@@ -1705,17 +1705,27 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 	m_nSearchIndex = selIndex;
 	m_bCancelled = FALSE;
 
-	// calculate some information the context menu commands can use
-//	CString pathURL = GetURLFromPath(m_path);
+	bool showExtendedMenu = (GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0;
 
 	POSITION pos = GetFirstSelectedItemPosition();
-	int indexNext = GetNextSelectedItem(pos);
-	if (indexNext < 0)
+	int FirstSelect = GetNextSelectedItem(pos);
+	if (FirstSelect < 0)
 		return;
 
-	GitRevLoglist* pSelLogEntry = m_arShownList.SafeGetAt(indexNext);
+	GitRevLoglist* pSelLogEntry = m_arShownList.SafeGetAt(FirstSelect);
 	if (pSelLogEntry == nullptr)
 		return;
+
+	int LastSelect = -1;
+	UINT selectedCount = 1;
+	while (pos)
+	{
+		LastSelect = GetNextSelectedItem(pos);
+		++selectedCount;
+	}
+
+	ASSERT(GetSelectedCount() == selectedCount);
+
 #if 0
 	GitRev revSelected = pSelLogEntry->Rev;
 	GitRev revPrevious = git_revnum_t(revSelected)-1;
@@ -1761,15 +1771,6 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 
 #endif
 
-	bool showExtendedMenu = (GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0;
-
-	int FirstSelect=-1, LastSelect=-1;
-	pos = GetFirstSelectedItemPosition();
-	FirstSelect = GetNextSelectedItem(pos);
-	while(pos)
-	{
-		LastSelect = GetNextSelectedItem(pos);
-	}
 	//entry is selected, now show the popup menu
 	CIconMenu popup;
 	CIconMenu subbranchmenu, submenu, gnudiffmenu, diffmenu, blamemenu, revertmenu;
@@ -1778,8 +1779,10 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 	{
 		bool isHeadCommit = (pSelLogEntry->m_CommitHash == m_HeadHash);
 		CString currentBranch = _T("refs/heads/") + g_Git.GetCurrentBranch();
-		bool isMergeActive = CTGitPath(g_Git.m_CurrentDir).IsMergeActive();
-		bool isStash = IsOnStash(indexNext);
+		CTGitPath workingTree(g_Git.m_CurrentDir);
+		bool isMergeActive = workingTree.IsMergeActive();
+		bool isBisectActive = workingTree.IsBisectActive();
+		bool isStash = IsOnStash(FirstSelect);
 		GIT_REV_LIST parentHash;
 		GetParentHashes(pSelLogEntry, parentHash);
 
@@ -1798,7 +1801,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 		if (m_ContextMenuMask & (GetContextMenuBit(ID_REBASE_SKIP) | GetContextMenuBit(ID_REBASE_EDIT) | GetContextMenuBit(ID_REBASE_SQUASH) | GetContextMenuBit(ID_REBASE_PICK)) && !(pSelLogEntry->GetRebaseAction() & (LOGACTIONS_REBASE_CURRENT | LOGACTIONS_REBASE_DONE)))
 			popup.AppendMenu(MF_SEPARATOR, NULL);
 
-		if (GetSelectedCount() == 1)
+		if (selectedCount == 1)
 		{
 			{
 				bool requiresSeparator = false;
@@ -1920,7 +1923,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					}
 				}
 
-				if ((pSelLogEntry->m_CommitHash.IsEmpty() || isStash) && CTGitPath(g_Git.m_CurrentDir).HasStashDir())
+				if ((pSelLogEntry->m_CommitHash.IsEmpty() || isStash) && workingTree.HasStashDir())
 				{
 					if (m_ContextMenuMask&GetContextMenuBit(ID_STASH_POP))
 					{
@@ -1941,7 +1944,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					requiresSeparator = false;
 				}
 
-				if (CTGitPath(g_Git.m_CurrentDir).IsBisectActive())
+				if (isBisectActive)
 				{
 					GitRevLoglist* pFirstEntry = m_arShownList.SafeGetAt(FirstSelect);
 					if (m_ContextMenuMask&GetContextMenuBit(ID_BISECTGOOD) && !IsBisect(pFirstEntry))
@@ -1962,7 +1965,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					}
 				}
 
-				if (pSelLogEntry->m_CommitHash.IsEmpty() && CTGitPath(g_Git.m_CurrentDir).IsBisectActive())
+				if (pSelLogEntry->m_CommitHash.IsEmpty() && isBisectActive)
 				{
 					if (m_ContextMenuMask&GetContextMenuBit(ID_BISECTRESET))
 					{
@@ -1985,7 +1988,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					if(m_ContextMenuMask&GetContextMenuBit(ID_FETCH))
 						popup.AppendMenuIcon(ID_FETCH, IDS_MENUFETCH, IDI_PULL);
 
-					if (CTGitPath(g_Git.m_CurrentDir).HasSubmodules() && m_ContextMenuMask & GetContextMenuBit(ID_SUBMODULE_UPDATE))
+					if ((m_ContextMenuMask & GetContextMenuBit(ID_SUBMODULE_UPDATE)) && workingTree.HasSubmodules())
 						popup.AppendMenuIcon(ID_SUBMODULE_UPDATE, IDS_PROC_SYNC_SUBKODULEUPDATE, IDI_UPDATE);
 
 					popup.AppendMenu(MF_SEPARATOR, NULL);
@@ -2017,8 +2020,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 
 			if(!pSelLogEntry->m_CommitHash.IsEmpty())
 			{
-				if((m_ContextMenuMask&GetContextMenuBit(ID_LOG)) &&
-					GetSelectedCount() == 1)
+				if ((m_ContextMenuMask & GetContextMenuBit(ID_LOG)) && selectedCount == 1)
 						popup.AppendMenuIcon(ID_LOG, IDS_LOG_POPUP_LOG, IDI_LOG);
 
 				if (m_ContextMenuMask&GetContextMenuBit(ID_REPOBROWSE))
@@ -2148,21 +2150,21 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 		if(!pSelLogEntry->m_Ref.IsEmpty())
 		{
 			popup.AppendMenuIcon(ID_REFLOG_DEL, IDS_REFLOG_DEL, IDI_DELETE);
-			if (GetSelectedCount() == 1 && CStringUtils::StartsWith(pSelLogEntry->m_Ref, L"refs/stash"))
+			if (selectedCount == 1 && CStringUtils::StartsWith(pSelLogEntry->m_Ref, L"refs/stash"))
 				popup.AppendMenuIcon(ID_REFLOG_STASH_APPLY, IDS_MENUSTASHAPPLY, IDI_RELOCATE);
 			popup.AppendMenu(MF_SEPARATOR, NULL);
 		}
 
-		if (GetSelectedCount() >= 2)
+		if (selectedCount >= 2)
 		{
 			bool bAddSeparator = false;
-			if (IsSelectionContinuous() || (GetSelectedCount() == 2))
+			if ((selectedCount == 2) || IsSelectionContinuous())
 			{
 				if(m_ContextMenuMask&GetContextMenuBit(ID_COMPARETWO)) // compare two revisions
 					popup.AppendMenuIcon(ID_COMPARETWO, IDS_LOG_POPUP_COMPARETWO, IDI_DIFF);
 			}
 
-			if (GetSelectedCount() == 2)
+			if (selectedCount == 2)
 			{
 				if(m_ContextMenuMask&GetContextMenuBit(ID_GNUDIFF2) && m_hasWC) // compare two revisions, unified
 					popup.AppendMenuIcon(ID_GNUDIFF2, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
@@ -2192,16 +2194,16 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				popup.AppendMenu(MF_SEPARATOR, NULL);
 		}
 
-		if (GetSelectedCount() > 1 && CTGitPath(g_Git.m_CurrentDir).IsBisectActive() && m_ContextMenuMask&GetContextMenuBit(ID_BISECTSKIP) && !IsBisect(pSelLogEntry))
+		if (selectedCount > 1 && isBisectActive && (m_ContextMenuMask & GetContextMenuBit(ID_BISECTSKIP)) && !IsBisect(pSelLogEntry))
 		{
 			popup.AppendMenuIcon(ID_BISECTSKIP, IDS_MENUBISECTSKIP, IDI_BISECT);
 			popup.AppendMenu(MF_SEPARATOR, NULL);
 		}
 
-		if ( GetSelectedCount() >0 && (!pSelLogEntry->m_CommitHash.IsEmpty()))
+		if (!pSelLogEntry->m_CommitHash.IsEmpty())
 		{
 			bool bAddSeparator = false;
-			if ( IsSelectionContinuous() && GetSelectedCount() >= 2 )
+			if (selectedCount >= 2 && IsSelectionContinuous())
 			{
 				if (m_ContextMenuMask&GetContextMenuBit(ID_COMBINE_COMMIT) && m_hasWC && !isMergeActive)
 				{
@@ -2228,14 +2230,14 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				}
 			}
 			if (m_ContextMenuMask&GetContextMenuBit(ID_CHERRY_PICK) && !isHeadCommit && m_hasWC && !isMergeActive) {
-				if (GetSelectedCount() >= 2)
+				if (selectedCount >= 2)
 					popup.AppendMenuIcon(ID_CHERRY_PICK, IDS_CHERRY_PICK_VERSIONS, IDI_EXPORT);
 				else
 					popup.AppendMenuIcon(ID_CHERRY_PICK, IDS_CHERRY_PICK_VERSION, IDI_EXPORT);
 				bAddSeparator = true;
 			}
 
-			if (GetSelectedCount() <= 2 || (IsSelectionContinuous() && GetSelectedCount() > 0 && !isStash))
+			if (selectedCount <= 2 || (IsSelectionContinuous() && !isStash))
 				if(m_ContextMenuMask&GetContextMenuBit(ID_CREATE_PATCH)) {
 					popup.AppendMenuIcon(ID_CREATE_PATCH, IDS_CREATE_PATCH, IDI_PATCH);
 					bAddSeparator = true;
@@ -2245,13 +2247,13 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				popup.AppendMenu(MF_SEPARATOR, NULL);
 		}
 
-		if (m_hasWC && !isMergeActive && !isStash && (m_ContextMenuMask & GetContextMenuBit(ID_BISECTSTART)) && GetSelectedCount() == 2 && !m_arShownList.SafeGetAt(FirstSelect)->m_CommitHash.IsEmpty() && !CTGitPath(g_Git.m_CurrentDir).IsBisectActive())
+		if (m_hasWC && !isMergeActive && !isStash && (m_ContextMenuMask & GetContextMenuBit(ID_BISECTSTART)) && selectedCount == 2 && !m_arShownList.SafeGetAt(FirstSelect)->m_CommitHash.IsEmpty() && !isBisectActive)
 		{
 			popup.AppendMenuIcon(ID_BISECTSTART, IDS_MENUBISECTSTART, IDI_BISECT);
 			popup.AppendMenu(MF_SEPARATOR, NULL);
 		}
 
-		if (GetSelectedCount() == 1)
+		if (selectedCount == 1)
 		{
 			bool bAddSeparator = false;
 			if (m_ContextMenuMask&GetContextMenuBit(ID_PUSH) && ((!isStash && !m_HashMap[pSelLogEntry->m_CommitHash].empty()) || showExtendedMenu))
@@ -2331,22 +2333,19 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			} // m_ContextMenuMask &GetContextMenuBit(ID_DELETE)
 			if (bAddSeparator)
 				popup.AppendMenu(MF_SEPARATOR, NULL);
-		} // GetSelectedCount() == 1
+		} // selectedCount == 1
 
-		if (GetSelectedCount() != 0)
-		{
-			if(m_ContextMenuMask&GetContextMenuBit(ID_COPYHASH))
-				popup.AppendMenuIcon(ID_COPYHASH, IDS_COPY_COMMIT_HASH, IDI_COPYCLIP);
-			if(m_ContextMenuMask&GetContextMenuBit(ID_COPYCLIPBOARD))
-				popup.AppendMenuIcon(ID_COPYCLIPBOARD, IDS_LOG_POPUP_COPYTOCLIPBOARD, IDI_COPYCLIP);
-			if(m_ContextMenuMask&GetContextMenuBit(ID_COPYCLIPBOARDMESSAGES))
-				popup.AppendMenuIcon(ID_COPYCLIPBOARDMESSAGES, IDS_LOG_POPUP_COPYTOCLIPBOARDMESSAGES, IDI_COPYCLIP);
-		}
+		if (m_ContextMenuMask & GetContextMenuBit(ID_COPYHASH))
+			popup.AppendMenuIcon(ID_COPYHASH, IDS_COPY_COMMIT_HASH, IDI_COPYCLIP);
+		if (m_ContextMenuMask & GetContextMenuBit(ID_COPYCLIPBOARD))
+			popup.AppendMenuIcon(ID_COPYCLIPBOARD, IDS_LOG_POPUP_COPYTOCLIPBOARD, IDI_COPYCLIP);
+		if (m_ContextMenuMask & GetContextMenuBit(ID_COPYCLIPBOARDMESSAGES))
+			popup.AppendMenuIcon(ID_COPYCLIPBOARDMESSAGES, IDS_LOG_POPUP_COPYTOCLIPBOARDMESSAGES, IDI_COPYCLIP);
 
 		if(m_ContextMenuMask&GetContextMenuBit(ID_FINDENTRY))
 			popup.AppendMenuIcon(ID_FINDENTRY, IDS_LOG_POPUP_FIND, IDI_FILTEREDIT);
 
-		if (GetSelectedCount() == 1 && m_ContextMenuMask & GetContextMenuBit(ID_SHOWBRANCHES) && !pSelLogEntry->m_CommitHash.IsEmpty())
+		if (selectedCount == 1 && (m_ContextMenuMask & GetContextMenuBit(ID_SHOWBRANCHES)) && !pSelLogEntry->m_CommitHash.IsEmpty())
 			popup.AppendMenuIcon(ID_SHOWBRANCHES, IDS_LOG_POPUP_SHOWBRANCHES, IDI_SHOWBRANCHES);
 
 		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this);
