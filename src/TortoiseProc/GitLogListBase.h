@@ -353,6 +353,7 @@ public:
 	ID_BISECTGOOD,
 	ID_BISECTBAD,
 	ID_BISECTRESET,
+	ID_BISECTSKIP,
 	};
 	enum
 	{

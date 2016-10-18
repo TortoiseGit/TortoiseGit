@@ -2185,6 +2185,10 @@ msgstr ""
 msgid "Bisect reset"
 msgstr ""
 
+#. Resource IDs: (IDS_MENUBISECTSKIP)
+msgid "Bisect skip"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_BISECTSTART: Control id 4574, IDS_MENUBISECTSTART)
 msgid "Bisect start"
 msgstr ""
@@ -8922,6 +8926,10 @@ msgstr ""
 #. Resource IDs: (IDS_PROC_SKIPPATCH)
 #, c-format
 msgid "Skip Patch: %s"
+msgstr ""
+
+#. Resource IDs: (IDS_MENUDESCBISECTSKIP)
+msgid "Skip current revision in bisecting process"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_PROPPAGE: Control id 11029, IDS_PATHACTIONS_SKIPWORKTREE, IDS_STATUSLIST_SKIPWORKTREE)

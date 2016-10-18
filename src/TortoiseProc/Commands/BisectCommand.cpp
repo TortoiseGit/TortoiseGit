@@ -36,7 +36,7 @@ bool BisectCommand::Execute()
 
 		return CAppUtils::BisectStart(lastGood, firstBad, true);
 	}
-	else if ((this->parser.HasKey(_T("good")) || this->parser.HasKey(_T("bad")) || this->parser.HasKey(_T("reset"))) && path.IsBisectActive())
+	else if ((this->parser.HasKey(L"good") || this->parser.HasKey(L"bad") || this->parser.HasKey(L"skip") || this->parser.HasKey(L"reset")) && path.IsBisectActive())
 	{
 		CString op;
 		CString ref;
@@ -45,6 +45,8 @@ bool BisectCommand::Execute()
 			g_Git.GetBisectTerms(&op, nullptr);
 		else if (this->parser.HasKey(_T("bad")))
 			g_Git.GetBisectTerms(nullptr, &op);
+		else if (this->parser.HasKey(L"skip"))
+			op = L"skip";
 		else if (this->parser.HasKey(_T("reset")))
 			op = _T("reset");
 

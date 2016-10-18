@@ -1,6 +1,9 @@
 ﻿= Release 2.4.0 =
 Released: unreleased
 
+== Features ==
+ * Fixed issue #2505: Add support for bisect skip
+
 == Bug Fixes ==
  * Fixed issue #2837: Layout of overlapping icons settings dialog
  * Fixed issue #2839: The dialog "check for updates" has a resize issue

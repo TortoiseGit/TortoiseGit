@@ -1084,6 +1084,9 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 				case CGit::REF_TYPE::BISECT_BAD:
 					colRef = m_Colors.GetColor(CColors::BisectBad);
 					break;
+				case CGit::REF_TYPE::BISECT_SKIP:
+					colRef = m_Colors.GetColor(CColors::BisectSkip);
+					break;
 				case CGit::REF_TYPE::NOTES:
 					colRef = m_Colors.GetColor(CColors::NoteNode);
 					break;

@@ -2955,6 +2955,12 @@ CString CGit::GetShortName(const CString& ref, REF_TYPE *out_type)
 			type = CGit::BISECT_BAD;
 			shortname = bisectBad;
 		}
+
+		if (CStringUtils::StartsWith(shortname, L"skip") && ((c = shortname.GetAt(4)) == '-' || c == '\0'))
+		{
+			type = CGit::BISECT_SKIP;
+			shortname = L"skip";
+		}
 	}
 	else if (CGit::GetShortName(str, shortname, _T("refs/notes/")))
 		type = CGit::NOTES;

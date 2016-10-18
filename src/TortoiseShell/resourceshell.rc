@@ -329,6 +329,8 @@ BEGIN
     IDS_MENUDESCREMOVE      "Deletes files/folders from version control"
     IDS_MENUUPDATEEXT       "Submodule &Update..."
     IDS_MENUBISECTRESET     "Bisect reset"
+    IDS_MENUBISECTSKIP      "Bisect skip"
+    IDS_MENUDESCBISECTSKIP  "Skip current revision in bisecting process"
 END
 
 STRINGTABLE

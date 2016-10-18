@@ -1368,9 +1368,10 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 								break;
 							case CGit::REF_TYPE::BISECT_GOOD:
 							case CGit::REF_TYPE::BISECT_BAD:
+							case CGit::REF_TYPE::BISECT_SKIP:
 								if (!(m_ShowRefMask & LOGLIST_SHOWBISECT))
 									continue;
-								refLabel.color = (refLabel.refType == CGit::REF_TYPE::BISECT_GOOD) ? m_Colors.GetColor(CColors::BisectGood): m_Colors.GetColor(CColors::BisectBad);
+								refLabel.color = (refLabel.refType == CGit::REF_TYPE::BISECT_GOOD) ? m_Colors.GetColor(CColors::BisectGood) : ((refLabel.refType == CGit::REF_TYPE::BISECT_SKIP) ? m_Colors.GetColor(CColors::BisectSkip) : m_Colors.GetColor(CColors::BisectBad));
 								break;
 							default:
 								continue;
@@ -1954,6 +1955,11 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						popup.AppendMenuIcon(ID_BISECTBAD, IDS_MENUBISECTBAD, IDI_THUMB_DOWN);
 						requiresSeparator = true;
 					}
+					if (m_ContextMenuMask&GetContextMenuBit(ID_BISECTSKIP) && !IsBisect(pFirstEntry))
+					{
+						popup.AppendMenuIcon(ID_BISECTSKIP, IDS_MENUBISECTSKIP, IDI_BISECT);
+						requiresSeparator = true;
+					}
 				}
 
 				if (pSelLogEntry->m_CommitHash.IsEmpty() && CTGitPath(g_Git.m_CurrentDir).IsBisectActive())
@@ -2184,6 +2190,12 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 
 			if (bAddSeparator)
 				popup.AppendMenu(MF_SEPARATOR, NULL);
+		}
+
+		if (GetSelectedCount() > 1 && CTGitPath(g_Git.m_CurrentDir).IsBisectActive() && m_ContextMenuMask&GetContextMenuBit(ID_BISECTSKIP) && !IsBisect(pSelLogEntry))
+		{
+			popup.AppendMenuIcon(ID_BISECTSKIP, IDS_MENUBISECTSKIP, IDI_BISECT);
+			popup.AppendMenu(MF_SEPARATOR, NULL);
 		}
 
 		if ( GetSelectedCount() >0 && (!pSelLogEntry->m_CommitHash.IsEmpty()))

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -118,6 +118,9 @@ MenuInfo menuInfo[] =
 
 	{ ShellMenuBisectBad,					MENUBISECT,			IDI_THUMB_DOWN,			IDS_MENUBISECTBAD,			IDS_MENUDESCBISECTBAD,
 		{ITEMIS_FOLDERINGIT|ITEMIS_ONLYONE|ITEMIS_BISECT, 0}, {0, 0}, {0, 0}, {0, 0} },
+
+	{ ShellMenuBisectSkip,					MENUBISECT,			IDI_BISECT,				IDS_MENUBISECTSKIP,			IDS_MENUDESCBISECTSKIP,
+		{ ITEMIS_FOLDERINGIT | ITEMIS_ONLYONE | ITEMIS_BISECT, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 } },
 
 	{ ShellMenuBisectReset,					MENUBISECT,			IDI_BISECT_RESET,		IDS_MENUBISECTRESET,		IDS_MENUDESCBISECTRESET,
 		{ITEMIS_FOLDERINGIT|ITEMIS_ONLYONE|ITEMIS_BISECT, 0}, {0, 0}, {0, 0}, {0, 0} },

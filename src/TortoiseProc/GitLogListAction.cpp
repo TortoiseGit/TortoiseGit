@@ -898,6 +898,21 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					Refresh();
 			}
 			break;
+		case ID_BISECTSKIP:
+		{
+			CString refs;
+			POSITION pos2 = GetFirstSelectedItemPosition();
+			while (pos2)
+			{
+				int indexNext2 = GetNextSelectedItem(pos2);
+				auto rev = m_arShownList.SafeGetAt(indexNext2);
+				if (!rev->m_CommitHash.IsEmpty())
+					refs.AppendFormat(L" %s", (LPCTSTR)rev->m_CommitHash.ToString());
+			}
+			if (CAppUtils::BisectOperation(L"skip", refs))
+				Refresh();
+		}
+		break;
 		case ID_BISECTRESET:
 			{
 				if (CAppUtils::BisectOperation(_T("reset")))

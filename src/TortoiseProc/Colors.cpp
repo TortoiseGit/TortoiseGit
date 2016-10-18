@@ -48,6 +48,7 @@ CColors::COLOR_DATA CColors::m_ColorArray[]=
 	{ BranchLine8, CRegDWORD(L"Software\\TortoiseGit\\Colors\\BranchLine8", RGB(128, 0, 128)) },
 	{ BisectGood, CRegDWORD(L"Software\\TortoiseGit\\Colors\\BisectGood", RGB(0, 100, 200)) },
 	{ BisectBad, CRegDWORD(L"Software\\TortoiseGit\\Colors\\BisectBad", RGB(255, 0, 0)) },
+	{ BisectSkip, CRegDWORD(L"Software\\TortoiseGit\\Colors\\BisectBad", RGB(192, 192, 192)) },
 };
 
 CColors::CColors(void)

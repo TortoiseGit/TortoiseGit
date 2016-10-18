@@ -372,6 +372,7 @@ public:
 		STASH,
 		BISECT_GOOD,
 		BISECT_BAD,
+		BISECT_SKIP,
 		NOTES,
 		UNKNOWN,
 

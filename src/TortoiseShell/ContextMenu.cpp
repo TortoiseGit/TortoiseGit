@@ -1509,6 +1509,10 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				AddPathCommand(gitCmd, L"bisect", false);
 				gitCmd += _T("\" /bad");
 				break;
+			case ShellMenuBisectSkip:
+				AddPathCommand(gitCmd, L"bisect", false);
+				gitCmd += L"\" /skip";
+				break;
 			case ShellMenuBisectReset:
 				AddPathCommand(gitCmd, L"bisect", false);
 				gitCmd += _T("\" /reset");
