@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015 - TortoiseGit
+// Copyright (C) 2015-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -147,6 +147,18 @@ TEST(CCmdLineParser, SingleArgStringValueQuoted)
 	}
 }
 
+
+TEST(CCmdLineParser, SingleArgStartingDoubleQuote)
+{
+	CString args[] = { L"/action:\"\"log", L"/action \"\"log", L"-action:\"\"log", L"-action \"\"log" };
+	for (const CString& arg : args)
+	{
+		CCmdLineParser parser(arg);
+		EXPECT_TRUE(parser.HasKey(L"action"));
+		EXPECT_FALSE(parser.HasVal(L"action"));
+	}
+}
+
 TEST(CCmdLineParser, SingleArgStringValueQuote)
 {
 	CString args[] = { L"/action:l\"og", L"/action l\"og", L"-action:l\"og", L"-action l\"og" };
@@ -156,6 +168,30 @@ TEST(CCmdLineParser, SingleArgStringValueQuote)
 		EXPECT_TRUE(parser.HasKey(L"action"));
 		EXPECT_TRUE(parser.HasVal(L"action"));
 		EXPECT_STREQ(L"l\"og", parser.GetVal(L"action"));
+	}
+}
+
+TEST(CCmdLineParser, SingleArgStringValueQuotes1)
+{
+	CString args[] = { L"/action:l\"\"og", L"/action l\"\"og", L"-action:l\"\"og", L"-action l\"\"og" };
+	for (const CString& arg : args)
+	{
+		CCmdLineParser parser(arg);
+		EXPECT_TRUE(parser.HasKey(L"action"));
+		EXPECT_TRUE(parser.HasVal(L"action"));
+		EXPECT_STREQ(L"l\"\"og", parser.GetVal(L"action"));
+	}
+}
+
+TEST(CCmdLineParser, SingleArgStringValueQuotes2)
+{
+	CString args[] = { L"/action:l\"og\"", L"/action l\"og\"", L"-action:l\"og\"", L"-action l\"og\"" };
+	for (const CString& arg : args)
+	{
+		CCmdLineParser parser(arg);
+		EXPECT_TRUE(parser.HasKey(L"action"));
+		EXPECT_TRUE(parser.HasVal(L"action"));
+		EXPECT_STREQ(L"l\"og\"", parser.GetVal(L"action"));
 	}
 }
 
@@ -281,6 +317,18 @@ TEST(CCmdLineParser, SingleArgBrokenQuote)
 		EXPECT_TRUE(parser.HasKey(L"action"));
 		EXPECT_TRUE(parser.HasVal(L"action"));
 		EXPECT_STREQ(L"-test", parser.GetVal(L"action"));
+		EXPECT_FALSE(parser.HasKey(L"test"));
+	}
+}
+
+TEST(CCmdLineParser, SingleArgBrokenQuoteAtEnd)
+{
+	CString args[] = { L"/action:\"", L"/action \"", L"-action \"", L"-action:\"" };
+	for (const CString& arg : args)
+	{
+		CCmdLineParser parser(arg);
+		EXPECT_TRUE(parser.HasKey(L"action"));
+		EXPECT_FALSE(parser.HasVal(L"action"));
 	}
 }
 
@@ -293,6 +341,8 @@ TEST(CCmdLineParser, SingleArgBrokenQuote2)
 		EXPECT_TRUE(parser.HasKey(L"action"));
 		EXPECT_TRUE(parser.HasVal(L"action"));
 		EXPECT_STREQ(L"-test ", parser.GetVal(L"action"));
+		EXPECT_FALSE(parser.HasKey(L"test"));
+		EXPECT_FALSE(parser.HasKey(L"bla"));
 	}
 }
 
@@ -305,6 +355,8 @@ TEST(CCmdLineParser, SingleArgBrokenQuote3)
 		EXPECT_TRUE(parser.HasKey(L"action"));
 		EXPECT_TRUE(parser.HasVal(L"action"));
 		EXPECT_STREQ(L"-test:", parser.GetVal(L"action"));
+		EXPECT_FALSE(parser.HasKey(L"test"));
+		EXPECT_FALSE(parser.HasKey(L"bla"));
 	}
 }
 
@@ -391,6 +443,21 @@ TEST(CCmdLineParser, MultiArgStringSpaceValue)
 	}
 }
 
+TEST(CCmdLineParser, MultiArgStringSpaceLeftOverQuote)
+{
+	CString args[] = { L"/action:log \"2 /rev def", L"/action log \"2 -rev def", L"-action:log \"2 -rev def", L"-action log \"2 /rev def" };
+	for (const CString& arg : args)
+	{
+		CCmdLineParser parser(arg);
+		EXPECT_TRUE(parser.HasKey(L"action"));
+		EXPECT_TRUE(parser.HasVal(L"action"));
+		EXPECT_STREQ(L"log", parser.GetVal(L"action"));
+		EXPECT_TRUE(parser.HasKey(L"rev"));
+		EXPECT_TRUE(parser.HasVal(L"rev"));
+		EXPECT_STREQ(L"def", parser.GetVal(L"rev"));
+	}
+}
+
 TEST(CCmdLineParser, MultiArgStringSpaceValueQuoted)
 {
 	CString args[] = { L"/action:\"log 2\" /rev def", L"/action \"log 2\" -rev def", L"-action:\"log 2\" -rev def", L"-action \"log 2\" /rev def" };
@@ -423,7 +490,7 @@ TEST(CCmdLineParser, MultiArgStringSpaceValueQuoted2)
 
 TEST(CCmdLineParser, MultiArgValueTwice)
 {
-	CString args[] = { L"/action:\"log\" /action:\"log2\"", L"/action \"log\" /action \"log2\"", L"-action:\"log\" -action:\"log2\"", L"-action \"log\" -action \"log2\"" };
+	CString args[] = { L"/action:\"log\" /action:\"log2\"", L"/action \"log\" /action \"log2\"", L"-action:\"log\" -action:\"log2\"", L"-action \"log\" -action \"log2\"", L"/action:\"log\" -action:\"log2\"", L"/action \"log\" -action \"log2\"", L"-action:\"log\" /action:\"log2\"", L"-action \"log\" /action \"log2\"" };
 	for (const CString& arg : args)
 	{
 		CCmdLineParser parser(arg);
