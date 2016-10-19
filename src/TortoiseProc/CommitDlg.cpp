@@ -1088,39 +1088,6 @@ void CCommitDlg::OnOK()
 		if (m_ctrlOkButton.GetCurrentEntry() == 1)
 			m_PostCmd = GIT_POSTCOMMIT_CMD_RECOMMIT;
 
-		if (progress.m_GitStatus || m_PostCmd == GIT_POSTCOMMIT_CMD_RECOMMIT)
-		{
-			bCloseCommitDlg = false;
-			if (m_PostCmd == GIT_POSTCOMMIT_CMD_RECOMMIT)
-			{
-				if (!m_sLogMessage.IsEmpty())
-				{
-					ReloadHistoryEntries();
-					m_History.AddEntry(m_sLogMessage);
-					m_History.Save();
-				}
-
-				this->m_sLogMessage.Empty();
-				GetCommitTemplate(m_sLogMessage);
-				RunStartCommitHook();
-				m_cLogMessage.SetText(m_sLogMessage);
-				if (m_bCreateNewBranch)
-				{
-					GetDlgItem(IDC_COMMIT_TO)->ShowWindow(SW_SHOW);
-					GetDlgItem(IDC_NEWBRANCH)->ShowWindow(SW_HIDE);
-				}
-				m_bCreateNewBranch = FALSE;
-			}
-
-			if (!progress.m_GitStatus)
-			{
-				m_AmendStr.Empty();
-				m_bCommitAmend = FALSE;
-			}
-
-			UpdateData(FALSE);
-		}
-
 		::DeleteFile(tempfile);
 
 		if (m_BugTraqProvider && progress.m_GitStatus == 0)
@@ -1168,6 +1135,39 @@ void CCommitDlg::OnOK()
 			BOOL cancel = FALSE;
 			mgtReAddAfterCommit.Execute(cancel);
 			mgtReDelAfterCommit.Execute(cancel);
+		}
+
+		if (progress.m_GitStatus || m_PostCmd == GIT_POSTCOMMIT_CMD_RECOMMIT)
+		{
+			bCloseCommitDlg = false;
+			if (m_PostCmd == GIT_POSTCOMMIT_CMD_RECOMMIT)
+			{
+				if (!m_sLogMessage.IsEmpty())
+				{
+					ReloadHistoryEntries();
+					m_History.AddEntry(m_sLogMessage);
+					m_History.Save();
+				}
+
+				this->m_sLogMessage.Empty();
+				GetCommitTemplate(m_sLogMessage);
+				RunStartCommitHook();
+				m_cLogMessage.SetText(m_sLogMessage);
+				if (m_bCreateNewBranch)
+				{
+					GetDlgItem(IDC_COMMIT_TO)->ShowWindow(SW_SHOW);
+					GetDlgItem(IDC_NEWBRANCH)->ShowWindow(SW_HIDE);
+				}
+				m_bCreateNewBranch = FALSE;
+			}
+
+			if (!progress.m_GitStatus)
+			{
+				m_AmendStr.Empty();
+				m_bCommitAmend = FALSE;
+			}
+
+			UpdateData(FALSE);
 		}
 	}
 	else if(bAddSuccess)
