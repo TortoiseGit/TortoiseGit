@@ -37,6 +37,7 @@ CMenuButton::CMenuButton(void) : CMFCMenuButton()
 	, m_bMarkDefault(TRUE)
 	, m_bShowCurrentItem(true)
 	, m_bRealMenuIsActive(false)
+	, m_bAlwaysShowArrow(false)
 {
 	m_bOSMenu = TRUE;
 	m_bDefaultClick = TRUE;
@@ -177,7 +178,7 @@ void CMenuButton::OnDestroy()
 
 void CMenuButton::OnDraw(CDC* pDC, const CRect& rect, UINT uiState)
 {
-	if (m_bMenuIsActive && !m_bRealMenuIsActive)
+	if (m_bMenuIsActive && !m_bRealMenuIsActive && !m_bAlwaysShowArrow)
 		CMFCButton::OnDraw(pDC, rect, uiState);
 	else
 		CMFCMenuButton::OnDraw(pDC, rect, uiState);

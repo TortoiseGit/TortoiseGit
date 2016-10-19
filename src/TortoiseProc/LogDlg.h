@@ -36,6 +36,7 @@
 #include "HyperLink.h"
 #include "GravatarPictureBox.h"
 #include "PatchViewDlg.h"
+#include "MenuButton.h"
 
 #define LOGFILTER_TIMER	101
 #define LOGFTIME_TIMER	102
@@ -225,6 +226,9 @@ private:
 	CTGitPath			m_orgPath;
 	CString				m_hightlightRevision;
 
+	CMenuButton			m_ctrlView;
+	CMenuButton			m_ctrlWalkBehavior;
+
 	std::vector<CGitHash>	m_sSelectedHash;	// set to selected commit hash on OK if appropriate
 	bool				m_bSelectionMustBeContinuous;
 	bool				m_bSelectionMustBeSingle;
@@ -248,7 +252,6 @@ private:
 	bool				m_bShowBranchRevNo;
 	bool				m_bNoMerges;
 	int					m_iCompressedGraph;
-	BOOL				m_bWalkBehavior;
 	bool				m_bNavigatingWithSelect;
 	bool				m_bAsteriskLogPrefix;
 

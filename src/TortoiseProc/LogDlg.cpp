@@ -49,7 +49,6 @@ CLogDlg::CLogDlg(CWnd* pParent /*=nullptr*/)
 	, m_bShowRemoteBranches(true)
 	, m_bNoMerges(false)
 	, m_iHidePaths(0)
-	, m_bWalkBehavior(FALSE)
 	, m_bFirstParent(false)
 	, m_bWholeProject(FALSE)
 	, m_iCompressedGraph(0)
@@ -135,7 +134,8 @@ void CLogDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_LOGINFO, m_sLogInfo);
 	DDX_Check(pDX, IDC_LOG_ALLBRANCH,m_bAllBranch);
 	DDX_Check(pDX, IDC_WHOLE_PROJECT, m_bWholeProject);
-	DDX_Check(pDX, IDC_WALKBEHAVIOUR, m_bWalkBehavior);
+	DDX_Control(pDX, IDC_WALKBEHAVIOUR, m_ctrlWalkBehavior);
+	DDX_Control(pDX, IDC_VIEW, m_ctrlView);
 	DDX_Control(pDX, IDC_SEARCHEDIT, m_cFilter);
 	DDX_Control(pDX, IDC_STATIC_REF, m_staticRef);
 	DDX_Control(pDX, IDC_PIC_AUTHOR, m_gravatar);
@@ -456,6 +456,9 @@ BOOL CLogDlg::OnInitDialog()
 	reg.Format(_T("Software\\TortoiseGit\\History\\LogDlg_Limits\\%s\\FromDate"), (LPCTSTR)g_Git.m_CurrentDir);
 	reg.Replace(_T(':'), _T('_'));
 	m_regLastSelectedFromDate = CRegString(reg);
+
+	m_ctrlWalkBehavior.m_bAlwaysShowArrow = true;
+	m_ctrlView.m_bAlwaysShowArrow = true;
 
 	ShowStartRef();
 	return FALSE;
@@ -3197,8 +3200,7 @@ void CLogDlg::OnBnClickedWalkBehaviour()
 		default:
 			break;
 		}
-		m_bWalkBehavior = (m_bFirstParent || m_bNoMerges || m_bFollowRenames || m_iCompressedGraph);
-		UpdateData(FALSE);
+		m_ctrlWalkBehavior.SetCheck((m_bFirstParent || m_bNoMerges || m_bFollowRenames || m_iCompressedGraph) ? BST_CHECKED : BST_UNCHECKED);
 	}
 }
 

@@ -81,6 +81,8 @@ public:
 	/** Don't show text on Button */
 	bool	m_bShowCurrentItem;
 
+	bool	m_bAlwaysShowArrow;
+
 protected:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 

@@ -7,6 +7,7 @@ Released: unreleased
  * Fixed issue #2849: Include and exclude paths
    We synced the include/exclude paths code with TortoiseSVN. Now you can exclude paths in an included path.
    Some people might need to update their include/exclude paths, see our manual for more information.
+ * Fixed issue #2136: LogDlg: Indicate that the View and Walk Behavior buttons contain a menu
 
 == Bug Fixes ==
  * Fixed issue #2837: Layout of overlapping icons settings dialog
