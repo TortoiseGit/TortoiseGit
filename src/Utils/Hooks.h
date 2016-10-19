@@ -160,19 +160,9 @@ public:
 	 * Executes the Post-Commit-Hook that first matches the path in
 	 * \c workingTree.
 	 * \param workingTree working tree root directory
-	 * \param pathList a list of paths to look for the hook scripts
-	 * \param message the commit message
-	 * \param rev the revision the commit was done to
-	 * \param exitcode on return, contains the exit code of the hook script
-	 * \param error the data the hook script outputs to stderr
-	 * \remark the string "%PATHS% in the command line of the hook script is
-	 * replaced with the path to a temporary file which contains a list of files
-	 * in \c pathList, separated by newlines. The hook script can parse this
-	 * file to get all the paths the commit is about to be done on.
+	 * \param amend commit was amend
 	 */
-	bool				PostCommit(const CString& workingTree, const CTGitPathList& pathList,
-									const GitRev& rev, const CString& message,
-									DWORD& exitcode, CString& error);
+	bool	PostCommit(const CString& workingTree, bool amend, DWORD& exitcode, CString& error);
 
 	bool	PrePush(const CString& workingTree, DWORD& exitcode, CString& error);
 	bool	PostPush(const CString& workingTree, DWORD& exitcode, CString& error);

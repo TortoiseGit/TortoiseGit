@@ -58,16 +58,14 @@
 					</para>
 				</listitem>
 			</varlistentry>
-			<!--
 			<varlistentry>
 				<term>Post-commit</term>
 				<listitem>
 					<para>
-						Called after the commit finishes (whether successful or not).
+						Called after the commit finished successfully.
 					</para>
 				</listitem>
 			</varlistentry>
-			-->
 			<varlistentry>
 				<term>Pre-push</term>
 				<listitem>
@@ -130,20 +128,15 @@
 					</para>
 				</listitem>
 			</varlistentry>
-			<!--
 			<varlistentry>
 				<term>Post-commit</term>
 				<listitem condition="pot">
 					<para>
-						<literal>PATH</literal>
-						<literal>MESSAGEFILE</literal>
-						<literal>REVISION</literal>
-						<literal>ERROR</literal>
 						<literal>CWD</literal>
+						<literal>(commit was amend (true or false))</literal>
 					</para>
 				</listitem>
 			</varlistentry>
-			-->
 			<varlistentry>
 				<term>Pre-push</term>
 				<listitem condition="pot">

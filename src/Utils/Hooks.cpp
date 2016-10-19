@@ -266,17 +266,17 @@ bool CHooks::PreCommit(const CString& workingTree, const CTGitPathList& pathList
 	return true;
 }
 
-bool CHooks::PostCommit(const CString& workingTree, const CTGitPathList& pathList, const GitRev& rev, const CString& message, DWORD& exitcode, CString& error)
+bool CHooks::PostCommit(const CString& workingTree, bool amend, DWORD& exitcode, CString& error)
 {
 	auto it = FindItem(post_commit_hook, workingTree);
 	if (it == end())
 		return false;
 	CString sCmd = it->second.commandline;
-	AddPathParam(sCmd, pathList);
-	AddMessageFileParam(sCmd, message);
-	AddParam(sCmd, rev.m_CommitHash.ToString());
-	AddErrorParam(sCmd, error);
 	AddCWDParam(sCmd, workingTree);
+	if (amend)
+		AddParam(sCmd, L"true");
+	else
+		AddParam(sCmd, L"false");
 	exitcode = RunScript(sCmd, workingTree, error, it->second.bWait, it->second.bShow);
 	return true;
 }

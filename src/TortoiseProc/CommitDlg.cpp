@@ -1137,6 +1137,22 @@ void CCommitDlg::OnOK()
 			mgtReDelAfterCommit.Execute(cancel);
 		}
 
+		if (!progress.m_GitStatus)
+		{
+			DWORD exitcode = 0xFFFFFFFF;
+			CString error;
+			if (CHooks::Instance().PostCommit(g_Git.m_CurrentDir, amend.IsEmpty(), exitcode, error))
+			{
+				if (exitcode)
+				{
+					CString temp;
+					temp.Format(IDS_ERR_HOOKFAILED, (LPCTSTR)error);
+					MessageBox(temp, L"TortoiseGit", MB_ICONERROR);
+					bCloseCommitDlg = false;
+				}
+			}
+		}
+
 		if (progress.m_GitStatus || m_PostCmd == GIT_POSTCOMMIT_CMD_RECOMMIT)
 		{
 			bCloseCommitDlg = false;
