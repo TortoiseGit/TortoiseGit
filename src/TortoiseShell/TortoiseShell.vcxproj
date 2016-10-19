@@ -118,6 +118,7 @@
     <ClInclude Include="Guids.h" />
     <ClInclude Include="ItemIDList.h" />
     <ClInclude Include="..\Utils\PathUtils.h" />
+    <ClInclude Include="MenuInfo.h" />
     <ClInclude Include="PIDL.h" />
     <ClInclude Include="PreserveChdir.h" />
     <ClInclude Include="..\Utils\registry.h" />

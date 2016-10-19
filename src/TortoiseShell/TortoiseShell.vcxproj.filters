@@ -232,6 +232,9 @@
     <ClInclude Include="..\Utils\CreateProcessHelper.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="MenuInfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resources\checkout.ico">
