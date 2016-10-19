@@ -41,37 +41,33 @@ CSetColorPage::~CSetColorPage()
 	m_bInit = FALSE;
 }
 
+static COLORREF GetColorFromButton(const CMFCColorButton& button)
+{
+	COLORREF col = button.GetColor();
+	if (col == -1)
+		return button.GetAutomaticColor();
+	return col;
+}
+
 void CSetColorPage::SaveData()
 {
 	if (!m_bInit)
 		return;
 
-	COLORREF cFg = m_cFgNormal.GetColor();
-	COLORREF cBk = m_cBkNormal.GetColor();
-	if (cFg == -1)
-		cFg = m_cFgNormal.GetAutomaticColor();
-	if (cBk == -1)
-		cBk = m_cBkNormal.GetAutomaticColor();
+	COLORREF cFg = GetColorFromButton(m_cFgNormal);
+	COLORREF cBk = GetColorFromButton(m_cBkNormal);
 	CDiffColors::GetInstance().SetColors(DIFFSTATE_NORMAL, cBk, cFg);
 	CDiffColors::GetInstance().SetColors(DIFFSTATE_UNKNOWN, cBk, cFg);
 
-	cFg = m_cFgRemoved.GetColor();
-	cBk = m_cBkRemoved.GetColor();
-	if (cFg == -1)
-		cFg = m_cFgRemoved.GetAutomaticColor();
-	if (cBk == -1)
-		cBk = m_cBkRemoved.GetAutomaticColor();
+	cFg = GetColorFromButton(m_cFgRemoved);
+	cBk = GetColorFromButton(m_cBkRemoved);
 	CDiffColors::GetInstance().SetColors(DIFFSTATE_REMOVED, cBk, cFg);
 	CDiffColors::GetInstance().SetColors(DIFFSTATE_IDENTICALREMOVED, cBk, cFg);
 	CDiffColors::GetInstance().SetColors(DIFFSTATE_THEIRSREMOVED, cBk, cFg);
 	CDiffColors::GetInstance().SetColors(DIFFSTATE_YOURSREMOVED, cBk, cFg);
 
-	cFg = m_cFgAdded.GetColor();
-	cBk = m_cBkAdded.GetColor();
-	if (cFg == -1)
-		cFg = m_cFgAdded.GetAutomaticColor();
-	if (cBk == -1)
-		cBk = m_cBkAdded.GetAutomaticColor();
+	cFg = GetColorFromButton(m_cFgAdded);
+	cBk = GetColorFromButton(m_cBkAdded);
 	CDiffColors::GetInstance().SetColors(DIFFSTATE_ADDED, cBk, cFg);
 	CDiffColors::GetInstance().SetColors(DIFFSTATE_IDENTICALADDED, cBk, cFg);
 	CDiffColors::GetInstance().SetColors(DIFFSTATE_THEIRSADDED, cBk, cFg);
@@ -79,46 +75,32 @@ void CSetColorPage::SaveData()
 
 	if ((DWORD)m_regInlineAdded != (DWORD)m_cBkInlineAdded.GetColor())
 		m_bReloadNeeded = true;
-	m_regInlineAdded = (m_cBkInlineAdded.GetColor() == -1 ? m_cBkInlineAdded.GetAutomaticColor() : m_cBkInlineAdded.GetColor());
+	m_regInlineAdded = GetColorFromButton(m_cBkInlineAdded);
 	if ((DWORD)m_regInlineRemoved != (DWORD)m_cBkInlineRemoved.GetColor())
 		m_bReloadNeeded = true;
-	m_regInlineRemoved = (m_cBkInlineRemoved.GetColor() == -1 ? m_cBkInlineRemoved.GetAutomaticColor() : m_cBkInlineRemoved.GetColor());
+	m_regInlineRemoved = GetColorFromButton(m_cBkInlineRemoved);
 	if ((DWORD)m_regModifiedBackground != (DWORD)m_cBkModified.GetColor())
 		m_bReloadNeeded = true;
-	m_regModifiedBackground = (m_cBkModified.GetColor() == -1 ? m_cBkModified.GetAutomaticColor() : m_cBkModified.GetColor());
+	m_regModifiedBackground = GetColorFromButton(m_cBkModified);
 	CDiffColors::GetInstance().SetColors(DIFFSTATE_EDITED, (DWORD)m_regModifiedBackground, cFg);
 
-	cFg = m_cFgEmpty.GetColor();
-	cBk = m_cBkEmpty.GetColor();
-	if (cFg == -1)
-		cFg = m_cFgEmpty.GetAutomaticColor();
-	if (cBk == -1)
-		cBk = m_cBkEmpty.GetAutomaticColor();
+	cFg = GetColorFromButton(m_cFgEmpty);
+	cBk = GetColorFromButton(m_cBkEmpty);
 	CDiffColors::GetInstance().SetColors(DIFFSTATE_EMPTY, cBk, cFg);
 
 	COLORREF adjustedcolor = cBk;
-	cFg = m_cFgConflict.GetColor();
-	cBk = m_cBkConflict.GetColor();
-	if (cFg == -1)
-		cFg = m_cFgConflict.GetAutomaticColor();
-	if (cBk == -1)
-		cBk = m_cBkConflict.GetAutomaticColor();
+	cFg = GetColorFromButton(m_cFgConflict);
+	cBk = GetColorFromButton(m_cBkConflict);
 	CDiffColors::GetInstance().SetColors(DIFFSTATE_CONFLICTED, cBk, cFg);
 	CDiffColors::GetInstance().SetColors(DIFFSTATE_CONFLICTED_IGNORED, cBk, cFg);
 	CDiffColors::GetInstance().SetColors(DIFFSTATE_CONFLICTADDED, cBk, cFg);
 	CDiffColors::GetInstance().SetColors(DIFFSTATE_CONFLICTEMPTY, adjustedcolor, cFg);
 
-	cFg = m_cFgConflictResolved.GetColor();
-	cBk = m_cBkConflictResolved.GetColor();
-	if (cFg == -1)
-		cFg = m_cFgConflictResolved.GetAutomaticColor();
-	if (cBk == -1)
-		cBk = m_cBkConflictResolved.GetAutomaticColor();
+	cFg = GetColorFromButton(m_cFgConflictResolved);
+	cBk = GetColorFromButton(m_cBkConflictResolved);
 	CDiffColors::GetInstance().SetColors(DIFFSTATE_CONFLICTRESOLVED, cBk, cFg);
 
-	cFg = m_cFgWhitespaces.GetColor();
-	if (cFg == -1)
-		cFg = m_cFgWhitespaces.GetAutomaticColor();
+	cFg = GetColorFromButton(m_cFgWhitespaces);
 	CRegDWORD regWhitespaceColor(_T("Software\\TortoiseGitMerge\\Colors\\Whitespace"), GetSysColor(COLOR_GRAYTEXT));
 	regWhitespaceColor = cFg;
 }
