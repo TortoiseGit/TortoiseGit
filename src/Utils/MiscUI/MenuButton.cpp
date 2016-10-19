@@ -43,6 +43,7 @@ CMenuButton::CMenuButton(void) : CMFCMenuButton()
 	m_bDefaultClick = TRUE;
 	m_bTransparent = TRUE;
 	m_bMenuIsActive = TRUE;
+	m_bStayPressed = TRUE;
 
 	m_btnMenu.CreatePopupMenu();
 	m_hMenu = m_btnMenu.GetSafeHmenu();
