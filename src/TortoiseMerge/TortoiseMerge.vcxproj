@@ -311,6 +311,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\ext\simpleini\SimpleIni.h" />
     <ClInclude Include="..\Git\Git.h" />
     <ClInclude Include="..\Git\GitForWindows.h" />
     <ClInclude Include="..\Git\gittype.h" />
@@ -328,7 +329,6 @@
     <ClInclude Include="..\Utils\MiscUI\Tooltip.h" />
     <ClInclude Include="..\Utils\MiscUI\TripleClick.h" />
     <ClInclude Include="..\Utils\ProfilingInfo.h" />
-    <ClInclude Include="..\Utils\SimpleIni.h" />
     <ClInclude Include="..\Utils\SysImageList.h" />
     <ClInclude Include="..\Utils\TaskbarUUID.h" />
     <ClInclude Include="CustomMFCRibbonStatusBar.h" />

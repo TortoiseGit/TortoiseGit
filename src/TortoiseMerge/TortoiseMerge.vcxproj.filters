@@ -25,6 +25,9 @@
     <Filter Include="Utils\MiscUI">
       <UniqueIdentifier>{13080af5-189e-4b35-b7f6-b9e770cb3539}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SimpleIni">
+      <UniqueIdentifier>{fda10926-3ccf-4768-8445-143f4ccd0dd6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AboutDlg.cpp">
@@ -539,9 +542,6 @@
     <ClInclude Include="..\Utils\registry.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\Utils\SimpleIni.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
     <ClInclude Include="..\Utils\StringUtils.h">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -568,6 +568,9 @@
     </ClInclude>
     <ClInclude Include="..\Utils\MiscUI\CommonDialogFunctions.h">
       <Filter>Utils\MiscUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ext\simpleini\SimpleIni.h">
+      <Filter>SimpleIni</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
