@@ -1,6 +1,7 @@
 // TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2006-2008, 2013-2014 - TortoiseSVN
+// Copyright (C) 2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -68,5 +69,11 @@ protected:
 	CMFCColorButton m_cBkConflict;
 	CMFCColorButton m_cBkConflictResolved;
 	CMFCColorButton m_cBkModified;
+	CMFCColorButton m_cFgNormal;
+	CMFCColorButton m_cFgRemoved;
+	CMFCColorButton m_cFgAdded;
+	CMFCColorButton m_cFgEmpty;
+	CMFCColorButton m_cFgConflict;
+	CMFCColorButton m_cFgConflictResolved;
 	CMFCColorButton m_cFgWhitespaces;
 };
