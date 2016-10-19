@@ -33,7 +33,7 @@
 		and fill in the details.
 	</para>
 	<para>
-		There are currently six types of hook script available
+		There are currently five types of hook script available
 		<variablelist>
 			<varlistentry>
 				<term>Start-commit</term>
@@ -58,16 +58,14 @@
 					</para>
 				</listitem>
 			</varlistentry>
-			<!--
 			<varlistentry>
 				<term>Post-commit</term>
 				<listitem>
 					<para>
-						Called after the commit finishes (whether successful or not).
+						Called after the commit finished successfully.
 					</para>
 				</listitem>
 			</varlistentry>
-			-->
 			<varlistentry>
 				<term>Pre-push</term>
 				<listitem>
@@ -81,6 +79,14 @@
 				<listitem>
 					<para>
 						Called after pushing finishes (whether successful or not).
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Pre-rebase</term>
+				<listitem>
+					<para>
+						Called before rebasing starts (after clicking on Start or autostart).
 					</para>
 				</listitem>
 			</varlistentry>
@@ -122,20 +128,15 @@
 					</para>
 				</listitem>
 			</varlistentry>
-			<!--
 			<varlistentry>
 				<term>Post-commit</term>
 				<listitem condition="pot">
 					<para>
-						<literal>PATH</literal>
-						<literal>MESSAGEFILE</literal>
-						<literal>REVISION</literal>
-						<literal>ERROR</literal>
 						<literal>CWD</literal>
+						<literal>(commit was amend (true or false))</literal>
 					</para>
 				</listitem>
 			</varlistentry>
-			-->
 			<varlistentry>
 				<term>Pre-push</term>
 				<listitem condition="pot">
@@ -149,6 +150,17 @@
 				<term>Post-push</term>
 				<listitem condition="pot">
 					<para>
+						<literal>ERROR</literal>
+						<literal>CWD</literal>
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Pre-rebase</term>
+				<listitem condition="pot">
+					<para>
+						<literal>(upstream branch)</literal>
+						<literal>(rebased branch)</literal>
 						<literal>ERROR</literal>
 						<literal>CWD</literal>
 					</para>

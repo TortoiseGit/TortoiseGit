@@ -35,6 +35,7 @@
 #include "MassiveGitTask.h"
 #include "CommitDlg.h"
 #include "StringUtils.h"
+#include "Hooks.h"
 
 // CRebaseDlg dialog
 
@@ -948,7 +949,22 @@ int CRebaseDlg::CheckRebaseCondition()
 	if (!CAppUtils::CheckUserData())
 		return -1;
 
-	//Todo call pre_rebase_hook
+	if (!m_IsCherryPick)
+	{
+		CString error;
+		DWORD exitcode = 0xFFFFFFFF;
+		if (CHooks::Instance().PreRebase(g_Git.m_CurrentDir, m_UpstreamCtrl.GetString(), m_BranchCtrl.GetString(), exitcode, error))
+		{
+			if (exitcode)
+			{
+				CString temp;
+				temp.Format(IDS_ERR_HOOKFAILED, (LPCTSTR)error);
+				MessageBox(temp, L"TortoiseGit", MB_OK | MB_ICONERROR);
+				return -1;
+			}
+		}
+	}
+
 	return 0;
 }
 
@@ -1146,9 +1162,9 @@ void CRebaseDlg::OnBnClickedContinue()
 
 	if (m_RebaseStage == CHOOSE_BRANCH || m_RebaseStage == CHOOSE_COMMIT_PICK_MODE)
 	{
-		if (CheckRebaseCondition())
-			return;
 		if (CAppUtils::IsTGitRebaseActive())
+			return;
+		if (CheckRebaseCondition())
 			return;
 	}
 
@@ -1204,8 +1220,6 @@ void CRebaseDlg::OnBnClickedContinue()
 
 	if( m_RebaseStage == CHOOSE_BRANCH|| m_RebaseStage == CHOOSE_COMMIT_PICK_MODE )
 	{
-		if(CheckRebaseCondition())
-			return ;
 		m_RebaseStage = REBASE_START;
 		m_FileListCtrl.Clear();
 		m_FileListCtrl.SetHasCheckboxes(false);

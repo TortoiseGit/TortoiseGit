@@ -7214,6 +7214,10 @@ msgstr ""
 msgid "Pre-Push Hook"
 msgstr ""
 
+#. Resource IDs: (IDS_HOOKTYPE_PREREBASE)
+msgid "Pre-rebase hook"
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_COMMIT_PREPARECOMMIT)
 msgid "Preparing commit..."
 msgstr ""

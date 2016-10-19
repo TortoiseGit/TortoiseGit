@@ -4775,6 +4775,7 @@ BEGIN
                             "For the current branch ""%s"" no tracked branch is configured.\nDo you want to set the selected branch ""%s"" as tracked branch?\nThis will automatically select it for push and pull in the future."
     IDS_PROC_DIFF_BASE      "Base"
     IDS_REMOVESTALEBUTTON   "Remove stale lock file"
+    IDS_HOOKTYPE_PREREBASE    "Pre-rebase hook"
 END
 
 #endif    // English (U.S.) resources

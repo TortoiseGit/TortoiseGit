@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2010, 2013-2014 - TortoiseGit
+// Copyright (C) 2010, 2013-2016 - TortoiseGit
 // Copyright (C) 2003-2008,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -74,6 +74,8 @@ BOOL CSetHooksAdv::OnInitDialog()
 	m_cHookTypeCombo.SetItemData(index, pre_push_hook);
 	index = m_cHookTypeCombo.AddString(CString(MAKEINTRESOURCE(IDS_HOOKTYPE_POSTPUSH)));
 	m_cHookTypeCombo.SetItemData(index, post_push_hook);
+	index = m_cHookTypeCombo.AddString(CString(MAKEINTRESOURCE(IDS_HOOKTYPE_PREREBASE)));
+	m_cHookTypeCombo.SetItemData(index, pre_rebase_hook);
 
 	// preselect the right hook type in the combobox
 	for (int i=0; i<m_cHookTypeCombo.GetCount(); ++i)
