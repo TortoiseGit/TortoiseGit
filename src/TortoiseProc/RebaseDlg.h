@@ -233,7 +233,6 @@ protected:
 	int CheckRebaseCondition();
 	void CheckRestoreStash();
 	int m_CurrentRebaseIndex;
-	int StateAction();
 	int GoNext();
 	void ResetParentForSquash(const CString& commitMessage);
 	void CleanUpRebaseActiveFolder();

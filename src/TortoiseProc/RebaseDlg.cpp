@@ -1585,21 +1585,6 @@ int CRebaseDlg::GoNext()
 	return 0;
 }
 
-int CRebaseDlg::StateAction()
-{
-	switch(this->m_RebaseStage)
-	{
-	case CHOOSE_BRANCH:
-	case CHOOSE_COMMIT_PICK_MODE:
-		if(StartRebase())
-			return -1;
-		m_RebaseStage = REBASE_START;
-		GoNext();
-		break;
-	}
-
-	return 0;
-}
 void CRebaseDlg::SetContinueButtonText()
 {
 	CString Text;
