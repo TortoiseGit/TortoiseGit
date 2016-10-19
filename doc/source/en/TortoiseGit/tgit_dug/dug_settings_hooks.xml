@@ -33,7 +33,7 @@
 		and fill in the details.
 	</para>
 	<para>
-		There are currently six types of hook script available
+		There are currently five types of hook script available
 		<variablelist>
 			<varlistentry>
 				<term>Start-commit</term>
@@ -81,6 +81,14 @@
 				<listitem>
 					<para>
 						Called after pushing finishes (whether successful or not).
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Pre-rebase</term>
+				<listitem>
+					<para>
+						Called before rebasing starts (after clicking on Start or autostart).
 					</para>
 				</listitem>
 			</varlistentry>
@@ -149,6 +157,17 @@
 				<term>Post-push</term>
 				<listitem condition="pot">
 					<para>
+						<literal>ERROR</literal>
+						<literal>CWD</literal>
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Pre-rebase</term>
+				<listitem condition="pot">
+					<para>
+						<literal>(upstream branch)</literal>
+						<literal>(rebased branch)</literal>
 						<literal>ERROR</literal>
 						<literal>CWD</literal>
 					</para>

@@ -174,6 +174,8 @@ CString CHooks::GetHookTypeString(hooktype t)
 		return _T("pre_push_hook");
 	case post_push_hook:
 		return _T("post_push_hook");
+	case pre_rebase_hook:
+		return L"pre_rebase_hook";
 	}
 	return _T("");
 }
@@ -190,6 +192,8 @@ hooktype CHooks::GetHookType(const CString& s)
 		return pre_push_hook;
 	if (s.Compare(_T("post_push_hook"))==0)
 		return post_push_hook;
+	if (s.Compare(L"pre_rebase_hook") == 0)
+		return pre_rebase_hook;
 
 	return unknown_hook;
 }
@@ -295,6 +299,20 @@ bool CHooks::PostPush(const CString& workingTree, DWORD& exitcode, CString& erro
 	if (it == end())
 		return false;
 	CString sCmd = it->second.commandline;
+	AddErrorParam(sCmd, error);
+	AddCWDParam(sCmd, workingTree);
+	exitcode = RunScript(sCmd, workingTree, error, it->second.bWait, it->second.bShow);
+	return true;
+}
+
+bool CHooks::PreRebase(const CString& workingTree, const CString& upstream, const CString& rebasedBranch, DWORD& exitcode, CString& error)
+{
+	auto it = FindItem(pre_rebase_hook, workingTree);
+	if (it == end())
+		return false;
+	CString sCmd = it->second.commandline;
+	AddParam(sCmd, upstream);
+	AddParam(sCmd, rebasedBranch);
 	AddErrorParam(sCmd, error);
 	AddCWDParam(sCmd, workingTree);
 	exitcode = RunScript(sCmd, workingTree, error, it->second.bWait, it->second.bShow);
