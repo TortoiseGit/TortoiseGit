@@ -19,6 +19,7 @@ Released: unreleased
    If you have non ascii chars in your dictionary and want to keep those, you need to manually convert these to UTF-8.
    The dictionaries can be found in %APPDATA%\TortoiseGit\*.dic.
  * Fixed issue #2850: The installer does not completely support high-contrast-mode
+ * Fixed issue #2853: Commit message autocompletion bugs out after typing a second character
 
 = Release 2.3.0 =
 Released: 2016-10-01

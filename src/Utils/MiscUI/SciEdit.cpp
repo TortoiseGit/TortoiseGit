@@ -643,6 +643,7 @@ void CSciEdit::DoAutoCompletion(int nMinPrefixLength)
 	CString wordHigher = word;
 	wordHigher.MakeUpper();
 
+	words.push_back(word);
 	words.push_back(wordLower);
 	words.push_back(wordHigher);
 
