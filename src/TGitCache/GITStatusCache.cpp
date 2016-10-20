@@ -239,7 +239,7 @@ CGitStatusCache::~CGitStatusCache(void)
 
 void CGitStatusCache::Refresh()
 {
-	m_shellCache.ForceRefresh();
+	m_shellCache.RefreshIfNeeded();
 //	m_pInstance->m_svnHelp.ReloadConfig();
 	if (!m_pInstance->m_directoryCache.empty())
 	{

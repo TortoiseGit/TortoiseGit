@@ -42,42 +42,23 @@ ShellCache::ShellCache()
 	showignoredoverlay = CRegStdDWORD(L"Software\\TortoiseGit\\ShowIgnoredOverlay", TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	getlocktop = CRegStdDWORD(L"Software\\TortoiseGit\\GetLockTop", TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	excludedasnormal = CRegStdDWORD(L"Software\\TortoiseGit\\ShowExcludedAsNormal", TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
-	cachetypeticker = GetTickCount64();
-	recursiveticker = cachetypeticker;
-	folderoverlayticker = cachetypeticker;
-	driveticker = cachetypeticker;
 	drivetypeticker = 0;
-	langticker = cachetypeticker;
-	simplecontextticker = cachetypeticker;
-	pathfilterticker = 0;
-	shellmenuacceleratorsticker = cachetypeticker;
-	unversionedasmodifiedticker = cachetypeticker;
-	recursesubmodulesticker = cachetypeticker;
-	showunversionedoverlayticker = cachetypeticker;
-	showignoredoverlayticker = cachetypeticker;
-	getlocktopticker = cachetypeticker;
-	excludedasnormalticker = cachetypeticker;
-	hidemenusforunversioneditemsticker = cachetypeticker;
-	excontextticker = cachetypeticker;
 
 	unsigned __int64 entries = (DEFAULTMENUTOPENTRIES);
 	menulayoutlow = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuEntries", entries & 0xFFFFFFFF, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	menulayouthigh = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuEntrieshigh", entries >> 32, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
-	layoutticker = cachetypeticker;
 
 	unsigned __int64 ext = (DEFAULTMENUEXTENTRIES);
 	menuextlow = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuExtEntriesLow", ext & 0xFFFFFFFF, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	menuexthigh = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuExtEntriesHigh", ext >> 32, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
-	exticker = cachetypeticker;
 
 	menumasklow_lm = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuEntriesMaskLow", 0, FALSE, HKEY_LOCAL_MACHINE, KEY_WOW64_64KEY);
 	menumaskhigh_lm = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuEntriesMaskHigh", 0, FALSE, HKEY_LOCAL_MACHINE, KEY_WOW64_64KEY);
 	menumasklow_cu = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuEntriesMaskLow", 0, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	menumaskhigh_cu = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuEntriesMaskHigh", 0, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
-	menumaskticker = cachetypeticker;
+	menumaskticker = 0;
 	langid = CRegStdDWORD(L"Software\\TortoiseGit\\LanguageID", 1033, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	blockstatus = CRegStdDWORD(L"Software\\TortoiseGit\\BlockStatus", 0, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
-	blockstatusticker = cachetypeticker;
 	std::fill_n(drivetypecache, 27, (UINT)-1);
 	if (DWORD(drivefloppy) == 0)
 	{
@@ -88,10 +69,48 @@ ShellCache::ShellCache()
 	drivetypepathcache[0] = L'\0';
 	nocontextpaths = CRegStdString(L"Software\\TortoiseGit\\NoContextPaths", L"", false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	m_critSec.Init();
+	// Use RegNotifyChangeKeyValue() to get a notification event whenever a registry value
+	// below HKCU\Software\TortoiseGit is changed. If a value has changed, re-read all
+	// the registry variables to ensure we use the latest ones
+	RegOpenKeyEx(HKEY_CURRENT_USER, L"Software\\TortoiseGit", 0, KEY_NOTIFY | KEY_WOW64_64KEY, &m_hNotifyRegKey);
+	m_registryChangeEvent = CreateEvent(nullptr, true, false, nullptr);
+	if (RegNotifyChangeKeyValue(m_hNotifyRegKey, false, REG_NOTIFY_CHANGE_LAST_SET, m_registryChangeEvent, TRUE) != ERROR_SUCCESS)
+	{
+		CloseHandle(m_registryChangeEvent);
+		m_registryChangeEvent = nullptr;
+		RegCloseKey(m_hNotifyRegKey);
+		m_hNotifyRegKey = nullptr;
+	}
 }
 
-void ShellCache::ForceRefresh()
+ShellCache::~ShellCache()
 {
+	if (m_registryChangeEvent)
+		CloseHandle(m_registryChangeEvent);
+	m_registryChangeEvent = nullptr;
+	if (m_hNotifyRegKey)
+		RegCloseKey(m_hNotifyRegKey);
+	m_hNotifyRegKey = nullptr;
+}
+
+bool ShellCache::RefreshIfNeeded()
+{
+	// don't wait for the registry change event but only test if such an event
+	// has occurred since the last time we got here.
+	// if the event has occurred, re-read all registry variables and of course
+	// re-set the notification event to get further notifications of registry changes.
+	bool signalled = WaitForSingleObjectEx(m_registryChangeEvent, 0, true) != WAIT_TIMEOUT;
+	if (!signalled)
+		return signalled;
+
+	if (RegNotifyChangeKeyValue(m_hNotifyRegKey, false, REG_NOTIFY_CHANGE_LAST_SET, m_registryChangeEvent, TRUE) != ERROR_SUCCESS)
+	{
+		CloseHandle(m_registryChangeEvent);
+		m_registryChangeEvent = nullptr;
+		RegCloseKey(m_hNotifyRegKey);
+		m_hNotifyRegKey = nullptr;
+	}
+
 	cachetype.read();
 	showrecursive.read();
 	folderoverlay.read();
@@ -121,37 +140,27 @@ void ShellCache::ForceRefresh()
 	menumaskhigh_cu.read();
 	nocontextpaths.read();
 
+	Locker lock(m_critSec);
 	pathFilter.Refresh();
+
+	return signalled;
 }
 
 ShellCache::CacheType ShellCache::GetCacheType()
 {
-	if ((GetTickCount64() - cachetypeticker) > REGISTRYTIMEOUT)
-	{
-		cachetypeticker = GetTickCount64();
-		cachetype.read();
-	}
+	RefreshIfNeeded();
 	return CacheType(DWORD((cachetype)));
 }
 
 DWORD ShellCache::BlockStatus()
 {
-	if ((GetTickCount64() - blockstatusticker) > REGISTRYTIMEOUT)
-	{
-		blockstatusticker = GetTickCount64();
-		blockstatus.read();
-	}
+	RefreshIfNeeded();
 	return (blockstatus);
 }
 
 unsigned __int64 ShellCache::GetMenuLayout()
 {
-	if ((GetTickCount64() - layoutticker) > REGISTRYTIMEOUT)
-	{
-		layoutticker = GetTickCount64();
-		menulayoutlow.read();
-		menulayouthigh.read();
-	}
+	RefreshIfNeeded();
 	unsigned __int64 temp = unsigned __int64(DWORD(menulayouthigh)) << 32;
 	temp |= unsigned __int64(DWORD(menulayoutlow));
 	return temp;
@@ -159,12 +168,7 @@ unsigned __int64 ShellCache::GetMenuLayout()
 
 unsigned __int64 ShellCache::GetMenuExt()
 {
-	if ((GetTickCount64() - exticker) > REGISTRYTIMEOUT)
-	{
-		exticker = GetTickCount64();
-		menuextlow.read();
-		menuexthigh.read();
-	}
+	RefreshIfNeeded();
 	unsigned __int64 temp = unsigned __int64(DWORD(menuexthigh)) << 32;
 	temp |= unsigned __int64(DWORD(menuextlow));
 	return temp;
@@ -172,13 +176,12 @@ unsigned __int64 ShellCache::GetMenuExt()
 
 unsigned __int64 ShellCache::GetMenuMask()
 {
-	if ((GetTickCount64() - menumaskticker) > REGISTRYTIMEOUT)
+	auto ticks = GetTickCount64();
+	if ((ticks - menumaskticker) > ADMINDIRTIMEOUT)
 	{
-		menumaskticker = GetTickCount64();
+		menumaskticker = ticks;
 		menumasklow_lm.read();
 		menumaskhigh_lm.read();
-		menumasklow_cu.read();
-		menumaskhigh_cu.read();
 	}
 	DWORD low = (DWORD)menumasklow_lm | (DWORD)menumasklow_cu;
 	DWORD high = (DWORD)menumaskhigh_lm | (DWORD)menumaskhigh_cu;
@@ -189,147 +192,103 @@ unsigned __int64 ShellCache::GetMenuMask()
 
 BOOL ShellCache::IsRecursive()
 {
-	if ((GetTickCount64() - recursiveticker) > REGISTRYTIMEOUT)
-	{
-		recursiveticker = GetTickCount64();
-		showrecursive.read();
-	}
+	RefreshIfNeeded();
 	return (showrecursive);
 }
 
 BOOL ShellCache::IsFolderOverlay()
 {
-	if ((GetTickCount64() - folderoverlayticker) > REGISTRYTIMEOUT)
-	{
-		folderoverlayticker = GetTickCount64();
-		folderoverlay.read();
-	}
+	RefreshIfNeeded();
 	return (folderoverlay);
 }
 
 BOOL ShellCache::IsSimpleContext()
 {
-	if ((GetTickCount64() - simplecontextticker) > REGISTRYTIMEOUT)
-	{
-		simplecontextticker = GetTickCount64();
-		simplecontext.read();
-	}
+	RefreshIfNeeded();
 	return (simplecontext != 0);
 }
 
 BOOL ShellCache::HasShellMenuAccelerators()
 {
-	if ((GetTickCount64() - shellmenuacceleratorsticker) > REGISTRYTIMEOUT)
-	{
-		shellmenuacceleratorsticker = GetTickCount64();
-		shellmenuaccelerators.read();
-	}
+	RefreshIfNeeded();
 	return (shellmenuaccelerators != 0);
 }
 
 BOOL ShellCache::IsUnversionedAsModified()
 {
-	if ((GetTickCount64() - unversionedasmodifiedticker) > REGISTRYTIMEOUT)
-	{
-		unversionedasmodifiedticker = GetTickCount64();
-		unversionedasmodified.read();
-	}
+	RefreshIfNeeded();
 	return (unversionedasmodified);
 }
 
 BOOL ShellCache::IsRecurseSubmodules()
 {
-	if ((GetTickCount64() - recursesubmodulesticker) > REGISTRYTIMEOUT)
-	{
-		recursesubmodulesticker = GetTickCount64();
-		recursesubmodules.read();
-	}
+	RefreshIfNeeded();
 	return (recursesubmodules);
 }
 
 BOOL ShellCache::ShowUnversionedOverlay()
 {
-	if ((GetTickCount64() - showunversionedoverlayticker) > REGISTRYTIMEOUT)
-	{
-		showunversionedoverlayticker = GetTickCount64();
-		showunversionedoverlay.read();
-	}
+	RefreshIfNeeded();
 	return (showunversionedoverlay);
 }
 
 BOOL ShellCache::ShowIgnoredOverlay()
 {
-	if ((GetTickCount64() - showignoredoverlayticker) > REGISTRYTIMEOUT)
-	{
-		showignoredoverlayticker = GetTickCount64();
-		showignoredoverlay.read();
-	}
+	RefreshIfNeeded();
 	return (showignoredoverlay);
 }
 
 BOOL ShellCache::IsGetLockTop()
 {
-	if ((GetTickCount64() - getlocktopticker) > REGISTRYTIMEOUT)
-	{
-		getlocktopticker = GetTickCount64();
-		getlocktop.read();
-	}
+	RefreshIfNeeded();
 	return (getlocktop);
 }
 
 BOOL ShellCache::ShowExcludedAsNormal()
 {
-	if ((GetTickCount64() - excludedasnormalticker) > REGISTRYTIMEOUT)
-	{
-		excludedasnormalticker = GetTickCount64();
-		excludedasnormal.read();
-	}
+	RefreshIfNeeded();
 	return (excludedasnormal);
 }
 
 BOOL ShellCache::HideMenusForUnversionedItems()
 {
-	if ((GetTickCount64() - hidemenusforunversioneditemsticker) > REGISTRYTIMEOUT)
-	{
-		hidemenusforunversioneditemsticker = GetTickCount64();
-		hidemenusforunversioneditems.read();
-	}
+	RefreshIfNeeded();
 	return (hidemenusforunversioneditems);
 }
 
 BOOL ShellCache::IsRemote()
 {
-	DriveValid();
+	RefreshIfNeeded();
 	return (driveremote);
 }
 
 BOOL ShellCache::IsFixed()
 {
-	DriveValid();
+	RefreshIfNeeded();
 	return (drivefixed);
 }
 
 BOOL ShellCache::IsCDRom()
 {
-	DriveValid();
+	RefreshIfNeeded();
 	return (drivecdrom);
 }
 
 BOOL ShellCache::IsRemovable()
 {
-	DriveValid();
+	RefreshIfNeeded();
 	return (driveremove);
 }
 
 BOOL ShellCache::IsRAM()
 {
-	DriveValid();
+	RefreshIfNeeded();
 	return (driveram);
 }
 
 BOOL ShellCache::IsUnknown()
 {
-	DriveValid();
+	RefreshIfNeeded();
 	return (driveunknown);
 }
 
@@ -422,11 +381,7 @@ BOOL ShellCache::IsPathAllowed(LPCTSTR path)
 
 DWORD ShellCache::GetLangID()
 {
-	if ((GetTickCount64() - langticker) > REGISTRYTIMEOUT)
-	{
-		langticker = GetTickCount64();
-		langid.read();
-	}
+	RefreshIfNeeded();
 	return (langid);
 }
 
@@ -468,26 +423,11 @@ BOOL ShellCache::HasGITAdminDir(LPCTSTR path, BOOL bIsDir, CString* ProjectTopDi
 	return hasAdminDir;
 }
 
-void ShellCache::DriveValid()
-{
-	if ((GetTickCount64() - driveticker) > REGISTRYTIMEOUT)
-	{
-		driveticker = GetTickCount64();
-		driveremote.read();
-		drivefixed.read();
-		drivecdrom.read();
-		driveremove.read();
-		drivefloppy.read();
-	}
-}
-
 void ShellCache::ExcludeContextValid()
 {
-	if ((GetTickCount64() - excontextticker) > EXCLUDELISTTIMEOUT)
+	if (RefreshIfNeeded())
 	{
 		Locker lock(m_critSec);
-		excontextticker = GetTickCount64();
-		nocontextpaths.read();
 		if (excludecontextstr.compare((tstring)nocontextpaths) == 0)
 			return;
 		excludecontextstr = (tstring)nocontextpaths;
@@ -509,12 +449,9 @@ void ShellCache::ExcludeContextValid()
 
 void ShellCache::ValidatePathFilter()
 {
-	auto ticks = GetTickCount64();
-	if ((ticks - pathfilterticker) > EXCLUDELISTTIMEOUT)
+	if (RefreshIfNeeded())
 	{
 		Locker lock(m_critSec);
-
-		pathfilterticker = ticks;
 		pathFilter.Refresh();
 	}
 }

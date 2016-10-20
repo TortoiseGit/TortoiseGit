@@ -21,11 +21,8 @@
 #include "registry.h"
 #include "Globals.h"
 
-#define REGISTRYTIMEOUT 2000
-#define EXCLUDELISTTIMEOUT 5000
 #define ADMINDIRTIMEOUT 10000
 #define DRIVETYPETIMEOUT 300000		// 5 min
-#define MENUTIMEOUT 100
 
 #define DEFAULTMENUTOPENTRIES	MENUSYNC|MENUCREATEREPOS|MENUCLONE|MENUCOMMIT
 #define DEFAULTMENUEXTENTRIES	MENUSVNIGNORE|MENUSTASHAPPLY|MENUSUBSYNC
@@ -59,9 +56,9 @@ public:
 	};
 
 	ShellCache();
-	~ShellCache() {}
+	~ShellCache();
 
-	void ForceRefresh();
+	bool RefreshIfNeeded();
 
 	CacheType GetCacheType();
 	DWORD BlockStatus();
@@ -94,7 +91,6 @@ public:
 	BOOL HasGITAdminDir(LPCTSTR path, BOOL bIsDir, CString* ProjectTopDir = nullptr);
 
 private:
-	void DriveValid();
 	void ExcludeContextValid();
 	void ValidatePathFilter();
 
@@ -218,26 +214,8 @@ public:
 
 	CPathFilter pathFilter;
 
-	ULONGLONG cachetypeticker;
-	ULONGLONG recursiveticker;
-	ULONGLONG folderoverlayticker;
-	ULONGLONG getlocktopticker;
-	ULONGLONG driveticker;
 	ULONGLONG drivetypeticker;
-	ULONGLONG layoutticker;
-	ULONGLONG exticker;
 	ULONGLONG menumaskticker;
-	ULONGLONG langticker;
-	ULONGLONG blockstatusticker;
-	ULONGLONG pathfilterticker;
-	ULONGLONG simplecontextticker;
-	ULONGLONG shellmenuacceleratorsticker;
-	ULONGLONG unversionedasmodifiedticker;
-	ULONGLONG recursesubmodulesticker;
-	ULONGLONG showunversionedoverlayticker;
-	ULONGLONG showignoredoverlayticker;
-	ULONGLONG excludedasnormalticker;
-	ULONGLONG hidemenusforunversioneditemsticker;
 	UINT  drivetypecache[27];
 	TCHAR drivetypepathcache[MAX_PATH];		// MAX_PATH ok.
 	TCHAR szDecSep[5];
@@ -246,8 +224,9 @@ public:
 	CRegStdString nocontextpaths;
 	tstring excludecontextstr;
 	std::vector<tstring> excontextvector;
-	ULONGLONG excontextticker;
 	CComCriticalSection m_critSec;
+	HANDLE m_registryChangeEvent;
+	HKEY m_hNotifyRegKey;
 };
 
 inline bool operator<(const ShellCache::CPathFilter::SEntry& lhs, const std::pair<LPCTSTR, size_t>& rhs)
