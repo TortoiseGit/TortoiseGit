@@ -33,7 +33,7 @@
 		and fill in the details.
 	</para>
 	<para>
-		There are currently five types of hook script available
+		There are currently six types of hook script available
 		<variablelist>
 			<varlistentry>
 				<term>Start-commit</term>
