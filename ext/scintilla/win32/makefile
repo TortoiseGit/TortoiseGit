@@ -4,6 +4,18 @@
 # This makefile assumes the MinGW32 version of GCC 4.x is used and changes will
 # be needed to use other compilers.
 
+ifdef CLANG
+# Common location for 32-bit clang on Windows
+CXX = "C:\Program Files (x86)\LLVM\bin\clang++"
+CXXSTD = c++14
+else
+# MinGW GCC
+LDMINGW = -Wl,--enable-runtime-pseudo-reloc-v2 -Wl,--add-stdcall-alias
+LIBSMINGW = -lstdc++
+STRIPOPTION = -s
+CXXSTD = gnu++0x
+endif
+
 .SUFFIXES: .cxx
 ifeq ($(OS),Windows_NT)
 DEL = del /q
@@ -20,28 +32,28 @@ LEXLIB = Lexers.a
 vpath %.h ../src ../include ../lexlib
 vpath %.cxx ../src ../lexlib ../lexers
 
-LDFLAGS=-shared -static -Wl,--enable-runtime-pseudo-reloc-v2 -mwindows -Wl,--add-stdcall-alias
-LIBS=-lstdc++ -limm32 -lole32 -luuid -loleaut32
+LDFLAGS=-shared -static -mwindows $(LDMINGW)
+LIBS=-lgdi32 -luser32 -limm32 -lole32 -luuid -loleaut32 $(LIBSMINGW)
 # Add -MMD to get dependencies
 INCLUDEDIRS=-I ../include -I ../src -I../lexlib
 
 # Check if Direct2D headers are available by trying to compile a file that includes them.
 # Most distributions of MinGW32 do not include Direct2D support but MinGW64 does.
-ifneq "$(shell g++ -c CheckD2D.cxx 2>&1)" ""
+ifneq "$(shell $(CXX) -c CheckD2D.cxx 2>&1)" ""
 D2DFLAGS=-DDISABLE_D2D
 endif
 
-CXXBASEFLAGS=--std=gnu++0x -Wall -pedantic $(INCLUDEDIRS) $(D2DFLAGS)
+CXXBASEFLAGS=--std=$(CXXSTD) -Wall -pedantic $(INCLUDEDIRS) $(D2DFLAGS) -D_CRT_SECURE_NO_DEPRECATE=1
 
-ifdef CXX11_REGEX
-REFLAGS=-DCXX11_REGEX
+ifdef NO_CXX11_REGEX
+REFLAGS=-DNO_CXX11_REGEX
 endif
 
 ifdef DEBUG
 CXXFLAGS=-DDEBUG -g $(CXXBASEFLAGS)
 else
 CXXFLAGS=-DNDEBUG -Os $(CXXBASEFLAGS)
-STRIPFLAG=-s
+STRIPFLAG=$(STRIPOPTION)
 endif
 
 .cxx.o:
@@ -53,7 +65,7 @@ clean:
 	$(DEL) *.exe *.o *.obj *.dll *.res *.map *.plist
 
 analyze:
-	clang --analyze -D DISABLE_D2D $(CXXFLAGS) *.cxx ../src/*.cxx ../lexlib/*.cxx ../lexers/*.cxx
+	$(CXX) --analyze $(D2DFLAGS) $(CXXFLAGS) *.cxx ../src/*.cxx ../lexlib/*.cxx ../lexers/*.cxx
 
 deps:
 	$(CXX) -MM $(CXXFLAGS) *.cxx ../src/*.cxx ../lexlib/*.cxx ../lexers/*.cxx >deps.mak
