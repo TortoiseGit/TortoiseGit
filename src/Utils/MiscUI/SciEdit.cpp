@@ -1374,7 +1374,7 @@ bool CSciEdit::IsValidURLChar(unsigned char ch)
 	return isalnum(ch) ||
 		ch == '_' || ch == '/' || ch == ';' || ch == '?' || ch == '&' || ch == '=' ||
 		ch == '%' || ch == ':' || ch == '.' || ch == '#' || ch == '-' || ch == '+' ||
-		ch == '|' || ch == '>' || ch == '<';
+		ch == '|' || ch == '>' || ch == '<' || ch == '!';
 }
 
 //similar code in AppUtils.cpp
@@ -1424,7 +1424,7 @@ void CSciEdit::StyleURLs(int startstylepos, int endstylepos)
 				}
 
 				int skipTrailing = 0;
-				while (strip && i - skipTrailing - 1 > starturl && (msg[i - skipTrailing - 1] == '.' || msg[i - skipTrailing - 1] == '-' || msg[i - skipTrailing - 1] == '?' || msg[i - skipTrailing - 1] == ';' || msg[i - skipTrailing - 1] == ':' || msg[i - skipTrailing - 1] == '>' || msg[i - skipTrailing - 1] == '<'))
+				while (strip && i - skipTrailing - 1 > starturl && (msg[i - skipTrailing - 1] == '.' || msg[i - skipTrailing - 1] == '-' || msg[i - skipTrailing - 1] == '?' || msg[i - skipTrailing - 1] == ';' || msg[i - skipTrailing - 1] == ':' || msg[i - skipTrailing - 1] == '>' || msg[i - skipTrailing - 1] == '<' || msg[i - skipTrailing - 1] == '!'))
 					++skipTrailing;
 				ASSERT(startstylepos + i - skipTrailing <= endstylepos);
 				Call(SCI_STARTSTYLING, startstylepos + starturl, STYLE_URL);

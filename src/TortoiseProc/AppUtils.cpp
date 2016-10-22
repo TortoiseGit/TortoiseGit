@@ -884,7 +884,7 @@ namespace {
 		return iswalnum(ch) ||
 			ch == L'_' || ch == L'/' || ch == L';' || ch == L'?' || ch == L'&' || ch == L'=' ||
 			ch == L'%' || ch == L':' || ch == L'.' || ch == L'#' || ch == L'-' || ch == L'+' ||
-			ch == L'|' || ch == L'>' || ch == L'<';
+			ch == L'|' || ch == L'>' || ch == L'<' || ch == L'!';
 	}
 
 	bool IsUrl(const CString& sText)
@@ -946,7 +946,7 @@ std::vector<CHARRANGE> CAppUtils::FindURLMatches(const CString& msg)
 				}
 
 				int skipTrailing = 0;
-				while (strip && i - skipTrailing - 1 > starturl && (msg[i - skipTrailing - 1] == '.' || msg[i - skipTrailing - 1] == '-' || msg[i - skipTrailing - 1] == '?' || msg[i - skipTrailing - 1] == ';' || msg[i - skipTrailing - 1] == ':' || msg[i - skipTrailing - 1] == '>' || msg[i - skipTrailing - 1] == '<'))
+				while (strip && i - skipTrailing - 1 > starturl && (msg[i - skipTrailing - 1] == '.' || msg[i - skipTrailing - 1] == '-' || msg[i - skipTrailing - 1] == '?' || msg[i - skipTrailing - 1] == ';' || msg[i - skipTrailing - 1] == ':' || msg[i - skipTrailing - 1] == '>' || msg[i - skipTrailing - 1] == '<' || msg[i - skipTrailing - 1] == '!'))
 					++skipTrailing;
 				
 				CHARRANGE range = { starturl, i - skipTrailing };
