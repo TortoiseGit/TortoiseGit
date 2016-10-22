@@ -1829,6 +1829,10 @@ void CLogDlg::OnEnLinkMsgview(NMHDR *pNMHDR, LRESULT *pResult)
 			url = m_LogList.m_ProjectProperties.GetBugIDUrl(url);
 			url = GetAbsoluteUrlFromRelativeUrl(url);
 		}
+		// check if it's an email address
+		auto atpos = url.Find(L'@');
+		if ((atpos > 0) && (url.ReverseFind(L'.') > atpos) && !::PathIsURL(url))
+			url = L"mailto:" + url;
 		if (::PathIsURL(url))
 		{
 			if (pEnLink->msg == WM_LBUTTONUP)

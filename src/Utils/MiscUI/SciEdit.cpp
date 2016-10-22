@@ -784,7 +784,11 @@ BOOL CSciEdit::OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT
 				Call(SCI_GETTEXTRANGE, 0, (LPARAM)&textrange);
 				CString url;
 				if (style == STYLE_URL)
+				{
 					url = StringFromControl(textbuffer.get());
+					if (url.Find(L'@') > 0 && !PathIsURL(url))
+						url = L"mailto:" + url;
+				}
 				else
 				{
 					url = m_sUrl;
@@ -1374,7 +1378,7 @@ bool CSciEdit::IsValidURLChar(unsigned char ch)
 	return isalnum(ch) ||
 		ch == '_' || ch == '/' || ch == ';' || ch == '?' || ch == '&' || ch == '=' ||
 		ch == '%' || ch == ':' || ch == '.' || ch == '#' || ch == '-' || ch == '+' ||
-		ch == '|' || ch == '>' || ch == '<' || ch == '!';
+		ch == '|' || ch == '>' || ch == '<' || ch == '!' || ch == '@';
 }
 
 //similar code in AppUtils.cpp
@@ -1417,7 +1421,7 @@ void CSciEdit::StyleURLs(int startstylepos, int endstylepos)
 					while (i < len && msg[i] != '\r' && msg[i] != '\n' && msg[i] != '>') // find first '>' or new line after resetting i to start position
 						AdvanceUTF8(msg, i);
 				}
-				if (!IsUrl(msg.Mid(starturl, i - starturl)))
+				if (!IsUrlOrEmail(msg.Mid(starturl, i - starturl)))
 				{
 					starturl = -1;
 					continue;
@@ -1435,10 +1439,17 @@ void CSciEdit::StyleURLs(int startstylepos, int endstylepos)
 	}
 }
 
-bool CSciEdit::IsUrl(const CStringA& sText)
+bool CSciEdit::IsUrlOrEmail(const CStringA& sText)
 {
 	if (!PathIsURLA(sText))
+	{
+		auto atpos = sText.Find('@');
+		if (atpos <= 0)
+			return false;
+		if (sText.ReverseFind('.') > atpos)
+			return true;
 		return false;
+	}
 	for (const CStringA& prefix : { "http://", "https://", "git://", "ftp://", "file://", "mailto:" })
 	{
 		if (strncmp(sText, prefix, prefix.GetLength()) == 0 && sText.GetLength() != prefix.GetLength())
