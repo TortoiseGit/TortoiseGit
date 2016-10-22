@@ -789,7 +789,7 @@ BOOL CHwSMTP::SendEmail (
 		if (!GetResponse("220"))
 			return FALSE;
 		m_bConnected = TRUE;
-		Send(L"STARTTLS\n");
+		Send(L"STARTTLS\r\n");
 		if (!GetResponse("220"))
 			return FALSE;
 		m_iSecurityLevel = tls_established;
