@@ -946,16 +946,17 @@ std::vector<CHARRANGE> CAppUtils::FindURLMatches(const CString& msg)
 					while (i < len && msg[i] != '\r' && msg[i] != '\n' && msg[i] != '>') // find first '>' or new line after resetting i to start position
 						++i;
 				}
-				if (!IsUrlOrEmail(msg.Mid(starturl, i - starturl)))
+
+				int skipTrailing = 0;
+				while (strip && i - skipTrailing - 1 > starturl && (msg[i - skipTrailing - 1] == '.' || msg[i - skipTrailing - 1] == '-' || msg[i - skipTrailing - 1] == '?' || msg[i - skipTrailing - 1] == ';' || msg[i - skipTrailing - 1] == ':' || msg[i - skipTrailing - 1] == '>' || msg[i - skipTrailing - 1] == '<' || msg[i - skipTrailing - 1] == '!'))
+					++skipTrailing;
+
+				if (!IsUrlOrEmail(msg.Mid(starturl, i - starturl - skipTrailing)))
 				{
 					starturl = -1;
 					continue;
 				}
 
-				int skipTrailing = 0;
-				while (strip && i - skipTrailing - 1 > starturl && (msg[i - skipTrailing - 1] == '.' || msg[i - skipTrailing - 1] == '-' || msg[i - skipTrailing - 1] == '?' || msg[i - skipTrailing - 1] == ';' || msg[i - skipTrailing - 1] == ':' || msg[i - skipTrailing - 1] == '>' || msg[i - skipTrailing - 1] == '<' || msg[i - skipTrailing - 1] == '!'))
-					++skipTrailing;
-				
 				CHARRANGE range = { starturl, i - skipTrailing };
 				result.push_back(range);
 			}

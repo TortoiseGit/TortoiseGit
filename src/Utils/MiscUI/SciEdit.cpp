@@ -1421,15 +1421,17 @@ void CSciEdit::StyleURLs(int startstylepos, int endstylepos)
 					while (i < len && msg[i] != '\r' && msg[i] != '\n' && msg[i] != '>') // find first '>' or new line after resetting i to start position
 						AdvanceUTF8(msg, i);
 				}
-				if (!IsUrlOrEmail(msg.Mid(starturl, i - starturl)))
+
+				int skipTrailing = 0;
+				while (strip && i - skipTrailing - 1 > starturl && (msg[i - skipTrailing - 1] == '.' || msg[i - skipTrailing - 1] == '-' || msg[i - skipTrailing - 1] == '?' || msg[i - skipTrailing - 1] == ';' || msg[i - skipTrailing - 1] == ':' || msg[i - skipTrailing - 1] == '>' || msg[i - skipTrailing - 1] == '<' || msg[i - skipTrailing - 1] == '!'))
+					++skipTrailing;
+
+				if (!IsUrlOrEmail(msg.Mid(starturl, i - starturl - skipTrailing)))
 				{
 					starturl = -1;
 					continue;
 				}
 
-				int skipTrailing = 0;
-				while (strip && i - skipTrailing - 1 > starturl && (msg[i - skipTrailing - 1] == '.' || msg[i - skipTrailing - 1] == '-' || msg[i - skipTrailing - 1] == '?' || msg[i - skipTrailing - 1] == ';' || msg[i - skipTrailing - 1] == ':' || msg[i - skipTrailing - 1] == '>' || msg[i - skipTrailing - 1] == '<' || msg[i - skipTrailing - 1] == '!'))
-					++skipTrailing;
 				ASSERT(startstylepos + i - skipTrailing <= endstylepos);
 				Call(SCI_STARTSTYLING, startstylepos + starturl, STYLE_URL);
 				Call(SCI_SETSTYLING, i - starturl - skipTrailing, STYLE_URL);
