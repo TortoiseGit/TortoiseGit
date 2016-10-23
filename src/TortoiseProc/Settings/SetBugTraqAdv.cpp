@@ -121,6 +121,12 @@ void CSetBugTraqAdv::OnOK()
 {
 	UpdateData();
 
+	if (m_sPath.IsEmpty() || !PathIsDirectory(m_sPath) || PathIsRelative(m_sPath))
+	{
+		ShowEditBalloon(IDC_BUGTRAQPATH, (LPCTSTR)CFormatMessageWrapper(ERROR_PATH_NOT_FOUND), CString(MAKEINTRESOURCE(IDS_ERR_ERROR)), TTI_ERROR);
+		return;
+	}
+
 	m_provider_clsid = GUID_NULL;
 
 	int index = m_cProviderCombo.GetCurSel();
