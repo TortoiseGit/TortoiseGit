@@ -79,4 +79,5 @@ private:
 	afx_msg void OnCbnSelchangeComboMergestrategy();
 	afx_msg void OnCbnSelchangeComboStrategyoption();
 	afx_msg void OnBnClickedCheckFFonlyOrNoFF();
+	afx_msg void OnSysColorChange();
 };

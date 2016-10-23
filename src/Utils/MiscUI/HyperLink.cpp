@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2012-2016 - TortoiseGit
 // Copyright (C) 2003-2006,2008, 2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -32,7 +33,7 @@ static char THIS_FILE[] = __FILE__;
 CHyperLink::CHyperLink()
 {
 	m_hLinkCursor		= nullptr;				// No cursor as	yet
-	m_crLinkColor		= RGB(	0,	 0,	238);	// Blue
+	m_crLinkColor		= GetSysColor(COLOR_HOTLIGHT);
 	m_crHoverColor		= RGB(255,	 0,	  0);	// Red
 	m_bOverControl		= FALSE;				// Cursor not yet over control
 	m_nUnderline		= ulHover;				// Underline the link?
@@ -110,6 +111,7 @@ BEGIN_MESSAGE_MAP(CHyperLink, CStatic)
 	ON_WM_TIMER()
 	ON_WM_ERASEBKGND()
 	ON_CONTROL_REFLECT(STN_CLICKED, OnClicked)
+	ON_WM_SYSCOLORCHANGE()
 END_MESSAGE_MAP()
 
 
@@ -288,4 +290,11 @@ void CHyperLink::SetDefaultCursor()
 HINSTANCE CHyperLink::GotoURL(LPCTSTR url)
 {
 	return ShellExecute(nullptr, _T("open"), url, nullptr, nullptr, SW_SHOW);
+}
+
+void CHyperLink::OnSysColorChange()
+{
+	__super::OnSysColorChange();
+	m_crLinkColor = GetSysColor(COLOR_HOTLIGHT);
+	Invalidate();
 }

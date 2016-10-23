@@ -184,6 +184,8 @@ protected:
 	afx_msg void OnBnClickedContinue();
 	afx_msg void OnBnClickedAbort();
 	afx_msg void OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnSysColorChange();
+	afx_msg LRESULT OnThemeChanged();
 	void FillLogMessageCtrl();
 
 	CProgressCtrl		m_ProgressBar;

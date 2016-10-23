@@ -422,6 +422,9 @@ public:
 	 * \param nID the resource ID of the bitmap to use as the background
 	 */
 	bool SetBackgroundImage(UINT nID);
+private:
+	UINT m_nBackgroundImageID;
+public:
 	/**
 	 * Makes the 'ignore' context menu only ignore the files and not add the
 	 * folder which gets the Git:ignore property changed to the list.
@@ -752,6 +755,7 @@ private:
 	virtual void PreSubclassWindow();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual BOOL OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult);
+	afx_msg void OnSysColorChange();
 	afx_msg void OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg BOOL OnToolTipText(UINT id, NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnHdnItemclick(NMHDR *pNMHDR, LRESULT *pResult);

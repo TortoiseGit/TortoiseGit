@@ -82,6 +82,7 @@ BEGIN_MESSAGE_MAP(CMergeDlg, CResizableStandAloneDialog)
 	ON_CBN_SELCHANGE(IDC_COMBO_STRATEGYOPTION, &CMergeDlg::OnCbnSelchangeComboStrategyoption)
 	ON_BN_CLICKED(IDC_CHECK_FFONLY, OnBnClickedCheckFFonlyOrNoFF)
 	ON_BN_CLICKED(IDC_CHECK_NOFF, OnBnClickedCheckFFonlyOrNoFF)
+	ON_WM_SYSCOLORCHANGE()
 END_MESSAGE_MAP()
 
 void CMergeDlg::ReloadHistoryEntries()
@@ -287,4 +288,12 @@ void CMergeDlg::OnBnClickedCheckFFonlyOrNoFF()
 
 	GetDlgItem(IDC_CHECK_FFONLY)->EnableWindow(!m_bNoFF);
 	GetDlgItem(IDC_CHECK_NOFF)->EnableWindow(!m_bFFonly);
+}
+
+void CMergeDlg::OnSysColorChange()
+{
+	__super::OnSysColorChange();
+	m_cLogMessage.SetColors(true);
+	m_cLogMessage.SetFont((CString)CRegString(L"Software\\TortoiseGit\\LogFontName", L"Courier New"), (DWORD)CRegDWORD(L"Software\\TortoiseGit\\LogFontSize", 8));
+	m_cLogMessage.SetAStyle(STYLE_DEFAULT, ::GetSysColor(m_bSquash ? COLOR_GRAYTEXT : COLOR_WINDOWTEXT), ::GetSysColor(m_bSquash ? COLOR_BTNFACE : COLOR_WINDOW));
 }

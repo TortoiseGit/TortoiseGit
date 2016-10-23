@@ -57,6 +57,7 @@ BEGIN_MESSAGE_MAP(CPatchViewDlg, CDialog)
 	ON_REGISTERED_MESSAGE(CFindBar::WM_FINDNEXT, OnFindNextMessage)
 	ON_REGISTERED_MESSAGE(CFindBar::WM_FINDPREV, OnFindPrevMessage)
 	ON_REGISTERED_MESSAGE(CFindBar::WM_FINDRESET, OnFindResetMessage)
+	ON_WM_SYSCOLORCHANGE()
 END_MESSAGE_MAP()
 
 // CPatchViewDlg message handlers
@@ -234,4 +235,11 @@ LRESULT CPatchViewDlg::OnFindResetMessage(WPARAM, LPARAM)
 {
 	OnFindReset();
 	return 0;
+}
+
+void CPatchViewDlg::OnSysColorChange()
+{
+	__super::OnSysColorChange();
+
+	m_ctrlPatchView.SetUDiffStyle();
 }

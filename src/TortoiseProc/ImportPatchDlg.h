@@ -112,6 +112,8 @@ protected:
 	afx_msg void OnBnClickedButtonDown();
 	afx_msg void OnBnClickedButtonRemove();
 	afx_msg void OnBnClickedOk();
+	afx_msg void OnSysColorChange();
+	afx_msg LRESULT OnThemeChanged();
 
 	void EnableInputCtrl(BOOL b);
 	void UpdateOkCancelText();

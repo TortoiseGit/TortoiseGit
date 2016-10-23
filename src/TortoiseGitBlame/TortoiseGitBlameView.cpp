@@ -101,6 +101,7 @@ BEGIN_MESSAGE_MAP(CTortoiseGitBlameView, CView)
 	ON_WM_LBUTTONDOWN()
 	ON_WM_RBUTTONDOWN()
 	ON_WM_RBUTTONUP()
+	ON_WM_SYSCOLORCHANGE()
 	ON_NOTIFY(SCN_PAINTED, IDC_SCINTILLA, OnSciPainted)
 	ON_NOTIFY(SCN_GETBKCOLOR, IDC_SCINTILLA, OnSciGetBkColor)
 	ON_REGISTERED_MESSAGE(m_FindDialogMessage, OnFindDialogMessage)
@@ -2103,4 +2104,18 @@ void CTortoiseGitBlameView::OnUpdateViewCopyToClipboard(CCmdUI *pCmdUI)
 	}
 	else
 		pCmdUI->Enable(FALSE);
+}
+
+void CTortoiseGitBlameView::OnSysColorChange()
+{
+	__super::OnSysColorChange();
+	m_windowcolor = ::GetSysColor(COLOR_WINDOW);
+	m_textcolor = ::GetSysColor(COLOR_WINDOWTEXT);
+	m_texthighlightcolor = ::GetSysColor(COLOR_HIGHLIGHTTEXT);
+	m_mouserevcolor = InterColor(m_windowcolor, m_textcolor, 20);
+	m_mouseauthorcolor = InterColor(m_windowcolor, m_textcolor, 10);
+	m_selectedrevcolor = ::GetSysColor(COLOR_HIGHLIGHT);
+	m_selectedauthorcolor = InterColor(m_selectedrevcolor, m_texthighlightcolor, 35);
+	InitialiseEditor();
+	SetupLexer(GetDocument()->m_CurrentFileName);
 }

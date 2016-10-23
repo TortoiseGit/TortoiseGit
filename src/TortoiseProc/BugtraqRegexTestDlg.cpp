@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014-2015 - TortoiseGit
+// Copyright (C) 2014-2016 - TortoiseGit
 // Copyright (C) 2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -49,6 +49,7 @@ void CBugtraqRegexTestDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CBugtraqRegexTestDlg, CResizableStandAloneDialog)
 	ON_EN_CHANGE(IDC_BUGTRAQLOGREGEX1, &CBugtraqRegexTestDlg::OnEnChangeBugtraqlogregex1)
 	ON_EN_CHANGE(IDC_BUGTRAQLOGREGEX2, &CBugtraqRegexTestDlg::OnEnChangeBugtraqlogregex2)
+	ON_WM_SYSCOLORCHANGE()
 END_MESSAGE_MAP()
 
 void CBugtraqRegexTestDlg::OnEnChangeBugtraqlogregex1()
@@ -102,4 +103,12 @@ void CBugtraqRegexTestDlg::UpdateLogControl()
 		m_cLogMessage.Init(projectprops);
 		m_cLogMessage.RestyleBugIDs();
 	}
+}
+
+void CBugtraqRegexTestDlg::OnSysColorChange()
+{
+	__super::OnSysColorChange();
+	
+	m_cLogMessage.SetColors(true);
+	m_cLogMessage.SetFont((CString)CRegString(L"Software\\TortoiseGit\\LogFontName", L"Courier New"), (DWORD)CRegDWORD(L"Software\\TortoiseGit\\LogFontSize", 8));
 }

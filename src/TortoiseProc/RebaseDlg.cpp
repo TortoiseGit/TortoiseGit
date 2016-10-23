@@ -88,6 +88,8 @@ BEGIN_MESSAGE_MAP(CRebaseDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_REBASE_CONTINUE,OnBnClickedContinue)
 	ON_BN_CLICKED(IDC_REBASE_ABORT,  OnBnClickedAbort)
 	ON_WM_SIZE()
+	ON_WM_THEMECHANGED()
+	ON_WM_SYSCOLORCHANGE()
 	ON_CBN_SELCHANGE(IDC_REBASE_COMBOXEX_BRANCH,   &CRebaseDlg::OnCbnSelchangeBranch)
 	ON_CBN_SELCHANGE(IDC_REBASE_COMBOXEX_UPSTREAM, &CRebaseDlg::OnCbnSelchangeUpstream)
 	ON_MESSAGE(MSG_REBASE_UPDATE_UI, OnRebaseUpdateUI)
@@ -2715,4 +2717,19 @@ int	CRebaseDlg::RunGitCmdRetryOrAbort(const CString& cmd)
 		else
 			return 0;
 	}
+}
+
+LRESULT CRebaseDlg::OnThemeChanged()
+{
+	CMFCVisualManager::GetInstance()->DestroyInstance();
+	return 0;
+}
+
+void CRebaseDlg::OnSysColorChange()
+{
+	__super::OnSysColorChange();
+	m_LogMessageCtrl.SetColors(true);
+	m_LogMessageCtrl.SetFont((CString)CRegString(L"Software\\TortoiseGit\\LogFontName", L"Courier New"), (DWORD)CRegDWORD(L"Software\\TortoiseGit\\LogFontSize", 8));
+	m_wndOutputRebase.SetColors(true);
+	m_wndOutputRebase.SetFont((CString)CRegString(L"Software\\TortoiseGit\\LogFontName", L"Courier New"), (DWORD)CRegDWORD(L"Software\\TortoiseGit\\LogFontSize", 8));
 }

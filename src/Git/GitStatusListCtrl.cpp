@@ -206,6 +206,7 @@ BEGIN_MESSAGE_MAP(CGitStatusListCtrl, CResizableColumnsListCtrl<CListCtrl>)
 	ON_NOTIFY_REFLECT(NM_RETURN, OnNMReturn)
 	ON_WM_KEYDOWN()
 	ON_WM_PAINT()
+	ON_WM_SYSCOLORCHANGE()
 	ON_NOTIFY_REFLECT(LVN_BEGINDRAG, OnBeginDrag)
 	ON_NOTIFY_REFLECT(LVN_ITEMCHANGING, &CGitStatusListCtrl::OnLvnItemchanging)
 END_MESSAGE_MAP()
@@ -269,6 +270,7 @@ CGitStatusListCtrl::CGitStatusListCtrl() : CResizableColumnsListCtrl<CListCtrl>(
 	, m_nRestoreOvl(0)
 	, m_pContextMenu(nullptr)
 	, m_hShellMenu(nullptr)
+	, m_nBackgroundImageID(0)
 {
 	m_FileLoaded=0;
 	m_dwDefaultColumns = 0;
@@ -359,6 +361,7 @@ void CGitStatusListCtrl::Init(DWORD dwColumns, const CString& sColumnInfoContain
 
 bool CGitStatusListCtrl::SetBackgroundImage(UINT nID)
 {
+	m_nBackgroundImageID = nID;
 	return CAppUtils::SetListCtrlBackgroundImage(GetSafeHwnd(), nID);
 }
 
@@ -4412,4 +4415,11 @@ CTGitPath* CGitStatusListCtrl::GetListEntry(int index)
 	auto entry = reinterpret_cast<CTGitPath*>(GetItemData(index));
 	ASSERT(entry);
 	return entry;
+}
+
+void CGitStatusListCtrl::OnSysColorChange()
+{
+	__super::OnSysColorChange();
+	if (m_nBackgroundImageID)
+		CAppUtils::SetListCtrlBackgroundImage(GetSafeHwnd(), m_nBackgroundImageID);
 }

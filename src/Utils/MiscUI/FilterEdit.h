@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2016 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -124,6 +125,7 @@ protected:
 	afx_msg void	OnEnKillfocus();
 	afx_msg void	OnEnSetfocus();
 	afx_msg LRESULT	OnPaste(WPARAM wParam, LPARAM lParam);
+	afx_msg void	OnSysColorChange();
 	DECLARE_MESSAGE_MAP()
 
 

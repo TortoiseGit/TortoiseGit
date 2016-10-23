@@ -55,6 +55,7 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnInitDialog();
 	afx_msg void OnDestroy();
+	afx_msg void OnSysColorChange();
 	virtual void OnOK();
 	virtual void OnCancel();
 

@@ -132,6 +132,7 @@ private:
 	afx_msg void			OnCancel();
 	afx_msg void			OnDestroy();
 	virtual BOOL			OnInitDialog();
+	afx_msg void			OnSysColorChange();
 
 	CTreeCtrl				m_RepoTree;
 	CListCtrl				m_RepoList;

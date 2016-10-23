@@ -228,6 +228,8 @@ public:
 protected:
 	afx_msg void OnClose();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	afx_msg void OnSysColorChange();
+	UINT m_nBackgroundImageID;
 };
 
 class ProgressCommand

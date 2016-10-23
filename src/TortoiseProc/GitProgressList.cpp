@@ -53,6 +53,7 @@ CGitProgressList::CGitProgressList():CListCtrl()
 	, m_bLastVisible(false)
 	, m_itemCount(-1)
 	, m_itemCountTotal(-1)
+	, m_nBackgroundImageID(0)
 {
 	m_pInfoCtrl = nullptr;
 	m_pAnimate = nullptr;
@@ -368,6 +369,7 @@ void CGitProgressList::ResizeColumns()
 
 bool CGitProgressList::SetBackgroundImage(UINT nID)
 {
+	m_nBackgroundImageID = nID;
 	return CAppUtils::SetListCtrlBackgroundImage(GetSafeHwnd(), nID);
 }
 
@@ -1171,4 +1173,11 @@ void CGitProgressList::WC_File_NotificationData::HandleDblClick() const
 		return;
 	}
 	CAppUtils::ShellOpen(sWinPath);
+}
+
+void CGitProgressList::OnSysColorChange()
+{
+	__super::OnSysColorChange();
+	if (m_nBackgroundImageID)
+		CAppUtils::SetListCtrlBackgroundImage(GetSafeHwnd(), m_nBackgroundImageID);
 }

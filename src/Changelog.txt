@@ -20,6 +20,7 @@ Released: unreleased
    The dictionaries can be found in %APPDATA%\TortoiseGit\*.dic.
  * Fixed issue #2850: The installer does not completely support high-contrast-mode
  * Fixed issue #2853: Commit message autocompletion bugs out after typing a second character
+ * Fixed issue #2851: Switching high-contrast-mode on or off, does not cause change of used UI colors
 
 = Release 2.3.0 =
 Released: 2016-10-01

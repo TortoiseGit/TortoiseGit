@@ -137,6 +137,8 @@ void CMenuButton::FixFont()
 BEGIN_MESSAGE_MAP(CMenuButton, CMFCMenuButton)
 	ON_WM_DESTROY()
 	ON_CONTROL_REFLECT_EX(BN_CLICKED, &CMenuButton::OnClicked)
+	ON_WM_SYSCOLORCHANGE()
+	ON_WM_THEMECHANGED()
 END_MESSAGE_MAP()
 
 
@@ -193,4 +195,17 @@ void CMenuButton::OnShowMenu()
 	m_bRealMenuIsActive = true;
 	CMFCMenuButton::OnShowMenu();
 	m_bRealMenuIsActive = false;
+}
+
+LRESULT CMenuButton::OnThemeChanged()
+{
+	CMFCVisualManager::GetInstance()->DestroyInstance();
+	m_Font.DeleteObject();
+	return 0L;
+}
+
+void CMenuButton::OnSysColorChange()
+{
+	__super::OnSysColorChange();
+	GetGlobalData()->UpdateSysColors();
 }

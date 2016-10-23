@@ -68,6 +68,7 @@ private:
 private:
 	LRESULT             m_directFunction;
 	LRESULT             m_directPointer;
+	void                SetupColors(bool recolorize);
 
 	HWND                m_hWndEdit;
 

@@ -147,6 +147,9 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
 	case WM_SETFOCUS:
 		SetFocus(m_hWndEdit);
 		break;
+	case WM_SYSCOLORCHANGE:
+		SetupColors(true);
+		break;
 	case COMMITMONITOR_FINDMSGNEXT:
 		{
 			SendEditor(SCI_CHARRIGHT);
@@ -586,11 +589,7 @@ bool CMainWindow::Initialize()
 	SendEditor(SCI_SETMARGINWIDTHN, 1);
 	SendEditor(SCI_SETMARGINWIDTHN, 2);
 	//Set the default windows colors for edit controls
-	SendEditor(SCI_STYLESETFORE, STYLE_DEFAULT, ::GetSysColor(COLOR_WINDOWTEXT));
-	SendEditor(SCI_STYLESETBACK, STYLE_DEFAULT, ::GetSysColor(COLOR_WINDOW));
-	SendEditor(SCI_SETSELFORE, TRUE, ::GetSysColor(COLOR_HIGHLIGHTTEXT));
-	SendEditor(SCI_SETSELBACK, TRUE, ::GetSysColor(COLOR_HIGHLIGHT));
-	SendEditor(SCI_SETCARETFORE, ::GetSysColor(COLOR_WINDOWTEXT));
+	SetupColors(false);
 	if (CRegStdDWORD(L"Software\\TortoiseGit\\ScintillaDirect2D", FALSE) != FALSE)
 	{
 		SendEditor(SCI_SETTECHNOLOGY, SC_TECHNOLOGY_DIRECTWRITERETAIN);
@@ -598,7 +597,6 @@ bool CMainWindow::Initialize()
 	}
 	SendEditor(SCI_SETVIEWWS, 1);
 	SendEditor(SCI_SETWHITESPACESIZE, 2);
-	SendEditor(SCI_SETWHITESPACEFORE, true, ::GetSysColor(COLOR_3DSHADOW));
 	SendEditor(SCI_STYLESETVISIBLE, STYLE_CONTROLCHAR, TRUE);
 
 	return true;
@@ -666,13 +664,31 @@ void CMainWindow::SetupWindow(bool bUTF8)
 	SendEditor(SCI_SETSAVEPOINT);
 	SendEditor(SCI_GOTOPOS, 0);
 
+	SetupColors(true);
+
+	::ShowWindow(m_hWndEdit, SW_SHOW);
+}
+
+void CMainWindow::SetupColors(bool recolorize)
+{
+	SendEditor(SCI_STYLESETFORE, STYLE_DEFAULT, ::GetSysColor(COLOR_WINDOWTEXT));
+	SendEditor(SCI_STYLESETBACK, STYLE_DEFAULT, ::GetSysColor(COLOR_WINDOW));
+	SendEditor(SCI_SETSELFORE, TRUE, ::GetSysColor(COLOR_HIGHLIGHTTEXT));
+	SendEditor(SCI_SETSELBACK, TRUE, ::GetSysColor(COLOR_HIGHLIGHT));
+	SendEditor(SCI_SETCARETFORE, ::GetSysColor(COLOR_WINDOWTEXT));
+
+	SendEditor(SCI_SETWHITESPACEFORE, true, ::GetSysColor(COLOR_3DSHADOW));
+
 	SendEditor(SCI_CLEARDOCUMENTSTYLE, 0, 0);
 	SendEditor(SCI_SETSTYLEBITS, 5, 0);
 
 	HIGHCONTRAST highContrast = { 0 };
 	highContrast.cbSize = sizeof(HIGHCONTRAST);
 	if (SystemParametersInfo(SPI_GETHIGHCONTRAST, 0, &highContrast, 0) == TRUE && (highContrast.dwFlags & HCF_HIGHCONTRASTON))
+	{
+		SendEditor(SCI_SETLEXER, SCLEX_NULL);
 		return;
+	}
 
 	//SetAStyle(SCE_DIFF_DEFAULT, RGB(0, 0, 0));
 	SetAStyle(SCE_DIFF_COMMAND,
@@ -698,8 +714,9 @@ void CMainWindow::SetupWindow(bool bUTF8)
 
 	SendEditor(SCI_SETLEXER, SCLEX_DIFF);
 	SendEditor(SCI_SETKEYWORDS, 0, (LPARAM)"revision");
-	SendEditor(SCI_COLOURISE, 0, -1);
-	::ShowWindow(m_hWndEdit, SW_SHOW);
+
+	if (recolorize)
+		SendEditor(SCI_COLOURISE, 0, -1);
 }
 
 bool CMainWindow::SaveFile(LPCTSTR filename)

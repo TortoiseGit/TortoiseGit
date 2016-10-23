@@ -124,6 +124,7 @@ protected:
 // Generated message map functions
 protected:
 	BOOL PreTranslateMessage(MSG* pMsg);
+	afx_msg void OnSysColorChange();
 	afx_msg void OnChangeEncode(UINT nID);
 	afx_msg void OnEditFind();
 	afx_msg void OnEditGoto();

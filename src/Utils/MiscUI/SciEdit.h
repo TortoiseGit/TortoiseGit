@@ -92,6 +92,7 @@ public:
 	 */
 	void		Init(LONG lLanguage = 0);
 	void		SetIcon(const std::map<int, UINT> &icons);
+	void		SetColors(bool recolorize);
 	/**
 	 * Execute a scintilla command, e.g. SCI_GETLINE.
 	 */

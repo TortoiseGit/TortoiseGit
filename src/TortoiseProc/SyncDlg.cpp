@@ -99,6 +99,7 @@ BEGIN_MESSAGE_MAP(CSyncDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_CHECK_FORCE, &CSyncDlg::OnBnClickedCheckForce)
 	ON_BN_CLICKED(IDC_LOG, &CSyncDlg::OnBnClickedLog)
 	ON_WM_DESTROY()
+	ON_WM_THEMECHANGED()
 END_MESSAGE_MAP()
 
 void CSyncDlg::EnableControlButton(bool bEnabled)
@@ -1762,4 +1763,10 @@ void CSyncDlg::OnDestroy()
 {
 	m_bWantToExit = true;
 	__super::OnDestroy();
+}
+
+LRESULT CSyncDlg::OnThemeChanged()
+{
+	CMFCVisualManager::GetInstance()->DestroyInstance();
+	return 0;
 }

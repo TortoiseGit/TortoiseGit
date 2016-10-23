@@ -148,6 +148,18 @@ static std::unique_ptr<UINT[]> Icon2Image(HICON hIcon)
 	return imagePixels;
 }
 
+void CSciEdit::SetColors(bool recolorize)
+{
+	Call(SCI_STYLESETFORE, STYLE_DEFAULT, ::GetSysColor(COLOR_WINDOWTEXT));
+	Call(SCI_STYLESETBACK, STYLE_DEFAULT, ::GetSysColor(COLOR_WINDOW));
+	Call(SCI_SETSELFORE, TRUE, ::GetSysColor(COLOR_HIGHLIGHTTEXT));
+	Call(SCI_SETSELBACK, TRUE, ::GetSysColor(COLOR_HIGHLIGHT));
+	Call(SCI_SETCARETFORE, ::GetSysColor(COLOR_WINDOWTEXT));
+
+	if (recolorize)
+		Call(SCI_COLOURISE, 0, -1);
+}
+
 void CSciEdit::Init(LONG lLanguage)
 {
 	//Setup the direct access data
@@ -162,11 +174,7 @@ void CSciEdit::Init(LONG lLanguage)
 	Call(SCI_AUTOCSETFILLUPS, 0, (LPARAM)"\t([");
 	Call(SCI_AUTOCSETMAXWIDTH, 0);
 	//Set the default windows colors for edit controls
-	Call(SCI_STYLESETFORE, STYLE_DEFAULT, ::GetSysColor(COLOR_WINDOWTEXT));
-	Call(SCI_STYLESETBACK, STYLE_DEFAULT, ::GetSysColor(COLOR_WINDOW));
-	Call(SCI_SETSELFORE, TRUE, ::GetSysColor(COLOR_HIGHLIGHTTEXT));
-	Call(SCI_SETSELBACK, TRUE, ::GetSysColor(COLOR_HIGHLIGHT));
-	Call(SCI_SETCARETFORE, ::GetSysColor(COLOR_WINDOWTEXT));
+	SetColors(false);
 	Call(SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT | SC_PERFORMED_UNDO | SC_PERFORMED_REDO);
 	Call(SCI_INDICSETSTYLE, INDIC_MISSPELLED, INDIC_SQUIGGLE);
 	Call(SCI_INDICSETFORE, INDIC_MISSPELLED, RGB(255,0,0));
@@ -411,7 +419,7 @@ void CSciEdit::SetFont(CString sFontName, int iFontSizeInPoints)
 	Call(SCI_STYLESETSIZE, STYLE_DEFAULT, iFontSizeInPoints);
 	Call(SCI_STYLECLEARALL);
 
-	LPARAM color = (LPARAM)GetSysColor(COLOR_HIGHLIGHT);
+	LPARAM color = (LPARAM)GetSysColor(COLOR_HOTLIGHT);
 	// set the styles for the bug ID strings
 	Call(SCI_STYLESETBOLD, STYLE_ISSUEBOLD, (LPARAM)TRUE);
 	Call(SCI_STYLESETFORE, STYLE_ISSUEBOLD, color);
@@ -1595,11 +1603,7 @@ void CSciEdit::SetUDiffStyle()
 	//Call(SCI_SETMARGINWIDTHN, 1);
 	//Call(SCI_SETMARGINWIDTHN, 2);
 	//Set the default windows colors for edit controls
-	Call(SCI_STYLESETFORE, STYLE_DEFAULT, ::GetSysColor(COLOR_WINDOWTEXT));
-	Call(SCI_STYLESETBACK, STYLE_DEFAULT, ::GetSysColor(COLOR_WINDOW));
-	Call(SCI_SETSELFORE, TRUE, ::GetSysColor(COLOR_HIGHLIGHTTEXT));
-	Call(SCI_SETSELBACK, TRUE, ::GetSysColor(COLOR_HIGHLIGHT));
-	Call(SCI_SETCARETFORE, ::GetSysColor(COLOR_WINDOWTEXT));
+	SetColors(false);
 
 	//SendEditor(SCI_SETREADONLY, FALSE);
 	Call(SCI_CLEARALL);
@@ -1622,7 +1626,10 @@ void CSciEdit::SetUDiffStyle()
 	HIGHCONTRAST highContrast = { 0 };
 	highContrast.cbSize = sizeof(HIGHCONTRAST);
 	if (SystemParametersInfo(SPI_GETHIGHCONTRAST, 0, &highContrast, 0) == TRUE && (highContrast.dwFlags & HCF_HIGHCONTRASTON))
+	{
+		Call(SCI_SETLEXER, SCLEX_NULL);
 		return;
+	}
 
 	//SetAStyle(SCE_DIFF_DEFAULT, RGB(0, 0, 0));
 	SetAStyle(SCE_DIFF_COMMAND,

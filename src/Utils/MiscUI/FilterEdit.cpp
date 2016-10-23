@@ -69,6 +69,7 @@ BEGIN_MESSAGE_MAP(CFilterEdit, CEdit)
 	ON_CONTROL_REFLECT(EN_KILLFOCUS, &CFilterEdit::OnEnKillfocus)
 	ON_CONTROL_REFLECT(EN_SETFOCUS, &CFilterEdit::OnEnSetfocus)
 	ON_MESSAGE(WM_PASTE, &CFilterEdit::OnPaste)
+	ON_WM_SYSCOLORCHANGE()
 END_MESSAGE_MAP()
 
 
@@ -441,4 +442,11 @@ LRESULT CFilterEdit::OnPaste(WPARAM, LPARAM)
 		GetParent()->SendMessage(WM_COMMAND, MAKEWPARAM(GetDlgCtrlID(), EN_CHANGE), (LPARAM)GetSafeHwnd());
 	}
 	return 0;
+}
+
+void CFilterEdit::OnSysColorChange()
+{
+	__super::OnSysColorChange();
+	m_backColor = GetSysColor(COLOR_WINDOW);
+	Invalidate();
 }

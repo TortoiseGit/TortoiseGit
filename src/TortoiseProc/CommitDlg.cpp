@@ -149,6 +149,7 @@ BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
 	ON_REGISTERED_MESSAGE(WM_UPDATEDATAFALSE, OnUpdateDataFalse)
 	ON_WM_TIMER()
 	ON_WM_SIZE()
+	ON_WM_SYSCOLORCHANGE()
 	ON_STN_CLICKED(IDC_EXTERNALWARNING, &CCommitDlg::OnStnClickedExternalwarning)
 	ON_BN_CLICKED(IDC_SIGNOFF, &CCommitDlg::OnBnClickedSignOff)
 	ON_BN_CLICKED(IDC_COMMIT_AMEND, &CCommitDlg::OnBnClickedCommitAmend)
@@ -2843,4 +2844,11 @@ void CCommitDlg::RunStartCommitHook()
 			return;
 		}
 	}
+}
+
+void CCommitDlg::OnSysColorChange()
+{
+	__super::OnSysColorChange();
+	m_cLogMessage.SetColors(true);
+	m_cLogMessage.SetFont((CString)CRegString(L"Software\\TortoiseGit\\LogFontName", L"Courier New"), (DWORD)CRegDWORD(L"Software\\TortoiseGit\\LogFontSize", 8));
 }

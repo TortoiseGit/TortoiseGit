@@ -76,6 +76,7 @@ BEGIN_MESSAGE_MAP(CCheckForUpdatesDlg, CResizableStandAloneDialog)
 	ON_WM_WINDOWPOSCHANGING()
 	ON_WM_SETCURSOR()
 	ON_WM_DESTROY()
+	ON_WM_SYSCOLORCHANGE()
 	ON_BN_CLICKED(IDC_BUTTON_UPDATE, OnBnClickedButtonUpdate)
 	ON_MESSAGE(WM_USER_DISPLAYSTATUS, OnDisplayStatus)
 	ON_MESSAGE(WM_USER_ENDDOWNLOAD, OnEndDownload)
@@ -860,4 +861,11 @@ void CCheckForUpdatesDlg::OnBnClickedDonotaskagain()
 		CRegDWORD(_T("Software\\TortoiseGit\\VersionCheck")) = FALSE;
 		OnOK();
 	}
+}
+
+void CCheckForUpdatesDlg::OnSysColorChange()
+{
+	__super::OnSysColorChange();
+	m_cLogMessage.SetColors(true);
+	m_cLogMessage.SetFont((CString)CRegString(L"Software\\TortoiseGit\\LogFontName", L"Courier New"), (DWORD)CRegDWORD(L"Software\\TortoiseGit\\LogFontSize", 8));
 }

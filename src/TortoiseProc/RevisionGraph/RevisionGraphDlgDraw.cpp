@@ -44,6 +44,13 @@ static char THIS_FILE[] = __FILE__;
 using namespace Gdiplus;
 using namespace ogdf;
 
+Color GetColorFromSysColor(int nIndex)
+{
+	Color color;
+	color.SetFromCOLORREF(GetSysColor(nIndex));
+	return color;
+}
+
 /************************************************************************/
 /* Graphing functions													*/
 /************************************************************************/
@@ -875,7 +882,7 @@ void CRevisionGraphWnd::DrawConnections (GraphicsDevice& graphics, const CRect& 
 		graphics.graphics->SetSmoothingMode(Gdiplus::SmoothingModeAntiAlias);
 
 	float penwidth = 2*m_fZoomFactor<1? 1:2*m_fZoomFactor;
-	Gdiplus::Pen pen(Color(0,0,0),penwidth);
+	Gdiplus::Pen pen(GetColorFromSysColor(COLOR_WINDOWTEXT), penwidth);
 
 	// iterate over all visible lines
 	edge e;
@@ -921,11 +928,7 @@ void CRevisionGraphWnd::DrawConnections (GraphicsDevice& graphics, const CRect& 
 		if (graphics.graphics)
 			graphics.graphics->DrawLines(&pen, points.GetData(), (INT)points.GetCount());
 		else if (graphics.pSVG)
-		{
-			Color color;
-			color.SetFromCOLORREF(GetSysColor(COLOR_WINDOWTEXT));
 			graphics.pSVG->Polyline(points.GetData(), (int)points.GetCount(), Color(0,0,0), (int)penwidth);
-		}
 		else if (graphics.pGraphviz)
 		{
 			CString hash1 = _T("g") + m_logEntries[e->target()->index()].ToString().Left(g_Git.GetShortHASHLength());
@@ -1128,11 +1131,10 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 				graphics.pGraphviz->EndDrawTableNode();
 		}
 		if ((m_SelectedEntry1 == v))
-			DrawMarker(graphics, noderect, mpLeft, 0, Color(0,0, 255), 1);
+			DrawMarker(graphics, noderect, mpLeft, 0, GetColorFromSysColor(COLOR_HIGHLIGHT), 1);
 
 		if ((m_SelectedEntry2 == v))
 			DrawMarker(graphics, noderect, mpLeft, 0, Color(136,0, 21), 2);
-
 	}
 }
 
