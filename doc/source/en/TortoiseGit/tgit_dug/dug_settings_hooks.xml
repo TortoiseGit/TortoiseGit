@@ -96,6 +96,7 @@
 		A hook is defined for a particular working tree path. You only need to
 		specify the top level path; if you perform an operation in a sub-folder,
 		TortoiseGit will automatically search upwards for a matching path.
+		Use <literal>*</literal> for matching all working trees.
 	</para>
 	<para>
 		Next you must specify the command line to execute, starting with the path

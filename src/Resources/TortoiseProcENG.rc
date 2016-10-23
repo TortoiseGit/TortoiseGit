@@ -3451,7 +3451,7 @@ BEGIN
                             "Merging requires different revisions or different URLs in 'From:' and 'To:'"
     IDS_ERR_NOHOOKTYPESPECIFIED "Please select a hook type"
     IDS_ERR_NOHOOKPATHSPECIFIED 
-                            "Please enter a path where to apply the hook script to."
+                            "Please enter a path where to apply the hook script to. Use ""*"" for all paths."
     IDS_ERR_NOHOOKCOMMANDPECIFIED "Please enter a hook script to execute."
     IDS_ERR_HOOKFAILED      "The hook script returned an error:\n%s"
     IDS_PROC_BROWSEREFS_DELETETAG "Delete tag"

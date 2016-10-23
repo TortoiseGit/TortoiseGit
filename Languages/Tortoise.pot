@@ -7151,7 +7151,7 @@ msgid "Please enter a hook script to execute."
 msgstr ""
 
 #. Resource IDs: (IDS_ERR_NOHOOKPATHSPECIFIED)
-msgid "Please enter a path where to apply the hook script to."
+msgid "Please enter a path where to apply the hook script to. Use \"*\" for all paths."
 msgstr ""
 
 #. Resource IDs: (IDS_ERR_NOHOOKTYPESPECIFIED)
