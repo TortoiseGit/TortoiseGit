@@ -1283,8 +1283,10 @@
 #define IDS_HOOKTYPE_PREREBASE          1606
 #define IDC_REBASE_CHECK_FORCE          1607
 #define IDC_EDIT_DEPTH                  1607
+#define IDS_BROWSE_REFS_ONLYMERGED      1607
 #define IDC_CHECK_SVN_FROM              1608
 #define IDC_REBASE_CHECK_PRESERVEMERGES 1608
+#define IDS_BROWSE_REFS_ONLYUNMERGED    1608
 #define IDC_HANDLERHINT                 1609
 #define IDC_COMBOBOXEX_URL              1610
 #define IDC_BUTTON_PULL                 1611
@@ -1541,6 +1543,7 @@
 #define IDC_STOREDDECISIONS             1833
 #define IDC_LABEL_FILTER                1834
 #define IDC_SELREF                      1835
+#define IDC_BROWSE_REFS_BRANCHFILTER    1838
 #define IDS_LOG_FILTER_BY               1850
 #define IDS_LOG_FILTER_PATHS            1851
 #define IDS_LOG_FILTER_AUTHORS          1852
@@ -1992,7 +1995,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        359
 #define _APS_NEXT_COMMAND_VALUE         32874
-#define _APS_NEXT_CONTROL_VALUE         1836
+#define _APS_NEXT_CONTROL_VALUE         1839
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

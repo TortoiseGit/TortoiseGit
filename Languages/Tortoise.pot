@@ -6836,12 +6836,20 @@ msgstr ""
 msgid "Only file children"
 msgstr ""
 
+#. Resource IDs: (IDS_BROWSE_REFS_ONLYMERGED)
+msgid "Only merged (to HEAD)"
+msgstr ""
+
 #. Resource IDs: (IDS_COMMITDLG_ONLYNUMBERS)
 msgid "Only numbers (optionally separated by commas)\nare allowed!"
 msgstr ""
 
 #. Resource IDs: (IDS_git_DEPTH_EMPTY)
 msgid "Only this item"
+msgstr ""
+
+#. Resource IDs: (IDS_BROWSE_REFS_ONLYUNMERGED)
+msgid "Only unmerged (to HEAD)"
 msgstr ""
 
 #. Resource IDs: (61440, ID_FILE_OPEN - Menu, ID_FILE_OPEN - Ribbon name)

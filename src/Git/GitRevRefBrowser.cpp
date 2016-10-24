@@ -36,14 +36,27 @@ void GitRevRefBrowser::Clear()
 	m_UpstreamRef.Empty();
 }
 
-int GitRevRefBrowser::GetGitRevRefMap(MAP_REF_GITREVREFBROWSER& map, CString& err, std::function<bool(const CString& refName)> filterCallback)
+int GitRevRefBrowser::GetGitRevRefMap(MAP_REF_GITREVREFBROWSER& map, int mergefilter, CString& err, std::function<bool(const CString& refName)> filterCallback)
 {
 	err.Empty();
 	MAP_STRING_STRING descriptions;
 	g_Git.GetBranchDescriptions(descriptions);
 
+	CString args;
+	switch (mergefilter)
+	{
+	case 1:
+		args = L" --merged HEAD";
+		break;
+	case 2:
+		args = L" --no-merged HEAD";
+		break;
+	}
+
+	CString cmd;
+	cmd.Format(L"git.exe for-each-ref%s --format=\"%%(refname)%%04 %%(objectname)%%04 %%(upstream)%%04 %%(subject)%%04 %%(authorname)%%04%%(authordate:raw)%%03\"", args);
 	CString allRefs;
-	if (g_Git.Run(L"git.exe for-each-ref --format=\"%(refname)%04 %(objectname)%04 %(upstream)%04 %(subject)%04 %(authorname)%04%(authordate:raw)%03\"", &allRefs, &err, CP_UTF8))
+	if (g_Git.Run(cmd, &allRefs, &err, CP_UTF8))
 		return -1;
 
 	int linePos = 0;

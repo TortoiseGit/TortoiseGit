@@ -1876,7 +1876,8 @@ CAPTION "Browse references"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     LTEXT           "Filter:",IDC_BROWSEREFS_STATIC_FILTER,125,8,37,9
-    EDITTEXT        IDC_BROWSEREFS_EDIT_FILTER,164,7,294,14,ES_MULTILINE | ES_AUTOHSCROLL | ES_WANTRETURN
+    EDITTEXT        IDC_BROWSEREFS_EDIT_FILTER,164,7,146,12,ES_MULTILINE | ES_AUTOHSCROLL | ES_WANTRETURN
+    COMBOBOX        IDC_BROWSE_REFS_BRANCHFILTER,317,7,141,13,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
     CONTROL         "",IDC_TREE_REF,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_SHOWSELALWAYS | WS_BORDER | WS_HSCROLL | WS_TABSTOP,7,24,108,207
     CONTROL         "",IDC_LIST_REF_LEAFS,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_EDITLABELS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,125,24,333,207
     CONTROL         "Show &nested refs",IDC_INCLUDENESTEDREFS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,234,107,9
@@ -3642,6 +3643,8 @@ BEGIN
     IDS_REBASELOCKFILEFOUND "Found a lock file indicating that a TortoiseGit rebase process is running. This blocks this operation.\n\nIf you are not runnig a TortoiseGit rebase process right now, you can remove the stale lock file in order to continue."
     IDS_ERR_MUSTBESAMEWT    "Target and source must be in the same working tree!"
     IDS_MERGE_UNRELATED     "&Merge unrelated history"
+    IDS_BROWSE_REFS_ONLYMERGED "Only merged (to HEAD)"
+    IDS_BROWSE_REFS_ONLYUNMERGED "Only unmerged (to HEAD)"
 END
 
 STRINGTABLE

@@ -197,6 +197,7 @@ void CBrowseRefsDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LIST_REF_LEAFS,	m_ListRefLeafs);
 	DDX_Control(pDX, IDC_BROWSEREFS_EDIT_FILTER, m_ctrlFilter);
 	DDX_Check(pDX, IDC_INCLUDENESTEDREFS, m_bIncludeNestedRefs);
+	DDX_Control(pDX, IDC_BROWSE_REFS_BRANCHFILTER, m_cBranchFilter);
 }
 
 
@@ -216,6 +217,7 @@ BEGIN_MESSAGE_MAP(CBrowseRefsDlg, CResizableStandAloneDialog)
 	ON_WM_TIMER()
 	ON_BN_CLICKED(IDC_CURRENTBRANCH, OnBnClickedCurrentbranch)
 	ON_BN_CLICKED(IDC_INCLUDENESTEDREFS, &CBrowseRefsDlg::OnBnClickedIncludeNestedRefs)
+	ON_CBN_SELCHANGE(IDC_BROWSE_REFS_BRANCHFILTER, &CBrowseRefsDlg::OnCbnSelchangeBrowseRefsBranchfilter)
 END_MESSAGE_MAP()
 
 
@@ -280,7 +282,8 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 	AddAnchor(IDC_TREE_REF, TOP_LEFT, BOTTOM_LEFT);
 	AddAnchor(IDC_LIST_REF_LEAFS, TOP_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_BROWSEREFS_STATIC_FILTER, TOP_LEFT);
-	AddAnchor(IDC_BROWSEREFS_EDIT_FILTER, TOP_LEFT, TOP_RIGHT);
+	AddAnchor(IDC_BROWSEREFS_EDIT_FILTER, TOP_LEFT, TOP_CENTER);
+	AddAnchor(IDC_BROWSE_REFS_BRANCHFILTER, TOP_CENTER, TOP_RIGHT);
 	AddAnchor(IDC_INFOLABEL, BOTTOM_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_INCLUDENESTEDREFS, BOTTOM_LEFT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
@@ -316,6 +319,11 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 
 	if (m_bPickOne)
 		m_ListRefLeafs.ModifyStyle(0, LVS_SINGLESEL);
+
+	m_cBranchFilter.AddString(CString(MAKEINTRESOURCE(IDS_ALL)));
+	m_cBranchFilter.AddString(CString(MAKEINTRESOURCE(IDS_BROWSE_REFS_ONLYMERGED)));
+	m_cBranchFilter.AddString(CString(MAKEINTRESOURCE(IDS_BROWSE_REFS_ONLYUNMERGED)));
+	m_cBranchFilter.SetCurSel(0);
 
 	m_ListRefLeafs.SetFocus();
 	return FALSE;
@@ -437,7 +445,7 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 
 	CString err;
 	MAP_REF_GITREVREFBROWSER refMap;
-	if (GitRevRefBrowser::GetGitRevRefMap(refMap, err, [&](const CString& refName)
+	if (GitRevRefBrowser::GetGitRevRefMap(refMap, m_cBranchFilter.GetCurSel(), err, [&](const CString& refName)
 	{
 		//Use ref based on m_pickRef_Kind
 		if (CStringUtils::StartsWith(refName, L"refs/heads/") && !(m_pickRef_Kind & gPickRef_Head))
@@ -1632,4 +1640,10 @@ CShadowTree* CBrowseRefsDlg::GetTreeEntry(HTREEITEM treeItem)
 	auto entry = reinterpret_cast<CShadowTree*>(m_RefTreeCtrl.GetItemData(treeItem));
 	ASSERT(entry);
 	return entry;
+}
+
+
+void CBrowseRefsDlg::OnCbnSelchangeBrowseRefsBranchfilter()
+{
+	Refresh();
 }

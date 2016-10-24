@@ -11,6 +11,7 @@ Released: unreleased
  * Fixed issue #1635: Add option to set TortoiseGitMerge foreground text colors
  * Fixed issue #2586: Integration of further hooks: pre-rebase and post-commit
  * Fixed issue #2444: Drag and drop on commit dialog to include files in the list for committing
+ * Browse References Dialog: Allow to filter for merged and unmerged branches
 
 == Bug Fixes ==
  * Fixed issue #2837: Layout of overlapping icons settings dialog

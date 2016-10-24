@@ -193,6 +193,7 @@ private:
 	afx_msg LRESULT OnClickedInfoIcon(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnClickedCancelFilter(WPARAM wParam, LPARAM lParam);
 	bool			IsMatchFilter(const CShadowTree* pTree, const CString &ref, const CString &filter, bool positive);
+	CComboBox		m_cBranchFilter;
 
 	int				m_currSortCol;
 	bool			m_currSortDesc;
@@ -218,6 +219,7 @@ private:
 	afx_msg void OnLvnBeginlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedCurrentbranch();
 	afx_msg void OnBnClickedIncludeNestedRefs();
+	afx_msg void OnCbnSelchangeBrowseRefsBranchfilter();
 	BOOL		m_bIncludeNestedRefs;
 	CRegDWORD	m_regIncludeNestedRefs;
 	void		UpdateInfoLabel();
