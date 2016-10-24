@@ -38,7 +38,6 @@
 #include "registry.h"
 #include "InputDlg.h"
 #include "GitAdminDir.h"
-#include "DragDropImpl.h"
 #include "GitDataObject.h"
 #include "ProgressCommands/AddProgressCommand.h"
 #include "IconMenu.h"
@@ -220,7 +219,6 @@ CGitStatusListCtrl::CGitStatusListCtrl() : CResizableColumnsListCtrl<CListCtrl>(
 	, m_bBusy(false)
 	, m_bEmpty(false)
 	, m_bShowIgnores(false)
-	, m_pDropTarget(nullptr)
 	, m_bIgnoreRemoveOnly(false)
 	, m_bCheckChildrenWithParent(false)
 	, m_bUnversionedLast(true)
@@ -282,8 +280,6 @@ CGitStatusListCtrl::CGitStatusListCtrl() : CResizableColumnsListCtrl<CListCtrl>(
 
 CGitStatusListCtrl::~CGitStatusListCtrl()
 {
-//	if (m_pDropTarget)
-//		delete m_pDropTarget;
 	ClearStatusArray();
 }
 
@@ -341,20 +337,18 @@ void CGitStatusListCtrl::Init(DWORD dwColumns, const CString& sColumnInfoContain
 	m_ColumnManager.SetRightAlign(7);
 
 	// enable file drops
-#if 0
 	if (!m_pDropTarget)
 	{
-		m_pDropTarget = new CGitStatusListCtrlDropTarget(this);
-		RegisterDragDrop(m_hWnd,m_pDropTarget);
+		m_pDropTarget = std::make_unique<CGitStatusListCtrlDropTarget>(this);
+		RegisterDragDrop(m_hWnd, m_pDropTarget.get());
 		// create the supported formats:
-		FORMATETC ftetc={0};
+		FORMATETC ftetc = { 0 };
 		ftetc.dwAspect = DVASPECT_CONTENT;
 		ftetc.lindex = -1;
 		ftetc.tymed = TYMED_HGLOBAL;
-		ftetc.cfFormat=CF_HDROP;
+		ftetc.cfFormat = CF_HDROP;
 		m_pDropTarget->AddSuportedFormat(ftetc);
 	}
-#endif
 
 	SetRedraw(true);
 }
@@ -3105,6 +3099,28 @@ void CGitStatusListCtrl::SetEntryCheck(CTGitPath* pEntry, int listboxIndex, bool
 	SetCheck(listboxIndex, bCheck);
 }
 
+void CGitStatusListCtrl::ResetChecked(const CTGitPath& entry)
+{
+	CTGitPath adjustedEntry;
+	if (g_Git.m_CurrentDir[g_Git.m_CurrentDir.GetLength() - 1] == L'\\')
+		adjustedEntry.SetFromWin(entry.GetWinPathString().Right(entry.GetWinPathString().GetLength() - g_Git.m_CurrentDir.GetLength()));
+	else
+		adjustedEntry.SetFromWin(entry.GetWinPathString().Right(entry.GetWinPathString().GetLength() - g_Git.m_CurrentDir.GetLength() - 1));
+	if (entry.IsDirectory())
+	{
+		STRING_VECTOR toDelete;
+		for (auto it = m_mapFilenameToChecked.begin(); it != m_mapFilenameToChecked.end(); ++it)
+		{
+			if (adjustedEntry.IsAncestorOf(it->first))
+				toDelete.emplace_back(it->first);
+		}
+		for (const auto& file : toDelete)
+			m_mapFilenameToChecked.erase(file);
+		return;
+	}
+	m_mapFilenameToChecked.erase(adjustedEntry.GetGitPathString());
+}
+
 #if 0
 void CGitStatusListCtrl::SetCheckOnAllDescendentsOf(const FileEntry* parentEntry, bool bCheck)
 {
@@ -3364,9 +3380,14 @@ bool CGitStatusListCtrl::EnableFileDrop()
 
 bool CGitStatusListCtrl::HasPath(const CTGitPath& path)
 {
+	CTGitPath adjustedEntry;
+	if (g_Git.m_CurrentDir[g_Git.m_CurrentDir.GetLength() - 1] == L'\\')
+		adjustedEntry.SetFromWin(path.GetWinPathString().Right(path.GetWinPathString().GetLength() - g_Git.m_CurrentDir.GetLength()));
+	else
+		adjustedEntry.SetFromWin(path.GetWinPathString().Right(path.GetWinPathString().GetLength() - g_Git.m_CurrentDir.GetLength() - 1));
 	for (size_t i=0; i < m_arStatusArray.size(); ++i)
 	{
-		if (m_arStatusArray[i]->IsEquivalentTo(path))
+		if (m_arStatusArray[i]->IsEquivalentTo(adjustedEntry))
 			return true;
 	}
 
@@ -3856,10 +3877,9 @@ bool CGitStatusListCtrl::CheckMultipleDiffs()
 }
 
 //////////////////////////////////////////////////////////////////////////
-#if 0
-bool CGitStatusListCtrlDropTarget::OnDrop(FORMATETC* pFmtEtc, STGMEDIUM& medium, DWORD * /*pdwEffect*/, POINTL pt)
+bool CGitStatusListCtrlDropTarget::OnDrop(FORMATETC* pFmtEtc, STGMEDIUM& medium, DWORD* /*pdwEffect*/, POINTL pt)
 {
-	if(pFmtEtc->cfFormat == CF_HDROP && medium.tymed == TYMED_HGLOBAL)
+	if (pFmtEtc->cfFormat == CF_HDROP && medium.tymed == TYMED_HGLOBAL)
 	{
 		HDROP hDrop = (HDROP)GlobalLock(medium.hGlobal);
 		if (hDrop)
@@ -3872,40 +3892,42 @@ bool CGitStatusListCtrlDropTarget::OnDrop(FORMATETC* pFmtEtc, STGMEDIUM& medium,
 			clientpoint.x = pt.x;
 			clientpoint.y = pt.y;
 			ScreenToClient(m_hTargetWnd, &clientpoint);
-			if ((m_pSVNStatusListCtrl->IsGroupViewEnabled())&&(m_pSVNStatusListCtrl->GetGroupFromPoint(&clientpoint) >= 0))
+			if ((m_pGitStatusListCtrl->IsGroupViewEnabled()) && (m_pGitStatusListCtrl->GetGroupFromPoint(&clientpoint) >= 0))
 			{
-				CTSVNPathList changelistItems;
-				for(UINT i = 0; i < cFiles; ++i)
+#if 0
+				CTGitPathList changelistItems;
+				for (UINT i = 0; i < cFiles; ++i)
 				{
 					DragQueryFile(hDrop, i, szFileName, sizeof(szFileName));
-					changelistItems.AddPath(CTSVNPath(szFileName));
+					changelistItems.AddPath(CTGitPath(szFileName));
 				}
 				// find the changelist name
 				CString sChangelist;
-				LONG_PTR nGroup = m_pSVNStatusListCtrl->GetGroupFromPoint(&clientpoint);
-				for (std::map<CString, int>::iterator it = m_pSVNStatusListCtrl->m_changelists.begin(); it != m_pSVNStatusListCtrl->m_changelists.end(); ++it)
+				LONG_PTR nGroup = m_pGitStatusListCtrl->GetGroupFromPoint(&clientpoint);
+				for (std::map<CString, int>::iterator it = m_pGitStatusListCtrl->m_changelists.begin(); it != m_pGitStatusListCtrl->m_changelists.end(); ++it)
 					if (it->second == nGroup)
 						sChangelist = it->first;
+
 				if (!sChangelist.IsEmpty())
 				{
-					SVN git;
+					CGit git;
 					if (git.AddToChangeList(changelistItems, sChangelist, git_depth_empty))
 					{
 						for (int l=0; l<changelistItems.GetCount(); ++l)
 						{
-							int index = m_pSVNStatusListCtrl->GetIndex(changelistItems[l]);
+							int index = m_pGitStatusListCtrl->GetIndex(changelistItems[l]);
 							if (index >= 0)
 							{
-								CSVNStatusListCtrl::FileEntry * e = m_pSVNStatusListCtrl->GetListEntry(index);
+								auto e = m_pGitStatusListCtrl->GetListEntry(index);
 								if (e)
 								{
 									e->changelist = sChangelist;
 									if (!e->IsFolder())
 									{
-										if (m_pSVNStatusListCtrl->m_changelists.find(e->changelist)!=m_pSVNStatusListCtrl->m_changelists.end())
-											m_pSVNStatusListCtrl->SetItemGroup(index, m_pSVNStatusListCtrl->m_changelists[e->changelist]);
+										if (m_pGitStatusListCtrl->m_changelists.find(e->changelist) != m_pGitStatusListCtrl->m_changelists.end())
+											m_pGitStatusListCtrl->SetItemGroup(index, m_pGitStatusListCtrl->m_changelists[e->changelist]);
 										else
-											m_pSVNStatusListCtrl->SetItemGroup(index, 0);
+											m_pGitStatusListCtrl->SetItemGroup(index, 0);
 									}
 								}
 							}
@@ -3913,12 +3935,12 @@ bool CGitStatusListCtrlDropTarget::OnDrop(FORMATETC* pFmtEtc, STGMEDIUM& medium,
 							{
 								HWND hParentWnd = GetParent(m_hTargetWnd);
 								if (hParentWnd)
-									::SendMessage(hParentWnd, CSVNStatusListCtrl::SVNSLNM_ADDFILE, 0, (LPARAM)changelistItems[l].GetWinPath());
+									::SendMessage(hParentWnd, CGitStatusListCtrl::GITSLNM_ADDFILE, 0, (LPARAM)changelistItems[l].GetWinPath());
 							}
 						}
 					}
 					else
-						CMessageBox::Show(m_pSVNStatusListCtrl->m_hWnd, git.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
+						CMessageBox::Show(m_pGitStatusListCtrl->m_hWnd, git.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 				}
 				else
 				{
@@ -3927,36 +3949,37 @@ bool CGitStatusListCtrlDropTarget::OnDrop(FORMATETC* pFmtEtc, STGMEDIUM& medium,
 					{
 						for (int l=0; l<changelistItems.GetCount(); ++l)
 						{
-							int index = m_pSVNStatusListCtrl->GetIndex(changelistItems[l]);
+							int index = m_pGitStatusListCtrl->GetIndex(changelistItems[l]);
 							if (index >= 0)
 							{
-								CSVNStatusListCtrl::FileEntry * e = m_pSVNStatusListCtrl->GetListEntry(index);
+								auto e = m_pGitStatusListCtrl->GetListEntry(index);
 								if (e)
 								{
 									e->changelist = sChangelist;
-									m_pSVNStatusListCtrl->SetItemGroup(index, 0);
+									m_pGitStatusListCtrl->SetItemGroup(index, 0);
 								}
 							}
 							else
 							{
 								HWND hParentWnd = GetParent(m_hTargetWnd);
 								if (hParentWnd)
-									::SendMessage(hParentWnd, CSVNStatusListCtrl::SVNSLNM_ADDFILE, 0, (LPARAM)changelistItems[l].GetWinPath());
+									::SendMessage(hParentWnd, CGitStatusListCtrl::GITSLNM_ADDFILE, 0, (LPARAM)changelistItems[l].GetWinPath());
 							}
 						}
 					}
 					else
-						CMessageBox::Show(m_pSVNStatusListCtrl->m_hWnd, git.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
+						CMessageBox::Show(m_pGitStatusListCtrl->m_hWnd, git.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 				}
+#endif
 			}
 			else
 			{
-				for(UINT i = 0; i < cFiles; ++i)
+				for (UINT i = 0; i < cFiles; ++i)
 				{
 					DragQueryFile(hDrop, i, szFileName, sizeof(szFileName));
 					HWND hParentWnd = GetParent(m_hTargetWnd);
 					if (hParentWnd)
-						::SendMessage(hParentWnd, CSVNStatusListCtrl::SVNSLNM_ADDFILE, 0, (LPARAM)szFileName);
+						::SendMessage(hParentWnd, CGitStatusListCtrl::GITSLNM_ADDFILE, 0, (LPARAM)szFileName);
 				}
 			}
 		}
@@ -3965,25 +3988,23 @@ bool CGitStatusListCtrlDropTarget::OnDrop(FORMATETC* pFmtEtc, STGMEDIUM& medium,
 	return true; //let base free the medium
 }
 
-HRESULT STDMETHODCALLTYPE CSVNStatusListCtrlDropTarget::DragOver(DWORD grfKeyState, POINTL pt, DWORD __RPC_FAR *pdwEffect)
+HRESULT STDMETHODCALLTYPE CGitStatusListCtrlDropTarget::DragOver(DWORD grfKeyState, POINTL pt, DWORD __RPC_FAR* pdwEffect)
 {
 	CIDropTarget::DragOver(grfKeyState, pt, pdwEffect);
 	*pdwEffect = DROPEFFECT_COPY;
-	if (m_pSVNStatusListCtrl)
+	if (m_pGitStatusListCtrl)
 	{
 		POINT clientpoint;
 		clientpoint.x = pt.x;
 		clientpoint.y = pt.y;
 		ScreenToClient(m_hTargetWnd, &clientpoint);
-		if ((m_pSVNStatusListCtrl->IsGroupViewEnabled())&&(m_pSVNStatusListCtrl->GetGroupFromPoint(&clientpoint) >= 0))
-			*pdwEffect = DROPEFFECT_MOVE;
-		else if ((!m_pSVNStatusListCtrl->m_bFileDropsEnabled)||(m_pSVNStatusListCtrl->m_bOwnDrag))
+		if ((m_pGitStatusListCtrl->IsGroupViewEnabled()) && (m_pGitStatusListCtrl->GetGroupFromPoint(&clientpoint) >= 0))
+			*pdwEffect = DROPEFFECT_NONE;
+		else if ((!m_pGitStatusListCtrl->m_bFileDropsEnabled) || (m_pGitStatusListCtrl->m_bOwnDrag))
 			*pdwEffect = DROPEFFECT_NONE;
 	}
 	return S_OK;
-}f
-
-#endif
+}
 
 void CGitStatusListCtrl::FilesExport()
 {

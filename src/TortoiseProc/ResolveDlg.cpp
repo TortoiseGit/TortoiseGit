@@ -206,6 +206,11 @@ LRESULT CResolveDlg::OnFileDropped(WPARAM, LPARAM lParam)
 	CTGitPath path;
 	path.SetFromWin((LPCTSTR)lParam);
 
+	// check whether the dropped file belongs to the very same repository
+	CString projectDir;
+	if (!path.HasAdminDir(&projectDir) || !CTGitPath::ArePathStringsEqual(g_Git.m_CurrentDir, projectDir))
+		return 0;
+
 	if (!m_resolveListCtrl.HasPath(path))
 	{
 		if (m_pathList.AreAllPathsFiles())
@@ -235,6 +240,7 @@ LRESULT CResolveDlg::OnFileDropped(WPARAM, LPARAM lParam)
 			}
 		}
 	}
+	m_resolveListCtrl.ResetChecked(path);
 
 	// Always start the timer, since the status of an existing item might have changed
 	SetTimer(REFRESHTIMER, 200, nullptr);

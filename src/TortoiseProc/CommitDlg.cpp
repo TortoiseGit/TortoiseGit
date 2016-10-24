@@ -1631,9 +1631,8 @@ LRESULT CCommitDlg::OnGitStatusListCtrlNeedsRefresh(WPARAM, LPARAM)
 	return 0;
 }
 
-LRESULT CCommitDlg::OnFileDropped(WPARAM, LPARAM /*lParam*/)
+LRESULT CCommitDlg::OnFileDropped(WPARAM, LPARAM lParam)
 {
-#if 0
 	BringWindowToTop();
 	SetForegroundWindow();
 	SetActiveWindow();
@@ -1649,11 +1648,17 @@ LRESULT CCommitDlg::OnFileDropped(WPARAM, LPARAM /*lParam*/)
 	CTGitPath path;
 	path.SetFromWin((LPCTSTR)lParam);
 
+	// check whether the dropped file belongs to the very same repository
+	CString projectDir;
+	if (!path.HasAdminDir(&projectDir) || !CTGitPath::ArePathStringsEqual(g_Git.m_CurrentDir, projectDir))
+		return 0;
+
 	// just add all the items we get here.
 	// if the item is versioned, the add will fail but nothing
 	// more will happen.
-	Git Git;
-	Git.Add(CTGitPathList(path), &m_ProjectProperties, Git_depth_empty, false, true, true);
+	CString cmd;
+	cmd.Format(L"git.exe add -- \"%s\"", path.GetWinPathString());
+	g_Git.Run(cmd, nullptr, CP_UTF8);
 
 	if (!m_ListCtrl.HasPath(path))
 	{
@@ -1688,11 +1693,11 @@ LRESULT CCommitDlg::OnFileDropped(WPARAM, LPARAM /*lParam*/)
 			}
 		}
 	}
+	m_ListCtrl.ResetChecked(path);
 
 	// Always start the timer, since the status of an existing item might have changed
 	SetTimer(REFRESHTIMER, 200, nullptr);
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Item %s dropped, timer started\n"), path.GetWinPath());
-#endif
 	return 0;
 }
 

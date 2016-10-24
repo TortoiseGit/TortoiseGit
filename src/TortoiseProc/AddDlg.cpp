@@ -151,7 +151,7 @@ UINT CAddDlg::AddThread()
 	unsigned int dwShow = GITSLC_SHOWUNVERSIONED | GITSLC_SHOWDIRECTFILES | GITSLC_SHOWREMOVEDANDPRESENT;
 	if (m_bIncludeIgnored)
 		dwShow |= GITSLC_SHOWIGNORED;
-	m_addListCtrl.Show(dwShow);
+	m_addListCtrl.Show(dwShow, GITSLC_SHOWUNVERSIONED);
 
 	InterlockedExchange(&m_bThreadRunning, FALSE);
 	return 0;
@@ -208,6 +208,11 @@ LRESULT CAddDlg::OnFileDropped(WPARAM, LPARAM lParam)
 	CTGitPath path;
 	path.SetFromWin((LPCTSTR)lParam);
 
+	// check whether the dropped file belongs to the very same repository
+	CString projectDir;
+	if (!path.HasAdminDir(&projectDir) || !CTGitPath::ArePathStringsEqual(g_Git.m_CurrentDir, projectDir))
+		return 0;
+
 	if (!m_addListCtrl.HasPath(path))
 	{
 		if (m_pathList.AreAllPathsFiles())
@@ -237,6 +242,7 @@ LRESULT CAddDlg::OnFileDropped(WPARAM, LPARAM lParam)
 			}
 		}
 	}
+	m_addListCtrl.ResetChecked(path);
 
 	// Always start the timer, since the status of an existing item might have changed
 	SetTimer(REFRESHTIMER, 200, nullptr);

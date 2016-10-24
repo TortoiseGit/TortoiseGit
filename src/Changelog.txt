@@ -10,6 +10,7 @@ Released: unreleased
  * Fixed issue #2136: LogDlg: Indicate that the View and Walk Behavior buttons contain a menu
  * Fixed issue #1635: Add option to set TortoiseGitMerge foreground text colors
  * Fixed issue #2586: Integration of further hooks: pre-rebase and post-commit
+ * Fixed issue #2444: Drag and drop on commit dialog to include files in the list for committing
 
 == Bug Fixes ==
  * Fixed issue #2837: Layout of overlapping icons settings dialog

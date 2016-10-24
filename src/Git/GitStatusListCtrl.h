@@ -23,6 +23,7 @@
 #include "GitRev.h"
 #include "Colors.h"
 #include "ResizableColumnsListCtrl.h"
+#include "DragDropImpl.h"
 
 #define GIT_WC_ENTRY_WORKING_SIZE_UNKNOWN (-1)
 
@@ -557,6 +558,8 @@ public:
 	 */
 	void SetEntryCheck(CTGitPath* pEntry, int listboxIndex, bool bCheck);
 
+	void ResetChecked(const CTGitPath& entry);
+
 	/** Write a list of the checked items' paths into a path list
 	 */
 	void WriteCheckedNamesToPathList(CTGitPathList& pathList);
@@ -852,7 +855,7 @@ private:
 	CString						m_sNoPropValueText;
 
 	bool						m_bCheckChildrenWithParent;
-	CGitStatusListCtrlDropTarget * m_pDropTarget;
+	std::unique_ptr<CGitStatusListCtrlDropTarget> m_pDropTarget;
 
 	std::map<CString,bool>		m_mapFilenameToChecked; ///< Remember de-/selected items
 	std::map<CString,bool>		m_mapDirectFiles;
@@ -902,15 +905,13 @@ private:
 	} m_sScrollPos;
 };
 
-#if 0
 class CGitStatusListCtrlDropTarget : public CIDropTarget
 {
 public:
-	CGitStatusListCtrlDropTarget(CGitStatusListCtrl * pGitStatusListCtrl):CIDropTarget(pGitStatusListCtrl->m_hWnd){m_pGitStatusListCtrl = pGitStatusListCtrl;}
+	CGitStatusListCtrlDropTarget(CGitStatusListCtrl* pGitStatusListCtrl) : CIDropTarget(pGitStatusListCtrl->m_hWnd) { m_pGitStatusListCtrl = pGitStatusListCtrl; }
 
-	virtual bool OnDrop(FORMATETC* pFmtEtc, STGMEDIUM& medium, DWORD * /*pdwEffect*/, POINTL pt);
-	virtual HRESULT STDMETHODCALLTYPE DragOver(DWORD grfKeyState, POINTL pt, DWORD __RPC_FAR *pdwEffect);
+	virtual bool OnDrop(FORMATETC* pFmtEtc, STGMEDIUM& medium, DWORD* pdwEffect, POINTL pt);
+	virtual HRESULT STDMETHODCALLTYPE DragOver(DWORD grfKeyState, POINTL pt, DWORD __RPC_FAR* pdwEffect);
 private:
-	CGitStatusListCtrl * m_pGitStatusListCtrl;
+	CGitStatusListCtrl* m_pGitStatusListCtrl;
 };
-#endif
