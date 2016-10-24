@@ -57,6 +57,7 @@ protected:
 	afx_msg void OnMoving(UINT fwSide, LPRECT pRect);
 	afx_msg void OnSysColorChange();
 	afx_msg void OnClose();
+	afx_msg void OnDestroy();
 
 	afx_msg void OnShowFindBar();
 	afx_msg void OnFindNext();

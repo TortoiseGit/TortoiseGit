@@ -12,6 +12,7 @@ Released: unreleased
  * Fixed issue #2586: Integration of further hooks: pre-rebase and post-commit
  * Fixed issue #2444: Drag and drop on commit dialog to include files in the list for committing
  * Browse References Dialog: Allow to filter for merged and unmerged branches
+ * Fixed issue #2273: Remember the width of the "view patch" window
 
 == Bug Fixes ==
  * Fixed issue #2837: Layout of overlapping icons settings dialog

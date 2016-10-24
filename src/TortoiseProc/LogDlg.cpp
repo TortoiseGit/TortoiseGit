@@ -1029,7 +1029,7 @@ void CLogDlg::TogglePatchView()
 		this->GetWindowRect(&rect);
 
 		m_patchViewdlg.ShowWindow(SW_SHOW);
-		m_patchViewdlg.SetWindowPos(nullptr, rect.right, rect.top, rect.Width(), rect.Height(), SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOZORDER);
+		m_patchViewdlg.SetWindowPos(nullptr, rect.right, rect.top, (DWORD)CRegStdDWORD(L"Software\\TortoiseGit\\TortoiseProc\\PatchDlgWidth", rect.Width()), rect.Height(), SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOZORDER);
 
 		FillPatchView();
 	}

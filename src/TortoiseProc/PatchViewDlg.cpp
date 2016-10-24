@@ -49,6 +49,7 @@ BEGIN_MESSAGE_MAP(CPatchViewDlg, CDialog)
 	ON_WM_SIZE()
 	ON_WM_MOVING()
 	ON_WM_CLOSE()
+	ON_WM_DESTROY()
 	ON_COMMAND(IDM_SHOWFINDBAR, OnShowFindBar)
 	ON_COMMAND(IDM_FINDEXIT, OnEscape)
 	ON_COMMAND(IDM_FINDNEXT, OnFindNext)
@@ -242,4 +243,12 @@ void CPatchViewDlg::OnSysColorChange()
 	__super::OnSysColorChange();
 
 	m_ctrlPatchView.SetUDiffStyle();
+}
+
+void CPatchViewDlg::OnDestroy()
+{
+	__super::OnDestroy();
+	CRect rect;
+	GetWindowRect(&rect);
+	CRegStdDWORD(L"Software\\TortoiseGit\\TortoiseProc\\PatchDlgWidth") = rect.Width();
 }
