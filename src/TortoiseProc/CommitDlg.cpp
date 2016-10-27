@@ -1179,6 +1179,7 @@ void CCommitDlg::OnOK()
 					GetDlgItem(IDC_NEWBRANCH)->ShowWindow(SW_HIDE);
 				}
 				m_bCreateNewBranch = FALSE;
+				m_ListCtrl.Clear();
 				if (!RunStartCommitHook())
 					bCloseCommitDlg = true;
 			}
