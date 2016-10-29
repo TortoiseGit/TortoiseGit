@@ -77,13 +77,25 @@ BOOL CPOFile::ParseFile(LPCTSTR szPath, BOOL bUpdateExisting, bool bAdjustEOLs)
 			//empty line means end of entry!
 			RESOURCEENTRY resEntry = {0};
 			std::wstring msgid;
+			std::wstring regexsearch, regexreplace;
 			int type = 0;
 			for (auto I = entry.cbegin(); I != entry.cend(); ++I)
 			{
 				if (wcsncmp(I->c_str(), L"# ", 2)==0)
 				{
 					//user comment
-					resEntry.translatorcomments.push_back(I->c_str());
+					if (wcsncmp(I->c_str(), L"# regexsearch=", 14) == 0)
+						regexsearch = I->substr(14);
+					else if (wcsncmp(I->c_str(), L"# regexreplace=", 15) == 0)
+						regexreplace = I->substr(15);
+					else
+						resEntry.translatorcomments.push_back(I->c_str());
+					if (!regexsearch.empty() && !regexreplace.empty())
+					{
+						m_regexes.push_back(std::make_tuple(regexsearch, regexreplace));
+						regexsearch.clear();
+						regexreplace.clear();
+					}
 					type = 0;
 				}
 				if (wcsncmp(I->c_str(), L"#.", 2)==0)

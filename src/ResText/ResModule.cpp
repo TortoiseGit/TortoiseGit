@@ -376,7 +376,8 @@ BOOL CResModule::ReplaceString(LPCTSTR lpszType, WORD wLanguage)
 
 		RESOURCEENTRY resEntry;
 		resEntry = m_StringEntries[msgid];
-		wcscpy(pBuf, resEntry.msgstr.c_str());
+		wcscpy(pBuf, resEntry.msgstr.empty() ? msgid.c_str() : resEntry.msgstr.c_str());
+		ReplaceWithRegex(pBuf);
 		CUtils::StringCollapse(pBuf);
 		size_t newlen = wcslen(pBuf);
 		if (newlen)
@@ -404,7 +405,8 @@ BOOL CResModule::ReplaceString(LPCTSTR lpszType, WORD wLanguage)
 
 		RESOURCEENTRY resEntry;
 		resEntry = m_StringEntries[msgid];
-		wcscpy(pBuf, resEntry.msgstr.c_str());
+		wcscpy(pBuf, resEntry.msgstr.empty() ? msgid.c_str() : resEntry.msgstr.c_str());
+		ReplaceWithRegex(pBuf);
 		CUtils::StringCollapse(pBuf);
 		size_t newlen = wcslen(pBuf);
 		if (newlen)
@@ -1980,6 +1982,7 @@ BOOL CResModule::ReplaceRibbon(LPCTSTR lpszType, WORD wLanguage)
 			auto sbuf = std::make_unique<wchar_t[]>(entry.msgstr.size() + 10);
 			wcscpy(sbuf.get(), entry.msgstr.c_str());
 			CUtils::StringCollapse(sbuf.get());
+			ReplaceWithRegex(sbuf.get());
 			std::wstring sreplace = L"<TEXT>";
 			sreplace += sbuf.get();
 			sreplace += L"</TEXT>";
@@ -2008,6 +2011,7 @@ BOOL CResModule::ReplaceRibbon(LPCTSTR lpszType, WORD wLanguage)
 			auto sbuf = std::make_unique<wchar_t[]>(entry.msgstr.size() + 10);
 			wcscpy(sbuf.get(), entry.msgstr.c_str());
 			CUtils::StringCollapse(sbuf.get());
+			ReplaceWithRegex(sbuf.get());
 			std::wstring sreplace = L"</ELEMENT_NAME><NAME>";
 			sreplace += sbuf.get();
 			sreplace += L"</NAME>";
@@ -2041,6 +2045,40 @@ DONE_ERROR:
 	UnlockResource(hglRibbonTemplate);
 	FreeResource(hglRibbonTemplate);
 	MYERROR;
+}
+
+std::wstring CResModule::ReplaceWithRegex(WCHAR* pBuf)
+{
+	for (const auto& t : m_StringEntries.m_regexes)
+	{
+		try
+		{
+			std::wregex e(std::get<0>(t), std::regex_constants::icase);
+			auto replaced = std::regex_replace(pBuf, e, std::get<1>(t));
+			wcscpy(pBuf, replaced.c_str());
+		}
+		catch (std::exception)
+		{
+		}
+	}
+	return pBuf;
+}
+
+std::wstring CResModule::ReplaceWithRegex(std::wstring& s)
+{
+	for (const auto& t : m_StringEntries.m_regexes)
+	{
+		try
+		{
+			std::wregex e(std::get<0>(t), std::regex_constants::icase);
+			auto replaced = std::regex_replace(s, e, std::get<1>(t));
+			s = replaced;
+		}
+		catch (std::exception)
+		{
+		}
+	}
+	return s;
 }
 
 BOOL CALLBACK CResModule::EnumResNameCallback(HMODULE /*hModule*/, LPCTSTR lpszType, LPTSTR lpszName, LONG_PTR lParam)
@@ -2138,10 +2176,12 @@ void CResModule::ReplaceStr(LPCWSTR src, WORD * dest, size_t * count, int * tran
 	CUtils::StringExtend(pBuf);
 
 	std::wstring wstr = std::wstring(pBuf);
+	ReplaceWithRegex(pBuf);
 	RESOURCEENTRY entry = m_StringEntries[wstr];
 	if (!entry.msgstr.empty())
 	{
 		wcscpy(pBuf, entry.msgstr.c_str());
+		ReplaceWithRegex(pBuf);
 		CUtils::StringCollapse(pBuf);
 		if (dest)
 			wcscpy((wchar_t *)&dest[(*count)], pBuf);
@@ -2150,11 +2190,21 @@ void CResModule::ReplaceStr(LPCWSTR src, WORD * dest, size_t * count, int * tran
 	}
 	else
 	{
-		if (dest)
-			wcscpy((wchar_t *)&dest[(*count)], src);
-		(*count) += wcslen(src) + 1;
-		if (wcslen(src))
-			(*def)++;
+		if (wcscmp(pBuf, wstr.c_str()))
+		{
+			if (dest)
+				wcscpy((wchar_t*)&dest[(*count)], pBuf);
+			(*count) += wcslen(pBuf) + 1;
+			(*translated)++;
+		}
+		else
+		{
+			if (dest)
+				wcscpy((wchar_t*)&dest[(*count)], src);
+			(*count) += wcslen(src) + 1;
+			if (wcslen(src))
+				(*def)++;
+		}
 	}
 	delete [] pBuf;
 }

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2007, 2011, 2015 - TortoiseSVN
+// Copyright (C) 2003-2007, 2011, 2015-2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,6 +20,7 @@
 #include <map>
 #include <set>
 #include <vector>
+#include <tuple>
 
 typedef struct tagResourceEntry
 {
@@ -49,6 +50,8 @@ public:
 	BOOL ParseFile(LPCTSTR szPath, BOOL bUpdateExisting, bool bAdjustEOLs);
 	BOOL SaveFile(LPCTSTR szPath, LPCTSTR lpszHeaderFile);
 	void SetQuiet(BOOL bQuiet = TRUE) {m_bQuiet = bQuiet;}
+
+	std::vector<std::tuple<std::wstring, std::wstring>> m_regexes;
 
 private:
 	void AdjustEOLs(std::wstring& str);

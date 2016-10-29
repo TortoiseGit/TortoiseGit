@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2007, 2011-2012, 2014-2015 - TortoiseSVN
+// Copyright (C) 2003-2007, 2011-2012, 2014-2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -105,6 +105,9 @@ private:
 	BOOL    ExtractAccelerator(LPCTSTR lpszType);
 	BOOL    ReplaceAccelerator(LPCTSTR lpszType, WORD wLanguage);
 	BOOL    ReplaceRibbon(LPCTSTR lpszType, WORD wLanguage);
+
+	std::wstring ReplaceWithRegex(WCHAR* pBuf);
+	std::wstring ReplaceWithRegex(std::wstring& s);
 
 	const WORD* ParseMenuResource(const WORD * res);
 	const WORD* CountMemReplaceMenuResource(const WORD * res, size_t * wordcount, WORD * newMenu);
