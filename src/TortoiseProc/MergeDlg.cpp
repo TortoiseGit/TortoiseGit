@@ -125,7 +125,7 @@ BOOL CMergeDlg::OnInitDialog()
 	m_ProjectProperties.ReadProps();
 
 	m_cLogMessage.Init(m_ProjectProperties);
-	m_cLogMessage.SetFont((CString)CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New")), (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogFontSize"), 8));
+	m_cLogMessage.SetFont(CAppUtils::GetLogFontName(), CAppUtils::GetLogFontSize());
 	m_cLogMessage.RegisterContextMenuHandler(this);
 
 	m_cLogMessage.SetText(m_pDefaultText);
@@ -294,6 +294,6 @@ void CMergeDlg::OnSysColorChange()
 {
 	__super::OnSysColorChange();
 	m_cLogMessage.SetColors(true);
-	m_cLogMessage.SetFont((CString)CRegString(L"Software\\TortoiseGit\\LogFontName", L"Courier New"), (DWORD)CRegDWORD(L"Software\\TortoiseGit\\LogFontSize", 8));
+	m_cLogMessage.SetFont(CAppUtils::GetLogFontName(), CAppUtils::GetLogFontSize());
 	m_cLogMessage.SetAStyle(STYLE_DEFAULT, ::GetSysColor(m_bSquash ? COLOR_GRAYTEXT : COLOR_WINDOWTEXT), ::GetSysColor(m_bSquash ? COLOR_BTNFACE : COLOR_WINDOW));
 }

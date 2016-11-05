@@ -643,11 +643,21 @@ BOOL CAppUtils::CheckForEmptyDiff(const CTGitPath& sDiffPath)
 	return FALSE;
 }
 
+CString CAppUtils::GetLogFontName()
+{
+	return (CString)CRegString(L"Software\\TortoiseGit\\LogFontName", L"Courier New");
+}
+
+DWORD CAppUtils::GetLogFontSize()
+{
+	return (DWORD)CRegDWORD(L"Software\\TortoiseGit\\LogFontSize", 8);
+}
+
 void CAppUtils::CreateFontForLogs(CFont& fontToCreate)
 {
 	LOGFONT logFont;
 	HDC hScreenDC = ::GetDC(nullptr);
-	logFont.lfHeight			= -MulDiv((DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogFontSize"), 8), GetDeviceCaps(hScreenDC, LOGPIXELSY), 72);
+	logFont.lfHeight = -MulDiv(GetLogFontSize(), GetDeviceCaps(hScreenDC, LOGPIXELSY), 72);
 	::ReleaseDC(nullptr, hScreenDC);
 	logFont.lfWidth				= 0;
 	logFont.lfEscapement		= 0;
@@ -661,7 +671,7 @@ void CAppUtils::CreateFontForLogs(CFont& fontToCreate)
 	logFont.lfClipPrecision		= CLIP_DEFAULT_PRECIS;
 	logFont.lfQuality			= DRAFT_QUALITY;
 	logFont.lfPitchAndFamily	= FF_DONTCARE | FIXED_PITCH;
-	_tcscpy_s(logFont.lfFaceName, 32, (LPCTSTR)(CString)CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New")));
+	_tcscpy_s(logFont.lfFaceName, 32, (LPCTSTR)GetLogFontName());
 	VERIFY(fontToCreate.CreateFontIndirect(&logFont));
 }
 

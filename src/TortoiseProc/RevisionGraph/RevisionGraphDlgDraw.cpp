@@ -747,8 +747,7 @@ void CRevisionGraphWnd::DrawMarker
 				base.AppendFormat(IDS_PROC_DIFF_BASE);
 				base += L')';
 				SolidBrush blackbrush(penColor);
-				CString fontname = CRegString(L"Software\\TortoiseGit\\LogFontName", L"Courier New");
-				Gdiplus::Font font(fontname, (REAL)m_nFontSize, FontStyleRegular);
+				Gdiplus::Font font(CAppUtils::GetLogFontName(), (REAL)m_nFontSize, FontStyleRegular);
 				graphics.graphics->DrawString(base, base.GetLength(), &font, Gdiplus::PointF(noderect.X + x + width, noderect.Y - y1), &blackbrush);
 			}
 		}
@@ -991,7 +990,7 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 	if (graphics.pDC)
 		graphics.pDC->SetTextAlign (TA_CENTER | TA_TOP);
 
-	CString fontname = CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New"));
+	CString fontname = CAppUtils::GetLogFontName();
 
 	Gdiplus::Font font(fontname, (REAL)m_nFontSize, FontStyleRegular);
 	SolidBrush blackbrush((ARGB)Color::Black);
@@ -1284,7 +1283,7 @@ void CRevisionGraphWnd::DrawGraph(GraphicsDevice& graphics, const CRect& rect, i
 void CRevisionGraphWnd::SetNodeRect(GraphicsDevice& graphics, ogdf::node *pnode, CGitHash rev, int mode )
 {
 	//multi - line mode. One RefName is one new line
-	CString fontname = CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New"));
+	CString fontname = CAppUtils::GetLogFontName();
 	if(mode == 0)
 	{
 		if(this->m_HashMap.find(rev) == m_HashMap.end())

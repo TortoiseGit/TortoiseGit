@@ -20,6 +20,7 @@
 #include "TortoiseProc.h"
 #include "InputDlg.h"
 #include "registry.h"
+#include "AppUtils.h"
 
 
 IMPLEMENT_DYNAMIC(CInputDlg, CResizableStandAloneDialog)
@@ -56,7 +57,7 @@ BOOL CInputDlg::OnInitDialog()
 	else
 		m_cInput.Init();
 
-	m_cInput.SetFont((CString)CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New")), (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogFontSize"), 8));
+	m_cInput.SetFont(CAppUtils::GetLogFontName(), CAppUtils::GetLogFontSize());
 
 	if (m_pProjectProperties)
 	{

@@ -208,7 +208,7 @@ BOOL CRebaseDlg::OnInitDialog()
 	}
 	m_ProjectProperties.ReadProps();
 	m_LogMessageCtrl.Init(m_ProjectProperties);
-	m_LogMessageCtrl.SetFont((CString)CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New")), (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogFontSize"), 8));
+	m_LogMessageCtrl.SetFont(CAppUtils::GetLogFontName(), CAppUtils::GetLogFontSize());
 	m_LogMessageCtrl.Call(SCI_SETREADONLY, TRUE);
 
 	dwStyle = LBS_NOINTEGRALHEIGHT | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL;
@@ -219,7 +219,7 @@ BOOL CRebaseDlg::OnInitDialog()
 		return -1;      // fail to create
 	}
 	m_wndOutputRebase.Init(-1);
-	m_wndOutputRebase.SetFont((CString)CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New")), (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogFontSize"), 8));
+	m_wndOutputRebase.SetFont(CAppUtils::GetLogFontName(), CAppUtils::GetLogFontSize());
 	m_wndOutputRebase.Call(SCI_SETREADONLY, TRUE);
 
 	m_tooltips.AddTool(IDC_REBASE_CHECK_FORCE,IDS_REBASE_FORCE_TT);
@@ -2729,7 +2729,7 @@ void CRebaseDlg::OnSysColorChange()
 {
 	__super::OnSysColorChange();
 	m_LogMessageCtrl.SetColors(true);
-	m_LogMessageCtrl.SetFont((CString)CRegString(L"Software\\TortoiseGit\\LogFontName", L"Courier New"), (DWORD)CRegDWORD(L"Software\\TortoiseGit\\LogFontSize", 8));
+	m_LogMessageCtrl.SetFont(CAppUtils::GetLogFontName(), CAppUtils::GetLogFontSize());
 	m_wndOutputRebase.SetColors(true);
-	m_wndOutputRebase.SetFont((CString)CRegString(L"Software\\TortoiseGit\\LogFontName", L"Courier New"), (DWORD)CRegDWORD(L"Software\\TortoiseGit\\LogFontSize", 8));
+	m_wndOutputRebase.SetFont(CAppUtils::GetLogFontName(), CAppUtils::GetLogFontSize());
 }

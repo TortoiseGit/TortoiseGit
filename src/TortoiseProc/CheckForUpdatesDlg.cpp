@@ -123,7 +123,7 @@ BOOL CCheckForUpdatesDlg::OnInitDialog()
 	m_ctrlFiles.SetColumnWidth(1, 200);
 
 	m_cLogMessage.Init(-1);
-	m_cLogMessage.SetFont((CString)CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New")), (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogFontSize"), 8));
+	m_cLogMessage.SetFont(CAppUtils::GetLogFontName(), CAppUtils::GetLogFontSize());
 	m_cLogMessage.Call(SCI_SETREADONLY, TRUE);
 
 	m_updateDownloader = new CUpdateDownloader(GetSafeHwnd(), m_bForce == TRUE, WM_USER_DISPLAYSTATUS, &m_eventStop);
@@ -867,5 +867,5 @@ void CCheckForUpdatesDlg::OnSysColorChange()
 {
 	__super::OnSysColorChange();
 	m_cLogMessage.SetColors(true);
-	m_cLogMessage.SetFont((CString)CRegString(L"Software\\TortoiseGit\\LogFontName", L"Courier New"), (DWORD)CRegDWORD(L"Software\\TortoiseGit\\LogFontSize", 8));
+	m_cLogMessage.SetFont(CAppUtils::GetLogFontName(), CAppUtils::GetLogFontSize());
 }
