@@ -915,19 +915,6 @@ BEGIN
     PUSHBUTTON      "Help",IDHELP,243,162,50,14
 END
 
-IDD_INPUTLOGDLG DIALOGEX 0, 0, 306, 182
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
-CAPTION "Enter Log Message"
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
-BEGIN
-    EDITTEXT        IDC_ACTIONLABEL,7,7,292,24,ES_MULTILINE | ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER,WS_EX_TRANSPARENT
-    PUSHBUTTON      "&Recent messages",IDC_HISTORY,15,47,143,14
-    CONTROL         "Scintilla",IDC_INPUTTEXT,"Scintilla",WS_TABSTOP,15,68,276,78,WS_EX_STATICEDGE
-    PUSHBUTTON      "OK",IDOK,190,161,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,249,161,50,14
-    GROUPBOX        "Message",IDC_GROUPBOX,7,35,292,120
-END
-
 IDD_SETTINGSTBLAME DIALOGEX 0, 0, 300, 251
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "TortoiseGitBlame"
@@ -2542,18 +2529,6 @@ BEGIN
         BOTTOMMARGIN, 176
     END
 
-    IDD_INPUTLOGDLG, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 299
-        VERTGUIDE, 15
-        VERTGUIDE, 66
-        VERTGUIDE, 73
-        VERTGUIDE, 291
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 175
-    END
-
     IDD_SETTINGSTBLAME, DIALOG
     BEGIN
         LEFTMARGIN, 7
@@ -3643,6 +3618,7 @@ BEGIN
     IDS_REBASELOCKFILEFOUND "Found a lock file indicating that a TortoiseGit rebase process is running. This blocks this operation.\n\nIf you are not runnig a TortoiseGit rebase process right now, you can remove the stale lock file in order to continue."
     IDS_ERR_MUSTBESAMEWT    "Target and source must be in the same working tree!"
     IDS_MERGE_UNRELATED     "&Merge unrelated history"
+    IDS_HOOKTYPE_PREREBASE  "Pre-rebase hook"
     IDS_BROWSE_REFS_ONLYMERGED "Only merged (to HEAD)"
     IDS_BROWSE_REFS_ONLYUNMERGED "Only unmerged (to HEAD)"
 END
@@ -4778,7 +4754,6 @@ BEGIN
                             "For the current branch ""%s"" no tracked branch is configured.\nDo you want to set the selected branch ""%s"" as tracked branch?\nThis will automatically select it for push and pull in the future."
     IDS_PROC_DIFF_BASE      "Base"
     IDS_REMOVESTALEBUTTON   "Remove stale lock file"
-    IDS_HOOKTYPE_PREREBASE    "Pre-rebase hook"
 END
 
 #endif    // English (U.S.) resources

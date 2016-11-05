@@ -70,7 +70,6 @@
 #define IDD_SETTINGSHOOKCONFIG          236
 #define IDI_HOOK                        237
 #define IDD_EXPORT                      238
-#define IDD_INPUTLOGDLG                 241
 #define IDD_CREATECHANGELIST            243
 #define IDI_REPOBROWSER_BKG             244
 #define IDD_SETTINGSTBLAME              244
@@ -582,7 +581,6 @@
 #define IDS_SETTINGS_EXTDIFF_TT         1245
 #define IDC_HISTORYLIST                 1245
 #define IDS_SETTINGS_EXTDIFFBROWSE_TT   1246
-#define IDC_HISTORY                     1246
 #define IDS_SETTINGS_CHANGEDDIRS_TT     1247
 #define IDS_PROC_BROWSEREFS_FETCHFROM   1247
 #define IDS_MSYSGIT_PATH_TT             1248
@@ -757,11 +755,9 @@
 #define IDC_REV1BTN2                    1354
 #define IDS_B_T_DIFFERENTNAMEORFORCE    1355
 #define IDC_RESETFILTER                 1355
-#define IDC_ACTIONLABEL                 1356
 #define IDS_B_DIFFERENTNAMEOROVERRIDE   1356
 #define IDS_T_SAMEBRANCHNAMEEXISTS      1357
 #define IDS_B_SAMETAGNAMEEXISTS         1358
-#define IDC_GROUPBOX                    1359
 #define IDS_SETTINGS_ABBREVIATERENAMINGS_TT 1359
 #define IDS_PROC_PUSHFETCH_ALLREMOTES   1360
 #define IDS_PROC_SYNC_NOFASTFORWARD     1361
