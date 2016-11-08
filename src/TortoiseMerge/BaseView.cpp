@@ -121,7 +121,7 @@ CBaseView::CBaseView()
 	m_InlineAddedBk = CRegDWORD(_T("Software\\TortoiseGitMerge\\InlineAdded"), INLINEADDED_COLOR);
 	m_InlineRemovedBk = CRegDWORD(_T("Software\\TortoiseGitMerge\\InlineRemoved"), INLINEREMOVED_COLOR);
 	m_ModifiedBk = CRegDWORD(_T("Software\\TortoiseGitMerge\\Colors\\ColorModifiedB"), MODIFIED_COLOR);
-	m_WhiteSpaceFg = CRegDWORD(_T("Software\\TortoiseGitMerge\\Colors\\Whitespace"), GetSysColor(COLOR_GRAYTEXT));
+	m_WhiteSpaceFg = CRegDWORD(_T("Software\\TortoiseGitMerge\\Colors\\Whitespace"), GetSysColor(COLOR_3DSHADOW));
 	m_sWordSeparators = CRegString(_T("Software\\TortoiseGitMerge\\WordSeparators"), _T("[]();:.,{}!@#$%^&*-+=|/\\<>'`~\"?"));
 	m_bIconLFs = CRegDWORD(_T("Software\\TortoiseGitMerge\\IconLFs"), 0);
 	m_nTabSize = (int)(DWORD)CRegDWORD(_T("Software\\TortoiseGitMerge\\TabSize"), 4);
@@ -254,7 +254,7 @@ void CBaseView::DocumentUpdated()
 	m_InlineAddedBk = CRegDWORD(_T("Software\\TortoiseGitMerge\\InlineAdded"), INLINEADDED_COLOR);
 	m_InlineRemovedBk = CRegDWORD(_T("Software\\TortoiseGitMerge\\InlineRemoved"), INLINEREMOVED_COLOR);
 	m_ModifiedBk = CRegDWORD(_T("Software\\TortoiseGitMerge\\Colors\\ColorModifiedB"), MODIFIED_COLOR);
-	m_WhiteSpaceFg = CRegDWORD(_T("Software\\TortoiseGitMerge\\Colors\\Whitespace"), GetSysColor(COLOR_GRAYTEXT));
+	m_WhiteSpaceFg = CRegDWORD(_T("Software\\TortoiseGitMerge\\Colors\\Whitespace"), GetSysColor(COLOR_3DSHADOW));
 	m_bIconLFs = CRegDWORD(_T("Software\\TortoiseGitMerge\\IconLFs"), 0);
 	m_nInlineDiffMaxLineLength = CRegDWORD(_T("Software\\TortoiseGitMerge\\InlineDiffMaxLineLength"), 3000);
 	m_Eols[EOL_AUTOLINE] = m_Eols[m_lineendings==EOL_AUTOLINE
