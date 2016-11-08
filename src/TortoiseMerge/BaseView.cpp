@@ -2040,7 +2040,6 @@ void CBaseView::DrawSingleLine(CDC *pDC, const CRect &rc, int nLineIndex)
 		xpos -= m_nOffsetChar * GetCharWidth();
 
 		CPen pen(PS_SOLID, 0, m_WhiteSpaceFg);
-		CPen pen2(PS_SOLID, 2, m_WhiteSpaceFg);
 		while (*pszChars)
 		{
 			switch (*pszChars)
@@ -2073,13 +2072,11 @@ void CBaseView::DrawSingleLine(CDC *pDC, const CRect &rc, int nLineIndex)
 				{
 					xpos += pDC->GetTextExtent(pLastSpace, (int)(pszChars - pLastSpace)).cx;
 					pLastSpace = pszChars + 1;
-					// draw a small dot
 					if (xpos >= 0)
 					{
-						CPen * oldPen = pDC->SelectObject(&pen2);
-						pDC->MoveTo(xpos + rc.left + GetCharWidth()/2-1, y);
-						pDC->LineTo(xpos + rc.left + GetCharWidth()/2+1, y);
-						pDC->SelectObject(oldPen);
+						const int whitespaceSize = 2;
+						// draw 2-pixel rectangle, like Scintilla editor.
+						pDC->FillSolidRect(xpos + rc.left + GetCharWidth() / 2 - whitespaceSize / 2, y, whitespaceSize, whitespaceSize, m_WhiteSpaceFg);
 					}
 					xpos += GetCharWidth();
 					nChars++;
