@@ -598,7 +598,7 @@ void CTortoiseGitBlameView::InitialiseEditor()
 {
 	SendEditor(SCI_STYLERESETDEFAULT);
 	// Set up the global default style. These attributes are used wherever no explicit choices are made.
-	std::string fontName = CUnicodeUtils::StdGetUTF8((tstring)CRegStdString(_T("Software\\TortoiseGit\\BlameFontName"), _T("Courier New")));
+	std::string fontName = CUnicodeUtils::StdGetUTF8((tstring)CRegStdString(L"Software\\TortoiseGit\\BlameFontName", L"Consolas"));
 	SetAStyle(STYLE_DEFAULT,
 			::GetSysColor(COLOR_WINDOWTEXT),
 			::GetSysColor(COLOR_WINDOW),
@@ -826,7 +826,7 @@ void CTortoiseGitBlameView::CreateFont()
 	HDC hDC = ::GetDC(wBlame);
 	lf.lfHeight = -MulDiv((DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\BlameFontSize"), 10), GetDeviceCaps(hDC, LOGPIXELSY), 72);
 	lf.lfCharSet = DEFAULT_CHARSET;
-	CRegStdString fontname = CRegStdString(_T("Software\\TortoiseGit\\BlameFontName"), _T("Courier New"));
+	CRegStdString fontname = CRegStdString(L"Software\\TortoiseGit\\BlameFontName", L"Consolas");
 	_tcscpy_s(lf.lfFaceName, 32, ((tstring)fontname).c_str());
 	m_font.CreateFontIndirect(&lf);
 

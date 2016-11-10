@@ -57,7 +57,7 @@ CSetMainPage::CSetMainPage()
 	m_regIgnoreEOL = CRegDWORD(_T("Software\\TortoiseGitMerge\\IgnoreEOL"), TRUE);
 	m_regOnePane = CRegDWORD(_T("Software\\TortoiseGitMerge\\OnePane"));
 	m_regViewLinenumbers = CRegDWORD(_T("Software\\TortoiseGitMerge\\ViewLinenumbers"), 1);
-	m_regFontName = CRegString(_T("Software\\TortoiseGitMerge\\LogFontName"), _T("Courier New"));
+	m_regFontName = CRegString(L"Software\\TortoiseGitMerge\\LogFontName", L"Consolas");
 	m_regFontSize = CRegDWORD(_T("Software\\TortoiseGitMerge\\LogFontSize"), 10);
 	m_regCaseInsensitive = CRegDWORD(_T("Software\\TortoiseGitMerge\\CaseInsensitive"), FALSE);
 	m_regUTF8Default = CRegDWORD(_T("Software\\TortoiseGitMerge\\UseUTF8"), FALSE);

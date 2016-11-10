@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014-2015 - TortoiseGit
+// Copyright (C) 2014-2016 - TortoiseGit
 // Copyright (C) 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -44,7 +44,7 @@ CSettingsUDiff::CSettingsUDiff()
 	m_regBackAddedColor = CRegDWORD(L"Software\\TortoiseGit\\UDiffBackAddedColor", UDIFF_COLORBACKADDED);
 	m_regBackRemovedColor = CRegDWORD(L"Software\\TortoiseGit\\UDiffBackRemovedColor", UDIFF_COLORBACKREMOVED);
 
-	m_regFontName = CRegString(L"Software\\TortoiseGit\\UDiffFontName", L"Courier New");
+	m_regFontName = CRegString(L"Software\\TortoiseGit\\UDiffFontName", L"Consolas");
 	m_regFontSize = CRegDWORD(L"Software\\TortoiseGit\\UDiffFontSize", 10);
 	m_regTabSize = CRegDWORD(L"Software\\TortoiseGit\\UDiffTabSize", 4);
 }

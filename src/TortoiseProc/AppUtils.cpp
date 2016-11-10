@@ -645,12 +645,12 @@ BOOL CAppUtils::CheckForEmptyDiff(const CTGitPath& sDiffPath)
 
 CString CAppUtils::GetLogFontName()
 {
-	return (CString)CRegString(L"Software\\TortoiseGit\\LogFontName", L"Courier New");
+	return (CString)CRegString(L"Software\\TortoiseGit\\LogFontName", L"Consolas");
 }
 
 DWORD CAppUtils::GetLogFontSize()
 {
-	return (DWORD)CRegDWORD(L"Software\\TortoiseGit\\LogFontSize", 8);
+	return (DWORD)CRegDWORD(L"Software\\TortoiseGit\\LogFontSize", 9);
 }
 
 void CAppUtils::CreateFontForLogs(CFont& fontToCreate)

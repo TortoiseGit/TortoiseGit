@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2007-2008 - TortoiseSVN
-// Copyright (C) 2011-2015 - TortoiseGit
+// Copyright (C) 2011-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -42,7 +42,7 @@ CSettingsTBlame::CSettingsTBlame()
 {
 	m_regNewLinesColor = CRegDWORD(_T("Software\\TortoiseGit\\BlameNewColor"), BLAMENEWCOLOR);
 	m_regOldLinesColor = CRegDWORD(_T("Software\\TortoiseGit\\BlameOldColor"), BLAMEOLDCOLOR);
-	m_regFontName = CRegString(_T("Software\\TortoiseGit\\BlameFontName"), _T("Courier New"));
+	m_regFontName = CRegString(L"Software\\TortoiseGit\\BlameFontName", L"Consolas");
 	m_regFontSize = CRegDWORD(_T("Software\\TortoiseGit\\BlameFontSize"), 10);
 	m_regTabSize = CRegDWORD(_T("Software\\TortoiseGit\\BlameTabSize"), 4);
 	m_regDetectMovedOrCopiedLines = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseGitBlame\\Workspace\\DetectMovedOrCopiedLines"), BLAME_DETECT_MOVED_OR_COPIED_LINES_DISABLED);

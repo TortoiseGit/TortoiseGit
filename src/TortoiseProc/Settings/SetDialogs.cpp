@@ -52,8 +52,8 @@ CSetDialogs::CSetDialogs()
 	m_regRelativeTimes = CRegDWORD(_T("Software\\TortoiseGit\\RelativeTimes"), FALSE);
 	m_regAsteriskLogPrefix = CRegDWORD(_T("Software\\TortoiseGit\\AsteriskLogPrefix"), TRUE);
 	m_regUseSystemLocaleForDates = CRegDWORD(_T("Software\\TortoiseGit\\UseSystemLocaleForDates"), TRUE);
-	m_regFontName = CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New"));
-	m_regFontSize = CRegDWORD(_T("Software\\TortoiseGit\\LogFontSize"), 8);
+	m_regFontName = CRegString(L"Software\\TortoiseGit\\LogFontName", L"Consolas");
+	m_regFontSize = CRegDWORD(L"Software\\TortoiseGit\\LogFontSize", 9);
 	m_regDiffByDoubleClick = CRegDWORD(_T("Software\\TortoiseGit\\DiffByDoubleClickInLog"), FALSE);
 	m_regAbbreviateRenamings = CRegDWORD(_T("Software\\TortoiseGit\\AbbreviateRenamings"), FALSE);
 	m_regSymbolizeRefNames = CRegDWORD(_T("Software\\TortoiseGit\\SymbolizeRefNames"), FALSE);
