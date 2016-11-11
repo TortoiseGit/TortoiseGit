@@ -2147,9 +2147,7 @@ bool CAppUtils::IsSSHPutty()
 {
 	CString sshclient=g_Git.m_Environment.GetEnv(_T("GIT_SSH"));
 	sshclient=sshclient.MakeLower();
-	if(sshclient.Find(_T("plink.exe"),0)>=0)
-		return true;
-	return false;
+	return sshclient.Find(L"plink", 0) >= 0;
 }
 
 CString CAppUtils::GetClipboardLink(const CString &skipGitPrefix, int paramsCount)
