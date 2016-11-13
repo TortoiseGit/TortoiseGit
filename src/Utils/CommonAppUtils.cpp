@@ -259,6 +259,10 @@ bool CCommonAppUtils::FileOpenSave(CString& path, int* filterindex, UINT title, 
 		CSelectFileFilter fileFilter(filterId);
 		if (!SUCCEEDED(pfd->SetFileTypes(fileFilter.GetCount(), fileFilter)))
 			return false;
+		if (filterId == 2501) // IDS_PROGRAMSFILEFILTER
+			pfd->SetClientGuid({ 0x323ca4b0, 0x62df, 0x4a08, { 0xa5, 0x5, 0x58, 0xde, 0xa2, 0xb9, 0x2d, 0xcd } });
+		else if (filterId == 1120) // IDS_PUTTYKEYFILEFILTER
+			pfd->SetClientGuid({ 0x271dbd3b, 0x50da, 0x4148, { 0x95, 0xfd, 0x64, 0x73, 0x69, 0xd1, 0x74, 0x2 } });
 	}
 
 	if (defaultExt && !SUCCEEDED(pfd->SetDefaultExtension(defaultExt)))
