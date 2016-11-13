@@ -497,7 +497,7 @@ BOOL CTortoiseMergeApp::InitInstance()
 			CString outfile = parser.GetVal(_T("outfile"));
 			if (outfile.IsEmpty())
 			{
-				CCommonAppUtils::FileOpenSave(outfile, NULL, IDS_SAVEASTITLE, IDS_COMMONFILEFILTER, false, NULL);
+				CCommonAppUtils::FileOpenSave(outfile, NULL, IDS_SAVEASTITLE, IDS_COMMONFILEFILTER, false);
 			}
 			if (!outfile.IsEmpty())
 			{

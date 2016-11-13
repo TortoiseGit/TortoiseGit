@@ -6860,7 +6860,7 @@ msgstr ""
 msgid "Open files for diff or to apply a patch\nOpen files"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_PATCH_FILE_OPEN_CUSTOM: Control id 1132, IDS_PATCH_COPYFROMCLIPBOARD)
+#. Resource IDs: (IDS_PATCH_COPYFROMCLIPBOARD)
 msgid "Open from clipboard"
 msgstr ""
 
