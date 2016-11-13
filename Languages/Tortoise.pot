@@ -8293,10 +8293,6 @@ msgstr ""
 msgid "Save the modified file\nSave file"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_PATCH_FILE_OPEN_CUSTOM: Control id 1132)
-msgid "Save to clipboard"
-msgstr ""
-
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 65535, Dialog IDD_SETTINGSBUGTRAQ_CONFIG: Control id 65535, Dialog IDD_SETTINGSDIALOGS3: Control id 65535)
 msgid "Save to:"
 msgstr ""
