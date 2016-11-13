@@ -2240,6 +2240,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							SetRedraw(TRUE);
 							break;
 						}
+						StoreScrollPos();
 						Show(m_dwShow, 0, m_bShowFolders,0,true);
 					}
 				}
