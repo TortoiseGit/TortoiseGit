@@ -671,7 +671,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 					CString temp;
 					CTGitPath savePath;
 					CString pathSave;
-					if (!CAppUtils::FileOpenSave(pathSave, nullptr, IDS_REPOBROWSE_SAVEAS, IDS_TEXTFILEFILTER, false, m_hWnd, L"txt"))
+					if (!CAppUtils::FileOpenSave(pathSave, nullptr, IDS_FILEDIFF_POPSAVELIST, IDS_TEXTFILEFILTER, false, m_hWnd, L"txt"))
 						break;
 					savePath = CTGitPath(pathSave);
 
