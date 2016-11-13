@@ -1421,14 +1421,14 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuDropCopyRename:
 				AddPathFileDropCommand(gitCmd, L"dropcopy");
-				gitCmd += _T("\" /rename";)
+				gitCmd += L" /rename";
 				break;
 			case ShellMenuDropMove:
 				AddPathFileDropCommand(gitCmd, L"dropmove");
 				break;
 			case ShellMenuDropMoveRename:
 				AddPathFileDropCommand(gitCmd, L"dropmove");
-				gitCmd += _T("\" /rename";)
+				gitCmd += L" /rename";
 				break;
 			case ShellMenuDropExport:
 				AddPathFileDropCommand(gitCmd, L"dropexport");
@@ -1499,23 +1499,23 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuBisectStart:
 				AddPathCommand(gitCmd, L"bisect", false);
-				gitCmd += _T("\" /start");
+				gitCmd += _T(" /start");
 				break;
 			case ShellMenuBisectGood:
 				AddPathCommand(gitCmd, L"bisect", false);
-				gitCmd += _T("\" /good");
+				gitCmd += _T(" /good");
 				break;
 			case ShellMenuBisectBad:
 				AddPathCommand(gitCmd, L"bisect", false);
-				gitCmd += _T("\" /bad");
+				gitCmd += _T(" /bad");
 				break;
 			case ShellMenuBisectSkip:
 				AddPathCommand(gitCmd, L"bisect", false);
-				gitCmd += L"\" /skip";
+				gitCmd += L" /skip";
 				break;
 			case ShellMenuBisectReset:
 				AddPathCommand(gitCmd, L"bisect", false);
-				gitCmd += _T("\" /reset");
+				gitCmd += _T(" /reset");
 				break;
 			case ShellMenuSubAdd:
 				AddPathCommand(gitCmd, L"subadd", false);
