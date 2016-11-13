@@ -198,6 +198,9 @@ void CSubmoduleAddDlg::OnBnClickedPuttykeyfileBrowse()
 {
 	UpdateData();
 	CString filename;
+	m_PuttyKeyCombo.GetWindowText(filename);
+	if (!PathFileExists(filename))
+		filename.Empty();
 	if (!CAppUtils::FileOpenSave(filename, nullptr, 0, IDS_PUTTYKEYFILEFILTER, true, GetSafeHwnd()))
 		return;
 	m_PuttyKeyCombo.SetWindowText(filename);

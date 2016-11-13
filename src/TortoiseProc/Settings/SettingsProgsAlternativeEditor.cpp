@@ -80,8 +80,13 @@ void CSettingsProgsAlternativeEditor::OnEnChangeAlternativeEditor()
 
 void CSettingsProgsAlternativeEditor::OnBnClickedAlternativeEditorBrowse()
 {
-	if (CAppUtils::FileOpenSave(m_sAlternativeEditorPath, nullptr, IDS_SETTINGS_SELECTDIFFVIEWER, IDS_PROGRAMSFILEFILTER, true, m_hWnd))
+	UpdateData();
+	CString filename = m_sAlternativeEditorPath;
+	if (!PathFileExists(filename))
+		filename.Empty();
+	if (CAppUtils::FileOpenSave(filename, nullptr, IDS_SETTINGS_SELECTDIFFVIEWER, IDS_PROGRAMSFILEFILTER, true, m_hWnd))
 	{
+		filename = m_sAlternativeEditorPath;
 		UpdateData(FALSE);
 		SetModified();
 	}

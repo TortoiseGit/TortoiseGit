@@ -291,12 +291,12 @@ void CCloneDlg::OnBnClickedCloneBrowseUrl()
 
 void CCloneDlg::OnBnClickedCloneDirBrowse()
 {
+	UpdateData(TRUE);
 	CBrowseFolder browseFolder;
 	browseFolder.m_style = BIF_EDITBOX | BIF_NEWDIALOGSTYLE | BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
 	CString strCloneDirectory = this->m_Directory;
 	if (browseFolder.Show(GetSafeHwnd(), strCloneDirectory) == CBrowseFolder::OK)
 	{
-		UpdateData(TRUE);
 		m_Directory = strCloneDirectory;
 		UpdateData(FALSE);
 	}
@@ -306,6 +306,9 @@ void CCloneDlg::OnBnClickedPuttykeyfileBrowse()
 {
 	UpdateData();
 	CString filename;
+	m_PuttyKeyCombo.GetWindowText(filename);
+	if (!PathFileExists(filename))
+		filename.Empty();
 	if (!CAppUtils::FileOpenSave(filename, nullptr, 0, IDS_PUTTYKEYFILEFILTER, true, GetSafeHwnd()))
 		return;
 

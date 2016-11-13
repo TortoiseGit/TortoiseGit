@@ -135,11 +135,13 @@ void CSettingGitRemote::OnTimer(UINT_PTR nIDEvent)
 
 void CSettingGitRemote::OnBnClickedButtonBrowse()
 {
-	CString filename;
+	UpdateData();
+	CString filename = m_strPuttyKeyfile;
+	if (!PathFileExists(filename))
+		filename.Empty();
 	if (!CAppUtils::FileOpenSave(filename, nullptr, 0, IDS_PUTTYKEYFILEFILTER, true, GetSafeHwnd()))
 		return;
 
-	UpdateData();
 	m_strPuttyKeyfile = filename;
 	UpdateData(FALSE);
 	OnEnChangeEditPuttyKey();
