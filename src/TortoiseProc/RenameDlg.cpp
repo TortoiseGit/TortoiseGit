@@ -146,7 +146,7 @@ void CRenameDlg::OnBnClickedButtonBrowseRef()
 		path = origname.GetWinPathString();
 	}
 
-	if (CAppUtils::FileOpenSave(path, nullptr, AFX_IDD_FILESAVE, 0, false, GetSafeHwnd(), ext))
+	if (CAppUtils::FileOpenSave(path, nullptr, AFX_IDD_FILESAVE, 0, false, GetSafeHwnd(), ext.Mid(1)))
 	{
 		GetDlgItem(IDC_NAME)->SetFocus();
 		CTGitPath target(path);

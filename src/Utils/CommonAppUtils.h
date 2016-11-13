@@ -38,7 +38,7 @@ public:
 
 	static bool SetListCtrlBackgroundImage(HWND hListCtrl, UINT nID, int width = 128, int height = 128);
 
-	static bool FileOpenSave(CString& path, int * filterindex, UINT title, UINT filter, bool bOpen, HWND hwndOwner = nullptr, LPCTSTR defaultExt = nullptr);
+	static bool FileOpenSave(CString& path, int* filterindex, UINT title, UINT filterId, bool bOpen, HWND hwndOwner = nullptr, LPCTSTR defaultExt = nullptr);
 
 	/**
 	 * Apply the @a effects or color (depending on @a mask)
