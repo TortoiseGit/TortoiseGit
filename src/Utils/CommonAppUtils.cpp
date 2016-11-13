@@ -241,9 +241,9 @@ bool CCommonAppUtils::FileOpenSave(CString& path, int* filterindex, UINT title, 
 	{
 		if (!SUCCEEDED(pfd->SetOptions(dwOptions | FOS_OVERWRITEPROMPT | FOS_FORCEFILESYSTEM | FOS_PATHMUSTEXIST)))
 			return false;
-		if (!SUCCEEDED(pfd->SetFileName(CPathUtils::GetFileNameFromPath(path))))
-			return false;
 	}
+	if (!PathIsDirectory(path) && !SUCCEEDED(pfd->SetFileName(CPathUtils::GetFileNameFromPath(path))))
+		return false;
 
 	// Set a title
 	if (title)
@@ -263,6 +263,22 @@ bool CCommonAppUtils::FileOpenSave(CString& path, int* filterindex, UINT title, 
 
 	if (defaultExt && !SUCCEEDED(pfd->SetDefaultExtension(defaultExt)))
 			return false;
+
+	// set the default folder
+	CComPtr<IShellItem> psiFolder;
+	if (CStringUtils::StartsWith(path, L"\\") || path.Mid(1, 2) == L":\\")
+	{
+		CString dir = path;
+		if (!PathIsDirectory(dir))
+		{
+			if (PathRemoveFileSpec(dir.GetBuffer()))
+				dir.ReleaseBuffer();
+			else	
+				dir.Empty();
+		}
+		if (!dir.IsEmpty() && SUCCEEDED(SHCreateItemFromParsingName(dir, nullptr, IID_PPV_ARGS(&psiFolder))))
+			pfd->SetFolder(psiFolder);
+	}
 
 	// Show the save/open file dialog
 	if (!SUCCEEDED(pfd->Show(hwndOwner)))
