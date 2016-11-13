@@ -135,17 +135,14 @@ void CSettingGitRemote::OnTimer(UINT_PTR nIDEvent)
 
 void CSettingGitRemote::OnBnClickedButtonBrowse()
 {
-	CFileDialog dlg(TRUE, nullptr, nullptr, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, CString(MAKEINTRESOURCE(IDS_PUTTYKEYFILEFILTER)));
+	CString filename;
+	if (!CAppUtils::FileOpenSave(filename, nullptr, 0, IDS_PUTTYKEYFILEFILTER, true, GetSafeHwnd()))
+		return;
 
-	this->UpdateData();
-	INT_PTR ret = dlg.DoModal();
-	SetCurrentDirectory(g_Git.m_CurrentDir);
-	if (ret == IDOK)
-	{
-		this->m_strPuttyKeyfile = dlg.GetPathName();
-		this->UpdateData(FALSE);
-		OnEnChangeEditPuttyKey();
-	}
+	UpdateData();
+	m_strPuttyKeyfile = filename;
+	UpdateData(FALSE);
+	OnEnChangeEditPuttyKey();
 }
 
 void CSettingGitRemote::OnBnClickedButtonAdd()

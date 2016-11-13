@@ -304,13 +304,12 @@ void CCloneDlg::OnBnClickedCloneDirBrowse()
 
 void CCloneDlg::OnBnClickedPuttykeyfileBrowse()
 {
-	CFileDialog dlg(TRUE, nullptr, nullptr, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, CString(MAKEINTRESOURCE(IDS_PUTTYKEYFILEFILTER)));
+	UpdateData();
+	CString filename;
+	if (!CAppUtils::FileOpenSave(filename, nullptr, 0, IDS_PUTTYKEYFILEFILTER, true, GetSafeHwnd()))
+		return;
 
-	this->UpdateData();
-	if(dlg.DoModal()==IDOK)
-	{
-		this->m_PuttyKeyCombo.SetWindowText( dlg.GetPathName() );
-	}
+	m_PuttyKeyCombo.SetWindowText(filename);
 }
 
 void CCloneDlg::OnBnClickedPuttykeyAutoload()

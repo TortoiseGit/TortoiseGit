@@ -1282,6 +1282,7 @@
 #define IDC_REBASE_CHECK_PRESERVEMERGES 1608
 #define IDS_BROWSE_REFS_ONLYUNMERGED    1608
 #define IDC_HANDLERHINT                 1609
+#define IDS_ARCHIVEFILEFILTER           1609
 #define IDC_COMBOBOXEX_URL              1610
 #define IDC_BUTTON_PULL                 1611
 #define IDC_BUTTON_PUSH                 1612

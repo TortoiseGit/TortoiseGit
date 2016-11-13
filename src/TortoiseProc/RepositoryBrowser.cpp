@@ -1215,24 +1215,15 @@ void CRepositoryBrowser::FileSaveAs(const CString path)
 	}
 
 	CString filename;
-	filename.Format(_T("%s-%s%s"), (LPCTSTR)gitPath.GetBaseFilename(), (LPCTSTR)hash.ToString().Left(g_Git.GetShortHASHLength()), (LPCTSTR)gitPath.GetFileExtension());
-	CFileDialog dlg(FALSE, nullptr, filename, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, nullptr);
+	filename.Format(L"%s\\%s-%s%s", (LPCTSTR)g_Git.CombinePath(gitPath.GetContainingDirectory()), (LPCTSTR)gitPath.GetBaseFilename(), (LPCTSTR)hash.ToString().Left(g_Git.GetShortHASHLength()), (LPCTSTR)gitPath.GetFileExtension());
+	if (!CAppUtils::FileOpenSave(filename, nullptr, 0, 0, false, GetSafeHwnd()))
+		return;
 
-	CString currentpath(g_Git.CombinePath(gitPath.GetContainingDirectory()));
-	dlg.m_ofn.lpstrInitialDir = currentpath;
-
-	CString cmd, out;
-	INT_PTR ret = dlg.DoModal();
-	SetCurrentDirectory(g_Git.m_CurrentDir);
-	if (ret == IDOK)
+	if (g_Git.GetOneFile(m_sRevision, gitPath, filename))
 	{
-		filename = dlg.GetPathName();
-		if (g_Git.GetOneFile(m_sRevision, gitPath, filename))
-		{
-			out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)gitPath.GetGitPathString(), (LPCTSTR)m_sRevision, (LPCTSTR)filename);
-			MessageBox(g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), _T("TortoiseGit"), MB_ICONERROR);
-			return;
-		}
+		CString out;
+		out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)gitPath.GetGitPathString(), (LPCTSTR)m_sRevision, (LPCTSTR)filename);
+		MessageBox(g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), L"TortoiseGit", MB_ICONERROR);
 	}
 }
 

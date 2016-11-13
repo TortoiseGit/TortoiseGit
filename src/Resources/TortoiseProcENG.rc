@@ -3606,6 +3606,7 @@ BEGIN
     IDS_HOOKTYPE_PREREBASE  "Pre-rebase hook"
     IDS_BROWSE_REFS_ONLYMERGED "Only merged (to HEAD)"
     IDS_BROWSE_REFS_ONLYUNMERGED "Only unmerged (to HEAD)"
+    IDS_ARCHIVEFILEFILTER   "ZIP archive (*.zip)|*.zip|All Files (*.*)|*.*||"
 END
 
 STRINGTABLE

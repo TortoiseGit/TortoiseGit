@@ -10733,6 +10733,10 @@ msgstr ""
 msgid "Your version is: %d.%d.%d.%d"
 msgstr ""
 
+#. Resource IDs: (IDS_ARCHIVEFILEFILTER)
+msgid "ZIP archive (*.zip)|*.zip|All Files (*.*)|*.*||"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_EXPORT: Control id 1074)
 msgid "Zip File"
 msgstr ""

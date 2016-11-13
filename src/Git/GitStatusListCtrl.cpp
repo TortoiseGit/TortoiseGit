@@ -4050,34 +4050,25 @@ void CGitStatusListCtrl::FilesExport()
 void CGitStatusListCtrl::FileSaveAs(CTGitPath *path)
 {
 	CString filename;
-	filename.Format(_T("%s-%s%s"), (LPCTSTR)path->GetBaseFilename(), (LPCTSTR)this->m_CurrentVersion.Left(g_Git.GetShortHASHLength()), (LPCTSTR)path->GetFileExtension());
-	CFileDialog dlg(FALSE, nullptr, filename, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, nullptr);
-
-	CString currentpath = g_Git.CombinePath(path->GetContainingDirectory());
-	dlg.m_ofn.lpstrInitialDir = currentpath;
-
-	CString cmd,out;
-	INT_PTR ret = dlg.DoModal();
-	SetCurrentDirectory(g_Git.m_CurrentDir);
-	if (ret == IDOK)
+	filename.Format(L"%s\\%s-%s%s", (LPCTSTR)g_Git.CombinePath(path->GetContainingDirectory()), (LPCTSTR)path->GetBaseFilename(), (LPCTSTR)m_CurrentVersion.Left(g_Git.GetShortHASHLength()), (LPCTSTR)path->GetFileExtension());
+	if (!CAppUtils::FileOpenSave(filename, nullptr, 0, 0, false, GetSafeHwnd()))
+		return;
+	if (m_CurrentVersion == GIT_REV_ZERO)
 	{
-		filename = dlg.GetPathName();
-		if(m_CurrentVersion == GIT_REV_ZERO)
+		if (!CopyFile(g_Git.CombinePath(path), filename, false))
 		{
-			if(!CopyFile(g_Git.CombinePath(path), filename, false))
-			{
-				MessageBox(CFormatMessageWrapper(), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
-				return;
-			}
+			MessageBox(CFormatMessageWrapper(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+			return;
 		}
-		else
+	}
+	else
+	{
+		if (g_Git.GetOneFile(m_CurrentVersion, *path, filename))
 		{
-			if(g_Git.GetOneFile(m_CurrentVersion,*path,filename))
-			{
-				out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)path->GetGitPathString(), (LPCTSTR)m_CurrentVersion, (LPCTSTR)filename);
-				CMessageBox::Show(GetSafeHwnd(), g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), L"TortoiseGit", MB_OK);
-				return;
-			}
+			CString out;
+			out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)path->GetGitPathString(), (LPCTSTR)m_CurrentVersion, (LPCTSTR)filename);
+			CMessageBox::Show(GetSafeHwnd(), g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), L"TortoiseGit", MB_OK);
+			return;
 		}
 	}
 }
