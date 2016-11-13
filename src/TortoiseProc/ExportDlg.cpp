@@ -151,17 +151,14 @@ void CExportDlg::OnBnClickedCheckoutdirectoryBrowse()
 	// dialog controls.
 	//
 	this->UpdateRevsionName();
-	CFileDialog dlg(FALSE, _T("zip"), this->m_VersionName, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T("*.zip"));
+	CString filename = m_VersionName;
+	if (!CAppUtils::FileOpenSave(filename, nullptr, 0, IDS_ARCHIVEFILEFILTER, false, GetSafeHwnd(), L"zip"))
+		return;
 
-	INT_PTR ret = dlg.DoModal();
-	SetCurrentDirectory(g_Git.m_CurrentDir);
-	if (ret == IDOK)
-	{
-		UpdateData(TRUE);
-		m_strFile = dlg.GetPathName();
-		UpdateData(FALSE);
-		OnEnChangeCheckoutdirectory();
-	}
+	UpdateData(TRUE);
+	m_strFile = filename;
+	UpdateData(FALSE);
+	OnEnChangeCheckoutdirectory();
 }
 
 void CExportDlg::OnEnChangeCheckoutdirectory()

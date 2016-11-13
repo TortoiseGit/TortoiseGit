@@ -49,7 +49,6 @@
 #define IDB_LOGOFLIPPED                 168
 #define IDR_IGNORECOMMENTSTXT           169
 #define IDI_LINEMARKED                  170
-#define IDD_PATCH_FILE_OPEN_CUSTOM      180
 #define IDS_SELECTFILE                  200
 #define IDD_ENCODING                    300
 #define IDC_STATIC_ENCODING             301
@@ -141,7 +140,6 @@
 #define IDS_ERR_PATCHPATHS              1111
 #define IDS_ERR_ERROR                   1112
 #define IDS_ERR_INVALIDREGEX            1113
-#define IDC_PATCH_TO_CLIPBOARD          1132
 #define IDS_APPNAME                     1271
 #define IDS_GOTOLINE                    1400
 #define IDS_GOTO_OUTOFRANGE             1401

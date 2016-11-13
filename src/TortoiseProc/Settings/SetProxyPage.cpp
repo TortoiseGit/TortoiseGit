@@ -282,11 +282,13 @@ BOOL CSetProxyPage::OnApply()
 
 void CSetProxyPage::OnBnClickedSshbrowse()
 {
-	CString openPath;
-	if (CAppUtils::FileOpenSave(openPath, nullptr, IDS_SETTINGS_SELECTSSH, IDS_PROGRAMSFILEFILTER, true, m_hWnd))
+	UpdateData();
+	CString filename = m_SSHClient;
+	if (!PathFileExists(filename))
+		filename.Empty();
+	if (CAppUtils::FileOpenSave(filename, nullptr, IDS_SETTINGS_SELECTSSH, IDS_PROGRAMSFILEFILTER, true, m_hWnd))
 	{
-		UpdateData();
-		m_SSHClient = openPath;
+		m_SSHClient = filename;
 		UpdateData(FALSE);
 		SetModified();
 	}

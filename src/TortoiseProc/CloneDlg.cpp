@@ -291,12 +291,12 @@ void CCloneDlg::OnBnClickedCloneBrowseUrl()
 
 void CCloneDlg::OnBnClickedCloneDirBrowse()
 {
+	UpdateData(TRUE);
 	CBrowseFolder browseFolder;
 	browseFolder.m_style = BIF_EDITBOX | BIF_NEWDIALOGSTYLE | BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
 	CString strCloneDirectory = this->m_Directory;
 	if (browseFolder.Show(GetSafeHwnd(), strCloneDirectory) == CBrowseFolder::OK)
 	{
-		UpdateData(TRUE);
 		m_Directory = strCloneDirectory;
 		UpdateData(FALSE);
 	}
@@ -304,13 +304,15 @@ void CCloneDlg::OnBnClickedCloneDirBrowse()
 
 void CCloneDlg::OnBnClickedPuttykeyfileBrowse()
 {
-	CFileDialog dlg(TRUE, nullptr, nullptr, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, CString(MAKEINTRESOURCE(IDS_PUTTYKEYFILEFILTER)));
+	UpdateData();
+	CString filename;
+	m_PuttyKeyCombo.GetWindowText(filename);
+	if (!PathFileExists(filename))
+		filename.Empty();
+	if (!CAppUtils::FileOpenSave(filename, nullptr, 0, IDS_PUTTYKEYFILEFILTER, true, GetSafeHwnd()))
+		return;
 
-	this->UpdateData();
-	if(dlg.DoModal()==IDOK)
-	{
-		this->m_PuttyKeyCombo.SetWindowText( dlg.GetPathName() );
-	}
+	m_PuttyKeyCombo.SetWindowText(filename);
 }
 
 void CCloneDlg::OnBnClickedPuttykeyAutoload()

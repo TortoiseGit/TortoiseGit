@@ -6860,7 +6860,7 @@ msgstr ""
 msgid "Open files for diff or to apply a patch\nOpen files"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_PATCH_FILE_OPEN_CUSTOM: Control id 1132, IDS_PATCH_COPYFROMCLIPBOARD)
+#. Resource IDs: (IDS_PATCH_COPYFROMCLIPBOARD)
 msgid "Open from clipboard"
 msgstr ""
 
@@ -8291,10 +8291,6 @@ msgstr ""
 
 #. Resource IDs: (57603, 57604)
 msgid "Save the modified file\nSave file"
-msgstr ""
-
-#. Resource IDs: (Dialog IDD_PATCH_FILE_OPEN_CUSTOM: Control id 1132)
-msgid "Save to clipboard"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 65535, Dialog IDD_SETTINGSBUGTRAQ_CONFIG: Control id 65535, Dialog IDD_SETTINGSDIALOGS3: Control id 65535)
@@ -10735,6 +10731,10 @@ msgstr ""
 #. Resource IDs: (IDS_CHECKNEWER_YOURVERSION)
 #, c-format
 msgid "Your version is: %d.%d.%d.%d"
+msgstr ""
+
+#. Resource IDs: (IDS_ARCHIVEFILEFILTER)
+msgid "ZIP archive (*.zip)|*.zip|All Files (*.*)|*.*||"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_EXPORT: Control id 1074)

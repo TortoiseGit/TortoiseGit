@@ -133,8 +133,13 @@ void CSettingsProgsDiff::OnBnClickedExtdiffOn()
 
 void CSettingsProgsDiff::OnBnClickedExtdiffbrowse()
 {
-	if (CAppUtils::FileOpenSave(m_sDiffPath, nullptr, IDS_SETTINGS_SELECTDIFF, IDS_PROGRAMSFILEFILTER, true, m_hWnd))
+	UpdateData();
+	CString filename = m_sDiffPath;
+	if (!PathFileExists(filename))
+		filename.Empty();
+	if (CAppUtils::FileOpenSave(filename, nullptr, IDS_SETTINGS_SELECTDIFF, IDS_PROGRAMSFILEFILTER, true, m_hWnd))
 	{
+		m_sDiffPath = filename;
 		UpdateData(FALSE);
 		SetModified();
 	}
@@ -191,8 +196,13 @@ void CSettingsProgsDiff::OnEnChangeDiffviewer()
 
 void CSettingsProgsDiff::OnBnClickedDiffviewerbrowse()
 {
-	if (CAppUtils::FileOpenSave(m_sDiffViewerPath, nullptr, IDS_SETTINGS_SELECTDIFFVIEWER, IDS_PROGRAMSFILEFILTER, true, m_hWnd))
+	UpdateData();
+	CString filename = m_sDiffViewerPath;
+	if (!PathFileExists(filename))
+		filename.Empty();
+	if (CAppUtils::FileOpenSave(filename, nullptr, IDS_SETTINGS_SELECTDIFFVIEWER, IDS_PROGRAMSFILEFILTER, true, m_hWnd))
 	{
+		m_sDiffViewerPath = filename;
 		UpdateData(FALSE);
 		SetModified();
 	}

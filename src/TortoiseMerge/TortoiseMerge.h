@@ -48,7 +48,6 @@ protected:
 	afx_msg void OnAppAbout();
 	DECLARE_MESSAGE_MAP()
 private:
-	static UINT_PTR CALLBACK CreatePatchFileOpenHook(HWND hDlg, UINT uiMsg, WPARAM wParam, LPARAM lParam);
 	bool HasClipboardPatch();
 	static bool TrySavePatchFromClipboard(std::wstring& resultFile);
 };

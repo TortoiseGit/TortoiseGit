@@ -219,72 +219,100 @@ bool CCommonAppUtils::SetListCtrlBackgroundImage(HWND hListCtrl, UINT nID, int w
 	return true;
 }
 
-bool CCommonAppUtils::FileOpenSave(CString& path, int * filterindex, UINT title, UINT filter, bool bOpen, HWND hwndOwner, LPCTSTR defaultExt)
+bool CCommonAppUtils::FileOpenSave(CString& path, int* filterindex, UINT title, UINT filterId, bool bOpen, HWND hwndOwner, LPCTSTR defaultExt)
 {
-	OPENFILENAME ofn = {0};				// common dialog box structure
-	TCHAR szFile[MAX_PATH] = {0};		// buffer for file name. Explorer can't handle paths longer than MAX_PATH.
-	ofn.lStructSize = sizeof(OPENFILENAME);
-	ofn.hwndOwner = hwndOwner;
-	if (path.GetLength() >= MAX_PATH)
+	// Create a new common save file dialog
+	CComPtr<IFileDialog> pfd = nullptr;
+
+	if (!SUCCEEDED(pfd.CoCreateInstance(bOpen ? CLSID_FileOpenDialog : CLSID_FileSaveDialog, nullptr, CLSCTX_INPROC_SERVER)))
+		return false;
+
+	// Set the dialog options
+	DWORD dwOptions;
+	if (!SUCCEEDED(pfd->GetOptions(&dwOptions)))
+		return false;
+
+	if (bOpen)
 	{
-		CString dir = path;
-		while (true)
-		{
-			int index = dir.ReverseFind(_T('\\'));
-			if (index < 0)
-				break;
-			dir = dir.Left(index);
-			if (PathFileExists(dir))
-				break;
-		}
-		GetShortPathName(dir, szFile, MAX_PATH);
-		CString remain = path.Right(path.GetLength() - dir.GetLength());
-		_tcscat_s(szFile, MAX_PATH, remain);
+		if (!SUCCEEDED(pfd->SetOptions(dwOptions | FOS_FILEMUSTEXIST | FOS_FORCEFILESYSTEM | FOS_PATHMUSTEXIST)))
+			return false;
 	}
 	else
-		_tcscpy_s(szFile, MAX_PATH, (LPCTSTR)path);
-	ofn.lpstrFile = szFile;
-	ofn.nMaxFile = _countof(szFile);
-
-	CSelectFileFilter fileFilter;
-	if (filter)
 	{
-		fileFilter.Load(filter);
-		ofn.lpstrFilter = fileFilter;
+		if (!SUCCEEDED(pfd->SetOptions(dwOptions | FOS_OVERWRITEPROMPT | FOS_FORCEFILESYSTEM | FOS_PATHMUSTEXIST)))
+			return false;
 	}
-	ofn.nFilterIndex = 1;
+	if (!PathIsDirectory(path) && !SUCCEEDED(pfd->SetFileName(CPathUtils::GetFileNameFromPath(path))))
+		return false;
 
-	ofn.lpstrFileTitle = nullptr;
-	ofn.nMaxFileTitle = 0;
-	ofn.lpstrInitialDir = nullptr;
-	ofn.lpstrDefExt = defaultExt;
-	CString temp;
+	// Set a title
 	if (title)
 	{
+		CString temp;
 		temp.LoadString(title);
 		CStringUtils::RemoveAccelerators(temp);
+		pfd->SetTitle(temp);
 	}
-	ofn.lpstrTitle = temp;
-	if (bOpen)
-		ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_EXPLORER;
-	else
-		ofn.Flags = OFN_OVERWRITEPROMPT | OFN_EXPLORER;
-
-	// Display the Open dialog box.
-	bool bRet = false;
-	if (bOpen)
-		bRet = !!GetOpenFileName(&ofn);
-	else
-		bRet = !!GetSaveFileName(&ofn);
-	SetCurrentDirectory(sOrigCWD);
-	if (bRet)
+	CComPtr<IShellItem> psiDefaultFolder;
+	if (filterId)
 	{
-		path = CString(ofn.lpstrFile);
-		if (filterindex)
-			*filterindex = ofn.nFilterIndex;
-		return true;
+		CSelectFileFilter fileFilter(filterId);
+		if (!SUCCEEDED(pfd->SetFileTypes(fileFilter.GetCount(), fileFilter)))
+			return false;
+		if (filterId == 2501) // IDS_PROGRAMSFILEFILTER
+		{
+			pfd->SetClientGuid({ 0x323ca4b0, 0x62df, 0x4a08, { 0xa5, 0x5, 0x58, 0xde, 0xa2, 0xb9, 0x2d, 0xcd } });
+			if (SUCCEEDED(SHCreateItemFromParsingName(CPathUtils::GetProgramsDirectory(), nullptr, IID_PPV_ARGS(&psiDefaultFolder))))
+				pfd->SetDefaultFolder(psiDefaultFolder);
+		}
+		else if (filterId == 1120) // IDS_PUTTYKEYFILEFILTER
+		{
+			pfd->SetClientGuid({ 0x271dbd3b, 0x50da, 0x4148, { 0x95, 0xfd, 0x64, 0x73, 0x69, 0xd1, 0x74, 0x2 } });
+			if (SUCCEEDED(SHCreateItemFromParsingName(CPathUtils::GetDocumentsDirectory(), nullptr, IID_PPV_ARGS(&psiDefaultFolder))))
+				pfd->SetDefaultFolder(psiDefaultFolder);
+		}
 	}
-	return false;
+
+	if (defaultExt && !SUCCEEDED(pfd->SetDefaultExtension(defaultExt)))
+			return false;
+
+	// set the default folder
+	CComPtr<IShellItem> psiFolder;
+	if (CStringUtils::StartsWith(path, L"\\") || path.Mid(1, 2) == L":\\")
+	{
+		CString dir = path;
+		if (!PathIsDirectory(dir))
+		{
+			if (PathRemoveFileSpec(dir.GetBuffer()))
+				dir.ReleaseBuffer();
+			else	
+				dir.Empty();
+		}
+		if (!dir.IsEmpty() && SUCCEEDED(SHCreateItemFromParsingName(dir, nullptr, IID_PPV_ARGS(&psiFolder))))
+			pfd->SetFolder(psiFolder);
+	}
+
+	// Show the save/open file dialog
+	if (!SUCCEEDED(pfd->Show(hwndOwner)))
+		return false;
+
+	// Get the selection from the user
+	CComPtr<IShellItem> psiResult = nullptr;
+	if (!SUCCEEDED(pfd->GetResult(&psiResult)))
+		return false;
+
+	PWSTR pszPath = nullptr;
+	if (!SUCCEEDED(psiResult->GetDisplayName(SIGDN_FILESYSPATH, &pszPath)))
+		return false;
+
+	path = CString(pszPath);
+	if (filterindex)
+	{
+		UINT fi = 0;
+		pfd->GetFileTypeIndex(&fi);
+		*filterindex = fi;
+	}
+	return true;
 }
 
 void CCommonAppUtils::SetCharFormat(CWnd* window, DWORD mask , DWORD effects, const std::vector<CHARRANGE>& positions)

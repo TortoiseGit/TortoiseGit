@@ -197,11 +197,13 @@ void CSubmoduleAddDlg::OnOK()
 void CSubmoduleAddDlg::OnBnClickedPuttykeyfileBrowse()
 {
 	UpdateData();
-	CFileDialog dlg(TRUE, nullptr, nullptr, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, CString(MAKEINTRESOURCE(IDS_PUTTYKEYFILEFILTER)));
-	if (dlg.DoModal()==IDOK)
-	{
-		m_PuttyKeyCombo.SetWindowText(dlg.GetPathName());
-	}
+	CString filename;
+	m_PuttyKeyCombo.GetWindowText(filename);
+	if (!PathFileExists(filename))
+		filename.Empty();
+	if (!CAppUtils::FileOpenSave(filename, nullptr, 0, IDS_PUTTYKEYFILEFILTER, true, GetSafeHwnd()))
+		return;
+	m_PuttyKeyCombo.SetWindowText(filename);
 }
 
 void CSubmoduleAddDlg::OnBnClickedPuttykeyAutoload()

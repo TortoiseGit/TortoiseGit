@@ -86,6 +86,12 @@ BOOL CToolAssocDlg::PreTranslateMessage(MSG* pMsg)
 void CToolAssocDlg::OnBnClickedToolbrowse()
 {
 	UpdateData(TRUE);
-	if (CAppUtils::FileOpenSave(m_sTool, nullptr, IDS_SETTINGS_SELECTDIFF, IDS_PROGRAMSFILEFILTER, true, m_hWnd))
-		UpdateData(FALSE);
+	CString filename = m_sTool;
+	if (!PathFileExists(filename))
+		filename.Empty();
+	if (!CAppUtils::FileOpenSave(filename, nullptr, IDS_SETTINGS_SELECTDIFF, IDS_PROGRAMSFILEFILTER, true, m_hWnd))
+		return;
+
+	m_sTool = filename;
+	UpdateData(FALSE);
 }

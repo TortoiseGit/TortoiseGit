@@ -21,6 +21,7 @@
 #include "SetMainPage.h"
 #include "ProjectProperties.h"
 #include "SetDialogs3.h"
+#include "AppUtils.h"
 
 static std::vector<DWORD> g_langs;
 
@@ -243,24 +244,19 @@ void CSetDialogs3::OnBnClickedIconfileBrowse()
 	if (!(iconFile.Mid(1, 1) == _T(":") || iconFile.Left(1) == _T("\\")))
 		iconFile = currentDir + iconFile;
 	iconFile.Replace('/', '\\');
-	CFileDialog dlg(FALSE, _T(""), iconFile, OFN_FILEMUSTEXIST, CString(MAKEINTRESOURCE(IDS_ICONFILEFILTER)));
+	if (!CAppUtils::FileOpenSave(iconFile, nullptr, 0, IDS_ICONFILEFILTER, true, GetSafeHwnd()))
+		return;
 
-	INT_PTR ret = dlg.DoModal();
-	SetCurrentDirectory(g_Git.m_CurrentDir);
-	if (ret == IDOK)
+	if (iconFile.Left(currentDir.GetLength()) == currentDir)
+		iconFile = iconFile.Mid(currentDir.GetLength());
+	iconFile.Replace('\\', '/');
+	if (m_iconFile != iconFile)
 	{
-		iconFile = dlg.GetPathName();
-		if (iconFile.Left(currentDir.GetLength()) == currentDir)
-			iconFile = iconFile.Mid(currentDir.GetLength());
-		iconFile.Replace('\\', '/');
-		if (m_iconFile != iconFile)
-		{
-			m_iconFile = iconFile;
-			m_bNeedSave = true;
-			SetModified();
-		}
-		UpdateData(FALSE);
+		m_iconFile = iconFile;
+		m_bNeedSave = true;
+		SetModified();
 	}
+	UpdateData(FALSE);
 }
 
 BOOL CSetDialogs3::OnApply()

@@ -395,41 +395,6 @@ BOOL CTortoiseMergeApp::InitInstance()
 				return FALSE;
 			}
 		}
-		else
-		{
-			OPENFILENAME ofn = {0};         // common dialog box structure
-			TCHAR szFile[MAX_PATH] = {0};   // buffer for file name
-			// Initialize OPENFILENAME
-			ofn.lStructSize = sizeof(OPENFILENAME);
-			ofn.hwndOwner = pFrame->m_hWnd;
-			ofn.lpstrFile = szFile;
-			ofn.nMaxFile = _countof(szFile);
-			CString temp;
-			temp.LoadString(IDS_OPENDIFFFILETITLE);
-			if (temp.IsEmpty())
-				ofn.lpstrTitle = NULL;
-			else
-				ofn.lpstrTitle = temp;
-
-			ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_EXPLORER;
-			if( HasClipboardPatch() ) {
-				ofn.Flags |= ( OFN_ENABLETEMPLATE | OFN_ENABLEHOOK );
-				ofn.hInstance = AfxGetResourceHandle();
-				ofn.lpTemplateName = MAKEINTRESOURCE(IDD_PATCH_FILE_OPEN_CUSTOM);
-				ofn.lpfnHook = CreatePatchFileOpenHook;
-			}
-
-			CSelectFileFilter fileFilter(IDS_PATCHFILEFILTER);
-			ofn.lpstrFilter = fileFilter;
-			ofn.nFilterIndex = 1;
-
-			// Display the Open dialog box.
-			if (GetOpenFileName(&ofn)==FALSE)
-			{
-				return FALSE;
-			}
-			pFrame->m_Data.m_sDiffFile = ofn.lpstrFile;
-		}
 	}
 
 	if ( pFrame->m_Data.m_baseFile.GetFilename().IsEmpty() && pFrame->m_Data.m_yourFile.GetFilename().IsEmpty() )
@@ -497,7 +462,7 @@ BOOL CTortoiseMergeApp::InitInstance()
 			CString outfile = parser.GetVal(_T("outfile"));
 			if (outfile.IsEmpty())
 			{
-				CCommonAppUtils::FileOpenSave(outfile, NULL, IDS_SAVEASTITLE, IDS_COMMONFILEFILTER, false, NULL);
+				CCommonAppUtils::FileOpenSave(outfile, NULL, IDS_SAVEASTITLE, IDS_COMMONFILEFILTER, false);
 			}
 			if (!outfile.IsEmpty())
 			{
@@ -539,25 +504,6 @@ void CTortoiseMergeApp::OnAppAbout()
 {
 	CAboutDlg aboutDlg;
 	aboutDlg.DoModal();
-}
-
-UINT_PTR CALLBACK
-CTortoiseMergeApp::CreatePatchFileOpenHook(HWND hDlg, UINT uiMsg, WPARAM wParam, LPARAM /*lParam*/)
-{
-	if(uiMsg == WM_COMMAND && LOWORD(wParam) == IDC_PATCH_TO_CLIPBOARD)
-	{
-		HWND hFileDialog = GetParent(hDlg);
-
-		// if there's a patchfile in the clipboard, we save it
-		// to a temporary file and tell TortoiseMerge to use that one
-		std::wstring sTempFile;
-		if (TrySavePatchFromClipboard(sTempFile))
-		{
-			CommDlg_OpenSave_SetControlText(hFileDialog, edt1, sTempFile.c_str());
-			PostMessage(hFileDialog, WM_COMMAND, MAKEWPARAM(IDOK, BM_CLICK), (LPARAM)(GetDlgItem(hDlg, IDOK)));
-		}
-	}
-	return 0;
 }
 
 int CTortoiseMergeApp::ExitInstance()
