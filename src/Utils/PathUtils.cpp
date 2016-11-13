@@ -364,6 +364,28 @@ CString CPathUtils::GetLocalAppDataDirectory()
 	return path;
 }
 
+CString CPathUtils::GetDocumentsDirectory()
+{
+	PWSTR pszPath = nullptr;
+	if (SHGetKnownFolderPath(FOLDERID_Documents, KF_FLAG_CREATE, nullptr, &pszPath) != S_OK)
+		return CString();
+
+	CString path = pszPath;
+	CoTaskMemFree(pszPath);
+	return path;
+}
+
+CString CPathUtils::GetProgramsDirectory()
+{
+	PWSTR pszPath = nullptr;
+	if (SHGetKnownFolderPath(FOLDERID_ProgramFiles, KF_FLAG_CREATE, nullptr, &pszPath) != S_OK)
+		return CString();
+
+	CString path = pszPath;
+	CoTaskMemFree(pszPath);
+	return path;
+}
+
 CStringA CPathUtils::PathUnescape(const CStringA& path)
 {
 	auto urlabuf = std::make_unique<char[]>(path.GetLength() + 1);

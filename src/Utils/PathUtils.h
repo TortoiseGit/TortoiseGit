@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2016 - TortoiseGit
 // Copyright (C) 2003-2008, 2013-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -88,6 +89,9 @@ public:
 	 * \remark the path returned has a trailing backslash
 	 */
 	static CString GetAppParentDirectory(HMODULE hMod = nullptr);
+
+	static CString GetDocumentsDirectory();
+	static CString GetProgramsDirectory();
 
 	/**
 	 * Returns the path to the application data folder, in our case the %APPDATA%TortoiseSVN folder.
