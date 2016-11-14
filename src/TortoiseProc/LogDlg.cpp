@@ -874,7 +874,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 				{
 					((CTGitPath&)files[i]).m_Action &= ~(CTGitPath::LOGACTIONS_HIDE | CTGitPath::LOGACTIONS_GRAY);
 
-					if (files[i].GetGitPathString().Left(matchPathLen) != matchpath && ((files[i].m_Action & (CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_COPY)) == 0 || files[i].GetGitOldPathString().Left(matchPathLen) != matchpath))
+					if (wcsncmp(files[i].GetGitPathString(), matchpath, matchPathLen) && ((files[i].m_Action & (CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_COPY)) == 0 || wcsncmp(files[i].GetGitOldPathString(), matchpath, matchPathLen)))
 					{
 						somethingHidden = true;
 						if (m_iHidePaths == 1)
@@ -1632,11 +1632,12 @@ void CLogDlg::OnPasteGitHash()
 
 void CLogDlg::JumpToGitHash(CString& hash)
 {
+	int hashLen = hash.GetLength();
 	for (int i = 0; i < (int)m_LogList.m_arShownList.size(); ++i)
 	{
 		GitRev* rev = m_LogList.m_arShownList.SafeGetAt(i);
 		if (!rev) continue;
-		if (rev->m_CommitHash.ToString().Left(hash.GetLength()) != hash)
+		if (wcsncmp(rev->m_CommitHash.ToString(), hash, hashLen))
 			continue;
 
 		m_LogList.SetItemState(m_LogList.GetSelectionMark(), 0, LVIS_SELECTED | LVIS_FOCUSED);
