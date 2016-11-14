@@ -589,7 +589,7 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 						break;
 					}
 				if (bIsSha1)
-					sBranchName = sBranchName.Left(8) + _T("....");
+					sBranchName = sBranchName.Left(8) + L"...";
 			}
 
 			// sanity check
