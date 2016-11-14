@@ -68,13 +68,10 @@ CLogDlg::CLogDlg(CWnd* pParent /*=nullptr*/)
 	m_bAsteriskLogPrefix = !!CRegDWORD(L"Software\\TortoiseGit\\AsteriskLogPrefix", TRUE);
 	m_LogList.m_SelectedFilters = CRegDWORD(_T("Software\\TortoiseGit\\SelectedLogFilters"), LOGFILTER_ALL);
 
-	CString str;
-	str=g_Git.m_CurrentDir;
+	CString str = g_Git.m_CurrentDir;
 	str.Replace(_T(":"),_T("_"));
-	str=CString(_T("Software\\TortoiseGit\\LogDialog\\AllBranch\\"))+str;
 
-	m_regbAllBranch=CRegDWORD(str,FALSE);
-
+	m_regbAllBranch = CRegDWORD(L"Software\\TortoiseGit\\LogDialog\\AllBranch\\" + str, FALSE);
 	m_AllBranchType = (AllBranchType)(DWORD)m_regbAllBranch;
 	switch (m_AllBranchType)
 	{
@@ -88,8 +85,6 @@ CLogDlg::CLogDlg(CWnd* pParent /*=nullptr*/)
 		m_bAllBranch = BST_INDETERMINATE;
 	}
 
-	str = g_Git.m_CurrentDir;
-	str.Replace(_T(":"),_T("_"));
 	m_regShowWholeProject = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\ShowWholeProject\\") + str, FALSE);
 	m_bWholeProject = m_regShowWholeProject;
 	m_regbShowTags = CRegDWORD(_T("Software\\TortoiseGit\\LogDialog\\ShowTags\\") + str, TRUE);

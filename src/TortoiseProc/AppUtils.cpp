@@ -765,7 +765,7 @@ bool CAppUtils::LaunchTortoiseBlame(const CString& sBlameFile, const CString& Re
 	//viewer += _T(" \"") + sLogFile + _T("\"");
 	//viewer += _T(" \"") + sOriginalFile + _T("\"");
 	if(!Rev.IsEmpty() && Rev != GIT_REV_ZERO)
-		viewer += CString(_T(" /rev:"))+Rev;
+		viewer += L" /rev:" + Rev;
 	if (!g_sGroupingUUID.IsEmpty())
 	{
 		viewer += L" /groupuuid:\"";

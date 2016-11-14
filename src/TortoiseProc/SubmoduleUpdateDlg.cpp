@@ -270,7 +270,7 @@ void CSubmoduleUpdateDlg::Refresh()
 	CString WorkingDir = g_Git.m_CurrentDir;
 	WorkingDir.Replace(_T(':'), _T('_'));
 
-	m_regPath = CRegString(CString(_T("Software\\TortoiseGit\\History\\SubmoduleUpdatePath\\") + WorkingDir));
+	m_regPath = CRegString(L"Software\\TortoiseGit\\History\\SubmoduleUpdatePath\\" + WorkingDir);
 	CString path = m_regPath;
 	STRING_VECTOR emptylist;
 	STRING_VECTOR list;

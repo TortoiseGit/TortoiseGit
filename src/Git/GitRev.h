@@ -106,8 +106,8 @@ public:
 		REV_UNSPECIFIED = -4,	///< unspecified revision
 	};
 
-	static CString GetHead(){return CString(_T("HEAD"));};
-	static CString GetWorkingCopy(){return CString(GIT_REV_ZERO);};
+	static CString GetHead() { return L"HEAD"; };
+	static CString GetWorkingCopy() { return GIT_REV_ZERO; };
 
 	CGitHash m_CommitHash;
 	GIT_REV_LIST m_ParentHash;

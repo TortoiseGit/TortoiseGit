@@ -2524,7 +2524,7 @@ void CCommitDlg::OnBnClickedCommitAmend()
 	if(this->m_bCommitAmend && this->m_AmendStr.IsEmpty())
 	{
 		GitRev rev;
-		if (rev.GetCommit(CString(_T("HEAD"))))
+		if (rev.GetCommit(L"HEAD"))
 			MessageBox(rev.GetLastErr(), _T("TortoiseGit"), MB_ICONERROR);
 		m_AmendStr=rev.GetSubject()+_T("\n")+rev.GetBody();
 	}

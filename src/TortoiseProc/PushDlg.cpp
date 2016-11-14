@@ -169,14 +169,14 @@ BOOL CPushDlg::OnInitDialog()
 	m_bPushAllRemotes = m_regPushAllRemotes;
 	m_regPushAllBranches = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\Push\\") + WorkingDir + _T("\\AllBranches"), FALSE);
 	m_bPushAllBranches = m_regPushAllBranches;
-	m_RemoteURL.LoadHistory(CString(_T("Software\\TortoiseGit\\History\\PushURLS\\"))+WorkingDir, _T("url"));
+	m_RemoteURL.LoadHistory(L"Software\\TortoiseGit\\History\\PushURLS\\" + WorkingDir, L"url");
 	m_RemoteURL.EnableWindow(FALSE);
 	CheckRadioButton(IDC_RD_REMOTE,IDC_RD_URL,IDC_RD_REMOTE);
 
 
 	m_regThinPack = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\Push\\") + WorkingDir + _T("\\ThinPack"), FALSE);
 	m_bPack = m_regThinPack;
-	this->m_regAutoLoad = CRegDWORD(CString(_T("Software\\TortoiseGit\\History\\PushDlgAutoLoad\\"))+WorkingDir,
+	this->m_regAutoLoad = CRegDWORD(L"Software\\TortoiseGit\\History\\PushDlgAutoLoad\\" + WorkingDir,
 									m_bAutoLoad);
 	m_bAutoLoad = this->m_regAutoLoad;
 	if(!CAppUtils::IsSSHPutty())
@@ -202,8 +202,7 @@ BOOL CPushDlg::OnInitDialog()
 		m_RecurseSubmodules = 2;
 	else
 		m_RecurseSubmodules = 0;
-	m_regRecurseSubmodules = CRegDWORD(
-		CString(_T("Software\\TortoiseGit\\History\\PushRecurseSubmodules\\")) + WorkingDir, m_RecurseSubmodules);
+	m_regRecurseSubmodules = CRegDWORD(L"Software\\TortoiseGit\\History\\PushRecurseSubmodules\\" + WorkingDir, m_RecurseSubmodules);
 	m_RecurseSubmodules = m_regRecurseSubmodules;
 	m_RecurseSubmodulesCombo.AddString(CString(MAKEINTRESOURCE(IDS_NONE)));
 	m_RecurseSubmodulesCombo.AddString(CString(MAKEINTRESOURCE(IDS_RECURSE_SUBMODULES_CHECK)));
@@ -223,7 +222,7 @@ void CPushDlg::Refresh()
 	CString WorkingDir=g_Git.m_CurrentDir;
 	WorkingDir.Replace(_T(':'),_T('_'));
 
-	CRegString remote(CString(_T("Software\\TortoiseGit\\History\\PushRemote\\")+WorkingDir));
+	CRegString remote(L"Software\\TortoiseGit\\History\\PushRemote\\" + WorkingDir);
 	m_RemoteReg = remote;
 	int sel = -1;
 
@@ -294,7 +293,7 @@ void CPushDlg::GetRemoteBranch(CString currentBranch)
 	CString pushBranch;
 	g_Git.GetRemotePushBranch(currentBranch, pushRemote, pushBranch);
 
-	CRegString remote(CString(_T("Software\\TortoiseGit\\History\\PushRemote\\")+WorkingDir));
+	CRegString remote(L"Software\\TortoiseGit\\History\\PushRemote\\" + WorkingDir);
 
 	if (!pushRemote.IsEmpty())
 	{
@@ -320,7 +319,7 @@ void CPushDlg::GetRemoteBranch(CString currentBranch)
 	else if (!(m_Remote.GetCount() > 1 && m_Remote.GetCurSel() == 0))
 		m_Remote.SetCurSel(-1);
 
-	m_BranchRemote.LoadHistory(CString(_T("Software\\TortoiseGit\\History\\RemoteBranch\\"))+WorkingDir, _T("branch"));
+	m_BranchRemote.LoadHistory(L"Software\\TortoiseGit\\History\\RemoteBranch\\" + WorkingDir, L"branch");
 	if( !pushBranch.IsEmpty() )
 		m_BranchRemote.AddString(pushBranch);
 
