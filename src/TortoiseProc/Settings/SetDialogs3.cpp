@@ -241,13 +241,13 @@ void CSetDialogs3::OnBnClickedIconfileBrowse()
 	UpdateData(TRUE);
 	CString currentDir = g_Git.m_CurrentDir + (g_Git.m_CurrentDir.Right(1) == _T("\\") ? _T("") : _T("\\"));
 	CString iconFile = m_iconFile;
-	if (!(iconFile.Mid(1, 1) == _T(":") || iconFile.Left(1) == _T("\\")))
+	if (!(iconFile.Mid(1, 1) == L":" || CStringUtils::StartsWith(iconFile, L"\\")))
 		iconFile = currentDir + iconFile;
 	iconFile.Replace('/', '\\');
 	if (!CAppUtils::FileOpenSave(iconFile, nullptr, 0, IDS_ICONFILEFILTER, true, GetSafeHwnd()))
 		return;
 
-	if (iconFile.Left(currentDir.GetLength()) == currentDir)
+	if (CStringUtils::StartsWith(iconFile, currentDir))
 		iconFile = iconFile.Mid(currentDir.GetLength());
 	iconFile.Replace('\\', '/');
 	if (m_iconFile != iconFile)

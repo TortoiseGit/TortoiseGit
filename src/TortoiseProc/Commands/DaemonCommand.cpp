@@ -63,7 +63,7 @@ bool DaemonCommand::Execute()
 
 		if (ptr->ai_family == AF_INET6)
 		{
-			if (ip.Left(5) == _T("fe80:")) // strip % interface number at the end
+			if (CStringUtils::StartsWith(ip, L"fe80:")) // strip % interface number at the end
 				ip = ip.Left(ip.Find(_T('%')));
 			ip = _T('[') + ip; // IPv6 addresses needs to be enclosed within braces
 			ip += _T(']');

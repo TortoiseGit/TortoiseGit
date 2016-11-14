@@ -231,6 +231,9 @@ TEST(CStringUtils, IsPlainReadableASCII)
 
 TEST(CStringUtils, StartsWith)
 {
+	EXPECT_TRUE(CStringUtils::StartsWith(L"", L""));
+	EXPECT_FALSE(CStringUtils::StartsWith(L"", L"sometest"));
+
 	CString heystack = L"sometest";
 	EXPECT_TRUE(CStringUtils::StartsWith(heystack, L"sometest"));
 	EXPECT_TRUE(CStringUtils::StartsWith(heystack, L""));
@@ -248,4 +251,45 @@ TEST(CStringUtils, StartsWith)
 	EXPECT_TRUE(CStringUtils::StartsWith(heystack, sometes));
 	EXPECT_FALSE(CStringUtils::StartsWith(heystack, someteste));
 	EXPECT_FALSE(CStringUtils::StartsWith(heystack, sometess));
+	EXPECT_FALSE(CStringUtils::StartsWith(empty, sometess));
+}
+
+TEST(CStringUtils, StartsWithI)
+{
+	EXPECT_TRUE(CStringUtils::StartsWithI(L"", L""));
+	EXPECT_FALSE(CStringUtils::StartsWithI(L"", L"sometest"));
+
+	CString heystack = L"someTest";
+	EXPECT_TRUE(CStringUtils::StartsWithI(heystack, L"sometest"));
+	EXPECT_TRUE(CStringUtils::StartsWithI(heystack, L"someTest"));
+	EXPECT_TRUE(CStringUtils::StartsWithI(heystack, L"sOmetest"));
+	EXPECT_TRUE(CStringUtils::StartsWithI(heystack, L""));
+	EXPECT_TRUE(CStringUtils::StartsWithI(heystack, L"sometEs"));
+	EXPECT_FALSE(CStringUtils::StartsWithI(heystack, L"sometesTe"));
+	EXPECT_FALSE(CStringUtils::StartsWithI(heystack, L"someteSs"));
+
+	CString empty;
+	CString sometest = L"someteSt";
+	CString sometes = L"soMetes";
+	CString someteste = L"sOmeteste";
+	CString sometess = L"sometesS";
+	EXPECT_TRUE(CStringUtils::StartsWithI(heystack, sometest));
+	EXPECT_TRUE(CStringUtils::StartsWithI(heystack, empty));
+	EXPECT_TRUE(CStringUtils::StartsWithI(heystack, sometes));
+	EXPECT_FALSE(CStringUtils::StartsWithI(heystack, someteste));
+	EXPECT_FALSE(CStringUtils::StartsWithI(heystack, sometess));
+	EXPECT_FALSE(CStringUtils::StartsWithI(empty, sometess));
+}
+
+TEST(CStringUtils, StartsWithA)
+{
+	EXPECT_TRUE(CStringUtils::StartsWith("", ""));
+	EXPECT_FALSE(CStringUtils::StartsWith("", "sometest"));
+
+	CStringA heystack = L"sometest";
+	EXPECT_TRUE(CStringUtils::StartsWith(heystack, "sometest"));
+	EXPECT_TRUE(CStringUtils::StartsWith(heystack, ""));
+	EXPECT_TRUE(CStringUtils::StartsWith(heystack, "sometes"));
+	EXPECT_FALSE(CStringUtils::StartsWith(heystack, "someteste"));
+	EXPECT_FALSE(CStringUtils::StartsWith(heystack, "sometess"));
 }

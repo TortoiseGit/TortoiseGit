@@ -107,7 +107,7 @@ bool DiffCommand::Execute()
 	}
 	else
 	{
-		if ( parser.HasKey(_T("startrev")) && parser.HasKey(_T("endrev")) && path2.Left(g_Git.m_CurrentDir.GetLength() + 1) == g_Git.m_CurrentDir + _T("\\"))
+		if (parser.HasKey(L"startrev") && parser.HasKey(L"endrev") && CStringUtils::StartsWith(path2, g_Git.m_CurrentDir + L"\\"))
 		{
 			CTGitPath tgitPath2 = path2.Mid(g_Git.m_CurrentDir.GetLength() + 1);
 			bRet = !!CGitDiff::Diff(&tgitPath2, &cmdLinePath, git_revnum_t(parser.GetVal(L"startrev")), git_revnum_t(parser.GetVal(L"endrev")), false, parser.HasKey(L"unified") == TRUE, parser.GetLongVal(L"line"), bAlternativeTool);

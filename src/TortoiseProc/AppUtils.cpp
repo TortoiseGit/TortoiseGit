@@ -264,13 +264,13 @@ BOOL CAppUtils::StartExtMerge(bool bAlternative,
 
 	if (bAlternative && !com.IsEmpty())
 	{
-		if (com.Left(1).Compare(L"#") == 0)
+		if (CStringUtils::StartsWith(com, L"#"))
 			com.Delete(0);
 		else
 			com.Empty();
 	}
 
-	if (com.IsEmpty()||(com.Left(1).Compare(_T("#"))==0))
+	if (com.IsEmpty() || CStringUtils::StartsWith(com, L"#"))
 	{
 		// Maybe we should use TortoiseIDiff?
 		if ((ext == _T(".jpg")) || (ext == _T(".jpeg")) ||
@@ -481,7 +481,7 @@ bool CAppUtils::StartExtDiff(
 	{
 		viewer = PickDiffTool(file1, file2);
 		// If registry entry for a diff program is commented out, use TortoiseGitMerge.
-		bool bCommentedOut = viewer.Left(1) == _T("#");
+		bool bCommentedOut = CStringUtils::StartsWith(viewer, L"#");
 		if (flags.bAlternativeTool)
 		{
 			// Invert external vs. internal diff tool selection.
@@ -553,7 +553,7 @@ BOOL CAppUtils::StartUnifiedDiffViewer(const CString& patchfile, const CString& 
 	viewer = v;
 
 	// If registry entry for a diff program is commented out, use TortoiseGitMerge.
-	bool bCommentedOut = viewer.Left(1) == _T("#");
+	bool bCommentedOut = CStringUtils::StartsWith(viewer, L"#");
 	if (bAlternativeTool)
 	{
 		// Invert external vs. internal diff tool selection.
@@ -732,9 +732,8 @@ bool CAppUtils::LaunchPAgent(const CString* keyfile, const CString* pRemote)
 bool CAppUtils::LaunchAlternativeEditor(const CString& filename, bool uac)
 {
 	CString editTool = CRegString(_T("Software\\TortoiseGit\\AlternativeEditor"));
-	if (editTool.IsEmpty() || (editTool.Left(1).Compare(_T("#"))==0)) {
+	if (editTool.IsEmpty() || CStringUtils::StartsWith(editTool, L"#"))
 		editTool = CPathUtils::GetAppDirectory() + _T("notepad2.exe");
-	}
 
 	CString sCmd;
 	sCmd.Format(_T("\"%s\" \"%s\""), (LPCTSTR)editTool, (LPCTSTR)filename);
@@ -1056,8 +1055,8 @@ bool CAppUtils::SetupDiffScripts(bool force, const CString& type)
 			if (f.ReadString(extline))
 			{
 				if ((extline.GetLength() > 15 ) &&
-					((extline.Left(15).Compare(_T("// extensions: ")) == 0) ||
-					(extline.Left(14).Compare(_T("' extensions: ")) == 0)))
+					(CStringUtils::StartsWith(extline, L"// extensions: ") ||
+					CStringUtils::StartsWith(extline, L"' extensions: ")))
 				{
 					if (extline[0] == '/')
 						extline = extline.Mid(15);
@@ -1089,7 +1088,7 @@ bool CAppUtils::SetupDiffScripts(bool force, const CString& type)
 		{
 			if (type.IsEmpty() || (type.Compare(_T("Diff")) == 0))
 			{
-				if (filename.Left(5).CompareNoCase(_T("diff-")) == 0)
+				if (CStringUtils::StartsWithI(filename, L"diff-"))
 				{
 					CRegString diffreg = CRegString(_T("Software\\TortoiseGit\\DiffTools\\") + extension);
 					CString diffregstring = diffreg;
@@ -1099,7 +1098,7 @@ bool CAppUtils::SetupDiffScripts(bool force, const CString& type)
 			}
 			if (type.IsEmpty() || (type.Compare(_T("Merge"))==0))
 			{
-				if (filename.Left(6).CompareNoCase(_T("merge-"))==0)
+				if (CStringUtils::StartsWithI(filename, L"merge-"))
 				{
 					CRegString diffreg = CRegString(_T("Software\\TortoiseGit\\MergeTools\\") + extension);
 					CString diffregstring = diffreg;
@@ -1261,7 +1260,7 @@ bool CAppUtils::Switch(const CString& initialRefName)
 
 		// if refs/heads/ is not stripped, checkout will detach HEAD
 		// checkout prefers branches on name clashes (with tags)
-		if (dlg.m_VersionName.Left(11) ==_T("refs/heads/") && dlg.m_bBranchOverride != TRUE)
+		if (CStringUtils::StartsWith(dlg.m_VersionName, L"refs/heads/") && dlg.m_bBranchOverride != TRUE)
 			dlg.m_VersionName = dlg.m_VersionName.Mid(11);
 
 		return PerformSwitch(dlg.m_VersionName, dlg.m_bForce == TRUE , branch, dlg.m_bBranchOverride == TRUE, dlg.m_bTrack, dlg.m_bMerge == TRUE);

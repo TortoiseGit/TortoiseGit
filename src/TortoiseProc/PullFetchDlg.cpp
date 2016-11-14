@@ -433,7 +433,7 @@ void CPullFetchDlg::OnBnClickedButtonBrowseRef()
 	CString initialRef;
 	initialRef.Format(L"refs/remotes/%s/%s", (LPCTSTR)m_Remote.GetString(), (LPCTSTR)m_RemoteBranch.GetString());
 	CString selectedRef = CBrowseRefsDlg::PickRef(false, initialRef, gPickRef_Remote);
-	if(selectedRef.Left(13) != "refs/remotes/")
+	if (CStringUtils::StartsWith(selectedRef, L"refs/remotes/"))
 		return;
 
 	selectedRef = selectedRef.Mid(13);

@@ -113,9 +113,11 @@ public:
 	static bool IsPlainReadableASCII(const CString& text);
 
 	static bool StartsWith(const wchar_t* heystack, const CString& needle);
+	static bool StartsWithI(const wchar_t* heystack, const CString& needle);
 	static bool WriteStringToTextFile(LPCTSTR path, LPCTSTR text, bool bUTF8 = true);
 #endif
 	static bool StartsWith(const wchar_t* heystack, const wchar_t* needle);
+	static bool StartsWith(const char* heystack, const char* needle);
 
 	/**
 	 * Writes the string \text to the file \path, either in utf16 or utf8 encoding,

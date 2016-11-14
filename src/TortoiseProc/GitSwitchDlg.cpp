@@ -172,9 +172,9 @@ void CGitSwitchDlg::SetDefaultName(BOOL isUpdateCreateBranch)
 	CString version = m_VersionName;
 
 	int start = -1;
-	if (version.Left(7)==_T("origin/"))
+	if (CStringUtils::StartsWith(version, L"origin/"))
 		start = version.Find(_T('/'), 8);
-	else if (version.Left(8)==_T("remotes/"))
+	else if (CStringUtils::StartsWith(version, L"remotes/"))
 		start = version.Find(_T('/'), 9);
 
 	if (start >= 0)
@@ -190,7 +190,7 @@ void CGitSwitchDlg::SetDefaultName(BOOL isUpdateCreateBranch)
 	}
 	else
 	{
-		if (m_VersionName.Left(11) == _T("refs/heads/"))
+		if (CStringUtils::StartsWith(m_VersionName, L"refs/heads/"))
 			version = m_VersionName.Mid(11);
 		m_NewBranch = L"Branch_" + version;
 		this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(FALSE);
@@ -239,7 +239,7 @@ void CGitSwitchDlg::OnEnChangeEditBranch()
 	GetDlgItem(IDC_EDIT_BRANCH)->GetWindowText(name);
 	name = _T("/") + name;
 	CString remoteName = m_ChooseVersioinBranch.GetString();
-	if (remoteName.Left(8) == _T("remotes/") && remoteName.Right(name.GetLength()) != name)		
+	if (CStringUtils::StartsWith(remoteName, L"remotes/") && remoteName.Right(name.GetLength()) != name)
 		((CButton *)GetDlgItem(IDC_CHECK_TRACK))->SetCheck(FALSE);
 }
 

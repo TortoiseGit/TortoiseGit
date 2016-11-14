@@ -401,7 +401,7 @@ void CCheckForUpdatesDlg::FillDownloads(CVersioncheckParser& versioncheck)
 		{
 			CString file = finder.GetFilePath();
 			CString filename = finder.GetFileName();
-			if (filename.Left(12).CompareNoCase(_T("TortoiseProc")) == 0)
+			if (CStringUtils::StartsWithI(filename, L"TortoiseProc"))
 			{
 				CString sVer = _T(STRPRODUCTVER);
 				sVer = sVer.Left(sVer.ReverseFind('.'));
@@ -409,7 +409,7 @@ void CCheckForUpdatesDlg::FillDownloads(CVersioncheckParser& versioncheck)
 				sFileVer = sFileVer.Left(sFileVer.ReverseFind('.'));
 				CString sLoc = filename.Mid(12);
 				sLoc = sLoc.Left(sLoc.GetLength() - 4); // cut off ".dll"
-				if ((sLoc.Left(2) == L"32") && (sLoc.GetLength() > 5))
+				if (CStringUtils::StartsWith(sLoc, L"32") && (sLoc.GetLength() > 5))
 					continue;
 				DWORD loc = _tstoi(filename.Mid(12));
 				installedLangs.push_back(loc);

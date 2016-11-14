@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2009,2011,2013-2014 - TortoiseGit
+// Copyright (C) 2008-2009, 2011, 2013-2014, 2016 - TortoiseGit
 // Copyright (C) 2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -45,7 +45,7 @@ public:
 							{
 								orgCmdLinePath = path;
 								CString WinPath=path.GetWinPath();
-								if(WinPath.Left(g_Git.m_CurrentDir.GetLength())==g_Git.m_CurrentDir)
+								if (CStringUtils::StartsWith(WinPath, g_Git.m_CurrentDir))
 								{
 									if(g_Git.m_CurrentDir[g_Git.m_CurrentDir.GetLength()-1] == _T('\\'))
 										cmdLinePath.SetFromWin( WinPath.Right(WinPath.GetLength()-g_Git.m_CurrentDir.GetLength()));
@@ -57,7 +57,7 @@ public:
 								{
 									WinPath=plist[i].GetWinPath();
 									CTGitPath p;
-									if(WinPath.Left(g_Git.m_CurrentDir.GetLength())==g_Git.m_CurrentDir)
+									if (CStringUtils::StartsWith(WinPath, g_Git.m_CurrentDir))
 									{
 										if(g_Git.m_CurrentDir[g_Git.m_CurrentDir.GetLength()-1] == _T('\\'))
 											p.SetFromWin( WinPath.Right(WinPath.GetLength()-g_Git.m_CurrentDir.GetLength()));

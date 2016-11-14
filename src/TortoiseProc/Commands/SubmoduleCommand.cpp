@@ -39,7 +39,7 @@ bool SubmoduleAddCommand::Execute()
 			CAppUtils::LaunchPAgent(&dlg.m_strPuttyKeyFile);
 
 		CString cmd;
-		if(dlg.m_strPath.Left(g_Git.m_CurrentDir.GetLength()) == g_Git.m_CurrentDir)
+		if (CStringUtils::StartsWith(dlg.m_strPath, g_Git.m_CurrentDir))
 			dlg.m_strPath = dlg.m_strPath.Right(dlg.m_strPath.GetLength()-g_Git.m_CurrentDir.GetLength()-1);
 
 		CString branch;

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -32,7 +32,7 @@ static bool CheckSpecialFolder(CString &folder)
 		return true;
 
 	// UNC root
-	if (folder.GetLength() > 2 && folder.Left(2) == "\\\\")
+	if (folder.GetLength() > 2 && CStringUtils::StartsWith(folder, L"\\\\"))
 	{
 		int index = folder.Find('\\', 2);
 		if (index < 0)

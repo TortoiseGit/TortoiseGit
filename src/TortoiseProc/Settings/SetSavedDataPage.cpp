@@ -71,7 +71,7 @@ BOOL CSetSavedDataPage::OnInitDialog()
 	for (POSITION pos = loghistlist.GetHeadPosition(); pos; )
 	{
 		CString sHistName = loghistlist.GetNext(pos);
-		if (sHistName.Left(6).CompareNoCase(_T("commit")) == 0 || sHistName.Left(5).CompareNoCase(_T("merge")) == 0)
+		if (CStringUtils::StartsWithI(sHistName, L"commit") || CStringUtils::StartsWithI(sHistName, L"merge"))
 		{
 			nLogHistWC++;
 			CRegistryKey regloghistwc(_T("Software\\TortoiseGit\\History\\")+sHistName);
@@ -211,7 +211,7 @@ void CSetSavedDataPage::OnBnClickedLoghistclear()
 	for (POSITION pos = histlist.GetHeadPosition(); pos; )
 	{
 		CString sHist = histlist.GetNext(pos);
-		if (sHist.Left(6).CompareNoCase(_T("commit"))==0)
+		if (CStringUtils::StartsWithI(sHist, L"commit"))
 		{
 			CRegistryKey regkey(_T("Software\\TortoiseGit\\History\\")+sHist);
 			regkey.removeKey();

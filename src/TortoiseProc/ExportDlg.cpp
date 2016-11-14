@@ -86,7 +86,7 @@ BOOL CExportDlg::OnInitDialog()
 	InitChooseVersion();
 	if (m_initialRefName.IsEmpty() || m_initialRefName == _T("HEAD"))
 		SetDefaultChoose(IDC_RADIO_HEAD);
-	else if (m_initialRefName.Left(10) == _T("refs/tags/"))
+	else if (CStringUtils::StartsWith(m_initialRefName, L"refs/tags/"))
 		SetDefaultChoose(IDC_RADIO_TAGS);
 
 	CWnd* pHead = GetDlgItem(IDC_RADIO_HEAD);

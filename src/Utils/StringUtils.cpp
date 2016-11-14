@@ -579,6 +579,11 @@ bool CStringUtils::StartsWith(const wchar_t* heystack, const CString& needle)
 	return wcsncmp(heystack, needle, needle.GetLength()) == 0;
 }
 
+bool CStringUtils::StartsWithI(const wchar_t* heystack, const CString& needle)
+{
+	return _wcsnicmp(heystack, needle, needle.GetLength()) == 0;
+}
+
 bool CStringUtils::WriteStringToTextFile(LPCTSTR path, LPCTSTR text, bool bUTF8 /* = true */)
 {
 	return WriteStringToTextFile((const std::wstring&)path, (const std::wstring&)text, bUTF8);
@@ -589,6 +594,11 @@ bool CStringUtils::WriteStringToTextFile(LPCTSTR path, LPCTSTR text, bool bUTF8 
 bool CStringUtils::StartsWith(const wchar_t* heystack, const wchar_t* needle)
 {
 	return wcsncmp(heystack, needle, wcslen(needle)) == 0;
+}
+
+bool CStringUtils::StartsWith(const char* heystack, const char* needle)
+{
+	return strncmp(heystack, needle, strlen(needle)) == 0;
 }
 
 bool CStringUtils::WriteStringToTextFile(const std::wstring& path, const std::wstring& text, bool bUTF8 /* = true */)

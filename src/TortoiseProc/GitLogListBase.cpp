@@ -1347,7 +1347,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 								refLabel.color = m_Colors.GetColor(CColors::RemoteBranch);
 								if (m_bSymbolizeRefNames)
 								{
-									if (!m_SingleRemote.IsEmpty() && refLabel.name.Left(m_SingleRemote.GetLength() + 1) == m_SingleRemote + _T("/"))
+									if (!m_SingleRemote.IsEmpty() && CStringUtils::StartsWith(refLabel.name, m_SingleRemote + L"/"))
 									{
 										refLabel.simplifiedName = _T("/") + refLabel.name.Mid(m_SingleRemote.GetLength() + 1);
 										refLabel.singleRemote = true;
@@ -1661,7 +1661,7 @@ bool CGitLogListBase::IsBisect(const GitRev * pSelLogEntry)
 {
 	for (size_t i = 0; i < m_HashMap[pSelLogEntry->m_CommitHash].size(); ++i)
 	{
-		if (m_HashMap[pSelLogEntry->m_CommitHash][i].Left(12) == _T("refs/bisect/"))
+		if (CStringUtils::StartsWith(m_HashMap[pSelLogEntry->m_CommitHash][i], L"refs/bisect/"))
 			return true;
 	}
 	return false;

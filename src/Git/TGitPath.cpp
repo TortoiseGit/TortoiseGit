@@ -938,7 +938,7 @@ bool CTGitPath::IsValidOnWindows() const
 	CString sMatch = m_sBackslashPath + _T("\r\n");
 	std::wstring sPattern;
 	// the 'file://' URL is just a normal windows path:
-	if (sMatch.Left(7).CompareNoCase(_T("file:\\\\"))==0)
+	if (CStringUtils::StartsWithI(sMatch, L"file:\\\\"))
 	{
 		sMatch = sMatch.Mid(7);
 		sMatch.TrimLeft(_T("\\"));

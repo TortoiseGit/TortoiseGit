@@ -23,6 +23,7 @@
 #include "MessageBox.h"
 #include "SetOverlayIcons.h"
 #include "AppUtils.h"
+#include "StringUtils.h"
 #include "PathUtils.h"
 
 IMPLEMENT_DYNAMIC(CSetOverlayIcons, ISettingsPropPage)
@@ -89,7 +90,7 @@ BOOL CSetOverlayIcons::OnInitDialog()
 		// no custom icon set, use the default
 		sModifiedIcon = m_sIconPath + _T("\\XPStyle\\ModifiedIcon.ico");
 	}
-	if (sModifiedIcon.Left(m_sIconPath.GetLength()).CompareNoCase(m_sIconPath)!=0)
+	if (CStringUtils::StartsWithI(sModifiedIcon, m_sIconPath))
 	{
 		// an icon set outside our own installation? We don't support that,
 		// so fall back to the default!

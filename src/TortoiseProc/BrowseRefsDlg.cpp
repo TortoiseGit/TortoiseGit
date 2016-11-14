@@ -41,9 +41,9 @@
 
 static int SplitRemoteBranchName(CString ref, CString &remote, CString &branch)
 {
-	if (ref.Left(13) == _T("refs/remotes/"))
+	if (CStringUtils::StartsWith(ref, L"refs/remotes/"))
 		ref = ref.Mid(13);
-	else if (ref.Left(8) == _T("remotes/"))
+	else if (CStringUtils::StartsWith(ref, L"remotes/"))
 		ref = ref.Mid(8);
 
 	STRING_VECTOR list;
@@ -53,7 +53,7 @@ static int SplitRemoteBranchName(CString ref, CString &remote, CString &branch)
 
 	for (size_t i = 0; i < list.size(); ++i)
 	{
-		if (ref.Left(list[i].GetLength() + 1) == list[i] + _T("/"))
+		if (CStringUtils::StartsWith(ref, list[i] + L"/"))
 		{
 			remote = list[i];
 			branch = ref.Mid(list[i].GetLength() + 1);

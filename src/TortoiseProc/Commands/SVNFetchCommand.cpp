@@ -36,7 +36,7 @@ bool SVNFetchCommand::Execute()
 		if( start >=0 )
 			out=out.Mid(start);
 
-		if(out.Left(5) == _T(":refs"))
+		if (CStringUtils::StartsWith(out, L":refs"))
 			out=out.Mid(6);
 
 		start = 0;

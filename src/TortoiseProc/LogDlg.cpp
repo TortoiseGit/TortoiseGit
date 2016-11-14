@@ -2526,7 +2526,7 @@ void CLogDlg::OnBnClickedJumpUp()
 			STRING_VECTOR refList = m_LogList.m_HashMap[data->m_CommitHash];
 			for (size_t j = 0; j < refList.size(); ++j)
 			{
-				if (refList[j].Left(10) == _T("refs/tags/"))
+				if (CStringUtils::StartsWith(refList[j], L"refs/tags/"))
 				{
 					found = true;
 					break;
@@ -2541,7 +2541,7 @@ void CLogDlg::OnBnClickedJumpUp()
 			STRING_VECTOR refList = m_LogList.m_HashMap[data->m_CommitHash];
 			for (size_t j = 0; j < refList.size(); ++j)
 			{
-				if (refList[j].Left(11) == _T("refs/heads/") || refList[j].Left(13) == _T("refs/remotes/"))
+				if (CStringUtils::StartsWith(refList[j], L"refs/heads/") || CStringUtils::StartsWith(refList[j], L"refs/remotes/"))
 				{
 					found = true;
 					break;
@@ -2639,7 +2639,7 @@ void CLogDlg::OnBnClickedJumpDown()
 			STRING_VECTOR refList = m_LogList.m_HashMap[data->m_CommitHash];
 			for (size_t j = 0; j < refList.size(); ++j)
 			{
-				if (refList[j].Left(10) == _T("refs/tags/"))
+				if (CStringUtils::StartsWith(refList[j], L"refs/tags/"))
 				{
 					found = true;
 					break;
@@ -2654,7 +2654,7 @@ void CLogDlg::OnBnClickedJumpDown()
 			STRING_VECTOR refList = m_LogList.m_HashMap[data->m_CommitHash];
 			for (size_t j = 0; j < refList.size(); ++j)
 			{
-				if (refList[j].Left(11) == _T("refs/heads/") || refList[j].Left(13) == _T("refs/remotes/"))
+				if (CStringUtils::StartsWith(refList[j], L"refs/heads/") || CStringUtils::StartsWith(refList[j], L"refs/remotes/"))
 				{
 					found = true;
 					break;
@@ -2882,7 +2882,7 @@ void CLogDlg::OnEditCopy()
 CString CLogDlg::GetAbsoluteUrlFromRelativeUrl(const CString& url)
 {
 	// is the URL a relative one?
-	if (url.Left(2).Compare(_T("^/")) == 0)
+	if (CStringUtils::StartsWith(url, L"^/"))
 	{
 		// URL is relative to the repository root
 		CString url1 = m_sRepositoryRoot + url.Mid(1);

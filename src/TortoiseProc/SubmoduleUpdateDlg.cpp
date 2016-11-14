@@ -82,7 +82,7 @@ static int SubmoduleCallback(git_submodule *sm, const char * /*name*/, void *pay
 		for (size_t i = 0; i < prefixList->size(); ++i)
 		{
 			CString prefix = prefixList->at(i) + _T("/");
-			if (path.Left(prefix.GetLength()) == prefix)
+			if (CStringUtils::StartsWith(path, prefix))
 				list->push_back(path);
 		}
 	}
