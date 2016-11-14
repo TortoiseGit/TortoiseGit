@@ -1519,7 +1519,7 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 		int cxWidth;
 		int nIndex = ((CMainFrame *)::AfxGetApp()->GetMainWnd())->m_wndStatusBar.CommandToIndex(ID_INDICATOR_ENCODING);
 		((CMainFrame *)::AfxGetApp()->GetMainWnd())->m_wndStatusBar.GetPaneInfo(nIndex, nID, nStyle, cxWidth);
-		CString sBarText = L"";
+		CString sBarText;
 		for (int i = 0; i < _countof(encodings); ++i)
 		{
 			if (encodings[i].id == encoding)
