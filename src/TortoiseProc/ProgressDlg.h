@@ -143,6 +143,9 @@ private:
 	void					OnCancel();
 	afx_msg void			OnClose();
 
+	afx_msg void			OnEnscrollLog();
+	afx_msg void			OnEnLinkLog(NMHDR* pNMHDR, LRESULT* pResult);
+
 	CGitGuardedByteArray	m_Databuf;
 	virtual CString Convert2UnionCode(char *buff, int size=-1)
 	{

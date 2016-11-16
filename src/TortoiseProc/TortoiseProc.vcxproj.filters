@@ -935,6 +935,9 @@
     <ClCompile Include="..\TortoiseShell\ShellCache.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="SyncTabCtrl.cpp">
+      <Filter>Commands\Sync</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1746,6 +1749,9 @@
     </ClInclude>
     <ClInclude Include="..\TortoiseShell\ShellCache.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="SyncTabCtrl.h">
+      <Filter>Commands\Sync</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

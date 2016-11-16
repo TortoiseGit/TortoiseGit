@@ -93,6 +93,9 @@ BEGIN_MESSAGE_MAP(CProgressDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDOK, &CProgressDlg::OnBnClickedOk)
 	ON_BN_CLICKED(IDC_PROGRESS_BUTTON1,&CProgressDlg::OnBnClickedButton1)
 	ON_REGISTERED_MESSAGE(TaskBarButtonCreated, OnTaskbarBtnCreated)
+	ON_NOTIFY(EN_LINK, IDC_LOG, OnEnLinkLog)
+	ON_EN_VSCROLL(IDC_LOG, OnEnscrollLog)
+	ON_EN_HSCROLL(IDC_LOG, OnEnscrollLog)
 END_MESSAGE_MAP()
 
 BOOL CProgressDlg::OnInitDialog()
@@ -130,8 +133,9 @@ BOOL CProgressDlg::OnInitDialog()
 
 	CFont m_logFont;
 	CAppUtils::CreateFontForLogs(m_logFont);
-	//GetDlgItem(IDC_CMD_LOG)->SetFont(&m_logFont);
 	m_Log.SetFont(&m_logFont);
+	// make the log message rich edit control send a message when the mouse pointer is over a link
+	m_Log.SendMessage(EM_SETEVENTMASK, NULL, ENM_LINK | ENM_SCROLL);
 
 	CString InitialText;
 	if ( !m_PreText.IsEmpty() )
@@ -388,7 +392,12 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 				m_Log.ReplaceSel(extraMsg);
 			}
 		}
-
+		{
+			CString text;
+			m_Log.GetWindowText(text);
+			text.Remove('\r');
+			CAppUtils::StyleURLs(text, &m_Log);
+		}
 		if(this->m_GitStatus)
 		{
 			if (m_pTaskbarList)
@@ -892,4 +901,54 @@ LRESULT CProgressDlg::DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 	}
 
 	return __super::DefWindowProc(message, wParam, lParam);
+}
+
+void CProgressDlg::OnEnLinkLog(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	// similar code in SyncDlg.cpp and LogDlg.cpp
+	ENLINK *pEnLink = reinterpret_cast<ENLINK *>(pNMHDR);
+	if ((pEnLink->msg == WM_LBUTTONUP) || (pEnLink->msg == WM_SETCURSOR))
+	{
+		CString msg;
+		GetDlgItemText(IDC_LOG, msg);
+		msg.Replace(L"\r\n", L"\n");
+		CString url = msg.Mid(pEnLink->chrg.cpMin, pEnLink->chrg.cpMax - pEnLink->chrg.cpMin);
+		// check if it's an email address
+		auto atpos = url.Find(L'@');
+		if ((atpos > 0) && (url.ReverseFind(L'.') > atpos) && !::PathIsURL(url))
+			url = L"mailto:" + url;
+		if (::PathIsURL(url))
+		{
+			if (pEnLink->msg == WM_LBUTTONUP)
+				ShellExecute(GetSafeHwnd(), L"open", url, nullptr, nullptr, SW_SHOWDEFAULT);
+			else
+			{
+				static RECT prevRect = { 0 };
+				CWnd* pMsgView = GetDlgItem(IDC_LOG);
+				if (pMsgView)
+				{
+					RECT rc;
+					POINTL pt;
+					pMsgView->SendMessage(EM_POSFROMCHAR, (WPARAM)&pt, pEnLink->chrg.cpMin);
+					rc.left = pt.x;
+					rc.top = pt.y;
+					pMsgView->SendMessage(EM_POSFROMCHAR, (WPARAM)&pt, pEnLink->chrg.cpMax);
+					rc.right = pt.x;
+					rc.bottom = pt.y + 12;
+					if ((prevRect.left != rc.left) || (prevRect.top != rc.top))
+					{
+						m_tooltips.DelTool(pMsgView, 1);
+						m_tooltips.AddTool(pMsgView, url, &rc, 1);
+						prevRect = rc;
+					}
+				}
+			}
+		}
+	}
+	*pResult = 0;
+}
+
+void CProgressDlg::OnEnscrollLog()
+{
+	m_tooltips.DelTool(GetDlgItem(IDC_LOG), 1);
 }

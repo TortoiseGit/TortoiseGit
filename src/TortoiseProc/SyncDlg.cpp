@@ -31,6 +31,7 @@
 #include "Hooks.h"
 #include "SmartHandle.h"
 #include "ProgressCommands/FetchProgressCommand.h"
+#include "SyncTabCtrl.h"
 
 // CSyncDlg dialog
 
@@ -894,11 +895,10 @@ BOOL CSyncDlg::OnInitDialog()
 	// set the font to use in the log message view, configured in the settings dialog
 	CFont m_logFont;
 	CAppUtils::CreateFontForLogs(m_logFont);
-	//GetDlgItem(IDC_CMD_LOG)->SetFont(&m_logFont);
 	m_ctrlCmdOut.SetFont(&m_logFont);
 	m_ctrlTabCtrl.InsertTab(&m_ctrlCmdOut, CString(MAKEINTRESOURCE(IDS_LOG)), -1);
-
-	//m_ctrlCmdOut.ReplaceSel(_T("Hello"));
+	// make the log message rich edit control send a message when the mouse pointer is over a link
+	m_ctrlCmdOut.SendMessage(EM_SETEVENTMASK, NULL, ENM_LINK | ENM_SCROLL);
 
 	//----------  Create in coming list ctrl -----------
 	dwStyle =LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | LVS_OWNERDATA | WS_BORDER | WS_TABSTOP | WS_CHILD | WS_VISIBLE;;
@@ -1379,6 +1379,13 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 		m_ctrlProgress.SetPos(100);
 		//this->DialogEnableWindow(IDOK,TRUE);
 
+		{
+			CString text;
+			m_ctrlCmdOut.GetWindowText(text);
+			text.Remove('\r');
+			CAppUtils::StyleURLs(text, &m_ctrlCmdOut);
+		}
+
 		DWORD exitCode = (DWORD)lParam;
 		if (exitCode)
 		{
@@ -1769,4 +1776,54 @@ LRESULT CSyncDlg::OnThemeChanged()
 {
 	CMFCVisualManager::GetInstance()->DestroyInstance();
 	return 0;
+}
+
+void CSyncDlg::OnEnLinkLog(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	// similar code in ProgressDlg.cpp and LogDlg.cpp
+	ENLINK *pEnLink = reinterpret_cast<ENLINK *>(pNMHDR);
+	if ((pEnLink->msg == WM_LBUTTONUP) || (pEnLink->msg == WM_SETCURSOR))
+	{
+		CString msg;
+		m_ctrlCmdOut.GetWindowText(msg);
+		msg.Replace(L"\r\n", L"\n");
+		CString url = msg.Mid(pEnLink->chrg.cpMin, pEnLink->chrg.cpMax - pEnLink->chrg.cpMin);
+		// check if it's an email address
+		auto atpos = url.Find(L'@');
+		if ((atpos > 0) && (url.ReverseFind(L'.') > atpos) && !::PathIsURL(url))
+			url = L"mailto:" + url;
+		if (::PathIsURL(url))
+		{
+			if (pEnLink->msg == WM_LBUTTONUP)
+				ShellExecute(GetSafeHwnd(), L"open", url, nullptr, nullptr, SW_SHOWDEFAULT);
+			else
+			{
+				static RECT prevRect = { 0 };
+				CWnd* pMsgView = &m_ctrlCmdOut;
+				if (pMsgView)
+				{
+					RECT rc;
+					POINTL pt;
+					pMsgView->SendMessage(EM_POSFROMCHAR, (WPARAM)&pt, pEnLink->chrg.cpMin);
+					rc.left = pt.x;
+					rc.top = pt.y;
+					pMsgView->SendMessage(EM_POSFROMCHAR, (WPARAM)&pt, pEnLink->chrg.cpMax);
+					rc.right = pt.x;
+					rc.bottom = pt.y + 12;
+					if ((prevRect.left != rc.left) || (prevRect.top != rc.top))
+					{
+						m_tooltips.DelTool(pMsgView, 1);
+						m_tooltips.AddTool(pMsgView, url, &rc, 1);
+						prevRect = rc;
+					}
+				}
+			}
+		}
+	}
+	*pResult = 0;
+}
+
+void CSyncDlg::OnEnscrollLog()
+{
+	m_tooltips.DelTool(&m_ctrlCmdOut, 1);
 }

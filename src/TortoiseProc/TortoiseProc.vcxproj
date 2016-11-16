@@ -272,6 +272,7 @@
     <ClCompile Include="SyncDlg.cpp" />
     <ClCompile Include="CheckForUpdatesDlg.cpp" />
     <ClCompile Include="Commands\UpdateCheckCommand.cpp" />
+    <ClCompile Include="SyncTabCtrl.cpp" />
     <ClCompile Include="UpdateCrypto.cpp" />
     <ClCompile Include="UpdateDownloader.cpp" />
     <ClCompile Include="UpdateListCtrl.cpp" />
@@ -548,6 +549,7 @@
     <ClInclude Include="SyncDlg.h" />
     <ClInclude Include="CheckForUpdatesDlg.h" />
     <ClInclude Include="Commands\UpdateCheckCommand.h" />
+    <ClInclude Include="SyncTabCtrl.h" />
     <ClInclude Include="UpdateCrypto.h" />
     <ClInclude Include="UpdateDownloader.h" />
     <ClInclude Include="UpdateListCtrl.h" />

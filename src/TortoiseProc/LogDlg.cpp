@@ -1810,6 +1810,7 @@ void CLogDlg::OnLvnItemchangedLogmsg(NMHDR * /*pNMHDR*/, LRESULT * /*pResult*/)
 
 void CLogDlg::OnEnLinkMsgview(NMHDR *pNMHDR, LRESULT *pResult)
 {
+	// similar code in ProgressDlg.cpp and SyncDlg.cpp
 	ENLINK *pEnLink = reinterpret_cast<ENLINK *>(pNMHDR);
 	if ((pEnLink->msg == WM_LBUTTONUP) || (pEnLink->msg == WM_SETCURSOR))
 	{

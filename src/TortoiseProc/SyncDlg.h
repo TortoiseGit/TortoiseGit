@@ -26,6 +26,7 @@
 #include "GitLoglist.h"
 #include "GitProgressList.h"
 #include "GitRefCompareList.h"
+#include "SyncTabCtrl.h"
 
 // CSyncDlg dialog
 #define IDC_SYNC_TAB 0x1000000
@@ -86,7 +87,7 @@ protected:
 	CRegDWORD			m_regSubmoduleButton;
 	CRegDWORD			m_regAutoLoadPutty;
 
-	CMFCTabCtrl			m_ctrlTabCtrl;
+	CSyncTabCtrl		m_ctrlTabCtrl;
 
 	BOOL				m_bInited;
 
@@ -230,4 +231,8 @@ protected:
 	afx_msg void OnLvnInLogListColumnClick(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedCheckForce();
 	afx_msg void OnBnClickedLog();
+	afx_msg void OnEnscrollLog();
+	afx_msg void OnEnLinkLog(NMHDR* pNMHDR, LRESULT* pResult);
+
+	friend class CSyncTabCtrl;
 };
