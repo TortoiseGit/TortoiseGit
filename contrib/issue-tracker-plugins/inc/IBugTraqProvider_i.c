@@ -5,25 +5,25 @@
 /* link this file in with the server and any clients */
 
 
- /* File created by MIDL compiler version 7.00.0500 */
-/* at Sat Oct 18 18:21:47 2008
+ /* File created by MIDL compiler version 8.00.0595 */
+/* at Sun Aug 11 13:07:32 2013
  */
-/* Compiler settings for .\IBugTraqProvider.idl:
-    Oicf, W4, Zp8, env=Win32 (32b run)
+/* Compiler settings for IBugTraqProvider.idl:
+    Oicf, W1, Zp8, env=Win32 (32b run), target_arch=X86 8.00.0595
     protocol : dce , ms_ext, c_ext, robust
-    error checks: allocation ref bounds_check enum stub_data 
-    VC __declspec() decoration level: 
+    error checks: allocation ref bounds_check enum stub_data
+    VC __declspec() decoration level:
          __declspec(uuid()), __declspec(selectany), __declspec(novtable)
          DECLSPEC_UUID(), MIDL_INTERFACE()
 */
-//@@MIDL_FILE_HEADING(  )
+/* @@MIDL_FILE_HEADING(  ) */
 
 #pragma warning( disable: 4049 )  /* more than 64k source lines */
 
 
 #ifdef __cplusplus
 extern "C"{
-#endif 
+#endif
 
 
 #include <rpc.h>

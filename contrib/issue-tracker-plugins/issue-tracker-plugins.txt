@@ -38,7 +38,7 @@ So, the user story looks like this:
  "From the TGit commit dialog, the user should be able to display up a list of
   assigned tickets from the issue-tracker associated with that repository. The
   user should be able to pick one or more tasks from this list."
-  
+
  "This will populate the commit message with the information required by the
   issue-tracker's Git server-side post-commit hook."
 
@@ -51,10 +51,10 @@ So, the user story looks like this:
 Implementing an issue tracker plugin
 ------------------------------------
 
-To write an integration plugin, you implement the IBugTraqProvider COM
-interface, and register your object as implementing the "TortoiseSVN BugTraq
-Providers" component category. This registration makes it easy for the
-settings dialog to find a list of available plugins.
+To write an integration plugin, you implement the IBugTraqProvider and/or
+the IBugTraqProvider2 COM interface, and register your object as
+implementing the "TortoiseGit BugTraq Providers" component category.
+This registration makes it easy for the settings dialog to find a list of available plugins.
 
 The IBugTraqProvider interface is documented in the inc\IBugTraqProvider.idl
 file.
@@ -62,8 +62,8 @@ file.
 The component category is defined (in C++) as follows:
 
 // {3494FA92-B139-4730-9591-01135D5E7831}
-DEFINE_GUID(CATID_BugTraqProvider, 
-			0x3494fa92, 0xb139, 0x4730, 0x95, 0x91, 0x1, 0x13, 0x5d, 0x5e, 0x78, 0x31);
+DEFINE_GUID(CATID_BugTraqProvider,
+            0x3494fa92, 0xb139, 0x4730, 0x95, 0x91, 0x1, 0x13, 0x5d, 0x5e, 0x78, 0x31);
 
 
 Example Plugins
@@ -73,7 +73,7 @@ There are two example plugins in this folder.
 
  - ExampleAtlPlugin, written in C++, using ATL.
  - ExampleCsPlugin, written in C#.
- 
+
 They get the list of available "issues" from a hard-coded list, rather than a
 database or web service, but this should be sufficient to demonstrate the
 plugin API.
@@ -98,7 +98,7 @@ files:
  * IBugTraqProvider.idl
    This is a copy of the src\IBugTraqProvider\IBugTraqProvider.idl file; it's
    provided for reference; you'll probably use the files below.
-   
+
  * IBugTraqProvider_h.h, IBugTraqProvider_i.c
    These are the files you'll probably use if you implement a plugin in C++.
 
@@ -115,7 +115,7 @@ Walkthrough: Creating an issue tracker plugin in C#
 
 (This assumes a basic familiarity with creating Windows Forms applications).
 
-In Visual Studio 2005 or 2008, create a new "Class Library" project; give it a
+In Visual Studio, create a new "Class Library" project; give it a
 name.
 
 Delete the "Class1" class; we'll create another one in a moment.
@@ -150,33 +150,33 @@ The class also needs some attributes; it should look like this:
      ClassInterface(ClassInterfaceType.None)]
     public class Provider : IBugTraqProvider
     {
-		// etc.
+        // etc.
 
 (Replace "PUT-GUID-HERE" with a new GUID).
 
 Add a class to hold our example ticket data:
 
-	internal class TicketItem
-	{
-		private readonly int _ticketNumber;
-		private readonly string _ticketSummary;
+    internal class TicketItem
+    {
+        private readonly int _ticketNumber;
+        private readonly string _ticketSummary;
 
-		public TicketItem(int ticketNumber, string ticketSummary)
-		{
-			_ticketNumber = ticketNumber;
-			_ticketSummary = ticketSummary;
-		}
+        public TicketItem(int ticketNumber, string ticketSummary)
+        {
+            _ticketNumber = ticketNumber;
+            _ticketSummary = ticketSummary;
+        }
 
-		public int Number
-		{
-			get { return _ticketNumber; }
-		}
+        public int Number
+        {
+            get { return _ticketNumber; }
+        }
 
-		public string Summary
-		{
-			get { return _ticketSummary; }
-		}
-	}
+        public string Summary
+        {
+            get { return _ticketSummary; }
+        }
+    }
 
 We can now implement the GetCommitMessage method as follows:
 
@@ -242,23 +242,23 @@ following properties:
 
 Change the class so that it looks like this:
 
-	partial class MyIssuesForm : Form
-	{
-		private readonly IEnumerable<TicketItem> _tickets;
-		private readonly List<TicketItem> _ticketsAffected = new List<TicketItem>();
+    partial class MyIssuesForm : Form
+    {
+        private readonly IEnumerable<TicketItem> _tickets;
+        private readonly List<TicketItem> _ticketsAffected = new List<TicketItem>();
 
-		public MyIssuesForm(IEnumerable<TicketItem> tickets)
-		{
-			InitializeComponent();
-			_tickets = tickets;
-		}
+        public MyIssuesForm(IEnumerable<TicketItem> tickets)
+        {
+            InitializeComponent();
+            _tickets = tickets;
+        }
 
-		public IEnumerable<TicketItem> TicketsFixed
-		{
-			get { return _ticketsAffected; }
-		}
+        public IEnumerable<TicketItem> TicketsFixed
+        {
+            get { return _ticketsAffected; }
+        }
 
-		// etc.
+        // etc.
 
 Then implement some event handlers in MyIssuesForm as follows:
 
@@ -297,7 +297,7 @@ Then implement some event handlers in MyIssuesForm as follows:
 Registering your new C# class can be done by using RegAsm from the command
 line, as follows:
 
-	RegAsm bin\Debug\MyCsPlugin.dll /codebase /regfile:MyCsPlugin.reg
+    RegAsm bin\Debug\MyCsPlugin.dll /codebase /regfile:MyCsPlugin.reg
 
 You'll need to edit the .REG file, by adding another "Implemented Categories"
 entry that looks like this:

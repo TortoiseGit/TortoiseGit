@@ -12,7 +12,7 @@ namespace ExampleCsPlugin
         ClassInterface(ClassInterfaceType.None)]
     public class MyPlugin : Interop.BugTraqProvider.IBugTraqProvider2, Interop.BugTraqProvider.IBugTraqProvider
     {
-		private List<TicketItem> selectedTickets = new List<TicketItem>();
+        private List<TicketItem> selectedTickets = new List<TicketItem>();
 
         public bool ValidateParameters(IntPtr hParentWnd, string parameters)
         {
@@ -27,74 +27,91 @@ namespace ExampleCsPlugin
         public string GetCommitMessage(IntPtr hParentWnd, string parameters, string commonRoot, string[] pathList,
                                        string originalMessage)
         {
-			return GetCommitMessage2( hParentWnd, parameters, "", commonRoot, pathList, originalMessage );
+            string[] revPropNames = new string[0];
+            string[] revPropValues = new string[0];
+            string dummystring = "";
+            return GetCommitMessage2( hParentWnd, parameters, "", commonRoot, pathList, originalMessage, "", out dummystring, out revPropNames, out revPropValues );
         }
 
-		public string GetCommitMessage2( IntPtr hParentWnd, string parameters, string commonURL, string commonRoot, string[] pathList,
-							   string originalMessage )
-		{
-			try
-			{
-				List<TicketItem> tickets = new List<TicketItem>( );
-				tickets.Add( new TicketItem( 12, "Service doesn't start on Windows Vista" ) );
-				tickets.Add( new TicketItem( 19, "About box doesn't render correctly in large fonts mode" ) );
+        public string GetCommitMessage2( IntPtr hParentWnd, string parameters, string commonURL, string commonRoot, string[] pathList,
+                               string originalMessage, string bugID, out string bugIDOut, out string[] revPropNames, out string[] revPropValues )
+        {
+            try
+            {
+                List<TicketItem> tickets = new List<TicketItem>( );
+                tickets.Add( new TicketItem( 12, "Service doesn't start on Windows Vista" ) );
+                tickets.Add( new TicketItem( 19, "About box doesn't render correctly in large fonts mode" ) );
 
-				/*
-								tickets.Add(new TicketItem(88, commonRoot));
-								foreach (string path in pathList)
-									tickets.Add(new TicketItem(99, path));
-				 */
+                /*
+                                tickets.Add(new TicketItem(88, commonRoot));
+                                foreach (string path in pathList)
+                                    tickets.Add(new TicketItem(99, path));
+                 */
+                revPropNames = new string[2];
+                revPropValues = new string[2];
+                revPropNames[0] = "bugtraq:issueIDs";
+                revPropNames[1] = "myownproperty";
+                revPropValues[0] = "13, 16, 17";
+                revPropValues[1] = "myownvalue";
 
-				MyIssuesForm form = new MyIssuesForm( tickets );
-				if ( form.ShowDialog( ) != DialogResult.OK )
-					return originalMessage;
+                bugIDOut = bugID + "added";
 
-				StringBuilder result = new StringBuilder( originalMessage );
-				if ( originalMessage.Length != 0 && !originalMessage.EndsWith( "\n" ) )
-					result.AppendLine( );
+                MyIssuesForm form = new MyIssuesForm( tickets );
+                if ( form.ShowDialog( ) != DialogResult.OK )
+                    return originalMessage;
 
-				foreach ( TicketItem ticket in form.TicketsFixed )
-				{
-					result.AppendFormat( "Fixed #{0}: {1}", ticket.Number, ticket.Summary );
-					result.AppendLine( );
-					selectedTickets.Add( ticket );
-				}
+                StringBuilder result = new StringBuilder( originalMessage );
+                if ( originalMessage.Length != 0 && !originalMessage.EndsWith( "\n" ) )
+                    result.AppendLine( );
 
-				return result.ToString( );
-			}
-			catch ( Exception ex )
-			{
-				MessageBox.Show( ex.ToString( ) );
-				throw;
-			}
-		}
+                foreach ( TicketItem ticket in form.TicketsFixed )
+                {
+                    result.AppendFormat( "Fixed #{0}: {1}", ticket.Number, ticket.Summary );
+                    result.AppendLine( );
+                    selectedTickets.Add( ticket );
+                }
 
-		public string OnCommitFinished( IntPtr hParentWnd, string commonRoot, string[] pathList, string logMessage, int revision )
-		{
-			// we now could use the selectedTickets member to find out which tickets
-			// were assigned to this commit.
-			CommitFinishedForm form = new CommitFinishedForm( selectedTickets );
-			if ( form.ShowDialog( ) != DialogResult.OK )
-				return "";
-			// just for testing, we return an error string
-			return "an error happened while closing the issue";
-		}
 
-		public bool HasOptions()
-		{
-			return true;
-		}
+                return result.ToString( );
+            }
+            catch ( Exception ex )
+            {
+                MessageBox.Show( ex.ToString( ) );
+                throw;
+            }
+        }
 
-		public string ShowOptionsDialog( IntPtr hParentWnd, string parameters )
-		{
-			OptionsForm form = new OptionsForm( );
-			if ( form.ShowDialog( ) != DialogResult.OK )
-				return "";
+        public string CheckCommit( IntPtr hParentWnd, string parameters, string commonURL, string commonRoot, string[] pathList, string commitMessage )
+        {
+            return "the commit log message is not correct.";
+        }
 
-			string options = form.checkBox1.Checked ? "option1" : "";
-			options += form.checkBox2.Checked ? "option2" : "";
-			return options;
-		}
+        public string OnCommitFinished( IntPtr hParentWnd, string commonRoot, string[] pathList, string logMessage, int revision )
+        {
+            // we now could use the selectedTickets member to find out which tickets
+            // were assigned to this commit.
+            CommitFinishedForm form = new CommitFinishedForm( selectedTickets );
+            if ( form.ShowDialog( ) != DialogResult.OK )
+                return "";
+            // just for testing, we return an error string
+            return "an error happened while closing the issue";
+        }
 
-	}
+        public bool HasOptions()
+        {
+            return true;
+        }
+
+        public string ShowOptionsDialog( IntPtr hParentWnd, string parameters )
+        {
+            OptionsForm form = new OptionsForm( );
+            if ( form.ShowDialog( ) != DialogResult.OK )
+                return "";
+
+            string options = form.checkBox1.Checked ? "option1" : "";
+            options += form.checkBox2.Checked ? "option2" : "";
+            return options;
+        }
+
+    }
 }

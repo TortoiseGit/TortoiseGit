@@ -9,17 +9,17 @@ using System.Windows.Forms;
 
 namespace ExampleCsPlugin
 {
-	public partial class CommitFinishedForm : Form
-	{
-		public CommitFinishedForm( List<TicketItem> selectedTickets )
-		{
-			InitializeComponent( );
-			string selectedIssuesString = "Selected Issues :";
-			foreach (TicketItem ticket in selectedTickets)
-			{
-				selectedIssuesString += ticket.Number.ToString( ) + " ";
-			}
-			label1.Text = selectedIssuesString;
-		}
-	}
+    public partial class CommitFinishedForm : Form
+    {
+        public CommitFinishedForm( List<TicketItem> selectedTickets )
+        {
+            InitializeComponent( );
+            string selectedIssuesString = "Selected Issues :";
+            foreach (TicketItem ticket in selectedTickets)
+            {
+                selectedIssuesString += ticket.Number.ToString( ) + " ";
+            }
+            label1.Text = selectedIssuesString;
+        }
+    }
 }

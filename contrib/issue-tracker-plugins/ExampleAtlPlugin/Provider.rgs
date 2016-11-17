@@ -21,7 +21,7 @@ HKCR
 				val ThreadingModel = s 'Apartment'
 			}
 			'TypeLib' = s '{FF484CE5-A2FA-44E1-85C0-45B56A83CC02}'
-			
+
 			'Implemented Categories'
 			{
 				'{3494FA92-B139-4730-9591-01135D5E7831}'

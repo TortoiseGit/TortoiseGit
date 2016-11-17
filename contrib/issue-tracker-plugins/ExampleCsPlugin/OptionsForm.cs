@@ -9,12 +9,12 @@ using System.Windows.Forms;
 
 namespace ExampleCsPlugin
 {
-	public partial class OptionsForm : Form
-	{
-		public OptionsForm( )
-		{
-			InitializeComponent( );
-		}
+    public partial class OptionsForm : Form
+    {
+        public OptionsForm( )
+        {
+            InitializeComponent( );
+        }
 
-	}
+    }
 }
