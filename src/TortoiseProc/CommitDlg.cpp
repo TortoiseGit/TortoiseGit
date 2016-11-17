@@ -2194,26 +2194,6 @@ void CCommitDlg::OnBnClickedBugtraqbutton()
 				SetDlgItemText(IDC_BUGID, m_sBugID);
 			}
 			m_cLogMessage.SetText((LPCTSTR)temp);
-			BSTR HUGEP *pbRevNames;
-			BSTR HUGEP *pbRevValues;
-
-			HRESULT hr1 = SafeArrayAccessData(revPropNames, (void HUGEP**)&pbRevNames);
-			if (SUCCEEDED(hr1))
-			{
-				HRESULT hr2 = SafeArrayAccessData(revPropValues, (void HUGEP**)&pbRevValues);
-				if (SUCCEEDED(hr2))
-				{
-//					if (revPropNames->rgsabound->cElements == revPropValues->rgsabound->cElements)
-//					{
-//						for (ULONG i = 0; i < revPropNames->rgsabound->cElements; ++i)
-//						{
-//							m_revProps[pbRevNames[i]] = pbRevValues[i];
-//						}
-//					}
-					SafeArrayUnaccessData(revPropValues);
-				}
-				SafeArrayUnaccessData(revPropNames);
-			}
 		}
 	}
 	else

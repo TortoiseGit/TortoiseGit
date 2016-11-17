@@ -47,6 +47,8 @@ namespace ExampleCsPlugin
                                 foreach (string path in pathList)
                                     tickets.Add(new TicketItem(99, path));
                  */
+
+                /* Please note: revPropNames and revPropValues are ignored by TortoiseGit! However, you must return at least empty arrays */
                 revPropNames = new string[2];
                 revPropValues = new string[2];
                 revPropNames[0] = "bugtraq:issueIDs";

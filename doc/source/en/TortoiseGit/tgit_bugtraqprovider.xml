@@ -252,10 +252,7 @@ HRESULT GetCommitMessage2 (
         </para>
         <para>
             The <literal>revPropNames</literal> and <literal>revPropValues</literal>
-            return parameters can contain name/value pairs for revision properties
-            that the commit should set. A plugin must make sure that both arrays
-            have the same size on return! Each property name in <literal>revPropNames</literal>
-            must also have a corresponding value in <literal>revPropValues</literal>.
+            are only honored by TortoiseSVN and are ignored by TortoiseGit.
             If no revision properties are to be set, the plugin must return empty arrays.
         </para>
 <programlisting>

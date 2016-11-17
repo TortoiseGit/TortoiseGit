@@ -161,7 +161,7 @@ HRESULT STDMETHODCALLTYPE CProvider::GetCommitMessage2(
 
         message = A2T((const char *)buffer);
 
-
+        /* Please note: revPropNames and revPropValues are ignored by TortoiseGit! However, you must return at least empty arrays */
         CString propName1 = _T("bugtraq:issueIDs");
         CString propName2 = _T("myownproperty");
         CString propValue1 = _T("13, 16, 17");
