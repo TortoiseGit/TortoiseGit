@@ -91,7 +91,6 @@ BEGIN_MESSAGE_MAP(CSyncDlg, CResizableStandAloneDialog)
 	ON_CBN_EDITCHANGE(IDC_COMBOBOXEX_REMOTE_BRANCH, &CSyncDlg::OnCbnEditchangeComboboxex)
 	ON_MESSAGE(MSG_PROGRESSDLG_UPDATE_UI, OnProgressUpdateUI)
 	ON_MESSAGE(WM_PROG_CMD_FINISH, OnProgCmdFinish)
-	ON_NOTIFY(LVN_COLUMNCLICK, IDC_IN_LOGLIST, OnLvnInLogListColumnClick)
 	ON_BN_CLICKED(IDC_BUTTON_COMMIT, &CSyncDlg::OnBnClickedButtonCommit)
 	ON_BN_CLICKED(IDC_BUTTON_SUBMODULE, &CSyncDlg::OnBnClickedButtonSubmodule)
 	ON_BN_CLICKED(IDC_BUTTON_STASH, &CSyncDlg::OnBnClickedButtonStash)
@@ -1728,12 +1727,6 @@ void CSyncDlg::OnTimer(UINT_PTR nIDEvent)
 		KillTimer(IDT_INPUT);
 		this->FetchOutList(true);
 	}
-}
-
-
-void CSyncDlg::OnLvnInLogListColumnClick(NMHDR * /* pNMHDR */, LRESULT *pResult)
-{
-	*pResult = 0;
 }
 
 LRESULT CSyncDlg::OnTaskbarBtnCreated(WPARAM wParam, LPARAM lParam)
