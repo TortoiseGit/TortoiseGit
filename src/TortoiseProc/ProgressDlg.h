@@ -49,10 +49,8 @@ public:
 	}
 
 	PostCmd(UINT msgId, PostCmdAction action)
-	: icon(0)
-	, action(action)
+	: PostCmd(0, msgId, action)
 	{
-		label.LoadString(msgId);
 	}
 
 	PostCmd(UINT icon, CString label, PostCmdAction action)
@@ -63,9 +61,7 @@ public:
 	}
 
 	PostCmd(CString label, PostCmdAction action)
-	: icon(0)
-	, action(action)
-	, label(label)
+	: PostCmd(0, label, action)
 	{
 	}
 
