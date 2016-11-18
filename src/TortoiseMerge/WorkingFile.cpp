@@ -72,7 +72,7 @@ void CWorkingFile::SetReflectedName(const CString& newReflectedName)
 // Make an empty file with this name
 void CWorkingFile::CreateEmptyFile()
 {
-	CAutoFile hFile = CreateFile(m_sFilename, GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+	CAutoFile hFile = CreateFile(m_sFilename, GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 }
 
 // Move the details of the specified file to the current one, and then mark the specified file
