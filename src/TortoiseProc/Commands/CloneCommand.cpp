@@ -215,11 +215,7 @@ bool CloneCommand::Execute()
 				cmd+=_T(" -t ")+dlg.m_strSVNTags;
 
 			if(dlg.m_bSVNFrom)
-			{
-				CString str;
-				str.Format(_T("%d:HEAD"),dlg.m_nSVNFrom);
-				cmd+=_T(" -r ")+str;
-			}
+				cmd.AppendFormat(L" -r %d:HEAD", dlg.m_nSVNFrom);
 
 			if(dlg.m_bSVNUserName)
 			{

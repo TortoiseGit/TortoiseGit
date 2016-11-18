@@ -788,11 +788,7 @@ LRESULT CMainWindow::DoCommand(int id, LPARAM lParam)
             CString cmd;
             cmd.Format(_T("\"%sTortoiseGitProc.exe\" /command:resolve /path:\"%s\" /closeonend:1 /noquestion /skipcheck /silent"), (LPCTSTR)CPathUtils::GetAppDirectory(), selectionResult.c_str());
             if (resolveMsgWnd)
-            {
-                CString s;
-                s.Format(L" /resolvemsghwnd:%I64d /resolvemsgwparam:%I64d /resolvemsglparam:%I64d", (__int64)resolveMsgWnd, (__int64)resolveMsgWParam, (__int64)resolveMsgLParam);
-                cmd += s;
-            }
+                cmd.AppendFormat(L" /resolvemsghwnd:%I64d /resolvemsgwparam:%I64d /resolvemsglparam:%I64d", (__int64)resolveMsgWnd, (__int64)resolveMsgWParam, (__int64)resolveMsgLParam);
 
             STARTUPINFO startup = { 0 };
             PROCESS_INFORMATION process = { 0 };
