@@ -500,9 +500,9 @@ int CLogCache::SaveCache()
 
 void CLogCache::Sort()
 {
-	if(this->m_pCacheIndex)
-		qsort(m_pCacheIndex->m_Item, m_pCacheIndex->m_Header.m_ItemCount,sizeof(SLogCacheIndexItem), Compare);
-	}
+	if (this->m_pCacheIndex)
+		qsort(m_pCacheIndex->m_Item, m_pCacheIndex->m_Header.m_ItemCount, sizeof(SLogCacheIndexItem), Compare);
+}
 
 int CLogCache::ClearAllParent()
 {

@@ -26,7 +26,6 @@
 bool ImportPatchCommand::Execute()
 {
 	CImportPatchDlg dlg;
-//	dlg.m_bIsTag=TRUE;
 	CString cmd;
 	CString output;
 

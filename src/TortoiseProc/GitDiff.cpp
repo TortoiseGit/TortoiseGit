@@ -46,8 +46,7 @@ int CGitDiff::SubmoduleDiffNull(const CTGitPath * pPath, const git_revnum_t &rev
 		return -1;
 	}
 
-	int start=0;
-	start=output.Find(_T(' '),start);
+	int start = output.Find(L' ');
 	if(start>0)
 	{
 		if (rev1 != GIT_REV_ZERO) // in ls-files the hash is in the second column; in ls-tree it's in the third one
