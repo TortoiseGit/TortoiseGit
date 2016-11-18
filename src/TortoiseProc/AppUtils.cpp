@@ -123,7 +123,7 @@ bool CAppUtils::StashSave(const CString& msg, bool showPull, bool pullShowPush, 
 		{
 			CString message = dlg.m_sMessage;
 			message.Replace(_T("\""), _T("\"\""));
-			cmd += _T(" -- \"") + message + _T("\"");
+			cmd += L" -- \"" + message + L'"';
 		}
 
 		CProgressDlg progress;
@@ -167,7 +167,7 @@ bool CAppUtils::StashApply(CString ref, bool showChanges /* true */)
 
 	bool hasConflicts = (out.Find(_T("CONFLICT")) >= 0);
 	if (ret && !(ret == 1 && hasConflicts))
-		CMessageBox::Show(nullptr, CString(MAKEINTRESOURCE(IDS_PROC_STASHAPPLYFAILED)) + _T("\n") + out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+		CMessageBox::Show(nullptr, CString(MAKEINTRESOURCE(IDS_PROC_STASHAPPLYFAILED)) + L'\n' + out, L"TortoiseGit", MB_OK | MB_ICONERROR);
 	else
 	{
 		CString message;
@@ -176,7 +176,7 @@ bool CAppUtils::StashApply(CString ref, bool showChanges /* true */)
 			message.LoadString(IDS_PROC_STASHAPPLYFAILEDCONFLICTS);
 		if (showChanges)
 		{
-			if (CMessageBox::Show(nullptr, message + _T("\n") + CString(MAKEINTRESOURCE(IDS_SEECHANGES)), _T("TortoiseGit"), MB_YESNO | MB_ICONINFORMATION) == IDYES)
+			if (CMessageBox::Show(nullptr, message + L'\n' + CString(MAKEINTRESOURCE(IDS_SEECHANGES)), L"TortoiseGit", MB_YESNO | MB_ICONINFORMATION) == IDYES)
 			{
 				CChangedDlg dlg;
 				dlg.m_pathList.AddPath(CTGitPath());
@@ -212,7 +212,7 @@ bool CAppUtils::StashPop(int showChanges /* = 1 */)
 
 	bool hasConflicts = (out.Find(_T("CONFLICT")) >= 0);
 	if (ret && !(ret == 1 && hasConflicts))
-		CMessageBox::Show(nullptr, CString(MAKEINTRESOURCE(IDS_PROC_STASHPOPFAILED)) + _T("\n") + out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+		CMessageBox::Show(nullptr, CString(MAKEINTRESOURCE(IDS_PROC_STASHPOPFAILED)) + L'\n' + out, L"TortoiseGit", MB_OK | MB_ICONERROR);
 	else
 	{
 		CString message;
@@ -281,7 +281,7 @@ BOOL CAppUtils::StartExtMerge(bool bAlternative,
 			(ext == _T(".cur")))
 		{
 			com = CPathUtils::GetAppDirectory() + _T("TortoiseGitIDiff.exe");
-			com = _T("\"") + com + _T("\"");
+			com = L'"' + com + L'"';
 			com = com + _T(" /base:%base /theirs:%theirs /mine:%mine /result:%merged");
 			com = com + _T(" /basetitle:%bname /theirstitle:%tname /minetitle:%yname");
 			if (resolveMsgHwnd)
@@ -292,7 +292,7 @@ BOOL CAppUtils::StartExtMerge(bool bAlternative,
 			// use TortoiseGitMerge
 			bInternal = true;
 			com = CPathUtils::GetAppDirectory() + _T("TortoiseGitMerge.exe");
-			com = _T("\"") + com + _T("\"");
+			com = L'"' + com + L'"';
 			com = com + _T(" /base:%base /theirs:%theirs /mine:%mine /merged:%merged");
 			com = com + _T(" /basename:%bname /theirsname:%tname /minename:%yname /mergedname:%mname");
 			com += _T(" /saverequired");
@@ -305,16 +305,16 @@ BOOL CAppUtils::StartExtMerge(bool bAlternative,
 		{
 			com += L" /groupuuid:\"";
 			com += g_sGroupingUUID;
-			com += L"\"";
+			com += L'"';
 		}
 	}
 	// check if the params are set. If not, just add the files to the command line
 	if ((com.Find(_T("%merged"))<0)&&(com.Find(_T("%base"))<0)&&(com.Find(_T("%theirs"))<0)&&(com.Find(_T("%mine"))<0))
 	{
-		com += _T(" \"")+basefile.GetWinPathString()+_T("\"");
-		com += _T(" \"")+theirfile.GetWinPathString()+_T("\"");
-		com += _T(" \"")+yourfile.GetWinPathString()+_T("\"");
-		com += _T(" \"")+mergedfile.GetWinPathString()+_T("\"");
+		com += L" \"" + basefile.GetWinPathString() + L'"';
+		com += L" \"" + theirfile.GetWinPathString() + L'"';
+		com += L" \"" + yourfile.GetWinPathString() + L'"';
+		com += L" \"" + mergedfile.GetWinPathString() + L'"';
 	}
 	if (basefile.IsEmpty())
 	{
@@ -322,28 +322,28 @@ BOOL CAppUtils::StartExtMerge(bool bAlternative,
 		com.Replace(_T("%base"), _T(""));
 	}
 	else
-		com.Replace(_T("%base"), _T("\"") + basefile.GetWinPathString() + _T("\""));
+		com.Replace(L"%base", L'"' + basefile.GetWinPathString() + L'"');
 	if (theirfile.IsEmpty())
 	{
 		com.Replace(_T("/theirs:%theirs"), _T(""));
 		com.Replace(_T("%theirs"), _T(""));
 	}
 	else
-		com.Replace(_T("%theirs"), _T("\"") + theirfile.GetWinPathString() + _T("\""));
+		com.Replace(L"%theirs", L'"' + theirfile.GetWinPathString() + L'"');
 	if (yourfile.IsEmpty())
 	{
 		com.Replace(_T("/mine:%mine"), _T(""));
 		com.Replace(_T("%mine"), _T(""));
 	}
 	else
-		com.Replace(_T("%mine"), _T("\"") + yourfile.GetWinPathString() + _T("\""));
+		com.Replace(L"%mine", L'"' + yourfile.GetWinPathString() + L'"');
 	if (mergedfile.IsEmpty())
 	{
 		com.Replace(_T("/merged:%merged"), _T(""));
 		com.Replace(_T("%merged"), _T(""));
 	}
 	else
-		com.Replace(_T("%merged"), _T("\"") + mergedfile.GetWinPathString() + _T("\""));
+		com.Replace(L"%merged", L'"' + mergedfile.GetWinPathString() + L'"');
 	if (basename.IsEmpty())
 	{
 		if (basefile.IsEmpty())
@@ -352,10 +352,10 @@ BOOL CAppUtils::StartExtMerge(bool bAlternative,
 			com.Replace(_T("%bname"), _T(""));
 		}
 		else
-			com.Replace(_T("%bname"), _T("\"") + basefile.GetUIFileOrDirectoryName() + _T("\""));
+			com.Replace(L"%bname", L'"' + basefile.GetUIFileOrDirectoryName() + L'"');
 	}
 	else
-		com.Replace(_T("%bname"), _T("\"") + basename + _T("\""));
+		com.Replace(L"%bname", L'"' + basename + L'"');
 	if (theirname.IsEmpty())
 	{
 		if (theirfile.IsEmpty())
@@ -364,10 +364,10 @@ BOOL CAppUtils::StartExtMerge(bool bAlternative,
 			com.Replace(_T("%tname"), _T(""));
 		}
 		else
-			com.Replace(_T("%tname"), _T("\"") + theirfile.GetUIFileOrDirectoryName() + _T("\""));
+			com.Replace(L"%tname", L'"' + theirfile.GetUIFileOrDirectoryName() + L'"');
 	}
 	else
-		com.Replace(_T("%tname"), _T("\"") + theirname + _T("\""));
+		com.Replace(L"%tname", L'"' + theirname + L'"');
 	if (yourname.IsEmpty())
 	{
 		if (yourfile.IsEmpty())
@@ -376,10 +376,10 @@ BOOL CAppUtils::StartExtMerge(bool bAlternative,
 			com.Replace(_T("%yname"), _T(""));
 		}
 		else
-			com.Replace(_T("%yname"), _T("\"") + yourfile.GetUIFileOrDirectoryName() + _T("\""));
+			com.Replace(L"%yname", L'"' + yourfile.GetUIFileOrDirectoryName() + L'"');
 	}
 	else
-		com.Replace(_T("%yname"), _T("\"") + yourname + _T("\""));
+		com.Replace(L"%yname", L'"' + yourname + L'"');
 	if (mergedname.IsEmpty())
 	{
 		if (mergedfile.IsEmpty())
@@ -388,10 +388,10 @@ BOOL CAppUtils::StartExtMerge(bool bAlternative,
 			com.Replace(_T("%mname"), _T(""));
 		}
 		else
-			com.Replace(_T("%mname"), _T("\"") + mergedfile.GetUIFileOrDirectoryName() + _T("\""));
+			com.Replace(L"%mname", L'"' + mergedfile.GetUIFileOrDirectoryName() + L'"');
 	}
 	else
-		com.Replace(_T("%mname"), _T("\"") + mergedname + _T("\""));
+		com.Replace(L"%mname", L'"' + mergedname + L'"');
 
 	if ((bReadOnly)&&(bInternal))
 		com += _T(" /readonly");
@@ -411,20 +411,20 @@ BOOL CAppUtils::StartExtPatch(const CTGitPath& patchfile, const CTGitPath& dir, 
 	viewer = CPathUtils::GetAppDirectory();
 	viewer += _T("TortoiseGitMerge.exe");
 
-	viewer = _T("\"") + viewer + _T("\"");
-	viewer = viewer + _T(" /diff:\"") + patchfile.GetWinPathString() + _T("\"");
-	viewer = viewer + _T(" /patchpath:\"") + dir.GetWinPathString() + _T("\"");
+	viewer = L'"' + viewer + L'"';
+	viewer = viewer + L" /diff:\"" + patchfile.GetWinPathString() + L'"';
+	viewer = viewer + L" /patchpath:\"" + dir.GetWinPathString() + L'"';
 	if (bReversed)
 		viewer += _T(" /reversedpatch");
 	if (!sOriginalDescription.IsEmpty())
-		viewer = viewer + _T(" /patchoriginal:\"") + sOriginalDescription + _T("\"");
+		viewer = viewer + L" /patchoriginal:\"" + sOriginalDescription + L'"';
 	if (!sPatchedDescription.IsEmpty())
-		viewer = viewer + _T(" /patchpatched:\"") + sPatchedDescription + _T("\"");
+		viewer = viewer + L" /patchpatched:\"" + sPatchedDescription + L'"';
 	if (!g_sGroupingUUID.IsEmpty())
 	{
 		viewer += L" /groupuuid:\"";
 		viewer += g_sGroupingUUID;
-		viewer += L"\"";
+		viewer += L'"';
 	}
 	if(!LaunchApplication(viewer, IDS_ERR_DIFFVIEWSTART, !!bWait))
 		return FALSE;
@@ -456,9 +456,9 @@ CString CAppUtils::PickDiffTool(const CTGitPath& file1, const CTGitPath& file2)
 			(ext == _T(".cur")))
 		{
 			return
-				_T("\"") + CPathUtils::GetAppDirectory() + _T("TortoiseGitIDiff.exe") + _T("\"") +
+				L'"' + CPathUtils::GetAppDirectory() + L"TortoiseGitIDiff.exe" + L'"' +
 				_T(" /left:%base /right:%mine /lefttitle:%bname /righttitle:%yname") +
-				L" /groupuuid:\"" + g_sGroupingUUID + L"\"";
+				L" /groupuuid:\"" + g_sGroupingUUID + L'"';
 		}
 	}
 
@@ -498,14 +498,14 @@ bool CAppUtils::StartExtDiff(
 	if (bInternal)
 	{
 		viewer =
-			_T("\"") + CPathUtils::GetAppDirectory() + _T("TortoiseGitMerge.exe") + _T("\"") +
+			L'"' + CPathUtils::GetAppDirectory() + L"TortoiseGitMerge.exe" + L'"' +
 			_T(" /base:%base /mine:%mine /basename:%bname /minename:%yname") +
 			_T(" /basereflectedname:%bpath /minereflectedname:%ypath");
 		if (!g_sGroupingUUID.IsEmpty())
 		{
 			viewer += L" /groupuuid:\"";
 			viewer += g_sGroupingUUID;
-			viewer += L"\"";
+			viewer += L'"';
 		}
 		if (flags.bBlame)
 			viewer += _T(" /blame");
@@ -513,29 +513,29 @@ bool CAppUtils::StartExtDiff(
 	// check if the params are set. If not, just add the files to the command line
 	if ((viewer.Find(_T("%base"))<0)&&(viewer.Find(_T("%mine"))<0))
 	{
-		viewer += _T(" \"")+file1+_T("\"");
-		viewer += _T(" \"")+file2+_T("\"");
+		viewer += L" \"" + file1 + L'"';
+		viewer += L" \"" + file2 + L'"';
 	}
 	if (viewer.Find(_T("%base")) >= 0)
-		viewer.Replace(_T("%base"),  _T("\"")+file1+_T("\""));
+		viewer.Replace(L"%base", L'"' + file1 + L'"');
 	if (viewer.Find(_T("%mine")) >= 0)
-		viewer.Replace(_T("%mine"),  _T("\"")+file2+_T("\""));
+		viewer.Replace(L"%mine", L'"' + file2 + L'"');
 
 	if (sName1.IsEmpty())
-		viewer.Replace(_T("%bname"), _T("\"") + file1 + _T("\""));
+		viewer.Replace(L"%bname", L'"' + file1 + L'"');
 	else
-		viewer.Replace(_T("%bname"), _T("\"") + sName1 + _T("\""));
+		viewer.Replace(L"%bname", L'"' + sName1 + L'"');
 
 	if (sName2.IsEmpty())
-		viewer.Replace(_T("%yname"), _T("\"") + file2 + _T("\""));
+		viewer.Replace(L"%yname", L'"' + file2 + L'"');
 	else
-		viewer.Replace(_T("%yname"), _T("\"") + sName2 + _T("\""));
+		viewer.Replace(L"%yname", L'"' + sName2 + L'"');
 
-	viewer.Replace(_T("%bpath"), _T("\"") + originalFile1 + _T("\""));
-	viewer.Replace(_T("%ypath"), _T("\"") + originalFile2 + _T("\""));
+	viewer.Replace(L"%bpath", L'"' + originalFile1 + L'"');
+	viewer.Replace(L"%ypath", L'"' + originalFile2 + L'"');
 
-	viewer.Replace(_T("%brev"), _T("\"") + hash1 + _T("\""));
-	viewer.Replace(_T("%yrev"), _T("\"") + hash2 + _T("\""));
+	viewer.Replace(L"%brev", L'"' + hash1 + L'"');
+	viewer.Replace(L"%yrev", L'"' + hash2 + L'"');
 
 	if (flags.bReadOnly && bInternal)
 		viewer += _T(" /readonly");
@@ -571,14 +571,14 @@ BOOL CAppUtils::StartUnifiedDiffViewer(const CString& patchfile, const CString& 
 		viewer = CPathUtils::GetAppDirectory();
 		viewer += _T("TortoiseGitUDiff.exe");
 		// enquote the path to TortoiseGitUDiff
-		viewer = _T("\"") + viewer + _T("\"");
+		viewer = L'"' + viewer + L'"';
 		// add the params
 		viewer = viewer + _T(" /patchfile:%1 /title:\"%title\"");
 		if (!g_sGroupingUUID.IsEmpty())
 		{
 			viewer += L" /groupuuid:\"";
 			viewer += g_sGroupingUUID;
-			viewer += L"\"";
+			viewer += L'"';
 		}
 	}
 	if (viewer.Find(_T("%1"))>=0)
@@ -586,10 +586,10 @@ BOOL CAppUtils::StartUnifiedDiffViewer(const CString& patchfile, const CString& 
 		if (viewer.Find(_T("\"%1\"")) >= 0)
 			viewer.Replace(_T("%1"), patchfile);
 		else
-			viewer.Replace(_T("%1"), _T("\"") + patchfile + _T("\""));
+			viewer.Replace(L"%1", L'"' + patchfile + L'"');
 	}
 	else
-		viewer += _T(" \"") + patchfile + _T("\"");
+		viewer += L" \"" + patchfile + L'"';
 	if (viewer.Find(_T("%title")) >= 0)
 		viewer.Replace(_T("%title"), title);
 
@@ -615,7 +615,7 @@ BOOL CAppUtils::StartTextViewer(CString file)
 	auto buf2 = std::make_unique<TCHAR[]>(len + 1);
 	ExpandEnvironmentStrings(file, buf2.get(), len);
 	file = buf2.get();
-	file = _T("\"")+file+_T("\"");
+	file = L'"' + file + L'"';
 	if (viewer.IsEmpty())
 		return CAppUtils::ShowOpenWithDialog(file) ? TRUE : FALSE;
 	if (viewer.Find(_T("\"%1\"")) >= 0)
@@ -623,7 +623,7 @@ BOOL CAppUtils::StartTextViewer(CString file)
 	else if (viewer.Find(_T("%1")) >= 0)
 		viewer.Replace(_T("%1"),  file);
 	else
-		viewer += _T(" ");
+		viewer += L' ';
 		viewer += file;
 
 	if(!LaunchApplication(viewer, IDS_ERR_TEXTVIEWSTART, false))
@@ -698,7 +698,7 @@ bool CAppUtils::LaunchPAgent(const CString* keyfile, const CString* pRemote)
 	CString proc=CPathUtils::GetAppDirectory();
 	proc += _T("pageant.exe \"");
 	proc += key;
-	proc += _T("\"");
+	proc += L'"';
 
 	CString tempfile = GetTempFile();
 	::DeleteFile(tempfile);
@@ -708,7 +708,7 @@ bool CAppUtils::LaunchPAgent(const CString* keyfile, const CString* pRemote)
 	proc += _T("tgittouch.exe\"");
 	proc += _T(" \"");
 	proc += tempfile;
-	proc += _T("\"");
+	proc += L'"';
 
 	CString appDir = CPathUtils::GetAppDirectory();
 	bool b = LaunchApplication(proc, IDS_ERR_PAGEANT, true, &appDir);
@@ -758,20 +758,20 @@ bool CAppUtils::LaunchRemoteSetting()
 */
 bool CAppUtils::LaunchTortoiseBlame(const CString& sBlameFile, const CString& Rev, const CString& sParams)
 {
-	CString viewer = _T("\"") + CPathUtils::GetAppDirectory();
+	CString viewer = L'"' + CPathUtils::GetAppDirectory();
 	viewer += _T("TortoiseGitBlame.exe");
-	viewer += _T("\" \"") + sBlameFile + _T("\"");
-	//viewer += _T(" \"") + sLogFile + _T("\"");
-	//viewer += _T(" \"") + sOriginalFile + _T("\"");
+	viewer += L"\" \"" + sBlameFile + L'"';
+	//viewer += L" \"" + sLogFile + L'"';
+	//viewer += L" \"" + sOriginalFile + L'"';
 	if(!Rev.IsEmpty() && Rev != GIT_REV_ZERO)
 		viewer += L" /rev:" + Rev;
 	if (!g_sGroupingUUID.IsEmpty())
 	{
 		viewer += L" /groupuuid:\"";
 		viewer += g_sGroupingUUID;
-		viewer += L"\"";
+		viewer += L'"';
 	}
-	viewer += _T(" ")+sParams;
+	viewer += L' ' + sParams;
 
 	return LaunchApplication(viewer, IDS_ERR_TGITBLAME, false);
 }
@@ -998,10 +998,10 @@ bool CAppUtils::StartShowUnifiedDiff(HWND hWnd, const CTGitPath& url1, const git
 	CString sCmd;
 	sCmd.Format(_T("%s /command:showcompare /unified"),
 		(LPCTSTR)(CPathUtils::GetAppDirectory()+_T("TortoiseGitProc.exe")));
-	sCmd += _T(" /url1:\"") + url1.GetGitPathString() + _T("\"");
+	sCmd += L" /url1:\"" + url1.GetGitPathString() + L'"';
 	if (rev1.IsValid())
 		sCmd += _T(" /revision1:") + rev1.ToString();
-	sCmd += _T(" /url2:\"") + url2.GetGitPathString() + _T("\"");
+	sCmd += L" /url2:\"" + url2.GetGitPathString() + L'"';
 	if (rev2.IsValid())
 		sCmd += _T(" /revision2:") + rev2.ToString();
 	if (peg.IsValid())
@@ -1444,7 +1444,7 @@ bool CAppUtils::IgnoreFile(const CTGitPathList& path,bool IsMask)
 	if (ignoreDlg.DoModal() == IDOK)
 	{
 		CString ignorefile;
-		ignorefile = g_Git.m_CurrentDir + _T("\\");
+		ignorefile = g_Git.m_CurrentDir + L'\\';
 
 		switch (ignoreDlg.m_IgnoreFile)
 		{
@@ -1479,12 +1479,12 @@ bool CAppUtils::IgnoreFile(const CTGitPathList& path,bool IsMask)
 				if (ignoreDlg.m_IgnoreType == 0)
 				{
 					if (ignoreDlg.m_IgnoreFile != 1 && !path[i].GetContainingDirectory().GetGitPathString().IsEmpty())
-						ignorePattern += _T("/") + path[i].GetContainingDirectory().GetGitPathString();
+						ignorePattern += L'/' + path[i].GetContainingDirectory().GetGitPathString();
 
-					ignorePattern += _T("/");
+					ignorePattern += L'/';
 				}
 				if (IsMask)
-					ignorePattern += _T("*") + path[i].GetFileExtension();
+					ignorePattern += L'*' + path[i].GetFileExtension();
 				else
 					ignorePattern += path[i].GetFileOrDirectoryName();
 
@@ -1625,7 +1625,7 @@ void CAppUtils::RemoveTempMergeFile(const CTGitPath& path)
 CString CAppUtils::GetMergeTempFile(const CString& type, const CTGitPath &merge)
 {
 	CString file;
-	file = g_Git.CombinePath(merge.GetWinPathString() + _T(".") + type + merge.GetFileExtension());
+	file = g_Git.CombinePath(merge.GetWinPathString() + L'.' + type + merge.GetFileExtension());
 
 	return file;
 }
@@ -1831,7 +1831,7 @@ bool CAppUtils::ConflictEdit(const CTGitPath& path, bool bAlternativeTool /*= fa
 				::MoveFileEx(file,outfile,MOVEFILE_REPLACE_EXISTING|MOVEFILE_COPY_ALLOWED);
 			}
 			else
-				CMessageBox::Show(nullptr, output + L"\n" + err, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+				CMessageBox::Show(nullptr, output + L'\n' + err, L"TortoiseGit", MB_OK | MB_ICONERROR);
 	}
 
 	if(b_local && b_remote )
@@ -2173,7 +2173,7 @@ CString CAppUtils::GetClipboardLink(const CString &skipGitPrefix, int paramsCoun
 
 	if(!sClipboardText.IsEmpty())
 	{
-		if(sClipboardText[0] == _T('\"') && sClipboardText[sClipboardText.GetLength()-1] == _T('\"'))
+		if (sClipboardText[0] == L'"' && sClipboardText[sClipboardText.GetLength() - 1] == L'"')
 			sClipboardText=sClipboardText.Mid(1,sClipboardText.GetLength()-2);
 
 		for (const CString& prefix : { L"http://", L"https://", L"git://", L"ssh://", L"git@" })
@@ -2331,7 +2331,7 @@ int CAppUtils::SaveCommitUnicodeFile(const CString& filename, CString &message)
 		while (start >= 0 && start < len)
 		{
 			int oldStart = start;
-			start = message.Find(L"\n", oldStart);
+			start = message.Find(L'\n', oldStart);
 			CString line = message.Mid(oldStart);
 			if (start != -1)
 			{
@@ -2352,7 +2352,7 @@ int CAppUtils::SaveCommitUnicodeFile(const CString& filename, CString &message)
 					file.Write("\n", 1);
 				emptyLineCnt = 0;
 			}
-			CStringA lineA = CUnicodeUtils::GetMulti(line + L"\n", cp);
+			CStringA lineA = CUnicodeUtils::GetMulti(line + L'\n', cp);
 			file.Write((LPCSTR)lineA, lineA.GetLength());
 		}
 		file.Close();
@@ -2545,7 +2545,7 @@ bool CAppUtils::RebaseAfterFetch(const CString& upstream, int rebase, bool prese
 		else if (response == IDC_REBASE_POST_BUTTON)
 		{
 			CString cmd = _T("/command:log");
-			cmd += _T(" /path:\"") + g_Git.m_CurrentDir + _T("\"");
+			cmd += L" /path:\"" + g_Git.m_CurrentDir + L'"';
 			CAppUtils::RunTortoiseGitProc(cmd);
 			return true;
 		}
@@ -2560,7 +2560,7 @@ bool CAppUtils::RebaseAfterFetch(const CString& upstream, int rebase, bool prese
 				(LPCTSTR)g_Git.FixBranchName(dlg.m_Branch));
 			if (g_Git.Run(cmd, &out, &err, CP_UTF8))
 			{
-				CMessageBox::Show(nullptr, out + L"\n" + err, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+				CMessageBox::Show(nullptr, out + L'\n' + err, L"TortoiseGit", MB_OK | MB_ICONERROR);
 				return false;
 			}
 			CAppUtils::SendPatchMail(cmd, out);
@@ -2645,7 +2645,7 @@ static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool l
 		postCmdList.emplace_back(IDI_LOG, IDS_MENULOG, []
 		{
 			CString cmd = _T("/command:log");
-			cmd += _T(" /path:\"") + g_Git.m_CurrentDir + _T("\"");
+			cmd += L" /path:\"" + g_Git.m_CurrentDir + L'"';
 			CAppUtils::RunTortoiseGitProc(cmd);
 		});
 
@@ -2914,7 +2914,7 @@ bool CAppUtils::RequestPull(const CString& endrevision, const CString& repositor
 		{
 			CString msg;
 			msg.LoadString(IDS_ERR_PULLREUQESTFAILED);
-			MessageBox(nullptr, msg + _T("\n") + err, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			MessageBox(nullptr, msg + L'\n' + err, L"TortoiseGit", MB_OK | MB_ICONERROR);
 			return false;
 		}
 
@@ -3526,7 +3526,7 @@ bool CAppUtils::BisectOperation(const CString& op, const CString& ref, bool bIsM
 
 	if (!ref.IsEmpty())
 	{
-		cmd += _T(" ");
+		cmd += L' ';
 		cmd += ref;
 	}
 

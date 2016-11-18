@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2015 - TortoiseGit
+// Copyright (C) 2013-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -31,7 +31,7 @@ bool FetchProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, in
 
 	list->SetWindowTitle(IDS_PROGRS_TITLE_FETCH, g_Git.m_CurrentDir, sWindowTitle);
 	list->SetBackgroundImage(IDI_UPDATE_BKG);
-	list->ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_TITLE_FETCH)) + _T(" ") + m_url.GetGitPathString() + _T(" ") + m_RefSpec);
+	list->ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_TITLE_FETCH)) + L' ' + m_url.GetGitPathString() + L' ' + m_RefSpec);
 
 	CStringA url = CUnicodeUtils::GetUTF8(m_url.GetGitPathString());
 

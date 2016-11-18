@@ -44,7 +44,7 @@ bool DropMoveCommand::Execute()
 	else
 		droppath = droppath.Right(droppath.GetLength() - ProjectTop.GetLength() - 1);
 	if (!droppath.IsEmpty())
-		droppath += L"\\";
+		droppath += L'\\';
 
 	unsigned long count = 0;
 	pathList.RemoveAdminPaths();

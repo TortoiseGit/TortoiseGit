@@ -804,7 +804,7 @@ CString CCheckForUpdatesDlg::GetDownloadsDirectory()
 	{
 		folder = wcharPtr;
 		CoTaskMemFree(wcharPtr);
-		return folder.TrimRight(_T("\\")) + _T("\\");
+		return folder.TrimRight(L'\\') + L'\\';
 	}
 
 	return folder;

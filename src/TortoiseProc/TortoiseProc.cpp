@@ -173,7 +173,7 @@ BOOL CTortoiseProcApp::InitInstance()
 		sHelppath.Replace(sLang, _T("_en"));
 		if (GetLocaleInfo(MAKELCID(langId, SORT_DEFAULT), LOCALE_SISO3166CTRYNAME, buf, _countof(buf)))
 		{
-			sLang += _T("_");
+			sLang += L'_';
 			sLang += buf;
 			sHelppath.Replace(_T("_en"), sLang);
 			if (PathFileExists(sHelppath))
@@ -665,7 +665,7 @@ void CTortoiseProcApp::CheckUpgrade()
 
 		// smoothly migrate broken msysgit path settings
 		CString oldmsysGitSetting = CRegString(REG_MSYSGIT_PATH);
-		oldmsysGitSetting.TrimRight(_T("\\"));
+		oldmsysGitSetting.TrimRight(L'\\');
 		CString right = oldmsysGitSetting.Right(4);
 		if (oldmsysGitSetting.GetLength() > 4 && oldmsysGitSetting.Right(4) == _T("\\cmd"))
 		{

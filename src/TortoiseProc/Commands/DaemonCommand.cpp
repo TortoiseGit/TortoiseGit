@@ -74,7 +74,7 @@ bool DaemonCommand::Execute()
 		FreeAddrInfoA(result);
 
 	CString basePath(g_Git.m_CurrentDir);
-	basePath.TrimRight(L"\\");
+	basePath.TrimRight(L'\\');
 	if (basePath.GetLength() == 2)
 		basePath += L"\\.";
 

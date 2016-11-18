@@ -506,7 +506,7 @@ LRESULT CCommitIsOnRefsDlg::OnGettingRefsFinished(WPARAM, LPARAM)
 	{
 		CString msg;
 		msg.Format(IDS_PROC_REFINVALID, (LPCTSTR)m_Rev);
-		m_cRefList.ShowText(msg + _T("\n") + m_gitrev.GetLastErr());
+		m_cRefList.ShowText(msg + L'\n' + m_gitrev.GetLastErr());
 
 		InvalidateRect(nullptr);
 		RefreshCursor();

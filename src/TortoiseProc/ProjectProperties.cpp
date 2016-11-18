@@ -332,7 +332,7 @@ std::vector<CHARRANGE> ProjectProperties::FindBugIDPositions(const CString& msg)
 			offset1 = sMsg.GetLength() - sBugLine.GetLength() + sFirstPart.GetLength();
 		else
 			offset1 = sFirstPart.GetLength();
-		sBugIDPart.Trim(_T(","));
+		sBugIDPart.Trim(L',');
 		while (sBugIDPart.Find(',')>=0)
 		{
 			offset2 = offset1 + sBugIDPart.Find(',');
@@ -381,7 +381,7 @@ CString ProjectProperties::FindBugID(const CString& msg)
 		for (const auto& id : bugIDs)
 		{
 			sRet += id;
-			sRet += _T(" ");
+			sRet += L' ';
 		}
 		sRet.Trim();
 	}

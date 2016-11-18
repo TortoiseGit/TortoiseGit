@@ -102,13 +102,13 @@ CString CWorkingFile::GetWindowName() const
 	{
 		// We don't have a proper name - use the filename part of the path
 		// return the filename part of the path.
-		return CPathUtils::GetFileNameFromPath(m_sFilename) + _T(" ") + sErrMsg;
+		return CPathUtils::GetFileNameFromPath(m_sFilename) + L' ' + sErrMsg;
 	}
 	else if (sErrMsg.IsEmpty())
 	{
 		return m_sDescriptiveName;
 	}
-	return m_sDescriptiveName + _T(" ") + sErrMsg;
+	return m_sDescriptiveName + L' ' + sErrMsg;
 }
 
 bool CWorkingFile::Exists() const

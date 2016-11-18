@@ -403,7 +403,7 @@ CString CBrowseRefsDlg::GetSelectedRef(bool onlyIfLeaf, bool pickFirstSelIfMulti
 				ref = ref.Mid(5);
 			if (CStringUtils::StartsWith(ref, L"heads/"))
 				ref = ref.Mid(6);
-			refs += ref + _T(" ");
+			refs += ref + L' ';
 		}
 		return refs.Trim();
 	}
@@ -603,7 +603,7 @@ void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNa
 			m_ListRefLeafs.SetItemText(indexItem,eCol_LastAuthor, pTree->m_csAuthor);
 			m_ListRefLeafs.SetItemText(indexItem,eCol_Hash, pTree->m_csRefHash);
 			CString descrition = pTree->m_csDescription;
-			descrition.Replace(L"\n", L" ");
+			descrition.Replace(L'\n', L' ');
 			m_ListRefLeafs.SetItemText(indexItem, eCol_Description, descrition);
 		}
 	}
@@ -1478,7 +1478,7 @@ void CBrowseRefsDlg::OnLvnEndlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pResu
 	CString newNameTrunced = newName.Mid(11);
 
 	CString errorMsg;
-	if(g_Git.Run(L"git.exe branch -m \"" + origName + L"\" \"" + newNameTrunced + L"\"", &errorMsg, CP_UTF8) != 0)
+	if (g_Git.Run(L"git.exe branch -m \"" + origName + L"\" \"" + newNameTrunced + L'"', &errorMsg, CP_UTF8) != 0)
 	{
 		CMessageBox::Show(m_hWnd, errorMsg, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 		return;
@@ -1576,7 +1576,7 @@ LRESULT CBrowseRefsDlg::OnClickedCancelFilter(WPARAM /*wParam*/, LPARAM /*lParam
 void CBrowseRefsDlg::SetFilterCueText()
 {
 	CString temp(MAKEINTRESOURCE(IDS_LOG_FILTER_BY));
-	temp += _T(" ");
+	temp += L' ';
 
 	if (m_SelectedFilters & LOGFILTER_REFNAME)
 		temp += CString(MAKEINTRESOURCE(IDS_LOG_FILTER_REFNAME));

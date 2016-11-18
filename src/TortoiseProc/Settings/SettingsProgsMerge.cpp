@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2009, 2011, 2013-2016 - TortoiseGit
 // Copyright (C) 2003-2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -79,7 +80,7 @@ BOOL CSettingsProgsMerge::OnApply()
 {
 	UpdateData();
 	if (m_iExtMerge == 0 && !m_sMergePath.IsEmpty() && m_sMergePath.Left(1) != _T("#"))
-		m_sMergePath = _T("#") + m_sMergePath;
+		m_sMergePath = L'#' + m_sMergePath;
 
 	m_regMergePath = m_sMergePath;
 
@@ -136,8 +137,8 @@ void CSettingsProgsMerge::CheckProgComment()
 {
 	UpdateData();
 	if (m_iExtMerge == 0 && !m_sMergePath.IsEmpty() && m_sMergePath.Left(1) != _T("#"))
-		m_sMergePath = _T("#") + m_sMergePath;
+		m_sMergePath = L'#' + m_sMergePath;
 	else if (m_iExtMerge == 1)
-		m_sMergePath.TrimLeft('#');
+		m_sMergePath.TrimLeft(L'#');
 	UpdateData(FALSE);
 }

@@ -69,7 +69,7 @@ CLogDlg::CLogDlg(CWnd* pParent /*=nullptr*/)
 	m_LogList.m_SelectedFilters = CRegDWORD(_T("Software\\TortoiseGit\\SelectedLogFilters"), LOGFILTER_ALL);
 
 	CString str = g_Git.m_CurrentDir;
-	str.Replace(_T(":"),_T("_"));
+	str.Replace(L':', L'_');
 
 	m_regbAllBranch = CRegDWORD(L"Software\\TortoiseGit\\LogDialog\\AllBranch\\" + str, FALSE);
 	m_AllBranchType = (AllBranchType)(DWORD)m_regbAllBranch;
@@ -815,7 +815,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			pMsgView->SetSel(-1,-1);
 			CAppUtils::SetCharFormat(pMsgView, CFM_BOLD, 0);
 
-			msg=_T("\n");
+			msg = L'\n';
 			msg+=pLogEntry->GetBody();
 
 			if(!pLogEntry->m_Notes.IsEmpty())
@@ -2234,7 +2234,7 @@ LRESULT CLogDlg::OnClickedCancelFilter(WPARAM wParam, LPARAM /*lParam*/)
 void CLogDlg::SetFilterCueText()
 {
 	CString temp(MAKEINTRESOURCE(IDS_LOG_FILTER_BY));
-	temp += _T(" ");
+	temp += L' ';
 
 	if (m_LogList.m_SelectedFilters & LOGFILTER_SUBJECT)
 	{

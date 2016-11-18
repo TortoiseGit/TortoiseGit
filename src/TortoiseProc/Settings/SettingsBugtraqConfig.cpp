@@ -166,7 +166,7 @@ void CSettingsBugtraqConfig::LoadDataImpl(CAutoConfig& config)
 		ProjectProperties props;
 		props.ReadProps();
 		m_URL = props.sUrl;
-		m_Logregex = props.sCheckRe + _T("\n") + props.sBugIDRe;
+		m_Logregex = props.sCheckRe + L'\n' + props.sBugIDRe;
 		m_Label = props.sLabel;
 		m_Message = props.sMessage;
 		m_UUID32 = props.sProviderUuid;
@@ -307,7 +307,7 @@ void CSettingsBugtraqConfig::OnBnClickedTestbugtraqregexbutton()
 	}
 	if (dlg.DoModal() == IDOK)
 	{
-		m_Logregex = dlg.m_sBugtraqRegex2 + _T("\n") + dlg.m_sBugtraqRegex1;
+		m_Logregex = dlg.m_sBugtraqRegex2 + L'\n' + dlg.m_sBugtraqRegex1;
 		m_Logregex.Trim();
 		m_Logregex.Replace(_T("\n"), _T("\r\n"));
 		UpdateData(FALSE);

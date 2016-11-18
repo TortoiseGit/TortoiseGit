@@ -147,7 +147,7 @@ void CSetOverlayIcons::ShowIconSet(bool bSmallIcons)
 		return;
 	}
 	m_cIconSet.GetLBText(index, sIconSet);
-	CString sIconSetPath = m_sIconPath + _T("\\") + sIconSet;
+	CString sIconSetPath = m_sIconPath + L'\\' + sIconSet;
 
 	CImageList * pImageList = bSmallIcons ? &m_ImageList : &m_ImageListBig;
 	int pixelsize = (bSmallIcons ? 16 : 32);
@@ -327,15 +327,15 @@ BOOL CSetOverlayIcons::OnApply()
 	if ((!m_sIconSet.IsEmpty())&&(m_sIconSet.CompareNoCase(m_sOriginalIconSet)!=0))
 	{
 		// the selected icon set has changed.
-		Store(m_sIconPath + _T("\\") + m_sIconSet + _T("\\NormalIcon.ico"), m_regNormal);
-		Store(m_sIconPath + _T("\\") + m_sIconSet + _T("\\ModifiedIcon.ico"), m_regModified);
-		Store(m_sIconPath + _T("\\") + m_sIconSet + _T("\\ConflictIcon.ico"), m_regConflicted);
-		Store(m_sIconPath + _T("\\") + m_sIconSet + _T("\\ReadOnlyIcon.ico"), m_regReadOnly);
-		Store(m_sIconPath + _T("\\") + m_sIconSet + _T("\\DeletedIcon.ico"), m_regDeleted);
-		Store(m_sIconPath + _T("\\") + m_sIconSet + _T("\\LockedIcon.ico"), m_regLocked);
-		Store(m_sIconPath + _T("\\") + m_sIconSet + _T("\\AddedIcon.ico"), m_regAdded);
-		Store(m_sIconPath + _T("\\") + m_sIconSet + _T("\\IgnoredIcon.ico"), m_regIgnored);
-		Store(m_sIconPath + _T("\\") + m_sIconSet + _T("\\UnversionedIcon.ico"), m_regUnversioned);
+		Store(m_sIconPath + L'\\' + m_sIconSet + L"\\NormalIcon.ico", m_regNormal);
+		Store(m_sIconPath + L'\\' + m_sIconSet + L"\\ModifiedIcon.ico", m_regModified);
+		Store(m_sIconPath + L'\\' + m_sIconSet + L"\\ConflictIcon.ico", m_regConflicted);
+		Store(m_sIconPath + L'\\' + m_sIconSet + L"\\ReadOnlyIcon.ico", m_regReadOnly);
+		Store(m_sIconPath + L'\\' + m_sIconSet + L"\\DeletedIcon.ico", m_regDeleted);
+		Store(m_sIconPath + L'\\' + m_sIconSet + L"\\LockedIcon.ico", m_regLocked);
+		Store(m_sIconPath + L'\\' + m_sIconSet + L"\\AddedIcon.ico", m_regAdded);
+		Store(m_sIconPath + L'\\' + m_sIconSet + L"\\IgnoredIcon.ico", m_regIgnored);
+		Store(m_sIconPath + L'\\' + m_sIconSet + L"\\UnversionedIcon.ico", m_regUnversioned);
 
 		m_restart = Restart_System;
 		m_sOriginalIconSet = m_sIconSet;

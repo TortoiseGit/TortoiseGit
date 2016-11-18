@@ -166,7 +166,7 @@ BOOL CCachedDirectory::LoadFromDisk(FILE * pFile)
 			sPath.ReleaseBuffer(value);
 			// make sure paths do not end with backslash (just needed for transition from old TGit clients)
 			if (sPath.GetLength() > 3 && sPath[sPath.GetLength() - 1] == _T('\\'))
-				sPath.TrimRight(_T("\\"));
+				sPath.TrimRight(L'\\');
 			m_directoryPath.SetFromWin(sPath);
 			m_directoryPath.GetGitPathString(); // make sure git path string is set
 		}
@@ -436,7 +436,7 @@ int CCachedDirectory::EnumFiles(const CTGitPath &path , bool IsFull)
 	}
 
 	// strip "\" at the end, otherwise cache lookups for drives do not work correctly
-	sProjectRoot.TrimRight(_T("\\"));
+	sProjectRoot.TrimRight(L'\\');
 
 	GitStatus *pStatus = &CGitStatusCache::Instance().m_GitStatus;
 	UNREFERENCED_PARAMETER(pStatus);
@@ -580,14 +580,14 @@ CCachedDirectory::GetCacheKey(const CTGitPath& path)
 {
 	// All we put into the cache as a key is just the end portion of the pathname
 	// There's no point storing the path of the containing directory for every item
-	return path.GetWinPathString().Mid(m_directoryPath.GetWinPathString().GetLength()).MakeLower().TrimLeft(_T("\\"));
+	return path.GetWinPathString().Mid(m_directoryPath.GetWinPathString().GetLength()).MakeLower().TrimLeft(L'\\');
 }
 
 CString
 CCachedDirectory::GetFullPathString(const CString& cacheKey)
 {
 	CString fullpath(m_directoryPath.GetWinPathString());
-	fullpath += _T('\\');
+	fullpath += L'\\';
 	fullpath += cacheKey;
 	return fullpath;
 }

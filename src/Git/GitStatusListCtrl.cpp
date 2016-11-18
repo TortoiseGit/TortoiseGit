@@ -1769,7 +1769,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						else
 						{
 							PathCompactPathEx(CStrBuf(diffWith, 40), m_sMarkForDiffFilename, 40, 0);
-							diffWith += _T(":") + m_sMarkForDiffVersion.Left(g_Git.GetShortHASHLength());
+							diffWith += L':' + m_sMarkForDiffVersion.Left(g_Git.GetShortHASHLength());
 						}
 						CString menuEntry;
 						menuEntry.Format(IDS_MENUDIFFNOW, (LPCTSTR)diffWith);
@@ -1819,7 +1819,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 								else
 									ignorepath.Format(IDS_MENUIGNOREMULTIPLE, ignorelist.GetCount());
 								ignoreSubMenu.AppendMenu(MF_STRING | MF_ENABLED, IDGITLC_IGNORE, ignorepath);
-								ignorepath = _T("*")+sExt;
+								ignorepath = L'*' + sExt;
 								ignoreSubMenu.AppendMenu(MF_STRING | MF_ENABLED, IDGITLC_IGNOREMASK, ignorepath);
 								if (ignorelist.GetCount() == 1 && !ignorelist[0].GetContainingDirectory().GetGitPathString().IsEmpty())
 									ignoreSubMenu.AppendMenu(MF_STRING | MF_ENABLED, IDGITLC_IGNOREFOLDER, ignorelist[0].GetContainingDirectory().GetGitPathString());
@@ -2181,7 +2181,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					if (cmd == IDGITLC_LOG && filepath->IsDirectory())
 						sCmd += _T(" /submodule");
 					if (!m_sDisplayedBranch.IsEmpty())
-						sCmd += _T(" /range:\"") + m_sDisplayedBranch + _T("\"");
+						sCmd += L" /range:\"" + m_sDisplayedBranch + L'"';
 					CAppUtils::RunTortoiseGitProc(sCmd, false, !(cmd == IDGITLC_LOGSUBMODULE));
 				}
 				break;
@@ -2192,7 +2192,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					CString sCmd;
 					sCmd.Format(_T("/command:log /path:\"%s\""), (LPCTSTR)g_Git.CombinePath(oldName));
 					if (!m_sDisplayedBranch.IsEmpty())
-						sCmd += _T(" /range:\"") + m_sDisplayedBranch + _T("\"");
+						sCmd += L" /range:\"" + m_sDisplayedBranch + L'"';
 					CAppUtils::RunTortoiseGitProc(sCmd);
 				}
 				break;
@@ -2310,7 +2310,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					VERIFY(targetList.WriteToFile(tempFile.GetWinPathString()));
 					CString commandline = _T("/command:commit /pathfile:\"");
 					commandline += tempFile.GetWinPathString();
-					commandline += _T("\"");
+					commandline += L'"';
 					commandline += _T(" /deletepathfile");
 					CAppUtils::RunTortoiseGitProc(commandline);
 				}
@@ -2459,7 +2459,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					CString commandline = CPathUtils::GetAppDirectory();
 					commandline += _T("TortoiseGitProc.exe /command:commit /pathfile:\"");
 					commandline += tempFile.GetWinPathString();
-					commandline += _T("\"");
+					commandline += L'"';
 					commandline += _T(" /deletepathfile");
 					CAppUtils::LaunchApplication(commandline, nullptr, false);
 				}
@@ -2735,11 +2735,11 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 
 				CString temppath;
 				GetTempPath(temppath);
-				temppath.TrimRight(_T("\\"));
+				temppath.TrimRight(L'\\');
 
-				mine.SetFromGit(temppath + _T("\\") + file1.GetFileOrDirectoryName() + _T(".LOCAL") + file1.GetFileExtension());
-				theirs.SetFromGit(temppath + _T("\\") + file1.GetFileOrDirectoryName() + _T(".REMOTE") + file1.GetFileExtension());
-				base.SetFromGit(temppath + _T("\\") + file1.GetFileOrDirectoryName() + _T(".BASE") + file1.GetFileExtension());
+				mine.SetFromGit(temppath + L'\\' + file1.GetFileOrDirectoryName() + L".LOCAL" + file1.GetFileExtension());
+				theirs.SetFromGit(temppath + L'\\' + file1.GetFileOrDirectoryName() + L".REMOTE" + file1.GetFileExtension());
+				base.SetFromGit(temppath + L'\\' + file1.GetFileOrDirectoryName() + L".BASE" + file1.GetFileExtension());
 
 				CFile tempfile;
 				//create a empty file, incase stage is not three
@@ -2750,7 +2750,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 				tempfile.Open(base.GetWinPathString(),CFile::modeCreate|CFile::modeReadWrite);
 				tempfile.Close();
 
-				merge.SetFromGit(temppath + _T("\\") + file1.GetFileOrDirectoryName() + _T(".Merged") + file1.GetFileExtension());
+				merge.SetFromGit(temppath + L'\\' + file1.GetFileOrDirectoryName() + L".Merged" + file1.GetFileExtension());
 
 				int parent1=-1, parent2 =-1;
 				for (size_t i = 0; i < m_arStatusArray.size(); ++i)
@@ -3465,7 +3465,7 @@ bool CGitStatusListCtrl::CopySelectedEntriesToClipboard(DWORD dwCols)
 		if (   ((dwCols == -1) && m_ColumnManager.IsVisible (i))
 			|| ((dwCols != 1) && (i < 32) && ((dwCols & (1 << i)) != 0)))
 		{
-			sClipboard += _T("\t") + m_ColumnManager.GetName(i);
+			sClipboard += L'\t' + m_ColumnManager.GetName(i);
 
 			if (i < 32)
 				selection += 1 << i;
@@ -3484,12 +3484,12 @@ bool CGitStatusListCtrl::CopySelectedEntriesToClipboard(DWORD dwCols)
 
 		sClipboard += entry->GetWinPathString();
 		if (selection & GITSLC_COLFILENAME)
-			sClipboard += _T("\t")+entry->GetFileOrDirectoryName();
+			sClipboard += L'\t' + entry->GetFileOrDirectoryName();
 		if (selection & GITSLC_COLEXT)
-			sClipboard += _T("\t")+entry->GetFileExtension();
+			sClipboard += L'\t' + entry->GetFileExtension();
 
 		if (selection & GITSLC_COLSTATUS)
-			sClipboard += _T("\t")+entry->GetActionName();
+			sClipboard += L'\t' + entry->GetActionName();
 #if 0
 		if (selection & SVNSLC_COLDATE)
 		{
@@ -3500,7 +3500,7 @@ bool CGitStatusListCtrl::CopySelectedEntriesToClipboard(DWORD dwCols)
 				temp = datebuf;
 			else
 				temp.Empty();
-			sClipboard += _T("\t")+temp;
+			sClipboard += L'\t' + temp;
 		}
 		for ( int i = SVNSLC_NUMCOLUMNS, count = m_ColumnManager.GetColumnCount()
 			; i < count
@@ -3510,14 +3510,14 @@ bool CGitStatusListCtrl::CopySelectedEntriesToClipboard(DWORD dwCols)
 			{
 				CString value
 					= entry->present_props[m_ColumnManager.GetName(i)];
-				sClipboard += _T("\t") + value;
+				sClipboard += L'\t' + value;
 			}
 		}
 #endif
 		if (selection & GITSLC_COLADD)
-			sClipboard += _T("\t")+entry->m_StatAdd;
+			sClipboard += L'\t' + entry->m_StatAdd;
 		if (selection & GITSLC_COLDEL)
-			sClipboard += _T("\t")+entry->m_StatDel;
+			sClipboard += L'\t' + entry->m_StatDel;
 
 		sClipboard += _T("\r\n");
 	}
@@ -3725,7 +3725,7 @@ int CGitStatusListCtrl::UpdateFileList(const CTGitPathList* list)
 			if (deleteFromIndex == 1)
 			{
 				CString err;
-				if (g_Git.Run(_T("git.exe checkout -- \"") + gitpatch->GetWinPathString() + _T("\""), &err, CP_UTF8))
+				if (g_Git.Run(L"git.exe checkout -- \"" + gitpatch->GetWinPathString() + L'"', &err, CP_UTF8))
 					MessageBox(_T("Restoring from index failed:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
 				else
 					needsRefresh = true;
@@ -3733,7 +3733,7 @@ int CGitStatusListCtrl::UpdateFileList(const CTGitPathList* list)
 			else if (deleteFromIndex == 2)
 			{
 				CString err;
-				if (g_Git.Run(_T("git.exe rm -f --cache -- \"") + gitpatch->GetWinPathString() + _T("\""), &err, CP_UTF8))
+				if (g_Git.Run(L"git.exe rm -f --cache -- \"" + gitpatch->GetWinPathString() + L'"', &err, CP_UTF8))
 					MessageBox(_T("Removing from index failed:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
 				else
 					needsRefresh = true;
@@ -4025,8 +4025,8 @@ void CGitStatusListCtrl::FilesExport()
 		if ((fd->m_Action & CTGitPath::LOGACTIONS_DELETED) || fd->IsDirectory())
 			continue;
 
-		CPathUtils::MakeSureDirectoryPathExists(exportDir + _T("\\") + fd->GetContainingDirectory().GetWinPathString());
-		CString filename = exportDir + _T("\\") + fd->GetWinPathString();
+		CPathUtils::MakeSureDirectoryPathExists(exportDir + L'\\' + fd->GetContainingDirectory().GetWinPathString());
+		CString filename = exportDir + L'\\' + fd->GetWinPathString();
 		if (m_CurrentVersion == GIT_REV_ZERO)
 		{
 			if (!CopyFile(g_Git.CombinePath(fd), filename, false))
@@ -4213,9 +4213,9 @@ void CGitStatusListCtrl::DeleteSelectedFiles()
 			continue;
 
 		filelist += path->GetWinPathString();
-		filelist += _T("|");
+		filelist += L'|';
 	}
-	filelist += _T("|");
+	filelist += L'|';
 	int len = filelist.GetLength();
 	auto buf = std::make_unique<TCHAR[]>(len + 2);
 	_tcscpy_s(buf.get(), len + 2, filelist);

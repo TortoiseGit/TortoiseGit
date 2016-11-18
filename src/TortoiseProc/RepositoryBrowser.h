@@ -66,7 +66,7 @@ public:
 		if (parentPath.IsEmpty())
 			return m_sName;
 		else
-			return m_pParent->GetFullName() + _T("/") + m_sName;
+			return m_pParent->GetFullName() + L'/' + m_sName;
 	}
 };
 typedef std::vector<CShadowFilesTree *> TShadowFilesTreeList;

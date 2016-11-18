@@ -65,7 +65,7 @@ CString CLoglistUtils::FormatDateAndTime(const CTime& cTime, DWORD option, bool 
 			CString datetime = buf;
 			if (bIncludeTime)
 			{
-				datetime += _T(" ");
+				datetime += L' ';
 				GetTimeFormat(LOCALE_USER_DEFAULT, 0, &sysTime, nullptr, buf, _countof(buf) - 1);
 				datetime += buf;
 			}

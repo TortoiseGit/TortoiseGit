@@ -49,11 +49,11 @@ TEST(CGit, RunGit)
 TEST(CGit, RunGit_BashPipe)
 {
 	CString tmpfile = GetTempFile();
-	tmpfile.Replace(L"\\", L"/");
+	tmpfile.Replace(L'\\', L'/');
 	ASSERT_TRUE(CStringUtils::WriteStringToTextFile(tmpfile, L"testing piping..."));
 	SCOPE_EXIT{ ::DeleteFile(tmpfile); };
 	CString pipefile = GetTempFile();
-	pipefile.Replace(L"\\", L"/");
+	pipefile.Replace(L'\\', L'/');
 	CString pipecmd;
 	pipecmd.Format(L"cat < %s", (LPCTSTR)tmpfile);
 	ASSERT_TRUE(CStringUtils::WriteStringToTextFile(pipefile, pipecmd));

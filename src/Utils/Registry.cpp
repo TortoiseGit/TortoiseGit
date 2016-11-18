@@ -30,12 +30,12 @@ CRegBase::CRegBase()
 CRegBase::CRegBase (const CString& key, bool force, HKEY base, REGSAM sam)
     : CRegBaseCommon<CString> (key, force, base, sam)
 {
-    m_key.TrimLeft(_T("\\"));
+    m_key.TrimLeft(L'\\');
     int backslashpos = m_key.ReverseFind('\\');
     m_path = m_key.Left(backslashpos);
-    m_path.TrimRight(_T("\\"));
+    m_path.TrimRight(L'\\');
     m_key = m_key.Mid(backslashpos);
-    m_key.Trim(_T("\\"));
+    m_key.Trim(L'\\');
 }
 #endif
 
@@ -48,7 +48,7 @@ CRegStdBase::CRegStdBase()
 CRegStdBase::CRegStdBase (const tstring& key, bool force, HKEY base, REGSAM sam)
     : CRegBaseCommon<tstring> (key, force, base, sam)
 {
-    tstring::size_type pos = key.find_last_of(_T('\\'));
+    tstring::size_type pos = key.find_last_of(L'\\');
     m_path = key.substr(0, pos);
     m_key = key.substr(pos + 1);
 }
@@ -137,7 +137,7 @@ CRegistryKey::CRegistryKey(const CString& key, HKEY base, REGSAM sam)
     m_hKey = nullptr;
     m_sam = sam;
     m_path = key;
-    m_path.TrimLeft(_T("\\"));
+    m_path.TrimLeft(L'\\');
 }
 
 CRegistryKey::~CRegistryKey()

@@ -236,7 +236,7 @@ BOOL CSetLookAndFeelPage::OnApply()
 	m_regTopmenu.getErrorString();
 	m_sNoContextPaths.Remove('\r');
 	if (m_sNoContextPaths.Right(1).Compare(_T("\n"))!=0)
-		m_sNoContextPaths += _T("\n");
+		m_sNoContextPaths += L'\n';
 
 	Store(m_bHideMenus, m_regHideMenus);
 	Store(m_sNoContextPaths, m_regNoContextPaths);

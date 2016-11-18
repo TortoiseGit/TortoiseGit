@@ -690,7 +690,7 @@ int CPatch::CountMatches(const CString& path)
 		CString temp = GetFilename(i);
 		temp.Replace('/', '\\');
 		if (PathIsRelative(temp))
-			temp = path + _T("\\")+ temp;
+			temp = path + L'\\' + temp;
 		if (PathFileExists(temp))
 			++matches;
 	}
@@ -705,7 +705,7 @@ int CPatch::CountDirMatches(const CString& path)
 		CString temp = GetFilename(i);
 		temp.Replace('/', '\\');
 		if (PathIsRelative(temp))
-			temp = path + _T("\\")+ temp;
+			temp = path + L'\\' + temp;
 		// remove the filename
 		temp = temp.Left(temp.ReverseFind('\\'));
 		if (PathFileExists(temp))
@@ -779,7 +779,7 @@ CString CPatch::GetFullPath(const CString& sPath, int nIndex, int fileno /* = 0*
 	if (PathIsRelative(temp))
 	{
 		if (sPath.Right(1).Compare(_T("\\")) != 0)
-			temp = sPath + _T("\\") + temp;
+			temp = sPath + L'\\' + temp;
 		else
 			temp = sPath + temp;
 	}

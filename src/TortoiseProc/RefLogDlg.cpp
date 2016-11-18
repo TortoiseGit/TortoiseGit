@@ -265,15 +265,15 @@ LRESULT CRefLogDlg::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*/)
 
 			CString str;
 			str += data->m_Ref;
-			str += _T("\n");
+			str += L'\n';
 			str += data->m_RefAction;
-			str += _T("\n");
+			str += L'\n';
 			str += data->m_CommitHash.ToString();
-			str += _T("\n");
+			str += L'\n';
 			str += data->GetSubject();
-			str += _T("\n");
+			str += L'\n';
 			str += data->GetBody();
-			str += _T("\n");
+			str += L'\n';
 
 			if (!bCaseSensitive)
 				str.MakeLower();
@@ -293,7 +293,7 @@ LRESULT CRefLogDlg::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*/)
 			m_nSearchLine = i;
 		}
 		else
-			MessageBox(_T("\"") + findString + _T("\" ") + CString(MAKEINTRESOURCE(IDS_NOTFOUND)), _T("TortoiseGit"), MB_ICONINFORMATION);
+			MessageBox(L'"' + findString + L"\" " + CString(MAKEINTRESOURCE(IDS_NOTFOUND)), L"TortoiseGit", MB_ICONINFORMATION);
 	}
 
 	return 0;

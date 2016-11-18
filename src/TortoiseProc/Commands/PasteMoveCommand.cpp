@@ -49,9 +49,9 @@ bool PasteMoveCommand::Execute()
 	{
 		CTGitPath destPath;
 		if (sNewName.IsEmpty())
-			destPath = CTGitPath(sDroppath+_T("\\")+orgPathList[nPath].GetFileOrDirectoryName());
+			destPath = CTGitPath(sDroppath + L'\\' + orgPathList[nPath].GetFileOrDirectoryName());
 		else
-			destPath = CTGitPath(sDroppath+_T("\\")+sNewName);
+			destPath = CTGitPath(sDroppath + L'\\' + sNewName);
 		if (destPath.Exists())
 		{
 			CString name = orgPathList[nPath].GetFileOrDirectoryName();
@@ -63,7 +63,7 @@ bool PasteMoveCommand::Execute()
 			dlg.m_windowtitle.Format(IDS_PROC_NEWNAMEMOVE, (LPCTSTR)name);
 			if (dlg.DoModal() != IDOK)
 				return FALSE;
-			destPath.SetFromWin(sDroppath+_T("\\")+dlg.m_name);
+			destPath.SetFromWin(sDroppath + L'\\' + dlg.m_name);
 		}
 		CString top;
 		top.Empty();
@@ -99,7 +99,7 @@ bool PasteMoveCommand::Execute()
 					// a force is requested.
 					CString temp = Git.GetLastErrorMessage();
 					CString sQuestion(MAKEINTRESOURCE(IDS_PROC_FORCEMOVE));
-					temp += _T("\n") + sQuestion;
+					temp += L'\n' + sQuestion;
 					if (CMessageBox::Show(hwndExplorer, temp, _T("TortoiseGit"), MB_YESNO)==IDYES)
 					{
 						if (!Git.Move(CTGitPathList(pathList[nPath]), destPath, TRUE))

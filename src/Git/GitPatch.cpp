@@ -332,9 +332,8 @@ int GitPatch::CountMatches(const CString& path) const
 	{
 		CString temp = GetStrippedPath(i);
 		temp.Replace('/', '\\');
-		if ((PathIsRelative(temp)) ||
-			((temp.GetLength() > 1) && (temp[0]=='\\') && (temp[1]!='\\')) )
-			temp = path + _T("\\")+ temp;
+		if (PathIsRelative(temp) || ((temp.GetLength() > 1) && (temp[0] == L'\\') && (temp[1] != L'\\')))
+			temp = path + L'\\' + temp;
 		if (PathFileExists(temp))
 			++matches;
 	}
@@ -349,7 +348,7 @@ int GitPatch::CountDirMatches(const CString& path) const
 		CString temp = GetStrippedPath(i);
 		temp.Replace('/', '\\');
 		if (PathIsRelative(temp))
-			temp = path + _T("\\")+ temp;
+			temp = path + L'\\' + temp;
 		// remove the filename
 		temp.Truncate(max(0, temp.ReverseFind(L'\\')));
 		if (PathFileExists(temp))

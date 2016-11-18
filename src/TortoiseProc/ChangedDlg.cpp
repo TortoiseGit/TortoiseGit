@@ -82,7 +82,7 @@ BOOL CChangedDlg::OnInitDialog()
 	m_bShowUnversioned = m_regAddBeforeCommit;
 
 	CString regPath(g_Git.m_CurrentDir);
-	regPath.Replace(_T(":"), _T("_"));
+	regPath.Replace(L':', L'_');
 	m_regShowWholeProject = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\ShowWholeProject\\") + regPath, FALSE);
 	m_bWholeProject = m_regShowWholeProject;
 	SetDlgTitle();
@@ -377,7 +377,7 @@ void CChangedDlg::OnBnClickedCommit()
 		cmd += m_pathList[0].GetWinPathString();
 	else
 		cmd += g_Git.CombinePath(m_pathList.GetCommonRoot().GetDirectory());
-	cmd += _T("\"");
+	cmd += L'"';
 	CAppUtils::RunTortoiseGitProc(cmd);
 }
 

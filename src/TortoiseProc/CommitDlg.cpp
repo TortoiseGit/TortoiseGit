@@ -223,7 +223,7 @@ BOOL CCommitDlg::OnInitDialog()
 	m_bShowUnversioned = m_regAddBeforeCommit;
 
 	CString regPath(g_Git.m_CurrentDir);
-	regPath.Replace(_T(":"), _T("_"));
+	regPath.Replace(L':', L'_');
 	m_regShowWholeProject = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\ShowWholeProject\\") + regPath, FALSE);
 	m_bWholeProject = m_regShowWholeProject;
 
@@ -608,7 +608,7 @@ void CCommitDlg::OnOK()
 			// branch already exists
 			CString msg;
 			msg.LoadString(IDS_B_EXISTS);
-			msg += _T(" ") + CString(MAKEINTRESOURCE(IDS_B_DELETEORDIFFERENTNAME));
+			msg += L' ' + CString(MAKEINTRESOURCE(IDS_B_DELETEORDIFFERENTNAME));
 			ShowEditBalloon(IDC_NEWBRANCH, msg, CString(MAKEINTRESOURCE(IDS_WARN_WARNING)));
 			return;
 		}
@@ -982,9 +982,9 @@ void CCommitDlg::OnOK()
 		CString sBugID = m_ProjectProperties.sMessage;
 		sBugID.Replace(_T("%BUGID%"), m_sBugID);
 		if (m_ProjectProperties.bAppend)
-			m_sLogMessage += _T("\n") + sBugID + _T("\n");
+			m_sLogMessage += L'\n' + sBugID + L'\n';
 		else
-			m_sLogMessage = sBugID + _T("\n") + m_sLogMessage;
+			m_sLogMessage = sBugID + L'\n' + m_sLogMessage;
 	}
 
 	// now let the bugtraq plugin check the commit message
@@ -1478,9 +1478,9 @@ void CCommitDlg::OnCancel()
 		CString sBugID = m_ProjectProperties.sMessage;
 		sBugID.Replace(_T("%BUGID%"), m_sBugID);
 		if (m_ProjectProperties.bAppend)
-			m_sLogMessage += _T("\n") + sBugID + _T("\n");
+			m_sLogMessage += L'\n' + sBugID + L'\n';
 		else
-			m_sLogMessage = sBugID + _T("\n") + m_sLogMessage;
+			m_sLogMessage = sBugID + L'\n' + m_sLogMessage;
 	}
 	if ((m_sLogTemplate.Compare(m_sLogMessage) != 0) && !m_sLogMessage.IsEmpty())
 	{
@@ -2506,7 +2506,7 @@ void CCommitDlg::OnBnClickedCommitAmend()
 		GitRev rev;
 		if (rev.GetCommit(L"HEAD"))
 			MessageBox(rev.GetLastErr(), _T("TortoiseGit"), MB_ICONERROR);
-		m_AmendStr=rev.GetSubject()+_T("\n")+rev.GetBody();
+		m_AmendStr = rev.GetSubject() + L'\n' + rev.GetBody();
 	}
 
 	if(this->m_bCommitAmend)

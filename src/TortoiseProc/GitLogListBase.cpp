@@ -1312,11 +1312,11 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 											{
 												if (!m_SingleRemote.IsEmpty() && m_SingleRemote == pullRemote)
 												{
-													refLabel.simplifiedName = _T("/") + (sameName ? CString() : pullBranch);
+													refLabel.simplifiedName = L'/' + (sameName ? CString() : pullBranch);
 													refLabel.singleRemote = true;
 												}
 												else if (sameName)
-													refLabel.simplifiedName = pullRemote + _T("/");
+													refLabel.simplifiedName = pullRemote + L'/';
 												refLabel.sameName = sameName;
 											}
 											refLabel.fullName = defaultUpstream;
@@ -1349,7 +1349,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 								{
 									if (!m_SingleRemote.IsEmpty() && CStringUtils::StartsWith(refLabel.name, m_SingleRemote + L"/"))
 									{
-										refLabel.simplifiedName = _T("/") + refLabel.name.Mid(m_SingleRemote.GetLength() + 1);
+										refLabel.simplifiedName = L'/' + refLabel.name.Mid(m_SingleRemote.GetLength() + 1);
 										refLabel.singleRemote = true;
 									}
 								}
@@ -2215,11 +2215,11 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						head.Format(_T("HEAD~%d"), FirstSelect - headindex);
 						CGitHash hashFirst;
 						if (g_Git.GetHash(hashFirst, head))
-							MessageBox(g_Git.GetGitLastErr(_T("Could not get hash of ") + head + _T(".")), _T("TortoiseGit"), MB_ICONERROR);
+							MessageBox(g_Git.GetGitLastErr(L"Could not get hash of " + head + L'.'), L"TortoiseGit", MB_ICONERROR);
 						head.Format(_T("HEAD~%d"),LastSelect-headindex);
 						CGitHash hash;
 						if (g_Git.GetHash(hash, head))
-							MessageBox(g_Git.GetGitLastErr(_T("Could not get hash of ") + head + _T(".")), _T("TortoiseGit"), MB_ICONERROR);
+							MessageBox(g_Git.GetGitLastErr(L"Could not get hash of " + head + L'.'), L"TortoiseGit", MB_ICONERROR);
 						GitRevLoglist* pFirstEntry = m_arShownList.SafeGetAt(FirstSelect);
 						GitRevLoglist* pLastEntry = m_arShownList.SafeGetAt(LastSelect);
 						if (pFirstEntry->m_CommitHash == hashFirst && pLastEntry->m_CommitHash == hash) {

@@ -149,7 +149,7 @@ void CGitSwitchDlg::OnBnClickedOk()
 			// branch already exists
 			CString msg;
 			msg.LoadString(IDS_B_EXISTS);
-			ShowEditBalloon(IDC_EDIT_BRANCH, msg + _T(" ") + CString(MAKEINTRESOURCE(IDS_B_DIFFERENTNAMEOROVERRIDE)), CString(MAKEINTRESOURCE(IDS_WARN_WARNING)));
+			ShowEditBalloon(IDC_EDIT_BRANCH, msg + L' ' + CString(MAKEINTRESOURCE(IDS_B_DIFFERENTNAMEOROVERRIDE)), CString(MAKEINTRESOURCE(IDS_WARN_WARNING)));
 			return;
 		}
 		else if (g_Git.BranchTagExists(m_NewBranch, false))
@@ -237,7 +237,7 @@ void CGitSwitchDlg::OnEnChangeEditBranch()
 
 	CString name;
 	GetDlgItem(IDC_EDIT_BRANCH)->GetWindowText(name);
-	name = _T("/") + name;
+	name = L'/' + name;
 	CString remoteName = m_ChooseVersioinBranch.GetString();
 	if (CStringUtils::StartsWith(remoteName, L"remotes/") && remoteName.Right(name.GetLength()) != name)
 		((CButton *)GetDlgItem(IDC_CHECK_TRACK))->SetCheck(FALSE);

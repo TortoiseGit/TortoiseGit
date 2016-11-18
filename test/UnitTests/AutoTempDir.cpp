@@ -43,12 +43,12 @@ static void DeleteDirectoryRecursive(CString dir)
 			continue;
 		if ((ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY)
 		{
-			CString subdir = dir + _T("\\") + ffd.cFileName;
+			CString subdir = dir + L'\\' + ffd.cFileName;
 			DeleteDirectoryRecursive(subdir);
 		}
 		else
 		{
-			CString file = dir + _T("\\") + ffd.cFileName;
+			CString file = dir + L'\\' + ffd.cFileName;
 			bool failed = !DeleteFile(file);
 			if (failed && GetLastError() == ERROR_ACCESS_DENIED)
 			{

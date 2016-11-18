@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2016 - TortoiseGit
 // Copyright (C) 2003-2007, 2009, 2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -41,8 +42,8 @@ void CToolAssocDlg::DoDataExchange(CDataExchange* pDX)
 
 	if (pDX->m_bSaveAndValidate)
 	{
-		if (m_sExtension.Find('/')<0)
-			m_sExtension.TrimLeft(_T("*"));
+		if (m_sExtension.Find(L'/') < 0)
+			m_sExtension.TrimLeft(L'*');
 	}
 }
 

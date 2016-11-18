@@ -910,12 +910,12 @@ CString CRevisionGraphWnd::TooltipText(node index)
 		CGitHash	hash = m_logEntries[index->index()];
 		GitRevLoglist* rev = this->m_LogCache.GetCacheData(hash);
 		str += rev->m_CommitHash.ToString();
-		str += _T("\n");
-		str += rev->GetAuthorName() +_T(" ") + rev->GetAuthorEmail();
-		str += _T(" ");
+		str += L'\n';
+		str += rev->GetAuthorName() + L' ' + rev->GetAuthorEmail();
+		str += L' ';
 		str += rev->GetAuthorDate().Format(_T("%Y-%m-%d %H:%M"));
 		str += _T("\n\n")+rev->GetSubject();
-		str += _T("\n");
+		str += L'\n';
 		str += rev->GetBody();
 		return str;
 	}else
@@ -1280,12 +1280,12 @@ void CRevisionGraphWnd::DoShowLog()
 
 	if(m_SelectedEntry2)
 		sCmd.Format(_T("/command:log %s /startrev:%s /endrev:%s"),
-			this->m_sPath.IsEmpty() ?  _T("") : (LPCTSTR)(_T("/path:\"") + this->m_sPath + _T("\"")),
+			this->m_sPath.IsEmpty() ? L"" : (LPCTSTR)(L"/path:\"" + this->m_sPath + L'"'),
 			(LPCTSTR)this->m_logEntries[m_SelectedEntry1->index()].ToString(),
 			(LPCTSTR)this->m_logEntries[m_SelectedEntry2->index()].ToString());
 	else
 		sCmd.Format(_T("/command:log %s /endrev:%s"),
-			(LPCTSTR)this->m_sPath.IsEmpty() ?  _T("") : (_T("/path:\"") + this->m_sPath + _T("\"")),
+			(LPCTSTR)this->m_sPath.IsEmpty() ? L"" : (L"/path:\"" + this->m_sPath + L'"'),
 			(LPCTSTR)this->m_logEntries[m_SelectedEntry1->index()].ToString());
 
 	CAppUtils::RunTortoiseGitProc(sCmd);
@@ -1364,7 +1364,7 @@ void CRevisionGraphWnd::DoBrowseRepo()
 
 	CString sCmd;
 	sCmd.Format(_T("/command:repobrowser %s /rev:%s"),
-		this->m_sPath.IsEmpty() ?  _T("") : (LPCTSTR)(_T("/path:\"") + this->m_sPath + _T("\"")),
+		this->m_sPath.IsEmpty() ? L"" : (LPCTSTR)(L"/path:\"" + this->m_sPath + L'"'),
 		(LPCTSTR)GetFriendRefName(m_SelectedEntry1));
 
 	CAppUtils::RunTortoiseGitProc(sCmd);

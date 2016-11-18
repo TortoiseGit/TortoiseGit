@@ -480,7 +480,7 @@ int CRepositoryBrowser::ReadTree(CShadowFilesTree* treeroot, const CString& root
 	CGitHash hash;
 	if (CGit::GetHash(repository, hash, m_sRevision))
 	{
-		MessageBox(CGit::GetLibGit2LastErr(_T("Could not get hash of ") + m_sRevision + _T(".")), _T("TortoiseGit"), MB_ICONERROR);
+		MessageBox(CGit::GetLibGit2LastErr(L"Could not get hash of " + m_sRevision + L'.'), L"TortoiseGit", MB_ICONERROR);
 		return -1;
 	}
 
@@ -568,7 +568,7 @@ void CRepositoryBrowser::FillListCtrlForTreeNode(HTREEITEM treeNode)
 	if (!pTree)
 		return;
 
-	CString url = _T("/") + pTree->GetFullName();
+	CString url = L'/' + pTree->GetFullName();
 	GetDlgItem(IDC_REPOBROWSER_URL)->SetWindowText(url);
 
 	if (!pTree->m_bLoaded)
@@ -802,7 +802,7 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 			{
 				PathCompactPathEx(diffWith.GetBuffer(40), m_sMarkForDiffFilename, 39, 0);
 				diffWith.ReleaseBuffer();
-				diffWith += _T(":") + m_sMarkForDiffVersion.ToString().Left(g_Git.GetShortHASHLength());
+				diffWith += L':' + m_sMarkForDiffVersion.ToString().Left(g_Git.GetShortHASHLength());
 			}
 			CString menuEntry;
 			menuEntry.Format(IDS_MENUDIFFNOW, (LPCTSTR)diffWith);
@@ -1210,7 +1210,7 @@ void CRepositoryBrowser::FileSaveAs(const CString path)
 	CGitHash hash;
 	if (g_Git.GetHash(hash, m_sRevision))
 	{
-		MessageBox(g_Git.GetGitLastErr(_T("Could not get hash of ") + m_sRevision + _T(".")), _T("TortoiseGit"), MB_ICONERROR);
+		MessageBox(g_Git.GetGitLastErr(L"Could not get hash of " + m_sRevision + L'.'), L"TortoiseGit", MB_ICONERROR);
 		return;
 	}
 
@@ -1237,7 +1237,7 @@ void CRepositoryBrowser::OpenFile(const CString path, eOpenType mode, bool isSub
 	CGitHash hash;
 	if (g_Git.GetHash(hash, m_sRevision))
 	{
-		MessageBox(g_Git.GetGitLastErr(_T("Could not get hash of ") + m_sRevision + _T(".")), _T("TortoiseGit"), MB_ICONERROR);
+		MessageBox(g_Git.GetGitLastErr(L"Could not get hash of " + m_sRevision + L'.'), L"TortoiseGit", MB_ICONERROR);
 		return;
 	}
 

@@ -246,7 +246,7 @@ void CGitPropertyPage::PageProcOnCommand(WPARAM wParam)
 			tstring gitCmd = _T(" /command:");
 			gitCmd += _T("log /path:\"");
 			gitCmd += filenames.front().c_str();
-			gitCmd += _T("\"");
+			gitCmd += L'"';
 			RunCommand(gitCmd);
 		}
 		break;
@@ -260,7 +260,7 @@ void CGitPropertyPage::PageProcOnCommand(WPARAM wParam)
 			tstring gitCmd = _T(" /command:");
 			gitCmd += _T("settings /path:\"");
 			gitCmd += projectTopDir;
-			gitCmd += _T("\"");
+			gitCmd += L'"';
 			RunCommand(gitCmd);
 		}
 		break;

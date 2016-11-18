@@ -849,7 +849,7 @@ TEST(CTGitPath, FillBasedOnIndexFlags)
 	CString filenames[] = { L"versioned", L"assume-unchanged", L"skip-worktree", L"unversioned", L"a/versioned", L"a/assume-unchanged", L"a/skip-worktree", L"a/unversioned", L"b/versioned", L"b/assume-unchanged", L"b/skip-worktree", L"b/unversioned" };
 	for (const CString& filename : filenames)
 	{
-		CString filenameWithPath = tmpDir.GetTempDir() + _T("\\") + filename;
+		CString filenameWithPath = tmpDir.GetTempDir() + L'\\' + filename;
 		EXPECT_TRUE(CStringUtils::WriteStringToTextFile(filenameWithPath, L"something"));
 		EXPECT_TRUE(git_index_add_bypath(gitindex, CUnicodeUtils::GetUTF8(filename)) == 0);
 	}

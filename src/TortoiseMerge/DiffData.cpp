@@ -101,7 +101,7 @@ bool CDiffData::HandleSvnError(svn_error_t * svnerr)
 	while (svnerr->child)
 	{
 		svnerr = svnerr->child;
-		sMsg += _T("\n");
+		sMsg += L'\n';
 		sMsg += CStringA(svnerr->message);
 	}
 	CString readableMsg = CUnicodeUtils::GetUnicode(sMsg);

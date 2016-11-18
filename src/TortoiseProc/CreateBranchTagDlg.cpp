@@ -166,7 +166,7 @@ void CCreateBranchTagDlg::OnBnClickedOk()
 			msg.LoadString(IDS_T_EXISTS);
 		else
 			msg.LoadString(IDS_B_EXISTS);
-		ShowEditBalloon(IDC_BRANCH_TAG, msg + _T(" ") + CString(MAKEINTRESOURCE(IDS_B_T_DIFFERENTNAMEORFORCE)), CString(MAKEINTRESOURCE(IDS_WARN_WARNING)));
+		ShowEditBalloon(IDC_BRANCH_TAG, msg + L' ' + CString(MAKEINTRESOURCE(IDS_B_T_DIFFERENTNAMEORFORCE)), CString(MAKEINTRESOURCE(IDS_WARN_WARNING)));
 		return;
 	}
 	if (g_Git.BranchTagExists(m_BranchTagName, m_bIsTag == TRUE))
@@ -226,7 +226,7 @@ void CCreateBranchTagDlg::OnEnChangeBranchTag()
 
 	CString name;
 	GetDlgItem(IDC_BRANCH_TAG)->GetWindowText(name);
-	name = _T("/") + name;
+	name = L'/' + name;
 	CString remoteName = m_ChooseVersioinBranch.GetString();
 	if (CStringUtils::StartsWith(remoteName, L"remotes/") && remoteName.Right(name.GetLength()) != name)
 		((CButton *)GetDlgItem(IDC_CHECK_TRACK))->SetCheck(FALSE);

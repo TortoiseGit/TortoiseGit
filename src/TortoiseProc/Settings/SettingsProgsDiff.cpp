@@ -98,13 +98,13 @@ BOOL CSettingsProgsDiff::OnApply()
 {
 	UpdateData();
 	if (m_iExtDiff == 0 && !m_sDiffPath.IsEmpty() && m_sDiffPath.Left(1) != _T("#"))
-		m_sDiffPath = _T("#") + m_sDiffPath;
+		m_sDiffPath = L'#' + m_sDiffPath;
 	m_regDiffPath = m_sDiffPath;
 
 	m_dlgAdvDiff.SaveData();
 
 	if (m_iDiffViewer == 0 && !m_sDiffViewerPath.IsEmpty() && m_sDiffViewerPath.Left(1) != _T("#"))
-		m_sDiffViewerPath = _T("#") + m_sDiffViewerPath;
+		m_sDiffViewerPath = L'#' + m_sDiffViewerPath;
 
 	m_regDiffViewerPath = m_sDiffViewerPath;
 
@@ -160,13 +160,13 @@ void CSettingsProgsDiff::CheckProgComment()
 {
 	UpdateData();
 	if (m_iExtDiff == 0 && !m_sDiffPath.IsEmpty() && m_sDiffPath.Left(1) != _T("#"))
-		m_sDiffPath = _T("#") + m_sDiffPath;
+		m_sDiffPath = L'#' + m_sDiffPath;
 	else if (m_iExtDiff == 1)
-		m_sDiffPath.TrimLeft('#');
+		m_sDiffPath.TrimLeft(L'#');
 	if (m_iDiffViewer == 0 && !m_sDiffViewerPath.IsEmpty() && m_sDiffViewerPath.Left(1) != _T("#"))
-		m_sDiffViewerPath = _T("#") + m_sDiffViewerPath;
+		m_sDiffViewerPath = L'#' + m_sDiffViewerPath;
 	else if (m_iDiffViewer == 1)
-		m_sDiffViewerPath.TrimLeft('#');
+		m_sDiffViewerPath.TrimLeft(L'#');
 	UpdateData(FALSE);
 }
 

@@ -458,7 +458,7 @@ public:
 			CString result = GitAdminDir::ReadGitLink(path, path + _T("\\.git"));
 			if (!result.IsEmpty())
 			{
-				(*this)[thePath] = result + _T("\\");
+				(*this)[thePath] = result + L'\\';
 				m_reverseLookup[result.MakeLower()] = path;
 				return (*this)[thePath];
 			}

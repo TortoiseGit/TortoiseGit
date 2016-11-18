@@ -1130,19 +1130,19 @@ void CRebaseDlg::RewriteNotes()
 		if (entry.second.IsEmpty())
 			continue;
 		rewrites += entry.first.ToString();
-		rewrites += L" ";
+		rewrites += L' ';
 		rewrites += entry.second.ToString();
-		rewrites += L"\n";
+		rewrites += L'\n';
 	}
 	if (rewrites.IsEmpty())
 		return;
 	CString tmpfile = GetTempFile();
-	tmpfile.Replace(L"\\", L"/");
+	tmpfile.Replace(L'\\', L'/');
 	if (!CStringUtils::WriteStringToTextFile(tmpfile, rewrites))
 		return;
 	SCOPE_EXIT{ ::DeleteFile(tmpfile); };
 	CString pipefile = GetTempFile();
-	pipefile.Replace(L"\\", L"/");
+	pipefile.Replace(L'\\', L'/');
 	CString pipecmd;
 	pipecmd.Format(L"git notes copy --for-rewrite=rebase < %s", (LPCTSTR)tmpfile);
 	if (!CStringUtils::WriteStringToTextFile(pipefile, pipecmd))
@@ -1225,7 +1225,7 @@ void CRebaseDlg::OnBnClickedContinue()
 		m_RebaseStage = REBASE_START;
 		m_FileListCtrl.Clear();
 		m_FileListCtrl.SetHasCheckboxes(false);
-		m_FileListCtrl.m_CurrentVersion = L"";
+		m_FileListCtrl.m_CurrentVersion.Empty();
 		m_ctrlTabCtrl.SetTabLabel(REBASE_TAB_CONFLICT, CString(MAKEINTRESOURCE(IDS_PROC_CONFLICTFILES)));
 		m_ctrlTabCtrl.AddTab(&m_wndOutputRebase, CString(MAKEINTRESOURCE(IDS_LOG)), 2);
 	}
@@ -1345,7 +1345,7 @@ void CRebaseDlg::OnBnClickedContinue()
 
 		// update commit message if needed
 		CString str = m_LogMessageCtrl.GetText().Trim();
-		if (str != (curRev->GetSubject() + _T("\n") + curRev->GetBody()).Trim())
+		if (str != (curRev->GetSubject() + L'\n' + curRev->GetBody()).Trim())
 		{
 			if (str.Trim().IsEmpty())
 			{
@@ -1836,15 +1836,15 @@ int CRebaseDlg::DoRebase()
 		if (!this->m_SquashMessage.IsEmpty())
 			this->m_SquashMessage += _T("\n\n");
 		this->m_SquashMessage += pRev->GetSubject();
-		this->m_SquashMessage += _T("\n");
+		this->m_SquashMessage += L'\n';
 		this->m_SquashMessage += pRev->GetBody().TrimRight();
 		if (m_bAddCherryPickedFrom)
 		{
 			if (!pRev->GetBody().IsEmpty())
-				m_SquashMessage += _T("\n");
+				m_SquashMessage += L'\n';
 			m_SquashMessage += _T("(cherry picked from commit ");
 			m_SquashMessage += pRev->m_CommitHash.ToString();
-			m_SquashMessage += _T(")");
+			m_SquashMessage += L')';
 		}
 	}
 	else
@@ -1975,7 +1975,7 @@ int CRebaseDlg::DoRebase()
 				{
 					CString parentString;
 					for (const auto& parent : newParents)
-						parentString += L" " + parent.ToString();
+						parentString += L' ' + parent.ToString();
 					cmd.Format(_T("git.exe checkout %s"), (LPCTSTR)newParents[0].ToString());
 					if (RunGitCmdRetryOrAbort(cmd))
 					{
@@ -2281,7 +2281,7 @@ LRESULT CRebaseDlg::OnRebaseUpdateUI(WPARAM,LPARAM)
 			CGit::LoadTextFile(dotGitPath + _T("MERGE_MSG"), logMessage);
 		}
 		if (logMessage.IsEmpty())
-			logMessage = curRev->GetSubject() + _T("\n") + curRev->GetBody();
+			logMessage = curRev->GetSubject() + L'\n' + curRev->GetBody();
 		this->m_LogMessageCtrl.SetText(logMessage);
 		break;
 		}
@@ -2298,10 +2298,10 @@ LRESULT CRebaseDlg::OnRebaseUpdateUI(WPARAM,LPARAM)
 			if (headRevision.GetCommit(_T("HEAD")))
 				MessageBox(headRevision.GetLastErr(), _T("TortoiseGit"), MB_ICONERROR);
 
-			m_LogMessageCtrl.SetText(headRevision.GetSubject() + _T("\n") + headRevision.GetBody());
+			m_LogMessageCtrl.SetText(headRevision.GetSubject() + L'\n' + headRevision.GetBody());
 		}
 		else
-			m_LogMessageCtrl.SetText(curRev->GetSubject() + _T("\n") + curRev->GetBody());
+			m_LogMessageCtrl.SetText(curRev->GetSubject() + L'\n' + curRev->GetBody());
 		break;
 	case REBASE_SQUASH_EDIT:
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_MESSAGE);
@@ -2600,7 +2600,7 @@ void CRebaseDlg::FillLogMessageCtrl()
 		m_FileListCtrl.m_CurrentVersion = pLogEntry->m_CommitHash;
 		m_FileListCtrl.Show(GITSLC_SHOWVERSIONED);
 		m_LogMessageCtrl.Call(SCI_SETREADONLY, FALSE);
-		m_LogMessageCtrl.SetText(pLogEntry->GetSubject() + _T("\n") + pLogEntry->GetBody());
+		m_LogMessageCtrl.SetText(pLogEntry->GetSubject() + L'\n' + pLogEntry->GetBody());
 		m_LogMessageCtrl.Call(SCI_SETREADONLY, TRUE);
 	}
 }

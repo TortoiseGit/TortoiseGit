@@ -282,12 +282,12 @@ CString CStringUtils::LinesWrap(const CString& longstring, int limit /* = 80 */,
 			break;
 		lineposold = linepos;
 		if (!retString.IsEmpty())
-			retString += _T("\n");
+			retString += L'\n';
 		retString += WordWrap(temp, limit, bCompactPaths, false, 4);
 	}
 	temp = longstring.Mid(lineposold);
 	if (!temp.IsEmpty())
-		retString += _T("\n");
+		retString += L'\n';
 	retString += WordWrap(temp, limit, bCompactPaths, false, 4);
 	retString.Trim();
 	return retString;
@@ -335,7 +335,7 @@ CString CStringUtils::WordWrap(const CString& longstring, int limit, bool bCompa
 			}
 			else
 				retString += longstring.Mid(nLineStart, nLineEnd-nLineStart);
-			retString += L"\n";
+			retString += L'\n';
 			tabOffset = 0;
 			nLineStart = nLineEnd;
 		}
@@ -465,10 +465,10 @@ static void parse_bogus_from(const CString& mailaddress, CString& parsedAddress,
 {
 	/* John Doe <johndoe> */
 
-	int bra = mailaddress.Find(L"<");
+	int bra = mailaddress.Find(L'<');
 	if (bra < 0)
 		return;
-	int ket = mailaddress.Find(L">");
+	int ket = mailaddress.Find(L'>');
 	if (ket < 0)
 		return;
 
@@ -645,7 +645,7 @@ void CStringUtils::PipesToNulls(TCHAR* buffer, size_t length)
 void CStringUtils::PipesToNulls(TCHAR* buffer)
 {
 	TCHAR* ptr = buffer;
-	while (*ptr != 0)
+	while (*ptr)
 	{
 		PipeToNull(ptr);
 		++ptr;

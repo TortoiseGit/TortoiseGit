@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2009,2011,2013-2015 - TortoiseGit
+// Copyright (C) 2008-2009,2011,2013-2016 - TortoiseGit
 // Copyright (C) 2003-2008,2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -228,14 +228,14 @@ BOOL CSetOverlayPage::OnApply()
 
 	if (m_sExcludePaths.Compare(CString(m_regExcludePaths)))
 		m_restart = Restart_Cache;
-	m_sExcludePaths.Remove('\r');
+	m_sExcludePaths.Remove(L'\r');
 	if (m_sExcludePaths.Right(1).Compare(_T("\n"))!=0)
-		m_sExcludePaths += _T("\n");
+		m_sExcludePaths += L'\n';
 	Store(m_sExcludePaths, m_regExcludePaths);
 	m_sExcludePaths.Replace(_T("\n"), _T("\r\n"));
-	m_sIncludePaths.Remove('\r');
+	m_sIncludePaths.Remove(L'\r');
 	if (m_sIncludePaths.Right(1).Compare(_T("\n"))!=0)
-		m_sIncludePaths += _T("\n");
+		m_sIncludePaths += L'\n';
 	if (m_sIncludePaths.Compare(CString(m_regIncludePaths)))
 		m_restart = Restart_Cache;
 	Store(m_sIncludePaths, m_regIncludePaths);

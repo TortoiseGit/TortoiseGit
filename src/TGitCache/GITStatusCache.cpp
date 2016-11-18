@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2006,2008,2010,2014 - TortoiseSVN
-// Copyright (C) 2008-2015, 2016 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -73,7 +73,7 @@ void CGitStatusCache::Create()
 		// and the second time we start up and try to read the file,
 		// it's not there anymore and we start from scratch without a crash.
 		path2 = path;
-		path2 += _T("2");
+		path2 += L'2';
 		DeleteFile(path2);
 		CopyFile(path, path2, FALSE);
 		DeleteFile(path);

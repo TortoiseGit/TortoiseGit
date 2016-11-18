@@ -107,7 +107,7 @@ TEST(CGitAdminDir, GetAdminDirPath_BareRepo)
 	ASSERT_TRUE(git_repository_init(repo.GetPointer(), CUnicodeUtils::GetUTF8(tmpDir.GetTempDir()), true) == 0);
 
 	EXPECT_TRUE(GitAdminDir::GetAdminDirPath(tmpDir.GetTempDir(), adminDir));
-	EXPECT_STREQ(tmpDir.GetTempDir() + _T("\\"), adminDir);
+	EXPECT_STREQ(tmpDir.GetTempDir() + L'\\', adminDir);
 
 	adminDir.Empty();
 	EXPECT_FALSE(GitAdminDir::GetAdminDirPath(tmpDir.GetTempDir() + L"\\objects", adminDir));

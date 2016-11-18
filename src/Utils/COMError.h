@@ -26,7 +26,7 @@ public:
 
 	std::wstring GetMessage() {return message;}
 	std::wstring GetDescription() {return description;}
-	std::wstring GetMessageAndDescription() {return message + _T("\n") + description;}
+	std::wstring GetMessageAndDescription() { return message + L'\n' + description; }
 	std::wstring GetSource() {return source;}
 	std::wstring GetUUID() {return uuid;}
 

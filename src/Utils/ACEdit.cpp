@@ -76,7 +76,7 @@ void CACEdit::SetMode(int iMode)
 		m_iMode |= _MODE_STANDARD_;
 
 	if(iMode & _MODE_FILESYSTEM_)
-		m_SeparationStr = _T("\\");
+		m_SeparationStr = L'\\';
 
 	// Vers. 1.2
 	if(iMode & _MODE_FIND_ALL_)
@@ -520,7 +520,7 @@ void CACEdit::ReadDirectory(CString m_Dir)
 
 	CString m_Name,m_File,m_Dir1 = m_Dir;
 	if (m_Dir.Right(1) != _T('\\'))
-		m_Dir += _T("\\");
+		m_Dir += L'\\';
 
 	if(m_LastDirectory.CompareNoCase(m_Dir) == 0 && m_Liste.m_SearchList.GetSize())
 		return;
@@ -547,7 +547,7 @@ void CACEdit::ReadDirectory(CString m_Dir)
 				continue;
 
 			if (m_File.Right(1) != _T('\\'))
-				m_File += _T("\\");
+				m_File += L'\\';
 		}
 
 		if(!FoundFiles.IsDirectory())
@@ -562,7 +562,7 @@ void CACEdit::ReadDirectory(CString m_Dir)
 		{
 			m_Name = m_Dir1;
 			if (m_Name.Right(1) != _T('\\'))
-				m_Name += _T("\\");
+				m_Name += L'\\';
 
 			m_Name += m_File;
 		}

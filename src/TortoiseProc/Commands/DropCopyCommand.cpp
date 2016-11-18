@@ -48,7 +48,7 @@ bool DropCopyCommand::Execute()
 			if (renDlg.DoModal() != IDOK)
 				return FALSE;
 			sNewName = renDlg.m_name;
-		} while(sNewName.IsEmpty() || PathFileExists(sDroppath+_T("\\")+sNewName));
+		} while (sNewName.IsEmpty() || PathFileExists(sDroppath + L'\\' + sNewName));
 	}
 	CSysProgressDlg progress;
 	progress.SetTitle(IDS_PROC_COPYING);
@@ -102,7 +102,7 @@ bool DropCopyCommand::Execute()
 				if (!path.IsEmpty() && (path[0] == _T('\\') || path[0] == _T('/')))
 					path = path.Mid(1);
 				cmd += path;
-				cmd +=_T('\"');
+				cmd += L'"';
 
 				CString output;
 				if (g_Git.Run(cmd, &output, CP_UTF8))

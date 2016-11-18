@@ -930,8 +930,8 @@ void CRevisionGraphWnd::DrawConnections (GraphicsDevice& graphics, const CRect& 
 			graphics.pSVG->Polyline(points.GetData(), (int)points.GetCount(), Color(0,0,0), (int)penwidth);
 		else if (graphics.pGraphviz)
 		{
-			CString hash1 = _T("g") + m_logEntries[e->target()->index()].ToString().Left(g_Git.GetShortHASHLength());
-			CString hash2 = _T("g") + m_logEntries[e->source()->index()].ToString().Left(g_Git.GetShortHASHLength());
+			CString hash1 = L'g' + m_logEntries[e->target()->index()].ToString().Left(g_Git.GetShortHASHLength());
+			CString hash2 = L'g' + m_logEntries[e->source()->index()].ToString().Left(g_Git.GetShortHASHLength());
 			graphics.pGraphviz->DrawEdge(hash1, hash2);
 		}
 
@@ -1037,13 +1037,13 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 			if (graphics.pGraphviz)
 			{
 				CString shortHash = hash.ToString().Left(g_Git.GetShortHASHLength());
-				graphics.pGraphviz->DrawNode(_T("g") + shortHash, shortHash, fontname, m_nFontSize, background, brightColor, (int)noderect.Height);
+				graphics.pGraphviz->DrawNode(L'g' + shortHash, shortHash, fontname, m_nFontSize, background, brightColor, (int)noderect.Height);
 			}
 		}else
 		{
 			if (graphics.pGraphviz)
 			{
-				CString id = _T("g") + hash.ToString().Left(g_Git.GetShortHASHLength());
+				CString id = L'g' + hash.ToString().Left(g_Git.GetShortHASHLength());
 				graphics.pGraphviz->BeginDrawTableNode(id, fontname, m_nFontSize, (int)noderect.Height);
 			}
 

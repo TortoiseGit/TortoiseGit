@@ -141,7 +141,7 @@ bool CCommonAppUtils::RunTortoiseGitProc(const CString& sCommandLine, bool uac, 
 	{
 		sCmd += L" /groupuuid:\"";
 		sCmd += g_sGroupingUUID;
-		sCmd += L"\"";
+		sCmd += L'"';
 	}
 
 	return LaunchApplication(sCmd, NULL, false, nullptr, uac);

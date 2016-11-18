@@ -104,7 +104,7 @@ static BOOL FindGitPath()
 	if (!gitExeDirectory.IsEmpty())
 	{
 		CGit::ms_LastMsysGitDir = gitExeDirectory;
-		CGit::ms_LastMsysGitDir.TrimRight(_T("\\"));
+		CGit::ms_LastMsysGitDir.TrimRight(L'\\');
 		if (CGit::ms_LastMsysGitDir.GetLength() > 12 && (CGit::ms_LastMsysGitDir.Right(12) == _T("\\mingw32\\bin") || CGit::ms_LastMsysGitDir.Right(12) == _T("\\mingw64\\bin")))
 		{
 			// prefer cmd directory as early Git for Windows 2.x releases only had this
@@ -533,7 +533,7 @@ int CGit::Run(CString cmd, CString* output, int code)
 	if (output && !err.IsEmpty())
 	{
 		if (!output->IsEmpty())
-			*output += _T("\n");
+			*output += L'\n';
 		*output += err;
 	}
 
@@ -1452,7 +1452,7 @@ CString CGit::GetGitLastErr(const CString& msg)
 	{
 		CString lastError = gitLastErr;
 		gitLastErr.Empty();
-		return msg + _T("\n") + lastError;
+		return msg + L'\n' + lastError;
 	}
 }
 
@@ -1466,7 +1466,7 @@ CString CGit::GetGitLastErr(const CString& msg, LIBGIT2_CMD cmd)
 	{
 		CString lastError = gitLastErr;
 		gitLastErr.Empty();
-		return msg + _T("\n") + lastError;
+		return msg + L'\n' + lastError;
 	}
 }
 
@@ -1486,7 +1486,7 @@ CString CGit::GetLibGit2LastErr()
 CString CGit::GetLibGit2LastErr(const CString& msg)
 {
 	if (!msg.IsEmpty())
-		return msg + _T("\n") + GetLibGit2LastErr();
+		return msg + L'\n' + GetLibGit2LastErr();
 	return GetLibGit2LastErr();
 }
 
@@ -1977,10 +1977,7 @@ int CGit::DeleteRemoteRefs(const CString& sRemote, const STRING_VECTOR& list)
 	{
 		CMassiveGitTaskBase mgtPush(_T("push ") + sRemote, FALSE);
 		for (const auto& ref : list)
-		{
-			CString refspec = _T(":") + ref;
-			mgtPush.AddFile(refspec);
-		}
+			mgtPush.AddFile(L':' + ref);
 
 		BOOL cancel = FALSE;
 		mgtPush.Execute(cancel);
@@ -2161,20 +2158,20 @@ int CGit::FindAndSetGitExePath(BOOL bFallback)
 
 	CRegString msyslocalinstalldir = CRegString(REG_MSYSGIT_INSTALL_LOCAL, _T(""), FALSE, HKEY_CURRENT_USER);
 	str = msyslocalinstalldir;
-	str.TrimRight(_T("\\"));
+	str.TrimRight(L'\\');
 #ifdef _WIN64
 	if (str.IsEmpty())
 	{
 		CRegString msysinstalldir = CRegString(REG_MSYSGIT_INSTALL_LOCAL, _T(""), FALSE, HKEY_LOCAL_MACHINE);
 		str = msysinstalldir;
-		str.TrimRight(_T("\\"));
+		str.TrimRight(L'\\');
 	}
 #endif
 	if (str.IsEmpty())
 	{
 		CRegString msysinstalldir = CRegString(REG_MSYSGIT_INSTALL, _T(""), FALSE, HKEY_LOCAL_MACHINE);
 		str = msysinstalldir;
-		str.TrimRight(_T("\\"));
+		str.TrimRight(L'\\');
 	}
 	if (!str.IsEmpty())
 	{
@@ -2804,14 +2801,14 @@ void CEnvironment::SetEnv(const TCHAR *name, const TCHAR* value)
 
 void CEnvironment::AddToPath(CString value)
 {
-	value.TrimRight(L"\\");
+	value.TrimRight(L'\\');
 	if (value.IsEmpty())
 		return;
 
-	CString path = GetEnv(L"PATH").TrimRight(L";") + L";";
+	CString path = GetEnv(L"PATH").TrimRight(L';') + L';';
 
 	// do not double add paths to %PATH%
-	if (path.Find(value + L";") >= 0 || path.Find(value + L"\\;") >= 0)
+	if (path.Find(value + L';') >= 0 || path.Find(value + L"\\;") >= 0)
 		return;
 
 	path += value;
@@ -3018,7 +3015,7 @@ CString CGit::GetUnifiedDiffCmd(const CTGitPath& path, const git_revnum_t& rev1,
 	{
 		cmd += _T(" \"");
 		cmd += path.GetGitPathString();
-		cmd += _T("\"");
+		cmd += L'"';
 	}
 
 	return cmd;
@@ -3334,8 +3331,8 @@ bool CGit::LoadTextFile(const CString &filename, CString &msg)
 	} while (true);
 	msg += CUnicodeUtils::GetUnicode(str);
 	msg.Replace(_T("\r\n"), _T("\n"));
-	msg.TrimRight(_T("\n"));
-	msg += _T("\n");
+	msg.TrimRight(L'\n');
+	msg += L'\n';
 
 	return true; // load no further files
 }

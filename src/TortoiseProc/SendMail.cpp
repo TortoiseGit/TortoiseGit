@@ -180,7 +180,7 @@ int GetFileContents(CString &filename, CString &content)
 		{
 			content += str;
 			str.Empty();
-			content += _T("\n");
+			content += L'\n';
 		}
 		return 0;
 	}
@@ -226,7 +226,7 @@ int CSendMailCombineable::SendAsCombinedMail(const CTGitPathList &list, CGitProg
 				instance->ReportError(_T("Could not open ") + filename);
 				return -2;
 			}
-			body += _T("\n");
+			body += L'\n';
 		}
 	}
 	return SendMail(CTGitPath(), instance, m_sSenderName, m_sSenderMail, m_sTo, m_sCC, m_sSubject, body, attachments);

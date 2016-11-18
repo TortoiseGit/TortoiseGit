@@ -181,7 +181,7 @@ bool CloneCommand::Execute()
 			postCmdList.emplace_back(IDI_LOG, IDS_MENULOG, [&]
 			{
 				CString cmd = _T("/command:log");
-				cmd += _T(" /path:\"") + dlg.m_Directory + _T("\"");
+				cmd += L" /path:\"" + dlg.m_Directory + L'"';
 				CAppUtils::RunTortoiseGitProc(cmd);
 			});
 

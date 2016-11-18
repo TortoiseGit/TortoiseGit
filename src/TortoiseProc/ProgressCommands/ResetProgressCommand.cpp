@@ -33,7 +33,7 @@ bool ResetProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, in
 	list->SetWindowTitle(IDS_PROGRS_TITLE_RESET, g_Git.m_CurrentDir, sWindowTitle);
 	list->SetBackgroundImage(IDI_UPDATE_BKG);
 	int resetTypesResource[] = { IDS_RESET_SOFT, IDS_RESET_MIXED, IDS_RESET_HARD };
-	list->ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_TITLE_RESET)) + _T(" ") + CString(MAKEINTRESOURCE(resetTypesResource[m_resetType])) + _T(" ") + m_revision);
+	list->ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_TITLE_RESET)) + L' ' + CString(MAKEINTRESOURCE(resetTypesResource[m_resetType])) + L' ' + m_revision);
 
 	list->ShowProgressBar();
 	CAutoRepository repo(g_Git.GetGitRepository());

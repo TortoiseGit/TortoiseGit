@@ -225,7 +225,7 @@ CStringA CPathUtils::PathEscape(const CStringA& path)
 CString CPathUtils::GetFileNameFromPath(CString sPath)
 {
 	CString ret;
-	sPath.Replace(_T("/"), _T("\\"));
+	sPath.Replace(L'/', L'\\');
 	ret = sPath.Mid(sPath.ReverseFind('\\') + 1);
 	return ret;
 }

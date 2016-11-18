@@ -140,14 +140,14 @@ BOOL CSetProxyPage::OnInitDialog()
 		else
 			start+=3;
 
-		int at = proxy.Find(_T("@"), 0);
+		int at = proxy.Find(L'@');
 		int port;
 
 		if(at<0)
 		{
 			m_username.Empty();
 			m_password.Empty();
-			port=proxy.Find(_T(":"),start);
+			port = proxy.Find(L':', start);
 			if(port<0)
 				m_serveraddress = proxy.Mid(start);
 			else
@@ -157,7 +157,7 @@ BOOL CSetProxyPage::OnInitDialog()
 		else
 		{
 			int username;
-			username = proxy.Find(_T(":"),start);
+			username = proxy.Find(L':', start);
 			if(username<=0 || username >at)
 			{
 				StringUnescape(proxy.Mid(start, at - start), &m_username);
@@ -169,7 +169,7 @@ BOOL CSetProxyPage::OnInitDialog()
 				StringUnescape(proxy.Mid(username + 1, at - username - 1), &m_password);
 			}
 
-			port=proxy.Find(_T(":"),at);
+			port = proxy.Find(L':', at);
 			if(port<0)
 				m_serveraddress = proxy.Mid(at+1);
 			else
@@ -257,10 +257,10 @@ BOOL CSetProxyPage::OnApply()
 					::MessageBox(nullptr, _T("Could not encode password."), _T("TortoiseGit"), MB_ICONERROR);
 					return FALSE;
 				}
-				http_proxy += _T(":") + escapedPassword;
+				http_proxy += L':' + escapedPassword;
 			}
 
-			http_proxy += _T("@");
+			http_proxy += L'@';
 		}
 		http_proxy+=m_serveraddress;
 

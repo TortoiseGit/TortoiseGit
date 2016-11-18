@@ -288,7 +288,7 @@ void CSetDialogs3::AddLangToCombo(DWORD langID)
 	{
 		sLang += _T(" (");
 		sLang += buf;
-		sLang += _T(")");
+		sLang += L')';
 	}
 
 	int index = m_langCombo.AddString(sLang);

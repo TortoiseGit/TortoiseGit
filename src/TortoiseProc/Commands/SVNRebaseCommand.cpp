@@ -80,7 +80,7 @@ bool SVNRebaseCommand::Execute()
 	}
 	else
 	{
-		MessageBox(hwndExplorer, out + L"\n" + err, L"TortoiseGit", MB_OK | MB_ICONERROR);
+		MessageBox(hwndExplorer, out + L'\n' + err, L"TortoiseGit", MB_OK | MB_ICONERROR);
 		return false;
 	}
 
@@ -153,7 +153,7 @@ bool SVNRebaseCommand::Execute()
 		if (response == IDC_REBASE_POST_BUTTON)
 		{
 			cmd = _T("/command:log");
-			cmd += _T(" /path:\"") + g_Git.m_CurrentDir + _T("\"");
+			cmd += L" /path:\"" + g_Git.m_CurrentDir + L'"';
 			CAppUtils::RunTortoiseGitProc(cmd);
 		}
 		return true;

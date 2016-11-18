@@ -264,7 +264,7 @@ LRESULT CMainWindow::DoCommand(int id)
 		{
 			std::wstring command = L" /diff:\"";
 			command += m_filename;
-			command += L"\"";
+			command += L'"';
 			std::wstring tortoiseMergePath = GetAppDirectory() + _T("TortoiseGitMerge.exe");
 			CCreateProcessHelper::CreateProcessDetached(tortoiseMergePath.c_str(), command.c_str());
 		}

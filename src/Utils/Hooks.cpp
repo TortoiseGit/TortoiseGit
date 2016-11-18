@@ -202,7 +202,7 @@ void CHooks::AddParam(CString& sCmd, const CString& param)
 {
 	sCmd += _T(" \"");
 	sCmd += param;
-	sCmd += _T("\"");
+	sCmd += L'"';
 }
 
 void CHooks::AddPathParam(CString& sCmd, const CTGitPathList& pathList)

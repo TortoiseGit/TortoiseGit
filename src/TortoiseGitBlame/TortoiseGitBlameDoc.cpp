@@ -250,7 +250,7 @@ void CTortoiseGitBlameDoc::SetPathName(LPCTSTR lpszPathName, BOOL bAddToMRU)
 {
 	CDocument::SetPathName(lpszPathName, bAddToMRU && (m_Rev == _T("HEAD")));
 
-	this->SetTitle(CString(lpszPathName) + _T(":") + m_Rev);
+	this->SetTitle(CString(lpszPathName) + L':' + m_Rev);
 }
 
 // CTortoiseGitBlameDoc diagnostics

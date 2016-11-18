@@ -1730,7 +1730,7 @@ void CTortoiseGitBlameView::OnMouseHover(UINT /*nFlags*/, CPoint point)
 			int pos = 0;
 			while (iline++ < maxLine)
 			{
-				int pos2 = body.Find(_T("\n"), pos);
+				int pos2 = body.Find(L'\n', pos);
 				if (pos2 < 0)
 					break;
 				int lineLength = pos2 - pos - 1;

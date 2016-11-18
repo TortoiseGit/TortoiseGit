@@ -134,7 +134,7 @@ bool GitAdminDir::GetAdminDirPath(const CString &projectTopDir, CString& adminDi
 	{
 		adminDir = projectTopDir;
 		adminDir.TrimRight('\\');
-		adminDir.Append(_T("\\"));
+		adminDir.AppendChar(L'\\');
 		return true;
 	}
 
@@ -142,7 +142,7 @@ bool GitAdminDir::GetAdminDirPath(const CString &projectTopDir, CString& adminDi
 	if (CTGitPath(sDotGitPath).IsDirectory())
 	{
 		sDotGitPath.TrimRight('\\');
-		sDotGitPath.Append(_T("\\"));
+		sDotGitPath.AppendChar(L'\\');
 		adminDir = sDotGitPath;
 		return true;
 	}
@@ -151,7 +151,7 @@ bool GitAdminDir::GetAdminDirPath(const CString &projectTopDir, CString& adminDi
 		CString result = ReadGitLink(projectTopDir, sDotGitPath);
 		if (result.IsEmpty())
 			return false;
-		adminDir = result + _T("\\");
+		adminDir = result + L'\\';
 		return true;
 	}
 }
@@ -176,7 +176,7 @@ CString GitAdminDir::ReadGitLink(const CString& topDir, const CString& dotGitPat
 	gitPath.TrimRight('\\');
 	if (!gitPath.IsEmpty() && gitPath[0] == _T('.'))
 	{
-		gitPath = topDir + _T("\\") + gitPath;
+		gitPath = topDir + L'\\' + gitPath;
 		CString adminDir;
 		PathCanonicalize(CStrBuf(adminDir, MAX_PATH), gitPath);
 		return adminDir;

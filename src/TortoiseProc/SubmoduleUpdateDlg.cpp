@@ -81,7 +81,7 @@ static int SubmoduleCallback(git_submodule *sm, const char * /*name*/, void *pay
 	{
 		for (size_t i = 0; i < prefixList->size(); ++i)
 		{
-			CString prefix = prefixList->at(i) + _T("/");
+			CString prefix = prefixList->at(i) + L'/';
 			if (CStringUtils::StartsWith(path, prefix))
 				list->push_back(path);
 		}
@@ -137,7 +137,7 @@ BOOL CSubmoduleUpdateDlg::OnInitDialog()
 	AddAnchor(IDC_CHECK_SUBMODULE_REBASE, BOTTOM_RIGHT);
 
 	CString str(g_Git.m_CurrentDir);
-	str.Replace(_T(":"), _T("_"));
+	str.Replace(L':', L'_');
 	m_regShowWholeProject = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\ShowWholeProject\\") + str, FALSE);
 	m_bWholeProject = m_regShowWholeProject;
 
@@ -200,7 +200,7 @@ void CSubmoduleUpdateDlg::OnBnClickedOk()
 		if (m_PathListBox.GetSel(i))
 		{
 			if (!selected.IsEmpty())
-				selected.Append(_T("|"));
+				selected.AppendChar(L'|');
 			CString text;
 			m_PathListBox.GetText(i, text);
 			m_PathList.push_back(text);

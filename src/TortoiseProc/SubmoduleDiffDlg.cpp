@@ -91,13 +91,13 @@ BOOL CSubmoduleDiffDlg::OnInitDialog()
 	{
 		CString toGroup;
 		GetDlgItem(IDC_TOGROUP)->GetWindowText(toGroup);
-		toGroup += _T(" (") + CString(MAKEINTRESOURCE(IDS_git_DEPTH_WORKING)) +  _T(")");
+		toGroup += L" (" + CString(MAKEINTRESOURCE(IDS_git_DEPTH_WORKING)) +  L')';
 		GetDlgItem(IDC_TOGROUP)->SetWindowText(toGroup);
 	}
 
 	CString fsPath = m_sPath;
-	fsPath.Replace('\\', '/');
-	CString title = _T("Submodule \"") + fsPath + _T("\"");
+	fsPath.Replace(L'\\', L'/');
+	CString title = L"Submodule \"" + fsPath + L'"';
 	GetDlgItem(IDC_SUBMODULEDIFFTITLE)->SetWindowText(title);
 
 	UpdateData(FALSE);

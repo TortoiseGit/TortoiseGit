@@ -594,7 +594,7 @@ BOOL CMainFrame::PatchFile(CString sFilePath, bool /*bContentMods*/, bool bPropM
 		MessageBox(m_Patch.GetErrorMessage(), NULL, MB_ICONERROR);
 		return FALSE;
 	}
-	sFilePath = m_Patch.GetTargetPath() + _T("\\") + sFilePath;
+	sFilePath = m_Patch.GetTargetPath() + L'\\' + sFilePath;
 	sFilePath.Replace('/', '\\');
 	if (sBasePath.IsEmpty())
 		sBasePath = sFilePath;
@@ -1538,7 +1538,7 @@ void CMainFrame::PatchSave()
 		{
 			// call TortoiseProc to add the new file to version control
 			CString cmd = _T("/command:add /noui /path:\"");
-			cmd += m_Data.m_mergedFile.GetFilename() + _T("\"");
+			cmd += m_Data.m_mergedFile.GetFilename() + L'"';
 			CAppUtils::RunTortoiseGitProc(cmd);
 		}
 	}
@@ -1685,7 +1685,7 @@ bool CMainFrame::FileSave(bool bCheckResolved /*=true*/)
 	{
 		// call TortoiseProc to add the new file to version control
 		CString cmd = _T("/command:add /noui /path:\"");
-		cmd += m_Data.m_mergedFile.GetFilename() + _T("\"");
+		cmd += m_Data.m_mergedFile.GetFilename() + L'"';
 		if(!CAppUtils::RunTortoiseGitProc(cmd))
 			return false;
 	}

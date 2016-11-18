@@ -261,7 +261,7 @@ void CTGitPath::SanitizeRootPath(CString& sPath, bool bIsForwardPath) const
 {
 	// Make sure to add the trailing slash to root paths such as 'C:'
 	if (sPath.GetLength() == 2 && sPath[1] == ':')
-		sPath += (bIsForwardPath) ? _T("/") : _T("\\");
+		sPath += (bIsForwardPath) ? L'/' : L'\\';
 }
 
 bool CTGitPath::IsDirectory() const
@@ -744,8 +744,8 @@ int CTGitPath::GetAdminDirMask() const
 					CAutoConfig config(true);
 					git_config_add_file_ondisk(config, CGit::GetGitPathStringA(topProjectDir + _T("\\.gitmodules")), GIT_CONFIG_LEVEL_APP, FALSE);
 					CString relativePath = GetWinPathString().Mid(topProjectDir.GetLength());
-					relativePath.Replace(_T("\\"), _T("/"));
-					relativePath.Trim(_T("/"));
+					relativePath.Replace(L'\\', L'/');
+					relativePath.Trim(L'/');
 					CStringA submodulePath = CUnicodeUtils::GetUTF8(relativePath);
 					if (git_config_foreach_match(config, "submodule\\..*\\.path", 
 						[](const git_config_entry *entry, void *data) { return entry->value == *(CStringA *)data ? GIT_EUSER : 0; }, &submodulePath) == GIT_EUSER)
@@ -941,7 +941,7 @@ bool CTGitPath::IsValidOnWindows() const
 	if (CStringUtils::StartsWithI(sMatch, L"file:\\\\"))
 	{
 		sMatch = sMatch.Mid(7);
-		sMatch.TrimLeft(_T("\\"));
+		sMatch.TrimLeft(L'\\');
 		sPattern = _T("^(\\\\\\\\\\?\\\\)?(([a-zA-Z]:|\\\\)\\\\)?(((\\.)|(\\.\\.)|([^\\\\/:\\*\\?\"\\|<> ](([^\\\\/:\\*\\?\"\\|<>\\. ])|([^\\\\/:\\*\\?\"\\|<>]*[^\\\\/:\\*\\?\"\\|<>\\. ]))?))\\\\)*[^\\\\/:\\*\\?\"\\|<> ](([^\\\\/:\\*\\?\"\\|<>\\. ])|([^\\\\/:\\*\\?\"\\|<>]*[^\\\\/:\\*\\?\"\\|<>\\. ]))?$");
 	}
 	else
@@ -1384,7 +1384,7 @@ bool CTGitPathList::WriteToFile(const CString& sFilename, bool bANSI /* = false 
 		{
 			CStdioFile file(sFilename, CFile::typeBinary | CFile::modeReadWrite | CFile::modeCreate);
 			for (const auto& path : m_paths)
-				file.WriteString(path.GetGitPathString() + _T("\n"));
+				file.WriteString(path.GetGitPathString() + L'\n');
 			file.Close();
 		}
 	}
@@ -1416,7 +1416,7 @@ CString CTGitPathList::CreateAsteriskSeparatedString() const
 	for (const auto& path : m_paths)
 	{
 		if (!sRet.IsEmpty())
-			sRet += _T("*");
+			sRet += L'*';
 		sRet += path.GetWinPathString();
 	}
 	return sRet;
@@ -1485,13 +1485,13 @@ CTGitPath CTGitPathList::GetCommonRoot() const
 
 	// first entry is common root for itself
 	// (add trailing '\\' to detect partial matches of the last path element)
-	CString root = m_paths[0].GetWinPathString() + _T('\\');
+	CString root = m_paths[0].GetWinPathString() + L'\\';
 	int rootLength = root.GetLength();
 
 	// determine common path string prefix
 	for (auto it = m_paths.cbegin() + 1; it != m_paths.cend(); ++it)
 	{
-		CString path = it->GetWinPathString() + _T('\\');
+		CString path = it->GetWinPathString() + L'\\';
 
 		int newLength = CStringUtils::GetMatchingLength(root, path);
 		if (newLength != rootLength)
@@ -1503,7 +1503,7 @@ CTGitPath CTGitPathList::GetCommonRoot() const
 
 	// remove the last (partial) path element
 	if (rootLength > 0)
-		root.Delete(root.ReverseFind(_T('\\')), rootLength);
+		root.Delete(root.ReverseFind(L'\\'), rootLength);
 
 	// done
 	return CTGitPath(root);

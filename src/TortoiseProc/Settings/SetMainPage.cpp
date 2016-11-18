@@ -128,7 +128,7 @@ BOOL CSetMainPage::OnInitDialog()
 			{
 				sLang += _T(" (");
 				sLang += buf;
-				sLang += _T(")");
+				sLang += L')';
 			}
 			m_LanguageCombo.AddString(sLang);
 			m_LanguageCombo.SetItemData(langcount++, loc);
@@ -171,13 +171,13 @@ static void PerformCommonGitPathCleanup(CString &path)
 		path.ReleaseBuffer();
 	}
 
-	path.Replace(L"/", L"\\");
+	path.Replace(L'/', L'\\');
 	path.Replace(L"\\\\", L"\\");
 
 	if (path.GetLength() > 7 && path.Right(7) == _T("git.exe"))
 		path = path.Left(path.GetLength() - 7);
 
-	path.TrimRight(L"\\");
+	path.TrimRight(L'\\');
 
 	// prefer git.exe in cmd-directory for Git for Windows based on msys2
 	if (path.GetLength() > 12 && (path.Right(12) == _T("\\mingw32\\bin") || path.Right(12) == _T("\\mingw64\\bin")) && PathFileExists(path.Left(path.GetLength() - 12) + _T("\\cmd\\git.exe")))
@@ -202,7 +202,7 @@ void CSetMainPage::OnMsysGitPathModify()
 			str += _T("mingw\\bin");
 			if(::PathFileExists(str))
 			{
-				str+=_T(";");
+				str += L';';
 				if(this->m_sMsysGitExtranPath.Find(str)<0)
 				{
 					m_sMsysGitExtranPath = str + m_sMsysGitExtranPath;

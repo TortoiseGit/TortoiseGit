@@ -437,9 +437,9 @@ UINT CImportPatchDlg::PatchThread()
 			if(this->m_bKeepCR)
 				cmd += _T("--keep-cr ");
 
-			cmd += _T("\"");
+			cmd += L'"';
 			cmd += m_cList.GetItemText(i,0);
-			cmd += _T("\"");
+			cmd += L'"';
 
 			this->AddLogString(cmd);
 			CString output;

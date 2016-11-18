@@ -42,7 +42,7 @@ int CGitDiff::SubmoduleDiffNull(const CTGitPath * pPath, const git_revnum_t &rev
 	CString output, err;
 	if (g_Git.Run(cmd, &output, &err, CP_UTF8))
 	{
-		CMessageBox::Show(nullptr, output + L"\n" + err, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+		CMessageBox::Show(nullptr, output + L'\n' + err, L"TortoiseGit", MB_OK | MB_ICONERROR);
 		return -1;
 	}
 
@@ -150,13 +150,13 @@ int CGitDiff::DiffNull(const CTGitPath *pPath, git_revnum_t rev1, bool bIsAdd, i
 	if(bIsAdd)
 		CAppUtils::StartExtDiff(tempfile,file1,
 							pPath->GetGitPathString(),
-							pPath->GetGitPathString() + _T(":") + rev1.Left(g_Git.GetShortHASHLength()),
+							pPath->GetGitPathString() + L':' + rev1.Left(g_Git.GetShortHASHLength()),
 							g_Git.CombinePath(pPath), g_Git.CombinePath(pPath),
 							git_revnum_t(GIT_REV_ZERO), rev1
 							, flags, jumpToLine);
 	else
 		CAppUtils::StartExtDiff(file1,tempfile,
-							pPath->GetGitPathString() + _T(":") + rev1.Left(g_Git.GetShortHASHLength()),
+							pPath->GetGitPathString() + L':' + rev1.Left(g_Git.GetShortHASHLength()),
 							pPath->GetGitPathString(),
 							g_Git.CombinePath(pPath), g_Git.CombinePath(pPath),
 							rev1, git_revnum_t(GIT_REV_ZERO)
@@ -191,7 +191,7 @@ int CGitDiff::SubmoduleDiff(const CTGitPath * pPath, const CTGitPath * /*pPath2*
 		CString output, err;
 		if (g_Git.Run(cmd, &output, &err, CP_UTF8))
 		{
-			CMessageBox::Show(nullptr, output + L"\n" + err, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			CMessageBox::Show(nullptr, output + L'\n' + err, L"TortoiseGit", MB_OK | MB_ICONERROR);
 			return -1;
 		}
 
@@ -203,7 +203,7 @@ int CGitDiff::SubmoduleDiff(const CTGitPath * pPath, const CTGitPath * /*pPath2*
 			cmd.Format(_T("git.exe diff -- \"%s\""), (LPCTSTR)pPath->GetGitPathString());
 			if (g_Git.Run(cmd, &output, &err, CP_UTF8))
 			{
-				CMessageBox::Show(nullptr, output + _T("\n") + err, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+				CMessageBox::Show(nullptr, output + L'\n' + err, L"TortoiseGit", MB_OK | MB_ICONERROR);
 				return -1;
 			}
 
@@ -296,7 +296,7 @@ void CGitDiff::GetSubmoduleChangeType(CGit& subgit, const CString& oldhash, cons
 		oldOK = !subgit.Run(cmd, &cmdout, &cmderr, encode);
 		if (oldOK)
 		{
-			int pos = cmdout.Find(_T(" "));
+			int pos = cmdout.Find(L' ');
 			oldTime = _ttoi(cmdout.Left(pos));
 			oldsub = cmdout.Mid(pos + 1);
 		}
@@ -310,7 +310,7 @@ void CGitDiff::GetSubmoduleChangeType(CGit& subgit, const CString& oldhash, cons
 		newOK = !subgit.Run(cmd, &cmdout, &cmderr, encode);
 		if (newOK)
 		{
-			int pos = cmdout.Find(_T(" "));
+			int pos = cmdout.Find(L' ');
 			newTime = _ttoi(cmdout.Left(pos));
 			newsub = cmdout.Mid(pos + 1);
 		}

@@ -98,7 +98,7 @@ BOOL CHwSMTP::SendSpeedEmail
 	BOOL ret=true;
 	CString To;
 	To += GET_SAFE_STRING(lpszAddrTo);
-	To += _T(";");
+	To += L';';
 	To += GET_SAFE_STRING(pStrAryCC);
 
 	std::map<CString,std::vector<CString>> Address;
@@ -145,7 +145,7 @@ BOOL CHwSMTP::SendSpeedEmail
 		for (size_t i = 0; i < itr1->second.size(); ++i)
 		{
 			to+=itr1->second[i];
-			to+=_T(";");
+			to += L';';
 		}
 		if(to.IsEmpty())
 			continue;

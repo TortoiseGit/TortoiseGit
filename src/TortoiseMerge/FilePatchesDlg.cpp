@@ -120,10 +120,8 @@ BOOL CFilePatchesDlg::Init(GitPatch * pPatch, CPatchFilesDlgCallBack * pCallBack
 		CRect rect;
 		GetClientRect(&rect);
 		SetTitleWithPath(rect.Width());
-		if (m_sPath.Right(1).Compare(_T("\\"))==0)
-			m_sPath = m_sPath.Left(m_sPath.GetLength()-1);
-
-		m_sPath = m_sPath + _T("\\");
+		m_sPath.TrimRight(L'\\');
+		m_sPath += L'\\';
 	}
 
 	SetWindowTheme(m_cFileList.GetSafeHwnd(), L"Explorer", NULL);

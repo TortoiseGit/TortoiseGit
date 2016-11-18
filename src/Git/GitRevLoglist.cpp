@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -479,7 +479,7 @@ int GitRevLoglist::GetRefLog(const CString& ref, std::vector<GitRevLoglist>& ref
 	while (pos >= 0)
 	{
 		CString one = out.Tokenize(_T("\n"), pos);
-		int refPos = one.Find(_T(' '), 0);
+		int refPos = one.Find(L' ');
 		if (refPos < 0)
 			continue;
 

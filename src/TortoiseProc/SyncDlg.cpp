@@ -329,7 +329,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 			if (m_oldRemoteHash.IsEmpty())
 				remotebranch=m_strRemoteBranch;
 			else
-				remotebranch=m_strRemoteBranch+_T(":")+remotebranch;
+				remotebranch = m_strRemoteBranch + L':' + remotebranch;
 		}
 
 		if (CurrentEntry == 1 || CurrentEntry == 3)
@@ -527,7 +527,7 @@ void CSyncDlg::FetchComplete()
 	}
 	m_ctrlRemoteBranch.GetWindowText(remotebranch);
 	if (!remote.IsEmpty() && !remotebranch.IsEmpty())
-		upstream = _T("remotes/") + remote + _T("/") + remotebranch;
+		upstream = L"remotes/" + remote + L'/' + remotebranch;
 
 	if (m_iPullRebase > 0)
 	{
@@ -688,7 +688,7 @@ void CSyncDlg::OnBnClickedButtonPush()
 
 	if (!m_strRemoteBranch.IsEmpty() && m_ctrlPush.GetCurrentEntry() != 2)
 	{
-		cmd += _T(":") + m_strRemoteBranch;
+		cmd += L':' + m_strRemoteBranch;
 	}
 
 	m_GitCmdList.push_back(cmd);
@@ -739,7 +739,7 @@ void CSyncDlg::OnBnClickedButtonApply()
 				break;
 			}
 			this->m_ctrlCmdOut.SetSel(-1,-1);
-			this->m_ctrlCmdOut.ReplaceSel(cmd+_T("\n"));
+			this->m_ctrlCmdOut.ReplaceSel(cmd + L'\n');
 			this->m_ctrlCmdOut.SetSel(-1,-1);
 			this->m_ctrlCmdOut.ReplaceSel(output);
 		}
@@ -803,7 +803,7 @@ void CSyncDlg::OnBnClickedButtonEmail()
 
 	if (g_Git.Run(cmd, &out, &err, CP_UTF8))
 	{
-		CMessageBox::Show(GetSafeHwnd(), out + L"\n" + err, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+		CMessageBox::Show(GetSafeHwnd(), out + L'\n' + err, L"TortoiseGit", MB_OK | MB_ICONERROR);
 		return ;
 	}
 
@@ -1229,7 +1229,7 @@ void CSyncDlg::FetchOutList(bool force)
 	this->m_ctrlURL.GetWindowText(remote);
 	CString remotebranch;
 	this->m_ctrlRemoteBranch.GetWindowText(remotebranch);
-	remotebranch=remote+_T("/")+remotebranch;
+	remotebranch = remote + L'/' + remotebranch;
 	CGitHash remotebranchHash;
 	g_Git.GetHash(remotebranchHash, remotebranch);
 
@@ -1575,7 +1575,7 @@ void CSyncDlg::OnBnClickedButtonCommit()
 	CString cmd = _T("/command:commit");
 	cmd += _T(" /path:\"");
 	cmd += g_Git.m_CurrentDir;
-	cmd += _T("\"");
+	cmd += L'"';
 
 	CAppUtils::RunTortoiseGitProc(cmd);
 }
@@ -1747,7 +1747,7 @@ void CSyncDlg::OnBnClickedLog()
 	CString cmd = _T("/command:log");
 	cmd += _T(" /path:\"");
 	cmd += g_Git.m_CurrentDir;
-	cmd += _T("\"");
+	cmd += L'"';
 
 	CAppUtils::RunTortoiseGitProc(cmd);
 }

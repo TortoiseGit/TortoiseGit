@@ -155,7 +155,7 @@ BOOL CTortoiseGitBlameApp::InitInstance()
 		}
 		sHelppath.Replace(sLang, _T("_en"));
 		GetLocaleInfo(MAKELCID(langId, SORT_DEFAULT), LOCALE_SISO3166CTRYNAME, buf, _countof(buf));
-		sLang += _T("_");
+		sLang += L'_';
 		sLang += buf;
 		sHelppath.Replace(_T("_en"), sLang);
 		if (PathFileExists(sHelppath))

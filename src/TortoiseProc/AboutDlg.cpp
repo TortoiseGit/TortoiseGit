@@ -59,7 +59,7 @@ static CString Lf2Crlf(const CString& text)
 	TCHAR c = L'\0';
 	for (int i = 0; i < text.GetLength(); i++)
 	{
-		if (text[i] == '\n' && c != '\r')
+		if (text[i] == L'\n' && c != L'\r')
 			s += "\r\n";
 		else
 			s += text[i];
@@ -79,7 +79,7 @@ BOOL CAboutDlg::OnInitDialog()
 	CString cmd, out, err;
 	cmd=_T("git.exe --version");
 	if (g_Git.Run(cmd, &out, &err, CP_UTF8))
-		out = _T("git not found (") + err + _T(")");;
+		out = L"git not found (" + err + L')';
 	out.Trim();
 
 	if (!CGit::ms_LastMsysGitDir.IsEmpty())
@@ -93,7 +93,7 @@ BOOL CAboutDlg::OnInitDialog()
 			out += _T("; with cygwin hack");
 		else
 			out += L"; " + g_Git.GetGitProgramDataConfig();
-		out += _T(")");
+		out += L')';
 	}
 
 	CString tortoisegitprocpath;

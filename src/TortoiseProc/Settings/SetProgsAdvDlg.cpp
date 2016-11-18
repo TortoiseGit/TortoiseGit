@@ -48,7 +48,7 @@ void CSetProgsAdvDlg::LoadData()
 			for (POSITION pos = values.GetHeadPosition(); pos; )
 			{
 				CString ext = values.GetNext(pos);
-				m_Tools[ext] = CRegString(m_regToolKey.m_path + _T("\\") + ext);
+				m_Tools[ext] = CRegString(m_regToolKey.m_path + L'\\' + ext);
 			}
 		}
 
@@ -69,7 +69,7 @@ int CSetProgsAdvDlg::SaveData()
 				CString ext = values.GetNext(pos);
 				if (m_Tools.find(ext) == m_Tools.end())
 				{
-					CRegString to_remove(m_regToolKey.m_path + _T("\\") + ext);
+					CRegString to_remove(m_regToolKey.m_path + L'\\' + ext);
 					to_remove.removeValue();
 				}
 			}
@@ -80,7 +80,7 @@ int CSetProgsAdvDlg::SaveData()
 		{
 			CString ext = it->first;
 			CString new_value = it->second;
-			CRegString reg_value(m_regToolKey.m_path + _T("\\") + ext);
+			CRegString reg_value(m_regToolKey.m_path + L'\\' + ext);
 			if (reg_value != new_value)
 				reg_value = new_value;
 		}

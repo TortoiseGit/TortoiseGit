@@ -675,8 +675,8 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				for (int i = FirstSelect; i <= LastSelect; ++i)
 				{
 					GitRev* pRev = m_arShownList.SafeGetAt(i);
-					dlg.m_sLogMessage+=pRev->GetSubject()+_T("\n")+pRev->GetBody();
-					dlg.m_sLogMessage+=_T("\n");
+					dlg.m_sLogMessage += pRev->GetSubject() + L'\n' + pRev->GetBody();
+					dlg.m_sLogMessage += L'\n';
 				}
 				dlg.m_bWholeProject=true;
 				dlg.m_bSelectFilesForCommit = true;
@@ -804,9 +804,9 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					CString ref = m_arShownList.SafeGetAt(GetNextSelectedItem(pos2))->m_Ref;
 					if (CStringUtils::StartsWith(ref, L"refs/"))
 						ref = ref.Mid(5);
-					int refpos = ref.ReverseFind('{');
+					int refpos = ref.ReverseFind(L'{');
 					if (refpos > 0 && ref.Mid(refpos - 1, 2) != _T("@{"))
-						ref = ref.Left(refpos) + _T("@")+ ref.Mid(refpos);
+						ref = ref.Left(refpos) + L'@'+ ref.Mid(refpos);
 					refsToDelete.push_back(ref);
 				}
 

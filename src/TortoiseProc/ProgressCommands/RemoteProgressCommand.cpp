@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2015 - TortoiseGit
+// Copyright (C) 2013-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -107,7 +107,7 @@ void RemoteProgressCommand::RefUpdateNotificationData::GetContextMenu(CIconMenu&
 	actions.push_back([&]()
 	{
 		CString cmd = _T("/command:log");
-		cmd += _T(" /path:\"") + g_Git.m_CurrentDir + _T("\"");
+		cmd += L" /path:\"" + g_Git.m_CurrentDir + L'"';
 		if (!m_OldHash.IsEmpty())
 			cmd += _T(" /startrev:") + m_OldHash.ToString();
 		if (!m_NewHash.IsEmpty())

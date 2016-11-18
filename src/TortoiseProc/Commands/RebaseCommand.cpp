@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2012, 2015 - TortoiseGit
+// Copyright (C) 2009-2012, 2015-2016 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -39,7 +39,7 @@ bool RebaseCommand::Execute()
 		if (ret == IDC_REBASE_POST_BUTTON)
 		{
 			CString cmd = _T("/command:log");
-			cmd += _T(" /path:\"") + g_Git.m_CurrentDir + _T("\"");
+			cmd += L" /path:\"" + g_Git.m_CurrentDir + L'"';
 			CAppUtils::RunTortoiseGitProc(cmd);
 			return true;
 		}

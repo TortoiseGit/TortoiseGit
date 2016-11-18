@@ -265,7 +265,7 @@ BOOL CFileDiffDlg::OnInitDialog()
 		{
 			CString msg;
 			msg.Format(IDS_PROC_REFINVALID, (LPCTSTR)m_strRev1);
-			m_cFileList.ShowText(msg + _T("\n") + m_rev1.GetLastErr());
+			m_cFileList.ShowText(msg + L'\n' + m_rev1.GetLastErr());
 		}
 
 		this->m_ctrRev1Edit.SetWindowText(m_strRev1);
@@ -279,7 +279,7 @@ BOOL CFileDiffDlg::OnInitDialog()
 		{
 			CString msg;
 			msg.Format(IDS_PROC_REFINVALID, (LPCTSTR)m_strRev2);
-			m_cFileList.ShowText(msg + _T("\n") + m_rev1.GetLastErr());
+			m_cFileList.ShowText(msg + L'\n' + m_rev1.GetLastErr());
 		}
 
 		this->m_ctrRev2Edit.SetWindowText(m_strRev2);
@@ -459,7 +459,7 @@ void CFileDiffDlg::OnLvnGetInfoTipFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 	if (pGetInfoTip->iItem >= (int)m_arFilteredList.size())
 		return;
 
-	CString path = m_path1.GetGitPathString() + _T("/") + m_arFilteredList[pGetInfoTip->iItem]->GetGitPathString();
+	CString path = m_path1.GetGitPathString() + L'/' + m_arFilteredList[pGetInfoTip->iItem]->GetGitPathString();
 	if (pGetInfoTip->cchTextMax > path.GetLength())
 			_tcsncpy_s(pGetInfoTip->pszText, pGetInfoTip->cchTextMax, path, pGetInfoTip->cchTextMax - 1);
 
@@ -727,8 +727,8 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 						// we cannot export directories or folders
 						if (fd->m_Action == CTGitPath::LOGACTIONS_DELETED || fd->IsDirectory())
 							continue;
-						CPathUtils::MakeSureDirectoryPathExists(m_strExportDir + _T("\\") + fd->GetContainingDirectory().GetWinPathString());
-						CString filename = m_strExportDir + _T("\\") + fd->GetWinPathString();
+						CPathUtils::MakeSureDirectoryPathExists(m_strExportDir + L'\\' + fd->GetContainingDirectory().GetWinPathString());
+						CString filename = m_strExportDir + L'\\' + fd->GetWinPathString();
 						if (m_rev2.m_CommitHash.ToString() == GIT_REV_ZERO)
 						{
 							if(!CopyFile(g_Git.CombinePath(fd), filename, false))
@@ -1158,7 +1158,7 @@ void CFileDiffDlg::OnTimer(UINT_PTR nIDEvent)
 		{
 			CString msg;
 			msg.Format(IDS_PROC_REFINVALID, (LPCTSTR)str);
-			m_cFileList.ShowText(msg + _T("\n") + gitrev.GetLastErr());
+			m_cFileList.ShowText(msg + L'\n' + gitrev.GetLastErr());
 		}
 
 		this->m_ctrRev2Edit.GetWindowText(str);
@@ -1172,7 +1172,7 @@ void CFileDiffDlg::OnTimer(UINT_PTR nIDEvent)
 		{
 			CString msg;
 			msg.Format(IDS_PROC_REFINVALID, (LPCTSTR)str);
-			m_cFileList.ShowText(msg + _T("\n") + gitrev.GetLastErr());
+			m_cFileList.ShowText(msg + L'\n' + gitrev.GetLastErr());
 		}
 
 		this->SetURLLabels(mask);
@@ -1215,18 +1215,18 @@ void CFileDiffDlg::CopySelectionToClipboard(BOOL isFull)
 	while ((index = m_cFileList.GetNextSelectedItem(pos)) >= 0)
 	{
 		sTextForClipboard += m_cFileList.GetItemText(index, 0);
-		sTextForClipboard += _T("\t");
+		sTextForClipboard += L'\t';
 
 		if(!isFull)
 			sTextForClipboard += _T("\r\n");
 		else
 		{
 			sTextForClipboard += m_cFileList.GetItemText(index, 1);
-			sTextForClipboard += _T("\t");
+			sTextForClipboard += L'\t';
 			sTextForClipboard += m_cFileList.GetItemText(index, 2);
-			sTextForClipboard += _T("\t");
+			sTextForClipboard += L'\t';
 			sTextForClipboard += m_cFileList.GetItemText(index, 3);
-			sTextForClipboard += _T("\t");
+			sTextForClipboard += L'\t';
 			sTextForClipboard += m_cFileList.GetItemText(index, 4);
 			sTextForClipboard += _T("\r\n");
 		}

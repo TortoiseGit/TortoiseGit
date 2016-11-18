@@ -116,7 +116,7 @@ BOOL CSettingsProgsAlternativeEditor::OnApply()
 {
 	UpdateData();
 	if (m_iAlternativeEditor == 0 && !m_sAlternativeEditorPath.IsEmpty() && m_sAlternativeEditorPath.Left(1) != _T("#"))
-		m_sAlternativeEditorPath = _T("#") + m_sAlternativeEditorPath;
+		m_sAlternativeEditorPath = L'#' + m_sAlternativeEditorPath;
 
 	m_regAlternativeEditorPath = m_sAlternativeEditorPath;
 	SetModified(FALSE);
@@ -127,8 +127,8 @@ void CSettingsProgsAlternativeEditor::CheckProgComment()
 {
 	UpdateData();
 	if (m_iAlternativeEditor == 0 && !m_sAlternativeEditorPath.IsEmpty() && m_sAlternativeEditorPath.Left(1) != _T("#"))
-		m_sAlternativeEditorPath = _T("#") + m_sAlternativeEditorPath;
+		m_sAlternativeEditorPath = L'#' + m_sAlternativeEditorPath;
 	else if (m_iAlternativeEditor == 1)
-		m_sAlternativeEditorPath.TrimLeft('#');
+		m_sAlternativeEditorPath.TrimLeft(L'#');
 	UpdateData(FALSE);
 }

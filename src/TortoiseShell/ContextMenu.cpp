@@ -1176,7 +1176,7 @@ void CShellExt::AddPathCommand(tstring& gitCmd, LPCTSTR command, bool bFilesAllo
 		gitCmd += files_.front();
 	else
 		gitCmd += folder_;
-	gitCmd += _T("\"");
+	gitCmd += L'"';
 }
 
 void CShellExt::AddPathFileCommand(tstring& gitCmd, LPCTSTR command)
@@ -1185,7 +1185,7 @@ void CShellExt::AddPathFileCommand(tstring& gitCmd, LPCTSTR command)
 	gitCmd += command;
 	gitCmd += _T(" /pathfile:\"");
 	gitCmd += tempfile;
-	gitCmd += _T("\"");
+	gitCmd += L'"';
 	gitCmd += _T(" /deletepathfile");
 }
 
@@ -1195,11 +1195,11 @@ void CShellExt::AddPathFileDropCommand(tstring& gitCmd, LPCTSTR command)
 	gitCmd += command;
 	gitCmd += _T(" /pathfile:\"");
 	gitCmd += tempfile;
-	gitCmd += _T("\"");
+	gitCmd += L'"';
 	gitCmd += _T(" /deletepathfile");
 	gitCmd += _T(" /droptarget:\"");
 	gitCmd += folder_;
-	gitCmd += _T("\"");
+	gitCmd += L'"';
 }
 
 STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
@@ -1270,7 +1270,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				{
 					gitCmd += _T(" /bkpath:\"");
 					gitCmd += folder_;
-					gitCmd += _T("\"");
+					gitCmd += L'"';
 				}
 				break;
 			case ShellMenuUpdateExt:
@@ -1279,7 +1279,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				{
 					gitCmd += _T(" /bkpath:\"");
 					gitCmd += folder_;
-					gitCmd += _T("\"");
+					gitCmd += L'"';
 				}
 				break;
 			case ShellMenuCommit:
@@ -1374,7 +1374,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				}
 				else
 					gitCmd += folder_;
-				gitCmd += _T("\"");
+				gitCmd += L'"';
 				if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
 					gitCmd += _T(" /alternative");
 				break;
@@ -1396,7 +1396,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 						AddPathCommand(gitCmd, L"diff", true);
 						gitCmd += _T(" /path2:\"");
 						gitCmd += std::wstring(regDiffLater);
-						gitCmd += _T("\"");
+						gitCmd += L'"';
 						if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
 							gitCmd += _T(" /alternative");
 						regDiffLater.removeValue();
@@ -1576,7 +1576,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 					if (itemStates & ITEMIS_INVERSIONEDFOLDER)
 						gitCmd += _T("\" /wc");
 					else
-						gitCmd += _T("\"");
+						gitCmd += L'"';
 				}
 				else
 				{
@@ -1585,7 +1585,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 						gitCmd += files_.front();
 					else
 						gitCmd += folder_;
-					gitCmd += _T("\"");
+					gitCmd += L'"';
 				}
 				myIDMap.clear();
 				myVerbsIDMap.clear();
@@ -1619,11 +1619,11 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 					else
 						gitCmd += _T("pastemove /pathfile:\"");
 					gitCmd += tempfile;
-					gitCmd += _T("\"");
+					gitCmd += L'"';
 					gitCmd += _T(" /deletepathfile");
 					gitCmd += _T(" /droptarget:\"");
 					gitCmd += folder_;
-					gitCmd += _T("\"");
+					gitCmd += L'"';
 				}
 				else return S_OK;
 				break;

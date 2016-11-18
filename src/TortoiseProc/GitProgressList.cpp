@@ -484,7 +484,7 @@ UINT CGitProgressList::ProgressThread()
 		temp.LoadString(IDS_PROGRS_TITLEFAILED);
 	else
 		temp.LoadString(IDS_PROGRS_TITLEFIN);
-	sWindowTitle = sWindowTitle + _T(" ") + temp;
+	sWindowTitle = sWindowTitle + L' ' + temp;
 	if (m_bSetTitle && m_pPostWnd)
 		::SetWindowText(m_pPostWnd->GetSafeHwnd(), sWindowTitle);
 
@@ -1145,7 +1145,7 @@ void CGitProgressList::WC_File_NotificationData::GetContextMenu(CIconMenu& popup
 		{
 			CString cmd = _T("/command:log");
 			CString sPath = g_Git.CombinePath(path);
-			cmd += _T(" /path:\"") + sPath + _T("\"");
+			cmd += L" /path:\"" + sPath + L'"';
 			CAppUtils::RunTortoiseGitProc(cmd);
 		});
 		popup.AppendMenuIcon(actions.size(), IDS_MENULOG, IDI_LOG);

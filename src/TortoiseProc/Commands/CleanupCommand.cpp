@@ -65,7 +65,7 @@ static int SubmoduleCallback(git_submodule *sm, const char * /*name*/, void *pay
 	auto spayload = reinterpret_cast<SubmodulePayload*>(payload);
 	CString path = CUnicodeUtils::GetUnicode(git_submodule_path(sm));
 	CString fullPath(spayload->basePath);
-	fullPath += _T("\\");
+	fullPath += L'\\';
 	fullPath += path;
 	if (!PathIsDirectory(fullPath))
 		return 0;
@@ -81,7 +81,7 @@ static int SubmoduleCallback(git_submodule *sm, const char * /*name*/, void *pay
 	{
 		for (size_t i = 0; i < spayload->prefixList.size(); ++i)
 		{
-			CString prefix = spayload->prefixList.at(i) + _T("/");
+			CString prefix = spayload->prefixList.at(i) + L'/';
 			if (CStringUtils::StartsWith(path, prefix))
 			{
 				CTGitPath subPath(spayload->basePath);
@@ -117,7 +117,7 @@ static bool GetFilesToCleanUp(CTGitPathList& delList, const CString& baseCmd, CG
 {
 	CString cmd(baseCmd);
 	if (!path.IsEmpty())
-		cmd += _T(" -- \"") + path + _T("\"");
+		cmd += L" -- \"" + path + L'"';
 
 	CString cmdout, cmdouterr;
 	if (pGit->Run(cmd, &cmdout, &cmdouterr, CP_UTF8))
@@ -142,7 +142,7 @@ static bool GetFilesToCleanUp(CTGitPathList& delList, const CString& baseCmd, CG
 		{
 			CString tempPath = token.Mid(13).TrimRight();
 			if (quotepath)
-				tempPath = UnescapeQuotePath(tempPath.Trim(_T('"')));
+				tempPath = UnescapeQuotePath(tempPath.Trim(L'"'));
 			delList.AddPath(pGit->CombinePath(tempPath));
 		}
 
@@ -212,7 +212,7 @@ static bool DoCleanUp(const CTGitPathList& pathList, int cleanType, bool bDir, b
 				path = pathList[i].GetContainingDirectory().GetGitPathString();
 
 			progress.m_GitDirList.push_back(g_Git.m_CurrentDir);
-			progress.m_GitCmdList.push_back(cmd + _T(" -- \"") + path + _T("\""));
+			progress.m_GitCmdList.push_back(cmd + L" -- \"" + path + L'"');
 		}
 
 		for (CString dir : submoduleList)

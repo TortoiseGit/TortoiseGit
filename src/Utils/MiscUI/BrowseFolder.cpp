@@ -84,7 +84,7 @@ CBrowseFolder::retVal CBrowseFolder::Show(HWND parent, CString& path, const CStr
 			CString p = path.Left(path.ReverseFind(L'\\'));
 			if ((p.GetLength() == 2) && (p[1] == L':'))
 			{
-				p += L"\\";
+				p += L'\\';
 				if (p.Compare(path) == 0)
 					p.Empty();
 			}
