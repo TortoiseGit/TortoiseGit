@@ -577,7 +577,7 @@ void CSciEdit::CheckSpelling(int startpos, int endpos)
 			}
 		}
 		if (len)
-			textrange.lpstrText[len - 1] = 0;
+			textrange.lpstrText[len - 1] = '\0';
 		textrange.chrg.cpMax--;
 		if (strlen(textrange.lpstrText) > 0)
 		{
@@ -1153,7 +1153,7 @@ bool CSciEdit::StyleEnteredText(int startstylepos, int endstylepos)
 		int line_len = (int)Call(SCI_LINELENGTH, line_number);
 		auto linebuffer = std::make_unique<char[]>(line_len + 1);
 		Call(SCI_GETLINE, line_number, (LPARAM)linebuffer.get());
-		linebuffer[line_len] = 0;
+		linebuffer[line_len] = '\0';
 		int start = 0;
 		int end = 0;
 		while (FindStyleChars(linebuffer.get(), '*', start, end))

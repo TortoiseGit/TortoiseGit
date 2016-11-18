@@ -60,7 +60,7 @@ CGitProgressList::CGitProgressList():CListCtrl()
 	m_pProgControl = nullptr;
 	m_pProgressLabelCtrl = nullptr;
 	m_pPostWnd = nullptr;
-	m_columnbuf[0] = 0;
+	m_columnbuf[0] = L'\0';
 }
 
 CGitProgressList::~CGitProgressList()
@@ -610,7 +610,7 @@ void CGitProgressList::OnLvnGetdispinfoSvnprogress(NMHDR *pNMHDR, LRESULT *pResu
 					}
 					break;
 				default:
-					m_columnbuf[0] = 0;
+					m_columnbuf[0] = L'\0';
 				}
 				pDispInfo->item.pszText = m_columnbuf;
 			}

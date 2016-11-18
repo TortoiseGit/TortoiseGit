@@ -82,15 +82,15 @@ void LoadLangDll()
 		TCHAR * dirpoint = _tcsrchr(langdir, '\\');
 		char * dirpointA = strrchr(langdirA, '\\');
 		if (dirpoint)
-			*dirpoint = 0;
+			*dirpoint = L'\0';
 		if (dirpointA)
-			*dirpointA = 0;
+			*dirpointA = '\0';
 		dirpoint = _tcsrchr(langdir, '\\');
 		dirpointA = strrchr(langdirA, '\\');
 		if (dirpoint)
-			*dirpoint = 0;
+			*dirpoint = L'\0';
 		if (dirpointA)
-			*dirpointA = 0;
+			*dirpointA = '\0';
 		strcat_s(langdirA, "\\Languages");
 
 		BOOL bIsWow = FALSE;

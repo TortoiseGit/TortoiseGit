@@ -209,9 +209,9 @@ public:
    {
       return IsDirectory()
           && m_FindFileData.cFileName[0] == _T('.')
-          && ( (m_FindFileData.cFileName[1] == 0)
+          && ( (m_FindFileData.cFileName[1] == L'\0')
             || (m_FindFileData.cFileName[1] == _T('.')
-             && m_FindFileData.cFileName[2] == 0) );
+          && m_FindFileData.cFileName[2] == L'\0'));
    }
 };
 

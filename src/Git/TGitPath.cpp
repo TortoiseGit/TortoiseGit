@@ -289,8 +289,8 @@ bool CTGitPath::Delete(bool bTrash, bool bShowErrorUI) const
 		{
 			auto buf = std::make_unique<TCHAR[]>(m_sBackslashPath.GetLength() + 2);
 			_tcscpy_s(buf.get(), m_sBackslashPath.GetLength() + 2, m_sBackslashPath);
-			buf[m_sBackslashPath.GetLength()] = 0;
-			buf[m_sBackslashPath.GetLength()+1] = 0;
+			buf[m_sBackslashPath.GetLength()] = L'\0';
+			buf[m_sBackslashPath.GetLength() + 1] = L'\0';
 			bRet = CTGitPathList::DeleteViaShell(buf.get(), bTrash, bShowErrorUI);
 		}
 		else

@@ -42,7 +42,7 @@ public:
 				HRESULT hr = medium.pstm->Read(buff.get(), BUF_SIZE, &cbRead);
 				if (SUCCEEDED(hr) && (cbRead > 0) && (cbRead < BUF_SIZE))
 				{
-					buff[cbRead]=0;
+					buff[cbRead] = '\0';
 					LRESULT nLen = ::SendMessage(m_hTargetWnd, WM_GETTEXTLENGTH, 0, 0);
 					::SendMessage(m_hTargetWnd, EM_SETSEL, nLen, -1);
 					std::wstring str = CUnicodeUtils::StdGetUnicode(std::string(buff.get()));
@@ -52,7 +52,7 @@ public:
 				{
 					while ((hr==S_OK) && (cbRead >0))
 					{
-						buff[cbRead]=0;
+						buff[cbRead] = '\0';
 						LRESULT nLen = ::SendMessage(m_hTargetWnd, WM_GETTEXTLENGTH, 0, 0);
 						::SendMessage(m_hTargetWnd, EM_SETSEL, nLen, -1);
 						std::wstring str = CUnicodeUtils::StdGetUnicode(std::string(buff.get()));
@@ -73,7 +73,7 @@ public:
 				HRESULT hr = medium.pstm->Read(buff.get(), BUF_SIZE, &cbRead);
 				if (SUCCEEDED(hr) && (cbRead > 0) && (cbRead < BUF_SIZE))
 				{
-					buff[cbRead]=0;
+					buff[cbRead] = '\0';
 					LRESULT nLen = ::SendMessage(m_hTargetWnd, WM_GETTEXTLENGTH, 0, 0);
 					::SendMessage(m_hTargetWnd, EM_SETSEL, nLen, -1);
 					::SendMessage(m_hTargetWnd, EM_REPLACESEL, TRUE, (LPARAM)buff.get());
@@ -82,7 +82,7 @@ public:
 				{
 					while( (hr==S_OK) && (cbRead >0) )
 					{
-						buff[cbRead]=0;
+						buff[cbRead] = '\0';
 						LRESULT nLen = ::SendMessage(m_hTargetWnd, WM_GETTEXTLENGTH, 0, 0);
 						::SendMessage(m_hTargetWnd, EM_SETSEL, nLen, -1);
 						::SendMessage(m_hTargetWnd, EM_REPLACESEL, TRUE, (LPARAM)buff.get());

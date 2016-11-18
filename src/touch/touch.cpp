@@ -39,7 +39,7 @@ int APIENTRY _tWinMain(HINSTANCE /*hInstance*/,
 		for (size_t i = 0; i < _tcslen(lpCmdLine); ++i)
 			if(lpCmdLine[i]== '\"')
 			{
-				lpCmdLine[i]=0;
+				lpCmdLine[i] = L'\0';
 				break;
 			}
 	}

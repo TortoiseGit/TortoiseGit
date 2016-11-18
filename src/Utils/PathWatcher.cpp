@@ -295,7 +295,7 @@ void CPathWatcher::WorkerThread()
 							pnotify = (PFILE_NOTIFY_INFORMATION)((LPBYTE)pnotify + nOffset);
 							continue;
 						}
-						buf[min(bufferSize-1, pdi->m_DirPath.GetLength()+(pnotify->FileNameLength/sizeof(WCHAR)))] = 0;
+						buf[min(bufferSize - 1, pdi->m_DirPath.GetLength() + (pnotify->FileNameLength/sizeof(WCHAR)))] = L'\0';
 						pnotify = (PFILE_NOTIFY_INFORMATION)((LPBYTE)pnotify + nOffset);
 						CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": change notification: %s\n"), buf);
 						{
@@ -359,7 +359,7 @@ CPathWatcher::CDirWatchInfo::CDirWatchInfo(HANDLE hDir, const CTGitPath& Directo
 	, m_DirName(DirectoryName)
 {
 	ATLASSERT( hDir && !DirectoryName.IsEmpty());
-	m_Buffer[0] = 0;
+	m_Buffer[0] = '\0';
 	memset(&m_Overlapped, 0, sizeof(m_Overlapped));
 	m_DirPath = m_DirName.GetWinPathString();
 	if (m_DirPath.GetAt(m_DirPath.GetLength()-1) != '\\')

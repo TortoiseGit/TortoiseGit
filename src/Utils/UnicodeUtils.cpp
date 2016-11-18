@@ -265,7 +265,7 @@ CStringA CUnicodeUtils::ConvertWCHARStringToUTF8(const CString& string)
 		{
 			buf[i] = (char)string.GetAt(i);
 		}
-		buf[i] = 0;
+		buf[i] = '\0';
 		sRet = CStringA(buf);
 		delete [] buf;
 	}
@@ -283,7 +283,7 @@ std::string CUnicodeUtils::StdGetUTF8(const std::wstring& wide)
 	int size = len*4;
 	char * narrow = new char[size];
 	int ret = WideCharToMultiByte(CP_UTF8, 0, wide.c_str(), len, narrow, size - 1, nullptr, nullptr);
-	narrow[ret] = 0;
+	narrow[ret] = '\0';
 	std::string sRet = std::string(narrow);
 	delete [] narrow;
 	return sRet;
@@ -297,7 +297,7 @@ std::wstring CUnicodeUtils::StdGetUnicode(const std::string& multibyte)
 	int size = len*4;
 	wchar_t * wide = new wchar_t[size];
 	int ret = MultiByteToWideChar(CP_UTF8, 0, multibyte.c_str(), len, wide, size - 1);
-	wide[ret] = 0;
+	wide[ret] = L'\0';
 	std::wstring sRet = std::wstring(wide);
 	delete [] wide;
 	return sRet;
@@ -309,7 +309,7 @@ std::string WideToMultibyte(const std::wstring& wide)
 	char * narrow = new char[wide.length()*3+2];
 	BOOL defaultCharUsed;
 	int ret = (int)WideCharToMultiByte(CP_ACP, 0, wide.c_str(), (int)wide.size(), narrow, (int)wide.length()*3 - 1, ".", &defaultCharUsed);
-	narrow[ret] = 0;
+	narrow[ret] = '\0';
 	std::string str = narrow;
 	delete[] narrow;
 	return str;
@@ -319,7 +319,7 @@ std::string WideToUTF8(const std::wstring& wide)
 {
 	char * narrow = new char[wide.length()*3+2];
 	int ret = (int)WideCharToMultiByte(CP_UTF8, 0, wide.c_str(), (int)wide.size(), narrow, (int)wide.length() * 3 - 1, nullptr, nullptr);
-	narrow[ret] = 0;
+	narrow[ret] = '\0';
 	std::string str = narrow;
 	delete[] narrow;
 	return str;
@@ -335,7 +335,7 @@ std::wstring MultibyteToWide(const std::string& multibyte)
 	if (!wide)
 		return std::wstring();
 	int ret = (int)MultiByteToWideChar(CP_ACP, 0, multibyte.c_str(), (int)multibyte.size(), wide, (int)length*2 - 1);
-	wide[ret] = 0;
+	wide[ret] = L'\0';
 	std::wstring str = wide;
 	delete[] wide;
 	return str;
@@ -351,7 +351,7 @@ std::wstring UTF8ToWide(const std::string& multibyte)
 	if (!wide)
 		return std::wstring();
 	int ret = (int)MultiByteToWideChar(CP_UTF8, 0, multibyte.c_str(), (int)multibyte.size(), wide, (int)length*2 - 1);
-	wide[ret] = 0;
+	wide[ret] = L'\0';
 	std::wstring str = wide;
 	delete[] wide;
 	return str;
@@ -388,7 +388,7 @@ int LoadStringEx(HINSTANCE hInstance, UINT uID, LPTSTR lpBuffer, int nBufferMax,
 
 	if (!lpBuffer)
 		return 0;
-	lpBuffer[0] = 0;
+	lpBuffer[0] = L'\0';
 	HRSRC hResource =  FindResourceEx(hInstance, RT_STRING, MAKEINTRESOURCE(((uID>>4)+1)), wLanguage);
 	if (!hResource)
 	{
@@ -422,10 +422,10 @@ int LoadStringEx(HINSTANCE hInstance, UINT uID, LPTSTR lpBuffer, int nBufferMax,
 	if (ret >= nBufferMax)
 		ret = nBufferMax - 1;
 	wcsncpy_s((wchar_t *)lpBuffer, nBufferMax, pImage->achString, ret);
-	lpBuffer[ret] = 0;
+	lpBuffer[ret] = L'\0';
 #else
 	ret = WideCharToMultiByte(CP_ACP, 0, pImage->achString, pImage->nLength, (LPSTR)lpBuffer, nBufferMax-1, ".", &defaultCharUsed);
-	lpBuffer[ret] = 0;
+	lpBuffer[ret] = L'\0';
 #endif
 	return ret;
 }

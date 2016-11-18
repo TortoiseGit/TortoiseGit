@@ -31,11 +31,11 @@ CACEdit::CACEdit()
 	m_iType = -1;
 	m_pEdit = nullptr;
 	m_CursorMode = false;
-	m_PrefixChar = 0;
-	m_szDrive[0] = 0;
-	m_szDir[0] = 0;
-	m_szFname[0] = 0;
-	m_szExt[0] = 0;
+	m_PrefixChar = L'\0';
+	m_szDrive[0] = L'\0';
+	m_szDir[0] = L'\0';
+	m_szFname[0] = L'\0';
+	m_szExt[0] = L'\0';
 }
 
 /*********************************************************************/

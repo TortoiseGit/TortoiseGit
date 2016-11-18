@@ -111,7 +111,7 @@ CBrowseFolder::retVal CBrowseFolder::Show(HWND parent, CString& path, const CStr
 	// Set a title
 	TCHAR* nl = _tcschr(m_title, '\n');
 	if (nl)
-		*nl = 0;
+		*nl = L'\0';
 	pfd->SetTitle(m_title);
 
 	// set the default folder

@@ -45,7 +45,7 @@ static bool CheckSpecialFolder(CString &folder)
 	int code[] = { CSIDL_DESKTOPDIRECTORY, CSIDL_PROFILE, CSIDL_PERSONAL, CSIDL_WINDOWS, CSIDL_SYSTEM, CSIDL_PROGRAM_FILES, CSIDL_SYSTEMX86, CSIDL_PROGRAM_FILESX86 };
 	for (int i = 0; i < _countof(code); i++)
 	{
-		path[0] = '\0';
+		path[0] = L'\0';
 		if (SUCCEEDED(SHGetFolderPath(nullptr, code[i], nullptr, 0, path)))
 			if (folder == path)
 				return true;

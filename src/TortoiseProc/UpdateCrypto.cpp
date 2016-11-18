@@ -752,7 +752,7 @@ static int hash_from_file(HCRYPTHASH hHash, CString filename, signature_packet_t
 	{
 		if (p_sig->type == TEXT_SIGNATURE)
 		{
-			buf[read] = 0;
+			buf[read] = '\0';
 			char * psz_string = buf;
 			while (*psz_string)
 			{

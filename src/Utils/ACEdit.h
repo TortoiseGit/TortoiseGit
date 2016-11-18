@@ -50,7 +50,7 @@ class CACEdit : public CWnd //CEdit
 public:
 	CACEdit();
 	void SetMode(int iMode=_MODE_STANDARD_);
-	void SetSeparator(LPCTSTR lpszString,TCHAR lpszPrefixChar = 0)
+	void SetSeparator(LPCTSTR lpszString, TCHAR lpszPrefixChar = L'\0')
 	{
 		m_SeparationStr = lpszString;
 		m_Liste.m_PrefixChar = m_PrefixChar = lpszPrefixChar;

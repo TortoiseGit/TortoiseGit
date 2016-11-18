@@ -60,8 +60,8 @@ CRevisionGraphDlg::CRevisionGraphDlg(CWnd* pParent /*=nullptr*/)
 //	DWORD dwOpts = CRegStdDWORD(_T("Software\\TortoiseGit\\RevisionGraphOptions"), 0x1ff199);
 //	m_Graph.m_state.GetOptions()->SetRegistryFlags (dwOpts, 0x407fbf);
 
-	m_szTip[0]  = 0;
-	m_wszTip[0] = 0;
+	m_szTip[0] = '\0';
+	m_wszTip[0] = L'\0';
 }
 
 CRevisionGraphDlg::~CRevisionGraphDlg()

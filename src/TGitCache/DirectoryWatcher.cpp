@@ -428,7 +428,7 @@ void CDirectoryWatcher::WorkerThread()
 							errno_t err = _tcsncat_s(buf + pdi->m_DirPath.GetLength(), READ_DIR_CHANGE_BUFFER_SIZE-pdi->m_DirPath.GetLength(), pnotify->FileName, min(READ_DIR_CHANGE_BUFFER_SIZE-pdi->m_DirPath.GetLength(), pnotify->FileNameLength/sizeof(TCHAR)));
 							if (err == STRUNCATE)
 								continue;
-							buf[(pnotify->FileNameLength/sizeof(TCHAR))+pdi->m_DirPath.GetLength()] = 0;
+							buf[(pnotify->FileNameLength / sizeof(TCHAR)) + pdi->m_DirPath.GetLength()] = L'\0';
 
 							if (m_FolderCrawler)
 							{
@@ -615,7 +615,7 @@ CDirectoryWatcher::CDirWatchInfo::CDirWatchInfo(HANDLE hDir, const CTGitPath& Di
 	, m_DirName(DirectoryName)
 {
 	ATLASSERT(hDir && !DirectoryName.IsEmpty());
-	m_Buffer[0] = 0;
+	m_Buffer[0] = '\0';
 	SecureZeroMemory(&m_Overlapped, sizeof(m_Overlapped));
 	m_DirPath = m_DirName.GetWinPathString();
 	if (m_DirPath.GetAt(m_DirPath.GetLength()-1) != '\\')

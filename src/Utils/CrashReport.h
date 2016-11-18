@@ -296,7 +296,7 @@ private:
 					wchar_t * dirpoint = wcsrchr(modpath, '\\');
 					if (dirpoint)
 					{
-						*dirpoint = 0;
+						*dirpoint = L'\0';
 						wcscat_s(modpath, L"\\crshhndl.dll");
 						hCrashHandlerDll = ::LoadLibraryW(modpath);
 					}

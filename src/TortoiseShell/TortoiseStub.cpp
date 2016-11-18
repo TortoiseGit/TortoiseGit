@@ -164,7 +164,7 @@ static void LoadRealLibrary(void)
 		--Len;
 		if (ModuleName[Len] == '\\')
 		{
-			ModuleName[Len] = '\0';
+			ModuleName[Len] = L'\0';
 			break;
 		}
 	}
