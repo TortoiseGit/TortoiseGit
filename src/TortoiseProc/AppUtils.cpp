@@ -994,7 +994,7 @@ bool CAppUtils::StartShowUnifiedDiff(HWND hWnd, const CTGitPath& url1, const git
 		MessageBox(hWnd, g_Git.GetGitLastErr(L"Could not get unified diff.", CGit::GIT_CMD_DIFF), L"TortoiseGit", MB_OK);
 		return false;
 	}
-	CAppUtils::StartUnifiedDiffViewer(tempfile, rev1 + L":" + rev2, FALSE, bAlternateDiff);
+	CAppUtils::StartUnifiedDiffViewer(tempfile, rev1.IsEmpty() ? rev2 : rev1 + L':' + rev2, FALSE, bAlternateDiff);
 
 #if 0
 	CString sCmd;

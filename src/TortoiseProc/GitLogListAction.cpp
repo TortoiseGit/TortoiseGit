@@ -297,7 +297,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 							e->Delete();
 						}
 
-						CAppUtils::StartUnifiedDiffViewer(tempfile, L"dd");
+						CAppUtils::StartUnifiedDiffViewer(tempfile, r1->m_CommitHash.ToString());
 						break;
 					}
 					else
