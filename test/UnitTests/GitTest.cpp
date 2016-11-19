@@ -90,6 +90,47 @@ TEST_P(CBasicGitWithTestRepoBareFixture, RunGit_AbsolutePath)
 	EXPECT_TRUE(PathFileExists(tempdir.GetTempDir() + L"\\export.zip"));
 }
 
+TEST(CGit, RunLogFile)
+{
+	CAutoTempDir tempdir;
+	CString tmpfile = tempdir.GetTempDir() + L"\\output.txt";
+	CString error;
+	CGit cgit;
+	ASSERT_EQ(0, cgit.RunLogFile(L"git --version", tmpfile, &error));
+	ASSERT_TRUE(error.IsEmpty());
+	__int64 size = -1;
+	EXPECT_EQ(0, CGit::GetFileModifyTime(tmpfile, nullptr, nullptr, &size));
+	EXPECT_LT(5, size);
+}
+
+TEST(CGit, RunLogFile_Set)
+{
+	CAutoTempDir tempdir;
+	CString tmpfile = tempdir.GetTempDir() + L"\\output.txt";
+	CString error;
+	CGit cgit;
+	ASSERT_EQ(0, cgit.RunLogFile(L"cmd /c set", tmpfile, &error));
+	ASSERT_TRUE(error.IsEmpty());
+	CString fileContents;
+	EXPECT_EQ(true, CStringUtils::ReadStringFromTextFile(tmpfile, fileContents));
+	ASSERT_TRUE(fileContents.Find(L"windir")); // should be there on any MS OS ;)
+}
+
+TEST(CGit, RunLogFile_Error)
+{
+	CAutoTempDir tempdir;
+	CString tmpfile = tempdir.GetTempDir() + L"\\output.txt";
+	CString error;
+	CGit cgit;
+	cgit.m_CurrentDir = tempdir.GetTempDir();
+
+	EXPECT_EQ(128, cgit.RunLogFile(L"git.exe add file.txt", tmpfile, &error));
+	EXPECT_TRUE(CStringUtils::StartsWith(error, L"fatal: Not a git repository (or any"));
+	__int64 size = -1;
+	EXPECT_EQ(0, CGit::GetFileModifyTime(tmpfile, nullptr, nullptr, &size));
+	EXPECT_EQ(0, size);
+}
+
 TEST(CGit, StringAppend)
 {
 	CGit::StringAppend(nullptr, nullptr); // string may be null
