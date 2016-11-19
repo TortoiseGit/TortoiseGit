@@ -3160,7 +3160,7 @@ int CGit::GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const 
 {
 	if (UsingLibGit2(GIT_CMD_DIFF))
 	{
-		CAutoFILE file = _wfsopen(patchfile, L"w", SH_DENYRW);
+		CAutoFILE file = _wfsopen(patchfile, L"wb", SH_DENYRW);
 		if (!file)
 			return -1;
 		return GetUnifiedDiffLibGit2(path, rev1, rev2, UnifiedDiffStatToFile, UnifiedDiffToFile, file, bMerge, bNoPrefix);

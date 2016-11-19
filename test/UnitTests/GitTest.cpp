@@ -2431,3 +2431,12 @@ TEST_P(CBasicGitWithTestRepoFixture, GetRefsCommitIsOn)
 	EXPECT_STREQ(L"refs/remotes/origin/HEAD", list[5]);
 	EXPECT_STREQ(L"refs/remotes/origin/master", list[6]);
 }
+
+TEST_P(CBasicGitWithTestRepoFixture, GetUnifiedDiff)
+{
+	CString tmpfile = m_Dir.GetTempDir() + L"\\output.txt";
+	EXPECT_EQ(0, m_Git.GetUnifiedDiff(CTGitPath(L""), L"b02add66f48814a73aa2f0876d6bbc8662d6a9a8", L"b9ef30183497cdad5c30b88d32dc1bed7951dfeb", tmpfile, false, false, -1, false));
+	CString fileContents;
+	EXPECT_EQ(true, CStringUtils::ReadStringFromTextFile(tmpfile, fileContents));
+	EXPECT_STREQ(L" utf8-nobom.txt | 4 ++--\n 1 file changed, 2 insertions(+), 2 deletions(-)\n\ndiff --git a/utf8-nobom.txt b/utf8-nobom.txt\nindex ffa0d50..c225b3f 100644\n--- a/utf8-nobom.txt\n+++ b/utf8-nobom.txt\n@@ -1,9 +1,9 @@\n-ä#äf34öööäß€9875oe\r\n+ä#äf34ööcöäß€9875oe\r\n fgdjkglsfdg\r\n öäöü45g\r\n fdgi&§$%&hfdsgä\r\n ä#äf34öööäß€9875oe\r\n-öäüpfgmfdg\r\n+öäcüpfgmfdg\r\n €fgfdsg\r\n 45\r\n äü\n\\ No newline at end of file\n", fileContents);
+}
