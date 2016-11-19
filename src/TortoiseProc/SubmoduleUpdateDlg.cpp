@@ -181,7 +181,7 @@ void CSubmoduleUpdateDlg::SetDlgTitle()
 	if (!m_bWholeProject)
 	{
 		if (!m_PathFilterList.empty())
-			dir += (g_Git.m_CurrentDir.Right(1) == L'\\' ? L"" : L"\\") + CTGitPath(m_PathFilterList[0]).GetWinPathString();
+			dir += (CStringUtils::EndsWith(g_Git.m_CurrentDir, L'\\') ? L"" : L"\\") + CTGitPath(m_PathFilterList[0]).GetWinPathString();
 		if (m_PathFilterList.size() > 1)
 			dir += L", ...";
 	}

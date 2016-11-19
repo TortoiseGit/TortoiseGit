@@ -1043,9 +1043,9 @@ bool CAppUtils::SetupDiffScripts(bool force, const CString& type)
 		std::set<CString> extensions;
 		extensions.insert(ext);
 		CString kind;
-		if (file.Right(3).CompareNoCase(L"vbs") == 0)
+		if (CStringUtils::EndsWithI(file, L"vbs"))
 			kind = L" //E:vbscript";
-		if (file.Right(2).CompareNoCase(L"js") == 0)
+		if (CStringUtils::EndsWithI(file, L"js"))
 			kind = L" //E:javascript";
 		// open the file, read the first line and find possible extensions
 		// this script can handle

@@ -24,6 +24,7 @@
 #include "CreateRepoDlg.h"
 #include "BrowseFolder.h"
 #include "AppUtils.h"
+#include "StringUtils.h"
 
 // CCreateRepoDlg dialog
 
@@ -58,7 +59,7 @@ BOOL CCreateRepoDlg::OnInitDialog()
 	CAppUtils::SetWindowTitle(m_hWnd, m_folder, sWindowTitle);
 
 	// Check if the folder ends with .git this indicates the use probably want this to be a bare repository
-	if (m_folder.Right(4) == L".git")
+	if (CStringUtils::EndsWith(m_folder, L".git"))
 	{
 		m_bBare = TRUE;
 		UpdateData(FALSE);

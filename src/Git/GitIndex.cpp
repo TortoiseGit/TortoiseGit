@@ -246,7 +246,7 @@ int CGitIndexList::GetStatus(const CString& gitdir, CString path, git_wc_status_
 		return 0;
 	}
 
-	if (!path.IsEmpty() && path.Right(1) != L'\\')
+	if (!path.IsEmpty() && !CStringUtils::EndsWith(path, L'\\'))
 		path += L'\\';
 
 	int len = path.GetLength();

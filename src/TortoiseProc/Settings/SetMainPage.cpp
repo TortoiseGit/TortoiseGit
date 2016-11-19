@@ -174,17 +174,17 @@ static void PerformCommonGitPathCleanup(CString &path)
 	path.Replace(L'/', L'\\');
 	path.Replace(L"\\\\", L"\\");
 
-	if (path.GetLength() > 7 && path.Right(7) == L"git.exe")
-		path = path.Left(path.GetLength() - 7);
+	if (CStringUtils::EndsWith(path, L"git.exe"))
+		path.Truncate(path.GetLength() - 7);
 
 	path.TrimRight(L'\\');
 
 	// prefer git.exe in cmd-directory for Git for Windows based on msys2
-	if (path.GetLength() > 12 && (path.Right(12) == L"\\mingw32\\bin" || path.Right(12) == L"\\mingw64\\bin") && PathFileExists(path.Left(path.GetLength() - 12) + L"\\cmd\\git.exe"))
+	if (path.GetLength() > 12 && (CStringUtils::EndsWith(path, L"\\mingw32\\bin") || CStringUtils::EndsWith(path, L"\\mingw64\\bin")) && PathFileExists(path.Left(path.GetLength() - 12) + L"\\cmd\\git.exe"))
 		path = path.Left(path.GetLength() - 12) + L"\\cmd";
 
 	// prefer git.exe in bin-directory, see https://github.com/msysgit/msysgit/issues/103
-	if (path.GetLength() > 5 && path.Right(4) == L"\\cmd" && PathFileExists(path.Left(path.GetLength() - 4) + L"\\bin\\git.exe"))
+	if (path.GetLength() > 5 && CStringUtils::EndsWith(path, L"\\cmd") && PathFileExists(path.Left(path.GetLength() - 4) + L"\\bin\\git.exe"))
 		path = path.Left(path.GetLength() - 4) + L"\\bin";
 }
 
@@ -196,9 +196,9 @@ void CSetMainPage::OnMsysGitPathModify()
 	{
 		PerformCommonGitPathCleanup(str);
 
-		if (str.GetLength() >= 3 && str.Find(L"bin", str.GetLength() - 3) >=0)
+		if (CStringUtils::EndsWith(str, L"bin"))
 		{
-			str=str.Left(str.GetLength()-3);
+			str.Truncate(str.GetLength() - 3);
 			str += L"mingw\\bin";
 			if(::PathFileExists(str))
 			{

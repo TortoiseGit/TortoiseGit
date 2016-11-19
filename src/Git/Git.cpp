@@ -105,14 +105,14 @@ static BOOL FindGitPath()
 	{
 		CGit::ms_LastMsysGitDir = gitExeDirectory;
 		CGit::ms_LastMsysGitDir.TrimRight(L'\\');
-		if (CGit::ms_LastMsysGitDir.GetLength() > 12 && (CGit::ms_LastMsysGitDir.Right(12) == L"\\mingw32\\bin" || CGit::ms_LastMsysGitDir.Right(12) == L"\\mingw64\\bin"))
+		if (CGit::ms_LastMsysGitDir.GetLength() > 12 && (CStringUtils::EndsWith(CGit::ms_LastMsysGitDir, L"\\mingw32\\bin") || CStringUtils::EndsWith(CGit::ms_LastMsysGitDir, L"\\mingw64\\bin")))
 		{
 			// prefer cmd directory as early Git for Windows 2.x releases only had this
 			CString installRoot = CGit::ms_LastMsysGitDir.Mid(0, CGit::ms_LastMsysGitDir.GetLength() - 12) + L"\\cmd\\git.exe";
 			if (PathFileExists(installRoot))
 				CGit::ms_LastMsysGitDir = CGit::ms_LastMsysGitDir.Mid(0, CGit::ms_LastMsysGitDir.GetLength() - 12) + L"\\cmd";
 		}
-		if (CGit::ms_LastMsysGitDir.GetLength() > 4 && CGit::ms_LastMsysGitDir.Right(4) == L"\\cmd")
+		if (CGit::ms_LastMsysGitDir.GetLength() > 4 && CStringUtils::EndsWith(CGit::ms_LastMsysGitDir, L"\\cmd"))
 		{
 			// often the msysgit\cmd folder is on the %PATH%, but
 			// that git.exe does not work, so try to guess the bin folder
@@ -130,7 +130,7 @@ static CString FindExecutableOnPath(const CString& executable, LPCTSTR env)
 {
 	CString filename = executable;
 
-	if (executable.GetLength() < 4 || executable.Find(L".exe", executable.GetLength() - 4) != executable.GetLength() - 4)
+	if (!CStringUtils::EndsWith(executable, L".exe"))
 		filename += L".exe";
 
 	if (PathFileExists(filename))
@@ -2915,7 +2915,7 @@ CString CGit::GetShortName(const CString& ref, REF_TYPE *out_type)
 		type = CGit::LOCAL_BRANCH;
 	else if (CGit::GetShortName(str, shortname, L"refs/remotes/"))
 		type = CGit::REMOTE_BRANCH;
-	else if (str.Right(3) == L"^{}" && CGit::GetShortName(str, shortname, L"refs/tags/"))
+	else if (CStringUtils::EndsWith(str, L"^{}") && CGit::GetShortName(str, shortname, L"refs/tags/"))
 		type = CGit::ANNOTATED_TAG;
 	else if (CGit::GetShortName(str, shortname, L"refs/tags/"))
 		type = CGit::TAG;
@@ -3254,7 +3254,7 @@ int CGit::DeleteRef(const CString& reference)
 			return -1;
 
 		CStringA refA;
-		if (reference.Right(3) == L"^{}")
+		if (CStringUtils::EndsWith(reference, L"^{}"))
 			refA = CUnicodeUtils::GetUTF8(reference.Left(reference.GetLength() - 3));
 		else
 			refA = CUnicodeUtils::GetUTF8(reference);

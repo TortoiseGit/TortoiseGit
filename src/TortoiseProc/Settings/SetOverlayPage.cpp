@@ -23,6 +23,7 @@
 #include "SetOverlayIcons.h"
 #include "Globals.h"
 #include "..\TGitCache\CacheInterface.h"
+#include "StringUtils.h"
 
 IMPLEMENT_DYNAMIC(CSetOverlayPage, ISettingsPropPage)
 CSetOverlayPage::CSetOverlayPage()
@@ -227,12 +228,12 @@ BOOL CSetOverlayPage::OnApply()
 	if (m_sExcludePaths.Compare(CString(m_regExcludePaths)))
 		m_restart = Restart_Cache;
 	m_sExcludePaths.Remove(L'\r');
-	if (m_sExcludePaths.Right(1) != L"\n")
+	if (!CStringUtils::EndsWith(m_sExcludePaths, L'\n'))
 		m_sExcludePaths += L'\n';
 	Store(m_sExcludePaths, m_regExcludePaths);
 	m_sExcludePaths.Replace(L"\n", L"\r\n");
 	m_sIncludePaths.Remove(L'\r');
-	if (m_sIncludePaths.Right(1) != L"\n")
+	if (!CStringUtils::EndsWith(m_sIncludePaths, L'\n'))
 		m_sIncludePaths += L'\n';
 	if (m_sIncludePaths.Compare(CString(m_regIncludePaths)))
 		m_restart = Restart_Cache;

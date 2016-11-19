@@ -666,7 +666,7 @@ void CTortoiseProcApp::CheckUpgrade()
 		// smoothly migrate broken msysgit path settings
 		CString oldmsysGitSetting = CRegString(REG_MSYSGIT_PATH);
 		oldmsysGitSetting.TrimRight(L'\\');
-		if (oldmsysGitSetting.GetLength() > 4 && oldmsysGitSetting.Right(4) == L"\\cmd")
+		if (oldmsysGitSetting.GetLength() > 4 && CStringUtils::EndsWith(oldmsysGitSetting, L"\\cmd"))
 		{
 			CString newPath = oldmsysGitSetting.Mid(0, oldmsysGitSetting.GetLength() - 3) + L"bin";
 			if (PathFileExists(newPath + L"\\git.exe"))

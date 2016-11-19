@@ -239,7 +239,7 @@ void CSetDialogs3::OnChange()
 void CSetDialogs3::OnBnClickedIconfileBrowse()
 {
 	UpdateData(TRUE);
-	CString currentDir = g_Git.m_CurrentDir + (g_Git.m_CurrentDir.Right(1) == L"\\" ? L"" : L"\\");
+	CString currentDir = g_Git.m_CurrentDir + (CStringUtils::EndsWith(g_Git.m_CurrentDir, L'\\') ? L"" : L"\\");
 	CString iconFile = m_iconFile;
 	if (!(iconFile.Mid(1, 1) == L":" || CStringUtils::StartsWith(iconFile, L"\\")))
 		iconFile = currentDir + iconFile;

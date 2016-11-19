@@ -297,3 +297,42 @@ TEST(CStringUtils, StartsWithA)
 	EXPECT_FALSE(CStringUtils::StartsWith(heystack, "someteste"));
 	EXPECT_FALSE(CStringUtils::StartsWith(heystack, "sometess"));
 }
+
+TEST(CStringUtils, EndsWith)
+{
+	EXPECT_TRUE(CStringUtils::EndsWith(L"", L""));
+	EXPECT_FALSE(CStringUtils::EndsWith(L"", L"sometest"));
+
+	CString heystack = L"sometest";
+	EXPECT_TRUE(CStringUtils::EndsWith(heystack, L"sometest"));
+	EXPECT_TRUE(CStringUtils::EndsWith(heystack, L"test"));
+	EXPECT_TRUE(CStringUtils::EndsWith(heystack, L"st"));
+	EXPECT_TRUE(CStringUtils::EndsWith(heystack, L"t"));
+	EXPECT_TRUE(CStringUtils::EndsWith(heystack, L""));
+	EXPECT_FALSE(CStringUtils::EndsWith(heystack, L"teSt"));
+	EXPECT_FALSE(CStringUtils::EndsWith(heystack, L"esometest"));
+	EXPECT_FALSE(CStringUtils::EndsWith(heystack, L"someteste"));
+	EXPECT_FALSE(CStringUtils::EndsWith(heystack, L"text"));
+	EXPECT_FALSE(CStringUtils::EndsWith(heystack, L"xt"));
+
+	EXPECT_TRUE(CStringUtils::EndsWith(heystack, L't'));
+	EXPECT_FALSE(CStringUtils::EndsWith(heystack, L'T'));
+	EXPECT_FALSE(CStringUtils::EndsWith(heystack, L'x'));
+}
+
+TEST(CStringUtils, EndsWithI)
+{
+	EXPECT_TRUE(CStringUtils::EndsWithI(L"", L""));
+	EXPECT_FALSE(CStringUtils::EndsWithI(L"", L"sometest"));
+
+	CString heystack = L"sometest";
+	EXPECT_TRUE(CStringUtils::EndsWithI(heystack, L"someteSt"));
+	EXPECT_TRUE(CStringUtils::EndsWithI(heystack, L"tEst"));
+	EXPECT_TRUE(CStringUtils::EndsWithI(heystack, L"sT"));
+	EXPECT_TRUE(CStringUtils::EndsWithI(heystack, L"T"));
+	EXPECT_TRUE(CStringUtils::EndsWithI(heystack, L""));
+	EXPECT_FALSE(CStringUtils::EndsWithI(heystack, L"esometEst"));
+	EXPECT_FALSE(CStringUtils::EndsWithI(heystack, L"someteSte"));
+	EXPECT_FALSE(CStringUtils::EndsWithI(heystack, L"text"));
+	EXPECT_FALSE(CStringUtils::EndsWithI(heystack, L"xt"));
+}

@@ -253,7 +253,7 @@ void CFolderCrawler::WorkerThread()
 						lowerpath.MakeLower();
 						if (lowerpath.Find(L"\\tmp\\") > 0)
 							continue;
-						if (lowerpath.Find(L"\\tmp") == lowerpath.GetLength() - 4)
+						if (CStringUtils::EndsWith(lowerpath, L"\\tmp"))
 							continue;
 						if (lowerpath.Find(L"\\log") > 0)
 							continue;*/

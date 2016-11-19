@@ -467,7 +467,7 @@ public:
 		if (CStringUtils::StartsWith(ref, prefix))
 		{
 			shortname = ref.Right(ref.GetLength() - prefix.GetLength());
-			if (shortname.Right(3) == L"^{}")
+			if (CStringUtils::EndsWith(shortname, L"^{}"))
 				shortname.Truncate(shortname.GetLength() - 3);
 			return TRUE;
 		}
@@ -491,7 +491,7 @@ public:
 			return m_CurrentDir;
 		if (m_CurrentDir.IsEmpty())
 			return path;
-		return m_CurrentDir + (m_CurrentDir.Right(1) == L"\\" ? L"" : L"\\") + path;
+		return m_CurrentDir + (CStringUtils::EndsWith(m_CurrentDir, L'\\') ? L"" : L"\\") + path;
 	}
 
 	CString CombinePath(const CTGitPath &path) const

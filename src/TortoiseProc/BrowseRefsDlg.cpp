@@ -359,13 +359,11 @@ CShadowTree* CShadowTree::FindLeaf(CString partialRefName)
 {
 	if(IsLeaf())
 	{
-		if(m_csRefName.GetLength() > partialRefName.GetLength())
-			return nullptr;
-		if(partialRefName.Right(m_csRefName.GetLength()) == m_csRefName)
+		if (CStringUtils::EndsWith(partialRefName, m_csRefName))
 		{
 			//Match of leaf name. Try match on total name.
 			CString totalRefName = GetRefName();
-			if(totalRefName.Right(partialRefName.GetLength()) == partialRefName)
+			if (CStringUtils::EndsWith(totalRefName, partialRefName))
 				return this; //Also match. Found.
 		}
 	}
@@ -1425,7 +1423,7 @@ bool CBrowseRefsDlg::PickRefForCombo(CComboBoxEx* pComboBox, int pickRef_Kind)
 		pComboBox->GetLBText(i, comboRefName);
 		if(comboRefName.Find(L'/') < 0 && !comboRefName.IsEmpty())
 			comboRefName.Insert(0,L"heads/"); // If combo contains single level ref name, it is usualy from 'heads/'
-		if(matchLength < comboRefName.GetLength() && resultRef.Right(comboRefName.GetLength()) == comboRefName)
+		if (matchLength < comboRefName.GetLength() && CStringUtils::EndsWith(resultRef, comboRefName))
 		{
 			matchLength = comboRefName.GetLength();
 			ixFound = i;

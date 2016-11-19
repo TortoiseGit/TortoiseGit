@@ -580,6 +580,32 @@ bool CStringUtils::StartsWith(const wchar_t* heystack, const CString& needle)
 	return wcsncmp(heystack, needle, needle.GetLength()) == 0;
 }
 
+bool CStringUtils::EndsWith(const CString& heystack, const wchar_t* needle)
+{
+	auto lenNeedle = wcslen(needle);
+	auto lenHeystack = (size_t)heystack.GetLength();
+	if (lenNeedle > lenHeystack)
+		return false;
+	return wcsncmp((LPCTSTR)heystack + (lenHeystack - lenNeedle), needle, lenNeedle) == 0;
+}
+
+bool CStringUtils::EndsWith(const CString& heystack, const wchar_t needle)
+{
+	auto lenHeystack = heystack.GetLength();
+	if (!lenHeystack)
+		return false;
+	return *((LPCTSTR)heystack + (lenHeystack - 1)) == needle;
+}
+
+bool CStringUtils::EndsWithI(const CString& heystack, const wchar_t* needle)
+{
+	auto lenNeedle = wcslen(needle);
+	auto lenHeystack = (size_t)heystack.GetLength();
+	if (lenNeedle > lenHeystack)
+		return false;
+	return _wcsnicmp((LPCTSTR)heystack + (lenHeystack - lenNeedle), needle, lenNeedle) == 0;
+}
+
 bool CStringUtils::StartsWithI(const wchar_t* heystack, const CString& needle)
 {
 	return _wcsnicmp(heystack, needle, needle.GetLength()) == 0;
