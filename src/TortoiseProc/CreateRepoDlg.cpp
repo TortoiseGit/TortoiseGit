@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2010-2014 - TortoiseGit
+// Copyright (C) 2010-2014, 2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -59,7 +59,7 @@ BOOL CCreateRepoDlg::OnInitDialog()
 	CAppUtils::SetWindowTitle(m_hWnd, m_folder, sWindowTitle);
 
 	// Check if the folder ends with .git this indicates the use probably want this to be a bare repository
-	if (m_folder.Right(4) == _T(".git"))
+	if (m_folder.Right(4) == L".git")
 	{
 		m_bBare = TRUE;
 		UpdateData(FALSE);

@@ -103,7 +103,7 @@ TEST_P(GitIndexCBasicGitWithTestRepoFixture, ReadIndex)
 	CString testFile = m_Dir.GetTempDir() + L"\\1.txt";
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"this is testing file."));
 	CString output;
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe add 1.txt"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe add 1.txt", &output, CP_UTF8));
 	EXPECT_TRUE(output.IsEmpty());
 
 	ReadAndCheckIndex(indexList, m_Dir.GetTempDir(), 1);
@@ -114,13 +114,13 @@ TEST_P(GitIndexCBasicGitWithTestRepoFixture, ReadIndex)
 	EXPECT_EQ(0, indexList[0].m_FlagsExtended);
 	EXPECT_STREQ(L"e4aac1275dfc440ec521a76e9458476fe07038bb", indexList[0].m_IndexHash.ToString());
 
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe rm -f 1.txt"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe rm -f 1.txt", &output, CP_UTF8));
 
 	ReadAndCheckIndex(indexList, m_Dir.GetTempDir());
 
 	output.Empty();
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"this is testing file."));
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe add -N 1.txt"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe add -N 1.txt", &output, CP_UTF8));
 	EXPECT_TRUE(output.IsEmpty());
 
 	ReadAndCheckIndex(indexList, m_Dir.GetTempDir(), 1);
@@ -150,7 +150,7 @@ TEST_P(GitIndexCBasicGitWithTestRepoFixture, GetFileStatus)
 	EXPECT_EQ(git_wc_status_modified, status);
 
 	CString output;
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe reset --hard"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe reset --hard", &output, CP_UTF8));
 
 	EXPECT_EQ(0, CGit::GetFileModifyTime(CombinePath(m_Dir.GetTempDir(), L"ansi.txt"), &time, nullptr, &filesize));
 	status = git_wc_status_none;
@@ -165,12 +165,12 @@ TEST_P(GitIndexCBasicGitWithTestRepoFixture, GetFileStatus)
 	EXPECT_FALSE(skipworktree);
 
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(CombinePath(m_Dir.GetTempDir(), L"just-added.txt"), L"this is testing file."));
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe add -- just-added.txt"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe add -- just-added.txt", &output, CP_UTF8));
 
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(CombinePath(m_Dir.GetTempDir(), L"noted-as-added.txt"), L"this is testing file."));
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe add -N -- noted-as-added.txt"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe add -N -- noted-as-added.txt", &output, CP_UTF8));
 
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe update-index --skip-worktree -- ansi.txt"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe update-index --skip-worktree -- ansi.txt", &output, CP_UTF8));
 	EXPECT_EQ(0, indexList.ReadIndex(m_Dir.GetTempDir()));
 	EXPECT_FALSE(indexList.m_bHasConflicts);
 	status = git_wc_status_none;
@@ -188,7 +188,7 @@ TEST_P(GitIndexCBasicGitWithTestRepoFixture, GetFileStatus)
 	EXPECT_EQ(0, indexList.GetFileStatus(m_Dir.GetTempDir(), L"noted-as-added.txt", &status, time, filesize));
 	EXPECT_EQ(git_wc_status_added, status);
 
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe update-index --no-skip-worktree ansi.txt"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe update-index --no-skip-worktree ansi.txt", &output, CP_UTF8));
 
 	Sleep(1000);
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(CombinePath(m_Dir.GetTempDir(), L"just-added.txt"), L"this IS testing file."));
@@ -198,11 +198,11 @@ TEST_P(GitIndexCBasicGitWithTestRepoFixture, GetFileStatus)
 	EXPECT_EQ(git_wc_status_modified, status);
 
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe checkout --force forconflict"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe checkout --force forconflict", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 
 	output.Empty();
-	EXPECT_EQ(1, m_Git.Run(_T("git.exe merge simple-conflict"), &output, CP_UTF8));
+	EXPECT_EQ(1, m_Git.Run(L"git.exe merge simple-conflict", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 
 	EXPECT_EQ(0, indexList.ReadIndex(m_Dir.GetTempDir()));

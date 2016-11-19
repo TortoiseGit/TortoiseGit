@@ -61,7 +61,7 @@ bool ResetProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, in
 	{
 		CGitProgressList* list = (CGitProgressList*)payload;
 		CString path(CUnicodeUtils::GetUnicode(pPath));
-		if (DWORD(CRegDWORD(_T("Software\\TortoiseGit\\RevertWithRecycleBin"), TRUE)))
+		if (DWORD(CRegDWORD(L"Software\\TortoiseGit\\RevertWithRecycleBin", TRUE)))
 		{
 			if (!CTGitPath(g_Git.CombinePath(path)).Delete(true, true))
 			{

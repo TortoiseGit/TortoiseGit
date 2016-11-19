@@ -97,7 +97,7 @@ BOOL CGitSwitchDlg::OnInitDialog()
 	AdjustControlSize(IDC_CHECK_TRACK);
 	AdjustControlSize(IDC_CHECK_BRANCHOVERRIDE);
 
-	EnableSaveRestore(_T("SwitchDlg"));
+	EnableSaveRestore(L"SwitchDlg");
 
 	CString sWindowTitle;
 	GetWindowText(sWindowTitle);
@@ -173,9 +173,9 @@ void CGitSwitchDlg::SetDefaultName(BOOL isUpdateCreateBranch)
 
 	int start = -1;
 	if (CStringUtils::StartsWith(version, L"origin/"))
-		start = version.Find(_T('/'), 8);
+		start = version.Find(L'/', 8);
 	else if (CStringUtils::StartsWith(version, L"remotes/"))
-		start = version.Find(_T('/'), 9);
+		start = version.Find(L'/', 9);
 
 	if (start >= 0)
 	{

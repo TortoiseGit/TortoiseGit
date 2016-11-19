@@ -27,9 +27,9 @@ IMPLEMENT_DYNAMIC(CSettingsProgsMerge, ISettingsPropPage)
 CSettingsProgsMerge::CSettingsProgsMerge()
 	: ISettingsPropPage(CSettingsProgsMerge::IDD)
 	, m_iExtMerge(0)
-	, m_dlgAdvMerge(_T("Merge"))
+	, m_dlgAdvMerge(L"Merge")
 {
-	m_regMergePath = CRegString(_T("Software\\TortoiseGit\\Merge"));
+	m_regMergePath = CRegString(L"Software\\TortoiseGit\\Merge");
 }
 
 CSettingsProgsMerge::~CSettingsProgsMerge()
@@ -79,7 +79,7 @@ BOOL CSettingsProgsMerge::OnInitDialog()
 BOOL CSettingsProgsMerge::OnApply()
 {
 	UpdateData();
-	if (m_iExtMerge == 0 && !m_sMergePath.IsEmpty() && m_sMergePath.Left(1) != _T("#"))
+	if (m_iExtMerge == 0 && !m_sMergePath.IsEmpty() && m_sMergePath.Left(1) != L"#")
 		m_sMergePath = L'#' + m_sMergePath;
 
 	m_regMergePath = m_sMergePath;
@@ -136,7 +136,7 @@ void CSettingsProgsMerge::OnBnClickedExtmergeadvanced()
 void CSettingsProgsMerge::CheckProgComment()
 {
 	UpdateData();
-	if (m_iExtMerge == 0 && !m_sMergePath.IsEmpty() && m_sMergePath.Left(1) != _T("#"))
+	if (m_iExtMerge == 0 && !m_sMergePath.IsEmpty() && m_sMergePath.Left(1) != L"#")
 		m_sMergePath = L'#' + m_sMergePath;
 	else if (m_iExtMerge == 1)
 		m_sMergePath.TrimLeft(L'#');

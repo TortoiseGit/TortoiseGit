@@ -67,17 +67,17 @@ int CSysImageList::AddIcon(const HICON hIcon)
 
 int CSysImageList::GetDirIconIndex() const
 {
-	return GetFileIcon(_T("Doesn't matter"), FILE_ATTRIBUTE_DIRECTORY, 0);
+	return GetFileIcon(L"Doesn't matter", FILE_ATTRIBUTE_DIRECTORY, 0);
 }
 
 int CSysImageList::GetDirOpenIconIndex() const
 {
-	return GetFileIcon(_T("Doesn't matter"), FILE_ATTRIBUTE_DIRECTORY, SHGFI_OPENICON);
+	return GetFileIcon(L"Doesn't matter", FILE_ATTRIBUTE_DIRECTORY, SHGFI_OPENICON);
 }
 
 int CSysImageList::GetDefaultIconIndex() const
 {
-	return GetFileIcon(_T(""), FILE_ATTRIBUTE_NORMAL, 0);
+	return GetFileIcon(L"", FILE_ATTRIBUTE_NORMAL, 0);
 }
 
 int CSysImageList::GetFileIconIndex(const CString& file) const

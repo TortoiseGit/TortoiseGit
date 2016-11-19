@@ -25,7 +25,7 @@
 
 #define CACHEVERION 7
 
-ULONGLONG cachetimeout = (ULONGLONG)CRegStdDWORD(_T("Software\\TortoiseGit\\Cachetimeout"), LONG_MAX);
+ULONGLONG cachetimeout = (ULONGLONG)CRegStdDWORD(L"Software\\TortoiseGit\\Cachetimeout", LONG_MAX);
 
 CStatusCacheEntry::CStatusCacheEntry()
 	: m_bSet(false)

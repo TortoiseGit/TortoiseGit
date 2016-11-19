@@ -78,7 +78,7 @@ CSciEdit::CSciEdit(void) : m_DirectFunction(NULL)
 	, m_nAutoCompleteMinChars(3)
 	, m_SpellingCache(2000)
 {
-	m_hModule = ::LoadLibrary(_T("SciLexer_tgit.dll"));
+	m_hModule = ::LoadLibrary(L"SciLexer_tgit.dll");
 }
 
 CSciEdit::~CSciEdit(void)
@@ -191,8 +191,8 @@ void CSciEdit::Init(LONG lLanguage)
 	}
 	Call(SCI_SETWORDCHARS, 0, (LPARAM)(LPCSTR)sWordChars);
 	Call(SCI_SETWHITESPACECHARS, 0, (LPARAM)(LPCSTR)sWhiteSpace);
-	m_bDoStyle = ((DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\StyleCommitMessages"), TRUE))==TRUE;
-	m_nAutoCompleteMinChars = (int)(DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\AutoCompleteMinChars"), 3);
+	m_bDoStyle = ((DWORD)CRegStdDWORD(L"Software\\TortoiseGit\\StyleCommitMessages", TRUE)) == TRUE;
+	m_nAutoCompleteMinChars = (int)(DWORD)CRegStdDWORD(L"Software\\TortoiseGit\\AutoCompleteMinChars", 3);
 	// look for dictionary files and use them if found
 	if ((lLanguage >= 0) && (((DWORD)CRegStdDWORD(L"Software\\TortoiseGit\\Spellchecker", TRUE)) == TRUE))
 	{
@@ -276,21 +276,21 @@ BOOL CSciEdit::LoadDictionaries(LONG lLanguageID)
 	GetLocaleInfo(MAKELCID(lLanguageID, SORT_DEFAULT), LOCALE_SISO639LANGNAME, buf, _countof(buf));
 	sFile = buf;
 	if (lLanguageID == 2074)
-		sFile += _T("-Latn");
+		sFile += L"-Latn";
 	sFile += L'_';
 	GetLocaleInfo(MAKELCID(lLanguageID, SORT_DEFAULT), LOCALE_SISO3166CTRYNAME, buf, _countof(buf));
 	sFile += buf;
 	if (!pChecker)
 	{
-		if ((PathFileExists(sFolderAppData + _T("dic\\") + sFile + _T(".aff"))) &&
-			(PathFileExists(sFolderAppData + _T("dic\\") + sFile + _T(".dic"))))
+		if ((PathFileExists(sFolderAppData + L"dic\\" + sFile + L".aff")) &&
+			(PathFileExists(sFolderAppData + L"dic\\" + sFile + L".dic")))
 		{
-			pChecker = std::make_unique<Hunspell>(CStringA(sFolderAppData + _T("dic\\") + sFile + _T(".aff")), CStringA(sFolderAppData + _T("dic\\") + sFile + _T(".dic")));
+			pChecker = std::make_unique<Hunspell>(CStringA(sFolderAppData + L"dic\\" + sFile + L".aff"), CStringA(sFolderAppData + L"dic\\" + sFile + L".dic"));
 		}
-		else if ((PathFileExists(sFolderUp + _T("Languages\\") + sFile + _T(".aff"))) &&
-			(PathFileExists(sFolderUp + _T("Languages\\") + sFile + _T(".dic"))))
+		else if ((PathFileExists(sFolderUp + L"Languages\\" + sFile + L".aff")) &&
+			(PathFileExists(sFolderUp + L"Languages\\" + sFile + L".dic")))
 		{
-			pChecker = std::make_unique<Hunspell>(CStringA(sFolderUp + _T("Languages\\") + sFile + _T(".aff")), CStringA(sFolderUp + _T("Languages\\") + sFile + _T(".dic")));
+			pChecker = std::make_unique<Hunspell>(CStringA(sFolderUp + L"Languages\\" + sFile + L".aff"), CStringA(sFolderUp + L"Languages\\" + sFile + L".dic"));
 		}
 		if (pChecker)
 		{
@@ -308,15 +308,15 @@ BOOL CSciEdit::LoadDictionaries(LONG lLanguageID)
 #if THESAURUS
 	if (!pThesaur)
 	{
-		if ((PathFileExists(sFolderAppData + _T("dic\\th_") + sFile + _T("_v2.idx"))) &&
-			(PathFileExists(sFolderAppData + _T("dic\\th_") + sFile + _T("_v2.dat"))))
+		if ((PathFileExists(sFolderAppData + L"dic\\th_" + sFile + L"_v2.idx")) &&
+			(PathFileExists(sFolderAppData + L"dic\\th_" + sFile + L"_v2.dat")))
 		{
-			pThesaur = std::make_unique<MyThes>(CStringA(sFolderAppData + _T("dic\\th_") + sFile + _T("_v2.idx")), CStringA(sFolderAppData + _T("dic\\th_") + sFile + _T("_v2.dat")));
+			pThesaur = std::make_unique<MyThes>(CStringA(sFolderAppData + L"dic\\th_" + sFile + L"_v2.idx"), CStringA(sFolderAppData + L"dic\\th_" + sFile + L"_v2.dat"));
 		}
-		else if ((PathFileExists(sFolderUp + _T("Languages\\th_") + sFile + _T("_v2.idx"))) &&
-			(PathFileExists(sFolderUp + _T("Languages\\th_") + sFile + _T("_v2.dat"))))
+		else if ((PathFileExists(sFolderUp + L"Languages\\th_" + sFile + L"_v2.idx")) &&
+			(PathFileExists(sFolderUp + L"Languages\\th_" + sFile + L"_v2.dat")))
 		{
-			pThesaur = std::make_unique<MyThes>(CStringA(sFolderUp + _T("Languages\\th_") + sFile + _T("_v2.idx")), CStringA(sFolderUp + _T("Languages\\th_") + sFile + _T("_v2.dat")));
+			pThesaur = std::make_unique<MyThes>(CStringA(sFolderUp + L"Languages\\th_" + sFile + L"_v2.idx"), CStringA(sFolderUp + L"Languages\\th_" + sFile + L"_v2.dat"));
 		}
 	}
 #endif
@@ -612,7 +612,7 @@ void CSciEdit::SuggestSpellingAlternatives()
 		CString suggestions;
 		for (int i=0; i < ns; i++)
 		{
-			suggestions.AppendFormat(_T("%s%c%d%c"), (LPCTSTR)GetWordFromSpellChecker(wlst[i]), m_typeSeparator, AUTOCOMPLETE_SPELLING, m_separator);
+			suggestions.AppendFormat(L"%s%c%d%c", (LPCTSTR)GetWordFromSpellChecker(wlst[i]), m_typeSeparator, AUTOCOMPLETE_SPELLING, m_separator);
 			free(wlst[i]);
 		}
 		free(wlst);
@@ -688,7 +688,7 @@ void CSciEdit::DoAutoCompletion(int nMinPrefixLength)
 	}
 
 	for (const auto& w : wordset)
-		sAutoCompleteList.AppendFormat(_T("%s%c%d%c"), (LPCTSTR)w.first, m_typeSeparator, w.second, m_separator);
+		sAutoCompleteList.AppendFormat(L"%s%c%d%c", (LPCTSTR)w.first, m_typeSeparator, w.second, m_separator);
 
 	sAutoCompleteList.TrimRight(m_separator);
 	if (sAutoCompleteList.IsEmpty())
@@ -805,7 +805,7 @@ BOOL CSciEdit::OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT
 				if (!url.IsEmpty())
 				{
 					if (lpnmhdr->code == SCN_HOTSPOTCLICK)
-						ShellExecute(GetParent()->GetSafeHwnd(), _T("open"), url, nullptr, nullptr, SW_SHOWDEFAULT);
+						ShellExecute(GetParent()->GetSafeHwnd(), L"open", url, nullptr, nullptr, SW_SHOWDEFAULT);
 					else
 					{
 						CStringA sTextA = StringForControl(url);
@@ -1045,7 +1045,7 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 					sMenuItemText.LoadString(IDS_SPELLEDIT_THESAURUS);
 					popup.InsertMenu((UINT)-1, MF_POPUP, (UINT_PTR)thesaurs.m_hMenu, sMenuItemText);
 #else
-					popup.InsertMenu((UINT)-1, MF_POPUP, (UINT_PTR)thesaurs.m_hMenu, _T("Thesaurus"));
+					popup.InsertMenu((UINT)-1, MF_POPUP, (UINT_PTR)thesaurs.m_hMenu, L"Thesaurus");
 #endif
 					nThesaurs = nCustoms;
 				}
@@ -1659,7 +1659,7 @@ void CSciEdit::SetUDiffStyle()
 
 int CSciEdit::LoadFromFile(CString &filename)
 {
-	CAutoFILE fp = _tfsopen(filename, _T("rb"), _SH_DENYWR);
+	CAutoFILE fp = _wfsopen(filename, L"rb", _SH_DENYWR);
 	if (!fp)
 		return -1;
 

@@ -117,7 +117,7 @@ tstring CPicture::GetFileSizeAsText(bool bAbbrev /* = true */)
 	if (bAbbrev)
 		StrFormatByteSize(m_nSize, buf, _countof(buf));
 	else
-		_stprintf_s(buf, _T("%lu Bytes"), m_nSize);
+		swprintf_s(buf, L"%lu Bytes", m_nSize);
 
 	return tstring(buf);
 }
@@ -136,7 +136,7 @@ bool CPicture::Load(tstring sFilePathName)
 		return true;
 
 	// Load & initialize the GDI+ library if available
-	HMODULE hGdiPlusLib = AtlLoadSystemLibraryUsingFullPath(_T("gdiplus.dll"));
+	HMODULE hGdiPlusLib = AtlLoadSystemLibraryUsingFullPath(L"gdiplus.dll");
 	if (hGdiPlusLib && GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr) == Ok)
 	{
 		bHaveGDIPlus = true;
@@ -279,7 +279,7 @@ bool CPicture::Load(tstring sFilePathName)
 
 			// NOTE: Currently just loading via FreeImage & using GDI+ for drawing.
 			// It might be nice to remove this dependency in the future.
-			HMODULE hFreeImageLib = LoadLibrary(_T("FreeImage.dll"));
+			HMODULE hFreeImageLib = LoadLibrary(L"FreeImage.dll");
 
 			// FreeImage DLL functions
 			typedef const char* (__stdcall *FreeImage_GetVersion_t)(void);

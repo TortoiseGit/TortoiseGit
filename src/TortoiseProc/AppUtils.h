@@ -193,7 +193,7 @@ public:
 	static bool ShellOpen(const CString& file, HWND hwnd = nullptr);
 	static bool ShowOpenWithDialog(const CString& file, HWND hwnd = nullptr);
 
-	static CString GetClipboardLink(const CString &skipGitPrefix = _T(""), int paramsCount = 0);
+	static CString GetClipboardLink(const CString& skipGitPrefix = L"", int paramsCount = 0);
 	static CString ChooseRepository(const CString* path);
 
 	static bool SendPatchMail(CTGitPathList& pathlist, bool bIsMainWnd = false);
@@ -205,11 +205,11 @@ public:
 
 	static bool Pull(bool showPush = false, bool showStashPop = false);
 	// rebase = 1: ask user what to do, rebase = 2: run autorebase
-	static bool RebaseAfterFetch(const CString& upstream = _T(""), int rebase = 0, bool preserveMerges = false);
-	static bool Fetch(const CString& remoteName = _T(""), bool allRemotes = false);
+	static bool RebaseAfterFetch(const CString& upstream = L"", int rebase = 0, bool preserveMerges = false);
+	static bool Fetch(const CString& remoteName = L"", bool allRemotes = false);
 	static bool DoPush(bool autoloadKey, bool pack, bool tags, bool allRemotes, bool allBranches, bool force, bool forceWithLease, const CString& localBranch, const CString& remote, const CString& remoteBranch, bool setUpstream, int recurseSubmodules);
 	static bool Push(const CString& selectLocalBranch = CString());
-	static bool RequestPull(const CString& endrevision = _T(""), const CString& repositoryUrl = _T(""), bool bIsMainWnd = false);
+	static bool RequestPull(const CString& endrevision = L"", const CString& repositoryUrl = L"", bool bIsMainWnd = false);
 
 	static void RemoveTrailSlash(CString &path);
 
@@ -229,7 +229,7 @@ public:
 	static void MarkWindowAsUnpinnable(HWND hWnd);
 
 	static bool BisectStart(const CString& lastGood, const CString& firstBad, bool bIsMainWnd = false);
-	static bool BisectOperation(const CString& op, const CString& ref = _T(""), bool bIsMainWnd = false);
+	static bool BisectOperation(const CString& op, const CString& ref = L"", bool bIsMainWnd = false);
 
 	static int	Git2GetUserPassword(git_cred **out, const char *url, const char *username_from_url, unsigned int allowed_types, void *payload);
 

@@ -57,7 +57,7 @@ CRevisionGraphDlg::CRevisionGraphDlg(CWnd* pParent /*=nullptr*/)
 
 	// restore option state
 
-//	DWORD dwOpts = CRegStdDWORD(_T("Software\\TortoiseGit\\RevisionGraphOptions"), 0x1ff199);
+//	DWORD dwOpts = CRegStdDWORD(L"Software\\TortoiseGit\\RevisionGraphOptions", 0x1ff199);
 //	m_Graph.m_state.GetOptions()->SetRegistryFlags (dwOpts, 0x407fbf);
 
 	m_szTip[0] = '\0';
@@ -68,7 +68,7 @@ CRevisionGraphDlg::~CRevisionGraphDlg()
 {
 	// save option state
 
-	CRegStdDWORD regOpts = CRegStdDWORD(_T("Software\\TortoiseGit\\RevisionGraphOptions"), 1);
+	CRegStdDWORD regOpts = CRegStdDWORD(L"Software\\TortoiseGit\\RevisionGraphOptions", 1);
 //	regOpts = m_Graph.m_state.GetOptions()->GetRegistryFlags();
 
 	// GDI+ cleanup
@@ -187,14 +187,14 @@ BOOL CRevisionGraphDlg::InitializeToolbar()
 
 	// fill the combo box
 
-	TCHAR* texts[] = { _T("5%")
-					 , _T("10%")
-					 , _T("20%")
-					 , _T("40%")
-					 , _T("50%")
-					 , _T("75%")
-					 , _T("100%")
-					 , _T("200%")
+	TCHAR* texts[] = { L"5%"
+					 , L"10%"
+					 , L"20%"
+					 , L"40%"
+					 , L"50%"
+					 , L"75%"
+					 , L"100%"
+					 , L"200%"
 					 , nullptr};
 
 	COMBOBOXEXITEM cbei = { 0 };
@@ -249,7 +249,7 @@ BOOL CRevisionGraphDlg::OnInitDialog()
 	CMenu * pMenu = GetMenu();
 	if (pMenu)
 	{
-		CRegDWORD reg(_T("Software\\TortoiseGit\\ShowRevGraphOverview"), FALSE);
+		CRegDWORD reg(L"Software\\TortoiseGit\\ShowRevGraphOverview", FALSE);
 		m_Graph.SetShowOverview ((DWORD)reg != FALSE);
 		pMenu->CheckMenuItem(ID_VIEW_SHOWOVERVIEW, MF_BYCOMMAND | (DWORD(reg) ? MF_CHECKED : 0));
 		int tbstate = m_ToolBar.GetToolBarCtrl().GetState(ID_VIEW_SHOWOVERVIEW);
@@ -269,7 +269,7 @@ BOOL CRevisionGraphDlg::OnInitDialog()
 	// begin background operation
 	StartWorkerThread();
 
-	EnableSaveRestore(_T("RevisionGraphDlg"));
+	EnableSaveRestore(L"RevisionGraphDlg");
 //	if (GetExplorerHWND())
 //		CenterWindow(CWnd::FromHandle(GetExplorerHWND()));
 
@@ -287,7 +287,7 @@ bool CRevisionGraphDlg::UpdateData()
 		//{
 		//	TGitMessageBox( m_hWnd
 		//				   , // m_Graph.m_state.GetLastErrorMessage()
-		//				   , _T("TortoiseGit")
+		//				   , L"TortoiseGit"
 		//				   , MB_ICONERROR);
 		//}
 	}
@@ -317,7 +317,7 @@ bool CRevisionGraphDlg::UpdateData()
 			{
 				TSVNMessageBox( m_hWnd
 							  , m_Graph.m_state.GetLastErrorMessage()
-							  , _T("TortoiseGit")
+							  , L"TortoiseGit"
 							  , MB_ICONERROR);
 			}
 		}
@@ -496,7 +496,7 @@ void CRevisionGraphDlg::OnMenuhelp()
 
 void CRevisionGraphDlg::OnViewCompareheadrevisions()
 {
-	m_Graph.CompareRevs(_T("HEAD"));
+	m_Graph.CompareRevs(L"HEAD");
 }
 
 void CRevisionGraphDlg::OnViewComparerevisions()
@@ -672,12 +672,12 @@ void CRevisionGraphDlg::OnFileSavegraphas()
 			extension = tempfile.Mid(dotPos);
 		if ((filterindex == 1)&&(extension.IsEmpty()))
 		{
-			extension = _T(".svg");
+			extension = L".svg";
 			tempfile += extension;
 		}
 		if ((filterindex == 2)&&(extension.IsEmpty()))
 		{
-			extension = _T(".gv");
+			extension = L".gv";
 			tempfile += extension;
 		}
 		m_Graph.SaveGraphAs(tempfile);
@@ -720,7 +720,7 @@ void CRevisionGraphDlg::OnChangeZoom()
 	if (strItem.IsEmpty())
 		return;
 
-	DoZoom ((float)(_tstof(strItem)/100.0));
+	DoZoom ((float)(_wtof(strItem) / 100.0));
 }
 
 void CRevisionGraphDlg::UpdateZoomBox()
@@ -729,7 +729,7 @@ void CRevisionGraphDlg::UpdateZoomBox()
 	CString strItem;
 	CComboBoxEx* pCBox = (CComboBoxEx*)m_ToolBar.GetDlgItem(ID_REVGRAPH_ZOOMCOMBO);
 	pCBox->GetWindowText(strItem);
-	strText.Format(_T("%.0f%%"), (m_fZoomFactor*100.0));
+	strText.Format(L"%.0f%%", (m_fZoomFactor * 100.0));
 	if (strText.Compare(strItem) != 0)
 		pCBox->SetWindowText(strText);
 }
@@ -848,7 +848,7 @@ void CRevisionGraphDlg::OnViewShowoverview()
 		m_Graph.SetShowOverview (true);
 	}
 
-	CRegDWORD reg(_T("Software\\TortoiseGit\\ShowRevGraphOverview"), FALSE);
+	CRegDWORD reg(L"Software\\TortoiseGit\\ShowRevGraphOverview", FALSE);
 	reg = m_Graph.GetShowOverview();
 	m_Graph.Invalidate(FALSE);
 }

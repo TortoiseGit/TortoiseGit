@@ -140,7 +140,7 @@ bool GitPatch::PatchFile(int nIndex, CString &datapath)
 	PathRejects pr;
 	m_testPath = m_patch.GetFilename2(nIndex);
 	pr.path = m_patch.GetFilename2(nIndex);
-	if (pr.path == _T("NUL"))
+	if (pr.path == L"NUL")
 		pr.path = m_patch.GetFilename(nIndex);
 
 	if (m_pProgDlg)
@@ -155,7 +155,7 @@ bool GitPatch::PatchFile(int nIndex, CString &datapath)
 		CString sVersion = m_patch.GetRevision(nIndex);
 
 		CString sBaseFile;
-		if (sVersion == _T("0000000") || sFilePath == _T("NUL"))
+		if (sVersion == L"0000000" || sFilePath == L"NUL")
 			sBaseFile = CTempFiles::Instance().GetTempFilePathString();
 		else
 		{
@@ -190,13 +190,13 @@ bool GitPatch::PatchFile(int nIndex, CString &datapath)
 			pr.rejectsPath = m_patch.GetErrorMessage();
 		}
 
-		TRACE(_T("comparing %s and %s\nagainst the base file %s\n"), (LPCTSTR)sTempFile, (LPCTSTR)sFilePath, (LPCTSTR)sBaseFile);
+		TRACE(L"comparing %s and %s\nagainst the base file %s\n", (LPCTSTR)sTempFile, (LPCTSTR)sFilePath, (LPCTSTR)sBaseFile);
 	}
 	else
 	{
 		//"dry run" was successful, so save the patched file somewhere...
 		pr.rejects = 0;
-		TRACE(_T("comparing %s\nwith the patched result %s\n"), (LPCTSTR)sFilePath, (LPCTSTR)sTempFile);
+		TRACE(L"comparing %s\nwith the patched result %s\n", (LPCTSTR)sFilePath, (LPCTSTR)sTempFile);
 	}
 
 	pr.resultPath = sTempFile;
@@ -222,26 +222,26 @@ bool GitPatch::PatchFile(int nIndex, CString &datapath)
 CString GitPatch::GetPatchRejects(int nIndex) const
 {
 	if (nIndex < 0)
-		return _T("");
+		return L"";
 	if (nIndex < (int)m_filePaths.size())
 		return m_filePaths[nIndex].rejectsPath;
 
-	return _T("");
+	return L"";
 }
 
 bool GitPatch::PatchPath(const CString& path)
 {
 	m_errorStr.Empty();
 
-	m_patchfile.Replace('\\', '/');
-	m_targetpath.Replace('\\', '/');
+	m_patchfile.Replace(L'\\', L'/');
+	m_targetpath.Replace(L'\\', L'/');
 
 	m_filetopatch = path.Mid(m_targetpath.GetLength()+1);
-	m_filetopatch.Replace('\\', '/');
+	m_filetopatch.Replace(L'\\', L'/');
 
 	m_nRejected = 0;
 
-	m_errorStr = _T("NOT IMPLEMENTED");
+	m_errorStr = L"NOT IMPLEMENTED";
 	return false;
 }
 
@@ -346,7 +346,7 @@ int GitPatch::CountDirMatches(const CString& path) const
 	for (int i=0; i<GetNumberOfFiles(); ++i)
 	{
 		CString temp = GetStrippedPath(i);
-		temp.Replace('/', '\\');
+		temp.Replace(L'/', L'\\');
 		if (PathIsRelative(temp))
 			temp = path + L'\\' + temp;
 		// remove the filename
@@ -360,14 +360,14 @@ int GitPatch::CountDirMatches(const CString& path) const
 CString GitPatch::GetStrippedPath(int nIndex) const
 {
 	if (nIndex < 0)
-		return _T("");
+		return L"";
 	if (nIndex < (int)m_filePaths.size())
 	{
 		CString filepath = Strip(GetFilePath(nIndex));
 		return filepath;
 	}
 
-	return _T("");
+	return L"";
 }
 
 CString GitPatch::Strip(const CString& filename) const
@@ -376,7 +376,7 @@ CString GitPatch::Strip(const CString& filename) const
 	if ( m_nStrip>0 )
 	{
 		// Remove windows drive letter "c:"
-		if (s.GetLength()>2 && s[1]==':')
+		if (s.GetLength() > 2 && s[1] == L':')
 			s = s.Mid(2);
 
 		for (int nStrip = 1; nStrip <= m_nStrip; ++nStrip)
@@ -386,7 +386,7 @@ CString GitPatch::Strip(const CString& filename) const
 			//       "ts/my-working-copy/dir/file.txt"
 			//          "my-working-copy/dir/file.txt"
 			//                          "dir/file.txt"
-			int p = s.FindOneOf(_T("/\\"));
+			int p = s.FindOneOf(L"/\\");
 			if (p < 0)
 			{
 				s.Empty();

@@ -57,8 +57,8 @@ int ProjectProperties::ReadProps()
 	else
 	{
 		CString tmpFile = GetTempFile();
-		CTGitPath path(_T(".tgitconfig"));
-		if (g_Git.GetOneFile(_T("HEAD"), path, tmpFile) == 0)
+		CTGitPath path(L".tgitconfig");
+		if (g_Git.GetOneFile(L"HEAD", path, tmpFile) == 0)
 			git_config_add_file_ondisk(gitconfig, CGit::GetGitPathStringA(tmpFile), GIT_CONFIG_LEVEL_LOCAL, FALSE); // this needs to have the second highest priority
 	}
 
@@ -103,19 +103,19 @@ int ProjectProperties::ReadProps()
 		CString val;
 		val = sPropVal;
 		if (!val.IsEmpty())
-			nLogWidthMarker = _ttoi(val);
+			nLogWidthMarker = _wtoi(val);
 	}
 
 	if (gitconfig.GetString(PROJECTPROPNAME_PROJECTLANGUAGE, sPropVal) == 0)
 	{
 		CString val;
 		val = sPropVal;
-		if (val == _T("-1"))
+		if (val == L"-1")
 			lProjectLanguage = -1;
 		if (!val.IsEmpty())
 		{
 			LPTSTR strEnd;
-			lProjectLanguage = _tcstol(val, &strEnd, 0);
+			lProjectLanguage = wcstol(val, &strEnd, 0);
 		}
 	}
 
@@ -124,7 +124,7 @@ int ProjectProperties::ReadProps()
 		CString val;
 		val = sPropVal;
 		if (!val.IsEmpty())
-			nMinLogSize = _ttoi(val);
+			nMinLogSize = _wtoi(val);
 	}
 
 	return 0;
@@ -249,7 +249,7 @@ std::vector<CHARRANGE> ProjectProperties::FindBugIDPositions(const CString& msg)
 					ptrdiff_t matchpos = it->position(0);
 					for (std::tr1::wsregex_iterator it2(matchedString.cbegin(), matchedString.cend(), regBugID); it2 != end; ++it2)
 					{
-						ATLTRACE(_T("matched id : %s\n"), (*it2)[0].str().c_str());
+						ATLTRACE(L"matched id : %s\n", (*it2)[0].str().c_str());
 						ptrdiff_t matchposID = it2->position(0);
 						CHARRANGE range = {(LONG)(matchpos+matchposID), (LONG)(matchpos+matchposID+(*it2)[0].str().size())};
 						result.push_back(range);
@@ -272,7 +272,7 @@ std::vector<CHARRANGE> ProjectProperties::FindBugIDPositions(const CString& msg)
 					// group 2 as the bug ID
 					if (match.size() >= 2)
 					{
-						ATLTRACE(_T("matched id : %s\n"), std::wstring(match[1]).c_str());
+						ATLTRACE(L"matched id : %s\n", std::wstring(match[1]).c_str());
 						CHARRANGE range = {(LONG)(match[1].first - s.cbegin()), (LONG)(match[1].second - s.cbegin())};
 						result.push_back(range);
 					}
@@ -402,7 +402,7 @@ CString ProjectProperties::GetBugIDUrl(const CString& sBugID)
 	if (!sMessage.IsEmpty() || !sCheckRe.IsEmpty())
 	{
 		ret = sUrl;
-		ret.Replace(_T("%BUGID%"), sBugID);
+		ret.Replace(L"%BUGID%", sBugID);
 	}
 	return ret;
 }

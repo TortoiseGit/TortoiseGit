@@ -28,7 +28,7 @@ CSettingsProgsAlternativeEditor::CSettingsProgsAlternativeEditor()
 	: ISettingsPropPage(CSettingsProgsAlternativeEditor::IDD)
 	, m_iAlternativeEditor(0)
 {
-	m_regAlternativeEditorPath = CRegString(_T("Software\\TortoiseGit\\AlternativeEditor"));
+	m_regAlternativeEditorPath = CRegString(L"Software\\TortoiseGit\\AlternativeEditor");
 }
 
 CSettingsProgsAlternativeEditor::~CSettingsProgsAlternativeEditor()
@@ -115,7 +115,7 @@ BOOL CSettingsProgsAlternativeEditor::OnInitDialog()
 BOOL CSettingsProgsAlternativeEditor::OnApply()
 {
 	UpdateData();
-	if (m_iAlternativeEditor == 0 && !m_sAlternativeEditorPath.IsEmpty() && m_sAlternativeEditorPath.Left(1) != _T("#"))
+	if (m_iAlternativeEditor == 0 && !m_sAlternativeEditorPath.IsEmpty() && m_sAlternativeEditorPath.Left(1) != L"#")
 		m_sAlternativeEditorPath = L'#' + m_sAlternativeEditorPath;
 
 	m_regAlternativeEditorPath = m_sAlternativeEditorPath;
@@ -126,7 +126,7 @@ BOOL CSettingsProgsAlternativeEditor::OnApply()
 void CSettingsProgsAlternativeEditor::CheckProgComment()
 {
 	UpdateData();
-	if (m_iAlternativeEditor == 0 && !m_sAlternativeEditorPath.IsEmpty() && m_sAlternativeEditorPath.Left(1) != _T("#"))
+	if (m_iAlternativeEditor == 0 && !m_sAlternativeEditorPath.IsEmpty() && m_sAlternativeEditorPath.Left(1) != L"#")
 		m_sAlternativeEditorPath = L'#' + m_sAlternativeEditorPath;
 	else if (m_iAlternativeEditor == 1)
 		m_sAlternativeEditorPath.TrimLeft(L'#');

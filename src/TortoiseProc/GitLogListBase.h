@@ -223,7 +223,7 @@ public:
 	{
 		m_wcRev.Clear();
 		m_wcRev.GetSubject().LoadString(IDS_LOG_WORKINGDIRCHANGES);
-		m_wcRev.m_Mark = _T('-');
+		m_wcRev.m_Mark = L'-';
 		m_wcRev.GetBody().LoadString(IDS_LOG_FETCHINGSTATUS);
 		m_wcRev.m_CallDiffAsync = DiffAsync;
 		InterlockedExchange(&m_wcRev.m_IsDiffFiles, FALSE);
@@ -439,13 +439,13 @@ public:
 		m_HashMap.clear();
 
 		if (g_Git.GetMapHashToFriendName(m_HashMap))
-			MessageBox(g_Git.GetGitLastErr(_T("Could not get all refs.")), _T("TortoiseGit"), MB_ICONERROR);
+			MessageBox(g_Git.GetGitLastErr(L"Could not get all refs."), L"TortoiseGit", MB_ICONERROR);
 
 		m_CurrentBranch=g_Git.GetCurrentBranch();
 
-		if (g_Git.GetHash(m_HeadHash, _T("HEAD")))
+		if (g_Git.GetHash(m_HeadHash, L"HEAD"))
 		{
-			MessageBox(g_Git.GetGitLastErr(_T("Could not get HEAD hash. Quitting...")), _T("TortoiseGit"), MB_ICONERROR);
+			MessageBox(g_Git.GetGitLastErr(L"Could not get HEAD hash. Quitting..."), L"TortoiseGit", MB_ICONERROR);
 			ExitProcess(1);
 		}
 
@@ -482,7 +482,7 @@ public:
 
 	CString GetRange() const { return m_sRange; }
 
-	bool HasFilterText() const { return !m_sFilterText.IsEmpty() && m_sFilterText != _T("!"); }
+	bool HasFilterText() const { return !m_sFilterText.IsEmpty() && m_sFilterText != L"!"; }
 
 	int					m_nSearchIndex;
 

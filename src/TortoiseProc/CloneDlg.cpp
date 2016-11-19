@@ -45,14 +45,14 @@ CCloneDlg::CCloneDlg(CWnd* pParent /*=nullptr*/)
 	m_bSVNUserName = FALSE;
 	m_bExactPath = FALSE;
 
-	m_strSVNTrunk = _T("trunk");
-	m_strSVNTags = _T("tags");
-	m_strSVNBranchs = _T("branches");
+	m_strSVNTrunk = L"trunk";
+	m_strSVNTags = L"tags";
+	m_strSVNBranchs = L"branches";
 
-	m_regBrowseUrl = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\CloneBrowse"),0);
-	m_regCloneDir = CRegString(_T("Software\\TortoiseGit\\TortoiseProc\\CloneDir"));
-	m_regCloneRecursive = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\CloneRecursive"), FALSE);
-	m_regUseSSHKey = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\CloneUseSSHKey"), TRUE);
+	m_regBrowseUrl = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\CloneBrowse",0);
+	m_regCloneDir = CRegString(L"Software\\TortoiseGit\\TortoiseProc\\CloneDir");
+	m_regCloneRecursive = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\CloneRecursive", FALSE);
+	m_regUseSSHKey = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\CloneUseSSHKey", TRUE);
 	m_nSVNFrom = 0;
 
 	m_bAutoloadPuttyKeyFile = m_regUseSSHKey && CAppUtils::IsSSHPutty();
@@ -155,10 +155,10 @@ BOOL CCloneDlg::OnInitDialog()
 
 	m_URLCombo.SetCaseSensitive(TRUE);
 	m_URLCombo.SetURLHistory(TRUE);
-	m_URLCombo.LoadHistory(_T("Software\\TortoiseGit\\History\\repoURLS"), _T("url"));
+	m_URLCombo.LoadHistory(L"Software\\TortoiseGit\\History\\repoURLS", L"url");
 	if(m_URL.IsEmpty())
 	{
-		CString str = CAppUtils::GetClipboardLink(_T("git clone "));
+		CString str = CAppUtils::GetClipboardLink(L"git clone ");
 		str.Trim();
 		if(str.IsEmpty())
 			m_URLCombo.SetCurSel(0);
@@ -177,14 +177,14 @@ BOOL CCloneDlg::OnInitDialog()
 	m_BrowseUrl.SetCurrentEntry(m_regBrowseUrl);
 
 	m_PuttyKeyCombo.SetPathHistory(TRUE);
-	m_PuttyKeyCombo.LoadHistory(_T("Software\\TortoiseGit\\History\\puttykey"), _T("key"));
+	m_PuttyKeyCombo.LoadHistory(L"Software\\TortoiseGit\\History\\puttykey", L"key");
 	m_PuttyKeyCombo.SetCurSel(0);
 
 	this->GetDlgItem(IDC_PUTTYKEY_AUTOLOAD)->EnableWindow( CAppUtils::IsSSHPutty() );
 	this->GetDlgItem(IDC_PUTTYKEYFILE)->EnableWindow(m_bAutoloadPuttyKeyFile);
 	this->GetDlgItem(IDC_PUTTYKEYFILE_BROWSE)->EnableWindow(m_bAutoloadPuttyKeyFile);
 
-	EnableSaveRestore(_T("CloneDlg"));
+	EnableSaveRestore(L"CloneDlg");
 
 	OnBnClickedCheckSvn();
 	OnBnClickedCheckDepth();
@@ -277,8 +277,8 @@ void CCloneDlg::OnBnClickedCloneBrowseUrl()
 			CMessageBox::Show(GetSafeHwnd(), IDS_PROC_CLONE_URLDIREMPTY, IDS_APPNAME, MB_ICONEXCLAMATION);
 			return;
 		}
-		if (CAppUtils::ExploreTo(GetSafeHwnd(), str) && (INT_PTR)ShellExecute(nullptr, _T("open"), str, nullptr, nullptr, SW_SHOW) <= 32)
-			MessageBox(CFormatMessageWrapper(), _T("TortoiseGit"), MB_ICONERROR);
+		if (CAppUtils::ExploreTo(GetSafeHwnd(), str) && (INT_PTR)ShellExecute(nullptr, L"open", str, nullptr, nullptr, SW_SHOW) <= 32)
+			MessageBox(CFormatMessageWrapper(), L"TortoiseGit", MB_ICONERROR);
 		return;
 	}
 
@@ -344,17 +344,17 @@ void CCloneDlg::OnCbnEditchangeUrlcombo()
 	CString old;
 	old=m_ModuleName;
 
-	url.Replace(_T('\\'),_T('/'));
+	url.Replace(L'\\', L'/');
 
 	// add compatibility for Google Code git urls
 	url.TrimRight(L"/");
 
-	int start=url.ReverseFind(_T('/'));
+	int start = url.ReverseFind(L'/');
 	if(start<0)
 	{
-		start = url.ReverseFind(_T(':'));
+		start = url.ReverseFind(L':');
 		if(start <0)
-			start = url.ReverseFind(_T('@'));
+			start = url.ReverseFind(L'@');
 
 		if(start<0)
 			start = 0;
@@ -365,14 +365,14 @@ void CCloneDlg::OnCbnEditchangeUrlcombo()
 	temp=temp.MakeLower();
 
 	// we've to check whether the URL ends with .git (instead of using the first .git)
-	int end = temp.Right(4) == _T(".git") ? (temp.GetLength() - 4) : temp.GetLength();
+	int end = temp.Right(4) == L".git" ? (temp.GetLength() - 4) : temp.GetLength();
 
 	//CString modulename;
 	m_ModuleName=url.Mid(start+1,end);
 
-	start = m_Directory.ReverseFind(_T('\\'));
+	start = m_Directory.ReverseFind(L'\\');
 	if(start <0 )
-		start = m_Directory.ReverseFind(_T('/'));
+		start = m_Directory.ReverseFind(L'/');
 	if(start <0 )
 		start =0;
 
@@ -381,7 +381,7 @@ void CCloneDlg::OnCbnEditchangeUrlcombo()
 		m_Directory=m_Directory.Left(dirstart);
 
 	m_Directory.TrimRight(L"\\/");
-	m_Directory += _T('\\');
+	m_Directory += L'\\';
 	m_Directory += m_ModuleName;
 
 	// check if URL starts with http://, https:// or git:// in those cases loading putty keys is only
@@ -404,7 +404,7 @@ void CCloneDlg::OnBnClickedCheckSvn()
 		m_URLCombo.GetWindowText(str);
 
 		str.TrimRight(L"\\/");
-		if(str.GetLength()>=5 && (str.Right(5).MakeLower() == _T("trunk") ))
+		if (str.GetLength() >= 5 && str.Right(5).MakeLower() == L"trunk")
 			this->m_bSVNBranch=this->m_bSVNTags=this->m_bSVNTrunk = FALSE;
 		else
 			this->m_bSVNBranch=this->m_bSVNTags=this->m_bSVNTrunk = TRUE;

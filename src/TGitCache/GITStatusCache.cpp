@@ -54,7 +54,7 @@ void CGitStatusCache::Create()
 
 	m_pInstance->watcher.SetFolderCrawler(&m_pInstance->m_folderCrawler);
 
-	if (!CRegStdDWORD(_T("Software\\TortoiseGit\\CacheSave"), TRUE))
+	if (!CRegStdDWORD(L"Software\\TortoiseGit\\CacheSave", TRUE))
 		return;
 
 #define LOADVALUEFROMFILE(x) if (fread(&x, sizeof(x), 1, pFile)!=1) goto exit;
@@ -77,7 +77,7 @@ void CGitStatusCache::Create()
 		DeleteFile(path2);
 		CopyFile(path, path2, FALSE);
 		DeleteFile(path);
-		CAutoFILE pFile = _tfsopen(path2, _T("rb"), _SH_DENYWR);
+		CAutoFILE pFile = _wfsopen(path2, L"rb", _SH_DENYWR);
 		if (pFile)
 		{
 			try
@@ -148,7 +148,7 @@ error:
 
 bool CGitStatusCache::SaveCache()
 {
-	if (!CRegStdDWORD(_T("Software\\TortoiseGit\\CacheSave"), TRUE))
+	if (!CRegStdDWORD(L"Software\\TortoiseGit\\CacheSave", TRUE))
 		return false;
 
 #define WRITEVALUETOFILE(x) if (fwrite(&x, sizeof(x), 1, pFile)!=1) goto error;
@@ -159,7 +159,7 @@ bool CGitStatusCache::SaveCache()
 	if (!path.IsEmpty())
 	{
 		path += STATUSCACHEFILENAME;
-		CAutoFILE pFile = _tfsopen(path, _T("wb"), SH_DENYRW);
+		CAutoFILE pFile = _wfsopen(path, L"wb", SH_DENYRW);
 		if (pFile)
 		{
 			value = CACHEDISKVERSION;
@@ -187,7 +187,7 @@ bool CGitStatusCache::SaveCache()
 			}
 		}
 	}
-	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": cache saved to disk at %s\n"), (LPCTSTR)path);
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": cache saved to disk at %s\n", (LPCTSTR)path);
 	return true;
 error:
 	Destroy();
@@ -269,7 +269,7 @@ bool CGitStatusCache::IsPathGood(const CTGitPath& path)
 		// TODO: maybe we also need to check if index.lock and HEAD.lock still exists after a specific timeout (if we miss update notifications for these files too often)
 		if (GetTickCount64() < it->second && it->first.IsAncestorOf(path))
 		{
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": path not good: %s\n"), it->first.GetWinPath());
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": path not good: %s\n", it->first.GetWinPath());
 			return false;
 		}
 	}
@@ -299,7 +299,7 @@ bool CGitStatusCache::UnBlockPath(const CTGitPath& path)
 	std::map<CTGitPath, ULONGLONG>::iterator it = m_NoWatchPaths.find(path.GetDirectory());
 	if (it != m_NoWatchPaths.end())
 	{
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": path removed from no good: %s\n"), it->first.GetWinPath());
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": path removed from no good: %s\n", it->first.GetWinPath());
 		m_NoWatchPaths.erase(it);
 		ret = true;
 	}
@@ -388,7 +388,7 @@ bool CGitStatusCache::RemoveCacheForDirectory(CCachedDirectory * cdir)
 		itMap = m_directoryCache.lower_bound(cdir->m_directoryPath);
 	} while (itMap != m_directoryCache.end() && cdir->m_directoryPath.IsAncestorOf(itMap->first));
 
-	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": removed from cache %s\n"), cdir->m_directoryPath.GetWinPath());
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": removed from cache %s\n", cdir->m_directoryPath.GetWinPath());
 	delete cdir;
 	return true;
 }
@@ -450,7 +450,7 @@ CCachedDirectory * CGitStatusCache::GetDirectoryCacheEntry(const CTGitPath& path
 			// again. If that's the case, just do nothing
 			if (path.IsDirectory()||(!path.Exists()))
 			{
-				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": adding %s to our cache\n"), path.GetWinPath());
+				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": adding %s to our cache\n", path.GetWinPath());
 				CCachedDirectory * newcdir = new CCachedDirectory(path);
 				if (newcdir)
 				{
@@ -516,7 +516,7 @@ CStatusCacheEntry CGitStatusCache::GetStatusForPath(const CTGitPath& path, DWORD
 		CCachedDirectory * cachedDir = GetDirectoryCacheEntry(dirpath);
 		if (cachedDir)
 		{
-			//CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": GetStatusForMember %d\n"), bFetch);
+			//CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": GetStatusForMember %d\n", bFetch);
 			CStatusCacheEntry entry = cachedDir->GetStatusForMember(path, bRecursive, bFetch);
 			{
 				AutoLocker lock(m_critSec);
@@ -553,11 +553,11 @@ CStatusCacheEntry CGitStatusCache::GetStatusForPath(const CTGitPath& path, DWORD
 		}
 	}
 	AutoLocker lock(m_critSec);
-	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": ignored no good path %s\n"), path.GetWinPath());
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": ignored no good path %s\n", path.GetWinPath());
 	m_mostRecentStatus = CStatusCacheEntry();
 	if (m_shellCache.ShowExcludedAsNormal() && path.IsDirectory() && m_shellCache.HasGITAdminDir(path.GetWinPath(), true))
 	{
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": force status %s\n"), path.GetWinPath());
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": force status %s\n", path.GetWinPath());
 		m_mostRecentStatus.ForceStatus(git_wc_status_normal);
 	}
 	return m_mostRecentStatus;

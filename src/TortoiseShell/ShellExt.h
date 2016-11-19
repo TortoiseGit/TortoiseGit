@@ -36,7 +36,7 @@ extern	ShellCache			g_ShellCache;			// caching of registry entries, ...
 extern	DWORD				g_langid;
 extern	ULONGLONG			g_langTimeout;
 extern	HINSTANCE			g_hResInst;
-extern	tstring				g_filepath;
+extern	std::wstring		g_filepath;
 extern	git_wc_status_kind	g_filestatus;			///< holds the corresponding status to the file/dir above
 extern	bool				g_readonlyoverlay;		///< whether to show the read only overlay or not
 extern	bool				g_lockedoverlay;		///< whether to show the locked overlay or not
@@ -79,17 +79,17 @@ protected:
 	//std::map<int,std::string> verbMap;
 	std::map<UINT_PTR, UINT_PTR>	myIDMap;
 	std::map<UINT_PTR, UINT_PTR>	mySubMenuMap;
-	std::map<tstring, UINT_PTR> myVerbsMap;
-	std::map<UINT_PTR, tstring> myVerbsIDMap;
-	tstring	 folder_;
-	std::vector<tstring> files_;
+	std::map<std::wstring, UINT_PTR> myVerbsMap;
+	std::map<UINT_PTR, std::wstring> myVerbsIDMap;
+	std::wstring folder_;
+	std::vector<std::wstring> files_;
 	DWORD itemStates;				///< see the globals.h file for the ITEMIS_* defines
 	DWORD itemStatesFolder;			///< used for states of the folder_ (folder background and/or drop target folder)
-	tstring uuidSource;
-	tstring uuidTarget;
+	std::wstring uuidSource;
+	std::wstring uuidTarget;
 	int space;
 	TCHAR stringtablebuffer[255];
-	tstring ignoredprops;
+	std::wstring ignoredprops;
 	CRegStdString		regDiffLater;
 
 	GitFolderStatus		m_CachedStatus;		// status cache
@@ -100,12 +100,12 @@ protected:
 	CCrashReportTGit	m_crasher;
 #endif
 
-#define MAKESTRING(ID) LoadStringEx(g_hResInst, ID, stringtablebuffer, _countof(stringtablebuffer), (WORD)CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)))
+#define MAKESTRING(ID) LoadStringEx(g_hResInst, ID, stringtablebuffer, _countof(stringtablebuffer), (WORD)CRegStdDWORD(L"Software\\TortoiseGit\\LanguageID", MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)))
 private:
 	void			InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UINT stringid, UINT icon, UINT idCmdFirst, GitCommands com, UINT uFlags);
 	bool			InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, HMENU subMenu, UINT &indexMenu, int &indexSubMenu, unsigned __int64 topmenu, bool bShowIcons, UINT uFlags);
-	tstring			WriteFileListToTempFile();
-	bool			WriteClipboardPathsToTempFile(tstring& tempfile);
+	std::wstring	WriteFileListToTempFile();
+	bool			WriteClipboardPathsToTempFile(std::wstring& tempfile);
 	LPCTSTR			GetMenuTextFromResource(int id);
 	bool			ShouldInsertItem(const MenuInfo& pair) const;
 	bool			ShouldEnableMenu(const YesNoPair& pair) const;

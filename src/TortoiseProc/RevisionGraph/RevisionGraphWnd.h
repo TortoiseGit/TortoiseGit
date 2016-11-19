@@ -160,10 +160,10 @@ public:
 	{
 		m_HashMap.clear();
 		if (g_Git.GetMapHashToFriendName(m_HashMap))
-			MessageBox(g_Git.GetGitLastErr(_T("Could not get all refs.")), _T("TortoiseGit"), MB_ICONERROR);
+			MessageBox(g_Git.GetGitLastErr(L"Could not get all refs."), L"TortoiseGit", MB_ICONERROR);
 		m_CurrentBranch=g_Git.GetCurrentBranch();
-		if (g_Git.GetHash(m_HeadHash, _T("HEAD")))
-			MessageBox(g_Git.GetGitLastErr(_T("Could not get HEAD hash.")), _T("TortoiseGit"), MB_ICONERROR);
+		if (g_Git.GetHash(m_HeadHash, L"HEAD"))
+			MessageBox(g_Git.GetGitLastErr(L"Could not get HEAD hash."), L"TortoiseGit", MB_ICONERROR);
 	}
 
 	std::auto_ptr<CFuture<bool>> updateJob;

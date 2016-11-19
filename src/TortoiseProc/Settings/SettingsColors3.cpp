@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009,2011,2013 - TortoiseGit
+// Copyright (C) 2009, 2011, 2013, 2016 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -78,19 +78,19 @@ BOOL CSettingsColors3::OnInitDialog()
 	CString text;
 	for (int i = 1; i <= 10; i++)
 	{
-		text.Format(_T("%d"), i);
+		text.Format(L"%d", i);
 		m_LogGraphLineWidth.AddString(text);
 	}
 	for (int i = 1; i <= 30; i++)
 	{
-		text.Format(_T("%d"), i);
+		text.Format(L"%d", i);
 		m_LogGraphNodeSize.AddString(text);
 	}
-	m_regLogGraphLineWidth = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\Graph\\LogLineWidth"), 2);
-	text.Format(_T("%d"), (DWORD)m_regLogGraphLineWidth);
+	m_regLogGraphLineWidth = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\Graph\\LogLineWidth", 2);
+	text.Format(L"%d", (DWORD)m_regLogGraphLineWidth);
 	m_LogGraphLineWidth.SelectString(-1, text);
-	m_regLogGraphNodeSize = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\Graph\\LogNodeSize"), 10);
-	text.Format(_T("%d"), (DWORD)m_regLogGraphNodeSize);
+	m_regLogGraphNodeSize = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\Graph\\LogNodeSize", 10);
+	text.Format(L"%d", (DWORD)m_regLogGraphNodeSize);
 	m_LogGraphNodeSize.SelectString(-1, text);
 
 	return TRUE;
@@ -100,8 +100,8 @@ void CSettingsColors3::OnBnClickedRestore()
 {
 	for(int i=0;i<8;i++)
 		m_cLine[i].SetColor(m_Colors.GetColor((CColors::Colors)(CColors::BranchLine1+i), true));
-	m_LogGraphLineWidth.SelectString(-1, _T("2"));
-	m_LogGraphNodeSize.SelectString(-1, _T("10"));
+	m_LogGraphLineWidth.SelectString(-1, L"2");
+	m_LogGraphNodeSize.SelectString(-1, L"10");
 	SetModified(TRUE);
 }
 
@@ -115,9 +115,9 @@ BOOL CSettingsColors3::OnApply()
 
 	CString text;
 	m_LogGraphLineWidth.GetWindowText(text);
-	m_regLogGraphLineWidth = _ttoi(text);
+	m_regLogGraphLineWidth = _wtoi(text);
 	m_LogGraphNodeSize.GetWindowText(text);
-	m_regLogGraphNodeSize = _ttoi(text);
+	m_regLogGraphNodeSize = _wtoi(text);
 
 	return ISettingsPropPage::OnApply();
 }

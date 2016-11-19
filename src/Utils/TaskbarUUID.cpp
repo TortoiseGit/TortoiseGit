@@ -32,12 +32,12 @@
 #pragma warning(pop)
 #pragma comment(lib, "gdiplus.lib")
 
-#define APPID (_T("TGIT.TGIT.1"))
+#define APPID (L"TGIT.TGIT.1")
 
 void SetTaskIDPerUUID()
 {
     typedef HRESULT STDAPICALLTYPE SetCurrentProcessExplicitAppUserModelIDFN(PCWSTR AppID);
-    CAutoLibrary hShell = AtlLoadSystemLibraryUsingFullPath(_T("shell32.dll"));
+    CAutoLibrary hShell = AtlLoadSystemLibraryUsingFullPath(L"shell32.dll");
     if (hShell)
     {
         SetCurrentProcessExplicitAppUserModelIDFN *pfnSetCurrentProcessExplicitAppUserModelID = (SetCurrentProcessExplicitAppUserModelIDFN*)GetProcAddress(hShell, "SetCurrentProcessExplicitAppUserModelID");
@@ -51,7 +51,7 @@ void SetTaskIDPerUUID()
 
 std::wstring GetTaskIDPerUUID(LPCTSTR uuid /*= nullptr */)
 {
-    CRegStdDWORD r = CRegStdDWORD(_T("Software\\TortoiseGit\\GroupTaskbarIconsPerRepo"), 3);
+    CRegStdDWORD r = CRegStdDWORD(L"Software\\TortoiseGit\\GroupTaskbarIconsPerRepo", 3);
     std::wstring id = APPID;
     if ((r < 2)||(r == 3))
     {
@@ -88,10 +88,10 @@ extern bool g_bGroupingRemoveIcon;
 
 void SetUUIDOverlayIcon( HWND hWnd )
 {
-    if (!CRegStdDWORD(_T("Software\\TortoiseGit\\GroupTaskbarIconsPerRepo"), 3))
+    if (!CRegStdDWORD(L"Software\\TortoiseGit\\GroupTaskbarIconsPerRepo", 3))
         return;
 
-    if (!CRegStdDWORD(_T("Software\\TortoiseGit\\GroupTaskbarIconsPerRepoOverlay"), TRUE))
+    if (!CRegStdDWORD(L"Software\\TortoiseGit\\GroupTaskbarIconsPerRepoOverlay", TRUE))
         return;
 
     std::wstring uuid;

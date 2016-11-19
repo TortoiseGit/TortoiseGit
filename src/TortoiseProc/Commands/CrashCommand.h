@@ -35,7 +35,7 @@ public:
 	 */
 	virtual bool			Execute()
 	{
-		crasher.Enable(!parser.HasKey(_T("nocustom")));
+		crasher.Enable(!parser.HasKey(L"nocustom"));
 		CMessageBox::Show(hwndExplorer, L"You are testing the crashhandler.\n<ct=0x0000FF>Do NOT send the crashreport!!!!</ct>", L"TortoiseGit", MB_ICONINFORMATION);
 		CrashProgram();
 		CMessageBox::Show(hwndExplorer, IDS_ERR_NOCOMMAND, IDS_APPNAME, MB_ICONERROR);

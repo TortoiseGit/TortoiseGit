@@ -54,9 +54,9 @@ CHwSMTP::CHwSMTP () :
 	m_bMustAuth ( TRUE )
 {
 	m_csPartBoundary = L"NextPart_" + GetGUID();
-	m_csMIMEContentType.Format(_T("multipart/mixed; boundary=%s"), (LPCTSTR)m_csPartBoundary);
-	m_csNoMIMEText = _T( "This is a multi-part message in MIME format." );
-	//m_csCharSet = _T("\r\n\tcharset=\"iso-8859-1\"\r\n");
+	m_csMIMEContentType.Format(L"multipart/mixed; boundary=%s", (LPCTSTR)m_csPartBoundary);
+	m_csNoMIMEText = L"This is a multi-part message in MIME format.";
+	//m_csCharSet = L"\r\n\tcharset=\"iso-8859-1\"\r\n";
 
 	hContext = nullptr;
 	hCreds = nullptr;
@@ -106,8 +106,7 @@ BOOL CHwSMTP::SendSpeedEmail
 	int start = 0;
 	while( start >= 0 )
 	{
-		CString one= To.Tokenize(_T(";"),start);
-		one=one.Trim();
+		CString one = To.Tokenize(L";", start).Trim();
 		if(one.IsEmpty())
 			continue;
 
@@ -135,7 +134,7 @@ BOOL CHwSMTP::SendSpeedEmail
 						);
 		if (status)
 		{
-			m_csLastError.Format(_T("DNS query failed %d"), status);
+			m_csLastError.Format(L"DNS query failed %d", status);
 			ret = false;
 			continue;
 		}
@@ -716,7 +715,7 @@ BOOL CHwSMTP::SendEmail (
 	m_csSmtpSrvHost = GET_SAFE_STRING ( lpszSmtpSrvHost );
 	if ( m_csSmtpSrvHost.GetLength() <= 0 )
 	{
-		m_csLastError.Format ( _T("Parameter Error!") );
+		m_csLastError = L"Parameter Error!";
 		return FALSE;
 	}
 	m_csUserName = GET_SAFE_STRING ( lpszUserName );
@@ -724,7 +723,7 @@ BOOL CHwSMTP::SendEmail (
 	m_bMustAuth = bMustAuth;
 	if ( m_bMustAuth && m_csUserName.GetLength() <= 0 )
 	{
-		m_csLastError.Format ( _T("Parameter Error!") );
+		m_csLastError = L"Parameter Error!";
 		return FALSE;
 	}
 
@@ -741,13 +740,13 @@ BOOL CHwSMTP::SendEmail (
 	m_nSmtpSrvPort = nSmtpSrvPort;
 
 	if ( lpszCharSet && lstrlen(lpszCharSet) > 0 )
-		m_csCharSet.Format ( _T("\r\n\tcharset=\"%s\"\r\n"), lpszCharSet );
+		m_csCharSet.Format(L"\r\n\tcharset=\"%s\"\r\n", lpszCharSet);
 
 	if	(
 			m_csAddrFrom.GetLength() <= 0 || m_csAddrTo.GetLength() <= 0
 		)
 	{
-		m_csLastError.Format ( _T("Parameter Error!") );
+		m_csLastError = L"Parameter Error!";
 		return FALSE;
 	}
 
@@ -756,14 +755,14 @@ BOOL CHwSMTP::SendEmail (
 		m_StrAryAttach.Append ( *pStrAryAttach );
 	}
 	if ( m_StrAryAttach.GetSize() < 1 )
-		m_csMIMEContentType.Format(_T("text/plain; %s"), (LPCTSTR)m_csCharSet);
+		m_csMIMEContentType.Format(L"text/plain; %s", (LPCTSTR)m_csCharSet);
 
 	// ´´½¨Socket
 	m_SendSock.Close();
 	if ( !m_SendSock.Create () )
 	{
 		//int nResult = GetLastError();
-		m_csLastError.Format ( _T("Create socket failed!") );
+		m_csLastError = L"Create socket failed!";
 		return FALSE;
 	}
 
@@ -781,7 +780,7 @@ BOOL CHwSMTP::SendEmail (
 
 	if ( !m_SendSock.Connect ( m_csSmtpSrvHost, m_nSmtpSrvPort ) )
 	{
-		m_csLastError.Format(_T("Connect to [%s] failed"), (LPCTSTR)m_csSmtpSrvHost);
+		m_csLastError.Format(L"Connect to [%s] failed", (LPCTSTR)m_csSmtpSrvHost);
 		return FALSE;
 	}
 
@@ -844,7 +843,7 @@ BOOL CHwSMTP::SendEmail (
 		if (CAppUtils::Git2CertificateCheck((git_cert*)&cert, 0, CUnicodeUtils::GetUTF8(m_csSmtpSrvHost), nullptr))
 		{
 			CertFreeCertificateContext(pRemoteCertContext);
-			m_csLastError = _T("Invalid certificate.");
+			m_csLastError = L"Invalid certificate.";
 			goto cleanup;
 		}
 
@@ -863,7 +862,7 @@ BOOL CHwSMTP::SendEmail (
 		SecureZeroMemory(pbIoBuffer, cbIoBufferLength);
 		if (pbIoBuffer == nullptr)
 		{
-			m_csLastError = _T("Could not allocate memory");
+			m_csLastError = L"Could not allocate memory";
 			goto cleanup;
 		}
 	}
@@ -925,16 +924,16 @@ BOOL CHwSMTP::GetResponse(LPCSTR lpszVerifyCode)
 	}
 	else
 		nRet = m_SendSock.Receive(szRecvBuf, sizeof(szRecvBuf));
-	//TRACE(_T("Received : %s\r\n"), szRecvBuf);
+	//TRACE(L"Received : %s\r\n", szRecvBuf);
 	if (nRet == 0 && m_iSecurityLevel == none || m_iSecurityLevel >= ssl && scRet != SEC_E_OK)
 	{
-		m_csLastError.Format ( _T("Receive TCP data failed") );
+		m_csLastError = L"Receive TCP data failed";
 		return FALSE;
 	}
 	memcpy ( szStatusCode, szRecvBuf, 3 );
 	if (strcmp(szStatusCode, lpszVerifyCode) != 0)
 	{
-		m_csLastError.Format(_T("Received invalid response: %s"), (LPCTSTR)CUnicodeUtils::GetUnicode(szRecvBuf));
+		m_csLastError.Format(L"Received invalid response: %s", (LPCTSTR)CUnicodeUtils::GetUnicode(szRecvBuf));
 		return FALSE;
 	}
 
@@ -946,7 +945,7 @@ BOOL CHwSMTP::SendBuffer(const char* buff, int size)
 		size=(int)strlen(buff);
 	if ( !m_bConnected )
 	{
-		m_csLastError.Format ( _T("Didn't connect") );
+		m_csLastError = L"Didn't connect";
 		return FALSE;
 	}
 
@@ -966,7 +965,7 @@ BOOL CHwSMTP::SendBuffer(const char* buff, int size)
 	}
 	else if (m_SendSock.Send ( buff, size ) != size)
 	{
-		m_csLastError.Format ( _T("Socket send data failed") );
+		m_csLastError = L"Socket send data failed";
 		return FALSE;
 	}
 
@@ -980,7 +979,7 @@ BOOL CHwSMTP::Send(const CString &str )
 
 BOOL CHwSMTP::Send(const CStringA &str)
 {
-	//TRACE(_T("Send: %s\r\n"), (LPCTSTR)CUnicodeUtils::GetUnicode(str));
+	//TRACE(L"Send: %s\r\n", (LPCTSTR)CUnicodeUtils::GetUnicode(str));
 	return SendBuffer(str, str.GetLength());
 }
 
@@ -1064,7 +1063,7 @@ BOOL CHwSMTP::auth()
 
 	if (!GetResponse("334"))
 	{
-		m_csLastError.Format ( _T("Authentication UserName failed") );
+		m_csLastError = L"Authentication UserName failed";
 		return FALSE;
 	}
 
@@ -1073,7 +1072,7 @@ BOOL CHwSMTP::auth()
 
 	if (!GetResponse("235"))
 	{
-		m_csLastError.Format ( _T("Authentication Password failed") );
+		m_csLastError = L"Authentication Password failed";
 		return FALSE;
 	}
 
@@ -1086,7 +1085,7 @@ BOOL CHwSMTP::SendHead()
 	CString addr;
 	CStringUtils::ParseEmailAddress(m_csAddrFrom, addr);
 
-	str.Format(_T("MAIL From: <%s>\r\n"), (LPCTSTR)addr);
+	str.Format(L"MAIL From: <%s>\r\n", (LPCTSTR)addr);
 	if (!Send(str))
 		return FALSE;
 
@@ -1096,14 +1095,13 @@ BOOL CHwSMTP::SendHead()
 	int start=0;
 	while(start>=0)
 	{
-		CString one=m_csAddrTo.Tokenize(_T(";"),start);
-		one=one.Trim();
+		CString one = m_csAddrTo.Tokenize(L";", start).Trim();
 		if(one.IsEmpty())
 			continue;
 
 		CStringUtils::ParseEmailAddress(one, addr);
 
-		str.Format(_T("RCPT TO: <%s>\r\n"), (LPCTSTR)addr);
+		str.Format(L"RCPT TO: <%s>\r\n", (LPCTSTR)addr);
 		if (!Send(str))
 			return FALSE;
 		if (!GetResponse("250"))
@@ -1121,59 +1119,58 @@ BOOL CHwSMTP::SendHead()
 BOOL CHwSMTP::SendSubject(const CString &hostname)
 {
 	CString csSubject;
-	csSubject += _T("Date: ");
+	csSubject += L"Date: ";
 	COleDateTime tNow = COleDateTime::GetCurrentTime();
 	if ( tNow > 1 )
 	{
-		csSubject += FormatDateTime (tNow, _T("%a, %d %b %y %H:%M:%S %Z"));
+		csSubject += FormatDateTime(tNow, L"%a, %d %b %y %H:%M:%S %Z");
 	}
-	csSubject += _T("\r\n");
-	csSubject.AppendFormat(_T("From: %s\r\n"), (LPCTSTR)m_csAddrFrom);
+	csSubject += L"\r\n";
+	csSubject.AppendFormat(L"From: %s\r\n", (LPCTSTR)m_csAddrFrom);
 
 	if (!m_StrCC.IsEmpty())
-		csSubject.AppendFormat(_T("CC: %s\r\n"), (LPCTSTR)m_StrCC);
+		csSubject.AppendFormat(L"CC: %s\r\n", (LPCTSTR)m_StrCC);
 
 	if(m_csSender.IsEmpty())
 		m_csSender =  this->m_csAddrFrom;
 
-	csSubject.AppendFormat(_T("Sender: %s\r\n"), (LPCTSTR)m_csSender);
+	csSubject.AppendFormat(L"Sender: %s\r\n", (LPCTSTR)m_csSender);
 
 	if(this->m_csToList.IsEmpty())
 		m_csToList = m_csReceiverName;
 
-	csSubject.AppendFormat(_T("To: %s\r\n"), (LPCTSTR)m_csToList);
+	csSubject.AppendFormat(L"To: %s\r\n", (LPCTSTR)m_csToList);
 
-	csSubject.AppendFormat(_T("Subject: %s\r\n"), (LPCTSTR)GetEncodedHeader(m_csSubject));
+	csSubject.AppendFormat(L"Subject: %s\r\n", (LPCTSTR)GetEncodedHeader(m_csSubject));
 
 	CString m_ListID(GetGUID());
 	if (m_ListID.IsEmpty())
 	{
-		m_csLastError = _T("Could not generate Message-ID");
+		m_csLastError = L"Could not generate Message-ID";
 		return FALSE;
 	}
-	csSubject.AppendFormat(_T("Message-ID: <%s@%s>\r\n"), (LPCTSTR)m_ListID, (LPCTSTR)hostname);
-	csSubject.AppendFormat(_T("X-Mailer: TortoiseGit\r\nMIME-Version: 1.0\r\nContent-Type: %s\r\n\r\n"), (LPCTSTR)m_csMIMEContentType);
+	csSubject.AppendFormat(L"Message-ID: <%s@%s>\r\n", (LPCTSTR)m_ListID, (LPCTSTR)hostname);
+	csSubject.AppendFormat(L"X-Mailer: TortoiseGit\r\nMIME-Version: 1.0\r\nContent-Type: %s\r\n\r\n", (LPCTSTR)m_csMIMEContentType);
 
 	return Send(csSubject);
 }
 
 BOOL CHwSMTP::SendBody()
 {
-	CString csBody, csTemp;
+	CString csBody;
 
 	if ( m_StrAryAttach.GetSize() > 0 )
 	{
-		csBody.AppendFormat(_T("%s\r\n\r\n"), (LPCTSTR)m_csNoMIMEText);
-		csBody.AppendFormat(_T("--%s\r\n"), (LPCTSTR)m_csPartBoundary);
-		csBody.AppendFormat(_T("Content-Type: text/plain\r\n%sContent-Transfer-Encoding: UTF-8\r\n\r\n"), m_csCharSet);
+		csBody.AppendFormat(L"%s\r\n\r\n", (LPCTSTR)m_csNoMIMEText);
+		csBody.AppendFormat(L"--%s\r\n", (LPCTSTR)m_csPartBoundary);
+		csBody.AppendFormat(L"Content-Type: text/plain\r\n%sContent-Transfer-Encoding: UTF-8\r\n\r\n", m_csCharSet);
 	}
 
 	m_csBody.Replace(L"\n.\n", L"\n..\n");
 	m_csBody.Replace(L"\n.\r\n", L"\n..\r\n");
 
-	//csTemp.Format ( _T("%s\r\n"), m_csBody );
 	csBody += m_csBody;
-	csBody += _T("\r\n");
+	csBody += L"\r\n";
 
 	return Send(csBody);
 }
@@ -1200,15 +1197,16 @@ BOOL CHwSMTP::SendOnAttach(LPCTSTR lpszFileName)
 	CString csAttach;
 	CString csShortFileName = CPathUtils::GetFileNameFromPath(lpszFileName);
 
-	csAttach.AppendFormat(_T("--%s\r\n"), (LPCTSTR)m_csPartBoundary);
-	csAttach.AppendFormat(_T("Content-Type: application/octet-stream; file=%s\r\n"), (LPCTSTR)csShortFileName);
-	csAttach.AppendFormat(_T("Content-Transfer-Encoding: base64\r\n"));
-	csAttach.AppendFormat(_T("Content-Disposition: attachment; filename=%s\r\n\r\n"), (LPCTSTR)csShortFileName);
+	csAttach.AppendFormat(L"--%s\r\n", (LPCTSTR)m_csPartBoundary);
+	csAttach.AppendFormat(L"--%s\r\n", (LPCTSTR)m_csPartBoundary);
+	csAttach.AppendFormat(L"Content-Type: application/octet-stream; file=%s\r\n", (LPCTSTR)csShortFileName);
+	csAttach.AppendFormat(L"Content-Transfer-Encoding: base64\r\n");
+	csAttach.AppendFormat(L"Content-Disposition: attachment; filename=%s\r\n\r\n", (LPCTSTR)csShortFileName);
 
 	DWORD dwFileSize =  hwGetFileAttr(lpszFileName);
 	if ( dwFileSize > 5*1024*1024 )
 	{
-		m_csLastError.Format ( _T("File [%s] too big. File size is : %s"), lpszFileName, FormatBytes(dwFileSize) );
+		m_csLastError.Format(L"File [%s] too big. File size is : %s", lpszFileName, FormatBytes(dwFileSize));
 		return FALSE;
 	}
 	auto pBuf = std::make_unique<char[]>(dwFileSize + 1);
@@ -1224,17 +1222,17 @@ BOOL CHwSMTP::SendOnAttach(LPCTSTR lpszFileName)
 	{
 		if ( !file.Open ( lpszFileName, CFile::modeRead ) )
 		{
-			m_csLastError.Format ( _T("Open file [%s] failed"), lpszFileName );			
+			m_csLastError.Format(L"Open file [%s] failed", lpszFileName);
 			return FALSE;
 		}
 		UINT nFileLen = file.Read(pBuf.get(), dwFileSize);
 		filedata = EncodeBase64(pBuf.get(), nFileLen);
-		filedata += _T("\r\n\r\n");
+		filedata += L"\r\n\r\n";
 	}
 	catch (CFileException *e)
 	{
 		e->Delete();
-		m_csLastError.Format ( _T("Read file [%s] failed"), lpszFileName );
+		m_csLastError.Format(L"Read file [%s] failed", lpszFileName);
 		return FALSE;
 	}
 
@@ -1254,28 +1252,26 @@ CString FormatDateTime (COleDateTime &DateTime, LPCTSTR /*pFormat*/)
 {
 	// If null, return empty string
 	if ( DateTime.GetStatus() == COleDateTime::null || DateTime.GetStatus() == COleDateTime::invalid )
-		return _T("");
+		return L"";
 
 	UDATE ud;
 	if (S_OK != VarUdateFromDate(DateTime.m_dt, 0, &ud))
 	{
-		return _T("");
+		return L"";
 	}
 
-	TCHAR *weeks[]={_T("Sun"),_T("Mon"),_T("Tue"),_T("Wen"),_T("Thu"),_T("Fri"),_T("Sat")};
-	TCHAR *month[]={_T("Jan"),_T("Feb"),_T("Mar"),_T("Apr"),
-					_T("May"),_T("Jun"),_T("Jul"),_T("Aug"),
-					_T("Sep"),_T("Oct"),_T("Nov"),_T("Dec")};
+	static TCHAR* weeks[] = { L"Sun", L"Mon", L"Tue", L"Wen", L"Thu", L"Fri", L"Sat" };
+	static TCHAR* month[] = { L"Jan", L"Feb", L"Mar", L"Apr", L"May", L"Jun", L"Jul", L"Aug", L"Sep", L"Oct", L"Nov", L"Dec" };
 
 	TIME_ZONE_INFORMATION stTimeZone;
 	GetTimeZoneInformation(&stTimeZone);
 
 	CString strDate;
-	strDate.Format(_T("%s, %d %s %d %02d:%02d:%02d %c%04d")
+	strDate.Format(L"%s, %d %s %d %02d:%02d:%02d %c%04d"
 		,weeks[ud.st.wDayOfWeek],
 		ud.st.wDay,month[ud.st.wMonth-1],ud.st.wYear,ud.st.wHour,
 		ud.st.wMinute,ud.st.wSecond,
-		stTimeZone.Bias>0?_T('-'):_T('+'),
+		stTimeZone.Bias > 0 ? L'-' : L'+',
 		abs(stTimeZone.Bias*10/6)
 		);
 	return strDate;
@@ -1329,20 +1325,20 @@ CString FormatBytes ( double fBytesNum, BOOL bShowUnit/*=TRUE*/, int nFlag/*=0*/
 	if ( nFlag == 0 )
 	{
 		if ( fBytesNum >= 1024.0 && fBytesNum < 1024.0*1024.0 )
-			csRes.Format ( _T("%.2f%s"), fBytesNum / 1024.0, bShowUnit?_T(" K"):_T("") );
+			csRes.Format(L"%.2f%s", fBytesNum / 1024.0, bShowUnit ? L" K" : L"");
 		else if ( fBytesNum >= 1024.0*1024.0 && fBytesNum < 1024.0*1024.0*1024.0 )
-			csRes.Format ( _T("%.2f%s"), fBytesNum / (1024.0*1024.0), bShowUnit?_T(" M"):_T("") );
+			csRes.Format(L"%.2f%s", fBytesNum / (1024.0 * 1024.0), bShowUnit ? L" M" : L"");
 		else if ( fBytesNum >= 1024.0*1024.0*1024.0 )
-			csRes.Format ( _T("%.2f%s"), fBytesNum / (1024.0*1024.0*1024.0), bShowUnit?_T(" G"):_T("") );
+			csRes.Format(L"%.2f%s", fBytesNum / (1024.0 * 1024.0 * 1024.0), bShowUnit?L" G":L"");
 		else
-			csRes.Format ( _T("%.2f%s"), fBytesNum, bShowUnit?_T(" B"):_T("") );
+			csRes.Format(L"%.2f%s", fBytesNum, bShowUnit ? L" B" : L"");
 	}
 	else if ( nFlag == 1 )
-		csRes.Format ( _T("%.2f%s"), fBytesNum / 1024.0, bShowUnit?_T(" K"):_T("") );
+		csRes.Format(L"%.2f%s", fBytesNum / 1024.0, bShowUnit ? L" K" : L"");
 	else if ( nFlag == 2 )
-		csRes.Format ( _T("%.2f%s"), fBytesNum / (1024.0*1024.0), bShowUnit?_T(" M"):_T("") );
+		csRes.Format(L"%.2f%s", fBytesNum / (1024.0 * 1024.0), bShowUnit ? L" M" : L"");
 	else if ( nFlag == 3 )
-		csRes.Format ( _T("%.2f%s"), fBytesNum / (1024.0*1024.0*1024.0), bShowUnit?_T(" G"):_T("") );
+		csRes.Format(L"%.2f%s", fBytesNum / (1024.0 * 1024.0 * 1024.0), bShowUnit ? L" G" : L"");
 
 	return csRes;
 }

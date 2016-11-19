@@ -132,23 +132,23 @@ END_MESSAGE_MAP()
 static bool RunUAC()
 {
 	CString sCmd;
-	sCmd.Format(_T("/command:settings /page:gitcredential /path:\"%s\""), (LPCTSTR)g_Git.m_CurrentDir);
+	sCmd.Format(L"/command:settings /page:gitcredential /path:\"%s\"", (LPCTSTR)g_Git.m_CurrentDir);
 	return CAppUtils::RunTortoiseGitProc(sCmd, true);
 }
 
 static CString GetWinstorePath()
 {
 	TCHAR winstorebuf[MAX_PATH] = {0};
-	ExpandEnvironmentStrings(_T("%AppData%\\GitCredStore\\git-credential-winstore.exe"), winstorebuf, MAX_PATH);
+	ExpandEnvironmentStrings(L"%AppData%\\GitCredStore\\git-credential-winstore.exe", winstorebuf, MAX_PATH);
 	CString winstore;
-	winstore.Format(_T("!'%s'"), winstorebuf);
+	winstore.Format(L"!'%s'", winstorebuf);
 	return winstore;
 }
 
 static bool WincredExists()
 {
 	CString path = CGit::ms_MsysGitRootDir;
-	path.Append(_T("libexec\\git-core\\git-credential-wincred.exe"));
+	path.Append(L"libexec\\git-core\\git-credential-wincred.exe");
 	return !!PathFileExists(path);
 }
 
@@ -160,7 +160,7 @@ static bool WinstoreExists()
 static bool GCMExists()
 {
 	CString path = CGit::ms_MsysGitRootDir;
-	path.Append(_T("libexec\\git-core\\git-credential-manager.exe"));
+	path.Append(L"libexec\\git-core\\git-credential-manager.exe");
 	return !!PathFileExists(path);
 }
 
@@ -206,11 +206,11 @@ BOOL CSettingGitCredential::OnInitDialog()
 	m_ctrlConfigType.SetCurSel(0);
 
 	if (WincredExists())
-		((CComboBox*) GetDlgItem(IDC_COMBO_HELPER))->AddString(_T("wincred"));
+		((CComboBox*) GetDlgItem(IDC_COMBO_HELPER))->AddString(L"wincred");
 	if (WinstoreExists())
 		((CComboBox*) GetDlgItem(IDC_COMBO_HELPER))->AddString(GetWinstorePath());
 	if (GCMExists())
-		((CComboBox*)GetDlgItem(IDC_COMBO_HELPER))->AddString(_T("manager"));
+		((CComboBox*)GetDlgItem(IDC_COMBO_HELPER))->AddString(L"manager");
 
 	SimpleCredentialType::Init();
 	AddSimpleCredential(SimpleCredentialType::Advanced, CString(MAKEINTRESOURCE(IDS_ADVANCED)));
@@ -251,10 +251,10 @@ void CSettingGitCredential::OnBnClickedButtonAdd()
 
 	m_ChangedMask = CREDENTIAL_URL | CREDENTIAL_HELPER | CREDENTIAL_USERNAME | CREDENTIAL_USEHTTPPATH;
 	int sel = m_ctrlConfigType.GetCurSel();
-	CString prefix = sel == ConfigType::System ? _T("S") : sel == ConfigType::Global ? _T("G") : _T("L");
+	CString prefix = sel == ConfigType::System ? L"S" : sel == ConfigType::Global ? L"G" : L"L";
 	CString text;
 	if (!m_strUrl.IsEmpty())
-		text.Format(_T("%s:%s"), (LPCTSTR)prefix, (LPCTSTR)m_strUrl);
+		text.Format(L"%s:%s", (LPCTSTR)prefix, (LPCTSTR)m_strUrl);
 	else
 		text = prefix;
 	if (IsUrlExist(text))
@@ -327,14 +327,14 @@ void CSettingGitCredential::OnLbnSelchangeListUrl()
 
 	CString text;
 	m_ctrlUrlList.GetText(index, text);
-	int pos = text.Find(_T(':'));
+	int pos = text.Find(L':');
 	CString prefix = pos >= 0 ? text.Left(pos) : text.Left(1);
 	m_ctrlConfigType.SetCurSel((prefix == L"S" || prefix == L"P") ? ConfigType::System : prefix == L"X" ? ConfigType::Global : prefix == L"G" ? ConfigType::Global : ConfigType::Local);
-	m_strUrl = pos >= 0 ? text.Mid(pos + 1) : _T("");
+	m_strUrl = pos >= 0 ? text.Mid(pos + 1) : L"";
 
-	m_strHelper = Load(_T("helper"));
-	m_strUsername = Load(_T("username"));
-	m_bUseHttpPath = Load(_T("useHttpPath")) == _T("true") ? TRUE : FALSE;
+	m_strHelper = Load(L"helper");
+	m_strUsername = Load(L"username");
+	m_bUseHttpPath = Load(L"useHttpPath") == L"true" ? TRUE : FALSE;
 
 	m_ChangedMask = 0;
 
@@ -379,19 +379,18 @@ void CSettingGitCredential::OnBnClickedCheckUsehttppath()
 
 static int GetCredentialDefaultUrlCallback(const git_config_entry *entry, void *payload)
 {
-	CString display = ConfigLevelToKey(entry->level);
-	((STRING_VECTOR *)payload)->push_back(display);
+	((STRING_VECTOR*)payload)->push_back(ConfigLevelToKey(entry->level));
 	return 0;
 }
 
 static int GetCredentialUrlCallback(const git_config_entry *entry, void *payload)
 {
 	CString name = CUnicodeUtils::GetUnicode(entry->name);
-	int pos1 = name.Find(_T('.'));
-	int pos2 = name.ReverseFind(_T('.'));
+	int pos1 = name.Find(L'.');
+	int pos2 = name.ReverseFind(L'.');
 	CString url = name.Mid(pos1 + 1, pos2 - pos1 - 1);
 	CString display;
-	display.Format(_T("%s:%s"), (LPCTSTR)ConfigLevelToKey(entry->level), url);
+	display.Format(L"%s:%s", (LPCTSTR)ConfigLevelToKey(entry->level), url);
 	((STRING_VECTOR *)payload)->push_back(display);
 	return 0;
 }
@@ -408,7 +407,7 @@ static int GetCredentialAnyEntryCallback(const git_config_entry *entry, void *pa
 	CString name = CUnicodeUtils::GetUnicode(entry->name);
 	CString value = CUnicodeUtils::GetUnicode(entry->value);
 	CString text;
-	text.Format(_T("%s\n%s\n%s"), (LPCTSTR)ConfigLevelToKey(entry->level), (LPCTSTR)name, (LPCTSTR)value);
+	text.Format(L"%s\n%s\n%s", (LPCTSTR)ConfigLevelToKey(entry->level), (LPCTSTR)name, (LPCTSTR)value);
 	((STRING_VECTOR *)payload)->push_back(text);
 	return 0;
 }
@@ -458,19 +457,19 @@ void CSettingGitCredential::LoadList()
 	}
 
 	int pos = 0;
-	CString prefix = anyList[0].Tokenize(_T("\n"), pos);
-	CString key = anyList[0].Tokenize(_T("\n"), pos);
-	CString value = anyList[0].Tokenize(_T("\n"), pos);
-	if (key != _T("credential.helper"))
+	CString prefix = anyList[0].Tokenize(L"\n", pos);
+	CString key = anyList[0].Tokenize(L"\n", pos);
+	CString value = anyList[0].Tokenize(L"\n", pos);
+	if (key != L"credential.helper")
 	{
 		m_ctrlSimpleCredential.SetCurSel(SimpleCredentialType::Advanced);
 		return;
 	}
 
 	CString winstore = GetWinstorePath();
-	if (prefix == _T("L"))
+	if (prefix == L"L")
 	{
-		if (value == _T("wincred"))
+		if (value == L"wincred")
 		{
 			m_ctrlSimpleCredential.SetCurSel(SimpleCredentialType::LocalWincred);
 			return;
@@ -480,16 +479,16 @@ void CSettingGitCredential::LoadList()
 			m_ctrlSimpleCredential.SetCurSel(SimpleCredentialType::LocalWinstore);
 			return;
 		}
-		else if (value == _T("manager"))
+		else if (value == L"manager")
 		{
 			m_ctrlSimpleCredential.SetCurSel(SimpleCredentialType::LocalGCM);
 			return;
 		}
 	}
 
-	if (prefix == _T("G") || prefix == _T("X"))
+	if (prefix == L"G" || prefix == L"X")
 	{
-		if (value == _T("wincred"))
+		if (value == L"wincred")
 		{
 			m_ctrlSimpleCredential.SetCurSel(SimpleCredentialType::GlobalWincred);
 			return;
@@ -499,7 +498,7 @@ void CSettingGitCredential::LoadList()
 			m_ctrlSimpleCredential.SetCurSel(SimpleCredentialType::GlobalWinstore);
 			return;
 		}
-		else if (value == _T("manager"))
+		else if (value == L"manager")
 		{
 			m_ctrlSimpleCredential.SetCurSel(SimpleCredentialType::GlobalGCM);
 			return;
@@ -508,12 +507,12 @@ void CSettingGitCredential::LoadList()
 
 	if (prefix == L"S" || prefix == L"P")
 	{
-		if (value == _T("wincred"))
+		if (value == L"wincred")
 		{
 			m_ctrlSimpleCredential.SetCurSel(SimpleCredentialType::SystemWincred);
 			return;
 		}
-		else if (value == _T("manager"))
+		else if (value == L"manager")
 		{
 			m_ctrlSimpleCredential.SetCurSel(SimpleCredentialType::SystemGCM);
 			return;
@@ -528,9 +527,9 @@ CString CSettingGitCredential::Load(CString key)
 	CString cmd;
 
 	if (m_strUrl.IsEmpty())
-		cmd.Format(_T("credential.%s"), (LPCTSTR)key);
+		cmd.Format(L"credential.%s", (LPCTSTR)key);
 	else
-		cmd.Format(_T("credential.%s.%s"), (LPCTSTR)m_strUrl, (LPCTSTR)key);
+		cmd.Format(L"credential.%s.%s", (LPCTSTR)m_strUrl, (LPCTSTR)key);
 
 	CAutoConfig config(true);
 	int sel = m_ctrlConfigType.GetCurSel();
@@ -559,9 +558,9 @@ void CSettingGitCredential::Save(CString key, CString value)
 	CString cmd, out;
 
 	if (m_strUrl.IsEmpty())
-		cmd.Format(_T("credential.%s"), (LPCTSTR)key);
+		cmd.Format(L"credential.%s", (LPCTSTR)key);
 	else
-		cmd.Format(_T("credential.%s.%s"), (LPCTSTR)m_strUrl, (LPCTSTR)key);
+		cmd.Format(L"credential.%s.%s", (LPCTSTR)m_strUrl, (LPCTSTR)key);
 
 	int sel = m_ctrlConfigType.GetCurSel();
 	CONFIG_TYPE configLevel = sel == ConfigType::System ? CONFIG_SYSTEM : sel == ConfigType::Global ? CONFIG_GLOBAL : CONFIG_LOCAL;
@@ -592,21 +591,21 @@ int CSettingGitCredential::DeleteOtherKeys(int type)
 {
 	CString match;
 	if (type == SimpleCredentialType::LocalWincred)
-		match = _T("L\ncredential.helper\nwincred");
+		match = L"L\ncredential.helper\nwincred";
 	else if (type == SimpleCredentialType::LocalWinstore)
-		match = _T("L\ncredential.helper\n") + GetWinstorePath();
+		match = L"L\ncredential.helper\n" + GetWinstorePath();
 	else if (type == SimpleCredentialType::LocalGCM)
-		match = _T("L\ncredential.helper\nmanager");
+		match = L"L\ncredential.helper\nmanager";
 	else if (type == SimpleCredentialType::GlobalWincred)
-		match = _T("G\ncredential.helper\nwincred");
+		match = L"G\ncredential.helper\nwincred";
 	else if (type == SimpleCredentialType::GlobalWinstore)
-		match = _T("G\ncredential.helper\n") + GetWinstorePath();
+		match = L"G\ncredential.helper\n" + GetWinstorePath();
 	else if (type == SimpleCredentialType::GlobalGCM)
-		match = _T("G\ncredential.helper\nmanager");
+		match = L"G\ncredential.helper\nmanager";
 	else if (type == SimpleCredentialType::SystemWincred)
-		match = _T("S\ncredential.helper\nwincred");
+		match = L"S\ncredential.helper\nwincred";
 	else if (type == SimpleCredentialType::SystemGCM)
-		match = _T("S\ncredential.helper\nmanager");
+		match = L"S\ncredential.helper\nmanager";
 
 	CAutoConfig config(true);
 	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitLocalConfig()), GIT_CONFIG_LEVEL_LOCAL, FALSE);
@@ -619,7 +618,7 @@ int CSettingGitCredential::DeleteOtherKeys(int type)
 	for (size_t i = 0; i < list.size(); ++i)
 	{
 		int pos = 0;
-		CString prefix = list[i].Tokenize(_T("\n"), pos);
+		CString prefix = list[i].Tokenize(L"\n", pos);
 		if ((prefix == L"S" || prefix == L"P") && !CAppUtils::IsAdminLogin())
 		{
 			RunUAC();
@@ -637,13 +636,13 @@ int CSettingGitCredential::DeleteOtherKeys(int type)
 		if (list[i] != match)
 		{
 			int pos = 0;
-			CString prefix = list[i].Tokenize(_T("\n"), pos);
-			CString key = list[i].Tokenize(_T("\n"), pos);
+			CString prefix = list[i].Tokenize(L"\n", pos);
+			CString key = list[i].Tokenize(L"\n", pos);
 			CONFIG_TYPE configLevel = (prefix == L"S" || prefix == L"P") ? CONFIG_SYSTEM : prefix == L"G" || prefix == L"X" ? CONFIG_GLOBAL : CONFIG_LOCAL;
 			if (g_Git.UnsetConfigValue(key, configLevel))
 			{
 				CString msg;
-				msg.Format(IDS_PROC_SAVECONFIGFAILED, (LPCTSTR)key, _T(""));
+				msg.Format(IDS_PROC_SAVECONFIGFAILED, (LPCTSTR)key, L"");
 				CMessageBox::Show(GetSafeHwnd(), msg, L"TortoiseGit", MB_OK | MB_ICONERROR);
 				result = 1;
 				break;
@@ -662,7 +661,7 @@ bool CSettingGitCredential::SaveSimpleCredential(int type)
 	if (type == SimpleCredentialType::LocalWincred)
 	{
 		configLevel = CONFIG_LOCAL;
-		value = _T("wincred");
+		value = L"wincred";
 	}
 	else if (type == SimpleCredentialType::LocalWinstore)
 	{
@@ -672,12 +671,12 @@ bool CSettingGitCredential::SaveSimpleCredential(int type)
 	else if (type == SimpleCredentialType::LocalGCM)
 	{
 		configLevel = CONFIG_LOCAL;
-		value = _T("manager");
+		value = L"manager";
 	}
 	else if (type == SimpleCredentialType::GlobalWincred)
 	{
 		configLevel = CONFIG_GLOBAL;
-		value = _T("wincred");
+		value = L"wincred";
 	}
 	else if (type == SimpleCredentialType::GlobalWinstore)
 	{
@@ -687,17 +686,17 @@ bool CSettingGitCredential::SaveSimpleCredential(int type)
 	else if (type == SimpleCredentialType::GlobalGCM)
 	{
 		configLevel = CONFIG_GLOBAL;
-		value = _T("manager");
+		value = L"manager";
 	}
 	else if (type == SimpleCredentialType::SystemWincred)
 	{
 		configLevel = CONFIG_SYSTEM;
-		value = _T("wincred");
+		value = L"wincred";
 	}
 	else if (type == SimpleCredentialType::SystemGCM)
 	{
 		configLevel = CONFIG_SYSTEM;
-		value = _T("manager");
+		value = L"manager";
 	}
 	else
 		return true;
@@ -706,10 +705,10 @@ bool CSettingGitCredential::SaveSimpleCredential(int type)
 	// TODO: switch to libgit2
 	bool old = g_Git.m_IsUseGitDLL;
 	g_Git.m_IsUseGitDLL = false;
-	if (g_Git.SetConfigValue(_T("credential.helper"), value, configLevel))
+	if (g_Git.SetConfigValue(L"credential.helper", value, configLevel))
 	{
 		CString msg;
-		msg.Format(IDS_PROC_SAVECONFIGFAILED, _T("credential.helper"), (LPCTSTR)value);
+		msg.Format(IDS_PROC_SAVECONFIGFAILED, L"credential.helper", (LPCTSTR)value);
 		CMessageBox::Show(GetSafeHwnd(), msg, L"TortoiseGit", MB_OK | MB_ICONERROR);
 		return false;
 	}
@@ -768,14 +767,14 @@ BOOL CSettingGitCredential::OnApply()
 		m_strUrl.Replace(L'\\', L'/');
 		m_strHelper.Replace(L'\\', L'/');
 		
-		Save(_T("helper"), m_strHelper);
+		Save(L"helper", m_strHelper);
 		m_ChangedMask &= ~CREDENTIAL_HELPER;
 		
 		sel = m_ctrlConfigType.GetCurSel();
-		CString prefix = sel == ConfigType::System ? _T("S") : sel == ConfigType::Global ? _T("G") : _T("L");
+		CString prefix = sel == ConfigType::System ? L"S" : sel == ConfigType::Global ? L"G" : L"L";
 		CString text;
 		if (!m_strUrl.IsEmpty())
-			text.Format(_T("%s:%s"), (LPCTSTR)prefix, (LPCTSTR)m_strUrl);
+			text.Format(L"%s:%s", (LPCTSTR)prefix, (LPCTSTR)m_strUrl);
 		else
 			text = prefix;
 		int urlIndex = m_ctrlUrlList.AddString(text);
@@ -786,14 +785,14 @@ BOOL CSettingGitCredential::OnApply()
 	if (m_ChangedMask & CREDENTIAL_HELPER)
 	{
 		m_strHelper.Replace(L'\\', L'/');
-		Save(_T("helper"), m_strHelper);
+		Save(L"helper", m_strHelper);
 	}
 
 	if (m_ChangedMask & CREDENTIAL_USERNAME)
-		Save(_T("username"), m_strUsername);
+		Save(L"username", m_strUsername);
 
 	if (m_ChangedMask & CREDENTIAL_USEHTTPPATH)
-		Save(_T("useHttpPath"), m_bUseHttpPath ? _T("true") : _T(""));
+		Save(L"useHttpPath", m_bUseHttpPath ? L"true" : L"");
 
 	SetModified(FALSE);
 
@@ -813,20 +812,20 @@ void CSettingGitCredential::OnBnClickedButtonRemove()
 		if (CMessageBox::Show(GetSafeHwnd(), msg, L"TortoiseGit", MB_YESNO | MB_ICONQUESTION) == IDYES)
 		{
 			CAutoConfig config(true);
-			int pos = str.Find(_T(':'));
+			int pos = str.Find(L':');
 			CString prefix = pos >= 0 ? str.Left(pos) : str;
-			CString url = pos >= 0 ? str.Mid(pos + 1) : _T("");
+			CString url = pos >= 0 ? str.Mid(pos + 1) : L"";
 			CONFIG_TYPE configLevel = CONFIG_LOCAL;
 			switch (prefix[0])
 			{
-			case _T('L'):
+			case L'L':
 				{
 				configLevel = CONFIG_LOCAL;
 				git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitLocalConfig()), GIT_CONFIG_LEVEL_LOCAL, FALSE);
 				break;
 				}
-			case _T('G'):
-			case _T('X'):
+			case L'G':
+			case L'X':
 				{
 				configLevel = CONFIG_GLOBAL;
 				git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitGlobalConfig()), GIT_CONFIG_LEVEL_GLOBAL, FALSE);
@@ -834,7 +833,7 @@ void CSettingGitCredential::OnBnClickedButtonRemove()
 				break;
 				}
 			case L'P':
-			case _T('S'):
+			case L'S':
 				{
 				if (!CAppUtils::IsAdminLogin())
 				{

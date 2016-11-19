@@ -27,7 +27,7 @@ bool DaemonCommand::Execute()
 {
 	if (CMessageBox::ShowCheck(hwndExplorer, IDS_DAEMON_SECURITY_WARN, IDS_APPNAME, 2, IDI_EXCLAMATION, IDS_PROCEEDBUTTON, IDS_ABORTBUTTON, NULL, L"DaemonNoSecurityWarning", IDS_MSGBOX_DONOTSHOWAGAIN) == 2)
 	{
-		CMessageBox::RemoveRegistryKey(_T("DaemonNoSecurityWarning")); // only store answer if it is "Proceed"
+		CMessageBox::RemoveRegistryKey(L"DaemonNoSecurityWarning"); // only store answer if it is "Proceed"
 		return false;
 	}
 
@@ -64,9 +64,9 @@ bool DaemonCommand::Execute()
 		if (ptr->ai_family == AF_INET6)
 		{
 			if (CStringUtils::StartsWith(ip, L"fe80:")) // strip % interface number at the end
-				ip = ip.Left(ip.Find(_T('%')));
-			ip = _T('[') + ip; // IPv6 addresses needs to be enclosed within braces
-			ip += _T(']');
+				ip = ip.Left(ip.Find(L'%'));
+			ip = L'[' + ip; // IPv6 addresses needs to be enclosed within braces
+			ip += L']';
 		}
 		ips.push_back(ip);
 	}
@@ -79,18 +79,18 @@ bool DaemonCommand::Execute()
 		basePath += L"\\.";
 
 	CString cmd;
-	cmd.Format(_T("git.exe daemon --verbose --export-all --base-path=\"%s\""), (LPCTSTR)basePath);
+	cmd.Format(L"git.exe daemon --verbose --export-all --base-path=\"%s\"", (LPCTSTR)basePath);
 	CProgressDlg progDlg;
 	progDlg.m_GitCmd = cmd;
 	if (ips.empty())
-		progDlg.m_PreText = _T("git://localhost/");
+		progDlg.m_PreText = L"git://localhost/";
 	else
 	{
 		for (const auto& ip : ips)
 		{
-			progDlg.m_PreText += _T("git://");
+			progDlg.m_PreText += L"git://";
 			progDlg.m_PreText += ip;
-			progDlg.m_PreText += _T("/\n");
+			progDlg.m_PreText += L"/\n";
 		}
 	}
 	progDlg.DoModal();

@@ -35,7 +35,7 @@
 // Global Variables:
 HINSTANCE hInst;								// current instance
 
-const TCHAR g_Promptphrase[] = _T("Enter your OpenSSH passphrase:");
+const TCHAR g_Promptphrase[] = L"Enter your OpenSSH passphrase:";
 const TCHAR* g_Prompt = g_Promptphrase;
 
 TCHAR g_PassWord[MAX_LOADSTRING];
@@ -52,7 +52,7 @@ int APIENTRY _tWinMain(HINSTANCE	/*hInstance*/,
 
 	InitCommonControls();
 
-	size_t cmdlineLen = _tcslen(lpCmdLine);
+	size_t cmdlineLen = wcslen(lpCmdLine);
 	if (lpCmdLine[0] == '"' && cmdlineLen > 1 && lpCmdLine[cmdlineLen - 1] == '"')
 	{
 		lpCmdLine[cmdlineLen - 1] = L'\0';
@@ -91,7 +91,7 @@ void MarkWindowAsUnpinnable(HWND hWnd)
 {
 	typedef HRESULT (WINAPI *SHGPSFW) (HWND hwnd,REFIID riid,void** ppv);
 
-	HMODULE hShell = AtlLoadSystemLibraryUsingFullPath(_T("Shell32.dll"));
+	HMODULE hShell = AtlLoadSystemLibraryUsingFullPath(L"Shell32.dll");
 
 	if (hShell) {
 		SHGPSFW pfnSHGPSFW = (SHGPSFW)::GetProcAddress(hShell, "SHGetPropertyStoreForWindow");

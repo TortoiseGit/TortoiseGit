@@ -92,7 +92,7 @@ BOOL CSubmoduleAddDlg::OnInitDialog()
 	AdjustControlSize(IDC_FORCE);
 	AdjustControlSize(IDC_PUTTYKEY_AUTOLOAD);
 
-	EnableSaveRestore(_T("SubmoduleAddDlg"));
+	EnableSaveRestore(L"SubmoduleAddDlg");
 
 	CString sWindowTitle;
 	GetWindowText(sWindowTitle);
@@ -102,13 +102,13 @@ BOOL CSubmoduleAddDlg::OnInitDialog()
 	m_Repository.SetCaseSensitive(TRUE);
 	m_PathCtrl.SetPathHistory(true);
 
-	m_Repository.LoadHistory(_T("Software\\TortoiseGit\\History\\SubModuleRepoURLS"), _T("url"));
-	m_PathCtrl.LoadHistory(_T("Software\\TortoiseGit\\History\\SubModulePath"), _T("url"));
+	m_Repository.LoadHistory(L"Software\\TortoiseGit\\History\\SubModuleRepoURLS", L"url");
+	m_PathCtrl.LoadHistory(L"Software\\TortoiseGit\\History\\SubModulePath", L"url");
 	m_PathCtrl.SetWindowText(m_strPath);
 	m_Repository.SetCurSel(0);
 
 	m_PuttyKeyCombo.SetPathHistory(TRUE);
-	m_PuttyKeyCombo.LoadHistory(_T("Software\\TortoiseGit\\History\\puttykey"), _T("key"));
+	m_PuttyKeyCombo.LoadHistory(L"Software\\TortoiseGit\\History\\puttykey", L"key");
 	m_PuttyKeyCombo.SetCurSel(0);
 
 	GetDlgItem(IDC_PUTTYKEY_AUTOLOAD)->EnableWindow(CAppUtils::IsSSHPutty());

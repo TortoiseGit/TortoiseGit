@@ -76,7 +76,7 @@ void EnsureGitLibrary(bool bCreate /* = true*/)
             PathCanonicalize(buf, (LPCTSTR)appDir);
             appDir = buf;
         }
-        path.Format(_T("%s%s,-%d"), (LPCTSTR)appDir, _T("TortoiseGitProc.exe"), SysInfo::Instance().IsWin10() ? IDI_LIBRARY_WIN10 : IDI_LIBRARY);
+        path.Format(L"%s%s,-%d", (LPCTSTR)appDir, L"TortoiseGitProc.exe", SysInfo::Instance().IsWin10() ? IDI_LIBRARY_WIN10 : IDI_LIBRARY);
         pLibrary->SetIcon((LPCTSTR)path);
         pLibrary->Commit();
     }

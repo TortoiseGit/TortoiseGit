@@ -33,16 +33,16 @@ TEST(CGit, RunSet)
 {
 	CString output;
 	CGit cgit;
-	ASSERT_EQ(0, cgit.Run(_T("cmd /c set"), &output, CP_UTF8));
+	ASSERT_EQ(0, cgit.Run(L"cmd /c set", &output, CP_UTF8));
 	ASSERT_FALSE(output.IsEmpty());
-	ASSERT_TRUE(output.Find(_T("windir"))); // should be there on any MS OS ;)
+	ASSERT_TRUE(output.Find(L"windir")); // should be there on any MS OS ;)
 }
 
 TEST(CGit, RunGit)
 {
 	CString output;
 	CGit cgit;
-	ASSERT_EQ(0, cgit.Run(_T("git --version"), &output, CP_UTF8));
+	ASSERT_EQ(0, cgit.Run(L"git --version", &output, CP_UTF8));
 	ASSERT_FALSE(output.IsEmpty());
 }
 
@@ -71,12 +71,12 @@ TEST(CGit, RunGit_Error)
 	cgit.m_CurrentDir = tempdir.GetTempDir();
 	
 	CString output;
-	EXPECT_NE(0, cgit.Run(_T("git-not-found.exe"), &output, CP_UTF8)); // Git for Windows returns 2, cygwin-hack returns 127
+	EXPECT_NE(0, cgit.Run(L"git-not-found.exe", &output, CP_UTF8)); // Git for Windows returns 2, cygwin-hack returns 127
 	//EXPECT_TRUE(output.IsEmpty()); with cygwin-hack we get an error message from sh.exe
 
 	output.Empty();
-	EXPECT_EQ(128, cgit.Run(_T("git.exe add file.txt"), &output, CP_UTF8));
-	EXPECT_TRUE(output.Find(_T("fatal: Not a git repository (or any")) == 0);
+	EXPECT_EQ(128, cgit.Run(L"git.exe add file.txt", &output, CP_UTF8));
+	EXPECT_TRUE(output.Find(L"fatal: Not a git repository (or any") == 0);
 }
 
 TEST_P(CBasicGitWithTestRepoBareFixture, RunGit_AbsolutePath)
@@ -84,34 +84,34 @@ TEST_P(CBasicGitWithTestRepoBareFixture, RunGit_AbsolutePath)
 	CAutoTempDir tempdir;
 
 	CString output;
-	EXPECT_EQ(0, m_Git.Run(_T("git archive -o ") + tempdir.GetTempDir() + _T("\\export.zip HEAD"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git archive -o " + tempdir.GetTempDir() + L"\\export.zip HEAD", &output, CP_UTF8));
 	EXPECT_TRUE(output.IsEmpty());
 
-	EXPECT_TRUE(PathFileExists(tempdir.GetTempDir() + _T("\\export.zip")));
+	EXPECT_TRUE(PathFileExists(tempdir.GetTempDir() + L"\\export.zip"));
 }
 
 TEST(CGit, StringAppend)
 {
 	CGit::StringAppend(nullptr, nullptr); // string may be null
-	CString string = _T("something");
+	CString string = L"something";
 	CGit::StringAppend(&string, nullptr, CP_UTF8, 0);
-	EXPECT_STREQ(_T("something"), string);
+	EXPECT_STREQ(L"something", string);
 	const BYTE somebytes[1] = { 0 };
 	CGit::StringAppend(&string, somebytes, CP_UTF8, 0);
-	EXPECT_STREQ(_T("something"), string);
+	EXPECT_STREQ(L"something", string);
 	CGit::StringAppend(&string, somebytes);
-	EXPECT_STREQ(_T("something"), string);
+	EXPECT_STREQ(L"something", string);
 	const BYTE moreBytesUTFEight[] = { 0x68, 0x65, 0x6C, 0x6C, 0xC3, 0xB6, 0x0A, 0x00 };
 	CGit::StringAppend(&string, moreBytesUTFEight, CP_UTF8, 3);
-	EXPECT_STREQ(_T("somethinghel"), string);
+	EXPECT_STREQ(L"somethinghel", string);
 	CGit::StringAppend(&string, moreBytesUTFEight + 3, CP_ACP, 1);
-	EXPECT_STREQ(_T("somethinghell"), string);
+	EXPECT_STREQ(L"somethinghell", string);
 	CGit::StringAppend(&string, moreBytesUTFEight);
-	EXPECT_STREQ(_T("somethinghellhellö\n"), string);
+	EXPECT_STREQ(L"somethinghellhellö\n", string);
 	CGit::StringAppend(&string, moreBytesUTFEight, CP_UTF8, sizeof(moreBytesUTFEight));
-	EXPECT_STREQ(_T("somethinghellhellö\nhellö\n\0"), string);
+	EXPECT_STREQ(L"somethinghellhellö\nhellö\n\0", string);
 	CGit::StringAppend(&string, moreBytesUTFEight, CP_UTF8, 3);
-	EXPECT_STREQ(_T("somethinghellhellö\nhellö\n\0hel"), string);
+	EXPECT_STREQ(L"somethinghellhellö\nhellö\n\0hel", string);
 }
 
 TEST(CGit, GetFileModifyTime)
@@ -190,103 +190,103 @@ TEST(CGit, LoadTextFile)
 TEST(CGit, IsBranchNameValid)
 {
 	CGit cgit;
-	EXPECT_TRUE(cgit.IsBranchNameValid(_T("master")));
-	EXPECT_TRUE(cgit.IsBranchNameValid(_T("def/master"))); 
-	EXPECT_FALSE(cgit.IsBranchNameValid(_T("-test")));
-	EXPECT_FALSE(cgit.IsBranchNameValid(_T("jfjf>ff")));
-	EXPECT_FALSE(cgit.IsBranchNameValid(_T("jf ff")));
-	EXPECT_FALSE(cgit.IsBranchNameValid(_T("jf~ff")));
+	EXPECT_TRUE(cgit.IsBranchNameValid(L"master"));
+	EXPECT_TRUE(cgit.IsBranchNameValid(L"def/master")); 
+	EXPECT_FALSE(cgit.IsBranchNameValid(L"-test"));
+	EXPECT_FALSE(cgit.IsBranchNameValid(L"jfjf>ff"));
+	EXPECT_FALSE(cgit.IsBranchNameValid(L"jf ff"));
+	EXPECT_FALSE(cgit.IsBranchNameValid(L"jf~ff"));
 }
 
 TEST(CGit, StripRefName)
 {
-	EXPECT_STREQ(_T("abc"), CGit::StripRefName(_T("abc")));
-	EXPECT_STREQ(_T("bcd"), CGit::StripRefName(_T("refs/bcd")));
-	EXPECT_STREQ(_T("cde"), CGit::StripRefName(_T("refs/heads/cde")));
+	EXPECT_STREQ(L"abc", CGit::StripRefName(L"abc"));
+	EXPECT_STREQ(L"bcd", CGit::StripRefName(L"refs/bcd"));
+	EXPECT_STREQ(L"cde", CGit::StripRefName(L"refs/heads/cde"));
 }
 
 TEST(CGit, CombinePath)
 {
 	CGit cgit;
-	cgit.m_CurrentDir = _T("c:\\something");
-	EXPECT_STREQ(_T("c:\\something"), cgit.CombinePath(_T("")));
-	EXPECT_STREQ(_T("c:\\something\\file.txt"), cgit.CombinePath(_T("file.txt")));
-	EXPECT_STREQ(_T("c:\\something\\sub\\file.txt"), cgit.CombinePath(_T("sub\\file.txt")));
-	EXPECT_STREQ(_T("c:\\something\\subdir\\file2.txt"), cgit.CombinePath(CTGitPath(_T("subdir/file2.txt"))));
+	cgit.m_CurrentDir = L"c:\\something";
+	EXPECT_STREQ(L"c:\\something", cgit.CombinePath(L""));
+	EXPECT_STREQ(L"c:\\something\\file.txt", cgit.CombinePath(L"file.txt"));
+	EXPECT_STREQ(L"c:\\something\\sub\\file.txt", cgit.CombinePath(L"sub\\file.txt"));
+	EXPECT_STREQ(L"c:\\something\\subdir\\file2.txt", cgit.CombinePath(CTGitPath(L"subdir/file2.txt")));
 }
 
 TEST(CGit, GetShortName)
 {
 	CGit::REF_TYPE type = CGit::UNKNOWN;
-	EXPECT_STREQ(_T("master"), CGit::GetShortName(_T("refs/heads/master"), &type));
+	EXPECT_STREQ(L"master", CGit::GetShortName(L"refs/heads/master", &type));
 	EXPECT_EQ(CGit::LOCAL_BRANCH, type);
 
 	type = CGit::UNKNOWN;
-	EXPECT_STREQ(_T("somedir/mastr"), CGit::GetShortName(_T("refs/heads/somedir/mastr"), &type));
+	EXPECT_STREQ(L"somedir/mastr", CGit::GetShortName(L"refs/heads/somedir/mastr", &type));
 	EXPECT_EQ(CGit::LOCAL_BRANCH, type);
 
 	type = CGit::BISECT_BAD; // do not use UNKNOWN here to make sure it gets set
-	EXPECT_STREQ(_T("svn/something"), CGit::GetShortName(_T("refs/svn/something"), &type));
+	EXPECT_STREQ(L"svn/something", CGit::GetShortName(L"refs/svn/something", &type));
 	EXPECT_EQ(CGit::UNKNOWN, type);
 
 	type = CGit::UNKNOWN;
-	EXPECT_STREQ(_T("origin/master"), CGit::GetShortName(_T("refs/remotes/origin/master"), &type));
+	EXPECT_STREQ(L"origin/master", CGit::GetShortName(L"refs/remotes/origin/master", &type));
 	EXPECT_EQ(CGit::REMOTE_BRANCH, type);
 
 	type = CGit::UNKNOWN;
-	EXPECT_STREQ(_T("origin/sub/master"), CGit::GetShortName(_T("refs/remotes/origin/sub/master"), &type));
+	EXPECT_STREQ(L"origin/sub/master", CGit::GetShortName(L"refs/remotes/origin/sub/master", &type));
 	EXPECT_EQ(CGit::REMOTE_BRANCH, type);
 
 	type = CGit::UNKNOWN;
-	EXPECT_STREQ(_T("release1"), CGit::GetShortName(_T("refs/tags/release1"), &type));
+	EXPECT_STREQ(L"release1", CGit::GetShortName(L"refs/tags/release1", &type));
 	EXPECT_EQ(CGit::TAG, type);
 
 	type = CGit::UNKNOWN;
-	EXPECT_STREQ(_T("releases/v1"), CGit::GetShortName(_T("refs/tags/releases/v1"), &type));
+	EXPECT_STREQ(L"releases/v1", CGit::GetShortName(L"refs/tags/releases/v1", &type));
 	EXPECT_EQ(CGit::TAG, type);
 
 	type = CGit::UNKNOWN;
-	EXPECT_STREQ(_T("release2"), CGit::GetShortName(_T("refs/tags/release2^{}"), &type));
+	EXPECT_STREQ(L"release2", CGit::GetShortName(L"refs/tags/release2^{}", &type));
 	EXPECT_EQ(CGit::ANNOTATED_TAG, type);
 
 	type = CGit::UNKNOWN;
-	EXPECT_STREQ(_T("releases/v2"), CGit::GetShortName(_T("refs/tags/releases/v2^{}"), &type));
+	EXPECT_STREQ(L"releases/v2", CGit::GetShortName(L"refs/tags/releases/v2^{}", &type));
 	EXPECT_EQ(CGit::ANNOTATED_TAG, type);
 
 	type = CGit::UNKNOWN;
-	EXPECT_STREQ(_T("stash"), CGit::GetShortName(_T("refs/stash"), &type));
+	EXPECT_STREQ(L"stash", CGit::GetShortName(L"refs/stash", &type));
 	EXPECT_EQ(CGit::STASH, type);
 
 	type = CGit::BISECT_BAD; // do not use UNKNOWN here to make sure it gets set
-	EXPECT_STREQ(_T("something"), CGit::GetShortName(_T("refs/something"), &type));
+	EXPECT_STREQ(L"something", CGit::GetShortName(L"refs/something", &type));
 	EXPECT_EQ(CGit::UNKNOWN, type);
 
 	type = CGit::BISECT_BAD; // do not use UNKNOWN here to make sure it gets set
-	EXPECT_STREQ(_T("sth"), CGit::GetShortName(_T("sth"), &type));
+	EXPECT_STREQ(L"sth", CGit::GetShortName(L"sth", &type));
 	EXPECT_EQ(CGit::UNKNOWN, type);
 
 	type = CGit::UNKNOWN;
-	EXPECT_STREQ(_T("good"), CGit::GetShortName(_T("refs/bisect/good"), &type));
+	EXPECT_STREQ(L"good", CGit::GetShortName(L"refs/bisect/good", &type));
 	EXPECT_EQ(CGit::BISECT_GOOD, type);
 
 	type = CGit::UNKNOWN;
-	EXPECT_STREQ(_T("good"), CGit::GetShortName(_T("refs/bisect/good-5809ac97a1115a8380b1d6bb304b62cd0b0fa9bb"), &type));
+	EXPECT_STREQ(L"good", CGit::GetShortName(L"refs/bisect/good-5809ac97a1115a8380b1d6bb304b62cd0b0fa9bb", &type));
 	EXPECT_EQ(CGit::BISECT_GOOD, type);
 
 	type = CGit::UNKNOWN;
-	EXPECT_STREQ(_T("bad"), CGit::GetShortName(_T("refs/bisect/bad"), &type));
+	EXPECT_STREQ(L"bad", CGit::GetShortName(L"refs/bisect/bad", &type));
 	EXPECT_EQ(CGit::BISECT_BAD, type);
 
 	type = CGit::UNKNOWN;
-	EXPECT_STREQ(_T("bad"), CGit::GetShortName(_T("refs/bisect/bad-5809ac97a1115a8380b1d6bb304b62cd0b0fd9bb"), &type));
+	EXPECT_STREQ(L"bad", CGit::GetShortName(L"refs/bisect/bad-5809ac97a1115a8380b1d6bb304b62cd0b0fd9bb", &type));
 	EXPECT_EQ(CGit::BISECT_BAD, type);
 
 	type = CGit::UNKNOWN;
-	EXPECT_STREQ(_T("ab"), CGit::GetShortName(_T("refs/notes/ab"), &type));
+	EXPECT_STREQ(L"ab", CGit::GetShortName(L"refs/notes/ab", &type));
 	EXPECT_EQ(CGit::NOTES, type);
 
 	type = CGit::UNKNOWN;
-	EXPECT_STREQ(_T("a/b"), CGit::GetShortName(_T("refs/notes/a/b"), &type));
+	EXPECT_STREQ(L"a/b", CGit::GetShortName(L"refs/notes/a/b", &type));
 	EXPECT_EQ(CGit::NOTES, type);
 }
 
@@ -299,21 +299,21 @@ TEST(CGit, GetRepository)
 	CAutoRepository repo = cgit.GetGitRepository();
 	EXPECT_FALSE(repo.IsValid());
 
-	cgit.m_CurrentDir = tempdir.GetTempDir() + _T("\\aöäüb");
+	cgit.m_CurrentDir = tempdir.GetTempDir() + L"\\aöäüb";
 	ASSERT_TRUE(CreateDirectory(cgit.m_CurrentDir, nullptr));
 
 	CString output;
-	EXPECT_EQ(0, cgit.Run(_T("git.exe init"), &output, CP_UTF8));
+	EXPECT_EQ(0, cgit.Run(L"git.exe init", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 
 	CAutoRepository repo2 = cgit.GetGitRepository(); // this tests GetGitRepository as well as m_Git.GetGitPathStringA
 	EXPECT_TRUE(repo2.IsValid());
 
-	cgit.m_CurrentDir = tempdir.GetTempDir() + _T("\\aöäüb.git");
+	cgit.m_CurrentDir = tempdir.GetTempDir() + L"\\aöäüb.git";
 	ASSERT_TRUE(CreateDirectory(cgit.m_CurrentDir, nullptr));
 
 	output.Empty();
-	EXPECT_EQ(0, cgit.Run(_T("git.exe init --bare"), &output, CP_UTF8));
+	EXPECT_EQ(0, cgit.Run(L"git.exe init --bare", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 
 	CAutoRepository repo3 = cgit.GetGitRepository(); // this tests GetGitRepository as well as m_Git.GetGitPathStringA
@@ -322,7 +322,7 @@ TEST(CGit, GetRepository)
 
 TEST_P(CBasicGitWithEmptyRepositoryFixture, IsInitRepos_GetInitAddList)
 {
-	EXPECT_STREQ(_T("master"), m_Git.GetCurrentBranch());
+	EXPECT_STREQ(L"master", m_Git.GetCurrentBranch());
 
 	CString output;
 	CString testFile = m_Dir.GetTempDir() + L"\\test.txt";
@@ -336,19 +336,19 @@ TEST_P(CBasicGitWithEmptyRepositoryFixture, IsInitRepos_GetInitAddList)
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"this is testing file."));
 	EXPECT_EQ(0, m_Git.GetInitAddList(addedFiles));
 	EXPECT_TRUE(addedFiles.IsEmpty());
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe add test.txt"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe add test.txt", &output, CP_UTF8));
 	EXPECT_TRUE(output.IsEmpty());
 	EXPECT_EQ(0, m_Git.GetInitAddList(addedFiles));
 	ASSERT_EQ(1, addedFiles.GetCount());
-	EXPECT_STREQ(_T("test.txt"), addedFiles[0].GetGitPathString());
+	EXPECT_STREQ(L"test.txt", addedFiles[0].GetGitPathString());
 
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe commit -m \"Add test.txt\""), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe commit -m \"Add test.txt\"", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 
 	EXPECT_FALSE(m_Git.IsInitRepos());
 
-	EXPECT_STREQ(_T("master"), m_Git.GetCurrentBranch());
+	EXPECT_STREQ(L"master", m_Git.GetCurrentBranch());
 }
 
 TEST_P(CBasicGitWithTestRepoFixture, IsInitRepos)
@@ -356,7 +356,7 @@ TEST_P(CBasicGitWithTestRepoFixture, IsInitRepos)
 	EXPECT_FALSE(m_Git.IsInitRepos());
 
 	CString output;
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe checkout --orphan orphanic"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe checkout --orphan orphanic", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 
 	EXPECT_TRUE(m_Git.IsInitRepos());
@@ -365,96 +365,96 @@ TEST_P(CBasicGitWithTestRepoFixture, IsInitRepos)
 TEST_P(CBasicGitWithTestRepoFixture, HasWorkingTreeConflicts)
 {
 	CString output;
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe reset --hard master"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe reset --hard master", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 
 	EXPECT_EQ(FALSE, m_Git.HasWorkingTreeConflicts());
 
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe merge forconflict"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe merge forconflict", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 	EXPECT_EQ(FALSE, m_Git.HasWorkingTreeConflicts());
 
 	output.Empty();
-	EXPECT_EQ(1, m_Git.Run(_T("git.exe merge simple-conflict"), &output, CP_UTF8));
+	EXPECT_EQ(1, m_Git.Run(L"git.exe merge simple-conflict", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 	EXPECT_EQ(TRUE, m_Git.HasWorkingTreeConflicts());
 
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe reset --hard master"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe reset --hard master", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe checkout forconflict"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe checkout forconflict", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 
 	output.Empty();
-	EXPECT_EQ(1, m_Git.Run(_T("git.exe merge simple-conflict"), &output, CP_UTF8));
+	EXPECT_EQ(1, m_Git.Run(L"git.exe merge simple-conflict", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 	EXPECT_EQ(TRUE, m_Git.HasWorkingTreeConflicts());
 }
 
 TEST_P(CBasicGitWithTestRepoFixture, GetCurrentBranch)
 {
-	EXPECT_STREQ(_T("master"), m_Git.GetCurrentBranch());
-	EXPECT_STREQ(_T("master"), m_Git.GetCurrentBranch(true));
+	EXPECT_STREQ(L"master", m_Git.GetCurrentBranch());
+	EXPECT_STREQ(L"master", m_Git.GetCurrentBranch(true));
 
 	CString output;
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe checkout simple-conflict"), &output, CP_UTF8));
-	EXPECT_STREQ(_T("simple-conflict"), m_Git.GetCurrentBranch());
-	EXPECT_STREQ(_T("simple-conflict"), m_Git.GetCurrentBranch(true));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe checkout simple-conflict", &output, CP_UTF8));
+	EXPECT_STREQ(L"simple-conflict", m_Git.GetCurrentBranch());
+	EXPECT_STREQ(L"simple-conflict", m_Git.GetCurrentBranch(true));
 
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe checkout subdir/branch"), &output, CP_UTF8));
-	EXPECT_STREQ(_T("subdir/branch"), m_Git.GetCurrentBranch());
-	EXPECT_STREQ(_T("subdir/branch"), m_Git.GetCurrentBranch(true));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe checkout subdir/branch", &output, CP_UTF8));
+	EXPECT_STREQ(L"subdir/branch", m_Git.GetCurrentBranch());
+	EXPECT_STREQ(L"subdir/branch", m_Git.GetCurrentBranch(true));
 
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe checkout 560deea87853158b22d0c0fd73f60a458d47838a"), &output, CP_UTF8));
-	EXPECT_STREQ(_T("(no branch)"), m_Git.GetCurrentBranch());
-	EXPECT_STREQ(_T("560deea87853158b22d0c0fd73f60a458d47838a"), m_Git.GetCurrentBranch(true));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe checkout 560deea87853158b22d0c0fd73f60a458d47838a", &output, CP_UTF8));
+	EXPECT_STREQ(L"(no branch)", m_Git.GetCurrentBranch());
+	EXPECT_STREQ(L"560deea87853158b22d0c0fd73f60a458d47838a", m_Git.GetCurrentBranch(true));
 
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe checkout --orphan orphanic"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe checkout --orphan orphanic", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 
-	EXPECT_STREQ(_T("orphanic"), m_Git.GetCurrentBranch());
-	EXPECT_STREQ(_T("orphanic"), m_Git.GetCurrentBranch(true));
+	EXPECT_STREQ(L"orphanic", m_Git.GetCurrentBranch());
+	EXPECT_STREQ(L"orphanic", m_Git.GetCurrentBranch(true));
 }
 
 TEST_P(CBasicGitWithTestRepoBareFixture, GetCurrentBranch)
 {
-	EXPECT_STREQ(_T("master"), m_Git.GetCurrentBranch());
-	EXPECT_STREQ(_T("master"), m_Git.GetCurrentBranch(true));
+	EXPECT_STREQ(L"master", m_Git.GetCurrentBranch());
+	EXPECT_STREQ(L"master", m_Git.GetCurrentBranch(true));
 }
 
 static void BranchTagExists_IsBranchTagNameUnique(CGit& m_Git)
 {
-	EXPECT_TRUE(m_Git.BranchTagExists(_T("master"), true));
-	EXPECT_FALSE(m_Git.BranchTagExists(_T("origin/master"), true));
-	EXPECT_FALSE(m_Git.BranchTagExists(_T("normal-tag"), true));
-	EXPECT_FALSE(m_Git.BranchTagExists(_T("also-signed"), true));
-	EXPECT_FALSE(m_Git.BranchTagExists(_T("wuseldusel"), true));
+	EXPECT_TRUE(m_Git.BranchTagExists(L"master", true));
+	EXPECT_FALSE(m_Git.BranchTagExists(L"origin/master", true));
+	EXPECT_FALSE(m_Git.BranchTagExists(L"normal-tag", true));
+	EXPECT_FALSE(m_Git.BranchTagExists(L"also-signed", true));
+	EXPECT_FALSE(m_Git.BranchTagExists(L"wuseldusel", true));
 
-	EXPECT_FALSE(m_Git.BranchTagExists(_T("master"), false));
-	EXPECT_TRUE(m_Git.BranchTagExists(_T("normal-tag"), false));
-	EXPECT_TRUE(m_Git.BranchTagExists(_T("also-signed"), false));
-	EXPECT_FALSE(m_Git.BranchTagExists(_T("wuseldusel"), false));
+	EXPECT_FALSE(m_Git.BranchTagExists(L"master", false));
+	EXPECT_TRUE(m_Git.BranchTagExists(L"normal-tag", false));
+	EXPECT_TRUE(m_Git.BranchTagExists(L"also-signed", false));
+	EXPECT_FALSE(m_Git.BranchTagExists(L"wuseldusel", false));
 
-	EXPECT_TRUE(m_Git.IsBranchTagNameUnique(_T("master")));
-	EXPECT_TRUE(m_Git.IsBranchTagNameUnique(_T("simpleconflict")));
-	EXPECT_TRUE(m_Git.IsBranchTagNameUnique(_T("normal-tag")));
-	EXPECT_TRUE(m_Git.IsBranchTagNameUnique(_T("also-signed")));
-	EXPECT_TRUE(m_Git.IsBranchTagNameUnique(_T("origin/master")));
+	EXPECT_TRUE(m_Git.IsBranchTagNameUnique(L"master"));
+	EXPECT_TRUE(m_Git.IsBranchTagNameUnique(L"simpleconflict"));
+	EXPECT_TRUE(m_Git.IsBranchTagNameUnique(L"normal-tag"));
+	EXPECT_TRUE(m_Git.IsBranchTagNameUnique(L"also-signed"));
+	EXPECT_TRUE(m_Git.IsBranchTagNameUnique(L"origin/master"));
 
 	CString output;
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe tag master HEAD~2"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe tag master HEAD~2", &output, CP_UTF8));
 	EXPECT_TRUE(output.IsEmpty());
 
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe branch normal-tag HEAD~2"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe branch normal-tag HEAD~2", &output, CP_UTF8));
 	EXPECT_TRUE(output.IsEmpty());
 
-	EXPECT_FALSE(m_Git.IsBranchTagNameUnique(_T("master")));
-	EXPECT_FALSE(m_Git.IsBranchTagNameUnique(_T("normal-tag")));
-	EXPECT_TRUE(m_Git.IsBranchTagNameUnique(_T("also-signed")));
+	EXPECT_FALSE(m_Git.IsBranchTagNameUnique(L"master"));
+	EXPECT_FALSE(m_Git.IsBranchTagNameUnique(L"normal-tag"));
+	EXPECT_TRUE(m_Git.IsBranchTagNameUnique(L"also-signed"));
 }
 
 TEST_P(CBasicGitWithTestRepoFixture, BranchTagExists_IsBranchTagNameUnique)
@@ -469,25 +469,25 @@ TEST_P(CBasicGitWithTestRepoBareFixture, BranchTagExists_IsBranchTagNameUnique)
 
 static void GetFullRefName(CGit& m_Git)
 {
-	EXPECT_STREQ(_T(""), m_Git.GetFullRefName(_T("does_not_exist")));
-	EXPECT_STREQ(_T("refs/heads/master"), m_Git.GetFullRefName(_T("master")));
-	EXPECT_STREQ(_T("refs/remotes/origin/master"), m_Git.GetFullRefName(_T("origin/master")));
-	EXPECT_STREQ(_T("refs/tags/normal-tag"), m_Git.GetFullRefName(_T("normal-tag")));
-	EXPECT_STREQ(_T("refs/tags/also-signed"), m_Git.GetFullRefName(_T("also-signed")));
+	EXPECT_STREQ(L"", m_Git.GetFullRefName(L"does_not_exist"));
+	EXPECT_STREQ(L"refs/heads/master", m_Git.GetFullRefName(L"master"));
+	EXPECT_STREQ(L"refs/remotes/origin/master", m_Git.GetFullRefName(L"origin/master"));
+	EXPECT_STREQ(L"refs/tags/normal-tag", m_Git.GetFullRefName(L"normal-tag"));
+	EXPECT_STREQ(L"refs/tags/also-signed", m_Git.GetFullRefName(L"also-signed"));
 
 	CString output;
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe tag master HEAD~2"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe tag master HEAD~2", &output, CP_UTF8));
 	EXPECT_TRUE(output.IsEmpty());
-	EXPECT_STREQ(_T(""), m_Git.GetFullRefName(_T("master")));
-	EXPECT_STREQ(_T("refs/remotes/origin/master"), m_Git.GetFullRefName(_T("origin/master")));
+	EXPECT_STREQ(L"", m_Git.GetFullRefName(L"master"));
+	EXPECT_STREQ(L"refs/remotes/origin/master", m_Git.GetFullRefName(L"origin/master"));
 
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe branch normal-tag HEAD~2"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe branch normal-tag HEAD~2", &output, CP_UTF8));
 	EXPECT_TRUE(output.IsEmpty());
-	EXPECT_STREQ(_T(""), m_Git.GetFullRefName(_T("normal-tag")));
+	EXPECT_STREQ(L"", m_Git.GetFullRefName(L"normal-tag"));
 
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe branch origin/master HEAD~2"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe branch origin/master HEAD~2", &output, CP_UTF8));
 	EXPECT_TRUE(output.IsEmpty());
-	EXPECT_STREQ(_T(""), m_Git.GetFullRefName(_T("origin/master")));
+	EXPECT_STREQ(L"", m_Git.GetFullRefName(L"origin/master"));
 }
 
 TEST_P(CBasicGitWithTestRepoFixture, GetFullRefName)
@@ -495,9 +495,9 @@ TEST_P(CBasicGitWithTestRepoFixture, GetFullRefName)
 	GetFullRefName(m_Git);
 
 	CString output;
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe checkout --orphan orphanic"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe checkout --orphan orphanic", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
-	EXPECT_STREQ(_T(""), m_Git.GetFullRefName(_T("orphanic")));
+	EXPECT_STREQ(L"", m_Git.GetFullRefName(L"orphanic"));
 }
 
 TEST_P(CBasicGitWithTestRepoBareFixture, GetFullRefName)
@@ -512,11 +512,11 @@ TEST_P(CBasicGitWithEmptyRepositoryFixture, GetRemoteTrackedBranch)
 	EXPECT_TRUE(remote.IsEmpty());
 	EXPECT_TRUE(branch.IsEmpty());
 
-	m_Git.GetRemoteTrackedBranch(_T("master"), remote, branch);
+	m_Git.GetRemoteTrackedBranch(L"master", remote, branch);
 	EXPECT_TRUE(remote.IsEmpty());
 	EXPECT_TRUE(branch.IsEmpty());
 
-	m_Git.GetRemoteTrackedBranch(_T("non-existing"), remote, branch);
+	m_Git.GetRemoteTrackedBranch(L"non-existing", remote, branch);
 	EXPECT_TRUE(remote.IsEmpty());
 	EXPECT_TRUE(branch.IsEmpty());
 }
@@ -525,18 +525,18 @@ static void GetRemoteTrackedBranch(CGit& m_Git)
 {
 	CString remote, branch;
 	m_Git.GetRemoteTrackedBranchForHEAD(remote, branch);
-	EXPECT_STREQ(_T("origin"), remote);
-	EXPECT_STREQ(_T("master"), branch);
+	EXPECT_STREQ(L"origin", remote);
+	EXPECT_STREQ(L"master", branch);
 
 	remote.Empty();
 	branch.Empty();
-	m_Git.GetRemoteTrackedBranch(_T("master"), remote, branch);
-	EXPECT_STREQ(_T("origin"), remote);
-	EXPECT_STREQ(_T("master"), branch);
+	m_Git.GetRemoteTrackedBranch(L"master", remote, branch);
+	EXPECT_STREQ(L"origin", remote);
+	EXPECT_STREQ(L"master", branch);
 
 	remote.Empty();
 	branch.Empty();
-	m_Git.GetRemoteTrackedBranch(_T("non-existing"), remote, branch);
+	m_Git.GetRemoteTrackedBranch(L"non-existing", remote, branch);
 	EXPECT_TRUE(remote.IsEmpty());
 	EXPECT_TRUE(branch.IsEmpty());
 }
@@ -554,11 +554,11 @@ TEST_P(CBasicGitWithTestRepoBareFixture, GetRemoteTrackedBranch)
 TEST_P(CBasicGitWithEmptyRepositoryFixture, GetRemotePushBranch)
 {
 	CString remote, branch;
-	m_Git.GetRemotePushBranch(_T("master"), remote, branch);
+	m_Git.GetRemotePushBranch(L"master", remote, branch);
 	EXPECT_TRUE(remote.IsEmpty());
 	EXPECT_TRUE(branch.IsEmpty());
 
-	m_Git.GetRemotePushBranch(_T("non-existing"), remote, branch);
+	m_Git.GetRemotePushBranch(L"non-existing", remote, branch);
 	EXPECT_TRUE(remote.IsEmpty());
 	EXPECT_TRUE(branch.IsEmpty());
 }
@@ -566,13 +566,13 @@ TEST_P(CBasicGitWithEmptyRepositoryFixture, GetRemotePushBranch)
 static void GetRemotePushBranch(CGit& m_Git)
 {
 	CString remote, branch;
-	m_Git.GetRemotePushBranch(_T("master"), remote, branch);
-	EXPECT_STREQ(_T("origin"), remote);
-	EXPECT_STREQ(_T("master"), branch);
+	m_Git.GetRemotePushBranch(L"master", remote, branch);
+	EXPECT_STREQ(L"origin", remote);
+	EXPECT_STREQ(L"master", branch);
 
 	remote.Empty();
 	branch.Empty();
-	m_Git.GetRemotePushBranch(_T("non-existing"), remote, branch);
+	m_Git.GetRemotePushBranch(L"non-existing", remote, branch);
 	EXPECT_TRUE(remote.IsEmpty());
 	EXPECT_TRUE(branch.IsEmpty());
 
@@ -584,28 +584,28 @@ static void GetRemotePushBranch(CGit& m_Git)
 	remote.Empty();
 	branch.Empty();
 	EXPECT_EQ(0, git_config_set_string(config, "remote.pushDefault", "originpush2"));
-	m_Git.GetRemotePushBranch(_T("master"), remote, branch);
-	EXPECT_STREQ(_T("originpush2"), remote);
-	EXPECT_STREQ(_T("master"), branch);
+	m_Git.GetRemotePushBranch(L"master", remote, branch);
+	EXPECT_STREQ(L"originpush2", remote);
+	EXPECT_STREQ(L"master", branch);
 
 	remote.Empty();
 	branch.Empty();
 	EXPECT_EQ(0, git_config_set_string(config, "branch.master.pushremote", "originpush3"));
-	m_Git.GetRemotePushBranch(_T("master"), remote, branch);
-	EXPECT_STREQ(_T("originpush3"), remote);
-	EXPECT_STREQ(_T("master"), branch);
+	m_Git.GetRemotePushBranch(L"master", remote, branch);
+	EXPECT_STREQ(L"originpush3", remote);
+	EXPECT_STREQ(L"master", branch);
 
 	remote.Empty();
 	branch.Empty();
 	EXPECT_EQ(0, git_config_set_string(config, "branch.master.pushbranch", "masterbranch2"));
-	m_Git.GetRemotePushBranch(_T("master"), remote, branch);
-	EXPECT_STREQ(_T("originpush3"), remote);
-	EXPECT_STREQ(_T("masterbranch2"), branch);
+	m_Git.GetRemotePushBranch(L"master", remote, branch);
+	EXPECT_STREQ(L"originpush3", remote);
+	EXPECT_STREQ(L"masterbranch2", branch);
 
 	remote.Empty();
 	branch.Empty();
-	m_Git.GetRemotePushBranch(_T("non-existing"), remote, branch);
-	EXPECT_STREQ(_T("originpush2"), remote);
+	m_Git.GetRemotePushBranch(L"non-existing", remote, branch);
+	EXPECT_STREQ(L"originpush2", remote);
 	EXPECT_TRUE(branch.IsEmpty());
 }
 
@@ -621,24 +621,24 @@ TEST_P(CBasicGitWithTestRepoBareFixture, GetRemotePushBranch)
 
 static void CanParseRev(CGit& m_Git)
 {
-	EXPECT_TRUE(m_Git.CanParseRev(_T("")));
-	EXPECT_TRUE(m_Git.CanParseRev(_T("HEAD")));
-	EXPECT_TRUE(m_Git.CanParseRev(_T("master")));
-	EXPECT_TRUE(m_Git.CanParseRev(_T("heads/master")));
-	EXPECT_TRUE(m_Git.CanParseRev(_T("refs/heads/master")));
-	EXPECT_TRUE(m_Git.CanParseRev(_T("master~1")));
-	EXPECT_TRUE(m_Git.CanParseRev(_T("master forconflict")));
-	EXPECT_TRUE(m_Git.CanParseRev(_T("origin/master..master")));
-	EXPECT_TRUE(m_Git.CanParseRev(_T("origin/master...master")));
-	EXPECT_TRUE(m_Git.CanParseRev(_T("49ecdfff36bfe2b9b499b33e5034f427e2fa54dd")));
-	EXPECT_FALSE(m_Git.CanParseRev(_T("non-existing")));
-	EXPECT_TRUE(m_Git.CanParseRev(_T("normal-tag")));
-	EXPECT_TRUE(m_Git.CanParseRev(_T("tags/normal-tag")));
-	EXPECT_TRUE(m_Git.CanParseRev(_T("refs/tags/normal-tag")));
-	EXPECT_TRUE(m_Git.CanParseRev(_T("all-files-signed")));
-	EXPECT_TRUE(m_Git.CanParseRev(_T("all-files-signed^{}")));
+	EXPECT_TRUE(m_Git.CanParseRev(L""));
+	EXPECT_TRUE(m_Git.CanParseRev(L"HEAD"));
+	EXPECT_TRUE(m_Git.CanParseRev(L"master"));
+	EXPECT_TRUE(m_Git.CanParseRev(L"heads/master"));
+	EXPECT_TRUE(m_Git.CanParseRev(L"refs/heads/master"));
+	EXPECT_TRUE(m_Git.CanParseRev(L"master~1"));
+	EXPECT_TRUE(m_Git.CanParseRev(L"master forconflict"));
+	EXPECT_TRUE(m_Git.CanParseRev(L"origin/master..master"));
+	EXPECT_TRUE(m_Git.CanParseRev(L"origin/master...master"));
+	EXPECT_TRUE(m_Git.CanParseRev(L"49ecdfff36bfe2b9b499b33e5034f427e2fa54dd"));
+	EXPECT_FALSE(m_Git.CanParseRev(L"non-existing"));
+	EXPECT_TRUE(m_Git.CanParseRev(L"normal-tag"));
+	EXPECT_TRUE(m_Git.CanParseRev(L"tags/normal-tag"));
+	EXPECT_TRUE(m_Git.CanParseRev(L"refs/tags/normal-tag"));
+	EXPECT_TRUE(m_Git.CanParseRev(L"all-files-signed"));
+	EXPECT_TRUE(m_Git.CanParseRev(L"all-files-signed^{}"));
 
-	EXPECT_FALSE(m_Git.CanParseRev(_T("orphanic")));
+	EXPECT_FALSE(m_Git.CanParseRev(L"orphanic"));
 }
 
 TEST_P(CBasicGitWithTestRepoFixture, CanParseRev)
@@ -646,12 +646,12 @@ TEST_P(CBasicGitWithTestRepoFixture, CanParseRev)
 	CanParseRev(m_Git);
 
 	CString output;
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe checkout --orphan orphanic"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe checkout --orphan orphanic", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
-	EXPECT_FALSE(m_Git.CanParseRev(_T("")));
-	EXPECT_FALSE(m_Git.CanParseRev(_T("HEAD")));
-	EXPECT_FALSE(m_Git.CanParseRev(_T("orphanic")));
-	EXPECT_TRUE(m_Git.CanParseRev(_T("master")));
+	EXPECT_FALSE(m_Git.CanParseRev(L""));
+	EXPECT_FALSE(m_Git.CanParseRev(L"HEAD"));
+	EXPECT_FALSE(m_Git.CanParseRev(L"orphanic"));
+	EXPECT_TRUE(m_Git.CanParseRev(L"master"));
 }
 
 TEST_P(CBasicGitWithTestRepoBareFixture, CanParseRev)
@@ -663,7 +663,7 @@ static void FETCHHEAD(CGit& m_Git, bool isBare)
 {
 	CString repoDir = m_Git.m_CurrentDir;
 	if (!isBare)
-		repoDir += _T("\\.git");
+		repoDir += L"\\.git";
 
 	STRING_VECTOR list;
 	EXPECT_EQ(0, m_Git.GetBranchList(list, nullptr));
@@ -672,17 +672,17 @@ static void FETCHHEAD(CGit& m_Git, bool isBare)
 	EXPECT_EQ(0, m_Git.GetBranchList(list, nullptr, CGit::BRANCH_LOCAL_F));
 	EXPECT_EQ(5, list.size());
 
-	EXPECT_STREQ(_T("HEAD"), m_Git.FixBranchName(_T("HEAD")));
-	EXPECT_STREQ(_T("master"), m_Git.FixBranchName(_T("master")));
-	EXPECT_STREQ(_T("non-existing"), m_Git.FixBranchName(_T("non-existing")));
-	CString branch = _T("master");
-	EXPECT_STREQ(_T("master"), m_Git.FixBranchName_Mod(branch));
-	EXPECT_STREQ(_T("master"), branch);
-	branch = _T("non-existing");
-	EXPECT_STREQ(_T("non-existing"), m_Git.FixBranchName_Mod(branch));
-	EXPECT_STREQ(_T("non-existing"), branch);
+	EXPECT_STREQ(L"HEAD", m_Git.FixBranchName(L"HEAD"));
+	EXPECT_STREQ(L"master", m_Git.FixBranchName(L"master"));
+	EXPECT_STREQ(L"non-existing", m_Git.FixBranchName(L"non-existing"));
+	CString branch = L"master";
+	EXPECT_STREQ(L"master", m_Git.FixBranchName_Mod(branch));
+	EXPECT_STREQ(L"master", branch);
+	branch = L"non-existing";
+	EXPECT_STREQ(L"non-existing", m_Git.FixBranchName_Mod(branch));
+	EXPECT_STREQ(L"non-existing", branch);
 	CGitHash hash;
-	EXPECT_NE(0, m_Git.GetHash(hash, _T("FETCH_HEAD")));
+	EXPECT_NE(0, m_Git.GetHash(hash, L"FETCH_HEAD"));
 
 	CString testFile = repoDir + L"\\FETCH_HEAD";
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"b9ef30183497cdad5c30b88d32dc1bed7951dfeb		branch 'master' of https://code.google.com/p/tortoisegit\n737878a4e2eabfa4fab580867c2b060c70999d31	not-for-merge	branch 'extend_hooks' of https://code.google.com/p/tortoisegit\n"));
@@ -694,23 +694,23 @@ static void FETCHHEAD(CGit& m_Git, bool isBare)
 	EXPECT_EQ(0, m_Git.GetBranchList(list, nullptr, CGit::BRANCH_LOCAL_F));
 	EXPECT_EQ(6, list.size());
 
-	EXPECT_STREQ(_T("master"), m_Git.FixBranchName(_T("master")));
-	EXPECT_STREQ(_T("non-existing"), m_Git.FixBranchName(_T("non-existing")));
-	EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), m_Git.FixBranchName(_T("FETCH_HEAD")));
-	branch = _T("HEAD");
-	EXPECT_STREQ(_T("HEAD"), m_Git.FixBranchName_Mod(branch));
-	EXPECT_STREQ(_T("HEAD"), branch);
-	branch = _T("master");
-	EXPECT_STREQ(_T("master"), m_Git.FixBranchName_Mod(branch));
-	EXPECT_STREQ(_T("master"), branch);
-	branch = _T("non-existing");
-	EXPECT_STREQ(_T("non-existing"), m_Git.FixBranchName_Mod(branch));
-	EXPECT_STREQ(_T("non-existing"), branch);
-	branch = _T("FETCH_HEAD");
-	EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), m_Git.FixBranchName_Mod(branch));
-	EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), branch);
-	EXPECT_EQ(0, m_Git.GetHash(hash, _T("FETCH_HEAD")));
-	EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), hash.ToString());
+	EXPECT_STREQ(L"master", m_Git.FixBranchName(L"master"));
+	EXPECT_STREQ(L"non-existing", m_Git.FixBranchName(L"non-existing"));
+	EXPECT_STREQ(L"b9ef30183497cdad5c30b88d32dc1bed7951dfeb", m_Git.FixBranchName(L"FETCH_HEAD"));
+	branch = L"HEAD";
+	EXPECT_STREQ(L"HEAD", m_Git.FixBranchName_Mod(branch));
+	EXPECT_STREQ(L"HEAD", branch);
+	branch = L"master";
+	EXPECT_STREQ(L"master", m_Git.FixBranchName_Mod(branch));
+	EXPECT_STREQ(L"master", branch);
+	branch = L"non-existing";
+	EXPECT_STREQ(L"non-existing", m_Git.FixBranchName_Mod(branch));
+	EXPECT_STREQ(L"non-existing", branch);
+	branch = L"FETCH_HEAD";
+	EXPECT_STREQ(L"b9ef30183497cdad5c30b88d32dc1bed7951dfeb", m_Git.FixBranchName_Mod(branch));
+	EXPECT_STREQ(L"b9ef30183497cdad5c30b88d32dc1bed7951dfeb", branch);
+	EXPECT_EQ(0, m_Git.GetHash(hash, L"FETCH_HEAD"));
+	EXPECT_STREQ(L"b9ef30183497cdad5c30b88d32dc1bed7951dfeb", hash.ToString());
 
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"737878a4e2eabfa4fab580867c2b060c70999d31	not-for-merge	branch 'extend_hooks' of https://code.google.com/p/tortoisegit\nb9ef30183497cdad5c30b88d32dc1bed7951dfeb		branch 'master' of https://code.google.com/p/tortoisegit\n"));
 
@@ -721,13 +721,13 @@ static void FETCHHEAD(CGit& m_Git, bool isBare)
 	EXPECT_EQ(0, m_Git.GetBranchList(list, nullptr, CGit::BRANCH_LOCAL_F));
 	EXPECT_EQ(6, list.size());
 
-	EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), m_Git.FixBranchName(_T("FETCH_HEAD")));
-	branch = _T("FETCH_HEAD");
-	EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), m_Git.FixBranchName_Mod(branch));
-	EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), branch);
+	EXPECT_STREQ(L"b9ef30183497cdad5c30b88d32dc1bed7951dfeb", m_Git.FixBranchName(L"FETCH_HEAD"));
+	branch = L"FETCH_HEAD";
+	EXPECT_STREQ(L"b9ef30183497cdad5c30b88d32dc1bed7951dfeb", m_Git.FixBranchName_Mod(branch));
+	EXPECT_STREQ(L"b9ef30183497cdad5c30b88d32dc1bed7951dfeb", branch);
 	// libgit2 fails here
-	//EXPECT_EQ(0, m_Git.GetHash(hash, _T("FETCH_HEAD")));
-	//EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), hash.ToString());
+	//EXPECT_EQ(0, m_Git.GetHash(hash, L"FETCH_HEAD"));
+	//EXPECT_STREQ(L"b9ef30183497cdad5c30b88d32dc1bed7951dfeb", hash.ToString());
 }
 
 TEST_P(CBasicGitWithTestRepoFixture, FETCHHEAD)
@@ -743,36 +743,36 @@ TEST_P(CBasicGitWithTestRepoBareFixture, FETCHHEAD)
 TEST_P(CBasicGitWithTestRepoFixture, IsFastForward)
 {
 	CGitHash commonAncestor;
-	EXPECT_TRUE(m_Git.IsFastForward(_T("origin/master"), _T("master"), &commonAncestor));
-	EXPECT_STREQ(_T("a9d53b535cb49640a6099860ac4999f5a0857b91"), commonAncestor.ToString());
+	EXPECT_TRUE(m_Git.IsFastForward(L"origin/master", L"master", &commonAncestor));
+	EXPECT_STREQ(L"a9d53b535cb49640a6099860ac4999f5a0857b91", commonAncestor.ToString());
 
-	EXPECT_FALSE(m_Git.IsFastForward(_T("simple-conflict"), _T("master"), &commonAncestor));
-	EXPECT_STREQ(_T("b02add66f48814a73aa2f0876d6bbc8662d6a9a8"), commonAncestor.ToString());
+	EXPECT_FALSE(m_Git.IsFastForward(L"simple-conflict", L"master", &commonAncestor));
+	EXPECT_STREQ(L"b02add66f48814a73aa2f0876d6bbc8662d6a9a8", commonAncestor.ToString());
 }
 
 static void GetHash(CGit& m_Git)
 {
 	CGitHash hash;
-	EXPECT_EQ(0, m_Git.GetHash(hash, _T("HEAD")));
-	EXPECT_STREQ(_T("7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6"), hash.ToString());
-	EXPECT_EQ(0, m_Git.GetHash(hash, _T("HEAD~1")));
-	EXPECT_STREQ(_T("1fc3c9688e27596d8717b54f2939dc951568f6cb"), hash.ToString());
-	EXPECT_EQ(0, m_Git.GetHash(hash, _T("ff1fbef1a54a9849afd4a5e94d2ca4d80d5b96c2")));
-	EXPECT_STREQ(_T("ff1fbef1a54a9849afd4a5e94d2ca4d80d5b96c2"), hash.ToString());
-	EXPECT_EQ(0, m_Git.GetHash(hash, _T("master")));
-	EXPECT_STREQ(_T("7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6"), hash.ToString());
-	EXPECT_EQ(0, m_Git.GetHash(hash, _T("origin/master")));
-	EXPECT_STREQ(_T("a9d53b535cb49640a6099860ac4999f5a0857b91"), hash.ToString());
-	EXPECT_EQ(0, m_Git.GetHash(hash, _T("49ecdfff36bfe2b9b499b33e5034f427e2fa54dd")));
-	EXPECT_STREQ(_T("49ecdfff36bfe2b9b499b33e5034f427e2fa54dd"), hash.ToString());
-	EXPECT_EQ(0, m_Git.GetHash(hash, _T("normal-tag")));
-	EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), hash.ToString());
-	EXPECT_EQ(0, m_Git.GetHash(hash, _T("all-files-signed")));
-	EXPECT_STREQ(_T("ab555b2776c6b700ad93848d0dd050e7d08be779"), hash.ToString()); // maybe we need automatically to dereference it
-	EXPECT_EQ(0, m_Git.GetHash(hash, _T("all-files-signed^{}")));
-	EXPECT_STREQ(_T("313a41bc88a527289c87d7531802ab484715974f"), hash.ToString());
+	EXPECT_EQ(0, m_Git.GetHash(hash, L"HEAD"));
+	EXPECT_STREQ(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6", hash.ToString());
+	EXPECT_EQ(0, m_Git.GetHash(hash, L"HEAD~1"));
+	EXPECT_STREQ(L"1fc3c9688e27596d8717b54f2939dc951568f6cb", hash.ToString());
+	EXPECT_EQ(0, m_Git.GetHash(hash, L"ff1fbef1a54a9849afd4a5e94d2ca4d80d5b96c2"));
+	EXPECT_STREQ(L"ff1fbef1a54a9849afd4a5e94d2ca4d80d5b96c2", hash.ToString());
+	EXPECT_EQ(0, m_Git.GetHash(hash, L"master"));
+	EXPECT_STREQ(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6", hash.ToString());
+	EXPECT_EQ(0, m_Git.GetHash(hash, L"origin/master"));
+	EXPECT_STREQ(L"a9d53b535cb49640a6099860ac4999f5a0857b91", hash.ToString());
+	EXPECT_EQ(0, m_Git.GetHash(hash, L"49ecdfff36bfe2b9b499b33e5034f427e2fa54dd"));
+	EXPECT_STREQ(L"49ecdfff36bfe2b9b499b33e5034f427e2fa54dd", hash.ToString());
+	EXPECT_EQ(0, m_Git.GetHash(hash, L"normal-tag"));
+	EXPECT_STREQ(L"b9ef30183497cdad5c30b88d32dc1bed7951dfeb", hash.ToString());
+	EXPECT_EQ(0, m_Git.GetHash(hash, L"all-files-signed"));
+	EXPECT_STREQ(L"ab555b2776c6b700ad93848d0dd050e7d08be779", hash.ToString()); // maybe we need automatically to dereference it
+	EXPECT_EQ(0, m_Git.GetHash(hash, L"all-files-signed^{}"));
+	EXPECT_STREQ(L"313a41bc88a527289c87d7531802ab484715974f", hash.ToString());
 
-	EXPECT_NE(0, m_Git.GetHash(hash, _T("non-existing")));
+	EXPECT_NE(0, m_Git.GetHash(hash, L"non-existing"));
 }
 
 TEST_P(CBasicGitWithTestRepoFixture, GetHash)
@@ -788,7 +788,7 @@ TEST_P(CBasicGitWithTestRepoBareFixture, GetHash)
 TEST_P(CBasicGitWithEmptyRepositoryFixture, GetHash_EmptyRepo)
 {
 	CGitHash hash;
-	EXPECT_EQ(0, m_Git.GetHash(hash, _T("HEAD")));
+	EXPECT_EQ(0, m_Git.GetHash(hash, L"HEAD"));
 	EXPECT_TRUE(hash.IsEmpty());
 }
 
@@ -828,52 +828,52 @@ static void GetBranchesTagsRefs(CGit& m_Git, config testConfig)
 	EXPECT_EQ(0, m_Git.GetBranchList(branches, &current));
 	ASSERT_EQ(5, branches.size());
 	EXPECT_EQ(1, current);
-	EXPECT_STREQ(_T("forconflict"), branches[0]);
-	EXPECT_STREQ(_T("master"), branches[1]);
-	EXPECT_STREQ(_T("master2"), branches[2]);
-	EXPECT_STREQ(_T("simple-conflict"), branches[3]);
-	EXPECT_STREQ(_T("subdir/branch"), branches[4]);
+	EXPECT_STREQ(L"forconflict", branches[0]);
+	EXPECT_STREQ(L"master", branches[1]);
+	EXPECT_STREQ(L"master2", branches[2]);
+	EXPECT_STREQ(L"simple-conflict", branches[3]);
+	EXPECT_STREQ(L"subdir/branch", branches[4]);
 
 	branches.clear();
 	current = -2;
 	EXPECT_EQ(0, m_Git.GetBranchList(branches, &current, CGit::BRANCH_ALL));
 	ASSERT_EQ(6, branches.size());
 	EXPECT_EQ(1, current);
-	EXPECT_STREQ(_T("forconflict"), branches[0]);
-	EXPECT_STREQ(_T("master"), branches[1]);
-	EXPECT_STREQ(_T("master2"), branches[2]);
-	EXPECT_STREQ(_T("simple-conflict"), branches[3]);
-	EXPECT_STREQ(_T("subdir/branch"), branches[4]);
-	EXPECT_STREQ(_T("remotes/origin/master"), branches[5]);
+	EXPECT_STREQ(L"forconflict", branches[0]);
+	EXPECT_STREQ(L"master", branches[1]);
+	EXPECT_STREQ(L"master2", branches[2]);
+	EXPECT_STREQ(L"simple-conflict", branches[3]);
+	EXPECT_STREQ(L"subdir/branch", branches[4]);
+	EXPECT_STREQ(L"remotes/origin/master", branches[5]);
 
 	branches.clear();
 	current = -2;
 	EXPECT_EQ(0, m_Git.GetBranchList(branches, &current, CGit::BRANCH_REMOTE));
 	ASSERT_EQ(1, branches.size());
 	EXPECT_EQ(-2, current); // not touched
-	EXPECT_STREQ(_T("remotes/origin/master"), branches[0]);
+	EXPECT_STREQ(L"remotes/origin/master", branches[0]);
 
 	STRING_VECTOR tags;
 	EXPECT_EQ(0, m_Git.GetTagList(tags));
 	ASSERT_EQ(3, tags.size());
-	EXPECT_STREQ(_T("all-files-signed"), tags[0]);
-	EXPECT_STREQ(_T("also-signed"), tags[1]);
-	EXPECT_STREQ(_T("normal-tag"), tags[2]);
+	EXPECT_STREQ(L"all-files-signed", tags[0]);
+	EXPECT_STREQ(L"also-signed", tags[1]);
+	EXPECT_STREQ(L"normal-tag", tags[2]);
 
 	STRING_VECTOR refs;
 	EXPECT_EQ(0, m_Git.GetRefList(refs));
 	ASSERT_EQ(11, refs.size());
-	EXPECT_STREQ(_T("refs/heads/forconflict"), refs[0]);
-	EXPECT_STREQ(_T("refs/heads/master"), refs[1]);
-	EXPECT_STREQ(_T("refs/heads/master2"), refs[2]);
-	EXPECT_STREQ(_T("refs/heads/simple-conflict"), refs[3]);
-	EXPECT_STREQ(_T("refs/heads/subdir/branch"), refs[4]);
-	EXPECT_STREQ(_T("refs/notes/commits"), refs[5]);
-	EXPECT_STREQ(_T("refs/remotes/origin/master"), refs[6]);
-	EXPECT_STREQ(_T("refs/stash"), refs[7]);
-	EXPECT_STREQ(_T("refs/tags/all-files-signed"), refs[8]);
-	EXPECT_STREQ(_T("refs/tags/also-signed"), refs[9]);
-	EXPECT_STREQ(_T("refs/tags/normal-tag"), refs[10]);
+	EXPECT_STREQ(L"refs/heads/forconflict", refs[0]);
+	EXPECT_STREQ(L"refs/heads/master", refs[1]);
+	EXPECT_STREQ(L"refs/heads/master2", refs[2]);
+	EXPECT_STREQ(L"refs/heads/simple-conflict", refs[3]);
+	EXPECT_STREQ(L"refs/heads/subdir/branch", refs[4]);
+	EXPECT_STREQ(L"refs/notes/commits", refs[5]);
+	EXPECT_STREQ(L"refs/remotes/origin/master", refs[6]);
+	EXPECT_STREQ(L"refs/stash", refs[7]);
+	EXPECT_STREQ(L"refs/tags/all-files-signed", refs[8]);
+	EXPECT_STREQ(L"refs/tags/also-signed", refs[9]);
+	EXPECT_STREQ(L"refs/tags/normal-tag", refs[10]);
 
 	MAP_HASH_NAME map;
 	EXPECT_EQ(0, m_Git.GetMapHashToFriendName(map));
@@ -883,33 +883,33 @@ static void GetBranchesTagsRefs(CGit& m_Git, config testConfig)
 		ASSERT_EQ(10, map.size());
 
 	ASSERT_EQ(1, map[CGitHash(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6")].size());
-	EXPECT_STREQ(_T("refs/heads/master"), map[CGitHash(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6")][0]);
+	EXPECT_STREQ(L"refs/heads/master", map[CGitHash(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6")][0]);
 	ASSERT_EQ(1, map[CGitHash(L"4c5c93d2a0b368bc4570d5ec02ab03b9c4334d44")].size());
-	EXPECT_STREQ(_T("refs/heads/subdir/branch"), map[CGitHash(L"4c5c93d2a0b368bc4570d5ec02ab03b9c4334d44")][0]);
+	EXPECT_STREQ(L"refs/heads/subdir/branch", map[CGitHash(L"4c5c93d2a0b368bc4570d5ec02ab03b9c4334d44")][0]);
 	ASSERT_EQ(1, map[CGitHash(L"5e702e1712aa6f8cd8e0328a87be006f3a923710")].size());
-	EXPECT_STREQ(_T("refs/notes/commits"), map[CGitHash(L"5e702e1712aa6f8cd8e0328a87be006f3a923710")][0]);
+	EXPECT_STREQ(L"refs/notes/commits", map[CGitHash(L"5e702e1712aa6f8cd8e0328a87be006f3a923710")][0]);
 	ASSERT_EQ(1, map[CGitHash(L"18da7c332dcad0f37f9977d9176dce0b0c66f3eb")].size());
-	EXPECT_STREQ(_T("refs/stash"), map[CGitHash(L"18da7c332dcad0f37f9977d9176dce0b0c66f3eb")][0]);
+	EXPECT_STREQ(L"refs/stash", map[CGitHash(L"18da7c332dcad0f37f9977d9176dce0b0c66f3eb")][0]);
 	ASSERT_EQ(1, map[CGitHash(L"c5b89de0335fd674e2e421ac4543098cb2f22cde")].size());
-	EXPECT_STREQ(_T("refs/heads/simple-conflict"), map[CGitHash(L"c5b89de0335fd674e2e421ac4543098cb2f22cde")][0]);
+	EXPECT_STREQ(L"refs/heads/simple-conflict", map[CGitHash(L"c5b89de0335fd674e2e421ac4543098cb2f22cde")][0]);
 	ASSERT_EQ(1, map[CGitHash(L"10385764a4d42d7428bbeb245015f8f338fc1e40")].size());
-	EXPECT_STREQ(_T("refs/heads/forconflict"), map[CGitHash(L"10385764a4d42d7428bbeb245015f8f338fc1e40")][0]);
+	EXPECT_STREQ(L"refs/heads/forconflict", map[CGitHash(L"10385764a4d42d7428bbeb245015f8f338fc1e40")][0]);
 	ASSERT_EQ(2, map[CGitHash(L"49ecdfff36bfe2b9b499b33e5034f427e2fa54dd")].size());
-	EXPECT_STREQ(_T("refs/heads/master2"), map[CGitHash(L"49ecdfff36bfe2b9b499b33e5034f427e2fa54dd")][0]);
-	EXPECT_STREQ(_T("refs/tags/also-signed^{}"), map[CGitHash(L"49ecdfff36bfe2b9b499b33e5034f427e2fa54dd")][1]);
+	EXPECT_STREQ(L"refs/heads/master2", map[CGitHash(L"49ecdfff36bfe2b9b499b33e5034f427e2fa54dd")][0]);
+	EXPECT_STREQ(L"refs/tags/also-signed^{}", map[CGitHash(L"49ecdfff36bfe2b9b499b33e5034f427e2fa54dd")][1]);
 	ASSERT_EQ(1, map[CGitHash(L"b9ef30183497cdad5c30b88d32dc1bed7951dfeb")].size());//
-	EXPECT_STREQ(_T("refs/tags/normal-tag"), map[CGitHash(L"b9ef30183497cdad5c30b88d32dc1bed7951dfeb")][0]);
+	EXPECT_STREQ(L"refs/tags/normal-tag", map[CGitHash(L"b9ef30183497cdad5c30b88d32dc1bed7951dfeb")][0]);
 	ASSERT_EQ(1, map[CGitHash(L"a9d53b535cb49640a6099860ac4999f5a0857b91")].size());
-	EXPECT_STREQ(_T("refs/remotes/origin/master"), map[CGitHash(L"a9d53b535cb49640a6099860ac4999f5a0857b91")][0]);
+	EXPECT_STREQ(L"refs/remotes/origin/master", map[CGitHash(L"a9d53b535cb49640a6099860ac4999f5a0857b91")][0]);
 	ASSERT_EQ(1, map[CGitHash(L"313a41bc88a527289c87d7531802ab484715974f")].size());
-	EXPECT_STREQ(_T("refs/tags/all-files-signed^{}"), map[CGitHash(L"313a41bc88a527289c87d7531802ab484715974f")][0]);
+	EXPECT_STREQ(L"refs/tags/all-files-signed^{}", map[CGitHash(L"313a41bc88a527289c87d7531802ab484715974f")][0]);
 
 	STRING_VECTOR remotes;
 	EXPECT_EQ(0, m_Git.GetRemoteList(remotes));
 	ASSERT_EQ(1, remotes.size());
-	EXPECT_STREQ(_T("origin"), remotes[0]);
+	EXPECT_STREQ(L"origin", remotes[0]);
 
-	EXPECT_EQ(-1, m_Git.DeleteRef(_T("refs/tags/gibbednet")));
+	EXPECT_EQ(-1, m_Git.DeleteRef(L"refs/tags/gibbednet"));
 	branches.clear();
 	EXPECT_EQ(0, m_Git.GetBranchList(branches, nullptr, CGit::BRANCH_ALL));
 	EXPECT_EQ(6, branches.size());
@@ -920,7 +920,7 @@ static void GetBranchesTagsRefs(CGit& m_Git, config testConfig)
 	EXPECT_EQ(0, m_Git.GetRefList(refs));
 	EXPECT_EQ(11, refs.size());
 
-	EXPECT_EQ(-1, m_Git.DeleteRef(_T("refs/heads/gibbednet")));
+	EXPECT_EQ(-1, m_Git.DeleteRef(L"refs/heads/gibbednet"));
 	branches.clear();
 	EXPECT_EQ(0, m_Git.GetBranchList(branches, nullptr, CGit::BRANCH_ALL));
 	EXPECT_EQ(6, branches.size());
@@ -931,7 +931,7 @@ static void GetBranchesTagsRefs(CGit& m_Git, config testConfig)
 	EXPECT_EQ(0, m_Git.GetRefList(refs));
 	EXPECT_EQ(11, refs.size());
 
-	EXPECT_EQ(-1, m_Git.DeleteRef(_T("refs/remotes/origin/gibbednet")));
+	EXPECT_EQ(-1, m_Git.DeleteRef(L"refs/remotes/origin/gibbednet"));
 	branches.clear();
 	EXPECT_EQ(0, m_Git.GetBranchList(branches, nullptr, CGit::BRANCH_ALL));
 	EXPECT_EQ(6, branches.size());
@@ -942,7 +942,7 @@ static void GetBranchesTagsRefs(CGit& m_Git, config testConfig)
 	EXPECT_EQ(0, m_Git.GetRefList(refs));
 	EXPECT_EQ(11, refs.size());
 
-	EXPECT_EQ(0, m_Git.DeleteRef(_T("refs/tags/normal-tag")));
+	EXPECT_EQ(0, m_Git.DeleteRef(L"refs/tags/normal-tag"));
 	branches.clear();
 	EXPECT_EQ(0, m_Git.GetBranchList(branches, nullptr, CGit::BRANCH_ALL));
 	EXPECT_EQ(6, branches.size());
@@ -953,7 +953,7 @@ static void GetBranchesTagsRefs(CGit& m_Git, config testConfig)
 	EXPECT_EQ(0, m_Git.GetRefList(refs));
 	EXPECT_EQ(10, refs.size());
 
-	EXPECT_EQ(0, m_Git.DeleteRef(_T("refs/tags/all-files-signed^{}")));
+	EXPECT_EQ(0, m_Git.DeleteRef(L"refs/tags/all-files-signed^{}"));
 	branches.clear();
 	EXPECT_EQ(0, m_Git.GetBranchList(branches, nullptr, CGit::BRANCH_ALL));
 	EXPECT_EQ(6, branches.size());
@@ -964,7 +964,7 @@ static void GetBranchesTagsRefs(CGit& m_Git, config testConfig)
 	EXPECT_EQ(0, m_Git.GetRefList(refs));
 	EXPECT_EQ(9, refs.size());
 
-	EXPECT_EQ(0, m_Git.DeleteRef(_T("refs/heads/subdir/branch")));
+	EXPECT_EQ(0, m_Git.DeleteRef(L"refs/heads/subdir/branch"));
 	branches.clear();
 	EXPECT_EQ(0, m_Git.GetBranchList(branches, nullptr, CGit::BRANCH_ALL));
 	EXPECT_EQ(5, branches.size());
@@ -975,7 +975,7 @@ static void GetBranchesTagsRefs(CGit& m_Git, config testConfig)
 	EXPECT_EQ(0, m_Git.GetRefList(refs));
 	EXPECT_EQ(8, refs.size());
 
-	EXPECT_EQ(0, m_Git.DeleteRef(_T("refs/remotes/origin/master")));
+	EXPECT_EQ(0, m_Git.DeleteRef(L"refs/remotes/origin/master"));
 	branches.clear();
 	EXPECT_EQ(0, m_Git.GetBranchList(branches, nullptr, CGit::BRANCH_ALL));
 	EXPECT_EQ(4, branches.size());
@@ -1000,7 +1000,7 @@ TEST_P(CBasicGitWithTestRepoBareFixture, GetBranchesTagsRefs)
 TEST_P(CBasicGitWithTestRepoFixture, GetBranchList_orphan)
 {
 	CString output;
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe checkout --orphan orphanic"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe checkout --orphan orphanic", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 
 	STRING_VECTOR branches;
@@ -1008,17 +1008,17 @@ TEST_P(CBasicGitWithTestRepoFixture, GetBranchList_orphan)
 	EXPECT_EQ(0, m_Git.GetBranchList(branches, &current));
 	ASSERT_EQ(5, branches.size());
 	EXPECT_EQ(-2, current);
-	EXPECT_STREQ(_T("forconflict"), branches[0]);
-	EXPECT_STREQ(_T("master"), branches[1]);
-	EXPECT_STREQ(_T("master2"), branches[2]);
-	EXPECT_STREQ(_T("simple-conflict"), branches[3]);
-	EXPECT_STREQ(_T("subdir/branch"), branches[4]);
+	EXPECT_STREQ(L"forconflict", branches[0]);
+	EXPECT_STREQ(L"master", branches[1]);
+	EXPECT_STREQ(L"master2", branches[2]);
+	EXPECT_STREQ(L"simple-conflict", branches[3]);
+	EXPECT_STREQ(L"subdir/branch", branches[4]);
 }
 
 TEST_P(CBasicGitWithTestRepoFixture, GetBranchList_detachedhead)
 {
 	CString output;
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe checkout a9d53b535cb49640a6099860ac4999f5a0857b91"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe checkout a9d53b535cb49640a6099860ac4999f5a0857b91", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 
 	STRING_VECTOR branches;
@@ -1026,18 +1026,18 @@ TEST_P(CBasicGitWithTestRepoFixture, GetBranchList_detachedhead)
 	EXPECT_EQ(0, m_Git.GetBranchList(branches, &current));
 	ASSERT_EQ(5, branches.size());
 	EXPECT_EQ(-2, current);
-	EXPECT_STREQ(_T("forconflict"), branches[0]);
-	EXPECT_STREQ(_T("master"), branches[1]);
-	EXPECT_STREQ(_T("master2"), branches[2]);
-	EXPECT_STREQ(_T("simple-conflict"), branches[3]);
-	EXPECT_STREQ(_T("subdir/branch"), branches[4]);
+	EXPECT_STREQ(L"forconflict", branches[0]);
+	EXPECT_STREQ(L"master", branches[1]);
+	EXPECT_STREQ(L"master2", branches[2]);
+	EXPECT_STREQ(L"simple-conflict", branches[3]);
+	EXPECT_STREQ(L"subdir/branch", branches[4]);
 
 	// cygwin fails here
 	if (CGit::ms_bCygwinGit)
 		return;
 
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe checkout -b (HEAD a9d53b535cb49640a6099860ac4999f5a0857b91"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe checkout -b (HEAD a9d53b535cb49640a6099860ac4999f5a0857b91", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 
 	branches.clear();
@@ -1045,17 +1045,17 @@ TEST_P(CBasicGitWithTestRepoFixture, GetBranchList_detachedhead)
 	EXPECT_EQ(0, m_Git.GetBranchList(branches, &current));
 	ASSERT_EQ(6, branches.size());
 	EXPECT_EQ(0, current);
-	EXPECT_STREQ(_T("(HEAD"), branches[0]);
-	EXPECT_STREQ(_T("forconflict"), branches[1]);
-	EXPECT_STREQ(_T("master"), branches[2]);
-	EXPECT_STREQ(_T("master2"), branches[3]);
-	EXPECT_STREQ(_T("simple-conflict"), branches[4]);
-	EXPECT_STREQ(_T("subdir/branch"), branches[5]);
+	EXPECT_STREQ(L"(HEAD", branches[0]);
+	EXPECT_STREQ(L"forconflict", branches[1]);
+	EXPECT_STREQ(L"master", branches[2]);
+	EXPECT_STREQ(L"master2", branches[3]);
+	EXPECT_STREQ(L"simple-conflict", branches[4]);
+	EXPECT_STREQ(L"subdir/branch", branches[5]);
 }
 
 TEST_P(CBasicGitWithEmptyBareRepositoryFixture, GetEmptyBranchesTagsRefs)
 {
-	EXPECT_STREQ(_T("master"), m_Git.GetCurrentBranch());
+	EXPECT_STREQ(L"master", m_Git.GetCurrentBranch());
 
 	STRING_VECTOR branches;
 	int current = -2;
@@ -1093,9 +1093,9 @@ TEST_P(CBasicGitWithEmptyRepositoryFixture, CheckCleanWorkTree)
 	CString output;
 	CString testFile = m_Dir.GetTempDir() + L"\\test.txt";
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"this is testing file."));
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe add test.txt"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe add test.txt", &output, CP_UTF8));
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe commit -m \"Add test.txt\""), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe commit -m \"Add test.txt\"", &output, CP_UTF8));
 	// repo with 1 versioned file
 	EXPECT_FALSE(output.IsEmpty());
 	EXPECT_TRUE(m_Git.CheckCleanWorkTree());
@@ -1107,19 +1107,19 @@ TEST_P(CBasicGitWithEmptyRepositoryFixture, CheckCleanWorkTree)
 	EXPECT_FALSE(m_Git.CheckCleanWorkTree(true));
 
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe add test.txt"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe add test.txt", &output, CP_UTF8));
 	// repo with 1 modified versioned and staged file
 	EXPECT_TRUE(output.IsEmpty());
 	EXPECT_FALSE(m_Git.CheckCleanWorkTree());
 	EXPECT_TRUE(m_Git.CheckCleanWorkTree(true));
 
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe commit -m \"Modified test.txt\""), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe commit -m \"Modified test.txt\"", &output, CP_UTF8));
 	testFile = m_Dir.GetTempDir() + L"\\test2.txt";
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"this is ANOTHER testing file."));
 	EXPECT_TRUE(m_Git.CheckCleanWorkTree());
 	EXPECT_TRUE(m_Git.CheckCleanWorkTree(true));
 
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe checkout --orphan orphanic"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe checkout --orphan orphanic", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 	EXPECT_FALSE(m_Git.CheckCleanWorkTree());
 	EXPECT_FALSE(m_Git.CheckCleanWorkTree(true));
@@ -1132,67 +1132,67 @@ TEST(CGit, CEnvironment)
 	ASSERT_TRUE(basePtr);
 	EXPECT_FALSE(*basePtr);
 	EXPECT_TRUE(env.empty());
-	env.SetEnv(_T("not-found"), nullptr);
+	env.SetEnv(L"not-found", nullptr);
 	EXPECT_FALSE(static_cast<wchar_t*>(env));
-	EXPECT_STREQ(_T(""), env.GetEnv(L"test"));
+	EXPECT_STREQ(L"", env.GetEnv(L"test"));
 	env.SetEnv(L"key1", L"value1");
-	EXPECT_STREQ(_T("value1"), env.GetEnv(L"key1"));
-	EXPECT_STREQ(_T("value1"), env.GetEnv(L"kEy1")); // check case insensitivity
+	EXPECT_STREQ(L"value1", env.GetEnv(L"key1"));
+	EXPECT_STREQ(L"value1", env.GetEnv(L"kEy1")); // check case insensitivity
 	EXPECT_TRUE(*basePtr);
 	EXPECT_EQ(static_cast<wchar_t*>(env), *basePtr);
 	EXPECT_FALSE(env.empty());
-	EXPECT_STREQ(_T("value1"), env.GetEnv(L"key1"));
+	EXPECT_STREQ(L"value1", env.GetEnv(L"key1"));
 	env.SetEnv(L"key1", nullptr); // delete first
 	EXPECT_FALSE(*basePtr);
 	EXPECT_EQ(static_cast<wchar_t*>(env), *basePtr);
 	EXPECT_TRUE(env.empty());
 	env.SetEnv(L"key1", L"value1");
-	EXPECT_STREQ(_T("value1"), env.GetEnv(L"key1"));
+	EXPECT_STREQ(L"value1", env.GetEnv(L"key1"));
 	EXPECT_TRUE(*basePtr);
 	EXPECT_EQ(static_cast<wchar_t*>(env), *basePtr);
 	EXPECT_FALSE(env.empty());
 	env.SetEnv(L"key2", L"value2");
-	EXPECT_STREQ(_T("value1"), env.GetEnv(L"key1"));
-	EXPECT_STREQ(_T("value2"), env.GetEnv(L"key2"));
+	EXPECT_STREQ(L"value1", env.GetEnv(L"key1"));
+	EXPECT_STREQ(L"value2", env.GetEnv(L"key2"));
 	EXPECT_EQ(static_cast<wchar_t*>(env), *basePtr);
-	env.SetEnv(_T("not-found"), nullptr);
-	EXPECT_STREQ(_T("value1"), env.GetEnv(L"key1"));
-	EXPECT_STREQ(_T("value2"), env.GetEnv(L"key2"));
-	env.SetEnv(_T("key2"), nullptr); // delete last
-	EXPECT_STREQ(_T("value1"), env.GetEnv(L"key1"));
-	EXPECT_STREQ(_T(""), env.GetEnv(L"key2"));
+	env.SetEnv(L"not-found", nullptr);
+	EXPECT_STREQ(L"value1", env.GetEnv(L"key1"));
+	EXPECT_STREQ(L"value2", env.GetEnv(L"key2"));
+	env.SetEnv(L"key2", nullptr); // delete last
+	EXPECT_STREQ(L"value1", env.GetEnv(L"key1"));
+	EXPECT_STREQ(L"", env.GetEnv(L"key2"));
 	env.SetEnv(L"key3", L"value3");
-	EXPECT_STREQ(_T("value1"), env.GetEnv(L"key1"));
-	EXPECT_STREQ(_T("value3"), env.GetEnv(L"key3"));
+	EXPECT_STREQ(L"value1", env.GetEnv(L"key1"));
+	EXPECT_STREQ(L"value3", env.GetEnv(L"key3"));
 	env.SetEnv(L"key4", L"value4");
-	env.SetEnv(_T("value3"), nullptr); // delete middle
-	EXPECT_STREQ(_T("value1"), env.GetEnv(L"key1"));
-	EXPECT_STREQ(_T("value4"), env.GetEnv(L"key4"));
+	env.SetEnv(L"value3", nullptr); // delete middle
+	EXPECT_STREQ(L"value1", env.GetEnv(L"key1"));
+	EXPECT_STREQ(L"value4", env.GetEnv(L"key4"));
 	env.SetEnv(L"key5", L"value5");
-	EXPECT_STREQ(_T("value1"), env.GetEnv(L"key1"));
-	EXPECT_STREQ(_T("value4"), env.GetEnv(L"key4"));
-	EXPECT_STREQ(_T("value5"), env.GetEnv(L"key5"));
+	EXPECT_STREQ(L"value1", env.GetEnv(L"key1"));
+	EXPECT_STREQ(L"value4", env.GetEnv(L"key4"));
+	EXPECT_STREQ(L"value5", env.GetEnv(L"key5"));
 	env.SetEnv(L"key4", L"value4a");
-	EXPECT_STREQ(_T("value1"), env.GetEnv(L"key1"));
-	EXPECT_STREQ(_T("value4a"), env.GetEnv(L"key4"));
-	EXPECT_STREQ(_T("value5"), env.GetEnv(L"key5"));
+	EXPECT_STREQ(L"value1", env.GetEnv(L"key1"));
+	EXPECT_STREQ(L"value4a", env.GetEnv(L"key4"));
+	EXPECT_STREQ(L"value5", env.GetEnv(L"key5"));
 	env.SetEnv(L"key5", L"value5a");
-	EXPECT_STREQ(_T("value1"), env.GetEnv(L"key1"));
-	EXPECT_STREQ(_T("value4a"), env.GetEnv(L"key4"));
-	EXPECT_STREQ(_T("value5a"), env.GetEnv(L"key5"));
+	EXPECT_STREQ(L"value1", env.GetEnv(L"key1"));
+	EXPECT_STREQ(L"value4a", env.GetEnv(L"key4"));
+	EXPECT_STREQ(L"value5a", env.GetEnv(L"key5"));
 #pragma warning(push)
 #pragma warning(disable: 4996)
 	CString windir = _wgetenv(L"windir");
 #pragma warning(pop)
 	env.CopyProcessEnvironment();
 	EXPECT_STREQ(windir, env.GetEnv(L"windir"));
-	EXPECT_STREQ(_T("value1"), env.GetEnv(L"key1"));
-	EXPECT_STREQ(_T("value4a"), env.GetEnv(L"key4"));
-	EXPECT_STREQ(_T("value5a"), env.GetEnv(L"key5"));
+	EXPECT_STREQ(L"value1", env.GetEnv(L"key1"));
+	EXPECT_STREQ(L"value4a", env.GetEnv(L"key4"));
+	EXPECT_STREQ(L"value5a", env.GetEnv(L"key5"));
 	env.clear();
 	EXPECT_FALSE(*basePtr);
 	EXPECT_TRUE(env.empty());
-	EXPECT_STREQ(_T(""), env.GetEnv(L"key4"));
+	EXPECT_STREQ(L"", env.GetEnv(L"key4"));
 	env.CopyProcessEnvironment();
 	EXPECT_STREQ(windir, env.GetEnv(L"windir"));
 	EXPECT_TRUE(*basePtr);
@@ -1258,7 +1258,7 @@ static void GetOneFile(CGit& m_Git)
 	EXPECT_EQ(0, _wstat32(tmpFile, &stat_buf));
 	EXPECT_EQ(139, stat_buf.st_size);
 	EXPECT_EQ(108, fileContents.GetLength());
-	EXPECT_STREQ(_T("ä#äf34ööcöäß€9875oe\r\nfgdjkglsfdg\r\nöäöü45g\r\nfdgi&§$%&hfdsgä\r\nä#äf34öööäß€9875oe\r\nöäcüpfgmfdg\r\n€fgfdsg\r\n45\r\näü"), fileContents);
+	EXPECT_STREQ(L"ä#äf34ööcöäß€9875oe\r\nfgdjkglsfdg\r\nöäöü45g\r\nfdgi&§$%&hfdsgä\r\nä#äf34öööäß€9875oe\r\nöäcüpfgmfdg\r\n€fgfdsg\r\n45\r\näü", fileContents);
 	::DeleteFile(tmpFile);
 }
 
@@ -1295,7 +1295,7 @@ TEST_P(CBasicGitWithTestRepoFixture, GetOneFile)
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(encryptedFileTwo, L"This should also be encrypted...\nAnd also decrypted on the fly\n"));
 
 	CString output;
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe add 1.enc"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe add 1.enc", &output, CP_UTF8));
 	EXPECT_TRUE(output.IsEmpty());
 
 	CAutoIndex index;
@@ -1303,21 +1303,21 @@ TEST_P(CBasicGitWithTestRepoFixture, GetOneFile)
 	EXPECT_EQ(0, git_index_add_bypath(index, "2.enc"));
 	EXPECT_EQ(0, git_index_write(index));
 
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe commit -m \"Message\""), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe commit -m \"Message\"", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 
 	CString fileContents;
 	CString tmpFile = GetTempFile();
 	EXPECT_EQ(0, m_Git.GetOneFile(L"HEAD", CTGitPath(L"1.enc"), tmpFile));
 	EXPECT_EQ(true, CStringUtils::ReadStringFromTextFile(tmpFile, fileContents));
-	EXPECT_STREQ(_T("This should be encrypted...\nAnd decrypted on the fly\n"), fileContents);
+	EXPECT_STREQ(L"This should be encrypted...\nAnd decrypted on the fly\n", fileContents);
 	::DeleteFile(tmpFile);
 
 	fileContents.Empty();
 	tmpFile = GetTempFile();
 	EXPECT_EQ(0, m_Git.GetOneFile(L"HEAD", CTGitPath(L"2.enc"), tmpFile));
 	EXPECT_EQ(true, CStringUtils::ReadStringFromTextFile(tmpFile, fileContents));
-	EXPECT_STREQ(_T("This should also be encrypted...\nAnd also decrypted on the fly\n"), fileContents);
+	EXPECT_STREQ(L"This should also be encrypted...\nAnd also decrypted on the fly\n", fileContents);
 	::DeleteFile(tmpFile);
 
 	EXPECT_TRUE(::DeleteFile(attributesFile));
@@ -1326,14 +1326,14 @@ TEST_P(CBasicGitWithTestRepoFixture, GetOneFile)
 	tmpFile = GetTempFile();
 	EXPECT_EQ(0, m_Git.GetOneFile(L"HEAD", CTGitPath(L"1.enc"), tmpFile));
 	EXPECT_EQ(true, CStringUtils::ReadStringFromTextFile(tmpFile, fileContents));
-	EXPECT_STREQ(_T("U2FsdGVkX1/+7d6tvu8AABwbE+Xy7U4l5boTKjIgUkYHONqmYHD+0e6k35MgtUGx\ns11nq1QuKeFCW5wFWNSj1WcHg2n4W59xfnB7RkSSIDQ=\n"), fileContents);
+	EXPECT_STREQ(L"U2FsdGVkX1/+7d6tvu8AABwbE+Xy7U4l5boTKjIgUkYHONqmYHD+0e6k35MgtUGx\ns11nq1QuKeFCW5wFWNSj1WcHg2n4W59xfnB7RkSSIDQ=\n", fileContents);
 	::DeleteFile(tmpFile);
 
 	fileContents.Empty();
 	tmpFile = GetTempFile();
 	EXPECT_EQ(0, m_Git.GetOneFile(L"HEAD", CTGitPath(L"2.enc"), tmpFile));
 	EXPECT_EQ(true, CStringUtils::ReadStringFromTextFile(tmpFile, fileContents));
-	EXPECT_STREQ(_T("U2FsdGVkX1/+7d6tvu8AAIDDx8qi/l0qzkSMsS2YLt8tYK1oWzj8+o78fXH0/tlO\nCRVrKqTvh9eUFklY8QFYfZfj01zBkFat+4zrW+1rV4Q=\n"), fileContents);
+	EXPECT_STREQ(L"U2FsdGVkX1/+7d6tvu8AAIDDx8qi/l0qzkSMsS2YLt8tYK1oWzj8+o78fXH0/tlO\nCRVrKqTvh9eUFklY8QFYfZfj01zBkFat+4zrW+1rV4Q=\n", fileContents);
 	::DeleteFile(tmpFile);
 }
 
@@ -1348,13 +1348,13 @@ static void GetBranchDescriptions(CGit& m_Git)
 	EXPECT_EQ(0, m_Git.GetBranchDescriptions(descriptions));
 	EXPECT_EQ(0, descriptions.size());
 
-	g_Git.SetConfigValue(_T("branch.master.description"), _T("test"));
-	g_Git.SetConfigValue(_T("branch.subdir/branch.description"), _T("multi\nline"));
+	g_Git.SetConfigValue(L"branch.master.description", L"test");
+	g_Git.SetConfigValue(L"branch.subdir/branch.description", L"multi\nline");
 
 	EXPECT_EQ(0, m_Git.GetBranchDescriptions(descriptions));
 	ASSERT_EQ(2, descriptions.size());
-	EXPECT_STREQ(_T("test"), descriptions[L"master"]);
-	EXPECT_STREQ(_T("multi\nline"), descriptions[L"subdir/branch"]);
+	EXPECT_STREQ(L"test", descriptions[L"master"]);
+	EXPECT_STREQ(L"multi\nline", descriptions[L"subdir/branch"]);
 }
 
 TEST_P(CBasicGitWithEmptyRepositoryFixture, GetBranchDescriptions)
@@ -1369,68 +1369,68 @@ TEST_P(CBasicGitWithEmptyBareRepositoryFixture, GetBranchDescriptions)
 
 TEST_P(CBasicGitWithTestRepoFixture, Config)
 {
-	EXPECT_STREQ(_T(""), m_Git.GetConfigValue(_T("not-found")));
-	EXPECT_STREQ(_T("default"), m_Git.GetConfigValue(_T("not-found"), _T("default")));
+	EXPECT_STREQ(L"", m_Git.GetConfigValue(L"not-found"));
+	EXPECT_STREQ(L"default", m_Git.GetConfigValue(L"not-found", L"default"));
 
-	EXPECT_STREQ(_T("false"), m_Git.GetConfigValue(_T("core.bare")));
-	EXPECT_STREQ(_T("false"), m_Git.GetConfigValue(_T("core.bare"), _T("default-value"))); // value exist, so default does not match
-	EXPECT_STREQ(_T("true"), m_Git.GetConfigValue(_T("core.ignorecase")));
-	EXPECT_STREQ(_T("0"), m_Git.GetConfigValue(_T("core.repositoryformatversion")));
-	EXPECT_STREQ(_T("https://example.com/git/testing"), m_Git.GetConfigValue(_T("remote.origin.url")));
+	EXPECT_STREQ(L"false", m_Git.GetConfigValue(L"core.bare"));
+	EXPECT_STREQ(L"false", m_Git.GetConfigValue(L"core.bare", L"default-value")); // value exist, so default does not match
+	EXPECT_STREQ(L"true", m_Git.GetConfigValue(L"core.ignorecase"));
+	EXPECT_STREQ(L"0", m_Git.GetConfigValue(L"core.repositoryformatversion"));
+	EXPECT_STREQ(L"https://example.com/git/testing", m_Git.GetConfigValue(L"remote.origin.url"));
 
-	EXPECT_EQ(false, m_Git.GetConfigValueBool(_T("not-found")));
-	EXPECT_EQ(true, m_Git.GetConfigValueBool(_T("not-found"), true));
-	EXPECT_EQ(false, m_Git.GetConfigValueBool(_T("core.bare")));
-	EXPECT_EQ(false, m_Git.GetConfigValueBool(_T("core.bare"), true)); // value exist, so default does not match
-	EXPECT_EQ(false, m_Git.GetConfigValueBool(_T("core.repositoryformatversion")));
-	EXPECT_EQ(false, m_Git.GetConfigValueBool(_T("remote.origin.url")));
-	EXPECT_EQ(true, m_Git.GetConfigValueBool(_T("core.ignorecase")));
+	EXPECT_EQ(false, m_Git.GetConfigValueBool(L"not-found"));
+	EXPECT_EQ(true, m_Git.GetConfigValueBool(L"not-found", true));
+	EXPECT_EQ(false, m_Git.GetConfigValueBool(L"core.bare"));
+	EXPECT_EQ(false, m_Git.GetConfigValueBool(L"core.bare", true)); // value exist, so default does not match
+	EXPECT_EQ(false, m_Git.GetConfigValueBool(L"core.repositoryformatversion"));
+	EXPECT_EQ(false, m_Git.GetConfigValueBool(L"remote.origin.url"));
+	EXPECT_EQ(true, m_Git.GetConfigValueBool(L"core.ignorecase"));
 
-	CString values[] = { _T(""), _T(" "), _T("ending-with-space "), _T(" starting with-space"), _T("test1"), _T("some\\backslashes\\in\\it"), _T("with \" doublequote"), _T("with backslash before \\\" doublequote"), _T("with'quote"), _T("multi\nline"), _T("no-multi\\nline"), _T("new line at end\n") };
+	CString values[] = { L"", L" ", L"ending-with-space ", L" starting with-space", L"test1", L"some\\backslashes\\in\\it", L"with \" doublequote", L"with backslash before \\\" doublequote", L"with'quote", L"multi\nline", L"no-multi\\nline", L"new line at end\n" };
 	for (int i = 0; i < _countof(values); ++i)
 	{
 		CString key;
-		key.Format(_T("re-read.test%d"), i);
+		key.Format(L"re-read.test%d", i);
 		EXPECT_EQ(0, m_Git.SetConfigValue(key, values[i]));
 		EXPECT_STREQ(values[i], m_Git.GetConfigValue(key));
 	}
 
-	m_Git.SetConfigValue(_T("booltest.true1"), _T("1"));
-	m_Git.SetConfigValue(_T("booltest.true2"), _T("100"));
-	m_Git.SetConfigValue(_T("booltest.true3"), _T("-2"));
-	m_Git.SetConfigValue(_T("booltest.true4"), _T("yes"));
-	m_Git.SetConfigValue(_T("booltest.true5"), _T("yEs"));
-	m_Git.SetConfigValue(_T("booltest.true6"), _T("true"));
-	m_Git.SetConfigValue(_T("booltest.true7"), _T("on"));
+	m_Git.SetConfigValue(L"booltest.true1", L"1");
+	m_Git.SetConfigValue(L"booltest.true2", L"100");
+	m_Git.SetConfigValue(L"booltest.true3", L"-2");
+	m_Git.SetConfigValue(L"booltest.true4", L"yes");
+	m_Git.SetConfigValue(L"booltest.true5", L"yEs");
+	m_Git.SetConfigValue(L"booltest.true6", L"true");
+	m_Git.SetConfigValue(L"booltest.true7", L"on");
 	for (int i = 1; i <= 7; ++i)
 	{
 		CString key;
-		key.Format(_T("booltest.true%d"), i);
+		key.Format(L"booltest.true%d", i);
 		EXPECT_EQ(true, m_Git.GetConfigValueBool(key));
 	}
-	m_Git.SetConfigValue(_T("booltest.false1"), _T("0"));
-	EXPECT_EQ(false, m_Git.GetConfigValueBool(_T("booltest.false1")));
-	m_Git.SetConfigValue(_T("booltest.false2"), _T(""));
-	EXPECT_EQ(false, m_Git.GetConfigValueBool(_T("booltest.false2")));
+	m_Git.SetConfigValue(L"booltest.false1", L"0");
+	EXPECT_EQ(false, m_Git.GetConfigValueBool(L"booltest.false1"));
+	m_Git.SetConfigValue(L"booltest.false2", L"");
+	EXPECT_EQ(false, m_Git.GetConfigValueBool(L"booltest.false2"));
 
-	EXPECT_EQ(0, m_Git.GetConfigValueInt32(_T("does-not-exist")));
-	EXPECT_EQ(15, m_Git.GetConfigValueInt32(_T("does-not-exist"), 15));
-	EXPECT_EQ(0, m_Git.GetConfigValueInt32(_T("core.repositoryformatversion")));
-	EXPECT_EQ(0, m_Git.GetConfigValueInt32(_T("core.repositoryformatversion"), 42)); // value exist, so default should not be returned
-	EXPECT_EQ(1, m_Git.GetConfigValueInt32(_T("booltest.true1")));
-	EXPECT_EQ(100, m_Git.GetConfigValueInt32(_T("booltest.true2")));
-	EXPECT_EQ(-2, m_Git.GetConfigValueInt32(_T("booltest.true3")));
-	EXPECT_EQ(0, m_Git.GetConfigValueInt32(_T("booltest.true4")));
-	EXPECT_EQ(42, m_Git.GetConfigValueInt32(_T("booltest.true4"), 42));
-	EXPECT_EQ(0, m_Git.GetConfigValueInt32(_T("booltest.true8")));
-	EXPECT_EQ(42, m_Git.GetConfigValueInt32(_T("booltest.true8"), 42));
+	EXPECT_EQ(0, m_Git.GetConfigValueInt32(L"does-not-exist"));
+	EXPECT_EQ(15, m_Git.GetConfigValueInt32(L"does-not-exist", 15));
+	EXPECT_EQ(0, m_Git.GetConfigValueInt32(L"core.repositoryformatversion"));
+	EXPECT_EQ(0, m_Git.GetConfigValueInt32(L"core.repositoryformatversion", 42)); // value exist, so default should not be returned
+	EXPECT_EQ(1, m_Git.GetConfigValueInt32(L"booltest.true1"));
+	EXPECT_EQ(100, m_Git.GetConfigValueInt32(L"booltest.true2"));
+	EXPECT_EQ(-2, m_Git.GetConfigValueInt32(L"booltest.true3"));
+	EXPECT_EQ(0, m_Git.GetConfigValueInt32(L"booltest.true4"));
+	EXPECT_EQ(42, m_Git.GetConfigValueInt32(L"booltest.true4", 42));
+	EXPECT_EQ(0, m_Git.GetConfigValueInt32(L"booltest.true8"));
+	EXPECT_EQ(42, m_Git.GetConfigValueInt32(L"booltest.true8", 42));
 
-	EXPECT_NE(0, m_Git.UnsetConfigValue(_T("does-not-exist")));
-	EXPECT_STREQ(_T("false"), m_Git.GetConfigValue(_T("core.bare")));
-	EXPECT_STREQ(_T("true"), m_Git.GetConfigValue(_T("core.ignorecase")));
-	EXPECT_EQ(0, m_Git.UnsetConfigValue(_T("core.bare")));
-	EXPECT_STREQ(_T("default"), m_Git.GetConfigValue(_T("core.bare"), _T("default")));
-	EXPECT_STREQ(_T("true"), m_Git.GetConfigValue(_T("core.ignorecase")));
+	EXPECT_NE(0, m_Git.UnsetConfigValue(L"does-not-exist"));
+	EXPECT_STREQ(L"false", m_Git.GetConfigValue(L"core.bare"));
+	EXPECT_STREQ(L"true", m_Git.GetConfigValue(L"core.ignorecase"));
+	EXPECT_EQ(0, m_Git.UnsetConfigValue(L"core.bare"));
+	EXPECT_STREQ(L"default", m_Git.GetConfigValue(L"core.bare", L"default"));
+	EXPECT_STREQ(L"true", m_Git.GetConfigValue(L"core.ignorecase"));
 
 	CString gitConfig = m_Git.m_CurrentDir + L"\\.git\\config";
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(gitConfig, L"[booltest]\nistrue"));
@@ -1440,7 +1440,7 @@ TEST_P(CBasicGitWithTestRepoFixture, Config)
 	EXPECT_STREQ(L"not-found", g_Git.GetConfigValue(L"test.fromincluded", L"not-found"));
 	EXPECT_EQ(0, m_Git.SetConfigValue(L"include.path", L"~/a-path-that-should-not-exist.gconfig"));
 	EXPECT_STREQ(L"~/a-path-that-should-not-exist.gconfig", g_Git.GetConfigValue(L"include.path", L"not-found"));
-	CString testFile = g_Git.GetHomeDirectory() + _T("\\a-path-that-should-not-exist.gconfig");
+	CString testFile = g_Git.GetHomeDirectory() + L"\\a-path-that-should-not-exist.gconfig";
 	ASSERT_FALSE(PathFileExists(testFile)); // make sure we don't override a file by mistake ;)
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"[test]\nfromincluded=yeah-this-is-included\n"));
 	EXPECT_STREQ(L"yeah-this-is-included", g_Git.GetConfigValue(L"test.fromincluded", L"not-found"));
@@ -1453,13 +1453,13 @@ TEST_P(CBasicGitWithTestRepoFixture, GetWorkingTreeChanges)
 		return;
 
 	// adding ansi2.txt (as a copy of ansi.txt) produces a warning
-	m_Git.SetConfigValue(_T("core.autocrlf"), _T("false"));
+	m_Git.SetConfigValue(L"core.autocrlf", L"false");
 
 	CString output;
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe reset --hard master"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe reset --hard master", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 
-	CTGitPathList filter(CTGitPath(_T("copy")));
+	CTGitPathList filter(CTGitPath(L"copy"));
 
 	// no changes
 	CTGitPathList list;
@@ -1469,7 +1469,7 @@ TEST_P(CBasicGitWithTestRepoFixture, GetWorkingTreeChanges)
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, nullptr));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list.GetAction());
-	EXPECT_STREQ(_T("ascii.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ascii.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, &filter));
@@ -1478,7 +1478,7 @@ TEST_P(CBasicGitWithTestRepoFixture, GetWorkingTreeChanges)
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, &filter));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list.GetAction());
-	EXPECT_STREQ(_T("ascii.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ascii.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
 
 	// untracked file
@@ -1490,7 +1490,7 @@ TEST_P(CBasicGitWithTestRepoFixture, GetWorkingTreeChanges)
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, nullptr));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list.GetAction());
-	EXPECT_STREQ(_T("ascii.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ascii.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, &filter));
@@ -1499,7 +1499,7 @@ TEST_P(CBasicGitWithTestRepoFixture, GetWorkingTreeChanges)
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, &filter));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list.GetAction());
-	EXPECT_STREQ(_T("ascii.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ascii.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
 
 	// untracked file in sub-directory
@@ -1511,7 +1511,7 @@ TEST_P(CBasicGitWithTestRepoFixture, GetWorkingTreeChanges)
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, nullptr));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list.GetAction());
-	EXPECT_STREQ(_T("ascii.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ascii.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, &filter));
@@ -1520,7 +1520,7 @@ TEST_P(CBasicGitWithTestRepoFixture, GetWorkingTreeChanges)
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, &filter));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list.GetAction());
-	EXPECT_STREQ(_T("ascii.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ascii.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
 
 	// modified file in sub-directory
@@ -1529,34 +1529,34 @@ TEST_P(CBasicGitWithTestRepoFixture, GetWorkingTreeChanges)
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, nullptr));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list.GetAction());
-	EXPECT_STREQ(_T("copy/utf8-nobom.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"copy/utf8-nobom.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, nullptr));
 	ASSERT_EQ(2, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list.GetAction());
-	EXPECT_STREQ(_T("ascii.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ascii.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
-	EXPECT_STREQ(_T("copy/utf8-nobom.txt"), list[1].GetGitPathString());
+	EXPECT_STREQ(L"copy/utf8-nobom.txt", list[1].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[1].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, &filter));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list.GetAction());
-	EXPECT_STREQ(_T("copy/utf8-nobom.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"copy/utf8-nobom.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, &filter));
 	ASSERT_EQ(2, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list.GetAction());
-	EXPECT_STREQ(_T("ascii.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ascii.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
-	EXPECT_STREQ(_T("copy/utf8-nobom.txt"), list[1].GetGitPathString());
+	EXPECT_STREQ(L"copy/utf8-nobom.txt", list[1].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[1].m_Action);
 
 	// two modified files, one in root and one in sub-directory
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe reset --hard master"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe reset --hard master", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 	testFile = m_Git.m_CurrentDir + L"\\utf8-bom.txt";
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"*.enc filter=openssl\n"));
@@ -1565,259 +1565,259 @@ TEST_P(CBasicGitWithTestRepoFixture, GetWorkingTreeChanges)
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, nullptr));
 	ASSERT_EQ(2, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list.GetAction());
-	EXPECT_STREQ(_T("copy/utf8-nobom.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"copy/utf8-nobom.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
-	EXPECT_STREQ(_T("utf8-bom.txt"), list[1].GetGitPathString());
+	EXPECT_STREQ(L"utf8-bom.txt", list[1].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[1].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, nullptr));
 	ASSERT_EQ(3, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list.GetAction());
-	EXPECT_STREQ(_T("ascii.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ascii.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
-	EXPECT_STREQ(_T("copy/utf8-nobom.txt"), list[1].GetGitPathString());
+	EXPECT_STREQ(L"copy/utf8-nobom.txt", list[1].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[1].m_Action);
-	EXPECT_STREQ(_T("utf8-bom.txt"), list[2].GetGitPathString());
+	EXPECT_STREQ(L"utf8-bom.txt", list[2].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[2].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, &filter));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list.GetAction());
-	EXPECT_STREQ(_T("copy/utf8-nobom.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"copy/utf8-nobom.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, &filter));
 	ASSERT_EQ(2, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list.GetAction());
-	EXPECT_STREQ(_T("ascii.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ascii.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
-	EXPECT_STREQ(_T("copy/utf8-nobom.txt"), list[1].GetGitPathString());
+	EXPECT_STREQ(L"copy/utf8-nobom.txt", list[1].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[1].m_Action);
 
 	// Staged modified file
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe reset --hard master"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe reset --hard master", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 	testFile = m_Git.m_CurrentDir + L"\\utf8-nobom.txt";
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"*.enc filter=openssl\n"));
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe add utf8-nobom.txt"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe add utf8-nobom.txt", &output, CP_UTF8));
 	EXPECT_TRUE(output.IsEmpty());
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, nullptr));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list.GetAction());
-	EXPECT_STREQ(_T("utf8-nobom.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"utf8-nobom.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, nullptr));
 	ASSERT_EQ(2, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list.GetAction());
-	EXPECT_STREQ(_T("ascii.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ascii.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
-	EXPECT_STREQ(_T("utf8-nobom.txt"), list[1].GetGitPathString());
+	EXPECT_STREQ(L"utf8-nobom.txt", list[1].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[1].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, &filter));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list.GetAction());
-	EXPECT_STREQ(_T("utf8-nobom.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"utf8-nobom.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, &filter));
 	ASSERT_EQ(2, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list.GetAction());
-	EXPECT_STREQ(_T("ascii.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ascii.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
-	EXPECT_STREQ(_T("utf8-nobom.txt"), list[1].GetGitPathString());
+	EXPECT_STREQ(L"utf8-nobom.txt", list[1].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[1].m_Action);
 
 	// Staged modified file in subfolder
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe reset --hard master"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe reset --hard master", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 	testFile = m_Git.m_CurrentDir + L"\\copy\\utf8-nobom.txt";
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"*.enc filter=openssl\n"));
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe add copy/utf8-nobom.txt"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe add copy/utf8-nobom.txt", &output, CP_UTF8));
 	EXPECT_TRUE(output.IsEmpty());
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, nullptr));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list.GetAction());
-	EXPECT_STREQ(_T("copy/utf8-nobom.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"copy/utf8-nobom.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, nullptr));
 	ASSERT_EQ(2, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list.GetAction());
-	EXPECT_STREQ(_T("ascii.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ascii.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
-	EXPECT_STREQ(_T("copy/utf8-nobom.txt"), list[1].GetGitPathString());
+	EXPECT_STREQ(L"copy/utf8-nobom.txt", list[1].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[1].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, &filter));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list.GetAction());
-	EXPECT_STREQ(_T("copy/utf8-nobom.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"copy/utf8-nobom.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, &filter));
 	ASSERT_EQ(2, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list.GetAction());
-	EXPECT_STREQ(_T("ascii.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ascii.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
-	EXPECT_STREQ(_T("copy/utf8-nobom.txt"), list[1].GetGitPathString());
+	EXPECT_STREQ(L"copy/utf8-nobom.txt", list[1].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[1].m_Action);
 
 	// Modified file modified after staging
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe reset --hard master"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe reset --hard master", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 	testFile = m_Git.m_CurrentDir + L"\\copy\\utf8-nobom.txt";
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"*.enc filter=openssl\n"));
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe add copy/utf8-nobom.txt"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe add copy/utf8-nobom.txt", &output, CP_UTF8));
 	EXPECT_TRUE(output.IsEmpty());
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"now with different content after staging"));
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, nullptr));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list.GetAction());
-	EXPECT_STREQ(_T("copy/utf8-nobom.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"copy/utf8-nobom.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, nullptr));
 	ASSERT_EQ(2, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list.GetAction());
-	EXPECT_STREQ(_T("ascii.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ascii.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
-	EXPECT_STREQ(_T("copy/utf8-nobom.txt"), list[1].GetGitPathString());
+	EXPECT_STREQ(L"copy/utf8-nobom.txt", list[1].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[1].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, &filter));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list.GetAction());
-	EXPECT_STREQ(_T("copy/utf8-nobom.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"copy/utf8-nobom.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, &filter));
 	ASSERT_EQ(2, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list.GetAction());
-	EXPECT_STREQ(_T("ascii.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ascii.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
-	EXPECT_STREQ(_T("copy/utf8-nobom.txt"), list[1].GetGitPathString());
+	EXPECT_STREQ(L"copy/utf8-nobom.txt", list[1].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[1].m_Action);
 
 	// Missing file
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe reset --hard master"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe reset --hard master", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
-	EXPECT_TRUE(::DeleteFile(m_Dir.GetTempDir()+_T("\\copy\\ansi.txt")));
+	EXPECT_TRUE(::DeleteFile(m_Dir.GetTempDir()+L"\\copy\\ansi.txt"));
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, nullptr));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, list.GetAction());
-	EXPECT_STREQ(_T("copy/ansi.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"copy/ansi.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MISSING, list[0].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, nullptr));
 	ASSERT_EQ(2, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED | CTGitPath::LOGACTIONS_DELETED, list.GetAction());
-	EXPECT_STREQ(_T("ascii.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ascii.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
-	EXPECT_STREQ(_T("copy/ansi.txt"), list[1].GetGitPathString());
+	EXPECT_STREQ(L"copy/ansi.txt", list[1].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MISSING, list[1].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, &filter));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, list.GetAction());
-	EXPECT_STREQ(_T("copy/ansi.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"copy/ansi.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MISSING, list[0].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, &filter));
 	ASSERT_EQ(2, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED | CTGitPath::LOGACTIONS_DELETED, list.GetAction());
-	EXPECT_STREQ(_T("ascii.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ascii.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
-	EXPECT_STREQ(_T("copy/ansi.txt"), list[1].GetGitPathString());
+	EXPECT_STREQ(L"copy/ansi.txt", list[1].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MISSING, list[1].m_Action);
 
 	// deleted file, also deleted in index
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe reset --hard master"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe reset --hard master", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe rm copy/ansi.txt"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe rm copy/ansi.txt", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, nullptr));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, list.GetAction());
-	EXPECT_STREQ(_T("copy/ansi.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"copy/ansi.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, list[0].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, nullptr));
 	ASSERT_EQ(2, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED | CTGitPath::LOGACTIONS_DELETED, list.GetAction());
-	EXPECT_STREQ(_T("ascii.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ascii.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
-	EXPECT_STREQ(_T("copy/ansi.txt"), list[1].GetGitPathString());
+	EXPECT_STREQ(L"copy/ansi.txt", list[1].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, list[1].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, &filter));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, list.GetAction());
-	EXPECT_STREQ(_T("copy/ansi.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"copy/ansi.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, list[0].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, &filter));
 	ASSERT_EQ(2, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED | CTGitPath::LOGACTIONS_DELETED, list.GetAction());
-	EXPECT_STREQ(_T("ascii.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ascii.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
-	EXPECT_STREQ(_T("copy/ansi.txt"), list[1].GetGitPathString());
+	EXPECT_STREQ(L"copy/ansi.txt", list[1].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, list[1].m_Action);
 
 	// file deleted in index, but still on disk
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe reset --hard master"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe reset --hard master", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe rm --cached copy/ansi.txt"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe rm --cached copy/ansi.txt", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, nullptr));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, list.GetAction());
-	EXPECT_STREQ(_T("copy/ansi.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"copy/ansi.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, list[0].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, nullptr));
 	ASSERT_EQ(2, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED | CTGitPath::LOGACTIONS_DELETED, list.GetAction());
-	EXPECT_STREQ(_T("ascii.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ascii.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
-	EXPECT_STREQ(_T("copy/ansi.txt"), list[1].GetGitPathString());
+	EXPECT_STREQ(L"copy/ansi.txt", list[1].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, list[1].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, &filter));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, list.GetAction());
-	EXPECT_STREQ(_T("copy/ansi.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"copy/ansi.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, list[0].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, &filter));
 	ASSERT_EQ(2, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED | CTGitPath::LOGACTIONS_DELETED, list.GetAction());
-	EXPECT_STREQ(_T("ascii.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ascii.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
-	EXPECT_STREQ(_T("copy/ansi.txt"), list[1].GetGitPathString());
+	EXPECT_STREQ(L"copy/ansi.txt", list[1].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, list[1].m_Action);
 
 	// file deleted in index, but still on disk, but modified
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe reset --hard master"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe reset --hard master", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe rm --cached copy/ansi.txt"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe rm --cached copy/ansi.txt", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 	testFile = m_Git.m_CurrentDir + L"\\copy\\ansi.txt";
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"*.enc filter=openssl\n"));
@@ -1825,236 +1825,236 @@ TEST_P(CBasicGitWithTestRepoFixture, GetWorkingTreeChanges)
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, nullptr));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, list.GetAction());
-	EXPECT_STREQ(_T("copy/ansi.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"copy/ansi.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, list[0].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, nullptr));
 	ASSERT_EQ(2, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED | CTGitPath::LOGACTIONS_DELETED, list.GetAction());
-	EXPECT_STREQ(_T("ascii.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ascii.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
-	EXPECT_STREQ(_T("copy/ansi.txt"), list[1].GetGitPathString());
+	EXPECT_STREQ(L"copy/ansi.txt", list[1].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, list[1].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, &filter));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, list.GetAction());
-	EXPECT_STREQ(_T("copy/ansi.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"copy/ansi.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, list[0].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, &filter));
 	ASSERT_EQ(2, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED | CTGitPath::LOGACTIONS_DELETED, list.GetAction());
-	EXPECT_STREQ(_T("ascii.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ascii.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
-	EXPECT_STREQ(_T("copy/ansi.txt"), list[1].GetGitPathString());
+	EXPECT_STREQ(L"copy/ansi.txt", list[1].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, list[1].m_Action);
 
 	// renamed file in same folder
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe reset --hard master"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe reset --hard master", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe mv ansi.txt ansi2.txt"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe mv ansi.txt ansi2.txt", &output, CP_UTF8));
 	EXPECT_TRUE(output.IsEmpty());
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, nullptr));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, list.GetAction());
-	EXPECT_STREQ(_T("ansi2.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ansi2.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, list[0].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, nullptr));
 	ASSERT_EQ(2, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_MODIFIED, list.GetAction());
-	EXPECT_STREQ(_T("ansi2.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ansi2.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, list[0].m_Action);
-	EXPECT_STREQ(_T("ascii.txt"), list[1].GetGitPathString());
+	EXPECT_STREQ(L"ascii.txt", list[1].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[1].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, &filter));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, list.GetAction());
-	EXPECT_STREQ(_T("ansi2.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ansi2.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, list[0].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, &filter));
 	ASSERT_EQ(2, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_MODIFIED, list.GetAction());
-	EXPECT_STREQ(_T("ansi2.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ansi2.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, list[0].m_Action);
-	EXPECT_STREQ(_T("ascii.txt"), list[1].GetGitPathString());
+	EXPECT_STREQ(L"ascii.txt", list[1].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[1].m_Action);
 
 	// added and staged new file
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe reset --hard master"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe reset --hard master", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 	testFile = m_Git.m_CurrentDir + L"\\copy\\test-file.txt";
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"*.enc filter=openssl\n"));
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe add copy/test-file.txt"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe add copy/test-file.txt", &output, CP_UTF8));
 	EXPECT_TRUE(output.IsEmpty());
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, nullptr));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, list.GetAction());
-	EXPECT_STREQ(_T("copy/test-file.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"copy/test-file.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, list[0].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, nullptr));
 	ASSERT_EQ(2, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED | CTGitPath::LOGACTIONS_ADDED, list.GetAction());
-	EXPECT_STREQ(_T("ascii.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ascii.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
-	EXPECT_STREQ(_T("copy/test-file.txt"), list[1].GetGitPathString());
+	EXPECT_STREQ(L"copy/test-file.txt", list[1].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, list[1].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, &filter));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, list.GetAction());
-	EXPECT_STREQ(_T("copy/test-file.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"copy/test-file.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, list[0].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, &filter));
 	ASSERT_EQ(2, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED | CTGitPath::LOGACTIONS_ADDED, list.GetAction());
-	EXPECT_STREQ(_T("ascii.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ascii.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
-	EXPECT_STREQ(_T("copy/test-file.txt"), list[1].GetGitPathString());
+	EXPECT_STREQ(L"copy/test-file.txt", list[1].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, list[1].m_Action);
 
 	// file copied and staged
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe reset --hard master"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe reset --hard master", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 	testFile = m_Git.m_CurrentDir + L"\\ansi.txt";
 	EXPECT_TRUE(CopyFile(m_Git.m_CurrentDir + L"\\ansi.txt", m_Git.m_CurrentDir + L"\\ansi2.txt", TRUE));
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe add ansi2.txt"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe add ansi2.txt", &output, CP_UTF8));
 	EXPECT_TRUE(output.IsEmpty());
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, nullptr));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, list.GetAction());
-	EXPECT_STREQ(_T("ansi2.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ansi2.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, list[0].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, nullptr));
 	ASSERT_EQ(2, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED | CTGitPath::LOGACTIONS_ADDED, list.GetAction());
-	EXPECT_STREQ(_T("ansi2.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ansi2.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, list[0].m_Action);
-	EXPECT_STREQ(_T("ascii.txt"), list[1].GetGitPathString());
+	EXPECT_STREQ(L"ascii.txt", list[1].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[1].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, &filter));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, list.GetAction());
-	EXPECT_STREQ(_T("ansi2.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ansi2.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, list[0].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, &filter));
 	ASSERT_EQ(2, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED | CTGitPath::LOGACTIONS_ADDED, list.GetAction());
-	EXPECT_STREQ(_T("ansi2.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ansi2.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, list[0].m_Action);
-	EXPECT_STREQ(_T("ascii.txt"), list[1].GetGitPathString());
+	EXPECT_STREQ(L"ascii.txt", list[1].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[1].m_Action);
 
 	// file renamed + moved to sub-folder
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe reset --hard master"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe reset --hard master", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe mv ansi.txt copy/ansi2.txt"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe mv ansi.txt copy/ansi2.txt", &output, CP_UTF8));
 	EXPECT_TRUE(output.IsEmpty());
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, nullptr));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, list.GetAction());
-	EXPECT_STREQ(_T("copy/ansi2.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"copy/ansi2.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, list[0].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, nullptr));
 	ASSERT_EQ(2, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED | CTGitPath::LOGACTIONS_REPLACED, list.GetAction());
-	EXPECT_STREQ(_T("ascii.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ascii.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
-	EXPECT_STREQ(_T("copy/ansi2.txt"), list[1].GetGitPathString());
+	EXPECT_STREQ(L"copy/ansi2.txt", list[1].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, list[1].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, &filter));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_ADDED, list.GetAction());
-	EXPECT_STREQ(_T("copy/ansi2.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"copy/ansi2.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_ADDED, list[0].m_Action); // TODO
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, &filter));
 	ASSERT_EQ(2, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED | CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_ADDED, list.GetAction());
-	EXPECT_STREQ(_T("ascii.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ascii.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
-	EXPECT_STREQ(_T("copy/ansi2.txt"), list[1].GetGitPathString());
+	EXPECT_STREQ(L"copy/ansi2.txt", list[1].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_ADDED, list[1].m_Action); // TODO
 
 	// conflicting files
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe reset --hard master"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe reset --hard master", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe merge forconflict"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe merge forconflict", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 	output.Empty();
-	EXPECT_EQ(1, m_Git.Run(_T("git.exe merge simple-conflict"), &output, CP_UTF8));
+	EXPECT_EQ(1, m_Git.Run(L"git.exe merge simple-conflict", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, nullptr));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED | CTGitPath::LOGACTIONS_MODIFIED, list.GetAction());
-	EXPECT_STREQ(_T("ansi.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ansi.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED | CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, nullptr));
 	ASSERT_EQ(7, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED | CTGitPath::LOGACTIONS_MODIFIED, list.GetAction());
-	EXPECT_STREQ(_T("ansi.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ansi.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED | CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
-	EXPECT_STREQ(_T("utf16-be-bom.txt"), list[1].GetGitPathString());
+	EXPECT_STREQ(L"utf16-be-bom.txt", list[1].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[1].m_Action);
-	EXPECT_STREQ(_T("utf16-be-nobom.txt"), list[2].GetGitPathString());
+	EXPECT_STREQ(L"utf16-be-nobom.txt", list[2].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[2].m_Action);
-	EXPECT_STREQ(_T("utf16-le-bom.txt"), list[3].GetGitPathString());
+	EXPECT_STREQ(L"utf16-le-bom.txt", list[3].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[3].m_Action);
-	EXPECT_STREQ(_T("utf16-le-nobom.txt"), list[4].GetGitPathString());
+	EXPECT_STREQ(L"utf16-le-nobom.txt", list[4].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[4].m_Action);
-	EXPECT_STREQ(_T("utf8-bom.txt"), list[5].GetGitPathString());
+	EXPECT_STREQ(L"utf8-bom.txt", list[5].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[5].m_Action);
-	EXPECT_STREQ(_T("utf8-nobom.txt"), list[6].GetGitPathString());
+	EXPECT_STREQ(L"utf8-nobom.txt", list[6].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[6].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, &filter));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED, list.GetAction());
-	EXPECT_STREQ(_T("ansi.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ansi.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED, list[0].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, &filter));
 	ASSERT_EQ(7, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED | CTGitPath::LOGACTIONS_MODIFIED, list.GetAction());
-	EXPECT_STREQ(_T("ansi.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ansi.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED, list[0].m_Action);
-	EXPECT_STREQ(_T("utf16-be-bom.txt"), list[1].GetGitPathString());
+	EXPECT_STREQ(L"utf16-be-bom.txt", list[1].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[1].m_Action);
-	EXPECT_STREQ(_T("utf16-be-nobom.txt"), list[2].GetGitPathString());
+	EXPECT_STREQ(L"utf16-be-nobom.txt", list[2].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[2].m_Action);
-	EXPECT_STREQ(_T("utf16-le-bom.txt"), list[3].GetGitPathString());
+	EXPECT_STREQ(L"utf16-le-bom.txt", list[3].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[3].m_Action);
-	EXPECT_STREQ(_T("utf16-le-nobom.txt"), list[4].GetGitPathString());
+	EXPECT_STREQ(L"utf16-le-nobom.txt", list[4].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[4].m_Action);
-	EXPECT_STREQ(_T("utf8-bom.txt"), list[5].GetGitPathString());
+	EXPECT_STREQ(L"utf8-bom.txt", list[5].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[5].m_Action);
-	EXPECT_STREQ(_T("utf8-nobom.txt"), list[6].GetGitPathString());
+	EXPECT_STREQ(L"utf8-nobom.txt", list[6].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[6].m_Action);
 }
 
@@ -2064,80 +2064,80 @@ TEST_P(CBasicGitWithTestRepoFixture, GetWorkingTreeChanges_DeleteModifyConflict_
 		return;
 
 	CString output;
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe reset --hard master"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe reset --hard master", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe checkout forconflict"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe checkout forconflict", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe rm ansi.txt"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe rm ansi.txt", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe commit -m \"Prepare conflict case\""), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe commit -m \"Prepare conflict case\"", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe checkout simple-conflict"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe checkout simple-conflict", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 	output.Empty();
-	EXPECT_EQ(1, m_Git.Run(_T("git.exe merge forconflict"), &output, CP_UTF8));
+	EXPECT_EQ(1, m_Git.Run(L"git.exe merge forconflict", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 
-	CTGitPathList filter(CTGitPath(_T("copy")));
+	CTGitPathList filter(CTGitPath(L"copy"));
 
 	CTGitPathList list;
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, nullptr));
 	ASSERT_EQ(7, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED | CTGitPath::LOGACTIONS_MODIFIED, list.GetAction());
-	EXPECT_STREQ(_T("ansi.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ansi.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED | CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
-	EXPECT_STREQ(_T("utf16-be-bom.txt"), list[1].GetGitPathString());
+	EXPECT_STREQ(L"utf16-be-bom.txt", list[1].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[1].m_Action);
-	EXPECT_STREQ(_T("utf16-be-nobom.txt"), list[2].GetGitPathString());
+	EXPECT_STREQ(L"utf16-be-nobom.txt", list[2].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[2].m_Action);
-	EXPECT_STREQ(_T("utf16-le-bom.txt"), list[3].GetGitPathString());
+	EXPECT_STREQ(L"utf16-le-bom.txt", list[3].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[3].m_Action);
-	EXPECT_STREQ(_T("utf16-le-nobom.txt"), list[4].GetGitPathString());
+	EXPECT_STREQ(L"utf16-le-nobom.txt", list[4].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[4].m_Action);
-	EXPECT_STREQ(_T("utf8-bom.txt"), list[5].GetGitPathString());
+	EXPECT_STREQ(L"utf8-bom.txt", list[5].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[5].m_Action);
-	EXPECT_STREQ(_T("utf8-nobom.txt"), list[6].GetGitPathString());
+	EXPECT_STREQ(L"utf8-nobom.txt", list[6].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[6].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, nullptr));
 	ASSERT_EQ(7, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED | CTGitPath::LOGACTIONS_MODIFIED, list.GetAction());
-	EXPECT_STREQ(_T("ansi.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ansi.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED | CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
-	EXPECT_STREQ(_T("utf16-be-bom.txt"), list[1].GetGitPathString());
+	EXPECT_STREQ(L"utf16-be-bom.txt", list[1].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[1].m_Action);
-	EXPECT_STREQ(_T("utf16-be-nobom.txt"), list[2].GetGitPathString());
+	EXPECT_STREQ(L"utf16-be-nobom.txt", list[2].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[2].m_Action);
-	EXPECT_STREQ(_T("utf16-le-bom.txt"), list[3].GetGitPathString());
+	EXPECT_STREQ(L"utf16-le-bom.txt", list[3].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[3].m_Action);
-	EXPECT_STREQ(_T("utf16-le-nobom.txt"), list[4].GetGitPathString());
+	EXPECT_STREQ(L"utf16-le-nobom.txt", list[4].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[4].m_Action);
-	EXPECT_STREQ(_T("utf8-bom.txt"), list[5].GetGitPathString());
+	EXPECT_STREQ(L"utf8-bom.txt", list[5].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[5].m_Action);
-	EXPECT_STREQ(_T("utf8-nobom.txt"), list[6].GetGitPathString());
+	EXPECT_STREQ(L"utf8-nobom.txt", list[6].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[6].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, &filter));
 	ASSERT_EQ(7, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED | CTGitPath::LOGACTIONS_MODIFIED, list.GetAction());
-	EXPECT_STREQ(_T("ansi.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ansi.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED, list[0].m_Action);
-	EXPECT_STREQ(_T("utf16-be-bom.txt"), list[1].GetGitPathString());
+	EXPECT_STREQ(L"utf16-be-bom.txt", list[1].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[1].m_Action);
-	EXPECT_STREQ(_T("utf16-be-nobom.txt"), list[2].GetGitPathString());
+	EXPECT_STREQ(L"utf16-be-nobom.txt", list[2].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[2].m_Action);
-	EXPECT_STREQ(_T("utf16-le-bom.txt"), list[3].GetGitPathString());
+	EXPECT_STREQ(L"utf16-le-bom.txt", list[3].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[3].m_Action);
-	EXPECT_STREQ(_T("utf16-le-nobom.txt"), list[4].GetGitPathString());
+	EXPECT_STREQ(L"utf16-le-nobom.txt", list[4].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[4].m_Action);
-	EXPECT_STREQ(_T("utf8-bom.txt"), list[5].GetGitPathString());
+	EXPECT_STREQ(L"utf8-bom.txt", list[5].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[5].m_Action);
-	EXPECT_STREQ(_T("utf8-nobom.txt"), list[6].GetGitPathString());
+	EXPECT_STREQ(L"utf8-nobom.txt", list[6].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[6].m_Action);
 }
 
@@ -2147,41 +2147,41 @@ TEST_P(CBasicGitWithTestRepoFixture, GetWorkingTreeChanges_DeleteModifyConflict_
 		return;
 
 	CString output;
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe reset --hard master"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe reset --hard master", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe checkout forconflict"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe checkout forconflict", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe rm ansi.txt"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe rm ansi.txt", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe commit -m \"Prepare conflict case\""), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe commit -m \"Prepare conflict case\"", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 	output.Empty();
-	EXPECT_EQ(1, m_Git.Run(_T("git.exe merge simple-conflict"), &output, CP_UTF8));
+	EXPECT_EQ(1, m_Git.Run(L"git.exe merge simple-conflict", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 
-	CTGitPathList filter(CTGitPath(_T("copy")));
+	CTGitPathList filter(CTGitPath(L"copy"));
 
 	CTGitPathList list;
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, nullptr));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED | CTGitPath::LOGACTIONS_ADDED, list.GetAction());
-	EXPECT_STREQ(_T("ansi.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ansi.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED | CTGitPath::LOGACTIONS_ADDED, list[0].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, nullptr));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED | CTGitPath::LOGACTIONS_MODIFIED, list.GetAction());
-	EXPECT_STREQ(_T("ansi.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ansi.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED | CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, &filter));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED, list.GetAction());
-	EXPECT_STREQ(_T("ansi.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"ansi.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED, list[0].m_Action);
 }
 
@@ -2199,34 +2199,34 @@ TEST_P(CBasicGitWithEmptyRepositoryFixture, GetWorkingTreeChanges)
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, nullptr));
 	EXPECT_TRUE(list.IsEmpty());
 	CString output;
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe add test.txt"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe add test.txt", &output, CP_UTF8));
 	EXPECT_TRUE(output.IsEmpty());
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, nullptr));
 	ASSERT_EQ(1, list.GetCount());
 	// EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, list.GetAction()); // we do not care here for the list action, as its only used in GitLogListBase and there we re-calculate it in AsyncDiffThread
-	EXPECT_STREQ(_T("test.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"test.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, list[0].m_Action);
 
-	CTGitPathList filter(CTGitPath(_T("copy")));
+	CTGitPathList filter(CTGitPath(L"copy"));
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, &filter));
 	ASSERT_EQ(1, list.GetCount());
 	// EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, list.GetAction()); // we do not care here for the list action, as its only used in GitLogListBase and there we re-calculate it in AsyncDiffThread
-	EXPECT_STREQ(_T("test.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"test.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, list[0].m_Action);
 
 	list.Clear();
 	EXPECT_TRUE(::CreateDirectory(m_Dir.GetTempDir() + L"\\copy", nullptr));
 	testFile = m_Dir.GetTempDir() + L"\\copy\\test2.txt";
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"this is another testing file."));
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe add copy/test2.txt"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe add copy/test2.txt", &output, CP_UTF8));
 	EXPECT_TRUE(output.IsEmpty());
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, &filter));
 	ASSERT_EQ(2, list.GetCount());
 	// EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, list.GetAction()); // we do not care here for the list action, as its only used in GitLogListBase and there we re-calculate it in AsyncDiffThread
-	EXPECT_STREQ(_T("copy/test2.txt"), list[0].GetGitPathString());
+	EXPECT_STREQ(L"copy/test2.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, list[0].m_Action);
-	EXPECT_STREQ(_T("test.txt"), list[1].GetGitPathString());
+	EXPECT_STREQ(L"test.txt", list[1].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, list[1].m_Action);
 }
 
@@ -2236,10 +2236,10 @@ TEST_P(CBasicGitWithTestRepoFixture, GetWorkingTreeChanges_RefreshGitIndex)
 		return;
 
 	// adding ansi2.txt (as a copy of ansi.txt) produces a warning
-	m_Git.SetConfigValue(_T("core.autocrlf"), _T("false"));
+	m_Git.SetConfigValue(L"core.autocrlf", L"false");
 
 	CString output;
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe reset --hard master"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe reset --hard master", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 
 	CTGitPathList list;
@@ -2278,28 +2278,28 @@ TEST_P(CBasicGitWithTestRepoFixture, GetBisectTerms)
 	CString good, bad;
 	CString output;
 
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe bisect start"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe bisect start", &output, CP_UTF8));
 	m_Git.GetBisectTerms(&good, &bad);
-	EXPECT_STREQ(_T("good"), good);
-	EXPECT_STREQ(_T("bad"), bad);
+	EXPECT_STREQ(L"good", good);
+	EXPECT_STREQ(L"bad", bad);
 
 	good.Empty();
 	bad.Empty();
 	m_Git.GetBisectTerms(&good, &bad);
-	EXPECT_STREQ(_T("good"), good);
-	EXPECT_STREQ(_T("bad"), bad);
+	EXPECT_STREQ(L"good", good);
+	EXPECT_STREQ(L"bad", bad);
 
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe bisect reset"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe bisect reset", &output, CP_UTF8));
 
 	if (m_Git.GetGitVersion(nullptr, nullptr) < 0x02070000)
 		return;
 
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe bisect start --term-good=original --term-bad=changed"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe bisect start --term-good=original --term-bad=changed", &output, CP_UTF8));
 	m_Git.GetBisectTerms(&good, &bad);
-	EXPECT_STREQ(_T("original"), good);
-	EXPECT_STREQ(_T("changed"), bad);
+	EXPECT_STREQ(L"original", good);
+	EXPECT_STREQ(L"changed", bad);
 
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe bisect reset"), &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe bisect reset", &output, CP_UTF8));
 }
 
 TEST_P(CBasicGitWithTestRepoFixture, GetRefsCommitIsOn)

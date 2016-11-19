@@ -73,7 +73,7 @@ protected:
 				TCHAR buffer[129];
 				::GetClassName(pMsg->hwnd, buffer,128);
 
-				if(_tcsnicmp(buffer,_T("EDIT"),128) == 0)
+				if (_wcsnicmp(buffer, L"EDIT", 128) == 0)
 				{
 					::PostMessage(pMsg->hwnd,EM_SETSEL,0,-1);
 					return TRUE;

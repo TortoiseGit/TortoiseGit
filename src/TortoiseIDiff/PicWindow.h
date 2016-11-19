@@ -104,7 +104,7 @@ public:
         , bDragging(false)
         , bSelectionMode(false)
     {
-        SetWindowTitle(_T("Picture Window"));
+        SetWindowTitle(L"Picture Window");
         m_lastTTPos.x = 0;
         m_lastTTPos.y = 0;
         m_wszTip[0]   = 0;
@@ -131,7 +131,7 @@ public:
     /// object without having to load it again.
     CPicture * GetPic() {return &picture;}
     /// Sets the path and title of the second image which is alpha blended over the original
-    void SetSecondPic(CPicture * pPicture = NULL, const tstring& sectit = _T(""), const tstring& secpath = _T(""), int hpos = 0, int vpos = 0)
+    void SetSecondPic(CPicture* pPicture = nullptr, const tstring& sectit = L"", const tstring& secpath = L"", int hpos = 0, int vpos = 0)
     {
         pSecondPic = pPicture;
         pictitle2 = sectit;

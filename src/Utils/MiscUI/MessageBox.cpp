@@ -92,7 +92,7 @@ UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, int
 		{
 			ASSERT(type==REG_DWORD);
 			RegCloseKey(hKey);
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Using stored value %ld for \"%s\"\n"), dwRetVal, lpMessage);
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Using stored value %ld for \"%s\"\n", dwRetVal, lpMessage);
 			return (UINT)dwRetVal;			//return with the last saved value
 		}
 		else
@@ -138,7 +138,7 @@ UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, int
 	if (!lpCheckMessage)
 	{
 #ifndef IDS_MSGBOX_DONOTSHOWAGAIN
-		box.m_sCheckbox = _T("do not show again");
+		box.m_sCheckbox = L"do not show again";
 #else
 		CString m_i18l;
 		m_i18l.LoadString(IDS_MSGBOX_DONOTSHOWAGAIN);
@@ -239,7 +239,7 @@ UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, UIN
 		{
 			ASSERT(type==REG_DWORD);
 			RegCloseKey(hKey);
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Using stored value %ld for \"%s\"\n"), dwRetVal, lpMessage);
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Using stored value %ld for \"%s\"\n", dwRetVal, lpMessage);
 			return (UINT)dwRetVal;			//return with the last saved value
 		}
 		else
@@ -346,7 +346,7 @@ UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, UIN
 	if (!lpCheckMessage)
 	{
 #ifndef IDS_MSGBOX_DONOTSHOWAGAIN
-		box.m_sCheckbox = _T("do not show again");
+		box.m_sCheckbox = L"do not show again";
 #else
 		CString m_i18l;
 		m_i18l.LoadString(IDS_MSGBOX_DONOTSHOWAGAIN);
@@ -594,7 +594,7 @@ int CMessageBox::FillBoxStandard(UINT uType)
 	{
 		CString sHelpText;
 #ifndef IDS_MSGBOX_HELP
-		sHelpText = _T("Help");
+		sHelpText = L"Help";
 #else
 		m_i18l.LoadString(IDS_MSGBOX_HELP);
 		sHelpText = m_i18l;
@@ -644,13 +644,13 @@ UINT CMessageBox::GoModal(CWnd * pWnd, const CString& title, const CString& msg,
 	int pix = -MulDiv(m_LogFont.lfHeight, 72, GetDeviceCaps(hdc, LOGPIXELSY));
 	CDlgTemplate dialogTemplate = CDlgTemplate(title, WS_CAPTION | DS_CENTER,
 		0, 0, 0, 0, m_LogFont.lfFaceName, pix);
-	dialogTemplate.AddButton(_T("Button1"), WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_PUSHBUTTON | ((nDefaultButton == 1) ? BS_DEFPUSHBUTTON : 0), 0,
+	dialogTemplate.AddButton(L"Button1", WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_PUSHBUTTON | ((nDefaultButton == 1) ? BS_DEFPUSHBUTTON : 0), 0,
 		2 + 3, 62, 56, 13, IDC_MESSAGEBOX_BUTTON1);
-	dialogTemplate.AddButton(_T("Button2"), WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_PUSHBUTTON | ((nDefaultButton == 2) ? BS_DEFPUSHBUTTON : 0), 0,
+	dialogTemplate.AddButton(L"Button2", WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_PUSHBUTTON | ((nDefaultButton == 2) ? BS_DEFPUSHBUTTON : 0), 0,
 		2 + 3, 62, 56, 13, IDC_MESSAGEBOX_BUTTON2);
-	dialogTemplate.AddButton(_T("Button3"), WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_PUSHBUTTON | ((nDefaultButton == 3) ? BS_DEFPUSHBUTTON : 0), 0,
+	dialogTemplate.AddButton(L"Button3", WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_PUSHBUTTON | ((nDefaultButton == 3) ? BS_DEFPUSHBUTTON : 0), 0,
 		2 + 3, 62, 56, 13, IDC_MESSAGEBOX_BUTTON3);
-	dialogTemplate.AddButton(_T("Checkbox"), WS_CHILD | WS_TABSTOP | BS_AUTOCHECKBOX, 0,
+	dialogTemplate.AddButton(L"Checkbox", WS_CHILD | WS_TABSTOP | BS_AUTOCHECKBOX, 0,
 		0, 0, 0, 0, IDC_MESSAGEBOX_CHECKBOX);
 
 	m_nDefButton = nDefaultButton;
@@ -674,7 +674,7 @@ void CMessageBox::SetRegistryValue(const CString& sValue, DWORD value)
 #endif
 	DWORD disp;
 	HKEY hKey;
-	if (RegCreateKeyEx(HKEY_CURRENT_USER, path, 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_WRITE, nullptr, &hKey, &disp) != ERROR_SUCCESS)
+	if (RegCreateKeyEx(HKEY_CURRENT_USER, path, 0, L"", REG_OPTION_NON_VOLATILE, KEY_WRITE, nullptr, &hKey, &disp) != ERROR_SUCCESS)
 	{
 		return;
 	}
@@ -854,7 +854,7 @@ void CMessageBox::OnLButtonUp(UINT nFlags, CPoint point)
 	if (IsPointOverALink(point))
 	{
 		CString url = GetLinkForPoint(point);
-		ShellExecute(nullptr, _T("open"), url, nullptr, nullptr, SW_HIDE);
+		ShellExecute(nullptr, L"open", url, nullptr, nullptr, SW_HIDE);
 	}
 
 	__super::OnLButtonUp(nFlags, point);
@@ -885,7 +885,7 @@ void CMessageBox::OnButton2()
 	{
 		typedef HWND (WINAPI* FPHH)(HWND, LPCWSTR, UINT, DWORD);
 		FPHH pHtmlHelp = nullptr; // Function pointer
-		CAutoLibrary hInstHtmlHelp = AtlLoadSystemLibraryUsingFullPath(_T("HHCtrl.ocx"));
+		CAutoLibrary hInstHtmlHelp = AtlLoadSystemLibraryUsingFullPath(L"HHCtrl.ocx");
 		HWND hHelp = nullptr;
 		if (hInstHtmlHelp)
 		{
@@ -894,7 +894,7 @@ void CMessageBox::OnButton2()
 				hHelp = pHtmlHelp(m_hWnd, (LPCTSTR)m_sHelpPath, HH_DISPLAY_TOPIC, NULL);
 		}
 		if (!hHelp)
-			::MessageBox(m_hWnd, _T("could not show help file"), _T("Help"), MB_ICONERROR);
+			::MessageBox(m_hWnd, L"could not show help file", L"Help", MB_ICONERROR);
 	}
 	else if (m_uButton2Ret == IDHELP)
 		OnHelp();
@@ -915,7 +915,7 @@ void CMessageBox::OnButton3()
 	{
 		typedef HWND (WINAPI* FPHH)(HWND, LPCWSTR, UINT, DWORD);
 		FPHH pHtmlHelp = nullptr; // Function pointer
-		CAutoLibrary hInstHtmlHelp = AtlLoadSystemLibraryUsingFullPath(_T("HHCtrl.ocx"));
+		CAutoLibrary hInstHtmlHelp = AtlLoadSystemLibraryUsingFullPath(L"HHCtrl.ocx");
 		HWND hHelp = nullptr;
 		if (hInstHtmlHelp)
 		{
@@ -924,7 +924,7 @@ void CMessageBox::OnButton3()
 				hHelp = pHtmlHelp(m_hWnd, (LPCTSTR)m_sHelpPath, HH_DISPLAY_TOPIC, NULL);
 		}
 		if (!hHelp)
-			::MessageBox(m_hWnd, _T("could not show help file"), _T("Help"), MB_ICONERROR);
+			::MessageBox(m_hWnd, L"could not show help file", L"Help", MB_ICONERROR);
 	}
 	else if (m_uButton3Ret == IDHELP)
 		OnHelp();

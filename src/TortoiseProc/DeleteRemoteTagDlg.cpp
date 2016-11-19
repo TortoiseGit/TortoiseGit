@@ -76,7 +76,7 @@ BOOL CDeleteRemoteTagDlg::OnInitDialog()
 
 	Refresh();
 
-	EnableSaveRestore(_T("DeleteRemoteTagDlg"));
+	EnableSaveRestore(L"DeleteRemoteTagDlg");
 
 	return TRUE;
 }
@@ -132,7 +132,7 @@ void CDeleteRemoteTagDlg::OnBnClickedOk()
 	{
 		CString msg;
 		msg.Format(IDS_PROC_DELETENREFS, m_ctrlTags.GetSelectedCount());
-		if (CMessageBox::Show(m_hWnd, msg, _T("TortoiseGit"), 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
+		if (CMessageBox::Show(GetSafeHwnd(), msg, L"TortoiseGit", 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
 			return;
 	}
 	else // GetSelectedCount() is 1, otherwise the button is disabled
@@ -140,7 +140,7 @@ void CDeleteRemoteTagDlg::OnBnClickedOk()
 		POSITION pos = m_ctrlTags.GetFirstSelectedItemPosition();
 		CString msg;
 		msg.Format(IDS_PROC_DELETEBRANCHTAG, (LPCTSTR)m_taglist[(m_ctrlTags.GetNextSelectedItem(pos))]);
-		if (CMessageBox::Show(m_hWnd, msg, _T("TortoiseGit"), 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
+		if (CMessageBox::Show(GetSafeHwnd(), msg, L"TortoiseGit", 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
 			return;
 	}
 
@@ -148,7 +148,7 @@ void CDeleteRemoteTagDlg::OnBnClickedOk()
 	POSITION pos = m_ctrlTags.GetFirstSelectedItemPosition();
 	int index;
 	while ((index = m_ctrlTags.GetNextSelectedItem(pos)) >= 0)
-		list.push_back(_T("refs/tags/") + m_taglist[index]);
+		list.push_back(L"refs/tags/" + m_taglist[index]);
 	CSysProgressDlg sysProgressDlg;
 	sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
 	sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_DELETING_REMOTE_REFS)));
@@ -156,7 +156,7 @@ void CDeleteRemoteTagDlg::OnBnClickedOk()
 	sysProgressDlg.SetShowProgressBar(false);
 	sysProgressDlg.ShowModal(this, true);
 	if (g_Git.DeleteRemoteRefs(m_sRemote, list))
-		CMessageBox::Show(m_hWnd, g_Git.GetGitLastErr(_T("Could not delete remote ref."), CGit::GIT_CMD_PUSH), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+		CMessageBox::Show(GetSafeHwnd(), g_Git.GetGitLastErr(L"Could not delete remote ref.", CGit::GIT_CMD_PUSH), L"TortoiseGit", MB_OK | MB_ICONERROR);
 	sysProgressDlg.Stop();
 	BringWindowToTop();
 	Refresh();

@@ -144,7 +144,7 @@ void HandleRestart()
 		TCHAR exeName[MAX_PATH] = { 0 };
 		::GetModuleFileName(nullptr, exeName, _countof(exeName));
 		TCHAR cmdLine[20] = { 0 };
-		_stprintf_s(cmdLine, _T(" /kill:%d"), GetCurrentProcessId());
+		swprintf_s(cmdLine, L" /kill:%d", GetCurrentProcessId());
 		if (!CCreateProcessHelper::CreateProcessDetached(exeName, cmdLine))
 			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Failed to start cache\n");
 	}
@@ -152,7 +152,7 @@ void HandleRestart()
 
 static void AddSystrayIcon()
 {
-	if (CRegStdDWORD(_T("Software\\TortoiseGit\\CacheTrayIcon"), FALSE) != TRUE)
+	if (CRegStdDWORD(L"Software\\TortoiseGit\\CacheTrayIcon", FALSE) != TRUE)
 		return;
 
 	SecureZeroMemory(&niData, sizeof(NOTIFYICONDATA));
@@ -277,7 +277,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			{
 				CString sInfoTip;
 				NOTIFYICONDATA SystemTray;
-				sInfoTip.Format(_T("TortoiseGit Overlay Icon Server\nCached Directories: %Id\nWatched paths: %d"),
+				sInfoTip.Format(L"TortoiseGit Overlay Icon Server\nCached Directories: %Id\nWatched paths: %d",
 					CGitStatusCache::Instance().GetCacheSize(),
 					CGitStatusCache::Instance().GetNumberOfWatchedPaths());
 
@@ -285,7 +285,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				SystemTray.hWnd   = hTrayWnd;
 				SystemTray.uID    = TRAY_ID;
 				SystemTray.uFlags = NIF_TIP;
-				_tcscpy_s(SystemTray.szTip, sInfoTip);
+				wcscpy_s(SystemTray.szTip, sInfoTip);
 				Shell_NotifyIcon(NIM_MODIFY, &SystemTray);
 			}
 			break;
@@ -297,9 +297,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				HMENU hMenu = CreatePopupMenu();
 				if(hMenu)
 				{
-					bool enabled = (DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\CacheType"), GetSystemMetrics(SM_REMOTESESSION) ? ShellCache::dll : ShellCache::exe) != ShellCache::none;
-					InsertMenu(hMenu, (UINT)-1, MF_BYPOSITION, TRAYPOP_ENABLE, enabled ? _T("Disable Status Cache") : _T("Enable Status Cache"));
-					InsertMenu(hMenu, (UINT)-1, MF_BYPOSITION, TRAYPOP_EXIT, _T("Exit"));
+					bool enabled = (DWORD)CRegStdDWORD(L"Software\\TortoiseGit\\CacheType", GetSystemMetrics(SM_REMOTESESSION) ? ShellCache::dll : ShellCache::exe) != ShellCache::none;
+					InsertMenu(hMenu, (UINT)-1, MF_BYPOSITION, TRAYPOP_ENABLE, enabled ? L"Disable Status Cache" : L"Enable Status Cache");
+					InsertMenu(hMenu, (UINT)-1, MF_BYPOSITION, TRAYPOP_EXIT, L"Exit");
 					SetForegroundWindow(hWnd);
 					TrackPopupMenu(hMenu, TPM_BOTTOMALIGN, pt.x, pt.y, 0, hWnd, nullptr);
 					DestroyMenu(hMenu);
@@ -323,15 +323,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			int line = 0;
 			SIZE fontsize = {0};
 			AutoLocker print(critSec);
-			GetTextExtentPoint32( hdc, szCurrentCrawledPath[0], (int)_tcslen(szCurrentCrawledPath[0]), &fontsize );
+			GetTextExtentPoint32(hdc, szCurrentCrawledPath[0], (int)wcslen(szCurrentCrawledPath[0]), &fontsize);
 			for (int i=nCurrentCrawledpathIndex; i<MAX_CRAWLEDPATHS; ++i)
 			{
-				TextOut(hdc, 0, line*fontsize.cy, szCurrentCrawledPath[i], (int)_tcslen(szCurrentCrawledPath[i]));
+				TextOut(hdc, 0, line*fontsize.cy, szCurrentCrawledPath[i], (int)wcslen(szCurrentCrawledPath[i]));
 				++line;
 			}
 			for (int i=0; i<nCurrentCrawledpathIndex; ++i)
 			{
-				TextOut(hdc, 0, line*fontsize.cy, szCurrentCrawledPath[i], (int)_tcslen(szCurrentCrawledPath[i]));
+				TextOut(hdc, 0, line*fontsize.cy, szCurrentCrawledPath[i], (int)wcslen(szCurrentCrawledPath[i]));
 				++line;
 			}
 
@@ -349,7 +349,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			{
 			case TRAYPOP_ENABLE:
 				{
-					CRegStdDWORD reg = CRegStdDWORD(_T("Software\\TortoiseGit\\CacheType"), GetSystemMetrics(SM_REMOTESESSION) ? ShellCache::dll : ShellCache::exe);
+					CRegStdDWORD reg = CRegStdDWORD(L"Software\\TortoiseGit\\CacheType", GetSystemMetrics(SM_REMOTESESSION) ? ShellCache::dll : ShellCache::exe);
 					bool enabled = (DWORD)reg != ShellCache::none;
 					reg = enabled ? ShellCache::none : ShellCache::exe;
 					if (enabled)
@@ -751,7 +751,7 @@ DWORD WINAPI CommandThread(LPVOID lpvParam)
 			case TGITCACHECOMMAND_REFRESHALL:
 				{
 					CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
-					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": refresh all\n"));
+					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": refresh all\n");
 					CGitStatusCache::Instance().Refresh();
 				}
 				break;
@@ -759,7 +759,7 @@ DWORD WINAPI CommandThread(LPVOID lpvParam)
 				{
 					CTGitPath changedpath;
 					changedpath.SetFromWin(command.path, true);
-					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": release handle for path %s\n"), changedpath.GetWinPath());
+					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": release handle for path %s\n", changedpath.GetWinPath());
 					CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
 					CGitStatusCache::Instance().CloseWatcherHandles(changedpath);
 					CGitStatusCache::Instance().RemoveCacheForPath(changedpath);
@@ -769,7 +769,7 @@ DWORD WINAPI CommandThread(LPVOID lpvParam)
 				{
 					CTGitPath changedpath;
 					changedpath.SetFromWin(command.path);
-					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": block path %s\n"), changedpath.GetWinPath());
+					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": block path %s\n", changedpath.GetWinPath());
 					CGitStatusCache::Instance().BlockPath(changedpath);
 				}
 				break;
@@ -777,7 +777,7 @@ DWORD WINAPI CommandThread(LPVOID lpvParam)
 				{
 					CTGitPath changedpath;
 					changedpath.SetFromWin(command.path);
-					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": unblock path %s\n"), changedpath.GetWinPath());
+					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": unblock path %s\n", changedpath.GetWinPath());
 					CGitStatusCache::Instance().UnBlockPath(changedpath);
 				}
 				break;

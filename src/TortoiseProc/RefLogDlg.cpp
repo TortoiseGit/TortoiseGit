@@ -80,7 +80,7 @@ BOOL CRefLogDlg::OnInitDialog()
 	AddAnchor(IDC_COMBOBOXEX_REF, TOP_LEFT, TOP_RIGHT);
 
 	AddOthersToAnchor();
-	this->EnableSaveRestore(_T("RefLogDlg"));
+	this->EnableSaveRestore(L"RefLogDlg");
 
 	CString sWindowTitle;
 	GetWindowText(sWindowTitle);
@@ -121,12 +121,12 @@ void CRefLogDlg::OnBnClickedClearStash()
 	size_t count = m_RefList.m_arShownList.size();
 	CString msg;
 	msg.Format(IDS_PROC_DELETEALLSTASH, count);
-	if (CMessageBox::Show(this->GetSafeHwnd(), msg, _T("TortoiseGit"), 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 1)
+	if (CMessageBox::Show(this->GetSafeHwnd(), msg, L"TortoiseGit", 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 1)
 	{
 		CString cmdOut;
-		if (g_Git.Run(_T("git.exe stash clear"), &cmdOut, CP_UTF8))
+		if (g_Git.Run(L"git.exe stash clear", &cmdOut, CP_UTF8))
 		{
-			MessageBox(cmdOut, _T("TortoiseGit"), MB_ICONERROR);
+			MessageBox(cmdOut, L"TortoiseGit", MB_ICONERROR);
 			return;
 		}
 
@@ -145,7 +145,7 @@ void CRefLogDlg::OnCbnSelchangeRef()
 
 	CString err;
 	if (GitRevLoglist::GetRefLog(ref, m_RefList.m_RevCache, err))
-		MessageBox(_T("Error while loading reflog.\n") + err, _T("TortoiseGit"), MB_ICONERROR);
+		MessageBox(L"Error while loading reflog.\n" + err, L"TortoiseGit", MB_ICONERROR);
 
 	m_RefList.SetItemCountEx((int)m_RefList.m_RevCache.size());
 
@@ -162,7 +162,7 @@ void CRefLogDlg::OnCbnSelchangeRef()
 
 	m_RefList.Invalidate();
 
-	if (ref == _T("refs/stash"))
+	if (ref == L"refs/stash")
 	{
 		GetDlgItem(IDC_REFLOG_BUTTONCLEARSTASH)->ShowWindow(SW_SHOW);
 		BOOL enabled = !m_RefList.m_arShownList.empty();
@@ -187,15 +187,15 @@ BOOL CRefLogDlg::PreTranslateMessage(MSG* pMsg)
 void CRefLogDlg::Refresh()
 {
 	STRING_VECTOR list;
-	list.push_back(_T("HEAD"));
+	list.push_back(L"HEAD");
 	if (g_Git.GetRefList(list))
-		MessageBox(g_Git.GetGitLastErr(_T("Could not get all refs.")), _T("TortoiseGit"), MB_ICONERROR);
+		MessageBox(g_Git.GetGitLastErr(L"Could not get all refs."), L"TortoiseGit", MB_ICONERROR);
 
 	m_ChooseRef.SetList(list);
 
 	if (m_CurrentBranch.IsEmpty())
 	{
-		m_CurrentBranch.Format(_T("refs/heads/%s"), (LPCTSTR)g_Git.GetCurrentBranch());
+		m_CurrentBranch.Format(L"refs/heads/%s", (LPCTSTR)g_Git.GetCurrentBranch());
 		m_ChooseRef.SetCurSel(0); /* Choose HEAD */
 	}
 	else
@@ -223,7 +223,7 @@ void CRefLogDlg::OnFind()
 {
 	m_nSearchLine = 0;
 	m_pFindDialog = new CFindReplaceDialog();
-	m_pFindDialog->Create(TRUE, _T(""), nullptr, FR_DOWN | FR_HIDEWHOLEWORD | FR_HIDEUPDOWN, this);
+	m_pFindDialog->Create(TRUE, L"", nullptr, FR_DOWN | FR_HIDEWHOLEWORD | FR_HIDEUPDOWN, this);
 }
 
 LRESULT CRefLogDlg::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*/)

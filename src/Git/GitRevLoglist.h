@@ -173,21 +173,21 @@ public:
 		CString ret(m_Subject);
 		if (!crlf)
 		{
-			ret += _T("\n\n");
+			ret += L"\n\n";
 			ret += m_Body;
 		}
 		else
 		{
 			ret.TrimRight();
-			ret += _T("\r\n\r\n");
+			ret += L"\r\n\r\n";
 			CString body(m_Body);
-			body.Replace(_T("\n"), _T("\r\n"));
+			body.Replace(L"\n", L"\r\n");
 			ret += body.TrimRight();
 		}
 		return ret;
 	}
 
-	BOOL IsBoundary() { return m_Mark == _T('-'); }
+	BOOL IsBoundary() { return m_Mark == L'-'; }
 
 	virtual void Clear();
 

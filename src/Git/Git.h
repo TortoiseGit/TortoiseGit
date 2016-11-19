@@ -26,9 +26,9 @@
 #include <functional>
 #include "StringUtils.h"
 
-#define REG_MSYSGIT_PATH _T("Software\\TortoiseGit\\MSysGit")
-#define REG_SYSTEM_GITCONFIGPATH _T("Software\\TortoiseGit\\SystemConfig")
-#define REG_MSYSGIT_EXTRA_PATH _T("Software\\TortoiseGit\\MSysGitExtra")
+#define REG_MSYSGIT_PATH L"Software\\TortoiseGit\\MSysGit"
+#define REG_SYSTEM_GITCONFIGPATH L"Software\\TortoiseGit\\SystemConfig"
+#define REG_MSYSGIT_EXTRA_PATH L"Software\\TortoiseGit\\MSysGitExtra"
 
 #define DEFAULT_USE_LIBGIT2_MASK (1 << CGit::GIT_CMD_MERGE_BASE) | (1 << CGit::GIT_CMD_DELETETAGBRANCH) | (1 << CGit::GIT_CMD_GETONEFILE) | (1 << CGit::GIT_CMD_ADD) | (1 << CGit::GIT_CMD_CHECKCONFLICTS) | (1 << CGit::GIT_CMD_GET_COMMIT)
 
@@ -140,7 +140,7 @@ public:
 
 	static BOOL GitPathFileExists(const CString &path)
 	{
-		if(path[0] == _T('\\') && path[1] == _T('\\'))
+		if (path[0] == L'\\' && path[1] == L'\\')
 		//it is netshare \\server\sharefoldername
 		// \\server\.git will create smb error log.
 		{
@@ -149,11 +149,11 @@ public:
 			if(length<2)
 				return false;
 
-			int start = path.Find(_T('\\'),2);
+			int start = path.Find(L'\\', 2);
 			if(start<0)
 				return false;
 
-			start = path.Find(_T('\\'),start+1);
+			start = path.Find(L'\\', start + 1);
 			if(start<0)
 				return false;
 
@@ -319,8 +319,9 @@ public:
 			m_CurrentDir = path;
 			b = true;
 		}
-		if(m_CurrentDir.GetLength() == 2 && m_CurrentDir[1] == _T(':')) //C: D:
-			m_CurrentDir += _T('\\');
+		if (m_CurrentDir.GetLength() == 2 && m_CurrentDir[1] == L':') //C: D:
+			m_CurrentDir += L'\\';
+
 		return b;
 	}
 	CString m_CurrentDir;
@@ -462,11 +463,11 @@ public:
 
 	static BOOL GetShortName(const CString& ref, CString& shortname, const CString& prefix)
 	{
-		//TRACE(_T("%s %s\r\n"),ref,prefix);
+		//TRACE(L"%s %s\r\n", ref, prefix);
 		if (CStringUtils::StartsWith(ref, prefix))
 		{
 			shortname = ref.Right(ref.GetLength() - prefix.GetLength());
-			if (shortname.Right(3) == _T("^{}"))
+			if (shortname.Right(3) == L"^{}")
 				shortname.Truncate(shortname.GetLength() - 3);
 			return TRUE;
 		}
@@ -490,7 +491,7 @@ public:
 			return m_CurrentDir;
 		if (m_CurrentDir.IsEmpty())
 			return path;
-		return m_CurrentDir + (m_CurrentDir.Right(1) == _T("\\") ? _T("") : _T("\\")) + path;
+		return m_CurrentDir + (m_CurrentDir.Right(1) == L"\\" ? L"" : L"\\") + path;
 	}
 
 	CString CombinePath(const CTGitPath &path) const

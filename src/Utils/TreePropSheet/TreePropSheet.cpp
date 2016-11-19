@@ -422,7 +422,7 @@ CString CTreePropSheet::SplitPageTreePath(CString &strRest)
 #pragma warning(disable: 4127)	// conditional expression constant
 	while (TRUE)
 	{
-		nSeperatorPos = strRest.Find(_T("::"), nSeperatorPos);
+		nSeperatorPos = strRest.Find(L"::", nSeperatorPos);
 		if (nSeperatorPos == -1)
 		{
 			CString	strItem(strRest);
@@ -434,7 +434,7 @@ CString CTreePropSheet::SplitPageTreePath(CString &strRest)
 			// if there is an odd number of backslashes infront of the
 			// seperator, than do not interpret it as separator
 			int	nBackslashCount = 0;
-			for (int nPos = nSeperatorPos-1; nPos >= 0 && strRest[nPos]==_T('\\'); --nPos, ++nBackslashCount);
+			for (int nPos = nSeperatorPos-1; nPos >= 0 && strRest[nPos] == L'\\'; --nPos, ++nBackslashCount);
 			if (nBackslashCount%2 == 0)
 				break;
 			else
@@ -444,8 +444,8 @@ CString CTreePropSheet::SplitPageTreePath(CString &strRest)
 #pragma warning(pop)
 
 	CString	strItem(strRest.Left(nSeperatorPos));
-	strItem.Replace(_T("\\::"), _T("::"));
-	strItem.Replace(_T("\\\\"), _T("\\"));
+	strItem.Replace(L"\\::", L"::");
+	strItem.Replace(L"\\\\", L"\\");
 	strRest = strRest.Mid(nSeperatorPos+2);
 	return strItem;
 }
@@ -803,7 +803,7 @@ BOOL CTreePropSheet::OnInitDialog()
 	// calculate caption height
 	CTabCtrl	wndTabCtrl;
 	wndTabCtrl.Create(WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS, rectFrame, this, 0x1234);
-	wndTabCtrl.InsertItem(0, _T(""));
+	wndTabCtrl.InsertItem(0, L"");
 	CRect	rectFrameCaption;
 	wndTabCtrl.GetItemRect(0, rectFrameCaption);
 	wndTabCtrl.DestroyWindow();
@@ -848,7 +848,7 @@ BOOL CTreePropSheet::OnInitDialog()
 	// YT: Cast tree control to CWnd and calls CWnd::CreateEx in all cases (VC 6 and7).
 	((CWnd*)m_pwndPageTree)->CreateEx(
 		WS_EX_CLIENTEDGE|WS_EX_NOPARENTNOTIFY|TVS_EX_DOUBLEBUFFER,
-		_T("SysTreeView32"), _T("PageTree"),
+		L"SysTreeView32", L"PageTree",
 		WS_TABSTOP|WS_CHILD|WS_VISIBLE|dwTreeStyle,
 		rectTree, this, s_unPageTreeId);
 

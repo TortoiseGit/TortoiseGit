@@ -101,7 +101,7 @@ void CFindDlg::OnCancel()
 	SaveWindowPos(pParent);
 
 	m_bTerminating = true;
-	SetStatusText(_T(""));
+	SetStatusText(L"");
 	if (pParent)
 		pParent->SendMessage(m_FindMsg);
 	DestroyWindow();
@@ -120,7 +120,7 @@ void CFindDlg::OnOK()
 	SaveWindowPos(pParent);
 
 	UpdateData();
-	SetStatusText(_T(""));
+	SetStatusText(L"");
 	m_FindCombo.SaveHistory();
 	m_regMatchCase = m_bMatchCase;
 	m_regLimitToDiffs = m_bLimitToDiffs;
@@ -146,7 +146,7 @@ BOOL CFindDlg::OnInitDialog()
 
 	m_FindCombo.SetCaseSensitive(TRUE);
 	m_FindCombo.DisableTrimming();
-	m_FindCombo.LoadHistory(_T("Software\\TortoiseGitMerge\\History\\Find"), _T("Search"));
+	m_FindCombo.LoadHistory(L"Software\\TortoiseGitMerge\\History\\Find", L"Search");
 	m_FindCombo.SetCurSel(0);
 
 	m_ReplaceCombo.SetCaseSensitive(TRUE);
@@ -170,7 +170,7 @@ void CFindDlg::OnCbnEditchangeFindcombo()
 void CFindDlg::OnBnClickedCount()
 {
 	UpdateData();
-	SetStatusText(_T(""));
+	SetStatusText(L"");
 	m_FindCombo.SaveHistory();
 	m_regMatchCase = m_bMatchCase;
 	m_regLimitToDiffs = m_bLimitToDiffs;

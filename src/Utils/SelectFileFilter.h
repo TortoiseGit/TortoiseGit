@@ -52,20 +52,20 @@ inline void CSelectFileFilter::Load(UINT stringId)
 	sFilter.LoadString(stringId);
 	const int bufferLength = sFilter.GetLength()+4;
 	buffer = std::make_unique<TCHAR[]>(bufferLength);
-	_tcscpy_s (buffer.get(), bufferLength, sFilter);
+	wcscpy_s (buffer.get(), bufferLength, sFilter);
 	CStringUtils::PipesToNulls(buffer.get());
 
 	int pos = 0;
 	CString temp;
 	for (;;)
 	{
-		temp = sFilter.Tokenize(_T("|"), pos);
+		temp = sFilter.Tokenize(L"|", pos);
 		if (temp.IsEmpty())
 		{
 			break;
 		}
 		filternames.push_back(temp);
-		temp = sFilter.Tokenize(_T("|"), pos);
+		temp = sFilter.Tokenize(L"|", pos);
 		filtermasks.push_back(temp);
 	}
 	filterspec.reset(new COMDLG_FILTERSPEC[filternames.size()]);

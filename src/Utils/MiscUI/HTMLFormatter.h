@@ -53,19 +53,19 @@ public:
 	 * \code
 	 * CHTMLFormatter formatter;
 	 *
-	 * CString strInfo = _T("<ct=0x0000FF><<b></ct>text<ct=0x0000FF><</b></ct><t=8> - <b>Bold text</b>\n");
-	 * strInfo += _T("<ct=0x0000FF><<i></ct>text<ct=0x0000FF><</i></ct><t=8> - <i>Italic text</i>\n");
-	 * strInfo += _T("<ct=0x0000FF><<u></ct>text<ct=0x0000FF><</u></ct><t=8> - <u>Underline text</u>\n");
-	 * strInfo += _T("<ct=0x0000FF><<s></ct>text<ct=0x0000FF><</s></ct><t=8> - <s>Strikeout text</s>\n");
-	 * strInfo += _T("<ct=0x0000FF><<ct=0x0000FF></ct>text<ct=0x0000FF><</ct></ct><t=5> - <ct=0x0000FF>Red text</ct>\n");
-	 * strInfo += _T("<ct=0x0000FF><<cb=0xFFFF00></ct>text<ct=0x0000FF><</cb></ct><t=5> - <cb=0xFFFF00>Cyan background</cb>\n");
-	 * strInfo += _T("<ct=0x0000FF><<t></ct><t=10> - Tabulation\n");
-	 * strInfo += _T("<ct=0x0000FF><<hr=80%></ct><t=9> - Horizontal line\n");
-	 * strInfo += _T("<hr=80%>\n");
-	 * strInfo += _T("<ct=0x0000FF><<al></ct><t=10> - Left align\n");
-	 * strInfo += _T("<ct=0x0000FF><<ac></ct><t=10> - Center align\n");
-	 * strInfo += _T("<ct=0x0000FF><<ar></ct><t=10> - Right align\n");
-	 * strInfo += _T("<ct=0x0000FF><<a=http://somelink.com><<u></ct>link<ct=0x0000FF><</u><</a></ct><t> - Link\n");
+	 * CString strInfo = L"<ct=0x0000FF><<b></ct>text<ct=0x0000FF><</b></ct><t=8> - <b>Bold text</b>\n";
+	 * strInfo += L"<ct=0x0000FF><<i></ct>text<ct=0x0000FF><</i></ct><t=8> - <i>Italic text</i>\n";
+	 * strInfo += L"<ct=0x0000FF><<u></ct>text<ct=0x0000FF><</u></ct><t=8> - <u>Underline text</u>\n";
+	 * strInfo += L"<ct=0x0000FF><<s></ct>text<ct=0x0000FF><</s></ct><t=8> - <s>Strikeout text</s>\n";
+	 * strInfo += L"<ct=0x0000FF><<ct=0x0000FF></ct>text<ct=0x0000FF><</ct></ct><t=5> - <ct=0x0000FF>Red text</ct>\n";
+	 * strInfo += L"<ct=0x0000FF><<cb=0xFFFF00></ct>text<ct=0x0000FF><</cb></ct><t=5> - <cb=0xFFFF00>Cyan background</cb>\n";
+	 * strInfo += L"<ct=0x0000FF><<t></ct><t=10> - Tabulation\n";
+	 * strInfo += L"<ct=0x0000FF><<hr=80%></ct><t=9> - Horizontal line\n";
+	 * strInfo += L"<hr=80%>\n";
+	 * strInfo += L"<ct=0x0000FF><<al></ct><t=10> - Left align\n";
+	 * strInfo += L"<ct=0x0000FF><<ac></ct><t=10> - Center align\n";
+	 * strInfo += L"<ct=0x0000FF><<ar></ct><t=10> - Right align\n";
+	 * strInfo += L"<ct=0x0000FF><<a=http://somelink.com><<u></ct>link<ct=0x0000FF><</u><</a></ct><t> - Link\n";
 	 *
 	 * formatter.DrawHTML(pDC, rect, strInfo, font);
 	 * \endcode

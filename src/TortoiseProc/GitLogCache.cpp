@@ -35,7 +35,7 @@ CLogCache::CLogCache()
 	m_DataFileMap = INVALID_HANDLE_VALUE;
 	m_pCacheData = nullptr;
 	m_DataFileLength = 0;
-	m_bEnabled = CRegDWORD(_T("Software\\TortoiseGit\\EnableLogCache"), TRUE);
+	m_bEnabled = CRegDWORD(L"Software\\TortoiseGit\\EnableLogCache", TRUE);
 }
 
 void CLogCache::CloseDataHandles()
@@ -245,9 +245,9 @@ int CLogCache::SaveOneItem(const GitRevLoglist& Rev, LONG offset)
 		revfileheader.m_OldFileNameSize = oldname.GetLength();
 
 		stat = Rev.m_Files[i].m_StatAdd;
-		revfileheader.m_Add = (stat == _T("-")) ? 0xFFFFFFFF : _tstol(stat);
+		revfileheader.m_Add = (stat == L"-") ? 0xFFFFFFFF : _wtol(stat);
 		stat = Rev.m_Files[i].m_StatDel;
-		revfileheader.m_Del = (stat == _T("-")) ? 0xFFFFFFFF : _tstol(stat);
+		revfileheader.m_Del = (stat == L"-") ? 0xFFFFFFFF : _wtol(stat);
 
 		if(!WriteFile(this->m_DataFile, &revfileheader, sizeof(revfileheader) - sizeof(TCHAR), &num, 0))
 			return -1;
@@ -316,14 +316,14 @@ int CLogCache::LoadOneItem(GitRevLoglist& Rev,ULONGLONG offset)
 		Rev.m_Action |= path.m_Action;
 
 		if(fileheader->m_Add == 0xFFFFFFFF)
-			path.m_StatAdd=_T("-");
+			path.m_StatAdd = L"-";
 		else
-			path.m_StatAdd.Format(_T("%d"),fileheader->m_Add);
+			path.m_StatAdd.Format(L"%d", fileheader->m_Add);
 
 		if(fileheader->m_Del == 0xFFFFFFFF)
-			path.m_StatDel=_T("-");
+			path.m_StatDel = L"-";
 		else
-			path.m_StatDel.Format(_T("%d"), fileheader->m_Del);
+			path.m_StatDel.Format(L"%d", fileheader->m_Del);
 
 		Rev.m_Files.AddPath(path);
 
@@ -460,7 +460,7 @@ int CLogCache::SaveCache()
 					SetFilePointerEx(this->m_DataFile,start,&offset,1);
 					if (this->SaveOneItem((*i).second, (LONG)offset.QuadPart))
 					{
-						TRACE(_T("Save one item error"));
+						TRACE(L"Save one item error");
 						SetFilePointerEx(this->m_DataFile,offset, &offset,0);
 						continue;
 					}

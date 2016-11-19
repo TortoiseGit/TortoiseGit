@@ -1,7 +1,7 @@
 #pragma once
 
 #ifndef GET_SAFE_STRING
-#define GET_SAFE_STRING(str) ( (str)?(str):_T("") )
+#define GET_SAFE_STRING(str) ((str) ? (str) : L"")
 #endif
 #define HANDLE_IS_VALID(h) ( (HANDLE)(h)!=NULL && (HANDLE)(h)!=INVALID_HANDLE_VALUE )
 

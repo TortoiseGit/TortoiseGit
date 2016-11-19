@@ -449,7 +449,7 @@ void CRegTypedBase<T, Base>::write()
     HKEY hKey = nullptr;
 
     DWORD disp = 0;
-    if ((LastError = RegCreateKeyEx(m_base, GetPlainString(m_path), 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_WRITE | m_sam, nullptr, &hKey, &disp)) != ERROR_SUCCESS)
+    if ((LastError = RegCreateKeyEx(m_base, GetPlainString(m_path), 0, L"", REG_OPTION_NON_VOLATILE, KEY_WRITE | m_sam, nullptr, &hKey, &disp)) != ERROR_SUCCESS)
     {
         return;
     }
@@ -692,8 +692,8 @@ public:
      * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
      * \param sam
      */
-    CRegStringCommon(const typename Base::StringT& key, const typename Base::StringT& def = _T(""), bool force = false, HKEY base = HKEY_CURRENT_USER, REGSAM sam = 0);
-    CRegStringCommon(DWORD lookupInterval, const typename Base::StringT& key, const typename Base::StringT& def = _T(""), bool force = false, HKEY base = HKEY_CURRENT_USER, REGSAM sam = 0);
+    CRegStringCommon(const typename Base::StringT& key, const typename Base::StringT& def = L"", bool force = false, HKEY base = HKEY_CURRENT_USER, REGSAM sam = 0);
+    CRegStringCommon(DWORD lookupInterval, const typename Base::StringT& key, const typename Base::StringT& def = L"", bool force = false, HKEY base = HKEY_CURRENT_USER, REGSAM sam = 0);
 
     CRegStringCommon& operator=(const typename Base::StringT& rhs) {CRegTypedBase<StringT, Base>::operator =(rhs); return *this;}
     CRegStringCommon& operator+=(const typename Base::StringT& s) { return *this = (typename Base::StringT)*this + s; }

@@ -26,14 +26,14 @@ bool ShowCompareCommand::Execute()
 	CString		rev1;
 	CString		rev2;
 
-	bool		unified = !!parser.HasKey(_T("unified"));
+	bool		unified = !!parser.HasKey(L"unified");
 
-	if (parser.HasVal(_T("revision1")))
-		rev1 = parser.GetVal(_T("revision1"));
-	if (parser.HasVal(_T("revision2")))
-		rev2 = parser.GetVal(_T("revision2"));
+	if (parser.HasVal(L"revision1"))
+		rev1 = parser.GetVal(L"revision1");
+	if (parser.HasVal(L"revision2"))
+		rev2 = parser.GetVal(L"revision2");
 
-	bool bAlternativeTool = !!parser.HasKey(_T("alternative"));
+	bool bAlternativeTool = !!parser.HasKey(L"alternative");
 
 	if (unified)
 		return !!CAppUtils::StartShowUnifiedDiff(nullptr, CTGitPath(), rev1, CTGitPath(), rev2, bAlternativeTool);

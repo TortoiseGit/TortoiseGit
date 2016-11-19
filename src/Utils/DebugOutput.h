@@ -63,7 +63,7 @@ private:
 	CTraceToOutputDebugString()
 	{
 		m_LastTick = GetTickCount64();
-		m_bActive = !!CRegStdDWORD(_T("Software\\TortoiseGit\\DebugOutputString"), FALSE);
+		m_bActive = !!CRegStdDWORD(L"Software\\TortoiseGit\\DebugOutputString", FALSE);
 	}
 	~CTraceToOutputDebugString()
 	{
@@ -102,7 +102,7 @@ private:
 		if (GetTickCount64() - m_LastTick > 10000UL)
 		{
 			m_LastTick = GetTickCount64();
-			m_bActive = !!CRegStdDWORD(_T("Software\\TortoiseGit\\DebugOutputString"), FALSE);
+			m_bActive = !!CRegStdDWORD(L"Software\\TortoiseGit\\DebugOutputString", FALSE);
 		}
 		return m_bActive;
 #endif

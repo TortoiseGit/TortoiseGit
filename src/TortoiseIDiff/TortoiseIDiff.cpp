@@ -41,12 +41,12 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 {
     SetDllDirectory(L"");
     SetTaskIDPerUUID();
-    CRegStdDWORD loc = CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), 1033);
+    CRegStdDWORD loc = CRegStdDWORD(L"Software\\TortoiseGit\\LanguageID", 1033);
     long langId = loc;
     CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
 
     CLangDll langDLL;
-    hResource = langDLL.Init(_T("TortoiseIDiff"), langId);
+    hResource = langDLL.Init(L"TortoiseIDiff", langId);
     if (hResource == NULL)
         hResource = hInstance;
 
@@ -54,11 +54,11 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 
     CCmdLineParser parser(lpCmdLine);
 
-    if (parser.HasKey(_T("?")) || parser.HasKey(_T("help")))
+    if (parser.HasKey(L"?") || parser.HasKey(L"help"))
     {
         TCHAR buf[1024] = { 0 };
         LoadString(hResource, IDS_COMMANDLINEHELP, buf, _countof(buf));
-        MessageBox(NULL, buf, _T("TortoiseIDiff"), MB_ICONINFORMATION);
+        MessageBox(NULL, buf, L"TortoiseIDiff", MB_ICONINFORMATION);
         langDLL.Close();
         return 0;
     }
@@ -78,9 +78,9 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
     curHandDown = (HCURSOR)LoadImage(hInst, MAKEINTRESOURCE(IDC_PANDOWNCUR), IMAGE_CURSOR, 0, 0, LR_DEFAULTSIZE);
 
     auto mainWindow = std::make_unique<CMainWindow>(hResource);
-    mainWindow->SetRegistryPath(_T("Software\\TortoiseGit\\TortoiseIDiffWindowPos"));
-    std::wstring leftfile = parser.HasVal(_T("left")) ? parser.GetVal(_T("left")) : _T("");
-    std::wstring rightfile = parser.HasVal(_T("right")) ? parser.GetVal(_T("right")) : _T("");
+    mainWindow->SetRegistryPath(L"Software\\TortoiseGit\\TortoiseIDiffWindowPos");
+    std::wstring leftfile = parser.HasVal(L"left") ? parser.GetVal(L"left") : L"";
+    std::wstring rightfile = parser.HasVal(L"right") ? parser.GetVal(L"right") : L"";
     if ((leftfile.empty()) && (lpCmdLine[0] != 0))
     {
         int nArgs;
@@ -104,8 +104,8 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
         // Free memory allocated for CommandLineToArgvW arguments.
         LocalFree(szArglist);
     }
-    mainWindow->SetLeft(leftfile.c_str(), parser.HasVal(_T("lefttitle")) ? parser.GetVal(_T("lefttitle")) : _T(""));
-    mainWindow->SetRight(rightfile.c_str(), parser.HasVal(_T("righttitle")) ? parser.GetVal(_T("righttitle")) : _T(""));
+    mainWindow->SetLeft(leftfile.c_str(), parser.HasVal(L"lefttitle") ? parser.GetVal(L"lefttitle") : L"");
+    mainWindow->SetRight(rightfile.c_str(), parser.HasVal(L"righttitle") ? parser.GetVal(L"righttitle") : L"");
     if (parser.HasVal(L"base"))
         mainWindow->SetSelectionImage(FileTypeBase, parser.GetVal(L"base"), parser.HasVal(L"basetitle") ? parser.GetVal(L"basetitle") : L"");
     if (parser.HasVal(L"mine"))
@@ -124,24 +124,24 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
         {
             PostMessage(*mainWindow, WM_COMMAND, ID_FILE_OPEN, 0);
         }
-        if (parser.HasKey(_T("overlay")))
+        if (parser.HasKey(L"overlay"))
         {
             PostMessage(*mainWindow, WM_COMMAND, ID_VIEW_OVERLAPIMAGES, 0);
         }
-        if (parser.HasKey(_T("fit")))
+        if (parser.HasKey(L"fit"))
         {
             PostMessage(*mainWindow, WM_COMMAND, ID_VIEW_FITIMAGEHEIGHTS, 0);
             PostMessage(*mainWindow, WM_COMMAND, ID_VIEW_FITIMAGEWIDTHS, 0);
         }
-        if (parser.HasKey(_T("fitwidth")))
+        if (parser.HasKey(L"fitwidth"))
         {
             PostMessage(*mainWindow, WM_COMMAND, ID_VIEW_FITIMAGEWIDTHS, 0);
         }
-        if (parser.HasKey(_T("fitheight")))
+        if (parser.HasKey(L"fitheight"))
         {
             PostMessage(*mainWindow, WM_COMMAND, ID_VIEW_FITIMAGEHEIGHTS, 0);
         }
-        if (parser.HasKey(_T("showinfo")))
+        if (parser.HasKey(L"showinfo"))
         {
             PostMessage(*mainWindow, WM_COMMAND, ID_VIEW_IMAGEINFO, 0);
         }

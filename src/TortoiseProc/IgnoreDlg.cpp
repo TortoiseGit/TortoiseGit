@@ -64,7 +64,7 @@ BOOL CIgnoreDlg::OnInitDialog()
 	AdjustControlSize(IDC_RADIO_IGNORETYPE_ONLYINFOLDER);
 	AdjustControlSize(IDC_RADIO_IGNORETYPE_RECURSIVELY);
 
-	EnableSaveRestore(_T("IgnoreDlg"));
+	EnableSaveRestore(L"IgnoreDlg");
 
 	return TRUE;
 }

@@ -122,7 +122,7 @@ BOOL CFindDlg::OnInitDialog()
 	UpdateData(FALSE);
 
 	m_FindCombo.SetCaseSensitive(TRUE);
-	m_FindCombo.LoadHistory(_T("Software\\TortoiseGit\\History\\Find"), _T("Search"));
+	m_FindCombo.LoadHistory(L"Software\\TortoiseGit\\History\\Find", L"Search");
 	m_FindCombo.SetCurSel(0);
 	m_FindCombo.SetFocus();
 
@@ -136,7 +136,7 @@ BOOL CFindDlg::OnInitDialog()
 	this->AddAnchor(IDC_LIST_REF, TOP_LEFT, BOTTOM_RIGHT);
 	this->AddOthersToAnchor();
 
-	EnableSaveRestore(_T("FindDlg"));
+	EnableSaveRestore(L"FindDlg");
 
 	CImageList *imagelist = new CImageList();
 	imagelist->Create(IDB_BITMAP_REFTYPE,16,3,RGB(255,255,255));
@@ -145,7 +145,7 @@ BOOL CFindDlg::OnInitDialog()
 	CRect rect;
 	m_ctrlRefList.GetClientRect(&rect);
 
-	this->m_ctrlRefList.InsertColumn(0,_T("Ref"),0, rect.Width()-50);
+	this->m_ctrlRefList.InsertColumn(0, L"Ref", 0, rect.Width() - 50);
 	if (CRegDWORD(L"Software\\TortoiseGit\\FullRowSelect", TRUE))
 		m_ctrlRefList.SetExtendedStyle(m_ctrlRefList.GetExtendedStyle() | LVS_EX_FULLROWSELECT);
 	RefreshList();
@@ -156,7 +156,7 @@ void CFindDlg::RefreshList()
 {
 	m_RefList.clear();
 	if (g_Git.GetRefList(m_RefList))
-		MessageBox(g_Git.GetGitLastErr(_T("Could not get all refs.")), _T("TortoiseGit"), MB_ICONERROR);
+		MessageBox(g_Git.GetGitLastErr(L"Could not get all refs."), L"TortoiseGit", MB_ICONERROR);
 	AddToList();
 }
 

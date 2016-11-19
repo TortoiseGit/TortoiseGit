@@ -76,7 +76,7 @@ int CSendMail::SendMail(const CTGitPath &item, CGitProgressList * instance, cons
 
 int CSendMail::SendMail(const CString& FromName, const CString& FromMail, const CString& To, const CString& CC, const CString& subject, const CString& body, CStringArray &attachments, CString *errortext)
 {
-	if (CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\DeliveryType"), SEND_MAIL_MAPI) == SEND_MAIL_MAPI)
+	if (CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\DeliveryType", SEND_MAIL_MAPI) == SEND_MAIL_MAPI)
 	{
 		CMailMsg mapiSender;
 		BOOL bMAPIInit = mapiSender.MAPIInitialize();
@@ -110,10 +110,10 @@ int CSendMail::SendMail(const CString& FromName, const CString& FromMail, const 
 	else
 	{
 		CString sender;
-		sender.Format(_T("%s <%s>"), (LPCTSTR)CHwSMTP::GetEncodedHeader(FromName), (LPCTSTR)FromMail);
+		sender.Format(L"%s <%s>", (LPCTSTR)CHwSMTP::GetEncodedHeader(FromName), (LPCTSTR)FromMail);
 
 		CHwSMTP mail;
-		if (CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\DeliveryType"), SEND_MAIL_SMTP_CONFIGURED) == SEND_MAIL_SMTP_CONFIGURED)
+		if (CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\DeliveryType", SEND_MAIL_SMTP_CONFIGURED) == SEND_MAIL_SMTP_CONFIGURED)
 		{
 			CString recipients(To);
 			if (!CC.IsEmpty())
@@ -200,7 +200,7 @@ int CSendMailCombineable::SendAsSingleMail(const CTGitPath& path, CGitProgressLi
 		attachments.Add(pathfile);
 	else if (GetFileContents(pathfile, body))
 	{
-		instance->ReportError(_T("Could not open ") + pathfile);
+		instance->ReportError(L"Could not open " + pathfile);
 		return -2;
 	}
 
@@ -220,10 +220,10 @@ int CSendMailCombineable::SendAsCombinedMail(const CTGitPathList &list, CGitProg
 		else
 		{
 			CString filename(list[i].GetWinPathString());
-			body += filename + _T(":\n");
+			body += filename + L":\n";
 			if (GetFileContents(filename, body))
 			{
-				instance->ReportError(_T("Could not open ") + filename);
+				instance->ReportError(L"Could not open " + filename);
 				return -2;
 			}
 			body += L'\n';

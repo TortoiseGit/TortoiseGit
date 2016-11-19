@@ -76,32 +76,31 @@ BOOL CAboutDlg::OnInitDialog()
 	// set the version string
 	CString temp;
 
-	CString cmd, out, err;
-	cmd=_T("git.exe --version");
-	if (g_Git.Run(cmd, &out, &err, CP_UTF8))
+	CString out, err;
+	if (g_Git.Run(L"git.exe --version", &out, &err, CP_UTF8))
 		out = L"git not found (" + err + L')';
 	out.Trim();
 
 	if (!CGit::ms_LastMsysGitDir.IsEmpty())
 	{
-		out += _T(" (") + CGit::ms_LastMsysGitDir;
+		out += L" (" + CGit::ms_LastMsysGitDir;
 		out += L"; " + CGit::ms_MsysGitRootDir;
 		out += L"; " + g_Git.GetGitSystemConfig();
 		if (CGit::ms_bMsys2Git)
-			out += _T("; with msys2 hack");
+			out += L"; with msys2 hack";
 		else if (CGit::ms_bCygwinGit)
-			out += _T("; with cygwin hack");
+			out += L"; with cygwin hack";
 		else
 			out += L"; " + g_Git.GetGitProgramDataConfig();
 		out += L')';
 	}
 
 	CString tortoisegitprocpath;
-	tortoisegitprocpath.Format(_T("(%s)"), (LPCTSTR)CPathUtils::GetAppDirectory().TrimRight(_T('\\')));
+	tortoisegitprocpath.Format(L"(%s)", (LPCTSTR)CPathUtils::GetAppDirectory().TrimRight(L'\\'));
 	temp.Format(IDS_ABOUTVERSION, TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, (LPCTSTR)tortoisegitprocpath, (LPCTSTR)out);
 	SetDlgItemText(IDC_VERSIONABOUT, Lf2Crlf(temp));
 
-	this->SetWindowText(_T("TortoiseGit"));
+	this->SetWindowText(L"TortoiseGit");
 
 	// we can only put up to 256 chars into the resource file, so fill it here with the full list
 	SetDlgItemText(IDC_STATIC_AUTHORS, L"Sven Strickroth <email@cs-ware.de> (Current Maintainer), Sup Yut Sum <ch3cooli@gmail.com>, Frank Li <lznuaa@gmail.com> (Founder), Yue Lin Ho <b8732003@student.nsysu.edu.tw>, Colin Law <clanlaw@googlemail.com>, Myagi <snowcoder@gmail.com>, Johan 't Hart <johanthart@gmail.com>, Laszlo Papp <djszapi@archlinux.us>");
@@ -115,8 +114,8 @@ BOOL CAboutDlg::OnInitDialog()
 	SetTimer(ID_EFFECTTIMER, 40, nullptr);
 	SetTimer(ID_DROPTIMER, 1500, nullptr);
 
-	m_cWebLink.SetURL(_T("https://tortoisegit.org/"));
-	m_cSupportLink.SetURL(_T("https://tortoisegit.org/donate"));
+	m_cWebLink.SetURL(L"https://tortoisegit.org/");
+	m_cSupportLink.SetURL(L"https://tortoisegit.org/donate");
 
 	CenterWindow(CWnd::FromHandle(hWndExplorer));
 	GetDlgItem(IDOK)->SetFocus();
@@ -169,5 +168,5 @@ void CAboutDlg::OnMouseMove(UINT nFlags, CPoint point)
 
 void CAboutDlg::OnBnClickedUpdate()
 {
-	CAppUtils::RunTortoiseGitProc(_T("/command:updatecheck /visible"), false, false);
+	CAppUtils::RunTortoiseGitProc(L"/command:updatecheck /visible", false, false);
 }

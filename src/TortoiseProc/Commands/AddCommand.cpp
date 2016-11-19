@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2013, 2016 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@
 bool AddCommand::Execute()
 {
 	bool bRet = false;
-	if (parser.HasKey(_T("noui")))
+	if (parser.HasKey(L"noui"))
 	{
 #if 0
 		SVN svn;

@@ -28,7 +28,7 @@
 
 bool DropMoveCommand::Execute()
 {
-	CString droppath = parser.GetVal(_T("droptarget"));
+	CString droppath = parser.GetVal(L"droptarget");
 	CString ProjectTop;
 	if (!CTGitPath(droppath).HasAdminDir(&ProjectTop))
 		return FALSE;
@@ -39,7 +39,7 @@ bool DropMoveCommand::Execute()
 		return FALSE;
 	}
 
-	if (ProjectTop.GetLength() == 3 && ProjectTop.Mid(1, 2) == _T(":\\")) // working tree root is directly on a drive
+	if (ProjectTop.GetLength() == 3 && ProjectTop.Mid(1, 2) == L":\\") // working tree root is directly on a drive
 		droppath = droppath.Right(droppath.GetLength() - ProjectTop.GetLength());
 	else
 		droppath = droppath.Right(droppath.GetLength() - ProjectTop.GetLength() - 1);
@@ -50,7 +50,7 @@ bool DropMoveCommand::Execute()
 	pathList.RemoveAdminPaths();
 	CString sNewName;
 
-	if ((parser.HasKey(_T("rename")))&&(pathList.GetCount()==1))
+	if (parser.HasKey(L"rename") && pathList.GetCount() == 1)
 	{
 		// ask for a new name of the source item
 		do
@@ -93,15 +93,15 @@ bool DropMoveCommand::Execute()
 		}
 		CString cmd,out;
 
-		cmd.Format(_T("git.exe mv -- \"%s\" \"%s\""), (LPCTSTR)pathList[nPath].GetGitPathString(), (LPCTSTR)destPath.GetGitPathString());
+		cmd.Format(L"git.exe mv -- \"%s\" \"%s\"", (LPCTSTR)pathList[nPath].GetGitPathString(), (LPCTSTR)destPath.GetGitPathString());
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
-			if (CMessageBox::Show(hwndExplorer, out, _T("TortoiseGit"), 2, IDI_EXCLAMATION, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 1)
+			if (CMessageBox::Show(hwndExplorer, out, L"TortoiseGit", 2, IDI_EXCLAMATION, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 1)
 			{
 #if 0
 					if (!svn.Move(CTSVNPathList(pathList[nPath]), destPath, TRUE))
 					{
-						CMessageBox::Show(hwndExplorer, svn.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
+						CMessageBox::Show(hwndExplorer, svn.GetLastErrorMessage(), L"TortoiseGit", MB_ICONERROR);
 						return FALSE;		//get out of here
 					}
 					CShellUpdater::Instance().AddPathForUpdate(destPath);

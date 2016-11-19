@@ -276,7 +276,7 @@ void CHyperLink::SetDefaultCursor()
 		GetWindowsDirectory(strWndDir.GetBuffer(MAX_PATH), MAX_PATH);	// Explorer can't handle paths longer than MAX_PATH.
 		strWndDir.ReleaseBuffer();
 
-		strWndDir += _T("\\winhlp32.exe");
+		strWndDir += L"\\winhlp32.exe";
 		// This retrieves cursor #106 from winhlp32.exe, which is a hand pointer
 		CAutoLibrary hModule = LoadLibrary(strWndDir);
 		if (hModule) {
@@ -289,7 +289,7 @@ void CHyperLink::SetDefaultCursor()
 
 HINSTANCE CHyperLink::GotoURL(LPCTSTR url)
 {
-	return ShellExecute(nullptr, _T("open"), url, nullptr, nullptr, SW_SHOW);
+	return ShellExecute(nullptr, L"open", url, nullptr, nullptr, SW_SHOW);
 }
 
 void CHyperLink::OnSysColorChange()

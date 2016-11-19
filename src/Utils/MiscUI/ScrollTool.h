@@ -31,7 +31,7 @@
  *    break;
  *   case SB_THUMBTRACK:
  *    m_ScrollTool.Init(&thumbpoint);
- *    m_ScrollTool.SetText(&thumbpoint, _T("Line: %*ld"), maxchars, nTrackPos);
+ *    m_ScrollTool.SetText(&thumbpoint, L"Line: %*ld", maxchars, nTrackPos);
  *    break;
  * }
  *

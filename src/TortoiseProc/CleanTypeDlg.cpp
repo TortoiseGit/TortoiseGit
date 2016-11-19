@@ -34,13 +34,13 @@ CCleanTypeDlg::CCleanTypeDlg(CWnd* pParent /*=nullptr*/)
 
 {
 	CString WorkingDir=g_Git.m_CurrentDir;
-	WorkingDir.Replace(_T(':'),_T('_'));
+	WorkingDir.Replace(L':', L'_');
 	this->m_regDir  = CRegDWORD(L"Software\\TortoiseGit\\History\\CleanDir\\" + WorkingDir, 1);
 	this->m_regType = CRegDWORD(L"Software\\TortoiseGit\\History\\CleanType\\" + WorkingDir, 0);
 
 	this->m_bDir = this->m_regDir;
 	this->m_CleanType = this->m_regType;
-	m_bNoRecycleBin = !CRegDWORD(_T("Software\\TortoiseGit\\RevertWithRecycleBin"), TRUE);
+	m_bNoRecycleBin = !CRegDWORD(L"Software\\TortoiseGit\\RevertWithRecycleBin", TRUE);
 	m_bDryRun = FALSE;
 	m_bSubmodules = FALSE;
 }
@@ -79,7 +79,7 @@ BOOL CCleanTypeDlg::OnInitDialog()
 	AdjustControlSize(IDC_CHECK_DRYRUN);
 	AdjustControlSize(IDC_CHECKSUBMODULES);
 
-	EnableSaveRestore(_T("CleanTypeDlg"));
+	EnableSaveRestore(L"CleanTypeDlg");
 
 	SetDlgTitle();
 

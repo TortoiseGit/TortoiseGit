@@ -84,21 +84,21 @@ class CBasicGitWithTestRepoFixture : public CBasicGitFixture
 protected:
 	CBasicGitWithTestRepoFixture()
 	{
-		prefix = _T("\\.git");
+		prefix = L"\\.git";
 	}
 
 	virtual void SetUp()
 	{
 		CBasicGitFixture::SetUp();
-		CString resourcesDir = CPathUtils::GetAppDirectory() + _T("\\resources");
+		CString resourcesDir = CPathUtils::GetAppDirectory() + L"\\resources";
 		if (!PathIsDirectory(resourcesDir))
 		{
-			resourcesDir = CPathUtils::GetAppDirectory() + _T("\\..\\..\\..\\test\\UnitTests\\resources");
+			resourcesDir = CPathUtils::GetAppDirectory() + L"\\..\\..\\..\\test\\UnitTests\\resources";
 			ASSERT_TRUE(PathIsDirectory(resourcesDir));
 		}
 		if (!prefix.IsEmpty())
 			EXPECT_TRUE(CreateDirectory(m_Dir.GetTempDir() + prefix, nullptr));
-		CString repoDir = resourcesDir + _T("\\git-repo1");
+		CString repoDir = resourcesDir + L"\\git-repo1";
 		CDirFileEnum finder(repoDir);
 		bool isDir;
 		CString filepath;
@@ -111,10 +111,10 @@ protected:
 				EXPECT_TRUE(CopyFile(filepath, m_Dir.GetTempDir() + prefix + relpath, false));
 		}
 
-		CString configFile = m_Dir.GetTempDir() + prefix + _T("\\config");
+		CString configFile = m_Dir.GetTempDir() + prefix + L"\\config";
 		CString text;
 		ASSERT_TRUE(CStringUtils::ReadStringFromTextFile(configFile, text));
-		text += _T("\n[core]\n  autocrlf = false\n[user]\n  name = User\n  email = user@example.com\n");
+		text += L"\n[core]\n  autocrlf = false\n[user]\n  name = User\n  email = user@example.com\n";
 		EXPECT_TRUE(CStringUtils::WriteStringToTextFile(configFile, text));
 	}
 	CString prefix;
@@ -128,11 +128,11 @@ protected:
 		prefix.Empty();
 		CBasicGitWithTestRepoFixture::SetUp();
 
-		DeleteFile(m_Dir.GetTempDir() + _T("\\index"));
-		CString configFile = m_Dir.GetTempDir() + _T("\\config");
+		DeleteFile(m_Dir.GetTempDir() + L"\\index");
+		CString configFile = m_Dir.GetTempDir() + L"\\config";
 		CString text;
 		ASSERT_TRUE(CStringUtils::ReadStringFromTextFile(configFile, text));
-		EXPECT_EQ(1, text.Replace(_T("bare = false"), _T("bare = true")));
+		EXPECT_EQ(1, text.Replace(L"bare = false", L"bare = true"));
 		EXPECT_TRUE(CStringUtils::WriteStringToTextFile(configFile, text));
 	}
 };
@@ -144,16 +144,16 @@ protected:
 	{
 		CBasicGitFixture::SetUp();
 		CString output;
-		EXPECT_EQ(0, m_Git.Run(_T("git.exe init"), &output, CP_UTF8));
+		EXPECT_EQ(0, m_Git.Run(L"git.exe init", &output, CP_UTF8));
 		EXPECT_FALSE(output.IsEmpty());
 		output.Empty();
-		EXPECT_EQ(0, m_Git.Run(_T("git.exe config core.autocrlf false"), &output, CP_UTF8));
+		EXPECT_EQ(0, m_Git.Run(L"git.exe config core.autocrlf false", &output, CP_UTF8));
 		EXPECT_TRUE(output.IsEmpty());
 		output.Empty();
-		EXPECT_EQ(0, m_Git.Run(_T("git.exe config user.name User"), &output, CP_UTF8));
+		EXPECT_EQ(0, m_Git.Run(L"git.exe config user.name User", &output, CP_UTF8));
 		EXPECT_TRUE(output.IsEmpty());
 		output.Empty();
-		EXPECT_EQ(0, m_Git.Run(_T("git.exe config user.email user@example.com"), &output, CP_UTF8));
+		EXPECT_EQ(0, m_Git.Run(L"git.exe config user.email user@example.com", &output, CP_UTF8));
 		EXPECT_TRUE(output.IsEmpty());
 	}
 };
@@ -165,7 +165,7 @@ protected:
 	{
 		CBasicGitFixture::SetUp();
 		CString output;
-		EXPECT_EQ(0, m_Git.Run(_T("git.exe init --bare"), &output, CP_UTF8));
+		EXPECT_EQ(0, m_Git.Run(L"git.exe init --bare", &output, CP_UTF8));
 		EXPECT_FALSE(output.IsEmpty());
 	}
 };

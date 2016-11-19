@@ -23,7 +23,7 @@
 
 bool ExportCommand::Execute()
 {
-	CString base=parser.GetVal(_T("rev"));
+	CString base = parser.GetVal(L"rev");
 	CString *p=&base;
 	if(base.IsEmpty())
 		p = nullptr;

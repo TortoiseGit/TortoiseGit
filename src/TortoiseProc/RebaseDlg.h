@@ -162,7 +162,7 @@ protected:
 			if (!set)
 				return CString();
 			CString temp;
-			temp.Format(_T("--date=%s --author=\"%s\" "), (LPCTSTR)time.Format(_T("%Y-%m-%dT%H:%M:%S")), (LPCTSTR)GetAuthor());
+			temp.Format(L"--date=%s --author=\"%s\" ", (LPCTSTR)time.Format(L"%Y-%m-%dT%H:%M:%S"), (LPCTSTR)GetAuthor());
 			return temp;
 		}
 	} m_SquashFirstMetaData;

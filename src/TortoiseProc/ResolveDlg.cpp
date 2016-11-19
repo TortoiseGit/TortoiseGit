@@ -58,7 +58,7 @@ BOOL CResolveDlg::OnInitDialog()
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
-	m_resolveListCtrl.Init(GITSLC_COLEXT, _T("ResolveDlg"), GITSLC_POPALL ^ (GITSLC_POPIGNORE | GITSLC_POPADD | GITSLC_POPCOMMIT | GITSLC_POPEXPORT | GITSLC_POPRESTORE | GITSLC_POPSAVEAS | GITSLC_PREPAREDIFF));
+	m_resolveListCtrl.Init(GITSLC_COLEXT, L"ResolveDlg", GITSLC_POPALL ^ (GITSLC_POPIGNORE | GITSLC_POPADD | GITSLC_POPCOMMIT | GITSLC_POPEXPORT | GITSLC_POPRESTORE | GITSLC_POPSAVEAS | GITSLC_PREPAREDIFF));
 	m_resolveListCtrl.SetConfirmButton((CButton*)GetDlgItem(IDOK));
 	m_resolveListCtrl.SetSelectButton(&m_SelectAll);
 	m_resolveListCtrl.SetCancelBool(&m_bCancelled);
@@ -79,7 +79,7 @@ BOOL CResolveDlg::OnInitDialog()
 	AddAnchor(IDC_STATIC_REMINDER, BOTTOM_RIGHT);
 	if (hWndExplorer)
 		CenterWindow(CWnd::FromHandle(hWndExplorer));
-	EnableSaveRestore(_T("ResolveDlg"));
+	EnableSaveRestore(L"ResolveDlg");
 
 	// first start a thread to obtain the file list with the status without
 	// blocking the dialog
@@ -244,7 +244,7 @@ LRESULT CResolveDlg::OnFileDropped(WPARAM, LPARAM lParam)
 
 	// Always start the timer, since the status of an existing item might have changed
 	SetTimer(REFRESHTIMER, 200, nullptr);
-	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Item %s dropped, timer started\n"), path.GetWinPath());
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Item %s dropped, timer started\n", path.GetWinPath());
 	return 0;
 }
 

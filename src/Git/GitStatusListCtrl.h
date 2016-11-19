@@ -124,7 +124,7 @@ GITSLC_SHOWINCOMPLETE|GITSLC_SHOWEXTERNAL|GITSLC_SHOWINEXTERNALS)
 #define GITLC_POPUNSETIGNORELOCALCHANGES CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_UNSETIGNORELOCALCHANGES)
 #define GITSLC_PREPAREDIFF				CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_PREPAREDIFF)
 
-#define GITSLC_IGNORECHANGELIST			_T("ignore-on-commit")
+#define GITSLC_IGNORECHANGELIST			L"ignore-on-commit"
 
 #define OVL_RESTORE			1
 
@@ -150,10 +150,10 @@ public:
 
 	static int A2L(const CString &str)
 	{
-		if(str==_T("-"))
+		if (str == L"-")
 			return -1;
-		else
-			return _ttol(str);
+
+		return _wtol(str);
 	}
 
 private:

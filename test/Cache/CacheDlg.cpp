@@ -32,7 +32,6 @@
 
 CCacheDlg::CCacheDlg(CWnd* pParent /*=nullptr*/)
 : CDialog(CCacheDlg::IDD, pParent)
-, m_sRootPath(_T(""))
 , m_hPipe(INVALID_HANDLE_VALUE)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
@@ -121,11 +120,11 @@ UINT CCacheDlg::TestThread()
 	CString filepath;
 	bool bIsDir = false;
 	while (direnum.NextFile(filepath, &bIsDir))
-		if(filepath.Find(_T(".git"))<0)
+		if (filepath.Find(L".git") < 0)
 			m_filelist.Add(filepath);
 
 	CTime starttime = CTime::GetCurrentTime();
-	GetDlgItem(IDC_STARTTIME)->SetWindowText(starttime.Format(_T("%H:%M:%S")));
+	GetDlgItem(IDC_STARTTIME)->SetWindowText(starttime.Format(L"%H:%M:%S"));
 
 	ULONGLONG startticks = GetTickCount64();
 
@@ -139,10 +138,10 @@ UINT CCacheDlg::TestThread()
 		CString filepath;
 		//do {
 			filepath = m_filelist.GetAt(dist(mt));
-		//}while(filepath.Find(_T(".git"))>=0);
+		//}while(filepath.Find(L".git") >= 0);
 		GetDlgItem(IDC_FILEPATH)->SetWindowText(filepath);
 		GetStatusFromRemoteCache(CTGitPath(filepath), true);
-		sNumber.Format(_T("%d"), i);
+		sNumber.Format(L"%d", i);
 		GetDlgItem(IDC_DONE)->SetWindowText(sNumber);
 		if ((GetTickCount64()%10)==1)
 			Sleep(10);
@@ -150,12 +149,12 @@ UINT CCacheDlg::TestThread()
 			RemoveFromCache(filepath);
 	}
 	CTime endtime = CTime::GetCurrentTime();
-	CString sEnd = endtime.Format(_T("%H:%M:%S"));
+	CString sEnd = endtime.Format(L"%H:%M:%S");
 
 	ULONGLONG endticks = GetTickCount64();
 
 	CString sEndText;
-	sEndText.Format(_T("%s  - %I64u ms"), sEnd, endticks - startticks);
+	sEndText.Format(L"%s  - %I64u ms", sEnd, endticks - startticks);
 
 	GetDlgItem(IDC_ENDTIME)->SetWindowText(sEndText);
 
@@ -249,8 +248,8 @@ bool CCacheDlg::GetStatusFromRemoteCache(const CTGitPath& Path, bool bRecursive)
 		PROCESS_INFORMATION process = { 0 };
 		startup.cb = sizeof(startup);
 
-		CString sCachePath = _T("TGitCache.exe");
-		if (CreateProcess(sCachePath.GetBuffer(sCachePath.GetLength() + 1), _T(""), nullptr, nullptr, FALSE, 0, nullptr, nullptr, &startup, &process) == 0)
+		CString sCachePath = L"TGitCache.exe";
+		if (CreateProcess(sCachePath.GetBuffer(sCachePath.GetLength() + 1), L"", nullptr, nullptr, FALSE, 0, nullptr, nullptr, &startup, &process) == 0)
 		{
 			// It's not appropriate to do a message box here, because there may be hundreds of calls
 			sCachePath.ReleaseBuffer();
@@ -413,7 +412,7 @@ UINT CCacheDlg::WatchTestThread()
 		m_filelist.Add(filepath);
 
 	CTime starttime = CTime::GetCurrentTime();
-	GetDlgItem(IDC_STARTTIME)->SetWindowText(starttime.Format(_T("%H:%M:%S")));
+	GetDlgItem(IDC_STARTTIME)->SetWindowText(starttime.Format(L"%H:%M:%S"));
 
 	ULONGLONG startticks = GetTickCount64();
 
@@ -429,7 +428,7 @@ UINT CCacheDlg::WatchTestThread()
 		GetDlgItem(IDC_FILEPATH)->SetWindowText(filepath);
 		TouchFile(filepath);
 		CopyRemoveCopy(filepath);
-		sNumber.Format(_T("%d"), i);
+		sNumber.Format(L"%d", i);
 		GetDlgItem(IDC_DONE)->SetWindowText(sNumber);
 	}
 
@@ -438,7 +437,7 @@ UINT CCacheDlg::WatchTestThread()
 	{
 		for (int i=0; i<10; ++i)
 		{
-			filepath.Format(_T("__MyDummyFolder%d"), i);
+			filepath.Format(L"__MyDummyFolder%d", i);
 			CreateDirectory(m_sRootPath + L'\\' + filepath, nullptr);
 			HANDLE hFile = CreateFile(m_sRootPath + L'\\' + filepath + L"\\file", GENERIC_READ, FILE_SHARE_READ, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 			CloseHandle(hFile);
@@ -447,21 +446,21 @@ UINT CCacheDlg::WatchTestThread()
 		Sleep(500);
 		for (int i=0; i<10; ++i)
 		{
-			filepath.Format(_T("__MyDummyFolder%d"), i);
+			filepath.Format(L"__MyDummyFolder%d", i);
 			DeleteFile(m_sRootPath + L'\\' + filepath + L"\\file");
 			RemoveDirectory(m_sRootPath + L'\\' + filepath);
 		}
-		sNumber.Format(_T("%d"), outer);
+		sNumber.Format(L"%d", outer);
 		GetDlgItem(IDC_DONE)->SetWindowText(sNumber);
 	}
 
 	CTime endtime = CTime::GetCurrentTime();
-	CString sEnd = endtime.Format(_T("%H:%M:%S"));
+	CString sEnd = endtime.Format(L"%H:%M:%S");
 
 	ULONGLONG endticks = GetTickCount64();
 
 	CString sEndText;
-	sEndText.Format(_T("%s  - %I64u ms"), sEnd, endticks - startticks);
+	sEndText.Format(L"%s  - %I64u ms", sEnd, endticks - startticks);
 
 	GetDlgItem(IDC_ENDTIME)->SetWindowText(sEndText);
 
@@ -490,20 +489,20 @@ void CCacheDlg::CopyRemoveCopy(const CString& path)
 {
 	if (PathIsDirectory(path))
 		return;
-	if (path.Find(_T(".git")) >= 0)
+	if (path.Find(L".git") >= 0)
 		return;
-	if (CopyFile(path, path+_T(".tmp"), FALSE))
+	if (CopyFile(path, path+L".tmp", FALSE))
 	{
 		if (DeleteFile(path))
 		{
-			if (MoveFile(path+_T(".tmp"), path))
+			if (MoveFile(path+L".tmp", path))
 				return;
 			else
-				MessageBox(_T("could not move file!"), path);
+				MessageBox(L"could not move file!", path);
 		}
 		else
-			MessageBox(_T("could not delete file!"), path);
+			MessageBox(L"could not delete file!", path);
 	}
 	else
-		MessageBox(_T("could not copy file!"), path);
+		MessageBox(L"could not copy file!", path);
 }

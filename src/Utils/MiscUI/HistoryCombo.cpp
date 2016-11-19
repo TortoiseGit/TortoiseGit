@@ -169,9 +169,9 @@ int CHistoryCombo::InsertEntry(const CString& combostring, INT_PTR pos)
 		if (cbei.iImage == 0 || cbei.iImage == SYS_IMAGE_LIST().GetDefaultIconIndex())
 		{
 			if (CStringUtils::StartsWith(combostring, L"http:"))
-				cbei.iImage = SYS_IMAGE_LIST().GetFileIconIndex(_T(".html"));
+				cbei.iImage = SYS_IMAGE_LIST().GetFileIconIndex(L".html");
 			else if (CStringUtils::StartsWith(combostring, L"https:"))
-				cbei.iImage = SYS_IMAGE_LIST().GetFileIconIndex(_T(".html"));
+				cbei.iImage = SYS_IMAGE_LIST().GetFileIconIndex(L".html");
 			else if (CStringUtils::StartsWith(combostring, L"file:"))
 				cbei.iImage = SYS_IMAGE_LIST().GetDirIconIndex();
 			else if (CStringUtils::StartsWith(combostring, L"git:"))
@@ -223,7 +223,7 @@ void CHistoryCombo::SetList(const STRING_VECTOR& list)
 CString CHistoryCombo::LoadHistory(LPCTSTR lpszSection, LPCTSTR lpszKeyPrefix)
 {
 	if (!lpszSection || !lpszKeyPrefix || *lpszSection == '\0')
-		return _T("");
+		return L"";
 
 	m_sSection = lpszSection;
 	m_sKeyPrefix = lpszKeyPrefix;
@@ -234,7 +234,7 @@ CString CHistoryCombo::LoadHistory(LPCTSTR lpszSection, LPCTSTR lpszKeyPrefix)
 	{
 		//keys are of form <lpszKeyPrefix><entrynumber>
 		CString sKey;
-		sKey.Format(_T("%s\\%s%d"), (LPCTSTR)m_sSection, (LPCTSTR)m_sKeyPrefix, n++);
+		sKey.Format(L"%s\\%s%d", (LPCTSTR)m_sSection, (LPCTSTR)m_sKeyPrefix, n++);
 		sText = CRegString(sKey);
 		if (!sText.IsEmpty())
 			AddString(sText);
@@ -270,7 +270,7 @@ void CHistoryCombo::SaveHistory()
 	for (int n = 0; n < nMax; n++)
 	{
 		CString sKey;
-		sKey.Format(_T("%s\\%s%d"), (LPCTSTR)m_sSection, (LPCTSTR)m_sKeyPrefix, n);
+		sKey.Format(L"%s\\%s%d", (LPCTSTR)m_sSection, (LPCTSTR)m_sKeyPrefix, n);
 		CRegString regkey(sKey);
 		regkey = m_arEntries.GetAt(n);
 	}
@@ -278,7 +278,7 @@ void CHistoryCombo::SaveHistory()
 	for (int n = nMax; ; n++)
 	{
 		CString sKey;
-		sKey.Format(_T("%s\\%s%d"), (LPCTSTR)m_sSection, (LPCTSTR)m_sKeyPrefix, n);
+		sKey.Format(L"%s\\%s%d", (LPCTSTR)m_sSection, (LPCTSTR)m_sKeyPrefix, n);
 		CRegString regkey(sKey);
 		CString sText = regkey;
 		if (sText.IsEmpty())
@@ -296,7 +296,7 @@ void CHistoryCombo::ClearHistory(BOOL bDeleteRegistryEntries/*=TRUE*/)
 		CString sKey;
 		for (int n = 0; ; n++)
 		{
-			sKey.Format(_T("%s\\%s%d"), (LPCTSTR)m_sSection, (LPCTSTR)m_sKeyPrefix, n);
+			sKey.Format(L"%s\\%s%d", (LPCTSTR)m_sSection, (LPCTSTR)m_sKeyPrefix, n);
 			CRegString regkey(sKey);
 			CString sText = regkey;
 			if (sText.IsEmpty())
@@ -316,7 +316,7 @@ void CHistoryCombo::RemoveEntryFromHistory(LPCTSTR lpszSection, LPCTSTR lpszKeyP
 	do
 	{
 		CString sKey;
-		sKey.Format(_T("%s\\%s%d"), lpszSection, lpszKeyPrefix, ++n);
+		sKey.Format(L"%s\\%s%d", lpszSection, lpszKeyPrefix, ++n);
 		CRegString regkey(sKey);
 		sText = regkey;
 		if (sText == entryToRemove)
@@ -332,13 +332,13 @@ void CHistoryCombo::RemoveEntryFromHistory(LPCTSTR lpszSection, LPCTSTR lpszKeyP
 	for (;; ++n)
 	{
 		CString sKey;
-		sKey.Format(_T("%s\\%s%d"), lpszSection, lpszKeyPrefix, n);
+		sKey.Format(L"%s\\%s%d", lpszSection, lpszKeyPrefix, n);
 		CRegString regkey(sKey);
 		sText = regkey;
 		if (!sText.IsEmpty())
 		{
 			CString sKeyNew;
-			sKeyNew.Format(_T("%s\\%s%d"), lpszSection, lpszKeyPrefix, n - 1);
+			sKeyNew.Format(L"%s\\%s%d", lpszSection, lpszKeyPrefix, n - 1);
 			CRegString regkeyNew(sKeyNew);
 			regkeyNew = sText;
 			regkey.removeValue();
@@ -455,7 +455,7 @@ BOOL CHistoryCombo::RemoveSelectedItem()
 		// The one and only item has just been
 		// deleted -> reset window text since
 		// there is no item to select
-		SetWindowText(_T(""));
+		SetWindowText(L"");
 	}
 	else
 	{

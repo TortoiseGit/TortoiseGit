@@ -52,8 +52,8 @@
 BOOL	CFileDiffDlg::m_bAscending = TRUE;
 int		CFileDiffDlg::m_nSortedColumn = -1;
 
-UINT CFileDiffDlg::WM_DISABLEBUTTONS = RegisterWindowMessage(_T("TORTOISEGIT_FILEDIFF_DISABLEBUTTONS"));
-UINT CFileDiffDlg::WM_DIFFFINISHED = RegisterWindowMessage(_T("TORTOISEGIT_FILEDIFF_DIFFFINISHED"));
+UINT CFileDiffDlg::WM_DISABLEBUTTONS = RegisterWindowMessage(L"TORTOISEGIT_FILEDIFF_DISABLEBUTTONS");
+UINT CFileDiffDlg::WM_DIFFFINISHED = RegisterWindowMessage(L"TORTOISEGIT_FILEDIFF_DIFFFINISHED");
 
 IMPLEMENT_DYNAMIC(CFileDiffDlg, CResizableStandAloneDialog)
 CFileDiffDlg::CFileDiffDlg(CWnd* pParent /*=nullptr*/)
@@ -143,7 +143,7 @@ void CFileDiffDlg::SetDiff(const CTGitPath* path, const CString &baseRev1, const
 	else
 	{
 		if (m_rev1.GetCommit(baseRev1))
-			MessageBox(m_rev1.GetLastErr(), _T("TortoiseGit"), MB_ICONERROR);
+			MessageBox(m_rev1.GetLastErr(), L"TortoiseGit", MB_ICONERROR);
 	}
 
 	logout.clear();
@@ -156,7 +156,7 @@ void CFileDiffDlg::SetDiff(const CTGitPath* path, const CString &baseRev1, const
 	else
 	{
 		if (m_rev2.GetCommit(hash2))
-			MessageBox(m_rev2.GetLastErr(), _T("TortoiseGit"), MB_ICONERROR);
+			MessageBox(m_rev2.GetLastErr(), L"TortoiseGit", MB_ICONERROR);
 	}
 }
 
@@ -208,7 +208,7 @@ BOOL CFileDiffDlg::OnInitDialog()
 	m_cFilter.SetCancelBitmaps(IDI_CANCELNORMAL, IDI_CANCELPRESSED);
 	m_cFilter.SetInfoIcon(IDI_FILTEREDIT);
 	temp.LoadString(IDS_FILEDIFF_FILTERCUE);
-	temp = _T("   ")+temp;
+	temp = L"   " + temp;
 	m_cFilter.SetCueBanner(temp);
 	if (!m_sFilter.IsEmpty())
 		m_cFilter.SetWindowText(m_sFilter);
@@ -253,7 +253,7 @@ BOOL CFileDiffDlg::OnInitDialog()
 	AddAnchor(IDC_DIFFOPTION, TOP_RIGHT);
 	AddAnchor(IDC_LOG, TOP_RIGHT);
 
-	EnableSaveRestore(_T("FileDiffDlg"));
+	EnableSaveRestore(L"FileDiffDlg");
 
 	m_bIsBare = GitAdminDir::IsBareRepo(g_Git.m_CurrentDir);
 
@@ -461,7 +461,7 @@ void CFileDiffDlg::OnLvnGetInfoTipFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 
 	CString path = m_path1.GetGitPathString() + L'/' + m_arFilteredList[pGetInfoTip->iItem]->GetGitPathString();
 	if (pGetInfoTip->cchTextMax > path.GetLength())
-			_tcsncpy_s(pGetInfoTip->pszText, pGetInfoTip->cchTextMax, path, pGetInfoTip->cchTextMax - 1);
+			wcsncpy_s(pGetInfoTip->pszText, pGetInfoTip->cchTextMax, path, pGetInfoTip->cchTextMax - 1);
 
 	*pResult = 0;
 }
@@ -655,10 +655,10 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 				while (pos)
 				{
 					int index = m_cFileList.GetNextSelectedItem(pos);
-					CString sCmd = _T("/command:log");
+					CString sCmd = L"/command:log";
 					if (sCmd == ID_LOGSUBMODULE)
-						sCmd += _T(" /submodule");
-					sCmd += _T(" /path:\"") + m_arFilteredList[index]->GetWinPathString() + _T("\" ");
+						sCmd += L" /submodule";
+					sCmd += L" /path:\"" + m_arFilteredList[index]->GetWinPathString() + L"\" ";
 					sCmd += L" /endrev:" + m_rev2.m_CommitHash.ToString();
 					CAppUtils::RunTortoiseGitProc(sCmd);
 				}
@@ -683,14 +683,14 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 							temp.Format(IDS_FILEDIFF_CHANGEDLISTINTROROOT, (LPCTSTR)m_rev1.m_CommitHash.ToString(), (LPCTSTR)m_rev2.m_CommitHash.ToString());
 						else
 							temp.Format(IDS_FILEDIFF_CHANGEDLISTINTRO, (LPCTSTR)m_path1.GetGitPathString(), (LPCTSTR)m_rev1.m_CommitHash.ToString(), (LPCTSTR)m_path2.GetGitPathString(), (LPCTSTR)m_rev2.m_CommitHash.ToString());
-						file.WriteString(temp + _T("\r\n"));
+						file.WriteString(temp + L"\r\n");
 						POSITION pos = m_cFileList.GetFirstSelectedItemPosition();
 						while (pos)
 						{
 							int index = m_cFileList.GetNextSelectedItem(pos);
 							CTGitPath* fd = m_arFilteredList[index];
 							file.WriteString(fd->GetGitPathString());
-							file.WriteString(_T("\r\n"));
+							file.WriteString(L"\r\n");
 						}
 						file.Close();
 					}
@@ -733,7 +733,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 						{
 							if(!CopyFile(g_Git.CombinePath(fd), filename, false))
 							{
-								MessageBox(CFormatMessageWrapper(), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+								MessageBox(CFormatMessageWrapper(), L"TortoiseGit", MB_OK | MB_ICONERROR);
 								return;
 							}
 						}
@@ -829,18 +829,18 @@ void CFileDiffDlg::SetURLLabels(int mask)
 {
 	if(mask &0x1)
 	{
-		SetDlgItemText(IDC_FIRSTURL, m_rev1.m_CommitHash.ToString().Left(8)+_T(": ")+m_rev1.GetSubject());
+		SetDlgItemText(IDC_FIRSTURL, m_rev1.m_CommitHash.ToString().Left(8) + L": " + m_rev1.GetSubject());
 		if (!m_rev1.m_CommitHash.IsEmpty())
 			m_tooltips.AddTool(IDC_FIRSTURL,
-				CLoglistUtils::FormatDateAndTime(m_rev1.GetAuthorDate(), DATE_SHORTDATE) + _T("  ") + m_rev1.GetAuthorName());
+				CLoglistUtils::FormatDateAndTime(m_rev1.GetAuthorDate(), DATE_SHORTDATE) + L"  " + m_rev1.GetAuthorName());
 	}
 
 	if(mask &0x2)
 	{
-		SetDlgItemText(IDC_SECONDURL,m_rev2.m_CommitHash.ToString().Left(8)+_T(": ")+m_rev2.GetSubject());
+		SetDlgItemText(IDC_SECONDURL,m_rev2.m_CommitHash.ToString().Left(8) + L": " + m_rev2.GetSubject());
 		if (!m_rev2.m_CommitHash.IsEmpty())
 			m_tooltips.AddTool(IDC_SECONDURL,
-				CLoglistUtils::FormatDateAndTime(m_rev2.GetAuthorDate(), DATE_SHORTDATE) + _T("  ") + m_rev2.GetAuthorName());
+				CLoglistUtils::FormatDateAndTime(m_rev2.GetAuthorDate(), DATE_SHORTDATE) + L"  " + m_rev2.GetAuthorName());
 	}
 
 	this->GetDlgItem(IDC_REV1GROUP)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_FILEDIFF_VERSION1BASE)));
@@ -857,14 +857,14 @@ void CFileDiffDlg::ClearURLabels(int mask)
 {
 	if(mask&0x1)
 	{
-		SetDlgItemText(IDC_FIRSTURL, _T(""));
-		m_tooltips.AddTool(IDC_FIRSTURL,  _T(""));
+		SetDlgItemText(IDC_FIRSTURL, L"");
+		m_tooltips.AddTool(IDC_FIRSTURL, L"");
 	}
 
 	if(mask&0x2)
 	{
-		SetDlgItemText(IDC_SECONDURL, _T(""));
-		m_tooltips.AddTool(IDC_SECONDURL,  _T(""));
+		SetDlgItemText(IDC_SECONDURL, L"");
+		m_tooltips.AddTool(IDC_SECONDURL, L"");
 	}
 }
 BOOL CFileDiffDlg::PreTranslateMessage(MSG* pMsg)
@@ -1108,7 +1108,7 @@ LRESULT CFileDiffDlg::OnClickedCancelFilter(WPARAM /*wParam*/, LPARAM /*lParam*/
 	m_arFilteredList.clear();
 	m_cFileList.DeleteAllItems();
 
-	Filter(_T(""));
+	Filter(L"");
 
 	m_cFileList.SetRedraw(TRUE);
 	return 0L;
@@ -1143,7 +1143,7 @@ void CFileDiffDlg::OnTimer(UINT_PTR nIDEvent)
 	if( nIDEvent == IDT_INPUT)
 	{
 		KillTimer(IDT_INPUT);
-		TRACE(_T("Input Timer\r\n"));
+		TRACE(L"Input Timer\r\n");
 
 		GitRev gitrev;
 		CString str;
@@ -1218,7 +1218,7 @@ void CFileDiffDlg::CopySelectionToClipboard(BOOL isFull)
 		sTextForClipboard += L'\t';
 
 		if(!isFull)
-			sTextForClipboard += _T("\r\n");
+			sTextForClipboard += L"\r\n";
 		else
 		{
 			sTextForClipboard += m_cFileList.GetItemText(index, 1);
@@ -1228,7 +1228,7 @@ void CFileDiffDlg::CopySelectionToClipboard(BOOL isFull)
 			sTextForClipboard += m_cFileList.GetItemText(index, 3);
 			sTextForClipboard += L'\t';
 			sTextForClipboard += m_cFileList.GetItemText(index, 4);
-			sTextForClipboard += _T("\r\n");
+			sTextForClipboard += L"\r\n";
 		}
 	}
 	CStringUtils::WriteAsciiStringToClipboard(sTextForClipboard);
@@ -1273,7 +1273,7 @@ LRESULT CFileDiffDlg::OnEnUpdate(WPARAM /*wParam*/, LPARAM lParam)
 void CFileDiffDlg::OnTextUpdate(CACEdit * /*pEdit*/)
 {
 	SetTimer(IDT_INPUT, 1000, nullptr);
-	this->m_cFileList.ShowText(_T("Wait For input validate version"));
+	this->m_cFileList.ShowText(L"Wait For input validate version");
 }
 
 int CFileDiffDlg::RevertSelectedItemToVersion(CString rev)
@@ -1288,10 +1288,10 @@ int CFileDiffDlg::RevertSelectedItemToVersion(CString rev)
 	{
 		CString cmd, out;
 		CTGitPath* fentry = m_arFilteredList[index];
-		cmd.Format(_T("git.exe checkout %s -- \"%s\""), (LPCTSTR)rev, (LPCTSTR)fentry->GetGitPathString());
+		cmd.Format(L"git.exe checkout %s -- \"%s\"", (LPCTSTR)rev, (LPCTSTR)fentry->GetGitPathString());
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
-			if (CMessageBox::Show(GetSafeHwnd(), out, _T("TortoiseGit"), 2, IDI_WARNING, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
+			if (CMessageBox::Show(GetSafeHwnd(), out, L"TortoiseGit", 2, IDI_WARNING, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
 				break;
 		}
 		else
@@ -1300,7 +1300,7 @@ int CFileDiffDlg::RevertSelectedItemToVersion(CString rev)
 
 	CString out;
 	out.Format(IDS_STATUSLIST_FILESREVERTED, count, (LPCTSTR)rev);
-	CMessageBox::Show(GetSafeHwnd(), out, _T("TortoiseGit"), MB_OK);
+	CMessageBox::Show(GetSafeHwnd(), out, L"TortoiseGit", MB_OK);
 	return 0;
 }
 
@@ -1365,11 +1365,11 @@ void CFileDiffDlg::OnBnClickedLog()
 bool CFileDiffDlg::CheckMultipleDiffs()
 {
 	UINT selCount = m_cFileList.GetSelectedCount();
-	if (selCount > max(3, (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\NumDiffWarning"), 10)))
+	if (selCount > max(3, (DWORD)CRegDWORD(L"Software\\TortoiseGit\\NumDiffWarning", 10)))
 	{
 		CString message;
 		message.Format(IDS_STATUSLIST_WARN_MAXDIFF, selCount);
-		return ::MessageBox(GetSafeHwnd(), message, _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION) == IDYES;
+		return ::MessageBox(GetSafeHwnd(), message, L"TortoiseGit", MB_YESNO | MB_ICONQUESTION) == IDYES;
 	}
 	return true;
 }

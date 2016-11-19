@@ -86,7 +86,7 @@ void CAutoTextTestDlg::OnBnClickedAutotextscan()
 				{
 					if (match[i].second-match[i].first)
 					{
-						ATLTRACE(_T("matched keyword : %s\n"), std::wstring(match[i]).c_str());
+						ATLTRACE(L"matched keyword : %s\n", std::wstring(match[i]).c_str());
 						std::wstring result = std::wstring(match[i]);
 						if (!result.empty())
 						{
@@ -99,13 +99,13 @@ void CAutoTextTestDlg::OnBnClickedAutotextscan()
 			for (const auto& append : autolist)
 			{
 				m_sResult += append;
-				m_sResult += _T("\r\n");
+				m_sResult += L"\r\n";
 			}
-			m_sTimingLabel.Format(_T("Parse time: %ld uSecs"), timer.GetMusecsTaken());
+			m_sTimingLabel.Format(L"Parse time: %ld uSecs", timer.GetMusecsTaken());
 		}
 		catch (std::exception &ex)
 		{
-			m_sResult = _T("Regex is invalid!\r\n") + CString(ex.what());
+			m_sResult = L"Regex is invalid!\r\n" + CString(ex.what());
 		}
 	}
 	UpdateData(FALSE);

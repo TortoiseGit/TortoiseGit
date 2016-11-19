@@ -42,9 +42,9 @@ you can specify the path of the pages in the tree, by their name:
 The names of the pages can contain
 double colons ("::"), which will specify the path of that page in the
 tree control. I.e. if you have three pages with the following names:
-1. _T("Appearance::Toolbars")
-2. _T("Appearance::Menus")
-3. _T("Directories")
+1. L"Appearance::Toolbars"
+2. L"Appearance::Menus"
+3. L"Directories"
 the tree would look as follow:
 \verbatim
 Appearance

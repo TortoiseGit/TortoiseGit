@@ -86,8 +86,8 @@ public:
 	}
 };
 
-#define INDEX_FILE_NAME _T("tortoisegit.index")
-#define DATA_FILE_NAME _T("tortoisegit.data")
+#define INDEX_FILE_NAME L"tortoisegit.index"
+#define DATA_FILE_NAME L"tortoisegit.data"
 
 class CLogCache
 {

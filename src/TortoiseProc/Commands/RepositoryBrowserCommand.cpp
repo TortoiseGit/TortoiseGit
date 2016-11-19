@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012, 2015 - TortoiseGit
+// Copyright (C) 2012, 2015-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -30,8 +30,8 @@ bool RepositoryBrowserCommand::Execute()
 		return false;
 	}
 
-	CString rev = _T("HEAD");
-	CString val = parser.GetVal(_T("rev"));
+	CString rev = L"HEAD";
+	CString val = parser.GetVal(L"rev");
 	if (!val.IsEmpty())
 		rev = val;
 	CRepositoryBrowser(rev).DoModal();

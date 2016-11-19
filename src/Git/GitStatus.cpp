@@ -61,13 +61,13 @@ git_wc_status_kind GitStatus::GetAllStatus(const CTGitPath& path, git_depth_t de
 	CString s = path.GetWinPathString();
 	if (s.GetLength() > sProjectRoot.GetLength())
 	{
-		if (sProjectRoot.GetLength() == 3 && sProjectRoot[1] == _T(':'))
+		if (sProjectRoot.GetLength() == 3 && sProjectRoot[1] == L':')
 			sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength());
 		else
 			sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/);
 	}
 
-	bool isfull = ((DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\CacheType"),
+	bool isfull = ((DWORD)CRegStdDWORD(L"Software\\TortoiseGit\\CacheType",
 				GetSystemMetrics(SM_REMOTESESSION) ? ShellCache::dll : ShellCache::exe) == ShellCache::dllFull);
 
 	if(isDir)
@@ -140,7 +140,7 @@ void GitStatus::GetStatus(const CTGitPath& path, bool /*update*/ /* = false */, 
 	if ( !path.HasAdminDir(&sProjectRoot) )
 		return;
 
-	bool isfull = ((DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\CacheType"),
+	bool isfull = ((DWORD)CRegStdDWORD(L"Software\\TortoiseGit\\CacheType",
 				GetSystemMetrics(SM_REMOTESESSION) ? ShellCache::dll : ShellCache::exe) == ShellCache::dllFull);
 
 	int err = 0;
@@ -153,7 +153,7 @@ void GitStatus::GetStatus(const CTGitPath& path, bool /*update*/ /* = false */, 
 		sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength());
 		lpszSubPath = sSubPath;
 		// skip initial slash if necessary
-		if (*lpszSubPath == _T('\\'))
+		if (*lpszSubPath == L'\\')
 			++lpszSubPath;
 	}
 
@@ -188,7 +188,7 @@ int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status_
 	if (!status)
 		return 0;
 
-	path.Replace(_T('\\'), _T('/'));
+	path.Replace(L'\\', L'/');
 
 	CString lowcasepath = path;
 	lowcasepath.MakeLower();
@@ -240,7 +240,7 @@ int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status_
 		if (start < 0)
 		{
 			*status = st = git_wc_status_added;
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": File miss in head tree %s"), (LPCTSTR)path);
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": File miss in head tree %s", (LPCTSTR)path);
 			if (callback && assumeValid && skipWorktree)
 				callback(CombinePath(gitdir, path), st, false, pData, *assumeValid, *skipWorktree);
 			return 0;
@@ -292,18 +292,18 @@ int GitStatus::IsIgnore(const CString &gitdir, const CString &path, bool *isIgno
 
 int GitStatus::GetFileList(CString path, std::vector<CGitFileName> &list)
 {
-	path += _T("\\*.*");
+	path += L"\\*.*";
 	WIN32_FIND_DATA data;
 	HANDLE handle = ::FindFirstFileEx(path, SysInfo::Instance().IsWin7OrLater() ? FindExInfoBasic : FindExInfoStandard, &data, FindExSearchNameMatch, nullptr, SysInfo::Instance().IsWin7OrLater() ? FIND_FIRST_EX_LARGE_FETCH : 0);
 	do
 	{
-		if(_tcscmp(data.cFileName, _T(".git")) == 0)
+		if (wcscmp(data.cFileName, L".git") == 0)
 			continue;
 
-		if(_tcscmp(data.cFileName, _T(".")) == 0)
+		if (wcscmp(data.cFileName, L".") == 0)
 			continue;
 
-		if(_tcscmp(data.cFileName, _T("..")) == 0)
+		if (wcscmp(data.cFileName, L"..") == 0)
 			continue;
 
 		CGitFileName filename;
@@ -312,7 +312,7 @@ int GitStatus::GetFileList(CString path, std::vector<CGitFileName> &list)
 		filename.m_FileName.MakeLower();
 
 		if(data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-			filename.m_FileName += _T('/');
+			filename.m_FileName += L'/';
 
 		list.push_back(filename);
 
@@ -331,9 +331,9 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 
 	CString path = subpath;
 
-	path.Replace(_T('\\'), _T('/'));
-	if (!path.IsEmpty() && path[path.GetLength() - 1] != _T('/'))
-		path += _T('/'); // Add trail / to show it is directory, not file name.
+	path.Replace(L'\\', L'/');
+	if (!path.IsEmpty() && path[path.GetLength() - 1] != L'/')
+		path += L'/'; // Add trail / to show it is directory, not file name.
 
 	std::vector<CGitFileName> filelist;
 	GetFileList(CombinePath(gitdir, subpath), filelist);
@@ -354,7 +354,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 			casepath += it->m_CaseFileName;
 
 			bool bIsDir = false;
-			if (!it->m_FileName.IsEmpty() && it->m_FileName[it->m_FileName.GetLength() - 1] == _T('/'))
+			if (!it->m_FileName.IsEmpty() && it->m_FileName[it->m_FileName.GetLength() - 1] == L'/')
 				bIsDir = true;
 
 			if (IsIgnore)
@@ -391,7 +391,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 		casepath += it->m_CaseFileName;
 
 		bool bIsDir = false;
-		if (!onepath.IsEmpty() && onepath[onepath.GetLength() - 1] == _T('/'))
+		if (!onepath.IsEmpty() && onepath[onepath.GetLength() - 1] == L'/')
 			bIsDir = true;
 
 		int matchLength = -1;
@@ -470,7 +470,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 		for (auto it = indexptr->cbegin() + start, itlast = indexptr->cbegin() + end; it <= itlast; ++it)
 		{
 			int commonPrefixLength = lowcasepath.GetLength();
-			int index = (*it).m_FileName.Find(_T('/'), commonPrefixLength);
+			int index = (*it).m_FileName.Find(L'/', commonPrefixLength);
 			if (index < 0)
 				index = (*it).m_FileName.GetLength();
 			else
@@ -505,7 +505,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 		for (auto it = treeptr->cbegin() + start, itlast = treeptr->cbegin() + end; it <= itlast; ++it)
 		{
 			int commonPrefixLength = lowcasepath.GetLength();
-			int index = (*it).m_FileName.Find(_T('/'), commonPrefixLength);
+			int index = (*it).m_FileName.Find(L'/', commonPrefixLength);
 			if (index < 0)
 				index = (*it).m_FileName.GetLength();
 			else
@@ -536,9 +536,9 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 
 	CString path = subpath;
 
-	path.Replace(_T('\\'), _T('/'));
-	if (!path.IsEmpty() && path[path.GetLength() - 1] != _T('/'))
-		path += _T('/'); //Add trail / to show it is directory, not file name.
+	path.Replace(L'\\', L'/');
+	if (!path.IsEmpty() && path[path.GetLength() - 1] != L'/')
+		path += L'/'; //Add trail / to show it is directory, not file name.
 
 	g_IndexFileMap.CheckAndUpdate(gitdir, true);
 
@@ -666,7 +666,7 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 	for (auto it = indexptr->cbegin() + start, itlast = indexptr->cbegin() + end; it <= itlast; ++it)
 	{
 		//skip child directory
-		if (!IsRecursive && (*it).m_FileName.Find(_T('/'), path.GetLength()) > 0)
+		if (!IsRecursive && (*it).m_FileName.Find(L'/', path.GetLength()) > 0)
 			continue;
 
 		git_wc_status_kind filestatus = git_wc_status_none;
@@ -692,7 +692,7 @@ bool GitStatus::IsExistIndexLockFile(CString sDirName)
 {
 	if (!PathIsDirectory(sDirName))
 	{
-		int x = sDirName.ReverseFind(_T('\\'));
+		int x = sDirName.ReverseFind(L'\\');
 		if (x < 2)
 			return false;
 
@@ -701,15 +701,15 @@ bool GitStatus::IsExistIndexLockFile(CString sDirName)
 
 	for (;;)
 	{
-		if (PathFileExists(CombinePath(sDirName, _T(".git"))))
+		if (PathFileExists(CombinePath(sDirName, L".git")))
 		{
-			if (PathFileExists(g_AdminDirMap.GetAdminDirConcat(sDirName, _T("index.lock"))))
+			if (PathFileExists(g_AdminDirMap.GetAdminDirConcat(sDirName, L"index.lock")))
 				return true;
 
 			return false;
 		}
 
-		int x = sDirName.ReverseFind(_T('\\'));
+		int x = sDirName.ReverseFind(L'\\');
 		if (x < 2)
 			return false;
 

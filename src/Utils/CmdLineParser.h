@@ -55,7 +55,7 @@ using std::map;
 class CCmdLineParser
 {
 public:
-	typedef map<tstring, tstring> CValsMap;
+	typedef map<std::wstring, std::wstring> CValsMap;
 	typedef CValsMap::const_iterator ITERPOS;
 public:
 	/**
@@ -89,7 +89,7 @@ public:
 	 * \param sValue returns the value
 	 * \return the next position
 	 */
-	ITERPOS getNext(ITERPOS& pos, tstring& sKey, tstring& sValue) const;
+	ITERPOS getNext(ITERPOS& pos, std::wstring& sKey, std::wstring& sValue) const;
 
 	/**
 	 * Checks if the position is the last or if there are more key/value pairs in the command line.
@@ -134,7 +134,7 @@ private:
 	CValsMap::const_iterator findKey(LPCTSTR sKey) const;
 	const CValsMap& getVals() const { return m_valueMap; }
 private:
-	tstring		m_sCmdLine;
+	std::wstring	m_sCmdLine;
 	CValsMap	m_valueMap;
 
 	static const TCHAR m_sDelims[];

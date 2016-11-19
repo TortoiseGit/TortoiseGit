@@ -28,7 +28,7 @@
 
 bool PasteMoveCommand::Execute()
 {
-	CString sDroppath = parser.GetVal(_T("droptarget"));
+	CString sDroppath = parser.GetVal(L"droptarget");
 	CTGitPath dropPath(sDroppath);
 	if (dropPath.IsAdminDir())
 		return FALSE;
@@ -74,12 +74,12 @@ bool PasteMoveCommand::Execute()
 			// source file is unversioned: move the file to the target, then add it
 			MoveFile(orgPathList[nPath].GetWinPath(), destPath.GetWinPath());
 			CString cmd,output;
-			cmd.Format(_T("git.exe add -- \"%s\""),destPath.GetWinPath());
+			cmd.Format(L"git.exe add -- \"%s\"", destPath.GetWinPath());
 			if (g_Git.Run(cmd, &output, CP_UTF8))
 			//if (!Git.Add(CTGitorgPathList(destPath), &props, Git_depth_infinity, true, false, true))
 			{
-				TRACE(_T("%s\n"), (LPCTSTR)output);
-				CMessageBox::Show(hwndExplorer, output, _T("TortoiseGit"), MB_ICONERROR);
+				TRACE(L"%s\n", (LPCTSTR)output);
+				CMessageBox::Show(hwndExplorer, output, L"TortoiseGit", MB_ICONERROR);
 				return FALSE;		//get out of here
 			}
 			CShellUpdater::Instance().AddPathForUpdate(destPath);
@@ -87,7 +87,7 @@ bool PasteMoveCommand::Execute()
 		else
 		{
 			CString cmd,output;
-			cmd.Format(_T("git.exe mv \"%s\" \"%s\""), (LPCTSTR)orgPathList[nPath].GetGitPathString(), (LPCTSTR)destPath.GetGitPathString());
+			cmd.Format(L"git.exe mv \"%s\" \"%s\"", (LPCTSTR)orgPathList[nPath].GetGitPathString(), (LPCTSTR)destPath.GetGitPathString());
 			if (g_Git.Run(cmd, &output, CP_UTF8))
 			//if (!Git.Move(CTGitorgPathList(orgPathList[nPath]), destPath, FALSE))
 			{
@@ -100,11 +100,11 @@ bool PasteMoveCommand::Execute()
 					CString temp = Git.GetLastErrorMessage();
 					CString sQuestion(MAKEINTRESOURCE(IDS_PROC_FORCEMOVE));
 					temp += L'\n' + sQuestion;
-					if (CMessageBox::Show(hwndExplorer, temp, _T("TortoiseGit"), MB_YESNO)==IDYES)
+					if (CMessageBox::Show(hwndExplorer, temp, L"TortoiseGit", MB_YESNO) == IDYES)
 					{
 						if (!Git.Move(CTGitPathList(pathList[nPath]), destPath, TRUE))
 						{
-							CMessageBox::Show(hwndExplorer, Git.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
+							CMessageBox::Show(hwndExplorer, Git.GetLastErrorMessage(), L"TortoiseGit", MB_ICONERROR);
 							return FALSE;		//get out of here
 						}
 						CShellUpdater::Instance().AddPathForUpdate(destPath);
@@ -113,8 +113,8 @@ bool PasteMoveCommand::Execute()
 				else
 #endif
 				{
-					TRACE(_T("%s\n"), (LPCTSTR)output);
-					CMessageBox::Show(hwndExplorer, output, _T("TortoiseGit"), MB_ICONERROR);
+					TRACE(L"%s\n", (LPCTSTR)output);
+					CMessageBox::Show(hwndExplorer, output, L"TortoiseGit", MB_ICONERROR);
 					return FALSE;		//get out of here
 				}
 			}

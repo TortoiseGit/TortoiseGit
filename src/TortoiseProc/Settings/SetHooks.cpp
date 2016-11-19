@@ -95,8 +95,8 @@ void CSetHooks::RebuildHookList()
 			int pos = m_cHookList.InsertItem(m_cHookList.GetItemCount(), CHooks::Instance().GetHookTypeString(it->first.htype));
 			m_cHookList.SetItemText(pos, 1, it->first.path.GetWinPathString());
 			m_cHookList.SetItemText(pos, 2, it->second.commandline);
-			m_cHookList.SetItemText(pos, 3, (it->second.bWait ? _T("true") : _T("false")));
-			m_cHookList.SetItemText(pos, 4, (it->second.bShow ? _T("show") : _T("hide")));
+			m_cHookList.SetItemText(pos, 3, (it->second.bWait ? L"true" : L"false"));
+			m_cHookList.SetItemText(pos, 4, (it->second.bShow ? L"show" : L"hide"));
 		}
 	}
 
@@ -137,8 +137,8 @@ void CSetHooks::OnBnClickedEditbutton()
 		dlg.key.htype = CHooks::GetHookType((LPCTSTR)m_cHookList.GetItemText(index, 0));
 		dlg.key.path = CTGitPath(m_cHookList.GetItemText(index, 1));
 		dlg.cmd.commandline = m_cHookList.GetItemText(index, 2);
-		dlg.cmd.bWait = (m_cHookList.GetItemText(index, 3).Compare(_T("true"))==0);
-		dlg.cmd.bShow = (m_cHookList.GetItemText(index, 4).Compare(_T("show"))==0);
+		dlg.cmd.bWait = (m_cHookList.GetItemText(index, 3).Compare(L"true") == 0);
+		dlg.cmd.bShow = (m_cHookList.GetItemText(index, 4).Compare(L"show") == 0);
 		hookkey key = dlg.key;
 		if (dlg.DoModal() == IDOK)
 		{
@@ -195,8 +195,8 @@ void CSetHooks::OnBnClickedHookcopybutton()
 		int index = m_cHookList.GetNextSelectedItem(pos);
 		dlg.key.htype = CHooks::GetHookType((LPCTSTR)m_cHookList.GetItemText(index, 0));
 		dlg.cmd.commandline = m_cHookList.GetItemText(index, 2);
-		dlg.cmd.bWait = (m_cHookList.GetItemText(index, 3).Compare(_T("true"))==0);
-		dlg.cmd.bShow = (m_cHookList.GetItemText(index, 4).Compare(_T("show"))==0);
+		dlg.cmd.bWait = (m_cHookList.GetItemText(index, 3).Compare(L"true") == 0);
+		dlg.cmd.bShow = (m_cHookList.GetItemText(index, 4).Compare(L"show") == 0);
 		hookkey key = dlg.key;
 		if (dlg.DoModal() == IDOK)
 		{

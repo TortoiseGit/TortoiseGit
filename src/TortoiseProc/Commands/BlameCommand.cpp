@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2008-2013, 2016 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -25,10 +26,10 @@
 bool BlameCommand::Execute()
 {
 	CString params;
-	if (parser.HasVal(_T("line")))
-		params.Format(_T("/line:%ld"), parser.GetLongVal(_T("line")));
+	if (parser.HasVal(L"line"))
+		params.Format(L"/line:%ld", parser.GetLongVal(L"line"));
 
-	CAppUtils::LaunchTortoiseBlame(orgCmdLinePath.GetWinPath(), parser.GetVal(_T("endrev")), params);
+	CAppUtils::LaunchTortoiseBlame(orgCmdLinePath.GetWinPath(), parser.GetVal(L"endrev"), params);
 
 	return TRUE;
 }

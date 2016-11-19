@@ -225,7 +225,7 @@ void CACListWnd::Init(CWnd *pWnd)
 	if(m_pDC)
 	{
 		m_pDC->SelectObject(GetStockObject(DEFAULT_GUI_FONT));
-		CSize m_Size = m_pDC->GetOutputTextExtent(_T("Hg"));
+		CSize m_Size = m_pDC->GetOutputTextExtent(L"Hg");
 		m_ItemHeight = m_Size.cy;
 		ReleaseDC(m_pDC);
 	}
@@ -726,7 +726,7 @@ CString CACListWnd::GetString()
 	int i = (int)m_DisplayList.GetSize();
 
 	if(!i)
-		return _T("");
+		return L"";
 	if(i <= m_lSelItem || m_lSelItem == -1)
 		i = 0;
 	else
@@ -934,7 +934,7 @@ void CACListWnd::CopyList()
 	m_DisplayList.Copy(m_SearchList);
 	m_lCount = (long)m_DisplayList.GetSize();
 	if(m_lCount)
-		FindString(0,_T(""),true);
+		FindString(0, L"", true);
 }
 
 /*********************************************************************/

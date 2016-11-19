@@ -236,7 +236,7 @@ CString MyGraphSeries::GetTipText(int nGroup, const CString &unitString) const
 
 	CString sTip;
 
-	sTip.Format(_T("%d %s (%d%%)"), m_dwaValues.GetAt(nGroup),
+	sTip.Format(L"%d %s (%d%%)", m_dwaValues.GetAt(nGroup),
 		(LPCTSTR)unitString,
 		GetDataTotal() ? (int) (100.0 * (double) m_dwaValues.GetAt(nGroup) /
 		(double) GetDataTotal()) : 0);
@@ -406,7 +406,7 @@ CString MyGraph::GetTipText() const
 			double barTop = m_ptOrigin.y - (double)m_nYAxisHeight *
 				(average / (double)nMaxDataValue);
 			if (pt.y >= barTop - 2 && pt.y <= barTop + 2) {
-				sTip.Format(_T("Average: %d %s (%d%%)"), average, (LPCTSTR)m_sYAxisLabel, nMaxDataValue ? (100 * average / nMaxDataValue) : 0);
+				sTip.Format(L"Average: %d %s (%d%%)", average, (LPCTSTR)m_sYAxisLabel, nMaxDataValue ? (100 * average / nMaxDataValue) : 0);
 				return sTip;
 			}
 		}
@@ -423,9 +423,9 @@ CString MyGraph::GetTipText() const
 
 				if (-1 != nGroup) {
 					if("" != sTip){
-						sTip += _T(", ");
+						sTip += L", ";
 					}
-					sTip += m_saLegendLabels.GetAt(nGroup) + _T(": ");
+					sTip += m_saLegendLabels.GetAt(nGroup) + L": ";
 					sTip += pSeries->GetTipText(nGroup, m_sYAxisLabel);
 					nGroup++;
 				}
@@ -771,7 +771,7 @@ void MyGraph::DrawTitle(CDC& dc)
 	// Create the title font.
 	CFont fontTitle;
 	VERIFY(fontTitle.CreatePointFont(max(m_rcGraph.Width() / TITLE_DIVISOR, MIN_FONT_SIZE),
-		_T("Arial"), &dc));
+		L"Arial", &dc));
 	CFont* pFontOld = dc.SelectObject(&fontTitle);
 	ASSERT_VALID(pFontOld);
 
@@ -816,14 +816,14 @@ void MyGraph::SetupAxes(CDC& dc)
 		m_nAxisTickLabelHeight = max(int(m_nAxisLabelHeight*0.8), MIN_FONT_SIZE);
 
 		CFont fontTickLabels;
-		VERIFY(fontTickLabels.CreatePointFont(m_nAxisTickLabelHeight, _T("Arial"), &dc));
+		VERIFY(fontTickLabels.CreatePointFont(m_nAxisTickLabelHeight, L"Arial", &dc));
 		// Select font and store the old.
 		CFont* pFontOld = dc.SelectObject(&fontTickLabels);
 		ASSERT_VALID(pFontOld);
 
 		// Obtain tick label dimensions.
 		CString sTickLabel;
-		sTickLabel.Format(_T("%d"), GetMaxDataValue());
+		sTickLabel.Format(L"%d", GetMaxDataValue());
 		CSize sizTickLabel(dc.GetTextExtent(sTickLabel));
 
 		// Set old font object again and delete temporary font object.
@@ -849,7 +849,7 @@ void MyGraph::DrawLegend(CDC& dc)
 	// Create the legend font.
 	CFont fontLegend;
 	int pointFontHeight = max(m_rcGraph.Height() / LEGEND_DIVISOR, MIN_FONT_SIZE);
-	VERIFY(fontLegend.CreatePointFont(pointFontHeight, _T("Arial"), &dc));
+	VERIFY(fontLegend.CreatePointFont(pointFontHeight, L"Arial", &dc));
 
 	// Get the height of each label.
 	LOGFONT lf = { 0 };
@@ -873,7 +873,7 @@ void MyGraph::DrawLegend(CDC& dc)
 	// If the optimalPointFontHeight is different from the initial one, create a new legend font
 	if (optimalPointFontHeight != pointFontHeight) {
 		fontLegend.DeleteObject();
-		VERIFY(fontLegend.CreatePointFont(optimalPointFontHeight, _T("Arial"), &dc));
+		VERIFY(fontLegend.CreatePointFont(optimalPointFontHeight, L"Arial", &dc));
 		VERIFY(fontLegend.GetLogFont(&lf));
 		nLabelHeight = max(1, abs(lf.lfHeight));
 	}
@@ -918,7 +918,7 @@ void MyGraph::DrawLegend(CDC& dc)
 		{
 			if (nGroup == skipped_row) {
 				// draw the dots
-				VERIFY(dc.TextOut(m_rcLegend.left + GAP_PIXELS, nLabelTop, _T("...") ));
+				VERIFY(dc.TextOut(m_rcLegend.left + GAP_PIXELS, nLabelTop, L"..."));
 				continue;
 			}
 			if (nGroup == nShownAuthors-1) {
@@ -985,7 +985,7 @@ void MyGraph::DrawAxes(CDC& dc) const
 
 	// Create the x-axis label font.
 	CFont fontXAxis;
-	VERIFY(fontXAxis.CreatePointFont(m_nAxisLabelHeight, _T("Arial"), &dc));
+	VERIFY(fontXAxis.CreatePointFont(m_nAxisLabelHeight, L"Arial", &dc));
 
 	// Obtain the height of the font in device coordinates.
 	LOGFONT pLF;
@@ -1008,7 +1008,7 @@ void MyGraph::DrawAxes(CDC& dc) const
 		CLIP_DEFAULT_PRECIS,
 		PROOF_QUALITY,
 		VARIABLE_PITCH | FF_DONTCARE,
-		_T("Arial"))
+		L"Arial")
 	);
 
 	// Set the y-axis label font and draw the label.
@@ -1042,7 +1042,7 @@ void MyGraph::DrawAxes(CDC& dc) const
 
 	// create tick label font and set it in the device context
 	CFont fontTickLabels;
-	VERIFY(fontTickLabels.CreatePointFont(m_nAxisTickLabelHeight, _T("Arial"), &dc));
+	VERIFY(fontTickLabels.CreatePointFont(m_nAxisTickLabelHeight, L"Arial", &dc));
 	VERIFY(dc.SelectObject(&fontTickLabels));
 
 	for (int nTick = 0; nTick < nTickCount; ++nTick)
@@ -1053,7 +1053,7 @@ void MyGraph::DrawAxes(CDC& dc) const
 
 		// Draw tick label.
 		CString sTickLabel;
-		sTickLabel.Format(_T("%d"), nTickStep * (nTick+1));
+		sTickLabel.Format(L"%d", nTickStep * (nTick + 1));
 		CSize sizTickLabel(dc.GetTextExtent(sTickLabel));
 
 		VERIFY(dc.TextOut(m_ptOrigin.x - GAP_PIXELS - sizTickLabel.cx - TICK_PIXELS,
@@ -1448,7 +1448,7 @@ void MyGraph::DrawSeriesPie(CDC& dc) const
 	// Create font for labels.
 	CFont fontLabels;
 	int pointFontHeight = max(m_rcGraph.Height() / Y_AXIS_LABEL_DIVISOR, MIN_FONT_SIZE);
-	VERIFY(fontLabels.CreatePointFont(pointFontHeight, _T("Arial"), &dc));
+	VERIFY(fontLabels.CreatePointFont(pointFontHeight, L"Arial", &dc));
 	CFont* pFontOld = dc.SelectObject(&fontLabels);
 	ASSERT_VALID(pFontOld);
 

@@ -34,8 +34,8 @@ INSTANTIATE_TEST_CASE_P(GitRevRefBrowser, GitRevRefBrowserCBasicGitWithTestRepoB
 
 static void GetGitRevRefMap()
 {
-	g_Git.SetConfigValue(_T("branch.master.description"), _T("test"));
-	g_Git.SetConfigValue(_T("branch.subdir/branch.description"), _T("multi\nline"));
+	g_Git.SetConfigValue(L"branch.master.description", L"test");
+	g_Git.SetConfigValue(L"branch.subdir/branch.description", L"multi\nline");
 
 	MAP_REF_GITREVREFBROWSER refMap;
 	CString err;
@@ -44,28 +44,28 @@ static void GetGitRevRefMap()
 	EXPECT_EQ(11, refMap.size());
 
 	GitRevRefBrowser rev = refMap[L"refs/heads/master"];
-	EXPECT_STREQ(_T("7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6"), rev.m_CommitHash.ToString());
-	EXPECT_STREQ(_T("Sven Strickroth"), rev.GetAuthorName());
-	EXPECT_STREQ(_T("2015-03-07 18:03:58"), rev.GetAuthorDate().FormatGmt(L"%Y-%m-%d %H:%M:%S"));
-	EXPECT_STREQ(_T("Changed ASCII file"), rev.GetSubject());
-	EXPECT_STREQ(_T("refs/remotes/origin/master"), rev.m_UpstreamRef);
-	EXPECT_STREQ(_T("test"), rev.m_Description);
+	EXPECT_STREQ(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6", rev.m_CommitHash.ToString());
+	EXPECT_STREQ(L"Sven Strickroth", rev.GetAuthorName());
+	EXPECT_STREQ(L"2015-03-07 18:03:58", rev.GetAuthorDate().FormatGmt(L"%Y-%m-%d %H:%M:%S"));
+	EXPECT_STREQ(L"Changed ASCII file", rev.GetSubject());
+	EXPECT_STREQ(L"refs/remotes/origin/master", rev.m_UpstreamRef);
+	EXPECT_STREQ(L"test", rev.m_Description);
 
 	rev = refMap[L"refs/heads/subdir/branch"];
-	EXPECT_STREQ(_T("4c5c93d2a0b368bc4570d5ec02ab03b9c4334d44"), rev.m_CommitHash.ToString());
-	EXPECT_STREQ(_T("Sven Strickroth"), rev.GetAuthorName());
-	EXPECT_STREQ(_T("2015-03-16 12:52:29"), rev.GetAuthorDate().FormatGmt(L"%Y-%m-%d %H:%M:%S"));
-	EXPECT_STREQ(_T("Several actions"), rev.GetSubject());
-	EXPECT_STREQ(_T(""), rev.m_UpstreamRef);
-	EXPECT_STREQ(_T("multi\nline"), rev.m_Description);
+	EXPECT_STREQ(L"4c5c93d2a0b368bc4570d5ec02ab03b9c4334d44", rev.m_CommitHash.ToString());
+	EXPECT_STREQ(L"Sven Strickroth", rev.GetAuthorName());
+	EXPECT_STREQ(L"2015-03-16 12:52:29", rev.GetAuthorDate().FormatGmt(L"%Y-%m-%d %H:%M:%S"));
+	EXPECT_STREQ(L"Several actions", rev.GetSubject());
+	EXPECT_STREQ(L"", rev.m_UpstreamRef);
+	EXPECT_STREQ(L"multi\nline", rev.m_Description);
 
 	rev = refMap[L"refs/tags/also-signed"];
-	EXPECT_STREQ(_T("e89cb722e0f9b2eb763bb059dc099ee6c502a6d8"), rev.m_CommitHash.ToString());
-	EXPECT_STREQ(_T(""), rev.GetAuthorName());
+	EXPECT_STREQ(L"e89cb722e0f9b2eb763bb059dc099ee6c502a6d8", rev.m_CommitHash.ToString());
+	EXPECT_STREQ(L"", rev.GetAuthorName());
 	EXPECT_TRUE(rev.GetAuthorDate() == 0);
-	EXPECT_STREQ(_T("Also signed"), rev.GetSubject());
-	EXPECT_STREQ(_T(""), rev.m_UpstreamRef);
-	EXPECT_STREQ(_T(""), rev.m_Description);
+	EXPECT_STREQ(L"Also signed", rev.GetSubject());
+	EXPECT_STREQ(L"", rev.m_UpstreamRef);
+	EXPECT_STREQ(L"", rev.m_Description);
 
 	refMap.clear();
 	EXPECT_EQ(0, GitRevRefBrowser::GetGitRevRefMap(refMap, 0, err, [](const CString& refName) { return wcsncmp(refName, L"refs/heads/", 11) == 0; }));

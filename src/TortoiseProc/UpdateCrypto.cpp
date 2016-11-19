@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2015 Sven Strickroth <email@cs-ware.de>
-// Copyright (C) 2014-2015 TortoiseGit
+// Copyright (C) 2013-2016 Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2014-2016 TortoiseGit
 // Copyright (C) VLC project (http://videolan.org)
 // - pgp parsing code was copied from src/misc/update(_crypto)?.c
 // Copyright (C) The Internet Society (1998).  All Rights Reserved.
@@ -575,7 +575,7 @@ error:
 
 static int LoadSignature(const CString &signatureFilename, signature_packet_t *p_sig)
 {
-	FILE* pFile = _tfsopen(signatureFilename, _T("rb"), SH_DENYWR);
+	FILE* pFile = _wfsopen(signatureFilename, L"rb", SH_DENYWR);
 	if (!pFile)
 		return -1;
 
@@ -741,7 +741,7 @@ static int hash_from_public_key(HCRYPTHASH hHash, public_key_t* p_pkey)
 
 static int hash_from_file(HCRYPTHASH hHash, CString filename, signature_packet_t* p_sig)
 {
-	CAutoFILE pFile = _tfsopen(filename, _T("rb"), SH_DENYWR);
+	CAutoFILE pFile = _wfsopen(filename, L"rb", SH_DENYWR);
 	if (!pFile)
 		return -1;
 
@@ -954,7 +954,7 @@ static public_key_t *download_key(const uint8_t *p_longid, const uint8_t *p_sign
 
 	int size = 65536;
 	auto buffer = std::make_unique<char[]>(size);
-	FILE * pFile = _tfsopen(tempfile, _T("rb"), SH_DENYWR);
+	FILE * pFile = _wfsopen(tempfile, L"rb", SH_DENYWR);
 	if (pFile)
 	{
 		SCOPE_EXIT{ fclose(pFile); };

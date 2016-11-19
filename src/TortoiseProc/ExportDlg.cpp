@@ -30,7 +30,7 @@ CExportDlg::CExportDlg(CWnd* pParent /*=nullptr*/)
 	: CHorizontalResizableStandAloneDialog(CExportDlg::IDD, pParent)
 	, CChooseVersion(this)
 	, m_bWholeProject(FALSE)
-	, m_Revision(_T("HEAD"))
+	, m_Revision(L"HEAD")
 {
 }
 
@@ -84,7 +84,7 @@ BOOL CExportDlg::OnInitDialog()
 	CHOOSE_VERSION_ADDANCHOR;
 	this->AddOthersToAnchor();
 	InitChooseVersion();
-	if (m_initialRefName.IsEmpty() || m_initialRefName == _T("HEAD"))
+	if (m_initialRefName.IsEmpty() || m_initialRefName == L"HEAD")
 		SetDefaultChoose(IDC_RADIO_HEAD);
 	else if (CStringUtils::StartsWith(m_initialRefName, L"refs/tags/"))
 		SetDefaultChoose(IDC_RADIO_TAGS);
@@ -101,7 +101,7 @@ BOOL CExportDlg::OnInitDialog()
 
 	if (!m_pParentWnd && hWndExplorer)
 		CenterWindow(CWnd::FromHandle(hWndExplorer));
-	EnableSaveRestore(_T("ExportDlg"));
+	EnableSaveRestore(L"ExportDlg");
 	return TRUE;
 }
 
@@ -128,7 +128,7 @@ void CExportDlg::OnOK()
 		}
 		CString sMessage;
 		sMessage.Format(IDS_PROC_OVERWRITE_CONFIRM, (LPCTSTR)m_strFile);
-		if (CMessageBox::Show(GetSafeHwnd(), sMessage, _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2) != IDYES)
+		if (CMessageBox::Show(GetSafeHwnd(), sMessage, L"TortoiseGit", MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2) != IDYES)
 			return ;
 	}
 	else if (m_strFile.IsEmpty())

@@ -106,11 +106,11 @@ void CACEdit::Init()
 	::GetClassName(GetSafeHwnd(), m_ClassName.GetBuffer(32), 32);
 	m_ClassName.ReleaseBuffer();
 
-	if (m_ClassName.Compare(_T("Edit")) == 0)
+	if (m_ClassName.Compare(L"Edit") == 0)
 		m_iType = _EDIT_;
 	else
 	{
-		if (m_ClassName.Compare(_T("ComboBox")) == 0)
+		if (m_ClassName.Compare(L"ComboBox") == 0)
 		{
 			m_iType = _COMBOBOX_;
 
@@ -118,7 +118,7 @@ void CACEdit::Init()
 			VERIFY(m_pEdit);
 			::GetClassName(m_pEdit->GetSafeHwnd(), m_ClassName.GetBuffer(32), 32);
 			m_ClassName.ReleaseBuffer();
-			VERIFY(m_ClassName.Compare(_T("Edit")) == 0);
+			VERIFY(m_ClassName.Compare(L"Edit") == 0);
 		}
 	}
 
@@ -236,7 +236,7 @@ bool CACEdit::HandleKey(UINT nChar, bool m_bFromChild)
 
 				if(m_iMode & _MODE_FILESYSTEM_)
 				{
-					if (m_EditText.Right(1) == _T('\\'))
+					if (m_EditText.Right(1) == L'\\')
 						m_EditText = m_EditText.Mid(0,m_EditText.GetLength()-1);
 				}
 
@@ -508,10 +508,10 @@ void CACEdit::ReadDirectory(CString m_Dir)
 
 	// Wenn mittem im Pfad,
 	// vorheriges Verzeichnis einlesen.
-	if (m_Dir.Right(1) != _T('\\'))
+	if (m_Dir.Right(1) != L'\\')
 	{
-		_tsplitpath_s(m_Dir, m_szDrive, m_szDir, m_szFname, m_szExt);
-		m_Dir.Format(_T("%s%s"),m_szDrive, m_szDir);
+		_wsplitpath_s(m_Dir, m_szDrive, m_szDir, m_szFname, m_szExt);
+		m_Dir.Format(L"%s%s",m_szDrive, m_szDir);
 	}
 
 	//ist hübscher
@@ -519,14 +519,14 @@ void CACEdit::ReadDirectory(CString m_Dir)
 	m_Dir.SetAt(0,ch);
 
 	CString m_Name,m_File,m_Dir1 = m_Dir;
-	if (m_Dir.Right(1) != _T('\\'))
+	if (m_Dir.Right(1) != L'\\')
 		m_Dir += L'\\';
 
 	if(m_LastDirectory.CompareNoCase(m_Dir) == 0 && m_Liste.m_SearchList.GetSize())
 		return;
 
 	m_LastDirectory = m_Dir;
-	m_Dir += _T("*.*");
+	m_Dir += L"*.*";
 
 	BOOL bContinue = FoundFiles.FindFile(m_Dir);
 	if(bContinue)
@@ -546,7 +546,7 @@ void CACEdit::ReadDirectory(CString m_Dir)
 			if(FoundFiles.IsDots())
 				continue;
 
-			if (m_File.Right(1) != _T('\\'))
+			if (m_File.Right(1) != L'\\')
 				m_File += L'\\';
 		}
 
@@ -561,7 +561,7 @@ void CACEdit::ReadDirectory(CString m_Dir)
 		else
 		{
 			m_Name = m_Dir1;
-			if (m_Name.Right(1) != _T('\\'))
+			if (m_Name.Right(1) != L'\\')
 				m_Name += L'\\';
 
 			m_Name += m_File;

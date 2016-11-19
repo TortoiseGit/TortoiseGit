@@ -20,9 +20,9 @@
 #pragma once
 
 #ifdef UNICODE
-#define _tcswildcmp wcswildcmp
+#define wcswildcmp wcswildcmp
 #else
-#define _tcswildcmp strwildcmp
+#define wcswildcmp strwildcmp
 #endif
 
 /**

@@ -74,7 +74,7 @@ public:
     * \param sPath    The path to search in.
     * \param pPattern The filename pattern - default all files.
     */
-   CSimpleFileFind(const CString &sPath, LPCTSTR pPattern = _T("*.*"));
+   CSimpleFileFind(const CString& sPath, LPCTSTR pPattern = L"*.*");
    ~CSimpleFileFind();
 
    /**
@@ -208,9 +208,9 @@ public:
    inline BOOL IsDots() const
    {
       return IsDirectory()
-          && m_FindFileData.cFileName[0] == _T('.')
+          && m_FindFileData.cFileName[0] == L'.'
           && ( (m_FindFileData.cFileName[1] == L'\0')
-            || (m_FindFileData.cFileName[1] == _T('.')
+            || (m_FindFileData.cFileName[1] == L'.'
           && m_FindFileData.cFileName[2] == L'\0'));
    }
 };

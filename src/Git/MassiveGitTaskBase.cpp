@@ -80,13 +80,13 @@ bool CMassiveGitTaskBase::ExecuteCommands(volatile BOOL& cancel)
 			CString add;
 			for (int j = firstCombine; j <= i; ++j)
 			{
-				add += _T(" \"");
+				add += L" \"";
 				add += GetListItem(j);
 				add += L'"';
 			}
 
 			CString cmd, out;
-			cmd.Format(_T("git.exe %s %s%s"), (LPCTSTR)m_sParams, m_bIsPath ? _T("--") : _T(""), (LPCTSTR)add);
+			cmd.Format(L"git.exe %s %s%s", (LPCTSTR)m_sParams, m_bIsPath ? L"--" : L"", (LPCTSTR)add);
 			int exitCode = g_Git.Run(cmd, &out, CP_UTF8);
 			if (exitCode && !m_bIgnoreErrors)
 			{
@@ -117,7 +117,7 @@ bool CMassiveGitTaskBase::ExecuteCommands(volatile BOOL& cancel)
 
 void CMassiveGitTaskBase::ReportError(const CString& out, int /*exitCode*/)
 {
-	MessageBox(nullptr, out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+	MessageBox(nullptr, out, L"TortoiseGit", MB_OK | MB_ICONERROR);
 }
 
 int CMassiveGitTaskBase::GetListCount()

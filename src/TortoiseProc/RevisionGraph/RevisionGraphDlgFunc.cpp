@@ -202,7 +202,7 @@ bool CRevisionGraphWnd::FetchRevisionData
 	this->m_logEntries.ClearAll();
 	CString range;
 	if (!m_ToRev.IsEmpty() && !m_FromRev.IsEmpty())
-		range.Format(_T("%s..%s"), (LPCTSTR)g_Git.FixBranchName(m_FromRev), (LPCTSTR)g_Git.FixBranchName(m_ToRev));
+		range.Format(L"%s..%s", (LPCTSTR)g_Git.FixBranchName(m_FromRev), (LPCTSTR)g_Git.FixBranchName(m_ToRev));
 	else if (!m_ToRev.IsEmpty())
 		range = m_ToRev;
 	else if (!m_FromRev.IsEmpty())
@@ -240,7 +240,7 @@ bool CRevisionGraphWnd::FetchRevisionData
 		{
 			if(m_logEntries.m_HashMap.find(rev.m_ParentHash[j]) == m_logEntries.m_HashMap.end())
 			{
-				TRACE(_T("Can't found parent node"));
+				TRACE(L"Can't found parent node");
 				//new parent node as new node
 				node nd;
 				nd = this->m_Graph.newNode();
@@ -252,7 +252,7 @@ bool CRevisionGraphWnd::FetchRevisionData
 
 			}else
 			{
-				TRACE(_T("edge %d - %d\n"),i, m_logEntries.m_HashMap[rev.m_ParentHash[j]]);
+				TRACE(L"edge %d - %d\n",i, m_logEntries.m_HashMap[rev.m_ParentHash[j]]);
 				m_Graph.newEdge(nodes[i], nodes[m_logEntries.m_HashMap[rev.m_ParentHash[j]]]);
 			}
 		}
@@ -435,7 +435,7 @@ void CRevisionGraphWnd::CompareRevs(const CString& revTo)
 
 	CString sCmd;
 
-	sCmd.Format(_T("/command:showcompare %s /revision1:%s /revision2:%s"),
+	sCmd.Format(L"/command:showcompare %s /revision1:%s /revision2:%s",
 			this->m_sPath.IsEmpty() ? L"" : (LPCTSTR)(L"/path:\"" + this->m_sPath + L'"'),
 			(LPCTSTR)GetFriendRefName(m_SelectedEntry1),
 			!revTo.IsEmpty() ? (LPCTSTR)revTo : (LPCTSTR)GetFriendRefName(m_SelectedEntry2));
@@ -453,7 +453,7 @@ void CRevisionGraphWnd::UnifiedDiffRevs(bool bHead)
 
 	bool alternativeTool = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
 	CAppUtils::StartShowUnifiedDiff(m_hWnd, CString(), GetFriendRefName(m_SelectedEntry1), CString(),
-		bHead? _T("HEAD"):GetFriendRefName(m_SelectedEntry2),
+		bHead ? L"HEAD" : GetFriendRefName(m_SelectedEntry2),
 		alternativeTool);
 }
 

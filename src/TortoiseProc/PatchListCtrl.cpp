@@ -128,12 +128,12 @@ void CPatchListCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 			}
 		case MENU_SENDMAIL:
 			{
-				LaunchProc(_T("sendmail"));
+				LaunchProc(L"sendmail");
 				break;
 			}
 		case MENU_APPLY:
 			{
-				LaunchProc(_T("importpatch"));
+				LaunchProc(L"importpatch");
 
 				break;
 			}
@@ -155,16 +155,16 @@ int CPatchListCtrl::LaunchProc(const CString& command)
 		int index = this->GetNextSelectedItem(pos);
 		CString one=this->GetItemText(index,0);
 		file.Write((LPCTSTR)one, sizeof(TCHAR) * one.GetLength());
-		file.Write(_T("\n"),sizeof(TCHAR)*1);
+		file.Write(L"\n", sizeof(TCHAR) * 1);
 	}
 
 	file.Close();
 
-	CString cmd = _T("/command:");
+	CString cmd = L"/command:";
 	cmd += command;
-	cmd +=_T(" /pathfile:\"");
+	cmd += L" /pathfile:\"";
 	cmd += tempfile;
-	cmd += _T("\" /deletepathfile");
+	cmd += L"\" /deletepathfile";
 	CAppUtils::RunTortoiseGitProc(cmd);
 	return 0;
 }

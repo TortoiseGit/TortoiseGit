@@ -52,7 +52,7 @@ void CCheckCertificateDlg::OnBnClickedOk()
 
 static CString getCertificateHash(HCRYPTPROV hCryptProv, ALG_ID algId, BYTE* certificate, size_t len)
 {
-	CString readable = _T("unknown");
+	CString readable = L"unknown";
 
 	if (!hCryptProv)
 		return readable;
@@ -112,7 +112,7 @@ BOOL CCheckCertificateDlg::OnInitDialog()
 
 void CCheckCertificateDlg::OnBnClickedOpencert()
 {
-	CTGitPath tempFile = CTempFiles::Instance().GetTempFilePath(true, CTGitPath(_T("certificate.der")));
+	CTGitPath tempFile = CTempFiles::Instance().GetTempFilePath(true, CTGitPath(L"certificate.der"));
 	
 	try
 	{
@@ -122,7 +122,7 @@ void CCheckCertificateDlg::OnBnClickedOpencert()
 	}
 	catch (CFileException* e)
 	{
-		MessageBox(_T("Could not write to file."), _T("TortoiseGit"), MB_ICONERROR);
+		MessageBox(L"Could not write to file.", L"TortoiseGit", MB_ICONERROR);
 		e->Delete();
 		return;
 	}

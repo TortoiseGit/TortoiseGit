@@ -41,6 +41,6 @@ PreserveChdir::~PreserveChdir()
 
 	// _tchdir is an expensive function - don't call it unless we really have to
 	GetCurrentDirectory(len, currentDirectory.get());
-	if (_tcscmp(currentDirectory.get(), m_originalCurrentDirectory.get()) != 0)
+	if (wcscmp(currentDirectory.get(), m_originalCurrentDirectory.get()) != 0)
 		SetCurrentDirectory(m_originalCurrentDirectory.get());
 }

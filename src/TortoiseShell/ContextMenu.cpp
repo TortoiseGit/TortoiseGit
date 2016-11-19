@@ -65,7 +65,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 	uuidTarget.clear();
 	itemStates = 0;
 	itemStatesFolder = 0;
-	tstring statuspath;
+	std::wstring statuspath;
 	git_wc_status_kind fetchedstatus = git_wc_status_none;
 	// get selected files/folders
 	if (pDataObj)
@@ -117,14 +117,14 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 					auto szFileName = std::make_unique<TCHAR[]>(len + 1);
 					if (0 == DragQueryFile(drop, i, szFileName.get(), len + 1))
 						continue;
-					tstring str = tstring(szFileName.get());
+					auto str = std::wstring(szFileName.get());
 					if ((!str.empty()) && (g_ShellCache.IsContextPathAllowed(szFileName.get())))
 					{
 						{
 							CTGitPath strpath;
 							strpath.SetFromWin(str.c_str());
-							itemStates |= (strpath.GetFileExtension().CompareNoCase(_T(".diff"))==0) ? ITEMIS_PATCHFILE : 0;
-							itemStates |= (strpath.GetFileExtension().CompareNoCase(_T(".patch"))==0) ? ITEMIS_PATCHFILE : 0;
+							itemStates |= (strpath.GetFileExtension().CompareNoCase(L".diff") == 0) ? ITEMIS_PATCHFILE : 0;
+							itemStates |= (strpath.GetFileExtension().CompareNoCase(L".patch") == 0) ? ITEMIS_PATCHFILE : 0;
 						}
 						files_.push_back(str);
 						if (i == 0)
@@ -232,7 +232,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 				for (int i = 0; i < count; ++i)
 				{
 					ItemIDList child (GetPIDLItem (cida, i), &parent);
-					tstring str = child.toString();
+					std::wstring str = child.toString();
 					if ((str.empty() == false)&&(g_ShellCache.IsContextPathAllowed(str.c_str())))
 					{
 						//check if our menu is requested for a git admin directory
@@ -242,8 +242,8 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 						files_.push_back(str);
 						CTGitPath strpath;
 						strpath.SetFromWin(str.c_str());
-						itemStates |= (strpath.GetFileExtension().CompareNoCase(_T(".diff"))==0) ? ITEMIS_PATCHFILE : 0;
-						itemStates |= (strpath.GetFileExtension().CompareNoCase(_T(".patch"))==0) ? ITEMIS_PATCHFILE : 0;
+						itemStates |= (strpath.GetFileExtension().CompareNoCase(L".diff") == 0) ? ITEMIS_PATCHFILE : 0;
+						itemStates |= (strpath.GetFileExtension().CompareNoCase(L".patch") == 0) ? ITEMIS_PATCHFILE : 0;
 						if (!statfetched)
 						{
 							//get the git status of the item
@@ -358,7 +358,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 
 				// if the item is a versioned folder, check if there's a patch file
 				// in the clipboard to be used in "Apply Patch"
-				UINT cFormatDiff = RegisterClipboardFormat(_T("TGIT_UNIFIEDDIFF"));
+				UINT cFormatDiff = RegisterClipboardFormat(L"TGIT_UNIFIEDDIFF");
 				if (cFormatDiff)
 				{
 					if (IsClipboardFormatAvailable(cFormatDiff))
@@ -545,16 +545,16 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 	{
 		//menu entry for the top context menu, so append an "Git " before
 		//the menu text to indicate where the entry comes from
-		_tcscpy_s(menutextbuffer, 255, _T("Git "));
+		wcscpy_s(menutextbuffer, 255, L"Git ");
 		if (!g_ShellCache.HasShellMenuAccelerators())
 		{
 			// remove the accelerators
 			tstring temp = stringtablebuffer;
 			temp.erase(std::remove(temp.begin(), temp.end(), '&'), temp.end());
-			_tcscpy_s(stringtablebuffer, 255, temp.c_str());
+			wcscpy_s(stringtablebuffer, 255, temp.c_str());
 		}
 	}
-	_tcscat_s(menutextbuffer, 255, stringtablebuffer);
+	wcscat_s(menutextbuffer, 255, stringtablebuffer);
 
 	// insert branch name into "Git Commit..." entry, so it looks like "Git Commit "master"..."
 	// so we have an easy and fast way to check the current branch
@@ -569,11 +569,11 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 		if (path.GetAdminDirMask() & ITEMIS_SUBMODULE)
 		{
 			if (istop)
-				_tcscpy_s(menutextbuffer, 255, _T("Git "));
+				wcscpy_s(menutextbuffer, 255, L"Git ");
 			else
 				menutextbuffer[0] = L'\0';
 			MAKESTRING(IDS_MENUCOMMITSUBMODULE);
-			_tcscat_s(menutextbuffer, 255, stringtablebuffer);
+			wcscat_s(menutextbuffer, 255, stringtablebuffer);
 		}
 
 		if (path.HasAdminDir(&sProjectRoot) && !CGit::GetCurrentBranchFromFile(sProjectRoot, sBranchName))
@@ -594,15 +594,15 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 
 			// sanity check
 			if (sBranchName.GetLength() > 64)
-				sBranchName = sBranchName.Left(64) + _T("...");
+				sBranchName = sBranchName.Left(64) + L"...";
 
 			// scan to before "..."
-			LPTSTR s = menutextbuffer + _tcslen(menutextbuffer)-1;
+			LPTSTR s = menutextbuffer + wcslen(menutextbuffer)-1;
 			if (s > menutextbuffer)
 			{
 				while (s > menutextbuffer)
 				{
-					if (*s != _T('.'))
+					if (*s != L'.')
 					{
 						s++;
 						break;
@@ -616,7 +616,7 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 			}
 
 			// append branch name and end with ...
-			_tcscpy_s(s, 255 - _tcslen(menutextbuffer) - 1, _T(" -> \"") + sBranchName + _T("\"..."));
+			wcscpy_s(s, 255 - wcslen(menutextbuffer) - 1, L" -> \"" + sBranchName + L"\"...");
 		}
 	}
 
@@ -652,11 +652,11 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 	{
 		//menu entry for the top context menu, so append an "Git " before
 		//the menu text to indicate where the entry comes from
-		_tcscpy_s(menutextbuffer, 255, _T("Git "));
+		wcscpy_s(menutextbuffer, 255, L"Git ");
 	}
 	LoadString(g_hResInst, stringid, verbsbuffer, _countof(verbsbuffer));
-	_tcscat_s(menutextbuffer, 255, verbsbuffer);
-	tstring verb = tstring(menutextbuffer);
+	wcscat_s(menutextbuffer, 255, verbsbuffer);
+	auto verb = std::wstring(menutextbuffer);
 	if (verb.find('&') != -1)
 	{
 		verb.erase(verb.find('&'),1);
@@ -673,9 +673,9 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 		mySubMenuMap[pos] = com;
 }
 
-bool CShellExt::WriteClipboardPathsToTempFile(tstring& tempfile)
+bool CShellExt::WriteClipboardPathsToTempFile(std::wstring& tempfile)
 {
-	tempfile = tstring();
+	tempfile = std::wstring();
 	//write all selected files and paths to a temporary file
 	//for TortoiseGitProc.exe to read out again.
 	DWORD written = 0;
@@ -683,8 +683,8 @@ bool CShellExt::WriteClipboardPathsToTempFile(tstring& tempfile)
 	auto path = std::make_unique<TCHAR[]>(pathlength + 1);
 	auto tempFile = std::make_unique<TCHAR[]>(pathlength + 100);
 	GetTortoiseGitTempPath(pathlength+1, path.get());
-	GetTempFileName(path.get(), _T("git"), 0, tempFile.get());
-	tempfile = tstring(tempFile.get());
+	GetTempFileName(path.get(), L"git", 0, tempFile.get());
+	tempfile = std::wstring(tempFile.get());
 
 	CAutoFile file = ::CreateFile(tempFile.get(),
 		GENERIC_WRITE,
@@ -702,7 +702,7 @@ bool CShellExt::WriteClipboardPathsToTempFile(tstring& tempfile)
 	if (!OpenClipboard(nullptr))
 		return false;
 
-	tstring sClipboardText;
+	std::wstring sClipboardText;
 	HGLOBAL hglb = GetClipboardData(CF_HDROP);
 	SCOPE_EXIT
 	{
@@ -719,15 +719,15 @@ bool CShellExt::WriteClipboardPathsToTempFile(tstring& tempfile)
 	for(UINT i = 0; i < cFiles; ++i)
 	{
 		DragQueryFile(hDrop, i, szFileName, _countof(szFileName));
-		tstring filename = szFileName;
+		std::wstring filename = szFileName;
 		::WriteFile (file, filename.c_str(), (DWORD)filename.size()*sizeof(TCHAR), &written, 0);
-		::WriteFile (file, _T("\n"), 2, &written, 0);
+		::WriteFile(file, L"\n", 2, &written, 0);
 	}
 	
 	return true;
 }
 
-tstring CShellExt::WriteFileListToTempFile()
+std::wstring CShellExt::WriteFileListToTempFile()
 {
 	//write all selected files and paths to a temporary file
 	//for TortoiseGitProc.exe to read out again.
@@ -735,8 +735,8 @@ tstring CShellExt::WriteFileListToTempFile()
 	auto path = std::make_unique<TCHAR[]>(pathlength + 1);
 	auto tempFile = std::make_unique<TCHAR[]>(pathlength + 100);
 	GetTortoiseGitTempPath(pathlength + 1, path.get());
-	GetTempFileName(path.get(), _T("git"), 0, tempFile.get());
-	tstring retFilePath = tstring(tempFile.get());
+	GetTempFileName(path.get(), L"git", 0, tempFile.get());
+	auto retFilePath = std::wstring(tempFile.get());
 
 	CAutoFile file = ::CreateFile (tempFile.get(),
 								GENERIC_WRITE,
@@ -749,20 +749,20 @@ tstring CShellExt::WriteFileListToTempFile()
 	if (!file)
 	{
 		MessageBox(nullptr, L"Could not create temporary file. Please check (the permissions of) your temp-folder: " + CString(tempFile.get()), L"TortoiseGit", MB_ICONERROR);
-		return tstring();
+		return std::wstring();
 	}
 
 	DWORD written = 0;
 	if (files_.empty())
 	{
 		::WriteFile (file, folder_.c_str(), (DWORD)folder_.size()*sizeof(TCHAR), &written, 0);
-		::WriteFile (file, _T("\n"), 2, &written, 0);
+		::WriteFile(file, L"\n", 2, &written, 0);
 	}
 
 	for (const auto& file_ : files_)
 	{
 		::WriteFile(file, file_.c_str(), (DWORD)file_.size() * sizeof(TCHAR), &written, 0);
-		::WriteFile (file, _T("\n"), 2, &written, 0);
+		::WriteFile(file, L"\n", 2, &written, 0);
 	}
 	return retFilePath;
 }
@@ -931,13 +931,13 @@ STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
 		// which we can't handle
 		for (const auto& file : files_)
 		{
-			if (_tcsncmp(file.c_str(), _T("::{"), 3)==0)
+			if (wcsncmp(file.c_str(), L"::{", 3) == 0)
 				return S_OK;
 		}
 	}
 	else
 	{
-		if (_tcsncmp(folder_.c_str(), _T("::{"), 3) == 0)
+		if (wcsncmp(folder_.c_str(), L"::{", 3) == 0)
 			return S_OK;
 	}
 
@@ -1007,7 +1007,7 @@ STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
 	bool bMenuEmpty = true;
 	// insert separator at start
 	InsertMenu(hMenu, indexMenu++, MF_SEPARATOR | MF_BYPOSITION, 0, nullptr); idCmd++;
-	bool bShowIcons = !!DWORD(CRegStdDWORD(_T("Software\\TortoiseGit\\ShowContextMenuIcons"), TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY));
+	bool bShowIcons = !!DWORD(CRegStdDWORD(L"Software\\TortoiseGit\\ShowContextMenuIcons", TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY));
 
 	while (menuInfo[menuIndex].command != ShellMenuLastEntry)
 	{
@@ -1102,7 +1102,7 @@ STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
 		// remove the accelerators
 		tstring temp = stringtablebuffer;
 		temp.erase(std::remove(temp.begin(), temp.end(), '&'), temp.end());
-		_tcscpy_s(stringtablebuffer, temp.c_str());
+		wcscpy_s(stringtablebuffer, temp.c_str());
 	}
 	MENUITEMINFO menuiteminfo = { 0 };
 	menuiteminfo.cbSize = sizeof(menuiteminfo);
@@ -1171,7 +1171,7 @@ void CShellExt::TweakMenu(HMENU hMenu)
 void CShellExt::AddPathCommand(tstring& gitCmd, LPCTSTR command, bool bFilesAllowed)
 {
 	gitCmd += command;
-	gitCmd += _T(" /path:\"");
+	gitCmd += L" /path:\"";
 	if ((bFilesAllowed) && !files_.empty())
 		gitCmd += files_.front();
 	else
@@ -1183,21 +1183,21 @@ void CShellExt::AddPathFileCommand(tstring& gitCmd, LPCTSTR command)
 {
 	tstring tempfile = WriteFileListToTempFile();
 	gitCmd += command;
-	gitCmd += _T(" /pathfile:\"");
+	gitCmd += L" /pathfile:\"";
 	gitCmd += tempfile;
 	gitCmd += L'"';
-	gitCmd += _T(" /deletepathfile");
+	gitCmd += L" /deletepathfile";
 }
 
 void CShellExt::AddPathFileDropCommand(tstring& gitCmd, LPCTSTR command)
 {
 	tstring tempfile = WriteFileListToTempFile();
 	gitCmd += command;
-	gitCmd += _T(" /pathfile:\"");
+	gitCmd += L" /pathfile:\"";
 	gitCmd += tempfile;
 	gitCmd += L'"';
-	gitCmd += _T(" /deletepathfile");
-	gitCmd += _T(" /droptarget:\"");
+	gitCmd += L" /deletepathfile";
+	gitCmd += L" /droptarget:\"";
 	gitCmd += folder_;
 	gitCmd += L'"';
 }
@@ -1228,8 +1228,8 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 
 		if (HIWORD(lpcmi->lpVerb))
 		{
-			tstring verb = tstring(MultibyteToWide(lpcmi->lpVerb));
-			std::map<tstring, UINT_PTR>::const_iterator verb_it = myVerbsMap.lower_bound(verb);
+			auto verb = std::wstring(MultibyteToWide(lpcmi->lpVerb));
+			const auto verb_it = myVerbsMap.lower_bound(verb);
 			if (verb_it != myVerbsMap.end() && verb_it->first == verb)
 				idCmd = verb_it->second;
 			else
@@ -1240,8 +1240,8 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 		std::map<UINT_PTR, UINT_PTR>::const_iterator id_it = myIDMap.lower_bound(idCmd);
 		if (id_it != myIDMap.end() && id_it->first == idCmd)
 		{
-			tstring tortoiseProcPath(CPathUtils::GetAppDirectory(g_hmodThisDll) + _T("TortoiseGitProc.exe"));
-			tstring tortoiseMergePath(CPathUtils::GetAppDirectory(g_hmodThisDll) + _T("TortoiseGitMerge.exe"));
+			tstring tortoiseProcPath(CPathUtils::GetAppDirectory(g_hmodThisDll) + L"TortoiseGitProc.exe");
+			tstring tortoiseMergePath(CPathUtils::GetAppDirectory(g_hmodThisDll) + L"TortoiseGitMerge.exe");
 
 			//TortoiseGitProc expects a command line of the form:
 			//"/command:<commandname> /pathfile:<path> /startrev:<startrevision> /endrev:<endrevision> /deletepathfile
@@ -1250,17 +1250,17 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 			//
 			//* path is a path to a single file/directory for commands which only act on single items (log, checkout, ...)
 			//* pathfile is a path to a temporary file which contains a list of file paths
-			tstring gitCmd = _T(" /command:");
-			tstring tempfile;
+			std::wstring gitCmd = L" /command:";
+			std::wstring tempfile;
 			switch (id_it->second)
 			{
 				//#region case
 			case ShellMenuSync:
 				{
 					TCHAR syncSeq[12] = { 0 };
-					_stprintf_s(syncSeq, _T("%d"), g_syncSeq++);
+					swprintf_s(syncSeq, L"%d", g_syncSeq++);
 					AddPathCommand(gitCmd, L"sync", false);
-					gitCmd += _T(" /seq:");
+					gitCmd += L" /seq:";
 					gitCmd += syncSeq;
 				}
 				break;
@@ -1268,7 +1268,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				AddPathFileCommand(gitCmd, L"subsync");
 				if (itemStatesFolder & ITEMIS_SUBMODULECONTAINER || (itemStates & ITEMIS_SUBMODULECONTAINER && itemStates & ITEMIS_WCROOT && itemStates & ITEMIS_ONLYONE))
 				{
-					gitCmd += _T(" /bkpath:\"");
+					gitCmd += L" /bkpath:\"";
 					gitCmd += folder_;
 					gitCmd += L'"';
 				}
@@ -1277,7 +1277,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				AddPathFileCommand(gitCmd, L"subupdate");
 				if (itemStatesFolder & ITEMIS_SUBMODULECONTAINER || (itemStates & ITEMIS_SUBMODULECONTAINER && itemStates & ITEMIS_WCROOT && itemStates & ITEMIS_ONLYONE))
 				{
-					gitCmd += _T(" /bkpath:\"");
+					gitCmd += L" /bkpath:\"";
 					gitCmd += folder_;
 					gitCmd += L'"';
 				}
@@ -1293,26 +1293,26 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuIgnoreCaseSensitive:
 				AddPathFileCommand(gitCmd, L"ignore");
-				gitCmd += _T(" /onlymask");
+				gitCmd += L" /onlymask";
 				break;
 			case ShellMenuDeleteIgnore:
 				AddPathFileCommand(gitCmd, L"ignore");
-				gitCmd += _T(" /delete");
+				gitCmd += L" /delete";
 				break;
 			case ShellMenuDeleteIgnoreCaseSensitive:
 				AddPathFileCommand(gitCmd, L"ignore");
-				gitCmd += _T(" /delete /onlymask");
+				gitCmd += L" /delete /onlymask";
 				break;
 			case ShellMenuUnIgnore:
 				AddPathFileCommand(gitCmd, L"unignore");
 				break;
 			case ShellMenuUnIgnoreCaseSensitive:
 				AddPathFileCommand(gitCmd, L"unignore");
-				gitCmd += _T(" /onlymask");
+				gitCmd += L" /onlymask";
 				break;
 			case ShellMenuMergeAbort:
 				AddPathCommand(gitCmd, L"merge", false);
-				gitCmd += _T(" /abort");
+				gitCmd += L" /abort";
 				break;
 			case ShellMenuRevert:
 				AddPathFileCommand(gitCmd, L"revert");
@@ -1333,7 +1333,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				AddPathCommand(gitCmd, L"export", false);
 				break;
 			case ShellMenuAbout:
-				gitCmd += _T("about");
+				gitCmd += L"about";
 				break;
 			case ShellMenuCreateRepos:
 				AddPathCommand(gitCmd, L"repocreate", false);
@@ -1348,7 +1348,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				AddPathCommand(gitCmd, L"settings", true);
 				break;
 			case ShellMenuHelp:
-				gitCmd += _T("help");
+				gitCmd += L"help";
 				break;
 			case ShellMenuRename:
 				AddPathCommand(gitCmd, L"rename", true);
@@ -1358,10 +1358,10 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuRemoveKeep:
 				AddPathFileCommand(gitCmd, L"remove");
-				gitCmd += _T(" /keep");
+				gitCmd += L" /keep";
 				break;
 			case ShellMenuDiff:
-				gitCmd += _T("diff /path:\"");
+				gitCmd += L"diff /path:\"";
 				if (files_.size() == 1)
 					gitCmd += files_.front();
 				else if (files_.size() == 2)
@@ -1369,14 +1369,14 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 					auto I = files_.cbegin();
 					gitCmd += *I;
 					++I;
-					gitCmd += _T("\" /path2:\"");
+					gitCmd += L"\" /path2:\"";
 					gitCmd += *I;
 				}
 				else
 					gitCmd += folder_;
 				gitCmd += L'"';
 				if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
-					gitCmd += _T(" /alternative");
+					gitCmd += L" /alternative";
 				break;
 			case ShellMenuDiffLater:
 				if (lpcmi->fMask & CMIC_MASK_CONTROL_DOWN)
@@ -1394,11 +1394,11 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 					else
 					{
 						AddPathCommand(gitCmd, L"diff", true);
-						gitCmd += _T(" /path2:\"");
+						gitCmd += L" /path2:\"";
 						gitCmd += std::wstring(regDiffLater);
 						gitCmd += L'"';
 						if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
-							gitCmd += _T(" /alternative");
+							gitCmd += L" /alternative";
 						regDiffLater.removeValue();
 					}
 				}
@@ -1408,7 +1408,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 			case ShellMenuPrevDiff:
 				AddPathCommand(gitCmd, L"prevdiff", true);
 				if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
-					gitCmd += _T(" /alternative");
+					gitCmd += L" /alternative";
 				break;
 			case ShellMenuDiffTwo:
 				AddPathCommand(gitCmd, L"diffcommits", true);
@@ -1435,13 +1435,13 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuDropExportExtended:
 				AddPathFileDropCommand(gitCmd, L"dropexport");
-				gitCmd += _T(" /extended");
+				gitCmd += L" /extended";
 				break;
 			case ShellMenuLog:
 			case ShellMenuLogSubmoduleFolder:
 				AddPathCommand(gitCmd, L"log", true);
 				if (id_it->second == ShellMenuLogSubmoduleFolder)
-					gitCmd += _T(" /submodule");
+					gitCmd += L" /submodule";
 				break;
 			case ShellMenuDaemon:
 				AddPathCommand(gitCmd, L"daemon", true);
@@ -1495,19 +1495,19 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuStashList:
 				AddPathCommand(gitCmd, L"reflog", false);
-				gitCmd += _T(" /ref:refs/stash");
+				gitCmd += L" /ref:refs/stash";
 				break;
 			case ShellMenuBisectStart:
 				AddPathCommand(gitCmd, L"bisect", false);
-				gitCmd += _T(" /start");
+				gitCmd += L" /start";
 				break;
 			case ShellMenuBisectGood:
 				AddPathCommand(gitCmd, L"bisect", false);
-				gitCmd += _T(" /good");
+				gitCmd += L" /good";
 				break;
 			case ShellMenuBisectBad:
 				AddPathCommand(gitCmd, L"bisect", false);
-				gitCmd += _T(" /bad");
+				gitCmd += L" /bad";
 				break;
 			case ShellMenuBisectSkip:
 				AddPathCommand(gitCmd, L"bisect", false);
@@ -1515,7 +1515,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuBisectReset:
 				AddPathCommand(gitCmd, L"bisect", false);
-				gitCmd += _T(" /reset");
+				gitCmd += L" /reset";
 				break;
 			case ShellMenuSubAdd:
 				AddPathCommand(gitCmd, L"subadd", false);
@@ -1528,7 +1528,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				{
 					// if there's a patch file in the clipboard, we save it
 					// to a temporary file and tell TortoiseGitMerge to use that one
-					UINT cFormat = RegisterClipboardFormat(_T("TGIT_UNIFIEDDIFF"));
+					UINT cFormat = RegisterClipboardFormat(L"TGIT_UNIFIEDDIFF");
 					if (cFormat && OpenClipboard(nullptr))
 					{
 						HGLOBAL hglb = GetClipboardData(cFormat);
@@ -1543,7 +1543,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 
 						FILE * outFile;
 						size_t patchlen = strlen(lpstr);
-						_tfopen_s(&outFile, sTempFile.c_str(), _T("wb"));
+						_wfopen_s(&outFile, sTempFile.c_str(), L"wb");
 						if(outFile)
 						{
 							size_t size = fwrite(lpstr, sizeof(char), patchlen, outFile);
@@ -1561,26 +1561,26 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				}
 				if (itemStates & ITEMIS_PATCHFILE)
 				{
-					gitCmd = _T(" /diff:\"");
+					gitCmd = L" /diff:\"";
 					if (!files_.empty())
 					{
 						gitCmd += files_.front();
 						if (itemStatesFolder & ITEMIS_FOLDERINGIT)
 						{
-							gitCmd += _T("\" /patchpath:\"");
+							gitCmd += L"\" /patchpath:\"";
 							gitCmd += folder_;
 						}
 					}
 					else
 						gitCmd += folder_;
 					if (itemStates & ITEMIS_INVERSIONEDFOLDER)
-						gitCmd += _T("\" /wc");
+						gitCmd += L"\" /wc";
 					else
 						gitCmd += L'"';
 				}
 				else
 				{
-					gitCmd = _T(" /patchpath:\"");
+					gitCmd = L" /patchpath:\"";
 					if (!files_.empty())
 						gitCmd += files_.front();
 					else
@@ -1590,14 +1590,14 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				myIDMap.clear();
 				myVerbsIDMap.clear();
 				myVerbsMap.clear();
-				RunCommand(tortoiseMergePath, gitCmd, _T("TortoiseGitMerge launch failed"));
+				RunCommand(tortoiseMergePath, gitCmd, L"TortoiseGitMerge launch failed");
 				return S_OK;
 				break;
 			case ShellMenuClipPaste:
 				if (WriteClipboardPathsToTempFile(tempfile))
 				{
 					bool bCopy = true;
-					UINT cPrefDropFormat = RegisterClipboardFormat(_T("Preferred DropEffect"));
+					UINT cPrefDropFormat = RegisterClipboardFormat(L"Preferred DropEffect");
 					if (cPrefDropFormat)
 					{
 						if (OpenClipboard(lpcmi->hwnd))
@@ -1615,13 +1615,13 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 					}
 
 					if (bCopy)
-						gitCmd += _T("pastecopy /pathfile:\"");
+						gitCmd += L"pastecopy /pathfile:\"";
 					else
-						gitCmd += _T("pastemove /pathfile:\"");
+						gitCmd += L"pastemove /pathfile:\"";
 					gitCmd += tempfile;
 					gitCmd += L'"';
-					gitCmd += _T(" /deletepathfile");
-					gitCmd += _T(" /droptarget:\"");
+					gitCmd += L" /deletepathfile";
+					gitCmd += L" /droptarget:\"";
 					gitCmd += folder_;
 					gitCmd += L'"';
 				}
@@ -1661,14 +1661,14 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 			} // switch (id_it->second)
 			if (!gitCmd.empty())
 			{
-				gitCmd += _T(" /hwnd:");
+				gitCmd += L" /hwnd:";
 				TCHAR buf[30] = { 0 };
-				_stprintf_s(buf, _T("%p"), (void*)lpcmi->hwnd);
+				swprintf_s(buf, L"%p", (void*)lpcmi->hwnd);
 				gitCmd += buf;
 				myIDMap.clear();
 				myVerbsIDMap.clear();
 				myVerbsMap.clear();
-				RunCommand(tortoiseProcPath, gitCmd, _T("TortoiseProc launch failed"));
+				RunCommand(tortoiseProcPath, gitCmd, L"TortoiseProc launch failed");
 			}
 			hr = S_OK;
 		} // if (id_it != myIDMap.end() && id_it->first == idCmd)
@@ -1742,7 +1742,7 @@ STDMETHODIMP CShellExt::GetCommandString_Wrap(UINT_PTR idCmd,
 		}
 	case GCS_VERBA:
 		{
-			std::map<UINT_PTR, tstring>::const_iterator verb_id_it = myVerbsIDMap.lower_bound(idCmd);
+			const auto verb_id_it = myVerbsIDMap.lower_bound(idCmd);
 			if (verb_id_it != myVerbsIDMap.end() && verb_id_it->first == idCmd)
 			{
 				std::string help = WideToMultibyte(verb_id_it->second);
@@ -1753,7 +1753,7 @@ STDMETHODIMP CShellExt::GetCommandString_Wrap(UINT_PTR idCmd,
 		break;
 	case GCS_VERBW:
 		{
-			std::map<UINT_PTR, tstring>::const_iterator verb_id_it = myVerbsIDMap.lower_bound(idCmd);
+			const auto verb_id_it = myVerbsIDMap.lower_bound(idCmd);
 			if (verb_id_it != myVerbsIDMap.end() && verb_id_it->first == idCmd)
 			{
 				std::wstring help = verb_id_it->second;
@@ -1857,7 +1857,7 @@ STDMETHODIMP CShellExt::HandleMenuMsg2_Wrap(UINT uMsg, WPARAM wParam, LPARAM lPa
 				if (!resource)
 					continue;
 				szItem = stringtablebuffer;
-				TCHAR * amp = _tcschr(szItem, '&');
+				TCHAR* amp = wcschr(szItem, L'&');
 				if (!amp)
 					continue;
 				amp++;
@@ -1943,9 +1943,9 @@ LPCTSTR CShellExt::GetMenuTextFromResource(int id)
 				space = (layout & menuInfo[menuIndex].menuID) ? 0 : 6;
 				if (layout & menuInfo[menuIndex].menuID)
 				{
-					_tcscpy_s(textbuf, 255, _T("Git "));
-					_tcscat_s(textbuf, 255, stringtablebuffer);
-					_tcscpy_s(stringtablebuffer, 255, textbuf);
+					wcscpy_s(textbuf, 255, L"Git ");
+					wcscat_s(textbuf, 255, stringtablebuffer);
+					wcscpy_s(stringtablebuffer, 255, textbuf);
 				}
 				break;
 			}
@@ -1974,9 +1974,9 @@ bool CShellExt::IsIllegalFolder(std::wstring folder, int * cslidarray)
 			continue;
 		}
 		CoTaskMemFree(pidl);
-		if (_tcslen(buf)==0)
+		if (wcslen(buf) == 0)
 			continue;
-		if (_tcscmp(buf, folder.c_str())==0)
+		if (wcscmp(buf, folder.c_str()) == 0)
 			return true;
 	}
 	return false;
@@ -1994,10 +1994,10 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 	UINT icon = bShowIcons ? IDI_IGNORE : 0;
 
 	auto I = files_.cbegin();
-	if (_tcsrchr(I->c_str(), '\\'))
-		_tcscpy_s(ignorepath, MAX_PATH, _tcsrchr(I->c_str(), '\\')+1);
+	if (wcsrchr(I->c_str(), L'\\'))
+		wcscpy_s(ignorepath, MAX_PATH, wcsrchr(I->c_str(), L'\\') + 1);
 	else
-		_tcscpy_s(ignorepath, MAX_PATH, I->c_str());
+		wcscpy_s(ignorepath, MAX_PATH, I->c_str());
 	if ((itemStates & ITEMIS_IGNORED) && (!ignoredprops.empty()))
 	{
 		// check if the item name is ignored or the mask
@@ -2005,7 +2005,7 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 		while ( (p=ignoredprops.find( ignorepath,p )) != -1 )
 		{
 			if ( (p==0 || ignoredprops[p-1]==TCHAR('\n'))
-				&& (p+_tcslen(ignorepath)==ignoredprops.length() || ignoredprops[p+_tcslen(ignorepath)+1]==TCHAR('\n')) )
+				&& (p + wcslen(ignorepath) == ignoredprops.length() || ignoredprops[p + wcslen(ignorepath) + 1] == TCHAR('\n')))
 			{
 				break;
 			}
@@ -2015,7 +2015,7 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 		{
 			ignoresubmenu = CreateMenu();
 			InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
-			tstring verb = tstring(ignorepath);
+			auto verb = std::wstring(ignorepath);
 			myVerbsMap[verb] = idCmd - idCmdFirst;
 			myVerbsMap[verb] = idCmd;
 			myVerbsIDMap[idCmd - idCmdFirst] = verb;
@@ -2024,19 +2024,19 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 			myIDMap[idCmd++] = ShellMenuUnIgnore;
 			bShowIgnoreMenu = true;
 		}
-		_tcscpy_s(maskbuf, MAX_PATH, _T("*"));
-		if (_tcsrchr(ignorepath, '.'))
+		wcscpy_s(maskbuf, MAX_PATH, L"*");
+		if (wcsrchr(ignorepath, L'.'))
 		{
-			_tcscat_s(maskbuf, MAX_PATH, _tcsrchr(ignorepath, '.'));
+			wcscat_s(maskbuf, MAX_PATH, wcsrchr(ignorepath, L'.'));
 			p = ignoredprops.find(maskbuf);
 			if ((p!=-1) &&
-				((ignoredprops.compare(maskbuf)==0) || (ignoredprops.find('\n', p)==p+_tcslen(maskbuf)+1) || (ignoredprops.rfind('\n', p)==p-1)))
+				((ignoredprops.compare(maskbuf) == 0) || (ignoredprops.find(L'\n', p) == p + wcslen(maskbuf) + 1) || (ignoredprops.rfind(L'\n', p) == p - 1)))
 			{
 				if (!ignoresubmenu)
 					ignoresubmenu = CreateMenu();
 
 				InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, maskbuf);
-				tstring verb = tstring(maskbuf);
+				auto verb = std::wstring(maskbuf);
 				myVerbsMap[verb] = idCmd - idCmdFirst;
 				myVerbsMap[verb] = idCmd;
 				myVerbsIDMap[idCmd - idCmdFirst] = verb;
@@ -2059,12 +2059,12 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 				myIDMap[idCmd - idCmdFirst] = ShellMenuDeleteIgnore;
 				myIDMap[idCmd++] = ShellMenuDeleteIgnore;
 
-				_tcscpy_s(maskbuf, MAX_PATH, _T("*"));
-				if (!(itemStates & ITEMIS_FOLDER) && _tcsrchr(ignorepath, '.'))
+				wcscpy_s(maskbuf, MAX_PATH, L"*");
+				if (!(itemStates & ITEMIS_FOLDER) && wcsrchr(ignorepath, '.'))
 				{
-					_tcscat_s(maskbuf, MAX_PATH, _tcsrchr(ignorepath, '.'));
+					wcscat_s(maskbuf, MAX_PATH, wcsrchr(ignorepath, '.'));
 					InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, maskbuf);
-					tstring verb = tstring(maskbuf);
+					auto verb = std::wstring(maskbuf);
 					myVerbsMap[verb] = idCmd - idCmdFirst;
 					myVerbsMap[verb] = idCmd;
 					myVerbsIDMap[idCmd - idCmdFirst] = verb;
@@ -2079,12 +2079,12 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 				myIDMap[idCmd - idCmdFirst] = ShellMenuIgnore;
 				myIDMap[idCmd++] = ShellMenuIgnore;
 
-				_tcscpy_s(maskbuf, MAX_PATH, _T("*"));
-				if (!(itemStates & ITEMIS_FOLDER) && _tcsrchr(ignorepath, '.'))
+				wcscpy_s(maskbuf, MAX_PATH, L"*");
+				if (!(itemStates & ITEMIS_FOLDER) && wcsrchr(ignorepath, L'.'))
 				{
-					_tcscat_s(maskbuf, MAX_PATH, _tcsrchr(ignorepath, '.'));
+					wcscat_s(maskbuf, MAX_PATH, wcsrchr(ignorepath, L'.'));
 					InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, maskbuf);
-					tstring verb = tstring(maskbuf);
+					auto verb = std::wstring(maskbuf);
 					myVerbsMap[verb] = idCmd - idCmdFirst;
 					myVerbsMap[verb] = idCmd;
 					myVerbsIDMap[idCmd - idCmdFirst] = verb;
@@ -2113,7 +2113,7 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 					swprintf_s(ignorepath, stringtablebuffer, files_.size());
 				}
 				InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
-				tstring verb = tstring(ignorepath);
+				auto verb = std::wstring(ignorepath);
 				myVerbsMap[verb] = idCmd - idCmdFirst;
 				myVerbsMap[verb] = idCmd;
 				myVerbsIDMap[idCmd - idCmdFirst] = verb;
@@ -2132,7 +2132,7 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 					swprintf_s(ignorepath, stringtablebuffer, files_.size());
 				}
 				InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
-				verb = tstring(ignorepath);
+				verb = std::wstring(ignorepath);
 				myVerbsMap[verb] = idCmd - idCmdFirst;
 				myVerbsMap[verb] = idCmd;
 				myVerbsIDMap[idCmd - idCmdFirst] = verb;
@@ -2153,7 +2153,7 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 					swprintf_s(ignorepath, stringtablebuffer, files_.size());
 				}
 				InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
-				tstring verb = tstring(ignorepath);
+				auto verb = std::wstring(ignorepath);
 				myVerbsMap[verb] = idCmd - idCmdFirst;
 				myVerbsMap[verb] = idCmd;
 				myVerbsIDMap[idCmd - idCmdFirst] = verb;
@@ -2172,7 +2172,7 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 					swprintf_s(ignorepath, stringtablebuffer, files_.size());
 				}
 				InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
-				verb = tstring(ignorepath);
+				verb = std::wstring(ignorepath);
 				myVerbsMap[verb] = idCmd - idCmdFirst;
 				myVerbsMap[verb] = idCmd;
 				myVerbsIDMap[idCmd - idCmdFirst] = verb;
@@ -2204,7 +2204,7 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 		else
 			GetMenuTextFromResource(ShellMenuIgnoreSub);
 		menuiteminfo.dwTypeData = stringtablebuffer;
-		menuiteminfo.cch = (UINT)min(_tcslen(menuiteminfo.dwTypeData), UINT_MAX);
+		menuiteminfo.cch = (UINT)min(wcslen(menuiteminfo.dwTypeData), UINT_MAX);
 
 		InsertMenuItem((topmenu & MENUIGNORE) ? hMenu : subMenu, (topmenu & MENUIGNORE) ? indexMenu++ : indexSubMenu++, TRUE, &menuiteminfo);
 		if (itemStates & ITEMIS_IGNORED)

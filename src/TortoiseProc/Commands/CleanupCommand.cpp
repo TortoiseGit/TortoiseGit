@@ -50,7 +50,7 @@ struct SubmodulePayload
 	STRING_VECTOR &list;
 	CString basePath;
 	STRING_VECTOR prefixList;
-	SubmodulePayload(STRING_VECTOR &alist, CString abasePath = _T(""), STRING_VECTOR aprefixList = STRING_VECTOR())
+	SubmodulePayload(STRING_VECTOR &alist, CString abasePath = L"", STRING_VECTOR aprefixList = STRING_VECTOR())
 		: list(alist)
 		, basePath(abasePath)
 		, prefixList(aprefixList)
@@ -135,10 +135,10 @@ static bool GetFilesToCleanUp(CTGitPathList& delList, const CString& baseCmd, CG
 	}
 
 	int pos = 0;
-	CString token = cmdout.Tokenize(_T("\n"), pos);
+	CString token = cmdout.Tokenize(L"\n", pos);
 	while (!token.IsEmpty())
 	{
-		if (token.Mid(0, 13) == _T("Would remove "))
+		if (token.Mid(0, 13) == L"Would remove ")
 		{
 			CString tempPath = token.Mid(13).TrimRight();
 			if (quotepath)
@@ -146,7 +146,7 @@ static bool GetFilesToCleanUp(CTGitPathList& delList, const CString& baseCmd, CG
 			delList.AddPath(pGit->CombinePath(tempPath));
 		}
 
-		token = cmdout.Tokenize(_T("\n"), pos);
+		token = cmdout.Tokenize(L"\n", pos);
 	}
 
 	if (sysProgressDlg.HasUserCancelled())
@@ -161,21 +161,21 @@ static bool GetFilesToCleanUp(CTGitPathList& delList, const CString& baseCmd, CG
 static bool DoCleanUp(const CTGitPathList& pathList, int cleanType, bool bDir, bool bSubmodules, bool bDryRun, bool bNoRecycleBin)
 {
 	CString cmd;
-	cmd.Format(_T("git.exe clean"));
+	cmd.Format(L"git.exe clean");
 	if (bDryRun || !bNoRecycleBin)
-		cmd += _T(" -n ");
+		cmd += L" -n ";
 	if (bDir)
-		cmd += _T(" -d ");
+		cmd += L" -d ";
 	switch (cleanType)
 	{
 	case 0:
-		cmd += _T(" -fx");
+		cmd += L" -fx";
 		break;
 	case 1:
-		cmd += _T(" -f");
+		cmd += L" -f";
 		break;
 	case 2:
-		cmd += _T(" -fX");
+		cmd += L" -fX";
 		break;
 	}
 
@@ -254,7 +254,7 @@ static bool DoCleanUp(const CTGitPathList& pathList, int cleanType, bool bDir, b
 		sysProgressDlg.SetShowProgressBar(false);
 		sysProgressDlg.ShowModeless((HWND)nullptr, true);
 
-		bool quotepath = g_Git.GetConfigValueBool(_T("core.quotepath"));
+		bool quotepath = g_Git.GetConfigValueBool(L"core.quotepath");
 
 		CTGitPathList delList;
 		for (int i = 0; i < pathList.GetCount(); ++i)
@@ -273,7 +273,7 @@ static bool DoCleanUp(const CTGitPathList& pathList, int cleanType, bool bDir, b
 		{
 			CGit git;
 			git.m_CurrentDir = dir;
-			if (!GetFilesToCleanUp(delList, cmd, &git, _T(""), quotepath, sysProgressDlg))
+			if (!GetFilesToCleanUp(delList, cmd, &git, L"", quotepath, sysProgressDlg))
 				return false;
 		}
 

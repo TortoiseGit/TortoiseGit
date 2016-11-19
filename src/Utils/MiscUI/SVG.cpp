@@ -93,7 +93,7 @@ void SVG::RoundedRectangle( int x, int y, int width, int height, Gdiplus::Color 
 			tmp.Format("V %d h %d z ", y+height, -width); 
 			sObj += tmp;
 		}
-		sObj +=_T("\" ");
+		sObj += L"\" ";
 		tmp.Format("style=\"stroke:#%06lx; stroke-width:%d; fill: #%06lx\"/>", GetColor(stroke), penWidth, GetColor(fill));
 		sObj += tmp;
 	}

@@ -26,19 +26,19 @@
 
 typedef std::vector<CGitHash> GIT_REV_LIST;
 
-#define LOG_REV_AUTHOR_NAME		_T('0')
-#define LOG_REV_AUTHOR_EMAIL	_T('1')
-#define LOG_REV_AUTHOR_DATE		_T('2')
-#define LOG_REV_COMMIT_NAME		_T('3')
-#define LOG_REV_COMMIT_EMAIL	_T('4')
-#define LOG_REV_COMMIT_DATE		_T('5')
-#define LOG_REV_COMMIT_SUBJECT	_T('6')
-#define LOG_REV_COMMIT_BODY		_T('7')
-#define LOG_REV_COMMIT_HASH		_T('8')
-#define LOG_REV_COMMIT_PARENT	_T('9')
-#define LOG_REV_COMMIT_FILE		_T('A')
-#define LOG_REV_ITEM_BEGIN		_T('B')
-#define LOG_REV_ITEM_END		_T('C')
+#define LOG_REV_AUTHOR_NAME		L'0'
+#define LOG_REV_AUTHOR_EMAIL	L'1'
+#define LOG_REV_AUTHOR_DATE		L'2'
+#define LOG_REV_COMMIT_NAME		L'3'
+#define LOG_REV_COMMIT_EMAIL	L'4'
+#define LOG_REV_COMMIT_DATE		L'5'
+#define LOG_REV_COMMIT_SUBJECT	L'6'
+#define LOG_REV_COMMIT_BODY		L'7'
+#define LOG_REV_COMMIT_HASH		L'8'
+#define LOG_REV_COMMIT_PARENT	L'9'
+#define LOG_REV_COMMIT_FILE		L'A'
+#define LOG_REV_ITEM_BEGIN		L'B'
+#define LOG_REV_ITEM_END		L'C'
 
 class GitRev
 {

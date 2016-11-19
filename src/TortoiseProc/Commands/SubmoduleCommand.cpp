@@ -44,16 +44,16 @@ bool SubmoduleAddCommand::Execute()
 
 		CString branch;
 		if(dlg.m_bBranch)
-			branch.Format(_T(" -b %s "), (LPCTSTR)dlg.m_strBranch);
+			branch.Format(L" -b %s ", (LPCTSTR)dlg.m_strBranch);
 
 		CString force;
 		if (dlg.m_bForce)
-			force = _T("--force");
+			force = L"--force";
 
-		dlg.m_strPath.Replace(_T('\\'),_T('/'));
-		dlg.m_strRepos.Replace(_T('\\'),_T('/'));
+		dlg.m_strPath.Replace(L'\\', L'/');
+		dlg.m_strRepos.Replace(L'\\', L'/');
 
-		cmd.Format(_T("git.exe submodule add %s %s -- \"%s\"  \"%s\""),
+		cmd.Format(L"git.exe submodule add %s %s -- \"%s\" \"%s\"",
 						(LPCTSTR)branch, (LPCTSTR)force,
 						(LPCTSTR)dlg.m_strRepos, (LPCTSTR)dlg.m_strPath);
 
@@ -67,10 +67,10 @@ bool SubmoduleAddCommand::Execute()
 			{
 				SetCurrentDirectory(g_Git.m_CurrentDir);
 				CGit subgit;
-				dlg.m_strPath.Replace(_T('/'), _T('\\'));
+				dlg.m_strPath.Replace(L'/', L'\\');
 				subgit.m_CurrentDir = PathIsRelative(dlg.m_strPath) ? g_Git.CombinePath(dlg.m_strPath) : dlg.m_strPath;
 
-				if (subgit.SetConfigValue(_T("remote.origin.puttykeyfile"), dlg.m_strPuttyKeyFile, CONFIG_LOCAL))
+				if (subgit.SetConfigValue(L"remote.origin.puttykeyfile", dlg.m_strPuttyKeyFile, CONFIG_LOCAL))
 				{
 					CMessageBox::Show(hwndExplorer, L"Fail set config remote.origin.puttykeyfile", L"TortoiseGit", MB_OK | MB_ICONERROR);
 					return FALSE;
@@ -86,12 +86,12 @@ bool SubmoduleAddCommand::Execute()
 bool SubmoduleUpdateCommand::Execute()
 {
 	CString bkpath;
-	if (parser.HasKey(_T("bkpath")))
-		bkpath = parser.GetVal(_T("bkpath"));
+	if (parser.HasKey(L"bkpath"))
+		bkpath = parser.GetVal(L"bkpath");
 	else
 	{
 		bkpath = this->orgPathList[0].GetWinPathString();
-		int start = bkpath.ReverseFind(_T('\\'));
+		int start = bkpath.ReverseFind(L'\\');
 		if (start >= 0)
 			bkpath = bkpath.Left(start);
 	}
@@ -117,10 +117,10 @@ bool SubmoduleUpdateCommand::Execute()
 
 	CSubmoduleUpdateDlg submoduleUpdateDlg;
 	submoduleUpdateDlg.m_PathFilterList = pathFilterList;
-	if (parser.HasKey(_T("selectedpath")))
+	if (parser.HasKey(L"selectedpath"))
 	{
-		CString selectedPath = parser.GetVal(_T("selectedpath"));
-		selectedPath.Replace(_T('\\'), _T('/'));
+		CString selectedPath = parser.GetVal(L"selectedpath");
+		selectedPath.Replace(L'\\', L'/');
 		submoduleUpdateDlg.m_PathList.push_back(selectedPath);
 	}
 	if (submoduleUpdateDlg.DoModal() != IDOK)
@@ -132,24 +132,24 @@ bool SubmoduleUpdateCommand::Execute()
 
 	CString params;
 	if (submoduleUpdateDlg.m_bInit)
-		params = _T(" --init");
+		params = L" --init";
 	if (submoduleUpdateDlg.m_bRecursive)
-		params += _T(" --recursive");
+		params += L" --recursive";
 	if (submoduleUpdateDlg.m_bForce)
-		params += _T(" --force");
+		params += L" --force";
 	if (submoduleUpdateDlg.m_bNoFetch)
-		params += _T(" --no-fetch");
+		params += L" --no-fetch";
 	if (submoduleUpdateDlg.m_bMerge)
-		params += _T(" --merge");
+		params += L" --merge";
 	if (submoduleUpdateDlg.m_bRebase)
-		params += _T(" --rebase");
+		params += L" --rebase";
 	if (submoduleUpdateDlg.m_bRemote)
-		params += _T(" --remote");
+		params += L" --remote";
 
 	for (size_t i = 0; i < submoduleUpdateDlg.m_PathList.size(); ++i)
 	{
 		CString str;
-		str.Format(_T("git.exe submodule update%s -- \"%s\""), (LPCTSTR)params, (LPCTSTR)submoduleUpdateDlg.m_PathList[i]);
+		str.Format(L"git.exe submodule update%s -- \"%s\"", (LPCTSTR)params, (LPCTSTR)submoduleUpdateDlg.m_PathList[i]);
 		progress.m_GitCmdList.push_back(str);
 	}
 
@@ -163,12 +163,12 @@ bool SubmoduleCommand::Execute(CString cmd,  CString arg)
 	CProgressDlg progress;
 	CString bkpath;
 
-	if(parser.HasKey(_T("bkpath")))
-		bkpath=parser.GetVal(_T("bkpath"));
+	if (parser.HasKey(L"bkpath"))
+		bkpath=parser.GetVal(L"bkpath");
 	else
 	{
 		bkpath=this->orgPathList[0].GetWinPathString();
-		int start = bkpath.ReverseFind(_T('\\'));
+		int start = bkpath.ReverseFind(L'\\');
 		if( start >= 0 )
 			bkpath=bkpath.Left(start);
 	}
@@ -183,14 +183,14 @@ bool SubmoduleCommand::Execute(CString cmd,  CString arg)
 
 	g_Git.m_CurrentDir=super;
 
-	//progress.m_GitCmd.Format(_T("git.exe submodule update --init "));
+	//progress.m_GitCmd.Format(L"git.exe submodule update --init ");
 
 	CString str;
 	for (int i = 0; i < this->orgPathList.GetCount(); ++i)
 	{
 		if(orgPathList[i].IsDirectory())
 		{
-			str.Format(_T("git.exe submodule %s %s -- \"%s\""), (LPCTSTR)cmd, (LPCTSTR)arg, (LPCTSTR)((CTGitPath &)orgPathList[i]).GetSubPath(CTGitPath(super)).GetGitPathString());
+			str.Format(L"git.exe submodule %s %s -- \"%s\"", (LPCTSTR)cmd, (LPCTSTR)arg, (LPCTSTR)((CTGitPath &)orgPathList[i]).GetSubPath(CTGitPath(super)).GetGitPathString());
 			progress.m_GitCmdList.push_back(str);
 		}
 	}

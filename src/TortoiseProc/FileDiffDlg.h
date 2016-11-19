@@ -104,7 +104,7 @@ protected:
 		GitRev gitrev;
 		if (gitrev.GetCommit(str))
 		{
-			MessageBox(gitrev.GetLastErr(), _T("TortoiseGit"), MB_ICONERROR);
+			MessageBox(gitrev.GetLastErr(), L"TortoiseGit", MB_ICONERROR);
 			return -1;
 		}
 		*rev=gitrev;

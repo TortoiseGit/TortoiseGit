@@ -30,8 +30,8 @@ bool FormatPatchCommand::Execute()
 {
 	CFormatPatchDlg dlg;
 //	dlg.m_bIsTag=TRUE;
-	CString startval = parser.GetVal(_T("startrev"));
-	CString endval = parser.GetVal(_T("endrev"));
+	CString startval = parser.GetVal(L"startrev");
+	CString endval = parser.GetVal(L"endrev");
 
 	if( endval.IsEmpty() && (!startval.IsEmpty()))
 	{
@@ -56,14 +56,14 @@ bool FormatPatchCommand::Execute()
 			range=g_Git.FixBranchName(dlg.m_Since);
 			break;
 		case IDC_RADIO_NUM:
-			range.Format(_T("-%d"),dlg.m_Num);
+			range.Format(L"-%d", dlg.m_Num);
 			break;
 		case IDC_RADIO_RANGE:
-			range.Format(_T("%s..%s"), (LPCTSTR)dlg.m_From, (LPCTSTR)dlg.m_To);
+			range.Format(L"%s..%s", (LPCTSTR)dlg.m_From, (LPCTSTR)dlg.m_To);
 			break;
 		}
-		dlg.m_Dir.Replace(_T('\\'),_T('/'));
-		cmd.Format(_T("git.exe format-patch%s -o \"%s\" %s"),
+		dlg.m_Dir.Replace(L'\\', L'/');
+		cmd.Format(L"git.exe format-patch%s -o \"%s\" %s",
 			dlg.m_bNoPrefix ? L" --no-prefix" : L"",
 			(LPCTSTR)dlg.m_Dir,
 			(LPCTSTR)range

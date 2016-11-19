@@ -24,10 +24,10 @@
 
 // The name of the named-pipe for the cache
 
-#define TGIT_CACHE_PIPE_NAME _T("\\\\.\\pipe\\TGitCache")
-#define TGIT_CACHE_COMMANDPIPE_NAME _T("\\\\.\\pipe\\TGitCacheCommand")
-#define TGIT_CACHE_WINDOW_NAME _T("TGitCacheWindow")
-#define TGIT_CACHE_MUTEX_NAME _T("TGitCacheMutex")
+#define TGIT_CACHE_PIPE_NAME L"\\\\.\\pipe\\TGitCache"
+#define TGIT_CACHE_COMMANDPIPE_NAME L"\\\\.\\pipe\\TGitCacheCommand"
+#define TGIT_CACHE_WINDOW_NAME L"TGitCacheWindow"
+#define TGIT_CACHE_MUTEX_NAME L"TGitCacheMutex"
 
 
 CString GetCachePipeName();

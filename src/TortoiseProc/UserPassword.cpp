@@ -54,7 +54,7 @@ BOOL CUserPassword::OnInitDialog()
 	{
 		CString title;
 		this->GetWindowText(title);
-		title += _T(" - ");
+		title += L" - ";
 		title += m_URL;
 		this->SetWindowText(title);
 	}

@@ -63,7 +63,7 @@ BOOL CPropPageFrameDefault::Create(DWORD dwWindowStyle, const RECT &rect, CWnd *
 {
 	return CWnd::Create(
 		AfxRegisterWndClass(CS_HREDRAW|CS_VREDRAW, AfxGetApp()->LoadStandardCursor(IDC_ARROW), GetSysColorBrush(COLOR_3DFACE)),
-		_T("Page Frame"),
+		L"Page Frame",
 		dwWindowStyle, rect, pwndParent, nID);
 }
 
@@ -189,7 +189,7 @@ void CPropPageFrameDefault::DrawCaption(CDC *pDc, CRect rect, LPCTSTR lpszCaptio
 
 	//pDc->DrawText(lpszCaption, rect, DT_LEFT|DT_VCENTER|DT_SINGLELINE|DT_END_ELLIPSIS);
 
-	TextOutTryFL(pDc->GetSafeHdc(), rect.left, rect.top, lpszCaption, (int)_tcslen(lpszCaption));
+	TextOutTryFL(pDc->GetSafeHdc(), rect.left, rect.top, lpszCaption, (int)wcslen(lpszCaption));
 
 	pDc->SetTextColor(clrPrev);
 	pDc->SetBkMode(nBkStyle);

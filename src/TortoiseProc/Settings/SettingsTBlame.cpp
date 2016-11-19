@@ -40,17 +40,17 @@ CSettingsTBlame::CSettingsTBlame()
 	, m_bShowCompleteLog(0)
 	, m_bFollowRenames(0)
 {
-	m_regNewLinesColor = CRegDWORD(_T("Software\\TortoiseGit\\BlameNewColor"), BLAMENEWCOLOR);
-	m_regOldLinesColor = CRegDWORD(_T("Software\\TortoiseGit\\BlameOldColor"), BLAMEOLDCOLOR);
+	m_regNewLinesColor = CRegDWORD(L"Software\\TortoiseGit\\BlameNewColor", BLAMENEWCOLOR);
+	m_regOldLinesColor = CRegDWORD(L"Software\\TortoiseGit\\BlameOldColor", BLAMEOLDCOLOR);
 	m_regFontName = CRegString(L"Software\\TortoiseGit\\BlameFontName", L"Consolas");
-	m_regFontSize = CRegDWORD(_T("Software\\TortoiseGit\\BlameFontSize"), 10);
-	m_regTabSize = CRegDWORD(_T("Software\\TortoiseGit\\BlameTabSize"), 4);
-	m_regDetectMovedOrCopiedLines = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseGitBlame\\Workspace\\DetectMovedOrCopiedLines"), BLAME_DETECT_MOVED_OR_COPIED_LINES_DISABLED);
-	m_regDetectMovedOrCopiedLinesNumCharactersWithinFile = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseGitBlame\\Workspace\\DetectMovedOrCopiedLinesNumCharactersWithinFile"), BLAME_DETECT_MOVED_OR_COPIED_LINES_NUM_CHARACTERS_WITHIN_FILE_DEFAULT);
-	m_regDetectMovedOrCopiedLinesNumCharactersFromFiles = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseGitBlame\\Workspace\\DetectMovedOrCopiedLinesNumCharactersFromFiles"), BLAME_DETECT_MOVED_OR_COPIED_LINES_NUM_CHARACTERS_FROM_FILES_DEFAULT);
-	m_regIgnoreWhitespace = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseGitBlame\\Workspace\\IgnoreWhitespace"), 0);
-	m_regShowCompleteLog = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseGitBlame\\Workspace\\ShowCompleteLog"), 1);
-	m_regFollowRenames = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseGitBlame\\Workspace\\FollowRenames"), 0);
+	m_regFontSize = CRegDWORD(L"Software\\TortoiseGit\\BlameFontSize", 10);
+	m_regTabSize = CRegDWORD(L"Software\\TortoiseGit\\BlameTabSize", 4);
+	m_regDetectMovedOrCopiedLines = CRegDWORD(L"Software\\TortoiseGit\\TortoiseGitBlame\\Workspace\\DetectMovedOrCopiedLines", BLAME_DETECT_MOVED_OR_COPIED_LINES_DISABLED);
+	m_regDetectMovedOrCopiedLinesNumCharactersWithinFile = CRegDWORD(L"Software\\TortoiseGit\\TortoiseGitBlame\\Workspace\\DetectMovedOrCopiedLinesNumCharactersWithinFile", BLAME_DETECT_MOVED_OR_COPIED_LINES_NUM_CHARACTERS_WITHIN_FILE_DEFAULT);
+	m_regDetectMovedOrCopiedLinesNumCharactersFromFiles = CRegDWORD(L"Software\\TortoiseGit\\TortoiseGitBlame\\Workspace\\DetectMovedOrCopiedLinesNumCharactersFromFiles", BLAME_DETECT_MOVED_OR_COPIED_LINES_NUM_CHARACTERS_FROM_FILES_DEFAULT);
+	m_regIgnoreWhitespace = CRegDWORD(L"Software\\TortoiseGit\\TortoiseGitBlame\\Workspace\\IgnoreWhitespace", 0);
+	m_regShowCompleteLog = CRegDWORD(L"Software\\TortoiseGit\\TortoiseGitBlame\\Workspace\\ShowCompleteLog", 1);
+	m_regFollowRenames = CRegDWORD(L"Software\\TortoiseGit\\TortoiseGitBlame\\Workspace\\FollowRenames", 0);
 }
 
 CSettingsTBlame::~CSettingsTBlame()
@@ -68,7 +68,7 @@ void CSettingsTBlame::DoDataExchange(CDataExchange* pDX)
 	{
 		CString t;
 		m_cFontSizes.GetWindowText(t);
-		m_dwFontSize = _ttoi(t);
+		m_dwFontSize = _wtoi(t);
 	}
 	DDX_Control(pDX, IDC_FONTNAMES, m_cFontNames);
 	DDX_Text(pDX, IDC_TABSIZE, m_dwTabSize);
@@ -137,7 +137,7 @@ BOOL CSettingsTBlame::OnInitDialog()
 	CString temp;
 	for (int i=6; i<32; i=i+2)
 	{
-		temp.Format(_T("%d"), i);
+		temp.Format(L"%d", i);
 		m_cFontSizes.AddString(temp);
 		m_cFontSizes.SetItemData(count++, i);
 	}
@@ -152,7 +152,7 @@ BOOL CSettingsTBlame::OnInitDialog()
 	}
 	if (!foundfont)
 	{
-		temp.Format(_T("%lu"), m_dwFontSize);
+		temp.Format(L"%lu", m_dwFontSize);
 		m_cFontSizes.SetWindowText(temp);
 	}
 	m_cFontNames.Setup(DEVICE_FONTTYPE|RASTER_FONTTYPE|TRUETYPE_FONTTYPE, 1, FIXED_PITCH);

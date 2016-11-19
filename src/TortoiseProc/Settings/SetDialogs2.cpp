@@ -42,29 +42,29 @@ CSetDialogs2::CSetDialogs2()
 	, m_bBranchesIncludeFetchHead(TRUE)
 	, m_bNoAutoselectMissing(FALSE)
 {
-	m_regAutoCloseGitProgress = CRegDWORD(_T("Software\\TortoiseGit\\AutoCloseGitProgress"));
-	m_regUseRecycleBin = CRegDWORD(_T("Software\\TortoiseGit\\RevertWithRecycleBin"), TRUE);
-	m_regConfirmKillProcess = CRegDWORD(_T("Software\\TortoiseGit\\ConfirmKillProcess"), FALSE);
+	m_regAutoCloseGitProgress = CRegDWORD(L"Software\\TortoiseGit\\AutoCloseGitProgress");
+	m_regUseRecycleBin = CRegDWORD(L"Software\\TortoiseGit\\RevertWithRecycleBin", TRUE);
+	m_regConfirmKillProcess = CRegDWORD(L"Software\\TortoiseGit\\ConfirmKillProcess", FALSE);
 	m_bConfirmKillProcess = (BOOL)m_regConfirmKillProcess;
-	m_regSyncDialogRandomPos = CRegDWORD(_T("Software\\TortoiseGit\\SyncDialogRandomPos"), FALSE);
+	m_regSyncDialogRandomPos = CRegDWORD(L"Software\\TortoiseGit\\SyncDialogRandomPos", FALSE);
 	m_bSyncDialogRandomPos = (BOOL)m_regSyncDialogRandomPos;
-	m_regRefCompareHideUnchanged = CRegDWORD(_T("Software\\TortoiseGit\\RefCompareHideUnchanged"), FALSE);
+	m_regRefCompareHideUnchanged = CRegDWORD(L"Software\\TortoiseGit\\RefCompareHideUnchanged", FALSE);
 	m_bRefCompareHideUnchanged = (BOOL)m_regRefCompareHideUnchanged;
-	m_regSortTagsReversed = CRegDWORD(_T("Software\\TortoiseGit\\SortTagsReversed"), FALSE);
+	m_regSortTagsReversed = CRegDWORD(L"Software\\TortoiseGit\\SortTagsReversed", FALSE);
 	m_bSortTagsReversed = (BOOL)(DWORD)m_regSortTagsReversed;
-	m_regAutocompletion = CRegDWORD(_T("Software\\TortoiseGit\\Autocompletion"), TRUE);
+	m_regAutocompletion = CRegDWORD(L"Software\\TortoiseGit\\Autocompletion", TRUE);
 	m_bAutocompletion = (DWORD)m_regAutocompletion;
-	m_regAutocompletionTimeout = CRegDWORD(_T("Software\\TortoiseGit\\AutocompleteParseTimeout"), 5);
+	m_regAutocompletionTimeout = CRegDWORD(L"Software\\TortoiseGit\\AutocompleteParseTimeout", 5);
 	m_dwAutocompletionTimeout = (DWORD)m_regAutocompletionTimeout;
-	m_regMaxHistory = CRegDWORD(_T("Software\\TortoiseGit\\MaxHistoryItems"), 25);
+	m_regMaxHistory = CRegDWORD(L"Software\\TortoiseGit\\MaxHistoryItems", 25);
 	m_dwMaxHistory = (DWORD)m_regMaxHistory;
-	m_regAutoSelect = CRegDWORD(_T("Software\\TortoiseGit\\SelectFilesForCommit"), TRUE);
+	m_regAutoSelect = CRegDWORD(L"Software\\TortoiseGit\\SelectFilesForCommit", TRUE);
 	m_bAutoSelect = (BOOL)(DWORD)m_regAutoSelect;
-	m_regStripCommentedLines = CRegDWORD(_T("Software\\TortoiseGit\\StripCommentedLines"), FALSE);
+	m_regStripCommentedLines = CRegDWORD(L"Software\\TortoiseGit\\StripCommentedLines", FALSE);
 	m_bStripCommentedLines = (BOOL)(DWORD)m_regStripCommentedLines;
-	m_regShowGitexeTimings = CRegDWORD(_T("Software\\TortoiseGit\\ShowGitexeTimings"), TRUE);
+	m_regShowGitexeTimings = CRegDWORD(L"Software\\TortoiseGit\\ShowGitexeTimings", TRUE);
 	m_bShowGitexeTimings = (BOOL)(DWORD)m_regShowGitexeTimings;
-	m_regNoSounds = CRegDWORD(_T("Software\\TortoiseGit\\NoSounds"), FALSE);
+	m_regNoSounds = CRegDWORD(L"Software\\TortoiseGit\\NoSounds", FALSE);
 	m_bNoSounds = (BOOL)(DWORD)m_regNoSounds;
 	m_regBranchesIncludeFetchHead = CRegDWORD(L"Software\\TortoiseGit\\BranchesIncludeFetchHead", TRUE);
 	m_bBranchesIncludeFetchHead = (BOOL)(DWORD)m_regBranchesIncludeFetchHead;

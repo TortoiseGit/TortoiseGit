@@ -96,7 +96,7 @@ BOOL CSubmoduleResolveConflictDlg::OnInitDialog()
 	AddAnchor(IDC_THEIRSHASH, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_THEIRSSUBJECT, TOP_LEFT, TOP_RIGHT);
 
-	EnableSaveRestore(_T("SubmoduleResolveConflictDlg"));
+	EnableSaveRestore(L"SubmoduleResolveConflictDlg");
 
 	CString fsPath = m_sPath;
 	fsPath.Replace(L'\\', L'/');
@@ -192,7 +192,7 @@ void CSubmoduleResolveConflictDlg::SetDiff(const CString& path, bool revertTheir
 void CSubmoduleResolveConflictDlg::ShowLog(CString hash)
 {
 	CString sCmd;
-	sCmd.Format(_T("/command:log /path:\"%s\" /endrev:%s"), (LPCTSTR)g_Git.CombinePath(m_sPath), (LPCTSTR)hash);
+	sCmd.Format(L"/command:log /path:\"%s\" /endrev:%s", (LPCTSTR)g_Git.CombinePath(m_sPath), (LPCTSTR)hash);
 	CAppUtils::RunTortoiseGitProc(sCmd, false, false);
 }
 

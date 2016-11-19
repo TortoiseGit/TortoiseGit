@@ -46,12 +46,12 @@ BOOL CLogOrdering::OnInitDialog()
 
 	int ind = m_cLogOrdering.AddString(CString(MAKEINTRESOURCE(IDS_LOG_CHRONOLOGICALREVERSEDORDER)));
 	m_cLogOrdering.SetItemData(ind, CGit::LOG_ORDER_CHRONOLOGIALREVERSED);
-	ind = m_cLogOrdering.AddString(_T("--topo-order ") + CString(MAKEINTRESOURCE(IDS_TORTOISEGITDEFAULT)));
+	ind = m_cLogOrdering.AddString(L"--topo-order " + CString(MAKEINTRESOURCE(IDS_TORTOISEGITDEFAULT)));
 	m_cLogOrdering.SetItemData(ind, CGit::LOG_ORDER_TOPOORDER);
-	ind = m_cLogOrdering.AddString(_T("--date-order"));
+	ind = m_cLogOrdering.AddString(L"--date-order");
 	m_cLogOrdering.SetItemData(ind, CGit::LOG_ORDER_DATEORDER);
 
-	DWORD curOrder = CRegDWORD(_T("Software\\TortoiseGit\\LogOrderBy"), CGit::LOG_ORDER_TOPOORDER);
+	DWORD curOrder = CRegDWORD(L"Software\\TortoiseGit\\LogOrderBy", CGit::LOG_ORDER_TOPOORDER);
 	for (int i = 0; i < m_cLogOrdering.GetCount(); ++i)
 		if (m_cLogOrdering.GetItemData(i) == curOrder)
 			m_cLogOrdering.SetCurSel(i);
@@ -62,7 +62,7 @@ BOOL CLogOrdering::OnInitDialog()
 void CLogOrdering::OnOK()
 {
 	if (m_cLogOrdering.GetCurSel() != CB_ERR)
-		CRegDWORD(_T("Software\\TortoiseGit\\LogOrderBy")) = (DWORD)m_cLogOrdering.GetItemData(m_cLogOrdering.GetCurSel());
+		CRegDWORD(L"Software\\TortoiseGit\\LogOrderBy") = (DWORD)m_cLogOrdering.GetItemData(m_cLogOrdering.GetCurSel());
 
 	__super::OnOK();
 }

@@ -56,7 +56,7 @@ protected:
 	afx_msg void OnBnClickedDiffviewerbrowse();
 	afx_msg void OnEnChangeDiffviewer();
 
-	bool IsExternal(const CString& path) const { return !path.IsEmpty() && path.Left(1) != _T("#"); }
+	bool IsExternal(const CString& path) const { return !path.IsEmpty() && path.Left(1) != L"#"; }
 	void CheckProgComment();
 	void CheckProgCommentProps();
 

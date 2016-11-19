@@ -50,8 +50,8 @@ public:
 
 			//the dialog box doesn't have a menu or a special class
 
-			AppendData(_T("\0"), 2);
-			AppendData(_T("\0"), 2);
+			AppendData(L"\0", 2);
+			AppendData(L"\0", 2);
 
 			//add the dialog's caption to the template
 

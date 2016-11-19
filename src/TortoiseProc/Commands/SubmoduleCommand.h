@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009,2012 - TortoiseGit
+// Copyright (C) 2009, 2012, 2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -31,7 +31,7 @@ public:
 class SubmoduleCommand:public Command
 {
 public:
-	virtual bool Execute(CString cmd,CString arg=_T(""));
+	virtual bool Execute(CString cmd, CString arg = L"");
 };
 
 class SubmoduleUpdateCommand : public Command
@@ -49,7 +49,7 @@ public:
 	/**
 	 * Executes the command.
 	 */
-	virtual bool			Execute() {return SubmoduleCommand::Execute(_T("sync"));};
+	virtual bool			Execute() { return SubmoduleCommand::Execute(L"sync"); };
 };
 
 

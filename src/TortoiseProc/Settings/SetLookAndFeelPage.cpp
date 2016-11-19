@@ -144,14 +144,14 @@ CSetLookAndFeelPage::CSetLookAndFeelPage()
 	m_topmenu = unsigned __int64(DWORD(m_regTopmenuhigh))<<32;
 	m_topmenu |= unsigned __int64(DWORD(m_regTopmenu));
 
-	m_regHideMenus = CRegDWORD(_T("Software\\TortoiseGit\\HideMenusForUnversionedItems"), FALSE);
+	m_regHideMenus = CRegDWORD(L"Software\\TortoiseGit\\HideMenusForUnversionedItems", FALSE);
 	m_bHideMenus = m_regHideMenus;
 
-	m_regNoContextPaths = CRegString(_T("Software\\TortoiseGit\\NoContextPaths"), _T(""));
+	m_regNoContextPaths = CRegString(L"Software\\TortoiseGit\\NoContextPaths", L"");
 	m_sNoContextPaths = m_regNoContextPaths;
-	m_sNoContextPaths.Replace(_T("\n"), _T("\r\n"));
+	m_sNoContextPaths.Replace(L"\n", L"\r\n");
 
-	m_regEnableDragContextMenu = CRegDWORD(_T("Software\\TortoiseGit\\EnableDragContextMenu"), TRUE);
+	m_regEnableDragContextMenu = CRegDWORD(L"Software\\TortoiseGit\\EnableDragContextMenu", TRUE);
 	m_bEnableDragContextMenu = m_regEnableDragContextMenu;
 }
 
@@ -198,7 +198,7 @@ BOOL CSetLookAndFeelPage::OnInitDialog()
 	int c = m_cMenuList.GetHeaderCtrl()->GetItemCount() - 1;
 	while (c>=0)
 		m_cMenuList.DeleteColumn(c--);
-	m_cMenuList.InsertColumn(0, _T(""));
+	m_cMenuList.InsertColumn(0, L"");
 
 	SetWindowTheme(m_hWnd, L"Explorer", nullptr);
 
@@ -235,14 +235,14 @@ BOOL CSetLookAndFeelPage::OnApply()
 
 	m_regTopmenu.getErrorString();
 	m_sNoContextPaths.Remove('\r');
-	if (m_sNoContextPaths.Right(1).Compare(_T("\n"))!=0)
+	if (m_sNoContextPaths.Right(1) != L'\n')
 		m_sNoContextPaths += L'\n';
 
 	Store(m_bHideMenus, m_regHideMenus);
 	Store(m_sNoContextPaths, m_regNoContextPaths);
 	Store(m_bEnableDragContextMenu, m_regEnableDragContextMenu);
 
-	m_sNoContextPaths.Replace(_T("\n"), _T("\r\n"));
+	m_sNoContextPaths.Replace(L"\n", L"\r\n");
 
 	SetModified(FALSE);
 	return ISettingsPropPage::OnApply();
@@ -337,7 +337,7 @@ BOOL CSetExtMenu::OnInitDialog()
 	int c = m_cMenuList.GetHeaderCtrl()->GetItemCount() - 1;
 	while (c>=0)
 		m_cMenuList.DeleteColumn(c--);
-	m_cMenuList.InsertColumn(0, _T(""));
+	m_cMenuList.InsertColumn(0, L"");
 
 	SetWindowTheme(m_cMenuList.GetSafeHwnd(), L"Explorer", nullptr);
 

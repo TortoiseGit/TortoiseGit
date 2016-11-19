@@ -316,6 +316,6 @@ bool CRemoteCacheLink::RunTGitCacheProcess()
 
 CString CRemoteCacheLink::GetTGitCachePath() const
 {
-	CString sCachePath = CPathUtils::GetAppDirectory(g_hmodThisDll) + _T("TGitCache.exe");
+	CString sCachePath = CPathUtils::GetAppDirectory(g_hmodThisDll) + L"TGitCache.exe";
 	return sCachePath;
 }

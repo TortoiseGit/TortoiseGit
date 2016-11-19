@@ -75,7 +75,7 @@ BOOL CResetDlg::OnInitDialog()
 	AdjustControlSize(IDC_RADIO_RESET_MIXED);
 	AdjustControlSize(IDC_RADIO_RESET_HARD);
 
-	EnableSaveRestore(_T("ResetDlg"));
+	EnableSaveRestore(L"ResetDlg");
 
 	CString resetTo;
 	CString currentBranch = g_Git.GetCurrentBranch();

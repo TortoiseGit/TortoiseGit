@@ -56,7 +56,7 @@ int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, 
 	if ((!path || path->IsDirectory()) && (infomask & CGit::LOG_INFO_FOLLOW))
 		infomask = infomask ^ CGit::LOG_INFO_FOLLOW;
 
-	CString gitrange = _T("HEAD");
+	CString gitrange = L"HEAD";
 	if (range != nullptr)
 		gitrange = *range;
 	CFilterData filter;
@@ -78,7 +78,7 @@ int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, 
 	}
 	catch (const char* msg)
 	{
-		MessageBox(nullptr, _T("Could not initialize libgit.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
+		MessageBox(nullptr, L"Could not initialize libgit.\nlibgit reports:\n" + CString(msg), L"TortoiseGit", MB_ICONERROR);
 		return -1;
 	}
 
@@ -91,7 +91,7 @@ int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, 
 	}
 	catch (char* msg)
 	{
-		MessageBox(nullptr, _T("Could not open log.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
+		MessageBox(nullptr, L"Could not open log.\nlibgit reports:\n" + CString(msg), L"TortoiseGit", MB_ICONERROR);
 		return -1;
 	}
 
@@ -102,7 +102,7 @@ int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, 
 	}
 	catch (char* msg)
 	{
-		MessageBox(nullptr, _T("Could not get first commit.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
+		MessageBox(nullptr, L"Could not get first commit.\nlibgit reports:\n" + CString(msg), L"TortoiseGit", MB_ICONERROR);
 		return -1;
 	}
 
@@ -118,14 +118,14 @@ int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, 
 		}
 		catch (char* msg)
 		{
-			MessageBox(nullptr, _T("Could not get next commit.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
+			MessageBox(nullptr, L"Could not get next commit.\nlibgit reports:\n" + CString(msg), L"TortoiseGit", MB_ICONERROR);
 			break;
 		}
 
 		if (ret)
 		{
 			if (ret != -2) // other than end of revision walking
-				MessageBox(nullptr, (_T("Could not get next commit.\nlibgit returns:") + std::to_wstring(ret)).c_str(), _T("TortoiseGit"), MB_ICONERROR);
+				MessageBox(nullptr, (L"Could not get next commit.\nlibgit returns:" + std::to_wstring(ret)).c_str(), L"TortoiseGit", MB_ICONERROR);
 			break;
 		}
 
@@ -161,7 +161,7 @@ int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, 
 		{
 			if (pRev->SafeFetchFullInfo(&g_Git))
 			{
-				MessageBox(nullptr, pRev->GetLastErr(), _T("TortoiseGit"), MB_ICONERROR);
+				MessageBox(nullptr, pRev->GetLastErr(), L"TortoiseGit", MB_ICONERROR);
 				return -1;
 			}
 		}
@@ -208,7 +208,7 @@ int CLogDataVector::Fill(std::set<CGitHash>& hashes)
 	}
 	catch (const char* msg)
 	{
-		MessageBox(nullptr, _T("Could not initialize libgit.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
+		MessageBox(nullptr, L"Could not initialize libgit.\nlibgit reports:\n" + CString(msg), L"TortoiseGit", MB_ICONERROR);
 		return -1;
 	}
 
@@ -225,7 +225,7 @@ int CLogDataVector::Fill(std::set<CGitHash>& hashes)
 		}
 		catch (char * msg)
 		{
-			MessageBox(nullptr, _T("Could not get commit \"") + hash.ToString() + _T("\".\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
+			MessageBox(nullptr, L"Could not get commit \"" + hash.ToString() + L"\".\nlibgit reports:\n" + CString(msg), L"TortoiseGit", MB_ICONERROR);
 			return -1;
 		}
 
@@ -318,7 +318,7 @@ void CLogDataVector::updateLanes(GitRevLoglist& c, Lanes& lns, CGitHash& sha)
 		lns.changeActiveLane(sha); // uses previous isBoundary state
 
 	lns.setBoundary(c.IsBoundary() == TRUE); // update must be here
-	TRACE(_T("%s %d"), (LPCTSTR)c.m_CommitHash.ToString(), c.IsBoundary());
+	TRACE(L"%s %d", (LPCTSTR)c.m_CommitHash.ToString(), c.IsBoundary());
 
 	if (isFork)
 		lns.setFork(sha);

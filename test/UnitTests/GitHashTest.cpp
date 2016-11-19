@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015 - TortoiseGit
+// Copyright (C) 2015-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,7 +25,7 @@ TEST(CGitHash, Initial)
 {
 	CGitHash empty;
 	EXPECT_TRUE(empty.IsEmpty());
-	EXPECT_STREQ(_T("0000000000000000000000000000000000000000"), GIT_REV_ZERO);
+	EXPECT_STREQ(L"0000000000000000000000000000000000000000", GIT_REV_ZERO);
 	EXPECT_STREQ(GIT_REV_ZERO, empty.ToString());
 	EXPECT_TRUE(empty == empty);
 	EXPECT_FALSE(empty != empty);

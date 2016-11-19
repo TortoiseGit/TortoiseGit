@@ -78,7 +78,7 @@ static void addAdresses(std::vector<MailAddress>& recipients, const CString& sAd
 	int start = 0;
 	while (start >= 0)
 	{
-		CString address = sAddresses.Tokenize(_T(";"), start);
+		CString address = sAddresses.Tokenize(L";", start);
 		CString name;
 		CStringUtils::ParseEmailAddress(address, address, &name);
 		if (address.IsEmpty())
@@ -116,7 +116,7 @@ void CMailMsg::AddAttachment(const CString& sAttachment, CString sTitle)
 {
 	if (sTitle.IsEmpty())
 	{
-		int position = sAttachment.ReverseFind(_T('\\'));
+		int position = sAttachment.ReverseFind(L'\\');
 		if(position >=0)
 		{
 			sTitle = sAttachment.Mid(position+1);
@@ -132,21 +132,21 @@ void CMailMsg::AddAttachment(const CString& sAttachment, CString sTitle)
 BOOL CMailMsg::DetectMailClient(CString& sMailClientName)
 {
 	CRegKey regKey;
-	TCHAR buf[1024] = _T("");
+	TCHAR buf[1024] = L"";
 	ULONG buf_size = 0;
 	LONG lResult;
 
-	lResult = regKey.Open(HKEY_CURRENT_USER, _T("SOFTWARE\\Clients\\Mail"), KEY_READ);
+	lResult = regKey.Open(HKEY_CURRENT_USER, L"SOFTWARE\\Clients\\Mail", KEY_READ);
 	if(lResult!=ERROR_SUCCESS)
 	{
-		lResult = regKey.Open(HKEY_LOCAL_MACHINE, _T("SOFTWARE\\Clients\\Mail"), KEY_READ);
+		lResult = regKey.Open(HKEY_LOCAL_MACHINE, L"SOFTWARE\\Clients\\Mail", KEY_READ);
 	}
 
 	if(lResult==ERROR_SUCCESS)
 	{
 		buf_size = 1023;
 #pragma warning(disable:4996)
-		LONG result = regKey.QueryValue(buf, _T(""), &buf_size);
+		LONG result = regKey.QueryValue(buf, L"", &buf_size);
 #pragma warning(default:4996)
 		if(result==ERROR_SUCCESS)
 		{
@@ -170,20 +170,20 @@ BOOL CMailMsg::MAPIInitialize()
 	CString sMailClientName;
 	if(!DetectMailClient(sMailClientName))
 	{
-		m_sErrorMsg = _T("Error detecting E-mail client");
+		m_sErrorMsg = L"Error detecting E-mail client";
 		return FALSE;
 	}
 	else
 	{
-		m_sErrorMsg = _T("Detected E-mail client ") + sMailClientName;
+		m_sErrorMsg = L"Detected E-mail client " + sMailClientName;
 	}
 
 	// Load MAPI.dll
 
-	m_hMapi = AtlLoadSystemLibraryUsingFullPath(_T("mapi32.dll"));
+	m_hMapi = AtlLoadSystemLibraryUsingFullPath(L"mapi32.dll");
 	if (!m_hMapi)
 	{
-		m_sErrorMsg = _T("Error loading mapi32.dll");
+		m_sErrorMsg = L"Error loading mapi32.dll";
 		return FALSE;
 	}
 
@@ -193,7 +193,7 @@ BOOL CMailMsg::MAPIInitialize()
 
 	if(!m_bReady)
 	{
-		m_sErrorMsg = _T("Not found required function entries in mapi32.dll");
+		m_sErrorMsg = L"Not found required function entries in mapi32.dll";
 	}
 
 	return m_bReady;
@@ -228,7 +228,7 @@ BOOL CMailMsg::Send()
 	pRecipients = new MapiRecipDesc[1 + m_to.size() + m_cc.size()];
 	if(!pRecipients)
 	{
-		m_sErrorMsg = _T("Error allocating memory");
+		m_sErrorMsg = L"Error allocating memory";
 		return FALSE;
 	}
 
@@ -238,7 +238,7 @@ BOOL CMailMsg::Send()
 		pAttachments = new MapiFileDesc[nAttachments];
 		if(!pAttachments)
 		{
-			m_sErrorMsg = _T("Error allocating memory");
+			m_sErrorMsg = L"Error allocating memory";
 			delete[] pRecipients;
 			return FALSE;
 		}
@@ -304,7 +304,7 @@ BOOL CMailMsg::Send()
 
 	if(status!=SUCCESS_SUCCESS)
 	{
-		m_sErrorMsg.Format(_T("MAPISendMail has failed with code %lu."), status);
+		m_sErrorMsg.Format(L"MAPISendMail has failed with code %lu.", status);
 	}
 
 	delete[] pRecipients;

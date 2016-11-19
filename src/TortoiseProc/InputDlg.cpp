@@ -106,7 +106,7 @@ BOOL CInputDlg::OnInitDialog()
 
 	AdjustControlSize(IDC_CHECKBOX);
 
-	EnableSaveRestore(_T("InputDlg"));
+	EnableSaveRestore(L"InputDlg");
 	if (hWndExplorer)
 		CenterWindow(CWnd::FromHandle(hWndExplorer));
 	GetDlgItem(IDC_INPUTTEXT)->SetFocus();

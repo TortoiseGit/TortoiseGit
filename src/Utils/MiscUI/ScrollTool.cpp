@@ -61,7 +61,7 @@ bool CScrollTool::Init(LPPOINT pos, bool bRightAligned /* = false */)
 		ti.hwnd = nullptr;
 		ti.hinst = nullptr;
 		ti.uId = 0;
-		ti.lpszText = _T(" ");
+		ti.lpszText = L" ";
 
 		// ToolTip control will cover the whole window
 		ti.rect.left = 0;
@@ -119,7 +119,7 @@ void CScrollTool::Clear()
 LONG CScrollTool::GetTextWidth(LPCTSTR szText)
 {
 	CDC *pDC = GetDC();
-	CSize textsize = pDC->GetTextExtent(szText, (int)_tcslen(szText));
+	CSize textsize = pDC->GetTextExtent(szText, (int)wcslen(szText));
 	ReleaseDC(pDC);
 	return textsize.cx;
 }

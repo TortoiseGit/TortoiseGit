@@ -78,18 +78,18 @@ BOOL CChangedDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
 
-	m_regAddBeforeCommit = CRegDWORD(_T("Software\\TortoiseGit\\AddBeforeCommit"), TRUE);
+	m_regAddBeforeCommit = CRegDWORD(L"Software\\TortoiseGit\\AddBeforeCommit", TRUE);
 	m_bShowUnversioned = m_regAddBeforeCommit;
 
 	CString regPath(g_Git.m_CurrentDir);
 	regPath.Replace(L':', L'_');
-	m_regShowWholeProject = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\ShowWholeProject\\") + regPath, FALSE);
+	m_regShowWholeProject = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\ShowWholeProject\\" + regPath, FALSE);
 	m_bWholeProject = m_regShowWholeProject;
 	SetDlgTitle();
 
 	UpdateData(FALSE);
 
-	m_FileListCtrl.Init(GITSLC_COLEXT | GITSLC_COLSTATUS | GITSLC_COLADD| GITSLC_COLDEL | GITSLC_COLMODIFICATIONDATE, _T("ChangedDlg"), (GITSLC_POPALL ^ (GITSLC_POPSAVEAS | GITSLC_POPRESTORE | GITSLC_PREPAREDIFF)), false);
+	m_FileListCtrl.Init(GITSLC_COLEXT | GITSLC_COLSTATUS | GITSLC_COLADD| GITSLC_COLDEL | GITSLC_COLMODIFICATIONDATE, L"ChangedDlg", (GITSLC_POPALL ^ (GITSLC_POPSAVEAS | GITSLC_POPRESTORE | GITSLC_PREPAREDIFF)), false);
 	m_FileListCtrl.SetCancelBool(&m_bCanceled);
 	m_FileListCtrl.SetBackgroundImage(IDI_CFM_BKG);
 	m_FileListCtrl.SetEmptyString(IDS_REPOSTATUS_EMPTYFILELIST);
@@ -116,9 +116,9 @@ BOOL CChangedDlg::OnInitDialog()
 //	SetPromptParentWindow(m_hWnd);
 	if (hWndExplorer)
 		CenterWindow(CWnd::FromHandle(hWndExplorer));
-	EnableSaveRestore(_T("ChangedDlg"));
+	EnableSaveRestore(L"ChangedDlg");
 
-	m_bRemote = !!(DWORD)CRegDWORD(_T("Software\\TortoiseGit\\CheckRepo"), FALSE);
+	m_bRemote = !!(DWORD)CRegDWORD(L"Software\\TortoiseGit\\CheckRepo", FALSE);
 
 	// first start a thread to obtain the status without
 	// blocking the dialog
@@ -177,7 +177,7 @@ UINT CChangedDlg::ChangedStatusThread()
 	DialogEnableWindow(IDC_SHOWLOCALCHANGESIGNORED, TRUE);
 	InterlockedExchange(&m_bBlock, FALSE);
 	// revert the remote flag back to the default
-	m_bRemote = !!(DWORD)CRegDWORD(_T("Software\\TortoiseGit\\CheckRepo"), FALSE);
+	m_bRemote = !!(DWORD)CRegDWORD(L"Software\\TortoiseGit\\CheckRepo", FALSE);
 	RefreshCursor();
 	return 0;
 }
@@ -364,14 +364,14 @@ void CChangedDlg::UpdateStatistics()
 	}
 #endif
 	temp = m_FileListCtrl.GetStatisticsString();
-	temp.Replace(_T(" = "), _T("="));
-	temp.Replace(_T("\n"), _T(", "));
+	temp.Replace(L" = ", L"=");
+	temp.Replace(L"\n", L", ");
 	SetDlgItemText(IDC_INFOLABEL, temp);
 }
 
 void CChangedDlg::OnBnClickedCommit()
 {
-	CString cmd = _T("/command:commit /path:\"");
+	CString cmd = L"/command:commit /path:\"";
 	bool bSingleFile = ((m_pathList.GetCount()==1)&&(!m_pathList[0].IsEmpty())&&(!m_pathList[0].IsDirectory()));
 	if (bSingleFile)
 		cmd += m_pathList[0].GetWinPathString();
@@ -410,12 +410,12 @@ void CChangedDlg::OnBnClickedStash()
 			CAppUtils::StashPop(2);
 			break;
 		case ID_STASH_APPLY:
-			CAppUtils::StashApply(_T(""), false);
+			CAppUtils::StashApply(L"", false);
 			break;
 		case ID_STASH_LIST:
 			{
 				CRefLogDlg dlg;
-				dlg.m_CurrentBranch = _T("refs/stash");
+				dlg.m_CurrentBranch = L"refs/stash";
 				dlg.DoModal();
 			}
 			break;

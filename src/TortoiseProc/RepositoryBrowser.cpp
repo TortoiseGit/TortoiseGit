@@ -210,13 +210,13 @@ BOOL CRepositoryBrowser::OnInitDialog()
 	static int columnWidths[] = { 150, 100, 100 };
 	DWORD dwDefaultColumns = (1 << eCol_Name) | (1 << eCol_Extension) | (1 << eCol_FileSize);
 	m_ColumnManager.SetNames(columnNames, _countof(columnNames));
-	m_ColumnManager.ReadSettings(dwDefaultColumns, 0, _T("RepoBrowser"), _countof(columnNames), columnWidths);
+	m_ColumnManager.ReadSettings(dwDefaultColumns, 0, L"RepoBrowser", _countof(columnNames), columnWidths);
 	m_ColumnManager.SetRightAlign(2);
 
 	// set up the list control
 	// set the extended style of the list control
 	// the style LVS_EX_FULLROWSELECT interferes with the background watermark image but it's more important to be able to select in the whole row.
-	CRegDWORD regFullRowSelect(_T("Software\\TortoiseGit\\FullRowSelect"), TRUE);
+	CRegDWORD regFullRowSelect(L"Software\\TortoiseGit\\FullRowSelect", TRUE);
 	DWORD exStyle = LVS_EX_HEADERDRAGDROP | LVS_EX_DOUBLEBUFFER | LVS_EX_INFOTIP | LVS_EX_SUBITEMIMAGES;
 	if (DWORD(regFullRowSelect))
 		exStyle |= LVS_EX_FULLROWSELECT;
@@ -252,7 +252,7 @@ BOOL CRepositoryBrowser::OnInitDialog()
 
 	EnableSaveRestore(L"Reposbrowser");
 
-	DWORD xPos = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\ResizableState\\RepobrowserDivider"), 0);
+	DWORD xPos = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\ResizableState\\RepobrowserDivider", 0);
 	if (xPos == 0)
 	{
 		RECT rc;
@@ -461,18 +461,18 @@ int CRepositoryBrowser::ReadTree(CShadowFilesTree* treeroot, const CString& root
 	CAutoRepository repository(g_Git.GetGitRepository());
 	if (!repository)
 	{
-		MessageBox(CGit::GetLibGit2LastErr(_T("Could not open repository.")), _T("TortoiseGit"), MB_ICONERROR);
+		MessageBox(CGit::GetLibGit2LastErr(L"Could not open repository."), L"TortoiseGit", MB_ICONERROR);
 		return -1;
 	}
 
-	if (m_sRevision == _T("HEAD"))
+	if (m_sRevision == L"HEAD")
 	{
 		int ret = git_repository_head_unborn(repository);
 		if (ret == 1)	// is orphan
 			return ret;
 		else if (ret != 0)
 		{
-			MessageBox(g_Git.GetLibGit2LastErr(_T("Could not check HEAD.")), _T("TortoiseGit"), MB_ICONERROR);
+			MessageBox(g_Git.GetLibGit2LastErr(L"Could not check HEAD."), L"TortoiseGit", MB_ICONERROR);
 			return ret;
 		}
 	}
@@ -487,14 +487,14 @@ int CRepositoryBrowser::ReadTree(CShadowFilesTree* treeroot, const CString& root
 	CAutoCommit commit;
 	if (git_commit_lookup(commit.GetPointer(), repository, (git_oid *)hash.m_hash))
 	{
-		MessageBox(CGit::GetLibGit2LastErr(_T("Could not lookup commit.")), _T("TortoiseGit"), MB_ICONERROR);
+		MessageBox(CGit::GetLibGit2LastErr(L"Could not lookup commit."), L"TortoiseGit", MB_ICONERROR);
 		return -1;
 	}
 
 	CAutoTree tree;
 	if (git_commit_tree(tree.GetPointer(), commit))
 	{
-		MessageBox(CGit::GetLibGit2LastErr(_T("Could not get tree of commit.")), _T("TortoiseGit"), MB_ICONERROR);
+		MessageBox(CGit::GetLibGit2LastErr(L"Could not get tree of commit."), L"TortoiseGit", MB_ICONERROR);
 		return -1;
 	}
 
@@ -503,19 +503,19 @@ int CRepositoryBrowser::ReadTree(CShadowFilesTree* treeroot, const CString& root
 		CAutoTreeEntry treeEntry;
 		if (git_tree_entry_bypath(treeEntry.GetPointer(), tree, CUnicodeUtils::GetUTF8(root)))
 		{
-			MessageBox(CGit::GetLibGit2LastErr(_T("Could not lookup path.")), _T("TortoiseGit"), MB_ICONERROR);
+			MessageBox(CGit::GetLibGit2LastErr(L"Could not lookup path."), L"TortoiseGit", MB_ICONERROR);
 			return -1;
 		}
 		if (git_tree_entry_type(treeEntry) != GIT_OBJ_TREE)
 		{
-			MessageBox(CGit::GetLibGit2LastErr(_T("Could not lookup path.")), _T("TortoiseGit"), MB_ICONERROR);
+			MessageBox(CGit::GetLibGit2LastErr(L"Could not lookup path."), L"TortoiseGit", MB_ICONERROR);
 			return -1;
 		}
 
 		CAutoObject object;
 		if (git_tree_entry_to_object(object.GetPointer(), repository, treeEntry))
 		{
-			MessageBox(CGit::GetLibGit2LastErr(_T("Could not lookup path.")), _T("TortoiseGit"), MB_ICONERROR);
+			MessageBox(CGit::GetLibGit2LastErr(L"Could not lookup path."), L"TortoiseGit", MB_ICONERROR);
 			return -1;
 		}
 
@@ -530,7 +530,7 @@ int CRepositoryBrowser::ReadTree(CShadowFilesTree* treeroot, const CString& root
 	{
 		MAP_HASH_NAME map;
 		if (CGit::GetMapHashToFriendName(repository, map))
-			MessageBox(g_Git.GetLibGit2LastErr(_T("Could not get all refs.")), _T("TortoiseGit"), MB_ICONERROR);
+			MessageBox(g_Git.GetLibGit2LastErr(L"Could not get all refs."), L"TortoiseGit", MB_ICONERROR);
 		if (!map[hash].empty())
 			m_sRevision = map[hash].at(0);
 	}
@@ -824,9 +824,9 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 	case eCmd_ViewLogSubmodule:
 		{
 			CString sCmd;
-			sCmd.Format(_T("/command:log /path:\"%s\""), (LPCTSTR)g_Git.CombinePath(selectedLeafs.at(0)->GetFullName()));
+			sCmd.Format(L"/command:log /path:\"%s\"", (LPCTSTR)g_Git.CombinePath(selectedLeafs.at(0)->GetFullName()));
 			if (cmd == eCmd_ViewLog && selectedLeafs.at(0)->m_bSubmodule)
-				sCmd += _T(" /submodule");
+				sCmd += L" /submodule";
 			if (cmd == eCmd_ViewLog)
 				sCmd += L" /endrev:" + m_sRevision;
 			CAppUtils::RunTortoiseGitProc(sCmd);
@@ -870,7 +870,7 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 			}
 			CString msg;
 			msg.Format(IDS_STATUSLIST_FILESREVERTED, count, (LPCTSTR)m_sRevision);
-			MessageBox(msg, _T("TortoiseGit"), MB_OK);
+			MessageBox(msg, L"TortoiseGit", MB_OK);
 		}
 		break;
 	case eCmd_SaveAs:
@@ -881,7 +881,7 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 			CString sClipboard;
 			for (auto itShadowTree = selectedLeafs.cbegin(); itShadowTree != selectedLeafs.cend(); ++itShadowTree)
 			{
-				sClipboard += (*itShadowTree)->m_sName + _T("\r\n");
+				sClipboard += (*itShadowTree)->m_sName + L"\r\n";
 			}
 			CStringUtils::WriteAsciiStringToClipboard(sClipboard);
 		}
@@ -896,7 +896,7 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 		if (g_Git.GetHash(m_sMarkForDiffVersion, m_sRevision))
 		{
 			m_sMarkForDiffFilename.Empty();
-			MessageBox(g_Git.GetGitLastErr(_T("Could not get SHA-1 for ") + m_sRevision), _T("TortoiseGit"), MB_ICONERROR);
+			MessageBox(g_Git.GetGitLastErr(L"Could not get SHA-1 for " + m_sRevision), L"TortoiseGit", MB_ICONERROR);
 		}
 		break;
 	case eCmd_PrepareDiff_Compare:
@@ -906,7 +906,7 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 			CGitHash currentHash;
 			if (g_Git.GetHash(currentHash, m_sRevision))
 			{
-				MessageBox(g_Git.GetGitLastErr(_T("Could not get SHA-1 for ") + m_sRevision), _T("TortoiseGit"), MB_ICONERROR);
+				MessageBox(g_Git.GetGitLastErr(L"Could not get SHA-1 for " + m_sRevision), L"TortoiseGit", MB_ICONERROR);
 				return;
 			}
 			CGitDiff::Diff(&selectedFile, &savedFile, currentHash, m_sMarkForDiffVersion);
@@ -973,7 +973,7 @@ void CRepositoryBrowser::SaveDividerPosition()
 {
 	RECT rc;
 	GetDlgItem(IDC_REPOTREE)->GetClientRect(&rc);
-	CRegDWORD xPos(_T("Software\\TortoiseGit\\TortoiseProc\\ResizableState\\RepobrowserDivider"));
+	CRegDWORD xPos(L"Software\\TortoiseGit\\TortoiseProc\\ResizableState\\RepobrowserDivider");
 	xPos = rc.right - rc.left;
 }
 
@@ -1241,7 +1241,7 @@ void CRepositoryBrowser::OpenFile(const CString path, eOpenType mode, bool isSub
 		return;
 	}
 
-	file.Format(_T("%s%s_%s%s"), (LPCTSTR)temppath, (LPCTSTR)gitPath.GetBaseFilename(), (LPCTSTR)hash.ToString().Left(g_Git.GetShortHASHLength()), (LPCTSTR)gitPath.GetFileExtension());
+	file.Format(L"%s%s_%s%s", (LPCTSTR)temppath, (LPCTSTR)gitPath.GetBaseFilename(), (LPCTSTR)hash.ToString().Left(g_Git.GetShortHASHLength()), (LPCTSTR)gitPath.GetFileExtension());
 
 	if (isSubmodule)
 	{
@@ -1255,22 +1255,22 @@ void CRepositoryBrowser::OpenFile(const CString path, eOpenType mode, bool isSub
 			{
 				CString out;
 				out.Format(IDS_REPOBROWSEASKSUBMODULEUPDATE, (LPCTSTR)itemHash.ToString(), (LPCTSTR)gitPath.GetGitPathString());
-				if (MessageBox(out, _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION) != IDYES)
+				if (MessageBox(out, L"TortoiseGit", MB_YESNO | MB_ICONQUESTION) != IDYES)
 					return;
 
 				CString sCmd;
-				sCmd.Format(_T("/command:subupdate /bkpath:\"%s\" /selectedpath:\"%s\""), (LPCTSTR)g_Git.m_CurrentDir, (LPCTSTR)gitPath.GetGitPathString());
+				sCmd.Format(L"/command:subupdate /bkpath:\"%s\" /selectedpath:\"%s\"", (LPCTSTR)g_Git.m_CurrentDir, (LPCTSTR)gitPath.GetGitPathString());
 				CAppUtils::RunTortoiseGitProc(sCmd);
 				return;
 			}
 
 			CString cmd;
-			cmd.Format(_T("/command:repobrowser /path:\"%s\" /rev:%s"), (LPCTSTR)g_Git.CombinePath(path), (LPCTSTR)itemHash.ToString());
+			cmd.Format(L"/command:repobrowser /path:\"%s\" /rev:%s", (LPCTSTR)g_Git.CombinePath(path), (LPCTSTR)itemHash.ToString());
 			CAppUtils::RunTortoiseGitProc(cmd);
 			return;
 		}
 
-		file += _T(".txt");
+		file += L".txt";
 		CFile submoduleCommit(file, CFile::modeCreate | CFile::modeWrite);
 		CStringA commitInfo = "Subproject commit " + CStringA(itemHash.ToString());
 		submoduleCommit.Write(commitInfo, commitInfo.GetLength());
@@ -1279,7 +1279,7 @@ void CRepositoryBrowser::OpenFile(const CString path, eOpenType mode, bool isSub
 	{
 		CString out;
 		out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)gitPath.GetGitPathString(), (LPCTSTR)m_sRevision, (LPCTSTR)file);
-		MessageBox(g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), _T("TortoiseGit"), MB_ICONERROR);
+		MessageBox(g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), L"TortoiseGit", MB_ICONERROR);
 		return;
 	}
 
@@ -1299,10 +1299,10 @@ void CRepositoryBrowser::OpenFile(const CString path, eOpenType mode, bool isSub
 bool CRepositoryBrowser::RevertItemToVersion(const CString &path)
 {
 	CString cmd, out;
-	cmd.Format(_T("git.exe checkout %s -- \"%s\""), (LPCTSTR)m_sRevision, (LPCTSTR)path);
+	cmd.Format(L"git.exe checkout %s -- \"%s\"", (LPCTSTR)m_sRevision, (LPCTSTR)path);
 	if (g_Git.Run(cmd, &out, CP_UTF8))
 	{
-		if (MessageBox(out, _T("TortoiseGit"), MB_ICONEXCLAMATION | MB_OKCANCEL) == IDCANCEL)
+		if (MessageBox(out, L"TortoiseGit", MB_ICONEXCLAMATION | MB_OKCANCEL) == IDCANCEL)
 			return false;
 	}
 
@@ -1318,7 +1318,7 @@ void CRepositoryBrowser::CopyHashToClipboard(TShadowFilesTreeList &selectedLeafs
 		for (size_t i = 0; i < selectedLeafs.size(); ++i)
 		{
 			if (!first)
-				sClipdata += _T("\r\n");
+				sClipdata += L"\r\n";
 			sClipdata += selectedLeafs[i]->m_hash;
 			first = false;
 		}

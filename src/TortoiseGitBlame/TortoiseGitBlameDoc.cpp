@@ -70,8 +70,8 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName)
 	CCmdLineParser parser(AfxGetApp()->m_lpCmdLine);
 	if (m_bFirstStartup)
 	{
-		m_Rev=parser.GetVal(_T("rev"));
-		m_lLine = (int)parser.GetLongVal(_T("line"));
+		m_Rev = parser.GetVal(L"rev");
+		m_lLine = (int)parser.GetLongVal(L"line");
 		m_bFirstStartup = false;
 	}
 	else
@@ -86,10 +86,10 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName)
 BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 {
 	if(Rev.IsEmpty())
-		Rev = _T("HEAD");
+		Rev = L"HEAD";
 
 	// enable blame for files which do not exist in current working tree
-	if (!PathFileExists(lpszPathName) && Rev != _T("HEAD"))
+	if (!PathFileExists(lpszPathName) && Rev != L"HEAD")
 	{
 		if (!CDocument::OnOpenDocument(GetTempFile()))
 			return FALSE;
@@ -107,7 +107,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 	// (SDI documents will reuse this document)
 	if(!g_Git.CheckMsysGitDir())
 	{
-		CCommonAppUtils::RunTortoiseGitProc(_T(" /command:settings"));
+		CCommonAppUtils::RunTortoiseGitProc(L" /command:settings");
 		return FALSE;
 	}
 	CString topdir;
@@ -115,7 +115,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 	{
 		CString temp;
 		temp.Format(IDS_CANNOTBLAMENOGIT, (LPCTSTR)m_CurrentFileName);
-		MessageBox(nullptr, temp, _T("TortoiseGitBlame"), MB_OK | MB_ICONERROR);
+		MessageBox(nullptr, temp, L"TortoiseGitBlame", MB_OK | MB_ICONERROR);
 		return FALSE;
 	}
 	else
@@ -124,8 +124,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 		sOrigCWD = g_Git.m_CurrentDir = topdir;
 
 		CString PathName = m_CurrentFileName;
-		if(topdir[topdir.GetLength()-1] == _T('\\') ||
-			topdir[topdir.GetLength()-1] == _T('/'))
+		if (topdir[topdir.GetLength() - 1] == L'\\' || topdir[topdir.GetLength() - 1] == L'/')
 			PathName=PathName.Right(PathName.GetLength()-g_Git.m_CurrentDir.GetLength());
 		else
 			PathName=PathName.Right(PathName.GetLength()-g_Git.m_CurrentDir.GetLength()-1);
@@ -139,18 +138,18 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 		try
 		{
 			// make sure all config files are read in order to check that none contains an error
-			g_Git.GetConfigValue(_T("doesnot.exist"));
+			g_Git.GetConfigValue(L"doesnot.exist");
 		}
 		catch (char * libgiterr)
 		{
-			MessageBox(nullptr, CString(libgiterr), _T("TortoiseGitBlame"), MB_ICONERROR);
+			MessageBox(nullptr, CString(libgiterr), L"TortoiseGitBlame", MB_ICONERROR);
 			return FALSE;
 		}
 
 		CString cmd, option;
-		int dwDetectMovedOrCopiedLines = theApp.GetInt(_T("DetectMovedOrCopiedLines"), BLAME_DETECT_MOVED_OR_COPIED_LINES_DISABLED);
-		int dwDetectMovedOrCopiedLinesNumCharactersWithinFile = theApp.GetInt(_T("DetectMovedOrCopiedLinesNumCharactersWithinFile"), BLAME_DETECT_MOVED_OR_COPIED_LINES_NUM_CHARACTERS_WITHIN_FILE_DEFAULT);
-		int dwDetectMovedOrCopiedLinesNumCharactersFromFiles = theApp.GetInt(_T("DetectMovedOrCopiedLinesNumCharactersFromFiles"), BLAME_DETECT_MOVED_OR_COPIED_LINES_NUM_CHARACTERS_FROM_FILES_DEFAULT);
+		int dwDetectMovedOrCopiedLines = theApp.GetInt(L"DetectMovedOrCopiedLines", BLAME_DETECT_MOVED_OR_COPIED_LINES_DISABLED);
+		int dwDetectMovedOrCopiedLinesNumCharactersWithinFile = theApp.GetInt(L"DetectMovedOrCopiedLinesNumCharactersWithinFile", BLAME_DETECT_MOVED_OR_COPIED_LINES_NUM_CHARACTERS_WITHIN_FILE_DEFAULT);
+		int dwDetectMovedOrCopiedLinesNumCharactersFromFiles = theApp.GetInt(L"DetectMovedOrCopiedLinesNumCharactersFromFiles", BLAME_DETECT_MOVED_OR_COPIED_LINES_NUM_CHARACTERS_FROM_FILES_DEFAULT);
 		switch(dwDetectMovedOrCopiedLines)
 		{
 		default:
@@ -158,23 +157,23 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 			option.Empty();
 			break;
 		case BLAME_DETECT_MOVED_OR_COPIED_LINES_WITHIN_FILE:
-			option.Format(_T("-M%d"), dwDetectMovedOrCopiedLinesNumCharactersWithinFile);
+			option.Format(L"-M%d", dwDetectMovedOrCopiedLinesNumCharactersWithinFile);
 			break;
 		case BLAME_DETECT_MOVED_OR_COPIED_LINES_FROM_MODIFIED_FILES:
-			option.Format(_T("-C%d"), dwDetectMovedOrCopiedLinesNumCharactersFromFiles);
+			option.Format(L"-C%d", dwDetectMovedOrCopiedLinesNumCharactersFromFiles);
 			break;
 		case BLAME_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES_AT_FILE_CREATION:
-			option.Format(_T("-C -C%d"), dwDetectMovedOrCopiedLinesNumCharactersFromFiles);
+			option.Format(L"-C -C%d", dwDetectMovedOrCopiedLinesNumCharactersFromFiles);
 			break;
 		case BLAME_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES:
-			option.Format(_T("-C -C -C%d"), dwDetectMovedOrCopiedLinesNumCharactersFromFiles);
+			option.Format(L"-C -C -C%d", dwDetectMovedOrCopiedLinesNumCharactersFromFiles);
 			break;
 		}
 
-		if (theApp.GetInt(_T("IgnoreWhitespace"), 0) == 1)
-			option += _T(" -w");
+		if (theApp.GetInt(L"IgnoreWhitespace", 0) == 1)
+			option += L" -w";
 
-		cmd.Format(_T("git.exe blame -p %s %s -- \"%s\""), (LPCTSTR)option, (LPCTSTR)Rev, (LPCTSTR)path.GetGitPathString());
+		cmd.Format(L"git.exe blame -p %s %s -- \"%s\"", (LPCTSTR)option, (LPCTSTR)Rev, (LPCTSTR)path.GetGitPathString());
 		m_BlameData.clear();
 		BYTE_VECTOR err;
 		if(g_Git.Run(cmd, &m_BlameData, &err))
@@ -184,7 +183,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 				CGit::StringAppend(&str, &m_BlameData[0], CP_UTF8);
 			if (!err.empty())
 				CGit::StringAppend(&str, &err[0], CP_UTF8);
-			MessageBox(nullptr, CString(MAKEINTRESOURCE(IDS_BLAMEERROR)) + _T("\n\n") + str, _T("TortoiseGitBlame"), MB_OK | MB_ICONERROR);
+			MessageBox(nullptr, CString(MAKEINTRESOURCE(IDS_BLAMEERROR)) + L"\n\n" + str, L"TortoiseGitBlame", MB_OK | MB_ICONERROR);
 
 			return FALSE;
 		}
@@ -198,13 +197,13 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 
 		m_TempFileName=GetTempFile();
 
-		cmd.Format(_T("git.exe cat-file blob %s:\"%s\""), (LPCTSTR)Rev, (LPCTSTR)path.GetGitPathString());
+		cmd.Format(L"git.exe cat-file blob %s:\"%s\"", (LPCTSTR)Rev, (LPCTSTR)path.GetGitPathString());
 
 		if(g_Git.RunLogFile(cmd, m_TempFileName))
 		{
 			CString str;
 			str.Format(IDS_CHECKOUTFAILED, (LPCTSTR)path.GetGitPathString());
-			MessageBox(nullptr, CString(MAKEINTRESOURCE(IDS_BLAMEERROR)) + _T("\n\n") + str, _T("TortoiseGitBlame"), MB_OK | MB_ICONERROR);
+			MessageBox(nullptr, CString(MAKEINTRESOURCE(IDS_BLAMEERROR)) + L"\n\n" + str, L"TortoiseGitBlame", MB_OK | MB_ICONERROR);
 			return FALSE;
 		}
 #endif
@@ -221,10 +220,10 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 		}
 		pView->ParseBlame();
 
-		BOOL bShowCompleteLog = (theApp.GetInt(_T("ShowCompleteLog"), 1) == 1);
+		BOOL bShowCompleteLog = (theApp.GetInt(L"ShowCompleteLog", 1) == 1);
 		if (bShowCompleteLog && BlameIsLimitedToOneFilename(dwDetectMovedOrCopiedLines))
 		{
-			if (GetMainFrame()->m_wndOutput.LoadHistory(path.GetGitPathString(), m_Rev, (theApp.GetInt(_T("FollowRenames"), 0) == 1)))
+			if (GetMainFrame()->m_wndOutput.LoadHistory(path.GetGitPathString(), m_Rev, (theApp.GetInt(L"FollowRenames", 0) == 1)))
 				return FALSE;
 		}
 		else
@@ -248,7 +247,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 
 void CTortoiseGitBlameDoc::SetPathName(LPCTSTR lpszPathName, BOOL bAddToMRU)
 {
-	CDocument::SetPathName(lpszPathName, bAddToMRU && (m_Rev == _T("HEAD")));
+	CDocument::SetPathName(lpszPathName, bAddToMRU && (m_Rev == L"HEAD"));
 
 	this->SetTitle(CString(lpszPathName) + L':' + m_Rev);
 }

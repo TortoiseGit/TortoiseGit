@@ -51,7 +51,7 @@ CString GetCacheID()
 			auto data = std::make_unique<BYTE[]>(len);
 			GetTokenInformation(token, TokenStatistics, data.get(), len, &len);
 			LUID uid = ((PTOKEN_STATISTICS)data.get())->AuthenticationId;
-			t.Format(_T("-%08x%08x"), uid.HighPart, uid.LowPart);
+			t.Format(L"-%08x%08x", uid.HighPart, uid.LowPart);
 		}
 	}
 	return t;
@@ -104,7 +104,7 @@ bool SendCacheCommand(BYTE command, const WCHAR* path /* = nullptr */)
 		TGITCacheCommand cmd = { 0 };
 		cmd.command = command;
 		if (path)
-			_tcsncpy_s(cmd.path, path, _TRUNCATE);
+			wcsncpy_s(cmd.path, path, _TRUNCATE);
 
 		int retrycount = 2;
 		BOOL fSuccess = FALSE;

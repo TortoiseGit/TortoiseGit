@@ -225,7 +225,7 @@ void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & Ha
 		}
 		else
 		{
-			MessageBox(nullptr, err, _T("TortoiseGit"), MB_ICONERROR);
+			MessageBox(nullptr, err, L"TortoiseGit", MB_ICONERROR);
 			authors.emplace_back();
 			dates.emplace_back();
 		}

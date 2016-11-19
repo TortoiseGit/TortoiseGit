@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015 - TortoiseGit
+// Copyright (C) 2015-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,7 +27,7 @@ CAutoTempDir::CAutoTempDir()
 	GetTempPath(MAX_PATH, temppath.GetBufferSetLength(MAX_PATH));
 	TCHAR szTempName[MAX_PATH] = { 0 };
 	temppath.ReleaseBuffer();
-	GetTempFileName(temppath, _T("tgit-tests"), 0, szTempName);
+	GetTempFileName(temppath, L"tgit-tests", 0, szTempName);
 	DeleteFile(szTempName);
 	CreateDirectory(szTempName, nullptr);
 	tempdir = szTempName;
@@ -36,10 +36,10 @@ CAutoTempDir::CAutoTempDir()
 static void DeleteDirectoryRecursive(CString dir)
 {
 	WIN32_FIND_DATA ffd;
-	HANDLE hp = FindFirstFile(dir + _T("\\*"), &ffd);
+	HANDLE hp = FindFirstFile(dir + L"\\*", &ffd);
 	do
 	{
-		if (!_tcscmp(ffd.cFileName, _T(".")) || !_tcscmp(ffd.cFileName, _T("..")))
+		if (!wcscmp(ffd.cFileName, L".") || !wcscmp(ffd.cFileName, L".."))
 			continue;
 		if ((ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY)
 		{

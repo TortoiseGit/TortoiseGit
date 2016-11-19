@@ -47,7 +47,7 @@ LRESULT CAboutDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
             TCHAR verbuf[1024] = {0};
             TCHAR maskbuf[1024] = {0};
             ::LoadString (hResource, IDS_VERSION, maskbuf, _countof(maskbuf));
-            _stprintf_s(verbuf, maskbuf, TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD);
+            swprintf_s(verbuf, maskbuf, TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD);
             SetDlgItemText(hwndDlg, IDC_ABOUTVERSION, verbuf);
         }
         return TRUE;

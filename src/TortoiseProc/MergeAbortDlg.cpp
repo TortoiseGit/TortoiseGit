@@ -63,7 +63,7 @@ BOOL CMergeAbortDlg::OnInitDialog()
 	AdjustControlSize(IDC_RADIO_RESET_MIXED);
 	AdjustControlSize(IDC_RADIO_RESET_HARD);
 
-	EnableSaveRestore(_T("MergeAbortDlg"));
+	EnableSaveRestore(L"MergeAbortDlg");
 
 	this->CheckRadioButton(IDC_RADIO_RESET_MIXED, IDC_RADIO_RESET_HARD, IDC_RADIO_RESET_MIXED + m_ResetType);
 

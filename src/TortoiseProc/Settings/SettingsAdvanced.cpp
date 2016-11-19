@@ -221,20 +221,20 @@ BOOL CSettingsAdvanced::OnInitDialog()
 		{
 		case SettingTypeBoolean:
 			{
-				CRegDWORD s(_T("Software\\TortoiseGit\\") + settings[i].sName, settings[i].def.b);
-				m_ListCtrl.SetItemText(i, 0, DWORD(s) ?	_T("true") : _T("false"));
+				CRegDWORD s(L"Software\\TortoiseGit\\" + settings[i].sName, settings[i].def.b);
+				m_ListCtrl.SetItemText(i, 0, DWORD(s) ?	L"true" : L"false");
 			}
 			break;
 		case SettingTypeNumber:
 			{
-				CRegDWORD s(_T("Software\\TortoiseGit\\") + settings[i].sName, settings[i].def.l);
-				temp.Format(_T("%ld"), (DWORD)s);
+				CRegDWORD s(L"Software\\TortoiseGit\\" + settings[i].sName, settings[i].def.l);
+				temp.Format(L"%ld", (DWORD)s);
 				m_ListCtrl.SetItemText(i, 0, temp);
 			}
 			break;
 		case SettingTypeString:
 			{
-				CRegString s(_T("Software\\TortoiseGit\\") + settings[i].sName, settings[i].def.s);
+				CRegString s(L"Software\\TortoiseGit\\" + settings[i].sName, settings[i].def.s);
 				m_ListCtrl.SetItemText(i, 0, CString(s));
 			}
 		}
@@ -264,12 +264,12 @@ BOOL CSettingsAdvanced::OnApply()
 		{
 		case SettingTypeBoolean:
 			{
-				CRegDWORD s(_T("Software\\TortoiseGit\\") + settings[i].sName, settings[i].def.b);
+				CRegDWORD s(L"Software\\TortoiseGit\\" + settings[i].sName, settings[i].def.b);
 				if (sValue.IsEmpty())
 					s.removeValue();
 				else
 				{
-					DWORD newValue = sValue.Compare(_T("true")) == 0;
+					DWORD newValue = sValue.Compare(L"true") == 0;
 					if (DWORD(s) != newValue)
 						s = newValue;
 				}
@@ -277,14 +277,14 @@ BOOL CSettingsAdvanced::OnApply()
 			break;
 		case SettingTypeNumber:
 			{
-				CRegDWORD s(_T("Software\\TortoiseGit\\") + settings[i].sName, settings[i].def.l);
-				if (DWORD(_tstol(sValue)) != DWORD(s))
-					s = _tstol(sValue);
+				CRegDWORD s(L"Software\\TortoiseGit\\" + settings[i].sName, settings[i].def.l);
+				if (DWORD(_wtol(sValue)) != DWORD(s))
+					s = _wtol(sValue);
 			}
 			break;
 		case SettingTypeString:
 			{
-				CRegString s(_T("Software\\TortoiseGit\\") + settings[i].sName, settings[i].def.s);
+				CRegString s(L"Software\\TortoiseGit\\" + settings[i].sName, settings[i].def.s);
 				if (sValue.Compare(CString(s)))
 					s = sValue;
 			}
@@ -314,8 +314,8 @@ void CSettingsAdvanced::OnLvnEndlabeledit(NMHDR *pNMHDR, LRESULT *pResult)
 	case SettingTypeBoolean:
 		{
 			if ((pDispInfo->item.pszText[0] == 0) ||
-				(_tcscmp(pDispInfo->item.pszText, _T("true")) == 0) ||
-				(_tcscmp(pDispInfo->item.pszText, _T("false")) == 0))
+				(wcscmp(pDispInfo->item.pszText, L"true") == 0) ||
+				(wcscmp(pDispInfo->item.pszText, L"false") == 0))
 			{
 				allowEdit = true;
 			}

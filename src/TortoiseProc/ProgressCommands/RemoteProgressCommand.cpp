@@ -99,19 +99,19 @@ RemoteProgressCommand::RefUpdateNotificationData::RefUpdateNotificationData(cons
 	m_NewHash = newOid->id;
 	m_OldHash = oldOid->id;
 	sActionColumnText.LoadString(IDS_GITACTION_UPDATE_REF);
-	sPathColumnText.Format(_T("%s\t %s -> %s (%s)"), (LPCTSTR)str, (LPCTSTR)m_OldHash.ToString().Left(g_Git.GetShortHASHLength()), (LPCTSTR)m_NewHash.ToString().Left(g_Git.GetShortHASHLength()), (LPCTSTR)change);
+	sPathColumnText.Format(L"%s\t %s -> %s (%s)", (LPCTSTR)str, (LPCTSTR)m_OldHash.ToString().Left(g_Git.GetShortHASHLength()), (LPCTSTR)m_NewHash.ToString().Left(g_Git.GetShortHASHLength()), (LPCTSTR)change);
 }
 
 void RemoteProgressCommand::RefUpdateNotificationData::GetContextMenu(CIconMenu& popup, CGitProgressList::ContextMenuActionList& actions)
 {
 	actions.push_back([&]()
 	{
-		CString cmd = _T("/command:log");
+		CString cmd = L"/command:log";
 		cmd += L" /path:\"" + g_Git.m_CurrentDir + L'"';
 		if (!m_OldHash.IsEmpty())
-			cmd += _T(" /startrev:") + m_OldHash.ToString();
+			cmd += L" /startrev:" + m_OldHash.ToString();
 		if (!m_NewHash.IsEmpty())
-			cmd += _T(" /endrev:") + m_NewHash.ToString();
+			cmd += L" /endrev:" + m_NewHash.ToString();
 		CAppUtils::RunTortoiseGitProc(cmd);
 	});
 	popup.AppendMenuIcon(actions.size(), IDS_MENULOG, IDI_LOG);

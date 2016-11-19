@@ -81,9 +81,9 @@ void CStashSaveDlg::OnBnClickedOk()
 
 	if (m_bIncludeUntracked)
 	{
-		if (CMessageBox::ShowCheck(GetSafeHwnd(), IDS_STASHSAVE_INCLUDEUNTRACKED, IDS_APPNAME, 2, IDI_WARNING, IDS_CONTINUEBUTTON, IDS_ABORTBUTTON, NULL, _T("NoStashIncludeUntrackedWarning"), IDS_PROC_NOTSHOWAGAINCONTINUE) == 2)
+		if (CMessageBox::ShowCheck(GetSafeHwnd(), IDS_STASHSAVE_INCLUDEUNTRACKED, IDS_APPNAME, 2, IDI_WARNING, IDS_CONTINUEBUTTON, IDS_ABORTBUTTON, NULL, L"NoStashIncludeUntrackedWarning", IDS_PROC_NOTSHOWAGAINCONTINUE) == 2)
 		{
-			CMessageBox::RemoveRegistryKey(_T("NoStashIncludeUntrackedWarning")); // only store answer if it is "Continue"
+			CMessageBox::RemoveRegistryKey(L"NoStashIncludeUntrackedWarning"); // only store answer if it is "Continue"
 			return;
 		}
 	}

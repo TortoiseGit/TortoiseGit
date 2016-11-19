@@ -67,9 +67,9 @@ UINT CALLBACK PropPageCallbackProc ( HWND /*hwnd*/, UINT uMsg, LPPROPSHEETPAGE p
 }
 
 // *********************** CGitPropertyPage *************************
-const UINT CGitPropertyPage::m_UpdateLastCommit = RegisterWindowMessage(_T("TORTOISEGIT_PROP_UPDATELASTCOMMIT"));
+const UINT CGitPropertyPage::m_UpdateLastCommit = RegisterWindowMessage(L"TORTOISEGIT_PROP_UPDATELASTCOMMIT");
 
-CGitPropertyPage::CGitPropertyPage(const std::vector<tstring>& newFilenames)
+CGitPropertyPage::CGitPropertyPage(const std::vector<std::wstring>& newFilenames)
 	:filenames(newFilenames)
 	,m_bChanged(false)
 	, m_hwnd(nullptr)
@@ -111,7 +111,7 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 						break;
 
 					int stripLength = projectTopDir.GetLength();
-					if (projectTopDir[stripLength - 1] != _T('\\'))
+					if (projectTopDir[stripLength - 1] != L'\\')
 						++stripLength;
 
 					CAutoRepository repository(CUnicodeUtils::GetUTF8(projectTopDir));
@@ -243,8 +243,8 @@ void CGitPropertyPage::PageProcOnCommand(WPARAM wParam)
 	{
 	case IDC_SHOWLOG:
 		{
-			tstring gitCmd = _T(" /command:");
-			gitCmd += _T("log /path:\"");
+			tstring gitCmd = L" /command:";
+			gitCmd += L"log /path:\"";
 			gitCmd += filenames.front().c_str();
 			gitCmd += L'"';
 			RunCommand(gitCmd);
@@ -257,8 +257,8 @@ void CGitPropertyPage::PageProcOnCommand(WPARAM wParam)
 			if(!path.HasAdminDir(&projectTopDir))
 				return;
 
-			tstring gitCmd = _T(" /command:");
-			gitCmd += _T("settings /path:\"");
+			tstring gitCmd = L" /command:";
+			gitCmd += L"settings /path:\"";
 			gitCmd += projectTopDir;
 			gitCmd += L'"';
 			RunCommand(gitCmd);
@@ -292,14 +292,14 @@ void CGitPropertyPage::PageProcOnCommand(WPARAM wParam)
 
 void CGitPropertyPage::RunCommand(const tstring& command)
 {
-	tstring tortoiseProcPath = CPathUtils::GetAppDirectory(g_hmodThisDll) + _T("TortoiseGitProc.exe");
+	tstring tortoiseProcPath = CPathUtils::GetAppDirectory(g_hmodThisDll) + L"TortoiseGitProc.exe";
 	if (CCreateProcessHelper::CreateProcessDetached(tortoiseProcPath.c_str(), command.c_str()))
 	{
 		// process started - exit
 		return;
 	}
 
-	MessageBox(nullptr, CFormatMessageWrapper(), _T("TortoiseGitProc launch failed"), MB_OK | MB_ICONERROR);
+	MessageBox(nullptr, CFormatMessageWrapper(), L"TortoiseGitProc launch failed", MB_OK | MB_ICONERROR);
 }
 
 void CGitPropertyPage::Time64ToTimeString(__time64_t time, TCHAR * buf, size_t buflen) const
@@ -332,9 +332,9 @@ void CGitPropertyPage::Time64ToTimeString(__time64_t time, TCHAR * buf, size_t b
 			GetDateFormat(locale, DATE_LONGDATE, &systime, nullptr, datebuf, MAX_STRING_LENGTH);
 		GetTimeFormat(locale, 0, &systime, nullptr, timebuf, MAX_STRING_LENGTH);
 		*buf = '\0';
-		_tcsncat_s(buf, buflen, datebuf, MAX_STRING_LENGTH-1);
-		_tcsncat_s(buf, buflen, _T(" "), MAX_STRING_LENGTH-1);
-		_tcsncat_s(buf, buflen, timebuf, MAX_STRING_LENGTH-1);
+		wcsncat_s(buf, buflen, datebuf, MAX_STRING_LENGTH - 1);
+		wcsncat_s(buf, buflen, L" ", MAX_STRING_LENGTH - 1);
+		wcsncat_s(buf, buflen, timebuf, MAX_STRING_LENGTH - 1);
 	}
 }
 
@@ -456,10 +456,10 @@ void CGitPropertyPage::DisplayCommit(const git_commit* commit, UINT hashLabel, U
 {
 	if (!commit)
 	{
-		SetDlgItemText(m_hwnd, hashLabel, _T(""));
-		SetDlgItemText(m_hwnd, subjectLabel, _T(""));
-		SetDlgItemText(m_hwnd, authorLabel, _T(""));
-		SetDlgItemText(m_hwnd, dateLabel, _T(""));
+		SetDlgItemText(m_hwnd, hashLabel, L"");
+		SetDlgItemText(m_hwnd, subjectLabel, L"");
+		SetDlgItemText(m_hwnd, authorLabel, L"");
+		SetDlgItemText(m_hwnd, dateLabel, L"");
 		return;
 	}
 
@@ -498,7 +498,7 @@ int CGitPropertyPage::LogThread()
 		return 0;
 
 	int stripLength = ProjectTopDir.GetLength();
-	if (ProjectTopDir[stripLength - 1] != _T('\\'))
+	if (ProjectTopDir[stripLength - 1] != L'\\')
 		++stripLength;
 
 	CTGitPath relatepath;
@@ -586,12 +586,12 @@ void CGitPropertyPage::InitWorkfileView()
 		}
 	}
 	else
-		branch = _T("detached HEAD");
+		branch = L"detached HEAD";
 
 	if (autocrlf.Trim().IsEmpty())
-		autocrlf = _T("false");
+		autocrlf = L"false";
 	if (safecrlf.Trim().IsEmpty())
-		safecrlf = _T("false");
+		safecrlf = L"false";
 
 	SetDlgItemText(m_hwnd,IDC_CONFIG_USERNAME,username.Trim());
 	SetDlgItemText(m_hwnd,IDC_CONFIG_USEREMAIL,useremail.Trim());
@@ -609,7 +609,7 @@ void CGitPropertyPage::InitWorkfileView()
 
 	{
 		int stripLength = ProjectTopDir.GetLength();
-		if (ProjectTopDir[stripLength - 1] != _T('\\'))
+		if (ProjectTopDir[stripLength - 1] != L'\\')
 			++stripLength;
 
 		bool allAreFiles = true;
@@ -772,7 +772,7 @@ STDMETHODIMP CShellExt::AddPages_Wrap(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM l
 	psp.hInstance = g_hResInst;
 	psp.pszTemplate = MAKEINTRESOURCE(IDD_PROPPAGE);
 	psp.pszIcon = MAKEINTRESOURCE(IDI_APPSMALL);
-	psp.pszTitle = _T("Git");
+	psp.pszTitle = L"Git";
 	psp.pfnDlgProc = (DLGPROC) PageProc;
 	psp.lParam = (LPARAM) sheetpage;
 	psp.pfnCallback = PropPageCallbackProc;

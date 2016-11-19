@@ -29,7 +29,7 @@
 
 // CCommitIsOnRefsDlg dialog
 
-UINT CCommitIsOnRefsDlg::WM_GETTINGREFSFINISHED = RegisterWindowMessage(_T("TORTOISEGIT_CommitIsOnRefs_GETTINGREFSFINISHED"));
+UINT CCommitIsOnRefsDlg::WM_GETTINGREFSFINISHED = RegisterWindowMessage(L"TORTOISEGIT_CommitIsOnRefs_GETTINGREFSFINISHED");
 
 IMPLEMENT_DYNAMIC(CCommitIsOnRefsDlg, CResizableStandAloneDialog)
 
@@ -367,7 +367,7 @@ void CCommitIsOnRefsDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		case eCmd_DiffWC:
 		{
 			CString sCmd;
-			sCmd.Format(_T("/command:showcompare /path:\"%s\" /revision1:%s /revision2:%s"), (LPCTSTR)g_Git.m_CurrentDir, (LPCTSTR)selectedRefs[0], (LPCTSTR)GitRev::GetWorkingCopy());
+			sCmd.Format(L"/command:showcompare /path:\"%s\" /revision1:%s /revision2:%s", (LPCTSTR)g_Git.m_CurrentDir, (LPCTSTR)selectedRefs[0], (LPCTSTR)GitRev::GetWorkingCopy());
 			if (!!(GetAsyncKeyState(VK_SHIFT) & 0x8000))
 				sCmd += L" /alternative";
 
@@ -583,7 +583,7 @@ void CCommitIsOnRefsDlg::CopySelectionToClipboard()
 	while ((index = m_cRefList.GetNextSelectedItem(pos)) >= 0)
 	{
 		sTextForClipboard += m_cRefList.GetItemText(index, 0);
-		sTextForClipboard += _T("\r\n");
+		sTextForClipboard += L"\r\n";
 	}
 	CStringUtils::WriteAsciiStringToClipboard(sTextForClipboard);
 }

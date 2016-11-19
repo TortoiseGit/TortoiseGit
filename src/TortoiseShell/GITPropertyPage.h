@@ -28,7 +28,7 @@
 class CGitPropertyPage
 {
 public:
-	CGitPropertyPage(const std::vector<tstring>& filenames);
+	CGitPropertyPage(const std::vector<std::wstring>& filenames);
 	virtual ~CGitPropertyPage();
 
 	/**
@@ -57,7 +57,7 @@ protected:
 	void RunCommand(const tstring& command);
 
 	HWND m_hwnd;
-	std::vector<tstring> filenames;
+	std::vector<std::wstring> filenames;
 	/**
 	 * Were executable, assumeValid or skip-worktree flags changes
 	 */

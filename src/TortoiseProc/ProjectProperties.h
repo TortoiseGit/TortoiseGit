@@ -21,26 +21,26 @@
 #include "TGitPath.h"
 #include <regex>
 
-#define BUGTRAQPROPNAME_LABEL             _T("bugtraq.label")
-#define BUGTRAQPROPNAME_MESSAGE           _T("bugtraq.message")
-#define BUGTRAQPROPNAME_NUMBER            _T("bugtraq.number")
-#define BUGTRAQPROPNAME_LOGREGEX		  _T("bugtraq.logregex")
-#define BUGTRAQPROPNAME_URL               _T("bugtraq.url")
-#define BUGTRAQPROPNAME_WARNIFNOISSUE     _T("bugtraq.warnifnoissue")
-#define BUGTRAQPROPNAME_APPEND		      _T("bugtraq.append")
-#define BUGTRAQPROPNAME_PROVIDERUUID      _T("bugtraq.provideruuid")
-#define BUGTRAQPROPNAME_PROVIDERUUID64    _T("bugtraq.provideruuid64")
-#define BUGTRAQPROPNAME_PROVIDERPARAMS    _T("bugtraq.providerparams")
+#define BUGTRAQPROPNAME_LABEL				L"bugtraq.label"
+#define BUGTRAQPROPNAME_MESSAGE				L"bugtraq.message"
+#define BUGTRAQPROPNAME_NUMBER				L"bugtraq.number"
+#define BUGTRAQPROPNAME_LOGREGEX			L"bugtraq.logregex"
+#define BUGTRAQPROPNAME_URL					L"bugtraq.url"
+#define BUGTRAQPROPNAME_WARNIFNOISSUE		L"bugtraq.warnifnoissue"
+#define BUGTRAQPROPNAME_APPEND				L"bugtraq.append"
+#define BUGTRAQPROPNAME_PROVIDERUUID		L"bugtraq.provideruuid"
+#define BUGTRAQPROPNAME_PROVIDERUUID64		L"bugtraq.provideruuid64"
+#define BUGTRAQPROPNAME_PROVIDERPARAMS		L"bugtraq.providerparams"
 
-#define PROJECTPROPNAME_LOGWIDTHLINE	  _T("tgit.logwidthmarker")
-#define PROJECTPROPNAME_LOGMINSIZE		  _T("tgit.logminsize")
-#define PROJECTPROPNAME_LOGFILELISTLANG	  _T("tsvn.logfilelistenglish")
-#define PROJECTPROPNAME_PROJECTLANGUAGE   _T("tgit.projectlanguage")
-#define PROJECTPROPNAME_WARNNOSIGNEDOFFBY _T("tgit.warnnosignedoffby")
-#define PROJECTPROPNAME_ICON              _T("tgit.icon")
+#define PROJECTPROPNAME_LOGWIDTHLINE		L"tgit.logwidthmarker"
+#define PROJECTPROPNAME_LOGMINSIZE			L"tgit.logminsize"
+#define PROJECTPROPNAME_LOGFILELISTLANG		L"tsvn.logfilelistenglish"
+#define PROJECTPROPNAME_PROJECTLANGUAGE		L"tgit.projectlanguage"
+#define PROJECTPROPNAME_WARNNOSIGNEDOFFBY	L"tgit.warnnosignedoffby"
+#define PROJECTPROPNAME_ICON				L"tgit.icon"
 
-#define PROJECTPROPNAME_WEBVIEWER_REV     _T("webviewer.revision")
-#define PROJECTPROPNAME_WEBVIEWER_PATHREV _T("webviewer.pathrevision")
+#define PROJECTPROPNAME_WEBVIEWER_REV		L"webviewer.revision"
+#define PROJECTPROPNAME_WEBVIEWER_PATHREV	L"webviewer.pathrevision"
 
 /**
  * \ingroup TortoiseProc

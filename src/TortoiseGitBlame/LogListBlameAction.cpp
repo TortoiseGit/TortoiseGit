@@ -93,9 +93,9 @@ void CGitBlameLogList::ContextMenuAction(int cmd, int /*FirstSelect*/, int /*Las
 				GetParentHash(pRev, index, parentHash, parentFilenames);
 				for (size_t i = 0; i < parentFilenames.size(); ++i)
 				{
-					CString procCmd = _T("/path:\"") + pView->ResolveCommitFile(parentFilenames[i]) + _T("\" ");
-					procCmd += _T(" /command:blame");
-					procCmd += _T(" /endrev:") + parentHash.ToString();
+					CString procCmd = L"/path:\"" + pView->ResolveCommitFile(parentFilenames[i]) + L"\" ";
+					procCmd += L" /command:blame";
+					procCmd += L" /endrev:" + parentHash.ToString();
 
 					CCommonAppUtils::RunTortoiseGitProc(procCmd);
 				}
@@ -113,12 +113,12 @@ void CGitBlameLogList::ContextMenuAction(int cmd, int /*FirstSelect*/, int /*Las
 				GetParentHash(pRev, index, parentHash, parentFilenames);
 				for (size_t i = 0; i < parentFilenames.size(); ++i)
 				{
-					CString procCmd = _T("/path:\"") + pView->ResolveCommitFile(parentFilenames[i]) + _T("\" ");
-					procCmd += _T(" /command:diff");
-					procCmd += _T(" /startrev:") + pRev->m_CommitHash.ToString();
-					procCmd += _T(" /endrev:") + parentHash.ToString();
+					CString procCmd = L"/path:\"" + pView->ResolveCommitFile(parentFilenames[i]) + L"\" ";
+					procCmd += L" /command:diff";
+					procCmd += L" /startrev:" + pRev->m_CommitHash.ToString();
+					procCmd += L" /endrev:" + parentHash.ToString();
 					if ((cmd & 0xFFFF) == ID_GNUDIFF1)
-						procCmd += _T(" /unified");
+						procCmd += L" /unified";
 					if (!!(GetAsyncKeyState(VK_SHIFT) & 0x8000))
 						procCmd += L" /alternative";
 
@@ -137,16 +137,16 @@ void CGitBlameLogList::ContextMenuAction(int cmd, int /*FirstSelect*/, int /*Las
 			}
 			break;
 		case ID_EXPORT:
-			RunTortoiseGitProcWithCurrentRev(_T("export"), pRev);
+			RunTortoiseGitProcWithCurrentRev(L"export", pRev);
 			break;
 		case ID_CREATE_BRANCH:
-			RunTortoiseGitProcWithCurrentRev(_T("branch"), pRev);
+			RunTortoiseGitProcWithCurrentRev(L"branch", pRev);
 			break;
 		case ID_CREATE_TAG:
-			RunTortoiseGitProcWithCurrentRev(_T("tag"), pRev);
+			RunTortoiseGitProcWithCurrentRev(L"tag", pRev);
 			break;
 		case ID_SWITCHTOREV:
-			RunTortoiseGitProcWithCurrentRev(_T("switch"), pRev);
+			RunTortoiseGitProcWithCurrentRev(L"switch", pRev);
 			break;
 		case ID_LOG:
 			{
@@ -156,13 +156,13 @@ void CGitBlameLogList::ContextMenuAction(int cmd, int /*FirstSelect*/, int /*Las
 			}
 			break;
 		case ID_REPOBROWSE:
-			RunTortoiseGitProcWithCurrentRev(_T("repobrowser"), pRev, ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName());
+			RunTortoiseGitProcWithCurrentRev(L"repobrowser", pRev, ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName());
 			break;
 		case ID_SHOWBRANCHES:
-			RunTortoiseGitProcWithCurrentRev(_T("commitisonrefs"), pRev);
+			RunTortoiseGitProcWithCurrentRev(L"commitisonrefs", pRev);
 			break;
 		default:
-			//CMessageBox::Show(nullptr, _T("Have not implemented"), _T("TortoiseGit"), MB_OK);
+			//CMessageBox::Show(nullptr, L"Have not implemented", L"TortoiseGit", MB_OK);
 			break;
 	} // switch (cmd)
 }
@@ -196,7 +196,7 @@ void CGitBlameLogList::GetParentNumbers(GitRevLoglist* pRev, const std::vector<C
 	if (pRev->m_ParentHash.empty())
 	{
 		if (pRev->GetParentFromHash(pRev->m_CommitHash))
-			MessageBox(pRev->GetLastErr(), _T("TortoiseGit"), MB_ICONERROR);
+			MessageBox(pRev->GetLastErr(), L"TortoiseGit", MB_ICONERROR);
 	}
 
 	GIT_REV_LIST allParentHash;
@@ -231,7 +231,7 @@ void CGitBlameLogList::GetParentNumbers(GitRevLoglist* pRev, const std::vector<C
 	}
 	catch (const char* msg)
 	{
-		MessageBox(_T("Could not get files of parents.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
+		MessageBox(L"Could not get files of parents.\nlibgit reports:\n" + CString(msg), L"TortoiseGit", MB_ICONERROR);
 	}
 }
 
@@ -285,6 +285,6 @@ void CGitBlameLogList::GetParentHash(GitRevLoglist* pRev, int index, CGitHash& p
 	}
 	catch (const char* msg)
 	{
-		MessageBox(_T("Could not get files of parents.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
+		MessageBox(L"Could not get files of parents.\nlibgit reports:\n" + CString(msg), L"TortoiseGit", MB_ICONERROR);
 	}
 }

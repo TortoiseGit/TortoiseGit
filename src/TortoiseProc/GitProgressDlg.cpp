@@ -73,7 +73,7 @@ BOOL CGitProgressDlg::OnInitDialog()
 	// not elevated, this is a no-op.
 	CHANGEFILTERSTRUCT cfs = { sizeof(CHANGEFILTERSTRUCT) };
 	typedef BOOL STDAPICALLTYPE ChangeWindowMessageFilterExDFN(HWND hWnd, UINT message, DWORD action, PCHANGEFILTERSTRUCT pChangeFilterStruct);
-	CAutoLibrary hUser = AtlLoadSystemLibraryUsingFullPath(_T("user32.dll"));
+	CAutoLibrary hUser = AtlLoadSystemLibraryUsingFullPath(L"user32.dll");
 	if (hUser)
 	{
 		ChangeWindowMessageFilterExDFN *pfnChangeWindowMessageFilterEx = (ChangeWindowMessageFilterExDFN*)GetProcAddress(hUser, "ChangeWindowMessageFilterEx");
@@ -108,15 +108,15 @@ BOOL CGitProgressDlg::OnInitDialog()
 
 	if (hWndExplorer)
 		CenterWindow(CWnd::FromHandle(hWndExplorer));
-	EnableSaveRestore(_T("GITProgressDlg"));
+	EnableSaveRestore(L"GITProgressDlg");
 
 	m_background_brush.CreateSolidBrush(GetSysColor(COLOR_WINDOW));
 	m_ProgList.Init();
 
-	int autoClose = CRegDWORD(_T("Software\\TortoiseGit\\AutoCloseGitProgress"), 0);
+	int autoClose = CRegDWORD(L"Software\\TortoiseGit\\AutoCloseGitProgress", 0);
 	CCmdLineParser parser(AfxGetApp()->m_lpCmdLine);
-	if (parser.HasKey(_T("closeonend")))
-		autoClose = parser.GetLongVal(_T("closeonend"));
+	if (parser.HasKey(L"closeonend"))
+		autoClose = parser.GetLongVal(L"closeonend");
 	switch (autoClose)
 	{
 	case 1:

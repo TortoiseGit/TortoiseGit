@@ -24,7 +24,7 @@
 
 bool RebuildIconCacheCommand::Execute()
 {
-	bool bQuiet = !!parser.HasKey(_T("noquestion"));
+	bool bQuiet = !!parser.HasKey(L"noquestion");
 	if (CShellUpdater::RebuildIcons())
 	{
 		if (!bQuiet)

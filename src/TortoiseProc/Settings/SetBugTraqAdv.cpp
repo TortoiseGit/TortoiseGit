@@ -105,7 +105,7 @@ BOOL CSetBugTraqAdv::OnInitDialog()
 	AddAnchor(IDOK, BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
-	EnableSaveRestore(_T("SetBugTraqAdvDlg"));
+	EnableSaveRestore(L"SetBugTraqAdvDlg");
 	return TRUE;
 }
 

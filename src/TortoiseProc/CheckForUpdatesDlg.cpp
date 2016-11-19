@@ -38,7 +38,7 @@
 
 #pragma comment(lib, "msi.lib")
 
-#define SIGNATURE_FILE_ENDING _T(".rsa.asc")
+#define SIGNATURE_FILE_ENDING L".rsa.asc"
 
 #define WM_USER_DISPLAYSTATUS	(WM_USER + 1)
 #define WM_USER_ENDDOWNLOAD		(WM_USER + 2)
@@ -54,7 +54,7 @@ CCheckForUpdatesDlg::CCheckForUpdatesDlg(CWnd* pParent /*=nullptr*/)
 	, m_bThreadRunning(FALSE)
 	, m_updateDownloader(nullptr)
 {
-	m_sUpdateDownloadLink = _T("https://tortoisegit.org/download");
+	m_sUpdateDownloadLink = L"https://tortoisegit.org/download";
 }
 
 CCheckForUpdatesDlg::~CCheckForUpdatesDlg()
@@ -188,8 +188,8 @@ UINT CCheckForUpdatesDlg::CheckThread()
 
 	bool official = false;
 
-	CRegString checkurluser = CRegString(_T("Software\\TortoiseGit\\UpdateCheckURL"), _T(""));
-	CRegString checkurlmachine = CRegString(_T("Software\\TortoiseGit\\UpdateCheckURL"), _T(""), FALSE, HKEY_LOCAL_MACHINE);
+	CRegString checkurluser = CRegString(L"Software\\TortoiseGit\\UpdateCheckURL", L"");
+	CRegString checkurlmachine = CRegString(L"Software\\TortoiseGit\\UpdateCheckURL", L"", FALSE, HKEY_LOCAL_MACHINE);
 	CString sCheckURL = checkurluser;
 	if (sCheckURL.IsEmpty())
 	{
@@ -207,11 +207,11 @@ UINT CCheckForUpdatesDlg::CheckThread()
 #endif
 			if (checkPreview)
 			{
-				sCheckURL = _T("https://versioncheck.tortoisegit.org/version-preview.txt");
-				SetDlgItemText(IDC_SOURCE, _T("Using preview release channel"));
+				sCheckURL = L"https://versioncheck.tortoisegit.org/version-preview.txt";
+				SetDlgItemText(IDC_SOURCE, L"Using preview release channel");
 			}
 			else
-				sCheckURL = _T("https://versioncheck.tortoisegit.org/version.txt");
+				sCheckURL = L"https://versioncheck.tortoisegit.org/version.txt";
 		}
 	}
 
@@ -219,7 +219,7 @@ UINT CCheckForUpdatesDlg::CheckThread()
 		official = true;
 
 	if (!official)
-		SetDlgItemText(IDC_SOURCE, _T("Using (unofficial) release channel: ") + sCheckURL);
+		SetDlgItemText(IDC_SOURCE, L"Using (unofficial) release channel: " + sCheckURL);
 
 	CString errorText;
 	CVersioncheckParser versioncheck;
@@ -231,9 +231,9 @@ UINT CCheckForUpdatesDlg::CheckThread()
 		ret = m_updateDownloader->DownloadFile(sCheckURL + SIGNATURE_FILE_ENDING, signatureTempfile, false);
 		if (ret || VerifyIntegrity(tempfile, signatureTempfile, m_updateDownloader))
 		{
-			CString error = _T("Could not verify digital signature.");
+			CString error = L"Could not verify digital signature.";
 			if (ret)
-				error += _T("\r\nError: ") + GetWinINetError(ret) + _T(" (on ") + sCheckURL + SIGNATURE_FILE_ENDING + _T(")");
+				error += L"\r\nError: " + GetWinINetError(ret) + L" (on " + sCheckURL + SIGNATURE_FILE_ENDING + L")";
 			SetDlgItemText(IDC_CHECKRESULT, error);
 			DeleteUrlCacheEntry(sCheckURL);
 			DeleteUrlCacheEntry(sCheckURL + SIGNATURE_FILE_ENDING);
@@ -243,10 +243,10 @@ UINT CCheckForUpdatesDlg::CheckThread()
 	else if (ret)
 	{
 		DeleteUrlCacheEntry(sCheckURL);
-		if (CRegDWORD(_T("Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\GlobalUserOffline"), 0))
+		if (CRegDWORD(L"Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\GlobalUserOffline", 0))
 			errorText.LoadString(IDS_OFFLINEMODE); // offline mode enabled
 		else
-			errorText.Format(IDS_CHECKNEWER_NETERROR_FORMAT, (LPCTSTR)(GetWinINetError(ret) + _T(" URL: ") + sCheckURL), ret);
+			errorText.Format(IDS_CHECKNEWER_NETERROR_FORMAT, (LPCTSTR)(GetWinINetError(ret) + L" URL: " + sCheckURL), ret);
 		SetDlgItemText(IDC_CHECKRESULT, errorText);
 		goto finish;
 	}
@@ -325,7 +325,7 @@ UINT CCheckForUpdatesDlg::CheckThread()
 			SetMinTrackSize(CSize(rectWindow.right - rectWindow.left, rectWindow.bottom - rectWindow.top));
 			MoveWindow(&rectWindow);
 			::MapWindowPoints(nullptr, GetSafeHwnd(), (LPPOINT)&rectOKButton, 2);
-			if (CRegDWORD(_T("Software\\TortoiseGit\\VersionCheck"), TRUE) != FALSE && !m_bForce && !m_bShowInfo)
+			if (CRegDWORD(L"Software\\TortoiseGit\\VersionCheck", TRUE) != FALSE && !m_bForce && !m_bShowInfo)
 			{
 				GetDlgItem(IDC_DONOTASKAGAIN)->ShowWindow(SW_SHOW);
 				rectOKButton.left += 60;
@@ -372,9 +372,9 @@ void CCheckForUpdatesDlg::FillDownloads(CVersioncheckParser& versioncheck)
 
 	bool isHotfix = versioncheck.GetTortoiseGitIsHotfix();
 	if (isHotfix)
-		m_ctrlFiles.InsertItem(0, _T("TortoiseGit Hotfix"));
+		m_ctrlFiles.InsertItem(0, L"TortoiseGit Hotfix");
 	else
-		m_ctrlFiles.InsertItem(0, _T("TortoiseGit"));
+		m_ctrlFiles.InsertItem(0, L"TortoiseGit");
 	CString filenameMain = versioncheck.GetTortoiseGitMainfilename();
 	m_ctrlFiles.SetItemData(0, (DWORD_PTR)(new CUpdateListCtrl::Entry(filenameMain, CUpdateListCtrl::STATUS_NONE)));
 	m_ctrlFiles.SetCheck(0 , TRUE);
@@ -395,8 +395,8 @@ void CCheckForUpdatesDlg::FillDownloads(CVersioncheckParser& versioncheck)
 	{
 		// set up the language selecting combobox
 		CString path = CPathUtils::GetAppParentDirectory();
-		path = path + _T("Languages\\");
-		CSimpleFileFind finder(path, _T("*.dll"));
+		path = path + L"Languages\\";
+		CSimpleFileFind finder(path, L"*.dll");
 		while (finder.FindNextFileNoDirectories())
 		{
 			CString file = finder.GetFilePath();
@@ -411,7 +411,7 @@ void CCheckForUpdatesDlg::FillDownloads(CVersioncheckParser& versioncheck)
 				sLoc = sLoc.Left(sLoc.GetLength() - 4); // cut off ".dll"
 				if (CStringUtils::StartsWith(sLoc, L"32") && (sLoc.GetLength() > 5))
 					continue;
-				DWORD loc = _tstoi(filename.Mid(12));
+				DWORD loc = _wtoi(filename.Mid(12));
 				installedLangs.push_back(loc);
 			}
 		}
@@ -446,8 +446,8 @@ void CCheckForUpdatesDlg::FillChangelog(CVersioncheckParser& versioncheck, bool 
 	pp.sUrl = versioncheck.GetTortoiseGitIssuesURL();
 	if (!pp.sUrl.IsEmpty())
 	{
-		pp.SetCheckRe(_T("[Ii]ssues?:?(\\s*(,|and)?\\s*#?\\d+)+"));
-		pp.SetBugIDRe(_T("(\\d+)"));
+		pp.SetCheckRe(L"[Ii]ssues?:?(\\s*(,|and)?\\s*#?\\d+)+");
+		pp.SetBugIDRe(L"(\\d+)");
 	}
 	m_cLogMessage.Init(pp);
 
@@ -458,7 +458,7 @@ void CCheckForUpdatesDlg::FillChangelog(CVersioncheckParser& versioncheck, bool 
 	DWORD err;
 	if ((err = m_updateDownloader->DownloadFile(sChangelogURL, tempchangelogfile, false)) != ERROR_SUCCESS)
 	{
-		CString msg = _T("Could not load changelog.\r\nError: ") + GetWinINetError(err) + _T(" (on ") + sChangelogURL + _T(")");
+		CString msg = L"Could not load changelog.\r\nError: " + GetWinINetError(err) + L" (on " + sChangelogURL + L")";
 		::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, 0, reinterpret_cast<LPARAM>((LPCTSTR)msg));
 		return;
 	}
@@ -467,9 +467,9 @@ void CCheckForUpdatesDlg::FillChangelog(CVersioncheckParser& versioncheck, bool 
 		CString signatureTempfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
 		if ((err = m_updateDownloader->DownloadFile(sChangelogURL + SIGNATURE_FILE_ENDING, signatureTempfile, false)) != ERROR_SUCCESS || VerifyIntegrity(tempchangelogfile, signatureTempfile, m_updateDownloader))
 		{
-			CString error = _T("Could not verify digital signature.");
+			CString error = L"Could not verify digital signature.";
 			if (err)
-				error += _T("\r\nError: ") + GetWinINetError(err) + _T(" (on ") + sChangelogURL + SIGNATURE_FILE_ENDING + _T(")");
+				error += L"\r\nError: " + GetWinINetError(err) + L" (on " + sChangelogURL + SIGNATURE_FILE_ENDING + L")";
 			::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, 0, reinterpret_cast<LPARAM>((LPCTSTR)error));
 			DeleteUrlCacheEntry(sChangelogURL);
 			DeleteUrlCacheEntry(sChangelogURL + SIGNATURE_FILE_ENDING);
@@ -487,7 +487,7 @@ void CCheckForUpdatesDlg::FillChangelog(CVersioncheckParser& versioncheck, bool 
 		CGit::StringAppend(&temp, buf.get() + (skipBom ? 3 : 0), CP_UTF8, read - (skipBom ? 3 : 0));
 	}
 	else
-		temp = _T("Could not open downloaded changelog file.");
+		temp = L"Could not open downloaded changelog file.";
 	::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, 0, reinterpret_cast<LPARAM>((LPCTSTR)temp));
 }
 
@@ -569,12 +569,12 @@ void CCheckForUpdatesDlg::OnBnClickedButtonUpdate()
 			{
 				CUpdateListCtrl::Entry *data = (CUpdateListCtrl::Entry *)m_ctrlFiles.GetItemData(i);
 				if (m_ctrlFiles.GetCheck(i) == TRUE)
-					ShellExecute(GetSafeHwnd(), _T("open"), folder + data->m_filename, nullptr, nullptr, SW_SHOWNORMAL);
+					ShellExecute(GetSafeHwnd(), L"open", folder + data->m_filename, nullptr, nullptr, SW_SHOWNORMAL);
 			}
 			CResizableStandAloneDialog::OnOK();
 		}
 		else if (m_ctrlUpdate.GetCurrentEntry() == 1)
-			ShellExecute(GetSafeHwnd(), _T("open"), folder, nullptr, nullptr, SW_SHOWNORMAL);
+			ShellExecute(GetSafeHwnd(), L"open", folder, nullptr, nullptr, SW_SHOWNORMAL);
 
 		m_ctrlUpdate.SetCurrentEntry(0);
 	}
@@ -602,7 +602,7 @@ bool CCheckForUpdatesDlg::VerifyUpdateFile(const CString& filename, const CStrin
 		if (sFileVer.IsEmpty())
 		{
 			m_sErrors.AppendFormat(L"%s: Invalid filetype found (neither executable nor MSI).\r\n", (LPCTSTR)reportingFilename);
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": MsiGetSummaryInformation reported: %s\n"), (LPCTSTR)CFormatMessageWrapper(ret));
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": MsiGetSummaryInformation reported: %s\n", (LPCTSTR)CFormatMessageWrapper(ret));
 			return false;
 		}
 		else if (sFileVer == m_sNewVersionNumber)
@@ -671,7 +671,7 @@ bool CCheckForUpdatesDlg::Download(CString filename)
 	{
 		ret = m_updateDownloader->DownloadFile(url + SIGNATURE_FILE_ENDING, signatureTempfile, true);
 		if (ret)
-			m_sErrors += url + SIGNATURE_FILE_ENDING + _T(": ") + GetWinINetError(ret) + _T("\r\n");
+			m_sErrors += url + SIGNATURE_FILE_ENDING + L": " + GetWinINetError(ret) + L"\r\n";
 		m_progress.SetPos(m_progress.GetPos() + 1);
 		if (m_pTaskbarList)
 		{
@@ -682,7 +682,7 @@ bool CCheckForUpdatesDlg::Download(CString filename)
 		}
 	}
 	else
-		m_sErrors += url + _T(": ") + GetWinINetError(ret) + _T("\r\n");
+		m_sErrors += url + L": " + GetWinINetError(ret) + L"\r\n";
 	if (!ret)
 	{
 		if (VerifyUpdateFile(tempfile, signatureTempfile, url))
@@ -773,7 +773,7 @@ LRESULT CCheckForUpdatesDlg::OnEndDownload(WPARAM, LPARAM)
 		CString tmp;
 		tmp.LoadString(IDS_ERR_FAILEDUPDATEDOWNLOAD);
 		if (!m_sErrors.IsEmpty())
-			tmp += _T("\r\n\r\nErrors:\r\n") + m_sErrors;
+			tmp += L"\r\n\r\nErrors:\r\n" + m_sErrors;
 		CMessageBox::Show(GetSafeHwnd(), tmp, L"TortoiseGit", MB_ICONERROR);
 		if (m_pTaskbarList)
 			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
@@ -841,7 +841,7 @@ CString CCheckForUpdatesDlg::GetWinINetError(DWORD err)
 	CString readableError = CFormatMessageWrapper(err);
 	if (readableError.IsEmpty())
 	{
-		for (const CString& module : { _T("wininet.dll"), _T("urlmon.dll") })
+		for (const CString& module : { L"wininet.dll", L"urlmon.dll" })
 		{
 			LPTSTR buffer;
 			FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_FROM_HMODULE, GetModuleHandle(module), err, 0, (LPTSTR)&buffer, 0, nullptr);
@@ -858,7 +858,7 @@ void CCheckForUpdatesDlg::OnBnClickedDonotaskagain()
 {
 	if (CMessageBox::Show(GetSafeHwnd(), IDS_DISABLEUPDATECHECKS, IDS_APPNAME, 2, IDI_QUESTION, IDS_DISABLEUPDATECHECKSBUTTON, IDS_ABORTBUTTON) == 1)
 	{
-		CRegDWORD(_T("Software\\TortoiseGit\\VersionCheck")) = FALSE;
+		CRegDWORD(L"Software\\TortoiseGit\\VersionCheck") = FALSE;
 		OnOK();
 	}
 }

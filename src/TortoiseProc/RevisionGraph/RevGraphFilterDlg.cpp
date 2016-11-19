@@ -65,10 +65,10 @@ BOOL CRevGraphFilterDlg::OnInitDialog()
 
 	STRING_VECTOR list;
 	if (g_Git.GetRefList(list))
-		MessageBox(g_Git.GetGitLastErr(_T("Could not get all refs.")), _T("TortoiseGit"), MB_ICONERROR);
+		MessageBox(g_Git.GetGitLastErr(L"Could not get all refs."), L"TortoiseGit", MB_ICONERROR);
 
-	m_ctrlFromRev.AddSearchString(_T("HEAD"));
-	m_ctrlToRev.AddSearchString(_T("HEAD"));
+	m_ctrlFromRev.AddSearchString(L"HEAD");
+	m_ctrlToRev.AddSearchString(L"HEAD");
 
 	for (size_t i = 0; i < list.size(); ++i)
 	{

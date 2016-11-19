@@ -72,7 +72,7 @@ CFont* CRevisionGraphWnd::GetFont(BOOL bItalic /*= FALSE*/, BOOL bBold /*= FALSE
 		ReleaseDC(pDC);
 		// use the empty font name, so GDI takes the first font which matches
 		// the specs. Maybe this will help render chinese/japanese chars correctly.
-		_tcsncpy_s(m_lfBaseFont.lfFaceName, _T("MS Shell Dlg 2"), _countof(m_lfBaseFont.lfFaceName) - 1);
+		wcsncpy_s(m_lfBaseFont.lfFaceName, L"MS Shell Dlg 2", _countof(m_lfBaseFont.lfFaceName) - 1);
 		if (!m_apFonts[nIndex]->CreateFontIndirect(&m_lfBaseFont))
 		{
 			delete m_apFonts[nIndex];
@@ -995,7 +995,7 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 	Gdiplus::Font font(fontname, (REAL)m_nFontSize, FontStyleRegular);
 	SolidBrush blackbrush((ARGB)Color::Black);
 
-	DWORD revGraphUseLocalForCur = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\Graph\\RevGraphUseLocalForCur"));
+	DWORD revGraphUseLocalForCur = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\Graph\\RevGraphUseLocalForCur");
 
 	node v;
 	forall_nodes(v,m_Graph)

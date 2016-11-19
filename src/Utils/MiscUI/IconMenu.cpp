@@ -23,7 +23,7 @@
 
 CIconMenu::CIconMenu(void) : CMenu()
 {
-	bShowIcons = !!DWORD(CRegDWORD(_T("Software\\TortoiseGit\\ShowAppContextMenuIcons"), TRUE));
+	bShowIcons = !!DWORD(CRegDWORD(L"Software\\TortoiseGit\\ShowAppContextMenuIcons", TRUE));
 }
 
 CIconMenu::~CIconMenu(void)
@@ -68,7 +68,7 @@ BOOL CIconMenu::SetMenuStyle(void)
 BOOL CIconMenu::AppendMenuIcon(UINT_PTR nIDNewItem, LPCTSTR lpszNewItem, UINT uIcon /* = 0 */, HMENU hsubmenu /* = nullptr */)
 {
 	TCHAR menutextbuffer[255] = {0};
-	_tcscpy_s(menutextbuffer, lpszNewItem);
+	wcscpy_s(menutextbuffer, lpszNewItem);
 
 	MENUITEMINFO info = {0};
 	info.cbSize = sizeof(info);

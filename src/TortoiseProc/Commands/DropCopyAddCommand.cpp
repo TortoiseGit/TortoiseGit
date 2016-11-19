@@ -29,7 +29,7 @@
 bool DropCopyAddCommand::Execute()
 {
 	bool bRet = false;
-	CString droppath = parser.GetVal(_T("droptarget"));
+	CString droppath = parser.GetVal(L"droptarget");
 	if (CTGitPath(droppath).IsAdminDir())
 		return FALSE;
 
@@ -59,7 +59,7 @@ bool DropCopyAddCommand::Execute()
 			CString sBtn1(MAKEINTRESOURCE(IDS_PROC_OVERWRITEEXPORT_OVERWRITE));
 			CString sBtn2(MAKEINTRESOURCE(IDS_PROC_OVERWRITEEXPORT_KEEP));
 			CString sBtn3(MAKEINTRESOURCE(IDS_PROC_OVERWRITEEXPORT_CANCEL));
-			UINT ret = CMessageBox::Show(hwndExplorer, strMessage, _T("TortoiseGit"), 2, IDI_QUESTION, sBtn1, sBtn2, sBtn3);
+			UINT ret = CMessageBox::Show(hwndExplorer, strMessage, L"TortoiseGit", 2, IDI_QUESTION, sBtn1, sBtn2, sBtn3);
 
 			if (ret == 3)
 				return FALSE; //cancel the whole operation
@@ -121,7 +121,7 @@ bool DropCopyAddCommand::Execute()
 								msg.Format(IDS_PROC_COPY_SUBMODULE, (LPCTSTR)lastRepo);
 							else
 								msg.Format(IDS_PROC_COPY_REPOSITORY, (LPCTSTR)lastRepo);
-							int ret = CMessageBox::Show(hwndExplorer, msg, _T("TortoiseGit"), 1, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)));
+							int ret = CMessageBox::Show(hwndExplorer, msg, L"TortoiseGit", 1, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)));
 							if (ret == 3)
 								return FALSE;
 							if (ret == 1)
@@ -164,5 +164,5 @@ void DropCopyAddCommand::ShowErrorMessage()
 	CFormatMessageWrapper errorDetails;
 	CString strMessage;
 	strMessage.Format(IDS_ERR_COPYFILES, (LPCTSTR)errorDetails);
-	MessageBox(hwndExplorer, strMessage, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
+	MessageBox(hwndExplorer, strMessage, L"TortoiseGit", MB_OK | MB_ICONINFORMATION);
 }

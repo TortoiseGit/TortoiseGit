@@ -198,7 +198,7 @@ CFileTextLines::UnicodeType CFileTextLines::CheckUnicodeType(LPVOID pBuffer, int
 	if (bNonANSI && nNeedData==0)
 		// if get here thru nonAscii and no missing data left then its valid UTF8
 		return CFileTextLines::UTF8;
-	if ((!bNonANSI)&&(DWORD(CRegDWORD(_T("Software\\TortoiseGitMerge\\UseUTF8"), FALSE))))
+	if (!bNonANSI && (DWORD(CRegDWORD(L"Software\\TortoiseGitMerge\\UseUTF8", FALSE))))
 		return CFileTextLines::UTF8;
 	return CFileTextLines::ASCII;
 }
@@ -433,16 +433,16 @@ void CFileTextLines::StripWhiteSpace(CString& sLine, DWORD dwIgnoreWhitespaces, 
 		break;
 	case 1:
 		// Ignore all whitespaces
-		sLine.TrimLeft(_T(" \t"));
-		sLine.TrimRight(_T(" \t"));
+		sLine.TrimLeft(L" \t");
+		sLine.TrimRight(L" \t");
 		break;
 	case 2:
 		// Ignore leading whitespace
-		sLine.TrimLeft(_T(" \t"));
+		sLine.TrimLeft(L" \t");
 		break;
 	case 3:
 		// Ignore ending whitespace
-		sLine.TrimRight(_T(" \t"));
+		sLine.TrimRight(L" \t");
 		break;
 	}
 }
@@ -539,9 +539,9 @@ BOOL CFileTextLines::Save( const CString& sFilePath
 		}
 		// cache EOLs
 		CBuffer oEncodedEol[EOL__COUNT];
-		oEncodedEol[EOL_LF] = pFilter->Encode(_T("\n")); // x0a
-		oEncodedEol[EOL_CR] = pFilter->Encode(_T("\r")); // x0d
-		oEncodedEol[EOL_CRLF] = pFilter->Encode(_T("\r\n")); // x0d x0a
+		oEncodedEol[EOL_LF] = pFilter->Encode(L"\n"); // x0a
+		oEncodedEol[EOL_CR] = pFilter->Encode(L"\r"); // x0d
+		oEncodedEol[EOL_CRLF] = pFilter->Encode(L"\r\n"); // x0d x0a
 		if (bUseSVNCompatibleEOLs)
 		{
 			// when using EOLs that are supported by the svn lib,
@@ -563,12 +563,12 @@ BOOL CFileTextLines::Save( const CString& sFilePath
 		}
 		else
 		{
-			oEncodedEol[EOL_LFCR] = pFilter->Encode(_T("\n\r"));
-			oEncodedEol[EOL_VT] = pFilter->Encode(_T("\v")); // x0b
-			oEncodedEol[EOL_FF] = pFilter->Encode(_T("\f")); // x0c
-			oEncodedEol[EOL_NEL] = pFilter->Encode(_T("\x85"));
-			oEncodedEol[EOL_LS] = pFilter->Encode(_T("\x2028"));
-			oEncodedEol[EOL_PS] = pFilter->Encode(_T("\x2029"));
+			oEncodedEol[EOL_LFCR] = pFilter->Encode(L"\n\r");
+			oEncodedEol[EOL_VT] = pFilter->Encode(L"\v"); // x0b
+			oEncodedEol[EOL_FF] = pFilter->Encode(L"\f"); // x0c
+			oEncodedEol[EOL_NEL] = pFilter->Encode(L"\x85");
+			oEncodedEol[EOL_LS] = pFilter->Encode(L"\x2028");
+			oEncodedEol[EOL_PS] = pFilter->Encode(L"\x2029");
 		}
 		oEncodedEol[EOL_AUTOLINE] = oEncodedEol[m_SaveParams.m_LineEndings==EOL_AUTOLINE
 				? EOL_CRLF

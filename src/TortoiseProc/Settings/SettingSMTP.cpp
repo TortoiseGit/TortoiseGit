@@ -32,11 +32,11 @@ IMPLEMENT_DYNAMIC(CSettingSMTP, ISettingsPropPage)
 
 CSettingSMTP::CSettingSMTP()
 	: ISettingsPropPage(CSettingSMTP::IDD)
-	, m_regDeliveryType(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\DeliveryType"), SEND_MAIL_SMTP_DIRECT)
-	, m_regServer(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Address"), _T(""))
-	, m_regPort(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Port"), 25)
-	, m_regEncryption(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Encryption"), 0)
-	, m_regAuthenticate(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\AuthenticationRequired"), FALSE)
+	, m_regDeliveryType(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\DeliveryType", SEND_MAIL_SMTP_DIRECT)
+	, m_regServer(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\Address", L"")
+	, m_regPort(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\Port", 25)
+	, m_regEncryption(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\Encryption", 0)
+	, m_regAuthenticate(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\AuthenticationRequired", FALSE)
 {
 	m_dwDeliveryType = m_regDeliveryType;
 	m_Server = m_regServer;

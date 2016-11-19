@@ -23,7 +23,7 @@
 
 CLogFile::CLogFile(const CString& repo)
 {
-	m_maxlines = CRegStdDWORD(_T("Software\\TortoiseGit\\MaxLinesInLogfile"), 4000);
+	m_maxlines = CRegStdDWORD(L"Software\\TortoiseGit\\MaxLinesInLogfile", 4000);
 	m_sRepo = repo;
 }
 
@@ -35,7 +35,7 @@ bool CLogFile::Open()
 {
 	if (m_maxlines == 0)
 		return false;
-	CTGitPath logfile = CTGitPath(CPathUtils::GetLocalAppDataDirectory() + _T("logfile.txt"));
+	CTGitPath logfile = CTGitPath(CPathUtils::GetLocalAppDataDirectory() + L"logfile.txt");
 	return Open(logfile);
 }
 
@@ -108,7 +108,7 @@ bool CLogFile::Close()
 		for (const auto& line : m_lines)
 		{
 			file.WriteString(line);
-			file.WriteString(_T("\n"));
+			file.WriteString(L"\n");
 		}
 		file.Close();
 	}
@@ -131,9 +131,9 @@ bool CLogFile::AddTimeLine()
 	GetDateFormat(LOCALE_USER_DEFAULT, DATE_SHORTDATE, nullptr, nullptr, datebuf, 4096);
 	sLine = datebuf;
 	GetTimeFormat(LOCALE_USER_DEFAULT, 0, nullptr, nullptr, datebuf, 4096);
-	sLine += _T(" - ");
+	sLine += L" - ";
 	sLine += datebuf;
-	sLine += _T(" - ");
+	sLine += L" - ";
 	sLine += m_sRepo;
 	m_lines.push_back(sLine);
 	return true;

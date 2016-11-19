@@ -62,7 +62,7 @@ BOOL CAddDlg::OnInitDialog()
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	// initialize the svn status list control
-	m_addListCtrl.Init(GITSLC_COLEXT, _T("AddDlg"), GITSLC_POPALL ^ (GITSLC_POPADD | GITSLC_POPCOMMIT | GITSLC_POPCHANGELISTS | GITSLC_PREPAREDIFF), true, true, GITSLC_COLEXT | GITSLC_COLMODIFICATIONDATE | GITSLC_COLSIZE); // adding and committing is useless in the add dialog
+	m_addListCtrl.Init(GITSLC_COLEXT, L"AddDlg", GITSLC_POPALL ^ (GITSLC_POPADD | GITSLC_POPCOMMIT | GITSLC_POPCHANGELISTS | GITSLC_PREPAREDIFF), true, true, GITSLC_COLEXT | GITSLC_COLMODIFICATIONDATE | GITSLC_COLSIZE); // adding and committing is useless in the add dialog
 	m_addListCtrl.SetIgnoreRemoveOnly();	// when ignoring, don't add the parent folder since we're in the add dialog
 	m_addListCtrl.SetSelectButton(&m_SelectAll);
 	m_addListCtrl.SetConfirmButton((CButton*)GetDlgItem(IDOK));
@@ -87,7 +87,7 @@ BOOL CAddDlg::OnInitDialog()
 
 	if (hWndExplorer)
 		CenterWindow(CWnd::FromHandle(hWndExplorer));
-	EnableSaveRestore(_T("AddDlg"));
+	EnableSaveRestore(L"AddDlg");
 
 	//first start a thread to obtain the file list with the status without
 	//blocking the dialog
@@ -246,7 +246,7 @@ LRESULT CAddDlg::OnFileDropped(WPARAM, LPARAM lParam)
 
 	// Always start the timer, since the status of an existing item might have changed
 	SetTimer(REFRESHTIMER, 200, nullptr);
-	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Item %s dropped, timer started\n"), path.GetWinPath());
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Item %s dropped, timer started\n", path.GetWinPath());
 	return 0;
 }
 

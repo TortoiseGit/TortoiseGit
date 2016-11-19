@@ -362,7 +362,7 @@ int GetRangeInSortVector(const T &vector, LPCTSTR pstr, int len, int *start, int
 	if (pos >= (int)vector.size())
 		return -1;
 
-	if( _tcsnccmp(vector[pos].m_FileName, pstr,len) != 0)
+	if (wcsncmp(vector[pos].m_FileName, pstr, len) != 0)
 		return -1;
 
 	*start = 0;
@@ -374,14 +374,14 @@ int GetRangeInSortVector(const T &vector, LPCTSTR pstr, int len, int *start, int
 
 	for (int i = pos; i < (int)vector.size(); ++i)
 	{
-		if (_tcsnccmp(vector[i].m_FileName, pstr, len) != 0)
+		if (wcsncmp(vector[i].m_FileName, pstr, len) != 0)
 			break;
 
 		*end = i;
 	}
 	for (int i = pos; i >= 0; --i)
 	{
-		if (_tcsnccmp(vector[i].m_FileName, pstr, len) != 0)
+		if (wcsncmp(vector[i].m_FileName, pstr, len) != 0)
 			break;
 
 		*start = i;
@@ -404,9 +404,9 @@ int SearchInSortVector(const T &vector, LPCTSTR pstr, int len)
 	{
 		int cmp;
 		if(len < 0)
-			cmp = _tcscmp(vector[mid].m_FileName,pstr);
+			cmp = wcscmp(vector[mid].m_FileName, pstr);
 		else
-			cmp = _tcsnccmp( vector[mid].m_FileName,pstr,len );
+			cmp = wcsncmp(vector[mid].m_FileName, pstr, len);
 
 		if (cmp == 0)
 			return mid;
@@ -420,12 +420,12 @@ int SearchInSortVector(const T &vector, LPCTSTR pstr, int len)
 	}
 	if(len <0)
 	{
-		if(_tcscmp(vector[mid].m_FileName,pstr) == 0)
+		if (wcscmp(vector[mid].m_FileName, pstr) == 0)
 			return mid;
 	}
 	else
 	{
-		if(_tcsnccmp( vector[mid].m_FileName,pstr,len ) == 0)
+		if (wcsncmp(vector[mid].m_FileName, pstr, len) == 0)
 			return mid;
 	}
 	return -1;
@@ -448,14 +448,14 @@ public:
 		auto lookup = find(thePath);
 		if (lookup == cend())
 		{
-			if (PathIsDirectory(path + _T("\\.git")))
+			if (PathIsDirectory(path + L"\\.git"))
 			{
-				(*this)[thePath] = path + _T("\\.git\\");
-				m_reverseLookup[thePath + _T("\\.git")] = path;
+				(*this)[thePath] = path + L"\\.git\\";
+				m_reverseLookup[thePath + L"\\.git"] = path;
 				return (*this)[thePath];
 			}
 
-			CString result = GitAdminDir::ReadGitLink(path, path + _T("\\.git"));
+			CString result = GitAdminDir::ReadGitLink(path, path + L"\\.git");
 			if (!result.IsEmpty())
 			{
 				(*this)[thePath] = result + L'\\';
@@ -463,7 +463,7 @@ public:
 				return (*this)[thePath];
 			}
 
-			return path + _T("\\.git\\"); // in case of an error stick to old behavior
+			return path + L"\\.git\\"; // in case of an error stick to old behavior
 		}
 
 		return lookup->second;

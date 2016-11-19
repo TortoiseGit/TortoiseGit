@@ -83,7 +83,7 @@ BOOL CBisectStartDlg::OnInitDialog()
 	AddAnchor(IDC_COMBOBOXEX_GOOD, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_COMBOBOXEX_BAD, TOP_LEFT, TOP_RIGHT);
 
-	EnableSaveRestore(_T("BisectStartDlg"));
+	EnableSaveRestore(L"BisectStartDlg");
 
 	CString sWindowTitle;
 	GetWindowText(sWindowTitle);

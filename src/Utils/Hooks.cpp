@@ -39,7 +39,7 @@ bool CHooks::Create()
 {
 	if (!m_pInstance)
 		m_pInstance = new CHooks();
-	CRegString reghooks(_T("Software\\TortoiseGit\\hooks"));
+	CRegString reghooks(L"Software\\TortoiseGit\\hooks");
 	CString strhooks = reghooks;
 	// now fill the map with all the hooks defined in the string
 	// the string consists of multiple lines, where one hook script is defined
@@ -80,7 +80,7 @@ bool CHooks::Create()
 				if ((pos = strhooks.Find('\n')) >= 0)
 				{
 					// line 4
-					cmd.bWait = (strhooks.Mid(0, pos).CompareNoCase(_T("true"))==0);
+					cmd.bWait = (strhooks.Mid(0, pos).CompareNoCase(L"true") == 0);
 					if (pos+1 < strhooks.GetLength())
 						strhooks = strhooks.Mid(pos+1);
 					else
@@ -88,7 +88,7 @@ bool CHooks::Create()
 					if ((pos = strhooks.Find('\n')) >= 0)
 					{
 						// line 5
-						cmd.bShow = (strhooks.Mid(0, pos).CompareNoCase(_T("show"))==0);
+						cmd.bShow = (strhooks.Mid(0, pos).CompareNoCase(L"show") == 0);
 						if (pos+1 < strhooks.GetLength())
 							strhooks = strhooks.Mid(pos+1);
 						else
@@ -127,12 +127,12 @@ bool CHooks::Save()
 		strhooks += '\n';
 		strhooks += it->second.commandline;
 		strhooks += '\n';
-		strhooks += (it->second.bWait ? _T("true") : _T("false"));
+		strhooks += (it->second.bWait ? L"true" : L"false");
 		strhooks += '\n';
-		strhooks += (it->second.bShow ? _T("show") : _T("hide"));
+		strhooks += (it->second.bShow ? L"show" : L"hide");
 		strhooks += '\n';
 	}
-	CRegString reghooks(_T("Software\\TortoiseGit\\hooks"));
+	CRegString reghooks(L"Software\\TortoiseGit\\hooks");
 	reghooks = strhooks;
 	if (reghooks.GetLastError())
 		return false;
@@ -165,32 +165,32 @@ CString CHooks::GetHookTypeString(hooktype t)
 	switch (t)
 	{
 	case start_commit_hook:
-		return _T("start_commit_hook");
+		return L"start_commit_hook";
 	case pre_commit_hook:
-		return _T("pre_commit_hook");
+		return L"pre_commit_hook";
 	case post_commit_hook:
-		return _T("post_commit_hook");
+		return L"post_commit_hook";
 	case pre_push_hook:
-		return _T("pre_push_hook");
+		return L"pre_push_hook";
 	case post_push_hook:
-		return _T("post_push_hook");
+		return L"post_push_hook";
 	case pre_rebase_hook:
 		return L"pre_rebase_hook";
 	}
-	return _T("");
+	return L"";
 }
 
 hooktype CHooks::GetHookType(const CString& s)
 {
-	if (s.Compare(_T("start_commit_hook"))==0)
+	if (s.Compare(L"start_commit_hook") == 0)
 		return start_commit_hook;
-	if (s.Compare(_T("pre_commit_hook"))==0)
+	if (s.Compare(L"pre_commit_hook") == 0)
 		return pre_commit_hook;
-	if (s.Compare(_T("post_commit_hook"))==0)
+	if (s.Compare(L"post_commit_hook") == 0)
 		return post_commit_hook;
-	if (s.Compare(_T("pre_push_hook"))==0)
+	if (s.Compare(L"pre_push_hook") == 0)
 		return pre_push_hook;
-	if (s.Compare(_T("post_push_hook"))==0)
+	if (s.Compare(L"post_push_hook") == 0)
 		return post_push_hook;
 	if (s.Compare(L"pre_rebase_hook") == 0)
 		return pre_rebase_hook;
@@ -200,7 +200,7 @@ hooktype CHooks::GetHookType(const CString& s)
 
 void CHooks::AddParam(CString& sCmd, const CString& param)
 {
-	sCmd += _T(" \"");
+	sCmd += L" \"";
 	sCmd += param;
 	sCmd += L'"';
 }
@@ -340,7 +340,7 @@ const_hookiterator CHooks::FindItem(hooktype t, const CString& workingTree) cons
 	} while(!path.IsEmpty());
 	// look for a script with a path as '*'
 	key.htype = t;
-	key.path = CTGitPath(_T("*"));
+	key.path = CTGitPath(L"*");
 	auto it = find(key);
 	if (it != end())
 	{
@@ -369,7 +369,7 @@ DWORD CHooks::RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bW
 	TCHAR szOutput[MAX_PATH] = {0};
 	TCHAR szErr[MAX_PATH] = {0};
 	GetTortoiseGitTempPath(_countof(szTempPath), szTempPath);
-	GetTempFileName(szTempPath, _T("git"), 0, szErr);
+	GetTempFileName(szTempPath, L"git", 0, szErr);
 
 	// setup redirection handles
 	// output handle must be WRITE mode, share READ
@@ -390,7 +390,7 @@ DWORD CHooks::RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bW
 		return (DWORD)-1;
 	}
 
-	GetTempFileName(szTempPath, _T("git"), 0, szOutput);
+	GetTempFileName(szTempPath, L"git", 0, szOutput);
 	hOut   = CreateFile(szOutput, GENERIC_WRITE, FILE_SHARE_READ, &sa, CREATE_ALWAYS, FILE_ATTRIBUTE_TEMPORARY, nullptr);
 
 	if (!hOut)

@@ -80,7 +80,7 @@ BOOL CRenameDlg::OnInitDialog()
 	CControlsBridge::AlignHorizontally(this, IDC_LABEL, IDC_NAME);
 	if (hWndExplorer)
 		CenterWindow(CWnd::FromHandle(hWndExplorer));
-	EnableSaveRestore(_T("RenameDlg"));
+	EnableSaveRestore(L"RenameDlg");
 	m_originalName = m_name;
 	return TRUE;
 }

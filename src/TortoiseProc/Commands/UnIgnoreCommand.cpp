@@ -31,7 +31,7 @@ bool UnIgnoreCommand::Execute()
 	for (int nPath = 0; nPath < pathList.GetCount(); ++nPath)
 	{
 		CString name = CPathUtils::PathPatternEscape(pathList[nPath].GetFileOrDirectoryName());
-		if (parser.HasKey(_T("onlymask")))
+		if (parser.HasKey(L"onlymask"))
 			name = L'*' + pathList[nPath].GetFileExtension();
 		filelist += name + L'\n';
 		CTSVNPath parentfolder = pathList[nPath].GetContainingDirectory();
@@ -40,7 +40,7 @@ bool UnIgnoreCommand::Execute()
 		for (int i = 0; i < props.GetCount(); ++i)
 		{
 			CString propname(props.GetItemName(i).c_str());
-			if (propname.CompareNoCase(_T("svn:ignore"))==0)
+			if (propname.CompareNoCase(L"svn:ignore") == 0)
 			{
 				//treat values as normal text even if they're not
 				value = (char *)props.GetItemValue(i).c_str();
@@ -62,22 +62,22 @@ bool UnIgnoreCommand::Execute()
 		sTrimmedvalue.Trim();
 		if (sTrimmedvalue.IsEmpty())
 		{
-			if (!props.Remove(_T("svn:ignore")))
+			if (!props.Remove(L"svn:ignore"))
 			{
 				CString temp;
 				temp.Format(IDS_ERR_FAILEDUNIGNOREPROPERTY, (LPCTSTR)name);
-				CMessageBox::Show(hwndExplorer, temp, _T("TortoiseGit"), MB_ICONERROR);
+				CMessageBox::Show(hwndExplorer, temp, L"TortoiseGit", MB_ICONERROR);
 				err = TRUE;
 				break;
 			}
 		}
 		else
 		{
-			if (!props.Add(_T("svn:ignore"), (LPCSTR)value))
+			if (!props.Add(L"svn:ignore", (LPCSTR)value))
 			{
 				CString temp;
 				temp.Format(IDS_ERR_FAILEDUNIGNOREPROPERTY, (LPCTSTR)name);
-				CMessageBox::Show(hwndExplorer, temp, _T("TortoiseGit"), MB_ICONERROR);
+				CMessageBox::Show(hwndExplorer, temp, L"TortoiseGit", MB_ICONERROR);
 				err = TRUE;
 				break;
 			}
@@ -87,7 +87,7 @@ bool UnIgnoreCommand::Execute()
 	{
 		CString temp;
 		temp.Format(IDS_PROC_UNIGNORESUCCESS, (LPCTSTR)filelist);
-		CMessageBox::Show(hwndExplorer, temp, _T("TortoiseGit"), MB_ICONINFORMATION);
+		CMessageBox::Show(hwndExplorer, temp, L"TortoiseGit", MB_ICONINFORMATION);
 		return true;
 	}
 	return false;

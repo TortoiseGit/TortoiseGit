@@ -23,19 +23,19 @@
 TEST(libgit2, Config)
 {
 	CAutoTempDir tempdir;
-	CString testFile = tempdir.GetTempDir() + _T("\\config");
+	CString testFile = tempdir.GetTempDir() + L"\\config";
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"[core]\nemail=dummy@example.com\ntrue=true\nfalse=false\n"));
 	CAutoConfig config(true);
 	EXPECT_EQ(0, git_config_add_file_ondisk(config, CUnicodeUtils::GetUTF8(testFile), GIT_CONFIG_LEVEL_LOCAL, 1));
 	bool ret = false;
-	EXPECT_EQ(0, config.GetBool(_T("core.true"), ret));
+	EXPECT_EQ(0, config.GetBool(L"core.true", ret));
 	EXPECT_EQ(true, ret);
-	EXPECT_EQ(0, config.GetBool(_T("core.false"), ret));
+	EXPECT_EQ(0, config.GetBool(L"core.false", ret));
 	EXPECT_EQ(false, ret);
-	EXPECT_EQ(-3, config.GetBool(_T("core.not-exist"), ret));
+	EXPECT_EQ(-3, config.GetBool(L"core.not-exist", ret));
 	CString value;
-	EXPECT_EQ(0, config.GetString(_T("core.email"), value));
-	EXPECT_STREQ(_T("dummy@example.com"), value);
+	EXPECT_EQ(0, config.GetString(L"core.email", value));
+	EXPECT_STREQ(L"dummy@example.com", value);
 }
 
 TEST(libgit2, TGitPatches)
@@ -57,7 +57,7 @@ TEST(libgit2, TGitPatches)
 	CAutoIndex index;
 	ASSERT_EQ(0, git_repository_index(index.GetPointer(), repo2));
 
-	CString testFile = tempdir.GetTempDir() + _T("\\safecrlf-failure.txt");
+	CString testFile = tempdir.GetTempDir() + L"\\safecrlf-failure.txt";
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"crlf\r\ncrlf\r\n"));
 	EXPECT_EQ(0, git_index_add_bypath(index, "safecrlf-failure.txt"));
 

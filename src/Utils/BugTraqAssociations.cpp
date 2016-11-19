@@ -26,7 +26,7 @@
 DEFINE_GUID(CATID_BugTraqProvider,
 			0x3494fa92, 0xb139, 0x4730, 0x95, 0x91, 0x1, 0x13, 0x5d, 0x5e, 0x78, 0x31);
 
-#define BUGTRAQ_ASSOCIATIONS_REGPATH _T("Software\\TortoiseGit\\BugTraq Associations")
+#define BUGTRAQ_ASSOCIATIONS_REGPATH L"Software\\TortoiseGit\\BugTraq Associations"
 
 CBugTraqAssociations::CBugTraqAssociations()
 : pProjectProvider(nullptr)
@@ -66,19 +66,19 @@ void CBugTraqAssociations::Load(LPCTSTR uuid /* = nullptr */, LPCTSTR params /* 
 		{
 			TCHAR szWorkingCopy[MAX_PATH] = {0};
 			DWORD cbWorkingCopy = sizeof(szWorkingCopy);
-			RegQueryValueEx(hk2, _T("WorkingCopy"), nullptr, nullptr, (LPBYTE)szWorkingCopy, &cbWorkingCopy);
+			RegQueryValueEx(hk2, L"WorkingCopy", nullptr, nullptr, (LPBYTE)szWorkingCopy, &cbWorkingCopy);
 
 			TCHAR szClsid[MAX_PATH] = {0};
 			DWORD cbClsid = sizeof(szClsid);
-			RegQueryValueEx(hk2, _T("Provider"), nullptr, nullptr, (LPBYTE)szClsid, &cbClsid);
+			RegQueryValueEx(hk2, L"Provider", nullptr, nullptr, (LPBYTE)szClsid, &cbClsid);
 
 			CLSID provider_clsid;
 			CLSIDFromString(szClsid, &provider_clsid);
 
 			DWORD cbParameters = 0;
-			RegQueryValueEx(hk2, _T("Parameters"), nullptr, nullptr, nullptr, &cbParameters);
+			RegQueryValueEx(hk2, L"Parameters", nullptr, nullptr, nullptr, &cbParameters);
 			auto szParameters = std::make_unique<TCHAR[]>(cbParameters + 1);
-			RegQueryValueEx(hk2, _T("Parameters"), nullptr, nullptr, (LPBYTE)szParameters.get(), &cbParameters);
+			RegQueryValueEx(hk2, L"Parameters", nullptr, nullptr, (LPBYTE)szParameters.get(), &cbParameters);
 			szParameters.get()[cbParameters] = 0;
 			m_inner.push_back(new CBugTraqAssociation(szWorkingCopy, provider_clsid, LookupProviderName(provider_clsid), szParameters.get()));
 
@@ -117,7 +117,7 @@ bool CBugTraqAssociations::FindProvider(const CString &path, CBugTraqAssociation
 	{
 		CLSID provider_clsid;
 		CLSIDFromString((LPOLESTR)(LPCWSTR)providerUUID, &provider_clsid);
-		pProjectProvider = new CBugTraqAssociation(_T(""), provider_clsid, _T("bugtraq:provider"), (LPCWSTR)providerParams);
+		pProjectProvider = new CBugTraqAssociation(L"", provider_clsid, L"bugtraq:provider", (LPCWSTR)providerParams);
 		if (pProjectProvider)
 		{
 			if (assoc)
@@ -147,7 +147,7 @@ CString CBugTraqAssociations::LookupProviderName(const CLSID &provider_clsid)
 	StringFromGUID2(provider_clsid, szClsid, ARRAYSIZE(szClsid));
 
 	TCHAR szSubKey[MAX_PATH] = {0};
-	_stprintf_s(szSubKey, _T("CLSID\\%ls"), szClsid);
+	swprintf_s(szSubKey, L"CLSID\\%ls", szClsid);
 
 	CString provider_name = CString(szClsid);
 
@@ -185,14 +185,14 @@ void CBugTraqAssociations::Save() const
 	for (const_iterator it = begin(); it != end(); ++it)
 	{
 		TCHAR szSubKey[MAX_PATH] = {0};
-		_stprintf_s(szSubKey, _T("%lu"), dwIndex);
+		swprintf_s(szSubKey, L"%lu", dwIndex);
 
 		HKEY hk2;
 		if (RegCreateKeyEx(hk, szSubKey, 0, nullptr, 0, KEY_WRITE, nullptr, &hk2, nullptr) == ERROR_SUCCESS)
 		{
-			RegSetValueFromCString(hk2, _T("Provider"), (*it)->GetProviderClassAsString());
-			RegSetValueFromCString(hk2, _T("WorkingCopy"), (*it)->GetPath().GetWinPath());
-			RegSetValueFromCString(hk2, _T("Parameters"), (*it)->GetParameters());
+			RegSetValueFromCString(hk2, L"Provider", (*it)->GetProviderClassAsString());
+			RegSetValueFromCString(hk2, L"WorkingCopy", (*it)->GetPath().GetWinPath());
+			RegSetValueFromCString(hk2, L"Parameters", (*it)->GetParameters());
 
 			RegCloseKey(hk2);
 		}

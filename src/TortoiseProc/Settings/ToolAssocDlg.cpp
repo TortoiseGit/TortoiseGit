@@ -60,7 +60,7 @@ BOOL CToolAssocDlg::OnInitDialog()
 	m_tooltips.Create(this);
 
 	CString title;
-	if (m_sType == _T("Diff"))
+	if (m_sType == L"Diff")
 	{
 		title.LoadString(m_bAdd ? IDS_DLGTITLE_ADD_DIFF_TOOL : IDS_DLGTITLE_EDIT_DIFF_TOOL);
 		m_tooltips.AddTool(IDC_TOOLEDIT, IDS_SETTINGS_EXTDIFF_TT);

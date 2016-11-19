@@ -40,8 +40,8 @@ CMergeDlg::CMergeDlg(CWnd* pParent /*=nullptr*/)
 	m_bSquash=false;
 	m_bNoCommit=false;
 	m_bLog = FALSE;
-	CString mergeLog = g_Git.GetConfigValue(_T("merge.log"));
-	int nLog = _ttoi(mergeLog);
+	CString mergeLog = g_Git.GetConfigValue(L"merge.log");
+	int nLog = _wtoi(mergeLog);
 	m_nLog = nLog > 0 ? nLog : 20;
 	m_nPopupPasteLastMessage = 0;
 	m_nPopupRecentMessage = 0;
@@ -87,7 +87,7 @@ END_MESSAGE_MAP()
 
 void CMergeDlg::ReloadHistoryEntries()
 {
-	m_History.Load(_T("Software\\TortoiseGit\\History\\merge"), _T("logmsgs"));
+	m_History.Load(L"Software\\TortoiseGit\\History\\merge", L"logmsgs");
 }
 
 BOOL CMergeDlg::OnInitDialog()
@@ -133,25 +133,25 @@ BOOL CMergeDlg::OnInitDialog()
 	if (m_bSquash)
 		m_cLogMessage.SetAStyle(STYLE_DEFAULT, ::GetSysColor(COLOR_GRAYTEXT), ::GetSysColor(COLOR_BTNFACE));
 
-	m_History.SetMaxHistoryItems((LONG)CRegDWORD(_T("Software\\TortoiseGit\\MaxHistoryItems"), 25));
+	m_History.SetMaxHistoryItems((LONG)CRegDWORD(L"Software\\TortoiseGit\\MaxHistoryItems", 25));
 	ReloadHistoryEntries();
 
-	((CComboBox *)GetDlgItem(IDC_COMBO_MERGESTRATEGY))->AddString(_T("resolve"));
-	((CComboBox *)GetDlgItem(IDC_COMBO_MERGESTRATEGY))->AddString(_T("recursive"));
-	((CComboBox *)GetDlgItem(IDC_COMBO_MERGESTRATEGY))->AddString(_T("ours"));
-	((CComboBox *)GetDlgItem(IDC_COMBO_MERGESTRATEGY))->AddString(_T("subtree"));
-	((CComboBox *)GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(_T("ours"));
-	((CComboBox *)GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(_T("theirs"));
-	((CComboBox *)GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(_T("patience"));
-	((CComboBox *)GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(_T("ignore-space-change"));
-	((CComboBox *)GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(_T("ignore-all-space"));
-	((CComboBox *)GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(_T("ignore-space-at-eol"));
-	((CComboBox *)GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(_T("renormalize"));
-	((CComboBox *)GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(_T("no-renormalize"));
-	((CComboBox *)GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(_T("rename-threshold"));
-	((CComboBox *)GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(_T("subtree"));
+	((CComboBox*)GetDlgItem(IDC_COMBO_MERGESTRATEGY))->AddString(L"resolve");
+	((CComboBox*)GetDlgItem(IDC_COMBO_MERGESTRATEGY))->AddString(L"recursive");
+	((CComboBox*)GetDlgItem(IDC_COMBO_MERGESTRATEGY))->AddString(L"ours");
+	((CComboBox*)GetDlgItem(IDC_COMBO_MERGESTRATEGY))->AddString(L"subtree");
+	((CComboBox*)GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(L"ours");
+	((CComboBox*)GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(L"theirs");
+	((CComboBox*)GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(L"patience");
+	((CComboBox*)GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(L"ignore-space-change");
+	((CComboBox*)GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(L"ignore-all-space");
+	((CComboBox*)GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(L"ignore-space-at-eol");
+	((CComboBox*)GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(L"renormalize");
+	((CComboBox*)GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(L"no-renormalize");
+	((CComboBox*)GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(L"rename-threshold");
+	((CComboBox*)GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(L"subtree");
 
-	EnableSaveRestore(_T("MergeDlg"));
+	EnableSaveRestore(L"MergeDlg");
 	GetDlgItem(IDOK)->SetFocus();
 
 	InitChooseVersion(true);
@@ -181,9 +181,9 @@ void CMergeDlg::OnBnClickedOk()
 		m_History.Save();
 	}
 
-	if (m_MergeStrategy != _T("recursive"))
+	if (m_MergeStrategy != L"recursive")
 		m_StrategyOption.Empty();
-	if (m_StrategyOption != _T("rename-threshold") && m_StrategyOption != _T("subtree"))
+	if (m_StrategyOption != L"rename-threshold" && m_StrategyOption != L"subtree")
 		m_StrategyParam.Empty();
 
 	OnOK();
@@ -234,7 +234,7 @@ bool CMergeDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
 	if (cmd == m_nPopupPasteLastMessage)
 	{
 		if (pSciEdit->GetText() == CString(m_pDefaultText))
-			pSciEdit->SetText(_T(""));
+			pSciEdit->SetText(L"");
 		CString logmsg (m_History.GetEntry(0));
 		pSciEdit->InsertText(logmsg);
 		return true;
@@ -248,7 +248,7 @@ bool CMergeDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
 			return false;
 
 		if (pSciEdit->GetText() == CString(m_pDefaultText))
-			pSciEdit->SetText(_T(""));
+			pSciEdit->SetText(L"");
 		m_cLogMessage.InsertText(historyDlg.GetSelectedText(), !m_cLogMessage.GetText().IsEmpty());
 		GetDlgItem(IDC_LOGMESSAGE)->SetFocus();
 		return true;
@@ -272,14 +272,14 @@ void CMergeDlg::OnBnClickedCheckMergeLog()
 void CMergeDlg::OnCbnSelchangeComboMergestrategy()
 {
 	UpdateData(TRUE);
-	GetDlgItem(IDC_COMBO_STRATEGYOPTION)->EnableWindow(m_MergeStrategy == _T("recursive"));
-	GetDlgItem(IDC_EDIT_STRATEGYPARAM)->EnableWindow(m_MergeStrategy == _T("recursive") ? m_StrategyOption == _T("rename-threshold") || m_StrategyOption == _T("subtree") : FALSE);
+	GetDlgItem(IDC_COMBO_STRATEGYOPTION)->EnableWindow(m_MergeStrategy == L"recursive");
+	GetDlgItem(IDC_EDIT_STRATEGYPARAM)->EnableWindow(m_MergeStrategy == L"recursive" ? m_StrategyOption == L"rename-threshold" || m_StrategyOption == L"subtree" : FALSE);
 }
 
 void CMergeDlg::OnCbnSelchangeComboStrategyoption()
 {
 	UpdateData(TRUE);
-	GetDlgItem(IDC_EDIT_STRATEGYPARAM)->EnableWindow(m_StrategyOption == _T("rename-threshold") || m_StrategyOption == _T("subtree"));
+	GetDlgItem(IDC_EDIT_STRATEGYPARAM)->EnableWindow(m_StrategyOption == L"rename-threshold" || m_StrategyOption == L"subtree");
 }
 
 void CMergeDlg::OnBnClickedCheckFFonlyOrNoFF()

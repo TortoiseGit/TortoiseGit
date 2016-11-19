@@ -29,7 +29,7 @@ bool ResolveCommand::Execute()
 	CResolveDlg dlg;
 	dlg.m_pathList = pathList;
 	INT_PTR ret = IDOK;
-	if (!parser.HasKey(_T("noquestion")))
+	if (!parser.HasKey(L"noquestion"))
 		ret = dlg.DoModal();
 	if (ret == IDOK)
 	{
@@ -40,7 +40,7 @@ bool ResolveCommand::Execute()
 				for (int i = 0; i < dlg.m_pathList.GetCount(); ++i)
 				{
 					CString cmd, out;
-					cmd.Format(_T("git.exe add -f -- \"%s\""), (LPCTSTR)dlg.m_pathList[i].GetGitPathString());
+					cmd.Format(L"git.exe add -f -- \"%s\"", (LPCTSTR)dlg.m_pathList[i].GetGitPathString());
 					if (g_Git.Run(cmd, &out, CP_UTF8))
 					{
 						MessageBox(hwndExplorer, out, L"TortoiseGit", MB_OK | MB_ICONERROR);
@@ -51,9 +51,9 @@ bool ResolveCommand::Execute()
 				}
 
 				HWND resolveMsgWnd = parser.HasVal(L"resolvemsghwnd") ? (HWND)parser.GetLongLongVal(L"resolvemsghwnd") : 0;
-				if (resolveMsgWnd && CRegDWORD(_T("Software\\TortoiseGit\\RefreshFileListAfterResolvingConflict"), TRUE) == TRUE)
+				if (resolveMsgWnd && CRegDWORD(L"Software\\TortoiseGit\\RefreshFileListAfterResolvingConflict", TRUE) == TRUE)
 				{
-					static UINT WM_REVERTMSG = RegisterWindowMessage(_T("GITSLNM_NEEDSREFRESH"));
+					static UINT WM_REVERTMSG = RegisterWindowMessage(L"GITSLNM_NEEDSREFRESH");
 					::PostMessage(resolveMsgWnd, WM_REVERTMSG, NULL, NULL);
 				}
 				return true;

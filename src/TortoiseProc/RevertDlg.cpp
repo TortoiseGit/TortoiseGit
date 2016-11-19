@@ -64,7 +64,7 @@ BOOL CRevertDlg::OnInitDialog()
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
-	m_RevertList.Init(GITSLC_COLEXT | GITSLC_COLSTATUS | GITSLC_COLADD| GITSLC_COLDEL, _T("RevertDlg"));
+	m_RevertList.Init(GITSLC_COLEXT | GITSLC_COLSTATUS | GITSLC_COLADD| GITSLC_COLDEL, L"RevertDlg");
 	m_RevertList.SetConfirmButton((CButton*)GetDlgItem(IDOK));
 	m_RevertList.SetSelectButton(&m_SelectAll);
 	m_RevertList.SetCancelBool(&m_bCancelled);
@@ -88,7 +88,7 @@ BOOL CRevertDlg::OnInitDialog()
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 	if (hWndExplorer)
 		CenterWindow(CWnd::FromHandle(hWndExplorer));
-	EnableSaveRestore(_T("RevertDlg"));
+	EnableSaveRestore(L"RevertDlg");
 
 	// first start a thread to obtain the file list with the status without
 	// blocking the dialog
@@ -127,7 +127,7 @@ UINT CRevertDlg::RevertThread()
 
 	if (m_RevertList.HasUnversionedItems())
 	{
-		if (DWORD(CRegStdDWORD(_T("Software\\TortoiseGit\\UnversionedAsModified"), FALSE)))
+		if (DWORD(CRegStdDWORD(L"Software\\TortoiseGit\\UnversionedAsModified", FALSE)))
 		{
 			GetDlgItem(IDC_UNVERSIONEDITEMS)->ShowWindow(SW_SHOW);
 		}
@@ -299,7 +299,7 @@ LRESULT CRevertDlg::OnFileDropped(WPARAM, LPARAM lParam)
 
 	// Always start the timer, since the status of an existing item might have changed
 	SetTimer(REFRESHTIMER, 200, nullptr);
-	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Item %s dropped, timer started\n"), path.GetWinPath());
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Item %s dropped, timer started\n", path.GetWinPath());
 	return 0;
 }
 

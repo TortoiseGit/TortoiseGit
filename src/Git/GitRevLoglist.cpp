@@ -238,8 +238,8 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 				{
 					CTGitPath path = m_Files[m_Files.GetCount() - 1];
 					m_Files.RemoveItem(path);
-					path.m_StatAdd = _T("-");
-					path.m_StatDel = _T("-");
+					path.m_StatAdd = L"-";
+					path.m_StatDel = L"-";
 					path.m_Action = CTGitPath::LOGACTIONS_MODIFIED;
 					m_Action = oldAction | CTGitPath::LOGACTIONS_MODIFIED;
 					m_Files.AddPath(path);
@@ -263,16 +263,16 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 
 				if (delta->flags & GIT_DIFF_FLAG_BINARY)
 				{
-					path.m_StatAdd = _T("-");
-					path.m_StatDel = _T("-");
+					path.m_StatAdd = L"-";
+					path.m_StatDel = L"-";
 				}
 				else
 				{
 					size_t adds, dels;
 					if (git_patch_line_stats(nullptr, &adds, &dels, patch) < 0)
 						return -1;
-					path.m_StatAdd.Format(_T("%d"), adds);
-					path.m_StatDel.Format(_T("%d"), dels);
+					path.m_StatAdd.Format(L"%d", adds);
+					path.m_StatDel.Format(L"%d", dels);
 				}
 				m_Files.AddPath(path);
 			}
@@ -354,13 +354,13 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 
 			if (IsBin)
 			{
-				path.m_StatAdd = _T("-");
-				path.m_StatDel = _T("-");
+				path.m_StatAdd = L"-";
+				path.m_StatDel = L"-";
 			}
 			else
 			{
-				path.m_StatAdd.Format(_T("%d"), inc);
-				path.m_StatDel.Format(_T("%d"), dec);
+				path.m_StatAdd.Format(L"%d", inc);
+				path.m_StatDel.Format(L"%d", dec);
 			}
 			m_Files.AddPath(path);
 		}
@@ -403,12 +403,12 @@ int GitRevLoglist::GetRefLog(const CString& ref, std::vector<GitRevLoglist>& ref
 
 			GitRevLoglist rev;
 			rev.m_CommitHash = (const unsigned char*)git_reflog_entry_id_new(entry)->id;
-			rev.m_Ref.Format(_T("%s@{%d}"), (LPCTSTR)ref, i);
+			rev.m_Ref.Format(L"%s@{%d}", (LPCTSTR)ref, i);
 			rev.GetCommitterDate() = CTime(git_reflog_entry_committer(entry)->when.time);
 			if (git_reflog_entry_message(entry) != nullptr)
 			{
 				CString one = CUnicodeUtils::GetUnicode(git_reflog_entry_message(entry));
-				int message = one.Find(_T(": "), 0);
+				int message = one.Find(L": ");
 				if (message > 0)
 				{
 					rev.m_RefAction = one.Left(message);
@@ -434,7 +434,7 @@ int GitRevLoglist::GetRefLog(const CString& ref, std::vector<GitRevLoglist>& ref
 			rev.GetCommitterDate() = CTime(time);
 
 			CString one = CUnicodeUtils::GetUnicode(msg);
-			int message = one.Find(_T(": "), 0);
+			int message = one.Find(L": ");
 			if (message > 0)
 			{
 				rev.m_RefAction = one.Left(message);
@@ -450,7 +450,7 @@ int GitRevLoglist::GetRefLog(const CString& ref, std::vector<GitRevLoglist>& ref
 		for (size_t i = tmp.size(), id = 0; i > 0; --i, ++id)
 		{
 			GitRevLoglist rev = tmp[i - 1];
-			rev.m_Ref.Format(_T("%s@{%ld}"), (LPCTSTR)ref, id);
+			rev.m_Ref.Format(L"%s@{%ld}", (LPCTSTR)ref, id);
 			refloglist.push_back(rev);
 		}
 		return 0;
@@ -459,7 +459,7 @@ int GitRevLoglist::GetRefLog(const CString& ref, std::vector<GitRevLoglist>& ref
 	CString dotGitDir;
 	if (!GitAdminDir::GetAdminDirPath(g_Git.m_CurrentDir, dotGitDir))
 	{
-		error = _T(".git directory not found");
+		error = L".git directory not found";
 		return -1;
 	}
 
@@ -469,38 +469,38 @@ int GitRevLoglist::GetRefLog(const CString& ref, std::vector<GitRevLoglist>& ref
 		return 0;
 
 	CString cmd, out;
-	cmd.Format(_T("git.exe reflog show --pretty=\"%%H %%gD: %%gs\" --date=raw %s"), (LPCTSTR)ref);
+	cmd.Format(L"git.exe reflog show --pretty=\"%%H %%gD: %%gs\" --date=raw %s", (LPCTSTR)ref);
 	if (g_Git.Run(cmd, &out, &error, CP_UTF8))
 		return -1;
 
 	int i = 0;
-	CString prefix = ref + _T("@{");
+	CString prefix = ref + L"@{";
 	int pos = 0;
 	while (pos >= 0)
 	{
-		CString one = out.Tokenize(_T("\n"), pos);
+		CString one = out.Tokenize(L"\n", pos);
 		int refPos = one.Find(L' ');
 		if (refPos < 0)
 			continue;
 
 		GitRevLoglist rev;
 		rev.m_CommitHash = one.Left(refPos);
-		rev.m_Ref.Format(_T("%s@{%d}"), (LPCTSTR)ref, i++);
+		rev.m_Ref.Format(L"%s@{%d}", (LPCTSTR)ref, i++);
 		int prefixPos = one.Find(prefix, refPos + 1);
 		if (prefixPos != refPos + 1)
 			continue;
 
-		int spacePos = one.Find(_T(' '), prefixPos + prefix.GetLength() + 1);
+		int spacePos = one.Find(L' ', prefixPos + prefix.GetLength() + 1);
 		if (spacePos < 0)
 			continue;
 
 		CString timeStr = one.Mid(prefixPos + prefix.GetLength(), spacePos - prefixPos - prefix.GetLength());
-		rev.GetCommitterDate() = CTime(_ttoi(timeStr));
-		int action = one.Find(_T("}: "), spacePos + 1);
+		rev.GetCommitterDate() = CTime(_wtoi(timeStr));
+		int action = one.Find(L"}: ", spacePos + 1);
 		if (action > 0)
 		{
 			action += 2;
-			int message = one.Find(_T(": "), action);
+			int message = one.Find(L": ", action);
 			if (message > 0)
 			{
 				rev.m_RefAction = one.Mid(action + 1, message - action - 1);

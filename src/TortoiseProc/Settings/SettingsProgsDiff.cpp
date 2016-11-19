@@ -26,12 +26,12 @@
 IMPLEMENT_DYNAMIC(CSettingsProgsDiff, ISettingsPropPage)
 CSettingsProgsDiff::CSettingsProgsDiff()
 	: ISettingsPropPage(CSettingsProgsDiff::IDD)
-	, m_dlgAdvDiff(_T("Diff"))
+	, m_dlgAdvDiff(L"Diff")
 	, m_iExtDiff(0)
 	, m_iDiffViewer(0)
 {
-	m_regDiffPath = CRegString(_T("Software\\TortoiseGit\\Diff"));
-	m_regDiffViewerPath = CRegString(_T("Software\\TortoiseGit\\DiffViewer"));
+	m_regDiffPath = CRegString(L"Software\\TortoiseGit\\Diff");
+	m_regDiffViewerPath = CRegString(L"Software\\TortoiseGit\\DiffViewer");
 }
 
 CSettingsProgsDiff::~CSettingsProgsDiff()
@@ -97,13 +97,13 @@ BOOL CSettingsProgsDiff::OnInitDialog()
 BOOL CSettingsProgsDiff::OnApply()
 {
 	UpdateData();
-	if (m_iExtDiff == 0 && !m_sDiffPath.IsEmpty() && m_sDiffPath.Left(1) != _T("#"))
+	if (m_iExtDiff == 0 && !m_sDiffPath.IsEmpty() && m_sDiffPath.Left(1) != L"#")
 		m_sDiffPath = L'#' + m_sDiffPath;
 	m_regDiffPath = m_sDiffPath;
 
 	m_dlgAdvDiff.SaveData();
 
-	if (m_iDiffViewer == 0 && !m_sDiffViewerPath.IsEmpty() && m_sDiffViewerPath.Left(1) != _T("#"))
+	if (m_iDiffViewer == 0 && !m_sDiffViewerPath.IsEmpty() && m_sDiffViewerPath.Left(1) != L"#")
 		m_sDiffViewerPath = L'#' + m_sDiffViewerPath;
 
 	m_regDiffViewerPath = m_sDiffViewerPath;
@@ -159,11 +159,11 @@ void CSettingsProgsDiff::OnEnChangeExtdiff()
 void CSettingsProgsDiff::CheckProgComment()
 {
 	UpdateData();
-	if (m_iExtDiff == 0 && !m_sDiffPath.IsEmpty() && m_sDiffPath.Left(1) != _T("#"))
+	if (m_iExtDiff == 0 && !m_sDiffPath.IsEmpty() && m_sDiffPath.Left(1) != L"#")
 		m_sDiffPath = L'#' + m_sDiffPath;
 	else if (m_iExtDiff == 1)
 		m_sDiffPath.TrimLeft(L'#');
-	if (m_iDiffViewer == 0 && !m_sDiffViewerPath.IsEmpty() && m_sDiffViewerPath.Left(1) != _T("#"))
+	if (m_iDiffViewer == 0 && !m_sDiffViewerPath.IsEmpty() && m_sDiffViewerPath.Left(1) != L"#")
 		m_sDiffViewerPath = L'#' + m_sDiffViewerPath;
 	else if (m_iDiffViewer == 1)
 		m_sDiffViewerPath.TrimLeft(L'#');

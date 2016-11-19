@@ -46,8 +46,8 @@ CDiffData::CDiffData(void)
 
 	m_bBlame = false;
 
-	m_sPatchOriginal = _T(": original");
-	m_sPatchPatched = _T(": patched");
+	m_sPatchOriginal = L": original";
+	m_sPatchPatched = L": patched";
 }
 
 CDiffData::~CDiffData(void)
@@ -95,8 +95,8 @@ svn_diff_file_options_t * CDiffData::CreateDiffFileOptions(DWORD dwIgnoreWS, boo
 
 bool CDiffData::HandleSvnError(svn_error_t * svnerr)
 {
-	TRACE(_T("diff-error in CDiffData::Load()\n"));
-	TRACE(_T("diff-error in CDiffData::Load()\n"));
+	TRACE(L"diff-error in CDiffData::Load()\n");
+	TRACE(L"diff-error in CDiffData::Load()\n");
 	CStringA sMsg = CStringA(svnerr->message);
 	while (svnerr->child)
 	{
@@ -156,13 +156,13 @@ bool CDiffData::CompareWithIgnoreWS(CString s1, CString s2, DWORD dwIgnoreWS) co
 {
 	if (dwIgnoreWS == 2)
 	{
-		s1 = s1.TrimLeft(_T(" \t"));
-		s2 = s2.TrimLeft(_T(" \t"));
+		s1 = s1.TrimLeft(L" \t");
+		s2 = s2.TrimLeft(L" \t");
 	}
 	else
 	{
-		s1 = s1.TrimRight(_T(" \t"));
-		s2 = s2.TrimRight(_T(" \t"));
+		s1 = s1.TrimRight(L" \t");
+		s2 = s2.TrimRight(L" \t");
 	}
 
 	return s1 != s2;
@@ -199,10 +199,10 @@ BOOL CDiffData::Load()
 
 	m_Diff3.Clear();
 
-	CRegDWORD regIgnoreWS = CRegDWORD(_T("Software\\TortoiseGitMerge\\IgnoreWS"));
-	CRegDWORD regIgnoreEOL = CRegDWORD(_T("Software\\TortoiseGitMerge\\IgnoreEOL"), TRUE);
-	CRegDWORD regIgnoreCase = CRegDWORD(_T("Software\\TortoiseGitMerge\\CaseInsensitive"), FALSE);
-	CRegDWORD regIgnoreComments = CRegDWORD(_T("Software\\TortoiseGitMerge\\IgnoreComments"), FALSE);
+	CRegDWORD regIgnoreWS = CRegDWORD(L"Software\\TortoiseGitMerge\\IgnoreWS");
+	CRegDWORD regIgnoreEOL = CRegDWORD(L"Software\\TortoiseGitMerge\\IgnoreEOL", TRUE);
+	CRegDWORD regIgnoreCase = CRegDWORD(L"Software\\TortoiseGitMerge\\CaseInsensitive", FALSE);
+	CRegDWORD regIgnoreComments = CRegDWORD(L"Software\\TortoiseGitMerge\\IgnoreComments", FALSE);
 	DWORD dwIgnoreWS = regIgnoreWS;
 	bool bIgnoreEOL = ((DWORD)regIgnoreEOL)!=0;
 	BOOL bIgnoreCase = ((DWORD)regIgnoreCase)!=0;
@@ -667,7 +667,7 @@ CDiffData::DoTwoWayDiff(const CString& sBaseFilename, const CString& sYourFilena
 		}
 	}//*/
 
-	TRACE(_T("done with 2-way diff\n"));
+	TRACE(L"done with 2-way diff\n");
 
 	HideUnchangedSections(&m_YourBaseLeft, &m_YourBaseRight, NULL);
 
@@ -689,7 +689,7 @@ CDiffData::DoThreeWayDiff(const CString& sBaseFilename, const CString& sYourFile
 	m_arDiff3LinesYour.Reserve(lengthHint);
 	m_arDiff3LinesTheir.Reserve(lengthHint);
 
-	CRegDWORD contextLines = CRegDWORD(_T("Software\\TortoiseGitMerge\\ContextLines"), 3);
+	CRegDWORD contextLines = CRegDWORD(L"Software\\TortoiseGitMerge\\ContextLines", 3);
 	svn_diff_file_options_t * options = CreateDiffFileOptions(dwIgnoreWS, bIgnoreEOL, pool);
 
 	// convert CString filenames (UTF-16 or ANSI) to UTF-8
@@ -708,8 +708,8 @@ CDiffData::DoThreeWayDiff(const CString& sBaseFilename, const CString& sYourFile
 	LONG theirline = 0;
 	LONG resline = 0;
 	// common viewdata
-	const viewdata emptyConflictEmpty(_T(""), DIFFSTATE_CONFLICTEMPTY, DIFF_EMPTYLINENUMBER, EOL_NOENDING, HIDESTATE_SHOWN);
-	const viewdata emptyIdenticalRemoved(_T(""), DIFFSTATE_IDENTICALREMOVED, DIFF_EMPTYLINENUMBER, EOL_NOENDING, HIDESTATE_SHOWN);
+	const viewdata emptyConflictEmpty(L"", DIFFSTATE_CONFLICTEMPTY, DIFF_EMPTYLINENUMBER, EOL_NOENDING, HIDESTATE_SHOWN);
+	const viewdata emptyIdenticalRemoved(L"", DIFFSTATE_IDENTICALREMOVED, DIFF_EMPTYLINENUMBER, EOL_NOENDING, HIDESTATE_SHOWN);
 	while (tempdiff)
 	{
 		if (tempdiff->type == svn_diff__type_common)
@@ -852,7 +852,7 @@ CDiffData::DoThreeWayDiff(const CString& sBaseFilename, const CString& sYourFile
 				{
 					AddLines(baseline, yourline, theirline);
 
-					m_Diff3.AddData(_T(""), DIFFSTATE_CONFLICTED, resline, EOL_NOENDING, HIDESTATE_SHOWN, -1);
+					m_Diff3.AddData(L"", DIFFSTATE_CONFLICTED, resline, EOL_NOENDING, HIDESTATE_SHOWN, -1);
 
 					resline++;
 				}
@@ -970,7 +970,7 @@ CDiffData::DoThreeWayDiff(const CString& sBaseFilename, const CString& sYourFile
 		}
 		else
 		{
-			TRACE(_T("something bad happened during diff!\n"));
+			TRACE(L"something bad happened during diff!\n");
 		}
 		tempdiff = tempdiff->next;
 
@@ -1015,7 +1015,7 @@ CDiffData::DoThreeWayDiff(const CString& sBaseFilename, const CString& sYourFile
 	ASSERT(m_Diff3.GetCount() == m_YourBaseBoth.GetCount());
 	ASSERT(m_TheirBaseBoth.GetCount() == m_YourBaseBoth.GetCount());
 
-	TRACE(_T("done with 3-way diff\n"));
+	TRACE(L"done with 3-way diff\n");
 
 	HideUnchangedSections(&m_Diff3, &m_YourBaseBoth, &m_TheirBaseBoth);
 
@@ -1027,7 +1027,7 @@ void CDiffData::HideUnchangedSections(CViewData * data1, CViewData * data2, CVie
 	if (data1 == NULL)
 		return;
 
-	CRegDWORD contextLines = CRegDWORD(_T("Software\\TortoiseGitMerge\\ContextLines"), 1);
+	CRegDWORD contextLines = CRegDWORD(L"Software\\TortoiseGitMerge\\ContextLines", 1);
 
 	if (data1->GetCount() > 1)
 	{

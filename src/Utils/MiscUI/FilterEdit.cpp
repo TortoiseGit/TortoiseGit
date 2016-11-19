@@ -131,9 +131,9 @@ BOOL CFilterEdit::SetCueBanner(LPCWSTR lpcwText)
 {
 	if (lpcwText)
 	{
-		size_t len = _tcslen(lpcwText);
+		size_t len = wcslen(lpcwText);
 		m_pCueBanner.reset(new TCHAR[len + 1]);
-		_tcscpy_s(m_pCueBanner.get(), len + 1, lpcwText);
+		wcscpy_s(m_pCueBanner.get(), len + 1, lpcwText);
 		InvalidateRect(nullptr, TRUE);
 		return TRUE;
 	}
@@ -227,7 +227,7 @@ void CFilterEdit::OnLButtonUp(UINT nFlags, CPoint point)
 	InvalidateRect(nullptr);
 	if (m_rcButtonArea.PtInRect(point))
 	{
-		SetWindowText(_T(""));
+		SetWindowText(L"");
 		CWnd *pOwner = GetOwner();
 		if (pOwner)
 		{
@@ -390,7 +390,7 @@ void CFilterEdit::DrawDimText()
 	dcDraw.SelectObject((*GetFont()));
 	dcDraw.SetTextColor(GetSysColor(COLOR_GRAYTEXT));
 	dcDraw.SetBkColor(GetSysColor(COLOR_WINDOW));
-	dcDraw.DrawText(m_pCueBanner.get(), (int)_tcslen(m_pCueBanner.get()), &rRect, DT_CENTER | DT_VCENTER);
+	dcDraw.DrawText(m_pCueBanner.get(), (int)wcslen(m_pCueBanner.get()), &rRect, DT_CENTER | DT_VCENTER);
 	dcDraw.RestoreDC(iState);
 	return;
 }
@@ -415,12 +415,12 @@ LRESULT CFilterEdit::OnPaste(WPARAM, LPARAM)
 		CloseClipboard();
 
 		// elimate control chars, especially newlines
-		toInsert.Replace(_T('\t'), _T(' '));
+		toInsert.Replace(L'\t', L' ');
 
 		// only insert first line
-		toInsert.Replace(_T('\r'), _T('\n'));
+		toInsert.Replace(L'\r', L'\n');
 		int pos = 0;
-		toInsert = toInsert.Tokenize(_T("\n"), pos);
+		toInsert = toInsert.Tokenize(L"\n", pos);
 		toInsert.Trim();
 
 		// get the current text

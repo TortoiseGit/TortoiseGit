@@ -34,8 +34,8 @@ IMPLEMENT_DYNAMIC(CSendMailDlg, CResizableStandAloneDialog)
 CSendMailDlg::CSendMailDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CSendMailDlg::IDD, pParent)
 	, m_bCustomSubject(FALSE)
-	, m_regAttach(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Attach"),0)
-	, m_regCombine(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Combine"),0)
+	, m_regAttach(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\Attach", 0)
+	, m_regCombine(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\Combine", 0)
 {
 	m_bAttachment  = m_regAttach;
 	m_bCombine =     m_regCombine;
@@ -93,7 +93,7 @@ BOOL CSendMailDlg::OnInitDialog()
 	AdjustControlSize(IDC_SENDMAIL_COMBINE);
 	AdjustControlSize(IDC_SENDMAIL_SETUP);
 
-	EnableSaveRestore(_T("SendMailDlg"));
+	EnableSaveRestore(L"SendMailDlg");
 
 	CString sWindowTitle;
 	GetWindowText(sWindowTitle);
@@ -102,12 +102,12 @@ BOOL CSendMailDlg::OnInitDialog()
 	m_ctrlCC.Init();
 	m_ctrlTO.Init();
 
-	m_ctrlCC.SetSeparator(_T(";"));
-	m_ctrlTO.SetSeparator(_T(";"));
+	m_ctrlCC.SetSeparator(L";");
+	m_ctrlTO.SetSeparator(L";");
 
 	m_AddressReg.SetMaxHistoryItems(0xFFFF);
 
-	m_AddressReg.Load(_T("Software\\TortoiseGit\\TortoiseProc\\EmailAddress\\"),_T("email"));
+	m_AddressReg.Load(L"Software\\TortoiseGit\\TortoiseProc\\EmailAddress\\", L"email");
 	for (size_t i = 0; i < m_AddressReg.GetCount(); ++i)
 	{
 		m_ctrlCC.AddSearchString(m_AddressReg.GetEntry(i));
@@ -150,7 +150,7 @@ void CSendMailDlg::OnBnClickedOk()
 {
 	this->UpdateData();
 
-	if (m_To.IsEmpty() && m_CC.IsEmpty() && CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\DeliveryType"), SEND_MAIL_MAPI) != SEND_MAIL_MAPI)
+	if (m_To.IsEmpty() && m_CC.IsEmpty() && CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\DeliveryType", SEND_MAIL_MAPI) != SEND_MAIL_MAPI)
 	{
 		CMessageBox::Show(GetSafeHwnd(), IDS_ERR_ADDRESS_NO_EMPTY, IDS_APPNAME, MB_OK | MB_ICONEXCLAMATION);
 		return;
@@ -159,14 +159,14 @@ void CSendMailDlg::OnBnClickedOk()
 	CString Address;
 	while(start>=0)
 	{
-		Address=this->m_CC.Tokenize(_T(";"),start);
+		Address = m_CC.Tokenize(L";", start);
 		m_AddressReg.AddEntry(Address);
 		m_AddressReg.Save();
 	}
 	start =0;
 	while(start>=0)
 	{
-		Address=this->m_To.Tokenize(_T(";"),start);
+		Address = m_To.Tokenize(L";", start);
 		m_AddressReg.AddEntry(Address);
 		m_AddressReg.Save();
 	}
@@ -206,7 +206,7 @@ void CSendMailDlg::UpdateSubject()
 			GetDlgItem(IDC_SENDMAIL_SUBJECT)->SetWindowText(m_MapPatch[index].m_Subject);
 		}
 		else
-			GetDlgItem(IDC_SENDMAIL_SUBJECT)->SetWindowText(_T(""));
+			GetDlgItem(IDC_SENDMAIL_SUBJECT)->SetWindowText(L"");
 	}
 }
 
@@ -240,5 +240,5 @@ void CSendMailDlg::OnEnChangeSendmailSubject()
 
 void CSendMailDlg::OnStnClickedSendmailSetup()
 {
-	CCommonAppUtils::RunTortoiseGitProc(_T("/command:settings /page:smtp"));
+	CCommonAppUtils::RunTortoiseGitProc(L"/command:settings /page:smtp");
 }

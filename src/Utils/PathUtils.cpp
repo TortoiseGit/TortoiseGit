@@ -23,7 +23,7 @@
 
 BOOL CPathUtils::MakeSureDirectoryPathExists(LPCTSTR path)
 {
-	size_t len = _tcslen(path) + 10;
+	size_t len = wcslen(path) + 10;
 	auto buf = std::make_unique<TCHAR[]>(len);
 	auto internalpathbuf = std::make_unique<TCHAR[]>(len);
 	TCHAR * pPath = internalpathbuf.get();
@@ -35,14 +35,14 @@ BOOL CPathUtils::MakeSureDirectoryPathExists(LPCTSTR path)
 	do
 	{
 		SecureZeroMemory(buf.get(), (len)*sizeof(TCHAR));
-		TCHAR * slashpos = _tcschr(pPath, '\\');
+		TCHAR* slashpos = wcschr(pPath, L'\\');
 		if (slashpos)
-			_tcsncpy_s(buf.get(), len, internalpathbuf.get(), slashpos - internalpathbuf.get());
+			wcsncpy_s(buf.get(), len, internalpathbuf.get(), slashpos - internalpathbuf.get());
 		else
-			_tcsncpy_s(buf.get(), len, internalpathbuf.get(), len);
+			wcsncpy_s(buf.get(), len, internalpathbuf.get(), len);
 		CreateDirectory(buf.get(), &attribs);
-		pPath = _tcschr(pPath, '\\');
-	} while ((pPath++)&&(_tcschr(pPath, '\\')));
+		pPath = wcschr(pPath, L'\\');
+	} while ((pPath++) && (wcschr(pPath, L'\\')));
 
 	return CreateDirectory(internalpathbuf.get(), &attribs);
 }
@@ -178,7 +178,7 @@ static const char uri_char_validity[256] = {
 
 void CPathUtils::ConvertToBackslash(LPTSTR dest, LPCTSTR src, size_t len)
 {
-	_tcscpy_s(dest, len, src);
+	wcscpy_s(dest, len, src);
 	TCHAR * p = dest;
 	for (; *p != '\0'; ++p)
 		if (*p == '/')
@@ -292,17 +292,16 @@ BOOL CPathUtils::FileCopy(CString srcPath, CString destPath, BOOL force)
 
 CString CPathUtils::ParsePathInString(const CString& Str)
 {
-	CString sToken;
 	int curPos = 0;
-	sToken = Str.Tokenize(_T("'\t\r\n"), curPos);
+	CString sToken = Str.Tokenize(L"'\t\r\n", curPos);
 	while (!sToken.IsEmpty())
 	{
 		if ((sToken.Find('/')>=0)||(sToken.Find('\\')>=0))
 		{
-			sToken.Trim(_T("'\""));
+			sToken.Trim(L"'\"");
 			return sToken;
 		}
-		sToken = Str.Tokenize(_T("'\t\r\n"), curPos);
+		sToken = Str.Tokenize(L"'\t\r\n", curPos);
 	}
 	sToken.Empty();
 	return sToken;
@@ -345,7 +344,7 @@ CString CPathUtils::GetAppDataDirectory()
 	if (!PathIsDirectory(path))
 		CreateDirectory(path, nullptr);
 
-	path += _T('\\');
+	path += L'\\';
 	return path;
 }
 
@@ -360,7 +359,7 @@ CString CPathUtils::GetLocalAppDataDirectory()
 	if (!PathIsDirectory(path))
 		CreateDirectory(path, nullptr);
 
-	path += _T('\\');
+	path += L'\\';
 	return path;
 }
 
@@ -452,12 +451,12 @@ CString CPathUtils::GetVersionFromFile(const CString & p_strFilename)
 
 			// Check the current language
 			VerQueryValue(pBuffer.get(),
-				_T("\\VarFileInfo\\Translation"),
+				L"\\VarFileInfo\\Translation",
 				&lpFixedPointer,
 				&nFixedLength);
 			lpTransArray = (TRANSARRAY*) lpFixedPointer;
 
-			strLangProductVersion.Format(_T("\\StringFileInfo\\%04x%04x\\ProductVersion"),
+			strLangProductVersion.Format(L"\\StringFileInfo\\%04x%04x\\ProductVersion",
 				lpTransArray[0].wLanguageID, lpTransArray[0].wCharacterSet);
 
 			VerQueryValue(pBuffer.get(),
@@ -477,19 +476,19 @@ CString CPathUtils::PathPatternEscape(const CString& path)
 	CString result = path;
 	// first remove already escaped patterns to avoid having those
 	// escaped twice
-	result.Replace(_T("\\["), _T("["));
-	result.Replace(_T("\\]"), _T("]"));
+	result.Replace(L"\\[", L"[");
+	result.Replace(L"\\]", L"]");
 	// now escape the patterns (again)
-	result.Replace(_T("["), _T("\\["));
-	result.Replace(_T("]"), _T("\\]"));
+	result.Replace(L"[", L"\\[");
+	result.Replace(L"]", L"\\]");
 	return result;
 }
 
 CString CPathUtils::PathPatternUnEscape(const CString& path)
 {
 	CString result = path;
-	result.Replace(_T("\\["), _T("["));
-	result.Replace(_T("\\]"), _T("]"));
+	result.Replace(L"\\[", L"[");
+	result.Replace(L"\\]", L"]");
 	return result;
 }
 

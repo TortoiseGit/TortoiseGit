@@ -30,7 +30,7 @@ ShellCache			g_ShellCache;					///< caching of registry entries, ...
 DWORD				g_langid;
 ULONGLONG			g_langTimeout = 0;
 HINSTANCE			g_hResInst = nullptr;
-tstring				g_filepath;
+std::wstring		g_filepath;
 git_wc_status_kind	g_filestatus = git_wc_status_none;	///< holds the corresponding status to the file/dir above
 bool				g_readonlyoverlay = false;
 bool				g_lockedoverlay = false;
@@ -46,7 +46,7 @@ bool				g_ignoredovlloaded = false;
 bool				g_unversionedovlloaded = false;
 CComCriticalSection	g_csGlobalCOMGuard;
 
-LPCTSTR				g_MenuIDString = _T("TortoiseGit");
+LPCTSTR				g_MenuIDString = L"TortoiseGit";
 
 ShellObjects		g_shellObjects;
 CGitIndexFileMap	g_IndexFileMap;
@@ -66,11 +66,11 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID /* lpReserved */)
 	DWORD pathLength = GetModuleFileName(nullptr, buf, MAX_PATH);
 	if(pathLength >= 14)
 	{
-		if (pathLength >= 24 && _tcsicmp(&buf[pathLength - 24], _T("\\TortoiseGitExplorer.exe")) == 0)
+		if (pathLength >= 24 && _wcsicmp(&buf[pathLength - 24], L"\\TortoiseGitExplorer.exe") == 0)
 			bInShellTest = true;
-		if ((_tcsicmp(&buf[pathLength-14], _T("\\ShellTest.exe"))) == 0)
+		if ((_wcsicmp(&buf[pathLength-14], L"\\ShellTest.exe")) == 0)
 			bInShellTest = true;
-		if ((_tcsicmp(&buf[pathLength-13], _T("\\verclsid.exe"))) == 0)
+		if ((_wcsicmp(&buf[pathLength-13], L"\\verclsid.exe")) == 0)
 			bInShellTest = true;
 	}
 

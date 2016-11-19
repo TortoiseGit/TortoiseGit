@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2011-2013 - TortoiseGit
+// Copyright (C) 2011-2013, 2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,7 +25,7 @@ IMPLEMENT_DYNAMIC(CSettingsColors, ISettingsPropPage)
 CSettingsColors::CSettingsColors()
 	: ISettingsPropPage(CSettingsColors::IDD)
 {
-	m_regRevGraphUseLocalForCur = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\Graph\\RevGraphUseLocalForCur"));
+	m_regRevGraphUseLocalForCur = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\Graph\\RevGraphUseLocalForCur");
 }
 
 CSettingsColors::~CSettingsColors()

@@ -32,11 +32,11 @@ CSetProxyPage::CSetProxyPage()
 	, m_serverport(0)
 	, m_isEnabled(FALSE)
 {
-	m_regServeraddress = CRegString(_T("Software\\TortoiseGit\\Git\\Servers\\global\\http-proxy-host"), _T(""));
-	m_regServerport = CRegString(_T("Software\\TortoiseGit\\Git\\Servers\\global\\http-proxy-port"), _T(""));
-	m_regUsername = CRegString(_T("Software\\TortoiseGit\\Git\\Servers\\global\\http-proxy-username"), _T(""));
-	m_regPassword = CRegString(_T("Software\\TortoiseGit\\Git\\Servers\\global\\http-proxy-password"), _T(""));
-	m_regSSHClient = CRegString(_T("Software\\TortoiseGit\\SSH"));
+	m_regServeraddress = CRegString(L"Software\\TortoiseGit\\Git\\Servers\\global\\http-proxy-host", L"");
+	m_regServerport = CRegString(L"Software\\TortoiseGit\\Git\\Servers\\global\\http-proxy-port", L"");
+	m_regUsername = CRegString(L"Software\\TortoiseGit\\Git\\Servers\\global\\http-proxy-username", L"");
+	m_regPassword = CRegString(L"Software\\TortoiseGit\\Git\\Servers\\global\\http-proxy-password", L"");
+	m_regSSHClient = CRegString(L"Software\\TortoiseGit\\SSH");
 	m_SSHClient = m_regSSHClient;
 }
 
@@ -78,8 +78,8 @@ HRESULT StringEscape(const CString& str_in, CString* escaped_string) {
 		escaped_string->ReleaseBuffer();
 	}
 
-	escaped_string->Replace(_T("@"), _T("%40"));
-	escaped_string->Replace(_T(":"), _T("%3a"));
+	escaped_string->Replace(L"@", L"%40");
+	escaped_string->Replace(L":", L"%3a");
 
 	return hr;
 }
@@ -105,24 +105,24 @@ BOOL CSetProxyPage::OnInitDialog()
 
 	m_tooltips.AddTool(IDC_SERVERADDRESS, IDS_SETTINGS_PROXYSERVER_TT);
 
-	CString proxy = g_Git.GetConfigValue(_T("http.proxy"));
+	CString proxy = g_Git.GetConfigValue(L"http.proxy");
 
 	m_SSHClient = m_regSSHClient;
 	if (m_SSHClient.IsEmpty())
-		m_SSHClient = CRegString(_T("Software\\TortoiseGit\\SSH"), _T(""), FALSE, HKEY_LOCAL_MACHINE);
+		m_SSHClient = CRegString(L"Software\\TortoiseGit\\SSH", L"", FALSE, HKEY_LOCAL_MACHINE);
 	if (m_SSHClient.IsEmpty())
 	{
 		TCHAR sPlink[MAX_PATH] = {0};
 		GetModuleFileName(nullptr, sPlink, _countof(sPlink));
-		LPTSTR ptr = _tcsrchr(sPlink, _T('\\'));
+		LPTSTR ptr = wcsrchr(sPlink, L'\\');
 		if (ptr)
 		{
-			_tcscpy_s(ptr + 1, MAX_PATH - (ptr - sPlink + 1), _T("TortoiseGitPlink.exe"));
+			wcscpy_s(ptr + 1, MAX_PATH - (ptr - sPlink + 1), L"TortoiseGitPlink.exe");
 			m_SSHClient = CString(sPlink);
 		}
 	}
 	m_serveraddress = m_regServeraddress;
-	m_serverport = _ttoi((LPCTSTR)(CString)m_regServerport);
+	m_serverport = _wtoi((LPCTSTR)(CString)m_regServerport);
 	m_username = m_regUsername;
 	m_password = m_regPassword;
 
@@ -134,7 +134,7 @@ BOOL CSetProxyPage::OnInitDialog()
 	else
 	{
 		int start=0;
-		start = proxy.Find(_T("://"),start);
+		start = proxy.Find(L"://", start);
 		if(start<0)
 			start =0;
 		else
@@ -179,7 +179,7 @@ BOOL CSetProxyPage::OnInitDialog()
 		if(port<0)
 			m_serverport= 0;
 		else
-			m_serverport = _ttoi(proxy.Mid(port+1));
+			m_serverport = _wtoi(proxy.Mid(port + 1));
 
 		m_isEnabled = TRUE;
 		EnableGroup(TRUE);
@@ -225,7 +225,7 @@ BOOL CSetProxyPage::OnApply()
 
 	CString temp;
 	Store(m_serveraddress, m_regServeraddress);
-	temp.Format(_T("%u"), m_serverport);
+	temp.Format(L"%u", m_serverport);
 	Store(temp, m_regServerport);
 	Store(m_username, m_regUsername);
 	Store(m_password, m_regPassword);
@@ -234,8 +234,8 @@ BOOL CSetProxyPage::OnApply()
 	CString http_proxy;
 	if(!m_serveraddress.IsEmpty())
 	{
-		if (m_serveraddress.Find(_T("://")) == -1)
-			http_proxy=_T("http://");
+		if (m_serveraddress.Find(L"://") == -1)
+			http_proxy = L"http://";
 
 		if(!m_username.IsEmpty())
 		{
@@ -243,7 +243,7 @@ BOOL CSetProxyPage::OnApply()
 
 			if (StringEscape(m_username, &escapedUsername))
 			{
-				::MessageBox(nullptr, _T("Could not encode username."), _T("TortoiseGit"), MB_ICONERROR);
+				::MessageBox(nullptr, L"Could not encode username.", L"TortoiseGit", MB_ICONERROR);
 				return FALSE;
 			}
 
@@ -254,7 +254,7 @@ BOOL CSetProxyPage::OnApply()
 				CString escapedPassword;
 				if (StringEscape(m_password, &escapedPassword))
 				{
-					::MessageBox(nullptr, _T("Could not encode password."), _T("TortoiseGit"), MB_ICONERROR);
+					::MessageBox(nullptr, L"Could not encode password.", L"TortoiseGit", MB_ICONERROR);
 					return FALSE;
 				}
 				http_proxy += L':' + escapedPassword;
@@ -272,9 +272,9 @@ BOOL CSetProxyPage::OnApply()
 	}
 
 	if (m_isEnabled)
-		g_Git.SetConfigValue(_T("http.proxy"),http_proxy,CONFIG_GLOBAL);
+		g_Git.SetConfigValue(L"http.proxy",http_proxy,CONFIG_GLOBAL);
 	else
-		g_Git.UnsetConfigValue(_T("http.proxy"), CONFIG_GLOBAL);
+		g_Git.UnsetConfigValue(L"http.proxy", CONFIG_GLOBAL);
 	m_regSSHClient = m_SSHClient;
 	SetModified(FALSE);
 	return ISettingsPropPage::OnApply();

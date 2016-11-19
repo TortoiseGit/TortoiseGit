@@ -89,20 +89,20 @@ CSize CHTMLFormatter::DrawHTML(CDC * pDC, CRect rect, CString str, LOGFONT font,
 				//waiting for the begin of a tag (<tag>), newline ('\n' or '\r') or tab ('\t')
 				switch (str.GetAt(i))
 				{
-				case _T('<'):
+				case L'<':
 					nState = TEXT_TAG;	//statemachine to 'waiting for the tag'
 					bCloseTag = FALSE;		//opening bracket
 					strTag.Empty();
 					break;
-				case _T('\n'):
+				case L'\n':
 					nCmd = NEW_LINE;
 					nParam = 1;
 					break;
-				case _T('\t'):
+				case L'\t':
 					nCmd = TABULATION;
 					nParam = 1;
 					break;
-				case _T('\r'):
+				case L'\r':
 					break;
 				default:
 					strText += str.GetAt(i);
@@ -113,11 +113,11 @@ CSize CHTMLFormatter::DrawHTML(CDC * pDC, CRect rect, CString str, LOGFONT font,
 				//get the tag itself (until the closing bracket ('>'))
 				switch (str.GetAt(i))
 				{
-				case _T('/'):
+				case L'/':
 					if (strTag.IsEmpty())
 						bCloseTag = TRUE; //found the char's cancel tag
 					break;
-				case _T('<'):
+				case L'<':
 					if (strTag.IsEmpty())
 					{
 						nState = BEGIN_TAG;
@@ -125,84 +125,84 @@ CSize CHTMLFormatter::DrawHTML(CDC * pDC, CRect rect, CString str, LOGFONT font,
 					}
 					else strTag += str.GetAt(i);
 					break;
-				case _T('='):
-				case _T('>'):
+				case L'=':
+				case L'>':
 					i--;
-				//case _T(' '):
+				//case L' ':
 					//Analyses tags
-					if (strTag.CompareNoCase(_T("b"))==0)
+					if (strTag.CompareNoCase(L"b") == 0)
 					{
 						//Bold text
 						nCmd = BOLD;
 						nState = END_TAG;
 					}
-					else if (strTag.CompareNoCase(_T("i")) == 0)
+					else if (strTag.CompareNoCase(L"i") == 0)
 					{
 						//Italic text
 						nCmd = ITALIC;
 						nState = END_TAG;
 					}
-					else if (strTag.CompareNoCase(_T("s")) == 0)
+					else if (strTag.CompareNoCase(L"s") == 0)
 					{
 						//Strikeout text
 						nCmd = STRIKE;
 						nState = END_TAG;
 					}
-					else if (strTag.CompareNoCase(_T("u")) == 0)
+					else if (strTag.CompareNoCase(L"u") == 0)
 					{
 						//Underline text
 						nCmd = UNDERLINE;
 						nState = END_TAG;
 					}
-					else if (strTag.CompareNoCase(_T("t")) == 0)
+					else if (strTag.CompareNoCase(L"t") == 0)
 					{
 						//Tabulation
 						nCmd = TABULATION;
 						nParam = 1;
 						nState = BEGIN_NUMBER;
 					}
-					else if (strTag.CompareNoCase(_T("ct")) == 0)
+					else if (strTag.CompareNoCase(L"ct") == 0)
 					{
 						//Color of the text
 						nCmd = COLOR_TEXT;
 						nParam = crText;
 						nState = BEGIN_NUMBER;
 					}
-					else if (strTag.CompareNoCase(_T("cb")) == 0)
+					else if (strTag.CompareNoCase(L"cb") == 0)
 					{
 						//Color of the background
 						nCmd = COLOR_BK;
 						nParam = crBg;
 						nState = BEGIN_NUMBER;
 					}
-					else if (strTag.CompareNoCase(_T("al")) == 0)
+					else if (strTag.CompareNoCase(L"al") == 0)
 					{
 						//left align
 						nAlign = ALIGN_LEFT;
 						nState = END_TAG;
 					}
-					else if (strTag.CompareNoCase(_T("ac")) == 0)
+					else if (strTag.CompareNoCase(L"ac") == 0)
 					{
 						//center align
 						if (!bCalculate)
 							nAlign = bCloseTag ? ALIGN_LEFT : ALIGN_CENTER;
 						nState = END_TAG;
 					}
-					else if (strTag.CompareNoCase(_T("ar")) == 0)
+					else if (strTag.CompareNoCase(L"ar") == 0)
 					{
 						//right align
 						if (!bCalculate)
 							nAlign = bCloseTag ? ALIGN_LEFT : ALIGN_RIGHT;
 						nState = END_TAG;
 					}
-					else if (strTag.CompareNoCase(_T("hr")) == 0)
+					else if (strTag.CompareNoCase(L"hr") == 0)
 					{
 						//horizontal line
 						nCmd = HORZ_LINE_PERCENT;
 						nParam = 100;
 						nState = BEGIN_NUMBER;
 					}
-					else if (strTag.CompareNoCase(_T("a")) == 0)
+					else if (strTag.CompareNoCase(L"a") == 0)
 					{
 						//link
 						nCmd = LINK;
@@ -217,40 +217,40 @@ CSize CHTMLFormatter::DrawHTML(CDC * pDC, CRect rect, CString str, LOGFONT font,
 				break;
 			case END_TAG:
 				//waiting for the end of the tag
-				if (str.GetAt(i) == _T('>'))
+				if (str.GetAt(i) == L'>')
 					nState = BEGIN_TAG;
 				break;
 			case BEGIN_NUMBER:
 				//waiting for the start of a number
-				if (str.GetAt(i) == _T('='))
+				if (str.GetAt(i) == L'=')
 				{
 					strTag.Empty();
 					nState = TEXT_NUMBER;
 				}
-				else if (str.GetAt(i) == _T('>'))
+				else if (str.GetAt(i) == L'>')
 					nState = BEGIN_TAG; //not a number
 				break;
 			case BEGIN_URL:
 				//waiting for the start of a number
-				if (str.GetAt(i) == _T('='))
+				if (str.GetAt(i) == L'=')
 				{
 					strTag.Empty();
 					nState = TEXT_URL;
 				}
-				else if (str.GetAt(i) == _T('>'))
+				else if (str.GetAt(i) == L'>')
 					nState = BEGIN_TAG; //not a url
 				break;
 			case TEXT_NUMBER:
 				//waiting for a number string
 				switch (str.GetAt(i))
 				{
-				case _T('>'):
+				case L'>':
 					i --;
 					//intended fall through!
-				case _T('%'):
+				case L'%':
 					//Gets the real number from the string
 					if (!strTag.IsEmpty())
-						nParam = _tcstoul(strTag, 0, 0);
+						nParam = wcstoul(strTag, 0, 0);
 					nState = END_TAG;
 					break;
 				default:
@@ -262,7 +262,7 @@ CSize CHTMLFormatter::DrawHTML(CDC * pDC, CRect rect, CString str, LOGFONT font,
 				//waiting for a url
 				switch (str.GetAt(i))
 				{
-				case _T('>'):
+				case L'>':
 					i--;
 					if (!strTag.IsEmpty())
 						m_arLinkURLs.Add(strTag);
@@ -477,5 +477,5 @@ CString CHTMLFormatter::GetLinkForPoint(CPoint pt)
 			return m_arLinkURLs.GetAt(i);
 		}
 	}
-	return _T("");
+	return L"";
 }

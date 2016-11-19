@@ -303,10 +303,10 @@ BOOL ShellCache::IsContextPathAllowed(LPCTSTR path)
 		if (exPath.at(exPath.size() - 1) == '*')
 		{
 			tstring str = exPath.substr(0, exPath.size() - 1);
-			if (_tcsnicmp(str.c_str(), path, str.size()) == 0)
+			if (_wcsnicmp(str.c_str(), path, str.size()) == 0)
 				return FALSE;
 		}
-		else if (_tcsicmp(exPath.c_str(), path) == 0)
+		else if (_wcsicmp(exPath.c_str(), path) == 0)
 			return FALSE;
 	}
 	return TRUE;
@@ -390,7 +390,7 @@ BOOL ShellCache::HasGITAdminDir(LPCTSTR path, BOOL bIsDir, CString* ProjectTopDi
 	tstring folder(path);
 	if (!bIsDir)
 	{
-		size_t pos = folder.rfind(_T('\\'));
+		size_t pos = folder.rfind(L'\\');
 		if (pos != tstring::npos)
 			folder.erase(pos);
 	}

@@ -1036,7 +1036,7 @@ BOOL CResModule::ExtractAccelerator(LPCTSTR lpszType)
 
 		TCHAR szTempBuf[1024] = { 0 };
 		SecureZeroMemory(szTempBuf, sizeof (szTempBuf));
-		std::wstring wmenu = L"";
+		std::wstring wmenu;
 		pME_iter = m_MenuEntries.find(wID);
 		if (pME_iter != m_MenuEntries.end())
 		{
@@ -1154,7 +1154,7 @@ BOOL CResModule::ReplaceAccelerator(LPCTSTR lpszType, WORD wLanguage)
 				continue;   // not a space - user must have made a mistake when translating
 			if (wtemp.compare(4, 1, L"+") == 0)
 			{
-				_stscanf(wtemp.substr(5, 1).c_str(), L"%c", &xkey);
+				swscanf(wtemp.substr(5, 1).c_str(), L"%c", &xkey);
 				lpaccelNew[i].fVirt = xfVirt;
 				lpaccelNew[i].key = (DWORD)xkey;
 			}

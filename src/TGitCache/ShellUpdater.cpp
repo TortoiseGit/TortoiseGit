@@ -133,7 +133,7 @@ void CShellUpdater::WorkerThread()
 			}
 			if (workingPath.IsEmpty())
 				continue;
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": shell notification for %s\n"), workingPath.GetWinPath());
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": shell notification for %s\n", workingPath.GetWinPath());
 			if (workingPath.IsDirectory())
 			{
 				// check if the path is monitored by the watcher. If it isn't, then we have to invalidate the cache

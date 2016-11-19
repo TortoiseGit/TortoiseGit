@@ -40,26 +40,26 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 {
 	SetDllDirectory(L"");
 	SetTaskIDPerUUID();
-	CRegStdDWORD loc = CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), 1033);
+	CRegStdDWORD loc = CRegStdDWORD(L"Software\\TortoiseGit\\LanguageID", 1033);
 	long langId = loc;
 	MSG msg;
 	HACCEL hAccelTable;
 
 #if ENABLE_CRASHHANLDER
-	CCrashReportTGit crasher(_T("TortoiseGitUDiff ") _T(APP_X64_STRING), TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, TGIT_VERDATE);
+	CCrashReportTGit crasher(L"TortoiseGitUDiff " _T(APP_X64_STRING), TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, TGIT_VERDATE);
 	CCrashReport::Instance().AddUserInfoToReport(L"CommandLine", GetCommandLine());
 #endif
 
 	CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
 
 	CLangDll langDLL;
-	hResource = langDLL.Init(_T("TortoiseGitUDiff"), langId);
+	hResource = langDLL.Init(L"TortoiseGitUDiff", langId);
 	if (hResource == NULL)
 		hResource = hInstance;
 
 	CCmdLineParser parser(lpCmdLine);
 
-	if (parser.HasKey(_T("?")) || parser.HasKey(_T("help")))
+	if (parser.HasKey(L"?") || parser.HasKey(L"help"))
 	{
 		ResString rHelp(hResource, IDS_COMMANDLINEHELP);
 		MessageBox(nullptr, rHelp, L"TortoiseGitUDiff", MB_ICONINFORMATION);
@@ -73,16 +73,16 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	InitCommonControlsEx(&used);
 
 
-	HMODULE hSciLexerDll = ::LoadLibrary(_T("SciLexer_tgit.dll"));
+	HMODULE hSciLexerDll = ::LoadLibrary(L"SciLexer_tgit.dll");
 	if (hSciLexerDll == NULL)
 		return FALSE;
 
 	CMainWindow mainWindow(hResource);
-	mainWindow.SetRegistryPath(_T("Software\\TortoiseGit\\UDiffViewerWindowPos"));
-	if (parser.HasVal(_T("title")))
-		mainWindow.SetTitle(parser.GetVal(_T("title")));
-	else if (parser.HasVal(_T("patchfile")))
-		mainWindow.SetTitle(parser.GetVal(_T("patchfile")));
+	mainWindow.SetRegistryPath(L"Software\\TortoiseGit\\UDiffViewerWindowPos");
+	if (parser.HasVal(L"title"))
+		mainWindow.SetTitle(parser.GetVal(L"title"));
+	else if (parser.HasVal(L"patchfile"))
+		mainWindow.SetTitle(parser.GetVal(L"patchfile"));
 	else
 	{
 		ResString rPipeTitle(hResource, IDS_PIPETITLE);
@@ -96,8 +96,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	}
 
 	bool bLoadedSuccessfully = false;
-	if ((lpCmdLine[0] == L'0') ||
-		(parser.HasKey(_T("p"))) )
+	if ((lpCmdLine[0] == L'0') || (parser.HasKey(L"p")))
 	{
 		// input from console pipe
 		// set console to raw mode
@@ -107,8 +106,8 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 
 		bLoadedSuccessfully = mainWindow.LoadFile(GetStdHandle(STD_INPUT_HANDLE));
 	}
-	else if (parser.HasVal(_T("patchfile")))
-		bLoadedSuccessfully = mainWindow.LoadFile(parser.GetVal(_T("patchfile")));
+	else if (parser.HasVal(L"patchfile"))
+		bLoadedSuccessfully = mainWindow.LoadFile(parser.GetVal(L"patchfile"));
 	else if (lpCmdLine[0] != L'0')
 	{
 		// remove double quotes

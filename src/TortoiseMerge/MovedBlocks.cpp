@@ -159,8 +159,8 @@ CString GetTrimmedString(const CString& s1, DWORD dwIgnoreWS)
 		return s2;
 	}
 	else if(dwIgnoreWS == 2)
-		return CString(s1).TrimLeft(_T(" \t"));
-	return CString(s1).TrimRight(_T(" \t"));
+		return CString(s1).TrimLeft(L" \t");
+	return CString(s1).TrimRight(L" \t");
 }
 
 EquivalencyGroup * ExtractGroup(const LineToGroupMap & map, const CString & line, DWORD dwIgnoreWS)

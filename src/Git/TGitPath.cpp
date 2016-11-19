@@ -200,7 +200,7 @@ void CTGitPath::SetFromUnknown(const CString& sPath)
 LPCTSTR CTGitPath::GetWinPath() const
 {
 	if(IsEmpty())
-		return _T("");
+		return L"";
 	if(m_sBackslashPath.IsEmpty())
 		SetBackslashPath(m_sFwdslashPath);
 	return m_sBackslashPath;
@@ -244,7 +244,7 @@ void CTGitPath::SetFwdslashPath(const CString& sPath) const
 
 	SanitizeRootPath(path, true);
 
-	path.Replace(_T("file:////"), _T("file://"));
+	path.Replace(L"file:////", L"file://");
 	m_sFwdslashPath = path;
 }
 
@@ -288,7 +288,7 @@ bool CTGitPath::Delete(bool bTrash, bool bShowErrorUI) const
 		if ((bTrash)||(IsDirectory()))
 		{
 			auto buf = std::make_unique<TCHAR[]>(m_sBackslashPath.GetLength() + 2);
-			_tcscpy_s(buf.get(), m_sBackslashPath.GetLength() + 2, m_sBackslashPath);
+			wcscpy_s(buf.get(), m_sBackslashPath.GetLength() + 2, m_sBackslashPath);
 			buf[m_sBackslashPath.GetLength()] = L'\0';
 			buf[m_sBackslashPath.GetLength() + 1] = L'\0';
 			bRet = CTGitPathList::DeleteViaShell(buf.get(), bTrash, bShowErrorUI);
@@ -327,7 +327,7 @@ void CTGitPath::UpdateAttributes() const
 	EnsureBackslashPathSet();
 	WIN32_FILE_ATTRIBUTE_DATA attribs;
 	if (m_sBackslashPath.GetLength() >= 248)
-		m_sLongBackslashPath = _T("\\\\?\\") + m_sBackslashPath;
+		m_sLongBackslashPath = L"\\\\?\\" + m_sBackslashPath;
 	if(GetFileAttributesEx(m_sBackslashPath.GetLength() >= 248 ? m_sLongBackslashPath : m_sBackslashPath, GetFileExInfoStandard, &attribs))
 	{
 		m_bIsDirectory = !!(attribs.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
@@ -491,7 +491,7 @@ CString CTGitPath::GetBaseFilename() const
 {
 	int dot;
 	CString filename=GetFilename();
-	dot = filename.ReverseFind(_T('.'));
+	dot = filename.ReverseFind(L'.');
 	if(dot>0)
 		filename.Truncate(dot);
 	return filename;
@@ -669,11 +669,11 @@ void CTGitPath::AppendPathString(const CString& sAppend)
 {
 	EnsureBackslashPathSet();
 	CString cleanAppend(sAppend);
-	cleanAppend.Replace('/', '\\');
-	cleanAppend.TrimLeft('\\');
-	m_sBackslashPath.TrimRight('\\');
+	cleanAppend.Replace(L'/', L'\\');
+	cleanAppend.TrimLeft(L'\\');
+	m_sBackslashPath.TrimRight(L'\\');
 	CString strCopy = m_sBackslashPath;
-	strCopy += _T('\\');
+	strCopy += L'\\';
 	strCopy += cleanAppend;
 	SetFromWin(strCopy);
 }
@@ -712,7 +712,7 @@ bool CTGitPath::HasSubmodules() const
 	if (HasAdminDir())
 	{
 		CString path = m_sProjectRoot;
-		path += _T("\\.gitmodules");
+		path += L"\\.gitmodules";
 		if( PathFileExists(path) )
 			return true;
 	}
@@ -739,10 +739,10 @@ int CTGitPath::GetAdminDirMask() const
 			CString topProjectDir;
 			if (GitAdminDir::HasAdminDir(GetWinPathString(), false, &topProjectDir))
 			{
-				if (PathFileExists(topProjectDir + _T("\\.gitmodules")))
+				if (PathFileExists(topProjectDir + L"\\.gitmodules"))
 				{
 					CAutoConfig config(true);
-					git_config_add_file_ondisk(config, CGit::GetGitPathStringA(topProjectDir + _T("\\.gitmodules")), GIT_CONFIG_LEVEL_APP, FALSE);
+					git_config_add_file_ondisk(config, CGit::GetGitPathStringA(topProjectDir + L"\\.gitmodules"), GIT_CONFIG_LEVEL_APP, FALSE);
 					CString relativePath = GetWinPathString().Mid(topProjectDir.GetLength());
 					relativePath.Replace(L'\\', L'/');
 					relativePath.Trim(L'/');
@@ -758,19 +758,19 @@ int CTGitPath::GetAdminDirMask() const
 	CString dotGitPath;
 	GitAdminDir::GetAdminDirPath(topdir, dotGitPath);
 
-	if (PathFileExists(dotGitPath + _T("BISECT_START")))
+	if (PathFileExists(dotGitPath + L"BISECT_START"))
 		status |= ITEMIS_BISECT;
 
-	if (PathFileExists(dotGitPath + _T("MERGE_HEAD")))
+	if (PathFileExists(dotGitPath + L"MERGE_HEAD"))
 		status |= ITEMIS_MERGEACTIVE;
 
 	if (HasStashDir(dotGitPath))
 		status |= ITEMIS_STASH;
 
-	if (PathFileExists(dotGitPath + _T("svn")))
+	if (PathFileExists(dotGitPath + L"svn"))
 		status |= ITEMIS_GITSVN;
 
-	if (PathFileExists(topdir + _T("\\.gitmodules")))
+	if (PathFileExists(topdir + L"\\.gitmodules"))
 		status |= ITEMIS_SUBMODULECONTAINER;
 
 	return status;
@@ -864,7 +864,7 @@ bool CTGitPath::HasGitSVNDir() const
 	CString dotGitPath;
 	GitAdminDir::GetAdminDirPath(topdir, dotGitPath);
 
-	return !!PathFileExists(dotGitPath + _T("svn"));
+	return !!PathFileExists(dotGitPath + L"svn");
 }
 bool CTGitPath::IsBisectActive() const
 {
@@ -875,7 +875,7 @@ bool CTGitPath::IsBisectActive() const
 	CString dotGitPath;
 	GitAdminDir::GetAdminDirPath(topdir, dotGitPath);
 
-	return !!PathFileExists(dotGitPath + _T("BISECT_START"));
+	return !!PathFileExists(dotGitPath + L"BISECT_START");
 }
 bool CTGitPath::IsMergeActive() const
 {
@@ -886,7 +886,7 @@ bool CTGitPath::IsMergeActive() const
 	CString dotGitPath;
 	GitAdminDir::GetAdminDirPath(topdir, dotGitPath);
 
-	return !!PathFileExists(dotGitPath + _T("MERGE_HEAD"));
+	return !!PathFileExists(dotGitPath + L"MERGE_HEAD");
 }
 bool CTGitPath::HasRebaseApply() const
 {
@@ -897,7 +897,7 @@ bool CTGitPath::HasRebaseApply() const
 	CString dotGitPath;
 	GitAdminDir::GetAdminDirPath(topdir, dotGitPath);
 
-	return !!PathFileExists(dotGitPath + _T("rebase-apply"));
+	return !!PathFileExists(dotGitPath + L"rebase-apply");
 }
 
 bool CTGitPath::HasAdminDir(CString *ProjectTopDir) const
@@ -935,17 +935,17 @@ bool CTGitPath::IsValidOnWindows() const
 
 	m_bIsValidOnWindows = false;
 	EnsureBackslashPathSet();
-	CString sMatch = m_sBackslashPath + _T("\r\n");
+	CString sMatch = m_sBackslashPath + L"\r\n";
 	std::wstring sPattern;
 	// the 'file://' URL is just a normal windows path:
 	if (CStringUtils::StartsWithI(sMatch, L"file:\\\\"))
 	{
 		sMatch = sMatch.Mid(7);
 		sMatch.TrimLeft(L'\\');
-		sPattern = _T("^(\\\\\\\\\\?\\\\)?(([a-zA-Z]:|\\\\)\\\\)?(((\\.)|(\\.\\.)|([^\\\\/:\\*\\?\"\\|<> ](([^\\\\/:\\*\\?\"\\|<>\\. ])|([^\\\\/:\\*\\?\"\\|<>]*[^\\\\/:\\*\\?\"\\|<>\\. ]))?))\\\\)*[^\\\\/:\\*\\?\"\\|<> ](([^\\\\/:\\*\\?\"\\|<>\\. ])|([^\\\\/:\\*\\?\"\\|<>]*[^\\\\/:\\*\\?\"\\|<>\\. ]))?$");
+		sPattern = L"^(\\\\\\\\\\?\\\\)?(([a-zA-Z]:|\\\\)\\\\)?(((\\.)|(\\.\\.)|([^\\\\/:\\*\\?\"\\|<> ](([^\\\\/:\\*\\?\"\\|<>\\. ])|([^\\\\/:\\*\\?\"\\|<>]*[^\\\\/:\\*\\?\"\\|<>\\. ]))?))\\\\)*[^\\\\/:\\*\\?\"\\|<> ](([^\\\\/:\\*\\?\"\\|<>\\. ])|([^\\\\/:\\*\\?\"\\|<>]*[^\\\\/:\\*\\?\"\\|<>\\. ]))?$";
 	}
 	else
-		sPattern = _T("^(\\\\\\\\\\?\\\\)?(([a-zA-Z]:|\\\\)\\\\)?(((\\.)|(\\.\\.)|([^\\\\/:\\*\\?\"\\|<> ](([^\\\\/:\\*\\?\"\\|<>\\. ])|([^\\\\/:\\*\\?\"\\|<>]*[^\\\\/:\\*\\?\"\\|<>\\. ]))?))\\\\)*[^\\\\/:\\*\\?\"\\|<> ](([^\\\\/:\\*\\?\"\\|<>\\. ])|([^\\\\/:\\*\\?\"\\|<>]*[^\\\\/:\\*\\?\"\\|<>\\. ]))?$");
+		sPattern = L"^(\\\\\\\\\\?\\\\)?(([a-zA-Z]:|\\\\)\\\\)?(((\\.)|(\\.\\.)|([^\\\\/:\\*\\?\"\\|<> ](([^\\\\/:\\*\\?\"\\|<>\\. ])|([^\\\\/:\\*\\?\"\\|<>]*[^\\\\/:\\*\\?\"\\|<>\\. ]))?))\\\\)*[^\\\\/:\\*\\?\"\\|<> ](([^\\\\/:\\*\\?\"\\|<>\\. ])|([^\\\\/:\\*\\?\"\\|<>]*[^\\\\/:\\*\\?\"\\|<>\\. ]))?$";
 
 	try
 	{
@@ -961,7 +961,7 @@ bool CTGitPath::IsValidOnWindows() const
 		if (m_bIsValidOnWindows)
 		{
 			// now check for illegal filenames
-			std::tr1::wregex rx2(_T("\\\\(lpt\\d|com\\d|aux|nul|prn|con)(\\\\|$)"), std::tr1::regex_constants::icase | std::tr1::regex_constants::ECMAScript);
+			std::tr1::wregex rx2(L"\\\\(lpt\\d|com\\d|aux|nul|prn|con)(\\\\|$)", std::tr1::regex_constants::icase | std::tr1::regex_constants::ECMAScript);
 			rmatch = m_sBackslashPath;
 			if (std::tr1::regex_search(rmatch, rx2, std::tr1::regex_constants::match_default))
 				m_bIsValidOnWindows = false;
@@ -1004,7 +1004,7 @@ int CTGitPathList::ParserFromLsFile(BYTE_VECTOR &out,bool /*staged*/)
 		// m_Action is never used and propably never worked (needs to be set after path.SetFromGit)
 		// also dropped LOGACTIONS_CACHE for 'H'
 		// path.m_Action=path.ParserAction(out[pos]);
-		one.Tokenize(_T("\t"),tabstart);
+		one.Tokenize(L"\t", tabstart);
 
 		if(tabstart>=0)
 			path.SetFromGit(one.Right(one.GetLength()-tabstart));
@@ -1013,23 +1013,23 @@ int CTGitPathList::ParserFromLsFile(BYTE_VECTOR &out,bool /*staged*/)
 
 		tabstart=0;
 
-		part=one.Tokenize(_T(" "),tabstart); //Tag
+		part = one.Tokenize(L" ", tabstart); //Tag
 		if (tabstart < 0)
 			return -1;
 
-		part=one.Tokenize(_T(" "),tabstart); //Mode
+		part = one.Tokenize(L" ", tabstart); //Mode
 		if (tabstart < 0)
 			return -1;
 
-		part=one.Tokenize(_T(" "),tabstart); //Hash
+		part = one.Tokenize(L" ", tabstart); //Hash
 		if (tabstart < 0)
 			return -1;
 
-		part=one.Tokenize(_T("\t"),tabstart); //Stage
+		part = one.Tokenize(L"\t", tabstart); //Stage
 		if (tabstart < 0)
 			return -1;
 
-		path.m_Stage=_ttol(part);
+		path.m_Stage = _wtol(part);
 
 		this->AddPath(path);
 
@@ -1053,16 +1053,17 @@ int CTGitPathList::FillUnRev(unsigned int action, const CTGitPathList* list, CSt
 		CString cmd;
 		CString ignored;
 		if(action & CTGitPath::LOGACTIONS_IGNORE)
-			ignored= _T(" -i");
+			ignored = L" -i";
 
 		if (!list)
 		{
-			cmd=_T("git.exe ls-files --exclude-standard --full-name --others -z");
+			cmd = L"git.exe ls-files --exclude-standard --full-name --others -z";
 			cmd+=ignored;
 
 		}
 		else
-		{	cmd.Format(_T("git.exe ls-files --exclude-standard --full-name --others -z%s -- \"%s\""),
+		{
+			cmd.Format(L"git.exe ls-files --exclude-standard --full-name --others -z%s -- \"%s\"",
 					(LPCTSTR)ignored,
 					(*list)[i].GetWinPath());
 		}
@@ -1286,8 +1287,8 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 				//path.SetFromGit(pathname);
 				if (parseDeletes)
 				{
-					path.m_StatAdd=_T("0");
-					path.m_StatDel=_T("0");
+					path.m_StatAdd = L"0";
+					path.m_StatDel = L"0";
 					path.m_Action |= CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MISSING;
 				}
 				else
@@ -1359,7 +1360,7 @@ bool CTGitPathList::LoadFromFile(const CTGitPath& filename)
 		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": CFileException loading target file list\n");
 		TCHAR error[10000] = {0};
 		pE->GetErrorMessage(error, 10000);
-//		CMessageBox::Show(nullptr, error, _T("TortoiseGit"), MB_ICONERROR);
+//		CMessageBox::Show(nullptr, error, L"TortoiseGit", MB_ICONERROR);
 		pE->Delete();
 		return false;
 	}
@@ -1403,7 +1404,7 @@ void CTGitPathList::LoadFromAsteriskSeparatedString(const CString& sPathString)
 	CString temp;
 	for(;;)
 	{
-		temp = sPathString.Tokenize(_T("*"),pos);
+		temp = sPathString.Tokenize(L"*", pos);
 		if(temp.IsEmpty())
 			break;
 		AddPath(CTGitPath(CPathUtils::GetLongPathname(temp)));

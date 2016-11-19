@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013 - TortoiseGit
+// Copyright (C) 2013, 2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,7 +27,7 @@ public:
 	void	Init();
 	bool	IsGravatarEnabled() const { return m_bEnableGravatar; }
 	void	EnableGravatar(bool value) { m_bEnableGravatar = value; }
-	void	LoadGravatar(CString email = _T(""));
+	void	LoadGravatar(CString email = L"");
 
 private:
 	void	GravatarThread();

@@ -48,21 +48,21 @@ CSetMainPage::CSetMainPage()
 	, m_nMaxInline(3000)
 	, m_dwFontSize(0)
 {
-	m_regBackup = CRegDWORD(_T("Software\\TortoiseGitMerge\\Backup"));
-	m_regFirstDiffOnLoad = CRegDWORD(_T("Software\\TortoiseGitMerge\\FirstDiffOnLoad"), TRUE);
-	m_regFirstConflictOnLoad = CRegDWORD(_T("Software\\TortoiseGitMerge\\FirstConflictOnLoad"), TRUE);
-	m_regTabMode = CRegDWORD(_T("Software\\TortoiseGitMerge\\TabMode"), 0);
-	m_regTabSize = CRegDWORD(_T("Software\\TortoiseGitMerge\\TabSize"), 4);
-	m_regEnableEditorConfig = CRegDWORD(_T("Software\\TortoiseGitMerge\\EnableEditorConfig"), FALSE);
-	m_regIgnoreEOL = CRegDWORD(_T("Software\\TortoiseGitMerge\\IgnoreEOL"), TRUE);
-	m_regOnePane = CRegDWORD(_T("Software\\TortoiseGitMerge\\OnePane"));
-	m_regViewLinenumbers = CRegDWORD(_T("Software\\TortoiseGitMerge\\ViewLinenumbers"), 1);
+	m_regBackup = CRegDWORD(L"Software\\TortoiseGitMerge\\Backup");
+	m_regFirstDiffOnLoad = CRegDWORD(L"Software\\TortoiseGitMerge\\FirstDiffOnLoad", TRUE);
+	m_regFirstConflictOnLoad = CRegDWORD(L"Software\\TortoiseGitMerge\\FirstConflictOnLoad", TRUE);
+	m_regTabMode = CRegDWORD(L"Software\\TortoiseGitMerge\\TabMode", 0);
+	m_regTabSize = CRegDWORD(L"Software\\TortoiseGitMerge\\TabSize", 4);
+	m_regEnableEditorConfig = CRegDWORD(L"Software\\TortoiseGitMerge\\EnableEditorConfig", FALSE);
+	m_regIgnoreEOL = CRegDWORD(L"Software\\TortoiseGitMerge\\IgnoreEOL", TRUE);
+	m_regOnePane = CRegDWORD(L"Software\\TortoiseGitMerge\\OnePane");
+	m_regViewLinenumbers = CRegDWORD(L"Software\\TortoiseGitMerge\\ViewLinenumbers", 1);
 	m_regFontName = CRegString(L"Software\\TortoiseGitMerge\\LogFontName", L"Consolas");
-	m_regFontSize = CRegDWORD(_T("Software\\TortoiseGitMerge\\LogFontSize"), 10);
-	m_regCaseInsensitive = CRegDWORD(_T("Software\\TortoiseGitMerge\\CaseInsensitive"), FALSE);
-	m_regUTF8Default = CRegDWORD(_T("Software\\TortoiseGitMerge\\UseUTF8"), FALSE);
-	m_regAutoAdd = CRegDWORD(_T("Software\\TortoiseGitMerge\\AutoAdd"), TRUE);
-	m_regMaxInline = CRegDWORD(_T("Software\\TortoiseGitMerge\\InlineDiffMaxLineLength"), 3000);
+	m_regFontSize = CRegDWORD(L"Software\\TortoiseGitMerge\\LogFontSize", 10);
+	m_regCaseInsensitive = CRegDWORD(L"Software\\TortoiseGitMerge\\CaseInsensitive", FALSE);
+	m_regUTF8Default = CRegDWORD(L"Software\\TortoiseGitMerge\\UseUTF8", FALSE);
+	m_regAutoAdd = CRegDWORD(L"Software\\TortoiseGitMerge\\AutoAdd", TRUE);
+	m_regMaxInline = CRegDWORD(L"Software\\TortoiseGitMerge\\InlineDiffMaxLineLength", 3000);
 	m_regUseRibbons = CRegDWORD(L"Software\\TortoiseGitMerge\\UseRibbons", TRUE);
 	m_regContextLines = CRegDWORD(L"Software\\TortoiseGitMerge\\ContextLines", (DWORD)-1);
 
@@ -109,7 +109,7 @@ void CSetMainPage::DoDataExchange(CDataExchange* pDX)
 	{
 		CString t;
 		m_cFontSizes.GetWindowText(t);
-		m_dwFontSize = _ttoi(t);
+		m_dwFontSize = _wtoi(t);
 	}
 	DDX_Control(pDX, IDC_FONTNAMES, m_cFontNames);
 	DDX_Check(pDX, IDC_LINENUMBERS, m_bViewLinenumbers);
@@ -184,7 +184,7 @@ BOOL CSetMainPage::OnInitDialog()
 	int count = 0;
 	for (int i=6; i<32; i=i+2)
 	{
-		temp.Format(_T("%d"), i);
+		temp.Format(L"%d", i);
 		m_cFontSizes.AddString(temp);
 		m_cFontSizes.SetItemData(count++, i);
 	}
@@ -199,7 +199,7 @@ BOOL CSetMainPage::OnInitDialog()
 	}
 	if (!foundfont)
 	{
-		temp.Format(_T("%lu"), m_dwFontSize);
+		temp.Format(L"%lu", m_dwFontSize);
 		m_cFontSizes.SetWindowText(temp);
 	}
 	m_cFontNames.Setup(DEVICE_FONTTYPE|RASTER_FONTTYPE|TRUETYPE_FONTTYPE, 1, FIXED_PITCH);

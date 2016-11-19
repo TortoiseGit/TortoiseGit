@@ -34,8 +34,8 @@ IMPLEMENT_DYNAMIC(CFormatPatchDlg, CHorizontalResizableStandAloneDialog)
 
 CFormatPatchDlg::CFormatPatchDlg(CWnd* pParent /*=nullptr*/)
 	: CHorizontalResizableStandAloneDialog(CFormatPatchDlg::IDD, pParent)
-	, m_regSendMail(_T("Software\\TortoiseGit\\TortoiseProc\\FormatPatch\\SendMail"), 0)
-	, m_regNoPrefix(_T("Software\\TortoiseGit\\TortoiseProc\\FormatPatch\\NoPrefix"), FALSE)
+	, m_regSendMail(L"Software\\TortoiseGit\\TortoiseProc\\FormatPatch\\SendMail", 0)
+	, m_regNoPrefix(L"Software\\TortoiseGit\\TortoiseProc\\FormatPatch\\NoPrefix", FALSE)
 {
 	m_Num=1;
 	this->m_bSendMail = m_regSendMail;
@@ -120,7 +120,7 @@ BOOL CFormatPatchDlg::OnInitDialog()
 	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
 
 	m_cDir.SetPathHistory(TRUE);
-	m_cDir.LoadHistory(_T("Software\\TortoiseGit\\History\\FormatPatchURLS"), _T("path"));
+	m_cDir.LoadHistory(L"Software\\TortoiseGit\\History\\FormatPatchURLS", L"path");
 	m_cDir.AddString(g_Git.m_CurrentDir);
 
 	STRING_VECTOR list;
@@ -131,13 +131,13 @@ BOOL CFormatPatchDlg::OnInitDialog()
 	if(!m_Since.IsEmpty())
 		m_cSince.SetWindowText(m_Since);
 
-	m_cFrom.LoadHistory(_T("Software\\TortoiseGit\\History\\FormatPatchFromURLS"), _T("ver"));
+	m_cFrom.LoadHistory(L"Software\\TortoiseGit\\History\\FormatPatchFromURLS", L"ver");
 	m_cFrom.SetCurSel(0);
 
 	if(!m_From.IsEmpty())
 		m_cFrom.SetWindowText(m_From);
 
-	m_cTo.LoadHistory(_T("Software\\TortoiseGit\\History\\FormatPatchToURLS"), _T("ver"));
+	m_cTo.LoadHistory(L"Software\\TortoiseGit\\History\\FormatPatchToURLS", L"ver");
 	m_cTo.SetCurSel(0);
 
 	if(!m_To.IsEmpty())
@@ -151,7 +151,7 @@ BOOL CFormatPatchDlg::OnInitDialog()
 	if (g_Git.IsInitRepos())
 		DialogEnableWindow(IDOK, FALSE);
 
-	EnableSaveRestore(_T("FormatPatchDlg"));
+	EnableSaveRestore(L"FormatPatchDlg");
 	return TRUE;
 }
 // CFormatPatchDlg message handlers

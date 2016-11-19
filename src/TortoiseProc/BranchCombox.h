@@ -31,7 +31,7 @@ public:
 	{
 		m_LocalBranchFilter = gPickRef_Head;
 		m_RemoteBranchFilter = gPickRef_Remote;
-		m_DialogName=_T("sync");
+		m_DialogName = L"sync";
 		m_pTooltip = nullptr;
 	}
 protected:
@@ -143,11 +143,11 @@ protected:
 			if (rev.GetCommit(text))
 			{
 				pBranch->DisableTooltip();
-				MessageBox(nullptr, rev.GetLastErr(), _T("TortoiseGit"), MB_ICONERROR);
+				MessageBox(nullptr, rev.GetLastErr(), L"TortoiseGit", MB_ICONERROR);
 				return;
 			}
 
-			tooltip.Format(_T("%s: %s\n%s: %s <%s>\n%s: %s\n%s:\n%s\n%s"),
+			tooltip.Format(L"%s: %s\n%s: %s <%s>\n%s: %s\n%s:\n%s\n%s",
 				(LPCTSTR)CString(MAKEINTRESOURCE(IDS_LOG_REVISION)), // TODOTODO
 				(LPCTSTR)rev.m_CommitHash.ToString(),
 				(LPCTSTR)CString(MAKEINTRESOURCE(IDS_LOG_AUTHOR)),
@@ -188,7 +188,7 @@ protected:
 		else
 		{
 			m_ctrlRemoteBranch.Reset();
-			m_ctrlRemoteBranch.LoadHistory(m_RegKeyRemoteBranch,_T("sync"));
+			m_ctrlRemoteBranch.LoadHistory(m_RegKeyRemoteBranch, L"sync");
 		}
 
 		if(!this->m_strLocalBranch.IsEmpty())

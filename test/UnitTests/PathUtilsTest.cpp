@@ -23,7 +23,7 @@
 
 TEST(CPathUtils, UnescapeTest)
 {
-	CString test(_T("file:///d:/REpos1/uCOS-100/Trunk/name%20with%20spaces/NewTest%20%%20NewTest"));
+	CString test(L"file:///d:/REpos1/uCOS-100/Trunk/name%20with%20spaces/NewTest%20%%20NewTest");
 	CString test2 = CPathUtils::PathUnescape(test);
 	EXPECT_STREQ(L"file:///d:/REpos1/uCOS-100/Trunk/name with spaces/NewTest % NewTest", test2);
 	CStringA test3 = CPathUtils::PathEscape("file:///d:/REpos1/uCOS-100/Trunk/name with spaces/NewTest % NewTest");
@@ -50,11 +50,11 @@ TEST(CPathUtils, ExtTest)
 {
 	CString test(L"d:\\test\\filename.ext");
 	EXPECT_STREQ(L".ext", CPathUtils::GetFileExtFromPath(test));
-	test = _T("filename.ext");
+	test = L"filename.ext";
 	EXPECT_STREQ(L".ext", CPathUtils::GetFileExtFromPath(test));
 	test = L"d:\\test\\filename";
 	EXPECT_TRUE(CPathUtils::GetFileExtFromPath(test).IsEmpty());
-	test = _T("filename");
+	test = L"filename";
 	EXPECT_TRUE(CPathUtils::GetFileExtFromPath(test).IsEmpty());
 	test.Empty();
 	EXPECT_TRUE(CPathUtils::GetFileExtFromPath(test).IsEmpty());
@@ -62,9 +62,9 @@ TEST(CPathUtils, ExtTest)
 
 TEST(CPathUtils, ParseTests)
 {
-	CString test(_T("test 'd:\\testpath with spaces' test"));
+	CString test(L"test 'd:\\testpath with spaces' test");
 	EXPECT_STREQ(L"d:\\testpath with spaces", CPathUtils::ParsePathInString(test));
-	test = _T("d:\\testpath with spaces");
+	test = L"d:\\testpath with spaces";
 	EXPECT_STREQ(L"d:\\testpath with spaces", CPathUtils::ParsePathInString(test));
 }
 

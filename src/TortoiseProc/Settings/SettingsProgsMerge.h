@@ -50,7 +50,7 @@ public:
 	afx_msg void OnBnClickedExtmergeadvanced();
 	afx_msg void OnEnChangeExtmerge();
 private:
-	bool IsExternal(const CString& path) const { return !path.IsEmpty() && path.Left(1) != _T("#"); }
+	bool IsExternal(const CString& path) const { return !path.IsEmpty() && path.Left(1) != L"#"; }
 	void CheckProgComment();
 private:
 	CString			m_sMergePath;

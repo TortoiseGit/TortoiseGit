@@ -394,7 +394,7 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
                 mii.dwTypeData = stringbuf;
                 mii.cch = _countof(stringbuf);
                 GetMenuItemInfo(GetMenu(*this), (UINT)lpttt->hdr.idFrom, FALSE, &mii);
-                _tcscpy_s(lpttt->lpszText, 80, stringbuf);
+                wcscpy_s(lpttt->lpszText, 80, stringbuf);
             }
         }
         break;
@@ -421,8 +421,8 @@ LRESULT CMainWindow::DoCommand(int id, LPARAM lParam)
         {
             if (OpenDialog())
             {
-                picWindow1.SetPic(leftpicpath, _T(""), true);
-                picWindow2.SetPic(rightpicpath, _T(""), false);
+                picWindow1.SetPic(leftpicpath, L"", true);
+                picWindow2.SetPic(rightpicpath, L"", false);
                 if (bOverlap)
                 {
                     picWindow1.SetSecondPic(picWindow2.GetPic(), rightpictitle, rightpicpath);
@@ -782,11 +782,11 @@ LRESULT CMainWindow::DoCommand(int id, LPARAM lParam)
 
             CString sTemp;
             sTemp.Format(ResString(hResource, IDS_MARKASRESOLVED), (LPCTSTR)CPathUtils::GetFileNameFromPath(selectionResult.c_str()));
-            if (MessageBox(m_hwnd, sTemp, _T("TortoiseGitMerge"), MB_YESNO | MB_ICONQUESTION) != IDYES)
+            if (MessageBox(m_hwnd, sTemp, L"TortoiseGitMerge", MB_YESNO | MB_ICONQUESTION) != IDYES)
                 break;
 
             CString cmd;
-            cmd.Format(_T("\"%sTortoiseGitProc.exe\" /command:resolve /path:\"%s\" /closeonend:1 /noquestion /skipcheck /silent"), (LPCTSTR)CPathUtils::GetAppDirectory(), selectionResult.c_str());
+            cmd.Format(L"\"%sTortoiseGitProc.exe\" /command:resolve /path:\"%s\" /closeonend:1 /noquestion /skipcheck /silent", (LPCTSTR)CPathUtils::GetAppDirectory(), selectionResult.c_str());
             if (resolveMsgWnd)
                 cmd.AppendFormat(L" /resolvemsghwnd:%I64d /resolvemsgwparam:%I64d /resolvemsglparam:%I64d", (__int64)resolveMsgWnd, (__int64)resolveMsgWParam, (__int64)resolveMsgLParam);
 
@@ -1153,7 +1153,7 @@ bool CMainWindow::AskForFile(HWND owner, TCHAR * path)
     ofn.lpstrTitle = sTitle;
     ofn.Flags = OFN_DONTADDTORECENT | OFN_FILEMUSTEXIST | OFN_EXPLORER;
     ofn.hInstance = ::hResource;
-    TCHAR filters[] = _T("Images\0*.wmf;*.jpg;*jpeg;*.bmp;*.gif;*.png;*.ico;*.dib;*.emf\0All (*.*)\0*.*\0\0");
+    TCHAR filters[] = L"Images\0*.wmf;*.jpg;*jpeg;*.bmp;*.gif;*.png;*.ico;*.dib;*.emf\0All (*.*)\0*.*\0\0";
     ofn.lpstrFilter = filters;
     ofn.nFilterIndex = 1;
     // Display the Open dialog box.

@@ -27,8 +27,8 @@
 
 bool PrevDiffCommand::Execute()
 {
-	bool bAlternativeTool = !!parser.HasKey(_T("alternative"));
-	bool bUnified = !!parser.HasKey(_T("unified"));
+	bool bAlternativeTool = !!parser.HasKey(L"alternative");
+	bool bUnified = !!parser.HasKey(L"unified");
 	if (this->orgCmdLinePath.IsDirectory())
 	{
 		CFileDiffDlg dlg;

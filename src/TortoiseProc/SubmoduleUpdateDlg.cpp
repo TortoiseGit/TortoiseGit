@@ -101,14 +101,14 @@ static void GetSubmodulePathList(STRING_VECTOR &list, STRING_VECTOR &prefixList)
 	CAutoRepository repo(g_Git.GetGitRepository());
 	if (!repo)
 	{
-		MessageBox(nullptr, CGit::GetLibGit2LastErr(_T("Could not open repository.")), _T("TortoiseGit"), MB_ICONERROR);
+		MessageBox(nullptr, CGit::GetLibGit2LastErr(L"Could not open repository."), L"TortoiseGit", MB_ICONERROR);
 		return;
 	}
 
 	STRING_VECTOR *listParams[] = { &list, &prefixList };
 	if (git_submodule_foreach(repo, SubmoduleCallback, &listParams))
 	{
-		MessageBox(nullptr, CGit::GetLibGit2LastErr(_T("Could not get submodule list.")), _T("TortoiseGit"), MB_ICONERROR);
+		MessageBox(nullptr, CGit::GetLibGit2LastErr(L"Could not get submodule list."), L"TortoiseGit", MB_ICONERROR);
 		return;
 	}
 
@@ -138,22 +138,22 @@ BOOL CSubmoduleUpdateDlg::OnInitDialog()
 
 	CString str(g_Git.m_CurrentDir);
 	str.Replace(L':', L'_');
-	m_regShowWholeProject = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\ShowWholeProject\\") + str, FALSE);
+	m_regShowWholeProject = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\ShowWholeProject\\" + str, FALSE);
 	m_bWholeProject = m_regShowWholeProject;
 
-	m_regInit = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SubmoduleUpdate\\") + str + _T("\\init"), TRUE);
+	m_regInit = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\SubmoduleUpdate\\" + str + L"\\init", TRUE);
 	m_bInit = m_regInit;
-	m_regRecursive = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SubmoduleUpdate\\") + str + _T("\\recursive"), FALSE);
+	m_regRecursive = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\SubmoduleUpdate\\" + str + L"\\recursive", FALSE);
 	m_bRecursive = m_regRecursive;
-	m_regForce = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SubmoduleUpdate\\") + str + _T("\\force"), FALSE);
+	m_regForce = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\SubmoduleUpdate\\" + str + L"\\force", FALSE);
 	m_bForce = m_regForce;
-	m_regRemote = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SubmoduleUpdate\\") + str + _T("\\remote"), FALSE);
+	m_regRemote = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\SubmoduleUpdate\\" + str + L"\\remote", FALSE);
 	m_bRemote = m_regRemote;
-	m_regNoFetch = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SubmoduleUpdate\\") + str + _T("\\nofetch"), FALSE);
+	m_regNoFetch = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\SubmoduleUpdate\\" + str + L"\\nofetch", FALSE);
 	m_bNoFetch = m_regNoFetch;
-	m_regMerge = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SubmoduleUpdate\\") + str + _T("\\merge"), FALSE);
+	m_regMerge = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\SubmoduleUpdate\\" + str + L"\\merge", FALSE);
 	m_bMerge = m_regMerge;
-	m_regRebase = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SubmoduleUpdate\\") + str + _T("\\rebase"), FALSE);
+	m_regRebase = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\SubmoduleUpdate\\" + str + L"\\rebase", FALSE);
 	m_bRebase = m_regRebase;
 
 	DialogEnableWindow(IDC_WHOLE_PROJECT, !(m_PathFilterList.empty() || (m_PathFilterList.size() == 1 && m_PathFilterList[0].IsEmpty())));
@@ -166,7 +166,7 @@ BOOL CSubmoduleUpdateDlg::OnInitDialog()
 	AdjustControlSize(IDC_CHECK_SUBMODULE_MERGE);
 	AdjustControlSize(IDC_CHECK_SUBMODULE_REBASE);
 
-	EnableSaveRestore(_T("SubmoduleUpdateDlg"));
+	EnableSaveRestore(L"SubmoduleUpdateDlg");
 
 	Refresh();
 	UpdateData(FALSE);
@@ -182,9 +182,9 @@ void CSubmoduleUpdateDlg::SetDlgTitle()
 	if (!m_bWholeProject)
 	{
 		if (!m_PathFilterList.empty())
-			dir += (g_Git.m_CurrentDir.Right(1) == _T('\\') ? _T("") : _T("\\")) + CTGitPath(m_PathFilterList[0]).GetWinPathString();
+			dir += (g_Git.m_CurrentDir.Right(1) == L'\\' ? L"" : L"\\") + CTGitPath(m_PathFilterList[0]).GetWinPathString();
 		if (m_PathFilterList.size() > 1)
-			dir += _T(", ...");
+			dir += L", ...";
 	}
 	CAppUtils::SetWindowTitle(m_hWnd, dir, m_sTitle);
 }
@@ -268,7 +268,7 @@ void CSubmoduleUpdateDlg::Refresh()
 		m_PathListBox.DeleteString(m_PathListBox.GetCount() - 1);
 
 	CString WorkingDir = g_Git.m_CurrentDir;
-	WorkingDir.Replace(_T(':'), _T('_'));
+	WorkingDir.Replace(L':', L'_');
 
 	m_regPath = CRegString(L"Software\\TortoiseGit\\History\\SubmoduleUpdatePath\\" + WorkingDir);
 	CString path = m_regPath;
@@ -281,7 +281,7 @@ void CSubmoduleUpdateDlg::Refresh()
 		int pos = 0;
 		while (pos >= 0)
 		{
-			CString part = path.Tokenize(_T("|"), pos);
+			CString part = path.Tokenize(L"|", pos);
 			if (!part.IsEmpty())
 				selected.push_back(part);
 		}

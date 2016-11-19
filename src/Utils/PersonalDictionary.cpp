@@ -106,7 +106,7 @@ bool CPersonalDictionary::Save()
 	std::wofstream File;
 	OpenFileStream(File, m_lLanguage, std::ios::ios_base::binary);
 	for (const auto& line : dict)
-		File << (LPCTSTR)line << _T("\n");
+		File << (LPCTSTR)line << L"\n";
 	File.close();
 	return true;
 }

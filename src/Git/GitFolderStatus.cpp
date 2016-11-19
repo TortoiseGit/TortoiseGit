@@ -42,8 +42,8 @@ GitFolderStatus::GitFolderStatus(void)
 	m_mostRecentStatus = nullptr;
 	sCacheKey.reserve(MAX_PATH);
 
-	g_Git.SetCurrentDir(_T(""));
-	m_hInvalidationEvent = CreateEvent(nullptr, FALSE, FALSE, _T("TortoiseGitCacheInvalidationEvent")); // no need to explicitely close m_hInvalidationEvent in ~GitFolderStatus as it is CAutoGeneralHandle
+	g_Git.SetCurrentDir(L"");
+	m_hInvalidationEvent = CreateEvent(nullptr, FALSE, FALSE, L"TortoiseGitCacheInvalidationEvent"); // no need to explicitely close m_hInvalidationEvent in ~GitFolderStatus as it is CAutoGeneralHandle
 }
 
 GitFolderStatus::~GitFolderStatus(void)
@@ -57,7 +57,7 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 	//access of the .git directory).
 	if (g_ShellCache.BlockStatus())
 	{
-		CAutoGeneralHandle TGitMutex = ::CreateMutex(nullptr, FALSE, _T("TortoiseGitProc.exe"));
+		CAutoGeneralHandle TGitMutex = ::CreateMutex(nullptr, FALSE, L"TortoiseGitProc.exe");
 		if (TGitMutex != nullptr)
 		{
 			if (::GetLastError() == ERROR_ALREADY_EXISTS)
@@ -123,12 +123,12 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 		status = git_wc_status_unknown;
 	}
 
-	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": building cache for %s - time %d\n"), filepath.GetWinPath(), t2 - t1);
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": building cache for %s - time %d\n", filepath.GetWinPath(), t2 - t1);
 
 	m_TimeStamp = GetTickCount64();
 	FileStatusCacheEntry* ret = nullptr;
 
-	if (_tcslen(filepath.GetWinPath())==3)
+	if (wcslen(filepath.GetWinPath()) == 3)
 		ret = &m_cache[(LPCTSTR)filepath.GetWinPathString().Left(2)];
 	else
 		ret = &m_cache[filepath.GetWinPath()];
@@ -199,12 +199,12 @@ const FileStatusCacheEntry * GitFolderStatus::GetCachedItem(const CTGitPath& fil
 	if(m_mostRecentPath.IsEquivalentTo(CTGitPath(sCacheKey.c_str())))
 	{
 		// We've hit the same result as we were asked for last time
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": fast cache hit for %s\n"), filepath.GetWinPath());
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": fast cache hit for %s\n", filepath.GetWinPath());
 		retVal = m_mostRecentStatus;
 	}
 	else if ((iter = m_cache.find(sCacheKey)) != m_cache.end())
 	{
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": cache found for %s\n"), filepath.GetWinPath());
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": cache found for %s\n", filepath.GetWinPath());
 		retVal = &iter->second;
 		m_mostRecentStatus = retVal;
 		m_mostRecentPath = CTGitPath(sCacheKey.c_str());

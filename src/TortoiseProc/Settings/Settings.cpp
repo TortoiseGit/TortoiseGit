@@ -229,59 +229,59 @@ BOOL CSettings::OnInitDialog()
 	{
 		CString title;
 		GetWindowText(title);
-		SetWindowText(g_Git.m_CurrentDir + _T(" - ") + title);
+		SetWindowText(g_Git.m_CurrentDir + L" - " + title);
 	}
 
 	CenterWindow(CWnd::FromHandle(hWndExplorer));
 
-	if (this->m_DefaultPage == _T("gitremote"))
+	if (this->m_DefaultPage == L"gitremote")
 	{
 		this->SetActivePage(this->m_pGitRemote);
 		this->m_pGitRemote->m_bNoFetch = true;
 	}
-	else if (this->m_DefaultPage == _T("gitconfig"))
+	else if (this->m_DefaultPage == L"gitconfig")
 		this->SetActivePage(this->m_pGitConfig);
-	else if (this->m_DefaultPage == _T("gitcredential"))
+	else if (this->m_DefaultPage == L"gitcredential")
 		this->SetActivePage(this->m_pGitCredential);
-	else if (this->m_DefaultPage == _T("main"))
+	else if (this->m_DefaultPage == L"main")
 		this->SetActivePage(this->m_pMainPage);
-	else if (this->m_DefaultPage == _T("overlay"))
+	else if (this->m_DefaultPage == L"overlay")
 		this->SetActivePage(this->m_pOverlayPage);
-	else if (this->m_DefaultPage == _T("overlays"))
+	else if (this->m_DefaultPage == L"overlays")
 		this->SetActivePage(this->m_pOverlaysPage);
-	else if (this->m_DefaultPage == _T("overlayshandlers"))
+	else if (this->m_DefaultPage == L"overlayshandlers")
 		this->SetActivePage(this->m_pOverlayHandlersPage);
-	else if (this->m_DefaultPage == _T("proxy"))
+	else if (this->m_DefaultPage == L"proxy")
 		this->SetActivePage(this->m_pProxyPage);
-	else if (this->m_DefaultPage == _T("smtp"))
+	else if (this->m_DefaultPage == L"smtp")
 		this->SetActivePage(this->m_pSMTPPage);
-	else if (this->m_DefaultPage == _T("diff"))
+	else if (this->m_DefaultPage == L"diff")
 		this->SetActivePage(this->m_pProgsDiffPage);
-	else if (this->m_DefaultPage == _T("merge"))
+	else if (this->m_DefaultPage == L"merge")
 		this->SetActivePage(this->m_pProgsMergePage);
-	else if (this->m_DefaultPage == _T("alternativeeditor"))
+	else if (this->m_DefaultPage == L"alternativeeditor")
 		this->SetActivePage(this->m_pProgsAlternativeEditor);
-	else if (this->m_DefaultPage == _T("look"))
+	else if (this->m_DefaultPage == L"look")
 		this->SetActivePage(this->m_pLookAndFeelPage);
-	else if (this->m_DefaultPage == _T("dialog"))
+	else if (this->m_DefaultPage == L"dialog")
 		this->SetActivePage(this->m_pDialogsPage);
-	else if (this->m_DefaultPage == _T("dialog2"))
+	else if (this->m_DefaultPage == L"dialog2")
 		this->SetActivePage(this->m_pDialogsPage2);
-	else if (this->m_DefaultPage == _T("dialog3"))
+	else if (this->m_DefaultPage == L"dialog3")
 		this->SetActivePage(this->m_pDialogsPage3);
-	else if (this->m_DefaultPage == _T("color1"))
+	else if (this->m_DefaultPage == L"color1")
 		this->SetActivePage(this->m_pColorsPage);
-	else if (this->m_DefaultPage == _T("color2"))
+	else if (this->m_DefaultPage == L"color2")
 		this->SetActivePage(this->m_pColorsPage2);
-	else if (this->m_DefaultPage == _T("color3"))
+	else if (this->m_DefaultPage == L"color3")
 		this->SetActivePage(this->m_pColorsPage3);
-	else if (this->m_DefaultPage == _T("save"))
+	else if (this->m_DefaultPage == L"save")
 		this->SetActivePage(this->m_pSavedPage);
-	else if (this->m_DefaultPage == _T("advanced"))
+	else if (this->m_DefaultPage == L"advanced")
 		this->SetActivePage(this->m_pAdvanced);
-	else if (this->m_DefaultPage == _T("blame"))
+	else if (this->m_DefaultPage == L"blame")
 		this->SetActivePage(this->m_pTBlamePage);
-	else if (this->m_DefaultPage == _T("udiff"))
+	else if (this->m_DefaultPage == L"udiff")
 		this->SetActivePage(this->m_pUDiffPage);
 	else if (GitAdminDir::IsWorkingTreeOrBareRepo(g_Git.m_CurrentDir))
 		this->SetActivePage(this->m_pGitConfig);

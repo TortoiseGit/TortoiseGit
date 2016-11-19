@@ -65,7 +65,7 @@ static UINT indicators[] =
 
 CMainFrame::CMainFrame()
 {
-	theApp.m_nAppLook = theApp.GetInt(_T("ApplicationLook"), ID_VIEW_APPLOOK_VS_2005);
+	theApp.m_nAppLook = theApp.GetInt(L"ApplicationLook", ID_VIEW_APPLOOK_VS_2005);
 }
 
 CMainFrame::~CMainFrame()
@@ -320,7 +320,7 @@ void CMainFrame::OnApplicationLook(UINT id)
 
 	RedrawWindow(nullptr, nullptr, RDW_ALLCHILDREN | RDW_INVALIDATE | RDW_UPDATENOW | RDW_FRAME | RDW_ERASE);
 
-	theApp.WriteInt(_T("ApplicationLook"), theApp.m_nAppLook);
+	theApp.WriteInt(L"ApplicationLook", theApp.m_nAppLook);
 }
 
 void CMainFrame::OnUpdateApplicationLook(CCmdUI* pCmdUI)

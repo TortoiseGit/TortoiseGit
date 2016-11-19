@@ -46,5 +46,5 @@ public:
 
 	static CString GetGitTopDir(const CString& path);
 
-	static CString GetAdminDirName() { return _T(".git"); }
+	static CString GetAdminDirName() { return L".git"; }
 };

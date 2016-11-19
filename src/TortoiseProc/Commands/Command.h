@@ -47,7 +47,7 @@ public:
 								CString WinPath=path.GetWinPath();
 								if (CStringUtils::StartsWith(WinPath, g_Git.m_CurrentDir))
 								{
-									if(g_Git.m_CurrentDir[g_Git.m_CurrentDir.GetLength()-1] == _T('\\'))
+									if (g_Git.m_CurrentDir[g_Git.m_CurrentDir.GetLength() - 1] == L'\\')
 										cmdLinePath.SetFromWin( WinPath.Right(WinPath.GetLength()-g_Git.m_CurrentDir.GetLength()));
 									else
 										cmdLinePath.SetFromWin( WinPath.Right(WinPath.GetLength()-g_Git.m_CurrentDir.GetLength()-1));
@@ -59,7 +59,7 @@ public:
 									CTGitPath p;
 									if (CStringUtils::StartsWith(WinPath, g_Git.m_CurrentDir))
 									{
-										if(g_Git.m_CurrentDir[g_Git.m_CurrentDir.GetLength()-1] == _T('\\'))
+										if (g_Git.m_CurrentDir[g_Git.m_CurrentDir.GetLength() - 1] == L'\\')
 											p.SetFromWin( WinPath.Right(WinPath.GetLength()-g_Git.m_CurrentDir.GetLength()));
 										else
 											p.SetFromWin( WinPath.Right(WinPath.GetLength()-g_Git.m_CurrentDir.GetLength()-1));

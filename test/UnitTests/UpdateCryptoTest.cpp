@@ -29,7 +29,7 @@ TEST(UpdateCrypto, SimpleVerify)
 	CString testFile = tempdir.GetTempDir() + L"\\.test.txt";
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"Text"));
 
-	CString testFileSignature = testFile + _T(".rsa.asc");
+	CString testFileSignature = testFile + L".rsa.asc";
 	EXPECT_EQ(-1, VerifyIntegrity(testFile, testFileSignature, nullptr));
 
 	CString signature = L"-----BEGIN PGP SIGNATURE-----\nVersion: GnuPG v2\n\niQIcBAEBCgAGBQJVxPizAAoJEPfxez+d2VOeHrgP/jOQwPGToQOVgpWixwrwhflL\nzK/hpgpBzgKALzPKfQcXd/iL2WvIldmMlGo9inNeEIh+a2ufrzsr/N/CzKqeTPkb\nazSF99LtRiIoFd3ZSf4JPpwUNyCzMn5OfOhsBDbU7vpyu4OCqSjsM4EdGynh6CdW\nLEiZ/25EZB/70ZGkTaQewx5wPi0Kmyv0M52b7TrKixxK8iuOjENviUNtvvpbvjUt\nVfv2lZV/lWkq5lesHFjg8HsDBcwC7LPQbR3M1MSW5wH6Kp/9OPifJh5xkRvRGsr2\nEucLGXKoRZXm8AxFYZ6diN0vai3oQP7nUNEUURZLG9yEQ4kCfoArUwtRvNrqJrrx\nkH57hM9Zft1Yxkj48USxJmi9reM7QahPsUqhWNnb3KUq+752OaOU3Sxd7ZW6YHzk\nSMvwcp0Jj8KczHtMyI4Nhj8CkzBgOs6Bi3ydoXCozGsxcrv6zCs2v1je3CeSP7rM\nK4f6dwstExPGtm46TU4L05EIJYjhneI7EUcgPKgJ0c7AdtaOcwLDZdEjmaDFH83N\nbSJ8Rune2uXwIDFX7BpZSSbSedE5yKt/o7sgnpoFOMHRkRCxjRD/lFgj9c0nlxm2\nFgHYyEM+1o1Ps9vKEZMbmpkzxTV4ZOPaiD/ZUzq1s9yx58Ja6zmVcIaZw79JEhiP\nOKnABUyX8A4V9bPLkQ1M\n=PI7W\n-----END PGP SIGNATURE-----";
@@ -50,7 +50,7 @@ TEST(UpdateCrypto, NewLine)
 	CString testFile = tempdir.GetTempDir() + L"\\.test.txt";
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"Text with\nNewline"));
 
-	CString testFileSignature = testFile + _T(".rsa.asc");
+	CString testFileSignature = testFile + L".rsa.asc";
 	CString signature = L"-----BEGIN PGP SIGNATURE-----\nVersion: GnuPG v2\n\niQIcBAEBCgAGBQJVxPp9AAoJEPfxez+d2VOeGsIQAJYSxXcBeYs7gwz3+NwWSv/D\nUL+d1rJgIwyIXQ46BjiCno0a6NJ7JxPYkhl9Tqj2WenQRzQqqYZNRUPN8xEU0lSC\nS8q2B+uEGopqHG5a+/X/FJh1ijeeK75ey3HKHyn7BpH66IsDU2HZ517w6/FJOsHE\n295s+RwgojR7ghk+dqu+LrkJxldQ3r9jRDujuez5NSj1aPU5IRazyf864vl13W9O\n+7NfyjNyPmZxK/nzYPi9nujsWGXjVKYqomzfEUu7FShv4Ic0vdzHcSQdS4wVsxHc\n9Feo1dfTTaCrXnYo5vSQB+b4C6EQ0DZXW0vGOjwBFHpHCLuAgyOaUccnsyKZDNnx\nmx8QK1hb13gP5oBsShS5VxgBGhl3BP47jTiaSIf9QSGOGZih+kfAzcu0e2VGJ5Xo\nYkTAhAH/x9kRjCRze0qtH7Y3CIY3O/fFTnQmNVGr25Wrhfs7aL0rF80mTk/lwbR+\nGIlrRC2lyQGEl8hfgHfvnau+biW0GRKIINLB/i86VFzUwPS5Y4XoAbKftQoEdyQj\nJ1OaVDQxlIvx/6O0bY2nw/9fflnoeBFWzcgyaYOAV95XwVjid4DkQyInkoLGCC1p\novO/2+3zPnOoab/L8ZlR8lzgDBjn5zzZRxX0CHlgLPPzLpTCFZgxOh8KIzJ04uKU\nY72YA8friiI836RZVoXq\n=i5FK\n-----END PGP SIGNATURE-----";
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFileSignature, signature));
 	EXPECT_EQ(0, VerifyIntegrity(testFile, testFileSignature, nullptr));
@@ -86,7 +86,7 @@ TEST(UpdateCrypto, Binary)
 	EXPECT_EQ(sizeof(binaryFile), written);
 	EXPECT_TRUE(file.CloseHandle());
 
-	CString testFileSignature = testFile + _T(".rsa.asc");
+	CString testFileSignature = testFile + L".rsa.asc";
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFileSignature, L"-----BEGIN PGP SIGNATURE-----\nVersion: GnuPG v2\n\niQIcBAABCgAGBQJVxPvgAAoJEPfxez+d2VOerKsP/iQlt4S20LdUknT5udD8fFpT\nEFhZDPTXMRWkd8OhCLxa+t5b/ijyxFKWNz808Q7BDQcQoOQtC19NDvVmAcfqXflt\nR4Z+ugCG/lqP+3y0xBrL9m4UT9fNzQCiUY8Xpaih+6riLGnXVVpUe29BgVZppEWn\nMG9RVXpXwC+M3VQ0yQWu1F2Yy5OjdH4Ww5kpluoseZMOPhT6VaSfXeyQmg2DrBbw\nUfVV+w718noZ5znDH9MiD5y+sd4o7vqN2YFdg6FNvTjHyha39aFV8UCpPX1lH9ME\nN9v1vt5IWGCWL0zsZ6umHqibGG3Q2S3mlqktFhKJGWci+Swy4cNMpXDHIKY6e5v7\nxPIP92djyFtbjdixcSqBaYFC/Dd0KuCa1eYmyi2KxzUP29rZ+EHWoazfbeL1Y2Pu\nkSBrVFv64j0URzSMxUpJMqYXZRC5QW7vdbVwHGAPzoS+0rBBddwfSKteBQjagcHA\nkLk3sAIZNj1JaP5dcGL2K4Wxlaae0WgwI48lZSBMoL8SaInQvcKq9iL64xfpU+FU\nG0mzbidvTfZpyEU3eeSNiFi+6z4XLQ3NUFxsOr5jEPVKvgRoPljhJ4nCx034KQRQ\nHbVF9KYgMJSroKN9bNi/UFkC45Pc4wVov/XyH82XCVS30Du4hsVXsTdAiiXb3i6w\nkrWIJWYRxx76XGtQoHrR\n=PlFQ\n-----END PGP SIGNATURE-----"));
 	EXPECT_EQ(0, VerifyIntegrity(testFile, testFileSignature, nullptr));
 
@@ -140,7 +140,7 @@ TEST(UpdateCrypto, BinarySignature)
 		0x0A, 0x6A, 0x33, 0xE0, 0xFC, 0xBB, 0x1C, 0xA0, 0xA4, 0x76, 0xE8, 0xB1, 0x17, 0xF5, 0xE4,
 	};
 
-	CString testFileSignature = testFile + _T(".rsa.asc");
+	CString testFileSignature = testFile + L".rsa.asc";
 	CAutoFile file = ::CreateFile(testFileSignature, GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 	ASSERT_TRUE(file.IsValid());
 	DWORD written = 0;

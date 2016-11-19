@@ -37,68 +37,68 @@ bool LogCommand::Execute()
 
 	CString range;
 
-	CString revstart = parser.GetVal(_T("startrev"));
+	CString revstart = parser.GetVal(L"startrev");
 	if (revstart.IsEmpty())
 	{
 		// support deprecated parameter prior 1.5.0
-		revstart = parser.GetVal(_T("revstart"));
+		revstart = parser.GetVal(L"revstart");
 	}
 	if (revstart == GIT_REV_ZERO)
 		revstart.Empty();
 	if (!revstart.IsEmpty())
-		range.Format(_T("%s.."), (LPCTSTR)g_Git.FixBranchName(revstart));
+		range.Format(L"%s..", (LPCTSTR)g_Git.FixBranchName(revstart));
 
-	CString revend = parser.GetVal(_T("endrev"));
+	CString revend = parser.GetVal(L"endrev");
 	if (revend.IsEmpty())
 	{
 		// support deprecated parameter prior 1.5.0
-		revend = parser.GetVal(_T("revend"));
+		revend = parser.GetVal(L"revend");
 	}
 	if (revend == GIT_REV_ZERO)
 		revend.Empty();
 	if (!revend.IsEmpty())
 		range += g_Git.FixBranchName(revend);
 
-	if (parser.HasVal(_T("range")))
-		range = parser.GetVal(_T("range"));
+	if (parser.HasVal(L"range"))
+		range = parser.GetVal(L"range");
 
-	CString val = parser.GetVal(_T("limit"));
-	int limit = _tstoi(val);
+	CString val = parser.GetVal(L"limit");
+	int limit = _wtoi(val);
 
 	int scale = -1;
 	val.MakeLower();
-	if (val.Find(_T("week")) > 0)
+	if (val.Find(L"week") > 0)
 		scale = CFilterData::SHOW_LAST_N_WEEKS;
-	else if (val.Find(_T("month")) > 0)
+	else if (val.Find(L"month") > 0)
 		scale = CFilterData::SHOW_LAST_N_MONTHS;
-	else if (val.Find(_T("year")) > 0)
+	else if (val.Find(L"year") > 0)
 		scale = CFilterData::SHOW_LAST_N_YEARS;
-	else if (val.Find(_T("commit")) > 0 || limit > 0)
+	else if (val.Find(L"commit") > 0 || limit > 0)
 		scale = CFilterData::SHOW_LAST_N_COMMITS;
 	else if (val == L"0")
 		scale = CFilterData::SHOW_NO_LIMIT;
 
-	CString rev = parser.GetVal(_T("rev"));
+	CString rev = parser.GetVal(L"rev");
 
-	CString findStr = parser.GetVal(_T("findstring"));
-	LONG findType = parser.GetLongVal(_T("findtype"));
-	bool findRegex = !!CRegDWORD(_T("Software\\TortoiseGit\\UseRegexFilter"), FALSE);
-	if (parser.HasKey(_T("findtext")))
+	CString findStr = parser.GetVal(L"findstring");
+	LONG findType = parser.GetLongVal(L"findtype");
+	bool findRegex = !!CRegDWORD(L"Software\\TortoiseGit\\UseRegexFilter", FALSE);
+	if (parser.HasKey(L"findtext"))
 		findRegex = false;
-	if (parser.HasKey(_T("findregex")))
+	if (parser.HasKey(L"findregex"))
 		findRegex = true;
 
 	CLogDlg dlg;
 	theApp.m_pMainWnd = &dlg;
 	dlg.SetParams(orgCmdLinePath, cmdLinePath, rev, range, limit, scale);
 	dlg.SetFilter(findStr, findType, findRegex);
-	if (parser.HasVal(_T("outfile")))
+	if (parser.HasVal(L"outfile"))
 	{
 		dlg.SetSelect(true);
 		dlg.SingleSelection(true);
 	}
 	dlg.DoModal();
-	if (parser.HasVal(_T("outfile")))
+	if (parser.HasVal(L"outfile"))
 	{
 		CString sText;
 		if (!dlg.GetSelectedHash().empty())

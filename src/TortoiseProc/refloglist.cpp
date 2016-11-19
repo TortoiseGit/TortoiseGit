@@ -27,7 +27,7 @@ IMPLEMENT_DYNAMIC(CRefLogList, CGitLogList)
 
 CRefLogList::CRefLogList()
 {
-	m_ColumnRegKey=_T("reflog");
+	m_ColumnRegKey = L"reflog";
 	this->m_ContextMenuMask |= this->GetContextMenuBit(ID_LOG);
 }
 
@@ -35,7 +35,7 @@ void CRefLogList::InsertRefLogColumn()
 {
 	CString temp;
 
-	CRegDWORD regFullRowSelect(_T("Software\\TortoiseGit\\FullRowSelect"), TRUE);
+	CRegDWORD regFullRowSelect(L"Software\\TortoiseGit\\FullRowSelect", TRUE);
 	DWORD exStyle = LVS_EX_HEADERDRAGDROP | LVS_EX_DOUBLEBUFFER | LVS_EX_INFOTIP | LVS_EX_SUBITEMIMAGES;
 	if (DWORD(regFullRowSelect))
 		exStyle |= LVS_EX_FULLROWSELECT;
@@ -63,7 +63,7 @@ void CRefLogList::InsertRefLogColumn()
 	SetRedraw(false);
 
 	m_ColumnManager.SetNames(normal, _countof(normal));
-	m_ColumnManager.ReadSettings(m_dwDefaultColumns,0, m_ColumnRegKey+_T("loglist"), _countof(normal), with);
+	m_ColumnManager.ReadSettings(m_dwDefaultColumns, 0, m_ColumnRegKey + L"loglist", _countof(normal), with);
 
 	SetRedraw(true);
 }
@@ -80,7 +80,7 @@ void CRefLogList::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		return;
 
 	// By default, clear text buffer.
-	lstrcpyn(pItem->pszText, _T(""), pItem->cchTextMax);
+	lstrcpyn(pItem->pszText, L"", pItem->cchTextMax);
 
 	bool bOutOfRange = pItem->iItem >= ShownCountWithStopped();
 

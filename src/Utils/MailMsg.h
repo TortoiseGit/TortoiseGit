@@ -78,7 +78,7 @@ public:
 	void SetFrom(const CString& sAddresses, const CString& sName);
 	void SetSubject(const CString& sSubject);
 	void SetMessage(const CString& sMessage);
-	void AddAttachment(const CString& sAttachment, CString sTitle = _T(""));
+	void AddAttachment(const CString& sAttachment, CString sTitle = L"");
 	void SetCC(const CString& sAddresses);
 	void SetShowComposeDialog(BOOL showComposeDialog);
 

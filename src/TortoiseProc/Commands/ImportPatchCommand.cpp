@@ -29,7 +29,7 @@ bool ImportPatchCommand::Execute()
 	CString cmd;
 	CString output;
 
-	CString droppath = parser.GetVal(_T("droptarget"));
+	CString droppath = parser.GetVal(L"droptarget");
 	if (!droppath.IsEmpty())
 	{
 		if (CTGitPath(droppath).IsAdminDir())

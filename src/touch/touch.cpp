@@ -30,13 +30,13 @@ int APIENTRY _tWinMain(HINSTANCE /*hInstance*/,
 {
 	SetDllDirectory(L"");
 
-	if(_tcslen(lpCmdLine) == 0)
+	if (wcslen(lpCmdLine) == 0)
 		return -1;
 
 	if(lpCmdLine[0] == '\"')
 	{
 		++lpCmdLine;
-		for (size_t i = 0; i < _tcslen(lpCmdLine); ++i)
+		for (size_t i = 0; i < wcslen(lpCmdLine); ++i)
 			if(lpCmdLine[i]== '\"')
 			{
 				lpCmdLine[i] = L'\0';

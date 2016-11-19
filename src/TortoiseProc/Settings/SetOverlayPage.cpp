@@ -41,20 +41,20 @@ CSetOverlayPage::CSetOverlayPage()
 	, m_bFloppy(FALSE)
 	, m_bShowExcludedAsNormal(TRUE)
 {
-	m_regOnlyExplorer = CRegDWORD(_T("Software\\TortoiseGit\\LoadDllOnlyInExplorer"), FALSE);
-	m_regDriveMaskRemovable = CRegDWORD(_T("Software\\TortoiseGit\\DriveMaskRemovable"));
-	m_regDriveMaskFloppy = CRegDWORD(_T("Software\\TortoiseGit\\DriveMaskFloppy"));
-	m_regDriveMaskRemote = CRegDWORD(_T("Software\\TortoiseGit\\DriveMaskRemote"));
-	m_regDriveMaskFixed = CRegDWORD(_T("Software\\TortoiseGit\\DriveMaskFixed"), TRUE);
-	m_regDriveMaskCDROM = CRegDWORD(_T("Software\\TortoiseGit\\DriveMaskCDROM"));
-	m_regDriveMaskRAM = CRegDWORD(_T("Software\\TortoiseGit\\DriveMaskRAM"));
-	m_regDriveMaskUnknown = CRegDWORD(_T("Software\\TortoiseGit\\DriveMaskUnknown"));
-	m_regExcludePaths = CRegString(_T("Software\\TortoiseGit\\OverlayExcludeList"));
-	m_regIncludePaths = CRegString(_T("Software\\TortoiseGit\\OverlayIncludeList"));
-	m_regCacheType = CRegDWORD(_T("Software\\TortoiseGit\\CacheType"), GetSystemMetrics(SM_REMOTESESSION) ? 2 : 1);
-	m_regUnversionedAsModified = CRegDWORD(_T("Software\\TortoiseGit\\UnversionedAsModified"), FALSE);
-	m_regRecurseSubmodules = CRegDWORD(_T("Software\\TortoiseGit\\TGitCacheRecurseSubmodules"), FALSE);
-	m_regShowExcludedAsNormal = CRegDWORD(_T("Software\\TortoiseGit\\ShowExcludedAsNormal"), TRUE);
+	m_regOnlyExplorer = CRegDWORD(L"Software\\TortoiseGit\\LoadDllOnlyInExplorer", FALSE);
+	m_regDriveMaskRemovable = CRegDWORD(L"Software\\TortoiseGit\\DriveMaskRemovable");
+	m_regDriveMaskFloppy = CRegDWORD(L"Software\\TortoiseGit\\DriveMaskFloppy");
+	m_regDriveMaskRemote = CRegDWORD(L"Software\\TortoiseGit\\DriveMaskRemote");
+	m_regDriveMaskFixed = CRegDWORD(L"Software\\TortoiseGit\\DriveMaskFixed", TRUE);
+	m_regDriveMaskCDROM = CRegDWORD(L"Software\\TortoiseGit\\DriveMaskCDROM");
+	m_regDriveMaskRAM = CRegDWORD(L"Software\\TortoiseGit\\DriveMaskRAM");
+	m_regDriveMaskUnknown = CRegDWORD(L"Software\\TortoiseGit\\DriveMaskUnknown");
+	m_regExcludePaths = CRegString(L"Software\\TortoiseGit\\OverlayExcludeList");
+	m_regIncludePaths = CRegString(L"Software\\TortoiseGit\\OverlayIncludeList");
+	m_regCacheType = CRegDWORD(L"Software\\TortoiseGit\\CacheType", GetSystemMetrics(SM_REMOTESESSION) ? 2 : 1);
+	m_regUnversionedAsModified = CRegDWORD(L"Software\\TortoiseGit\\UnversionedAsModified", FALSE);
+	m_regRecurseSubmodules = CRegDWORD(L"Software\\TortoiseGit\\TGitCacheRecurseSubmodules", FALSE);
+	m_regShowExcludedAsNormal = CRegDWORD(L"Software\\TortoiseGit\\ShowExcludedAsNormal", TRUE);
 
 	m_bOnlyExplorer = m_regOnlyExplorer;
 	m_bRemovable = m_regDriveMaskRemovable;
@@ -68,9 +68,9 @@ CSetOverlayPage::CSetOverlayPage()
 	m_bRecurseSubmodules = m_regRecurseSubmodules;
 	m_bShowExcludedAsNormal = m_regShowExcludedAsNormal;
 	m_sExcludePaths = m_regExcludePaths;
-	m_sExcludePaths.Replace(_T("\n"), _T("\r\n"));
+	m_sExcludePaths.Replace(L"\n", L"\r\n");
 	m_sIncludePaths = m_regIncludePaths;
-	m_sIncludePaths.Replace(_T("\n"), _T("\r\n"));
+	m_sIncludePaths.Replace(L"\n", L"\r\n");
 	m_dwCacheType = m_regCacheType;
 }
 
@@ -229,17 +229,17 @@ BOOL CSetOverlayPage::OnApply()
 	if (m_sExcludePaths.Compare(CString(m_regExcludePaths)))
 		m_restart = Restart_Cache;
 	m_sExcludePaths.Remove(L'\r');
-	if (m_sExcludePaths.Right(1).Compare(_T("\n"))!=0)
+	if (m_sExcludePaths.Right(1) != L"\n")
 		m_sExcludePaths += L'\n';
 	Store(m_sExcludePaths, m_regExcludePaths);
-	m_sExcludePaths.Replace(_T("\n"), _T("\r\n"));
+	m_sExcludePaths.Replace(L"\n", L"\r\n");
 	m_sIncludePaths.Remove(L'\r');
-	if (m_sIncludePaths.Right(1).Compare(_T("\n"))!=0)
+	if (m_sIncludePaths.Right(1) != L"\n")
 		m_sIncludePaths += L'\n';
 	if (m_sIncludePaths.Compare(CString(m_regIncludePaths)))
 		m_restart = Restart_Cache;
 	Store(m_sIncludePaths, m_regIncludePaths);
-	m_sIncludePaths.Replace(_T("\n"), _T("\r\n"));
+	m_sIncludePaths.Replace(L"\n", L"\r\n");
 
 	if (DWORD(m_regUnversionedAsModified) != DWORD(m_bUnversionedAsModified))
 		m_restart = Restart_Cache;

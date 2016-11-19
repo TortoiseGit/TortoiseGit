@@ -66,7 +66,7 @@ BOOL CAboutDlg::OnInitDialog()
 		APR_MAJOR_VERSION, APR_MINOR_VERSION, APR_PATCH_VERSION,
 		APU_MAJOR_VERSION, APU_MINOR_VERSION, APU_PATCH_VERSION);
 	SetDlgItemText(IDC_VERSIONABOUT, temp);
-	this->SetWindowText(_T("TortoiseGitMerge"));
+	this->SetWindowText(L"TortoiseGitMerge");
 
 	CPictureHolder tmpPic;
 	tmpPic.CreateFromBitmap(IDB_LOGOFLIPPED);
@@ -77,8 +77,8 @@ BOOL CAboutDlg::OnInitDialog()
 	SetTimer(ID_EFFECTTIMER, 40, NULL);
 	SetTimer(ID_DROPTIMER, 300, NULL);
 
-	m_cWebLink.SetURL(_T("https://tortoisegit.org/"));
-	m_cSupportLink.SetURL(_T("http://tortoisesvn.tigris.org/contributors.html"));
+	m_cWebLink.SetURL(L"https://tortoisegit.org/");
+	m_cSupportLink.SetURL(L"http://tortoisesvn.tigris.org/contributors.html");
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE

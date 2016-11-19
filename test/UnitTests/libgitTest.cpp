@@ -34,9 +34,9 @@ TEST(libgit, BrokenConfig)
 	SetCurrentDirectory(g_Git.m_CurrentDir);
 
 	CString output;
-	EXPECT_EQ(0, g_Git.Run(_T("git.exe init"), &output, CP_UTF8));
+	EXPECT_EQ(0, g_Git.Run(L"git.exe init", &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
-	CString testFile = tempdir.GetTempDir() + _T("\\.git\\config");
+	CString testFile = tempdir.GetTempDir() + L"\\.git\\config";
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"[push]\ndefault=something-that-is-invalid\n"));
 
 	EXPECT_THROW(g_Git.CheckAndInitDll(), const char*);

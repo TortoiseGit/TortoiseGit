@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2015 - TortoiseGit
+// Copyright (C) 2009-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -31,7 +31,7 @@ bool ResolveProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, 
 	for (m_itemCount = 0; m_itemCount < m_itemCountTotal; ++m_itemCount)
 	{
 		CString cmd, out, tempmergefile;
-		cmd.Format(_T("git.exe add -f -- \"%s\""), (LPCTSTR)m_targetPathList[m_itemCount].GetGitPathString());
+		cmd.Format(L"git.exe add -f -- \"%s\"", (LPCTSTR)m_targetPathList[m_itemCount].GetGitPathString());
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
 			list->ReportError(out);
@@ -53,7 +53,7 @@ bool ResolveProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, 
 		postCmdList.emplace_back(IDI_COMMIT, IDS_MENUCOMMIT, []
 		{
 			CString sCmd;
-			sCmd.Format(_T("/command:commit /path:\"%s\""), (LPCTSTR)g_Git.m_CurrentDir);
+			sCmd.Format(L"/command:commit /path:\"%s\"", (LPCTSTR)g_Git.m_CurrentDir);
 			CAppUtils::RunTortoiseGitProc(sCmd);
 		});
 	};
@@ -63,6 +63,6 @@ bool ResolveProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, 
 
 bool ResolveProgressCommand::ShowInfo(CString& info)
 {
-	info = _T("You need commit your change after resolve conflict");
+	info = L"You need commit your change after resolve conflict";
 	return true;
 }

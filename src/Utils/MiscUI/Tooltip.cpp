@@ -95,7 +95,7 @@ BOOL CToolTips::ShowBalloon(CWnd *pWnd, UINT nIDText, UINT nIDTitle, UINT icon /
 	const HWND hwndTT = CreateWindow
 		(
 		TOOLTIPS_CLASS,
-		_T(""),
+		L"",
 		TTS_NOPREFIX|TTS_BALLOON|TTS_ALWAYSTIP|TTS_CLOSE,
 		CW_USEDEFAULT, CW_USEDEFAULT,
 		CW_USEDEFAULT, CW_USEDEFAULT,
@@ -138,8 +138,8 @@ CString CToolTips::LoadTooltip( UINT nIDText )
 	sTemp.LoadString(nIDText);
 	// tooltips can't handle \t and single \n, only spaces and \r\n
 	sTemp.Replace('\t', ' ');
-	sTemp.Replace(_T("\r\n"), _T("\n"));
-	sTemp.Replace(_T("\n"), _T("\r\n"));
+	sTemp.Replace(L"\r\n", L"\n");
+	sTemp.Replace(L"\n", L"\r\n");
 	return sTemp;
 }
 

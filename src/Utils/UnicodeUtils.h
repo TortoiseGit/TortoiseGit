@@ -54,11 +54,11 @@ std::wstring MultibyteToWide(const std::string& multibyte);
 std::wstring UTF8ToWide(const std::string& multibyte);
 
 #ifdef UNICODE
-	tstring UTF8ToString(const std::string& string);
-	std::string StringToUTF8(const tstring& string);
+	std::wstring UTF8ToString(const std::string& string);
+	std::string StringToUTF8(const std::wstring& string);
 #else
-	tstring UTF8ToString(const std::string& string);
-	std::string StringToUTF8(const tstring& string);
+	std::wstring UTF8ToString(const std::string& string);
+	std::string StringToUTF8(const std::wstring& string);
 #endif
 
 int LoadStringEx(HINSTANCE hInstance, UINT uID, LPTSTR lpBuffer, int nBufferMax, WORD wLanguage);

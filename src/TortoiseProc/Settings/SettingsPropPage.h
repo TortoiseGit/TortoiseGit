@@ -89,6 +89,6 @@ protected:
 	{
 		registryKey = value;
 		if (registryKey.GetLastError() != ERROR_SUCCESS)
-			CMessageBox::Show (m_hWnd, registryKey.getErrorString(), _T("TortoiseGit"), MB_ICONERROR);
+			CMessageBox::Show (m_hWnd, registryKey.getErrorString(), L"TortoiseGit", MB_ICONERROR);
 	}
 };

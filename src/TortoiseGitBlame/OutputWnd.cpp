@@ -56,7 +56,7 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (CDockablePane::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
-	TRACE(_T("%u\n"),LVN_ITEMCHANGED);
+	TRACE(L"%u\n", LVN_ITEMCHANGED);
 	m_Font.CreateStockObject(DEFAULT_GUI_FONT);
 
 	CRect rectDummy;
@@ -73,8 +73,8 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	m_LogList.SetFont(&m_Font);
 
-	m_Gravatar.Create(_T(""), WS_CHILD | WS_VISIBLE, rectDummy, this);
-	bool bEnableGravatar = !!CRegDWORD(_T("Software\\TortoiseGit\\EnableGravatar"), FALSE);
+	m_Gravatar.Create(L"", WS_CHILD | WS_VISIBLE, rectDummy, this);
+	bool bEnableGravatar = !!CRegDWORD(L"Software\\TortoiseGit\\EnableGravatar", FALSE);
 	m_Gravatar.EnableGravatar(bEnableGravatar);
 	if (bEnableGravatar)
 		m_Gravatar.Init();
@@ -88,7 +88,7 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	m_LogList.m_IsIDReplaceAction=TRUE;
 	m_LogList.DeleteAllItems();
-	m_LogList.m_ColumnRegKey=_T("Blame");
+	m_LogList.m_ColumnRegKey = L"Blame";
 	m_LogList.InsertGitColumn();
 
 	m_LogList.hideUnimplementedCommands();

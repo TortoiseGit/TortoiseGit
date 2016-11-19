@@ -42,16 +42,16 @@ bool RevertProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, i
 			(!(action & CTGitPath::LOGACTIONS_REPLACED)))
 			delList.AddPath(path);
 	}
-	if (DWORD(CRegDWORD(_T("Software\\TortoiseGit\\RevertWithRecycleBin"), TRUE)))
+	if (DWORD(CRegDWORD(L"Software\\TortoiseGit\\RevertWithRecycleBin", TRUE)))
 		delList.DeleteAllFiles(true);
 
 	list->ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_REVERT)));
 	for (int i = 0; i < m_targetPathList.GetCount(); ++i)
 	{
 		CString err;
-		if (g_Git.Revert(_T("HEAD"), (CTGitPath&)m_targetPathList[i], err))
+		if (g_Git.Revert(L"HEAD", (CTGitPath&)m_targetPathList[i], err))
 		{
-			list->ReportError(_T("Revert failed:\n") + err);
+			list->ReportError(L"Revert failed:\n" + err);
 			return false;
 		}
 		list->AddNotify(new CGitProgressList::WC_File_NotificationData(m_targetPathList[i], CGitProgressList::WC_File_NotificationData::git_wc_notify_revert));

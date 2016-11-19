@@ -75,9 +75,9 @@ CString CLoglistUtils::FormatDateAndTime(const CTime& cTime, DWORD option, bool 
 		{
 			// no, so fixed format
 			if (bIncludeTime)
-				return cTime.Format(_T("%Y-%m-%d %H:%M:%S"));
+				return cTime.Format(L"%Y-%m-%d %H:%M:%S");
 			else
-				return cTime.Format(_T("%Y-%m-%d"));
+				return cTime.Format(L"%Y-%m-%d");
 		}
 	}
 }

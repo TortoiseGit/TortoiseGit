@@ -175,12 +175,12 @@ int GitRev::GetCommit(git_repository* repo, const CString& refname)
 
 void GitRev::DbgPrint()
 {
-	ATLTRACE(_T("Commit %s\r\n"), (LPCTSTR)this->m_CommitHash.ToString());
+	ATLTRACE(L"Commit %s\r\n", (LPCTSTR)this->m_CommitHash.ToString());
 	for (unsigned int i = 0; i < this->m_ParentHash.size(); ++i)
 	{
-		ATLTRACE(_T("Parent %i %s"), i, (LPCTSTR)m_ParentHash[i].ToString());
+		ATLTRACE(L"Parent %i %s", i, (LPCTSTR)m_ParentHash[i].ToString());
 	}
-	ATLTRACE(_T("\n"));
+	ATLTRACE(L"\n");
 }
 
 int GitRev::GetParentFromHash(const CGitHash& hash)
@@ -194,13 +194,13 @@ int GitRev::GetParentFromHash(const CGitHash& hash)
 
 		if (git_get_commit_from_hash(&commit, hash.m_hash))
 		{
-			m_sErr = _T("git_get_commit_from_hash failed for ") + hash.ToString();
+			m_sErr = L"git_get_commit_from_hash failed for " + hash.ToString();
 			return -1;
 		}
 	}
 	catch (char* msg)
 	{
-		m_sErr = _T("Could not get parents of commit \"") + hash.ToString() + _T("\".\nlibgit reports:\n") + CString(msg);
+		m_sErr = L"Could not get parents of commit \"" + hash.ToString() + L"\".\nlibgit reports:\n" + CString(msg);
 		return -1;
 	}
 
@@ -228,13 +228,13 @@ int GitRev::GetCommitFromHash_withoutLock(const CGitHash& hash)
 	{
 		if (git_get_commit_from_hash(&commit, hash.m_hash))
 		{
-			m_sErr = _T("git_get_commit_from_hash failed for ") + hash.ToString();
+			m_sErr = L"git_get_commit_from_hash failed for " + hash.ToString();
 			return -1;
 		}
 	}
 	catch (char * msg)
 	{
-		m_sErr = _T("Could not get commit \"") + hash.ToString() + _T("\".\nlibgit reports:\n") + CString(msg);
+		m_sErr = L"Could not get commit \"" + hash.ToString() + L"\".\nlibgit reports:\n" + CString(msg);
 		return -1;
 	}
 
@@ -267,7 +267,7 @@ int GitRev::GetCommit(const CString& refname)
 	}
 	catch (char* msg)
 	{
-		m_sErr = _T("Could not initiate libgit.\nlibgit reports:\n") + CString(msg);
+		m_sErr = L"Could not initiate libgit.\nlibgit reports:\n" + CString(msg);
 		return -1;
 	}
 
@@ -287,13 +287,13 @@ int GitRev::GetCommit(const CString& refname)
 	{
 		if (git_get_sha1(rev.GetBuffer(), sha))
 		{
-			m_sErr = _T("Could not get SHA-1 of ref \"") + g_Git.FixBranchName(refname);
+			m_sErr = L"Could not get SHA-1 of ref \"" + g_Git.FixBranchName(refname);
 			return -1;
 		}
 	}
 	catch (char * msg)
 	{
-		m_sErr = _T("Could not get SHA-1 of ref \"") + g_Git.FixBranchName(refname) + _T("\".\nlibgit reports:\n") + CString(msg);
+		m_sErr = L"Could not get SHA-1 of ref \"" + g_Git.FixBranchName(refname) + L"\".\nlibgit reports:\n" + CString(msg);
 		return -1;
 	}
 

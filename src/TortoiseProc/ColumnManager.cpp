@@ -433,7 +433,7 @@ void ColumnManager::ParseWidths(const CString& widths)
 {
 	for (int i = 0, count = widths.GetLength() / 8; i < count; ++i)
 	{
-		long width = _tcstol(widths.Mid(i * 8, 8), nullptr, 16);
+		long width = wcstol(widths.Mid(i * 8, 8), nullptr, 16);
 		if (i < (int)itemName.size())
 		{
 			// a standard column
@@ -469,7 +469,7 @@ void ColumnManager::ParseColumnOrder(const CString& widths)
 
 	for (int i = 0, count = widths.GetLength() / 2; i < count; ++i)
 	{
-		int index = _tcstol(widths.Mid(i * 2, 2), nullptr, 16);
+		int index = wcstol(widths.Mid(i * 2, 2), nullptr, 16);
 		if ((index < (int)itemName.size()))
 		{
 			alreadyPlaced.insert(index);

@@ -50,7 +50,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
-	bool IsExternal(const CString& path) const { return !path.IsEmpty() && path.Left(1) != _T("#"); }
+	bool IsExternal(const CString& path) const { return !path.IsEmpty() && path.Left(1) != L"#"; }
 	void CheckProgComment();
 
 	CString			m_sAlternativeEditorPath;

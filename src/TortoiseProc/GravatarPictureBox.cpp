@@ -33,23 +33,23 @@ static CString CalcMD5(CString text)
 {
 	HCRYPTPROV hProv = 0;
 	if (!CryptAcquireContext(&hProv, nullptr, nullptr, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT))
-		return _T("");
+		return L"";
 	SCOPE_EXIT { CryptReleaseContext(hProv, 0); };
 
 	HCRYPTHASH hHash = 0;
 	if (!CryptCreateHash(hProv, CALG_MD5, 0, 0, &hHash))
-		return _T("");
+		return L"";
 	SCOPE_EXIT { CryptDestroyHash(hHash); };
 
 	CStringA textA = CUnicodeUtils::GetUTF8(text);
 	if (!CryptHashData(hHash, (LPBYTE)(LPCSTR)textA, textA.GetLength(), 0))
-		return _T("");
+		return L"";
 
 	CString hash;
 	BYTE rgbHash[16];
 	DWORD cbHash = _countof(rgbHash);
 	if (!CryptGetHashParam(hHash, HP_HASHVAL, rgbHash, &cbHash, 0))
-		return _T("");
+		return L"";
 
 	for (DWORD i = 0; i < cbHash; i++)
 	{
@@ -139,7 +139,7 @@ void CGravatar::GravatarThread()
 {
 	bool *gravatarExit = m_gravatarExit;
 	SCOPE_EXIT { delete gravatarExit; };
-	CString gravatarBaseUrl = CRegString(_T("Software\\TortoiseGit\\GravatarUrl"), _T("http://www.gravatar.com/avatar/%HASH%?d=identicon"));
+	CString gravatarBaseUrl = CRegString(L"Software\\TortoiseGit\\GravatarUrl", L"http://www.gravatar.com/avatar/%HASH%?d=identicon");
 
 	CString hostname;
 	CString baseUrlPath;
@@ -193,7 +193,7 @@ void CGravatar::GravatarThread()
 				continue;
 
 			CString gravatarUrl = baseUrlPath;
-			gravatarUrl.Replace(_T("%HASH%"), md5);
+			gravatarUrl.Replace(L"%HASH%", md5);
 			CString tempFile;
 			GetTempPath(tempFile);
 			tempFile += md5;
