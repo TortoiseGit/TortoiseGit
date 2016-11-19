@@ -1456,7 +1456,9 @@ bool CSciEdit::IsUrlOrEmail(const CStringA& sText)
 		auto atpos = sText.Find('@');
 		if (atpos <= 0)
 			return false;
-		if (sText.ReverseFind('.') > atpos)
+		if (sText.Find('.', atpos) <= atpos + 1) // a dot must follow after the @, but not directly after it
+			return false;
+		if (sText.Find(':', atpos) < 0) // do not detect git@example.com:something as an email address
 			return true;
 		return false;
 	}

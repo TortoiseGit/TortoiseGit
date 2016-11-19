@@ -904,7 +904,9 @@ namespace {
 			auto atpos = sText.Find(L'@');
 			if (atpos <= 0)
 				return false;
-			if (sText.ReverseFind(L'.') > atpos)
+			if (sText.Find(L'.', atpos) <= atpos + 1) // a dot must follow after the @, but not directly after it
+				return false;
+			if (sText.Find(L':', atpos) < 0) // do not detect git@example.com:something as an email address
 				return true;
 			return false;
 		}
