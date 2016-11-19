@@ -238,17 +238,20 @@ TEST(CStringUtils, StartsWith)
 	EXPECT_TRUE(CStringUtils::StartsWith(heystack, L"sometest"));
 	EXPECT_TRUE(CStringUtils::StartsWith(heystack, L""));
 	EXPECT_TRUE(CStringUtils::StartsWith(heystack, L"sometes"));
+	EXPECT_FALSE(CStringUtils::StartsWith(heystack, L"sometEs"));
 	EXPECT_FALSE(CStringUtils::StartsWith(heystack, L"someteste"));
 	EXPECT_FALSE(CStringUtils::StartsWith(heystack, L"sometess"));
 
 	CString empty;
 	CString sometest = L"sometest";
 	CString sometes = L"sometes";
+	CString sometEs = L"sometEs";
 	CString someteste = L"someteste";
 	CString sometess = L"sometess";
 	EXPECT_TRUE(CStringUtils::StartsWith(heystack, sometest));
 	EXPECT_TRUE(CStringUtils::StartsWith(heystack, empty));
 	EXPECT_TRUE(CStringUtils::StartsWith(heystack, sometes));
+	EXPECT_FALSE(CStringUtils::StartsWith(heystack, sometEs));
 	EXPECT_FALSE(CStringUtils::StartsWith(heystack, someteste));
 	EXPECT_FALSE(CStringUtils::StartsWith(heystack, sometess));
 	EXPECT_FALSE(CStringUtils::StartsWith(empty, sometess));
@@ -290,6 +293,7 @@ TEST(CStringUtils, StartsWithA)
 	EXPECT_TRUE(CStringUtils::StartsWith(heystack, "sometest"));
 	EXPECT_TRUE(CStringUtils::StartsWith(heystack, ""));
 	EXPECT_TRUE(CStringUtils::StartsWith(heystack, "sometes"));
+	EXPECT_FALSE(CStringUtils::StartsWith(heystack, "someTe"));
 	EXPECT_FALSE(CStringUtils::StartsWith(heystack, "someteste"));
 	EXPECT_FALSE(CStringUtils::StartsWith(heystack, "sometess"));
 }
