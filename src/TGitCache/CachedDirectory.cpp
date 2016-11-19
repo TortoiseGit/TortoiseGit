@@ -255,13 +255,14 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromCache(const CTGitPath& path, bo
 
 CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, CString sProjectRoot)
 {
-	CString subpaths = path.GetGitPathString();
-	if(subpaths.GetLength() >= sProjectRoot.GetLength())
+	CString subpaths;
+	CString s = path.GetGitPathString();
+	if (s.GetLength() > sProjectRoot.GetLength())
 	{
-		if (subpaths[sProjectRoot.GetLength()] == L'/')
-			subpaths=subpaths.Right(subpaths.GetLength() - sProjectRoot.GetLength()-1);
+		if (s[sProjectRoot.GetLength()] == L'/')
+			subpaths = s.Right(s.GetLength() - sProjectRoot.GetLength() - 1);
 		else
-			subpaths=subpaths.Right(subpaths.GetLength() - sProjectRoot.GetLength());
+			subpaths = s.Right(s.GetLength() - sProjectRoot.GetLength());
 	}
 
 	GitStatus *pGitStatus = &CGitStatusCache::Instance().m_GitStatus;
