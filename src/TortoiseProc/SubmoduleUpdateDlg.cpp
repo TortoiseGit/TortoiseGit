@@ -22,7 +22,6 @@
 #include "SubmoduleUpdateDlg.h"
 #include "AppUtils.h"
 #include "UnicodeUtils.h"
-#include "MessageBox.h"
 
 IMPLEMENT_DYNAMIC(CSubmoduleUpdateDlg, CResizableStandAloneDialog)
 

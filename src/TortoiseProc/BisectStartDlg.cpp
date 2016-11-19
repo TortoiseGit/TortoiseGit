@@ -24,7 +24,6 @@
 #include "BisectStartDlg.h"
 #include "Git.h"
 #include "LogDlg.h"
-#include "MessageBox.h"
 #include "AppUtils.h"
 #include "StringUtils.h"
 

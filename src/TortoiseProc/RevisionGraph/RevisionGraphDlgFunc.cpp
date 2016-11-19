@@ -21,7 +21,6 @@
 #include "TortoiseProc.h"
 #include <gdiplus.h>
 #include "Revisiongraphdlg.h"
-#include "MessageBox.h"
 #include "Git.h"
 #include "TempFile.h"
 #include "UnicodeUtils.h"

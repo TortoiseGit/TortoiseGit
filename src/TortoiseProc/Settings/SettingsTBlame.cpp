@@ -19,7 +19,6 @@
 //
 #include "stdafx.h"
 #include "TortoiseProc.h"
-#include "MessageBox.h"
 #include "SettingsTBlame.h"
 #include "..\TortoiseGitBlame\BlameIndexColors.h"
 #include "..\TortoiseGitBlame\BlameDetectMovedOrCopiedLines.h"

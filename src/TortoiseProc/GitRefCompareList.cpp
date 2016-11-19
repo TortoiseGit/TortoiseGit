@@ -23,7 +23,6 @@
 #include "GitRefCompareList.h"
 #include "registry.h"
 #include "UnicodeUtils.h"
-#include "MessageBox.h"
 #include "IconMenu.h"
 #include "AppUtils.h"
 #include "..\TortoiseShell\resource.h"

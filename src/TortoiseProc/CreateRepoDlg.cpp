@@ -23,7 +23,6 @@
 #include "TortoiseProc.h"
 #include "CreateRepoDlg.h"
 #include "BrowseFolder.h"
-#include "MessageBox.h"
 #include "AppUtils.h"
 
 // CCreateRepoDlg dialog

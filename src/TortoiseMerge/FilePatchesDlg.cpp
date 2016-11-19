@@ -24,7 +24,6 @@
 #include "AppUtils.h"
 #include "PathUtils.h"
 #include "SysProgressDlg.h"
-#include "MessageBox.h"
 #include "SysImageList.h"
 
 IMPLEMENT_DYNAMIC(CFilePatchesDlg, CResizableStandAloneDialog)

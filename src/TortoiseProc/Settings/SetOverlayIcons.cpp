@@ -20,7 +20,6 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "DirFileEnum.h"
-#include "MessageBox.h"
 #include "SetOverlayIcons.h"
 #include "AppUtils.h"
 #include "StringUtils.h"

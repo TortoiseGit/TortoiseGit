@@ -20,7 +20,6 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "RevisionGraphDlg.h"
-#include "MessageBox.h"
 #include "Git.h"
 #include "AppUtils.h"
 #include "StringUtils.h"

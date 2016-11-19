@@ -24,7 +24,6 @@
 #include "AppUtils.h"
 #include "StringUtils.h"
 #include "SetLookAndFeelPage.h"
-#include "MessageBox.h"
 #include "MenuInfo.h"
 #include "ShellCache.h"
 

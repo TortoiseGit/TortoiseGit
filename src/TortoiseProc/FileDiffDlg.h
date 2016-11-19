@@ -25,7 +25,6 @@
 #include "HintCtrl.h"
 #include "Colors.h"
 #include "FilterEdit.h"
-#include "MessageBox.h"
 #include "ProgressDlg.h"
 #include "MenuButton.h"
 #include "ACEdit.h"

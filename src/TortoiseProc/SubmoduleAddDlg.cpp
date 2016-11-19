@@ -24,7 +24,6 @@
 #include "resource.h"
 #include "SubmoduleAddDlg.h"
 #include "BrowseFolder.h"
-#include "MessageBox.h"
 #include "AppUtils.h"
 
 // CSubmoduleAddDlg dialog

@@ -23,8 +23,6 @@
 #include "SetOverlayIcons.h"
 #include "Globals.h"
 #include "..\TGitCache\CacheInterface.h"
-#include "MessageBox.h"
-
 
 IMPLEMENT_DYNAMIC(CSetOverlayPage, ISettingsPropPage)
 CSetOverlayPage::CSetOverlayPage()

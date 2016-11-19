@@ -26,7 +26,6 @@
 
 #include "TortoiseGitBlameDoc.h"
 #include "GitAdminDir.h"
-#include "MessageBox.h"
 #include "Git.h"
 #include "MainFrm.h"
 #include "TGitPath.h"

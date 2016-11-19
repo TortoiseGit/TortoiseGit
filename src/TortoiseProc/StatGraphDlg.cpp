@@ -23,7 +23,6 @@
 #include <GdiPlus.h>
 #include "AppUtils.h"
 #include "PathUtils.h"
-#include "MessageBox.h"
 #include "registry.h"
 #include "FormatMessageWrapper.h"
 #include "SysProgressDlg.h"
