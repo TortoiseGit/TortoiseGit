@@ -1630,14 +1630,17 @@ void CLogDlg::OnPasteGitHash()
 		JumpToGitHash(str);
 }
 
-void CLogDlg::JumpToGitHash(CString& hash)
+void CLogDlg::JumpToGitHash(CString hash)
 {
-	int hashLen = hash.GetLength();
+	int prefixLen = hash.GetLength();
+	while (hash.GetLength() < 2 * GIT_HASH_SIZE)
+		hash += L'0';
+	CGitHash prefixHash(hash);
 	for (int i = 0; i < (int)m_LogList.m_arShownList.size(); ++i)
 	{
 		GitRev* rev = m_LogList.m_arShownList.SafeGetAt(i);
 		if (!rev) continue;
-		if (wcsncmp(rev->m_CommitHash.ToString(), hash, hashLen))
+		if (!rev->m_CommitHash.MatchesPrefix(prefixHash, hash, prefixLen))
 			continue;
 
 		m_LogList.SetItemState(m_LogList.GetSelectionMark(), 0, LVIS_SELECTED | LVIS_FOCUSED);

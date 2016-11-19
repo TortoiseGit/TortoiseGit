@@ -144,6 +144,13 @@ public:
 		return memcmp(left.m_hash, right.m_hash, GIT_HASH_SIZE) != 0;
 	}
 
+	bool MatchesPrefix(const CGitHash& hash, const CString& hashString, size_t prefixLen) const
+	{
+		if (memcmp(m_hash, hash.m_hash, prefixLen >> 1))
+			return false;
+		return prefixLen == 2 * GIT_HASH_SIZE || wcsncmp(ToString(), hashString, prefixLen) == 0;
+	}
+
 	static bool IsValidSHA1(const CString &possibleSHA1)
 	{
 		if (possibleSHA1.GetLength() != 2 * GIT_HASH_SIZE)

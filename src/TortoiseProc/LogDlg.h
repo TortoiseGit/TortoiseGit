@@ -163,7 +163,7 @@ protected:
 	afx_msg void OnPaint();
 
 	void OnPasteGitHash();
-	void JumpToGitHash(CString& hash);
+	void JumpToGitHash(CString hash);
 
 	DECLARE_MESSAGE_MAP()
 

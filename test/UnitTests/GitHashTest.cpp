@@ -92,3 +92,35 @@ TEST(CGitHash, IsSHA1Valid)
 	EXPECT_FALSE(CGitHash::IsValidSHA1(L"refs/heads/master"));
 	EXPECT_FALSE(CGitHash::IsValidSHA1(L"8d1861316061748cfee7e075dc138287978102az"));
 }
+
+TEST(CGitHash, MatchesPrefix)
+{
+	CString prefix = L"3012b757c23d16cc915acf60f5e3922d0409187a";
+	CGitHash hash = prefix;
+	CGitHash prefixHash = prefix;
+	EXPECT_TRUE(hash.MatchesPrefix(prefixHash, prefix, prefix.GetLength()));
+
+	prefix = L"";
+	prefixHash = L"0000000000000000000000000000000000000000";
+	EXPECT_TRUE(hash.MatchesPrefix(prefixHash, prefix, prefix.GetLength()));
+
+	prefix = L"3012b757";
+	prefixHash = L"3012b75700000000000000000000000000000000";
+	EXPECT_TRUE(hash.MatchesPrefix(prefixHash, prefix, prefix.GetLength()));
+
+	prefix = L"3012b758";
+	prefixHash = L"3012b75800000000000000000000000000000000";
+	EXPECT_FALSE(hash.MatchesPrefix(prefixHash, prefix, prefix.GetLength()));
+
+	prefix = L"a0";
+	prefixHash = L"a000000000000000000000000000000000000000";
+	EXPECT_FALSE(hash.MatchesPrefix(prefixHash, prefix, prefix.GetLength()));
+
+	prefix = L"3012b75";
+	prefixHash = L"3012b75000000000000000000000000000000000";
+	EXPECT_TRUE(hash.MatchesPrefix(prefixHash, prefix, prefix.GetLength()));
+
+	prefix = L"3012b76";
+	prefixHash = L"3012b76000000000000000000000000000000000";
+	EXPECT_FALSE(hash.MatchesPrefix(prefixHash, prefix, prefix.GetLength()));
+}
