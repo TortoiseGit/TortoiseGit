@@ -395,7 +395,7 @@ int CRepositoryBrowser::ReadTreeRecursive(git_repository& repo, const git_tree* 
 		CShadowFilesTree * pNextTree = &treeroot->m_ShadowTree[base];
 		pNextTree->m_sName = base;
 		pNextTree->m_pParent = treeroot;
-		pNextTree->m_hash = CGitHash((char *)oid->id);
+		pNextTree->m_hash = oid->id;
 
 		if (mode == GIT_FILEMODE_COMMIT)
 			pNextTree->m_bSubmodule = true;
@@ -522,7 +522,7 @@ int CRepositoryBrowser::ReadTree(CShadowFilesTree* treeroot, const CString& root
 		tree = (git_tree*)object.Detach();
 	}
 
-	treeroot->m_hash = CGitHash((char *)git_tree_id(tree)->id);
+	treeroot->m_hash = git_tree_id(tree)->id;
 	ReadTreeRecursive(*repository, tree, treeroot, recursive);
 
 	// try to resolve hash to a branch name

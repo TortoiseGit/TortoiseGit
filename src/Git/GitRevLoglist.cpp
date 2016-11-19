@@ -402,7 +402,7 @@ int GitRevLoglist::GetRefLog(const CString& ref, std::vector<GitRevLoglist>& ref
 				continue;
 
 			GitRevLoglist rev;
-			rev.m_CommitHash = (const unsigned char*)git_reflog_entry_id_new(entry)->id;
+			rev.m_CommitHash = git_reflog_entry_id_new(entry)->id;
 			rev.m_Ref.Format(L"%s@{%d}", (LPCTSTR)ref, i);
 			rev.GetCommitterDate() = CTime(git_reflog_entry_committer(entry)->when.time);
 			if (git_reflog_entry_message(entry) != nullptr)

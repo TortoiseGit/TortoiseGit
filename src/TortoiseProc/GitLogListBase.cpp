@@ -2905,7 +2905,7 @@ UINT CGitLogListBase::LogThread()
 			if(m_bExitThread)
 				break;
 
-			CGitHash hash = (char*)commit.m_hash ;
+			CGitHash hash(commit.m_hash);
 
 			GitRevLoglist* pRev = m_LogCache.GetCacheData(hash);
 			pRev->m_GitCommit = commit;

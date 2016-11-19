@@ -55,7 +55,7 @@ int GitRev::ParserParentFromCommit(GIT_COMMIT *commit)
 
 	git_get_commit_first_parent(commit,&list);
 	while(git_get_commit_next_parent(&list,parent)==0)
-		m_ParentHash.emplace_back((char*)parent);
+		m_ParentHash.emplace_back(parent);
 	return 0;
 }
 
@@ -102,7 +102,7 @@ int GitRev::ParserParentFromCommit(const git_commit* commit)
 	m_ParentHash.clear();
 	unsigned int parentCount = git_commit_parentcount(commit);
 	for (unsigned int i = 0; i < parentCount; ++i)
-		m_ParentHash.emplace_back((char*)git_commit_parent_id(commit, i)->id);
+		m_ParentHash.emplace_back(git_commit_parent_id(commit, i)->id);
 
 	return 0;
 }
@@ -297,6 +297,6 @@ int GitRev::GetCommit(const CString& refname)
 		return -1;
 	}
 
-	CGitHash hash((char*)sha);
+	CGitHash hash(sha);
 	return GetCommitFromHash_withoutLock(hash);
 }

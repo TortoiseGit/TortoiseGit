@@ -53,7 +53,7 @@ TEST(CGitHash, Initial)
 	EXPECT_TRUE(hash2.IsEmpty());
 
 	unsigned char chararray[20] = { 0x8D, 0x18, 0x61, 0x31, 0x60, 0x61, 0x74, 0x8C, 0xFE, 0xE7, 0xE0, 0x75, 0xDC, 0x13, 0x82, 0x87, 0x97, 0x81, 0x02, 0xAB };
-	CGitHash hash3((char*)chararray);
+	CGitHash hash3(chararray);
 	EXPECT_FALSE(hash3.IsEmpty());
 	EXPECT_STREQ(L"8d1861316061748cfee7e075dc138287978102ab", hash3.ToString());
 	EXPECT_TRUE(hash3 == hash);

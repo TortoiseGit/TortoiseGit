@@ -1303,7 +1303,7 @@ int CGit::GetHash(git_repository * repo, CGitHash &hash, const CString& friendna
 	if (!oid)
 		return -1;
 
-	hash = CGitHash((char *)oid->id);
+	hash = CGitHash(oid->id);
 
 	return 0;
 }
@@ -2055,7 +2055,7 @@ int libgit2_addto_map_each_ref_fn(git_reference *ref, void *payload)
 	if (!oid)
 		return 1;
 
-	CGitHash hash((char *)oid->id);
+	CGitHash hash(oid->id);
 	(*payloadContent->map)[hash].push_back(str);
 
 	return 0;

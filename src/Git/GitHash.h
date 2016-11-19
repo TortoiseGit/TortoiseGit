@@ -29,7 +29,7 @@ public:
 	{
 		memset(m_hash,0, GIT_HASH_SIZE);
 	}
-	CGitHash(const char *p)
+	CGitHash(const unsigned char* p)
 	{
 		memcpy(m_hash,p,GIT_HASH_SIZE);
 	}
