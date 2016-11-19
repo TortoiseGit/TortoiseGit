@@ -10,6 +10,7 @@
 
 #include "stdafx.h"
 #include "ACListWnd.h"
+#include "StringUtils.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -608,7 +609,7 @@ int CACListWnd::FindString(int nStartAfter, LPCTSTR lpszString, bool m_bDisplayO
 			}
 			else  // _MODE_FIND_EXACT_
 			{
-				if(m_Str1.Find(m_Str2) == 0)
+				if (CStringUtils::StartsWith(m_Str1, m_Str2))
 				{
 					m_DisplayList.Add(m_SearchList.GetAt(i));
 				}

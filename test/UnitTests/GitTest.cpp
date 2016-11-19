@@ -76,7 +76,7 @@ TEST(CGit, RunGit_Error)
 
 	output.Empty();
 	EXPECT_EQ(128, cgit.Run(L"git.exe add file.txt", &output, CP_UTF8));
-	EXPECT_TRUE(output.Find(L"fatal: Not a git repository (or any") == 0);
+	EXPECT_TRUE(CStringUtils::StartsWith(output, L"fatal: Not a git repository (or any"));
 }
 
 TEST_P(CBasicGitWithTestRepoBareFixture, RunGit_AbsolutePath)
