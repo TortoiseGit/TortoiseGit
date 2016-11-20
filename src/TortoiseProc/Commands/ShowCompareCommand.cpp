@@ -36,7 +36,7 @@ bool ShowCompareCommand::Execute()
 	bool bAlternativeTool = !!parser.HasKey(L"alternative");
 
 	if (unified)
-		return !!CAppUtils::StartShowUnifiedDiff(nullptr, CTGitPath(), rev1, CTGitPath(), rev2, bAlternativeTool);
+		return !!CAppUtils::StartShowUnifiedDiff(nullptr, cmdLinePath, rev1, CTGitPath(), rev2, bAlternativeTool);
 	else
 		return !!CGitDiff::DiffCommit(cmdLinePath, rev2, rev1, bAlternativeTool);
 }
