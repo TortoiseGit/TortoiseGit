@@ -25,6 +25,7 @@ class CTGitPath;
 struct git_cred;
 struct git_transfer_progress;
 class CIgnoreFile;
+class ProjectProperties;
 
 /**
  * \ingroup TortoiseProc
@@ -224,7 +225,7 @@ public:
 	static BOOL Merge(const CString* commit = nullptr, bool showStashPop = false);
 	static BOOL MergeAbort();
 	static void RemoveTempMergeFile(const CTGitPath& path);
-	static void EditNote(GitRevLoglist* hash);
+	static void EditNote(GitRevLoglist* rev, ProjectProperties* projectProperties);
 	static int GetMsysgitVersion();
 	static void MarkWindowAsUnpinnable(HWND hWnd);
 

@@ -3328,7 +3328,7 @@ BOOL CAppUtils::MergeAbort()
 	return FALSE;
 }
 
-void CAppUtils::EditNote(GitRevLoglist* rev)
+void CAppUtils::EditNote(GitRevLoglist* rev, ProjectProperties* projectProperties)
 {
 	if (!CheckUserData())
 		return;
@@ -3337,7 +3337,7 @@ void CAppUtils::EditNote(GitRevLoglist* rev)
 	dlg.m_sHintText = CString(MAKEINTRESOURCE(IDS_PROGS_TITLE_EDITNOTES));
 	dlg.m_sInputText = rev->m_Notes;
 	dlg.m_sTitle = CString(MAKEINTRESOURCE(IDS_PROGS_TITLE_EDITNOTES));
-	//dlg.m_pProjectProperties = &m_ProjectProperties;
+	dlg.m_pProjectProperties = projectProperties;
 	dlg.m_bUseLogWidth = true;
 	if(dlg.DoModal() == IDOK)
 	{
