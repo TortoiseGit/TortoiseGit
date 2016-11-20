@@ -2426,12 +2426,30 @@ void CGitLogListBase::CopySelectionToClipBoard(int toCopy)
 					sPaths += L"\r\n";
 				}
 				sPaths.Trim();
-				sLogCopyText.Format(L"%s: %s\r\n%s: %s <%s>\r\n%s: %s\r\n%s:\r\n%s\r\n----\r\n%s\r\n\r\n",
+
+				CString sNotesTags;
+				if (!pLogEntry->m_Notes.IsEmpty())
+				{
+					sNotesTags = L"----\n" + CString(MAKEINTRESOURCE(IDS_NOTES));
+					sNotesTags += L":\n";
+					sNotesTags += pLogEntry->m_Notes;
+					sNotesTags.Replace(L"\n", L"\r\n");
+				}
+				CString tagInfo = GetTagInfo(pLogEntry);
+				if (!tagInfo.IsEmpty())
+				{
+					sNotesTags += L"----\r\n" + CString(MAKEINTRESOURCE(IDS_PROC_LOG_TAGINFO)) + L":\r\n";
+					tagInfo.Replace(L"\n", L"\r\n");
+					sNotesTags += tagInfo;
+				}
+
+				sLogCopyText.Format(L"%s: %s\r\n%s: %s <%s>\r\n%s: %s\r\n%s:\r\n%s\r\n%s----\r\n%s\r\n\r\n",
 					(LPCTSTR)sRev, (LPCTSTR)pLogEntry->m_CommitHash.ToString(),
 					(LPCTSTR)sAuthor, (LPCTSTR)pLogEntry->GetAuthorName(), (LPCTSTR)pLogEntry->GetAuthorEmail(),
 					(LPCTSTR)sDate,
 					(LPCTSTR)CLoglistUtils::FormatDateAndTime(pLogEntry->GetAuthorDate(), m_DateFormat, true, m_bRelativeTimes),
 					(LPCTSTR)sMessage, (LPCTSTR)pLogEntry->GetSubjectBody(true),
+					(LPCTSTR)sNotesTags,
 					(LPCTSTR)sPaths);
 				sClipdata +=  sLogCopyText;
 			}
