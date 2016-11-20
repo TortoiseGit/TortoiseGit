@@ -4130,7 +4130,11 @@ int CGitStatusListCtrl::RevertSelectedItemToVersion(bool parent)
 		out += versionEntry + L"\r\n";
 	}
 	if (!out.IsEmpty())
+	{
+		if (GetLogicalParent() && GetLogicalParent()->GetSafeHwnd())
+			GetLogicalParent()->SendMessage(GITSLNM_NEEDSREFRESH);
 		CMessageBox::Show(GetSafeHwnd(), out, L"TortoiseGit", MB_OK);
+	}
 	return 0;
 }
 

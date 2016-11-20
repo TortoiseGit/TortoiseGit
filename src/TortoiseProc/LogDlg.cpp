@@ -188,6 +188,7 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_REGISTERED_MESSAGE(TaskBarButtonCreated, OnTaskbarBtnCreated)
 
 	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::GITSLNM_ITEMCHANGED, &CLogDlg::OnFileListCtrlItemChanged)
+	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::GITSLNM_NEEDSREFRESH, OnGitStatusListCtrlNeedsRefresh)
 	ON_WM_MOVE()
 	ON_WM_MOVING()
 	ON_WM_SIZING()
@@ -208,6 +209,13 @@ enum JumpType
 	JumpType_BranchFF,
 	JumpType_History,
 };
+
+LRESULT CLogDlg::OnGitStatusListCtrlNeedsRefresh(WPARAM, LPARAM)
+{
+	m_LogList.ResetWcRev(true);
+	m_LogList.Invalidate();
+	return 0;
+}
 
 void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString hightlightRevision, CString range, DWORD limit, int limitScale/*=-1*/)
 {
