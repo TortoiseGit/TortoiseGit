@@ -30,6 +30,7 @@ Released: unreleased
  * Fixed issue #2829: Remembering the last selected line might not work when a conflict was manually resolved
  * Fixed issue #2868: Show changes as unified diff fails (using Cygwin git)
  * /command:showcompare /unified did not honor path filters correctly
+ * Fixed issue #2870: Save unified diff can cause TortoiseGit to not respond
 
 = Release 2.3.0 =
 Released: 2016-10-01

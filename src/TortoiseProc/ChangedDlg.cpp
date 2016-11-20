@@ -434,7 +434,11 @@ void CChangedDlg::OnBnClickedButtonUnifieddiff()
 	bool bSingleFile = ((m_pathList.GetCount()==1)&&(!m_pathList[0].IsEmpty())&&(!m_pathList[0].IsDirectory()));
 	if (bSingleFile)
 		commonDirectory = m_pathList[0];
-	CAppUtils::StartShowUnifiedDiff(m_hWnd, commonDirectory, GitRev::GetHead(), commonDirectory, GitRev::GetWorkingCopy(), !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
+	CString sCmd;
+	sCmd.Format(L"/command:showcompare /unified /path:\"%s\" /revision1:HEAD /revision2:%s", (LPCTSTR)g_Git.CombinePath(commonDirectory), (LPCTSTR)GitRev::GetWorkingCopy());
+	if (!!(GetAsyncKeyState(VK_SHIFT) & 0x8000))
+		sCmd += L" /alternative";
+	CAppUtils::RunTortoiseGitProc(sCmd);
 }
 
 void CChangedDlg::OnBnClickedWholeProject()
