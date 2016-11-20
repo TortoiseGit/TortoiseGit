@@ -279,6 +279,15 @@
             </listitem>
         </varlistentry>
         <varlistentry>
+            <term condition="pot">ProgressDlgLinesLimit</term>
+            <listitem>
+                <para>
+                    The Git progress dialog shows the output of the executed git.exe commands.
+                    The number of lines are limited for performance reasons. The default is 50000, minimum is 50.
+                </para>
+            </listitem>
+        </varlistentry>
+        <varlistentry>
             <term condition="pot">ReaddUnselectedAddedFilesAfterCommit</term>
             <listitem>
                 <para>
