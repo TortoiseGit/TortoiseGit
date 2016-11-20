@@ -1685,6 +1685,7 @@ void CLogDlg::JumpToGitHash(CString hash)
 		return;
 	}
 
+	FlashWindowEx(FLASHW_ALL, 3, 100);
 	CMessageBox::ShowCheck(GetSafeHwnd(), IDS_PROC_LOG_JUMPNOTFOUND, IDS_APPNAME, 1, IDI_INFORMATION, IDS_OKBUTTON, 0, 0, L"NoJumpNotFoundWarning", IDS_MSGBOX_DONOTSHOWAGAIN);
 }
 
