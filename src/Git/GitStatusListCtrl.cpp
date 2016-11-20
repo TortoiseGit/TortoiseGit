@@ -3899,7 +3899,7 @@ bool CGitStatusListCtrlDropTarget::OnDrop(FORMATETC* pFmtEtc, STGMEDIUM& medium,
 				CTGitPathList changelistItems;
 				for (UINT i = 0; i < cFiles; ++i)
 				{
-					DragQueryFile(hDrop, i, szFileName, sizeof(szFileName));
+					DragQueryFile(hDrop, i, szFileName, _countof(szFileName));
 					changelistItems.AddPath(CTGitPath(szFileName));
 				}
 				// find the changelist name
@@ -3977,7 +3977,7 @@ bool CGitStatusListCtrlDropTarget::OnDrop(FORMATETC* pFmtEtc, STGMEDIUM& medium,
 			{
 				for (UINT i = 0; i < cFiles; ++i)
 				{
-					DragQueryFile(hDrop, i, szFileName, sizeof(szFileName));
+					DragQueryFile(hDrop, i, szFileName, _countof(szFileName));
 					HWND hParentWnd = GetParent(m_hTargetWnd);
 					if (hParentWnd)
 						::SendMessage(hParentWnd, CGitStatusListCtrl::GITSLNM_ADDFILE, 0, (LPARAM)szFileName);
