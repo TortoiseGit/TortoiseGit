@@ -1003,7 +1003,7 @@ int CRebaseDlg::StartRebase()
 	m_OrigUpstreamHash.Empty();
 	if (g_Git.GetHash(m_OrigUpstreamHash, (m_IsCherryPick || m_Onto.IsEmpty()) ? m_UpstreamCtrl.GetString() : m_Onto))
 	{
-		MessageBox(g_Git.GetGitLastErr(L"Could not get hash of \"" + (m_IsCherryPick || m_Onto.IsEmpty()) ? m_UpstreamCtrl.GetString() : m_Onto + L"\"."), L"TortoiseGit", MB_ICONERROR);
+		MessageBox(g_Git.GetGitLastErr(L"Could not get hash of \"" + ((m_IsCherryPick || m_Onto.IsEmpty()) ? m_UpstreamCtrl.GetString() : m_Onto) + L"\"."), L"TortoiseGit", MB_ICONERROR);
 		return -1;
 	}
 
