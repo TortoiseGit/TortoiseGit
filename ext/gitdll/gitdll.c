@@ -678,7 +678,7 @@ int git_check_excluded_1(const char *pathname,
 	return is_excluded_from_list(pathname, pathlen, basename, dtype, el);
 }
 
-int git_get_notes(GIT_HASH hash, char **p_note)
+int git_get_notes(const GIT_HASH hash, char** p_note)
 {
 	struct strbuf sb;
 	size_t size;
