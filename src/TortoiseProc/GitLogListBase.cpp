@@ -2426,8 +2426,6 @@ void CGitLogListBase::CopySelectionToClipBoard(int toCopy)
 					sPaths += L"\r\n";
 				}
 				sPaths.Trim();
-				CString body = pLogEntry->GetBody();
-				body.Replace(L"\n", L"\r\n");
 				sLogCopyText.Format(L"%s: %s\r\n%s: %s <%s>\r\n%s: %s\r\n%s:\r\n%s\r\n----\r\n%s\r\n\r\n",
 					(LPCTSTR)sRev, (LPCTSTR)pLogEntry->m_CommitHash.ToString(),
 					(LPCTSTR)sAuthor, (LPCTSTR)pLogEntry->GetAuthorName(), (LPCTSTR)pLogEntry->GetAuthorEmail(),
