@@ -1189,7 +1189,7 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 				{
 					file2=file1;
 					file1 = log.find(0,file1);
-					if(file1>=0 )
+					if (file1 != BYTE_VECTOR::npos)
 					{
 						++file1;
 						pos=file1;
