@@ -3345,7 +3345,7 @@ void CAppUtils::EditNote(GitRevLoglist* rev, ProjectProperties* projectPropertie
 		cmd = L"notes add -f -F \"";
 
 		CString tempfile=::GetTempFile();
-		if (CAppUtils::SaveCommitUnicodeFile(tempfile, dlg.m_sInputText))
+		if (!CStringUtils::WriteStringToTextFile(tempfile, dlg.m_sInputText))
 		{
 			CMessageBox::Show(nullptr, IDS_PROC_FAILEDSAVINGNOTES, IDS_APPNAME, MB_OK | MB_ICONERROR);
 			return;
