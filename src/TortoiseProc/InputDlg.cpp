@@ -57,7 +57,7 @@ BOOL CInputDlg::OnInitDialog()
 	if (m_pProjectProperties)
 		m_cInput.Init(*m_pProjectProperties);
 	else
-		m_cInput.Init();
+		m_cInput.Init(-1);
 
 	m_cInput.SetFont(CAppUtils::GetLogFontName(), CAppUtils::GetLogFontSize());
 
