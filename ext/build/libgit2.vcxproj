@@ -252,6 +252,7 @@
     <ClInclude Include="..\libgit2\include\git2\sys\remote.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\repository.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\stream.h" />
+    <ClInclude Include="..\libgit2\include\git2\sys\time.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\transport.h" />
     <ClInclude Include="..\libgit2\include\git2\trace.h" />
     <ClInclude Include="..\libgit2\include\git2\transaction.h" />

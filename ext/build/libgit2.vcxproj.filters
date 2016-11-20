@@ -1126,6 +1126,9 @@
     <ClInclude Include="..\libgit2\src\varint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\libgit2\include\git2\sys\time.h">
+      <Filter>Public Header Files\sys</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\libgit2\src\win32\git2.rc">
