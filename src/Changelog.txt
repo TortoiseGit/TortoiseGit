@@ -16,6 +16,7 @@ Released: unreleased
  * Fixed issue #2710: Allow start-commit hook to prevent the Commit dialog from showing
  * Fixed issue #2865: Clickable URLs in TortoiseGit output window
  * Fixed issue #2154: Copy to clipboard function in show log window doesn't include annotated tag or notes messages
+ * Fixed issue #1668: Allow submodules to be removed ("Delete" is now available for submodules)
 
 == Bug Fixes ==
  * Fixed issue #2837: Layout of overlapping icons settings dialog

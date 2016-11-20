@@ -1355,6 +1355,8 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuRemove:
 				AddPathFileCommand(gitCmd, L"remove");
+				if (itemStates & ITEMIS_SUBMODULE)
+					gitCmd += L" /submodule";
 				break;
 			case ShellMenuRemoveKeep:
 				AddPathFileCommand(gitCmd, L"remove");

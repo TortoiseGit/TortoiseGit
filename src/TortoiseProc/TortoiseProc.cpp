@@ -403,6 +403,8 @@ BOOL CTortoiseProcApp::InitInstance()
 			if(g_Git.SetCurrentDir(pathList[i].GetWinPath()))
 				break;
 	}
+	if (parser.HasKey(L"pathfile") && parser.HasKey(L"submodule"))
+		g_Git.SetCurrentDir(pathList[0].GetWinPathString(), true);
 
 	if(!g_Git.m_CurrentDir.IsEmpty())
 	{
