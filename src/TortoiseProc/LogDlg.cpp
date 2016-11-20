@@ -815,23 +815,41 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			pMsgView->SetSel(-1,-1);
 			CAppUtils::SetCharFormat(pMsgView, CFM_BOLD, 0);
 
+			HCURSOR old = GetCursor(); // hack to fix issue #2792
+
 			msg = L'\n';
 			msg+=pLogEntry->GetBody();
+			pMsgView->ReplaceSel(msg);
 
 			if(!pLogEntry->m_Notes.IsEmpty())
 			{
-				msg+= L"\n*" + CString(MAKEINTRESOURCE(IDS_NOTES)) + L"* ";
-				msg+= pLogEntry->m_Notes;
-				msg+= L"\n\n";
+				pMsgView->SetSel(-1, -1);
+				CAppUtils::SetCharFormat(pMsgView, CFM_BOLD, CFE_BOLD);
+				msg = L'\n';
+				if (m_bAsteriskLogPrefix)
+					msg += L"* ";
+				msg += CString(MAKEINTRESOURCE(IDS_NOTES)) + L":\n";
+				pMsgView->ReplaceSel(msg);
+				pMsgView->SetSel(-1, -1);
+				CAppUtils::SetCharFormat(pMsgView, CFM_BOLD, 0);
+				pMsgView->ReplaceSel(pLogEntry->m_Notes);
 			}
 
 			CString tagInfo = m_LogList.GetTagInfo(pLogEntry);
-			if(!tagInfo.IsEmpty())
-				tagInfo = L"\n*" + CString(MAKEINTRESOURCE(IDS_PROC_LOG_TAGINFO)) + L"*\n\n" + tagInfo;
-			msg += tagInfo;
+			if (!tagInfo.IsEmpty())
+			{
+				pMsgView->SetSel(-1, -1);
+				CAppUtils::SetCharFormat(pMsgView, CFM_BOLD, CFE_BOLD);
+				msg = L'\n';
+				if (m_bAsteriskLogPrefix)
+					msg += L"* ";
+				msg += CString(MAKEINTRESOURCE(IDS_PROC_LOG_TAGINFO)) + L":\n";
+				pMsgView->ReplaceSel(msg);
+				pMsgView->SetSel(-1, -1);
+				CAppUtils::SetCharFormat(pMsgView, CFM_BOLD, 0);
+				pMsgView->ReplaceSel(tagInfo);
+			}
 
-			HCURSOR old = GetCursor(); // hack to fix issue #2792
-			pMsgView->ReplaceSel(msg);
 			SetCursor(old);
 
 			CString text;
