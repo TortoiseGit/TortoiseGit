@@ -269,7 +269,7 @@ static bool IsPowerShell(CString cmd)
 	return (end - 4 - 10 == powerShellPos || end - 10 == powerShellPos); // len(".exe")==4, len("powershell")==10
 }
 
-int CGit::RunAsync(CString cmd, PROCESS_INFORMATION *piOut, HANDLE *hReadOut, HANDLE *hErrReadOut, CString *StdioFile)
+int CGit::RunAsync(CString cmd, PROCESS_INFORMATION* piOut, HANDLE* hReadOut, HANDLE* hErrReadOut, const CString* StdioFile)
 {
 	CAutoGeneralHandle hRead, hWrite, hReadErr, hWriteErr;
 	CAutoFile hStdioFile;
@@ -1174,55 +1174,10 @@ DWORD GetTortoiseGitTempPath(DWORD nBufferLength, LPTSTR lpBuffer)
 
 int CGit::RunLogFile(CString cmd, const CString &filename, CString *stdErr)
 {
-	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
-	si.cb=sizeof(STARTUPINFO);
-	GetStartupInfo(&si);
-
-	SECURITY_ATTRIBUTES psa = {sizeof(psa), nullptr, TRUE};
-	psa.bInheritHandle=TRUE;
-
-	CAutoGeneralHandle hReadErr, hWriteErr;
-	if (!CreatePipe(hReadErr.GetPointer(), hWriteErr.GetPointer(), &psa, 0))
-	{
-		CString err = CFormatMessageWrapper();
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": could not open stderr pipe: %s\n", (LPCTSTR)err.Trim());
-		return TGIT_GIT_ERROR_OPEN_PIP;
-	}
-
-	CAutoFile houtfile = CreateFile(filename, GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, &psa, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
-	if (!houtfile)
-	{
-		CString err = CFormatMessageWrapper();
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": could not open stdout pipe: %s\n", (LPCTSTR)err.Trim());
-		return TGIT_GIT_ERROR_OPEN_PIP;
-	}
-
-	si.wShowWindow = SW_HIDE;
-	si.dwFlags = STARTF_USESTDHANDLES|STARTF_USESHOWWINDOW;
-	si.hStdOutput = houtfile;
-	si.hStdError = hWriteErr;
-
-	LPTSTR pEnv = m_Environment;
-	DWORD dwFlags = CREATE_UNICODE_ENVIRONMENT;
-
-	if (CStringUtils::StartsWith(cmd, L"git"))
-	{
-		int firstSpace = cmd.Find(L' ');
-		if (firstSpace > 0)
-			cmd = L'"' + CGit::ms_LastMsysGitDir + L"\\" + cmd.Left(firstSpace) + L'"' + cmd.Mid(firstSpace);
-		else
-			cmd = L'"' + CGit::ms_LastMsysGitDir + L"\\" + cmd + L'"';
-	}
-
-	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": executing %s\n", (LPCTSTR)cmd);
-	if (!CreateProcess(nullptr, cmd.GetBuffer(), nullptr, nullptr, TRUE, dwFlags, pEnv, m_CurrentDir.GetBuffer(), &si, &pi))
-	{
-		CString err = CFormatMessageWrapper();
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": failed to create Process: %s\n", (LPCTSTR)err.Trim());
-		stdErr = &err;
+	CAutoGeneralHandle hReadErr;
+	if (RunAsync(cmd, &pi, nullptr, hReadErr.GetPointer(), &filename))
 		return TGIT_GIT_ERROR_CREATE_PROCESS;
-	}
 
 	CAutoGeneralHandle piThread(pi.hThread);
 	CAutoGeneralHandle piProcess(pi.hProcess);
@@ -1241,9 +1196,6 @@ int CGit::RunLogFile(CString cmd, const CString &filename, CString *stdErr)
 	}
 
 	WaitForSingleObject(pi.hProcess,INFINITE);
-
-	hWriteErr.CloseHandle();
-	hReadErr.CloseHandle();
 
 	if (thread)
 	{

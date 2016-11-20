@@ -273,7 +273,7 @@ public:
 #ifdef _MFC_VER
 	void KillRelatedThreads(CWinThread* thread);
 #endif
-	int RunAsync(CString cmd, PROCESS_INFORMATION* pi, HANDLE* hRead, HANDLE* hErrReadOut, CString* StdioFile = nullptr);
+	int RunAsync(CString cmd, PROCESS_INFORMATION* pi, HANDLE* hRead, HANDLE* hErrReadOut, const CString* StdioFile = nullptr);
 	int RunLogFile(CString cmd, const CString &filename, CString *stdErr);
 
 	int GetDiffPath(CTGitPathList* PathList, CGitHash* hash1, CGitHash* hash2, char* arg = nullptr);
