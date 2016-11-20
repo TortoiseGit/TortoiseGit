@@ -118,6 +118,8 @@ BOOL CChangedDlg::OnInitDialog()
 		CenterWindow(CWnd::FromHandle(hWndExplorer));
 	EnableSaveRestore(L"ChangedDlg");
 
+	m_ctrlStash.m_bAlwaysShowArrow = true;
+
 	m_bRemote = !!(DWORD)CRegDWORD(L"Software\\TortoiseGit\\CheckRepo", FALSE);
 
 	// first start a thread to obtain the status without
@@ -397,9 +399,9 @@ void CChangedDlg::OnBnClickedStash()
 			popup.AppendMenuIcon(ID_STASH_LIST, IDS_MENUSTASHLIST, IDI_LOG);
 		}
 
-		POINT cursorPos;
-		GetCursorPos(&cursorPos);
-		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, cursorPos.x, cursorPos.y, this);
+		RECT rect;
+		GetDlgItem(IDC_BUTTON_STASH)->GetWindowRect(&rect);
+		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, rect.left, rect.top, this);
 
 		switch (cmd & 0xFFFF)
 		{

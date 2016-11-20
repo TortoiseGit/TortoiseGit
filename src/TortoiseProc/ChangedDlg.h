@@ -22,7 +22,7 @@
 #include "StandAloneDlg.h"
 #include "Git.h"
 #include "registry.h"
-
+#include "MenuButton.h"
 #include "GitStatusListCtrl.h"
 
 /**
@@ -61,7 +61,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
-	CButton					m_ctrlStash;
+	CMenuButton				m_ctrlStash;
 	static UINT				ChangedStatusThreadEntry(LPVOID pVoid);
 	UINT					ChangedStatusThread();
 	void					UpdateStatistics();
