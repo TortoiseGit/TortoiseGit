@@ -220,7 +220,9 @@ int CGitLogListBase::AsyncDiffThread()
 				InterlockedExchange(&pRev->m_IsDiffFiles, TRUE);
 				InterlockedExchange(&pRev->m_IsFull, TRUE);
 
-				pRev->GetBody().Format(IDS_FILESCHANGES, files.GetCount());
+				CString body = L"\n";
+				body.AppendFormat(IDS_FILESCHANGES, files.GetCount());
+				pRev->GetBody() = body;
 				::PostMessage(m_hWnd,MSG_LOADED,(WPARAM)0,0);
 				this->GetParent()->PostMessage(WM_COMMAND, MSG_FETCHED_DIFF, 0);
 			}

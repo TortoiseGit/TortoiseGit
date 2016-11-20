@@ -173,13 +173,13 @@ public:
 		CString ret(m_Subject);
 		if (!crlf)
 		{
-			ret += L"\n\n";
+			ret += L"\n";
 			ret += m_Body;
 		}
 		else
 		{
 			ret.TrimRight();
-			ret += L"\r\n\r\n";
+			ret += L"\r\n";
 			CString body(m_Body);
 			body.Replace(L"\n", L"\r\n");
 			ret += body.TrimRight();
