@@ -36,6 +36,7 @@ Released: unreleased
  * Fixed issue #2870: Save unified diff can cause TortoiseGit to not respond
  * Fixed issue #2217: LogDlg: Refresh working tree status and file list after changes to working tree
  * Fixed issue #2833: Pull with 'pull.rebase=preserve' does rebase on invalid upstream
+ * Fixed issue #2859: Cannot clone URLs which contain non-ASCII chars with Git for Windows 2.10.1 and 2.10.2
 
 = Release 2.3.0 =
 Released: 2016-10-01
