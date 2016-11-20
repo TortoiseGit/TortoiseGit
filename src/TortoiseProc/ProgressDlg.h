@@ -130,6 +130,7 @@ private:
 
 	void					ParserCmdOutput(char ch);
 	void					RemoveLastLine(CString &str);
+	static const int		s_iProgressLinesLimit;
 
 	LRESULT					OnProgressUpdateUI(WPARAM wParam,LPARAM lParam);
 

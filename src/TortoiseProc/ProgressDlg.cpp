@@ -39,6 +39,8 @@
 
 IMPLEMENT_DYNAMIC(CProgressDlg, CResizableStandAloneDialog)
 
+const int CProgressDlg::s_iProgressLinesLimit = max(50, (int)CRegDWORD(L"Software\\TortoiseGit\\ProgressDlgLinesLimit", 50000));
+
 CProgressDlg::CProgressDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CProgressDlg::IDD, pParent)
 	, m_bShowCommand(true)
@@ -605,7 +607,7 @@ void CProgressDlg::ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctr
 				log.ReplaceSel(str);
 		}
 
-		if (lines > 500) //limited log length
+		if (lines > s_iProgressLinesLimit) //limited log length
 		{
 			int end=log.LineIndex(1);
 			log.SetSel(0,end);

@@ -106,6 +106,10 @@ CSettingsAdvanced::CSettingsAdvanced()
 	settings[i].type	= CSettingsAdvanced::SettingTypeNumber;
 	settings[i++].def.l	= 10;
 
+	settings[i].sName	= L"ProgressDlgLinesLimit";
+	settings[i].type	= CSettingsAdvanced::SettingTypeNumber;
+	settings[i++].def.l	= 50000;
+
 	settings[i].sName	= L"PullRebaseBehaviorLike1816";
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
 	settings[i++].def.b	= false;
