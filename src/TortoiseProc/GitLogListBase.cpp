@@ -3476,7 +3476,7 @@ CString CGitLogListBase::GetTagInfo(GitRev* pLogEntry)
 
 				cmd.Format(L"git.exe cat-file tag %s", (LPCTSTR)tag);
 				if (g_Git.Run(cmd, &output, nullptr, CP_UTF8) == 0)
-					output.AppendChar(L'\n');
+					output.Trim().AppendChar(L'\n');
 			}
 		}
 	}
