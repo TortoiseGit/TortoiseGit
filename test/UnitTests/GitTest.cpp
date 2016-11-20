@@ -97,10 +97,10 @@ TEST(CGit, RunLogFile)
 	CString error;
 	CGit cgit;
 	ASSERT_EQ(0, cgit.RunLogFile(L"git --version", tmpfile, &error));
-	ASSERT_TRUE(error.IsEmpty());
-	__int64 size = -1;
-	EXPECT_EQ(0, CGit::GetFileModifyTime(tmpfile, nullptr, nullptr, &size));
-	EXPECT_LT(5, size);
+	EXPECT_TRUE(error.IsEmpty());
+	CString fileContents;
+	EXPECT_EQ(true, CStringUtils::ReadStringFromTextFile(tmpfile, fileContents));
+	EXPECT_TRUE(CStringUtils::StartsWith(fileContents, L"git version "));
 }
 
 TEST(CGit, RunLogFile_Set)
@@ -110,10 +110,10 @@ TEST(CGit, RunLogFile_Set)
 	CString error;
 	CGit cgit;
 	ASSERT_EQ(0, cgit.RunLogFile(L"cmd /c set", tmpfile, &error));
-	ASSERT_TRUE(error.IsEmpty());
+	EXPECT_TRUE(error.IsEmpty());
 	CString fileContents;
 	EXPECT_EQ(true, CStringUtils::ReadStringFromTextFile(tmpfile, fileContents));
-	ASSERT_TRUE(fileContents.Find(L"windir")); // should be there on any MS OS ;)
+	EXPECT_TRUE(fileContents.Find(L"windir")); // should be there on any MS OS ;)
 }
 
 TEST(CGit, RunLogFile_Error)
