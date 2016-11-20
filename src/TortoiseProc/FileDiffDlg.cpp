@@ -85,6 +85,7 @@ void CFileDiffDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_FILTER, m_cFilter);
 	DDX_Control(pDX, IDC_REV1EDIT, m_ctrRev1Edit);
 	DDX_Control(pDX, IDC_REV2EDIT, m_ctrRev2Edit);
+	DDX_Control(pDX, IDC_DIFFOPTION, m_cDiffOptionsBtn);
 }
 
 
@@ -314,6 +315,8 @@ BOOL CFileDiffDlg::OnInitDialog()
 
 	if(m_rev2.m_CommitHash.IsEmpty())
 		m_SwitchButton.EnableWindow(FALSE);
+
+	m_cDiffOptionsBtn.m_bAlwaysShowArrow = true;
 
 	KillTimer(IDT_INPUT);
 	return FALSE;
@@ -1321,6 +1324,7 @@ void CFileDiffDlg::OnBnClickedDiffoption()
 	CMenu popup;
 	if (popup.CreatePopupMenu())
 	{
+		m_cDiffOptionsBtn.SetCheck(BST_CHECKED);
 		AppendMenuChecked(popup, IDS_DIFFOPTION_IGNORESPACEATEOL, DIFFOPTION_IGNORESPACEATEOL, m_bIgnoreSpaceAtEol);
 		AppendMenuChecked(popup, IDS_DIFFOPTION_IGNORESPACECHANGE, DIFFOPTION_IGNORESPACECHANGE, m_bIgnoreSpaceChange);
 		AppendMenuChecked(popup, IDS_DIFFOPTION_IGNOREALLSPACE, DIFFOPTION_IGNOREALLSPACE, m_bIgnoreAllSpace);
@@ -1352,6 +1356,7 @@ void CFileDiffDlg::OnBnClickedDiffoption()
 			break;
 		}
 		UpdateData(FALSE);
+		m_cDiffOptionsBtn.SetCheck((m_bIgnoreSpaceAtEol || m_bIgnoreSpaceChange || m_bIgnoreAllSpace || m_bIgnoreBlankLines) ? BST_CHECKED : BST_UNCHECKED);
 	}
 }
 

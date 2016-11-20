@@ -134,6 +134,8 @@ private:
 	CMenuButton			m_cRev2Btn;
 	CFilterEdit			m_cFilter;
 
+	CMenuButton			m_cDiffOptionsBtn;
+
 	CMFCButton			m_SwitchButton;
 	CColors				m_colors;
 	CHintCtrl<CListCtrl>	m_cFileList;
