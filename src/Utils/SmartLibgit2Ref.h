@@ -702,3 +702,24 @@ protected:
 		git_status_list_free(m_Ref);
 	}
 };
+
+class CAutoNote : public CSmartLibgit2Ref<git_note>
+{
+public:
+	CAutoNote() {};
+
+	~CAutoNote()
+	{
+		CleanUp();
+	}
+
+private:
+	CAutoNote(const CAutoNote&) = delete;
+	CAutoNote& operator=(const CAutoNote&) = delete;
+
+protected:
+	virtual void FreeRef()
+	{
+		git_note_free(m_Ref);
+	}
+};

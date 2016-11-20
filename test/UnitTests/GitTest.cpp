@@ -2440,3 +2440,27 @@ TEST_P(CBasicGitWithTestRepoFixture, GetUnifiedDiff)
 	EXPECT_EQ(true, CStringUtils::ReadStringFromTextFile(tmpfile, fileContents));
 	EXPECT_STREQ(L" utf8-nobom.txt | 4 ++--\n 1 file changed, 2 insertions(+), 2 deletions(-)\n\ndiff --git a/utf8-nobom.txt b/utf8-nobom.txt\nindex ffa0d50..c225b3f 100644\n--- a/utf8-nobom.txt\n+++ b/utf8-nobom.txt\n@@ -1,9 +1,9 @@\n-ä#äf34öööäß€9875oe\r\n+ä#äf34ööcöäß€9875oe\r\n fgdjkglsfdg\r\n öäöü45g\r\n fdgi&§$%&hfdsgä\r\n ä#äf34öööäß€9875oe\r\n-öäüpfgmfdg\r\n+öäcüpfgmfdg\r\n €fgfdsg\r\n 45\r\n äü\n\\ No newline at end of file\n", fileContents);
 }
+
+static void GetGitNotes(CGit& m_Git, config testConfig)
+{
+	if (testConfig != LIBGIT2_ALL)
+		return;
+
+	CString notes;
+	EXPECT_EQ(0, m_Git.GetGitNotes(CGitHash(L"1fc3c9688e27596d8717b54f2939dc951568f6cb"), notes));
+	EXPECT_STREQ(L"A note here!\n", notes);
+
+	EXPECT_EQ(0, m_Git.GetGitNotes(CGitHash(L"1ce788330fd3a306c8ad37654063ceee13a7f172"), notes));
+	EXPECT_STREQ(L"", notes);
+}
+
+TEST_P(CBasicGitWithTestRepoFixture, GetGitNotes)
+{
+	GetGitNotes(m_Git, GetParam());
+}
+
+TEST_P(CBasicGitWithTestRepoBareFixture, GetGitNotes)
+{
+	GetGitNotes(m_Git, GetParam());
+}
+

@@ -3505,3 +3505,22 @@ int CGit::GetGitVersion(CString* versiondebug, CString* errStr)
 
 	return ver;
 }
+
+int CGit::GetGitNotes(const CGitHash& hash, CString& notes)
+{
+	CAutoRepository repo(GetGitRepository());
+	if (!repo)
+		return -1;
+
+	CAutoNote note;
+	int ret = git_note_read(note.GetPointer(), repo, nullptr, reinterpret_cast<const git_oid*>(hash.m_hash));
+	if (ret == GIT_ENOTFOUND)
+	{
+		notes.Empty();
+		return 0;
+	}
+	else if (ret)
+		return -1;
+	notes = CUnicodeUtils::GetUnicode(git_note_message(note));
+	return 0;
+}

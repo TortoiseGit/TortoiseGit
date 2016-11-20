@@ -57,25 +57,10 @@ BOOL CInputDlg::OnInitDialog()
 	if (m_pProjectProperties)
 		m_cInput.Init(*m_pProjectProperties);
 	else
-		m_cInput.Init();
+		m_cInput.Init(-1);
 
 	m_cInput.SetFont(CAppUtils::GetLogFontName(), CAppUtils::GetLogFontSize());
 
-	if (m_pProjectProperties)
-	{
-		if (m_pProjectProperties->nLogWidthMarker)
-		{
-			m_cInput.Call(SCI_SETWRAPMODE, SC_WRAP_NONE);
-			m_cInput.Call(SCI_SETEDGEMODE, EDGE_LINE);
-			m_cInput.Call(SCI_SETEDGECOLUMN, m_pProjectProperties->nLogWidthMarker);
-		}
-		else
-		{
-			m_cInput.Call(SCI_SETEDGEMODE, EDGE_NONE);
-			m_cInput.Call(SCI_SETWRAPMODE, SC_WRAP_WORD);
-		}
-		//m_cInput.SetText(m_pProjectProperties->sLogTemplate);
-	}
 	if (!m_sInputText.IsEmpty())
 	{
 		m_cInput.SetText(m_sInputText);

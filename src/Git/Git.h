@@ -478,6 +478,8 @@ public:
 
 	static bool LoadTextFile(const CString &filename, CString &msg);
 
+	int GetGitNotes(const CGitHash& hash, CString& notes);
+
 	int GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, CString patchfile, bool bMerge, bool bCombine, int diffContext, bool bNoPrefix = false);
 	int GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, CStringA * buffer, bool bMerge, bool bCombine, int diffContext);
 

@@ -3328,7 +3328,7 @@ BOOL CAppUtils::MergeAbort()
 	return FALSE;
 }
 
-void CAppUtils::EditNote(GitRevLoglist* rev)
+void CAppUtils::EditNote(GitRevLoglist* rev, ProjectProperties* projectProperties)
 {
 	if (!CheckUserData())
 		return;
@@ -3337,7 +3337,7 @@ void CAppUtils::EditNote(GitRevLoglist* rev)
 	dlg.m_sHintText = CString(MAKEINTRESOURCE(IDS_PROGS_TITLE_EDITNOTES));
 	dlg.m_sInputText = rev->m_Notes;
 	dlg.m_sTitle = CString(MAKEINTRESOURCE(IDS_PROGS_TITLE_EDITNOTES));
-	//dlg.m_pProjectProperties = &m_ProjectProperties;
+	dlg.m_pProjectProperties = projectProperties;
 	dlg.m_bUseLogWidth = true;
 	if(dlg.DoModal() == IDOK)
 	{
@@ -3345,7 +3345,7 @@ void CAppUtils::EditNote(GitRevLoglist* rev)
 		cmd = L"notes add -f -F \"";
 
 		CString tempfile=::GetTempFile();
-		if (CAppUtils::SaveCommitUnicodeFile(tempfile, dlg.m_sInputText))
+		if (!CStringUtils::WriteStringToTextFile(tempfile, dlg.m_sInputText))
 		{
 			CMessageBox::Show(nullptr, IDS_PROC_FAILEDSAVINGNOTES, IDS_APPNAME, MB_OK | MB_ICONERROR);
 			return;
@@ -3358,14 +3358,14 @@ void CAppUtils::EditNote(GitRevLoglist* rev)
 		{
 			if (git_run_cmd("notes", CUnicodeUtils::GetMulti(cmd, CP_UTF8).GetBuffer()))
 				CMessageBox::Show(nullptr, IDS_PROC_FAILEDSAVINGNOTES, IDS_APPNAME, MB_OK | MB_ICONERROR);
-			else
-				rev->m_Notes = dlg.m_sInputText;
 		}catch(...)
 		{
 			CMessageBox::Show(nullptr, IDS_PROC_FAILEDSAVINGNOTES, IDS_APPNAME, MB_OK | MB_ICONERROR);
 		}
 		::DeleteFile(tempfile);
 
+		if (g_Git.GetGitNotes(rev->m_CommitHash, rev->m_Notes))
+			MessageBox(nullptr, g_Git.GetLibGit2LastErr(L"Could not load notes for commit " + rev->m_CommitHash.ToString() + L'.'), L"TortoiseGit", MB_OK | MB_ICONERROR);
 	}
 }
 
