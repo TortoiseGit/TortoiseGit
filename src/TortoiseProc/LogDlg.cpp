@@ -1662,8 +1662,16 @@ void CLogDlg::JumpToGitHash(CString hash)
 	while (hash.GetLength() < 2 * GIT_HASH_SIZE)
 		hash += L'0';
 	CGitHash prefixHash(hash);
-	for (int i = 0; i < (int)m_LogList.m_arShownList.size(); ++i)
+	// start searching downwards, because it's unlikely that a hash is a forward reference
+	int currentPos = m_LogList.GetSelectionMark();
+	int cnt = (int)m_LogList.m_arShownList.size();
+	if (!cnt || currentPos < 0)
+		return;
+	for (int i = currentPos + 1; i != currentPos; ++i)
 	{
+		if (i >= cnt)
+			i = 0;
+
 		GitRev* rev = m_LogList.m_arShownList.SafeGetAt(i);
 		if (!rev) continue;
 		if (!rev->m_CommitHash.MatchesPrefix(prefixHash, hash, prefixLen))
