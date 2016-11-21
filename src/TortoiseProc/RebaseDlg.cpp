@@ -1429,9 +1429,8 @@ void CRebaseDlg::OnBnClickedContinue()
 			dlg.m_bCommitAmend = isFirst && (m_RebaseStage != REBASE_SQUASH_EDIT); //  do not amend on squash_edit stage, we need a normal commit there
 			if (isFirst && m_RebaseStage == REBASE_SQUASH_EDIT)
 			{
-				if (m_iSquashdate == 2)
-					m_SquashFirstMetaData.time = CTime::GetCurrentTime();
-				dlg.SetTime(m_SquashFirstMetaData.time);
+				if (m_iSquashdate != 2)
+					dlg.SetTime(m_SquashFirstMetaData.time);
 				dlg.SetAuthor(m_SquashFirstMetaData.GetAuthor());
 			}
 			CTGitPathList gpl;
@@ -1493,11 +1492,7 @@ void CRebaseDlg::OnBnClickedContinue()
 		CString out,cmd;
 
 		if (m_RebaseStage == REBASE_SQUASH_EDIT)
-		{
-			if (m_iSquashdate == 2)
-				m_SquashFirstMetaData.time = CTime::GetCurrentTime();
-			cmd.Format(L"git.exe commit %s-F \"%s\"", (LPCTSTR)m_SquashFirstMetaData.GetAsParam(), (LPCTSTR)tempfile);
-		}
+			cmd.Format(L"git.exe commit %s-F \"%s\"", (LPCTSTR)m_SquashFirstMetaData.GetAsParam(m_iSquashdate == 2), (LPCTSTR)tempfile);
 		else
 		{
 			CString options;

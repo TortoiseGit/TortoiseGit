@@ -26,6 +26,7 @@
 #include "GitLogList.h"
 #include "MenuButton.h"
 #include "ProjectProperties.h"
+#include "AppUtils.h"
 
 // CRebaseDlg dialog
 #define IDC_REBASE_TAB 0x1000000
@@ -163,12 +164,17 @@ protected:
 			return temp;
 		}
 
-		CString GetAsParam() const
+		CString GetAsParam(bool now) const
 		{
 			if (!set)
 				return CString();
+
+			CString date = time.Format(L"%Y-%m-%dT%H:%M:%S");
+			if (now)
+				date = CAppUtils::GetMsysgitVersion() > 0x02010000 ? L"\"now\"" : L"\"\"";
+
 			CString temp;
-			temp.Format(L"--date=%s --author=\"%s\" ", (LPCTSTR)time.Format(L"%Y-%m-%dT%H:%M:%S"), (LPCTSTR)GetAuthor());
+			temp.Format(L"--date=%s --author=\"%s\" ", (LPCTSTR)date, (LPCTSTR)GetAuthor());
 			return temp;
 		}
 	} m_SquashFirstMetaData;
