@@ -154,6 +154,10 @@ CSettingsAdvanced::CSettingsAdvanced()
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
 	settings[i++].def.b	= true;
 
+	settings[i].sName	= L"SquashDate";
+	settings[i].type	= CSettingsAdvanced::SettingTypeNumber;
+	settings[i++].def.l	= 0;
+
 	settings[i].sName	= L"StyleCommitMessages";
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
 	settings[i++].def.b	= true;

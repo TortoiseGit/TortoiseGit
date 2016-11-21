@@ -59,6 +59,7 @@ CRebaseDlg::CRebaseDlg(CWnd* pParent /*=nullptr*/)
 	this->m_IsCherryPick = FALSE;
 	m_bForce=FALSE;
 	m_IsFastForward=FALSE;
+	m_iSquashdate = (int)CRegDWORD(L"Software\\TortoiseGit\\SquashDate", 0);
 }
 
 CRebaseDlg::~CRebaseDlg()
@@ -1428,6 +1429,8 @@ void CRebaseDlg::OnBnClickedContinue()
 			dlg.m_bCommitAmend = isFirst && (m_RebaseStage != REBASE_SQUASH_EDIT); //  do not amend on squash_edit stage, we need a normal commit there
 			if (isFirst && m_RebaseStage == REBASE_SQUASH_EDIT)
 			{
+				if (m_iSquashdate == 2)
+					m_SquashFirstMetaData.time = CTime::GetCurrentTime();
 				dlg.SetTime(m_SquashFirstMetaData.time);
 				dlg.SetAuthor(m_SquashFirstMetaData.GetAuthor());
 			}
@@ -1489,8 +1492,12 @@ void CRebaseDlg::OnBnClickedContinue()
 
 		CString out,cmd;
 
-		if(  m_RebaseStage == REBASE_SQUASH_EDIT )
+		if (m_RebaseStage == REBASE_SQUASH_EDIT)
+		{
+			if (m_iSquashdate == 2)
+				m_SquashFirstMetaData.time = CTime::GetCurrentTime();
 			cmd.Format(L"git.exe commit %s-F \"%s\"", (LPCTSTR)m_SquashFirstMetaData.GetAsParam(), (LPCTSTR)tempfile);
+		}
 		else
 		{
 			CString options;
@@ -1853,13 +1860,15 @@ int CRebaseDlg::DoRebase()
 		m_SquashFirstMetaData.Empty();
 	}
 
+	if (nextCommitIsSquash && mode != CGitLogListBase::LOGACTIONS_REBASE_SQUASH)
+		m_SquashFirstMetaData = SquashFirstMetaData(pRev);
+
 	if ((nextCommitIsSquash && mode != CGitLogListBase::LOGACTIONS_REBASE_EDIT) || mode == CGitLogListBase::LOGACTIONS_REBASE_SQUASH)
 	{ // next or this commit is squash (don't do this on edit->squash sequence)
 		nocommit = L" --no-commit ";
+		if (m_iSquashdate == 1)
+			m_SquashFirstMetaData.UpdateDate(pRev);
 	}
-
-	if (nextCommitIsSquash && mode != CGitLogListBase::LOGACTIONS_REBASE_SQUASH)
-		m_SquashFirstMetaData = SquashFirstMetaData(pRev);
 
 	CString log;
 	log.Format(L"%s %d: %s", (LPCTSTR)CGitLogListBase::GetRebaseActionName(mode), GetCurrentCommitID(), (LPCTSTR)pRev->m_CommitHash.ToString());

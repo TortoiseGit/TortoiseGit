@@ -140,6 +140,12 @@ protected:
 			time = rev->GetAuthorDate();
 		}
 
+		void UpdateDate(GitRev* rev)
+		{
+			ATLASSERT(set);
+			time = rev->GetAuthorDate();
+		}
+
 		void Empty()
 		{
 			set = false;
@@ -166,6 +172,7 @@ protected:
 			return temp;
 		}
 	} m_SquashFirstMetaData;
+	int m_iSquashdate;
 
 	int CheckNextCommitIsSquash();
 	int GetCurrentCommitID();

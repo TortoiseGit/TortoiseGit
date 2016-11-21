@@ -395,6 +395,17 @@
             </listitem>
         </varlistentry>
         <varlistentry>
+            <term condition="pot">SquashDate</term>
+            <listitem>
+                <para>
+                    Using this setting you can control which date is used on squashing commits.
+                    Set this value to <literal>1</literal> if you want to use the date of the latest commit.
+                    Set this value to <literal>2</literal> if you want to use the current date.
+                    Set this value to <literal>0</literal> to use the date of the first commit (into which all others are squashed, default).
+                </para>
+            </listitem>
+        </varlistentry>
+        <varlistentry>
             <term condition="pot">TGitCacheCheckContentMaxSize</term>
             <listitem>
                 <para>

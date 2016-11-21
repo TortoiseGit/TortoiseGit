@@ -677,6 +677,13 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				dlg.m_bWholeProject=true;
 				dlg.m_bSelectFilesForCommit = true;
 				dlg.m_bForceCommitAmend=true;
+				int squashDate = (int)CRegDWORD(L"Software\\TortoiseGit\\SquashDate", 0);
+				if (squashDate == 1)
+					dlg.SetTime(m_arShownList.SafeGetAt(FirstSelect)->GetAuthorDate());
+				else if (squashDate == 2)
+					dlg.SetTime(CTime::GetCurrentTime());
+				else
+					dlg.SetTime(m_arShownList.SafeGetAt(LastSelect)->GetAuthorDate());
 				CTGitPathList gpl;
 				gpl.AddPath(CTGitPath(g_Git.m_CurrentDir));
 				dlg.m_pathList = gpl;
