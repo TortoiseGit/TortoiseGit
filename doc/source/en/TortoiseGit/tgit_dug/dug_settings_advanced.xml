@@ -406,6 +406,18 @@
             </listitem>
         </varlistentry>
         <varlistentry>
+          <term condition="pot">StyleCommitMessages</term>
+          <listitem>
+            <para>
+              The commit and log dialog use styling (e.g. bold, italic)
+              in commit messages
+              (see <xref linkend="tgit-dug-commit-log"/> for details).
+              If you don't want to do this, set the value to
+              <literal>false</literal>.
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
             <term condition="pot">TGitCacheCheckContentMaxSize</term>
             <listitem>
                 <para>
