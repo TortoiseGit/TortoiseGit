@@ -156,7 +156,7 @@ private:
 	DECLARE_MESSAGE_MAP()
 
 	//Share with Sync Dailog
-	static int	FindPercentage(CString &log);
+	static int ParsePercentage(CString &log, int pos);
 
 	static void	ClearESC(CString &str);
 

@@ -515,12 +515,8 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 }
 
 //static function, Share with SyncDialog
-int CProgressDlg::FindPercentage(CString &log)
+int CProgressDlg::ParsePercentage(CString &log, int s1)
 {
-	int s1 = log.Find(L'%');
-	if(s1<0)
-		return -1;
-
 	int s2=s1-1;
 	for(int i=s1-1;i>=0;i--)
 	{
@@ -622,7 +618,7 @@ void CProgressDlg::ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctr
 			if(CurrentWork)
 				CurrentWork->SetWindowTextW(str.Left(s1));
 
-			int pos=FindPercentage(str);
+			int pos = ParsePercentage(str, s2);
 			TRACE(L"Pos %d\r\n", pos);
 			if(pos>0)
 			{
