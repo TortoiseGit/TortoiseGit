@@ -1670,7 +1670,7 @@ bool ParseHashesFromLsFile(const BYTE_VECTOR& out, CString& hash1, CString& hash
 	return false;
 }
 
-bool CAppUtils::ConflictEdit(const CTGitPath& path, bool bAlternativeTool /*= false*/, bool revertTheirMy /*= false*/, HWND resolveMsgHwnd /*= nullptr*/)
+bool CAppUtils::ConflictEdit(CTGitPath& path, bool bAlternativeTool /*= false*/, bool revertTheirMy /*= false*/, HWND resolveMsgHwnd /*= nullptr*/)
 {
 	bool bRet = false;
 
@@ -1898,6 +1898,11 @@ bool CAppUtils::ConflictEdit(const CTGitPath& path, bool bAlternativeTool /*= fa
 			{
 				MessageBox(nullptr, out, L"TortoiseGit", MB_OK | MB_ICONERROR);
 				return FALSE;
+			}
+			if (!dlg.m_bIsDelete)
+			{
+				path.m_Action |= CTGitPath::LOGACTIONS_ADDED;
+				path.m_Action &= ~CTGitPath::LOGACTIONS_UNMERGED;
 			}
 			return TRUE;
 		}

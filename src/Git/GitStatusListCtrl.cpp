@@ -2203,7 +2203,12 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					{
 						CString conflictedFile = g_Git.CombinePath(filepath);
 						if (!PathFileExists(conflictedFile) && GetLogicalParent() && GetLogicalParent()->GetSafeHwnd())
+						{
 							GetLogicalParent()->SendMessage(GITSLNM_NEEDSREFRESH);
+							break;
+						}
+						StoreScrollPos();
+						Show(m_dwShow, 0, m_bShowFolders, 0, true);
 					}
 				}
 				break;
@@ -2628,7 +2633,12 @@ void CGitStatusListCtrl::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 		{
 			CString conflictedFile = g_Git.CombinePath(file);
 			if (!PathFileExists(conflictedFile) && GetLogicalParent() && GetLogicalParent()->GetSafeHwnd())
+			{
 				GetLogicalParent()->SendMessage(GITSLNM_NEEDSREFRESH);
+				return;
+			}
+			StoreScrollPos();
+			Show(m_dwShow, 0, m_bShowFolders, 0, true);
 		}
 	}
 	else if ((file->m_Action & CTGitPath::LOGACTIONS_MISSING) && file->m_Action != (CTGitPath::LOGACTIONS_MISSING | CTGitPath::LOGACTIONS_DELETED) && file->m_Action != (CTGitPath::LOGACTIONS_MISSING | CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MODIFIED))
@@ -3192,6 +3202,7 @@ void CGitStatusListCtrl::OnNMReturn(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 	if (!CheckMultipleDiffs())
 		return;
 	bool needsRefresh = false;
+	bool resolvedTreeConfict = false;
 	POSITION pos = GetFirstSelectedItemPosition();
 	while ( pos )
 	{
@@ -3209,6 +3220,7 @@ void CGitStatusListCtrl::OnNMReturn(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 			{
 				CString conflictedFile = g_Git.CombinePath(file);
 				needsRefresh = needsRefresh || !PathFileExists(conflictedFile);
+				resolvedTreeConfict = resolvedTreeConfict || (file->m_Action & CTGitPath::LOGACTIONS_UNMERGED) == 0;
 			}
 		}
 		else if ((file->m_Action & CTGitPath::LOGACTIONS_MISSING) && file->m_Action != (CTGitPath::LOGACTIONS_MISSING | CTGitPath::LOGACTIONS_DELETED) && file->m_Action != (CTGitPath::LOGACTIONS_MISSING | CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MODIFIED))
@@ -3223,6 +3235,11 @@ void CGitStatusListCtrl::OnNMReturn(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 	}
 	if (needsRefresh && GetLogicalParent() && GetLogicalParent()->GetSafeHwnd())
 		GetLogicalParent()->SendMessage(GITSLNM_NEEDSREFRESH);
+	else if (resolvedTreeConfict)
+	{
+		StoreScrollPos();
+		Show(m_dwShow, 0, m_bShowFolders, 0, true);
+	}
 }
 
 void CGitStatusListCtrl::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)

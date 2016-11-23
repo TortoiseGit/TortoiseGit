@@ -172,7 +172,7 @@ public:
 
 	static bool IgnoreFile(const CTGitPathList& filelist, bool IsMask);
 	static bool GitReset(const CString* CommitHash, int type = 1);
-	static bool ConflictEdit(const CTGitPath& file, bool bAlternativeTool = false, bool revertTheirMy = false, HWND resolveMsgHwnd = nullptr);
+	static bool ConflictEdit(CTGitPath& file, bool bAlternativeTool = false, bool revertTheirMy = false, HWND resolveMsgHwnd = nullptr);
 
 	static CString GetMergeTempFile(const CString& str, const CTGitPath& merge);
 	static bool	StashSave(const CString& msg = CString(), bool showPull = false, bool pullShowPush = false, bool showMerge = false, const CString& mergeRev = CString());
