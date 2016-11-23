@@ -373,14 +373,25 @@ void CChangedDlg::UpdateStatistics()
 
 void CChangedDlg::OnBnClickedCommit()
 {
-	CString cmd = L"/command:commit /path:\"";
+	CTGitPathList pathList;
 	bool bSingleFile = ((m_pathList.GetCount()==1)&&(!m_pathList[0].IsEmpty())&&(!m_pathList[0].IsDirectory()));
 	if (bSingleFile)
-		cmd += m_pathList[0].GetWinPathString();
+		pathList.AddPath(m_pathList[0]);
 	else
-		cmd += g_Git.CombinePath(m_pathList.GetCommonRoot().GetDirectory());
-	cmd += L'"';
-	CAppUtils::RunTortoiseGitProc(cmd);
+		pathList.AddPath(m_pathList.GetCommonRoot().GetDirectory());
+
+	bool bSelectFilesForCommit = !!DWORD(CRegStdDWORD(L"Software\\TortoiseGit\\SelectFilesForCommit", TRUE));
+
+	CString logmsg;
+	CTGitPathList selected;
+	CAppUtils::Commit(L"",
+		m_bWholeProject,
+		logmsg,
+		pathList,
+		selected,
+		bSelectFilesForCommit);
+
+	OnBnClickedRefresh();
 }
 
 void CChangedDlg::OnBnClickedStash()
