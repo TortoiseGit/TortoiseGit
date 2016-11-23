@@ -1852,20 +1852,39 @@ bool CAppUtils::ConflictEdit(const CTGitPath& path, bool bAlternativeTool /*= fa
 		::DeleteFile(base.GetWinPathString());
 
 		CDeleteConflictDlg dlg;
-		DescribeConflictFile(b_local, b_base,dlg.m_LocalStatus);
-		DescribeConflictFile(b_remote,b_base,dlg.m_RemoteStatus);
-		CGitHash localHash, remoteHash;
-		if (!g_Git.GetHash(localHash, L"HEAD"))
-			dlg.m_LocalHash = localHash.ToString();
-		if (!g_Git.GetHash(remoteHash, L"MERGE_HEAD"))
-			dlg.m_RemoteHash = remoteHash.ToString();
-		else if (!g_Git.GetHash(remoteHash, L"rebase-apply/original-commit"))
-			dlg.m_RemoteHash = remoteHash.ToString();
-		else if (!g_Git.GetHash(remoteHash, L"CHERRY_PICK_HEAD"))
-			dlg.m_RemoteHash = remoteHash.ToString();
-		else if (!g_Git.GetHash(remoteHash, L"REVERT_HEAD"))
-			dlg.m_RemoteHash = remoteHash.ToString();
-		dlg.m_bShowModifiedButton=b_base;
+		if (!revertTheirMy)
+		{
+			DescribeConflictFile(b_local, b_base, dlg.m_LocalStatus);
+			DescribeConflictFile(b_remote, b_base, dlg.m_RemoteStatus);
+			CGitHash localHash, remoteHash;
+			if (!g_Git.GetHash(localHash, L"HEAD"))
+				dlg.m_LocalHash = localHash.ToString();
+			if (!g_Git.GetHash(remoteHash, L"MERGE_HEAD"))
+				dlg.m_RemoteHash = remoteHash.ToString();
+			else if (!g_Git.GetHash(remoteHash, L"rebase-apply/original-commit"))
+				dlg.m_RemoteHash = remoteHash.ToString();
+			else if (!g_Git.GetHash(remoteHash, L"CHERRY_PICK_HEAD"))
+				dlg.m_RemoteHash = remoteHash.ToString();
+			else if (!g_Git.GetHash(remoteHash, L"REVERT_HEAD"))
+				dlg.m_RemoteHash = remoteHash.ToString();
+		}
+		else
+		{
+			DescribeConflictFile(b_local, b_base, dlg.m_RemoteStatus);
+			DescribeConflictFile(b_remote, b_base, dlg.m_LocalStatus);
+			CGitHash localHash, remoteHash;
+			if (!g_Git.GetHash(remoteHash, L"HEAD"))
+				dlg.m_RemoteHash = remoteHash.ToString();
+			if (!g_Git.GetHash(localHash, L"MERGE_HEAD"))
+				dlg.m_LocalHash = localHash.ToString();
+			else if (!g_Git.GetHash(localHash, L"rebase-apply/original-commit"))
+				dlg.m_LocalHash = localHash.ToString();
+			else if (!g_Git.GetHash(localHash, L"CHERRY_PICK_HEAD"))
+				dlg.m_LocalHash = localHash.ToString();
+			else if (!g_Git.GetHash(localHash, L"REVERT_HEAD"))
+				dlg.m_LocalHash = localHash.ToString();
+		}
+		dlg.m_bShowModifiedButton = b_base;
 		dlg.m_File=merge.GetGitPathString();
 		if(dlg.DoModal() == IDOK)
 		{
