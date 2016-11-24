@@ -261,6 +261,7 @@ void CMergeDlg::OnBnClickedCheckSquash()
 	UpdateData(TRUE);
 	m_cLogMessage.EnableWindow(!m_bSquash);
 	m_cLogMessage.SetAStyle(STYLE_DEFAULT, ::GetSysColor(m_bSquash ? COLOR_GRAYTEXT : COLOR_WINDOWTEXT), ::GetSysColor(m_bSquash ? COLOR_BTNFACE : COLOR_WINDOW));
+	GetDlgItem(IDC_CHECK_NOFF)->EnableWindow(!m_bSquash);
 }
 
 void CMergeDlg::OnBnClickedCheckMergeLog()
@@ -288,6 +289,7 @@ void CMergeDlg::OnBnClickedCheckFFonlyOrNoFF()
 
 	GetDlgItem(IDC_CHECK_FFONLY)->EnableWindow(!m_bNoFF);
 	GetDlgItem(IDC_CHECK_NOFF)->EnableWindow(!m_bFFonly);
+	GetDlgItem(IDC_CHECK_SQUASH)->EnableWindow(!m_bNoFF);
 }
 
 void CMergeDlg::OnSysColorChange()
