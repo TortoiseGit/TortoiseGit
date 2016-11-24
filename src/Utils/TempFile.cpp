@@ -64,11 +64,12 @@ CTGitPath CTempFiles::GetTempFilePath(bool bRemoveAtEnd, const CTGitPath& path /
 				possibletempfile.Format(L"%s%s.%3.3x%s", temppath.get(), (LPCTSTR)path.GetBaseFilename(), i, (LPCTSTR)path.GetFileExtension());
 			tempfile.SetFromWin(possibletempfile);
 			++i;
-		} while (PathFileExists(tempfile.GetWinPath()));
+			// now create the temp file in a thread safe way, so that subsequent calls to GetTempFile() return different filenames.
+			CAutoFile hFile = CreateFile(tempfile.GetWinPath(), GENERIC_READ, FILE_SHARE_READ, nullptr, CREATE_NEW, FILE_ATTRIBUTE_TEMPORARY, nullptr);
+			if (hFile || GetLastError() != ERROR_FILE_EXISTS)
+				break;
+		} while (true);
 	}
-	//now create the temp file, so that subsequent calls to GetTempFile() return
-	//different filenames.
-	CAutoFile hFile = CreateFile(tempfile.GetWinPath(), GENERIC_READ, FILE_SHARE_READ, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_TEMPORARY, nullptr);
 	if (bRemoveAtEnd)
 		m_TempFileList.AddPath(tempfile);
 	return tempfile;
