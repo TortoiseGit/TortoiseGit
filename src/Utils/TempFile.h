@@ -47,10 +47,6 @@ public:
 	 */
 	CTGitPath		GetTempFilePath(bool bRemoveAtEnd, const CTGitPath& path = CTGitPath(), const CGitHash& hash = CGitHash());
 
-	CString			GetTempFolder();
-
-private:
-
 private:
 	CTGitPathList m_TempFileList;
 };
