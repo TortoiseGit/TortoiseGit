@@ -3282,7 +3282,7 @@ static bool DoMerge(bool noFF, bool ffOnly, bool squash, bool noCommit, const in
 		if (showStashPop)
 			postCmdList.emplace_back(IDI_RELOCATE, IDS_MENUSTASHPOP, []{ CAppUtils::StashPop(); });
 
-		if (noCommit)
+		if (noCommit || squash)
 		{
 			postCmdList.emplace_back(IDI_COMMIT, IDS_MENUCOMMIT, []
 			{
