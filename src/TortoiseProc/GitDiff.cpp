@@ -25,6 +25,7 @@
 #include "MessageBox.h"
 #include "FileDiffDlg.h"
 #include "SubmoduleDiffDlg.h"
+#include "TempFile.h"
 
 int CGitDiff::SubmoduleDiffNull(const CTGitPath * pPath, const git_revnum_t &rev1)
 {
@@ -87,8 +88,6 @@ int CGitDiff::SubmoduleDiffNull(const CTGitPath * pPath, const git_revnum_t &rev
 
 int CGitDiff::DiffNull(const CTGitPath *pPath, git_revnum_t rev1, bool bIsAdd, int jumpToLine, bool bAlternative)
 {
-	CString temppath;
-	GetTempPath(temppath);
 	if (rev1 != GIT_REV_ZERO)
 	{
 		CGitHash rev1Hash;
@@ -115,17 +114,7 @@ int CGitDiff::DiffNull(const CTGitPath *pPath, git_revnum_t rev1, bool bIsAdd, i
 
 	if(rev1 != GIT_REV_ZERO )
 	{
-		TCHAR szTempName[MAX_PATH] = {0};
-		GetTempFileName(temppath, pPath->GetBaseFilename(), 0, szTempName);
-		CString temp(szTempName);
-		DeleteFile(szTempName);
-		CreateDirectory(szTempName, nullptr);
-		file1.Format(L"%s\\%s-%s%s",
-				(LPCTSTR)temp,
-				(LPCTSTR)pPath->GetBaseFilename(),
-				(LPCTSTR)rev1.Left(g_Git.GetShortHASHLength()),
-				(LPCTSTR)pPath->GetFileExtension());
-
+		file1 = CTempFiles::Instance().GetTempFilePath(false, *pPath, rev1).GetWinPathString();
 		if (g_Git.GetOneFile(rev1, *pPath, file1))
 		{
 			CString out;
@@ -357,9 +346,6 @@ void CGitDiff::GetSubmoduleChangeType(CGit& subgit, const CString& oldhash, cons
 
 int CGitDiff::Diff(const CTGitPath* pPath, const CTGitPath* pPath2, git_revnum_t rev1, git_revnum_t rev2, bool /*blame*/, bool /*unified*/, int jumpToLine, bool bAlternativeTool)
 {
-	CString temppath;
-	GetTempPath(temppath);
-
 	// make sure we have HASHes here, otherwise filenames might be invalid
 	if (rev1 != GIT_REV_ZERO)
 	{
@@ -402,17 +388,8 @@ int CGitDiff::Diff(const CTGitPath* pPath, const CTGitPath* pPath2, git_revnum_t
 
 	if(rev1 != GIT_REV_ZERO )
 	{
-		TCHAR szTempName[MAX_PATH] = {0};
-		GetTempFileName(temppath, pPath->GetBaseFilename(), 0, szTempName);
-		CString temp(szTempName);
-		DeleteFile(szTempName);
-		CreateDirectory(szTempName, nullptr);
 		// use original file extension, an external diff tool might need it
-		file1.Format(L"%s\\%s-%s-right%s",
-				(LPCTSTR)temp,
-				(LPCTSTR)pPath->GetBaseFilename(),
-				(LPCTSTR)rev1.Left(g_Git.GetShortHASHLength()),
-				(LPCTSTR)pPath->GetFileExtension());
+		file1 = CTempFiles::Instance().GetTempFilePath(false, *pPath, rev1).GetWinPathString();
 		title1 = pPath->GetGitPathString() + L": " + rev1.Left(g_Git.GetShortHASHLength());
 		if (g_Git.GetOneFile(rev1, *pPath, file1))
 		{
@@ -443,21 +420,11 @@ int CGitDiff::Diff(const CTGitPath* pPath, const CTGitPath* pPath2, git_revnum_t
 	CString title2;
 	if(rev2 != GIT_REV_ZERO)
 	{
-		TCHAR szTempName[MAX_PATH] = {0};
-		GetTempFileName(temppath, pPath2->GetBaseFilename(), 0, szTempName);
-		CString temp(szTempName);
-		DeleteFile(szTempName);
-		CreateDirectory(szTempName, nullptr);
 		CTGitPath fileName = *pPath2;
 		if (pPath2->m_Action & CTGitPath::LOGACTIONS_REPLACED)
 			fileName = CTGitPath(pPath2->GetGitOldPathString());
 
-		// use original file extension, an external diff tool might need it
-		file2.Format(L"%s\\%s-%s-left%s",
-				(LPCTSTR)temp,
-				(LPCTSTR)fileName.GetBaseFilename(),
-				(LPCTSTR)rev2.Left(g_Git.GetShortHASHLength()),
-				(LPCTSTR)fileName.GetFileExtension());
+		file2 = CTempFiles::Instance().GetTempFilePath(false, fileName, rev2).GetWinPathString();
 		title2 = fileName.GetGitPathString() + L": " + rev2.Left(g_Git.GetShortHASHLength());
 		if (g_Git.GetOneFile(rev2, fileName, file2))
 		{

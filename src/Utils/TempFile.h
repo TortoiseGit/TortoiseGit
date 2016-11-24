@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2008, 2013, 2015 - TortoiseGit
 // Copyright (C) 2003-2006,2008,2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -44,7 +45,9 @@ public:
 	 * \param path         if set, the temp file will have the same file extension
 	 *                     as this path.
 	 */
-	CTGitPath		GetTempFilePath(bool bRemoveAtEnd, const CTGitPath& path = CTGitPath(), const GitRev &revision = GitRev());
+	CTGitPath		GetTempFilePath(bool bRemoveAtEnd, const CTGitPath& path = CTGitPath(), const CGitHash& hash = CGitHash());
+
+	CString			GetTempFolder();
 
 private:
 
