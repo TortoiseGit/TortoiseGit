@@ -416,6 +416,7 @@ public:
 	bool IsSelectionContinuous();
 protected:
 	int  BeginFetchLog();
+	HWND GetParentHWND();
 public:
 	int  FillGitLog(CTGitPath* path, CString* range = nullptr, int infomask = CGit::LOG_INFO_STAT | CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE);
 	int  FillGitLog(std::unordered_set<CGitHash>& hashes);

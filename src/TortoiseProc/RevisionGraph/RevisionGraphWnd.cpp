@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012, 2015 - TortoiseSVN
-// Copyright (C) 2012-2017 - TortoiseGit
+// Copyright (C) 2012-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -1340,7 +1340,7 @@ void CRevisionGraphWnd::DoUpdate()
 
 void CRevisionGraphWnd::DoSwitch(CString rev)
 {
-	CAppUtils::PerformSwitch(rev);
+	CAppUtils::PerformSwitch(GetSafeHwnd(), rev);
 }
 
 void CRevisionGraphWnd::DoSwitchToHead()

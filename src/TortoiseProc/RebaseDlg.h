@@ -163,14 +163,14 @@ protected:
 			return temp;
 		}
 
-		CString GetAsParam(bool now) const
+		CString GetAsParam(HWND hWnd, bool now) const
 		{
 			if (!set)
 				return CString();
 
 			CString date = time.Format(L"%Y-%m-%dT%H:%M:%S");
 			if (now)
-				date = CAppUtils::IsGitVersionNewerOrEqual(2, 1) ? L"\"now\"" : L"\"\"";
+				date = CAppUtils::IsGitVersionNewerOrEqual(hWnd, 2, 1) ? L"\"now\"" : L"\"\"";
 
 			CString temp;
 			temp.Format(L"--date=%s --author=\"%s\" ", (LPCTSTR)date, (LPCTSTR)GetAuthor());

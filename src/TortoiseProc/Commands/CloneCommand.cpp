@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 // Copyright (C) 2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -124,7 +124,7 @@ bool CloneCommand::Execute()
 			originStr = L" --origin " + dlg.m_strOrigin;
 
 		if(dlg.m_bAutoloadPuttyKeyFile)
-			CAppUtils::LaunchPAgent(&dlg.m_strPuttyKeyFile);
+			CAppUtils::LaunchPAgent(hwndExplorer, &dlg.m_strPuttyKeyFile);
 
 		CAppUtils::RemoveTrailSlash(dlg.m_Directory);
 		if (!dlg.m_bSVN)

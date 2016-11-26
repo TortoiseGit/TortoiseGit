@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2014 - TortoiseSVN
 // Copyright (C) 2008-2018 - TortoiseGit
@@ -546,7 +546,7 @@ static bool UpdateIndex(CMassiveGitTask &mgt, CSysProgressDlg &sysProgressDlg, i
 	return mgt.Execute(cancel);
 }
 
-static void DoPush()
+static void DoPush(HWND hWnd)
 {
 	CString head;
 	if (g_Git.GetCurrentBranchFromFile(g_Git.m_CurrentDir, head))
@@ -555,11 +555,11 @@ static void DoPush()
 	g_Git.GetRemotePushBranch(head, remote, remotebranch);
 	if (remote.IsEmpty() || remotebranch.IsEmpty())
 	{
-		CAppUtils::Push();
+		CAppUtils::Push(hWnd);
 		return;
 	}
 
-	CAppUtils::DoPush(CAppUtils::IsSSHPutty(), false, false, false, false, false, false, head, remote, remotebranch, false, 0);
+	CAppUtils::DoPush(hWnd, CAppUtils::IsSSHPutty(), false, false, false, false, false, false, head, remote, remotebranch, false, 0);
 }
 
 void CCommitDlg::OnOK()
@@ -1055,7 +1055,7 @@ void CCommitDlg::OnOK()
 			m_CommitDate.GetTime(date);
 			m_CommitTime.GetTime(time);
 			if (m_bCommitAmend && m_AsCommitDateCtrl.GetCheck())
-				dateTime = CAppUtils::IsGitVersionNewerOrEqual(2, 1) ? L"--date=\"now\"" : L"--date=\"\"" ;
+				dateTime = CAppUtils::IsGitVersionNewerOrEqual(GetSafeHwnd(), 2, 1) ? L"--date=\"now\"" : L"--date=\"\"" ;
 			else
 				dateTime.Format(L"--date=%sT%s", (LPCTSTR)date.Format(L"%Y-%m-%d"), (LPCTSTR)time.Format(L"%H:%M:%S"));
 		}
@@ -1222,7 +1222,7 @@ void CCommitDlg::OnOK()
 	if (bCloseCommitDlg)
 	{
 		if (m_ctrlOkButton.GetCurrentEntry() == 2)
-			DoPush();
+			DoPush(GetSafeHwnd());
 		CResizableStandAloneDialog::OnOK();
 	}
 	else if (m_PostCmd == GIT_POSTCOMMIT_CMD_RECOMMIT)
@@ -2744,7 +2744,7 @@ int CCommitDlg::CheckHeadDetach()
 		int retval = CMessageBox::Show(GetSafeHwnd(), IDS_PROC_COMMIT_DETACHEDWARNING, IDS_APPNAME, MB_YESNOCANCEL | MB_ICONWARNING);
 		if(retval == IDYES)
 		{
-			if (CAppUtils::CreateBranchTag(FALSE, nullptr, true) == FALSE)
+			if (CAppUtils::CreateBranchTag(GetSafeHwnd(), FALSE, nullptr, true) == FALSE)
 				return 1;
 		}
 		else if (retval == IDCANCEL)

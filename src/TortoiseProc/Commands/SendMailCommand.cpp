@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013 - TortoiseGit
+// Copyright (C) 2009-2013, 2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,5 +22,5 @@
 
 bool SendMailCommand::Execute()
 {
-	return CAppUtils::SendPatchMail(orgPathList, true);
+	return CAppUtils::SendPatchMail(hwndExplorer, orgPathList, true);
 }

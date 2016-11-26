@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011, 2015-2016 - Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2011, 2015-2016, 2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -30,5 +30,5 @@ bool RequestPullCommand::Execute()
 	if (parser.HasVal(L"url"))
 		reposirotyurl = parser.GetVal(L"url");
 
-	return CAppUtils::RequestPull(endrevision, reposirotyurl, true);
+	return CAppUtils::RequestPull(hwndExplorer, endrevision, reposirotyurl, true);
 }

@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2009, 2012-2016, 2018 - TortoiseGit
 
@@ -36,7 +36,7 @@ bool SubmoduleAddCommand::Execute()
 	if( dlg.DoModal() == IDOK )
 	{
 		if (dlg.m_bAutoloadPuttyKeyFile)
-			CAppUtils::LaunchPAgent(&dlg.m_strPuttyKeyFile);
+			CAppUtils::LaunchPAgent(hwndExplorer, &dlg.m_strPuttyKeyFile);
 
 		CString cmd;
 		if (CStringUtils::StartsWith(dlg.m_strPath, g_Git.m_CurrentDir))
@@ -145,7 +145,7 @@ bool SubmoduleUpdateCommand::Execute()
 		params += L" --rebase";
 	if (submoduleUpdateDlg.m_bRemote)
 		params += L" --remote";
-	if (CAppUtils::IsGitVersionNewerOrEqual(2, 11))
+	if (CAppUtils::IsGitVersionNewerOrEqual(hWndExplorer, 2, 11))
 		params += L" --progress";
 
 	for (size_t i = 0; i < submoduleUpdateDlg.m_PathList.size(); ++i)

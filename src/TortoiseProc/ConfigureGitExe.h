@@ -35,7 +35,7 @@ public:
 
 	static bool CheckGitVersion(HWND hwnd)
 	{
-		if (CAppUtils::IsGitVersionNewerOrEqual(1, 9, 5))
+		if (CAppUtils::IsGitVersionNewerOrEqual(hwnd, 1, 9, 5))
 			return true;
 
 		CString tmp;

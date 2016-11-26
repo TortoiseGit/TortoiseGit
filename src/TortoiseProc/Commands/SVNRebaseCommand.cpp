@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013, 2015-2017 - TortoiseGit
+// Copyright (C) 2009-2013, 2015-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -162,5 +162,5 @@ bool SVNRebaseCommand::Execute()
 void SVNRebaseCommand::askIfUserWantsToStashPop()
 {
 	if (MessageBox(hwndExplorer, g_Git.m_CurrentDir + L"\r\n" + CString(MAKEINTRESOURCE(IDS_DCOMMIT_STASH_POP)), L"TortoiseGit", MB_YESNO | MB_ICONINFORMATION) == IDYES)
-		CAppUtils::StashPop();
+		CAppUtils::StashPop(hwndExplorer);
 }

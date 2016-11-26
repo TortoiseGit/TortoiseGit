@@ -164,6 +164,14 @@ CGitLogListBase::CGitLogListBase() : CHintCtrl<CResizableColumnsListCtrl<CListCt
 	StartAsyncDiffThread();
 }
 
+HWND CGitLogListBase::GetParentHWND()
+{
+	auto owner = GetSafeOwner();
+	if (!owner)
+		return GetSafeHwnd();
+	return owner->GetSafeHwnd();
+}
+
 int CGitLogListBase::AsyncDiffThread()
 {
 	while(!m_AsyncThreadExit)

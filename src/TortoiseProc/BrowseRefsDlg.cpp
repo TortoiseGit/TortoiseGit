@@ -327,7 +327,7 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 	m_cBranchFilter.AddString(CString(MAKEINTRESOURCE(IDS_BROWSE_REFS_ONLYMERGED)));
 	m_cBranchFilter.AddString(CString(MAKEINTRESOURCE(IDS_BROWSE_REFS_ONLYUNMERGED)));
 	m_cBranchFilter.SetCurSel(0);
-	if (!CAppUtils::IsGitVersionNewerOrEqual(2, 7))
+	if (!CAppUtils::IsGitVersionNewerOrEqual(GetSafeHwnd(), 2, 7))
 	{
 		m_cBranchFilter.EnableWindow(FALSE);
 		CString temp;
@@ -1146,7 +1146,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		break;
 	case eCmd_Fetch:
 		{
-			CAppUtils::Fetch(remoteName);
+			CAppUtils::Fetch(GetSafeHwnd(), remoteName);
 			Refresh();
 		}
 		break;
@@ -1163,12 +1163,12 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 	case eCmd_Merge:
 		{
 			CString ref = selectedLeafs[0]->GetRefName();
-			CAppUtils::Merge(&ref);
+			CAppUtils::Merge(GetSafeHwnd(), &ref);
 		}
 		break;
 	case eCmd_Switch:
 		{
-			CAppUtils::Switch(selectedLeafs[0]->GetRefName());
+			CAppUtils::Switch(GetSafeHwnd(), selectedLeafs[0]->GetRefName());
 		}
 		break;
 	case eCmd_Rename:
@@ -1197,13 +1197,13 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 			CString* commitHash = nullptr;
 			if (selectedLeafs.size() == 1)
 				commitHash = &(selectedLeafs[0]->m_csRefHash);
-			CAppUtils::CreateBranchTag(false, commitHash);
+			CAppUtils::CreateBranchTag(GetSafeHwnd(), false, commitHash);
 			Refresh();
 		}
 		break;
 	case eCmd_CreateTag:
 		{
-			CAppUtils::CreateBranchTag(true);
+			CAppUtils::CreateBranchTag(GetSafeHwnd(), true);
 			Refresh();
 		}
 		break;

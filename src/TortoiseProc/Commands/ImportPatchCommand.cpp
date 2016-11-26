@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013, 2015-2017 - TortoiseGit
+// Copyright (C) 2009-2013, 2015-2018 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -46,7 +46,7 @@ bool ImportPatchCommand::Execute()
 	}
 	else if (!orgPathList.IsEmpty() && !orgPathList[0].HasAdminDir())
 	{
-		CString str = CAppUtils::ChooseRepository(nullptr);
+		CString str = CAppUtils::ChooseRepository(hwndExplorer, nullptr);
 		if(str.IsEmpty())
 			return FALSE;
 

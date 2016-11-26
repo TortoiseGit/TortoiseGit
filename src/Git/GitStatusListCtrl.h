@@ -270,6 +270,8 @@ public:
 	CGitStatusListCtrl(void);
 	~CGitStatusListCtrl(void);
 
+	HWND GetParentHWND();
+
 	CString m_Rev1;
 	CString m_Rev2;
 
