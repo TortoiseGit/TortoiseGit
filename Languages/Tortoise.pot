@@ -2581,7 +2581,7 @@ msgid "Check those menu entries you want to appear in the top context menu inste
 msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_EXTMENULAYOUT_TT)
-msgid "Check those menu entries you want to appear only in the extended context menu (SHIFT + left click)"
+msgid "Check those menu entries you want to appear only in the extended context menu (SHIFT + right click)"
 msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_RELATIVETIMES_TT)

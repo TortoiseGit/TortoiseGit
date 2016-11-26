@@ -3591,7 +3591,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_SETTINGS_EXTMENULAYOUT_TT 
-                            "Check those menu entries you want to appear only in the extended context menu (SHIFT + left click)"
+                            "Check those menu entries you want to appear only in the extended context menu (SHIFT + right click)"
     IDS_REVGRAPH_ERR_NOGRAPH "No graph available"
 END
 
