@@ -35,6 +35,7 @@
 #include "GitDiff.h"
 #include "DragDropImpl.h"
 #include "GitDataObject.h"
+#include "TempFile.h"
 
 #define OVERLAY_EXTERNAL	1
 #define OVERLAY_EXECUTABLE	2
@@ -1231,9 +1232,6 @@ void CRepositoryBrowser::OpenFile(const CString path, eOpenType mode, bool isSub
 {
 	CTGitPath gitPath(path);
 
-	CString temppath;
-	CString file;
-	GetTempPath(temppath);
 	CGitHash hash;
 	if (g_Git.GetHash(hash, m_sRevision))
 	{
@@ -1241,8 +1239,7 @@ void CRepositoryBrowser::OpenFile(const CString path, eOpenType mode, bool isSub
 		return;
 	}
 
-	file.Format(L"%s%s_%s%s", (LPCTSTR)temppath, (LPCTSTR)gitPath.GetBaseFilename(), (LPCTSTR)hash.ToString().Left(g_Git.GetShortHASHLength()), (LPCTSTR)gitPath.GetFileExtension());
-
+	CString file = CTempFiles::Instance().GetTempFilePath(false, gitPath, hash).GetWinPathString();
 	if (isSubmodule)
 	{
 		if (mode == OPEN && !GitAdminDir::IsBareRepo(g_Git.m_CurrentDir))

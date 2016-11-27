@@ -127,11 +127,7 @@ int CGitDiff::DiffNull(const CTGitPath *pPath, git_revnum_t rev1, bool bIsAdd, i
 	else
 		file1 = g_Git.CombinePath(pPath);
 
-	// preserve FileExtension, needed especially for diffing deleted images (detection on new filename extension)
-	CString tempfile=::GetTempFile() + pPath->GetFileExtension();
-	CStdioFile file(tempfile,CFile::modeReadWrite|CFile::modeCreate );
-	//file.WriteString();
-	file.Close();
+	CString tempfile = CTempFiles::Instance().GetTempFilePath(false, *pPath, rev1).GetWinPathString();
 	::SetFileAttributes(tempfile, FILE_ATTRIBUTE_READONLY);
 
 	CAppUtils::DiffFlags flags;
