@@ -4,9 +4,6 @@
 	<?dbhh topicname="HIDD_SETTINGSMAIN"?>
 	<title>General Settings</title>
 	<indexterm>
-		<primary>sounds</primary>
-	</indexterm>
-	<indexterm>
 		<primary>git.exe path</primary>
 	</indexterm>
 	<indexterm>
