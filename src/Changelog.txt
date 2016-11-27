@@ -22,6 +22,7 @@ Released: unreleased
  * Fixed issue #2274 and issue #2750 : Add advanced option for controlling which date/time is used for squashed commits (setting: SquashDate)
    1: Use date of last commit, 2: Use current date, 0: Use time of first commit into which others are squashed (default)
  * Fixed issue #2633: Check for Modifications dialog doesn't refresh after commit
+ * Fixed issue #1656: Add "dcommit" to change sets in "log messages"
 
 == Bug Fixes ==
  * Fixed issue #2837: Layout of overlapping icons settings dialog

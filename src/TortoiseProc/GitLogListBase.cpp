@@ -2278,6 +2278,9 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					if (index != (size_t)-1 && index < m_HashMap[pSelLogEntry->m_CommitHash].size())
 						popup.SetMenuItemData(ID_PUSH, (ULONG_PTR)&m_HashMap[pSelLogEntry->m_CommitHash][index]);
 
+					if (m_ContextMenuMask & GetContextMenuBit(ID_SVNDCOMMIT) && workingTree.HasGitSVNDir())
+						popup.AppendMenuIcon(ID_SVNDCOMMIT, IDS_MENUSVNDCOMMIT, IDI_COMMIT);
+
 					bAddSeparator = true;
 				}
 			}

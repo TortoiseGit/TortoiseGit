@@ -354,6 +354,7 @@ public:
 	ID_BISECTBAD,
 	ID_BISECTRESET,
 	ID_BISECTSKIP,
+	ID_SVNDCOMMIT,
 	};
 	enum
 	{

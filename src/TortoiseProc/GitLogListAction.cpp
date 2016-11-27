@@ -954,6 +954,12 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					Refresh();
 			}
 			break;
+		case ID_SVNDCOMMIT:
+		{
+			if (CAppUtils::SVNDCommit())
+				Refresh();
+		}
+		break;
 		case ID_CLEANUP:
 			{
 				CString sCmd;
