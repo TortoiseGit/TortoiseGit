@@ -218,7 +218,7 @@ bool CCommonAppUtils::SetListCtrlBackgroundImage(HWND hListCtrl, UINT nID, int w
 bool CCommonAppUtils::FileOpenSave(CString& path, int* filterindex, UINT title, UINT filterId, bool bOpen, HWND hwndOwner, LPCTSTR defaultExt)
 {
 	// Create a new common save file dialog
-	CComPtr<IFileDialog> pfd = nullptr;
+	CComPtr<IFileDialog> pfd;
 
 	if (!SUCCEEDED(pfd.CoCreateInstance(bOpen ? CLSID_FileOpenDialog : CLSID_FileSaveDialog, nullptr, CLSCTX_INPROC_SERVER)))
 		return false;
@@ -293,7 +293,7 @@ bool CCommonAppUtils::FileOpenSave(CString& path, int* filterindex, UINT title, 
 		return false;
 
 	// Get the selection from the user
-	CComPtr<IShellItem> psiResult = nullptr;
+	CComPtr<IShellItem> psiResult;
 	if (!SUCCEEDED(pfd->GetResult(&psiResult)))
 		return false;
 
