@@ -165,7 +165,7 @@
                     <orderedlist>
                         <listitem>
                             <para>
-                                The default value is 3. With this setting, the
+                                The default value is <literal>3</literal>. With this setting, the
                                 icons are grouped together by application type per working tree.
                                 All dialogs from TortoiseGit of one working tree are grouped together,
                                 all windows from TortoiseGitMerge of one working tree are grouped together, ...
@@ -185,8 +185,8 @@
                         </listitem>
                         <listitem>
                             <para>
-                                If set to 4, then the grouping works as with
-                                the setting set to 3, except that TortoiseGit, TortoiseGitMerge,
+                                If set to <literal>4</literal>, then the grouping works as with
+                                the setting set to <literal>3</literal>, except that TortoiseGit, TortoiseGitMerge,
                                 TortoiseGitBlame, TortoiseGitIDiff and TortoiseGitUDiff windows
                                 of one working tree
                                 are all grouped together. For example, if you have
@@ -202,8 +202,8 @@
                         </listitem>
                         <listitem>
                             <para>
-                                If set to 1, then the grouping works as with
-                                the setting set to 3 (grouping by application),
+                                If set to <literal>1</literal>, then the grouping works as with
+                                the setting set to <literal>3</literal> (grouping by application),
                                 except that grouping takes place
                                 independently of the working tree. This was the default
                                 before TGit 1.8.1.2.
@@ -211,8 +211,8 @@
                         </listitem>
                         <listitem>
                             <para>
-                                If set to 2, then the grouping works as with
-                                the setting set to 4, except that grouping takes place
+                                If set to <literal>2</literal>, then the grouping works as with
+                                the setting set to <literal>4</literal>, except that grouping takes place
                                 independently of the working tree. Thus all TortoiseGit
                                 icons are grouped to only show one icon.
                             </para>
@@ -226,7 +226,7 @@
             <listitem>
                 <para>
                     This has no effect if the option <literal>GroupTaskbarIconsPerRepo</literal>
-                    is set to 0 (see above).
+                    is set to <literal>0</literal> (see above).
                 </para>
                 <para>
                     If this option is set to <literal>true</literal>, then every
@@ -253,7 +253,7 @@
             <listitem>
                 <para>
                     This options sets the maximum browse ref history (Right click ref hyperlink to find it).
-                    The default is 5.
+                    The default is <literal>5</literal>.
                 </para>
             </listitem>
         </varlistentry>
@@ -283,7 +283,7 @@
                 <para>
                     If you want to show the diff at once for more items
                     than specified with this settings, a warning dialog
-                    is shown first. The default is 10.
+                    is shown first. The default is <literal>10</literal>.
                 </para>
             </listitem>
         </varlistentry>
@@ -292,7 +292,7 @@
             <listitem>
                 <para>
                     The Git progress dialog shows the output of the executed git.exe commands.
-                    The number of lines are limited for performance reasons. The default is 50000, minimum is 50.
+                    The number of lines are limited for performance reasons. The default is <literal>50000</literal>, minimum is <literal>50</literal>.
                 </para>
             </listitem>
         </varlistentry>
@@ -312,7 +312,7 @@
             <term condition="pot">RefreshFileListAfterResolvingConflict</term>
             <listitem>
                 <para>
-                    This option toggles if the file lists of the commit dialog, resolve conflicts and rebase dialog automatically refresh
+                    This option toggles whether the file lists of the commit dialog, resolve conflicts and rebase dialog automatically refresh
                     when a conflict is marked as resolved. By default this is set to <literal>true</literal>, but in certain cases, e.g.
                     when refreshing takes lots of time or you want to prevent the scrolling to the top, this can be set to <literal>false</literal>.
                     However, then a manual refresh (e.g. by pressing <keycap>F5</keycap>) is necessary.
