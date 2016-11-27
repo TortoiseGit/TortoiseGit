@@ -5546,6 +5546,11 @@ msgstr ""
 msgid "If you plan to work inside this folder, leave this unchecked. Typically a bare repo can only have changes 'pushed' to it. (By convention, a bare repo folder should have a name that ends with '.git')"
 msgstr ""
 
+#. Resource IDs: (IDS_EXTRAPATH_TT)
+#, c-format
+msgid "If your git installation needs an extra entry in the PATH environment variable, you can enter it here and it will get appended to %PATH% automatically when TortoiseGit starts."
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_IGNORE: Control id 4577)
 msgid "Ignore"
 msgstr ""

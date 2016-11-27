@@ -1286,6 +1286,7 @@
 #define IDC_COMBOBOXEX_URL              1610
 #define IDS_BLAME_ONLYFIRSTPARENT_TT    1610
 #define IDC_BUTTON_PULL                 1611
+#define IDS_EXTRAPATH_TT                1611
 #define IDC_BUTTON_PUSH                 1612
 #define IDC_SAMPLELABEL                 1612
 #define IDC_BUTTON_APPLY                1613

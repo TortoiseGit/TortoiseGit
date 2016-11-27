@@ -3611,6 +3611,7 @@ BEGIN
     IDS_ARCHIVEFILEFILTER   "ZIP archive (*.zip)|*.zip|All Files (*.*)|*.*||"
     IDS_BLAME_ONLYFIRSTPARENT_TT 
                             "This handles merge commits as squashed commits."
+    IDS_EXTRAPATH_TT        "If your git installation needs an extra entry in the PATH environment variable, you can enter it here and it will get appended to %PATH% automatically when TortoiseGit starts."
 END
 
 STRINGTABLE
