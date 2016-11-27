@@ -38,11 +38,8 @@ CSetMainPage::CSetMainPage()
 	, m_dwLanguage(0)
 {
 	m_regLanguage = CRegDWORD(L"Software\\TortoiseGit\\LanguageID", 1033);
-	CString temp = CRegString(REG_MSYSGIT_INSTALL, L"", FALSE, HKEY_LOCAL_MACHINE);
-	if(!temp.IsEmpty())
-		temp += L"bin";
-	m_regMsysGitPath = CRegString(REG_MSYSGIT_PATH,temp,FALSE);
 
+	m_regMsysGitPath = CRegString(REG_MSYSGIT_PATH);
 	m_regMsysGitExtranPath =CRegString(REG_MSYSGIT_EXTRA_PATH);
 
 	m_sMsysGitPath = m_regMsysGitPath;
