@@ -50,7 +50,6 @@
 #include "SVNDCommitDlg.h"
 #include "requestpulldlg.h"
 #include "PullFetchDlg.h"
-#include "FileDiffDlg.h"
 #include "RebaseDlg.h"
 #include "PropKey.h"
 #include "StashSave.h"
@@ -2484,15 +2483,15 @@ bool DoPull(const CString& url, bool bAutoLoad, BOOL bFetchTags, bool bNoFF, boo
 		{
 			postCmdList.emplace_back(IDI_DIFF, IDS_PROC_PULL_DIFFS, [&]
 			{
-				CFileDiffDlg dlg;
-				dlg.SetDiff(nullptr, hashOld.ToString(), hashNew.ToString());
-				dlg.DoModal();
+				CString sCmd;
+				sCmd.Format(L"/command:showcompare /path:\"%s\" /revision1:%s /revision2:%s", (LPCTSTR)g_Git.m_CurrentDir, (LPCTSTR)hashOld.ToString(), (LPCTSTR)hashNew.ToString());
+				CAppUtils::RunTortoiseGitProc(sCmd);
 			});
 			postCmdList.emplace_back(IDI_LOG, IDS_PROC_PULL_LOG, [&]
 			{
-				CLogDlg dlg;
-				dlg.SetParams(CTGitPath(L""), CTGitPath(L""), L"", hashOld.ToString() + L".." + hashNew.ToString(), 0);
-				dlg.DoModal();
+				CString sCmd;
+				sCmd.Format(L"/command:log /path:\"%s\" /range:%s", (LPCTSTR)g_Git.m_CurrentDir, (LPCTSTR)(hashOld.ToString() + L".." + hashNew.ToString()));
+				CAppUtils::RunTortoiseGitProc(sCmd);
 			});
 		}
 
