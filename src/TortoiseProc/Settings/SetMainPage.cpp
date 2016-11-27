@@ -324,6 +324,7 @@ void CSetMainPage::OnBnClickedButtonShowEnv()
 		CMessageBox::Show(GetSafeHwnd(), L"Could not get environment variables:\n" + err, L"TortoiseGit", MB_OK);
 		return;
 	}
+	::SetFileAttributes(tempfile, FILE_ATTRIBUTE_READONLY);
 	CAppUtils::LaunchAlternativeEditor(tempfile);
 }
 

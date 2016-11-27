@@ -280,6 +280,7 @@ void CSettingGitConfig::OnBnClickedEdittgitconfig()
 		CTGitPath path(L".tgitconfig");
 		if (g_Git.GetOneFile(L"HEAD", path, tmpFile) == 0)
 		{
+			::SetFileAttributes(tmpFile, FILE_ATTRIBUTE_READONLY);
 			CAppUtils::LaunchAlternativeEditor(tmpFile);
 		}
 	}

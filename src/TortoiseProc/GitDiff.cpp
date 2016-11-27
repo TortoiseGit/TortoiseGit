@@ -122,6 +122,7 @@ int CGitDiff::DiffNull(const CTGitPath *pPath, git_revnum_t rev1, bool bIsAdd, i
 			CMessageBox::Show(nullptr, g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), L"TortoiseGit", MB_OK);
 			return -1;
 		}
+		::SetFileAttributes(file1, FILE_ATTRIBUTE_READONLY);
 	}
 	else
 		file1 = g_Git.CombinePath(pPath);
