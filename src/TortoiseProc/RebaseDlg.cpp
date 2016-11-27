@@ -1354,6 +1354,7 @@ void CRebaseDlg::OnBnClickedContinue()
 				return;
 			}
 			CString tempfile = ::GetTempFile();
+			SCOPE_EXIT{ ::DeleteFile(tempfile); };
 			if (CAppUtils::SaveCommitUnicodeFile(tempfile, str))
 			{
 				CMessageBox::Show(GetSafeHwnd(), L"Could not save commit message", L"TortoiseGit", MB_OK | MB_ICONERROR);
@@ -1483,6 +1484,7 @@ void CRebaseDlg::OnBnClickedContinue()
 		}
 
 		CString tempfile=::GetTempFile();
+		SCOPE_EXIT{ ::DeleteFile(tempfile); };
 		if (CAppUtils::SaveCommitUnicodeFile(tempfile, str))
 		{
 			CMessageBox::Show(GetSafeHwnd(), L"Could not save commit message", L"TortoiseGit", MB_OK | MB_ICONERROR);
@@ -1513,7 +1515,6 @@ void CRebaseDlg::OnBnClickedContinue()
 			}
 		}
 
-		::DeleteFile(tempfile);
 		AddLogString(out);
 		if (CheckNextCommitIsSquash() == 0 && m_RebaseStage != REBASE_SQUASH_EDIT) // remember commit msg after edit if next commit if squash; but don't do this if ...->squash(reset here)->pick->squash
 		{

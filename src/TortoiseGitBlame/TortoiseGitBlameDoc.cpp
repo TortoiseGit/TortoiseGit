@@ -33,6 +33,7 @@
 #include "CmdLineParser.h"
 #include "CommonAppUtils.h"
 #include "BlameDetectMovedOrCopiedLines.h"
+#include "TempFile.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -90,7 +91,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 	// enable blame for files which do not exist in current working tree
 	if (!PathFileExists(lpszPathName) && Rev != L"HEAD")
 	{
-		if (!CDocument::OnOpenDocument(GetTempFile()))
+		if (!CDocument::OnOpenDocument(CTempFiles::Instance().GetTempFilePath(true).GetWinPathString()))
 			return FALSE;
 	}
 	else
@@ -188,13 +189,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 		}
 
 #ifdef USE_TEMPFILENAME
-		if(!m_TempFileName.IsEmpty())
-		{
-			::DeleteFile(m_TempFileName);
-			m_TempFileName.Empty();
-		}
-
-		m_TempFileName=GetTempFile();
+		m_TempFileName = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
 
 		cmd.Format(L"git.exe cat-file blob %s:\"%s\"", (LPCTSTR)Rev, (LPCTSTR)path.GetGitPathString());
 

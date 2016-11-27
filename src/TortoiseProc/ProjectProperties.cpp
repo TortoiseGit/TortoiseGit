@@ -21,7 +21,7 @@
 #include "CommonAppUtils.h"
 #include "Git.h"
 #include "UnicodeUtils.h"
-
+#include "TempFile.h"
 
 struct num_compare
 {
@@ -56,7 +56,7 @@ int ProjectProperties::ReadProps()
 		git_config_add_file_ondisk(gitconfig, CGit::GetGitPathStringA(g_Git.CombinePath(L".tgitconfig")), GIT_CONFIG_LEVEL_LOCAL, FALSE); // this needs to have the second highest priority
 	else
 	{
-		CString tmpFile = GetTempFile();
+		CString tmpFile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
 		CTGitPath path(L".tgitconfig");
 		if (g_Git.GetOneFile(L"HEAD", path, tmpFile) == 0)
 			git_config_add_file_ondisk(gitconfig, CGit::GetGitPathStringA(tmpFile), GIT_CONFIG_LEVEL_LOCAL, FALSE); // this needs to have the second highest priority

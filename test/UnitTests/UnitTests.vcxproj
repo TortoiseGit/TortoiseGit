@@ -98,6 +98,7 @@
     <ClInclude Include="..\..\src\Utils\SmartLibgit2Ref.h" />
     <ClInclude Include="..\..\src\Utils\StringUtils.h" />
     <ClInclude Include="..\..\src\Utils\SysInfo.h" />
+    <ClInclude Include="..\..\src\Utils\TempFile.h" />
     <ClInclude Include="..\..\src\Utils\UnicodeUtils.h" />
     <ClInclude Include="..\..\src\Utils\UniqueQueue.h" />
     <ClInclude Include="..\..\src\Utils\WindowsCredentialsStore.h" />
@@ -135,6 +136,7 @@
     <ClCompile Include="..\..\src\Utils\Registry.cpp" />
     <ClCompile Include="..\..\src\Utils\StringUtils.cpp" />
     <ClCompile Include="..\..\src\Utils\SysInfo.cpp" />
+    <ClCompile Include="..\..\src\Utils\TempFile.cpp" />
     <ClCompile Include="..\..\src\Utils\UnicodeUtils.cpp" />
     <ClCompile Include="..\..\src\Utils\WindowsCredentialsStore.cpp" />
     <ClCompile Include="AutoTempDir.cpp" />

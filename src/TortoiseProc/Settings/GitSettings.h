@@ -22,6 +22,7 @@
 #include "Git.h"
 #include "Tooltip.h"
 #include "../../Utils/UnicodeUtils.h"
+#include "TempFile.h"
 
 class CSettings;
 
@@ -143,7 +144,7 @@ protected:
 			}
 			else
 			{
-				CString tmpFile = GetTempFile();
+				CString tmpFile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
 				CTGitPath path(L".tgitconfig");
 				if (g_Git.GetOneFile(L"HEAD", path, tmpFile) == 0)
 				{
