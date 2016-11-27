@@ -23,6 +23,7 @@ Released: unreleased
    1: Use date of last commit, 2: Use current date, 0: Use time of first commit into which others are squashed (default)
  * Fixed issue #2633: Check for Modifications dialog doesn't refresh after commit
  * Fixed issue #1656: Add "dcommit" to change sets in "log messages"
+ * Fixed issue #2741: TortoiseGitBlame: Allow to limit blame on first parents (i.e., handle merge commits as squashed commits)
 
 == Bug Fixes ==
  * Fixed issue #2837: Layout of overlapping icons settings dialog

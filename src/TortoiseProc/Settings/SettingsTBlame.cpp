@@ -37,6 +37,7 @@ CSettingsTBlame::CSettingsTBlame()
 	, m_dwDetectMovedOrCopiedLinesNumCharactersFromFiles(BLAME_DETECT_MOVED_OR_COPIED_LINES_NUM_CHARACTERS_FROM_FILES_DEFAULT)
 	, m_bIgnoreWhitespace(0)
 	, m_bShowCompleteLog(0)
+	, m_bFirstParent(0)
 	, m_bFollowRenames(0)
 {
 	m_regNewLinesColor = CRegDWORD(L"Software\\TortoiseGit\\BlameNewColor", BLAMENEWCOLOR);
@@ -49,6 +50,7 @@ CSettingsTBlame::CSettingsTBlame()
 	m_regDetectMovedOrCopiedLinesNumCharactersFromFiles = CRegDWORD(L"Software\\TortoiseGit\\TortoiseGitBlame\\Workspace\\DetectMovedOrCopiedLinesNumCharactersFromFiles", BLAME_DETECT_MOVED_OR_COPIED_LINES_NUM_CHARACTERS_FROM_FILES_DEFAULT);
 	m_regIgnoreWhitespace = CRegDWORD(L"Software\\TortoiseGit\\TortoiseGitBlame\\Workspace\\IgnoreWhitespace", 0);
 	m_regShowCompleteLog = CRegDWORD(L"Software\\TortoiseGit\\TortoiseGitBlame\\Workspace\\ShowCompleteLog", 1);
+	m_regFirstParent = CRegDWORD(L"Software\\TortoiseGit\\TortoiseGitBlame\\Workspace\\OnlyFirstParent", 0);
 	m_regFollowRenames = CRegDWORD(L"Software\\TortoiseGit\\TortoiseGitBlame\\Workspace\\FollowRenames", 0);
 }
 
@@ -80,6 +82,7 @@ void CSettingsTBlame::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_DETECT_MOVED_OR_COPIED_LINES_NUM_CHARACTERS_FROM_FILES, m_dwDetectMovedOrCopiedLinesNumCharactersFromFiles);
 	DDX_Check(pDX, IDC_IGNORE_WHITESPACE, m_bIgnoreWhitespace);
 	DDX_Check(pDX, IDC_SHOWCOMPLETELOG, m_bShowCompleteLog);
+	DDX_Check(pDX, IDC_BLAME_ONLYFIRSTPARENT, m_bFirstParent);
 	DDX_Check(pDX, IDC_FOLLOWRENAMES, m_bFollowRenames);
 }
 
@@ -94,6 +97,7 @@ BEGIN_MESSAGE_MAP(CSettingsTBlame, ISettingsPropPage)
 	ON_EN_CHANGE(IDC_DETECT_MOVED_OR_COPIED_LINES_NUM_CHARACTERS_FROM_FILES, OnChange)
 	ON_BN_CLICKED(IDC_IGNORE_WHITESPACE, OnChange)
 	ON_BN_CLICKED(IDC_SHOWCOMPLETELOG, OnChange)
+	ON_BN_CLICKED(IDC_BLAME_ONLYFIRSTPARENT, OnChange)
 	ON_BN_CLICKED(IDC_FOLLOWRENAMES, OnChange)
 	ON_BN_CLICKED(IDC_NEWLINESCOLOR, &CSettingsTBlame::OnBnClickedColor)
 	ON_BN_CLICKED(IDC_OLDLINESCOLOR, &CSettingsTBlame::OnBnClickedColor)
@@ -110,6 +114,7 @@ BOOL CSettingsTBlame::OnInitDialog()
 
 	AdjustControlSize(IDC_IGNORE_WHITESPACE);
 	AdjustControlSize(IDC_SHOWCOMPLETELOG);
+	AdjustControlSize(IDC_BLAME_ONLYFIRSTPARENT);
 	AdjustControlSize(IDC_FOLLOWRENAMES);
 
 	m_cNewLinesColor.SetColor((DWORD)m_regNewLinesColor);
@@ -131,6 +136,7 @@ BOOL CSettingsTBlame::OnInitDialog()
 	m_dwDetectMovedOrCopiedLinesNumCharactersFromFiles = m_regDetectMovedOrCopiedLinesNumCharactersFromFiles;
 	m_bIgnoreWhitespace = m_regIgnoreWhitespace;
 	m_bShowCompleteLog = m_regShowCompleteLog;
+	m_bFirstParent = m_regFirstParent;
 	m_bFollowRenames = m_regFollowRenames;
 	int count = 0;
 	CString temp;
@@ -187,6 +193,8 @@ BOOL CSettingsTBlame::OnInitDialog()
 		}
 	}
 
+	m_tooltips.AddTool(IDC_BLAME_ONLYFIRSTPARENT, IDS_BLAME_ONLYFIRSTPARENT_TT);
+
 	UpdateData(FALSE);
 	UpdateDependencies();
 	return TRUE;
@@ -224,6 +232,7 @@ BOOL CSettingsTBlame::OnApply()
 	Store(m_dwDetectMovedOrCopiedLinesNumCharactersFromFiles, m_regDetectMovedOrCopiedLinesNumCharactersFromFiles);
 	Store(m_bIgnoreWhitespace, m_regIgnoreWhitespace);
 	Store(m_bShowCompleteLog, m_regShowCompleteLog);
+	Store(m_bFirstParent, m_regFirstParent);
 	Store(m_bFollowRenames, m_regFollowRenames);
 
 	SetModified(FALSE);
@@ -245,7 +254,7 @@ void CSettingsTBlame::UpdateDependencies()
 		enableDetectMovedOrCopiedLinesNumCharactersFromFiles = TRUE;
 	BOOL enableShowCompleteLog = FALSE;
 	BOOL enableFollowRenames = FALSE;
-	if (BlameIsLimitedToOneFilename(m_dwDetectMovedOrCopiedLines))
+	if (BlameIsLimitedToOneFilename(m_dwDetectMovedOrCopiedLines) && !m_bFirstParent)
 	{
 		enableShowCompleteLog = TRUE;
 		if (m_bShowCompleteLog)

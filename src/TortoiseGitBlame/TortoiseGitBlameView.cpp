@@ -86,6 +86,8 @@ BEGIN_MESSAGE_MAP(CTortoiseGitBlameView, CView)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_IGNORE_WHITESPACE, OnUpdateViewToggleIgnoreWhitespace)
 	ON_COMMAND(ID_VIEW_SHOWCOMPLETELOG, OnViewToggleShowCompleteLog)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_SHOWCOMPLETELOG, OnUpdateViewToggleShowCompleteLog)
+	ON_COMMAND(ID_VIEW_ONLYCONSIDERFIRSTPARENTS, OnViewToggleOnlyFirstParent)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_ONLYCONSIDERFIRSTPARENTS, OnUpdateViewToggleOnlyFirstParent)
 	ON_COMMAND(ID_VIEW_FOLLOWRENAMES, OnViewToggleFollowRenames)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_FOLLOWRENAMES, OnUpdateViewToggleFollowRenames)
 	ON_COMMAND(ID_VIEW_COLORBYAGE, OnViewToggleColorByAge)
@@ -159,6 +161,7 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 	m_dwDetectMovedOrCopiedLines = theApp.GetInt(L"DetectMovedOrCopiedLines", 0);
 	m_bIgnoreWhitespace = (theApp.GetInt(L"IgnoreWhitespace", 0) == 1);
 	m_bShowCompleteLog = (theApp.GetInt(L"ShowCompleteLog", 1) == 1);
+	m_bOnlyFirstParent = (theApp.GetInt(L"OnlyFirstParent", 0) == 1);
 	m_bFollowRenames = (theApp.GetInt(L"FollowRenames", 0) == 1);
 	m_bBlameOuputContainsOtherFilenames = FALSE;
 
@@ -1739,7 +1742,7 @@ void CTortoiseGitBlameView::OnMouseHover(UINT /*nFlags*/, CPoint point)
 			}
 
 			CString filename;
-			if ((m_bShowCompleteLog && m_bFollowRenames) || !BlameIsLimitedToOneFilename(m_dwDetectMovedOrCopiedLines) || m_bBlameOuputContainsOtherFilenames)
+			if ((m_bShowCompleteLog && m_bFollowRenames && !m_bOnlyFirstParent) || !BlameIsLimitedToOneFilename(m_dwDetectMovedOrCopiedLines) || m_bBlameOuputContainsOtherFilenames)
 				filename.Format(L"%s: %s\n", (LPCTSTR)m_sFileName, (LPCTSTR)m_data.GetFilename(line));
 
 			CString str;
@@ -2036,10 +2039,24 @@ void CTortoiseGitBlameView::OnViewToggleShowCompleteLog()
 	ReloadDocument();
 }
 
+void CTortoiseGitBlameView::OnUpdateViewToggleOnlyFirstParent(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(m_bOnlyFirstParent);
+}
+
+void CTortoiseGitBlameView::OnViewToggleOnlyFirstParent()
+{
+	m_bOnlyFirstParent = !m_bOnlyFirstParent;
+
+	theApp.WriteInt(L"OnlyFirstParent", m_bOnlyFirstParent ? 1 : 0);
+
+	ReloadDocument();
+}
+
 void CTortoiseGitBlameView::OnUpdateViewToggleShowCompleteLog(CCmdUI *pCmdUI)
 {
-	pCmdUI->Enable(BlameIsLimitedToOneFilename(m_dwDetectMovedOrCopiedLines));
-	pCmdUI->SetCheck(m_bShowCompleteLog && BlameIsLimitedToOneFilename(m_dwDetectMovedOrCopiedLines));
+	pCmdUI->Enable(BlameIsLimitedToOneFilename(m_dwDetectMovedOrCopiedLines) && !m_bOnlyFirstParent);
+	pCmdUI->SetCheck(m_bShowCompleteLog && BlameIsLimitedToOneFilename(m_dwDetectMovedOrCopiedLines) && !m_bOnlyFirstParent);
 }
 
 void CTortoiseGitBlameView::OnViewToggleFollowRenames()
@@ -2053,8 +2070,8 @@ void CTortoiseGitBlameView::OnViewToggleFollowRenames()
 
 void CTortoiseGitBlameView::OnUpdateViewToggleFollowRenames(CCmdUI *pCmdUI)
 {
-	pCmdUI->Enable(m_bShowCompleteLog && BlameIsLimitedToOneFilename(m_dwDetectMovedOrCopiedLines));
-	pCmdUI->SetCheck(m_bFollowRenames && m_bShowCompleteLog && BlameIsLimitedToOneFilename(m_dwDetectMovedOrCopiedLines));
+	pCmdUI->Enable(m_bShowCompleteLog && BlameIsLimitedToOneFilename(m_dwDetectMovedOrCopiedLines) && !m_bOnlyFirstParent);
+	pCmdUI->SetCheck(m_bFollowRenames && m_bShowCompleteLog && BlameIsLimitedToOneFilename(m_dwDetectMovedOrCopiedLines) && !m_bOnlyFirstParent);
 }
 
 void CTortoiseGitBlameView::OnViewToggleColorByAge()

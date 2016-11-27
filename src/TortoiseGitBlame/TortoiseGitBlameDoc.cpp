@@ -173,6 +173,33 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 		if (theApp.GetInt(L"IgnoreWhitespace", 0) == 1)
 			option += L" -w";
 
+		bool onlyFirstParent = theApp.GetInt(L"OnlyFirstParent", 0) == 1;
+		if (onlyFirstParent)
+		{
+			CString tmpfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
+			cmd.Format(L"git rev-list --first-parent %s", (LPCTSTR)Rev);
+			CString err;
+			CAutoFILE file = _wfsopen(tmpfile, L"wb", SH_DENYWR);
+			if (!file)
+			{
+				MessageBox(nullptr, CString(MAKEINTRESOURCE(IDS_BLAMEERROR)) + L"\n\nCould not create temp file!", L"TortoiseGitBlame", MB_OK | MB_ICONERROR);
+				return FALSE;
+			}
+			
+			CStringA lastline;
+			if (g_Git.Run(cmd, [&](const CStringA& line)
+			{
+				fwrite(lastline + ' ' + line + '\n', sizeof(char), lastline.GetLength() + 1 + line.GetLength() + 1, file);
+				lastline = line;
+			}
+			, &err))
+			{
+				MessageBox(nullptr, CString(MAKEINTRESOURCE(IDS_BLAMEERROR)) + L"\n\n" + err, L"TortoiseGitBlame", MB_OK | MB_ICONERROR);
+				return FALSE;
+			}
+			option.AppendFormat(L" -S \"%s\"", (LPCTSTR)tmpfile);
+		}
+
 		cmd.Format(L"git.exe blame -p %s %s -- \"%s\"", (LPCTSTR)option, (LPCTSTR)Rev, (LPCTSTR)path.GetGitPathString());
 		m_BlameData.clear();
 		BYTE_VECTOR err;
@@ -215,7 +242,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 		pView->ParseBlame();
 
 		BOOL bShowCompleteLog = (theApp.GetInt(L"ShowCompleteLog", 1) == 1);
-		if (bShowCompleteLog && BlameIsLimitedToOneFilename(dwDetectMovedOrCopiedLines))
+		if (bShowCompleteLog && BlameIsLimitedToOneFilename(dwDetectMovedOrCopiedLines) && !onlyFirstParent)
 		{
 			if (GetMainFrame()->m_wndOutput.LoadHistory(path.GetGitPathString(), m_Rev, (theApp.GetInt(L"FollowRenames", 0) == 1)))
 				return FALSE;

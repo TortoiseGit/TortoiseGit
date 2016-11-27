@@ -1284,6 +1284,7 @@
 #define IDC_HANDLERHINT                 1609
 #define IDS_ARCHIVEFILEFILTER           1609
 #define IDC_COMBOBOXEX_URL              1610
+#define IDS_BLAME_ONLYFIRSTPARENT_TT    1610
 #define IDC_BUTTON_PULL                 1611
 #define IDC_BUTTON_PUSH                 1612
 #define IDC_SAMPLELABEL                 1612
@@ -1347,6 +1348,7 @@
 #define IDC_TOGROUP                     1676
 #define IDC_IGNORE_WHITESPACE           1676
 #define IDC_FROMHASH                    1677
+#define IDC_BLAME_ONLYFIRSTPARENT       1677
 #define IDC_FROMSUBJECT                 1678
 #define IDC_TOHASH                      1679
 #define IDC_TOSUBJECT                   1680

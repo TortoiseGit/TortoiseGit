@@ -296,6 +296,7 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "Show com&plete log",          ID_VIEW_SHOWCOMPLETELOG
         MENUITEM "&Follow renames",             ID_VIEW_FOLLOWRENAMES
+        MENUITEM "Only consider first parents on blame", ID_VIEW_ONLYCONSIDERFIRSTPARENTS
         MENUITEM SEPARATOR
         MENUITEM "Color by age, &continuous",   ID_VIEW_COLORBYAGE
         MENUITEM "Enable syntax highlighting",  ID_VIEW_ENABLELEXER

@@ -6824,6 +6824,10 @@ msgstr ""
 msgid "Only Merged Files"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_SETTINGSTBLAME: Control id 1677, ID_VIEW_ONLYCONSIDERFIRSTPARENTS - Menu)
+msgid "Only consider first parents on blame"
+msgstr ""
+
 #. Resource IDs: (IDS_git_DEPTH_FILES)
 msgid "Only file children"
 msgstr ""
@@ -9697,6 +9701,10 @@ msgstr ""
 
 #. Resource IDs: (IDS_ERR_MISSINGVALUE)
 msgid "This field is required and must not be empty."
+msgstr ""
+
+#. Resource IDs: (IDS_BLAME_ONLYFIRSTPARENT_TT)
+msgid "This handles merge commits as squashed commits."
 msgstr ""
 
 #. Resource IDs: (IDS_ERR_MUSTBEURL)
