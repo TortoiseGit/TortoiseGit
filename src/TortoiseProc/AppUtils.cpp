@@ -2628,6 +2628,19 @@ static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool l
 			if (url == *it)
 			{
 				upstream = L"remotes/" + *it + L'/' + remoteBranch;
+				if (remoteBranch.IsEmpty()) // pulldlg might clear remote branch if its the default tracked branch
+				{
+					CString currentBranch;
+					if (g_Git.GetCurrentBranchFromFile(g_Git.m_CurrentDir, currentBranch))
+						currentBranch.Empty();
+					if (!currentBranch.IsEmpty() && remoteBranch.IsEmpty())
+					{
+						CString pullRemote, pullBranch;
+						g_Git.GetRemoteTrackedBranch(currentBranch, pullRemote, pullBranch);
+						if (!pullRemote.IsEmpty() && !pullBranch.IsEmpty() && pullRemote == url) // pullRemote == url is just another safety-check and should not be needed
+							upstream += pullBranch;
+					}
+				}
 				g_Git.GetHash(oldUpstreamHash, upstream);
 				break;
 			}
