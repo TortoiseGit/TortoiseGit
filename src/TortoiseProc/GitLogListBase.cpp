@@ -724,7 +724,8 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CDC& W_Dc, HTHEME hTheme, CRect& re
 				DrawUpTriangle(hdc, newRect, color, bold);
 			}
 
-			m_RefLabelPosMap[refList[i].fullName] = rt;
+			if (!refList[i].fullName.IsEmpty())
+				m_RefLabelPosMap[refList[i].fullName] = rt;
 
 			rt.left = rt.right + 1;
 		}
@@ -1202,7 +1203,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				{
 					GitRevLoglist* data = m_arShownList.SafeGetAt(pLVCD->nmcd.dwItemSpec);
 
-					if (!m_HashMap[data->m_CommitHash].empty() && !(data->GetRebaseAction() & LOGACTIONS_REBASE_DONE))
+					if ((!m_HashMap[data->m_CommitHash].empty() || (!m_superProjectHash.IsEmpty() && data->m_CommitHash == m_superProjectHash)) && !(data->GetRebaseAction() & LOGACTIONS_REBASE_DONE))
 					{
 						CRect rect;
 						GetSubItemRect((int)pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem, LVIR_BOUNDS, rect);
@@ -1378,6 +1379,17 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 							default:
 								continue;
 							}
+							refsToShow.push_back(refLabel);
+						}
+						if (!m_superProjectHash.IsEmpty() && data->m_CommitHash == m_superProjectHash)
+						{
+							REFLABEL refLabel;
+							refLabel.color = RGB(246, 153, 253);
+							refLabel.singleRemote = false;
+							refLabel.hasTracking = false;
+							refLabel.sameName = false;
+							refLabel.name = L"super-project-pointer";
+							refLabel.fullName = "";
 							refsToShow.push_back(refLabel);
 						}
 
@@ -4271,7 +4283,7 @@ CString CGitLogListBase::GetToolTipText(int nItem, int nSubItem)
 		GitRevLoglist* pLogEntry = m_arShownList.SafeGetAt(nItem);
 		if (pLogEntry == nullptr)
 			return CString();
-		if (m_HashMap[pLogEntry->m_CommitHash].empty())
+		if (m_HashMap[pLogEntry->m_CommitHash].empty() && (m_superProjectHash.IsEmpty() || pLogEntry->m_CommitHash != m_superProjectHash))
 			return CString();
 		return pLogEntry->GetSubject();
 	}

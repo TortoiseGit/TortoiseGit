@@ -240,6 +240,15 @@
             </listitem>
         </varlistentry>
         <varlistentry>
+            <term condition="pot">LogShowSuperProjectSubmodulePointer</term>
+            <listitem>
+                <para>
+                    This option defines whether the commit of a submodule to which the super repository points to is highlighted with a branch like label (cf. <ulink url="https://tortoisegit.org/issue/2826"><citetitle>issue #2826</citetitle></ulink>).
+                    The default is <literal>true</literal>.
+                </para>
+            </listitem>
+        </varlistentry>
+        <varlistentry>
             <term condition="pot">MaxRefHistoryItems</term>
             <listitem>
                 <para>

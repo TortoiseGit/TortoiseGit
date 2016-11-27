@@ -24,6 +24,7 @@ Released: unreleased
  * Fixed issue #2633: Check for Modifications dialog doesn't refresh after commit
  * Fixed issue #1656: Add "dcommit" to change sets in "log messages"
  * Fixed issue #2741: TortoiseGitBlame: Allow to limit blame on first parents (i.e., handle merge commits as squashed commits)
+ * Fixed issue #2826: Highlight commit to which the parent repo points to in the log for submodules
 
 == Bug Fixes ==
  * Fixed issue #2837: Layout of overlapping icons settings dialog
