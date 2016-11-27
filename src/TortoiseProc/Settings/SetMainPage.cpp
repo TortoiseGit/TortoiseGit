@@ -295,7 +295,7 @@ void CSetMainPage::OnCheck()
 		this->GetDlgItem(IDC_MSYSGIT_VER)->SetWindowText(out);
 		if (out.IsEmpty())
 		{
-			if (ret == 0xC0000135 && CMessageBox::Show(GetSafeHwnd(), L"Could not start git.exe. A dynamic library (dll) is missing.\nCheck help file for \"Extern DLL Path\".", L"TortoiseGit", 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)), CString(MAKEINTRESOURCE(IDS_MSGBOX_HELP))) == 2)
+			if (ret == 0xC0000135 && CMessageBox::Show(GetSafeHwnd(), L"Could not start git.exe. A dynamic library (dll) is missing.\nCheck help file for \"Extra PATH\".", L"TortoiseGit", 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)), CString(MAKEINTRESOURCE(IDS_MSGBOX_HELP))) == 2)
 				OnHelp();
 			else if (CMessageBox::Show(GetSafeHwnd(), L"Could not get read version information from git.exe.\nCheck help file for \"Git.exe Path\".", L"TortoiseGit", 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)), CString(MAKEINTRESOURCE(IDS_MSGBOX_HELP))) == 2)
 				OnHelp();

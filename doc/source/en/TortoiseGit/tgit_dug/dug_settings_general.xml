@@ -15,6 +15,9 @@
 	<indexterm>
 		<primary>Extern DLL Path</primary>
 	</indexterm>
+	<indexterm>
+		<primary>Extra PATH</primary>
+	</indexterm>
 	<para>
 		<figure id="tgit-dug-settings-dia-main">
 			<title>The Settings Dialog, General Page</title>
@@ -96,7 +99,7 @@
 			</listitem>
 		</varlistentry>
 		<varlistentry>
-			<term>Extern DLL Path</term>
+			<term>Extra PATH</term>
 			<listitem>
 				<para>
 					If your git installation needs an extra entry in the PATH environment variable,
@@ -104,7 +107,7 @@
 				</para>
 				<para>
 					This is especially needed if you installed the developer version of msysGit ("Full installer (self-contained) if you want to hack on Git" with the filename <literal>msysGit-fullinstall-*.exe</literal>),
-					in this case it is necessary that the <literal>[MSYSGIT-INSTALL-PATH]\mingw\bin</literal>-folder is on the path (i.e. entered in the <guilabel>Extern DLL Path</guilabel> textbox) in order to execute git.exe.
+					in this case it is necessary that the <literal>[MSYSGIT-INSTALL-PATH]\mingw\bin</literal>-folder is on the path (i.e. entered in the <guilabel>Extra PATH</guilabel> textbox) in order to execute git.exe.
 				</para>
 				<para>
 					Often you can see if you need this when you start git.exe in <literal>[MSYSGIT-INSTALL-PATH]\mingw\bin</literal>-folder and you get a messagebox saying that a dll is missing.

@@ -4434,16 +4434,16 @@ msgstr ""
 msgid "Extension:"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_SETTINGSMAIN: Control id 65535)
-msgid "Extern DLL Path:"
-msgstr ""
-
 #. Resource IDs: (IDS_SVNACTION_EXTERNAL)
 msgid "External"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_TOOLASSOC: Control id 65535)
 msgid "External Program:"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_SETTINGSMAIN: Control id 65535)
+msgid "Extra PATH:"
 msgstr ""
 
 #. Resource IDs: (IDS_MENUFETCH)
