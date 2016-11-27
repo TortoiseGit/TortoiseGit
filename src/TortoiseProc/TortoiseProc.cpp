@@ -47,6 +47,7 @@
 #include <random>
 #include "SendMail.h"
 #include "WindowsCredentialsStore.h"
+#include "FirstStartWizard.h"
 
 #define STRUCT_IOVEC_DEFINED
 
@@ -196,31 +197,6 @@ BOOL CTortoiseProcApp::InitInstance()
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Set Help Filename %s\n", m_pszHelpFilePath);
 	setlocale(LC_ALL, "");
 
-	if (!g_Git.CheckMsysGitDir())
-	{
-		UINT ret = CMessageBox::Show(nullptr, IDS_PROC_NOMSYSGIT, IDS_APPNAME, 3, IDI_HAND, IDS_PROC_SETMSYSGITPATH, IDS_PROC_GOTOMSYSGITWEBSITE, IDS_ABORTBUTTON);
-		if(ret == 2)
-		{
-			ShellExecute(nullptr, L"open", GIT_FOR_WINDOWS_URL, nullptr, nullptr, SW_SHOW);
-		}
-		else if(ret == 1)
-		{
-			// open settings dialog
-			CSinglePropSheetDlg(CString(MAKEINTRESOURCE(IDS_PROC_SETTINGS_TITLE)), new CSetMainPage(), this->GetMainWnd()).DoModal();
-		}
-		return FALSE;
-	}
-	if (!CConfigureGitExe::CheckGitVersion(hWndExplorer))
-		return FALSE;
-
-	{
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Registering Crash Report ...\n");
-		CCrashReport::Instance().AddUserInfoToReport(L"msysGitDir", CGit::ms_LastMsysGitDir);
-		CString versionString;
-		versionString.Format(L"%X", CGit::ms_LastMsysGitVersion);
-		CCrashReport::Instance().AddUserInfoToReport(L"msysGitVersion", versionString);
-	}
-
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Initializing UI components ...\n");
 	// InitCommonControls() is required on Windows XP if an application
 	// manifest specifies use of ComCtl32.dll version 6 or later to enable
@@ -260,6 +236,35 @@ BOOL CTortoiseProcApp::InitInstance()
 	// in a message box
 	if (CRegDWORD(L"Software\\TortoiseGit\\Debug", FALSE) == TRUE)
 		AfxMessageBox(AfxGetApp()->m_lpCmdLine, MB_OK | MB_ICONINFORMATION);
+
+	if (parser.HasKey(L"command") && wcscmp(parser.GetVal(L"command"), L"firststart") == 0)
+	{
+		CFirstStartWizard wizard(IDS_APPNAME);
+		return (wizard.DoModal() == ID_WIZFINISH);
+	}
+
+	if (!g_Git.CheckMsysGitDir())
+	{
+		UINT ret = CMessageBox::Show(hWndExplorer, IDS_PROC_NOMSYSGIT, IDS_APPNAME, 3, IDI_HAND, IDS_PROC_SETMSYSGITPATH, IDS_PROC_GOTOMSYSGITWEBSITE, IDS_ABORTBUTTON);
+		if (ret == 2)
+			ShellExecute(hWndExplorer, L"open", GIT_FOR_WINDOWS_URL, nullptr, nullptr, SW_SHOW);
+		else if (ret == 1)
+		{
+			// open settings dialog
+			CSinglePropSheetDlg(CString(MAKEINTRESOURCE(IDS_PROC_SETTINGS_TITLE)), new CSetMainPage(), this->GetMainWnd()).DoModal();
+		}
+		return FALSE;
+	}
+	if (!CConfigureGitExe::CheckGitVersion(hWndExplorer))
+		return FALSE;
+
+	{
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Registering Crash Report ...\n");
+		CCrashReport::Instance().AddUserInfoToReport(L"msysGitDir", CGit::ms_LastMsysGitDir);
+		CString versionString;
+		versionString.Format(L"%X", CGit::ms_LastMsysGitVersion);
+		CCrashReport::Instance().AddUserInfoToReport(L"msysGitVersion", versionString);
+	}
 
 	if (parser.HasKey(L"urlhandler"))
 	{

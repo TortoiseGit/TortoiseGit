@@ -78,7 +78,6 @@
 #include "ShowCompareCommand.h"
 #include "DaemonCommand.h"
 #include "CommitIsOnRefsCommand.h"
-#include "FirstStartCommand.h"
 
 #if 0
 #include "CrashCommand.h"
@@ -158,7 +157,6 @@ typedef enum
 	cmdDaemon,
 	cmdPGPFP,
 	cmdCommitIsOnRefs,
-	cmdFirstStart,
 } TGitCommand;
 
 static const struct CommandInfo
@@ -233,7 +231,6 @@ static const struct CommandInfo
 	{	cmdDaemon,			L"daemon"			},
 	{	cmdPGPFP,			L"pgpfp"			},
 	{	cmdCommitIsOnRefs,	L"commitisonrefs"	},
-	{	cmdFirstStart,		L"firststart"		},
 };
 
 
@@ -374,8 +371,6 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new DaemonCommand;
 	case cmdCommitIsOnRefs:
 		return new CommitIsOnRefsCommand;
-	case cmdFirstStart:
-		return new FirstStartCommand;
 
 #if 0
 	case cmdCrash:

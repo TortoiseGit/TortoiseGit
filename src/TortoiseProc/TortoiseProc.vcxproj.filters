@@ -950,9 +950,6 @@
     <ClCompile Include="FirstStartWizardBasePage.cpp">
       <Filter>Commands\FirstStart</Filter>
     </ClCompile>
-    <ClCompile Include="Commands\FirstStartCommand.cpp">
-      <Filter>Commands\FirstStart</Filter>
-    </ClCompile>
     <ClCompile Include="FirstStartWizardGit.cpp">
       <Filter>Commands\FirstStart</Filter>
     </ClCompile>
@@ -1781,9 +1778,6 @@
       <Filter>Commands\FirstStart</Filter>
     </ClInclude>
     <ClInclude Include="FirstStartWizardBasePage.h">
-      <Filter>Commands\FirstStart</Filter>
-    </ClInclude>
-    <ClInclude Include="Commands\FirstStartCommand.h">
       <Filter>Commands\FirstStart</Filter>
     </ClInclude>
     <ClInclude Include="FirstStartWizardGit.h">

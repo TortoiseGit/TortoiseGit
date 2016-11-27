@@ -125,7 +125,6 @@
     <ClCompile Include="ColumnManager.cpp" />
     <ClCompile Include="Commands\CommitIsOnRefsCommand.cpp" />
     <ClCompile Include="Commands\DaemonCommand.cpp" />
-    <ClCompile Include="Commands\FirstStartCommand.cpp" />
     <ClCompile Include="CommitIsOnRefsDlg.cpp" />
     <ClCompile Include="FindBar.cpp" />
     <ClCompile Include="FirstStartWizard.cpp" />
@@ -407,7 +406,6 @@
     <ClInclude Include="Commands\AutoTextTestCommand.h" />
     <ClInclude Include="Commands\CommitIsOnRefsCommand.h" />
     <ClInclude Include="Commands\DaemonCommand.h" />
-    <ClInclude Include="Commands\FirstStartCommand.h" />
     <ClInclude Include="CommitIsOnRefsDlg.h" />
     <ClInclude Include="ConfigureGitExe.h" />
     <ClInclude Include="FindBar.h" />
