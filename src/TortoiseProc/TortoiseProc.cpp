@@ -35,8 +35,6 @@
 #include "Commands\Command.h"
 #include "..\version.h"
 #include "JumpListHelpers.h"
-#include "SinglePropSheetDlg.h"
-#include "Settings\setmainpage.h"
 #include "ConfigureGitExe.h"
 #include "Libraries.h"
 #include "TaskbarUUID.h"
@@ -250,8 +248,8 @@ BOOL CTortoiseProcApp::InitInstance()
 			ShellExecute(hWndExplorer, L"open", GIT_FOR_WINDOWS_URL, nullptr, nullptr, SW_SHOW);
 		else if (ret == 1)
 		{
-			// open settings dialog
-			CSinglePropSheetDlg(CString(MAKEINTRESOURCE(IDS_PROC_SETTINGS_TITLE)), new CSetMainPage(), this->GetMainWnd()).DoModal();
+			CFirstStartWizard wizard(IDS_APPNAME, nullptr, 1);
+			wizard.DoModal();
 		}
 		return FALSE;
 	}
