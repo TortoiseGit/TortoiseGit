@@ -341,6 +341,7 @@ BEGIN
     COMBOBOX        IDC_LANGUAGECOMBO,108,18,176,64,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
     CHECKBOX        "Automatically check for &newer versions every week",IDC_CHECKNEWERVERSION,14,34,195,26,BS_VCENTER | BS_MULTILINE
     PUSHBUTTON      "C&heck now",IDC_CHECKNEWERBUTTON,212,38,72,14
+    PUSHBUTTON      "Re-run &First Start Wizard",IDC_RUNFIRSTSTARTWIZARD,14,59,192,14
     PUSHBUTTON      "Create &Library",IDC_CREATELIB,212,59,72,14
     GROUPBOX        "Git for Windows",IDC_STATIC,7,113,286,98
     LTEXT           "&Git.exe Path:",IDC_STATIC,16,132,58,8
@@ -1360,6 +1361,14 @@ BEGIN
     PUSHBUTTON      "Help",IDHELP,271,239,50,14
 END
 
+IDD_FIRSTSTARTWIZARD_START DIALOGEX 0, 0, 322, 191
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "First Start Wizard - TortoiseGit"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    LTEXT           "",IDC_FIRSTSTART_HINT,17,7,289,135,SS_NOPREFIX
+END
+
 IDD_SETTINGSCOLORS_1 DIALOGEX 0, 0, 300, 217
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "General::Colors 1"
@@ -2142,6 +2151,42 @@ BEGIN
     EDITTEXT        IDC_STATIC_SUBJECT,14,25,214,12,ES_MULTILINE | ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
 END
 
+IDD_FIRSTSTARTWIZARD_USER DIALOGEX 0, 0, 322, 191
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "First Start Wizard - TortoiseGit"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    LTEXT           "&Name:",IDC_STATIC,17,42,47,8
+    EDITTEXT        IDC_GIT_USERNAME,71,40,150,12,ES_AUTOHSCROLL
+    LTEXT           "&Email:",IDC_STATIC,17,60,50,8
+    EDITTEXT        IDC_GIT_USEREMAIL,71,57,150,12,ES_AUTOHSCROLL
+    CONTROL         "&Don't store these settings now.",IDC_DONTSAVE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,118,289,11
+    LTEXT           "Git requires that you set up a user name and email address. Both are used as meta data for your commits (not for authentication).",IDC_STATIC,17,7,289,25
+    LTEXT           "These settings will be stored to your global git configuration (%HOME%/.gitconfig) and will be used for all your git repositories as a default.",IDC_STATIC,17,81,289,30
+END
+
+IDD_FIRSTSTARTWIZARD_GIT DIALOGEX 0, 0, 322, 191
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "First Start Wizard - TortoiseGit"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    LTEXT           "TortoiseGit requires a git.exe for its operations. TortoiseGit tries to automatically detect a working git.exe, but that doesn't work please specify the path!",IDC_STATIC,17,7,289,32
+    LTEXT           "&Git.exe Path:",IDC_STATIC,18,50,58,8
+    EDITTEXT        IDC_MSYSGIT_PATH,80,47,202,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_MSYSGIT_BROWSE,287,47,19,14
+    LTEXT           "&Extra PATH:",IDC_STATIC,17,73,58,8
+    EDITTEXT        IDC_MSYSGIT_EXTERN_PATH,80,70,202,14,ES_AUTOHSCROLL
+    LTEXT           "",IDC_MSYSGIT_VER,17,94,141,8
+    PUSHBUTTON      "C&heck now",IDC_MSYSGIT_CHECK,210,91,72,14
+    LTEXT           "Recommended: Git for Windows",IDC_STATIC,17,110,289,9
+    LTEXT           "",IDC_LINK,17,121,289,10
+    CONTROL         "I don't use Git for Windows and need special workarounds",IDC_WORKAROUNDS,
+                    "Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,17,136,289,11
+    CONTROL         "Enable special hack for Cygwin git",IDC_GITHACKS1,
+                    "Button",BS_AUTORADIOBUTTON | NOT WS_VISIBLE,17,150,289,11
+    CONTROL         "Enable special hack for Msys2 git",IDC_GITHACKS2,"Button",BS_AUTORADIOBUTTON | NOT WS_VISIBLE,17,164,289,11
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -2701,6 +2746,17 @@ BEGIN
         BOTTOMMARGIN, 253
     END
 
+    IDD_FIRSTSTARTWIZARD_START, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 315
+        VERTGUIDE, 17
+        VERTGUIDE, 306
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 184
+        HORZGUIDE, 176
+    END
+
     IDD_SETTINGSCOLORS_1, DIALOG
     BEGIN
         LEFTMARGIN, 7
@@ -3047,6 +3103,31 @@ BEGIN
         VERTGUIDE, 193
         TOPMARGIN, 7
         BOTTOMMARGIN, 187
+    END
+
+    IDD_FIRSTSTARTWIZARD_USER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 315
+        VERTGUIDE, 17
+        VERTGUIDE, 28
+        VERTGUIDE, 306
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 184
+        HORZGUIDE, 176
+    END
+
+    IDD_FIRSTSTARTWIZARD_GIT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 315
+        VERTGUIDE, 17
+        VERTGUIDE, 80
+        VERTGUIDE, 282
+        VERTGUIDE, 306
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 184
+        HORZGUIDE, 176
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -3612,6 +3693,10 @@ BEGIN
     IDS_BLAME_ONLYFIRSTPARENT_TT 
                             "This handles merge commits as squashed commits."
     IDS_EXTRAPATH_TT        "If your git installation needs an extra entry in the PATH environment variable, you can enter it here and it will get appended to %PATH% automatically when TortoiseGit starts."
+    IDS_FIRSTSTART_HINT1    "TortoiseGit is designed as a Shell Extension. Therefore the main interaction with TortoiseGit will be using the context menu of the Windows shell such as the Windows Explorer."
+    IDS_FIRSTSTART_HINT2    "This is the First Start Wizard which will help you configuring the basic settings. TortoiseGit is highly configurable, so it is advisable that you have a look into its settings dialog. The settings dialog is reachable using the start menu or the context menu of the Windows Explorer: TortoiseGit -> Settings."
+    IDS_FIRSTSTART_HINT3    "Please see the manual for general hints. E.g. in most dialogs there are some shared shortcuts such as F5 for refresh and oftentimes there are powerfull context menus."
+    IDS_FIRSTSTART_HINT4    "We hope you enjoy the usage of TortoiseGit! In case of questions or problems, please consult our manual or go to https://tortoisegit.org/support/"
 END
 
 STRINGTABLE
@@ -4497,7 +4582,7 @@ BEGIN
                             "It has not been checked if these branches have been fully merged into HEAD."
     IDS_PROC_BROWSEREFS_WARNINGDELETEREMOTEBRANCHES 
                             "This action will remove the branches on the remote."
-    IDS_PROC_NOMSYSGIT      "Git for Windows (https://git-for-windows.github.io/) not found."
+    IDS_PROC_NOMSYSGIT      "No git.exe found.\n\nTortoiseGit requires a git.exe for its operations (e.g., such as provided by the Git for Windows package)."
     IDS_PROC_SETMSYSGITPATH "&Set Git path"
     IDS_PROC_GOTOMSYSGITWEBSITE "&Open Git for Windows WebSite"
     IDS_PROC_OLDMSYSGIT     "You have an old version of Git for Windows (https://git-for-windows.github.io/) installed which contains security issues.\n\nYou should consider an upgrade to 1.9.5+."
@@ -4745,6 +4830,21 @@ BEGIN
                             "For the current branch ""%s"" no tracked branch is configured.\nDo you want to set the selected branch ""%s"" as tracked branch?\nThis will automatically select it for push and pull in the future."
     IDS_PROC_DIFF_BASE      "Base"
     IDS_REMOVESTALEBUTTON   "Remove stale lock file"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_FIRSTSTART_STARTTITLE "Welcome to TortoiseGit!"
+    IDS_FIRSTSTART_GITTITLE "Configure git.exe"
+    IDS_FIRSTSTART_USERTITLE "Configure user information"
+    IDS_SEEMANUALGITEXEPATH "Check out the help file for ""Git.exe Path""."
+    IDS_ERR_GITDLLMISSING   "Could not start git.exe. A dynamic library (dll) is missing.\nYou might need to specify an extra PATH.\nCheck help file for ""Extra PATH""."
+    IDS_ERR_GITNOVALIDOUTPUT 
+                            "Could not get read version information from git.exe.\nGot: ""%s"""
+    IDS_ERR_GITNEEDHACKS    "Could not find ""msysgit"" or ""windows"" in versionstring of git.exe.\nIf you are using git of the cygwin or msys2 environment you need to enable special hacks.\nFor more information see the help file for the keyword ""cygwin git"" or ""msys2 git""."
+    IDS_ERR_GITUNNEEDEDHACKS 
+                            "Found ""msysgit"" or ""windows"" in versionstring of git.exe, however, you have git.exe hacks enabled. These hacks must be disabled for proper operation with Git for Windows!\nYou can find more information in the help file for the keyword ""cygwin git"" or ""msys2 git""."
+    IDS_ERR_GITCALLFAILED   "Calling git.exe failed (exit code: %d). Please check the git.exe path."
 END
 
 #endif    // English (U.S.) resources

@@ -20,14 +20,14 @@
 #pragma once
 #include "SettingsPropPage.h"
 #include "registry.h"
-
+#include "ConfigureGitExe.h"
 
 /**
  * \ingroup TortoiseProc
  * This is the main page of the settings. It contains all the most important
  * settings.
  */
-class CSetMainPage : public ISettingsPropPage
+class CSetMainPage : public ISettingsPropPage, public CConfigureGitExe
 {
 	DECLARE_DYNAMIC(CSetMainPage)
 
@@ -54,10 +54,9 @@ protected:
 	afx_msg void OnCheck();
 	afx_msg void OnBnClickedButtonShowEnv();
 	afx_msg void OnBnClickedCreatelib();
+	afx_msg void OnBnClickedRunfirststartwizard();
 
 private:
-	CRegString		m_regMsysGitPath;
-	CRegString		m_regMsysGitExtranPath;
 	CString			m_sMsysGitPath;
 	CString			m_sMsysGitExtranPath;
 	CComboBox		m_LanguageCombo;

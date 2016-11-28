@@ -165,6 +165,9 @@
     <Filter Include="Commands\CommitIsOnRefs">
       <UniqueIdentifier>{c9518b55-36f2-4643-ab1a-c9e6d30ad1b6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Commands\FirstStart">
+      <UniqueIdentifier>{6356a693-c68f-494c-8b38-ea863b7d5b6b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddRemoteDlg.cpp">
@@ -937,6 +940,21 @@
     </ClCompile>
     <ClCompile Include="SyncTabCtrl.cpp">
       <Filter>Commands\Sync</Filter>
+    </ClCompile>
+    <ClCompile Include="FirstStartWizard.cpp">
+      <Filter>Commands\FirstStart</Filter>
+    </ClCompile>
+    <ClCompile Include="FirstStartWizardStart.cpp">
+      <Filter>Commands\FirstStart</Filter>
+    </ClCompile>
+    <ClCompile Include="FirstStartWizardBasePage.cpp">
+      <Filter>Commands\FirstStart</Filter>
+    </ClCompile>
+    <ClCompile Include="FirstStartWizardGit.cpp">
+      <Filter>Commands\FirstStart</Filter>
+    </ClCompile>
+    <ClCompile Include="FirstStartWizardUser.cpp">
+      <Filter>Commands\FirstStart</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1752,6 +1770,24 @@
     </ClInclude>
     <ClInclude Include="SyncTabCtrl.h">
       <Filter>Commands\Sync</Filter>
+    </ClInclude>
+    <ClInclude Include="FirstStartWizard.h">
+      <Filter>Commands\FirstStart</Filter>
+    </ClInclude>
+    <ClInclude Include="FirstStartWizardStart.h">
+      <Filter>Commands\FirstStart</Filter>
+    </ClInclude>
+    <ClInclude Include="FirstStartWizardBasePage.h">
+      <Filter>Commands\FirstStart</Filter>
+    </ClInclude>
+    <ClInclude Include="FirstStartWizardGit.h">
+      <Filter>Commands\FirstStart</Filter>
+    </ClInclude>
+    <ClInclude Include="FirstStartWizardUser.h">
+      <Filter>Commands\FirstStart</Filter>
+    </ClInclude>
+    <ClInclude Include="ConfigureGitExe.h">
+      <Filter>Commands\setting</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

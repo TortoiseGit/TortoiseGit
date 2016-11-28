@@ -26,6 +26,7 @@
 
 		<!-- Launch Condition related properties ................................................................................. -->
 		<Property Id="SHOWCHANGELOG" Secure="yes">1</Property>
+		<Property Id="FIRSTSTARTWIZARD" Secure="yes">1</Property>
 		<Property Id="ALLUSERS" Secure="yes">1</Property>
 
 		<Condition Message="[ProductName] requires Windows Vista or later."><![CDATA[(VersionNT >= 600)]]></Condition>
@@ -49,6 +50,9 @@
 		</Property>
 		<CustomAction Id="Set_ShowChangelog" Property="SHOWCHANGELOG" Value="" Return="check" />
 		<CustomAction Id="ShowChangelogAction" Property="TEXTEDITOR" ExeCommand="[INSTALLDIR]changelog.txt" Return="asyncNoWait" />
+
+		<CustomAction Id="Set_FirstStartWizard" Property="FIRSTSTARTWIZARD" Value="" Return="check" />
+		<CustomAction Id="FirstStartWizardAction" Directory="D__Bin" ExeCommand="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:firststart" Return="asyncNoWait" />
 
 		<CustomAction Id="ShowDonatePage" BinaryKey="CustomActionsDLL" DllEntry="OpenDonatePage" />
 
@@ -122,6 +126,7 @@
 			<Custom Action="DefaultTargetDir" After="PrepareDlg">INSTALLDIR=""</Custom>
 			<Custom Action="ERRCA_UIANDADVERTISED" Before="AppSearch">ProductState=1</Custom>
 			<Custom Action="Set_ShowChangelog" After="LaunchConditions">NOT (NEWERVERSIONDETECTED OR PREVIOUSVERSIONSINSTALLED)</Custom>
+			<Custom Action="Set_FirstStartWizard" After="LaunchConditions">(NEWERVERSIONDETECTED OR PREVIOUSVERSIONSINSTALLED)</Custom>
 		</InstallUISequence>
 	</Product>
 </Wix>
