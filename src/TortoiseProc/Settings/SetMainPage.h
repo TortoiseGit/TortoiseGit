@@ -54,6 +54,7 @@ protected:
 	afx_msg void OnCheck();
 	afx_msg void OnBnClickedButtonShowEnv();
 	afx_msg void OnBnClickedCreatelib();
+	afx_msg void OnBnClickedRunfirststartwizard();
 
 private:
 	CString			m_sMsysGitPath;

@@ -7582,6 +7582,10 @@ msgstr ""
 msgid "Re&vert..."
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_SETTINGSMAIN: Control id 1684)
+msgid "Re-run &First Start Wizard"
+msgstr ""
+
 #. Resource IDs: (IDS_FETCH_REACHABLE)
 msgid "Reachable"
 msgstr ""

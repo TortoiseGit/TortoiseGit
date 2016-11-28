@@ -1374,6 +1374,7 @@
 #define IDC_CREATELIB                   1683
 #define IDC_THEIRSSUBJECT               1683
 #define IDC_BUTTON_REVISION             1684
+#define IDC_RUNFIRSTSTARTWIZARD         1684
 #define IDC_REPOBROWSER_URL             1685
 #define IDC_REFLOG_BUTTONCLEARSTASH     1686
 #define IDC_GROUP_IGNORE_TYPE           1686
