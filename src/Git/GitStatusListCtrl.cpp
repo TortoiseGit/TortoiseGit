@@ -1731,7 +1731,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					popup.AppendMenuIcon(IDGITLC_LOGSUBMODULE, IDS_LOG_SUBMODULE, IDI_LOG);
 				if (m_dwContextMenus & GITSLC_POPSHOWLOGOLDNAME && (wcStatus & (CTGitPath::LOGACTIONS_REPLACED|CTGitPath::LOGACTIONS_COPY) && !filepath->GetGitOldPathString().IsEmpty()))
 					popup.AppendMenuIcon(IDGITLC_LOGOLDNAME, IDS_STATUSLIST_SHOWLOGOLDNAME, IDI_LOG);
-				if (m_dwContextMenus & GITSLC_POPBLAME && ! filepath->IsDirectory() && !(wcStatus & CTGitPath::LOGACTIONS_DELETED) && m_bHasWC)
+				if ((m_dwContextMenus & GITSLC_POPBLAME) && !filepath->IsDirectory() && !(wcStatus & CTGitPath::LOGACTIONS_DELETED) && !((wcStatus & CTGitPath::LOGACTIONS_ADDED) && (m_CurrentVersion.IsEmpty() || m_CurrentVersion == GIT_REV_ZERO)) && m_bHasWC)
 					popup.AppendMenuIcon(IDGITLC_BLAME, IDS_MENUBLAME, IDI_BLAME);
 			}
 
