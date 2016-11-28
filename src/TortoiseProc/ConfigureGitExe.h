@@ -40,7 +40,9 @@ public:
 		if (CAppUtils::GetMsysgitVersion() >= 0x01090500)
 			return true;
 
-		int ret = CMessageBox::ShowCheck(nullptr, IDS_PROC_OLDMSYSGIT, IDS_APPNAME, 1, IDI_EXCLAMATION, IDS_PROC_GOTOMSYSGITWEBSITE, IDS_ABORTBUTTON, IDS_IGNOREBUTTON, L"OldMsysgitVersionWarning", IDS_PROC_NOTSHOWAGAINIGNORE);
+		CString tmp;
+		tmp.Format(IDS_PROC_OLDMSYSGIT, L"1.9.5+");
+		int ret = CMessageBox::ShowCheck(hwnd, tmp, L"TortoiseGit", 1, IDI_EXCLAMATION, CString(MAKEINTRESOURCE(IDS_PROC_GOTOMSYSGITWEBSITE)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)), CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), L"OldMsysgitVersionWarning", CString(MAKEINTRESOURCE(IDS_PROC_NOTSHOWAGAINIGNORE)));
 		if (ret == 3)
 			return true;
 

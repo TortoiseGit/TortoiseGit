@@ -10757,7 +10757,8 @@ msgid "You cannot change the type of this ref with a rename."
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_OLDMSYSGIT)
-msgid "You have an old version of Git for Windows (https://git-for-windows.github.io/) installed which contains security issues.\n\nYou should consider an upgrade to 1.9.5+."
+#, c-format
+msgid "You have an old unsupported version of Git installed.\n\nYou should consider an upgrade to %s."
 msgstr ""
 
 #. Resource IDs: (IDS_STASHSAVE_INCLUDEUNTRACKED)
