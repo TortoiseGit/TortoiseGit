@@ -119,6 +119,12 @@ protected:
 
 		GuessExtraPath(gitpath, pathaddition);
 
+		if (gitpath.IsEmpty() || !PathFileExists(gitpath + L"\\git.exe"))
+		{
+			MessageBox(hwnd, L"No git.exe found. TortoiseGit requires a git.exe for its operations.", L"TortoiseGit", MB_ICONEXCLAMATION);
+			return false;
+		}
+
 		CString oldpath = m_regMsysGitPath;
 		CString oldextranpath = m_regMsysGitExtranPath;
 
@@ -138,9 +144,15 @@ protected:
 			SetWindowText(GetDlgItem(hwnd, versionLabelId), out);
 			if (out.IsEmpty())
 			{
-				if (ret == 0xC0000135 && CMessageBox::Show(hwnd, L"Could not start git.exe. A dynamic library (dll) is missing.\nYou might need to specify an extra PATH.\nCheck help file for \"Extra PATH\".", L"TortoiseGit", 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)), CString(MAKEINTRESOURCE(IDS_MSGBOX_HELP))) == 2)
-					callHelp(IDD_SETTINGSMAIN);
-				else if (CMessageBox::Show(hwnd, L"Could not get read version information from git.exe.\nCheck help file for \"Git.exe Path\".", L"TortoiseGit", 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)), CString(MAKEINTRESOURCE(IDS_MSGBOX_HELP))) == 2)
+				if (ret == 0xC0000135)
+				{
+					if (CMessageBox::Show(hwnd, L"Could not start git.exe. A dynamic library (dll) is missing.\nYou might need to specify an extra PATH.\nCheck help file for \"Extra PATH\".", L"TortoiseGit", 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)), CString(MAKEINTRESOURCE(IDS_MSGBOX_HELP))) == 2)
+						callHelp(IDD_SETTINGSMAIN);
+					return false;
+				}
+				CString tmp;
+				tmp.Format(L"Calling git.exe returned an error (%d). Please check the git.exe path.\nCheck help file for \"Git.exe Path\".", ret);
+				if (CMessageBox::Show(hwnd, tmp, L"TortoiseGit", 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)), CString(MAKEINTRESOURCE(IDS_MSGBOX_HELP))) == 2)
 					callHelp(IDD_SETTINGSMAIN);
 				return false;
 			}
