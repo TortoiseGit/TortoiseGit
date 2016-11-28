@@ -35,6 +35,22 @@ public:
 		, m_regMsys2Hack(L"Software\\TortoiseGit\\Msys2Hack", FALSE)
 	{};
 
+	static bool CheckGitVersion(HWND hwnd)
+	{
+		if (CAppUtils::GetMsysgitVersion() >= 0x01090500)
+			return true;
+
+		int ret = CMessageBox::ShowCheck(nullptr, IDS_PROC_OLDMSYSGIT, IDS_APPNAME, 1, IDI_EXCLAMATION, IDS_PROC_GOTOMSYSGITWEBSITE, IDS_ABORTBUTTON, IDS_IGNOREBUTTON, L"OldMsysgitVersionWarning", IDS_PROC_NOTSHOWAGAINIGNORE);
+		if (ret == 3)
+			return true;
+
+		CMessageBox::RemoveRegistryKey(L"OldMsysgitVersionWarning"); // only store answer if it is "Ignore"
+		if (ret == 1)
+			ShellExecute(hwnd, L"open", GIT_FOR_WINDOWS_URL, nullptr, nullptr, SW_SHOW);
+
+		return false;
+	}
+
 protected:
 	CRegDWORD		m_regCygwinHack;
 	CRegDWORD		m_regMsys2Hack;
@@ -188,6 +204,9 @@ protected:
 			return false;
 		}
 
+		CGit::ms_LastMsysGitVersion = 0;
+		if (!CheckGitVersion(hwnd))
+			return false;
 		return true;
 	}
 

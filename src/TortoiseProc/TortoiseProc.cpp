@@ -37,6 +37,7 @@
 #include "JumpListHelpers.h"
 #include "SinglePropSheetDlg.h"
 #include "Settings\setmainpage.h"
+#include "ConfigureGitExe.h"
 #include "Libraries.h"
 #include "TaskbarUUID.h"
 #include "ProjectProperties.h"
@@ -200,7 +201,7 @@ BOOL CTortoiseProcApp::InitInstance()
 		UINT ret = CMessageBox::Show(nullptr, IDS_PROC_NOMSYSGIT, IDS_APPNAME, 3, IDI_HAND, IDS_PROC_SETMSYSGITPATH, IDS_PROC_GOTOMSYSGITWEBSITE, IDS_ABORTBUTTON);
 		if(ret == 2)
 		{
-			ShellExecute(nullptr, L"open", L"https://git-for-windows.github.io/", nullptr, nullptr, SW_SHOW);
+			ShellExecute(nullptr, L"open", GIT_FOR_WINDOWS_URL, nullptr, nullptr, SW_SHOW);
 		}
 		else if(ret == 1)
 		{
@@ -209,21 +210,8 @@ BOOL CTortoiseProcApp::InitInstance()
 		}
 		return FALSE;
 	}
-	if (CAppUtils::GetMsysgitVersion() < 0x01090500)
-	{
-		int ret = CMessageBox::ShowCheck(nullptr, IDS_PROC_OLDMSYSGIT, IDS_APPNAME, 1, IDI_EXCLAMATION, IDS_PROC_GOTOMSYSGITWEBSITE, IDS_ABORTBUTTON, IDS_IGNOREBUTTON, L"OldMsysgitVersionWarning", IDS_PROC_NOTSHOWAGAINIGNORE);
-		if (ret == 1)
-		{
-			CMessageBox::RemoveRegistryKey(L"OldMsysgitVersionWarning"); // only store answer if it is "Ignore"
-			ShellExecute(nullptr, L"open", L"https://git-for-windows.github.io/", nullptr, nullptr, SW_SHOW);
-			return FALSE;
-		}
-		else if (ret == 2)
-		{
-			CMessageBox::RemoveRegistryKey(L"OldMsysgitVersionWarning"); // only store answer if it is "Ignore"
-			return FALSE;
-		}
-	}
+	if (!CConfigureGitExe::CheckGitVersion(hWndExplorer))
+		return FALSE;
 
 	{
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Registering Crash Report ...\n");
