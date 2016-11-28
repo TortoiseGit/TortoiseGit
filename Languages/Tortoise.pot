@@ -654,6 +654,10 @@ msgstr ""
 msgid "&External"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_SETTINGSMAIN: Control id 65535)
+msgid "&Extra PATH:"
+msgstr ""
+
 #. Resource IDs: (65535 - PopupMenu)
 msgid "&File"
 msgstr ""
@@ -704,6 +708,10 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SVNDCOMMITTYPE: Control id 2153)
 msgid "&Git Style Commit (--rmdir)"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_SETTINGSMAIN: Control id 65535)
+msgid "&Git.exe Path:"
 msgstr ""
 
 #. Resource IDs: (ID_EDIT_GOTO - Menu)
@@ -4442,10 +4450,6 @@ msgstr ""
 msgid "External Program:"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_SETTINGSMAIN: Control id 65535)
-msgid "Extra PATH:"
-msgstr ""
-
 #. Resource IDs: (IDS_MENUFETCH)
 msgid "F&etch..."
 msgstr ""
@@ -5061,10 +5065,6 @@ msgstr ""
 
 #. Resource IDs: (IDS_HIERARCHICALCONFIG)
 msgid "Git uses the concept of a hierarchical configuration.\nI.e. there are multiple levels; settings in higher levels override values in lower levels.\nThe \"Effective\" tab shows you the effective values for the current scope (read-only).\nSelect any level to see the values stored there.\nIn order to change settings select a level, enter the values and select where to store to."
-msgstr ""
-
-#. Resource IDs: (Dialog IDD_SETTINGSMAIN: Control id 65535)
-msgid "Git.exe Path:"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 4591)
