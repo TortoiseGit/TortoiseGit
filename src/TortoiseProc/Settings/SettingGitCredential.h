@@ -19,6 +19,7 @@
 #pragma once
 #include "SettingsPropPage.h"
 #include "registry.h"
+#include "Git.h"
 
 // CSettingGitCredential dialog
 class CSettingGitCredential : public ISettingsPropPage
@@ -39,7 +40,87 @@ public:
 // Dialog Data
 	enum { IDD = IDD_SETTINGSCREDENTIAL };
 
+	static int GetCredentialDefaultUrlCallback(const git_config_entry *entry, void *payload)
+	{
+		((STRING_VECTOR*)payload)->push_back(ConfigLevelToKey(entry->level));
+		return 0;
+	}
+
+	static int GetCredentialUrlCallback(const git_config_entry *entry, void *payload)
+	{
+		CString name = CUnicodeUtils::GetUnicode(entry->name);
+		int pos1 = name.Find(L'.');
+		int pos2 = name.ReverseFind(L'.');
+		CString url = name.Mid(pos1 + 1, pos2 - pos1 - 1);
+		CString display;
+		display.Format(L"%s:%s", (LPCTSTR)ConfigLevelToKey(entry->level), url);
+		((STRING_VECTOR*)payload)->push_back(display);
+		return 0;
+	}
+
+	static int GetCredentialEntryCallback(const git_config_entry *entry, void *payload)
+	{
+		CString name = CUnicodeUtils::GetUnicode(entry->name);
+		((STRING_VECTOR*)payload)->push_back(name);
+		return 0;
+	}
+
+	static int GetCredentialAnyEntryCallback(const git_config_entry *entry, void *payload)
+	{
+		CString name = CUnicodeUtils::GetUnicode(entry->name);
+		CString value = CUnicodeUtils::GetUnicode(entry->value);
+		CString text;
+		text.Format(L"%s\n%s\n%s", (LPCTSTR)ConfigLevelToKey(entry->level), (LPCTSTR)name, (LPCTSTR)value);
+		((STRING_VECTOR*)payload)->push_back(text);
+		return 0;
+	}
+
+	static CString GetWinstorePath()
+	{
+		TCHAR winstorebuf[MAX_PATH] = { 0 };
+		ExpandEnvironmentStrings(L"%AppData%\\GitCredStore\\git-credential-winstore.exe", winstorebuf, MAX_PATH);
+		CString winstore;
+		winstore.Format(L"!'%s'", winstorebuf);
+		return winstore;
+	}
+
+	static bool WincredExists()
+	{
+		CString path = CGit::ms_MsysGitRootDir;
+		path.Append(L"libexec\\git-core\\git-credential-wincred.exe");
+		return !!PathFileExists(path);
+	}
+
+	static bool WinstoreExists()
+	{
+		return !!PathFileExists(GetWinstorePath());
+	}
+
+	static bool GCMExists()
+	{
+		CString path = CGit::ms_MsysGitRootDir;
+		path.Append(L"libexec\\git-core\\git-credential-manager.exe");
+		return !!PathFileExists(path);
+	}
+
 protected:
+	static CString ConfigLevelToKey(git_config_level_t level)
+	{
+		switch (level)
+		{
+		case GIT_CONFIG_LEVEL_PROGRAMDATA:
+			return L"P";
+		case GIT_CONFIG_LEVEL_SYSTEM:
+			return L"S";
+		case GIT_CONFIG_LEVEL_XDG:
+			return L"X";
+		case GIT_CONFIG_LEVEL_GLOBAL:
+			return L"G";
+		default:
+			return L"L";
+		}
+	}
+
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()

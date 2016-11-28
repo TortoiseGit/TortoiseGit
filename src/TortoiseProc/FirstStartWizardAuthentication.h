@@ -17,29 +17,34 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
-#include "StandAloneDlg.h"
-#include "FirstStartWizardStart.h"
-#include "FirstStartWizardGit.h"
-#include "FirstStartWizardUser.h"
-#include "FirstStartWizardAuthentication.h"
+#include "FirstStartWizardBasePage.h"
 
-class CFirstStartWizard : public CStandAloneDialogTmpl<CPropertySheetEx>
+/**
+ * First page in the first start wizard
+ */
+class CFirstStartWizardAuthentication : public CFirstStartWizardBasePage
 {
-	DECLARE_DYNAMIC(CFirstStartWizard)
+	DECLARE_DYNAMIC(CFirstStartWizardAuthentication)
 
 public:
-	CFirstStartWizard(UINT nIDCaption, CWnd* pParentWnd = nullptr, UINT iSelectPage = 0);
-	virtual ~CFirstStartWizard();
+	CFirstStartWizardAuthentication();
+	virtual ~CFirstStartWizardAuthentication();
+
+	enum { IDD = IDD_FIRSTSTARTWIZARD_AUTHENTICATION };
 
 protected:
+	virtual void	DoDataExchange(CDataExchange* pDX);
+	virtual BOOL	OnWizardFinish();
+	virtual BOOL	OnInitDialog();
+	virtual BOOL	OnSetActive();
+
+	afx_msg void	OnBnClickedGenerateputtykey();
+	afx_msg void	OnBnClickedAdvancedconfiguration();
+	afx_msg void	OnClickedNoSave();
+
 	DECLARE_MESSAGE_MAP()
-	virtual BOOL OnInitDialog();
 
-	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
-	afx_msg void OnCancel();
-
-	CFirstStartWizardStart				start;
-	CFirstStartWizardGit				git;
-	CFirstStartWizardUser				user;
-	CFirstStartWizardAuthentication		authentication;
+	CComboBox		m_ctrlSimpleCredential;
+	STRING_VECTOR	m_availableHelpers;
+	BOOL			m_bNoSave;
 };

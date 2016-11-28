@@ -235,6 +235,23 @@ BOOL CTortoiseProcApp::InitInstance()
 	if (CRegDWORD(L"Software\\TortoiseGit\\Debug", FALSE) == TRUE)
 		AfxMessageBox(AfxGetApp()->m_lpCmdLine, MB_OK | MB_ICONINFORMATION);
 
+	// Set CWD to temporary dir, and restore it later
+	{
+		DWORD len = GetCurrentDirectory(0, nullptr);
+		if (len)
+		{
+			auto originalCurrentDirectory = std::make_unique<TCHAR[]>(len);
+			if (GetCurrentDirectory(len, originalCurrentDirectory.get()))
+			{
+				sOrigCWD = originalCurrentDirectory.get();
+				sOrigCWD = CPathUtils::GetLongPathname(sOrigCWD);
+			}
+		}
+		TCHAR pathbuf[MAX_PATH] = {0};
+		GetTortoiseGitTempPath(MAX_PATH, pathbuf);
+		SetCurrentDirectory(pathbuf);
+	}
+
 	if (parser.HasKey(L"command") && wcscmp(parser.GetVal(L"command"), L"firststart") == 0)
 	{
 		CFirstStartWizard wizard(IDS_APPNAME);
@@ -366,23 +383,6 @@ BOOL CTortoiseProcApp::InitInstance()
 
 	if (pathList.IsEmpty()) {
 		pathList.AddPath(CTGitPath::CTGitPath(g_Git.m_CurrentDir));
-	}
-
-	// Set CWD to temporary dir, and restore it later
-	{
-		DWORD len = GetCurrentDirectory(0, nullptr);
-		if (len)
-		{
-			auto originalCurrentDirectory = std::make_unique<TCHAR[]>(len);
-			if (GetCurrentDirectory(len, originalCurrentDirectory.get()))
-			{
-				sOrigCWD = originalCurrentDirectory.get();
-				sOrigCWD = CPathUtils::GetLongPathname(sOrigCWD);
-			}
-		}
-		TCHAR pathbuf[MAX_PATH] = {0};
-		GetTortoiseGitTempPath(MAX_PATH, pathbuf);
-		SetCurrentDirectory(pathbuf);
 	}
 
 	CheckForNewerVersion();

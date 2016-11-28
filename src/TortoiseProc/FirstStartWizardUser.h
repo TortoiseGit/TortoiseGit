@@ -38,7 +38,7 @@ public:
 
 protected:
 	virtual void	DoDataExchange(CDataExchange* pDX);
-	virtual BOOL	OnWizardFinish();
+	virtual LRESULT	OnWizardNext();
 	virtual BOOL	OnInitDialog();
 	virtual BOOL	OnSetActive();
 

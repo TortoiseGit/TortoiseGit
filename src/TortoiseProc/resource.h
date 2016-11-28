@@ -1320,7 +1320,9 @@
 #define IDC_RADIO_CLEAN_ALL             1627
 #define IDS_HINTLASTMESSAGES            1627
 #define IDC_RADIO_CLEAN_NO              1628
+#define IDS_FIRSTSTART_AUTHENTICATIONTITLE 1628
 #define IDC_RADIO_CLEAN_IGNORE          1629
+#define IDS_FIRSTSTART_SSHHINT          1629
 #define IDC_GROUP_CLEAN_TYPE            1630
 #define IDC_CHECK_AUTOCRLF              1631
 #define IDC_COMBO_SAFECRLF              1632
@@ -1565,6 +1567,9 @@
 #define IDC_WORKAROUNDS                 1841
 #define IDC_GITHACKS1                   1842
 #define IDC_GITHACKS2                   1843
+#define IDC_GENERATEPUTTYKEY            1844
+#define IDC_ADVANCEDCONFIGURATION       1845
+#define IDC_FIRSTSTART_SSHHINT          1846
 #define IDS_LOG_FILTER_BY               1850
 #define IDS_LOG_FILTER_PATHS            1851
 #define IDS_LOG_FILTER_AUTHORS          1852
@@ -1842,6 +1847,7 @@
 #define IDD_COMMITISONREFS              4596
 #define IDD_FIRSTSTARTWIZARD_USER       4597
 #define IDD_FIRSTSTARTWIZARD_GIT        4598
+#define IDD_FIRSTSTARTWIZARD_AUTHENTICATION 4599
 #define IDC_COMBOBOXEX_LOCAL_BRANCH     5000
 #define IDC_COMBOBOXEX_REMOTE_BRANCH    5001
 #define IDC_COMBOBOXEX_BAD              5001
@@ -2018,7 +2024,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        359
 #define _APS_NEXT_COMMAND_VALUE         32874
-#define _APS_NEXT_CONTROL_VALUE         1844
+#define _APS_NEXT_CONTROL_VALUE         1847
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

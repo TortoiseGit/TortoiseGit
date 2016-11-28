@@ -55,7 +55,7 @@ void CFirstStartWizardUser::OnClickedNoSave()
 	GetDlgItem(IDC_GIT_USEREMAIL)->EnableWindow(!m_bNoSave);
 }
 
-BOOL CFirstStartWizardUser::OnWizardFinish()
+LRESULT CFirstStartWizardUser::OnWizardNext()
 {
 	UpdateData();
 
@@ -64,7 +64,7 @@ BOOL CFirstStartWizardUser::OnWizardFinish()
 		if (m_sUsername.Trim().IsEmpty() || m_sUseremail.Trim().IsEmpty())
 		{
 			MessageBox(L"Username and email must not be empty.", L"TortoiseGit", MB_ICONERROR);
-			return FALSE;
+			return -1;
 		}
 
 		CAutoConfig config(true);
@@ -74,21 +74,21 @@ BOOL CFirstStartWizardUser::OnWizardFinish()
 		if (err)
 		{
 			MessageBox(g_Git.GetLibGit2LastErr(), L"TortoiseGit", MB_ICONEXCLAMATION);
-			return FALSE;
+			return -1;
 		}
 		if (git_config_set_string(config, "user.name", CUnicodeUtils::GetUTF8(m_sUsername)))
 		{
 			MessageBox(g_Git.GetLibGit2LastErr(), L"TortoiseGit", MB_ICONEXCLAMATION);
-			return FALSE;
+			return -1;
 		}
 		if (git_config_set_string(config, "user.email", CUnicodeUtils::GetUTF8(m_sUseremail)))
 		{
 			MessageBox(g_Git.GetLibGit2LastErr(), L"TortoiseGit", MB_ICONEXCLAMATION);
-			return FALSE;
+			return -1;
 		}
 	}
 
-	return __super::OnWizardFinish();
+	return __super::OnWizardNext();
 }
 
 BOOL CFirstStartWizardUser::OnInitDialog()
@@ -125,7 +125,7 @@ BOOL CFirstStartWizardUser::OnSetActive()
 {
 	CFirstStartWizard* wiz = (CFirstStartWizard*)GetParent();
 
-	wiz->SetWizardButtons(PSWIZB_FINISH | PSWIZB_BACK);
+	wiz->SetWizardButtons(PSWIZB_NEXT | PSWIZB_BACK);
 
 	return CFirstStartWizardBasePage::OnSetActive();
 }

@@ -31,6 +31,7 @@ CFirstStartWizard::CFirstStartWizard(UINT nIDCaption, CWnd* pParentWnd, UINT iSe
 	AddPage(&start);
 	AddPage(&git);
 	AddPage(&user);
+	AddPage(&authentication);
 
 	m_psh.dwFlags |= PSH_WIZARD97 | PSH_HEADER;
 	m_psh.pszbmHeader = L"TortoiseGit";

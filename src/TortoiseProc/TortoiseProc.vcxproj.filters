@@ -956,6 +956,9 @@
     <ClCompile Include="FirstStartWizardUser.cpp">
       <Filter>Commands\FirstStart</Filter>
     </ClCompile>
+    <ClCompile Include="FirstStartWizardAuthentication.cpp">
+      <Filter>Commands\FirstStart</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1788,6 +1791,9 @@
     </ClInclude>
     <ClInclude Include="ConfigureGitExe.h">
       <Filter>Commands\setting</Filter>
+    </ClInclude>
+    <ClInclude Include="FirstStartWizardAuthentication.h">
+      <Filter>Commands\FirstStart</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

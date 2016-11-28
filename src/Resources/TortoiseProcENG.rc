@@ -2187,6 +2187,23 @@ BEGIN
     CONTROL         "Enable special hack for Msys2 git",IDC_GITHACKS2,"Button",BS_AUTORADIOBUTTON | NOT WS_VISIBLE,17,164,289,11
 END
 
+IDD_FIRSTSTARTWIZARD_AUTHENTICATION DIALOGEX 0, 0, 322, 191
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "First Start Wizard - TortoiseGit"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    GROUPBOX        "SSH (URLs look like ""git@example.com"")",IDC_STATIC,7,7,308,84
+    LTEXT           "",IDC_FIRSTSTART_SSHHINT,17,17,289,66,SS_NOPREFIX
+    PUSHBUTTON      "&Generate PuTTY  key pair",IDC_GENERATEPUTTYKEY,169,73,137,13
+    GROUPBOX        "HTTP (URLs start with ""http://"" or ""https://"")",IDC_STATIC,7,92,308,95
+    LTEXT           "By default Git does not save/cache credentials. However, you can configure a credential helper (recommended) or manually use %HOME%/_netrc.",IDC_STATIC,17,103,289,25
+    LTEXT           "&Credential helper:",IDC_STATIC,17,131,145,8
+    COMBOBOX        IDC_COMBO_SIMPLECREDENTIAL,189,128,117,12,CBS_DROPDOWNLIST | WS_TABSTOP
+    CONTROL         "&Don't store these settings now.",IDC_DONTSAVE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,145,172,11
+    PUSHBUTTON      "&Advanced...",IDC_ADVANCEDCONFIGURATION,189,144,117,12
+    LTEXT           "These settings will be stored to your global git configuration (%HOME%/.gitconfig) and will be used for all your git repositories as a default.",IDC_STATIC,17,160,289,25
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -3124,6 +3141,18 @@ BEGIN
         VERTGUIDE, 17
         VERTGUIDE, 80
         VERTGUIDE, 282
+        VERTGUIDE, 306
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 184
+        HORZGUIDE, 176
+    END
+
+    IDD_FIRSTSTARTWIZARD_AUTHENTICATION, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 315
+        VERTGUIDE, 17
+        VERTGUIDE, 189
         VERTGUIDE, 306
         TOPMARGIN, 7
         BOTTOMMARGIN, 184
@@ -4848,6 +4877,8 @@ BEGIN
     IDS_GITEXEFILEFILTER    "git.exe|git.exe||"
     IDS_REALLYCANCEL        "Are you sure you want to cancel?"
     IDS_HINTLASTMESSAGES    "Hint: Recently used commit messages are available using the context menu of the text field."
+    IDS_FIRSTSTART_AUTHENTICATIONTITLE "Authentification and credential store"
+    IDS_FIRSTSTART_SSHHINT  "TortoiseGitPlink is recommended as SSH client. If you don't have a key pair yet, you should generate one. Keep the private one in a save place and set up the public key on your hosting platform. Use the PuTTY authentication agent for caching the password (done automatically if a PuTTY key is configured for a remote). For advanced tips & tricks see our manual and FAQ."
 END
 
 #endif    // English (U.S.) resources

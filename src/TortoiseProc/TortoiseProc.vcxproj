@@ -128,6 +128,7 @@
     <ClCompile Include="CommitIsOnRefsDlg.cpp" />
     <ClCompile Include="FindBar.cpp" />
     <ClCompile Include="FirstStartWizard.cpp" />
+    <ClCompile Include="FirstStartWizardAuthentication.cpp" />
     <ClCompile Include="FirstStartWizardBasePage.cpp" />
     <ClCompile Include="FirstStartWizardGit.cpp" />
     <ClCompile Include="FirstStartWizardStart.cpp" />
@@ -410,6 +411,7 @@
     <ClInclude Include="ConfigureGitExe.h" />
     <ClInclude Include="FindBar.h" />
     <ClInclude Include="FirstStartWizard.h" />
+    <ClInclude Include="FirstStartWizardAuthentication.h" />
     <ClInclude Include="FirstStartWizardBasePage.h" />
     <ClInclude Include="FirstStartWizardGit.h" />
     <ClInclude Include="FirstStartWizardStart.h" />
