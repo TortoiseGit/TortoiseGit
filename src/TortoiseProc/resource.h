@@ -1303,10 +1303,16 @@
 #define IDC_STATIC_REMOTE_URL           1618
 #define IDS_FIRSTSTART_USERTITLE        1618
 #define IDC_CHECK_PUTTY_KEY             1619
+#define IDS_SEEMANUALGITEXEPATH         1619
+#define IDS_ERR_GITDLLMISSING           1620
 #define IDC_STATIC_STATUS               1621
+#define IDS_ERR_GITNOVALIDOUTPUT        1621
 #define IDC_PROGRESS_SYNC               1622
+#define IDS_ERR_GITNEEDHACKS            1622
 #define IDC_ANIMATE_SYNC                1623
+#define IDS_ERR_GITUNNEEDEDHACKS        1623
 #define IDC_GROUP_INFO                  1624
+#define IDS_ERR_GITCALLFAILED           1624
 #define IDC_BUTTON_COMMIT               1625
 #define IDC_CHECK_DIR                   1626
 #define IDC_RADIO_CLEAN_ALL             1627

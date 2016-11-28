@@ -4581,7 +4581,7 @@ BEGIN
                             "It has not been checked if these branches have been fully merged into HEAD."
     IDS_PROC_BROWSEREFS_WARNINGDELETEREMOTEBRANCHES 
                             "This action will remove the branches on the remote."
-    IDS_PROC_NOMSYSGIT      "Git for Windows (https://git-for-windows.github.io/) not found."
+    IDS_PROC_NOMSYSGIT      "No git.exe found.\n\nTortoiseGit requires a git.exe for its operations (e.g., such as provided by the Git for Windows package)."
     IDS_PROC_SETMSYSGITPATH "&Set Git path"
     IDS_PROC_GOTOMSYSGITWEBSITE "&Open Git for Windows WebSite"
     IDS_PROC_OLDMSYSGIT     "You have an old version of Git for Windows (https://git-for-windows.github.io/) installed which contains security issues.\n\nYou should consider an upgrade to 1.9.5+."
@@ -4836,6 +4836,14 @@ BEGIN
     IDS_FIRSTSTART_STARTTITLE "Welcome to TortoiseGit!"
     IDS_FIRSTSTART_GITTITLE "Configure git.exe"
     IDS_FIRSTSTART_USERTITLE "Configure user information"
+    IDS_SEEMANUALGITEXEPATH "Check out the help file for ""Git.exe Path""."
+    IDS_ERR_GITDLLMISSING   "Could not start git.exe. A dynamic library (dll) is missing.\nYou might need to specify an extra PATH.\nCheck help file for ""Extra PATH""."
+    IDS_ERR_GITNOVALIDOUTPUT 
+                            "Could not get read version information from git.exe.\nGot: ""%s"""
+    IDS_ERR_GITNEEDHACKS    "Could not find ""msysgit"" or ""windows"" in versionstring of git.exe.\nIf you are using git of the cygwin or msys2 environment you need to enable special hacks.\nFor more information see the help file for the keyword ""cygwin git"" or ""msys2 git""."
+    IDS_ERR_GITUNNEEDEDHACKS 
+                            "Found ""msysgit"" or ""windows"" in versionstring of git.exe, however, you have git.exe hacks enabled. These hacks must be disabled for proper operation with Git for Windows!\nYou can find more information in the help file for the keyword ""cygwin git"" or ""msys2 git""."
+    IDS_ERR_GITCALLFAILED   "Calling git.exe failed (exit code: %d). Please check the git.exe path."
 END
 
 #endif    // English (U.S.) resources

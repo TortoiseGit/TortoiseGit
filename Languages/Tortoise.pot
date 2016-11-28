@@ -2386,6 +2386,11 @@ msgstr ""
 msgid "Calculate"
 msgstr ""
 
+#. Resource IDs: (IDS_ERR_GITCALLFAILED)
+#, c-format
+msgid "Calling git.exe failed (exit code: %d). Please check the git.exe path."
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1127)
 msgid "Can double-click in log list to compare with previous revision"
 msgstr ""
@@ -2582,6 +2587,10 @@ msgstr ""
 
 #. Resource IDs: (IDS_MENUSHOWCHANGED)
 msgid "Check for modi&fications"
+msgstr ""
+
+#. Resource IDs: (IDS_SEEMANUALGITEXEPATH)
+msgid "Check out the help file for \"Git.exe Path\"."
 msgstr ""
 
 #. Resource IDs: (IDS_SVNERR_CHECKPATHORURL)
@@ -3203,6 +3212,15 @@ msgstr ""
 msgid "Could not find Super-project"
 msgstr ""
 
+#. Resource IDs: (IDS_ERR_GITNEEDHACKS)
+msgid "Could not find \"msysgit\" or \"windows\" in versionstring of git.exe.\nIf you are using git of the cygwin or msys2 environment you need to enable special hacks.\nFor more information see the help file for the keyword \"cygwin git\" or \"msys2 git\"."
+msgstr ""
+
+#. Resource IDs: (IDS_ERR_GITNOVALIDOUTPUT)
+#, c-format
+msgid "Could not get read version information from git.exe.\nGot: \"%s\""
+msgstr ""
+
 #. Resource IDs: (IDS_ERR_NOSTATUS)
 msgid "Could not get the status!"
 msgstr ""
@@ -3266,6 +3284,10 @@ msgstr ""
 #. Resource IDs: (IDS_ERR_EXTMERGESTART)
 #, c-format
 msgid "Could not start external merge program!\n\n%s"
+msgstr ""
+
+#. Resource IDs: (IDS_ERR_GITDLLMISSING)
+msgid "Could not start git.exe. A dynamic library (dll) is missing.\nYou might need to specify an extra PATH.\nCheck help file for \"Extra PATH\"."
 msgstr ""
 
 #. Resource IDs: (61702)
@@ -4837,6 +4859,10 @@ msgstr ""
 msgid "Forward %d"
 msgstr ""
 
+#. Resource IDs: (IDS_ERR_GITUNNEEDEDHACKS)
+msgid "Found \"msysgit\" or \"windows\" in versionstring of git.exe, however, you have git.exe hacks enabled. These hacks must be disabled for proper operation with Git for Windows!\nYou can find more information in the help file for the keyword \"cygwin git\" or \"msys2 git\"."
+msgstr ""
+
 #. Resource IDs: (IDS_REBASELOCKFILEFOUND)
 msgid "Found a lock file indicating that a TortoiseGit rebase process is running. This blocks this operation.\n\nIf you are not runnig a TortoiseGit rebase process right now, you can remove the stale lock file in order to continue."
 msgstr ""
@@ -5069,10 +5095,6 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSMAIN: Control id 65535)
 msgid "Git for Windows"
-msgstr ""
-
-#. Resource IDs: (IDS_PROC_NOMSYSGIT)
-msgid "Git for Windows (https://git-for-windows.github.io/) not found."
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_REPOCREATEERR)
@@ -6580,6 +6602,10 @@ msgstr ""
 
 #. Resource IDs: (IDS_COMMITDLG_NOTHINGTOCOMMITUNVERSIONED)
 msgid "No files were changed or added since\nthe last commit.\nDo you want to see the unversioned files?"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_NOMSYSGIT)
+msgid "No git.exe found.\n\nTortoiseGit requires a git.exe for its operations (e.g., such as provided by the Git for Windows package)."
 msgstr ""
 
 #. Resource IDs: (IDS_REVGRAPH_ERR_NOGRAPH)

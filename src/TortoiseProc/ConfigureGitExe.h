@@ -122,7 +122,7 @@ protected:
 		gitpath = dir;
 		PerformCommonGitPathCleanup(gitpath);
 		if (!PathFileExists(gitpath + L"\\git.exe"))
-			MessageBox(hwnd, L"No git.exe found in the selected folder.", L"TortoiseGit", MB_ICONEXCLAMATION);
+			CMessageBox::Show(hwnd, IDS_PROC_NOMSYSGIT, IDS_APPNAME, MB_ICONEXCLAMATION);
 		GuessExtraPath(gitpath, pathaddition);
 		return true;
 	}
@@ -137,7 +137,7 @@ protected:
 
 		if (gitpath.IsEmpty() || !PathFileExists(gitpath + L"\\git.exe"))
 		{
-			MessageBox(hwnd, L"No git.exe found. TortoiseGit requires a git.exe for its operations.", L"TortoiseGit", MB_ICONEXCLAMATION);
+			CMessageBox::Show(hwnd, IDS_PROC_NOMSYSGIT, IDS_APPNAME, MB_ICONERROR);
 			return false;
 		}
 
@@ -151,6 +151,9 @@ protected:
 			StoreSetting(hwnd, oldextranpath, m_regMsysGitExtranPath);
 		};
 
+		CString checkhelpHint;
+		checkhelpHint.LoadString(IDS_SEEMANUALGITEXEPATH);
+
 		g_Git.m_bInitialized = false;
 
 		if (g_Git.CheckMsysGitDir(FALSE))
@@ -162,26 +165,34 @@ protected:
 			{
 				if (ret == 0xC0000135)
 				{
-					if (CMessageBox::Show(hwnd, L"Could not start git.exe. A dynamic library (dll) is missing.\nYou might need to specify an extra PATH.\nCheck help file for \"Extra PATH\".", L"TortoiseGit", 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)), CString(MAKEINTRESOURCE(IDS_MSGBOX_HELP))) == 2)
+					if (CMessageBox::Show(hwnd, IDS_ERR_GITDLLMISSING, IDS_APPNAME, 1, IDI_ERROR, IDS_MSGBOX_OK, IDS_MSGBOX_HELP) == 2)
 						callHelp(IDD_SETTINGSMAIN);
 					return false;
 				}
 				CString tmp;
-				tmp.Format(L"Calling git.exe returned an error (%d). Please check the git.exe path.\nCheck help file for \"Git.exe Path\".", ret);
+				tmp.Format(IDS_ERR_GITCALLFAILED, ret);
+				tmp.AppendChar(L'\n');
+				tmp.AppendChar(L'\n');
+				tmp.Append(checkhelpHint);
 				if (CMessageBox::Show(hwnd, tmp, L"TortoiseGit", 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)), CString(MAKEINTRESOURCE(IDS_MSGBOX_HELP))) == 2)
 					callHelp(IDD_SETTINGSMAIN);
 				return false;
 			}
 			else if (!CStringUtils::StartsWith(out.Trim(), L"git version "))
 			{
-				if (CMessageBox::Show(hwnd, L"Could not get read version information from git.exe.\nGot: \"" + out.Trim() + L"\"\n\nCheck help file for \"Git.exe Path\".", L"TortoiseGit", 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)), CString(MAKEINTRESOURCE(IDS_MSGBOX_HELP))) == 2)
+				CString tmp;
+				tmp.Format(IDS_ERR_GITNOVALIDOUTPUT, out.Trim());
+				tmp.AppendChar(L'\n');
+				tmp.AppendChar(L'\n');
+				tmp.Append(checkhelpHint);
+				if (CMessageBox::Show(hwnd, tmp, L"TortoiseGit", 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)), CString(MAKEINTRESOURCE(IDS_MSGBOX_HELP))) == 2)
 					callHelp(IDD_SETTINGSMAIN);
 				return false;
 			}
 			else if (!(CGit::ms_bCygwinGit || CGit::ms_bMsys2Git) && out.Find(L"msysgit") == -1 && out.Find(L"windows") == -1)
 			{
 				bool wasAlreadyWarned = !needWorkarounds || *needWorkarounds;
-				if (CMessageBox::Show(hwnd, L"Could not find \"msysgit\" or \"windows\" in versionstring of git.exe.\nIf you are using git of the cygwin or msys2 environment please read the help file for the keyword \"cygwin git\" or \"msys2 git\".", L"TortoiseGit", 1, IDI_INFORMATION, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)), CString(MAKEINTRESOURCE(IDS_MSGBOX_HELP))) == 2)
+				if (CMessageBox::Show(hwnd, IDS_ERR_GITNEEDHACKS, IDS_APPNAME, 1, IDI_INFORMATION, IDS_MSGBOX_OK, IDS_MSGBOX_HELP) == 2)
 					callHelp(IDD_SETTINGSMAIN);
 				if (needWorkarounds)
 					*needWorkarounds = true;
@@ -190,7 +201,7 @@ protected:
 			}
 			else if ((CGit::ms_bCygwinGit || CGit::ms_bMsys2Git) && out.Find(L"msysgit") > 0 && out.Find(L"windows") > 0)
 			{
-				if (CMessageBox::Show(hwnd, L"Found \"msysgit\" or \"windows\" in versionstring of git.exe, however, you have git.exe quirks enabled. These hacks must be disabled for proper operation with Git for Windows!\nYou can find more information in the help file for the keyword \"cygwin git\" or \"msys2 git\".", L"TortoiseGit", 1, IDI_INFORMATION, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)), CString(MAKEINTRESOURCE(IDS_MSGBOX_HELP))) == 2)
+				if (CMessageBox::Show(hwnd, IDS_ERR_GITUNNEEDEDHACKS, IDS_APPNAME, 1, IDI_INFORMATION, IDS_MSGBOX_OK, IDS_MSGBOX_HELP) == 2)
 					callHelp(IDD_SETTINGSMAIN);
 				if (needWorkarounds)
 					*needWorkarounds = true;
@@ -199,7 +210,12 @@ protected:
 		}
 		else
 		{
-			if (CMessageBox::Show(hwnd, L"Invalid git.exe path.\nCheck help file for \"Git.exe Path\".", L"TortoiseGit", 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)), CString(MAKEINTRESOURCE(IDS_MSGBOX_HELP))) == 2)
+			CString tmp;
+			tmp.LoadString(IDS_PROC_NOMSYSGIT);
+			tmp.AppendChar(L'\n');
+			tmp.AppendChar(L'\n');
+			tmp.Append(checkhelpHint);
+			if (CMessageBox::Show(hwnd, tmp, L"TortoiseGit", 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)), CString(MAKEINTRESOURCE(IDS_MSGBOX_HELP))) == 2)
 				callHelp(IDD_SETTINGSMAIN);
 			return false;
 		}
