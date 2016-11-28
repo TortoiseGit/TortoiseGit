@@ -37,7 +37,7 @@ public:
 	* this method can reduce the size of those controls again to only
 	* fit the text.
 	*/
-	RECT AdjustControlSize(UINT nID)
+	RECT AdjustControlSize(UINT nID, bool ischeck = true)
 	{
 		CWnd* pwndDlgItem = m_ctrl->GetDlgItem(nID);
 		if (!pwndDlgItem)
@@ -68,7 +68,7 @@ public:
 					// the value of 3 pixels added here is necessary in case certain visual styles have
 					// been disabled. Without this, the width is calculated too short.
 					const int checkWidth = GetSystemMetrics(SM_CXMENUCHECK) + 2 * GetSystemMetrics(SM_CXEDGE) + 3;
-					controlrectorig.right = controlrectorig.left + (controlrect.right - controlrect.left) + checkWidth;
+					controlrectorig.right = controlrectorig.left + (controlrect.right - controlrect.left) + (ischeck ? checkWidth : 0);
 					pwndDlgItem->MoveWindow(&controlrectorig);
 				}
 			}

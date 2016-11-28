@@ -953,6 +953,9 @@
     <ClCompile Include="Commands\FirstStartCommand.cpp">
       <Filter>Commands\FirstStart</Filter>
     </ClCompile>
+    <ClCompile Include="FirstStartWizardGit.cpp">
+      <Filter>Commands\FirstStart</Filter>
+    </ClCompile>
     <ClCompile Include="FirstStartWizardUser.cpp">
       <Filter>Commands\FirstStart</Filter>
     </ClCompile>
@@ -1783,8 +1786,14 @@
     <ClInclude Include="Commands\FirstStartCommand.h">
       <Filter>Commands\FirstStart</Filter>
     </ClInclude>
+    <ClInclude Include="FirstStartWizardGit.h">
+      <Filter>Commands\FirstStart</Filter>
+    </ClInclude>
     <ClInclude Include="FirstStartWizardUser.h">
       <Filter>Commands\FirstStart</Filter>
+    </ClInclude>
+    <ClInclude Include="ConfigureGitExe.h">
+      <Filter>Commands\setting</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

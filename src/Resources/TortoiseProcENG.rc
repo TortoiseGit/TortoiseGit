@@ -2164,6 +2164,24 @@ BEGIN
     LTEXT           "These settings will be stored to your global git configuration (%HOME%/.gitconfig) and will be used for all your git repositories as a default.",IDC_STATIC,17,81,289,30
 END
 
+IDD_FIRSTSTARTWIZARD_GIT DIALOGEX 0, 0, 322, 191
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "First Start Wizard - TortoiseGit"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    LTEXT           "TortoiseGit requires a git.exe for its operations. TortoiseGit tries to automatically detect a working git.exe, but that doesn't work please specify the path!",IDC_STATIC,17,7,289,32
+    LTEXT           "&Git.exe Path:",IDC_STATIC,18,50,58,8
+    EDITTEXT        IDC_MSYSGIT_PATH,80,47,202,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_MSYSGIT_BROWSE,287,47,19,14
+    LTEXT           "&Extra PATH:",IDC_STATIC,17,73,58,8
+    EDITTEXT        IDC_MSYSGIT_EXTERN_PATH,80,70,202,14,ES_AUTOHSCROLL
+    LTEXT           "",IDC_MSYSGIT_VER,17,94,141,8
+    PUSHBUTTON      "C&heck now",IDC_MSYSGIT_CHECK,210,91,72,14
+    LTEXT           "Recommended: Git for Windows",IDC_STATIC,17,110,289,9
+    LTEXT           "",IDC_LINK,17,121,289,10
+END
+
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // DESIGNINFO
@@ -3087,6 +3105,19 @@ BEGIN
         RIGHTMARGIN, 315
         VERTGUIDE, 17
         VERTGUIDE, 28
+        VERTGUIDE, 306
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 184
+        HORZGUIDE, 176
+    END
+
+    IDD_FIRSTSTARTWIZARD_GIT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 315
+        VERTGUIDE, 17
+        VERTGUIDE, 80
+        VERTGUIDE, 282
         VERTGUIDE, 306
         TOPMARGIN, 7
         BOTTOMMARGIN, 184
@@ -4798,6 +4829,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_FIRSTSTART_STARTTITLE "Welcome to TortoiseGit!"
+    IDS_FIRSTSTART_GITTITLE "Configure git.exe"
     IDS_FIRSTSTART_USERTITLE "Configure user information"
 END
 

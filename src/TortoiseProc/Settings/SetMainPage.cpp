@@ -28,7 +28,6 @@
 #include "Git.h"
 #include "MessageBox.h"
 #include "GitForWindows.h"
-#include "BrowseFolder.h"
 #include "Libraries.h"
 
 IMPLEMENT_DYNAMIC(CSetMainPage, ISettingsPropPage)
@@ -157,58 +156,11 @@ void CSetMainPage::OnModified()
 	SetModified();
 }
 
-static void PerformCommonGitPathCleanup(CString &path)
-{
-	path.Trim(L"\"'");
-
-	if (path.Find(L"%") >= 0)
-	{
-		int neededSize = ExpandEnvironmentStrings(path, nullptr, 0);
-		CString origPath(path);
-		ExpandEnvironmentStrings(origPath, path.GetBufferSetLength(neededSize), neededSize);
-		path.ReleaseBuffer();
-	}
-
-	path.Replace(L'/', L'\\');
-	path.Replace(L"\\\\", L"\\");
-
-	if (CStringUtils::EndsWith(path, L"git.exe"))
-		path.Truncate(path.GetLength() - 7);
-
-	path.TrimRight(L'\\');
-
-	// prefer git.exe in cmd-directory for Git for Windows based on msys2
-	if (path.GetLength() > 12 && (CStringUtils::EndsWith(path, L"\\mingw32\\bin") || CStringUtils::EndsWith(path, L"\\mingw64\\bin")) && PathFileExists(path.Left(path.GetLength() - 12) + L"\\cmd\\git.exe"))
-		path = path.Left(path.GetLength() - 12) + L"\\cmd";
-
-	// prefer git.exe in bin-directory, see https://github.com/msysgit/msysgit/issues/103
-	if (path.GetLength() > 5 && CStringUtils::EndsWith(path, L"\\cmd") && PathFileExists(path.Left(path.GetLength() - 4) + L"\\bin\\git.exe"))
-		path = path.Left(path.GetLength() - 4) + L"\\bin";
-}
-
 void CSetMainPage::OnMsysGitPathModify()
 {
 	this->UpdateData();
-	CString str=this->m_sMsysGitPath;
-	if(!str.IsEmpty())
-	{
-		PerformCommonGitPathCleanup(str);
-
-		if (CStringUtils::EndsWith(str, L"bin"))
-		{
-			str.Truncate(str.GetLength() - 3);
-			str += L"mingw\\bin";
-			if(::PathFileExists(str))
-			{
-				str += L';';
-				if(this->m_sMsysGitExtranPath.Find(str)<0)
-				{
-					m_sMsysGitExtranPath = str + m_sMsysGitExtranPath;
-					this->UpdateData(FALSE);
-				}
-			}
-		}
-	}
+	if (GuessExtraPath(m_sMsysGitPath, m_sMsysGitExtranPath))
+		UpdateData(FALSE);
 	SetModified();
 }
 
@@ -230,18 +182,11 @@ BOOL CSetMainPage::OnApply()
 	Store(m_bCheckNewer, m_regCheckNewer);
 
 	// only complete if the msysgit directory is ok
-	g_Git.m_bInitialized = FALSE;
-	if (g_Git.CheckMsysGitDir(FALSE))
-	{
-		SetModified(FALSE);
-		return ISettingsPropPage::OnApply();
-	}
-	else
-	{
-		if (CMessageBox::Show(GetSafeHwnd(), L"Invalid git.exe path.\nCheck help file for \"Git.exe Path\".", L"TortoiseGit", 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)), CString(MAKEINTRESOURCE(IDS_MSGBOX_HELP))) == 2)
-			OnHelp();
+	if (!CheckGitExe(GetSafeHwnd(), m_sMsysGitPath, m_sMsysGitExtranPath, IDC_MSYSGIT_VER, [&](UINT helpid) { HtmlHelp(0x20000 + helpid); }))
 		return 0;
-	}
+
+	SetModified(FALSE);
+	return ISettingsPropPage::OnApply();
 }
 
 void CSetMainPage::OnBnClickedChecknewerbutton()
@@ -251,64 +196,22 @@ void CSetMainPage::OnBnClickedChecknewerbutton()
 
 void CSetMainPage::OnBrowseDir()
 {
-	CBrowseFolder browseFolder;
-	browseFolder.m_style = BIF_EDITBOX | BIF_NEWDIALOGSTYLE | BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
-	CString dir;
-	this->UpdateData(TRUE);
-	dir=this->m_sMsysGitPath;
-	if (browseFolder.Show(GetSafeHwnd(), dir) == CBrowseFolder::OK)
-	{
-		m_sMsysGitPath=dir;
-		PerformCommonGitPathCleanup(m_sMsysGitPath);
-		this->UpdateData(FALSE);
-		OnMsysGitPathModify();
-	}
+	UpdateData(TRUE);
+	
+	if (!SelectFolder(GetSafeHwnd(), m_sMsysGitPath, m_sMsysGitExtranPath))
+		return;
+	
+	UpdateData(FALSE);
 	SetModified(TRUE);
 }
 
 void CSetMainPage::OnCheck()
 {
-	GetDlgItem(IDC_MSYSGIT_VER)->SetWindowText(L"");
+	UpdateData(TRUE);
 
-	this->UpdateData(TRUE);
+	CheckGitExe(GetSafeHwnd(), m_sMsysGitPath, m_sMsysGitExtranPath, IDC_MSYSGIT_VER, [&](UINT helpid) { HtmlHelp(0x20000 + helpid); });
 
-	PerformCommonGitPathCleanup(m_sMsysGitPath);
 	UpdateData(FALSE);
-
-	OnMsysGitPathModify();
-
-	CString oldpath = m_regMsysGitPath;
-	CString oldextranpath = this->m_regMsysGitExtranPath;
-
-	Store(m_sMsysGitPath, m_regMsysGitPath);
-	Store(m_sMsysGitExtranPath, m_regMsysGitExtranPath);
-
-	g_Git.m_bInitialized = false;
-
-	if (g_Git.CheckMsysGitDir(FALSE))
-	{
-		CString out;
-		CString cmd = L"git.exe --version";
-		int ret = g_Git.Run(cmd,&out,CP_UTF8);
-		this->GetDlgItem(IDC_MSYSGIT_VER)->SetWindowText(out);
-		if (out.IsEmpty())
-		{
-			if (ret == 0xC0000135 && CMessageBox::Show(GetSafeHwnd(), L"Could not start git.exe. A dynamic library (dll) is missing.\nCheck help file for \"Extra PATH\".", L"TortoiseGit", 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)), CString(MAKEINTRESOURCE(IDS_MSGBOX_HELP))) == 2)
-				OnHelp();
-			else if (CMessageBox::Show(GetSafeHwnd(), L"Could not get read version information from git.exe.\nCheck help file for \"Git.exe Path\".", L"TortoiseGit", 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)), CString(MAKEINTRESOURCE(IDS_MSGBOX_HELP))) == 2)
-				OnHelp();
-		}
-		else if (!(CGit::ms_bCygwinGit || CGit::ms_bMsys2Git) && out.Find(L"msysgit") == -1 && out.Find(L"windows") == -1 && CMessageBox::Show(GetSafeHwnd(), L"Could not find \"msysgit\" or \"windows\" in versionstring of git.exe.\nIf you are using git of the cygwin or msys2 environment please read the help file for the keyword \"cygwin git\" or \"msys2 git\".", L"TortoiseGit", 1, IDI_INFORMATION, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)), CString(MAKEINTRESOURCE(IDS_MSGBOX_HELP))) == 2)
-			OnHelp();
-	}
-	else
-	{
-		if (CMessageBox::Show(GetSafeHwnd(), L"Invalid git.exe path.\nCheck help file for \"Git.exe Path\".", L"TortoiseGit", 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)), CString(MAKEINTRESOURCE(IDS_MSGBOX_HELP))) == 2)
-			OnHelp();
-	}
-
-	Store(oldpath, m_regMsysGitPath);
-	Store(oldextranpath, m_regMsysGitExtranPath);
 }
 
 void CSetMainPage::OnBnClickedButtonShowEnv()

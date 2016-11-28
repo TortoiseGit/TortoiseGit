@@ -130,6 +130,7 @@
     <ClCompile Include="FindBar.cpp" />
     <ClCompile Include="FirstStartWizard.cpp" />
     <ClCompile Include="FirstStartWizardBasePage.cpp" />
+    <ClCompile Include="FirstStartWizardGit.cpp" />
     <ClCompile Include="FirstStartWizardStart.cpp" />
     <ClCompile Include="FirstStartWizardUser.cpp" />
     <ClCompile Include="GravatarPictureBox.cpp" />
@@ -408,9 +409,11 @@
     <ClInclude Include="Commands\DaemonCommand.h" />
     <ClInclude Include="Commands\FirstStartCommand.h" />
     <ClInclude Include="CommitIsOnRefsDlg.h" />
+    <ClInclude Include="ConfigureGitExe.h" />
     <ClInclude Include="FindBar.h" />
     <ClInclude Include="FirstStartWizard.h" />
     <ClInclude Include="FirstStartWizardBasePage.h" />
+    <ClInclude Include="FirstStartWizardGit.h" />
     <ClInclude Include="FirstStartWizardStart.h" />
     <ClInclude Include="FirstStartWizardUser.h" />
     <ClInclude Include="GravatarPictureBox.h" />

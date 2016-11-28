@@ -29,6 +29,7 @@ CFirstStartWizard::CFirstStartWizard(UINT nIDCaption, CWnd* pParentWnd, UINT iSe
 	SetWizardMode();
 	SetActivePage(iSelectPage);
 	AddPage(&start);
+	AddPage(&git);
 	AddPage(&user);
 
 	m_psh.dwFlags |= PSH_WIZARD97 | PSH_HEADER;

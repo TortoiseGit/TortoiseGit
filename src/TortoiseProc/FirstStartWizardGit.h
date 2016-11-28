@@ -17,27 +17,40 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
-#include "StandAloneDlg.h"
-#include "FirstStartWizardStart.h"
-#include "FirstStartWizardGit.h"
-#include "FirstStartWizardUser.h"
+#include "FirstStartWizardBasePage.h"
+#include "Tooltip.h"
+#include "ConfigureGitExe.h"
+#include "HyperLink.h"
 
-class CFirstStartWizard : public CStandAloneDialogTmpl<CPropertySheetEx>
+/**
+ * Git page in the first start wizard
+ */
+class CFirstStartWizardGit : public CFirstStartWizardBasePage, public CConfigureGitExe
 {
-	DECLARE_DYNAMIC(CFirstStartWizard)
+	DECLARE_DYNAMIC(CFirstStartWizardGit)
 
 public:
-	CFirstStartWizard(UINT nIDCaption, CWnd* pParentWnd = nullptr, UINT iSelectPage = 0);
-	virtual ~CFirstStartWizard();
+	CFirstStartWizardGit();
+	virtual ~CFirstStartWizardGit();
+
+	enum { IDD = IDD_FIRSTSTARTWIZARD_GIT };
 
 protected:
+	virtual void	DoDataExchange(CDataExchange* pDX);
+	virtual LRESULT	OnWizardNext();
+	virtual BOOL	OnInitDialog();
+	virtual BOOL	OnSetActive();
+	virtual BOOL	PreTranslateMessage(MSG* pMsg);
+
 	DECLARE_MESSAGE_MAP()
-	virtual BOOL OnInitDialog();
 
-	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
-	afx_msg void OnCancel();
+	afx_msg void	OnMsysGitPathModify();
+	afx_msg void	OnBrowseDir();
+	afx_msg void	OnCheck();
 
-	CFirstStartWizardStart				start;
-	CFirstStartWizardGit				git;
-	CFirstStartWizardUser				user;
+	CString			m_sMsysGitPath;
+	CString			m_sMsysGitExtranPath;
+
+	CToolTips		m_tooltips;
+	CHyperLink		m_link;
 };

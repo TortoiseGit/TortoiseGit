@@ -658,7 +658,7 @@ msgstr ""
 msgid "&External"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_SETTINGSMAIN: Control id 65535)
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 65535, Dialog IDD_SETTINGSMAIN: Control id 65535)
 msgid "&Extra PATH:"
 msgstr ""
 
@@ -714,7 +714,7 @@ msgstr ""
 msgid "&Git Style Commit (--rmdir)"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_SETTINGSMAIN: Control id 65535)
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 65535, Dialog IDD_SETTINGSMAIN: Control id 65535)
 msgid "&Git.exe Path:"
 msgstr ""
 
@@ -1459,7 +1459,7 @@ msgstr ""
 msgid "-------------------------------------------------------------------------------------------"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_BISECTSTART: Control id 1383, Dialog IDD_BISECTSTART: Control id 1672, Dialog IDD_CLONE: Control id 1384, Dialog IDD_EXPORT: Control id 1036, Dialog IDD_EXPORT: Control id 1382, Dialog IDD_EXPORT: Control id 1483, Dialog IDD_FORMAT_PATCH: Control id 1383, Dialog IDD_FORMAT_PATCH: Control id 1384, Dialog IDD_FORMAT_PATCH: Control id 1541, Dialog IDD_FORMAT_PATCH: Control id 1542, Dialog IDD_GITSWITCH: Control id 1382, Dialog IDD_GITSWITCH: Control id 1483, Dialog IDD_MERGE: Control id 1382, Dialog IDD_MERGE: Control id 1483, Dialog IDD_NEW_BRANCH_TAG: Control id 1382, Dialog IDD_NEW_BRANCH_TAG: Control id 1483, Dialog IDD_OPEN: Control id 1002, Dialog IDD_OPEN: Control id 1003, Dialog IDD_PULLFETCH: Control id 1483, Dialog IDD_PUSH: Control id 1484, Dialog IDD_REBASE: Control id 1483, Dialog IDD_REQUESTPULL: Control id 1382, Dialog IDD_RESET: Control id 1382, Dialog IDD_RESET: Control id 1483, Dialog IDD_SETTINGSBUGTRAQADV: Control id 1474, Dialog IDD_SETTINGSDIALOGS3: Control id 1778, Dialog IDD_SETTINGSHOOKCONFIG: Control id 1324, Dialog IDD_SETTINGSHOOKCONFIG: Control id 1333, Dialog IDD_SETTINGSMAIN: Control id 1551, Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 1664, Dialog IDD_SETTINGSPROGSDIFF: Control id 1021, Dialog IDD_SETTINGSPROGSDIFF: Control id 1089, Dialog IDD_SETTINGSPROGSMERGE: Control id 1022, Dialog IDD_SETTINREMOTE: Control id 1483, Dialog IDD_SUBMODULE_ADD: Control id 1384, Dialog IDD_SUBMODULE_ADD: Control id 1583, Dialog IDD_SUBMODULE_ADD: Control id 1584, Dialog IDD_SYNC: Control id 1382, Dialog IDD_SYNC: Control id 1383, Dialog IDD_TOOLASSOC: Control id 1104)
+#. Resource IDs: (Dialog IDD_BISECTSTART: Control id 1383, Dialog IDD_BISECTSTART: Control id 1672, Dialog IDD_CLONE: Control id 1384, Dialog IDD_EXPORT: Control id 1036, Dialog IDD_EXPORT: Control id 1382, Dialog IDD_EXPORT: Control id 1483, Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 1551, Dialog IDD_FORMAT_PATCH: Control id 1383, Dialog IDD_FORMAT_PATCH: Control id 1384, Dialog IDD_FORMAT_PATCH: Control id 1541, Dialog IDD_FORMAT_PATCH: Control id 1542, Dialog IDD_GITSWITCH: Control id 1382, Dialog IDD_GITSWITCH: Control id 1483, Dialog IDD_MERGE: Control id 1382, Dialog IDD_MERGE: Control id 1483, Dialog IDD_NEW_BRANCH_TAG: Control id 1382, Dialog IDD_NEW_BRANCH_TAG: Control id 1483, Dialog IDD_OPEN: Control id 1002, Dialog IDD_OPEN: Control id 1003, Dialog IDD_PULLFETCH: Control id 1483, Dialog IDD_PUSH: Control id 1484, Dialog IDD_REBASE: Control id 1483, Dialog IDD_REQUESTPULL: Control id 1382, Dialog IDD_RESET: Control id 1382, Dialog IDD_RESET: Control id 1483, Dialog IDD_SETTINGSBUGTRAQADV: Control id 1474, Dialog IDD_SETTINGSDIALOGS3: Control id 1778, Dialog IDD_SETTINGSHOOKCONFIG: Control id 1324, Dialog IDD_SETTINGSHOOKCONFIG: Control id 1333, Dialog IDD_SETTINGSMAIN: Control id 1551, Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 1664, Dialog IDD_SETTINGSPROGSDIFF: Control id 1021, Dialog IDD_SETTINGSPROGSDIFF: Control id 1089, Dialog IDD_SETTINGSPROGSMERGE: Control id 1022, Dialog IDD_SETTINREMOTE: Control id 1483, Dialog IDD_SUBMODULE_ADD: Control id 1384, Dialog IDD_SUBMODULE_ADD: Control id 1583, Dialog IDD_SUBMODULE_ADD: Control id 1584, Dialog IDD_SYNC: Control id 1382, Dialog IDD_SYNC: Control id 1383, Dialog IDD_TOOLASSOC: Control id 1104)
 msgid "..."
 msgstr ""
 
@@ -2350,7 +2350,7 @@ msgstr ""
 msgid "Button3"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_SETTINGSMAIN: Control id 1215, Dialog IDD_SETTINGSMAIN: Control id 1216)
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 1216, Dialog IDD_SETTINGSMAIN: Control id 1215, Dialog IDD_SETTINGSMAIN: Control id 1216)
 msgid "C&heck now"
 msgstr ""
 
@@ -3013,6 +3013,10 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 65535)
 msgid "Configure alternative editor. Preferably one which can handle *nix line endings."
+msgstr ""
+
+#. Resource IDs: (IDS_FIRSTSTART_GITTITLE)
+msgid "Configure git.exe"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSDIFF: Control id 65535)
@@ -7578,6 +7582,10 @@ msgstr ""
 msgid "Recently modified lines"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 65535)
+msgid "Recommended: Git for Windows"
+msgstr ""
+
 #. Resource IDs: (IDS_MERGE_RECORDONLY)
 msgid "Record Only"
 msgstr ""
@@ -9876,6 +9884,10 @@ msgstr ""
 
 #. Resource IDs: (IDS_FIRSTSTART_HINT1)
 msgid "TortoiseGit is designed as a Shell Extension. Therefore the main interaction with TortoiseGit will be using the context menu of the Windows shell such as the Windows Explorer."
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 65535)
+msgid "TortoiseGit requires a git.exe for its operations. TortoiseGit tries to automatically detect a working git.exe, but that doesn't work please specify the path!"
 msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_OVERLAYINFO2)

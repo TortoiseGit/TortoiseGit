@@ -2,6 +2,7 @@
 <!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 <sect2 id="tgit-dug-settings-main">
 	<?dbhh topicname="HIDD_SETTINGSMAIN"?>
+	<?dbhh topicname="HIDD_FIRSTSTARTWIZARD_GIT"?>
 	<title>General Settings</title>
 	<indexterm>
 		<primary>git.exe path</primary>
