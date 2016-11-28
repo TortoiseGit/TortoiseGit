@@ -9929,7 +9929,7 @@ msgid "TortoiseGit is designed as a Shell Extension. Therefore the main interact
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 65535)
-msgid "TortoiseGit requires a git.exe for its operations. TortoiseGit tries to automatically detect a working git.exe, but that doesn't work please specify the path!"
+msgid "TortoiseGit requires a git.exe for its operations. TortoiseGit tries to automatically detect a working git.exe, but if that doesn't work or you want to use a different one please specify the path manually!"
 msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_OVERLAYINFO2)

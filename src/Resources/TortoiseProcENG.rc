@@ -2170,7 +2170,7 @@ STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "First Start Wizard - TortoiseGit"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
-    LTEXT           "TortoiseGit requires a git.exe for its operations. TortoiseGit tries to automatically detect a working git.exe, but that doesn't work please specify the path!",IDC_STATIC,17,7,289,32
+    LTEXT           "TortoiseGit requires a git.exe for its operations. TortoiseGit tries to automatically detect a working git.exe, but if that doesn't work or you want to use a different one please specify the path manually!",IDC_STATIC,17,7,289,32
     LTEXT           "&Git.exe Path:",IDC_STATIC,18,50,58,8
     EDITTEXT        IDC_MSYSGIT_PATH,80,47,202,14,ES_AUTOHSCROLL
     PUSHBUTTON      "...",IDC_MSYSGIT_BROWSE,287,47,19,14
