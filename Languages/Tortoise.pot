@@ -590,6 +590,10 @@ msgstr ""
 msgid "&Don't show this message again"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_USER: Control id 1839)
+msgid "&Don't store these settings now."
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1384)
 msgid "&Down"
 msgstr ""
@@ -630,7 +634,7 @@ msgstr ""
 msgid "&Email Patch"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 65535)
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_USER: Control id 65535, Dialog IDD_SETTINGIT_CONFIG: Control id 65535)
 msgid "&Email:"
 msgstr ""
 
@@ -916,7 +920,7 @@ msgstr ""
 msgid "&Name"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 65535)
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_USER: Control id 65535, Dialog IDD_SETTINGIT_CONFIG: Control id 65535)
 msgid "&Name:"
 msgstr ""
 
@@ -3019,6 +3023,10 @@ msgstr ""
 msgid "Configure the program used to resolve conflicted files."
 msgstr ""
 
+#. Resource IDs: (IDS_FIRSTSTART_USERTITLE)
+msgid "Configure user information"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSDIFF: Control id 65535)
 msgid "Configure viewer program for GNU diff files (patch files)"
 msgstr ""
@@ -4735,6 +4743,10 @@ msgstr ""
 msgid "First Parent Only"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 4598, Dialog IDD_FIRSTSTARTWIZARD_START: Control id 276, Dialog IDD_FIRSTSTARTWIZARD_USER: Control id 4597)
+msgid "First Start Wizard - TortoiseGit"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_BISECTSTART: Control id 1617)
 msgid "First known &bad:"
 msgstr ""
@@ -5053,6 +5065,10 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROC_REPOCREATEERR)
 msgid "Git reported an error while creating a repository!\n"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_USER: Control id 65535)
+msgid "Git requires that you set up a user name and email address. Both are used as meta data for your commits (not for authentication)."
 msgstr ""
 
 #. Resource IDs: (32787)
@@ -7161,6 +7177,10 @@ msgstr ""
 
 #. Resource IDs: (IDS_ERR_NOHOOKPATHSPECIFIED)
 msgid "Please enter a path where to apply the hook script to. Use \"*\" for all paths."
+msgstr ""
+
+#. Resource IDs: (IDS_FIRSTSTART_HINT3)
+msgid "Please see the manual for general hints. E.g. in most dialogs there are some shared shortcuts such as F5 for refresh and oftentimes there are powerfull context menus."
 msgstr ""
 
 #. Resource IDs: (IDS_ERR_NOHOOKTYPESPECIFIED)
@@ -9696,6 +9716,10 @@ msgstr ""
 msgid "These are more recently saved than the currently open documents and contain changes that were made before the application closed."
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_USER: Control id 65535)
+msgid "These settings will be stored to your global git configuration (%HOME%/.gitconfig) and will be used for all your git repositories as a default."
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGDELETEREMOTEBRANCHES)
 msgid "This action will remove the branches on the remote."
 msgstr ""
@@ -9718,6 +9742,10 @@ msgstr ""
 
 #. Resource IDs: (IDS_ERR_NOVALIDPATH)
 msgid "This is not a valid path!\nA valid path must not contain '<<>|\"?*:' or one of the following device names:\ncom1-com9, lpt1-lpt9, prn, aux, con, nul, clock$"
+msgstr ""
+
+#. Resource IDs: (IDS_FIRSTSTART_HINT2)
+msgid "This is the First Start Wizard which will help you configuring the basic settings. TortoiseGit is highly configurable, so it is advisable that you have a look into its settings dialog. The settings dialog is reachable using the start menu or the context menu of the Windows Explorer: TortoiseGit -> Settings."
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_LOG_ONLYONCE)
@@ -9844,6 +9872,10 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROC_RTFM)
 msgid "TortoiseGit is a shell extension.\nThat means it is integrated into the Windows explorer.\nTo use TortoiseGit please open the explorer and right-click on any folder you like\nto bring up the context menu where you will find all TortoiseGit commands.\nAnd read the manual!"
+msgstr ""
+
+#. Resource IDs: (IDS_FIRSTSTART_HINT1)
+msgid "TortoiseGit is designed as a Shell Extension. Therefore the main interaction with TortoiseGit will be using the context menu of the Windows shell such as the Windows Explorer."
 msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_OVERLAYINFO2)
@@ -10490,6 +10522,14 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROGRS_CONFLICTSOCCURED_WARNING)
 msgid "Warning!"
+msgstr ""
+
+#. Resource IDs: (IDS_FIRSTSTART_HINT4)
+msgid "We hope you enjoy the usage of TortoiseGit! In case of questions or problems, please consult our manual or go to https://tortoisegit.org/support/"
+msgstr ""
+
+#. Resource IDs: (IDS_FIRSTSTART_STARTTITLE)
+msgid "Welcome to TortoiseGit!"
 msgstr ""
 
 #. Resource IDs: (65535 - PopupMenu)

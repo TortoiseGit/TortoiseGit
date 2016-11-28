@@ -93,6 +93,7 @@
 #define IDI_MERGE_BKG                   273
 #define IDI_RENAME_BKG                  274
 #define IDI_SWITCH_BKG                  275
+#define IDD_FIRSTSTARTWIZARD_START      276
 #define IDD_SETTINGSBUGTRAQ             283
 #define IDI_BUGTRAQ                     284
 #define IDD_SETTINGSBUGTRAQADV          284
@@ -1289,11 +1290,17 @@
 #define IDS_EXTRAPATH_TT                1611
 #define IDC_BUTTON_PUSH                 1612
 #define IDC_SAMPLELABEL                 1612
+#define IDS_FIRSTSTART_HINT1            1612
 #define IDC_BUTTON_APPLY                1613
+#define IDS_FIRSTSTART_HINT2            1613
 #define IDC_BUTTON_EMAIL                1614
+#define IDS_FIRSTSTART_HINT3            1614
+#define IDS_FIRSTSTART_HINT4            1615
 #define IDC_STATIC_LOCAL_BRANCH         1616
+#define IDS_FIRSTSTART_STARTTITLE       1616
 #define IDC_STATIC_REMOTE_BRANCH        1617
 #define IDC_STATIC_REMOTE_URL           1618
+#define IDS_FIRSTSTART_USERTITLE        1618
 #define IDC_CHECK_PUTTY_KEY             1619
 #define IDC_STATIC_STATUS               1621
 #define IDC_PROGRESS_SYNC               1622
@@ -1542,6 +1549,8 @@
 #define IDC_LABEL_FILTER                1834
 #define IDC_SELREF                      1835
 #define IDC_BROWSE_REFS_BRANCHFILTER    1838
+#define IDC_DONTSAVE                    1839
+#define IDC_FIRSTSTART_HINT             1840
 #define IDS_LOG_FILTER_BY               1850
 #define IDS_LOG_FILTER_PATHS            1851
 #define IDS_LOG_FILTER_AUTHORS          1852
@@ -1817,6 +1826,7 @@
 #define IDD_CERTCHECK                   4594
 #define IDD_RESOLVESUBMODULECONFLICT    4595
 #define IDD_COMMITISONREFS              4596
+#define IDD_FIRSTSTARTWIZARD_USER       4597
 #define IDC_COMBOBOXEX_LOCAL_BRANCH     5000
 #define IDC_COMBOBOXEX_REMOTE_BRANCH    5001
 #define IDC_COMBOBOXEX_BAD              5001
@@ -1993,7 +2003,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        359
 #define _APS_NEXT_COMMAND_VALUE         32874
-#define _APS_NEXT_CONTROL_VALUE         1839
+#define _APS_NEXT_CONTROL_VALUE         1841
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

@@ -143,6 +143,12 @@ Don't touch these lines:
 							</entry>
 						</row>
 						<row>
+							<entry condition="pot">:firststart</entry>
+							<entry>
+								Shows the first start wizard.
+							</entry>
+						</row>
+						<row>
 							<entry condition="pot">:log</entry>
 							<entry>
 								Opens the <link linkend="tgit-dug-showlog">log dialog</link>. The <option>/path</option> specifies the

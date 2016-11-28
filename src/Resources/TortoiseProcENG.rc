@@ -1360,6 +1360,14 @@ BEGIN
     PUSHBUTTON      "Help",IDHELP,271,239,50,14
 END
 
+IDD_FIRSTSTARTWIZARD_START DIALOGEX 0, 0, 322, 191
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "First Start Wizard - TortoiseGit"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    LTEXT           "",IDC_FIRSTSTART_HINT,17,7,289,135,SS_NOPREFIX
+END
+
 IDD_SETTINGSCOLORS_1 DIALOGEX 0, 0, 300, 217
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "General::Colors 1"
@@ -2142,6 +2150,19 @@ BEGIN
     EDITTEXT        IDC_STATIC_SUBJECT,14,25,214,12,ES_MULTILINE | ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
 END
 
+IDD_FIRSTSTARTWIZARD_USER DIALOGEX 0, 0, 322, 191
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "First Start Wizard - TortoiseGit"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    LTEXT           "&Name:",IDC_STATIC,17,42,47,8
+    EDITTEXT        IDC_GIT_USERNAME,71,40,150,12,ES_AUTOHSCROLL
+    LTEXT           "&Email:",IDC_STATIC,17,60,50,8
+    EDITTEXT        IDC_GIT_USEREMAIL,71,57,150,12,ES_AUTOHSCROLL
+    CONTROL         "&Don't store these settings now.",IDC_DONTSAVE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,118,289,11
+    LTEXT           "Git requires that you set up a user name and email address. Both are used as meta data for your commits (not for authentication).",IDC_STATIC,17,7,289,25
+    LTEXT           "These settings will be stored to your global git configuration (%HOME%/.gitconfig) and will be used for all your git repositories as a default.",IDC_STATIC,17,81,289,30
+END
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -2701,6 +2722,17 @@ BEGIN
         BOTTOMMARGIN, 253
     END
 
+    IDD_FIRSTSTARTWIZARD_START, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 315
+        VERTGUIDE, 17
+        VERTGUIDE, 306
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 184
+        HORZGUIDE, 176
+    END
+
     IDD_SETTINGSCOLORS_1, DIALOG
     BEGIN
         LEFTMARGIN, 7
@@ -3047,6 +3079,18 @@ BEGIN
         VERTGUIDE, 193
         TOPMARGIN, 7
         BOTTOMMARGIN, 187
+    END
+
+    IDD_FIRSTSTARTWIZARD_USER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 315
+        VERTGUIDE, 17
+        VERTGUIDE, 28
+        VERTGUIDE, 306
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 184
+        HORZGUIDE, 176
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -3612,6 +3656,10 @@ BEGIN
     IDS_BLAME_ONLYFIRSTPARENT_TT 
                             "This handles merge commits as squashed commits."
     IDS_EXTRAPATH_TT        "If your git installation needs an extra entry in the PATH environment variable, you can enter it here and it will get appended to %PATH% automatically when TortoiseGit starts."
+    IDS_FIRSTSTART_HINT1    "TortoiseGit is designed as a Shell Extension. Therefore the main interaction with TortoiseGit will be using the context menu of the Windows shell such as the Windows Explorer."
+    IDS_FIRSTSTART_HINT2    "This is the First Start Wizard which will help you configuring the basic settings. TortoiseGit is highly configurable, so it is advisable that you have a look into its settings dialog. The settings dialog is reachable using the start menu or the context menu of the Windows Explorer: TortoiseGit -> Settings."
+    IDS_FIRSTSTART_HINT3    "Please see the manual for general hints. E.g. in most dialogs there are some shared shortcuts such as F5 for refresh and oftentimes there are powerfull context menus."
+    IDS_FIRSTSTART_HINT4    "We hope you enjoy the usage of TortoiseGit! In case of questions or problems, please consult our manual or go to https://tortoisegit.org/support/"
 END
 
 STRINGTABLE
@@ -4745,6 +4793,12 @@ BEGIN
                             "For the current branch ""%s"" no tracked branch is configured.\nDo you want to set the selected branch ""%s"" as tracked branch?\nThis will automatically select it for push and pull in the future."
     IDS_PROC_DIFF_BASE      "Base"
     IDS_REMOVESTALEBUTTON   "Remove stale lock file"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_FIRSTSTART_STARTTITLE "Welcome to TortoiseGit!"
+    IDS_FIRSTSTART_USERTITLE "Configure user information"
 END
 
 #endif    // English (U.S.) resources

@@ -125,8 +125,13 @@
     <ClCompile Include="ColumnManager.cpp" />
     <ClCompile Include="Commands\CommitIsOnRefsCommand.cpp" />
     <ClCompile Include="Commands\DaemonCommand.cpp" />
+    <ClCompile Include="Commands\FirstStartCommand.cpp" />
     <ClCompile Include="CommitIsOnRefsDlg.cpp" />
     <ClCompile Include="FindBar.cpp" />
+    <ClCompile Include="FirstStartWizard.cpp" />
+    <ClCompile Include="FirstStartWizardBasePage.cpp" />
+    <ClCompile Include="FirstStartWizardStart.cpp" />
+    <ClCompile Include="FirstStartWizardUser.cpp" />
     <ClCompile Include="GravatarPictureBox.cpp" />
     <ClCompile Include="MergeAbortDlg.cpp" />
     <ClCompile Include="GitRefCompareList.cpp" />
@@ -401,8 +406,13 @@
     <ClInclude Include="Commands\AutoTextTestCommand.h" />
     <ClInclude Include="Commands\CommitIsOnRefsCommand.h" />
     <ClInclude Include="Commands\DaemonCommand.h" />
+    <ClInclude Include="Commands\FirstStartCommand.h" />
     <ClInclude Include="CommitIsOnRefsDlg.h" />
     <ClInclude Include="FindBar.h" />
+    <ClInclude Include="FirstStartWizard.h" />
+    <ClInclude Include="FirstStartWizardBasePage.h" />
+    <ClInclude Include="FirstStartWizardStart.h" />
+    <ClInclude Include="FirstStartWizardUser.h" />
     <ClInclude Include="GravatarPictureBox.h" />
     <ClInclude Include="MergeAbortDlg.h" />
     <ClInclude Include="GitRefCompareList.h" />
