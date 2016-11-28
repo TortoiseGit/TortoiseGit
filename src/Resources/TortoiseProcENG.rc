@@ -2179,6 +2179,11 @@ BEGIN
     PUSHBUTTON      "C&heck now",IDC_MSYSGIT_CHECK,210,91,72,14
     LTEXT           "Recommended: Git for Windows",IDC_STATIC,17,110,289,9
     LTEXT           "",IDC_LINK,17,121,289,10
+    CONTROL         "I don't use Git for Windows and need special workarounds",IDC_WORKAROUNDS,
+                    "Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,17,136,289,11
+    CONTROL         "Enable special hack for Cygwin git",IDC_GITHACKS1,
+                    "Button",BS_AUTORADIOBUTTON | NOT WS_VISIBLE,17,150,289,11
+    CONTROL         "Enable special hack for Msys2 git",IDC_GITHACKS2,"Button",BS_AUTORADIOBUTTON | NOT WS_VISIBLE,17,164,289,11
 END
 
 

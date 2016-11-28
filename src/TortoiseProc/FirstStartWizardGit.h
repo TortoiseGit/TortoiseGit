@@ -47,9 +47,14 @@ protected:
 	afx_msg void	OnMsysGitPathModify();
 	afx_msg void	OnBrowseDir();
 	afx_msg void	OnCheck();
+	afx_msg void	OnClickedWorkarounds();
+
+	void			ShowWorkarounds(bool show = false);
+	void			SetGitHacks();
 
 	CString			m_sMsysGitPath;
 	CString			m_sMsysGitExtranPath;
+	BOOL			m_bEnableHacks;
 
 	CToolTips		m_tooltips;
 	CHyperLink		m_link;

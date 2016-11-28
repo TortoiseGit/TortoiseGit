@@ -39,6 +39,8 @@ CFirstStartWizardGit::CFirstStartWizardGit() : CFirstStartWizardBasePage(CFirstS
 
 	m_sMsysGitPath = m_regMsysGitPath;
 	m_sMsysGitExtranPath = m_regMsysGitExtranPath;
+
+	m_bEnableHacks = (CGit::ms_bCygwinGit || CGit::ms_bMsys2Git);
 }
 
 CFirstStartWizardGit::~CFirstStartWizardGit()
@@ -51,11 +53,13 @@ void CFirstStartWizardGit::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_MSYSGIT_PATH, m_sMsysGitPath);
 	DDX_Text(pDX, IDC_MSYSGIT_EXTERN_PATH, m_sMsysGitExtranPath);
 	DDX_Control(pDX, IDC_LINK, m_link);
+	DDX_Check(pDX, IDC_WORKAROUNDS, m_bEnableHacks);
 }
 
 BEGIN_MESSAGE_MAP(CFirstStartWizardGit, CFirstStartWizardBasePage)
 	ON_BN_CLICKED(IDC_MSYSGIT_BROWSE, OnBrowseDir)
 	ON_BN_CLICKED(IDC_MSYSGIT_CHECK, OnCheck)
+	ON_BN_CLICKED(IDC_WORKAROUNDS, OnClickedWorkarounds)
 END_MESSAGE_MAP()
 
 LRESULT CFirstStartWizardGit::OnWizardNext()
@@ -65,18 +69,43 @@ LRESULT CFirstStartWizardGit::OnWizardNext()
 	PerformCommonGitPathCleanup(m_sMsysGitPath);
 	UpdateData(FALSE);
 
-	if (m_sMsysGitPath.Compare(CString(m_regMsysGitPath)) || m_sMsysGitExtranPath.Compare(CString(m_regMsysGitExtranPath)))
+	SetGitHacks();
+
+	if (m_sMsysGitPath.Compare(CString(m_regMsysGitPath)) || m_sMsysGitExtranPath.Compare(CString(m_regMsysGitExtranPath)) || CGit::ms_bCygwinGit != (m_regCygwinHack == TRUE) || CGit::ms_bMsys2Git != (m_regMsys2Hack == TRUE))
 	{
 		StoreSetting(GetSafeHwnd(), m_sMsysGitPath, m_regMsysGitPath);
 		StoreSetting(GetSafeHwnd(), m_sMsysGitExtranPath, m_regMsysGitExtranPath);
+		StoreSetting(GetSafeHwnd(), CGit::ms_bCygwinGit, m_regCygwinHack);
+		StoreSetting(GetSafeHwnd(), CGit::ms_bMsys2Git, m_regMsys2Hack);
 		SendCacheCommand(TGITCACHECOMMAND_END);
 	}
 
 	// only complete if the msysgit directory is ok
-	if (!CheckGitExe(GetSafeHwnd(), m_sMsysGitPath, m_sMsysGitExtranPath, IDC_MSYSGIT_VER, [&](UINT helpid) { HtmlHelp(0x20000 + helpid); }))
+	bool needWorkarounds = (GetDlgItem(IDC_WORKAROUNDS)->IsWindowVisible() == TRUE);
+	if (!CheckGitExe(GetSafeHwnd(), m_sMsysGitPath, m_sMsysGitExtranPath, IDC_MSYSGIT_VER, [&](UINT helpid) { HtmlHelp(0x20000 + helpid); }, &needWorkarounds))
+	{
+		if (needWorkarounds)
+			ShowWorkarounds(true);
 		return -1;
+	}
 
 	return __super::OnWizardNext();
+}
+
+void CFirstStartWizardGit::ShowWorkarounds(bool show)
+{
+	if (!(CGit::ms_bCygwinGit || CGit::ms_bMsys2Git || show))
+		return;
+
+	GetDlgItem(IDC_WORKAROUNDS)->ShowWindow(SW_SHOW);
+
+	GetDlgItem(IDC_GITHACKS1)->ShowWindow(m_bEnableHacks ? SW_SHOW : SW_HIDE);
+	GetDlgItem(IDC_GITHACKS2)->ShowWindow(m_bEnableHacks ? SW_SHOW : SW_HIDE);
+
+	if (CGit::ms_bCygwinGit)
+		CheckRadioButton(IDC_GITHACKS1, IDC_GITHACKS2, IDC_GITHACKS1);
+	else if (CGit::ms_bMsys2Git)
+		CheckRadioButton(IDC_GITHACKS1, IDC_GITHACKS2, IDC_GITHACKS2);
 }
 
 BOOL CFirstStartWizardGit::OnInitDialog()
@@ -92,6 +121,12 @@ BOOL CFirstStartWizardGit::OnInitDialog()
 	m_link.SetURL(GIT_FOR_WINDOWS_URL);
 
 	AdjustControlSize(IDC_LINK, false);
+	AdjustControlSize(IDC_WORKAROUNDS);
+	AdjustControlSize(IDC_GITHACKS1);
+	AdjustControlSize(IDC_GITHACKS2);
+
+	CheckRadioButton(IDC_GITHACKS1, IDC_GITHACKS2, IDC_GITHACKS1);
+	ShowWorkarounds();
 
 	return TRUE;
 }
@@ -122,15 +157,45 @@ void CFirstStartWizardGit::OnBrowseDir()
 	UpdateData(FALSE);
 }
 
+void CFirstStartWizardGit::SetGitHacks()
+{
+	CGit::ms_bCygwinGit = false;
+	CGit::ms_bMsys2Git = false;
+	if (m_bEnableHacks)
+	{
+		int id = GetCheckedRadioButton(IDC_GITHACKS1, IDC_GITHACKS2);
+		CGit::ms_bCygwinGit = (id == IDC_GITHACKS1);
+		CGit::ms_bMsys2Git = (id == IDC_GITHACKS2);
+	}
+}
+
 void CFirstStartWizardGit::OnCheck()
 {
 	UpdateData();
+	bool oldCygwinGit = CGit::ms_bCygwinGit;
+	bool oldMsys2Git = CGit::ms_bMsys2Git;
+	SCOPE_EXIT
+	{ 
+		CGit::ms_bCygwinGit = oldCygwinGit;
+		CGit::ms_bMsys2Git = oldMsys2Git;
+	};
 
-	CheckGitExe(GetSafeHwnd(), m_sMsysGitPath, m_sMsysGitExtranPath, IDC_MSYSGIT_VER, [&](UINT helpid) { HtmlHelp(0x20000 + helpid); });
+	SetGitHacks();
+
+	bool needWorkarounds = (GetDlgItem(IDC_WORKAROUNDS)->IsWindowVisible() == TRUE);
+	CheckGitExe(GetSafeHwnd(), m_sMsysGitPath, m_sMsysGitExtranPath, IDC_MSYSGIT_VER, [&](UINT helpid) { HtmlHelp(0x20000 + helpid); }, &needWorkarounds);
+	if (needWorkarounds)
+		ShowWorkarounds(true);
 }
 
 BOOL CFirstStartWizardGit::PreTranslateMessage(MSG* pMsg)
 {
 	m_tooltips.RelayEvent(pMsg);
 	return __super::PreTranslateMessage(pMsg);
+}
+
+void CFirstStartWizardGit::OnClickedWorkarounds()
+{
+	UpdateData();
+	ShowWorkarounds(true);
 }

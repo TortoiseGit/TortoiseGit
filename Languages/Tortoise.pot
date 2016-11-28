@@ -4210,6 +4210,14 @@ msgstr ""
 msgid "Enable showing Gravatar image in Log Dialog"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 1842)
+msgid "Enable special hack for Cygwin git"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 1843)
+msgid "Enable special hack for Msys2 git"
+msgstr ""
+
 #. Resource IDs: (ID_VIEW_ENABLELEXER - Menu)
 msgid "Enable syntax highlighting"
 msgstr ""
@@ -5261,6 +5269,10 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSHOOKCONFIG: Control id 1334)
 msgid "Hook Type:"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 1841)
+msgid "I don't use Git for Windows and need special workarounds"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 65535)

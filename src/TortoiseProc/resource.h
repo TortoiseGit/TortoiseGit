@@ -1552,6 +1552,9 @@
 #define IDC_BROWSE_REFS_BRANCHFILTER    1838
 #define IDC_DONTSAVE                    1839
 #define IDC_FIRSTSTART_HINT             1840
+#define IDC_WORKAROUNDS                 1841
+#define IDC_GITHACKS1                   1842
+#define IDC_GITHACKS2                   1843
 #define IDS_LOG_FILTER_BY               1850
 #define IDS_LOG_FILTER_PATHS            1851
 #define IDS_LOG_FILTER_AUTHORS          1852
@@ -2005,7 +2008,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        359
 #define _APS_NEXT_COMMAND_VALUE         32874
-#define _APS_NEXT_CONTROL_VALUE         1841
+#define _APS_NEXT_CONTROL_VALUE         1844
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

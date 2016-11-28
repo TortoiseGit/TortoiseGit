@@ -111,7 +111,7 @@ protected:
 		return true;
 	}
 
-	bool CheckGitExe(HWND hwnd, CString& gitpath, CString& pathaddition, int versionLabelId, std::function<void(UINT)> callHelp)
+	bool CheckGitExe(HWND hwnd, CString& gitpath, CString& pathaddition, int versionLabelId, std::function<void(UINT)> callHelp, bool* needWorkarounds = nullptr)
 	{
 		SetWindowText(GetDlgItem(hwnd, versionLabelId), L"");
 
@@ -144,8 +144,30 @@ protected:
 					callHelp(IDD_SETTINGSMAIN);
 				return false;
 			}
-			else if (!(CGit::ms_bCygwinGit || CGit::ms_bMsys2Git) && out.Find(L"msysgit") == -1 && out.Find(L"windows") == -1 && CMessageBox::Show(hwnd, L"Could not find \"msysgit\" or \"windows\" in versionstring of git.exe.\nIf you are using git of the cygwin or msys2 environment please read the help file for the keyword \"cygwin git\" or \"msys2 git\".", L"TortoiseGit", 1, IDI_INFORMATION, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)), CString(MAKEINTRESOURCE(IDS_MSGBOX_HELP))) == 2)
-				callHelp(IDD_SETTINGSMAIN);
+			else if (!CStringUtils::StartsWith(out.Trim(), L"git version "))
+			{
+				if (CMessageBox::Show(hwnd, L"Could not get read version information from git.exe.\nGot: \"" + out.Trim() + L"\"\n\nCheck help file for \"Git.exe Path\".", L"TortoiseGit", 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)), CString(MAKEINTRESOURCE(IDS_MSGBOX_HELP))) == 2)
+					callHelp(IDD_SETTINGSMAIN);
+				return false;
+			}
+			else if (!(CGit::ms_bCygwinGit || CGit::ms_bMsys2Git) && out.Find(L"msysgit") == -1 && out.Find(L"windows") == -1)
+			{
+				bool wasAlreadyWarned = !needWorkarounds || *needWorkarounds;
+				if (CMessageBox::Show(hwnd, L"Could not find \"msysgit\" or \"windows\" in versionstring of git.exe.\nIf you are using git of the cygwin or msys2 environment please read the help file for the keyword \"cygwin git\" or \"msys2 git\".", L"TortoiseGit", 1, IDI_INFORMATION, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)), CString(MAKEINTRESOURCE(IDS_MSGBOX_HELP))) == 2)
+					callHelp(IDD_SETTINGSMAIN);
+				if (needWorkarounds)
+					*needWorkarounds = true;
+				if (!wasAlreadyWarned)
+					return false;
+			}
+			else if ((CGit::ms_bCygwinGit || CGit::ms_bMsys2Git) && out.Find(L"msysgit") > 0 && out.Find(L"windows") > 0)
+			{
+				if (CMessageBox::Show(hwnd, L"Found \"msysgit\" or \"windows\" in versionstring of git.exe, however, you have git.exe quirks enabled. These hacks must be disabled for proper operation with Git for Windows!\nYou can find more information in the help file for the keyword \"cygwin git\" or \"msys2 git\".", L"TortoiseGit", 1, IDI_INFORMATION, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)), CString(MAKEINTRESOURCE(IDS_MSGBOX_HELP))) == 2)
+					callHelp(IDD_SETTINGSMAIN);
+				if (needWorkarounds)
+					*needWorkarounds = true;
+				return false;
+			}
 		}
 		else
 		{
