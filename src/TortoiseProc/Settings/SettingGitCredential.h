@@ -100,7 +100,11 @@ public:
 	{
 		CString path = CGit::ms_MsysGitRootDir;
 		path.Append(L"libexec\\git-core\\git-credential-manager.exe");
-		return !!PathFileExists(path);
+		if (!PathFileExists(path))
+			return false;
+		// CCM requires .NET 4.5.1 or later
+		// try to detect it (only works for >=4.5): https://msdn.microsoft.com/en-us/library/hh925568
+		return CRegDWORD(L"SOFTWARE\\Microsoft\\NET Framework Setup\\NDP\\v4\\Full\\Release", 0, false, HKEY_LOCAL_MACHINE) >= 378675;
 	}
 
 protected:
