@@ -47,6 +47,7 @@ Released: unreleased
  * Fixed issue #2872: Rebase local/remote reversed for tree conflicts
  * Fixed issue #2491: Optimize way for creating temporary files in order to improve compatibility with certain backup softwares
  * Fixed issue #2875: Mistake in settings hint text
+ * Fixed issue #2878: SplitContainer glitch in Cherry Pick dialog
 
 = Release 2.3.0 =
 Released: 2016-10-01

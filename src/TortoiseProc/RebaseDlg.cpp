@@ -417,6 +417,12 @@ void CRebaseDlg::DoSize(int delta)
 	this->m_CommitList.Invalidate();
 	this->m_FileListCtrl.Invalidate();
 	this->m_LogMessageCtrl.Invalidate();
+	m_SplitAllOptions.Invalidate();
+	GetDlgItem(IDC_REBASE_CHECK_FORCE)->Invalidate();
+	GetDlgItem(IDC_REBASE_CHECK_PRESERVEMERGES)->Invalidate();
+	GetDlgItem(IDC_CHECK_CHERRYPICKED_FROM)->Invalidate();
+	GetDlgItem(IDC_BUTTON_UP2)->Invalidate();
+	GetDlgItem(IDC_BUTTON_DOWN2)->Invalidate();
 }
 
 void CRebaseDlg::SetSplitterRange()
