@@ -24,7 +24,7 @@ Released: unreleased
  * Fixed issue #2633: Check for Modifications dialog doesn't refresh after commit
  * Fixed issue #1656: Add "dcommit" to change sets in "log messages"
  * Fixed issue #2741: TortoiseGitBlame: Allow to limit blame on first parents (i.e., handle merge commits as squashed commits)
- * Fixed issue #2826: Highlight commit to which the parent repo points to in the log for submodules
+ * Fixed issue #2826: Highlight commit to which the parent repo points to in the log for submodules (named: super-project-pointer)
  * Added a first start wizard which can be re-run from TortoiseGit settings
  * Fixed issue #2593: Hitting escape closes the commit window without any attention message
 
@@ -36,19 +36,20 @@ Released: unreleased
    If you have non ascii chars in your dictionary and want to keep those, you need to manually convert these to UTF-8.
    The dictionaries can be found in %APPDATA%\TortoiseGit\*.dic.
  * Fixed issue #2850: The installer does not completely support high-contrast-mode
- * Fixed issue #2853: Commit message autocompletion bugs out after typing a second character
+ * Fixed issue #2853: Commit message autocompletion failed sometimes for words with different casing
  * Fixed issue #2851: Switching high-contrast-mode on or off, does not cause change of used UI colors
  * Fixed issue #2829: Remembering the last selected line might not work when a conflict was manually resolved
- * Fixed issue #2868: Show changes as unified diff fails (using Cygwin git)
+ * Fixed issue #2868: Show changes as unified diff might fail (using Cygwin git)
  * /command:showcompare /unified did not honor path filters correctly
  * Fixed issue #2870: Save unified diff can cause TortoiseGit to not respond
  * Fixed issue #2217: LogDlg: Refresh working tree status and file list after changes to working tree
  * Fixed issue #2833: Pull with 'pull.rebase=preserve' does rebase on invalid upstream
  * Fixed issue #2859: Cannot clone URLs which contain non-ASCII chars with Git for Windows 2.10.1 and 2.10.2
- * Fixed issue #2872: Rebase local/remote reversed for tree conflicts
+ * Fixed issue #2872: Rebase local/remote reversed for tree conflicts (delete/modify conflicts)
  * Fixed issue #2491: Optimize way for creating temporary files in order to improve compatibility with certain backup softwares
  * Fixed issue #2875: Mistake in settings hint text
- * Fixed issue #2878: SplitContainer glitch in Cherry Pick dialog
+ * Fixed issue #2878: SplitContainer redraw issues in Cherry Pick dialog
+ * Fixed issue #2877: Git fetch all with rebase might produce error
 
 = Release 2.3.0 =
 Released: 2016-10-01
