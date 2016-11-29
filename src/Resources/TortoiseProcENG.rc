@@ -4847,6 +4847,7 @@ BEGIN
     IDS_ERR_GITCALLFAILED   "Calling git.exe failed (exit code: %d). Please check the git.exe path."
     IDS_GITEXEFILEFILTER    "git.exe|git.exe||"
     IDS_REALLYCANCEL        "Are you sure you want to cancel?"
+    IDS_HINTLASTMESSAGES    "Hint: Recently used commit messages are available using the context menu of the text field."
 END
 
 #endif    // English (U.S.) resources

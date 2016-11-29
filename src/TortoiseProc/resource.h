@@ -1318,6 +1318,7 @@
 #define IDC_CHECK_DIR                   1626
 #define IDS_REALLYCANCEL                1626
 #define IDC_RADIO_CLEAN_ALL             1627
+#define IDS_HINTLASTMESSAGES            1627
 #define IDC_RADIO_CLEAN_NO              1628
 #define IDC_RADIO_CLEAN_IGNORE          1629
 #define IDC_GROUP_CLEAN_TYPE            1630

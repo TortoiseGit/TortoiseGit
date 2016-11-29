@@ -5269,6 +5269,10 @@ msgstr ""
 msgid "Hint"
 msgstr ""
 
+#. Resource IDs: (IDS_HINTLASTMESSAGES)
+msgid "Hint: Recently used commit messages are available using the context menu of the text field."
+msgstr ""
+
 #. Resource IDs: (16519)
 msgid "Hint: select the context menu, change the page to 'Commands' and drag the toolbar buttons into the menu window."
 msgstr ""

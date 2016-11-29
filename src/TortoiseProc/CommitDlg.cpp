@@ -1462,7 +1462,14 @@ void CCommitDlg::SetDlgTitle()
 
 void CCommitDlg::OnCancel()
 {
-	if (CMessageBox::ShowCheck(GetSafeHwnd(), IDS_REALLYCANCEL, IDS_APPNAME, MB_ICONQUESTION | MB_DEFBUTTON2 | MB_YESNO, L"CommitAskBeforeCancel", IDS_MSGBOX_DONOTSHOWAGAIN) == IDNO)
+	CString tmp;
+	tmp.LoadString(IDS_REALLYCANCEL);
+	tmp.AppendChar(L'\n');
+	tmp.AppendChar(L'\n');
+	tmp.Append(CString(MAKEINTRESOURCE(IDS_HINTLASTMESSAGES)));
+	CString dontaskagain;
+	dontaskagain.LoadString(IDS_MSGBOX_DONOTSHOWAGAIN);
+	if (CMessageBox::ShowCheck(GetSafeHwnd(), tmp, L"TortoiseGit", MB_ICONQUESTION | MB_DEFBUTTON2 | MB_YESNO, L"CommitAskBeforeCancel", dontaskagain) == IDNO)
 		return;
 
 	m_bCancelled = true;
