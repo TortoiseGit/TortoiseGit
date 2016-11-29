@@ -207,9 +207,9 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 		{
 			CString str;
 			if (!m_BlameData.empty())
-				CGit::StringAppend(&str, &m_BlameData[0], CP_UTF8);
+				CGit::StringAppend(&str, &m_BlameData[0], CP_UTF8, (int)m_BlameData.size());
 			if (!err.empty())
-				CGit::StringAppend(&str, &err[0], CP_UTF8);
+				CGit::StringAppend(&str, &err[0], CP_UTF8, (int)err.size());
 			MessageBox(nullptr, CString(MAKEINTRESOURCE(IDS_BLAMEERROR)) + L"\n\n" + str, L"TortoiseGitBlame", MB_OK | MB_ICONERROR);
 
 			return FALSE;
