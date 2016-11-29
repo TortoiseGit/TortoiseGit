@@ -2193,8 +2193,9 @@ CAPTION "First Start Wizard - TortoiseGit"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
     GROUPBOX        "SSH (URLs look like ""git@example.com"")",IDC_STATIC,7,7,308,84
-    LTEXT           "",IDC_FIRSTSTART_SSHHINT,17,17,289,66,SS_NOPREFIX
-    PUSHBUTTON      "&Generate PuTTY  key pair",IDC_GENERATEPUTTYKEY,169,73,137,13
+    LTEXT           "",IDC_FIRSTSTART_SSHHINT,17,17,289,57,SS_NOPREFIX
+    COMBOBOX        IDC_COMBO_SSHCLIENT,17,74,144,12,CBS_DROPDOWNLIST | WS_TABSTOP
+    PUSHBUTTON      "&Generate PuTTY  key pair",IDC_GENERATEPUTTYKEY,169,73,137,14
     GROUPBOX        "HTTP (URLs start with ""http://"" or ""https://"")",IDC_STATIC,7,92,308,95
     LTEXT           "By default Git does not save/cache credentials. However, you can configure a credential helper (recommended) or manually use %HOME%/_netrc.",IDC_STATIC,17,103,289,25
     LTEXT           "&Credential helper:",IDC_STATIC,17,131,145,8

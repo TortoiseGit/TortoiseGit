@@ -43,6 +43,7 @@ void CFirstStartWizardAuthentication::DoDataExchange(CDataExchange* pDX)
 	CFirstStartWizardBasePage::DoDataExchange(pDX);
 	DDX_Check(pDX, IDC_DONTSAVE, m_bNoSave);
 	DDX_Control(pDX, IDC_COMBO_SIMPLECREDENTIAL, m_ctrlSimpleCredential);
+	DDX_Control(pDX, IDC_COMBO_SSHCLIENT, m_ctrlSSHClient);
 }
 
 BEGIN_MESSAGE_MAP(CFirstStartWizardAuthentication, CFirstStartWizardBasePage)
@@ -57,9 +58,36 @@ void CFirstStartWizardAuthentication::OnClickedNoSave()
 	m_ctrlSimpleCredential.EnableWindow(!m_bNoSave);
 }
 
+static bool IsToolBasename(const CString& toolname, LPCTSTR setting)
+{
+	if (toolname.CompareNoCase(setting) == 0)
+		return true;
+
+	if ((toolname + L".exe").CompareNoCase(setting) == 0)
+		return true;
+
+	return false;
+}
+
+static bool IsTool(const CString& toolname, LPCTSTR setting)
+{
+	if (IsToolBasename(toolname, setting))
+		return true;
+
+	return IsToolBasename(toolname, PathFindFileName(setting));
+}
+
 BOOL CFirstStartWizardAuthentication::OnWizardFinish()
 {
 	UpdateData();
+
+	CString sshclient = CRegString(L"Software\\TortoiseGit\\SSH");
+	if (sshclient.IsEmpty())
+		sshclient = CRegString(L"Software\\TortoiseGit\\SSH", L"", FALSE, HKEY_LOCAL_MACHINE);
+	if (m_ctrlSSHClient.GetCurSel() == 0 && !(sshclient.IsEmpty() || IsTool(L"tortoisegitplink", sshclient) || IsTool(L"tortoiseplink", sshclient)))
+		CRegString(L"Software\\TortoiseGit\\SSH") = CPathUtils::GetAppDirectory() + L"TortoiseGitPlink.exe";
+	else if (m_ctrlSSHClient.GetCurSel() == 1 && !IsTool(L"ssh", sshclient))
+		CRegString(L"Software\\TortoiseGit\\SSH") = L"ssh.exe";
 
 	if (m_ctrlSimpleCredential.IsWindowEnabled() || !m_bNoSave && m_ctrlSimpleCredential.GetCurSel() != -1)
 	{
@@ -152,6 +180,22 @@ BOOL CFirstStartWizardAuthentication::OnInitDialog()
 	}
 
 	AdjustControlSize(IDC_DONTSAVE);
+
+	CString sshclient = CRegString(L"Software\\TortoiseGit\\SSH");
+	if (sshclient.IsEmpty())
+		sshclient = CRegString(L"Software\\TortoiseGit\\SSH", L"", FALSE, HKEY_LOCAL_MACHINE);
+
+	int idx = m_ctrlSSHClient.AddString(L"TortoiseGitPlink");
+	if (sshclient.IsEmpty() || IsTool(L"tortoisegitplink", sshclient) || IsTool(L"tortoiseplink", sshclient))
+		m_ctrlSSHClient.SetCurSel(idx);
+	idx = m_ctrlSSHClient.AddString(L"OpenSSH");
+	if (IsTool(L"ssh", sshclient))
+		m_ctrlSSHClient.SetCurSel(idx);
+	if (m_ctrlSSHClient.GetCurSel() == -1)
+	{
+		idx = m_ctrlSSHClient.AddString(sshclient);
+		m_ctrlSSHClient.SetCurSel(idx);
+	}
 
 	// TODO: Hide the button if PuTTY is not used?
 	//GetDlgItem(IDC_GENERATEPUTTYKEY)->ShowWindow(CAppUtils::IsSSHPutty() ? SW_SHOW : SW_HIDE);

@@ -47,4 +47,5 @@ protected:
 	CComboBox		m_ctrlSimpleCredential;
 	STRING_VECTOR	m_availableHelpers;
 	BOOL			m_bNoSave;
+	CComboBox		m_ctrlSSHClient;
 };
