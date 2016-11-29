@@ -2327,6 +2327,7 @@ void CBaseView::OnDoMouseHWheel(UINT /*nFlags*/, short zDelta, CPoint /*pt*/)
 
 	if (bControl || bShift)
 	{
+		// Ctrl-H-Wheel scrolls vertical
 		ScrollVertical(zDelta);
 	}
 	else
@@ -2334,7 +2335,7 @@ void CBaseView::OnDoMouseHWheel(UINT /*nFlags*/, short zDelta, CPoint /*pt*/)
 		if (m_pMainFrame->m_bWrapLines)
 			return;
 		// Ctrl-Wheel scrolls sideways
-		ScrollSide(-zDelta/30);
+		ScrollSide(zDelta/30);
 	}
 }
 

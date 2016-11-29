@@ -50,6 +50,7 @@ Released: unreleased
  * Fixed issue #2875: Mistake in settings hint text
  * Fixed issue #2878: SplitContainer redraw issues in Cherry Pick dialog
  * Fixed issue #2877: Git fetch all with rebase might produce error
+ * Fixed issue #2874: Horizontal scroll reversed in tortoiseGitMerge
 
 = Release 2.3.0 =
 Released: 2016-10-01
