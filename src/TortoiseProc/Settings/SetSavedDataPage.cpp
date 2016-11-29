@@ -364,6 +364,7 @@ void CSetSavedDataPage::OnBnClickedStoreddecisionsclear()
 		L"StashPopShowChanges",
 		L"StashPopShowConflictChanges",
 		L"CommitWarnOnUnresolved",
+		L"CommitAskBeforeCancel",
 	};
 	for (const auto& value : tgitvalues)
 	{

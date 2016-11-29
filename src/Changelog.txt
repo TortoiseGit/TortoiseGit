@@ -26,6 +26,7 @@ Released: unreleased
  * Fixed issue #2741: TortoiseGitBlame: Allow to limit blame on first parents (i.e., handle merge commits as squashed commits)
  * Fixed issue #2826: Highlight commit to which the parent repo points to in the log for submodules
  * Added a first start wizard which can be re-run from TortoiseGit settings
+ * Fixed issue #2593: Hitting escape closes the commit window without any attention message
 
 == Bug Fixes ==
  * Fixed issue #2837: Layout of overlapping icons settings dialog

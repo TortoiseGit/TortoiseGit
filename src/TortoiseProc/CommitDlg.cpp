@@ -1462,6 +1462,9 @@ void CCommitDlg::SetDlgTitle()
 
 void CCommitDlg::OnCancel()
 {
+	if (CMessageBox::ShowCheck(GetSafeHwnd(), IDS_REALLYCANCEL, IDS_APPNAME, MB_ICONQUESTION | MB_DEFBUTTON2 | MB_YESNO, L"CommitAskBeforeCancel", IDS_MSGBOX_DONOTSHOWAGAIN) == IDNO)
+		return;
+
 	m_bCancelled = true;
 	m_pathwatcher.Stop();
 

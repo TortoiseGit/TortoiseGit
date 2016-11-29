@@ -1958,6 +1958,10 @@ msgstr ""
 msgid "Are you sure you want to abort the rebase process?"
 msgstr ""
 
+#. Resource IDs: (IDS_REALLYCANCEL)
+msgid "Are you sure you want to cancel?"
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_RESOLVE)
 msgid "Are you sure you want to mark the conflicted file(s) as resolved?"
 msgstr ""

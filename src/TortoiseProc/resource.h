@@ -1316,6 +1316,7 @@
 #define IDC_BUTTON_COMMIT               1625
 #define IDS_GITEXEFILEFILTER            1625
 #define IDC_CHECK_DIR                   1626
+#define IDS_REALLYCANCEL                1626
 #define IDC_RADIO_CLEAN_ALL             1627
 #define IDC_RADIO_CLEAN_NO              1628
 #define IDC_RADIO_CLEAN_IGNORE          1629
