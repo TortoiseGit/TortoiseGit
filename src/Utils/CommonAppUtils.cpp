@@ -255,7 +255,7 @@ bool CCommonAppUtils::FileOpenSave(CString& path, int* filterindex, UINT title, 
 		CSelectFileFilter fileFilter(filterId);
 		if (!SUCCEEDED(pfd->SetFileTypes(fileFilter.GetCount(), fileFilter)))
 			return false;
-		if (filterId == 2501) // IDS_PROGRAMSFILEFILTER
+		if (filterId == 1602 || filterId == 2501) // IDS_GITEXEFILEFILTER || IDS_PROGRAMSFILEFILTER
 		{
 			pfd->SetClientGuid({ 0x323ca4b0, 0x62df, 0x4a08, { 0xa5, 0x5, 0x58, 0xde, 0xa2, 0xb9, 0x2d, 0xcd } });
 			if (SUCCEEDED(SHCreateItemFromParsingName(CPathUtils::GetProgramsDirectory(), nullptr, IID_PPV_ARGS(&psiDefaultFolder))))

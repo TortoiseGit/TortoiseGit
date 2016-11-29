@@ -19,8 +19,6 @@
 
 #pragma once
 #include "StringUtils.h"
-#include "BrowseFolder.h"
-#include "PathUtils.h"
 #include "Git.h"
 #include "MessageBox.h"
 #include "AppUtils.h"
@@ -112,13 +110,11 @@ protected:
 
 	static bool SelectFolder(HWND hwnd, CString& gitpath, CString& pathaddition)
 	{
-		CBrowseFolder browseFolder;
-		browseFolder.m_style = BIF_EDITBOX | BIF_NEWDIALOGSTYLE | BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
 		CString dir;
 		dir = gitpath;
-		if (dir.IsEmpty())
-			dir = CPathUtils::GetProgramsDirectory();
-		if (browseFolder.Show(hwnd, dir) != CBrowseFolder::OK)
+		if (!dir.IsEmpty())
+			dir += L"\\git.exe";
+		if (!CCommonAppUtils::FileOpenSave(dir, nullptr, 0, IDS_GITEXEFILEFILTER, true, hwnd))
 			return false;
 
 		gitpath = dir;

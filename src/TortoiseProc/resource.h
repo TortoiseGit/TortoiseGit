@@ -1314,6 +1314,7 @@
 #define IDC_GROUP_INFO                  1624
 #define IDS_ERR_GITCALLFAILED           1624
 #define IDC_BUTTON_COMMIT               1625
+#define IDS_GITEXEFILEFILTER            1625
 #define IDC_CHECK_DIR                   1626
 #define IDC_RADIO_CLEAN_ALL             1627
 #define IDC_RADIO_CLEAN_NO              1628

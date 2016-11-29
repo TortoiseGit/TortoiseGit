@@ -11061,6 +11061,10 @@ msgstr ""
 msgid "git did not exit cleanly (exit code %d)"
 msgstr ""
 
+#. Resource IDs: (IDS_GITEXEFILEFILTER)
+msgid "git.exe|git.exe||"
+msgstr ""
+
 #. Resource IDs: (IDS_STATUSIGNORED)
 msgid "ignored"
 msgstr ""
