@@ -51,6 +51,7 @@ Released: unreleased
  * Fixed issue #2878: SplitContainer redraw issues in Cherry Pick dialog
  * Fixed issue #2877: Git fetch all with rebase might produce error
  * Fixed issue #2874: Horizontal scroll reversed in tortoiseGitMerge
+ * When showing an autocompletion list, don't bail out if one is already shown but just update it
 
 = Release 2.3.0 =
 Released: 2016-10-01

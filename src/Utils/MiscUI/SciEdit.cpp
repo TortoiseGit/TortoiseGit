@@ -633,8 +633,6 @@ void CSciEdit::DoAutoCompletion(int nMinPrefixLength)
 {
 	if (m_autolist.empty())
 		return;
-	if (Call(SCI_AUTOCACTIVE))
-		return;
 	CString word = GetWordUnderCursor();
 	if (word.GetLength() < nMinPrefixLength)
 		return;		//don't auto complete yet, word is too short
