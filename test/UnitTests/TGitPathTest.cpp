@@ -221,6 +221,7 @@ TEST(CTGitPath, AncestorTest)
 	testPath.SetFromWin(L"c:\\windows");
 	EXPECT_FALSE(testPath.IsAncestorOf(CTGitPath(L"c:\\")));
 	EXPECT_TRUE(testPath.IsAncestorOf(CTGitPath(L"c:\\windows")));
+	EXPECT_FALSE(testPath.IsAncestorOf(CTGitPath(L"c:\\windows test")));
 	EXPECT_FALSE(testPath.IsAncestorOf(CTGitPath(L"c:\\windowsdummy")));
 	EXPECT_TRUE(testPath.IsAncestorOf(CTGitPath(L"c:\\windows\\test.txt")));
 	EXPECT_TRUE(testPath.IsAncestorOf(CTGitPath(L"c:\\windows\\system32\\test.txt")));
@@ -268,6 +269,11 @@ TEST(CTGitPath, GetCommonRootTest)
 	EXPECT_TRUE(list.GetCommonRoot().GetWinPathString().CompareNoCase(L"D:\\Development\\StExBar") == 0);
 
 	list.Clear();
+	sPathList = L"D:\\Development\\StEYBar\\StExBar\\src\\setup\\Setup64.wxs*D:\\Development\\StExBar\\StExBar\\src\\setup\\Setup.wxs*D:\\Development\\StExBar\\SKTimeStamp\\src\\setup\\Setup.wxs*D:\\Development\\StExBar\\SKTimeStamp\\src\\setup\\Setup64.wxs";
+	list.LoadFromAsteriskSeparatedString(sPathList);
+	EXPECT_TRUE(list.GetCommonRoot().GetWinPathString().CompareNoCase(L"D:\\Development") == 0);
+
+	list.Clear();
 	sPathList = L"c:\\windows\\explorer.exe*c:\\windows";
 	list.LoadFromAsteriskSeparatedString(sPathList);
 	EXPECT_TRUE(list.GetCommonRoot().GetWinPathString().CompareNoCase(L"c:\\windows") == 0);
@@ -286,6 +292,11 @@ TEST(CTGitPath, GetCommonRootTest)
 	sPathList = L"c:\\windowsdummy*c:\\windows";
 	list.LoadFromAsteriskSeparatedString(sPathList);
 	EXPECT_TRUE(list.GetCommonRoot().GetWinPathString().CompareNoCase(L"c:\\") == 0);
+
+	list.Clear();
+	sPathList = L"c:\\windows*d:\\windows";
+	list.LoadFromAsteriskSeparatedString(sPathList);
+	EXPECT_STREQ(L"", list.GetCommonRoot().GetWinPathString());
 }
 
 TEST(CTGitPath, ValidPathAndUrlTest)
@@ -396,6 +407,159 @@ TEST(CTGitPath, ListLoadingTest)
 	sPathList = L"c:\\path2 with spaces and stuff*c:\\funnypath\\*";
 	testList.LoadFromAsteriskSeparatedString(sPathList);
 	EXPECT_STREQ(L"c:\\", testList.GetCommonRoot().GetWinPathString());
+}
+
+TEST(CTGitPath, GetBaseFilename)
+{
+	CTGitPath testPath;
+	EXPECT_STREQ(L"", testPath.GetBaseFilename());
+
+	testPath.SetFromWin(L"filename.extension");
+	EXPECT_STREQ(L"filename", testPath.GetBaseFilename());
+	testPath.SetFromWin(L"c:\\test.txt");
+	EXPECT_STREQ(L"test", testPath.GetBaseFilename());
+	testPath.SetFromWin(L"c:\\subfolder\\file.txt");
+	EXPECT_STREQ(L"file", testPath.GetBaseFilename());
+	testPath.SetFromWin(L"c:\\without");
+	EXPECT_STREQ(L"without", testPath.GetBaseFilename());
+	testPath.SetFromWin(L"c:\\folder\\");
+	EXPECT_STREQ(L"", testPath.GetBaseFilename()); // this is the behavior right now, dunno if this is the best one
+	testPath.SetFromWin(L".gitignore");
+	EXPECT_STREQ(L".gitignore", testPath.GetBaseFilename());
+	testPath.SetFromWin(L"c:\\.gitignore");
+	EXPECT_STREQ(L".gitignore", testPath.GetBaseFilename());
+	testPath.SetFromWin(L"c:\\test.double.extension");
+	EXPECT_STREQ(L"test.double", testPath.GetBaseFilename());
+}
+
+TEST(CTGitPath, IsEquivalentTo)
+{
+	CTGitPath testPath;
+	CTGitPath testPath2;
+
+	EXPECT_TRUE(testPath.IsEquivalentTo(testPath2));
+
+	testPath.SetFromUnknown(L"c:\\folder");
+	testPath2.SetFromUnknown(L"c:\\folder\\");
+	EXPECT_TRUE(testPath.IsEquivalentTo(testPath2));
+
+	testPath.SetFromUnknown(L"c:\\folder\\");
+	testPath2.SetFromUnknown(L"c:\\folder");
+	EXPECT_TRUE(testPath.IsEquivalentTo(testPath2));
+
+	testPath.SetFromUnknown(L"\\unc\\path");
+	testPath2.SetFromUnknown(L"\\unc\\path");
+	EXPECT_TRUE(testPath.IsEquivalentTo(testPath2));
+
+	testPath.SetFromUnknown(L"c:\\");
+	testPath2.SetFromUnknown(L"c:\\");
+	EXPECT_TRUE(testPath.IsEquivalentTo(testPath2));
+
+	testPath2.SetFromUnknown(L"c:/");
+	EXPECT_TRUE(testPath.IsEquivalentTo(testPath2));
+
+	testPath2.SetFromUnknown(L"c:");
+	EXPECT_TRUE(testPath.IsEquivalentTo(testPath2));
+
+	testPath.SetFromUnknown(L"c:\\test\\1.txt");
+	testPath2.SetFromUnknown(L"c:\\test\\1.txt");
+	EXPECT_TRUE(testPath.IsEquivalentTo(testPath2));
+
+	testPath2.SetFromUnknown(L"c:/test/1.txt");
+	EXPECT_TRUE(testPath.IsEquivalentTo(testPath2));
+
+	testPath2.SetFromUnknown(L"c:\\test\\2.txt");
+	EXPECT_FALSE(testPath.IsEquivalentTo(testPath2));
+
+	testPath2.SetFromUnknown(L"c:\\text\\1.txt");
+	EXPECT_FALSE(testPath.IsEquivalentTo(testPath2));
+
+	testPath2.SetFromUnknown(L"c:\\tesT\\1.txt");
+	EXPECT_FALSE(testPath.IsEquivalentTo(testPath2));
+
+	testPath2.SetFromUnknown(L"c:\\test\\1.tXt");
+	EXPECT_FALSE(testPath.IsEquivalentTo(testPath2));
+
+	testPath.SetFromUnknown(L"test/1.txt");
+	testPath2.SetFromUnknown(L"test/1.txt");
+	EXPECT_TRUE(testPath.IsEquivalentTo(testPath2));
+
+	testPath2.SetFromUnknown(L"test\\1.txt");
+	EXPECT_TRUE(testPath.IsEquivalentTo(testPath2));
+
+	testPath2.SetFromUnknown(L"tesT\\1.txt");
+	EXPECT_FALSE(testPath.IsEquivalentTo(testPath2));
+
+	testPath2.SetFromUnknown(L"text\\1.txt");
+	EXPECT_FALSE(testPath.IsEquivalentTo(testPath2));
+
+	testPath2.SetFromUnknown(L"test\\2.txt");
+	EXPECT_FALSE(testPath.IsEquivalentTo(testPath2));
+}
+
+TEST(CTGitPath, IsEquivalentToWithoutCase)
+{
+	CTGitPath testPath;
+	CTGitPath testPath2;
+
+	EXPECT_TRUE(testPath.IsEquivalentToWithoutCase(testPath2));
+
+	testPath.SetFromUnknown(L"c:\\folder");
+	testPath2.SetFromUnknown(L"c:\\folder\\");
+	EXPECT_TRUE(testPath.IsEquivalentToWithoutCase(testPath2));
+
+	testPath.SetFromUnknown(L"c:\\folder\\");
+	testPath2.SetFromUnknown(L"c:\\folder");
+	EXPECT_TRUE(testPath.IsEquivalentToWithoutCase(testPath2));
+
+	testPath.SetFromUnknown(L"\\unc\\path");
+	testPath2.SetFromUnknown(L"\\unc\\path");
+	EXPECT_TRUE(testPath.IsEquivalentToWithoutCase(testPath2));
+
+	testPath.SetFromUnknown(L"c:\\");
+	testPath2.SetFromUnknown(L"c:\\");
+	EXPECT_TRUE(testPath.IsEquivalentToWithoutCase(testPath2));
+
+	testPath2.SetFromUnknown(L"c:/");
+	EXPECT_TRUE(testPath.IsEquivalentToWithoutCase(testPath2));
+
+	testPath2.SetFromUnknown(L"c:");
+	EXPECT_TRUE(testPath.IsEquivalentToWithoutCase(testPath2));
+
+	testPath.SetFromUnknown(L"c:\\test\\1.txt");
+	testPath2.SetFromUnknown(L"c:\\test\\1.txt");
+	EXPECT_TRUE(testPath.IsEquivalentToWithoutCase(testPath2));
+
+	testPath2.SetFromUnknown(L"c:/test/1.txt");
+	EXPECT_TRUE(testPath.IsEquivalentToWithoutCase(testPath2));
+
+	testPath2.SetFromUnknown(L"c:\\test\\2.txt");
+	EXPECT_FALSE(testPath.IsEquivalentToWithoutCase(testPath2));
+
+	testPath2.SetFromUnknown(L"c:\\text\\1.txt");
+	EXPECT_FALSE(testPath.IsEquivalentToWithoutCase(testPath2));
+
+	testPath2.SetFromUnknown(L"c:\\tesT\\1.txt");
+	EXPECT_TRUE(testPath.IsEquivalentToWithoutCase(testPath2));
+
+	testPath2.SetFromUnknown(L"c:\\test\\1.tXt");
+	EXPECT_TRUE(testPath.IsEquivalentToWithoutCase(testPath2));
+
+	testPath.SetFromUnknown(L"test/1.txt");
+	testPath2.SetFromUnknown(L"test/1.txt");
+	EXPECT_TRUE(testPath.IsEquivalentToWithoutCase(testPath2));
+
+	testPath2.SetFromUnknown(L"test\\1.txt");
+	EXPECT_TRUE(testPath.IsEquivalentToWithoutCase(testPath2));
+
+	testPath2.SetFromUnknown(L"tesT\\1.txt");
+	EXPECT_TRUE(testPath.IsEquivalentToWithoutCase(testPath2));
+
+	testPath2.SetFromUnknown(L"text\\1.txt");
+	EXPECT_FALSE(testPath.IsEquivalentToWithoutCase(testPath2));
+
+	testPath2.SetFromUnknown(L"test\\2.txt");
+	EXPECT_FALSE(testPath.IsEquivalentToWithoutCase(testPath2));
 }
 
 TEST(CTGitPath, ParserFromLog_Empty)
