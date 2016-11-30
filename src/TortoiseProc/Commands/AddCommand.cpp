@@ -40,18 +40,20 @@ bool AddCommand::Execute()
 	}
 	else
 	{
-#if 0
 		if (pathList.AreAllPathsFiles())
 		{
-			SVN svn;
-			ProjectProperties props;
-			props.ReadPropsPathList(pathList);
-			bRet = !!svn.Add(pathList, &props, svn_depth_empty, FALSE, FALSE, TRUE);
-			CShellUpdater::Instance().AddPathsForUpdate(pathList);
+			CGitProgressDlg progDlg;
+			theApp.m_pMainWnd = &progDlg;
+			AddProgressCommand addCommand;
+			progDlg.SetCommand(&addCommand);
+			addCommand.SetPathList(pathList);
+			progDlg.SetItemCount(pathList.GetCount());
+			progDlg.DoModal();
+
+			bRet = !progDlg.DidErrorsOccur();
 		}
 		else
 		{
-#endif
 			CAddDlg dlg;
 			dlg.m_pathList = pathList;
 			if (dlg.DoModal() == IDOK)
@@ -69,7 +71,7 @@ bool AddCommand::Execute()
 				bRet = !progDlg.DidErrorsOccur();
 
 			}
-	//	}
+		}
 	}
 	CShellUpdater::Instance().Flush();
 	return bRet;

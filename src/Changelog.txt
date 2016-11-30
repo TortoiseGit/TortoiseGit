@@ -27,6 +27,7 @@ Released: unreleased
  * Fixed issue #2826: Highlight commit to which the parent repo points to in the log for submodules (named: super-project-pointer)
  * Added a first start wizard which can be re-run from TortoiseGit settings
  * Fixed issue #2593: Hitting escape closes the commit window without any attention message
+ * Fixed issue #2702: File selection dialog should not open for Add if only files are selected
 
 == Bug Fixes ==
  * Fixed issue #2837: Layout of overlapping icons settings dialog
