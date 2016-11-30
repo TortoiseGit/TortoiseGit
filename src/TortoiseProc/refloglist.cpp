@@ -29,6 +29,7 @@ CRefLogList::CRefLogList()
 {
 	m_ColumnRegKey = L"reflog";
 	this->m_ContextMenuMask |= this->GetContextMenuBit(ID_LOG);
+	this->m_ContextMenuMask &= ~GetContextMenuBit(ID_COMPARETWOCOMMITCHANGES);
 }
 
 void CRefLogList::InsertRefLogColumn()

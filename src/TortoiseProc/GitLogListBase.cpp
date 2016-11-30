@@ -2198,8 +2198,20 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				bAddSeparator = true;
 			}
 
+			if ((m_ContextMenuMask & GetContextMenuBit(ID_COMPARETWOCOMMITCHANGES)) && selectedCount == 2 && !IsSelectionContinuous())
+			{
+				bAddSeparator = true;
+				popup.AppendMenuIcon(ID_COMPARETWOCOMMITCHANGES, IDS_LOG_POPUP_COMPARECHANGESET, IDI_DIFF);
+			}
+
 			if (m_hasWC)
 				bAddSeparator = true;
+
+			if (bAddSeparator)
+			{
+				popup.AppendMenu(MF_SEPARATOR, NULL);
+				bAddSeparator = false;
+			}
 
 			if (m_ContextMenuMask&GetContextMenuBit(ID_REVERTREV) && m_hasWC && !isMergeActive)
 					popup.AppendMenuIcon(ID_REVERTREV, IDS_LOG_POPUP_REVERTREVS, IDI_REVERT);

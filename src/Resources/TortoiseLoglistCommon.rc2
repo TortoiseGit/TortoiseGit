@@ -98,6 +98,7 @@ BEGIN
     IDS_LOG_POPUP_COMMIT    "Commit..."
     IDS_SWITCH_BRANCH       "Switch/Checkout to"
     IDS_NOTFOUND            "not found"
+    IDS_LOG_POPUP_COMPARECHANGESET "Compare change sets"
 END 
 
 

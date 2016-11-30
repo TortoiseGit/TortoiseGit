@@ -456,6 +456,27 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				//	CAppUtils::StartShowCompare(m_hWnd, CTGitPath(pathURL), revPrevious, CTGitPath(pathURL), revSelected, GitRev(), m_LogRevision, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 			}
 			break;
+		case ID_COMPARETWOCOMMITCHANGES:
+			{
+				auto pFirstEntry = m_arShownList.SafeGetAt(FirstSelect);
+				auto pLastEntry = m_arShownList.SafeGetAt(LastSelect);
+				CString patch1 = GetTempFile();
+				CString patch2 = GetTempFile();
+				CString err;
+				if (g_Git.RunLogFile(L"git.exe format-patch --stdout " + pFirstEntry->m_CommitHash.ToString() + L"~1.." + pFirstEntry->m_CommitHash.ToString() + L"", patch1, &err))
+				{
+					MessageBox(L"Could not generate patch for commit " + pFirstEntry->m_CommitHash.ToString() + L".\n" + err, L"TortoiseGit", MB_ICONERROR);
+					break;
+				}
+				if (g_Git.RunLogFile(L"git.exe format-patch --stdout " + pLastEntry->m_CommitHash.ToString() + L"~1.." + pLastEntry->m_CommitHash.ToString() + L"", patch2, &err))
+				{
+					MessageBox(L"Could not generate patch for commit " + pLastEntry->m_CommitHash.ToString() + L".\n" + err, L"TortoiseGit", MB_ICONERROR);
+					break;
+				}
+				CAppUtils::DiffFlags flags;
+				CAppUtils::StartExtDiff(patch1, patch2, pFirstEntry->m_CommitHash.ToString(), pLastEntry->m_CommitHash.ToString(), pFirstEntry->m_CommitHash.ToString() + L".patch", pLastEntry->m_CommitHash.ToString() + L".patch", pFirstEntry->m_CommitHash.ToString(), pLastEntry->m_CommitHash.ToString(), flags);
+			}
+			break;
 		case ID_LOG_VIEWRANGE:
 		case ID_LOG_VIEWRANGE_REACHABLEFROMONLYONE:
 			{
