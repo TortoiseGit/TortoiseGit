@@ -2892,27 +2892,16 @@ CString CGitStatusListCtrl::GetCommonDirectory(bool bStrict)
 			return m_StatusFileList.GetCommonDirectory().GetWinPath();
 	}
 
-	CTGitPath commonBaseDirectory;
+	CTGitPathList list;
 	int nListItems = GetItemCount();
 	for (int i=0; i<nListItems; ++i)
 	{
-		CTGitPath baseDirectory, *p = GetListEntry(i);
-		if (!p)
+		auto* entry = GetListEntry(i);
+		if (entry->IsEmpty())
 			continue;
-		baseDirectory = p->GetDirectory();
-
-		if(commonBaseDirectory.IsEmpty())
-			commonBaseDirectory = baseDirectory;
-		else
-		{
-			if (commonBaseDirectory.GetWinPathString().GetLength() > baseDirectory.GetWinPathString().GetLength())
-			{
-				if (baseDirectory.IsAncestorOf(commonBaseDirectory))
-					commonBaseDirectory = baseDirectory;
-			}
-		}
+		list.AddPath(*entry);
 	}
-	return g_Git.CombinePath(commonBaseDirectory);
+	return g_Git.CombinePath(list.GetCommonRoot());
 }
 
 void CGitStatusListCtrl::SelectAll(bool bSelect, bool /*bIncludeNoCommits*/)
