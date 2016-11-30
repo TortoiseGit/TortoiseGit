@@ -74,7 +74,13 @@ static bool IsTool(const CString& toolname, LPCTSTR setting)
 	if (IsToolBasename(toolname, setting))
 		return true;
 
-	return IsToolBasename(toolname, PathFindFileName(setting));
+	if (!IsToolBasename(toolname, PathFindFileName(setting)))
+		return false;
+
+	if (PathIsRelative(setting) || !PathFileExists(setting))
+		return false;
+
+	return true;
 }
 
 BOOL CFirstStartWizardAuthentication::OnWizardFinish()
