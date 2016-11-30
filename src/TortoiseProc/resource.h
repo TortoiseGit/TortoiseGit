@@ -811,7 +811,6 @@
 #define IDC_REPOGROUP                   1383
 #define IDC_CLONE_DIR_BROWSE            1383
 #define IDC_BUTTON_TO                   1383
-#define IDC_BUTTON_UP                   1383
 #define IDC_REBASE_POST_BUTTON          1383
 #define IDC_BUTTON_REMOTE_BRANCH        1383
 #define IDC_EDITLOCALGITCONFIG          1383
@@ -821,16 +820,15 @@
 #define IDC_BUTTON_DIR                  1384
 #define IDC_BUTTON_DOWN                 1384
 #define IDC_PUTTYKEYFILE_BROWSE         1384
-#define IDC_BUTTON_UP2                  1384
 #define IDC_BUTTON_STASH                1384
 #define IDC_EDITSYSTEMGITCONFIG         1384
 #define IDS_SETTINGS_SYMBOLIZEREFNAMES_TT 1384
 #define IDC_FROMGROUP                   1385
 #define IDC_BUTTON_REMOVE               1385
-#define IDC_BUTTON_DOWN2                1385
 #define IDC_CONFIG                      1385
 #define IDC_BUTTON_UNIFIEDDIFF          1385
 #define IDS_PROC_SYNC_PUSHNOTES         1385
+#define IDC_BUTTON_UP                   1386
 #define IDS_PROC_REPOCREATED            1386
 #define IDC_FILTER                      1387
 #define IDS_PROC_BROWSEREFS_DELETEALLTAGS 1387

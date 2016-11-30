@@ -101,8 +101,8 @@ BEGIN_MESSAGE_MAP(CRebaseDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_REBASE_CHECK_PRESERVEMERGES, &CRebaseDlg::OnBnClickedRebaseCheckForce)
 	ON_BN_CLICKED(IDC_CHECK_CHERRYPICKED_FROM, &CRebaseDlg::OnBnClickedCheckCherryPickedFrom)
 	ON_BN_CLICKED(IDC_REBASE_POST_BUTTON, &CRebaseDlg::OnBnClickedRebasePostButton)
-	ON_BN_CLICKED(IDC_BUTTON_UP2, &CRebaseDlg::OnBnClickedButtonUp2)
-	ON_BN_CLICKED(IDC_BUTTON_DOWN2, &CRebaseDlg::OnBnClickedButtonDown2)
+	ON_BN_CLICKED(IDC_BUTTON_UP, &CRebaseDlg::OnBnClickedButtonUp)
+	ON_BN_CLICKED(IDC_BUTTON_DOWN, &CRebaseDlg::OnBnClickedButtonDown)
 	ON_REGISTERED_MESSAGE(TaskBarButtonCreated, OnTaskbarBtnCreated)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_COMMIT_LIST, OnLvnItemchangedLoglist)
 	ON_REGISTERED_MESSAGE(CGitLogListBase::m_RebaseActionMessage, OnRebaseActionMessage)
@@ -132,8 +132,8 @@ void CRebaseDlg::AddRebaseAnchor()
 	AddAnchor(IDC_REBASE_ABORT, BOTTOM_RIGHT);
 	AddAnchor(IDC_REBASE_PROGRESS,BOTTOM_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_SPLITALLOPTIONS, TOP_LEFT);
-	AddAnchor(IDC_BUTTON_UP2,TOP_LEFT);
-	AddAnchor(IDC_BUTTON_DOWN2,TOP_LEFT);
+	AddAnchor(IDC_BUTTON_UP, TOP_LEFT);
+	AddAnchor(IDC_BUTTON_DOWN, TOP_LEFT);
 	AddAnchor(IDC_REBASE_COMBOXEX_UPSTREAM, TOP_CENTER, TOP_RIGHT);
 	AddAnchor(IDC_REBASE_COMBOXEX_BRANCH, TOP_LEFT, TOP_CENTER);
 	AddAnchor(IDC_BUTTON_REVERSE, TOP_CENTER);
@@ -395,8 +395,8 @@ void CRebaseDlg::DoSize(int delta)
 	CSplitterControl::ChangeHeight(GetDlgItem(IDC_REBASE_TAB), -delta, CW_BOTTOMALIGN);
 	//CSplitterControl::ChangeHeight(GetDlgItem(), -delta, CW_BOTTOMALIGN);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_SPLITALLOPTIONS), 0, delta);
-	CSplitterControl::ChangePos(GetDlgItem(IDC_BUTTON_UP2),0,delta);
-	CSplitterControl::ChangePos(GetDlgItem(IDC_BUTTON_DOWN2),0,delta);
+	CSplitterControl::ChangePos(GetDlgItem(IDC_BUTTON_UP), 0, delta);
+	CSplitterControl::ChangePos(GetDlgItem(IDC_BUTTON_DOWN), 0, delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_REBASE_CHECK_FORCE),0,delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_REBASE_CHECK_PRESERVEMERGES), 0, delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_CHECK_CHERRYPICKED_FROM), 0, delta);
@@ -421,8 +421,8 @@ void CRebaseDlg::DoSize(int delta)
 	GetDlgItem(IDC_REBASE_CHECK_FORCE)->Invalidate();
 	GetDlgItem(IDC_REBASE_CHECK_PRESERVEMERGES)->Invalidate();
 	GetDlgItem(IDC_CHECK_CHERRYPICKED_FROM)->Invalidate();
-	GetDlgItem(IDC_BUTTON_UP2)->Invalidate();
-	GetDlgItem(IDC_BUTTON_DOWN2)->Invalidate();
+	GetDlgItem(IDC_BUTTON_UP)->Invalidate();
+	GetDlgItem(IDC_BUTTON_DOWN)->Invalidate();
 }
 
 void CRebaseDlg::SetSplitterRange()
@@ -838,14 +838,14 @@ BOOL CRebaseDlg::PreTranslateMessage(MSG*pMsg)
 		case 'U':
 			if (LogListHasFocus(pMsg->hwnd))
 			{
-				OnBnClickedButtonDown2();
+				OnBnClickedButtonDown();
 				return TRUE;
 			}
 			break;
 		case 'D':
 			if (LogListHasFocus(pMsg->hwnd))
 			{
-				OnBnClickedButtonUp2();
+				OnBnClickedButtonUp();
 				return TRUE;
 			}
 			break;
@@ -1661,8 +1661,8 @@ void CRebaseDlg::SetControlEnable()
 	case CHOOSE_COMMIT_PICK_MODE:
 
 		this->GetDlgItem(IDC_SPLITALLOPTIONS)->EnableWindow(TRUE);
-		this->GetDlgItem(IDC_BUTTON_UP2)->EnableWindow(TRUE);
-		this->GetDlgItem(IDC_BUTTON_DOWN2)->EnableWindow(TRUE);
+		this->GetDlgItem(IDC_BUTTON_UP)->EnableWindow(TRUE);
+		this->GetDlgItem(IDC_BUTTON_DOWN)->EnableWindow(TRUE);
 
 		if(!m_IsCherryPick)
 		{
@@ -1694,8 +1694,8 @@ void CRebaseDlg::SetControlEnable()
 		this->GetDlgItem(IDC_BUTTON_REVERSE)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_REBASE_CHECK_FORCE)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_REBASE_CHECK_PRESERVEMERGES)->EnableWindow(FALSE);
-		this->GetDlgItem(IDC_BUTTON_UP2)->EnableWindow(FALSE);
-		this->GetDlgItem(IDC_BUTTON_DOWN2)->EnableWindow(FALSE);
+		this->GetDlgItem(IDC_BUTTON_UP)->EnableWindow(FALSE);
+		this->GetDlgItem(IDC_BUTTON_DOWN)->EnableWindow(FALSE);
 
 		if( m_RebaseStage == REBASE_DONE && (this->m_PostButtonTexts.GetCount() != 0) )
 		{
@@ -2479,7 +2479,7 @@ void CRebaseDlg::Refresh()
 	}
 }
 
-void CRebaseDlg::OnBnClickedButtonUp2()
+void CRebaseDlg::OnBnClickedButtonUp()
 {
 	POSITION pos;
 	pos = m_CommitList.GetFirstSelectedItemPosition();
@@ -2519,7 +2519,7 @@ void CRebaseDlg::OnBnClickedButtonUp2()
 	}
 }
 
-void CRebaseDlg::OnBnClickedButtonDown2()
+void CRebaseDlg::OnBnClickedButtonDown()
 {
 	if (m_CommitList.GetSelectedCount() == 0)
 		return;

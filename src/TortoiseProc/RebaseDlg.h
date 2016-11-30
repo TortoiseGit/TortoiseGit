@@ -257,8 +257,8 @@ protected:
 	afx_msg void OnBnClickedCheckCherryPickedFrom();
 	afx_msg void OnBnClickedRebasePostButton();
 	afx_msg void OnBnClickedSplitAllOptions();
-	afx_msg void OnBnClickedButtonUp2();
-	afx_msg void OnBnClickedButtonDown2();
+	afx_msg void OnBnClickedButtonUp();
+	afx_msg void OnBnClickedButtonDown();
 	afx_msg void OnHelp();
 
 	afx_msg LRESULT	OnTaskbarBtnCreated(WPARAM wParam, LPARAM lParam);
