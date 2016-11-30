@@ -2281,56 +2281,56 @@ void CLogDlg::SetFilterCueText()
 
 	if (m_LogList.m_SelectedFilters & LOGFILTER_MESSAGES)
 	{
-		if (temp.ReverseFind(L' ') != temp.GetLength() - 1)
+		if (!CStringUtils::EndsWith(temp, L' '))
 			temp += L", ";
 		temp += CString(MAKEINTRESOURCE(IDS_LOG_FILTER_MESSAGES));
 	}
 
 	if (m_LogList.m_SelectedFilters & LOGFILTER_PATHS)
 	{
-		if (temp.ReverseFind(L' ') != temp.GetLength() - 1)
+		if (!CStringUtils::EndsWith(temp, L' '))
 			temp += L", ";
 		temp += CString(MAKEINTRESOURCE(IDS_LOG_FILTER_PATHS));
 	}
 
 	if (m_LogList.m_SelectedFilters & LOGFILTER_AUTHORS)
 	{
-		if (temp.ReverseFind(L' ') != temp.GetLength() - 1)
+		if (!CStringUtils::EndsWith(temp, L' '))
 			temp += L", ";
 		temp += CString(MAKEINTRESOURCE(IDS_LOG_FILTER_AUTHORS));
 	}
 
 	if (m_LogList.m_SelectedFilters & LOGFILTER_EMAILS)
 	{
-		if (temp.ReverseFind(L' ') != temp.GetLength() - 1)
+		if (!CStringUtils::EndsWith(temp, L' '))
 			temp += L", ";
 		temp += CString(MAKEINTRESOURCE(IDS_LOG_FILTER_EMAILS));
 	}
 
 	if (m_LogList.m_SelectedFilters & LOGFILTER_REVS)
 	{
-		if (temp.ReverseFind(L' ') != temp.GetLength() - 1)
+		if (!CStringUtils::EndsWith(temp, L' '))
 			temp += L", ";
 		temp += CString(MAKEINTRESOURCE(IDS_LOG_FILTER_REVS));
 	}
 
 	if (m_LogList.m_SelectedFilters & LOGFILTER_REFNAME)
 	{
-		if (temp.ReverseFind(L' ') != temp.GetLength() - 1)
+		if (!CStringUtils::EndsWith(temp, L' '))
 			temp += L", ";
 		temp += CString(MAKEINTRESOURCE(IDS_LOG_FILTER_REFNAME));
 	}
 
 	if (m_LogList.m_SelectedFilters & LOGFILTER_NOTES)
 	{
-		if (temp.ReverseFind(L' ') != temp.GetLength() - 1)
+		if (!CStringUtils::EndsWith(temp, L' '))
 			temp += L", ";
 		temp += CString(MAKEINTRESOURCE(IDS_NOTES));
 	}
 
 	if (m_LogList.m_bShowBugtraqColumn && m_LogList.m_SelectedFilters & LOGFILTER_BUGID)
 	{
-		if (temp.ReverseFind(L' ') != temp.GetLength() - 1)
+		if (!CStringUtils::EndsWith(temp, L' '))
 			temp += L", ";
 		temp += CString(MAKEINTRESOURCE(IDS_LOG_FILTER_BUGIDS));
 	}

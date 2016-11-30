@@ -150,7 +150,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 
 					if (chunks->sFilePath.Find('\t')>=0)
 						chunks->sFilePath = chunks->sFilePath.Left(chunks->sFilePath.Find('\t'));
-					if (CStringUtils::StartsWith(chunks->sFilePath, L"\"") && chunks->sFilePath.ReverseFind(L'"') == chunks->sFilePath.GetLength() - 1)
+					if (CStringUtils::StartsWith(chunks->sFilePath, L"\"") && CStringUtils::EndsWith(chunks->sFilePath, L'"'))
 						chunks->sFilePath=chunks->sFilePath.Mid(1, chunks->sFilePath.GetLength() - 2);
 					if (CStringUtils::StartsWith(chunks->sFilePath, L"a/"))
 						chunks->sFilePath=chunks->sFilePath.Mid(2);

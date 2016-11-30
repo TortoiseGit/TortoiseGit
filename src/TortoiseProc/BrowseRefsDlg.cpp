@@ -1581,21 +1581,21 @@ void CBrowseRefsDlg::SetFilterCueText()
 
 	if (m_SelectedFilters & LOGFILTER_SUBJECT)
 	{
-		if (temp.ReverseFind(L' ') != temp.GetLength() - 1)
+		if (!CStringUtils::EndsWith(temp, L' '))
 			temp += L", ";
 		temp += CString(MAKEINTRESOURCE(IDS_LOG_FILTER_SUBJECT));
 	}
 
 	if (m_SelectedFilters & LOGFILTER_AUTHORS)
 	{
-		if (temp.ReverseFind(L' ') != temp.GetLength() - 1)
+		if (!CStringUtils::EndsWith(temp, L' '))
 			temp += L", ";
 		temp += CString(MAKEINTRESOURCE(IDS_LOG_FILTER_AUTHORS));
 	}
 
 	if (m_SelectedFilters & LOGFILTER_REVS)
 	{
-		if (temp.ReverseFind(L' ') != temp.GetLength() - 1)
+		if (!CStringUtils::EndsWith(temp, L' '))
 			temp += L", ";
 		temp += CString(MAKEINTRESOURCE(IDS_LOG_FILTER_REVS));
 	}
