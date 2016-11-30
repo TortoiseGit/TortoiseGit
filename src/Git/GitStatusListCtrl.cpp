@@ -2901,7 +2901,7 @@ CString CGitStatusListCtrl::GetCommonDirectory(bool bStrict)
 			continue;
 		list.AddPath(*entry);
 	}
-	return g_Git.CombinePath(list.GetCommonRoot());
+	return list.GetCommonRoot().GetWinPath();
 }
 
 void CGitStatusListCtrl::SelectAll(bool bSelect, bool /*bIncludeNoCommits*/)
