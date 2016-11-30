@@ -845,6 +845,7 @@ void CMainWindow::loadOrSaveFile(bool doLoad, const std::wstring& filename /* = 
 	ofn.lpstrFilter = filter;
 	ofn.nFilterIndex = 1;
 	ofn.lpstrFileTitle = NULL;
+	ofn.lpstrDefExt = L"diff";
 	ofn.nMaxFileTitle = 0;
 	ofn.lpstrInitialDir = NULL;
 	TCHAR fileTitle[1024] = { 0 };
