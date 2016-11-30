@@ -36,7 +36,6 @@ public:
 	static CStringA GetMulti(const CStringW& string, int acp);
 	static CStringA GetUTF8(const CStringA& string);
 	static CString GetUnicode(const CStringA& string, int acp=CP_UTF8);
-	static CStringA ConvertWCHARStringToUTF8(const CString& string);
 	static int GetCPCode(const CString & codename);
 #endif
 #ifdef UNICODE

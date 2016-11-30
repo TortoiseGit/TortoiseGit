@@ -253,25 +253,6 @@ CString CUnicodeUtils::GetUnicode(const CStringA& string, int acp)
 	return retVal;
 }
 
-CStringA CUnicodeUtils::ConvertWCHARStringToUTF8(const CString& string)
-{
-	CStringA sRet;
-	char * buf;
-	buf = new char[string.GetLength()+1];
-	if (buf)
-	{
-		int i=0;
-		for ( ; i<string.GetLength(); ++i)
-		{
-			buf[i] = (char)string.GetAt(i);
-		}
-		buf[i] = '\0';
-		sRet = CStringA(buf);
-		delete [] buf;
-	}
-	return sRet;
-}
-
 #endif //_MFC_VER
 
 #ifdef UNICODE
