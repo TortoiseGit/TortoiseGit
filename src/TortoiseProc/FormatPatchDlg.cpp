@@ -41,6 +41,10 @@ CFormatPatchDlg::CFormatPatchDlg(CWnd* pParent /*=nullptr*/)
 	this->m_bSendMail = m_regSendMail;
 	this->m_Radio = IDC_RADIO_SINCE;
 	m_bNoPrefix = m_regNoPrefix;
+
+	CString workingDir = g_Git.m_CurrentDir;
+	workingDir.Replace(L':', L'_');
+	m_regSince = CRegString(L"Software\\TortoiseGit\\History\\FormatPatch\\" + workingDir + L"\\Since");
 }
 
 CFormatPatchDlg::~CFormatPatchDlg()
@@ -128,8 +132,10 @@ BOOL CFormatPatchDlg::OnInitDialog()
 	m_cSince.SetMaxHistoryItems((int)list.size());
 	m_cSince.SetList(list);
 
-	if(!m_Since.IsEmpty())
+	if (!m_Since.IsEmpty())
 		m_cSince.SetWindowText(m_Since);
+	else
+		m_cSince.SetWindowText((CString)m_regSince);
 
 	m_cFrom.LoadHistory(L"Software\\TortoiseGit\\History\\FormatPatchFromURLS", L"ver");
 	m_cFrom.SetCurSel(0);
@@ -214,6 +220,9 @@ void CFormatPatchDlg::OnBnClickedOk()
 	m_cTo.SaveHistory();
 	this->UpdateData(TRUE);
 	this->m_Radio=GetCheckedRadioButton(IDC_RADIO_SINCE,IDC_RADIO_RANGE);
+
+	if (m_Radio == IDC_RADIO_SINCE && !m_Since.IsEmpty())
+		m_regSince = m_Since;
 
 	m_regSendMail=this->m_bSendMail;
 	m_regNoPrefix = m_bNoPrefix;

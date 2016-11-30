@@ -56,6 +56,7 @@ protected:
 	CEdit		  m_cNum;
 	CRegDWORD	m_regSendMail;
 	CRegDWORD	m_regNoPrefix;
+	CRegString	m_regSince;
 
 	DECLARE_MESSAGE_MAP()
 public:
