@@ -369,7 +369,17 @@ public:
 	const CTGitPath& operator[](INT_PTR index) const;
 	bool AreAllPathsFiles() const;
 	bool AreAllPathsFilesInOneDirectory() const;
+	/**
+	 * returns the directory which all items have in common.
+	 * if not all paths are in the same directory, then
+	 * an empty path is returned
+	 */
 	CTGitPath GetCommonDirectory() const;
+	/**
+	 * returns the root path of all paths in the list.
+	 * only returns an empty path if not all paths are on
+	 * the same drive/root.
+	 */
 	CTGitPath GetCommonRoot() const;
 	void SortByPathname(bool bReverse = false);
 	/**
