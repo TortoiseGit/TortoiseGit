@@ -2053,12 +2053,12 @@ msgstr ""
 msgid "Authentication"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_SETTINGSSAVEDDATA: Control id 1278)
-msgid "Authentication data"
+#. Resource IDs: (IDS_FIRSTSTART_AUTHENTICATIONTITLE)
+msgid "Authentication and credential store"
 msgstr ""
 
-#. Resource IDs: (IDS_FIRSTSTART_AUTHENTICATIONTITLE)
-msgid "Authentification and credential store"
+#. Resource IDs: (Dialog IDD_SETTINGSSAVEDDATA: Control id 1278)
+msgid "Authentication data"
 msgstr ""
 
 #. Resource IDs: (IDS_LOG_AUTHOR, IDS_STATUSLIST_COLAUTHOR)
