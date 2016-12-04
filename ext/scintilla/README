@@ -7,8 +7,10 @@ To build SciTE, Scintilla must first be built.
 *** GTK+/Linux version ***
 
 You must first have GTK+ 2.18 or later and GCC (4.8 or better) installed.
-GTK+ 1.x will not work.
+Clang may be used by adding CLANG=1 to the make command line.
 Other C++ compilers may work but may require tweaking the make file.
+Either GTK+ 2.x or 3.x may be used with 2.x the default and 3.x
+chosen with the make argument GTK3=1.
 
 To build Scintilla, use the makefile located in the scintilla/gtk directory
 	cd scintilla/gtk
@@ -44,16 +46,19 @@ A C++ compiler is required, with C++11 required for building SciTE.
 Visual Studio 2015 is the development system used for most development
 although Mingw32 4.8 is also supported.
 
+Older compilers may not have a working std::regex so this can be disabled
+with the make argument NO_CXX11_REGEX=1.
+
 To build Scintilla, make in the scintilla/win32 directory
 		cd scintilla\win32
 GCC:		mingw32-make
-VS .NET:	nmake -f scintilla.mak
+Visual C++:	nmake -f scintilla.mak
 		cd ..\..
 
 To build SciTE, use the makefiles located in the scite/win32 directory
 		cd scite\win32
 GCC:		mingw32-make
-VS .NET: 	nmake -f scite.mak
+Visual C++: 	nmake -f scite.mak
 
 An executable SciTE will now be in scite/bin.
 
@@ -67,11 +72,11 @@ To build Scintilla, make in the scintilla/gtk directory
 	cd scintilla\gtk
 	mingw32-make
 
-*** OS X Cocoa version ***
+*** macOS Cocoa version ***
 
-Xcode 6 or 7 may be used to build Scintilla on OS X.
+Xcode 7 or 8 may be used to build Scintilla on macOS.
 
-There is no open source version of SciTE for OS X but there is a commercial
+There is no open source version of SciTE for macOS but there is a commercial
 version available through the App Store.
 
 To build Scintilla, run xcodebuild in the scintilla/cocoa/ScintillaFramework directory

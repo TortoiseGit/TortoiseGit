@@ -11,6 +11,9 @@ noExplicitConstructor
 // cppcheck does not understand private methods can be called from static methods
 unusedPrivateFunction:scintilla/win32/PlatWin.cxx
 
+// ScintillaDocument is providing an API and there are no consumers of the API inside Scintilla
+unusedFunction:scintilla/qt/ScintillaEdit/ScintillaDocument.cpp
+
 // The performance cost of by-value passing is often small and using a reference decreases
 // code legibility.
 passedByValue
@@ -46,3 +49,7 @@ variableScope:scintilla/lexers/LexVHDL.cxx
 
 // Suppress everything in catch.hpp as won't be changing
 *:scintilla/test/unit/catch.hpp
+// Spurious errors due to choice of variadic or two argument TEST_CASE macro
+preprocessorErrorDirective:scintilla/test/unit/*.cxx
+syntaxError:scintilla/test/unit/UnitTester.cxx
+syntaxError:scintilla/test/unit/unitTest.cxx

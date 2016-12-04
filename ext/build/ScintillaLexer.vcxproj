@@ -57,6 +57,7 @@
     <ClCompile Include="..\scintilla\lexers\LexDiff.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexDMAP.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexDMIS.cxx" />
+    <ClCompile Include="..\scintilla\lexers\LexEDIFACT.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexErrorList.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexHex.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexJSON.cxx" />
@@ -227,6 +228,7 @@
     <ClInclude Include="..\scintilla\src\RunStyles.h" />
     <ClInclude Include="..\scintilla\src\ScintillaBase.h" />
     <ClInclude Include="..\scintilla\src\Selection.h" />
+    <ClInclude Include="..\scintilla\src\SparseVector.h" />
     <ClInclude Include="..\scintilla\src\SplitVector.h" />
     <ClInclude Include="..\scintilla\src\Style.h" />
     <ClInclude Include="..\scintilla\src\UnicodeFromUTF8.h" />

@@ -454,6 +454,9 @@
     <ClCompile Include="..\scintilla\lexers\LexJSON.cxx">
       <Filter>lexers</Filter>
     </ClCompile>
+    <ClCompile Include="..\scintilla\lexers\LexEDIFACT.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\scintilla\src\AutoComplete.h">
@@ -594,14 +597,17 @@
     <ClInclude Include="..\scintilla\src\MarginView.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\scintilla\win32\HanjaDic.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\scintilla\src\Position.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\scintilla\include\Sci_Position.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scintilla\win32\HanjaDic.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scintilla\src\SparseVector.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
