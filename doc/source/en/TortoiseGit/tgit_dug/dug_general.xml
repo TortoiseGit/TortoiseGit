@@ -126,6 +126,14 @@
 						</para>
 					</listitem>
 				</varlistentry>
+				<varlistentry>
+					<term>Ctrl-F</term>
+					<listitem>
+						<para>
+							Search
+						</para>
+					</listitem>
+				</varlistentry>
 			</variablelist>
 		</para>
 	</sect2>
