@@ -254,7 +254,7 @@ BOOL CTortoiseProcApp::InitInstance()
 
 	if (parser.HasKey(L"command") && wcscmp(parser.GetVal(L"command"), L"firststart") == 0)
 	{
-		CFirstStartWizard wizard(IDS_APPNAME);
+		CFirstStartWizard wizard(IDS_APPNAME, CWnd::FromHandle(hWndExplorer), parser.GetLongVal(L"page"));
 		return (wizard.DoModal() == ID_WIZFINISH);
 	}
 
@@ -265,7 +265,7 @@ BOOL CTortoiseProcApp::InitInstance()
 			ShellExecute(hWndExplorer, L"open", GIT_FOR_WINDOWS_URL, nullptr, nullptr, SW_SHOW);
 		else if (ret == 1)
 		{
-			CFirstStartWizard wizard(IDS_APPNAME, nullptr, 1);
+			CFirstStartWizard wizard(IDS_APPNAME, CWnd::FromHandle(hWndExplorer), 2);
 			wizard.DoModal();
 		}
 		return FALSE;

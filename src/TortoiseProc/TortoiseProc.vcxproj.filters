@@ -959,6 +959,9 @@
     <ClCompile Include="FirstStartWizardAuthentication.cpp">
       <Filter>Commands\FirstStart</Filter>
     </ClCompile>
+    <ClCompile Include="FirstStartWizardLanguage.cpp">
+      <Filter>Commands\FirstStart</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1793,6 +1796,9 @@
       <Filter>Commands\setting</Filter>
     </ClInclude>
     <ClInclude Include="FirstStartWizardAuthentication.h">
+      <Filter>Commands\FirstStart</Filter>
+    </ClInclude>
+    <ClInclude Include="FirstStartWizardLanguage.h">
       <Filter>Commands\FirstStart</Filter>
     </ClInclude>
   </ItemGroup>

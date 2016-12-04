@@ -823,7 +823,7 @@ msgstr ""
 msgid "&Labels"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_SETTINGSMAIN: Control id 65535)
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_LANGUAGE: Control id 65535, Dialog IDD_SETTINGSMAIN: Control id 65535)
 msgid "&Language:"
 msgstr ""
 
@@ -4068,6 +4068,10 @@ msgstr ""
 msgid "Download"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_LANGUAGE: Control id 65535)
+msgid "Download language packs:"
+msgstr ""
+
 #. Resource IDs: (16028)
 msgid "Drag to make this menu float"
 msgstr ""
@@ -4801,7 +4805,7 @@ msgstr ""
 msgid "First Parent Only"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_AUTHENTICATION: Control id 4599, Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 4598, Dialog IDD_FIRSTSTARTWIZARD_START: Control id 276, Dialog IDD_FIRSTSTARTWIZARD_USER: Control id 4597)
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_AUTHENTICATION: Control id 4599, Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 4598, Dialog IDD_FIRSTSTARTWIZARD_LANGUAGE: Control id 4600, Dialog IDD_FIRSTSTARTWIZARD_START: Control id 276, Dialog IDD_FIRSTSTARTWIZARD_USER: Control id 4597)
 msgid "First Start Wizard - TortoiseGit"
 msgstr ""
 
@@ -5632,6 +5636,10 @@ msgstr ""
 msgid "If you plan to work inside this folder, leave this unchecked. Typically a bare repo can only have changes 'pushed' to it. (By convention, a bare repo folder should have a name that ends with '.git')"
 msgstr ""
 
+#. Resource IDs: (IDS_FIRSTSTART_LANGUAGEHINT3)
+msgid "If you want to use a translated version of TortoiseGit and your language is missing, <a id=\"download\">download</a> and install a matching language pack now and hit \"Refresh\" before continuing."
+msgstr ""
+
 #. Resource IDs: (IDS_EXTRAPATH_TT)
 #, c-format
 msgid "If your git installation needs an extra entry in the PATH environment variable, you can enter it here and it will get appended to %PATH% automatically when TortoiseGit starts."
@@ -5782,6 +5790,10 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1649)
 msgid "In order to abort a merge progess a reset (to HEAD) is needed."
+msgstr ""
+
+#. Resource IDs: (IDS_FIRSTSTART_LANGUAGEHINT2)
+msgid "In the following combobox you can find all installed language packs which can be used by this version of TortoiseGit."
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1499)
@@ -7724,7 +7736,7 @@ msgstr ""
 msgid "Refname"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_LOGMESSAGE: Control id 1382, IDS_MENUREFRESH)
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_LANGUAGE: Control id 1382, Dialog IDD_LOGMESSAGE: Control id 1382, IDS_MENUREFRESH)
 msgid "Refresh"
 msgstr ""
 
@@ -9944,6 +9956,10 @@ msgstr ""
 #. Resource IDs: (IDS_ABOUTVERSION)
 #, c-format
 msgid "TortoiseGit %d.%d.%d.%d %s\n%s\n"
+msgstr ""
+
+#. Resource IDs: (IDS_FIRSTSTART_LANGUAGEHINT1)
+msgid "TortoiseGit can be localized using language packs."
 msgstr ""
 
 #. Resource IDs: (IDS_ASK_REMOVE_FROM_INDEX)

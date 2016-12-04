@@ -276,6 +276,7 @@
 		</sect2>
 		<sect2 id="tgit-intro-install-lang">
 			<title>Language Packs</title>
+			<?dbhh topicname="HIDD_FIRSTSTARTWIZARD_LANGUAGE"?>
 			<indexterm>
 				<primary>language packs</primary>
 			</indexterm>

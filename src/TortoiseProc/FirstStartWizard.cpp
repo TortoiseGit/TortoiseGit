@@ -28,6 +28,7 @@ CFirstStartWizard::CFirstStartWizard(UINT nIDCaption, CWnd* pParentWnd, UINT iSe
 {
 	SetWizardMode();
 	SetActivePage(iSelectPage);
+	AddPage(&language);
 	AddPage(&start);
 	AddPage(&git);
 	AddPage(&user);

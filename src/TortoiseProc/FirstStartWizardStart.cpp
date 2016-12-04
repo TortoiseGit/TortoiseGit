@@ -72,7 +72,7 @@ BOOL CFirstStartWizardStart::OnSetActive()
 {
 	CFirstStartWizard* wiz = (CFirstStartWizard*)GetParent();
 
-	wiz->SetWizardButtons(PSWIZB_NEXT);
+	wiz->SetWizardButtons(PSWIZB_BACK | PSWIZB_NEXT);
 
 	PostMessage(WM_SETPAGEFOCUS, 0, 0);
 

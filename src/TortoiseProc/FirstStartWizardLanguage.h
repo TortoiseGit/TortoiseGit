@@ -17,31 +17,36 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
-#include "StandAloneDlg.h"
-#include "FirstStartWizardLanguage.h"
-#include "FirstStartWizardStart.h"
-#include "FirstStartWizardGit.h"
-#include "FirstStartWizardUser.h"
-#include "FirstStartWizardAuthentication.h"
+#include "FirstStartWizardBasePage.h"
+#include "HyperLink.h"
 
-class CFirstStartWizard : public CStandAloneDialogTmpl<CPropertySheetEx>
+/**
+ * First page in the first start wizard
+ */
+class CFirstStartWizardLanguage : public CFirstStartWizardBasePage
 {
-	DECLARE_DYNAMIC(CFirstStartWizard)
+	DECLARE_DYNAMIC(CFirstStartWizardLanguage)
 
 public:
-	CFirstStartWizard(UINT nIDCaption, CWnd* pParentWnd = nullptr, UINT iSelectPage = 0);
-	virtual ~CFirstStartWizard();
+	CFirstStartWizardLanguage();
+	virtual ~CFirstStartWizardLanguage();
+
+	enum { IDD = IDD_FIRSTSTARTWIZARD_LANGUAGE };
 
 protected:
+	virtual void	DoDataExchange(CDataExchange* pDX);
+	virtual BOOL	OnInitDialog();
+	virtual BOOL	OnSetActive();
+	virtual LRESULT	OnWizardNext();
+	afx_msg LRESULT	OnDialogDisplayed(WPARAM wParam, LPARAM lParam);
+	afx_msg void	OnClickedLink(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void	OnBnClickedRefresh();
+
 	DECLARE_MESSAGE_MAP()
-	virtual BOOL OnInitDialog();
 
-	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
-	afx_msg void OnCancel();
+	CComboBox		m_LanguageCombo;
+	CRegDWORD		m_regLanguage;
+	DWORD			m_dwLanguage;
 
-	CFirstStartWizardLanguage			language;
-	CFirstStartWizardStart				start;
-	CFirstStartWizardGit				git;
-	CFirstStartWizardUser				user;
-	CFirstStartWizardAuthentication		authentication;
+	CHyperLink		m_link;
 };

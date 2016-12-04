@@ -131,6 +131,7 @@
     <ClCompile Include="FirstStartWizardAuthentication.cpp" />
     <ClCompile Include="FirstStartWizardBasePage.cpp" />
     <ClCompile Include="FirstStartWizardGit.cpp" />
+    <ClCompile Include="FirstStartWizardLanguage.cpp" />
     <ClCompile Include="FirstStartWizardStart.cpp" />
     <ClCompile Include="FirstStartWizardUser.cpp" />
     <ClCompile Include="GravatarPictureBox.cpp" />
@@ -414,6 +415,7 @@
     <ClInclude Include="FirstStartWizardAuthentication.h" />
     <ClInclude Include="FirstStartWizardBasePage.h" />
     <ClInclude Include="FirstStartWizardGit.h" />
+    <ClInclude Include="FirstStartWizardLanguage.h" />
     <ClInclude Include="FirstStartWizardStart.h" />
     <ClInclude Include="FirstStartWizardUser.h" />
     <ClInclude Include="GravatarPictureBox.h" />

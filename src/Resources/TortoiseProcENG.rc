@@ -1366,7 +1366,7 @@ STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "First Start Wizard - TortoiseGit"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
-    CONTROL         "",IDC_FIRSTSTART_HINT,"SysLink",LWS_NOPREFIX | WS_TABSTOP,17,7,289,135,SS_NOPREFIX
+    CONTROL         "",IDC_FIRSTSTART_HINT,"SysLink",LWS_NOPREFIX | WS_TABSTOP,17,7,289,135
 END
 
 IDD_SETTINGSCOLORS_1 DIALOGEX 0, 0, 300, 217
@@ -2204,6 +2204,19 @@ BEGIN
     CONTROL         "&Don't store these settings now.",IDC_DONTSAVE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,145,172,11
     PUSHBUTTON      "&Advanced...",IDC_ADVANCEDCONFIGURATION,189,144,117,12
     LTEXT           "These settings will be stored to your global git configuration (%HOME%/.gitconfig) and will be used for all your git repositories as a default.",IDC_STATIC,17,160,289,25
+END
+
+IDD_FIRSTSTARTWIZARD_LANGUAGE DIALOGEX 0, 0, 322, 191
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "First Start Wizard - TortoiseGit"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    CONTROL         "",IDC_FIRSTSTART_HINT,"SysLink",LWS_NOPREFIX | WS_TABSTOP,17,7,289,67
+    LTEXT           "&Language:",IDC_STATIC,17,82,86,8
+    COMBOBOX        IDC_LANGUAGECOMBO,111,80,129,64,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "",IDC_LINK,17,110,289,10
+    PUSHBUTTON      "Refresh",IDC_REFRESH,245,80,61,13
+    LTEXT           "Download language packs:",IDC_STATIC,17,100,289,8
 END
 
 
@@ -3155,6 +3168,17 @@ BEGIN
         RIGHTMARGIN, 315
         VERTGUIDE, 17
         VERTGUIDE, 189
+        VERTGUIDE, 306
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 184
+        HORZGUIDE, 176
+    END
+
+    IDD_FIRSTSTARTWIZARD_LANGUAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 315
+        VERTGUIDE, 17
         VERTGUIDE, 306
         TOPMARGIN, 7
         BOTTOMMARGIN, 184
@@ -4881,6 +4905,16 @@ BEGIN
     IDS_HINTLASTMESSAGES    "Hint: Recently used commit messages are available using the context menu of the text field."
     IDS_FIRSTSTART_AUTHENTICATIONTITLE "Authentication and credential store"
     IDS_FIRSTSTART_SSHHINT  "TortoiseGitPlink is recommended as SSH client. If you don't have a key pair yet, you should generate one. Keep the private one in a save place and set up the public key on your hosting platform. Use the PuTTY authentication agent for caching the password (done automatically if a PuTTY key is configured for a remote). For advanced tips & tricks see our <a id=""manual"">manual</a> and <a id=""sshfaq"">FAQ</a>."
+    IDS_FIRSTSTART_LANGUAGEHINT1 
+                            "TortoiseGit can be localized using language packs."
+    IDS_FIRSTSTART_LANGUAGEHINT2 
+                            "In the following combobox you can find all installed language packs which can be used by this version of TortoiseGit."
+END
+
+STRINGTABLE
+BEGIN
+    IDS_FIRSTSTART_LANGUAGEHINT3 
+                            "If you want to use a translated version of TortoiseGit and your language is missing, <a id=""download"">download</a> and install a matching language pack now and hit ""Refresh"" before continuing."
 END
 
 #endif    // English (U.S.) resources
