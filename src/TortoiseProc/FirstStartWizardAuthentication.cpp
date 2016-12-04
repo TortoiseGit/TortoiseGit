@@ -24,6 +24,8 @@
 #include "Settings\SettingGitCredential.h"
 #include "PathUtils.h"
 
+#define WM_SETPAGEFOCUS WM_APP+2
+
 IMPLEMENT_DYNAMIC(CFirstStartWizardAuthentication, CFirstStartWizardBasePage)
 
 CFirstStartWizardAuthentication::CFirstStartWizardAuthentication() : CFirstStartWizardBasePage(CFirstStartWizardAuthentication::IDD)
@@ -49,6 +51,8 @@ BEGIN_MESSAGE_MAP(CFirstStartWizardAuthentication, CFirstStartWizardBasePage)
 	ON_BN_CLICKED(IDC_GENERATEPUTTYKEY, &CFirstStartWizardAuthentication::OnBnClickedGenerateputtykey)
 	ON_BN_CLICKED(IDC_ADVANCEDCONFIGURATION, &CFirstStartWizardAuthentication::OnBnClickedAdvancedconfiguration)
 	ON_BN_CLICKED(IDC_DONTSAVE, OnClickedNoSave)
+	ON_MESSAGE(WM_SETPAGEFOCUS, OnDialogDisplayed)
+	ON_NOTIFY(NM_CLICK, IDC_FIRSTSTART_SSHHINT, OnClickedLink)
 END_MESSAGE_MAP()
 
 void CFirstStartWizardAuthentication::OnClickedNoSave()
@@ -216,6 +220,8 @@ BOOL CFirstStartWizardAuthentication::OnSetActive()
 
 	wiz->SetWizardButtons(PSWIZB_FINISH | PSWIZB_BACK);
 
+	PostMessage(WM_SETPAGEFOCUS, 0, 0);
+
 	return CFirstStartWizardBasePage::OnSetActive();
 }
 
@@ -231,4 +237,26 @@ void CFirstStartWizardAuthentication::OnBnClickedAdvancedconfiguration()
 	UpdateData(FALSE);
 	OnClickedNoSave();
 	CAppUtils::RunTortoiseGitProc(L"/command:settings /page:gitcredential", false, false);
+}
+
+LRESULT CFirstStartWizardAuthentication::OnDialogDisplayed(WPARAM /*wParam*/, LPARAM /*lParam*/)
+{
+	GetDlgItem(IDC_COMBO_SSHCLIENT)->SetFocus();
+
+	return 0;
+}
+
+void CFirstStartWizardAuthentication::OnClickedLink(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	ATLASSERT(pNMHDR && pResult);
+	auto pNMLink = reinterpret_cast<PNMLINK>(pNMHDR);
+	if (wcscmp(pNMLink->item.szID, L"manual") == 0)
+		HtmlHelp(0x20000 + IDD_FIRSTSTARTWIZARD_AUTHENTICATION);
+	else if (wcscmp(pNMLink->item.szID, L"sshfaq") == 0)
+	{
+		CString helppath(theApp.m_pszHelpFilePath);
+		helppath += L"::/tgit-ssh-howto.html";
+		::HtmlHelp(GetSafeHwnd(), helppath, HH_DISPLAY_TOPIC, 0);
+	}
+	*pResult = 0;
 }

@@ -1366,7 +1366,7 @@ STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "First Start Wizard - TortoiseGit"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
-    LTEXT           "",IDC_FIRSTSTART_HINT,17,7,289,135,SS_NOPREFIX
+    CONTROL         "",IDC_FIRSTSTART_HINT,"SysLink",LWS_NOPREFIX | WS_TABSTOP,17,7,289,135,SS_NOPREFIX
 END
 
 IDD_SETTINGSCOLORS_1 DIALOGEX 0, 0, 300, 217
@@ -2194,7 +2194,7 @@ CAPTION "First Start Wizard - TortoiseGit"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
     GROUPBOX        "SSH (URLs look like ""git@example.com"")",IDC_STATIC,7,7,308,84
-    LTEXT           "",IDC_FIRSTSTART_SSHHINT,17,17,289,57,SS_NOPREFIX
+    CONTROL         "",IDC_FIRSTSTART_SSHHINT,"SysLink",LWS_NOPREFIX | WS_TABSTOP,17,17,289,56
     COMBOBOX        IDC_COMBO_SSHCLIENT,17,74,144,12,CBS_DROPDOWNLIST | WS_TABSTOP
     PUSHBUTTON      "&Generate PuTTY  key pair",IDC_GENERATEPUTTYKEY,169,73,137,14
     GROUPBOX        "HTTP (URLs start with ""http://"" or ""https://"")",IDC_STATIC,7,92,308,95
@@ -3726,8 +3726,8 @@ BEGIN
     IDS_EXTRAPATH_TT        "If your git installation needs an extra entry in the PATH environment variable, you can enter it here and it will get appended to %PATH% automatically when TortoiseGit starts."
     IDS_FIRSTSTART_HINT1    "TortoiseGit is designed as a Shell Extension. Therefore the main interaction with TortoiseGit will be using the context menu of the Windows shell such as the Windows Explorer."
     IDS_FIRSTSTART_HINT2    "This is the First Start Wizard which will help you configuring the basic settings. TortoiseGit is highly configurable, so it is advisable that you have a look into its settings dialog. The settings dialog is reachable using the start menu or the context menu of the Windows Explorer: TortoiseGit -> Settings."
-    IDS_FIRSTSTART_HINT3    "Please see the manual for general hints. E.g. in most dialogs there are some shared shortcuts such as F5 for refresh and oftentimes there are powerfull context menus."
-    IDS_FIRSTSTART_HINT4    "We hope you enjoy the usage of TortoiseGit! In case of questions or problems, please consult our manual or go to https://tortoisegit.org/support/"
+    IDS_FIRSTSTART_HINT3    "Please see the <a id=""manual"">manual</a> for general hints. E.g. in most dialogs there are some shared shortcuts such as F5 for refresh or CTRL+F for search and oftentimes there are powerfull context menus."
+    IDS_FIRSTSTART_HINT4    "We hope you enjoy the usage of TortoiseGit! In case of questions or problems, please consult our manual or go to <a id=""support"">https://tortoisegit.org/support/</a>"
 END
 
 STRINGTABLE
@@ -4880,7 +4880,7 @@ BEGIN
     IDS_REALLYCANCEL        "Are you sure you want to cancel?"
     IDS_HINTLASTMESSAGES    "Hint: Recently used commit messages are available using the context menu of the text field."
     IDS_FIRSTSTART_AUTHENTICATIONTITLE "Authentication and credential store"
-    IDS_FIRSTSTART_SSHHINT  "TortoiseGitPlink is recommended as SSH client. If you don't have a key pair yet, you should generate one. Keep the private one in a save place and set up the public key on your hosting platform. Use the PuTTY authentication agent for caching the password (done automatically if a PuTTY key is configured for a remote). For advanced tips & tricks see our manual and FAQ."
+    IDS_FIRSTSTART_SSHHINT  "TortoiseGitPlink is recommended as SSH client. If you don't have a key pair yet, you should generate one. Keep the private one in a save place and set up the public key on your hosting platform. Use the PuTTY authentication agent for caching the password (done automatically if a PuTTY key is configured for a remote). For advanced tips & tricks see our <a id=""manual"">manual</a> and <a id=""sshfaq"">FAQ</a>."
 END
 
 #endif    // English (U.S.) resources

@@ -41,6 +41,8 @@ protected:
 	afx_msg void	OnBnClickedGenerateputtykey();
 	afx_msg void	OnBnClickedAdvancedconfiguration();
 	afx_msg void	OnClickedNoSave();
+	afx_msg LRESULT	OnDialogDisplayed(WPARAM wParam, LPARAM lParam);
+	afx_msg void	OnClickedLink(NMHDR* pNMHDR, LRESULT* pResult);
 
 	DECLARE_MESSAGE_MAP()
 

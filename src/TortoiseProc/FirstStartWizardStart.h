@@ -36,6 +36,8 @@ protected:
 	virtual void	DoDataExchange(CDataExchange* pDX);
 	virtual BOOL	OnInitDialog();
 	virtual BOOL	OnSetActive();
+	afx_msg LRESULT	OnDialogDisplayed(WPARAM wParam, LPARAM lParam);
+	afx_msg void	OnClickedLink(NMHDR* pNMHDR, LRESULT* pResult);
 
 	DECLARE_MESSAGE_MAP()
 };
