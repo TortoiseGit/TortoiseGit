@@ -29,7 +29,7 @@ CXXFLAGS=-Zi -TP -MP -W4 -EHsc -Zc:forScope -Zc:wchar_t $(CRTFLAGS)
 CXXDEBUG=-Od -MTd -DDEBUG
 CXXNDEBUG=-O1 -MT -DNDEBUG -GL
 NAME=-Fo
-LDFLAGS=-OPT:REF -LTCG -DEBUG $(XP_LINK)
+LDFLAGS=-OPT:REF -LTCG -IGNORE:4197 -DEBUG $(XP_LINK)
 LDDEBUG=
 LIBS=KERNEL32.lib USER32.lib GDI32.lib IMM32.lib OLE32.LIB OLEAUT32.LIB
 NOLOGO=-nologo
@@ -136,6 +136,7 @@ LEXOBJS=\
 	$(DIR_O)\LexDMAP.obj \
 	$(DIR_O)\LexDMIS.obj \
 	$(DIR_O)\LexECL.obj \
+	$(DIR_O)\LexEDIFACT.obj \
 	$(DIR_O)\LexEiffel.obj \
 	$(DIR_O)\LexErlang.obj \
 	$(DIR_O)\LexErrorList.obj \
@@ -348,6 +349,7 @@ $(DIR_O)\ContractionState.obj: \
 	../src/SplitVector.h \
 	../src/Partitioning.h \
 	../src/RunStyles.h \
+	../src/SparseVector.h \
 	../src/ContractionState.h
 $(DIR_O)\Decoration.obj: \
 	../src/Decoration.cxx \
@@ -366,6 +368,7 @@ $(DIR_O)\Document.obj: \
 	../include/Sci_Position.h \
 	../include/Scintilla.h \
 	../lexlib/CharacterSet.h \
+	../lexlib/CharacterCategory.h \
 	../src/Position.h \
 	../src/SplitVector.h \
 	../src/Partitioning.h \
@@ -444,6 +447,7 @@ $(DIR_O)\EditView.obj: \
 	../include/Sci_Position.h \
 	../include/Scintilla.h \
 	../lexlib/StringCopy.h \
+	../lexlib/CharacterSet.h \
 	../src/Position.h \
 	../src/SplitVector.h \
 	../src/Partitioning.h \
@@ -555,6 +559,8 @@ $(DIR_O)\LexDMAP.obj: ..\lexers\LexDMAP.cxx $(LEX_HEADERS)
 $(DIR_O)\LexDMIS.obj: ..\lexers\LexDMIS.cxx $(LEX_HEADERS)
 
 $(DIR_O)\LexECL.obj: ..\lexers\LexECL.cxx $(LEX_HEADERS)
+
+$(DIR_O)\LexEDIFACT.obj: ..\lexers\LexEDIFACT.cxx $(LEX_HEADERS)
 
 $(DIR_O)\LexEiffel.obj: ..\lexers\LexEiffel.cxx $(LEX_HEADERS)
 
@@ -1041,7 +1047,8 @@ $(DIR_O)\StyleContext.obj: \
 	../include/Sci_Position.h \
 	../lexlib/LexAccessor.h \
 	../lexlib/Accessor.h \
-	../lexlib/StyleContext.h
+	../lexlib/StyleContext.h \
+	../lexlib/CharacterSet.h
 $(DIR_O)\UniConversion.obj: \
 	../src/UniConversion.cxx \
 	../src/UniConversion.h
@@ -1067,7 +1074,7 @@ $(DIR_O)\XPM.obj: \
 	../src/XPM.cxx \
 	../include/Platform.h \
 	../src/XPM.h
-$(DIR_O)\HanjaDic: \
+$(DIR_O)\HanjaDic.obj: \
 	HanjaDic.cxx \
 	../src/UniConversion.h \
 	HanjaDic.h
