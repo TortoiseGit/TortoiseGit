@@ -77,6 +77,7 @@ public:
 	Surface *pixmapLine;
 	Surface *pixmapIndentGuide;
 	Surface *pixmapIndentGuideHighlight;
+	void	*editor;
 
 	LineLayoutCache llc;
 	PositionCache posCache;
