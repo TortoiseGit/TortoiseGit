@@ -66,7 +66,7 @@
 	<para>
 		To avoid being prompted for a password repeatedly, you might also
 		consider using a password caching tool such as Pageant. This is also
-		available for download from the PuTTY website or included in the TortoiseGit package.
+		available for download from the PuTTY website or included in the TortoiseGit package. (Also see <xref linkend="tgit-dug-general-auth"/>.)
 	</para>
 	<para>
 		Finally, setting up SSH on clients is a non-trivial process

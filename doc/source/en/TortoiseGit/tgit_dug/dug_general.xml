@@ -137,73 +137,63 @@
 			</variablelist>
 		</para>
 	</sect2>
-	<!--
 	<sect2 id="tgit-dug-general-auth">
 		<title>Authentication</title>
+		<?dbhh topicname="HIDD_FIRSTSTARTWIZARD_AUTHENTICATION"?>
 		<indexterm>
 			<primary>authentication</primary>
 		</indexterm>
-		<para>
-			If the repository that you are trying to access is password protected, an 
-			authentication Dialog will show up.
-			<figure id="tgit-fig-authentication">
-				<title>Authentication Dialog</title>
-				<graphic fileref="../images/Authenticate.png"/>
-			</figure>
-			Enter your username and password. The checkbox will make TortoiseGit
-			store the credentials in Git's default directory: 
-			<filename>%APPDATA%\Git\auth</filename> in three subdirectories:
-			<itemizedlist>
-				<listitem>
-					<para>
-						<filename>svn.simple</filename> contains credentials
-						for basic authentication (username/password).
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						<filename>svn.ssl.server</filename> contains
-						SSL server certificates.
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						<filename>svn.username</filename> contains credentials
-						for username-only authentication (no password needed).
-					</para>
-				</listitem>
-			</itemizedlist>
-		</para>
-		<para>
-			If you want to clear the authentication cache for all
-			servers, you can do so from the <guilabel>Saved Data</guilabel> page
-			of TortoiseGit's settings dialog. That button will clear all cached
-			authentication data from the Git <filename>auth</filename>
-			directories, as well as any authentication
-			data stored in the registry by earlier versions of TortoiseGit.
-			Refer to <xref linkend="tgit-dug-settings-saved-data"/>.
-		</para>
-		<para>
-			Some people like to have the authentication data deleted when they
-			log off Windows, or on shutdown. The way to do that is to use a shutdown
-			script to delete the <filename>%APPDATA%\Git\auth</filename>
-			directory, e.g.
-<screen>
-@echo off
-rmdir /s /q "%APPDATA%\Git\auth"
-</screen>
-			You can find a description of how to install such scripts at
-			<ulink url="http://www.windows-help-central.com/windows-shutdown-script.html">
-				<citetitle>windows-help-central.com</citetitle>
-			</ulink>.
-		</para>
-		<para>
-			For more information on how to set up your server for
-			authentication and access control, refer to
-			<xref linkend="tgit-serversetup"/>
-		</para>
+		<sect3 id="tgit-dug-general-auth-ssh">
+			<title>SSH (URLs look like git@example.com)</title>
+			<para>
+				TortoiseGitPlink is recommended as SSH client because it better integrates with Windows.
+				By default TortoiseGitPlink does not store passwords, you can use the PuTTY authentication agent
+				for caching the password (done automatically if a PuTTY key is configured for a remote).
+				For advanced tips &amp; tricks see <xref linkend="tgit-ssh-howto"/>. Note, however, that TortoiseGitPlink
+				does not respect <filename>~/.ssh/config</filename> which is OpenSSH specific (see PuTTY tips &amp; tricks
+				or configure OpenSSH as SSH client, see next paragraph). If you also want to use
+				TortoiseGitPlink on Git Bash, create an environment variable called <literal>GIT_SSH</literal>
+				with the path to the PuTTY plink.exe or preferably to TortoiseGitPLink.exe. This can be done by
+				re-executing the Git for WIndows installer (there you can choose which SSH client to use), on the
+				command line by executing <literal>set GIT_SSH=PATH_TO_PLINK.EXE"</literal>
+				(<filename>C:\Program Files\TortoiseGit\bin\TortoiseGitPLink.exe</filename> on default installations)
+				or configure the environment variables
+				<ulink url="http://www.computerhope.com/issues/ch000549.htm">
+					<citetitle>permanently</citetitle>
+				</ulink>.
+			</para>
+			<para>
+				It is also possible to use OpenSSH (shipped with Git for Windows, Cygwin, and Msys2). Just open TortoiseGit
+				settings and open the <guilabel>Network</guilabel> page and enter <filename>ssh.exe</filename> as SSH client,
+				see <xref linkend="tgit-dug-settings-network"/> and
+				<ulink url="https://stackoverflow.com/a/32115724/3906760">
+					<citetitle>this answer on StackOverflow</citetitle>
+				</ulink>. When OpenSSH is used, you can also make use of <filename>~/.ssh/config</filename> (cf. 
+				<ulink url="https://stackoverflow.com/q/30320458/3906760">
+					<citetitle>this answer on StackOverflow</citetitle>
+				</ulink>).
+			</para>
+		</sect3>
+		<sect3 id="tgit-dug-general-auth-https">
+			<title>HTTP/HTTPS (URLs start with https:// or http://)</title>
+			<para>
+				By default Git does not save/cache credentials. However, you can configure a
+				<ulink url="https://stackoverflow.com/q/14000173/3906760">
+					<citetitle>credential helper</citetitle>
+				</ulink>
+				(recommended, also see <xref linkend="gitcredentials(7)"/>) or manually use
+				<ulink url="https://stackoverflow.com/revisions/6031266/6">
+					<citetitle>%HOME%/_netrc</citetitle>
+				</ulink>.
+			</para>
+			<para>
+				If you have set up a credential store and you want to clear some stored credentials see
+				<ulink url="https://stackoverflow.com/a/31782500/3906760">
+					<citetitle>this answer on StackOverflow</citetitle>
+				</ulink>.
+			</para>
+		</sect3>
 	</sect2>
-	-->
 	<sect2 id="tgit-dug-general-window-max">
 		<title>Maximizing Windows</title>
 		<indexterm>

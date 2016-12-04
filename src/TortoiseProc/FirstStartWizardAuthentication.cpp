@@ -30,7 +30,6 @@ CFirstStartWizardAuthentication::CFirstStartWizardAuthentication() : CFirstStart
 , m_bNoSave(FALSE)
 {
 	m_psp.dwFlags |= PSP_DEFAULT | PSP_USEHEADERTITLE;
-	m_psp.dwFlags &= ~PSP_HASHELP;
 	m_psp.pszHeaderTitle = MAKEINTRESOURCE(IDS_FIRSTSTART_AUTHENTICATIONTITLE);
 }
 
