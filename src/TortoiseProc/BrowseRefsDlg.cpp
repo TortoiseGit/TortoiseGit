@@ -288,7 +288,7 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 	AddAnchor(IDC_INCLUDENESTEDREFS, BOTTOM_LEFT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
-	m_ListRefLeafs.SetExtendedStyle(m_ListRefLeafs.GetExtendedStyle() | LVS_EX_INFOTIP);
+	m_ListRefLeafs.SetExtendedStyle(m_ListRefLeafs.GetExtendedStyle() | LVS_EX_INFOTIP | LVS_EX_DOUBLEBUFFER);
 	static UINT columnNames[] = { IDS_BRANCHNAME, IDS_TRACKEDBRANCH, IDS_DATELASTCOMMIT, IDS_LASTCOMMIT, IDS_LASTAUTHOR, IDS_HASH, IDS_DESCRIPTION };
 	static int columnWidths[] = { 0, 0, 0, 300, 0, 0, 80 };
 	DWORD dwDefaultColumns = (1 << eCol_Name) | (1 << eCol_Upstream ) | (1 << eCol_Date) | (1 << eCol_Msg) |
