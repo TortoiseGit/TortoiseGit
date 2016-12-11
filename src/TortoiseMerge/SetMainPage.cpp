@@ -229,6 +229,7 @@ BEGIN_MESSAGE_MAP(CSetMainPage, CPropertyPage)
 	ON_BN_CLICKED(IDC_AUTOADD, &CSetMainPage::OnModified)
 	ON_EN_CHANGE(IDC_MAXINLINE, &CSetMainPage::OnModifiedWithReload)
 	ON_BN_CLICKED(IDC_USERIBBONS, &CSetMainPage::OnModified)
+	ON_WM_MEASUREITEM()
 END_MESSAGE_MAP()
 
 
@@ -265,4 +266,18 @@ BOOL CSetMainPage::DialogEnableWindow(UINT nID, BOOL bEnable)
 		SendMessage(WM_NEXTDLGCTL, 0, FALSE);
 	}
 	return pwndDlgItem->EnableWindow(bEnable);
+}
+
+void CSetMainPage::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct)
+{
+	CFont* pFont = GetFont();
+	if (pFont) {
+		CDC* pDC = GetDC();
+		CFont* pFontPrev = pDC->SelectObject(pFont);
+		int iborder = ::GetSystemMetrics(SM_CYBORDER);
+		CSize sz = pDC->GetTextExtent(L"0");
+		lpMeasureItemStruct->itemHeight = sz.cy + 2 * iborder;
+		pDC->SelectObject(pFontPrev);
+	}
+	CPropertyPage::OnMeasureItem(nIDCtl, lpMeasureItemStruct);
 }

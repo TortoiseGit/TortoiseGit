@@ -53,6 +53,7 @@ protected:
 	afx_msg void OnModified();
 	afx_msg void OnModifiedWithReload();
 	afx_msg void OnBnClickedWhitespace();
+	afx_msg void OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct);
 
 	DECLARE_MESSAGE_MAP()
 
