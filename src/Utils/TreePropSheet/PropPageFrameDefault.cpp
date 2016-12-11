@@ -170,26 +170,42 @@ void CPropPageFrameDefault::DrawCaption(CDC *pDc, CRect rect, LPCTSTR lpszCaptio
 	COLORREF	clrRight = pDc->GetPixel(rect.right-1, rect.top);
 	FillGradientRectH(pDc, rect, clrLeft, clrRight);
 
+	double hScale = 1.0;
+	double vScale = 1.0;
+
 	// draw icon
 	if (hIcon && m_Images.GetSafeHandle() && m_Images.GetImageCount() == 1)
 	{
-		IMAGEINFO	ii;
+		IMAGEINFO ii;
 		m_Images.GetImageInfo(0, &ii);
-		CPoint		pt(6, rect.CenterPoint().y - (ii.rcImage.bottom-ii.rcImage.top)/2);
-		m_Images.Draw(pDc, 0, pt, ILD_TRANSPARENT);
-		rect.left+= (ii.rcImage.right-ii.rcImage.left) + 6;
+		const RECT& rcImage = ii.rcImage;
+		SIZE sz;
+		sz.cx = rcImage.right - rcImage.left;
+		sz.cy = rcImage.bottom - rcImage.top;
+		hScale = vScale = max(1.0, rect.Height() / sz.cy * 0.7);
+		sz.cx = (LONG)(sz.cx * hScale + 0.5);
+		sz.cy = (LONG)(sz.cy * vScale + 0.5);
+		LONG xOffset = (LONG)(6 * hScale + 0.5);
+		CPoint pt(xOffset, rect.CenterPoint().y - (sz.cy)/2);
+		m_Images.DrawEx(pDc, 0, pt, sz, CLR_DEFAULT, CLR_DEFAULT, ILD_TRANSPARENT|ILD_SCALE);
+		rect.left += sz.cx + xOffset;
 	}
 
 	// draw text
-	rect.left+= 2;
+	rect.left += (LONG)(2 * hScale + 0.5);
 
 	COLORREF	clrPrev = pDc->SetTextColor(GetSysColor(COLOR_CAPTIONTEXT));
 	int				nBkStyle = pDc->SetBkMode(TRANSPARENT);
-	CFont			*pFont = (CFont*)pDc->SelectStockObject(SYSTEM_FONT);
 
-	//pDc->DrawText(lpszCaption, rect, DT_LEFT|DT_VCENTER|DT_SINGLELINE|DT_END_ELLIPSIS);
+	LOGFONT lf;
+	SystemParametersInfo(SPI_GETICONTITLELOGFONT, sizeof(LOGFONT), &lf, 0);
+	CFont font;
+	font.CreateFontIndirect(&lf);
+	CFont *pFont = pDc->SelectObject(&font);
 
-	TextOutTryFL(pDc->GetSafeHdc(), rect.left, rect.top, lpszCaption, (int)wcslen(lpszCaption));
+	pDc->DrawText(lpszCaption, rect, DT_LEFT|DT_VCENTER|DT_SINGLELINE|DT_END_ELLIPSIS);
+
+	//TextOutTryFL(pDc->GetSafeHdc(), rect.left, rect.top, lpszCaption, (int)wcslen(lpszCaption));
 
 	pDc->SetTextColor(clrPrev);
 	pDc->SetBkMode(nBkStyle);
