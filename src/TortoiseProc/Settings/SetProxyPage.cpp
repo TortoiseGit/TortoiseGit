@@ -72,10 +72,7 @@ HRESULT StringEscape(const CString& str_in, CString* escaped_string) {
 		return E_INVALIDARG;
 
 	DWORD buf_len = INTERNET_MAX_URL_LENGTH + 1;
-	HRESULT hr = ::UrlEscape(str_in, escaped_string->GetBufferSetLength(buf_len), &buf_len, URL_ESCAPE_PERCENT | URL_ESCAPE_SEGMENT_ONLY);
-	if (SUCCEEDED(hr)) {
-		escaped_string->ReleaseBuffer();
-	}
+	HRESULT hr = ::UrlEscape(str_in, CStrBuf(*escaped_string, buf_len), &buf_len, URL_ESCAPE_PERCENT | URL_ESCAPE_SEGMENT_ONLY);
 
 	escaped_string->Replace(L"@", L"%40");
 	escaped_string->Replace(L":", L"%3a");
@@ -89,11 +86,7 @@ HRESULT StringUnescape(const CString& str_in, CString* unescaped_string) {
 
 	DWORD buf_len = INTERNET_MAX_URL_LENGTH + 1;
 	ATL::CComBSTR temp(str_in);
-	HRESULT hr = ::UrlUnescape(temp, unescaped_string->GetBufferSetLength(buf_len), &buf_len, 0);
-	if (SUCCEEDED(hr))
-		unescaped_string->ReleaseBuffer();
-
-	return hr;
+	return ::UrlUnescape(temp, CStrBuf(*unescaped_string, buf_len), &buf_len, 0);
 }
 
 BOOL CSetProxyPage::OnInitDialog()

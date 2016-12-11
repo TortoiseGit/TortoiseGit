@@ -226,8 +226,7 @@ void CPatchListCtrl::OnDropFiles(HDROP hDropInfo)
 	for (UINT i = 0; i < nNumFiles; ++i)
 	{
 		CString file;
-		DragQueryFile(hDropInfo, i, file.GetBufferSetLength(MAX_PATH), MAX_PATH);
-		file.ReleaseBuffer();
+		DragQueryFile(hDropInfo, i, CStrBuf(file, MAX_PATH), MAX_PATH);
 		if (PathIsDirectory(file))
 			continue;
 

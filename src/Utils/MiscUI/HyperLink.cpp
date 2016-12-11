@@ -273,9 +273,7 @@ void CHyperLink::SetDefaultCursor()
 		}
 		// windows cursor not available, so try to load it from winhlp32.exe
 		CString strWndDir;
-		GetWindowsDirectory(strWndDir.GetBuffer(MAX_PATH), MAX_PATH);	// Explorer can't handle paths longer than MAX_PATH.
-		strWndDir.ReleaseBuffer();
-
+		GetWindowsDirectory(CStrBuf(strWndDir, MAX_PATH), MAX_PATH);	// Explorer can't handle paths longer than MAX_PATH.
 		strWndDir += L"\\winhlp32.exe";
 		// This retrieves cursor #106 from winhlp32.exe, which is a hand pointer
 		CAutoLibrary hModule = LoadLibrary(strWndDir);

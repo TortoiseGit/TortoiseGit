@@ -606,8 +606,7 @@ void CRepositoryBrowser::FillListCtrlForShadowTree(CShadowFilesTree* pTree)
 			temp = CPathUtils::GetFileExtFromPath((*itShadowTree).second.m_sName);
 			m_RepoList.SetItemText(indexItem, eCol_Extension, temp);
 
-			StrFormatByteSize64((*itShadowTree).second.m_iSize, temp.GetBuffer(20), 20);
-			temp.ReleaseBuffer();
+			StrFormatByteSize64((*itShadowTree).second.m_iSize, CStrBuf(temp, 20), 20);
 			m_RepoList.SetItemText(indexItem, eCol_FileSize, temp);
 		}
 	}
@@ -801,8 +800,7 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 				diffWith = m_sMarkForDiffVersion;
 			else
 			{
-				PathCompactPathEx(diffWith.GetBuffer(40), m_sMarkForDiffFilename, 39, 0);
-				diffWith.ReleaseBuffer();
+				PathCompactPathEx(CStrBuf(diffWith, 40), m_sMarkForDiffFilename, 39, 0);
 				diffWith += L':' + m_sMarkForDiffVersion.ToString().Left(g_Git.GetShortHASHLength());
 			}
 			CString menuEntry;

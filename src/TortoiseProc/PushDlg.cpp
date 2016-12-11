@@ -303,8 +303,7 @@ void CPushDlg::GetRemoteBranch(CString currentBranch)
 		{
 			CString str;
 			int n = m_Remote.GetLBTextLen(i);
-			m_Remote.GetLBText(i, str.GetBuffer(n));
-			str.ReleaseBuffer();
+			m_Remote.GetLBText(i, CStrBuf(str, n));
 			if (str == pushRemote)
 			{
 				m_Remote.SetCurSel(i);

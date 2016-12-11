@@ -450,9 +450,7 @@ CString CTGitPath::GetRootPathString() const
 {
 	EnsureBackslashPathSet();
 	CString workingPath = m_sBackslashPath;
-	LPTSTR pPath = workingPath.GetBuffer(MAX_PATH);		// MAX_PATH ok here.
-	ATLVERIFY(::PathStripToRoot(pPath));
-	workingPath.ReleaseBuffer();
+	ATLVERIFY(::PathStripToRoot(CStrBuf(workingPath, MAX_PATH))); // MAX_PATH ok here.
 	return workingPath;
 }
 

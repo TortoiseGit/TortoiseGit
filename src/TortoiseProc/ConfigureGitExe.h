@@ -65,8 +65,7 @@ protected:
 		{
 			int neededSize = ExpandEnvironmentStrings(path, nullptr, 0);
 			CString origPath(path);
-			ExpandEnvironmentStrings(origPath, path.GetBufferSetLength(neededSize), neededSize);
-			path.ReleaseBuffer();
+			ExpandEnvironmentStrings(origPath, CStrBuf(path, neededSize, CStrBuf::SET_LENGTH), neededSize);
 		}
 
 		path.Replace(L'/', L'\\');

@@ -434,8 +434,7 @@ BOOL CTortoiseProcApp::InitInstance()
 					if (!git_odb_hash(&oid, wcRootA.MakeLower(), wcRootA.GetLength(), GIT_OBJ_BLOB))
 					{
 						CStringA hash;
-						git_oid_tostr(hash.GetBufferSetLength(GIT_OID_HEXSZ + 1), GIT_OID_HEXSZ + 1, &oid);
-						hash.ReleaseBuffer();
+						git_oid_tostr(CStrBufA(hash, GIT_OID_HEXSZ, CStrBufA::SET_LENGTH), GIT_OID_HEXSZ + 1, &oid);
 						g_sGroupingUUID = hash;
 					}
 					ProjectProperties pp;

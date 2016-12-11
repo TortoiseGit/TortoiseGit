@@ -391,8 +391,7 @@ CString CSciEdit::GetText()
 {
 	LRESULT len = Call(SCI_GETTEXT, 0, 0);
 	CStringA sTextA;
-	Call(SCI_GETTEXT, (WPARAM)(len + 1), (LPARAM)(LPCSTR)sTextA.GetBuffer((int)len + 1));
-	sTextA.ReleaseBuffer();
+	Call(SCI_GETTEXT, (WPARAM)(len + 1), (LPARAM)(LPCSTR)CStrBufA(sTextA, (int)len + 1));
 	return StringFromControl(sTextA);
 }
 

@@ -103,8 +103,7 @@ void CACEdit::Init()
 		0x3E8, nullptr));
 
 	CString m_ClassName;
-	::GetClassName(GetSafeHwnd(), m_ClassName.GetBuffer(32), 32);
-	m_ClassName.ReleaseBuffer();
+	::GetClassName(GetSafeHwnd(), CStrBuf(m_ClassName, 32), 32);
 
 	if (m_ClassName.Compare(L"Edit") == 0)
 		m_iType = _EDIT_;
@@ -116,8 +115,7 @@ void CACEdit::Init()
 
 			m_pEdit = (CEdit*)GetWindow(GW_CHILD);
 			VERIFY(m_pEdit);
-			::GetClassName(m_pEdit->GetSafeHwnd(), m_ClassName.GetBuffer(32), 32);
-			m_ClassName.ReleaseBuffer();
+			::GetClassName(m_pEdit->GetSafeHwnd(), CStrBuf(m_ClassName, 32), 32);
 			VERIFY(m_ClassName.Compare(L"Edit") == 0);
 		}
 	}
