@@ -50,6 +50,7 @@ protected:
 	afx_msg void OnChange();
 	afx_msg void OnCbnSelchangeDefaultlogscale();
 	afx_msg void OnBnClickedBrowsecheckoutpath();
+	afx_msg void OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct);
 
 private:
 	BOOL				m_bShortDateFormat;

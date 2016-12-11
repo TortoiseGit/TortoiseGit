@@ -101,6 +101,7 @@ BEGIN_MESSAGE_MAP(CSettingsTBlame, ISettingsPropPage)
 	ON_BN_CLICKED(IDC_FOLLOWRENAMES, OnChange)
 	ON_BN_CLICKED(IDC_NEWLINESCOLOR, &CSettingsTBlame::OnBnClickedColor)
 	ON_BN_CLICKED(IDC_OLDLINESCOLOR, &CSettingsTBlame::OnBnClickedColor)
+	ON_WM_MEASUREITEM()
 END_MESSAGE_MAP()
 
 
@@ -274,3 +275,20 @@ void CSettingsTBlame::UpdateDependencies()
 	GetDlgItem(IDC_SHOWCOMPLETELOG)->EnableWindow(enableShowCompleteLog);
 	GetDlgItem(IDC_FOLLOWRENAMES)->EnableWindow(enableFollowRenames);
 }
+
+void CSettingsTBlame::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct)
+{
+	CFont* pFont = GetFont();
+	if (pFont)
+	{
+		CDC* pDC = GetDC();
+		CFont* pFontPrev = pDC->SelectObject(pFont);
+		int iborder = ::GetSystemMetrics(SM_CYBORDER);
+		CSize sz = pDC->GetTextExtent(L"0");
+		lpMeasureItemStruct->itemHeight = sz.cy + 2 * iborder;
+		pDC->SelectObject(pFontPrev);
+		ReleaseDC(pDC);
+	}
+	ISettingsPropPage::OnMeasureItem(nIDCtl, lpMeasureItemStruct);
+}
+

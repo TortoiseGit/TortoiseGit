@@ -99,6 +99,7 @@ BEGIN_MESSAGE_MAP(CSettingsUDiff, ISettingsPropPage)
 	ON_BN_CLICKED(IDC_BACKCOMMENTCOLOR, &CSettingsUDiff::OnBnClickedColor)
 	ON_BN_CLICKED(IDC_BACKADDEDCOLOR, &CSettingsUDiff::OnBnClickedColor)
 	ON_BN_CLICKED(IDC_BACKREMOVEDCOLOR, &CSettingsUDiff::OnBnClickedColor)
+	ON_WM_MEASUREITEM()
 END_MESSAGE_MAP()
 
 // CSettingsUDiff message handlers
@@ -241,4 +242,20 @@ BOOL CSettingsUDiff::OnApply()
 void CSettingsUDiff::OnBnClickedColor()
 {
 	SetModified();
+}
+
+void CSettingsUDiff::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct)
+{
+	CFont* pFont = GetFont();
+	if (pFont)
+	{
+		CDC* pDC = GetDC();
+		CFont* pFontPrev = pDC->SelectObject(pFont);
+		int iborder = ::GetSystemMetrics(SM_CYBORDER);
+		CSize sz = pDC->GetTextExtent(L"0");
+		lpMeasureItemStruct->itemHeight = sz.cy + 2 * iborder;
+		pDC->SelectObject(pFontPrev);
+		ReleaseDC(pDC);
+	}
+	ISettingsPropPage::OnMeasureItem(nIDCtl, lpMeasureItemStruct);
 }

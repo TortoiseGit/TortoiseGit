@@ -134,6 +134,7 @@ BEGIN_MESSAGE_MAP(CSetDialogs, ISettingsPropPage)
 	ON_BN_CLICKED(IDC_DESCRIBEALWAYSLONG, OnChange)
 	ON_BN_CLICKED(IDC_FULLCOMMITMESSAGEONLOGLINE, OnChange)
 	ON_BN_CLICKED(IDC_USEMAILMAP, OnChange)
+	ON_WM_MEASUREITEM()
 END_MESSAGE_MAP()
 
 // CSetDialogs message handlers
@@ -327,4 +328,20 @@ BOOL CSetDialogs::OnApply()
 
 	SetModified(FALSE);
 	return ISettingsPropPage::OnApply();
+}
+
+void CSetDialogs::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct)
+{
+	CFont* pFont = GetFont();
+	if (pFont)
+	{
+		CDC* pDC = GetDC();
+		CFont* pFontPrev = pDC->SelectObject(pFont);
+		int iborder = ::GetSystemMetrics(SM_CYBORDER);
+		CSize sz = pDC->GetTextExtent(L"0");
+		lpMeasureItemStruct->itemHeight = sz.cy + 2 * iborder;
+		pDC->SelectObject(pFontPrev);
+		ReleaseDC(pDC);
+	}
+	ISettingsPropPage::OnMeasureItem(nIDCtl, lpMeasureItemStruct);
 }
