@@ -433,13 +433,13 @@ void ShellCache::ExcludeContextValid()
 		excludecontextstr = (tstring)nocontextpaths;
 		excontextvector.clear();
 		size_t pos = 0, pos_ant = 0;
-		pos = excludecontextstr.find(L"\n", pos_ant);
+		pos = excludecontextstr.find(L'\n', pos_ant);
 		while (pos != tstring::npos)
 		{
 			tstring token = excludecontextstr.substr(pos_ant, pos - pos_ant);
 			excontextvector.push_back(token);
 			pos_ant = pos + 1;
-			pos = excludecontextstr.find(L"\n", pos_ant);
+			pos = excludecontextstr.find(L'\n', pos_ant);
 		}
 		if (!excludecontextstr.empty())
 			excontextvector.push_back(excludecontextstr.substr(pos_ant, excludecontextstr.size() - 1));
