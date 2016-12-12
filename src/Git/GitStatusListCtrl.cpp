@@ -234,7 +234,6 @@ CGitStatusListCtrl::CGitStatusListCtrl() : CResizableColumnsListCtrl<CListCtrl>(
 	, m_bAscending(false)
 	, m_nSortedColumn(-1)
 	, m_bHasExternalsFromDifferentRepos(false)
-	, m_sNoPropValueText(MAKEINTRESOURCE(IDS_STATUSLIST_NOPROPVALUE))
 	, m_amend(false)
 	, m_bDoNotAutoselectSubmodules(false)
 	, m_bNoAutoselectMissing(false)

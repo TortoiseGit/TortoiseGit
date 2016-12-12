@@ -671,7 +671,6 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 			{
 				if (m_cFileList.GetSelectedCount() > 0)
 				{
-					CString temp;
 					CTGitPath savePath;
 					CString pathSave;
 					if (!CAppUtils::FileOpenSave(pathSave, nullptr, IDS_FILEDIFF_POPSAVELIST, IDS_TEXTFILEFILTER, false, m_hWnd, L"txt"))
@@ -682,6 +681,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 					try
 					{
 						CStdioFile file(savePath.GetWinPathString(), CFile::typeBinary | CFile::modeReadWrite | CFile::modeCreate);
+						CString temp;
 						if (m_path1.IsEmpty() && m_path2.IsEmpty())
 							temp.Format(IDS_FILEDIFF_CHANGEDLISTINTROROOT, (LPCTSTR)m_rev1.m_CommitHash.ToString(), (LPCTSTR)m_rev2.m_CommitHash.ToString());
 						else

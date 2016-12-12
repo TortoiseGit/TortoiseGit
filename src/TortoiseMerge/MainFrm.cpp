@@ -585,7 +585,6 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* pContex
 // Callback function
 BOOL CMainFrame::PatchFile(CString sFilePath, bool /*bContentMods*/, bool bPropMods, CString sVersion, BOOL bAutoPatch)
 {
-	CString sDummy;
 	//"dry run" was successful, so save the patched file somewhere...
 	CString sTempFile = CTempFiles::Instance().GetTempFilePathString();
 	CString sRejectedFile, sBasePath;

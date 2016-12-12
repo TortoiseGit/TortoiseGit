@@ -1591,7 +1591,6 @@ void CRevisionGraphWnd::OnMouseMove(UINT nFlags, CPoint point)
 		if (m_bShowOverview && (m_OverviewRect.PtInRect(point))&&(nFlags & MK_LBUTTON))
 		{
 			// scrolling
-			CRect viewRect = GetViewRect();
 			int x = (int)((point.x-m_OverviewRect.left - (m_OverviewPosRect.Width()/2)) / m_previewZoom  * m_fZoomFactor);
 			int y = (int)((point.y - m_OverviewRect.top - (m_OverviewPosRect.Height()/2)) / m_previewZoom  * m_fZoomFactor);
 			x = max(0, x);

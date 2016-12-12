@@ -712,7 +712,6 @@ void CRevisionGraphDlg::OnChangeZoom()
 {
 	if (!IsWindow(m_Graph.GetSafeHwnd()))
 		return;
-	CString strText;
 	CString strItem;
 	CComboBoxEx* pCBox = (CComboBoxEx*)m_ToolBar.GetDlgItem(ID_REVGRAPH_ZOOMCOMBO);
 	pCBox->GetWindowText(strItem);

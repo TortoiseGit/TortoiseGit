@@ -1250,7 +1250,6 @@ void CRevisionGraphWnd::DrawGraph(GraphicsDevice& graphics, const CRect& rect, i
 		graphics.pDC->DrawEdge(&m_OverviewRect, EDGE_BUMP, BF_RECT);
 		// now draw a rectangle where the current view is located in the overview
 
-		CRect viewRect = GetViewRect();
 		LONG width = (long)(rect.Width() * m_previewZoom / m_fZoomFactor);
 		LONG height = (long)(rect.Height() * m_previewZoom / m_fZoomFactor);
 		LONG xpos = (long)(nHScrollPos * m_previewZoom / m_fZoomFactor);

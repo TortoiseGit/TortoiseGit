@@ -91,7 +91,6 @@ bool CLogFile::Close()
 	AdjustSize();
 	try
 	{
-		CString strLine;
 		CStdioFile file;
 
 		int retrycounter = 10;

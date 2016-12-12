@@ -852,7 +852,6 @@ private:
 
 	CString						m_sEmpty;
 	CString						m_sBusy;
-	CString						m_sNoPropValueText;
 
 	bool						m_bCheckChildrenWithParent;
 	std::unique_ptr<CGitStatusListCtrlDropTarget> m_pDropTarget;

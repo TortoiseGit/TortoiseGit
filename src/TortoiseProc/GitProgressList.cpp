@@ -183,7 +183,6 @@ CString CGitProgressList::BuildInfoString()
 
 #if 0
 
-	CString temp;
 	int added = 0;
 	int copied = 0;
 	int deleted = 0;
