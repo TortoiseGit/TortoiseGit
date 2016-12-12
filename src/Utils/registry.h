@@ -825,8 +825,8 @@ public:
     CRegRect& operator-=(SIZE r) { return *this = (CRect)*this - r;}
     CRegRect& operator-=(LPCRECT  r) { return *this = (CRect)*this - r;}
 
-    CRegRect& operator&=(CRect r) { return *this = r & *this;}
-    CRegRect& operator|=(CRect r) { return *this = r | *this;}
+    CRegRect& operator&=(const CRect& r) { return *this = r & *this;}
+    CRegRect& operator|=(const CRect& r) { return *this = r | *this;}
 };
 #endif
 

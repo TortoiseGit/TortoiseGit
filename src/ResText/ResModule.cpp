@@ -73,7 +73,7 @@ CResModule::~CResModule(void)
 {
 }
 
-BOOL CResModule::ExtractResources(std::vector<std::wstring> filelist, LPCTSTR lpszPOFilePath, BOOL bNoUpdate, LPCTSTR lpszHeaderFile)
+BOOL CResModule::ExtractResources(const std::vector<std::wstring>& filelist, LPCTSTR lpszPOFilePath, BOOL bNoUpdate, LPCTSTR lpszHeaderFile)
 {
 	for (auto I = filelist.cbegin(); I != filelist.cend(); ++I)
 	{

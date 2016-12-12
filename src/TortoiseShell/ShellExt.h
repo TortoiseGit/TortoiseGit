@@ -114,7 +114,7 @@ private:
 	void			AddPathFileCommand(tstring& gitCmd, LPCTSTR command);
 	void			AddPathFileDropCommand(tstring& gitCmd, LPCTSTR command);
 	STDMETHODIMP	QueryDropContext(UINT uFlags, UINT idCmdFirst, HMENU hMenu, UINT &indexMenu);
-	bool			IsIllegalFolder(std::wstring folder, int * cslidarray);
+	bool			IsIllegalFolder(const std::wstring& folder, int* cslidarray);
 	static void		RunCommand(const tstring& path, const tstring& command, LPCTSTR errorMessage);
 
 	/** \name IContextMenu2 wrappers

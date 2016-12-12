@@ -553,7 +553,7 @@ void CPicWindow::Animate(bool bStart)
     }
 }
 
-void CPicWindow::SetPic(tstring path, tstring title, bool bFirst)
+void CPicWindow::SetPic(const tstring& path, const tstring& title, bool bFirst)
 {
     bMainPic = bFirst;
     picpath=path;pictitle=title;

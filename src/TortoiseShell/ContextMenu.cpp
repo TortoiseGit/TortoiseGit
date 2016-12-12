@@ -1958,7 +1958,7 @@ LPCTSTR CShellExt::GetMenuTextFromResource(int id)
 	return nullptr;
 }
 
-bool CShellExt::IsIllegalFolder(std::wstring folder, int * cslidarray)
+bool CShellExt::IsIllegalFolder(const std::wstring& folder, int* cslidarray)
 {
 	int i=0;
 	TCHAR buf[MAX_PATH] = {0};	//MAX_PATH ok, since SHGetSpecialFolderPath doesn't return the required buffer length!

@@ -126,7 +126,7 @@ public:
     bool RegisterAndCreateWindow(HWND hParent);
 
     /// Sets the image path and title to show
-    void SetPic(tstring path, tstring title, bool bFirst);
+    void SetPic(const tstring& path, const tstring& title, bool bFirst);
     /// Returns the CPicture image object. Used to get an already loaded image
     /// object without having to load it again.
     CPicture * GetPic() {return &picture;}

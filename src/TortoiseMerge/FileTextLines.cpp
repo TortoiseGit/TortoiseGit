@@ -770,7 +770,7 @@ bool CBaseFilter::Decode(/*in out*/ CBuffer & data)
 	return TRUE;
 }
 
-const CBuffer & CBaseFilter::Encode(const CString s)
+const CBuffer& CBaseFilter::Encode(const CString& s)
 {
 	m_oBuffer.SetLength(s.GetLength()*3+1); // set buffer to guessed max size
 	int nConvertedLen = WideCharToMultiByte(m_nCodePage, 0, (LPCTSTR)s, s.GetLength(), (LPSTR)m_oBuffer, m_oBuffer.GetLength(), NULL, NULL);
@@ -786,7 +786,7 @@ bool CUtf16leFilter::Decode(/*in out*/ CBuffer & /*data*/)
 	return TRUE;
 }
 
-const CBuffer & CUtf16leFilter::Encode(const CString s)
+const CBuffer& CUtf16leFilter::Encode(const CString& s)
 {
 	int nNeedBytes = s.GetLength()*sizeof(TCHAR);
 	m_oBuffer.SetLength(nNeedBytes);
@@ -815,7 +815,7 @@ bool CUtf16beFilter::Decode(/*in out*/ CBuffer & data)
 	return CUtf16leFilter::Decode(data);
 }
 
-const CBuffer & CUtf16beFilter::Encode(const CString s)
+const CBuffer& CUtf16beFilter::Encode(const CString& s)
 {
 	int nNeedBytes = s.GetLength()*sizeof(TCHAR);
 	m_oBuffer.SetLength(nNeedBytes);
@@ -881,7 +881,7 @@ bool CUtf32leFilter::Decode(/*in out*/ CBuffer & data)
 	return TRUE;
 }
 
-const CBuffer & CUtf32leFilter::Encode(const CString s)
+const CBuffer& CUtf32leFilter::Encode(const CString& s)
 {
 	int nInWords = s.GetLength();
 	m_oBuffer.SetLength(nInWords*2);
@@ -935,7 +935,7 @@ bool CUtf32beFilter::Decode(/*in out*/ CBuffer & data)
 	return CUtf32leFilter::Decode(data);
 }
 
-const CBuffer & CUtf32beFilter::Encode(const CString s)
+const CBuffer& CUtf32beFilter::Encode(const CString& s)
 {
 	CUtf32leFilter::Encode(s);
 
