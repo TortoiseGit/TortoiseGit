@@ -254,6 +254,7 @@ void CSettingsUDiff::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItem
 		CSize sz = pDC->GetTextExtent(L"0");
 		lpMeasureItemStruct->itemHeight = sz.cy + 2 * iborder;
 		pDC->SelectObject(pFontPrev);
+		ReleaseDC(pDC);
 	}
 	ISettingsPropPage::OnMeasureItem(nIDCtl, lpMeasureItemStruct);
 }

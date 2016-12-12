@@ -278,6 +278,7 @@ void CSetMainPage::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemSt
 		CSize sz = pDC->GetTextExtent(L"0");
 		lpMeasureItemStruct->itemHeight = sz.cy + 2 * iborder;
 		pDC->SelectObject(pFontPrev);
+		ReleaseDC(pDC);
 	}
 	CPropertyPage::OnMeasureItem(nIDCtl, lpMeasureItemStruct);
 }
