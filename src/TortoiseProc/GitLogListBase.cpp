@@ -1500,7 +1500,7 @@ CString FindSVNRev(const CString& msg)
 			}
 		}
 	}
-	catch (std::exception) {}
+	catch (std::exception&) {}
 
 	return L"";
 }
@@ -3179,7 +3179,7 @@ bool CGitLogListBase::ValidateRegexp(LPCTSTR regexp_str, std::tr1::wregex& pat, 
 		pat = std::tr1::wregex(regexp_str, type);
 		return true;
 	}
-	catch (std::exception) {}
+	catch (std::exception&) {}
 	return false;
 }
 BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::wregex& pat)

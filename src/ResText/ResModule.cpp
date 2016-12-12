@@ -2057,7 +2057,7 @@ std::wstring CResModule::ReplaceWithRegex(WCHAR* pBuf)
 			auto replaced = std::regex_replace(pBuf, e, std::get<1>(t));
 			wcscpy(pBuf, replaced.c_str());
 		}
-		catch (std::exception)
+		catch (std::exception&)
 		{
 		}
 	}
@@ -2074,7 +2074,7 @@ std::wstring CResModule::ReplaceWithRegex(std::wstring& s)
 			auto replaced = std::regex_replace(s, e, std::get<1>(t));
 			s = replaced;
 		}
-		catch (std::exception)
+		catch (std::exception&)
 		{
 		}
 	}

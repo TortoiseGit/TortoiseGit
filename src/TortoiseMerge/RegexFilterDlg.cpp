@@ -1,6 +1,6 @@
 // TortoiseMerge - a Diff/Patch program
 
-// Copyright (C) 2013-2014 - TortoiseSVN
+// Copyright (C) 2013-2014, 2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -72,7 +72,7 @@ void CRegexFilterDlg::OnOK()
 		std::wregex r1 = std::wregex(m_sRegex);
 		UNREFERENCED_PARAMETER(r1);
 	}
-	catch (std::exception)
+	catch (std::exception&)
 	{
 		ShowEditBalloon(IDC_REGEX, IDS_ERR_INVALIDREGEX, IDS_ERR_ERROR);
 		return;

@@ -1375,7 +1375,7 @@ BOOL CSciEdit::MarkEnteredBugID(int startstylepos, int endstylepos)
 			}
 		}
 	}
-	catch (std::exception) {}
+	catch (std::exception&) {}
 
 	return FALSE;
 }

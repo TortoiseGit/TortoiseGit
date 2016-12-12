@@ -217,7 +217,7 @@ void ProjectProperties::AutoUpdateRegex()
 			regCheck = std::tr1::wregex(sCheckRe);
 			regBugID = std::tr1::wregex(sBugIDRe);
 		}
-		catch (std::exception)
+		catch (std::exception&)
 		{
 		}
 
@@ -256,7 +256,7 @@ std::vector<CHARRANGE> ProjectProperties::FindBugIDPositions(const CString& msg)
 					}
 				}
 			}
-			catch (std::exception) {}
+			catch (std::exception&) {}
 		}
 		else
 		{
@@ -278,7 +278,7 @@ std::vector<CHARRANGE> ProjectProperties::FindBugIDPositions(const CString& msg)
 					}
 				}
 			}
-			catch (std::exception) {}
+			catch (std::exception&) {}
 		}
 	}
 	else if (result.empty() && (!sMessage.IsEmpty()))
@@ -436,7 +436,7 @@ BOOL ProjectProperties::HasBugID(const CString& sMsg)
 			AutoUpdateRegex();
 			return std::tr1::regex_search((LPCTSTR)sMsg, regCheck);
 		}
-		catch (std::exception) {}
+		catch (std::exception&) {}
 	}
 	return FALSE;
 }

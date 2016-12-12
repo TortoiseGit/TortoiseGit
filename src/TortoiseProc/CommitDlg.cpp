@@ -1979,7 +1979,7 @@ void CCommitDlg::ScanFile(const CString& sFilePath, const CString& sRegex, const
 			}
 		}
 	}
-	catch (std::exception) {}
+	catch (std::exception&) {}
 }
 
 // CSciEditContextMenuInterface

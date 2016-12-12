@@ -965,7 +965,7 @@ bool CTGitPath::IsValidOnWindows() const
 				m_bIsValidOnWindows = false;
 		}
 	}
-	catch (std::exception) {}
+	catch (std::exception&) {}
 
 	m_bIsValidOnWindowsKnown = true;
 	return m_bIsValidOnWindows;
