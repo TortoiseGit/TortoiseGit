@@ -113,7 +113,7 @@ void CAboutDlg::OnMouseMove(UINT nFlags, CPoint point)
 	r.right = r.left + m_renderSrc.GetWidth();
 	r.bottom = r.top + m_renderSrc.GetHeight();
 
-	if(r.PtInRect(point) == TRUE)
+	if (r.PtInRect(point) != FALSE)
 	{
 		// dibs are drawn upside down...
 		point.y -= 20;

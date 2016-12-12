@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006, 2011 - TortoiseSVN
+// Copyright (C) 2006, 2011, 2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -78,7 +78,7 @@ BOOL CXSplitter::ReplaceView(int row, int col,CRuntimeClass * pViewClass,SIZE si
 	CCreateContext context;
 	BOOL bSetActive;
 
-	if ((GetPane(row,col)->IsKindOf(pViewClass))==TRUE)
+	if ((GetPane(row, col)->IsKindOf(pViewClass)) != FALSE)
 		return FALSE;
 
 	// Get pointer to CDocument object so that it can be used in the creation
@@ -108,7 +108,7 @@ BOOL CXSplitter::ReplaceView(int row, int col,CRuntimeClass * pViewClass,SIZE si
 
 	CView * pNewView= (CView *)GetPane(row,col);
 
-	if (bSetActive==TRUE)
+	if (bSetActive != FALSE)
 		GetParentFrame()->SetActiveView(pNewView);
 
 	RecalcLayout();
