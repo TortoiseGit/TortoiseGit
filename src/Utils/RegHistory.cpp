@@ -32,7 +32,7 @@ CRegHistory::~CRegHistory()
 
 bool CRegHistory::AddEntry(LPCTSTR szText)
 {
-	if (wcslen(szText) == 0)
+	if (!szText[0])
 		return false;
 
 	if ((!m_sSection.empty())&&(!m_sKeyPrefix.empty()))

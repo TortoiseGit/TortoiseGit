@@ -422,9 +422,8 @@ CString MyGraph::GetTipText() const
 				nGroup = pSeries->HitTest(pt,nGroup);
 
 				if (-1 != nGroup) {
-					if("" != sTip){
+					if (!sTip.IsEmpty())
 						sTip += L", ";
-					}
 					sTip += m_saLegendLabels.GetAt(nGroup) + L": ";
 					sTip += pSeries->GetTipText(nGroup, m_sYAxisLabel);
 					nGroup++;

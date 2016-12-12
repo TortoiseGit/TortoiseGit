@@ -58,7 +58,7 @@ BOOL CCmdLineParser::Parse(LPCTSTR sCmdLine)
 	{
 		//format is  -Key:"arg"
 
-		if (wcslen(sCurrent) == 0)
+		if (!sCurrent[0])
 			break;		// no more data, leave loop
 
 		LPCTSTR sArg = wcspbrk(sCurrent, m_sDelims);
@@ -66,7 +66,7 @@ BOOL CCmdLineParser::Parse(LPCTSTR sCmdLine)
 			break; // no (more) delimiters found
 		sArg = _wcsinc(sArg);
 
-		if (wcslen(sArg) == 0)
+		if (!sArg[0])
 			break; // ends with delim
 
 		LPCTSTR sVal = wcspbrk(sArg, m_sValueSep);
@@ -83,13 +83,13 @@ BOOL CCmdLineParser::Parse(LPCTSTR sCmdLine)
 			std::transform(Key.begin(), Key.end(), Key.begin(), ::tolower);
 
 			LPCTSTR sQuote(nullptr), sEndQuote(nullptr);
-			if (wcslen(sVal) > 0)
+			if (sVal[0])
 			{
 				if (sVal[0] != L' ')
 					sVal = _wcsinc(sVal);
 				else
 				{
-					while (wcslen(sVal) > 0 && sVal[0] == L' ')
+					while (sVal[0] == L' ')
 						sVal = _wcsinc(sVal);
 				}
 				

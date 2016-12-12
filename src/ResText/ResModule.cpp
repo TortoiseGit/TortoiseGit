@@ -316,7 +316,7 @@ BOOL CResModule::ExtractString(LPCTSTR lpszType)
 		wcscpy(pBuf, msgid.c_str());
 		CUtils::StringExtend(pBuf);
 
-		if (wcslen(pBuf))
+		if (pBuf[0])
 		{
 			std::wstring str = std::wstring(pBuf);
 			RESOURCEENTRY entry = m_StringEntries[str];
@@ -1255,7 +1255,7 @@ BOOL CResModule::ExtractDialog(LPCTSTR lpszType)
 		if (bCode == FALSE)
 			wcsncpy(szTitle, dlgItem.windowName, _countof(szTitle) - 1);
 
-		if (wcslen(szTitle) > 0)
+		if (szTitle[0])
 		{
 			CUtils::StringExtend(szTitle);
 

@@ -739,7 +739,7 @@ BOOL CHwSMTP::SendEmail (
 
 	m_nSmtpSrvPort = nSmtpSrvPort;
 
-	if ( lpszCharSet && lstrlen(lpszCharSet) > 0 )
+	if (lpszCharSet && lpszCharSet[0])
 		m_csCharSet.Format(L"\r\n\tcharset=\"%s\"\r\n", lpszCharSet);
 
 	if	(

@@ -1976,7 +1976,7 @@ bool CShellExt::IsIllegalFolder(const std::wstring& folder, int* cslidarray)
 			continue;
 		}
 		CoTaskMemFree(pidl);
-		if (wcslen(buf) == 0)
+		if (!buf[0])
 			continue;
 		if (wcscmp(buf, folder.c_str()) == 0)
 			return true;
@@ -2004,10 +2004,11 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 	{
 		// check if the item name is ignored or the mask
 		size_t p = 0;
+		const size_t pathLength = wcslen(ignorepath);
 		while ( (p=ignoredprops.find( ignorepath,p )) != -1 )
 		{
 			if ( (p==0 || ignoredprops[p-1]==TCHAR('\n'))
-				&& (p + wcslen(ignorepath) == ignoredprops.length() || ignoredprops[p + wcslen(ignorepath) + 1] == TCHAR('\n')))
+				&& (p + pathLength == ignoredprops.length() || ignoredprops[p + pathLength + 1] == TCHAR('\n')))
 			{
 				break;
 			}

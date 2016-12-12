@@ -579,7 +579,7 @@ void CSciEdit::CheckSpelling(int startpos, int endpos)
 		if (len)
 			textrange.lpstrText[len - 1] = '\0';
 		textrange.chrg.cpMax--;
-		if (strlen(textrange.lpstrText) > 0)
+		if (textrange.lpstrText[0])
 		{
 			CString sWord = StringFromControl(textrange.lpstrText);
 			if ((GetStyleAt(textrange.chrg.cpMin) != STYLE_URL) && IsMisspelled(sWord))
