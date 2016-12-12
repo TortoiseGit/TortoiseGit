@@ -214,7 +214,7 @@ bool CStringUtils::WriteDiffToClipboard(const CStringA& sClipdata, HWND hOwningW
 		return false;
 
 	CString sClipdataW = CUnicodeUtils::GetUnicode(sClipdata);
-	auto hClipboardDataW = CClipboardHelper::GlobalAlloc(sClipdataW.GetLength()*sizeof(wchar_t) + 1);
+	auto hClipboardDataW = CClipboardHelper::GlobalAlloc((sClipdataW.GetLength() + 1) * sizeof(wchar_t));
 	if (!hClipboardDataW)
 		return false;
 
