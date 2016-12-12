@@ -27,7 +27,7 @@ class COpenDlg : public CStandAloneDialog
 	DECLARE_DYNAMIC(COpenDlg)
 
 public:
-	COpenDlg(CWnd* pParent = NULL);   // standard constructor
+	COpenDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~COpenDlg();
 
 // Dialog Data

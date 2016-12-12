@@ -85,7 +85,7 @@ BOOL CXSplitter::ReplaceView(int row, int col,CRuntimeClass * pViewClass,SIZE si
 	// process of the new view
 	CDocument * pDoc= ((CView *)GetPane(row,col))->GetDocument();
 	CView * pActiveView=GetParentFrame()->GetActiveView();
-	if (pActiveView==NULL || pActiveView==GetPane(row,col))
+	if (!pActiveView || pActiveView == GetPane(row, col))
 		bSetActive=TRUE;
 	else
 		bSetActive=FALSE;
@@ -100,9 +100,9 @@ BOOL CXSplitter::ReplaceView(int row, int col,CRuntimeClass * pViewClass,SIZE si
 	// Create new view
 	context.m_pNewViewClass=pViewClass;
 	context.m_pCurrentDoc=pDoc;
-	context.m_pNewDocTemplate=NULL;
-	context.m_pLastView=NULL;
-	context.m_pCurrentFrame=NULL;
+	context.m_pNewDocTemplate = nullptr;
+	context.m_pLastView = nullptr;
+	context.m_pCurrentFrame = nullptr;
 
 	CreateView(row,col,pViewClass,size, &context);
 
@@ -128,7 +128,7 @@ void CXSplitter::HideRow(int nRowHide)
 	int nActiveRow, nActiveCol;
 
 	// if the nRow has an active window -- change it
-	if( GetActivePane( &nActiveRow, &nActiveCol ) != NULL )
+	if (GetActivePane(&nActiveRow, &nActiveCol) != nullptr)
 	{
 		if( nActiveRow == nRowHide )
 		{
@@ -142,7 +142,7 @@ void CXSplitter::HideRow(int nRowHide)
 	for( int nCol = 0; nCol < m_nCols; ++nCol )
 	{
 		CWnd* pPaneHide = GetPane( nRowHide, nCol );
-		ASSERT( pPaneHide != NULL );
+		ASSERT(pPaneHide != nullptr);
 
 		pPaneHide->ShowWindow( SW_HIDE );
 		pPaneHide->SetDlgCtrlID( AFX_IDW_PANE_FIRST+nCol * 16+m_nRows );
@@ -150,7 +150,7 @@ void CXSplitter::HideRow(int nRowHide)
 		for( int nRow = nRowHide+1; nRow < m_nRows; ++nRow )
 		{
 			CWnd* pPane = GetPane( nRow, nCol );
-			ASSERT( pPane != NULL );
+			ASSERT(pPane != nullptr);
 
 			pPane->SetDlgCtrlID( IdFromRowCol( nRow-1, nCol ));
 		}
@@ -181,13 +181,13 @@ void CXSplitter::ShowRow()
 	for( int nCol = 0; nCol < m_nCols; ++nCol )
 	{
 		CWnd* pPaneShow = GetDlgItem( AFX_IDW_PANE_FIRST+nCol * 16+m_nRows );
-		ASSERT( pPaneShow != NULL );
+		ASSERT(pPaneShow != nullptr);
 		pPaneShow->ShowWindow( SW_SHOWNA );
 
 		for( nRow = m_nRows - 2; nRow >= nShowRow; --nRow )
 		{
 			CWnd* pPane = GetPane( nRow, nCol );
-			ASSERT( pPane != NULL );
+			ASSERT(pPane != nullptr);
 			pPane->SetDlgCtrlID( IdFromRowCol( nRow + 1, nCol ));
 		}
 
@@ -212,7 +212,7 @@ void CXSplitter::HideColumn(int nColHide)
 
 	// if the column has an active window -- change it
 	int nActiveRow, nActiveCol;
-	if( GetActivePane( &nActiveRow, &nActiveCol ) != NULL )
+	if (GetActivePane(&nActiveRow, &nActiveCol) != nullptr)
 	{
 		if( nActiveCol == nColHide )
 		{
@@ -226,7 +226,7 @@ void CXSplitter::HideColumn(int nColHide)
 	for( int nRow = 0; nRow < m_nRows; nRow++)
 	{
 		CWnd* pPaneHide = GetPane(nRow, nColHide);
-		ASSERT( pPaneHide != NULL );
+		ASSERT(pPaneHide != nullptr);
 
 		pPaneHide->ShowWindow(SW_HIDE);
 		pPaneHide->SetDlgCtrlID( AFX_IDW_PANE_FIRST+nRow * 16+m_nCols );
@@ -234,7 +234,7 @@ void CXSplitter::HideColumn(int nColHide)
 		for( int nCol = nColHide + 1; nCol < m_nCols; nCol++ )
 		{
 			CWnd* pPane = GetPane( nRow, nCol );
-			ASSERT( pPane != NULL );
+			ASSERT(pPane != nullptr);
 
 			pPane->SetDlgCtrlID( IdFromRowCol( nRow, nCol - 1 ));
 		}
@@ -265,13 +265,13 @@ void CXSplitter::ShowColumn()
 	for( int nRow = 0; nRow < m_nRows; ++nRow )
 	{
 		CWnd* pPaneShow = GetDlgItem( AFX_IDW_PANE_FIRST+nRow * 16+m_nCols );
-		ASSERT( pPaneShow != NULL );
+		ASSERT(pPaneShow != nullptr);
 		pPaneShow->ShowWindow( SW_SHOWNA );
 
 		for( nCol = m_nCols - 2; nCol >= nShowCol; --nCol )
 		{
 			CWnd* pPane = GetPane( nRow, nCol );
-			ASSERT( pPane != NULL );
+			ASSERT(pPane != nullptr);
 			pPane->SetDlgCtrlID( IdFromRowCol( nRow, nCol + 1 ));
 		}
 

@@ -27,15 +27,15 @@
 #include "SysImageList.h"
 
 IMPLEMENT_DYNAMIC(CFilePatchesDlg, CResizableStandAloneDialog)
-CFilePatchesDlg::CFilePatchesDlg(CWnd* pParent /*=NULL*/)
+CFilePatchesDlg::CFilePatchesDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CFilePatchesDlg::IDD, pParent)
 	, m_ShownIndex(-1)
 	, m_bMinimized(FALSE)
-	, m_pPatch(NULL)
-	, m_pCallBack(NULL)
+	, m_pPatch(nullptr)
+	, m_pCallBack(nullptr)
 	, m_nWindowHeight(-1)
-	, m_pMainFrame(NULL)
-	, m_boldFont(NULL)
+	, m_pMainFrame(nullptr)
+	, m_boldFont(nullptr)
 {
 }
 
@@ -100,7 +100,7 @@ BOOL CFilePatchesDlg::OnInitDialog()
 
 BOOL CFilePatchesDlg::Init(GitPatch * pPatch, CPatchFilesDlgCallBack * pCallBack, CString sPath, CWnd * pParent)
 {
-	if ((pCallBack==NULL)||(pPatch==NULL))
+	if (!pCallBack || !pPatch)
 	{
 		m_cFileList.DeleteAllItems();
 		return FALSE;
@@ -123,7 +123,7 @@ BOOL CFilePatchesDlg::Init(GitPatch * pPatch, CPatchFilesDlgCallBack * pCallBack
 		m_sPath += L'\\';
 	}
 
-	SetWindowTheme(m_cFileList.GetSafeHwnd(), L"Explorer", NULL);
+	SetWindowTheme(m_cFileList.GetSafeHwnd(), L"Explorer", nullptr);
 	m_cFileList.SetExtendedStyle(LVS_EX_INFOTIP | LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER);
 	m_cFileList.DeleteAllItems();
 	int c = ((CHeaderCtrl*)(m_cFileList.GetDlgItem(0)))->GetItemCount()-1;
@@ -234,12 +234,12 @@ void CFilePatchesDlg::OnNMDblclkFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 	*pResult = 0;
 	if ((pNMLV->iItem < 0) || (pNMLV->iItem >= m_arFileStates.GetCount()))
 		return;
-	if (m_pCallBack==NULL)
+	if (!m_pCallBack)
 		return;
 
 	if (m_arFileStates.GetAt(pNMLV->iItem) == FPDLG_FILESTATE_ERROR)
 	{
-		MessageBox(m_pPatch->GetPatchRejects(pNMLV->iItem), NULL, MB_ICONERROR);
+		MessageBox(m_pPatch->GetPatchRejects(pNMLV->iItem), nullptr, MB_ICONERROR);
 		return;
 	}
 
@@ -357,7 +357,7 @@ void CFilePatchesDlg::OnNMRclickFilelist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 			int nIndex = m_cFileList.GetSelectionMark();
 			if (m_arFileStates.GetAt(nIndex) == FPDLG_FILESTATE_ERROR)
 			{
-				MessageBox(m_pPatch->GetPatchRejects(nIndex), NULL, MB_ICONERROR);
+				MessageBox(m_pPatch->GetPatchRejects(nIndex), nullptr, MB_ICONERROR);
 			}
 			else if ( m_arFileStates.GetAt(nIndex)!=FPDLG_FILESTATE_PATCHED)
 			{
@@ -458,7 +458,7 @@ void CFilePatchesDlg::PatchAll()
 		for (int i=0; i<m_arFileStates.GetCount() && !progDlg.HasUserCancelled(); i++)
 		{
 			if (m_arFileStates.GetAt(i) == FPDLG_FILESTATE_ERROR)
-				MessageBox(m_pPatch->GetPatchRejects(i), NULL, MB_ICONERROR);
+				MessageBox(m_pPatch->GetPatchRejects(i), nullptr, MB_ICONERROR);
 			else if (m_arFileStates.GetAt(i) != FPDLG_FILESTATE_PATCHED)
 			{
 				progDlg.SetLine(2, GetFullPath(i), true);
@@ -491,7 +491,7 @@ void CFilePatchesDlg::PatchSelected()
 		while (((index = m_cFileList.GetNextSelectedItem(pos)) >= 0) && (!progDlg.HasUserCancelled()))
 		{
 			if (m_arFileStates.GetAt(index) == FPDLG_FILESTATE_ERROR)
-				MessageBox(m_pPatch->GetPatchRejects(index), NULL, MB_ICONERROR);
+				MessageBox(m_pPatch->GetPatchRejects(index), nullptr, MB_ICONERROR);
 			else if (m_arFileStates.GetAt(index) != FPDLG_FILESTATE_PATCHED)
 			{
 				progDlg.SetLine(2, GetFullPath(index), true);

@@ -96,7 +96,7 @@ BOOL CTortoiseMergeApp::InitInstance()
 	CCrashReport::Instance().AddUserInfoToReport(L"CommandLine", GetCommandLine());
 
 	{
-		DWORD len = GetCurrentDirectory(0, NULL);
+		DWORD len = GetCurrentDirectory(0, nullptr);
 		if (len)
 		{
 			auto originalCurrentDirectory = std::make_unique<TCHAR[]>(len);
@@ -112,7 +112,7 @@ BOOL CTortoiseMergeApp::InitInstance()
 	CRegDWORD loc = CRegDWORD(L"Software\\TortoiseGit\\LanguageID", 1033);
 	long langId = loc;
 	CString langDll;
-	HINSTANCE hInst = NULL;
+	HINSTANCE hInst = nullptr;
 	do
 	{
 		langDll.Format(L"%sLanguages\\TortoiseMerge%ld.dll", (LPCTSTR)CPathUtils::GetAppParentDirectory(), langId);
@@ -123,9 +123,9 @@ BOOL CTortoiseMergeApp::InitInstance()
 		if (sFileVer.Compare(sVer)!=0)
 		{
 			FreeLibrary(hInst);
-			hInst = NULL;
+			hInst = nullptr;
 		}
-		if (hInst != NULL)
+		if (hInst)
 			AfxSetResourceHandle(hInst);
 		else
 		{
@@ -138,7 +138,7 @@ BOOL CTortoiseMergeApp::InitInstance()
 			else
 				langId = 0;
 		}
-	} while ((hInst == NULL) && (langId != 0));
+	} while ((!hInst) && (langId != 0));
 	{
 		CString langStr;
 		langStr.Format(L"%ld", langId);
@@ -245,12 +245,12 @@ BOOL CTortoiseMergeApp::InitInstance()
 	// To create the main window, this code creates a new frame window
 	// object and then sets it as the application's main window object
 	CMainFrame* pFrame = new CMainFrame;
-	if (pFrame == NULL)
+	if (!pFrame)
 		return FALSE;
 	m_pMainWnd = pFrame;
 
 	// create and load the frame with its resources
-	if (!pFrame->LoadFrame(IDR_MAINFRAME, WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, NULL, NULL))
+	if (!pFrame->LoadFrame(IDR_MAINFRAME, WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, nullptr, nullptr))
 		return FALSE;
 
 	// Fill in the command line options
@@ -302,7 +302,7 @@ BOOL CTortoiseMergeApp::InitInstance()
 		{
 			CBrowseFolder fbrowser;
 			fbrowser.m_style = BIF_EDITBOX | BIF_NEWDIALOGSTYLE | BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
-			if (fbrowser.Show(NULL, pFrame->m_Data.m_sPatchPath)==CBrowseFolder::CANCEL)
+			if (fbrowser.Show(nullptr, pFrame->m_Data.m_sPatchPath) == CBrowseFolder::CANCEL)
 				return FALSE;
 		}
 	}
@@ -315,8 +315,8 @@ BOOL CTortoiseMergeApp::InitInstance()
 
 		HRESULT hr;
 		// Create a new common save file dialog
-		CComPtr<IFileOpenDialog> pfd = NULL;
-		hr = pfd.CoCreateInstance(CLSID_FileOpenDialog, NULL, CLSCTX_INPROC_SERVER);
+		CComPtr<IFileOpenDialog> pfd;
+		hr = pfd.CoCreateInstance(CLSID_FileOpenDialog, nullptr, CLSCTX_INPROC_SERVER);
 		if (SUCCEEDED(hr))
 		{
 			// Set the dialog options
@@ -348,7 +348,7 @@ BOOL CTortoiseMergeApp::InitInstance()
 					// check if there's a unified diff on the clipboard and
 					// add a button to the fileopen dialog if there is.
 					UINT cFormat = RegisterClipboardFormat(L"TGIT_UNIFIEDDIFF");
-					if ((cFormat)&&(OpenClipboard(NULL)))
+					if ((cFormat) && (OpenClipboard(nullptr)))
 					{
 						HGLOBAL hglb = GetClipboardData(cFormat);
 						if (hglb)
@@ -366,13 +366,13 @@ BOOL CTortoiseMergeApp::InitInstance()
 			if (SUCCEEDED(hr) && SUCCEEDED(hr = pfd->Show(pFrame->m_hWnd)))
 			{
 				// Get the selection from the user
-				CComPtr<IShellItem> psiResult = NULL;
+				CComPtr<IShellItem> psiResult;
 				hr = pfd->GetResult(&psiResult);
 				if (bAdvised)
 					pfd->Unadvise(dwCookie);
 				if (SUCCEEDED(hr))
 				{
-					PWSTR pszPath = NULL;
+					PWSTR pszPath = nullptr;
 					hr = psiResult->GetDisplayName(SIGDN_FILESYSPATH, &pszPath);
 					if (SUCCEEDED(hr))
 					{
@@ -401,10 +401,8 @@ BOOL CTortoiseMergeApp::InitInstance()
 	{
 		int nArgs;
 		LPWSTR *szArglist = CommandLineToArgvW(GetCommandLineW(), &nArgs);
-		if( NULL == szArglist )
-		{
+		if (!szArglist)
 			TRACE("CommandLineToArgvW failed\n");
-		}
 		else
 		{
 			if ( nArgs==3 || nArgs==4 )
@@ -462,7 +460,7 @@ BOOL CTortoiseMergeApp::InitInstance()
 			CString outfile = parser.GetVal(L"outfile");
 			if (outfile.IsEmpty())
 			{
-				CCommonAppUtils::FileOpenSave(outfile, NULL, IDS_SAVEASTITLE, IDS_COMMONFILEFILTER, false);
+				CCommonAppUtils::FileOpenSave(outfile, nullptr, IDS_SAVEASTITLE, IDS_COMMONFILEFILTER, false);
 			}
 			if (!outfile.IsEmpty())
 			{
@@ -522,7 +520,7 @@ bool CTortoiseMergeApp::HasClipboardPatch()
 	if (cFormat == 0)
 		return false;
 
-	if (OpenClipboard(NULL) == 0)
+	if (OpenClipboard(nullptr) == 0)
 		return false;
 
 	bool containsPatch = false;
@@ -546,13 +544,13 @@ bool CTortoiseMergeApp::TrySavePatchFromClipboard(std::wstring& resultFile)
 	UINT cFormat = RegisterClipboardFormat(L"TGIT_UNIFIEDDIFF");
 	if (cFormat == 0)
 		return false;
-	if (OpenClipboard(NULL) == 0)
+	if (OpenClipboard(nullptr) == 0)
 		return false;
 
 	HGLOBAL hglb = GetClipboardData(cFormat);
 	LPCSTR lpstr = (LPCSTR)GlobalLock(hglb);
 
-	DWORD len = GetTempPath(0, NULL);
+	DWORD len = GetTempPath(0, nullptr);
 	auto path = std::make_unique<TCHAR[]>(len + 1);
 	auto tempF = std::make_unique<TCHAR[]>(len + 100);
 	GetTempPath (len+1, path.get());

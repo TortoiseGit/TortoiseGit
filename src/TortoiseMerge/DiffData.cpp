@@ -323,8 +323,8 @@ BOOL CDiffData::Load()
 		return FALSE;
 	}
 
-	apr_pool_t * pool = NULL;
-	apr_pool_create_ex (&pool, NULL, abort_on_pool_failure, NULL);
+	apr_pool_t* pool = nullptr;
+	apr_pool_create_ex(&pool, nullptr, abort_on_pool_failure, nullptr);
 
 	// Is this a two-way diff?
 	if (IsBaseFileInUse() && IsYourFileInUse() && !IsTheirFileInUse())
@@ -371,13 +371,13 @@ CDiffData::DoTwoWayDiff(const CString& sBaseFilename, const CString& sYourFilena
 	CStringA sBaseFilenameUtf8 = CUnicodeUtils::GetUTF8(sBaseFilename);
 	CStringA sYourFilenameUtf8 = CUnicodeUtils::GetUTF8(sYourFilename);
 
-	svn_diff_t * diffYourBase = NULL;
+	svn_diff_t* diffYourBase = nullptr;
 	svn_error_t * svnerr = svn_diff_file_diff_2(&diffYourBase, sBaseFilenameUtf8, sYourFilenameUtf8, options, pool);
 
 	if (svnerr)
 		return HandleSvnError(svnerr);
 
-	tsvn_svn_diff_t_extension * movedBlocks = NULL;
+	tsvn_svn_diff_t_extension* movedBlocks = nullptr;
 	if(m_bViewMovedBlocks)
 		movedBlocks = MovedBlocksDetect(diffYourBase, dwIgnoreWS, pool); // Side effect is that diffs are now splitted
 
@@ -452,7 +452,7 @@ CDiffData::DoTwoWayDiff(const CString& sBaseFilename, const CString& sYourFilena
 		tempdiff = tempdiff->next;
 	}
 
-	HideUnchangedSections(&m_YourBaseBoth, NULL, NULL);
+	HideUnchangedSections(&m_YourBaseBoth, nullptr, nullptr);
 
 	tempdiff = diffYourBase;
 	baseline = 0;
@@ -669,7 +669,7 @@ CDiffData::DoTwoWayDiff(const CString& sBaseFilename, const CString& sYourFilena
 
 	TRACE(L"done with 2-way diff\n");
 
-	HideUnchangedSections(&m_YourBaseLeft, &m_YourBaseRight, NULL);
+	HideUnchangedSections(&m_YourBaseLeft, &m_YourBaseRight, nullptr);
 
 	return true;
 }
@@ -697,7 +697,7 @@ CDiffData::DoThreeWayDiff(const CString& sBaseFilename, const CString& sYourFile
 	CStringA sYourFilenameUtf8  = CUnicodeUtils::GetUTF8(sYourFilename);
 	CStringA sTheirFilenameUtf8 = CUnicodeUtils::GetUTF8(sTheirFilename);
 
-	svn_diff_t * diffTheirYourBase = NULL;
+	svn_diff_t* diffTheirYourBase = nullptr;
 	svn_error_t * svnerr = svn_diff_file_diff3_2(&diffTheirYourBase, sBaseFilenameUtf8, sTheirFilenameUtf8, sYourFilenameUtf8, options, pool);
 	if (svnerr)
 		return HandleSvnError(svnerr);
@@ -1024,7 +1024,7 @@ CDiffData::DoThreeWayDiff(const CString& sBaseFilename, const CString& sYourFile
 
 void CDiffData::HideUnchangedSections(CViewData * data1, CViewData * data2, CViewData * data3) const
 {
-	if (data1 == NULL)
+	if (!data1)
 		return;
 
 	CRegDWORD contextLines = CRegDWORD(L"Software\\TortoiseGitMerge\\ContextLines", 1);

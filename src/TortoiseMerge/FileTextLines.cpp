@@ -266,7 +266,7 @@ BOOL CFileTextLines::Load(const CString& sFilePath, int lengthHint /* = 0*/)
 
 	// load file
 	DWORD dwReadBytes = 0;
-	if (!ReadFile(hFile, (void *)oFile, fsize.LowPart, &dwReadBytes, NULL))
+	if (!ReadFile(hFile, (void*)oFile, fsize.LowPart, &dwReadBytes, nullptr))
 	{
 		SetErrorString();
 		return FALSE;
@@ -284,7 +284,7 @@ BOOL CFileTextLines::Load(const CString& sFilePath, int lengthHint /* = 0*/)
 	// we may have to convert the file content - CString is UTF16LE
 	try
 	{
-		CBaseFilter * pFilter = NULL;
+		CBaseFilter* pFilter = nullptr;
 		switch (m_SaveParams.m_UnicodeType)
 		{
 		case BINARY:
@@ -292,25 +292,25 @@ BOOL CFileTextLines::Load(const CString& sFilePath, int lengthHint /* = 0*/)
 			return FALSE;
 		case UTF8:
 		case UTF8BOM:
-			pFilter = new CUtf8Filter(NULL);
+			pFilter = new CUtf8Filter(nullptr);
 			break;
 		default:
 		case ASCII:
-			pFilter = new CAsciiFilter(NULL);
+			pFilter = new CAsciiFilter(nullptr);
 			break;
 		case UTF16_BE:
 		case UTF16_BEBOM:
-			pFilter = new CUtf16beFilter(NULL);
+			pFilter = new CUtf16beFilter(nullptr);
 			break;
 		case UTF16_LE:
 		case UTF16_LEBOM:
-			pFilter = new CUtf16leFilter(NULL);
+			pFilter = new CUtf16leFilter(nullptr);
 			break;
 		case UTF32_BE:
-			pFilter = new CUtf32beFilter(NULL);
+			pFilter = new CUtf32beFilter(nullptr);
 			break;
 		case UTF32_LE:
-			pFilter = new CUtf32leFilter(NULL);
+			pFilter = new CUtf32leFilter(nullptr);
 			break;
 		}
 		pFilter->Decode(oFile);
@@ -482,7 +482,7 @@ BOOL CFileTextLines::Save( const CString& sFilePath
 		{
 			if (!PathIsDirectory(destPath.Left(destPath.Find('\\', ind))))
 			{
-				if (!CreateDirectory(destPath.Left(destPath.Find('\\', ind)), NULL))
+				if (!CreateDirectory(destPath.Left(destPath.Find('\\', ind)), nullptr))
 					return FALSE;
 			}
 			ind = destPath.Find('\\', ind)+1;
@@ -495,7 +495,7 @@ BOOL CFileTextLines::Save( const CString& sFilePath
 			return FALSE;
 		}
 
-		CBaseFilter * pFilter = NULL;
+		CBaseFilter* pFilter = nullptr;
 		bool bSaveBom = true;
 		CFileTextLines::UnicodeType eUnicodeType = bSaveAsUTF8 ? CFileTextLines::UTF8 : m_SaveParams.m_UnicodeType;
 		switch (eUnicodeType)
@@ -759,7 +759,7 @@ bool CBaseFilter::Decode(/*in out*/ CBuffer & data)
 {
 	int nFlags = (m_nCodePage==CP_ACP) ? MB_PRECOMPOSED : 0;
 	// dry decode is around 8 times faster then real one, alternatively we can set buffer to max length
-	int nReadChars = MultiByteToWideChar(m_nCodePage, nFlags, (LPCSTR)data, data.GetLength(), NULL, 0);
+	int nReadChars = MultiByteToWideChar(m_nCodePage, nFlags, (LPCSTR)data, data.GetLength(), nullptr, 0);
 	m_oBuffer.SetLength(nReadChars*sizeof(wchar_t));
 	int ret2 = MultiByteToWideChar(m_nCodePage, nFlags, (LPCSTR)data, data.GetLength(), (LPWSTR)(void *)m_oBuffer, nReadChars);
 	if (ret2 != nReadChars)
@@ -773,7 +773,7 @@ bool CBaseFilter::Decode(/*in out*/ CBuffer & data)
 const CBuffer& CBaseFilter::Encode(const CString& s)
 {
 	m_oBuffer.SetLength(s.GetLength()*3+1); // set buffer to guessed max size
-	int nConvertedLen = WideCharToMultiByte(m_nCodePage, 0, (LPCTSTR)s, s.GetLength(), (LPSTR)m_oBuffer, m_oBuffer.GetLength(), NULL, NULL);
+	int nConvertedLen = WideCharToMultiByte(m_nCodePage, 0, (LPCTSTR)s, s.GetLength(), (LPSTR)m_oBuffer, m_oBuffer.GetLength(), nullptr, nullptr);
 	m_oBuffer.SetLength(nConvertedLen); // set buffer to used size
 	return m_oBuffer;
 }

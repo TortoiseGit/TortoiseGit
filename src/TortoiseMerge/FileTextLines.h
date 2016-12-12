@@ -211,7 +211,7 @@ public:
 private:
 	void Copy(const CBuffer & Src);
 	void Free() { delete [] m_pBuffer; }
-	void Init() { m_pBuffer=NULL; m_nUsed=0; m_nAllocated=0; }
+	void Init() { m_pBuffer = nullptr; m_nUsed = 0; m_nAllocated = 0; }
 
 	BYTE * m_pBuffer;
 	int m_nUsed;

@@ -24,15 +24,15 @@
 IMPLEMENT_DYNAMIC(CSettings, CPropertySheet)
 CSettings::CSettings(UINT nIDCaption, CWnd* pParentWnd, UINT iSelectPage)
 	: CPropertySheet(nIDCaption, pParentWnd, iSelectPage)
-	, m_pMainPage(NULL)
-	, m_pColorPage(NULL)
+	, m_pMainPage(nullptr)
+	, m_pColorPage(nullptr)
 {
 }
 
 CSettings::CSettings(LPCTSTR pszCaption, CWnd* pParentWnd, UINT iSelectPage)
 	: CPropertySheet(pszCaption, pParentWnd, iSelectPage)
-	, m_pMainPage(NULL)
-	, m_pColorPage(NULL)
+	, m_pMainPage(nullptr)
+	, m_pColorPage(nullptr)
 {
 	AddPropPages();
 }
@@ -54,9 +54,9 @@ void CSettings::AddPropPages()
 void CSettings::RemovePropPages()
 {
 	delete m_pMainPage;
-	m_pMainPage = NULL;
+	m_pMainPage = nullptr;
 	delete m_pColorPage;
-	m_pColorPage = NULL;
+	m_pColorPage = nullptr;
 }
 
 void CSettings::SaveData()

@@ -34,9 +34,9 @@ class CEncodingDlg : public CDialog
 	DECLARE_DYNAMIC(CEncodingDlg)
 
 public:
-	CEncodingDlg(CWnd* pParent = NULL);   // standard constructor
+	CEncodingDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CEncodingDlg();
-	void Create(CWnd * pParent = NULL) {CDialog::Create(IDD, pParent);ShowWindow(SW_SHOW);UpdateWindow();}
+	void Create(CWnd* pParent = nullptr) { CDialog::Create(IDD, pParent); ShowWindow(SW_SHOW); UpdateWindow(); }
 // Dialog Data
 	enum { IDD = IDD_ENCODING };
 

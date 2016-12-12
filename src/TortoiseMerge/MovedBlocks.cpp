@@ -90,7 +90,7 @@ bool EquivalencyGroup::IsPerfectMatch() const
 
 void LineToGroupMap::Add(int lineno, const CString &line, int nside)
 {
-	EquivalencyGroup *pGroup = NULL;
+	EquivalencyGroup* pGroup = nullptr;
 	auto it = __super::find(line);
 	if ( it == cend() )
 	{
@@ -111,7 +111,7 @@ void LineToGroupMap::Add(int lineno, const CString &line, int nside)
 
 EquivalencyGroup *LineToGroupMap::find(const CString &line) const
 {
-	EquivalencyGroup *pGroup = NULL;
+	EquivalencyGroup* pGroup = nullptr;
 	auto it = __super::find(line);
 	if ( it != cend() )
 		pGroup = it->second;
@@ -129,7 +129,7 @@ LineToGroupMap::~LineToGroupMap()
 tsvn_svn_diff_t_extension * CreateDiffExtension(svn_diff_t * base, apr_pool_t * pool)
 {
 	auto ext = static_cast<tsvn_svn_diff_t_extension*>(apr_palloc(pool, sizeof(tsvn_svn_diff_t_extension)));
-	ext->next = NULL;
+	ext->next = nullptr;
 	ext->moved_to = -1;
 	ext->moved_from = -1;
 	ext->base = base;
@@ -173,8 +173,8 @@ EquivalencyGroup * ExtractGroup(const LineToGroupMap & map, const CString & line
 tsvn_svn_diff_t_extension * CDiffData::MovedBlocksDetect(svn_diff_t * diffYourBase, DWORD dwIgnoreWS, apr_pool_t * pool)
 {
 	LineToGroupMap map;
-	tsvn_svn_diff_t_extension * head = NULL;
-	tsvn_svn_diff_t_extension * tail = NULL;
+	tsvn_svn_diff_t_extension* head = nullptr;
+	tsvn_svn_diff_t_extension* tail = nullptr;
 	svn_diff_t * tempdiff = diffYourBase;
 	LONG baseLine = 0;
 	LONG yourLine = 0;
@@ -185,7 +185,7 @@ tsvn_svn_diff_t_extension * CDiffData::MovedBlocksDetect(svn_diff_t * diffYourBa
 
 		baseLine = (LONG)tempdiff->original_start;
 		if (m_arBaseFile.GetCount() <= (baseLine+tempdiff->original_length))
-			return NULL;
+			return nullptr;
 		for(int i = 0; i < tempdiff->original_length; ++i, ++baseLine)
 		{
 			const CString &sCurrentBaseLine = m_arBaseFile.GetAt(baseLine);
@@ -196,7 +196,7 @@ tsvn_svn_diff_t_extension * CDiffData::MovedBlocksDetect(svn_diff_t * diffYourBa
 		}
 		yourLine = (LONG)tempdiff->modified_start;
 		if (m_arYourFile.GetCount() <= (yourLine+tempdiff->modified_length))
-			return NULL;
+			return nullptr;
 		for(int i = 0; i < tempdiff->modified_length; ++i, ++yourLine)
 		{
 			const CString &sCurrentYourLine = m_arYourFile.GetAt(yourLine);
@@ -214,7 +214,7 @@ tsvn_svn_diff_t_extension * CDiffData::MovedBlocksDetect(svn_diff_t * diffYourBa
 		if(tempdiff->type != svn_diff__type_diff_modified)
 			continue;
 
-		EquivalencyGroup * pGroup = NULL;
+		EquivalencyGroup* pGroup = nullptr;
 
 		int i;
 		for(i = (int)tempdiff->original_start; (i - tempdiff->original_start)< tempdiff->original_length; ++i)
@@ -267,7 +267,7 @@ tsvn_svn_diff_t_extension * CDiffData::MovedBlocksDetect(svn_diff_t * diffYourBa
 		--j2;
 		// Ok, now our moved block is (i1..i2,j1..j2)
 		tsvn_svn_diff_t_extension * newTail = CreateDiffExtension(tempdiff, pool);
-		if(head == NULL)
+		if (!head)
 		{
 			head = newTail;
 			tail = head;
@@ -333,14 +333,14 @@ tsvn_svn_diff_t_extension * CDiffData::MovedBlocksDetect(svn_diff_t * diffYourBa
 	// and splitting them out
 	// That is, we actually fragment diff blocks as we find moved sections
 	tsvn_svn_diff_t_extension * existing = head;
-	tail = NULL;
+	tail = nullptr;
 	for(tempdiff = diffYourBase; tempdiff; tempdiff = tempdiff->next)
 	{
 		// scan down block for a match
 		if(tempdiff->type != svn_diff__type_diff_modified)
 			continue;
 
-		EquivalencyGroup * pGroup = NULL;
+		EquivalencyGroup* pGroup = nullptr;
 		int j = 0;
 		for(j = (int)tempdiff->modified_start; (j - tempdiff->modified_start) < tempdiff->modified_length; ++j)
 		{
@@ -398,7 +398,7 @@ tsvn_svn_diff_t_extension * CDiffData::MovedBlocksDetect(svn_diff_t * diffYourBa
 		--i2;
 		--j2;
 		// Ok, now our moved block is (i1..i2,j1..j2)
-		tsvn_svn_diff_t_extension * newTail = NULL;
+		tsvn_svn_diff_t_extension* newTail = nullptr;
 		if(existing && existing->base == tempdiff)
 		{
 			newTail = existing;
@@ -406,10 +406,8 @@ tsvn_svn_diff_t_extension * CDiffData::MovedBlocksDetect(svn_diff_t * diffYourBa
 		else
 		{
 			newTail = CreateDiffExtension(tempdiff, pool);
-			if(head == NULL)
-			{
+			if (!head)
 				head = newTail;
-			}
 			else if(tail)
 			{
 				newTail->next = tail->next;

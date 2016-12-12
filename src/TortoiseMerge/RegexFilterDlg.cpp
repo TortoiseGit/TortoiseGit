@@ -27,7 +27,7 @@
 
 IMPLEMENT_DYNAMIC(CRegexFilterDlg, CDialogEx)
 
-CRegexFilterDlg::CRegexFilterDlg(CWnd* pParent /*=NULL*/)
+CRegexFilterDlg::CRegexFilterDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(CRegexFilterDlg::IDD, pParent)
 {
 }

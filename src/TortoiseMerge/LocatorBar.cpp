@@ -29,8 +29,8 @@
 
 IMPLEMENT_DYNAMIC(CLocatorBar, CPaneDialog)
 CLocatorBar::CLocatorBar() : CPaneDialog()
-	, m_pMainFrm(NULL)
-	, m_pCacheBitmap(NULL)
+	, m_pMainFrm(nullptr)
+	, m_pCacheBitmap(nullptr)
 	, m_regUseFishEye(L"Software\\TortoiseGitMerge\\UseFishEye", TRUE)
 	, m_nLines(-1)
 	, m_minWidth(0)
@@ -43,7 +43,7 @@ CLocatorBar::~CLocatorBar()
 	{
 		m_pCacheBitmap->DeleteObject();
 		delete m_pCacheBitmap;
-		m_pCacheBitmap = NULL;
+		m_pCacheBitmap = nullptr;
 	}
 }
 
@@ -60,7 +60,7 @@ END_MESSAGE_MAP()
 void CLocatorBar::DocumentUpdated()
 {
 	m_pMainFrm = (CMainFrame *)this->GetParentFrame();
-	if (m_pMainFrm == NULL)
+	if (!m_pMainFrm)
 		return;
 
 	m_nLines = 0;
@@ -139,7 +139,7 @@ void CLocatorBar::OnPaint()
 	CDC cacheDC;
 	VERIFY(cacheDC.CreateCompatibleDC(&dc));
 
-	if (m_pCacheBitmap == NULL)
+	if (!m_pCacheBitmap)
 	{
 		m_pCacheBitmap = new CBitmap;
 		VERIFY(m_pCacheBitmap->CreateCompatibleBitmap(&dc, width, height));
@@ -194,11 +194,11 @@ void CLocatorBar::OnSize(UINT nType, int cx, int cy)
 {
 	CPaneDialog::OnSize(nType, cx, cy);
 
-	if (m_pCacheBitmap != NULL)
+	if (m_pCacheBitmap)
 	{
 		m_pCacheBitmap->DeleteObject();
 		delete m_pCacheBitmap;
-		m_pCacheBitmap = NULL;
+		m_pCacheBitmap = nullptr;
 	}
 	Invalidate();
 }

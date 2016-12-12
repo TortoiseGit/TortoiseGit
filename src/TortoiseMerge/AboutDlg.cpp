@@ -28,7 +28,7 @@
 // CAboutDlg dialog
 
 IMPLEMENT_DYNAMIC(CAboutDlg, CStandAloneDialog)
-CAboutDlg::CAboutDlg(CWnd* pParent /*=NULL*/)
+CAboutDlg::CAboutDlg(CWnd* pParent /*=nullptr*/)
 	: CStandAloneDialog(CAboutDlg::IDD, pParent)
 {
 }
@@ -74,8 +74,8 @@ BOOL CAboutDlg::OnInitDialog()
 	m_renderDest.Create32BitFromPicture(&tmpPic,468,64);
 
 	m_waterEffect.Create(468,64);
-	SetTimer(ID_EFFECTTIMER, 40, NULL);
-	SetTimer(ID_DROPTIMER, 300, NULL);
+	SetTimer(ID_EFFECTTIMER, 40, nullptr);
+	SetTimer(ID_DROPTIMER, 300, nullptr);
 
 	m_cWebLink.SetURL(L"https://tortoisegit.org/");
 	m_cSupportLink.SetURL(L"http://tortoisesvn.tigris.org/contributors.html");

@@ -27,7 +27,7 @@ class CGotoLineDlg : public CDialogEx
 	DECLARE_DYNAMIC(CGotoLineDlg)
 
 public:
-	CGotoLineDlg(CWnd* pParent = NULL);   // standard constructor
+	CGotoLineDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CGotoLineDlg();
 
 	int			GetLineNumber() const {return m_nLine;}

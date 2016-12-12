@@ -25,7 +25,7 @@
 
 IMPLEMENT_DYNAMIC(CFindDlg, CDialog)
 
-CFindDlg::CFindDlg(CWnd* pParent /*=NULL*/)
+CFindDlg::CFindDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(CFindDlg::IDD, pParent)
 	, m_pParent(pParent)
 	, m_bTerminating(false)
@@ -62,7 +62,7 @@ void CFindDlg::Create(CWnd* pParent, int id /* = 0 */)
 		pt.y = (int)(DWORD)CRegDWORD(sRegPath, 0);
 		pParent->ClientToScreen(&pt);
 		if (MonitorFromPoint(pt, MONITOR_DEFAULTTONULL))
-			SetWindowPos(NULL, pt.x, pt.y, 0, 0, SWP_NOACTIVATE | SWP_NOREDRAW | SWP_NOSIZE);
+			SetWindowPos(nullptr, pt.x, pt.y, 0, 0, SWP_NOACTIVATE | SWP_NOREDRAW | SWP_NOSIZE);
 	}
 	ShowWindow(SW_SHOW);
 	UpdateWindow();

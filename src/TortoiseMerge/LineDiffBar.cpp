@@ -27,8 +27,8 @@
 IMPLEMENT_DYNAMIC(CLineDiffBar, CPaneDialog)
 CLineDiffBar::CLineDiffBar() : CPaneDialog()
 {
-	m_pMainFrm = NULL;
-	m_pCacheBitmap = NULL;
+	m_pMainFrm = nullptr;
+	m_pCacheBitmap = nullptr;
 	m_nLineIndex = -1;
 	m_nLineHeight = 0;
 	m_bExclusiveRow = TRUE;
@@ -40,7 +40,7 @@ CLineDiffBar::~CLineDiffBar()
 	{
 		m_pCacheBitmap->DeleteObject();
 		delete m_pCacheBitmap;
-		m_pCacheBitmap = NULL;
+		m_pCacheBitmap = nullptr;
 	}
 }
 
@@ -62,7 +62,7 @@ void CLineDiffBar::DocumentUpdated()
 	CSize size = rect.Size();
 	size.cy = 2 * m_nLineHeight;
 	SetMinSize(size);
-	SetWindowPos(NULL, 0, 0, size.cx, 2*m_nLineHeight, SWP_NOMOVE);
+	SetWindowPos(nullptr, 0, 0, size.cx, 2 * m_nLineHeight, SWP_NOMOVE);
 	RecalcLayout();
 	if (m_pMainFrm)
 		m_pMainFrm->RecalcLayout();
@@ -85,7 +85,7 @@ void CLineDiffBar::OnPaint()
 	CDC cacheDC;
 	VERIFY(cacheDC.CreateCompatibleDC(&dc));
 	cacheDC.FillSolidRect(&rect, ::GetSysColor(COLOR_WINDOW));
-	if (m_pCacheBitmap == NULL)
+	if (!m_pCacheBitmap)
 	{
 		m_pCacheBitmap = new CBitmap;
 		VERIFY(m_pCacheBitmap->CreateCompatibleBitmap(&dc, width, height));
@@ -138,13 +138,13 @@ void CLineDiffBar::OnSize(UINT nType, int cx, int cy)
 {
 	CPaneDialog::OnSize(nType, cx, cy);
 
-	if (m_pCacheBitmap != NULL)
+	if (m_pCacheBitmap)
 	{
 		m_pCacheBitmap->DeleteObject();
 		delete m_pCacheBitmap;
-		m_pCacheBitmap = NULL;
+		m_pCacheBitmap = nullptr;
 	}
-	SetWindowPos(NULL, 0, 0, cx, 2*m_nLineHeight, SWP_NOMOVE);
+	SetWindowPos(nullptr, 0, 0, cx, 2 * m_nLineHeight, SWP_NOMOVE);
 	Invalidate();
 }
 
