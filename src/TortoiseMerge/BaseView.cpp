@@ -5400,9 +5400,7 @@ LRESULT CBaseView::OnFindDialogMessage(WPARAM wParam, LPARAM /*lParam*/)
 				m_ptSelectionViewPosStart = lastPoint;
 			CString message;
 			message.Format(IDS_FIND_REPLACED, replaceCount);
-			if (m_pFindDialog)
-				m_pFindDialog->SetStatusText(message, RGB(0, 0, 0));
-
+			m_pFindDialog->SetStatusText(message, RGB(0, 0, 0));
 		}
 	}
 
