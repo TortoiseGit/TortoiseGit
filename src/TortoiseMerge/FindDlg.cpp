@@ -162,9 +162,10 @@ BOOL CFindDlg::OnInitDialog()
 void CFindDlg::OnCbnEditchangeFindcombo()
 {
 	UpdateData();
-	GetDlgItem(IDOK)->EnableWindow(!m_FindCombo.GetString().IsEmpty());
-	GetDlgItem(IDC_REPLACE)->EnableWindow(!m_bReadonly && !m_FindCombo.GetString().IsEmpty());
-	GetDlgItem(IDC_REPLACEALL)->EnableWindow(!m_bReadonly && !m_FindCombo.GetString().IsEmpty());
+	auto s = m_FindCombo.GetString();
+	GetDlgItem(IDOK)->EnableWindow(!s.IsEmpty());
+	GetDlgItem(IDC_REPLACE)->EnableWindow(!m_bReadonly && !s.IsEmpty());
+	GetDlgItem(IDC_REPLACEALL)->EnableWindow(!m_bReadonly && !s.IsEmpty());
 }
 
 void CFindDlg::OnBnClickedCount()

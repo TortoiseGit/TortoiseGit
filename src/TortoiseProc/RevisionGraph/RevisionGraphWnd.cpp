@@ -636,8 +636,9 @@ void CRevisionGraphWnd::OnLButtonDown(UINT nFlags, CPoint point)
 	else
 		uEnable |= MF_GRAYED;
 
-	EnableMenuItem(GetParent()->GetMenu()->m_hMenu, ID_VIEW_COMPAREREVISIONS, uEnable);
-	EnableMenuItem(GetParent()->GetMenu()->m_hMenu, ID_VIEW_UNIFIEDDIFF, uEnable);
+	auto hMenu = GetParent()->GetMenu()->m_hMenu;
+	EnableMenuItem(hMenu, ID_VIEW_COMPAREREVISIONS, uEnable);
+	EnableMenuItem(hMenu, ID_VIEW_UNIFIEDDIFF, uEnable);
 
 	uEnable = MF_BYCOMMAND;
 	if (m_SelectedEntry1 && !m_SelectedEntry2)
@@ -645,8 +646,8 @@ void CRevisionGraphWnd::OnLButtonDown(UINT nFlags, CPoint point)
 	else
 		uEnable |= MF_GRAYED;
 
-	EnableMenuItem(GetParent()->GetMenu()->m_hMenu, ID_VIEW_UNIFIEDDIFFOFHEADREVISIONS, uEnable);
-	EnableMenuItem(GetParent()->GetMenu()->m_hMenu, ID_VIEW_COMPAREHEADREVISIONS, uEnable);
+	EnableMenuItem(hMenu, ID_VIEW_UNIFIEDDIFFOFHEADREVISIONS, uEnable);
+	EnableMenuItem(hMenu, ID_VIEW_COMPAREHEADREVISIONS, uEnable);
 
 	__super::OnLButtonDown(nFlags, point);
 }
