@@ -9830,10 +9830,6 @@ msgstr ""
 msgid "This field is required and must not be empty."
 msgstr ""
 
-#. Resource IDs: (IDS_BLAME_ONLYFIRSTPARENT_TT)
-msgid "This handles merge commits as squashed commits."
-msgstr ""
-
 #. Resource IDs: (IDS_ERR_MUSTBEURL)
 msgid "This is not a valid URL.\nPlease enter an URL here."
 msgstr ""

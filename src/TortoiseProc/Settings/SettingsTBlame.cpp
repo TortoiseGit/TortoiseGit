@@ -193,8 +193,6 @@ BOOL CSettingsTBlame::OnInitDialog()
 		}
 	}
 
-	m_tooltips.AddTool(IDC_BLAME_ONLYFIRSTPARENT, IDS_BLAME_ONLYFIRSTPARENT_TT);
-
 	UpdateData(FALSE);
 	UpdateDependencies();
 	return TRUE;
