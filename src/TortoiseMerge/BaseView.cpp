@@ -1338,7 +1338,11 @@ void CBaseView::DrawMargin(CDC *pdc, const CRect &rect, int nLineIndex)
 
 
 		if (icon)
-			::DrawIconEx(pdc->m_hDC, rect.left + 2, rect.top + (rect.Height() - 16) / 2, icon, 16, 16, 0, nullptr, DI_NORMAL);
+		{
+			int iconWidth = GetSystemMetrics(SM_CXSMICON);
+			int iconHeight = GetSystemMetrics(SM_CYSMICON);
+			::DrawIconEx(pdc->m_hDC, rect.left + 2, rect.top + (rect.Height() - iconHeight) / 2, icon, iconWidth, iconHeight, 0, nullptr, DI_NORMAL);
+		}
 		if ((m_bViewLinenumbers)&&(m_nDigits))
 		{
 			int nSubLine = GetSubLineOffset(nLineIndex);
@@ -4426,8 +4430,10 @@ void CBaseView::CompensateForKeyboard(CPoint& point)
 
 HICON CBaseView::LoadIcon(WORD iconId)
 {
+	int iconWidth = GetSystemMetrics(SM_CXSMICON);
+	int iconHeight = GetSystemMetrics(SM_CYSMICON);
 	HANDLE icon = ::LoadImage( AfxGetResourceHandle(), MAKEINTRESOURCE(iconId),
-						IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
+						IMAGE_ICON, iconWidth, iconHeight, LR_DEFAULTCOLOR);
 	return (HICON)icon;
 }
 

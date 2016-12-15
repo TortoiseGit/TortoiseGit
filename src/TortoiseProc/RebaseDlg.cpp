@@ -321,7 +321,9 @@ BOOL CRebaseDlg::OnInitDialog()
 	{
 		((CButton*)GetDlgItem(IDC_BUTTON_ONTO))->SetCheck(m_Onto.IsEmpty() ? BST_UNCHECKED : BST_CHECKED);
 		GetDlgItem(IDC_CHECK_CHERRYPICKED_FROM)->ShowWindow(SW_HIDE);
-		((CButton *)GetDlgItem(IDC_BUTTON_REVERSE))->SetIcon((HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_SWITCHLEFTRIGHT), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR));
+		int iconWidth = GetSystemMetrics(SM_CXSMICON);
+		int iconHeight = GetSystemMetrics(SM_CYSMICON);
+		((CButton*)GetDlgItem(IDC_BUTTON_REVERSE))->SetIcon((HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_SWITCHLEFTRIGHT), IMAGE_ICON, iconWidth, iconHeight, LR_DEFAULTCOLOR));
 		SetContinueButtonText();
 		m_CommitList.DeleteAllItems();
 		FetchLogList();

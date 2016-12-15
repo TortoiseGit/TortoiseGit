@@ -1390,7 +1390,9 @@ bool CPicWindow::CreateButtons()
                                 NULL);
     if (hwndLeftBtn == INVALID_HANDLE_VALUE)
         return false;
-    hLeft = (HICON)LoadImage(hResource, MAKEINTRESOURCE(IDI_BACKWARD), IMAGE_ICON, 16, 16, LR_LOADTRANSPARENT);
+    int iconWidth = GetSystemMetrics(SM_CXSMICON);
+    int iconHeight = GetSystemMetrics(SM_CYSMICON);
+    hLeft = (HICON)LoadImage(hResource, MAKEINTRESOURCE(IDI_BACKWARD), IMAGE_ICON, iconWidth, iconHeight, LR_LOADTRANSPARENT);
     SendMessage(hwndLeftBtn, BM_SETIMAGE, (WPARAM)IMAGE_ICON, (LPARAM)hLeft);
     hwndRightBtn = CreateWindowEx(0,
                                 L"BUTTON",
@@ -1403,7 +1405,7 @@ bool CPicWindow::CreateButtons()
                                 NULL);
     if (hwndRightBtn == INVALID_HANDLE_VALUE)
         return false;
-    hRight = (HICON)LoadImage(hResource, MAKEINTRESOURCE(IDI_FORWARD), IMAGE_ICON, 16, 16, LR_LOADTRANSPARENT);
+    hRight = (HICON)LoadImage(hResource, MAKEINTRESOURCE(IDI_FORWARD), IMAGE_ICON, iconWidth, iconHeight, LR_LOADTRANSPARENT);
     SendMessage(hwndRightBtn, BM_SETIMAGE, (WPARAM)IMAGE_ICON, (LPARAM)hRight);
     hwndPlayBtn = CreateWindowEx(0,
                                 L"BUTTON",
@@ -1416,8 +1418,8 @@ bool CPicWindow::CreateButtons()
                                 NULL);
     if (hwndPlayBtn == INVALID_HANDLE_VALUE)
         return false;
-    hPlay = (HICON)LoadImage(hResource, MAKEINTRESOURCE(IDI_START), IMAGE_ICON, 16, 16, LR_LOADTRANSPARENT);
-    hStop = (HICON)LoadImage(hResource, MAKEINTRESOURCE(IDI_STOP), IMAGE_ICON, 16, 16, LR_LOADTRANSPARENT);
+    hPlay = (HICON)LoadImage(hResource, MAKEINTRESOURCE(IDI_START), IMAGE_ICON, iconWidth, iconHeight, LR_LOADTRANSPARENT);
+    hStop = (HICON)LoadImage(hResource, MAKEINTRESOURCE(IDI_STOP), IMAGE_ICON, iconWidth, iconHeight, LR_LOADTRANSPARENT);
     SendMessage(hwndPlayBtn, BM_SETIMAGE, (WPARAM)IMAGE_ICON, (LPARAM)hPlay);
     hwndAlphaToggleBtn = CreateWindowEx(0,
                                 L"BUTTON",
@@ -1430,7 +1432,7 @@ bool CPicWindow::CreateButtons()
                                 NULL);
     if (hwndAlphaToggleBtn == INVALID_HANDLE_VALUE)
         return false;
-    hAlphaToggle = (HICON)LoadImage(hResource, MAKEINTRESOURCE(IDI_ALPHATOGGLE), IMAGE_ICON, 16, 16, LR_LOADTRANSPARENT);
+    hAlphaToggle = (HICON)LoadImage(hResource, MAKEINTRESOURCE(IDI_ALPHATOGGLE), IMAGE_ICON, iconWidth, iconHeight, LR_LOADTRANSPARENT);
     SendMessage(hwndAlphaToggleBtn, BM_SETIMAGE, (WPARAM)IMAGE_ICON, (LPARAM)hAlphaToggle);
 
     TOOLINFO ti = {0};
@@ -1468,10 +1470,12 @@ void CPicWindow::PositionChildren()
     ::GetClientRect(*this, &rect);
     if (HasMultipleImages())
     {
-        SetWindowPos(hwndLeftBtn, HWND_TOP, rect.left+3, rect.top + HEADER_HEIGHT + (HEADER_HEIGHT-16)/2, 16, 16, SWP_FRAMECHANGED|SWP_SHOWWINDOW);
-        SetWindowPos(hwndRightBtn, HWND_TOP, rect.left+23, rect.top + HEADER_HEIGHT + (HEADER_HEIGHT-16)/2, 16, 16, SWP_FRAMECHANGED|SWP_SHOWWINDOW);
+        int iconWidth = GetSystemMetrics(SM_CXSMICON);
+        int iconHeight = GetSystemMetrics(SM_CYSMICON);
+        SetWindowPos(hwndLeftBtn, HWND_TOP, rect.left + iconWidth / 4, rect.top + HEADER_HEIGHT + (HEADER_HEIGHT-iconHeight)/2, iconWidth, iconHeight, SWP_FRAMECHANGED | SWP_SHOWWINDOW);
+        SetWindowPos(hwndRightBtn, HWND_TOP, rect.left + iconWidth + iconWidth / 2, rect.top + HEADER_HEIGHT + (HEADER_HEIGHT - iconHeight) / 2, iconWidth, iconHeight, SWP_FRAMECHANGED | SWP_SHOWWINDOW);
         if (nFrames > 1)
-            SetWindowPos(hwndPlayBtn, HWND_TOP, rect.left+43, rect.top + HEADER_HEIGHT + (HEADER_HEIGHT-16)/2, 16, 16, SWP_FRAMECHANGED|SWP_SHOWWINDOW);
+            SetWindowPos(hwndPlayBtn, HWND_TOP, rect.left + iconWidth * 2 + iconWidth / 2, rect.top + HEADER_HEIGHT + (HEADER_HEIGHT - iconHeight) / 2, iconWidth, iconHeight, SWP_FRAMECHANGED | SWP_SHOWWINDOW);
         else
             ShowWindow(hwndPlayBtn, SW_HIDE);
     }

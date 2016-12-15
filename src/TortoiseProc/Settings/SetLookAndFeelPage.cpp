@@ -32,6 +32,8 @@ extern MenuInfo menuInfo[];
 void InsertMenuItemToList(CListCtrl *list,CImageList *imagelist)
 {
 	int i=0;
+	int iconWidth = GetSystemMetrics(SM_CXSMICON);
+	int iconHeight = GetSystemMetrics(SM_CYSMICON);
 	while(menuInfo[i].command != ShellMenuLastEntry)
 	{
 		if ((menuInfo[i].command != ShellSeparator &&
@@ -42,8 +44,7 @@ void InsertMenuItemToList(CListCtrl *list,CImageList *imagelist)
 		   menuInfo[i].command != ShellSubMenuMultiple) &&
 		   (i == 0 || menuInfo[i - 1].menuID != menuInfo[i].menuID))
 		{
-			HICON hIcon = reinterpret_cast<HICON>(::LoadImage(AfxGetResourceHandle(),
-					MAKEINTRESOURCE(menuInfo[i].iconID),IMAGE_ICON, 16, 16, LR_LOADTRANSPARENT ));
+			HICON hIcon = reinterpret_cast<HICON>(::LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(menuInfo[i].iconID),IMAGE_ICON, iconWidth, iconHeight, LR_LOADTRANSPARENT));
 
 			int nImage = imagelist -> Add(hIcon);
 
@@ -203,7 +204,9 @@ BOOL CSetLookAndFeelPage::OnInitDialog()
 
 	m_cMenuList.SetRedraw(false);
 
-	m_imgList.Create(16, 16, ILC_COLOR16 | ILC_MASK, 4, 1);
+	int iconWidth = GetSystemMetrics(SM_CXSMICON);
+	int iconHeight = GetSystemMetrics(SM_CYSMICON);
+	m_imgList.Create(iconWidth, iconHeight, ILC_COLOR32 | ILC_MASK, 4, 1);
 
 	m_bBlock = true;
 
@@ -342,7 +345,9 @@ BOOL CSetExtMenu::OnInitDialog()
 
 	m_cMenuList.SetRedraw(false);
 
-	m_imgList.Create(16, 16, ILC_COLOR16 | ILC_MASK, 4, 1);
+	int iconWidth = GetSystemMetrics(SM_CXSMICON);
+	int iconHeight = GetSystemMetrics(SM_CYSMICON);
+	m_imgList.Create(iconWidth, iconHeight, ILC_COLOR32 | ILC_MASK, 4, 1);
 
 	m_bBlock = true;
 

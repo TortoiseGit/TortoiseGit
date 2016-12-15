@@ -97,10 +97,11 @@ HBITMAP IconBitmapUtils::IconToBitmapPARGB32(HINSTANCE hInst, UINT uIcon)
     std::map<UINT, HBITMAP>::iterator bitmap_it = bitmaps.lower_bound(uIcon);
     if (bitmap_it != bitmaps.end() && bitmap_it->first == uIcon)
         return bitmap_it->second;
+    int iconWidth = GetSystemMetrics(SM_CXSMICON);
+    int iconHeight = GetSystemMetrics(SM_CYSMICON);
+    HICON hIcon = (HICON)LoadImage(hInst, MAKEINTRESOURCE(uIcon), IMAGE_ICON, iconWidth, iconHeight, LR_DEFAULTCOLOR);
 
-    HICON hIcon = (HICON)LoadImage(hInst, MAKEINTRESOURCE(uIcon), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
-
-    HBITMAP hBmp = IconToBitmapPARGB32(hIcon);
+    HBITMAP hBmp = IconToBitmapPARGB32(hIcon, iconWidth, iconHeight);
 
     DestroyIcon(hIcon);
 
@@ -110,14 +111,14 @@ HBITMAP IconBitmapUtils::IconToBitmapPARGB32(HINSTANCE hInst, UINT uIcon)
     return hBmp;
 }
 
-HBITMAP IconBitmapUtils::IconToBitmapPARGB32(HICON hIcon)
+HBITMAP IconBitmapUtils::IconToBitmapPARGB32(HICON hIcon, int width, int height)
 {
     if (!hIcon)
         return nullptr;
 
     SIZE sizIcon;
-    sizIcon.cx = GetSystemMetrics(SM_CXSMICON);
-    sizIcon.cy = GetSystemMetrics(SM_CYSMICON);
+    sizIcon.cx = width;
+    sizIcon.cy = height;
 
     RECT rcIcon;
     SetRect(&rcIcon, 0, 0, sizIcon.cx, sizIcon.cy);

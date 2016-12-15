@@ -728,6 +728,8 @@ void CTreePropSheet::ActivateNextPage()
 
 BOOL CTreePropSheet::OnInitDialog()
 {
+	int iconWidth = GetSystemMetrics(SM_CXSMICON);
+	int iconHeight = GetSystemMetrics(SM_CYSMICON);
 	if (m_bTreeViewMode)
 	{
 		// be sure, there are no stacked tabs, because otherwise the
@@ -744,12 +746,12 @@ BOOL CTreePropSheet::OnInitDialog()
 			m_Images.Create(ii.rcImage.right-ii.rcImage.left, ii.rcImage.bottom-ii.rcImage.top, ILC_COLOR32|ILC_MASK, 0, 1);
 		}
 		else
-			m_Images.Create(16, 16, ILC_COLOR32|ILC_MASK, 0, 1);
+			m_Images.Create(iconWidth, iconHeight, ILC_COLOR32 | ILC_MASK, 0, 1);
 	}
 
 	// perform default implementation
 	BOOL bResult = CPropertySheet::OnInitDialog();
-	HighColorTab::UpdateImageList(*this);
+	HighColorTab::UpdateImageList(*this, iconWidth, iconHeight);
 
 	if (!m_bTreeViewMode)
 		// stop here, if we would like to use tabs

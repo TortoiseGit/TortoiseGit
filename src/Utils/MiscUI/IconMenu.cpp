@@ -108,19 +108,21 @@ void CIconMenu::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 		return;		//not for a menu
 	HICON hIcon = nullptr;
 	bool bDestroyIcon = true;
+	int iconWidth = GetSystemMetrics(SM_CXSMICON);
+	int iconHeight = GetSystemMetrics(SM_CYSMICON);
 	if (iconhandles.find(lpDrawItemStruct->itemID) != iconhandles.end())
 	{
 		hIcon = iconhandles[lpDrawItemStruct->itemID];
 		bDestroyIcon = false;
 	}
 	else
-		hIcon = (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(icons[lpDrawItemStruct->itemID]), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
+		hIcon = (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(icons[lpDrawItemStruct->itemID]), IMAGE_ICON, iconWidth, iconHeight, LR_DEFAULTCOLOR);
 	if (!hIcon)
 		return;
 	DrawIconEx(lpDrawItemStruct->hDC,
-		lpDrawItemStruct->rcItem.left - 16,
-		lpDrawItemStruct->rcItem.top + (lpDrawItemStruct->rcItem.bottom - lpDrawItemStruct->rcItem.top - 16) / 2,
-		hIcon, 16, 16,
+		lpDrawItemStruct->rcItem.left - iconWidth,
+		lpDrawItemStruct->rcItem.top + (lpDrawItemStruct->rcItem.bottom - lpDrawItemStruct->rcItem.top - iconHeight) / 2,
+		hIcon, iconWidth, iconHeight,
 		0, nullptr, DI_NORMAL);
 	if (bDestroyIcon)
 		DestroyIcon(hIcon);

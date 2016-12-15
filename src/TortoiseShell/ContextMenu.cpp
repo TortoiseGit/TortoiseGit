@@ -1830,13 +1830,15 @@ STDMETHODIMP CShellExt::HandleMenuMsg2_Wrap(UINT uMsg, WPARAM wParam, LPARAM lPa
 			resource = GetMenuTextFromResource((int)myIDMap[lpdis->itemID]);
 			if (!resource)
 				return S_OK;
-			HICON hIcon = (HICON)LoadImage(g_hResInst, resource, IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
+			int iconWidth = GetSystemMetrics(SM_CXSMICON);
+			int iconHeight = GetSystemMetrics(SM_CYSMICON);
+			HICON hIcon = (HICON)LoadImage(g_hResInst, resource, IMAGE_ICON, iconWidth, iconHeight, LR_DEFAULTCOLOR);
 			if (!hIcon)
 				return S_OK;
 			DrawIconEx(lpdis->hDC,
 				lpdis->rcItem.left,
-				lpdis->rcItem.top + (lpdis->rcItem.bottom - lpdis->rcItem.top - 16) / 2,
-				hIcon, 16, 16,
+				lpdis->rcItem.top + (lpdis->rcItem.bottom - lpdis->rcItem.top - iconHeight) / 2,
+				hIcon, iconWidth, iconHeight,
 				0, nullptr, DI_NORMAL);
 			DestroyIcon(hIcon);
 			*pResult = TRUE;

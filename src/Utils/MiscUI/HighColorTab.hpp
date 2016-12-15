@@ -35,7 +35,7 @@ namespace HighColorTab
 	{
 	/*! Create the image list.
 		\retval std::unique_ptr<CImageList> Not null if success. */
-	static std::unique_ptr<CImageList> CreateImageList()
+	static std::unique_ptr<CImageList> CreateImageList(int w, int h)
 	{
 		auto apILNew = std::make_unique<CImageList>();
 		if (!apILNew.get())
@@ -45,7 +45,7 @@ namespace HighColorTab
 			return std::unique_ptr<CImageList>();
 		}
 
-		if( 0 == apILNew->Create( 16, 16, ILC_COLOR32|ILC_MASK, 0, 1 ) )
+		if (0 == apILNew->Create(w, h, ILC_COLOR32 | ILC_MASK, 0, 1))
 		{
 			// ASSERT: The image list (Win32) creation failed.
 			ASSERT( FALSE );
@@ -68,7 +68,7 @@ namespace HighColorTab
 	\date 02/2004 */
 	template<typename TSheet,
 			typename TListCreator>
-	bool UpdateImageListFull(TSheet& rSheet)
+	bool UpdateImageListFull(TSheet& rSheet, int w, int h)
 	{
 		// Get the tab control...
 		CTabCtrl* pTab = rSheet.GetTabControl();
@@ -80,7 +80,7 @@ namespace HighColorTab
 		}
 
 		// Create the replacement image list via policy.
-		std::unique_ptr<CImageList> apILNew(TListCreator::CreateImageList());
+		std::unique_ptr<CImageList> apILNew(TListCreator::CreateImageList(w, h));
 
 		bool bSuccess = (nullptr != apILNew.get());
 
@@ -131,9 +131,9 @@ namespace HighColorTab
 
 	This method uses 32 bits image list creation default policy. */
 	template<typename TSheet>
-	bool UpdateImageList(TSheet& rSheet)
+	bool UpdateImageList(TSheet& rSheet, int w, int h)
 	{
-		return UpdateImageListFull<TSheet, HighColorTab::CHighColorListCreator>( rSheet );
+		return UpdateImageListFull<TSheet, HighColorTab::CHighColorListCreator>(rSheet, w, h);
 	};
 };
 
