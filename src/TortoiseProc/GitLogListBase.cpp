@@ -2166,7 +2166,8 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			popup.AppendMenuIcon(ID_REFLOG_DEL, IDS_REFLOG_DEL, IDI_DELETE);
 			if (selectedCount == 1 && CStringUtils::StartsWith(pSelLogEntry->m_Ref, L"refs/stash"))
 				popup.AppendMenuIcon(ID_REFLOG_STASH_APPLY, IDS_MENUSTASHAPPLY, IDI_RELOCATE);
-			popup.AppendMenu(MF_SEPARATOR, NULL);
+			if (selectedCount <= 2)
+				popup.AppendMenu(MF_SEPARATOR, NULL);
 		}
 
 		if (selectedCount >= 2)
