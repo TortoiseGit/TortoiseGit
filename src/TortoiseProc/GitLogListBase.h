@@ -234,6 +234,7 @@ public:
 		m_wcRev.GetSubject().LoadString(IDS_LOG_WORKINGDIRCHANGES);
 		m_wcRev.m_Mark = L'-';
 		m_wcRev.GetBody().LoadString(IDS_LOG_FETCHINGSTATUS);
+		m_wcRev.GetBody() = L'\n' + m_wcRev.GetBody();
 		m_wcRev.m_CallDiffAsync = DiffAsync;
 		InterlockedExchange(&m_wcRev.m_IsDiffFiles, FALSE);
 		if (refresh && m_bShowWC)
