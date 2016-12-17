@@ -123,7 +123,7 @@ GITDLL_API int git_close_log(GIT_LOG handle);
  */
 GITDLL_API int git_get_commit_from_hash(GIT_COMMIT* commit, const GIT_HASH hash);
 GITDLL_API int git_parse_commit(GIT_COMMIT *commit);
-
+GITDLL_API int git_commit_is_root(const GIT_COMMIT* commit);
 GITDLL_API int git_get_commit_first_parent(GIT_COMMIT *commit,GIT_COMMIT_LIST *list);
 GITDLL_API int git_get_commit_next_parent(GIT_COMMIT_LIST *list, GIT_HASH hash);
 

@@ -245,6 +245,13 @@ int git_get_commit_first_parent(GIT_COMMIT *commit,GIT_COMMIT_LIST *list)
 	*list = (GIT_COMMIT_LIST*)p->parents;
 	return 0;
 }
+
+int git_commit_is_root(const GIT_COMMIT* commit)
+{
+	struct commit* p = commit->m_pGitCommit;
+	return (struct commit_list**)p->parents ? 1 : 0;
+}
+
 int git_get_commit_next_parent(GIT_COMMIT_LIST *list, GIT_HASH hash)
 {
 	struct commit_list *l;
@@ -551,12 +558,13 @@ int git_root_diff(GIT_DIFF diff, GIT_HASH hash,GIT_FILE *file, int *count, int i
 			//if (check_pair_status(p))
 			diff_flush_stat(p, &p_Rev->diffopt, &p_Rev->diffstat);
 		}
-
-		if(file)
-			*file = q;
-		if(count)
-			*count = q->nr;
 	}
+
+	if (file)
+		*file = q;
+	if (count)
+		*count = q->nr;
+
 	return 0;
 }
 

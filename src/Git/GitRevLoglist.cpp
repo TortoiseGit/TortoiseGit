@@ -110,6 +110,9 @@ int GitRevLoglist::SafeGetSimpleList(CGit* git)
 			}
 		}
 
+		std::sort(m_SimpleFileList.begin(), m_SimpleFileList.end());
+		m_SimpleFileList.erase(std::unique(m_SimpleFileList.begin(), m_SimpleFileList.end()), m_SimpleFileList.end());
+
 		InterlockedExchange(&m_IsUpdateing, FALSE);
 		InterlockedExchange(&m_IsSimpleListReady, TRUE);
 		return 0;
@@ -132,8 +135,8 @@ int GitRevLoglist::SafeGetSimpleList(CGit* git)
 	}
 
 	int i = 0;
-	bool isRoot = m_ParentHash.empty();
 	git_get_commit_first_parent(&commit, &list);
+	bool isRoot = git_commit_is_root(&commit) == 0;
 	while (git_get_commit_next_parent(&list, parent) == 0 || isRoot)
 	{
 		GIT_FILE file = 0;
@@ -173,6 +176,9 @@ int GitRevLoglist::SafeGetSimpleList(CGit* git)
 		git_diff_flush(git->GetGitSimpleListDiff());
 		++i;
 	}
+
+	std::sort(m_SimpleFileList.begin(), m_SimpleFileList.end());
+	m_SimpleFileList.erase(std::unique(m_SimpleFileList.begin(), m_SimpleFileList.end()), m_SimpleFileList.end());
 
 	InterlockedExchange(&m_IsUpdateing, FALSE);
 	InterlockedExchange(&m_IsSimpleListReady, TRUE);
