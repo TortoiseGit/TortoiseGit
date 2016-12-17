@@ -650,42 +650,11 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					MessageBox(out, L"TortoiseGit", MB_OK | MB_ICONERROR);
 					throw std::exception(CUnicodeUtils::GetUTF8(CString(MAKEINTRESOURCE(IDS_PROC_COMBINE_ERRORSTEP1)) + L"\r\n\r\n" + out));
 				}
-				sCmd.Format(L"git.exe reset --mixed %s --", (LPCTSTR)hashLast.ToString());
+				sCmd.Format(L"git.exe reset --soft %s --", (LPCTSTR)hashLast.ToString());
 				if(g_Git.Run(sCmd, &out, CP_UTF8))
 				{
 					MessageBox(out, L"TortoiseGit", MB_OK | MB_ICONERROR);
 					throw std::exception(CUnicodeUtils::GetUTF8(CString(MAKEINTRESOURCE(IDS_PROC_COMBINE_ERRORSTEP2)) + L"\r\n\r\n"+out));
-				}
-
-				CTGitPathList PathList;
-				/* don't why must add --stat to get action status*/
-				/* first -z will be omitted by gitdll*/
-				if(g_Git.GetDiffPath(&PathList,&pFirstEntry->m_CommitHash,&hashLast,"-z --stat -r"))
-				{
-					MessageBox(L"Get Diff file list error", L"TortoiseGit", MB_OK | MB_ICONERROR);
-					throw std::exception(CUnicodeUtils::GetUTF8(L"Could not get changed file list aborting...\r\n\r\n"+out));
-				}
-
-				for (int i = 0; i < PathList.GetCount(); ++i)
-				{
-					if(PathList[i].m_Action & CTGitPath::LOGACTIONS_ADDED)
-					{
-						sCmd.Format(L"git.exe add -- \"%s\"", (LPCTSTR)PathList[i].GetGitPathString());
-						if (g_Git.Run(sCmd, &out, CP_UTF8))
-						{
-							MessageBox(out, L"TortoiseGit", MB_OK | MB_ICONERROR);
-							throw std::exception(CUnicodeUtils::GetUTF8(L"Could not add new file aborting...\r\n\r\n"+out));
-						}
-					}
-					if(PathList[i].m_Action & CTGitPath::LOGACTIONS_DELETED)
-					{
-						sCmd.Format(L"git.exe rm -- \"%s\"", (LPCTSTR)PathList[i].GetGitPathString());
-						if (g_Git.Run(sCmd, &out, CP_UTF8))
-						{
-							MessageBox(out, L"TortoiseGit", MB_OK | MB_ICONERROR);
-							throw std::exception(CUnicodeUtils::GetUTF8(L"Could not rm file aborting...\r\n\r\n"+out));
-						}
-					}
 				}
 
 				CCommitDlg dlg;
