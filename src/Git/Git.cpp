@@ -2577,6 +2577,12 @@ int CGit::GetOneFile(const CString &Refname, const CTGitPath &path, const CStrin
 		if (git_tree_entry_bypath(entry.GetPointer(), tree, CUnicodeUtils::GetUTF8(path.GetGitPathString())))
 			return -1;
 
+		if (git_tree_entry_filemode(entry) == GIT_FILEMODE_COMMIT)
+		{
+			giterr_set_str(GITERR_NONE, "The requested object is a submodule and not a file.");
+			return -1;
+		}
+
 		CAutoBlob blob;
 		if (git_tree_entry_to_object((git_object**)blob.GetPointer(), repo, entry))
 			return -1;
