@@ -152,6 +152,11 @@ void CRebaseDlg::AddRebaseAnchor()
 	AddAnchor(IDC_REBASE_POST_BUTTON,BOTTOM_LEFT);
 
 	this->AddOthersToAnchor();
+
+	AdjustControlSize(IDC_CHECK_CHERRYPICKED_FROM);
+	AdjustControlSize(IDC_REBASE_SPLIT_COMMIT);
+	AdjustControlSize(IDC_REBASE_CHECK_FORCE);
+	AdjustControlSize(IDC_REBASE_CHECK_PRESERVEMERGES);
 }
 
 BOOL CRebaseDlg::OnInitDialog()
@@ -251,9 +256,6 @@ BOOL CRebaseDlg::OnInitDialog()
 	m_ctrlTabCtrl.AddTab(&m_FileListCtrl, CString(MAKEINTRESOURCE(IDS_PROC_REVISIONFILES)));
 	m_ctrlTabCtrl.AddTab(&m_LogMessageCtrl, CString(MAKEINTRESOURCE(IDS_PROC_COMMITMESSAGE)), 1);
 	AddRebaseAnchor();
-
-	AdjustControlSize(IDC_CHECK_CHERRYPICKED_FROM);
-	AdjustControlSize(IDC_REBASE_SPLIT_COMMIT);
 
 	CString sWindowTitle;
 	GetWindowText(sWindowTitle);
