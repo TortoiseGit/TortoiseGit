@@ -11,15 +11,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\gtest\src\gtest-all.cc">
+    <ClCompile Include="..\googletest\googlemock\src\gmock-all.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\gmock\src\gmock-all.cc">
+    <ClCompile Include="..\googletest\googletest\src\gtest-all.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\gtest\include\gtest\gtest.h">
+    <ClInclude Include="..\googletest\googletest\include\gtest\gtest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

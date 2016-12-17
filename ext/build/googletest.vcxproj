@@ -39,15 +39,15 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <AdditionalIncludeDirectories>..\..\ext\gtest;..\..\ext\gtest\include;..\..\ext\gmock;..\..\ext\gmock\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\ext\googletest\googletest;..\..\ext\googletest\googletest\include;..\..\ext\googletest\googlemock;..\..\ext\googletest\googlemock\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\gmock\src\gmock-all.cc" />
-    <ClCompile Include="..\gtest\src\gtest-all.cc" />
+    <ClCompile Include="..\googletest\googlemock\src\gmock-all.cc" />
+    <ClCompile Include="..\googletest\googletest\src\gtest-all.cc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\gtest\include\gtest\gtest.h" />
+    <ClInclude Include="..\googletest\googletest\include\gtest\gtest.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

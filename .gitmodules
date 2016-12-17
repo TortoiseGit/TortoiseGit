@@ -22,12 +22,9 @@
 [submodule "ext/pcre"]
 	path = ext/pcre
 	url = https://gitlab.com/tortoisegit/pcre.git
-[submodule "ext/gtest"]
-	path = ext/gtest
-	url = https://chromium.googlesource.com/external/gtest.git
 [submodule "ext/simpleini"]
 	path = ext/simpleini
 	url = https://github.com/brofield/simpleini.git
-[submodule "ext/gmock"]
-	path = ext/gmock
-	url = https://chromium.googlesource.com/external/gmock.git
+[submodule "ext/googletest"]
+	path = ext/googletest
+	url = https://github.com/google/googletest.git

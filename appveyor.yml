@@ -5,7 +5,7 @@ init:
 - git config --global user.email "dummy@example.com"
 - git config --global user.name "Dummy Name"
 build_script:
-- git submodule update --init -- ext/gtest ext/gmock ext/libgit2 ext/tgit ext/zlib
+- git submodule update --init -- ext/googletest ext/libgit2 ext/tgit ext/zlib
 - cd ext\libgit2
 - for %%G in (..\libgit2-*.patch) do ( type %%G | git am )
 - cd ..\..

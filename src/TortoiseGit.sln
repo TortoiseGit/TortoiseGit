@@ -255,7 +255,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libeditorconfig", "libedito
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTests", "..\test\UnitTests\UnitTests.vcxproj", "{20988578-4A14-441C-886F-61F2B9307D44}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gtest", "..\ext\build\gtest.vcxproj", "{C8F6C172-56F2-4E76-B5FA-C3B423B31BE8}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "googletest", "..\ext\build\googletest.vcxproj", "{C8F6C172-56F2-4E76-B5FA-C3B423B31BE8}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TortoiseGitUDiffLang", "TortoiseUDiff\TortoiseUDiffLang.vcxproj", "{2643919E-D024-440B-9817-1B2DF5FE4603}"
 EndProject
