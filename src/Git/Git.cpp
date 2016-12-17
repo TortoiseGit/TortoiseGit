@@ -2468,6 +2468,7 @@ int CGit::HasWorkingTreeConflicts()
 	}
 
 	CString output;
+	gitLastErr.Empty();
 	if (Run(L"git.exe ls-files -u -t -z", &output, &gitLastErr, CP_UTF8))
 		return -1;
 
@@ -2506,6 +2507,7 @@ bool CGit::IsFastForward(const CString &from, const CString &to, CGitHash * comm
 	CString cmd;
 	cmd.Format(L"git.exe merge-base %s %s", (LPCTSTR)FixBranchName(to), (LPCTSTR)FixBranchName(from));
 
+	gitLastErr.Empty();
 	if (Run(cmd, &base, &gitLastErr, CP_UTF8))
 		return false;
 	basehash = base.Trim();
@@ -2627,6 +2629,7 @@ int CGit::GetOneFile(const CString &Refname, const CTGitPath &path, const CStrin
 	{
 		CString cmd;
 		cmd.Format(L"git.exe cat-file -p %s:\"%s\"", (LPCTSTR)Refname, (LPCTSTR)path.GetGitPathString());
+		gitLastErr.Empty();
 		return RunLogFile(cmd, outputfile, &gitLastErr);
 	}
 }
@@ -3048,6 +3051,7 @@ int CGit::GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const 
 	{
 		CString cmd;
 		cmd = GetUnifiedDiffCmd(path, rev1, rev2, bMerge, bCombine, diffContext, bNoPrefix);
+		gitLastErr.Empty();
 		return RunLogFile(cmd, patchfile, &gitLastErr);
 	}
 }
@@ -3169,6 +3173,7 @@ int CGit::DeleteRef(const CString& reference)
 			return -1;
 		}
 
+		gitLastErr.Empty();
 		if (Run(cmd, &gitLastErr, CP_UTF8))
 			return -1;
 
