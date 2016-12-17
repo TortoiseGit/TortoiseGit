@@ -151,6 +151,11 @@ static git_transport_certificate_check_cb g_Git2CheckCertificateCallback;
 
 static void GetSortOptions()
 {
+#ifdef GTEST_INCLUDE_GTEST_GTEST_H_
+	g_bSortLogical = true;
+	g_bSortLocalBranchesFirst = true;
+	g_bSortTagsReversed = false;
+#else
 	g_bSortLogical = !CRegDWORD(L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\NoStrCmpLogical", 0, false, HKEY_CURRENT_USER);
 	if (g_bSortLogical)
 		g_bSortLogical = !CRegDWORD(L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\NoStrCmpLogical", 0, false, HKEY_LOCAL_MACHINE);
@@ -160,6 +165,7 @@ static void GetSortOptions()
 	g_bSortTagsReversed = !!CRegDWORD(L"Software\\TortoiseGit\\SortTagsReversed", 0, false, HKEY_LOCAL_MACHINE);
 	if (!g_bSortTagsReversed)
 		g_bSortTagsReversed = !!CRegDWORD(L"Software\\TortoiseGit\\SortTagsReversed", 0, false, HKEY_CURRENT_USER);
+#endif
 }
 
 static int LogicalComparePredicate(const CString &left, const CString &right)
