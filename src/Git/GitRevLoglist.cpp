@@ -340,7 +340,7 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 			git_get_diff_file(git->GetGitDiff(), file, j, &newname, &oldname, &mode, &IsBin, &inc, &dec);
 
 			git->StringAppend(&strnewname, (BYTE*)newname, CP_UTF8);
-			if (newname == oldname)
+			if (strcmp(newname, oldname) == 0)
 				path.SetFromGit(strnewname);
 			else
 			{
