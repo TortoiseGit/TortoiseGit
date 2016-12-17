@@ -120,12 +120,12 @@ void CMassiveGitTaskBase::ReportError(const CString& out, int /*exitCode*/)
 	MessageBox(nullptr, out, L"TortoiseGit", MB_OK | MB_ICONERROR);
 }
 
-int CMassiveGitTaskBase::GetListCount()
+int CMassiveGitTaskBase::GetListCount() const
 {
 	return m_bIsPath ? m_pathList.GetCount() : (int)m_itemList.size();
 }
 
-CString CMassiveGitTaskBase::GetListItem(int index)
+CString CMassiveGitTaskBase::GetListItem(int index) const
 {
 	return m_bIsPath ? m_pathList[index].GetGitPathString() : m_itemList[index];
 }

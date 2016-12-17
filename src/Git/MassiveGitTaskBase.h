@@ -32,16 +32,16 @@ public:
 	void					AddFile(const CString& filename);
 	void					AddFile(const CTGitPath& filename);
 	bool					Execute(BOOL& cancel);
-	int						GetListCount();
+	int						GetListCount() const;
 protected:
 	void					SetPaths(const CTGitPathList* pathList);
 	bool					ExecuteCommands(volatile BOOL& cancel);
 	virtual void			ReportError(const CString &out, int exitCode);
 	virtual void			ReportProgress(const CTGitPath& /*path*/, int /*index*/) { }
 	virtual void			ReportUserCanceled() { }
-	CString					GetParams() { return m_sParams; }
+	CString					GetParams() const { return m_sParams; }
 private:
-	CString					GetListItem(int index);
+	CString					GetListItem(int index) const;
 	bool					m_bUnused;
 	BOOL					m_bIsPath;
 	bool					m_bIgnoreErrors;
