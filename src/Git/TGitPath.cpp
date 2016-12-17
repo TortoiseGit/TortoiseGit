@@ -1097,7 +1097,13 @@ int CTGitPathList::FillUnRev(unsigned int action, const CTGitPathList* list, CSt
 			if(!one.IsEmpty())
 			{
 				//SetFromGit will clear all status
-				path.SetFromGit(one, CStringUtils::EndsWith(one, L'/'));
+				if (CStringUtils::EndsWith(one, L'/'))
+				{
+					one.Truncate(one.GetLength() - 1);
+					path.SetFromGit(one, true);
+				}
+				else
+					path.SetFromGit(one);
 				path.m_Action=action;
 				AddPath(path);
 			}
