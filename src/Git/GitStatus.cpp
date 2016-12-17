@@ -469,14 +469,15 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 		CString oldstring;
 		for (auto it = indexptr->cbegin() + start, itlast = indexptr->cbegin() + end; it <= itlast; ++it)
 		{
+			auto& entry = *it;
 			int commonPrefixLength = lowcasepath.GetLength();
-			int index = (*it).m_FileName.Find(L'/', commonPrefixLength);
+			int index = entry.m_FileName.Find(L'/', commonPrefixLength);
 			if (index < 0)
-				index = (*it).m_FileName.GetLength();
+				index = entry.m_FileName.GetLength();
 			else
 				++index; // include slash at the end for subfolders, so that we do not match files by mistake
 
-			CString filename = (*it).m_FileName.Mid(commonPrefixLength, index - commonPrefixLength);
+			CString filename = entry.m_FileName.Mid(commonPrefixLength, index - commonPrefixLength);
 			if (oldstring != filename)
 			{
 				oldstring = filename;
@@ -484,14 +485,14 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 				{
 					bool skipWorktree = false;
 					*status = git_wc_status_deleted;
-					if (((*it).m_FlagsExtended & GIT_IDXENTRY_SKIP_WORKTREE) != 0)
+					if ((entry.m_FlagsExtended & GIT_IDXENTRY_SKIP_WORKTREE) != 0)
 					{
 						skipWorktreeMap[filename] = true;
 						skipWorktree = true;
 						*status = git_wc_status_normal;
 					}
 					if (callback)
-						callback(CombinePath(gitdir, (*it).m_FileName), *status, false, pData, false, skipWorktree);
+						callback(CombinePath(gitdir, entry.m_FileName), *status, false, pData, false, skipWorktree);
 				}
 			}
 		}
@@ -504,14 +505,15 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 		CString oldstring;
 		for (auto it = treeptr->cbegin() + start, itlast = treeptr->cbegin() + end; it <= itlast; ++it)
 		{
+			auto& entry = *it;
 			int commonPrefixLength = lowcasepath.GetLength();
-			int index = (*it).m_FileName.Find(L'/', commonPrefixLength);
+			int index = entry.m_FileName.Find(L'/', commonPrefixLength);
 			if (index < 0)
-				index = (*it).m_FileName.GetLength();
+				index = entry.m_FileName.GetLength();
 			else
 				++index; // include slash at the end for subfolders, so that we do not match files by mistake
 
-			CString filename = (*it).m_FileName.Mid(commonPrefixLength, index - commonPrefixLength);
+			CString filename = entry.m_FileName.Mid(commonPrefixLength, index - commonPrefixLength);
 			if (oldstring != filename && skipWorktreeMap[filename] != true)
 			{
 				oldstring = filename;
@@ -519,7 +521,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 				{
 					*status = git_wc_status_deleted;
 					if (callback)
-						callback(CombinePath(gitdir, (*it).m_FileName), *status, false, pData, false, false);
+						callback(CombinePath(gitdir, entry.m_FileName), *status, false, pData, false, false);
 				}
 			}
 		}

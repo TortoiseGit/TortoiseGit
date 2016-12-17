@@ -127,13 +127,14 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	{
 		const git_index_entry *e = git_index_get_byindex(index, i);
 
-		this->at(i).m_FileName = CUnicodeUtils::GetUnicode(e->path);
-		this->at(i).m_FileName.MakeLower();
-		this->at(i).m_ModifyTime = e->mtime.seconds;
-		this->at(i).m_Flags = e->flags;
-		this->at(i).m_FlagsExtended = e->flags_extended;
-		this->at(i).m_IndexHash = e->id.id;
-		this->at(i).m_Size = e->file_size;
+		auto& item = this->at(i);
+		item.m_FileName = CUnicodeUtils::GetUnicode(e->path);
+		item.m_FileName.MakeLower();
+		item.m_ModifyTime = e->mtime.seconds;
+		item.m_Flags = e->flags;
+		item.m_FlagsExtended = e->flags_extended;
+		item.m_IndexHash = e->id.id;
+		item.m_Size = e->file_size;
 		m_bHasConflicts |= GIT_IDXENTRY_STAGE(e);
 	}
 
@@ -165,31 +166,32 @@ int CGitIndexList::GetFileStatus(const CString &gitdir, const CString &pathorg, 
 		return 0;
 	}
 
+	auto& entry = at(index);
 	// skip-worktree has higher priority than assume-valid
-	if (at(index).m_FlagsExtended & GIT_IDXENTRY_SKIP_WORKTREE)
+	if (entry.m_FlagsExtended & GIT_IDXENTRY_SKIP_WORKTREE)
 	{
 		*status = git_wc_status_normal;
 		if (skipWorktree)
 			*skipWorktree = true;
 	}
-	else if (at(index).m_Flags & GIT_IDXENTRY_VALID)
+	else if (entry.m_Flags & GIT_IDXENTRY_VALID)
 	{
 		*status = git_wc_status_normal;
 		if (assumeValid)
 			*assumeValid = true;
 	}
-	else if (filesize != at(index).m_Size)
+	else if (filesize != entry.m_Size)
 		*status = git_wc_status_modified;
-	else if (time == at(index).m_ModifyTime)
+	else if (time == entry.m_ModifyTime)
 		*status = git_wc_status_normal;
 	else if (repository && filesize < m_iMaxCheckSize)
 	{
 		git_oid actual;
 		CStringA fileA = CUnicodeUtils::GetMulti(pathorg, CP_UTF8);
 		m_critRepoSec.Lock(); // prevent concurrent access to repository instance and especially filter-lists
-		if (!git_repository_hashfile(&actual, repository, fileA, GIT_OBJ_BLOB, nullptr) && !git_oid_cmp(&actual, (const git_oid*)at(index).m_IndexHash.m_hash))
+		if (!git_repository_hashfile(&actual, repository, fileA, GIT_OBJ_BLOB, nullptr) && !git_oid_cmp(&actual, (const git_oid*)entry.m_IndexHash.m_hash))
 		{
-			at(index).m_ModifyTime = time;
+			entry.m_ModifyTime = time;
 			*status = git_wc_status_normal;
 		}
 		else
@@ -199,13 +201,13 @@ int CGitIndexList::GetFileStatus(const CString &gitdir, const CString &pathorg, 
 	else
 		*status = git_wc_status_modified;
 
-	if (at(index).m_Flags & GIT_IDXENTRY_STAGEMASK)
+	if (entry.m_Flags & GIT_IDXENTRY_STAGEMASK)
 		*status = git_wc_status_conflicted;
-	else if (at(index).m_FlagsExtended & GIT_IDXENTRY_INTENT_TO_ADD)
+	else if (entry.m_FlagsExtended & GIT_IDXENTRY_INTENT_TO_ADD)
 		*status = git_wc_status_added;
 
 	if (pHash)
-		*pHash = at(index).m_IndexHash;
+		*pHash = entry.m_IndexHash;
 
 	if (callback && assumeValid && skipWorktree)
 		callback(CombinePath(gitdir, pathorg), *status, false, pData, *assumeValid, *skipWorktree);
@@ -253,19 +255,20 @@ int CGitIndexList::GetStatus(const CString& gitdir, CString path, git_wc_status_
 
 	for (auto it = cbegin(), itend = cend(); it != itend; ++it)
 	{
-		if (!((*it).m_FileName.GetLength() > len && wcsncmp((*it).m_FileName, path, len) == 0))
+		auto& entry = *it;
+		if (!(entry.m_FileName.GetLength() > len && wcsncmp(entry.m_FileName, path, len) == 0))
 			continue;
 
 		if (!IsFull)
 		{
 			*status = git_wc_status_normal;
 			if (callback)
-				callback(CombinePath(gitdir, path), *status, false, pData, ((*it).m_Flags & GIT_IDXENTRY_VALID) && !((*it).m_FlagsExtended & GIT_IDXENTRY_SKIP_WORKTREE), ((*it).m_FlagsExtended & GIT_IDXENTRY_SKIP_WORKTREE) != 0);
+				callback(CombinePath(gitdir, path), *status, false, pData, (entry.m_Flags & GIT_IDXENTRY_VALID) && !(entry.m_FlagsExtended & GIT_IDXENTRY_SKIP_WORKTREE), (entry.m_FlagsExtended & GIT_IDXENTRY_SKIP_WORKTREE) != 0);
 
 			return 0;
 		}
 
-		result = CGit::GetFileModifyTime(CombinePath(gitdir, (*it).m_FileName), &time, nullptr, &filesize);
+		result = CGit::GetFileModifyTime(CombinePath(gitdir, entry.m_FileName), &time, nullptr, &filesize);
 		if (result)
 			continue;
 
@@ -275,7 +278,7 @@ int CGitIndexList::GetStatus(const CString& gitdir, CString path, git_wc_status_
 		if (skipWorktree)
 			*skipWorktree = false;
 
-		GetFileStatus(gitdir, (*it).m_FileName, status, time, filesize, callback, pData, nullptr, assumeValid, skipWorktree);
+		GetFileStatus(gitdir, entry.m_FileName, status, time, filesize, callback, pData, nullptr, assumeValid, skipWorktree);
 
 		// if a file is assumed valid, we need to inform the caller, otherwise the assumevalid flag might not get to the explorer on first open of a repository
 		if (callback && assumeValid && skipWorktree && (*assumeValid || *skipWorktree))
@@ -661,18 +664,14 @@ int CGitHeadFileList::CallBack(const unsigned char *sha1, const char *base, int 
 	if ((mode & S_IFDIR) && (mode & S_IFMT) != S_IFGITLINK)
 		return READ_TREE_RECURSIVE;
 
-	size_t cur = p->size();
-	p->resize(p->size() + 1);
-	p->at(cur).m_Hash = sha1;
+	CGitTreeItem item;
+	item.m_Hash = sha1;
+	CGit::StringAppend(&item.m_FileName, (BYTE*)base, CP_UTF8, baselen);
+	CGit::StringAppend(&item.m_FileName, (BYTE*)pathname, CP_UTF8);
 
-	CGit::StringAppend(&p->at(cur).m_FileName, (BYTE*)base, CP_UTF8, baselen);
-	CGit::StringAppend(&p->at(cur).m_FileName, (BYTE*)pathname, CP_UTF8);
+	item.m_FileName.MakeLower();
 
-	p->at(cur).m_FileName.MakeLower();
-
-	//p->at(cur).m_FileName.Replace(L'/', L'\\');
-
-	//p->m_Map[p->at(cur).m_FileName] = cur;
+	p->push_back(item);
 
 	if( (mode&S_IFMT) == S_IFGITLINK)
 		return 0;
