@@ -1,0 +1,38 @@
+0000000000000000000000000000000000000000 e8199180d4f1eda395cb47c6142f78b2c525bb70 Sven Strickroth <email@cs-ware.de> 1481907939 +0100	commit (initial): Initial commit
+e8199180d4f1eda395cb47c6142f78b2c525bb70 e8199180d4f1eda395cb47c6142f78b2c525bb70 Sven Strickroth <email@cs-ware.de> 1481907969 +0100	checkout: moving from master to file
+e8199180d4f1eda395cb47c6142f78b2c525bb70 b9ad06b41c00bd309f9639f92c96165813c6ebe3 Sven Strickroth <email@cs-ware.de> 1481907969 +0100	commit: Add a normal text file "something"
+b9ad06b41c00bd309f9639f92c96165813c6ebe3 e8199180d4f1eda395cb47c6142f78b2c525bb70 Sven Strickroth <email@cs-ware.de> 1481907980 +0100	checkout: moving from file to master
+e8199180d4f1eda395cb47c6142f78b2c525bb70 900539cd24776a94d1b642358ccfdb9d897c8254 Sven Strickroth <email@cs-ware.de> 1481908063 +0100	commit: Add submodule
+900539cd24776a94d1b642358ccfdb9d897c8254 900539cd24776a94d1b642358ccfdb9d897c8254 Sven Strickroth <email@cs-ware.de> 1481908090 +0100	checkout: moving from master to branch1
+900539cd24776a94d1b642358ccfdb9d897c8254 036248287461bce0d7912cdfe24b8757cb1434f6 Sven Strickroth <email@cs-ware.de> 1481908090 +0100	commit: Update branch 1
+036248287461bce0d7912cdfe24b8757cb1434f6 900539cd24776a94d1b642358ccfdb9d897c8254 Sven Strickroth <email@cs-ware.de> 1481908098 +0100	checkout: moving from branch1 to master
+900539cd24776a94d1b642358ccfdb9d897c8254 900539cd24776a94d1b642358ccfdb9d897c8254 Sven Strickroth <email@cs-ware.de> 1481908125 +0100	checkout: moving from master to branch2
+900539cd24776a94d1b642358ccfdb9d897c8254 c8d17f57c7b511aff4aa2fbfae158902281cad8e Sven Strickroth <email@cs-ware.de> 1481908125 +0100	commit: Update branch 2
+c8d17f57c7b511aff4aa2fbfae158902281cad8e c8d17f57c7b511aff4aa2fbfae158902281cad8e Sven Strickroth <email@cs-ware.de> 1481908175 +0100	checkout: moving from branch2 to deleted
+c8d17f57c7b511aff4aa2fbfae158902281cad8e 4ed8d1f9ce9aedc6ad044d9051cb584a8bc294ac Sven Strickroth <email@cs-ware.de> 1481908175 +0100	commit: Delete submodule
+4ed8d1f9ce9aedc6ad044d9051cb584a8bc294ac 900539cd24776a94d1b642358ccfdb9d897c8254 Sven Strickroth <email@cs-ware.de> 1481908203 +0100	checkout: moving from deleted to master
+900539cd24776a94d1b642358ccfdb9d897c8254 e8199180d4f1eda395cb47c6142f78b2c525bb70 Sven Strickroth <email@cs-ware.de> 1481908214 +0100	reset: moving to e8199180d4f1eda395cb47c6142f78b2c525bb70
+e8199180d4f1eda395cb47c6142f78b2c525bb70 b9ad06b41c00bd309f9639f92c96165813c6ebe3 Sven Strickroth <email@cs-ware.de> 1481908264 +0100	checkout: moving from master to merged_submodule_to_file_delete_both
+b9ad06b41c00bd309f9639f92c96165813c6ebe3 ad40dd45be59b3e475a0f9ca120f68f0a59071e5 Sven Strickroth <email@cs-ware.de> 1481908300 +0100	commit (merge): Merge branch 'branch1' into file
+ad40dd45be59b3e475a0f9ca120f68f0a59071e5 b9ad06b41c00bd309f9639f92c96165813c6ebe3 Sven Strickroth <email@cs-ware.de> 1481908329 +0100	checkout: moving from merged_submodule_to_file_delete_both to merged_submodule_to_file_keep_file
+b9ad06b41c00bd309f9639f92c96165813c6ebe3 f4c4903b4f7debf71894da38eb941c4208a34190 Sven Strickroth <email@cs-ware.de> 1481908352 +0100	commit (merge): Merge branch 'branch1' into file
+f4c4903b4f7debf71894da38eb941c4208a34190 b9ad06b41c00bd309f9639f92c96165813c6ebe3 Sven Strickroth <email@cs-ware.de> 1481908374 +0100	checkout: moving from merged_submodule_to_file_keep_file to merged_submodule_to_file_take_submodule
+b9ad06b41c00bd309f9639f92c96165813c6ebe3 0f95c89d9056f66cec279a483e9e02bb3c7b7b1e Sven Strickroth <email@cs-ware.de> 1481908595 +0100	commit (merge): Merge branch 'branch1' into file
+0f95c89d9056f66cec279a483e9e02bb3c7b7b1e 036248287461bce0d7912cdfe24b8757cb1434f6 Sven Strickroth <email@cs-ware.de> 1481908642 +0100	checkout: moving from merged_submodule_to_file_take_submodule to merged_file_to_submodule_take_file
+036248287461bce0d7912cdfe24b8757cb1434f6 f308ae95f16e1f4abe251f6fcf566fe4f939015b Sven Strickroth <email@cs-ware.de> 1481908727 +0100	commit (merge): Merge branch 'file' into branch1
+f308ae95f16e1f4abe251f6fcf566fe4f939015b 036248287461bce0d7912cdfe24b8757cb1434f6 Sven Strickroth <email@cs-ware.de> 1481908757 +0100	checkout: moving from merged_file_to_submodule_take_file to branch1
+036248287461bce0d7912cdfe24b8757cb1434f6 036248287461bce0d7912cdfe24b8757cb1434f6 Sven Strickroth <email@cs-ware.de> 1481908770 +0100	checkout: moving from branch1 to merged_file_to_submodule_keep_submodule
+036248287461bce0d7912cdfe24b8757cb1434f6 036248287461bce0d7912cdfe24b8757cb1434f6 Sven Strickroth <email@cs-ware.de> 1481908931 +0100	reset: moving to 036248287461bce0d7912cdfe24b8757cb1434f6
+036248287461bce0d7912cdfe24b8757cb1434f6 855c1f527e1b86d9568079132655b274c44320d2 Sven Strickroth <email@cs-ware.de> 1481908986 +0100	commit (merge): Merge branch 'file' into branch1
+855c1f527e1b86d9568079132655b274c44320d2 e8199180d4f1eda395cb47c6142f78b2c525bb70 Sven Strickroth <email@cs-ware.de> 1481908991 +0100	checkout: moving from merged_file_to_submodule_keep_submodule to master
+e8199180d4f1eda395cb47c6142f78b2c525bb70 036248287461bce0d7912cdfe24b8757cb1434f6 Sven Strickroth <email@cs-ware.de> 1481909306 +0100	checkout: moving from master to branch1
+036248287461bce0d7912cdfe24b8757cb1434f6 724ce240abe4ace33664b4b0cc860e1ccf014b41 Sven Strickroth <email@cs-ware.de> 1481909417 +0100	commit (merge): Merge branch 'branch2' into branch1
+724ce240abe4ace33664b4b0cc860e1ccf014b41 036248287461bce0d7912cdfe24b8757cb1434f6 Sven Strickroth <email@cs-ware.de> 1481909455 +0100	reset: moving to 036248287461bce0d7912cdfe24b8757cb1434f6
+036248287461bce0d7912cdfe24b8757cb1434f6 2d2017245cf3d016c64e5ad4eb6b0f1bccd1cf7f Sven Strickroth <email@cs-ware.de> 1481909498 +0100	commit (merge): Merge branch 'branch2' into branch1
+2d2017245cf3d016c64e5ad4eb6b0f1bccd1cf7f 036248287461bce0d7912cdfe24b8757cb1434f6 Sven Strickroth <email@cs-ware.de> 1481909514 +0100	reset: moving to 036248287461bce0d7912cdfe24b8757cb1434f6
+036248287461bce0d7912cdfe24b8757cb1434f6 e8199180d4f1eda395cb47c6142f78b2c525bb70 Sven Strickroth <email@cs-ware.de> 1481909517 +0100	checkout: moving from branch1 to master
+e8199180d4f1eda395cb47c6142f78b2c525bb70 900539cd24776a94d1b642358ccfdb9d897c8254 Sven Strickroth <email@cs-ware.de> 1481911943 +0100	checkout: moving from master to submodule_to_file
+900539cd24776a94d1b642358ccfdb9d897c8254 2e63f1a55bc3dce074897200b226009f575fbcae Sven Strickroth <email@cs-ware.de> 1481911963 +0100	commit: Submodule to file
+2e63f1a55bc3dce074897200b226009f575fbcae b9ad06b41c00bd309f9639f92c96165813c6ebe3 Sven Strickroth <email@cs-ware.de> 1481911983 +0100	checkout: moving from submodule_to_file to file_to_submodule
+b9ad06b41c00bd309f9639f92c96165813c6ebe3 07ac6e5916c03747f7485195deb7ec9100d1c2ef Sven Strickroth <email@cs-ware.de> 1481912040 +0100	commit: File to submodule
+07ac6e5916c03747f7485195deb7ec9100d1c2ef e8199180d4f1eda395cb47c6142f78b2c525bb70 Sven Strickroth <email@cs-ware.de> 1481912055 +0100	checkout: moving from file_to_submodule to master

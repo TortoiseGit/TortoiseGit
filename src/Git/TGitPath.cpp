@@ -29,6 +29,7 @@
 #include "SmartHandle.h"
 #include "../Resources/LoglistCommonResource.h"
 #include <memory>
+#include <sys/stat.h>
 
 extern CGit g_Git;
 
@@ -145,11 +146,16 @@ void CTGitPath::SetFromGit(const TCHAR* pPath, bool bIsDirectory)
 	m_bIsDirectory = bIsDirectory;
 }
 
-void CTGitPath::SetFromGit(const CString& sPath,CString *oldpath)
+void CTGitPath::SetFromGit(const CString& sPath, CString* oldpath, int* bIsDirectory)
 {
 	Reset();
 	m_sFwdslashPath = sPath;
 	SanitizeRootPath(m_sFwdslashPath, true);
+	if (bIsDirectory)
+	{
+		m_bDirectoryKnown = true;
+		m_bIsDirectory = *bIsDirectory != FALSE;
+	}
 	if(oldpath)
 		m_sOldFwdslashPath = *oldpath;
 }
@@ -1009,10 +1015,10 @@ int CTGitPathList::ParserFromLsFile(BYTE_VECTOR &out,bool /*staged*/)
 		// path.m_Action=path.ParserAction(out[pos]);
 		one.Tokenize(L"\t", tabstart);
 
-		if(tabstart>=0)
-			path.SetFromGit(one.Right(one.GetLength()-tabstart));
-		else
+		if (tabstart < 0)
 			return -1;
+
+		CString pathstring = one.Right(one.GetLength() - tabstart);
 
 		tabstart=0;
 
@@ -1023,6 +1029,8 @@ int CTGitPathList::ParserFromLsFile(BYTE_VECTOR &out,bool /*staged*/)
 		part = one.Tokenize(L" ", tabstart); //Mode
 		if (tabstart < 0)
 			return -1;
+		int mode = wcstol(part, nullptr, 8);
+		path.SetFromGit(pathstring, (mode & S_IFDIR) == S_IFDIR);
 
 		part = one.Tokenize(L" ", tabstart); //Hash
 		if (tabstart < 0)
@@ -1089,7 +1097,13 @@ int CTGitPathList::FillUnRev(unsigned int action, const CTGitPathList* list, CSt
 			if(!one.IsEmpty())
 			{
 				//SetFromGit will clear all status
-				path.SetFromGit(one);
+				if (CStringUtils::EndsWith(one, L'/'))
+				{
+					one.Truncate(one.GetLength() - 1);
+					path.SetFromGit(one, true);
+				}
+				else
+					path.SetFromGit(one);
 				path.m_Action=action;
 				AddPath(path);
 			}
@@ -1133,7 +1147,7 @@ int CTGitPathList::FillBasedOnIndexFlags(unsigned short flag, unsigned short fla
 				continue;
 
 			//SetFromGit will clear all status
-			path.SetFromGit(one);
+			path.SetFromGit(one, (e->mode & S_IFDIR) == S_IFDIR);
 			if (e->flags_extended & GIT_IDXENTRY_SKIP_WORKTREE)
 				path.m_Action = CTGitPath::LOGACTIONS_SKIPWORKTREE;
 			else if (e->flags & GIT_IDXENTRY_VALID)
@@ -1166,13 +1180,21 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 			bool merged=false;
 			if (pos + 1 >= logend)
 				return -1;
-			if(log[pos+1] ==':')
-				merged=true;
+			if (log[pos + 1] == ':')
+			{
+				merged = true;
+				++pos;
+			}
+
+			int modenew = 0;
+			int modeold = 0;
 			size_t end = log.find(0, pos);
 			size_t actionstart = BYTE_VECTOR::npos;
 			size_t file1 = BYTE_VECTOR::npos, file2 = BYTE_VECTOR::npos;
-			if (end != BYTE_VECTOR::npos && end > 0)
+			if (end != BYTE_VECTOR::npos && end > 7)
 			{
+				modeold = strtol((const char*)&log[pos + 1], nullptr, 8);
+				modenew = strtol((const char*)&log[pos + 7], nullptr, 8);
 				actionstart=log.find(' ',end-6);
 				pos=actionstart;
 			}
@@ -1217,6 +1239,10 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 				CTGitPath& p = m_paths[existing->second];
 				p.ParserAction(log[actionstart]);
 
+				// reset submodule/folder status if a staged entry is not a folder
+				if (p.IsDirectory() && ((modeold && !(modeold & S_IFDIR)) || (modenew && !(modenew & S_IFDIR))))
+					p.UnsetDirectoryStatus();
+
 				if(merged)
 					p.m_Action |= CTGitPath::LOGACTIONS_MERGED;
 				m_Action |= p.m_Action;
@@ -1226,7 +1252,13 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 				int ac=path.ParserAction(log[actionstart] );
 				ac |= merged?CTGitPath::LOGACTIONS_MERGED:0;
 
-				path.SetFromGit(pathname1,&pathname2);
+				int isSubmodule = FALSE;
+				if (ac & (CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_UNMERGED))
+					isSubmodule = (modeold & S_IFDIR) == S_IFDIR;
+				else
+					isSubmodule = (modenew & S_IFDIR) == S_IFDIR;
+
+				path.SetFromGit(pathname1, &pathname2, &isSubmodule);
 				path.m_Action=ac;
 					//action must be set after setfromgit. SetFromGit will clear all status.
 				this->m_Action|=ac;
@@ -1242,10 +1274,12 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 			CString StatDel;
 			CString file1;
 			CString file2;
-
+			int isSubmodule = FALSE;
 			size_t tabstart = log.find('\t', pos);
 			if (tabstart != BYTE_VECTOR::npos)
 			{
+				int modenew = strtol((const char*)&log[pos + 2], nullptr, 8);
+				isSubmodule = (modenew & S_IFDIR) == S_IFDIR;
 				log[tabstart]=0;
 				CGit::StringAppend(&StatAdd, &log[pos], CP_UTF8);
 				pos=tabstart+1;
@@ -1276,7 +1310,7 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 			{
 				CGit::StringAppend(&file1, &log[pos], CP_UTF8);
 			}
-			path.SetFromGit(file1,&file2);
+			path.SetFromGit(file1, &file2, &isSubmodule);
 
 			auto existing = duplicateMap.find(path.GetGitPathString());
 			if (existing != duplicateMap.end())

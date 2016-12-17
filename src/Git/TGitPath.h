@@ -74,7 +74,7 @@ public:
 	void SetFromGit(const char* pPath);
 	void SetFromGit(const char* pPath, bool bIsDirectory);
 	void SetFromGit(const TCHAR* pPath, bool bIsDirectory);
-	void SetFromGit(const CString& sPath, CString* OldPath = nullptr);
+	void SetFromGit(const CString& sPath, CString* oldPath = nullptr, int* bIsDirectory = nullptr);
 
 	/**
 	 * Set the path as UNICODE with backslashes
@@ -285,6 +285,13 @@ public:
 	 */
 	static bool ArePathStringsEqual(const CString& sP1, const CString& sP2);
 	static bool ArePathStringsEqualWithCase(const CString& sP1, const CString& sP2);
+
+
+	/**
+	 * Marks a path as a file by unsetting the cached IsDirectory status
+	 * Used while diffing commits where a submodule changed to a file
+	 */
+	void UnsetDirectoryStatus() { m_bIsDirectory = false; }
 
 private:
 	/**

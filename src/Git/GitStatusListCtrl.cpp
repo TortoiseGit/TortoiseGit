@@ -1095,10 +1095,11 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int list
 	SetItemText(index, GetColumnIndex(GITSLC_COLADD),GitPath->m_StatAdd);
 	SetItemText(index, GetColumnIndex(GITSLC_COLDEL),GitPath->m_StatDel);
 
+	if (!(GitPath->m_Action & CTGitPath::LOGACTIONS_DELETED) && m_ColumnManager.IsRelevant(GetColumnIndex(GITSLC_COLMODIFICATIONDATE)))
 	{
 		CString modificationDate;
 		__int64 filetime = GitPath->GetLastWriteTime();
-		if (filetime && !(GitPath->m_Action & CTGitPath::LOGACTIONS_DELETED))
+		if (filetime)
 		{
 			FILETIME* f = (FILETIME*)(__int64*)&filetime;
 			modificationDate = CLoglistUtils::FormatDateAndTime(CTime(CGit::filetime_to_time_t(f)), DATE_SHORTDATE, true, relativeTimes);
@@ -1106,7 +1107,7 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int list
 		SetItemText(index, GetColumnIndex(GITSLC_COLMODIFICATIONDATE), modificationDate);
 	}
 	// SVNSLC_COLSIZE
-	if (GitPath->IsDirectory())
+	if (GitPath->IsDirectory() || !m_ColumnManager.IsRelevant(GetColumnIndex(GITSLC_COLSIZE)))
 		SetItemText(index, GetColumnIndex(GITSLC_COLSIZE), L"");
 	else
 	{

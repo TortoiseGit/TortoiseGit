@@ -1292,7 +1292,7 @@ void CRebaseDlg::OnBnClickedContinue()
 			auto entry = m_FileListCtrl.GetListEntry(i);
 			if (entry->m_Checked)
 			{
-				if (entry->m_Action & CTGitPath::LOGACTIONS_UNVER)
+				if ((entry->m_Action & CTGitPath::LOGACTIONS_UNVER) || entry->IsDirectory())
 					mgtAdd.AddFile(entry->GetGitPathString());
 				else if (entry->m_Action & CTGitPath::LOGACTIONS_DELETED)
 					mgtUpdateIndexForceRemove.AddFile(entry->GetGitPathString());

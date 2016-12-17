@@ -57,6 +57,8 @@ Released: unreleased
  * Fixed issue #2874: Horizontal scroll reversed in tortoiseGitMerge
  * When showing an autocompletion list, don't bail out if one is already shown but just update it
  * Fixed issue #2887: ListView flickering in Browse References dialog
+ * Fixed issue #2891: "Show log" on a repo with 200k files is extremely slow due to each file attributes being queried individually
+   This also improves submodule support as we rely on the directory/file information we got from git
 
 = Release 2.3.0 =
 Released: 2016-10-01

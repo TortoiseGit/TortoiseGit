@@ -63,7 +63,7 @@ int CGitDiff::SubmoduleDiffNull(const CTGitPath * pPath, const git_revnum_t &rev
 		bool toOK = !subgit.Run(cmd,&newsub,encode);
 
 		bool dirty = false;
-		if (rev1 == GIT_REV_ZERO)
+		if (rev1 == GIT_REV_ZERO && !(pPath->m_Action & CTGitPath::LOGACTIONS_DELETED))
 		{
 			CString dirtyList;
 			subgit.Run(L"git.exe status --porcelain", &dirtyList, encode);
@@ -71,7 +71,10 @@ int CGitDiff::SubmoduleDiffNull(const CTGitPath * pPath, const git_revnum_t &rev
 		}
 
 		CSubmoduleDiffDlg submoduleDiffDlg;
-		submoduleDiffDlg.SetDiff(pPath->GetWinPath(), false, oldhash, oldsub, true, newhash, newsub, toOK, dirty, NewSubmodule);
+		if (pPath->m_Action & CTGitPath::LOGACTIONS_DELETED)
+			submoduleDiffDlg.SetDiff(pPath->GetWinPath(), false, newhash, newsub, toOK, oldhash, oldsub, false, dirty, DeleteSubmodule);
+		else
+			submoduleDiffDlg.SetDiff(pPath->GetWinPath(), false, oldhash, oldsub, true, newhash, newsub, toOK, dirty, NewSubmodule);
 		submoduleDiffDlg.DoModal();
 		if (submoduleDiffDlg.IsRefresh())
 			return 1;
