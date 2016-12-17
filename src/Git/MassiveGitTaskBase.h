@@ -33,6 +33,7 @@ public:
 	void					AddFile(const CTGitPath& filename);
 	bool					Execute(BOOL& cancel);
 	int						GetListCount() const;
+	bool					IsListEmpty() const;
 protected:
 	void					SetPaths(const CTGitPathList* pathList);
 	bool					ExecuteCommands(volatile BOOL& cancel);

@@ -530,7 +530,7 @@ void CCommitDlg::PrepareOkButton()
 
 static bool UpdateIndex(CMassiveGitTask &mgt, CSysProgressDlg &sysProgressDlg, int progress, int maxProgress)
 {
-	if (!mgt.GetListCount())
+	if (mgt.IsListEmpty())
 		return true;
 
 	if (sysProgressDlg.HasUserCancelled())

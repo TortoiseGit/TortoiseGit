@@ -125,6 +125,11 @@ int CMassiveGitTaskBase::GetListCount() const
 	return m_bIsPath ? m_pathList.GetCount() : (int)m_itemList.size();
 }
 
+bool CMassiveGitTaskBase::IsListEmpty() const
+{
+	return m_bIsPath ? m_pathList.IsEmpty() : m_itemList.empty();
+}
+
 CString CMassiveGitTaskBase::GetListItem(int index) const
 {
 	return m_bIsPath ? m_pathList[index].GetGitPathString() : m_itemList[index];
