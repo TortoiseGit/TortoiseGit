@@ -602,7 +602,7 @@ int git_do_diff(GIT_DIFF diff, GIT_HASH hash1, GIT_HASH hash2, GIT_FILE * file, 
 	return 0;
 }
 
-int git_get_diff_file(GIT_DIFF diff,GIT_FILE file,int i, char **newname, char ** oldname,  int *status, int *IsBin, int *inc, int *dec)
+int git_get_diff_file(GIT_DIFF diff, GIT_FILE file, int i, char** newname, char** oldname, int* IsDir, int* status, int* IsBin, int* inc, int* dec)
 {
 	struct diff_queue_struct *q = &diff_queued_diff;
 	struct rev_info *p_Rev;
@@ -614,11 +614,18 @@ int git_get_diff_file(GIT_DIFF diff,GIT_FILE file,int i, char **newname, char **
 	if(i>=q->nr)
 		return -1;
 
-	assert(newname && oldname && status);
+	assert(newname && oldname && status && IsDir);
 
 	*newname = q->queue[i]->two->path;
 	*oldname = q->queue[i]->one->path;
 	*status = q->queue[i]->status;
+	if (*status == 'D')
+		*IsDir = (q->queue[i]->one->mode & S_IFDIR) == S_IFDIR;
+	else
+		*IsDir = (q->queue[i]->two->mode & S_IFDIR) == S_IFDIR;
+
+	if (q->queue[i]->one->mode && q->queue[i]->two->mode && DIFF_PAIR_TYPE_CHANGED(q->queue[i]))
+		*IsDir = 0;
 
 	if(p_Rev->diffstat.files)
 	{

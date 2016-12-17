@@ -236,6 +236,7 @@ int CLogCache::SaveOneItem(const GitRevLoglist& Rev, LONG offset)
 		SLogCacheRevFileHeader revfileheader;
 		revfileheader.m_Magic = LOG_DATA_FILE_MAGIC;
 		revfileheader.m_Version = LOG_INDEX_VERSION;
+		revfileheader.m_IsSubmodule = Rev.m_Files[i].IsDirectory() ? 1 : 0;
 		revfileheader.m_Action = Rev.m_Files[i].m_Action;
 		revfileheader.m_Stage = Rev.m_Files[i].m_Stage;
 		revfileheader.m_ParentNo = Rev.m_Files[i].m_ParentNo;
@@ -308,7 +309,7 @@ int CLogCache::LoadOneItem(GitRevLoglist& Rev,ULONGLONG offset)
 		CString file(fileheader->m_FileName, fileheader->m_FileNameSize);
 		if(fileheader->m_OldFileNameSize)
 			oldfile = CString(fileheader->m_FileName + fileheader->m_FileNameSize, fileheader->m_OldFileNameSize);
-		path.SetFromGit(file,&oldfile);
+		path.SetFromGit(file, &oldfile, (int*)&fileheader->m_IsSubmodule);
 
 		path.m_ParentNo = fileheader ->m_ParentNo;
 		path.m_Stage = fileheader ->m_Stage;

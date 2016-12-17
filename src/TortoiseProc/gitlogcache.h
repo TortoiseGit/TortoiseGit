@@ -27,7 +27,7 @@
 #define LOG_DATA_MAGIC		0x99BB0FFF
 #define LOG_DATA_ITEM_MAGIC 0x0FCC9ACC
 #define LOG_DATA_FILE_MAGIC 0x19EE9DFF
-#define LOG_INDEX_VERSION   0xF
+#define LOG_INDEX_VERSION   0x10
 
 #pragma pack (1)
 struct SLogCacheIndexHeader
@@ -58,6 +58,7 @@ struct SLogCacheRevFileHeader
 	DWORD m_ParentNo;
 	DWORD m_Add;
 	DWORD m_Del;
+	DWORD m_IsSubmodule;
 	DWORD m_FileNameSize;
 	DWORD m_OldFileNameSize;
 	TCHAR m_FileName[1];

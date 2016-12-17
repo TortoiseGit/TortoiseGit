@@ -25,6 +25,8 @@ public:
 	~CAutoTempDir();
 
 	CString GetTempDir() const;
+
+	static void DeleteDirectoryRecursive(const CString& dir);
 private:
 	CString tempdir;
 };

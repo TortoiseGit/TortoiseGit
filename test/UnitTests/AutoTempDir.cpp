@@ -33,7 +33,7 @@ CAutoTempDir::CAutoTempDir()
 	tempdir = szTempName;
 }
 
-static void DeleteDirectoryRecursive(CString dir)
+void CAutoTempDir::DeleteDirectoryRecursive(const CString& dir)
 {
 	WIN32_FIND_DATA ffd;
 	HANDLE hp = FindFirstFile(dir + L"\\*", &ffd);

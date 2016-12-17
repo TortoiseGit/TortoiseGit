@@ -22,6 +22,7 @@
 #include "Git.h"
 #include "gitdll.h"
 #include "UnicodeUtils.h"
+#include <sys/stat.h>
 
 typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 
@@ -159,11 +160,11 @@ int GitRevLoglist::SafeGetSimpleList(CGit* git)
 		{
 			char* newname;
 			char* oldname;
-			int mode, IsBin, inc, dec;
+			int status, isBin, inc, dec, isDir;
 
 			try
 			{
-				git_get_diff_file(git->GetGitSimpleListDiff(), file, j, &newname, &oldname, &mode, &IsBin, &inc, &dec);
+				git_get_diff_file(git->GetGitSimpleListDiff(), file, j, &newname, &oldname, &isDir, &status, &isBin, &inc, &dec);
 			}
 			catch (char *)
 			{
@@ -240,10 +241,17 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 
 				const git_diff_delta* delta = git_patch_get_delta(patch);
 
+				int isDir = (delta->new_file.mode & S_IFDIR) == S_IFDIR;
+				if (delta->status == GIT_DELTA_DELETED)
+					isDir = (delta->old_file.mode & S_IFDIR) == S_IFDIR;
+
 				if (lastDelta && strcmp(lastDelta->new_file.path, delta->new_file.path) == 0 && (lastDelta->status == GIT_DELTA_DELETED && delta->status == GIT_DELTA_ADDED || delta->status == GIT_DELTA_DELETED && lastDelta->status == GIT_DELTA_ADDED))
 				{
+					// rename handling
 					CTGitPath path = m_Files[m_Files.GetCount() - 1];
 					m_Files.RemoveItem(path);
+					if (path.IsDirectory() && !isDir)
+						path.UnsetDirectoryStatus();
 					path.m_StatAdd = L"-";
 					path.m_StatDel = L"-";
 					path.m_Action = CTGitPath::LOGACTIONS_MODIFIED;
@@ -257,11 +265,11 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 				CString newname = CUnicodeUtils::GetUnicode(delta->new_file.path);
 				CTGitPath path;
 				if (delta->new_file.path == delta->old_file.path)
-					path.SetFromGit(newname);
+					path.SetFromGit(newname, isDir != FALSE);
 				else
 				{
 					CString oldname = CUnicodeUtils::GetUnicode(delta->old_file.path);
-					path.SetFromGit(newname, &oldname);
+					path.SetFromGit(newname, &oldname, &isDir);
 				}
 				oldAction = m_Action;
 				m_Action |= path.ParserAction(delta->status);
@@ -342,23 +350,23 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 			strnewname.Empty();
 			stroldname.Empty();
 
-			int mode, IsBin, inc, dec;
-			git_get_diff_file(git->GetGitDiff(), file, j, &newname, &oldname, &mode, &IsBin, &inc, &dec);
+			int status, isBin, inc, dec, isDir;
+			git_get_diff_file(git->GetGitDiff(), file, j, &newname, &oldname, &isDir, &status, &isBin, &inc, &dec);
 
 			git->StringAppend(&strnewname, (BYTE*)newname, CP_UTF8);
 			if (strcmp(newname, oldname) == 0)
-				path.SetFromGit(strnewname);
+				path.SetFromGit(strnewname, isDir != FALSE);
 			else
 			{
 				git->StringAppend(&stroldname, (BYTE*)oldname, CP_UTF8);
-				path.SetFromGit(strnewname, &stroldname);
+				path.SetFromGit(strnewname, &stroldname, &isDir);
 			}
-			path.ParserAction((BYTE)mode);
+			path.ParserAction((BYTE)status);
 			path.m_ParentNo = i;
 
 			m_Action |= path.m_Action;
 
-			if (IsBin)
+			if (isBin)
 			{
 				path.m_StatAdd = L"-";
 				path.m_StatDel = L"-";

@@ -2833,17 +2833,16 @@ int CGit::GetDiffPath(CTGitPathList *PathList, CGitHash *hash1, CGitHash *hash2,
 		strnewname.Empty();
 		stroldname.Empty();
 
-		int mode=0,IsBin=0,inc=0,dec=0;
-		git_get_diff_file(diff,file,j,&newname,&oldname,
-					&mode,&IsBin,&inc,&dec);
+		int status = 0, isBin = 0, inc = 0, dec = 0, isDir = 0;
+		git_get_diff_file(diff, file, j, &newname, &oldname, &isDir, &status, &isBin, &inc, &dec);
 
 		StringAppend(&strnewname, (BYTE*)newname, CP_UTF8);
 		StringAppend(&stroldname, (BYTE*)oldname, CP_UTF8);
 
-		path.SetFromGit(strnewname,&stroldname);
-		path.ParserAction((BYTE)mode);
+		path.SetFromGit(strnewname, &stroldname, &isDir);
+		path.ParserAction((BYTE)status);
 
-		if(IsBin)
+		if (isBin)
 		{
 			path.m_StatAdd = L"-";
 			path.m_StatDel = L"-";
