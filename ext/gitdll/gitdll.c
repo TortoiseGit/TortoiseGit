@@ -772,7 +772,7 @@ static int update_some(const unsigned char* sha1, struct strbuf* base,
 	if (S_ISDIR(mode))
 		return READ_TREE_RECURSIVE;
 
-	hashcpy(ce->sha1, sha1);
+	hashcpy(ce->oid.hash, sha1);
 	memcpy(ce->name, base->buf, base->len);
 	memcpy(ce->name + base->len, pathname, strlen(pathname));
 	ce->ce_flags = create_ce_flags((unsigned int)(strlen(pathname) + base->len));

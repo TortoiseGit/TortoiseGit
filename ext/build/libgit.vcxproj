@@ -46,6 +46,7 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\tgit\apply.c" />
     <ClCompile Include="..\tgit\builtin\am.c" />
     <ClCompile Include="..\tgit\builtin\check-mailmap.c" />
     <ClCompile Include="..\tgit\builtin\get-tar-commit-id.c" />
@@ -206,6 +207,7 @@
     <ClCompile Include="..\tgit\symlinks.c" />
     <ClCompile Include="..\tgit\tag.c" />
     <ClCompile Include="..\tgit\tempfile.c" />
+    <ClCompile Include="..\tgit\tmp-objdir.c" />
     <ClCompile Include="..\tgit\trace.c" />
     <ClCompile Include="..\tgit\transport-helper.c" />
     <ClCompile Include="..\tgit\transport.c" />
@@ -240,7 +242,9 @@
     <ClCompile Include="..\tgit\xdiff\xutils.c" />
     <ClCompile Include="..\tgit\builtin\add.c" />
     <ClCompile Include="..\tgit\builtin\annotate.c" />
-    <ClCompile Include="..\tgit\builtin\apply.c" />
+    <ClCompile Include="..\tgit\builtin\apply.c">
+      <ObjectFileName>$(IntDir)BuildIn%(Filename).obj</ObjectFileName>
+    </ClCompile>
     <ClCompile Include="..\tgit\builtin\archive.c">
       <ObjectFileName>$(IntDir)BuildIn%(Filename).obj</ObjectFileName>
     </ClCompile>
@@ -370,6 +374,7 @@
     <ClCompile Include="..\tgit\builtin\write-tree.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\tgit\apply.h" />
     <ClInclude Include="..\tgit\commit-slab.h" />
     <ClInclude Include="..\tgit\compat\msvc.h" />
     <ClInclude Include="..\tgit\archive.h" />
@@ -459,6 +464,7 @@
     <ClInclude Include="..\tgit\tar.h" />
     <ClInclude Include="..\tgit\tempfile.h" />
     <ClInclude Include="..\tgit\thread-utils.h" />
+    <ClInclude Include="..\tgit\tmp-objdir.h" />
     <ClInclude Include="..\tgit\transport.h" />
     <ClInclude Include="..\tgit\tree-walk.h" />
     <ClInclude Include="..\tgit\tree.h" />

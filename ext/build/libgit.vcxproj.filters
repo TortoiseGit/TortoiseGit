@@ -872,6 +872,12 @@
     <ClCompile Include="..\tgit\refs\iterator.c">
       <Filter>git\refs</Filter>
     </ClCompile>
+    <ClCompile Include="..\tgit\apply.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\tmp-objdir.c">
+      <Filter>git</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\tgit\compat\msvc.h">
@@ -1223,5 +1229,11 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="libgit-defines.h" />
+    <ClInclude Include="..\tgit\apply.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\tmp-objdir.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
