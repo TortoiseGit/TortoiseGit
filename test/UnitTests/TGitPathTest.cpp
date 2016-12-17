@@ -1408,3 +1408,45 @@ TEST(CTGitPath, HashStashDir)
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(file, L"# pack-refs with: peeled fully-peeled\nf3a76c72d89aebd63a0346dd92ecafecdc780822 refs/stashNotReal\n"));
 	EXPECT_FALSE(path.HasStashDir());
 }
+
+class MockCTGitPath : public CTGitPath
+{
+public:
+	MockCTGitPath()
+	{
+		ON_CALL(*this, UpdateAttributes()).WillByDefault(testing::Invoke(this, &MockCTGitPath::UpdateAttributes_Real));
+	}
+	MOCK_CONST_METHOD0(UpdateAttributes, void());
+
+private:
+	void UpdateAttributes_Real() { CTGitPath::UpdateAttributes(); }
+};
+
+TEST(CTGitPath, SetDirectory_DiskAccess)
+{
+	MockCTGitPath path;
+	path.SetFromGit(L"bla");
+	EXPECT_CALL(path, UpdateAttributes()).Times(1);
+	EXPECT_FALSE(path.IsDirectory());
+	EXPECT_FALSE(path.IsDirectory());
+	EXPECT_FALSE(path.Exists());
+
+	TCHAR winDir[MAX_PATH + 1] = { 0 };
+	GetWindowsDirectory(winDir, _countof(winDir));
+	MockCTGitPath pathWin;
+	pathWin.SetFromGit(winDir);
+	EXPECT_CALL(pathWin, UpdateAttributes()).Times(1);
+	EXPECT_TRUE(pathWin.IsDirectory());
+	EXPECT_TRUE(pathWin.IsDirectory());
+	EXPECT_TRUE(pathWin.Exists());
+
+	MockCTGitPath pathDir;
+	pathDir.SetFromGit(L"bla", false);
+	EXPECT_CALL(pathDir, UpdateAttributes()).Times(0);
+	EXPECT_FALSE(pathDir.IsDirectory());
+
+	MockCTGitPath pathDir2;
+	pathDir2.SetFromGit(L"bla", true);
+	EXPECT_CALL(pathDir2, UpdateAttributes()).Times(0);
+	EXPECT_TRUE(pathDir2.IsDirectory());
+}

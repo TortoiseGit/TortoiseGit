@@ -28,3 +28,6 @@
 [submodule "ext/simpleini"]
 	path = ext/simpleini
 	url = https://github.com/brofield/simpleini.git
+[submodule "ext/gmock"]
+	path = ext/gmock
+	url = https://chromium.googlesource.com/external/gmock.git

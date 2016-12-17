@@ -28,7 +28,11 @@ class CTGitPath
 {
 public:
 	CTGitPath(void);
+#ifdef GMOCK_INCLUDE_GMOCK_GMOCK_H_
+	virtual ~CTGitPath(void);
+#else
 	~CTGitPath(void);
+#endif
 	CTGitPath(const CString& sUnknownPath);
 	int m_Stage;
 	int m_ParentNo;
@@ -288,7 +292,13 @@ private:
 	 */
 	void SanitizeRootPath(CString& sPath, bool bIsForwardPath) const;
 
+#ifdef GMOCK_INCLUDE_GMOCK_GMOCK_H_
+protected:
+	virtual void UpdateAttributes() const;
+private:
+#else
 	void UpdateAttributes() const;
+#endif
 
 	bool HasStashDir(const CString& adminDirPath) const;
 

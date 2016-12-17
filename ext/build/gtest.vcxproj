@@ -39,10 +39,11 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <AdditionalIncludeDirectories>..\..\ext\gtest;..\..\ext\gtest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\ext\gtest;..\..\ext\gtest\include;..\..\ext\gmock;..\..\ext\gmock\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\gmock\src\gmock-all.cc" />
     <ClCompile Include="..\gtest\src\gtest-all.cc" />
   </ItemGroup>
   <ItemGroup>

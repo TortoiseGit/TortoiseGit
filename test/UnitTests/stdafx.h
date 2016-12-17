@@ -50,5 +50,6 @@
 
 // Header for gtest
 #include "gtest/gtest.h"
+#include "gmock/gmock.h"
 
 #include "AutoTempDir.h"
