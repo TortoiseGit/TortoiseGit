@@ -1472,10 +1472,10 @@ void CPicWindow::PositionChildren()
     {
         int iconWidth = GetSystemMetrics(SM_CXSMICON);
         int iconHeight = GetSystemMetrics(SM_CYSMICON);
-        SetWindowPos(hwndLeftBtn, HWND_TOP, rect.left+iconWidth/4, rect.top + HEADER_HEIGHT + (HEADER_HEIGHT-iconHeight)/2, iconWidth, iconHeight, SWP_FRAMECHANGED|SWP_SHOWWINDOW);
-        SetWindowPos(hwndRightBtn, HWND_TOP, rect.left+iconWidth+iconWidth/2, rect.top + HEADER_HEIGHT + (HEADER_HEIGHT-iconHeight)/2, iconWidth, iconHeight, SWP_FRAMECHANGED|SWP_SHOWWINDOW);
+        SetWindowPos(hwndLeftBtn, HWND_TOP, rect.left + iconWidth / 4, rect.top + HEADER_HEIGHT + (HEADER_HEIGHT-iconHeight)/2, iconWidth, iconHeight, SWP_FRAMECHANGED|SWP_SHOWWINDOW);
+        SetWindowPos(hwndRightBtn, HWND_TOP, rect.left + iconWidth + iconWidth / 2, rect.top + HEADER_HEIGHT + (HEADER_HEIGHT - iconHeight) / 2, iconWidth, iconHeight, SWP_FRAMECHANGED|SWP_SHOWWINDOW);
         if (nFrames > 1)
-            SetWindowPos(hwndPlayBtn, HWND_TOP, rect.left+iconWidth*2+iconWidth/2, rect.top + HEADER_HEIGHT + (HEADER_HEIGHT-iconHeight)/2, iconWidth, iconHeight, SWP_FRAMECHANGED|SWP_SHOWWINDOW);
+            SetWindowPos(hwndPlayBtn, HWND_TOP, rect.left + iconWidth * 2 + iconWidth / 2, rect.top + HEADER_HEIGHT + (HEADER_HEIGHT - iconHeight) / 2, iconWidth, iconHeight, SWP_FRAMECHANGED|SWP_SHOWWINDOW);
         else
             ShowWindow(hwndPlayBtn, SW_HIDE);
     }

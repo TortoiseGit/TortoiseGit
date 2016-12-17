@@ -32,32 +32,25 @@ extern MenuInfo menuInfo[];
 void InsertMenuItemToList(CListCtrl *list,CImageList *imagelist)
 {
 	int i=0;
-	HINSTANCE hRes = AfxGetResourceHandle();
 	int iconWidth = GetSystemMetrics(SM_CXSMICON);
 	int iconHeight = GetSystemMetrics(SM_CYSMICON);
 	while(menuInfo[i].command != ShellMenuLastEntry)
 	{
-		const MenuInfo& mi = menuInfo[i];
-		if ((mi.command != ShellSeparator &&
-			mi.command != ShellSubMenu &&
-			mi.command != ShellSubMenuFile &&
-			mi.command != ShellSubMenuFolder &&
-			mi.command != ShellSubMenuLink &&
-			mi.command != ShellSubMenuMultiple) &&
-			(i == 0 || menuInfo[i - 1].menuID != mi.menuID))
+		if ((menuInfo[i].command != ShellSeparator &&
+		   menuInfo[i].command != ShellSubMenu &&
+		   menuInfo[i].command != ShellSubMenuFile &&
+		   menuInfo[i].command != ShellSubMenuFolder &&
+		   menuInfo[i].command != ShellSubMenuLink &&
+		   menuInfo[i].command != ShellSubMenuMultiple) &&
+		   (i == 0 || menuInfo[i - 1].menuID != menuInfo[i].menuID))
 		{
-			HICON hIcon = reinterpret_cast<HICON>(::LoadImage(
-				hRes,
-				MAKEINTRESOURCE(mi.iconID),
-				IMAGE_ICON,
-				iconWidth,
-				iconHeight,
-				LR_LOADTRANSPARENT ));
+			HICON hIcon = reinterpret_cast<HICON>(::LoadImage(AfxGetResourceHandle(),
+					MAKEINTRESOURCE(menuInfo[i].iconID),IMAGE_ICON, iconWidth, iconHeight, LR_LOADTRANSPARENT ));
 
 			int nImage = imagelist -> Add(hIcon);
 
 			CString temp;
-			temp.LoadString(mi.menuTextID);
+			temp.LoadString(menuInfo[i].menuTextID);
 			CStringUtils::RemoveAccelerators(temp);
 
 			int nIndex = list->GetItemCount();

@@ -152,9 +152,7 @@ void SetUUIDOverlayIcon( HWND hWnd )
     if (!sicon.empty())
     {
         if (sicon.size() >= 4 && !_wcsicmp(sicon.substr(sicon.size() - 4).c_str(), L".ico"))
-        {
             icon = (HICON)::LoadImage(nullptr, sicon.c_str(), IMAGE_ICON, iconWidth, iconHeight, LR_LOADFROMFILE | LR_SHARED);
-        }
         else
         {
             ULONG_PTR gdiplusToken = 0;

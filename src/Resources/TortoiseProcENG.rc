@@ -339,7 +339,7 @@ BEGIN
     GROUPBOX        "TortoiseGit",IDC_STATIC,7,7,286,92
     LTEXT           "&Language:",IDC_STATIC,14,20,86,8
     COMBOBOX        IDC_LANGUAGECOMBO,108,18,176,64,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    CHECKBOX        "Automatically check for &newer versions every week",IDC_CHECKNEWERVERSION,14,36,195,18,BS_VCENTER
+    CHECKBOX        "Automatically check for &newer versions every week",IDC_CHECKNEWERVERSION,14,34,195,26,BS_VCENTER | BS_MULTILINE
     PUSHBUTTON      "C&heck now",IDC_CHECKNEWERBUTTON,212,38,72,14
     PUSHBUTTON      "Re-run &First Start Wizard",IDC_RUNFIRSTSTARTWIZARD,14,59,192,14
     PUSHBUTTON      "Create &Library",IDC_CREATELIB,212,59,72,14
