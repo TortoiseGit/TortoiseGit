@@ -32,6 +32,7 @@ Released: unreleased
  * Fixed issue #2264: Insert new items into interactive rebase process
  * Fixed issue #2456: Allow to compare change sets in log
  * Updated libgit to 2.11
+ * Updated pcre to 8.40-RC1
 
 == Bug Fixes ==
  * Fixed issue #2837: Layout of overlapping icons settings dialog
