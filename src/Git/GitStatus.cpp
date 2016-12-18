@@ -236,8 +236,8 @@ int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status_
 		SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
 
 		//add item
-		int start = SearchInSortVector(*treeptr, lowcasepath, -1);
-		if (start < 0)
+		size_t start = SearchInSortVector(*treeptr, lowcasepath, -1);
+		if (start == NPOS)
 		{
 			*status = st = git_wc_status_added;
 			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": File miss in head tree %s", (LPCTSTR)path);
@@ -397,10 +397,10 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 		int matchLength = -1;
 		if (bIsDir)
 			matchLength = onepath.GetLength();
-		int pos = SearchInSortVector(*indexptr, onepath, matchLength);
-		int posintree = SearchInSortVector(*treeptr, onepath, matchLength);
+		size_t pos = SearchInSortVector(*indexptr, onepath, matchLength);
+		size_t posintree = SearchInSortVector(*treeptr, onepath, matchLength);
 
-		if (pos < 0 && posintree < 0)
+		if (pos == NPOS && posintree == NPOS)
 		{
 			if (onepath.IsEmpty())
 				continue;
@@ -424,13 +424,13 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 			if (callback)
 				callback(CombinePath(gitdir, casepath), *status, bIsDir, pData, false, false);
 		}
-		else if (pos < 0 && posintree >= 0) /* check if file delete in index */
+		else if (pos == NPOS && posintree != NPOS) /* check if file delete in index */
 		{
 			*status = git_wc_status_deleted;
 			if (callback)
 				callback(CombinePath(gitdir, casepath), *status, bIsDir, pData, false, false);
 		}
-		else if (pos >= 0 && posintree < 0) /* Check if file added */
+		else if (pos != NPOS && posintree == NPOS) /* Check if file added */
 		{
 			*status = git_wc_status_added;
 			if ((*indexptr)[pos].m_Flags & GIT_IDXENTRY_STAGEMASK)
@@ -460,8 +460,8 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 	}/*End of For*/
 
 	/* Check deleted file in system */
-	int start = 0, end = 0;
-	int pos = SearchInSortVector(*indexptr, lowcasepath, lowcasepath.GetLength()); // match path prefix, (sub)folders end with slash
+	size_t start = 0, end = 0;
+	size_t pos = SearchInSortVector(*indexptr, lowcasepath, lowcasepath.GetLength()); // match path prefix, (sub)folders end with slash
 	std::map<CString, bool> skipWorktreeMap;
 
 	if (GetRangeInSortVector(*indexptr, lowcasepath, lowcasepath.GetLength(), &start, &end, pos) == 0)
@@ -555,10 +555,10 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 	CString lowcasepath = path;
 	lowcasepath.MakeLower();
 
-	int pos = SearchInSortVector(*indexptr, lowcasepath, lowcasepath.GetLength());
+	size_t pos = SearchInSortVector(*indexptr, lowcasepath, lowcasepath.GetLength());
 
 	// Not In Version Contorl
-	if (pos < 0)
+	if (pos == NPOS)
 	{
 		if (!IsIgnore)
 		{
@@ -591,8 +591,8 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 	// In version control
 	*status = git_wc_status_normal;
 
-	int start = 0;
-	int end = 0;
+	size_t start = 0;
+	size_t end = 0;
 
 	GetRangeInSortVector(*indexptr, lowcasepath, lowcasepath.GetLength(), &start, &end, pos);
 
@@ -623,7 +623,7 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 				{
 					pos = SearchInSortVector(*treeptr, (*it).m_FileName, -1);
 
-					if (pos < 0)
+					if (pos == NPOS)
 					{
 						*status = max(git_wc_status_added, *status); // added file found
 						break;
@@ -640,11 +640,12 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 				if (*status == git_wc_status_normal)
 				{
 					pos = SearchInSortVector(*treeptr, lowcasepath, lowcasepath.GetLength());
-					if (pos < 0)
+					if (pos == NPOS)
 						*status = max(git_wc_status_added, *status); // added file found
 					else
 					{
-						int hstart, hend;
+						size_t hstart, hend;
+						// we know that pos exists in treeptr
 						GetRangeInSortVector(*treeptr, lowcasepath, lowcasepath.GetLength(), &hstart, &hend, pos);
 						for (auto hit = treeptr->cbegin() + hstart, lastElement = treeptr->cbegin() + hend; hit <= lastElement; ++hit)
 						{

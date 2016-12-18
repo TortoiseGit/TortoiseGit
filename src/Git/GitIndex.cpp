@@ -152,9 +152,9 @@ int CGitIndexList::GetFileStatus(const CString &gitdir, const CString &pathorg, 
 	CString path = pathorg;
 	path.MakeLower();
 
-	int index = SearchInSortVector(*this, path, -1);
+	size_t index = SearchInSortVector(*this, path, -1);
 
-	if (index < 0)
+	if (index == NPOS)
 	{
 		*status = git_wc_status_unversioned;
 		if (pHash)

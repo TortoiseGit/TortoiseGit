@@ -346,40 +346,42 @@ public:
 	bool IsIgnore(CString path, const CString& root, bool isDir);
 };
 
+static const size_t NPOS = (size_t)-1; // bad/missing length/position
+
 template<class T>
-int GetRangeInSortVector(const T &vector, LPCTSTR pstr, int len, int *start, int *end, int pos)
+int GetRangeInSortVector(const T& vector, LPCTSTR pstr, size_t len, size_t* start, size_t* end, size_t pos)
 {
-	if( pos < 0)
+	if (pos == NPOS)
 		return -1;
-	if (start == 0 || !end)
+	if (!start || !end)
 		return -1;
 
-	*start=*end=-1;
+	*start = *end = NPOS;
 
 	if (vector.empty())
 		return -1;
 
-	if (pos >= (int)vector.size())
+	if (pos >= vector.size())
 		return -1;
 
 	if (wcsncmp(vector[pos].m_FileName, pstr, len) != 0)
 		return -1;
 
 	*start = 0;
-	*end = (int)vector.size() - 1;
+	*end = vector.size() - 1;
 
 	// shortcut, if all entries are going match
 	if (!len)
 		return 0;
 
-	for (int i = pos; i < (int)vector.size(); ++i)
+	for (size_t i = pos; i < vector.size(); ++i)
 	{
 		if (wcsncmp(vector[i].m_FileName, pstr, len) != 0)
 			break;
 
 		*end = i;
 	}
-	for (int i = pos; i >= 0; --i)
+	for (size_t i = pos + 1; i-- > 0;)
 	{
 		if (wcsncmp(vector[i].m_FileName, pstr, len) != 0)
 			break;
@@ -391,14 +393,14 @@ int GetRangeInSortVector(const T &vector, LPCTSTR pstr, int len, int *start, int
 }
 
 template<class T>
-int SearchInSortVector(const T &vector, LPCTSTR pstr, int len)
+size_t SearchInSortVector(const T& vector, LPCTSTR pstr, int len)
 {
-	int end = (int)vector.size() - 1;
-	int start = 0;
-	int mid = (start+end)/2;
+	size_t end = vector.size() - 1;
+	size_t start = 0;
+	size_t mid = (start + end) / 2;
 
 	if (vector.empty())
-		return -1;
+		return NPOS;
 
 	while(!( start == end && start==mid))
 	{
@@ -428,7 +430,7 @@ int SearchInSortVector(const T &vector, LPCTSTR pstr, int len)
 		if (wcsncmp(vector[mid].m_FileName, pstr, len) == 0)
 			return mid;
 	}
-	return -1;
+	return NPOS;
 };
 
 class CGitAdminDirMap:public std::map<CString, CString>
