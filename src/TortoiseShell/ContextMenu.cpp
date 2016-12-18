@@ -1999,9 +1999,9 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 
 	auto I = files_.cbegin();
 	if (wcsrchr(I->c_str(), L'\\'))
-		wcscpy_s(ignorepath, MAX_PATH, wcsrchr(I->c_str(), L'\\') + 1);
+		wcscpy_s(ignorepath, wcsrchr(I->c_str(), L'\\') + 1);
 	else
-		wcscpy_s(ignorepath, MAX_PATH, I->c_str());
+		wcscpy_s(ignorepath, I->c_str());
 	if ((itemStates & ITEMIS_IGNORED) && (!ignoredprops.empty()))
 	{
 		// check if the item name is ignored or the mask
@@ -2029,10 +2029,10 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 			myIDMap[idCmd++] = ShellMenuUnIgnore;
 			bShowIgnoreMenu = true;
 		}
-		wcscpy_s(maskbuf, MAX_PATH, L"*");
+		wcscpy_s(maskbuf, L"*");
 		if (wcsrchr(ignorepath, L'.'))
 		{
-			wcscat_s(maskbuf, MAX_PATH, wcsrchr(ignorepath, L'.'));
+			wcscat_s(maskbuf, wcsrchr(ignorepath, L'.'));
 			p = ignoredprops.find(maskbuf);
 			if ((p!=-1) &&
 				((ignoredprops.compare(maskbuf) == 0) || (ignoredprops.find(L'\n', p) == p + wcslen(maskbuf) + 1) || (ignoredprops.rfind(L'\n', p) == p - 1)))
@@ -2064,10 +2064,10 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 				myIDMap[idCmd - idCmdFirst] = ShellMenuDeleteIgnore;
 				myIDMap[idCmd++] = ShellMenuDeleteIgnore;
 
-				wcscpy_s(maskbuf, MAX_PATH, L"*");
-				if (!(itemStates & ITEMIS_FOLDER) && wcsrchr(ignorepath, '.'))
+				wcscpy_s(maskbuf, L"*");
+				if (!(itemStates & ITEMIS_FOLDER) && wcsrchr(ignorepath, L'.'))
 				{
-					wcscat_s(maskbuf, MAX_PATH, wcsrchr(ignorepath, '.'));
+					wcscat_s(maskbuf, wcsrchr(ignorepath, L'.'));
 					InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, maskbuf);
 					auto verb = std::wstring(maskbuf);
 					myVerbsMap[verb] = idCmd - idCmdFirst;
@@ -2084,10 +2084,10 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 				myIDMap[idCmd - idCmdFirst] = ShellMenuIgnore;
 				myIDMap[idCmd++] = ShellMenuIgnore;
 
-				wcscpy_s(maskbuf, MAX_PATH, L"*");
+				wcscpy_s(maskbuf, L"*");
 				if (!(itemStates & ITEMIS_FOLDER) && wcsrchr(ignorepath, L'.'))
 				{
-					wcscat_s(maskbuf, MAX_PATH, wcsrchr(ignorepath, L'.'));
+					wcscat_s(maskbuf, wcsrchr(ignorepath, L'.'));
 					InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, maskbuf);
 					auto verb = std::wstring(maskbuf);
 					myVerbsMap[verb] = idCmd - idCmdFirst;

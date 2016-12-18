@@ -117,7 +117,7 @@ void SetUUIDOverlayIcon( HWND hWnd )
     do
     {
         wchar_t buf[MAX_PATH] = { 0 };
-        swprintf_s(buf, _countof(buf), L"%s%d", L"Software\\TortoiseGit\\LastUsedUUIDsForGrouping\\", foundUUIDIndex);
+        swprintf_s(buf, L"%s%d", L"Software\\TortoiseGit\\LastUsedUUIDsForGrouping\\", foundUUIDIndex);
         CRegStdString r = CRegStdString(buf);
         std::wstring sr = r;
         if (sr.empty())

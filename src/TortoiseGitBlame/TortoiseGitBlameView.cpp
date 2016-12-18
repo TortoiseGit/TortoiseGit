@@ -893,7 +893,7 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 			CString shortHashStr;
 			shortHashStr = hash.ToString().Left(g_Git.GetShortHASHLength());
 
-			//swprintf_s(buf, MAX_PATH, L"%8ld       ", revs[i]);
+			//swprintf_s(buf, L"%8ld       ", revs[i]);
 			rc.top = (LONG)Y;
 			rc.left=LOCATOR_WIDTH;
 			rc.bottom = (LONG)(Y + height);
