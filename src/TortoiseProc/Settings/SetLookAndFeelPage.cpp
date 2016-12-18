@@ -205,9 +205,9 @@ BOOL CSetLookAndFeelPage::OnInitDialog()
 
 	m_cMenuList.SetRedraw(false);
 
-	m_imgList.Create(GetSystemMetrics(SM_CXSMICON),
-					 GetSystemMetrics(SM_CYSMICON),
-					 ILC_COLOR32 | ILC_MASK, 4, 1);
+	int iconWidth = GetSystemMetrics(SM_CXSMICON);
+	int iconHeight = GetSystemMetrics(SM_CYSMICON);
+	m_imgList.Create(iconWidth, iconHeight, ILC_COLOR32 | ILC_MASK, 4, 1);
 
 	m_bBlock = true;
 
@@ -346,9 +346,9 @@ BOOL CSetExtMenu::OnInitDialog()
 
 	m_cMenuList.SetRedraw(false);
 
-	m_imgList.Create(GetSystemMetrics(SM_CXSMICON),
-					 GetSystemMetrics(SM_CYSMICON),
-					 ILC_COLOR32 | ILC_MASK, 4, 1);
+	int iconWidth = GetSystemMetrics(SM_CXSMICON);
+	int iconHeight = GetSystemMetrics(SM_CYSMICON);
+	m_imgList.Create(iconWidth, iconHeight, ILC_COLOR32 | ILC_MASK, 4, 1);
 
 	m_bBlock = true;
 
