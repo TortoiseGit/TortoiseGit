@@ -145,11 +145,14 @@ void SetUUIDOverlayIcon( HWND hWnd )
         r.removeKey();
     }
 
+    int iconWidth = GetSystemMetrics(SM_CXSMICON);
+    int iconHeight = GetSystemMetrics(SM_CYSMICON);
+
     HICON icon = nullptr;
     if (!sicon.empty())
     {
         if (sicon.size() >= 4 && !_wcsicmp(sicon.substr(sicon.size() - 4).c_str(), L".ico"))
-            icon = (HICON)::LoadImage(nullptr, sicon.c_str(), IMAGE_ICON, 16, 16, LR_LOADFROMFILE | LR_SHARED);
+            icon = (HICON)::LoadImage(nullptr, sicon.c_str(), IMAGE_ICON, iconWidth, iconHeight, LR_LOADFROMFILE | LR_SHARED);
         else
         {
             ULONG_PTR gdiplusToken = 0;
@@ -184,7 +187,7 @@ void SetUUIDOverlayIcon( HWND hWnd )
             XOR[i] = colors[foundUUIDIndex % 6];
         }
 
-        icon = ::CreateIcon(nullptr, 16, 16, 1, 32, AND, (BYTE*)XOR);
+        icon = ::CreateIcon(nullptr, iconWidth, iconHeight, 1, 32, AND, (BYTE*)XOR);
     }
     pTaskbarInterface->SetOverlayIcon(hWnd, icon, uuid.c_str());
     DestroyIcon(icon);

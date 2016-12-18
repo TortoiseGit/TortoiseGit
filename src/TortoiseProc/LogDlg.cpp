@@ -364,8 +364,10 @@ BOOL CLogDlg::OnInitDialog()
 	m_JumpType.AddString(CString(MAKEINTRESOURCE(IDS_PROC_BRANCH_FF)));
 	m_JumpType.AddString(CString(MAKEINTRESOURCE(IDS_PROC_SELECTION_HISTORY)));
 	m_JumpType.SetCurSel(0);
-	m_JumpUp.SetIcon((HICON)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_JUMPUP), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR));
-	m_JumpDown.SetIcon((HICON)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_JUMPDOWN), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR));
+	int iconWidth = GetSystemMetrics(SM_CXSMICON);
+	int iconHeight = GetSystemMetrics(SM_CYSMICON);
+	m_JumpUp.SetIcon((HICON)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_JUMPUP), IMAGE_ICON, iconWidth, iconHeight, LR_DEFAULTCOLOR));
+	m_JumpDown.SetIcon((HICON)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_JUMPDOWN), IMAGE_ICON, iconWidth, iconHeight, LR_DEFAULTCOLOR));
 
 	if (hWndExplorer)
 		CenterWindow(CWnd::FromHandle(hWndExplorer));

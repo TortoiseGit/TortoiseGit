@@ -255,11 +255,13 @@ void CSciEdit::Init(const ProjectProperties& props)
 
 void CSciEdit::SetIcon(const std::map<int, UINT> &icons)
 {
-	Call(SCI_RGBAIMAGESETWIDTH, 16);
-	Call(SCI_RGBAIMAGESETHEIGHT, 16);
+	int iconWidth = GetSystemMetrics(SM_CXSMICON);
+	int iconHeight = GetSystemMetrics(SM_CYSMICON);
+	Call(SCI_RGBAIMAGESETWIDTH, iconWidth);
+	Call(SCI_RGBAIMAGESETHEIGHT, iconHeight);
 	for (auto icon : icons)
 	{
-		auto hIcon = (HICON)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(icon.second), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
+		auto hIcon = (HICON)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(icon.second), IMAGE_ICON, iconWidth, iconHeight, LR_DEFAULTCOLOR);
 		auto bytes = Icon2Image(hIcon);
 		DestroyIcon(hIcon);
 		Call(SCI_REGISTERRGBAIMAGE, icon.first, (LPARAM)bytes.get());

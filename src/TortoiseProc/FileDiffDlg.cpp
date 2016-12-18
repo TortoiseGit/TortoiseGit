@@ -203,7 +203,9 @@ BOOL CFileDiffDlg::OnInitDialog()
 	m_nIconFolder = SYS_IMAGE_LIST().GetDirIconIndex();
 	m_cFileList.SetImageList(&SYS_IMAGE_LIST(), LVSIL_SMALL);
 
-	m_SwitchButton.SetImage((HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_SWITCHLEFTRIGHT), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR));
+	int iconWidth = GetSystemMetrics(SM_CXSMICON);
+	int iconHeight = GetSystemMetrics(SM_CYSMICON);
+	m_SwitchButton.SetImage((HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_SWITCHLEFTRIGHT), IMAGE_ICON, iconWidth, iconHeight, LR_DEFAULTCOLOR));
 	m_SwitchButton.Invalidate();
 
 	m_cFilter.SetCancelBitmaps(IDI_CANCELNORMAL, IDI_CANCELPRESSED);
