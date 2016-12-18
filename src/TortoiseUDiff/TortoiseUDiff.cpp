@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2011-2016 - TortoiseGit
 // Copyright (C) 2003-2008, 2010-2012, 2014-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -50,11 +51,11 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	CCrashReport::Instance().AddUserInfoToReport(L"CommandLine", GetCommandLine());
 #endif
 
-	CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
+	CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
 
 	CLangDll langDLL;
 	hResource = langDLL.Init(L"TortoiseGitUDiff", langId);
-	if (hResource == NULL)
+	if (!hResource)
 		hResource = hInstance;
 
 	CCmdLineParser parser(lpCmdLine);
@@ -74,7 +75,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 
 
 	HMODULE hSciLexerDll = ::LoadLibrary(L"SciLexer_tgit.dll");
-	if (hSciLexerDll == NULL)
+	if (!hSciLexerDll)
 		return FALSE;
 
 	CMainWindow mainWindow(hResource);
@@ -128,7 +129,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	hAccelTable = LoadAccelerators(hResource, MAKEINTRESOURCE(IDC_TORTOISEUDIFF));
 
 	// Main message loop:
-	while (GetMessage(&msg, NULL, 0, 0))
+	while (GetMessage(&msg, nullptr, 0, 0))
 	{
 		if (!TranslateAccelerator(mainWindow, hAccelTable, &msg))
 		{

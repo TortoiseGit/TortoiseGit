@@ -25,10 +25,10 @@
  */
 class CNiceTrackbar {
 public:
-    CNiceTrackbar() : m_Window(NULL), m_OrigProc(NULL), m_Dragging(false), m_DragChanged(false) { }
+    CNiceTrackbar() : m_Window(nullptr), m_OrigProc(nullptr), m_Dragging(false), m_DragChanged(false) {}
 
     HWND GetWindow() const { return m_Window; }
-    bool IsValid() const { return m_Window != NULL; }
+    bool IsValid() const { return m_Window != nullptr; }
 
     void ConvertTrackbarToNice( HWND window );
 

@@ -1,6 +1,6 @@
 // TortoiseIDiff - an image diff viewer in TortoiseSVN and TortoiseGit
 
-// Copyright (C) 2015 - TortoiseGit
+// Copyright (C) 2015-2016 - TortoiseGit
 // Copyright (C) 2006-2007, 2010-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -43,11 +43,11 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
     SetTaskIDPerUUID();
     CRegStdDWORD loc = CRegStdDWORD(L"Software\\TortoiseGit\\LanguageID", 1033);
     long langId = loc;
-    CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
+    CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
 
     CLangDll langDLL;
     hResource = langDLL.Init(L"TortoiseIDiff", langId);
-    if (hResource == NULL)
+    if (!hResource)
         hResource = hInstance;
 
     git_libgit2_init();
@@ -58,7 +58,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
     {
         TCHAR buf[1024] = { 0 };
         LoadString(hResource, IDS_COMMANDLINEHELP, buf, _countof(buf));
-        MessageBox(NULL, buf, L"TortoiseIDiff", MB_ICONINFORMATION);
+        MessageBox(nullptr, buf, L"TortoiseIDiff", MB_ICONINFORMATION);
         langDLL.Close();
         return 0;
     }
@@ -146,7 +146,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
             PostMessage(*mainWindow, WM_COMMAND, ID_VIEW_IMAGEINFO, 0);
         }
         // Main message loop:
-        while (GetMessage(&msg, NULL, 0, 0))
+        while (GetMessage(&msg, nullptr, 0, 0))
         {
             if (!TranslateAccelerator(*mainWindow, hAccelTable, &msg))
             {

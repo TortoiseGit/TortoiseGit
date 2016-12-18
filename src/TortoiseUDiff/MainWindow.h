@@ -34,7 +34,7 @@
 class CMainWindow : public CWindow
 {
 public:
-	CMainWindow(HINSTANCE hInst, const WNDCLASSEX* wcx = NULL);
+	CMainWindow(HINSTANCE hInst, const WNDCLASSEX* wcx = nullptr);
 	~CMainWindow(void);
 
 	/**

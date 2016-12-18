@@ -29,12 +29,12 @@
 
 const UINT TaskBarButtonCreated = RegisterWindowMessage(L"TaskbarButtonCreated");
 
-CMainWindow::CMainWindow(HINSTANCE hInst, const WNDCLASSEX* wcx /* = NULL*/)
+CMainWindow::CMainWindow(HINSTANCE hInst, const WNDCLASSEX* wcx /* = nullptr*/)
 	: CWindow(hInst, wcx)
 	, m_bShowFindBar(false)
 	, m_directFunction(0)
 	, m_directPointer(0)
-	, m_hWndEdit(NULL)
+	, m_hWndEdit(nullptr)
 	, m_bMatchCase(false)
 {
 	SetWindowTitle(L"TortoiseGitUDiff");
@@ -55,7 +55,7 @@ bool CMainWindow::RegisterAndCreateWindow()
 	wcx.cbClsExtra = 0;
 	wcx.cbWndExtra = 0;
 	wcx.hInstance = hResource;
-	wcx.hCursor = NULL;
+	wcx.hCursor = nullptr;
 	ResString clsname(hResource, IDS_APP_TITLE);
 	wcx.lpszClassName = clsname;
 	wcx.hIcon = LoadIcon(hResource, MAKEINTRESOURCE(IDI_TORTOISEUDIFF));
@@ -64,7 +64,7 @@ bool CMainWindow::RegisterAndCreateWindow()
 	wcx.hIconSm = LoadIcon(wcx.hInstance, MAKEINTRESOURCE(IDI_TORTOISEUDIFF));
 	if (RegisterWindow(&wcx))
 	{
-		if (Create(WS_CAPTION | WS_MAXIMIZEBOX | WS_MINIMIZEBOX | WS_SIZEBOX | WS_SYSMENU | WS_CLIPCHILDREN, NULL))
+		if (Create(WS_CAPTION | WS_MAXIMIZEBOX | WS_MINIMIZEBOX | WS_SIZEBOX | WS_SYSMENU | WS_CLIPCHILDREN, nullptr))
 		{
 			m_FindBar.SetParent(*this);
 			m_FindBar.Create(::hResource, IDD_FINDBAR, *this);
@@ -279,7 +279,7 @@ LRESULT CMainWindow::DoCommand(int id)
 			PAGESETUPDLG pdlg = {0};
 			pdlg.lStructSize = sizeof(PAGESETUPDLG);
 			pdlg.hwndOwner = *this;
-			pdlg.hInstance = NULL;
+			pdlg.hInstance = nullptr;
 			pdlg.Flags = PSD_DEFAULTMINMARGINS|PSD_MARGINS|PSD_DISABLEPAPER|PSD_DISABLEORIENTATION;
 			if (localeInfo[0] == '0')
 				pdlg.Flags |= PSD_INHUNDREDTHSOFMILLIMETERS;
@@ -308,7 +308,7 @@ LRESULT CMainWindow::DoCommand(int id)
 			PRINTDLGEX pdlg = {0};
 			pdlg.lStructSize = sizeof(PRINTDLGEX);
 			pdlg.hwndOwner = *this;
-			pdlg.hInstance = NULL;
+			pdlg.hInstance = nullptr;
 			pdlg.Flags = PD_USEDEVMODECOPIESANDCOLLATE | PD_ALLPAGES | PD_RETURNDC | PD_NOCURRENTPAGE | PD_NOPAGENUMS;
 			pdlg.nMinPage = 1;
 			pdlg.nMaxPage = 0xffffU; // We do not know how many pages in the document
@@ -502,11 +502,11 @@ LRESULT CMainWindow::DoCommand(int id)
 			::EndDoc(hdc);
 			::DeleteDC(hdc);
 
-			if (pdlg.hDevMode != NULL)
+			if (pdlg.hDevMode)
 				GlobalFree(pdlg.hDevMode);
-			if (pdlg.hDevNames != NULL)
+			if (pdlg.hDevNames)
 				GlobalFree(pdlg.hDevNames);
-			if (pdlg.lpPageRanges != NULL)
+			if (pdlg.lpPageRanges)
 				GlobalFree(pdlg.lpPageRanges);
 
 			// reset the UI
@@ -530,7 +530,7 @@ std::wstring CMainWindow::GetAppDirectory()
 	{
 		bufferlen += MAX_PATH;		// MAX_PATH is not the limit here!
 		auto pBuf = std::make_unique<TCHAR[]>(bufferlen);
-		len = GetModuleFileName(NULL, pBuf.get(), bufferlen);
+		len = GetModuleFileName(nullptr, pBuf.get(), bufferlen);
 		path = std::wstring(pBuf.get(), len);
 	} while(len == bufferlen);
 	path = path.substr(0, path.rfind('\\') + 1);
@@ -608,13 +608,13 @@ bool CMainWindow::LoadFile(HANDLE hFile)
 	char data[4096] = { 0 };
 	DWORD dwRead = 0;
 
-	BOOL bRet = ReadFile(hFile, data, sizeof(data), &dwRead, NULL);
+	BOOL bRet = ReadFile(hFile, data, sizeof(data), &dwRead, nullptr);
 	bool bUTF8 = IsUTF8(data, dwRead);
 	while ((dwRead > 0) && (bRet))
 	{
 		SendEditor(SCI_ADDTEXT, dwRead,
 			reinterpret_cast<LPARAM>(static_cast<char *>(data)));
-		bRet = ReadFile(hFile, data, sizeof(data), &dwRead, NULL);
+		bRet = ReadFile(hFile, data, sizeof(data), &dwRead, nullptr);
 	}
 	SetupWindow(bUTF8);
 	return true;
@@ -623,7 +623,7 @@ bool CMainWindow::LoadFile(HANDLE hFile)
 bool CMainWindow::LoadFile(LPCTSTR filename)
 {
 	InitEditor();
-	FILE *fp = NULL;
+	FILE* fp = nullptr;
 	_wfopen_s(&fp, filename, L"rb");
 	if (!fp)
 		return false;
@@ -721,7 +721,7 @@ void CMainWindow::SetupColors(bool recolorize)
 
 bool CMainWindow::SaveFile(LPCTSTR filename)
 {
-	FILE *fp = NULL;
+	FILE* fp = nullptr;
 	_wfopen_s(&fp, filename, L"w+b");
 	if (!fp)
 		return false;
@@ -844,10 +844,10 @@ void CMainWindow::loadOrSaveFile(bool doLoad, const std::wstring& filename /* = 
 	CStringUtils::PipesToNulls(filter);
 	ofn.lpstrFilter = filter;
 	ofn.nFilterIndex = 1;
-	ofn.lpstrFileTitle = NULL;
+	ofn.lpstrFileTitle = nullptr;
 	ofn.lpstrDefExt = L"diff";
 	ofn.nMaxFileTitle = 0;
-	ofn.lpstrInitialDir = NULL;
+	ofn.lpstrInitialDir = nullptr;
 	TCHAR fileTitle[1024] = { 0 };
 	LoadString(::hResource, doLoad ? IDS_OPENPATCH : IDS_SAVEPATCH, fileTitle, sizeof(fileTitle)/sizeof(TCHAR));
 	ofn.lpstrTitle = fileTitle;

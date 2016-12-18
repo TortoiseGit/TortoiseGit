@@ -1,6 +1,6 @@
 // TortoiseIDiff - an image diff viewer in TortoiseSVN
 
-// Copyright (C) 2015 - TortoiseGit
+// Copyright (C) 2015-2016 - TortoiseGit
 // Copyright (C) 2006-2007, 2009, 2011-2013, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -45,7 +45,7 @@ enum FileType
 class CMainWindow : public CWindow
 {
 public:
-    CMainWindow(HINSTANCE hInstance, const WNDCLASSEX* wcx = NULL) : CWindow(hInstance, wcx)
+    CMainWindow(HINSTANCE hInstance, const WNDCLASSEX* wcx = nullptr) : CWindow(hInstance, wcx)
         , picWindow1(hInstance)
         , picWindow2(hInstance)
         , picWindow3(hInstance)
@@ -65,11 +65,11 @@ public:
         , transparentColor(::GetSysColor(COLOR_WINDOW))
         , m_BlendType(CPicWindow::BLEND_ALPHA)
         , hwndTB(0)
-        , hToolbarImgList(NULL)
+        , hToolbarImgList(nullptr)
         , bSelectionMode(false)
         , resolveMsgWnd(nullptr)
-        , resolveMsgLParam(NULL)
-        , resolveMsgWParam(NULL)
+        , resolveMsgLParam(0)
+        , resolveMsgWParam(0)
     {
         SetWindowTitle((LPCTSTR)ResString(hResource, IDS_APP_TITLE));
     };
@@ -104,7 +104,7 @@ protected:
     LRESULT                             DoCommand(int id, LPARAM lParam);
 
     /// Positions the child windows. Call this after the window sizes/positions have changed.
-    void                                PositionChildren(RECT * clientrect = NULL);
+    void                                PositionChildren(RECT* clientrect = nullptr);
     /// Shows the "Open images" dialog where the user can select the images to diff
     bool                                OpenDialog();
     static BOOL CALLBACK                OpenDlgProc(HWND hwndDlg, UINT message, WPARAM wParam, LPARAM lParam);

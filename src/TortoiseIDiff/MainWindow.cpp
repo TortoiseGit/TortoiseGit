@@ -47,7 +47,7 @@ bool CMainWindow::RegisterAndCreateWindow()
     wcx.cbClsExtra = 0;
     wcx.cbWndExtra = 0;
     wcx.hInstance = hResource;
-    wcx.hCursor = LoadCursor(NULL, IDC_SIZEWE);
+    wcx.hCursor = LoadCursor(nullptr, IDC_SIZEWE);
     ResString clsname(hResource, IDS_APP_TITLE);
     wcx.lpszClassName = clsname;
     wcx.hIcon = LoadIcon(hResource, MAKEINTRESOURCE(IDI_TORTOISEIDIFF));
@@ -59,7 +59,7 @@ bool CMainWindow::RegisterAndCreateWindow()
     wcx.hIconSm = LoadIcon(wcx.hInstance, MAKEINTRESOURCE(IDI_TORTOISEIDIFF));
     if (RegisterWindow(&wcx))
     {
-        if (Create(WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_VISIBLE, NULL))
+        if (Create(WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_VISIBLE, nullptr))
         {
             UpdateWindow(m_hwnd);
             return true;
@@ -68,10 +68,10 @@ bool CMainWindow::RegisterAndCreateWindow()
     return false;
 }
 
-void CMainWindow::PositionChildren(RECT * clientrect /* = NULL */)
+void CMainWindow::PositionChildren(RECT * clientrect /* = nullptr */)
 {
     RECT tbRect;
-    if (clientrect == NULL)
+    if (!clientrect)
         return;
     SendMessage(hwndTB, TB_AUTOSIZE, 0, 0);
     GetWindowRect(hwndTB, &tbRect);
@@ -79,7 +79,7 @@ void CMainWindow::PositionChildren(RECT * clientrect /* = NULL */)
     HDWP hdwp = BeginDeferWindowPos(3);
     if (bOverlap && selectionPaths.empty())
     {
-        SetWindowPos(picWindow1, NULL, clientrect->left, clientrect->top+tbHeight, clientrect->right-clientrect->left, clientrect->bottom-clientrect->top-tbHeight, SWP_SHOWWINDOW);
+        SetWindowPos(picWindow1, nullptr, clientrect->left, clientrect->top + tbHeight, clientrect->right - clientrect->left, clientrect->bottom - clientrect->top - tbHeight, SWP_SHOWWINDOW);
     }
     else
     {
@@ -93,10 +93,10 @@ void CMainWindow::PositionChildren(RECT * clientrect /* = NULL */)
                 child.top = clientrect->top+tbHeight;
                 child.right = clientrect->right;
                 child.bottom = nSplitterPos-(SPLITTER_BORDER/2);
-                if (hdwp) hdwp = DeferWindowPos(hdwp, picWindow1, NULL, child.left, child.top, child.right-child.left, child.bottom-child.top, SWP_FRAMECHANGED|SWP_SHOWWINDOW);
+                if (hdwp) hdwp = DeferWindowPos(hdwp, picWindow1, nullptr, child.left, child.top, child.right - child.left, child.bottom - child.top, SWP_FRAMECHANGED | SWP_SHOWWINDOW);
                 child.top = nSplitterPos+(SPLITTER_BORDER/2);
                 child.bottom = clientrect->bottom;
-                if (hdwp) hdwp = DeferWindowPos(hdwp, picWindow2, NULL, child.left, child.top, child.right-child.left, child.bottom-child.top, SWP_FRAMECHANGED|SWP_SHOWWINDOW);
+                if (hdwp) hdwp = DeferWindowPos(hdwp, picWindow2, nullptr, child.left, child.top, child.right - child.left, child.bottom - child.top, SWP_FRAMECHANGED | SWP_SHOWWINDOW);
             }
             else
             {
@@ -106,13 +106,13 @@ void CMainWindow::PositionChildren(RECT * clientrect /* = NULL */)
                 child.top = clientrect->top+tbHeight;
                 child.right = clientrect->right;
                 child.bottom = nSplitterPos-(SPLITTER_BORDER/2);
-                if (hdwp) hdwp = DeferWindowPos(hdwp, picWindow1, NULL, child.left, child.top, child.right-child.left, child.bottom-child.top, SWP_FRAMECHANGED|SWP_SHOWWINDOW);
+                if (hdwp) hdwp = DeferWindowPos(hdwp, picWindow1, nullptr, child.left, child.top, child.right - child.left, child.bottom - child.top, SWP_FRAMECHANGED | SWP_SHOWWINDOW);
                 child.top = nSplitterPos+(SPLITTER_BORDER/2);
                 child.bottom = nSplitterPos2-(SPLITTER_BORDER/2);
-                if (hdwp) hdwp = DeferWindowPos(hdwp, picWindow2, NULL, child.left, child.top, child.right-child.left, child.bottom-child.top, SWP_FRAMECHANGED|SWP_SHOWWINDOW);
+                if (hdwp) hdwp = DeferWindowPos(hdwp, picWindow2, nullptr, child.left, child.top, child.right - child.left, child.bottom - child.top, SWP_FRAMECHANGED | SWP_SHOWWINDOW);
                 child.top = nSplitterPos2+(SPLITTER_BORDER/2);
                 child.bottom = clientrect->bottom;
-                if (hdwp) hdwp = DeferWindowPos(hdwp, picWindow3, NULL, child.left, child.top, child.right-child.left, child.bottom-child.top, SWP_FRAMECHANGED|SWP_SHOWWINDOW);
+                if (hdwp) hdwp = DeferWindowPos(hdwp, picWindow3, nullptr, child.left, child.top, child.right - child.left, child.bottom - child.top, SWP_FRAMECHANGED | SWP_SHOWWINDOW);
             }
         }
         else
@@ -125,10 +125,10 @@ void CMainWindow::PositionChildren(RECT * clientrect /* = NULL */)
                 child.top = clientrect->top+tbHeight;
                 child.right = nSplitterPos-(SPLITTER_BORDER/2);
                 child.bottom = clientrect->bottom;
-                if (hdwp) hdwp = DeferWindowPos(hdwp, picWindow1, NULL, child.left, child.top, child.right-child.left, child.bottom-child.top, SWP_FRAMECHANGED|SWP_SHOWWINDOW);
+                if (hdwp) hdwp = DeferWindowPos(hdwp, picWindow1, nullptr, child.left, child.top, child.right - child.left, child.bottom - child.top, SWP_FRAMECHANGED | SWP_SHOWWINDOW);
                 child.left = nSplitterPos+(SPLITTER_BORDER/2);
                 child.right = clientrect->right;
-                if (hdwp) hdwp = DeferWindowPos(hdwp, picWindow2, NULL, child.left, child.top, child.right-child.left, child.bottom-child.top, SWP_FRAMECHANGED|SWP_SHOWWINDOW);
+                if (hdwp) hdwp = DeferWindowPos(hdwp, picWindow2, nullptr, child.left, child.top, child.right - child.left, child.bottom - child.top, SWP_FRAMECHANGED | SWP_SHOWWINDOW);
             }
             else
             {
@@ -138,13 +138,13 @@ void CMainWindow::PositionChildren(RECT * clientrect /* = NULL */)
                 child.top = clientrect->top+tbHeight;
                 child.right = nSplitterPos-(SPLITTER_BORDER/2);
                 child.bottom = clientrect->bottom;
-                if (hdwp) hdwp = DeferWindowPos(hdwp, picWindow1, NULL, child.left, child.top, child.right-child.left, child.bottom-child.top, SWP_FRAMECHANGED|SWP_SHOWWINDOW);
+                if (hdwp) hdwp = DeferWindowPos(hdwp, picWindow1, nullptr, child.left, child.top, child.right - child.left, child.bottom - child.top, SWP_FRAMECHANGED | SWP_SHOWWINDOW);
                 child.left = nSplitterPos+(SPLITTER_BORDER/2);
                 child.right = nSplitterPos2-(SPLITTER_BORDER/2);
-                if (hdwp) hdwp = DeferWindowPos(hdwp, picWindow2, NULL, child.left, child.top, child.right-child.left, child.bottom-child.top, SWP_FRAMECHANGED|SWP_SHOWWINDOW);
+                if (hdwp) hdwp = DeferWindowPos(hdwp, picWindow2, nullptr, child.left, child.top, child.right - child.left, child.bottom - child.top, SWP_FRAMECHANGED | SWP_SHOWWINDOW);
                 child.left = nSplitterPos2+(SPLITTER_BORDER/2);
                 child.right = clientrect->right;
-                if (hdwp) hdwp = DeferWindowPos(hdwp, picWindow3, NULL, child.left, child.top, child.right-child.left, child.bottom-child.top, SWP_FRAMECHANGED|SWP_SHOWWINDOW);
+                if (hdwp) hdwp = DeferWindowPos(hdwp, picWindow3, nullptr, child.left, child.top, child.right - child.left, child.bottom - child.top, SWP_FRAMECHANGED | SWP_SHOWWINDOW);
             }
         }
     }
@@ -152,7 +152,7 @@ void CMainWindow::PositionChildren(RECT * clientrect /* = NULL */)
     picWindow1.SetTransparentColor(transparentColor);
     picWindow2.SetTransparentColor(transparentColor);
     picWindow3.SetTransparentColor(transparentColor);
-    InvalidateRect(*this, NULL, FALSE);
+    InvalidateRect(*this, nullptr, FALSE);
 }
 
 LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -224,7 +224,7 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
             ::GetClientRect(*this, &rect);
             hdc = BeginPaint(hwnd, &ps);
             SetBkColor(hdc, GetSysColor(COLOR_3DFACE));
-            ::ExtTextOut(hdc, 0, 0, ETO_OPAQUE, &rect, NULL, 0, NULL);
+            ::ExtTextOut(hdc, 0, 0, ETO_OPAQUE, &rect, nullptr, 0, nullptr);
             EndPaint(hwnd, &ps);
         }
         break;
@@ -285,12 +285,12 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
                 {
                     if (bVertical)
                     {
-                        HCURSOR hCur = LoadCursor(NULL, IDC_SIZENS);
+                        HCURSOR hCur = LoadCursor(nullptr, IDC_SIZENS);
                         SetCursor(hCur);
                     }
                     else
                     {
-                        HCURSOR hCur = LoadCursor(NULL, IDC_SIZEWE);
+                        HCURSOR hCur = LoadCursor(nullptr, IDC_SIZEWE);
                         SetCursor(hCur);
                     }
                     return TRUE;
@@ -1094,7 +1094,7 @@ BOOL CALLBACK CMainWindow::OpenDlgProc(HWND hwndDlg, UINT message, WPARAM wParam
             centeredrect.right = centeredrect.left + (childrect.right-childrect.left);
             centeredrect.top = parentrect.top + ((parentrect.bottom-parentrect.top-childrect.bottom+childrect.top)/2);
             centeredrect.bottom = centeredrect.top + (childrect.bottom-childrect.top);
-            SetWindowPos(hwndDlg, NULL, centeredrect.left, centeredrect.top, centeredrect.right-centeredrect.left, centeredrect.bottom-centeredrect.top, SWP_SHOWWINDOW);
+            SetWindowPos(hwndDlg, nullptr, centeredrect.left, centeredrect.top, centeredrect.right - centeredrect.left, centeredrect.bottom - centeredrect.top, SWP_SHOWWINDOW);
 
             if (!leftpicpath.empty())
                 SetDlgItemText(hwndDlg, IDC_LEFTIMAGE, leftpicpath.c_str());
@@ -1174,13 +1174,13 @@ bool CMainWindow::CreateToolbar()
 
     hwndTB = CreateWindowEx(0,
                             TOOLBARCLASSNAME,
-                            (LPCTSTR)NULL,
+                            (LPCTSTR)nullptr,
                             WS_CHILD | WS_BORDER | WS_VISIBLE | TBSTYLE_FLAT | TBSTYLE_TOOLTIPS,
                             0, 0, 0, 0,
                             *this,
                             (HMENU)IDC_TORTOISEIDIFF,
                             hResource,
-                            NULL);
+                            nullptr);
     if (hwndTB == INVALID_HANDLE_VALUE)
         return false;
 
@@ -1189,10 +1189,10 @@ bool CMainWindow::CreateToolbar()
     TBBUTTON tbb[13];
     // create an imagelist containing the icons for the toolbar
     hToolbarImgList = ImageList_Create(24, 24, ILC_COLOR32 | ILC_MASK, 12, 4);
-    if (hToolbarImgList == NULL)
+    if (!hToolbarImgList)
         return false;
     int index = 0;
-    HICON hIcon = NULL;
+    HICON hIcon = nullptr;
     if (selectionPaths.empty())
     {
         hIcon = LoadIcon(hResource, MAKEINTRESOURCE(IDI_OVERLAP));
