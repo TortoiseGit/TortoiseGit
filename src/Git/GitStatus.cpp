@@ -629,7 +629,7 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 						break;
 					}
 
-					if (pos >= 0 && (*treeptr)[pos].m_Hash != (*it).m_IndexHash)
+					if ((*treeptr)[pos].m_Hash != (*it).m_IndexHash)
 					{
 						*status = max(git_wc_status_modified, *status); // modified file found
 						break;
