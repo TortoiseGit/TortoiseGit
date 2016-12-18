@@ -247,7 +247,7 @@ int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status_
 		}
 
 		// staged and not commit
-		if (treeptr->at(start).m_Hash != hash)
+		if ((*treeptr)[start].m_Hash != hash)
 		{
 			*status = st = git_wc_status_modified;
 			if (callback && assumeValid && skipWorktree)
@@ -433,7 +433,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 		else if (pos >= 0 && posintree < 0) /* Check if file added */
 		{
 			*status = git_wc_status_added;
-			if (indexptr->at(pos).m_Flags & GIT_IDXENTRY_STAGEMASK)
+			if ((*indexptr)[pos].m_Flags & GIT_IDXENTRY_STAGEMASK)
 				*status = git_wc_status_conflicted;
 			if (callback)
 				callback(CombinePath(gitdir, casepath), *status, bIsDir, pData, false, false);
@@ -629,7 +629,7 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 						break;
 					}
 
-					if (pos >= 0 && treeptr->at(pos).m_Hash != (*it).m_IndexHash)
+					if (pos >= 0 && (*treeptr)[pos].m_Hash != (*it).m_IndexHash)
 					{
 						*status = max(git_wc_status_modified, *status); // modified file found
 						break;

@@ -127,7 +127,7 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	{
 		const git_index_entry *e = git_index_get_byindex(index, i);
 
-		auto& item = this->at(i);
+		auto& item = (*this)[i];
 		item.m_FileName = CUnicodeUtils::GetUnicode(e->path);
 		item.m_FileName.MakeLower();
 		item.m_ModifyTime = e->mtime.seconds;
@@ -166,7 +166,7 @@ int CGitIndexList::GetFileStatus(const CString &gitdir, const CString &pathorg, 
 		return 0;
 	}
 
-	auto& entry = at(index);
+	auto& entry = (*this)[index];
 	// skip-worktree has higher priority than assume-valid
 	if (entry.m_FlagsExtended & GIT_IDXENTRY_SKIP_WORKTREE)
 	{
