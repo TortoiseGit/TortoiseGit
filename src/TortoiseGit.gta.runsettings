@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+	<GoogleTestAdapter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+		<TestDiscoveryRegex>Tests\.exe</TestDiscoveryRegex>
+		<WorkingDir>$(ExecutableDir)</WorkingDir>
+		<TraitsRegexesBefore>(^libgit2\.|\[0\]$)///git,LIBGIT2_ALL//||//(^libgit2\.|\[1\]$)///git,LIBGIT2//||//(^libgit\.|\[2\]$)///git,LIBGIT//||//(^CGit\.Run|\[3\]$)///git,GIT//||//(WithEmptyRepo|WithEmptyBareRepo)///Repo,Empty//||//WithTestRepo///Repo,Test//||//WithSubmodule?Repo///Repo,Submodule//||//With.+(BareRepo|Repo(sitory)?Bare)///RepoType,Bare//||//With.*(?&lt;!Bare)Repo(?!Bare)///RepoType,Working Tree//||//^CGit\.GetRepository///git,LIBGIT2_ALL//||//^CGit\.GetRepository///git,LIBGIT2//||//^CGit\.GetRepository///git,GIT//||//^CTGitPath\.FillUnRev///git,GIT//||//^CTGitPath\.FillBasedOnIndexFlags///git,LIBGIT2_ALL//||//^CTGitPath\.FillBasedOnIndexFlags///git,LIBGIT2</TraitsRegexesBefore>
+		<ParseSymbolInformation>true</ParseSymbolInformation>
+	</GoogleTestAdapter>
+</RunSettings>
