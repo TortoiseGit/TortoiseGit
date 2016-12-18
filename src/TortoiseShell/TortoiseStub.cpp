@@ -232,7 +232,7 @@ BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD Reason, LPVOID /*Reserved*/)
 
 	BOOL bInShellTest = FALSE;
 	TCHAR buf[MAX_PATH + 1] = {0};       // MAX_PATH ok, the test really is for debugging anyway.
-	DWORD pathLength = GetModuleFileName(nullptr, buf, MAX_PATH);
+	DWORD pathLength = GetModuleFileName(nullptr, buf, _countof(buf) - 1);
 
 	if (pathLength >= 14)
 	{

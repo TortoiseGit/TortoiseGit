@@ -62,7 +62,7 @@ static CString FindFileOnPath(const CString& filename, LPCTSTR env, bool wantDir
 	TCHAR buf[MAX_PATH] = { 0 };
 
 	// search in all paths defined in PATH
-	while ((env = nextpath(env, buf, MAX_PATH - 1)) != nullptr && *buf)
+	while ((env = nextpath(env, buf, _countof(buf) - 1)) != nullptr && *buf)
 	{
 		TCHAR* pfin = buf + wcslen(buf) - 1;
 
@@ -72,8 +72,8 @@ static CString FindFileOnPath(const CString& filename, LPCTSTR env, bool wantDir
 
 		const size_t len = wcslen(buf);
 
-		if ((len + filename.GetLength()) < MAX_PATH)
-			wcscpy_s(pfin + 1, MAX_PATH - len, filename);
+		if ((len + filename.GetLength()) < _countof(buf))
+			wcscpy_s(pfin + 1, _countof(buf) - len, filename);
 		else
 			break;
 
@@ -2187,7 +2187,7 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 		GetModuleFileName(nullptr, sPlink, _countof(sPlink));
 		LPTSTR ptr = wcsrchr(sPlink, L'\\');
 		if (ptr) {
-			wcscpy_s(ptr + 1, MAX_PATH - (ptr - sPlink + 1), L"TortoiseGitPlink.exe");
+			wcscpy_s(ptr + 1, _countof(sPlink) - (ptr - sPlink + 1), L"TortoiseGitPlink.exe");
 			m_Environment.SetEnv(L"GIT_SSH", sPlink);
 			m_Environment.SetEnv(L"SVN_SSH", sPlink);
 		}
@@ -2199,7 +2199,7 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 		LPTSTR ptr = wcsrchr(sAskPass, L'\\');
 		if (ptr)
 		{
-			wcscpy_s(ptr + 1, MAX_PATH - (ptr - sAskPass + 1), L"SshAskPass.exe");
+			wcscpy_s(ptr + 1, _countof(sAskPass) - (ptr - sAskPass + 1), L"SshAskPass.exe");
 			m_Environment.SetEnv(L"DISPLAY",L":9999");
 			m_Environment.SetEnv(L"SSH_ASKPASS",sAskPass);
 			m_Environment.SetEnv(L"GIT_ASKPASS",sAskPass);
@@ -3386,12 +3386,12 @@ void CGit::GetBisectTerms(CString* good, CString* bad)
 	if (!fp)
 		return;
 	char badA[MAX_PATH] = { 0 };
-	fgets(badA, MAX_PATH, fp);
+	fgets(badA, sizeof(badA), fp);
 	size_t len = strlen(badA);
 	if (len > 0 && badA[len - 1] == '\n')
 		badA[len - 1] = '\0';
 	char goodA[MAX_PATH] = { 0 };
-	fgets(goodA, MAX_PATH, fp);
+	fgets(goodA, sizeof(goodA), fp);
 	len = strlen(goodA);
 	if (len > 0 && goodA[len - 1] == '\n')
 		goodA[len - 1] = '\0';

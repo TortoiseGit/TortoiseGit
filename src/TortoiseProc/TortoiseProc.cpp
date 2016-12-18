@@ -392,7 +392,7 @@ BOOL CTortoiseProcApp::InitInstance()
 			}
 		}
 		TCHAR pathbuf[MAX_PATH] = {0};
-		GetTortoiseGitTempPath(MAX_PATH, pathbuf);
+		GetTortoiseGitTempPath(_countof(pathbuf), pathbuf);
 		SetCurrentDirectory(pathbuf);
 	}
 

@@ -78,7 +78,7 @@ public:
 	static CString GetWinstorePath()
 	{
 		TCHAR winstorebuf[MAX_PATH] = { 0 };
-		ExpandEnvironmentStrings(L"%AppData%\\GitCredStore\\git-credential-winstore.exe", winstorebuf, MAX_PATH);
+		ExpandEnvironmentStrings(L"%AppData%\\GitCredStore\\git-credential-winstore.exe", winstorebuf, _countof(winstorebuf));
 		CString winstore;
 		winstore.Format(L"!'%s'", winstorebuf);
 		return winstore;

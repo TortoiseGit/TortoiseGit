@@ -63,7 +63,7 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID /* lpReserved */)
 
 	bool bInShellTest = false;
 	TCHAR buf[MAX_PATH + 1] = {0};		// MAX_PATH ok, the test really is for debugging anyway.
-	DWORD pathLength = GetModuleFileName(nullptr, buf, MAX_PATH);
+	DWORD pathLength = GetModuleFileName(nullptr, buf, _countof(buf) - 1);
 	if(pathLength >= 14)
 	{
 		if (pathLength >= 24 && _wcsicmp(&buf[pathLength - 24], L"\\TortoiseGitExplorer.exe") == 0)

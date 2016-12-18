@@ -41,7 +41,7 @@ static void OpenFileStream(T& file, LONG lLanguage, std::ios_base::openmode open
 	swprintf_s(path, L"%s%ld.dic", (LPCTSTR)CPathUtils::GetAppDataDirectory(), !lLanguage ? GetUserDefaultLCID() : lLanguage);
 
 	char filepath[MAX_PATH + 1] = { 0 };
-	WideCharToMultiByte(CP_ACP, 0, path, -1, filepath, MAX_PATH, nullptr, nullptr);
+	WideCharToMultiByte(CP_ACP, 0, path, -1, filepath, _countof(filepath) - 1, nullptr, nullptr);
 
 	std::locale ulocale(std::locale(), new std::codecvt_utf8<wchar_t>);
 	file.imbue(ulocale);

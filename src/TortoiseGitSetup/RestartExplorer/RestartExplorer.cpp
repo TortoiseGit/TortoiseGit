@@ -43,7 +43,7 @@ int APIENTRY _tWinMain(HINSTANCE /*hInstance*/, HINSTANCE /*hPrevInstance*/, LPT
 		return 1;
 
 	TCHAR szPathExplorerExe[MAX_PATH];
-	if (_snwprintf_s(szPathExplorerExe, MAX_PATH - 1, L"%s\\explorer.exe", szPathWindows) <= 0)
+	if (_snwprintf_s(szPathExplorerExe, _countof(szPathExplorerExe) - 1, L"%s\\explorer.exe", szPathWindows) <= 0)
 		return 1;
 
 	return CCreateProcessHelper::CreateProcessDetached(szPathExplorerExe, nullptr, szPathWindows) ? 0 : 1;

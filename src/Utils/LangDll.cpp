@@ -40,7 +40,7 @@ HINSTANCE CLangDll::Init(LPCTSTR appname, unsigned long langID)
 	TCHAR langdllpath[MAX_PATH] = {0};
 	TCHAR sVer[MAX_PATH] = {0};
 	wcscpy_s(sVer, _T(STRPRODUCTVER));
-	GetModuleFileName(nullptr, langpath, MAX_PATH);
+	GetModuleFileName(nullptr, langpath, _countof(langpath));
 	TCHAR* pSlash = wcsrchr(langpath, L'\\');
 	if (!pSlash)
 		return m_hInstance;
