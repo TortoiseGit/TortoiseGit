@@ -32,6 +32,8 @@ Next you might need to install some utilities/programs:
 *  For building the docs you need NAnt (http://nant.sourceforge.net/) and
    https://sourceforge.net/projects/tortoisesvn/files/build%20tools/
    See doc/readme.txt for more details on building the docs.
+*  If you want to execute the unit tests from within VisualStudio the GoogleTestAdaper is recommended
+   (https://github.com/csoltenborn/GoogleTestAdapter/releases)
 
 Get external source code
 ------------------------
