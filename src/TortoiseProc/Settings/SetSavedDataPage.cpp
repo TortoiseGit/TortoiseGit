@@ -251,11 +251,7 @@ void CSetSavedDataPage::OnBnClickedAuthhistclear()
 
 void CSetSavedDataPage::OnBnClickedRepologclear()
 {
-	CString path = CPathUtils::GetAppDataDirectory() + L"logcache";
-	TCHAR pathbuf[MAX_PATH] = {0};
-	wcscpy_s(pathbuf, MAX_PATH, (LPCTSTR)path);
-
-	DeleteViaShell(pathbuf, IDS_SETTINGS_DELCACHE);
+	DeleteViaShell(CPathUtils::GetAppDataDirectory() + L"logcache", IDS_SETTINGS_DELCACHE);
 
 	m_btnRepoLogClear.EnableWindow(FALSE);
 	m_tooltips.DelTool(GetDlgItem(IDC_REPOLOG));
