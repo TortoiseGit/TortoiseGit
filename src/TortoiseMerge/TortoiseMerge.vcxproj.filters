@@ -252,9 +252,6 @@
     <ClCompile Include="..\Utils\MiscUI\HistoryCombo.cpp">
       <Filter>Utils\MiscUI</Filter>
     </ClCompile>
-    <ClCompile Include="..\Utils\MiscUI\HTMLFormatter.cpp">
-      <Filter>Utils\MiscUI</Filter>
-    </ClCompile>
     <ClCompile Include="..\Utils\MiscUI\HyperLink.cpp">
       <Filter>Utils\MiscUI</Filter>
     </ClCompile>
@@ -480,9 +477,6 @@
       <Filter>Utils\MiscUI</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\MiscUI\HistoryCombo.h">
-      <Filter>Utils\MiscUI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Utils\MiscUI\HTMLFormatter.h">
       <Filter>Utils\MiscUI</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\MiscUI\HyperLink.h">

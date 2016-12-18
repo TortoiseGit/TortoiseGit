@@ -19,7 +19,6 @@
 //
 #pragma once
 
-#include "htmlformatter.h"
 #include "dlgtemplate.h"
 #include "cursor.h"
 
@@ -40,13 +39,6 @@
 /**
  * \ingroup Utils
  * Implements an enhanced MessageBox().\n
- * It supports limited html formatting of the text (inherited from CHTMLFormatter).
- * Also it supports hyperlinks and starts the web browser if you click on a link.
- * \image html "CMessageBox_1.jpg"
- * \image html "CMessageBox_4.jpg"
- * \image html "CMessageBox_5.jpg"
- * and also a checkbox for "Do not show again" functionality.\n
- * \image html "CMessageBox_2.jpg"
  *
  * You can use CMessageBox::Show() as a replacement for the Platform SDK version of
  * MessageBox(). Most of the flags are supported (param uType):\n
@@ -234,7 +226,7 @@
  * \endcode
  * if you don't do that define then CMessageBox will use the default path "Software\\YourApplicationName\\"
  */
-class CMessageBox : public CDialog, public CHTMLFormatter
+class CMessageBox : public CDialog
 {
 public:
 	CMessageBox(void);
@@ -449,8 +441,6 @@ protected:
 public:
 	DECLARE_MESSAGE_MAP()
 	afx_msg void OnPaint();
-	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnButton1();
 	afx_msg void OnButton2();
 	afx_msg void OnButton3();

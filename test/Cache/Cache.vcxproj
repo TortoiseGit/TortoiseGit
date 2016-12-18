@@ -48,7 +48,6 @@
     <ClCompile Include="..\..\src\TGitCache\CacheInterface.cpp" />
     <ClCompile Include="..\..\src\Utils\DirFileEnum.cpp" />
     <ClCompile Include="..\..\src\Git\GitAdminDir.cpp" />
-    <ClCompile Include="..\..\src\Utils\MiscUI\HTMLFormatter.cpp" />
     <ClCompile Include="..\..\src\Utils\MiscUI\MessageBox.cpp" />
     <ClCompile Include="..\..\src\Utils\PathUtils.cpp" />
     <ClCompile Include="..\..\src\Utils\Registry.cpp" />

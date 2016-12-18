@@ -144,7 +144,6 @@
     <ClCompile Include="FindDlg.cpp" />
     <ClCompile Include="GotoLineDlg.cpp" />
     <ClCompile Include="..\Git\GitPatch.cpp" />
-    <ClCompile Include="..\Utils\MiscUI\HTMLFormatter.cpp" />
     <ClCompile Include="..\Utils\MiscUI\MessageBox.cpp" />
     <ClCompile Include="LeftView.cpp" />
     <ClCompile Include="LineDiffBar.cpp" />
@@ -348,7 +347,6 @@
     <ClInclude Include="FindDlg.h" />
     <ClInclude Include="GotoLineDlg.h" />
     <ClInclude Include="..\Git\GitPatch.h" />
-    <ClInclude Include="..\Utils\MiscUI\HTMLFormatter.h" />
     <ClInclude Include="LeftView.h" />
     <ClInclude Include="LineDiffBar.h" />
     <ClInclude Include="LocatorBar.h" />

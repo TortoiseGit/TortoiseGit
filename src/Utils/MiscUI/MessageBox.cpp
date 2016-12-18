@@ -682,6 +682,104 @@ void CMessageBox::SetRegistryValue(const CString& sValue, DWORD value)
 	RegCloseKey(hKey);
 }
 
+typedef enum {
+	NONE = 0,
+	NEW_LINE,
+	TABULATION,
+} COMMAND;
+
+CSize DrawText(CDC* pDC, CRect rect, const CString& str, LOGFONT font, BOOL bCalculate = FALSE)
+{
+	CSize sz(0, 0);
+
+	if (str.IsEmpty())
+		return sz;
+
+	CPoint pt = rect.TopLeft();
+	CPoint ptCur = pt;
+
+	LOGFONT lf;
+	memcpy(&lf, &font, sizeof(LOGFONT));
+
+	CFont tempFont;
+	tempFont.CreateFontIndirect(&lf);
+
+	CFont* pOldFont = pDC->SelectObject(&tempFont);
+
+	TEXTMETRIC textMetric;
+	pDC->GetTextMetrics(&textMetric);
+	int nHeight = textMetric.tmHeight;
+	int nWidth = textMetric.tmAveCharWidth;
+
+	CString strText;
+
+	//iterate through all characters of the string
+	for (int i = 0; i <= str.GetLength(); ++i)
+	{
+		COMMAND nCmd = NONE;
+		if (i < str.GetLength())
+		{
+			switch (str.GetAt(i))
+			{
+			case L'\n':
+				nCmd = NEW_LINE;
+				break;
+			case L'\t':
+				nCmd = TABULATION;
+				break;
+			case L'\r':
+				break;
+			default:
+				strText += str.GetAt(i);
+				break;
+			}
+		}
+		else // Immitates new line at the end of the string
+			nCmd = NEW_LINE;
+
+		if (nCmd != NONE)
+		{
+			if (!strText.IsEmpty())
+			{
+				if (!bCalculate)
+					pDC->TextOut(ptCur.x, ptCur.y, strText);
+				CSize s = pDC->GetTextExtent(strText);
+				ptCur.x += s.cx;
+				strText.Empty();
+			}
+
+			// Executes command
+			switch (nCmd)
+			{
+			case NEW_LINE:
+				// New line
+				sz.cx = max(sz.cx, ptCur.x - pt.x);
+				ptCur.y += nHeight;
+				ptCur.x = pt.x;
+				break;
+			case TABULATION:
+				// Tabulation
+				int nTemp = (ptCur.x - pt.x) % (nWidth * 4);
+				if (nTemp)
+				{
+					//aligns with tab
+					ptCur.x += (nWidth * 4) - nTemp;
+				}
+				ptCur.x += nWidth * 4;
+				break;
+			}
+		}
+	}
+
+	//Gets real height of the tooltip
+	sz.cy = ptCur.y - pt.y;
+
+	pDC->SelectObject(pOldFont);
+	tempFont.DeleteObject();
+
+	return sz;
+}
+
 CSize CMessageBox::GetTextSize(const CString& str)
 {
 	CRect rect;
@@ -696,7 +794,7 @@ CSize CMessageBox::GetTextSize(const CString& str)
 	CBitmap* pOldBitmap = memDC.SelectObject(&bitmap);
 
 	//get the minimum size of the rectangle of the tooltip
-	CSize sz = DrawHTML(&memDC, rect, str, m_LogFont, TRUE);
+	CSize sz = DrawText(&memDC, rect, str, m_LogFont, TRUE);
 
 	memDC.SelectObject(pOldBitmap);
 	memDC.DeleteDC();
@@ -784,8 +882,6 @@ CSize CMessageBox::GetButtonSize()
 
 BEGIN_MESSAGE_MAP(CMessageBox, CDialog)
 	ON_WM_PAINT()
-	ON_WM_MOUSEMOVE()
-	ON_WM_LBUTTONUP()
 	ON_BN_CLICKED(IDC_MESSAGEBOX_BUTTON1, OnButton1)
 	ON_BN_CLICKED(IDC_MESSAGEBOX_BUTTON2, OnButton2)
 	ON_BN_CLICKED(IDC_MESSAGEBOX_BUTTON3, OnButton3)
@@ -828,7 +924,7 @@ void CMessageBox::OnPaint()
 			drawrect.top += (m_szIcon.cy - m_szText.cy) / 2;
 	}
 
-	DrawHTML(&memDC, drawrect, m_sMessage, m_LogFont);
+	DrawText(&memDC, drawrect, m_sMessage, m_LogFont);
 
 	//Copy the memory device context back into the original DC.
 	dc.BitBlt(rect.left, rect.top, rect.Width(), rect.Height(), &memDC, 0,0, SRCCOPY);
@@ -837,27 +933,6 @@ void CMessageBox::OnPaint()
 	memDC.SelectObject(pOldBitmap);
 	memDC.DeleteDC();
 	bitmap.DeleteObject();
-}
-
-void CMessageBox::OnMouseMove(UINT nFlags, CPoint point)
-{
-	if (IsPointOverALink(point))
-		m_Cursor.SetCursor(IDC_HAND);
-	else
-		m_Cursor.Restore();
-
-	__super::OnMouseMove(nFlags, point);
-}
-
-void CMessageBox::OnLButtonUp(UINT nFlags, CPoint point)
-{
-	if (IsPointOverALink(point))
-	{
-		CString url = GetLinkForPoint(point);
-		ShellExecute(nullptr, L"open", url, nullptr, nullptr, SW_HIDE);
-	}
-
-	__super::OnLButtonUp(nFlags, point);
 }
 
 void CMessageBox::OnButton1()

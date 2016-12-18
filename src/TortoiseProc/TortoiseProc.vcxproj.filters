@@ -755,9 +755,6 @@
     <ClCompile Include="..\Utils\MiscUI\HistoryCombo.cpp">
       <Filter>Utils\UI</Filter>
     </ClCompile>
-    <ClCompile Include="..\Utils\MiscUI\HTMLFormatter.cpp">
-      <Filter>Utils\UI</Filter>
-    </ClCompile>
     <ClCompile Include="..\Utils\MiscUI\HyperLink.cpp">
       <Filter>Utils\UI</Filter>
     </ClCompile>
@@ -1558,9 +1555,6 @@
     <ClInclude Include="..\Utils\MiscUI\HistoryCombo.h">
       <Filter>Utils\UI</Filter>
     </ClInclude>
-    <ClInclude Include="..\Utils\MiscUI\HTMLFormatter.h">
-      <Filter>Utils\UI</Filter>
-    </ClInclude>
     <ClInclude Include="..\Utils\MiscUI\HyperLink.h">
       <Filter>Utils\UI</Filter>
     </ClInclude>
@@ -1800,6 +1794,9 @@
     </ClInclude>
     <ClInclude Include="FirstStartWizardLanguage.h">
       <Filter>Commands\FirstStart</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\HighColorTab.hpp">
+      <Filter>Utils\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

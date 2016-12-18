@@ -99,9 +99,6 @@
     <ClCompile Include="..\Utils\MiscUI\IconBitmapUtils.cpp">
       <Filter>Utils\MiscUI</Filter>
     </ClCompile>
-    <ClCompile Include="..\Utils\MiscUI\HTMLFormatter.cpp">
-      <Filter>Utils\MiscUI</Filter>
-    </ClCompile>
     <ClCompile Include="..\Utils\PersonalDictionary.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
@@ -252,9 +249,6 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\MiscUI\IconBitmapUtils.h">
-      <Filter>Utils\MiscUI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Utils\MiscUI\HTMLFormatter.h">
       <Filter>Utils\MiscUI</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\PersonalDictionary.h">

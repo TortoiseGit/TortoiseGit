@@ -48,9 +48,6 @@
     <ClCompile Include="..\..\src\Utils\DirFileEnum.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Utils\MiscUI\HTMLFormatter.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\Utils\MiscUI\MessageBox.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
