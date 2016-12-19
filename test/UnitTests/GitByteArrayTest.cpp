@@ -20,15 +20,6 @@
 #include "stdafx.h"
 #include "gittype.h"
 
-TEST(CGitByteArray, ImplTest)
-{
-	EXPECT_EQ(MAXSIZE_T, CGitByteArray::npos);
-#pragma warning(push)
-#pragma warning(disable: 4310)
-	EXPECT_EQ(-1, (int)CGitByteArray::npos);
-#pragma warning(pop)
-}
-
 TEST(CGitByteArray, Empty)
 {
 	CGitByteArray byteArray;

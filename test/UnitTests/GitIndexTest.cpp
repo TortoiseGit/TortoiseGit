@@ -215,15 +215,6 @@ TEST_P(GitIndexCBasicGitWithTestRepoFixture, GetFileStatus)
 	EXPECT_EQ(git_wc_status_conflicted, status);
 }
 
-TEST(GitIndex, ImplTest)
-{
-	EXPECT_EQ(MAXSIZE_T, NPOS);
-#pragma warning(push)
-#pragma warning(disable: 4310)
-	EXPECT_EQ(-1, (int)NPOS);
-#pragma warning(pop)
-}
-
 TEST(GitIndex, SearchInSortVector)
 {
 	std::vector<CGitFileName> vector;

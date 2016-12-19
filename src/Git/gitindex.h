@@ -347,6 +347,11 @@ public:
 };
 
 static const size_t NPOS = (size_t)-1; // bad/missing length/position
+static_assert(MAXSIZE_T == NPOS, "NPOS must equal MAXSIZE_T");
+#pragma warning(push)
+#pragma warning(disable: 4310)
+static_assert(-1 == (int)NPOS, "NPOS must equal -1");
+#pragma warning(pop)
 
 template<class T>
 int GetRangeInSortVector(const T& vector, LPCTSTR pstr, size_t len, size_t* start, size_t* end, size_t pos)
