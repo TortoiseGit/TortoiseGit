@@ -126,8 +126,9 @@ protected:
 		text += L"\n[core]\n  autocrlf = false\n[user]\n  name = User\n  email = user@example.com\n";
 		EXPECT_TRUE(CStringUtils::WriteStringToTextFile(configFile, text));
 	}
-	CString repo;
 	CString prefix;
+private:
+	CString repo;
 };
 
 class CBasicGitWithTestRepoBareFixture : public CBasicGitWithTestRepoFixture
