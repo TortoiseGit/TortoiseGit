@@ -387,9 +387,9 @@ int CGitIndexFileMap::IsUnderVersionControl(const CString& gitdir, CString subpa
 	if (pIndex)
 	{
 		if (isDir)
-			*isVersion = (SearchInSortVector(*pIndex, subpath, subpath.GetLength()) >= 0);
+			*isVersion = (SearchInSortVector(*pIndex, subpath, subpath.GetLength()) != NPOS);
 		else
-			*isVersion = (SearchInSortVector(*pIndex, subpath, -1) >= 0);
+			*isVersion = (SearchInSortVector(*pIndex, subpath, -1) != NPOS);
 	}
 
 	return 0;
@@ -1276,9 +1276,9 @@ int CGitHeadFileMap::IsUnderVersionControl(const CString& gitdir, CString subpat
 	}
 
 	if (isDir)
-		*isVersion = (SearchInSortVector(*treeptr, subpath, subpath.GetLength()) >= 0);
+		*isVersion = (SearchInSortVector(*treeptr, subpath, subpath.GetLength()) != NPOS);
 	else
-		*isVersion = (SearchInSortVector(*treeptr, subpath, -1) >= 0);
+		*isVersion = (SearchInSortVector(*treeptr, subpath, -1) != NPOS);
 
 	return 0;
 }

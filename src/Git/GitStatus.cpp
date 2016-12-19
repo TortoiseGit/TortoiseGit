@@ -481,7 +481,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 			if (oldstring != filename)
 			{
 				oldstring = filename;
-				if (SearchInSortVector(filelist, filename, filename.GetLength()) < 0)
+				if (SearchInSortVector(filelist, filename, filename.GetLength()) == NPOS)
 				{
 					bool skipWorktree = false;
 					*status = git_wc_status_deleted;
@@ -517,7 +517,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 			if (oldstring != filename && skipWorktreeSet.find(filename) == skipWorktreeSet.cend())
 			{
 				oldstring = filename;
-				if (SearchInSortVector(filelist, filename, filename.GetLength()) < 0)
+				if (SearchInSortVector(filelist, filename, filename.GetLength()) == NPOS)
 				{
 					*status = git_wc_status_deleted;
 					if (callback)
@@ -649,7 +649,7 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 						GetRangeInSortVector(*treeptr, lowcasepath, lowcasepath.GetLength(), &hstart, &hend, pos);
 						for (auto hit = treeptr->cbegin() + hstart, lastElement = treeptr->cbegin() + hend; hit <= lastElement; ++hit)
 						{
-							if (SearchInSortVector(*indexptr, (*hit).m_FileName, -1) < 0)
+							if (SearchInSortVector(*indexptr, (*hit).m_FileName, -1) == NPOS)
 							{
 								*status = max(git_wc_status_deleted, *status); // deleted file found
 								break;
