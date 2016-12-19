@@ -300,7 +300,7 @@ BOOL ShellCache::IsContextPathAllowed(LPCTSTR path)
 	{
 		if (exPath.empty())
 			continue;
-		if (exPath.at(exPath.size() - 1) == '*')
+		if (exPath[exPath.size() - 1] == '*')
 		{
 			tstring str = exPath.substr(0, exPath.size() - 1);
 			if (_wcsnicmp(str.c_str(), path, str.size()) == 0)

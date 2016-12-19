@@ -34,7 +34,7 @@ public:
 	size_t find(BYTE data, size_t start = 0) const
 	{
 		for (size_t i = start, end = size(); i < end; ++i)
-			if( at(i) == data )
+			if ((*this)[i] == data)
 				return i;
 		return npos;
 	}
@@ -48,7 +48,7 @@ public:
 		}
 
 		for (size_t i = start + 1; i-- > 0;)
-			if( at(i) == data )
+			if ((*this)[i] == data)
 				return i;
 		return npos;
 	}

@@ -123,7 +123,6 @@ TEST(CGitByteArray, RevertFind)
 
 	EXPECT_EQ(CGitByteArray::npos, byteArray.RevertFind(0));
 	EXPECT_EQ(CGitByteArray::npos, byteArray.RevertFind('3'));
-	EXPECT_THROW(byteArray.RevertFind(0, 15), std::out_of_range); // right now this should never happen, just to check if the implementation changes
 
 	byteArray.append(inputByteArray, sizeof(inputByteArray));
 	EXPECT_EQ(sizeof(inputByteArray), byteArray.size());
@@ -134,7 +133,6 @@ TEST(CGitByteArray, RevertFind)
 	EXPECT_EQ(4, byteArray.RevertFind(0, 4));
 	EXPECT_EQ(4, byteArray.RevertFind(0, 5));
 	EXPECT_EQ(CGitByteArray::npos, byteArray.RevertFind(0, 2));
-	EXPECT_THROW(byteArray.RevertFind(0, 15), std::out_of_range); // right now this should never happen, just to check if the implementation changes
 
 	EXPECT_EQ(0, byteArray.RevertFind('1'));
 	EXPECT_EQ(1, byteArray.RevertFind('2'));
@@ -157,7 +155,6 @@ TEST(CGitByteArray, RevertFind)
 	EXPECT_EQ(9, byteArray.RevertFind(0, 9));
 	EXPECT_EQ(10, byteArray.RevertFind(0, 10));
 	EXPECT_EQ(10, byteArray.RevertFind(0, 11));
-	EXPECT_THROW(byteArray.RevertFind(0, 15), std::out_of_range); // right now this should never happen, just to check if the implementation changes
 }
 
 TEST(CGitByteArray, FindNextString)

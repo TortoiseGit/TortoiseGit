@@ -3280,9 +3280,9 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 			if(pathList)
 				for (INT_PTR cpPathIndex = 0; cpPathIndex < pathList->GetCount(); ++cpPathIndex)
 				{
-					if (std::regex_search(std::wstring((LPCTSTR)pathList->m_paths.at(cpPathIndex).GetGitOldPathString()), pat, flags))
+					if (std::regex_search(std::wstring((LPCTSTR)pathList->m_paths[cpPathIndex].GetGitOldPathString()), pat, flags))
 						return true;
-					if (std::regex_search(std::wstring((LPCTSTR)pathList->m_paths.at(cpPathIndex).GetGitPathString()), pat, flags))
+					if (std::regex_search(std::wstring((LPCTSTR)pathList->m_paths[cpPathIndex].GetGitPathString()), pat, flags))
 						return true;
 				}
 
@@ -3401,7 +3401,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 			if(pathList)
 				for (INT_PTR cpPathIndex = 0; cpPathIndex < pathList->GetCount() ; ++cpPathIndex)
 				{
-					CTGitPath *cpath = &pathList->m_paths.at(cpPathIndex);
+					CTGitPath* cpath = &pathList->m_paths[cpPathIndex];
 					CString path = cpath->GetGitOldPathString();
 					if (!m_bFilterCaseSensitively)
 						path.MakeLower();

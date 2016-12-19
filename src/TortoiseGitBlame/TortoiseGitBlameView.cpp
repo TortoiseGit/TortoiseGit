@@ -1476,7 +1476,7 @@ void CTortoiseGitBlameView::MapLineToLogIndex()
 		int index = -2;
 		for (size_t i = 0; i < logSize; ++i)
 		{
-			if (hash == this->GetLogData()->at(i))
+			if (hash == (*GetLogData())[i])
 			{
 				index = (int)i;
 				break;
