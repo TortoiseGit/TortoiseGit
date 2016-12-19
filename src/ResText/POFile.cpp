@@ -41,6 +41,11 @@ CPOFile::~CPOFile(void)
 {
 }
 
+static bool StartsWith(const wchar_t* heystacl, const wchar_t* needle)
+{
+	return wcsncmp(heystacl, needle, wcslen(needle)) == 0;
+}
+
 BOOL CPOFile::ParseFile(LPCTSTR szPath, BOOL bUpdateExisting, bool bAdjustEOLs)
 {
 	if (!PathFileExists(szPath))
@@ -81,12 +86,12 @@ BOOL CPOFile::ParseFile(LPCTSTR szPath, BOOL bUpdateExisting, bool bAdjustEOLs)
 			int type = 0;
 			for (auto I = entry.cbegin(); I != entry.cend(); ++I)
 			{
-				if (wcsncmp(I->c_str(), L"# ", 2)==0)
+				if (StartsWith(I->c_str(), L"# "))
 				{
 					//user comment
-					if (wcsncmp(I->c_str(), L"# regexsearch=", 14) == 0)
+					if (StartsWith(I->c_str(), L"# regexsearch="))
 						regexsearch = I->substr(14);
-					else if (wcsncmp(I->c_str(), L"# regexreplace=", 15) == 0)
+					else if (StartsWith(I->c_str(), L"# regexreplace="))
 						regexreplace = I->substr(15);
 					else
 						resEntry.translatorcomments.push_back(I->c_str());
@@ -98,19 +103,19 @@ BOOL CPOFile::ParseFile(LPCTSTR szPath, BOOL bUpdateExisting, bool bAdjustEOLs)
 					}
 					type = 0;
 				}
-				if (wcsncmp(I->c_str(), L"#.", 2)==0)
+				if (StartsWith(I->c_str(), L"#."))
 				{
 					//automatic comments
 					resEntry.automaticcomments.push_back(I->c_str());
 					type = 0;
 				}
-				if (wcsncmp(I->c_str(), L"#,", 2)==0)
+				if (StartsWith(I->c_str(), L"#,"))
 				{
 					//flag
 					resEntry.flag = I->c_str();
 					type = 0;
 				}
-				if (wcsncmp(I->c_str(), L"msgid", 5)==0)
+				if (StartsWith(I->c_str(), L"msgid"))
 				{
 					//message id
 					msgid = I->c_str();
@@ -122,7 +127,7 @@ BOOL CPOFile::ParseFile(LPCTSTR szPath, BOOL bUpdateExisting, bool bAdjustEOLs)
 						nEntries++;
 					type = 1;
 				}
-				if (wcsncmp(I->c_str(), L"msgstr", 6)==0)
+				if (StartsWith(I->c_str(), L"msgstr"))
 				{
 					//message string
 					resEntry.msgstr = I->c_str();
@@ -131,7 +136,7 @@ BOOL CPOFile::ParseFile(LPCTSTR szPath, BOOL bUpdateExisting, bool bAdjustEOLs)
 						nTranslated++;
 					type = 2;
 				}
-				if (wcsncmp(I->c_str(), L"\"", 1)==0)
+				if (StartsWith(I->c_str(), L"\""))
 				{
 					if (type == 1)
 					{

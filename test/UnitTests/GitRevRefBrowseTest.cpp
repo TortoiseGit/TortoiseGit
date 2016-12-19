@@ -68,7 +68,7 @@ static void GetGitRevRefMap()
 	EXPECT_STREQ(L"", rev.m_Description);
 
 	refMap.clear();
-	EXPECT_EQ(0, GitRevRefBrowser::GetGitRevRefMap(refMap, 0, err, [](const CString& refName) { return wcsncmp(refName, L"refs/heads/", 11) == 0; }));
+	EXPECT_EQ(0, GitRevRefBrowser::GetGitRevRefMap(refMap, 0, err, [](const CString& refName) { return CStringUtils::StartsWith(refName, L"refs/heads/"); }));
 	EXPECT_TRUE(err.IsEmpty());
 	EXPECT_EQ(5, refMap.size());
 	EXPECT_TRUE(refMap.find(L"refs/heads/master") != refMap.end());

@@ -20,7 +20,7 @@
 #include "stdafx.h"
 #include "ShellExt.h"
 #include "ItemIDList.h"
-
+#include "StringUtils.h"
 
 ItemIDList::ItemIDList(PCUITEMID_CHILD item, PCUIDLIST_RELATIVE parent)
 	: item_ (item)
@@ -107,7 +107,7 @@ tstring ItemIDList::toString(bool resolveLibraries /*= true*/)
 	ret = szDisplayName;
 	CoTaskMemFree(szDisplayName);
 
-	if (!((resolveLibraries) && (wcsncmp(ret.c_str(), L"::{", 3) == 0)))
+	if (!((resolveLibraries) && (CStringUtils::StartsWith(ret.c_str(), L"::{"))))
 		return ret;
 
 	CComPtr<IShellLibrary> plib;

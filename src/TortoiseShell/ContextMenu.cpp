@@ -931,13 +931,13 @@ STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
 		// which we can't handle
 		for (const auto& file : files_)
 		{
-			if (wcsncmp(file.c_str(), L"::{", 3) == 0)
+			if (CStringUtils::StartsWith(file.c_str(), L"::{"))
 				return S_OK;
 		}
 	}
 	else
 	{
-		if (wcsncmp(folder_.c_str(), L"::{", 3) == 0)
+		if (CStringUtils::StartsWith(folder_.c_str(), L"::{"))
 			return S_OK;
 	}
 
