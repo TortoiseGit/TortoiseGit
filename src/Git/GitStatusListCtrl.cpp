@@ -380,12 +380,12 @@ BOOL CGitStatusListCtrl::GetStatus ( const CTGitPathList* pathList
 		mask |= CGitStatusListCtrl::FILELIST_LOCALCHANGESIGNORED;
 	this->UpdateFileList(mask, bUpdate, pathList);
 
-	if (pathList && m_mapDirectFiles.empty())
+	if (pathList && m_setDirectFiles.empty())
 	{
 		// remember files which are selected by users so that those can be preselected
 		for (int i = 0; i < pathList->GetCount(); ++i)
 			if (!(*pathList)[i].IsDirectory())
-				m_mapDirectFiles[(*pathList)[i].GetGitPathString()] = true;
+				m_setDirectFiles.insert((*pathList)[i].GetGitPathString());
 	}
 
 #if 0
@@ -648,7 +648,7 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 		else if (!UseStoredCheckStatus)
 		{
 			bool autoSelectSubmodules = !(entry->IsDirectory() && m_bDoNotAutoselectSubmodules);
-			if (((entry->m_Action & dwCheck) && !(m_bNoAutoselectMissing && entry->m_Action & CTGitPath::LOGACTIONS_MISSING) || dwShow & GITSLC_SHOWDIRECTFILES && m_mapDirectFiles.find(path) != m_mapDirectFiles.end()) && autoSelectSubmodules)
+			if (((entry->m_Action & dwCheck) && !(m_bNoAutoselectMissing && entry->m_Action & CTGitPath::LOGACTIONS_MISSING) || dwShow & GITSLC_SHOWDIRECTFILES && m_setDirectFiles.find(path) != m_setDirectFiles.end()) && autoSelectSubmodules)
 				entry->m_Checked=true;
 			else
 				entry->m_Checked=false;

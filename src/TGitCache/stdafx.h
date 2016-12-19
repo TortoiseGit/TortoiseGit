@@ -33,6 +33,7 @@ using namespace ATL;
 #include <string>
 #include <vector>
 #include <map>
+#include <set>
 #include <algorithm>
 #include <deque>
 #include <functional>
