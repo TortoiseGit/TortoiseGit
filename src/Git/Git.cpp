@@ -2113,41 +2113,14 @@ int CGit::FindAndSetGitExePath(BOOL bFallback)
 		return TRUE;
 	}
 
-	CRegString msyslocalinstalldir = CRegString(REG_MSYSGIT_INSTALL_LOCAL, L"", FALSE, HKEY_CURRENT_USER);
-	str = msyslocalinstalldir;
-	str.TrimRight(L'\\');
-#ifdef _WIN64
-	if (str.IsEmpty())
+	if (FindGitForWindows(str))
 	{
-		CRegString msysinstalldir = CRegString(REG_MSYSGIT_INSTALL_LOCAL, L"", FALSE, HKEY_LOCAL_MACHINE);
-		str = msysinstalldir;
-		str.TrimRight(L'\\');
-	}
-#endif
-	if (str.IsEmpty())
-	{
-		CRegString msysinstalldir = CRegString(REG_MSYSGIT_INSTALL, L"", FALSE, HKEY_LOCAL_MACHINE);
-		str = msysinstalldir;
-		str.TrimRight(L'\\');
-	}
-	if (!str.IsEmpty())
-	{
-		if (PathFileExists(str + L"\\bin\\git.exe"))
-			str += L"\\bin";
-		else if (PathFileExists(str + L"\\cmd\\git.exe")) // only needed for older Git for Windows 2.x packages
-			str += L"\\cmd";
-		else
-		{
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Git for Windows installation found, but git.exe not exists in %s\n", (LPCTSTR)str);
-			return FALSE;
-		}
 		msysdir = str;
 		CGit::ms_LastMsysGitDir = str;
 		msysdir.write();
 		return TRUE;
 	}
 
-	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Found no git.exe\n");
 	return FALSE;
 }
 

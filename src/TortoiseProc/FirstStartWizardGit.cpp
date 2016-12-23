@@ -145,37 +145,10 @@ void CFirstStartWizardGit::OnTimer(UINT_PTR nIDEvent)
 		UpdateData();
 		if (m_sMsysGitPath.IsEmpty())
 		{
-			CRegString msyslocalinstalldir = CRegString(REG_MSYSGIT_INSTALL_LOCAL, L"", FALSE, HKEY_CURRENT_USER);
-			m_sMsysGitPath = msyslocalinstalldir;
-			m_sMsysGitPath.TrimRight(L'\\');
-#ifdef _WIN64
-			if (m_sMsysGitPath.IsEmpty())
+			if (FindGitForWindows(m_sMsysGitPath))
 			{
-				CRegString msysinstalldir = CRegString(REG_MSYSGIT_INSTALL_LOCAL, L"", FALSE, HKEY_LOCAL_MACHINE);
-				m_sMsysGitPath = msysinstalldir;
-				m_sMsysGitPath.TrimRight(L'\\');
-			}
-#endif
-			if (m_sMsysGitPath.IsEmpty())
-			{
-				CRegString msysinstalldir = CRegString(REG_MSYSGIT_INSTALL, L"", FALSE, HKEY_LOCAL_MACHINE);
-				m_sMsysGitPath = msysinstalldir;
-				m_sMsysGitPath.TrimRight(L'\\');
-			}
-			if (!m_sMsysGitPath.IsEmpty())
-			{
-				if (PathFileExists(m_sMsysGitPath + L"\\bin\\git.exe"))
-					m_sMsysGitPath += L"\\bin";
-				else if (PathFileExists(m_sMsysGitPath + L"\\cmd\\git.exe")) // only needed for older Git for Windows 2.x packages
-					m_sMsysGitPath += L"\\cmd";
-				else
-					m_sMsysGitPath.Empty();
-
-				if (!m_sMsysGitPath.IsEmpty())
-				{
-					UpdateData(FALSE);
-					return;
-				}
+				UpdateData(FALSE);
+				return;
 			}
 			SetTimer(CHECK_NEWGIT_TIMER, 1000, nullptr);
 		}
