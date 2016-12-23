@@ -341,8 +341,7 @@ public:
 
 	std::map<CString, CGitIgnoreItem> m_Map;
 
-	bool CheckIgnoreChanged(const CString &gitdir,const CString &path, bool isDir);
-	int  LoadAllIgnoreFile(const CString &gitdir, const CString &path, bool isDir);
+	bool CheckAndUpdateIgnoreFiles(const CString& gitdir, const CString& path, bool isDir);
 	bool IsIgnore(CString path, const CString& root, bool isDir);
 };
 

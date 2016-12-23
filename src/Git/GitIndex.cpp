@@ -894,64 +894,6 @@ bool CGitIgnoreList::CheckFileChanged(const CString &path)
 	return true;
 }
 
-bool CGitIgnoreList::CheckIgnoreChanged(const CString &gitdir, const CString &path, bool isDir)
-{
-	CString temp(gitdir);
-	temp += L'\\';
-	temp += path;
-
-	temp.Replace(L'/', L'\\');
-
-	if (!isDir)
-	{
-		int x = temp.ReverseFind(L'\\');
-		if (x >= 2)
-			temp.Truncate(x);
-	}
-
-	while(!temp.IsEmpty())
-	{
-		CString tempOrig = temp;
-		temp += L"\\.git";
-
-		if (CGit::GitPathFileExists(temp))
-		{
-			CString gitignore=temp;
-			gitignore += L"ignore";
-			if (CheckFileChanged(gitignore))
-				return true;
-
-			CString adminDir = g_AdminDirMap.GetAdminDir(tempOrig);
-			CString wcglobalgitignore = adminDir + L"info\\exclude";
-			if (CheckFileChanged(wcglobalgitignore))
-				return true;
-
-			if (CheckAndUpdateCoreExcludefile(adminDir))
-				return true;
-
-			return false;
-		}
-
-		temp += L"ignore";
-		if (CheckFileChanged(temp))
-			return true;
-
-		int found=0;
-		int i;
-		for (i = temp.GetLength() - 1; i >= 0; --i)
-		{
-			if (temp[i] == L'\\')
-				++found;
-
-			if(found == 2)
-				break;
-		}
-
-		temp.Truncate(max(0, i));
-	}
-	return true;
-}
-
 int CGitIgnoreList::FetchIgnoreFile(const CString &gitdir, const CString &gitignore, bool isGlobal)
 {
 	if (CGit::GitPathFileExists(gitignore)) //if .gitignore remove, we need remote cache
@@ -967,7 +909,7 @@ int CGitIgnoreList::FetchIgnoreFile(const CString &gitdir, const CString &gitign
 	return 0;
 }
 
-int CGitIgnoreList::LoadAllIgnoreFile(const CString &gitdir, const CString &path, bool isDir)
+bool CGitIgnoreList::CheckAndUpdateIgnoreFiles(const CString& gitdir, const CString& path, bool isDir)
 {
 	CString temp(gitdir);
 	temp += L'\\';
@@ -982,6 +924,7 @@ int CGitIgnoreList::LoadAllIgnoreFile(const CString &gitdir, const CString &path
 			temp.Truncate(x);
 	}
 
+	bool updated = false;
 	while (!temp.IsEmpty())
 	{
 		CString tempOrig = temp;
@@ -992,14 +935,17 @@ int CGitIgnoreList::LoadAllIgnoreFile(const CString &gitdir, const CString &path
 			CString gitignore = temp;
 			gitignore += L"ignore";
 			if (CheckFileChanged(gitignore))
+			{
 				FetchIgnoreFile(gitdir, gitignore, false);
+				updated = true;
+			}
 
 			CString adminDir = g_AdminDirMap.GetAdminDir(tempOrig);
-			CString wcglobalgitignore = adminDir;
-			wcglobalgitignore += L"info\\exclude";
+			CString wcglobalgitignore = adminDir + L"info\\exclude";
 			if (CheckFileChanged(wcglobalgitignore))
 			{
 				FetchIgnoreFile(gitdir, wcglobalgitignore, true);
+				updated = true;
 			}
 
 			if (CheckAndUpdateCoreExcludefile(adminDir))
@@ -1010,15 +956,21 @@ int CGitIgnoreList::LoadAllIgnoreFile(const CString &gitdir, const CString &path
 					excludesFile = m_CoreExcludesfiles[adminDir];
 				}
 				if (!excludesFile.IsEmpty())
+				{
 					FetchIgnoreFile(gitdir, excludesFile, true);
+					updated = true;
+				}
 			}
 
-			return 0;
+			return updated;
 		}
 
 		temp += L"ignore";
 		if (CheckFileChanged(temp))
+		{
 			FetchIgnoreFile(gitdir, temp, false);
+			updated = true;
+		}
 
 		int found = 0;
 		int i;
@@ -1027,14 +979,15 @@ int CGitIgnoreList::LoadAllIgnoreFile(const CString &gitdir, const CString &path
 			if (temp[i] == L'\\')
 				++found;
 
-			if(found == 2)
+			if (found == 2)
 				break;
 		}
 
 		temp.Truncate(max(0, i));
 	}
-	return 0;
+	return updated;
 }
+
 bool CGitIgnoreList::CheckAndUpdateGitSystemConfigPath(bool force)
 {
 	if (force)

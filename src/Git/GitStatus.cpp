@@ -217,8 +217,7 @@ int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status_
 			return 0;
 		}
 
-		if (g_IgnoreList.CheckIgnoreChanged(gitdir, path, false))
-			g_IgnoreList.LoadAllIgnoreFile(gitdir, path, false);
+		g_IgnoreList.CheckAndUpdateIgnoreFiles(gitdir, path, false);
 		if (g_IgnoreList.IsIgnore(path, gitdir, false))
 			st = git_wc_status_ignored;
 
@@ -265,12 +264,7 @@ int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status_
 #ifdef TGITCACHE
 bool GitStatus::CheckAndUpdateIgnoreFiles(const CString& gitdir, const CString& subpaths, bool isDir)
 {
-	if (g_IgnoreList.CheckIgnoreChanged(gitdir, subpaths, isDir))
-	{
-		g_IgnoreList.LoadAllIgnoreFile(gitdir, subpaths, isDir);
-		return true;
-	}
-	return false;
+	return g_IgnoreList.CheckAndUpdateIgnoreFiles(gitdir, subpaths, isDir);
 }
 int GitStatus::IsUnderVersionControl(const CString &gitdir, const CString &path, bool isDir,bool *isVersion)
 {
@@ -357,9 +351,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 
 			if (IsIgnore)
 			{
-				if (g_IgnoreList.CheckIgnoreChanged(gitdir, casepath, bIsDir))
-					g_IgnoreList.LoadAllIgnoreFile(gitdir, casepath, bIsDir);
-
+				g_IgnoreList.CheckAndUpdateIgnoreFiles(gitdir, casepath, bIsDir);
 				if (g_IgnoreList.IsIgnore(casepath, gitdir, bIsDir))
 					*status = git_wc_status_ignored;
 				else if (bIsDir)
@@ -411,9 +403,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 				continue;
 			}
 
-			if (g_IgnoreList.CheckIgnoreChanged(gitdir, casepath, bIsDir))
-				g_IgnoreList.LoadAllIgnoreFile(gitdir, casepath, bIsDir);
-
+			g_IgnoreList.CheckAndUpdateIgnoreFiles(gitdir, casepath, bIsDir);
 			if (g_IgnoreList.IsIgnore(casepath, gitdir, bIsDir))
 				*status = git_wc_status_ignored;
 			else
@@ -565,9 +555,7 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 		}
 
 		// Check ignore always.
-		if (g_IgnoreList.CheckIgnoreChanged(gitdir, path, true))
-			g_IgnoreList.LoadAllIgnoreFile(gitdir, path, true);
-
+		g_IgnoreList.CheckAndUpdateIgnoreFiles(gitdir, path, true);
 		if (g_IgnoreList.IsIgnore(path, gitdir, true))
 			*status = git_wc_status_ignored;
 		else
