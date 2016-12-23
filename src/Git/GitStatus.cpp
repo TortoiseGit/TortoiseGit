@@ -263,14 +263,14 @@ int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status_
 }
 
 #ifdef TGITCACHE
-bool GitStatus::HasIgnoreFilesChanged(const CString &gitdir, const CString &subpaths, bool isDir)
+bool GitStatus::CheckAndUpdateIgnoreFiles(const CString& gitdir, const CString& subpaths, bool isDir)
 {
-	return g_IgnoreList.CheckIgnoreChanged(gitdir, subpaths, isDir);
-}
-
-int GitStatus::LoadIgnoreFile(const CString &gitdir, const CString &subpaths, bool isDir)
-{
-	return g_IgnoreList.LoadAllIgnoreFile(gitdir, subpaths, isDir);
+	if (g_IgnoreList.CheckIgnoreChanged(gitdir, subpaths, isDir))
+	{
+		g_IgnoreList.LoadAllIgnoreFile(gitdir, subpaths, isDir);
+		return true;
+	}
+	return false;
 }
 int GitStatus::IsUnderVersionControl(const CString &gitdir, const CString &path, bool isDir,bool *isVersion)
 {

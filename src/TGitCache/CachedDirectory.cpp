@@ -273,12 +273,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, CStr
 	if(!isVersion)
 	{	//untracked file
 		bool isDir = path.IsDirectory();
-		bool isIgnoreFileChanged = pGitStatus->HasIgnoreFilesChanged(sProjectRoot, subpaths, isDir);
-
-		if( isIgnoreFileChanged)
-		{
-			pGitStatus->LoadIgnoreFile(sProjectRoot, subpaths, isDir);
-		}
+		bool isIgnoreFileChanged = pGitStatus->CheckAndUpdateIgnoreFiles(sProjectRoot, subpaths, isDir);
 
 		if (isDir)
 		{
