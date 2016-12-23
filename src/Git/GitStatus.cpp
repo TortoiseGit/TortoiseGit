@@ -26,6 +26,7 @@
 #include "gitindex.h"
 #include "ShellCache.h"
 #include "SysInfo.h"
+#include "SmartHandle.h"
 
 extern CGitAdminDirMap g_AdminDirMap;
 extern CGitIndexFileMap g_IndexFileMap;
@@ -294,7 +295,9 @@ int GitStatus::GetFileList(CString path, std::vector<CGitFileName> &list)
 {
 	path += L"\\*.*";
 	WIN32_FIND_DATA data;
-	HANDLE handle = ::FindFirstFileEx(path, SysInfo::Instance().IsWin7OrLater() ? FindExInfoBasic : FindExInfoStandard, &data, FindExSearchNameMatch, nullptr, SysInfo::Instance().IsWin7OrLater() ? FIND_FIRST_EX_LARGE_FETCH : 0);
+	CAutoFindFile handle = ::FindFirstFileEx(path, SysInfo::Instance().IsWin7OrLater() ? FindExInfoBasic : FindExInfoStandard, &data, FindExSearchNameMatch, nullptr, SysInfo::Instance().IsWin7OrLater() ? FIND_FIRST_EX_LARGE_FETCH : 0);
+	if (!handle)
+		return -1;
 	do
 	{
 		if (wcscmp(data.cFileName, L".git") == 0)
@@ -318,7 +321,7 @@ int GitStatus::GetFileList(CString path, std::vector<CGitFileName> &list)
 
 	}while(::FindNextFile(handle, &data));
 
-	FindClose(handle);
+	handle.CloseHandle(); // manually close handle here in order to keep handles open as short as possible
 
 	std::sort(list.begin(), list.end(), SortCGitFileName);
 	return 0;
