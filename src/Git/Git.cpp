@@ -3193,7 +3193,7 @@ bool CGit::LoadTextFile(const CString &filename, CString &msg)
 	if (!PathFileExists(filename))
 		return false;
 
-	CAutoFILE pFile = _wfsopen(filename, L"r", SH_DENYWR);
+	CAutoFILE pFile = _wfsopen(filename, L"rb", SH_DENYWR);
 	if (!pFile)
 	{
 		::MessageBox(nullptr, L"Could not open " + filename, L"TortoiseGit", MB_ICONERROR);

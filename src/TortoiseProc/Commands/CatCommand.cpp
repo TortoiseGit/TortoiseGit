@@ -50,7 +50,7 @@ bool CatCommand::Execute()
 
 		if (git_object_type(obj) == GIT_OBJ_BLOB)
 		{
-			CAutoFILE file = _wfsopen(savepath, L"w", SH_DENYRW);
+			CAutoFILE file = _wfsopen(savepath, L"wb", SH_DENYRW);
 			if (file == nullptr)
 			{
 				::DeleteFile(savepath);
