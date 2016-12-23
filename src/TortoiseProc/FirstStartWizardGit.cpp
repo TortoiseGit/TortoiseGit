@@ -27,6 +27,8 @@
 
 IMPLEMENT_DYNAMIC(CFirstStartWizardGit, CFirstStartWizardBasePage)
 
+#define CHECK_NEWGIT_TIMER	100
+
 CFirstStartWizardGit::CFirstStartWizardGit() : CFirstStartWizardBasePage(CFirstStartWizardGit::IDD)
 {
 	m_psp.dwFlags |= PSP_DEFAULT | PSP_USEHEADERTITLE;
@@ -60,6 +62,7 @@ BEGIN_MESSAGE_MAP(CFirstStartWizardGit, CFirstStartWizardBasePage)
 	ON_BN_CLICKED(IDC_MSYSGIT_BROWSE, OnBrowseDir)
 	ON_BN_CLICKED(IDC_MSYSGIT_CHECK, OnCheck)
 	ON_BN_CLICKED(IDC_WORKAROUNDS, OnClickedWorkarounds)
+	ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 LRESULT CFirstStartWizardGit::OnWizardNext()
@@ -128,7 +131,57 @@ BOOL CFirstStartWizardGit::OnInitDialog()
 	CheckRadioButton(IDC_GITHACKS1, IDC_GITHACKS2, IDC_GITHACKS1);
 	ShowWorkarounds();
 
+	if (m_sMsysGitPath.IsEmpty())
+		SetTimer(CHECK_NEWGIT_TIMER, 1000, nullptr);
+
 	return TRUE;
+}
+
+void CFirstStartWizardGit::OnTimer(UINT_PTR nIDEvent)
+{
+	if (nIDEvent == CHECK_NEWGIT_TIMER)
+	{
+		KillTimer(CHECK_NEWGIT_TIMER);
+		UpdateData();
+		if (m_sMsysGitPath.IsEmpty())
+		{
+			CRegString msyslocalinstalldir = CRegString(REG_MSYSGIT_INSTALL_LOCAL, L"", FALSE, HKEY_CURRENT_USER);
+			m_sMsysGitPath = msyslocalinstalldir;
+			m_sMsysGitPath.TrimRight(L'\\');
+#ifdef _WIN64
+			if (m_sMsysGitPath.IsEmpty())
+			{
+				CRegString msysinstalldir = CRegString(REG_MSYSGIT_INSTALL_LOCAL, L"", FALSE, HKEY_LOCAL_MACHINE);
+				m_sMsysGitPath = msysinstalldir;
+				m_sMsysGitPath.TrimRight(L'\\');
+			}
+#endif
+			if (m_sMsysGitPath.IsEmpty())
+			{
+				CRegString msysinstalldir = CRegString(REG_MSYSGIT_INSTALL, L"", FALSE, HKEY_LOCAL_MACHINE);
+				m_sMsysGitPath = msysinstalldir;
+				m_sMsysGitPath.TrimRight(L'\\');
+			}
+			if (!m_sMsysGitPath.IsEmpty())
+			{
+				if (PathFileExists(m_sMsysGitPath + L"\\bin\\git.exe"))
+					m_sMsysGitPath += L"\\bin";
+				else if (PathFileExists(m_sMsysGitPath + L"\\cmd\\git.exe")) // only needed for older Git for Windows 2.x packages
+					m_sMsysGitPath += L"\\cmd";
+				else
+					m_sMsysGitPath.Empty();
+
+				if (!m_sMsysGitPath.IsEmpty())
+				{
+					UpdateData(FALSE);
+					return;
+				}
+			}
+			SetTimer(CHECK_NEWGIT_TIMER, 1000, nullptr);
+		}
+		return;
+	}
+	__super::OnTimer(nIDEvent);
 }
 
 BOOL CFirstStartWizardGit::OnSetActive()

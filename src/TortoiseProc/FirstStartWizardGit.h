@@ -48,6 +48,7 @@ protected:
 	afx_msg void	OnBrowseDir();
 	afx_msg void	OnCheck();
 	afx_msg void	OnClickedWorkarounds();
+	afx_msg void	OnTimer(UINT_PTR nIDEvent);
 
 	void			ShowWorkarounds(bool show = false);
 	void			SetGitHacks();
