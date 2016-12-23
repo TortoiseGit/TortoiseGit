@@ -281,14 +281,9 @@ int GitStatus::IsUnderVersionControl(const CString &gitdir, const CString &path,
 	return 0;
 }
 
-int GitStatus::IsIgnore(const CString &gitdir, const CString &path, bool *isIgnore, bool isDir)
+bool GitStatus::IsIgnored(const CString& gitdir, const CString& path, bool isDir)
 {
-	if (g_IgnoreList.CheckIgnoreChanged(gitdir, path, isDir))
-		g_IgnoreList.LoadAllIgnoreFile(gitdir, path, isDir);
-
-	*isIgnore = g_IgnoreList.IsIgnore(path, gitdir, isDir);
-
-	return 0;
+	return g_IgnoreList.IsIgnore(path, gitdir, isDir);
 }
 
 int GitStatus::GetFileList(CString path, std::vector<CGitFileName> &list)

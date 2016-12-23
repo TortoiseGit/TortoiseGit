@@ -95,7 +95,8 @@ public:
 	static int GetFileList(CString path, std::vector<CGitFileName> &list);
 	static bool CheckAndUpdateIgnoreFiles(const CString& gitdir, const CString& subpaths, bool isDir);
 	static int IsUnderVersionControl(const CString &gitdir, const CString &path, bool isDir,bool *isVersion);
-	static int IsIgnore(const CString &gitdir, const CString &path, bool *isIgnore, bool isDir);
+	/** Checks whether a file/directory is ignored - does not reload .ignore files */
+	static bool IsIgnored(const CString &gitdir, const CString &path, bool isDir);
 	static bool IsExistIndexLockFile(CString gitdir);
 	static bool ReleasePath(const CString &gitdir);
 	static bool ReleasePathsRecursively(const CString &rootpath);

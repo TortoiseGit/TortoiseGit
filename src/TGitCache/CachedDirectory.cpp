@@ -287,8 +287,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, CStr
 				git_wc_status_kind dirstatus = dirEntry->GetCurrentFullStatus() ;
 				if (CGitStatusCache::Instance().IsUnversionedAsModified() || dirstatus == git_wc_status_none || dirstatus >= git_wc_status_normal || isIgnoreFileChanged)
 				{/* status have not initialized*/
-					bool isignore = false;
-					pGitStatus->IsIgnore(sProjectRoot, subpaths, &isignore, isDir);
+					bool isignore = pGitStatus->IsIgnored(sProjectRoot, subpaths, isDir);
 
 					if (!isignore && CGitStatusCache::Instance().IsUnversionedAsModified())
 					{
@@ -323,8 +322,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, CStr
 			if(itMap == m_entryCache.end() || isIgnoreFileChanged)
 			{
 				git_wc_status2_t status2;
-				bool isignore = false;
-				pGitStatus->IsIgnore(sProjectRoot, subpaths, &isignore, isDir);
+				bool isignore = pGitStatus->IsIgnored(sProjectRoot, subpaths, isDir);
 				status2.text_status = status2.prop_status =
 					(isignore? git_wc_status_ignored:git_wc_status_unversioned);
 				AddEntry(path, &status2);
