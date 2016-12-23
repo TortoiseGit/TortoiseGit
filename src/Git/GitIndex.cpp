@@ -935,11 +935,9 @@ bool CGitIgnoreList::CheckAndUpdateIgnoreFiles(const CString& gitdir, const CStr
 			updated = true;
 		}
 
-		temp.Truncate(temp.GetLength() - (int)wcslen(L"ignore"));
-		if (CGit::GitPathFileExists(temp))
+		temp.Truncate(temp.GetLength() - (int)wcslen(L"\\.gitignore"));
+		if (CTGitPath::ArePathStringsEqual(temp, gitdir))
 		{
-			temp.Truncate(temp.GetLength() - (int)wcslen(L"\\.git"));
-
 			CString adminDir = g_AdminDirMap.GetAdminDir(temp);
 			CString wcglobalgitignore = adminDir + L"info\\exclude";
 			if (CheckFileChanged(wcglobalgitignore))
@@ -965,17 +963,7 @@ bool CGitIgnoreList::CheckAndUpdateIgnoreFiles(const CString& gitdir, const CStr
 			return updated;
 		}
 
-		int found = 0;
-		int i;
-		for (i = temp.GetLength() - 1; i >= 0; --i)
-		{
-			if (temp[i] == L'\\')
-				++found;
-
-			if (found == 2)
-				break;
-		}
-
+		int i = temp.ReverseFind(L'\\');
 		temp.Truncate(max(0, i));
 	}
 	return updated;
@@ -1135,11 +1123,10 @@ int CGitIgnoreList::CheckIgnore(const CString &path, const CString &projectroot,
 		if ((ret = CheckFileAgainstIgnoreList(temp, patha, base, type)) != -1)
 			return ret;
 
-		temp.Truncate(temp.GetLength() - (int)wcslen(L"ignore"));
+		temp.Truncate(temp.GetLength() - (int)wcslen(L"\\.gitignore"));
 
-		if (CGit::GitPathFileExists(temp))
+		if (CTGitPath::ArePathStringsEqual(temp, projectroot))
 		{
-			temp.Truncate(temp.GetLength() - (int)wcslen(L"\\.git"));
 			CString adminDir = g_AdminDirMap.GetAdminDir(temp);
 			CString wcglobalgitignore = adminDir;
 			wcglobalgitignore += L"info\\exclude";
@@ -1153,17 +1140,7 @@ int CGitIgnoreList::CheckIgnore(const CString &path, const CString &projectroot,
 			return -1;
 		}
 
-		int found = 0;
-		int i;
-		for (i = temp.GetLength() - 1; i >= 0; i--)
-		{
-			if (temp[i] == L'\\')
-				++found;
-
-			if (found == 2)
-				break;
-		}
-
+		int i = temp.ReverseFind(L'\\');
 		temp.Truncate(max(0, i));
 	}
 
