@@ -69,7 +69,7 @@ bool GitAdminDir::HasAdminDir(const CString& path,CString* ProjectTopDir)
 	return HasAdminDir(path, !!PathIsDirectory(path),ProjectTopDir);
 }
 
-bool GitAdminDir::HasAdminDir(const CString& path, bool bDir, CString* ProjectTopDir)
+bool GitAdminDir::HasAdminDir(const CString& path, bool bDir, CString* ProjectTopDir, bool* IsAdminDirPath)
 {
 	if (path.IsEmpty())
 		return false;
@@ -93,7 +93,11 @@ bool GitAdminDir::HasAdminDir(const CString& path, bool bDir, CString* ProjectTo
 		// check for actual .git dir (and not .gitignore or something else), continue search if false match
 		n += 5;
 		if (sDirName[n] == L'\\' || sDirName[n] == 0)
+		{
+			if (IsAdminDirPath)
+				*IsAdminDirPath = true;
 			return false;
+		}
 	}
 
 	for (;;)

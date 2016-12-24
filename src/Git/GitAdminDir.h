@@ -38,7 +38,8 @@ public:
 	/// associated, i.e. if the path is in a working copy.
 	static bool HasAdminDir(const CString& path);
 	static bool HasAdminDir(const CString& path, CString* ProjectTopDir);
-	static bool HasAdminDir(const CString& path, bool bDir, CString* ProjectTopDir = nullptr);
+	// IsAdminDirPath is only touched/set to true if and only if we the path is an AdminDirPath
+	static bool HasAdminDir(const CString& path, bool bDir, CString* ProjectTopDir = nullptr, bool* IsAdminDirPath = nullptr);
 	static CString GetSuperProjectRoot(const CString& path);
 
 	static bool GetAdminDirPath(const CString &projectTopDir, CString& adminDir);
