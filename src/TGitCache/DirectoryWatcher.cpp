@@ -337,7 +337,7 @@ void CDirectoryWatcher::WorkerThread()
 
 
 					HANDLE port = CreateIoCompletionPort(pDirInfo->m_hDir, m_hCompPort, (ULONG_PTR)pDirInfo, 0);
-					if (!port)
+					if (port == INVALID_HANDLE_VALUE)
 					{
 						CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": CreateIoCompletionPort failed. Can't watch directory %s\n", watchedPath.GetWinPath());
 
