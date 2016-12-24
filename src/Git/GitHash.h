@@ -164,3 +164,14 @@ public:
 	}
 };
 
+namespace std
+{
+	template <>
+	struct hash<CGitHash>
+	{
+		std::size_t operator()(const CGitHash& k) const
+		{
+			return(size_t)*k.m_hash;
+		}
+	};
+}

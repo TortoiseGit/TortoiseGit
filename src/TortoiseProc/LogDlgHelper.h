@@ -21,6 +21,8 @@
 #include "lanes.h"
 #include "GitHash.h"
 #include "GitLogCache.h"
+#include <unordered_map>
+#include <unordered_set>
 class CLogDlg;
 
 /**
@@ -28,7 +30,7 @@ class CLogDlg;
  * Instances of CStoreSelection save the selection of the CLogDlg. When the instance
  * is deleted the destructor restores the selection.
  */
-typedef std::map<CGitHash, int> MAP_HASH_REV;
+typedef std::unordered_map<CGitHash, int> MAP_HASH_REV;
 
 /**
  * \ingroup TortoiseProc
@@ -65,7 +67,7 @@ public:
 	}
 	void ClearAll();
 	int  ParserFromLog(CTGitPath* path = nullptr, DWORD count = 0, DWORD infomask = CGit::LOG_INFO_STAT | CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE, CString* range = nullptr);
-	int  Fill(std::set<CGitHash>& hashes);
+	int  Fill(std::unordered_set<CGitHash>& hashes);
 
 	int FetchFullInfo(int i);
 

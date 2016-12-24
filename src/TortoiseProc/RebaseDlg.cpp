@@ -709,7 +709,7 @@ void CRebaseDlg::FetchLogList()
 	if (!m_bPreserveMerges)
 	{
 		// Default all actions to 'pick'
-		std::map<CGitHash, size_t> revIxMap;
+		std::unordered_map<CGitHash, size_t> revIxMap;
 		for (size_t i = 0; i < m_CommitList.m_logEntries.size(); ++i)
 		{
 			GitRevLoglist& rev = m_CommitList.m_logEntries.GetGitRevAt(i);

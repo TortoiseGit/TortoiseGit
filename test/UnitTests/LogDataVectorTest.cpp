@@ -322,7 +322,7 @@ static void FillTests()
 	logDataVector.m_logOrderBy = CGit::LOG_ORDER_TOPOORDER;
 	logDataVector.SetLogCache(&logCache);
 
-	std::set<CGitHash> hashes;
+	std::unordered_set<CGitHash> hashes;
 	EXPECT_EQ(0, logDataVector.Fill(hashes));
 	EXPECT_EQ(0, logDataVector.size());
 	EXPECT_EQ(0, logCache.m_HashMap.size());

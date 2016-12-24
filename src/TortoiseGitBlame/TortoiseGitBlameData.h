@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,6 +22,7 @@
 #pragma once
 
 #include "gitlogcache.h"
+#include <unordered_set>
 
 class CTortoiseGitBlameData
 {
@@ -77,7 +78,7 @@ public:
 		return m_Hash[line];
 	}
 
-	void GetHashes(std::set<CGitHash>& hashes)
+	void GetHashes(std::unordered_set<CGitHash>& hashes)
 	{
 		hashes.clear();
 		for (const auto& hash : m_Hash)

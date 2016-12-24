@@ -78,7 +78,7 @@ struct SLogCacheDataFileHeader
 	DWORD m_Version;
 };
 
-class CGitHashMap : public std::map<CGitHash, GitRevLoglist>
+class CGitHashMap : public std::unordered_map<CGitHash, GitRevLoglist>
 {
 public:
 	bool IsExist(CGitHash &hash)

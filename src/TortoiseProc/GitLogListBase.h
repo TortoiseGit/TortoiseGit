@@ -34,6 +34,7 @@
 #include <regex>
 #include "GitStatusListCtrl.h"
 #include "FindDlg.h"
+#include <unordered_set>
 
 // CGitLogList
 #define ICONITEMBORDER 5
@@ -401,10 +402,10 @@ public:
 	bool IsSelectionContinuous();
 	int  BeginFetchLog();
 	int  FillGitLog(CTGitPath* path, CString* range = nullptr, int infomask = CGit::LOG_INFO_STAT | CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE);
-	int  FillGitLog(std::set<CGitHash>& hashes);
+	int  FillGitLog(std::unordered_set<CGitHash>& hashes);
 	CString MessageDisplayStr(GitRev* pLogEntry);
 	BOOL IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::wregex& pat);
-	bool ShouldShowFilter(GitRevLoglist* pRev, const std::map<CGitHash, std::set<CGitHash>>& commitChildren);
+	bool ShouldShowFilter(GitRevLoglist* pRev, const std::unordered_map<CGitHash, std::unordered_set<CGitHash>>& commitChildren);
 	void ShowGraphColumn(bool bShow);
 	CString	GetTagInfo(GitRev* pLogEntry);
 

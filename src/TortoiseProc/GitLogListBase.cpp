@@ -2615,7 +2615,7 @@ int CGitLogListBase::FillGitLog(CTGitPath *path, CString *range, int info)
 	return 0;
 }
 
-int CGitLogListBase::FillGitLog(std::set<CGitHash>& hashes)
+int CGitLogListBase::FillGitLog(std::unordered_set<CGitHash>& hashes)
 {
 	ClearText();
 
@@ -2916,7 +2916,7 @@ UINT CGitLogListBase::LogThread()
 		t2 = t1 = GetTickCount64();
 		int oldprecentage = 0;
 		size_t oldsize = m_logEntries.size();
-		std::map<CGitHash, std::set<CGitHash>> commitChildren;
+		std::unordered_map<CGitHash, std::unordered_set<CGitHash>> commitChildren;
 		while (ret== 0 && !m_bExitThread)
 		{
 			g_Git.m_critGitDllSec.Lock();
@@ -2991,7 +2991,7 @@ UINT CGitLogListBase::LogThread()
 					const CGitHash &parentHash = pRev->m_ParentHash[i];
 					auto it = commitChildren.find(parentHash);
 					if (it == commitChildren.end())
-						it = commitChildren.insert(make_pair(parentHash, std::set<CGitHash>())).first;
+						it = commitChildren.insert(make_pair(parentHash, std::unordered_set<CGitHash>())).first;
 					it->second.insert(pRev->m_CommitHash);
 				}
 			}
@@ -3431,7 +3431,7 @@ static bool CStringStartsWith(const CString &str, const CString &prefix)
 {
 	return str.Left(prefix.GetLength()) == prefix;
 }
-bool CGitLogListBase::ShouldShowFilter(GitRevLoglist* pRev, const std::map<CGitHash, std::set<CGitHash>>& commitChildren)
+bool CGitLogListBase::ShouldShowFilter(GitRevLoglist* pRev, const std::unordered_map<CGitHash, std::unordered_set<CGitHash>>& commitChildren)
 {
 	if (m_ShowFilter & FILTERSHOW_ANYCOMMIT)
 		return true;
@@ -3481,7 +3481,7 @@ bool CGitLogListBase::ShouldShowFilter(GitRevLoglist* pRev, const std::map<CGitH
 		auto childrenIt = commitChildren.find(pRev->m_CommitHash);
 		if (childrenIt != commitChildren.end())
 		{
-			const std::set<CGitHash> &children = childrenIt->second;
+			const std::unordered_set<CGitHash> &children = childrenIt->second;
 			if (children.size() > 1)
 				return true;
 		}

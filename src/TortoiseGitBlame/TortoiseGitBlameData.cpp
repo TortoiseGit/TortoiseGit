@@ -86,7 +86,7 @@ int CTortoiseGitBlameData::GetEncode(int *bomoffset)
 
 void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & HashToRev, DWORD dateFormat, bool bRelativeTimes)
 {
-	std::map<CGitHash, CString> hashToFilename;
+	std::unordered_map<CGitHash, CString> hashToFilename;
 
 	std::vector<CGitHash>		hashes;
 	std::vector<int>			originalLineNumbers;

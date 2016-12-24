@@ -143,7 +143,7 @@ int COutputWnd::LoadHistory(CString filename, CString revision, bool follow)
 	return 0;
 }
 
-int COutputWnd::LoadHistory(std::set<CGitHash>& hashes)
+int COutputWnd::LoadHistory(std::unordered_set<CGitHash>& hashes)
 {
 	m_LogList.Clear();
 	m_LogList.ShowGraphColumn(false);

@@ -249,7 +249,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 		}
 		else
 		{
-			std::set<CGitHash> hashes;
+			std::unordered_set<CGitHash> hashes;
 			pView->m_data.GetHashes(hashes);
 			if (GetMainFrame()->m_wndOutput.LoadHistory(hashes))
 				return FALSE;

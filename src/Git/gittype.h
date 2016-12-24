@@ -19,6 +19,7 @@
 
 #pragma once
 #include "GitHash.h"
+#include <unordered_map>
 
 enum
 {
@@ -107,6 +108,6 @@ public:
 };
 
 typedef std::vector<CString> STRING_VECTOR;
-typedef std::map<CGitHash, STRING_VECTOR> MAP_HASH_NAME;
+typedef std::unordered_map<CGitHash, STRING_VECTOR> MAP_HASH_NAME;
 typedef std::map<CString, CString> MAP_STRING_STRING;
 typedef CGitByteArray BYTE_VECTOR;

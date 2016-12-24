@@ -199,7 +199,7 @@ struct SortByParentDate
 	}
 };
 
-int CLogDataVector::Fill(std::set<CGitHash>& hashes)
+int CLogDataVector::Fill(std::unordered_set<CGitHash>& hashes)
 {
 	ATLASSERT(m_pLogCache);
 	try
