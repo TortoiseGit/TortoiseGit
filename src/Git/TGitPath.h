@@ -234,8 +234,7 @@ public:
 	 * is done in the same directory. For folders, it checks if the folder itself
 	 * contains an admin directory.
 	 */
-	bool HasAdminDir() const;
-	bool HasAdminDir(CString *ProjectTopDir) const;
+	bool HasAdminDir(CString* projectTopDir = nullptr) const;
 	bool HasSubmodules() const;
 	bool HasGitSVNDir() const;
 	bool IsBisectActive() const;

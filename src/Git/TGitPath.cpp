@@ -705,17 +705,6 @@ bool CTGitPath::IsWCRoot() const
 	return m_bIsWCRoot;
 }
 
-bool CTGitPath::HasAdminDir() const
-{
-	if (m_bHasAdminDirKnown)
-		return m_bHasAdminDir;
-
-	EnsureBackslashPathSet();
-	m_bHasAdminDir = GitAdminDir::HasAdminDir(m_sBackslashPath, IsDirectory(), &m_sProjectRoot);
-	m_bHasAdminDirKnown = true;
-	return m_bHasAdminDir;
-}
-
 bool CTGitPath::HasSubmodules() const
 {
 	if (HasAdminDir())
