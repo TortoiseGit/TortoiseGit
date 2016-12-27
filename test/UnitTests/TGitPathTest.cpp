@@ -1623,6 +1623,9 @@ TEST(CTGitPath, HashStashDir)
 	// no repository -> no stash
 	EXPECT_FALSE(path.HasStashDir());
 
+	path.Reset();
+	path.SetFromWin(tmpDir.GetTempDir());
+
 	CAutoRepository repo = nullptr;
 	ASSERT_TRUE(git_repository_init(repo.GetPointer(), CUnicodeUtils::GetUTF8(tmpDir.GetTempDir()), false) == 0);
 

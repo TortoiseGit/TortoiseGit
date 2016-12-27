@@ -720,8 +720,7 @@ bool CTGitPath::HasSubmodules() const
 int CTGitPath::GetAdminDirMask() const
 {
 	int status = 0;
-	CString topdir;
-	if (!GitAdminDir::HasAdminDir(GetWinPathString(), &topdir))
+	if (!HasAdminDir())
 		return status;
 
 	// ITEMIS_INGIT will be revoked if necessary in TortoiseShell/ContextMenu.cpp
@@ -754,7 +753,7 @@ int CTGitPath::GetAdminDirMask() const
 	}
 
 	CString dotGitPath;
-	GitAdminDir::GetAdminDirPath(topdir, dotGitPath);
+	GitAdminDir::GetAdminDirPath(m_sProjectRoot, dotGitPath);
 
 	if (PathFileExists(dotGitPath + L"BISECT_START"))
 		status |= ITEMIS_BISECT;
@@ -768,7 +767,7 @@ int CTGitPath::GetAdminDirMask() const
 	if (PathFileExists(dotGitPath + L"svn"))
 		status |= ITEMIS_GITSVN;
 
-	if (PathFileExists(topdir + L"\\.gitmodules"))
+	if (PathFileExists(m_sProjectRoot + L"\\.gitmodules"))
 		status |= ITEMIS_SUBMODULECONTAINER;
 
 	return status;
@@ -843,57 +842,52 @@ bool CTGitPath::HasStashDir(const CString& dotGitPath) const
 
 bool CTGitPath::HasStashDir() const
 {
-	CString topdir;
-	if (!GitAdminDir::HasAdminDir(GetWinPathString(), &topdir))
+	if (!HasAdminDir())
 		return false;
 
 	CString dotGitPath;
-	GitAdminDir::GetAdminDirPath(topdir, dotGitPath);
+	GitAdminDir::GetAdminDirPath(m_sProjectRoot, dotGitPath);
 
 	return HasStashDir(dotGitPath);
 }
 
 bool CTGitPath::HasGitSVNDir() const
 {
-	CString topdir;
-	if (!GitAdminDir::HasAdminDir(GetWinPathString(), &topdir))
+	if (!HasAdminDir())
 		return false;
 
 	CString dotGitPath;
-	GitAdminDir::GetAdminDirPath(topdir, dotGitPath);
+	GitAdminDir::GetAdminDirPath(m_sProjectRoot, dotGitPath);
 
 	return !!PathFileExists(dotGitPath + L"svn");
 }
 bool CTGitPath::IsBisectActive() const
 {
-	CString topdir;
-	if (!GitAdminDir::HasAdminDir(GetWinPathString(), &topdir))
+	if (!HasAdminDir())
 		return false;
 
 	CString dotGitPath;
-	GitAdminDir::GetAdminDirPath(topdir, dotGitPath);
+	GitAdminDir::GetAdminDirPath(m_sProjectRoot, dotGitPath);
 
 	return !!PathFileExists(dotGitPath + L"BISECT_START");
 }
 bool CTGitPath::IsMergeActive() const
 {
-	CString topdir;
-	if (!GitAdminDir::HasAdminDir(GetWinPathString(), &topdir))
+	if (!HasAdminDir())
 		return false;
 
 	CString dotGitPath;
-	GitAdminDir::GetAdminDirPath(topdir, dotGitPath);
+	GitAdminDir::GetAdminDirPath(m_sProjectRoot, dotGitPath);
 
 	return !!PathFileExists(dotGitPath + L"MERGE_HEAD");
 }
 bool CTGitPath::HasRebaseApply() const
 {
-	CString topdir;
-	if (!GitAdminDir::HasAdminDir(GetWinPathString(), &topdir))
+	if (!HasAdminDir())
 		return false;
 
 	CString dotGitPath;
-	GitAdminDir::GetAdminDirPath(topdir, dotGitPath);
+	GitAdminDir::GetAdminDirPath(m_sProjectRoot, dotGitPath);
 
 	return !!PathFileExists(dotGitPath + L"rebase-apply");
 }
