@@ -321,9 +321,14 @@ int CGitLogListBase:: OnCreate(LPCREATESTRUCT lpCreateStruct)
 	return __super::OnCreate(lpCreateStruct);
 }
 
-void CGitLogListBase::PreSubclassWindow()
+void CGitLogListBase::SetStyle()
 {
 	SetExtendedStyle(LVS_EX_INFOTIP | LVS_EX_DOUBLEBUFFER | LVS_EX_SUBITEMIMAGES | LVS_EX_FULLROWSELECT);
+}
+
+void CGitLogListBase::PreSubclassWindow()
+{
+	SetStyle();
 	// load the icons for the action columns
 //	m_Theme.Open(m_hWnd, L"ListView");
 	SetWindowTheme(m_hWnd, L"Explorer", nullptr);

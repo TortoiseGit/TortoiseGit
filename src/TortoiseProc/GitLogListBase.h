@@ -539,6 +539,8 @@ public:
 	MAP_HASH_NAME		m_HashMap;
 	std::map<CString, std::pair<CString, CString>>	m_TrackingMap;
 
+	void				SetStyle();
+
 public:
 	CString				m_ColumnRegKey;
 

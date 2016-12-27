@@ -71,6 +71,9 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;      // fail to create
 	}
 
+	// for some unknown reason, the SetExtendedStyle in OnCreate/PreSubclassWindow is not working here
+	m_LogList.SetStyle();
+
 	m_LogList.SetFont(&m_Font);
 
 	m_Gravatar.Create(L"", WS_CHILD | WS_VISIBLE, rectDummy, this);
