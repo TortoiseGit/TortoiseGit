@@ -4868,10 +4868,27 @@ LineColors & CBaseView::GetLineColors(int nViewLine)
 		CString sLine = GetViewLineChars(nViewLine);
 		if (sLine.IsEmpty())
 			break;
-		if (!m_pOtherView)
-			break;
-
-		CString sDiffLine = m_pOtherView->GetViewLineChars(nViewLine);
+        CString sDiffLine;
+        if (!m_pOtherView)
+        {
+            switch (diffState)
+            {
+                case DIFFSTATE_ADDED:
+                {
+                    if ((nViewLine > 0) && (m_pViewData->GetState(nViewLine - 1) == DIFFSTATE_REMOVED))
+                        sDiffLine = GetViewLineChars(nViewLine - 1);
+                }
+                break;
+                case DIFFSTATE_REMOVED:
+                {
+                    if (((nViewLine + 1) < m_pViewData->GetCount()) && (m_pViewData->GetState(nViewLine + 1) == DIFFSTATE_ADDED))
+                        sDiffLine = GetViewLineChars(nViewLine + 1);
+                }
+                break;
+            }
+        }
+        else
+            sDiffLine = m_pOtherView->GetViewLineChars(nViewLine);
 		if (sDiffLine.IsEmpty())
 			break;
 
@@ -4914,7 +4931,7 @@ LineColors & CBaseView::GetLineColors(int nViewLine)
 			{
 				crBkgnd = InlineViewLineDiffColor(nViewLine);
 			}
-			else
+			else if (m_pOtherView)
 			{
 				crBkgnd = m_ModifiedBk;
 			}
