@@ -245,25 +245,35 @@ public:
 	volatile LONG		m_bNoDispUpdates;
 	BOOL m_IsIDReplaceAction;
 	BOOL m_IsOldFirst;
+protected:
 	void hideFromContextMenu(unsigned __int64 hideMask, bool exclusivelyShow);
+public:
 	BOOL m_IsRebaseReplaceGraph;
 	BOOL m_bNoHightlightHead;
 
+protected:
 	void MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct);
 
 	BOOL m_bStrictStopped;
+public:
 	BOOL m_bShowBugtraqColumn;
+protected:
 	BOOL m_bSearchIndex;
 	BOOL m_bCancelled;
+public:
 	bool m_bIsCherryPick;
 	unsigned __int64 m_ContextMenuMask;
 
 	bool				m_hasWC;
 	bool				m_bShowWC;
+protected:
 	GitRevLoglist		m_wcRev;
+public:
 	volatile LONG 		m_bThreadRunning;
+protected:
 	CLogCache			m_LogCache;
 
+public:
 	CString	m_sRange;
 	// don't forget to bump BLAME_COLUMN_VERSION in GitStatusListCtrlHelpers.cpp if you change columns
 	enum
@@ -400,12 +410,16 @@ public:
 	void CopySelectionToClipBoard(int toCopy = ID_COPY_ALL);
 	void DiffSelectedRevWithPrevious();
 	bool IsSelectionContinuous();
+protected:
 	int  BeginFetchLog();
+public:
 	int  FillGitLog(CTGitPath* path, CString* range = nullptr, int infomask = CGit::LOG_INFO_STAT | CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE);
 	int  FillGitLog(std::unordered_set<CGitHash>& hashes);
+protected:
 	CString MessageDisplayStr(GitRev* pLogEntry);
 	BOOL IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::wregex& pat);
 	bool ShouldShowFilter(GitRevLoglist* pRev, const std::unordered_map<CGitHash, std::unordered_set<CGitHash>>& commitChildren);
+public:
 	void ShowGraphColumn(bool bShow);
 	CString	GetTagInfo(GitRev* pLogEntry);
 
@@ -413,7 +427,9 @@ public:
 	static const UINT	m_FindDialogMessage;
 	void OnFind();
 
+protected:
 	static const UINT	m_ScrollToMessage;
+public:
 	static const UINT	m_ScrollToRef;
 	static const UINT	m_RebaseActionMessage;
 
@@ -443,9 +459,12 @@ public:
 	CGitHash			m_highlight;
 	int					m_ShowRefMask;
 
+protected:
 	CGitHash			m_superProjectHash;
 
+public:
 	void				GetTimeRange(CTime &oldest,CTime &latest);
+protected:
 	virtual void GetParentHashes(GitRev* pRev, GIT_REV_LIST& parentHash);
 	virtual void ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMenu * menu)=0;
 	void UpdateSubmodulePointer()
@@ -505,6 +524,7 @@ public:
 	}
 	void StartAsyncDiffThread();
 	void StartLoadingThread();
+public:
 	void SafeTerminateThread()
 	{
 		if (m_LoadingThread && InterlockedExchange(&m_bExitThread, TRUE) == FALSE)
@@ -517,12 +537,12 @@ public:
 			m_LoadingThread = nullptr;
 		}
 	};
-
+protected:
 	bool IsInWorkingThread()
 	{
 		return (AfxGetThread() == m_LoadingThread);
 	}
-
+public:
 	void SetRange(const CString& range)
 	{
 		m_sRange = range;
@@ -533,15 +553,17 @@ public:
 	bool HasFilterText() const { return !m_sFilterText.IsEmpty() && m_sFilterText != L"!"; }
 
 	int					m_nSearchIndex;
-
+protected:
 	volatile LONG		m_bExitThread;
 	CWinThread*			m_LoadingThread;
+public:
 	MAP_HASH_NAME		m_HashMap;
+protected:
 	std::map<CString, std::pair<CString, CString>>	m_TrackingMap;
 
+public:
 	void				SetStyle();
 
-public:
 	CString				m_ColumnRegKey;
 
 protected:
