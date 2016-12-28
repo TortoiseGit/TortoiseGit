@@ -520,7 +520,7 @@ int CRepositoryBrowser::ReadTree(CShadowFilesTree* treeroot, const CString& root
 			return -1;
 		}
 
-		tree = (git_tree*)object.Detach();
+		tree.ConvertFrom(std::move(object));
 	}
 
 	treeroot->m_hash = git_tree_id(tree)->id;

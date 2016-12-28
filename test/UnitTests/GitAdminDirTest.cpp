@@ -28,7 +28,7 @@ TEST(CGitAdminDir, IsBareRepo)
 
 	EXPECT_FALSE(GitAdminDir::IsBareRepo(tmpDir.GetTempDir()));
 
-	CAutoRepository repo = nullptr;
+	CAutoRepository repo;
 	ASSERT_TRUE(git_repository_init(repo.GetPointer(), CUnicodeUtils::GetUTF8(tmpDir.GetTempDir()), true) == 0);
 
 	EXPECT_TRUE(GitAdminDir::IsBareRepo(tmpDir.GetTempDir()));
@@ -40,7 +40,7 @@ TEST(CGitAdminDir, IsBareRepo_normalRepo)
 
 	EXPECT_FALSE(GitAdminDir::IsBareRepo(tmpDir.GetTempDir()));
 
-	CAutoRepository repo = nullptr;
+	CAutoRepository repo;
 	ASSERT_TRUE(git_repository_init(repo.GetPointer(), CUnicodeUtils::GetUTF8(tmpDir.GetTempDir()), false) == 0);
 
 	EXPECT_FALSE(GitAdminDir::IsBareRepo(tmpDir.GetTempDir()));
@@ -66,7 +66,7 @@ TEST(CGitAdminDir, IsAdminDirPath)
 
 	EXPECT_FALSE(GitAdminDir::IsAdminDirPath(tmpDir.GetTempDir()));
 
-	CAutoRepository repo = nullptr;
+	CAutoRepository repo;
 	ASSERT_TRUE(git_repository_init(repo.GetPointer(), CUnicodeUtils::GetUTF8(tmpDir.GetTempDir()), false) == 0);
 
 	EXPECT_FALSE(GitAdminDir::IsAdminDirPath(tmpDir.GetTempDir()));
@@ -89,7 +89,7 @@ TEST(CGitAdminDir, IsAdminDirPath_BareRepo)
 
 	EXPECT_FALSE(GitAdminDir::IsAdminDirPath(tmpDir.GetTempDir()));
 
-	CAutoRepository repo = nullptr;
+	CAutoRepository repo;
 	ASSERT_TRUE(git_repository_init(repo.GetPointer(), CUnicodeUtils::GetUTF8(tmpDir.GetTempDir()), true) == 0);
 
 	EXPECT_FALSE(GitAdminDir::IsAdminDirPath(tmpDir.GetTempDir()));
@@ -103,7 +103,7 @@ TEST(CGitAdminDir, GetAdminDirPath_BareRepo)
 	EXPECT_FALSE(GitAdminDir::GetAdminDirPath(tmpDir.GetTempDir(), adminDir));
 	EXPECT_TRUE(adminDir.IsEmpty());
 
-	CAutoRepository repo = nullptr;
+	CAutoRepository repo;
 	ASSERT_TRUE(git_repository_init(repo.GetPointer(), CUnicodeUtils::GetUTF8(tmpDir.GetTempDir()), true) == 0);
 
 	EXPECT_TRUE(GitAdminDir::GetAdminDirPath(tmpDir.GetTempDir(), adminDir));
@@ -156,7 +156,7 @@ TEST(CGitAdminDir, HasAdminDir)
 
 	EXPECT_FALSE(GitAdminDir::HasAdminDir(tmpDir.GetTempDir()));
 
-	CAutoRepository repo = nullptr;
+	CAutoRepository repo;
 	ASSERT_TRUE(git_repository_init(repo.GetPointer(), CUnicodeUtils::GetUTF8(tmpDir.GetTempDir()), false) == 0);
 
 	CString repoRoot;
@@ -178,7 +178,7 @@ TEST(CGitAdminDir, HasAdminDir)
 	EXPECT_TRUE(GitAdminDir::HasAdminDir(tmpDir.GetTempDir() + L"\\anotherdir", &repoRoot));
 	EXPECT_STREQ(tmpDir.GetTempDir(), repoRoot);
 
-	CAutoRepository subrepo = nullptr;
+	CAutoRepository subrepo;
 	ASSERT_TRUE(git_repository_init(subrepo.GetPointer(), CUnicodeUtils::GetUTF8(tmpDir.GetTempDir() + L"\\anotherdir"), false) == 0);
 
 	repoRoot.Empty();
@@ -200,7 +200,7 @@ TEST(CGitAdminDir, HasAdminDir_bareRepo)
 
 	EXPECT_FALSE(GitAdminDir::HasAdminDir(tmpDir.GetTempDir()));
 
-	CAutoRepository repo = nullptr;
+	CAutoRepository repo;
 	ASSERT_TRUE(git_repository_init(repo.GetPointer(), CUnicodeUtils::GetUTF8(tmpDir.GetTempDir()), true) == 0);
 
 	EXPECT_FALSE(GitAdminDir::HasAdminDir(tmpDir.GetTempDir()));
@@ -226,7 +226,7 @@ TEST(CGitAdminDir, IsWorkingTreeOrBareRepo)
 
 	EXPECT_FALSE(GitAdminDir::IsWorkingTreeOrBareRepo(tmpDir.GetTempDir()));
 
-	CAutoRepository repo = nullptr;
+	CAutoRepository repo;
 	ASSERT_TRUE(git_repository_init(repo.GetPointer(), CUnicodeUtils::GetUTF8(tmpDir.GetTempDir()), true) == 0);
 
 	EXPECT_TRUE(GitAdminDir::IsWorkingTreeOrBareRepo(tmpDir.GetTempDir()));
@@ -238,7 +238,7 @@ TEST(CGitAdminDir, IsWorkingTreeOrBareRepo_normalRepo)
 
 	EXPECT_FALSE(GitAdminDir::IsWorkingTreeOrBareRepo(tmpDir.GetTempDir()));
 
-	CAutoRepository repo = nullptr;
+	CAutoRepository repo;
 	ASSERT_TRUE(git_repository_init(repo.GetPointer(), CUnicodeUtils::GetUTF8(tmpDir.GetTempDir()), false) == 0);
 
 	EXPECT_TRUE(GitAdminDir::IsWorkingTreeOrBareRepo(tmpDir.GetTempDir()));

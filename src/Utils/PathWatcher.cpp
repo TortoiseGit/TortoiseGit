@@ -355,7 +355,7 @@ void CPathWatcher::ClearInfoMap()
 }
 
 CPathWatcher::CDirWatchInfo::CDirWatchInfo(HANDLE hDir, const CTGitPath& DirectoryName)
-	: m_hDir(hDir)
+	: m_hDir(std::move(hDir))
 	, m_DirName(DirectoryName)
 {
 	ATLASSERT( hDir && !DirectoryName.IsEmpty());

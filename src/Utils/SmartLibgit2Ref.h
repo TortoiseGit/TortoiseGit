@@ -154,7 +154,7 @@ class CAutoRepository : public CSmartLibgit2Ref<git_repository>
 public:
 	CAutoRepository() {};
 
-	CAutoRepository(git_repository* h)
+	explicit CAutoRepository(git_repository*&& h)
 	{
 		m_Ref = h;
 	}
@@ -226,7 +226,7 @@ class CAutoCommit : public CSmartLibgit2Ref<git_commit>
 public:
 	CAutoCommit() {}
 
-	CAutoCommit(git_commit* h)
+	explicit CAutoCommit(git_commit*&& h)
 	{
 		m_Ref = h;
 	}
@@ -244,37 +244,6 @@ protected:
 	virtual void FreeRef()
 	{
 		git_commit_free(m_Ref);
-	}
-};
-
-class CAutoTree : public CSmartLibgit2Ref<git_tree>
-{
-public:
-	CAutoTree() {};
-
-	git_tree* operator=(git_tree* h)
-	{
-		if (m_Ref != h)
-		{
-			CleanUp();
-			m_Ref = h;
-		}
-		return (*this);
-	}
-
-	~CAutoTree()
-	{
-		CleanUp();
-	}
-
-private:
-	CAutoTree(const CAutoTree&) = delete;
-	CAutoTree& operator=(const CAutoTree&) = delete;
-
-protected:
-	virtual void FreeRef()
-	{
-		git_tree_free(m_Ref);
 	}
 };
 
@@ -296,6 +265,37 @@ protected:
 	virtual void FreeRef()
 	{
 		git_object_free(m_Ref);
+	}
+};
+
+
+class CAutoTree : public CSmartLibgit2Ref<git_tree>
+{
+public:
+	CAutoTree() {};
+
+	void ConvertFrom(CAutoObject&& h)
+	{
+		if (m_Ref != (git_tree*)(git_object*)h)
+		{
+			CleanUp();
+			m_Ref = (git_tree*)h.Detach();
+		}
+	}
+
+	~CAutoTree()
+	{
+		CleanUp();
+	}
+
+private:
+	CAutoTree(const CAutoTree&) = delete;
+	CAutoTree& operator=(const CAutoTree&) = delete;
+
+protected:
+	virtual void FreeRef()
+	{
+		git_tree_free(m_Ref);
 	}
 };
 
@@ -404,7 +404,7 @@ class CAutoReference : public CSmartLibgit2Ref<git_reference>
 public:
 	CAutoReference() {}
 
-	CAutoReference(git_reference* h)
+	explicit CAutoReference(git_reference*&& h)
 	{
 		m_Ref = h;
 	}
@@ -430,7 +430,7 @@ class CAutoTag : public CSmartLibgit2Ref<git_tag>
 public:
 	CAutoTag() {}
 
-	CAutoTag(git_tag* h)
+	explicit CAutoTag(git_tag*&& h)
 	{
 		m_Ref = h;
 	}

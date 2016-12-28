@@ -353,7 +353,7 @@ void CDirectoryWatcher::WorkerThread()
 						watchedPaths.RemovePath(watchedPath);
 						break;
 					}
-					m_hCompPort = port;
+					m_hCompPort = std::move(port);
 
 					if (!ReadDirectoryChangesW(pDirInfo->m_hDir,
 												pDirInfo->m_Buffer,
@@ -611,7 +611,7 @@ bool CDirectoryWatcher::CloseHandlesForPath(const CTGitPath& path)
 }
 
 CDirectoryWatcher::CDirWatchInfo::CDirWatchInfo(HANDLE hDir, const CTGitPath& DirectoryName)
-	: m_hDir(hDir)
+	: m_hDir(std::move(hDir))
 	, m_DirName(DirectoryName)
 {
 	ATLASSERT(hDir && !DirectoryName.IsEmpty());

@@ -639,11 +639,10 @@ DWORD WINAPI InstanceThread(LPVOID lpvParam)
 	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": InstanceThread started\n");
 	TGITCacheResponse response;
 	DWORD cbBytesRead, cbWritten;
-	CAutoFile hPipe;
 
 	// The thread's parameter is a handle to a pipe instance.
+	CAutoFile hPipe(std::move(lpvParam));
 
-	hPipe = lpvParam;
 	InterlockedIncrement(&nThreadCount);
 	while (bRun)
 	{
@@ -705,11 +704,9 @@ DWORD WINAPI CommandThread(LPVOID lpvParam)
 {
 	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": CommandThread started\n");
 	DWORD cbBytesRead;
-	CAutoFile hPipe;
 
 	// The thread's parameter is a handle to a pipe instance.
-
-	hPipe = lpvParam;
+	CAutoFile hPipe(std::move(lpvParam));
 
 	while (bRun)
 	{

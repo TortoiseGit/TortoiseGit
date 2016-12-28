@@ -1135,7 +1135,7 @@ TEST(CTGitPath, FillBasedOnIndexFlags)
 	CAutoTempDir tmpDir;
 
 	CString output;
-	CAutoRepository repo = nullptr;
+	CAutoRepository repo;
 	EXPECT_TRUE(git_repository_init(repo.GetPointer(), CUnicodeUtils::GetUTF8(tmpDir.GetTempDir()), 0) == 0);
 	
 	ASSERT_TRUE(CreateDirectory(tmpDir.GetTempDir() + L"\\a", nullptr));
@@ -1445,7 +1445,7 @@ TEST(CTGitPath, FillUnRev)
 {
 	CAutoTempDir tmpDir;
 
-	CAutoRepository repo = nullptr;
+	CAutoRepository repo;
 	ASSERT_TRUE(git_repository_init(repo.GetPointer(), CUnicodeUtils::GetUTF8(tmpDir.GetTempDir()), false) == 0);
 
 	g_Git.m_CurrentDir = tmpDir.GetTempDir();
@@ -1626,7 +1626,7 @@ TEST(CTGitPath, HashStashDir)
 	path.Reset();
 	path.SetFromWin(tmpDir.GetTempDir());
 
-	CAutoRepository repo = nullptr;
+	CAutoRepository repo;
 	ASSERT_TRUE(git_repository_init(repo.GetPointer(), CUnicodeUtils::GetUTF8(tmpDir.GetTempDir()), false) == 0);
 
 	g_Git.m_CurrentDir = tmpDir.GetTempDir();

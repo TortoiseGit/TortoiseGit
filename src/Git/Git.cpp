@@ -451,8 +451,8 @@ int CGit::Run(CGitCall* pcall)
 	if (RunAsync(pcall->GetCmd(), &pi, hRead.GetPointer(), hReadErr.GetPointer()))
 		return TGIT_GIT_ERROR_CREATE_PROCESS;
 
-	CAutoGeneralHandle piThread(pi.hThread);
-	CAutoGeneralHandle piProcess(pi.hProcess);
+	CAutoGeneralHandle piThread(std::move(pi.hThread));
+	CAutoGeneralHandle piProcess(std::move(pi.hProcess));
 
 	ASYNCREADSTDERRTHREADARGS threadArguments;
 	threadArguments.fileHandle = hReadErr;
@@ -1185,8 +1185,8 @@ int CGit::RunLogFile(CString cmd, const CString &filename, CString *stdErr)
 	if (RunAsync(cmd, &pi, nullptr, hReadErr.GetPointer(), &filename))
 		return TGIT_GIT_ERROR_CREATE_PROCESS;
 
-	CAutoGeneralHandle piThread(pi.hThread);
-	CAutoGeneralHandle piProcess(pi.hProcess);
+	CAutoGeneralHandle piThread(std::move(pi.hThread));
+	CAutoGeneralHandle piProcess(std::move(pi.hProcess));
 
 	BYTE_VECTOR stderrVector;
 	CGitCall_ByteVector pcall(L"", nullptr, &stderrVector);
@@ -1603,7 +1603,7 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 			git_branch_t branchType;
 			while (git_branch_next(&ref, &branchType, it) == 0)
 			{
-				CAutoReference autoRef(ref);
+				CAutoReference autoRef(std::move(ref));
 				const char * name = nullptr;
 				if (git_branch_name(&name, ref))
 					continue;

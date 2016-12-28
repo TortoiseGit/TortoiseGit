@@ -261,8 +261,8 @@ UINT CProgressDlg::RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR&
 			return runAsyncRet;
 		}
 
-		CAutoGeneralHandle piProcess(pi.hProcess);
-		CAutoGeneralHandle piThread(pi.hThread);
+		CAutoGeneralHandle piProcess(std::move(pi.hProcess));
+		CAutoGeneralHandle piThread(std::move(pi.hThread));
 		DWORD readnumber;
 		char lastByte = '\0';
 		char byte;

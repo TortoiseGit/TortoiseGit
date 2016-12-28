@@ -35,12 +35,23 @@ public:
 	{
 	}
 
-	CSmartHandle(HandleType h)
+	CSmartHandle(HandleType&& h)
 		: m_Handle(h)
 	{
 	}
 
-	HandleType operator=(HandleType h)
+	CSmartHandle(CSmartHandle&& h)
+		: m_Handle(h.Detach())
+	{
+	}
+
+	CSmartHandle& operator=(CSmartHandle&& h)
+	{
+		*this = h.Detach();
+		return *this;
+	}
+
+	HandleType& operator=(HandleType&& h)
 	{
 		if (m_Handle != h)
 		{
@@ -48,7 +59,7 @@ public:
 			m_Handle = h;
 		}
 
-		return(*this);
+		return m_Handle;
 	}
 
 	bool CloseHandle()
@@ -91,7 +102,9 @@ public:
 	}
 
 private:
+	CSmartHandle(const HandleType&) = delete;
 	CSmartHandle(const CSmartHandle&) = delete;
+	HandleType& operator=(const HandleType&) = delete;
 	CSmartHandle& operator=(const CSmartHandle&) = delete;
 
 protected:
@@ -177,3 +190,19 @@ typedef CSmartHandle<HMODULE,	CCloseLibrary>											CAutoLibrary;
 typedef CSmartHandle<HANDLE,	CCloseHandle, INVALID_HANDLE_VALUE>						CAutoFile;
 typedef CSmartHandle<HANDLE,	CCloseFindFile, INVALID_HANDLE_VALUE>					CAutoFindFile;
 typedef CSmartHandle<FILE*,		CCloseFILE>												CAutoFILE;
+
+/*
+void CompilerTests()
+{
+	// compiler tests
+	{
+		HANDLE h = (HANDLE)1;
+		CAutoFile hFile = h;                    // C2280
+		CAutoFile hFile2 = std::move(h);        // OK
+		// OK, uses move semantics
+		CAutoFile hFile3 = CreateFile(L"c:\\test.txt", GENERIC_WRITE, FILE_SHARE_READ, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+		CAutoFile hFile4 = hFile3;              // C2280
+		CAutoFile hFile5 = std::move(hFile3);   // OK
+	}
+}
+*/
