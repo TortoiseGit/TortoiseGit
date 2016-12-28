@@ -252,7 +252,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromCache(const CTGitPath& path, bo
 	}
 }
 
-CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, CString sProjectRoot)
+CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, const CString& sProjectRoot, bool isSelf)
 {
 	CString subpaths;
 	CString s = path.GetGitPathString();
@@ -290,7 +290,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, CStr
 
 					if (!isignore && CGitStatusCache::Instance().IsUnversionedAsModified())
 					{
-						dirEntry->EnumFiles(path, TRUE);
+						dirEntry->EnumFiles(path, sProjectRoot, subpaths, isSelf);
 						dirEntry->UpdateCurrentStatus();
 						return CStatusCacheEntry(dirEntry->GetCurrentFullStatus());
 					}
@@ -337,7 +337,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, CStr
 	}
 	else
 	{
-		EnumFiles(path, TRUE);
+		EnumFiles(path, sProjectRoot, subpaths, isSelf);
 		UpdateCurrentStatus();
 		if (!path.IsDirectory())
 			return GetCacheStatusForMember(path);
@@ -387,7 +387,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 
 	if(bFetch)
 	{
-		return GetStatusFromGit(path, sProjectRoot);
+		return GetStatusFromGit(path, sProjectRoot, bRequestForSelf);
 	}
 	else
 	{
@@ -406,27 +406,9 @@ CStatusCacheEntry CCachedDirectory::GetCacheStatusForMember(const CTGitPath& pat
 	return CStatusCacheEntry();
 }
 
-int CCachedDirectory::EnumFiles(const CTGitPath &path , bool IsFull)
+int CCachedDirectory::EnumFiles(const CTGitPath& path, CString sProjectRoot, const CString& sSubPath, bool isSelf)
 {
-	CString sProjectRoot;
-	path.HasAdminDir(&sProjectRoot);
-
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": EnumFiles %s\n", path.GetWinPath());
-
-	ATLASSERT( !m_directoryPath.IsEmpty() );
-
-	CString sSubPath;
-
-	CString s = path.GetWinPath();
-
-	if (s.GetLength() > sProjectRoot.GetLength())
-	{
-		// skip initial slash if necessary
-		if (s[sProjectRoot.GetLength()] == L'\\')
-			sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength() -1);
-		else
-			sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength() );
-	}
 
 	// strip "\" at the end, otherwise cache lookups for drives do not work correctly
 	sProjectRoot.TrimRight(L'\\');
@@ -439,13 +421,12 @@ int CCachedDirectory::EnumFiles(const CTGitPath &path , bool IsFull)
 	{
 		bool assumeValid = false;
 		bool skipWorktree = false;
-		pStatus->GetFileStatus(sProjectRoot, sSubPath, &status, IsFull, false, true, GetStatusCallback, this, &assumeValid, &skipWorktree);
+		pStatus->GetFileStatus(sProjectRoot, sSubPath, &status, TRUE, false, true, GetStatusCallback, this, &assumeValid, &skipWorktree);
 		if (status < m_mostImportantFileStatus)
 			RefreshMostImportant();
 	}
 	else
 	{
-		bool isSelf = path == m_directoryPath;
 		if (isSelf)
 		{
 			AutoLocker lock(m_critSec);
@@ -456,7 +437,7 @@ int CCachedDirectory::EnumFiles(const CTGitPath &path , bool IsFull)
 		}
 
 		m_mostImportantFileStatus = git_wc_status_none;
-		pStatus->EnumDirStatus(sProjectRoot, sSubPath, &status, IsFull, false, true, GetStatusCallback,this);
+		pStatus->EnumDirStatus(sProjectRoot, sSubPath, &status, TRUE, false, true, GetStatusCallback, this);
 		m_mostImportantFileStatus = GitStatus::GetMoreImportant(m_mostImportantFileStatus, status);
 
 		if (isSelf)
