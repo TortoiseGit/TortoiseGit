@@ -465,7 +465,7 @@ int CCachedDirectory::EnumFiles(const CTGitPath &path , bool IsFull)
 			AutoLocker lock(m_critSec);
 			// use a tmp files status cache so that we can still use the old cached values
 			// for deciding whether we have to issue a shell notify
-			m_entryCache = m_entryCache_tmp;
+			m_entryCache = std::move(m_entryCache_tmp);
 			m_entryCache_tmp.clear();
 		}
 
