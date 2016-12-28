@@ -150,6 +150,7 @@ void CStatusCacheEntry::SetAsUnversioned()
 	m_GitStatus.text_status = status;
 	m_lastWriteTime = 0;
 	m_bAssumeValid = false;
+	m_bSkipWorktree = false;
 }
 
 bool CStatusCacheEntry::HasExpired(LONGLONG now) const
