@@ -25,9 +25,10 @@
 #include <set>
 
 CCachedDirectory::CCachedDirectory(void)
+	: m_currentFullStatus(git_wc_status_none)
+	, m_mostImportantFileStatus(git_wc_status_none)
+	, m_bRecursive(true)
 {
-	m_currentFullStatus = m_mostImportantFileStatus = git_wc_status_none;
-	m_bRecursive = true;
 }
 
 CCachedDirectory::~CCachedDirectory(void)
@@ -35,14 +36,12 @@ CCachedDirectory::~CCachedDirectory(void)
 }
 
 CCachedDirectory::CCachedDirectory(const CTGitPath& directoryPath)
+	: CCachedDirectory()
 {
 	ATLASSERT(directoryPath.IsDirectory() || !PathFileExists(directoryPath.GetWinPath()));
 
 	m_directoryPath = directoryPath;
 	m_directoryPath.GetGitPathString(); // make sure git path string is set
-
-	m_currentFullStatus = m_mostImportantFileStatus = git_wc_status_none;
-	m_bRecursive = true;
 }
 
 BOOL CCachedDirectory::SaveToDisk(FILE * pFile)

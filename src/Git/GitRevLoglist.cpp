@@ -27,17 +27,16 @@
 typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 
 GitRevLoglist::GitRevLoglist(void) : GitRev()
+, m_Action(0)
+, m_RebaseAction(0)
+, m_IsFull(FALSE)
+, m_IsUpdateing(FALSE)
+, m_IsCommitParsed(FALSE)
+, m_IsDiffFiles(FALSE)
+, m_CallDiffAsync(nullptr)
+, m_IsSimpleListReady(FALSE)
+, m_Mark(0)
 {
-	m_Action = 0;
-	m_RebaseAction = 0;
-	m_IsFull = FALSE;
-	m_IsUpdateing = FALSE;
-	m_IsCommitParsed = FALSE;
-	m_IsDiffFiles = FALSE;
-	m_CallDiffAsync = nullptr;
-	m_IsSimpleListReady = FALSE;
-	m_Mark = 0;
-
 	SecureZeroMemory(&m_GitCommit, sizeof(GIT_COMMIT));
 }
 

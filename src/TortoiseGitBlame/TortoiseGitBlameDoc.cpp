@@ -51,10 +51,10 @@ END_MESSAGE_MAP()
 // CTortoiseGitBlameDoc construction/destruction
 
 CTortoiseGitBlameDoc::CTortoiseGitBlameDoc()
+: m_bFirstStartup(true)
+, m_IsGitFile(FALSE)
+, m_lLine(1)
 {
-	m_bFirstStartup = true;
-	m_IsGitFile = FALSE;
-	m_lLine = 1;
 }
 
 CTortoiseGitBlameDoc::~CTortoiseGitBlameDoc()

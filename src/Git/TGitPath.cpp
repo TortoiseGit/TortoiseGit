@@ -54,10 +54,10 @@ CTGitPath::CTGitPath(void)
 	, m_bIsWCRoot(false)
 	, m_fileSize(0)
 	, m_Checked(false)
+	, m_Action(0)
+	, m_ParentNo(0)
+	, m_Stage(0)
 {
-	m_Action=0;
-	m_ParentNo=0;
-	m_Stage = 0;
 }
 
 CTGitPath::~CTGitPath(void)

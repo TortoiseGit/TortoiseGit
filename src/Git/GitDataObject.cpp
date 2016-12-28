@@ -39,9 +39,9 @@ GitDataObject::GitDataObject(const CTGitPathList& gitpaths, const CGitHash& rev,
 	, m_bIsAsync(TRUE)
 	, m_cRefCount(0)
 	, m_iStripLength(stripLength)
+	, m_containsExistingFiles(false)
 {
 	ASSERT((m_revision.IsEmpty() && m_iStripLength == -1) || (!m_revision.IsEmpty() && m_iStripLength >= -1)); // m_iStripLength only possible if rev is set
-	m_containsExistingFiles = false;
 	for (int i = 0; i < m_gitPaths.GetCount(); ++i)
 	{
 		if ((m_gitPaths[i].m_Action == 0 || (m_gitPaths[i].m_Action & ~(CTGitPath::LOGACTIONS_MISSING | CTGitPath::LOGACTIONS_DELETED))) && !m_gitPaths[i].IsDirectory())

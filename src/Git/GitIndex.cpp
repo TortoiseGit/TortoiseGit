@@ -54,8 +54,8 @@ int CGitIndex::Print()
 
 CGitIndexList::CGitIndexList()
 : m_bHasConflicts(FALSE)
+, m_LastModifyTime(0)
 {
-	this->m_LastModifyTime = 0;
 	m_critRepoSec.Init();
 	m_iMaxCheckSize = (__int64)CRegDWORD(L"Software\\TortoiseGit\\TGitCacheCheckContentMaxSize", 10 * 1024) * 1024; // stored in KiB
 }

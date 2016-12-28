@@ -30,36 +30,32 @@
 IMPLEMENT_DYNCREATE(CCloneDlg, CHorizontalResizableStandAloneDialog)
 
 CCloneDlg::CCloneDlg(CWnd* pParent /*=nullptr*/)
-	: CHorizontalResizableStandAloneDialog(CCloneDlg::IDD, pParent)
+: CHorizontalResizableStandAloneDialog(CCloneDlg::IDD, pParent)
+, m_bRecursive(BST_UNCHECKED)
+, m_bBare(BST_UNCHECKED)
+, m_bBranch(BST_UNCHECKED)
+, m_bOrigin(BST_UNCHECKED)
+, m_bNoCheckout(BST_UNCHECKED)
+, m_bSVN(BST_UNCHECKED)
+, m_bSVNTrunk(BST_UNCHECKED)
+, m_bSVNTags(BST_UNCHECKED)
+, m_bSVNBranch(BST_UNCHECKED)
+, m_bSVNFrom(BST_UNCHECKED)
+, m_bSVNUserName(BST_UNCHECKED)
+, m_bExactPath(FALSE)
+, m_strSVNTrunk(L"trunk")
+, m_strSVNTags(L"tags")
+, m_strSVNBranchs(L"branches")
+, m_nDepth(1)
+, m_bDepth(BST_UNCHECKED)
+, m_bSaving(false)
+, m_nSVNFrom(0)
+, m_regBrowseUrl(L"Software\\TortoiseGit\\TortoiseProc\\CloneBrowse", 0)
+, m_regCloneDir(L"Software\\TortoiseGit\\TortoiseProc\\CloneDir")
+, m_regCloneRecursive(L"Software\\TortoiseGit\\TortoiseProc\\CloneRecursive", FALSE)
+, m_regUseSSHKey(L"Software\\TortoiseGit\\TortoiseProc\\CloneUseSSHKey", TRUE)
 {
-	m_bRecursive = FALSE;
-	m_bBare = FALSE;
-	m_bBranch = FALSE;
-	m_bOrigin = FALSE;
-	m_bNoCheckout = FALSE;
-	m_bSVN = FALSE;
-	m_bSVNTrunk = FALSE;
-	m_bSVNTags = FALSE;
-	m_bSVNBranch = FALSE;
-	m_bSVNFrom = FALSE;
-	m_bSVNUserName = FALSE;
-	m_bExactPath = FALSE;
-
-	m_strSVNTrunk = L"trunk";
-	m_strSVNTags = L"tags";
-	m_strSVNBranchs = L"branches";
-
-	m_regBrowseUrl = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\CloneBrowse",0);
-	m_regCloneDir = CRegString(L"Software\\TortoiseGit\\TortoiseProc\\CloneDir");
-	m_regCloneRecursive = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\CloneRecursive", FALSE);
-	m_regUseSSHKey = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\CloneUseSSHKey", TRUE);
-	m_nSVNFrom = 0;
-
 	m_bAutoloadPuttyKeyFile = m_regUseSSHKey && CAppUtils::IsSSHPutty();
-
-	m_nDepth = 1;
-	m_bDepth = false;
-	m_bSaving = false;
 }
 
 CCloneDlg::~CCloneDlg()

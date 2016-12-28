@@ -54,12 +54,12 @@ CGitProgressList::CGitProgressList():CListCtrl()
 	, m_itemCount(-1)
 	, m_itemCountTotal(-1)
 	, m_nBackgroundImageID(0)
+	, m_pInfoCtrl(nullptr)
+	, m_pAnimate(nullptr)
+	, m_pProgControl(nullptr)
+	, m_pProgressLabelCtrl(nullptr)
+	, m_pPostWnd(nullptr)
 {
-	m_pInfoCtrl = nullptr;
-	m_pAnimate = nullptr;
-	m_pProgControl = nullptr;
-	m_pProgressLabelCtrl = nullptr;
-	m_pPostWnd = nullptr;
 	m_columnbuf[0] = L'\0';
 }
 

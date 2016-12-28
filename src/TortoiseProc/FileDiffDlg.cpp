@@ -67,8 +67,8 @@ CFileDiffDlg::CFileDiffDlg(CWnd* pParent /*=nullptr*/)
 	, m_bIgnoreAllSpace(false)
 	, m_bIgnoreBlankLines(false)
 	, m_bIsBare(false)
+	, m_bLoadingRef(FALSE)
 {
-	m_bLoadingRef=FALSE;
 }
 
 CFileDiffDlg::~CFileDiffDlg()

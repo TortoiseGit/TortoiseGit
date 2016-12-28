@@ -36,8 +36,8 @@ CFormatPatchDlg::CFormatPatchDlg(CWnd* pParent /*=nullptr*/)
 	: CHorizontalResizableStandAloneDialog(CFormatPatchDlg::IDD, pParent)
 	, m_regSendMail(L"Software\\TortoiseGit\\TortoiseProc\\FormatPatch\\SendMail", 0)
 	, m_regNoPrefix(L"Software\\TortoiseGit\\TortoiseProc\\FormatPatch\\NoPrefix", FALSE)
+	, m_Num(1)
 {
-	m_Num=1;
 	this->m_bSendMail = m_regSendMail;
 	this->m_Radio = IDC_RADIO_SINCE;
 	m_bNoPrefix = m_regNoPrefix;

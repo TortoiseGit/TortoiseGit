@@ -85,8 +85,8 @@ CCommitDlg::CCommitDlg(CWnd* pParent /*=nullptr*/)
 	, m_bWarnDetachedHead(true)
 	, m_hAccelOkButton(nullptr)
 	, m_bDoNotStoreLastSelectedLine(true)
+	, m_bCommitAmend(FALSE)
 {
-	this->m_bCommitAmend=FALSE;
 }
 
 CCommitDlg::~CCommitDlg()

@@ -22,13 +22,13 @@
 #include <math.h>
 
 CWaterEffect::CWaterEffect()
-{
-	m_iWidth = 0;
-	m_iHeight = 0;
+	: m_iWidth(0)
+	, m_iHeight(0)
 
-	m_iLightModifier = 10;
-	m_iHpage = 0;
-	m_iDensity = 2;
+	, m_iLightModifier(10)
+	, m_iHpage(0)
+	, m_iDensity(2)
+{
 }
 
 CWaterEffect::~CWaterEffect()

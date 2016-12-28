@@ -35,14 +35,14 @@ ProjectProperties::ProjectProperties(void)
 	: regExNeedUpdate (true)
 	, nBugIdPos(-1)
 	, bWarnNoSignedOffBy(FALSE)
+	, bNumber(TRUE)
+	, bWarnIfNoIssue(FALSE)
+	, nLogWidthMarker(0)
+	, nMinLogSize(0)
+	, bFileListInEnglish(TRUE)
+	, bAppend(TRUE)
+	, lProjectLanguage(0)
 {
-	bNumber = TRUE;
-	bWarnIfNoIssue = FALSE;
-	nLogWidthMarker = 0;
-	nMinLogSize = 0;
-	bFileListInEnglish = TRUE;
-	bAppend = TRUE;
-	lProjectLanguage = 0;
 }
 
 int ProjectProperties::ReadProps()

@@ -22,9 +22,9 @@
 #include "PathUtils.h"
 
 CLogFile::CLogFile(const CString& repo)
+	: m_maxlines(CRegStdDWORD(L"Software\\TortoiseGit\\MaxLinesInLogfile", 4000))
+	, m_sRepo(repo)
 {
-	m_maxlines = CRegStdDWORD(L"Software\\TortoiseGit\\MaxLinesInLogfile", 4000);
-	m_sRepo = repo;
 }
 
 CLogFile::~CLogFile(void)

@@ -80,6 +80,14 @@ CGitLogListBase::CGitLogListBase() : CHintCtrl<CResizableColumnsListCtrl<CListCt
 	, m_AsyncThreadExit(FALSE)
 	, m_bIsCherryPick(false)
 	, m_pMailmap(nullptr)
+	, m_bShowBugtraqColumn(false)
+	, m_IsIDReplaceAction(FALSE)
+	, m_ShowMask(0)
+	, m_LoadingThread(nullptr)
+	, m_bExitThread(FALSE)
+	, m_IsOldFirst(FALSE)
+	, m_IsRebaseReplaceGraph(FALSE)
+	, m_ContextMenuMask(0xFFFFFFFFFFFFFFFF)
 {
 	// use the default GUI font, create a copy of it and
 	// change the copy to BOLD (leave the rest of the font
@@ -94,10 +102,6 @@ CGitLogListBase::CGitLogListBase() : CHintCtrl<CResizableColumnsListCtrl<CListCt
 	m_FontItalics.CreateFontIndirect(&lf);
 	lf.lfWeight = FW_BOLD;
 	m_boldItalicsFont.CreateFontIndirect(&lf);
-
-	m_bShowBugtraqColumn=false;
-
-	m_IsIDReplaceAction=FALSE;
 
 	this->m_critSec.Init();
 	ResetWcRev(false);
@@ -127,13 +131,6 @@ CGitLogListBase::CGitLogListBase() : CHintCtrl<CResizableColumnsListCtrl<CListCt
 	}
 	m_Filter.m_NumberOfLogs = (DWORD)CRegDWORD(L"Software\\TortoiseGit\\LogDialog\\NumberOfLogs", 1);
 
-	m_ShowMask = 0;
-	m_LoadingThread = nullptr;
-
-	InterlockedExchange(&m_bExitThread,FALSE);
-	m_IsOldFirst = FALSE;
-	m_IsRebaseReplaceGraph = FALSE;
-
 	for (int i = 0; i < Lanes::COLORS_NUM; ++i)
 	{
 		m_LineColors[i] = m_Colors.GetColor((CColors::Colors)(CColors::BranchLine1+i));
@@ -151,7 +148,6 @@ CGitLogListBase::CGitLogListBase() : CHintCtrl<CResizableColumnsListCtrl<CListCt
 	// get relative time display setting from registry
 	DWORD regRelativeTimes = CRegDWORD(L"Software\\TortoiseGit\\RelativeTimes", FALSE);
 	m_bRelativeTimes = (regRelativeTimes != 0);
-	m_ContextMenuMask = 0xFFFFFFFFFFFFFFFF;
 
 	m_ContextMenuMask &= ~GetContextMenuBit(ID_REBASE_PICK);
 	m_ContextMenuMask &= ~GetContextMenuBit(ID_REBASE_SQUASH);

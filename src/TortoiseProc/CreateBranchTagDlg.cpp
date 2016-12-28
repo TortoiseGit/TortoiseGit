@@ -33,11 +33,11 @@ CCreateBranchTagDlg::CCreateBranchTagDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CCreateBranchTagDlg::IDD, pParent)
 	, m_bForce(FALSE)
 	, CChooseVersion(this)
+	, m_bIsTag(0)
+	, m_bSwitch(BST_UNCHECKED)	// default switch to checkbox not selected
+	, m_bTrack(BST_INDETERMINATE)
+	, m_bSign(BST_UNCHECKED)
 {
-	m_bIsTag=0;
-	m_bSwitch = 0;	// default switch to checkbox not selected
-	m_bTrack=2;
-	m_bSign=0;
 }
 
 CCreateBranchTagDlg::~CCreateBranchTagDlg()

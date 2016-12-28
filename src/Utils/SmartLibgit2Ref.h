@@ -29,8 +29,8 @@ class CSmartBuffer
 {
 public:
 	CSmartBuffer()
+		: m_Ref({0})
 	{
-		m_Ref = { 0 };
 	}
 
 	operator HandleType*()
@@ -80,8 +80,8 @@ class CSmartLibgit2Ref
 {
 public:
 	CSmartLibgit2Ref()
+		: m_Ref(nullptr)
 	{
-		m_Ref = nullptr;
 	}
 
 	void Swap(CSmartLibgit2Ref& tmp)

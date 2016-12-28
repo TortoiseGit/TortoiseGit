@@ -24,11 +24,11 @@
 #include "GitStatusCache.h"
 
 CShellUpdater::CShellUpdater(void)
+	: m_bRunning(FALSE)
+	, m_bItemsAddedSinceLastUpdate(false)
 {
 	m_hWakeEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
 	m_hTerminationEvent = CreateEvent(nullptr, TRUE, FALSE, nullptr);
-	m_bRunning = FALSE;
-	m_bItemsAddedSinceLastUpdate = false;
 }
 
 CShellUpdater::~CShellUpdater(void)

@@ -50,10 +50,10 @@ CProgressDlg::CProgressDlg(CWnd* pParent /*=nullptr*/)
 	, m_BufStart(0)
 	, m_Git(&g_Git)
 	, m_hAccel(nullptr)
+	, m_pThread(nullptr)
+	, m_bBufferAll(false)
+	, m_GitStatus((DWORD)-1)
 {
-	m_pThread = nullptr;
-	m_bBufferAll=false;
-	m_GitStatus = (DWORD)-1;
 	int autoClose = CRegDWORD(L"Software\\TortoiseGit\\AutoCloseGitProgress", 0);
 	CCmdLineParser parser(AfxGetApp()->m_lpCmdLine);
 	if (parser.HasKey(L"closeonend"))

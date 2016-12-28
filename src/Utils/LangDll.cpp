@@ -26,8 +26,8 @@
 #pragma comment(lib, "Version.lib")
 
 CLangDll::CLangDll()
+	: m_hInstance(nullptr)
 {
-	m_hInstance = nullptr;
 }
 
 CLangDll::~CLangDll()

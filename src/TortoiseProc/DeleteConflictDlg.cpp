@@ -31,9 +31,9 @@ IMPLEMENT_DYNAMIC(CDeleteConflictDlg, CStandAloneDialog)
 
 CDeleteConflictDlg::CDeleteConflictDlg(CWnd* pParent /*=nullptr*/)
 	: CStandAloneDialog(CDeleteConflictDlg::IDD, pParent)
+	, m_bShowModifiedButton(FALSE)
+	, m_bIsDelete(FALSE)
 {
-	m_bShowModifiedButton = FALSE;
-	m_bIsDelete =FALSE;
 }
 
 CDeleteConflictDlg::~CDeleteConflictDlg()

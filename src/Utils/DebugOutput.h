@@ -61,10 +61,11 @@ public:
 
 private:
 	CTraceToOutputDebugString()
+		: m_LastTick(GetTickCount64())
+		, m_bActive(!!CRegStdDWORD(L"Software\\TortoiseGit\\DebugOutputString", FALSE))
 	{
-		m_LastTick = GetTickCount64();
-		m_bActive = !!CRegStdDWORD(L"Software\\TortoiseGit\\DebugOutputString", FALSE);
 	}
+
 	~CTraceToOutputDebugString()
 	{
 		delete m_pInstance;

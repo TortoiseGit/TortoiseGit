@@ -32,13 +32,13 @@ IMPLEMENT_DYNAMIC(CGitSwitchDlg, CHorizontalResizableStandAloneDialog)
 
 CGitSwitchDlg::CGitSwitchDlg(CWnd* pParent /*=nullptr*/)
 	: CHorizontalResizableStandAloneDialog(CGitSwitchDlg::IDD, pParent)
-	,CChooseVersion(this)
+	, CChooseVersion(this)
+	, m_bBranch(BST_UNCHECKED)
+	, m_bMerge(BST_UNCHECKED)
+	, m_bTrack(BST_INDETERMINATE)
+	, m_bForce(BST_UNCHECKED)
+	, m_bBranchOverride(BST_UNCHECKED)
 {
-	m_bBranch=FALSE;
-	m_bMerge = FALSE;
-	m_bTrack = 2;
-	m_bForce=FALSE;
-	m_bBranchOverride = FALSE;
 }
 
 CGitSwitchDlg::~CGitSwitchDlg()

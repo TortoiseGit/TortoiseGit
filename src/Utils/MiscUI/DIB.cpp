@@ -21,8 +21,8 @@
 #include "DIB.h"
 
 CDib::CDib()
+	: m_hBitmap(nullptr)
 {
-    m_hBitmap = nullptr;
     DeleteObject();
 }
 

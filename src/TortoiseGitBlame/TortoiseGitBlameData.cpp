@@ -34,8 +34,8 @@ wchar_t WideCharSwap2(wchar_t nValue)
 // CTortoiseGitBlameData construction/destruction
 
 CTortoiseGitBlameData::CTortoiseGitBlameData()
+	: m_encode(-1)
 {
-	m_encode = -1;
 }
 
 CTortoiseGitBlameData::~CTortoiseGitBlameData()

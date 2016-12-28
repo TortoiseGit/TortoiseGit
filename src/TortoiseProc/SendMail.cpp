@@ -27,12 +27,12 @@
 class CAppUtils;
 
 CSendMail::CSendMail(const CString& To, const CString& CC, bool bAttachment)
+	: m_sSenderName(g_Git.GetUserName())
+	, m_sSenderMail(g_Git.GetUserEmail())
+	, m_sTo(To)
+	, m_sCC(CC)
+	, m_bAttachment(bAttachment)
 {
-	m_sSenderName = g_Git.GetUserName();
-	m_sSenderMail = g_Git.GetUserEmail();
-	m_sTo = To;
-	m_sCC = CC;
-	m_bAttachment = bAttachment;
 }
 
 CSendMail::~CSendMail(void)

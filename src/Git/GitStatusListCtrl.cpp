@@ -268,13 +268,13 @@ CGitStatusListCtrl::CGitStatusListCtrl() : CResizableColumnsListCtrl<CListCtrl>(
 	, m_pContextMenu(nullptr)
 	, m_hShellMenu(nullptr)
 	, m_nBackgroundImageID(0)
+	, m_FileLoaded(0)
+	, m_bIsRevertTheirMy(false)
+	, m_nLineAdded(0)
+	, m_nLineDeleted(0)
 {
-	m_FileLoaded=0;
-	m_dwDefaultColumns = 0;
 	m_critSec.Init();
-	m_bIsRevertTheirMy = false;
 	m_bNoAutoselectMissing = CRegDWORD(L"Software\\TortoiseGit\\AutoselectMissingFiles", FALSE) == TRUE;
-	this->m_nLineAdded =this->m_nLineDeleted =0;
 }
 
 CGitStatusListCtrl::~CGitStatusListCtrl()

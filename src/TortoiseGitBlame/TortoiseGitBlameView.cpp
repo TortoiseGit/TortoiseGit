@@ -121,21 +121,25 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 	, bIgnoreAllSpaces(false)
 	, m_MouseLine(-1)
 	, m_bMatchCase(false)
+	, hInstance(nullptr)
+	, hResource(nullptr)
+	, currentDialog(nullptr)
+	, wMain(nullptr)
+	, wLocator(nullptr)
+	, m_blamewidth(0)
+	, m_revwidth(0)
+	, m_datewidth(0)
+	, m_authorwidth(0)
+	, m_filenameWidth(0)
+	, m_originalLineNumberWidth(0)
+	, m_linewidth(0)
+	, m_SelectedLine(-1)
+	, m_bShowLine(true)
+	, m_pFindDialog(nullptr)
+#ifdef USE_TEMPFILENAME
+	, m_Buffer(nullptr)
+#endif
 {
-	hInstance = 0;
-	hResource = 0;
-	currentDialog = 0;
-	wMain = 0;
-	wLocator = 0;
-
-	m_blamewidth = 0;
-	m_revwidth = 0;
-	m_datewidth = 0;
-	m_authorwidth = 0;
-	m_filenameWidth = 0;
-	m_originalLineNumberWidth = 0;
-	m_linewidth = 0;
-
 	m_windowcolor = ::GetSysColor(COLOR_WINDOW);
 	m_textcolor = ::GetSysColor(COLOR_WINDOWTEXT);
 	m_texthighlightcolor = ::GetSysColor(COLOR_HIGHLIGHTTEXT);
@@ -144,15 +148,11 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 	m_selectedrevcolor = ::GetSysColor(COLOR_HIGHLIGHT);
 	m_selectedauthorcolor = InterColor(m_selectedrevcolor, m_texthighlightcolor, 35);
 
-	m_SelectedLine = -1;
-
 	HIGHCONTRAST highContrast = { 0 };
 	highContrast.cbSize = sizeof(HIGHCONTRAST);
 	BOOL highContrastModeEnabled = SystemParametersInfo(SPI_GETHIGHCONTRAST, 0, &highContrast, 0) == TRUE && (highContrast.dwFlags & HCF_HIGHCONTRASTON);
 	m_colorage = !!theApp.GetInt(L"ColorAge", !highContrastModeEnabled);
 	m_bLexer = !!theApp.GetInt(L"EnableLexer", !highContrastModeEnabled);
-
-	m_bShowLine=true;
 
 	m_bShowAuthor = (theApp.GetInt(L"ShowAuthor", 1) == 1);
 	m_bShowDate = (theApp.GetInt(L"ShowDate", 0) == 1);
@@ -166,7 +166,6 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 	m_bBlameOuputContainsOtherFilenames = FALSE;
 
 	m_FindDialogMessage = ::RegisterWindowMessage(FINDMSGSTRING);
-	m_pFindDialog = nullptr;
 	// get short/long datetime setting from registry
 	DWORD RegUseShortDateFormat = CRegDWORD(L"Software\\TortoiseGit\\LogDateFormat", TRUE);
 	if ( RegUseShortDateFormat )
@@ -186,10 +185,6 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 	m_sAuthor.LoadString(IDS_LOG_AUTHOR);
 	m_sDate.LoadString(IDS_LOG_DATE);
 	m_sMessage.LoadString(IDS_LOG_MESSAGE);
-
-#ifdef USE_TEMPFILENAME
-	m_Buffer = nullptr;
-#endif
 }
 
 CTortoiseGitBlameView::~CTortoiseGitBlameView()

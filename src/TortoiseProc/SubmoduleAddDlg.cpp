@@ -34,8 +34,8 @@ CSubmoduleAddDlg::CSubmoduleAddDlg(CWnd* pParent /*=nullptr*/)
 	: CHorizontalResizableStandAloneDialog(CSubmoduleAddDlg::IDD, pParent)
 	, m_bBranch(FALSE)
 	, m_bForce(FALSE)
+	, m_bAutoloadPuttyKeyFile(CAppUtils::IsSSHPutty())
 {
-	m_bAutoloadPuttyKeyFile = CAppUtils::IsSSHPutty();
 }
 
 CSubmoduleAddDlg::~CSubmoduleAddDlg()

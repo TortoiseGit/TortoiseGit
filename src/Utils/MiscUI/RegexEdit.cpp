@@ -25,8 +25,8 @@
 
 IMPLEMENT_DYNAMIC(CRegexEdit, CEdit)
 CRegexEdit::CRegexEdit()
+: m_bValid(true)
 {
-	m_bValid = true;
 }
 
 CRegexEdit::~CRegexEdit()

@@ -30,17 +30,17 @@
 int CHistoryCombo::m_nGitIconIndex = 0;
 
 CHistoryCombo::CHistoryCombo(BOOL bAllowSortStyle /*=FALSE*/ )
+	: m_nMaxHistoryItems ( MAX_HISTORY_ITEMS)
+	, m_bAllowSortStyle(bAllowSortStyle)
+	, m_bURLHistory(FALSE)
+	, m_bPathHistory(FALSE)
+	, m_hWndToolTip(nullptr)
+	, m_ttShown(FALSE)
+	, m_bDyn(FALSE)
+	, m_bWantReturn(FALSE)
+	, m_bTrim(TRUE)
+	, m_bCaseSensitive(FALSE)
 {
-	m_nMaxHistoryItems = MAX_HISTORY_ITEMS;
-	m_bAllowSortStyle = bAllowSortStyle;
-	m_bURLHistory = FALSE;
-	m_bPathHistory = FALSE;
-	m_hWndToolTip = nullptr;
-	m_ttShown = FALSE;
-	m_bDyn = FALSE;
-	m_bWantReturn = FALSE;
-	m_bTrim = TRUE;
-	m_bCaseSensitive = FALSE;
 	SecureZeroMemory(&m_ToolInfo, sizeof(m_ToolInfo));
 }
 

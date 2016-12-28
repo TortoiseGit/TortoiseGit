@@ -39,8 +39,8 @@ CFindDlg::CFindDlg(CWnd* pParent /*=nullptr*/)
 	, m_regMatchCase(L"Software\\TortoiseGit\\LogDialog\\FindMatchCase", FALSE)
 	, m_regWholeWord(L"Software\\TortoiseGit\\LogDialog\\FindWholeWord", FALSE)
 	, m_regRegex(L"Software\\TortoiseGit\\LogDialog\\FindRegex", FALSE)
+	, m_pParent(pParent)
 {
-	m_pParent = pParent;
 }
 
 CFindDlg::~CFindDlg()

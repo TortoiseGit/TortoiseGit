@@ -31,14 +31,13 @@ static char THIS_FILE[] = __FILE__;
 
 
 CHyperLink::CHyperLink()
+	: m_hLinkCursor(nullptr)
+	, m_crLinkColor(GetSysColor(COLOR_HOTLIGHT))
+	, m_crHoverColor(RGB(255, 0, 0)) // Red
+	, m_bOverControl(FALSE)
+	, m_nUnderline(ulHover)
+	, m_nTimerID(100)
 {
-	m_hLinkCursor		= nullptr;				// No cursor as	yet
-	m_crLinkColor		= GetSysColor(COLOR_HOTLIGHT);
-	m_crHoverColor		= RGB(255,	 0,	  0);	// Red
-	m_bOverControl		= FALSE;				// Cursor not yet over control
-	m_nUnderline		= ulHover;				// Underline the link?
-	m_strURL.Empty();
-	m_nTimerID			= 100;
 }
 
 CHyperLink::~CHyperLink()

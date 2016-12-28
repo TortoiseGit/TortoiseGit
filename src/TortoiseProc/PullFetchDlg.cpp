@@ -33,23 +33,22 @@ IMPLEMENT_DYNAMIC(CPullFetchDlg, CHorizontalResizableStandAloneDialog)
 
 CPullFetchDlg::CPullFetchDlg(CWnd* pParent /*=nullptr*/)
 	: CHorizontalResizableStandAloneDialog(CPullFetchDlg::IDD, pParent)
+	, m_IsPull(TRUE)
+	, m_bRebaseActivatedInConfigForPull(false)
+	, m_bNoFF(BST_UNCHECKED)
+	, m_bRebase(BST_UNCHECKED)
+	, m_bRebasePreserveMerges(false)
+	, m_bSquash(BST_UNCHECKED)
+	, m_bNoCommit(BST_UNCHECKED)
+	, m_nDepth(1)
+	, m_bDepth(BST_UNCHECKED)
+	, m_bFFonly(BST_UNCHECKED)
+	, m_bFetchTags(BST_INDETERMINATE)
+	, m_bAllRemotes(BST_UNCHECKED)
+	, m_bPrune(BST_INDETERMINATE)
+	, m_bAutoLoad(CAppUtils::IsSSHPutty())
+	, m_bAutoLoadEnable(CAppUtils::IsSSHPutty())
 {
-	m_IsPull=TRUE;
-	m_bRebaseActivatedInConfigForPull = false;
-	m_bAutoLoad = CAppUtils::IsSSHPutty();
-	m_bAutoLoadEnable=CAppUtils::IsSSHPutty();;
-	m_regRebase = false;
-	m_bNoFF = false;
-	m_bRebase = FALSE;
-	m_bRebasePreserveMerges = false;
-	m_bSquash = false;
-	m_bNoCommit = false;
-	m_nDepth = 1;
-	m_bDepth = FALSE;
-	m_bFFonly = false;
-	m_bFetchTags = 2;
-	m_bAllRemotes = FALSE;
-	m_bPrune = BST_INDETERMINATE;
 }
 
 CPullFetchDlg::~CPullFetchDlg()

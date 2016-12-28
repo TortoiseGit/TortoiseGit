@@ -39,8 +39,8 @@ CChangedDlg::CChangedDlg(CWnd* pParent /*=nullptr*/)
 	, m_bShowIgnored(FALSE)
 	, m_bShowLocalChangesIgnored(FALSE)
 	, m_bWholeProject(FALSE)
+	, m_bRemote(FALSE)
 {
-	m_bRemote = FALSE;
 }
 
 CChangedDlg::~CChangedDlg()

@@ -26,8 +26,8 @@ CMassiveGitTaskBase::CMassiveGitTaskBase(CString gitParameters, BOOL isPath, boo
 	: m_bUnused(true)
 	, m_bIsPath(isPath)
 	, m_bIgnoreErrors(ignoreErrors)
+	, m_sParams(gitParameters)
 {
-	m_sParams = gitParameters;
 }
 
 CMassiveGitTaskBase::~CMassiveGitTaskBase(void)

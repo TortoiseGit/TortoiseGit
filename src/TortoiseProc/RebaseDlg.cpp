@@ -53,14 +53,14 @@ CRebaseDlg::CRebaseDlg(CWnd* pParent /*=nullptr*/)
 	, m_bPreserveMerges(FALSE)
 	, m_bRebaseAutoStart(false)
 	, m_bRebaseAutoEnd(false)
+	, m_RebaseStage(CHOOSE_BRANCH)
+	, m_CurrentRebaseIndex(-1)
+	, m_bThreadRunning(FALSE)
+	, m_IsCherryPick(FALSE)
+	, m_bForce(BST_UNCHECKED)
+	, m_IsFastForward(FALSE)
+	, m_iSquashdate((int)CRegDWORD(L"Software\\TortoiseGit\\SquashDate", 0))
 {
-	m_RebaseStage=CHOOSE_BRANCH;
-	m_CurrentRebaseIndex=-1;
-	m_bThreadRunning =FALSE;
-	this->m_IsCherryPick = FALSE;
-	m_bForce=FALSE;
-	m_IsFastForward=FALSE;
-	m_iSquashdate = (int)CRegDWORD(L"Software\\TortoiseGit\\SquashDate", 0);
 }
 
 CRebaseDlg::~CRebaseDlg()

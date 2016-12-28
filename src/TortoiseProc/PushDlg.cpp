@@ -43,14 +43,13 @@ CPushDlg::CPushDlg(CWnd* pParent /*=nullptr*/)
 	, m_bForceWithLease(FALSE)
 	, m_bPack(FALSE)
 	, m_bTags(FALSE)
-	, m_bAutoLoad(FALSE)
 	, m_bPushAllRemotes(FALSE)
 	, m_bSetPushBranch(FALSE)
 	, m_bSetPushRemote(FALSE)
 	, m_bSetUpstream(FALSE)
 	, m_RecurseSubmodules(0)
+	, m_bAutoLoad(CAppUtils::IsSSHPutty())
 {
-	m_bAutoLoad = CAppUtils::IsSSHPutty();
 }
 
 CPushDlg::~CPushDlg()

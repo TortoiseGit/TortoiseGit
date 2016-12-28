@@ -31,9 +31,8 @@
 IMPLEMENT_DYNAMIC(CPatchListCtrl, CListCtrl)
 
 CPatchListCtrl::CPatchListCtrl()
+: m_ContextMenuMask(0xFFFFFFFF)
 {
-	m_ContextMenuMask=0xFFFFFFFF;
-
 	HFONT hFont = (HFONT)GetStockObject(DEFAULT_GUI_FONT);
 	LOGFONT lf = {0};
 	GetObject(hFont, sizeof(LOGFONT), &lf);

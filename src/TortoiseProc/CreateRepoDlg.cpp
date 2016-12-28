@@ -32,8 +32,8 @@ IMPLEMENT_DYNCREATE(CCreateRepoDlg, CStandAloneDialog)
 
 CCreateRepoDlg::CCreateRepoDlg(CWnd* pParent /*=nullptr*/)
 	: CStandAloneDialog(CCreateRepoDlg::IDD, pParent)
+	, m_bBare(BST_UNCHECKED)
 {
-	m_bBare = FALSE;
 }
 
 CCreateRepoDlg::~CCreateRepoDlg()

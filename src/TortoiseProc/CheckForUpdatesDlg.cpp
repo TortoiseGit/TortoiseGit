@@ -53,8 +53,8 @@ CCheckForUpdatesDlg::CCheckForUpdatesDlg(CWnd* pParent /*=nullptr*/)
 	, m_pDownloadThread(nullptr)
 	, m_bThreadRunning(FALSE)
 	, m_updateDownloader(nullptr)
+	, m_sUpdateDownloadLink(L"https://tortoisegit.org/download")
 {
-	m_sUpdateDownloadLink = L"https://tortoisegit.org/download";
 }
 
 CCheckForUpdatesDlg::~CCheckForUpdatesDlg()

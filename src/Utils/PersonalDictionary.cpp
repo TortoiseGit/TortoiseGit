@@ -24,10 +24,10 @@
 #include "PersonalDictionary.h"
 #include "PathUtils.h"
 
-CPersonalDictionary::CPersonalDictionary(LONG lLanguage /* = 0*/) :
-	m_bLoaded(false)
+CPersonalDictionary::CPersonalDictionary(LONG lLanguage /* = 0*/)
+	: m_bLoaded(false)
+	, m_lLanguage(lLanguage)
 {
-	m_lLanguage = lLanguage;
 }
 
 CPersonalDictionary::~CPersonalDictionary()

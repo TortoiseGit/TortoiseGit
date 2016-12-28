@@ -35,18 +35,15 @@ IMPLEMENT_DYNAMIC(CImportPatchDlg, CResizableStandAloneDialog)
 CImportPatchDlg::CImportPatchDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CImportPatchDlg::IDD, pParent)
 	, m_LoadingThread(FALSE)
+	, m_CurrentItem(0)
+	, m_bExitThread(FALSE)
+	, m_bThreadRunning(FALSE)
+	, m_b3Way(BST_CHECKED)
+	, m_bIgnoreSpace(BST_CHECKED)
+	, m_bAddSignedOffBy(BST_UNCHECKED)
+	, m_bKeepCR(BST_CHECKED)
 {
 	m_cList.m_ContextMenuMask &=~ m_cList.GetMenuMask(CPatchListCtrl::MENU_APPLY);
-
-	m_CurrentItem =0;
-
-	m_bExitThread = false;
-	m_bThreadRunning =false;
-
-	m_b3Way = 1;
-	m_bIgnoreSpace = 1;
-	m_bAddSignedOffBy = FALSE;
-	m_bKeepCR = TRUE;
 }
 
 CImportPatchDlg::~CImportPatchDlg()

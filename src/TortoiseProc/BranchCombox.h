@@ -28,11 +28,11 @@ class CBranchCombox
 {
 public:
 	CBranchCombox()
+		: m_LocalBranchFilter(gPickRef_Head)
+		, m_RemoteBranchFilter(gPickRef_Remote)
+		, m_DialogName(L"sync")
+		, m_pTooltip(nullptr)
 	{
-		m_LocalBranchFilter = gPickRef_Head;
-		m_RemoteBranchFilter = gPickRef_Remote;
-		m_DialogName = L"sync";
-		m_pTooltip = nullptr;
 	}
 protected:
 	CHistoryCombo m_ctrlLocalBranch;
