@@ -484,18 +484,6 @@ void DrawTrackingRoundRect(HDC hdc, CRect rect, HBRUSH brush, COLORREF darkColor
 	::DeleteObject(darkBrush);
 }
 
-void DrawLightning(HDC hdc, CRect rect, COLORREF color, int bold)
-{
-	HPEN pen = ::CreatePen(PS_SOLID, bold, color);
-	HPEN oldpen = (HPEN)::SelectObject(hdc, pen);
-	::MoveToEx(hdc, rect.left + 7, rect.top, nullptr);
-	::LineTo(hdc, rect.left + 1, (rect.top + rect.bottom) / 2);
-	::LineTo(hdc, rect.left + 6, (rect.top + rect.bottom) / 2);
-	::LineTo(hdc, rect.left, rect.bottom);
-	::SelectObject(hdc, oldpen);
-	::DeleteObject(pen);
-}
-
 void CGitLogListBase::DrawTagBranchMessage(HDC hdc, CRect &rect, INT_PTR index, std::vector<REFLABEL> &refList)
 {
 	GitRevLoglist* data = m_arShownList.SafeGetAt(index);
@@ -575,14 +563,13 @@ void CGitLogListBase::DrawTagBranchMessage(HDC hdc, CRect &rect, INT_PTR index, 
 	W_Dc.Detach();
 }
 
-void CGitLogListBase::DrawTagBranch(HDC hdc, CDC& W_Dc, HTHEME hTheme, CRect& rect, CRect& rt, LVITEM& rItem, GitRevLoglist* data, std::vector<REFLABEL>& refList)
+void CGitLogListBase::DrawTagBranch(HDC hdc, CDC& W_Dc, HTHEME hTheme, CRect& rect, CRect& rt, LVITEM& rItem, GitRevLoglist* /*data*/, std::vector<REFLABEL>& refList)
 {
 	for (unsigned int i = 0; i < refList.size(); ++i)
 	{
 		CString shortname = !refList[i].simplifiedName.IsEmpty() ? refList[i].simplifiedName : refList[i].name;
 		HBRUSH brush = 0;
 		COLORREF colRef = refList[i].color;
-		bool singleRemote = refList[i].singleRemote;
 		bool hasTracking = refList[i].hasTracking;
 		CGit::REF_TYPE refType = refList[i].refType;
 
@@ -612,12 +599,6 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CDC& W_Dc, HTHEME hTheme, CRect& re
 			}
 
 			CRect textRect = rt;
-
-			if (singleRemote)
-			{
-				rt.right += 8;
-				textRect.OffsetRect(8, 0);
-			}
 
 			if (hasTracking)
 				DrawTrackingRoundRect(hdc, rt, brush, m_Colors.Darken(colRef, 100));
@@ -689,15 +670,6 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CDC& W_Dc, HTHEME hTheme, CRect& re
 					::DrawText(hdc, shortname, shortname.GetLength(), &textRect, textpos | DT_SINGLELINE | DT_VCENTER);
 					::SetTextColor(hdc, clrOld);
 				}
-			}
-
-			if (singleRemote)
-			{
-				COLORREF color = ::GetSysColor(customColor ? COLOR_HIGHLIGHTTEXT : COLOR_WINDOWTEXT);
-				int bold = data->m_CommitHash == m_HeadHash ? 2 : 1;
-				CRect newRect;
-				newRect.SetRect(rt.left + 4, rt.top + 4, rt.left + 8, rt.bottom - 4);
-				DrawLightning(hdc, newRect, color, bold);
 			}
 
 			if (!refList[i].fullName.IsEmpty())
@@ -1291,10 +1263,11 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 											{
 												if (!m_SingleRemote.IsEmpty() && m_SingleRemote == pullRemote)
 												{
+													refLabel.simplifiedName = L"↑/";
 													if (sameName)
-														refLabel.simplifiedName = L"/≡";
+														refLabel.simplifiedName += L'≡';
 													else
-														refLabel.simplifiedName = L'/' + pullBranch;
+														refLabel.simplifiedName += pullBranch;
 													refLabel.singleRemote = true;
 												}
 												else if (sameName)
@@ -1331,7 +1304,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 								{
 									if (!m_SingleRemote.IsEmpty() && CStringUtils::StartsWith(refLabel.name, m_SingleRemote + L"/"))
 									{
-										refLabel.simplifiedName = L'/' + refLabel.name.Mid(m_SingleRemote.GetLength() + 1);
+										refLabel.simplifiedName = L"↑/" + refLabel.name.Mid(m_SingleRemote.GetLength() + 1);
 										refLabel.singleRemote = true;
 									}
 								}
