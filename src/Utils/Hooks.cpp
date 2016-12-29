@@ -45,7 +45,7 @@ bool CHooks::Create()
 	// the string consists of multiple lines, where one hook script is defined
 	// as four lines:
 	// line 1: the hook type
-	// line 2: path to working copy where to apply the hook script
+	// line 2: path to working copy where to apply the hook script, if it starts with "!" this hook is disabled (this should provide backward and forward compatibility)
 	// line 3: command line to execute
 	// line 4: 'true' or 'false' for waiting for the script to finish
 	// line 5: 'show' or 'hide' on how to start the hook script
@@ -64,6 +64,13 @@ bool CHooks::Create()
 		if ((pos = strhooks.Find('\n')) >= 0)
 		{
 			// line 2
+			cmd.bEnabled = true;
+			if (strhooks[0] == L'!' && pos > 1)
+			{
+				cmd.bEnabled = false;
+				strhooks = strhooks.Mid(1);
+				--pos;
+			}
 			key.path = CTGitPath(strhooks.Mid(0, pos));
 			if (pos+1 < strhooks.GetLength())
 				strhooks = strhooks.Mid(pos+1);
@@ -123,6 +130,8 @@ bool CHooks::Save()
 	{
 		strhooks += GetHookTypeString(it->first.htype);
 		strhooks += '\n';
+		if (!it->second.bEnabled)
+			strhooks += '!';
 		strhooks += it->first.path.GetWinPathString();
 		strhooks += '\n';
 		strhooks += it->second.commandline;
@@ -144,7 +153,7 @@ bool CHooks::Remove(const hookkey &key)
 	return (erase(key) > 0);
 }
 
-void CHooks::Add(hooktype ht, const CTGitPath& Path, LPCTSTR szCmd, bool bWait, bool bShow)
+void CHooks::Add(hooktype ht, const CTGitPath& Path, LPCTSTR szCmd, bool bWait, bool bShow, bool bEnabled)
 {
 	hookkey key;
 	key.htype = ht;
@@ -157,7 +166,19 @@ void CHooks::Add(hooktype ht, const CTGitPath& Path, LPCTSTR szCmd, bool bWait, 
 	cmd.commandline = szCmd;
 	cmd.bWait = bWait;
 	cmd.bShow = bShow;
+	cmd.bEnabled = bEnabled;
 	insert(std::pair<hookkey, hookcmd>(key, cmd));
+}
+
+bool CHooks::SetEnabled(const hookkey& k, bool bEnabled)
+{
+	auto it = find(k);
+	if (it == end())
+		return false;
+	if (it->second.bEnabled == bEnabled)
+		return false;
+	it->second.bEnabled = bEnabled;
+	return true;
 }
 
 CString CHooks::GetHookTypeString(hooktype t)
@@ -334,7 +355,7 @@ const_hookiterator CHooks::FindItem(hooktype t, const CString& workingTree) cons
 		key.htype = t;
 		key.path = path;
 		auto it = find(key);
-		if (it != end())
+		if (it != end() && it->second.bEnabled)
 			return it;
 		path = path.GetContainingDirectory();
 	} while(!path.IsEmpty());
@@ -342,7 +363,7 @@ const_hookiterator CHooks::FindItem(hooktype t, const CString& workingTree) cons
 	key.htype = t;
 	key.path = CTGitPath(L"*");
 	auto it = find(key);
-	if (it != end())
+	if (it != end() && it->second.bEnabled)
 	{
 		return it;
 	}

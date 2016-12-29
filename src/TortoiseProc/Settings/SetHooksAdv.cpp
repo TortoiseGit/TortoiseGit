@@ -28,6 +28,7 @@ IMPLEMENT_DYNAMIC(CSetHooksAdv, CResizableStandAloneDialog)
 
 CSetHooksAdv::CSetHooksAdv(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CSetHooksAdv::IDD, pParent)
+	, m_bEnabled(FALSE)
 	, m_bWait(FALSE)
 	, m_bHide(FALSE)
 {
@@ -42,6 +43,7 @@ void CSetHooksAdv::DoDataExchange(CDataExchange* pDX)
 	CResizableStandAloneDialog::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_HOOKPATH, m_sPath);
 	DDX_Text(pDX, IDC_HOOKCOMMANDLINE, m_sCommandLine);
+	DDX_Check(pDX, IDC_ENABLE, m_bEnabled);
 	DDX_Check(pDX, IDC_WAITCHECK, m_bWait);
 	DDX_Check(pDX, IDC_HIDECHECK, m_bHide);
 	DDX_Control(pDX, IDC_HOOKTYPECOMBO, m_cHookTypeCombo);
@@ -57,6 +59,7 @@ BOOL CSetHooksAdv::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
 
+	AdjustControlSize(IDC_ENABLE);
 	AdjustControlSize(IDC_WAITCHECK);
 	AdjustControlSize(IDC_HIDECHECK);
 
@@ -94,8 +97,10 @@ BOOL CSetHooksAdv::OnInitDialog()
 	m_sCommandLine = cmd.commandline;
 	m_bWait = cmd.bWait;
 	m_bHide = !cmd.bShow;
+	m_bEnabled = cmd.bEnabled ? BST_CHECKED : BST_UNCHECKED;
 	UpdateData(FALSE);
 
+	AddAnchor(IDC_ENABLE, TOP_LEFT);
 	AddAnchor(IDC_HOOKTYPELABEL, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_HOOKTYPECOMBO, TOP_RIGHT);
 	AddAnchor(IDC_HOOKWCPATHLABEL, TOP_LEFT, TOP_RIGHT);
@@ -123,6 +128,7 @@ void CSetHooksAdv::OnOK()
 		key.htype = (hooktype)m_cHookTypeCombo.GetItemData(cursel);
 		key.path = CTGitPath(m_sPath);
 		cmd.commandline = m_sCommandLine;
+		cmd.bEnabled = m_bEnabled == BST_CHECKED;
 		cmd.bWait = !!m_bWait;
 		cmd.bShow = !m_bHide;
 	}

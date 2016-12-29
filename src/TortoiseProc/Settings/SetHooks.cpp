@@ -54,7 +54,7 @@ BOOL CSetHooks::OnInitDialog()
 {
 	ISettingsPropPage::OnInitDialog();
 
-	m_cHookList.SetExtendedStyle((CRegDWORD(L"Software\\TortoiseGit\\FullRowSelect", TRUE) ? LVS_EX_FULLROWSELECT : 0) | LVS_EX_DOUBLEBUFFER | LVS_EX_INFOTIP);
+	m_cHookList.SetExtendedStyle((CRegDWORD(L"Software\\TortoiseGit\\FullRowSelect", TRUE) ? LVS_EX_FULLROWSELECT : 0) | LVS_EX_DOUBLEBUFFER | LVS_EX_INFOTIP | LVS_EX_CHECKBOXES);
 
 	// clear all previously set header columns
 	m_cHookList.DeleteAllItems();
@@ -93,6 +93,7 @@ void CSetHooks::RebuildHookList()
 		for (hookiterator it = CHooks::Instance().begin(); it != CHooks::Instance().end(); ++it)
 		{
 			int pos = m_cHookList.InsertItem(m_cHookList.GetItemCount(), CHooks::Instance().GetHookTypeString(it->first.htype));
+			m_cHookList.SetCheck(pos, it->second.bEnabled);
 			m_cHookList.SetItemText(pos, 1, it->first.path.GetWinPathString());
 			m_cHookList.SetItemText(pos, 2, it->second.commandline);
 			m_cHookList.SetItemText(pos, 3, (it->second.bWait ? L"true" : L"false"));
@@ -136,6 +137,7 @@ void CSetHooks::OnBnClickedEditbutton()
 		int index = m_cHookList.GetNextSelectedItem(pos);
 		dlg.key.htype = CHooks::GetHookType((LPCTSTR)m_cHookList.GetItemText(index, 0));
 		dlg.key.path = CTGitPath(m_cHookList.GetItemText(index, 1));
+		dlg.cmd.bEnabled = m_cHookList.GetCheck(index) == BST_CHECKED;
 		dlg.cmd.commandline = m_cHookList.GetItemText(index, 2);
 		dlg.cmd.bWait = (m_cHookList.GetItemText(index, 3).Compare(L"true") == 0);
 		dlg.cmd.bShow = (m_cHookList.GetItemText(index, 4).Compare(L"show") == 0);
@@ -143,7 +145,7 @@ void CSetHooks::OnBnClickedEditbutton()
 		if (dlg.DoModal() == IDOK)
 		{
 			CHooks::Instance().Remove(key);
-			CHooks::Instance().Add(dlg.key.htype, dlg.key.path, dlg.cmd.commandline, dlg.cmd.bWait, dlg.cmd.bShow);
+			CHooks::Instance().Add(dlg.key.htype, dlg.key.path, dlg.cmd.commandline, dlg.cmd.bWait, dlg.cmd.bShow, dlg.cmd.bEnabled);
 			RebuildHookList();
 			SetModified();
 		}
@@ -155,19 +157,29 @@ void CSetHooks::OnBnClickedAddbutton()
 	CSetHooksAdv dlg;
 	if (dlg.DoModal() == IDOK)
 	{
-		CHooks::Instance().Add(dlg.key.htype, dlg.key.path, dlg.cmd.commandline, dlg.cmd.bWait, dlg.cmd.bShow);
+		CHooks::Instance().Add(dlg.key.htype, dlg.key.path, dlg.cmd.commandline, dlg.cmd.bWait, dlg.cmd.bShow, dlg.cmd.bEnabled);
 		RebuildHookList();
 		SetModified();
 	}
 }
 
-void CSetHooks::OnLvnItemchangedHooklist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
+void CSetHooks::OnLvnItemchangedHooklist(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	UINT count = m_cHookList.GetSelectedCount();
 	GetDlgItem(IDC_HOOKREMOVEBUTTON)->EnableWindow(count > 0);
 	GetDlgItem(IDC_HOOKEDITBUTTON)->EnableWindow(count == 1);
 	GetDlgItem(IDC_HOOKCOPYBUTTON)->EnableWindow(count == 1);
 	*pResult = 0;
+
+	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+	if ((pNMLV->uOldState == 0) || (pNMLV->uNewState == 0) || (pNMLV->uNewState & LVIS_SELECTED) || (pNMLV->uNewState & LVIS_FOCUSED) || pNMLV->iItem < 0)
+		return;
+
+	hookkey key;
+	key.htype = CHooks::GetHookType((LPCTSTR)m_cHookList.GetItemText(pNMLV->iItem, 0));
+	key.path = CTGitPath(m_cHookList.GetItemText(pNMLV->iItem, 1));
+	if (CHooks::Instance().SetEnabled(key, m_cHookList.GetCheck(pNMLV->iItem) == BST_CHECKED))
+		SetModified();
 }
 
 void CSetHooks::OnNMDblclkHooklist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
@@ -197,10 +209,11 @@ void CSetHooks::OnBnClickedHookcopybutton()
 		dlg.cmd.commandline = m_cHookList.GetItemText(index, 2);
 		dlg.cmd.bWait = (m_cHookList.GetItemText(index, 3).Compare(L"true") == 0);
 		dlg.cmd.bShow = (m_cHookList.GetItemText(index, 4).Compare(L"show") == 0);
+		dlg.cmd.bEnabled = m_cHookList.GetCheck(index) == BST_CHECKED;
 		hookkey key = dlg.key;
 		if (dlg.DoModal() == IDOK)
 		{
-			CHooks::Instance().Add(dlg.key.htype, dlg.key.path, dlg.cmd.commandline, dlg.cmd.bWait, dlg.cmd.bShow);
+			CHooks::Instance().Add(dlg.key.htype, dlg.key.path, dlg.cmd.commandline, dlg.cmd.bWait, dlg.cmd.bShow, dlg.cmd.bEnabled);
 			RebuildHookList();
 			SetModified();
 		}

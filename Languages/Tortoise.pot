@@ -642,6 +642,10 @@ msgstr ""
 msgid "&Email:"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_SETTINGSHOOKCONFIG: Control id 1023)
+msgid "&Enable"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETTINGSPROXY: Control id 1023)
 msgid "&Enable Proxy Server"
 msgstr ""

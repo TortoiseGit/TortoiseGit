@@ -70,6 +70,7 @@ typedef struct hookcmd
 	CString			commandline;
 	bool			bWait;
 	bool			bShow;
+	bool			bEnabled;
 } hookcmd;
 
 typedef std::map<hookkey, hookcmd>::iterator hookiterator;
@@ -113,7 +114,13 @@ public:
 	 * Adds a new hook script. To make the change persistent, call Save().
 	 */
 	void				Add(hooktype ht, const CTGitPath& Path, LPCTSTR szCmd,
-							bool bWait, bool bShow);
+							bool bWait, bool bShow, bool bEnabled);
+
+	/**
+	* Toggles the hook script identified by \c key. Returns whether the status has changed.
+	* To make the change persistent call Save().
+	*/
+	bool				SetEnabled(const hookkey& key, bool bEnabled);
 
 	/// returns the string representation of the hook type.
 	static CString		GetHookTypeString(hooktype t);

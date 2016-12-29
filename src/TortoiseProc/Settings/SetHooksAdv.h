@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2016 - TortoiseGit
 // Copyright (C) 2003-2008,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -49,6 +50,7 @@ protected:
 
 	CString			m_sPath;
 	CString			m_sCommandLine;
+	BOOL			m_bEnabled;
 	BOOL			m_bWait;
 	BOOL			m_bHide;
 	CComboBox		m_cHookTypeCombo;
