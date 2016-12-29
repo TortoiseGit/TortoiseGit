@@ -203,9 +203,9 @@ void CBugTraqAssociations::Save() const
 	RegCloseKey(hk);
 }
 
-void CBugTraqAssociations::RemoveByPath(const CTGitPath &path)
+void CBugTraqAssociations::Remove(CBugTraqAssociation* assoc)
 {
-	inner_t::iterator it = std::find_if(m_inner.begin(), m_inner.end(), FindByPathPred(path));
+	inner_t::iterator it = std::find(m_inner.begin(), m_inner.end(), assoc);
 	if (it != m_inner.end())
 	{
 		delete *it;

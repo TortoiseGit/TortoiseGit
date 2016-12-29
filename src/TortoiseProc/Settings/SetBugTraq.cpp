@@ -107,9 +107,14 @@ void CSetBugTraq::OnBnClickedRemovebutton()
 	{
 		if (m_cBugTraqList.GetItemState(index, LVIS_SELECTED) & LVIS_SELECTED)
 		{
-			CTGitPath path = CTGitPath(m_cBugTraqList.GetItemText(index, 0));
+			auto assoc = reinterpret_cast<CBugTraqAssociation*>(m_cBugTraqList.GetItemData(index));
+			if (!assoc)
+			{
+				RebuildBugTraqList();
+				return;
+			}
 			m_cBugTraqList.DeleteItem(index);
-			m_associations.RemoveByPath(path);
+			m_associations.Remove(assoc);
 			SetModified();
 		}
 		index--;
@@ -132,7 +137,7 @@ void CSetBugTraq::OnBnClickedEditbutton()
 	CSetBugTraqAdv dlg(*assoc);
 	if (dlg.DoModal() == IDOK)
 	{
-		m_associations.RemoveByPath(assoc->GetPath());
+		m_associations.Remove(assoc);
 		m_associations.Add(dlg.GetAssociation());
 		RebuildBugTraqList();
 		SetModified();

@@ -67,7 +67,7 @@ public:
 	void Save() const;
 
 	void Add(const CBugTraqAssociation &assoc);
-	void RemoveByPath(const CTGitPath &path);
+	void Remove(CBugTraqAssociation* assoc);
 
 	bool FindProvider(const CString &path, CBugTraqAssociation *assoc);
 
