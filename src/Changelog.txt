@@ -67,6 +67,7 @@ Released: unreleased
    This also improves submodule support as we rely on the directory/file information we got from git
  * Fixed issue #2896: Blame revisions ListView selection and flickering issues
  * Fixed issue #2883: Improve wording for our "needs merge" hint in commit dialog
+ * Fixed issue #2898: Branch name forced to be lower what leads to pull error
 
 = Release 2.3.0 =
 Released: 2016-10-01
