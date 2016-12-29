@@ -36,6 +36,7 @@ CSetBugTraqAdv::CSetBugTraqAdv(const CBugTraqAssociation& assoc, CWnd* pParent /
 	, m_sPath(assoc.GetPath().GetWinPathString())
 	, m_provider_clsid(assoc.GetProviderClass())
 	, m_sParameters(assoc.GetParameters())
+	, m_bEnabled(assoc.IsEnabled())
 {
 }
 
@@ -49,6 +50,7 @@ void CSetBugTraqAdv::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_BUGTRAQPATH, m_sPath);
 	DDX_Control(pDX, IDC_BUGTRAQPROVIDERCOMBO, m_cProviderCombo);
 	DDX_Text(pDX, IDC_BUGTRAQPARAMETERS, m_sParameters);
+	DDX_Check(pDX, IDC_ENABLE, m_bEnabled);
 }
 
 BEGIN_MESSAGE_MAP(CSetBugTraqAdv, CResizableStandAloneDialog)
@@ -94,6 +96,9 @@ BOOL CSetBugTraqAdv::OnInitDialog()
 	UpdateData(FALSE);
 	CheckHasOptions();
 
+	AdjustControlSize(IDC_ENABLE);
+
+	AddAnchor(IDC_ENABLE, TOP_LEFT);
 	AddAnchor(IDC_BUGTRAQWCPATHLABEL, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_BUGTRAQPATH, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_BUGTRAQBROWSE, TOP_RIGHT);
@@ -173,7 +178,7 @@ void CSetBugTraqAdv::OnBnClickedBugTraqbrowse()
 
 CBugTraqAssociation CSetBugTraqAdv::GetAssociation() const
 {
-	return CBugTraqAssociation(m_sPath, m_provider_clsid, CBugTraqAssociations::LookupProviderName(m_provider_clsid), m_sParameters);
+	return CBugTraqAssociation(m_sPath, m_provider_clsid, CBugTraqAssociations::LookupProviderName(m_provider_clsid), m_sParameters, m_bEnabled == BST_CHECKED);
 }
 
 void CSetBugTraqAdv::CheckHasOptions()

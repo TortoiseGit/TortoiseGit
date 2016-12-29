@@ -54,7 +54,7 @@ BOOL CSetBugTraq::OnInitDialog()
 
 	m_associations.Load();
 
-	m_cBugTraqList.SetExtendedStyle((CRegDWORD(L"Software\\TortoiseGit\\FullRowSelect", TRUE) ? LVS_EX_FULLROWSELECT : 0) | LVS_EX_DOUBLEBUFFER | LVS_EX_INFOTIP);
+	m_cBugTraqList.SetExtendedStyle((CRegDWORD(L"Software\\TortoiseGit\\FullRowSelect", TRUE) ? LVS_EX_FULLROWSELECT : 0) | LVS_EX_DOUBLEBUFFER | LVS_EX_INFOTIP | LVS_EX_CHECKBOXES);
 
 	// clear all previously set header columns
 	m_cBugTraqList.DeleteAllItems();
@@ -88,6 +88,7 @@ void CSetBugTraq::RebuildBugTraqList()
 	for (CBugTraqAssociations::const_iterator it = m_associations.begin(); it != m_associations.end(); ++it)
 	{
 		int pos = m_cBugTraqList.InsertItem(m_cBugTraqList.GetItemCount(), (*it)->GetPath().GetWinPathString());
+		m_cBugTraqList.SetCheck(pos, (*it)->IsEnabled());
 		m_cBugTraqList.SetItemText(pos, 1, (*it)->GetProviderName());
 		m_cBugTraqList.SetItemText(pos, 2, (*it)->GetParameters());
 		m_cBugTraqList.SetItemData(pos, (DWORD_PTR)*it);
@@ -155,13 +156,23 @@ void CSetBugTraq::OnBnClickedAddbutton()
 	}
 }
 
-void CSetBugTraq::OnLvnItemchangedBugTraqlist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
+void CSetBugTraq::OnLvnItemchangedBugTraqlist(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	UINT count = m_cBugTraqList.GetSelectedCount();
 	GetDlgItem(IDC_BUGTRAQREMOVEBUTTON)->EnableWindow(count > 0);
 	GetDlgItem(IDC_BUGTRAQEDITBUTTON)->EnableWindow(count == 1);
 	GetDlgItem(IDC_BUGTRAQCOPYBUTTON)->EnableWindow(count == 1);
 	*pResult = 0;
+
+	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+	if ((pNMLV->uOldState == 0) || (pNMLV->uNewState == 0) || (pNMLV->uNewState & LVIS_SELECTED) || (pNMLV->uNewState & LVIS_FOCUSED) || pNMLV->iItem < 0)
+		return;
+
+	auto assoc = reinterpret_cast<CBugTraqAssociation*>(m_cBugTraqList.GetItemData(pNMLV->iItem));
+	if (!assoc)
+		return;
+	if (assoc->SetEnabled(m_cBugTraqList.GetCheck(pNMLV->iItem) == BST_CHECKED))
+		SetModified();
 }
 
 void CSetBugTraq::OnNMDblclkBugTraqlist(NMHDR * /*pNMHDR*/, LRESULT *pResult)

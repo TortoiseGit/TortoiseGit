@@ -80,7 +80,12 @@ void CBugTraqAssociations::Load(LPCTSTR uuid /* = nullptr */, LPCTSTR params /* 
 			auto szParameters = std::make_unique<TCHAR[]>(cbParameters + 1);
 			RegQueryValueEx(hk2, L"Parameters", nullptr, nullptr, (LPBYTE)szParameters.get(), &cbParameters);
 			szParameters.get()[cbParameters] = 0;
-			m_inner.push_back(new CBugTraqAssociation(szWorkingCopy, provider_clsid, LookupProviderName(provider_clsid), szParameters.get()));
+
+			DWORD enabled = TRUE;
+			DWORD size = sizeof(enabled);
+			RegQueryValueEx(hk2, L"Enabled", nullptr, nullptr, (BYTE*)&enabled, &size);
+
+			m_inner.push_back(new CBugTraqAssociation(szWorkingCopy, provider_clsid, LookupProviderName(provider_clsid), szParameters.get(), enabled != FALSE));
 
 			RegCloseKey(hk2);
 		}
@@ -117,7 +122,7 @@ bool CBugTraqAssociations::FindProvider(const CString &path, CBugTraqAssociation
 	{
 		CLSID provider_clsid;
 		CLSIDFromString((LPOLESTR)(LPCWSTR)providerUUID, &provider_clsid);
-		pProjectProvider = new CBugTraqAssociation(L"", provider_clsid, L"bugtraq:provider", (LPCWSTR)providerParams);
+		pProjectProvider = new CBugTraqAssociation(L"", provider_clsid, L"bugtraq:provider", (LPCWSTR)providerParams, true);
 		if (pProjectProvider)
 		{
 			if (assoc)
@@ -130,7 +135,7 @@ bool CBugTraqAssociations::FindProvider(const CString &path, CBugTraqAssociation
 
 bool CBugTraqAssociations::FindProviderForPath(const CTGitPath& path, CBugTraqAssociation *assoc) const
 {
-		inner_t::const_iterator it = std::find_if(m_inner.cbegin(), m_inner.cend(), FindByPathPred(path));
+	const auto it = std::find_if(m_inner.cbegin(), m_inner.cend(), [&path](const CBugTraqAssociation* assoc) { return assoc->IsEnabled() && assoc->GetPath().IsEquivalentToWithoutCase(path); });
 		if (it != m_inner.end())
 		{
 			*assoc = *(*it);
@@ -193,6 +198,8 @@ void CBugTraqAssociations::Save() const
 			RegSetValueFromCString(hk2, L"Provider", (*it)->GetProviderClassAsString());
 			RegSetValueFromCString(hk2, L"WorkingCopy", (*it)->GetPath().GetWinPath());
 			RegSetValueFromCString(hk2, L"Parameters", (*it)->GetParameters());
+			DWORD enabled = (*it)->IsEnabled() ? 1 : 0;
+			RegSetValueEx(hk2, L"Enabled", 0, REG_DWORD, (BYTE*)&enabled, sizeof(enabled));
 
 			RegCloseKey(hk2);
 		}
