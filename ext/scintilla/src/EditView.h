@@ -77,7 +77,6 @@ public:
 	Surface *pixmapLine;
 	Surface *pixmapIndentGuide;
 	Surface *pixmapIndentGuideHighlight;
-	void	*editor;
 
 	LineLayoutCache llc;
 	PositionCache posCache;
@@ -115,7 +114,7 @@ public:
 	Point LocationFromPosition(Surface *surface, const EditModel &model, SelectionPosition pos, int topLine,
 				   const ViewStyle &vs, PointEnd pe);
 	Range RangeDisplayLine(Surface *surface, const EditModel &model, int lineVisible, const ViewStyle &vs);
-	SelectionPosition SPositionFromLocation(Surface *surface, const EditModel &model, Point pt, bool canReturnInvalid,
+	SelectionPosition SPositionFromLocation(Surface *surface, const EditModel &model, PointDocument pt, bool canReturnInvalid,
 		bool charPosition, bool virtualSpace, const ViewStyle &vs);
 	SelectionPosition SPositionFromLineX(Surface *surface, const EditModel &model, int lineDoc, int x, const ViewStyle &vs);
 	int DisplayFromPosition(Surface *surface, const EditModel &model, int pos, const ViewStyle &vs);
