@@ -40,6 +40,7 @@ CCachedDirectory::CCachedDirectory(const CTGitPath& directoryPath)
 {
 	ATLASSERT(directoryPath.IsDirectory() || !PathFileExists(directoryPath.GetWinPath()));
 
+	directoryPath.HasAdminDir(); // make sure HasAdminDir is always initialized
 	m_directoryPath = directoryPath;
 	m_directoryPath.GetGitPathString(); // make sure git path string is set
 }
@@ -624,6 +625,20 @@ BOOL CCachedDirectory::GetStatusCallback(const CString & path, git_wc_status_kin
 					// This child directory is already in our cache!
 					// So ask this dir about its recursive status
 					git_wc_status_kind st = GitStatus::GetMoreImportant(s, cdir->GetCurrentFullStatus());
+
+					// only propagate real status of submodules to parent repo if enabled
+					if (!CGitStatusCache::Instance().IsRecurseSubmodules())
+					{
+						CString root1, root2;
+						bool pThisIsVersioned;
+						{
+							AutoLocker lock(pThis->m_critSec);
+							pThisIsVersioned = pThis->m_directoryPath.HasAdminDir(&root1);
+						}
+						AutoLocker lock(cdir->m_critSec);
+						if (pThisIsVersioned && cdir->m_directoryPath.HasAdminDir(&root2) && root1 != root2)
+							st = s;
+					}
 					AutoLocker lock(pThis->m_critSec);
 					pThis->m_childDirectories[gitPath.GetWinPathString()] = st;
 					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": call 1 Update dir %s %d\n", gitPath.GetWinPath(), st);
