@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005 - 2006, 2008, 2014 - TortoiseSVN
-// Copyright (C) 2008-2012, 2014, 2016 - TortoiseGit
+// Copyright (C) 2008-2012, 2014, 2016-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -87,7 +87,7 @@ private:
 	CacheEntryMap m_entryCache_tmp; // used for updating m_entryCache and removing "removed" entries
 
 	/// A vector if iterators to child directories - used to put-together recursive status
-	typedef std::map<CTGitPath, git_wc_status_kind>  ChildDirStatus;
+	typedef std::map<CString, git_wc_status_kind>  ChildDirStatus;
 	ChildDirStatus m_childDirectories;
 
 	// The path of the directory with this object looks after

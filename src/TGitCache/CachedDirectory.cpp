@@ -71,7 +71,7 @@ BOOL CCachedDirectory::SaveToDisk(FILE * pFile)
 	WRITEVALUETOFILE(value);
 	for (const auto& entry : m_childDirectories)
 	{
-		const CString& path = entry.first.GetWinPathString();
+		const CString& path = entry.first;
 		value = path.GetLength();
 		WRITEVALUETOFILE(value);
 		if (value)
@@ -148,7 +148,7 @@ BOOL CCachedDirectory::LoadFromDisk(FILE * pFile)
 				sPath.ReleaseBuffer(value);
 				git_wc_status_kind status;
 				LOADVALUEFROMFILE(status);
-				m_childDirectories[CTGitPath(sPath)] = status;
+				m_childDirectories[sPath] = status;
 			}
 		}
 		LOADVALUEFROMFILE(value);
@@ -625,7 +625,7 @@ BOOL CCachedDirectory::GetStatusCallback(const CString & path, git_wc_status_kin
 					// So ask this dir about its recursive status
 					git_wc_status_kind st = GitStatus::GetMoreImportant(s, cdir->GetCurrentFullStatus());
 					AutoLocker lock(pThis->m_critSec);
-					pThis->m_childDirectories[gitPath] = st;
+					pThis->m_childDirectories[gitPath.GetWinPathString()] = st;
 					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": call 1 Update dir %s %d\n", gitPath.GetWinPath(), st);
 				}
 				else
@@ -636,7 +636,7 @@ BOOL CCachedDirectory::GetStatusCallback(const CString & path, git_wc_status_kin
 					CGitStatusCache::Instance().GetDirectoryCacheEntry(gitPath);
 
 					AutoLocker lock(pThis->m_critSec);
-					pThis->m_childDirectories[gitPath] = s;
+					pThis->m_childDirectories[gitPath.GetWinPathString()] = s;
 					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": call 2 Update dir %s %d\n", gitPath.GetWinPath(), s);
 				}
 			}
@@ -735,13 +735,13 @@ void CCachedDirectory::UpdateChildDirectoryStatus(const CTGitPath& childDir, git
 	git_wc_status_kind currentStatus = git_wc_status_none;
 	{
 		AutoLocker lock(m_critSec);
-		currentStatus = m_childDirectories[childDir];
+		currentStatus = m_childDirectories[childDir.GetWinPathString()];
 	}
 	if ((currentStatus != childStatus)||(!IsOwnStatusValid()))
 	{
 		{
 			AutoLocker lock(m_critSec);
-			m_childDirectories[childDir] = childStatus;
+			m_childDirectories[childDir.GetWinPathString()] = childStatus;
 		}
 		UpdateCurrentStatus();
 	}

@@ -351,12 +351,10 @@ bool CGitStatusCache::RemoveCacheForDirectory(CCachedDirectory * cdir)
 	if (!cdir)
 		return false;
 
-	typedef std::map<CTGitPath, git_wc_status_kind>  ChildDirStatus;
 	CAutoWriteLock writeLock(m_guard);
 	if (!cdir->m_childDirectories.empty())
 	{
-		ChildDirStatus::iterator it = cdir->m_childDirectories.begin();
-		for (; it != cdir->m_childDirectories.end(); )
+		for (auto it = cdir->m_childDirectories.begin(); it != cdir->m_childDirectories.end();)
 		{
 			CCachedDirectory * childdir = CGitStatusCache::Instance().GetDirectoryCacheEntryNoCreate(it->first);
 			if ((childdir) && (!cdir->m_directoryPath.IsEquivalentTo(childdir->m_directoryPath)) && (cdir->m_directoryPath.GetFileOrDirectoryName() != L".."))
