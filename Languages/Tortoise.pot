@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2015 the TortoiseGit team
+# Copyright (C) 2008-2017 the TortoiseGit team
 #
 # This file is distributed under the same license as TortoiseGit
 #
@@ -2085,10 +2085,6 @@ msgstr ""
 msgid "Authors case sensitive"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_ABOUTBOX: Control id 65535)
-msgid "Authors:\tFrank Li (lznuaa@gmail.com),\n\t\tSven Strickroth (email@cs-ware.de)"
-msgstr ""
-
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 65535)
 msgid "Auto CrLf convert"
 msgstr ""
@@ -3198,10 +3194,6 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROC_COPYING)
 msgid "Copying..."
-msgstr ""
-
-#. Resource IDs: (Dialog IDD_ABOUTBOX: Control id 1001)
-msgid "Copyright (C) 2009-2016 TortoiseGit"
 msgstr ""
 
 #. Resource IDs: (IDS_SPELLEDIT_CORRECTIONS)
@@ -7119,10 +7111,6 @@ msgstr ""
 msgid "Parent(s)"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_ABOUTBOX: Control id 65535)
-msgid "Part of code come from TortoiseSVN Blame"
-msgstr ""
-
 #. Resource IDs: (Dialog IDD_USER_PASSWD: Control id 4585)
 msgid "Password"
 msgstr ""
@@ -9038,7 +9026,7 @@ msgstr ""
 msgid "Si&gn"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_ABOUT: Control id 65535)
+#. Resource IDs: (Dialog IDD_ABOUT: Control id 65535, Dialog IDD_ABOUTBOX: Control id 65535)
 msgid "Significant contributions by: (see Git repository for a complete list)"
 msgstr ""
 

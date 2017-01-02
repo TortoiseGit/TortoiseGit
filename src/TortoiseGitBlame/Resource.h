@@ -47,6 +47,7 @@
 #define IDC_COPYRIGHT                   1001
 #define IDC_SCINTILLA                   1002
 #define IDC_LOG                         1003
+#define IDC_STATIC_AUTHORS              1829
 #define ID_INDICATOR_ENCODING           2000
 #define IDS_STATUS_PANE1                20122
 #define IDS_STATUS_PANE2                20123

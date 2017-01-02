@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2016 - TortoiseGit
+// Copyright (C) 2012-2017 - TortoiseGit
 // Copyright (C) 2003-2008, 2013-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -463,6 +463,61 @@ CString CPathUtils::GetVersionFromFile(const CString & p_strFilename)
 				(LPTSTR)(LPCTSTR)strLangProductVersion,
 				(LPVOID *)&lpVersion,
 				&nInfoSize);
+			if (nInfoSize && lpVersion)
+				strReturn = (LPCTSTR)lpVersion;
+		}
+	}
+
+	return strReturn;
+}
+
+CString CPathUtils::GetCopyrightForSelf()
+{
+	DWORD len = 0;
+	DWORD bufferlen = MAX_PATH; // MAX_PATH is not the limit here!
+	CString path;
+	path.GetBuffer(bufferlen);
+	do
+	{
+		bufferlen += MAX_PATH; // MAX_PATH is not the limit here!
+		path.ReleaseBuffer(0);
+		len = GetModuleFileName(nullptr, path.GetBuffer(bufferlen + 1), bufferlen);
+	} while (len == bufferlen);
+	path.ReleaseBuffer();
+
+	CString strReturn;
+	DWORD dwReserved = 0;
+	DWORD dwBufferSize = GetFileVersionInfoSize((LPTSTR)(LPCTSTR)path, &dwReserved);
+
+	if (dwBufferSize > 0)
+	{
+		auto pBuffer = std::make_unique<BYTE[]>(dwBufferSize);
+
+		if (pBuffer)
+		{
+			GetFileVersionInfo((LPTSTR)(LPCTSTR)path,
+				dwReserved,
+				dwBufferSize,
+				pBuffer.get());
+
+			UINT nFixedLength = 0;
+			VOID* lpFixedPointer;
+			struct TRANSARRAY
+			{
+				WORD wLanguageID;
+				WORD wCharacterSet;
+			};
+			TRANSARRAY* lpTransArray;
+			// Check the current language
+			VerQueryValue(pBuffer.get(), L"\\VarFileInfo\\Translation", &lpFixedPointer, &nFixedLength);
+			lpTransArray = (TRANSARRAY*)lpFixedPointer;
+
+			CString strLangLegalCopyright;
+			strLangLegalCopyright.Format(L"\\StringFileInfo\\%04x%04x\\LegalCopyright", lpTransArray[0].wLanguageID, lpTransArray[0].wCharacterSet);
+
+			UINT nInfoSize = 0;
+			LPSTR lpVersion = nullptr;
+			VerQueryValue(pBuffer.get(), (LPTSTR)(LPCTSTR)strLangLegalCopyright, (LPVOID*)&lpVersion, &nInfoSize);
 			if (nInfoSize && lpVersion)
 				strReturn = (LPCTSTR)lpVersion;
 		}

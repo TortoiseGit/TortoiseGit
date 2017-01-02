@@ -351,17 +351,17 @@ END
 // Dialog
 //
 
-IDD_ABOUTBOX DIALOGEX 0, 0, 230, 90
+IDD_ABOUTBOX DIALOGEX 0, 0, 357, 116
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "About TortoiseGitBlame"
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     ICON            IDR_TORTOISE_GIT_BLAME_MAINFRAME,IDC_STATIC,14,14,20,20
-    LTEXT           "TortoiseGitBlame",IDC_VERSION,42,14,138,8,SS_NOPREFIX
-    LTEXT           "Copyright (C) 2009-2016 TortoiseGit",IDC_COPYRIGHT,42,26,156,8
-    DEFPUSHBUTTON   "OK",IDOK,173,69,50,14,WS_GROUP
-    LTEXT           "Authors:\tFrank Li (lznuaa@gmail.com),\n\t\tSven Strickroth (email@cs-ware.de)",IDC_STATIC,42,37,174,18
-    LTEXT           "Part of code come from TortoiseSVN Blame",IDC_STATIC,42,55,138,8
+    LTEXT           "TortoiseGitBlame",IDC_VERSION,42,14,308,8,SS_NOPREFIX
+    LTEXT           "",IDC_COPYRIGHT,42,26,308,16
+    LTEXT           "Significant contributions by: (see Git repository for a complete list)",IDC_STATIC,42,47,308,9
+    LTEXT           "",IDC_STATIC_AUTHORS,42,56,308,34
+    DEFPUSHBUTTON   "OK",IDOK,300,94,50,14,WS_GROUP
 END
 
 IDD_GOTODLG DIALOGEX 0, 0, 127, 52
@@ -387,9 +387,10 @@ BEGIN
     IDD_ABOUTBOX, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 223
+        RIGHTMARGIN, 350
+        VERTGUIDE, 42
         TOPMARGIN, 7
-        BOTTOMMARGIN, 82
+        BOTTOMMARGIN, 108
     END
 END
 #endif    // APSTUDIO_INVOKED

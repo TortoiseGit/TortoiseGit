@@ -292,6 +292,9 @@ BOOL CAboutDlg::OnInitDialog()
 	swprintf_s(verbuf, maskbuf, TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD);
 	SetDlgItemText(IDC_VERSION, verbuf);
 
+	SetDlgItemText(IDC_COPYRIGHT, CPathUtils::GetCopyrightForSelf());
+	SetDlgItemText(IDC_STATIC_AUTHORS, L"Sven Strickroth <email@cs-ware.de> (Current Maintainer), Sup Yut Sum <ch3cooli@gmail.com>, Frank Li <lznuaa@gmail.com> and Martin Strauﬂ <MStrauss@MuellerBBM-vas.de>");
+
 	return FALSE;
 }
 
