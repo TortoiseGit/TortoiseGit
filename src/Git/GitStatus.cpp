@@ -457,7 +457,8 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 			if (oldstring != filename)
 			{
 				oldstring = filename;
-				if (SearchInSortVector(filelist, filename, filename.GetLength()) == NPOS)
+				int length = filename.GetLength();
+				if (SearchInSortVector(filelist, filename, filename[length - 1] == L'/' ? length : -1) == NPOS) // do full match for filenames and only prefix-match ending with "/" for folders
 				{
 					bool skipWorktree = false;
 					*status = git_wc_status_deleted;
@@ -493,7 +494,8 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 			if (oldstring != filename && skipWorktreeSet.find(filename) == skipWorktreeSet.cend())
 			{
 				oldstring = filename;
-				if (SearchInSortVector(filelist, filename, filename.GetLength()) == NPOS)
+				int length = filename.GetLength();
+				if (SearchInSortVector(filelist, filename, filename[length - 1] == L'/' ? length : -1) == NPOS) // do full match for filenames and only prefix-match ending with "/" for folders
 				{
 					*status = git_wc_status_deleted;
 					if (callback)

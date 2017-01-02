@@ -129,6 +129,8 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 
 		auto& item = (*this)[i];
 		item.m_FileName = CUnicodeUtils::GetUnicode(e->path);
+		if (e->mode & S_IFDIR)
+			item.m_FileName += L'/';
 		item.m_ModifyTime = e->mtime.seconds;
 		item.m_Flags = e->flags;
 		item.m_FlagsExtended = e->flags_extended;
@@ -664,6 +666,8 @@ int CGitHeadFileList::CallBack(const unsigned char *sha1, const char *base, int 
 	item.m_Hash = sha1;
 	CGit::StringAppend(&item.m_FileName, (BYTE*)base, CP_UTF8, baselen);
 	CGit::StringAppend(&item.m_FileName, (BYTE*)pathname, CP_UTF8);
+	if ((mode & S_IFMT) == S_IFGITLINK)
+		item.m_FileName += L'/';
 
 	p->push_back(item);
 
