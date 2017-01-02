@@ -636,7 +636,7 @@ BOOL CCachedDirectory::GetStatusCallback(const CString & path, git_wc_status_kin
 							pThisIsVersioned = pThis->m_directoryPath.HasAdminDir(&root1);
 						}
 						AutoLocker lock(cdir->m_critSec);
-						if (pThisIsVersioned && cdir->m_directoryPath.HasAdminDir(&root2) && root1 != root2)
+						if (pThisIsVersioned && cdir->m_directoryPath.HasAdminDir(&root2) && !CTGitPath::ArePathStringsEqualWithCase(root1, root2))
 							st = s;
 					}
 					AutoLocker lock(pThis->m_critSec);
@@ -735,7 +735,7 @@ void CCachedDirectory::UpdateCurrentStatus()
 		// We have a parent
 		// just version controled directory need to cache.
 		CString root1, root2;
-		if (parentPath.HasAdminDir(&root1) && (CGitStatusCache::Instance().IsRecurseSubmodules() || m_directoryPath.HasAdminDir(&root2) && root1 == root2))
+		if (parentPath.HasAdminDir(&root1) && (CGitStatusCache::Instance().IsRecurseSubmodules() || m_directoryPath.HasAdminDir(&root2) && CTGitPath::ArePathStringsEqualWithCase(root1, root2)))
 		{
 			CCachedDirectory * cachedDir = CGitStatusCache::Instance().GetDirectoryCacheEntry(parentPath);
 			if (cachedDir)
