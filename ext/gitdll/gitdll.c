@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -358,12 +358,11 @@ int git_open_log(GIT_LOG * handle, char * arg)
 	struct rev_info *p_Rev;
 	char ** argv=0;
 	int argc=0;
-	unsigned int i=0;
 	struct setup_revision_opt opt;
 
 	/* clear flags */
 	unsigned int obj_size = get_max_object_index();
-	for(i =0; i<obj_size; i++)
+	for (unsigned int i = 0; i < obj_size; ++i)
 	{
 		struct object *ob= get_indexed_object(i);
 		if(ob)
@@ -511,13 +510,12 @@ int git_diff_flush(GIT_DIFF diff)
 {
 	struct diff_queue_struct *q = &diff_queued_diff;
 	struct rev_info *p_Rev;
-	int i;
 	p_Rev = (struct rev_info *)diff;
 
 	if(q->nr == 0)
 		return 0;
 
-	for (i = 0; i < q->nr; i++)
+	for (int i = 0; i < q->nr; ++i)
 		diff_free_filepair(q->queue[i]);
 
 	if(q->queue)
@@ -538,7 +536,6 @@ int git_root_diff(GIT_DIFF diff, GIT_HASH hash,GIT_FILE *file, int *count, int i
 {
 	int ret;
 	struct rev_info *p_Rev;
-	int i;
 	struct diff_queue_struct *q = &diff_queued_diff;
 
 	p_Rev = (struct rev_info *)diff;
@@ -553,7 +550,7 @@ int git_root_diff(GIT_DIFF diff, GIT_HASH hash,GIT_FILE *file, int *count, int i
 		diffcore_std(&p_Rev->diffopt);
 
 		memset(&p_Rev->diffstat, 0, sizeof(struct diffstat_t));
-		for (i = 0; i < q->nr; i++) {
+		for (int i = 0; i < q->nr; ++i) {
 			struct diff_filepair *p = q->queue[i];
 			//if (check_pair_status(p))
 			diff_flush_stat(p, &p_Rev->diffopt, &p_Rev->diffstat);
@@ -572,7 +569,6 @@ int git_do_diff(GIT_DIFF diff, GIT_HASH hash1, GIT_HASH hash2, GIT_FILE * file, 
 {
 	struct rev_info *p_Rev;
 	int ret;
-	int i;
 	struct diff_queue_struct *q = &diff_queued_diff;
 
 	p_Rev = (struct rev_info *)diff;
@@ -588,7 +584,7 @@ int git_do_diff(GIT_DIFF diff, GIT_HASH hash1, GIT_HASH hash2, GIT_FILE * file, 
 	{
 		diffcore_std(&p_Rev->diffopt);
 		memset(&p_Rev->diffstat, 0, sizeof(struct diffstat_t));
-		for (i = 0; i < q->nr; i++) {
+		for (int i = 0; i < q->nr; ++i) {
 			struct diff_filepair *p = q->queue[i];
 			//if (check_pair_status(p))
 			diff_flush_stat(p, &p_Rev->diffopt, &p_Rev->diffstat);
@@ -630,7 +626,7 @@ int git_get_diff_file(GIT_DIFF diff, GIT_FILE file, int i, char** newname, char*
 	if(p_Rev->diffstat.files)
 	{
 		int j;
-		for(j=0;j<p_Rev->diffstat.nr;j++)
+		for (j = 0; j < p_Rev->diffstat.nr; ++j)
 		{
 			if(strcmp(*newname,p_Rev->diffstat.files[j]->name)==0)
 				break;
@@ -674,10 +670,9 @@ int git_create_exclude_list(EXCLUDE_LIST *which)
 
 int git_free_exclude_list(EXCLUDE_LIST which)
 {
-	int i=0;
 	struct exclude_list *p = (struct exclude_list *) which;
 
-	for(i=0; i<p->nr;i++)
+	for (int i = 0; i < p->nr; ++i)
 	{
 		free(p->excludes[i]);
 	}
@@ -720,13 +715,12 @@ static struct cmd_struct commands[] = {
 int git_run_cmd(char *cmd, char *arg)
 {
 
-	int i=0;
 	char ** argv=0;
 	int argc=0;
 
 	git_init();
 
-	for(i=0;i<	sizeof(commands) / sizeof(struct cmd_struct);i++)
+	for (int i = 0; i < sizeof(commands) / sizeof(struct cmd_struct); ++i)
 	{
 		if(strcmp(cmd,commands[i].cmd)==0)
 		{
@@ -1094,8 +1088,7 @@ int git_lookup_mailmap(GIT_MAILMAP mailmap, const char** email1, const char** na
 			if (me->namemap.nr)
 			{
 				const char *author2 = author2_cb(payload);
-				unsigned int j;
-				for (j = 0; j < me->namemap.nr; ++j)
+				for (unsigned int j = 0; j < me->namemap.nr; ++j)
 				{
 					struct string_list_item *sj = (struct string_list_item *)&me->namemap.items[j];
 					struct mailmap_info *mi = (struct mailmap_info *)sj->util;
