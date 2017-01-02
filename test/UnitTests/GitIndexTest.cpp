@@ -226,17 +226,19 @@ TEST(GitIndex, SearchInSortVector)
 	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"something", 9));
 	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"something", -1));
 	EXPECT_EQ(0, SearchInSortVector(vector, L"something", 0)); // do we really need this behavior?
-	EXPECT_EQ(0, SearchInSortVector(vector, L"one", 3));
-	EXPECT_EQ(0, SearchInSortVector(vector, L"one", -1));
+	EXPECT_EQ(0, SearchInSortVector(vector, L"One", 3));
+	EXPECT_EQ(0, SearchInSortVector(vector, L"One", -1));
+	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"One/", 4));
+	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"one", 3));
+	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"one", -1));
 	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"one/", 4));
-	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"One", 3));
 
 	vector.push_back(CGitFileName(L"tWo"));
 	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"something", 9));
-	EXPECT_EQ(0, SearchInSortVector(vector, L"one", 3));
-	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"One", 3));
-	EXPECT_EQ(1, SearchInSortVector(vector, L"two", 3));
-	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"tWo", 3));
+	EXPECT_EQ(0, SearchInSortVector(vector, L"One", 3));
+	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"one", 3));
+	EXPECT_EQ(1, SearchInSortVector(vector, L"tWo", 3));
+	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"two", 3));
 	EXPECT_EQ(1, SearchInSortVector(vector, L"t", 1));
 	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"0", 1));
 	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"z", 1));
@@ -248,13 +250,13 @@ TEST(GitIndex, SearchInSortVector)
 	vector.push_back(CGitFileName(L"b/4"));
 	vector.push_back(CGitFileName(L"b/5"));
 	std::sort(vector.begin(), vector.end(), SortCGitFileName);
-	EXPECT_EQ(2, SearchInSortVector(vector, L"b/2", 3));
-	EXPECT_EQ(2, SearchInSortVector(vector, L"b/2", -1));
+	EXPECT_EQ(0, SearchInSortVector(vector, L"One", 3));
+	EXPECT_EQ(3, SearchInSortVector(vector, L"b/2", 3));
+	EXPECT_EQ(3, SearchInSortVector(vector, L"b/2", -1));
 	EXPECT_EQ(3, SearchInSortVector(vector, L"b/", 2));
 	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"b/6", 3));
-	EXPECT_EQ(0, SearchInSortVector(vector, L"a", 1));
-	EXPECT_EQ(6, SearchInSortVector(vector, L"one", 3));
-	EXPECT_EQ(7, SearchInSortVector(vector, L"two", 3));
+	EXPECT_EQ(1, SearchInSortVector(vector, L"a", 1));
+	EXPECT_EQ(7, SearchInSortVector(vector, L"tWo", 3));
 }
 
 TEST(GitIndex, GetRangeInSortVector)

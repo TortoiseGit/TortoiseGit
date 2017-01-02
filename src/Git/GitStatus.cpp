@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -191,9 +191,6 @@ int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status_
 
 	path.Replace(L'\\', L'/');
 
-	CString lowcasepath = path;
-	lowcasepath.MakeLower();
-
 	git_wc_status_kind st = git_wc_status_none;
 	CGitHash hash;
 
@@ -236,7 +233,7 @@ int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status_
 		SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
 
 		//add item
-		size_t start = SearchInSortVector(*treeptr, lowcasepath, -1);
+		size_t start = SearchInSortVector(*treeptr, path, -1);
 		if (start == NPOS)
 		{
 			*status = st = git_wc_status_added;
@@ -298,11 +295,7 @@ int GitStatus::GetFileList(CString path, std::vector<CGitFileName> &list)
 		if (wcscmp(data.cFileName, L"..") == 0)
 			continue;
 
-		CGitFileName filename;
-
-		filename.m_CaseFileName = filename.m_FileName = data.cFileName;
-		filename.m_FileName.MakeLower();
-
+		CGitFileName filename(data.cFileName);
 		if(data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 			filename.m_FileName += L'/';
 
@@ -343,7 +336,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 		for (auto it = filelist.cbegin(); it != filelist.cend(); ++it)
 		{
 			CString casepath = path;
-			casepath += it->m_CaseFileName;
+			casepath += it->m_FileName;
 
 			bool bIsDir = false;
 			if (!it->m_FileName.IsEmpty() && it->m_FileName[it->m_FileName.GetLength() - 1] == L'/')
@@ -370,15 +363,10 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 		return 0;
 	}
 
-	CString lowcasepath = path;
-	lowcasepath.MakeLower();
-
 	for (auto it = filelist.cbegin(), itend = filelist.cend(); it != itend; ++it)
 	{
-		CString onepath(lowcasepath);
+		CString onepath(path);
 		onepath += it->m_FileName;
-		CString casepath(path);
-		casepath += it->m_CaseFileName;
 
 		bool bIsDir = false;
 		if (!onepath.IsEmpty() && onepath[onepath.GetLength() - 1] == L'/')
@@ -399,24 +387,24 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 			{
 				*status = git_wc_status_unversioned;
 				if (callback)
-					callback(CombinePath(gitdir, casepath), *status, bIsDir, pData, false, false);
+					callback(CombinePath(gitdir, onepath), *status, bIsDir, pData, false, false);
 				continue;
 			}
 
-			g_IgnoreList.CheckAndUpdateIgnoreFiles(gitdir, casepath, bIsDir);
-			if (g_IgnoreList.IsIgnore(casepath, gitdir, bIsDir))
+			g_IgnoreList.CheckAndUpdateIgnoreFiles(gitdir, onepath, bIsDir);
+			if (g_IgnoreList.IsIgnore(onepath, gitdir, bIsDir))
 				*status = git_wc_status_ignored;
 			else
 				*status = git_wc_status_unversioned;
 
 			if (callback)
-				callback(CombinePath(gitdir, casepath), *status, bIsDir, pData, false, false);
+				callback(CombinePath(gitdir, onepath), *status, bIsDir, pData, false, false);
 		}
 		else if (pos == NPOS && posintree != NPOS) /* check if file delete in index */
 		{
 			*status = git_wc_status_deleted;
 			if (callback)
-				callback(CombinePath(gitdir, casepath), *status, bIsDir, pData, false, false);
+				callback(CombinePath(gitdir, onepath), *status, bIsDir, pData, false, false);
 		}
 		else if (pos != NPOS && posintree == NPOS) /* Check if file added */
 		{
@@ -424,7 +412,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 			if ((*indexptr)[pos].m_Flags & GIT_IDXENTRY_STAGEMASK)
 				*status = git_wc_status_conflicted;
 			if (callback)
-				callback(CombinePath(gitdir, casepath), *status, bIsDir, pData, false, false);
+				callback(CombinePath(gitdir, onepath), *status, bIsDir, pData, false, false);
 		}
 		else
 		{
@@ -435,30 +423,30 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 			{
 				*status = git_wc_status_normal;
 				if (callback)
-					callback(CombinePath(gitdir, casepath), *status, bIsDir, pData, false, false);
+					callback(CombinePath(gitdir, onepath), *status, bIsDir, pData, false, false);
 			}
 			else
 			{
 				bool assumeValid = false;
 				bool skipWorktree = false;
 				git_wc_status_kind filestatus;
-				GetFileStatus(gitdir, casepath, &filestatus, IsFul, IsRecursive, IsIgnore, callback, pData, &assumeValid, &skipWorktree);
+				GetFileStatus(gitdir, onepath, &filestatus, IsFul, IsRecursive, IsIgnore, callback, pData, &assumeValid, &skipWorktree);
 			}
 		}
 	}/*End of For*/
 
 	/* Check deleted file in system */
 	size_t start = 0, end = 0;
-	size_t pos = SearchInSortVector(*indexptr, lowcasepath, lowcasepath.GetLength()); // match path prefix, (sub)folders end with slash
+	size_t pos = SearchInSortVector(*indexptr, path, path.GetLength()); // match path prefix, (sub)folders end with slash
 	std::set<CString> skipWorktreeSet;
 
-	if (GetRangeInSortVector(*indexptr, lowcasepath, lowcasepath.GetLength(), &start, &end, pos) == 0)
+	if (GetRangeInSortVector(*indexptr, path, path.GetLength(), &start, &end, pos) == 0)
 	{
 		CString oldstring;
 		for (auto it = indexptr->cbegin() + start, itlast = indexptr->cbegin() + end; it <= itlast; ++it)
 		{
 			auto& entry = *it;
-			int commonPrefixLength = lowcasepath.GetLength();
+			int commonPrefixLength = path.GetLength();
 			int index = entry.m_FileName.Find(L'/', commonPrefixLength);
 			if (index < 0)
 				index = entry.m_FileName.GetLength();
@@ -487,14 +475,14 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 	}
 
 	start = end = 0;
-	pos = SearchInSortVector(*treeptr, lowcasepath, lowcasepath.GetLength()); // match path prefix, (sub)folders end with slash
-	if (GetRangeInSortVector(*treeptr, lowcasepath, lowcasepath.GetLength(), &start, &end, pos) == 0)
+	pos = SearchInSortVector(*treeptr, path, path.GetLength()); // match path prefix, (sub)folders end with slash
+	if (GetRangeInSortVector(*treeptr, path, path.GetLength(), &start, &end, pos) == 0)
 	{
 		CString oldstring;
 		for (auto it = treeptr->cbegin() + start, itlast = treeptr->cbegin() + end; it <= itlast; ++it)
 		{
 			auto& entry = *it;
-			int commonPrefixLength = lowcasepath.GetLength();
+			int commonPrefixLength = path.GetLength();
 			int index = entry.m_FileName.Find(L'/', commonPrefixLength);
 			if (index < 0)
 				index = entry.m_FileName.GetLength();
@@ -540,10 +528,7 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 		return 0;
 	}
 
-	CString lowcasepath = path;
-	lowcasepath.MakeLower();
-
-	size_t pos = SearchInSortVector(*indexptr, lowcasepath, lowcasepath.GetLength());
+	size_t pos = SearchInSortVector(*indexptr, path, path.GetLength());
 
 	// Not In Version Contorl
 	if (pos == NPOS)
@@ -580,7 +565,7 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 	size_t start = 0;
 	size_t end = 0;
 
-	GetRangeInSortVector(*indexptr, lowcasepath, lowcasepath.GetLength(), &start, &end, pos);
+	GetRangeInSortVector(*indexptr, path, path.GetLength(), &start, &end, pos);
 
 	// Check Conflict;
 	for (auto it = indexptr->cbegin() + start, itlast = indexptr->cbegin() + end; indexptr->m_bHasConflicts && it <= itlast; ++it)
@@ -625,14 +610,14 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 				// Check Delete
 				if (*status == git_wc_status_normal)
 				{
-					pos = SearchInSortVector(*treeptr, lowcasepath, lowcasepath.GetLength());
+					pos = SearchInSortVector(*treeptr, path, path.GetLength());
 					if (pos == NPOS)
 						*status = max(git_wc_status_added, *status); // added file found
 					else
 					{
 						size_t hstart, hend;
 						// we know that pos exists in treeptr
-						GetRangeInSortVector(*treeptr, lowcasepath, lowcasepath.GetLength(), &hstart, &hend, pos);
+						GetRangeInSortVector(*treeptr, path, path.GetLength(), &hstart, &hend, pos);
 						for (auto hit = treeptr->cbegin() + hstart, lastElement = treeptr->cbegin() + hend; hit <= lastElement; ++hit)
 						{
 							if (SearchInSortVector(*indexptr, (*hit).m_FileName, -1) == NPOS)

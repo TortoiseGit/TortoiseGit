@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2006,2008,2010,2014 - TortoiseSVN
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -495,7 +495,7 @@ CStatusCacheEntry CGitStatusCache::GetStatusForPath(const CTGitPath& path, DWORD
 	LONGLONG now = (LONGLONG)GetTickCount64();
 	if(now-m_mostRecentExpiresAt < 0)
 	{
-		if(path.IsEquivalentToWithoutCase(m_mostRecentPath))
+		if (path.IsEquivalentTo(m_mostRecentPath))
 			return m_mostRecentStatus;
 	}
 	{

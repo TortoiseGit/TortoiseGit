@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -129,7 +129,6 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 
 		auto& item = (*this)[i];
 		item.m_FileName = CUnicodeUtils::GetUnicode(e->path);
-		item.m_FileName.MakeLower();
 		item.m_ModifyTime = e->mtime.seconds;
 		item.m_Flags = e->flags;
 		item.m_FlagsExtended = e->flags_extended;
@@ -150,7 +149,6 @@ int CGitIndexList::GetFileStatus(const CString &gitdir, const CString &pathorg, 
 		return 0;
 
 	CString path = pathorg;
-	path.MakeLower();
 
 	size_t index = SearchInSortVector(*this, path, -1);
 
@@ -377,8 +375,6 @@ int CGitIndexFileMap::IsUnderVersionControl(const CString& gitdir, CString subpa
 	subpath.Replace(L'\\', L'/');
 	if (isDir)
 		subpath += L'/';
-
-	subpath.MakeLower();
 
 	CheckAndUpdate(gitdir, isLoadUpdateIndex);
 
@@ -668,8 +664,6 @@ int CGitHeadFileList::CallBack(const unsigned char *sha1, const char *base, int 
 	item.m_Hash = sha1;
 	CGit::StringAppend(&item.m_FileName, (BYTE*)base, CP_UTF8, baselen);
 	CGit::StringAppend(&item.m_FileName, (BYTE*)pathname, CP_UTF8);
-
-	item.m_FileName.MakeLower();
 
 	p->push_back(item);
 
@@ -1175,8 +1169,6 @@ int CGitHeadFileMap::IsUnderVersionControl(const CString& gitdir, CString subpat
 	subpath.Replace(L'\\', L'/');
 	if (isDir)
 		subpath += L'/';
-
-	subpath.MakeLower();
 
 	CheckHeadAndUpdate(gitdir);
 
