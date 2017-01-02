@@ -82,7 +82,7 @@ static int convert_slash(char * path)
 	{
 		if(*path == '\\' )
 			*path = '/';
-		path++;
+		++path;
 	}
 	return 0;
 }
@@ -189,7 +189,7 @@ int git_parse_commit(GIT_COMMIT *commit)
 		// the headers end after the first empty line
 		else if (*pbuf == '\n')
 		{
-			pbuf++;
+			++pbuf;
 
 			commit->m_Subject=pbuf;
 			end = strchr(pbuf,'\n');
@@ -207,7 +207,7 @@ int git_parse_commit(GIT_COMMIT *commit)
 
 		pbuf = strchr(pbuf,'\n');
 		if(pbuf)
-			pbuf ++;
+			++pbuf;
 	}
 	return 0;
 }
@@ -306,15 +306,15 @@ char **strtoargv(char *arg, int *size)
 	{
 		if(*p == '\\')
 			*p='/';
-		p++;
+		++p;
 	}
 	p=arg;
 
 	while(*p)
 	{
 		if(*p == ' ')
-			count ++;
-		p++;
+			++count;
+		++p;
 	}
 
 	argv=malloc(strlen(arg)+1 + (count +2)*sizeof(void*));
@@ -331,7 +331,7 @@ char **strtoargv(char *arg, int *size)
 			{
 				if(*arg == '"')
 				{
-					arg++;
+					++arg;
 					if(space == ' ')
 						space = '"';
 					else
@@ -342,12 +342,12 @@ char **strtoargv(char *arg, int *size)
 
 				*p++ = *arg++;
 			}
-			i++;
+			++i;
 			*p++=0;
 		}
 		if(*arg == 0)
 			break;
-		arg++;
+		++arg;
 	}
 	argv[i]=NULL;
 	*size = i;
