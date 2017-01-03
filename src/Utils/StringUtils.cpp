@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2016 - TortoiseGit
+// Copyright (C) 2015-2017 - TortoiseGit
 // Copyright (C) 2003-2011, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -595,6 +595,14 @@ bool CStringUtils::EndsWith(const CString& heystack, const wchar_t needle)
 	if (!lenHeystack)
 		return false;
 	return *((LPCTSTR)heystack + (lenHeystack - 1)) == needle;
+}
+
+bool CStringUtils::EndsWith(const CStringA& heystack, const char needle)
+{
+	auto lenHeystack = heystack.GetLength();
+	if (!lenHeystack)
+		return false;
+	return *((LPCSTR)heystack + (lenHeystack - 1)) == needle;
 }
 
 bool CStringUtils::EndsWithI(const CString& heystack, const wchar_t* needle)

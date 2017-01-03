@@ -23,6 +23,7 @@
 #include "GitStatusCache.h"
 #include "GitStatus.h"
 #include <set>
+#include "StringUtils.h"
 
 CCachedDirectory::CCachedDirectory(void)
 	: m_currentFullStatus(git_wc_status_none)
@@ -57,12 +58,12 @@ BOOL CCachedDirectory::SaveToDisk(FILE * pFile)
 	// now iterate through the maps and save every entry.
 	for (const auto& entry : m_entryCache)
 	{
-		const CString& key = entry.first;
+		const CStringA& key = entry.first;
 		value = key.GetLength();
 		WRITEVALUETOFILE(value);
 		if (value)
 		{
-			if (fwrite((LPCTSTR)key, sizeof(TCHAR), value, pFile)!=value)
+			if (fwrite((LPCSTR)key, sizeof(char), value, pFile) != value)
 				return false;
 			if (!entry.second.SaveToDisk(pFile))
 				return false;
@@ -72,12 +73,12 @@ BOOL CCachedDirectory::SaveToDisk(FILE * pFile)
 	WRITEVALUETOFILE(value);
 	for (const auto& entry : m_childDirectories)
 	{
-		const CString& path = entry.first;
+		const CStringA path = CUnicodeUtils::GetUTF8(entry.first);
 		value = path.GetLength();
 		WRITEVALUETOFILE(value);
 		if (value)
 		{
-			if (fwrite((LPCTSTR)path, sizeof(TCHAR), value, pFile)!=value)
+			if (fwrite((LPCSTR)path, sizeof(char), value, pFile) != value)
 				return false;
 			git_wc_status_kind status = entry.second;
 			WRITEVALUETOFILE(status);
@@ -88,7 +89,7 @@ BOOL CCachedDirectory::SaveToDisk(FILE * pFile)
 	WRITEVALUETOFILE(value);
 	if (value)
 	{
-		if (fwrite(m_directoryPath.GetWinPath(), sizeof(TCHAR), value, pFile)!=value)
+		if (fwrite(m_directoryPath.GetWinPath(), sizeof(TCHAR), value, pFile) != value)
 			return false;
 	}
 	if (!m_ownStatus.SaveToDisk(pFile))
@@ -117,8 +118,8 @@ BOOL CCachedDirectory::LoadFromDisk(FILE * pFile)
 				return false;
 			if (value)
 			{
-				CString sKey;
-				if (fread(sKey.GetBuffer(value+1), sizeof(TCHAR), value, pFile)!=value)
+				CStringA sKey;
+				if (fread(sKey.GetBuffer(value+1), sizeof(char), value, pFile) != value)
 				{
 					sKey.ReleaseBuffer(0);
 					return false;
@@ -140,8 +141,8 @@ BOOL CCachedDirectory::LoadFromDisk(FILE * pFile)
 				return false;
 			if (value)
 			{
-				CString sPath;
-				if (fread(sPath.GetBuffer(value), sizeof(TCHAR), value, pFile)!=value)
+				CStringA sPath;
+				if (fread(sPath.GetBuffer(value), sizeof(char), value, pFile) != value)
 				{
 					sPath.ReleaseBuffer(0);
 					return false;
@@ -228,7 +229,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromCache(const CTGitPath& path, bo
 
 		// Look up a file in our own cache
 		AutoLocker lock(m_critSec);
-		CString strCacheKey = GetCacheKey(path);
+		auto strCacheKey = GetCacheKey(path);
 		CacheEntryMap::iterator itMap = m_entryCache.find(strCacheKey);
 		if(itMap != m_entryCache.end())
 		{
@@ -256,6 +257,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromCache(const CTGitPath& path, bo
 CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, const CString& sProjectRoot, bool isSelf)
 {
 	CString subpaths;
+	CStringA subpathsA;
 	CString s = path.GetGitPathString();
 	if (s.GetLength() > sProjectRoot.GetLength())
 	{
@@ -263,13 +265,14 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, cons
 			subpaths = s.Right(s.GetLength() - sProjectRoot.GetLength() - 1);
 		else
 			subpaths = s.Right(s.GetLength() - sProjectRoot.GetLength());
+		subpathsA = CUnicodeUtils::GetUTF8(subpaths);
 	}
 
 	GitStatus *pGitStatus = &CGitStatusCache::Instance().m_GitStatus;
 	UNREFERENCED_PARAMETER(pGitStatus);
 
 	bool isVersion =true;
-	pGitStatus->IsUnderVersionControl(sProjectRoot, subpaths, path.IsDirectory(), &isVersion);
+	pGitStatus->IsUnderVersionControl(sProjectRoot, subpathsA, path.IsDirectory(), &isVersion);
 	if(!isVersion)
 	{	//untracked file
 		bool isDir = path.IsDirectory();
@@ -287,11 +290,11 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, cons
 				git_wc_status_kind dirstatus = dirEntry->GetCurrentFullStatus() ;
 				if (CGitStatusCache::Instance().IsUnversionedAsModified() || dirstatus == git_wc_status_none || dirstatus >= git_wc_status_normal || isIgnoreFileChanged)
 				{/* status have not initialized*/
-					bool isignore = pGitStatus->IsIgnored(sProjectRoot, subpaths, isDir);
+					bool isignore = pGitStatus->IsIgnored(sProjectRoot, subpathsA, isDir);
 
 					if (!isignore && CGitStatusCache::Instance().IsUnversionedAsModified())
 					{
-						dirEntry->EnumFiles(path, sProjectRoot, subpaths, isSelf);
+						dirEntry->EnumFiles(path, sProjectRoot, subpaths, subpathsA, isSelf);
 						dirEntry->UpdateCurrentStatus();
 						return CStatusCacheEntry(dirEntry->GetCurrentFullStatus());
 					}
@@ -313,7 +316,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, cons
 		else /* path is file */
 		{
 			AutoLocker lock(m_critSec);
-			CString strCacheKey = GetCacheKey(path);
+			auto strCacheKey = GetCacheKey(path);
 
 			if (strCacheKey.IsEmpty())
 				return CStatusCacheEntry();
@@ -322,7 +325,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, cons
 			if(itMap == m_entryCache.end() || isIgnoreFileChanged)
 			{
 				git_wc_status2_t status2;
-				bool isignore = pGitStatus->IsIgnored(sProjectRoot, subpaths, isDir);
+				bool isignore = pGitStatus->IsIgnored(sProjectRoot, subpathsA, isDir);
 				status2.text_status = status2.prop_status =
 					(isignore? git_wc_status_ignored:git_wc_status_unversioned);
 				AddEntry(path, &status2);
@@ -338,7 +341,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, cons
 	}
 	else
 	{
-		EnumFiles(path, sProjectRoot, subpaths, isSelf);
+		EnumFiles(path, sProjectRoot, subpaths, subpathsA, isSelf);
 		UpdateCurrentStatus();
 		if (!path.IsDirectory())
 			return GetCacheStatusForMember(path);
@@ -407,7 +410,7 @@ CStatusCacheEntry CCachedDirectory::GetCacheStatusForMember(const CTGitPath& pat
 	return CStatusCacheEntry();
 }
 
-int CCachedDirectory::EnumFiles(const CTGitPath& path, CString sProjectRoot, const CString& sSubPath, bool isSelf)
+int CCachedDirectory::EnumFiles(const CTGitPath& path, CString sProjectRoot, const CString& sSubPath, const CStringA& sSubPathA, bool isSelf)
 {
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": EnumFiles %s\n", path.GetWinPath());
 
@@ -422,7 +425,7 @@ int CCachedDirectory::EnumFiles(const CTGitPath& path, CString sProjectRoot, con
 	{
 		bool assumeValid = false;
 		bool skipWorktree = false;
-		pStatus->GetFileStatus(sProjectRoot, sSubPath, &status, TRUE, false, true, GetStatusCallback, this, &assumeValid, &skipWorktree);
+		pStatus->GetFileStatus(sProjectRoot, sSubPath, sSubPathA, &status, TRUE, false, true, GetStatusCallback, this, &assumeValid, &skipWorktree);
 		if (status < m_mostImportantFileStatus)
 			RefreshMostImportant();
 	}
@@ -438,7 +441,7 @@ int CCachedDirectory::EnumFiles(const CTGitPath& path, CString sProjectRoot, con
 		}
 
 		m_mostImportantFileStatus = git_wc_status_none;
-		pStatus->EnumDirStatus(sProjectRoot, sSubPath, &status, TRUE, false, true, GetStatusCallback, this);
+		pStatus->EnumDirStatus(sProjectRoot, sSubPathA, &status, TRUE, false, true, GetStatusCallback, this);
 		m_mostImportantFileStatus = GitStatus::GetMoreImportant(m_mostImportantFileStatus, status);
 
 		if (isSelf)
@@ -513,7 +516,7 @@ CCachedDirectory::AddEntry(const CTGitPath& path, const git_wc_status2_t* pGitSt
 			return ;
 
 		AutoLocker lock2(childDir->m_critSec);
-		CString cachekey = GetCacheKey(path);
+		auto cachekey = GetCacheKey(path);
 		CacheEntryMap::iterator entry_it = childDir->m_entryCache.lower_bound(cachekey);
 		if (entry_it != childDir->m_entryCache.end() && entry_it->first == cachekey)
 		{
@@ -550,12 +553,11 @@ CCachedDirectory::AddEntry(const CTGitPath& path, const git_wc_status2_t* pGitSt
 	}
 }
 
-CString
-CCachedDirectory::GetCacheKey(const CTGitPath& path)
+CStringA CCachedDirectory::GetCacheKey(const CTGitPath& path)
 {
 	// All we put into the cache as a key is just the end portion of the pathname
 	// There's no point storing the path of the containing directory for every item
-	return path.GetWinPathString().Mid(m_directoryPath.GetWinPathString().GetLength()).TrimLeft(L'\\');
+	return CUnicodeUtils::GetUTF8(path.GetWinPathString().Mid(m_directoryPath.GetWinPathString().GetLength()).TrimLeft(L'\\'));
 }
 
 CString
@@ -640,7 +642,7 @@ BOOL CCachedDirectory::GetStatusCallback(const CString & path, git_wc_status_kin
 							st = s;
 					}
 					AutoLocker lock(pThis->m_critSec);
-					pThis->m_childDirectories[gitPath.GetWinPathString()] = st;
+					pThis->m_childDirectories[CUnicodeUtils::GetUTF8(gitPath.GetWinPathString())] = st;
 					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": call 1 Update dir %s %d\n", gitPath.GetWinPath(), st);
 				}
 				else
@@ -651,7 +653,7 @@ BOOL CCachedDirectory::GetStatusCallback(const CString & path, git_wc_status_kin
 					CGitStatusCache::Instance().GetDirectoryCacheEntry(gitPath);
 
 					AutoLocker lock(pThis->m_critSec);
-					pThis->m_childDirectories[gitPath.GetWinPathString()] = s;
+					pThis->m_childDirectories[CUnicodeUtils::GetUTF8(gitPath.GetWinPathString())] = s;
 					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": call 2 Update dir %s %d\n", gitPath.GetWinPath(), s);
 				}
 			}
@@ -750,13 +752,13 @@ void CCachedDirectory::UpdateChildDirectoryStatus(const CTGitPath& childDir, git
 	git_wc_status_kind currentStatus = git_wc_status_none;
 	{
 		AutoLocker lock(m_critSec);
-		currentStatus = m_childDirectories[childDir.GetWinPathString()];
+		currentStatus = m_childDirectories[CUnicodeUtils::GetUTF8(childDir.GetWinPathString())];
 	}
 	if ((currentStatus != childStatus)||(!IsOwnStatusValid()))
 	{
 		{
 			AutoLocker lock(m_critSec);
-			m_childDirectories[childDir.GetWinPathString()] = childStatus;
+			m_childDirectories[CUnicodeUtils::GetUTF8(childDir.GetWinPathString())] = childStatus;
 		}
 		UpdateCurrentStatus();
 	}
@@ -795,7 +797,7 @@ void CCachedDirectory::RefreshStatus(bool bRecursive)
 		if (itMembers->first)
 		{
 			CTGitPath filePath(m_directoryPath);
-			filePath.AppendPathString(itMembers->first);
+			filePath.AppendPathString(CUnicodeUtils::GetUnicode(itMembers->first));
 			std::set<CTGitPath>::iterator refr_it;
 			if ((!filePath.IsEquivalentToWithoutCase(m_directoryPath))&&
 				(((refr_it = refreshedpaths.lower_bound(filePath)) == refreshedpaths.end()) || !filePath.IsEquivalentToWithoutCase(*refr_it)))

@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2010 - TortoiseSVN
-// Copyright (C) 2015-2016 - TortoiseGit
+// Copyright (C) 2015-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -117,6 +117,7 @@ public:
 	static bool WriteStringToTextFile(LPCTSTR path, LPCTSTR text, bool bUTF8 = true);
 	static bool EndsWith(const CString& heystack, const wchar_t* needle);
 	static bool EndsWith(const CString& heystack, const wchar_t needle);
+	static bool EndsWith(const CStringA& heystack, const char needle);
 	static bool EndsWithI(const CString& heystack, const wchar_t* needle);
 #endif
 	static bool StartsWith(const wchar_t* heystack, const wchar_t* needle);

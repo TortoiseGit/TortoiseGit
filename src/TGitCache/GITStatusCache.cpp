@@ -31,7 +31,7 @@
 #define BLOCK_PATH_DEFAULT_TIMEOUT	600		// 10 minutes
 #define BLOCK_PATH_MAX_TIMEOUT		1200	// 20 minutes
 
-#define CACHEDISKVERSION 2
+#define CACHEDISKVERSION 3
 
 #ifdef _WIN64
 #define STATUSCACHEFILENAME L"cache64"
@@ -356,7 +356,7 @@ bool CGitStatusCache::RemoveCacheForDirectory(CCachedDirectory * cdir)
 	{
 		for (auto it = cdir->m_childDirectories.begin(); it != cdir->m_childDirectories.end();)
 		{
-			CCachedDirectory * childdir = CGitStatusCache::Instance().GetDirectoryCacheEntryNoCreate(it->first);
+			auto childdir = CGitStatusCache::Instance().GetDirectoryCacheEntryNoCreate(CUnicodeUtils::GetUnicode(it->first));
 			if ((childdir) && (!cdir->m_directoryPath.IsEquivalentTo(childdir->m_directoryPath)) && (cdir->m_directoryPath.GetFileOrDirectoryName() != L".."))
 				RemoveCacheForDirectory(childdir);
 			cdir->m_childDirectories.erase(it->first);

@@ -47,7 +47,7 @@ int CGitIndex::Print()
 		(int)this->m_ModifyTime,
 		this->m_Flags,
 		(LPCTSTR)this->m_IndexHash.ToString(),
-		(LPCTSTR)this->m_FileName);
+		(LPCTSTR)CUnicodeUtils::GetUnicode(m_FileName));
 
 	return 0;
 }
@@ -129,9 +129,9 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 		const git_index_entry *e = git_index_get_byindex(index, i);
 
 		auto& item = (*this)[i];
-		item.m_FileName = CUnicodeUtils::GetUnicode(e->path);
+		item.m_FileName = e->path;
 		if (e->mode & S_IFDIR)
-			item.m_FileName += L'/';
+			item.m_FileName += '/';
 		item.m_ModifyTime = e->mtime.seconds;
 		item.m_Flags = e->flags;
 		item.m_FlagsExtended = e->flags_extended;
@@ -146,14 +146,12 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	return 0;
 }
 
-int CGitIndexList::GetFileStatus(const CString &gitdir, const CString &pathorg, git_wc_status_kind *status, __int64 time, __int64 filesize, FILL_STATUS_CALLBACK callback, void *pData, CGitHash *pHash, bool * assumeValid, bool * skipWorktree)
+int CGitIndexList::GetFileStatus(const CString& gitdir, const CStringA& pathorg, git_wc_status_kind* status, __int64 time, __int64 filesize, FILL_STATUS_CALLBACK callback, void* pData, CGitHash* pHash, bool* assumeValid, bool* skipWorktree)
 {
 	if (!status)
 		return 0;
 
-	CString path = pathorg;
-
-	size_t index = SearchInSortVector(*this, path, -1);
+	size_t index = SearchInSortVector(*this, pathorg, -1);
 
 	if (index == NPOS)
 	{
@@ -196,9 +194,8 @@ int CGitIndexList::GetFileStatus(const CString &gitdir, const CString &pathorg, 
 			return -1;
 
 		git_oid actual;
-		CStringA fileA = CUnicodeUtils::GetMulti(pathorg, CP_UTF8);
 		git_repository_set_config(repository, config);
-		if (!git_repository_hashfile(&actual, repository, fileA, GIT_OBJ_BLOB, nullptr) && !git_oid_cmp(&actual, (const git_oid*)entry.m_IndexHash.m_hash))
+		if (!git_repository_hashfile(&actual, repository, pathorg, GIT_OBJ_BLOB, nullptr) && !git_oid_cmp(&actual, (const git_oid*)entry.m_IndexHash.m_hash))
 		{
 			entry.m_ModifyTime = time;
 			*status = git_wc_status_normal;
@@ -223,7 +220,7 @@ int CGitIndexList::GetFileStatus(const CString &gitdir, const CString &pathorg, 
 	return 0;
 }
 
-int CGitIndexList::GetStatus(const CString& gitdir, CString path, git_wc_status_kind* status,
+int CGitIndexList::GetStatus(const CString& gitdir, CStringA path, git_wc_status_kind* status,
 							 BOOL IsFull, BOOL /*IsRecursive*/,
 							 FILL_STATUS_CALLBACK callback, void *pData,
 							 CGitHash *pHash, bool * assumeValid, bool * skipWorktree)
@@ -256,15 +253,15 @@ int CGitIndexList::GetStatus(const CString& gitdir, CString path, git_wc_status_
 		return 0;
 	}
 
-	if (!path.IsEmpty() && !CStringUtils::EndsWith(path, L'\\'))
-		path += L'\\';
+	if (!path.IsEmpty() && !CStringUtils::EndsWith(path, '\\'))
+		path += '\\';
 
 	int len = path.GetLength();
 
 	for (auto it = cbegin(), itend = cend(); it != itend; ++it)
 	{
 		auto& entry = *it;
-		if (!(entry.m_FileName.GetLength() > len && wcsncmp(entry.m_FileName, path, len) == 0))
+		if (!(entry.m_FileName.GetLength() > len && strncmp(entry.m_FileName, path, len) == 0))
 			continue;
 
 		if (!IsFull)
@@ -355,7 +352,7 @@ int CGitIndexFileMap::LoadIndex(const CString &gitdir)
 	return 0;
 }
 
-int CGitIndexFileMap::GetFileStatus(const CString &gitdir, const CString &path, git_wc_status_kind *status,BOOL IsFull, BOOL IsRecursive,
+int CGitIndexFileMap::GetFileStatus(const CString& gitdir, const CStringA& path, git_wc_status_kind* status, BOOL IsFull, BOOL IsRecursive,
 									FILL_STATUS_CALLBACK callback, void *pData,
 									CGitHash *pHash,
 									bool* assumeValid, bool* skipWorktree)
@@ -374,7 +371,7 @@ int CGitIndexFileMap::GetFileStatus(const CString &gitdir, const CString &path, 
 	return 0;
 }
 
-int CGitIndexFileMap::IsUnderVersionControl(const CString& gitdir, CString subpath, bool isDir, bool* isVersion)
+int CGitIndexFileMap::IsUnderVersionControl(const CString& gitdir, CStringA subpath, bool isDir, bool* isVersion)
 {
 	if (subpath.IsEmpty())
 	{
@@ -669,8 +666,11 @@ int CGitHeadFileList::CallBack(const unsigned char *sha1, const char *base, int 
 
 	CGitTreeItem item;
 	item.m_Hash = sha1;
-	CGit::StringAppend(&item.m_FileName, (BYTE*)base, CP_UTF8, baselen);
-	CGit::StringAppend(&item.m_FileName, (BYTE*)pathname, CP_UTF8);
+	int pathnamelen = (int)strlen(pathname);
+	LPSTR buf = item.m_FileName.GetBuffer(baselen + pathnamelen + 1);
+	strncpy(buf, base, baselen);
+	strncat(buf, pathname, pathnamelen);
+	item.m_FileName.ReleaseBuffer(baselen + pathnamelen);
 	if ((mode & S_IFMT) == S_IFGITLINK)
 		item.m_FileName += L'/';
 
@@ -1056,15 +1056,15 @@ const CString CGitIgnoreList::GetWindowsHome()
 	static CString sWindowsHome(g_Git.GetHomeDirectory());
 	return sWindowsHome;
 }
-bool CGitIgnoreList::IsIgnore(CString str, const CString& projectroot, bool isDir)
+bool CGitIgnoreList::IsIgnore(CString str, CStringA stra, const CString& projectroot, bool isDir)
 {
-	str.Replace(L'\\', L'/');
+	str.Replace(L'\\', L'/'); // Cleanup!
 
 	if (!str.IsEmpty() && str[str.GetLength() - 1] == L'/')
 		str.Truncate(str.GetLength() - 1);
 
 	int ret;
-	ret = CheckIgnore(str, projectroot, isDir);
+	ret = CheckIgnore(str, stra, projectroot, isDir);
 	while (ret < 0)
 	{
 		int start = str.ReverseFind(L'/');
@@ -1072,24 +1072,23 @@ bool CGitIgnoreList::IsIgnore(CString str, const CString& projectroot, bool isDi
 			return (ret == 1);
 
 		str.Truncate(start);
-		ret = CheckIgnore(str, projectroot, isDir);
+		ret = CheckIgnore(str, stra, projectroot, isDir);
 	}
 
 	return (ret == 1);
 }
-int CGitIgnoreList::CheckFileAgainstIgnoreList(const CString &ignorefile, const CStringA &patha, const char * base, int &type)
+int CGitIgnoreList::CheckFileAgainstIgnoreList(const CString& ignorefile, const CStringA& path, const char* base, int& type)
 {
 	if (m_Map.find(ignorefile) == m_Map.end())
 		return -1; // error or undecided
 
-	return (m_Map[ignorefile].IsPathIgnored(patha, base, type));
+	return (m_Map[ignorefile].IsPathIgnored(path, base, type));
 }
-int CGitIgnoreList::CheckIgnore(const CString &path, const CString &projectroot, bool isDir)
+int CGitIgnoreList::CheckIgnore(const CString& path, CStringA patha, const CString& projectroot, bool isDir)
 {
 	CString temp = CombinePath(projectroot, path);
 	temp.Replace(L'/', L'\\');
 
-	CStringA patha = CUnicodeUtils::GetMulti(path, CP_UTF8);
 	patha.Replace('\\', '/');
 
 	int type = 0;
@@ -1165,7 +1164,7 @@ bool CGitHeadFileMap::CheckHeadAndUpdate(const CString &gitdir)
 	return true;
 }
 
-int CGitHeadFileMap::IsUnderVersionControl(const CString& gitdir, CString subpath, bool isDir, bool* isVersion)
+int CGitHeadFileMap::IsUnderVersionControl(const CString& gitdir, CStringA subpath, bool isDir, bool* isVersion)
 {
 	if (subpath.IsEmpty())
 	{

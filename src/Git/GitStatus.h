@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012,2014,2016 - TortoiseGit
+// Copyright (C) 2008-2012,2014,2016-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -81,6 +81,14 @@ static CString CombinePath(const CString& part1, const CString& part2)
 	return path;
 }
 
+static CString CombinePath(const CString& part1, const CStringA& part2)
+{
+	CString path(part1);
+	path += L'\\';
+	path += CUnicodeUtils::GetUnicode(part2);
+	return path;
+}
+
 /**
  * \ingroup Git
  * Handles git status of working copies.
@@ -89,14 +97,14 @@ class GitStatus
 {
 public:
 
-	static int GetFileStatus(const CString& gitdir, CString path, git_wc_status_kind* status, BOOL IsFull = FALSE, BOOL IsRecursive = FALSE, BOOL isIgnore = TRUE, FILL_STATUS_CALLBACK callback = nullptr, void* pData = nullptr, bool* assumeValid = nullptr, bool* skipWorktree = nullptr);
+	static int GetFileStatus(const CString& gitdir, const CString& path, CStringA patha, git_wc_status_kind* status, BOOL IsFull = FALSE, BOOL IsRecursive = FALSE, BOOL isIgnore = TRUE, FILL_STATUS_CALLBACK callback = nullptr, void* pData = nullptr, bool* assumeValid = nullptr, bool* skipWorktree = nullptr);
 	static int GetDirStatus(const CString& gitdir, const CString& path, git_wc_status_kind* status, BOOL IsFull = false, BOOL IsRecursive = false, BOOL isIgnore = true);
-	static int EnumDirStatus(const CString &gitdir, const CString &path, git_wc_status_kind * status, BOOL IsFull = false, BOOL IsRecursive = false, BOOL isIgnore = true, FILL_STATUS_CALLBACK callback = nullptr, void *pData = nullptr);
+	static int EnumDirStatus(const CString& gitdir, const CStringA& path, git_wc_status_kind* status, BOOL IsFull = false, BOOL IsRecursive = false, BOOL isIgnore = true, FILL_STATUS_CALLBACK callback = nullptr, void* pData = nullptr);
 	static int GetFileList(CString path, std::vector<CGitFileName> &list);
 	static bool CheckAndUpdateIgnoreFiles(const CString& gitdir, const CString& subpaths, bool isDir);
-	static int IsUnderVersionControl(const CString &gitdir, const CString &path, bool isDir,bool *isVersion);
+	static int IsUnderVersionControl(const CString& gitdir, const CStringA &path, bool isDir, bool* isVersion);
 	/** Checks whether a file/directory is ignored - does not reload .ignore files */
-	static bool IsIgnored(const CString &gitdir, const CString &path, bool isDir);
+	static bool IsIgnored(const CString& gitdir, const CString& path, const CStringA& patha, bool isDir);
 	static bool IsExistIndexLockFile(CString gitdir);
 	static bool ReleasePath(const CString &gitdir);
 	static bool ReleasePathsRecursively(const CString &rootpath);

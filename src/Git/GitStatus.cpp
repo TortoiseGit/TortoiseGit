@@ -184,17 +184,17 @@ void GitStatus::GetStatus(const CTGitPath& path, bool /*update*/ /* = false */, 
 
 typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 
-int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status_kind* status, BOOL IsFull, BOOL /*IsRecursive*/, BOOL IsIgnore, FILL_STATUS_CALLBACK callback, void* pData, bool* assumeValid, bool* skipWorktree)
+int GitStatus::GetFileStatus(const CString& gitdir, const CString& path, CStringA patha, git_wc_status_kind* status, BOOL IsFull, BOOL /*IsRecursive*/, BOOL IsIgnore, FILL_STATUS_CALLBACK callback, void* pData, bool* assumeValid, bool* skipWorktree)
 {
 	if (!status)
 		return 0;
 
-	path.Replace(L'\\', L'/');
+	patha.Replace('\\', '/');
 
 	git_wc_status_kind st = git_wc_status_none;
 	CGitHash hash;
 
-	g_IndexFileMap.GetFileStatus(gitdir, path, &st, IsFull, false, callback, pData, &hash, assumeValid, skipWorktree);
+	g_IndexFileMap.GetFileStatus(gitdir, patha, &st, IsFull, false, callback, pData, &hash, assumeValid, skipWorktree);
 
 	if (st == git_wc_status_conflicted)
 	{
@@ -215,7 +215,7 @@ int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status_
 		}
 
 		g_IgnoreList.CheckAndUpdateIgnoreFiles(gitdir, path, false);
-		if (g_IgnoreList.IsIgnore(path, gitdir, false))
+		if (g_IgnoreList.IsIgnore(path, patha, gitdir, false))
 			st = git_wc_status_ignored;
 
 		*status = st;
@@ -233,11 +233,11 @@ int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status_
 		SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
 
 		//add item
-		size_t start = SearchInSortVector(*treeptr, path, -1);
+		size_t start = SearchInSortVector(*treeptr, patha, -1);
 		if (start == NPOS)
 		{
 			*status = st = git_wc_status_added;
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": File miss in head tree %s", (LPCTSTR)path);
+			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": File miss in head tree %s", (LPCSTR)patha);
 			if (callback && assumeValid && skipWorktree)
 				callback(CombinePath(gitdir, path), st, false, pData, *assumeValid, *skipWorktree);
 			return 0;
@@ -263,7 +263,7 @@ bool GitStatus::CheckAndUpdateIgnoreFiles(const CString& gitdir, const CString& 
 {
 	return g_IgnoreList.CheckAndUpdateIgnoreFiles(gitdir, subpaths, isDir);
 }
-int GitStatus::IsUnderVersionControl(const CString &gitdir, const CString &path, bool isDir,bool *isVersion)
+int GitStatus::IsUnderVersionControl(const CString& gitdir, const CStringA& path, bool isDir, bool* isVersion)
 {
 	if (g_IndexFileMap.IsUnderVersionControl(gitdir, path, isDir, isVersion))
 		return 1;
@@ -272,9 +272,9 @@ int GitStatus::IsUnderVersionControl(const CString &gitdir, const CString &path,
 	return 0;
 }
 
-bool GitStatus::IsIgnored(const CString& gitdir, const CString& path, bool isDir)
+bool GitStatus::IsIgnored(const CString& gitdir, const CString& path, const CStringA& patha, bool isDir)
 {
-	return g_IgnoreList.IsIgnore(path, gitdir, isDir);
+	return g_IgnoreList.IsIgnore(path, patha, gitdir, isDir);
 }
 
 int GitStatus::GetFileList(CString path, std::vector<CGitFileName> &list)
@@ -295,7 +295,7 @@ int GitStatus::GetFileList(CString path, std::vector<CGitFileName> &list)
 		if (wcscmp(data.cFileName, L"..") == 0)
 			continue;
 
-		CGitFileName filename(data.cFileName);
+		CGitFileName filename(CUnicodeUtils::GetUTF8(data.cFileName));
 		if(data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 			filename.m_FileName += L'/';
 
@@ -309,12 +309,12 @@ int GitStatus::GetFileList(CString path, std::vector<CGitFileName> &list)
 	return 0;
 }
 
-int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_wc_status_kind * status,BOOL IsFul, BOOL IsRecursive, BOOL IsIgnore, FILL_STATUS_CALLBACK callback, void *pData)
+int GitStatus::EnumDirStatus(const CString& gitdir, const CStringA& subpath, git_wc_status_kind* status, BOOL IsFul, BOOL IsRecursive, BOOL IsIgnore, FILL_STATUS_CALLBACK callback, void* pData)
 {
 	if (!status)
 		return 0;
 
-	CString path = subpath;
+	CStringA path = subpath;
 
 	path.Replace(L'\\', L'/');
 	if (!path.IsEmpty() && path[path.GetLength() - 1] != L'/')
@@ -335,7 +335,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 	{
 		for (auto it = filelist.cbegin(); it != filelist.cend(); ++it)
 		{
-			CString casepath = path;
+			CStringA casepath = path;
 			casepath += it->m_FileName;
 
 			bool bIsDir = false;
@@ -365,7 +365,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 
 	for (auto it = filelist.cbegin(), itend = filelist.cend(); it != itend; ++it)
 	{
-		CString onepath(path);
+		CStringA onepath(path);
 		onepath += it->m_FileName;
 
 		bool bIsDir = false;
@@ -438,11 +438,11 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 	/* Check deleted file in system */
 	size_t start = 0, end = 0;
 	size_t pos = SearchInSortVector(*indexptr, path, path.GetLength()); // match path prefix, (sub)folders end with slash
-	std::set<CString> skipWorktreeSet;
+	std::set<CStringA> skipWorktreeSet;
 
 	if (GetRangeInSortVector(*indexptr, path, path.GetLength(), &start, &end, pos) == 0)
 	{
-		CString oldstring;
+		CStringA oldstring;
 		for (auto it = indexptr->cbegin() + start, itlast = indexptr->cbegin() + end; it <= itlast; ++it)
 		{
 			auto& entry = *it;
@@ -453,12 +453,12 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 			else
 				++index; // include slash at the end for subfolders, so that we do not match files by mistake
 
-			CString filename = entry.m_FileName.Mid(commonPrefixLength, index - commonPrefixLength);
+			CStringA filename = entry.m_FileName.Mid(commonPrefixLength, index - commonPrefixLength);
 			if (oldstring != filename)
 			{
 				oldstring = filename;
 				int length = filename.GetLength();
-				if (SearchInSortVector(filelist, filename, filename[length - 1] == L'/' ? length : -1) == NPOS) // do full match for filenames and only prefix-match ending with "/" for folders
+				if (SearchInSortVector(filelist, filename, filename[length - 1] == '/' ? length : -1) == NPOS) // do full match for filenames and only prefix-match ending with "/" for folders
 				{
 					bool skipWorktree = false;
 					*status = git_wc_status_deleted;
@@ -479,7 +479,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 	pos = SearchInSortVector(*treeptr, path, path.GetLength()); // match path prefix, (sub)folders end with slash
 	if (GetRangeInSortVector(*treeptr, path, path.GetLength(), &start, &end, pos) == 0)
 	{
-		CString oldstring;
+		CStringA oldstring;
 		for (auto it = treeptr->cbegin() + start, itlast = treeptr->cbegin() + end; it <= itlast; ++it)
 		{
 			auto& entry = *it;
@@ -490,12 +490,12 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 			else
 				++index; // include slash at the end for subfolders, so that we do not match files by mistake
 
-			CString filename = entry.m_FileName.Mid(commonPrefixLength, index - commonPrefixLength);
+			CStringA filename = entry.m_FileName.Mid(commonPrefixLength, index - commonPrefixLength);
 			if (oldstring != filename && skipWorktreeSet.find(filename) == skipWorktreeSet.cend())
 			{
 				oldstring = filename;
 				int length = filename.GetLength();
-				if (SearchInSortVector(filelist, filename, filename[length - 1] == L'/' ? length : -1) == NPOS) // do full match for filenames and only prefix-match ending with "/" for folders
+				if (SearchInSortVector(filelist, filename, filename[length - 1] == '/' ? length : -1) == NPOS) // do full match for filenames and only prefix-match ending with "/" for folders
 				{
 					*status = git_wc_status_deleted;
 					if (callback)

@@ -28,7 +28,7 @@
 class CGitIndex
 {
 public:
-	CString    m_FileName;
+	CStringA	m_FileName;
 	__time64_t	m_ModifyTime;
 	uint16_t	m_Flags;
 	uint16_t	m_FlagsExtended;
@@ -48,14 +48,14 @@ public:
 	~CGitIndexList();
 
 	int ReadIndex(CString file);
-	int GetStatus(const CString& gitdir, CString path, git_wc_status_kind* status, BOOL IsFull = FALSE, BOOL IsRecursive = FALSE, FILL_STATUS_CALLBACK callback = nullptr, void* pData = nullptr, CGitHash* pHash = nullptr, bool* assumeValid = nullptr, bool* skipWorktree = nullptr);
+	int GetStatus(const CString& gitdir, CStringA path, git_wc_status_kind* status, BOOL IsFull = FALSE, BOOL IsRecursive = FALSE, FILL_STATUS_CALLBACK callback = nullptr, void* pData = nullptr, CGitHash* pHash = nullptr, bool* assumeValid = nullptr, bool* skipWorktree = nullptr);
 #ifdef GTEST_INCLUDE_GTEST_GTEST_H_
 	FRIEND_TEST(GitIndexCBasicGitWithTestRepoFixture, GetFileStatus);
 #endif
 protected:
 	__int64 m_iMaxCheckSize;
 	CAutoConfig config;
-	int GetFileStatus(const CString &gitdir, const CString &path, git_wc_status_kind * status, __int64 time, __int64 filesize, FILL_STATUS_CALLBACK callback = nullptr, void *pData = nullptr, CGitHash *pHash = nullptr, bool * assumeValid = nullptr, bool * skipWorktree = nullptr);
+	int GetFileStatus(const CString& gitdir, const CStringA& path, git_wc_status_kind* status, __int64 time, __int64 filesize, FILL_STATUS_CALLBACK callback = nullptr, void* pData = nullptr, CGitHash* pHash = nullptr, bool* assumeValid = nullptr, bool* skipWorktree = nullptr);
 };
 
 typedef std::shared_ptr<CGitIndexList> SHARED_INDEX_PTR;
@@ -129,14 +129,14 @@ public:
 
 		return false;
 	}
-	int GetFileStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,
+	int GetFileStatus(const CString& gitdir,const CStringA& path,git_wc_status_kind* status,
 							BOOL IsFull=false, BOOL IsRecursive=false,
 							FILL_STATUS_CALLBACK callback = nullptr,
 							void* pData = nullptr, CGitHash* pHash = nullptr,
 							bool* assumeValid = nullptr, bool* skipWorktree = nullptr);
 
 	int IsUnderVersionControl(const CString &gitdir,
-							  CString path,
+							  CStringA path,
 							  bool isDir,
 							  bool *isVersion);
 };
@@ -145,7 +145,7 @@ public:
 class CGitTreeItem
 {
 public:
-	CString	m_FileName;
+	CStringA	m_FileName;
 	CGitHash	m_Hash;
 	int			m_Flags;
 };
@@ -246,22 +246,22 @@ public:
 		return !toRemove.empty();
 	}
 
-	int GetFileStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,
+	int GetFileStatus(const CString& gitdir, const CStringA& path, git_wc_status_kind* status, BOOL IsFull = FALSE, BOOL IsRecursive = FALSE,
 						FILL_STATUS_CALLBACK callback = nullptr, void *pData = nullptr,
 						bool isLoaded=false);
 	bool CheckHeadAndUpdate(const CString& gitdir);
-	int IsUnderVersionControl(const CString& gitdir, CString path, bool isDir, bool* isVersion);
+	int IsUnderVersionControl(const CString& gitdir, CStringA path, bool isDir, bool* isVersion);
 };
 
 class CGitFileName
 {
 public:
 	CGitFileName() {}
-	CGitFileName(LPCTSTR filename)
+	CGitFileName(CStringA filename)
 	: m_FileName(filename)
 	{
 	}
-	CString m_FileName;
+	CStringA m_FileName;
 };
 
 static bool SortCGitFileName(const CGitFileName& item1, const CGitFileName& item2)
@@ -310,8 +310,8 @@ private:
 	bool CheckFileChanged(const CString &path);
 	int FetchIgnoreFile(const CString &gitdir, const CString &gitignore, bool isGlobal);
 
-	int  CheckIgnore(const CString &path, const CString &root, bool isDir);
-	int CheckFileAgainstIgnoreList(const CString &ignorefile, const CStringA &patha, const char * base, int &type);
+	int CheckIgnore(const CString& path, CStringA patha, const CString& root, bool isDir);
+	int CheckFileAgainstIgnoreList(const CString& ignorefile, const CStringA& path, const char* base, int& type);
 
 	// core.excludesfile stuff
 	std::map<CString, CString> m_CoreExcludesfiles;
@@ -334,7 +334,7 @@ public:
 	std::map<CString, CGitIgnoreItem> m_Map;
 
 	bool CheckAndUpdateIgnoreFiles(const CString& gitdir, const CString& path, bool isDir);
-	bool IsIgnore(CString path, const CString& root, bool isDir);
+	bool IsIgnore(CString str, CStringA stra, const CString& root, bool isDir);
 };
 
 static const size_t NPOS = (size_t)-1; // bad/missing length/position
@@ -345,7 +345,7 @@ static_assert(-1 == (int)NPOS, "NPOS must equal -1");
 #pragma warning(pop)
 
 template<class T>
-int GetRangeInSortVector(const T& vector, LPCTSTR pstr, size_t len, size_t* start, size_t* end, size_t pos)
+int GetRangeInSortVector(const T& vector, LPCSTR pstr, size_t len, size_t* start, size_t* end, size_t pos)
 {
 	if (pos == NPOS)
 		return -1;
@@ -360,7 +360,7 @@ int GetRangeInSortVector(const T& vector, LPCTSTR pstr, size_t len, size_t* star
 	if (pos >= vector.size())
 		return -1;
 
-	if (wcsncmp(vector[pos].m_FileName, pstr, len) != 0)
+	if (strncmp(vector[pos].m_FileName, pstr, len) != 0)
 		return -1;
 
 	*start = 0;
@@ -372,14 +372,14 @@ int GetRangeInSortVector(const T& vector, LPCTSTR pstr, size_t len, size_t* star
 
 	for (size_t i = pos; i < vector.size(); ++i)
 	{
-		if (wcsncmp(vector[i].m_FileName, pstr, len) != 0)
+		if (strncmp(vector[i].m_FileName, pstr, len) != 0)
 			break;
 
 		*end = i;
 	}
 	for (size_t i = pos + 1; i-- > 0;)
 	{
-		if (wcsncmp(vector[i].m_FileName, pstr, len) != 0)
+		if (strncmp(vector[i].m_FileName, pstr, len) != 0)
 			break;
 
 		*start = i;
@@ -389,7 +389,7 @@ int GetRangeInSortVector(const T& vector, LPCTSTR pstr, size_t len, size_t* star
 }
 
 template<class T>
-size_t SearchInSortVector(const T& vector, LPCTSTR pstr, int len)
+size_t SearchInSortVector(const T& vector, LPCSTR pstr, int len)
 {
 	size_t end = vector.size() - 1;
 	size_t start = 0;
@@ -402,9 +402,9 @@ size_t SearchInSortVector(const T& vector, LPCTSTR pstr, int len)
 	{
 		int cmp;
 		if(len < 0)
-			cmp = wcscmp(vector[mid].m_FileName, pstr);
+			cmp = strcmp(vector[mid].m_FileName, pstr);
 		else
-			cmp = wcsncmp(vector[mid].m_FileName, pstr, len);
+			cmp = strncmp(vector[mid].m_FileName, pstr, len);
 
 		if (cmp == 0)
 			return mid;
@@ -418,12 +418,12 @@ size_t SearchInSortVector(const T& vector, LPCTSTR pstr, int len)
 	}
 	if(len <0)
 	{
-		if (wcscmp(vector[mid].m_FileName, pstr) == 0)
+		if (strcmp(vector[mid].m_FileName, pstr) == 0)
 			return mid;
 	}
 	else
 	{
-		if (wcsncmp(vector[mid].m_FileName, pstr, len) == 0)
+		if (strncmp(vector[mid].m_FileName, pstr, len) == 0)
 			return mid;
 	}
 	return NPOS;

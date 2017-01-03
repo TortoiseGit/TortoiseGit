@@ -27,7 +27,7 @@
  * Holds the status for a folder and all files and folders directly inside
  * that folder.
  */
-#define GIT_CACHE_VERSION 2
+#define GIT_CACHE_VERSION 3
 
 class CCachedDirectory
 {
@@ -45,7 +45,7 @@ private:
 	CStatusCacheEntry GetCacheStatusForMember(const CTGitPath& path);
 
 	// If path is not emtpy, means fetch special file status.
-	int EnumFiles(const CTGitPath& path, CString sProjectRoot, const CString& sSubPath, bool isSelf);
+	int EnumFiles(const CTGitPath& path, CString sProjectRoot, const CString& sSubPath, const CStringA& sSubPathA, bool isSelf);
 	CStatusCacheEntry GetOwnStatus(bool bRecursive);
 	bool IsOwnStatusValid() const;
 public:
@@ -66,7 +66,7 @@ private:
 //	static git_error_t* GetStatusCallback(void *baton, const char *path, git_wc_status2_t *status);
 	static BOOL GetStatusCallback(const CString & path, git_wc_status_kind status, bool isDir, void * /*pUserData*/, bool assumeValid, bool skipWorktree);
 	void AddEntry(const CTGitPath& path, const git_wc_status2_t* pGitStatus, DWORD validuntil = 0);
-	CString GetCacheKey(const CTGitPath& path);
+	CStringA GetCacheKey(const CTGitPath& path);
 	CString GetFullPathString(const CString& cacheKey);
 	CStatusCacheEntry LookForItemInCache(const CTGitPath& path, bool &bFound);
 	void UpdateChildDirectoryStatus(const CTGitPath& childDir, git_wc_status_kind childStatus);
@@ -82,12 +82,12 @@ private:
 	CComAutoCriticalSection m_critSec;
 
 	// The cache of files and directories within this directory
-	typedef std::map<CString, CStatusCacheEntry> CacheEntryMap;
+	typedef std::map<CStringA, CStatusCacheEntry> CacheEntryMap;
 	CacheEntryMap m_entryCache;
 	CacheEntryMap m_entryCache_tmp; // used for updating m_entryCache and removing "removed" entries
 
 	/// A vector if iterators to child directories - used to put-together recursive status
-	typedef std::map<CString, git_wc_status_kind>  ChildDirStatus;
+	typedef std::map<CStringA, git_wc_status_kind> ChildDirStatus;
 	ChildDirStatus m_childDirectories;
 
 	// The path of the directory with this object looks after
