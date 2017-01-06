@@ -295,10 +295,10 @@
 				<term>Symbolize ref names</term>
 				<listitem>
 					<para>
-						Show symbols on ref labels to substitute part of the ref names.
+						Show symbols on ref labels to substitute part of the ref namesin order to make them smaller.
 						If this option is enabled, the following description and example will apply.
-						If there is only a single remote, a lightning symbol will substitute the remote name part of each remote branch.
-						If the remote branch is the upstream of a local branch, an up triangle symbol will substitute the branch name part of the remote branch.
+						If there is only a single remote, an up-arrow symbol (↑) will substitute the remote name part of each remote branch.
+						If the remote branch is the upstream of a local branch, an equivalent symbol (≡) will substitute the branch name part of the remote branch.
 						<figure id="tgit-dug-settings-symbolizerefname-example">
 							<title>Example of Symbolize ref names</title>
 							<graphic fileref="../images/SymbolizeRefNamesExample.png"/>
