@@ -350,9 +350,9 @@ int CGitIndexFileMap::LoadIndex(const CString &gitdir)
 int CGitIndexFileMap::GetFileStatus(const CString &gitdir, const CString &path, git_wc_status_kind *status,BOOL IsFull, BOOL IsRecursive,
 									FILL_STATUS_CALLBACK callback, void *pData,
 									CGitHash *pHash,
-									bool isLoadUpdatedIndex, bool * assumeValid, bool * skipWorktree)
+									bool* assumeValid, bool* skipWorktree)
 {
-	CheckAndUpdate(gitdir, isLoadUpdatedIndex);
+	CheckAndUpdate(gitdir);
 
 	SHARED_INDEX_PTR pIndex = this->SafeGet(gitdir);
 	if (pIndex)
@@ -366,7 +366,7 @@ int CGitIndexFileMap::GetFileStatus(const CString &gitdir, const CString &path, 
 	return 0;
 }
 
-int CGitIndexFileMap::IsUnderVersionControl(const CString& gitdir, CString subpath, bool isDir, bool* isVersion, bool isLoadUpdateIndex)
+int CGitIndexFileMap::IsUnderVersionControl(const CString& gitdir, CString subpath, bool isDir, bool* isVersion)
 {
 	if (subpath.IsEmpty())
 	{
@@ -378,7 +378,7 @@ int CGitIndexFileMap::IsUnderVersionControl(const CString& gitdir, CString subpa
 	if (isDir)
 		subpath += L'/';
 
-	CheckAndUpdate(gitdir, isLoadUpdateIndex);
+	CheckAndUpdate(gitdir);
 
 	SHARED_INDEX_PTR pIndex = this->SafeGet(gitdir);
 

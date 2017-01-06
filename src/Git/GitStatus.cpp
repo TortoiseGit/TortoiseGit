@@ -194,7 +194,7 @@ int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status_
 	git_wc_status_kind st = git_wc_status_none;
 	CGitHash hash;
 
-	g_IndexFileMap.GetFileStatus(gitdir, path, &st, IsFull, false, callback, pData, &hash, true, assumeValid, skipWorktree);
+	g_IndexFileMap.GetFileStatus(gitdir, path, &st, IsFull, false, callback, pData, &hash, assumeValid, skipWorktree);
 
 	if (st == git_wc_status_conflicted)
 	{
@@ -323,7 +323,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 	std::vector<CGitFileName> filelist;
 	GetFileList(CombinePath(gitdir, subpath), filelist);
 
-	g_IndexFileMap.CheckAndUpdate(gitdir,true);
+	g_IndexFileMap.CheckAndUpdate(gitdir);
 
 	g_HeadFileMap.CheckHeadAndUpdate(gitdir);
 
@@ -520,7 +520,7 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 	if (!path.IsEmpty() && path[path.GetLength() - 1] != L'/')
 		path += L'/'; //Add trail / to show it is directory, not file name.
 
-	g_IndexFileMap.CheckAndUpdate(gitdir, true);
+	g_IndexFileMap.CheckAndUpdate(gitdir);
 
 	SHARED_INDEX_PTR indexptr = g_IndexFileMap.SafeGet(gitdir);
 

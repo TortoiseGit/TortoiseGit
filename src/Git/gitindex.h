@@ -116,13 +116,13 @@ public:
 	int Check(const CString &gitdir, bool *isChanged);
 	int LoadIndex(const CString &gitdir);
 
-	bool CheckAndUpdate(const CString &gitdir,bool isLoadUpdatedIndex)
+	bool CheckAndUpdate(const CString& gitdir)
 	{
 		bool isChanged=false;
-		if(isLoadUpdatedIndex && Check(gitdir,&isChanged))
+		if (Check(gitdir, &isChanged))
 			return false;
 
-		if(isChanged && isLoadUpdatedIndex)
+		if (isChanged)
 		{
 			LoadIndex(gitdir);
 			return true;
@@ -134,13 +134,12 @@ public:
 							BOOL IsFull=false, BOOL IsRecursive=false,
 							FILL_STATUS_CALLBACK callback = nullptr,
 							void* pData = nullptr, CGitHash* pHash = nullptr,
-							bool isLoadUpdatedIndex = true, bool* assumeValid = nullptr, bool* skipWorktree = nullptr);
+							bool* assumeValid = nullptr, bool* skipWorktree = nullptr);
 
 	int IsUnderVersionControl(const CString &gitdir,
 							  CString path,
 							  bool isDir,
-							  bool *isVersion,
-							  bool isLoadUpdateIndex=true);
+							  bool *isVersion);
 };
 
 
