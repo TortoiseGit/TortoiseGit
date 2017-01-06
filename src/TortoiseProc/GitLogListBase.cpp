@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2016 - TortoiseGit
 // Copyright (C) 2005-2007 Marco Costalba
@@ -484,26 +484,18 @@ void DrawTrackingRoundRect(HDC hdc, CRect rect, HBRUSH brush, COLORREF darkColor
 	::DeleteObject(darkBrush);
 }
 
-void DrawLightning(HDC hdc, CRect rect, COLORREF color, int bold)
+void DrawUpstream(HDC hdc, CRect rect, COLORREF color, int bold)
 {
 	HPEN pen = ::CreatePen(PS_SOLID, bold, color);
 	HPEN oldpen = (HPEN)::SelectObject(hdc, pen);
-	::MoveToEx(hdc, rect.left + 7, rect.top, nullptr);
-	::LineTo(hdc, rect.left + 1, (rect.top + rect.bottom) / 2);
-	::LineTo(hdc, rect.left + 6, (rect.top + rect.bottom) / 2);
-	::LineTo(hdc, rect.left, rect.bottom);
-	::SelectObject(hdc, oldpen);
-	::DeleteObject(pen);
-}
-
-void DrawUpTriangle(HDC hdc, CRect rect, COLORREF color, int bold)
-{
-	HPEN pen = ::CreatePen(PS_SOLID, bold, color);
-	HPEN oldpen = (HPEN)::SelectObject(hdc, pen);
-	::MoveToEx(hdc, (rect.left + rect.right) / 2, rect.top, nullptr);
-	::LineTo(hdc, rect.left, rect.bottom);
-	::LineTo(hdc, rect.right, rect.bottom);
-	::LineTo(hdc, (rect.left + rect.right) / 2, rect.top);
+	::MoveToEx(hdc, rect.left + 2 + bold, rect.top + 2 - bold, nullptr);
+	::LineTo(hdc, rect.left + 2 + bold, rect.bottom + 1 - bold);
+	::MoveToEx(hdc, rect.left + 3, rect.top + 1, nullptr);
+	::LineTo(hdc, rect.left, rect.top + 4);
+	::MoveToEx(hdc, rect.left + 2 + bold, rect.top + 1, nullptr);
+	::LineTo(hdc, rect.right + 1 + bold, rect.top + 4);
+	::MoveToEx(hdc, rect.left + 1, rect.top + 2 + bold, nullptr);
+	::LineTo(hdc, rect.right + 1 + bold, rect.top + 2 + bold);
 	::SelectObject(hdc, oldpen);
 	::DeleteObject(pen);
 }
@@ -596,7 +588,6 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CDC& W_Dc, HTHEME hTheme, CRect& re
 		COLORREF colRef = refList[i].color;
 		bool singleRemote = refList[i].singleRemote;
 		bool hasTracking = refList[i].hasTracking;
-		bool sameName = refList[i].sameName;
 		CGit::REF_TYPE refType = refList[i].refType;
 
 		//When row selected, ajust label color
@@ -628,12 +619,9 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CDC& W_Dc, HTHEME hTheme, CRect& re
 
 			if (singleRemote)
 			{
-				rt.right += 8;
-				textRect.OffsetRect(8, 0);
+				rt.right += 5;
+				textRect.OffsetRect(5, 0);
 			}
-
-			if (sameName)
-				rt.right += 8;
 
 			if (hasTracking)
 				DrawTrackingRoundRect(hdc, rt, brush, m_Colors.Darken(colRef, 100));
@@ -712,17 +700,8 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CDC& W_Dc, HTHEME hTheme, CRect& re
 				COLORREF color = ::GetSysColor(customColor ? COLOR_HIGHLIGHTTEXT : COLOR_WINDOWTEXT);
 				int bold = data->m_CommitHash == m_HeadHash ? 2 : 1;
 				CRect newRect;
-				newRect.SetRect(rt.left + 4, rt.top + 4, rt.left + 8, rt.bottom - 4);
-				DrawLightning(hdc, newRect, color, bold);
-			}
-
-			if (sameName)
-			{
-				COLORREF color = ::GetSysColor(customColor ? COLOR_HIGHLIGHTTEXT : COLOR_WINDOWTEXT);
-				int bold = data->m_CommitHash == m_HeadHash ? 2 : 1;
-				CRect newRect;
-				newRect.SetRect(rt.right - 12, rt.top + 4, rt.right - 4, rt.bottom - 4);
-				DrawUpTriangle(hdc, newRect, color, bold);
+				newRect.SetRect(rt.left + 2, rt.top + 4, rt.left + 6, rt.bottom - 4);
+				DrawUpstream(hdc, newRect, color, bold);
 			}
 
 			if (!refList[i].fullName.IsEmpty())
@@ -1316,11 +1295,15 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 											{
 												if (!m_SingleRemote.IsEmpty() && m_SingleRemote == pullRemote)
 												{
-													refLabel.simplifiedName = L'/' + (sameName ? CString() : pullBranch);
+													refLabel.simplifiedName = L'/';
+													if (sameName)
+														refLabel.simplifiedName += L'≡';
+													else
+														refLabel.simplifiedName += pullBranch;
 													refLabel.singleRemote = true;
 												}
 												else if (sameName)
-													refLabel.simplifiedName = pullRemote + L'/';
+													refLabel.simplifiedName = pullRemote + L"/≡";
 												refLabel.sameName = sameName;
 											}
 											refLabel.fullName = defaultUpstream;
