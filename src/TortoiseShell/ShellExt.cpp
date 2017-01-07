@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2016 - TortoiseGit
+// Copyright (C) 2011-2017 - TortoiseGit
 // Copyright (C) 2003-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -74,24 +74,14 @@ void LoadLangDll()
 		TCHAR langDll[MAX_PATH*4] = {0};
 		HINSTANCE hInst = nullptr;
 		TCHAR langdir[MAX_PATH] = {0};
-		char langdirA[MAX_PATH] = {0};
 		if (GetModuleFileName(g_hmodThisDll, langdir, _countof(langdir))==0)
 			return;
-		if (GetModuleFileNameA(g_hmodThisDll, langdirA, _countof(langdirA))==0)
-			return;
 		TCHAR* dirpoint = wcsrchr(langdir, L'\\');
-		char * dirpointA = strrchr(langdirA, '\\');
 		if (dirpoint)
 			*dirpoint = L'\0';
-		if (dirpointA)
-			*dirpointA = '\0';
 		dirpoint = wcsrchr(langdir, L'\\');
-		dirpointA = strrchr(langdirA, '\\');
 		if (dirpoint)
 			*dirpoint = L'\0';
-		if (dirpointA)
-			*dirpointA = '\0';
-		strcat_s(langdirA, "\\Languages");
 
 		BOOL bIsWow = FALSE;
 		IsWow64Process(GetCurrentProcess(), &bIsWow);
