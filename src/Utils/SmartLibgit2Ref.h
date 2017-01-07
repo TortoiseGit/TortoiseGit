@@ -125,11 +125,8 @@ private:
 protected:
 	void CleanUp()
 	{
-		if (IsValid())
-		{
-			FreeFunction(m_Ref);
-			m_Ref = nullptr;
-		}
+		FreeFunction(m_Ref);
+		m_Ref = nullptr;
 	}
 
 	ReferenceType* m_Ref;
