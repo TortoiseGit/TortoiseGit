@@ -69,7 +69,7 @@ public:
 
 	~CSmartLibgit2Ref()
 	{
-		CleanUp();
+		Free();
 	}
 
 	void Swap(CSmartLibgit2Ref& tmp)
@@ -83,7 +83,8 @@ public:
 
 	void Free()
 	{
-		CleanUp();
+		FreeFunction(m_Ref);
+		m_Ref = nullptr;
 	}
 
 	ReferenceType* Detach()
@@ -104,7 +105,7 @@ public:
 	 */
 	ReferenceType** GetPointer()
 	{
-		CleanUp();
+		Free();
 		return &m_Ref;
 	}
 
@@ -123,12 +124,6 @@ private:
 	CSmartLibgit2Ref& operator=(const CSmartLibgit2Ref&) = delete;
 
 protected:
-	void CleanUp()
-	{
-		FreeFunction(m_Ref);
-		m_Ref = nullptr;
-	}
-
 	ReferenceType* m_Ref;
 };
 
@@ -216,7 +211,7 @@ public:
 	{
 		if (m_Ref != (git_tree*)(git_object*)h)
 		{
-			CleanUp();
+			Free();
 			m_Ref = (git_tree*)h.Detach();
 		}
 	}
@@ -244,7 +239,7 @@ public:
 
 	void New()
 	{
-		CleanUp();
+		Free();
 		git_config_new(&m_Ref);
 	}
 
