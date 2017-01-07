@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014-2016 - TortoiseGit
+// Copyright (C) 2014-2017 - TortoiseGit
 // based on SmartHandle of TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -24,7 +24,7 @@
 * \ingroup Utils
 * Helper classes for libgit2 references.
 */
-template <typename HandleType, class FreeFunction>
+template <typename HandleType, void FreeFunction(HandleType*)>
 class CSmartBuffer
 {
 public:
@@ -45,43 +45,31 @@ public:
 
 	~CSmartBuffer()
 	{
-		FreeFunction::Free(&m_Ref);
+		FreeFunction(&m_Ref);
 	}
 
 private:
 	CSmartBuffer(const CSmartBuffer&) = delete;
 	CSmartBuffer& operator=(const CSmartBuffer&) = delete;
 
-protected:
 	HandleType m_Ref;
 };
 
-struct CFreeBuf
-{
-	static void Free(git_buf* ref)
-	{
-		git_buf_free(ref);
-	}
-};
+typedef CSmartBuffer<git_buf,			git_buf_free>						CAutoBuf;
+typedef CSmartBuffer<git_strarray,		git_strarray_free>					CAutoStrArray;
 
-struct CFreeStrArray
-{
-	static void Free(git_strarray* ref)
-	{
-		git_strarray_free(ref);
-	}
-};
-
-typedef CSmartBuffer<git_buf, CFreeBuf>	CAutoBuf;
-typedef CSmartBuffer<git_strarray, CFreeStrArray>	CAutoStrArray;
-
-template <typename ReferenceType>
+template <typename ReferenceType, void FreeFunction(ReferenceType*)>
 class CSmartLibgit2Ref
 {
 public:
 	CSmartLibgit2Ref()
 		: m_Ref(nullptr)
 	{
+	}
+
+	~CSmartLibgit2Ref()
+	{
+		CleanUp();
 	}
 
 	void Swap(CSmartLibgit2Ref& tmp)
@@ -135,13 +123,11 @@ private:
 	CSmartLibgit2Ref& operator=(const CSmartLibgit2Ref&) = delete;
 
 protected:
-	virtual void FreeRef() = 0;
-
 	void CleanUp()
 	{
 		if (IsValid())
 		{
-			FreeRef();
+			FreeFunction(m_Ref);
 			m_Ref = nullptr;
 		}
 	}
@@ -149,7 +135,26 @@ protected:
 	ReferenceType* m_Ref;
 };
 
-class CAutoRepository : public CSmartLibgit2Ref<git_repository>
+typedef CSmartLibgit2Ref<git_object,				git_object_free>				CAutoObject;
+typedef CSmartLibgit2Ref<git_submodule,				git_submodule_free>				CAutoSubmodule;
+typedef CSmartLibgit2Ref<git_blob,					git_blob_free>					CAutoBlob;
+typedef CSmartLibgit2Ref<git_reference,				git_reference_free>				CAutoReference;
+typedef CSmartLibgit2Ref<git_tag,					git_tag_free>					CAutoTag;
+typedef CSmartLibgit2Ref<git_tree_entry,			git_tree_entry_free>			CAutoTreeEntry;
+typedef CSmartLibgit2Ref<git_diff,					git_diff_free>					CAutoDiff;
+typedef CSmartLibgit2Ref<git_patch,					git_patch_free>					CAutoPatch;
+typedef CSmartLibgit2Ref<git_diff_stats,			git_diff_stats_free>			CAutoDiffStats;
+typedef CSmartLibgit2Ref<git_index,					git_index_free>					CAutoIndex;
+typedef CSmartLibgit2Ref<git_remote,				git_remote_free>				CAutoRemote;
+typedef CSmartLibgit2Ref<git_reflog,				git_reflog_free>				CAutoReflog;
+typedef CSmartLibgit2Ref<git_revwalk,				git_revwalk_free>				CAutoRevwalk;
+typedef CSmartLibgit2Ref<git_branch_iterator,		git_branch_iterator_free>		CAutoBranchIterator;
+typedef CSmartLibgit2Ref<git_reference_iterator,	git_reference_iterator_free>	CAutoReferenceIterator;
+typedef CSmartLibgit2Ref<git_describe_result,		git_describe_result_free>		CAutoDescribeResult;
+typedef CSmartLibgit2Ref<git_status_list,			git_status_list_free>			CAutoStatusList;
+typedef CSmartLibgit2Ref<git_note,					git_note_free>					CAutoNote;
+
+class CAutoRepository : public CSmartLibgit2Ref<git_repository, git_repository_free>
 {
 public:
 	CAutoRepository() {};
@@ -179,11 +184,6 @@ public:
 		return Open(CUnicodeUtils::GetUTF8(gitDir));
 	}
 
-	~CAutoRepository()
-	{
-		CleanUp();
-	}
-
 private:
 	CAutoRepository(const CAutoRepository&) = delete;
 	CAutoRepository& operator=(const CAutoRepository&) = delete;
@@ -193,35 +193,9 @@ protected:
 	{
 		return git_repository_open(GetPointer(), gitDirA);
 	}
-
-	virtual void FreeRef()
-	{
-		git_repository_free(m_Ref);
-	}
 };
 
-class CAutoSubmodule : public CSmartLibgit2Ref<git_submodule>
-{
-public:
-	CAutoSubmodule() {};
-
-	~CAutoSubmodule()
-	{
-		CleanUp();
-	}
-
-private:
-	CAutoSubmodule(const CAutoSubmodule&) = delete;
-	CAutoSubmodule& operator=(const CAutoSubmodule&) = delete;
-
-protected:
-	virtual void FreeRef()
-	{
-		git_submodule_free(m_Ref);
-	}
-};
-
-class CAutoCommit : public CSmartLibgit2Ref<git_commit>
+class CAutoCommit : public CSmartLibgit2Ref<git_commit, git_commit_free>
 {
 public:
 	CAutoCommit() {}
@@ -231,45 +205,12 @@ public:
 		m_Ref = h;
 	}
 
-	~CAutoCommit()
-	{
-		CleanUp();
-	}
-
 private:
 	CAutoCommit(const CAutoCommit&) = delete;
 	CAutoCommit& operator=(const CAutoCommit&) = delete;
-
-protected:
-	virtual void FreeRef()
-	{
-		git_commit_free(m_Ref);
-	}
 };
 
-class CAutoObject : public CSmartLibgit2Ref<git_object>
-{
-public:
-	CAutoObject() {};
-
-	~CAutoObject()
-	{
-		CleanUp();
-	}
-
-private:
-	CAutoObject(const CAutoObject&) = delete;
-	CAutoObject& operator=(const CAutoObject&) = delete;
-
-protected:
-	virtual void FreeRef()
-	{
-		git_object_free(m_Ref);
-	}
-};
-
-
-class CAutoTree : public CSmartLibgit2Ref<git_tree>
+class CAutoTree : public CSmartLibgit2Ref<git_tree, git_tree_free>
 {
 public:
 	CAutoTree() {};
@@ -283,44 +224,12 @@ public:
 		}
 	}
 
-	~CAutoTree()
-	{
-		CleanUp();
-	}
-
 private:
 	CAutoTree(const CAutoTree&) = delete;
 	CAutoTree& operator=(const CAutoTree&) = delete;
-
-protected:
-	virtual void FreeRef()
-	{
-		git_tree_free(m_Ref);
-	}
 };
 
-class CAutoBlob : public CSmartLibgit2Ref<git_blob>
-{
-public:
-	CAutoBlob() {};
-
-	~CAutoBlob()
-	{
-		CleanUp();
-	}
-
-private:
-	CAutoBlob(const CAutoBlob&) = delete;
-	CAutoBlob& operator=(const CAutoBlob&) = delete;
-
-protected:
-	virtual void FreeRef()
-	{
-		git_blob_free(m_Ref);
-	}
-};
-
-class CAutoConfig : public CSmartLibgit2Ref<git_config>
+class CAutoConfig : public CSmartLibgit2Ref<git_config, git_config_free>
 {
 public:
 	CAutoConfig() {}
@@ -340,11 +249,6 @@ public:
 	{
 		CleanUp();
 		git_config_new(&m_Ref);
-	}
-
-	~CAutoConfig()
-	{
-		CleanUp();
 	}
 
 	int GetString(const CString &key, CString &value) const
@@ -391,335 +295,4 @@ public:
 private:
 	CAutoConfig(const CAutoConfig&) = delete;
 	CAutoConfig& operator=(const CAutoConfig&) = delete;
-
-protected:
-	virtual void FreeRef()
-	{
-		git_config_free(m_Ref);
-	}
-};
-
-class CAutoReference : public CSmartLibgit2Ref<git_reference>
-{
-public:
-	CAutoReference() {}
-
-	explicit CAutoReference(git_reference*&& h)
-	{
-		m_Ref = h;
-	}
-
-	~CAutoReference()
-	{
-		CleanUp();
-	}
-
-private:
-	CAutoReference(const CAutoReference&) = delete;
-	CAutoReference& operator=(const CAutoReference&) = delete;
-
-protected:
-	virtual void FreeRef()
-	{
-		git_reference_free(m_Ref);
-	}
-};
-
-class CAutoTag : public CSmartLibgit2Ref<git_tag>
-{
-public:
-	CAutoTag() {}
-
-	explicit CAutoTag(git_tag*&& h)
-	{
-		m_Ref = h;
-	}
-
-	~CAutoTag()
-	{
-		CleanUp();
-	}
-
-private:
-	CAutoTag(const CAutoTag&) = delete;
-	CAutoTag& operator=(const CAutoTag&) = delete;
-
-protected:
-	virtual void FreeRef()
-	{
-		git_tag_free(m_Ref);
-	}
-};
-
-class CAutoTreeEntry : public CSmartLibgit2Ref<git_tree_entry>
-{
-public:
-	CAutoTreeEntry() {};
-
-	~CAutoTreeEntry()
-	{
-		CleanUp();
-	}
-
-private:
-	CAutoTreeEntry(const CAutoTreeEntry&) = delete;
-	CAutoTreeEntry& operator=(const CAutoTreeEntry&) = delete;
-
-protected:
-	virtual void FreeRef()
-	{
-		git_tree_entry_free(m_Ref);
-	}
-};
-
-class CAutoDiff : public CSmartLibgit2Ref<git_diff>
-{
-public:
-	CAutoDiff() {};
-
-	~CAutoDiff()
-	{
-		CleanUp();
-	}
-
-private:
-	CAutoDiff(const CAutoDiff&) = delete;
-	CAutoDiff& operator=(const CAutoDiff&) = delete;
-
-protected:
-	virtual void FreeRef()
-	{
-		git_diff_free(m_Ref);
-	}
-};
-
-class CAutoPatch : public CSmartLibgit2Ref<git_patch>
-{
-public:
-	CAutoPatch() {};
-
-	~CAutoPatch()
-	{
-		CleanUp();
-	}
-
-private:
-	CAutoPatch(const CAutoPatch&) = delete;
-	CAutoPatch& operator=(const CAutoPatch&) = delete;
-
-protected:
-	virtual void FreeRef()
-	{
-		git_patch_free(m_Ref);
-	}
-};
-
-class CAutoDiffStats : public CSmartLibgit2Ref<git_diff_stats>
-{
-public:
-	CAutoDiffStats() {};
-
-	~CAutoDiffStats()
-	{
-		CleanUp();
-	}
-
-private:
-	CAutoDiffStats(const CAutoDiffStats&) = delete;
-	CAutoDiffStats& operator=(const CAutoDiffStats&) = delete;
-
-protected:
-	virtual void FreeRef()
-	{
-		git_diff_stats_free(m_Ref);
-	}
-};
-
-class CAutoIndex : public CSmartLibgit2Ref<git_index>
-{
-public:
-	CAutoIndex() {};
-
-	~CAutoIndex()
-	{
-		CleanUp();
-	}
-
-private:
-	CAutoIndex(const CAutoIndex& that);
-	CAutoIndex& operator=(const CAutoIndex& that);
-
-protected:
-	virtual void FreeRef()
-	{
-		git_index_free(m_Ref);
-	}
-};
-
-class CAutoRemote : public CSmartLibgit2Ref<git_remote>
-{
-public:
-	CAutoRemote() {};
-
-	~CAutoRemote()
-	{
-		CleanUp();
-	}
-
-private:
-	CAutoRemote(const CAutoRemote&) = delete;
-	CAutoRemote& operator=(const CAutoRemote&) = delete;
-
-protected:
-	virtual void FreeRef()
-	{
-		git_remote_free(m_Ref);
-	}
-};
-
-class CAutoReflog : public CSmartLibgit2Ref<git_reflog>
-{
-public:
-	CAutoReflog() {};
-
-	~CAutoReflog()
-	{
-		CleanUp();
-	}
-
-private:
-	CAutoReflog(const CAutoReflog&) = delete;
-	CAutoReflog& operator=(const CAutoReflog&) = delete;
-
-protected:
-	virtual void FreeRef()
-	{
-		git_reflog_free(m_Ref);
-	}
-};
-
-class CAutoRevwalk : public CSmartLibgit2Ref<git_revwalk>
-{
-public:
-	CAutoRevwalk() {};
-
-	~CAutoRevwalk()
-	{
-		CleanUp();
-	}
-
-private:
-	CAutoRevwalk(const CAutoRevwalk&) = delete;
-	CAutoRevwalk& operator=(const CAutoRevwalk&) = delete;
-
-protected:
-	virtual void FreeRef()
-	{
-		git_revwalk_free(m_Ref);
-	}
-};
-
-class CAutoBranchIterator : public CSmartLibgit2Ref<git_branch_iterator>
-{
-public:
-	CAutoBranchIterator() {};
-
-	~CAutoBranchIterator()
-	{
-		CleanUp();
-	}
-
-private:
-	CAutoBranchIterator(const CAutoBranchIterator&) = delete;
-	CAutoBranchIterator& operator=(const CAutoBranchIterator&) = delete;
-
-protected:
-	virtual void FreeRef()
-	{
-		git_branch_iterator_free(m_Ref);
-	}
-};
-
-class CAutoReferenceIterator : public CSmartLibgit2Ref<git_reference_iterator>
-{
-public:
-	CAutoReferenceIterator() {};
-
-	~CAutoReferenceIterator()
-	{
-		CleanUp();
-	}
-
-private:
-	CAutoReferenceIterator(const CAutoReferenceIterator&) = delete;
-	CAutoReferenceIterator& operator=(const CAutoReferenceIterator&) = delete;
-
-protected:
-	virtual void FreeRef()
-	{
-		git_reference_iterator_free(m_Ref);
-	}
-};
-
-class CAutoDescribeResult : public CSmartLibgit2Ref<git_describe_result>
-{
-public:
-	CAutoDescribeResult() {};
-
-	~CAutoDescribeResult()
-	{
-		CleanUp();
-	}
-
-private:
-	CAutoDescribeResult(const CAutoDescribeResult&) = delete;
-	CAutoDescribeResult& operator=(const CAutoDescribeResult&) = delete;
-
-protected:
-	virtual void FreeRef()
-	{
-		git_describe_result_free(m_Ref);
-	}
-};
-
-class CAutoStatusList : public CSmartLibgit2Ref<git_status_list>
-{
-public:
-	CAutoStatusList() {};
-
-	~CAutoStatusList()
-	{
-		CleanUp();
-	}
-
-private:
-	CAutoStatusList(const CAutoStatusList&) = delete;
-	CAutoStatusList& operator=(const CAutoStatusList&) = delete;
-
-protected:
-	virtual void FreeRef()
-	{
-		git_status_list_free(m_Ref);
-	}
-};
-
-class CAutoNote : public CSmartLibgit2Ref<git_note>
-{
-public:
-	CAutoNote() {};
-
-	~CAutoNote()
-	{
-		CleanUp();
-	}
-
-private:
-	CAutoNote(const CAutoNote&) = delete;
-	CAutoNote& operator=(const CAutoNote&) = delete;
-
-protected:
-	virtual void FreeRef()
-	{
-		git_note_free(m_Ref);
-	}
 };
