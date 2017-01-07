@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -741,24 +741,17 @@ STDMETHODIMP CShellExt::AddPages(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam
 
 STDMETHODIMP CShellExt::AddPages_Wrap(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam)
 {
-	CString ProjectTopDir;
-
 	if (files_.empty())
 		return S_OK;
 
-	for (const auto file_ : files_)
-	{
-		/*
-		GitStatus svn = GitStatus();
-		if (svn.GetStatus(CTGitPath(I->c_str())) == (-2))
-			return S_OK;			// file/directory not under version control
+	CString projectTopDir;
+	if (!CTGitPath(files_[0].c_str()).HasAdminDir(&projectTopDir))
+		return S_OK;
 
-		if (!svn.status->entry)
-			return S_OK;
-		*/
-		if (CTGitPath(file_.c_str()).HasAdminDir(&ProjectTopDir))
-			break;
-		else
+	for (const auto& file_ : files_)
+	{
+		CString currentProjectTopDir;
+		if (!CTGitPath(file_.c_str()).HasAdminDir(&currentProjectTopDir) || !CTGitPath::ArePathStringsEqual(projectTopDir, currentProjectTopDir))
 			return S_OK;
 	}
 
