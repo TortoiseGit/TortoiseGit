@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -1599,11 +1599,10 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 			if (git_branch_iterator_new(it.GetPointer(), repo, flags))
 				return -1;
 
-			git_reference * ref = nullptr;
+			CAutoReference ref;
 			git_branch_t branchType;
-			while (git_branch_next(&ref, &branchType, it) == 0)
+			while (git_branch_next(ref.GetPointer(), &branchType, it) == 0)
 			{
-				CAutoReference autoRef(std::move(ref));
 				const char * name = nullptr;
 				if (git_branch_name(&name, ref))
 					continue;
