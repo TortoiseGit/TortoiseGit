@@ -54,7 +54,6 @@ public:
 #endif
 protected:
 	__int64 m_iMaxCheckSize;
-	CComCriticalSection m_critRepoSec;
 	CAutoConfig config;
 	int GetFileStatus(const CString &gitdir, const CString &path, git_wc_status_kind * status, __int64 time, __int64 filesize, FILL_STATUS_CALLBACK callback = nullptr, void *pData = nullptr, CGitHash *pHash = nullptr, bool * assumeValid = nullptr, bool * skipWorktree = nullptr);
 };
@@ -158,7 +157,6 @@ class CGitHeadFileList:public std::vector<CGitTreeItem>
 {
 private:
 	int GetPackRef(const CString &gitdir);
-	CReaderWriterLock m_SharedMutex;
 
 	__time64_t  m_LastModifyTimeHead;
 	__time64_t  m_LastModifyTimeRef;

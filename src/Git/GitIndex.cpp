@@ -56,13 +56,11 @@ CGitIndexList::CGitIndexList()
 : m_bHasConflicts(FALSE)
 , m_LastModifyTime(0)
 {
-	m_critRepoSec.Init();
 	m_iMaxCheckSize = (__int64)CRegDWORD(L"Software\\TortoiseGit\\TGitCacheCheckContentMaxSize", 10 * 1024) * 1024; // stored in KiB
 }
 
 CGitIndexList::~CGitIndexList()
 {
-	m_critRepoSec.Term();
 }
 
 static bool SortIndex(const CGitIndex &Item1, const CGitIndex &Item2)
@@ -77,9 +75,11 @@ static bool SortTree(const CGitTreeItem &Item1, const CGitTreeItem &Item2)
 
 int CGitIndexList::ReadIndex(CString dgitdir)
 {
-	this->clear();
+#ifdef GTEST_INCLUDE_GTEST_GTEST_H_
+	clear(); // HACK to make tests work, until we use CGitIndexList
+#endif
+	ATLASSERT(empty());
 
-	CAutoLocker lock(m_critRepoSec);
 	CAutoRepository repository(dgitdir);
 	if (!repository)
 		return -1;
@@ -498,7 +498,8 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 }
 int CGitHeadFileList::ReadHeadHash(const CString& gitdir)
 {
-	CAutoWriteLock lock(m_SharedMutex);
+	ATLASSERT(m_Gitdir.IsEmpty() && m_HeadFile.IsEmpty());
+
 	m_Gitdir = g_AdminDirMap.GetAdminDir(gitdir);
 
 	m_HeadFile = m_Gitdir;
@@ -604,7 +605,6 @@ int CGitHeadFileList::ReadHeadHash(const CString& gitdir)
 
 bool CGitHeadFileList::CheckHeadUpdate()
 {
-	CAutoReadLock lock(m_SharedMutex);
 	if (this->m_HeadFile.IsEmpty())
 		return true;
 
@@ -644,19 +644,16 @@ bool CGitHeadFileList::CheckHeadUpdate()
 
 bool CGitHeadFileList::HeadHashEqualsTreeHash()
 {
-	CAutoReadLock lock(m_SharedMutex);
 	return (m_Head == m_TreeHash);
 }
 
 bool CGitHeadFileList::HeadFileIsEmpty()
 {
-	CAutoReadLock lock(m_SharedMutex);
 	return m_HeadFile.IsEmpty();
 }
 
 bool CGitHeadFileList::HeadIsEmpty()
 {
-	CAutoReadLock lock(m_SharedMutex);
 	return m_Head.IsEmpty();
 }
 
@@ -725,7 +722,6 @@ int ReadTreeRecursive(git_repository &repo, const git_tree * tree, const CString
 // ReadTree is/must only be executed on an empty list
 int CGitHeadFileList::ReadTree()
 {
-	CAutoWriteLock lock(m_SharedMutex);
 	ATLASSERT(empty());
 
 	CAutoRepository repository(m_Gitdir);
