@@ -1,0 +1,42 @@
+From 57dce6dd6fb6b1279dd73d14962ab04612cf316f Mon Sep 17 00:00:00 2001
+From: Sven Strickroth <email@cs-ware.de>
+Date: Sun, 8 Jan 2017 01:18:08 +0100
+Subject: [PATCH] Use CreateFile with FILE_SHARE_DELETE for O_RDONLY
+
+This prevents FILE_SHARED_VIOLATIONS when used in tools such as
+TortoiseGit TGitCache, because the file is not locked.
+
+Signed-off-by: Sven Strickroth <email@cs-ware.de>
+---
+ src/win32/posix_w32.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/src/win32/posix_w32.c b/src/win32/posix_w32.c
+index fea634b00..9839b24cf 100644
+--- a/src/win32/posix_w32.c
++++ b/src/win32/posix_w32.c
+@@ -295,6 +295,21 @@ int p_open(const char *path, int flags, ...)
+ 		mode = (mode_t)va_arg(arg_list, int);
+ 		va_end(arg_list);
+ 	}
++	else if (flags == O_RDONLY) {
++		// use CreateFile here, so that we can request FILE_SHARE_DELETE
++		HANDLE handle;
++
++		SECURITY_ATTRIBUTES security_attributes;
++		security_attributes.nLength = sizeof(security_attributes);
++		security_attributes.lpSecurityDescriptor = NULL;
++		security_attributes.bInheritHandle = FALSE;
++
++		handle = CreateFileW(buf, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE, &security_attributes, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
++		if (handle == INVALID_HANDLE_VALUE)
++			return -1;
++
++		return _open_osfhandle((intptr_t)handle, 0);
++	}
+ 
+ 	return _wopen(buf, flags | STANDARD_OPEN_FLAGS, mode & WIN32_MODE_MASK);
+ }
+-- 
+2.11.0.windows.1
+
