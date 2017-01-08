@@ -80,11 +80,12 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	this->clear();
 
 	CAutoLocker lock(m_critRepoSec);
-	if (repository.Open(dgitdir))
+	CAutoRepository repository(dgitdir);
+	if (!repository)
 		return -1;
 
 	// add config files
-	CAutoConfig config(true);
+	config.New();
 
 	CString projectConfig = dgitdir + L"config";
 	CString globalConfig = g_Git.GetGitGlobalConfig();
@@ -106,7 +107,7 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	// load index in order to enumerate files
 	if (git_repository_index(index.GetPointer(), repository))
 	{
-		repository.Free();
+		config.Free();
 		return -1;
 	}
 
@@ -119,7 +120,7 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	}
 	catch (const std::bad_alloc& ex)
 	{
-		repository.Free();
+		config.Free();
 		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Could not resize index-vector: %s\n", ex.what());
 		return -1;
 	}
@@ -184,11 +185,19 @@ int CGitIndexList::GetFileStatus(const CString &gitdir, const CString &pathorg, 
 		*status = git_wc_status_modified;
 	else if (time == entry.m_ModifyTime)
 		*status = git_wc_status_normal;
-	else if (repository && filesize < m_iMaxCheckSize)
+	else if (config && filesize < m_iMaxCheckSize)
 	{
+		/*
+		 * Opening a new repository each time is not yet optimal, however, there is no API to clear the pack-cache
+		 * When a shared repository is used, we might need a mutex to prevent concurrent access to repository instance and especially filter-lists
+		 */
+		CAutoRepository repository(gitdir);
+		if (!repository)
+			return -1;
+
 		git_oid actual;
 		CStringA fileA = CUnicodeUtils::GetMulti(pathorg, CP_UTF8);
-		m_critRepoSec.Lock(); // prevent concurrent access to repository instance and especially filter-lists
+		git_repository_set_config(repository, config);
 		if (!git_repository_hashfile(&actual, repository, fileA, GIT_OBJ_BLOB, nullptr) && !git_oid_cmp(&actual, (const git_oid*)entry.m_IndexHash.m_hash))
 		{
 			entry.m_ModifyTime = time;
@@ -196,7 +205,6 @@ int CGitIndexList::GetFileStatus(const CString &gitdir, const CString &pathorg, 
 		}
 		else
 			*status = git_wc_status_modified;
-		m_critRepoSec.Unlock();
 	}
 	else
 		*status = git_wc_status_modified;
