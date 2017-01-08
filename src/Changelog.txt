@@ -20,7 +20,7 @@ Released: unreleased
  * Fixed issue #2865: Clickable URLs in TortoiseGit output window
  * Fixed issue #2154: Copy to clipboard function in show log window doesn't include annotated tag or notes messages
  * Fixed issue #1668: Allow submodules to be removed ("Delete" is now available for submodules)
- * Update libgit2 to 0.25-rc1
+ * Update libgit2 to 0.25
  * Fixed issue #2863: Increase text box size limit for command progress dialog and make it configurable
  * Fixed issue #2274 and issue #2750 : Add advanced option for controlling which date/time is used for squashed commits (setting: SquashDate)
    1: Use date of last commit, 2: Use current date, 0: Use time of first commit into which others are squashed (default)
