@@ -251,7 +251,7 @@ public:
 	int GetFileStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,
 						FILL_STATUS_CALLBACK callback = nullptr, void *pData = nullptr,
 						bool isLoaded=false);
-	bool CheckHeadAndUpdate(const CString &gitdir, bool readTree = true);
+	bool CheckHeadAndUpdate(const CString& gitdir);
 	int IsUnderVersionControl(const CString& gitdir, CString path, bool isDir, bool* isVersion);
 };
 
