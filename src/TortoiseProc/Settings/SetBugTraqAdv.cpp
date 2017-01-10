@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014, 2016 - TortoiseGit
+// Copyright (C) 2014, 2016-2017 - TortoiseGit
 // Copyright (C) 2008,2010,2014-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -28,6 +28,7 @@ IMPLEMENT_DYNAMIC(CSetBugTraqAdv, CResizableStandAloneDialog)
 CSetBugTraqAdv::CSetBugTraqAdv(CWnd* pParent /*= nullptr*/)
 	: CResizableStandAloneDialog(CSetBugTraqAdv::IDD, pParent)
 	, m_provider_clsid(GUID_NULL)
+	, m_bEnabled(true)
 {
 }
 
