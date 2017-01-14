@@ -75,6 +75,7 @@ Released: unreleased
  * TGitCache: Do not accidentally report up status of submodules to parent repo if not enabled
  * TGitCache: Prevent more FILE_SHARE_VIOLATIONS for deleting files
  * Fixed issue #497: TGitCache.exe won't let user delete folder
+ * Fixed issue #2899: Fall back to %USERPROFILE% if %HOMEDRIVE%%HOMEPATH% is not a directory for %HOME% detection as Git for Windows does
 
 = Release 2.3.0 =
 Released: 2016-10-01

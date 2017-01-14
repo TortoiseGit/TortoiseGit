@@ -953,20 +953,35 @@ int git_get_config(const char *key, char *buffer, int size)
 const char *get_windows_home_directory(void)
 {
 	static const char *home_directory = NULL;
-	struct strbuf buf = STRBUF_INIT;
+	const char* tmp;
 
 	if (home_directory)
 		return home_directory;
 
-	home_directory = getenv("HOME");
-	if (home_directory && *home_directory)
+	if ((tmp = getenv("HOME")) != NULL && *tmp)
 	{
-		home_directory = _strdup(home_directory);
+		home_directory = _strdup(tmp);
 		return home_directory;
 	}
 
-	strbuf_addf(&buf, "%s%s", getenv("HOMEDRIVE"), getenv("HOMEPATH"));
-	home_directory = strbuf_detach(&buf, NULL);
+	if ((tmp = getenv("HOMEDRIVE")) != NULL)
+	{
+		struct strbuf buf = STRBUF_INIT;
+		strbuf_addstr(&buf, tmp);
+		if ((tmp = getenv("HOMEPATH")) != NULL)
+		{
+			strbuf_addstr(&buf, tmp);
+			if (is_directory(buf.buf))
+			{
+				home_directory = strbuf_detach(&buf, NULL);
+				return home_directory;
+			}
+		}
+		strbuf_release(&buf);
+	}
+
+	if ((tmp = getenv("USERPROFILE")) != NULL && *tmp)
+		home_directory = _strdup(tmp);
 
 	return home_directory;
 }
