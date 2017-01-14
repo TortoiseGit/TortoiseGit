@@ -319,7 +319,6 @@ private:
 	mutable bool m_bDirectoryKnown;
 	mutable bool m_bIsDirectory;
 	mutable bool m_bLastWriteTimeKnown;
-	mutable bool m_bURLKnown;
 	mutable __int64 m_lastWriteTime;
 	mutable __int64 m_fileSize;
 	mutable bool m_bIsReadOnly;
@@ -333,8 +332,6 @@ private:
 	mutable bool m_bIsWCRoot;
 	mutable bool m_bExists;
 	mutable bool m_bExistsKnown;
-	mutable bool m_bIsSpecialDirectoryKnown;
-	mutable bool m_bIsSpecialDirectory;
 
 	friend bool operator<(const CTGitPath& left, const CTGitPath& right);
 };

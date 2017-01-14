@@ -36,7 +36,6 @@ extern CGit g_Git;
 CTGitPath::CTGitPath(void)
 	: m_bDirectoryKnown(false)
 	, m_bIsDirectory(false)
-	, m_bURLKnown(false)
 	, m_bHasAdminDirKnown(false)
 	, m_bHasAdminDir(false)
 	, m_bIsValidOnWindowsKnown(false)
@@ -48,8 +47,6 @@ CTGitPath::CTGitPath(void)
 	, m_bExistsKnown(false)
 	, m_bLastWriteTimeKnown(0)
 	, m_lastWriteTime(0)
-	, m_bIsSpecialDirectoryKnown(false)
-	, m_bIsSpecialDirectory(false)
 	, m_bIsWCRootKnown(false)
 	, m_bIsWCRoot(false)
 	, m_fileSize(0)
@@ -407,14 +404,11 @@ void CTGitPath::EnsureFwdslashPathSet() const
 void CTGitPath::Reset()
 {
 	m_bDirectoryKnown = false;
-	m_bURLKnown = false;
 	m_bLastWriteTimeKnown = false;
 	m_bHasAdminDirKnown = false;
 	m_bIsValidOnWindowsKnown = false;
 	m_bIsAdminDirKnown = false;
 	m_bExistsKnown = false;
-	m_bIsSpecialDirectoryKnown = false;
-	m_bIsSpecialDirectory = false;
 
 	m_sBackslashPath.Empty();
 	m_sFwdslashPath.Empty();
