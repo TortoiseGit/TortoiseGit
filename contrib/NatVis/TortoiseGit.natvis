@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+  <Type Name="CGitHash">
+    <DisplayString LegacyAddin="TGitNatVis.dll" Export="SHA1Formatter"></DisplayString>
+  </Type>
+  <Type Name="git_oid">
+    <DisplayString LegacyAddin="TGitNatVis.dll" Export="SHA1Formatter"></DisplayString>
+  </Type>
+  <Type Name="object_id">
+    <DisplayString LegacyAddin="TGitNatVis.dll" Export="SHA1Formatter"></DisplayString>
+  </Type>
+  <Type Name="CTGitPath">
+    <DisplayString Condition="(m_sFwdslashPath.m_pszData == 0 || m_sFwdslashPath.m_pszData[0] == 0) &amp;&amp; (m_sBackslashPath.m_pszData == 0 || m_sBackslashPath.m_pszData[0] == 0)">empty</DisplayString>
+    <DisplayString Condition="m_sFwdslashPath.m_pszData != 0 &amp;&amp; m_sFwdslashPath.m_pszData[0] != 0">{m_sFwdslashPath.m_pszData,su}</DisplayString>
+    <DisplayString Condition="m_sBackslashPath.m_pszData != 0 &amp;&amp; m_sBackslashPath.m_pszData[0] != 0">{m_sBackslashPath.m_pszData,su}</DisplayString>
+    <Expand>
+      <Item Name="IsDir" Condition="m_bDirectoryKnown">m_bIsDirectory</Item>
+      <Item Name="Exists" Condition="m_bExistsKnown">m_bExists</Item>
+      <Item Name="HasAdminDir" Condition="m_bHasAdminDirKnown">m_bHasAdminDir</Item>
+      <Item Name="FileSize" Condition="m_bDirectoryKnown">m_fileSize</Item>
+      <Item Name="IsWCRoot" Condition="m_bIsWCRootKnown">m_bIsWCRoot</Item>
+      <Item Name="IsValidOnWindows" Condition="m_bIsValidOnWindowsKnown">m_bIsValidOnWindows</Item>
+      <Item Name="IsReadOnly" Condition="m_bLastWriteTimeKnown">m_bIsReadOnly</Item>
+      <Item Name="LastWriteTime" Condition="m_bLastWriteTimeKnown">m_lastWriteTime</Item>
+      <Item Name="Stage">m_Stage</Item>
+      <Item Name="ParentNo">m_ParentNo</Item>
+      <Item Name="Action">(Actions)m_Action</Item>
+      <Item Name="StatAdd">m_StatAdd</Item>
+      <Item Name="StatDel">m_StatDel</Item>
+      <Item Name="Checked">m_Checked</Item>
+    </Expand>
+  </Type>
+</AutoVisualizer>

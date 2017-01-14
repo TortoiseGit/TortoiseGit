@@ -37,7 +37,7 @@ public:
 	int m_Stage;
 	int m_ParentNo;
 
-	enum : unsigned int
+	enum Actions : unsigned int
 	{
 		LOGACTIONS_ADDED	= 0x00000001,
 		LOGACTIONS_MODIFIED	= 0x00000002,
