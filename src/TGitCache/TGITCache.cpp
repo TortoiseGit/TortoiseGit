@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005 - 2006,2010 - Will Dean, Stefan Kueng
-// Copyright (C) 2008-2014, 2016 - TortoiseGit
+// Copyright (C) 2008-2014, 2016-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -184,6 +184,7 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR lp
 {
 	SetDllDirectory(L"");
 	git_libgit2_init();
+	git_libgit2_opts(GIT_OPT_SET_WINDOWS_SHAREMODE, FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE);
 	HandleCommandLine(lpCmdLine);
 	CAutoGeneralHandle hReloadProtection = ::CreateMutex(nullptr, FALSE, GetCacheMutexName());
 

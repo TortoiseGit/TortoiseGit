@@ -1,0 +1,129 @@
+From 005d051ce8dc252c7b0cac70b7f72e96cda57134 Mon Sep 17 00:00:00 2001
+From: Sven Strickroth <email@cs-ware.de>
+Date: Sat, 14 Jan 2017 18:39:32 +0100
+Subject: [PATCH 4/4] Allow to configure default file share mode for opening
+ files
+
+This can prevent FILE_SHARED_VIOLATIONS when used in tools such as TortoiseGit TGitCache and FILE_SHARE_DELETE, because files can be opened w/o being locked any more.
+
+Signed-off-by: Sven Strickroth <email@cs-ware.de>
+---
+ CHANGELOG.md          |  4 ++++
+ include/git2/common.h | 12 ++++++++++++
+ src/settings.c        | 18 ++++++++++++++++++
+ src/win32/posix.h     |  2 ++
+ src/win32/posix_w32.c |  4 +++-
+ 5 files changed, 39 insertions(+), 1 deletion(-)
+
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+index 6137efd71..060d8f7e3 100644
+--- a/CHANGELOG.md
++++ b/CHANGELOG.md
+@@ -52,6 +52,10 @@ v0.25
+ 
+ ### API additions
+ 
++* You can now set the default share modes on Windows for opening files using
++  `GIT_OPT_SET_WINDOWS_SHAREMODE` option with `git_libgit2_opts()`.
++  It is the counterpart to `GIT_OPT_GET_WINDOWS_SHAREMODE`.
++
+ * You can now get the user-agent used by libgit2 using the
+   `GIT_OPT_GET_USER_AGENT` option with `git_libgit2_opts()`.
+   It is the counterpart to `GIT_OPT_SET_USER_AGENT`.
+diff --git a/include/git2/common.h b/include/git2/common.h
+index 99c99812b..f7ba89a33 100644
+--- a/include/git2/common.h
++++ b/include/git2/common.h
+@@ -177,6 +177,8 @@ typedef enum {
+ 	GIT_OPT_ENABLE_STRICT_OBJECT_CREATION,
+ 	GIT_OPT_SET_SSL_CIPHERS,
+ 	GIT_OPT_GET_USER_AGENT,
++	GIT_OPT_GET_WINDOWS_SHAREMODE,
++	GIT_OPT_SET_WINDOWS_SHAREMODE,
+ } git_libgit2_opt_t;
+ 
+ /**
+@@ -281,6 +283,16 @@ typedef enum {
+  *		> - `user_agent` is the value that will be delivered as the
+  *		>   User-Agent header on HTTP requests.
+  *
++ *	* opts(GIT_OPT_SET_WINDOWS_SHAREMODE, DWORD value)
++ *
++ *		> Set the default share modes on Windows for opening files.
++ *		> This can be used to add FILE_SHARE_DELETE.
++ *		> The Windows default is: FILE_SHARE_READ | FILE_SHARE_WRITE.
++ *
++ *	* opts(GIT_OPT_GET_WINDOWS_SHAREMODE, DWORD *value)
++ *
++ *		> Get the default share modes on Windows for opening files.
++ *
+  *	* opts(GIT_OPT_ENABLE_STRICT_OBJECT_CREATION, int enabled)
+  *
+  *		> Enable strict input validation when creating new objects
+diff --git a/src/settings.c b/src/settings.c
+index 980233d88..3fa4bae8b 100644
+--- a/src/settings.c
++++ b/src/settings.c
+@@ -217,6 +217,24 @@ int git_libgit2_opts(int key, ...)
+ 		}
+ 		break;
+ 
++	case GIT_OPT_GET_WINDOWS_SHAREMODE:
++#ifdef GIT_WIN32
++		*(va_arg(ap, DWORD *)) = git_posix_w32__windows_sharemode;
++#else
++		giterr_set(GITERR_INVALID, "cannot set windows share mode on non Windows builds");
++		error = -1;
++#endif
++		break;
++
++	case GIT_OPT_SET_WINDOWS_SHAREMODE:
++#ifdef GIT_WIN32
++		git_posix_w32__windows_sharemode = (va_arg(ap, DWORD) & (FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE));
++#else
++		giterr_set(GITERR_INVALID, "cannot set windows share mode on non Windows builds");
++		error = -1;
++#endif
++		break;
++
+ 	default:
+ 		giterr_set(GITERR_INVALID, "invalid option key");
+ 		error = -1;
+diff --git a/src/win32/posix.h b/src/win32/posix.h
+index 73705fb2b..89d543b73 100644
+--- a/src/win32/posix.h
++++ b/src/win32/posix.h
+@@ -14,6 +14,8 @@
+ #include "utf-conv.h"
+ #include "dir.h"
+ 
++extern DWORD git_posix_w32__windows_sharemode;
++
+ typedef SOCKET GIT_SOCKET;
+ 
+ #define p_lseek(f,n,w) _lseeki64(f, n, w)
+diff --git a/src/win32/posix_w32.c b/src/win32/posix_w32.c
+index a20ae9b2f..3f4fa7d25 100644
+--- a/src/win32/posix_w32.c
++++ b/src/win32/posix_w32.c
+@@ -18,6 +18,8 @@
+ #include <fcntl.h>
+ #include <ws2tcpip.h>
+ 
++DWORD git_posix_w32__windows_sharemode = FILE_SHARE_READ | FILE_SHARE_WRITE;
++
+ #ifndef FILE_NAME_NORMALIZED
+ # define FILE_NAME_NORMALIZED 0
+ #endif
+@@ -356,7 +358,7 @@ int p_open(const char *path, int flags, ...)
+ 		return  -1;
+ 	}
+ 
+-	handle = CreateFileW(buf, desired_access, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, creation_disposition, flags_and_attributes, 0);
++	handle = CreateFileW(buf, desired_access, git_posix_w32__windows_sharemode, NULL, creation_disposition, flags_and_attributes, 0);
+ 	if (handle == INVALID_HANDLE_VALUE)
+ 	{
+ 		_dosmaperr(GetLastError());
+-- 
+2.11.0.windows.1
+
