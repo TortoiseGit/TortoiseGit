@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -36,9 +36,7 @@ public:
 	CTGitPath(const CString& sUnknownPath);
 	int m_Stage;
 	int m_ParentNo;
-public:
-#pragma warning(push)
-#pragma warning(disable: 4480)	// nonstandard extension used: specifying underlying type for enum 'enum'
+
 	enum : unsigned int
 	{
 		LOGACTIONS_ADDED	= 0x00000001,
@@ -58,7 +56,6 @@ public:
 		LOGACTIONS_HIDE		= 0x20000000,
 		LOGACTIONS_GRAY		= 0x10000000,
 	};
-#pragma warning(pop)
 
 	CString m_StatAdd;
 	CString m_StatDel;
