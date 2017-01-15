@@ -989,10 +989,13 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		sMenuItemText.LoadString(IDS_SCIEDIT_SELECTALL);
 		popup.AppendMenu(uEnabledMenu, SCI_SELECTALL, sMenuItemText);
 
-		popup.AppendMenu(MF_SEPARATOR);
-
-		sMenuItemText.LoadString(IDS_SCIEDIT_SPLITLINES);
-		popup.AppendMenu(bHasSelection ? uEnabledMenu : uDisabledMenu, SCI_LINESSPLIT, sMenuItemText);
+		if (!bIsReadOnly && Call(SCI_GETEDGECOLUMN))
+		{
+			popup.AppendMenu(MF_SEPARATOR);
+			
+			sMenuItemText.LoadString(IDS_SCIEDIT_SPLITLINES);
+			popup.AppendMenu(bHasSelection ? uEnabledMenu : uDisabledMenu, SCI_LINESSPLIT, sMenuItemText);
+		}
 
 		if (m_arContextHandlers.GetCount() > 0)
 			popup.AppendMenu(MF_SEPARATOR);
