@@ -1005,18 +1005,14 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 			pHandler->InsertMenuItems(popup, nCustoms);
 		}
 #if THESAURUS
-		if (nCustoms > nCorrections)
-		{
-			// custom menu entries present, so add another separator
-			popup.AppendMenu(MF_SEPARATOR);
-		}
-
 		// add found thesauri to sub menu's
 		CMenu thesaurs;
 		int nThesaurs = 0;
 		CPtrArray menuArray;
 		if (thesaurs.CreatePopupMenu())
 		{
+			if ((nCustoms > nCorrections || m_arContextHandlers.IsEmpty()) && !bIsReadOnly)
+				popup.AppendMenu(MF_SEPARATOR);
 			if (pThesaur && !worda.IsEmpty() && !bIsReadOnly)
 			{
 				mentry * pmean;
