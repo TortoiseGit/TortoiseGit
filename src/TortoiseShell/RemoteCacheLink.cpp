@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2014, 2016 - TortoiseGit
+// Copyright (C) 2009-2014, 2016-2017 - TortoiseGit
 // Copyright (C) 2003-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -29,12 +29,6 @@ CRemoteCacheLink::CRemoteCacheLink(void)
 {
 	SecureZeroMemory(&m_dummyStatus, sizeof(m_dummyStatus));
 	SecureZeroMemory(&m_Overlapped, sizeof(m_Overlapped));
-//	m_dummyStatus.node_status = git_wc_status_none;
-	m_dummyStatus.text_status = git_wc_status_none;
-	m_dummyStatus.prop_status = git_wc_status_none;
-//	m_dummyStatus.repos_text_status = git_wc_status_none;
-//	m_dummyStatus.repos_prop_status = git_wc_status_none;
-//	m_dummyStatus.repos_node_status = git_wc_status_none;
 	m_lastTimeout = 0;
 	m_critSec.Init();
 }
