@@ -104,6 +104,7 @@ int git_init(void)
 	// set HOME if not set already
 	gitsetenv("HOME", get_windows_home_directory(), 0);
 	drop_attr_stack();
+	git_config_clear();
 	g_prefix = setup_git_directory();
 	git_config(git_default_config, NULL);
 
