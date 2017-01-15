@@ -478,6 +478,13 @@ VOID GetAnswerToRequest(const TGITCacheRequest* pRequest, TGITCacheResponse* pRe
 	else
 		path.SetFromWin(pRequest->path);
 
+	if (!bRun)
+	{
+		CStatusCacheEntry entry;
+		entry.BuildCacheResponse(*pReply, *pResponseLength);
+		return;
+	}
+
 	CAutoReadWeakLock readLock(CGitStatusCache::Instance().GetGuard(), 2000);
 	if (readLock.IsAcquired())
 		CGitStatusCache::Instance().GetStatusForPath(path, pRequest->flags, false).BuildCacheResponse(*pReply, *pResponseLength);
