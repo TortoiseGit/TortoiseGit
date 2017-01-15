@@ -411,7 +411,7 @@ CCachedDirectory * CGitStatusCache::GetDirectoryCacheEntry(const CTGitPath& path
 {
 	ATLASSERT(path.IsDirectory() || !PathFileExists(path.GetWinPath()));
 
-
+	CAutoReadLock readLock(m_guardcacheddirectories);
 	CCachedDirectory::ItDir itMap;
 	itMap = m_directoryCache.find(path);
 	if ((itMap != m_directoryCache.end())&&(itMap->second))
@@ -426,13 +426,14 @@ CCachedDirectory * CGitStatusCache::GetDirectoryCacheEntry(const CTGitPath& path
 		// as if it never was in our cache. So we remove the last remains
 		// from the cache and start from scratch.
 
-		CAutoWriteLock writeLock(m_guard);
+		CAutoWriteLock writeLock(m_guardcacheddirectories);
 		// Since above there's a small chance that before we can upgrade to
 		// writer state some other thread gained writer state and changed
 		// the data, we have to recreate the iterator here again.
 		itMap = m_directoryCache.find(path);
 		if (itMap!=m_directoryCache.end())
 		{
+			CAutoWriteLock writeLock(m_guard); // needed? Can this happen?
 			delete itMap->second;
 			m_directoryCache.erase(itMap);
 		}
@@ -473,6 +474,7 @@ CCachedDirectory * CGitStatusCache::GetDirectoryCacheEntryNoCreate(const CTGitPa
 {
 	ATLASSERT(path.IsDirectory() || !PathFileExists(path.GetWinPath()));
 
+	CAutoReadLock readLock(m_guardcacheddirectories);
 	CCachedDirectory::ItDir itMap;
 	itMap = m_directoryCache.find(path);
 	if(itMap != m_directoryCache.end())
@@ -527,12 +529,12 @@ CStatusCacheEntry CGitStatusCache::GetStatusForPath(const CTGitPath& path, DWORD
 	{
 		// path is blocked for some reason: return the cached status if we have one
 		// we do here only a cache search, absolutely no disk access is allowed!
-		CCachedDirectory::ItDir itMap = m_directoryCache.find(path.GetDirectory());
-		if ((itMap != m_directoryCache.end())&&(itMap->second))
+		auto cachedDir = GetDirectoryCacheEntryNoCreate(path.GetDirectory());
+		if (cachedDir)
 		{
 			if (path.IsDirectory())
 			{
-				CStatusCacheEntry entry = itMap->second->GetOwnStatus(false);
+				CStatusCacheEntry entry = cachedDir->GetOwnStatus(false);
 				AutoLocker lock(m_critSec);
 				m_mostRecentStatus = entry;
 				return m_mostRecentStatus;
@@ -540,7 +542,6 @@ CStatusCacheEntry CGitStatusCache::GetStatusForPath(const CTGitPath& path, DWORD
 			else
 			{
 				// We've found this directory in the cache
-				CCachedDirectory * cachedDir = itMap->second;
 				CStatusCacheEntry entry = cachedDir->GetCacheStatusForMember(path);
 				{
 					AutoLocker lock(m_critSec);
