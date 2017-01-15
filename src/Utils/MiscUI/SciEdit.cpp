@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2016 - TortoiseGit
+// Copyright (C) 2009-2017 - TortoiseGit
 // Copyright (C) 2003-2008,2012-2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -1017,7 +1017,7 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		CPtrArray menuArray;
 		if (thesaurs.CreatePopupMenu())
 		{
-			if ((pThesaur)&&(!worda.IsEmpty()))
+			if (pThesaur && !worda.IsEmpty() && !bIsReadOnly)
 			{
 				mentry * pmean;
 				worda.MakeLower();
@@ -1057,7 +1057,7 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 
 				pThesaur->CleanUpAfterLookup(&pmean, count);
 			}
-			else
+			else if (!bIsReadOnly)
 			{
 				sMenuItemText.LoadString(IDS_SPELLEDIT_NOTHESAURUS);
 				popup.AppendMenu(MF_DISABLED | MF_GRAYED | MF_STRING, 0, sMenuItemText);
