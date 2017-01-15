@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011,2014-2016 - TortoiseGit
+// Copyright (C) 2008-2011, 2014-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@ public:
 };
 
 // CPatchViewDlg dialog
-class CPatchViewDlg : public CDialog
+class CPatchViewDlg : public CDialog, public CSciEditContextMenuInterface
 {
 	DECLARE_DYNAMIC(CPatchViewDlg)
 
@@ -74,4 +74,9 @@ protected:
 	bool                m_bShowFindBar;
 
 	HACCEL				m_hAccel;
+
+	// CSciEditContextMenuInterface
+	virtual void		InsertMenuItems(CMenu& mPopup, int& nCmd);
+	virtual bool		HandleMenuItemClick(int cmd, CSciEdit* pSciEdit);
+	int					m_nPopupSave;
 };

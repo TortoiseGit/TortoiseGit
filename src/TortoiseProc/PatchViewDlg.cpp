@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,6 +22,8 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "PatchViewDlg.h"
+#include "CommonAppUtils.h"
+#include "StringUtils.h"
 
 // CPatchViewDlg dialog
 
@@ -32,6 +34,7 @@ CPatchViewDlg::CPatchViewDlg(CWnd* pParent /*=nullptr*/)
 	, m_ParentDlg(nullptr)
 	, m_hAccel(nullptr)
 	, m_bShowFindBar(false)
+	, m_nPopupSave(0)
 {
 }
 
@@ -70,6 +73,8 @@ BOOL CPatchViewDlg::OnInitDialog()
 	m_ctrlPatchView.Init(-1);
 
 	m_ctrlPatchView.SetUDiffStyle();
+
+	m_ctrlPatchView.RegisterContextMenuHandler(this);
 
 	m_hAccel = LoadAccelerators(AfxGetResourceHandle(), MAKEINTRESOURCE(IDR_ACC_PATCHVIEW));
 
@@ -251,4 +256,25 @@ void CPatchViewDlg::OnDestroy()
 	CRect rect;
 	GetWindowRect(&rect);
 	CRegStdDWORD(L"Software\\TortoiseGit\\TortoiseProc\\PatchDlgWidth") = rect.Width();
+}
+
+// CSciEditContextMenuInterface
+void CPatchViewDlg::InsertMenuItems(CMenu& mPopup, int& nCmd)
+{
+	CString sMenuItemText;
+	sMenuItemText.LoadString(IDS_REPOBROWSE_SAVEAS);
+	m_nPopupSave = nCmd++;
+	mPopup.AppendMenu(MF_STRING | MF_ENABLED, m_nPopupSave, sMenuItemText);
+}
+
+bool CPatchViewDlg::HandleMenuItemClick(int cmd, CSciEdit*)
+{
+	if (cmd == m_nPopupSave)
+	{
+		CString filename;
+		if (CCommonAppUtils::FileOpenSave(filename, nullptr, 0, IDS_PATCHFILEFILTER, false, GetSafeHwnd(), L"diff"))
+			CStringUtils::WriteStringToTextFile(filename, m_ctrlPatchView.GetText());
+		return true;
+	}
+	return false;
 }
