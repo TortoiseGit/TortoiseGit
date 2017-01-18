@@ -421,7 +421,7 @@ void CBaseView::UpdateStatusBar()
 				m_pMainFrame->FillEOLButton(pButton, ID_INDICATOR_BOTTOMEOLSTART);
 				apBtnGroupBottom->AddButton(pButton);
 				pButton = new CMFCRibbonButton(ID_INDICATOR_BOTTOMVIEWCOMBOTABMODE, L"");
-				m_pMainFrame->FillEOLButton(pButton, ID_INDICATOR_BOTTOMTABMODESTART);
+				m_pMainFrame->FillTabModeButton(pButton, ID_INDICATOR_BOTTOMTABMODESTART);
 				apBtnGroupBottom->AddButton(pButton);
 				apBtnGroupBottom->AddButton(new CMFCRibbonStatusBarPane(ID_INDICATOR_BOTTOMVIEW, L"", TRUE));
 				m_pwndRibbonStatusBar->AddExtendedElement(apBtnGroupBottom.release(), L"");
