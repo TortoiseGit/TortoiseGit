@@ -383,7 +383,6 @@
 				<?endif ?>
 
 				<Component Id="C__win7library" Guid="$(var.GuidWin7Library)" Win64="$(var.Win64YesNo)">
-					<Condition><![CDATA[(VersionNT >= 600)]]></Condition>
 					<!-- Folders -->
 					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)" />
 					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)" Name="CanonicalName" Value="GitWCs" Type="string" KeyPath="yes"/>
