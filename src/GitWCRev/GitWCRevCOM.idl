@@ -1,0 +1,87 @@
+// TortoiseGit - a Windows shell extension for easy version control
+
+// Copyright (C) 2017 - TortoiseGit
+// Copyright (C) 2007-2013 - TortoiseSVN
+
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software Foundation,
+// 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+import "wtypes.idl";
+
+[
+	uuid(F2E334DC-2799-4961-9FCC-C324CB5FD205),
+	helpstring("GitWCRev Type Library"),
+	version(1.0)
+]
+library LibGitWCRev
+{
+	importlib("stdole32.tlb");
+
+	[
+		uuid(41886E22-73C4-49E8-8831-37F79CED16FE),
+		dual,
+		oleautomation
+	]
+	interface IGitWCRev : IDispatch
+	{
+		[helpstring("Fetches the status information. Call this to initialize all the properties")]
+		HRESULT GetWCInfo([in] BSTR wcPath, [in]VARIANT_BOOL ignore_submodules);
+
+		[propget, helpstring("Returns the working tree revision")]
+		HRESULT Revision([out, retval]VARIANT* rev);
+
+		[propget, helpstring("Returns the working tree HEAD commit date as a string")]
+		HRESULT Date([out, retval]VARIANT* date);
+
+		[propget, helpstring("Returns the working tree HEAD author as a string")]
+		HRESULT Author([out, retval]VARIANT* author);
+
+		[propget, helpstring("TRUE if the working tree has modifications")]
+		HRESULT HasModifications([out, retval]VARIANT_BOOL* modifications);
+
+		[propget, helpstring("TRUE if the working tree has unversioned items")]
+		HRESULT HasUnversioned([out, retval]VARIANT_BOOL* unversioned);
+
+		[propget, helpstring("TRUE if the HEAD commit is tagged")]
+		HRESULT IsWcTagged([out, retval]VARIANT_BOOL* tagged);
+
+		[propget, helpstring("TRUE if the working tree branch is unborn")]
+		HRESULT IsUnborn([out, retval]VARIANT_BOOL* unborn);
+
+		[propget, helpstring("TRUE if the file or folder is under Git version control")]
+		HRESULT IsGitItem([out, retval]VARIANT_BOOL* versioned);
+
+		[propget, helpstring("TRUE if the working tree has at least one submodule")]
+		HRESULT HasSubmodule([out, retval]VARIANT_BOOL* has_submodule);
+
+		[propget, helpstring("TRUE if the at least one submodule has uncommitted changes")]
+		HRESULT HasSubmoduleModifications([out, retval]VARIANT_BOOL* modifications);
+
+		[propget, helpstring("TRUE if the at least one submodule has unversioned items")]
+		HRESULT HasSubmoduleUnversioned([out, retval]VARIANT_BOOL* unversioned);
+
+		[propget, helpstring("TRUE if all submodule HEADs match the committed ones")]
+		HRESULT IsSubmoduleUp2Date([out, retval]VARIANT_BOOL* up2date);
+	}
+
+
+	[ uuid(9642A3D3-7425-49F6-8F75-6A001F716AED),
+		helpstring("GitWCRev object")
+	]
+	coclass GitWCRev
+	{
+		[default] interface IGitWCRev;
+	}
+}
+

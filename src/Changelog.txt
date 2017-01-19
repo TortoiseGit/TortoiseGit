@@ -41,6 +41,7 @@ Released: unreleased
  * Fixed issue #2894: Enable/disable check boxes for hook scripts
  * Enable/disable check boxes for bugtraq plugins
  * Fixed issue #2283: Improve symbols for "Symbolize ref names"
+ * Fixed issue #2746: SubWCRev equivalent required: GitWCRev added
 
 == Bug Fixes ==
  * Fixed issue #2837: Layout of overlapping icons settings dialog

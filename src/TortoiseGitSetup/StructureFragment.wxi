@@ -798,6 +798,56 @@
 						<File Id="F__askpass" Name="sshaskpass.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\sshaskpass.exe" />
 					</Component>
 
+					<Component Id="C__TortoiseGitGitWCRev" Guid="$(var.GuidTortoiseGitGitWCRev)" Win64="$(var.Win64YesNo)">
+						<File Id="F__GitWCRev" Name="GitWCRev.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\GitWCRev.exe" />
+						<File Id="F__GitWCRevCOM" Name="GitWCRevCOM.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\GitWCRevCOM.exe" />
+
+						<!-- set paths we use to find the executables -->
+						<RegistryKey Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\App Paths\GitWCRev.exe" />
+						<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\App Paths\GitWCRev.exe" Name="Path" Value="[INSTALLDIR]bin" Type="string" />
+						<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\App Paths\GitWCRev.exe" Value="[INSTALLDIR]bin\GitWCRev.exe" Type="string" />
+
+						<!-- register the GitWCRev COM-Object -->
+						<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidGitWCRev)}" />
+						<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidGitWCRev)}\LocalServer32" Value="[INSTALLDIR]bin\GitWCRevCOM.exe /automation" Type="string" />
+						<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidGitWCRev)}\ProgID" Value="GitWCRev.object.1" Type="string" />
+						<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidGitWCRev)}\VersionIndependentProgID" Value="GitWCRev.object" Type="string" />
+						<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidGitWCRev)}\TypeLib" Value="{$(var.GuidGitWCRevTypeLib)}" Type="string" />
+						<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidGitWCRev)}" Value="GitWCRev Server Object" Type="string" />
+
+						<RegistryKey Root="HKLM" Key="Software\Classes\GitWCRev.object" />
+						<RegistryValue Root="HKLM" Key="Software\Classes\GitWCRev.object" Value="GitWCRev Server Object" Type="string" />
+						<RegistryValue Root="HKLM" Key="Software\Classes\GitWCRev.object\CLSID" Value="{$(var.GuidGitWCRev)}" Type="string" />
+						<RegistryValue Root="HKLM" Key="Software\Classes\GitWCRev.object\CurVer" Value="GitWCRev.object.1" Type="string" />
+
+						<RegistryKey Root="HKLM" Key="Software\Classes\GitWCRev.object.1" />
+						<RegistryValue Root="HKLM" Key="Software\Classes\GitWCRev.object.1" Value="GitWCRev Server Object" Type="string" />
+						<RegistryValue Root="HKLM" Key="Software\Classes\GitWCRev.object.1\CLSID" Value="{$(var.GuidGitWCRev)}" Type="string" />
+
+						<RegistryKey Root="HKLM" Key="Software\Classes\TypeLib\{$(var.GuidGitWCRevTypeLib)}" />
+						<RegistryValue Root="HKLM" Key="Software\Classes\TypeLib\{$(var.GuidGitWCRevTypeLib)}\1.0" Value="GitWCRev Type Library" Type="string" />
+						<RegistryKey Root="HKLM" Key="Software\Classes\TypeLib\{$(var.GuidGitWCRevTypeLib)}\1.0\0" />
+						<RegistryValue Root="HKLM" Key="Software\Classes\TypeLib\{$(var.GuidGitWCRevTypeLib)}\1.0\0\win32" Value="[INSTALLDIR]bin\GitWCRevCOM.exe" Type="string" />
+						<RegistryValue Root="HKLM" Key="Software\Classes\TypeLib\{$(var.GuidGitWCRevTypeLib)}\1.0\FLAGS" Value="0" Type="string" />
+						<RegistryValue Root="HKLM" Key="Software\Classes\TypeLib\{$(var.GuidGitWCRevTypeLib)}\1.0\HELPDIR" Value="[INSTALLDIR]" Type="string" />
+
+						<RegistryKey Root="HKLM" Key="Software\Classes\Interface\{$(var.GuidGitWCRevInterface)}" />
+						<RegistryValue Root="HKLM" Key="Software\Classes\Interface\{$(var.GuidGitWCRevInterface)}" Value="IGitWCRev" Type="string" />
+						<RegistryValue Root="HKLM" Key="Software\Classes\Interface\{$(var.GuidGitWCRevInterface)}\ProxyStubClsid" Value="{00020424-0000-0000-C000-000000000046}" Type="string" />
+						<RegistryValue Root="HKLM" Key="Software\Classes\Interface\{$(var.GuidGitWCRevInterface)}\ProxyStubClsid32" Value="{00020424-0000-0000-C000-000000000046}" Type="string" />
+						<RegistryValue Root="HKLM" Key="Software\Classes\Interface\{$(var.GuidGitWCRevInterface)}\TypeLib" Value="{$(var.GuidGitWCRevTypeLib)}" Type="string" />
+						<RegistryValue Root="HKLM" Key="Software\Classes\Interface\{$(var.GuidGitWCRevInterface)}\TypeLib" Name="Version" Value="1.0" Type="string" />
+					</Component>
+
+					<?if $(var.Platform) = "x64" ?>
+					<Component Id="C__TortoiseGitGitWCRev32" Guid="$(var.GuidTortoiseGitGitWCRev32)" Win64="no">
+						<!-- set paths we use to find the executables -->
+						<RegistryKey Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\App Paths\GitWCRev.exe" />
+						<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\App Paths\GitWCRev.exe" Name="Path" Value="[INSTALLDIR]bin" Type="string" />
+						<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\App Paths\GitWCRev.exe" Value="[INSTALLDIR]bin\GitWCRev.exe" Type="string" />
+					</Component>
+					<?endif ?>
+
 					<Component Id="C__TGitCache" Guid="$(var.GuidTortoiseGitCache)" Win64="$(var.Win64YesNo)">
 						<File Id="F__TGitCache" Name="TGitCache.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TGitCache.exe" KeyPath="yes"/>
 					</Component>

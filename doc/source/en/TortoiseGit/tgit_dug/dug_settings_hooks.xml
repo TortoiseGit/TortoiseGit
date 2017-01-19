@@ -25,6 +25,12 @@
 		you can always choose to call a script which is itself under version control.
 	</para>
 	<para>
+		One application for such hooks might be to call a program like
+		<literal>GitWCRev.exe</literal> (<xref linkend="tgit-gitwcrev"/>)
+		to update version numbers after a commit,
+		and perhaps to trigger a rebuild.
+	</para>
+	<para>
 		<figure id="tgit-dug-settings-dia-hook-edit">
 			<title>The Settings Dialog, Configure Hook Scripts</title>
 			<graphic fileref="../images/SettingsHookEdit.png"/>

@@ -156,6 +156,12 @@ public:
 		m_Ref = h;
 	}
 
+	CAutoRepository(CAutoRepository&& that)
+	{
+		m_Ref = that.Detach();
+	}
+
+#if defined(_MFC_VER) || defined(CSTRING_AVAILABLE)
 	CAutoRepository(const CString& gitDir)
 	{
 		Open(gitDir);
@@ -166,22 +172,18 @@ public:
 		Open(gitDirA);
 	}
 
-	CAutoRepository(CAutoRepository&& that)
-	{
-		m_Ref = that.Detach();
-	}
-
 	int Open(const CString& gitDir)
 	{
 		return Open(CUnicodeUtils::GetUTF8(gitDir));
 	}
+#endif
 
 private:
 	CAutoRepository(const CAutoRepository&) = delete;
 	CAutoRepository& operator=(const CAutoRepository&) = delete;
 
 protected:
-	int Open(const CStringA& gitDirA)
+	int Open(const char* gitDirA)
 	{
 		return git_repository_open(GetPointer(), gitDirA);
 	}
@@ -243,6 +245,7 @@ public:
 		git_config_new(&m_Ref);
 	}
 
+#if defined(_MFC_VER) || defined(CSTRING_AVAILABLE)
 	int GetString(const CString &key, CString &value) const
 	{
 		if (!IsValid())
@@ -283,6 +286,7 @@ public:
 
 		return ret;
 	}
+#endif
 
 private:
 	CAutoConfig(const CAutoConfig&) = delete;

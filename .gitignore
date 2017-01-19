@@ -22,6 +22,11 @@
 /doc/xsl/db_*.xsl
 /Languages/.tx
 /src/.vs
+/src/GitWCRev/GitWCRevCOM.tlb
+/src/GitWCRev/GitWCRevCOM_h.h
+/src/GitWCRev/GitWCRevCOM_i.c
+/src/GitWCRev/Test.txt
+/src/GitWCRev/TestW.txt
 /src/ipch
 /src/TortoiseShell/register.reg
 /src/TortoiseShell/register_recover.reg

@@ -22,6 +22,11 @@
 
 		<ComponentRef Id="C__TortoiseUDiff" />
 
+		<ComponentRef Id="C__TortoiseGitGitWCRev" />
+		<?if $(var.Platform) = "x64" ?>
+		<ComponentRef Id="C__TortoiseGitGitWCRev32" />
+		<?endif ?>
+
 		<ComponentRef Id="C__PlainSettingsShortcuts" />
 		<ComponentRef Id="C__PlatformSettingsShortcuts" />
 		<ComponentRef Id="C__shellregistry" />

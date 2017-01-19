@@ -1,0 +1,50 @@
+//
+// GitWCRev.rc2 - resources Microsoft Visual C++ does not edit directly
+//
+
+#ifdef APSTUDIO_INVOKED
+#error this file is not editable by Microsoft Visual C++
+#endif //APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Add manually edited resources here...
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+#include "..\version.h"
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION FILEVER
+ PRODUCTVERSION PRODUCTVER
+ FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
+#ifdef _DEBUG
+ FILEFLAGS VS_FF_DEBUG
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS VOS_NT_WINDOWS32
+ FILETYPE VFT_APP
+ FILESUBTYPE VFT2_UNKNOWN
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040004e4"
+        BEGIN
+            VALUE "CompanyName", "https://tortoisegit.org/"
+            VALUE "FileDescription", "GitWCRev"
+            VALUE "FileVersion", STRFILEVER
+            VALUE "InternalName", "GitWCRev.exe"
+            VALUE "LegalCopyright", "Copyright (C) 2017 - TortoiseGit and Copyright (C) 2003-2016 - TortoiseSVN"
+            VALUE "OriginalFilename", "GitWCRev.exe"
+            VALUE "ProductName", "GitWCRev"
+            VALUE "ProductVersion", STRPRODUCTVER
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x400, 1252
+    END
+END
+
+/////////////////////////////////////////////////////////////////////////////

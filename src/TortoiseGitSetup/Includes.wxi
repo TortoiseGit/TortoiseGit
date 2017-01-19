@@ -53,6 +53,10 @@
 	<?define GuidIgnored="1B94B098-57C6-4C39-9DC5-8EB00E423D3E"?>
 	<?define GuidUnversioned="18BF1135-6EA2-405F-A71E-16EEE7F71F8B"?>
 
+	<?define GuidGitWCRev="9642A3D3-7425-49F6-8F75-6A001F716AED"?>
+	<?define GuidGitWCRevTypeLib="F2E334DC-2799-4961-9FCC-C324CB5FD205"?>
+	<?define GuidGitWCRevInterface="41886E22-73C4-49E8-8831-37F79CED16FE"?>
+
 	<!-- Target specific component GUIDs ............................................. -->
 
 	<?if $(var.Platform) = "x64" ?>
@@ -95,6 +99,8 @@
 	<?define GuidProtocolSmartgit="294096FE-7AD3-445C-8F7C-77B048315FB9"?>
 	<?define GuidPlainSettingsShortcuts="D78CE764-1770-4D38-9229-F5068D8738FD"?>
 	<?define GuidPlatformSettingsShortcuts="256F134F-87F1-418F-BA9A-AFA92270D42D"?>
+	<?define GuidTortoiseGitGitWCRev="FBB5B46E-3F8D-4128-B851-C8C781C2DD03"?>
+	<?define GuidTortoiseGitGitWCRev32="9549BE69-E931-4001-AF29-C815B2030584"?>
 
 	<?define GuidDictionaryENGB="03B4BF1F-7CBB-4F14-BE09-5DAA6F38B976"?>
 	<?define GuidDictionaryENUS="5E7DDA35-1078-40C1-8428-14808AF7DB96"?>
@@ -177,6 +183,7 @@
 	<?define GuidProtocolSmartgit="C114A9E4-2427-4435-B3BE-11EDC9C39B8C"?>
 	<?define GuidPlainSettingsShortcuts="49263747-C09E-4FFE-A0A4-8E8966CBD807"?>
 	<?define GuidPlatformSettingsShortcuts="F1B92E39-6F75-4ED4-9099-CB5DC7A91831"?>
+	<?define GuidTortoiseGitGitWCRev="FBB5B46E-3F8D-4128-B851-C8C781C2DD03"?>
 
 	<?define GuidDictionaryENGB="7218599E-4140-429F-855A-D82B59ED34F9"?>
 	<?define GuidDictionaryENUS="B3FD2F77-B14C-448F-8D82-4B21F16711D6"?>

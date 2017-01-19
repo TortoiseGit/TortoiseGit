@@ -1,0 +1,806 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter SYSTEM "../../dtd/dblite.dtd">
+<chapter id="tgit-gitwcrev">
+  <title>The GitWCRev Program</title>
+  <simplesect>
+    <indexterm>
+      <primary>version extraction</primary>
+    </indexterm>
+    <indexterm>
+      <primary>GitWCRev</primary>
+    </indexterm>
+    <indexterm>
+      <primary>SubWCRev</primary>
+    </indexterm>
+    <indexterm>
+      <primary>COM</primary>
+    </indexterm>
+    <indexterm>
+      <primary>version number in files</primary>
+    </indexterm>
+    <para>
+      GitWCRev is Windows console program which can be used to read
+      the status of a Git working tree and optionally perform
+      keyword substitution in a template file - another alternative could be git filters (cf. <xref linkend="gitattributes(5)"/>).
+      This is often used as part of the build process as a means of
+      incorporating working tree information into the object you
+      are building. Typically it might be used to include the
+      revision number in an <quote>About</quote> box.
+    </para>
+  </simplesect>
+  <!-- ================================================================= -->
+  <!-- ======================== SECTION 1 ============================== -->
+  <!-- ================================================================= -->
+  <sect1 id="tgit-gitwcrev-cli">
+    <title>The GitWCRev Command Line</title>
+    <para>
+      GitWCRev reads the Git status of all files in a working
+      tree including submodules. It records the HEAD commit revision
+      and the commit timestamp,
+      it also records whether there are local modifications in the working
+      tree. The status revision and modification status are displayed on stdout.
+    </para>
+    <para>
+      GitWCRev.exe is called from the command line or a script, and
+      is controlled using the command line parameters.
+      <screen>
+GitWCRev WorkingTreePath [SrcVersionFile DstVersionFile] [-mMuUsdq]
+      </screen>
+    </para>
+    <para>
+      <literal>WorkingTreePath</literal> is the path to the working
+      tree being checked.The path may be absolute or relative to the current working directory.
+    </para>
+    <para>
+      If you want GitWCRev to perform keyword substitution, so that
+      fields like repository revision is saved to a text
+      file, you need to supply a template file
+      <literal>SrcVersionFile</literal>
+      and an output file
+      <literal>DstVersionFile</literal>
+      which contains the substituted version of the template.
+    </para>
+    <para>
+      You can specify ignore patterns for GitWCRev to prevent specific files
+      and paths from being considered. The patterns are read from a file
+      named <filename>.gitwcrevignore</filename>. The file is read <!--from
+      the specified path, and also--> from the working tree root.
+      If the file does not exist, no files or paths are ignored.
+      The <filename>.gitwcrevignore</filename> file can contain multiple
+      patterns, separated by newlines. The patterns are matched against
+      the paths relative to the repository root <!--and paths relative to
+      the path of the <filename>.gitwcrevignore</filename> file-->. For example, to ignore all
+      files in the <filename>/doc</filename> folder of the TortoiseGit working tree,
+      the <filename>.gitwcrevignore</filename> would contain the following
+      lines:
+<screen>
+/doc
+/doc/*
+</screen>
+<!--      Or, assuming the <filename>.gitwcrevignore</filename> file is in the working tree root which
+      is checked out from trunk, using the patterns
+<screen>
+doc
+doc/*
+</screen>
+      is the same as the example above.-->
+    </para>
+    <para>
+      To ignore all images, the ignore patterns could be set like this:
+<screen>
+*.png
+*.jpg
+*.ico
+*.bmp
+</screen>
+    </para>
+    <important>
+      <para>
+        The ignore patterns are case-sensitive, just like Git is.
+      </para>
+    </important>
+    <tip>
+      <para>
+        To create a file with a starting dot in the Windows explorer,
+        enter <filename>.gitwcrevignore.</filename>. Note the trailing dot.
+      </para>
+    </tip>
+    <para>
+      There are a number of optional switches which affect the way
+      GitWCRev works. If you use more than one, they must be specified
+      as a single group, e.g.
+      <literal>-sU</literal>, not
+      <literal>-s -U</literal>.
+      <table id="tgit-gitwcrev-switch-table">
+        <title>List of available command line switches</title>
+        <tgroup cols="2">
+          <colspec colnum="1" colwidth="2*"/>
+          <colspec colnum="2" colwidth="10*"/>
+          <thead>
+            <row>
+              <entry>Switch</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry condition="pot">-m</entry>
+              <entry>
+                If this switch is given, GitWCRev will exit with
+                <literal>ERRORLEVEL 7</literal> if the working tree
+                contains local modifications. This may be used to
+                prevent building with uncommitted changes present.
+              </entry>
+            </row>
+            <row>
+              <entry condition="pot">-M</entry>
+              <entry>
+                Same as above, but includes the status of submodules.
+              </entry>
+            </row>
+            <row>
+              <entry condition="pot">-u</entry>
+              <entry>
+                If this switch is given, GitWCRev will exit with
+                <literal>ERRORLEVEL 11</literal> if the working tree
+                contains unversioned items that are not ignored.
+              </entry>
+            </row>
+            <row>
+              <entry condition="pot">-U</entry>
+              <entry>
+                Same as above, but includes the status of submodules.
+              </entry>
+            </row>
+            <row>
+              <entry condition="pot">-d</entry>
+              <entry>
+                If this switch is given, GitWCRev will exit with
+                <literal>ERRORLEVEL 9</literal> if the destination file
+                already exists.
+              </entry>
+            </row>
+            <row>
+              <entry condition="pot">-s</entry>
+              <entry>
+                If this switch is given, GitWCRev will exclude submodules.
+                The default behaviour is to also check submodules.
+              </entry>
+            </row>
+            <row>
+              <entry condition="pot">-F</entry>
+              <entry>
+                If this switch is given, GitWCRev will ignore any
+                <filename>.gitwcrevignore</filename> files and
+                include all files.
+              </entry>
+            </row>
+            <row>
+              <entry condition="pot">-q</entry>
+              <entry>
+                If this switch is given, GitWCRev will perform the
+                keyword substitution without showing working tree
+                status on stdout.
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </para>
+    <para>
+      If there is no error, GitWCRev returns zero. But in case
+      an error occurs, the error message is written to stderr
+      and shown in the console. And the returned error codes are:
+      <table id="tgit-gitwcrev-error-table">
+        <title>List of GitWCRev error codes</title>
+        <tgroup cols="2">
+          <colspec colnum="1" colwidth="2*"/>
+          <colspec colnum="2" colwidth="10*"/>
+          <thead>
+            <row>
+              <entry>Error Code</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry condition="pot">1</entry>
+              <entry>
+                Syntax error. One or more command line
+                parameters are invalid.
+              </entry>
+            </row>
+            <row>
+              <entry condition="pot">2</entry>
+              <entry>
+                The file or folder specified on the
+                command line was not found.
+              </entry>
+            </row>
+            <row>
+              <entry condition="pot">3</entry>
+              <entry>
+                The input file could not be opened, or
+                the target file could not be created.
+              </entry>
+            </row>
+            <row>
+              <entry condition="pot">4</entry>
+              <entry>
+                Could not allocate memory. This could
+                happen if e.g. the source file is too
+                big.
+              </entry>
+            </row>
+            <row>
+              <entry condition="pot">5</entry>
+              <entry>
+                The source file can not be scanned properly.
+              </entry>
+            </row>
+            <row>
+              <entry condition="pot">6</entry>
+              <entry>
+                Git error: libgit2 returned with
+                an error when GitWCRev tried to find
+                the information from the working tree.
+              </entry>
+            </row>
+            <row>
+              <entry condition="pot">7</entry>
+              <entry>
+                The working tree has local modifications.
+                This requires the <literal>-m</literal> or <literal>-M</literal> switch.
+              </entry>
+            </row>
+            <row>
+              <entry condition="pot">9</entry>
+              <entry>
+                The output file already exists.
+                This requires the <literal>-d</literal> switch.
+              </entry>
+            </row>
+            <row>
+              <entry condition="pot">10</entry>
+              <entry>
+                The specified path is neither a working tree nor
+                part of one.
+              </entry>
+            </row>
+            <row>
+              <entry condition="pot">11</entry>
+              <entry>
+                The working tree has unversioned files or folders in it.
+                This requires the <literal>-u</literal> or <literal>-U</literal> switch.
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </para>
+  </sect1>
+  <!-- ================================================================= -->
+  <!-- ======================== SECTION 2 ============================== -->
+  <!-- ================================================================= -->
+  <sect1 id="tgit-gitwcrev-keywords">
+    <title>Keyword Substitution</title>
+    <para>
+      If a source and destination files are supplied, GitWCRev copies
+      source to destination, performing keyword substitution as follows:
+      <table id="tgit-gitwcrev-switch-table2">
+        <title>List of available keywords</title>
+        <tgroup cols="2">
+          <colspec colnum="1" colwidth="3*"/>
+          <colspec colnum="2" colwidth="7*"/>
+          <thead>
+            <row>
+              <entry>Keyword</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry condition="pot">$WCREV$</entry>
+              <entry>
+                Replaced with the HEAD commit revision
+                in the working tree.
+              </entry>
+            </row>
+            <row>
+              <entry condition="pot">$WCREV=n$</entry>
+              <entry>
+                Replaced with the HEAD commit revision
+                in the working tree, trimmed to <literal>n</literal> chars. For example:
+                <literal>$WCREV=7$</literal>
+              </entry>
+            </row>
+            <row>
+              <entry condition="pot">$WCDATE$, $WCDATEUTC$</entry>
+              <entry>
+                Replaced with the commit date/time of the
+                highest commit revision. By default,
+                international format is used:
+                <literal>yyyy-mm-dd hh:mm:ss</literal>.
+                Alternatively, you can specify a custom format which
+                will be used with <literal>strftime()</literal>,
+                for example:
+                <literal>$WCDATE=%a %b %d %I:%M:%S %p$</literal>.
+                For a list of available formatting characters, look at the
+                <ulink url="https://msdn.microsoft.com/en-us/library/fe06s4ak.aspx">
+                  <citetitle>online reference</citetitle>
+                </ulink>.
+              </entry>
+            </row>
+            <row>
+              <entry condition="pot">$WCNOW$, $WCNOWUTC$</entry>
+              <entry>
+                Replaced with the current system date/time.
+                This can be used to indicate the build time.
+                Time formatting can be used as described for
+                <literal>$WCDATE$</literal>.
+              </entry>
+            </row>
+            <row>
+              <entry condition="pot">$WCMODS$</entry>
+              <entry>
+                <literal>$WCMODS?TText:FText$</literal> is
+                replaced with <literal>TText</literal> if there are local
+                modifications, or <literal>FText</literal> if not.
+                This will also evaluate to <literal>true</literal> ff a submodule is checked out at a different commit (requires submodules not to be ignored).
+              </entry>
+            </row>
+            <row>
+              <entry condition="pot">$WCFILEMODS$</entry>
+              <entry>
+                <literal>$WCFILEMODS?TText:FText$</literal> is
+                replaced with <literal>TText</literal> if there are local
+                modifications, or <literal>FText</literal> if not.
+                This does not check the checked out commit of submodules.
+              </entry>
+            </row>
+            <row>
+              <entry condition="pot">$WCUNVER$</entry>
+              <entry>
+                <literal>$WCUNVER?TText:FText$</literal> is
+                replaced with <literal>TText</literal> if there are unversioned
+                items in the working tree, or <literal>FText</literal> if not.
+              </entry>
+            </row>
+            <row>
+              <entry condition="pot">$WCISTAGGED$</entry>
+              <entry>
+                <literal>$WCISTAGGED?TText:FText$</literal> is
+                replaced with <literal>TText</literal> if the HEAD commit is tagged, or
+                <literal>FText</literal> if not.
+              </entry>
+            </row>
+            <row>
+              <entry condition="pot">$WCINGIT$</entry>
+              <entry>
+                <literal>$WCINGIT?TText:FText$</literal> is
+                replaced with <literal>TText</literal> if the entry is versioned,
+                or <literal>FText</literal> if not.
+              </entry>
+            </row>
+            <row>
+              <entry condition="pot">$WCSUBMODULE$</entry>
+              <entry>
+                <literal>$WCSUBMODULE?TText:FText$</literal> is
+                replaced with <literal>TText</literal> if the working tree has submodules,
+                or <literal>FText</literal> if not.
+              </entry>
+            </row>
+            <row>
+              <entry condition="pot">$WCSUBMODULEUP2DATE$</entry>
+              <entry>
+                <literal>$WCSUBMODULEUP2DATE?TText:FText$</literal> is
+                replaced with <literal>TText</literal> if all submodules are checked out at the version specified in the index of the parent working tree,
+                or <literal>FText</literal> if not.
+              </entry>
+            </row>
+            <row>
+              <entry condition="pot">$WCMODSINSUBMODULE$</entry>
+              <entry>
+                <literal>$WCMODSINSUBMODULE?TText:FText$</literal> is
+                replaced with <literal>TText</literal> if a submodule contains uncommitted changes,
+                or <literal>FText</literal> if not.
+              </entry>
+            </row>
+            <row>
+              <entry condition="pot">$WCUNVERINSUBMODULE$</entry>
+              <entry>
+                <literal>$WCUNVERINSUBMODULE?TText:FText$</literal> is
+                replaced with <literal>TText</literal> if a submodule contains unversioned items,
+                or <literal>FText</literal> if not.
+              </entry>
+            </row>
+            <row>
+              <entry condition="pot">$WCMODSFULL$</entry>
+              <entry>
+                <literal>$WCMODSFULL?TText:FText$</literal> combines is <literal>$WCMODS$</literal> and <literal>$WCMODSINSUBMODULE$</literal> and can be seen as a recursive check.
+                replaced with <literal>TText</literal> if the working tree or any submodule contains uncommitted changes,
+                or <literal>FText</literal> if not.
+              </entry>
+            </row>
+            <row>
+              <entry condition="pot">$WCUNVERFULL$</entry>
+              <entry>
+                <literal>$WCUNVERFULL?TText:FText$</literal> combines is <literal>$WCUNVER$</literal> and <literal>$WCUNVERINSUBMODULE$</literal> and can be seen as a recursive check.
+                replaced with <literal>TText</literal> if the working tree or any submodule contains unversioned items,
+                or <literal>FText</literal> if not.
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </para>
+    <para>
+      GitWCRev does not directly support nesting of expressions, so for example
+      you cannot use an expression like:
+      <screen>
+#define SVN_REVISION    "$WCUNVER?$WCNOW$:$WCDATE$$"
+      </screen>
+      But you can usually work around it by other means, for example:
+      <screen>
+#define DATE_NOW       $WCNOW$
+#define DATE_COMMIT    $WCDATE$
+#define DATE           "$WCUNVER?DATE_NOW:DATE_COMMIT$"
+      </screen>
+    </para>
+    <tip>
+      <para>
+        Some of these keywords apply to single files rather than to
+        an entire working tree, so it only makes sense to use these
+        when GitWCRev is called to scan a single file. This applies to
+        <literal>$WCINGIT$</literal>.
+      </para>
+    </tip>
+  </sect1>
+  <!-- ================================================================= -->
+  <!-- ======================== SECTION 3 ============================== -->
+  <!-- ================================================================= -->
+  <sect1 id="tgit-gitwcrev-example">
+    <title>Keyword Example</title>
+    <para>
+      The example below shows how keywords in a template file are
+      substituted in the output file.
+    </para>
+<programlisting>
+// Test file for GitWCRev
+
+char* Revision                    = "$WCREV$";
+char* RevisionShort               = "$WCREV=7$";
+char* Modified                    = "$WCMODS?Modified:Not modified$";
+char* Unversioned                 = "$WCUNVER?Unversioned items found:no unversioned items$";
+char* Date                        = "$WCDATE$";
+char* DateUTC                     = "$WCDATEUTC$";
+char* CustDate                    = "$WCDATE=%a, %d %B %Y$";
+char* CustDateEmpty               = "$WCDATE=$";
+char* CustDateInval               = "$WCDATE=%a, %c %B %Y$";
+char* CustDateUTC                 = "$WCDATEUTC=%a, %d %B %Y$";
+char* TimeNow                     = "$WCNOW$";
+char* TimeNowUTC                  = "$WCNOWUTC$";
+char* IsTagged                    = "$WCISTAGGED?Tagged:Not tagged$";
+char* IsInGit                     = "$WCINGIT?versioned:not versioned$";
+char* ModifiedFiles               = "$WCFILEMODS?Modified:Not modified$";
+char* HasSubmodule                = "$WCSUBMODULE?Working tree has at least one submodule:Working tree has no submodules$";
+char* SubmodulesUp2Date           = "$WCSUBMODULEUP2DATE?All submodules are up2date (checked out HEAD):At least one submodule is not up2date (checked HEAD differs)$";
+char* SubmoduleHasModifications   = "$WCMODSINSUBMODULE?At least one submodule has uncommited items:No submodule has uncommitted items$";
+char* SubmoduleHasUnversioned     = "$WCUNVERINSUBMODULE?At least one submodule has unversioned files:No submodule with unversioned files$";
+char* ModifiedAlsoInSubmodules    = "$WCMODSFULL?Modified items found (recursively):No modified items found (also not in submodules)$";
+char* UnversionedAlsoInSubmodules = "$WCUNVERFULL?Unversioned items found (recursively):No unversioned items found (also not in submodules)$";
+
+#if $WCMODSFULL?1:0$
+#error Source is modified
+#endif
+
+// End of file
+</programlisting>
+    <para>
+      After running <literal>GitWCRev.exe path\to\workingcopy testfile.tmpl testfile.txt</literal>,
+      the output file <literal>testfile.txt</literal> would looks like this:
+    </para>
+<programlisting>
+// Test file for GitWCRev
+
+char* Revision                    = "c16403bd41ba502935dee309fac137df0807f31e";
+char* RevisionShort               = "c16403b";
+char* Modified                    = "Modified";
+char* Unversioned                 = "Unversioned items found";
+char* Date                        = "2017/01/19 15:33:51";
+char* DateUTC                     = "2017/01/19 14:33:51";
+char* CustDate                    = "Thu, 19 January 2017";
+char* CustDateEmpty               = "";
+char* CustDateInval               = "Thu, 01/19/17 15:33:51 January 2017";
+char* CustDateUTC                 = "Thu, 19 January 2017";
+char* TimeNow                     = "2017/01/19 15:35:36";
+char* TimeNowUTC                  = "2017/01/19 14:35:36";
+char* IsTagged                    = "Not tagged";
+char* IsInGit                     = "versioned";
+char* ModifiedFiles               = "Not modified";
+char* HasSubmodule                = "Working tree has at least one submodule";
+char* SubmodulesUp2Date           = "At least one submodule is not up2date (checked HEAD differs)";
+char* SubmoduleHasModifications   = "No submodule has uncommitted items";
+char* SubmoduleHasUnversioned     = "At least one submodule has unversioned files";
+char* ModifiedAlsoInSubmodules    = "Modified items found (recursively)";
+char* UnversionedAlsoInSubmodules = "Unversioned items found (recursively)";
+
+#if 1
+#error Source is modified
+#endif
+
+// End of file
+</programlisting>
+    <tip>
+      <para>
+        A file like this will be included in the build so you would expect it
+        to be versioned. Be sure to version the template file, not the
+        generated file, otherwise each time you regenerate the version file
+        you need to commit the change, which in turn means the version file
+        needs to be updated.
+      </para>
+    </tip>
+  </sect1>
+  <!-- ================================================================= -->
+  <!-- ======================== SECTION 4 ============================== -->
+  <!-- ================================================================= -->
+  <sect1 id="tgit-gitwcrev-com-interface">
+    <title>COM interface</title>
+    <indexterm>
+      <primary>COM GitWCRev interface</primary>
+    </indexterm>
+    <para>
+      If you need to access Subversion revision information from other
+      programs, you can use the COM interface of GitWCRev. The object to
+      create is <literal>GitWCRev.object</literal>, and the following
+      methods are supported:
+      <table id="tgit-gitwcrev-COM-table">
+        <title>COM/automation methods supported</title>
+        <tgroup cols="2">
+          <colspec colnum="1" colwidth="3*"/>
+          <colspec colnum="2" colwidth="7*"/>
+          <thead>
+            <row>
+              <entry>Method</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry condition="pot">.GetWCInfo</entry>
+              <entry>
+                This method traverses the working tree gathering the
+                status and revision information. Naturally you must call this before
+                you can access the information using the remaining methods.
+                The first parameter is the path.
+                The second parameter needs to be true if you want to exclude submodules.
+                Equivalent to the <literal>-s</literal> command line switch.
+              </entry>
+            </row>
+            <row>
+              <entry condition="pot">.Revision</entry>
+              <entry>
+                The highest commit revision in the working tree.
+                Equivalent to <literal>$WCREV$</literal>.
+              </entry>
+            </row>
+            <row>
+              <entry condition="pot">.Date</entry>
+              <entry>
+                The commit date/time of the highest commit revision.
+                Equivalent to <literal>$WCDATE$</literal>.
+              </entry>
+            </row>
+            <row>
+              <entry condition="pot">.Author</entry>
+              <entry>
+                The author of the highest commit revision, that is, the
+                last person to commit changes to the working tree.
+              </entry>
+            </row>
+            <row>
+              <entry condition="pot">.HasModifications</entry>
+              <entry>True if there are local modifications</entry>.
+            </row>
+            <row>
+              <entry condition="pot">.HasUnversioned</entry>
+              <entry>True if there are unversioned items</entry>.
+            </row>
+            <row>
+              <entry condition="pot">.IsGitItem</entry>
+              <entry>
+                True if the item is versioned.
+              </entry>
+            </row>
+            <row>
+              <entry condition="pot">.IsUnborn</entry>
+              <entry>
+                True if the branch is not yet born.
+              </entry>
+            </row>
+            <row>
+              <entry condition="pot">.HasSubmodule</entry>
+              <entry>
+                True if working tree contains submodules.
+              </entry>
+            </row>
+            <row>
+              <entry condition="pot">.HasSubmoduleModifications</entry>
+              <entry>
+                True if a submodule has uncommitted changes.
+              </entry>
+            </row>
+            <row>
+              <entry condition="pot">.HasSubmoduleUnversioned</entry>
+              <entry>
+                True if a submodule has unversioned items.
+              </entry>
+            </row>
+            <row>
+              <entry condition="pot">.IsSubmoduleUp2Date</entry>
+              <entry>
+                True if all submodules are checked out at the in the parent repository specified version.
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </para>
+    <para>
+      The following example shows how the interface might be used.
+<programlisting>
+// testCOM.js - javascript file
+// test script for the GitWCRev COM/Automation-object
+
+filesystem = new ActiveXObject("Scripting.FileSystemObject");
+
+GitWCRevObject1 = new ActiveXObject("GitWCRev.object");
+GitWCRevObject2 = new ActiveXObject("GitWCRev.object");
+GitWCRevObject3 = new ActiveXObject("GitWCRev.object");
+GitWCRevObject4 = new ActiveXObject("GitWCRev.object");
+GitWCRevObject5 = new ActiveXObject("GitWCRev.object");
+
+GitWCRevObject2_1 = new ActiveXObject("GitWCRev.object");
+GitWCRevObject2_2 = new ActiveXObject("GitWCRev.object");
+GitWCRevObject2_3 = new ActiveXObject("GitWCRev.object");
+GitWCRevObject2_4 = new ActiveXObject("GitWCRev.object");
+GitWCRevObject2_5 = new ActiveXObject("GitWCRev.object");
+
+GitWCRevObject1.GetWCInfo(filesystem.GetAbsolutePathName("."), 0);
+GitWCRevObject2.GetWCInfo(filesystem.GetAbsolutePathName(".."), 0);
+GitWCRevObject3.GetWCInfo(filesystem.GetAbsolutePathName("GitWCRev.cpp"), 0);
+GitWCRevObject4.GetWCInfo(filesystem.GetAbsolutePathName("..\\.."), 0);
+
+GitWCRevObject2_1.GetWCInfo(filesystem.GetAbsolutePathName("."), 1);
+GitWCRevObject2_2.GetWCInfo(filesystem.GetAbsolutePathName(".."), 1);
+GitWCRevObject2_3.GetWCInfo(filesystem.GetAbsolutePathName("GitWCRev.cpp"), 1);
+GitWCRevObject2_4.GetWCInfo(filesystem.GetAbsolutePathName("..\\.."), 1);
+
+wcInfoString1 = "Revision = " + GitWCRevObject1.Revision +
+                "\nDate = " + GitWCRevObject1.Date +
+                "\nAuthor = " + GitWCRevObject1.Author +
+                "\nHasMods = " + GitWCRevObject1.HasModifications +
+                "\nHasUnversioned = " + GitWCRevObject1.HasUnversioned +
+                "\nIsTagged = " + GitWCRevObject1.IsWcTagged +
+                "\nIsGitItem = " + GitWCRevObject1.IsGitItem +
+                "\nIsUnborn = " + GitWCRevObject1.IsUnborn +
+                "\nHasSubmodule = " + GitWCRevObject1.HasSubmodule +
+                "\nHasSubmoduleModifications = " + GitWCRevObject1.HasSubmoduleModifications +
+                "\nHasSubmoduleUnversioned = " + GitWCRevObject1.HasSubmoduleUnversioned +
+                "\nIsSubmoduleUp2Date = " + GitWCRevObject1.IsSubmoduleUp2Date;
+wcInfoString2 = "Revision = " + GitWCRevObject2.Revision +
+                "\nDate = " + GitWCRevObject2.Date +
+                "\nAuthor = " + GitWCRevObject2.Author +
+                "\nHasMods = " + GitWCRevObject2.HasModifications +
+                "\nHasUnversioned = " + GitWCRevObject2.HasUnversioned +
+                "\nIsTagged = " + GitWCRevObject2.IsWcTagged +
+                "\nIsGitItem = " + GitWCRevObject2.IsGitItem +
+                "\nIsUnborn = " + GitWCRevObject2.IsUnborn +
+                "\nHasSubmodule = " + GitWCRevObject2.HasSubmodule +
+                "\nHasSubmoduleModifications = " + GitWCRevObject2.HasSubmoduleModifications +
+                "\nHasSubmoduleUnversioned = " + GitWCRevObject2.HasSubmoduleUnversioned +
+                "\nIsSubmoduleUp2Date = " + GitWCRevObject2.IsSubmoduleUp2Date;
+wcInfoString3 = "Revision = " + GitWCRevObject3.Revision +
+                "\nDate = " + GitWCRevObject3.Date +
+                "\nAuthor = " + GitWCRevObject3.Author +
+                "\nHasMods = " + GitWCRevObject3.HasModifications +
+                "\nHasUnversioned = " + GitWCRevObject3.HasUnversioned +
+                "\nIsTagged = " + GitWCRevObject3.IsWcTagged +
+                "\nIsGitItem = " + GitWCRevObject3.IsGitItem +
+                "\nIsUnborn = " + GitWCRevObject3.IsUnborn +
+                "\nHasSubmodule = " + GitWCRevObject3.HasSubmodule +
+                "\nHasSubmoduleModifications = " + GitWCRevObject3.HasSubmoduleModifications +
+                "\nHasSubmoduleUnversioned = " + GitWCRevObject3.HasSubmoduleUnversioned +
+                "\nIsSubmoduleUp2Date = " + GitWCRevObject3.IsSubmoduleUp2Date;
+wcInfoString4 = "Revision = " + GitWCRevObject4.Revision +
+                "\nDate = " + GitWCRevObject4.Date +
+                "\nAuthor = " + GitWCRevObject4.Author +
+                "\nHasMods = " + GitWCRevObject4.HasModifications +
+                "\nHasUnversioned = " + GitWCRevObject4.HasUnversioned +
+                "\nIsTagged = " + GitWCRevObject4.IsWcTagged +
+                "\nIsGitItem = " + GitWCRevObject4.IsGitItem +
+                "\nIsUnborn = " + GitWCRevObject4.IsUnborn +
+                "\nHasSubmodule = " + GitWCRevObject4.HasSubmodule +
+                "\nHasSubmoduleModifications = " + GitWCRevObject4.HasSubmoduleModifications +
+                "\nHasSubmoduleUnversioned = " + GitWCRevObject4.HasSubmoduleUnversioned +
+                "\nIsSubmoduleUp2Date = " + GitWCRevObject4.IsSubmoduleUp2Date;
+
+WScript.Echo(wcInfoString1 + "\n");
+WScript.Echo(wcInfoString2 + "\n");
+WScript.Echo(wcInfoString3 + "\n");
+WScript.Echo(wcInfoString4 + "\n");
+
+wcInfoString1 = "Revision = " + GitWCRevObject2_1.Revision +
+                "\nDate = " + GitWCRevObject2_1.Date +
+                "\nAuthor = " + GitWCRevObject2_1.Author +
+                "\nHasMods = " + GitWCRevObject2_1.HasModifications +
+                "\nHasUnversioned = " + GitWCRevObject2_1.HasUnversioned +
+                "\nIsTagged = " + GitWCRevObject2_1.IsWcTagged +
+                "\nIsGitItem = " + GitWCRevObject2_1.IsGitItem +
+                "\nIsUnborn = " + GitWCRevObject2_1.IsUnborn +
+                "\nHasSubmodule = " + GitWCRevObject2_1.HasSubmodule +
+                "\nHasSubmoduleModifications = " + GitWCRevObject2_1.HasSubmoduleModifications +
+                "\nHasSubmoduleUnversioned = " + GitWCRevObject2_1.HasSubmoduleUnversioned +
+                "\nIsSubmoduleUp2Date = " + GitWCRevObject2_1.IsSubmoduleUp2Date;
+wcInfoString2 = "Revision = " + GitWCRevObject2_2.Revision +
+                "\nDate = " + GitWCRevObject2_2.Date +
+                "\nAuthor = " + GitWCRevObject2_2.Author +
+                "\nHasMods = " + GitWCRevObject2_2.HasModifications +
+                "\nHasUnversioned = " + GitWCRevObject2_2.HasUnversioned +
+                "\nIsTagged = " + GitWCRevObject2_2.IsWcTagged +
+                "\nIsGitItem = " + GitWCRevObject2_2.IsGitItem +
+                "\nIsUnborn = " + GitWCRevObject2_2.IsUnborn +
+                "\nHasSubmodule = " + GitWCRevObject2_2.HasSubmodule +
+                "\nHasSubmoduleModifications = " + GitWCRevObject2_2.HasSubmoduleModifications +
+                "\nHasSubmoduleUnversioned = " + GitWCRevObject2_2.HasSubmoduleUnversioned +
+                "\nIsSubmoduleUp2Date = " + GitWCRevObject2_2.IsSubmoduleUp2Date;
+wcInfoString3 = "Revision = " + GitWCRevObject2_3.Revision +
+                "\nDate = " + GitWCRevObject2_3.Date +
+                "\nAuthor = " + GitWCRevObject2_3.Author +
+                "\nHasMods = " + GitWCRevObject2_3.HasModifications +
+                "\nHasUnversioned = " + GitWCRevObject2_3.HasUnversioned +
+                "\nIsTagged = " + GitWCRevObject2_3.IsWcTagged +
+                "\nIsGitItem = " + GitWCRevObject2_3.IsGitItem +
+                "\nIsUnborn = " + GitWCRevObject2_3.IsUnborn +
+                "\nHasSubmodule = " + GitWCRevObject2_3.HasSubmodule +
+                "\nHasSubmoduleModifications = " + GitWCRevObject2_3.HasSubmoduleModifications +
+                "\nHasSubmoduleUnversioned = " + GitWCRevObject2_3.HasSubmoduleUnversioned +
+                "\nIsSubmoduleUp2Date = " + GitWCRevObject2_3.IsSubmoduleUp2Date;
+wcInfoString4 = "Revision = " + GitWCRevObject2_4.Revision +
+                "\nDate = " + GitWCRevObject2_4.Date +
+                "\nAuthor = " + GitWCRevObject2_4.Author +
+                "\nHasMods = " + GitWCRevObject2_4.HasModifications +
+                "\nHasUnversioned = " + GitWCRevObject2_4.HasUnversioned +
+                "\nIsTagged = " + GitWCRevObject2_4.IsWcTagged +
+                "\nIsGitItem = " + GitWCRevObject2_4.IsGitItem +
+                "\nIsUnborn = " + GitWCRevObject2_4.IsUnborn +
+                "\nHasSubmodule = " + GitWCRevObject2_4.HasSubmodule +
+                "\nHasSubmoduleModifications = " + GitWCRevObject2_4.HasSubmoduleModifications +
+                "\nHasSubmoduleUnversioned = " + GitWCRevObject2_4.HasSubmoduleUnversioned +
+                "\nIsSubmoduleUp2Date = " + GitWCRevObject2_4.IsSubmoduleUp2Date;
+
+WScript.Echo(wcInfoString1 + "\n");
+WScript.Echo(wcInfoString2 + "\n");
+WScript.Echo(wcInfoString3 + "\n");
+WScript.Echo(wcInfoString4 + "\n");
+</programlisting>
+    </para>
+    <para>
+      The following listing is an example on how to use the GitWCRev COM
+      object from C#:
+<programlisting>
+using LibGitWCRev;
+GitWCRev sub = new GitWCRev();
+sub.GetWCInfo("C:\\PathToMyFile\\MyFile.cc", false);
+if (sub.IsGitItem == true)
+{
+    MessageBox.Show("versioned");
+}
+else
+{
+    MessageBox.Show("not versioned");
+}
+</programlisting>
+    </para>
+  </sect1>
+</chapter>
