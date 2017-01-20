@@ -16,7 +16,11 @@
 	</menuchoice>
   </para>
   <para>
-	Rebase dialog will be shown. <graphic fileref="../images/GitRebase.png"/>
+		The Rebase dialog will be shown.
+		<figure id="tgit-dug-rebase-dia-rebasedialog">
+			<title>Rebase dialog</title>
+			<graphic fileref="../images/GitRebase.png"/>
+		</figure>
   </para>
   <para>
 	Rebasing commits takes places from the bottom of the list to the top (in ascending order of the ID column). For example, "squash" means that the commit gets squashed/combined with the previous commit(s) which are located below in the list (with a lower ID).

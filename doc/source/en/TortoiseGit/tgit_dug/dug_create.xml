@@ -17,11 +17,17 @@
       <guimenu>Git Create Repository here
       </guimenu>
     </menuchoice>. 
-    <graphic fileref="../images/GitCreate.png"/>
+		<figure id="tgit-dug-create-dia-createdialog">
+			<title>Create repository dialog</title>
+			<graphic fileref="../images/GitCreate.png"/>
+		</figure>
   </para>
   <para>
     After (non bare) repository is created, ".git" directory will be created. And a messagebox will be shown:
-    <graphic fileref="../images/GitCreateMsg.png"/>
+		<figure id="tgit-dug-create-dia-created">
+			<title>Successfull repository creation message</title>
+			<graphic fileref="../images/GitCreateMsg.png"/>
+		</figure>
   </para>
 	<para>
 		You can find more information at <xref linkend="git-init(1)"/>

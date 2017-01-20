@@ -19,7 +19,11 @@
     </menuchoice>. 
   </para>
   <para>
-    Clone Dialog will show. <graphic fileref="../images/GitClone.png"/>
+		The Clone Dialog will show.
+		<figure id="tgit-dug-clone-dia-clonedialog">
+			<title>Clone dialog</title>
+			<graphic fileref="../images/GitClone.png"/>
+		</figure>
   </para>
   <para>
     <guilabel>URL:</guilabel> Input repository URL address, which you will clone <emphasis>from</emphasis>.

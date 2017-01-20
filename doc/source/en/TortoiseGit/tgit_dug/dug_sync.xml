@@ -19,7 +19,11 @@
     </menuchoice>. 
   </para>
   <para>
-	Sync Dialog will show. <graphic fileref="../images/GitSync.png"/>
+		The Sync Dialog will show.
+		<figure id="tgit-dug-sync-dia-syncdialog">
+			<title>Sync dialog</title>
+			<graphic fileref="../images/GitSync.png"/>
+		</figure>
   </para>
   <sect2>
 	<title>Branch</title>

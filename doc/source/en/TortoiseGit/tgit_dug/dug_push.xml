@@ -19,7 +19,11 @@
 		</menuchoice>. 
 	</para>
 	<para>
-		Push Dialog will show. <graphic fileref="../images/GitPush.png"/>
+		The Push Dialog will show.
+		<figure id="tgit-dug-push-dia-pushdialog">
+			<title>Push dialog</title>
+			<graphic fileref="../images/GitPush.png"/>
+		</figure>
 	</para>
 	<sect2>
 		<title>Branch</title>

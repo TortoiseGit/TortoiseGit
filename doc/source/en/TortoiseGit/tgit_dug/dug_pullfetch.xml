@@ -34,7 +34,16 @@
     </menuchoice>. 
   </para>
   <para>
-    Pull\fetch Dialog will show. <graphic fileref="../images/GitPull.png"/> <graphic fileref="../images/Fetch.png"/>
+        The pull or fetch dialog will show.
+
+		<figure id="tgit-dug-pull-dia-pulldialog">
+			<title>Pull dialog</title>
+			<graphic fileref="../images/GitPull.png"/>
+		</figure>
+		<figure id="tgit-dug-pull-dia-fetchdialog">
+			<title>Fetch dialog</title>
+			<graphic fileref="../images/Fetch.png"/>
+		</figure>
   </para>
   <para>
     <guilabel>Remote:</guilabel> Choose Remote
