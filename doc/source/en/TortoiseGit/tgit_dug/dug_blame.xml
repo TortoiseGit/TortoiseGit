@@ -198,4 +198,7 @@
 		</para>
 	</sect2>
 	-->
+	<para>
+		You can find more information at <xref linkend="git-blame(1)"/>
+	</para>
 </sect1>

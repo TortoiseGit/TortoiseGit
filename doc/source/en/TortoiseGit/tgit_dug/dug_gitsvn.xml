@@ -30,4 +30,7 @@
 	not removed by default if there are no files left in them. git cannot version empty
 	directories. Enabling this flag will make the commit to SVN act like git.
 	</para>
+	<para>
+		You can find more information at <xref linkend="git-svn(1)"/>
+	</para>
 </sect1>

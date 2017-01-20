@@ -216,6 +216,9 @@
 		<guilabel>Omit externals</guilabel> checkbox.
 	</para>
 	-->
+	<para>
+		You can find more information at <xref linkend="git-checkout(1)"/>
+	</para>
 	<important>
 		<para>
 			If you checkout/switch to a <guilabel>Tag</guilabel> or <guilabel>Commit</guilabel>,

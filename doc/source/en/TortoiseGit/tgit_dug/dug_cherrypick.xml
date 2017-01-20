@@ -19,4 +19,7 @@
 	<para>
 		The Cherry Pick dialog is similar to the <link linkend="tgit-dug-rebase">Rebase dialog</link>. The top table displays one line for each selected commit to cherry-pick. Buttons below it control the actions (Pick, Squash, Edit, Skip) and the order in which multiple commits are picked. Selecting a line shows the files affected by the commit.
 	</para>
+	<para>
+		You can find more information at <xref linkend="git-cherry-pick(1)"/>
+	</para>
 </sect1>

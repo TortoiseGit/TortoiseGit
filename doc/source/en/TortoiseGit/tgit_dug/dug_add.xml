@@ -97,4 +97,7 @@
 		</menuchoice>
 		or <guimenuitem>Revert</guimenuitem>.
 	</para>
+	<para>
+		You can find more information at <xref linkend="git-add(1)"/>
+	</para>
 </sect1>

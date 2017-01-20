@@ -32,6 +32,9 @@
 	<para>
 		<xi:include href="./dug_chooseversion.xml"/>
 	</para>
+	<para>
+		You can find more information at <xref linkend="git-archive(1)"/>
+	</para>
 <!--
 	<para>
 		Another way to export from a working tree is to <action>right drag</action>
