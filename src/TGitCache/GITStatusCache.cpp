@@ -433,7 +433,7 @@ CCachedDirectory * CGitStatusCache::GetDirectoryCacheEntry(const CTGitPath& path
 		itMap = m_directoryCache.find(path);
 		if (itMap!=m_directoryCache.end())
 		{
-			CAutoWriteLock writeLock(m_guard); // needed? Can this happen?
+			CAutoWriteLock writeLock2(m_guard); // needed? Can this happen?
 			delete itMap->second;
 			m_directoryCache.erase(itMap);
 		}

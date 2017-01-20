@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2016 - TortoiseGit
+// Copyright (C) 2015-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -108,7 +108,7 @@ protected:
 	CBasicGitWithTestRepoFixture(const CString& arepo = L"git-repo1")
 	{
 		prefix = L"\\.git";
-		repo = arepo;
+		m_reponame = arepo;
 	}
 
 	virtual void SetUp()
@@ -118,7 +118,7 @@ protected:
 		ASSERT_TRUE(GetResourcesDir(resourcesDir));
 		if (!prefix.IsEmpty())
 			EXPECT_TRUE(CreateDirectory(m_Dir.GetTempDir() + prefix, nullptr));
-		CString repoDir = resourcesDir + L"\\" + repo;
+		CString repoDir = resourcesDir + L"\\" + m_reponame;
 		CopyRecursively(repoDir, m_Dir.GetTempDir() + prefix);
 		CString configFile = m_Dir.GetTempDir() + prefix + L"\\config";
 		CString text;
@@ -128,7 +128,7 @@ protected:
 	}
 	CString prefix;
 private:
-	CString repo;
+	CString m_reponame;
 };
 
 class CBasicGitWithTestRepoBareFixture : public CBasicGitWithTestRepoFixture
