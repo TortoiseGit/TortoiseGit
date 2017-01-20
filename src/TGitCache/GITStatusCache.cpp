@@ -208,7 +208,6 @@ void CGitStatusCache::Destroy()
 
 void CGitStatusCache::Stop()
 {
-//	m_svnHelp.Cancel(true);
 	watcher.Stop();
 	m_folderCrawler.Stop();
 	m_shellUpdater.Stop();
@@ -240,7 +239,6 @@ CGitStatusCache::~CGitStatusCache(void)
 void CGitStatusCache::Refresh()
 {
 	m_shellCache.RefreshIfNeeded();
-//	m_pInstance->m_svnHelp.ReloadConfig();
 	if (!m_pInstance->m_directoryCache.empty())
 	{
 		auto I = m_pInstance->m_directoryCache.cbegin();

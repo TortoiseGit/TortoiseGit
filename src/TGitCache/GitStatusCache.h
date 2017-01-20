@@ -68,11 +68,6 @@ public:
 	/// Removes all items from the cache
 	void ClearCache();
 
-	/// Call this method before getting the status for a shell request
-	void StartRequest(const CTGitPath& path);
-	/// Call this method after the data for the shell request has been gathered
-	void EndRequest(const CTGitPath& path);
-
 	/// Notifies the shell about file/folder status changes.
 	/// A notification is only sent for paths which aren't currently
 	/// in the list of handled shell requests to avoid deadlocks.
@@ -108,7 +103,6 @@ private:
 	CCachedDirectory::CachedDirMap m_directoryCache;
 	CComAutoCriticalSection m_NoWatchPathCritSec;
 	std::map<CTGitPath, ULONGLONG> m_NoWatchPaths;	///< paths to block from getting crawled, and the time in ms until they're unblocked
-//	SVNHelper m_svnHelp;
 	ShellCache	m_shellCache;
 
 	static CGitStatusCache* m_pInstance;
