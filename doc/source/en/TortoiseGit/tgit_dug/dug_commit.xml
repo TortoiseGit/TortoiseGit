@@ -98,12 +98,11 @@
 			customizations are preserved, so you will see the same headings
 			next time.
 		</para>
-<!--
 		<tip>
 			<title>Drag and Drop</title>
 			<para>
-				You can drag files into the commit dialog from elsewhere, so
-				long as the working trees are checked out from the same repository.
+				You can drag files into the commit dialog from elsewhere, as
+				long as the working tree is the very same.
 				For example, you may have a huge working tree with several
 				explorer windows open to look at distant folders of the
 				hierarchy. If you want to avoid committing from the top
@@ -116,7 +115,6 @@
 				into the commit dialog, and they will be Git added automatically.
 			</para>
 		</tip>
--->
 	</sect2>
 	<!--
 	<sect2 id="tgit-dug-commit-changelists">
@@ -295,12 +293,10 @@
 			</menuchoice>
 			in the edit control.
 		</para>
-<!--
 		<para>
 			Another way to insert the paths into the log message is to simply
 			drag the files from the file list onto the edit control.
 		</para>
--->
 		<tip>
 			<title>Using keyboard</title>
 			<para>
