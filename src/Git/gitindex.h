@@ -47,7 +47,7 @@ public:
 	CGitIndexList();
 	~CGitIndexList();
 
-	int ReadIndex(CString file);
+	int ReadIndex(CString dotgitdir);
 	int GetStatus(const CString& gitdir, CString path, git_wc_status_kind* status, BOOL IsFull = FALSE, BOOL IsRecursive = FALSE, FILL_STATUS_CALLBACK callback = nullptr, void* pData = nullptr, CGitHash* pHash = nullptr, bool* assumeValid = nullptr, bool* skipWorktree = nullptr);
 #ifdef GTEST_INCLUDE_GTEST_GTEST_H_
 	FRIEND_TEST(GitIndexCBasicGitWithTestRepoFixture, GetFileStatus);
