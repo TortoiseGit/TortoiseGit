@@ -184,7 +184,7 @@ void GitStatus::GetStatus(const CTGitPath& path, bool /*update*/ /* = false */, 
 
 typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 
-int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status_kind* status, BOOL IsFull, BOOL /*IsRecursive*/, BOOL IsIgnore, FILL_STATUS_CALLBACK callback, void* pData, bool* assumeValid, bool* skipWorktree)
+int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status_kind* status, BOOL IsFull, BOOL IsRecursive, BOOL IsIgnore, FILL_STATUS_CALLBACK callback, void* pData, bool* assumeValid, bool* skipWorktree)
 {
 	if (!status)
 		return 0;
@@ -194,7 +194,7 @@ int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status_
 	git_wc_status_kind st = git_wc_status_none;
 	CGitHash hash;
 
-	g_IndexFileMap.GetFileStatus(gitdir, path, &st, IsFull, false, callback, pData, &hash, assumeValid, skipWorktree);
+	g_IndexFileMap.GetFileStatus(gitdir, path, &st, IsFull, false, IsRecursive ? nullptr : callback, pData, &hash, assumeValid, skipWorktree);
 
 	if (st == git_wc_status_conflicted)
 	{
@@ -430,7 +430,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 				bool assumeValid = false;
 				bool skipWorktree = false;
 				git_wc_status_kind filestatus;
-				GetFileStatus(gitdir, onepath, &filestatus, IsFul, IsRecursive, IsIgnore, callback, pData, &assumeValid, &skipWorktree);
+				GetFileStatus(gitdir, onepath, &filestatus, IsFul, true, IsIgnore, callback, pData, &assumeValid, &skipWorktree);
 			}
 		}
 	}/*End of For*/
