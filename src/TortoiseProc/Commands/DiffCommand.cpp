@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2007-2008 - TortoiseSVN
-// Copyright (C) 2007-2011, 2013-2016 - TortoiseGit
+// Copyright (C) 2007-2011, 2013-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -95,7 +95,13 @@ bool DiffCommand::Execute()
 							}
 						}
 					}
-					cmdLinePath.m_Action = cmdLinePath.LOGACTIONS_ADDED;
+					if (parser.HasKey(L"unified"))
+					{
+						cmdLinePath.m_Action = cmdLinePath.LOGACTIONS_ADDED;
+						return !!CAppUtils::StartShowUnifiedDiff(nullptr, cmdLinePath, git_revnum_t(L"HEAD"), cmdLinePath, git_revnum_t(GIT_REV_ZERO), bAlternativeTool);
+					}
+					else
+						return !!CGitDiff::DiffNull(&cmdLinePath, git_revnum_t(GIT_REV_ZERO), true, parser.GetLongVal(L"line"), bAlternativeTool);
 				}
 
 				if (parser.HasKey(L"unified"))
