@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013, 2015-2016 - TortoiseGit
+// Copyright (C) 2009-2013, 2015-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -77,7 +77,7 @@ bool SVNRebaseCommand::Execute()
 	}
 	else
 	{
-		MessageBox(hwndExplorer, out + L'\n' + err, L"TortoiseGit", MB_OK | MB_ICONERROR);
+		MessageBox(hwndExplorer, L"Could not get \"svn-remote.svn.fetch\" config value.\n" + out + L'\n' + err, L"TortoiseGit", MB_OK | MB_ICONERROR);
 		return false;
 	}
 
