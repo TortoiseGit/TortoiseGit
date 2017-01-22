@@ -753,6 +753,7 @@ protected:
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult);
 	void				DrawDropInsertMarker(int nIndex);
+	void				DrawDropInsertMarkerLine(int nIndex);
 
 public:
 	void				EnableDragnDrop(bool enable) { m_bDragndropEnabled = enable; }

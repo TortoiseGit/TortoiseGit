@@ -4431,6 +4431,14 @@ void CGitLogListBase::OnMouseMove(UINT nFlags, CPoint point)
 	dropPoint.y += 10;
 	m_nDropIndex = HitTest(dropPoint);
 
+	if (m_nDropIndex == -1) // might be last item, allow to move past last item
+	{
+		dropPoint.y -= 10;
+		m_nDropIndex = HitTest(dropPoint);
+		if (m_nDropIndex != -1)
+			m_nDropIndex = GetItemCount();
+	}
+
 	POSITION pos = GetFirstSelectedItemPosition();
 	int first = GetNextSelectedItem(pos);
 	int last = first;
@@ -4481,31 +4489,50 @@ void CGitLogListBase::DrawDropInsertMarker(int nIndex)
 	if (m_nDropMarkerLast != nIndex)
 	{
 		CRect rect;
-		GetItemRect(m_nDropMarkerLast, &rect, 0);
-		rect.bottom = rect.top + 2;
-		rect.top -= 2;
-		InvalidateRect(&rect, 0);
+		if (GetItemRect(m_nDropMarkerLast, &rect, 0))
+		{
+			rect.bottom = rect.top + 2;
+			rect.top -= 2;
+			InvalidateRect(&rect, 0);
+		}
+		else if (m_nDropMarkerLast == GetItemCount())
+			DrawDropInsertMarkerLine(m_nDropMarkerLast); // double painting = removal
 		m_nDropMarkerLast = nIndex;
 
 		if (nIndex < 0)
 			return;
 
-		CBrush* pBrush = CDC::GetHalftoneBrush();
-		CDC* pDC = GetDC();
-
-		GetItemRect(nIndex, &rect, 0);
-		rect.bottom = rect.top + 2;
-		rect.top -= 2;
-
-		CBrush* pBrushOld = pDC->SelectObject(pBrush);
-		pDC->PatBlt(rect.left, rect.top, rect.Width(), rect.Height(), PATINVERT);
-		pDC->SelectObject(pBrushOld);
-
-		ReleaseDC(pDC);
+		DrawDropInsertMarkerLine(m_nDropMarkerLast);
 	}
 	else if (m_nDropMarkerLastHot != GetHotItem())
 	{
 		m_nDropMarkerLastHot = GetHotItem();
 		m_nDropMarkerLast = -1;
 	}
+}
+
+void CGitLogListBase::DrawDropInsertMarkerLine(int nIndex)
+{
+	CBrush* pBrush = CDC::GetHalftoneBrush();
+	CDC* pDC = GetDC();
+
+	CRect rect;
+	if (nIndex < GetItemCount())
+	{
+		GetItemRect(nIndex, &rect, 0);
+		rect.bottom = rect.top + 2;
+		rect.top -= 2;
+	}
+	else
+	{
+		GetItemRect(nIndex - 1, &rect, 0);
+		rect.top = rect.bottom - 2;
+		rect.bottom += 2;
+	}
+
+	CBrush* pBrushOld = pDC->SelectObject(pBrush);
+	pDC->PatBlt(rect.left, rect.top, rect.Width(), rect.Height(), PATINVERT);
+	pDC->SelectObject(pBrushOld);
+
+	ReleaseDC(pDC);
 }
