@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012, 2014-2016 - TortoiseSVN
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -796,7 +796,7 @@ STDMETHODIMP CShellExt::QueryDropContext(UINT uFlags, UINT idCmdFirst, HMENU hMe
 	bool moveAvailable = false;
 	// Git move here
 	// available if source is versioned but not added, target is versioned, source and target from same repository or target folder is added
-	if ((bSourceAndTargetFromSameRepository || (itemStatesFolder & ITEMIS_ADDED)) && (itemStatesFolder & ITEMIS_FOLDERINGIT) && ((itemStates & (ITEMIS_NORMAL | ITEMIS_INGIT | ITEMIS_FOLDERINGIT)) && ((~itemStates) & ITEMIS_ADDED)))
+	if ((bSourceAndTargetFromSameRepository || (itemStatesFolder & ITEMIS_ADDED)) && (itemStatesFolder & ITEMIS_FOLDERINGIT) && ((itemStates & (ITEMIS_NORMAL | ITEMIS_INGIT | ITEMIS_FOLDERINGIT))))
 	{
 		InsertGitMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPMOVEMENU, 0, idCmdFirst, ShellMenuDropMove, uFlags);
 		moveAvailable = true;
@@ -804,7 +804,7 @@ STDMETHODIMP CShellExt::QueryDropContext(UINT uFlags, UINT idCmdFirst, HMENU hMe
 
 	// Git move and rename here
 	// available if source is a single, versioned but not added item, target is versioned, source and target from same repository or target folder is added
-	if ((bSourceAndTargetFromSameRepository || (itemStatesFolder & ITEMIS_ADDED)) && (itemStatesFolder & ITEMIS_FOLDERINGIT) && (itemStates & (ITEMIS_NORMAL | ITEMIS_INGIT | ITEMIS_FOLDERINGIT)) && (itemStates & ITEMIS_ONLYONE) && ((~itemStates) & ITEMIS_ADDED))
+	if ((bSourceAndTargetFromSameRepository || (itemStatesFolder & ITEMIS_ADDED)) && (itemStatesFolder & ITEMIS_FOLDERINGIT) && (itemStates & (ITEMIS_NORMAL | ITEMIS_INGIT | ITEMIS_FOLDERINGIT)) && (itemStates & ITEMIS_ONLYONE))
 	{
 		InsertGitMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPMOVERENAMEMENU, 0, idCmdFirst, ShellMenuDropMoveRename, uFlags);
 		moveAvailable = true;
