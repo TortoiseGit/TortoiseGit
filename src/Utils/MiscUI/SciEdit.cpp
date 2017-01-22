@@ -232,9 +232,9 @@ void CSciEdit::Init(LONG lLanguage)
 void CSciEdit::Init(const ProjectProperties& props)
 {
 	Init(props.lProjectLanguage);
-	m_sCommand = CStringA(CUnicodeUtils::GetUTF8(props.GetCheckRe()));
-	m_sBugID = CStringA(CUnicodeUtils::GetUTF8(props.GetBugIDRe()));
-	m_sUrl = CStringA(CUnicodeUtils::GetUTF8(props.sUrl));
+	m_sCommand = CUnicodeUtils::GetUTF8(props.GetCheckRe());
+	m_sBugID = CUnicodeUtils::GetUTF8(props.GetBugIDRe());
+	m_sUrl = CUnicodeUtils::GetUTF8(props.sUrl);
 
 	Call(SCI_SETMOUSEDWELLTIME, 333);
 
