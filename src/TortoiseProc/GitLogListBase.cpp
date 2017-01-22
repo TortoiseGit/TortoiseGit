@@ -4441,6 +4441,15 @@ void CGitLogListBase::OnMouseMove(UINT nFlags, CPoint point)
 		SetCursor(LoadCursor(nullptr, IDC_NO));
 		m_nDropIndex = -1;
 	}
+
+	// handle auto scrolling
+	int hotItem = GetHotItem();
+	int topindex = GetTopIndex();
+	if (hotItem == topindex && hotItem != 0)
+		EnsureVisible(hotItem - 1, FALSE);
+	else if (hotItem >= topindex + GetCountPerPage() - 1 && hotItem + 1 < GetItemCount())
+		EnsureVisible(hotItem + 1, FALSE);
+
 	DrawDropInsertMarker(m_nDropIndex);
 }
 
