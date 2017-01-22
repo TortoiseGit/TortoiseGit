@@ -11,12 +11,6 @@
 	<indexterm>
 		<primary>move files</primary>
 	</indexterm>
-	<indexterm>
-		<primary>branch</primary>
-	</indexterm>
-	<indexterm>
-		<primary>tag</primary>
-	</indexterm>
 	<para>
 		It often happens that you already have the files you need in another
 		project in your repository, and you simply want to copy them across.
