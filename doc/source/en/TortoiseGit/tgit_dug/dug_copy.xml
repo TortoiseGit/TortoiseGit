@@ -14,10 +14,7 @@
 	<para>
 		It often happens that you already have the files you need in another
 		project in your repository, and you simply want to copy them across.
-		You could simply copy the files and add them as described above, but
-		that would not give you any history. And if you subsequently fix a bug
-		in the original files, you can only merge the fix automatically if the
-		new copy is related to the original in Git.
+		One way is to simply copy the files and add them as described above manually.
 	</para>
 	<para>
 		The easiest way to copy files and folders from within a working tree is
@@ -46,26 +43,7 @@
 	</para>
 -->
 	<para>
-		You can copy files and folders from your working tree to another
-		location in the repository using
-		<menuchoice>
-			<guimenu>TortoiseGit</guimenu>
-			<guimenuitem>Branch/Tag</guimenuitem>
-		</menuchoice>.
-		Refer to <xref linkend="tgit-dug-branch-1"/> to find out more.
-	</para>
-	<para>
-		You can locate an older version of a file or folder in the log
-		dialog and copy it to a new location in the repository directly
-		from the log dialog using
-		<menuchoice>
-			<guimenu>Context menu</guimenu>
-			<guimenuitem>Create branch/tag from revision</guimenuitem>
-		</menuchoice>.
-		Refer to <xref linkend="tgit-dug-showlog-2"/> to find out more.
-	</para>
-	<para>
-		You can also use the repository browser to locate content you want,
+		In order to get older versions of a file you can use the repository browser to locate content you want,
 		and copy it into your working tree directly from the repository,
 		or copy between two locations within the repository.
 		Refer to <xref linkend="tgit-dug-repobrowser"/> to find out more.
