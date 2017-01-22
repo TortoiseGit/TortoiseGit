@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -71,6 +71,7 @@
 #define MSG_LOAD_PERCENTAGE		(WM_USER+111)
 #define MSG_REFLOG_CHANGED		(WM_USER+112)
 #define MSG_FETCHED_DIFF		(WM_USER+113)
+#define MSG_COMMITS_REORDERED	(WM_USER+114)
 
 class SelectionHistory
 {
@@ -742,4 +743,18 @@ protected:
 	int					m_OldTopIndex;
 
 	GIT_MAILMAP			m_pMailmap;
+
+	bool				m_bDragndropEnabled;
+	BOOL				m_bDragging;
+	int					m_nDropIndex;
+	int					m_nDropMarkerLast;
+	int					m_nDropMarkerLastHot;
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult);
+	void				DrawDropInsertMarker(int nIndex);
+	void				DrawDropInsertMarkerLine(int nIndex);
+
+public:
+	void				EnableDragnDrop(bool enable) { m_bDragndropEnabled = enable; }
 };

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -265,6 +265,7 @@ protected:
 	CComPtr<ITaskbarList3>	m_pTaskbarList;
 
 	afx_msg LRESULT OnRebaseActionMessage(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnCommitsReordered(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnBnClickedRebaseSplitCommit();
 	afx_msg void OnBnClickedButtonOnto();
 	afx_msg void OnBnClickedButtonAdd();
