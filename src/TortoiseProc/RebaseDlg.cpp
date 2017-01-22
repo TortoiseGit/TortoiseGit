@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -113,6 +113,7 @@ BEGIN_MESSAGE_MAP(CRebaseDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_BUTTON_ONTO, &CRebaseDlg::OnBnClickedButtonOnto)
 	ON_BN_CLICKED(IDHELP, OnHelp)
 	ON_BN_CLICKED(IDC_BUTTON_ADD, &CRebaseDlg::OnBnClickedButtonAdd)
+	ON_MESSAGE(MSG_COMMITS_REORDERED, OnCommitsReordered)
 END_MESSAGE_MAP()
 
 void CRebaseDlg::CleanUpRebaseActiveFolder()
@@ -1673,6 +1674,7 @@ void CRebaseDlg::SetControlEnable()
 		this->GetDlgItem(IDC_BUTTON_UP)->EnableWindow(TRUE);
 		this->GetDlgItem(IDC_BUTTON_DOWN)->EnableWindow(TRUE);
 		this->GetDlgItem(IDC_BUTTON_ADD)->EnableWindow(!m_bPreserveMerges);
+		m_CommitList.EnableDragnDrop(true);
 
 		if(!m_IsCherryPick)
 		{
@@ -1706,6 +1708,7 @@ void CRebaseDlg::SetControlEnable()
 		this->GetDlgItem(IDC_REBASE_CHECK_PRESERVEMERGES)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_BUTTON_UP)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_BUTTON_DOWN)->EnableWindow(FALSE);
+		m_CommitList.EnableDragnDrop(false);
 		this->GetDlgItem(IDC_BUTTON_ADD)->EnableWindow(FALSE);
 
 		if( m_RebaseStage == REBASE_DONE && (this->m_PostButtonTexts.GetCount() != 0) )
@@ -2574,6 +2577,39 @@ void CRebaseDlg::OnBnClickedButtonDown()
 		m_CommitList.Invalidate();
 		m_CommitList.SetFocus();
 	}
+}
+
+LRESULT CRebaseDlg::OnCommitsReordered(WPARAM wParam, LPARAM /*lParam*/)
+{
+	POSITION pos = m_CommitList.GetFirstSelectedItemPosition();
+	int first = m_CommitList.GetNextSelectedItem(pos);
+	int last = first;
+	while (pos)
+		last = m_CommitList.GetNextSelectedItem(pos);
+	++last;
+
+	for (int i = first; i < last; ++i)
+		m_CommitList.SetItemState(i, 0, LVIS_SELECTED);
+
+	int dest = (int)wParam;
+	if (dest > first)
+	{
+		std::rotate(m_CommitList.m_logEntries.begin() + first, m_CommitList.m_logEntries.begin() + last, m_CommitList.m_logEntries.begin() + dest);
+		m_CommitList.RecalculateShownList(&m_CommitList.m_arShownList);
+		for (int i = first + dest - last; i < dest; ++i)
+			m_CommitList.SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
+	}
+	else
+	{
+		std::rotate(m_CommitList.m_logEntries.begin() + dest, m_CommitList.m_logEntries.begin() + first, m_CommitList.m_logEntries.begin() + last);
+		m_CommitList.RecalculateShownList(&m_CommitList.m_arShownList);
+		for (int i = dest; i < dest + (last - first); ++i)
+			m_CommitList.SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
+	}
+
+	m_CommitList.Invalidate();
+
+	return 0;
 }
 
 LRESULT CRebaseDlg::OnTaskbarBtnCreated(WPARAM wParam, LPARAM lParam)

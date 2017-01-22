@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 // Copyright (C) 2005-2007 Marco Costalba
 
 // This program is free software; you can redistribute it and/or
@@ -88,6 +88,11 @@ CGitLogListBase::CGitLogListBase() : CHintCtrl<CResizableColumnsListCtrl<CListCt
 	, m_IsOldFirst(FALSE)
 	, m_IsRebaseReplaceGraph(FALSE)
 	, m_ContextMenuMask(0xFFFFFFFFFFFFFFFF)
+	, m_bDragndropEnabled(false)
+	, m_bDragging(FALSE)
+	, m_nDropIndex(-1)
+	, m_nDropMarkerLast(-1)
+	, m_nDropMarkerLastHot(-1)
 {
 	// use the default GUI font, create a copy of it and
 	// change the copy to BOLD (leave the rest of the font
@@ -303,6 +308,9 @@ BEGIN_MESSAGE_MAP(CGitLogListBase, CHintCtrl<CResizableColumnsListCtrl<CListCtrl
 	ON_WM_MEASUREITEM_REFLECT()
 	ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, &OnToolTipText)
 	ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTA, 0, 0xFFFF, &OnToolTipText)
+	ON_WM_MOUSEMOVE()
+	ON_WM_LBUTTONUP()
+	ON_NOTIFY_REFLECT(LVN_BEGINDRAG, OnBeginDrag)
 END_MESSAGE_MAP()
 
 void CGitLogListBase::MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct)
@@ -4383,4 +4391,112 @@ bool CGitLogListBase::IsMouseOnRefLabel(const GitRevLoglist* pLogEntry, const PO
 		return true;
 	}
 	return false;
+}
+
+void CGitLogListBase::OnBeginDrag(NMHDR* /*pnmhdr*/, LRESULT* pResult)
+{
+	*pResult = 0;
+
+	if (!m_bDragndropEnabled || GetSelectedCount() == 0 || !IsSelectionContinuous())
+		return;
+
+	m_bDragging = TRUE;
+	m_nDropIndex = -1;
+	m_nDropMarkerLast = -1;
+	m_nDropMarkerLastHot = GetHotItem();
+	SetCapture();
+}
+
+void CGitLogListBase::OnMouseMove(UINT nFlags, CPoint point)
+{
+	__super::OnMouseMove(nFlags, point);
+
+	if (!m_bDragging)
+		return;
+
+	CPoint dropPoint = point;
+	ClientToScreen(&dropPoint);
+
+	if (WindowFromPoint(dropPoint) != this)
+	{
+		SetCursor(LoadCursor(nullptr, IDC_NO));
+		m_nDropIndex = -1;
+		DrawDropInsertMarker(m_nDropIndex);
+		return;
+	}
+
+	SetCursor(LoadCursor(nullptr, IDC_ARROW));
+	ScreenToClient(&dropPoint);
+
+	dropPoint.y += 10;
+	m_nDropIndex = HitTest(dropPoint);
+
+	POSITION pos = GetFirstSelectedItemPosition();
+	int first = GetNextSelectedItem(pos);
+	int last = first;
+	while (pos)
+		last = GetNextSelectedItem(pos);
+	if (m_nDropIndex == -1 || (m_nDropIndex >= first && m_nDropIndex - 1 <= last))
+	{
+		SetCursor(LoadCursor(nullptr, IDC_NO));
+		m_nDropIndex = -1;
+	}
+	DrawDropInsertMarker(m_nDropIndex);
+}
+
+void CGitLogListBase::OnLButtonUp(UINT nFlags, CPoint point)
+{
+	if (m_bDragging)
+	{
+		::ReleaseCapture();
+		SetCursor(LoadCursor(nullptr, IDC_HAND));
+		m_bDragging = FALSE;
+
+		CRect rect;
+		GetItemRect(m_nDropMarkerLast, &rect, 0);
+		rect.bottom = rect.top + 2;
+		rect.top -= 2;
+		InvalidateRect(&rect, 0);
+
+		CPoint pt(point);
+		ClientToScreen(&pt);
+		if (WindowFromPoint(pt) == this && m_nDropIndex != -1)
+			GetParent()->PostMessage(MSG_COMMITS_REORDERED, m_nDropIndex, 0);
+	}
+
+	__super::OnLButtonUp(nFlags, point);
+}
+
+void CGitLogListBase::DrawDropInsertMarker(int nIndex)
+{
+	if (m_nDropMarkerLast != nIndex)
+	{
+		CRect rect;
+		GetItemRect(m_nDropMarkerLast, &rect, 0);
+		rect.bottom = rect.top + 2;
+		rect.top -= 2;
+		InvalidateRect(&rect, 0);
+		m_nDropMarkerLast = nIndex;
+
+		if (nIndex < 0)
+			return;
+
+		CBrush* pBrush = CDC::GetHalftoneBrush();
+		CDC* pDC = GetDC();
+
+		GetItemRect(nIndex, &rect, 0);
+		rect.bottom = rect.top + 2;
+		rect.top -= 2;
+
+		CBrush* pBrushOld = pDC->SelectObject(pBrush);
+		pDC->PatBlt(rect.left, rect.top, rect.Width(), rect.Height(), PATINVERT);
+		pDC->SelectObject(pBrushOld);
+
+		ReleaseDC(pDC);
+	}
+	else if (m_nDropMarkerLastHot != GetHotItem())
+	{
+		m_nDropMarkerLastHot = GetHotItem();
+		m_nDropMarkerLast = -1;
+	}
 }
