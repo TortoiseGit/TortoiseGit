@@ -19,7 +19,6 @@
 		in the original files, you can only merge the fix automatically if the
 		new copy is related to the original in Git.
 	</para>
-<!--
 	<para>
 		The easiest way to copy files and folders from within a working tree is
 		to use the right-drag menu. When you <action>right-drag</action> a file
@@ -32,6 +31,7 @@
 		Now you can copy existing versioned content to a new location, possibly
 		renaming it at the same time.
 	</para>
+<!--
 	<para>
 		You can also copy or move versioned files within a working tree, or between two
 		working trees, using the familiar cut-and-paste method. Use the standard Windows
