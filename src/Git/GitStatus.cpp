@@ -309,7 +309,7 @@ int GitStatus::GetFileList(CString path, std::vector<CGitFileName> &list)
 	return 0;
 }
 
-int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_wc_status_kind * status,BOOL IsFul, BOOL IsRecursive, BOOL IsIgnore, FILL_STATUS_CALLBACK callback, void *pData)
+int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_wc_status_kind* status, BOOL IsFul, BOOL /*IsRecursive*/, BOOL IsIgnore, FILL_STATUS_CALLBACK callback, void* pData)
 {
 	if (!status)
 		return 0;
