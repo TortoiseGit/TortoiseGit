@@ -53,8 +53,6 @@ typedef enum
 	git_depth_immediates,
 }git_depth_t;
 
-#define GIT_REV_ZERO L"0000000000000000000000000000000000000000"
-
 typedef struct git_wc_status2_t
 {
 	/** The status of the entries text. */
