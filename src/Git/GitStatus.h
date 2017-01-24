@@ -54,7 +54,6 @@ typedef enum
 }git_depth_t;
 
 #define GIT_REV_ZERO L"0000000000000000000000000000000000000000"
-#define GIT_INVALID_REVNUM L""
 typedef CString git_revnum_t;
 
 typedef struct git_wc_status2_t
