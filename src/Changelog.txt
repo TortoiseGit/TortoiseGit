@@ -43,6 +43,7 @@ Released: unreleased
  * Fixed issue #2283: Improve symbols for "Symbolize ref names"
  * Fixed issue #2746: SubWCRev equivalent required: GitWCRev added
  * Fixed issue #2082: RebaseDlg: Reorder commits via drag'n'drop
+ * Fixed issue #2210: Do not allow merging from the current branch to the current branch
 
 == Bug Fixes ==
  * Fixed issue #2837: Layout of overlapping icons settings dialog

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2016 - TortoiseGit
+// Copyright (C) 2015-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -890,6 +890,26 @@ static void GetBranchesTagsRefs(CGit& m_Git, config testConfig)
 
 	branches.clear();
 	current = -2;
+	EXPECT_EQ(0, m_Git.GetBranchList(branches, &current, CGit::BRANCH_ALL, true));
+	ASSERT_EQ(5, branches.size());
+	EXPECT_EQ(-2, current); // not touched
+	EXPECT_STREQ(L"forconflict", branches[0]);
+	EXPECT_STREQ(L"master2", branches[1]);
+	EXPECT_STREQ(L"simple-conflict", branches[2]);
+	EXPECT_STREQ(L"subdir/branch", branches[3]);
+	EXPECT_STREQ(L"remotes/origin/master", branches[4]);
+
+	branches.clear();
+	EXPECT_EQ(0, m_Git.GetBranchList(branches, nullptr, CGit::BRANCH_ALL, true));
+	ASSERT_EQ(5, branches.size());
+	EXPECT_STREQ(L"forconflict", branches[0]);
+	EXPECT_STREQ(L"master2", branches[1]);
+	EXPECT_STREQ(L"simple-conflict", branches[2]);
+	EXPECT_STREQ(L"subdir/branch", branches[3]);
+	EXPECT_STREQ(L"remotes/origin/master", branches[4]);
+
+	branches.clear();
+	current = -2;
 	EXPECT_EQ(0, m_Git.GetBranchList(branches, &current, CGit::BRANCH_REMOTE));
 	ASSERT_EQ(1, branches.size());
 	EXPECT_EQ(-2, current); // not touched
@@ -1066,6 +1086,17 @@ TEST_P(CBasicGitWithTestRepoFixture, GetBranchList_detachedhead)
 	STRING_VECTOR branches;
 	int current = -2;
 	EXPECT_EQ(0, m_Git.GetBranchList(branches, &current));
+	ASSERT_EQ(5, branches.size());
+	EXPECT_EQ(-2, current);
+	EXPECT_STREQ(L"forconflict", branches[0]);
+	EXPECT_STREQ(L"master", branches[1]);
+	EXPECT_STREQ(L"master2", branches[2]);
+	EXPECT_STREQ(L"simple-conflict", branches[3]);
+	EXPECT_STREQ(L"subdir/branch", branches[4]);
+
+	branches.clear();
+	current = -2;
+	EXPECT_EQ(0, m_Git.GetBranchList(branches, &current, CGit::BRANCH_LOCAL, true));
 	ASSERT_EQ(5, branches.size());
 	EXPECT_EQ(-2, current);
 	EXPECT_STREQ(L"forconflict", branches[0]);
