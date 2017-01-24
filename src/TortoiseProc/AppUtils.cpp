@@ -3107,7 +3107,6 @@ BOOL CAppUtils::Commit(const CString& bugid, BOOL bWholeProject, CString &sLogMs
 //			if (parser.HasVal(L"closeonend"))
 //				progDlg.SetAutoClose(parser.GetLongVal(L"closeonend"));
 //			progDlg.SetCommand(CGitProgressDlg::GitProgress_Commit);
-//			progDlg.SetOptions(dlg.m_bKeepLocks ? ProgOptKeeplocks : ProgOptNone);
 //			progDlg.SetPathList(dlg.m_pathList);
 //			progDlg.SetCommitMessage(dlg.m_sLogMessage);
 //			progDlg.SetDepth(dlg.m_bRecursive ? Git_depth_infinity : svn_depth_empty);

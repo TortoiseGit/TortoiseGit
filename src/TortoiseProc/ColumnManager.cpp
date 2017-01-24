@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 // Copyright (C) 2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -83,15 +83,6 @@ bool PropertyList::HasProperty(const CString& name) const
 {
 	return properties.find(name) != properties.end();
 }
-
-// due to frequent use: special check for svn:needs-lock
-
-bool PropertyList::IsNeedsLockSet() const
-{
-	static const CString svnNeedsLock = L"svn:needs-lock";
-	return HasProperty(svnNeedsLock);
-}
-
 #endif
 // registry access
 

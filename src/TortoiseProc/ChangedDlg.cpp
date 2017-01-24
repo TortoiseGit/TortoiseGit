@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -157,7 +157,7 @@ UINT CChangedDlg::ChangedStatusThread()
 		if (!m_FileListCtrl.GetLastErrorMessage().IsEmpty())
 			m_FileListCtrl.SetEmptyString(m_FileListCtrl.GetLastErrorMessage());
 	}
-	unsigned int dwShow = GITSLC_SHOWVERSIONEDBUTNORMALANDEXTERNALS | GITSLC_SHOWLOCKS | GITSLC_SHOWSWITCHED | GITSLC_SHOWINCHANGELIST;
+	unsigned int dwShow = GITSLC_SHOWVERSIONEDBUTNORMALANDEXTERNALS | GITSLC_SHOWSWITCHED | GITSLC_SHOWINCHANGELIST;
 	dwShow |= m_bShowUnversioned ? GITSLC_SHOWUNVERSIONED : 0;
 	dwShow |= m_iShowUnmodified ? GITSLC_SHOWNORMAL : 0;
 	dwShow |= m_bShowIgnored ? GITSLC_SHOWIGNORED : 0;

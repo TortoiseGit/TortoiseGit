@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 // Copyright (C) 2003-2008, 2013-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -223,7 +223,6 @@ CGitStatusListCtrl::CGitStatusListCtrl() : CResizableColumnsListCtrl<CListCtrl>(
 	, m_bCheckChildrenWithParent(false)
 	, m_bUnversionedLast(true)
 	, m_bHasChangeLists(false)
-	, m_bHasLocks(false)
 	, m_bBlock(false)
 	, m_bBlockUI(false)
 	, m_bHasCheckboxes(false)
@@ -437,7 +436,6 @@ BOOL CGitStatusListCtrl::GetStatus ( const CTGitPathList* pathList
 		m_bHasExternalsFromDifferentRepos = FALSE;
 		m_bHasExternals = FALSE;
 		m_bHasUnversionedItems = FALSE;
-		m_bHasLocks = false;
 		m_bHasChangeLists = false;
 		m_bShowIgnores = bShowIgnores;
 		m_nSortedColumn = 0;
@@ -731,8 +729,6 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 #if 0
 		git_wc_status_kind status = GitStatus::GetMoreImportant(entry->status, entry->remotestatus);
 		DWORD showFlags = GetShowFlagsFromGitStatus(status);
-		if (entry->IsLocked())
-			showFlags |= SVNSLC_SHOWLOCKS;
 		if (entry->switched)
 			showFlags |= SVNSLC_SHOWSWITCHED;
 		if (!entry->changelist.IsEmpty())
@@ -880,8 +876,6 @@ void CGitStatusListCtrl::Show(unsigned int /*dwShow*/, const CTGitPathList& chec
 #if 0
 		git_wc_status_kind status = SVNStatus::GetMoreImportant(entry->status, entry->remotestatus);
 		DWORD showFlags = GetShowFlagsFromSVNStatus(status);
-		if (entry->IsLocked())
-			showFlags |= SVNSLC_SHOWLOCKS;
 		if (!entry->changelist.IsEmpty())
 			showFlags |= SVNSLC_SHOWINCHANGELIST;
 

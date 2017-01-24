@@ -58,7 +58,6 @@
 #define GITSLC_SHOWINCOMPLETE	0x00000000
 #define GITSLC_SHOWINEXTERNALS	0x00000000
 #define GITSLC_SHOWREMOVEDANDPRESENT 0x00000000
-#define GITSLC_SHOWLOCKS		0x00000000
 #define GITSLC_SHOWDIRECTFILES	0x04000000
 #define GITSLC_SHOWDIRECTFOLDER 0x00000000
 #define GITSLC_SHOWEXTERNALFROMDIFFERENTREPO 0x00000000
@@ -301,9 +300,7 @@ public:
 			, Revision(GIT_REV_ZERO)
 			, isConflicted(false)
 //			, present_props()
-			, needslock(false)
 ///			, working_size(SVN_WC_ENTRY_WORKING_SIZE_UNKNOWN)
-			, keeplocal(false)
 //			, depth(git_depth_unknown)
 		{
 		}
@@ -321,14 +318,6 @@ public:
 				return path.GetGitPathString();
 			return path.GetGitPathString().Mid(basepath.GetGitPathString().GetLength()+1);
 		}
-//		const bool IsLocked() const
-//		{
-//			return !(lock_token.IsEmpty() && lock_remotetoken.IsEmpty());
-//		}
-//		const bool HasNeedsLock() const
-//		{
-//			return needslock;
-//		}
 		const bool IsFolder() const
 		{
 			return isfolder;
@@ -392,10 +381,8 @@ public:
 		bool					isfolder;				///< TRUE if entry refers to a folder
 		bool					isNested;				///< TRUE if the folder from a different repository and/or path
 		bool					isConflicted;			///< TRUE if a file entry is conflicted, i.e. if it has the conflicted paths set
-		bool					needslock;				///< TRUE if the Git:needs-lock property is set
 		git_revnum_t			Revision;				///< the base revision
 //		PropertyList			present_props;			///< cacheable properties present in BASE
-		bool					keeplocal;				///< Whether a local copy of this entry should be kept in the working copy after a deletion has been committed
 		git_depth_t				depth;					///< the depth of this entry
 		friend class CGitStatusListCtrl;
 		friend class CGitStatusListCtrlDropTarget;
@@ -482,11 +469,6 @@ public:
 	 * If unversioned files are found (but not necessarily shown) TRUE is returned.
 	 */
 	BOOL HasUnversionedItems() {return m_bHasUnversionedItems;}
-
-	/**
-	 * If there are any locks in the working copy, TRUE is returned
-	 */
-	BOOL HasLocks() const {return m_bHasLocks;}
 
 	/**
 	 * If there are any change lists defined in the working copy, TRUE is returned
@@ -781,7 +763,6 @@ private:
 	bool						m_bHasExternalsFromDifferentRepos;
 	bool						m_bHasExternals;
 	BOOL						m_bHasUnversionedItems;
-	bool						m_bHasLocks;
 	bool						m_bHasChangeLists;
 	//typedef std::vector<FileEntry*> FileEntryVector;
 	//FileEntryVector				m_arStatusArray;
