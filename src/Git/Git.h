@@ -378,7 +378,7 @@ public:
 	}REF_TYPE;
 
 	int GetRemoteList(STRING_VECTOR &list);
-	int GetBranchList(STRING_VECTOR &list, int *Current,BRANCH_TYPE type=BRANCH_LOCAL);
+	int GetBranchList(STRING_VECTOR& list, int* current, BRANCH_TYPE type = BRANCH_LOCAL, bool skipCurrent = false);
 	int GetTagList(STRING_VECTOR &list);
 	int GetRefsCommitIsOn(STRING_VECTOR& list, const CGitHash& hash, bool includeTags, bool includeBranches, BRANCH_TYPE type = BRANCH_LOCAL);
 	int GetRemoteTags(const CString& remote, STRING_VECTOR& list);

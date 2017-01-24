@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -47,6 +47,7 @@ CMergeDlg::CMergeDlg(CWnd* pParent /*=nullptr*/)
 	CString mergeLog = g_Git.GetConfigValue(L"merge.log");
 	int nLog = _wtoi(mergeLog);
 	m_nLog = nLog > 0 ? nLog : 20;
+	m_bSkipCurrentBranch = true;
 }
 
 CMergeDlg::~CMergeDlg()
@@ -167,6 +168,12 @@ void CMergeDlg::OnBnClickedOk()
 	this->UpdateData(TRUE);
 
 	this->UpdateRevsionName();
+
+	if (GetCheckedRadioButton(IDC_RADIO_HEAD, IDC_RADIO_VERSION) == IDC_RADIO_BRANCH && m_ChooseVersioinBranch.GetCurSel() == -1)
+	{
+		CMessageBox::Show(GetSafeHwnd(), IDS_B_T_NOTEMPTY, IDS_APPNAME, MB_ICONEXCLAMATION);
+		return;
+	}
 
 	this->m_strLogMesage = m_cLogMessage.GetText() ;
 	if( m_strLogMesage == CString(this->m_pDefaultText) )

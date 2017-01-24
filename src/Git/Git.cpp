@@ -1572,7 +1572,7 @@ CString CGit::DerefFetchHead()
 	return CUnicodeUtils::GetUnicode(hashToReturn.c_str());
 }
 
-int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
+int CGit::GetBranchList(STRING_VECTOR &list, int *current, BRANCH_TYPE type, bool skipCurrent /*false*/)
 {
 	size_t prevCount = list.size();
 	int ret = 0;
@@ -1613,7 +1613,11 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 				else
 				{
 					if (git_branch_is_head(ref))
+					{
+						if (skipCurrent)
+							continue;
 						cur = branchname;
+					}
 					list.push_back(branchname);
 				}
 			}
@@ -1639,6 +1643,8 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 			CString branch = CUnicodeUtils::GetUnicode(lineA);
 			if (lineA[0] == '*')
 			{
+				if (skipCurrent)
+					return;
 				branch = branch.Mid(2);
 				cur = branch;
 
@@ -1663,7 +1669,7 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 
 	std::sort(list.begin() + prevCount, list.end(), LogicalCompareBranchesPredicate);
 
-	if (current && !headIsDetached)
+	if (current && !headIsDetached && !skipCurrent)
 	{
 		for (unsigned int i = 0; i < list.size(); ++i)
 		{

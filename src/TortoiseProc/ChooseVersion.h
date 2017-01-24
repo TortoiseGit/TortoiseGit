@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014, 2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -48,6 +48,7 @@ protected:
 	CButton			m_RadioTag;
 	CString			m_pendingRefName;
 	bool			m_bNotFullName;
+	bool			m_bSkipCurrentBranch;
 
 	//Notification when version changed. Can be implemented in derived classes.
 	virtual void OnVersionChanged(){}
@@ -194,7 +195,7 @@ protected:
 		STRING_VECTOR list;
 
 		int current = -1;
-		g_Git.GetBranchList(list, &current, CRegDWORD(L"Software\\TortoiseGit\\BranchesIncludeFetchHead", TRUE) ? CGit::BRANCH_ALL_F : CGit::BRANCH_ALL);
+		g_Git.GetBranchList(list, &current, CRegDWORD(L"Software\\TortoiseGit\\BranchesIncludeFetchHead", TRUE) ? CGit::BRANCH_ALL_F : CGit::BRANCH_ALL, m_bSkipCurrentBranch);
 		m_ChooseVersioinBranch.SetList(list);
 		m_ChooseVersioinBranch.SetCurSel(current);
 
@@ -268,6 +269,7 @@ public:
 	, m_pLoadingThread(nullptr)
 	, m_bLoadingThreadRunning(FALSE)
 	, m_bNotFullName(true)
+	, m_bSkipCurrentBranch(false)
 	{
 		m_pWin=win;
 	};
