@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -563,16 +563,6 @@ public:
 	/** Write a list of the checked items' paths into a path list
 	 */
 	void WriteCheckedNamesToPathList(CTGitPathList& pathList);
-
-	/** fills in \a lMin and \a lMax with the lowest/highest revision of all
-	 * files/folders in the working copy.
-	 * \param bShownOnly if true, the min/max revisions are calculated only for shown items
-	 * \param bCheckedOnly if true, the min/max revisions are calculated only for items
-	 *                   which are checked.
-	 * \remark Since an item can only be checked if it is visible/shown in the list control
-	 *         bShownOnly is automatically set to true if bCheckedOnly is true
-	 */
-	void GetMinMaxRevisions(git_revnum_t& rMin, git_revnum_t& rMax, bool bShownOnly, bool bCheckedOnly);
 
 	/**
 	 * Returns the parent directory of all entries in the control.
