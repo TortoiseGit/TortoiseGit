@@ -155,6 +155,18 @@ BOOL CMergeDlg::OnInitDialog()
 	EnableSaveRestore(L"MergeDlg");
 	GetDlgItem(IDOK)->SetFocus();
 
+	if (m_initialRefName.IsEmpty())
+	{
+		CString currentBranch;
+		if (g_Git.GetCurrentBranchFromFile(g_Git.m_CurrentDir, currentBranch))
+			currentBranch.Empty();
+
+		CString pr, pb;
+		g_Git.GetRemotePushBranch(currentBranch, pr, pb);
+		if (!pr.IsEmpty() && !pb.IsEmpty())
+			m_initialRefName = L"remotes/" + pr + L'/' + pb;
+	}
+
 	InitChooseVersion(true);
 
 	return FALSE;
