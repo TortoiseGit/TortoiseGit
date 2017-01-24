@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,10 +27,8 @@
 #include "SubmoduleDiffDlg.h"
 #include "TempFile.h"
 
-int CGitDiff::SubmoduleDiffNull(const CTGitPath * pPath, const git_revnum_t &rev1)
+int CGitDiff::SubmoduleDiffNull(const CTGitPath* pPath, const CString& rev1)
 {
-	CString oldhash = GIT_REV_ZERO;
-	CString oldsub ;
 	CString newsub;
 	CString newhash;
 
@@ -72,9 +70,9 @@ int CGitDiff::SubmoduleDiffNull(const CTGitPath * pPath, const git_revnum_t &rev
 
 		CSubmoduleDiffDlg submoduleDiffDlg;
 		if (pPath->m_Action & CTGitPath::LOGACTIONS_DELETED)
-			submoduleDiffDlg.SetDiff(pPath->GetWinPath(), false, newhash, newsub, toOK, oldhash, oldsub, false, dirty, DeleteSubmodule);
+			submoduleDiffDlg.SetDiff(pPath->GetWinPath(), false, newhash, newsub, toOK, GIT_REV_ZERO, L"", false, dirty, DeleteSubmodule);
 		else
-			submoduleDiffDlg.SetDiff(pPath->GetWinPath(), false, oldhash, oldsub, true, newhash, newsub, toOK, dirty, NewSubmodule);
+			submoduleDiffDlg.SetDiff(pPath->GetWinPath(), false, GIT_REV_ZERO, L"", true, newhash, newsub, toOK, dirty, NewSubmodule);
 		submoduleDiffDlg.DoModal();
 		if (submoduleDiffDlg.IsRefresh())
 			return 1;
@@ -89,7 +87,7 @@ int CGitDiff::SubmoduleDiffNull(const CTGitPath * pPath, const git_revnum_t &rev
 	return -1;
 }
 
-int CGitDiff::DiffNull(const CTGitPath *pPath, git_revnum_t rev1, bool bIsAdd, int jumpToLine, bool bAlternative)
+int CGitDiff::DiffNull(const CTGitPath* pPath, CString rev1, bool bIsAdd, int jumpToLine, bool bAlternative)
 {
 	if (rev1 != GIT_REV_ZERO)
 	{
@@ -140,20 +138,20 @@ int CGitDiff::DiffNull(const CTGitPath *pPath, git_revnum_t rev1, bool bIsAdd, i
 							pPath->GetGitPathString(),
 							pPath->GetGitPathString() + L':' + rev1.Left(g_Git.GetShortHASHLength()),
 							g_Git.CombinePath(pPath), g_Git.CombinePath(pPath),
-							git_revnum_t(GIT_REV_ZERO), rev1
+							GIT_REV_ZERO, rev1
 							, flags, jumpToLine);
 	else
 		CAppUtils::StartExtDiff(file1,tempfile,
 							pPath->GetGitPathString() + L':' + rev1.Left(g_Git.GetShortHASHLength()),
 							pPath->GetGitPathString(),
 							g_Git.CombinePath(pPath), g_Git.CombinePath(pPath),
-							rev1, git_revnum_t(GIT_REV_ZERO)
+							rev1, GIT_REV_ZERO
 							, flags, jumpToLine);
 
 	return 0;
 }
 
-int CGitDiff::SubmoduleDiff(const CTGitPath * pPath, const CTGitPath * /*pPath2*/, const git_revnum_t &rev1, const git_revnum_t &rev2, bool /*blame*/, bool /*unified*/)
+int CGitDiff::SubmoduleDiff(const CTGitPath* pPath, const CTGitPath* /*pPath2*/, const CString& rev1, const CString& rev2, bool /*blame*/, bool /*unified*/)
 {
 	CString oldhash;
 	CString newhash;
@@ -344,7 +342,7 @@ void CGitDiff::GetSubmoduleChangeType(CGit& subgit, const CString& oldhash, cons
 		changeType = Unknown;
 }
 
-int CGitDiff::Diff(const CTGitPath* pPath, const CTGitPath* pPath2, git_revnum_t rev1, git_revnum_t rev2, bool /*blame*/, bool /*unified*/, int jumpToLine, bool bAlternativeTool)
+int CGitDiff::Diff(const CTGitPath* pPath, const CTGitPath* pPath2, CString rev1, CString rev2, bool /*blame*/, bool /*unified*/, int jumpToLine, bool bAlternativeTool)
 {
 	// make sure we have HASHes here, otherwise filenames might be invalid
 	if (rev1 != GIT_REV_ZERO)

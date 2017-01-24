@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -267,7 +267,7 @@ private:
 		HANDLE fileHandle;
 		CGitCall* pcall;
 	} ASYNCREADSTDERRTHREADARGS, *PASYNCREADSTDERRTHREADARGS;
-	CString GetUnifiedDiffCmd(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, bool bMerge, bool bCombine, int diffContext, bool bNoPrefix = false);
+	CString GetUnifiedDiffCmd(const CTGitPath& path, const CString& rev1, const CString& rev2, bool bMerge, bool bCombine, int diffContext, bool bNoPrefix = false);
 
 public:
 #ifdef _MFC_VER
@@ -478,8 +478,8 @@ public:
 
 	int GetGitNotes(const CGitHash& hash, CString& notes);
 
-	int GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, CString patchfile, bool bMerge, bool bCombine, int diffContext, bool bNoPrefix = false);
-	int GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, CStringA * buffer, bool bMerge, bool bCombine, int diffContext);
+	int GetUnifiedDiff(const CTGitPath& path, const CString& rev1, const CString& rev2, CString patchfile, bool bMerge, bool bCombine, int diffContext, bool bNoPrefix = false);
+	int GetUnifiedDiff(const CTGitPath& path, const CString& rev1, const CString& rev2, CStringA* buffer, bool bMerge, bool bCombine, int diffContext);
 
 	int GitRevert(int parent, const CGitHash &hash);
 

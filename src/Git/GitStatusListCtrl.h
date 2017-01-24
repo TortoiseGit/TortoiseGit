@@ -873,7 +873,7 @@ public:
 	void AddEntry(CTGitPath* path, WORD langID, int ListIndex);
 	void Clear();
 	int m_FileLoaded;
-	git_revnum_t m_CurrentVersion;
+	CString m_CurrentVersion;
 	bool m_bDoNotAutoselectSubmodules;
 	bool m_bNoAutoselectMissing;
 	std::map<CString, CString>	m_restorepaths;

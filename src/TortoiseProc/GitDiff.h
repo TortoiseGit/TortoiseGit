@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014, 2016 - TortoiseGit
+// Copyright (C) 2008-2014, 2016-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -43,12 +43,12 @@ public:
 	static void GetSubmoduleChangeType(CGit& subgit, const CString& oldhash, const CString& newhash, bool& oldOK, bool& newOK, ChangeType& changeType, CString& oldsub, CString& newsub);
 
 	// Use two path to handle rename cases
-	static int Diff(const CTGitPath * pPath1, const CTGitPath *pPath2, git_revnum_t rev1, git_revnum_t rev2, bool blame = false, bool unified = false, int jumpToLine = 0, bool bAlternativeTool = false);
-	static int SubmoduleDiff(const CTGitPath * pPath1, const CTGitPath *pPath2, const git_revnum_t &rev1, const git_revnum_t &rev2, bool blame = false, bool unified = false);
-	static int DiffNull(const CTGitPath *pPath, git_revnum_t rev1, bool bIsAdd = true, int jumpToLine = 0, bool bAlternative = false);
+	static int Diff(const CTGitPath* pPath1, const CTGitPath* pPath2, CString rev1, CString rev2, bool blame = false, bool unified = false, int jumpToLine = 0, bool bAlternativeTool = false);
+	static int SubmoduleDiff(const CTGitPath* pPath1, const CTGitPath* pPath2, const CString& rev1, const CString& rev2, bool blame = false, bool unified = false);
+	static int DiffNull(const CTGitPath* pPath, CString rev1, bool bIsAdd = true, int jumpToLine = 0, bool bAlternative = false);
 	static int DiffCommit(const CTGitPath& path, const GitRev* r1, const GitRev* r2, bool bAlternative = false);
 	static int DiffCommit(const CTGitPath& path1, const CTGitPath& path2, const GitRev* r1, const GitRev* r2, bool bAlternative = false);
 	static int DiffCommit(const CTGitPath& path, const CString& r1, const CString& r2, bool bAlternative = false);
 	static int DiffCommit(const CTGitPath& path1, const CTGitPath& path2, const CString& r1, const CString& r2, bool bAlternative = false);
-	static int SubmoduleDiffNull(const CTGitPath * pPath1, const git_revnum_t &rev1);
+	static int SubmoduleDiffNull(const CTGitPath* pPath1, const CString& rev1);
 };

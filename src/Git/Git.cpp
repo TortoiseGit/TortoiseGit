@@ -2839,7 +2839,7 @@ void CGit::SetGit2CertificateCheckCertificate(void* callback)
 	g_Git2CheckCertificateCallback = (git_transport_certificate_check_cb)callback;
 }
 
-CString CGit::GetUnifiedDiffCmd(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, bool bMerge, bool bCombine, int diffContext, bool bNoPrefix)
+CString CGit::GetUnifiedDiffCmd(const CTGitPath& path, const CString& rev1, const CString& rev2, bool bMerge, bool bCombine, int diffContext, bool bNoPrefix)
 {
 	CString cmd;
 	if (rev2 == GitRev::GetWorkingCopy())
@@ -2916,7 +2916,7 @@ static int resolve_to_tree(git_repository *repo, const char *identifier, git_tre
 }
 
 /* use libgit2 get unified diff */
-static int GetUnifiedDiffLibGit2(const CTGitPath& path, const git_revnum_t& revOld, const git_revnum_t& revNew, std::function<void(const git_buf*, void*)> statCallback, git_diff_line_cb callback, void* data, bool /* bMerge */, bool bNoPrefix)
+static int GetUnifiedDiffLibGit2(const CTGitPath& path, const CString& revOld, const CString& revNew, std::function<void(const git_buf*, void*)> statCallback, git_diff_line_cb callback, void* data, bool /* bMerge */, bool bNoPrefix)
 {
 	CStringA tree1 = CUnicodeUtils::GetMulti(revNew, CP_UTF8);
 	CStringA tree2 = CUnicodeUtils::GetMulti(revOld, CP_UTF8);
@@ -3016,7 +3016,7 @@ static int GetUnifiedDiffLibGit2(const CTGitPath& path, const git_revnum_t& revO
 	return 0;
 }
 
-int CGit::GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, CString patchfile, bool bMerge, bool bCombine, int diffContext, bool bNoPrefix)
+int CGit::GetUnifiedDiff(const CTGitPath& path, const CString& rev1, const CString& rev2, CString patchfile, bool bMerge, bool bCombine, int diffContext, bool bNoPrefix)
 {
 	if (UsingLibGit2(GIT_CMD_DIFF))
 	{
@@ -3052,7 +3052,7 @@ static int UnifiedDiffToStringA(const git_diff_delta * /*delta*/, const git_diff
 	return 0;
 }
 
-int CGit::GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, CStringA * buffer, bool bMerge, bool bCombine, int diffContext)
+int CGit::GetUnifiedDiff(const CTGitPath& path, const CString& rev1, const CString& rev2, CStringA* buffer, bool bMerge, bool bCombine, int diffContext)
 {
 	if (UsingLibGit2(GIT_CMD_DIFF))
 		return GetUnifiedDiffLibGit2(path, rev1, rev2, UnifiedDiffStatToStringA, UnifiedDiffToStringA, buffer, bMerge, false);

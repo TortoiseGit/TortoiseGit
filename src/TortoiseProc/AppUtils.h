@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -90,7 +90,7 @@ public:
 		const CString& file1, const CString& file2,
 		const CString& sName1, const CString& sName2,
 		const CString& originalFile1, const CString& originalFile2,
-		const git_revnum_t& hash1, const git_revnum_t& hash2, const DiffFlags& flags, int jumpToLine = 0);
+		const CString& hash1, const CString& hash2, const DiffFlags& flags, int jumpToLine = 0);
 
 	/**
 	 * Launches the standard text viewer/editor application which is associated
@@ -153,8 +153,8 @@ public:
 	/**
 	 * Replacement for GitDiff::ShowUnifiedDiff(), but started as a separate process.
 	 */
-	static bool StartShowUnifiedDiff(HWND hWnd, const CTGitPath& url1,  const git_revnum_t& rev1,
-												const CTGitPath & url2, const git_revnum_t& rev2,
+	static bool StartShowUnifiedDiff(HWND hWnd, const CTGitPath& url1, const CString& rev1,
+												const CTGitPath& url2, const CString& rev2,
 
 												//const GitRev& peg = GitRev(), const GitRev& headpeg = GitRev(),
 												bool bAlternateDiff = false,

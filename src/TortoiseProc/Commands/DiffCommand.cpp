@@ -50,9 +50,9 @@ bool DiffCommand::Execute()
 			if (parser.HasKey(L"startrev") && parser.HasKey(L"endrev"))
 			{
 				if (parser.HasKey(L"unified"))
-					bRet = !!CAppUtils::StartShowUnifiedDiff(nullptr, cmdLinePath, git_revnum_t(parser.GetVal(L"endrev")), cmdLinePath, git_revnum_t(parser.GetVal(L"startrev")), bAlternativeTool);
+					bRet = !!CAppUtils::StartShowUnifiedDiff(nullptr, cmdLinePath, parser.GetVal(L"endrev"), cmdLinePath, parser.GetVal(L"startrev"), bAlternativeTool);
 				else
-					bRet = !!CGitDiff::Diff(&cmdLinePath, &cmdLinePath, git_revnum_t(parser.GetVal(L"startrev")), git_revnum_t(parser.GetVal(L"endrev")), false, parser.HasKey(L"unified") == TRUE, parser.GetLongVal(L"line"), bAlternativeTool);
+					bRet = !!CGitDiff::Diff(&cmdLinePath, &cmdLinePath, parser.GetVal(L"startrev"), parser.GetVal(L"endrev"), false, parser.HasKey(L"unified") == TRUE, parser.GetLongVal(L"line"), bAlternativeTool);
 			}
 			else
 			{
@@ -88,8 +88,8 @@ bool DiffCommand::Execute()
 								{
 									CTGitPath oldPath(changedFiles[i].GetGitOldPathString());
 									if (parser.HasKey(L"unified"))
-										return !!CAppUtils::StartShowUnifiedDiff(nullptr, cmdLinePath, git_revnum_t(L"HEAD"), cmdLinePath, git_revnum_t(GIT_REV_ZERO), bAlternativeTool);
-									return !!CGitDiff::Diff(&cmdLinePath, &oldPath, git_revnum_t(GIT_REV_ZERO), git_revnum_t(L"HEAD"), false, parser.HasKey(L"unified") == TRUE, parser.GetLongVal(L"line"), bAlternativeTool);
+										return !!CAppUtils::StartShowUnifiedDiff(nullptr, cmdLinePath, L"HEAD", cmdLinePath, GIT_REV_ZERO, bAlternativeTool);
+									return !!CGitDiff::Diff(&cmdLinePath, &oldPath, GIT_REV_ZERO, L"HEAD", false, parser.HasKey(L"unified") == TRUE, parser.GetLongVal(L"line"), bAlternativeTool);
 								}
 								break;
 							}
@@ -98,16 +98,16 @@ bool DiffCommand::Execute()
 					if (parser.HasKey(L"unified"))
 					{
 						cmdLinePath.m_Action = cmdLinePath.LOGACTIONS_ADDED;
-						return !!CAppUtils::StartShowUnifiedDiff(nullptr, cmdLinePath, git_revnum_t(L"HEAD"), cmdLinePath, git_revnum_t(GIT_REV_ZERO), bAlternativeTool);
+						return !!CAppUtils::StartShowUnifiedDiff(nullptr, cmdLinePath, L"HEAD", cmdLinePath, GIT_REV_ZERO, bAlternativeTool);
 					}
 					else
-						return !!CGitDiff::DiffNull(&cmdLinePath, git_revnum_t(GIT_REV_ZERO), true, parser.GetLongVal(L"line"), bAlternativeTool);
+						return !!CGitDiff::DiffNull(&cmdLinePath, GIT_REV_ZERO, true, parser.GetLongVal(L"line"), bAlternativeTool);
 				}
 
 				if (parser.HasKey(L"unified"))
-					bRet = !!CAppUtils::StartShowUnifiedDiff(nullptr, cmdLinePath, git_revnum_t(L"HEAD"), cmdLinePath, git_revnum_t(GIT_REV_ZERO), bAlternativeTool);
+					bRet = !!CAppUtils::StartShowUnifiedDiff(nullptr, cmdLinePath, L"HEAD", cmdLinePath, GIT_REV_ZERO, bAlternativeTool);
 				else
-					bRet = !!CGitDiff::Diff(&cmdLinePath, &cmdLinePath, git_revnum_t(GIT_REV_ZERO), git_revnum_t(L"HEAD"), false, parser.HasKey(L"unified") == TRUE, parser.GetLongVal(L"line"), bAlternativeTool);
+					bRet = !!CGitDiff::Diff(&cmdLinePath, &cmdLinePath, GIT_REV_ZERO, L"HEAD", false, parser.HasKey(L"unified") == TRUE, parser.GetLongVal(L"line"), bAlternativeTool);
 			}
 		}
 	}
@@ -116,13 +116,13 @@ bool DiffCommand::Execute()
 		if (parser.HasKey(L"startrev") && parser.HasKey(L"endrev") && CStringUtils::StartsWith(path2, g_Git.m_CurrentDir + L"\\"))
 		{
 			CTGitPath tgitPath2 = path2.Mid(g_Git.m_CurrentDir.GetLength() + 1);
-			bRet = !!CGitDiff::Diff(&tgitPath2, &cmdLinePath, git_revnum_t(parser.GetVal(L"startrev")), git_revnum_t(parser.GetVal(L"endrev")), false, parser.HasKey(L"unified") == TRUE, parser.GetLongVal(L"line"), bAlternativeTool);
+			bRet = !!CGitDiff::Diff(&tgitPath2, &cmdLinePath, parser.GetVal(L"startrev"), parser.GetVal(L"endrev"), false, parser.HasKey(L"unified") == TRUE, parser.GetLongVal(L"line"), bAlternativeTool);
 		}
 		else
 		{
 			bRet = CAppUtils::StartExtDiff(
 				path2, orgCmdLinePath.GetWinPathString(), CString(), CString(),
-				CString(), CString(), git_revnum_t(GIT_REV_ZERO), git_revnum_t(GIT_REV_ZERO),
+				CString(), CString(), GIT_REV_ZERO, GIT_REV_ZERO,
 				CAppUtils::DiffFlags().AlternativeTool(bAlternativeTool), parser.GetLongVal(L"line"));
 		}
 	}
