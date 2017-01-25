@@ -23,7 +23,6 @@
 #include "AppUtils.h"
 #include "ChangedDlg.h"
 #include "GitDiff.h"
-#include "GitStatus.h"
 #include "../TGitCache/CacheInterface.h"
 #include "UnicodeUtils.h"
 
@@ -57,21 +56,11 @@ bool DiffCommand::Execute()
 			else
 			{
 				// check if it is a newly added (but uncommitted) file
-				git_wc_status_kind status = git_wc_status_none;
-				CString topDir;
-				if (orgCmdLinePath.HasAdminDir(&topDir))
-				{
-					CBlockCacheForPath cacheBlock(topDir);
-					CAutoIndex index;
-					CString adminDir;
-					GitAdminDir::GetAdminDirPath(topDir, adminDir);
-					if (!git_index_open(index.GetPointer(), CUnicodeUtils::GetUTF8(adminDir + L"index")))
-						g_Git.Run(L"git.exe update-index -- \"" + cmdLinePath.GetGitPathString() + L'"', nullptr); // make sure we get the right status
-					GitStatus::GetFileStatus(topDir, cmdLinePath.GetWinPathString(), &status, true);
-					if (index)
-						git_index_write(index);
-				}
-				if (status == git_wc_status_added)
+				unsigned int status_flags = 0;
+				CAutoRepository repo(g_Git.GetGitRepository());
+				if (repo)
+					git_status_file(&status_flags, repo, CUnicodeUtils::GetUTF8(cmdLinePath.GetWinPathString()));
+				if (status_flags == GIT_STATUS_INDEX_NEW)
 				{
 					if (!g_Git.IsInitRepos())
 					{
