@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -19,6 +19,8 @@
 
 #pragma once
 #include "GitRev.h"
+#include "TGitPath.h"
+#include "gitdll.h"
 
 class CGit;
 extern CGit g_Git;

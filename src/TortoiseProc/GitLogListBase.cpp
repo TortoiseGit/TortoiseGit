@@ -23,18 +23,14 @@
 #include "resource.h"
 #include "GitLogListBase.h"
 #include "IconMenu.h"
-#include "cursor.h"
 #include "GitProgressDlg.h"
 #include "ProgressDlg.h"
 #include "MessageBox.h"
-#include "registry.h"
 #include "LoglistUtils.h"
 #include "StringUtils.h"
 #include "UnicodeUtils.h"
 #include "IconMenu.h"
-#include "GitStatus.h"
 #include "..\TortoiseShell\Resource.h"
-#include "FindDlg.h"
 
 template < typename Cont, typename Pred>
 void for_each(Cont& c, Pred p)

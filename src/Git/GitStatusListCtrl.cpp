@@ -31,6 +31,7 @@
 #include "StringUtils.h"
 #include "LoglistUtils.h"
 #include "Git.h"
+#include "GitRev.h"
 #include "GitDiff.h"
 #include "GitProgressDlg.h"
 #include "SysImageList.h"
@@ -211,7 +212,6 @@ BEGIN_MESSAGE_MAP(CGitStatusListCtrl, CResizableColumnsListCtrl<CListCtrl>)
 END_MESSAGE_MAP()
 
 CGitStatusListCtrl::CGitStatusListCtrl() : CResizableColumnsListCtrl<CListCtrl>()
-	//, m_HeadRev(GitRev::REV_HEAD)
 	, m_pbCanceled(nullptr)
 	, m_pStatLabel(nullptr)
 	, m_pSelectButton(nullptr)

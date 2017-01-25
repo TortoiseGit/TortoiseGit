@@ -19,7 +19,7 @@
 
 #pragma once
 #include "TGitPath.h"
-#include "GitStatus.h"
+#include "GitRev.h"
 #include "Git.h"
 
 class CGitDiff

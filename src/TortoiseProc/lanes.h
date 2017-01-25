@@ -1,6 +1,6 @@
 /*
 	Author: Marco Costalba (C) 2005-2007
-	Author: TortoiseGit (C) 2013
+	Author: TortoiseGit (C) 2008-2013, 2017
 
 	Copyright: See COPYING file that comes with this distribution
 
@@ -8,8 +8,6 @@
 #ifndef LANES_H
 #define LANES_H
 
-//#include <CGitHash>
-//#include <QVector>
 #include "githash.h"
 
 #define QVector std::vector

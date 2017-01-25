@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011, 2015-2016 - TortoiseGit
+// Copyright (C) 2008-2012, 2015-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,7 +25,6 @@
 #include "SciEdit.h"
 #include "SplitterControl.h"
 #include "HistoryCombo.h"
-#include "Tooltip.h"
 
 #define MSG_REBASE_UPDATE_UI	(WM_USER+151)
 

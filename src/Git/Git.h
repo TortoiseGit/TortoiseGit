@@ -18,9 +18,8 @@
 //
 
 #pragma once
-#include "GitType.h"
-#include "GitRev.h"
-#include "GitStatus.h"
+#include "TGitPath.h"
+#include "gittype.h"
 #include "GitAdminDir.h"
 #include "gitdll.h"
 #include <functional>
@@ -89,7 +88,6 @@ private:
 
 typedef std::function<void (const CStringA&)> GitReceiverFunc;
 
-class CTGitPath;
 class CEnvironment : protected std::vector<TCHAR>
 {
 public:

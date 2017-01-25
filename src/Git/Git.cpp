@@ -19,6 +19,7 @@
 
 #include "stdafx.h"
 #include "Git.h"
+#include "GitRev.h"
 #include "registry.h"
 #include "GitForWindows.h"
 #include "UnicodeUtils.h"

@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013, 2016 - TortoiseGit
-// Copyright (C) 2003-2011 - TortoiseSVN
+// Copyright (C) 2008, 2011-2013, 2015-2017 - TortoiseGit
+// Copyright (C) 2003-2011, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -26,9 +26,6 @@
 
 #include "tstring.h"
 #include "GitLogListBase.h"
-
-#include <map>
-#include <list>
 
 /**
  * \ingroup TortoiseProc

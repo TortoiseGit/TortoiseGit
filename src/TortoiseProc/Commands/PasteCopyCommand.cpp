@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2011-2013, 2015-2016 - TortoiseGit
+// Copyright (C) 2009, 2011-2013, 2015-2017 - TortoiseGit
 // Copyright (C) 2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -24,7 +24,6 @@
 #include "MessageBox.h"
 #include "RenameDlg.h"
 #include "Git.h"
-#include "GitStatus.h"
 #include "ShellUpdater.h"
 
 bool PasteCopyCommand::Execute()

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2016 - TortoiseGit
+// Copyright (C) 2013-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,10 +18,10 @@
 //
 
 #pragma once
-#include "../TortoiseProc.h"
+#include "TortoiseProc.h"
 #include "Git.h"
 #include "Tooltip.h"
-#include "../../Utils/UnicodeUtils.h"
+#include "UnicodeUtils.h"
 #include "TempFile.h"
 
 class CSettings;

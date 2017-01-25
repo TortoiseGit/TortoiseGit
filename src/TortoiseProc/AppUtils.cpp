@@ -32,7 +32,6 @@
 #include "ProgressDlg.h"
 #include "BrowseFolder.h"
 #include "DirFileEnum.h"
-#include "GitStatus.h"
 #include "CreateBranchTagDlg.h"
 #include "GitSwitchDlg.h"
 #include "ResetDlg.h"

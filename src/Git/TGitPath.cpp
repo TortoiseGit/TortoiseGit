@@ -28,7 +28,6 @@
 #include "StringUtils.h"
 #include "SmartHandle.h"
 #include "../Resources/LoglistCommonResource.h"
-#include <memory>
 #include <sys/stat.h>
 
 extern CGit g_Git;

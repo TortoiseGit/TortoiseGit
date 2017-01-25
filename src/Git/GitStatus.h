@@ -22,7 +22,6 @@
 
 class CGitFileName;
 
-#include "TGitPath.h"
 #include "GitHash.h"
 
 typedef enum type_git_wc_status_kind
@@ -97,7 +96,6 @@ public:
 	static bool ReleasePath(const CString &gitdir);
 	static bool ReleasePathsRecursively(const CString &rootpath);
 
-public:
 	GitStatus();
 
 	/**

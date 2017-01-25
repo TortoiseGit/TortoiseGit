@@ -27,8 +27,6 @@
 #include "IconMenu.h"
 #include "RefLogDlg.h"
 
-#include "GitStatusListCtrl.h"
-
 IMPLEMENT_DYNAMIC(CChangedDlg, CResizableStandAloneDialog)
 CChangedDlg::CChangedDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CChangedDlg::IDD, pParent)

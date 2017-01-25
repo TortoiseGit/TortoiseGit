@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2007-2008 - TortoiseSVN
-// Copyright (C) 2007-2011, 2013-2017 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,7 +25,7 @@
 #include "GitDiff.h"
 #include "GitStatus.h"
 #include "../TGitCache/CacheInterface.h"
-#include "../Utils/UnicodeUtils.h"
+#include "UnicodeUtils.h"
 
 bool DiffCommand::Execute()
 {

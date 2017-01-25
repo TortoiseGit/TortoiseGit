@@ -20,7 +20,6 @@
 #pragma once
 #include "TGitPath.h"
 #include "GitStatus.h"
-#include "GitRev.h"
 #include "Colors.h"
 #include "ResizableColumnsListCtrl.h"
 #include "DragDropImpl.h"
@@ -633,8 +632,6 @@ public:
 	LONG						m_nTargetCount;		///< number of targets in the file passed to GetStatus()
 
 	CString						m_sURL;				///< the URL of the target or "(multiple targets)"
-
-	GitRev						m_HeadRev;			///< the HEAD revision of the repository if bUpdate was TRUE
 
 	bool						m_amend;			///< if true show the changes to the revision before the last commit
 
