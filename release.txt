@@ -1,26 +1,46 @@
-\section Version numbers
+This articel documents some of the main steps for releasing a new version.
 
-Upgrade numbers in:
+* Upgrade version number in (for preview releases don't commit):
+  * doc/doc.build.include
+  * src/version.h
+  * src/TortoiseGitSetup/VersionNumberInclude.wxi
+  * For a preview release also make sure to include the yyyymmdd-HASH in src/TortoiseProc/AboutDlg.cpp in "tortoisegitprocpath"
 
--# doc/doc.build.include
--# src/version.h
--# src/TortoiseGitSetup/VersionNumberInclude.wxi
+* Make sure crash-report is enabled in version.h (but don't commit this change)
+* For a preview release enable "PREVIEW" in version.h (but don't commit this change)
 
-Upload symbols to drdump.com
+* Sync Transifex translations (for stable releases)
+* Check translations for:
+  * fix ?
+  * fix ?
+  * fix ?
+  * fix »
+  * fix <span
 
-Upload (signed) msi-files (do not forget to upload debug symbols and language packs for stable releases).
-Naming-convention:
-- stable release
-  - TortoiseGit-VERSION-XXbit.msi
-  - TortoiseGit-LanguagePack-VERSION-XXbit-ISOLANG.msi
-  - TortoiseGit-DebugSymbols-VERSION.7z
-- preview release
-  - TortoiseGit-preview-VERSION-YYYYMMDD-(SHA1-7chars)-XXbit
+* Create new DrDump.com version (for stable releases)
 
-Google code tasks:
-- for a stable release
-  - update front/summary page as well as "Downloads" and "ReleaseNotes" (make sure it contains no unwanted links) wiki pages
+* Update spell checker dictionaries
 
-Update version.txt (http://code.google.com/p/tortoisegit/source/checkout?repo=version) for auto updater (for a stable release make sure version-preview.txt has the same content as version.txt)
+* Build docs
 
-Send annoucement mail (for stable releases)
+* Update changelog
+
+* Build TortoiseGit
+
+* Upload release
+
+* Tag commit (for stable releases)
+
+* Update website
+  * RSS feed
+  * Download languages
+  * Version number of latest stable
+  * Update manual
+
+* Send annoucement mail to mailing list (for stable releases)
+
+* Auto-Updater
+  * Prepare changelog (wrap at column 86)
+  * Update version.txt (sync with shipped languages)
+
+* Mark old release as deprecated on DrDump.com (for stable releases)
