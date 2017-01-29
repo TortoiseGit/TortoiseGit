@@ -168,6 +168,9 @@
     <Filter Include="Commands\FirstStart">
       <UniqueIdentifier>{6356a693-c68f-494c-8b38-ea863b7d5b6b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Commands\Help">
+      <UniqueIdentifier>{3a3018a4-ac2f-4bf5-a8fe-e8af554e8435}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddRemoteDlg.cpp">
@@ -1788,6 +1791,12 @@
     </ClInclude>
     <ClInclude Include="..\Utils\MiscUI\HighColorTab.hpp">
       <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\RTFMCommand.h">
+      <Filter>Commands\RTFM</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\HelpCommand.h">
+      <Filter>Commands\Help</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
