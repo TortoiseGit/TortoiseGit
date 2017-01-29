@@ -405,6 +405,7 @@
     <ClInclude Include="Commands\CommitIsOnRefsCommand.h" />
     <ClInclude Include="Commands\DaemonCommand.h" />
     <ClInclude Include="Commands\HelpCommand.h" />
+    <ClInclude Include="Commands\RTFMCommand.h" />
     <ClInclude Include="CommitIsOnRefsDlg.h" />
     <ClInclude Include="ConfigureGitExe.h" />
     <ClInclude Include="FindBar.h" />

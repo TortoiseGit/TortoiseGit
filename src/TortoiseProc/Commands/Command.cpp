@@ -78,12 +78,12 @@
 #include "ShowCompareCommand.h"
 #include "DaemonCommand.h"
 #include "CommitIsOnRefsCommand.h"
+#include "RTFMCommand.h"
 
 #if 0
 #include "CrashCommand.h"
 #include "RebuildIconCacheCommand.h"
 #include "RemoveCommand.h"
-#include "RTFMCommand.h"
 #include "UnIgnoreCommand.h"
 #endif
 
@@ -371,12 +371,11 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new DaemonCommand;
 	case cmdCommitIsOnRefs:
 		return new CommitIsOnRefsCommand;
-
+	case cmdRTFM:
+		return new RTFMCommand;
 #if 0
 	case cmdCrash:
 		return new CrashCommand;
-	case cmdRTFM:
-		return new RTFMCommand;
 	case cmdRebuildIconCache:
 		return new RebuildIconCacheCommand;
 	case cmdUnIgnore:

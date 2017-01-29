@@ -168,6 +168,9 @@
     <Filter Include="Commands\FirstStart">
       <UniqueIdentifier>{6356a693-c68f-494c-8b38-ea863b7d5b6b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Commands\RTFM">
+      <UniqueIdentifier>{9c458ff5-6572-4948-b1b3-d8197fc2be5c}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Commands\Help">
       <UniqueIdentifier>{3a3018a4-ac2f-4bf5-a8fe-e8af554e8435}</UniqueIdentifier>
     </Filter>

@@ -38,7 +38,8 @@ public:
 	{
 		// If the user tries to start TortoiseProc from the link in the programs start menu
 		// show an explanation about what TSVN is (shell extension) and open up an explorer window
-		CMessageBox::Show(hwndExplorer, IDS_PROC_RTFM, IDS_APPNAME, MB_ICONINFORMATION);
+		if (CMessageBox::Show(hwndExplorer, IDS_PROC_RTFM, IDS_APPNAME, 1, IDI_INFORMATION, IDS_OKBUTTON, IDS_MENUHELP) == 2)
+			return ((INT_PTR)ShellExecute(hwndExplorer, L"open", theApp.m_pszHelpFilePath, nullptr, nullptr, SW_SHOWNORMAL) > 32);
 		TCHAR path[MAX_PATH] = {0};
 		SHGetFolderPath(hwndExplorer, CSIDL_PERSONAL, nullptr, SHGFP_TYPE_CURRENT, path);
 		CAppUtils::ExploreTo(hwndExplorer, path);
