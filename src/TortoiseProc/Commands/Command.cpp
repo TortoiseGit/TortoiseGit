@@ -83,7 +83,6 @@
 #include "CrashCommand.h"
 #include "RebuildIconCacheCommand.h"
 #include "RemoveCommand.h"
-#include "RevertCommand.h"
 #include "RTFMCommand.h"
 #include "UnIgnoreCommand.h"
 #endif
