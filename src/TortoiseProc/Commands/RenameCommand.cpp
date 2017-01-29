@@ -34,18 +34,28 @@ bool RenameCommand::Execute()
 	// show the rename dialog until the user either cancels or enters a new
 	// name (one that's different to the original name
 	CString sNewName;
-	do
+	CRenameDlg dlg;
+	dlg.SetInputValidator([&](const int /*nID*/, const CString& input) -> CString
 	{
-		CRenameDlg dlg;
-		dlg.m_sBaseDir = g_Git.CombinePath(basePath);
-		dlg.m_name = filename;
-		if (dlg.DoModal() != IDOK)
-			return FALSE;
+		CString newName;
 		if (!basePath.IsEmpty())
-			sNewName = basePath + "/" + dlg.m_name;
+			newName = basePath + "/" + input;
 		else
-			sNewName = dlg.m_name;
-	} while (sNewName.Compare(cmdLinePath.GetGitPathString()) == 0);
+			newName = input;
+
+		if (newName.CompareNoCase(cmdLinePath.GetGitPathString()) != 0 && PathFileExists(g_Git.CombinePath(newName)))
+			return CString(CFormatMessageWrapper(ERROR_FILE_EXISTS));
+
+		return{};
+	});
+	dlg.m_sBaseDir = g_Git.CombinePath(basePath);
+	dlg.m_name = filename;
+	if (dlg.DoModal() != IDOK)
+		return FALSE;
+	if (!basePath.IsEmpty())
+		sNewName = basePath + "/" + dlg.m_name;
+	else
+		sNewName = dlg.m_name;
 
 	CString force;
 	// if the filenames only differ in case, we have to pass "-f"

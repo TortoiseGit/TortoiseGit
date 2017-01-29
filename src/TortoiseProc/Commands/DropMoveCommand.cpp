@@ -53,16 +53,21 @@ bool DropMoveCommand::Execute()
 	if (parser.HasKey(L"rename") && pathList.GetCount() == 1)
 	{
 		// ask for a new name of the source item
-		do
+		CRenameDlg renDlg;
+		renDlg.SetRenameRequired(pathList[0].GetContainingDirectory().IsEquivalentToWithoutCase(droppath));
+		renDlg.SetInputValidator([&](const int /*nID*/, const CString& input) -> CString
 		{
-			CRenameDlg renDlg;
-			renDlg.m_sBaseDir = g_Git.CombinePath(droppath);
-			renDlg.m_windowtitle.LoadString(IDS_PROC_MOVERENAME);
-			renDlg.m_name = pathList[0].GetFileOrDirectoryName();
-			if (renDlg.DoModal() != IDOK)
-				return FALSE;
-			sNewName = renDlg.m_name;
-		} while(PathFileExists(droppath + L'\\' + sNewName));
+			if (PathFileExists(g_Git.CombinePath(droppath + L'\\' + input)))
+				return CString(CFormatMessageWrapper(ERROR_FILE_EXISTS));
+
+			return{};
+		});
+		renDlg.m_sBaseDir = g_Git.CombinePath(droppath);
+		renDlg.m_windowtitle.LoadString(IDS_PROC_MOVERENAME);
+		renDlg.m_name = pathList[0].GetFileOrDirectoryName();
+		if (renDlg.DoModal() != IDOK)
+			return FALSE;
+		sNewName = renDlg.m_name;
 	}
 	CSysProgressDlg progress;
 	if (progress.IsValid())
@@ -83,11 +88,16 @@ bool DropMoveCommand::Execute()
 		{
 			progress.Stop();
 
-			CString name = pathList[nPath].GetFileOrDirectoryName();
-			if (!sNewName.IsEmpty())
-				name = sNewName;
+			CString name = destPath.GetFileOrDirectoryName();
 			progress.Stop();
 			CRenameDlg dlg;
+			dlg.SetInputValidator([&](const int /*nID*/, const CString& input) -> CString
+			{
+				if (PathFileExists(g_Git.CombinePath(droppath + L'\\' + input)))
+					return CString(CFormatMessageWrapper(ERROR_FILE_EXISTS));
+
+				return{};
+			});
 			dlg.m_sBaseDir = g_Git.CombinePath(destPath);
 			dlg.m_name = name;
 			dlg.m_windowtitle.Format(IDS_PROC_NEWNAMEMOVE, (LPCTSTR)name);

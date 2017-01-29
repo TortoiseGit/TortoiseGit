@@ -33,7 +33,7 @@ public:
 	CRenameDlg(CWnd* pParent = nullptr);
 	virtual ~CRenameDlg();
 
-	void SetInputValidator(IInputValidator * validator) { m_pInputValidator = validator; }
+	void SetInputValidator(IInputValidator validator) { m_pInputValidator = validator; }
 	void SetRenameRequired(bool renameRequired) { m_renameRequired = renameRequired; }
 	enum { IDD = IDD_RENAME };
 
@@ -59,5 +59,5 @@ private:
 	bool				m_bBalloonVisible;
 	bool				m_renameRequired;
 	CString				m_originalName;
-	IInputValidator *	m_pInputValidator;
+	IInputValidator		m_pInputValidator;
 };

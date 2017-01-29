@@ -40,16 +40,20 @@ bool DropCopyCommand::Execute()
 	if (parser.HasKey(L"rename") && pathList.GetCount() == 1)
 	{
 		// ask for a new name of the source item
-		do
+		CRenameDlg renDlg;
+		renDlg.SetInputValidator([&](const int /*nID*/, const CString& input) -> CString
 		{
-			CRenameDlg renDlg;
-			renDlg.m_sBaseDir = sDroppath;
-			renDlg.m_windowtitle.LoadString(IDS_PROC_COPYRENAME);
-			renDlg.m_name = pathList[0].GetFileOrDirectoryName();
-			if (renDlg.DoModal() != IDOK)
-				return FALSE;
-			sNewName = renDlg.m_name;
-		} while (PathFileExists(sDroppath + L'\\' + sNewName));
+			if (PathFileExists(sDroppath + L'\\' + input))
+				return CString(CFormatMessageWrapper(ERROR_FILE_EXISTS));
+
+			return{};
+		});
+		renDlg.m_sBaseDir = sDroppath;
+		renDlg.m_windowtitle.LoadString(IDS_PROC_COPYRENAME);
+		renDlg.m_name = pathList[0].GetFileOrDirectoryName();
+		if (renDlg.DoModal() != IDOK)
+			return FALSE;
+		sNewName = renDlg.m_name;
 	}
 	CSysProgressDlg progress;
 	progress.SetTitle(IDS_PROC_COPYING);
@@ -73,6 +77,15 @@ bool DropCopyCommand::Execute()
 			// Offer a rename
 			progress.Stop();
 			CRenameDlg dlg;
+			dlg.SetInputValidator([&](const int /*nID*/, const CString& input) -> CString
+			{
+				CTGitPath newPath(sDroppath);
+				newPath.AppendPathString(input);
+				if (newPath.Exists())
+					return CString(CFormatMessageWrapper(ERROR_FILE_EXISTS));
+
+				return{};
+			});
 			dlg.m_sBaseDir = fullDropPath.GetContainingDirectory().GetWinPathString();
 			dlg.m_name = fullDropPath.GetFileOrDirectoryName();
 			dlg.m_windowtitle.Format(IDS_PROC_NEWNAMECOPY, (LPCTSTR)sourcePath.GetUIFileOrDirectoryName());

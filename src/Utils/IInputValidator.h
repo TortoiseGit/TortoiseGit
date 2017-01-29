@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2017 - TortoiseGit
 // Copyright (C) 2010, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -18,15 +19,4 @@
 //
 #pragma once
 
-class IInputValidator
-{
-public:
-	/**
-	 * Method is called to validate the user input, usually an edit control.
-	 * Return an empty string if the input is valid. If the input is not valid,
-	 * return an error string which is then shown in an error balloon.
-	 * \param nID the id of the edit control, or 0 if it's not for a specific control
-	 * \param input the user input
-	 */
-	virtual CString Validate(const int nID, const CString& input) = 0;
-};
+typedef std::function<CString(const int nID, const CString& input)> IInputValidator;

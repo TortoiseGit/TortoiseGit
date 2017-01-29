@@ -90,16 +90,6 @@ void CRenameDlg::OnOK()
 {
 	UpdateData();
 	m_name.Trim();
-	if (m_pInputValidator)
-	{
-		CString sError = m_pInputValidator->Validate(IDC_NAME, m_name);
-		if (!sError.IsEmpty())
-		{
-			m_bBalloonVisible = true;
-			ShowEditBalloon(IDC_NAME, sError, CString(MAKEINTRESOURCE(IDS_ERR_ERROR)), TTI_ERROR);
-			return;
-		}
-	}
 	bool nameAllowed = ((m_originalName != m_name) || !m_renameRequired) && !m_name.IsEmpty();
 	if (!nameAllowed)
 	{
@@ -115,6 +105,18 @@ void CRenameDlg::OnOK()
 		ShowEditBalloon(IDC_NAME, IDS_WARN_NOVALIDPATH, IDS_ERR_ERROR, TTI_ERROR);
 		return;
 	}
+
+	if (m_pInputValidator)
+	{
+		CString sError = m_pInputValidator(IDC_NAME, m_name);
+		if (!sError.IsEmpty())
+		{
+			m_bBalloonVisible = true;
+			ShowEditBalloon(IDC_NAME, sError, CString(MAKEINTRESOURCE(IDS_ERR_ERROR)), TTI_ERROR);
+			return;
+		}
+	}
+
 	CHorizontalResizableStandAloneDialog::OnOK();
 }
 
