@@ -56,6 +56,7 @@ bool DropMoveCommand::Execute()
 		do
 		{
 			CRenameDlg renDlg;
+			renDlg.m_sBaseDir = g_Git.CombinePath(droppath);
 			renDlg.m_windowtitle.LoadString(IDS_PROC_MOVERENAME);
 			renDlg.m_name = pathList[0].GetFileOrDirectoryName();
 			if (renDlg.DoModal() != IDOK)
@@ -87,6 +88,7 @@ bool DropMoveCommand::Execute()
 				name = sNewName;
 			progress.Stop();
 			CRenameDlg dlg;
+			dlg.m_sBaseDir = g_Git.CombinePath(destPath);
 			dlg.m_name = name;
 			dlg.m_windowtitle.Format(IDS_PROC_NEWNAMEMOVE, (LPCTSTR)name);
 			if (dlg.DoModal() != IDOK)

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2016 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2017 - TortoiseGit
 // Copyright (C) 2003-2008,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -215,7 +215,7 @@ bool CCommonAppUtils::SetListCtrlBackgroundImage(HWND hListCtrl, UINT nID, int w
 	return true;
 }
 
-bool CCommonAppUtils::FileOpenSave(CString& path, int* filterindex, UINT title, UINT filterId, bool bOpen, HWND hwndOwner, LPCTSTR defaultExt)
+bool CCommonAppUtils::FileOpenSave(CString& path, int* filterindex, UINT title, UINT filterId, bool bOpen, HWND hwndOwner, LPCTSTR defaultExt, bool handleAsFile)
 {
 	// Create a new common save file dialog
 	CComPtr<IFileDialog> pfd;
@@ -238,7 +238,7 @@ bool CCommonAppUtils::FileOpenSave(CString& path, int* filterindex, UINT title, 
 		if (!SUCCEEDED(pfd->SetOptions(dwOptions | FOS_OVERWRITEPROMPT | FOS_FORCEFILESYSTEM | FOS_PATHMUSTEXIST)))
 			return false;
 	}
-	if (!PathIsDirectory(path) && !SUCCEEDED(pfd->SetFileName(CPathUtils::GetFileNameFromPath(path))))
+	if ((!PathIsDirectory(path) || handleAsFile) && !SUCCEEDED(pfd->SetFileName(CPathUtils::GetFileNameFromPath(path))))
 		return false;
 
 	// Set a title
@@ -277,7 +277,7 @@ bool CCommonAppUtils::FileOpenSave(CString& path, int* filterindex, UINT title, 
 	if (CStringUtils::StartsWith(path, L"\\") || path.Mid(1, 2) == L":\\")
 	{
 		CString dir = path;
-		if (!PathIsDirectory(dir))
+		if (!PathIsDirectory(dir) || handleAsFile)
 		{
 			if (PathRemoveFileSpec(dir.GetBuffer()))
 				dir.ReleaseBuffer();

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2009, 2011-2013, 2015-2016 - TortoiseGit
+// Copyright (C) 2008-2009, 2011-2013, 2015-2017 - TortoiseGit
 // Copyright (C) 2003-2011, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -32,6 +32,7 @@ CRenameDlg::CRenameDlg(CWnd* pParent /*=nullptr*/)
 	, m_renameRequired(true)
 	, m_pInputValidator(nullptr)
 	, m_bBalloonVisible(false)
+	, m_sBaseDir(g_Git.m_CurrentDir)
 {
 }
 
@@ -141,12 +142,13 @@ void CRenameDlg::OnBnClickedButtonBrowseRef()
 	CString path;
 	if (!m_originalName.IsEmpty())
 	{
-		CTGitPath origname(g_Git.CombinePath(m_originalName));
+		CTGitPath origname(m_sBaseDir);
+		origname.AppendPathString(m_originalName);
 		ext = origname.GetFileExtension();
 		path = origname.GetWinPathString();
 	}
 
-	if (CAppUtils::FileOpenSave(path, nullptr, AFX_IDD_FILESAVE, 0, false, GetSafeHwnd(), ext.Mid(1)))
+	if (CAppUtils::FileOpenSave(path, nullptr, AFX_IDD_FILESAVE, 0, false, GetSafeHwnd(), ext.Mid(1), !path.IsEmpty()))
 	{
 		GetDlgItem(IDC_NAME)->SetFocus();
 		CTGitPath target(path);
@@ -156,11 +158,12 @@ void CRenameDlg::OnBnClickedButtonBrowseRef()
 			CMessageBox::Show(GetSafeHwnd(), IDS_ERR_MUSTBESAMEWT, IDS_APPNAME, MB_OK | MB_ICONEXCLAMATION);
 			return;
 		}
-		if (g_Git.m_CurrentDir.GetLength() > 3)
-			path = path.Mid(g_Git.m_CurrentDir.GetLength() + 1);
-		else
-			path = path.Mid(g_Git.m_CurrentDir.GetLength());
-		m_name = path;
+		CString relPath;
+		if (!PathRelativePathTo(CStrBuf(relPath, MAX_PATH), m_sBaseDir, FILE_ATTRIBUTE_DIRECTORY, path, FILE_ATTRIBUTE_DIRECTORY))
+			return;
+		if (CStringUtils::StartsWith(relPath, L".\\"))
+			relPath = relPath.Mid(2);
+		m_name = relPath;
 		UpdateData(FALSE);
 	}
 }

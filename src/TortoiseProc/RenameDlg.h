@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2017 - TortoiseGit
 // Copyright (C) 2003-2006, 2009-2010, 2013, 2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -52,6 +53,7 @@ public:
 	CString m_name;
 	CString m_windowtitle;
 	CString m_label;
+	CString m_sBaseDir;
 
 private:
 	bool				m_bBalloonVisible;

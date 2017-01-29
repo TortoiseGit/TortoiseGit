@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012, 2015-2016 - TortoiseGit
+// Copyright (C) 2008-2012, 2015-2017 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -37,14 +37,15 @@ bool RenameCommand::Execute()
 	do
 	{
 		CRenameDlg dlg;
+		dlg.m_sBaseDir = g_Git.CombinePath(basePath);
 		dlg.m_name = filename;
 		if (dlg.DoModal() != IDOK)
 			return FALSE;
-		sNewName = dlg.m_name;
-	} while(PathIsRelative(sNewName) && !PathIsURL(sNewName) && (sNewName.IsEmpty() || (sNewName.Compare(filename)==0)));
-
-	if(!basePath.IsEmpty())
-		sNewName=basePath+"/"+sNewName;
+		if (!basePath.IsEmpty())
+			sNewName = basePath + "/" + dlg.m_name;
+		else
+			sNewName = dlg.m_name;
+	} while (PathIsRelative(sNewName) && (sNewName.IsEmpty() || (sNewName.Compare(cmdLinePath.GetGitPathString()) == 0)));
 
 	CString force;
 	// if the filenames only differ in case, we have to pass "-f"
