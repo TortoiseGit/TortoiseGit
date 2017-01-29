@@ -3,16 +3,21 @@
 :: This script compresses all .png images.
 ::
 :: By default all images in all languages will be handled.
-:: You can specify a group of files to check using the first
-:: parameter, e.g.
+:: You can specify several distinct files or a group of files to
+:: process using parameters, e.g.
 ::     adjustimages en\Rev*.png
+::     adjustimages en\AboutDlg.png en\BrowseRef.png
+::     adjustimages en\AboutDlg.png en\BrowseRef.png en\Rev*.png
 ::
 :: ============================================================ 
 ::
 ::
 if '%1' == '' goto :DoDefault
+:NextParam
 for %%? in (%1) do Call :ProcAdjustFile %%?
-endlocal & goto:EOF
+shift
+if '%1' == '' endlocal & goto:EOF
+goto :NextParam
 ::
 :DoDefault
 for %%? in (en\*.png) do Call :ProcAdjustFile %%?
