@@ -125,6 +125,7 @@ void CRenameDlg::OnCancel()
 	if (m_bBalloonVisible)
 	{
 		Edit_HideBalloonTip(GetDlgItem(IDC_NAME)->GetSafeHwnd());
+		m_bBalloonVisible = false;
 		return;
 	}
 
