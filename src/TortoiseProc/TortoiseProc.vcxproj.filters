@@ -869,12 +869,6 @@
     <ClCompile Include="..\Git\TGitPath.cpp">
       <Filter>Git</Filter>
     </ClCompile>
-    <ClCompile Include="..\Git\GitStatus.cpp">
-      <Filter>Git</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Git\GitIndex.cpp">
-      <Filter>Git</Filter>
-    </ClCompile>
     <ClCompile Include="..\Utils\ReaderWriterLock.cpp">
       <Filter>Utils\General</Filter>
     </ClCompile>
@@ -1673,9 +1667,6 @@
       <Filter>Git</Filter>
     </ClInclude>
     <ClInclude Include="..\Git\GitStatus.h">
-      <Filter>Git</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Git\gitindex.h">
       <Filter>Git</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\ReaderWriterLock.h">

@@ -22,7 +22,6 @@
 #include "SysProgressDlg.h"
 #include "MessageBox.h"
 #include "Git.h"
-#include "GitStatus.h"
 #include "RenameDlg.h"
 #include "ShellUpdater.h"
 
@@ -36,7 +35,6 @@ bool PasteMoveCommand::Execute()
 	if(!dropPath.HasAdminDir(&g_Git.m_CurrentDir))
 		return FALSE;
 
-	GitStatus status;
 	unsigned long count = 0;
 	orgPathList.RemoveAdminPaths();
 	CString sNewName;
@@ -67,8 +65,9 @@ bool PasteMoveCommand::Execute()
 		}
 		CString top;
 		orgPathList[nPath].HasAdminDir(&top);
-		git_wc_status_kind s = status.GetAllStatus(orgPathList[nPath]);
-		if (s == git_wc_status_none || s == git_wc_status_unversioned || s == git_wc_status_ignored || top.CompareNoCase(g_Git.m_CurrentDir) != 0)
+		//git_wc_status_kind s = status.GetAllStatus(orgPathList[nPath]);
+		//if (s == git_wc_status_none || s == git_wc_status_unversioned || s == git_wc_status_ignored || top.CompareNoCase(g_Git.m_CurrentDir) != 0)
+		if (false)
 		{
 			// source file is unversioned: move the file to the target, then add it
 			MoveFile(orgPathList[nPath].GetWinPath(), destPath.GetWinPath());

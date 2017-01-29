@@ -55,11 +55,9 @@
     <ClCompile Include="..\Git\Git.cpp" />
     <ClCompile Include="..\Git\GitAdminDir.cpp" />
     <ClCompile Include="..\Git\GitDataObject.cpp" />
-    <ClCompile Include="..\Git\GitIndex.cpp" />
     <ClCompile Include="..\Git\GitRev.cpp" />
     <ClCompile Include="..\Git\GitRevLoglist.cpp" />
     <ClCompile Include="..\Git\GitRevRefBrowser.cpp" />
-    <ClCompile Include="..\Git\GitStatus.cpp" />
     <ClCompile Include="..\Git\MassiveGitTaskBase.cpp" />
     <ClCompile Include="..\Git\TGitPath.cpp" />
     <ClCompile Include="..\TortoiseMerge\FileTextLines.cpp" />
@@ -324,7 +322,6 @@
     <ClInclude Include="..\Git\GitDataObject.h" />
     <ClInclude Include="..\Git\GitForWindows.h" />
     <ClInclude Include="..\Git\GitHash.h" />
-    <ClInclude Include="..\Git\gitindex.h" />
     <ClInclude Include="..\Git\GitRev.h" />
     <ClInclude Include="..\Git\GitRevLoglist.h" />
     <ClInclude Include="..\Git\GitRevRefBrowser.h" />
