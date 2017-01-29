@@ -51,7 +51,7 @@ int CGitDiff::SubmoduleDiffNull(const CTGitPath* pPath, const CString& rev1)
 		if (rev1 != GIT_REV_ZERO) // in ls-files the hash is in the second column; in ls-tree it's in the third one
 			start = output.Find(L' ', start + 1);
 		if(start>0)
-			newhash=output.Mid(start+1, 40);
+			newhash=output.Mid(start + 1, GIT_HASH_SIZE * 2);
 
 		CGit subgit;
 		subgit.m_CurrentDir = g_Git.CombinePath(pPath);
@@ -214,7 +214,7 @@ int CGitDiff::SubmoduleDiff(const CTGitPath* pPath, const CTGitPath* /*pPath2*/,
 			CMessageBox::Show(nullptr, L"Subproject Diff Format error", L"TortoiseGit", MB_OK | MB_ICONERROR);
 			return -1;
 		}
-		oldhash = output.Mid(oldstart + wcslen(L"-Subproject commit") + 1, 40);
+		oldhash = output.Mid(oldstart + wcslen(L"-Subproject commit") + 1, GIT_HASH_SIZE * 2);
 		start = 0;
 		int newstart = output.Find(L"+Subproject commit",start);
 		if (newstart < 0)
@@ -222,8 +222,8 @@ int CGitDiff::SubmoduleDiff(const CTGitPath* pPath, const CTGitPath* /*pPath2*/,
 			CMessageBox::Show(nullptr, L"Subproject Diff Format error", L"TortoiseGit", MB_OK | MB_ICONERROR);
 			return -1;
 		}
-		newhash = output.Mid(newstart + wcslen(L"+Subproject commit") + 1, 40);
-		dirty = output.Mid(newstart + wcslen(L"+Subproject commit") + 41) == L"-dirty\n";
+		newhash = output.Mid(newstart + wcslen(L"+Subproject commit") + 1, GIT_HASH_SIZE * 2);
+		dirty = output.Mid(newstart + wcslen(L"+Subproject commit") + GIT_HASH_SIZE * 2 + 1) == L"-dirty\n";
 	}
 	else
 	{
