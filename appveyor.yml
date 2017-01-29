@@ -7,7 +7,7 @@ init:
 build_script:
 - git submodule update --init -- ext/googletest ext/libgit2 ext/tgit ext/zlib
 - cd ext\libgit2
-- for %%G in (..\libgit2-*.patch) do ( type %%G | git am )
+- for %%G in (..\libgit2-*.patch) do ( type %%G | git am --3way )
 - cd ..\..
 - msbuild "src\TortoiseGit.sln" /t:"test\UnitTests" /m /verbosity:minimal /p:Configuration=Debug /p:PlatformToolset=v120 /p:Platform=x64 /maxcpucount /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 - msbuild "src\TortoiseGit.sln" /t:"test\UnitTests" /m /verbosity:minimal /p:Configuration=Debug /p:PlatformToolset=v120 /p:Platform=Win32 /maxcpucount /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
