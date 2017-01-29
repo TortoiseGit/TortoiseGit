@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2016 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2017 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -114,8 +114,12 @@ bool DropCopyCommand::Execute()
 		}else
 		{
 			CString str;
-			str += L"Copy file fail:";
+			str += L"Copy from \"";
 			str+=sourcePath.GetWinPath();
+			str += L"\" to \"";
+			str += fullDropPath.GetWinPath();
+			str += L"\" failed:\n";
+			str += CFormatMessageWrapper();
 
 			MessageBox(hwndExplorer, str, L"TortoiseGit", MB_OK | MB_ICONERROR);
 		}
