@@ -62,7 +62,7 @@ bool DropMoveCommand::Execute()
 			if (renDlg.DoModal() != IDOK)
 				return FALSE;
 			sNewName = renDlg.m_name;
-		} while(sNewName.IsEmpty() || PathFileExists(droppath + sNewName));
+		} while(PathFileExists(droppath + L'\\' + sNewName));
 	}
 	CSysProgressDlg progress;
 	if (progress.IsValid())

@@ -109,7 +109,7 @@ void CRenameDlg::OnOK()
 	}
 
 	CTGitPath path(m_name);
-	if (!path.IsValidOnWindows())
+	if (!path.IsValidOnWindows() || !PathIsRelative(m_name))
 	{
 		m_bBalloonVisible = true;
 		ShowEditBalloon(IDC_NAME, IDS_WARN_NOVALIDPATH, IDS_ERR_ERROR, TTI_ERROR);

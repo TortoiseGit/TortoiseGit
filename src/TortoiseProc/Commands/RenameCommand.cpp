@@ -45,7 +45,7 @@ bool RenameCommand::Execute()
 			sNewName = basePath + "/" + dlg.m_name;
 		else
 			sNewName = dlg.m_name;
-	} while (PathIsRelative(sNewName) && (sNewName.IsEmpty() || (sNewName.Compare(cmdLinePath.GetGitPathString()) == 0)));
+	} while (sNewName.Compare(cmdLinePath.GetGitPathString()) == 0);
 
 	CString force;
 	// if the filenames only differ in case, we have to pass "-f"

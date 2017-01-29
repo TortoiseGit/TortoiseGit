@@ -49,7 +49,7 @@ bool DropCopyCommand::Execute()
 			if (renDlg.DoModal() != IDOK)
 				return FALSE;
 			sNewName = renDlg.m_name;
-		} while (sNewName.IsEmpty() || PathFileExists(sDroppath + L'\\' + sNewName));
+		} while (PathFileExists(sDroppath + L'\\' + sNewName));
 	}
 	CSysProgressDlg progress;
 	progress.SetTitle(IDS_PROC_COPYING);
