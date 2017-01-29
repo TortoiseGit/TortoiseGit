@@ -312,8 +312,10 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new ResolveCommand;
 	case cmdDropMove:
 		return new DropMoveCommand;
+#if 0
 	case cmdDropCopy:
 		return new DropCopyCommand;
+#endif
 	case cmdDropCopyAdd:
 		return new DropCopyAddCommand;
 	case cmdHelp:
@@ -350,10 +352,12 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new RequestPullCommand;
 	case cmdUpdateCheck:
 		return new UpdateCheckCommand;
+#if 0
 	case cmdPasteCopy:
 		return new PasteCopyCommand;
 	case cmdPasteMove:
 		return new PasteMoveCommand;
+#endif
 	case cmdSVNIgnore:
 		return new SVNIgnoreCommand;
 	case cmdBisect:
