@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 // Copyright (C) 2007-2009 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -81,7 +81,6 @@
 
 #if 0
 #include "CrashCommand.h"
-#include "PropertiesCommand.h"
 #include "RebuildIconCacheCommand.h"
 #include "RemoveCommand.h"
 #include "RevertCommand.h"
@@ -117,7 +116,6 @@ typedef enum
 	cmdPasteCopy,
 	cmdPasteMove,
 	cmdPrevDiff,
-	cmdProperties,
 	cmdPull,
 	cmdPush,
 	cmdRTFM,
@@ -191,7 +189,6 @@ static const struct CommandInfo
 	{	cmdPasteCopy,		L"pastecopy"		},
 	{	cmdPasteMove,		L"pastemove"		},
 	{	cmdPrevDiff,		L"prevdiff"			},
-	{	cmdProperties,		L"properties"		},
 	{	cmdPull,			L"pull"				},
 	{	cmdPush,			L"push"				},
 	{	cmdRTFM,			L"rtfm"				},
@@ -375,8 +372,6 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 #if 0
 	case cmdCrash:
 		return new CrashCommand;
-	case cmdProperties:
-		return new PropertiesCommand;
 	case cmdRTFM:
 		return new RTFMCommand;
 	case cmdRebuildIconCache:
