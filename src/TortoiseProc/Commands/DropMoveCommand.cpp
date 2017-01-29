@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009,2011-2016 - TortoiseGit
+// Copyright (C) 2009, 2011-2017 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -80,6 +80,8 @@ bool DropMoveCommand::Execute()
 			destPath = CTGitPath(droppath + sNewName);
 		if (destPath.Exists())
 		{
+			progress.Stop();
+
 			CString name = pathList[nPath].GetFileOrDirectoryName();
 			if (!sNewName.IsEmpty())
 				name = sNewName;
@@ -89,7 +91,18 @@ bool DropMoveCommand::Execute()
 			dlg.m_windowtitle.Format(IDS_PROC_NEWNAMEMOVE, (LPCTSTR)name);
 			if (dlg.DoModal() != IDOK)
 				return FALSE;
-			destPath.SetFromWin(droppath + dlg.m_name);
+
+			// rebuild the progress dialog
+			progress.EnsureValid();
+			progress.SetTitle(IDS_PROC_MOVING);
+			progress.SetAnimation(IDR_MOVEANI);
+			progress.SetTime(true);
+			progress.SetProgress(count, pathList.GetCount());
+			progress.ShowModeless(CWnd::FromHandle(hwndExplorer));
+
+			// Rebuild the destination path, with the new name
+			destPath.SetFromUnknown(droppath);
+			destPath.AppendPathString(dlg.m_name);
 		}
 		CString cmd,out;
 
