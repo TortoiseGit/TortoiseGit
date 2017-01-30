@@ -61,9 +61,6 @@ p a, p a:hover {
 }
 
 div.navheader {
-	width:100%; filter:none;
-	background-repeat: no-repeat;
-	background-image: url(images/Tortoise.png);
-	background-position: 50px 0;
+	filter:none;
 }
 
