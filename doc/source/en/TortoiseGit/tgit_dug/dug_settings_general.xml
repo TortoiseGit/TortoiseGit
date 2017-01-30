@@ -220,7 +220,7 @@
 		<title>TortoiseGit Dialog Settings</title>
 		<?dbhh topicname="HIDD_SETTINGSDIALOGS"?>
 		<para>
-			<figure id="tgit-dug-settings-dia-dialogs">
+			<figure id="tgit-dug-settings-dia-dialogs-1">
 				<title>The Settings Dialog, Dialogs Page</title>
 				<graphic fileref="../images/SettingsDialog.png"/>
 			</figure>
@@ -410,7 +410,7 @@
 		<title>TortoiseGit Dialog Settings 2</title>
 		<?dbhh topicname="HIDD_SETTINGSDIALOGS2"?>
 		<para>
-			<figure id="tgit-dug-settings-dia-dialogs">
+			<figure id="tgit-dug-settings-dia-dialogs-2">
 				<title>The Settings Dialog, Dialogs Page 2</title>
 				<graphic fileref="../images/SettingsDialog2.png"/>
 			</figure>
@@ -584,7 +584,7 @@
 		<title>TortoiseGit Dialog Settings 3</title>
 		<?dbhh topicname="HIDD_SETTINGSDIALOGS3"?>
 		<para>
-			<figure id="tgit-dug-settings-dia-dialogs">
+			<figure id="tgit-dug-settings-dia-dialogs-3">
 				<title>The Settings Dialog, Dialogs 3 Page</title>
 				<graphic fileref="../images/SettingsDialog3.png"/>
 			</figure>
