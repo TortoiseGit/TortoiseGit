@@ -11,7 +11,7 @@
 	</indexterm>
 	<para>
 		If you want to undo all changes you made in a file since
-		the last update you need to select the file,
+		your last commit you need to select the file,
 		<action>right click</action> to pop up the context menu and then select
 		the command
 		<menuchoice>
@@ -28,7 +28,7 @@
 	</para>
 	<para>
 		If you want to undo a deletion or a rename, you need to use
-		Revert on the parent folder as the deleted item does not
+		Revert on the parent folder (or commit or repository status dialog) as the deleted item does not
 		exist for you to right-click on.
 	</para>
 	<para>
@@ -47,7 +47,7 @@
 		Read <xref linkend="tgit-dug-wcstatus-2"/> for further details.
 	</para>
 	<tip>
-		<title>Undoing Changes which have been Committed</title>
+		<title>Undoing Changes which have been committed</title>
 		<para>
 			<menuchoice>
 				<guimenuitem>Revert</guimenuitem>
@@ -55,7 +55,18 @@
 			will only undo your local changes. It does <emphasis>not</emphasis>
 			undo any changes which have already been committed. If you want to
 			undo all the changes which were committed in a particular revision,
-			read <xref linkend="tgit-dug-showlog"/> for further information.
+			read <xref linkend="tgit-dug-showlog"/> and <xref linkend="tgit-dug-repobrowser"/> for further information.
+		</para>
+	</tip>
+	<tip>
+		<title>Reverting a whole commit</title>
+		<para>
+			If you want to undo a whole commit, then you should use the log dialog and select
+			<menuchoice>
+				<guimenuitem>Revert change by this commit</guimenuitem>
+			</menuchoice>
+			on a revision/commit (cf. <xref linkend="tgit-dug-showlog"/>). Then all changes of this commit are undone and a revert commit is created which need to be committed manually (cf. <xref linkend="git-revert(1)"/>).
+			It is also possible to (hard) reset to a previous commit, then all commits after that are forgotten (cf. <xref linkend="tgit-dug-reset"/>) - this might not be recommended if the changes are already pushed (also see <ulink url="https://stackoverflow.com/q/27032850/3906760">https://stackoverflow.com/q/27032850/3906760</ulink>).
 		</para>
 	</tip>
 	<tip>
@@ -71,4 +82,15 @@
 			in TortoiseGit's settings.
 		</para>
 	</tip>
+	<caution>
+		<title>Revert != "git revert" for files</title>
+		<para>
+			In the TortoiseGit naming a "revert" on a file is comparable to
+			<filename>git checkout HEAD -- filename</filename> (or <filename>git checkout REVISION -- filename</filename>)
+			for resetting a file to it's last (or a specific) committed state. This has nothing to do with <xref linkend="git-revert(1)"/>!
+		</para>
+		<para>
+			<xref linkend="git-revert(1)"/> is only referred to by <guilabel>Revert change by this commit</guilabel> in log dialog (cf. <xref linkend="tgit-dug-showlog"/>).
+		</para>
+	</caution>
 </sect1>

@@ -28,13 +28,13 @@
 		the file appears with a <literal>added</literal> icon overlay which means you
 		first have to commit (and push) your working tree to make those
 		files available to other developers.
-		Adding a file does <emphasis>not</emphasis> affect any remote
+		Just adding a file does <emphasis>not</emphasis> affect any remote
 		repository!
 	</para>
 	<tip>
 		<title>Many Adds</title>
 		<para>
-			You can also use the Add command on already versioned
+			You can also use the Add command on
 			folders. In that case, the add dialog will show you all
 			unversioned files inside that versioned folder.
 			This helps if you have many new files and need to add
@@ -46,7 +46,7 @@
 		<para>
 			Git only tracks content and, thus, cannot version (empty) directories. If you
 			need a directory to be automatically created on checkout, make sure at least one
-			versioned file is in it (e.g. a placeholder file).
+			versioned file is in it (e.g. a placeholder file such as <filename>.gitkeep</filename> or <filename>.gitignore</filename>).
 		</para>
 	</tip>
 	<para>
@@ -74,7 +74,7 @@
 					select
 					<menuchoice>
 						<guimenu>Context Menu</guimenu>
-						<guimenuitem>Git Add files to this WT</guimenuitem>
+						<guimenuitem>Git Add copy and add files</guimenuitem>
 					</menuchoice>.
 					The files will then be copied to the working tree and
 					added to version control.
@@ -82,12 +82,10 @@
 			</listitem>
 		</orderedlist>
 	</para>
-<!--
 	<para>
-		You can also add files within a working copy simply by left-dragging and
+		You can also add files within a working tree simply by (left-)dragging and
 		dropping them onto the commit dialog.
 	</para>
--->
 	<para>
 		If you add a file by mistake, you can undo the addition
 		before you commit using

@@ -10,7 +10,11 @@
         Sometimes you need to see all contents/files of a repository, without having
         a working tree (e.g. a bare repository) or you want to see all files of a revision without switching to it.
         That's what the <firstterm>Repository Browser</firstterm>
-        is for.
+        is for. You can open it using 
+		<menuchoice>
+			<guimenu>TortoiseGit</guimenu>
+			<guimenuitem>Repo-browser</guimenuitem>
+		</menuchoice> or from the log dialog (cf. <xref linkend="tgit-dug-showlog"/>) using the context menu of a commit.
         <figure id="tgit-dug-repobrowser-dia-1">
             <title>The Repository Browser</title>
             <graphic fileref="../images/RepoBrowser.png"/>
@@ -29,6 +33,9 @@
         Just like Windows explorer, you can click on the column headings in
         the right pane if you want to set the sort order. And as in explorer
         there are context menus available in both panes.
+    </para>
+    <para>
+        In order to get an older version of a file you can click on a file and select <guimenuitem>Save revision to</guimenuitem>, but it is also possible to just drag one or more files into a Windows explorer window.
     </para>
     <para>
         The context menu for a file allows you to:

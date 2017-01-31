@@ -7,7 +7,7 @@
 		<primary>Bisect</primary>
 	</indexterm>
 	<para>
-		if you want to find out which revision introduced a bug, you can use the bisect functionality.
+		If you want to find out which revision introduced a bug, you can use the bisect functionality.
 		<action>Right click</action> on a folder to pop up the context menu and then select
 		the command
 		<menuchoice>
@@ -22,7 +22,7 @@
 		Enter the last known good revision and the first or one known bad (this is normally HEAD).
 	</para>
 	<para>
-		After hitting <guibutton>OK</guibutton>, GIT will perform a binary search for the first faulty revision: Git
+		After hitting <guibutton>OK</guibutton>, Git will perform a binary search for the first faulty revision: Git
 		switches to a revision in the middle. Now you can test this revision.
 	</para>
 	<para>
@@ -56,6 +56,12 @@
 			(hard) reset the current HEAD to a revision you like.
 		</para>
 	</tip>
+	<important>
+		<title>Submodules</title>
+		<para>
+			If you use submodule you might need to make sure that those are updated after each bisect step so that all dependencies are up to date.
+		</para>
+	</important>
 	<para>
 		You can find more information at <xref linkend="git-bisect(1)"/>
 	</para>

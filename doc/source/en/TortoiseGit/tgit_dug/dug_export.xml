@@ -10,11 +10,8 @@
 		<primary>unversioned 'working tree'</primary>
 	</indexterm>
 	<para>
-		Sometimes you may want a copy of your working tree without any of
-		those <filename>.git</filename> directories, e.g. to create a zipped
-		tarball of your source, or to export to a web server. Instead of
-		making a copy and then deleting all those <filename>.git</filename>
-		directories manually, TortoiseGit offers the command
+		Sometimes you may want a snapshot of a specific revision/commit, e.g. to create a zipped
+		tarball of your source, or to export to a web server. for this TortoiseGit offers the command
 		<menuchoice>
 			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>Export...</guimenuitem>
@@ -33,7 +30,7 @@
 		<xi:include href="./dug_chooseversion.xml"/>
 	</para>
 	<para>
-		You can find more information at <xref linkend="git-archive(1)"/>
+		You can find more information at <xref linkend="git-archive(1)"/>.
 	</para>
 <!--
 	<para>
@@ -58,22 +55,19 @@
 		an automatically generated name, eg. <literal>Target (1)</literal>.
 	</para>
 -->
-	<!--
 	<tip>
 		<title>Exporting single files</title>
 		<para>
-			The export dialog does not allow exporting single files, even 
-			though Git can.
+			The export dialog does not allow exporting single files.
 		</para>
 		<para>
 			To export single files with TortoiseGit, you have to use
-			the log dialog <xref linkend="tgit-dug-repobrowser"/>).
+			the repository browser (cf. <xref linkend="tgit-dug-repobrowser"/>) or log dialog (cf. <xref linkend="tgit-dug-showlog"/>).
 			Simply drag the file(s) you want to export from the repository
 			browser to where you want them in the explorer, or use the
 			context menu in the repository browser to export the files.
 		</para>
 	</tip>
-	-->
 	<!--
 	<tip>
 		<title>Exporting a Change Tree</title>

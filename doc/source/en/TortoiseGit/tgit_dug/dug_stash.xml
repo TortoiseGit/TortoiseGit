@@ -35,7 +35,17 @@
 		copy to the top of the stack. <guimenuitem>Stash List</guimenuitem> provides an overview of all the whole stash stack. You
 		can also remove and view the stashed changes there (similarly to the <xref linkend="tgit-dug-showlog"/> and <xref linkend="tgit-dug-reflog"/>).
 	</para>
+	<important>
+		<title>Conflicts</title>
+		<para>
+			Although major merge work is done by git automatically applying a stash, a conflict may happen during cherry-picking (i.e., a file was modified in your current branch and also in the stash), 
+			please see <xref linkend="tgit-dug-conflicts"/> on how to resolve conflicts.
+		</para>
+		<para>
+			Please note, that "REMOTE"/"theirs" in the conflict editor refers to the to be merged stash and "LOCAL"/"mine" to your version in the working tree before you applied the stash.
+		</para>
+	</important>
 	<para>
-		You can find more information at <xref linkend="git-stash(1)"/>
+		You can find more information at <xref linkend="git-stash(1)"/>.
 	</para>
 </sect1>

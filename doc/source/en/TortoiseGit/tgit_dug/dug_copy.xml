@@ -60,4 +60,10 @@
 			content to the second repository.
 		</para>
 	</tip>
+	<important>
+		<title>Git only tracks content</title>
+		<para>
+			As Git only tracks content, it is not necessary to explicitly record copies or moves as in version control systems like Subversion. Git automatically detects copies/renames/moves based on the file contents when calculating the log.
+		</para>
+	</important>
 </sect1>

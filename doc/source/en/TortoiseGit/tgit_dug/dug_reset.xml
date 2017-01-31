@@ -8,9 +8,7 @@
 	<?dbhh topicname="HIDD_RESET"?>
 	<?dbhh topicname="HIDD_MERGEABORT"?>
 	<para>
-		 Reset current HEAD to the specified state.
-		Sets the current head to the specified commit and optionally resets the
-index and working tree to match.
+		The reset dialog can be used to reset the current HEAD to the specified state and optionally also the index and the working tree. This can also be used to abort a merge.
 		<figure id="tgit-dug-reset-dia-1">
 			<title>The Reset dialog</title>
 			<graphic fileref="../images/GitReset.png"/>
@@ -21,12 +19,12 @@ index and working tree to match.
 		</figure>
 	</para>
 	<para>
-		In Reset dialog, you can click <guibutton>...</guibutton> to browse git log and choose a specific version.
+		On the Reset dialog, you can click <guibutton>...</guibutton> to browse the log and choose a specific version.
 		In Abort merge dialog, you can only reset to HEAD.
 	</para>
 	<para>
 		<guilabel>Soft: Leave working tree and index untouched</guilabel>
-		Does not touch the index file nor the working tree at all (but resets the head to &lt;commit&gt;, just like all modes do). This leaves all your changed files "Changes to be committed", as git status would put it.
+		Does not touch the index file nor the working tree at all (but resets the head to the selected commit, just like all modes do). This leaves all your changed files "Changes to be committed" as before.
 		This option is not available in Abort Merge dialog.
 	</para>
 	<para>
@@ -36,10 +34,16 @@ index and working tree to match.
 	</para>
 	<para>
 		<guilabel>Hard: Reset working tree and index (discard all local changes)</guilabel>
-		Resets the index and working tree. Any changes to tracked files in the working tree since &lt;commit&gt; are discarded.
+		Resets the index and working tree. Any changes to tracked files in the working tree since the selected commit are discarded.
 		This option can abort a merge, and it is the default action in Abort Merge dialog.
 	</para>
+	<caution>
+		<title>Git hard reset does not use the Windows recycle bin</title>
+		<para>
+			Unlike the revert or clean functions of TortoiseGit, the hard reset does not make use of the Windows recycle bin, i.e., uncommitted changes might get lost!
+		</para>
+	</caution>
 	<para>
-		You can find more information at <xref linkend="git-reset(1)"/>
+		You can find more information at <xref linkend="git-reset(1)"/>.
 	</para>
 </sect1>

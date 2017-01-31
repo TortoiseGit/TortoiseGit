@@ -31,8 +31,8 @@
 			</figure>
 		</para>
 		<para>
-			Now that you have checked out a working tree from a Git
-			repository you can see your files in the windows explorer with
+			Now that you have checked out a working tree
+			you can see your files in the windows explorer with
 			changed icons. This is one of the reasons why TortoiseGit is so
 			popular. TortoiseGit adds a so called overlay icon to each
 			file icon which overlaps the original file icon. Depending on
@@ -96,17 +96,14 @@
 		<para>
 			In fact, you may find that not all of these icons are used on your system.
 			This is because the number of overlays allowed by Windows is very limited
-			and if you are also using an old version of TortoiseCVS, then there are
+			and if you are also using an old version of TortoiseCVS or tools with overlay handlers such as SkyDrive, DropBox or GoogleDrive, then there are
 			not enough overlay slots available.
 			TortoiseGit tries to be a <quote>Good Citizen (TM)</quote>
 			and limits its use of overlays to give other apps a chance too.
 		</para>
 		<para>
-			Now that there are more Tortoise clients around (TortoiseCVS, TortoiseHG, ...)
-			the icon limit becomes a real problem. To work around this, the TortoiseSVN
-			project introduced a common shared icon set, loaded as a DLL, which can be
-			used by all Tortoise clients. Check with your client provider to see if
-			this has been integrated yet :-)
+			If you have problems with overlays, please see the online
+			<ulink url="https://tortoisegit.org/support/faq/#ovlnotshowing"><citetitle>FAQ</citetitle></ulink>.
 		</para>
 		<para>
 			For a description of how icon overlays correspond to Git
@@ -222,12 +219,6 @@
 			Read <xref linkend="tgit-dug-settings-colours"/> for more information.
 		</para>
 		<para>
-			Items which have been switched to a different repository path are
-			also indicated using an <literal>(s)</literal> marker. You may have
-			switched something while working on a branch and forgotten to switch
-			back to trunk. This is your warning sign!
-		</para>
-		<para>
 			From the context menu of the dialog you can show a diff of the
 			changes. Check the local changes <emphasis>you</emphasis> made using
 			<menuchoice>
@@ -275,15 +266,11 @@
 		</para>
 		-->
 		<para>
-			At the bottom of the dialog you can see a summary of the range of repository
-			revisions in use in your working tree. These are the <emphasis>commit</emphasis>
-			revisions, not the <emphasis>update</emphasis> revisions; they represent the
-			range of revisions where these files were last committed, not the revisions
-			to which they have been updated. Note that the revision range shown applies
-			only to the items displayed, not to the entire working tree. If you want to
-			see that information for the whole working tree you must check the
-			<guilabel>Show unmodified files</guilabel> checkbox.
+			At the bottom of the dialog you have several options to select which entries to show (such as ignored or untracked/unversioned files).
+			It is also possible to view all files which were marked as "Assume valid" or "Skip worktree" here (using <guilabel>Show ingore local changes flagged files</guilabel>).
+			Resetting those flags (it's also possible to edit this flag using file properties in explorer on the <guilabel>Git</guilabel> tab).
 		</para>
+<!--
 		<tip>
 			<para>
 				If you want a flat view of your working tree, i.e. showing all files
@@ -294,23 +281,7 @@
 				all files in your working tree.
 			</para>
 		</tip>
-		<!--
-		<tip>
-			<title>Repairing External Renames</title>
-			<para>
-				Sometimes files get renamed outside of Git, and they show up
-				in the file list as a missing file and an unversioned file. To avoid
-				losing the history you need to notify Git about the connection.
-				Simply select both the old name (missing) and the new name (unversioned)
-				and use
-				<menuchoice>
-					<guimenu>Context Menu</guimenu>
-					<guimenuitem>Repair Move</guimenuitem>
-				</menuchoice>
-				to pair the two files as a rename.
-			</para>
-		</tip>
-		-->
+-->
 	</sect2>
 	<sect2 id="tgit-dug-diffing">
 		<title>Viewing Diffs</title>

@@ -13,7 +13,7 @@
 	</indexterm>
 	<?dbhh topicname="HIDD_COMMITDLG"?>
 	<para>
-		Sending the changes you made to your working tree is known as
+		Storing the changes you made to your working tree is known as
 		<firstterm>committing</firstterm> the changes. you can use
 		<menuchoice>
 			<guimenu>TortoiseGit</guimenu>
@@ -45,8 +45,8 @@
 		</para>
 		<para>
 			Default commit dialog just list select paths and their child directory files. 
-			If you want to list all files of project, you can just click <guilabel>
-			Whole Project</guilabel>
+			If you want to list all files of project, you can just click <guibutton>
+			Whole Project</guibutton>.
 		</para>
 		<tip>
 			<title>Many unversioned files in the commit dialog</title>
@@ -55,15 +55,6 @@
 				many unversioned (e.g. compiler generated or editor backup)
 				files, there are several ways to handle this. You can:
 				<itemizedlist>
-					<!--
-					<listitem>
-						<para>
-							add the file (or a wildcard extension)
-							to the list of files to exclude on the settings page.
-							This will affect every working tree you have.
-						</para>
-					</listitem>
-					-->
 					<listitem>
 						<para>
 							add the file to the <literal>.gitignore</literal> list
@@ -115,6 +106,12 @@
 				into the commit dialog, and they will be Git added automatically.
 			</para>
 		</tip>
+		<important>
+			<title>Commits are just local</title>
+			<para>
+				Please note, that all commits are just local and only affect your local working tree. In order to share them with others you need to push them to a remote repository. See <xref linkend="tgit-dug-push"/> and <xref linkend="tgit-dug-sync"/> for more information.
+			</para>
+		</important>
 	</sect2>
 	<!--
 	<sect2 id="tgit-dug-commit-changelists">
@@ -220,7 +217,7 @@
 				<graphic fileref="../images/CommitSpellcheck.png"/>
 			</figure>
 			TortoiseGit includes a spellchecker to help you get your log messages
-			right. This will highlight any mis-spelled words. Use the context menu
+			right (cf. <xref linkend="tgit-intro-instalsl-spell"/>). This will highlight any mis-spelled words. Use the context menu
 			to access the suggested corrections. Of course, it doesn't know
 			<emphasis>every</emphasis> technical term that you do, so correctly
 			spelt words will sometimes show up as errors. But don't worry. You can
@@ -276,7 +273,7 @@
 		</para>
 		<para>
 			You can add your name and email address to the end of the log message by clicking
-			<guibutton>Add Signed-off-by</guibutton>
+			<guibutton>Add Signed-off-by</guibutton>.
 		</para>
 		<para>
 			You can clear all stored commit messages from the <guilabel>Saved data</guilabel>
@@ -321,18 +318,37 @@
 				"Changes made" group box, then drag the separator.
 			</para>
 		</tip>
+		<tip>
+			<title>Commit to a new branch</title>
+			<para>
+				If you want to commit to a fresh branch (based on the current branch), you can check the <guibutton>new branch</guibutton> checkbox and enter a branch name in the displayed textbox.
+			</para>
+		</tip>
+		<tip>
+			<title>Commit multiple times in a row and directly pushing changes</title>
+			<para>
+				The main button <guibutton>Commit</guibutton> has a drop-down menu.
+				There are the options <guimenuitem>ReCommit</guimenuitem> and <guimenuitem>Commit &amp; push</guimenuitem>.
+				The option <guimenuitem>ReCommit</guimenuitem> commits your changes and leaves the Commit dialog open, so that you can continue committing.
+				The last option <guimenuitem>Commit &amp; push</guimenuitem> will commit your changes and immediately push your changes.
+				If no remote tracking branch is configured for the current active branch, the push dialolg (cf. <xref linkend="tgit-dug-push"/>) is opened.
+			</para>
+		</tip>
 	</sect2>
-	<!--
 	<sect2 id="tgit-dug-commit-progress">
 		<title>Commit Progress</title>
 		<para>
-			After pressing <guibutton>OK</guibutton>, a dialog appears displaying
+			After pressing <guibutton>Commit</guibutton>, a dialog appears displaying
 			the progress of the commit.
 			<figure id="tgit-dug-commit-dia-3">
 				<title>The Progress dialog showing a commit in progress</title>
 				<graphic fileref="../images/CommitProgress.png"/>
 			</figure>
 		</para>
+		<para>
+			In the lower left, there is a menu button which provides shortcuts to further steps, such as <guimenuitem>ReCommit</guimenuitem> (resets the commit dialog and allows you to continue committing) or <guimenuitem>Push</guimenuitem> in order to push your commit to a remote repository.
+		</para>
+<!--
 		<para>
 			The progress dialog uses colour coding to highlight different
 			commit actions
@@ -376,9 +392,9 @@
 			using the settings dialog.
 			Read <xref linkend="tgit-dug-settings-colours"/> for more information.
 		</para>
+-->
 	</sect2>
-	-->
 	<para>
-		You can find more information at <xref linkend="git-commit(1)"/>
+		You can find more information at <xref linkend="git-commit(1)"/>.
 	</para>
 </sect1>

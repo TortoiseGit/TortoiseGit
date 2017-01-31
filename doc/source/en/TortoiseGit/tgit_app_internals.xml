@@ -17,7 +17,7 @@
 			<primary>overlays</primary>
 		</indexterm>
 		<para>
-			Every file and folder has a Git status value as reported
+			Every file has a Git status value as reported
 			by the Git library. In the command line client, these
 			are represented by single letter codes, but in TortoiseGit they
 			are shown graphically using the icon overlays. Because the number
@@ -28,27 +28,21 @@
 			<graphic fileref="images/ConflictIcon.png"/>
 			The <emphasis>Conflicted</emphasis> overlay is used to
 			represent the <literal>conflicted</literal> state, where
-			an update or switch results in conflicts between local
-			changes and changes downloaded from the repository. It is
-			also used to indicate the <literal>obstructed</literal> state,
-			which can occur when an operation is unable to complete.
+			a merge resulted in conflicts between the
+			changes of the current and changes from another branch.
 		</para>
 		<para>
 			<graphic fileref="images/ModifiedIcon.png"/>
 			The <emphasis>Modified</emphasis> overlay represents the
 			<literal>modified</literal> state, where you have made
-			local modifications, the <literal>merged</literal> state,
-			where changes from the repository have been merged with
-			local changes, and the <literal>replaced</literal> state,
-			where a file has been deleted and replaced by another
-			different file with the same name.
+			local modifications to your working tree.
 		</para>
 		<para>
 			<graphic fileref="images/DeletedIcon.png"/>
 			The <emphasis>Deleted</emphasis> overlay represents the
 			<literal>deleted</literal> state, where an item is scheduled for
 			deletion, or the <literal>missing</literal> state, where an
-			item is not present. Naturally an item which is missing cannot have
+			item is not present but still in the Git index. Naturally an item which is missing cannot have
 			an overlay itself, but the parent folder can be marked if one of its
 			child items is missing.
 		</para>
@@ -62,10 +56,11 @@
 			<graphic fileref="images/InGitIcon.png"/>
 			The <emphasis>In Git</emphasis> overlay is used to
 			represent an item which is in the <literal>normal</literal>
-			state, or a versioned item whose state is not yet known.
+			state.
+			<!--, or a versioned item whose state is not yet known.
 			Because TortoiseGit uses a background caching process to
 			gather status, it may take a few seconds before the overlay
-			updates.
+			updates.-->
 		</para>
 		<para>
 			<graphic fileref="images/ReadOnlyIcon.png"/>
@@ -126,6 +121,10 @@
 			slots available, TortoiseGit tries to be a
 			<emphasis>Good Citizen (TM)</emphasis> and limits its use of overlays to
 			give other apps a chance.
+		</para>
+		<para>
+			If you have problems with overlays, please see the online
+			<ulink url="https://tortoisegit.org/support/faq/#ovlnotshowing"><citetitle>FAQ</citetitle></ulink>.
 		</para>
 		<para>
 			Since there are Tortoise clients available for other version control
