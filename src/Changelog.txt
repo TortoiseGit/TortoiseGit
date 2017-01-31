@@ -1,8 +1,8 @@
 ﻿= Release 2.4.0 =
-Released: unreleased
+Released: 2017-01-31
 
 == Major change ==
-* TGitCache and icon overlays now work case sensitive
+* TGitCache and icon overlays are case sensitive now
 
 == Features ==
  * Fixed issue #2505: Add support for bisect skip
@@ -23,20 +23,20 @@ Released: unreleased
  * Update libgit2 to 0.25.1
  * The shipped libgit2 uses the CrLf filter logic from Git >= 2.9
  * Fixed issue #2863: Increase text box size limit for command progress dialog and make it configurable
- * Fixed issue #2274 and issue #2750 : Add advanced option for controlling which date/time is used for squashed commits (setting: SquashDate)
+ * Fixed issue #2274 and issue #2750: Add advanced option for controlling which date/time is used for squashed commits (setting: SquashDate)
    1: Use date of last commit, 2: Use current date, 0: Use time of first commit into which others are squashed (default)
  * Fixed issue #2633: Check for Modifications dialog doesn't refresh after commit
  * Fixed issue #1656: Add "dcommit" to change sets in "log messages"
- * Fixed issue #2741: TortoiseGitBlame: Allow to limit blame on first parents (i.e., handle merge commits as squashed commits)
+ * Fixed issue #2741: TortoiseGitBlame: Allow to limit blame on first parents
  * Fixed issue #2826: Highlight commit to which the parent repo points to in the log for submodules (named: super-project-pointer)
  * Added a first start wizard which can be re-run from TortoiseGit settings
  * Fixed issue #2593: Hitting escape closes the commit window without any attention message
  * Fixed issue #2702: File selection dialog should not open for Add if only files are selected
  * Fixed issue #1749: Create Patch Serial: Remember "Since" branch
- * Fixed issue #2264: Insert new items into interactive rebase process
+ * Fixed issue #2264: Insert new items into interactive rebase and cherry-pick process
  * Fixed issue #2456: Allow to compare change sets in log
  * Updated libgit to 2.11
- * Updated pcre to 8.40-RC1
+ * Updated pcre to 8.40
  * Several high DPI optimizations
  * Fixed issue #2889: TortoiseGitMerge: Show inline diffs in one-pane-view mode as well, at least for single line changes
  * Fixed issue #2894: Enable/disable check boxes for hook scripts
@@ -47,7 +47,7 @@ Released: unreleased
  * Fixed issue #2210: Do not allow merging from the current branch to the current branch
 
 == Bug Fixes ==
- * Fixed issue #2837: Layout of overlapping icons settings dialog
+ * Fixed issue #2837: Fixed layout issues on settings dialog
  * Fixed issue #2839: The dialog "check for updates" has a resize issue
  * Fixed issue #2845: Sticky button when resizing the "Rename dialog"
  * Fixed issue #2846: Spell checker won't add unknown words to dictionary. The dictionaries are now saved as UTF-8. 
@@ -65,14 +65,14 @@ Released: unreleased
  * Fixed issue #2859: Cannot clone URLs which contain non-ASCII chars with Git for Windows 2.10.1 and 2.10.2
  * Fixed issue #2872: Rebase local/remote reversed for tree conflicts (delete/modify conflicts)
  * Fixed issue #2491: Optimize way for creating temporary files in order to improve compatibility with certain backup softwares
- * Fixed issue #2875: Mistake in settings hint text
+ * Fixed issue #2875: Fixed error in settings hint text
  * Fixed issue #2878: SplitContainer redraw issues in Cherry Pick dialog
  * Fixed issue #2877: Git fetch all with rebase might produce error
- * Fixed issue #2874: Horizontal scroll reversed in tortoiseGitMerge
+ * Fixed issue #2874: Horizontal scroll reversed in TortoiseGitMerge
  * When showing an autocompletion list, don't bail out if one is already shown but just update it
  * Fixed issue #2887: ListView flickering in Browse References dialog
  * Fixed issue #2891: "Show log" on a repo with 200k files is extremely slow due to each file attributes being queried individually
-   This also improves submodule support as we rely on the directory/file information we got from git
+   This also improves submodule support as we rely on the directory/file information we got from git now.
  * Fixed issue #2896: Blame revisions ListView selection and flickering issues
  * Fixed issue #2883: Improve wording for our "needs merge" hint in commit dialog
  * Fixed issue #2898: Branch name forced to be lower what leads to pull error
