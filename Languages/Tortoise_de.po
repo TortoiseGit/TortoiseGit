@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2016-09-04 13:42+0000\n"
+"PO-Revision-Date: 2016-12-29 16:18+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: German (http://www.transifex.com/lznuaa/tortoisegit/language/de/)\n"
 "MIME-Version: 1.0\n"
@@ -343,7 +343,8 @@ msgstr "Ü&ber TortoiseGitMerge..."
 msgid "&Activate"
 msgstr "&Aktivieren"
 
-#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1382)
+#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1382, Dialog
+#. IDD_REBASE: Control id 1382)
 msgid "&Add"
 msgstr "&Hinzufügen"
 
@@ -372,7 +373,8 @@ msgstr "&Schaltflächen hinzufügen oder entfernen"
 msgid "&Add..."
 msgstr "&Hinzufügen..."
 
-#. Resource IDs: (Dialog IDD_SETTINGSPROGSDIFF: Control id 1090, Dialog
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_AUTHENTICATION: Control id 1845,
+#. Dialog IDD_SETTINGSPROGSDIFF: Control id 1090, Dialog
 #. IDD_SETTINGSPROGSMERGE: Control id 1093)
 msgid "&Advanced..."
 msgstr "&Erweitert..."
@@ -560,6 +562,11 @@ msgstr "&Kopiere Schaltflächenbild"
 msgid "&Copy\tCtrl+C"
 msgstr "&Kopieren\tCtrl+C"
 
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_AUTHENTICATION: Control id
+#. 65535)
+msgid "&Credential helper:"
+msgstr "&Credential helper:"
+
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 1662)
 msgid "&Custom"
 msgstr "&Individuell"
@@ -629,6 +636,11 @@ msgstr "&Nicht erneut nachfragen"
 msgid "&Don't show this message again"
 msgstr "&Diese Meldung nicht wieder anzeigen"
 
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_AUTHENTICATION: Control id 1839,
+#. Dialog IDD_FIRSTSTARTWIZARD_USER: Control id 1839)
+msgid "&Don't store these settings now."
+msgstr "&Diese Werte jetzt nicht speichern."
+
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1384)
 msgid "&Down"
 msgstr "&Runter"
@@ -670,9 +682,15 @@ msgstr "Eintragung &bearbeiten/aufspalten"
 msgid "&Email Patch"
 msgstr "Patch mailen"
 
-#. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 65535)
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_USER: Control id 65535, Dialog
+#. IDD_SETTINGIT_CONFIG: Control id 65535)
 msgid "&Email:"
 msgstr "&E-Mail:"
+
+#. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQADV: Control id 1023, Dialog
+#. IDD_SETTINGSHOOKCONFIG: Control id 1023)
+msgid "&Enable"
+msgstr "&Aktivieren"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROXY: Control id 1023)
 msgid "&Enable Proxy Server"
@@ -694,6 +712,11 @@ msgstr "&Exportiere Auswahl in..."
 #. IDD_SETTINGSPROGSMERGE: Control id 1095)
 msgid "&External"
 msgstr "&Extern"
+
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 65535, Dialog
+#. IDD_SETTINGSMAIN: Control id 65535)
+msgid "&Extra PATH:"
+msgstr "&Extra PATH:"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "&File"
@@ -748,9 +771,18 @@ msgstr "Neuaufbau er&zwingen"
 msgid "&From:"
 msgstr "Von:"
 
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_AUTHENTICATION: Control id 1844)
+msgid "&Generate PuTTY  key pair"
+msgstr "PuTTY Schlüsselpaar &generieren"
+
 #. Resource IDs: (Dialog IDD_SVNDCOMMITTYPE: Control id 2153)
 msgid "&Git Style Commit (--rmdir)"
 msgstr "&Git ähnliches Eintragen (--rmdir)"
+
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 65535, Dialog
+#. IDD_SETTINGSMAIN: Control id 65535)
+msgid "&Git.exe Path:"
+msgstr "&Git.exe Pfad:"
 
 #. Resource IDs: (ID_EDIT_GOTO - Menu)
 msgid "&Go to\tCtrl+G"
@@ -851,7 +883,8 @@ msgstr "Aktuellen Status &beibehalten"
 msgid "&Labels"
 msgstr "&Beschriftungen"
 
-#. Resource IDs: (Dialog IDD_SETTINGSMAIN: Control id 65535)
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_LANGUAGE: Control id 65535,
+#. Dialog IDD_SETTINGSMAIN: Control id 65535)
 msgid "&Language:"
 msgstr "&Sprache:"
 
@@ -921,6 +954,10 @@ msgstr "&Menüinhalte:"
 msgid "&Merge"
 msgstr "&Zusammenführen"
 
+#. Resource IDs: (IDS_MERGE_UNRELATED)
+msgid "&Merge unrelated history"
+msgstr "Führe &zusammen, trotz unzusammenhängede Geschichte"
+
 #. Resource IDs: (IDS_MENUMERGE)
 msgid "&Merge..."
 msgstr "&Zusammenführen..."
@@ -954,7 +991,8 @@ msgstr "&Verschobene Blöcke"
 msgid "&Name"
 msgstr "&Name"
 
-#. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 65535)
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_USER: Control id 65535, Dialog
+#. IDD_SETTINGIT_CONFIG: Control id 65535)
 msgid "&Name:"
 msgstr "&Name:"
 
@@ -1100,10 +1138,6 @@ msgstr "E&rneut eintragen"
 #. Resource IDs: (IDS_REBASEBUTTON)
 msgid "&Rebase"
 msgstr "&Neu aufbauen"
-
-#. Resource IDs: (Dialog IDD_INPUTLOGDLG: Control id 1246)
-msgid "&Recent messages"
-msgstr "&Letzte-Meldungen"
 
 #. Resource IDs: (Dialog IDD_SUBMODULE_UPDATE: Control id 1694)
 msgid "&Recursive"
@@ -1399,7 +1433,7 @@ msgstr "&Standard-Diff"
 msgid "&Unknown drives"
 msgstr "&Unbekannte Laufwerke"
 
-#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1383)
+#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1386)
 msgid "&Up"
 msgstr "&Hoch"
 
@@ -1518,20 +1552,20 @@ msgstr "------------------------------------------------------------------------
 #. Resource IDs: (Dialog IDD_BISECTSTART: Control id 1383, Dialog
 #. IDD_BISECTSTART: Control id 1672, Dialog IDD_CLONE: Control id 1384, Dialog
 #. IDD_EXPORT: Control id 1036, Dialog IDD_EXPORT: Control id 1382, Dialog
-#. IDD_EXPORT: Control id 1483, Dialog IDD_FORMAT_PATCH: Control id 1383,
-#. Dialog IDD_FORMAT_PATCH: Control id 1384, Dialog IDD_FORMAT_PATCH: Control
-#. id 1541, Dialog IDD_FORMAT_PATCH: Control id 1542, Dialog IDD_GITSWITCH:
-#. Control id 1382, Dialog IDD_GITSWITCH: Control id 1483, Dialog IDD_MERGE:
-#. Control id 1382, Dialog IDD_MERGE: Control id 1483, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 1382, Dialog IDD_NEW_BRANCH_TAG: Control id
-#. 1483, Dialog IDD_OPEN: Control id 1002, Dialog IDD_OPEN: Control id 1003,
-#. Dialog IDD_PULLFETCH: Control id 1483, Dialog IDD_PUSH: Control id 1484,
-#. Dialog IDD_REBASE: Control id 1483, Dialog IDD_REQUESTPULL: Control id
-#. 1382, Dialog IDD_RESET: Control id 1382, Dialog IDD_RESET: Control id 1483,
-#. Dialog IDD_SETTINGSBUGTRAQADV: Control id 1474, Dialog
-#. IDD_SETTINGSDIALOGS3: Control id 1778, Dialog IDD_SETTINGSHOOKCONFIG:
-#. Control id 1324, Dialog IDD_SETTINGSHOOKCONFIG: Control id 1333, Dialog
-#. IDD_SETTINGSMAIN: Control id 1551, Dialog
+#. IDD_EXPORT: Control id 1483, Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id
+#. 1551, Dialog IDD_FORMAT_PATCH: Control id 1383, Dialog IDD_FORMAT_PATCH:
+#. Control id 1384, Dialog IDD_FORMAT_PATCH: Control id 1541, Dialog
+#. IDD_FORMAT_PATCH: Control id 1542, Dialog IDD_GITSWITCH: Control id 1382,
+#. Dialog IDD_GITSWITCH: Control id 1483, Dialog IDD_MERGE: Control id 1382,
+#. Dialog IDD_MERGE: Control id 1483, Dialog IDD_NEW_BRANCH_TAG: Control id
+#. 1382, Dialog IDD_NEW_BRANCH_TAG: Control id 1483, Dialog IDD_OPEN: Control
+#. id 1002, Dialog IDD_OPEN: Control id 1003, Dialog IDD_PULLFETCH: Control id
+#. 1483, Dialog IDD_PUSH: Control id 1484, Dialog IDD_REBASE: Control id 1483,
+#. Dialog IDD_REQUESTPULL: Control id 1382, Dialog IDD_RESET: Control id 1382,
+#. Dialog IDD_RESET: Control id 1483, Dialog IDD_SETTINGSBUGTRAQADV: Control
+#. id 1474, Dialog IDD_SETTINGSDIALOGS3: Control id 1778, Dialog
+#. IDD_SETTINGSHOOKCONFIG: Control id 1324, Dialog IDD_SETTINGSHOOKCONFIG:
+#. Control id 1333, Dialog IDD_SETTINGSMAIN: Control id 1551, Dialog
 #. IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 1664, Dialog
 #. IDD_SETTINGSPROGSDIFF: Control id 1021, Dialog IDD_SETTINGSPROGSDIFF:
 #. Control id 1089, Dialog IDD_SETTINGSPROGSMERGE: Control id 1022, Dialog
@@ -1647,8 +1681,9 @@ msgstr "Eine neue Version ist verfügbar. Bitte laden Sie die aktuelle Version h
 #. Resource IDs: (IDS_SETTINGS_INCLUDELIST_TT)
 msgid ""
 "A newline separated list of paths for which icon overlays are shown.\n"
-"If you add an '*' char at the end of a path, then all files and subdirs inside that path are included too."
-msgstr "Eine durch Zeilenumbrüche getrennte Liste von Pfaden, für die überlagerte Symbole angezeigt werden.\nWenn Sie ein '*' Zeichen an einen Pfad anhängen, werden alle Dateien und Ordner innerhalb des Pfades eingeschlossen."
+"If you add an '?' char at the end of a path, then only this path will be included.\n"
+"If you add an '*' or no char at all at the end of a path, then all files and subdirs inside that path are included too."
+msgstr "Eine durch Zeilenumbrüche getrennte Liste von Pfaden, für die überlagerte Symbole angezeigt werden.\nWenn Sie ein '?' Zeichen an einen Pfad anhängen, wird nur dieser Pfad eingeschlossen.\nWenn Sie ein '*' oder gar kein Zeichen an einen Pfad anhängen, werden alle Dateien und Ordner innerhalb des Pfades eingeschlossen."
 
 #. Resource IDs: (IDS_SETTINGS_EXCLUDECONTEXTLIST_TT)
 msgid ""
@@ -1660,9 +1695,10 @@ msgstr "Eine durch Zeilenumbrüche getrennte Liste von Pfaden, für die kein Kon
 #. Resource IDs: (IDS_SETTINGS_EXCLUDELIST_TT)
 msgid ""
 "A newline separated list of paths for which no icon overlays are shown.\n"
-"If you add an '*' char at the end of a path, then all files and subdirs inside that path are excluded too.\n"
+"If you add an '?' char at the end of a path, then only this path will be excluded.\n"
+"If you add an '*' or no char at all at the end of a path, then all files and subdirs inside that path are excluded too.\n"
 "An empty list will allow overlays on all paths."
-msgstr "Eine durch Zeilenumbrüche getrennte Liste von Pfaden, für die keine überlagerten Symbole angezeigt werden.\nWenn Sie ein '*' Zeichen an einen Pfad anhängen, werden alle Dateien und Ordner innerhalb des Pfades ausgeschlossen."
+msgstr "Eine durch Zeilenumbrüche getrennte Liste von Pfaden, für die keine überlagerten Symbole angezeigt werden.\nWenn Sie ein '?' Zeichen an einen Pfad anhängen, wird nur dieser Pfad ausgeschlossen.\nWenn Sie ein '*' oder gar kein Zeichen an einen Pfad anhängen, werden alle Dateien und Ordner innerhalb des Pfades ausgeschlossen.\nEine leere Liste lässt überlagerte Symbole für alle Pfade zu."
 
 #. Resource IDs: (61474)
 msgid "A required resource was unavailable."
@@ -2095,6 +2131,10 @@ msgstr "Sind Sie sicher, dass Sie die Spalten zurücksetzen möchten?"
 msgid "Are you sure you want to abort the rebase process?"
 msgstr "Sind Sie sicher, dass Sie das neu Aufbauen abbrechen möchten?"
 
+#. Resource IDs: (IDS_REALLYCANCEL)
+msgid "Are you sure you want to cancel?"
+msgstr "Sind Sie sicher, dass Sie abbrechen möchten?"
+
 #. Resource IDs: (IDS_PROC_RESOLVE)
 msgid "Are you sure you want to mark the conflicted file(s) as resolved?"
 msgstr "Sind Sie sicher, dass Sie den Konflikt aufgelöst haben?"
@@ -2184,6 +2224,10 @@ msgstr "Achtung: Dieser Befehl betrifft den gesamten Arbeitsbaum!"
 #. Control id 160)
 msgid "Authentication"
 msgstr "Anmeldung"
+
+#. Resource IDs: (IDS_FIRSTSTART_AUTHENTICATIONTITLE)
+msgid "Authentication and credential store"
+msgstr "Authentifizierung und Anmeldeinformationen speichern"
 
 #. Resource IDs: (Dialog IDD_SETTINGSSAVEDDATA: Control id 1278)
 msgid "Authentication data"
@@ -2290,7 +2334,8 @@ msgstr "S&uchen..."
 msgid "Back"
 msgstr "Zurück"
 
-#. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 65535)
+#. Resource IDs: (Dialog IDD_SETCOLORPAGE: Control id 65535, Dialog
+#. IDD_SETTINGSUDIFF: Control id 65535)
 msgid "Background"
 msgstr "Hintergrund"
 
@@ -2342,6 +2387,10 @@ msgstr "Bisect Gut"
 #. Resource IDs: (IDS_MENUBISECTRESET)
 msgid "Bisect reset"
 msgstr "Bisect Reset"
+
+#. Resource IDs: (IDS_MENUBISECTSKIP)
+msgid "Bisect skip"
+msgstr "Bisect übergehen"
 
 #. Resource IDs: (Dialog IDD_BISECTSTART: Control id 4574,
 #. IDS_MENUBISECTSTART)
@@ -2510,8 +2559,16 @@ msgstr "Button1"
 msgid "Button3"
 msgstr "Button3"
 
-#. Resource IDs: (Dialog IDD_SETTINGSMAIN: Control id 1215, Dialog
-#. IDD_SETTINGSMAIN: Control id 1216)
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_AUTHENTICATION: Control id
+#. 65535)
+msgid ""
+"By default Git does not save/cache credentials. However, you can configure a"
+" credential helper (recommended) or manually use %HOME%/_netrc."
+msgstr "Standardmäßig speichert Git keine Anmeldeinformationen. Sie können jedoch einen sog. \"Credential helper\" einrichten (empfohlen) oder manuell %HOME%/_netrc benutzen."
+
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 1216, Dialog
+#. IDD_SETTINGSMAIN: Control id 1215, Dialog IDD_SETTINGSMAIN: Control id
+#. 1216)
 msgid "C&heck now"
 msgstr "&Jetzt prüfen"
 
@@ -2546,6 +2603,11 @@ msgstr "Kopie (CC):"
 #. Resource IDs: (Dialog IDD_STATGRAPH: Control id 1741)
 msgid "Calculate"
 msgstr "Berechnen"
+
+#. Resource IDs: (IDS_ERR_GITCALLFAILED)
+#, c-format
+msgid "Calling git.exe failed (exit code: %d). Please check the git.exe path."
+msgstr "Der Aufruf von git.exe schlug fehl (Errorcode: %d). Bitte prüfen Sie den git.exe Pfad."
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1127)
 msgid "Can double-click in log list to compare with previous revision"
@@ -2591,25 +2653,25 @@ msgstr "Kann das Bild aus der Zwischenablage nicht einfügen!"
 #. IDD_GITSWITCH: Control id 2, Dialog IDD_GOTO: Control id 2, Dialog
 #. IDD_GOTODLG: Control id 2, Dialog IDD_HISTORYDLG: Control id 2, Dialog
 #. IDD_IGNORE: Control id 2, Dialog IDD_INPUTDLG: Control id 2, Dialog
-#. IDD_INPUTLOGDLG: Control id 2, Dialog IDD_LOGMESSAGE: Control id 2, Dialog
-#. IDD_LOGORDERING: Control id 2, Dialog IDD_MERGE: Control id 2, Dialog
-#. IDD_MERGEABORT: Control id 2, Dialog IDD_NEW_BRANCH_TAG: Control id 2,
-#. Dialog IDD_OPEN: Control id 2, Dialog IDD_OPENDLG: Control id 2, Dialog
-#. IDD_PROMPT: Control id 2, Dialog IDD_PULLFETCH: Control id 2, Dialog
-#. IDD_PUSH: Control id 2, Dialog IDD_REFLOG: Control id 2, Dialog
-#. IDD_REGEXFILTER: Control id 2, Dialog IDD_REGEXFILTERS: Control id 2,
-#. Dialog IDD_RENAME: Control id 2, Dialog IDD_REPOSITORY_BROWSER: Control id
-#. 2, Dialog IDD_REQUESTPULL: Control id 2, Dialog IDD_RESET: Control id 2,
-#. Dialog IDD_RESOLVE: Control id 2, Dialog IDD_REVERT: Control id 2, Dialog
-#. IDD_REVGRAPHFILTER: Control id 2, Dialog IDD_SENDMAIL: Control id 2, Dialog
-#. IDD_SETTINGSBUGTRAQADV: Control id 2, Dialog IDD_SETTINGSHOOKCONFIG:
-#. Control id 2, Dialog IDD_SETTINGSPROGSADV: Control id 2, Dialog
-#. IDD_SIMPLEPROMPT: Control id 2, Dialog IDD_STASH: Control id 2, Dialog
-#. IDD_SUBMODULE_ADD: Control id 2, Dialog IDD_SUBMODULE_UPDATE: Control id 2,
-#. Dialog IDD_SVNDCOMMITTYPE: Control id 2, Dialog IDD_SVNIGNORE: Control id
-#. 2, Dialog IDD_SVNPROGRESS: Control id 2, Dialog IDD_TOOLASSOC: Control id
-#. 2, Dialog IDD_URL: Control id 2, Dialog IDD_USER_PASSWD: Control id 2,
-#. IDS_MSGBOX_CANCEL, IDS_PROC_OVERWRITEEXPORT_CANCEL)
+#. IDD_LOGMESSAGE: Control id 2, Dialog IDD_LOGORDERING: Control id 2, Dialog
+#. IDD_MERGE: Control id 2, Dialog IDD_MERGEABORT: Control id 2, Dialog
+#. IDD_NEW_BRANCH_TAG: Control id 2, Dialog IDD_OPEN: Control id 2, Dialog
+#. IDD_OPENDLG: Control id 2, Dialog IDD_PROMPT: Control id 2, Dialog
+#. IDD_PULLFETCH: Control id 2, Dialog IDD_PUSH: Control id 2, Dialog
+#. IDD_REFLOG: Control id 2, Dialog IDD_REGEXFILTER: Control id 2, Dialog
+#. IDD_REGEXFILTERS: Control id 2, Dialog IDD_RENAME: Control id 2, Dialog
+#. IDD_REPOSITORY_BROWSER: Control id 2, Dialog IDD_REQUESTPULL: Control id 2,
+#. Dialog IDD_RESET: Control id 2, Dialog IDD_RESOLVE: Control id 2, Dialog
+#. IDD_REVERT: Control id 2, Dialog IDD_REVGRAPHFILTER: Control id 2, Dialog
+#. IDD_SENDMAIL: Control id 2, Dialog IDD_SETTINGSBUGTRAQADV: Control id 2,
+#. Dialog IDD_SETTINGSHOOKCONFIG: Control id 2, Dialog IDD_SETTINGSPROGSADV:
+#. Control id 2, Dialog IDD_SIMPLEPROMPT: Control id 2, Dialog IDD_STASH:
+#. Control id 2, Dialog IDD_SUBMODULE_ADD: Control id 2, Dialog
+#. IDD_SUBMODULE_UPDATE: Control id 2, Dialog IDD_SVNDCOMMITTYPE: Control id
+#. 2, Dialog IDD_SVNIGNORE: Control id 2, Dialog IDD_SVNPROGRESS: Control id
+#. 2, Dialog IDD_TOOLASSOC: Control id 2, Dialog IDD_URL: Control id 2, Dialog
+#. IDD_USER_PASSWD: Control id 2, IDS_MSGBOX_CANCEL,
+#. IDS_PROC_OVERWRITEEXPORT_CANCEL)
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -2800,6 +2862,10 @@ msgstr "Auf Aktualisierungen prüfen..."
 msgid "Check for modi&fications"
 msgstr "&Prüfe auf Änderungen"
 
+#. Resource IDs: (IDS_SEEMANUALGITEXEPATH)
+msgid "Check out the help file for \"Git.exe Path\"."
+msgstr "Bitte konsultieren Sie die Hilfe für \"Git.exe Path\"."
+
 #. Resource IDs: (IDS_SVNERR_CHECKPATHORURL)
 msgid "Check the path and/or URL you've entered."
 msgstr "Überprüfen Sie den eingegebenen Pfad und/oder die URL."
@@ -2813,8 +2879,8 @@ msgstr "Wählen Sie die Einträge, die im Windows Kontextmenü anstelle des Tort
 #. Resource IDs: (IDS_SETTINGS_EXTMENULAYOUT_TT)
 msgid ""
 "Check those menu entries you want to appear only in the extended context "
-"menu (SHIFT + left click)"
-msgstr "Wählen Sie die Menüeinträge, die nur im erweiteren Kontextmenü (SHIFT+Linksklick) erscheinen sollen"
+"menu (SHIFT + right click)"
+msgstr "Wählen Sie die Menüeinträge, die nur im erweiteren Kontextmenü (SHIFT+Rechtsklick) erscheinen sollen"
 
 #. Resource IDs: (IDS_SETTINGS_RELATIVETIMES_TT)
 msgid "Check to show relative times in log messages"
@@ -3204,6 +3270,10 @@ msgstr "Üblicher Name"
 msgid "Compare &HEAD revisions"
 msgstr "&HEAD Revisionen vergleichen"
 
+#. Resource IDs: (IDS_LOG_POPUP_COMPARECHANGESET)
+msgid "Compare change sets"
+msgstr "Vergleiche Change-Sets"
+
 #. Resource IDs: (IDS_PROC_BROWSEREFS_COMPAREREFS)
 msgid "Compare selected refs"
 msgstr "Ausgewählte Referenzen vergleichen"
@@ -3282,6 +3352,10 @@ msgid ""
 "endings."
 msgstr "Alternativen Editor einrichten. Möglichst einer, der mit *nix-Zeilenenden klarkommt."
 
+#. Resource IDs: (IDS_FIRSTSTART_GITTITLE)
+msgid "Configure git.exe"
+msgstr "Git.exe einrichten"
+
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSDIFF: Control id 65535)
 msgid "Configure the program used for comparing different revisions of files"
 msgstr "Vergleichen verschiedener Dateirevisionen"
@@ -3289,6 +3363,10 @@ msgstr "Vergleichen verschiedener Dateirevisionen"
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSMERGE: Control id 65535)
 msgid "Configure the program used to resolve conflicted files."
 msgstr "Auflösen von Konflikten"
+
+#. Resource IDs: (IDS_FIRSTSTART_USERTITLE)
+msgid "Configure user information"
+msgstr "Benutzerdaten einrichten"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSDIFF: Control id 65535)
 msgid "Configure viewer program for GNU diff files (patch files)"
@@ -3472,6 +3550,20 @@ msgstr "Konnte die letzte eingetragene Revision nicht ermitteln!"
 msgid "Could not find Super-project"
 msgstr "Konnte übergeordnetes Projekt nicht finden"
 
+#. Resource IDs: (IDS_ERR_GITNEEDHACKS)
+msgid ""
+"Could not find \"msysgit\" or \"windows\" in versionstring of git.exe.\n"
+"If you are using git of the cygwin or msys2 environment you need to enable special hacks.\n"
+"For more information see the help file for the keyword \"cygwin git\" or \"msys2 git\"."
+msgstr "\"msysgit\" oder \"windows\" konnten nicht in der Versionsausgabe von git.exe gefunden werden.\nSollten Sie git aus der Cygwin- oder Msys2-Umgebung nutzen, sind spezielle Hacks notwendig.\nFür mehr Informationen konsultieren Sie bitte die Hilfe unter dem Stichwort \"cygwin git\" or \"msys2 git\"."
+
+#. Resource IDs: (IDS_ERR_GITNOVALIDOUTPUT)
+#, c-format
+msgid ""
+"Could not get read version information from git.exe.\n"
+"Got: \"%s\""
+msgstr "Konnte keine Versioninformationen von git.exe lesen.\nErhalten: \"%s\""
+
 #. Resource IDs: (IDS_ERR_NOSTATUS)
 msgid "Could not get the status!"
 msgstr "Konnte den Status nicht ermitteln!"
@@ -3551,6 +3643,13 @@ msgid ""
 "\n"
 "%s"
 msgstr "Konnte den externen Konflikteditor nicht starten!\n\n%s"
+
+#. Resource IDs: (IDS_ERR_GITDLLMISSING)
+msgid ""
+"Could not start git.exe. A dynamic library (dll) is missing.\n"
+"You might need to specify an extra PATH.\n"
+"Check help file for \"Extra PATH\"."
+msgstr "Git.exe konnte nicht gestartet werden. Eine dynamische Bibliothek (dll) fehlt.\nEs ist möglich, dass Sie einen extra Pfad angeben müssen.\nKonsoltieren Sie die Hilfe für \"Extra PATH\"."
 
 #. Resource IDs: (61702)
 msgid "Could not start print job."
@@ -4371,13 +4470,17 @@ msgstr "Diese Meldung nicht wieder anzeigen"
 msgid "Done"
 msgstr "Fertig"
 
-#. Resource IDs: (Dialog IDD_REBASE: Control id 1385)
+#. Resource IDs: (Dialog IDD_REBASE: Control id 1384)
 msgid "Down"
 msgstr "Runter"
 
 #. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1698)
 msgid "Download"
 msgstr "Download"
+
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_LANGUAGE: Control id 65535)
+msgid "Download language packs:"
+msgstr "Sprachpaket herunterladen:"
 
 #. Resource IDs: (16028)
 msgid "Drag to make this menu float"
@@ -4394,6 +4497,10 @@ msgstr "Positioniere Markierungs-/Zweigbeschriftungen rechts"
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1079)
 msgid "Drive Types"
 msgstr "Laufwerkstypen"
+
+#. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1315)
+msgid "Drives A: and B:"
+msgstr "Laufwerke A: und B:"
 
 #. Resource IDs: (IDS_DROPONESTASH)
 msgid "Drop &one stash"
@@ -4571,6 +4678,14 @@ msgstr "Meldungszwischenspeicher aktivieren"
 msgid "Enable showing Gravatar image in Log Dialog"
 msgstr "Zeige Gravatar-Icons im Log Dialog"
 
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 1842)
+msgid "Enable special hack for Cygwin git"
+msgstr "Speziellen Hack für Cygwin git aktivieren"
+
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 1843)
+msgid "Enable special hack for Msys2 git"
+msgstr "Speziellen Hack für Msys2 git aktivieren"
+
 #. Resource IDs: (ID_VIEW_ENABLELEXER - Menu)
 msgid "Enable syntax highlighting"
 msgstr "Aktiviere Syntax-Hervorhebungen"
@@ -4639,10 +4754,6 @@ msgstr "Zeilenendestil"
 #. Resource IDs: (61187)
 msgid "Enlarge the window to full size"
 msgstr "Vergrößert das Fenster auf Bildschirmgröße"
-
-#. Resource IDs: (Dialog IDD_INPUTLOGDLG: Control id 241)
-msgid "Enter Log Message"
-msgstr "Logmeldung eingeben"
 
 #. Resource IDs: (IDS_PROC_ENTERURL)
 msgid "Enter URL"
@@ -4832,10 +4943,6 @@ msgstr "Erweiterungsspezifische Programme"
 #. Resource IDs: (Dialog IDD_TOOLASSOC: Control id 65535)
 msgid "Extension:"
 msgstr "Erweiterung:"
-
-#. Resource IDs: (Dialog IDD_SETTINGSMAIN: Control id 65535)
-msgid "Extern DLL Path:"
-msgstr "Externer DLL Pfad:"
 
 #. Resource IDs: (IDS_SVNACTION_EXTERNAL)
 msgid "External"
@@ -5189,6 +5296,14 @@ msgstr "Erster Elternteil"
 msgid "First Parent Only"
 msgstr "Nur erster Elternteil"
 
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_AUTHENTICATION: Control id 4599,
+#. Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 4598, Dialog
+#. IDD_FIRSTSTARTWIZARD_LANGUAGE: Control id 4600, Dialog
+#. IDD_FIRSTSTARTWIZARD_START: Control id 276, Dialog
+#. IDD_FIRSTSTARTWIZARD_USER: Control id 4597)
+msgid "First Start Wizard - TortoiseGit"
+msgstr "Erststart-Assistent - TortoiseGit"
+
 #. Resource IDs: (Dialog IDD_BISECTSTART: Control id 1617)
 msgid "First known &bad:"
 msgstr "Erste bekannte &schlechte Version:"
@@ -5200,10 +5315,6 @@ msgstr "Bild&höhen anpassen\tH"
 #. Resource IDs: (ID_VIEW_FITIMAGEWIDTHS - Menu)
 msgid "Fit image &widths\tW"
 msgstr "Bild&breiten anpassen\tW"
-
-#. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1315)
-msgid "Floppy drives (A: B:)"
-msgstr "Diskettenlaufwerke (A: B:)"
 
 #. Resource IDs: (16016)
 msgid "Folder"
@@ -5263,7 +5374,8 @@ msgstr "Zwinge das neu Aufbauen, selbst wen der aktuelle Zweig ein Nachkomme der
 msgid "Force: May discard"
 msgstr "Erzwingen: Mit möglichem Verlust von"
 
-#. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 65535)
+#. Resource IDs: (Dialog IDD_SETCOLORPAGE: Control id 65535, Dialog
+#. IDD_SETTINGSUDIFF: Control id 65535)
 msgid "Foreground"
 msgstr "Vordergrund"
 
@@ -5283,6 +5395,12 @@ msgstr "Forward"
 #, c-format
 msgid "Forward %d"
 msgstr "Forward %d"
+
+#. Resource IDs: (IDS_ERR_GITUNNEEDEDHACKS)
+msgid ""
+"Found \"msysgit\" or \"windows\" in versionstring of git.exe, however, you have git.exe hacks enabled. These hacks must be disabled for proper operation with Git for Windows!\n"
+"You can find more information in the help file for the keyword \"cygwin git\" or \"msys2 git\"."
+msgstr "\"msysgit\" oder \"windows\" wurden in der Versionsausgabe von git.exe gefunden, obwohl Sie git.exe Hacks aktiviert haben. Diese Hacks müssen bei der Nutzung von Git für Windows deaktiviert werden!\nFür mehr Informationen konsultieren Sie bitte die Hilfe unter dem Stichwort \"cygwin git\" or \"msys2 git\"."
 
 #. Resource IDs: (IDS_REBASELOCKFILEFOUND)
 msgid ""
@@ -5530,13 +5648,15 @@ msgstr "Sys Verzeichnis ist nicht gesetzt (siehe \"Allgemeines\" Einstellungssei
 msgid "Git for Windows"
 msgstr "Git für Windows"
 
-#. Resource IDs: (IDS_PROC_NOMSYSGIT)
-msgid "Git for Windows (https://git-for-windows.github.io/) not found."
-msgstr "Git für Windows (https://git-for-windows.github.io/) nicht gefunden."
-
 #. Resource IDs: (IDS_PROC_REPOCREATEERR)
 msgid "Git reported an error while creating a repository!\n"
 msgstr "Git hat einen Fehler beim Erstellen der Arbeitsbaum gemeldet!\n"
+
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_USER: Control id 65535)
+msgid ""
+"Git requires that you set up a user name and email address. Both are used as"
+" meta data for your commits (not for authentication)."
+msgstr "Git erfordert, dass Sie einen Namen und E-Mail-Adresse hinterlegen. Beide werden als Metadaten für Eintragungen verwendet (nicht zur Authentifikation)."
 
 #. Resource IDs: (32787)
 msgid "Git revision list contains the complete file history"
@@ -5554,10 +5674,6 @@ msgid ""
 "Select any level to see the values stored there.\n"
 "In order to change settings select a level, enter the values and select where to store to."
 msgstr "Git benutzt das Konzept einer hierarchischen Konfiguration.\nD.h. es gibt mehrere Level; Einstellungen in höhreren Leveln überschreiben Einstellungen niedrigerer Level.\nDer \"Effektiv\"-Tab zeigt die effektiven Werte für den aktuellen Anwendungsbereich (nur lesend).\nWählen Sie ein Level, um die Werte, die dort gespeichert sind, einzusehen.\nUm Einstellungen zu ändern, wählen Sein ein level aus, geben die Werte und entscheiden in welches Level die Werte gespeichert werden sollen."
-
-#. Resource IDs: (Dialog IDD_SETTINGSMAIN: Control id 65535)
-msgid "Git.exe Path:"
-msgstr "Git.exe Pfad:"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 4591)
 msgid "Git::Credential"
@@ -5658,6 +5774,11 @@ msgstr "HEAD"
 msgid "HEAD:"
 msgstr "HEAD:"
 
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_AUTHENTICATION: Control id
+#. 65535)
+msgid "HTTP (URLs start with \"http://\" or \"https://\")"
+msgstr "HTTP (URLs starten mit \"http://\" oder \"https://\")"
+
 #. Resource IDs: (IDS_RESET_HARD)
 msgid "Hard"
 msgstr "Hart"
@@ -5745,6 +5866,12 @@ msgstr "Verberge/Zeige die Patchliste\nVerbirgt oder zeigt die Patchdateiliste"
 msgid "Hint"
 msgstr "Hinweis"
 
+#. Resource IDs: (IDS_HINTLASTMESSAGES)
+msgid ""
+"Hint: Recently used commit messages are available using the context menu of "
+"the text field."
+msgstr "Hinweis: Sie können auf kürzlich verwendete Meldungen über das Kontextmenü des Textfeldes zugreifen."
+
 #. Resource IDs: (16519)
 msgid ""
 "Hint: select the context menu, change the page to 'Commands' and drag the "
@@ -5774,6 +5901,10 @@ msgstr "Aktionstyp"
 #. Resource IDs: (Dialog IDD_SETTINGSHOOKCONFIG: Control id 1334)
 msgid "Hook Type:"
 msgstr "Aktionstyp:"
+
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 1841)
+msgid "I don't use Git for Windows and need special workarounds"
+msgstr "Ich benuzte nicht GIt für Windows und benötigt spezielle Workarounds"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 65535)
 msgid "I&nclude paths:"
@@ -6100,6 +6231,21 @@ msgid ""
 "folder should have a name that ends with '.git')"
 msgstr "Wenn Sie in diesem Ordner arbeiten möchten, wählen Sie diese Option nicht aus. Typischerweise können in ein bare-Projektarchiv nur Eintragungen versandt werden. (Nach Konvention, sollte der Projektarchiv-Ordnername mit \".git\" enden)"
 
+#. Resource IDs: (IDS_FIRSTSTART_LANGUAGEHINT3)
+msgid ""
+"If you want to use a translated version of TortoiseGit and your language is "
+"missing, <a id=\"download\">download</a> and install a matching language "
+"pack now and hit \"Refresh\" before continuing."
+msgstr "Wenn Sie eine übersetzte Version von TortoiseGit nutzen möchte und Ihre Sprache fehlt, <a id=\"download\">laden</a> und installieren Sie jetzt ein entsprechendes Sprachpaket und klicken auf \"Aktualisieren\" bevor Sie fortfahren."
+
+#. Resource IDs: (IDS_EXTRAPATH_TT)
+#, c-format
+msgid ""
+"If your git installation needs an extra entry in the PATH environment "
+"variable, you can enter it here and it will get appended to %PATH% "
+"automatically when TortoiseGit starts."
+msgstr "Sollte Ihre Git-Installation einen zusätzlichen Eintrag in der PATH-Umgebungsvariable benötigen, so können Sie dies hier eingeben. Dieser Pfad wird dann automatisch von TortoiseGit an %PATH% angehangen."
+
 #. Resource IDs: (Dialog IDD_IGNORE: Control id 4577)
 msgid "Ignore"
 msgstr "Ignorieren"
@@ -6258,6 +6404,12 @@ msgstr "Eingehende Eintragungen"
 #. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1649)
 msgid "In order to abort a merge progess a reset (to HEAD) is needed."
 msgstr "Um das Zusammenführen abzubrechen, ist ein Reset (auf HEAD) notwendig."
+
+#. Resource IDs: (IDS_FIRSTSTART_LANGUAGEHINT2)
+msgid ""
+"In the following combobox you can find all installed language packs which "
+"can be used by this version of TortoiseGit."
+msgstr "Im folgenden Kombinationsfeld finden Sie alle installierten Sprachpakete, die mit dieser Version von TortoiseGit kompatibel sind."
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1499)
 msgid "Include &Tags"
@@ -6842,8 +6994,7 @@ msgstr "Zusammenführen erfordert unterschiedliche Revisionen oder URLs in 'Von:
 msgid "Merging revisions %s of %s into %s, %s%s"
 msgstr "Zusammenführen %s von %s in %s, %s%s"
 
-#. Resource IDs: (Dialog IDD_INPUTLOGDLG: Control id 1359, IDS_LOG_MESSAGE,
-#. IDS_MESSAGE)
+#. Resource IDs: (IDS_LOG_MESSAGE, IDS_MESSAGE)
 msgid "Message"
 msgstr "Meldung"
 
@@ -7182,6 +7333,13 @@ msgid ""
 "Do you want to see the unversioned files?"
 msgstr "Seit der letzten Eintragung wurden keine\nDateien/Ordner verändert oder hinzugefügt.\nMöchten Sie die unversionierten Objekte anzeigen lassen?"
 
+#. Resource IDs: (IDS_PROC_NOMSYSGIT)
+msgid ""
+"No git.exe found.\n"
+"\n"
+"TortoiseGit requires a git.exe for its operations (e.g., such as provided by the Git for Windows package)."
+msgstr "Keine git.exe gefunden.\n\nTortoiseGit benötigt eine git.exe (wird z.B. durch das Git für Windows-Paket bereitgestellt)."
+
 #. Resource IDs: (IDS_REVGRAPH_ERR_NOGRAPH)
 msgid "No graph available"
 msgstr "Keine Grafik vorhanden"
@@ -7419,25 +7577,25 @@ msgstr "OEM-US"
 #. id 1, Dialog IDD_FORMAT_PATCH: Control id 1, Dialog IDD_GITSWITCH: Control
 #. id 1, Dialog IDD_GOTO: Control id 1, Dialog IDD_GOTODLG: Control id 1,
 #. Dialog IDD_HISTORYDLG: Control id 1, Dialog IDD_IGNORE: Control id 1,
-#. Dialog IDD_INPUTDLG: Control id 1, Dialog IDD_INPUTLOGDLG: Control id 1,
-#. Dialog IDD_LOGMESSAGE: Control id 1, Dialog IDD_LOGORDERING: Control id 1,
-#. Dialog IDD_MERGE: Control id 1, Dialog IDD_MERGEABORT: Control id 1, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 1, Dialog IDD_OPEN: Control id 1, Dialog
-#. IDD_OPENDLG: Control id 1, Dialog IDD_PROMPT: Control id 1, Dialog
-#. IDD_PULLFETCH: Control id 1, Dialog IDD_PUSH: Control id 1, Dialog
-#. IDD_REFLOG: Control id 1, Dialog IDD_REGEXFILTER: Control id 1, Dialog
-#. IDD_REGEXFILTERS: Control id 1, Dialog IDD_RENAME: Control id 1, Dialog
-#. IDD_REPOSITORY_BROWSER: Control id 1, Dialog IDD_REQUESTPULL: Control id 1,
-#. Dialog IDD_RESET: Control id 1, Dialog IDD_RESOLVE: Control id 1, Dialog
-#. IDD_RESOLVE_CONFLICT: Control id 4569, Dialog IDD_REVERT: Control id 1,
-#. Dialog IDD_SETTINGSBUGTRAQADV: Control id 1, Dialog IDD_SETTINGSHOOKCONFIG:
-#. Control id 1, Dialog IDD_SETTINGSPROGSADV: Control id 1, Dialog
-#. IDD_SIMPLEPROMPT: Control id 1, Dialog IDD_STASH: Control id 1, Dialog
-#. IDD_STATGRAPH: Control id 1, Dialog IDD_SUBMODULE_ADD: Control id 1, Dialog
-#. IDD_SUBMODULE_UPDATE: Control id 1, Dialog IDD_SVNDCOMMITTYPE: Control id
-#. 1, Dialog IDD_SVNIGNORE: Control id 1, Dialog IDD_SVNPROGRESS: Control id
-#. 1, Dialog IDD_TOOLASSOC: Control id 1, Dialog IDD_URL: Control id 1, Dialog
-#. IDD_USER_PASSWD: Control id 1, IDS_MSGBOX_OK)
+#. Dialog IDD_INPUTDLG: Control id 1, Dialog IDD_LOGMESSAGE: Control id 1,
+#. Dialog IDD_LOGORDERING: Control id 1, Dialog IDD_MERGE: Control id 1,
+#. Dialog IDD_MERGEABORT: Control id 1, Dialog IDD_NEW_BRANCH_TAG: Control id
+#. 1, Dialog IDD_OPEN: Control id 1, Dialog IDD_OPENDLG: Control id 1, Dialog
+#. IDD_PROMPT: Control id 1, Dialog IDD_PULLFETCH: Control id 1, Dialog
+#. IDD_PUSH: Control id 1, Dialog IDD_REFLOG: Control id 1, Dialog
+#. IDD_REGEXFILTER: Control id 1, Dialog IDD_REGEXFILTERS: Control id 1,
+#. Dialog IDD_RENAME: Control id 1, Dialog IDD_REPOSITORY_BROWSER: Control id
+#. 1, Dialog IDD_REQUESTPULL: Control id 1, Dialog IDD_RESET: Control id 1,
+#. Dialog IDD_RESOLVE: Control id 1, Dialog IDD_RESOLVE_CONFLICT: Control id
+#. 4569, Dialog IDD_REVERT: Control id 1, Dialog IDD_SETTINGSBUGTRAQADV:
+#. Control id 1, Dialog IDD_SETTINGSHOOKCONFIG: Control id 1, Dialog
+#. IDD_SETTINGSPROGSADV: Control id 1, Dialog IDD_SIMPLEPROMPT: Control id 1,
+#. Dialog IDD_STASH: Control id 1, Dialog IDD_STATGRAPH: Control id 1, Dialog
+#. IDD_SUBMODULE_ADD: Control id 1, Dialog IDD_SUBMODULE_UPDATE: Control id 1,
+#. Dialog IDD_SVNDCOMMITTYPE: Control id 1, Dialog IDD_SVNIGNORE: Control id
+#. 1, Dialog IDD_SVNPROGRESS: Control id 1, Dialog IDD_TOOLASSOC: Control id
+#. 1, Dialog IDD_URL: Control id 1, Dialog IDD_USER_PASSWD: Control id 1,
+#. IDS_MSGBOX_OK)
 msgid "OK"
 msgstr "OK"
 
@@ -7505,9 +7663,18 @@ msgstr "Nur lokale Zweige"
 msgid "Only Merged Files"
 msgstr "nur zusammengeführte Dateien"
 
+#. Resource IDs: (Dialog IDD_SETTINGSTBLAME: Control id 1677,
+#. ID_VIEW_ONLYCONSIDERFIRSTPARENTS - Menu)
+msgid "Only consider first parents on blame"
+msgstr "Betrachte nur den ersten Elter beim Annotieren"
+
 #. Resource IDs: (IDS_git_DEPTH_FILES)
 msgid "Only file children"
 msgstr "Nur Dateiobjekte"
+
+#. Resource IDs: (IDS_BROWSE_REFS_ONLYMERGED)
+msgid "Only merged (to HEAD)"
+msgstr "Nur zusammengeführte (zu HEAD)"
 
 #. Resource IDs: (IDS_COMMITDLG_ONLYNUMBERS)
 msgid ""
@@ -7518,6 +7685,10 @@ msgstr "Nur Zahlen (ggf. durch Kommata separiert)\nsind zugelassen!"
 #. Resource IDs: (IDS_git_DEPTH_EMPTY)
 msgid "Only this item"
 msgstr "Nur dieses Objekt"
+
+#. Resource IDs: (IDS_BROWSE_REFS_ONLYUNMERGED)
+msgid "Only unmerged (to HEAD)"
+msgstr "Nur nicht zusammengeführte (zu HEAD)"
 
 #. Resource IDs: (61440, ID_FILE_OPEN - Menu, ID_FILE_OPEN - Ribbon name)
 msgid "Open"
@@ -7539,8 +7710,7 @@ msgid ""
 "Open files"
 msgstr "Dateien zum Vergleichen oder Patchen öffnen\nDateien öffnen"
 
-#. Resource IDs: (Dialog IDD_PATCH_FILE_OPEN_CUSTOM: Control id 1132,
-#. IDS_PATCH_COPYFROMCLIPBOARD)
+#. Resource IDs: (IDS_PATCH_COPYFROMCLIPBOARD)
 msgid "Open from clipboard"
 msgstr "Aus Zwischenablage öffnen"
 
@@ -7855,8 +8025,17 @@ msgid "Please enter a hook script to execute."
 msgstr "Bitte wählen Sie das auszuführende Skript aus."
 
 #. Resource IDs: (IDS_ERR_NOHOOKPATHSPECIFIED)
-msgid "Please enter a path where to apply the hook script to."
-msgstr "Bitte geben Sie einen Pfad an auf den das Skript angewendet wird."
+msgid ""
+"Please enter a path where to apply the hook script to. Use \"*\" for all "
+"paths."
+msgstr "Bitte geben Sie einen Pfad an auf den das Skript angewendet wird. Benutzen Sie \"*\" für alle Pfade."
+
+#. Resource IDs: (IDS_FIRSTSTART_HINT3)
+msgid ""
+"Please see the <a id=\"manual\">manual</a> for general hints. E.g. in most "
+"dialogs there are some shared shortcuts such as F5 for refresh or CTRL+F for"
+" search and oftentimes there are powerfull context menus."
+msgstr "Bitte konsultieren Sie das <a id=\"manual\">Handbuch</a> für allgemeine Hinweise. Beispielsweise gibt es in den meisten Dialogen einige geteilte Verknüpfungen wie F5 zum Aktualisieren oder Strg+F zum Suchen und oft gibt es leistungsfähige Kontextmenüs."
 
 #. Resource IDs: (IDS_ERR_NOHOOKTYPESPECIFIED)
 msgid "Please select a hook type"
@@ -7918,6 +8097,10 @@ msgstr "Vor Eintragung"
 #. Resource IDs: (IDS_HOOKTYPE_PREPUSH)
 msgid "Pre-Push Hook"
 msgstr "Vor Versenden"
+
+#. Resource IDs: (IDS_HOOKTYPE_PREREBASE)
+msgid "Pre-rebase hook"
+msgstr "Vor Rebase"
 
 #. Resource IDs: (IDS_PROC_COMMIT_PREPARECOMMIT)
 msgid "Preparing commit..."
@@ -8232,6 +8415,10 @@ msgstr "Auf &Standardwerte setzen"
 msgid "Re&vert..."
 msgstr "&Rückgängig..."
 
+#. Resource IDs: (Dialog IDD_SETTINGSMAIN: Control id 1684)
+msgid "Re-run &First Start Wizard"
+msgstr "%Erststart-Assistent erneut aufrufen"
+
 #. Resource IDs: (IDS_FETCH_REACHABLE)
 msgid "Reachable"
 msgstr "Erreichbare"
@@ -8269,6 +8456,10 @@ msgstr "Letzte Datei"
 #. Resource IDs: (Dialog IDD_SETTINGSTBLAME: Control id 65535)
 msgid "Recently modified lines"
 msgstr "Kürzlich geänderte Zeilen"
+
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 65535)
+msgid "Recommended: Git for Windows"
+msgstr "Empfohlen: Git für Windows"
 
 #. Resource IDs: (IDS_MERGE_RECORDONLY)
 msgid "Record Only"
@@ -8341,7 +8532,8 @@ msgstr "Zeige Referenzen auf denen diese Revision liegt"
 msgid "Refname"
 msgstr "Refname"
 
-#. Resource IDs: (Dialog IDD_LOGMESSAGE: Control id 1382, IDS_MENUREFRESH)
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_LANGUAGE: Control id 1382,
+#. Dialog IDD_LOGMESSAGE: Control id 1382, IDS_MENUREFRESH)
 msgid "Refresh"
 msgstr "Aktualisieren"
 
@@ -8852,6 +9044,10 @@ msgstr "Zeile runter"
 msgid "Row Up"
 msgstr "Zeile hoch"
 
+#. Resource IDs: (Dialog IDD_SETTINGSHOOKCONFIG: Control id 1335)
+msgid "Run when working tree path is under:"
+msgstr "Ausführen, wenn sich der Arbeitsbaum unter dem folgenden Pfad befindet:"
+
 #. Resource IDs: (17045)
 msgid "S&elect..."
 msgstr "&Wählen..."
@@ -8916,6 +9112,11 @@ msgstr "SMTP, direkt beim Zielserver einliefern"
 #. Resource IDs: (Dialog IDD_SETTINGSPROXY: Control id 1081)
 msgid "SSH"
 msgstr "SSH"
+
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_AUTHENTICATION: Control id
+#. 65535)
+msgid "SSH (URLs look like \"git@example.com\")"
+msgstr "SSH (URLs sehen aus wie \"git@example.com\")"
 
 #. Resource IDs: (IDS_ENCRYPT_SSL)
 msgid "SSL/TLS"
@@ -9059,7 +9260,7 @@ msgstr "Speichern und einschließen\nIhre Änderungen sind gespeichert und die m
 
 #. Resource IDs: (IDS_ASKFORSAVEAS, ID_FILE_SAVE_AS - Ribbon name)
 msgid "Save as"
-msgstr "Speichern unter …"
+msgstr "Speichern unter"
 
 #. Resource IDs: (IDS_SAVEASTITLE)
 msgid "Save as..."
@@ -9105,10 +9306,6 @@ msgid ""
 "Save the modified file\n"
 "Save file"
 msgstr "Geänderte Datei speichern\nDatei speichern"
-
-#. Resource IDs: (Dialog IDD_PATCH_FILE_OPEN_CUSTOM: Control id 1132)
-msgid "Save to clipboard"
-msgstr "In Zwischenablage speichern"
 
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 65535, Dialog
 #. IDD_SETTINGSBUGTRAQ_CONFIG: Control id 65535, Dialog IDD_SETTINGSDIALOGS3:
@@ -9157,9 +9354,8 @@ msgstr "Durchsuchen"
 
 #. Resource IDs: (Dialog IDD_BUGTRAQREGEXTESTER: Control id 1014, Dialog
 #. IDD_CHECKFORUPDATES: Control id 1014, Dialog IDD_COMMITDLG: Control id
-#. 1014, Dialog IDD_INPUTDLG: Control id 1064, Dialog IDD_INPUTLOGDLG: Control
-#. id 1064, Dialog IDD_MERGE: Control id 1014, Dialog IDD_PATCH_VIEW: Control
-#. id 1636)
+#. 1014, Dialog IDD_INPUTDLG: Control id 1064, Dialog IDD_MERGE: Control id
+#. 1014, Dialog IDD_PATCH_VIEW: Control id 1636)
 msgid "Scintilla"
 msgstr "Scintilla"
 
@@ -9816,6 +10012,10 @@ msgstr "Überspringen"
 msgid "Skip Patch: %s"
 msgstr "Überspringe Patch: %s"
 
+#. Resource IDs: (IDS_MENUDESCBISECTSKIP)
+msgid "Skip current revision in bisecting process"
+msgstr "Aktuelle Revision im Bisect-Prozess übergehen"
+
 #. Resource IDs: (Dialog IDD_PROPPAGE: Control id 11029,
 #. IDS_PATHACTIONS_SKIPWORKTREE, IDS_STATUSLIST_SKIPWORKTREE)
 msgid "Skip worktree"
@@ -10364,7 +10564,7 @@ msgid ""
 "\n"
 "You should NOT uncheck files unless you know what you are doing.\n"
 "\n"
-"While merging conflicts can occur which need to be resolved manually (i.e., integrate your changes into a file which was also modified on another branch).\n"
+"When you merge changes, conflicts can arise that must be solved manually (i.e., you need to integrate your changes into a file which was also modified on another branch).\n"
 "\n"
 "See help for more information."
 msgstr "Die Eintragung, die Sie gerade vornehmen wollen, ist eine besondere Eintragung: Es handelt sich um eine Zusammenführungs-Eintragung. Daher enthält diese sowohl Ihre als auch Änderungen eines zusammengeführten Zweiges.\n\nSie sollten KEINE Dateien abwählen, sofern Sie nicht genau wissen was Sie tun.\n\nWährend des Zusammenführens können Konflikte entstehen, die manuell gelöst werden müssen (d.h. Sie müssen Ihre Änderungen in eine Datei, die ebenfalls auf dem anderen Zweig verändert wurde, integrieren).\n\nKonsultieren Sie die Hilfe für mehr Informationen."
@@ -10735,6 +10935,14 @@ msgid ""
 "changes that were made before the application closed."
 msgstr "Diese wurden nach den derzeit geöffneten Dokumenten gespeichert und enthalten Änderungen, die vorgenommen wurden, bevor die Anwendung geschlossen wurde."
 
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_AUTHENTICATION: Control id
+#. 65535, Dialog IDD_FIRSTSTARTWIZARD_USER: Control id 65535)
+msgid ""
+"These settings will be stored to your global git configuration "
+"(%HOME%/.gitconfig) and will be used for all your git repositories as a "
+"default."
+msgstr "Diese Einstellungen werden in Ihrer globalen git-Konfiguration (% HOME%/.gitconfig) gespeichert und standardmäßig für alle git-Repositories verwendet."
+
 #. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGDELETEREMOTEBRANCHES)
 msgid "This action will remove the branches on the remote."
 msgstr "Diese Aktion wird Zweige im entfernte Archiv löschen."
@@ -10759,6 +10967,15 @@ msgid ""
 "A valid path must not contain '<<>|\"?*:' or one of the following device names:\n"
 "com1-com9, lpt1-lpt9, prn, aux, con, nul, clock$"
 msgstr "Dies ist kein gültiger Pfad!\nEine gültige Pfadangabe unter Windows darf keine '<<>|\"*:' oder einen der folgenden Gerätenamen enthalten:\ncom1-com9, lpt1-lpt9, prn, aux, con, nul, clock$"
+
+#. Resource IDs: (IDS_FIRSTSTART_HINT2)
+msgid ""
+"This is the First Start Wizard which will help you configuring the basic "
+"settings. TortoiseGit is highly configurable, so it is advisable that you "
+"have a look into its settings dialog. The settings dialog is reachable using"
+" the start menu or the context menu of the Windows Explorer: TortoiseGit -> "
+"Settings."
+msgstr "Dies ist der Erststart-Assistent, der Ihnen bei der Konfiguration der Grundeinstellungen hilft. TortoiseGit ist in hohem Maße konfigurierbar, daher ist es ratsam, einen Blick in den Einstellungsdialog zu werfen. Der Einstellungsdialog kann über das Startmenü oder das Kontextmenü des Windows Explorers erreicht werden: TortoiseGit -> Einstellungen."
 
 #. Resource IDs: (IDS_PROC_LOG_ONLYONCE)
 msgid ""
@@ -10898,6 +11115,10 @@ msgid ""
 "%s\n"
 msgstr "TortoiseGit %d.%d.%d.%d %s\n%s\n"
 
+#. Resource IDs: (IDS_FIRSTSTART_LANGUAGEHINT1)
+msgid "TortoiseGit can be localized using language packs."
+msgstr "TortoiseGit kann über Sprachpakete lokalisiert werden."
+
 #. Resource IDs: (IDS_ASK_REMOVE_FROM_INDEX)
 #, c-format
 msgid ""
@@ -10922,6 +11143,20 @@ msgid ""
 "to bring up the context menu where you will find all TortoiseGit commands.\n"
 "And read the manual!"
 msgstr "TortoiseGit ist eine Shell Erweiterung.\nDas bedeutet, dass es in den Windows Explorer integriert ist. Um\nTortoiseGit zu verwenden, öffnen Sie den Explorer und machen\nSie einen Rechts-Klick, damit das Kontextmenü angezeigt wird.\nDort finden Sie sämtliche TortoiseGit Befehle.\nUnd lesen Sie das Handbuch!"
+
+#. Resource IDs: (IDS_FIRSTSTART_HINT1)
+msgid ""
+"TortoiseGit is designed as a Shell Extension. Therefore the main interaction"
+" with TortoiseGit will be using the context menu of the Windows shell such "
+"as the Windows Explorer."
+msgstr "TortoiseGit ist als Shell-Erweiterung konzipiert. Daher wird die Hauptinteraktion mit TortoiseGit das Kontextmenü der Windows-Shell wie dem Windows Explorer nutzen."
+
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 65535)
+msgid ""
+"TortoiseGit requires a git.exe for its operations. TortoiseGit tries to "
+"automatically detect a working git.exe, but if that doesn't work or you want"
+" to use a different one please specify the path manually!"
+msgstr "TortoiseGit benötigt eine git.exe. TortoiseGit versucht automatisch eine funktionierende git.exe  zu erkennen. Sollte dies nicht funktionieren oder Sie möchten eine andere benutzen, können Sie hier manuell einen Pfad angeben."
 
 #. Resource IDs: (IDS_SETTINGS_OVERLAYINFO2)
 #, c-format
@@ -11007,6 +11242,16 @@ msgid ""
 "TortoiseGitMerge cannot process this patch file. The filename \"%s\" appears"
 " more than once."
 msgstr "TortoiseGitMerge kann diesen Patch nicht verarbeiten. Der Dateiname \"%s\" ist im Patch mehrfach enthalten."
+
+#. Resource IDs: (IDS_FIRSTSTART_SSHHINT)
+msgid ""
+"TortoiseGitPlink is recommended as SSH client. If you don't have a key pair "
+"yet, you should generate one. Keep the private one in a save place and set "
+"up the public key on your hosting platform. Use the PuTTY authentication "
+"agent for caching the password (done automatically if a PuTTY key is "
+"configured for a remote). For advanced tips & tricks see our <a "
+"id=\"manual\">manual</a> and <a id=\"sshfaq\">FAQ</a>."
+msgstr "TortoiseGitPlink wird als SSH-Client empfohlen. Besitzen Sie noch kein Schlüsselpaar, sollten Sie sich jetzt eines generieren. Speichern Sie den privaten Schlüssel an einem sicheren Ort ab und hinterlegen den öffentlichen Schlüssel bei Ihrer Hosting-Plattform. Benutzen Sie den PuTTY Authentication Agent um Passwörter zwischenzuspeichern (wird automatisch gemacht, wenn ein PuTTY Key für ein entferntes Repository konfiguriert ist). Für fortgeschrittene Tipps & Tricks konsultieren Sie bitte das <a id=\"manual\">Handbuch</a> und die <a id=\"sshfaq\">FAQ</a>."
 
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 357, IDS_APP_TITLE)
 msgid "TortoiseGitUDiff"
@@ -11247,7 +11492,7 @@ msgstr "Nicht versionierte Dateien markieren Elternordner als modifiziert"
 msgid "Unversioning %s"
 msgstr "Hebe Versionierung von %s auf"
 
-#. Resource IDs: (Dialog IDD_REBASE: Control id 1384)
+#. Resource IDs: (Dialog IDD_REBASE: Control id 1386)
 msgid "Up"
 msgstr "Hoch"
 
@@ -11675,6 +11920,17 @@ msgstr "Warnung"
 msgid "Warning!"
 msgstr "Warnung!"
 
+#. Resource IDs: (IDS_FIRSTSTART_HINT4)
+msgid ""
+"We hope you enjoy the usage of TortoiseGit! In case of questions or "
+"problems, please consult our manual or go to <a "
+"id=\"support\">https://tortoisegit.org/support/</a>"
+msgstr "Wir wünschen Ihnen viel Spaß mit TortoiseGit! Bei Fragen oder Problemen konsultieren Sie bitte unser Handbuch oder gehen Sie zu <a id=\"support\">https://tortoisegit.org/support/</a>"
+
+#. Resource IDs: (IDS_FIRSTSTART_STARTTITLE)
+msgid "Welcome to TortoiseGit!"
+msgstr "Willkommen bei TortoiseGit!"
+
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Western European"
 msgstr "West Europa"
@@ -11819,8 +12075,7 @@ msgstr "Innerhalb der Datei"
 msgid "Working Tree"
 msgstr "Arbeitsbaum"
 
-#. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQADV: Control id 1472, Dialog
-#. IDD_SETTINGSHOOKCONFIG: Control id 1335)
+#. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQADV: Control id 1472)
 msgid "Working Tree Path:"
 msgstr "Pfad des Arbeitsbaumes:"
 
@@ -11879,11 +12134,12 @@ msgid "You cannot change the type of this ref with a rename."
 msgstr "Sie können nicht den Ref-Typ mit einer Umbenennung verändern."
 
 #. Resource IDs: (IDS_PROC_OLDMSYSGIT)
+#, c-format
 msgid ""
-"You have an old version of Git for Windows (https://git-for-windows.github.io/) installed which contains security issues.\n"
+"You have an old unsupported version of Git installed.\n"
 "\n"
-"You should consider an upgrade to 1.9.5+."
-msgstr "Sie haben eine alte Version von Git für Windows (https://git-for-windows.github.io/) installiert, die Sicherheitslücken aufweist.\n\nSie sollten ein Upgrade auf 1.9.5+ in Erwägung ziehen."
+"You should consider an upgrade to %s."
+msgstr "Sie haben eine alte nicht mehr unterstützte Version von Git installiert.\n\nSie sollten ein Upgrade auf %s in Erwägung ziehen."
 
 #. Resource IDs: (IDS_STASHSAVE_INCLUDEUNTRACKED)
 msgid ""
@@ -11983,6 +12239,10 @@ msgstr "Ihre Version ist:"
 #, c-format
 msgid "Your version is: %d.%d.%d.%d"
 msgstr "Ihre Version ist: %d.%d.%d.%d"
+
+#. Resource IDs: (IDS_ARCHIVEFILEFILTER)
+msgid "ZIP archive (*.zip)|*.zip|All Files (*.*)|*.*||"
+msgstr "ZIP-Archiv (*.zip)|*.zip|Alle Dateien (*.*)|*.*||"
 
 #. Resource IDs: (Dialog IDD_EXPORT: Control id 1074)
 msgid "Zip File"
@@ -12225,6 +12485,10 @@ msgstr "extern"
 #, c-format
 msgid "git did not exit cleanly (exit code %d)"
 msgstr "git wurde nicht sauber beendet (Exit-Code: %d)"
+
+#. Resource IDs: (IDS_GITEXEFILEFILTER)
+msgid "git.exe|git.exe||"
+msgstr "git.exe|git.exe||"
 
 #. Resource IDs: (IDS_STATUSIGNORED)
 msgid "ignored"

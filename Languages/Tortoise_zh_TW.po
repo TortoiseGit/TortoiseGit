@@ -5,20 +5,22 @@
 # 
 # Translators:
 # Hydriz Scholz <hydriz@jorked.com>, 2013
-# ch cooli <ch3cooli@gmail.com>, 2012
-# ch cooli <ch3cooli@gmail.com>, 2012-2015
+# 乙酸鋰 <ch3cooli@gmail.com>, 2012
+# 乙酸鋰 <ch3cooli@gmail.com>, 2012-2015
 # Hydriz Scholz <hydriz@jorked.com>, 2013
+# Hydriz Scholz <hydriz@jorked.com>, 2013,2015
 # Hydriz Scholz <hydriz@jorked.com>, 2013,2015
 # Sven Strickroth <sstrickroth@googlemail.com>, 2013
 # Yue Lin Ho <yuelinho777@gmail.com>, 2014-2016
-# ch cooli <ch3cooli@gmail.com>, 2012-2013
+# 乙酸鋰 <ch3cooli@gmail.com>, 2012,2017
+# 乙酸鋰 <ch3cooli@gmail.com>, 2012-2013
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2016-09-24 10:42+0000\n"
-"Last-Translator: Yue Lin Ho <yuelinho777@gmail.com>\n"
+"PO-Revision-Date: 2017-01-30 03:27+0000\n"
+"Last-Translator: 乙酸鋰 <ch3cooli@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/lznuaa/tortoisegit/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -343,7 +345,8 @@ msgstr "關於 TortoiseGitMerge (&A)..."
 msgid "&Activate"
 msgstr "啟動(&A)"
 
-#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1382)
+#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1382, Dialog
+#. IDD_REBASE: Control id 1382)
 msgid "&Add"
 msgstr "加入(&A)"
 
@@ -372,7 +375,8 @@ msgstr "新增或移除按鈕(&A)"
 msgid "&Add..."
 msgstr "加入(&A)..."
 
-#. Resource IDs: (Dialog IDD_SETTINGSPROGSDIFF: Control id 1090, Dialog
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_AUTHENTICATION: Control id 1845,
+#. Dialog IDD_SETTINGSPROGSDIFF: Control id 1090, Dialog
 #. IDD_SETTINGSPROGSMERGE: Control id 1093)
 msgid "&Advanced..."
 msgstr "進階設定(&A)..."
@@ -560,6 +564,11 @@ msgstr "複製按鈕影像(&C)"
 msgid "&Copy\tCtrl+C"
 msgstr "複製(&C)\tCtrl+C"
 
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_AUTHENTICATION: Control id
+#. 65535)
+msgid "&Credential helper:"
+msgstr "憑證小幫手(&C)："
+
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 1662)
 msgid "&Custom"
 msgstr "自訂(&C)"
@@ -629,6 +638,11 @@ msgstr "不再詢問(&D)"
 msgid "&Don't show this message again"
 msgstr "不再顯示此訊息(&D)"
 
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_AUTHENTICATION: Control id 1839,
+#. Dialog IDD_FIRSTSTARTWIZARD_USER: Control id 1839)
+msgid "&Don't store these settings now."
+msgstr "現在先不儲存這些設定值(&D)。"
+
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1384)
 msgid "&Down"
 msgstr "向下(&D)"
@@ -670,9 +684,15 @@ msgstr "編輯／切分 提交(&E)"
 msgid "&Email Patch"
 msgstr "電郵補綴(&E)"
 
-#. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 65535)
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_USER: Control id 65535, Dialog
+#. IDD_SETTINGIT_CONFIG: Control id 65535)
 msgid "&Email:"
 msgstr "電郵(&E)："
+
+#. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQADV: Control id 1023, Dialog
+#. IDD_SETTINGSHOOKCONFIG: Control id 1023)
+msgid "&Enable"
+msgstr "啟用(&E)"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROXY: Control id 1023)
 msgid "&Enable Proxy Server"
@@ -694,6 +714,11 @@ msgstr "匯出選取的檔案至(&E)..."
 #. IDD_SETTINGSPROGSMERGE: Control id 1095)
 msgid "&External"
 msgstr "外部(&E)"
+
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 65535, Dialog
+#. IDD_SETTINGSMAIN: Control id 65535)
+msgid "&Extra PATH:"
+msgstr "額外的 PATH 值(&E)："
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "&File"
@@ -748,9 +773,18 @@ msgstr "強制變基(rebase)(&F)"
 msgid "&From:"
 msgstr "從(&F)："
 
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_AUTHENTICATION: Control id 1844)
+msgid "&Generate PuTTY  key pair"
+msgstr "產生 PuTTY 金鑰對(&G)"
+
 #. Resource IDs: (Dialog IDD_SVNDCOMMITTYPE: Control id 2153)
 msgid "&Git Style Commit (--rmdir)"
 msgstr "Git形式提交(--rmdir)(&G)"
+
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 65535, Dialog
+#. IDD_SETTINGSMAIN: Control id 65535)
+msgid "&Git.exe Path:"
+msgstr "Git.exe 路徑(&G)："
 
 #. Resource IDs: (ID_EDIT_GOTO - Menu)
 msgid "&Go to\tCtrl+G"
@@ -851,7 +885,8 @@ msgstr "保持目前狀態(&K)"
 msgid "&Labels"
 msgstr "標記(&L)"
 
-#. Resource IDs: (Dialog IDD_SETTINGSMAIN: Control id 65535)
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_LANGUAGE: Control id 65535,
+#. Dialog IDD_SETTINGSMAIN: Control id 65535)
 msgid "&Language:"
 msgstr "語系(&L)："
 
@@ -921,6 +956,10 @@ msgstr "選單內容(&M)："
 msgid "&Merge"
 msgstr "合併 (&M)"
 
+#. Resource IDs: (IDS_MERGE_UNRELATED)
+msgid "&Merge unrelated history"
+msgstr "合併無共同祖先的分支(&M)"
+
 #. Resource IDs: (IDS_MENUMERGE)
 msgid "&Merge..."
 msgstr "合併(&M)..."
@@ -954,7 +993,8 @@ msgstr "已移動的方塊"
 msgid "&Name"
 msgstr "名稱(&N)"
 
-#. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 65535)
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_USER: Control id 65535, Dialog
+#. IDD_SETTINGIT_CONFIG: Control id 65535)
 msgid "&Name:"
 msgstr "名稱(&N)："
 
@@ -1100,10 +1140,6 @@ msgstr "重新提交(&R)"
 #. Resource IDs: (IDS_REBASEBUTTON)
 msgid "&Rebase"
 msgstr "變基(&R)"
-
-#. Resource IDs: (Dialog IDD_INPUTLOGDLG: Control id 1246)
-msgid "&Recent messages"
-msgstr "最近的記錄訊息(&R)"
 
 #. Resource IDs: (Dialog IDD_SUBMODULE_UPDATE: Control id 1694)
 msgid "&Recursive"
@@ -1399,7 +1435,7 @@ msgstr "統合式差異檔(&U)"
 msgid "&Unknown drives"
 msgstr "未知磁碟(&U)"
 
-#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1383)
+#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1386)
 msgid "&Up"
 msgstr "向上(&U)"
 
@@ -1518,20 +1554,20 @@ msgstr "------------------------------------------------------------------------
 #. Resource IDs: (Dialog IDD_BISECTSTART: Control id 1383, Dialog
 #. IDD_BISECTSTART: Control id 1672, Dialog IDD_CLONE: Control id 1384, Dialog
 #. IDD_EXPORT: Control id 1036, Dialog IDD_EXPORT: Control id 1382, Dialog
-#. IDD_EXPORT: Control id 1483, Dialog IDD_FORMAT_PATCH: Control id 1383,
-#. Dialog IDD_FORMAT_PATCH: Control id 1384, Dialog IDD_FORMAT_PATCH: Control
-#. id 1541, Dialog IDD_FORMAT_PATCH: Control id 1542, Dialog IDD_GITSWITCH:
-#. Control id 1382, Dialog IDD_GITSWITCH: Control id 1483, Dialog IDD_MERGE:
-#. Control id 1382, Dialog IDD_MERGE: Control id 1483, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 1382, Dialog IDD_NEW_BRANCH_TAG: Control id
-#. 1483, Dialog IDD_OPEN: Control id 1002, Dialog IDD_OPEN: Control id 1003,
-#. Dialog IDD_PULLFETCH: Control id 1483, Dialog IDD_PUSH: Control id 1484,
-#. Dialog IDD_REBASE: Control id 1483, Dialog IDD_REQUESTPULL: Control id
-#. 1382, Dialog IDD_RESET: Control id 1382, Dialog IDD_RESET: Control id 1483,
-#. Dialog IDD_SETTINGSBUGTRAQADV: Control id 1474, Dialog
-#. IDD_SETTINGSDIALOGS3: Control id 1778, Dialog IDD_SETTINGSHOOKCONFIG:
-#. Control id 1324, Dialog IDD_SETTINGSHOOKCONFIG: Control id 1333, Dialog
-#. IDD_SETTINGSMAIN: Control id 1551, Dialog
+#. IDD_EXPORT: Control id 1483, Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id
+#. 1551, Dialog IDD_FORMAT_PATCH: Control id 1383, Dialog IDD_FORMAT_PATCH:
+#. Control id 1384, Dialog IDD_FORMAT_PATCH: Control id 1541, Dialog
+#. IDD_FORMAT_PATCH: Control id 1542, Dialog IDD_GITSWITCH: Control id 1382,
+#. Dialog IDD_GITSWITCH: Control id 1483, Dialog IDD_MERGE: Control id 1382,
+#. Dialog IDD_MERGE: Control id 1483, Dialog IDD_NEW_BRANCH_TAG: Control id
+#. 1382, Dialog IDD_NEW_BRANCH_TAG: Control id 1483, Dialog IDD_OPEN: Control
+#. id 1002, Dialog IDD_OPEN: Control id 1003, Dialog IDD_PULLFETCH: Control id
+#. 1483, Dialog IDD_PUSH: Control id 1484, Dialog IDD_REBASE: Control id 1483,
+#. Dialog IDD_REQUESTPULL: Control id 1382, Dialog IDD_RESET: Control id 1382,
+#. Dialog IDD_RESET: Control id 1483, Dialog IDD_SETTINGSBUGTRAQADV: Control
+#. id 1474, Dialog IDD_SETTINGSDIALOGS3: Control id 1778, Dialog
+#. IDD_SETTINGSHOOKCONFIG: Control id 1324, Dialog IDD_SETTINGSHOOKCONFIG:
+#. Control id 1333, Dialog IDD_SETTINGSMAIN: Control id 1551, Dialog
 #. IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 1664, Dialog
 #. IDD_SETTINGSPROGSDIFF: Control id 1021, Dialog IDD_SETTINGSPROGSDIFF:
 #. Control id 1089, Dialog IDD_SETTINGSPROGSMERGE: Control id 1022, Dialog
@@ -1647,8 +1683,9 @@ msgstr "發現較新的版本，請下載！"
 #. Resource IDs: (IDS_SETTINGS_INCLUDELIST_TT)
 msgid ""
 "A newline separated list of paths for which icon overlays are shown.\n"
-"If you add an '*' char at the end of a path, then all files and subdirs inside that path are included too."
-msgstr "以換行分隔的列表，包含要顯示圖示覆蓋的目錄。\n如果你在路徑後面加上「*」，那麼此路徑下的所有檔案及子目錄也都會顯示。"
+"If you add an '?' char at the end of a path, then only this path will be included.\n"
+"If you add an '*' or no char at all at the end of a path, then all files and subdirs inside that path are included too."
+msgstr "用來限制顯示圖示覆蓋的目錄，該列表一行一條規則。\n如果你在路徑後面加入「?」字元，表示只有該路徑會被顯示；\n如果你在路徑後面加上「*」字元，那麼此路徑下的所有檔案及其子目錄都會顯示。"
 
 #. Resource IDs: (IDS_SETTINGS_EXCLUDECONTEXTLIST_TT)
 msgid ""
@@ -1660,9 +1697,10 @@ msgstr "以換行分隔的列表，列出的目錄不顯示快顯功能表。\n�
 #. Resource IDs: (IDS_SETTINGS_EXCLUDELIST_TT)
 msgid ""
 "A newline separated list of paths for which no icon overlays are shown.\n"
-"If you add an '*' char at the end of a path, then all files and subdirs inside that path are excluded too.\n"
+"If you add an '?' char at the end of a path, then only this path will be excluded.\n"
+"If you add an '*' or no char at all at the end of a path, then all files and subdirs inside that path are excluded too.\n"
 "An empty list will allow overlays on all paths."
-msgstr "以換行分隔的列表，列出的目錄不顯示圖示覆蓋。\n如果你在路徑後面加上「*」，那麼此路徑下的所有檔案及子目錄也都不會顯示。\n列表為空時表示所有路徑都顯示圖示覆蓋。"
+msgstr "用來限制「不」顯示圖示覆蓋的目錄，該列表一行一條規則。\n如果你在路徑後面加入「?」字元，表示只有該路徑會被排除；\n如果你在路徑後面加上「*」字元，那麼此路徑下的所有檔案及其子目錄都會被排除。"
 
 #. Resource IDs: (61474)
 msgid "A required resource was unavailable."
@@ -2095,6 +2133,10 @@ msgstr "確定要重設所有欄位？"
 msgid "Are you sure you want to abort the rebase process?"
 msgstr "確定要中止變基程序？"
 
+#. Resource IDs: (IDS_REALLYCANCEL)
+msgid "Are you sure you want to cancel?"
+msgstr "確定要關閉視窗？"
+
 #. Resource IDs: (IDS_PROC_RESOLVE)
 msgid "Are you sure you want to mark the conflicted file(s) as resolved?"
 msgstr "確定要把衝突的檔案(們)標記為已解決嗎？"
@@ -2185,6 +2227,10 @@ msgstr "注意：這個命令影響整個工作目錄！"
 msgid "Authentication"
 msgstr "認證"
 
+#. Resource IDs: (IDS_FIRSTSTART_AUTHENTICATIONTITLE)
+msgid "Authentication and credential store"
+msgstr "「使用者認證」(SSH) 及「憑證」(HTTPS) 設定"
+
 #. Resource IDs: (Dialog IDD_SETTINGSSAVEDDATA: Control id 1278)
 msgid "Authentication data"
 msgstr "認證資料"
@@ -2259,11 +2305,11 @@ msgstr "在輸入日誌訊息時，自動從這次有修改的檔案內容中\n�
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1505)
 msgid "AutoLoad Putty &Key"
-msgstr "自動載入putty鑰(&K)"
+msgstr "自動載入 PuTTY 金鑰(&K)"
 
 #. Resource IDs: (Dialog IDD_SYNC: Control id 1619)
 msgid "Autoload Putty &Key"
-msgstr "自動載入putty鑰(&K)"
+msgstr "自動載入 PuTTY 金鑰(&K)"
 
 #. Resource IDs: (IDS_COLOURPICKER_DEFAULTTEXT)
 msgid "Automatic"
@@ -2290,7 +2336,8 @@ msgstr "瀏覽(&R)..."
 msgid "Back"
 msgstr "上一步"
 
-#. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 65535)
+#. Resource IDs: (Dialog IDD_SETCOLORPAGE: Control id 65535, Dialog
+#. IDD_SETTINGSUDIFF: Control id 65535)
 msgid "Background"
 msgstr "背景色"
 
@@ -2342,6 +2389,10 @@ msgstr "二分法 - 好的"
 #. Resource IDs: (IDS_MENUBISECTRESET)
 msgid "Bisect reset"
 msgstr "二分法 - 重設"
+
+#. Resource IDs: (IDS_MENUBISECTSKIP)
+msgid "Bisect skip"
+msgstr "二分法 - 略過"
 
 #. Resource IDs: (Dialog IDD_BISECTSTART: Control id 4574,
 #. IDS_MENUBISECTSTART)
@@ -2510,8 +2561,16 @@ msgstr "Button1"
 msgid "Button3"
 msgstr "Button3"
 
-#. Resource IDs: (Dialog IDD_SETTINGSMAIN: Control id 1215, Dialog
-#. IDD_SETTINGSMAIN: Control id 1216)
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_AUTHENTICATION: Control id
+#. 65535)
+msgid ""
+"By default Git does not save/cache credentials. However, you can configure a"
+" credential helper (recommended) or manually use %HOME%/_netrc."
+msgstr "Git 預設行為並不會「儲存／快取」憑證，然而，你可以設定憑證小幫手（建議），或者手動修改 %HOME%/_netrc 檔案。"
+
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 1216, Dialog
+#. IDD_SETTINGSMAIN: Control id 1215, Dialog IDD_SETTINGSMAIN: Control id
+#. 1216)
 msgid "C&heck now"
 msgstr "立即檢查(&H)"
 
@@ -2546,6 +2605,11 @@ msgstr "副本："
 #. Resource IDs: (Dialog IDD_STATGRAPH: Control id 1741)
 msgid "Calculate"
 msgstr "計算"
+
+#. Resource IDs: (IDS_ERR_GITCALLFAILED)
+#, c-format
+msgid "Calling git.exe failed (exit code: %d). Please check the git.exe path."
+msgstr "執行 git.exe 失敗（結束碼：%d），請確認是否正確設定 git 執行檔路徑。"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1127)
 msgid "Can double-click in log list to compare with previous revision"
@@ -2591,25 +2655,25 @@ msgstr "無法從剪貼簿上貼上點陣圖!"
 #. IDD_GITSWITCH: Control id 2, Dialog IDD_GOTO: Control id 2, Dialog
 #. IDD_GOTODLG: Control id 2, Dialog IDD_HISTORYDLG: Control id 2, Dialog
 #. IDD_IGNORE: Control id 2, Dialog IDD_INPUTDLG: Control id 2, Dialog
-#. IDD_INPUTLOGDLG: Control id 2, Dialog IDD_LOGMESSAGE: Control id 2, Dialog
-#. IDD_LOGORDERING: Control id 2, Dialog IDD_MERGE: Control id 2, Dialog
-#. IDD_MERGEABORT: Control id 2, Dialog IDD_NEW_BRANCH_TAG: Control id 2,
-#. Dialog IDD_OPEN: Control id 2, Dialog IDD_OPENDLG: Control id 2, Dialog
-#. IDD_PROMPT: Control id 2, Dialog IDD_PULLFETCH: Control id 2, Dialog
-#. IDD_PUSH: Control id 2, Dialog IDD_REFLOG: Control id 2, Dialog
-#. IDD_REGEXFILTER: Control id 2, Dialog IDD_REGEXFILTERS: Control id 2,
-#. Dialog IDD_RENAME: Control id 2, Dialog IDD_REPOSITORY_BROWSER: Control id
-#. 2, Dialog IDD_REQUESTPULL: Control id 2, Dialog IDD_RESET: Control id 2,
-#. Dialog IDD_RESOLVE: Control id 2, Dialog IDD_REVERT: Control id 2, Dialog
-#. IDD_REVGRAPHFILTER: Control id 2, Dialog IDD_SENDMAIL: Control id 2, Dialog
-#. IDD_SETTINGSBUGTRAQADV: Control id 2, Dialog IDD_SETTINGSHOOKCONFIG:
-#. Control id 2, Dialog IDD_SETTINGSPROGSADV: Control id 2, Dialog
-#. IDD_SIMPLEPROMPT: Control id 2, Dialog IDD_STASH: Control id 2, Dialog
-#. IDD_SUBMODULE_ADD: Control id 2, Dialog IDD_SUBMODULE_UPDATE: Control id 2,
-#. Dialog IDD_SVNDCOMMITTYPE: Control id 2, Dialog IDD_SVNIGNORE: Control id
-#. 2, Dialog IDD_SVNPROGRESS: Control id 2, Dialog IDD_TOOLASSOC: Control id
-#. 2, Dialog IDD_URL: Control id 2, Dialog IDD_USER_PASSWD: Control id 2,
-#. IDS_MSGBOX_CANCEL, IDS_PROC_OVERWRITEEXPORT_CANCEL)
+#. IDD_LOGMESSAGE: Control id 2, Dialog IDD_LOGORDERING: Control id 2, Dialog
+#. IDD_MERGE: Control id 2, Dialog IDD_MERGEABORT: Control id 2, Dialog
+#. IDD_NEW_BRANCH_TAG: Control id 2, Dialog IDD_OPEN: Control id 2, Dialog
+#. IDD_OPENDLG: Control id 2, Dialog IDD_PROMPT: Control id 2, Dialog
+#. IDD_PULLFETCH: Control id 2, Dialog IDD_PUSH: Control id 2, Dialog
+#. IDD_REFLOG: Control id 2, Dialog IDD_REGEXFILTER: Control id 2, Dialog
+#. IDD_REGEXFILTERS: Control id 2, Dialog IDD_RENAME: Control id 2, Dialog
+#. IDD_REPOSITORY_BROWSER: Control id 2, Dialog IDD_REQUESTPULL: Control id 2,
+#. Dialog IDD_RESET: Control id 2, Dialog IDD_RESOLVE: Control id 2, Dialog
+#. IDD_REVERT: Control id 2, Dialog IDD_REVGRAPHFILTER: Control id 2, Dialog
+#. IDD_SENDMAIL: Control id 2, Dialog IDD_SETTINGSBUGTRAQADV: Control id 2,
+#. Dialog IDD_SETTINGSHOOKCONFIG: Control id 2, Dialog IDD_SETTINGSPROGSADV:
+#. Control id 2, Dialog IDD_SIMPLEPROMPT: Control id 2, Dialog IDD_STASH:
+#. Control id 2, Dialog IDD_SUBMODULE_ADD: Control id 2, Dialog
+#. IDD_SUBMODULE_UPDATE: Control id 2, Dialog IDD_SVNDCOMMITTYPE: Control id
+#. 2, Dialog IDD_SVNIGNORE: Control id 2, Dialog IDD_SVNPROGRESS: Control id
+#. 2, Dialog IDD_TOOLASSOC: Control id 2, Dialog IDD_URL: Control id 2, Dialog
+#. IDD_USER_PASSWD: Control id 2, IDS_MSGBOX_CANCEL,
+#. IDS_PROC_OVERWRITEEXPORT_CANCEL)
 msgid "Cancel"
 msgstr "取消"
 
@@ -2800,6 +2864,10 @@ msgstr "檢查更新..."
 msgid "Check for modi&fications"
 msgstr "檢查變動(&F)"
 
+#. Resource IDs: (IDS_SEEMANUALGITEXEPATH)
+msgid "Check out the help file for \"Git.exe Path\"."
+msgstr "查看說明文件中關於「Git.exe Path」的說明。"
+
 #. Resource IDs: (IDS_SVNERR_CHECKPATHORURL)
 msgid "Check the path and/or URL you've entered."
 msgstr "請檢查你輸入的路徑或 URL。"
@@ -2813,8 +2881,8 @@ msgstr "勾選你希望出現在第一層選單的選單項目，而不是出現
 #. Resource IDs: (IDS_SETTINGS_EXTMENULAYOUT_TT)
 msgid ""
 "Check those menu entries you want to appear only in the extended context "
-"menu (SHIFT + left click)"
-msgstr "選擇你想移到擴展右鍵選單的項目（需要按住 Shift 鍵）"
+"menu (SHIFT + right click)"
+msgstr "勾選你想移到「擴展」快顯功能表的項目（需按住 Shift 鍵 + 滑鼠右鍵才會顯示）"
 
 #. Resource IDs: (IDS_SETTINGS_RELATIVETIMES_TT)
 msgid "Check to show relative times in log messages"
@@ -3204,6 +3272,10 @@ msgstr "憑證名稱："
 msgid "Compare &HEAD revisions"
 msgstr "比較 &HEAD 版本"
 
+#. Resource IDs: (IDS_LOG_POPUP_COMPARECHANGESET)
+msgid "Compare change sets"
+msgstr "比對變更集"
+
 #. Resource IDs: (IDS_PROC_BROWSEREFS_COMPAREREFS)
 msgid "Compare selected refs"
 msgstr "比對已選的參照"
@@ -3282,6 +3354,10 @@ msgid ""
 "endings."
 msgstr "設定用來比對不同版本檔案的工具程式，最好能處理 *nix 檔案。"
 
+#. Resource IDs: (IDS_FIRSTSTART_GITTITLE)
+msgid "Configure git.exe"
+msgstr "設定 git 執行檔"
+
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSDIFF: Control id 65535)
 msgid "Configure the program used for comparing different revisions of files"
 msgstr "設定用來比對不同版本檔案的工具程式"
@@ -3289,6 +3365,10 @@ msgstr "設定用來比對不同版本檔案的工具程式"
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSMERGE: Control id 65535)
 msgid "Configure the program used to resolve conflicted files."
 msgstr "設定用來解決衝突檔案的工具程式。"
+
+#. Resource IDs: (IDS_FIRSTSTART_USERTITLE)
+msgid "Configure user information"
+msgstr "設定使用者資訊"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSDIFF: Control id 65535)
 msgid "Configure viewer program for GNU diff files (patch files)"
@@ -3472,6 +3552,20 @@ msgstr "無法判斷最後提交的版本!"
 msgid "Could not find Super-project"
 msgstr "無法找到上層專案"
 
+#. Resource IDs: (IDS_ERR_GITNEEDHACKS)
+msgid ""
+"Could not find \"msysgit\" or \"windows\" in versionstring of git.exe.\n"
+"If you are using git of the cygwin or msys2 environment you need to enable special hacks.\n"
+"For more information see the help file for the keyword \"cygwin git\" or \"msys2 git\"."
+msgstr "在 git 版本字串中無法找到「msysgit」或「windows」關鍵字。\n如果你使用的是 cygwin 或 msys2 環境下的 git，你需要啟用專用的 hacks。\n請在說明文件中搜尋關鍵字「cygwin git」或「msys2 git」以取得更多詳細的說明。"
+
+#. Resource IDs: (IDS_ERR_GITNOVALIDOUTPUT)
+#, c-format
+msgid ""
+"Could not get read version information from git.exe.\n"
+"Got: \"%s\""
+msgstr "無法讀取 git 版本資訊。\n只得到：「%s」"
+
 #. Resource IDs: (IDS_ERR_NOSTATUS)
 msgid "Could not get the status!"
 msgstr "無法取得狀態！"
@@ -3551,6 +3645,13 @@ msgid ""
 "\n"
 "%s"
 msgstr "無法啟動外部合併工具！\n\n%s"
+
+#. Resource IDs: (IDS_ERR_GITDLLMISSING)
+msgid ""
+"Could not start git.exe. A dynamic library (dll) is missing.\n"
+"You might need to specify an extra PATH.\n"
+"Check help file for \"Extra PATH\"."
+msgstr "無法啟動 git.exe，可能是遺失了某個動態連結函式庫（dll）；\n你或許需要指定額外的 PATH 值。\n請在說明文件中尋找「Extra PATH」的相關說明。"
 
 #. Resource IDs: (61702)
 msgid "Could not start print job."
@@ -3685,15 +3786,15 @@ msgstr "正在建立拉取要求．．．"
 
 #. Resource IDs: (IDS_GITCREDENTIAL_HELPEREMPTY)
 msgid "Credential helper must not be empty."
-msgstr "憑證助手不能為空"
+msgstr "憑證小幫手不能空白。"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 65535)
 msgid "Credential helper:"
-msgstr "憑據助手："
+msgstr "憑證小幫手："
 
 #. Resource IDs: (Dialog IDD_SETTINGSMTP: Control id 65535)
 msgid "Credentials"
-msgstr "憑據"
+msgstr "憑證"
 
 #. Resource IDs: (IDS_SCIEDIT_CUT)
 msgid "Cu&t"
@@ -4371,13 +4472,17 @@ msgstr "不再顯示此訊息"
 msgid "Done"
 msgstr "完成"
 
-#. Resource IDs: (Dialog IDD_REBASE: Control id 1385)
+#. Resource IDs: (Dialog IDD_REBASE: Control id 1384)
 msgid "Down"
 msgstr "向下"
 
 #. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1698)
 msgid "Download"
 msgstr "下載"
+
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_LANGUAGE: Control id 65535)
+msgid "Download language packs:"
+msgstr "下載語言包："
 
 #. Resource IDs: (16028)
 msgid "Drag to make this menu float"
@@ -4394,6 +4499,10 @@ msgstr "將「標籤／分支」畫在訊息的右側"
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1079)
 msgid "Drive Types"
 msgstr "磁碟機類型"
+
+#. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1315)
+msgid "Drives A: and B:"
+msgstr "磁碟機 A: 和 B:"
 
 #. Resource IDs: (IDS_DROPONESTASH)
 msgid "Drop &one stash"
@@ -4571,6 +4680,14 @@ msgstr "啟用日誌快取"
 msgid "Enable showing Gravatar image in Log Dialog"
 msgstr "啟用在日誌視窗中顯示 Gravatar 影像"
 
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 1842)
+msgid "Enable special hack for Cygwin git"
+msgstr "啟用 Cygwin git 專用 hack"
+
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 1843)
+msgid "Enable special hack for Msys2 git"
+msgstr "啟用 Msys2 git 專用 hack"
+
 #. Resource IDs: (ID_VIEW_ENABLELEXER - Menu)
 msgid "Enable syntax highlighting"
 msgstr "啟用語法高亮顯示"
@@ -4639,10 +4756,6 @@ msgstr "行尾格式"
 #. Resource IDs: (61187)
 msgid "Enlarge the window to full size"
 msgstr "將視窗放到最大"
-
-#. Resource IDs: (Dialog IDD_INPUTLOGDLG: Control id 241)
-msgid "Enter Log Message"
-msgstr "輸入日誌訊息"
 
 #. Resource IDs: (IDS_PROC_ENTERURL)
 msgid "Enter URL"
@@ -4733,7 +4846,7 @@ msgstr "錯誤"
 
 #. Resource IDs: (IDS_PROC_ICONCACHENOTREBUILT)
 msgid "Error rebuilding Shell Icon Cache!"
-msgstr "建立圖示快取失敗！"
+msgstr "建立 Shell 圖示快取失敗！"
 
 #. Resource IDs: (IDS_ERR_SSL_VALIDATE)
 #, c-format
@@ -4832,10 +4945,6 @@ msgstr "根據副檔名而定的程式"
 #. Resource IDs: (Dialog IDD_TOOLASSOC: Control id 65535)
 msgid "Extension:"
 msgstr "副檔名："
-
-#. Resource IDs: (Dialog IDD_SETTINGSMAIN: Control id 65535)
-msgid "Extern DLL Path:"
-msgstr "外部 DLL 路徑："
 
 #. Resource IDs: (IDS_SVNACTION_EXTERNAL)
 msgid "External"
@@ -5189,6 +5298,14 @@ msgstr "第一個親代"
 msgid "First Parent Only"
 msgstr "只限第一個親代"
 
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_AUTHENTICATION: Control id 4599,
+#. Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 4598, Dialog
+#. IDD_FIRSTSTARTWIZARD_LANGUAGE: Control id 4600, Dialog
+#. IDD_FIRSTSTARTWIZARD_START: Control id 276, Dialog
+#. IDD_FIRSTSTARTWIZARD_USER: Control id 4597)
+msgid "First Start Wizard - TortoiseGit"
+msgstr "首次啟動精靈 - TortoiseGit"
+
 #. Resource IDs: (Dialog IDD_BISECTSTART: Control id 1617)
 msgid "First known &bad:"
 msgstr "首個已知壞的版本(&B)："
@@ -5200,10 +5317,6 @@ msgstr "符合影像高度(&H)\tH"
 #. Resource IDs: (ID_VIEW_FITIMAGEWIDTHS - Menu)
 msgid "Fit image &widths\tW"
 msgstr "符合影像寬度(&W)\tW"
-
-#. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1315)
-msgid "Floppy drives (A: B:)"
-msgstr "軟磁碟機（A: B:）"
 
 #. Resource IDs: (16016)
 msgid "Folder"
@@ -5263,7 +5376,8 @@ msgstr "儘管你想要變基的基準點是目前分支的後裔節點，也要
 msgid "Force: May discard"
 msgstr "強制：可能丟失"
 
-#. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 65535)
+#. Resource IDs: (Dialog IDD_SETCOLORPAGE: Control id 65535, Dialog
+#. IDD_SETTINGSUDIFF: Control id 65535)
 msgid "Foreground"
 msgstr "前景色"
 
@@ -5283,6 +5397,12 @@ msgstr "向前"
 #, c-format
 msgid "Forward %d"
 msgstr "向前 %d"
+
+#. Resource IDs: (IDS_ERR_GITUNNEEDEDHACKS)
+msgid ""
+"Found \"msysgit\" or \"windows\" in versionstring of git.exe, however, you have git.exe hacks enabled. These hacks must be disabled for proper operation with Git for Windows!\n"
+"You can find more information in the help file for the keyword \"cygwin git\" or \"msys2 git\"."
+msgstr "在 git 版本字串中找到「msysgit」或「windows」關鍵字，然而，你啟用了 git.exe hacks；這些 hacks 必需被關閉才能正常使用 Git for Windows 相關操作！\n你可以在說明文件中使用關鍵字「cygwin git」或「msys2 git」取得更多相關資訊。"
 
 #. Resource IDs: (IDS_REBASELOCKFILEFOUND)
 msgid ""
@@ -5406,7 +5526,7 @@ msgstr "一般::顏色3"
 
 #. Resource IDs: (Dialog IDD_SETTINGSLOOKANDFEEL: Control id 195)
 msgid "General::Context Menu"
-msgstr "一般::快顯式選單"
+msgstr "一般::快顯功能表"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 196)
 msgid "General::Dialogs 1"
@@ -5530,13 +5650,15 @@ msgstr "未設定 Git 目錄（見 「一般」 設定頁）"
 msgid "Git for Windows"
 msgstr "Git for Windows"
 
-#. Resource IDs: (IDS_PROC_NOMSYSGIT)
-msgid "Git for Windows (https://git-for-windows.github.io/) not found."
-msgstr "找不到 Git for Windows (https://git-for-windows.github.io/)。"
-
 #. Resource IDs: (IDS_PROC_REPOCREATEERR)
 msgid "Git reported an error while creating a repository!\n"
 msgstr "當建立版本庫時，Git 回報錯誤！\n"
+
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_USER: Control id 65535)
+msgid ""
+"Git requires that you set up a user name and email address. Both are used as"
+" meta data for your commits (not for authentication)."
+msgstr "Git 需要你設定「使用者名稱」和「電子郵件」，二者都是用來做為提交時的基本必要資訊（並非用來認證授權）。"
 
 #. Resource IDs: (32787)
 msgid "Git revision list contains the complete file history"
@@ -5555,13 +5677,9 @@ msgid ""
 "In order to change settings select a level, enter the values and select where to store to."
 msgstr "Git 採用階層式組態的概念。\n意即有多層；高層設定會覆蓋低層設定。\n「有效的」分頁顯示目前範圍的有效設定值（唯讀）。\n選擇任一層以檢視其設定值。\n要變更設定值，選擇該層，輸入新的值並選擇儲存到哪一層。"
 
-#. Resource IDs: (Dialog IDD_SETTINGSMAIN: Control id 65535)
-msgid "Git.exe Path:"
-msgstr "Git.exe 路徑："
-
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 4591)
 msgid "Git::Credential"
-msgstr "Git::憑據"
+msgstr "Git::憑證"
 
 #. Resource IDs: (Dialog IDD_SETTINREMOTE: Control id 4570)
 msgid "Git::Remote"
@@ -5658,6 +5776,11 @@ msgstr "HEAD"
 msgid "HEAD:"
 msgstr "HEAD："
 
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_AUTHENTICATION: Control id
+#. 65535)
+msgid "HTTP (URLs start with \"http://\" or \"https://\")"
+msgstr "HTTP（「http://」或「https://」開頭的 URL）"
+
 #. Resource IDs: (IDS_RESET_HARD)
 msgid "Hard"
 msgstr "Hard"
@@ -5695,11 +5818,11 @@ msgstr "鍵盤說明"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 65535)
 msgid "Helper:"
-msgstr "助手："
+msgstr "小幫手："
 
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 65535)
 msgid "Helpers:"
-msgstr "助手："
+msgstr "小幫手："
 
 #. Resource IDs: (16974)
 msgid "Hex"
@@ -5745,11 +5868,17 @@ msgstr "「隱藏／顯示」補綴檔列表\n隱藏或顯示補綴檔案列表"
 msgid "Hint"
 msgstr "提示"
 
+#. Resource IDs: (IDS_HINTLASTMESSAGES)
+msgid ""
+"Hint: Recently used commit messages are available using the context menu of "
+"the text field."
+msgstr "提示：在文字輸入區域使用快顯功能表可以取回最近使用過的提交訊息。"
+
 #. Resource IDs: (16519)
 msgid ""
 "Hint: select the context menu, change the page to 'Commands' and drag the "
 "toolbar buttons into the menu window."
-msgstr "小提示：選擇快顯式選單，切換至「命令」頁面，再將工具列按鈕拖至選單視窗中。"
+msgstr "提示: 選取內容功能表，將頁面變更為「命令」，並且將工具列按鈕拖曳到功能表視窗中。"
 
 #. Resource IDs: (17022)
 msgid "Home"
@@ -5774,6 +5903,10 @@ msgstr "掛鉤類型"
 #. Resource IDs: (Dialog IDD_SETTINGSHOOKCONFIG: Control id 1334)
 msgid "Hook Type:"
 msgstr "掛鉤類型："
+
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 1841)
+msgid "I don't use Git for Windows and need special workarounds"
+msgstr "我不使用 Git for Windows，我需要特定的應急方案："
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 65535)
 msgid "I&nclude paths:"
@@ -6100,6 +6233,21 @@ msgid ""
 "folder should have a name that ends with '.git')"
 msgstr "如果你打算在這個目錄內作業，請不要勾選此項。典型的純版本庫只用來被推送變更。（按照慣例，純版本庫的資料夾名稱應該以「.git」結尾）。"
 
+#. Resource IDs: (IDS_FIRSTSTART_LANGUAGEHINT3)
+msgid ""
+"If you want to use a translated version of TortoiseGit and your language is "
+"missing, <a id=\"download\">download</a> and install a matching language "
+"pack now and hit \"Refresh\" before continuing."
+msgstr "如你想用翻譯版 TortoiseGit 但找不到該語言， <a id=\"download\">下載</a> 及安裝語言包及按 「重新整理」。"
+
+#. Resource IDs: (IDS_EXTRAPATH_TT)
+#, c-format
+msgid ""
+"If your git installation needs an extra entry in the PATH environment "
+"variable, you can enter it here and it will get appended to %PATH% "
+"automatically when TortoiseGit starts."
+msgstr "如果你安裝的 git 需要額外的 PATH 環境變數，你可以在這裡輸入它們；當 TortoiseGit 啟動時會把它們自動附加到 %PATH% 中。"
+
 #. Resource IDs: (Dialog IDD_IGNORE: Control id 4577)
 msgid "Ignore"
 msgstr "忽略"
@@ -6180,7 +6328,7 @@ msgstr "忽略變更"
 
 #. Resource IDs: (32786)
 msgid "Ignore whitespace when comparing the parents version and the child's "
-msgstr "比較父版本時忽略空白"
+msgstr "比較親代版本時忽略空白"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAYHANDLERS: Control id 1432,
 #. IDS_PATHACTIONS_IGNORED)
@@ -6258,6 +6406,12 @@ msgstr "輸入的提交"
 #. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1649)
 msgid "In order to abort a merge progess a reset (to HEAD) is needed."
 msgstr "為了中止合併程序，需要重設（至 HEAD）。"
+
+#. Resource IDs: (IDS_FIRSTSTART_LANGUAGEHINT2)
+msgid ""
+"In the following combobox you can find all installed language packs which "
+"can be used by this version of TortoiseGit."
+msgstr "在以下組合框你可找到所有已安裝及對應此版本的 TortoiseGit 語言包"
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1499)
 msgid "Include &Tags"
@@ -6572,7 +6726,7 @@ msgstr "載入影像"
 #. Resource IDs: (Dialog IDD_CLONE: Control id 1505, Dialog IDD_SUBMODULE_ADD:
 #. Control id 1505)
 msgid "Load Putty &Key"
-msgstr "載入putty鑰(&key)"
+msgstr "載入 PuTTY 金鑰(&K)"
 
 #. Resource IDs: (IDS_WARNMODIFIEDOUTSIDE_TASK3)
 msgid ""
@@ -6842,8 +6996,7 @@ msgstr "合併時，「從：」和「到：」的 URL 或是版本不可以相�
 msgid "Merging revisions %s of %s into %s, %s%s"
 msgstr "合併版本 %s 至 %s，併入 %s，%s%s"
 
-#. Resource IDs: (Dialog IDD_INPUTLOGDLG: Control id 1359, IDS_LOG_MESSAGE,
-#. IDS_MESSAGE)
+#. Resource IDs: (IDS_LOG_MESSAGE, IDS_MESSAGE)
 msgid "Message"
 msgstr "訊息"
 
@@ -7130,7 +7283,7 @@ msgid ""
 "No command specified!\n"
 "\n"
 "TortoiseGitProc.exe is used by the Shell extension and should not be called directly!"
-msgstr "未指定命令！\n\nTortoiseGitProc.exe 用於 shell extension，請勿直接執行！"
+msgstr "未指定命令！\n\nTortoiseGitProc.exe 被 Shell extension 所執行，請勿直接執行！"
 
 #. Resource IDs: (IDS_ERR_NOCOMMANDVALUE)
 msgid "No command value specified!"
@@ -7181,6 +7334,13 @@ msgid ""
 "the last commit.\n"
 "Do you want to see the unversioned files?"
 msgstr "從上次提交以來沒有任何檔案\n變動或加入。\n要檢視未加入版本控制的檔案嗎？"
+
+#. Resource IDs: (IDS_PROC_NOMSYSGIT)
+msgid ""
+"No git.exe found.\n"
+"\n"
+"TortoiseGit requires a git.exe for its operations (e.g., such as provided by the Git for Windows package)."
+msgstr "找不到 git.exe。\n\nTortoiseGit 需要藉由一個 git 執行檔來執行實際的 git 操作（例如：由 Git for Windows 所提供的 git 執行檔）。"
 
 #. Resource IDs: (IDS_REVGRAPH_ERR_NOGRAPH)
 msgid "No graph available"
@@ -7419,25 +7579,25 @@ msgstr "OEM-US"
 #. id 1, Dialog IDD_FORMAT_PATCH: Control id 1, Dialog IDD_GITSWITCH: Control
 #. id 1, Dialog IDD_GOTO: Control id 1, Dialog IDD_GOTODLG: Control id 1,
 #. Dialog IDD_HISTORYDLG: Control id 1, Dialog IDD_IGNORE: Control id 1,
-#. Dialog IDD_INPUTDLG: Control id 1, Dialog IDD_INPUTLOGDLG: Control id 1,
-#. Dialog IDD_LOGMESSAGE: Control id 1, Dialog IDD_LOGORDERING: Control id 1,
-#. Dialog IDD_MERGE: Control id 1, Dialog IDD_MERGEABORT: Control id 1, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 1, Dialog IDD_OPEN: Control id 1, Dialog
-#. IDD_OPENDLG: Control id 1, Dialog IDD_PROMPT: Control id 1, Dialog
-#. IDD_PULLFETCH: Control id 1, Dialog IDD_PUSH: Control id 1, Dialog
-#. IDD_REFLOG: Control id 1, Dialog IDD_REGEXFILTER: Control id 1, Dialog
-#. IDD_REGEXFILTERS: Control id 1, Dialog IDD_RENAME: Control id 1, Dialog
-#. IDD_REPOSITORY_BROWSER: Control id 1, Dialog IDD_REQUESTPULL: Control id 1,
-#. Dialog IDD_RESET: Control id 1, Dialog IDD_RESOLVE: Control id 1, Dialog
-#. IDD_RESOLVE_CONFLICT: Control id 4569, Dialog IDD_REVERT: Control id 1,
-#. Dialog IDD_SETTINGSBUGTRAQADV: Control id 1, Dialog IDD_SETTINGSHOOKCONFIG:
-#. Control id 1, Dialog IDD_SETTINGSPROGSADV: Control id 1, Dialog
-#. IDD_SIMPLEPROMPT: Control id 1, Dialog IDD_STASH: Control id 1, Dialog
-#. IDD_STATGRAPH: Control id 1, Dialog IDD_SUBMODULE_ADD: Control id 1, Dialog
-#. IDD_SUBMODULE_UPDATE: Control id 1, Dialog IDD_SVNDCOMMITTYPE: Control id
-#. 1, Dialog IDD_SVNIGNORE: Control id 1, Dialog IDD_SVNPROGRESS: Control id
-#. 1, Dialog IDD_TOOLASSOC: Control id 1, Dialog IDD_URL: Control id 1, Dialog
-#. IDD_USER_PASSWD: Control id 1, IDS_MSGBOX_OK)
+#. Dialog IDD_INPUTDLG: Control id 1, Dialog IDD_LOGMESSAGE: Control id 1,
+#. Dialog IDD_LOGORDERING: Control id 1, Dialog IDD_MERGE: Control id 1,
+#. Dialog IDD_MERGEABORT: Control id 1, Dialog IDD_NEW_BRANCH_TAG: Control id
+#. 1, Dialog IDD_OPEN: Control id 1, Dialog IDD_OPENDLG: Control id 1, Dialog
+#. IDD_PROMPT: Control id 1, Dialog IDD_PULLFETCH: Control id 1, Dialog
+#. IDD_PUSH: Control id 1, Dialog IDD_REFLOG: Control id 1, Dialog
+#. IDD_REGEXFILTER: Control id 1, Dialog IDD_REGEXFILTERS: Control id 1,
+#. Dialog IDD_RENAME: Control id 1, Dialog IDD_REPOSITORY_BROWSER: Control id
+#. 1, Dialog IDD_REQUESTPULL: Control id 1, Dialog IDD_RESET: Control id 1,
+#. Dialog IDD_RESOLVE: Control id 1, Dialog IDD_RESOLVE_CONFLICT: Control id
+#. 4569, Dialog IDD_REVERT: Control id 1, Dialog IDD_SETTINGSBUGTRAQADV:
+#. Control id 1, Dialog IDD_SETTINGSHOOKCONFIG: Control id 1, Dialog
+#. IDD_SETTINGSPROGSADV: Control id 1, Dialog IDD_SIMPLEPROMPT: Control id 1,
+#. Dialog IDD_STASH: Control id 1, Dialog IDD_STATGRAPH: Control id 1, Dialog
+#. IDD_SUBMODULE_ADD: Control id 1, Dialog IDD_SUBMODULE_UPDATE: Control id 1,
+#. Dialog IDD_SVNDCOMMITTYPE: Control id 1, Dialog IDD_SVNIGNORE: Control id
+#. 1, Dialog IDD_SVNPROGRESS: Control id 1, Dialog IDD_TOOLASSOC: Control id
+#. 1, Dialog IDD_URL: Control id 1, Dialog IDD_USER_PASSWD: Control id 1,
+#. IDS_MSGBOX_OK)
 msgid "OK"
 msgstr "確定"
 
@@ -7505,9 +7665,18 @@ msgstr "只顯示本地分支"
 msgid "Only Merged Files"
 msgstr "只包含已合併的檔案"
 
+#. Resource IDs: (Dialog IDD_SETTINGSTBLAME: Control id 1677,
+#. ID_VIEW_ONLYCONSIDERFIRSTPARENTS - Menu)
+msgid "Only consider first parents on blame"
+msgstr "只譴責第一親代版本"
+
 #. Resource IDs: (IDS_git_DEPTH_FILES)
 msgid "Only file children"
 msgstr "僅包含檔案"
+
+#. Resource IDs: (IDS_BROWSE_REFS_ONLYMERGED)
+msgid "Only merged (to HEAD)"
+msgstr "只顯示已合併到 HEAD 的"
 
 #. Resource IDs: (IDS_COMMITDLG_ONLYNUMBERS)
 msgid ""
@@ -7518,6 +7687,10 @@ msgstr "只允許輸入數字！\n（可以用逗號分隔）"
 #. Resource IDs: (IDS_git_DEPTH_EMPTY)
 msgid "Only this item"
 msgstr "僅此項目"
+
+#. Resource IDs: (IDS_BROWSE_REFS_ONLYUNMERGED)
+msgid "Only unmerged (to HEAD)"
+msgstr "只顯示未合併到 HEAD 的"
 
 #. Resource IDs: (61440, ID_FILE_OPEN - Menu, ID_FILE_OPEN - Ribbon name)
 msgid "Open"
@@ -7539,8 +7712,7 @@ msgid ""
 "Open files"
 msgstr "開啟檔案以比較檔案或套用補綴\n開啟檔案"
 
-#. Resource IDs: (Dialog IDD_PATCH_FILE_OPEN_CUSTOM: Control id 1132,
-#. IDS_PATCH_COPYFROMCLIPBOARD)
+#. Resource IDs: (IDS_PATCH_COPYFROMCLIPBOARD)
 msgid "Open from clipboard"
 msgstr "自剪貼簿開啟"
 
@@ -7855,8 +8027,17 @@ msgid "Please enter a hook script to execute."
 msgstr "請輸入要指定的掛鉤指令檔"
 
 #. Resource IDs: (IDS_ERR_NOHOOKPATHSPECIFIED)
-msgid "Please enter a path where to apply the hook script to."
-msgstr "請輸入要套用這個掛鉤指令檔的路徑"
+msgid ""
+"Please enter a path where to apply the hook script to. Use \"*\" for all "
+"paths."
+msgstr "請輸入要套用這個掛鉤指令檔的路徑。可以使用「*」來表示所有的路徑。"
+
+#. Resource IDs: (IDS_FIRSTSTART_HINT3)
+msgid ""
+"Please see the <a id=\"manual\">manual</a> for general hints. E.g. in most "
+"dialogs there are some shared shortcuts such as F5 for refresh or CTRL+F for"
+" search and oftentimes there are powerfull context menus."
+msgstr "請查閱<a id=\"manual\">手冊</a>以取得更多詳細的提示，例如：在大多數的視窗中，可以按 F5 來更新畫面，並且常常有許多強大的快顯功能表可用。"
 
 #. Resource IDs: (IDS_ERR_NOHOOKTYPESPECIFIED)
 msgid "Please select a hook type"
@@ -7918,6 +8099,10 @@ msgstr "提交前掛鉤"
 #. Resource IDs: (IDS_HOOKTYPE_PREPUSH)
 msgid "Pre-Push Hook"
 msgstr "推送前掛鉤"
+
+#. Resource IDs: (IDS_HOOKTYPE_PREREBASE)
+msgid "Pre-rebase hook"
+msgstr "變基(rebase)前掛鉤"
 
 #. Resource IDs: (IDS_PROC_COMMIT_PREPARECOMMIT)
 msgid "Preparing commit..."
@@ -8139,11 +8324,11 @@ msgstr "推送..."
 
 #. Resource IDs: (Dialog IDD_SETTINREMOTE: Control id 65535)
 msgid "Putty Key:"
-msgstr "Putty 金鑰："
+msgstr "PuTTY 金鑰："
 
 #. Resource IDs: (IDS_PUTTYKEYFILEFILTER)
 msgid "Putty Private Key (*.ppk)|*.ppk|All Files (*.*)|*.*||"
-msgstr "Putty 私有鑰 (*.ppk)|*.ppk|所有檔案 (*.*)|*.*||"
+msgstr "PuTTY 私鑰 (*.ppk)|*.ppk|所有檔案 (*.*)|*.*||"
 
 #. Resource IDs: (IDS_STATGRAPH_QUARTERLABEL)
 #, c-format
@@ -8232,6 +8417,10 @@ msgstr "還原預設值(&S)"
 msgid "Re&vert..."
 msgstr "復原(&V)..."
 
+#. Resource IDs: (Dialog IDD_SETTINGSMAIN: Control id 1684)
+msgid "Re-run &First Start Wizard"
+msgstr "重啟「首次啟動精靈」(&F)"
+
 #. Resource IDs: (IDS_FETCH_REACHABLE)
 msgid "Reachable"
 msgstr "可達到的"
@@ -8269,6 +8458,10 @@ msgstr "最近檔案"
 #. Resource IDs: (Dialog IDD_SETTINGSTBLAME: Control id 65535)
 msgid "Recently modified lines"
 msgstr "最近修改過的行"
+
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 65535)
+msgid "Recommended: Git for Windows"
+msgstr "建議：Git for Windows"
 
 #. Resource IDs: (IDS_MERGE_RECORDONLY)
 msgid "Record Only"
@@ -8341,7 +8534,8 @@ msgstr "提交位於哪些參照上"
 msgid "Refname"
 msgstr "參照名稱"
 
-#. Resource IDs: (Dialog IDD_LOGMESSAGE: Control id 1382, IDS_MENUREFRESH)
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_LANGUAGE: Control id 1382,
+#. Dialog IDD_LOGMESSAGE: Control id 1382, IDS_MENUREFRESH)
 msgid "Refresh"
 msgstr "重新整理"
 
@@ -8714,7 +8908,7 @@ msgstr "已還原"
 
 #. Resource IDs: (IDS_SVNACTION_SENDMAIL_RETRY)
 msgid "Retrying in 2 seconds..."
-msgstr "兩秒後重試…"
+msgstr "兩秒後重試..."
 
 #. Resource IDs: (Dialog IDD_REVERT: Control id 175, IDS_PROGRS_CMD_REVERT,
 #. IDS_PROGRS_TITLE_REVERT)
@@ -8852,6 +9046,10 @@ msgstr "往下一行"
 msgid "Row Up"
 msgstr "往上一行"
 
+#. Resource IDs: (Dialog IDD_SETTINGSHOOKCONFIG: Control id 1335)
+msgid "Run when working tree path is under:"
+msgstr "當工作目錄如下時執行："
+
 #. Resource IDs: (17045)
 msgid "S&elect..."
 msgstr "選擇(&E)..."
@@ -8916,6 +9114,11 @@ msgstr "SMTP，直接到目的伺服器"
 #. Resource IDs: (Dialog IDD_SETTINGSPROXY: Control id 1081)
 msgid "SSH"
 msgstr "SSH"
+
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_AUTHENTICATION: Control id
+#. 65535)
+msgid "SSH (URLs look like \"git@example.com\")"
+msgstr "SSH（URL 看起像「git@example.com」）"
 
 #. Resource IDs: (IDS_ENCRYPT_SSL)
 msgid "SSL/TLS"
@@ -9106,10 +9309,6 @@ msgid ""
 "Save file"
 msgstr "儲存已修改的檔案\n儲存檔案"
 
-#. Resource IDs: (Dialog IDD_PATCH_FILE_OPEN_CUSTOM: Control id 1132)
-msgid "Save to clipboard"
-msgstr "複製至剪貼簿"
-
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 65535, Dialog
 #. IDD_SETTINGSBUGTRAQ_CONFIG: Control id 65535, Dialog IDD_SETTINGSDIALOGS3:
 #. Control id 65535)
@@ -9157,9 +9356,8 @@ msgstr "掃瞄"
 
 #. Resource IDs: (Dialog IDD_BUGTRAQREGEXTESTER: Control id 1014, Dialog
 #. IDD_CHECKFORUPDATES: Control id 1014, Dialog IDD_COMMITDLG: Control id
-#. 1014, Dialog IDD_INPUTDLG: Control id 1064, Dialog IDD_INPUTLOGDLG: Control
-#. id 1064, Dialog IDD_MERGE: Control id 1014, Dialog IDD_PATCH_VIEW: Control
-#. id 1636)
+#. 1014, Dialog IDD_INPUTDLG: Control id 1064, Dialog IDD_MERGE: Control id
+#. 1014, Dialog IDD_PATCH_VIEW: Control id 1636)
 msgid "Scintilla"
 msgstr "Scintilla"
 
@@ -9413,15 +9611,15 @@ msgstr "設定 - TortoiseGit"
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1270,
 #. IDS_STATUSLIST_CONTEXT_SHELL)
 msgid "Shell"
-msgstr "檔案總管"
+msgstr "Shell"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1271)
 msgid "Shell Extended"
-msgstr "檔案總管增強"
+msgstr "Shell 增強"
 
 #. Resource IDs: (IDS_PROC_ICONCACHEREBUILT)
 msgid "Shell Icon Cache was rebuilt!"
-msgstr "重新建立圖示快取！"
+msgstr "重建了 Shell 圖示快取！"
 
 #. Resource IDs: (5062 - Menu)
 msgid "Shift-JIS"
@@ -9475,7 +9673,7 @@ msgstr "顯示巢狀參照"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1088)
 msgid "Show &overlays and context menu only in explorer"
-msgstr "僅在檔案總管中顯示圖示覆蓋與快顯式選單(&O)"
+msgstr "僅在檔案總管中顯示圖示覆蓋與快顯功能表(&O)"
 
 #. Resource IDs: (17099)
 msgid "Show Above the Ribbon"
@@ -9815,6 +10013,10 @@ msgstr "略過"
 #, c-format
 msgid "Skip Patch: %s"
 msgstr "略過補綴：%s"
+
+#. Resource IDs: (IDS_MENUDESCBISECTSKIP)
+msgid "Skip current revision in bisecting process"
+msgstr "在二分法過程中「略過」目前版本"
 
 #. Resource IDs: (Dialog IDD_PROPPAGE: Control id 11029,
 #. IDS_PATHACTIONS_SKIPWORKTREE, IDS_STATUSLIST_SKIPWORKTREE)
@@ -10364,23 +10566,23 @@ msgid ""
 "\n"
 "You should NOT uncheck files unless you know what you are doing.\n"
 "\n"
-"While merging conflicts can occur which need to be resolved manually (i.e., integrate your changes into a file which was also modified on another branch).\n"
+"When you merge changes, conflicts can arise that must be solved manually (i.e., you need to integrate your changes into a file which was also modified on another branch).\n"
 "\n"
 "See help for more information."
-msgstr "你正在完成一個特殊的提交，名為「合併提交」，因此，它包含你的變更以及合併來源分支的變更。\n\n你「不」應該取消勾選某些檔案，除非你知道你正在做什麼。\n\n合併時可能會發生需要手動解決的衝突；這意謂著，你的變更和合併來源分支都修改了相同檔案中的相關部分。\n\n請參考「說明文件」取得更多資訊。"
+msgstr "你正在完成一個特殊的提交，名為「合併提交」，因此，它包含你的變更以及合併來源分支的變更。 \n\n你「不」應該取消勾選某些檔案，除非你知道你正在做什麼。 \n\n合併時可能會發生需要手動解決的衝突；這意謂著，你的變更和合併來源分支都修改了相同檔案中的相關部分。 \n\n請參考「說明文件」取得更多資訊。"
 
 #. Resource IDs: (IDS_GITCREDENTIAL_OVERWRITEHELPER)
 #, c-format
 msgid ""
 "The credential helper URL \"%s\" already exists.\n"
 "Do you want to overwrite it?"
-msgstr "憑證助手「%s」已經存在\n要覆寫嗎？"
+msgstr "憑證小幫手的 URL「%s」已經存在。\n要覆寫嗎？"
 
 #. Resource IDs: (IDS_GITCREDENTIAL_SAVEHELPER)
 msgid ""
 "The credential helper was changed.\n"
 "Do you want to save now or discard changes?"
-msgstr "憑證組態已改變\n要「儲存」或「放棄變更」？"
+msgstr "已切換到不同的憑證小幫手。\n要「儲存」或「放棄變更」？"
 
 #. Resource IDs: (IDS_ERROR_NOCLEAN_STASH)
 msgid ""
@@ -10735,6 +10937,14 @@ msgid ""
 "changes that were made before the application closed."
 msgstr "這些是比目前版本還要更新的儲存檔，並含有程式關閉前留下的變更。"
 
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_AUTHENTICATION: Control id
+#. 65535, Dialog IDD_FIRSTSTARTWIZARD_USER: Control id 65535)
+msgid ""
+"These settings will be stored to your global git configuration "
+"(%HOME%/.gitconfig) and will be used for all your git repositories as a "
+"default."
+msgstr "這些設定將會被存到你的 git 全域組態中（%HOME%/.gitconfig），它們會成為你所有 git 版本庫的預設值。"
+
 #. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGDELETEREMOTEBRANCHES)
 msgid "This action will remove the branches on the remote."
 msgstr "這會移除遠端的分支。"
@@ -10759,6 +10969,15 @@ msgid ""
 "A valid path must not contain '<<>|\"?*:' or one of the following device names:\n"
 "com1-com9, lpt1-lpt9, prn, aux, con, nul, clock$"
 msgstr "路徑錯誤！\n正確的路徑不可以包含「<<>|\"?*:」或是下列的裝置名稱：\ncom1-com9, lpt1-lpt9, prn, aux, con, nul, clock$"
+
+#. Resource IDs: (IDS_FIRSTSTART_HINT2)
+msgid ""
+"This is the First Start Wizard which will help you configuring the basic "
+"settings. TortoiseGit is highly configurable, so it is advisable that you "
+"have a look into its settings dialog. The settings dialog is reachable using"
+" the start menu or the context menu of the Windows Explorer: TortoiseGit -> "
+"Settings."
+msgstr "這是「首次啟動精靈」，用來幫助你完成基本的設定值。其實 TortoiseGit 有相當多的組態能夠被設定，所以相當值得你進入設定畫面瞧個究竟；你可以使用「Windows 開始選單」或者「檔案總管快顯功能表：TortoiseGit -> Settings」來開啟設定畫面。"
 
 #. Resource IDs: (IDS_PROC_LOG_ONLYONCE)
 msgid ""
@@ -10898,6 +11117,10 @@ msgid ""
 "%s\n"
 msgstr "TortoiseGit %d.%d.%d.%d %s\n%s\n"
 
+#. Resource IDs: (IDS_FIRSTSTART_LANGUAGEHINT1)
+msgid "TortoiseGit can be localized using language packs."
+msgstr "TortoiseGit 可以透過語言包進行本地化。"
+
 #. Resource IDs: (IDS_ASK_REMOVE_FROM_INDEX)
 #, c-format
 msgid ""
@@ -10921,7 +11144,21 @@ msgid ""
 "To use TortoiseGit please open the explorer and right-click on any folder you like\n"
 "to bring up the context menu where you will find all TortoiseGit commands.\n"
 "And read the manual!"
-msgstr "TortoiseGit 是 shell 延伸程式，\n也就是說它整合到 Windows 檔案總管。\n要使用 TortoiseGit 請從檔案總管中右鍵點擊任何目錄，\n可以在快顯式選單中找到所有 TortoiseGit 的指令；\n並請閱讀說明書！"
+msgstr "TortoiseGit 是 Shell extension，\n也就是說它整合到 Windows 檔案總管。\n要使用 TortoiseGit 請從檔案總管中的任何目錄或檔案點擊右鍵，\n即可在快顯功能表中找到所有 TortoiseGit 的指令；\n並請閱讀說明書！"
+
+#. Resource IDs: (IDS_FIRSTSTART_HINT1)
+msgid ""
+"TortoiseGit is designed as a Shell Extension. Therefore the main interaction"
+" with TortoiseGit will be using the context menu of the Windows shell such "
+"as the Windows Explorer."
+msgstr "TortoiseGit 被設計為一支 Shell Extension，因此，主要用法是透過 Windows Shell（例如：檔案總管）的快顯功能表來使用 TortoiseGit。"
+
+#. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 65535)
+msgid ""
+"TortoiseGit requires a git.exe for its operations. TortoiseGit tries to "
+"automatically detect a working git.exe, but if that doesn't work or you want"
+" to use a different one please specify the path manually!"
+msgstr "TortoiseGit 需要藉由一個 git 執行檔來執行實際的 git 操作，TortoiseGit 會試著自動尋找可用的 git 執行檔，但是如果它無法正常工作的話，請試著手動指定它的正確路徑！"
 
 #. Resource IDs: (IDS_SETTINGS_OVERLAYINFO2)
 #, c-format
@@ -11007,6 +11244,16 @@ msgid ""
 "TortoiseGitMerge cannot process this patch file. The filename \"%s\" appears"
 " more than once."
 msgstr "TortoiseGitMerge 無法處理這個補綴檔，檔名「%s」出現多於一次。"
+
+#. Resource IDs: (IDS_FIRSTSTART_SSHHINT)
+msgid ""
+"TortoiseGitPlink is recommended as SSH client. If you don't have a key pair "
+"yet, you should generate one. Keep the private one in a save place and set "
+"up the public key on your hosting platform. Use the PuTTY authentication "
+"agent for caching the password (done automatically if a PuTTY key is "
+"configured for a remote). For advanced tips & tricks see our <a "
+"id=\"manual\">manual</a> and <a id=\"sshfaq\">FAQ</a>."
+msgstr "建議使用 TortoiseGitPlink 做為你的 SSH 客戶端程式。如果你還沒有「金鑰對(key pair)」，你應該產生一組，並將私鑰存放在安全的地方以備後用，然後在伺服端設定好你的公鑰；使用 PuTTY 認證代理程式（Pageant）幫你快取密碼（如果你已經為遠端設定好 PuTTY 金鑰，這就會自動完成）。請查閱我們的<a id=\"manual\">手冊</a>和 <a id=\"sshfaq\">FAQ</a> 以取得更多進階的提示和技巧。"
 
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 357, IDS_APP_TITLE)
 msgid "TortoiseGitUDiff"
@@ -11247,7 +11494,7 @@ msgstr "含有無版本控制的檔案時，將上層資料夾標記為「已修
 msgid "Unversioning %s"
 msgstr "正在清除 %s 的版本控制資訊"
 
-#. Resource IDs: (Dialog IDD_REBASE: Control id 1384)
+#. Resource IDs: (Dialog IDD_REBASE: Control id 1386)
 msgid "Up"
 msgstr "向上"
 
@@ -11675,6 +11922,17 @@ msgstr "警告"
 msgid "Warning!"
 msgstr "警告！"
 
+#. Resource IDs: (IDS_FIRSTSTART_HINT4)
+msgid ""
+"We hope you enjoy the usage of TortoiseGit! In case of questions or "
+"problems, please consult our manual or go to <a "
+"id=\"support\">https://tortoisegit.org/support/</a>"
+msgstr "我們希望你可以享用 TortoiseGit！如果你有任何使用上的問題，請參考我們的手冊，或者瀏覽 <a id=\"support\">https://tortoisegit.org/support/</a>"
+
+#. Resource IDs: (IDS_FIRSTSTART_STARTTITLE)
+msgid "Welcome to TortoiseGit!"
+msgstr "歡迎使用 TortoiseGit！"
+
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Western European"
 msgstr "西歐"
@@ -11819,8 +12077,7 @@ msgstr "在檔案之內"
 msgid "Working Tree"
 msgstr "工作目錄"
 
-#. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQADV: Control id 1472, Dialog
-#. IDD_SETTINGSHOOKCONFIG: Control id 1335)
+#. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQADV: Control id 1472)
 msgid "Working Tree Path:"
 msgstr "工作目錄路徑："
 
@@ -11855,7 +12112,7 @@ msgstr "你要求拉取，卻沒有指定遠端分支。"
 msgid ""
 "You can disable specific Overlay handlers here.\n"
 "Disabled handlers won't use up an overlay slot and give other shell extensions a chance to show their overlays."
-msgstr "你可以停用特定的圖示覆蓋。\n作業系統可顯示的圖示數量有限，停用圖示可讓其它擴展程式有機會顯示它們的圖示。"
+msgstr "你可以停用特定的圖示覆蓋。\n作業系統可顯示的圖示數量有限，停用圖示可讓其它 Shell extensions 有機會顯示它們的圖示。"
 
 #. Resource IDs: (16005)
 #, c-format
@@ -11879,11 +12136,12 @@ msgid "You cannot change the type of this ref with a rename."
 msgstr "你不能透過重新命名來更改這參照的類型"
 
 #. Resource IDs: (IDS_PROC_OLDMSYSGIT)
+#, c-format
 msgid ""
-"You have an old version of Git for Windows (https://git-for-windows.github.io/) installed which contains security issues.\n"
+"You have an old unsupported version of Git installed.\n"
 "\n"
-"You should consider an upgrade to 1.9.5+."
-msgstr "你安裝了舊版的、有安全漏洞的 Git for Windows (https://git-for-windows.github.io/)\n\n你應該考慮升級到 1.9.5+。"
+"You should consider an upgrade to %s."
+msgstr "你安裝了舊版的、不被支援的 Git。\n\n你應該考慮升級到 %s。"
 
 #. Resource IDs: (IDS_STASHSAVE_INCLUDEUNTRACKED)
 msgid ""
@@ -11983,6 +12241,10 @@ msgstr "你的版本是："
 #, c-format
 msgid "Your version is: %d.%d.%d.%d"
 msgstr "你的版本是：%d.%d.%d.%d"
+
+#. Resource IDs: (IDS_ARCHIVEFILEFILTER)
+msgid "ZIP archive (*.zip)|*.zip|All Files (*.*)|*.*||"
+msgstr "ZIP 壓縮檔 (*.zip)|*.zip|所有檔案 (*.*)|*.*||"
 
 #. Resource IDs: (Dialog IDD_EXPORT: Control id 1074)
 msgid "Zip File"
@@ -12224,7 +12486,11 @@ msgstr "外部"
 #. Resource IDs: (IDS_PROC_PROGRESS_GITUNCLEANEXIT)
 #, c-format
 msgid "git did not exit cleanly (exit code %d)"
-msgstr "Git 不正常結束（傳回 %d）"
+msgstr "Git 不正常結束（結束碼 %d）"
+
+#. Resource IDs: (IDS_GITEXEFILEFILTER)
+msgid "git.exe|git.exe||"
+msgstr "git.exe|git.exe||"
 
 #. Resource IDs: (IDS_STATUSIGNORED)
 msgid "ignored"
