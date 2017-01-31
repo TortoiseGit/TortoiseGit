@@ -73,7 +73,6 @@ bool DropMoveCommand::Execute()
 	if (progress.IsValid())
 	{
 		progress.SetTitle(IDS_PROC_MOVING);
-		progress.SetAnimation(IDR_MOVEANI);
 		progress.SetTime(true);
 		progress.ShowModeless(CWnd::FromHandle(hwndExplorer));
 	}
@@ -107,7 +106,6 @@ bool DropMoveCommand::Execute()
 			// rebuild the progress dialog
 			progress.EnsureValid();
 			progress.SetTitle(IDS_PROC_MOVING);
-			progress.SetAnimation(IDR_MOVEANI);
 			progress.SetTime(true);
 			progress.SetProgress(count, pathList.GetCount());
 			progress.ShowModeless(CWnd::FromHandle(hwndExplorer));

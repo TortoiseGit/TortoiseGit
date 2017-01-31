@@ -728,7 +728,6 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff, BOOL keepFetchedData)
 	{
 		progress.SetTitle(CString(MAKEINTRESOURCE(IDS_PROGS_TITLE_GATHERSTATISTICS)));
 		progress.FormatNonPathLine(1, IDS_PROC_STATISTICS_DIFF);
-		progress.SetAnimation(IDR_MOVEANI);
 		progress.SetTime(true);
 		progress.ShowModeless(this);
 	}

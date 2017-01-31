@@ -24,10 +24,6 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 // AVI
 //
 
-IDR_ANIMATION           AVI                     "bin168.avi"
-IDR_MOVEANI             AVI                     "bin167.avi"
-IDR_SEARCH              AVI                     "search.avi"
-IDR_CLEANUPANI          AVI                     "cleananim.avi"
 IDR_DOWNLOAD            AVI                     "download.avi"
 
 /////////////////////////////////////////////////////////////////////////////

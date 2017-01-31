@@ -64,7 +64,6 @@ int CGitLogList::RevertSelectedCommits(int parent)
 	if (this->GetSelectedCount() > 1)
 	{
 		progress.SetTitle(CString(MAKEINTRESOURCE(IDS_PROGS_TITLE_REVERTCOMMIT)));
-		progress.SetAnimation(IDR_MOVEANI);
 		progress.SetTime(true);
 		progress.ShowModeless(this);
 	}
@@ -120,7 +119,6 @@ int CGitLogList::CherryPickFrom(CString from, CString to)
 
 	CSysProgressDlg progress;
 	progress.SetTitle(CString(MAKEINTRESOURCE(IDS_PROGS_TITLE_CHERRYPICK)));
-	progress.SetAnimation(IDR_MOVEANI);
 	progress.SetTime(true);
 	progress.ShowModeless(this);
 

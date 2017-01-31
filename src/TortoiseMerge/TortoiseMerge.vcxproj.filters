@@ -568,9 +568,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Resources\download.avi">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="..\Resources\lineadded.ico">
       <Filter>Resource Files</Filter>
     </None>

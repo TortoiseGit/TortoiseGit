@@ -2198,15 +2198,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Resources\bin167.avi">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\Resources\bin168.avi">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\Resources\cleananim.avi">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="..\Resources\download.avi">
       <Filter>Resource Files</Filter>
     </None>
@@ -2214,9 +2205,6 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="..\Resources\pandown.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\Resources\search.avi">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="..\Resources\TortoiseLoglistCommon.rc2">

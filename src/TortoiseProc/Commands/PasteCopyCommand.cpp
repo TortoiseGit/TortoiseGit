@@ -42,7 +42,6 @@ bool PasteCopyCommand::Execute()
 	orgPathList.RemoveAdminPaths();
 	CSysProgressDlg progress;
 	progress.SetTitle(IDS_PROC_COPYING);
-	progress.SetAnimation(IDR_MOVEANI);
 	progress.SetTime(true);
 	progress.ShowModeless(CWnd::FromHandle(hwndExplorer));
 	for (int nPath = 0; nPath < orgPathList.GetCount(); ++nPath)
@@ -67,7 +66,6 @@ bool PasteCopyCommand::Execute()
 			// rebuild the progress dialog
 			progress.EnsureValid();
 			progress.SetTitle(IDS_PROC_COPYING);
-			progress.SetAnimation(IDR_MOVEANI);
 			progress.SetTime(true);
 			progress.SetProgress(count, orgPathList.GetCount());
 			progress.ShowModeless(CWnd::FromHandle(hwndExplorer));

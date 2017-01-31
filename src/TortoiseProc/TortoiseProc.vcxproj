@@ -732,13 +732,9 @@
     <Image Include="..\Resources\library-win10.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Resources\bin167.avi" />
-    <None Include="..\Resources\bin168.avi" />
-    <None Include="..\Resources\cleananim.avi" />
     <None Include="..\Resources\download.avi" />
     <None Include="..\Resources\pan.cur" />
     <None Include="..\Resources\pandown.cur" />
-    <None Include="..\Resources\search.avi" />
     <None Include="..\Resources\TortoiseLoglistCommon.rc2" />
   </ItemGroup>
   <ItemGroup>

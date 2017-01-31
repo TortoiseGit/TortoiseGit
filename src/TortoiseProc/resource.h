@@ -15,15 +15,12 @@
 #define IDD_COMMITDLG                   135
 #define IDD_SETTINGSMAIN                143
 #define IDD_FINDBAR                     144
-#define IDR_ANIMATION                   148
-#define IDR_MOVEANI                     149
 #define IDD_RENAME                      151
 #define IDD_REPOSITORY_BROWSER          153
 #define IDD_ADD                         155
 #define IDD_CHANGEDFILES                158
 #define IDD_SIMPLEPROMPT                160
 #define IDD_INPUTDLG                    161
-#define IDR_SEARCH                      163
 #define IDI_DRIVES                      164
 #define IDD_URL                         164
 #define IDI_SSH                         165
@@ -51,7 +48,6 @@
 #define IDD_RESOLVE                     207
 #define IDI_WARNING_GENERAL             210
 #define IDD_HISTORYDLG                  211
-#define IDR_CLEANUPANI                  212
 #define IDD_SETTINGSCOLORS_2            212
 #define IDI_ACTIONADDED                 213
 #define IDI_ACTIONDELETED               214

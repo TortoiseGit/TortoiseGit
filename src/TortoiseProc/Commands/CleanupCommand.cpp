@@ -247,7 +247,6 @@ static bool DoCleanUp(const CTGitPathList& pathList, int cleanType, bool bDir, b
 	else
 	{
 		CSysProgressDlg sysProgressDlg;
-		sysProgressDlg.SetAnimation(IDR_CLEANUPANI);
 		sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
 		sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_PROC_CLEANUP_INFO1)));
 		sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));

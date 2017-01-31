@@ -689,7 +689,6 @@ BOOL CMainFrame::DiffFiles(CString sURL1, CString sRev1, CString sURL2, CString 
 	sTemp.LoadString(IDS_GETVERSIONOFFILETITLE);
 	progDlg.SetTitle(sTemp);
 	progDlg.SetShowProgressBar(true);
-	progDlg.SetAnimation(IDR_DOWNLOAD);
 	progDlg.SetTime(FALSE);
 	progDlg.SetProgress(1,100);
 	progDlg.ShowModeless(this);

@@ -83,18 +83,7 @@ public:
 	void SetCancelMsg ( LPCTSTR szMessage );
 #ifdef _MFC_VER
 	void SetCancelMsg ( UINT idMessage );
-	/**
-	 * Specifies an AVI-clip that will run in the dialog box.
-	 * \param uRsrcID AVI resource identifier. To create this value use the MAKEINTRESOURCE macro.
-	 */
-	void SetAnimation ( UINT uRsrcID );
 #endif
-	/**
-	 * Specifies an AVI-clip that will run in the dialog box.
-	 * \param hinst instance handle to the module from which the avi resource should be loaded.
-	 * \param uRsrcID AVI resource identifier. To create this value use the MAKEINTRESOURCE macro.
-	 */
-	void SetAnimation ( HINSTANCE hinst, UINT uRsrcID );
 
 	/**
 	 * Specifies that the progress dialog should have a line indicating the time remaining to complete.

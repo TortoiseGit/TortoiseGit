@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2010-2013, 2016 - TortoiseGit
+// Copyright (C) 2010-2013, 2016-2017 - TortoiseGit
 // Copyright (C) 2003-2006,2008-2011,2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -84,18 +84,6 @@ void CSysProgressDlg::SetCancelMsg(LPCTSTR szMessage)
 		m_pIDlg->SetCancelMsg(T2COLE(szMessage), nullptr);
 }
 
-void CSysProgressDlg::SetAnimation(HINSTANCE hinst, UINT uRsrcID)
-{
-	if (IsValid())
-		m_pIDlg->SetAnimation(hinst, uRsrcID);
-}
-#ifdef _MFC_VER
-void CSysProgressDlg::SetAnimation(UINT uRsrcID)
-{
-	if (IsValid())
-		m_pIDlg->SetAnimation(AfxGetResourceHandle(), uRsrcID);
-}
-#endif
 void CSysProgressDlg::SetTime(bool bTime /* = true */)
 {
 	m_dwDlgFlags &= ~(PROGDLG_NOTIME | PROGDLG_AUTOTIME);

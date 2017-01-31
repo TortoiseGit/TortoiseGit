@@ -187,11 +187,7 @@
     <None Include="..\Resources\pandown.cur">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\Resources\bin167.avi" />
-    <None Include="..\Resources\bin168.avi" />
-    <None Include="..\Resources\cleananim.avi" />
     <None Include="..\Resources\download.avi" />
-    <None Include="..\Resources\search.avi" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\Resources\TortoiseProcENG.rc">
