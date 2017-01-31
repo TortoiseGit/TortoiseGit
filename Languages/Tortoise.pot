@@ -7987,6 +7987,10 @@ msgstr ""
 msgid "Reset Type"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 1847)
+msgid "Reset Type default Hard"
+msgstr ""
+
 #. Resource IDs: (IDS_RESET_TO_THIS_FORMAT)
 #, c-format
 msgid "Reset \"%s\" to this..."

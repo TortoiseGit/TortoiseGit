@@ -171,7 +171,7 @@ public:
 	static bool PerformSwitch(const CString& ref, bool bForce = false, const CString& sNewBranch = CString(), bool bBranchOverride = false, BOOL bTrack = 2, bool bMerge = false);
 
 	static bool IgnoreFile(const CTGitPathList& filelist, bool IsMask);
-	static bool GitReset(const CString* CommitHash, int type = 1);
+	static bool GitReset(const CString* CommitHash, int type = -1);
 	static bool ConflictEdit(CTGitPath& file, bool bAlternativeTool = false, bool revertTheirMy = false, HWND resolveMsgHwnd = nullptr);
 
 	static CString GetMergeTempFile(const CString& str, const CTGitPath& merge);

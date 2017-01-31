@@ -1592,6 +1592,9 @@ static bool Reset(const CString& resetTo, int resetType)
 
 bool CAppUtils::GitReset(const CString* CommitHash, int type)
 {
+	if (type == -1 && !!CRegDWORD(L"Software\\TortoiseGit\\ResetDefaultHard", FALSE))
+		type = 2; // hard
+
 	CResetDlg dlg;
 	dlg.m_ResetType=type;
 	dlg.m_ResetToVersion=*CommitHash;
