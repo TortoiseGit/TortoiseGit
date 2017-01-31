@@ -21,14 +21,13 @@
 		like.
 	</para>
 	<sect2 id="tgit-dug-diff-file">
-		<?dbhh topicname="HIDD_URLDIFF"?>
 		<title>File Differences</title>
 		<variablelist>
 			<varlistentry>
 				<term>Local changes</term>
 				<listitem>
 					<para>
-						If you want to see what changes <emphasis>you</emphasis>
+						If you want to see what (uncommitted) changes <emphasis>you</emphasis>
 						have made in your working tree, just use the explorer
 						context menu and select
 						<menuchoice>
@@ -38,42 +37,15 @@
 					</para>
 				</listitem>
 			</varlistentry>
-      <!--
-			<varlistentry>
-				<term>Difference to another branch/tag</term>
-				<listitem>
-					<para>
-						If you want to see what has changed on trunk (if you are
-						working on a branch) or on a specific branch (if you are
-						working on trunk), you can use the explorer context menu.
-						Just hold down the <keycap>Shift</keycap> key while you
-						right click on the file. Then select
-						<menuchoice>
-							<guimenu>TortoiseGit</guimenu>
-							<guimenuitem>Diff with URL</guimenuitem>
-						</menuchoice>. In the following dialog, specify the URL in
-						the repository with which you want to compare your local
-						file to.
-					</para>
-					<para>
-						You can also use the repository browser and select two
-						trees to diff, perhaps two tags, or a branch/tag and trunk.
-						The context menu there allows you to compare them
-						using <guimenuitem>Compare revisions</guimenuitem>.
-						Read more in <xref linkend="tgit-dug-compare-revs"/>.
-					</para>
-				</listitem>
-			</varlistentry>
-      -->
 			<varlistentry>
 				<term>Difference from a previous revision</term>
 				<listitem>
 					<para>
 						If you want to see the difference between a particular
-						revision and your working tree, use the Revision Log
+						revision and your working tree, use the Log
 						dialog, select the revision of interest, then select
 						<guimenuitem>Compare with working tree</guimenuitem>
-						from the context menu.
+						from the context menu (cf. <xref linkend="tgit-dug-showlog"/>).
 					</para>
 					<para>
 						If you want to see the difference between the last committed
@@ -96,16 +68,13 @@
 				<listitem>
 					<para>
 						If you want to see the difference between two revisions
-						which are already committed, use the Revision Log
+						which are already committed, use the Log
 						dialog and select the two revisions you want to compare
 						(using the usual <keycap>Ctrl</keycap>-modifier).
 						Then select <guimenuitem>Compare revisions</guimenuitem>
-						from the context menu.
-					</para>
-					<para>
-						If you did this from the revision log for a folder,
-						a Compare Revisions dialog appears, showing a list
-						of changed files in that folder. Read more in
+						from the context menu (cf. <xref linkend="tgit-dug-showlog"/>).
+						Then the Compare Revisions dialog appears, showing a list
+						of changed files (maybe with a folder filder pre-applied). Read more in
 						<xref linkend="tgit-dug-compare-revs"/>.
 					</para>
 				</listitem>
@@ -141,28 +110,19 @@
 					</para>
 				</listitem>
 			</varlistentry>
-      <!--
 			<varlistentry>
-				<term>Difference between working tree file/folder and a URL</term>
+				<term>Difference to another branch/tag</term>
 				<listitem>
 					<para>
-						If you want to see the differences between a file in your
-						working tree, and a file in any Git repository,
-						you can do that directly in explorer by selecting the
-						file then holding down the <keycap>Shift</keycap> key whilst
-						right clicking to obtain the context menu. Select
-						<menuchoice>
-							<guimenu>TortoiseGit</guimenu>
-							<guimenuitem>Diff with URL</guimenuitem>
-						</menuchoice>.
-						You can do the same thing for a working tree folder.
-						TortoiseMerge shows these differences in the same way
-						as it shows a patch file - a list of changed files which
-						you can view one at a time.
+						If you want to see the changes of different branches
+						(maybe the current one to another branch or two branches)
+						you can use the log dialog and select the two revisions as described above for "Difference between two previous revisions".
+						An easier way is to open the reference browser (cf. <xref linkend="tgit-dug-browse-ref"/>).
+						There you can click on one branch and select <guimenuitem>Compare to working tree</guimenuitem> to see all changes between that branch and your current state of the working tree.
+						You can also select two branches and compare those using the context menu as described in <xref linkend="tgit-dug-browse-ref"/>.
 					</para>
 				</listitem>
 			</varlistentry>
-      -->
       <!--
 			<varlistentry>
 				<term>Difference with blame information</term>
@@ -181,10 +141,13 @@
 				<listitem>
 					<para>
 						The built-in tools supplied with TortoiseGit do not support
-						viewing differences between directory hierarchies. But if you
+						viewing differences between directory hierarchies.
+<!--
+						But if you
 						have an external tool which does support that feature, you can
 						use that instead. In <xref linkend="tgit-dug-diff-tools"/>
 						we tell you about some tools which we have used.
+-->
 					</para>
 				</listitem>
 			</varlistentry>
@@ -192,7 +155,7 @@
 		<para>
 			If you have configured a third party diff tool, you can use
 			<keycap>Shift</keycap> when selecting the Diff command to
-			use the alternate tool.
+			use the alternate tool resp. the build in tool.
 			Read <xref linkend="tgit-dug-settings-progs"/> to
 			find out about configuring other diff tools.
 		</para>
@@ -206,8 +169,8 @@
 			a large number of lines as changed, even though there is no change
 			to the meaning of the code. The options here will help to manage
 			these changes when it comes to comparing and applying differences.
-			You will see these settings in the <guilabel>Merge</guilabel> and
-			<guilabel>Blame</guilabel> dialogs, as well as in the settings for
+			You will see these settings in the <guilabel>Comparing Version</guilabel>
+			dialog (cf. <xref linkend="tgit-dug-compare-revs"/>), as well as in the settings for
 			TortoiseGitMerge.
 		</para>
 		<para>
@@ -260,12 +223,12 @@
 				<guimenu>Context menu</guimenu>
 				<guimenuitem>Compare with previous version / Compare with working tree</guimenuitem>
 			</menuchoice>
-			; or in Windows Explorer, when you select no files
+			; or in Windows Explorer, when you select no files or a folder
 			<menuchoice>
 				<guimenu>TortoiseGit context menu</guimenu>
 				<guimenuitem>Diff with previous version</guimenuitem>
 			</menuchoice>
-			, Compare Revisions Dialog shows.
+			, the Compare Revisions Dialog comes up.
 		</para>
 		<para>
 			This dialog shows a list of all files which have changed and allows
@@ -336,18 +299,13 @@
 			The built-in diff command of git is available for diffing submodules, 
 			but we often find ourselves wanting to see more details how
 			a submodule has changed too. That's why we created Submodule Diff Dialog.
+			The Submodule Diff Dialog is only accessible using the <xref linkend="tgit-dug-commit"/> or <xref linkend="tgit-dug-wcstatus"/> dialogs using the <guimenuitem>COmpare with base</guimenuitem> entry in the context menu for a submodule. 
 		</para>
 		<para>
 			<figure id="tgit-dug-submodulediff-dia-1">
 				<title>The submodule difference dialog</title>
 				<graphic fileref="../images/SubmoduleDiff.png"/>
 			</figure>
-			<menuchoice>
-				<guimenu>TortoiseGit</guimenu>
-				<guimenuitem>Diff</guimenuitem>
-			</menuchoice>
-			for submodules will start Submodule Diff Dialog to show submodules differences. 
-			The summary of the two revisions are displayed.
 		</para>
 		<para>
 			The 'From' group box on the top displays the information of the original revision.
@@ -628,8 +586,7 @@
 						</ulink>.
 					</para>
           <para>
-            Notepad2 have been included at TortoiseGit Setup MSI.
-            You can launch it by command line "notepad2". 
+            Notepad2 is included in the TortoiseGit Setup as an alternative editor which support LF only line endings. An entry in the start menu named <guilabel>Notepad2</guilabel> is created.
           </para>
 				</listitem>
 			</varlistentry>

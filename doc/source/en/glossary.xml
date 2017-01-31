@@ -11,7 +11,7 @@
 		<glossdef>
 			<para>
 				A Git command that is used to add a
-				file or directory to your working tree.
+				file to your working tree.
 				The new items are added to the repository when you commit.
 			</para>
 		</glossdef>
@@ -20,10 +20,7 @@
 		<glossterm>BASE revision</glossterm>
 		<glossdef>
 			<para>
-				The current base revision of a file or folder in your <emphasis>working tree</emphasis>. 
-				This is the revision the file or folder was in, when the last checkout,
-				update or commit was run. The BASE revision is normally not equal to the
-				HEAD revision.
+				This is the common ancestor's version of a conflicted file.
 			</para>
 		</glossdef>
 	</glossentry>
@@ -100,8 +97,8 @@
 		<glossterm>Copy</glossterm>
 		<glossdef>
 			<para>
-				In a Git repository you can create a copy of a single file
-				or an entire tree.
+				In a Git repository you can manually create a copy of a single file
+				or an entire tree w/o problems.
 			</para>
 		</glossdef>
 	</glossentry>
@@ -143,19 +140,10 @@
 		</glossdef>
 	</glossentry>
 	<glossentry>
-		<glossterm>HEAD revision</glossterm>
+		<glossterm>HEAD</glossterm>
 		<glossdef>
 			<para>
-				The latest revision of a file or folder in the <emphasis>repository</emphasis>.
-			</para>
-		</glossdef>
-	</glossentry>
-	<glossentry>
-		<glossterm>Log</glossterm>
-		<glossdef>
-			<para>
-				Show the revision history of a file or folder.
-				Also known as <quote>History</quote>.
+				HEAD is a synonym for the currently active branch (to be more precise in Git HEAD can also be so-called "detached" and directly pointing to a commit instead of a branch).
 			</para>
 		</glossdef>
 	</glossentry>
@@ -169,6 +157,15 @@
 		</glossdef>
 	</glossentry>
 	<glossentry>
+		<glossterm>Log</glossterm>
+		<glossdef>
+			<para>
+				Show the revision history of a file or folder.
+				Also known as <quote>History</quote>.
+			</para>
+		</glossdef>
+	</glossentry>
+	<glossentry>
 		<glossterm>Merge</glossterm>
 		<glossdef>
 			<para>
@@ -178,7 +175,7 @@
 				and the working tree is said to be in conflict.
 			</para>
 			<para>
-				Merging happens automatically when you update your working tree.
+				Merging happens automatically when you pull changes, cherry-pick, or rebase.
 				You can also merge specific changes from another branch using
 				TortoiseGit's Merge command.
 			</para>
@@ -200,6 +197,16 @@
 		</glossdef>
 	</glossentry>
 	<glossentry>
+		<glossterm>Pull</glossterm>
+		<glossdef>
+			<para>
+				This Git command pulls down the latest changes from the
+				repository into your working tree, merging any changes made by
+				others with local changes in the working tree.
+			</para>
+		</glossdef>
+	</glossentry>
+	<glossentry>
 		<glossterm>Repository</glossterm>
 		<glossdef>
 			<para>
@@ -207,7 +214,7 @@
 				A repository can be a place where multiple databases or files are located for 
 				distribution over a network, or a repository can be a location that is 
 				directly accessible to the user without having to travel across a network.
-				Git is a distributed version control system.
+				Git is a distributed version control system - each working tree contains its own repository (in the <filename>.git</filename> folder).
 				A Git repository does not require network to work with most operations.
 				Network is required only when you need to synchronize changes with remote repositories.
 			</para>
@@ -243,7 +250,7 @@
 				<quote>revision</quote> in the repository. Each revision represents
 				the state of the repository tree at a certain point in its history.
 				If you want to go back in time you can examine the repository as
-				it was at revision N.
+				it was at a specific revision.
 			</para>
 			<para>
 				In another sense, a revision can refer to the set of changes that
@@ -269,13 +276,7 @@
 		<glossterm>Switch/Checkout</glossterm>
 		<glossdef>
 			<para>
-				Just as <quote>Update-to-revision</quote> changes the time
-				window of a working tree to look at a different point in history,
-				so <quote>Switch</quote> changes the space window of a working tree
-				so that it points to a different part of the repository.
-				It is particularly useful when working on master and branches where
-				only a few files differ. You can switch your working tree between
-				the two and only the changed files will be updated.
+				Updates all files in the working tree to a specific version. This is normally used for switching/checking out branches.
 			</para>
 		</glossdef>
 	</glossentry>
@@ -283,9 +284,7 @@
 		<glossterm>Update</glossterm>
 		<glossdef>
 			<para>
-				This Git command pulls down the latest changes from the
-				repository into your working tree, merging any changes made by
-				others with local changes in the working tree.
+				The corresponding command for the SVN update command is <emphasis>Pull</emphasis>.
 			</para>
 		</glossdef>
 	</glossentry>

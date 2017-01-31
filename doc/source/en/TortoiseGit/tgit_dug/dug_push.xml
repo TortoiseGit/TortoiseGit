@@ -7,19 +7,19 @@
 		<primary>Push</primary>
 	</indexterm>
 	<para>
-		Push Change to the other repository. You must push change to bare repository. 
-		If you push change to repository with working tree, there are unexpected results.
+		This section talks about how to push (i.e., send) changes to another repository.
 	</para>
 	<para>
+		In order to perform a push open the push dialog using
 		<menuchoice>
 			<guimenu>TortoiseGit
 			</guimenu>
 			<guimenuitem>Push...
 			</guimenuitem>
-		</menuchoice>. 
+		</menuchoice>.
+		Pushing changes is also possible using the Sync dialog (cf. <xref linkend="tgit-dug-sync"/>), however, there you have less options, but the sync dialog allows you to initiate other operations such as pulling and to see diffs and changes.
 	</para>
 	<para>
-		The Push Dialog will show.
 		<figure id="tgit-dug-push-dia-pushdialog">
 			<title>Push dialog</title>
 			<graphic fileref="../images/GitPush.png"/>
@@ -28,19 +28,23 @@
 	<sect2>
 		<title>Branch</title>
 		<para>
-			<guilabel>Local:</guilabel> The source branch which will be pushed to the other repository.
+			<guilabel>Local</guilabel>: The source branch which will be pushed to the other repository. If the current branch or the selected local branch has a remote tracked branch set, the remote branch and remote repository are automatically selected. A remote tracked branch can be set using the reference browser (cf. <xref linkend="tgit-dug-browse-ref"/>) or by using <guilabel>Set upstream/track remote branch</guilabel>. This can be overridden in this dialog by using one of the <guilabel>Always push to the selected remote ...</guilabel> options, so that for pushing a different branch is autoselected as for merging and pulling.
 		</para>
 		<para>
-			<guilabel>Remote:</guilabel> The remote branch of the other repository. 
+			<guilabel>Remote</guilabel>: The remote branch of the other repository. 
 		</para>
 	</sect2>
 	<sect2>
 		<title>Destination</title>
 		<para>
-			<guilabel>Remote:</guilabel> Choose remote repository.
+			<guilabel>Remote</guilabel>: Choose an already configured remote repository.
 		</para>
 		<para>
-			<guilabel>Arbitrary URL:</guilabel> The remote repository url. 
+			<guilabel>Arbitrary URL</guilabel>: The URL of a remote repository. 
+		</para>
+		<para>
+			You must push change to a bare repository. 
+			Pushing changes to repository which has a working tree can lead to unexpected results.
 		</para>
 	</sect2>
 	<sect2>
@@ -61,9 +65,11 @@
 			Use this option with <guilabel>Include Tags</guilabel> to overwrite tags.
 			This passes the traditional <literal>--force</literal> option of <literal>git push</literal> command.
 		</para>
+<!--
 		<para>
-			<guilabel>Use Thin Pack(For slow network connections)</guilabel>
+			<guilabel>Use Thin Pack (For slow network connections)</guilabel>
 		</para>
+-->
 		<para>
 			<guilabel>Include Tags</guilabel>
 			Also push tags to remote repository.
@@ -72,11 +78,11 @@
 			<guilabel>Autoload Putty Key</guilabel>
 		</para>
 		<tip>
-			<para>You can find more information about PuTTY and using ssh-keys at <xref linkend="tgit-ssh-howto"/>.</para>
+			<para>You can find more information about PuTTY and using ssh-keys at <xref linkend="tgit-ssh-howto"/>. There is also explained how you can use several accounts at the same time for a remote.</para>
 		</tip>
 		<para>
-			<guilabel>Set upstream/track remote branch</guilabel>
-			After a successful push, the tracking relationship will be set between the pushed local branch and its remote tracking branch.
+			<guilabel>Set upstream/track remote branch</guilabel>:
+			After a successful push, the tracking relationship will be set between the pushed local branch and its remote tracking branch. This will autoselect the remote branch automatically for pulling/pushing and merging.
 		</para>
 		<para>
 			<guilabel>Always push to the selected remote archive for this local branch</guilabel>
@@ -92,6 +98,6 @@
 		</para>
 	</sect2>
 	<para>
-		You can find more information at <xref linkend="git-push(1)"/>
+		You can find more information at <xref linkend="git-push(1)"/>.
 	</para>
 </sect1>

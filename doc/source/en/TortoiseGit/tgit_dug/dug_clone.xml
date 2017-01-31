@@ -10,7 +10,7 @@
     <primary>Repository</primary>
   </indexterm>
   <para>
-    This section talks about how to clone a git repository from an existing repository.
+    This section talks about how to clone a git repository from an existing repository. This operation is used to get a full copy of a remote repository.
     Cloning a git repository is very simple. At an empty directory, 
     just use the explorer context menu and select
     <menuchoice>
@@ -35,12 +35,12 @@
   </para>
   <para>
     If you check the <guilabel>Load Putty Key</guilabel> checkbox, clone will auto load putty key file with Pageant.
-    You can click <guibutton>...</guibutton> to browse putty key file.
+    You can click <guibutton>...</guibutton> to browse for a putty key file.
   </para>
   <para>
     Clone will checkout current HEAD to work space automatically. 
   </para>
-  <para> <!-- FIXME command git-choose-ssh does not exist -->
+  <para>
     Git clone supports http, git and ssh protocol. <xref linkend="tgit-dug-settings-network"/> shows how to choose SSH client.
     OpenSSH, Plink or TortoiseGitPlink. 
   </para>

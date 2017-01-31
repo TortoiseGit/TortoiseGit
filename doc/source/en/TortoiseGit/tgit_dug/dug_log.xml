@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tgit-dug-showlog">
-	<title>Revision Log Dialog</title>
+	<title>Log Dialog</title>
 	<indexterm>
 		<primary>log</primary>
 	</indexterm>
@@ -14,6 +14,9 @@
 	<indexterm>
 		<primary>log messages</primary>
 	</indexterm>
+	<indexterm>
+		<primary>revision log dialog</primary>
+	</indexterm>
 	<?dbhh topicname="HIDD_LOGMESSAGE"?>
 	<para>
 		For every change you make and commit, you should provide
@@ -22,7 +25,7 @@
 		your development process.
 	</para>
 	<para>
-		The Revision Log Dialog retrieves all those log messages and shows them
+		The Log Dialog retrieves all those log messages and shows them
 		to you.
 		The display is divided into 3 panes.
 		<itemizedlist>
@@ -34,7 +37,7 @@
 					start of the log message.
 				</para>
 				<para>
-					Lines shown in bold indicate that that is HEAD commit.
+					The line shown in bold indicates the HEAD commit and the entry "Working tree changes" is a virtual entry representing the current (uncommitted) state of your working tree.
 				</para>
 			</listitem>
 			<listitem>
@@ -65,7 +68,21 @@
 			<itemizedlist>
 				<listitem>
 					<para>
-						From the TortoiseGit context submenu
+						From the explorer context menu using
+				 		<menuchoice>
+							<guimenu>TortoiseGit</guimenu>
+							<guimenuitem>Show log...</guimenuitem>
+						</menuchoice>.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						From various TortoiseGit dialogs where you can select a commit (oftentimes using a <guibutton>...</guibutton> button).
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						From various TortoiseGit dialogs where commit entries or files are shown using the context menu.
 					</para>
 				</listitem>
 			</itemizedlist>
@@ -153,7 +170,7 @@
 					<listitem>
 						<para>
 							Open the repository browser to examine the selected file or
-							folder in the repository as it was at the selected revision.
+							folder in the repository as it was at the selected revision (cf. <xref linkend="tgit-dug-repobrowser"/>).
 						</para>
 					</listitem>
 				</varlistentry>
@@ -161,8 +178,7 @@
 					<term>Reset (current branch) to this</term>
 					<listitem>
 						<para>
-							Reset current branch HEAD to selected commit.
-							<!-- todo refer reset -->
+							Resets the HEAD to the selected commit (cf. <xref linkend="tgit-dug-reset"/>).
 						</para>
 					</listitem>
 				</varlistentry>
@@ -183,8 +199,7 @@
 					<term>Create branch from revision</term>
 					<listitem>
 						<para>
-							Create a branch from a selected revision.
-							This is useful e.g.
+							Create a branch based on the selected revision (cf. <xref linkend="tgit-dug-branchtag"/>).
 						</para>
 					</listitem>
 				</varlistentry>
@@ -192,8 +207,7 @@
 					<term>Create tag from revision</term>
 					<listitem>
 						<para>
-							Create a tag from a selected revision.
-							This is useful e.g.
+							Create a tag on a selected revision (cf. <xref linkend="tgit-dug-branchtag"/>).
 						</para>
 					</listitem>
 				</varlistentry>
@@ -201,8 +215,7 @@
 					<term>Rebase (current branch) to this</term>
 					<listitem>
 						<para>
-							Rebase current branch to selected commit.
-							<!-- todo refer rebase -->
+							Rebase current branch on top of the selected commit (cf. <xref linkend="tgit-dug-rebase"/>).
 						</para>
 					</listitem>
 				</varlistentry>
@@ -211,7 +224,7 @@
 					<listitem>
 						<para>
 							Export the selected revision to an archive file such as zip. This brings up a dialog for you to confirm the
-							revision, and select a location for the export.
+							revision, and select a location for the export (cf. <xref linkend="tgit-dug-export"/>).
 						</para>
 					</listitem>
 				</varlistentry>
@@ -238,8 +251,15 @@
 					<term>Cherry Pick this commit</term>
 					<listitem>
 						<para>
-							Cherry Pick this commit to current branch
-							<!-- todo refer cherry pick -->
+							Cherry Pick this commit on top of HEAD (cf. <xref linkend="tgit-dug-cherrypick"/>).
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Bisect start</term>
+					<listitem>
+						<para>
+							Start bisection. Find by binary search the change that introduced a bug (cf. <xref linkend="tgit-dug-bisect"/>).
 						</para>
 					</listitem>
 				</varlistentry>
@@ -340,7 +360,7 @@
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>Revert changes by these commit</term>
+					<term>Revert changes by these commits</term>
 					<listitem>
 						<para>
 							Revert changes from which were made in the selected
@@ -362,15 +382,7 @@
 					<term>Cherry Pick selected commits</term>
 					<listitem>
 						<para>
-							Cherry Pick Chosen Commits.
-						</para>
-					</listitem>
-				</varlistentry>
-				<varlistentry>
-					<term>Bisect start</term>
-					<listitem>
-						<para>
-							Start bisection. Find by binary search the change that introduced a bug. 
+							Cherry Pick chosen Commits on top of current HEAD (cf. <xref linkend="tgit-dug-cherrypick"/>).
 						</para>
 					</listitem>
 				</varlistentry>
@@ -463,7 +475,7 @@
 					<term>Revert changes to this revision</term>
 					<listitem>
 						<para>
-							Revert chosen files to this revision.
+							Revert chosen files to the satte of this revision.
 						</para>
 					</listitem>
 				</varlistentry>
@@ -471,7 +483,7 @@
 					<term>Revert changes to parent revision</term>
 					<listitem>
 						<para>
-							Revert chosen files to parent revision.
+							Revert chosen files to the state before this revision.
 						</para>
 					</listitem>
 				</varlistentry>
@@ -489,7 +501,7 @@
 					<listitem>
 						<para>
 							Opens the Blame dialog, allowing you to blame up to the
-							selected revision.
+							selected revision (cf. <xref linkend="tgit-dug-blame"/>).
 						</para>
 					</listitem>
 				</varlistentry>
@@ -523,7 +535,7 @@
 				</varlistentry>
 
 				<varlistentry>
-					<term>Open / Open with...</term>
+					<term>Open/Open with...</term>
 					<listitem>
 						<para>
 							Open the selected file, either with the default viewer for
@@ -592,7 +604,7 @@
 			The start and end date controls allow you
 			to restrict the output to a known date range. The search
 			box allows you to show only messages which contain a
-			particular phrase.
+			particular phrase. A default limitation for <guilabel>From</guilabel> can be configured in the settings dialog on the <guilabel>Dialogs 1</guilabel> page (cf. <xref linkend="tgit-dug-settings-dialogs"/>).
 		</para>
 		<para>
 			Click on the search icon to select which information you want
@@ -631,9 +643,8 @@
 			</menuchoice>
 			Uncheck both menu items to hide the unrelated paths completely.
 		</para>
-
 		<para>
-			You can show all branches history by click <guilabel>All branches</guilabel>
+			In the lower left there are the checkboxes <guilabel>All branches</guilabel> and <guilabel>Show whole project</guilabel>. Use these to override the branch resp. a file/folder filter and show the log for the whole repository. Please note that these settings are remembered for a repository - even if you started the log dialog on a single file.
 		</para>
 		<para>
 			You can show whole project history, no choose directory or file by click
@@ -662,7 +673,7 @@
 				<guimenu>View</guimenu>
 				<guimenuitem>Gravatar</guimenuitem>
 			</menuchoice>
-			You can enable / disable Gravatar for a specific repository.
+			You can enable/disable Gravatar for a specific repository.
 		</para>
 		<para>
 			<menuchoice>
@@ -683,8 +694,8 @@
 				<guimenu>Walk Behaviour</guimenu>
 				<guimenuitem>Follow renames</guimenuitem>
 			</menuchoice>
-			This is available to a single file only, which tracks rename.
-			Otherwise, the log list stops at the commit that the current filename is introduced.
+			This is available to a single file only, which tracks renames.
+			Otherwise, the log list stops at the commit that the current filename introduced.
 		</para>
 		<para>
 			<menuchoice>
@@ -707,7 +718,7 @@
 			<primary>log navigation</primary>
 		</indexterm>
 		<para>
-			You can use the dropdown control to select a navigation type
+			You can use the dropdown control on the upper right to select a navigation type
 			(e.g. Author Email, Parent 1, Selection history),
 			then use the <guibutton>Up</guibutton> 
 			and <guibutton>Down</guibutton> green buttons
@@ -743,6 +754,13 @@
 			and then select the commit(s) you really want to select
 			(e.g. you can compare the current selected commit
 			with the one you selected before).
+		</para>
+		<para>
+			If you want to jump to a commit with a particular hash, you may
+			do so by pressing <keycap>Ctrl+V</keycap> or <keycap>Shift+Insert</keycap>
+			(into any log dialog element other than the search box) to paste the hash
+			from the clipboard. If it has the form of a valid commit hash, the log
+			dialog will attempt to jump to it.
 		</para>
 	</sect2>
 	<sect2 id="tgit-dug-showlog-5">
@@ -837,16 +855,6 @@
 		<para>
 			If you want to check the repository again for newer log messages,
 			you can simply refresh the view using <keycap>F5</keycap>.
-		</para>
-	</sect2>
-	<sect2 id="tgit-dug-showlog-pastehash">
-		<title>Jumping to a Commit by its Hash</title>
-		<para>
-			If you want to jump to a commit with a particular hash, you may
-			do so by pressing <keycap>Ctrl+V</keycap> or <keycap>Shift+Insert</keycap>
-			(into any log dialog element other than the search box) to paste the hash
-			from the clipboard. If it has the form of a valid commit hash, the log
-			dialog will attempt to jump to it.
 		</para>
 	</sect2>
 </sect1>

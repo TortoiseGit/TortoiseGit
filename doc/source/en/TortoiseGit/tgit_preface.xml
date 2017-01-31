@@ -160,6 +160,29 @@ and
 				</listitem>
 			</varlistentry>
 			<varlistentry>
+				<term>Sven Strickroth "email@cs-ware.de"</term>
+				<listitem>
+					<para>
+						for the hard work to get TortoiseGit to what it is now,
+						and his leadership of the project
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Sup Yut Sum "ch3cooli@gmail.com"</term>
+				<listitem>
+					<para>for bug reports and lots of improvements (code and translations)
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Yue Lin Ho "b8732003@student.nsysu.edu.tw"</term>
+				<listitem>
+					<para>for bug reports, work on the mailing list and lots of improvements (code and translations)
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
 				<term>myagi (Georg Fischer) "snowcoder@gmail.com"</term>
 				<listitem>
 					<para>
@@ -171,29 +194,21 @@ and
 			<varlistentry>
 				<term>Colin Law</term>
 				<listitem>
-					<para>						
-					</para>
-				</listitem>
-			</varlistentry>			
-			<varlistentry>
-				<term>Johan t Hart</term>
-				<listitem>
-					<para>						
+					<para>
 					</para>
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>Sven Strickroth "email@cs-ware.de"</term>
+				<term>Johan't Hart</term>
 				<listitem>
 					<para>
-						
 					</para>
 				</listitem>
 			</varlistentry>
 			<varlistentry>
 				<term>Laszlo Papp "djszapi@archlinux"</term>
 				<listitem>
-					<para>For bug reports and the bugtracker handling
+					<para>
 					</para>
 				</listitem>
 			</varlistentry>
@@ -201,7 +216,7 @@ and
 				<term>Tim Kemp</term>
 				<listitem>
 					<para>
-						for founding the TortoiseSVN project (TortoiseGit come from this project)
+						for founding the TortoiseSVN project (TortoiseGit is based on this project)
 					</para>
 				</listitem>
 			</varlistentry>
@@ -217,8 +232,7 @@ and
 				<term>Lübbe Onken</term>
 				<listitem>
 					<para>
-						for the beautiful icons, logo, bug hunting, translating and
-						managing the translations on TortoiseSVN
+						for the beautiful icons, logo, bug hunting and translating
 					</para>
 				</listitem>
 			</varlistentry>
@@ -251,7 +265,6 @@ and
 				<term>Our Donators</term>
 				<listitem>
 					<para>
-						for many hours of joy with the music they sent us
 					</para>
 				</listitem>
 			</varlistentry>

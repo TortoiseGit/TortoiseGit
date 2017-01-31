@@ -7,7 +7,7 @@
     <primary>Rebase</primary>
   </indexterm>
   <para>
-	Rebase is quite complex, it alters the history of a repository. Please make sure you understood its principles before using it (For hints where to find more information about Git and merging see <xref linkend="tgit-preface-readingguide"/>).
+	Rebase is quite complex and it alters/rewrites the history of a repository. Please make sure you understood its principles before using it (for general hints where to find more information about Git and rebasing see <xref linkend="tgit-preface-readingguide"/> and especialy <xref linkend="git-rebase(1)"/>).
   </para>
   <para>
 	<menuchoice>
@@ -50,6 +50,16 @@
 	<important>
 		<para>
 			When preserving merge commits, re-ordering commits cannot be handled properly in all cases, see in known bugs of vanilla git rebase: <xref linkend="git-rebase(1)"/>.
+		</para>
+	</important>
+	<important>
+		<title>Conflicts</title>
+		<para>
+			Although major merge work is done by git automatically while rebasing, a conflict may happen during rebase (i.e., a file was modified in both branches, the one you are rebasing one and the on which you are rebasing), 
+			please see <xref linkend="tgit-dug-conflicts"/> on how to resolve conflicts.
+		</para>
+		<para>
+			Please note, that "REMOTE"/"theirs" in the conflict editor refers to the to the changes of the branch you rebase onto and "LOCAL"/"mine" to your version on the branch which you are rebasing.
 		</para>
 	</important>
 </sect1>

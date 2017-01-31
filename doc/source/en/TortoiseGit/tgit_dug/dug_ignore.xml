@@ -19,7 +19,7 @@
 		to version control. These might include files created by the compiler,
 		<filename>*.obj, *.lst</filename>, maybe an output folder used to store
 		the executable, <filename>bin/, obj/</filename>. 
-		More examples include user-specific workspace settings <filename>*.suo, *.user</filename>(Visual Studio),
+		More examples include user-specific workspace settings <filename>*.suo, *.user</filename> (Visual Studio),
 		backup files <filename>*.bak, Backup*/</filename>,
 		Shell metadata files <filename>Thumbs.db, Desktop.ini, .DS_Store/</filename>.
 		Whenever you commit changes, TortoiseGit shows your unversioned

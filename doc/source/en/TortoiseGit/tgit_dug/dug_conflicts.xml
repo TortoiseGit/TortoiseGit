@@ -10,55 +10,51 @@
 		<primary>resolve</primary>
 	</indexterm>
 	<para>
+		During a merge, the working tree files are updated to reflect the result of the merge.
 		Once in a while, you will get a <emphasis>conflict</emphasis> when
-		you update your files from the repository. A conflict
-		occurs when two or more developers have changed the same
-		few lines of a file. As Git knows nothing of your
-		project, it leaves resolving the conflicts to the developers.
-		Whenever a conflict is reported, you should open the file in
-		question, and search for lines starting with the string
-		<literal>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</literal>.
-		The conflicting area is marked like this:
+		you merge another branch, cherry-pick commits, rebase or apply a stash:
+		Among the changes made to the common ancestor's version, non-overlapping ones (that is, you changed an area of the file while the other side left that area intact, or vice versa) are incorporated in the final result verbatim. When both sides made changes to the same area, however, Git cannot randomly pick one side over the other, and asks you to resolve it by leaving what both sides did to that area.
+		Whenever a conflict is reported you need to resolve it!
+	</para>
+	<para>
+		The conflicting area is marked in the file like this (also cf. <xref linkend="git-merge(1)__how_conflicts_are_presented"/>):
 <screen>
-&lt;&lt;&lt;&lt;&lt;&lt;&lt; filename
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; yours
     your changes
 =======
-    code merged from repository
-&gt;&gt;&gt;&gt;&gt;&gt;&gt; revision
+    changes from the code merged
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; their
 </screen>
 	</para>
 	<para>
-		You can launch an external merge tool / conflict
+		You can use any editor to manually resolve the conflict or
+		you can launch an external merge tool/conflict
 		editor with
 		<menuchoice>
 			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>Edit Conflicts</guimenuitem>
-		</menuchoice>
-		or you can use any other editor to manually
-		resolve the conflict. You should decide what the code
-		should look like, do the necessary changes and save the file.
-
-		For this, Git places three additional files in your directory for the selected conflicted file:
+		</menuchoice>.
+		Then TortoiseGit will place three additional files in your directory for the selected conflicted file and launch the configured conflict editor:
 		<variablelist>
+			<varlistentry>
+				<term>filename.ext.BASE.ext</term>
+				<listitem>
+					<para>
+						This is the common ancestor's version of the conflicted file (this version does contain neither any of your nor any of the changes of the to be merged branch/revision, especially it does not contain any conflict markers).
+					</para>
+				</listitem>
+			</varlistentry>
 			<varlistentry>
 				<term>filename.ext.LOCAL.ext</term>
 				<listitem>
 					<para>
 						This is your file as it existed in your
-						working tree before you updated your working tree
-						- that is, without conflict markers. This file has
-						your latest changes in it and nothing else.
+						working tree before you started the merge (i.e., the file conforms to the latest committed state of the HEAD of your local repository)
+						- that is, without conflict markers.
+						Therefore, this state/version is often also called "mine".
 					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>filename.ext.BASE.ext</term>
-				<listitem>
 					<para>
-						This is the file that was the BASE
-						revision before you updated your working tree. That is,
-						it the file that you checked out before you made
-						your latest edits.
+						Just for completeness "mine" means for "stash"/"merge"/"pull"/"cherry-pick" the HEAD version in your working tree and for "rebase" the version on the branch you rebase.
 					</para>
 				</listitem>
 			</varlistentry>
@@ -66,10 +62,11 @@
 				<term>filename.ext.REMOTE.ext</term>
 				<listitem>
 					<para>
-						This is the file that your Git
-						client just received from the server when you updated
-						your working tree. This file corresponds to the HEAD
-						revision of the repository.
+						This is the version of file of the revision you want to merge (on a normal merge this correspondents to MERGE_HEAD).
+						As you want to merge other changes, this state/version is often also called "theirs".
+					</para>
+					<para>
+						Just for completeness "theirs" means for "stash"/"merge"/"pull"/"cherry-pick" the version of the to be merged commit/branch and for "rebase" the version of the branch you rebase onto.
 					</para>
 				</listitem>
 			</varlistentry>
@@ -81,7 +78,7 @@
 			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>Resolved</guimenuitem>
 		</menuchoice>
-		and commit your modifications to the repository.
+		and commit your modifications to the repository (if the conflict occurred while rebasing or cherry-picking make sure you use the cherry-pick resp. rebase dialog for committing and not the normal commit dialog!).
 		Please note that the Resolve command does not really
 		resolve the conflict. 
 		It uses "git add" to mark file status as resolved
@@ -94,12 +91,13 @@
 	<para>
 		If you have conflicts with binary files, Git does
 		not attempt to merge the files itself. The local file remains
-		unchanged (exactly as you last changed it) and you have
-		<filename>filename.ext.BASE|LOCAL|REMOTE.ext</filename> files.
-		If you want to discard your changes and keep the repository
-		version, just use the Revert command. If you want to keep
-		your version and overwrite the repository version, use the
-		<guimenuitem>Resolved</guimenuitem> command, then commit your version.
+		unchanged (exactly as you last changed it).
+		In order to resolve the conflict use 
+		<menuchoice>
+			<guimenu>TortoiseGit</guimenu>
+			<guimenuitem>Resolve...</guimenuitem>
+		</menuchoice>
+		and then right click on the conflicted file and choose one of <guimenuitem>Resolved</guimenuitem> (the current version of the file which is in the working tree will be used), <guimenuitem>Resolve conflict using 'mine'</guimenuitem> (the version of the file of your HEAD will be used), and <guimenuitem>Resolve conflict using 'theirs'</guimenuitem> (the version of the file of the merged revision/branch will be used). After that commit.
 	</para>
 	<para>
 		You can use the <guimenuitem>Resolved</guimenuitem> command for multiple files
@@ -118,7 +116,12 @@
 	</para>
 	<important>
 		<para>
-			In Git (unlike SVN) you have to <link linkend="tgit-dug-commit">commit</link> after resolving conflicts.
+			Git (unlike SVN) does not automatically create <filename>filename.ext.BASE.ext</filename>, <filename>filename.ext.LOCAL.ext</filename> and <filename>filename.ext.REMOTE.ext</filename> files for conflicted files. These are only created on-demand by TortoiseGit when you use the command <guimenuitem>Edit Conflicts</guimenuitem>.
+		</para>
+	</important>
+	<important>
+		<para>
+			In Git (unlike SVN) you have to <link linkend="tgit-dug-commit">commit</link> after resolving conflicts. However, if the conflict occurred while rebasing or cherry-picking make sure you use the cherry-pick resp. rebase dialog for committing and not the normal commit dialog!
 		</para>
 	</important>
 	<sect2 id="tgit-dug-conflicts-special">

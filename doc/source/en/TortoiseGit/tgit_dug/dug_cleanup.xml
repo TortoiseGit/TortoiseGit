@@ -7,12 +7,12 @@
 	</indexterm>
 	<?dbhh topicname="HIDD_CLEAN"?>
 	<para>
-		 Remove untracked files from the working tree.
+		 In order to remove untracked or ignored files from the working tree use
 		 <menuchoice>
 			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>Cleanup</guimenuitem>
-		</menuchoice>
-		Cleans the working tree by recursively removing files that are not under version control,
+		</menuchoice>.
+		Then a dialog comes up which allows you to clean up the working tree by recursively removing files that are not under version control or ignored,
 		starting from the current directory <emphasis>or</emphasis> on the whole working tree (depends on version of installed git).
 		<figure id="tgit-dug-clean-dia-1">
 			<title>Clean dialog</title>
@@ -38,26 +38,18 @@
 	</para>
 	<para>
 		<guilabel>Do not use recycle bin</guilabel>
-		Since TortoiseGit v1.7.11, files are moved to recycle bin.
 		Use this option if you want to delete those files directly and permanently.
 		Make sure you do not regret!
 	</para>
 	<para>
 		<guilabel>Dry run</guilabel>
-		This just gives the list of files to be deleted, but it does not perform deletion.
+		This just gives the list of files to be deleted, but it does not perform any deletion.
 	</para>
 	<para>
 		<guilabel>Submodules</guilabel>
-		This cleans also the submodules recursively.
+		This also cleans submodules recursively.
 	</para>
-	<caution>
-		<title>Attention</title>
-		<para>
-			This command affects the <emphasis>whole</emphasis> working tree and will delete
-			all untracked files using the recycle bin (Since TortoiseGit v1.7.11)!
-		</para>
-	</caution>
 	<para>
-		You can find more information at <xref linkend="git-clean(1)"/>
+		You can find more information at <xref linkend="git-clean(1)"/>.
 	</para>
 </sect1>

@@ -23,13 +23,14 @@
 		</figure>
   </para>
   <para>
-    After (non bare) repository is created, ".git" directory will be created. And a messagebox will be shown:
+		You can choose here between a bare and normal git repository. A normal repository has a working tree attached to which files can be checkout out and committed hwreas a bare repository only can be pushed to and pulled from.
+		After a (non bare) repository is created a messagebox will be shown:
 		<figure id="tgit-dug-create-dia-created">
 			<title>Successfull repository creation message</title>
 			<graphic fileref="../images/GitCreateMsg.png"/>
 		</figure>
   </para>
 	<para>
-		You can find more information at <xref linkend="git-init(1)"/>
+		You can find more information at <xref linkend="git-init(1)"/>.
 	</para>
 </sect1>

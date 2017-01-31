@@ -268,6 +268,12 @@
 				the installer file and follow the instructions. The installer
 				will take care of the rest. 
 			</para>
+			<para>
+				One prerequisite of TortoiseGit is that it requires an already installed (command line) Git client which provides a <filename>git.exe</filename>.
+				<ulink url="https://git-for-windows.github.io/">Git for Windows</ulink> is recommended (Cygwin and Msys2 Git also work, see <xref linkend="tgit-dug-settings-main"/> for configuration. Please note that Cygwin and Msys2 Git are not officially supported by TortoiseGit as the developers only use Git for Windows. Bug reports, however, are welcome).
+				Installation of Git for Windows can be done with preselected options, however, no need to install the "Windows Explorer integration".
+				If you know about CRLF and LF line endings and you have editors coping with that, you should select "Checkout as-is, commit as-is" in order to prevent automatic translations.
+			</para>
 			<important>
 				<para>
 					You need Administrator privileges to install TortoiseGit.
@@ -296,8 +302,8 @@
 			</para>
 			<para>
 				Each language pack is packaged as a <literal>.msi</literal> installer.
-				Just run the install program and follow the instructions.
-				After the installation finishes, the translation will be available.
+				Just run the install program after the installation of the main TortoiseGit package and follow the instructions.
+				After the installation finishes, the translation will be available and can be selected in settings dialog (cf. <xref linkend="tgit-dug-settings-main"/>).
 			</para>
 		</sect2>
 		<sect2 id="tgit-intro-instalsl-spell">
@@ -327,7 +333,7 @@
 			<para>
 				The installer automatically adds the US English dictionary.
 				If you want other languages, the easiest option is simply to
-				install one of TortoiseGit's language packs. This will install
+				install one of TortoiseGit's language packs (see <xref linkend="tgit-intro-install-lang"/>). This will install
 				the appropriate dictionary files as well as the TortoiseGit local
 				user interface.
 				After the installation finishes, the translation will be available.

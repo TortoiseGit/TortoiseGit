@@ -10,31 +10,37 @@
     <primary>Fetch</primary>
   </indexterm>
   <para>
-    This section talks about how to fetch or pull change from the other
+    This section talks about how to fetch or pull (i.e., download) changes from another
 	repository. The difference between pull and fetch is:
   </para>
   <para>
-	Pull will merge remote branch change to local branch which tracked with 
-	remote branch. Fetch just get change from remote branch and never merge.
+	Fetch just downloads the objects and refs from a remote repository and normally updates the remote tracking branches.
+	Pull, however, will not only download the changes, but also merges them - it is the combination of fetch and merge (cf. <xref linkend="tgit-dug-merge"/>). The configured remote tracking branch is selected automatically.
   </para>
+  <important>
+	<para>
+		Whenever you merge, it is possible the a file was changed in both branches and that the changes cannot be merged automatically: This is called a "conflict" and needs to be manually resolved. See <xref linkend="tgit-dug-conflicts"/> for more information.
+	</para>
+  </important>
   <para>
+  	A pull/fetch can be initiated by using
     <menuchoice>
       <guimenu>TortoiseGit
       </guimenu>
 	  <guimenuitem>Pull...
 	  </guimenuitem>
-    </menuchoice>. 
-  </para>
-  <para>
+    </menuchoice>
+    or
     <menuchoice>
       <guimenu>TortoiseGit
       </guimenu>
 	  <guimenuitem>Fetch...
 	  </guimenuitem>
-    </menuchoice>. 
+    </menuchoice>.
+    Fetching and pulling changes is also possible using the Sync dialog (cf. <xref linkend="tgit-dug-sync"/>), however, there you have less options, but the sync dialog allows you to initiate other operations such as pushing and to see diffs and changes.
   </para>
   <para>
-        The pull or fetch dialog will show.
+        The fetch and pull dialog will open.
 
 		<figure id="tgit-dug-pull-dia-pulldialog">
 			<title>Pull dialog</title>
@@ -46,18 +52,18 @@
 		</figure>
   </para>
   <para>
-    <guilabel>Remote:</guilabel> Choose Remote
+    <guilabel>Remote</guilabel> Choose a configured remote repository (these can be changes using the <guilabel>Manage Remotes</guilabel> label). Instead of the configured repositories, you can also put the URL of another repository into the <guilabel>Arbitrary URL</guilabel> textbox.
   </para>
+	<para>
+		If the current active branch has a remote tracked branch set, the remote branch and remote repository are automatically selected. A remote tracked branch can be set using the reference browser (cf. <xref linkend="tgit-dug-browse-ref"/>) or using the push dialog (cf. <xref linkend="tgit-dug-push"/>).
+	</para>
   <para>
     <guilabel>Other:</guilabel> Input Other URL or local directory.
     You can click <guibutton>...</guibutton> to browse directory. 
   </para>
   <para>
-    If you check the <guilabel>Autoload Putty Key</guilabel> checkbox, Putty key
-	will auto load by Pageant.
-  </para>
-  <para>
-    <guilabel>Manage Remotes</guilabel> to add or modify remote configuration.
+    If you check the <guilabel>Autoload Putty Key</guilabel> checkbox, a configured Putty key
+	will be automatically loaded using Pageant.
   </para>
   <para>
     <guilabel>Tags</guilabel> has three states (git 1.9 and later): Checked: All tags as well as branches are downloaded (--tags is passed to git), unchecked: No tags are downloaded (--no-tags is passed to git), and third state: use default behavior (based on remote <option>name</option>.tagopt setting).
@@ -66,12 +72,24 @@
   <para>
     <guilabel>Prune</guilabel> has three states: True to remove remote-tracking branches which no longer exist on the remote, false: not to remove, and third state: use default behavior (based on remote <option>name</option>.prune or fetch.prune setting).
   </para>
+<!--
   <para>
     <guilabel>Depth</guilabel> allows you to do a shallow pull/fetch on a shallow-clone repository with a specified depth.
   </para>
+-->
   <tip>
-    <para>You can find more information about PuTTY and using ssh-keys at <xref linkend="tgit-ssh-howto"/>.</para>
+    <para>You can find more information about PuTTY and using ssh-keys at <xref linkend="tgit-ssh-howto"/>. There is also explained how you can use several accounts at the same time for a remote.</para>
   </tip>
+	<important>
+		<title>Conflicts</title>
+		<para>
+			Although major merge work is done by git automatically while pulling, a conflict may happen during cherry-picking (i.e., a file was modified in your current branch and also in the branch you are pulling), 
+			please see <xref linkend="tgit-dug-conflicts"/> on how to resolve conflicts.
+		</para>
+		<para>
+			Please note, that "REMOTE"/"theirs" in the conflict editor refers to the to the changes your on the branch you selected for pulling/merging and "LOCAL"/"mine" to your HEAD version in your working tree.
+		</para>
+	</important>
   <para>
     You can find more information at <xref linkend="git-fetch(1)"/> and <xref linkend="git-pull(1)"/>.
   </para>

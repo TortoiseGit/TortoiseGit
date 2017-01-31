@@ -79,7 +79,7 @@
 		<title>Email settings</title>
 		<?dbhh topicname="HIDD_SETTINGSMTP"?>
 		<para>
-			<figure id="tgit-dug-settings-network-email">
+			<figure id="tgit-dug-settings-network-email-dia-1">
 				<title>The Settings Dialog, email settings</title>
 				<graphic fileref="../images/SettingsEmail.png"/>
 			</figure>

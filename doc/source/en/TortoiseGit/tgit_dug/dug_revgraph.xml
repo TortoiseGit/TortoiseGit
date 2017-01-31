@@ -40,8 +40,7 @@
         <para>
             Each revision graph node represents a revision in the repository
             where something changed in the tree you are looking at.
-            Different types of node can be distinguished by colour.
-            but colours can be set using
+            Different types of nodes can be distinguished by colour which can be configured using
             <menuchoice>
                 <guimenu>TortoiseGit</guimenu>
                 <guimenuitem>Settings</guimenuitem>

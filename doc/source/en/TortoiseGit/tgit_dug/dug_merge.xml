@@ -34,9 +34,8 @@
 	<para>
 		In general it is a good idea to perform a merge into an unmodified
 		working tree. If you have made other changes in your working tree, commit those
-		first. If the merge does not go as you expect, you may want to revert
-		the changes, and the <guilabel>Revert</guilabel> command will discard
-		<emphasis>all</emphasis> changes including any you made before the merge.
+		first. If the merge does not go as you expect, you may want to abort the merge using the <guilabel>Abort Merge</guilabel> command which might discard
+		<emphasis>all</emphasis> changes (depending on the mode, in case of <guilabel>hard</guilabel>).
 	</para>
 	<para>
 		You can choose one commit that you want to merge from. 
@@ -49,7 +48,7 @@
 	</para>
 	<para>
 		<guilabel>No Fast Forward</guilabel> Generate a merge commit even if the
-		merge resolved as a fast-forward.
+		merge resolved as a fast-forward. See <ulink url="https://stackoverflow.com/q/41794529/3906760">https://stackoverflow.com/q/41794529/3906760</ulink> for an example of fast-forward vs. non-fast-forward merge.
 	</para>
 	<para>
 		<guilabel>No Commit</guilabel> Do not automatically create a commit after merge.
@@ -59,11 +58,17 @@
 		from the actual commits that are being merged. Can specify the number of commits 
 		to be included in the merge message.
 	</para>
+	<important>
+		<title>Conflicts</title>
+		<para>
+			Although major merge work is done by git automatically, a conflict may happen during merge (i.e., a file is modified in both branches, the current one and the one you want to merge), 
+			please see <xref linkend="tgit-dug-conflicts"/> on how to resolve conflicts.
+		</para>
+		<para>
+			Please note, that "REMOTE"/"theirs" in the conflict editor refers to the to the changes your on the branch you selected for merging and "LOCAL"/"mine" to your HEAD version in your working tree.
+		</para>
+	</important>
 	<para>
-		You can see more information at <xref linkend="git-merge(1)"/>
-	</para>
-	<para>
-		Although major merge working is done by git automatically, conflict maybe happen during merge, 
-		please see <xref linkend="tgit-dug-conflicts"/> to how to resolve conflict.
+		You can see more information at <xref linkend="git-merge(1)"/>.
 	</para>
 </sect1>
