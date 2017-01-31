@@ -40,7 +40,7 @@ public:
 		OlderTime,
 		SameTime
 	};
-	static void GetSubmoduleChangeType(CGit& subgit, const CString& oldhash, const CString& newhash, bool& oldOK, bool& newOK, ChangeType& changeType, CString& oldsub, CString& newsub);
+	static void GetSubmoduleChangeType(CGit& subgit, const CGitHash& oldhash, const CGitHash& newhash, bool& oldOK, bool& newOK, ChangeType& changeType, CString& oldsub, CString& newsub);
 
 	// Use two path to handle rename cases
 	static int Diff(const CTGitPath* pPath1, const CTGitPath* pPath2, CString rev1, CString rev2, bool blame = false, bool unified = false, int jumpToLine = 0, bool bAlternativeTool = false);

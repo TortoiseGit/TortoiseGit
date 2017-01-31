@@ -269,16 +269,16 @@ int CGitDiff::SubmoduleDiff(const CTGitPath* pPath, const CTGitPath* /*pPath2*/,
 	return 0;
 }
 
-void CGitDiff::GetSubmoduleChangeType(CGit& subgit, const CString& oldhash, const CString& newhash, bool& oldOK, bool& newOK, ChangeType& changeType, CString& oldsub, CString& newsub)
+void CGitDiff::GetSubmoduleChangeType(CGit& subgit, const CGitHash& oldhash, const CGitHash& newhash, bool& oldOK, bool& newOK, ChangeType& changeType, CString& oldsub, CString& newsub)
 {
 	CString cmd;
 	int encode = CAppUtils::GetLogOutputEncode(&subgit);
 	int oldTime = 0, newTime = 0;
 
-	if (oldhash != GIT_REV_ZERO)
+	if (!oldhash.IsEmpty())
 	{
 		CString cmdout, cmderr;
-		cmd.Format(L"git.exe log -n1 --pretty=format:\"%%ct %%s\" %s --", (LPCTSTR)oldhash);
+		cmd.Format(L"git.exe log -n1 --pretty=format:\"%%ct %%s\" %s --", (LPCTSTR)oldhash.ToString());
 		oldOK = !subgit.Run(cmd, &cmdout, &cmderr, encode);
 		if (oldOK)
 		{
@@ -289,10 +289,10 @@ void CGitDiff::GetSubmoduleChangeType(CGit& subgit, const CString& oldhash, cons
 		else
 			oldsub = cmderr;
 	}
-	if (newhash != GIT_REV_ZERO)
+	if (!newhash.IsEmpty())
 	{
 		CString cmdout, cmderr;
-		cmd.Format(L"git.exe log -n1 --pretty=format:\"%%ct %%s\" %s --", (LPCTSTR)newhash);
+		cmd.Format(L"git.exe log -n1 --pretty=format:\"%%ct %%s\" %s --", (LPCTSTR)newhash.ToString());
 		newOK = !subgit.Run(cmd, &cmdout, &cmderr, encode);
 		if (newOK)
 		{
@@ -304,12 +304,12 @@ void CGitDiff::GetSubmoduleChangeType(CGit& subgit, const CString& oldhash, cons
 			newsub = cmderr;
 	}
 
-	if (oldhash == GIT_REV_ZERO)
+	if (oldhash.IsEmpty())
 	{
 		oldOK = true;
 		changeType = NewSubmodule;
 	}
-	else if (newhash == GIT_REV_ZERO)
+	else if (newhash.IsEmpty())
 	{
 		newOK = true;
 		changeType = DeleteSubmodule;
