@@ -102,7 +102,6 @@
 #define IDI_OPEN                        294
 #define IDI_UPDATE_BKG                  295
 #define IDD_CLONE                       297
-#define IDB_GIT                         299
 #define IDD_GITPROGRESS                 300
 #define IDD_PULLFETCH                   302
 #define IDD_PUSH                        303

@@ -1878,9 +1878,6 @@
     <Image Include="..\Resources\general.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\Resources\git.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="..\Resources\gitconfig.ico">
       <Filter>Resource Files</Filter>
     </Image>

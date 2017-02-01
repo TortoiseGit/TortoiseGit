@@ -629,7 +629,6 @@
     <Image Include="..\Resources\file.ico" />
     <Image Include="..\Resources\filteredit.ico" />
     <Image Include="..\Resources\general.ico" />
-    <Image Include="..\Resources\git.bmp" />
     <Image Include="..\Resources\gitconfig.ico" />
     <Image Include="..\Resources\gitcredential.ico" />
     <Image Include="..\Resources\gitremote.ico" />
