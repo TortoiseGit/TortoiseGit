@@ -73,24 +73,24 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDR_TORTOISE_GIT_BLAME_MAINFRAME ICON           "..\\Resources\\TortoiseGitBlame.ico"
-IDR_MAINFRAME           ICON                    "..\\Resources\\TortoiseGitBlame.ico"
-IDI_OUTPUT_WND          ICON                    "..\\Resources\\blameres\\output_wnd.ico"
-IDI_OUTPUT_WND_HC       ICON                    "..\\Resources\\blameres\\output_wnd_hc.ico"
-IDI_PROPERTIES_WND      ICON                    "..\\Resources\\blameres\\properties_wnd.ico"
-IDI_PROPERTIES_WND_HC   ICON                    "..\\Resources\\blameres\\properties_wnd_hc.ico"
-IDI_BLAME_POPUP_BLAME   ICON                    "..\\Resources\\menublame.ico"
-IDI_BLAME_POPUP_COMPARE ICON                    "..\\Resources\\menucompare.ico"
-IDI_BLAME_POPUP_LOG     ICON                    "..\\Resources\\menulog.ico"
-IDI_BLAME_POPUP_COPY    ICON                    "..\\Resources\\copy.ico"
+IDR_TORTOISE_GIT_BLAME_MAINFRAME ICON           "TortoiseGitBlame.ico"
+IDR_MAINFRAME           ICON                    "TortoiseGitBlame.ico"
+IDI_OUTPUT_WND          ICON                    "blameres\\output_wnd.ico"
+IDI_OUTPUT_WND_HC       ICON                    "blameres\\output_wnd_hc.ico"
+IDI_PROPERTIES_WND      ICON                    "blameres\\properties_wnd.ico"
+IDI_PROPERTIES_WND_HC   ICON                    "blameres\\properties_wnd_hc.ico"
+IDI_BLAME_POPUP_BLAME   ICON                    "menublame.ico"
+IDI_BLAME_POPUP_COMPARE ICON                    "menucompare.ico"
+IDI_BLAME_POPUP_LOG     ICON                    "menulog.ico"
+IDI_BLAME_POPUP_COPY    ICON                    "copy.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Bitmap
 //
 
-IDR_TORTOISE_GIT_BLAME_MAINFRAME BITMAP                  "..\\Resources\\blameres\\Toolbar.bmp"
-IDR_TORTOISE_GIT_BLAME_MAINFRAME_256 BITMAP                  "..\\Resources\\blameres\\Toolbar256.bmp"
+IDR_TORTOISE_GIT_BLAME_MAINFRAME BITMAP                  "blameres\\Toolbar.bmp"
+IDR_TORTOISE_GIT_BLAME_MAINFRAME_256 BITMAP                  "blameres\\Toolbar256.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //

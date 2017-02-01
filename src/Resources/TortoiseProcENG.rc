@@ -74,7 +74,7 @@ IDI_MERGE_BKG           ICON                    "MergeBackground.ico"
 IDI_SWITCH_BKG          ICON                    "SwitchBackground.ico"
 IDI_TORTOISEBLAME       ICON                    "TortoiseGitBlame.ico"
 IDI_BUGTRAQ             ICON                    "bugtraq.ico"
-IDI_UP                  ICON                    "..\\Resources\\up.ico"
+IDI_UP                  ICON                    "up.ico"
 IDI_MKDIR               ICON                    "newfolder.ico"
 IDI_REFRESH             ICON                    "refresh.ico"
 IDI_SAVE                ICON                    "save.ico"
@@ -83,7 +83,7 @@ IDI_EXPLORER            ICON                    "explorer.ico"
 IDI_OPEN                ICON                    "open.ico"
 IDI_GITCONFIG           ICON                    "gitconfig.ico"
 IDI_GITREMOTE           ICON                    "gitremote.ico"
-IDI_ACTIONFETCHING      ICON                    "..\\resources\\actionfetching.ico"
+IDI_ACTIONFETCHING      ICON                    "actionfetching.ico"
 IDI_LIBRARY             ICON                    "Library.ico"
 IDI_RESTORE             ICON                    "restore.ico"
 IDI_RESTOREOVL          ICON                    "restoreovl.ico"
@@ -137,7 +137,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // Bitmap
 //
 
-IDB_BITMAP_REFTYPE      BITMAP                  "..\\resources\\reftype.bmp"
+IDB_BITMAP_REFTYPE      BITMAP                  "reftype.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
