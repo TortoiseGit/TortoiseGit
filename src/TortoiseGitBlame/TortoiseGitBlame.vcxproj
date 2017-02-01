@@ -167,7 +167,6 @@
     <Image Include="..\Resources\blameres\Toolbar.bmp" />
     <Image Include="..\Resources\blameres\Toolbar256.bmp" />
     <Image Include="..\Resources\blameres\TortoiseGitBlame.ico" />
-    <Image Include="..\Resources\blameres\TortoiseGitBlameDoc.ico" />
     <Image Include="..\Resources\menulog.ico" />
   </ItemGroup>
   <ItemGroup>

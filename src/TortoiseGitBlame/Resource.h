@@ -18,7 +18,6 @@
 #define IDD_ABOUTBOX                    100
 #define IDP_OLE_INIT_FAILED             100
 #define ID_VIEW_CUSTOMIZE               126
-#define IDR_TortoiseGitBlamTYPE         130
 #define ID_VIEW_OUTPUTWND               149
 #define ID_VIEW_PROPERTIESWND           150
 #define IDI_OUTPUT_WND                  165

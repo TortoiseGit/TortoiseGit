@@ -355,9 +355,6 @@
     <Image Include="..\Resources\blameres\TortoiseGitBlame.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\Resources\blameres\TortoiseGitBlameDoc.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="..\Resources\copy.ico">
       <Filter>Resource Files</Filter>
     </Image>
