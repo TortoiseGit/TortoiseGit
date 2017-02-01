@@ -92,9 +92,6 @@
     <Image Include="..\Resources\iconset.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\Resources\ImportBackground.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="..\Resources\logfilter.ico">
       <Filter>Resource Files</Filter>
     </Image>

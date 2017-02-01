@@ -65,7 +65,6 @@
     <Image Include="..\Resources\graph-pie.ico" />
     <Image Include="..\Resources\hook.ico" />
     <Image Include="..\Resources\iconset.ico" />
-    <Image Include="..\Resources\ImportBackground.ico" />
     <Image Include="..\Resources\logfilter.ico" />
     <Image Include="..\Resources\lookandfeel.ico" />
     <Image Include="..\Resources\MergeBackground.ico" />
