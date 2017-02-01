@@ -714,7 +714,7 @@
     <Image Include="..\Resources\symlinkovl.ico" />
     <Image Include="..\Resources\Toolbar.bmp" />
     <Image Include="..\Resources\Tortoise.ico" />
-    <Image Include="..\Resources\TortoiseBlame.ico" />
+    <Image Include="..\Resources\TortoiseGitBlame.ico" />
     <Image Include="..\Resources\tortoisegit_logoflipped.bmp" />
     <Image Include="..\Resources\TortoiseMerge.ico" />
     <Image Include="..\Resources\TortoiseSmall.ico" />

@@ -352,7 +352,7 @@
     <Image Include="..\Resources\blameres\Toolbar256.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\Resources\blameres\TortoiseGitBlame.ico">
+    <Image Include="..\Resources\TortoiseGitBlame.ico">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\copy.ico">

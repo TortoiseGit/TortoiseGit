@@ -2121,7 +2121,7 @@
     <Image Include="..\Resources\Tortoise.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\Resources\TortoiseBlame.ico">
+    <Image Include="..\Resources\TortoiseGitBlame.ico">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\tortoisegit_logoflipped.bmp">
