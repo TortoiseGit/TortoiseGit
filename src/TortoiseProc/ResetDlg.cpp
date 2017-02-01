@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -34,6 +34,7 @@ CResetDlg::CResetDlg(CWnd* pParent /*=nullptr*/)
 	: CHorizontalResizableStandAloneDialog(CResetDlg::IDD, pParent)
 	, CChooseVersion(this)
 	, m_ResetType(1)
+	, m_bStash(FALSE)
 {
 }
 
@@ -50,6 +51,7 @@ void CResetDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CResetDlg, CHorizontalResizableStandAloneDialog)
 	CHOOSE_VERSION_EVENT
 	ON_BN_CLICKED(IDC_SHOW_MODIFIED_FILES, &CResetDlg::OnBnClickedShowModifiedFiles)
+	ON_BN_CLICKED(IDC_STASHANDRESET, &CResetDlg::OnBnClickedStashandreset)
 	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
@@ -74,6 +76,7 @@ BOOL CResetDlg::OnInitDialog()
 	AdjustControlSize(IDC_RADIO_RESET_SOFT);
 	AdjustControlSize(IDC_RADIO_RESET_MIXED);
 	AdjustControlSize(IDC_RADIO_RESET_HARD);
+	AdjustControlSize(IDC_STASHANDRESET);
 
 	EnableSaveRestore(L"ResetDlg");
 
@@ -120,6 +123,7 @@ void CResetDlg::OnOK()
 	UpdateRevsionName();
 	m_ResetToVersion = m_VersionName;
 	m_ResetType=this->GetCheckedRadioButton(IDC_RADIO_RESET_SOFT,IDC_RADIO_RESET_HARD)-IDC_RADIO_RESET_SOFT;
+	m_bStash = ((CButton *)GetDlgItem(IDC_STASHANDRESET))->GetCheck();
 	return CHorizontalResizableStandAloneDialog::OnOK();
 }
 
@@ -131,6 +135,12 @@ void CResetDlg::OnBnClickedShowModifiedFiles()
 		dlg.m_strRev2 = GIT_REV_ZERO;
 
 		dlg.DoModal();
+}
+
+void CResetDlg::OnBnClickedStashandreset()
+{
+	if (((CButton *)GetDlgItem(IDC_STASHANDRESET))->GetCheck())
+		CheckRadioButton(IDC_RADIO_RESET_SOFT, IDC_RADIO_RESET_HARD, IDC_RADIO_RESET_HARD);
 }
 
 void CResetDlg::OnDestroy()

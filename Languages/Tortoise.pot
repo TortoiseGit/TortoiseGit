@@ -9215,6 +9215,10 @@ msgstr ""
 msgid "Stash Save"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_RESET: Control id 1848)
+msgid "Stash Save -> Reset -> Stash Pop"
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_STASHSUCCESS)
 msgid "Stash Success"
 msgstr ""

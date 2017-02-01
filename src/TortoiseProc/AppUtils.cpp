@@ -1590,6 +1590,13 @@ static bool Reset(const CString& resetTo, int resetType)
 	return ret == IDOK;
 }
 
+static int GetStashCount()
+{
+	CString err;
+	std::vector<GitRevLoglist> stashList;
+	return !GitRevLoglist::GetRefLog(L"refs/stash", stashList, err) ? (int)stashList.size() : 0;
+}
+
 bool CAppUtils::GitReset(const CString* CommitHash, int type)
 {
 	if (type == -1 && !!CRegDWORD(L"Software\\TortoiseGit\\ResetDefaultHard", FALSE))
@@ -1600,7 +1607,41 @@ bool CAppUtils::GitReset(const CString* CommitHash, int type)
 	dlg.m_ResetToVersion=*CommitHash;
 	dlg.m_initialRefName = *CommitHash;
 	if (dlg.DoModal() == IDOK)
-		return Reset(dlg.m_ResetToVersion, dlg.m_ResetType);
+	{
+		if (dlg.m_bStash)
+		{
+			CSysProgressDlg sysProgressDlg;
+			sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
+			sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_PROC_STASHRUNNING)));
+			sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
+			sysProgressDlg.SetShowProgressBar(false);
+			sysProgressDlg.SetCancelMsg(IDS_PROGRS_INFOFAILED);
+			sysProgressDlg.ShowModeless((HWND)nullptr, true);
+
+			int stash1 = GetStashCount();
+
+			CString out;
+			CString cmd = L"git.exe stash";
+			if (g_Git.Run(cmd, &out, CP_UTF8))
+			{
+				sysProgressDlg.Stop();
+				MessageBox(nullptr, out, L"TortoiseGit", MB_OK | MB_ICONERROR);
+				return false;
+			}
+
+			int stash2 = GetStashCount();
+			if (stash1 >= stash2) // seems stash not created
+				dlg.m_bStash = FALSE;
+
+			sysProgressDlg.Stop();
+		}
+
+		if (Reset(dlg.m_ResetToVersion, dlg.m_ResetType))
+		{
+			if (dlg.m_bStash)
+				StashPop(0);
+		}
+	}
 
 	return false;
 }
