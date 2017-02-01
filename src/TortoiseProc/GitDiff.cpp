@@ -214,7 +214,7 @@ int CGitDiff::SubmoduleDiff(const CTGitPath* pPath, const CTGitPath* /*pPath2*/,
 			CMessageBox::Show(nullptr, L"Subproject Diff Format error", L"TortoiseGit", MB_OK | MB_ICONERROR);
 			return -1;
 		}
-		oldhash = output.Mid(oldstart + wcslen(L"-Subproject commit") + 1, GIT_HASH_SIZE * 2);
+		oldhash = output.Mid(oldstart + (int)wcslen(L"-Subproject commit") + 1, GIT_HASH_SIZE * 2);
 		start = 0;
 		int newstart = output.Find(L"+Subproject commit",start);
 		if (newstart < 0)
@@ -222,8 +222,8 @@ int CGitDiff::SubmoduleDiff(const CTGitPath* pPath, const CTGitPath* /*pPath2*/,
 			CMessageBox::Show(nullptr, L"Subproject Diff Format error", L"TortoiseGit", MB_OK | MB_ICONERROR);
 			return -1;
 		}
-		newhash = output.Mid(newstart + wcslen(L"+Subproject commit") + 1, GIT_HASH_SIZE * 2);
-		dirty = output.Mid(newstart + wcslen(L"+Subproject commit") + GIT_HASH_SIZE * 2 + 1) == L"-dirty\n";
+		newhash = output.Mid(newstart + (int)wcslen(L"+Subproject commit") + 1, GIT_HASH_SIZE * 2);
+		dirty = output.Mid(newstart + (int)wcslen(L"+Subproject commit") + GIT_HASH_SIZE * 2 + 1) == L"-dirty\n";
 	}
 	else
 	{
