@@ -87,7 +87,6 @@
 #define IDI_EXPORT_BKG                  271
 #define IDI_IMPORT_BKG                  272
 #define IDI_MERGE_BKG                   273
-#define IDI_RENAME_BKG                  274
 #define IDI_SWITCH_BKG                  275
 #define IDD_FIRSTSTARTWIZARD_START      276
 #define IDD_SETTINGSBUGTRAQ             283

@@ -2049,9 +2049,6 @@
     <Image Include="..\Resources\reftype.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\Resources\RenameBackground.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="..\Resources\RepoBrowserBackground.ico">
       <Filter>Resource Files</Filter>
     </Image>

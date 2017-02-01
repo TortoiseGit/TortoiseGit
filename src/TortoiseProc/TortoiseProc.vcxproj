@@ -687,7 +687,6 @@
     <Image Include="..\Resources\pull1.ico" />
     <Image Include="..\Resources\refresh.ico" />
     <Image Include="..\Resources\reftype.bmp" />
-    <Image Include="..\Resources\RenameBackground.ico" />
     <Image Include="..\Resources\RepoBrowserBackground.ico" />
     <Image Include="..\Resources\ResolveBackground.ico" />
     <Image Include="..\Resources\restore.ico" />

@@ -72,7 +72,6 @@
     <Image Include="..\Resources\misc.ico" />
     <Image Include="..\Resources\Overlays.ico" />
     <Image Include="..\Resources\proxy.ico" />
-    <Image Include="..\Resources\RenameBackground.ico" />
     <Image Include="..\Resources\RepoBrowserBackground.ico" />
     <Image Include="..\Resources\ResolveBackground.ico" />
     <Image Include="..\Resources\RevertBackground.ico" />
@@ -91,7 +90,6 @@
     <Image Include="..\Resources\Tortoise.ico" />
     <Image Include="..\Resources\tortoisegit_logoflipped.bmp" />
     <Image Include="..\Resources\ttf_glyph.bmp" />
-    <Image Include="..\Resources\UnlockBackground.ico" />
     <Image Include="..\Resources\UpdateBackground.ico" />
     <Image Include="..\Resources\warning-general.ico" />
   </ItemGroup>

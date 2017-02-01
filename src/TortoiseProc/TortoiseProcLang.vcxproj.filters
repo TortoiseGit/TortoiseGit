@@ -113,9 +113,6 @@
     <Image Include="..\Resources\proxy.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\Resources\RenameBackground.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="..\Resources\RepoBrowserBackground.ico">
       <Filter>Resource Files</Filter>
     </Image>
@@ -168,9 +165,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\ttf_glyph.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\Resources\UnlockBackground.ico">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\UpdateBackground.ico">
