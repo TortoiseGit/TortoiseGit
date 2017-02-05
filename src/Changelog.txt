@@ -1,4 +1,10 @@
-﻿= Release 2.4.0 =
+﻿= Release 2.5.0 =
+Released: unreleased
+
+== Bug Fixes ==
+Fixed issue #2909: Commit window unclosable after clicking "No" and "do not ask again"
+
+= Release 2.4.0 =
 Released: 2017-01-31
 
 == Major change ==
