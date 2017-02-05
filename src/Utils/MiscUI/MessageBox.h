@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2016 - TortoiseGit
+// Copyright (C) 2013-2017 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -372,13 +372,14 @@ public:
 	 */
 	static bool RemoveRegistryKey(LPCTSTR lpRegistry);
 
-protected:
 	/**
 	 * Stores the value in the registry
 	 * \param sValue the value name
 	 * \param value DWORD to store
 	 */
 	static void SetRegistryValue(const CString& sValue, DWORD value);
+
+protected:
 	/**
 	 * Shows the modal dialog
 	 * \param pWnd handle to the parent window or nullptr

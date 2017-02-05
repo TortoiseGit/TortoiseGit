@@ -1468,7 +1468,10 @@ void CCommitDlg::OnCancel()
 	CString dontaskagain;
 	dontaskagain.LoadString(IDS_MSGBOX_DONOTSHOWAGAIN);
 	if (CMessageBox::ShowCheck(GetSafeHwnd(), tmp, L"TortoiseGit", MB_ICONQUESTION | MB_DEFBUTTON2 | MB_YESNO, L"CommitAskBeforeCancel", dontaskagain) == IDNO)
+	{
+		CMessageBox::SetRegistryValue(L"CommitAskBeforeCancel", IDYES);
 		return;
+	}
 
 	m_bCancelled = true;
 	m_pathwatcher.Stop();
