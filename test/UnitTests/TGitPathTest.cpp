@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2016 - TortoiseGit
+// Copyright (C) 2015-2017 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
 #include "TGitPath.h"
 #include "Git.h"
 #include "StringUtils.h"
-
-extern CGit g_Git;
+#include "PreserveChdir.h"
+#include "AutoTempDir.h"
 
 TEST(CTGitPath, GetDirectoryTest)
 {
@@ -1729,4 +1729,39 @@ TEST(CTGitPath, SetDirectory_DiskAccess)
 	EXPECT_TRUE(pathDir3.IsDirectory());
 	pathDir3.UnsetDirectoryStatus();
 	EXPECT_FALSE(pathDir3.IsDirectory());
+}
+
+TEST(CTGitPath, AreAllPathsFiles)
+{
+	CTGitPathList list;
+	EXPECT_TRUE(list.AreAllPathsFiles());
+
+	list.AddPath(CTGitPath(L"C:\\Windows\\explorer.exe"));
+	EXPECT_TRUE(list.AreAllPathsFiles());
+
+	list.AddPath(CTGitPath(L"C:\\Windows"));
+	EXPECT_FALSE(list.AreAllPathsFiles());
+
+	list.Clear();
+	EXPECT_TRUE(list.AreAllPathsFiles());
+	
+	// now test relative paths
+	PreserveChdir chdir;
+	CAutoTempDir tmp;
+	SetCurrentDirectory(tmp.GetTempDir());
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(tmp.GetTempDir() + L"\\file1", L"something"));
+	list.AddPath(CTGitPath(L"file1"));
+	EXPECT_TRUE(list.AreAllPathsFiles());
+
+	EXPECT_TRUE(CreateDirectory(tmp.GetTempDir() + L"\\dir", nullptr));
+	list.AddPath(CTGitPath(L"dir"));
+	EXPECT_FALSE(list.AreAllPathsFiles());
+
+	list.Clear();
+	list.AddPath(CTGitPath()); // equivalent of "."
+	EXPECT_FALSE(list.AreAllPathsFiles());
+
+	list.AddPath(CTGitPath(L"file1"));
+	EXPECT_FALSE(list.AreAllPathsFiles());
 }
