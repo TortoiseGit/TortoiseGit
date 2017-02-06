@@ -83,6 +83,7 @@
     <ClInclude Include="..\..\src\TortoiseProc\UpdateCrypto.h" />
     <ClInclude Include="..\..\src\TortoiseProc\UpdateDownloader.h" />
     <ClInclude Include="..\..\src\TortoiseProc\VersioncheckParser.h" />
+    <ClInclude Include="..\..\src\TortoiseShell\PreserveChdir.h" />
     <ClInclude Include="..\..\src\Utils\CmdLineParser.h" />
     <ClInclude Include="..\..\src\Utils\CommonAppUtils.h" />
     <ClInclude Include="..\..\src\Utils\DebugHelpers.h" />
@@ -125,6 +126,7 @@
     <ClCompile Include="..\..\src\TortoiseProc\SerialPatch.cpp" />
     <ClCompile Include="..\..\src\TortoiseProc\UpdateCrypto.cpp" />
     <ClCompile Include="..\..\src\TortoiseProc\VersioncheckParser.cpp" />
+    <ClCompile Include="..\..\src\TortoiseShell\PreserveChdir.cpp" />
     <ClCompile Include="..\..\src\Utils\CmdLineParser.cpp" />
     <ClCompile Include="..\..\src\Utils\CommonAppUtils.cpp" />
     <ClCompile Include="..\..\src\Utils\DebugOutput.cpp" />

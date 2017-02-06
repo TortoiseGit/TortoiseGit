@@ -21,6 +21,9 @@
     <Filter Include="TortoiseGitMerge">
       <UniqueIdentifier>{6bdce77d-3a9a-458f-8e18-65f43a40657c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="TortoiseShell">
+      <UniqueIdentifier>{3afc6978-ab69-4a83-8199-c978ef2284e9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -154,6 +157,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Utils\TempFile.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\TortoiseShell\PreserveChdir.h">
+      <Filter>TortoiseShell</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -330,6 +336,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Utils\TempFile.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\TortoiseShell\PreserveChdir.cpp">
+      <Filter>TortoiseShell</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -328,14 +328,16 @@ void CTGitPath::UpdateAttributes() const
 {
 	EnsureBackslashPathSet();
 	WIN32_FILE_ATTRIBUTE_DATA attribs;
-	if (m_sBackslashPath.GetLength() >= 248)
+	if (m_sBackslashPath.IsEmpty())
+		m_sLongBackslashPath = L".";
+	else if (m_sBackslashPath.GetLength() >= 248)
 	{
 		if (!PathIsRelative(m_sBackslashPath))
 			m_sLongBackslashPath = L"\\\\?\\" + m_sBackslashPath;
 		else
 			m_sLongBackslashPath = L"\\\\?\\" + g_Git.CombinePath(m_sBackslashPath);
 	}
-	if(GetFileAttributesEx(m_sBackslashPath.GetLength() >= 248 ? m_sLongBackslashPath : m_sBackslashPath, GetFileExInfoStandard, &attribs))
+	if (GetFileAttributesEx(m_sBackslashPath.IsEmpty() || m_sBackslashPath.GetLength() >= 248 ? m_sLongBackslashPath : m_sBackslashPath, GetFileExInfoStandard, &attribs))
 	{
 		m_bIsDirectory = !!(attribs.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
 		// don't cast directly to an __int64:
