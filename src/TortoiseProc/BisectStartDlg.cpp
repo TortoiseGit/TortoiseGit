@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014-2016 TortoiseGit
+// Copyright (C) 2014-2017 TortoiseGit
 
 // with code of PullFetchDlg.cpp
 
@@ -76,6 +76,9 @@ BOOL CBisectStartDlg::OnInitDialog()
 	AddAnchor(IDOK, BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
+
+	AddAnchor(IDC_STATIC_LOCAL_BRANCH, TOP_LEFT);
+	AddAnchor(IDC_STATIC_REMOTE_BRANCH, TOP_LEFT);
 
 	AddAnchor(IDC_BUTTON_GOOD, TOP_RIGHT);
 	AddAnchor(IDC_BUTTON_BAD, TOP_RIGHT);
