@@ -51,11 +51,9 @@
     <Image Include="..\Resources\cancel-pressed.ico" />
     <Image Include="..\Resources\CFMBackground.ico" />
     <Image Include="..\Resources\CommitBackground.ico" />
-    <Image Include="..\Resources\CopyBackground.ico" />
     <Image Include="..\Resources\DelunversionedBackground.ico" />
     <Image Include="..\Resources\dialogs.ico" />
     <Image Include="..\Resources\Drives.ico" />
-    <Image Include="..\Resources\ExportBackground.ico" />
     <Image Include="..\Resources\filteredit.ico" />
     <Image Include="..\Resources\general.ico" />
     <Image Include="..\Resources\graph-bar-stacked.ico" />
@@ -67,7 +65,6 @@
     <Image Include="..\Resources\iconset.ico" />
     <Image Include="..\Resources\logfilter.ico" />
     <Image Include="..\Resources\lookandfeel.ico" />
-    <Image Include="..\Resources\MergeBackground.ico" />
     <Image Include="..\Resources\misc.ico" />
     <Image Include="..\Resources\Overlays.ico" />
     <Image Include="..\Resources\proxy.ico" />

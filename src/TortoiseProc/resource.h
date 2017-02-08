@@ -83,9 +83,6 @@
 #define IDI_CANCELPRESSED               265
 #define IDI_LOGFILTER                   266
 #define IDI_FILTEREDIT                  267
-#define IDI_COPY_BKG                    270
-#define IDI_EXPORT_BKG                  271
-#define IDI_MERGE_BKG                   273
 #define IDI_SWITCH_BKG                  275
 #define IDD_FIRSTSTARTWIZARD_START      276
 #define IDD_SETTINGSBUGTRAQ             283

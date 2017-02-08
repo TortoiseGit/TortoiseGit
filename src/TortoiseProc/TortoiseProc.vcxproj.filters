@@ -1851,9 +1851,6 @@
     <Image Include="..\Resources\copy.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\Resources\CopyBackground.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="..\Resources\DelunversionedBackground.ico">
       <Filter>Resource Files</Filter>
     </Image>
@@ -1867,9 +1864,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\explorer.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\Resources\ExportBackground.ico">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\filteredit.ico">
@@ -2017,9 +2011,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\menuupdate.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\Resources\MergeBackground.ico">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\misc.ico">

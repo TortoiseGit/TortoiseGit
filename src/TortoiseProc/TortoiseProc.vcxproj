@@ -618,13 +618,11 @@
     <Image Include="..\Resources\code.ico" />
     <Image Include="..\Resources\CommitBackground.ico" />
     <Image Include="..\Resources\copy.ico" />
-    <Image Include="..\Resources\CopyBackground.ico" />
     <Image Include="..\Resources\DelunversionedBackground.ico" />
     <Image Include="..\Resources\dialogs.ico" />
     <Image Include="..\Resources\Drives.ico" />
     <Image Include="..\Resources\executableovl.ico" />
     <Image Include="..\Resources\explorer.ico" />
-    <Image Include="..\Resources\ExportBackground.ico" />
     <Image Include="..\Resources\externalovl.ico" />
     <Image Include="..\Resources\file.ico" />
     <Image Include="..\Resources\filteredit.ico" />
@@ -677,7 +675,6 @@
     <Image Include="..\Resources\menushowchanged.ico" />
     <Image Include="..\Resources\menuswitch.ico" />
     <Image Include="..\Resources\menuupdate.ico" />
-    <Image Include="..\Resources\MergeBackground.ico" />
     <Image Include="..\Resources\misc.ico" />
     <Image Include="..\Resources\newfolder.ico" />
     <Image Include="..\Resources\open.ico" />
