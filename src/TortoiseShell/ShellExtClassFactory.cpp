@@ -55,6 +55,7 @@ STDMETHODIMP CShellExtClassFactory::QueryInterface(REFIID riid,
 
 STDMETHODIMP_(ULONG) CShellExtClassFactory::AddRef()
 {
+	git_libgit2_init();
 	return InterlockedIncrement(&m_cRef);
 }
 
@@ -64,6 +65,8 @@ STDMETHODIMP_(ULONG) CShellExtClassFactory::Release()
 		return m_cRef;
 
 	delete this;
+
+	git_libgit2_shutdown();
 
 	return 0L;
 }
