@@ -11,6 +11,7 @@
 # 5 = Language string for web page (english)
 # 6 = Language string for installer
 #
+#http://wixtoolset.org/documentation/manual/v3/wixui/wixui_localization.html
 #bs_BA;	5146;	0;	English;	Bosnia/Herzegovina;	Bosnia/Herzegovina
 bg;	1026;	0;	Bulgarian;	Bulgarian;		Bulgarian
 ca_ES;	1027;	0;	Catalan;	Catalan;		Catalan
