@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2010, 2012 - TortoiseSVN
-// Copyright (C) 2008-2012, 2014, 2016 - TortoiseGit
+// Copyright (C) 2008-2012, 2014, 2016-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -115,7 +115,7 @@ STDAPI DllCanUnloadNow(void)
 
 STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, LPVOID *ppvOut)
 {
-	if (ppvOut == 0)
+	if (!ppvOut)
 		return E_POINTER;
 	*ppvOut = nullptr;
 
