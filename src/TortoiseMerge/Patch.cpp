@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2009-2013, 2015-2016 - TortoiseGit
+// Copyright (C) 2009-2013, 2015-2017 - TortoiseGit
 // Copyright (C) 2012-2013 - Sven Strickroth <email@cs-ware.de>
 // Copyright (C) 2004-2009,2011-2014 - TortoiseSVN
 
@@ -256,7 +256,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 				chunk = new Chunk();
 				CString sRemove = sLine.Left(sLine.Find(' '));
 				CString sAdd = sLine.Mid(sLine.Find(' '));
-				chunk->lRemoveStart = (_wtol(sRemove));
+				chunk->lRemoveStart = abs(_wtol(sRemove));
 				if (sRemove.Find(',')>=0)
 				{
 					sRemove = sRemove.Mid(sRemove.Find(',')+1);
