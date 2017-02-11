@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -987,7 +987,7 @@ BOOL CSyncDlg::OnInitDialog()
 	m_GitProgressList.m_pProgControl = &m_ctrlProgress;
 	m_GitProgressList.m_pTaskbarList = m_pTaskbarList;
 
-	dwStyle = LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP | WS_CHILD | WS_VISIBLE;
+	dwStyle = LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP | WS_CHILD | WS_VISIBLE | LVS_SINGLESEL;
 	DWORD exStyle = LVS_EX_HEADERDRAGDROP | LVS_EX_DOUBLEBUFFER | LVS_EX_INFOTIP;
 	if (CRegDWORD(L"Software\\TortoiseGit\\FullRowSelect", TRUE))
 		exStyle |= LVS_EX_FULLROWSELECT;
