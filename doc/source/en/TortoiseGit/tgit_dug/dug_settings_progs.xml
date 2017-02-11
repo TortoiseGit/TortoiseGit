@@ -92,6 +92,14 @@
 						</para>
 					</listitem>
 				</varlistentry>
+				<varlistentry>
+					<term condition="pot">%wtroot</term>
+					<listitem>
+						<para>
+							Path to the working tree
+						</para>
+					</listitem>
+				</varlistentry>
 			</variablelist>
 		</para>
 		<para>
@@ -244,6 +252,14 @@ C:\Path-To\compare.exe /max /wait /title1:%bname /title2:%yname
 					<listitem>
 						<para>
 							The window title for the merged file
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term condition="pot">%wtroot</term>
+					<listitem>
+						<para>
+							Path to the working tree
 						</para>
 					</listitem>
 				</varlistentry>

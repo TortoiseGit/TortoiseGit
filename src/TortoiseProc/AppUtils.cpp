@@ -389,6 +389,8 @@ BOOL CAppUtils::StartExtMerge(bool bAlternative,
 	else
 		com.Replace(L"%mname", L'"' + mergedname + L'"');
 
+	com.Replace(L"%wtroot", L'"' + g_Git.m_CurrentDir + L'"');
+
 	if ((bReadOnly)&&(bInternal))
 		com += L" /readonly";
 
@@ -532,6 +534,8 @@ bool CAppUtils::StartExtDiff(
 
 	viewer.Replace(L"%brev", L'"' + hash1 + L'"');
 	viewer.Replace(L"%yrev", L'"' + hash2 + L'"');
+
+	viewer.Replace(L"%wtroot", L'"' + g_Git.m_CurrentDir + L'"');
 
 	if (flags.bReadOnly && bInternal)
 		viewer += L" /readonly";
