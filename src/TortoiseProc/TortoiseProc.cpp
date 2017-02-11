@@ -598,6 +598,13 @@ void CTortoiseProcApp::CheckUpgrade()
 	}
 
 	// version specific updates
+	if (lVersion <= 0x02040000)
+	{
+		CRegStdDWORD commmitAskBeforeCancel(L"Software\\TortoiseGit\\CommitAskBeforeCancel");
+		if (commmitAskBeforeCancel.exists() && commmitAskBeforeCancel != IDYES)
+			commmitAskBeforeCancel = IDYES;
+	}
+
 	if (lVersion <= 0x02020100)
 	{
 		CString username = CRegString(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\Username", L""); 
