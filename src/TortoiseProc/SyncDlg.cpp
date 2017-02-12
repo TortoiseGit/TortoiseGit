@@ -939,8 +939,7 @@ BOOL CSyncDlg::OnInitDialog()
 	m_ctrlTabCtrl.InsertTab(&m_ConflictFileList, CString(MAKEINTRESOURCE(IDS_PROC_SYNC_CONFLICTS)), -1);
 
 	m_ConflictFileList.Init(GITSLC_COLEXT | GITSLC_COLSTATUS |GITSLC_COLADD|GITSLC_COLDEL, L"ConflictSyncDlg",
-							(CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_COMPARETWOREVISIONS) |
-							CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_GNUDIFF2REVISIONS) |
+							(GITSLC_POPEXPLORE | GITSLC_POPOPEN | GITSLC_POPSHOWLOG |
 							GITSLC_POPCONFLICT|GITSLC_POPRESOLVE),false);
 
 
