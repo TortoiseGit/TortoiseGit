@@ -3335,6 +3335,9 @@ void CGitStatusListCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
 
 	Locker lock(m_critSec);
 
+	if (!m_Rev1.IsEmpty() || !m_Rev2.IsEmpty())
+		return;
+
 	CTGitPathList pathList;
 	FillListOfSelectedItemPaths(pathList);
 	if (pathList.IsEmpty())
