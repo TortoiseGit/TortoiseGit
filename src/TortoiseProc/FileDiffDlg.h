@@ -80,6 +80,7 @@ protected:
 	afx_msg void OnBnClickedLog();
 	afx_msg LRESULT OnDisableButtons(WPARAM, LPARAM);
 	afx_msg LRESULT OnDiffFinished(WPARAM, LPARAM);
+	afx_msg void OnLvnBegindrag(NMHDR* pNMHDR, LRESULT* pResult);
 
 	DECLARE_MESSAGE_MAP()
 

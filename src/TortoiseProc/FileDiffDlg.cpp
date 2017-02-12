@@ -36,6 +36,7 @@
 #include "RefLogDlg.h"
 #include "GitStatusListCtrl.h"
 #include "FormatMessageWrapper.h"
+#include "GitDataObject.h"
 
 #define ID_COMPARE 1
 #define ID_BLAME 2
@@ -110,6 +111,7 @@ BEGIN_MESSAGE_MAP(CFileDiffDlg, CResizableStandAloneDialog)
 	ON_REGISTERED_MESSAGE(WM_DIFFFINISHED, OnDiffFinished)
 	ON_BN_CLICKED(IDC_DIFFOPTION, OnBnClickedDiffoption)
 	ON_BN_CLICKED(IDC_LOG, &CFileDiffDlg::OnBnClickedLog)
+	ON_NOTIFY(LVN_BEGINDRAG, IDC_FILELIST, OnLvnBegindrag)
 END_MESSAGE_MAP()
 
 
@@ -1380,4 +1382,48 @@ bool CFileDiffDlg::CheckMultipleDiffs()
 		return ::MessageBox(GetSafeHwnd(), message, L"TortoiseGit", MB_YESNO | MB_ICONQUESTION) == IDYES;
 	}
 	return true;
+}
+
+void CFileDiffDlg::OnLvnBegindrag(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	*pResult = 0;
+
+	// get selected paths
+	POSITION pos = m_cFileList.GetFirstSelectedItemPosition();
+	if (!pos)
+		return;
+
+	CTGitPathList toExport;
+	int index = -1;
+	while ((index = m_cFileList.GetNextSelectedItem(pos)) >= 0)
+	{
+		auto fentry = m_arFilteredList[index];
+		toExport.AddPath(*fentry);
+	}
+
+
+	// build copy source / content
+	auto pdsrc = std::make_unique<CIDropSource>();
+	if (!pdsrc)
+		return;
+
+	pdsrc->AddRef();
+
+	GitDataObject* pdobj = new GitDataObject(toExport, m_rev2.m_CommitHash);
+	if (!pdobj)
+		return;
+	pdobj->AddRef();
+	pdobj->SetAsyncMode(TRUE);
+	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+	CDragSourceHelper dragsrchelper;
+	dragsrchelper.InitializeFromWindow(GetSafeHwnd(), pNMLV->ptAction, pdobj);
+	pdsrc->m_pIDataObj = pdobj;
+	pdsrc->m_pIDataObj->AddRef();
+
+	// Initiate the Drag & Drop
+	DWORD dwEffect;
+	::DoDragDrop(pdobj, pdsrc.get(), DROPEFFECT_MOVE | DROPEFFECT_COPY, &dwEffect);
+	pdsrc->Release();
+	pdsrc.release();
+	pdobj->Release();
 }
