@@ -828,9 +828,14 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 
 void CGitStatusListCtrl::Show(unsigned int /*dwShow*/, const CTGitPathList& checkedList, bool /*bShowFolders*/ /* = true */)
 {
+	m_dwShow = GITSLC_SHOWALL;
 	DeleteAllItems();
+	m_arStatusArray.clear();
 	for (int i = 0; i < checkedList.GetCount(); ++i)
+	{
 		this->AddEntry((CTGitPath *)&checkedList[i],0,i);
+		m_arStatusArray.push_back(&checkedList[i]);
+	}
 
 	AdjustColumnWidths();
 
