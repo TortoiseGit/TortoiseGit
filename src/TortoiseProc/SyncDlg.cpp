@@ -914,7 +914,7 @@ BOOL CSyncDlg::OnInitDialog()
 	m_InLogList.InsertGitColumn();
 
 	//----------- Create In Change file list -----------
-	dwStyle = LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP |LVS_SINGLESEL |WS_CHILD | WS_VISIBLE;
+	dwStyle = LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP | WS_CHILD | WS_VISIBLE;
 
 	if( !m_InChangeFileList.Create(dwStyle,rectDummy,&m_ctrlTabCtrl,IDC_IN_CHANGELIST))
 	{
@@ -962,7 +962,7 @@ BOOL CSyncDlg::OnInitDialog()
 
 	//------------- Create Change File List Control ----------------
 
-	dwStyle = LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP |LVS_SINGLESEL |WS_CHILD | WS_VISIBLE;
+	dwStyle = LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP | WS_CHILD | WS_VISIBLE;
 
 	if( !m_OutChangeFileList.Create(dwStyle,rectDummy,&m_ctrlTabCtrl,IDC_OUT_CHANGELIST))
 	{
@@ -975,6 +975,7 @@ BOOL CSyncDlg::OnInitDialog()
 							(CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_COMPARETWOREVISIONS) |
 							CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_GNUDIFF2REVISIONS)), false, true, GITSLC_COLEXT | GITSLC_COLSTATUS | GITSLC_COLADD | GITSLC_COLDEL);
 
+	dwStyle = LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP | LVS_SINGLESEL | WS_CHILD | WS_VISIBLE;
 	if (!m_GitProgressList.Create(dwStyle | LVS_OWNERDATA, rectDummy, &m_ctrlTabCtrl, IDC_CMD_GIT_PROG))
 	{
 		TRACE0("Failed to create Git Progress List Window\n");

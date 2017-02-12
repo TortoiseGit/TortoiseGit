@@ -1,6 +1,9 @@
 ﻿= Release 2.5.0 =
 Released: unreleased
 
+== Features ==
+ * Fixed issue #2931: Make “ChangeList” grids in “Git synchronization” multi-selectable
+
 == Bug Fixes ==
  * Fixed issue #2909: Commit window unclosable after clicking "No" and "do not ask again"
  * Fixed issue #2911: Doing Add on repository root fails with libgit2 returned invalid path"
