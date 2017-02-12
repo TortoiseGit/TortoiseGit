@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -554,6 +554,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 
 		CString menuText;
 		popup.AppendMenuIcon(ID_COMPARE, IDS_LOG_POPUP_COMPARETWO, IDI_DIFF);
+		popup.SetDefaultItem(ID_COMPARE, FALSE);
 		popup.AppendMenuIcon(ID_GNUDIFFCOMPARE, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
 		popup.AppendMenu(MF_SEPARATOR, NULL);
 		if (!m_bIsBare)
