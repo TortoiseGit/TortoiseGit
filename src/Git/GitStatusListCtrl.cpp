@@ -1649,16 +1649,13 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 			if (!m_Rev1.IsEmpty() && !m_Rev2.IsEmpty())
 			{
-				if(GetSelectedCount() == 1)
+				if (m_dwContextMenus & this->GetContextMenuBit(IDGITLC_COMPARETWOREVISIONS))
 				{
-					if (m_dwContextMenus & this->GetContextMenuBit(IDGITLC_COMPARETWOREVISIONS))
-					{
-						popup.AppendMenuIcon(IDGITLC_COMPARETWOREVISIONS, IDS_LOG_POPUP_COMPARETWO, IDI_DIFF);
-						popup.SetDefaultItem(IDGITLC_COMPARETWOREVISIONS, FALSE);
-					}
-					if (m_dwContextMenus & this->GetContextMenuBit(IDGITLC_GNUDIFF2REVISIONS))
-						popup.AppendMenuIcon(IDGITLC_GNUDIFF2REVISIONS, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
+					popup.AppendMenuIcon(IDGITLC_COMPARETWOREVISIONS, IDS_LOG_POPUP_COMPARETWO, IDI_DIFF);
+					popup.SetDefaultItem(IDGITLC_COMPARETWOREVISIONS, FALSE);
 				}
+				if (m_dwContextMenus & this->GetContextMenuBit(IDGITLC_GNUDIFF2REVISIONS))
+					popup.AppendMenuIcon(IDGITLC_GNUDIFF2REVISIONS, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
 			}
 
 			//Select Multi item
@@ -2132,7 +2129,14 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 			case IDGITLC_GNUDIFF2REVISIONS:
 				{
-					CAppUtils::StartShowUnifiedDiff(m_hWnd, *filepath, m_Rev2, *filepath, m_Rev1, bShift);
+					if (!CheckMultipleDiffs())
+						break;
+					POSITION pos = GetFirstSelectedItemPosition();
+					while (pos)
+					{
+						auto entry = GetListEntry(GetNextSelectedItem(pos));
+						CAppUtils::StartShowUnifiedDiff(m_hWnd, *entry, m_Rev2, *entry, m_Rev1, bShift);
+					}
 				}
 				break;
 
