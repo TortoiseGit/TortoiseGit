@@ -1824,12 +1824,6 @@
     <Image Include="..\Resources\bugtraq.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\Resources\cache.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\Resources\CacheList.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="..\Resources\cancel-normal.ico">
       <Filter>Resource Files</Filter>
     </Image>

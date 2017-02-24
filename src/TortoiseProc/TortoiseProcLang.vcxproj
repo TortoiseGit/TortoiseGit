@@ -46,7 +46,6 @@
     <Image Include="..\Resources\actionmodified.ico" />
     <Image Include="..\Resources\actionreplaced.ico" />
     <Image Include="..\Resources\AddBackground.ico" />
-    <Image Include="..\Resources\cache.ico" />
     <Image Include="..\Resources\cancel-normal.ico" />
     <Image Include="..\Resources\cancel-pressed.ico" />
     <Image Include="..\Resources\CFMBackground.ico" />

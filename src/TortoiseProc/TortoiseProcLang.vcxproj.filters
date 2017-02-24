@@ -35,9 +35,6 @@
     <Image Include="..\Resources\AddBackground.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\Resources\cache.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="..\Resources\cancel-normal.ico">
       <Filter>Resource Files</Filter>
     </Image>

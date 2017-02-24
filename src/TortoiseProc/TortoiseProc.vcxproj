@@ -607,8 +607,6 @@
     <Image Include="..\Resources\actionreplaced.ico" />
     <Image Include="..\Resources\AddBackground.ico" />
     <Image Include="..\Resources\bugtraq.ico" />
-    <Image Include="..\Resources\cache.ico" />
-    <Image Include="..\Resources\CacheList.ico" />
     <Image Include="..\Resources\cancel-normal.ico" />
     <Image Include="..\Resources\cancel-pressed.ico" />
     <Image Include="..\Resources\certcheck.ico" />
