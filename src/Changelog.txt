@@ -3,6 +3,7 @@ Released: unreleased
 
 == Features ==
  * Fixed issue #2931: Make “ChangeList” grids in “Git synchronization” multi-selectable
+ * Update Scintille to 3.7.3
 
 == Bug Fixes ==
  * Fixed issue #2909: Commit window unclosable after clicking "No" and "do not ask again"
