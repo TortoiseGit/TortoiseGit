@@ -273,7 +273,7 @@ static bool IsPowerShell(CString cmd)
 			end = firstSpace;
 	}
 
-	return (end - 4 - 10 == powerShellPos || end - 10 == powerShellPos); // len(".exe")==4, len("powershell")==10
+	return (end - (int)wcslen(L"powershell") - (int)wcslen(L".exe") == powerShellPos || end - (int)wcslen(L"powershell") == powerShellPos);
 }
 
 int CGit::RunAsync(CString cmd, PROCESS_INFORMATION* piOut, HANDLE* hReadOut, HANDLE* hErrReadOut, const CString* StdioFile)
@@ -914,11 +914,11 @@ int CGit::GetCurrentBranchFromFile(const CString &sProjectRoot, CString &sBranch
 	if (!pFile)
 		return -1;
 
-	char s[256] = {0};
+	char s[MAX_PATH] = {0};
 	fgets(s, sizeof(s), pFile);
 
 	const char *pfx = "ref: refs/heads/";
-	const int len = 16;//strlen(pfx)
+	const size_t len = strlen(pfx);
 
 	if ( !strncmp(s, pfx, len) )
 	{
@@ -2253,7 +2253,7 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 				PathCanonicalize(CStrBuf(temp, MAX_PATH), possibleShExe);
 				sh.Format(L"\"%s\"", (LPCTSTR)temp);
 				// we need to put the usr\bin folder on the path for Git for Windows based on msys2
-				m_Environment.AddToPath(temp.Left(temp.GetLength() - 7)); // 7 = len("\\sh.exe")
+				m_Environment.AddToPath(temp.Left(temp.GetLength() - (int)wcslen(L"\\sh.exe")));
 				break;
 			}
 		}

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2014, 2016 - TortoiseGit
+// Copyright (C) 2012-2014, 2016-2017 - TortoiseGit
 // Copyright (C) 2007, 2009, 2013-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -115,7 +115,7 @@ static BOOL WantRealVersion(void)
 				// we also have to allow the verclsid.exe process - that process determines
 				// first whether the shell is allowed to even use an extension.
 				Len = lstrlen(ModuleName);
-				if ((Len > 13) && (lstrcmpi(&ModuleName[Len-13], L"\\verclsid.exe") == 0))
+				if ((Len > wcslen(L"\\verclsid.exe")) && (lstrcmpi(&ModuleName[Len - wcslen(L"\\verclsid.exe")], L"\\verclsid.exe") == 0))
 					bWantReal = TRUE;
 			}
 		}

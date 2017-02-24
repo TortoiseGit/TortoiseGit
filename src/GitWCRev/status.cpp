@@ -97,7 +97,7 @@ static std::wstring GetProgramDataConfig()
 	if (is_cygwin_msys2_hack_active())
 		return {};
 
-	if (SHGetFolderPathW(nullptr, CSIDL_COMMON_APPDATA, nullptr, SHGFP_TYPE_CURRENT, wbuffer) != S_OK || wcslen(wbuffer) >= MAX_PATH - 11) /* 11 = len("\\Git\\config") */
+	if (SHGetFolderPathW(nullptr, CSIDL_COMMON_APPDATA, nullptr, SHGFP_TYPE_CURRENT, wbuffer) != S_OK || wcslen(wbuffer) >= MAX_PATH - wcslen(L"\\Git\\config"))
 		return{};
 
 	wcscat(wbuffer, L"\\Git\\config");

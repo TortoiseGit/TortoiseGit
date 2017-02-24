@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -175,7 +175,7 @@ CString GitAdminDir::ReadGitLink(const CString& topDir, const CString& dotGitPat
 		return L"";
 	CString gitPath = CUnicodeUtils::GetUnicode(gitPathA);
 	// trim after converting to UTF-16, because CStringA trim does not work when having UTF-8 chars
-	gitPath = gitPath.Trim().Mid(8); // 8 = len("gitdir: ")
+	gitPath = gitPath.Trim().Mid((int)wcslen(L"gitdir: "));
 	gitPath.Replace('/', '\\');
 	gitPath.TrimRight('\\');
 	if (!gitPath.IsEmpty() && gitPath[0] == L'.')

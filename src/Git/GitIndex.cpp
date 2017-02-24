@@ -35,7 +35,7 @@ static CString GetProgramDataGitConfig()
 	if (!((CRegDWORD(L"Software\\TortoiseGit\\CygwinHack", FALSE) == TRUE) || (CRegDWORD(L"Software\\TortoiseGit\\Msys2Hack", FALSE) == TRUE)))
 	{
 		CString programdataConfig;
-		if (SHGetFolderPath(nullptr, CSIDL_COMMON_APPDATA, NULL, SHGFP_TYPE_CURRENT, CStrBuf(programdataConfig, MAX_PATH)) == S_OK && programdataConfig.GetLength() < MAX_PATH - 11) /* 11 = len("\\Git\\config") */
+		if (SHGetFolderPath(nullptr, CSIDL_COMMON_APPDATA, NULL, SHGFP_TYPE_CURRENT, CStrBuf(programdataConfig, MAX_PATH)) == S_OK && programdataConfig.GetLength() < MAX_PATH - (int)wcslen(L"\\Git\\config"))
 			return programdataConfig + L"\\Git\\config";
 	}
 	return L"";
@@ -521,8 +521,8 @@ int CGitHeadFileList::ReadHeadHash(const CString& gitdir)
 
 	DWORD size = 0;
 	unsigned char buffer[2 * GIT_HASH_SIZE];
-	ReadFile(hfile, buffer, 4, &size, nullptr);
-	if (size != 4)
+	ReadFile(hfile, buffer, (DWORD)strlen("ref:"), &size, nullptr);
+	if (size != strlen("ref:"))
 		return -1;
 	buffer[4] = '\0';
 	if (strcmp((const char*)buffer, "ref:") == 0)
@@ -532,12 +532,12 @@ int CGitHeadFileList::ReadHeadHash(const CString& gitdir)
 		if (filesize < 5 || filesize == INVALID_FILE_SIZE)
 			return -1;
 
-		unsigned char *p = (unsigned char*)malloc(filesize - 4);
+		unsigned char *p = (unsigned char*)malloc(filesize - strlen("ref:"));
 		if (!p)
 			return -1;
 
-		ReadFile(hfile, p, filesize - 4, &size, nullptr);
-		CGit::StringAppend(&m_HeadRefFile, p, CP_UTF8, filesize - 4);
+		ReadFile(hfile, p, filesize - (DWORD)strlen("ref:"), &size, nullptr);
+		CGit::StringAppend(&m_HeadRefFile, p, CP_UTF8, filesize - (int)strlen("ref:"));
 		free(p);
 
 		CString ref = m_HeadRefFile.Trim();
@@ -592,8 +592,8 @@ int CGitHeadFileList::ReadHeadHash(const CString& gitdir)
 		return 0;
 	}
 
-	ReadFile(hfile, buffer + 4, 2 * GIT_HASH_SIZE - 4, &size, nullptr);
-	if (size != 36)
+	ReadFile(hfile, buffer + (DWORD)strlen("ref:"), 2 * GIT_HASH_SIZE - (DWORD)strlen("ref:"), &size, nullptr);
+	if (size != 2 * GIT_HASH_SIZE - (DWORD)strlen("ref:"))
 		return -1;
 
 	m_HeadRefFile.Empty();

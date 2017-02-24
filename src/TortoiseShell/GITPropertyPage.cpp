@@ -562,7 +562,7 @@ void CGitPropertyPage::InitWorkfileView()
 			git_reference_lookup(head.GetPointer(), repository, "HEAD");
 			branch = CUnicodeUtils::GetUnicode(git_reference_symbolic_target(head));
 			if (CStringUtils::StartsWith(branch, L"refs/heads/"))
-				branch = branch.Mid(11); // 11 = len("refs/heads/")
+				branch = branch.Mid((int)wcslen(L"refs/heads/"));
 		}
 		else if (!git_repository_head(head.GetPointer(), repository))
 		{
@@ -574,7 +574,7 @@ void CGitPropertyPage::InitWorkfileView()
 			if (!git_branch_upstream_name(upstreambranchname, repository, branchFullChar))
 			{
 				remotebranch = CUnicodeUtils::GetUnicode(CStringA(upstreambranchname->ptr, (int)upstreambranchname->size));
-				remotebranch = remotebranch.Mid(13); // 13=len("refs/remotes/")
+				remotebranch = remotebranch.Mid((int)wcslen(L"refs/remotes/"));
 				int pos = remotebranch.Find(L'/');
 				if (pos > 0)
 				{
