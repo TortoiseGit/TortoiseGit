@@ -25,7 +25,9 @@ typedef struct raw_backend_data {
     int closed_on_socket_error;
     int bufsize;
     void *frontend;
-    int sent_console_eof, sent_socket_eof;
+    int sent_console_eof, sent_socket_eof, session_started;
+
+    Conf *conf;
 } *Raw;
 
 static void raw_size(void *handle, int width, int height);
@@ -40,17 +42,8 @@ static void raw_log(Plug plug, int type, SockAddr addr, int port,
 		    const char *error_msg, int error_code)
 {
     Raw raw = (Raw) plug;
-    char addrbuf[256], *msg;
-
-    sk_getaddr(addr, addrbuf, lenof(addrbuf));
-
-    if (type == 0)
-	msg = dupprintf("Connecting to %s port %d", addrbuf, port);
-    else
-	msg = dupprintf("Failed to connect to %s: %s", addrbuf, error_msg);
-
-    logevent(raw->frontend, msg);
-    sfree(msg);
+    backend_socket_log(raw->frontend, type, addr, port,
+                       error_msg, error_code, raw->conf, raw->session_started);
 }
 
 static void raw_check_close(Raw raw)
@@ -106,6 +99,9 @@ static int raw_receive(Plug plug, int urgent, char *data, int len)
 {
     Raw raw = (Raw) plug;
     c_write(raw, data, len);
+    /* We count 'session start', for proxy logging purposes, as being
+     * when data is received from the network and printed. */
+    raw->session_started = TRUE;
     return 1;
 }
 
@@ -125,8 +121,8 @@ static void raw_sent(Plug plug, int bufsize)
  */
 static const char *raw_init(void *frontend_handle, void **backend_handle,
 			    Conf *conf,
-			    char *host, int port, char **realhost, int nodelay,
-			    int keepalive)
+			    const char *host, int port, char **realhost,
+                            int nodelay, int keepalive)
 {
     static const struct plug_function_table fn_table = {
 	raw_log,
@@ -147,6 +143,8 @@ static const char *raw_init(void *frontend_handle, void **backend_handle,
     *backend_handle = raw;
     raw->sent_console_eof = raw->sent_socket_eof = FALSE;
     raw->bufsize = 0;
+    raw->session_started = FALSE;
+    raw->conf = conf_copy(conf);
 
     raw->frontend = frontend_handle;
 
@@ -154,16 +152,8 @@ static const char *raw_init(void *frontend_handle, void **backend_handle,
     /*
      * Try to find host.
      */
-    {
-	char *buf;
-	buf = dupprintf("Looking up host \"%s\"%s", host,
-			(addressfamily == ADDRTYPE_IPV4 ? " (IPv4)" :
-			 (addressfamily == ADDRTYPE_IPV6 ? " (IPv6)" :
-			  "")));
-	logevent(raw->frontend, buf);
-	sfree(buf);
-    }
-    addr = name_lookup(host, port, realhost, conf, addressfamily);
+    addr = name_lookup(host, port, realhost, conf, addressfamily,
+                       raw->frontend, "main connection");
     if ((err = sk_addr_error(addr)) != NULL) {
 	sk_addr_free(addr);
 	return err;
@@ -201,6 +191,7 @@ static void raw_free(void *handle)
 
     if (raw->s)
 	sk_close(raw->s);
+    conf_free(raw->conf);
     sfree(raw);
 }
 
@@ -214,7 +205,7 @@ static void raw_reconfig(void *handle, Conf *conf)
 /*
  * Called to send data down the raw connection.
  */
-static int raw_send(void *handle, char *buf, int len)
+static int raw_send(void *handle, const char *buf, int len)
 {
     Raw raw = (Raw) handle;
 
@@ -339,6 +330,7 @@ Backend raw_backend = {
     raw_provide_logctx,
     raw_unthrottle,
     raw_cfg_info,
+    NULL /* test_for_upstream */,
     "raw",
     PROT_RAW,
     0

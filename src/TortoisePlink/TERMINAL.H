@@ -315,6 +315,7 @@ struct terminal_tag {
     int no_remote_charset;
     int no_remote_resize;
     int no_remote_wintitle;
+    int no_remote_clearscroll;
     int rawcnp;
     int rect_select;
     int remote_qtitle_action;

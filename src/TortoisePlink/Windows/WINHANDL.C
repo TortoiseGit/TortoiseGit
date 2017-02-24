@@ -411,9 +411,9 @@ static int handle_cmp_evtomain(void *av, void *bv)
     struct handle *a = (struct handle *)av;
     struct handle *b = (struct handle *)bv;
 
-    if ((unsigned)a->u.g.ev_to_main < (unsigned)b->u.g.ev_to_main)
+    if ((uintptr_t)a->u.g.ev_to_main < (uintptr_t)b->u.g.ev_to_main)
 	return -1;
-    else if ((unsigned)a->u.g.ev_to_main > (unsigned)b->u.g.ev_to_main)
+    else if ((uintptr_t)a->u.g.ev_to_main > (uintptr_t)b->u.g.ev_to_main)
 	return +1;
     else
 	return 0;
@@ -424,9 +424,9 @@ static int handle_find_evtomain(void *av, void *bv)
     HANDLE *a = (HANDLE *)av;
     struct handle *b = (struct handle *)bv;
 
-    if ((unsigned)*a < (unsigned)b->u.g.ev_to_main)
+    if ((uintptr_t)*a < (uintptr_t)b->u.g.ev_to_main)
 	return -1;
-    else if ((unsigned)*a > (unsigned)b->u.g.ev_to_main)
+    else if ((uintptr_t)*a > (uintptr_t)b->u.g.ev_to_main)
 	return +1;
     else
 	return 0;
@@ -533,7 +533,7 @@ void handle_write_eof(struct handle *h)
      * direction!
      */
     assert(h->type == HT_OUTPUT);
-    if (!h->u.o.outgoingeof == EOF_NO) {
+    if (h->u.o.outgoingeof == EOF_NO) {
         h->u.o.outgoingeof = EOF_PENDING;
         handle_try_output(&h->u.o);
     }

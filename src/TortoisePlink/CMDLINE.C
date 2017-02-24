@@ -44,15 +44,15 @@ struct cmdline_saved_param_set {
  */
 static struct cmdline_saved_param_set saves[NPRIORITIES];
 
-static void cmdline_save_param(char *p, char *value, int pri)
+static void cmdline_save_param(const char *p, const char *value, int pri)
 {
     if (saves[pri].nsaved >= saves[pri].savesize) {
 	saves[pri].savesize = saves[pri].nsaved + 32;
 	saves[pri].params = sresize(saves[pri].params, saves[pri].savesize,
 				    struct cmdline_saved_param);
     }
-    saves[pri].params[saves[pri].nsaved].p = p;
-    saves[pri].params[saves[pri].nsaved].value = value;
+    saves[pri].params[saves[pri].nsaved].p = dupstr(p);
+    saves[pri].params[saves[pri].nsaved].value = dupstr(value);
     saves[pri].nsaved++;
 }
 
@@ -85,8 +85,8 @@ void cmdline_cleanup(void)
  * return means that we aren't capable of processing the prompt and
  * someone else should do it.
  */
-int cmdline_get_passwd_input(prompts_t *p, unsigned char *in, int inlen) {
-
+int cmdline_get_passwd_input(prompts_t *p, const unsigned char *in, int inlen)
+{
     static int tried_once = 0;
 
     /*
@@ -125,7 +125,7 @@ int cmdline_get_passwd_input(prompts_t *p, unsigned char *in, int inlen) {
  */
 int cmdline_tooltype = 0;
 
-static int cmdline_check_unavailable(int flag, char *p)
+static int cmdline_check_unavailable(int flag, const char *p)
 {
     if (cmdline_tooltype & flag) {
 	cmdline_error("option \"%s\" not available in this tool", p);
@@ -159,7 +159,8 @@ static int cmdline_check_unavailable(int flag, char *p)
     if (need_save < 0) return x; \
 } while (0)
 
-int cmdline_process_param(char *p, char *value, int need_save, Conf *conf)
+int cmdline_process_param(const char *p, char *value,
+                          int need_save, Conf *conf)
 {
     int ret = 0;
 
@@ -328,7 +329,8 @@ int cmdline_process_param(char *p, char *value, int need_save, Conf *conf)
         sfree(host);
     }
     if (!strcmp(p, "-m")) {
-	char *filename, *command;
+	const char *filename;
+        char *command;
 	int cmdlen, cmdsize;
 	FILE *fp;
 	int c, d;
@@ -599,14 +601,39 @@ int cmdline_process_param(char *p, char *value, int need_save, Conf *conf)
         filename_free(fn);
     }
 
+    if (!strcmp(p, "-proxycmd")) {
+	RETURN(2);
+	UNAVAILABLE_IN(TOOLTYPE_NONNETWORK);
+	SAVEABLE(0);
+        conf_set_int(conf, CONF_proxy_type, PROXY_CMD);
+	conf_set_str(conf, CONF_proxy_telnet_command, value);
+    }
+
+#ifdef _WINDOWS
+    /*
+     * Cross-tool options only available on Windows.
+     */
+    if (!strcmp(p, "-restrict-acl") || !strcmp(p, "-restrict_acl") ||
+        !strcmp(p, "-restrictacl")) {
+	RETURN(1);
+        restrict_process_acl();
+        restricted_acl = TRUE;
+    }
+#endif
+
     return ret;			       /* unrecognised */
 }
 
 void cmdline_run_saved(Conf *conf)
 {
     int pri, i;
-    for (pri = 0; pri < NPRIORITIES; pri++)
-	for (i = 0; i < saves[pri].nsaved; i++)
+    for (pri = 0; pri < NPRIORITIES; pri++) {
+	for (i = 0; i < saves[pri].nsaved; i++) {
 	    cmdline_process_param(saves[pri].params[i].p,
 				  saves[pri].params[i].value, 0, conf);
+            sfree(saves[pri].params[i].p);
+            sfree(saves[pri].params[i].value);
+        }
+        saves[pri].nsaved = 0;
+    }
 }

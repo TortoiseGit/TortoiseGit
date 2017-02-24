@@ -445,7 +445,8 @@ static IShellLink *make_shell_link(const char *appname,
                              sessionname, "'", NULL);
     } else {
         assert(appname);
-        desc_string = dupprintf("Run %.*s", strcspn(appname, "."), appname);
+        desc_string = dupprintf("Run %.*s",
+                                (int)strcspn(appname, "."), appname);
     }
     ret->lpVtbl->SetDescription(ret, desc_string);
     sfree(desc_string);
@@ -461,7 +462,8 @@ static IShellLink *make_shell_link(const char *appname,
             pv.pszVal = dupstr(sessionname);
         } else {
             assert(appname);
-            pv.pszVal = dupprintf("Run %.*s", strcspn(appname, "."), appname);
+            pv.pszVal = dupprintf("Run %.*s",
+                                  (int)strcspn(appname, "."), appname);
         }
         pPS->lpVtbl->SetValue(pPS, &PKEY_Title, &pv);
         sfree(pv.pszVal);
@@ -711,4 +713,34 @@ void remove_session_from_jumplist(const char * const sessionname)
         /* Make sure we don't leave the jumplist dangling. */
         clear_jumplist();
     }
+}
+
+/* Set Explicit App User Model Id to fix removable media error with
+   jump lists */
+
+BOOL set_explicit_app_user_model_id()
+{
+  DECL_WINDOWS_FUNCTION(static, HRESULT, SetCurrentProcessExplicitAppUserModelID,
+                        (PCWSTR));
+
+  static HMODULE shell32_module = 0;
+
+    if (!shell32_module)
+    {
+        shell32_module = load_system32_dll("Shell32.dll");
+        GET_WINDOWS_FUNCTION(shell32_module, SetCurrentProcessExplicitAppUserModelID);
+    }
+
+    if (p_SetCurrentProcessExplicitAppUserModelID)
+    {
+        if (p_SetCurrentProcessExplicitAppUserModelID(L"SimonTatham.PuTTY") == S_OK)
+        {
+	  return TRUE;
+        }
+        return FALSE;
+    }
+    /* Function doesn't exist, which is ok for Pre-7 systems */
+
+    return TRUE;
+
 }

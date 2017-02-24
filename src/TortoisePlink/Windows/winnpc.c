@@ -16,8 +16,8 @@
 
 #include "winsecur.h"
 
-Socket make_handle_socket(HANDLE send_H, HANDLE recv_H, Plug plug,
-                          int overlapped);
+Socket make_handle_socket(HANDLE send_H, HANDLE recv_H, HANDLE stderr_H,
+                          Plug plug, int overlapped);
 
 Socket new_named_pipe_client(const char *pipename, Plug plug)
 {
@@ -93,7 +93,7 @@ Socket new_named_pipe_client(const char *pipename, Plug plug)
 
     LocalFree(psd);
 
-    return make_handle_socket(pipehandle, pipehandle, plug, TRUE);
+    return make_handle_socket(pipehandle, pipehandle, NULL, plug, TRUE);
 }
 
 #endif /* !defined NO_SECURITY */
