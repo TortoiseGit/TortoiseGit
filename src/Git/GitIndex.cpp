@@ -524,7 +524,7 @@ int CGitHeadFileList::ReadHeadHash(const CString& gitdir)
 	ReadFile(hfile, buffer, 4, &size, nullptr);
 	if (size != 4)
 		return -1;
-	buffer[4] = 0;
+	buffer[4] = '\0';
 	if (strcmp((const char*)buffer, "ref:") == 0)
 	{
 		m_HeadRefFile.Empty();
@@ -804,7 +804,7 @@ int CGitIgnoreItem::FetchIgnoreList(const CString &projectroot, const CString &f
 		m_buffer = nullptr;
 		return -1;
 	}
-	m_buffer[size] = 0;
+	m_buffer[size] = '\0';
 
 	if (git_create_exclude_list(&m_pExcludeList))
 	{
@@ -820,9 +820,9 @@ int CGitIgnoreItem::FetchIgnoreList(const CString &projectroot, const CString &f
 		if (m_buffer[i] == '\n' || m_buffer[i] == '\r' || i == (size - 1))
 		{
 			if (m_buffer[i] == '\n' || m_buffer[i] == '\r')
-				m_buffer[i] = 0;
+				m_buffer[i] = '\0';
 
-			if (p[0] != '#' && p[0] != 0)
+			if (p[0] != '#' && p[0])
 				git_add_exclude((const char*)p, this->m_BaseDir, m_BaseDir.GetLength(), this->m_pExcludeList, ++line);
 
 			p = m_buffer + i + 1;
