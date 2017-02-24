@@ -778,7 +778,7 @@ bool CTGitPath::HasStashDir(const CString& dotGitPath) const
 		return false;
 
 	DWORD filesize = ::GetFileSize(hfile, nullptr);
-	if (filesize == 0)
+	if (filesize == 0 || filesize == INVALID_FILE_SIZE)
 		return false;
 
 	DWORD size = 0;
