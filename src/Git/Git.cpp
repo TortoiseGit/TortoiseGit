@@ -1976,7 +1976,7 @@ int CGit::GetRefList(STRING_VECTOR &list)
 	int ret = Run(L"git.exe show-ref -d", [&](const CStringA& lineA)
 	{
 		int start = lineA.Find(L' ');
-		ASSERT(start == 40);
+		ASSERT(start == 2 * GIT_HASH_SIZE);
 		if (start <= 0)
 			return;
 
@@ -2055,7 +2055,7 @@ int CGit::GetMapHashToFriendName(MAP_HASH_NAME &map)
 	int ret = Run(L"git.exe show-ref -d", [&](const CStringA& lineA)
 	{
 		int start = lineA.Find(L' ');
-		ASSERT(start == 40);
+		ASSERT(start == 2 * GIT_HASH_SIZE);
 		if (start <= 0)
 			return;
 

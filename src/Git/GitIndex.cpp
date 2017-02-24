@@ -520,7 +520,7 @@ int CGitHeadFileList::ReadHeadHash(const CString& gitdir)
 		return -1;
 
 	DWORD size = 0;
-	unsigned char buffer[40];
+	unsigned char buffer[2 * GIT_HASH_SIZE];
 	ReadFile(hfile, buffer, 4, &size, nullptr);
 	if (size != 4)
 		return -1;
@@ -581,8 +581,8 @@ int CGitHeadFileList::ReadHeadHash(const CString& gitdir)
 			return 0;
 		}
 
-		ReadFile(href, buffer, 40, &size, nullptr);
-		if (size != 40)
+		ReadFile(href, buffer, 2 * GIT_HASH_SIZE, &size, nullptr);
+		if (size != 2 * GIT_HASH_SIZE)
 			return -1;
 
 		m_Head.ConvertFromStrA((char*)buffer);
@@ -592,7 +592,7 @@ int CGitHeadFileList::ReadHeadHash(const CString& gitdir)
 		return 0;
 	}
 
-	ReadFile(hfile, buffer + 4, 40 - 4, &size, nullptr);
+	ReadFile(hfile, buffer + 4, 2 * GIT_HASH_SIZE - 4, &size, nullptr);
 	if (size != 36)
 		return -1;
 

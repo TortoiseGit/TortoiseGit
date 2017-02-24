@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2016 - TortoiseGit
+// Copyright (C) 2009-2017 - TortoiseGit
 // Copyright (C) 2003-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -800,7 +800,7 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 				diffWith = m_sMarkForDiffVersion;
 			else
 			{
-				PathCompactPathEx(CStrBuf(diffWith, 40), m_sMarkForDiffFilename, 39, 0);
+				PathCompactPathEx(CStrBuf(diffWith, 2 * GIT_HASH_SIZE), m_sMarkForDiffFilename, 2 * GIT_HASH_SIZE, 0);
 				diffWith += L':' + m_sMarkForDiffVersion.ToString().Left(g_Git.GetShortHASHLength());
 			}
 			CString menuEntry;

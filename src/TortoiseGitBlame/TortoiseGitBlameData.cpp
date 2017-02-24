@@ -1,6 +1,6 @@
 // TortoiseGitBlame - a Viewer for Git Blames
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 // Copyright (C) 2003 Don HO <donho@altern.org>
 
 // This program is free software; you can redistribute it and/or
@@ -123,11 +123,11 @@ void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & Ha
 				if (expectHash)
 				{
 					expectHash = false;
-					if (lineEnd - lineBegin > 40)
+					if (lineEnd - lineBegin > 2 * GIT_HASH_SIZE)
 					{
 						hash.ConvertFromStrA((char*)&data[lineBegin]);
 
-						size_t hashEnd = lineBegin + 40;
+						size_t hashEnd = lineBegin + 2 * GIT_HASH_SIZE;
 						size_t originalLineNumberBegin = hashEnd + 1;
 						size_t originalLineNumberEnd = data.find(' ', originalLineNumberBegin);
 						if (originalLineNumberEnd != BYTE_VECTOR::npos)

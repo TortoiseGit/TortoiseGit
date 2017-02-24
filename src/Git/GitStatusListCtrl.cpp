@@ -1764,7 +1764,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							diffWith = m_sMarkForDiffVersion;
 						else
 						{
-							PathCompactPathEx(CStrBuf(diffWith, 40), m_sMarkForDiffFilename, 40, 0);
+							PathCompactPathEx(CStrBuf(diffWith, 2 * GIT_HASH_SIZE), m_sMarkForDiffFilename, 2 * GIT_HASH_SIZE, 0);
 							diffWith += L':' + m_sMarkForDiffVersion.Left(g_Git.GetShortHASHLength());
 						}
 						CString menuEntry;
@@ -2812,7 +2812,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 
 					if (!g_Git.Run(cmd, &output, nullptr, CP_UTF8))
 					{
-						if(g_Git.GetOneFile(output.Left(40), file1, (CString&)base.GetWinPathString()))
+						if (g_Git.GetOneFile(output.Left(2 * GIT_HASH_SIZE), file1, (CString&)base.GetWinPathString()))
 							CMessageBox::Show(GetSafeHwnd(), IDS_STATUSLIST_FAILEDGETBASEFILE, IDS_APPNAME, MB_OK | MB_ICONERROR);
 					}
 				}

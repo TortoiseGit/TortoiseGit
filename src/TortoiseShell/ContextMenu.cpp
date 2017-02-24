@@ -578,11 +578,11 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 
 		if (path.HasAdminDir(&sProjectRoot) && !CGit::GetCurrentBranchFromFile(sProjectRoot, sBranchName))
 		{
-			if (sBranchName.GetLength() == 40)
+			if (sBranchName.GetLength() == 2 * GIT_HASH_SIZE)
 			{
 				// if SHA1 only show 4 first bytes
 				BOOL bIsSha1 = TRUE;
-				for (int i=0; i<40; i++)
+				for (int i = 0; i < 2 * GIT_HASH_SIZE; ++i)
 					if ( !iswxdigit(sBranchName[i]) )
 					{
 						bIsSha1 = FALSE;
@@ -626,7 +626,7 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 		if (!sPath.empty())
 		{
 			// add the path of the saved file
-			wchar_t compact[40] = {0};
+			wchar_t compact[2 * GIT_HASH_SIZE] = { 0 };
 			PathCompactPathEx(compact, sPath.c_str(), _countof(compact) - 1, 0);
 			MAKESTRING(IDS_MENUDIFFNOW);
 			CString sMenu;
