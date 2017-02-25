@@ -3331,9 +3331,6 @@ void CGitStatusListCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
 
 	Locker lock(m_critSec);
 
-	if (!m_Rev1.IsEmpty() || !m_Rev2.IsEmpty())
-		return;
-
 	CTGitPathList pathList;
 	FillListOfSelectedItemPaths(pathList);
 	if (pathList.IsEmpty())
@@ -3344,7 +3341,7 @@ void CGitStatusListCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
 		return;
 	pdsrc->AddRef();
 
-	GitDataObject* pdobj = new GitDataObject(pathList, m_CurrentVersion);
+	GitDataObject* pdobj = new GitDataObject(pathList, m_Rev2.IsEmpty() ? m_CurrentVersion : m_Rev2);
 	if (!pdobj)
 		return;
 	pdobj->AddRef();
