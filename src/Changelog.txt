@@ -1,5 +1,5 @@
-﻿= Release 2.5.0 =
-Released: unreleased
+﻿= Release 2.4.0.2 =
+Released: 2017-02-25
 
 == Bug Fixes ==
  * Fixed issue #2909: Commit window unclosable after clicking "No" and "do not ask again"
@@ -7,6 +7,7 @@ Released: unreleased
  * Fixed issue #2791: Start Bisect UI incomplete
  * Update PuTTY to 0.68 (security fix, cf. http://www.chiark.greenend.org.uk/~sgtatham/putty/changes.html)
  * Fixed issue #2935: Icon overlay not shown for files on network UNC paths
+ * Fix possible crash in TortoiseGitMerge when applying patch
 
 = Release 2.4.0 =
 Released: 2017-01-31
