@@ -118,15 +118,16 @@
 			<Show Dialog="PrepareDlg" After="LaunchConditions" />
 			<Show Dialog="WelcomeDlg" After="MigrateFeatureStates"><![CDATA[NOT Installed]]></Show>
 			<Show Dialog="ResumeDlg" After="WelcomeDlg"><![CDATA[Installed AND (RESUME OR Preselected)]]></Show>
-			<Show Dialog="MaintenanceWelcomeDlg" After="ResumeDlg"><![CDATA[Installed AND NOT RESUME AND NOT Preselected]]></Show>
+			<Show Dialog="PatchWelcomeDlg" After="ResumeDlg"><![CDATA[Installed AND NOT RESUME AND PATCH]]></Show>
+			<Show Dialog="MaintenanceWelcomeDlg" After="ResumeDlg"><![CDATA[Installed AND NOT RESUME AND NOT Preselected and NOT PATCH]]></Show>
 			<Show Dialog="ProgressDlg" After="MaintenanceWelcomeDlg" />
 
 			<FindRelatedProducts Suppress="no">1</FindRelatedProducts>
 
 			<Custom Action="DefaultTargetDir" After="PrepareDlg">INSTALLDIR=""</Custom>
 			<Custom Action="ERRCA_UIANDADVERTISED" Before="AppSearch">ProductState=1</Custom>
-			<Custom Action="Set_ShowChangelog" After="LaunchConditions">NOT (NEWERVERSIONDETECTED OR PREVIOUSVERSIONSINSTALLED)</Custom>
-			<Custom Action="Set_FirstStartWizard" After="LaunchConditions">(NEWERVERSIONDETECTED OR PREVIOUSVERSIONSINSTALLED)</Custom>
+			<Custom Action="Set_ShowChangelog" After="LaunchConditions">NOT (NEWERVERSIONDETECTED OR PREVIOUSVERSIONSINSTALLED OR PATCH)</Custom>
+			<Custom Action="Set_FirstStartWizard" After="LaunchConditions">(NEWERVERSIONDETECTED OR PREVIOUSVERSIONSINSTALLED OR PATCH)</Custom>
 		</InstallUISequence>
 	</Product>
 </Wix>

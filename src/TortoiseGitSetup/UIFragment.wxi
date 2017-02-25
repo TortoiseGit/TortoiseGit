@@ -353,8 +353,8 @@
 
 		<Dialog Id="ExitDlg" Width="370" Height="270" Title="[ProductName] [Setup]" NoMinimize="yes">
 			<Control Id="Finish" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Cancel="yes" Text="[ButtonText_Finish]">
-				<Publish Event="DoAction" Value="ShowChangelogAction">(NOT Installed) AND (SHOWCHANGELOG = 1)</Publish>
-				<Publish Event="DoAction" Value="FirstStartWizardAction">(NOT Installed OR InstallMode = "Repair") AND (FIRSTSTARTWIZARD = 1)</Publish>
+				<Publish Event="DoAction" Value="ShowChangelogAction">(NOT Installed OR PATCH) AND (SHOWCHANGELOG = 1)</Publish>
+				<Publish Event="DoAction" Value="FirstStartWizardAction">(NOT Installed OR InstallMode = "Repair" OR PATCH) AND (FIRSTSTARTWIZARD = 1)</Publish>
 				<Publish Event="DoAction" Value="RestartExplorer">1</Publish>
 				<Publish Event="EndDialog" Value="Return">1</Publish>
 			</Control>
@@ -366,11 +366,11 @@
 			</Control>
 			<Control Id="ChangeLog" Type="CheckBox" X="135" Y="100" Width="200" Height="12" Property='SHOWCHANGELOG' CheckBoxValue='1'>
 				<Text>Show Changelog</Text>
-				<Condition Action="hide">(Installed)</Condition>
+				<Condition Action="hide">(Installed AND NOT PATCH)</Condition>
 			</Control>
 			<Control Id="FirstSTart" Type="CheckBox" X="135" Y="116" Width="200" Height="12" Property='FIRSTSTARTWIZARD' CheckBoxValue='1'>
 				<Text>Run first start wizard</Text>
-				<Condition Action="hide">(Installed AND NOT InstallMode = "Repair")</Condition>
+				<Condition Action="hide">(Installed AND NOT InstallMode = "Repair" AND NOT PATCH)</Condition>
 			</Control>
 			<Control Id="DialogDescription" Type="Text" X="135" Y="70" Width="220" Height="20" Transparent="yes" NoPrefix="yes">
 				<Text>Click the Finish button to exit the [Wizard].</Text>
@@ -556,6 +556,25 @@
 			</Control>
 			<Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
 		</Dialog>
+
+		<Dialog Id="PatchWelcomeDlg" Width="370" Height="270" Title="[PATCHNEWSUMMARYCOMMENTS] [Setup]" NoMinimize="yes">
+		<Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="[ButtonText_Next]">
+			<Publish Event="SpawnWaitDialog" Value="WaitForCostingPopup">CostingComplete = 1</Publish>
+			<Publish Event="NewDialog" Value="ProgressDlg">1</Publish>
+		</Control>
+		<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Disabled="yes" Text="[ButtonText_Back]" />
+		<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="[ButtonText_Cancel]">
+			<Publish Event="SpawnDialog" Value="CancelPopup">1</Publish>
+		</Control>
+		<Control Id="BackgroundBitmap" Type="Bitmap" X="0" Y="0" Width="123" Height="234" TabSkip="no" Text="[DialogBitmap]" />
+		<Control Id="Title" Type="Text" X="135" Y="20" Width="220" Height="60" Transparent="yes" NoPrefix="yes">
+			<Text>{\VerdanaBold13}Welcome to the [PATCHNEWSUMMARYCOMMENTS] [Wizard]</Text>
+		</Control>
+		<Control Id="DialogDescription" Type="Text" X="135" Y="70" Width="220" Height="60" Transparent="yes" NoPrefix="yes">
+			<Text>The [Wizard] will allow you to update [ProductName] to [PATCHNEWSUMMARYCOMMENTS]. Click Next to continue or Cancel to exit the [Wizard].</Text>
+		</Control>
+		<Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+	</Dialog>
 
 		<Dialog Id="OutOfDiskDlg" Width="370" Height="270" Title="[ProductName] [Setup]" NoMinimize="yes">
 			<Control Id="OK" Type="PushButton" X="304" Y="243" Width="56" Height="17" Default="yes" Cancel="yes" Text="[ButtonText_OK]">
