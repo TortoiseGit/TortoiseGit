@@ -2163,14 +2163,20 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			bool bAddSeparator = false;
 			if ((selectedCount == 2) || IsSelectionContinuous())
 			{
-				if(m_ContextMenuMask&GetContextMenuBit(ID_COMPARETWO)) // compare two revisions
+				if (m_ContextMenuMask&GetContextMenuBit(ID_COMPARETWO)) // compare two revisions
+				{
 					popup.AppendMenuIcon(ID_COMPARETWO, IDS_LOG_POPUP_COMPARETWO, IDI_DIFF);
+					bAddSeparator = true;
+				}
 			}
 
 			if (selectedCount == 2)
 			{
-				if(m_ContextMenuMask&GetContextMenuBit(ID_GNUDIFF2) && m_hasWC) // compare two revisions, unified
+				if (m_ContextMenuMask&GetContextMenuBit(ID_GNUDIFF2) && m_hasWC) // compare two revisions, unified
+				{
 					popup.AppendMenuIcon(ID_GNUDIFF2, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
+					bAddSeparator = true;
+				}
 
 				if (!pSelLogEntry->m_CommitHash.IsEmpty())
 				{
@@ -2182,9 +2188,8 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					popup.AppendMenuIcon(ID_LOG_VIEWRANGE, menu, IDI_LOG);
 					menu.Format(IDS_SHOWLOG_OF, (LPCTSTR)(lastSelHash + L"..." + firstSelHash));
 					popup.AppendMenuIcon(ID_LOG_VIEWRANGE_REACHABLEFROMONLYONE, menu, IDI_LOG);
+					bAddSeparator = true;
 				}
-
-				bAddSeparator = true;
 			}
 
 			if ((m_ContextMenuMask & GetContextMenuBit(ID_COMPARETWOCOMMITCHANGES)) && selectedCount == 2 && !IsSelectionContinuous())
@@ -2192,9 +2197,6 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				bAddSeparator = true;
 				popup.AppendMenuIcon(ID_COMPARETWOCOMMITCHANGES, IDS_LOG_POPUP_COMPARECHANGESET, IDI_DIFF);
 			}
-
-			if (m_hasWC)
-				bAddSeparator = true;
 
 			if (bAddSeparator)
 			{
