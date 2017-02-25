@@ -47,8 +47,8 @@ void timer_change_notify(unsigned long next)
 {
 }
 
-int verify_ssh_host_key(void *frontend, char *host, int port, char *keytype,
-                        char *keystr, char *fingerprint,
+int verify_ssh_host_key(void *frontend, char *host, int port,
+                        const char *keytype, char *keystr, char *fingerprint,
                         void (*callback)(void *ctx, int result), void *ctx)
 {
     int ret;
@@ -191,6 +191,48 @@ int askalg(void *frontend, const char *algtype, const char *algname,
 		return 0;
 }
 
+int askhk(void *frontend, const char *algname, const char *betteralgs,
+          void (*callback)(void *ctx, int result), void *ctx)
+{
+    HANDLE hin;
+    DWORD savemode, i;
+
+    static const char msg[] =
+	"The first host key type we have stored for this server\n"
+	"is %s, which is below the configured warning threshold.\n"
+	"The server also provides the following types of host key\n"
+        "above the threshold, which we do not have stored:\n"
+        "%s\n"
+	"Continue with connection? (y/n) ";
+    static const char msg_batch[] =
+	"The first host key type we have stored for this server\n"
+	"is %s, which is below the configured warning threshold.\n"
+	"The server also provides the following types of host key\n"
+        "above the threshold, which we do not have stored:\n"
+        "%s\n"
+	"Connection abandoned.\n";
+    static const char abandoned[] = "Connection abandoned.\n";
+
+    char line[32];
+
+    int mbret;
+    char *message, *title;
+    static const char mbtitle[] = "%s Security Alert";
+
+    message = dupprintf(msg, algname, betteralgs);
+    title = dupprintf(mbtitle, appname);
+
+    mbret = MessageBox(GetParentHwnd(), message, title, MB_ICONWARNING | MB_YESNOCANCEL | MB_DEFBUTTON3);
+    sfree(message);
+    sfree(title);
+
+    if (mbret == IDYES) {
+	return 1;
+    } else {
+	return 0;
+    }
+}
+
 /*
  * Ask whether to wipe a session log file before writing to it.
  * Returns 2 for wipe, 1 for append, 0 for cancel (don't log).
@@ -215,25 +257,20 @@ int askappend(void *frontend, Filename *filename,
 	"Logging will not be enabled.\n";
 
     char line[32];
+    int mbret;
+    char *message, *title;
+    static const char mbtitle[] = "%s Session log";
 
-    if (console_batch_mode) {
-	fprintf(stderr, msgtemplate_batch, FILENAME_MAX, filename->path);
-	fflush(stderr);
-	return 0;
-    }
-    fprintf(stderr, msgtemplate, FILENAME_MAX, filename->path);
-    fflush(stderr);
+    message = dupprintf(msgtemplate, FILENAME_MAX, filename->path);
+    title = dupprintf(mbtitle, appname);
 
-    hin = GetStdHandle(STD_INPUT_HANDLE);
-    GetConsoleMode(hin, &savemode);
-    SetConsoleMode(hin, (savemode | ENABLE_ECHO_INPUT |
-			 ENABLE_PROCESSED_INPUT | ENABLE_LINE_INPUT));
-    ReadFile(hin, line, sizeof(line) - 1, &i, NULL);
-    SetConsoleMode(hin, savemode);
+    mbret = MessageBox(GetParentHwnd(), message, title, MB_ICONWARNING | MB_YESNOCANCEL | MB_DEFBUTTON3);
+    sfree(message);
+    sfree(title);
 
-    if (line[0] == 'y' || line[0] == 'Y')
+    if (mbret == IDYES)
 	return 2;
-    else if (line[0] == 'n' || line[0] == 'N')
+    else if (mbret == IDNO)
 	return 1;
     else
 	return 0;
@@ -300,7 +337,8 @@ static void console_data_untrusted(HANDLE hout, const char *data, int len)
     WriteFile(hout, data, len, &dummy, NULL);
 }
 
-int console_get_userpass_input(prompts_t *p, unsigned char *in, int inlen)
+int console_get_userpass_input(prompts_t *p,
+                               const unsigned char *in, int inlen)
 {
     size_t curr_prompt;
 
@@ -316,16 +354,15 @@ int console_get_userpass_input(prompts_t *p, unsigned char *in, int inlen)
     if (console_batch_mode)
 	return 0;
 
-
     for (curr_prompt = 0; curr_prompt < p->n_prompts; curr_prompt++) {
-		
+
 	prompt_t *pr = p->prompts[curr_prompt];
 	if (!DoLoginDialog(pr->result, pr->resultsize-1, pr->prompt))
 	return 0;
+    
     }
 
     return 1; /* success */
-
 }
 
 void frontend_keypress(void *handle)

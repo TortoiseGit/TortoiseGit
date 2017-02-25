@@ -8,7 +8,7 @@
 struct pinger_tag {
     int interval;
     int pending;
-    unsigned long next;
+    unsigned long when_set, next;
     Backend *back;
     void *backhandle;
 };
@@ -28,7 +28,7 @@ static void pinger_timer(void *ctx, unsigned long now)
 
 static void pinger_schedule(Pinger pinger)
 {
-    int next;
+    unsigned long next;
 
     if (!pinger->interval) {
 	pinger->pending = FALSE;       /* cancel any pending ping */
@@ -37,8 +37,10 @@ static void pinger_schedule(Pinger pinger)
 
     next = schedule_timer(pinger->interval * TICKSPERSEC,
 			  pinger_timer, pinger);
-    if (!pinger->pending || next < pinger->next) {
+    if (!pinger->pending ||
+        (next - pinger->when_set) < (pinger->next - pinger->when_set)) {
 	pinger->next = next;
+        pinger->when_set = timing_last_clock();
 	pinger->pending = TRUE;
     }
 }

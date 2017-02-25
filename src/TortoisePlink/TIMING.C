@@ -148,6 +148,17 @@ unsigned long schedule_timer(int ticks, timer_fn_t fn, void *ctx)
     return when;
 }
 
+unsigned long timing_last_clock(void)
+{
+    /*
+     * Return the last value we stored in 'now'. In particular,
+     * calling this just after schedule_timer returns the value of
+     * 'now' that was used to decide when the timer you just set would
+     * go off.
+     */
+    return now;
+}
+
 /*
  * Call to run any timers whose time has reached the present.
  * Returns the time (in ticks) expected until the next timer after

@@ -11,9 +11,23 @@
 #include <windows.h>
 #include <stdio.h>		       /* for FILENAME_MAX */
 
+/* We use uintptr_t for Win32/Win64 portability, so we should in
+ * principle include stdint.h, which defines it according to the C
+ * standard. But older versions of Visual Studio - including the one
+ * used for official PuTTY builds as of 2015-09-28 - don't provide
+ * stdint.h at all, but do (non-standardly) define uintptr_t in
+ * stddef.h. So here we try to make sure _some_ standard header is
+ * included which defines uintptr_t. */
+#include <stddef.h>
+#if !defined _MSC_VER || _MSC_VER >= 1600
+#include <stdint.h>
+#endif
+
 #include "tree234.h"
 
 #include "winhelp.h"
+
+#define BUILDINFO_PLATFORM "Windows"
 
 struct Filename {
     char *path;
@@ -75,9 +89,27 @@ struct FontSpec *fontspec_new(const char *name,
 #define BOXRESULT (DLGWINDOWEXTRA + sizeof(LONG_PTR))
 #define DF_END 0x0001
 
+#ifdef __WINE__
+#define NO_SECUREZEROMEMORY            /* winelib doesn't have this */
+#endif
+
 #ifndef NO_SECUREZEROMEMORY
 #define PLATFORM_HAS_SMEMCLR /* inhibit cross-platform one in misc.c */
 #endif
+
+#ifndef __WINE__
+/* Up-to-date Windows headers warn that the unprefixed versions of
+ * these names are deprecated. */
+#define stricmp _stricmp
+#define strnicmp _strnicmp
+#else
+/* Compiling with winegcc, _neither_ version of these functions
+ * exists. Use the POSIX names. */
+#define stricmp strcasecmp
+#define strnicmp strncasecmp
+#endif
+
+#define BROKEN_PIPE_ERROR_CODE ERROR_BROKEN_PIPE   /* used in sshshare.c */
 
 /*
  * Dynamically linked functions. These come in two flavours:
@@ -255,12 +287,21 @@ DECL_WINDOWS_FUNCTION(GLOBAL, int, WSAAsyncSelect,
 		      (SOCKET, HWND, u_int, long));
 DECL_WINDOWS_FUNCTION(GLOBAL, int, WSAEventSelect,
 		      (SOCKET, WSAEVENT, long));
-DECL_WINDOWS_FUNCTION(GLOBAL, int, select,
-		      (int, fd_set FAR *, fd_set FAR *,
-		       fd_set FAR *, const struct timeval FAR *));
 DECL_WINDOWS_FUNCTION(GLOBAL, int, WSAGetLastError, (void));
 DECL_WINDOWS_FUNCTION(GLOBAL, int, WSAEnumNetworkEvents,
 		      (SOCKET, WSAEVENT, LPWSANETWORKEVENTS));
+#ifdef NEED_DECLARATION_OF_SELECT
+/* This declaration is protected by an ifdef for the sake of building
+ * against winelib, in which you have to include winsock2.h before
+ * stdlib.h so that the right fd_set type gets defined. It would be a
+ * pain to do that throughout this codebase, so instead I arrange that
+ * only a modules actually needing to use (or define, or initialise)
+ * this function pointer will see its declaration, and _those_ modules
+ * - which will be Windows-specific anyway - can take more care. */
+DECL_WINDOWS_FUNCTION(GLOBAL, int, select,
+		      (int, fd_set FAR *, fd_set FAR *,
+		       fd_set FAR *, const struct timeval FAR *));
+#endif
 
 extern int socket_writable(SOCKET skt);
 
@@ -464,9 +505,12 @@ void show_help(HWND hwnd);
  * Exports from winmisc.c.
  */
 extern OSVERSIONINFO osVersion;
+void dll_hijacking_protection(void);
 BOOL init_winver(void);
 HMODULE load_system32_dll(const char *libname);
 const char *win_strerror(int error);
+void restrict_process_acl(void);
+GLOBAL int restricted_acl;
 
 /*
  * Exports from sizetip.c.
@@ -528,6 +572,7 @@ extern Backend serial_backend;
 void add_session_to_jumplist(const char * const sessionname);
 void remove_session_from_jumplist(const char * const sessionname);
 void clear_jumplist(void);
+BOOL set_explicit_app_user_model_id();
 
 /*
  * Extra functions in winstore.c over and above the interface in

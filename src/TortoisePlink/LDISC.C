@@ -22,7 +22,7 @@
                       (ldisc->back->ldisc(ldisc->backhandle, LD_EDIT) || \
 			   term_ldisc(ldisc->term, LD_EDIT))))
 
-static void c_write(Ldisc ldisc, char *buf, int len)
+static void c_write(Ldisc ldisc, const char *buf, int len)
 {
     from_backend(ldisc->frontend, 0, buf, len);
 }
@@ -128,28 +128,19 @@ void ldisc_free(void *handle)
     sfree(ldisc);
 }
 
-void ldisc_send(void *handle, char *buf, int len, int interactive)
+void ldisc_echoedit_update(void *handle)
+{
+    Ldisc ldisc = (Ldisc) handle;
+    frontend_echoedit_update(ldisc->frontend, ECHOING, EDITING);
+}
+
+void ldisc_send(void *handle, const char *buf, int len, int interactive)
 {
     Ldisc ldisc = (Ldisc) handle;
     int keyflag = 0;
-    /*
-     * Called with len=0 when the options change. We must inform
-     * the front end in case it needs to know.
-     */
-    if (len == 0) {
-	ldisc_update(ldisc->frontend, ECHOING, EDITING);
-	return;
-    }
 
-    /*
-     * If that wasn't true, then we expect ldisc->term to be non-NULL
-     * hereafter. (The only front ends which have an ldisc but no term
-     * are those which do networking but no terminal emulation, in
-     * which case they need the above if statement to handle
-     * ldisc_updates passed from the back ends, but should never send
-     * any actual input through this function.)
-     */
     assert(ldisc->term);
+    assert(len);
 
     /*
      * Notify the front end that something was pressed, in case

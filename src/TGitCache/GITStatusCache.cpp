@@ -223,9 +223,13 @@ CGitStatusCache::CGitStatusCache(void)
 {
 	#define forever DWORD(-1)
 	AutoLocker lock(m_NoWatchPathCritSec);
-	KNOWNFOLDERID folderids[] = { FOLDERID_Cookies, FOLDERID_History, FOLDERID_InternetCache, FOLDERID_Windows, FOLDERID_CDBurning, FOLDERID_Fonts, FOLDERID_RecycleBinFolder }; //FOLDERID_SearchHistory
+	KNOWNFOLDERID folderids[] = { FOLDERID_Cookies, FOLDERID_History, FOLDERID_InternetCache, FOLDERID_Windows, FOLDERID_CDBurning, FOLDERID_Fonts, FOLDERID_SearchHistory }; //FOLDERID_RecycleBinFolder
 	for (KNOWNFOLDERID folderid : folderids)
-		m_NoWatchPaths[CTGitPath(GetSpecialFolder(folderid))] = forever;
+	{
+		CString path(GetSpecialFolder(folderid));
+		if (!path.IsEmpty())
+			m_NoWatchPaths[CTGitPath(path)] = forever;
+	}
 	m_bClearMemory = false;
 	m_mostRecentExpiresAt = 0;
 }

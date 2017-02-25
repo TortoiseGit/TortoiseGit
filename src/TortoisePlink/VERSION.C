@@ -8,10 +8,15 @@
  * to do here is to drop it into variables of the right names.
  */
 
+#ifdef SOURCE_COMMIT
+#include "empty.h"
+#endif
+
 #include "version.h"
 
-char ver[] = TEXTVER;
-char sshver[] = SSHVER;
+const char ver[] = TEXTVER;
+const char sshver[] = SSHVER;
+const char commitid[] = SOURCE_COMMIT;
 
 /*
  * SSH local version string MUST be under 40 characters. Here's a

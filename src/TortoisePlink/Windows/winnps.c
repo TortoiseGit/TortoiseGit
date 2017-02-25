@@ -16,8 +16,8 @@
 
 #include "winsecur.h"
 
-Socket make_handle_socket(HANDLE send_H, HANDLE recv_H, Plug plug,
-                          int overlapped);
+Socket make_handle_socket(HANDLE send_H, HANDLE recv_H, HANDLE stderr_H,
+                          Plug plug, int overlapped);
 
 typedef struct Socket_named_pipe_server_tag *Named_Pipe_Server_Socket;
 struct Socket_named_pipe_server_tag {
@@ -120,7 +120,7 @@ static Socket named_pipe_accept(accept_ctx_t ctx, Plug plug)
 {
     HANDLE conn = (HANDLE)ctx.p;
 
-    return make_handle_socket(conn, conn, plug, TRUE);
+    return make_handle_socket(conn, conn, NULL, plug, TRUE);
 }
 
 /*

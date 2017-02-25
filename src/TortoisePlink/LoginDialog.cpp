@@ -1,6 +1,5 @@
-// TortoiseGit - a Windows shell extension for easy version control
+// TortoiseSVN - a Windows shell extension for easy version control
 
-// Copyright (C) 2013, 2016 - TortoiseGit
 // Copyright (C) 2003, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -63,7 +62,7 @@ BOOL CALLBACK LoginDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
 {
    if (uMsg == WM_INITDIALOG)
    {
-      auto pDlg = reinterpret_cast<LoginDialog*>(lParam);
+      LoginDialog* pDlg = (LoginDialog*) lParam;
       pDlg->_hdlg = hwndDlg;
       SetWindowLongPtr(hwndDlg, GWLP_USERDATA, lParam);
       // Set prompt text
@@ -80,14 +79,14 @@ BOOL CALLBACK LoginDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
    }
    else if (uMsg == WM_COMMAND && LOWORD(wParam) == IDCANCEL && HIWORD(wParam) == BN_CLICKED)
    {
-      auto pDlg = reinterpret_cast<LoginDialog*>(GetWindowLongPtr(hwndDlg, GWLP_USERDATA));
+      LoginDialog* pDlg = (LoginDialog*) GetWindowLongPtr(hwndDlg, GWLP_USERDATA);
       pDlg->myOK = false;
       EndDialog(hwndDlg, IDCANCEL);
       return 1;
    }
    else if (uMsg == WM_COMMAND && LOWORD(wParam) == IDOK && HIWORD(wParam) == BN_CLICKED)
    {
-      auto pDlg = reinterpret_cast<LoginDialog*>(GetWindowLongPtr(hwndDlg, GWLP_USERDATA));
+      LoginDialog* pDlg = (LoginDialog*) GetWindowLongPtr(hwndDlg, GWLP_USERDATA);
       pDlg->myOK = true;
       pDlg->RetrieveValues();
       EndDialog(hwndDlg, IDOK);

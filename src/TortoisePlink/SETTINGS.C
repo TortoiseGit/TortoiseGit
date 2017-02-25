@@ -11,6 +11,7 @@
 /* The cipher order given here is the default order. */
 static const struct keyvalwhere ciphernames[] = {
     { "aes",        CIPHER_AES,             -1, -1 },
+    { "chacha20",   CIPHER_CHACHA20,        CIPHER_AES, +1 },
     { "blowfish",   CIPHER_BLOWFISH,        -1, -1 },
     { "3des",       CIPHER_3DES,            -1, -1 },
     { "WARN",       CIPHER_WARN,            -1, -1 },
@@ -18,12 +19,25 @@ static const struct keyvalwhere ciphernames[] = {
     { "des",        CIPHER_DES,             -1, -1 }
 };
 
+/* The default order here is sometimes overridden by the backward-
+ * compatibility warts in load_open_settings(), and should be kept
+ * in sync with those. */
 static const struct keyvalwhere kexnames[] = {
+    { "ecdh",               KEX_ECDH,       -1, +1 },
+    /* This name is misleading: it covers both SHA-256 and SHA-1 variants */
     { "dh-gex-sha1",        KEX_DHGEX,      -1, -1 },
     { "dh-group14-sha1",    KEX_DHGROUP14,  -1, -1 },
-    { "dh-group1-sha1",     KEX_DHGROUP1,   -1, -1 },
+    { "dh-group1-sha1",     KEX_DHGROUP1,   KEX_WARN, +1 },
     { "rsa",                KEX_RSA,        KEX_WARN, -1 },
     { "WARN",               KEX_WARN,       -1, -1 }
+};
+
+static const struct keyvalwhere hknames[] = {
+    { "ed25519",    HK_ED25519,             -1, +1 },
+    { "ecdsa",      HK_ECDSA,               -1, -1 },
+    { "dsa",        HK_DSA,                 -1, -1 },
+    { "rsa",        HK_RSA,                 -1, -1 },
+    { "WARN",       HK_WARN,                -1, -1 },
 };
 
 /*
@@ -40,11 +54,11 @@ const char *const ttymodes[] = {
     "SWTCH",	"STATUS",   "DISCARD",	"IGNPAR",   "PARMRK",
     "INPCK",	"ISTRIP",   "INLCR",	"IGNCR",    "ICRNL",
     "IUCLC",	"IXON",     "IXANY",	"IXOFF",    "IMAXBEL",
-    "ISIG",	"ICANON",   "XCASE",	"ECHO",     "ECHOE",
-    "ECHOK",	"ECHONL",   "NOFLSH",	"TOSTOP",   "IEXTEN",
-    "ECHOCTL",	"ECHOKE",   "PENDIN",	"OPOST",    "OLCUC",
-    "ONLCR",	"OCRNL",    "ONOCR",	"ONLRET",   "CS7",
-    "CS8",	"PARENB",   "PARODD",	NULL
+    "IUTF8",    "ISIG",     "ICANON",   "XCASE",    "ECHO",
+    "ECHOE",    "ECHOK",    "ECHONL",   "NOFLSH",   "TOSTOP",
+    "IEXTEN",   "ECHOCTL",  "ECHOKE",   "PENDIN",   "OPOST",
+    "OLCUC",    "ONLCR",    "OCRNL",    "ONOCR",    "ONLRET",
+    "CS7",      "CS8",      "PARENB",   "PARODD",   NULL
 };
 
 /*
@@ -123,13 +137,14 @@ static void gppfile(void *handle, const char *name, Conf *conf, int primary)
     filename_free(result);
 }
 
-static int gppi_raw(void *handle, char *name, int def)
+static int gppi_raw(void *handle, const char *name, int def)
 {
     def = platform_default_i(name, def);
     return read_setting_i(handle, name, def);
 }
 
-static void gppi(void *handle, char *name, int def, Conf *conf, int primary)
+static void gppi(void *handle, const char *name, int def,
+                 Conf *conf, int primary)
 {
     conf_set_int(conf, primary, gppi_raw(handle, name, def));
 }
@@ -141,7 +156,7 @@ static void gppi(void *handle, char *name, int def, Conf *conf, int primary)
  * If there's no "=VALUE" (e.g. just NAME,NAME,NAME) then those keys
  * are mapped to the empty string.
  */
-static int gppmap(void *handle, char *name, Conf *conf, int primary)
+static int gppmap(void *handle, const char *name, Conf *conf, int primary)
 {
     char *buf, *p, *q, *key, *val;
 
@@ -211,7 +226,8 @@ static int gppmap(void *handle, char *name, Conf *conf, int primary)
 static void wmap(void *handle, char const *outkey, Conf *conf, int primary,
                  int include_values)
 {
-    char *buf, *p, *q, *key, *realkey, *val;
+    char *buf, *p, *key, *realkey;
+    const char *val, *q;
     int len;
 
     len = 1;			       /* allow for NUL */
@@ -297,19 +313,14 @@ static const char *val2key(const struct keyvalwhere *mapping,
  * to the end and duplicates are weeded.
  * XXX: assumes vals in 'mapping' are small +ve integers
  */
-static void gprefs(void *sesskey, char *name, char *def,
-		   const struct keyvalwhere *mapping, int nvals,
-		   Conf *conf, int primary)
+static void gprefs_from_str(const char *str,
+			    const struct keyvalwhere *mapping, int nvals,
+			    Conf *conf, int primary)
 {
-    char *commalist;
+    char *commalist = dupstr(str);
     char *p, *q;
     int i, j, n, v, pos;
     unsigned long seen = 0;	       /* bitmap for weeding dups etc */
-
-    /*
-     * Fetch the string which we'll parse as a comma-separated list.
-     */
-    commalist = gpps_raw(sesskey, name, def);
 
     /*
      * Go through that list and convert it into values.
@@ -374,16 +385,32 @@ static void gprefs(void *sesskey, char *name, char *def,
                     conf_set_int_int(conf, primary, j+1,
                                      conf_get_int_int(conf, primary, j));
                 conf_set_int_int(conf, primary, pos, mapping[i].v);
+                seen |= (1 << mapping[i].v);
                 n++;
             }
         }
     }
 }
 
+/*
+ * Read a preference list.
+ */
+static void gprefs(void *sesskey, const char *name, const char *def,
+		   const struct keyvalwhere *mapping, int nvals,
+		   Conf *conf, int primary)
+{
+    /*
+     * Fetch the string which we'll parse as a comma-separated list.
+     */
+    char *value = gpps_raw(sesskey, name, def);
+    gprefs_from_str(value, mapping, nvals, conf, primary);
+    sfree(value);
+}
+
 /* 
  * Write out a preference list.
  */
-static void wprefs(void *sesskey, char *name,
+static void wprefs(void *sesskey, const char *name,
 		   const struct keyvalwhere *mapping, int nvals,
 		   Conf *conf, int primary)
 {
@@ -417,7 +444,7 @@ static void wprefs(void *sesskey, char *name,
     sfree(buf);
 }
 
-char *save_settings(char *section, Conf *conf)
+char *save_settings(const char *section, Conf *conf)
 {
     void *sesskey;
     char *errmsg;
@@ -433,7 +460,7 @@ char *save_settings(char *section, Conf *conf)
 void save_open_settings(void *sesskey, Conf *conf)
 {
     int i;
-    char *p;
+    const char *p;
 
     write_setting_i(sesskey, "Present", 1);
     write_setting_s(sesskey, "HostName", conf_get_str(conf, CONF_host));
@@ -476,6 +503,7 @@ void save_open_settings(void *sesskey, Conf *conf)
     write_setting_s(sesskey, "ProxyUsername", conf_get_str(conf, CONF_proxy_username));
     write_setting_s(sesskey, "ProxyPassword", conf_get_str(conf, CONF_proxy_password));
     write_setting_s(sesskey, "ProxyTelnetCommand", conf_get_str(conf, CONF_proxy_telnet_command));
+    write_setting_i(sesskey, "ProxyLogToTerm", conf_get_int(conf, CONF_proxy_log_to_term));
     wmap(sesskey, "Environment", conf, CONF_environmt, TRUE);
     write_setting_s(sesskey, "UserName", conf_get_str(conf, CONF_username));
     write_setting_i(sesskey, "UserNameFromEnvironment", conf_get_int(conf, CONF_username_from_env));
@@ -488,6 +516,7 @@ void save_open_settings(void *sesskey, Conf *conf)
     write_setting_i(sesskey, "ChangeUsername", conf_get_int(conf, CONF_change_username));
     wprefs(sesskey, "Cipher", ciphernames, CIPHER_MAX, conf, CONF_ssh_cipherlist);
     wprefs(sesskey, "KEX", kexnames, KEX_MAX, conf, CONF_ssh_kexlist);
+    wprefs(sesskey, "HostKey", hknames, HK_MAX, conf, CONF_ssh_hklist);
     write_setting_i(sesskey, "RekeyTime", conf_get_int(conf, CONF_ssh_rekey_time));
     write_setting_s(sesskey, "RekeyBytes", conf_get_str(conf, CONF_ssh_rekey_data));
     write_setting_i(sesskey, "SshNoAuth", conf_get_int(conf, CONF_ssh_no_userauth));
@@ -516,6 +545,7 @@ void save_open_settings(void *sesskey, Conf *conf)
     write_setting_i(sesskey, "NoRemoteResize", conf_get_int(conf, CONF_no_remote_resize));
     write_setting_i(sesskey, "NoAltScreen", conf_get_int(conf, CONF_no_alt_screen));
     write_setting_i(sesskey, "NoRemoteWinTitle", conf_get_int(conf, CONF_no_remote_wintitle));
+    write_setting_i(sesskey, "NoRemoteClearScroll", conf_get_int(conf, CONF_no_remote_clearscroll));
     write_setting_i(sesskey, "RemoteQTitleAction", conf_get_int(conf, CONF_remote_qtitle_action));
     write_setting_i(sesskey, "NoDBackspace", conf_get_int(conf, CONF_no_dbackspace));
     write_setting_i(sesskey, "NoRemoteCharset", conf_get_int(conf, CONF_no_remote_charset));
@@ -527,6 +557,10 @@ void save_open_settings(void *sesskey, Conf *conf)
     write_setting_i(sesskey, "AltOnly", conf_get_int(conf, CONF_alt_only));
     write_setting_i(sesskey, "ComposeKey", conf_get_int(conf, CONF_compose_key));
     write_setting_i(sesskey, "CtrlAltKeys", conf_get_int(conf, CONF_ctrlaltkeys));
+#ifdef OSX_META_KEY_CONFIG
+    write_setting_i(sesskey, "OSXOptionMeta", conf_get_int(conf, CONF_osx_option_meta));
+    write_setting_i(sesskey, "OSXCommandMeta", conf_get_int(conf, CONF_osx_command_meta));
+#endif
     write_setting_i(sesskey, "TelnetKey", conf_get_int(conf, CONF_telnet_keyboard));
     write_setting_i(sesskey, "TelnetRet", conf_get_int(conf, CONF_telnet_newline));
     write_setting_i(sesskey, "LocalEcho", conf_get_int(conf, CONF_localecho));
@@ -654,7 +688,7 @@ void save_open_settings(void *sesskey, Conf *conf)
     wmap(sesskey, "SSHManualHostKeys", conf, CONF_ssh_manual_hostkeys, FALSE);
 }
 
-void load_settings(char *section, Conf *conf)
+void load_settings(const char *section, Conf *conf)
 {
     void *sesskey;
 
@@ -751,6 +785,7 @@ void load_open_settings(void *sesskey, Conf *conf)
     gpps(sesskey, "ProxyPassword", "", conf, CONF_proxy_password);
     gpps(sesskey, "ProxyTelnetCommand", "connect %host %port\\n",
 	 conf, CONF_proxy_telnet_command);
+    gppi(sesskey, "ProxyLogToTerm", FORCE_OFF, conf, CONF_proxy_log_to_term);
     gppmap(sesskey, "Environment", conf, CONF_environmt);
     gpps(sesskey, "UserName", "", conf, CONF_username);
     gppi(sesskey, "UserNameFromEnvironment", 0, conf, CONF_username_from_env);
@@ -764,23 +799,58 @@ void load_open_settings(void *sesskey, Conf *conf)
     gprefs(sesskey, "Cipher", "\0",
 	   ciphernames, CIPHER_MAX, conf, CONF_ssh_cipherlist);
     {
-	/* Backward-compatibility: we used to have an option to
+	/* Backward-compatibility: before 0.58 (when the "KEX"
+	 * preference was first added), we had an option to
 	 * disable gex under the "bugs" panel after one report of
 	 * a server which offered it then choked, but we never got
 	 * a server version string or any other reports. */
-	char *default_kexes;
+	const char *default_kexes,
+	           *normal_default = "ecdh,dh-gex-sha1,dh-group14-sha1,rsa,"
+		       "WARN,dh-group1-sha1",
+		   *bugdhgex2_default = "ecdh,dh-group14-sha1,rsa,"
+		       "WARN,dh-group1-sha1,dh-gex-sha1";
+	char *raw;
 	i = 2 - gppi_raw(sesskey, "BugDHGEx2", 0);
 	if (i == FORCE_ON)
-	    default_kexes = "dh-group14-sha1,dh-group1-sha1,rsa,WARN,dh-gex-sha1";
+            default_kexes = bugdhgex2_default;
 	else
-	    default_kexes = "dh-gex-sha1,dh-group14-sha1,dh-group1-sha1,rsa,WARN";
-	gprefs(sesskey, "KEX", default_kexes,
-	       kexnames, KEX_MAX, conf, CONF_ssh_kexlist);
+            default_kexes = normal_default;
+	/* Migration: after 0.67 we decided we didn't like
+	 * dh-group1-sha1. If it looks like the user never changed
+	 * the defaults, quietly upgrade their settings to demote it.
+	 * (If they did, they're on their own.) */
+	raw = gpps_raw(sesskey, "KEX", default_kexes);
+	assert(raw != NULL);
+	/* Lack of 'ecdh' tells us this was saved by 0.58-0.67
+	 * inclusive. If it was saved by a later version, we need
+	 * to leave it alone. */
+	if (strcmp(raw, "dh-group14-sha1,dh-group1-sha1,rsa,"
+		   "WARN,dh-gex-sha1") == 0) {
+	    /* Previously migrated from BugDHGEx2. */
+	    sfree(raw);
+	    raw = dupstr(bugdhgex2_default);
+	} else if (strcmp(raw, "dh-gex-sha1,dh-group14-sha1,"
+			  "dh-group1-sha1,rsa,WARN") == 0) {
+	    /* Untouched old default setting. */
+	    sfree(raw);
+	    raw = dupstr(normal_default);
+	}
+	gprefs_from_str(raw, kexnames, KEX_MAX, conf, CONF_ssh_kexlist);
+	sfree(raw);
     }
+    gprefs(sesskey, "HostKey", "ed25519,ecdsa,rsa,dsa,WARN",
+           hknames, HK_MAX, conf, CONF_ssh_hklist);
     gppi(sesskey, "RekeyTime", 60, conf, CONF_ssh_rekey_time);
     gpps(sesskey, "RekeyBytes", "1G", conf, CONF_ssh_rekey_data);
-    /* SSH-2 only by default */
-    gppi(sesskey, "SshProt", 3, conf, CONF_sshprot);
+    {
+	/* SSH-2 only by default */
+	int sshprot = gppi_raw(sesskey, "SshProt", 3);
+	/* Old sessions may contain the values correponding to the fallbacks
+	 * we used to allow; migrate them */
+	if (sshprot == 1)      sshprot = 0; /* => "SSH-1 only" */
+	else if (sshprot == 2) sshprot = 3; /* => "SSH-2 only" */
+	conf_set_int(conf, CONF_sshprot, sshprot);
+    }
     gpps(sesskey, "LogHost", "", conf, CONF_loghost);
     gppi(sesskey, "SSH2DES", 0, conf, CONF_ssh2_des_cbc);
     gppi(sesskey, "SshNoAuth", 0, conf, CONF_ssh_no_userauth);
@@ -807,6 +877,7 @@ void load_open_settings(void *sesskey, Conf *conf)
     gppi(sesskey, "NoRemoteResize", 0, conf, CONF_no_remote_resize);
     gppi(sesskey, "NoAltScreen", 0, conf, CONF_no_alt_screen);
     gppi(sesskey, "NoRemoteWinTitle", 0, conf, CONF_no_remote_wintitle);
+    gppi(sesskey, "NoRemoteClearScroll", 0, conf, CONF_no_remote_clearscroll);
     {
 	/* Backward compatibility */
 	int no_remote_qtitle = gppi_raw(sesskey, "NoRemoteQTitle", 1);
@@ -827,6 +898,10 @@ void load_open_settings(void *sesskey, Conf *conf)
     gppi(sesskey, "AltOnly", 0, conf, CONF_alt_only);
     gppi(sesskey, "ComposeKey", 0, conf, CONF_compose_key);
     gppi(sesskey, "CtrlAltKeys", 1, conf, CONF_ctrlaltkeys);
+#ifdef OSX_META_KEY_CONFIG
+    gppi(sesskey, "OSXOptionMeta", 1, conf, CONF_osx_option_meta);
+    gppi(sesskey, "OSXCommandMeta", 0, conf, CONF_osx_command_meta);
+#endif
     gppi(sesskey, "TelnetKey", 0, conf, CONF_telnet_keyboard);
     gppi(sesskey, "TelnetRet", 1, conf, CONF_telnet_newline);
     gppi(sesskey, "LocalEcho", AUTO, conf, CONF_localecho);
@@ -1003,7 +1078,7 @@ void load_open_settings(void *sesskey, Conf *conf)
     gppmap(sesskey, "SSHManualHostKeys", conf, CONF_ssh_manual_hostkeys);
 }
 
-void do_defaults(char *session, Conf *conf)
+void do_defaults(const char *session, Conf *conf)
 {
     load_settings(session, conf);
 }
@@ -1073,7 +1148,7 @@ void get_sesslist(struct sesslist *list, int allocate)
 	    p++;
 	}
 
-	list->sessions = snewn(list->nsessions + 1, char *);
+	list->sessions = snewn(list->nsessions + 1, const char *);
 	list->sessions[0] = "Default Settings";
 	p = list->buffer;
 	i = 1;
@@ -1085,7 +1160,7 @@ void get_sesslist(struct sesslist *list, int allocate)
 	    p++;
 	}
 
-	qsort(list->sessions, i, sizeof(char *), sessioncmp);
+	qsort(list->sessions, i, sizeof(const char *), sessioncmp);
     } else {
 	sfree(list->buffer);
 	sfree(list->sessions);

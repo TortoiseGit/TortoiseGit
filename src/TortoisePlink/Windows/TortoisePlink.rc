@@ -1,6 +1,7 @@
 // Microsoft Visual C++ generated resource script.
 //
 #include "TortoisePlinkRes.h"
+#include "..\version.h"
 
 #define APSTUDIO_READONLY_SYMBOLS
 /////////////////////////////////////////////////////////////////////////////
@@ -53,8 +54,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,67,0,9999
- PRODUCTVERSION 0,67,0,9999
+ FILEVERSION BINARY_VERSION
+ PRODUCTVERSION BINARY_VERSION
  FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
 #ifdef _DEBUG
  FILEFLAGS VS_FF_DEBUG
@@ -72,12 +73,12 @@ BEGIN
             VALUE "Comments", "Adapted from PuTTY plink (http://www.chiark.greenend.org.uk/~sgtatham/putty/)"
             VALUE "CompanyName", "PuTTY team, TortoiseGit team and TortoiseSVN team"
             VALUE "FileDescription", "TortoiseGitPlink"
-            VALUE "FileVersion", "Release 0.67"
+            VALUE "FileVersion", TEXTVER
             VALUE "InternalName", "TortoiseGitPlink"
-            VALUE "LegalCopyright", "Copyright (C) 2003-2016"
+            VALUE "LegalCopyright", "Copyright (C) 2003-2017"
             VALUE "OriginalFilename", "TortoiseGitPlink.exe"
             VALUE "ProductName", "TortoiseGit TortoiseGitPlink"
-            VALUE "ProductVersion", "Release 0.67"
+            VALUE "ProductVersion", TEXTVER
         END
     END
     BLOCK "VarFileInfo"
