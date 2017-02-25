@@ -1,8 +1,7 @@
-From 005d051ce8dc252c7b0cac70b7f72e96cda57134 Mon Sep 17 00:00:00 2001
+From fa057694bb0f8fe9645acbccc8bfe7986d8520df Mon Sep 17 00:00:00 2001
 From: Sven Strickroth <email@cs-ware.de>
 Date: Sat, 14 Jan 2017 18:39:32 +0100
-Subject: [PATCH 4/4] Allow to configure default file share mode for opening
- files
+Subject: [PATCH] Allow to configure default file share mode for opening files
 
 This can prevent FILE_SHARED_VIOLATIONS when used in tools such as TortoiseGit TGitCache and FILE_SHARE_DELETE, because files can be opened w/o being locked any more.
 
@@ -16,10 +15,10 @@ Signed-off-by: Sven Strickroth <email@cs-ware.de>
  5 files changed, 39 insertions(+), 1 deletion(-)
 
 diff --git a/CHANGELOG.md b/CHANGELOG.md
-index 6137efd71..060d8f7e3 100644
+index 0ae75e156..080d546fa 100644
 --- a/CHANGELOG.md
 +++ b/CHANGELOG.md
-@@ -52,6 +52,10 @@ v0.25
+@@ -56,6 +56,10 @@ v0.25
  
  ### API additions
  
@@ -31,19 +30,19 @@ index 6137efd71..060d8f7e3 100644
    `GIT_OPT_GET_USER_AGENT` option with `git_libgit2_opts()`.
    It is the counterpart to `GIT_OPT_SET_USER_AGENT`.
 diff --git a/include/git2/common.h b/include/git2/common.h
-index 99c99812b..f7ba89a33 100644
+index f13dfd509..89e567a74 100644
 --- a/include/git2/common.h
 +++ b/include/git2/common.h
-@@ -177,6 +177,8 @@ typedef enum {
- 	GIT_OPT_ENABLE_STRICT_OBJECT_CREATION,
+@@ -179,6 +179,8 @@ typedef enum {
  	GIT_OPT_SET_SSL_CIPHERS,
  	GIT_OPT_GET_USER_AGENT,
+ 	GIT_OPT_ENABLE_OFS_DELTA,
 +	GIT_OPT_GET_WINDOWS_SHAREMODE,
 +	GIT_OPT_SET_WINDOWS_SHAREMODE,
  } git_libgit2_opt_t;
  
  /**
-@@ -281,6 +283,16 @@ typedef enum {
+@@ -283,6 +285,16 @@ typedef enum {
   *		> - `user_agent` is the value that will be delivered as the
   *		>   User-Agent header on HTTP requests.
   *
@@ -61,11 +60,11 @@ index 99c99812b..f7ba89a33 100644
   *
   *		> Enable strict input validation when creating new objects
 diff --git a/src/settings.c b/src/settings.c
-index 980233d88..3fa4bae8b 100644
+index 21585672c..5abc17fe4 100644
 --- a/src/settings.c
 +++ b/src/settings.c
-@@ -217,6 +217,24 @@ int git_libgit2_opts(int key, ...)
- 		}
+@@ -227,6 +227,24 @@ int git_libgit2_opts(int key, ...)
+ 		git_smart__ofs_delta_enabled = (va_arg(ap, int) != 0);
  		break;
  
 +	case GIT_OPT_GET_WINDOWS_SHAREMODE:
@@ -125,5 +124,5 @@ index a20ae9b2f..3f4fa7d25 100644
  	{
  		_dosmaperr(GetLastError());
 -- 
-2.11.0.windows.1
+2.11.0.windows.3
 
