@@ -385,7 +385,7 @@ void CCommitIsOnRefsDlg::OnItemChangedListRefs(NMHDR* pNMHDR, LRESULT* pResult)
 	LPNMLISTVIEW pNMListView = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 	*pResult = 0;
 
-	if (pNMListView->iItem >= 0 && m_RefList.size() > pNMListView->iItem && (pNMListView->uNewState & LVIS_SELECTED))
+	if (pNMListView->iItem >= 0 && m_RefList.size() > (size_t)pNMListView->iItem && (pNMListView->uNewState & LVIS_SELECTED))
 		m_sLastSelected = m_RefList[pNMListView->iItem];
 }
 
@@ -394,7 +394,7 @@ void CCommitIsOnRefsDlg::OnNMDblClickListRefs(NMHDR* pNMHDR, LRESULT* pResult)
 	*pResult = 0;
 
 	LPNMLISTVIEW pNMListView = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
-	if (m_bNonModalParentHWND && pNMListView->iItem >= 0 && m_RefList.size() > pNMListView->iItem)
+	if (m_bNonModalParentHWND && pNMListView->iItem >= 0 && m_RefList.size() > (size_t)pNMListView->iItem)
 	{
 		if (::SendMessage(m_bNonModalParentHWND, CGitLogListBase::m_ScrollToRef, (WPARAM)&m_RefList[pNMListView->iItem], 0) != 0)
 			FlashWindowEx(FLASHW_ALL, 2, 100);
