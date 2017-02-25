@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 // Copyright (C) 2005-2007 Marco Costalba
 
 // This program is free software; you can redistribute it and/or
@@ -490,22 +490,16 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				CAppUtils::RunTortoiseGitProc(cmdline);
 			}
 			break;
-		case ID_COPYCLIPBOARD:
-			{
-				CopySelectionToClipBoard();
-			}
-			break;
+		case ID_COPYCLIPBOARDFULL:
+		case ID_COPYCLIPBOARDFULLNOPATHS:
+		case ID_COPYCLIPBOARDHASH:
+		case ID_COPYCLIPBOARDAUTHORSFULL:
+		case ID_COPYCLIPBOARDAUTHORSNAME:
+		case ID_COPYCLIPBOARDAUTHORSEMAIL:
+		case ID_COPYCLIPBOARDSUBJECTS:
 		case ID_COPYCLIPBOARDMESSAGES:
 			{
-				if ((GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0)
-					CopySelectionToClipBoard(ID_COPY_SUBJECT);
-				else
-					CopySelectionToClipBoard(ID_COPY_MESSAGE);
-			}
-			break;
-		case ID_COPYHASH:
-			{
-				CopySelectionToClipBoard(ID_COPY_HASH);
+				CopySelectionToClipBoard(cmd & 0xFFFF);
 			}
 			break;
 		case ID_EXPORT:

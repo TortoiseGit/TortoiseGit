@@ -2073,12 +2073,24 @@ msgstr ""
 msgid "Author Email"
 msgstr ""
 
+#. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_AUTHORSEMAIL)
+msgid "Author email addresses"
+msgstr ""
+
+#. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_AUTHORSNAME)
+msgid "Author names"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 65535)
 msgid "Author:\t\t\t\tStefan Kueng"
 msgstr ""
 
 #. Resource IDs: (IDS_LOG_FILTER_AUTHORS)
 msgid "Authors"
+msgstr ""
+
+#. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_AUTHORSFULL)
+msgid "Authors (full)"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_STATGRAPH: Control id 1265)
@@ -3152,10 +3164,6 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROC_COPYRENAME)
 msgid "Copy and rename"
-msgstr ""
-
-#. Resource IDs: (IDS_LOG_POPUP_COPYTOCLIPBOARDMESSAGES)
-msgid "Copy log messages to clipboard"
 msgstr ""
 
 #. Resource IDs: (IDS_BLAME_POPUP_COPYLOGTOCLIPBOARD)
@@ -4935,6 +4943,14 @@ msgstr ""
 msgid "Full Screen"
 msgstr ""
 
+#. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_FULLNOPATHS)
+msgid "Full commit data without changed paths"
+msgstr ""
+
+#. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_FULL)
+msgid "Full data"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_FIND: Control id 20086)
 msgid "Full text search"
 msgstr ""
@@ -6345,7 +6361,7 @@ msgstr ""
 msgid "Message part &expression:"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_MERGE: Control id 1742, IDS_LOG_FILTER_MESSAGES)
+#. Resource IDs: (Dialog IDD_MERGE: Control id 1742, IDS_LOG_FILTER_MESSAGES, IDS_LOG_POPUP_CLIPBOARD_MSGS)
 msgid "Messages"
 msgstr ""
 
@@ -8920,7 +8936,7 @@ msgstr ""
 msgid "Show long format even if a tag is exactly on that commit"
 msgstr ""
 
-#. Resource IDs: (20308)
+#. Resource IDs: (25308)
 msgid "Show next change of selected commit\nShow next"
 msgstr ""
 
@@ -8952,7 +8968,7 @@ msgstr ""
 msgid "Show original line number"
 msgstr ""
 
-#. Resource IDs: (20309)
+#. Resource IDs: (25309)
 msgid "Show previous change of selected commit\nShow previous"
 msgstr ""
 
@@ -9297,6 +9313,10 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_DIFFSUBMODULE: Control id 1714, Dialog IDD_DIFFSUBMODULE: Control id 1715, Dialog IDD_RESOLVESUBMODULECONFLICT: Control id 1714, Dialog IDD_RESOLVESUBMODULECONFLICT: Control id 1715, Dialog IDD_RESOLVESUBMODULECONFLICT: Control id 1717, Dialog IDD_SENDMAIL: Control id 65535)
 msgid "Subject:"
+msgstr ""
+
+#. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_SUBJECTS)
+msgid "Subjects"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SYNC: Control id 1639)

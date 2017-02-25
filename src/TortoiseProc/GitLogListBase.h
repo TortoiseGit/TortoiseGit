@@ -318,7 +318,6 @@ public:
 	ID_COMPARE = 1, // compare revision with WC
 	ID_SAVEAS,
 	ID_COMPARETWO, // compare two revisions
-	ID_COPY,
 	ID_REVERTREV,
 	ID_MERGEREV,
 	ID_GNUDIFF1, // compare with WC, unified
@@ -332,7 +331,14 @@ public:
 	ID_DIFF,
 	ID_OPENWITH,
 	ID_COPYCLIPBOARD,
-	ID_COPYHASH,
+	ID_COPYCLIPBOARDFULL,
+	ID_COPYCLIPBOARDFULLNOPATHS,
+	ID_COPYCLIPBOARDHASH,
+	ID_COPYCLIPBOARDAUTHORSFULL,
+	ID_COPYCLIPBOARDAUTHORSNAME,
+	ID_COPYCLIPBOARDAUTHORSEMAIL,
+	ID_COPYCLIPBOARDSUBJECTS,
+	ID_COPYCLIPBOARDMESSAGES,
 	ID_REVERTTOREV,
 	ID_BLAMECOMPARE,
 	ID_BLAMEDIFF,
@@ -365,7 +371,6 @@ public:
 	ID_PULL,
 	ID_FETCH,
 	ID_SHOWBRANCHES,
-	ID_COPYCLIPBOARDMESSAGES,
 	ID_BISECTSTART,
 	ID_LOG_VIEWRANGE,
 	ID_LOG_VIEWRANGE_REACHABLEFROMONLYONE,
@@ -378,13 +383,6 @@ public:
 	ID_BISECTSKIP,
 	ID_SVNDCOMMIT,
 	ID_COMPARETWOCOMMITCHANGES,
-	};
-	enum
-	{
-	ID_COPY_ALL,
-	ID_COPY_MESSAGE,
-	ID_COPY_SUBJECT,
-	ID_COPY_HASH,
 	};
 	enum FilterShow
 	{
@@ -408,7 +406,7 @@ public:
 	inline unsigned __int64 GetContextMenuBit(int i){ return ((unsigned __int64 )0x1)<<i ;}
 	static CString GetRebaseActionName(int action);
 	void InsertGitColumn();
-	void CopySelectionToClipBoard(int toCopy = ID_COPY_ALL);
+	void CopySelectionToClipBoard(int toCopy = ID_COPYCLIPBOARDFULL);
 	void DiffSelectedRevWithPrevious();
 	bool IsSelectionContinuous();
 protected:

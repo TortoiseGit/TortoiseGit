@@ -2354,12 +2354,24 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				popup.AppendMenu(MF_SEPARATOR, NULL);
 		} // selectedCount == 1
 
-		if (m_ContextMenuMask & GetContextMenuBit(ID_COPYHASH))
-			popup.AppendMenuIcon(ID_COPYHASH, IDS_COPY_COMMIT_HASH, IDI_COPYCLIP);
+		CIconMenu clipSubMenu;
+		if (!clipSubMenu.CreatePopupMenu())
+			return;
 		if (m_ContextMenuMask & GetContextMenuBit(ID_COPYCLIPBOARD))
-			popup.AppendMenuIcon(ID_COPYCLIPBOARD, IDS_LOG_POPUP_COPYTOCLIPBOARD, IDI_COPYCLIP);
-		if (m_ContextMenuMask & GetContextMenuBit(ID_COPYCLIPBOARDMESSAGES))
-			popup.AppendMenuIcon(ID_COPYCLIPBOARDMESSAGES, IDS_LOG_POPUP_COPYTOCLIPBOARDMESSAGES, IDI_COPYCLIP);
+		{
+			clipSubMenu.AppendMenuIcon(ID_COPYCLIPBOARDFULL, IDS_LOG_POPUP_CLIPBOARD_FULL, IDI_COPYCLIP);
+			clipSubMenu.AppendMenuIcon(ID_COPYCLIPBOARDFULLNOPATHS, IDS_LOG_POPUP_CLIPBOARD_FULLNOPATHS, IDI_COPYCLIP);
+			clipSubMenu.AppendMenuIcon(ID_COPYCLIPBOARDHASH, IDS_LOG_HASH, IDI_COPYCLIP);
+			clipSubMenu.AppendMenuIcon(ID_COPYCLIPBOARDAUTHORSFULL, IDS_LOG_POPUP_CLIPBOARD_AUTHORSFULL, IDI_COPYCLIP);
+			clipSubMenu.AppendMenuIcon(ID_COPYCLIPBOARDAUTHORSNAME, IDS_LOG_POPUP_CLIPBOARD_AUTHORSNAME, IDI_COPYCLIP);
+			clipSubMenu.AppendMenuIcon(ID_COPYCLIPBOARDAUTHORSEMAIL, IDS_LOG_POPUP_CLIPBOARD_AUTHORSEMAIL, IDI_COPYCLIP);
+			clipSubMenu.AppendMenuIcon(ID_COPYCLIPBOARDSUBJECTS, IDS_LOG_POPUP_CLIPBOARD_SUBJECTS, IDI_COPYCLIP);
+			clipSubMenu.AppendMenuIcon(ID_COPYCLIPBOARDMESSAGES, IDS_LOG_POPUP_CLIPBOARD_MSGS, IDI_COPYCLIP);
+
+			CString temp;
+			temp.LoadString(IDS_LOG_POPUP_COPYTOCLIPBOARD);
+			popup.InsertMenu((UINT)-1, MF_BYPOSITION | MF_POPUP, (UINT_PTR)clipSubMenu.m_hMenu, temp);
+		}
 
 		if(m_ContextMenuMask&GetContextMenuBit(ID_FINDENTRY))
 			popup.AppendMenuIcon(ID_FINDENTRY, IDS_LOG_POPUP_FIND, IDI_FILTEREDIT);
@@ -2419,6 +2431,7 @@ void CGitLogListBase::CopySelectionToClipBoard(int toCopy)
 		sDate.LoadString(IDS_LOG_DATE);
 		CString sMessage;
 		sMessage.LoadString(IDS_LOG_MESSAGE);
+		CString from(MAKEINTRESOURCE(IDS_STATUSLIST_FROM));
 		bool first = true;
 		while (pos)
 		{
@@ -2426,16 +2439,13 @@ void CGitLogListBase::CopySelectionToClipBoard(int toCopy)
 			CString sPaths;
 			GitRevLoglist* pLogEntry = m_arShownList.SafeGetAt(GetNextSelectedItem(pos));
 
-			if (toCopy == ID_COPY_ALL)
+			if (toCopy == ID_COPYCLIPBOARDFULL)
 			{
-				//pLogEntry->GetFiles(this)
-				//LogChangedPathArray * cpatharray = pLogEntry->pArChangedPaths;
-
-				CString from(MAKEINTRESOURCE(IDS_STATUSLIST_FROM));
+				sPaths = L"----\r\n";
 				for (int cpPathIndex = 0; cpPathIndex<pLogEntry->GetFiles(this).GetCount(); ++cpPathIndex)
 				{
 					sPaths += ((CTGitPath&)pLogEntry->GetFiles(this)[cpPathIndex]).GetActionName() + L": " + pLogEntry->GetFiles(this)[cpPathIndex].GetGitPathString();
-					if (((CTGitPath&)pLogEntry->GetFiles(this)[cpPathIndex]).m_Action & (CTGitPath::LOGACTIONS_REPLACED|CTGitPath::LOGACTIONS_COPY) && !((CTGitPath&)pLogEntry->GetFiles(this)[cpPathIndex]).GetGitOldPathString().IsEmpty())
+					if (((CTGitPath&)pLogEntry->GetFiles(this)[cpPathIndex]).m_Action & (CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_COPY) && !((CTGitPath&)pLogEntry->GetFiles(this)[cpPathIndex]).GetGitOldPathString().IsEmpty())
 					{
 						sPaths += L' ';
 						sPaths.AppendFormat(from, (LPCTSTR)((CTGitPath&)pLogEntry->GetFiles(this)[cpPathIndex]).GetGitOldPathString());
@@ -2443,7 +2453,11 @@ void CGitLogListBase::CopySelectionToClipBoard(int toCopy)
 					sPaths += L"\r\n";
 				}
 				sPaths.Trim();
+				sPaths += L"\r\n";
+			}
 
+			if (toCopy == ID_COPYCLIPBOARDFULL || toCopy == ID_COPYCLIPBOARDFULLNOPATHS)
+			{
 				CString sNotesTags;
 				if (!pLogEntry->m_Notes.IsEmpty())
 				{
@@ -2460,7 +2474,7 @@ void CGitLogListBase::CopySelectionToClipBoard(int toCopy)
 					sNotesTags += tagInfo;
 				}
 
-				sLogCopyText.Format(L"%s: %s\r\n%s: %s <%s>\r\n%s: %s\r\n%s:\r\n%s\r\n%s----\r\n%s\r\n\r\n",
+				sLogCopyText.Format(L"%s: %s\r\n%s: %s <%s>\r\n%s: %s\r\n%s:\r\n%s\r\n%s%s\r\n",
 					(LPCTSTR)sRev, (LPCTSTR)pLogEntry->m_CommitHash.ToString(),
 					(LPCTSTR)sAuthor, (LPCTSTR)pLogEntry->GetAuthorName(), (LPCTSTR)pLogEntry->GetAuthorEmail(),
 					(LPCTSTR)sDate,
@@ -2470,13 +2484,35 @@ void CGitLogListBase::CopySelectionToClipBoard(int toCopy)
 					(LPCTSTR)sPaths);
 				sClipdata +=  sLogCopyText;
 			}
-			else if (toCopy == ID_COPY_MESSAGE)
+			else if (toCopy == ID_COPYCLIPBOARDAUTHORSFULL)
+			{
+				if (!first)
+					sClipdata += L"\r\n";
+				sClipdata += pLogEntry->GetAuthorName();
+				sClipdata += L" <";
+				sClipdata += pLogEntry->GetAuthorEmail();
+				sClipdata += L">";
+			}
+			else if (toCopy == ID_COPYCLIPBOARDAUTHORSNAME)
+			{
+				if (!first)
+					sClipdata += L"\r\n";
+				sClipdata += pLogEntry->GetAuthorName();
+			}
+			else if (toCopy == ID_COPYCLIPBOARDAUTHORSEMAIL)
+			{
+				if (!first)
+					sClipdata += L"\r\n";
+				sClipdata += pLogEntry->GetAuthorEmail();
+			}
+
+			else if (toCopy == ID_COPYCLIPBOARDMESSAGES)
 			{
 				sClipdata += L"* ";
 				sClipdata += pLogEntry->GetSubjectBody(true);
 				sClipdata += L"\r\n\r\n";
 			}
-			else if (toCopy == ID_COPY_SUBJECT)
+			else if (toCopy == ID_COPYCLIPBOARDSUBJECTS)
 			{
 				sClipdata += L"* ";
 				sClipdata += pLogEntry->GetSubject().Trim();

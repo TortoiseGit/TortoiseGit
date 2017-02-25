@@ -1,6 +1,6 @@
 // TortoiseGitBlame - a Viewer for Git Blames
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // Copyright (C)2003 Don HO <donho@altern.org>
@@ -527,11 +527,11 @@ void CTortoiseGitBlameView::ContextMenuAction(int cmd, GitRev *pRev, GIT_REV_LIS
 		break;
 
 	case ID_COPYHASHTOCLIPBOARD:
-		this->GetLogList()->CopySelectionToClipBoard(CGitLogListBase::ID_COPY_HASH);
+		this->GetLogList()->CopySelectionToClipBoard(CGitLogListBase::ID_COPYCLIPBOARDHASH);
 		break;
 
 	case ID_COPYLOGTOCLIPBOARD:
-		this->GetLogList()->CopySelectionToClipBoard();
+		this->GetLogList()->CopySelectionToClipBoard(CGitLogListBase::ID_COPYCLIPBOARDFULL);
 		break;
 	}
 }

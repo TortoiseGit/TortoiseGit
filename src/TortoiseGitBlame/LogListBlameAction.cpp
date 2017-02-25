@@ -37,7 +37,6 @@ void CGitBlameLogList::hideUnimplementedCommands()
 		GetContextMenuBit(ID_GNUDIFF1) |
 		GetContextMenuBit(ID_BLAMEPREVIOUS) |
 		GetContextMenuBit(ID_COPYCLIPBOARD) |
-		GetContextMenuBit(ID_COPYHASH) |
 		GetContextMenuBit(ID_EXPORT) |
 		GetContextMenuBit(ID_CREATE_BRANCH) |
 		GetContextMenuBit(ID_CREATE_TAG) |
@@ -127,15 +126,15 @@ void CGitBlameLogList::ContextMenuAction(int cmd, int /*FirstSelect*/, int /*Las
 				}
 			}
 			break;
-		case ID_COPYCLIPBOARD:
-			{
-				CopySelectionToClipBoard();
-			}
-			break;
-		case ID_COPYHASH:
-			{
-				CopySelectionToClipBoard(ID_COPY_HASH);
-			}
+		case ID_COPYCLIPBOARDFULL:
+		case ID_COPYCLIPBOARDFULLNOPATHS:
+		case ID_COPYCLIPBOARDHASH:
+		case ID_COPYCLIPBOARDAUTHORSFULL:
+		case ID_COPYCLIPBOARDAUTHORSNAME:
+		case ID_COPYCLIPBOARDAUTHORSEMAIL:
+		case ID_COPYCLIPBOARDSUBJECTS:
+		case ID_COPYCLIPBOARDMESSAGES:
+			CopySelectionToClipBoard(cmd & 0xFFFF);
 			break;
 		case ID_EXPORT:
 			RunTortoiseGitProcWithCurrentRev(L"export", pRev);
