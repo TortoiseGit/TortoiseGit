@@ -1387,7 +1387,7 @@ bool CSciEdit::IsValidURLChar(unsigned char ch)
 	return isalnum(ch) ||
 		ch == '_' || ch == '/' || ch == ';' || ch == '?' || ch == '&' || ch == '=' ||
 		ch == '%' || ch == ':' || ch == '.' || ch == '#' || ch == '-' || ch == '+' ||
-		ch == '|' || ch == '>' || ch == '<' || ch == '!' || ch == '@';
+		ch == '|' || ch == '>' || ch == '<' || ch == '!' || ch == '@' || ch == '~';
 }
 
 //similar code in AppUtils.cpp
