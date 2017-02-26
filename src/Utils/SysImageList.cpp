@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2017 - TortoiseGit
 // Copyright (C) 2003-2006, 2008-2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -29,18 +30,21 @@ CSysImageList::CSysImageList()
 	SHFILEINFO ssfi;
 	TCHAR windir[MAX_PATH] = {0};
 	GetWindowsDirectory(windir, _countof(windir));  // MAX_PATH ok.
-	HIMAGELIST hSystemImageList =
+	hSystemImageList =
 		(HIMAGELIST)SHGetFileInfo(
 			windir,
 			0,
 			&ssfi, sizeof ssfi,
 			SHGFI_SYSICONINDEX | SHGFI_SMALLICON);
-	Attach(hSystemImageList);
+
+	int cx, cy;
+	ImageList_GetIconSize(hSystemImageList, &cx, &cy);
+	auto emptyImageList = ImageList_Create(cx, cy, ILC_COLOR32, ImageList_GetImageCount(hSystemImageList), 10);
+	Attach(emptyImageList);
 }
 
 CSysImageList::~CSysImageList()
 {
-	Detach();
 }
 
 // Singleton specific operations
@@ -65,27 +69,27 @@ int CSysImageList::AddIcon(const HICON hIcon)
 	return this->Add(hIcon);
 }
 
-int CSysImageList::GetDirIconIndex() const
+int CSysImageList::GetDirIconIndex()
 {
 	return GetFileIcon(L"Doesn't matter", FILE_ATTRIBUTE_DIRECTORY, 0);
 }
 
-int CSysImageList::GetDirOpenIconIndex() const
+int CSysImageList::GetDirOpenIconIndex()
 {
 	return GetFileIcon(L"Doesn't matter", FILE_ATTRIBUTE_DIRECTORY, SHGFI_OPENICON);
 }
 
-int CSysImageList::GetDefaultIconIndex() const
+int CSysImageList::GetDefaultIconIndex()
 {
 	return GetFileIcon(L"", FILE_ATTRIBUTE_NORMAL, 0);
 }
 
-int CSysImageList::GetFileIconIndex(const CString& file) const
+int CSysImageList::GetFileIconIndex(const CString& file)
 {
 	return GetFileIcon(file, FILE_ATTRIBUTE_NORMAL, 0);
 }
 
-int CSysImageList::GetPathIconIndex(const CTGitPath& filePath) const
+int CSysImageList::GetPathIconIndex(const CTGitPath& filePath)
 {
 	CString strExtension = filePath.GetFileExtension();
 	strExtension.MakeUpper();
@@ -100,7 +104,7 @@ int CSysImageList::GetPathIconIndex(const CTGitPath& filePath) const
 	return it->second;
 }
 
-int CSysImageList::GetFileIcon( LPCTSTR file, DWORD attributes, UINT extraFlags ) const
+int CSysImageList::GetFileIcon(LPCTSTR file, DWORD attributes, UINT extraFlags)
 {
 	SHFILEINFO sfi = { 0 };
 
@@ -110,5 +114,5 @@ int CSysImageList::GetFileIcon( LPCTSTR file, DWORD attributes, UINT extraFlags 
 		&sfi, sizeof sfi,
 		SHGFI_SYSICONINDEX | SHGFI_SMALLICON | SHGFI_USEFILEATTRIBUTES | extraFlags);
 
-	return sfi.iIcon;
+	return AddIcon(ImageList_ExtractIcon(nullptr, hSystemImageList, sfi.iIcon));
 }
