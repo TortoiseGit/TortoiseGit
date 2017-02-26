@@ -27,106 +27,118 @@
     <ClCompile Include="ZipUnzip.cpp">
       <Filter>My</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\external\zlib123\adler32.c">
+    <ClCompile Include="..\..\..\zlib\adler32.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\external\zlib123\compress.c">
+    <ClCompile Include="..\..\..\zlib\compress.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\external\zlib123\crc32.c">
+    <ClCompile Include="..\..\..\zlib\crc32.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\external\zlib123\deflate.c">
+    <ClCompile Include="..\..\..\zlib\deflate.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\external\zlib123\gzio.c">
+    <ClCompile Include="..\..\..\zlib\infback.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\external\zlib123\infback.c">
+    <ClCompile Include="..\..\..\zlib\inffast.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\external\zlib123\inffast.c">
+    <ClCompile Include="..\..\..\zlib\inflate.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\external\zlib123\inflate.c">
+    <ClCompile Include="..\..\..\zlib\inftrees.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\external\zlib123\inftrees.c">
+    <ClCompile Include="..\..\..\zlib\trees.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\external\zlib123\trees.c">
+    <ClCompile Include="..\..\..\zlib\uncompr.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\external\zlib123\uncompr.c">
+    <ClCompile Include="..\..\..\zlib\zutil.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\external\zlib123\zutil.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\external\zlib123\contrib\minizip\ioapi.c">
+    <ClCompile Include="..\..\..\zlib\contrib\minizip\ioapi.c">
       <Filter>MiniZip Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\external\zlib123\contrib\minizip\iowin32.c">
+    <ClCompile Include="..\..\..\zlib\contrib\minizip\iowin32.c">
       <Filter>MiniZip Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\external\zlib123\contrib\minizip\mztools.c">
+    <ClCompile Include="..\..\..\zlib\contrib\minizip\mztools.c">
       <Filter>MiniZip Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\external\zlib123\contrib\minizip\zip.c">
+    <ClCompile Include="..\..\..\zlib\contrib\minizip\zip.c">
       <Filter>MiniZip Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\external\zlib123\contrib\minizip\unzip.c">
+    <ClCompile Include="..\..\..\zlib\contrib\minizip\unzip.c">
       <Filter>MiniZip Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\zlib\gzclose.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\zlib\gzlib.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\zlib\gzread.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\zlib\gzwrite.c">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ZipUnzip.h">
       <Filter>My</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\external\zlib123\crc32.h">
+    <ClInclude Include="..\..\..\zlib\crc32.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\external\zlib123\deflate.h">
+    <ClInclude Include="..\..\..\zlib\deflate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\external\zlib123\inffast.h">
+    <ClInclude Include="..\..\..\zlib\inffast.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\external\zlib123\inffixed.h">
+    <ClInclude Include="..\..\..\zlib\inffixed.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\external\zlib123\inflate.h">
+    <ClInclude Include="..\..\..\zlib\inflate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\external\zlib123\inftrees.h">
+    <ClInclude Include="..\..\..\zlib\inftrees.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\external\zlib123\trees.h">
+    <ClInclude Include="..\..\..\zlib\trees.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\external\zlib123\zconf.h">
+    <ClInclude Include="..\..\..\zlib\zconf.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\external\zlib123\zlib.h">
+    <ClInclude Include="..\..\..\zlib\zlib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\external\zlib123\zutil.h">
+    <ClInclude Include="..\..\..\zlib\zutil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\external\zlib123\contrib\minizip\crypt.h">
+    <ClInclude Include="..\..\..\zlib\contrib\minizip\crypt.h">
       <Filter>MiniZip Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\external\zlib123\contrib\minizip\zip.h">
+    <ClInclude Include="..\..\..\zlib\contrib\minizip\zip.h">
       <Filter>MiniZip Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\external\zlib123\contrib\minizip\unzip.h">
+    <ClInclude Include="..\..\..\zlib\contrib\minizip\unzip.h">
       <Filter>MiniZip Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\external\zlib123\contrib\minizip\iowin32.h">
+    <ClInclude Include="..\..\..\zlib\contrib\minizip\iowin32.h">
       <Filter>MiniZip Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\external\zlib123\contrib\minizip\ioapi.h">
+    <ClInclude Include="..\..\..\zlib\contrib\minizip\ioapi.h">
       <Filter>MiniZip Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\zlib\gzguts.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
