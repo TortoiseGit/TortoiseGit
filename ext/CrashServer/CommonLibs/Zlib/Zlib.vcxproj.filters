@@ -64,19 +64,19 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\external\zlib123\contrib\minizip\ioapi.c">
-      <Filter>Source Files</Filter>
+      <Filter>MiniZip Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\external\zlib123\contrib\minizip\iowin32.c">
-      <Filter>Source Files</Filter>
+      <Filter>MiniZip Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\external\zlib123\contrib\minizip\mztools.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\external\zlib123\contrib\minizip\unzip.c">
-      <Filter>Source Files</Filter>
+      <Filter>MiniZip Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\external\zlib123\contrib\minizip\zip.c">
-      <Filter>Source Files</Filter>
+      <Filter>MiniZip Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\external\zlib123\contrib\minizip\unzip.c">
+      <Filter>MiniZip Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -114,19 +114,19 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\external\zlib123\contrib\minizip\crypt.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\external\zlib123\contrib\minizip\ioapi.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\external\zlib123\contrib\minizip\iowin32.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\external\zlib123\contrib\minizip\unzip.h">
-      <Filter>Header Files</Filter>
+      <Filter>MiniZip Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\external\zlib123\contrib\minizip\zip.h">
-      <Filter>Header Files</Filter>
+      <Filter>MiniZip Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\external\zlib123\contrib\minizip\unzip.h">
+      <Filter>MiniZip Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\external\zlib123\contrib\minizip\iowin32.h">
+      <Filter>MiniZip Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\external\zlib123\contrib\minizip\ioapi.h">
+      <Filter>MiniZip Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
