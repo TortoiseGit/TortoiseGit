@@ -76,8 +76,6 @@ public:
 	}
 } git2init;
 
-CGitIndexFileMap g_IndexFileMap;
-
 volatile LONG		nThreadCount = 0;
 
 #define PACKVERSION(major,minor) MAKELONG(minor,major)

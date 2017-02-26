@@ -22,7 +22,6 @@
 #include "Guids.h"
 #include "ShellExtClassFactory.h"
 #include "ShellObjects.h"
-#include "gitindex.h"
 
 volatile LONG		g_cRefThisDll = 0;				///< reference count of this DLL.
 HINSTANCE			g_hmodThisDll = nullptr;		///< handle to this DLL itself.
@@ -49,7 +48,6 @@ CComCriticalSection	g_csGlobalCOMGuard;
 LPCTSTR				g_MenuIDString = L"TortoiseGit";
 
 ShellObjects		g_shellObjects;
-CGitIndexFileMap	g_IndexFileMap;
 
 #pragma comment(linker, "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2016 - TortoiseGit
+// Copyright (C) 2015-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -19,7 +19,6 @@
 
 #include "stdafx.h"
 #include "gtest/gtest.h"
-#include "gitindex.h"
 
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -33,6 +32,5 @@ int _tmain(int argc, _TCHAR* argv[])
 	return result;
 }
 
-CGitIndexFileMap g_IndexFileMap;
 CString g_sGroupingUUID;
 CString sOrigCWD;

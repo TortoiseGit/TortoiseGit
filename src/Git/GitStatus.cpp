@@ -29,7 +29,7 @@
 #include "SmartHandle.h"
 
 extern CGitAdminDirMap g_AdminDirMap;
-extern CGitIndexFileMap g_IndexFileMap;
+CGitIndexFileMap g_IndexFileMap;
 CGitHeadFileMap g_HeadFileMap;
 CGitIgnoreList  g_IgnoreList;
 
