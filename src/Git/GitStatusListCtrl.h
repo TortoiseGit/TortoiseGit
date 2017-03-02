@@ -232,6 +232,7 @@ public:
 // the submenu items get command ID's sequent to this number
 		IDGITLC_MOVETOCS		,
 	};
+	static_assert(IDGITLC_MOVETOCS < 64, "IDs must be <64 in order to be usable in a bitfield");
 	int GetColumnIndex(int colmask);
 	static inline unsigned __int64 GetContextMenuBit(int i){ return ((unsigned __int64 )0x1)<<i ;}
 	/**
