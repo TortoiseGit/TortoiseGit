@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2016 - TortoiseGit
+// Copyright (C) 2012-2017 - TortoiseGit
 // Copyright (C) 2003-2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -314,7 +314,7 @@ BOOL ShellCache::IsContextPathAllowed(LPCTSTR path)
 
 BOOL ShellCache::IsPathAllowed(LPCTSTR path)
 {
-	ValidatePathFilter();
+	RefreshIfNeeded();
 	Locker lock(m_critSec);
 	tristate_t allowed = pathFilter.IsPathAllowed(path);
 	if (allowed != tristate_unknown)
@@ -444,15 +444,6 @@ void ShellCache::ExcludeContextValid()
 		if (!excludecontextstr.empty())
 			excontextvector.push_back(excludecontextstr.substr(pos_ant, excludecontextstr.size() - 1));
 		excludecontextstr = (tstring)nocontextpaths;
-	}
-}
-
-void ShellCache::ValidatePathFilter()
-{
-	if (RefreshIfNeeded())
-	{
-		Locker lock(m_critSec);
-		pathFilter.Refresh();
 	}
 }
 

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2016 - TortoiseGit
+// Copyright (C) 2012-2017 - TortoiseGit
 // Copyright (C) 2003-2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -92,7 +92,6 @@ public:
 
 private:
 	void ExcludeContextValid();
-	void ValidatePathFilter();
 
 	class CPathFilter
 	{
