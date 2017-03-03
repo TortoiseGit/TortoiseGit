@@ -3846,6 +3846,10 @@ msgstr ""
 msgid "Disable sounds"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1536)
+msgid "Disable status cache for elevated processes"
+msgstr ""
+
 #. Resource IDs: (IDS_SETTINGS_RECURSIVE_TT)
 msgid "Disable this option if you have really big working trees and experience\ntoo much disk access when browsing the working tree."
 msgstr ""
@@ -10519,6 +10523,10 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 65535, IDS_AUTH_USERNAME)
 msgid "Username:"
+msgstr ""
+
+#. Resource IDs: (IDS_SETTINGS_ONLYNONELEVATED_TT)
+msgid "Uses the status cache type 'none' for elevated processes"
 msgstr ""
 
 #. Resource IDs: (IDS_COMMANDLINEHELP)

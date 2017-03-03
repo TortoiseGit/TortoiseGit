@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2012-2017 - TortoiseGit
-// Copyright (C) 2003-2016 - TortoiseSVN
+// Copyright (C) 2003-2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -24,6 +24,7 @@
 ShellCache::ShellCache()
 {
 	cachetype = CRegStdDWORD(L"Software\\TortoiseGit\\CacheType", GetSystemMetrics(SM_REMOTESESSION) ? dll : exe, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
+	onlynonelevated = CRegStdDWORD(L"Software\\TortoiseGit\\ShowOverlaysOnlyNonElevated", FALSE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	showrecursive = CRegStdDWORD(L"Software\\TortoiseGit\\RecursiveOverlay", TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	folderoverlay = CRegStdDWORD(L"Software\\TortoiseGit\\FolderOverlay", TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	driveremote = CRegStdDWORD(L"Software\\TortoiseGit\\DriveMaskRemote", FALSE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
@@ -81,6 +82,18 @@ ShellCache::ShellCache()
 		RegCloseKey(m_hNotifyRegKey);
 		m_hNotifyRegKey = nullptr;
 	}
+
+	// find out if we're elevated
+	isElevated = false;
+	HANDLE hToken = nullptr;
+	if (::OpenProcessToken(::GetCurrentProcess(), TOKEN_QUERY, &hToken))
+	{
+		TOKEN_ELEVATION te = { 0 };
+		DWORD dwReturnLength = 0;
+		if (::GetTokenInformation(hToken, TokenElevation, &te, sizeof(te), &dwReturnLength))
+			isElevated = (te.TokenIsElevated != 0);
+		::CloseHandle(hToken);
+	}
 }
 
 ShellCache::~ShellCache()
@@ -112,6 +125,7 @@ bool ShellCache::RefreshIfNeeded()
 	}
 
 	cachetype.read();
+	onlynonelevated.read();
 	showrecursive.read();
 	folderoverlay.read();
 	driveremote.read();
@@ -188,6 +202,17 @@ unsigned __int64 ShellCache::GetMenuMask()
 	unsigned __int64 temp = unsigned __int64(high) << 32;
 	temp |= unsigned __int64(low);
 	return temp;
+}
+
+bool ShellCache::IsProcessElevated()
+{
+	return isElevated;
+}
+
+BOOL ShellCache::IsOnlyNonElevated()
+{
+	RefreshIfNeeded();
+	return (onlynonelevated);
 }
 
 BOOL ShellCache::IsRecursive()

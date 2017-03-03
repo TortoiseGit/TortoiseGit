@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2009,2011,2013-2016 - TortoiseGit
-// Copyright (C) 2003-2008,2011 - TortoiseSVN
+// Copyright (C) 2003-2008, 2011, 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -35,12 +35,14 @@ CSetOverlayPage::CSetOverlayPage()
 	, m_bRAM(FALSE)
 	, m_bUnknown(FALSE)
 	, m_bOnlyExplorer(FALSE)
+	, m_bOnlyNonElevated(FALSE)
 	, m_bUnversionedAsModified(FALSE)
 	, m_bRecurseSubmodules(FALSE)
 	, m_bFloppy(FALSE)
 	, m_bShowExcludedAsNormal(TRUE)
 {
 	m_regOnlyExplorer = CRegDWORD(L"Software\\TortoiseGit\\LoadDllOnlyInExplorer", FALSE);
+	m_regOnlyNonElevated = CRegDWORD(L"Software\\TortoiseGit\\ShowOverlaysOnlyNonElevated", FALSE);
 	m_regDriveMaskRemovable = CRegDWORD(L"Software\\TortoiseGit\\DriveMaskRemovable");
 	m_regDriveMaskFloppy = CRegDWORD(L"Software\\TortoiseGit\\DriveMaskFloppy");
 	m_regDriveMaskRemote = CRegDWORD(L"Software\\TortoiseGit\\DriveMaskRemote");
@@ -56,6 +58,7 @@ CSetOverlayPage::CSetOverlayPage()
 	m_regShowExcludedAsNormal = CRegDWORD(L"Software\\TortoiseGit\\ShowExcludedAsNormal", TRUE);
 
 	m_bOnlyExplorer = m_regOnlyExplorer;
+	m_bOnlyNonElevated = m_regOnlyNonElevated;
 	m_bRemovable = m_regDriveMaskRemovable;
 	m_bFloppy = m_regDriveMaskFloppy;
 	m_bNetwork = m_regDriveMaskRemote;
@@ -87,6 +90,7 @@ void CSetOverlayPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_RAM, m_bRAM);
 	DDX_Check(pDX, IDC_UNKNOWN, m_bUnknown);
 	DDX_Check(pDX, IDC_ONLYEXPLORER, m_bOnlyExplorer);
+	DDX_Check(pDX, IDC_ONLYNONELEVATED, m_bOnlyNonElevated);
 	DDX_Text(pDX, IDC_EXCLUDEPATHS, m_sExcludePaths);
 	DDX_Text(pDX, IDC_INCLUDEPATHS, m_sIncludePaths);
 	DDX_Check(pDX, IDC_UNVERSIONEDASMODIFIED, m_bUnversionedAsModified);
@@ -104,6 +108,7 @@ BEGIN_MESSAGE_MAP(CSetOverlayPage, ISettingsPropPage)
 	ON_BN_CLICKED(IDC_UNKNOWN, OnChange)
 	ON_BN_CLICKED(IDC_RAM, OnChange)
 	ON_BN_CLICKED(IDC_ONLYEXPLORER, OnChange)
+	ON_BN_CLICKED(IDC_ONLYNONELEVATED, &CSetOverlayPage::OnChange)
 	ON_EN_CHANGE(IDC_EXCLUDEPATHS, OnChange)
 	ON_EN_CHANGE(IDC_INCLUDEPATHS, OnChange)
 	ON_BN_CLICKED(IDC_CACHEDEFAULT, &CSetOverlayPage::OnChange)
@@ -154,6 +159,7 @@ BOOL CSetOverlayPage::OnInitDialog()
 	GetDlgItem(IDC_RECURSIVESUBMODULES)->EnableWindow(m_dwCacheType == 1);
 
 	m_tooltips.AddTool(IDC_ONLYEXPLORER, IDS_SETTINGS_ONLYEXPLORER_TT);
+	m_tooltips.AddTool(IDC_ONLYNONELEVATED, IDS_SETTINGS_ONLYNONELEVATED_TT);
 	m_tooltips.AddTool(IDC_EXCLUDEPATHS, IDS_SETTINGS_EXCLUDELIST_TT);
 	m_tooltips.AddTool(IDC_INCLUDEPATHS, IDS_SETTINGS_INCLUDELIST_TT);
 	m_tooltips.AddTool(IDC_CACHEDEFAULT, IDS_SETTINGS_CACHEDEFAULT_TT);
@@ -197,6 +203,7 @@ BOOL CSetOverlayPage::OnApply()
 {
 	UpdateData();
 	Store(m_bOnlyExplorer, m_regOnlyExplorer);
+	Store(m_bOnlyNonElevated, m_regOnlyNonElevated);
 	if (DWORD(m_regDriveMaskRemovable) != DWORD(m_bRemovable))
 		m_restart = Restart_Cache;
 	Store(m_bRemovable, m_regDriveMaskRemovable);

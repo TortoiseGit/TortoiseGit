@@ -148,6 +148,13 @@
 		<guilabel>Show overlays and context menu only in explorer</guilabel> box.
 	</para>
 	<para>
+		You can force the status cache to <emphasis>None</emphasis> for elevated
+		processes by checking the
+		<guilabel>Disable status cache for elevated processes</guilabel> box.
+		This is useful if you want to prevent another <filename>TGitCache.exe</filename>
+		process getting created with elevated privileges.
+	</para>
+	<para>
 		You can also choose to mark folders as
 		modified if they contain unversioned items. This could be useful for
 		reminding you that you have created new files which are not yet versioned.

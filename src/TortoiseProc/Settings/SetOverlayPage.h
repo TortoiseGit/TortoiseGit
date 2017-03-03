@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2014 - TortoiseGit
-// Copyright (C) 2003-2008,2010 - TortoiseSVN
+// Copyright (C) 2003-2008, 2010, 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -50,6 +50,7 @@ protected:
 
 private:
 	BOOL			m_bOnlyExplorer;
+	BOOL			m_bOnlyNonElevated;
 	BOOL			m_bRemovable;
 	BOOL			m_bFloppy;
 	BOOL			m_bNetwork;
@@ -61,6 +62,7 @@ private:
 	BOOL			m_bRecurseSubmodules;
 	BOOL			m_bShowExcludedAsNormal;
 	CRegDWORD		m_regOnlyExplorer;
+	CRegDWORD		m_regOnlyNonElevated;
 	CRegDWORD		m_regDriveMaskRemovable;
 	CRegDWORD		m_regDriveMaskFloppy;
 	CRegDWORD		m_regDriveMaskRemote;

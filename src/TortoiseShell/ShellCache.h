@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2012-2017 - TortoiseGit
-// Copyright (C) 2003-2011 - TortoiseSVN
+// Copyright (C) 2003-2011, 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -65,6 +65,9 @@ public:
 	unsigned __int64 GetMenuLayout();
 	unsigned __int64 GetMenuExt();
 	unsigned __int64 GetMenuMask();
+
+	bool IsProcessElevated();
+	BOOL IsOnlyNonElevated();
 
 	BOOL IsRecursive();
 	BOOL IsFolderOverlay();
@@ -184,6 +187,7 @@ public:
 	CRegStdDWORD cachetype;
 	CRegStdDWORD blockstatus;
 	CRegStdDWORD langid;
+	CRegStdDWORD onlynonelevated;
 	CRegStdDWORD showrecursive;
 	CRegStdDWORD folderoverlay;
 	CRegStdDWORD getlocktop;
@@ -226,6 +230,7 @@ public:
 	CComCriticalSection m_critSec;
 	HANDLE m_registryChangeEvent;
 	HKEY m_hNotifyRegKey;
+	bool isElevated;
 };
 
 inline bool operator<(const ShellCache::CPathFilter::SEntry& lhs, const std::pair<LPCTSTR, size_t>& rhs)
