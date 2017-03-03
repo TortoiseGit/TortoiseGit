@@ -4,6 +4,7 @@ Released: unreleased
 == Features ==
  * Fixed issue #2931: Make “ChangeList” grids in “Git synchronization” multi-selectable
  * Update Scintille to 3.7.3
+ * Fixed issue #2949: Don't hide "Show log" button when fetch/pull was not successful
 
 == Bug Fixes ==
  * Fixed issue #2909: Commit window unclosable after clicking "No" and "do not ask again"

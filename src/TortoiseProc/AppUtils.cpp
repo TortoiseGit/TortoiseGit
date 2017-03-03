@@ -2679,6 +2679,13 @@ static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool l
 		if (status)
 		{
 			postCmdList.emplace_back(IDI_REFRESH, IDS_MSGBOX_RETRY, [&]{ DoFetch(url, fetchAllRemotes, loadPuttyAgent, prune, bDepth, nDepth, fetchTags, remoteBranch, runRebase, rebasePreserveMerges); });
+			if (fetchAllRemotes)
+				postCmdList.emplace_back(IDI_LOG, IDS_MENULOG, []
+				{
+					CString cmd = L"/command:log";
+					cmd += L" /path:\"" + g_Git.m_CurrentDir + L'"';
+					CAppUtils::RunTortoiseGitProc(cmd);
+				});
 			return;
 		}
 
