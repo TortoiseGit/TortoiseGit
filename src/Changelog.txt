@@ -13,6 +13,7 @@ Released: unreleased
  * Fixed issue #2935: Icon overlay not shown for files on network UNC paths
  * Fix possible crash in TortoiseGitMerge when applying patch
  * Fixed issue #2942: Can't update Remote Branch of Pull dialog with Browse references dialog
+ * Fixed issue #2951: Graphics corruption on taskbar overlay with UI scaling
 
 = Release 2.4.0 =
 Released: 2017-01-31

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2014, 2016 - TortoiseGit
+// Copyright (C) 2013-2014, 2016-2017 - TortoiseGit
 // Copyright (C) 2011-2012, 2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -174,20 +174,16 @@ void SetUUIDOverlayIcon( HWND hWnd )
         DWORD colors[6] = { 0x80FF0000, 0x80FFFF00, 0x8000FF00, 0x800000FF, 0x80000000, 0x8000FFFF };
 
         // AND mask - monochrome - determines which pixels get drawn
-        BYTE AND[32];
-        for (int i = 0; i<32; i++)
-        {
-            AND[i] = 0xFF;
-        }
+        auto AND = std::make_unique<BYTE[]>(iconWidth * iconWidth);
+        for (int i = 0; i < iconWidth * iconWidth; ++i)
+            AND.get()[i] = 0xff;
 
         // XOR mask - 32bpp ARGB - determines the pixel values
-        DWORD XOR[256];
-        for (int i = 0; i<256; i++)
-        {
-            XOR[i] = colors[foundUUIDIndex % 6];
-        }
+        auto XOR = std::make_unique<DWORD[]>(iconWidth * iconWidth);
+        for (int i = 0; i < iconWidth * iconWidth; ++i)
+            XOR.get()[i] = colors[foundUUIDIndex % 6];
 
-        icon = ::CreateIcon(nullptr, iconWidth, iconHeight, 1, 32, AND, (BYTE*)XOR);
+        icon = ::CreateIcon(nullptr, iconWidth, iconHeight, 1, 32, AND.get(), (BYTE*)XOR.get());
     }
     pTaskbarInterface->SetOverlayIcon(hWnd, icon, uuid.c_str());
     DestroyIcon(icon);
