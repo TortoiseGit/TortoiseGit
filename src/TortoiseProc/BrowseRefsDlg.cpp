@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2016 - TortoiseGit
+// Copyright (C) 2009-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -1057,6 +1057,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 					popupMenu.AppendMenuIcon(eCmd_DeleteRemoteTag | (pos << 16), temp, IDI_DELETE);
 				}
 			}
+			bAddSeparator = false;
 		}
 		if(pTree->IsFrom(L"refs/heads"))
 		{
@@ -1065,6 +1066,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 			CString temp;
 			temp.LoadString(IDS_MENUBRANCH);
 			popupMenu.AppendMenuIcon(eCmd_CreateBranch, temp, IDI_COPY);
+			bAddSeparator = false;
 		}
 		if(pTree->IsFrom(L"refs/tags"))
 		{
@@ -1083,9 +1085,12 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 					popupMenu.AppendMenuIcon(eCmd_DeleteRemoteTag | (i << 16), temp, IDI_DELETE);
 				}
 			}
+			bAddSeparator = false;
 		}
 	}
-
+	if (bAddSeparator)
+		popupMenu.AppendMenu(MF_SEPARATOR);
+	popupMenu.AppendMenuIcon(eCmd_Copy, IDS_COPY_REF_NAMES, IDI_COPYCLIP);
 
 	int selection = popupMenu.TrackPopupMenuEx(TPM_LEFTALIGN | TPM_RETURNCMD, point.x, point.y, this, nullptr);
 	switch ((eCmd)(selection & 0xFFFF))
@@ -1274,6 +1279,22 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 			key.Format(L"branch.%s.merge", (LPCTSTR)selectedLeafs[0]->GetRefsHeadsName());
 			g_Git.SetConfigValue(key, L"refs/heads/" + branch);
 			Refresh();
+		}
+		break;
+	case eCmd_Copy:
+		{
+			CString sClipdata;
+			bool first = true;
+			POSITION pos = m_ListRefLeafs.GetFirstSelectedItemPosition();
+			while (pos)
+			{
+				auto index = m_ListRefLeafs.GetNextSelectedItem(pos);
+				if (!first)
+					sClipdata += L"\r\n";
+				sClipdata += m_ListRefLeafs.GetItemText(index, eCol_Name);
+				first = false;
+			}
+			CStringUtils::WriteAsciiStringToClipboard(sClipdata, GetSafeHwnd());
 		}
 		break;
 	}
