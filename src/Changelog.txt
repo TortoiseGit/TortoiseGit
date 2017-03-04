@@ -15,6 +15,7 @@ Released: unreleased
  * Fix possible crash in TortoiseGitMerge when applying patch
  * Fixed issue #2942: Can't update Remote Branch of Pull dialog with Browse references dialog
  * Fixed issue #2951: Graphics corruption on taskbar overlay with UI scaling
+ * Fixed issue #2945: Rebase dialog should remember the last position of the divider
 
 = Release 2.4.0 =
 Released: 2017-01-31

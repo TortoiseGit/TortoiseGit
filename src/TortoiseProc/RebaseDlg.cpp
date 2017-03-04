@@ -1176,6 +1176,7 @@ void CRebaseDlg::OnBnClickedContinue()
 		OnOK();
 		CleanUpRebaseActiveFolder();
 		CheckRestoreStash();
+		SaveSplitterPos();
 		return;
 	}
 
@@ -1252,6 +1253,7 @@ void CRebaseDlg::OnBnClickedContinue()
 		if(FinishRebase())
 			return ;
 
+		SaveSplitterPos();
 		OnOK();
 	}
 
@@ -2353,6 +2355,8 @@ void CRebaseDlg::OnBnClickedAbort()
 
 	m_tooltips.Pop();
 	
+	SaveSplitterPos();
+
 	if(m_OrigUpstreamHash.IsEmpty())
 	{
 		__super::OnCancel();
