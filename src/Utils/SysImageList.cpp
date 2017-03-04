@@ -39,7 +39,7 @@ CSysImageList::CSysImageList()
 
 	int cx, cy;
 	ImageList_GetIconSize(hSystemImageList, &cx, &cy);
-	auto emptyImageList = ImageList_Create(cx, cy, ILC_COLOR32, ImageList_GetImageCount(hSystemImageList), 10);
+	auto emptyImageList = ImageList_Create(cx, cy, ILC_COLOR32 | ILC_MASK, ImageList_GetImageCount(hSystemImageList), 10);
 	Attach(emptyImageList);
 }
 
