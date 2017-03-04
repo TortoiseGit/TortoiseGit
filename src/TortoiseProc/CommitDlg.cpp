@@ -1774,13 +1774,34 @@ void CCommitDlg::ParseSnippetFile(const CString& sFile, std::map<CString, CStrin
 				continue;
 			if (strLine[0] == L'#') // comment char
 				continue;
-			int eqpos = strLine.Find('=');
+			int eqpos = strLine.Find(L'=');
+			if (eqpos <= 0)
+				continue;
 			CString key = strLine.Left(eqpos);
-			CString value = strLine.Mid(eqpos + 1);
-			value.Replace(L"\\\t", L"\t");
-			value.Replace(L"\\\r", L"\r");
-			value.Replace(L"\\\n", L"\n");
-			value.Replace(L"\\\\", L"\\");
+			auto rawvalue = strLine.GetBuffer() + eqpos + 1;
+			CString value;
+			bool isEscaped = false;
+			for (int i = 0, len = strLine.GetLength() - eqpos - 1; i < len; ++i)
+			{
+				wchar_t c = rawvalue[i];
+				if (isEscaped)
+				{
+					switch (c)
+					{
+					case L't': c = L'\t'; break;
+					case L'n': c = L'\n'; break;
+					case L'r': c = L'\r'; break;
+					case L'\\': c = L'\\'; break;
+					default: value += rawvalue[i - 1]; break; // i is known to be > 0
+					}
+					value += c;
+					isEscaped = false;
+				}
+				else if (c == L'\\')
+					isEscaped = true;
+				else
+					value += c;
+			}
 			mapSnippet[key] = value;
 		}
 		file.Close();

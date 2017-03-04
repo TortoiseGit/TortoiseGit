@@ -17,6 +17,7 @@ Released: unreleased
  * Fixed issue #2951: Graphics corruption on taskbar overlay with UI scaling
  * Fixed issue #2945: Rebase dialog should remember the last position of the divider
  * Fixed issue #2947: Reinitializing a repository using "git init --separate-git-dir" turns all overlay icons to added
+ * Allow snippets to include new lines (using "\n" notation)
 
 = Release 2.4.0 =
 Released: 2017-01-31
