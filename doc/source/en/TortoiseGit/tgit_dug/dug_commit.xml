@@ -269,7 +269,7 @@
 			The snippets supplied with TortoiseGit are held in the TortoiseGit
 			installation <filename>bin</filename> folder. You can also define your own
 			snippets and store them in <filename>%APPDATA%\TortoiseGit\snippet.txt</filename>.
-			# is the comment character. Use escape sequences \t \r \n \\.
+			<literal>#</literal> is the comment character. Use escape sequences <literal>\t</literal>, <literal>\r</literal>, <literal>\n</literal>, and <literal>\\</literal>.
 		</para>
 		<para>
 			You can add your name and email address to the end of the log message by clicking
