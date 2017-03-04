@@ -318,7 +318,10 @@ int CGitIndexFileMap::Check(const CString &gitdir, bool *isChanged)
 	CString IndexFile = g_AdminDirMap.GetAdminDirConcat(gitdir, L"index");
 
 	if (CGit::GetFileModifyTime(IndexFile, &time))
+	{
+		g_AdminDirMap.ResetAdminDirCache(gitdir);
 		return -1;
+	}
 
 	SHARED_INDEX_PTR pIndex;
 	pIndex = this->SafeGet(gitdir);
