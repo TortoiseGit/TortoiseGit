@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2016 - TortoiseGit
+// Copyright (C) 2015-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -569,21 +569,21 @@ static void GetReflog()
 	std::vector<GitRevLoglist> revloglist;
 	EXPECT_EQ(0, GitRevLoglist::GetRefLog(L"refs/stash", revloglist, err));
 	EXPECT_EQ(0, revloglist.size());
-	EXPECT_TRUE(err.IsEmpty());
+	EXPECT_STREQ(L"", err);
 
 	EXPECT_EQ(0, GitRevLoglist::GetRefLog(L"HEAD", revloglist, err));
 	EXPECT_EQ(12, revloglist.size());
-	EXPECT_TRUE(err.IsEmpty());
+	EXPECT_STREQ(L"", err);
 
 	revloglist.clear();
 	EXPECT_EQ(0, GitRevLoglist::GetRefLog(L"refs/heads/does-not-exist", revloglist, err));
 	EXPECT_EQ(0, revloglist.size());
-	EXPECT_TRUE(err.IsEmpty());
+	EXPECT_STREQ(L"", err);
 
 	err.Empty();
 	EXPECT_EQ(0, GitRevLoglist::GetRefLog(L"refs/heads/master", revloglist, err));
 	ASSERT_EQ(7, revloglist.size());
-	EXPECT_TRUE(err.IsEmpty());
+	EXPECT_STREQ(L"", err);
 
 	EXPECT_STREQ(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6", revloglist[0].m_CommitHash.ToString());
 	EXPECT_STREQ(L"refs/heads/master@{0}", revloglist[0].m_Ref);

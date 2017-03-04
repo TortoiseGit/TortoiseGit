@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2016 - TortoiseGit
+// Copyright (C) 2015-2017 - TortoiseGit
 // Copyright (C) 2003-2008, 2013-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -43,7 +43,7 @@ TEST(CPathUtils, GetFileNameFromPath)
 	test = L"filename";
 	EXPECT_STREQ(L"filename", CPathUtils::GetFileNameFromPath(test));
 	test.Empty();
-	EXPECT_TRUE(CPathUtils::GetFileNameFromPath(test).IsEmpty());
+	EXPECT_STREQ(L"", CPathUtils::GetFileNameFromPath(test));
 }
 
 TEST(CPathUtils, ExtTest)
@@ -53,11 +53,11 @@ TEST(CPathUtils, ExtTest)
 	test = L"filename.ext";
 	EXPECT_STREQ(L".ext", CPathUtils::GetFileExtFromPath(test));
 	test = L"d:\\test\\filename";
-	EXPECT_TRUE(CPathUtils::GetFileExtFromPath(test).IsEmpty());
+	EXPECT_STREQ(L"", CPathUtils::GetFileExtFromPath(test));
 	test = L"filename";
-	EXPECT_TRUE(CPathUtils::GetFileExtFromPath(test).IsEmpty());
+	EXPECT_STREQ(L"", CPathUtils::GetFileExtFromPath(test));
 	test.Empty();
-	EXPECT_TRUE(CPathUtils::GetFileExtFromPath(test).IsEmpty());
+	EXPECT_STREQ(L"", CPathUtils::GetFileExtFromPath(test));
 }
 
 TEST(CPathUtils, ParseTests)

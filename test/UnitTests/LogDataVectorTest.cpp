@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015 - TortoiseGit
+// Copyright (C) 2015, 2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -253,7 +253,7 @@ static void ParserFromLogTests()
 	// check whether libgit ref_cache is correctly invalidated
 	CString output;
 	EXPECT_EQ(0, g_Git.Run(L"git.exe branch -D simple-conflict", &output, CP_UTF8)); // normal ref in refs/heads
-	EXPECT_FALSE(output.IsEmpty());
+	EXPECT_STRNE(L"", output);
 	logCache.m_HashMap.clear();
 	logDataVector.ClearAll();
 	EXPECT_EQ(0, logDataVector.ParserFromLog(nullptr, 0, CGit::LOG_INFO_ALL_BRANCH));
@@ -268,7 +268,7 @@ static void ParserFromLogTests()
 	EXPECT_TRUE(logCache.m_HashMap.find(CGitHash(L"c5b89de0335fd674e2e421ac4543098cb2f22cde")) == logCache.m_HashMap.end());
 	output.Empty();
 	EXPECT_EQ(0, g_Git.Run(L"git.exe branch -D forconflict", &output, CP_UTF8)); // ref in packed-refs
-	EXPECT_FALSE(output.IsEmpty());
+	EXPECT_STRNE(L"", output);
 	logCache.m_HashMap.clear();
 	logDataVector.ClearAll();
 	EXPECT_EQ(0, logDataVector.ParserFromLog(nullptr, 0, CGit::LOG_INFO_ALL_BRANCH));

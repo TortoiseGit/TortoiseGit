@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2016 - TortoiseGit
+// Copyright (C) 2015-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -46,12 +46,12 @@ static void GetRevParsingTests()
 	EXPECT_STREQ(L"2015-03-07 18:03:58", rev.GetCommitterDate().FormatGmt(L"%Y-%m-%d %H:%M:%S"));
 	EXPECT_STREQ(L"Changed ASCII file", rev.GetSubject());
 	EXPECT_STREQ(L"", rev.GetBody());
-	EXPECT_TRUE(rev.GetLastErr().IsEmpty());
+	EXPECT_STREQ(L"", rev.GetLastErr());
 	EXPECT_EQ(0, rev.ParentsCount());
 	EXPECT_EQ(0, rev.GetParentFromHash(rev.m_CommitHash));
 	ASSERT_EQ(1, rev.ParentsCount());
 	EXPECT_STREQ(L"1fc3c9688e27596d8717b54f2939dc951568f6cb", rev.m_ParentHash[0].ToString());
-	EXPECT_TRUE(rev.GetLastErr().IsEmpty());
+	EXPECT_STREQ(L"", rev.GetLastErr());
 	rev.Clear();
 	EXPECT_EQ(0, rev.GetCommit(GitRev::GetWorkingCopy()));
 	EXPECT_TRUE(rev.m_CommitHash.IsEmpty());
@@ -62,9 +62,9 @@ static void GetRevParsingTests()
 	EXPECT_STREQ(L"Working Tree", rev.GetSubject());
 	EXPECT_STREQ(L"", rev.GetBody());
 	EXPECT_EQ(0, rev.ParentsCount());
-	EXPECT_TRUE(rev.GetLastErr().IsEmpty());
+	EXPECT_STREQ(L"", rev.GetLastErr());
 	rev.Clear();
-	EXPECT_TRUE(rev.GetLastErr().IsEmpty());
+	EXPECT_STREQ(L"", rev.GetLastErr());
 	EXPECT_EQ(0, rev.GetCommit(L"aa5b97f89cea6863222823c8289ce392d06d1691"));
 	EXPECT_STREQ(L"aa5b97f89cea6863222823c8289ce392d06d1691", rev.m_CommitHash.ToString());
 	EXPECT_STREQ(L"Another dummy with ümlaut", rev.GetAuthorName());
@@ -75,7 +75,7 @@ static void GetRevParsingTests()
 	EXPECT_STREQ(L"2015-03-14 22:30:06", rev.GetCommitterDate().FormatGmt(L"%Y-%m-%d %H:%M:%S"));
 	EXPECT_STREQ(L"Subject line", rev.GetSubject());
 	EXPECT_STREQ(L"\nalso some more lines\n\nhere in body\n\nSigned-off-by: Another dummy with ümlaut <anotherduemmy@example.com>\n", rev.GetBody());
-	EXPECT_TRUE(rev.GetLastErr().IsEmpty());
+	EXPECT_STREQ(L"", rev.GetLastErr());
 	rev.Clear();
 	EXPECT_TRUE(rev.m_CommitHash.IsEmpty());
 	EXPECT_EQ(0, rev.GetCommit(L"1fc3c9688e27596d8717b54f2939dc951568f6cb"));
@@ -88,10 +88,10 @@ static void GetRevParsingTests()
 	EXPECT_STREQ(L"2015-03-07 18:03:39", rev.GetCommitterDate().FormatGmt(L"%Y-%m-%d %H:%M:%S"));
 	EXPECT_STREQ(L"Added an ascii file", rev.GetSubject());
 	EXPECT_STREQ(L"", rev.GetBody());
-	EXPECT_TRUE(rev.GetLastErr().IsEmpty());
+	EXPECT_STREQ(L"", rev.GetLastErr());
 	rev.Clear();
 	EXPECT_EQ(-1, rev.GetCommit(L"does-not-exist"));
-	EXPECT_FALSE(rev.GetLastErr().IsEmpty());
+	EXPECT_STRNE(L"", rev.GetLastErr());
 	EXPECT_TRUE(rev.m_CommitHash.IsEmpty());
 	rev.Clear();
 	CGitHash hash(L"aa5b97f89cea6863222823c8289ce392d06d1691");
@@ -105,7 +105,7 @@ static void GetRevParsingTests()
 	EXPECT_STREQ(L"2015-03-14 22:30:06", rev.GetCommitterDate().FormatGmt(L"%Y-%m-%d %H:%M:%S"));
 	EXPECT_STREQ(L"Subject line", rev.GetSubject());
 	EXPECT_STREQ(L"\nalso some more lines\n\nhere in body\n\nSigned-off-by: Another dummy with ümlaut <anotherduemmy@example.com>\n", rev.GetBody());
-	EXPECT_TRUE(rev.GetLastErr().IsEmpty());
+	EXPECT_STREQ(L"", rev.GetLastErr());
 	rev.Clear();
 	EXPECT_EQ(0, rev.GetCommit(L"8d1ebbcc7eeb63af10ff8bcf7712afb9fcc90b8a"));
 	EXPECT_STREQ(L"8d1ebbcc7eeb63af10ff8bcf7712afb9fcc90b8a", rev.m_CommitHash.ToString());
@@ -122,7 +122,7 @@ static void GetRevParsingTests()
 	ASSERT_EQ(2, rev.ParentsCount());
 	EXPECT_STREQ(L"3686b9cf74f1a4ef96d6bfe736595ef9abf0fb8d", rev.m_ParentHash[0].ToString());
 	EXPECT_STREQ(L"1ce788330fd3a306c8ad37654063ceee13a7f172", rev.m_ParentHash[1].ToString());
-	EXPECT_TRUE(rev.GetLastErr().IsEmpty());
+	EXPECT_STREQ(L"", rev.GetLastErr());
 	rev.Clear();
 	EXPECT_TRUE(rev.m_CommitHash.IsEmpty());
 	EXPECT_EQ(0, rev.GetCommit(L"844309789a13614b52d5e7cbfe6350dd73d1dc72")); // root-commit
@@ -135,11 +135,11 @@ static void GetRevParsingTests()
 	EXPECT_STREQ(L"2015-03-04 17:35:13", rev.GetCommitterDate().FormatGmt(L"%Y-%m-%d %H:%M:%S"));
 	EXPECT_STREQ(L"added ansi file", rev.GetSubject());
 	EXPECT_STREQ(L"", rev.GetBody());
-	EXPECT_TRUE(rev.GetLastErr().IsEmpty());
+	EXPECT_STREQ(L"", rev.GetLastErr());
 	EXPECT_EQ(0, rev.ParentsCount());
 	EXPECT_EQ(0, rev.GetParentFromHash(rev.m_CommitHash));
 	EXPECT_EQ(0, rev.ParentsCount());
-	EXPECT_TRUE(rev.GetLastErr().IsEmpty());
+	EXPECT_STREQ(L"", rev.GetLastErr());
 	rev.Clear();
 	// GPG signed commit which was also amended with different dates
 	EXPECT_EQ(0, rev.GetCommit(L"subdir/branch"));
@@ -152,12 +152,12 @@ static void GetRevParsingTests()
 	EXPECT_STREQ(L"2015-03-16 13:06:08", rev.GetCommitterDate().FormatGmt(L"%Y-%m-%d %H:%M:%S"));
 	EXPECT_STREQ(L"Several actions", rev.GetSubject());
 	EXPECT_STREQ(L"\n* amended with different date\n* make utf16-be-nobom.txt a symlink ti ascii.txt\n* remove utf8-bom.txt\n* Copied ascii.txt\n\nSigned-off-by: Sven Strickroth <email@cs-ware.de>\n", rev.GetBody());
-	EXPECT_TRUE(rev.GetLastErr().IsEmpty());
+	EXPECT_STREQ(L"", rev.GetLastErr());
 	EXPECT_EQ(0, rev.ParentsCount());
 	EXPECT_EQ(0, rev.GetParentFromHash(rev.m_CommitHash));
 	ASSERT_EQ(1, rev.ParentsCount());
 	EXPECT_STREQ(L"aa5b97f89cea6863222823c8289ce392d06d1691", rev.m_ParentHash[0].ToString());
-	EXPECT_TRUE(rev.GetLastErr().IsEmpty());
+	EXPECT_STREQ(L"", rev.GetLastErr());
 }
 
 TEST_P(GitRevCBasicGitWithTestRepoFixture, GitRevParsing)

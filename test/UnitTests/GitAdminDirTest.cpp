@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2016 - TortoiseGit
+// Copyright (C) 2015-2017 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -101,7 +101,7 @@ TEST(CGitAdminDir, GetAdminDirPath_BareRepo)
 
 	CString adminDir;
 	EXPECT_FALSE(GitAdminDir::GetAdminDirPath(tmpDir.GetTempDir(), adminDir));
-	EXPECT_TRUE(adminDir.IsEmpty());
+	EXPECT_STREQ(L"", adminDir);
 
 	CAutoRepository repo;
 	ASSERT_TRUE(git_repository_init(repo.GetPointer(), CUnicodeUtils::GetUTF8(tmpDir.GetTempDir()), true) == 0);
@@ -111,7 +111,7 @@ TEST(CGitAdminDir, GetAdminDirPath_BareRepo)
 
 	adminDir.Empty();
 	EXPECT_FALSE(GitAdminDir::GetAdminDirPath(tmpDir.GetTempDir() + L"\\objects", adminDir));
-	EXPECT_TRUE(adminDir.IsEmpty());
+	EXPECT_STREQ(L"", adminDir);
 }
 
 TEST(CGitAdminDir, GetAdminDirPath_ReferencedRepo)

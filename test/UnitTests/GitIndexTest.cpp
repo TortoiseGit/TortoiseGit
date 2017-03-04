@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2016 - TortoiseGit
+// Copyright (C) 2015-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -104,7 +104,7 @@ TEST_P(GitIndexCBasicGitWithTestRepoFixture, ReadIndex)
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"this is testing file."));
 	CString output;
 	EXPECT_EQ(0, m_Git.Run(L"git.exe add 1.txt", &output, CP_UTF8));
-	EXPECT_TRUE(output.IsEmpty());
+	EXPECT_STREQ(L"", output);
 
 	ReadAndCheckIndex(indexList, m_Dir.GetTempDir(), 1);
 
@@ -121,7 +121,7 @@ TEST_P(GitIndexCBasicGitWithTestRepoFixture, ReadIndex)
 	output.Empty();
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"this is testing file."));
 	EXPECT_EQ(0, m_Git.Run(L"git.exe add -N 1.txt", &output, CP_UTF8));
-	EXPECT_TRUE(output.IsEmpty());
+	EXPECT_STREQ(L"", output);
 
 	ReadAndCheckIndex(indexList, m_Dir.GetTempDir(), 1);
 
@@ -199,11 +199,11 @@ TEST_P(GitIndexCBasicGitWithTestRepoFixture, GetFileStatus)
 
 	output.Empty();
 	EXPECT_EQ(0, m_Git.Run(L"git.exe checkout --force forconflict", &output, CP_UTF8));
-	EXPECT_FALSE(output.IsEmpty());
+	EXPECT_STRNE(L"", output);
 
 	output.Empty();
 	EXPECT_EQ(1, m_Git.Run(L"git.exe merge simple-conflict", &output, CP_UTF8));
-	EXPECT_FALSE(output.IsEmpty());
+	EXPECT_STRNE(L"", output);
 
 	EXPECT_EQ(0, indexList.ReadIndex(m_Dir.GetTempDir()));
 	EXPECT_EQ(9, indexList.size());

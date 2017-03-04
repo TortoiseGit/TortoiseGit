@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2016 - TortoiseGit
+// Copyright (C) 2015-2017 - TortoiseGit
 // Copyright (C) 2003-2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -66,7 +66,7 @@ TEST(CStringUtils, RemoveAccelerators)
 {
 	CString empty;
 	CStringUtils::RemoveAccelerators(empty);
-	EXPECT_TRUE(empty.IsEmpty());
+	EXPECT_STREQ(L"", empty);
 
 	CString text1 = L"&Accellerator";
 	CStringUtils::RemoveAccelerators(text1);

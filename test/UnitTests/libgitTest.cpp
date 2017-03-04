@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016 - TortoiseGit
+// Copyright (C) 2016-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -35,7 +35,7 @@ TEST(libgit, BrokenConfig)
 
 	CString output;
 	EXPECT_EQ(0, g_Git.Run(L"git.exe init", &output, CP_UTF8));
-	EXPECT_FALSE(output.IsEmpty());
+	EXPECT_STRNE(L"", output);
 	CString testFile = tempdir.GetTempDir() + L"\\.git\\config";
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"[push]\ndefault=something-that-is-invalid\n"));
 

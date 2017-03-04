@@ -172,16 +172,16 @@ protected:
 		CBasicGitFixture::SetUp();
 		CString output;
 		EXPECT_EQ(0, m_Git.Run(L"git.exe init", &output, CP_UTF8));
-		EXPECT_FALSE(output.IsEmpty());
+		EXPECT_STRNE(L"", output);
 		output.Empty();
 		EXPECT_EQ(0, m_Git.Run(L"git.exe config core.autocrlf false", &output, CP_UTF8));
-		EXPECT_TRUE(output.IsEmpty());
+		EXPECT_STREQ(L"", output);
 		output.Empty();
 		EXPECT_EQ(0, m_Git.Run(L"git.exe config user.name User", &output, CP_UTF8));
-		EXPECT_TRUE(output.IsEmpty());
+		EXPECT_STREQ(L"", output);
 		output.Empty();
 		EXPECT_EQ(0, m_Git.Run(L"git.exe config user.email user@example.com", &output, CP_UTF8));
-		EXPECT_TRUE(output.IsEmpty());
+		EXPECT_STREQ(L"", output);
 	}
 };
 
@@ -193,6 +193,6 @@ protected:
 		CBasicGitFixture::SetUp();
 		CString output;
 		EXPECT_EQ(0, m_Git.Run(L"git.exe init --bare", &output, CP_UTF8));
-		EXPECT_FALSE(output.IsEmpty());
+		EXPECT_STRNE(L"", output);
 	}
 };
