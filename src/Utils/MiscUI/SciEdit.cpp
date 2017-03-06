@@ -409,9 +409,29 @@ CString CSciEdit::GetWordUnderCursor(bool bSelectWord)
 	auto textbuffer = std::make_unique<char[]>(textrange.chrg.cpMax - textrange.chrg.cpMin + 1);
 	textrange.lpstrText = textbuffer.get();
 	Call(SCI_GETTEXTRANGE, 0, (LPARAM)&textrange);
+	CString sRet = StringFromControl(textbuffer.get());
+	if (m_bDoStyle)
+	{
+		for (const auto styleindicator : { '*', '_', '^' })
+		{
+			if (sRet.IsEmpty())
+				break;
+			if (sRet[sRet.GetLength() - 1] == styleindicator)
+			{
+				--textrange.chrg.cpMax;
+				sRet.Truncate(sRet.GetLength() - 1);
+			}
+			if (sRet.IsEmpty())
+				break;
+			if (sRet[0] == styleindicator)
+			{
+				++textrange.chrg.cpMin; 
+				sRet = sRet.Right(sRet.GetLength() - 1);
+			}
+		}
+	}
 	if (bSelectWord)
 		Call(SCI_SETSEL, textrange.chrg.cpMin, textrange.chrg.cpMax);
-	CString sRet = StringFromControl(textbuffer.get());
 	return sRet;
 }
 
@@ -1487,6 +1507,21 @@ CStringA CSciEdit::GetWordForSpellChecker(const CString& sWord)
 		sWordA = CStringA(sWord);
 
 	sWordA.Trim("\'\".,");
+
+	if (m_bDoStyle)
+	{
+		for (const auto styleindicator : { '*', '_', '^' })
+		{
+			if (sWordA.IsEmpty())
+				break;
+			if (sWordA[sWordA.GetLength() - 1] == styleindicator)
+				sWordA.Truncate(sWordA.GetLength() - 1);
+			if (sWordA.IsEmpty())
+				break;
+			if (sWordA[0] == styleindicator)
+				sWordA = sWordA.Right(sWordA.GetLength() - 1);
+		}
+	}
 
 	return sWordA;
 }
