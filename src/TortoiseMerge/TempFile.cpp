@@ -69,7 +69,7 @@ CTGitPath CTempFiles::ConstructTempPath(const CTGitPath& path)
 			// that's longer than MAX_PATH (in that case, we can't really do much to avoid longer paths)
 			do
 			{
-				possibletempfile.Format(L"%s%s.tsm%3.3x.tmp%s", temppath, (LPCTSTR)filename, i, (LPCTSTR)path.GetFileExtension());
+				possibletempfile.Format(L"%s%s.tsm%3.3x.tmp%s", temppath.get(), (LPCTSTR)filename, i, (LPCTSTR)path.GetFileExtension());
 				tempfile.SetFromWin(possibletempfile);
 				filename = filename.Left(filename.GetLength()-1);
 			} while (   (filename.GetLength() > 4)
