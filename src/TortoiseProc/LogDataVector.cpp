@@ -56,124 +56,84 @@ int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, 
 	if ((!path || path->IsDirectory()) && (infomask & CGit::LOG_INFO_FOLLOW))
 		infomask = infomask ^ CGit::LOG_INFO_FOLLOW;
 
-	CString gitrange = L"HEAD";
-	if (range != nullptr)
-		gitrange = *range;
-	CFilterData filter;
-	if (count == 0)
-		filter.m_NumberOfLogsScale = CFilterData::SHOW_NO_LIMIT;
-	else
-	{
-		filter.m_NumberOfLogs = count;
-		filter.m_NumberOfLogsScale = CFilterData::SHOW_LAST_N_COMMITS;
-	}
-	CString cmd = g_Git.GetLogCmd(gitrange, path, infomask, &filter, m_logOrderBy);
-
-	if (!g_Git.CanParseRev(gitrange))
+	if (infomask & CGit::LOG_INFO_FULL_DIFF)
 		return -1;
 
-	try
-	{
-		[] { git_init(); } ();
-	}
-	catch (const char* msg)
-	{
-		MessageBox(nullptr, L"Could not initialize libgit.\nlibgit reports:\n" + CString(msg), L"TortoiseGit", MB_ICONERROR);
+	CAutoRepository repo(g_Git.GetGitRepository());
+	if (!repo)
 		return -1;
-	}
-
-	GIT_LOG handle;
-	try
-	{
-		CAutoLocker lock(g_Git.m_critGitDllSec);
-		if (git_open_log(&handle,CUnicodeUtils::GetMulti(cmd, CP_UTF8).GetBuffer()))
-			return -1;
-	}
-	catch (char* msg)
-	{
-		MessageBox(nullptr, L"Could not open log.\nlibgit reports:\n" + CString(msg), L"TortoiseGit", MB_ICONERROR);
+	CAutoRevwalk revwalk;
+	if (git_revwalk_new(revwalk.GetPointer(), repo) || !revwalk)
 		return -1;
-	}
 
-	try
+	git_revwalk_sorting(revwalk, GIT_SORT_TOPOLOGICAL);
+
+	/*if (!m_ToRev.IsEmpty() && !m_FromRev.IsEmpty())
 	{
-		CAutoLocker lock(g_Git.m_critGitDllSec);
-		[&]{ git_get_log_firstcommit(handle); }();
+		CString range;
+		range.Format(L"%s..%s", (LPCTSTR)g_Git.FixBranchName(m_FromRev), (LPCTSTR)g_Git.FixBranchName(m_ToRev));
+		git_revwalk_push_range(revwalk, CUnicodeUtils::GetUTF8(range));
 	}
-	catch (char* msg)
+	else if (!m_ToRev.IsEmpty())
 	{
-		MessageBox(nullptr, L"Could not get first commit.\nlibgit reports:\n" + CString(msg), L"TortoiseGit", MB_ICONERROR);
+		CGitHash hash;
+		g_Git.GetHash(hash, m_ToRev);
+		git_revwalk_push(revwalk, (const git_oid*)hash.m_hash);
+	}
+	else if (!m_FromRev.IsEmpty())
+	{
+		CGitHash hash;
+		g_Git.GetHash(hash, m_FromRev);
+		git_revwalk_push(revwalk, (const git_oid*)hash.m_hash);
+	}
+	else*/
+	if (git_revwalk_push_head(revwalk))
 		return -1;
-	}
 
-	int ret = 0;
-	while (ret == 0)
+	MAP_HASH_NAME map;
+	if (CGit::GetMapHashToFriendName(repo, map))
+		return -1;
+	
+	//git_revwalk_simplify_first_parent(revwalk);
+
+	git_oid oid;
+	while ((git_revwalk_next(&oid, revwalk)) == 0)
 	{
-		GIT_COMMIT commit;
+		CGitHash hash(oid.id);
 
-		try
-		{
-			CAutoLocker lock(g_Git.m_critGitDllSec);
-			[&]{ ret = git_get_log_nextcommit(handle, &commit, infomask & CGit::LOG_INFO_FOLLOW); }();
-		}
-		catch (char* msg)
-		{
-			MessageBox(nullptr, L"Could not get next commit.\nlibgit reports:\n" + CString(msg), L"TortoiseGit", MB_ICONERROR);
-			break;
-		}
+		/*if (map.find(hash) == map.cend())
+			continue;*/
 
-		if (ret)
-		{
-			if (ret != -2) // other than end of revision walking
-				MessageBox(nullptr, (L"Could not get next commit.\nlibgit returns:" + std::to_wstring(ret)).c_str(), L"TortoiseGit", MB_ICONERROR);
-			break;
+		/*
+		
+		if (!strcmp(arg, "--simplify-by-decoration")) {
+			revs->simplify_merges = 1;
+			revs->topo_order = 1;
+			revs->rewrite_parents = 1;
+			revs->simplify_history = 0;
+			revs->simplify_by_decoration = 1;
+			revs->limited = 1;
+			revs->prune = 1;
+			load_ref_decorations(DECORATE_SHORT_REFS);
 		}
-
-		if (commit.m_ignore == 1)
-		{
-			git_free_commit(&commit);
-			continue;
-		}
-
-		CGitHash hash(commit.m_hash);
+		*/
 
 		GitRevLoglist* pRev = this->m_pLogCache->GetCacheData(hash);
+		CAutoCommit commit;
+		if (git_commit_lookup(commit.GetPointer(), repo, &oid))
+			return -1;
 
-		char *pNote = nullptr;
-		{
-			CAutoLocker lock(g_Git.m_critGitDllSec);
-			git_get_notes(commit.m_hash, &pNote);
-		}
-		if (pNote)
-		{
-			pRev->m_Notes = CUnicodeUtils::GetUnicode(pNote);
-			free(pNote);
-			pNote = nullptr;
-		}
+		pRev->ParserFromCommit(commit);
+		pRev->ParserParentFromCommit(commit);
 
-		pRev->ParserFromCommit(&commit);
-		pRev->ParserParentFromCommit(&commit);
-		git_free_commit(&commit);
-		// Must call free commit before SafeFetchFullInfo, commit parent is rewrite by log.
-		// file list will wrong if parent rewrite.
-
-		if (!pRev->m_IsFull && (infomask & CGit::LOG_INFO_FULL_DIFF))
+		//if (git_commit_parentcount(commit) == 0)
 		{
-			if (pRev->SafeFetchFullInfo(&g_Git))
-			{
-				MessageBox(nullptr, pRev->GetLastErr(), L"TortoiseGit", MB_ICONERROR);
-				return -1;
-			}
+			this->push_back(pRev->m_CommitHash);
+			m_HashMap[pRev->m_CommitHash] = (int)size() - 1;
 		}
 
-		this->push_back(pRev->m_CommitHash);
-
-		m_HashMap[pRev->m_CommitHash] = (int)size() - 1;
-	}
-
-	{
-		CAutoLocker lock(g_Git.m_critGitDllSec);
-		git_close_log(handle);
+		if (--count == 0)
+			break;
 	}
 
 	return 0;

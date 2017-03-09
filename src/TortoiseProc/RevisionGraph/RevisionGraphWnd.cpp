@@ -905,7 +905,7 @@ CString CRevisionGraphWnd::DisplayableText ( const CString& wholeText
 
 CString CRevisionGraphWnd::TooltipText(node index)
 {
-	if(index)
+	/*if(index)
 	{
 		CString str;
 		CGitHash	hash = m_logEntries[index->index()];
@@ -919,7 +919,7 @@ CString CRevisionGraphWnd::TooltipText(node index)
 		str += L'\n';
 		str += rev->GetBody();
 		return str;
-	}else
+	}else*/
 		return CString();
 }
 
@@ -1279,7 +1279,7 @@ void CRevisionGraphWnd::DoShowLog()
 
 	CString sCmd;
 
-	if(m_SelectedEntry2)
+	/*if(m_SelectedEntry2)
 		sCmd.Format(L"/command:log %s /startrev:%s /endrev:%s",
 			this->m_sPath.IsEmpty() ? L"" : (LPCTSTR)(L"/path:\"" + this->m_sPath + L'"'),
 			(LPCTSTR)this->m_logEntries[m_SelectedEntry1->index()].ToString(),
@@ -1289,7 +1289,7 @@ void CRevisionGraphWnd::DoShowLog()
 			(LPCTSTR)this->m_sPath.IsEmpty() ? L"" : (L"/path:\"" + this->m_sPath + L'"'),
 			(LPCTSTR)this->m_logEntries[m_SelectedEntry1->index()].ToString());
 
-	CAppUtils::RunTortoiseGitProc(sCmd);
+	CAppUtils::RunTortoiseGitProc(sCmd);*/
 }
 
 void CRevisionGraphWnd::DoCheckForModification()

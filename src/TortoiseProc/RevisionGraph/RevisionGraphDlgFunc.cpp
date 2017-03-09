@@ -197,6 +197,8 @@ bool CRevisionGraphWnd::FetchRevisionData
 	, ITaskbarList3 * /*pTaskbarList*/
 	, HWND /*hWnd*/)
 {
+	this->m_Graph.clear();
+
 	this->m_LogCache.ClearAllParent();
 	this->m_logEntries.ClearAll();
 	CString range;
@@ -207,10 +209,14 @@ bool CRevisionGraphWnd::FetchRevisionData
 	else if (!m_FromRev.IsEmpty())
 		range = m_FromRev;
 	DWORD infomask = CGit::LOG_INFO_SIMPILFY_BY_DECORATION | (m_bCurrentBranch ? 0 : m_bLocalBranches ? CGit::LOG_INFO_LOCAL_BRANCHES : CGit::LOG_INFO_ALL_BRANCH);
-	m_logEntries.ParserFromLog(nullptr, 0, infomask, &range);
+	if (m_logEntries.ParserFromLog(nullptr, 0, infomask, &range))
+	{
+		m_GraphRect.top = m_GraphRect.left = 0;
+		m_GraphRect.bottom = m_GraphRect.right = 0;
+		return false;
+	}
 
 	ReloadHashMap();
-	this->m_Graph.clear();
 
 	CArray<node> nodes;
 	GraphicsDevice dev;
