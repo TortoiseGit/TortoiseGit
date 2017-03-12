@@ -135,18 +135,18 @@ UINT CCacheDlg::TestThread()
 	std::uniform_int_distribution<INT_PTR> dist2(0, 9);
 	for (int i=0; i < 1; ++i)
 	{
-		CString filepath;
+		CString filepath2;
 		//do {
-			filepath = m_filelist.GetAt(dist(mt));
+			filepath2 = m_filelist.GetAt(dist(mt));
 		//}while(filepath.Find(L".git") >= 0);
-		GetDlgItem(IDC_FILEPATH)->SetWindowText(filepath);
-		GetStatusFromRemoteCache(CTGitPath(filepath), true);
+		GetDlgItem(IDC_FILEPATH)->SetWindowText(filepath2);
+		GetStatusFromRemoteCache(CTGitPath(filepath2), true);
 		sNumber.Format(L"%d", i);
 		GetDlgItem(IDC_DONE)->SetWindowText(sNumber);
 		if ((GetTickCount64()%10)==1)
 			Sleep(10);
 		if (dist2(mt) == 3)
-			RemoveFromCache(filepath);
+			RemoveFromCache(filepath2);
 	}
 	CTime endtime = CTime::GetCurrentTime();
 	CString sEnd = endtime.Format(L"%H:%M:%S");
@@ -369,14 +369,14 @@ void CCacheDlg::RemoveFromCache(const CString& path)
 			if (hPipe != INVALID_HANDLE_VALUE)
 			{
 				// now tell the cache we don't need it's command thread anymore
-				DWORD cbWritten; 
-				TGITCacheCommand cmd;
-				cmd.command = TGITCACHECOMMAND_END;
+				DWORD cbWritten2; 
+				TGITCacheCommand cmd2;
+				cmd2.command = TGITCACHECOMMAND_END;
 				WriteFile( 
 					hPipe,			// handle to pipe 
-					&cmd,			// buffer to write from 
-					sizeof(cmd),	// number of bytes to write 
-					&cbWritten,		// number of bytes written 
+					&cmd2,			// buffer to write from 
+					sizeof(cmd2),	// number of bytes to write 
+					&cbWritten2,		// number of bytes written 
 					NULL);			// not overlapped I/O 
 				DisconnectNamedPipe(hPipe); 
 				CloseHandle(hPipe); 
