@@ -2808,7 +2808,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 				{
 					CString cmd, output;
 					cmd.Format(L"git.exe merge-base %s^%d %s^%d", (LPCTSTR)this->m_CurrentVersion, parent1 + 1,
-						this->m_CurrentVersion,parent2+1);
+						(LPCTSTR)m_CurrentVersion, parent2 + 1);
 
 					if (!g_Git.Run(cmd, &output, nullptr, CP_UTF8))
 					{

@@ -436,7 +436,7 @@ int CGitDiff::Diff(const CTGitPath* pPath, const CTGitPath* pPath2, CString rev1
 	else
 	{
 		file2 = g_Git.CombinePath(pPath2);
-		title2.Format(IDS_DIFF_WCNAME, pPath2->GetGitPathString());
+		title2.Format(IDS_DIFF_WCNAME, (LPCTSTR)pPath2->GetGitPathString());
 	}
 
 	CAppUtils::DiffFlags flags;

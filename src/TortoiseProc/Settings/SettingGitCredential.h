@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2016 - TortoiseGit
+// Copyright (C) 2013-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -53,7 +53,7 @@ public:
 		int pos2 = name.ReverseFind(L'.');
 		CString url = name.Mid(pos1 + 1, pos2 - pos1 - 1);
 		CString display;
-		display.Format(L"%s:%s", (LPCTSTR)ConfigLevelToKey(entry->level), url);
+		display.Format(L"%s:%s", (LPCTSTR)ConfigLevelToKey(entry->level), (LPCTSTR)url);
 		((STRING_VECTOR*)payload)->push_back(display);
 		return 0;
 	}

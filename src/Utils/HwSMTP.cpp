@@ -1163,7 +1163,7 @@ BOOL CHwSMTP::SendBody()
 	{
 		csBody.AppendFormat(L"%s\r\n\r\n", (LPCTSTR)m_csNoMIMEText);
 		csBody.AppendFormat(L"--%s\r\n", (LPCTSTR)m_csPartBoundary);
-		csBody.AppendFormat(L"Content-Type: text/plain\r\n%sContent-Transfer-Encoding: UTF-8\r\n\r\n", m_csCharSet);
+		csBody.AppendFormat(L"Content-Type: text/plain\r\n%sContent-Transfer-Encoding: UTF-8\r\n\r\n", (LPCTSTR)m_csCharSet);
 	}
 
 	m_csBody.Replace(L"\n.\n", L"\n..\n");
@@ -1206,7 +1206,7 @@ BOOL CHwSMTP::SendOnAttach(LPCTSTR lpszFileName)
 	DWORD dwFileSize =  hwGetFileAttr(lpszFileName);
 	if ( dwFileSize > 5*1024*1024 )
 	{
-		m_csLastError.Format(L"File [%s] too big. File size is : %s", lpszFileName, FormatBytes(dwFileSize));
+		m_csLastError.Format(L"File [%s] too big. File size is : %s", lpszFileName, (LPCTSTR)FormatBytes(dwFileSize));
 		return FALSE;
 	}
 	auto pBuf = std::make_unique<char[]>(dwFileSize + 1);

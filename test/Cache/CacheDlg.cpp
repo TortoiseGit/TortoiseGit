@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012, 2014-2016 - TortoiseGit
+// Copyright (C) 2012, 2014-2017 - TortoiseGit
 // Copyright (C) 2003-2006, 2009, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -154,7 +154,7 @@ UINT CCacheDlg::TestThread()
 	ULONGLONG endticks = GetTickCount64();
 
 	CString sEndText;
-	sEndText.Format(L"%s  - %I64u ms", sEnd, endticks - startticks);
+	sEndText.Format(L"%s  - %I64u ms", (LPCTSTR)sEnd, endticks - startticks);
 
 	GetDlgItem(IDC_ENDTIME)->SetWindowText(sEndText);
 
@@ -460,7 +460,7 @@ UINT CCacheDlg::WatchTestThread()
 	ULONGLONG endticks = GetTickCount64();
 
 	CString sEndText;
-	sEndText.Format(L"%s  - %I64u ms", sEnd, endticks - startticks);
+	sEndText.Format(L"%s  - %I64u ms", (LPCTSTR)sEnd, endticks - startticks);
 
 	GetDlgItem(IDC_ENDTIME)->SetWindowText(sEndText);
 

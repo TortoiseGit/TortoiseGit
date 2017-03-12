@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2012-2013, 2015-2016 - TortoiseGit
+// Copyright (C) 2012-2013, 2015-2017 - TortoiseGit
 // Copyright (C) 2010-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -144,7 +144,7 @@ bool GitPatch::PatchFile(int nIndex, CString &datapath)
 		pr.path = m_patch.GetFilename(nIndex);
 
 	if (m_pProgDlg)
-		m_pProgDlg->FormatPathLine(2, IDS_PATCH_PATHINGFILE, pr.path);
+		m_pProgDlg->FormatPathLine(2, IDS_PATCH_PATHINGFILE, (LPCTSTR)pr.path);
 
 	//first, do a "dry run" of patching against the file in place...
 	if (!m_patch.PatchFile(m_nStrip, nIndex, datapath, sTempFile))
@@ -174,7 +174,7 @@ bool GitPatch::PatchFile(int nIndex, CString &datapath)
 		}
 
 		if (m_pProgDlg)
-			m_pProgDlg->FormatPathLine(2, IDS_PATCH_PATHINGFILE, pr.path);
+			m_pProgDlg->FormatPathLine(2, IDS_PATCH_PATHINGFILE, (LPCTSTR)pr.path);
 
 		int patchtry = m_patch.PatchFile(m_nStrip, nIndex, datapath, sTempFile, sBaseFile, true);
 

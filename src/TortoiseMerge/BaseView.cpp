@@ -5637,7 +5637,7 @@ bool CBaseView::Search(SearchDirection srchDir, bool useStart, bool flashIfNotFo
 				if (flashIfNotFound)
 				{
 					CString message;
-					message.Format(IDS_FIND_NOTFOUND, m_sFindText);
+					message.Format(IDS_FIND_NOTFOUND, (LPCTSTR)m_sFindText);
 					if (m_pFindDialog)
 						m_pFindDialog->SetStatusText(message, RGB(255, 0, 0));
 					::MessageBeep(0xFFFFFFFF);

@@ -2756,7 +2756,7 @@ static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool l
 						postCmdList.emplace_back(IDI_RESOLVE, IDS_PROGRS_CMD_RESOLVE, []
 						{
 							CString sCmd;
-							sCmd.Format(L"/command:commit /path:\"%s\"", g_Git.m_CurrentDir);
+							sCmd.Format(L"/command:commit /path:\"%s\"", (LPCTSTR)g_Git.m_CurrentDir);
 							CAppUtils::RunTortoiseGitProc(sCmd);
 						});
 					}
@@ -3154,7 +3154,7 @@ BOOL CAppUtils::SVNDCommit()
 				if (g_Git.SetConfigValue(L"svn.rmdir", gitSetting))
 				{
 					CString msg;
-					msg.Format(IDS_PROC_SAVECONFIGFAILED, L"svn.rmdir", gitSetting);
+					msg.Format(IDS_PROC_SAVECONFIGFAILED, L"svn.rmdir", (LPCTSTR)gitSetting);
 					MessageBox(nullptr, msg, L"TortoiseGit", MB_OK | MB_ICONERROR);
 				}
 			}
@@ -3322,7 +3322,7 @@ static bool DoMerge(bool noFF, bool ffOnly, bool squash, bool noCommit, const in
 			postCmdList.emplace_back(IDI_DELETE, IDS_PROC_REMOVEBRANCH, [&]
 			{
 				CString msg;
-				msg.Format(IDS_PROC_DELETEBRANCHTAG, version);
+				msg.Format(IDS_PROC_DELETEBRANCHTAG, (LPCTSTR)version);
 				if (CMessageBox::Show(nullptr, msg, L"TortoiseGit", 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 1)
 				{
 					CString cmd, out;

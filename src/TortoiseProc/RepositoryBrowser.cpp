@@ -634,7 +634,7 @@ void CRepositoryBrowser::UpdateInfoLabel()
 			int index = m_RepoList.GetNextSelectedItem(pos);
 			auto item = GetListEntry(index);
 			if (item->m_bSubmodule)
-				temp.FormatMessage(IDS_REPOBROWSE_INFOEXT, (LPCTSTR)m_RepoList.GetItemText(index, eCol_Name), item->m_hash.ToString());
+				temp.FormatMessage(IDS_REPOBROWSE_INFOEXT, (LPCTSTR)m_RepoList.GetItemText(index, eCol_Name), (LPCTSTR)item->m_hash.ToString());
 			else if (item->m_bFolder)
 				temp.FormatMessage(IDS_REPOBROWSE_INFODIR, (LPCTSTR)m_RepoList.GetItemText(index, eCol_Name));
 			else

@@ -3581,7 +3581,7 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 #endif
 			if ((m_SelectedFilters & LOGFILTER_SUBJECT) || (m_SelectedFilters & LOGFILTER_MESSAGES))
 			{
-				ATLTRACE(L"messge = \"%s\"\n", m_logEntries.GetGitRevAt(i).GetSubject());
+				ATLTRACE(L"messge = \"%s\"\n", (LPCTSTR)m_logEntries.GetGitRevAt(i).GetSubject());
 				if (std::regex_search(std::wstring((LPCTSTR)m_logEntries.GetGitRevAt(i).GetSubject()), pat, flags)&&IsEntryInDateRange(i))
 				{
 					pShownlist->SafeAdd(&m_logEntries.GetGitRevAt(i));
@@ -3590,7 +3590,7 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 			}
 			if (m_SelectedFilters & LOGFILTER_MESSAGES)
 			{
-				ATLTRACE("messge = \"%s\"\n", m_logEntries.GetGitRevAt(i).GetBody());
+				ATLTRACE("messge = \"%s\"\n", (LPCTSTR)m_logEntries.GetGitRevAt(i).GetBody());
 				if (std::regex_search(std::wstring((LPCTSTR)m_logEntries.GetGitRevAt(i).GetBody()), pat, flags)&&IsEntryInDateRange(i))
 				{
 					pShownlist->SafeAdd(&m_logEntries.GetGitRevAt(i));

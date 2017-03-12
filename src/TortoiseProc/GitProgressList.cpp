@@ -519,7 +519,7 @@ UINT CGitProgressList::ProgressThread()
 	if (!m_sTotalBytesTransferred.IsEmpty())
 	{
 		temp.Format(IDS_PROGRS_TIME, (time / 1000) / 60, (time / 1000) % 60);
-		sFinalInfo.Format(IDS_PROGRS_FINALINFO, m_sTotalBytesTransferred, (LPCTSTR)temp);
+		sFinalInfo.Format(IDS_PROGRS_FINALINFO, (LPCTSTR)m_sTotalBytesTransferred, (LPCTSTR)temp);
 		if (m_pProgressLabelCtrl)
 			m_pProgressLabelCtrl->SetWindowText(sFinalInfo);
 	}

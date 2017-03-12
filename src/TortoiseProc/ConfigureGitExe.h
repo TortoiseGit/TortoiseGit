@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -178,7 +178,7 @@ protected:
 			else if (!CStringUtils::StartsWith(out.Trim(), L"git version "))
 			{
 				CString tmp;
-				tmp.Format(IDS_ERR_GITNOVALIDOUTPUT, out.Trim());
+				tmp.Format(IDS_ERR_GITNOVALIDOUTPUT, (LPCTSTR)out.Trim());
 				tmp.AppendChar(L'\n');
 				tmp.AppendChar(L'\n');
 				tmp.Append(checkhelpHint);

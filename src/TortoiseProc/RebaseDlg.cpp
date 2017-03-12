@@ -1220,7 +1220,7 @@ void CRebaseDlg::OnBnClickedContinue()
 		}
 		cmd.Format(L"git.exe reset --hard %s --", (LPCTSTR)g_Git.FixBranchName(this->m_UpstreamCtrl.GetString()));
 		CString log;
-		log.Format(IDS_PROC_REBASE_FFTO, m_UpstreamCtrl.GetString());
+		log.Format(IDS_PROC_REBASE_FFTO, (LPCTSTR)m_UpstreamCtrl.GetString());
 		this->AddLogString(log);
 
 		AddLogString(cmd);

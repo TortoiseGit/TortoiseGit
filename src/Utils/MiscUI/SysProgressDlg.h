@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2009, 2011-2012, 2016-2017 - TortoiseGit
 // Copyright (C) 2003-2011, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -63,9 +64,9 @@ public:
 	* the system to measure the space available for the text, and do path compaction properly
 	*/
 	void FormatPathLine ( DWORD dwLine, UINT idFormatText, ...);
-	void FormatPathLine ( DWORD dwLine, CString FormatText, ...);
+	void FormatPathLine(DWORD dwLine, LPCTSTR FormatText, ...);
 	void FormatNonPathLine ( DWORD dwLine, UINT idFormatText, ...);
-	void FormatNonPathLine(DWORD dwLine, CString FormatText, ...);
+	void FormatNonPathLine(DWORD dwLine, LPCTSTR FormatText, ...);
 #endif
 	/**
 	 * Sets a message to be displayed if the user clicks the cancel button.

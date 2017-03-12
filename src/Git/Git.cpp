@@ -2087,13 +2087,13 @@ int CGit::GetBranchDescriptions(MAP_STRING_STRING& map)
 static void SetLibGit2SearchPath(int level, const CString &value)
 {
 	CStringA valueA = CUnicodeUtils::GetMulti(value, CP_UTF8);
-	git_libgit2_opts(GIT_OPT_SET_SEARCH_PATH, level, valueA);
+	git_libgit2_opts(GIT_OPT_SET_SEARCH_PATH, level, (LPCSTR)valueA);
 }
 
 static void SetLibGit2TemplatePath(const CString &value)
 {
 	CStringA valueA = CUnicodeUtils::GetMulti(value, CP_UTF8);
-	git_libgit2_opts(GIT_OPT_SET_TEMPLATE_PATH, valueA);
+	git_libgit2_opts(GIT_OPT_SET_TEMPLATE_PATH, (LPCSTR)valueA);
 }
 
 int CGit::FindAndSetGitExePath(BOOL bFallback)

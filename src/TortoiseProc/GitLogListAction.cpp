@@ -79,7 +79,7 @@ int CGitLogList::RevertSelectedCommits(int parent)
 
 		if (progress.IsVisible())
 		{
-			progress.FormatNonPathLine(1, IDS_PROC_REVERTCOMMIT, r1->m_CommitHash.ToString());
+			progress.FormatNonPathLine(1, IDS_PROC_REVERTCOMMIT, (LPCTSTR)r1->m_CommitHash.ToString());
 			progress.FormatNonPathLine(2, L"%s", (LPCTSTR)r1->GetSubject());
 			progress.SetProgress(i, this->GetSelectedCount());
 		}
@@ -128,7 +128,7 @@ int CGitLogList::CherryPickFrom(CString from, CString to)
 	{
 		if (progress.IsVisible())
 		{
-			progress.FormatNonPathLine(1, IDS_PROC_PICK, logs.GetGitRevAt(i).m_CommitHash.ToString());
+			progress.FormatNonPathLine(1, IDS_PROC_PICK, (LPCTSTR)logs.GetGitRevAt(i).m_CommitHash.ToString());
 			progress.FormatNonPathLine(2, L"%s", (LPCTSTR)logs.GetGitRevAt(i).GetSubject());
 			progress.SetProgress64(logs.size() - i, logs.size());
 		}

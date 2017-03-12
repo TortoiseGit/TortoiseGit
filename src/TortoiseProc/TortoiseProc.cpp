@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 // Copyright (C) 2003-2008, 2012-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -126,7 +126,7 @@ BOOL CTortoiseProcApp::InitInstance()
 			HINSTANCE hInst = LoadLibrary(langDll);
 			if (hInst)
 			{
-				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Load Language DLL %s\n", langDll);
+				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Load Language DLL %s\n", (LPCTSTR)langDll);
 				AfxSetResourceHandle(hInst);
 				break;
 			}
