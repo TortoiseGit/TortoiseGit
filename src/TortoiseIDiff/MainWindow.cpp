@@ -1,6 +1,6 @@
 // TortoiseIDiff - an image diff viewer in TortoiseSVN
 
-// Copyright (C) 2015-2016 - TortoiseGit
+// Copyright (C) 2015-2017 - TortoiseGit
 // Copyright (C) 2006-2013, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -771,10 +771,10 @@ LRESULT CMainWindow::DoCommand(int id, LPARAM lParam)
                 break;
             }
 
-            CStringA subpath = CUnicodeUtils::GetUTF8(selectionResult.c_str()).Mid((int)strlen(projectRoot->ptr) - 5); /* 5 = len(".git/") */
+            CStringA subpath = CUnicodeUtils::GetUTF8(selectionResult.c_str()).Mid((int)strlen(git_repository_workdir(repository)));
 
             CAutoIndex index;
-            if (git_repository_index(index.GetPointer(), repository) || git_index_get_bypath(index, CUnicodeUtils::GetUTF8(subpath), 1) == nullptr)
+            if (git_repository_index(index.GetPointer(), repository) || git_index_get_bypath(index, subpath, 1) == nullptr)
             {
                 PostQuitMessage(resolveWith);
                 break;

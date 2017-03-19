@@ -5,7 +5,7 @@
 			<Settings>
 				<TestDiscoveryRegex>Tests\.exe</TestDiscoveryRegex>
 				<WorkingDir>$(ExecutableDir)</WorkingDir>
-				<TraitsRegexesBefore>(^libgit2\.|\[0\]$)///git,LIBGIT2_ALL//||//(^libgit2\.|\[1\]$)///git,LIBGIT2//||//(^libgit\.|\[2\]$)///git,LIBGIT//||//(^CGit\.Run|\[3\]$)///git,GIT//||//(WithEmptyRepo|WithEmptyBareRepo)///Repo,Empty//||//WithTestRepo///Repo,Test//||//WithSubmodule?Repo///Repo,Submodule//||//With.+(BareRepo|Repo(sitory)?Bare)///RepoType,Bare//||//With.*(?&lt;!Bare)Repo(?!Bare)///RepoType,Working Tree//||//^CGit\.GetRepository///git,LIBGIT2_ALL//||//^CGit\.GetRepository///git,LIBGIT2//||//^CGit\.GetRepository///git,GIT//||//^CTGitPath\.FillUnRev///git,GIT//||//^CTGitPath\.FillBasedOnIndexFlags///git,LIBGIT2_ALL//||//^CTGitPath\.FillBasedOnIndexFlags///git,LIBGIT2</TraitsRegexesBefore>
+				<TraitsRegexesBefore>(^libgit2\.|\[0\]$)///git,LIBGIT2_ALL//||//(^libgit2\.|\[1\]$)///git,LIBGIT2//||//(^libgit\.|\[2\]$)///git,LIBGIT//||//(^CGit\.Run|\[3\]$)///git,GIT//||//(WithEmptyRepo|WithEmptyBareRepo)///Repo,Empty//||//(WithTestRepo|WithMultiLinkedTest(WithSubmodule)?Repo)///Repo,Test//||//WithSubmodule?Repo///Repo,Submodule//||//With.+(BareRepo|Repo(sitory)?Bare)///RepoType,Bare//||//With.*(?&lt;!Bare)Repo(?!Bare)///RepoType,Working Tree//||//WithMultiLinked///RepoType,Linked WorkTree//||//^CGit\.GetRepository///git,LIBGIT2_ALL//||//^CGit\.GetRepository///git,LIBGIT2//||//^CGit\.GetRepository///git,GIT//||//^CTGitPath\.FillUnRev///git,GIT//||//^CTGitPath\.FillBasedOnIndexFlags///git,LIBGIT2_ALL//||//^CTGitPath\.FillBasedOnIndexFlags///git,LIBGIT2</TraitsRegexesBefore>
 				<ParseSymbolInformation>true</ParseSymbolInformation>
 			</Settings>
 		</SolutionSettings>

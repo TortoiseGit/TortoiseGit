@@ -52,6 +52,7 @@
     <ClCompile Include="..\Utils\MiscUI\Picture.cpp" />
     <ClCompile Include="..\Utils\PathUtils.cpp" />
     <ClCompile Include="..\Utils\Registry.cpp" />
+    <ClCompile Include="..\Utils\StringUtils.cpp" />
     <ClCompile Include="..\Utils\TaskbarUUID.cpp" />
     <ClCompile Include="..\Utils\UnicodeUtils.cpp" />
     <ClCompile Include="AboutDlg.cpp" />
@@ -74,6 +75,7 @@
     <ClInclude Include="..\Utils\MiscUI\ResString.h" />
     <ClInclude Include="..\Utils\PathUtils.h" />
     <ClInclude Include="..\Utils\registry.h" />
+    <ClInclude Include="..\Utils\StringUtils.h" />
     <ClInclude Include="..\Utils\TaskbarUUID.h" />
     <ClInclude Include="..\Utils\UnicodeUtils.h" />
     <ClInclude Include="AboutDlg.h" />

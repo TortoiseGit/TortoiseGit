@@ -751,7 +751,7 @@ STDMETHODIMP CShellExt::AddPages_Wrap(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM l
 	for (const auto& file_ : files_)
 	{
 		CString currentProjectTopDir;
-		if (!CTGitPath(file_.c_str()).HasAdminDir(&currentProjectTopDir) || !CTGitPath::ArePathStringsEqual(projectTopDir, currentProjectTopDir))
+		if (!CTGitPath(file_.c_str()).HasAdminDir(&currentProjectTopDir) || !CPathUtils::ArePathStringsEqual(projectTopDir, currentProjectTopDir))
 			return S_OK;
 	}
 

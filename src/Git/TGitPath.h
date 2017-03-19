@@ -276,14 +276,6 @@ private:
 
 public:
 	/**
-	 * Checks if two path strings are equal. No conversion of slashes is done!
-	 * \remark for slash-independent comparison, use IsEquivalentTo()
-	 */
-	static bool ArePathStringsEqual(const CString& sP1, const CString& sP2);
-	static bool ArePathStringsEqualWithCase(const CString& sP1, const CString& sP2);
-
-
-	/**
 	 * Marks a path as a file by unsetting the cached IsDirectory status
 	 * Used while diffing commits where a submodule changed to a file
 	 */

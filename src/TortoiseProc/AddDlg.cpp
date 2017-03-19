@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -21,6 +21,7 @@
 #include "TortoiseProc.h"
 #include "MessageBox.h"
 #include "AddDlg.h"
+#include "PathUtils.h"
 #include "Git.h"
 #include "AppUtils.h"
 
@@ -210,7 +211,7 @@ LRESULT CAddDlg::OnFileDropped(WPARAM, LPARAM lParam)
 
 	// check whether the dropped file belongs to the very same repository
 	CString projectDir;
-	if (!path.HasAdminDir(&projectDir) || !CTGitPath::ArePathStringsEqual(g_Git.m_CurrentDir, projectDir))
+	if (!path.HasAdminDir(&projectDir) || !CPathUtils::ArePathStringsEqual(g_Git.m_CurrentDir, projectDir))
 		return 0;
 
 	if (!m_addListCtrl.HasPath(path))

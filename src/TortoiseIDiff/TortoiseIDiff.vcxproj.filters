@@ -69,6 +69,9 @@
     <ClCompile Include="..\Utils\UnicodeUtils.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\Utils\StringUtils.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AboutDlg.h">
@@ -126,6 +129,9 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\UnicodeUtils.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\StringUtils.h">
       <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
