@@ -774,7 +774,7 @@ LRESULT CMainWindow::DoCommand(int id, LPARAM lParam)
             CStringA subpath = CUnicodeUtils::GetUTF8(selectionResult.c_str()).Mid((int)strlen(git_repository_workdir(repository)));
 
             CAutoIndex index;
-            if (git_repository_index(index.GetPointer(), repository) || git_index_get_bypath(index, subpath, 1) == nullptr)
+            if (git_repository_index(index.GetPointer(), repository) || (git_index_get_bypath(index, subpath, 1) == nullptr && git_index_get_bypath(index, subpath, 2) == nullptr))
             {
                 PostQuitMessage(resolveWith);
                 break;

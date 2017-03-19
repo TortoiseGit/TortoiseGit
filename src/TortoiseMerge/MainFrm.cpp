@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 // Copyright (C) 2004-2015 - TortoiseSVN
 // Copyright (C) 2012-2014 - Sven Strickroth <email@cs-ware.de>
 
@@ -1652,8 +1652,7 @@ bool CMainFrame::FileSave(bool bCheckResolved /*=true*/)
 					break;
 
 				CStringA path = CUnicodeUtils::GetMulti(subpath, CP_UTF8);
-				const git_index_entry * entry = git_index_get_bypath(index, path, 1);
-				hasConflictInIndex = entry != nullptr;
+				hasConflictInIndex = git_index_get_bypath(index, path, 1) || git_index_get_bypath(index, path, 2);
 			} while(0);
 
 			if (hasConflictInIndex)
