@@ -20,6 +20,7 @@ Released: unreleased
  * Fixed issue #2947: Reinitializing a repository using "git init --separate-git-dir" turns all overlay icons to added
  * Allow snippets to include new lines (using "\n" notation)
  * Spell checker wrongly marked styled words as misspelled (e.g. _example_)
+ * Fixed issue #2960: libgit2 fails to resolve absolute symlinks
 
 = Release 2.4.0 =
 Released: 2017-01-31
