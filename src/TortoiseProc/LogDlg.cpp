@@ -1314,7 +1314,11 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		int cnt = 0;
 		popup.AppendMenuIcon(++cnt, IDS_MENUREFBROWSE);
 		popup.SetDefaultItem(cnt);
-		popup.AppendMenuIcon(++cnt, L"HEAD");
+		CString head = L"HEAD";
+		CString curBranch = g_Git.GetCurrentBranch();
+		if (!curBranch.IsEmpty())
+			head.AppendFormat(L" -> \"%s\"", (LPCTSTR)curBranch);
+		popup.AppendMenuIcon(++cnt, head);
 		CGitHash fetchHead;
 		g_Git.GetHash(fetchHead, g_Git.FixBranchName(L"FETCH_HEAD"));
 		popup.AppendMenuIcon(++cnt, L"FETCH_HEAD");
