@@ -848,6 +848,8 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 	int Y = 0;
 	TCHAR buf[MAX_PATH] = {0};
 	RECT rc;
+	CGitHash oldHash;
+	CString oldFile;
 	//::GetClientRect(this->m_hWnd, &rc);
 	for (int i = line; i < (line + linesonscreen); ++i)
 	{
@@ -882,42 +884,51 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 			//	::SetTextColor(hDC, m_texthighlightcolor);
 			//}
 
-			CString shortHashStr;
-			shortHashStr = hash.ToString().Left(g_Git.GetShortHASHLength());
+			CString file = m_data.GetFilename(i);
+			if (oldHash != hash || (m_bShowFilename && oldFile != file) || m_bShowOriginalLineNumber)
+			{
+				rc.top = (LONG)Y;
+				rc.left = LOCATOR_WIDTH;
+				rc.bottom = (LONG)(Y + height);
+				rc.right = rc.left + m_blamewidth;
+				if (oldHash != hash)
+				{
+					CString shortHashStr = hash.ToString().Left(g_Git.GetShortHASHLength());
+					::ExtTextOut(hDC, LOCATOR_WIDTH, Y, ETO_CLIPPED, &rc, shortHashStr, shortHashStr.GetLength(), 0);
+				}
+				int Left = m_revwidth;
 
-			//swprintf_s(buf, L"%8ld       ", revs[i]);
-			rc.top = (LONG)Y;
-			rc.left=LOCATOR_WIDTH;
-			rc.bottom = (LONG)(Y + height);
-			rc.right = rc.left + m_blamewidth;
-			::ExtTextOut(hDC, LOCATOR_WIDTH, Y, ETO_CLIPPED, &rc, shortHashStr, shortHashStr.GetLength(), 0);
-			int Left = m_revwidth;
-
-			if (m_bShowAuthor)
-			{
-				rc.right = rc.left + Left + m_authorwidth;
-				::ExtTextOut(hDC, Left, Y, ETO_CLIPPED, &rc, m_data.GetAuthor(i), m_data.GetAuthor(i).GetLength(), 0);
-				Left += m_authorwidth;
-			}
-			if (m_bShowDate)
-			{
-				rc.right = rc.left + Left + m_datewidth;
-				::ExtTextOut(hDC, Left, Y, ETO_CLIPPED, &rc, m_data.GetDate(i), m_data.GetDate(i).GetLength(), 0);
-				Left += m_datewidth;
-			}
-			if (m_bShowFilename)
-			{
-				rc.right = rc.left + Left + m_filenameWidth;
-				::ExtTextOut(hDC, Left, (int)Y, ETO_CLIPPED, &rc, m_data.GetFilename(i), m_data.GetFilename(i).GetLength(), 0);
-				Left += m_filenameWidth;
-			}
-			if (m_bShowOriginalLineNumber)
-			{
-				rc.right = rc.left + Left + m_originalLineNumberWidth;
-				CString str;
-				str.Format(L"%5d", m_data.GetOriginalLineNumber(i));
-				::ExtTextOut(hDC, Left, (int)Y, ETO_CLIPPED, &rc, str, str.GetLength(), 0);
-				Left += m_originalLineNumberWidth;
+				if (m_bShowAuthor)
+				{
+					rc.right = rc.left + Left + m_authorwidth;
+					if (oldHash != hash)
+						::ExtTextOut(hDC, Left, Y, ETO_CLIPPED, &rc, m_data.GetAuthor(i), m_data.GetAuthor(i).GetLength(), 0);
+					Left += m_authorwidth;
+				}
+				if (m_bShowDate)
+				{
+					rc.right = rc.left + Left + m_datewidth;
+					if (oldHash != hash)
+						::ExtTextOut(hDC, Left, Y, ETO_CLIPPED, &rc, m_data.GetDate(i), m_data.GetDate(i).GetLength(), 0);
+					Left += m_datewidth;
+				}
+				if (m_bShowFilename)
+				{
+					rc.right = rc.left + Left + m_filenameWidth;
+					if (oldFile != file)
+						::ExtTextOut(hDC, Left, Y, ETO_CLIPPED, &rc, m_data.GetFilename(i), m_data.GetFilename(i).GetLength(), 0);
+					Left += m_filenameWidth;
+				}
+				if (m_bShowOriginalLineNumber)
+				{
+					rc.right = rc.left + Left + m_originalLineNumberWidth;
+					CString str;
+					str.Format(L"%5d", m_data.GetOriginalLineNumber(i));
+					::ExtTextOut(hDC, Left, Y, ETO_CLIPPED, &rc, str, str.GetLength(), 0);
+					Left += m_originalLineNumberWidth;
+				}
+				oldHash = hash;
+				oldFile = file;
 			}
 			if ((i==m_SelectedLine)&&(m_pFindDialog))
 			{
