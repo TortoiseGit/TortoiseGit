@@ -457,6 +457,9 @@
     <ClCompile Include="..\scintilla\lexers\LexEDIFACT.cxx">
       <Filter>lexers</Filter>
     </ClCompile>
+    <ClCompile Include="..\scintilla\lexers\LexIndent.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\scintilla\src\AutoComplete.h">

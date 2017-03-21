@@ -48,7 +48,7 @@
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>imm32.lib;comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>imm32.lib;comctl32.lib;msimg32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -60,6 +60,7 @@
     <ClCompile Include="..\scintilla\lexers\LexEDIFACT.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexErrorList.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexHex.cxx" />
+    <ClCompile Include="..\scintilla\lexers\LexIndent.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexJSON.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexKVIrc.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexLaTeX.cxx" />

@@ -234,7 +234,7 @@ private:
 	PerLine *perLineData[ldSize];
 
 	bool matchesValid;
-	RegexSearchBase *regex;
+	std::unique_ptr<RegexSearchBase> regex;
 
 public:
 

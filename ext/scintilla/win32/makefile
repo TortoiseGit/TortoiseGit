@@ -33,7 +33,7 @@ vpath %.h ../src ../include ../lexlib
 vpath %.cxx ../src ../lexlib ../lexers
 
 LDFLAGS=-shared -static -mwindows $(LDMINGW)
-LIBS=-lgdi32 -luser32 -limm32 -lole32 -luuid -loleaut32 $(LIBSMINGW)
+LIBS=-lgdi32 -luser32 -limm32 -lole32 -luuid -loleaut32 -lmsimg32 $(LIBSMINGW)
 # Add -MMD to get dependencies
 INCLUDEDIRS=-I ../include -I ../src -I../lexlib
 

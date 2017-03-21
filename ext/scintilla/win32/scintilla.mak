@@ -31,7 +31,7 @@ CXXNDEBUG=-O1 -MT -DNDEBUG -GL
 NAME=-Fo
 LDFLAGS=-OPT:REF -LTCG -IGNORE:4197 -DEBUG $(XP_LINK)
 LDDEBUG=
-LIBS=KERNEL32.lib USER32.lib GDI32.lib IMM32.lib OLE32.LIB OLEAUT32.LIB
+LIBS=KERNEL32.lib USER32.lib GDI32.lib IMM32.lib OLE32.lib OLEAUT32.lib MSIMG32.lib
 NOLOGO=-nologo
 
 !IFDEF QUIET
@@ -149,6 +149,7 @@ LEXOBJS=\
 	$(DIR_O)\LexHaskell.obj \
 	$(DIR_O)\LexHex.obj \
 	$(DIR_O)\LexHTML.obj \
+	$(DIR_O)\LexIndent.obj \
 	$(DIR_O)\LexInno.obj \
 	$(DIR_O)\LexJSON.obj \
 	$(DIR_O)\LexKix.obj \
@@ -585,6 +586,8 @@ $(DIR_O)\LexHaskell.obj: ..\lexers\LexHaskell.cxx $(LEX_HEADERS)
 $(DIR_O)\LexHex.obj: ..\lexers\LexHex.cxx $(LEX_HEADERS)
 
 $(DIR_O)\LexHTML.obj: ..\lexers\LexHTML.cxx $(LEX_HEADERS)
+
+$(DIR_O)\LexIndent.obj: ..\lexers\LexIndent.cxx $(LEX_HEADERS)
 
 $(DIR_O)\LexInno.obj: ..\lexers\LexInno.cxx $(LEX_HEADERS)
 
