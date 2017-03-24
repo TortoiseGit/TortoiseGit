@@ -28,6 +28,8 @@
 
 	<Property Id="ALLUSERS" Secure="yes">1</Property>
 
+    <Property Id="COUNTRYID" Value="$(var.COUNTRYID)" />
+
     <?if $(var.Platform) = "x86" ?>
         <Condition Message="You are attempting to run the 32-bit installer on a 64-bit version of Windows. Please install the 64-bit version of the TortoiseGit language pack instead.">NOT Msix64</Condition>
     <?endif ?>
@@ -36,6 +38,9 @@
       <RegistrySearch Id="TGitInstallationDir" Root="HKLM" Key="Software\[Manufacturer]" Name="Directory" Type="raw" Win64="$(var.Win64YesNo)"/>
     </Property>
     <Condition Message="TortoiseGit is not installed. Please install TortoiseGit before installing the language pack">INSTALLDIR</Condition>
+
+    <CustomAction Id="SetLanguage" BinaryKey="CustomActionsDLL" DllEntry="SetLanguage" />
+    <Binary Id="CustomActionsDLL" SourceFile="..\bin\$(var.ReleasePath)\bin\CustomActions.dll" />
 
     <Directory Id='TARGETDIR' Name='SourceDir'>
       <Directory Id='D__ProgramFilesFolder' ShortName="PFiles" Name="Program Files">
@@ -81,7 +86,10 @@
     <WixVariable Id="WixUIBannerBmp" Value="Banner.jpg" />
     <WixVariable Id="WixUIDialogBmp" Value="Dialog.jpg" />
 
-
+    <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Configure TortoiseGit to use this language" />
+    <UI>
+      <Publish Dialog="MyExitDialog" Control="Finish" Event="DoAction" Value="SetLanguage">WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed</Publish>
+    </UI>
 
     <InstallExecuteSequence>
       <!-- These 'Suppress' statements prevent the installer from getting

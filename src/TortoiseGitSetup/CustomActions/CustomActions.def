@@ -6,4 +6,5 @@ LIBRARY    "CustomActions"
 EXPORTS
     TerminateCache
     OpenDonatePage
+    SetLanguage
 	RestartExplorer

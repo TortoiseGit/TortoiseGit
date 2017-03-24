@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016 - TortoiseGit
+// Copyright (C) 2016-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -75,8 +75,6 @@ BOOL CFirstStartWizardLanguage::OnInitDialog()
 	AppendStringResource(hinttext, IDS_FIRSTSTART_LANGUAGEHINT2);
 	AppendStringResource(hinttext, IDS_FIRSTSTART_LANGUAGEHINT3);
 	GetDlgItem(IDC_FIRSTSTART_HINT)->SetWindowText(hinttext);
-
-	m_dwLanguage = m_regLanguage;
 
 	GetDlgItem(IDC_LINK)->SetWindowText(DOWNLOAD_URL);
 	m_link.SetURL(DOWNLOAD_URL);
@@ -179,6 +177,8 @@ void CFirstStartWizardLanguage::OnBnClickedRefresh()
 		}
 	}
 
+	m_regLanguage.read();
+	m_dwLanguage = m_regLanguage;
 	for (int i = 0; i < m_LanguageCombo.GetCount(); ++i)
 	{
 		if (m_LanguageCombo.GetItemData(i) == m_dwLanguage)

@@ -34,6 +34,7 @@
     <Link>
       <ModuleDefinitionFile>CustomActions.def</ModuleDefinitionFile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
+      <AdditionalDependencies>Msi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

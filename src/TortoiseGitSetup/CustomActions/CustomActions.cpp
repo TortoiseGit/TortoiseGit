@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011, 2012, 2015-2016 - TortoiseGit
-// Copyright (C) 2003-2008, 2012 - TortoiseSVN
+// Copyright (C) 2011, 2012, 2015-2017 - TortoiseGit
+// Copyright (C) 2003-2008, 2012, 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -67,6 +67,17 @@ UINT __stdcall TerminateCache(MSIHANDLE /*hModule*/)
 UINT __stdcall OpenDonatePage(MSIHANDLE /*hModule*/)
 {
 	ShellExecute(nullptr, L"open", L"https://tortoisegit.org/donate", nullptr, nullptr, SW_SHOW);
+	return ERROR_SUCCESS;
+}
+
+UINT __stdcall SetLanguage(MSIHANDLE hModule)
+{
+	wchar_t codebuf[30] = { 0 };
+	DWORD count = _countof(codebuf);
+	if (MsiGetProperty(hModule, L"COUNTRYID", codebuf, &count))
+		return ERROR_SUCCESS;
+	DWORD lang = _wtol(codebuf);
+	SHRegSetUSValue(L"Software\\TortoiseGit", L"LanguageID", REG_DWORD, &lang, sizeof(DWORD), SHREGSET_FORCE_HKCU);
 	return ERROR_SUCCESS;
 }
 
