@@ -1,4 +1,4 @@
-From fa057694bb0f8fe9645acbccc8bfe7986d8520df Mon Sep 17 00:00:00 2001
+From de73394c27247b0e769c28ef48729ba138866675 Mon Sep 17 00:00:00 2001
 From: Sven Strickroth <email@cs-ware.de>
 Date: Sat, 14 Jan 2017 18:39:32 +0100
 Subject: [PATCH] Allow to configure default file share mode for opening files
@@ -30,19 +30,19 @@ index 0ae75e156..080d546fa 100644
    `GIT_OPT_GET_USER_AGENT` option with `git_libgit2_opts()`.
    It is the counterpart to `GIT_OPT_SET_USER_AGENT`.
 diff --git a/include/git2/common.h b/include/git2/common.h
-index f13dfd509..89e567a74 100644
+index c909f86ca..687557910 100644
 --- a/include/git2/common.h
 +++ b/include/git2/common.h
-@@ -179,6 +179,8 @@ typedef enum {
- 	GIT_OPT_SET_SSL_CIPHERS,
+@@ -180,6 +180,8 @@ typedef enum {
  	GIT_OPT_GET_USER_AGENT,
  	GIT_OPT_ENABLE_OFS_DELTA,
+ 	GIT_OPT_ENABLE_SYNCHRONOUS_OBJECT_CREATION,
 +	GIT_OPT_GET_WINDOWS_SHAREMODE,
 +	GIT_OPT_SET_WINDOWS_SHAREMODE,
  } git_libgit2_opt_t;
  
  /**
-@@ -283,6 +285,16 @@ typedef enum {
+@@ -284,6 +286,16 @@ typedef enum {
   *		> - `user_agent` is the value that will be delivered as the
   *		>   User-Agent header on HTTP requests.
   *
@@ -60,11 +60,11 @@ index f13dfd509..89e567a74 100644
   *
   *		> Enable strict input validation when creating new objects
 diff --git a/src/settings.c b/src/settings.c
-index 21585672c..5abc17fe4 100644
+index 24e549ec1..3c9bf396c 100644
 --- a/src/settings.c
 +++ b/src/settings.c
-@@ -227,6 +227,24 @@ int git_libgit2_opts(int key, ...)
- 		git_smart__ofs_delta_enabled = (va_arg(ap, int) != 0);
+@@ -231,6 +231,24 @@ int git_libgit2_opts(int key, ...)
+ 		git_object__synchronous_writing = (va_arg(ap, int) != 0);
  		break;
  
 +	case GIT_OPT_GET_WINDOWS_SHAREMODE:
@@ -102,7 +102,7 @@ index 73705fb2b..89d543b73 100644
  
  #define p_lseek(f,n,w) _lseeki64(f, n, w)
 diff --git a/src/win32/posix_w32.c b/src/win32/posix_w32.c
-index a20ae9b2f..3f4fa7d25 100644
+index 0555c1218..3bdc73032 100644
 --- a/src/win32/posix_w32.c
 +++ b/src/win32/posix_w32.c
 @@ -18,6 +18,8 @@
@@ -114,7 +114,7 @@ index a20ae9b2f..3f4fa7d25 100644
  #ifndef FILE_NAME_NORMALIZED
  # define FILE_NAME_NORMALIZED 0
  #endif
-@@ -356,7 +358,7 @@ int p_open(const char *path, int flags, ...)
+@@ -358,7 +360,7 @@ int p_open(const char *path, int flags, ...)
  		return  -1;
  	}
  
@@ -124,5 +124,5 @@ index a20ae9b2f..3f4fa7d25 100644
  	{
  		_dosmaperr(GetLastError());
 -- 
-2.11.0.windows.3
+2.12.0.windows.1
 
