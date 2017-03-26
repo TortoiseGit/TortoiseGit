@@ -691,12 +691,12 @@ bool CCheckForUpdatesDlg::Download(CString filename)
 			DeleteFile(destFilename + SIGNATURE_FILE_ENDING);
 			if (!MoveFile(tempfile, destFilename))
 			{
-				m_sErrors.AppendFormat(L"Could not move \"%s\" to \"%s\".\r\n", (LPCTSTR)filename, (LPCTSTR)tempfile, (LPCTSTR)destFilename);
+				m_sErrors.AppendFormat(L"Could not move \"%s\" to \"%s\".\r\n", (LPCTSTR)tempfile, (LPCTSTR)destFilename);
 				return false;
 			}
 			if (!MoveFile(signatureTempfile, destFilename + SIGNATURE_FILE_ENDING))
 			{
-				m_sErrors.AppendFormat(L"Could not move \"%s\" to \"%s\".\r\n", (LPCTSTR)filename, (LPCTSTR)tempfile, (LPCTSTR)destFilename);
+				m_sErrors.AppendFormat(L"Could not move \"%s\" to \"%s\".\r\n", (LPCTSTR)signatureTempfile, (LPCTSTR)(destFilename + SIGNATURE_FILE_ENDING));
 				return false;
 			}
 			return true;
