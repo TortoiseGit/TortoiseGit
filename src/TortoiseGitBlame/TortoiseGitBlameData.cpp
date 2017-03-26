@@ -97,7 +97,6 @@ void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & Ha
 
 	CGitHash hash;
 	int originalLineNumber = 0;
-	int finalLineNumber = 0;
 	int numberOfSubsequentLines = 0;
 	CString filename;
 
@@ -137,7 +136,6 @@ void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & Ha
 							size_t finalLineNumberEnd = (numberOfSubsequentLines == 0) ? data.find(' ', finalLineNumberBegin) : lineEnd;
 							if (finalLineNumberEnd != BYTE_VECTOR::npos)
 							{
-								finalLineNumber = atoi(CStringA((LPCSTR)&data[finalLineNumberBegin], (int)(finalLineNumberEnd - finalLineNumberBegin)));
 								if (numberOfSubsequentLines == 0)
 								{
 									size_t numberOfSubsequentLinesBegin = finalLineNumberEnd + 1;
@@ -148,14 +146,12 @@ void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & Ha
 							else
 							{
 								// parse error
-								finalLineNumber = 0;
 								numberOfSubsequentLines = 0;
 							}
 						}
 						else
 						{
 							// parse error
-							finalLineNumber = 0;
 							numberOfSubsequentLines = 0;
 						}
 
@@ -168,7 +164,6 @@ void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & Ha
 					else
 					{
 						// parse error
-						finalLineNumber = 0;
 						numberOfSubsequentLines = 0;
 					}
 				}

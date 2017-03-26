@@ -848,11 +848,9 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 	int Y = 0;
 	TCHAR buf[MAX_PATH] = {0};
 	RECT rc;
-	BOOL sel = FALSE;
 	//::GetClientRect(this->m_hWnd, &rc);
 	for (int i = line; i < (line + linesonscreen); ++i)
 	{
-		sel = FALSE;
 		if (i < m_data.GetNumberOfLines())
 		{
 			 CGitHash hash(m_data.GetHash(i));
@@ -870,7 +868,6 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 				{
 					::SetBkColor(hDC, m_selectedauthorcolor);
 					::SetTextColor(hDC, m_texthighlightcolor);
-					sel = TRUE;
 				}
 			}
 

@@ -702,7 +702,6 @@ bool CShellExt::WriteClipboardPathsToTempFile(std::wstring& tempfile)
 	if (!OpenClipboard(nullptr))
 		return false;
 
-	std::wstring sClipboardText;
 	HGLOBAL hglb = GetClipboardData(CF_HDROP);
 	SCOPE_EXIT
 	{

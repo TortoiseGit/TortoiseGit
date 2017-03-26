@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016 - TortoiseGit
+// Copyright (C) 2016-2017 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -210,7 +210,6 @@ void CSetHooks::OnBnClickedHookcopybutton()
 		dlg.cmd.bWait = (m_cHookList.GetItemText(index, 3).Compare(L"true") == 0);
 		dlg.cmd.bShow = (m_cHookList.GetItemText(index, 4).Compare(L"show") == 0);
 		dlg.cmd.bEnabled = m_cHookList.GetCheck(index) == BST_CHECKED;
-		hookkey key = dlg.key;
 		if (dlg.DoModal() == IDOK)
 		{
 			CHooks::Instance().Add(dlg.key.htype, dlg.key.path, dlg.cmd.commandline, dlg.cmd.bWait, dlg.cmd.bShow, dlg.cmd.bEnabled);

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -134,7 +134,6 @@ int GitRevLoglist::SafeGetSimpleList(CGit* git)
 		return -1;
 	}
 
-	int i = 0;
 	git_get_commit_first_parent(&commit, &list);
 	bool isRoot = git_commit_is_root(&commit) == 0;
 	while (git_get_commit_next_parent(&list, parent) == 0 || isRoot)
@@ -174,7 +173,6 @@ int GitRevLoglist::SafeGetSimpleList(CGit* git)
 		}
 
 		git_diff_flush(git->GetGitSimpleListDiff());
-		++i;
 	}
 
 	std::sort(m_SimpleFileList.begin(), m_SimpleFileList.end());
