@@ -1484,9 +1484,11 @@ void CCommitDlg::OnCancel()
 	tmp.Append(CString(MAKEINTRESOURCE(IDS_HINTLASTMESSAGES)));
 	CString dontaskagain;
 	dontaskagain.LoadString(IDS_MSGBOX_DONOTSHOWAGAIN);
-	if ((hasChangedMessage || m_ListCtrl.GetItemCount() > 0) && CMessageBox::ShowCheck(GetSafeHwnd(), tmp, L"TortoiseGit", MB_ICONQUESTION | MB_DEFBUTTON2 | MB_YESNO, L"CommitAskBeforeCancel", dontaskagain) == IDNO)
+	BOOL dontaskagainchecked = FALSE;
+	if ((hasChangedMessage || m_ListCtrl.GetItemCount() > 0) && CMessageBox::ShowCheck(GetSafeHwnd(), tmp, L"TortoiseGit", MB_ICONQUESTION | MB_DEFBUTTON2 | MB_YESNO, L"CommitAskBeforeCancel", dontaskagain, &dontaskagainchecked) == IDNO)
 	{
-		CMessageBox::SetRegistryValue(L"CommitAskBeforeCancel", IDYES);
+		if (dontaskagainchecked)
+			CMessageBox::SetRegistryValue(L"CommitAskBeforeCancel", IDYES);
 		return;
 	}
 
