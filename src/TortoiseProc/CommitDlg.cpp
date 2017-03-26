@@ -1460,26 +1460,6 @@ void CCommitDlg::SetDlgTitle()
 
 void CCommitDlg::OnCancel()
 {
-	CString tmp;
-	tmp.LoadString(IDS_REALLYCANCEL);
-	tmp.AppendChar(L'\n');
-	tmp.AppendChar(L'\n');
-	tmp.Append(CString(MAKEINTRESOURCE(IDS_HINTLASTMESSAGES)));
-	CString dontaskagain;
-	dontaskagain.LoadString(IDS_MSGBOX_DONOTSHOWAGAIN);
-	if (CMessageBox::ShowCheck(GetSafeHwnd(), tmp, L"TortoiseGit", MB_ICONQUESTION | MB_DEFBUTTON2 | MB_YESNO, L"CommitAskBeforeCancel", dontaskagain) == IDNO)
-	{
-		CMessageBox::SetRegistryValue(L"CommitAskBeforeCancel", IDYES);
-		return;
-	}
-
-	m_bCancelled = true;
-	m_pathwatcher.Stop();
-
-	if (m_bThreadRunning)
-		StopStatusThread();
-	if (!RestoreFiles())
-		return;
 	UpdateData();
 	m_sBugID.Trim();
 	m_sLogMessage = m_cLogMessage.GetText();
@@ -1494,7 +1474,30 @@ void CCommitDlg::OnCancel()
 		else
 			m_sLogMessage = sBugID + L'\n' + m_sLogMessage;
 	}
-	if ((m_sLogTemplate.Compare(m_sLogMessage) != 0) && !m_sLogMessage.IsEmpty())
+
+	bool hasChangedMessage = (m_sLogTemplate.Compare(m_sLogMessage) != 0) && !m_sLogMessage.IsEmpty();
+
+	CString tmp;
+	tmp.LoadString(IDS_REALLYCANCEL);
+	tmp.AppendChar(L'\n');
+	tmp.AppendChar(L'\n');
+	tmp.Append(CString(MAKEINTRESOURCE(IDS_HINTLASTMESSAGES)));
+	CString dontaskagain;
+	dontaskagain.LoadString(IDS_MSGBOX_DONOTSHOWAGAIN);
+	if ((hasChangedMessage || m_ListCtrl.GetItemCount() > 0) && CMessageBox::ShowCheck(GetSafeHwnd(), tmp, L"TortoiseGit", MB_ICONQUESTION | MB_DEFBUTTON2 | MB_YESNO, L"CommitAskBeforeCancel", dontaskagain) == IDNO)
+	{
+		CMessageBox::SetRegistryValue(L"CommitAskBeforeCancel", IDYES);
+		return;
+	}
+
+	m_bCancelled = true;
+	m_pathwatcher.Stop();
+
+	if (m_bThreadRunning)
+		StopStatusThread();
+	if (!RestoreFiles())
+		return;
+	if (hasChangedMessage)
 	{
 		ReloadHistoryEntries();
 		m_History.AddEntry(m_sLogMessage);
