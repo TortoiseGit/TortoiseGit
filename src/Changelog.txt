@@ -21,6 +21,7 @@ Released: unreleased
  * Allow snippets to include new lines (using "\n" notation)
  * Spell checker wrongly marked styled words as misspelled (e.g. _example_)
  * Fixed issue #2960: libgit2 fails to resolve absolute symlinks
+ * Fixed issue #2963: Rebase dialog does not change "Start (FastFwd)" button during rebase process
 
 = Release 2.4.0 =
 Released: 2017-01-31

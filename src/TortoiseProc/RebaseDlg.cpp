@@ -1190,15 +1190,18 @@ void CRebaseDlg::OnBnClickedContinue()
 
 	if( this->m_IsFastForward )
 	{
+		GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(FALSE);
 		CString cmd,out;
-		if (g_Git.GetHash(m_OrigBranchHash, m_BranchCtrl.GetString()))
+		if (g_Git.GetHash(m_OrigBranchHash, m_BranchCtrl.GetString()) || true)
 		{
 			MessageBox(g_Git.GetGitLastErr(L"Could not get hash of \"" + m_BranchCtrl.GetString() + L"\"."), L"TortoiseGit", MB_ICONERROR);
+			GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(TRUE);
 			return;
 		}
 		if (g_Git.GetHash(m_OrigUpstreamHash, m_UpstreamCtrl.GetString()))
 		{
 			MessageBox(g_Git.GetGitLastErr(L"Could not get hash of \"" + m_UpstreamCtrl.GetString() + L"\"."), L"TortoiseGit", MB_ICONERROR);
+			GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(TRUE);
 			return;
 		}
 
@@ -1206,6 +1209,7 @@ void CRebaseDlg::OnBnClickedContinue()
 		{
 			this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
 			AddLogString(L"No fast forward possible.\r\nMaybe repository changed");
+			GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(TRUE);
 			return;
 		}
 
@@ -1214,7 +1218,10 @@ void CRebaseDlg::OnBnClickedContinue()
 			cmd.Format(L"git.exe checkout --no-track -f -B %s %s --", (LPCTSTR)m_BranchCtrl.GetString(), (LPCTSTR)m_UpstreamCtrl.GetString());
 			AddLogString(cmd);
 			if (RunGitCmdRetryOrAbort(cmd))
+			{
+				GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(TRUE);
 				return;
+			}
 			AddLogString(out);
 			out.Empty();
 		}
@@ -1226,7 +1233,10 @@ void CRebaseDlg::OnBnClickedContinue()
 		AddLogString(cmd);
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
 		if (RunGitCmdRetryOrAbort(cmd))
+		{
+			GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(TRUE);
 			return;
+		}
 		AddLogString(out);
 		AddLogString(CString(MAKEINTRESOURCE(IDS_DONE)));
 		m_RebaseStage = REBASE_DONE;
