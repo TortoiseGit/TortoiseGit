@@ -1192,7 +1192,7 @@ void CRebaseDlg::OnBnClickedContinue()
 	{
 		GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(FALSE);
 		CString cmd,out;
-		if (g_Git.GetHash(m_OrigBranchHash, m_BranchCtrl.GetString()) || true)
+		if (g_Git.GetHash(m_OrigBranchHash, m_BranchCtrl.GetString()))
 		{
 			MessageBox(g_Git.GetGitLastErr(L"Could not get hash of \"" + m_BranchCtrl.GetString() + L"\"."), L"TortoiseGit", MB_ICONERROR);
 			GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(TRUE);
