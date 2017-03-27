@@ -14,7 +14,7 @@ TortoiseGit supports you with regular tasks, such as committing, showing logs, d
 * Mailing lists: [tortoisegit-announce](https://groups.google.com/group/tortoisegit-announce),
                  [tortoisegit-users](https://groups.google.com/group/tortoisegit-users) and
                  [tortoisegit-dev](https://groups.google.com/group/tortoisegit-dev)
-* StackOverflow tag: [tortoisegit](http://stackoverflow.com/questions/tagged/tortoisegit)
+* StackOverflow tag: [tortoisegit](https://stackoverflow.com/questions/tagged/tortoisegit)
 
 Download
 --------
