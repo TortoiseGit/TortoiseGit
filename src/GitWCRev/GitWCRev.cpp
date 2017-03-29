@@ -516,6 +516,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	SetDllDirectory(L"");
 	CCrashReportTGit crasher(L"GitWCRev " _T(APP_X64_STRING), TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, TGIT_VERDATE);
 
+	_setmode(_fileno(stdout), _O_U16TEXT);
+
 	if (argc >= 2 && argc <= 5)
 	{
 		// WC path is always first argument.
