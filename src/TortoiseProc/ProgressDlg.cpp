@@ -829,6 +829,8 @@ BOOL CProgressDlg::PreTranslateMessage(MSG* pMsg)
 			{
 				// since we convert ESC to RETURN, make sure the OK button has the focus.
 				GetDlgItem(IDOK)->SetFocus();
+				// make sure the RETURN is not handled by the RichEdit
+				pMsg->hwnd = GetSafeHwnd();
 				pMsg->wParam = VK_RETURN;
 			}
 		}
