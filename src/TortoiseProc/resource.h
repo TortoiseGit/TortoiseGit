@@ -1274,6 +1274,7 @@
 #define IDC_HANDLERHINT                 1609
 #define IDS_ARCHIVEFILEFILTER           1609
 #define IDC_COMBOBOXEX_URL              1610
+#define IDS_PROC_USELFS_TT              1610
 #define IDC_BUTTON_PULL                 1611
 #define IDS_EXTRAPATH_TT                1611
 #define IDC_BUTTON_PUSH                 1612
@@ -1562,6 +1563,7 @@
 #define IDC_GENERATEPUTTYKEY            1844
 #define IDC_ADVANCEDCONFIGURATION       1845
 #define IDC_FIRSTSTART_SSHHINT          1846
+#define IDC_CHECK_LFS                   1847
 #define IDS_LOG_FILTER_BY               1850
 #define IDS_LOG_FILTER_PATHS            1851
 #define IDS_LOG_FILTER_AUTHORS          1852
@@ -2018,7 +2020,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        359
 #define _APS_NEXT_COMMAND_VALUE         32874
-#define _APS_NEXT_CONTROL_VALUE         1847
+#define _APS_NEXT_CONTROL_VALUE         1848
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

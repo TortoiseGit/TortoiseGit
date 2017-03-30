@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 // Copyright (C) 2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -154,7 +154,8 @@ bool CloneCommand::Execute()
 			depth.Format(L" --depth %d", dlg.m_nDepth);
 
 		CString cmd;
-		cmd.Format(L"git.exe clone --progress%s%s%s%s%s -v%s \"%s\" \"%s\"",
+		cmd.Format(L"git.exe %sclone --progress%s%s%s%s%s -v%s \"%s\" \"%s\"",
+						dlg.m_bUseLFS ? L"lfs " : L"",
 						(LPCTSTR)nocheckoutStr,
 						(LPCTSTR)recursiveStr,
 						(LPCTSTR)bareStr,
@@ -225,7 +226,7 @@ bool CloneCommand::Execute()
 		}
 		else
 		{
-			if (g_Git.UsingLibGit2(CGit::GIT_CMD_CLONE))
+			if (g_Git.UsingLibGit2(CGit::GIT_CMD_CLONE) && !dlg.m_bUseLFS)
 			{
 				while (true)
 				{
