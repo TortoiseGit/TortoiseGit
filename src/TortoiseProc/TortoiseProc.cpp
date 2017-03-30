@@ -598,6 +598,11 @@ void CTortoiseProcApp::CheckUpgrade()
 	}
 
 	// version specific updates
+	if (lVersion <= 0x02040100)
+	{
+		CRegStdDWORD(L"Software\\TortoiseGit\\CommitAskBeforeCancel").removeValue();
+	}
+
 	if (lVersion <= 0x02040000)
 	{
 		CRegStdDWORD commmitAskBeforeCancel(L"Software\\TortoiseGit\\CommitAskBeforeCancel");
