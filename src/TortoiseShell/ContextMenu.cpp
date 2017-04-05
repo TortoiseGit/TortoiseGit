@@ -701,7 +701,7 @@ bool CShellExt::WriteClipboardPathsToTempFile(std::wstring& tempfile)
 	return true;
 }
 
-std::wstring CShellExt::WriteFileListToTempFile()
+std::wstring CShellExt::WriteFileListToTempFile(bool bFoldersOnly = false)
 {
 	//write all selected files and paths to a temporary file
 	//for TortoiseGitProc.exe to read out again.
@@ -735,8 +735,19 @@ std::wstring CShellExt::WriteFileListToTempFile()
 
 	for (const auto& file_ : files_)
 	{
-		::WriteFile(file, file_.c_str(), static_cast<DWORD>(file_.size()) * sizeof(TCHAR), &written, 0);
-		::WriteFile(file, L"\n", 2, &written, 0);
+		if (!bFoldersOnly)
+		{
+			::WriteFile(file, file_.c_str(), static_cast<DWORD>(file_.size()) * sizeof(TCHAR), &written, 0);
+			::WriteFile(file, L"\n", 2, &written, 0);
+		}
+		else
+		{
+			if (PathIsDirectory(file_.c_str()))
+			{
+				::WriteFile(file, file_.c_str(), static_cast<DWORD>(file_.size()) * sizeof(TCHAR), &written, 0);
+				::WriteFile(file, L"\n", 2, &written, 0);
+			}
+		}
 	}
 	return retFilePath;
 }
@@ -1130,9 +1141,9 @@ void CShellExt::AddPathCommand(tstring& gitCmd, LPCTSTR command, bool bFilesAllo
 	gitCmd += L'"';
 }
 
-void CShellExt::AddPathFileCommand(tstring& gitCmd, LPCTSTR command)
+void CShellExt::AddPathFileCommand(tstring& gitCmd, LPCTSTR command, bool bFoldersOnly = false)
 {
-	tstring tempfile = WriteFileListToTempFile();
+	tstring tempfile = WriteFileListToTempFile(bFoldersOnly);
 	gitCmd += command;
 	gitCmd += L" /pathfile:\"";
 	gitCmd += tempfile;
@@ -1593,7 +1604,7 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				AddPathFileDropCommand(gitCmd, L"importpatch");
 				break;
 			case ShellMenuFetch:
-				AddPathCommand(gitCmd, L"fetch", false);
+				AddPathFileCommand(gitCmd, L"fetch", true);
 				break;
 
 			default:

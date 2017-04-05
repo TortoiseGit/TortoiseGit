@@ -255,7 +255,12 @@ BOOL CPullFetchDlg::OnInitDialog()
 	else
 		sWindowTitle.LoadString(IDS_PROGRS_TITLE_FETCH);
 
-	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
+	CString& dirTitle = g_Git.m_CurrentDir;
+
+	if (m_pathList.GetCount() > 1)
+		dirTitle = m_pathList.GetCommonRoot().GetUIPathString();
+
+	CAppUtils::SetWindowTitle(m_hWnd, dirTitle, sWindowTitle);
 
 	Refresh();
 
