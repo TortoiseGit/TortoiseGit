@@ -99,14 +99,14 @@ protected:
 private:
 	void			InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UINT stringid, UINT icon, UINT idCmdFirst, GitCommands com, UINT uFlags);
 	bool			InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, HMENU subMenu, UINT &indexMenu, int &indexSubMenu, unsigned __int64 topmenu, bool bShowIcons, UINT uFlags);
-	std::wstring	WriteFileListToTempFile();
+	std::wstring	WriteFileListToTempFile(bool bFoldersOnly);
 	bool			WriteClipboardPathsToTempFile(std::wstring& tempfile);
 	LPCTSTR			GetMenuTextFromResource(int id);
 	bool			ShouldInsertItem(const MenuInfo& pair) const;
 	bool			ShouldEnableMenu(const YesNoPair& pair) const;
 	void			TweakMenu(HMENU menu);
 	void			AddPathCommand(tstring& gitCmd, LPCTSTR command, bool bFilesAllowed);
-	void			AddPathFileCommand(tstring& gitCmd, LPCTSTR command);
+	void			AddPathFileCommand(tstring& gitCmd, LPCTSTR command, bool bFoldersOnly);
 	void			AddPathFileDropCommand(tstring& gitCmd, LPCTSTR command);
 	STDMETHODIMP	QueryDropContext(UINT uFlags, UINT idCmdFirst, HMENU hMenu, UINT &indexMenu);
 	bool			IsIllegalFolder(const std::wstring& folder, int* cslidarray);
