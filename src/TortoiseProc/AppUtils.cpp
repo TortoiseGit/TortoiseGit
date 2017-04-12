@@ -2731,27 +2731,21 @@ bool CAppUtils::Fetch(HWND hWnd, const CString& remoteName, bool allRemotes, CTG
 	dlg.m_IsPull=FALSE;
 	dlg.m_bAllRemotes = allRemotes;
 
-	if(dlg.DoModal()==IDOK)
+	if (dlg.DoModal() != IDOK)
+		return false;
+
+	if (!pathList || dlg.m_pathList.GetCount() == 1)
+		return DoFetch(hWnd, dlg.m_RemoteURL, dlg.m_bAllRemotes == BST_CHECKED, dlg.m_bAutoLoad == BST_CHECKED, dlg.m_bPrune, dlg.m_bDepth == BST_CHECKED, dlg.m_nDepth, dlg.m_bFetchTags, dlg.m_RemoteBranchName, dlg.m_bRebase == BST_CHECKED ? 1 : 0, FALSE);
+
+	bool retVal = true;
+	for (int i = 0; i < dlg.m_pathList.GetCount(); ++i)
 	{
-		if (!pathList || dlg.m_pathList.GetCount() == 1)
-			return DoFetch(hWnd, dlg.m_RemoteURL, dlg.m_bAllRemotes == BST_CHECKED, dlg.m_bAutoLoad == BST_CHECKED, dlg.m_bPrune, dlg.m_bDepth == BST_CHECKED, dlg.m_nDepth, dlg.m_bFetchTags, dlg.m_RemoteBranchName, dlg.m_bRebase == BST_CHECKED ? 1 : 0, FALSE);
-		else
-		{
-			bool retVal = true;
-
-			for (int i = 0; i < dlg.m_pathList.GetCount(); ++i)
-			{
-				g_Git.SetCurrentDir(dlg.m_pathList.m_paths[i].GetWinPath());
-				SetCurrentDirectory(g_Git.m_CurrentDir);
-				bool returnVal = DoFetch(hWnd, dlg.m_RemoteURL, true, dlg.m_bAutoLoad == BST_CHECKED, dlg.m_bPrune, dlg.m_bDepth == BST_CHECKED, dlg.m_nDepth, dlg.m_bFetchTags, dlg.m_RemoteBranchName, dlg.m_bRebase == BST_CHECKED ? 1 : 0, FALSE);
-				if (!returnVal)
-					retVal = false;
-			}
-			return retVal;
-		}
+		g_Git.SetCurrentDir(dlg.m_pathList.m_paths[i].GetWinPath());
+		SetCurrentDirectory(g_Git.m_CurrentDir);
+		if (!DoFetch(hWnd, dlg.m_RemoteURL, true, dlg.m_bAutoLoad == BST_CHECKED, dlg.m_bPrune, dlg.m_bDepth == BST_CHECKED, dlg.m_nDepth, dlg.m_bFetchTags, dlg.m_RemoteBranchName, dlg.m_bRebase == BST_CHECKED ? 1 : 0, FALSE))
+			retVal = false;
 	}
-
-	return false;
+	return retVal;
 }
 
 bool CAppUtils::DoPush(HWND hWnd, bool autoloadKey, bool tags, bool allRemotes, bool allBranches, bool force, bool forceWithLease, const CString& localBranch, const CString& remote, const CString& remoteBranch, bool setUpstream, int recurseSubmodules)
