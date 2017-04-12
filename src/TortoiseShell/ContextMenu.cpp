@@ -735,19 +735,11 @@ std::wstring CShellExt::WriteFileListToTempFile(bool bFoldersOnly = false)
 
 	for (const auto& file_ : files_)
 	{
-		if (!bFoldersOnly)
-		{
-			::WriteFile(file, file_.c_str(), static_cast<DWORD>(file_.size()) * sizeof(TCHAR), &written, 0);
-			::WriteFile(file, L"\n", 2, &written, 0);
-		}
-		else
-		{
-			if (PathIsDirectory(file_.c_str()))
-			{
-				::WriteFile(file, file_.c_str(), static_cast<DWORD>(file_.size()) * sizeof(TCHAR), &written, 0);
-				::WriteFile(file, L"\n", 2, &written, 0);
-			}
-		}
+		if (bFoldersOnly && !PathIsDirectory(file_.c_str()))
+			continue;
+
+		::WriteFile(file, file_.c_str(), static_cast<DWORD>(file_.size()) * sizeof(TCHAR), &written, 0);
+		::WriteFile(file, L"\n", 2, &written, 0);
 	}
 	return retFilePath;
 }
