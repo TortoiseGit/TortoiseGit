@@ -28,6 +28,7 @@ IMPLEMENT_DYNAMIC(CSetDialogs2, ISettingsPropPage)
 CSetDialogs2::CSetDialogs2()
 	: ISettingsPropPage(CSetDialogs2::IDD)
 	, m_dwAutoCloseGitProgress(AUTOCLOSE_NO)
+	, m_dwAutoCloseMFGitProgress(AUTOCLOSE_NO)
 	, m_bUseRecycleBin(TRUE)
 	, m_bConfirmKillProcess(FALSE)
 	, m_bSyncDialogRandomPos(FALSE)
@@ -44,6 +45,7 @@ CSetDialogs2::CSetDialogs2()
 	, m_bMailmap(FALSE)
 {
 	m_regAutoCloseGitProgress = CRegDWORD(L"Software\\TortoiseGit\\AutoCloseGitProgress");
+	m_regAutoCloseMFGitProgress = CRegDWORD(L"Software\\TortoiseGit\\AutoCloseMFGitProgress");
 	m_regUseRecycleBin = CRegDWORD(L"Software\\TortoiseGit\\RevertWithRecycleBin", TRUE);
 	m_regConfirmKillProcess = CRegDWORD(L"Software\\TortoiseGit\\ConfirmKillProcess", FALSE);
 	m_bConfirmKillProcess = m_regConfirmKillProcess;
@@ -82,6 +84,7 @@ void CSetDialogs2::DoDataExchange(CDataExchange* pDX)
 {
 	ISettingsPropPage::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_AUTOCLOSECOMBO, m_cAutoCloseGitProgress);
+	DDX_Control(pDX, IDC_AUTOCLOSEMFCOMBO, m_cAutoCloseMFGitProgress);
 	DDX_Check(pDX, IDC_USERECYCLEBIN, m_bUseRecycleBin);
 	DDX_Check(pDX, IDC_CONFIRMKILLPROCESS, m_bConfirmKillProcess);
 	DDX_Check(pDX, IDC_SYNCDIALOGRANDOMPOS, m_bSyncDialogRandomPos);
@@ -103,6 +106,7 @@ void CSetDialogs2::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CSetDialogs2, ISettingsPropPage)
 	ON_CBN_SELCHANGE(IDC_AUTOCLOSECOMBO, OnCbnSelchangeAutoclosecombo)
+	ON_CBN_SELCHANGE(IDC_AUTOCLOSEMFCOMBO, OnCbnSelchangeAutocloseMFcombo)
 	ON_BN_CLICKED(IDC_USERECYCLEBIN, OnChange)
 	ON_BN_CLICKED(IDC_CONFIRMKILLPROCESS, OnChange)
 	ON_BN_CLICKED(IDC_SYNCDIALOGRANDOMPOS, OnChange)
@@ -156,6 +160,19 @@ BOOL CSetDialogs2::OnInitDialog()
 		if (m_cAutoCloseGitProgress.GetItemData(i) == m_dwAutoCloseGitProgress)
 			m_cAutoCloseGitProgress.SetCurSel(i);
 
+	int ind2 = m_cAutoCloseMFGitProgress.AddString(CString(MAKEINTRESOURCE(IDS_PROGRS_CLOSE_MANUAL)));
+	m_cAutoCloseMFGitProgress.SetItemData(ind, AUTOCLOSE_NO);
+	ind2 = m_cAutoCloseMFGitProgress.AddString(CString(MAKEINTRESOURCE(IDS_PROGRS_CLOSE_NOPTIONS)));
+	m_cAutoCloseMFGitProgress.SetItemData(ind, AUTOCLOSE_IF_NO_OPTIONS);
+	ind2 = m_cAutoCloseMFGitProgress.AddString(CString(MAKEINTRESOURCE(IDS_PROGRS_CLOSE_NOERROR)));
+	m_cAutoCloseMFGitProgress.SetItemData(ind, AUTOCLOSE_IF_NO_ERRORS);
+
+	m_dwAutoCloseMFGitProgress = m_regAutoCloseMFGitProgress;
+
+	for (int i = 0; i < m_cAutoCloseMFGitProgress.GetCount(); ++i)
+		if (m_cAutoCloseMFGitProgress.GetItemData(i) == m_dwAutoCloseMFGitProgress)
+			m_cAutoCloseMFGitProgress.SetCurSel(i);
+
 	CString temp;
 
 	m_tooltips.AddTool(IDC_AUTOCLOSECOMBO, IDS_SETTINGS_AUTOCLOSE_TT);
@@ -185,6 +202,7 @@ BOOL CSetDialogs2::OnApply()
 	UpdateData();
 
 	Store(static_cast<DWORD>(m_dwAutoCloseGitProgress), m_regAutoCloseGitProgress);
+	Store(static_cast<DWORD>(m_dwAutoCloseMFGitProgress), m_regAutoCloseMFGitProgress);
 	Store(m_bUseRecycleBin, m_regUseRecycleBin);
 	Store(m_bConfirmKillProcess, m_regConfirmKillProcess);
 	Store(m_bSyncDialogRandomPos, m_regSyncDialogRandomPos);
@@ -212,5 +230,13 @@ void CSetDialogs2::OnCbnSelchangeAutoclosecombo()
 	{
 		m_dwAutoCloseGitProgress = m_cAutoCloseGitProgress.GetItemData(m_cAutoCloseGitProgress.GetCurSel());
 	}
+	SetModified();
+}
+
+void CSetDialogs2::OnCbnSelchangeAutocloseMFcombo()
+{
+	if (m_cAutoCloseMFGitProgress.GetCurSel() != CB_ERR)
+		m_dwAutoCloseMFGitProgress = m_cAutoCloseMFGitProgress.GetItemData(m_cAutoCloseMFGitProgress.GetCurSel());
+
 	SetModified();
 }
