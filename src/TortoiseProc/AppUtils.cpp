@@ -101,7 +101,7 @@ static struct last_accepted_cert {
 	}
 } last_accepted_cert;
 
-static bool DoFetch(HWND hWnd, const CString& url, const bool fetchAllRemotes, const bool loadPuttyAgent, const int prune, const bool bDepth, const int nDepth, const int fetchTags, const CString& remoteBranch, int runRebase, const bool rebasePreserveMerges);
+static bool DoFetch(HWND hWnd, const CString& url, const bool fetchAllRemotes, const bool loadPuttyAgent, const int prune, const bool bDepth, const int nDepth, const int fetchTags, const CString& remoteBranch, int runRebase, const bool rebasePreserveMerges, const bool multiFetch = false);
 
 bool CAppUtils::StashSave(HWND hWnd, const CString& msg, bool showPull, bool pullShowPush, bool showMerge, const CString& mergeRev)
 {
@@ -2544,7 +2544,26 @@ bool CAppUtils::RebaseAfterFetch(HWND hWnd, const CString& upstream, int rebase,
 	}
 }
 
-static bool DoFetch(HWND hWnd, const CString& url, const bool fetchAllRemotes, const bool loadPuttyAgent, const int prune, const bool bDepth, const int nDepth, const int fetchTags, const CString& remoteBranch, int runRebase, const bool rebasePreserveMerges)
+GitProgressAutoClose GetAutoCloseMultiFetch()
+{
+	GitProgressAutoClose autoClose;
+	DWORD autoCloseReg = CRegDWORD(L"Software\\TortoiseGit\\AutoCloseMFGitProgress", 0);
+	switch (autoCloseReg)
+	{
+	case 1:
+		autoClose = AUTOCLOSE_IF_NO_OPTIONS;
+		break;
+	case 2:
+		autoClose = AUTOCLOSE_IF_NO_ERRORS;
+		break;
+	default:
+		autoClose = AUTOCLOSE_NO;
+		break;
+	}
+	return autoClose;
+}
+
+static bool DoFetch(HWND hWnd, const CString& url, const bool fetchAllRemotes, const bool loadPuttyAgent, const int prune, const bool bDepth, const int nDepth, const int fetchTags, const CString& remoteBranch, int runRebase, const bool rebasePreserveMerges, const bool multiFetch)
 {
 	if (loadPuttyAgent)
 	{
@@ -2615,6 +2634,10 @@ static bool DoFetch(HWND hWnd, const CString& url, const bool fetchAllRemotes, c
 		cmd.Format(L"git.exe fetch -v%s \"%s\" %s", static_cast<LPCTSTR>(arg), static_cast<LPCTSTR>(url), static_cast<LPCTSTR>(remoteBranch));
 
 	CProgressDlg progress(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
+
+	if (multiFetch)
+		progress.m_AutoClose = GetAutoCloseMultiFetch();
+
 	progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
 	{
 		if (status)
@@ -2742,7 +2765,7 @@ bool CAppUtils::Fetch(HWND hWnd, const CString& remoteName, bool allRemotes, CTG
 	{
 		g_Git.SetCurrentDir(dlg.m_pathList.m_paths[i].GetWinPath());
 		SetCurrentDirectory(g_Git.m_CurrentDir);
-		if (!DoFetch(hWnd, dlg.m_RemoteURL, true, dlg.m_bAutoLoad == BST_CHECKED, dlg.m_bPrune, dlg.m_bDepth == BST_CHECKED, dlg.m_nDepth, dlg.m_bFetchTags, dlg.m_RemoteBranchName, dlg.m_bRebase == BST_CHECKED ? 1 : 0, FALSE))
+		if (!DoFetch(hWnd, dlg.m_RemoteURL, true, dlg.m_bAutoLoad == BST_CHECKED, dlg.m_bPrune, dlg.m_bDepth == BST_CHECKED, dlg.m_nDepth, dlg.m_bFetchTags, dlg.m_RemoteBranchName, dlg.m_bRebase == BST_CHECKED ? 1 : 0, FALSE, TRUE))
 			retVal = false;
 	}
 	return retVal;

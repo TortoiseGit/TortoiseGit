@@ -743,6 +743,8 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,87,270,10
     CONTROL         "Sort tag list in reversed order",IDC_SORTTAGSREVERSED,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,101,270,10
+    LTEXT           "&Autoclose multi-fetch dialog:",IDC_STATIC,13,30,94,16,SS_CENTERIMAGE
+    COMBOBOX        IDC_AUTOCLOSEMFCOMBO,116,33,168,75,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
     CONTROL         "Disable sounds",IDC_NOSOUNDS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,115,270,10
     CONTROL         "Include FETCH_HEAD in branch selection boxes",IDC_BRANCHESINCLUDEFETCHHEAD,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,129,270,10
