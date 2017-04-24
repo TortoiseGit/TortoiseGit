@@ -33,7 +33,7 @@
 // Define the help text as a multi-line macro
 // Every line except the last must be terminated with a backslash
 #define HelpText1 "\
-Usage: GitWCRev WorkingCopyPath [SrcVersionFile DstVersionFile] [-nmdf]\n\
+Usage: GitWCRev WorkingCopyPath [SrcVersionFile DstVersionFile] [-mMuUdqsF]\n\
 \n\
 Params:\n\
 WorkingCopyPath    :   path to a Git working tree.\n\
