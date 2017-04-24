@@ -44,6 +44,7 @@
 #include "IconMenu.h"
 #include "FormatMessageWrapper.h"
 #include "BrowseFolder.h"
+#include "SysInfo.h"
 
 const UINT CGitStatusListCtrl::GITSLNM_ITEMCOUNTCHANGED
 					= ::RegisterWindowMessage(L"GITSLNM_ITEMCOUNTCHANGED");
@@ -3357,13 +3358,16 @@ void CGitStatusListCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
 	// Since I haven't been able to find out *why* it crashes, I'm disabling
 	// the group view right before the call to InitializeFromWindow() and
 	// re-enable it again after the call is finished.
+	// Note: the crash doesn't happen from Win7 onwards, so activate the
+	// workaround only for Vista: if the workaround is applied to later OS, then
+	// the drop description label appears not at the mouse cursor position but floats around
 
 	SetRedraw(false);
-	BOOL bGroupView = IsGroupViewEnabled();
-	if (bGroupView)
+	BOOL bCrashWorkaround = IsGroupViewEnabled() && !SysInfo::Instance().IsWin7OrLater();
+	if (bCrashWorkaround)
 		EnableGroupView(false);
 	dragsrchelper.InitializeFromWindow(m_hWnd, pNMLV->ptAction, pdobj);
-	if (bGroupView)
+	if (bCrashWorkaround)
 		EnableGroupView(true);
 	SetRedraw(true);
 	//dragsrchelper.InitializeFromBitmap()
