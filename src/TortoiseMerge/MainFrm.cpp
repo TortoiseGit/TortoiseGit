@@ -173,6 +173,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_INDICATOR_LEFTTABMODESTART, ID_INDICATOR_LEFTTABMODESTART+19, &CMainFrame::OnUpdateTabModeLeft)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_INDICATOR_RIGHTTABMODESTART, ID_INDICATOR_RIGHTTABMODESTART+19, &CMainFrame::OnUpdateTabModeRight)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_INDICATOR_BOTTOMTABMODESTART, ID_INDICATOR_BOTTOMTABMODESTART+19, &CMainFrame::OnUpdateTabModeBottom)
+	ON_WM_NCCALCSIZE()
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -3583,4 +3584,33 @@ BOOL CMainFrame::OnShowPopupMenu(CMFCPopupMenu* pMenuPopup)
 	}
 
 	return TRUE;
+}
+
+void CMainFrame::OnNcCalcSize(BOOL bCalcValidRects, NCCALCSIZE_PARAMS* lpncsp)
+{
+	__super::OnNcCalcSize(bCalcValidRects, lpncsp);
+
+	// the original OnNcCalcSize handler extends the client are over the window borders if DWM composition is enabled,
+	// but that leads to ugly gaps when the window is maximized and the task bar is set
+	// to auto-hide. Seems Windows tries to adjust a maximized window itself to ensure that
+	// the window either covers everything (fullscreen window) or does not cover the last pixel
+	// on the side where the task bar is. But that adjustment doesn't work properly if the window
+	// does not have borders.
+	// So: to work around this problem, we undo what the original OnNcCalcSize() handler has done
+	// if the window is maximized, the task bar is set to auto-hide and DWM composition is enabled.
+	// problem reported here: https://developercommunity.visualstudio.com/content/problem/44368/maximizing-mfc-ribbon-app-is-wrong-when-task-bar-i.html
+	if (GetRibbonBar()->GetSafeHwnd() && ((GetRibbonBar()->IsWindowVisible()) || !IsWindowVisible()) && GetRibbonBar()->IsReplaceFrameCaption())
+	{
+		if (GetGlobalData()->IsDwmCompositionEnabled() && (GetStyle() & WS_MAXIMIZE))
+		{
+			int nShellAutohideBars = GetGlobalData()->GetShellAutohideBars();
+			if (nShellAutohideBars)
+			{
+				CSize szSystemBorder(afxGlobalUtils.GetSystemBorders(this));
+				lpncsp->rgrc[0].left -= szSystemBorder.cx;
+				lpncsp->rgrc[0].right += szSystemBorder.cx;
+				lpncsp->rgrc[0].bottom += szSystemBorder.cy;
+			}
+		}
+	}
 }

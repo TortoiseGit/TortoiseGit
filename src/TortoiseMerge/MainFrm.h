@@ -188,6 +188,7 @@ protected:
 	afx_msg void	OnUpdateTabModeLeft(CCmdUI *pCmdUI);
 	afx_msg void	OnUpdateTabModeRight(CCmdUI *pCmdUI);
 	afx_msg void	OnUpdateTabModeBottom(CCmdUI *pCmdUI);
+	afx_msg void	OnNcCalcSize(BOOL bCalcValidRects, NCCALCSIZE_PARAMS* lpncsp);
 
 	DECLARE_MESSAGE_MAP()
 protected:
