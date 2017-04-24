@@ -41,10 +41,10 @@ SrcVersionFile     :   path to a template file containing keywords.\n\
 DstVersionFile     :   path to save the resulting parsed file.\n\
 -m                 :   if given, then GitWCRev will error if the working\n\
                        tree contains local modifications.\n\
--M                 :   same as above, but recursively\
+-M                 :   same as above, but recursively\n\
 -u                 :   if given, then GitWCRev will error if the working\n\
                        tree contains unversioned items.\n\
--U                 :   same as above, but recursively\
+-U                 :   same as above, but recursively\n\
 -d                 :   if given, then GitWCRev will only do its job if\n\
                        DstVersionFile does not exist.\n\
 -q                 :   if given, then GitWCRev will perform keyword\n\
