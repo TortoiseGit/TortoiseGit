@@ -160,9 +160,11 @@ void SetUUIDOverlayIcon( HWND hWnd )
             GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr);
             if (gdiplusToken)
             {
+                {
                 auto pBitmap = std::make_unique<Gdiplus::Bitmap>(sicon.c_str(), FALSE);
                 if (pBitmap->GetLastStatus() == Gdiplus::Status::Ok)
                     pBitmap->GetHICON(&icon);
+                }
                 Gdiplus::GdiplusShutdown(gdiplusToken);
             }
         }
