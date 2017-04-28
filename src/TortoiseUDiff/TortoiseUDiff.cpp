@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2016 - TortoiseGit
+// Copyright (C) 2011-2017 - TortoiseGit
 // Copyright (C) 2003-2008, 2010-2012, 2014-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -97,7 +97,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	}
 
 	bool bLoadedSuccessfully = false;
-	if ((lpCmdLine[0] == L'0') || (parser.HasKey(L"p")))
+	if ((lpCmdLine[0] == L'\0') || (parser.HasKey(L"p")))
 	{
 		// input from console pipe
 		// set console to raw mode
@@ -109,7 +109,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	}
 	else if (parser.HasVal(L"patchfile"))
 		bLoadedSuccessfully = mainWindow.LoadFile(parser.GetVal(L"patchfile"));
-	else if (lpCmdLine[0] != L'0')
+	else if (lpCmdLine[0] != L'\0')
 	{
 		// remove double quotes
 		std::wstring path = lpCmdLine;
