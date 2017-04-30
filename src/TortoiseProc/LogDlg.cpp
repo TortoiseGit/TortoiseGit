@@ -1957,12 +1957,13 @@ void CLogDlg::DoSizeV1(int delta)
 	int changeFileListDelta = -delta - messageViewDelta;
 
 	// set new sizes & positions
-	CSplitterControl::ChangeHeight(&m_LogList, delta, CW_TOPALIGN);
-	CSplitterControl::ChangeHeight(GetDlgItem(IDC_MSGVIEW), messageViewDelta, CW_TOPALIGN);
-	CSplitterControl::ChangePos(GetDlgItem(IDC_MSGVIEW), 0, delta);
+	auto hdwp = BeginDeferWindowPos(5);
+	hdwp = CSplitterControl::ChangeRect(hdwp, &m_LogList, 0, 0, 0, delta);
+	hdwp = CSplitterControl::ChangeRect(hdwp, GetDlgItem(IDC_MSGVIEW), 0, delta, 0, delta + messageViewDelta);
 	MoveToSameTop(GetDlgItem(IDC_MSGVIEW), GetDlgItem(IDC_PIC_AUTHOR));
-	CSplitterControl::ChangePos(GetDlgItem(IDC_SPLITTERBOTTOM), 0, -changeFileListDelta);
-	CSplitterControl::ChangeHeight(&m_ChangedFileListCtrl, changeFileListDelta, CW_BOTTOMALIGN);
+	hdwp = CSplitterControl::ChangeRect(hdwp, GetDlgItem(IDC_SPLITTERBOTTOM), 0, -changeFileListDelta, 0, -changeFileListDelta);
+	hdwp = CSplitterControl::ChangeRect(hdwp, &m_ChangedFileListCtrl, 0, -changeFileListDelta, 0, 0);
+	EndDeferWindowPos(hdwp);
 
 	AddMainAnchors();
 	ArrangeLayout();
@@ -1990,14 +1991,13 @@ void CLogDlg::DoSizeV2(int delta)
 	int logListDelta = delta - messageViewDelta;
 
 	// set new sizes & positions
-	CSplitterControl::ChangeHeight(&m_LogList, logListDelta, CW_TOPALIGN);
-	CSplitterControl::ChangePos(GetDlgItem(IDC_SPLITTERTOP), 0, logListDelta);
-
-	CSplitterControl::ChangeHeight(GetDlgItem(IDC_MSGVIEW), messageViewDelta, CW_TOPALIGN);
-	CSplitterControl::ChangePos(GetDlgItem(IDC_MSGVIEW), 0, logListDelta);
+	auto hdwp = BeginDeferWindowPos(5);
+	hdwp = CSplitterControl::ChangeRect(hdwp, &m_LogList, 0, 0, 0, logListDelta);
+	hdwp = CSplitterControl::ChangeRect(hdwp, GetDlgItem(IDC_SPLITTERTOP), 0, logListDelta, 0, logListDelta);
+	hdwp = CSplitterControl::ChangeRect(hdwp, GetDlgItem(IDC_MSGVIEW), 0, logListDelta, 0, logListDelta + messageViewDelta);
 	MoveToSameTop(GetDlgItem(IDC_MSGVIEW), GetDlgItem(IDC_PIC_AUTHOR));
-
-	CSplitterControl::ChangeHeight(&m_ChangedFileListCtrl, -delta, CW_BOTTOMALIGN);
+	hdwp = CSplitterControl::ChangeRect(hdwp, &m_ChangedFileListCtrl, 0, delta, 0, 0);
+	EndDeferWindowPos(hdwp);
 
 	AddMainAnchors();
 	ArrangeLayout();

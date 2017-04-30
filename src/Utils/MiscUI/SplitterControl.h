@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2006. 2011 - TortoiseSVN
+// Copyright (C) 2003-2006. 2011, 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -17,6 +17,12 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
+#include "AnimationManager.h"
+
+#pragma warning(push)
+#pragma warning(disable: 4458) // declaration of 'xxx' hides class member
+#include <gdiplus.h>
+#pragma warning(pop)
 
 /////////////////////////////////////////////////////////////////////////////
 // CSplitterControl window
@@ -41,31 +47,14 @@ public:
 	CSplitterControl();
 	virtual		~CSplitterControl();
 
-// Attributes
-public:
-protected:
-	BOOL		m_bIsPressed;
-	int			m_nType;
-	int			m_nX, m_nY;
-	int			m_nMin, m_nMax;
-	int			m_nSavePos;		// Save point on the lbutton down message
-	bool		m_bMouseOverControl;
-
-// Implementation
-public:
-	static void ChangePos(CWnd* pWnd, int dx, int dy);
-	static void ChangeWidth(CWnd* pWnd, int dx, DWORD dwFlag = CW_LEFTALIGN);
-	static void ChangeHeight(CWnd* pWnd, int dy, DWORD dwFlag = CW_TOPALIGN);
-public:
+	static HDWP	ChangeRect(HDWP hdwp, CWnd* pWnd, int dleft, int dtop, int dright, int dbottom);
 	void		SetRange(int nMin, int nMax);
 	void		SetRange(int nSubtraction, int nAddition, int nRoot);
 
 	int			GetSplitterStyle();
 	int			SetSplitterStyle(int nStyle = SPS_VERTICAL);
 
-	// Generated message map functions
 protected:
-	virtual void	DrawLine(CDC* pDC);
 	void			MoveWindowTo(CPoint pt);
 	virtual void	PreSubclassWindow();
 	afx_msg void	OnPaint();
@@ -74,7 +63,16 @@ protected:
 	afx_msg void	OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void	OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg BOOL	OnEraseBkgnd(CDC* pDC);
-	afx_msg void	OnCaptureChanged(CWnd *pWnd);
 	afx_msg LRESULT	OnMouseLeave(WPARAM wParam, LPARAM lParam);
 	DECLARE_MESSAGE_MAP()
+
+private:
+	bool		m_bIsPressed;
+	int			m_nType;
+	int			m_nX, m_nY;
+	int			m_nMin, m_nMax;
+	int			m_nSavePos;
+	bool		m_bMouseOverControl;
+	ULONG_PTR	m_gdiPlusToken;
+	IUIAnimationVariablePtr m_AnimVarHot;
 };

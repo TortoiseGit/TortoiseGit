@@ -530,14 +530,14 @@ void CImportPatchDlg::DoSize(int delta)
 {
 	this->RemoveAllAnchors();
 
-	CSplitterControl::ChangeHeight(GetDlgItem(IDC_LIST_PATCH), delta, CW_TOPALIGN);
-	//CSplitterControl::ChangeHeight(GetDlgItem(), delta, CW_TOPALIGN);
-	CSplitterControl::ChangeHeight(GetDlgItem(IDC_AM_TAB), -delta, CW_BOTTOMALIGN);
-	//CSplitterControl::ChangeHeight(GetDlgItem(), -delta, CW_BOTTOMALIGN);
-	CSplitterControl::ChangePos(GetDlgItem(IDC_CHECK_3WAY), 0, delta);
-	CSplitterControl::ChangePos(GetDlgItem(IDC_CHECK_IGNORE_SPACE), 0, delta);
-	CSplitterControl::ChangePos(GetDlgItem(IDC_SIGN_OFF), 0, delta);
-	CSplitterControl::ChangePos(GetDlgItem(IDC_KEEP_CR), 0, delta);
+	auto hdwp = BeginDeferWindowPos(6);
+	hdwp = CSplitterControl::ChangeRect(hdwp, GetDlgItem(IDC_LIST_PATCH), 0, 0, 0, delta);
+	hdwp = CSplitterControl::ChangeRect(hdwp, GetDlgItem(IDC_AM_TAB), 0, delta, 0, 0);
+	hdwp = CSplitterControl::ChangeRect(hdwp, GetDlgItem(IDC_CHECK_3WAY), 0, delta, 0, delta);
+	hdwp = CSplitterControl::ChangeRect(hdwp, GetDlgItem(IDC_CHECK_IGNORE_SPACE), 0, delta, 0, delta);
+	hdwp = CSplitterControl::ChangeRect(hdwp, GetDlgItem(IDC_SIGN_OFF), 0, delta, 0, delta);
+	hdwp = CSplitterControl::ChangeRect(hdwp, GetDlgItem(IDC_KEEP_CR), 0, delta, 0, delta);
+	EndDeferWindowPos(hdwp);
 
 	this->AddAmAnchor();
 	// adjust the minimum size of the dialog to prevent the resizing from

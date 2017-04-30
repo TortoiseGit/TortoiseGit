@@ -398,17 +398,17 @@ void CRebaseDlg::DoSize(int delta)
 {
 	this->RemoveAllAnchors();
 
-	CSplitterControl::ChangeHeight(GetDlgItem(IDC_COMMIT_LIST), delta, CW_TOPALIGN);
-	//CSplitterControl::ChangeHeight(GetDlgItem(), delta, CW_TOPALIGN);
-	CSplitterControl::ChangeHeight(GetDlgItem(IDC_REBASE_TAB), -delta, CW_BOTTOMALIGN);
-	//CSplitterControl::ChangeHeight(GetDlgItem(), -delta, CW_BOTTOMALIGN);
-	CSplitterControl::ChangePos(GetDlgItem(IDC_SPLITALLOPTIONS), 0, delta);
-	CSplitterControl::ChangePos(GetDlgItem(IDC_BUTTON_UP), 0, delta);
-	CSplitterControl::ChangePos(GetDlgItem(IDC_BUTTON_DOWN), 0, delta);
-	CSplitterControl::ChangePos(GetDlgItem(IDC_BUTTON_ADD), 0, delta);
-	CSplitterControl::ChangePos(GetDlgItem(IDC_REBASE_CHECK_FORCE),0,delta);
-	CSplitterControl::ChangePos(GetDlgItem(IDC_REBASE_CHECK_PRESERVEMERGES), 0, delta);
-	CSplitterControl::ChangePos(GetDlgItem(IDC_CHECK_CHERRYPICKED_FROM), 0, delta);
+	auto hdwp = BeginDeferWindowPos(9);
+	hdwp = CSplitterControl::ChangeRect(hdwp, GetDlgItem(IDC_COMMIT_LIST), 0, 0, 0, delta);
+	hdwp = CSplitterControl::ChangeRect(hdwp, GetDlgItem(IDC_REBASE_TAB), 0, delta, 0, 0);
+	hdwp = CSplitterControl::ChangeRect(hdwp, GetDlgItem(IDC_SPLITALLOPTIONS), 0, delta, 0, delta);
+	hdwp = CSplitterControl::ChangeRect(hdwp, GetDlgItem(IDC_BUTTON_UP), 0, delta, 0, delta);
+	hdwp = CSplitterControl::ChangeRect(hdwp, GetDlgItem(IDC_BUTTON_DOWN), 0, delta, 0, delta);
+	hdwp = CSplitterControl::ChangeRect(hdwp, GetDlgItem(IDC_BUTTON_ADD), 0, delta, 0, delta);
+	hdwp = CSplitterControl::ChangeRect(hdwp, GetDlgItem(IDC_REBASE_CHECK_FORCE), 0, delta, 0, delta);
+	hdwp = CSplitterControl::ChangeRect(hdwp, GetDlgItem(IDC_REBASE_CHECK_PRESERVEMERGES), 0, delta, 0, delta);
+	hdwp = CSplitterControl::ChangeRect(hdwp, GetDlgItem(IDC_CHECK_CHERRYPICKED_FROM), 0, delta, 0, delta);
+	EndDeferWindowPos(hdwp);
 
 	this->AddRebaseAnchor();
 	// adjust the minimum size of the dialog to prevent the resizing from

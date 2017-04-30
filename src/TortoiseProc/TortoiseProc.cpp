@@ -45,6 +45,7 @@
 #include "SendMail.h"
 #include "WindowsCredentialsStore.h"
 #include "FirstStartWizard.h"
+#include "AnimationManager.h"
 
 #define STRUCT_IOVEC_DEFINED
 
@@ -537,6 +538,8 @@ BOOL CTortoiseProcApp::InitInstance()
 			}
 		}
 	}
+
+	Animator::Instance().ShutDown();
 
 	// Since the dialog has been closed, return FALSE so that we exit the
 	// application, rather than start the application's message pump.
