@@ -1,28 +1,14 @@
 From db3d45c7a5b8773f6221516c015add695708e0fe Mon Sep 17 00:00:00 2001
 From: Sven Strickroth <email@cs-ware.de>
 Date: Sun, 29 Jan 2017 02:12:07 +0100
-Subject: [PATCH 8/8] Update workdir_to_infex CrLf conversion to match Git >=
+Subject: [PATCH] Update workdir_to_infex CrLf conversion to match Git >=
  2.9 logic
 
 Signed-off-by: Sven Strickroth <email@cs-ware.de>
 ---
- CHANGELOG.md |  2 +-
  src/crlf.c   | 19 +++++++++++--------
- 2 files changed, 12 insertions(+), 9 deletions(-)
+ 1 files changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/CHANGELOG.md b/CHANGELOG.md
-index 99473edd7..442e3d14b 100644
---- a/CHANGELOG.md
-+++ b/CHANGELOG.md
-@@ -7,7 +7,7 @@ v0.25 + 1
-   This aligns this structure with the default by `git_merge` and
-   `git_merge_trees` when `NULL` was provided for the options.
- 
--* LF -> CRLF filter now handles files on adding to index the way vanilla git does
-+* LF -> CRLF filter now handles files on adding to index the way vanilla git >= 2.9 does
-   * skip files marked as "binary" (-crlf)
-   * especially files containing single CR chars are added as is now
-   * honor "text" attribute for forcing a file being interpreted as text
 diff --git a/src/crlf.c b/src/crlf.c
 index 468f33b4c..97b29af5c 100644
 --- a/src/crlf.c

@@ -1,36 +1,16 @@
 From 1855ca47e678e00ba9151f9734d7e682b7c67f6d Mon Sep 17 00:00:00 2001
 From: Sven Strickroth <email@cs-ware.de>
 Date: Sun, 1 Feb 2015 13:39:31 +0100
-Subject: [PATCH 5/8] Make CRLF filter behave like vanilla git for adding files
+Subject: [PATCH] Make CRLF filter behave like vanilla git for adding files
  in combination with attributes
 
 Based on lots of manual testing (even with "malformed" files and binary) with vanilla git executable...
 
 Signed-off-by: Sven Strickroth <email@cs-ware.de>
 ---
- CHANGELOG.md |  8 ++++----
  src/crlf.c   | 57 +++++++++++++++++++++++++++++++++------------------------
- 2 files changed, 37 insertions(+), 28 deletions(-)
+ 1 files changed, 29 insertions(+), 28 deletions(-)
 
-diff --git a/CHANGELOG.md b/CHANGELOG.md
-index 23702a3cb..99473edd7 100644
---- a/CHANGELOG.md
-+++ b/CHANGELOG.md
-@@ -7,10 +7,10 @@ v0.25 + 1
-   This aligns this structure with the default by `git_merge` and
-   `git_merge_trees` when `NULL` was provided for the options.
- 
--* LF -> CRLF filter now correctly honors core.safecrlf=true errors
--  * LF only files were accepted with core.autocrlf=true on CRLF platforms
--  * files containig CRLF in combination with core.autocrlf=input were accepted
--  * adding files containing CR and CRLF but not the same number failed
-+* LF -> CRLF filter now handles files on adding to index the way vanilla git does
-+  * skip files marked as "binary" (-crlf)
-+  * especially files containing single CR chars are added as is now
-+  * honor "text" attribute for forcing a file being interpreted as text
- 
- ### API additions
- 
 diff --git a/src/crlf.c b/src/crlf.c
 index 858a94484..468f33b4c 100644
 --- a/src/crlf.c

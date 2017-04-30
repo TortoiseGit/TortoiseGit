@@ -1,28 +1,15 @@
 From 41bfaa4b73c16cc2cd833e8600be6d95d85729a7 Mon Sep 17 00:00:00 2001
 From: Sven Strickroth <email@cs-ware.de>
 Date: Fri, 23 Jan 2015 15:34:14 +0100
-Subject: [PATCH 3/8] Adding a CRLF-file with core.autocrlf=input and
+Subject: [PATCH] Adding a CRLF-file with core.autocrlf=input and
  core.safecrlf=true does not fail as with vanilla git
 
 Signed-off-by: Sven Strickroth <email@cs-ware.de>
 ---
- CHANGELOG.md       |  1 +
  src/crlf.c         | 13 +++++++++++++
  tests/index/crlf.c |  6 ++++++
- 3 files changed, 20 insertions(+)
+ 2 files changed, 19 insertions(+)
 
-diff --git a/CHANGELOG.md b/CHANGELOG.md
-index 5784d3b86..e06155e2a 100644
---- a/CHANGELOG.md
-+++ b/CHANGELOG.md
-@@ -9,6 +9,7 @@ v0.25 + 1
- 
- * LF -> CRLF filter now correctly honors core.safecrlf=true errors
-   * LF only files were accepted with core.autocrlf=true on CRLF platforms
-+  * files containig CRLF in combination with core.autocrlf=input were accepted
- 
- ### API additions
- 
 diff --git a/src/crlf.c b/src/crlf.c
 index 27ba7eefd..dd5a7625c 100644
 --- a/src/crlf.c

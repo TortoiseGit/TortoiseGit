@@ -1,28 +1,15 @@
 From 78b6049046afcb041d785b56641664f5ffa99e9f Mon Sep 17 00:00:00 2001
 From: Sven Strickroth <email@cs-ware.de>
 Date: Fri, 23 Jan 2015 17:15:16 +0100
-Subject: [PATCH 4/8] Make files with #CR!=#CRLF not fail with
+Subject: [PATCH] Make files with #CR!=#CRLF not fail with
  core.safecrlf=true
 
 Signed-off-by: Sven Strickroth <email@cs-ware.de>
 ---
- CHANGELOG.md        |  1 +
  src/crlf.c          | 18 +++++++++---------
  tests/filter/crlf.c |  7 +++++++
- 3 files changed, 17 insertions(+), 9 deletions(-)
+ 2 files changed, 16 insertions(+), 9 deletions(-)
 
-diff --git a/CHANGELOG.md b/CHANGELOG.md
-index e06155e2a..23702a3cb 100644
---- a/CHANGELOG.md
-+++ b/CHANGELOG.md
-@@ -10,6 +10,7 @@ v0.25 + 1
- * LF -> CRLF filter now correctly honors core.safecrlf=true errors
-   * LF only files were accepted with core.autocrlf=true on CRLF platforms
-   * files containig CRLF in combination with core.autocrlf=input were accepted
-+  * adding files containing CR and CRLF but not the same number failed
- 
- ### API additions
- 
 diff --git a/src/crlf.c b/src/crlf.c
 index dd5a7625c..858a94484 100644
 --- a/src/crlf.c
