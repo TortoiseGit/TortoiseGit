@@ -728,7 +728,13 @@ BOOL set_explicit_app_user_model_id()
     if (!shell32_module)
     {
         shell32_module = load_system32_dll("Shell32.dll");
-        GET_WINDOWS_FUNCTION(shell32_module, SetCurrentProcessExplicitAppUserModelID);
+        /*
+         * We can't typecheck this function here, because it's defined
+         * in <shobjidl.h>, which we're not including due to clashes
+         * with all the manual-COM machinery above.
+         */
+        GET_WINDOWS_FUNCTION_NO_TYPECHECK(
+            shell32_module, SetCurrentProcessExplicitAppUserModelID);
     }
 
     if (p_SetCurrentProcessExplicitAppUserModelID)

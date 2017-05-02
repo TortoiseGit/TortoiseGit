@@ -46,6 +46,9 @@ static const struct keyvalwhere hknames[] = {
  * This is currently precisely the same as the set in ssh.c, but could
  * in principle differ if other backends started to support tty modes
  * (e.g., the pty backend).
+ * The set of modes in in this array is currently significant for
+ * settings migration from old versions; if they change, review the
+ * gppmap() invocation for "TerminalModes".
  */
 const char *const ttymodes[] = {
     "INTR",	"QUIT",     "ERASE",	"KILL",     "EOF",
@@ -748,7 +751,51 @@ void load_open_settings(void *sesskey, Conf *conf)
     gppi(sesskey, "TCPKeepalives", 0, conf, CONF_tcp_keepalives);
     gpps(sesskey, "TerminalType", "xterm", conf, CONF_termtype);
     gpps(sesskey, "TerminalSpeed", "38400,38400", conf, CONF_termspeed);
-    if (!gppmap(sesskey, "TerminalModes", conf, CONF_ttymodes)) {
+    if (gppmap(sesskey, "TerminalModes", conf, CONF_ttymodes)) {
+	/*
+	 * Backwards compatibility with old saved settings.
+	 *
+	 * From the invention of this setting through 0.67, the set of
+	 * terminal modes was fixed, and absence of a mode from this
+	 * setting meant the user had explicitly removed it from the
+	 * UI and we shouldn't send it.
+	 *
+	 * In 0.68, the IUTF8 mode was added, and in handling old
+	 * settings we inadvertently removed the ability to not send
+	 * a mode. Any mode not mentioned was treated as if it was
+	 * set to 'auto' (A).
+	 *
+	 * After 0.68, we added explicit notation to the setting format
+	 * when the user removes a known terminal mode from the list.
+	 *
+	 * So: if any of the modes from the original set is missing, we
+	 * assume this was an intentional removal by the user and add
+	 * an explicit removal ('N'); but if IUTF8 (or any other mode
+	 * added after 0.67) is missing, we assume that its absence is
+	 * due to the setting being old rather than intentional, and
+	 * add it with its default setting.
+	 *
+	 * (This does mean that if a 0.68 user explicitly removed IUTF8,
+	 * we add it back; but removing IUTF8 had no effect in 0.68, so
+	 * we're preserving behaviour, which is the best we can do.)
+	 */
+	for (i = 0; ttymodes[i]; i++) {
+	    if (!conf_get_str_str_opt(conf, CONF_ttymodes, ttymodes[i])) {
+		/* Mode not mentioned in setting. */
+		const char *def;
+		if (!strcmp(ttymodes[i], "IUTF8")) {
+		    /* Any new modes we add in future should be treated
+		     * this way too. */
+		    def = "A";  /* same as new-setting default below */
+		} else {
+		    /* One of the original modes. Absence is probably
+		     * deliberate. */
+		    def = "N";  /* don't send */
+		}
+		conf_set_str_str(conf, CONF_ttymodes, ttymodes[i], def);
+	    }
+	}
+    } else {
 	/* This hardcodes a big set of defaults in any new saved
 	 * sessions. Let's hope we don't change our mind. */
 	for (i = 0; ttymodes[i]; i++)
@@ -845,7 +892,7 @@ void load_open_settings(void *sesskey, Conf *conf)
     {
 	/* SSH-2 only by default */
 	int sshprot = gppi_raw(sesskey, "SshProt", 3);
-	/* Old sessions may contain the values correponding to the fallbacks
+	/* Old sessions may contain the values corresponding to the fallbacks
 	 * we used to allow; migrate them */
 	if (sshprot == 1)      sshprot = 0; /* => "SSH-1 only" */
 	else if (sshprot == 2) sshprot = 3; /* => "SSH-2 only" */
