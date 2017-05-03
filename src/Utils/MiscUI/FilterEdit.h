@@ -150,7 +150,7 @@ protected:
 	COLORREF				m_backColor;
 	HBRUSH					m_brBack;
 	IFilterEditValidator *	m_pValidator;
-	std::unique_ptr<TCHAR[]>	m_pCueBanner;
+	CString					m_sCueBanner;
 };
 
 

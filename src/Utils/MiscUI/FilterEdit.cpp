@@ -131,12 +131,12 @@ BOOL CFilterEdit::SetCueBanner(LPCWSTR lpcwText)
 {
 	if (lpcwText)
 	{
-		size_t len = wcslen(lpcwText);
-		m_pCueBanner.reset(new TCHAR[len + 1]);
-		wcscpy_s(m_pCueBanner.get(), len + 1, lpcwText);
+		m_sCueBanner = lpcwText;
 		InvalidateRect(nullptr, TRUE);
 		return TRUE;
 	}
+	m_sCueBanner.Empty();
+	InvalidateRect(nullptr, TRUE);
 	return FALSE;
 }
 
@@ -371,11 +371,9 @@ void CFilterEdit::OnPaint()
 
 void CFilterEdit::DrawDimText()
 {
-	if (!m_pCueBanner.get())
+	if (m_sCueBanner.IsEmpty())
 		return;
 	if (GetWindowTextLength())
-		return;
-	if (m_pCueBanner.get()[0] == L'\0')
 		return;
 	if (GetFocus() == this)
 		return;
@@ -390,7 +388,7 @@ void CFilterEdit::DrawDimText()
 	dcDraw.SelectObject((*GetFont()));
 	dcDraw.SetTextColor(GetSysColor(COLOR_GRAYTEXT));
 	dcDraw.SetBkColor(GetSysColor(COLOR_WINDOW));
-	dcDraw.DrawText(m_pCueBanner.get(), (int)wcslen(m_pCueBanner.get()), &rRect, DT_CENTER | DT_VCENTER);
+	dcDraw.DrawText(m_sCueBanner, m_sCueBanner.GetLength(), &rRect, DT_CENTER | DT_VCENTER);
 	dcDraw.RestoreDC(iState);
 	return;
 }
