@@ -32,7 +32,6 @@ CFilterEdit::CFilterEdit()
 	, m_iCancelClickedMessageId(WM_FILTEREDIT_CANCELCLICKED)
 	, m_pValidator(nullptr)
 	, m_backColor(GetSysColor(COLOR_WINDOW))
-	, m_brBack(nullptr)
 {
 	m_rcEditArea.SetRect(0, 0, 0, 0);
 	m_rcButtonArea.SetRect(0, 0, 0, 0);
@@ -49,8 +48,6 @@ CFilterEdit::~CFilterEdit()
 		DestroyIcon(m_hIconCancelPressed);
 	if (m_hIconInfo)
 		DestroyIcon(m_hIconInfo);
-	if (m_brBack)
-		DeleteObject(m_brBack);
 }
 
 BEGIN_MESSAGE_MAP(CFilterEdit, CEdit)
@@ -323,11 +320,10 @@ void CFilterEdit::Validate()
 {
 	if (m_pValidator)
 	{
-		int len = GetWindowTextLength();
-		TCHAR * pBuf = new TCHAR[len+1];
-		GetWindowText(pBuf, len+1);
+		CString text;
+		GetWindowText(text);
 		m_backColor = GetSysColor(COLOR_WINDOW);
-		if (!m_pValidator->Validate(pBuf))
+		if (!m_pValidator->Validate(text))
 		{
 			// Use a background color slightly shifted to red.
 			// We do this by increasing red component and decreasing green and blue.
@@ -342,11 +338,9 @@ void CFilterEdit::Validate()
 			g = g * (100 - SHIFT_PRECENTAGE) / 100;
 			b = b * (100 - SHIFT_PRECENTAGE) / 100;
 			m_backColor = RGB(r, g, b);
-			if (m_brBack)
-				DeleteObject(m_brBack);
-			m_brBack = CreateSolidBrush(m_backColor);
+			m_brBack.DeleteObject();
+			m_brBack.CreateSolidBrush(m_backColor);
 		}
-		delete [] pBuf;
 	}
 }
 
