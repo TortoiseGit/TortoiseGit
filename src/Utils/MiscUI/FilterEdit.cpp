@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2012, 2014, 2016 - TortoiseGit
-// Copyright (C) 2007, 2012-2013 - TortoiseSVN
+// Copyright (C) 2007, 2012-2013, 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -142,7 +142,7 @@ void CFilterEdit::ResizeWindow()
 	if (!::IsWindow(m_hWnd))
 		return;
 
-	RECT editrc, rc;
+	CRect editrc, rc;
 	GetRect(&editrc);
 	GetClientRect(&rc);
 	editrc.left = rc.left + 4;
@@ -150,10 +150,16 @@ void CFilterEdit::ResizeWindow()
 	editrc.right = rc.right - 4;
 	editrc.bottom = rc.bottom - 4;
 
+	CWindowDC dc(this);
+	HGDIOBJ oldFont = dc.SelectObject(GetFont()->GetSafeHandle());
+	TEXTMETRIC tm = { 0 };
+	dc.GetTextMetrics(&tm);
+	dc.SelectObject(oldFont);
+
 	m_rcEditArea.left = editrc.left + m_sizeInfoIcon.cx;
 	m_rcEditArea.right = editrc.right - m_sizeCancelIcon.cx - 5;
-	m_rcEditArea.top = editrc.top;
-	m_rcEditArea.bottom = editrc.bottom;
+	m_rcEditArea.top = (rc.Height() - tm.tmHeight) / 2;
+	m_rcEditArea.bottom = m_rcEditArea.top + tm.tmHeight;
 
 	m_rcButtonArea.left = m_rcEditArea.right + 5;
 	m_rcButtonArea.right = rc.right;
