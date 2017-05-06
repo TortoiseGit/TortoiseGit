@@ -314,8 +314,8 @@ BOOL CLogDlg::OnInitDialog()
 	SetSplitterRange();
 
 	// the filter control has a 'cancel' button (the red 'X'), we need to load its bitmap
-	m_cFilter.SetCancelBitmaps(IDI_CANCELNORMAL, IDI_CANCELPRESSED);
-	m_cFilter.SetInfoIcon(IDI_LOGFILTER);
+	m_cFilter.SetCancelBitmaps(IDI_CANCELNORMAL, IDI_CANCELPRESSED, 14, 14);
+	m_cFilter.SetInfoIcon(IDI_LOGFILTER, 19, 19);
 	m_cFilter.SetValidator(this);
 
 	AdjustControlSize(IDC_LOG_ALLBRANCH);
@@ -442,8 +442,8 @@ BOOL CLogDlg::OnInitDialog()
 	ShowGravatar();
 	m_gravatar.Init();
 
-	m_cFileFilter.SetCancelBitmaps(IDI_CANCELNORMAL, IDI_CANCELPRESSED);
-	m_cFileFilter.SetInfoIcon(IDI_FILTEREDIT);
+	m_cFilter.SetCancelBitmaps(IDI_CANCELNORMAL, IDI_CANCELPRESSED, 14, 14);
+	m_cFilter.SetInfoIcon(IDI_LOGFILTER, 19, 19);
 	temp.LoadString(IDS_FILEDIFF_FILTERCUE);
 	temp = L"   " + temp;
 	m_cFileFilter.SetCueBanner(temp);

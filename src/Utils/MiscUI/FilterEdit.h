@@ -76,11 +76,15 @@ public:
 	 * the normal state, the second one when the button is pressed.
 	 * if \c bShowAlways is true, then the cancel button is shown even if there
 	 * is no text in the control.
+	 *
+	 * The \c cx96dpi and \c cy96dpi specifies width and height of icon in 96 DPI.
+	 * Control will automatically scale icon according to current DPI.
+	 *
 	 * \note To catch the WM_FILTEREDIT_CANCELCLICKED notification, handle the message directly (or use the
 	 * WM_MESSAGE() macro). The LPARAM parameter of the message contains the
 	 * rectangle (pointer to RECT) of the info icon in screen coordinates.
 	 */
-	BOOL SetCancelBitmaps(UINT uCancelNormal, UINT uCancelPressed, BOOL bShowAlways = FALSE);
+	BOOL SetCancelBitmaps(UINT uCancelNormal, UINT uCancelPressed, int cx96dpi, int cy96dpi, BOOL bShowAlways = FALSE);
 
 	/**
 	 * Sets the info icon shown on the left.
@@ -92,12 +96,21 @@ public:
 	 * WM_MESSAGE() macro). The LPARAM parameter of the message contains the
 	 * rectangle (pointer to RECT) of the info icon in screen coordinates.
 	 */
-	BOOL SetInfoIcon(UINT uInfo);
+	BOOL SetInfoIcon(UINT uInfo, int cx96dpi, int cy96dpi);
 
 	/**
-	 * Sets the message Id which is sent when the user clicks on the info
-	 * button.
-	 */
+	 * Sets the info icon shown on the left.
+	 * A notification is sent when the user clicks on that icon.
+	 * The notification is either WM_FILTEREDIT_INFOCLICKED or the one
+	 * set with SetButtonClickedMessageId().
+	 *
+	 * The \c cx96dpi and \c cy96dpi specifies width and height of icon in 96 DPI.
+	 * Control will automatically scale icon according to current DPI.
+	 *
+	 * To catch the notification, handle the message directly (or use the
+	 * WM_MESSAGE() macro). The LPARAM parameter of the message contains the
+	 * rectangle (pointer to RECT) of the info icon in screen coordinates.
+	*/
 	void SetButtonClickedMessageId(UINT iButtonClickedMessageId, UINT iCancelClickedMessageId);
 
 	/**
@@ -133,6 +146,7 @@ protected:
 	CSize			GetIconSize(HICON hIcon);
 	void			Validate();
 	void			DrawDimText();
+	HICON			LoadDpiScaledIcon(UINT resourceId, int cx96dpi, int cy96dpi);
 
 protected:
 	HICON					m_hIconCancelNormal;

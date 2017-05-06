@@ -275,8 +275,8 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	// the filter control has a 'cancel' button (the red 'X'), we need to load its bitmap
-	m_ctrlFilter.SetCancelBitmaps(IDI_CANCELNORMAL, IDI_CANCELPRESSED);
-	m_ctrlFilter.SetInfoIcon(IDI_FILTEREDIT);
+	m_ctrlFilter.SetCancelBitmaps(IDI_CANCELNORMAL, IDI_CANCELPRESSED, 14, 14);
+	m_ctrlFilter.SetInfoIcon(IDI_LOGFILTER, 19, 19);
 	SetFilterCueText();
 
 	AddAnchor(IDC_TREE_REF, TOP_LEFT, BOTTOM_LEFT);
