@@ -6,7 +6,7 @@
 	<sect1 id="tgit-ssh-introduction">
 		<title>Introduction</title>
 		<para>
-			PuTTY comes with a great session management, where you can save attributes of connections (e.g. ssh key, username, port). This page describes how to make use of it - partly in form of a FAQ. For this to work, you need the <ulink url="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">PuTTY.exe-application</ulink>.
+			PuTTY comes with a great session management, where you can save attributes of connections (e.g. ssh key, username, port). This page describes how to make use of it - partly in form of a FAQ. For this to work, you need the <ulink url="https://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">PuTTY.exe-application</ulink>.
 		</para>
 		<sect2 id="tgit-ssh-introduction-sessions-howto">
 			<title>How to use sessions</title>

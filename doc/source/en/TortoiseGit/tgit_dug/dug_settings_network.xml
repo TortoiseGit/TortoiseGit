@@ -59,7 +59,7 @@
 		TortoiseGitPlink does not have any documentation of its own because it
 		is just a minor variant of Plink. Find out about command line
 		parameters from the
-		<ulink url="http://www.chiark.greenend.org.uk/~sgtatham/putty/">
+		<ulink url="https://www.chiark.greenend.org.uk/~sgtatham/putty/">
 			<citetitle>PuTTY website</citetitle>
 		</ulink>
 	</para>
