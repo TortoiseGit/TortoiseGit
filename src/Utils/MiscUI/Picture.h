@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2007,2009, 2012, 2014-2015 - TortoiseSVN
+// Copyright (C) 2003-2007, 2009, 2012-2015, 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -19,9 +19,9 @@
 #pragma once
 #include "tstring.h"
 #include <string>
-#include "ocidl.h"
+#include <ocidl.h>
 #pragma warning(push)
-#pragma warning(disable: 4458)
+#pragma warning(disable: 4458) // declaration of 'xxx' hides class member
 #include <GdiPlus.h>
 #pragma warning(pop)
 
@@ -79,7 +79,7 @@ public:
 	 * \note
 	 * if the given size is not the actual picture size, then the picture will
 	 * be drawn stretched to the given dimensions.
-	 * \param pDC the device context to draw on
+	 * \param hDC the device context to draw on
 	 * \param DrawRect the dimensions to draw the picture on
 	 * \return TRUE if succeeded
 	 */
@@ -88,7 +88,7 @@ public:
 	 * get the original picture pixel size. A pointer to a device context is needed
 	 * for the pixel calculation (DPI). Also updates the classes height and width
 	 * members.
-	 * \param pDC the device context to perform the calculations on
+	 * \param hDC the device context to perform the calculations on
 	 * \return TRUE if succeeded
 	 */
 	bool UpdateSizeOnDC(HDC hDC);
@@ -157,9 +157,9 @@ public:
 	long SetActiveFrame(UINT frame);
 
 	/**
-	* frees the allocated memory that holds the IPicture interface data and
-	* clear picture information
-	*/
+	 * frees the allocated memory that holds the IPicture interface data and
+	 * clear picture information
+	 */
 	void FreePictureData();
 
 	DWORD GetFileSize() const {return m_nSize;}
@@ -191,7 +191,7 @@ private:
 	GdiplusStartupInput gdiplusStartupInput;
 	ULONG_PTR			gdiplusToken;
 	Bitmap *			pBitmap;
-	bool				bHaveGDIPlus;
+	BYTE*				pBitmapBuffer;
 	InterpolationMode	m_ip;
 	bool				bIsIcon;
 	bool				bIsTiff;
