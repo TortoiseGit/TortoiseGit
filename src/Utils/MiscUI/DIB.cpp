@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2006 - Stefan Kueng
+// Copyright (C) 2003-2006, 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -17,7 +17,6 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #include "stdafx.h"
-#include "stdex_vector.h"
 #include "DIB.h"
 
 CDib::CDib()
@@ -65,7 +64,7 @@ void CDib::Create32BitFromPicture (CPictureHolder* pPicture, int iWidth, int iHe
 	pPicture->Render(&tempDC,r,r);
 
 	// Create a 32 bit bitmap
-	stdex::vector<DWORD> pBits(iWidth * iHeight);
+	std::vector<DWORD> pBits(iWidth * iHeight);
 
 	BITMAPINFO bi;
     bi.bmiHeader.biSize          = sizeof(BITMAPINFOHEADER);
@@ -81,7 +80,7 @@ void CDib::Create32BitFromPicture (CPictureHolder* pPicture, int iWidth, int iHe
     bi.bmiHeader.biClrImportant  = 0;
 
 
-	SetBitmap(&bi, pBits);
+	SetBitmap(&bi, pBits.data());
 
 	DWORD* pAr = (DWORD*)GetDIBits();
 
