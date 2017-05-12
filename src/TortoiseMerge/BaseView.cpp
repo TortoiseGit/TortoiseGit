@@ -128,18 +128,21 @@ CBaseView::CBaseView()
 	m_nTabMode = (int)(DWORD)CRegDWORD(L"Software\\TortoiseGitMerge\\TabMode", TABMODE_NONE);
 	m_bEditorConfigEnabled = !!(DWORD)CRegDWORD(L"Software\\TortoiseGitMerge\\EnableEditorConfig", FALSE);
 	std::fill_n(m_apFonts, fontsCount, (CFont*)nullptr);
-	m_hConflictedIcon = LoadIcon(IDI_CONFLICTEDLINE);
-	m_hConflictedIgnoredIcon = LoadIcon(IDI_CONFLICTEDIGNOREDLINE);
-	m_hRemovedIcon = LoadIcon(IDI_REMOVEDLINE);
-	m_hAddedIcon = LoadIcon(IDI_ADDEDLINE);
-	m_hWhitespaceBlockIcon = LoadIcon(IDI_WHITESPACELINE);
-	m_hEqualIcon = LoadIcon(IDI_EQUALLINE);
-	m_hLineEndingCR = LoadIcon(IDI_LINEENDINGCR);
-	m_hLineEndingCRLF = LoadIcon(IDI_LINEENDINGCRLF);
-	m_hLineEndingLF = LoadIcon(IDI_LINEENDINGLF);
-	m_hEditedIcon = LoadIcon(IDI_LINEEDITED);
-	m_hMovedIcon = LoadIcon(IDI_MOVEDLINE);
-	m_hMarkedIcon = LoadIcon(IDI_LINEMARKED);
+
+	int cxIcon = GetSystemMetrics(SM_CXSMICON);
+	int cyIcon = GetSystemMetrics(SM_CYSMICON);
+	m_hConflictedIcon = (HCURSOR)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_CONFLICTEDLINE), IMAGE_ICON, cxIcon, cyIcon, 0);
+	m_hConflictedIgnoredIcon = (HCURSOR)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_CONFLICTEDIGNOREDLINE), IMAGE_ICON, cxIcon, cyIcon, 0);
+	m_hRemovedIcon = (HCURSOR)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_REMOVEDLINE), IMAGE_ICON, cxIcon, cyIcon, 0);
+	m_hAddedIcon = (HCURSOR)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ADDEDLINE), IMAGE_ICON, cxIcon, cyIcon, 0);
+	m_hWhitespaceBlockIcon = (HCURSOR)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_WHITESPACELINE), IMAGE_ICON, cxIcon, cyIcon, 0);
+	m_hEqualIcon = (HCURSOR)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_EQUALLINE), IMAGE_ICON, cxIcon, cyIcon, 0);
+	m_hLineEndingCR = (HCURSOR)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_LINEENDINGCR), IMAGE_ICON, cxIcon, cyIcon, 0);
+	m_hLineEndingCRLF = (HCURSOR)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_LINEENDINGCRLF), IMAGE_ICON, cxIcon, cyIcon, 0);
+	m_hLineEndingLF = (HCURSOR)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_LINEENDINGLF), IMAGE_ICON, cxIcon, cyIcon, 0);
+	m_hEditedIcon = (HCURSOR)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_LINEEDITED), IMAGE_ICON, cxIcon, cyIcon, 0);
+	m_hMovedIcon = (HCURSOR)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_MOVEDLINE), IMAGE_ICON, cxIcon, cyIcon, 0);
+	m_hMarkedIcon = (HCURSOR)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_LINEMARKED), IMAGE_ICON, cxIcon, cyIcon, 0);
 	m_margincursor = (HCURSOR)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDC_MARGINCURSOR), IMAGE_CURSOR, 0, 0, LR_DEFAULTSIZE);
 
 	for (int i=0; i<1024; ++i)
