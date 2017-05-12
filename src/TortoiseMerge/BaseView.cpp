@@ -47,7 +47,6 @@
 #define new DEBUG_NEW
 #endif
 
-#define MARGINWIDTH 20
 #define HEADERHEIGHT 10
 
 #define IDT_SCROLLTIMER 101
@@ -1337,11 +1336,10 @@ void CBaseView::DrawMargin(CDC *pdc, const CRect &rect, int nLineIndex)
 			break;
 		}
 
-
+		int iconWidth = GetSystemMetrics(SM_CXSMICON);
+		int iconHeight = GetSystemMetrics(SM_CYSMICON);
 		if (icon)
 		{
-			int iconWidth = GetSystemMetrics(SM_CXSMICON);
-			int iconHeight = GetSystemMetrics(SM_CYSMICON);
 			::DrawIconEx(pdc->m_hDC, rect.left + 2, rect.top + (rect.Height() - iconHeight) / 2, icon, iconWidth, iconHeight, 0, nullptr, DI_NORMAL);
 		}
 		if ((m_bViewLinenumbers)&&(m_nDigits))
@@ -1376,7 +1374,7 @@ void CBaseView::DrawMargin(CDC *pdc, const CRect &rect, int nLineIndex)
 					pdc->SetTextColor(::GetSysColor(COLOR_WINDOWTEXT));
 
 					pdc->SelectObject(GetFont());
-					pdc->ExtTextOut(rect.left + 18, rect.top, ETO_CLIPPED, &rect, sLinenumber, nullptr);
+					pdc->ExtTextOut(rect.left + iconWidth + 2, rect.top, ETO_CLIPPED, &rect, sLinenumber, nullptr);
 				}
 			}
 		}
@@ -1385,6 +1383,8 @@ void CBaseView::DrawMargin(CDC *pdc, const CRect &rect, int nLineIndex)
 
 int CBaseView::GetMarginWidth()
 {
+	int marginWidth = GetSystemMetrics(SM_CXSMICON) + 2 + 2;
+
 	if ((m_bViewLinenumbers)&&(m_pViewData)&&(m_pViewData->GetCount()))
 	{
 		if (m_nDigits <= 0)
@@ -1396,9 +1396,10 @@ int CBaseView::GetMarginWidth()
 			m_nDigits = sMax.GetLength();
 		}
 		int nWidth = GetCharWidth();
-		return (MARGINWIDTH + (m_nDigits * nWidth) + 2);
+		marginWidth += (m_nDigits * nWidth) + 2;
 	}
-	return MARGINWIDTH;
+
+	return marginWidth;
 }
 
 void CBaseView::DrawHeader(CDC *pdc, const CRect &rect)
@@ -2936,10 +2937,11 @@ INT_PTR CBaseView::OnToolHitTest(CPoint point, TOOLINFO* pTI) const
 	CRect rcClient;
 	GetClientRect(rcClient);
 	CRect textrect(rcClient.left, rcClient.top, rcClient.Width(), m_nLineHeight+HEADERHEIGHT);
-	int marginwidth = MARGINWIDTH;
+
+	int marginwidth = GetSystemMetrics(SM_CXSMICON) + 2 + 2;
 	if ((m_bViewLinenumbers)&&(m_pViewData)&&(m_pViewData->GetCount())&&(m_nDigits > 0))
 	{
-		marginwidth = (MARGINWIDTH + (m_nDigits * m_nCharWidth) + 2);
+		marginwidth += (m_nDigits * m_nCharWidth) + 2;
 	}
 	CRect borderrect(rcClient.left, rcClient.top+m_nLineHeight+HEADERHEIGHT, marginwidth, rcClient.bottom);
 
