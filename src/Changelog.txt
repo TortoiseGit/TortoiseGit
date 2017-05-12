@@ -25,6 +25,7 @@ Released: unreleased
  * Fixed issue #2960: libgit2 fails to resolve absolute symlinks
  * Fixed issue #2963: Rebase dialog does not change "Start (FastFwd)" button during rebase process
  * Fixed issue #2968: Active urls in output windows opened when hitting ESC
+ * Fixed issue #2985: TortoiseGit hangs when prematurely double clicking on "Please wait..."
 
 = Release 2.4.0 =
 Released: 2017-01-31

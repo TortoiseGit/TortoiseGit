@@ -2616,14 +2616,15 @@ void CGitStatusListCtrl::OnContextMenu(CWnd* pWnd, CPoint point)
 
 void CGitStatusListCtrl::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 {
-	Locker lock(m_critSec);
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 	*pResult = 0;
-	if (m_bBlock)
+	if (m_bBlock || m_bBusy)
 		return;
 
 	if (pNMLV->iItem < 0)
 		return;
+
+	Locker lock(m_critSec);
 
 	auto file = GetListEntry(pNMLV->iItem);
 
