@@ -94,7 +94,7 @@ public:
 	CEnvironment() : baseptr(nullptr) {}
 	CEnvironment(const CEnvironment& env) : std::vector<TCHAR>(env)
 	{
-		baseptr = &__super::at(0);
+		baseptr = data();
 	}
 	CEnvironment& operator =(const CEnvironment& env)
 	{
@@ -102,7 +102,7 @@ public:
 		if (empty())
 			baseptr = nullptr;
 		else
-			baseptr = &__super::at(0);
+			baseptr = data();
 		return *this;
 	}
 	void CopyProcessEnvironment();

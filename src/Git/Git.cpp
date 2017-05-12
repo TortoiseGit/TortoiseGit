@@ -2634,7 +2634,7 @@ CEnvironment::operator LPTSTR()
 {
 	if (empty())
 		return nullptr;
-	return &__super::at(0);
+	return data();
 }
 
 CEnvironment::operator LPWSTR*()
@@ -2653,7 +2653,7 @@ void CEnvironment::CopyProcessEnvironment()
 
 	push_back(L'\0');
 	push_back(L'\0');
-	baseptr = &__super::at(0);
+	baseptr = data();
 
 	FreeEnvironmentStrings(porig);
 }
@@ -2716,7 +2716,7 @@ void CEnvironment::SetEnv(const TCHAR *name, const TCHAR* value)
 		if (empty())
 			baseptr = nullptr;
 		else
-			baseptr = &__super::at(0);
+			baseptr = data();
 		return;
 	}
 
@@ -2737,7 +2737,7 @@ void CEnvironment::SetEnv(const TCHAR *name, const TCHAR* value)
 		++i;
 		it= begin()+i;
 	}
-	baseptr = &__super::at(0);
+	baseptr = data();
 }
 
 void CEnvironment::AddToPath(CString value)
