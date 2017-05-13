@@ -4,11 +4,12 @@
     using System.Runtime.InteropServices;
 
     // Original IDL definition can be found at:
-    // http://tortoisesvn.tigris.org/svn/tortoisesvn/trunk/contrib/issue-tracker-plugins/inc/IBugTraqProvider.idl
+    // https://sourceforge.net/p/tortoisesvn/code/HEAD/tree/trunk/contrib/issue-tracker-plugins/inc/IBugTraqProvider.idl?format=raw
+    // https://sourceforge.net/p/tortoisesvn/code/HEAD/tree/trunk/contrib/issue-tracker-plugins/inc/IBugTraqProvider.idl
     //
     // See also:
     // https://tortoisegit.org/docs/tortoisegit/tgit-ibugtraqprovider-1.html
-    // http://tortoisesvn.net/docs/release/TortoiseSVN_en/tsvn-ibugtraqprovider.html#tsvn-ibugtraqprovider-1
+    // https://tortoisesvn.net/docs/release/TortoiseSVN_en/tsvn-ibugtraqprovider.html#tsvn-ibugtraqprovider-1
     //
 
     /// <remarks>
@@ -127,7 +128,7 @@
     //
     // See also:
     // https://tortoisegit.org/docs/tortoisegit/tgit-ibugtraqprovider-2.html
-    // http://tortoisesvn.net/docs/release/TortoiseSVN_en/tsvn-ibugtraqprovider-2.html
+    // https://tortoisesvn.net/docs/release/TortoiseSVN_en/tsvn-ibugtraqprovider-2.html
     //
 
     /// <remarks>

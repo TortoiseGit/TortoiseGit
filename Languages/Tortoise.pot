@@ -11063,7 +11063,7 @@ msgid "author (>= 0.5%)"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 65535)
-msgid "based on TortoiseSVN (http://www.tortoisesvn.net/)"
+msgid "based on TortoiseSVN (https://tortoisesvn.net/)"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ_CONFIG: Control id 65535)

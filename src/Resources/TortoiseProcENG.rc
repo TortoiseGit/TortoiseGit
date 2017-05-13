@@ -154,7 +154,7 @@ BEGIN
     EDITTEXT        IDC_VERSIONABOUT,14,199,304,35,ES_MULTILINE | ES_READONLY | NOT WS_BORDER
     PUSHBUTTON      "Check For Updates...",IDC_UPDATE,7,244,110,14
     DEFPUSHBUTTON   "OK",IDOK,276,244,50,14
-    LTEXT           "based on TortoiseSVN (http://www.tortoisesvn.net/)",IDC_STATIC,13,71,310,8
+    LTEXT           "based on TortoiseSVN (https://tortoisesvn.net/)",IDC_STATIC,13,71,310,8
     LTEXT           "",IDC_STATIC,9,11,313,41,SS_SUNKEN,WS_EX_TRANSPARENT
 END
 
