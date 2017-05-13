@@ -878,6 +878,21 @@
     <ClCompile Include="..\tgit\tmp-objdir.c">
       <Filter>git</Filter>
     </ClCompile>
+    <ClCompile Include="..\tgit\compat\qsort_s.c">
+      <Filter>compat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\compat\winansi.c">
+      <Filter>compat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\trailer.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\refs\ref-cache.c">
+      <Filter>git\refs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\oidset.c">
+      <Filter>git</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\tgit\compat\msvc.h">
@@ -1233,6 +1248,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\tgit\tmp-objdir.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\hash.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\trailer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\refs\ref-cache.h">
+      <Filter>git\refs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\oidset.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

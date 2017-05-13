@@ -49,10 +49,10 @@ extern int die_is_recursing_dll(void);
 
 extern void free_all_pack(void);
 extern void reset_git_env(void);
-extern void drop_attr_stack(void);
+extern void drop_all_attr_stacks(void);
 extern void git_atexit_dispatch(void);
 extern void git_atexit_clear(void);
-extern void invalidate_ref_cache(const char* submodule);
+extern void invalidate_ref_cache(void);
 extern void cmd_log_init(int argc, const char** argv, const char* prefix, struct rev_info* rev, struct setup_revision_opt* opt);
 extern int estimate_commit_count(struct rev_info* rev, struct commit_list* list);
 extern int log_tree_commit(struct rev_info*, struct commit*);
@@ -103,10 +103,11 @@ int git_init(void)
 	reset_git_env();
 	// set HOME if not set already
 	gitsetenv("HOME", get_windows_home_directory(), 0);
-	drop_attr_stack();
+	drop_all_attr_stacks();
 	git_config_clear();
 	g_prefix = setup_git_directory();
 	git_config(git_default_config, NULL);
+	invalidate_ref_cache();
 
 	return 0;
 }
@@ -397,7 +398,7 @@ int git_open_log(GIT_LOG * handle, char * arg)
 
 	memset(p_Rev,0,sizeof(struct rev_info));
 
-	invalidate_ref_cache(NULL);
+	invalidate_ref_cache();
 
 	init_revisions(p_Rev, g_prefix);
 	p_Rev->diff = 1;
@@ -892,6 +893,9 @@ int git_get_config(const char *key, char *buffer, int size)
 	struct config_buf buf;
 	struct git_config_source config_source = { 0 };
 
+	struct config_options opts = { 0 };
+	opts.respect_includes = 1;
+
 	buf.buf=buffer;
 	buf.size=size;
 	buf.seen = 0;
@@ -917,27 +921,27 @@ int git_get_config(const char *key, char *buffer, int size)
 	if (!buf.seen)
 	{
 		config_source.file = local;
-		git_config_with_options(get_config, &buf, &config_source, 1);
+		git_config_with_options(get_config, &buf, &config_source, &opts);
 	}
 	if (!buf.seen && global)
 	{
 		config_source.file = global;
-		git_config_with_options(get_config, &buf, &config_source, 1);
+		git_config_with_options(get_config, &buf, &config_source, &opts);
 	}
 	if (!buf.seen && globalxdg)
 	{
 		config_source.file = globalxdg;
-		git_config_with_options(get_config, &buf, &config_source, 1);
+		git_config_with_options(get_config, &buf, &config_source, &opts);
 	}
 	if (!buf.seen && system)
 	{
 		config_source.file = system;
-		git_config_with_options(get_config, &buf, &config_source, 1);
+		git_config_with_options(get_config, &buf, &config_source, &opts);
 	}
 	if (!buf.seen && programdata)
 	{
 		config_source.file = programdata;
-		git_config_with_options(get_config, &buf, &config_source, 1);
+		git_config_with_options(get_config, &buf, &config_source, &opts);
 	}
 
 	if(local)

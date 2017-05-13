@@ -60,6 +60,7 @@
     <ClCompile Include="..\tgit\compat\msvc.c" />
     <ClCompile Include="..\tgit\block-sha1\sha1.c" />
     <ClCompile Include="..\tgit\compat\basename.c" />
+    <ClCompile Include="..\tgit\compat\qsort_s.c" />
     <ClCompile Include="..\tgit\compat\win32\dirent.c" />
     <ClCompile Include="..\tgit\compat\fopen.c" />
     <ClCompile Include="..\tgit\compat\memmem.c" />
@@ -96,6 +97,7 @@
     <ClCompile Include="..\tgit\column.c" />
     <ClCompile Include="..\tgit\combine-diff.c" />
     <ClCompile Include="..\tgit\commit.c" />
+    <ClCompile Include="..\tgit\compat\winansi.c" />
     <ClCompile Include="..\tgit\config.c" />
     <ClCompile Include="..\tgit\connect.c" />
     <ClCompile Include="..\tgit\connected.c" />
@@ -154,6 +156,7 @@
     <ClCompile Include="..\tgit\notes-utils.c" />
     <ClCompile Include="..\tgit\notes.c" />
     <ClCompile Include="..\tgit\object.c" />
+    <ClCompile Include="..\tgit\oidset.c" />
     <ClCompile Include="..\tgit\pack-bitmap-write.c" />
     <ClCompile Include="..\tgit\pack-bitmap.c" />
     <ClCompile Include="..\tgit\pack-check.c" />
@@ -180,6 +183,7 @@
     <ClCompile Include="..\tgit\refs.c" />
     <ClCompile Include="..\tgit\refs\files-backend.c" />
     <ClCompile Include="..\tgit\refs\iterator.c" />
+    <ClCompile Include="..\tgit\refs\ref-cache.c" />
     <ClCompile Include="..\tgit\remote.c" />
     <ClCompile Include="..\tgit\replace_object.c" />
     <ClCompile Include="..\tgit\rerere.c" />
@@ -209,6 +213,7 @@
     <ClCompile Include="..\tgit\tempfile.c" />
     <ClCompile Include="..\tgit\tmp-objdir.c" />
     <ClCompile Include="..\tgit\trace.c" />
+    <ClCompile Include="..\tgit\trailer.c" />
     <ClCompile Include="..\tgit\transport-helper.c" />
     <ClCompile Include="..\tgit\transport.c" />
     <ClCompile Include="..\tgit\tree-diff.c" />
@@ -408,6 +413,7 @@
     <ClInclude Include="..\tgit\gpg-interface.h" />
     <ClInclude Include="..\tgit\graph.h" />
     <ClInclude Include="..\tgit\grep.h" />
+    <ClInclude Include="..\tgit\hash.h" />
     <ClInclude Include="..\tgit\hashmap.h" />
     <ClInclude Include="..\tgit\help.h" />
     <ClInclude Include="..\tgit\iterator.h" />
@@ -428,6 +434,7 @@
     <ClInclude Include="..\tgit\notes-utils.h" />
     <ClInclude Include="..\tgit\notes.h" />
     <ClInclude Include="..\tgit\object.h" />
+    <ClInclude Include="..\tgit\oidset.h" />
     <ClInclude Include="..\tgit\pack-bitmap.h" />
     <ClInclude Include="..\tgit\pack-objects.h" />
     <ClInclude Include="..\tgit\pack-revindex.h" />
@@ -443,6 +450,7 @@
     <ClInclude Include="..\tgit\ref-filter.h" />
     <ClInclude Include="..\tgit\reflog-walk.h" />
     <ClInclude Include="..\tgit\refs.h" />
+    <ClInclude Include="..\tgit\refs\ref-cache.h" />
     <ClInclude Include="..\tgit\refs\refs-internal.h" />
     <ClInclude Include="..\tgit\remote.h" />
     <ClInclude Include="..\tgit\rerere.h" />
@@ -465,6 +473,7 @@
     <ClInclude Include="..\tgit\tempfile.h" />
     <ClInclude Include="..\tgit\thread-utils.h" />
     <ClInclude Include="..\tgit\tmp-objdir.h" />
+    <ClInclude Include="..\tgit\trailer.h" />
     <ClInclude Include="..\tgit\transport.h" />
     <ClInclude Include="..\tgit\tree-walk.h" />
     <ClInclude Include="..\tgit\tree.h" />

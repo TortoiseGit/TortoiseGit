@@ -9,6 +9,7 @@ Released: unreleased
  * Fixed issue #2966: Do not need to confirm cancel out of commit when there are no changes left
  * Fixed issue #2861: Cloning a repository with many files tracked by git-lfs is extremely slow
  * Various High DPI optimizations
+ * Update libgit to 2.13.0
 
 == Bug Fixes ==
  * Fixed issue #2909: Commit window unclosable after clicking "No" and "do not ask again"
