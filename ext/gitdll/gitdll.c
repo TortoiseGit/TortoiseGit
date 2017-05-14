@@ -888,7 +888,7 @@ const wchar_t *wget_msysgit_etc(void)
 
 int git_get_config(const char *key, char *buffer, int size)
 {
-	char *local, *global, *globalxdg;
+	char *local = NULL, *global, *globalxdg;
 	const char *home, *system, *programdata;
 	struct config_buf buf;
 	struct git_config_source config_source = { 0 };
@@ -916,9 +916,10 @@ int git_get_config(const char *key, char *buffer, int size)
 	system = git_etc_gitconfig();
 	programdata = git_program_data_config();
 
-	local = git_pathdup("config");
+	if (have_git_dir())
+		local = git_pathdup("config");
 
-	if (!buf.seen)
+	if (local)
 	{
 		config_source.file = local;
 		git_config_with_options(get_config, &buf, &config_source, &opts);
