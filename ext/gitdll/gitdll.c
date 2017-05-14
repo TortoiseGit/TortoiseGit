@@ -888,7 +888,6 @@ const wchar_t *wget_msysgit_etc(void)
 
 int git_get_config(const char *key, char *buffer, int size)
 {
-	char *local = NULL, *global, *globalxdg;
 	const char *home, *system, *programdata;
 	struct config_buf buf;
 	struct git_config_source config_source = { 0 };
@@ -901,56 +900,54 @@ int git_get_config(const char *key, char *buffer, int size)
 	buf.seen = 0;
 	buf.key = key;
 
+	if (have_git_dir())
+	{
+		char* local = git_pathdup("config");
+		config_source.file = local;
+		git_config_with_options(get_config, &buf, &config_source, &opts);
+		free(local);
+		if (buf.seen)
+			return !buf.seen;
+	}
+
 	home = get_windows_home_directory();
 	if (home)
 	{
-		global = xstrdup(mkpath("%s/.gitconfig", home));
-		globalxdg = xstrdup(mkpath("%s/.config/git/config", home));
-	}
-	else
-	{
-		global = NULL;
-		globalxdg = NULL;
+		char* global = xstrdup(mkpath("%s/.gitconfig", home));
+		if (global)
+		{
+			config_source.file = global;
+			git_config_with_options(get_config, &buf, &config_source, &opts);
+			free(global);
+			if (buf.seen)
+				return !buf.seen;
+		}
+		char* globalxdg = xstrdup(mkpath("%s/.config/git/config", home));
+		if (globalxdg)
+		{
+			config_source.file = globalxdg;
+			git_config_with_options(get_config, &buf, &config_source, &opts);
+			free(globalxdg);
+			if (buf.seen)
+				return !buf.seen;
+		}
 	}
 
 	system = git_etc_gitconfig();
-	programdata = git_program_data_config();
-
-	if (have_git_dir())
-		local = git_pathdup("config");
-
-	if (local)
-	{
-		config_source.file = local;
-		git_config_with_options(get_config, &buf, &config_source, &opts);
-	}
-	if (!buf.seen && global)
-	{
-		config_source.file = global;
-		git_config_with_options(get_config, &buf, &config_source, &opts);
-	}
-	if (!buf.seen && globalxdg)
-	{
-		config_source.file = globalxdg;
-		git_config_with_options(get_config, &buf, &config_source, &opts);
-	}
-	if (!buf.seen && system)
+	if (system)
 	{
 		config_source.file = system;
 		git_config_with_options(get_config, &buf, &config_source, &opts);
+		if (buf.seen)
+			return !buf.seen;
 	}
-	if (!buf.seen && programdata)
+
+	programdata = git_program_data_config();
+	if (programdata)
 	{
 		config_source.file = programdata;
 		git_config_with_options(get_config, &buf, &config_source, &opts);
 	}
-
-	if(local)
-		free(local);
-	if(global)
-		free(global);
-	if (globalxdg)
-		free(globalxdg);
 
 	return !buf.seen;
 }
