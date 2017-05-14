@@ -429,6 +429,16 @@ void CGitLogListBase::InsertGitColumn()
 	m_ColumnManager.ReadSettings(m_dwDefaultColumns, hideColumns, m_ColumnRegKey + L"loglist", _countof(normal), with);
 	m_ColumnManager.SetRightAlign(LOGLIST_ID);
 
+	if (!(hideColumns & GIT_LOG_ACTIONS))
+	{
+		// Configure fake a imagelist for LogList with 1px width and height = GetSystemMetrics(SM_CYSMICON)
+		// to set the minimum item height: we draw icons in the actions column, but on High-DPI the
+		// display's font height may be less than small icon height.
+		ASSERT((GetStyle() & LVS_SHAREIMAGELISTS) == 0);
+		HIMAGELIST hImageList = ImageList_Create(1, GetSystemMetrics(SM_CYSMICON), 0, 1, 0);
+		ListView_SetImageList(GetSafeHwnd(), hImageList, LVSIL_SMALL);
+	}
+
 	SetRedraw(true);
 }
 
