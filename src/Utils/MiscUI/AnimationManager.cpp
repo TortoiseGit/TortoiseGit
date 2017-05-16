@@ -355,6 +355,7 @@ HRESULT Animator::AbandonAllStoryBoards()
 }
 
 Animator::Animator()
+: timerEventHandler(nullptr)
 {
 	// Create the IUIAnimationManager.
 	if (FAILED(pAnimMgr.CreateInstance(CLSID_UIAnimationManager, 0, CLSCTX_INPROC_SERVER)))
