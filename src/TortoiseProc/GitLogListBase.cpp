@@ -4295,7 +4295,7 @@ BOOL CGitLogListBase::OnToolTipText(UINT /*id*/, NMHDR* pNMHDR, LRESULT* pResult
 			return FALSE;
 
 		// we want multiline tooltips
-		::SendMessage(pNMHDR->hwndFrom, TTM_SETMAXTIPWIDTH, 0, INT_MAX);
+		::SendMessage(pNMHDR->hwndFrom, TTM_SETMAXTIPWIDTH, 0, SHRT_MAX);
 
 		wcscpy_s(m_wszTip, strTipText);
 		// handle Unicode as well as non-Unicode requests
