@@ -33,7 +33,7 @@
 // Define the help text as a multi-line macro
 // Every line except the last must be terminated with a backslash
 #define HelpText1 "\
-Usage: GitWCRev WorkingCopyPath [SrcVersionFile DstVersionFile] [-mMuUdqsF]\n\
+Usage: GitWCRev WorkingCopyPath [SrcVersionFile DstVersionFile] [-mMuUdqsFe]\n\
 \n\
 Params:\n\
 WorkingCopyPath    :   path to a Git working tree.\n\
@@ -53,7 +53,8 @@ DstVersionFile     :   path to save the resulting parsed file.\n\
 -s                 :   if given, submodules are not checked. This increases\n\
                        the checking speed.\n"
 #define HelpText3 "\
--F                 :   if given, does not use the .GitWCRevignore file\n"
+-F                 :   if given, does not use the .GitWCRevignore file\n\
+-e                 :   changes the console output encoding to Unicode\n"
 
 #define HelpText4 "\
 Switches must be given in a single argument, e.g. '-nm' not '-n -m'.\n\
@@ -516,8 +517,6 @@ int _tmain(int argc, _TCHAR* argv[])
 	SetDllDirectory(L"");
 	CCrashReportTGit crasher(L"GitWCRev " _T(APP_X64_STRING), TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, TGIT_VERDATE);
 
-	_setmode(_fileno(stdout), _O_U16TEXT);
-
 	if (argc >= 2 && argc <= 5)
 	{
 		// WC path is always first argument.
@@ -541,6 +540,8 @@ int _tmain(int argc, _TCHAR* argv[])
 		const TCHAR* Params = argv[argc - 1];
 		if (Params[0] == L'-')
 		{
+			if (wcschr(Params, L'e') != 0)
+				_setmode(_fileno(stdout), _O_U16TEXT);
 			if (wcschr(Params, L'q') != 0)
 				bQuiet = TRUE;
 			if (wcschr(Params, L'm') != 0)
