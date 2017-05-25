@@ -34,6 +34,7 @@
       <AdditionalIncludeDirectories>..\..\Utils;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
       <Optimization>MinSpace</Optimization>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
