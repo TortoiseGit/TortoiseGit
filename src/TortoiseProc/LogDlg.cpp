@@ -92,7 +92,8 @@ CLogDlg::CLogDlg(CWnd* pParent /*=nullptr*/)
 	m_regbShowRemoteBranches = CRegDWORD(L"Software\\TortoiseGit\\LogDialog\\ShowRemoteBranches\\" + str, TRUE);
 	m_bShowRemoteBranches = !!m_regbShowRemoteBranches;
 
-	m_bShowUnversioned = CRegDWORD(L"Software\\TortoiseGit\\AddBeforeCommit", TRUE);
+	m_regAddBeforeCommit = CRegDWORD(L"Software\\TortoiseGit\\AddBeforeCommit", TRUE);
+	m_bShowUnversioned = !!m_regAddBeforeCommit;
 	
 	m_bShowGravatar = !!CRegDWORD(L"Software\\TortoiseGit\\EnableGravatar", FALSE);
 	m_regbShowGravatar = CRegDWORD(L"Software\\TortoiseGit\\LogDialog\\ShowGravatar\\" + str, m_bShowGravatar);
@@ -108,6 +109,7 @@ CLogDlg::~CLogDlg()
 	m_regbShowLocalBranches = m_bShowLocalBranches;
 	m_regbShowRemoteBranches = m_bShowRemoteBranches;
 	m_regbShowGravatar = m_bShowGravatar;
+	m_regAddBeforeCommit = m_bShowUnversioned;
 }
 
 void CLogDlg::DoDataExchange(CDataExchange* pDX)
@@ -3255,6 +3257,7 @@ void CLogDlg::OnBnClickedWalkBehaviour()
 #define VIEW_SHOWREMOTEBRANCHES		5
 #define VIEW_SHOWGRAVATAR			6
 #define VIEW_SHOWPATCH				7
+#define VIEW_SHOWWCUNVERSIONED		8
 
 void CLogDlg::OnBnClickedView()
 {
@@ -3264,6 +3267,8 @@ void CLogDlg::OnBnClickedView()
 		m_ctrlView.SetCheck(BST_CHECKED);
 		AppendMenuChecked(popup, IDS_SHOWFILES_HIDEPATHS, VIEW_HIDEPATHS, m_iHidePaths == 1);
 		AppendMenuChecked(popup, IDS_SHOWFILES_GRAYPATHS, VIEW_GRAYPATHS, m_iHidePaths == 2);
+		popup.AppendMenu(MF_SEPARATOR, NULL);
+		AppendMenuChecked(popup, IDS_PROC_LOG_SHOWUNVERSIONED, VIEW_SHOWWCUNVERSIONED, m_bShowUnversioned == BST_CHECKED);
 		popup.AppendMenu(MF_SEPARATOR, NULL);
 		CMenu showLabelsMenu;
 		if (showLabelsMenu.CreatePopupMenu())
@@ -3332,6 +3337,11 @@ void CLogDlg::OnBnClickedView()
 			}
 		case VIEW_SHOWPATCH:
 			TogglePatchView();
+			break;
+		case VIEW_SHOWWCUNVERSIONED:
+			m_bShowUnversioned = !m_bShowUnversioned;
+			FillLogMessageCtrl();
+			m_ChangedFileListCtrl.Invalidate();
 			break;
 		default:
 			break;

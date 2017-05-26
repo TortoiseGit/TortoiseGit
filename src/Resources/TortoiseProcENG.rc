@@ -4912,6 +4912,7 @@ STRINGTABLE
 BEGIN
     IDS_FIRSTSTART_LANGUAGEHINT3 
                             "If you want to use a translated version of TortoiseGit and your language is missing, <a id=""download"">download</a> and install a matching language pack now and hit ""Refresh"" before continuing."
+    IDS_PROC_LOG_SHOWUNVERSIONED "Show &Unversioned Files"
 END
 
 #endif    // English (U.S.) resources

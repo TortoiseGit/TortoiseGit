@@ -172,6 +172,7 @@ private:
 	CRegDWORD m_regbShowRemoteBranches;
 	CRegDWORD m_regbShowGravatar;
 	CRegDWORD m_regShowWholeProject;
+	CRegDWORD m_regAddBeforeCommit;
 
 	void Refresh (bool clearfilter = false);
 	void MoveToSameTop(CWnd *pWndRef, CWnd *pWndTarget);

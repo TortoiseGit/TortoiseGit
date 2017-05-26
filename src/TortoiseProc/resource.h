@@ -1319,6 +1319,7 @@
 #define IDC_COMBO_SAFECRLF              1632
 #define IDS_FIRSTSTART_LANGUAGEHINT3    1632
 #define IDC_CHECK_QUOTEPATH             1633
+#define IDS_PROC_LOG_SHOWUNVERSIONED    1633
 #define IDC_STATIC_MERGE_MESSAGE        1635
 #define IDC_PATCH                       1636
 #define IDC_VIEW_PATCH                  1637
