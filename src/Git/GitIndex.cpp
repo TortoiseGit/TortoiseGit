@@ -754,7 +754,7 @@ int CGitHeadFileList::ReadTree()
 
 	return 0;
 }
-int CGitIgnoreItem::FetchIgnoreList(const CString &projectroot, const CString &file, bool isGlobal)
+int CGitIgnoreItem::FetchIgnoreList(const CString& projectroot, const CString& file, bool isGlobal, int* ignoreCase)
 {
 	if (this->m_pExcludeList)
 	{
@@ -816,6 +816,8 @@ int CGitIgnoreItem::FetchIgnoreList(const CString &projectroot, const CString &f
 		return -1;
 	}
 
+	m_iIgnoreCase = ignoreCase;
+
 	BYTE *p = m_buffer;
 	int line = 0;
 	for (DWORD i = 0; i < size; ++i)
@@ -858,7 +860,7 @@ int CGitIgnoreItem::IsPathIgnored(const CStringA& patha, const char* base, int& 
 	if (!m_pExcludeList)
 		return -1; // error or undecided
 
-	return git_check_excluded_1(patha, patha.GetLength(), base, &type, m_pExcludeList);
+	return git_check_excluded_1(patha, patha.GetLength(), base, &type, m_pExcludeList, m_iIgnoreCase ? *m_iIgnoreCase : 1);
 }
 
 bool CGitIgnoreList::CheckFileChanged(const CString &path)
@@ -904,7 +906,7 @@ int CGitIgnoreList::FetchIgnoreFile(const CString &gitdir, const CString &gitign
 	if (CGit::GitPathFileExists(gitignore)) //if .gitignore remove, we need remote cache
 	{
 		CAutoWriteLock lock(m_SharedMutex);
-		m_Map[gitignore].FetchIgnoreList(gitdir, gitignore, isGlobal);
+		m_Map[gitignore].FetchIgnoreList(gitdir, gitignore, isGlobal, &m_IgnoreCase[g_AdminDirMap.GetAdminDir(gitdir)]);
 	}
 	else
 	{
@@ -1035,6 +1037,8 @@ bool CGitIgnoreList::CheckAndUpdateCoreExcludefile(const CString &adminDir)
 		excludesFile = GetWindowsHome() + excludesFile.Mid(1);
 
 	CAutoWriteLock lockMap(m_SharedMutex);
+	m_IgnoreCase[adminDir] = 1;
+	config.GetBOOL(L"core.ignorecase", m_IgnoreCase[adminDir]);
 	CGit::GetFileModifyTime(projectConfig, &m_Map[projectConfig].m_LastModifyTime);
 	CGit::GetFileModifyTime(globalXDGConfig, &m_Map[globalXDGConfig].m_LastModifyTime);
 	if (m_Map[globalXDGConfig].m_LastModifyTime == 0)

@@ -151,7 +151,7 @@ GITDLL_API int git_add_exclude(const char *string, const char *base,
 
 GITDLL_API int git_check_excluded_1(const char *pathname,
 							int pathlen, const char *basename, int *dtype,
-							EXCLUDE_LIST el);
+							EXCLUDE_LIST el, int ignorecase);
 
 #define DT_UNKNOWN	0
 #define DT_DIR		1

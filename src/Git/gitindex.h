@@ -277,6 +277,7 @@ public:
 	: m_LastModifyTime(0)
 	, m_pExcludeList(nullptr)
 	, m_buffer(nullptr)
+	, m_iIgnoreCase(nullptr)
 	{
 	}
 
@@ -291,8 +292,9 @@ public:
 	CStringA m_BaseDir;
 	BYTE *m_buffer;
 	EXCLUDE_LIST m_pExcludeList;
+	int* m_iIgnoreCase;
 
-	int FetchIgnoreList(const CString &projectroot, const CString &file, bool isGlobal);
+	int FetchIgnoreList(const CString& projectroot, const CString& file, bool isGlobal, int* ignoreCase);
 
 	/**
 	* patha: the filename to be checked whether is is ignored or not
@@ -316,6 +318,7 @@ private:
 
 	// core.excludesfile stuff
 	std::map<CString, CString> m_CoreExcludesfiles;
+	std::map<CString, int> m_IgnoreCase;
 	CString m_sGitSystemConfigPath;
 	CString m_sGitProgramDataConfigPath;
 	ULONGLONG m_dGitSystemConfigPathLastChecked;

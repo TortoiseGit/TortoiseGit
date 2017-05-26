@@ -685,8 +685,9 @@ int git_free_exclude_list(EXCLUDE_LIST which)
 
 int git_check_excluded_1(const char *pathname,
 							int pathlen, const char *basename, int *dtype,
-							EXCLUDE_LIST el)
+							EXCLUDE_LIST el, int ignorecase)
 {
+	ignore_case = ignorecase;
 	return is_excluded_from_list(pathname, pathlen, basename, dtype, el);
 }
 
