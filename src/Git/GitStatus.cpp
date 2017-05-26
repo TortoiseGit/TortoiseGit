@@ -281,7 +281,7 @@ int GitStatus::GetFileList(CString path, std::vector<CGitFileName> &list)
 {
 	path += L"\\*.*";
 	WIN32_FIND_DATA data;
-	CAutoFindFile handle = ::FindFirstFileEx(path, SysInfo::Instance().IsWin7OrLater() ? FindExInfoBasic : FindExInfoStandard, &data, FindExSearchNameMatch, nullptr, SysInfo::Instance().IsWin7OrLater() ? FIND_FIRST_EX_LARGE_FETCH : 0);
+	CAutoFindFile handle = ::FindFirstFileEx(path, FindExInfoBasic, &data, FindExSearchNameMatch, nullptr, FIND_FIRST_EX_LARGE_FETCH);
 	if (!handle)
 		return -1;
 	do

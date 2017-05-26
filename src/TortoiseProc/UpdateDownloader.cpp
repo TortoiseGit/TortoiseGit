@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2016 - TortoiseGit
+// Copyright (C) 2013-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -48,8 +48,8 @@ CUpdateDownloader::~CUpdateDownloader(void)
 void CUpdateDownloader::BruteforceGetWindowsVersionNumber(OSVERSIONINFOEX& osVersionInfo)
 {
 	osVersionInfo.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
-	osVersionInfo.dwMajorVersion = HIBYTE(_WIN32_WINNT_VISTA);
-	osVersionInfo.dwMinorVersion = LOBYTE(_WIN32_WINNT_VISTA);
+	osVersionInfo.dwMajorVersion = HIBYTE(_WIN32_WINNT_WIN7);
+	osVersionInfo.dwMinorVersion = LOBYTE(_WIN32_WINNT_WIN7);
 	osVersionInfo.dwPlatformId = VER_PLATFORM_WIN32_NT;
 
 	ULONGLONG maskConditioMajor = ::VerSetConditionMask(0, VER_MAJORVERSION, VER_LESS);
