@@ -172,6 +172,11 @@ HRESULT GitWCRev::GetWCInfoInternal(/*[in]*/ BSTR wcPath, /*[in]*/VARIANT_BOOL i
 	GitStat.HeadEmail.clear();
 	GitStat.ignorepatterns.clear();
 
+	if (!wcPath || wcPath[0] == L'\0')
+		return S_FALSE;
+	if (!PathFileExists(wcPath))
+		return S_FALSE;
+
 	if (GetStatus(wcPath, GitStat) == 0)
 		return S_OK;
 
