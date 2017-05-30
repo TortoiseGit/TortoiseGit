@@ -84,7 +84,6 @@ BOOL CCachedDirectory::SaveToDisk(FILE * pFile)
 			WRITEVALUETOFILE(status);
 		}
 	}
-//	WRITEVALUETOFILE(m_propsFileTime);
 	value = m_directoryPath.GetWinPathString().GetLength();
 	WRITEVALUETOFILE(value);
 	if (value)

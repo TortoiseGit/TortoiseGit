@@ -77,8 +77,6 @@ bool CStatusCacheEntry::SaveToDisk(FILE* pFile) const
 
 	// now save the status struct (without the entry field, because we don't use that)
 	WRITEVALUETOFILE(m_GitStatus.prop_status);
-//	WRITEVALUETOFILE(m_GitStatus.repos_prop_status);
-//	WRITEVALUETOFILE(m_GitStatus.repos_text_status);
 	WRITEVALUETOFILE(m_GitStatus.text_status);
 	WRITEVALUETOFILE(m_GitStatus.assumeValid);
 	WRITEVALUETOFILE(m_GitStatus.skipWorktree);
@@ -100,12 +98,9 @@ bool CStatusCacheEntry::LoadFromDisk(FILE * pFile)
 		LOADVALUEFROMFILE(m_kind);
 		SecureZeroMemory(&m_GitStatus, sizeof(m_GitStatus));
 		LOADVALUEFROMFILE(m_GitStatus.prop_status);
-//		LOADVALUEFROMFILE(m_GitStatus.repos_prop_status);
-//		LOADVALUEFROMFILE(m_GitStatus.repos_text_status);
 		LOADVALUEFROMFILE(m_GitStatus.text_status);
 		LOADVALUEFROMFILE(m_GitStatus.assumeValid);
 		LOADVALUEFROMFILE(m_GitStatus.skipWorktree);
-//		m_GitStatus.entry = nullptr;
 		m_discardAtTime = GetTickCount64() + cachetimeout;
 	}
 	catch ( CAtlException )
