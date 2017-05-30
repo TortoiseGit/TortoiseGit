@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2006,2008,2014 - TortoiseSVN
-// Copyright (C) 2008-2014, 2016 - TortoiseGit
+// Copyright (C) 2008-2014, 2016-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -50,7 +50,7 @@ CStatusCacheEntry::CStatusCacheEntry(const git_wc_status_kind status)
 	m_discardAtTime = GetTickCount64() + cachetimeout;
 }
 
-CStatusCacheEntry::CStatusCacheEntry(const git_wc_status2_t* pGitStatus, __int64 lastWriteTime, bool /*bReadOnly*/, LONGLONG validuntil /* = 0*/)
+CStatusCacheEntry::CStatusCacheEntry(const git_wc_status2_t* pGitStatus, __int64 lastWriteTime, LONGLONG validuntil /* = 0*/)
 	: m_bSet(false)
 	, m_kind(git_node_unknown)
 	, m_highestPriorityLocalStatus(git_wc_status_none)

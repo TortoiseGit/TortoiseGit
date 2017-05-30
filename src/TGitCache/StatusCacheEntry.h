@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005 - 2006 - Will Dean, Stefan Kueng
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2012, 2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -33,7 +33,7 @@ class CStatusCacheEntry
 public:
 	CStatusCacheEntry();
 	CStatusCacheEntry(const git_wc_status_kind status);
-	CStatusCacheEntry(const git_wc_status2_t* pGitStatus, __int64 lastWriteTime, bool bReadOnly, LONGLONG validuntil = 0);
+	CStatusCacheEntry(const git_wc_status2_t* pGitStatus, __int64 lastWriteTime, LONGLONG validuntil = 0);
 	bool HasExpired(LONGLONG now) const;
 	void BuildCacheResponse(TGITCacheResponse& response, DWORD& responseLength) const;
 	bool IsVersioned() const;

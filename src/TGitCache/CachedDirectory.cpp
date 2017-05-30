@@ -535,7 +535,7 @@ CCachedDirectory::AddEntry(const CTGitPath& path, const git_wc_status2_t* pGitSt
 			bNotified = true;
 
 		}
-		entry_it->second = CStatusCacheEntry(pGitStatus, path.GetLastWriteTime(), path.IsReadOnly(), validuntil);
+		entry_it->second = CStatusCacheEntry(pGitStatus, path.GetLastWriteTime(), validuntil);
 		// TEMP(?): git status doesn't not have "entry" that contains node type, so manually set as file
 		entry_it->second.SetKind(git_node_file);
 
