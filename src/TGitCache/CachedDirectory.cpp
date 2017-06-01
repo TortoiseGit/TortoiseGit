@@ -783,48 +783,11 @@ void CCachedDirectory::RefreshStatus(bool bRecursive)
 	// Make sure that our own status is up-to-date
 	GetStatusForMember(m_directoryPath,bRecursive);
 
-	AutoLocker lock(m_critSec);
-	// We also need to check if all our file members have the right date on them
-	CacheEntryMap::iterator itMembers;
-	std::set<CTGitPath> refreshedpaths;
-	ULONGLONG now = GetTickCount64();
-	if (m_entryCache.empty())
-		return;
-	for (itMembers = m_entryCache.begin(); itMembers != m_entryCache.end(); ++itMembers)
-	{
-		if (itMembers->first)
-		{
-			CTGitPath filePath(m_directoryPath);
-			filePath.AppendPathString(itMembers->first);
-			std::set<CTGitPath>::iterator refr_it;
-			if ((!filePath.IsEquivalentToWithoutCase(m_directoryPath))&&
-				(((refr_it = refreshedpaths.lower_bound(filePath)) == refreshedpaths.end()) || !filePath.IsEquivalentToWithoutCase(*refr_it)))
-			{
-				if ((itMembers->second.HasExpired(now))||(!itMembers->second.DoesFileTimeMatch(filePath.GetLastWriteTime())))
-				{
-					lock.Unlock();
-					// We need to request this item as well
-					GetStatusForMember(filePath,bRecursive);
-					// GetStatusForMember now has recreated the m_entryCache map.
-					// So start the loop again, but add this path to the refreshed paths set
-					// to make sure we don't refresh this path again. This is to make sure
-					// that we don't end up in an endless loop.
-					lock.Lock();
-					refreshedpaths.insert(refr_it, filePath);
-					itMembers = m_entryCache.begin();
-					if (m_entryCache.empty())
-						return;
-					continue;
-				}
-				else if ((bRecursive)&&(itMembers->second.IsDirectory()))
-				{
-					// crawl all sub folders too! Otherwise a change deep inside the
-					// tree which has changed won't get propagated up the tree.
-					CGitStatusCache::Instance().AddFolderForCrawling(filePath);
-				}
-			}
-		}
-	}
+	/*
+	 * TSVNCache here checks whether m_entryCache is still up2date with the filesystem and refreshes all child directories.
+	 * In the current TGitCache implementation, however, the file status is always fetched from git when GetStatusForMember is called from here (with fetch=true).
+	 * Therefore, it is not necessary check whether the cache is still up to date since we just updated it.
+	 */
 }
 
 void CCachedDirectory::RefreshMostImportant()
