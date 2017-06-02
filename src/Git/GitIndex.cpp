@@ -267,7 +267,7 @@ int CGitIndexList::GetStatus(const CString& gitdir, CString path, git_wc_status_
 
 	int len = path.GetLength();
 
-	for (auto it = cbegin(), itend = cend(); it != itend; ++it)
+	for (auto it = begin(), itend = end(); it != itend; ++it)
 	{
 		auto& entry = *it;
 		if (!(entry.m_FileName.GetLength() > len && wcsncmp(entry.m_FileName, path, len) == 0))
@@ -292,7 +292,7 @@ int CGitIndexList::GetStatus(const CString& gitdir, CString path, git_wc_status_
 		if (skipWorktree)
 			*skipWorktree = false;
 
-		GetFileStatus(gitdir, entry.m_FileName, status, time, filesize, callback, pData, nullptr, assumeValid, skipWorktree);
+		GetFileStatus(gitdir, entry, status, time, filesize, callback, pData, nullptr, assumeValid, skipWorktree);
 
 		// if a file is assumed valid, we need to inform the caller, otherwise the assumevalid flag might not get to the explorer on first open of a repository
 		if (callback && assumeValid && skipWorktree && (*assumeValid || *skipWorktree))
