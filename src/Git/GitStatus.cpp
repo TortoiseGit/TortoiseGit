@@ -295,7 +295,7 @@ int GitStatus::GetFileList(CString path, std::vector<CGitFileName> &list)
 		if (wcscmp(data.cFileName, L"..") == 0)
 			continue;
 
-		CGitFileName filename(data.cFileName);
+		CGitFileName filename(data.cFileName, ((__int64)data.nFileSizeHigh << 32) + data.nFileSizeLow, ((__int64)data.ftLastWriteTime.dwHighDateTime << 32) + data.ftLastWriteTime.dwLowDateTime);
 		if(data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 			filename.m_FileName += L'/';
 
@@ -412,10 +412,23 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 			}
 			else
 			{
+				if ((*indexptr)[pos].m_Flags & GIT_IDXENTRY_STAGEMASK)
+				{
+					*status = git_wc_status_conflicted;
+					if (callback)
+						callback(CombinePath(gitdir, onepath), *status, false, pData, false, false);// TODO: priorität assumevalid vs. conflicted
+					continue;
+				}
 				bool assumeValid = false;
 				bool skipWorktree = false;
 				git_wc_status_kind filestatus;
-				GetFileStatus(gitdir, onepath, &filestatus, TRUE, TRUE, TRUE, callback, pData, &assumeValid, &skipWorktree);
+				CGitHash hash;
+				(*indexptr).GetFileStatus(gitdir, (*indexptr)[pos], &filestatus, CGit::filetime_to_time_t((*it).m_LastModified), (*it).m_Size, nullptr, nullptr, &hash, &assumeValid, &skipWorktree);
+				if (filestatus == git_wc_status_normal && (*treeptr)[posintree].m_Hash != hash)
+					filestatus = git_wc_status_modified;
+				*status = filestatus;
+				if (callback)
+					callback(CombinePath(gitdir, onepath), filestatus, false, pData, assumeValid, skipWorktree);
 			}
 		}
 	}/*End of For*/

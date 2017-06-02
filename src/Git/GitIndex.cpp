@@ -168,6 +168,12 @@ int CGitIndexList::GetFileStatus(const CString &gitdir, const CString &pathorg, 
 	}
 
 	auto& entry = (*this)[index];
+	ATLASSERT(pathorg == entry.m_FileName);
+	return GetFileStatus(gitdir, entry, status, time, filesize, pHash, assumeValid, skipWorktree);
+}
+
+int CGitIndexList::GetFileStatus(const CString& gitdir, CGitIndex& entry, git_wc_status_kind* status, __int64 time, __int64 filesize, FILL_STATUS_CALLBACK callback, void* pData, CGitHash* pHash, bool* assumeValid, bool* skipWorktree)
+{
 	// skip-worktree has higher priority than assume-valid
 	if (entry.m_FlagsExtended & GIT_IDXENTRY_SKIP_WORKTREE)
 	{
@@ -196,7 +202,7 @@ int CGitIndexList::GetFileStatus(const CString &gitdir, const CString &pathorg, 
 			return -1;
 
 		git_oid actual;
-		CStringA fileA = CUnicodeUtils::GetMulti(pathorg, CP_UTF8);
+		CStringA fileA = CUnicodeUtils::GetMulti(entry.m_FileName, CP_UTF8);
 		git_repository_set_config(repository, config);
 		if (!git_repository_hashfile(&actual, repository, fileA, GIT_OBJ_BLOB, nullptr) && !git_oid_cmp(&actual, (const git_oid*)entry.m_IndexHash.m_hash))
 		{
@@ -218,7 +224,7 @@ int CGitIndexList::GetFileStatus(const CString &gitdir, const CString &pathorg, 
 		*pHash = entry.m_IndexHash;
 
 	if (callback && assumeValid && skipWorktree)
-		callback(CombinePath(gitdir, pathorg), *status, false, pData, *assumeValid, *skipWorktree);
+		callback(CombinePath(gitdir, entry.m_FileName), *status, false, pData, *assumeValid, *skipWorktree);
 
 	return 0;
 }

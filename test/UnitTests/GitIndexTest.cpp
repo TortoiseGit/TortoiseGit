@@ -269,7 +269,7 @@ TEST(GitIndex, SearchInSortVector)
 	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"something", 0));
 	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"something", -1));
 
-	vector.push_back(CGitFileName(L"One"));
+	vector.push_back(CGitFileName(L"One", 0, 0));
 	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"something", 9));
 	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"something", -1));
 	EXPECT_EQ(0, SearchInSortVector(vector, L"something", 0)); // do we really need this behavior?
@@ -280,7 +280,7 @@ TEST(GitIndex, SearchInSortVector)
 	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"one", -1));
 	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"one/", 4));
 
-	vector.push_back(CGitFileName(L"tWo"));
+	vector.push_back(CGitFileName(L"tWo", 0, 0));
 	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"something", 9));
 	EXPECT_EQ(0, SearchInSortVector(vector, L"One", 3));
 	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"one", 3));
@@ -290,12 +290,12 @@ TEST(GitIndex, SearchInSortVector)
 	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"0", 1));
 	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"z", 1));
 
-	vector.push_back(CGitFileName(L"a"));
-	vector.push_back(CGitFileName(L"b/1"));
-	vector.push_back(CGitFileName(L"b/2"));
-	vector.push_back(CGitFileName(L"b/3"));
-	vector.push_back(CGitFileName(L"b/4"));
-	vector.push_back(CGitFileName(L"b/5"));
+	vector.push_back(CGitFileName(L"a", 0, 0));
+	vector.push_back(CGitFileName(L"b/1", 0, 0));
+	vector.push_back(CGitFileName(L"b/2", 0, 0));
+	vector.push_back(CGitFileName(L"b/3", 0, 0));
+	vector.push_back(CGitFileName(L"b/4", 0, 0));
+	vector.push_back(CGitFileName(L"b/5", 0, 0));
 	std::sort(vector.begin(), vector.end(), SortCGitFileName);
 	EXPECT_EQ(0, SearchInSortVector(vector, L"One", 3));
 	EXPECT_EQ(3, SearchInSortVector(vector, L"b/2", 3));
@@ -321,7 +321,7 @@ TEST(GitIndex, GetRangeInSortVector)
 	EXPECT_EQ(NPOS, start);
 	EXPECT_EQ(NPOS, end);
 
-	vector.push_back(CGitFileName(L"a"));
+	vector.push_back(CGitFileName(L"a", 0, 0));
 	start = end = NPOS;
 	EXPECT_EQ(-1, GetRangeInSortVector(vector, L"something", 9, &start, &end, NPOS));
 	EXPECT_EQ(-1, GetRangeInSortVector(vector, L"something", 9, &start, nullptr, 0));
@@ -353,11 +353,11 @@ TEST(GitIndex, GetRangeInSortVector)
 	EXPECT_EQ(0, start);
 	EXPECT_EQ(0, end);
 
-	vector.push_back(CGitFileName(L"b/1"));
-	vector.push_back(CGitFileName(L"b/2"));
-	vector.push_back(CGitFileName(L"b/3"));
-	vector.push_back(CGitFileName(L"b/4"));
-	vector.push_back(CGitFileName(L"b/5"));
+	vector.push_back(CGitFileName(L"b/1", 0, 0));
+	vector.push_back(CGitFileName(L"b/2", 0, 0));
+	vector.push_back(CGitFileName(L"b/3", 0, 0));
+	vector.push_back(CGitFileName(L"b/4", 0, 0));
+	vector.push_back(CGitFileName(L"b/5", 0, 0));
 
 	start = end = NPOS;
 	EXPECT_EQ(0, GetRangeInSortVector(vector, L"a", 1, &start, &end, 0));
@@ -396,8 +396,8 @@ TEST(GitIndex, GetRangeInSortVector)
 	EXPECT_EQ(NPOS, start);
 	EXPECT_EQ(NPOS, end);
 
-	vector.push_back(CGitFileName(L"c"));
-	vector.push_back(CGitFileName(L"d"));
+	vector.push_back(CGitFileName(L"c", 0, 0));
+	vector.push_back(CGitFileName(L"d", 0, 0));
 
 	start = end = NPOS;
 	EXPECT_EQ(0, GetRangeInSortVector(vector, L"b/", 2, &start, &end, 1));
