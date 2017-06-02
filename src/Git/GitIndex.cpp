@@ -151,9 +151,7 @@ int CGitIndexList::GetFileStatus(const CString &gitdir, const CString &pathorg, 
 	if (!status)
 		return 0;
 
-	CString path = pathorg;
-
-	size_t index = SearchInSortVector(*this, path, -1);
+	size_t index = SearchInSortVector(*this, pathorg, -1);
 
 	if (index == NPOS)
 	{
