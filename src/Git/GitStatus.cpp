@@ -423,7 +423,7 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 				bool skipWorktree = false;
 				git_wc_status_kind filestatus;
 				CGitHash hash;
-				(*indexptr).GetFileStatus(gitdir, (*indexptr)[pos], &filestatus, CGit::filetime_to_time_t((*it).m_LastModified), (*it).m_Size, nullptr, nullptr, &hash, &assumeValid, &skipWorktree);
+				(*indexptr).GetFileStatus(gitdir, (*indexptr)[pos], &filestatus, CGit::filetime_to_time_t((*it).m_LastModified), (*it).m_Size, &hash, &assumeValid, &skipWorktree);
 				if (filestatus == git_wc_status_normal && (*treeptr)[posintree].m_Hash != hash)
 					filestatus = git_wc_status_modified;
 				*status = filestatus;

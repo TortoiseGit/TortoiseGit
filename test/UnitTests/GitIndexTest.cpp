@@ -207,7 +207,7 @@ TEST_P(GitIndexCBasicGitWithTestRepoFixture, GetFileStatus)
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(CombinePath(m_Dir.GetTempDir(), L"ansi.txt"), L"this is testing file."));
 	EXPECT_EQ(0, CGit::GetFileModifyTime(CombinePath(m_Dir.GetTempDir(), L"ansi.txt"), &time, nullptr, &filesize));
 	status = git_wc_status_none;
-	EXPECT_EQ(0, indexList.GetFileStatus(m_Dir.GetTempDir(), L"ansi.txt", &status, time, filesize, nullptr, nullptr, nullptr, nullptr, &skipworktree));
+	EXPECT_EQ(0, indexList.GetFileStatus(m_Dir.GetTempDir(), L"ansi.txt", &status, time, filesize, nullptr, nullptr, &skipworktree));
 	EXPECT_EQ(git_wc_status_modified, status);
 	EXPECT_FALSE(skipworktree);
 
@@ -221,7 +221,7 @@ TEST_P(GitIndexCBasicGitWithTestRepoFixture, GetFileStatus)
 	EXPECT_EQ(0, indexList.ReadIndex(m_Dir.GetTempDir()));
 	EXPECT_FALSE(indexList.m_bHasConflicts);
 	status = git_wc_status_none;
-	EXPECT_EQ(0, indexList.GetFileStatus(m_Dir.GetTempDir(), L"ansi.txt", &status, time, filesize, nullptr, nullptr, nullptr, nullptr, &skipworktree));
+	EXPECT_EQ(0, indexList.GetFileStatus(m_Dir.GetTempDir(), L"ansi.txt", &status, time, filesize, nullptr, nullptr, &skipworktree));
 	EXPECT_EQ(git_wc_status_normal, status);
 	EXPECT_TRUE(skipworktree);
 

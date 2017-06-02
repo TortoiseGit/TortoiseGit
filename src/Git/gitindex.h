@@ -50,14 +50,14 @@ public:
 
 	int ReadIndex(CString dotgitdir);
 	int GetStatus(const CString& gitdir, CString path, git_wc_status_kind* status, BOOL IsFull = FALSE, FILL_STATUS_CALLBACK callback = nullptr, void* pData = nullptr, CGitHash* pHash = nullptr, bool* assumeValid = nullptr, bool* skipWorktree = nullptr);
-	int GetFileStatus(const CString& gitdir, CGitIndex& entry, git_wc_status_kind* status, __int64 time, __int64 filesize, FILL_STATUS_CALLBACK callback, void* pData, CGitHash* pHash, bool* assumeValid, bool* skipWorktree);
+	int GetFileStatus(const CString& gitdir, CGitIndex& entry, git_wc_status_kind* status, __int64 time, __int64 filesize, CGitHash* pHash, bool* assumeValid, bool* skipWorktree);
 #ifdef GTEST_INCLUDE_GTEST_GTEST_H_
 	FRIEND_TEST(GitIndexCBasicGitWithTestRepoFixture, GetFileStatus);
 #endif
 protected:
 	__int64 m_iMaxCheckSize;
 	CAutoConfig config;
-	int GetFileStatus(const CString &gitdir, const CString &path, git_wc_status_kind * status, __int64 time, __int64 filesize, FILL_STATUS_CALLBACK callback = nullptr, void *pData = nullptr, CGitHash *pHash = nullptr, bool * assumeValid = nullptr, bool * skipWorktree = nullptr);
+	int GetFileStatus(const CString& gitdir, const CString& path, git_wc_status_kind* status, __int64 time, __int64 filesize, CGitHash* pHash = nullptr, bool* assumeValid = nullptr, bool* skipWorktree = nullptr);
 };
 
 typedef std::shared_ptr<CGitIndexList> SHARED_INDEX_PTR;

@@ -146,7 +146,7 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	return 0;
 }
 
-int CGitIndexList::GetFileStatus(const CString &gitdir, const CString &pathorg, git_wc_status_kind *status, __int64 time, __int64 filesize, FILL_STATUS_CALLBACK callback, void *pData, CGitHash *pHash, bool * assumeValid, bool * skipWorktree)
+int CGitIndexList::GetFileStatus(const CString& gitdir, const CString& pathorg, git_wc_status_kind* status, __int64 time, __int64 filesize, CGitHash* pHash, bool* assumeValid, bool* skipWorktree)
 {
 	if (!status)
 		return 0;
@@ -159,9 +159,6 @@ int CGitIndexList::GetFileStatus(const CString &gitdir, const CString &pathorg, 
 		if (pHash)
 			pHash->Empty();
 
-		if (callback && assumeValid && skipWorktree)
-			callback(CombinePath(gitdir, pathorg), *status, false, pData, *assumeValid, *skipWorktree);
-
 		return 0;
 	}
 
@@ -170,7 +167,7 @@ int CGitIndexList::GetFileStatus(const CString &gitdir, const CString &pathorg, 
 	return GetFileStatus(gitdir, entry, status, time, filesize, pHash, assumeValid, skipWorktree);
 }
 
-int CGitIndexList::GetFileStatus(const CString& gitdir, CGitIndex& entry, git_wc_status_kind* status, __int64 time, __int64 filesize, FILL_STATUS_CALLBACK callback, void* pData, CGitHash* pHash, bool* assumeValid, bool* skipWorktree)
+int CGitIndexList::GetFileStatus(const CString& gitdir, CGitIndex& entry, git_wc_status_kind* status, __int64 time, __int64 filesize, CGitHash* pHash, bool* assumeValid, bool* skipWorktree)
 {
 	// skip-worktree has higher priority than assume-valid
 	if (entry.m_FlagsExtended & GIT_IDXENTRY_SKIP_WORKTREE)
@@ -221,9 +218,6 @@ int CGitIndexList::GetFileStatus(const CString& gitdir, CGitIndex& entry, git_wc
 	if (pHash)
 		*pHash = entry.m_IndexHash;
 
-	if (callback && assumeValid && skipWorktree)
-		callback(CombinePath(gitdir, entry.m_FileName), *status, false, pData, *assumeValid, *skipWorktree);
-
 	return 0;
 }
 
@@ -256,7 +250,9 @@ int CGitIndexList::GetStatus(const CString& gitdir, CString path, git_wc_status_
 
 	if (!isDir)
 	{
-		GetFileStatus(gitdir, path, status, time, filesize, callback, pData, pHash, assumeValid, skipWorktree);
+		GetFileStatus(gitdir, path, status, time, filesize, pHash, assumeValid, skipWorktree);
+		if (callback && assumeValid && assumeValid)
+			callback(CombinePath(gitdir, path), *status, false, pData, *assumeValid, *skipWorktree);
 		return 0;
 	}
 
@@ -290,10 +286,8 @@ int CGitIndexList::GetStatus(const CString& gitdir, CString path, git_wc_status_
 		if (skipWorktree)
 			*skipWorktree = false;
 
-		GetFileStatus(gitdir, entry, status, time, filesize, callback, pData, nullptr, assumeValid, skipWorktree);
-
-		// if a file is assumed valid, we need to inform the caller, otherwise the assumevalid flag might not get to the explorer on first open of a repository
-		if (callback && assumeValid && skipWorktree && (*assumeValid || *skipWorktree))
+		GetFileStatus(gitdir, entry, status, time, filesize, nullptr, assumeValid, skipWorktree);
+		if (callback && assumeValid && skipWorktree)
 			callback(CombinePath(gitdir, path), *status, false, pData, *assumeValid, *skipWorktree);
 		if (*status != git_wc_status_none)
 		{
