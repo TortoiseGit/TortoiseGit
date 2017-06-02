@@ -81,7 +81,7 @@ git_wc_status_kind GitStatus::GetAllStatus(const CTGitPath& path, git_depth_t de
 			statuskind = git_wc_status_modified;
 	}
 	else
-		err = GetFileStatus(sProjectRoot, sSubPath, &statuskind, isfull, false, isfull, nullptr, nullptr, assumeValid, skipWorktree);
+		err = GetFileStatus(sProjectRoot, sSubPath, &statuskind, isfull, isfull, nullptr, nullptr, assumeValid, skipWorktree);
 
 	return statuskind;
 }
@@ -169,7 +169,7 @@ void GitStatus::GetStatus(const CTGitPath& path, bool /*update*/ /* = false */, 
 			m_status.text_status = git_wc_status_modified;
 	}
 	else
-		err = GetFileStatus(sProjectRoot, lpszSubPath, &m_status.text_status, isfull, false, !noignore, nullptr, nullptr, &m_status.assumeValid, &m_status.skipWorktree);
+		err = GetFileStatus(sProjectRoot, lpszSubPath, &m_status.text_status, isfull, !noignore, nullptr, nullptr, &m_status.assumeValid, &m_status.skipWorktree);
 
 	// Error present if function is not under version control
 	if (err)
@@ -184,7 +184,7 @@ void GitStatus::GetStatus(const CTGitPath& path, bool /*update*/ /* = false */, 
 
 typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 
-int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status_kind* status, BOOL IsFull, BOOL IsRecursive, BOOL IsIgnore, FILL_STATUS_CALLBACK callback, void* pData, bool* assumeValid, bool* skipWorktree)
+int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status_kind* status, BOOL IsFull, BOOL IsIgnore, FILL_STATUS_CALLBACK callback, void* pData, bool* assumeValid, bool* skipWorktree)
 {
 	if (!status)
 		return 0;
@@ -194,7 +194,7 @@ int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status_
 	git_wc_status_kind st = git_wc_status_none;
 	CGitHash hash;
 
-	g_IndexFileMap.GetFileStatus(gitdir, path, &st, IsFull, IsRecursive ? nullptr : callback, pData, &hash, assumeValid, skipWorktree);
+	g_IndexFileMap.GetFileStatus(gitdir, path, &st, IsFull, nullptr, pData, &hash, assumeValid, skipWorktree);
 
 	if (st == git_wc_status_conflicted)
 	{
@@ -646,7 +646,7 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 		git_wc_status_kind filestatus = git_wc_status_none;
 		bool assumeValid = false;
 		bool skipWorktree = false;
-		GetFileStatus(gitdir, (*it).m_FileName, &filestatus, IsFul, IsRecursive, IsIgnore, nullptr, nullptr, &assumeValid, &skipWorktree);
+		GetFileStatus(gitdir, (*it).m_FileName, &filestatus, IsFul, IsIgnore, nullptr, nullptr, &assumeValid, &skipWorktree);
 		switch (filestatus)
 		{
 		case git_wc_status_added:
