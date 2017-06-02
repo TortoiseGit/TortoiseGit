@@ -422,7 +422,8 @@ int CCachedDirectory::EnumFiles(const CTGitPath& path, CString sProjectRoot, con
 	{
 		bool assumeValid = false;
 		bool skipWorktree = false;
-		pStatus->GetFileStatus(sProjectRoot, sSubPath, &status, TRUE, true, GetStatusCallback, this, &assumeValid, &skipWorktree);
+		pStatus->GetFileStatus(sProjectRoot, sSubPath, &status, TRUE, true, &assumeValid, &skipWorktree);
+		GetStatusCallback(path.GetWinPathString(), status, false, this, assumeValid, skipWorktree);
 		if (status < m_mostImportantFileStatus)
 			RefreshMostImportant();
 	}
