@@ -606,7 +606,6 @@ BOOL CCachedDirectory::GetStatusCallback(const CString & path, git_wc_status_kin
 				if (pThis->m_bRecursive)
 				{
 					// Add any versioned directory, which is not our 'self' entry, to the list for having its status updated
-//OutputDebugStringA("AddFolderCrawl: ");OutputDebugStringW(svnPath.GetWinPathString());OutputDebugStringA("\r\n");
 					if (status >= git_wc_status_normal || (CGitStatusCache::Instance().IsUnversionedAsModified() && status == git_wc_status_unversioned))
 						CGitStatusCache::Instance().AddFolderForCrawling(gitPath);
 				}

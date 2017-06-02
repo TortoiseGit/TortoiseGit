@@ -115,13 +115,6 @@ public:
 	static git_wc_status_kind GetMoreImportant(git_wc_status_kind status1, git_wc_status_kind status2);
 
 	/**
-	 * Checks if a status is "important", i.e. if the status indicates that the user should know about it.
-	 * E.g. a "normal" status is not important, but "modified" is.
-	 * \param status the status to check
-	 */
-	static BOOL IsImportant(git_wc_status_kind status) {return (GetMoreImportant(git_wc_status_added, status)==status);}
-
-	/**
 	 * Reads the git text status of the working copy entry. No
 	 * recurse is done, even if the entry is a directory.
 	 * The result is stored in the public member variable status.
