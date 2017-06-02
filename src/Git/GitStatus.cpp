@@ -194,7 +194,7 @@ int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status_
 	git_wc_status_kind st = git_wc_status_none;
 	CGitHash hash;
 
-	g_IndexFileMap.GetFileStatus(gitdir, path, &st, IsFull, false, IsRecursive ? nullptr : callback, pData, &hash, assumeValid, skipWorktree);
+	g_IndexFileMap.GetFileStatus(gitdir, path, &st, IsFull, IsRecursive ? nullptr : callback, pData, &hash, assumeValid, skipWorktree);
 
 	if (st == git_wc_status_conflicted)
 	{
@@ -309,7 +309,7 @@ int GitStatus::GetFileList(CString path, std::vector<CGitFileName> &list)
 	return 0;
 }
 
-int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_wc_status_kind* status, BOOL IsFul, BOOL /*IsRecursive*/, BOOL IsIgnore, FILL_STATUS_CALLBACK callback, void* pData)
+int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_wc_status_kind* status, FILL_STATUS_CALLBACK callback, void* pData)
 {
 	if (!status)
 		return 0;
@@ -342,16 +342,9 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 			if (!it->m_FileName.IsEmpty() && it->m_FileName[it->m_FileName.GetLength() - 1] == L'/')
 				bIsDir = true;
 
-			if (IsIgnore)
-			{
-				g_IgnoreList.CheckAndUpdateIgnoreFiles(gitdir, casepath, bIsDir);
-				if (g_IgnoreList.IsIgnore(casepath, gitdir, bIsDir))
-					*status = git_wc_status_ignored;
-				else if (bIsDir)
-					continue;
-				else
-					*status = git_wc_status_unversioned;
-			}
+			g_IgnoreList.CheckAndUpdateIgnoreFiles(gitdir, casepath, bIsDir);
+			if (g_IgnoreList.IsIgnore(casepath, gitdir, bIsDir))
+				*status = git_wc_status_ignored;
 			else if (bIsDir)
 				continue;
 			else
@@ -382,14 +375,6 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 		{
 			if (onepath.IsEmpty())
 				continue;
-
-			if (!IsIgnore)
-			{
-				*status = git_wc_status_unversioned;
-				if (callback)
-					callback(CombinePath(gitdir, onepath), *status, bIsDir, pData, false, false);
-				continue;
-			}
 
 			g_IgnoreList.CheckAndUpdateIgnoreFiles(gitdir, onepath, bIsDir);
 			if (g_IgnoreList.IsIgnore(onepath, gitdir, bIsDir))
@@ -430,7 +415,7 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 				bool assumeValid = false;
 				bool skipWorktree = false;
 				git_wc_status_kind filestatus;
-				GetFileStatus(gitdir, onepath, &filestatus, IsFul, true, IsIgnore, callback, pData, &assumeValid, &skipWorktree);
+				GetFileStatus(gitdir, onepath, &filestatus, TRUE, TRUE, TRUE, callback, pData, &assumeValid, &skipWorktree);
 			}
 		}
 	}/*End of For*/

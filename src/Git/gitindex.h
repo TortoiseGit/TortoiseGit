@@ -49,7 +49,7 @@ public:
 	~CGitIndexList();
 
 	int ReadIndex(CString dotgitdir);
-	int GetStatus(const CString& gitdir, CString path, git_wc_status_kind* status, BOOL IsFull = FALSE, BOOL IsRecursive = FALSE, FILL_STATUS_CALLBACK callback = nullptr, void* pData = nullptr, CGitHash* pHash = nullptr, bool* assumeValid = nullptr, bool* skipWorktree = nullptr);
+	int GetStatus(const CString& gitdir, CString path, git_wc_status_kind* status, BOOL IsFull = FALSE, FILL_STATUS_CALLBACK callback = nullptr, void* pData = nullptr, CGitHash* pHash = nullptr, bool* assumeValid = nullptr, bool* skipWorktree = nullptr);
 #ifdef GTEST_INCLUDE_GTEST_GTEST_H_
 	FRIEND_TEST(GitIndexCBasicGitWithTestRepoFixture, GetFileStatus);
 #endif
@@ -131,7 +131,7 @@ public:
 		return false;
 	}
 	int GetFileStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,
-							BOOL IsFull=false, BOOL IsRecursive=false,
+							BOOL IsFull = false,
 							FILL_STATUS_CALLBACK callback = nullptr,
 							void* pData = nullptr, CGitHash* pHash = nullptr,
 							bool* assumeValid = nullptr, bool* skipWorktree = nullptr);
