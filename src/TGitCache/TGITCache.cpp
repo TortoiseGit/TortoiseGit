@@ -485,7 +485,7 @@ VOID GetAnswerToRequest(const TGITCacheRequest* pRequest, TGITCacheResponse* pRe
 
 	CAutoReadWeakLock readLock(CGitStatusCache::Instance().GetGuard(), 2000);
 	if (readLock.IsAcquired())
-		CGitStatusCache::Instance().GetStatusForPath(path, pRequest->flags, false).BuildCacheResponse(*pReply, *pResponseLength);
+		CGitStatusCache::Instance().GetStatusForPath(path, pRequest->flags).BuildCacheResponse(*pReply, *pResponseLength);
 	else
 	{
 		CStatusCacheEntry entry;
