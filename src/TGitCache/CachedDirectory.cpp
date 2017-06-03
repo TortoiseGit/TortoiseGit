@@ -507,47 +507,23 @@ CCachedDirectory::AddEntry(const CTGitPath& path, const git_wc_status2_t* pGitSt
 	}
 	else
 	{
-		CCachedDirectory * childDir = CGitStatusCache::Instance().GetDirectoryCacheEntry(path.GetContainingDirectory());
-		bool bNotified = false;
-
-		if(!childDir)
-			return ;
-
-		AutoLocker lock2(childDir->m_critSec);
 		CString cachekey = GetCacheKey(path);
-		CacheEntryMap::iterator entry_it = childDir->m_entryCache.lower_bound(cachekey);
-		if (entry_it != childDir->m_entryCache.end() && entry_it->first == cachekey)
+		CacheEntryMap::iterator entry_it = m_entryCache.lower_bound(cachekey);
+		if (entry_it != m_entryCache.end() && entry_it->first == cachekey)
 		{
 			if (pGitStatus)
 			{
-				if (entry_it->second.GetEffectiveStatus() > git_wc_status_none &&
-					entry_it->second.GetEffectiveStatus() != GitStatus::GetMoreImportant(pGitStatus->prop_status, pGitStatus->text_status)
-				)
+				if (entry_it->second.GetEffectiveStatus() > git_wc_status_none && entry_it->second.GetEffectiveStatus() != pGitStatus->text_status)
 				{
-					bNotified =true;
+					CGitStatusCache::Instance().UpdateShell(path);
+					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": shell update for %s\n", path.GetWinPath());
 				}
 			}
-
 		}
 		else
-		{
-			entry_it = childDir->m_entryCache.insert(entry_it, std::make_pair(cachekey, CStatusCacheEntry()));
-			bNotified = true;
-
-		}
+			entry_it = m_entryCache.insert(entry_it, std::make_pair(cachekey, CStatusCacheEntry()));
 		entry_it->second = CStatusCacheEntry(pGitStatus, lastwritetime);
-		// TEMP(?): git status doesn't not have "entry" that contains node type, so manually set as file
-		entry_it->second.SetKind(git_node_file);
-
-		childDir->m_entryCache_tmp[cachekey] = entry_it->second;
-
-		if(bNotified)
-		{
-			CGitStatusCache::Instance().UpdateShell(path);
-			//CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": shell update for %s\n", path.GetWinPath());
-		}
-
-		//CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Path Entry Add %s %s %s %d\n", path.GetWinPath(), cachekey, m_directoryPath.GetWinPath(), pGitStatus->text_status);
+		m_entryCache_tmp[cachekey] = entry_it->second;
 	}
 }
 
