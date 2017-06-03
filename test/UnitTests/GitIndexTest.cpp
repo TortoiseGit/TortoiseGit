@@ -300,7 +300,8 @@ TEST(GitIndex, SearchInSortVector)
 	EXPECT_EQ(0, SearchInSortVector(vector, L"One", 3));
 	EXPECT_EQ(3, SearchInSortVector(vector, L"b/2", 3));
 	EXPECT_EQ(3, SearchInSortVector(vector, L"b/2", -1));
-	EXPECT_EQ(3, SearchInSortVector(vector, L"b/", 2));
+	EXPECT_LT(2, SearchInSortVector(vector, L"b/", 2));
+	EXPECT_GE(6, SearchInSortVector(vector, L"b/", 2));
 	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"b/6", 3));
 	EXPECT_EQ(1, SearchInSortVector(vector, L"a", 1));
 	EXPECT_EQ(7, SearchInSortVector(vector, L"tWo", 3));
