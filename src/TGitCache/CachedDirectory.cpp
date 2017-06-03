@@ -481,32 +481,22 @@ int CCachedDirectory::EnumFiles(const CTGitPath& path, CString sProjectRoot, con
 void
 CCachedDirectory::AddEntry(const CTGitPath& path, const git_wc_status2_t* pGitStatus, __int64 lastwritetime)
 {
-	AutoLocker lock(m_critSec);
 	if(path.IsDirectory())
 	{
+		// no lock here:
+		// AutoLocker lock(m_critSec);
+		// because GetDirectoryCacheEntry() can try to obtain a write lock
 		CCachedDirectory * childDir = CGitStatusCache::Instance().GetDirectoryCacheEntry(path);
 		if (childDir)
 		{
 			if ((childDir->GetCurrentFullStatus() != git_wc_status_missing) || !pGitStatus || (pGitStatus->text_status != git_wc_status_unversioned))
-			{
-				if(pGitStatus)
-				{
-					if(childDir->GetCurrentFullStatus() != GitStatus::GetMoreImportant(pGitStatus->prop_status, pGitStatus->text_status))
-					{
-						CGitStatusCache::Instance().UpdateShell(path);
-						//CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": shell update for %s\n", path.GetWinPath());
-						childDir->m_ownStatus.SetKind(git_node_dir);
-						childDir->m_ownStatus.SetStatus(pGitStatus);
-					}
-				}
-			}
+				childDir->m_ownStatus.SetStatus(pGitStatus);
 			childDir->m_ownStatus.SetKind(git_node_dir);
-
-
 		}
 	}
 	else
 	{
+		AutoLocker lock(m_critSec);
 		CString cachekey = GetCacheKey(path);
 		CacheEntryMap::iterator entry_it = m_entryCache.lower_bound(cachekey);
 		if (entry_it != m_entryCache.end() && entry_it->first == cachekey)
