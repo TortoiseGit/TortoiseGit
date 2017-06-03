@@ -66,7 +66,7 @@ typedef struct git_wc_status2_t
 
 #define MAX_STATUS_STRING_LENGTH		256
 
-typedef BOOL (*FILL_STATUS_CALLBACK)(const CString &path, git_wc_status_kind status, bool isDir, void *pdata, bool assumeValid, bool skipWorktree);
+typedef BOOL (*FILL_STATUS_CALLBACK)(const CString& path, git_wc_status_kind status, bool isDir, __int64 lastwritetime, void *pdata, bool assumeValid, bool skipWorktree);
 
 static CString CombinePath(const CString& part1, const CString& part2)
 {
