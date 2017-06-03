@@ -66,7 +66,7 @@ typedef struct git_wc_status2_t
 
 #define MAX_STATUS_STRING_LENGTH		256
 
-typedef BOOL (*FILL_STATUS_CALLBACK)(const CString &path, git_wc_status_kind status, bool isDir, void *pdata, bool assumeValid, bool skipWorktree);
+typedef BOOL (*FILL_STATUS_CALLBACK)(const CString& path, git_wc_status_kind status, bool isDir, __int64 lastwritetime, void *pdata, bool assumeValid, bool skipWorktree);
 
 static CString CombinePath(const CString& part1, const CString& part2)
 {
@@ -84,9 +84,9 @@ class GitStatus
 {
 public:
 
-	static int GetFileStatus(const CString& gitdir, CString path, git_wc_status_kind* status, BOOL IsFull = FALSE, BOOL IsRecursive = FALSE, BOOL isIgnore = TRUE, FILL_STATUS_CALLBACK callback = nullptr, void* pData = nullptr, bool* assumeValid = nullptr, bool* skipWorktree = nullptr);
+	static int GetFileStatus(const CString& gitdir, CString path, git_wc_status_kind* status, BOOL IsFull = FALSE, BOOL isIgnore = TRUE, bool* assumeValid = nullptr, bool* skipWorktree = nullptr);
 	static int GetDirStatus(const CString& gitdir, const CString& path, git_wc_status_kind* status, BOOL IsFull = false, BOOL IsRecursive = false, BOOL isIgnore = true);
-	static int EnumDirStatus(const CString &gitdir, const CString &path, git_wc_status_kind * status, BOOL IsFull = false, BOOL IsRecursive = false, BOOL isIgnore = true, FILL_STATUS_CALLBACK callback = nullptr, void *pData = nullptr);
+	static int EnumDirStatus(const CString& gitdir, const CString& path, git_wc_status_kind* status, FILL_STATUS_CALLBACK callback, void* pData);
 	static int GetFileList(CString path, std::vector<CGitFileName> &list);
 	static bool CheckAndUpdateIgnoreFiles(const CString& gitdir, const CString& subpaths, bool isDir);
 	static int IsUnderVersionControl(const CString &gitdir, const CString &path, bool isDir,bool *isVersion);
@@ -113,13 +113,6 @@ public:
 	 * in it.
 	 */
 	static git_wc_status_kind GetMoreImportant(git_wc_status_kind status1, git_wc_status_kind status2);
-
-	/**
-	 * Checks if a status is "important", i.e. if the status indicates that the user should know about it.
-	 * E.g. a "normal" status is not important, but "modified" is.
-	 * \param status the status to check
-	 */
-	static BOOL IsImportant(git_wc_status_kind status) {return (GetMoreImportant(git_wc_status_added, status)==status);}
 
 	/**
 	 * Reads the git text status of the working copy entry. No

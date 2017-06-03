@@ -63,9 +63,8 @@ private:
 	CStatusCacheEntry GetStatusFromCache(const CTGitPath &path, bool bRecursive);
 	CStatusCacheEntry GetStatusFromGit(const CTGitPath &path, const CString& sProjectRoot, bool isSelf);
 
-//	static git_error_t* GetStatusCallback(void *baton, const char *path, git_wc_status2_t *status);
-	static BOOL GetStatusCallback(const CString & path, git_wc_status_kind status, bool isDir, void * /*pUserData*/, bool assumeValid, bool skipWorktree);
-	void AddEntry(const CTGitPath& path, const git_wc_status2_t* pGitStatus, DWORD validuntil = 0);
+	static BOOL GetStatusCallback(const CString& path, git_wc_status_kind status, bool isDir, __int64 lastwritetime, void* /*pUserData*/, bool assumeValid, bool skipWorktree);
+	void AddEntry(const CTGitPath& path, const git_wc_status2_t* pGitStatus, __int64 lastwritetime);
 	CString GetCacheKey(const CTGitPath& path);
 	CString GetFullPathString(const CString& cacheKey);
 	CStatusCacheEntry LookForItemInCache(const CTGitPath& path, bool &bFound);

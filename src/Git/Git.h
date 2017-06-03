@@ -428,12 +428,16 @@ public:
 	int GetInitAddList(CTGitPathList &outpathlist);
 	int GetWorkingTreeChanges(CTGitPathList& result, bool amend = false, const CTGitPathList* filterlist = nullptr);
 
-	static __int64 filetime_to_time_t(const FILETIME *ft)
+	static __int64 filetime_to_time_t(__int64 winTime)
 	{
-		long long winTime = ((long long)ft->dwHighDateTime << 32) + ft->dwLowDateTime;
 		winTime -= 116444736000000000LL; /* Windows to Unix Epoch conversion */
 		winTime /= 10000000;		 /* Nano to seconds resolution */
 		return (time_t)winTime;
+	}
+
+	static inline __int64 filetime_to_time_t(const FILETIME *ft)
+	{
+		return filetime_to_time_t(((__int64)ft->dwHighDateTime << 32) + ft->dwLowDateTime);
 	}
 
 	static int GetFileModifyTime(LPCTSTR filename, __int64* time, bool* isDir = nullptr, __int64* size = nullptr)

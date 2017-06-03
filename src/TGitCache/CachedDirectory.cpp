@@ -325,7 +325,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, cons
 				bool isignore = pGitStatus->IsIgnored(sProjectRoot, subpaths, isDir);
 				status2.text_status = status2.prop_status =
 					(isignore? git_wc_status_ignored:git_wc_status_unversioned);
-				AddEntry(path, &status2);
+				AddEntry(path, &status2, path.GetLastWriteTime());
 				return m_entryCache[strCacheKey];
 			}
 			else
@@ -422,7 +422,8 @@ int CCachedDirectory::EnumFiles(const CTGitPath& path, CString sProjectRoot, con
 	{
 		bool assumeValid = false;
 		bool skipWorktree = false;
-		pStatus->GetFileStatus(sProjectRoot, sSubPath, &status, TRUE, false, true, GetStatusCallback, this, &assumeValid, &skipWorktree);
+		pStatus->GetFileStatus(sProjectRoot, sSubPath, &status, TRUE, true, &assumeValid, &skipWorktree);
+		GetStatusCallback(path.GetWinPathString(), status, false, path.GetLastWriteTime(), this, assumeValid, skipWorktree);
 		if (status < m_mostImportantFileStatus)
 			RefreshMostImportant();
 	}
@@ -438,7 +439,7 @@ int CCachedDirectory::EnumFiles(const CTGitPath& path, CString sProjectRoot, con
 		}
 
 		m_mostImportantFileStatus = git_wc_status_none;
-		pStatus->EnumDirStatus(sProjectRoot, sSubPath, &status, TRUE, false, true, GetStatusCallback, this);
+		pStatus->EnumDirStatus(sProjectRoot, sSubPath, &status, GetStatusCallback, this);
 		m_mostImportantFileStatus = GitStatus::GetMoreImportant(m_mostImportantFileStatus, status);
 
 		if (isSelf)
@@ -478,7 +479,7 @@ int CCachedDirectory::EnumFiles(const CTGitPath& path, CString sProjectRoot, con
 	return 0;
 }
 void
-CCachedDirectory::AddEntry(const CTGitPath& path, const git_wc_status2_t* pGitStatus, DWORD validuntil /* = 0*/)
+CCachedDirectory::AddEntry(const CTGitPath& path, const git_wc_status2_t* pGitStatus, __int64 lastwritetime)
 {
 	AutoLocker lock(m_critSec);
 	if(path.IsDirectory())
@@ -534,7 +535,7 @@ CCachedDirectory::AddEntry(const CTGitPath& path, const git_wc_status2_t* pGitSt
 			bNotified = true;
 
 		}
-		entry_it->second = CStatusCacheEntry(pGitStatus, path.GetLastWriteTime(), validuntil);
+		entry_it->second = CStatusCacheEntry(pGitStatus, lastwritetime);
 		// TEMP(?): git status doesn't not have "entry" that contains node type, so manually set as file
 		entry_it->second.SetKind(git_node_file);
 
@@ -567,7 +568,7 @@ CCachedDirectory::GetFullPathString(const CString& cacheKey)
 	return fullpath;
 }
 
-BOOL CCachedDirectory::GetStatusCallback(const CString & path, git_wc_status_kind status,bool isDir, void *, bool assumeValid, bool skipWorktree)
+BOOL CCachedDirectory::GetStatusCallback(const CString& path, git_wc_status_kind status, bool isDir, __int64 lastwritetime, void*, bool assumeValid, bool skipWorktree)
 {
 	git_wc_status2_t _status;
 	git_wc_status2_t *status2 = &_status;
@@ -606,7 +607,6 @@ BOOL CCachedDirectory::GetStatusCallback(const CString & path, git_wc_status_kin
 				if (pThis->m_bRecursive)
 				{
 					// Add any versioned directory, which is not our 'self' entry, to the list for having its status updated
-//OutputDebugStringA("AddFolderCrawl: ");OutputDebugStringW(svnPath.GetWinPathString());OutputDebugStringA("\r\n");
 					if (status >= git_wc_status_normal || (CGitStatusCache::Instance().IsUnversionedAsModified() && status == git_wc_status_unversioned))
 						CGitStatusCache::Instance().AddFolderForCrawling(gitPath);
 				}
@@ -672,7 +672,7 @@ BOOL CCachedDirectory::GetStatusCallback(const CString & path, git_wc_status_kin
 		}
 	}
 
-	pThis->AddEntry(gitPath, status2);
+	pThis->AddEntry(gitPath, status2, lastwritetime);
 
 	return FALSE;
 }
