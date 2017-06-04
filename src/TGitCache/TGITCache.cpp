@@ -485,9 +485,13 @@ VOID GetAnswerToRequest(const TGITCacheRequest* pRequest, TGITCacheResponse* pRe
 
 	CAutoReadWeakLock readLock(CGitStatusCache::Instance().GetGuard(), 2000);
 	if (readLock.IsAcquired())
-		CGitStatusCache::Instance().GetStatusForPath(path, pRequest->flags, false).BuildCacheResponse(*pReply, *pResponseLength);
+	{
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": app asked for status of %s\n", pRequest->path);
+		CGitStatusCache::Instance().GetStatusForPath(path, pRequest->flags).BuildCacheResponse(*pReply, *pResponseLength);
+	}
 	else
 	{
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": timeout for asked status of %s\n", pRequest->path);
 		CStatusCacheEntry entry;
 		entry.BuildCacheResponse(*pReply, *pResponseLength);
 	}

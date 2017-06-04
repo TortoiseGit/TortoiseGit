@@ -487,9 +487,7 @@ CCachedDirectory * CGitStatusCache::GetDirectoryCacheEntryNoCreate(const CTGitPa
 	return nullptr;
 }
 
-/* Fetch is true, means fetch status from */
-/* Fetch is false, means fetch status from cache */
-CStatusCacheEntry CGitStatusCache::GetStatusForPath(const CTGitPath& path, DWORD flags,  bool bFetch /* = true */)
+CStatusCacheEntry CGitStatusCache::GetStatusForPath(const CTGitPath& path, DWORD flags)
 {
 	bool bRecursive = !!(flags & TGITCACHE_FLAGS_RECUSIVE_STATUS);
 
@@ -519,7 +517,7 @@ CStatusCacheEntry CGitStatusCache::GetStatusForPath(const CTGitPath& path, DWORD
 		if (cachedDir)
 		{
 			//CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": GetStatusForMember %d\n", bFetch);
-			CStatusCacheEntry entry = cachedDir->GetStatusForMember(path, bRecursive, bFetch);
+			CStatusCacheEntry entry = cachedDir->GetStatusForMember(path, bRecursive, false);
 			{
 				AutoLocker lock(m_critSec);
 				m_mostRecentStatus = entry;
