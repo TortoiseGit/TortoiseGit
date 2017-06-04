@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2006,2008-2010 - TortoiseSVN
-// Copyright (C) 2008-2013, 2016 - TortoiseGit
+// Copyright (C) 2008-2013, 2016-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -36,14 +36,6 @@ CString GetCacheMutexName();
 
 CString GetCacheID();
 bool	SendCacheCommand(BYTE command, const WCHAR* path = nullptr);
-
-typedef enum git_node_kind_t
-{
-	git_node_none,
-	git_node_file,
-	git_node_dir,
-	git_node_unknown,
-}git_node_kind;
 
 /**
  * \ingroup TGitCache

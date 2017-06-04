@@ -23,13 +23,12 @@
 #include "CacheInterface.h"
 #include "registry.h"
 
-#define CACHEVERION 7
+#define CACHEVERION 8
 
 ULONGLONG cachetimeout = (ULONGLONG)CRegStdDWORD(L"Software\\TortoiseGit\\Cachetimeout", LONG_MAX);
 
 CStatusCacheEntry::CStatusCacheEntry()
 	: m_bSet(false)
-	, m_kind(git_node_unknown)
 	, m_highestPriorityLocalStatus(git_wc_status_none)
 	, m_bAssumeValid(false)
 	, m_bSkipWorktree(false)
@@ -39,7 +38,6 @@ CStatusCacheEntry::CStatusCacheEntry()
 
 CStatusCacheEntry::CStatusCacheEntry(const git_wc_status_kind status)
 	: m_bSet(true)
-	, m_kind(git_node_unknown)
 	, m_highestPriorityLocalStatus(status)
 	, m_bAssumeValid(false)
 	, m_bSkipWorktree(false)
@@ -52,7 +50,6 @@ CStatusCacheEntry::CStatusCacheEntry(const git_wc_status_kind status)
 
 CStatusCacheEntry::CStatusCacheEntry(const git_wc_status2_t* pGitStatus, __int64 lastWriteTime, LONGLONG validuntil /* = 0*/)
 	: m_bSet(false)
-	, m_kind(git_node_unknown)
 	, m_highestPriorityLocalStatus(git_wc_status_none)
 {
 	SetStatus(pGitStatus);
@@ -73,7 +70,6 @@ bool CStatusCacheEntry::SaveToDisk(FILE* pFile) const
 	WRITEVALUETOFILE(m_highestPriorityLocalStatus);
 	WRITEVALUETOFILE(m_lastWriteTime);
 	WRITEVALUETOFILE(m_bSet);
-	WRITEVALUETOFILE(m_kind);
 
 	// now save the status struct (without the entry field, because we don't use that)
 	WRITEVALUETOFILE(m_GitStatus.prop_status);
@@ -95,7 +91,6 @@ bool CStatusCacheEntry::LoadFromDisk(FILE * pFile)
 		LOADVALUEFROMFILE(m_highestPriorityLocalStatus);
 		LOADVALUEFROMFILE(m_lastWriteTime);
 		LOADVALUEFROMFILE(m_bSet);
-		LOADVALUEFROMFILE(m_kind);
 		SecureZeroMemory(&m_GitStatus, sizeof(m_GitStatus));
 		LOADVALUEFROMFILE(m_GitStatus.prop_status);
 		LOADVALUEFROMFILE(m_GitStatus.text_status);
@@ -120,11 +115,8 @@ void CStatusCacheEntry::SetStatus(const git_wc_status2_t* pGitStatus)
 	{
 		m_highestPriorityLocalStatus = GitStatus::GetMoreImportant(pGitStatus->prop_status, pGitStatus->text_status);
 		m_GitStatus = *pGitStatus;
-		if (m_kind != git_node_dir)
-		{
-			m_bAssumeValid = pGitStatus->assumeValid;
-			m_bSkipWorktree = pGitStatus->skipWorktree;
-		}
+		m_bAssumeValid = pGitStatus->assumeValid;
+		m_bSkipWorktree = pGitStatus->skipWorktree;
 	}
 	m_discardAtTime = GetTickCount64() + cachetimeout;
 	m_bSet = true;
