@@ -81,6 +81,8 @@ private:
 private:
 	CComAutoCriticalSection m_critSec;
 
+	volatile bool m_bWantRrefresh;
+
 	// The cache of files and directories within this directory
 	typedef std::map<CString, CStatusCacheEntry> CacheEntryMap;
 	CacheEntryMap m_entryCache;
