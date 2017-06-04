@@ -380,7 +380,7 @@ void CFolderCrawler::WorkerThread()
 					}
 				}
 			}
-			else if (!m_foldersToUpdate.empty())
+			if (!m_foldersToUpdate.empty())
 			{
 				{
 					AutoLocker lock(m_critSec);
