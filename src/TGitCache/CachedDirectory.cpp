@@ -29,7 +29,6 @@ CCachedDirectory::CCachedDirectory(void)
 	: m_currentFullStatus(git_wc_status_none)
 	, m_mostImportantFileStatus(git_wc_status_none)
 	, m_bRecursive(true)
-	, m_bWantRrefresh(false)
 {
 }
 
@@ -264,8 +263,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromCache(const CTGitPath& path, bo
 				}
 			}
 		}
-		else
-			m_bWantRrefresh = true;
+
 		CGitStatusCache::Instance().AddFolderForCrawling(path.GetContainingDirectory());
 		return CStatusCacheEntry();
 	}
@@ -359,12 +357,6 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, cons
 		UpdateCurrentStatus();
 		if (!path.IsDirectory())
 			return GetCacheStatusForMember(path);
-		if (m_bWantRrefresh)
-		{
-			m_bWantRrefresh = false;
-			CGitStatusCache::Instance().UpdateShell(path);
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": requested shell update for %s\n", path.GetWinPath());
-		}
 		return CStatusCacheEntry(m_ownStatus);
 	}
 }
