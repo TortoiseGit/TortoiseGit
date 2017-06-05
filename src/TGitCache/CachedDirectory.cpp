@@ -208,6 +208,14 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromCache(const CTGitPath& path, bo
 				}*/
 
 				CGitStatusCache::Instance().AddFolderForCrawling(path);
+				// also ask parent in case me might have missed some watcher update requests for our parent
+				CTGitPath parentPath = path.GetContainingDirectory();
+				if (!parentPath.IsEmpty())
+				{
+					auto parentEntry = CGitStatusCache::Instance().GetDirectoryCacheEntry(parentPath);
+					if (parentEntry && parentEntry->GetCurrentFullStatus() > git_wc_status_unversioned)
+						CGitStatusCache::Instance().AddFolderForCrawling(parentPath);
+				}
 
 				/*Return old status during crawling*/
 				return dirEntry->GetOwnStatus(bRecursive);
@@ -216,6 +224,14 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromCache(const CTGitPath& path, bo
 		else
 		{
 			CGitStatusCache::Instance().AddFolderForCrawling(path);
+			// also ask parent in case me might have missed some watcher update requests for our parent
+			CTGitPath parentPath = path.GetContainingDirectory();
+			if (!parentPath.IsEmpty())
+			{
+				auto parentEntry = CGitStatusCache::Instance().GetDirectoryCacheEntry(parentPath);
+				if (parentEntry && parentEntry->GetCurrentFullStatus() > git_wc_status_unversioned)
+					CGitStatusCache::Instance().AddFolderForCrawling(parentPath);
+			}
 		}
 		return CStatusCacheEntry();
 	}
@@ -431,8 +447,7 @@ int CCachedDirectory::EnumFiles(const CTGitPath& path, CString sProjectRoot, con
 		bool skipWorktree = false;
 		pStatus->GetFileStatus(sProjectRoot, sSubPath, &status, TRUE, true, &assumeValid, &skipWorktree);
 		GetStatusCallback(path.GetWinPathString(), status, false, path.GetLastWriteTime(), this, assumeValid, skipWorktree);
-		if (status < m_mostImportantFileStatus)
-			RefreshMostImportant(false);
+		RefreshMostImportant(false);
 	}
 	else
 	{
