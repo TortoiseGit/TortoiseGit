@@ -299,6 +299,11 @@ subst T: C:\TortoiseGit\doc
             those clients too.
         </para>
         <para>
+            For a description of how icon overlays correspond to Git
+            status and other technical details, read
+            <xref linkend="tgit-app-internals-overlays"/>.
+        </para>
+        <para>
             Windows explorer can just handle a fixed number different overlay providers (15) and TortoiseGit is using 6 of these
             (these 6 are handled by TortoiseOverlays and, thus, shared with TortoiseSVN and TortoiseCVS). If the TortoiseGit icons
             are not correctly displayed this is likely caused by other programs which provide overlays (like Dropbox, Owncloud, BoxSync
