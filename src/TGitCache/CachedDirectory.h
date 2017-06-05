@@ -76,7 +76,7 @@ private:
 
 	// Update our composite status and deal with things if it's changed
 	void UpdateCurrentStatus();
-
+	void SetChildStatus(const CString& childDir, git_wc_status_kind childStatus);
 
 private:
 	CComAutoCriticalSection m_critSec;

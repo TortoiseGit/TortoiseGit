@@ -610,8 +610,7 @@ BOOL CCachedDirectory::GetStatusCallback(const CString& path, git_wc_status_kind
 						if (pThisIsVersioned && cdir->m_directoryPath.HasAdminDir(&root2) && !CPathUtils::ArePathStringsEqualWithCase(root1, root2))
 							st = s;
 					}
-					AutoLocker lock(pThis->m_critSec);
-					pThis->m_childDirectories[gitPath.GetWinPathString()] = st;
+					pThis->SetChildStatus(gitPath.GetWinPathString(), st);
 					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": call 1 Update dir %s %d\n", gitPath.GetWinPath(), st);
 				}
 				else
@@ -621,8 +620,7 @@ BOOL CCachedDirectory::GetStatusCallback(const CString& path, git_wc_status_kind
 					// means the cache will be updated soon.
 					CGitStatusCache::Instance().GetDirectoryCacheEntry(gitPath);
 
-					AutoLocker lock(pThis->m_critSec);
-					pThis->m_childDirectories[gitPath.GetWinPathString()] = s;
+					pThis->SetChildStatus(gitPath.GetWinPathString(), s);
 					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": call 2 Update dir %s %d\n", gitPath.GetWinPath(), s);
 				}
 			}
@@ -725,12 +723,15 @@ void CCachedDirectory::UpdateChildDirectoryStatus(const CTGitPath& childDir, git
 	}
 	if ((currentStatus != childStatus)||(!IsOwnStatusValid()))
 	{
-		{
-			AutoLocker lock(m_critSec);
-			m_childDirectories[childDir.GetWinPathString()] = childStatus;
-		}
+		SetChildStatus(childDir.GetWinPathString(), childStatus);
 		UpdateCurrentStatus();
 	}
+}
+
+void CCachedDirectory::SetChildStatus(const CString& childDir, git_wc_status_kind childStatus)
+{
+	AutoLocker lock(m_critSec);
+	m_childDirectories[childDir] = childStatus;
 }
 
 CStatusCacheEntry CCachedDirectory::GetOwnStatus(bool bRecursive)
