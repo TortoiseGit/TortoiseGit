@@ -416,7 +416,7 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 	/* Check deleted file in system */
 	size_t start = 0, end = 0;
 	size_t pos = SearchInSortVector(*indexptr, path, path.GetLength()); // match path prefix, (sub)folders end with slash
-	std::set<CString> skipWorktreeSet;
+	std::set<CString> alreadyReported;
 
 	if (GetRangeInSortVector(*indexptr, path, path.GetLength(), &start, &end, pos) == 0)
 	{
@@ -442,10 +442,10 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 					*status = git_wc_status_deleted;
 					if ((entry.m_FlagsExtended & GIT_IDXENTRY_SKIP_WORKTREE) != 0)
 					{
-						skipWorktreeSet.insert(filename);
 						skipWorktree = true;
 						*status = git_wc_status_normal;
 					}
+					alreadyReported.insert(filename);
 					callback(CombinePath(gitdir, entry.m_FileName), *status, false, 0, pData, false, skipWorktree);
 				}
 			}
@@ -468,7 +468,7 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 				++index; // include slash at the end for subfolders, so that we do not match files by mistake
 
 			CString filename = entry.m_FileName.Mid(commonPrefixLength, index - commonPrefixLength);
-			if (oldstring != filename && skipWorktreeSet.find(filename) == skipWorktreeSet.cend())
+			if (oldstring != filename && alreadyReported.find(filename) == alreadyReported.cend())
 			{
 				oldstring = filename;
 				int length = filename.GetLength();
