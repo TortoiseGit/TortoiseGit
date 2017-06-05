@@ -467,6 +467,7 @@ bool CFolderCrawler::SetHoldoff(DWORD milliseconds /* = 100*/)
 
 void CFolderCrawler::BlockPath(const CTGitPath& path, DWORD ticks)
 {
+	AutoLocker lock(m_critSec);
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": block path %s from being crawled\n", path.GetWinPath());
 	m_blockedPath = path;
 	if (ticks == 0)
