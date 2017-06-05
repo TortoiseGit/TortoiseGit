@@ -444,6 +444,9 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 					{
 						skipWorktree = true;
 						*status = git_wc_status_normal;
+						oldstring.Empty(); // without this a deleted folder which has two versioned files and only the first is skipwoktree flagged gets reported as normal
+						if (alreadyReported.find(filename) != alreadyReported.cend())
+							continue;
 					}
 					alreadyReported.insert(filename);
 					callback(CombinePath(gitdir, entry.m_FileName), *status, false, 0, pData, false, skipWorktree);
