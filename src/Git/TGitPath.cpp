@@ -65,6 +65,12 @@ CTGitPath::CTGitPath(const CString& sUnknownPath) : CTGitPath()
 	SetFromUnknown(sUnknownPath);
 }
 
+CTGitPath::CTGitPath(const CString& sUnknownPath, bool bIsDirectory) : CTGitPath(sUnknownPath)
+{
+	m_bDirectoryKnown = true;
+	m_bIsDirectory = bIsDirectory;
+}
+
 int CTGitPath::ParserAction(BYTE action)
 {
 	//action=action.TrimLeft();

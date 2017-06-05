@@ -436,7 +436,8 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 			{
 				oldstring = filename;
 				int length = filename.GetLength();
-				if (SearchInSortVector(filelist, filename, filename[length - 1] == L'/' ? length : -1) == NPOS) // do full match for filenames and only prefix-match ending with "/" for folders
+				bool isDir = filename[length - 1] == L'/';
+				if (SearchInSortVector(filelist, filename, isDir ? length : -1) == NPOS) // do full match for filenames and only prefix-match ending with "/" for folders
 				{
 					bool skipWorktree = false;
 					*status = git_wc_status_deleted;
@@ -449,7 +450,7 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 							continue;
 					}
 					alreadyReported.insert(filename);
-					callback(CombinePath(gitdir, entry.m_FileName), *status, false, 0, pData, false, skipWorktree);
+					callback(CombinePath(gitdir, subpath, filename), *status, isDir, 0, pData, false, skipWorktree);
 				}
 			}
 		}
@@ -475,10 +476,11 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 			{
 				oldstring = filename;
 				int length = filename.GetLength();
-				if (SearchInSortVector(filelist, filename, filename[length - 1] == L'/' ? length : -1) == NPOS) // do full match for filenames and only prefix-match ending with "/" for folders
+				bool isDir = filename[length - 1] == L'/';
+				if (SearchInSortVector(filelist, filename, isDir ? length : -1) == NPOS) // do full match for filenames and only prefix-match ending with "/" for folders
 				{
 					*status = git_wc_status_deleted;
-					callback(CombinePath(gitdir, entry.m_FileName), *status, false, 0, pData, false, false);
+					callback(CombinePath(gitdir, subpath, filename), *status, isDir, 0, pData, false, false);
 				}
 			}
 		}

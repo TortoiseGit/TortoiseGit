@@ -19,6 +19,7 @@
 
 #pragma once
 #include "TGitPath.h"
+#include "PathUtils.h"
 
 class CGitFileName;
 
@@ -73,6 +74,16 @@ static CString CombinePath(const CString& part1, const CString& part2)
 	CString path(part1);
 	path += L'\\';
 	path += part2;
+	return path;
+}
+
+static CString CombinePath(const CString& part1, const CString& part2, const CString& part3)
+{
+	CString path(part1);
+	path += L'\\';
+	path += part2;
+	CPathUtils::EnsureTrailingPathDelimiter(path);
+	path += part3;
 	return path;
 }
 

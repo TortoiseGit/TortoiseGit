@@ -432,7 +432,7 @@ int CCachedDirectory::EnumFiles(const CTGitPath& path, CString sProjectRoot, con
 		pStatus->GetFileStatus(sProjectRoot, sSubPath, &status, TRUE, true, &assumeValid, &skipWorktree);
 		GetStatusCallback(path.GetWinPathString(), status, false, path.GetLastWriteTime(), this, assumeValid, skipWorktree);
 		if (status < m_mostImportantFileStatus)
-			RefreshMostImportant();
+			RefreshMostImportant(false);
 	}
 	else
 	{
@@ -447,7 +447,6 @@ int CCachedDirectory::EnumFiles(const CTGitPath& path, CString sProjectRoot, con
 
 		m_mostImportantFileStatus = git_wc_status_none;
 		pStatus->EnumDirStatus(sProjectRoot, sSubPath, &status, GetStatusCallback, this);
-		m_mostImportantFileStatus = GitStatus::GetMoreImportant(m_mostImportantFileStatus, status);
 
 		if (isSelf)
 		{
@@ -457,6 +456,8 @@ int CCachedDirectory::EnumFiles(const CTGitPath& path, CString sProjectRoot, con
 			m_entryCache = std::move(m_entryCache_tmp);
 			m_entryCache_tmp.clear();
 		}
+
+		RefreshMostImportant(false);
 
 		// need to set/construct m_ownStatus (only unversioned and normal are valid values)
 		m_ownStatus = git_wc_status_unversioned;
@@ -539,7 +540,7 @@ CCachedDirectory::GetFullPathString(const CString& cacheKey)
 	return fullpath;
 }
 
-BOOL CCachedDirectory::GetStatusCallback(const CString& path, git_wc_status_kind status, bool isDir, __int64 lastwritetime, void*, bool assumeValid, bool skipWorktree)
+BOOL CCachedDirectory::GetStatusCallback(const CString& path, git_wc_status_kind status, bool isDir, __int64 lastwritetime, void* baton, bool assumeValid, bool skipWorktree)
 {
 	git_wc_status2_t _status;
 	git_wc_status2_t *status2 = &_status;
@@ -548,33 +549,16 @@ BOOL CCachedDirectory::GetStatusCallback(const CString& path, git_wc_status_kind
 	status2->assumeValid = assumeValid;
 	status2->skipWorktree = skipWorktree;
 
-	CTGitPath gitPath(path);
+	CTGitPath gitPath(path, isDir);
 
-	CCachedDirectory *pThis = CGitStatusCache::Instance().GetDirectoryCacheEntry(gitPath.GetContainingDirectory());
+	auto pThis = reinterpret_cast<CCachedDirectory*>(baton);
 
-	if (!pThis)
-		return FALSE;
-
-//	if(status->entry)
 	{
 		if (isDir)
 		{	/*gitpath is directory*/
+			ATLASSERT(!gitPath.IsEquivalentToWithoutCase(pThis->m_directoryPath)); // this method does not get called four ourself
 			//if ( !gitPath.IsEquivalentToWithoutCase(pThis->m_directoryPath) )
 			{
-				if (!gitPath.Exists())
-				{
-					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Miss dir %s \n", gitPath.GetWinPath());
-					pThis->m_mostImportantFileStatus = GitStatus::GetMoreImportant(pThis->m_mostImportantFileStatus, git_wc_status_deleted);
-				}
-
-				if ( status <  git_wc_status_normal)
-				{
-					if (::PathFileExists(path + L"\\.git"))
-					{ // this is submodule
-						CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": skip submodule %s\n", (LPCTSTR)path);
-						return FALSE;
-					}
-				}
 				if (pThis->m_bRecursive)
 				{
 					// Add any versioned directory, which is not our 'self' entry, to the list for having its status updated
@@ -582,6 +566,12 @@ BOOL CCachedDirectory::GetStatusCallback(const CString& path, git_wc_status_kind
 						CGitStatusCache::Instance().AddFolderForCrawling(gitPath);
 				}
 
+				if (status == git_wc_status_deleted)
+				{
+					pThis->SetChildStatus(gitPath.GetWinPathString(), git_wc_status_modified);
+					return FALSE;
+				}
+				
 				// Make sure we know about this child directory
 				// This initial status value is likely to be overwritten from below at some point
 				git_wc_status_kind s = GitStatus::GetMoreImportant(status2->text_status, status2->prop_status);
@@ -608,7 +598,10 @@ BOOL CCachedDirectory::GetStatusCallback(const CString& path, git_wc_status_kind
 						}
 						AutoLocker lock(cdir->m_critSec);
 						if (pThisIsVersioned && cdir->m_directoryPath.HasAdminDir(&root2) && !CPathUtils::ArePathStringsEqualWithCase(root1, root2))
-							st = s;
+						{
+							CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": skip submodule %s\n", (LPCTSTR)path);
+							return FALSE;
+						}
 					}
 					pThis->SetChildStatus(gitPath.GetWinPathString(), st);
 					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": call 1 Update dir %s %d\n", gitPath.GetWinPath(), st);
@@ -623,20 +616,6 @@ BOOL CCachedDirectory::GetStatusCallback(const CString& path, git_wc_status_kind
 					pThis->SetChildStatus(gitPath.GetWinPathString(), s);
 					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": call 2 Update dir %s %d\n", gitPath.GetWinPath(), s);
 				}
-			}
-		}
-		else /* gitpath is file*/
-		{
-			// Keep track of the most important status of all the files in this directory
-			// Don't include subdirectories in this figure, because they need to provide their
-			// own 'most important' value
-			pThis->m_mostImportantFileStatus = GitStatus::GetMoreImportant(pThis->m_mostImportantFileStatus, status2->text_status);
-			pThis->m_mostImportantFileStatus = GitStatus::GetMoreImportant(pThis->m_mostImportantFileStatus, status2->prop_status);
-			if ((status2->text_status == git_wc_status_unversioned) && (CGitStatusCache::Instance().IsUnversionedAsModified()))
-			{
-				// treat unversioned files as modified
-				if (pThis->m_mostImportantFileStatus != git_wc_status_added)
-					pThis->m_mostImportantFileStatus = GitStatus::GetMoreImportant(pThis->m_mostImportantFileStatus, git_wc_status_modified);
 			}
 		}
 	}
@@ -762,7 +741,7 @@ void CCachedDirectory::RefreshStatus(bool bRecursive)
 	 */
 }
 
-void CCachedDirectory::RefreshMostImportant()
+void CCachedDirectory::RefreshMostImportant(bool bUpdateShell /* = true */)
 {
 	AutoLocker lock(m_critSec);
 	CacheEntryMap::iterator itMembers;
@@ -778,7 +757,7 @@ void CCachedDirectory::RefreshMostImportant()
 				newStatus = GitStatus::GetMoreImportant(newStatus, git_wc_status_modified);
 		}
 	}
-	if (newStatus != m_mostImportantFileStatus)
+	if (bUpdateShell && newStatus != m_mostImportantFileStatus)
 	{
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": status change of path %s\n", m_directoryPath.GetWinPath());
 		CGitStatusCache::Instance().UpdateShell(m_directoryPath);

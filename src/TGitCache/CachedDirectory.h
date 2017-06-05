@@ -53,7 +53,7 @@ public:
 	void Invalidate();
 	void RefreshStatus(bool bRecursive);
 private:
-	void RefreshMostImportant();
+	void RefreshMostImportant(bool bUpdateShell = true);
 	BOOL SaveToDisk(FILE * pFile);
 	BOOL LoadFromDisk(FILE * pFile);
 public:

@@ -34,6 +34,7 @@ public:
 	~CTGitPath(void);
 #endif
 	CTGitPath(const CString& sUnknownPath);
+	CTGitPath(const CString& sUnknownPath, bool bIsDirectory);
 	int m_Stage;
 	int m_ParentNo;
 
