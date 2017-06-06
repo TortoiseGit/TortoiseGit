@@ -541,14 +541,14 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 		if (((*it).m_Flags & GIT_IDXENTRY_STAGEMASK) != 0)
 		{
 			*status = git_wc_status_conflicted;
-			break;
+			// When status == git_wc_status_conflicted, we don't need to check each file status
+			// because git_wc_status_conflicted is the highest.
+			return 0;
 		}
 	}
 
-	if (IsFul && (*status != git_wc_status_conflicted))
+	if (IsFul)
 	{
-		*status = git_wc_status_normal;
-
 		g_HeadFileMap.CheckHeadAndUpdate(gitdir);
 
 		// Check Add
@@ -599,11 +599,6 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 			}
 		} /* End lock*/
 	}
-
-	// When status == git_wc_status_conflicted, needn't check each file status
-	// because git_wc_status_conflicted is highest.s
-	if (*status == git_wc_status_conflicted)
-		return 0;
 
 	for (auto it = indexptr->cbegin() + start, itlast = indexptr->cbegin() + end; it <= itlast; ++it)
 	{
