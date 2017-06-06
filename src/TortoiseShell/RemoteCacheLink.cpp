@@ -27,7 +27,6 @@
 
 CRemoteCacheLink::CRemoteCacheLink(void)
 {
-	SecureZeroMemory(&m_dummyStatus, sizeof(m_dummyStatus));
 	SecureZeroMemory(&m_Overlapped, sizeof(m_Overlapped));
 	m_lastTimeout = 0;
 	m_critSec.Init();
