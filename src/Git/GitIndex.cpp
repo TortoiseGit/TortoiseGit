@@ -163,11 +163,13 @@ int CGitIndexList::GetFileStatus(const CString& gitdir, const CString& pathorg, 
 	}
 
 	auto& entry = (*this)[index];
+	if (pHash)
+		*pHash = entry.m_IndexHash;
 	ATLASSERT(pathorg == entry.m_FileName);
-	return GetFileStatus(gitdir, entry, status, time, filesize, pHash, assumeValid, skipWorktree);
+	return GetFileStatus(gitdir, entry, status, time, filesize, assumeValid, skipWorktree);
 }
 
-int CGitIndexList::GetFileStatus(const CString& gitdir, CGitIndex& entry, git_wc_status_kind* status, __int64 time, __int64 filesize, CGitHash* pHash, bool* assumeValid, bool* skipWorktree)
+int CGitIndexList::GetFileStatus(const CString& gitdir, CGitIndex& entry, git_wc_status_kind* status, __int64 time, __int64 filesize, bool* assumeValid, bool* skipWorktree)
 {
 	// skip-worktree has higher priority than assume-valid
 	if (entry.m_FlagsExtended & GIT_IDXENTRY_SKIP_WORKTREE)
@@ -214,9 +216,6 @@ int CGitIndexList::GetFileStatus(const CString& gitdir, CGitIndex& entry, git_wc
 		*status = git_wc_status_conflicted;
 	else if (entry.m_FlagsExtended & GIT_IDXENTRY_INTENT_TO_ADD)
 		*status = git_wc_status_added;
-
-	if (pHash)
-		*pHash = entry.m_IndexHash;
 
 	return 0;
 }
@@ -277,7 +276,7 @@ int CGitIndexList::GetStatus(const CString& gitdir, CString path, git_wc_status_
 		if (skipWorktree)
 			*skipWorktree = false;
 
-		GetFileStatus(gitdir, entry, status, time, filesize, nullptr, assumeValid, skipWorktree);
+		GetFileStatus(gitdir, entry, status, time, filesize, assumeValid, skipWorktree);
 		if (*status != git_wc_status_none)
 		{
 			if (dirstatus == git_wc_status_none)
