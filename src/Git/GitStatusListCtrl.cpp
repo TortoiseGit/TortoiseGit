@@ -559,28 +559,16 @@ DWORD CGitStatusListCtrl::GetShowFlagsFromGitStatus(git_wc_status_kind status)
 		if (!m_bShowIgnores)
 			return GITSLC_SHOWDIRECTS;
 		return GITSLC_SHOWDIRECTS|GITSLC_SHOWIGNORED;
-	case git_wc_status_incomplete:
-		return GITSLC_SHOWINCOMPLETE;
 	case git_wc_status_normal:
 		return GITSLC_SHOWNORMAL;
-	case git_wc_status_external:
-		return GITSLC_SHOWEXTERNAL;
 	case git_wc_status_added:
 		return GITSLC_SHOWADDED;
-	case git_wc_status_missing:
-		return GITSLC_SHOWMISSING;
 	case git_wc_status_deleted:
 		return GITSLC_SHOWREMOVED;
-	case git_wc_status_replaced:
-		return GITSLC_SHOWREPLACED;
 	case git_wc_status_modified:
 		return GITSLC_SHOWMODIFIED;
-	case git_wc_status_merged:
-		return GITSLC_SHOWMERGED;
 	case git_wc_status_conflicted:
 		return GITSLC_SHOWCONFLICTED;
-	case git_wc_status_obstructed:
-		return GITSLC_SHOWOBSTRUCTED;
 	default:
 		// we should NEVER get here!
 		ASSERT(FALSE);

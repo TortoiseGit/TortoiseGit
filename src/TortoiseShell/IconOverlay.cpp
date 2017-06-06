@@ -319,8 +319,6 @@ STDMETHODIMP CShellExt::IsMemberOf_Wrap(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 			}
 			return S_FALSE;
 		case git_wc_status_normal:
-		case git_wc_status_external:
-		case git_wc_status_incomplete:
 			// skip-worktree aka locked has higher priority than assume-valid
 			if ((lockedoverlay)&&(g_lockedovlloaded))
 			{
@@ -349,7 +347,6 @@ STDMETHODIMP CShellExt::IsMemberOf_Wrap(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 			}
 			else
 				return S_FALSE;
-		case git_wc_status_missing:
 		case git_wc_status_deleted:
 			if (g_deletedovlloaded)
 			{
@@ -373,7 +370,6 @@ STDMETHODIMP CShellExt::IsMemberOf_Wrap(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 				else
 					return S_FALSE;
 			}
-		case git_wc_status_replaced:
 		case git_wc_status_modified:
 			if (g_modifiedovlloaded)
 			{
@@ -395,14 +391,6 @@ STDMETHODIMP CShellExt::IsMemberOf_Wrap(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 				else
 					return S_FALSE;
 			}
-		case git_wc_status_merged:
-			if (m_State == FileStateReadOnly)
-			{
-				g_filepath.clear();
-				return S_OK;
-			}
-			else
-				return S_FALSE;
 		case git_wc_status_added:
 			if (g_addedovlloaded)
 			{
@@ -427,7 +415,6 @@ STDMETHODIMP CShellExt::IsMemberOf_Wrap(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 					return S_FALSE;
 			}
 		case git_wc_status_conflicted:
-		case git_wc_status_obstructed:
 			if (g_conflictedovlloaded)
 			{
 				if (m_State == FileStateConflict)

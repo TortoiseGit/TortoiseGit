@@ -253,13 +253,10 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromCache(const CTGitPath& path, bo
 			{
 				if(itMap->second.DoesFileTimeMatch(path.GetLastWriteTime()))
 				{
-					if ((itMap->second.GetEffectiveStatus()!=git_wc_status_missing)||(!PathFileExists(path.GetWinPath())))
-					{
-						// Note: the filetime matches after a modified has been committed too.
-						// So in that case, we would return a wrong status (e.g. 'modified' instead
-						// of 'normal') here.
-						return itMap->second;
-					}
+					// Note: the filetime matches after a modified has been committed too.
+					// So in that case, we would return a wrong status (e.g. 'modified' instead
+					// of 'normal') here.
+					return itMap->second;
 				}
 			}
 		}
@@ -496,7 +493,7 @@ CCachedDirectory::AddEntry(const CTGitPath& path, const git_wc_status2_t* pGitSt
 		CCachedDirectory * childDir = CGitStatusCache::Instance().GetDirectoryCacheEntry(path);
 		if (childDir)
 		{
-			if ((childDir->GetCurrentFullStatus() != git_wc_status_missing) || !pGitStatus || (pGitStatus->status != git_wc_status_unversioned))
+			if (!pGitStatus || pGitStatus->status != git_wc_status_unversioned)
 				childDir->m_ownStatus.SetStatus(pGitStatus);
 		}
 	}

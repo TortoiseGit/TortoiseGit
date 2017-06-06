@@ -126,8 +126,6 @@ void CStatusCacheEntry::SetAsUnversioned()
 	SecureZeroMemory(&m_GitStatus, sizeof(m_GitStatus));
 	m_discardAtTime = GetTickCount64() + cachetimeout;
 	git_wc_status_kind status = git_wc_status_none;
-	if (m_highestPriorityLocalStatus == git_wc_status_missing)
-		status = git_wc_status_missing;
 	if (m_highestPriorityLocalStatus == git_wc_status_unversioned)
 		status = git_wc_status_unversioned;
 	m_highestPriorityLocalStatus = status;
@@ -149,10 +147,6 @@ void CStatusCacheEntry::BuildCacheResponse(TGITCacheResponse& response, DWORD& r
 	response.m_bAssumeValid = m_bAssumeValid;
 	response.m_bSkipWorktree = m_bSkipWorktree;
 	responseLength = sizeof(response);
-
-	// directories that are empty or only contain unversioned files will be git_wc_status_incomplete, report as unversioned
-	if (response.m_status.status == git_wc_status_incomplete)
-		response.m_status.status = git_wc_status_unversioned;
 }
 
 bool CStatusCacheEntry::IsVersioned() const

@@ -31,16 +31,10 @@ typedef enum type_git_wc_status_kind
 	git_wc_status_unversioned,
 	git_wc_status_ignored,
 	git_wc_status_normal,
-	git_wc_status_external,
-	git_wc_status_incomplete,
-	git_wc_status_missing,
 	git_wc_status_deleted,
-	git_wc_status_replaced,
 	git_wc_status_modified,
-	git_wc_status_merged,
 	git_wc_status_added,
 	git_wc_status_conflicted,
-	git_wc_status_obstructed,
 	git_wc_status_unknown,
 }git_wc_status_kind;
 

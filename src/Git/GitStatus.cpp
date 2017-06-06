@@ -103,27 +103,15 @@ int GitStatus::GetStatusRanking(git_wc_status_kind status)
 			return 1;
 		case git_wc_status_ignored:
 			return 2;
-		case git_wc_status_incomplete:
-			return 4;
 		case git_wc_status_normal:
-		case git_wc_status_external:
-			return 5;
 		case git_wc_status_added:
 			return 6;
-		case git_wc_status_missing:
-			return 7;
 		case git_wc_status_deleted:
 			return 8;
-		case git_wc_status_replaced:
-			return 9;
 		case git_wc_status_modified:
 			return 10;
-		case git_wc_status_merged:
-			return 11;
 		case git_wc_status_conflicted:
 			return 12;
-		case git_wc_status_obstructed:
-			return 13;
 	}
 	return 0;
 }
