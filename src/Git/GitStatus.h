@@ -44,15 +44,6 @@ typedef enum type_git_wc_status_kind
 	git_wc_status_unknown,
 }git_wc_status_kind;
 
-typedef enum
-{
-	git_depth_empty,
-	git_depth_infinity,
-	git_depth_unknown,
-	git_depth_files,
-	git_depth_immediates,
-}git_depth_t;
-
 typedef struct git_wc_status2_t
 {
 	git_wc_status_kind status;
@@ -111,7 +102,7 @@ public:
 	 * If the status of the text and property part are different
 	 * then the more important status is returned.
 	 */
-	static git_wc_status_kind GetAllStatus(const CTGitPath& path, git_depth_t depth = git_depth_empty, bool* assumeValid = nullptr, bool* skipWorktree = nullptr);
+	static git_wc_status_kind GetAllStatus(const CTGitPath& path, bool bIsRecursive, bool* assumeValid = nullptr, bool* skipWorktree = nullptr);
 
 	/**
 	 * Returns the status which is more "important" of the two statuses specified.

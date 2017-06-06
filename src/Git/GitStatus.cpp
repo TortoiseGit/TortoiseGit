@@ -42,7 +42,7 @@ GitStatus::GitStatus()
 
 // static method
 #ifndef TGITCACHE
-git_wc_status_kind GitStatus::GetAllStatus(const CTGitPath& path, git_depth_t depth, bool * assumeValid, bool * skipWorktree)
+git_wc_status_kind GitStatus::GetAllStatus(const CTGitPath& path, bool bIsRecursive, bool* assumeValid, bool* skipWorktree)
 {
 	git_wc_status_kind			statuskind;
 	BOOL						err;
@@ -55,8 +55,6 @@ git_wc_status_kind GitStatus::GetAllStatus(const CTGitPath& path, git_depth_t de
 
 //	rev.kind = git_opt_revision_unspecified;
 	statuskind = git_wc_status_none;
-
-	const BOOL bIsRecursive = (depth == git_depth_infinity || depth == git_depth_unknown); // taken from SVN source
 
 	CString sSubPath;
 	CString s = path.GetWinPathString();

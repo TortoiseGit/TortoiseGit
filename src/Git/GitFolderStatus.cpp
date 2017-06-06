@@ -101,13 +101,8 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 	t2=t1=0;
 	try
 	{
-		git_depth_t depth = git_depth_infinity;
-
-		if (g_ShellCache.GetCacheType() == ShellCache::dll)
-			depth = git_depth_empty;
-
 		t1 = ::GetCurrentTime();
-		status = m_GitStatus.GetAllStatus(filepath, depth, &assumeValid, &skipWorktree);
+		status = m_GitStatus.GetAllStatus(filepath, g_ShellCache.GetCacheType() != ShellCache::dll, &assumeValid, &skipWorktree);
 		t2 = ::GetCurrentTime();
 	}
 	catch ( ... )
