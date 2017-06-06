@@ -312,14 +312,12 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, cons
 						return CStatusCacheEntry(dirEntry->GetCurrentFullStatus());
 					}
 
-					git_wc_status2_t status2 = { git_wc_status_unversioned, git_wc_status_unversioned, false, false };
-					status2.text_status = status2.prop_status =
-						(isignore? git_wc_status_ignored:git_wc_status_unversioned);
+					git_wc_status2_t status2 = { isignore ? git_wc_status_ignored : git_wc_status_unversioned, false, false };
 
 					// we do not know anything about files here, all we know is that there are not versioned files in this dir
 					dirEntry->m_mostImportantFileStatus = git_wc_status_none;
 					dirEntry->m_ownStatus.SetStatus(&status2);
-					dirEntry->m_currentFullStatus = status2.text_status;
+					dirEntry->m_currentFullStatus = status2.status;
 				}
 				return dirEntry->m_ownStatus;
 			}
@@ -336,10 +334,8 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, cons
 			CacheEntryMap::iterator itMap = m_entryCache.find(strCacheKey);
 			if(itMap == m_entryCache.end() || isIgnoreFileChanged)
 			{
-				git_wc_status2_t status2 = { git_wc_status_unversioned, git_wc_status_unversioned, false, false };
 				bool isignore = pGitStatus->IsIgnored(sProjectRoot, subpaths, isDir);
-				status2.text_status = status2.prop_status =
-					(isignore? git_wc_status_ignored:git_wc_status_unversioned);
+				git_wc_status2_t status2 = { isignore ? git_wc_status_ignored : git_wc_status_unversioned, false, false };
 				AddEntry(path, &status2, path.GetLastWriteTime());
 				return m_entryCache[strCacheKey];
 			}
@@ -470,21 +466,18 @@ int CCachedDirectory::EnumFiles(const CTGitPath& path, CString sProjectRoot, con
 		m_ownStatus = git_wc_status_unversioned;
 		if (m_mostImportantFileStatus > git_wc_status_unversioned)
 		{
-			git_wc_status2_t status2 = { git_wc_status_unversioned, git_wc_status_unversioned, false, false };
-			status2.text_status = status2.prop_status = git_wc_status_normal;
+			git_wc_status2_t status2 = { git_wc_status_normal, false, false };
 			m_ownStatus.SetStatus(&status2);
 		}
 		else
 		{
 			if (::PathFileExists(m_directoryPath.GetWinPathString() + L"\\.git")) {
-				git_wc_status2_t status2 = { git_wc_status_unversioned, git_wc_status_unversioned, false, false };
-				status2.text_status = status2.prop_status = git_wc_status_normal;
+				git_wc_status2_t status2 = { git_wc_status_normal, false, false };
 				m_ownStatus.SetStatus(&status2);
 			}
 			else
 			{
-				git_wc_status2_t status2 = { git_wc_status_unversioned, git_wc_status_unversioned, false, false };
-				status2.text_status = status2.prop_status = CalculateRecursiveStatus();
+				git_wc_status2_t status2 = { CalculateRecursiveStatus(), false, false };
 				m_ownStatus.SetStatus(&status2);
 			}
 		}
@@ -503,7 +496,7 @@ CCachedDirectory::AddEntry(const CTGitPath& path, const git_wc_status2_t* pGitSt
 		CCachedDirectory * childDir = CGitStatusCache::Instance().GetDirectoryCacheEntry(path);
 		if (childDir)
 		{
-			if ((childDir->GetCurrentFullStatus() != git_wc_status_missing) || !pGitStatus || (pGitStatus->text_status != git_wc_status_unversioned))
+			if ((childDir->GetCurrentFullStatus() != git_wc_status_missing) || !pGitStatus || (pGitStatus->status != git_wc_status_unversioned))
 				childDir->m_ownStatus.SetStatus(pGitStatus);
 		}
 	}
@@ -516,7 +509,7 @@ CCachedDirectory::AddEntry(const CTGitPath& path, const git_wc_status2_t* pGitSt
 		{
 			if (pGitStatus)
 			{
-				if (entry_it->second.GetEffectiveStatus() > git_wc_status_none && entry_it->second.GetEffectiveStatus() != pGitStatus->text_status)
+				if (entry_it->second.GetEffectiveStatus() > git_wc_status_none && entry_it->second.GetEffectiveStatus() != pGitStatus->status)
 				{
 					CGitStatusCache::Instance().UpdateShell(path);
 					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": shell update for %s\n", path.GetWinPath());
@@ -549,12 +542,8 @@ CCachedDirectory::GetFullPathString(const CString& cacheKey)
 
 BOOL CCachedDirectory::GetStatusCallback(const CString& path, git_wc_status_kind status, bool isDir, __int64 lastwritetime, void* baton, bool assumeValid, bool skipWorktree)
 {
-	git_wc_status2_t _status;
+	git_wc_status2_t _status = { status, assumeValid, skipWorktree };
 	git_wc_status2_t *status2 = &_status;
-
-	status2->prop_status = status2->text_status = status;
-	status2->assumeValid = assumeValid;
-	status2->skipWorktree = skipWorktree;
 
 	CTGitPath gitPath(path, isDir);
 
@@ -581,7 +570,7 @@ BOOL CCachedDirectory::GetStatusCallback(const CString& path, git_wc_status_kind
 				
 				// Make sure we know about this child directory
 				// This initial status value is likely to be overwritten from below at some point
-				git_wc_status_kind s = GitStatus::GetMoreImportant(status2->text_status, status2->prop_status);
+				git_wc_status_kind s = status;
 
 				// folders must not be displayed as added or deleted only as modified
 				if (s == git_wc_status_deleted || s == git_wc_status_added)

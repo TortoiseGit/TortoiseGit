@@ -155,7 +155,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 									SecureZeroMemory(&itemStatus, sizeof(itemStatus));
 									if (m_remoteCacheLink.GetStatusFromRemoteCache(tpath, &itemStatus, true))
 									{
-										fetchedstatus = status = GitStatus::GetMoreImportant(itemStatus.m_status.text_status, itemStatus.m_status.prop_status);
+										fetchedstatus = status = itemStatus.m_status.status;
 										if (askedpath.IsDirectory())//if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
 										{
 											itemStates |= ITEMIS_FOLDER;
@@ -171,7 +171,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 									if (stat.status)
 									{
 										statuspath = str;
-										status = GitStatus::GetMoreImportant(stat.status->text_status, stat.status->prop_status);
+										status = stat.status->status;
 										fetchedstatus = status;
 										if ( askedpath.IsDirectory() )//if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
 										{
@@ -274,7 +274,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 										SecureZeroMemory(&itemStatus, sizeof(itemStatus));
 										if (m_remoteCacheLink.GetStatusFromRemoteCache(tpath, &itemStatus, true))
 										{
-											fetchedstatus = status = GitStatus::GetMoreImportant(itemStatus.m_status.text_status, itemStatus.m_status.prop_status);
+											fetchedstatus = status = itemStatus.m_status.status;
 											if (strpath.IsDirectory())//if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
 											{
 												itemStates |= ITEMIS_FOLDER;
@@ -293,7 +293,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 										statuspath = str;
 										if (stat.status)
 										{
-											status = GitStatus::GetMoreImportant(stat.status->text_status, stat.status->prop_status);
+											status = stat.status->status;
 											fetchedstatus = status;
 											if ( strpath.IsDirectory() )//if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
 											{
@@ -411,7 +411,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 							TGITCacheResponse itemStatus;
 							SecureZeroMemory(&itemStatus, sizeof(itemStatus));
 							if (m_remoteCacheLink.GetStatusFromRemoteCache(tpath, &itemStatus, true))
-								status = GitStatus::GetMoreImportant(itemStatus.m_status.text_status, itemStatus.m_status.prop_status);
+								status = itemStatus.m_status.status;
 						}
 					}
 					else
@@ -419,12 +419,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 						GitStatus stat;
 						stat.GetStatus(CTGitPath(folder_.c_str()), false, false, true);
 						if (stat.status)
-						{
-							status = GitStatus::GetMoreImportant(stat.status->text_status, stat.status->prop_status);
-							//					if ((stat.status->entry)&&(stat.status->entry->uuid))
-							//						uuidTarget = CUnicodeUtils::StdGetUnicode(stat.status->entry->uuid);
-
-						}
+							status = stat.status->status;
 						else
 						{
 							// sometimes, git_client_status() returns with an error.
@@ -498,11 +493,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 						GitStatus stat;
 						stat.GetStatus(CTGitPath(folder_.c_str()), false, false, true);
 						if (stat.status)
-						{
-							status = GitStatus::GetMoreImportant(stat.status->text_status, stat.status->prop_status);
-//							if ((stat.status->entry)&&(stat.status->entry->uuid))
-//								uuidTarget = CUnicodeUtils::StdGetUnicode(stat.status->entry->uuid);
-						}
+							status = stat.status->status;
 					}
 					catch ( ... )
 					{

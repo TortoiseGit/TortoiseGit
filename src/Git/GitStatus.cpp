@@ -37,7 +37,7 @@ GitStatus::GitStatus()
 	: status(nullptr)
 {
 	m_status.assumeValid = m_status.skipWorktree = false;
-	m_status.prop_status = m_status.text_status = git_wc_status_none;
+	m_status.status = git_wc_status_none;
 }
 
 // static method
@@ -158,18 +158,18 @@ void GitStatus::GetStatus(const CTGitPath& path, bool /*update*/ /* = false */, 
 			++lpszSubPath;
 	}
 
-	m_status.prop_status = m_status.text_status = git_wc_status_none;
+	m_status.status = git_wc_status_none;
 	m_status.assumeValid = false;
 	m_status.skipWorktree = false;
 
 	if (path.IsDirectory())
 	{
-		err = GetDirStatus(sProjectRoot, lpszSubPath, &m_status.text_status, isfull, false, !noignore);
-		if (m_status.text_status == git_wc_status_added || m_status.text_status == git_wc_status_deleted) // fix for issue #1769; a folder is either modified, conflicted or normal
-			m_status.text_status = git_wc_status_modified;
+		err = GetDirStatus(sProjectRoot, lpszSubPath, &m_status.status, isfull, false, !noignore);
+		if (m_status.status == git_wc_status_added || m_status.status == git_wc_status_deleted) // fix for issue #1769; a folder is either modified, conflicted or normal
+			m_status.status = git_wc_status_modified;
 	}
 	else
-		err = GetFileStatus(sProjectRoot, lpszSubPath, &m_status.text_status, isfull, !noignore, &m_status.assumeValid, &m_status.skipWorktree);
+		err = GetFileStatus(sProjectRoot, lpszSubPath, &m_status.status, isfull, !noignore, &m_status.assumeValid, &m_status.skipWorktree);
 
 	// Error present if function is not under version control
 	if (err)

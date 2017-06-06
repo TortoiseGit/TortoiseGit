@@ -213,7 +213,7 @@ STDMETHODIMP CShellExt::IsMemberOf_Wrap(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 						readonlyoverlay = true;
 					if (itemStatus.m_bSkipWorktree)
 						lockedoverlay = true;
-					status = GitStatus::GetMoreImportant(itemStatus.m_status.text_status, itemStatus.m_status.prop_status);
+					status = itemStatus.m_status.status;
 				}
 			}
 			break;

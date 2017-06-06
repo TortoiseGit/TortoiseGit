@@ -43,7 +43,7 @@ CStatusCacheEntry::CStatusCacheEntry(const git_wc_status_kind status)
 	, m_bSkipWorktree(false)
 	, m_lastWriteTime(0)
 {
-	m_GitStatus.prop_status=m_GitStatus.text_status = status;
+	m_GitStatus.status = status;
 	m_GitStatus.assumeValid = m_GitStatus.skipWorktree = false;
 	m_discardAtTime = GetTickCount64() + cachetimeout;
 }
@@ -72,8 +72,7 @@ bool CStatusCacheEntry::SaveToDisk(FILE* pFile) const
 	WRITEVALUETOFILE(m_bSet);
 
 	// now save the status struct (without the entry field, because we don't use that)
-	WRITEVALUETOFILE(m_GitStatus.prop_status);
-	WRITEVALUETOFILE(m_GitStatus.text_status);
+	WRITEVALUETOFILE(m_GitStatus.status);
 	WRITEVALUETOFILE(m_GitStatus.assumeValid);
 	WRITEVALUETOFILE(m_GitStatus.skipWorktree);
 	return true;
@@ -92,8 +91,7 @@ bool CStatusCacheEntry::LoadFromDisk(FILE * pFile)
 		LOADVALUEFROMFILE(m_lastWriteTime);
 		LOADVALUEFROMFILE(m_bSet);
 		SecureZeroMemory(&m_GitStatus, sizeof(m_GitStatus));
-		LOADVALUEFROMFILE(m_GitStatus.prop_status);
-		LOADVALUEFROMFILE(m_GitStatus.text_status);
+		LOADVALUEFROMFILE(m_GitStatus.status);
 		LOADVALUEFROMFILE(m_GitStatus.assumeValid);
 		LOADVALUEFROMFILE(m_GitStatus.skipWorktree);
 		m_discardAtTime = GetTickCount64() + cachetimeout;
@@ -113,7 +111,7 @@ void CStatusCacheEntry::SetStatus(const git_wc_status2_t* pGitStatus)
 	}
 	else
 	{
-		m_highestPriorityLocalStatus = GitStatus::GetMoreImportant(pGitStatus->prop_status, pGitStatus->text_status);
+		m_highestPriorityLocalStatus = pGitStatus->status;
 		m_GitStatus = *pGitStatus;
 		m_bAssumeValid = pGitStatus->assumeValid;
 		m_bSkipWorktree = pGitStatus->skipWorktree;
@@ -133,8 +131,7 @@ void CStatusCacheEntry::SetAsUnversioned()
 	if (m_highestPriorityLocalStatus == git_wc_status_unversioned)
 		status = git_wc_status_unversioned;
 	m_highestPriorityLocalStatus = status;
-	m_GitStatus.prop_status = git_wc_status_none;
-	m_GitStatus.text_status = status;
+	m_GitStatus.status = git_wc_status_none;
 	m_lastWriteTime = 0;
 	m_bAssumeValid = false;
 	m_bSkipWorktree = false;
@@ -154,10 +151,8 @@ void CStatusCacheEntry::BuildCacheResponse(TGITCacheResponse& response, DWORD& r
 	responseLength = sizeof(response);
 
 	// directories that are empty or only contain unversioned files will be git_wc_status_incomplete, report as unversioned
-	if (response.m_status.text_status == git_wc_status_incomplete)
-	{
-		response.m_status.text_status = response.m_status.prop_status = git_wc_status_unversioned;
-	}
+	if (response.m_status.status == git_wc_status_incomplete)
+		response.m_status.status = git_wc_status_unversioned;
 }
 
 bool CStatusCacheEntry::IsVersioned() const
@@ -179,8 +174,7 @@ bool CStatusCacheEntry::ForceStatus(git_wc_status_kind forcedStatus)
 	{
 		// We've had a status change
 		m_highestPriorityLocalStatus = newStatus;
-		m_GitStatus.text_status = newStatus;
-		m_GitStatus.prop_status = newStatus;
+		m_GitStatus.status = newStatus;
 		m_discardAtTime = GetTickCount64() + cachetimeout;
 		return true;
 	}

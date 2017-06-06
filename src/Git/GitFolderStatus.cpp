@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008,2011, 2014 - TortoiseSVN
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -85,15 +85,7 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 
 
 			if (dirstatus)
-			{
-/*				if (dirstatus->entry)
-				{
-					dirstat.author = authors.GetString (dirstatus->entry->cmt_author);
-					dirstat.url = authors.GetString (dirstatus->entry->url);
-					dirstat.rev = dirstatus->entry->cmt_rev;
-				}*/
-				dirstat.status = GitStatus::GetMoreImportant(dirstatus->text_status, dirstatus->prop_status);
-			}
+				dirstat.status = dirstatus->status;
 			m_cache[filepath.GetWinPath()] = dirstat;
 			m_TimeStamp = GetTickCount64();
 			return &dirstat;

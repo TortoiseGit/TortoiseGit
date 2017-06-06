@@ -55,11 +55,7 @@ typedef enum
 
 typedef struct git_wc_status2_t
 {
-	/** The status of the entries text. */
-	git_wc_status_kind text_status;
-
-	/** The status of the entries properties. */
-	git_wc_status_kind prop_status;
+	git_wc_status_kind status;
 
 	bool assumeValid;
 	bool skipWorktree;
