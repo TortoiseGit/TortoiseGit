@@ -143,7 +143,7 @@ bool CStatusCacheEntry::HasExpired(LONGLONG now) const
 void CStatusCacheEntry::BuildCacheResponse(TGITCacheResponse& response, DWORD& responseLength) const
 {
 	SecureZeroMemory(&response, sizeof(response));
-	response.m_status = m_GitStatus;
+	response.m_status = (INT8)m_GitStatus.status;
 	response.m_bAssumeValid = m_bAssumeValid;
 	response.m_bSkipWorktree = m_bSkipWorktree;
 	responseLength = sizeof(response);

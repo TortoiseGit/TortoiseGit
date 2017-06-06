@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013, 2015-2016 - TortoiseGit
+// Copyright (C) 2009-2013, 2015-2017 - TortoiseGit
 // Copyright (C) 2003-2008, 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -213,7 +213,7 @@ STDMETHODIMP CShellExt::IsMemberOf_Wrap(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 						readonlyoverlay = true;
 					if (itemStatus.m_bSkipWorktree)
 						lockedoverlay = true;
-					status = itemStatus.m_status.status;
+					status = (git_wc_status_kind)itemStatus.m_status;
 				}
 			}
 			break;

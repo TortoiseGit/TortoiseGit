@@ -155,7 +155,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 									SecureZeroMemory(&itemStatus, sizeof(itemStatus));
 									if (m_remoteCacheLink.GetStatusFromRemoteCache(tpath, &itemStatus, true))
 									{
-										fetchedstatus = status = itemStatus.m_status.status;
+										fetchedstatus = status = (git_wc_status_kind)itemStatus.m_status;
 										if (askedpath.IsDirectory())//if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
 										{
 											itemStates |= ITEMIS_FOLDER;
@@ -274,7 +274,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 										SecureZeroMemory(&itemStatus, sizeof(itemStatus));
 										if (m_remoteCacheLink.GetStatusFromRemoteCache(tpath, &itemStatus, true))
 										{
-											fetchedstatus = status = itemStatus.m_status.status;
+											fetchedstatus = status = (git_wc_status_kind)itemStatus.m_status;
 											if (strpath.IsDirectory())//if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
 											{
 												itemStates |= ITEMIS_FOLDER;
@@ -411,7 +411,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 							TGITCacheResponse itemStatus;
 							SecureZeroMemory(&itemStatus, sizeof(itemStatus));
 							if (m_remoteCacheLink.GetStatusFromRemoteCache(tpath, &itemStatus, true))
-								status = itemStatus.m_status.status;
+								status = (git_wc_status_kind)itemStatus.m_status;
 						}
 					}
 					else

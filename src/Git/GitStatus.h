@@ -35,7 +35,7 @@ typedef enum type_git_wc_status_kind
 	git_wc_status_modified,
 	git_wc_status_added,
 	git_wc_status_conflicted,
-	git_wc_status_unknown,
+	git_wc_status_unknown, // should be last, see TGitCache/CacheInterface.h
 }git_wc_status_kind;
 
 typedef struct git_wc_status2_t

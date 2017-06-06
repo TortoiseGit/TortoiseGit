@@ -71,10 +71,12 @@ struct TGITCacheRequest
  */
 struct TGITCacheResponse
 {
-	git_wc_status2_t m_status;
+	UINT8 m_status;
 	bool m_bAssumeValid;
 	bool m_bSkipWorktree;
 };
+static_assert((UINT8)git_wc_status_unknown == git_wc_status_unknown, "type git_wc_status_kind fits into UINT8");
+static_assert(sizeof(TGITCacheResponse) == 3 && offsetof(TGITCacheResponse, m_status) == 0 && offsetof(TGITCacheResponse, m_bAssumeValid) == 1 && offsetof(TGITCacheResponse, m_bSkipWorktree) == 2, "Cross platform compatibility");
 
 /**
  * \ingroup TGitCache
