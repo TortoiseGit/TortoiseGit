@@ -324,6 +324,7 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, FILL
 		return 0;
 	}
 
+	CAutoRepository repository;
 	for (auto it = filelist.cbegin(), itend = filelist.cend(); it != itend; ++it)
 	{
 		CString onepath(path);
@@ -372,13 +373,14 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, FILL
 				bool assumeValid = false;
 				bool skipWorktree = false;
 				git_wc_status_kind filestatus;
-				(*indexptr).GetFileStatus(gitdir, (*indexptr)[pos], &filestatus, CGit::filetime_to_time_t((*it).m_LastModified), (*it).m_Size, &assumeValid, &skipWorktree);
+				(*indexptr).GetFileStatus(repository, gitdir, (*indexptr)[pos], &filestatus, CGit::filetime_to_time_t((*it).m_LastModified), (*it).m_Size, &assumeValid, &skipWorktree);
 				if (filestatus == git_wc_status_normal && (*treeptr)[posintree].m_Hash != (*indexptr)[pos].m_IndexHash)
 					filestatus = git_wc_status_modified;
 				callback(CombinePath(gitdir, onepath), filestatus, false, it->m_LastModified, pData, assumeValid, skipWorktree);
 			}
 		}
 	}/*End of For*/
+	repository.Free(); // explicitly free the handle here in order to keep an open repository as short as possible
 
 	/* Check deleted file in system */
 	size_t start = 0, end = 0;

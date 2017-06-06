@@ -166,10 +166,11 @@ int CGitIndexList::GetFileStatus(const CString& gitdir, const CString& pathorg, 
 	if (pHash)
 		*pHash = entry.m_IndexHash;
 	ATLASSERT(pathorg == entry.m_FileName);
-	return GetFileStatus(gitdir, entry, status, time, filesize, assumeValid, skipWorktree);
+	CAutoRepository repository;
+	return GetFileStatus(repository, gitdir, entry, status, time, filesize, assumeValid, skipWorktree);
 }
 
-int CGitIndexList::GetFileStatus(const CString& gitdir, CGitIndex& entry, git_wc_status_kind* status, __int64 time, __int64 filesize, bool* assumeValid, bool* skipWorktree)
+int CGitIndexList::GetFileStatus(CAutoRepository& repository, const CString& gitdir, CGitIndex& entry, git_wc_status_kind* status, __int64 time, __int64 filesize, bool* assumeValid, bool* skipWorktree)
 {
 	// skip-worktree has higher priority than assume-valid
 	if (entry.m_FlagsExtended & GIT_IDXENTRY_SKIP_WORKTREE)
@@ -194,13 +195,15 @@ int CGitIndexList::GetFileStatus(const CString& gitdir, CGitIndex& entry, git_wc
 		 * Opening a new repository each time is not yet optimal, however, there is no API to clear the pack-cache
 		 * When a shared repository is used, we might need a mutex to prevent concurrent access to repository instance and especially filter-lists
 		 */
-		CAutoRepository repository(gitdir);
 		if (!repository)
-			return -1;
+		{
+			if (repository.Open(gitdir))
+				return -1;
+			git_repository_set_config(repository, config);
+		}
 
 		git_oid actual;
 		CStringA fileA = CUnicodeUtils::GetMulti(entry.m_FileName, CP_UTF8);
-		git_repository_set_config(repository, config);
 		if (!git_repository_hashfile(&actual, repository, fileA, GIT_OBJ_BLOB, nullptr) && !git_oid_cmp(&actual, (const git_oid*)entry.m_IndexHash.m_hash))
 		{
 			entry.m_ModifyTime = time;
@@ -254,6 +257,7 @@ int CGitIndexList::GetStatus(const CString& gitdir, CString path, git_wc_status_
 
 	int len = path.GetLength();
 
+	CAutoRepository repository;
 	for (auto it = begin(), itend = end(); it != itend; ++it)
 	{
 		auto& entry = *it;
@@ -276,7 +280,7 @@ int CGitIndexList::GetStatus(const CString& gitdir, CString path, git_wc_status_
 		if (skipWorktree)
 			*skipWorktree = false;
 
-		GetFileStatus(gitdir, entry, status, time, filesize, assumeValid, skipWorktree);
+		GetFileStatus(repository, gitdir, entry, status, time, filesize, assumeValid, skipWorktree);
 		if (*status != git_wc_status_none)
 		{
 			if (dirstatus == git_wc_status_none)
