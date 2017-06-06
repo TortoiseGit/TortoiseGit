@@ -341,9 +341,6 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, FILL
 
 		if (pos == NPOS && posintree == NPOS)
 		{
-			if (onepath.IsEmpty())
-				continue;
-
 			git_wc_status_kind filestatus = git_wc_status_unversioned;
 
 			g_IgnoreList.CheckAndUpdateIgnoreFiles(gitdir, onepath, bIsDir);
@@ -363,9 +360,6 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, FILL
 		}
 		else
 		{
-			if (onepath.IsEmpty())
-				continue;
-
 			if (bIsDir)
 				callback(CombinePath(gitdir, onepath), git_wc_status_normal, bIsDir, it->m_LastModified, pData, false, false);
 			else
