@@ -97,7 +97,7 @@ public:
 
 	static int GetFileStatus(const CString& gitdir, CString path, git_wc_status_kind* status, BOOL IsFull = FALSE, BOOL isIgnore = TRUE, bool* assumeValid = nullptr, bool* skipWorktree = nullptr);
 	static int GetDirStatus(const CString& gitdir, const CString& path, git_wc_status_kind* status, BOOL IsFull = false, BOOL IsRecursive = false, BOOL isIgnore = true);
-	static int EnumDirStatus(const CString& gitdir, const CString& path, git_wc_status_kind* status, FILL_STATUS_CALLBACK callback, void* pData);
+	static int EnumDirStatus(const CString& gitdir, const CString& path, FILL_STATUS_CALLBACK callback, void* pData);
 	static int GetFileList(CString path, std::vector<CGitFileName> &list);
 	static bool CheckAndUpdateIgnoreFiles(const CString& gitdir, const CString& subpaths, bool isDir);
 	static int IsUnderVersionControl(const CString &gitdir, const CString &path, bool isDir,bool *isVersion);

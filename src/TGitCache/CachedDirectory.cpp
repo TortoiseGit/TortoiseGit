@@ -431,12 +431,12 @@ int CCachedDirectory::EnumFiles(const CTGitPath& path, CString sProjectRoot, con
 
 	GitStatus *pStatus = &CGitStatusCache::Instance().m_GitStatus;
 	UNREFERENCED_PARAMETER(pStatus);
-	git_wc_status_kind status = git_wc_status_none;
 
 	if (!path.IsDirectory())
 	{
 		bool assumeValid = false;
 		bool skipWorktree = false;
+		git_wc_status_kind status = git_wc_status_none;
 		pStatus->GetFileStatus(sProjectRoot, sSubPath, &status, TRUE, true, &assumeValid, &skipWorktree);
 		GetStatusCallback(path.GetWinPathString(), status, false, path.GetLastWriteTime(), this, assumeValid, skipWorktree);
 		RefreshMostImportant(false);
@@ -453,7 +453,7 @@ int CCachedDirectory::EnumFiles(const CTGitPath& path, CString sProjectRoot, con
 		}
 
 		m_mostImportantFileStatus = git_wc_status_none;
-		pStatus->EnumDirStatus(sProjectRoot, sSubPath, &status, GetStatusCallback, this);
+		pStatus->EnumDirStatus(sProjectRoot, sSubPath, GetStatusCallback, this);
 
 		if (isSelf)
 		{
