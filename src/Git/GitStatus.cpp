@@ -387,6 +387,7 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 
 	if (GetRangeInSortVector(*indexptr, path, path.GetLength(), &start, &end, pos) == 0)
 	{
+		*dirstatus = git_wc_status_normal; // here we know that this folder has versioned entries
 		CString oldstring;
 		for (auto it = indexptr->cbegin() + start, itlast = indexptr->cbegin() + end; it <= itlast; ++it)
 		{
@@ -427,6 +428,7 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 	pos = SearchInSortVector(*treeptr, path, path.GetLength()); // match path prefix, (sub)folders end with slash
 	if (GetRangeInSortVector(*treeptr, path, path.GetLength(), &start, &end, pos) == 0)
 	{
+		*dirstatus = git_wc_status_normal; // here we know that this folder has versioned entries
 		CString oldstring;
 		for (auto it = treeptr->cbegin() + start, itlast = treeptr->cbegin() + end; it <= itlast; ++it)
 		{

@@ -77,6 +77,7 @@ private:
 	// Update our composite status and deal with things if it's changed
 	void UpdateCurrentStatus();
 	void SetChildStatus(const CString& childDir, git_wc_status_kind childStatus);
+	void KeepChildStatus(const CString& childDir);
 
 private:
 	CComAutoCriticalSection m_critSec;
@@ -89,6 +90,7 @@ private:
 	/// A vector if iterators to child directories - used to put-together recursive status
 	typedef std::map<CString, git_wc_status_kind>  ChildDirStatus;
 	ChildDirStatus m_childDirectories;
+	ChildDirStatus m_childDirectories_tmp; // used for updating m_childDirectories and removing "removed" entries
 
 	// The path of the directory with this object looks after
 	CTGitPath	m_directoryPath;
