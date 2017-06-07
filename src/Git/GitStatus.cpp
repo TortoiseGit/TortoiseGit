@@ -220,7 +220,7 @@ int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status_
 		}
 
 		// staged and not commit
-		if ((*treeptr)[start].m_Hash != hash)
+		if (!assumeValid && !skipWorktree &&(*treeptr)[start].m_Hash != hash)
 		{
 			*status = st = git_wc_status_modified;
 			return 0;
@@ -373,7 +373,7 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, FILL
 				bool skipWorktree = false;
 				git_wc_status_kind filestatus;
 				(*indexptr).GetFileStatus(repository, gitdir, (*indexptr)[pos], &filestatus, CGit::filetime_to_time_t((*it).m_LastModified), (*it).m_Size, &assumeValid, &skipWorktree);
-				if (filestatus == git_wc_status_normal && (*treeptr)[posintree].m_Hash != (*indexptr)[pos].m_IndexHash)
+				if (filestatus == git_wc_status_normal && !assumeValid && !skipWorktree && (*treeptr)[posintree].m_Hash != (*indexptr)[pos].m_IndexHash)
 					filestatus = git_wc_status_modified;
 				callback(CombinePath(gitdir, onepath), filestatus, false, it->m_LastModified, pData, assumeValid, skipWorktree);
 			}
@@ -548,7 +548,7 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 						break;
 					}
 
-					if ((*treeptr)[pos].m_Hash != (*it).m_IndexHash)
+					if (((*it).m_Flags & GIT_IDXENTRY_VALID) == 0 && ((*it).m_FlagsExtended & GIT_IDXENTRY_SKIP_WORKTREE) == 0 && (*treeptr)[pos].m_Hash != (*it).m_IndexHash)
 					{
 						*status = max(git_wc_status_modified, *status); // modified file found
 						break;
