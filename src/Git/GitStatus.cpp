@@ -75,8 +75,8 @@ git_wc_status_kind GitStatus::GetAllStatus(const CTGitPath& path, bool bIsRecurs
 		// folders must not be displayed as added or deleted only as modified (this is for Shell Overlay-Modes)
 		if (statuskind == git_wc_status_unversioned && sSubPath.IsEmpty())
 			statuskind = git_wc_status_normal;
-		else if (statuskind == git_wc_status_deleted || statuskind == git_wc_status_added)
-			statuskind = git_wc_status_modified;
+		else 
+			AdjustFolderStatus(statuskind);
 	}
 	else
 		err = GetFileStatus(sProjectRoot, sSubPath, &statuskind, isfull, isfull, assumeValid, skipWorktree);
@@ -151,8 +151,7 @@ void GitStatus::GetStatus(const CTGitPath& path, bool /*update*/ /* = false */, 
 	if (path.IsDirectory())
 	{
 		err = GetDirStatus(sProjectRoot, lpszSubPath, &m_status.status, isfull, false, !noignore);
-		if (m_status.status == git_wc_status_added || m_status.status == git_wc_status_deleted) // fix for issue #1769; a folder is either modified, conflicted or normal
-			m_status.status = git_wc_status_modified;
+		AdjustFolderStatus(m_status.status);
 	}
 	else
 		err = GetFileStatus(sProjectRoot, lpszSubPath, &m_status.status, isfull, !noignore, &m_status.assumeValid, &m_status.skipWorktree);
@@ -650,3 +649,8 @@ bool GitStatus::ReleasePathsRecursively(const CString &rootpath)
 	return true;
 }
 
+void GitStatus::AdjustFolderStatus(git_wc_status_kind& status)
+{
+	if (status == git_wc_status_deleted || status == git_wc_status_added)
+		status = git_wc_status_modified;
+}

@@ -570,8 +570,7 @@ BOOL CCachedDirectory::GetStatusCallback(const CString& path, git_wc_status_kind
 				git_wc_status_kind s = status;
 
 				// folders must not be displayed as added or deleted only as modified
-				if (s == git_wc_status_deleted || s == git_wc_status_added)
-					s = git_wc_status_modified;
+				GitStatus::AdjustFolderStatus(s);
 
 				CCachedDirectory * cdir = CGitStatusCache::Instance().GetDirectoryCacheEntryNoCreate(gitPath);
 				if (cdir)
@@ -635,8 +634,7 @@ git_wc_status_kind CCachedDirectory::CalculateRecursiveStatus()
 	git_wc_status_kind retVal = GitStatus::GetMoreImportant(m_mostImportantFileStatus, m_ownStatus.GetEffectiveStatus());
 
 	// folders can only be none, unversioned, normal, modified, and conflicted
-	if (retVal == git_wc_status_deleted || retVal == git_wc_status_added)
-		retVal = git_wc_status_modified;
+	GitStatus::AdjustFolderStatus(retVal);
 
 	// Now combine all our child-directorie's status
 	AutoLocker lock(m_critSec);

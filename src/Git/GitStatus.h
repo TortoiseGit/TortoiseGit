@@ -106,6 +106,8 @@ public:
 	 */
 	static git_wc_status_kind GetMoreImportant(git_wc_status_kind status1, git_wc_status_kind status2);
 
+	static void AdjustFolderStatus(git_wc_status_kind& status);
+
 	/**
 	 * Reads the git text status of the working copy entry. No
 	 * recurse is done, even if the entry is a directory.
