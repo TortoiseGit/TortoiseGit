@@ -363,33 +363,6 @@ int CGitIndexFileMap::GetFileStatus(const CString& gitdir, const CString& path, 
 	return 0;
 }
 
-int CGitIndexFileMap::IsUnderVersionControl(const CString& gitdir, CString subpath, bool isDir, bool* isVersion)
-{
-	if (subpath.IsEmpty())
-	{
-		*isVersion = true;
-		return 0;
-	}
-
-	subpath.Replace(L'\\', L'/');
-	if (isDir)
-		subpath += L'/';
-
-	CheckAndUpdate(gitdir);
-
-	SHARED_INDEX_PTR pIndex = this->SafeGet(gitdir);
-
-	if (pIndex)
-	{
-		if (isDir)
-			*isVersion = (SearchInSortVector(*pIndex, subpath, subpath.GetLength()) != NPOS);
-		else
-			*isVersion = (SearchInSortVector(*pIndex, subpath, -1) != NPOS);
-	}
-
-	return 0;
-}
-
 // This method is assumed to be called with m_SharedMutex locked.
 int CGitHeadFileList::GetPackRef(const CString &gitdir)
 {
@@ -1156,40 +1129,4 @@ bool CGitHeadFileMap::CheckHeadAndUpdate(const CString &gitdir)
 	this->SafeSet(gitdir, ptr);
 
 	return true;
-}
-
-int CGitHeadFileMap::IsUnderVersionControl(const CString& gitdir, CString subpath, bool isDir, bool* isVersion)
-{
-	if (subpath.IsEmpty())
-	{
-		*isVersion = true;
-		return 0;
-	}
-
-	subpath.Replace(L'\\', L'/');
-	if (isDir)
-		subpath += L'/';
-
-	CheckHeadAndUpdate(gitdir);
-
-	SHARED_TREE_PTR treeptr = SafeGet(gitdir);
-
-	// Init Repository
-	if (treeptr->HeadFileIsEmpty())
-	{
-		*isVersion = false;
-		return 0;
-	}
-	if (treeptr->empty())
-	{
-		*isVersion = false;
-		return 1;
-	}
-
-	if (isDir)
-		*isVersion = (SearchInSortVector(*treeptr, subpath, subpath.GetLength()) != NPOS);
-	else
-		*isVersion = (SearchInSortVector(*treeptr, subpath, -1) != NPOS);
-
-	return 0;
 }

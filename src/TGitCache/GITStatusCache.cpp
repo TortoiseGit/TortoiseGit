@@ -409,7 +409,7 @@ void CGitStatusCache::RemoveCacheForPath(const CTGitPath& path)
 	RemoveCacheForDirectory(dirtoremove);
 }
 
-CCachedDirectory * CGitStatusCache::GetDirectoryCacheEntry(const CTGitPath& path, bool isAddToWatch)
+CCachedDirectory * CGitStatusCache::GetDirectoryCacheEntry(const CTGitPath& path)
 {
 	ATLASSERT(path.IsDirectory() || !PathFileExists(path.GetWinPath()));
 
@@ -456,13 +456,7 @@ CCachedDirectory * CGitStatusCache::GetDirectoryCacheEntry(const CTGitPath& path
 				if (newcdir)
 				{
 					CCachedDirectory * cdir = m_directoryCache.insert(m_directoryCache.lower_bound(path), std::make_pair(path, newcdir))->second;
-					CString gitdir;
-					if ((!path.IsEmpty())&&(path.HasAdminDir(&gitdir))&&isAddToWatch)
-					{
-						/* Just watch version path */
-						watcher.AddPath(gitdir);
-						watcher.AddPath(path);
-					}
+					// TSVN crawls here
 					return cdir;
 				}
 				m_bClearMemory = true;

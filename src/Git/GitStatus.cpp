@@ -235,21 +235,13 @@ bool GitStatus::CheckAndUpdateIgnoreFiles(const CString& gitdir, const CString& 
 {
 	return g_IgnoreList.CheckAndUpdateIgnoreFiles(gitdir, subpaths, isDir);
 }
-int GitStatus::IsUnderVersionControl(const CString &gitdir, const CString &path, bool isDir,bool *isVersion)
-{
-	if (g_IndexFileMap.IsUnderVersionControl(gitdir, path, isDir, isVersion))
-		return 1;
-	if (!*isVersion)
-		return g_HeadFileMap.IsUnderVersionControl(gitdir, path, isDir, isVersion);
-	return 0;
-}
 
 bool GitStatus::IsIgnored(const CString& gitdir, const CString& path, bool isDir)
 {
 	return g_IgnoreList.IsIgnore(path, gitdir, isDir);
 }
 
-int GitStatus::GetFileList(CString path, std::vector<CGitFileName> &list)
+int GitStatus::GetFileList(CString path, std::vector<CGitFileName>& list, bool& isRepoRoot)
 {
 	path += L"\\*.*";
 	WIN32_FIND_DATA data;
@@ -259,7 +251,10 @@ int GitStatus::GetFileList(CString path, std::vector<CGitFileName> &list)
 	do
 	{
 		if (wcscmp(data.cFileName, L".git") == 0)
+		{
+			isRepoRoot = true;
 			continue;
+		}
 
 		if (wcscmp(data.cFileName, L".") == 0)
 			continue;
@@ -281,7 +276,7 @@ int GitStatus::GetFileList(CString path, std::vector<CGitFileName> &list)
 	return 0;
 }
 
-int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, FILL_STATUS_CALLBACK callback, void* pData)
+int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_wc_status_kind* dirstatus, FILL_STATUS_CALLBACK callback, void* pData)
 {
 	CString path = subpath;
 
@@ -290,7 +285,11 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, FILL
 		path += L'/'; // Add trail / to show it is directory, not file name.
 
 	std::vector<CGitFileName> filelist;
-	GetFileList(CombinePath(gitdir, subpath), filelist);
+	bool isRepoRoot = false;
+	GetFileList(CombinePath(gitdir, subpath), filelist, isRepoRoot);
+	*dirstatus = git_wc_status_unknown;
+	if (isRepoRoot)
+		*dirstatus = git_wc_status_normal;
 
 	g_IndexFileMap.CheckAndUpdate(gitdir);
 

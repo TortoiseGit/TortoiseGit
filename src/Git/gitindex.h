@@ -135,11 +135,6 @@ public:
 							BOOL IsFull = false,
 							CGitHash* pHash = nullptr,
 							bool* assumeValid = nullptr, bool* skipWorktree = nullptr);
-
-	int IsUnderVersionControl(const CString &gitdir,
-							  CString path,
-							  bool isDir,
-							  bool *isVersion);
 };
 
 
@@ -250,7 +245,6 @@ public:
 	int GetFileStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,
 						bool isLoaded=false);
 	bool CheckHeadAndUpdate(const CString& gitdir);
-	int IsUnderVersionControl(const CString& gitdir, CString path, bool isDir, bool* isVersion);
 };
 
 class CGitFileName

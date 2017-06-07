@@ -239,8 +239,6 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromCache(const CTGitPath& path, bo
 		//All file ignored if under ignore directory
 		if (m_ownStatus.GetEffectiveStatus() == git_wc_status_ignored)
 			return CStatusCacheEntry(git_wc_status_ignored);
-		if (m_ownStatus.GetEffectiveStatus() == git_wc_status_unversioned)
-			return CStatusCacheEntry(git_wc_status_unversioned);
 
 		// Look up a file in our own cache
 		AutoLocker lock(m_critSec);
@@ -251,7 +249,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromCache(const CTGitPath& path, bo
 			// We've hit the cache - check for timeout
 			if (!itMap->second.HasExpired((LONGLONG)GetTickCount64()))
 			{
-				if(itMap->second.DoesFileTimeMatch(path.GetLastWriteTime()))
+				if (itMap->second.GetEffectiveStatus() == git_wc_status_ignored || itMap->second.GetEffectiveStatus() == git_wc_status_unversioned || itMap->second.DoesFileTimeMatch(path.GetLastWriteTime()))
 				{
 					// Note: the filetime matches after a modified has been committed too.
 					// So in that case, we would return a wrong status (e.g. 'modified' instead
@@ -281,77 +279,11 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, cons
 	GitStatus *pGitStatus = &CGitStatusCache::Instance().m_GitStatus;
 	UNREFERENCED_PARAMETER(pGitStatus);
 
-	bool isVersion =true;
-	pGitStatus->IsUnderVersionControl(sProjectRoot, subpaths, path.IsDirectory(), &isVersion);
-	if(!isVersion)
-	{	//untracked file
-		bool isDir = path.IsDirectory();
-		bool isIgnoreFileChanged = pGitStatus->CheckAndUpdateIgnoreFiles(sProjectRoot, subpaths, isDir);
-
-		if (isDir)
-		{
-			CCachedDirectory * dirEntry = CGitStatusCache::Instance().GetDirectoryCacheEntry(path,
-											false); /* we needn't watch untracked directory*/
-
-			if(dirEntry)
-			{
-				AutoLocker lock(dirEntry->m_critSec);
-
-				git_wc_status_kind dirstatus = dirEntry->GetCurrentFullStatus() ;
-				if (CGitStatusCache::Instance().IsUnversionedAsModified() || dirstatus == git_wc_status_none || dirstatus >= git_wc_status_normal || isIgnoreFileChanged)
-				{/* status have not initialized*/
-					bool isignore = pGitStatus->IsIgnored(sProjectRoot, subpaths, isDir);
-
-					if (!isignore && CGitStatusCache::Instance().IsUnversionedAsModified())
-					{
-						dirEntry->EnumFiles(path, sProjectRoot, subpaths, isSelf);
-						dirEntry->UpdateCurrentStatus();
-						return CStatusCacheEntry(dirEntry->GetCurrentFullStatus());
-					}
-
-					git_wc_status2_t status2 = { isignore ? git_wc_status_ignored : git_wc_status_unversioned, false, false };
-
-					// we do not know anything about files here, all we know is that there are not versioned files in this dir
-					dirEntry->m_mostImportantFileStatus = git_wc_status_none;
-					dirEntry->m_ownStatus.SetStatus(&status2);
-					dirEntry->m_currentFullStatus = status2.status;
-				}
-				return dirEntry->m_ownStatus;
-			}
-
-		}
-		else /* path is file */
-		{
-			AutoLocker lock(m_critSec);
-			CString strCacheKey = GetCacheKey(path);
-
-			if (strCacheKey.IsEmpty())
-				return CStatusCacheEntry();
-
-			CacheEntryMap::iterator itMap = m_entryCache.find(strCacheKey);
-			if(itMap == m_entryCache.end() || isIgnoreFileChanged)
-			{
-				bool isignore = pGitStatus->IsIgnored(sProjectRoot, subpaths, isDir);
-				git_wc_status2_t status2 = { isignore ? git_wc_status_ignored : git_wc_status_unversioned, false, false };
-				AddEntry(path, &status2, path.GetLastWriteTime());
-				return m_entryCache[strCacheKey];
-			}
-			else
-			{
-				return itMap->second;
-			}
-		}
-		return CStatusCacheEntry();
-
-	}
-	else
-	{
-		EnumFiles(path, sProjectRoot, subpaths, isSelf);
-		UpdateCurrentStatus();
-		if (!path.IsDirectory())
-			return GetCacheStatusForMember(path);
-		return CStatusCacheEntry(m_ownStatus);
-	}
+	EnumFiles(path, sProjectRoot, subpaths, isSelf);
+	UpdateCurrentStatus();
+	if (!path.IsDirectory())
+		return GetCacheStatusForMember(path);
+	return CStatusCacheEntry(m_ownStatus);
 }
 
 /// bFetch is true, fetch all status, call by crawl.
@@ -446,7 +378,8 @@ int CCachedDirectory::EnumFiles(const CTGitPath& path, CString sProjectRoot, con
 		}
 
 		m_mostImportantFileStatus = git_wc_status_none;
-		pStatus->EnumDirStatus(sProjectRoot, sSubPath, GetStatusCallback, this);
+		git_wc_status_kind folderstatus = git_wc_status_unversioned;
+		pStatus->EnumDirStatus(sProjectRoot, sSubPath, &folderstatus, GetStatusCallback, this);
 
 		if (isSelf)
 		{
@@ -458,25 +391,22 @@ int CCachedDirectory::EnumFiles(const CTGitPath& path, CString sProjectRoot, con
 		}
 
 		RefreshMostImportant(false);
-
 		// need to set/construct m_ownStatus (only unversioned and normal are valid values)
 		m_ownStatus = git_wc_status_unversioned;
-		if (m_mostImportantFileStatus > git_wc_status_unversioned)
-		{
+		if (folderstatus == git_wc_status_normal) {
 			git_wc_status2_t status2 = { git_wc_status_normal, false, false };
 			m_ownStatus.SetStatus(&status2);
 		}
-		else
+		else if (m_mostImportantFileStatus == git_wc_status_ignored || m_mostImportantFileStatus == git_wc_status_unversioned)
 		{
-			if (::PathFileExists(m_directoryPath.GetWinPathString() + L"\\.git")) {
-				git_wc_status2_t status2 = { git_wc_status_normal, false, false };
-				m_ownStatus.SetStatus(&status2);
-			}
-			else
-			{
-				git_wc_status2_t status2 = { CalculateRecursiveStatus(), false, false };
-				m_ownStatus.SetStatus(&status2);
-			}
+			bool isIgnored = pStatus->IsIgnored(sProjectRoot, sSubPath, true);
+			git_wc_status2_t status2 = { isIgnored ? git_wc_status_ignored : git_wc_status_unversioned, false, false };
+			m_ownStatus.SetStatus(&status2);
+		}
+		else if (m_mostImportantFileStatus > git_wc_status_unversioned)
+		{
+			git_wc_status2_t status2 = { git_wc_status_normal, false, false };
+			m_ownStatus.SetStatus(&status2);
 		}
 	}
 
@@ -485,19 +415,7 @@ int CCachedDirectory::EnumFiles(const CTGitPath& path, CString sProjectRoot, con
 void
 CCachedDirectory::AddEntry(const CTGitPath& path, const git_wc_status2_t* pGitStatus, __int64 lastwritetime)
 {
-	if(path.IsDirectory())
-	{
-		// no lock here:
-		// AutoLocker lock(m_critSec);
-		// because GetDirectoryCacheEntry() can try to obtain a write lock
-		CCachedDirectory * childDir = CGitStatusCache::Instance().GetDirectoryCacheEntry(path);
-		if (childDir)
-		{
-			if (!pGitStatus || pGitStatus->status != git_wc_status_unversioned)
-				childDir->m_ownStatus.SetStatus(pGitStatus);
-		}
-	}
-	else
+	if (!path.IsDirectory())
 	{
 		AutoLocker lock(m_critSec);
 		CString cachekey = GetCacheKey(path);
@@ -644,6 +562,9 @@ git_wc_status_kind CCachedDirectory::CalculateRecursiveStatus()
 		retVal = GitStatus::GetMoreImportant(retVal, it->second);
 	}
 
+	if (retVal == git_wc_status_ignored && m_ownStatus.GetEffectiveStatus() != git_wc_status_ignored) // hack to show folders which have only ignored files inside but are not ignored themself
+		retVal = git_wc_status_unversioned;
+
 	return retVal;
 }
 
@@ -655,7 +576,7 @@ void CCachedDirectory::UpdateCurrentStatus()
 		m_directoryPath.GetWinPath(),
 		newStatus, m_currentFullStatus);
 
-	if (newStatus != m_currentFullStatus && m_ownStatus.GetEffectiveStatus() != git_wc_status_ignored)
+	if (newStatus != m_currentFullStatus)
 	{
 		m_currentFullStatus = newStatus;
 
@@ -707,7 +628,7 @@ void CCachedDirectory::SetChildStatus(const CString& childDir, git_wc_status_kin
 CStatusCacheEntry CCachedDirectory::GetOwnStatus(bool bRecursive)
 {
 	// Don't return recursive status if we're unversioned ourselves.
-	if (bRecursive && m_ownStatus.GetEffectiveStatus() != git_wc_status_ignored)
+	if (bRecursive && m_ownStatus.GetEffectiveStatus() > git_wc_status_none)
 	{
 		CStatusCacheEntry recursiveStatus(m_ownStatus);
 		UpdateCurrentStatus();
