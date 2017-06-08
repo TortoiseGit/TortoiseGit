@@ -185,6 +185,8 @@ int CGitIndexList::GetFileStatus(CAutoRepository& repository, const CString& git
 		if (assumeValid)
 			*assumeValid = true;
 	}
+	else if (filesize == -1)
+		*status = git_wc_status_deleted;
 	else if (filesize != entry.m_Size)
 		*status = git_wc_status_modified;
 	else if (time == entry.m_ModifyTime)
@@ -241,10 +243,7 @@ int CGitIndexList::GetStatus(const CString& gitdir, CString path, git_wc_status_
 		result = CGit::GetFileModifyTime(CombinePath(gitdir, path), &time, &isDir, &filesize);
 
 	if (result)
-	{
-		*status = git_wc_status_deleted;
-		return 0;
-	}
+		filesize = -1;
 
 	if (!isDir)
 	{

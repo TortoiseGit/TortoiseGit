@@ -194,6 +194,9 @@ TEST_P(GitIndexCBasicGitWithTestRepoFixture, GetFileStatus)
 	bool skipworktree = false;
 	EXPECT_EQ(-1, CGit::GetFileModifyTime(CombinePath(m_Dir.GetTempDir(), L"ansi.txt"), &time, nullptr, &filesize));
 	EXPECT_EQ(0, indexList.GetFileStatus(m_Dir.GetTempDir(), L"ansi.txt", &status, time, filesize));
+	EXPECT_EQ(git_wc_status_deleted, status);
+	filesize = 42; // some arbitrary size, i.e., file exists but is changed
+	EXPECT_EQ(0, indexList.GetFileStatus(m_Dir.GetTempDir(), L"ansi.txt", &status, time, filesize));
 	EXPECT_EQ(git_wc_status_modified, status);
 
 	CString output;
