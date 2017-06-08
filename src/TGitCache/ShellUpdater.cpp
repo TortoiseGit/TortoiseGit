@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2008 - TortoiseSVN
-// Copyright (C) 2008-2011,2013,2015-2016 - TortoiseGit
+// Copyright (C) 2008-2011,2013,2015-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -136,13 +136,6 @@ void CShellUpdater::WorkerThread()
 			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": shell notification for %s\n", workingPath.GetWinPath());
 			if (workingPath.IsDirectory())
 			{
-				// check if the path is monitored by the watcher. If it isn't, then we have to invalidate the cache
-				// for that path and add it to the watcher.
-				if (!CGitStatusCache::Instance().IsPathWatched(workingPath))
-				{
-					if (workingPath.HasAdminDir())
-						CGitStatusCache::Instance().AddPathToWatch(workingPath);
-				}
 				// first send a notification about a sub folder change, so explorer doesn't discard
 				// the folder notification. Since we only know for sure that the git admin
 				// dir is present, we send a notification for that folder.
