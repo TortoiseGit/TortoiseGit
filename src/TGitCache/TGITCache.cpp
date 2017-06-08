@@ -767,6 +767,9 @@ DWORD WINAPI CommandThread(LPVOID lpvParam)
 					CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
 					CGitStatusCache::Instance().CloseWatcherHandles(changedpath);
 					CGitStatusCache::Instance().RemoveCacheForPath(changedpath);
+					auto cachedDir = CGitStatusCache::Instance().GetDirectoryCacheEntryNoCreate(changedpath.GetContainingDirectory());
+					if (cachedDir)
+						cachedDir->Invalidate();
 				}
 				break;
 			case TGITCACHECOMMAND_BLOCK:
