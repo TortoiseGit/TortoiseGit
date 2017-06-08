@@ -546,7 +546,10 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 					if (pos == NPOS)
 					{
 						*status = GetMoreImportant(git_wc_status_added, *status); // added file found
-						break;
+						AdjustFolderStatus(*status);
+						if (GetMoreImportant(*status, git_wc_status_modified) == *status) // the only potential higher status which me might get in this loop
+							break;
+						continue;
 					}
 
 					if (((*it).m_Flags & GIT_IDXENTRY_VALID) == 0 && ((*it).m_FlagsExtended & GIT_IDXENTRY_SKIP_WORKTREE) == 0 && (*treeptr)[pos].m_Hash != (*it).m_IndexHash)
@@ -581,6 +584,12 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 		} /* End lock*/
 	}
 
+	auto mostImportantPossibleFolderStatus = GetMoreImportant(git_wc_status_added, GetMoreImportant(git_wc_status_modified, git_wc_status_deleted));
+	AdjustFolderStatus(mostImportantPossibleFolderStatus);
+	// we can skip here when we already have the highest possible status
+	if (mostImportantPossibleFolderStatus == *status)
+		return 0;
+
 	for (auto it = indexptr->cbegin() + start, itlast = indexptr->cbegin() + end; it <= itlast; ++it)
 	{
 		//skip child directory
@@ -596,8 +605,11 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 		case git_wc_status_added:
 		case git_wc_status_modified:
 		case git_wc_status_deleted:
-		case git_wc_status_conflicted:
+		//case git_wc_status_conflicted: cannot happen, we exit as soon we found a conflict in subpath
 			*status = GetMoreImportant(filestatus, *status);
+			AdjustFolderStatus(*status);
+			if (mostImportantPossibleFolderStatus == *status)
+				return 0;
 		}
 	}
 
