@@ -545,13 +545,13 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 
 					if (pos == NPOS)
 					{
-						*status = max(git_wc_status_added, *status); // added file found
+						*status = GetMoreImportant(git_wc_status_added, *status); // added file found
 						break;
 					}
 
 					if (((*it).m_Flags & GIT_IDXENTRY_VALID) == 0 && ((*it).m_FlagsExtended & GIT_IDXENTRY_SKIP_WORKTREE) == 0 && (*treeptr)[pos].m_Hash != (*it).m_IndexHash)
 					{
-						*status = max(git_wc_status_modified, *status); // modified file found
+						*status = GetMoreImportant(git_wc_status_modified, *status); // modified file found
 						break;
 					}
 				}
@@ -561,7 +561,7 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 				{
 					pos = SearchInSortVector(*treeptr, path, path.GetLength());
 					if (pos == NPOS)
-						*status = max(git_wc_status_added, *status); // added file found
+						*status = GetMoreImportant(git_wc_status_added, *status); // added file found
 					else
 					{
 						size_t hstart, hend;
@@ -571,7 +571,7 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 						{
 							if (SearchInSortVector(*indexptr, (*hit).m_FileName, -1) == NPOS)
 							{
-								*status = max(git_wc_status_deleted, *status); // deleted file found
+								*status = GetMoreImportant(git_wc_status_deleted, *status); // deleted file found
 								break;
 							}
 						}
