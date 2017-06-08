@@ -525,7 +525,7 @@ void CCachedDirectory::UpdateCurrentStatus()
 		m_directoryPath.GetWinPath(),
 		newStatus, m_currentFullStatus);
 
-	if (newStatus != m_currentFullStatus)
+	if (newStatus != m_currentFullStatus && IsOwnStatusValid())
 	{
 		m_currentFullStatus = newStatus;
 
