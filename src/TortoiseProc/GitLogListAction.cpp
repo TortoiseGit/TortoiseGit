@@ -502,6 +502,30 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				CopySelectionToClipBoard(cmd & 0xFFFF);
 			}
 			break;
+		case ID_COPYCLIPBOARDBRANCHTAG:
+			{
+				if (!popmenu)
+					break;
+				auto selectedBranch = reinterpret_cast<const CString*>(reinterpret_cast<CIconMenu*>(popmenu)->GetMenuItemData(cmd));
+				CString sClipboard;
+				if (selectedBranch)
+				{
+					if (CStringUtils::StartsWith(*selectedBranch, L"refs/tags/"))
+						sClipboard = selectedBranch->Mid((int)wcslen(L"refs/tags/")).TrimRight(L"^{}");
+					else
+						sClipboard = CGit::StripRefName(*selectedBranch);
+				}
+				else
+				{
+					for (const auto& ref : m_HashMap[pSelLogEntry->m_CommitHash])
+					{
+						sClipboard += ref;
+						sClipboard += L"\r\n";
+					}
+				}
+				CStringUtils::WriteAsciiStringToClipboard(sClipboard, GetSafeHwnd());
+			}
+			break;
 		case ID_EXPORT:
 			{
 				CString str=pSelLogEntry->m_CommitHash.ToString();

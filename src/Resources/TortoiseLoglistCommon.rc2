@@ -49,6 +49,7 @@ BEGIN
     IDS_LOG_POPUP_CLIPBOARD_AUTHORSEMAIL "Author email addresses"
     IDS_LOG_POPUP_CLIPBOARD_SUBJECTS "Subjects"
     IDS_LOG_POPUP_CLIPBOARD_MSGS "Messages"
+    IDS_LOG_POPUP_CLIPBOARD_TAGBRANCHES "Tag/branch names"
     IDS_LOG_POPUP_REVERTTOREV "R&evert to this revision"
     IDS_LOG_POPUP_REVERTTOPARENT "Revert to parent revision"
     IDS_LOG_POPUP_EXPORT "Export selection to..."

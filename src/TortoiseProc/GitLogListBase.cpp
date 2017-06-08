@@ -2379,6 +2379,14 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			clipSubMenu.AppendMenuIcon(ID_COPYCLIPBOARDAUTHORSEMAIL, IDS_LOG_POPUP_CLIPBOARD_AUTHORSEMAIL, IDI_COPYCLIP);
 			clipSubMenu.AppendMenuIcon(ID_COPYCLIPBOARDSUBJECTS, IDS_LOG_POPUP_CLIPBOARD_SUBJECTS, IDI_COPYCLIP);
 			clipSubMenu.AppendMenuIcon(ID_COPYCLIPBOARDMESSAGES, IDS_LOG_POPUP_CLIPBOARD_MSGS, IDI_COPYCLIP);
+			if (!m_HashMap[pSelLogEntry->m_CommitHash].empty() && selectedCount == 1)
+			{
+				clipSubMenu.AppendMenuIcon(ID_COPYCLIPBOARDBRANCHTAG, IDS_LOG_POPUP_CLIPBOARD_TAGBRANCHES, IDI_COPYCLIP);
+				size_t index = (size_t)-1;
+				CGit::REF_TYPE type = CGit::REF_TYPE::UNKNOWN;
+				if (IsMouseOnRefLabelFromPopupMenu(pSelLogEntry, point, type, nullptr, &index))
+					clipSubMenu.SetMenuItemData(ID_COPYCLIPBOARDBRANCHTAG, (ULONG_PTR)&m_HashMap[pSelLogEntry->m_CommitHash][index]);
+			}
 
 			CString temp;
 			temp.LoadString(IDS_LOG_POPUP_COPYTOCLIPBOARD);

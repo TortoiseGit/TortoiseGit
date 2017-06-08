@@ -9513,6 +9513,10 @@ msgstr ""
 msgid "Tag Info"
 msgstr ""
 
+#. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_TAGBRANCHES)
+msgid "Tag/branch names"
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_COPY_SUCCESS)
 #, c-format
 msgid "Tagged the working tree to %s"

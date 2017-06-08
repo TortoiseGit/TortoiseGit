@@ -11,6 +11,7 @@ Released: unreleased
  * Various High DPI optimizations
  * Update libgit to 2.13.0
  * Fixed issue #2988: Add `Show/hide ignore local changes flagged files` in Log Dialog
+ * Fixed issue #2999: Log dialog: Copy tag to clipboard
 
 == Bug Fixes ==
  * Fixed issue #2909: Commit window unclosable after clicking "No" and "do not ask again"
