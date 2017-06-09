@@ -251,6 +251,29 @@ int CGitIndexList::GetStatus(const CString& gitdir, CString path, git_wc_status_
 		return 0;
 	}
 
+	if (CStringUtils::EndsWith(path, L'/'))
+	{
+		size_t index = SearchInSortVector(*this, path, -1);
+
+		if (index == NPOS)
+		{
+			*status = git_wc_status_unversioned;
+			if (pHash)
+				pHash->Empty();
+			return 0;
+		}
+
+		if (pHash)
+			*pHash = (*this)[index].m_IndexHash;
+
+		if (!result)
+			*status = git_wc_status_normal;
+		else
+			*status = git_wc_status_deleted;
+
+		return 0;
+	}
+
 	if (!path.IsEmpty() && !CStringUtils::EndsWith(path, L'\\'))
 		path += L'\\';
 
