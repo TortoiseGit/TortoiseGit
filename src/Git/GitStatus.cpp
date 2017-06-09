@@ -245,6 +245,24 @@ int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status_
 	return 0;
 }
 
+// checks whether indexPath is a direct submodule and not one in a subfolder
+static bool IsDirectSubmodule(const CString& indexPath, int prefix)
+{
+	if (!CStringUtils::EndsWith(indexPath, L'/'))
+		return false;
+
+	auto ptr = indexPath.GetString() + prefix;
+	int folderdepth = 0;
+	while (*ptr)
+	{
+		if (*ptr == L'/')
+			++folderdepth;
+		++ptr;
+	}
+
+	return folderdepth == 1;
+}
+
 #ifdef TGITCACHE
 bool GitStatus::CheckAndUpdateIgnoreFiles(const CString& gitdir, const CString& subpaths, bool isDir)
 {
@@ -423,7 +441,7 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 				if (SearchInSortVector(filelist, filename, isDir ? length : -1) == NPOS) // do full match for filenames and only prefix-match ending with "/" for folders
 				{
 					bool skipWorktree = false;
-					git_wc_status_kind filestatus = git_wc_status_deleted;
+					git_wc_status_kind filestatus = (!isDir || IsDirectSubmodule(entry.m_FileName, commonPrefixLength)) ? git_wc_status_deleted : git_wc_status_modified; // only report deleted submodules and files as deletedy
 					if ((entry.m_FlagsExtended & GIT_IDXENTRY_SKIP_WORKTREE) != 0)
 					{
 						skipWorktree = true;
@@ -462,7 +480,7 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 				int length = filename.GetLength();
 				bool isDir = filename[length - 1] == L'/';
 				if (SearchInSortVector(filelist, filename, isDir ? length : -1) == NPOS) // do full match for filenames and only prefix-match ending with "/" for folders
-					callback(CombinePath(gitdir, subpath, filename), git_wc_status_deleted, isDir, 0, pData, false, false);
+					callback(CombinePath(gitdir, subpath, filename), (!isDir || IsDirectSubmodule(entry.m_FileName, commonPrefixLength)) ? git_wc_status_deleted : git_wc_status_modified, isDir, 0, pData, false, false);
 			}
 		}
 	}

@@ -465,9 +465,10 @@ BOOL CCachedDirectory::GetStatusCallback(const CString& path, git_wc_status_kind
 						CGitStatusCache::Instance().AddFolderForCrawling(gitPath);
 				}
 
-				if (status == git_wc_status_deleted)
+				// deleted subfolders are reported as modified whereas deleted submodules are reported as deleted
+				if (status == git_wc_status_deleted || status == git_wc_status_modified)
 				{
-					pThis->SetChildStatus(gitPath.GetWinPathString(), git_wc_status_modified);
+					pThis->SetChildStatus(gitPath.GetWinPathString(), status);
 					return FALSE;
 				}
 
@@ -500,9 +501,6 @@ git_wc_status_kind CCachedDirectory::CalculateRecursiveStatus()
 	// Combine our OWN folder status with the most important of our *FILES'* status.
 	git_wc_status_kind retVal = GitStatus::GetMoreImportant(m_mostImportantFileStatus, m_ownStatus.GetEffectiveStatus());
 
-	// folders can only be none, unversioned, normal, modified, and conflicted
-	GitStatus::AdjustFolderStatus(retVal);
-
 	// Now combine all our child-directorie's status
 	AutoLocker lock(m_critSec);
 	ChildDirStatus::const_iterator it;
@@ -510,6 +508,9 @@ git_wc_status_kind CCachedDirectory::CalculateRecursiveStatus()
 	{
 		retVal = GitStatus::GetMoreImportant(retVal, it->second);
 	}
+
+	// folders can only be none, unversioned, normal, modified, and conflicted
+	GitStatus::AdjustFolderStatus(retVal);
 
 	if (retVal == git_wc_status_ignored && m_ownStatus.GetEffectiveStatus() != git_wc_status_ignored) // hack to show folders which have only ignored files inside but are not ignored themself
 		retVal = git_wc_status_unversioned;
@@ -575,8 +576,9 @@ void CCachedDirectory::KeepChildStatus(const CString& childDir)
 	auto it = m_childDirectories.find(childDir);
 	if (it != m_childDirectories.cend())
 	{
-		// if a submodule was deleted, we must not keep the modified status if it re-appears - the modified status cannot be reset otherwise
-		if (it->second == git_wc_status_modified)
+		// if a submodule was deleted, we must not keep the deleted status if it re-appears - the deleted status cannot be reset otherwise
+		// ATM only missing submodules are reported as deleted, so that this check only performed for submodules which were deleted
+		if (it->second == git_wc_status_deleted)
 		{
 			CTGitPath child(childDir);
 			CString root1, root2;
