@@ -189,6 +189,21 @@ int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status_
 
 	if (st == git_wc_status_unversioned)
 	{
+		if (IsFull)
+		{
+			g_HeadFileMap.CheckHeadAndUpdate(gitdir);
+
+			// Check Head Tree Hash
+			SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
+
+			// deleted only in index item?
+			if (SearchInSortVector(*treeptr, path, -1) != NPOS)
+			{
+				*status = git_wc_status_deleted;
+				return 0;
+			}
+		}
+
 		if (!IsIgnore)
 		{
 			*status = git_wc_status_unversioned;
