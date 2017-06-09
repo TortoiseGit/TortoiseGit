@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -77,6 +77,15 @@ BOOL CGitSwitchDlg::OnInitDialog()
 	CHorizontalResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
+	AdjustControlSize(IDC_RADIO_BRANCH);
+	AdjustControlSize(IDC_RADIO_TAGS);
+	AdjustControlSize(IDC_RADIO_VERSION);
+	AdjustControlSize(IDC_CHECK_BRANCH);
+	AdjustControlSize(IDC_CHECK_FORCE);
+	AdjustControlSize(IDC_CHECK_MERGE);
+	AdjustControlSize(IDC_CHECK_TRACK);
+	AdjustControlSize(IDC_CHECK_BRANCHOVERRIDE);
+
 	AddAnchor(IDC_GROUP_OPTION, TOP_LEFT, TOP_RIGHT);
 
 	AddAnchor(IDC_EDIT_BRANCH, TOP_LEFT, TOP_RIGHT);
@@ -87,15 +96,6 @@ BOOL CGitSwitchDlg::OnInitDialog()
 
 	CHOOSE_VERSION_ADDANCHOR;
 	this->AddOthersToAnchor();
-
-	AdjustControlSize(IDC_RADIO_BRANCH);
-	AdjustControlSize(IDC_RADIO_TAGS);
-	AdjustControlSize(IDC_RADIO_VERSION);
-	AdjustControlSize(IDC_CHECK_BRANCH);
-	AdjustControlSize(IDC_CHECK_FORCE);
-	AdjustControlSize(IDC_CHECK_MERGE);
-	AdjustControlSize(IDC_CHECK_TRACK);
-	AdjustControlSize(IDC_CHECK_BRANCHOVERRIDE);
 
 	EnableSaveRestore(L"SwitchDlg");
 

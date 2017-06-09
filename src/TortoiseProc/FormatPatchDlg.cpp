@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014, 2016 - TortoiseGit
+// Copyright (C) 2008-2014, 2016-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -90,6 +90,12 @@ BOOL CFormatPatchDlg::OnInitDialog()
 	CHorizontalResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
+	AdjustControlSize(IDC_RADIO_SINCE);
+	AdjustControlSize(IDC_RADIO_NUM);
+	AdjustControlSize(IDC_RADIO_RANGE);
+	AdjustControlSize(IDC_CHECK_SENDMAIL);
+	AdjustControlSize(IDC_CHECK_NOPREFIX);
+
 	AddAnchor(IDC_GROUP_DIR, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_COMBOBOXEX_DIR,TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_BUTTON_DIR, TOP_RIGHT);
@@ -110,12 +116,6 @@ BOOL CFormatPatchDlg::OnInitDialog()
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 	AddAnchor(IDC_BUTTON_REF,TOP_RIGHT);
-
-	AdjustControlSize(IDC_RADIO_SINCE);
-	AdjustControlSize(IDC_RADIO_NUM);
-	AdjustControlSize(IDC_RADIO_RANGE);
-	AdjustControlSize(IDC_CHECK_SENDMAIL);
-	AdjustControlSize(IDC_CHECK_NOPREFIX);
 
 	this->AddOthersToAnchor();
 

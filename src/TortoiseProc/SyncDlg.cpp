@@ -999,6 +999,9 @@ BOOL CSyncDlg::OnInitDialog()
 		m_ctrlTabCtrl.InsertTab(&m_refList, CString(MAKEINTRESOURCE(IDS_REFLIST)), -1);
 	}
 
+	AdjustControlSize(IDC_CHECK_PUTTY_KEY);
+	AdjustControlSize(IDC_CHECK_FORCE);
+
 	AddAnchor(IDC_SYNC_TAB,TOP_LEFT,BOTTOM_RIGHT);
 
 	AddAnchor(IDC_GROUP_INFO,TOP_LEFT,TOP_RIGHT);
@@ -1025,9 +1028,6 @@ BOOL CSyncDlg::OnInitDialog()
 	AddAnchor(IDC_BUTTON_REMOTE_BRANCH, TOP_RIGHT);
 	AddAnchor(IDC_STATIC_REMOTE_BRANCH, TOP_CENTER);
 	AddAnchor(IDC_PROG_LABEL, TOP_LEFT);
-
-	AdjustControlSize(IDC_CHECK_PUTTY_KEY);
-	AdjustControlSize(IDC_CHECK_FORCE);
 
 	CString WorkingDir=g_Git.m_CurrentDir;
 	WorkingDir.Replace(L':', L'_');

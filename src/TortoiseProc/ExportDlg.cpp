@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -66,6 +66,11 @@ BOOL CExportDlg::OnInitDialog()
 		((CButton *)GetDlgItem(IDC_WHOLE_PROJECT))->SetCheck(TRUE);
 	}
 
+	AdjustControlSize(IDC_RADIO_BRANCH);
+	AdjustControlSize(IDC_RADIO_TAGS);
+	AdjustControlSize(IDC_RADIO_VERSION);
+	AdjustControlSize(IDC_RADIO_HEAD);
+
 	AddAnchor(IDC_REPOGROUP, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_EXPORTFILE_LABEL, TOP_LEFT);
 	AddAnchor(IDC_EXPORTFILE_BROWSE, TOP_RIGHT);
@@ -74,10 +79,6 @@ BOOL CExportDlg::OnInitDialog()
 	AddAnchor(IDOK, BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
-
-	AdjustControlSize(IDC_RADIO_BRANCH);
-	AdjustControlSize(IDC_RADIO_TAGS);
-	AdjustControlSize(IDC_RADIO_VERSION);
 
 	SetDlgTitle();
 
@@ -93,7 +94,6 @@ BOOL CExportDlg::OnInitDialog()
 	CString headText;
 	pHead->GetWindowText(headText);
 	pHead->SetWindowText(headText + " (" + g_Git.GetCurrentBranch() + ")");
-	AdjustControlSize(IDC_RADIO_HEAD);
 
 	m_tooltips.AddTool(IDC_EXPORTFILE, IDS_EXPORTFILE_TT);
 

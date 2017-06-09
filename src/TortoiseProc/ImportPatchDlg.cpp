@@ -159,11 +159,12 @@ BOOL CImportPatchDlg::OnInitDialog()
 	m_ctrlTabCtrl.AddTab(&m_PatchCtrl, CString(MAKEINTRESOURCE(IDS_PATCH)), 0);
 	m_ctrlTabCtrl.AddTab(&m_wndOutput, CString(MAKEINTRESOURCE(IDS_LOG)), 1);
 
-	AddAmAnchor();
 	AdjustControlSize(IDC_CHECK_3WAY);
 	AdjustControlSize(IDC_CHECK_IGNORE_SPACE);
 	AdjustControlSize(IDC_SIGN_OFF);
 	AdjustControlSize(IDC_KEEP_CR);
+
+	AddAmAnchor();
 
 	m_PathList.SortByPathname(true);
 	m_cList.SetExtendedStyle( m_cList.GetExtendedStyle()| LVS_EX_CHECKBOXES );

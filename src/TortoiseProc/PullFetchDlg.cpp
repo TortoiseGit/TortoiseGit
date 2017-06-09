@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -92,6 +92,18 @@ BOOL CPullFetchDlg::OnInitDialog()
 	CHorizontalResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
+	AdjustControlSize(IDC_REMOTE_RD);
+	AdjustControlSize(IDC_OTHER_RD);
+	AdjustControlSize(IDC_CHECK_SQUASH);
+	AdjustControlSize(IDC_CHECK_NOCOMMIT);
+	AdjustControlSize(IDC_CHECK_DEPTH);
+	AdjustControlSize(IDC_CHECK_NOFF);
+	AdjustControlSize(IDC_CHECK_FFONLY);
+	AdjustControlSize(IDC_CHECK_FETCHTAGS);
+	AdjustControlSize(IDC_PUTTYKEY_AUTOLOAD);
+	AdjustControlSize(IDC_CHECK_REBASE);
+	AdjustControlSize(IDC_CHECK_PRUNE);
+
 	AddAnchor(IDC_REMOTE_COMBO, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_OTHER, TOP_LEFT,TOP_RIGHT);
 
@@ -107,18 +119,6 @@ BOOL CPullFetchDlg::OnInitDialog()
 	AddAnchor(IDC_CHECK_REBASE,BOTTOM_LEFT);
 	AddAnchor(IDC_REMOTE_MANAGE,BOTTOM_LEFT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
-
-	AdjustControlSize(IDC_REMOTE_RD);
-	AdjustControlSize(IDC_OTHER_RD);
-	AdjustControlSize(IDC_CHECK_SQUASH);
-	AdjustControlSize(IDC_CHECK_NOCOMMIT);
-	AdjustControlSize(IDC_CHECK_DEPTH);
-	AdjustControlSize(IDC_CHECK_NOFF);
-	AdjustControlSize(IDC_CHECK_FFONLY);
-	AdjustControlSize(IDC_CHECK_FETCHTAGS);
-	AdjustControlSize(IDC_PUTTYKEY_AUTOLOAD);
-	AdjustControlSize(IDC_CHECK_REBASE);
-	AdjustControlSize(IDC_CHECK_PRUNE);
 
 	CString WorkingDir=g_Git.m_CurrentDir;
 	WorkingDir.Replace(L':', L'_');

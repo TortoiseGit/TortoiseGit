@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2016 - TortoiseGit
+// Copyright (C) 2012-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -119,6 +119,12 @@ BOOL CSubmoduleUpdateDlg::OnInitDialog()
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
+	AdjustControlSize(IDC_CHECK_SUBMODULE_INIT);
+	AdjustControlSize(IDC_CHECK_SUBMODULE_RECURSIVE);
+	AdjustControlSize(IDC_CHECK_SUBMODULE_NOFETCH);
+	AdjustControlSize(IDC_CHECK_SUBMODULE_MERGE);
+	AdjustControlSize(IDC_CHECK_SUBMODULE_REBASE);
+
 	AddAnchor(IDOK, BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
@@ -158,12 +164,6 @@ BOOL CSubmoduleUpdateDlg::OnInitDialog()
 	DialogEnableWindow(IDC_WHOLE_PROJECT, !(m_PathFilterList.empty() || (m_PathFilterList.size() == 1 && m_PathFilterList[0].IsEmpty())));
 
 	SetDlgTitle();
-
-	AdjustControlSize(IDC_CHECK_SUBMODULE_INIT);
-	AdjustControlSize(IDC_CHECK_SUBMODULE_RECURSIVE);
-	AdjustControlSize(IDC_CHECK_SUBMODULE_NOFETCH);
-	AdjustControlSize(IDC_CHECK_SUBMODULE_MERGE);
-	AdjustControlSize(IDC_CHECK_SUBMODULE_REBASE);
 
 	EnableSaveRestore(L"SubmoduleUpdateDlg");
 

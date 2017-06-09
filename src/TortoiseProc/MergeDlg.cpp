@@ -96,6 +96,14 @@ BOOL CMergeDlg::OnInitDialog()
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
+	AdjustControlSize(IDC_RADIO_BRANCH);
+	AdjustControlSize(IDC_RADIO_TAGS);
+	AdjustControlSize(IDC_RADIO_VERSION);
+	AdjustControlSize(IDC_CHECK_SQUASH);
+	AdjustControlSize(IDC_CHECK_NOFF);
+	AdjustControlSize(IDC_CHECK_NOCOMMIT);
+	AdjustControlSize(IDC_CHECK_MERGE_LOG);
+
 	CHOOSE_VERSION_ADDANCHOR;
 
 	AddAnchor(IDC_GROUP_OPTION, TOP_LEFT, TOP_RIGHT);
@@ -107,14 +115,6 @@ BOOL CMergeDlg::OnInitDialog()
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
 	this->AddOthersToAnchor();
-
-	AdjustControlSize(IDC_RADIO_BRANCH);
-	AdjustControlSize(IDC_RADIO_TAGS);
-	AdjustControlSize(IDC_RADIO_VERSION);
-	AdjustControlSize(IDC_CHECK_SQUASH);
-	AdjustControlSize(IDC_CHECK_NOFF);
-	AdjustControlSize(IDC_CHECK_NOCOMMIT);
-	AdjustControlSize(IDC_CHECK_MERGE_LOG);
 
 	CheckRadioButton(IDC_RADIO_BRANCH,IDC_RADIO_VERSION,IDC_RADIO_BRANCH);
 	this->SetDefaultChoose(IDC_RADIO_BRANCH);

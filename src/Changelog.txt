@@ -33,6 +33,7 @@ Released: unreleased
  * Fixed issue #2979: gitignore patterns are always treated case sensitively for overlay icons
  * Fixed issue #2989: TGitCache: Significantly reduce refresh requests send to Windows Explorer (causing Explorer to freeze)
  * Fixed issue #2766: TGitCache: Icon Overlay might show ignored files as non-versioned
+ * Fixed issue #2998: Resizing dialogs might lead to extension of clickable checkox area
 
 = Release 2.4.0 =
 Released: 2017-01-31

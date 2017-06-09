@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2016 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -76,6 +76,10 @@ BOOL CSendMailDlg::OnInitDialog()
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
+	AdjustControlSize(IDC_SENDMAIL_ATTACHMENT);
+	AdjustControlSize(IDC_SENDMAIL_COMBINE);
+	AdjustControlSize(IDC_SENDMAIL_SETUP);
+
 	AddAnchor(IDC_SENDMAIL_GROUP,TOP_LEFT,TOP_RIGHT);
 	AddAnchor(IDC_SENDMAIL_TO,TOP_LEFT,TOP_RIGHT);
 	AddAnchor(IDC_SENDMAIL_CC,TOP_LEFT,TOP_RIGHT);
@@ -88,10 +92,6 @@ BOOL CSendMailDlg::OnInitDialog()
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
 	this->AddOthersToAnchor();
-
-	AdjustControlSize(IDC_SENDMAIL_ATTACHMENT);
-	AdjustControlSize(IDC_SENDMAIL_COMBINE);
-	AdjustControlSize(IDC_SENDMAIL_SETUP);
 
 	EnableSaveRestore(L"SendMailDlg");
 

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2016 - TortoiseGit
+// Copyright (C) 2012-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -56,6 +56,8 @@ BOOL CDeleteRemoteTagDlg::OnInitDialog()
 	CHorizontalResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
+	AdjustControlSize((UINT)IDC_STATIC);
+
 	AddAnchor(IDC_EDIT_REMOTE, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_LIST_TAGS, TOP_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_SELECTALL, BOTTOM_RIGHT);
@@ -63,8 +65,6 @@ BOOL CDeleteRemoteTagDlg::OnInitDialog()
 	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
 
 	this->AddOthersToAnchor();
-
-	AdjustControlSize((UINT)IDC_STATIC);
 
 	CString temp;
 	temp.LoadString(IDS_PROC_TAG);

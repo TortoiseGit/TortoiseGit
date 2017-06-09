@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -59,6 +59,13 @@ BOOL CResetDlg::OnInitDialog()
 	CHorizontalResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
+	AdjustControlSize(IDC_RADIO_BRANCH);
+	AdjustControlSize(IDC_RADIO_TAGS);
+	AdjustControlSize(IDC_RADIO_VERSION);
+	AdjustControlSize(IDC_RADIO_RESET_SOFT);
+	AdjustControlSize(IDC_RADIO_RESET_MIXED);
+	AdjustControlSize(IDC_RADIO_RESET_HARD);
+
 	AddAnchor(IDC_SHOW_MODIFIED_FILES, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_GROUP_RESET_TYPE, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDOK, BOTTOM_RIGHT);
@@ -67,13 +74,6 @@ BOOL CResetDlg::OnInitDialog()
 
 	CHOOSE_VERSION_ADDANCHOR;
 	this->AddOthersToAnchor();
-
-	AdjustControlSize(IDC_RADIO_BRANCH);
-	AdjustControlSize(IDC_RADIO_TAGS);
-	AdjustControlSize(IDC_RADIO_VERSION);
-	AdjustControlSize(IDC_RADIO_RESET_SOFT);
-	AdjustControlSize(IDC_RADIO_RESET_MIXED);
-	AdjustControlSize(IDC_RADIO_RESET_HARD);
 
 	EnableSaveRestore(L"ResetDlg");
 

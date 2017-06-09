@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -99,6 +99,19 @@ BOOL CPushDlg::OnInitDialog()
 	CHorizontalResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
+	AdjustControlSize(IDC_RD_REMOTE);
+	AdjustControlSize(IDC_RD_URL);
+	AdjustControlSize(IDC_PUSHALL);
+	AdjustControlSize(IDC_FORCE);
+	AdjustControlSize(IDC_FORCE_WITH_LEASE);
+	AdjustControlSize(IDC_PACK);
+	AdjustControlSize(IDC_TAGS);
+	AdjustControlSize(IDC_PUTTYKEY_AUTOLOAD);
+	AdjustControlSize(IDC_PROC_PUSH_SET_PUSHBRANCH);
+	AdjustControlSize(IDC_PROC_PUSH_SET_PUSHREMOTE);
+	AdjustControlSize(IDC_PROC_PUSH_SET_UPSTREAM);
+	AdjustControlSize(IDC_STATIC_RECURSE_SUBMODULES);
+
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
 	AddAnchor(IDC_BRANCH_GROUP, TOP_LEFT,TOP_RIGHT);
@@ -136,19 +149,6 @@ BOOL CPushDlg::OnInitDialog()
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
 	AddOthersToAnchor();
-
-	AdjustControlSize(IDC_RD_REMOTE);
-	AdjustControlSize(IDC_RD_URL);
-	AdjustControlSize(IDC_PUSHALL);
-	AdjustControlSize(IDC_FORCE);
-	AdjustControlSize(IDC_FORCE_WITH_LEASE);
-	AdjustControlSize(IDC_PACK);
-	AdjustControlSize(IDC_TAGS);
-	AdjustControlSize(IDC_PUTTYKEY_AUTOLOAD);
-	AdjustControlSize(IDC_PROC_PUSH_SET_PUSHBRANCH);
-	AdjustControlSize(IDC_PROC_PUSH_SET_PUSHREMOTE);
-	AdjustControlSize(IDC_PROC_PUSH_SET_UPSTREAM);
-	AdjustControlSize(IDC_STATIC_RECURSE_SUBMODULES);
 
 	CString sWindowTitle;
 	GetWindowText(sWindowTitle);

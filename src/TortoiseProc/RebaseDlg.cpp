@@ -127,6 +127,11 @@ void CRebaseDlg::CleanUpRebaseActiveFolder()
 
 void CRebaseDlg::AddRebaseAnchor()
 {
+	AdjustControlSize(IDC_CHECK_CHERRYPICKED_FROM);
+	AdjustControlSize(IDC_REBASE_SPLIT_COMMIT);
+	AdjustControlSize(IDC_REBASE_CHECK_FORCE);
+	AdjustControlSize(IDC_REBASE_CHECK_PRESERVEMERGES);
+
 	AddAnchor(IDC_REBASE_TAB,TOP_LEFT,BOTTOM_RIGHT);
 	AddAnchor(IDC_COMMIT_LIST,TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_REBASE_SPLIT,TOP_LEFT, TOP_RIGHT);
@@ -153,11 +158,6 @@ void CRebaseDlg::AddRebaseAnchor()
 	AddAnchor(IDC_REBASE_POST_BUTTON,BOTTOM_LEFT);
 
 	this->AddOthersToAnchor();
-
-	AdjustControlSize(IDC_CHECK_CHERRYPICKED_FROM);
-	AdjustControlSize(IDC_REBASE_SPLIT_COMMIT);
-	AdjustControlSize(IDC_REBASE_CHECK_FORCE);
-	AdjustControlSize(IDC_REBASE_CHECK_PRESERVEMERGES);
 }
 
 BOOL CRebaseDlg::OnInitDialog()

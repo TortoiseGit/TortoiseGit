@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -73,6 +73,15 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
+	AdjustControlSize(IDC_RADIO_BRANCH);
+	AdjustControlSize(IDC_RADIO_TAGS);
+	AdjustControlSize(IDC_RADIO_VERSION);
+	AdjustControlSize(IDC_CHECK_TRACK);
+	AdjustControlSize(IDC_CHECK_FORCE);
+	AdjustControlSize(IDC_CHECK_SWITCH);
+	AdjustControlSize(IDC_CHECK_SIGN);
+	AdjustControlSize(IDC_RADIO_HEAD);
+
 	CHOOSE_VERSION_ADDANCHOR;
 
 	AddAnchor(IDC_BRANCH_TAG, TOP_LEFT, TOP_RIGHT);
@@ -87,14 +96,6 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 	AddAnchor(IDC_EDIT_MESSAGE,TOP_LEFT,BOTTOM_RIGHT);
 
 	this->AddOthersToAnchor();
-
-	AdjustControlSize(IDC_RADIO_BRANCH);
-	AdjustControlSize(IDC_RADIO_TAGS);
-	AdjustControlSize(IDC_RADIO_VERSION);
-	AdjustControlSize(IDC_CHECK_TRACK);
-	AdjustControlSize(IDC_CHECK_FORCE);
-	AdjustControlSize(IDC_CHECK_SWITCH);
-	AdjustControlSize(IDC_CHECK_SIGN);
 
 	this->SetDefaultChoose(IDC_RADIO_HEAD);
 
@@ -125,7 +126,7 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 	CString HeadText;
 	pHead->GetWindowText( HeadText );
 	pHead->SetWindowText( HeadText + " (" + g_Git.GetCurrentBranch() + ")");
-	AdjustControlSize(IDC_RADIO_HEAD);
+
 	EnableSaveRestore(L"BranchTagDlg");
 
 	m_tooltips.AddTool(GetDlgItem(IDC_CHECK_FORCE), CString(MAKEINTRESOURCE(IDS_PROC_NEWBRANCHTAG_FORCE_TT)));

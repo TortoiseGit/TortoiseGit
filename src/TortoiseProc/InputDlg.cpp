@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012, 2014-2016 - TortoiseGit
+// Copyright (C) 2012, 2014-2017 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -83,13 +83,13 @@ BOOL CInputDlg::OnInitDialog()
 		GetDlgItem(IDC_CHECKBOX)->ShowWindow(SW_HIDE);
 	}
 
+	AdjustControlSize(IDC_CHECKBOX);
+
 	AddAnchor(IDC_HINTTEXT, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_INPUTTEXT, TOP_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_CHECKBOX, BOTTOM_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
 	AddAnchor(IDOK, BOTTOM_RIGHT);
-
-	AdjustControlSize(IDC_CHECKBOX);
 
 	EnableSaveRestore(L"InputDlg");
 	if (hWndExplorer)
