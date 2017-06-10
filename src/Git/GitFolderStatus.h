@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012, 2014, 2016 - TortoiseGit
+// Copyright (C) 2008-2012, 2014, 2016-2017 - TortoiseGit
 // Copyright (C) 2003-2006,2008,2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -67,7 +67,6 @@ private:
 
 	void				ClearCache();
 
-	int					m_nCounter;
 	typedef std::map<std::wstring, FileStatusCacheEntry> FileStatusMap;
 	FileStatusMap			m_cache;
 	ULONGLONG				m_TimeStamp;

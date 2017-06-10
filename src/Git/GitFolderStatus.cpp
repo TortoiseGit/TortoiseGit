@@ -37,7 +37,6 @@ GitFolderStatus::GitFolderStatus(void)
 	dirstat.askedcounter = -1;
 	dirstat.assumeValid = dirstat.skipWorktree = false;
 	dirstat.status = git_wc_status_none;
-	m_nCounter = 0;
 	dirstatus = nullptr;
 	m_mostRecentStatus = nullptr;
 	sCacheKey.reserve(MAX_PATH);
@@ -91,8 +90,6 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 			return &dirstat;
 		}
 	} // if (bIsFolder)
-
-	m_nCounter = 0;
 
 	git_wc_status_kind status;
 	bool assumeValid = false;
