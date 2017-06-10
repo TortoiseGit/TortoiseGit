@@ -625,8 +625,8 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 
 	for (auto it = indexptr->cbegin() + start, itlast = indexptr->cbegin() + end; it <= itlast; ++it)
 	{
-		//skip child directory
-		if (!IsRecursive && (*it).m_FileName.Find(L'/', path.GetLength()) > 0)
+		// skip child directory, but handle submodules
+		if (!IsRecursive && (*it).m_FileName.Find(L'/', path.GetLength()) > 0 && !IsDirectSubmodule((*it).m_FileName, path.GetLength()))
 			continue;
 
 		git_wc_status_kind filestatus = git_wc_status_none;
