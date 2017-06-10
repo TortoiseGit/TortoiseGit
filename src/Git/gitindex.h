@@ -49,7 +49,7 @@ public:
 	~CGitIndexList();
 
 	int ReadIndex(CString dotgitdir);
-	int GetStatus(const CString& gitdir, CString path, git_wc_status_kind* status, BOOL IsFull = FALSE, CGitHash* pHash = nullptr, bool* assumeValid = nullptr, bool* skipWorktree = nullptr);
+	int GetFileStatus(const CString& gitdir, CString path, git_wc_status_kind* status, CGitHash* pHash = nullptr, bool* assumeValid = nullptr, bool* skipWorktree = nullptr);
 	int GetFileStatus(CAutoRepository& repository, const CString& gitdir, CGitIndex& entry, git_wc_status_kind* status, __int64 time, __int64 filesize, bool* assumeValid, bool* skipWorktree);
 #ifdef GTEST_INCLUDE_GTEST_GTEST_H_
 	FRIEND_TEST(GitIndexCBasicGitWithTestRepoFixture, GetFileStatus);
@@ -132,7 +132,6 @@ public:
 		return false;
 	}
 	int GetFileStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,
-							BOOL IsFull = false,
 							CGitHash* pHash = nullptr,
 							bool* assumeValid = nullptr, bool* skipWorktree = nullptr);
 };

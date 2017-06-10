@@ -225,8 +225,7 @@ int CGitIndexList::GetFileStatus(CAutoRepository& repository, const CString& git
 	return 0;
 }
 
-int CGitIndexList::GetStatus(const CString& gitdir, CString path, git_wc_status_kind* status,
-							 BOOL IsFull,
+int CGitIndexList::GetFileStatus(const CString& gitdir, CString path, git_wc_status_kind* status,
 							 CGitHash *pHash, bool * assumeValid, bool * skipWorktree)
 {
 	__int64 time, filesize = 0;
@@ -235,7 +234,6 @@ int CGitIndexList::GetStatus(const CString& gitdir, CString path, git_wc_status_
 	if (!status)
 		return 0;
 
-	git_wc_status_kind dirstatus = git_wc_status_none;
 	int result;
 	if (path.IsEmpty())
 		result = CGit::GetFileModifyTime(gitdir, &time, &isDir);
@@ -254,12 +252,12 @@ int CGitIndexList::GetStatus(const CString& gitdir, CString path, git_wc_status_
 	if (CStringUtils::EndsWith(path, L'/'))
 	{
 		size_t index = SearchInSortVector(*this, path, -1);
-
 		if (index == NPOS)
 		{
 			*status = git_wc_status_unversioned;
 			if (pHash)
 				pHash->Empty();
+
 			return 0;
 		}
 
@@ -270,52 +268,11 @@ int CGitIndexList::GetStatus(const CString& gitdir, CString path, git_wc_status_
 			*status = git_wc_status_normal;
 		else
 			*status = git_wc_status_deleted;
-
 		return 0;
 	}
 
-	if (!path.IsEmpty() && !CStringUtils::EndsWith(path, L'\\'))
-		path += L'\\';
-
-	int len = path.GetLength();
-
-	CAutoRepository repository;
-	for (auto it = begin(), itend = end(); it != itend; ++it)
-	{
-		auto& entry = *it;
-		if (!(entry.m_FileName.GetLength() > len && wcsncmp(entry.m_FileName, path, len) == 0))
-			continue;
-
-		if (!IsFull)
-		{
-			*status = git_wc_status_normal;
-			return 0;
-		}
-
-		result = CGit::GetFileModifyTime(CombinePath(gitdir, entry.m_FileName), &time, nullptr, &filesize);
-		if (result)
-			continue;
-
-		*status = git_wc_status_none;
-		if (assumeValid)
-			*assumeValid = false;
-		if (skipWorktree)
-			*skipWorktree = false;
-
-		GetFileStatus(repository, gitdir, entry, status, time, filesize, assumeValid, skipWorktree);
-		if (*status != git_wc_status_none)
-		{
-			if (dirstatus == git_wc_status_none)
-				dirstatus = git_wc_status_normal;
-			if (*status != git_wc_status_normal)
-				dirstatus = git_wc_status_modified;
-		}
-	} /* End For */
-
-	if (dirstatus != git_wc_status_none)
-		*status = dirstatus;
-	else
-		*status = git_wc_status_unversioned;
+	// we should never get here
+	*status = git_wc_status_unversioned;
 
 	return 0;
 }
@@ -367,7 +324,7 @@ int CGitIndexFileMap::LoadIndex(const CString &gitdir)
 	return 0;
 }
 
-int CGitIndexFileMap::GetFileStatus(const CString& gitdir, const CString& path, git_wc_status_kind* status, BOOL IsFull,
+int CGitIndexFileMap::GetFileStatus(const CString& gitdir, const CString& path, git_wc_status_kind* status,
 									CGitHash *pHash,
 									bool* assumeValid, bool* skipWorktree)
 {
@@ -375,7 +332,7 @@ int CGitIndexFileMap::GetFileStatus(const CString& gitdir, const CString& path, 
 
 	SHARED_INDEX_PTR pIndex = this->SafeGet(gitdir);
 	if (pIndex)
-		pIndex->GetStatus(gitdir, path, status, IsFull, pHash, assumeValid, skipWorktree);
+		pIndex->GetFileStatus(gitdir, path, status, pHash, assumeValid, skipWorktree);
 	else
 	{
 		// git working tree has not index
