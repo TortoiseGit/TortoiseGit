@@ -9,7 +9,7 @@ Released: unreleased
  * Fixed issue #2966: Do not need to confirm cancel out of commit when there are no changes left
  * Fixed issue #2861: Cloning a repository with many files tracked by git-lfs is extremely slow
  * Various High DPI optimizations
- * Update libgit to 2.13.0
+ * Update libgit to 2.13.1
  * Fixed issue #2988: Add `Show/hide ignore local changes flagged files` in Log Dialog
  * Fixed issue #2999: Log dialog: Copy tag to clipboard
 
