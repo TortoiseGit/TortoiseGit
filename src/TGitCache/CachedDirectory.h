@@ -64,7 +64,7 @@ private:
 	CStatusCacheEntry GetStatusFromCache(const CTGitPath &path, bool bRecursive);
 	CStatusCacheEntry GetStatusFromGit(const CTGitPath &path, const CString& sProjectRoot, bool isSelf);
 
-	static BOOL GetStatusCallback(const CString& path, git_wc_status_kind status, bool isDir, __int64 lastwritetime, void* /*pUserData*/, bool assumeValid, bool skipWorktree);
+	static BOOL GetStatusCallback(const CString& path, const git_wc_status2_t* status, bool isDir, __int64 lastwritetime, void* baton);
 	void AddEntry(const CTGitPath& path, const git_wc_status2_t* pGitStatus, __int64 lastwritetime);
 	CString GetCacheKey(const CTGitPath& path);
 	CString GetFullPathString(const CString& cacheKey);

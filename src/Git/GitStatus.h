@@ -48,7 +48,7 @@ typedef struct git_wc_status2_t
 
 #define MAX_STATUS_STRING_LENGTH		256
 
-typedef BOOL (*FILL_STATUS_CALLBACK)(const CString& path, git_wc_status_kind status, bool isDir, __int64 lastwritetime, void *pdata, bool assumeValid, bool skipWorktree);
+typedef BOOL (*FILL_STATUS_CALLBACK)(const CString& path, const git_wc_status2_t* status, bool isDir, __int64 lastwritetime, void* baton);
 
 static CString CombinePath(const CString& part1, const CString& part2)
 {
@@ -76,7 +76,7 @@ class GitStatus
 {
 public:
 
-	static int GetFileStatus(const CString& gitdir, CString path, git_wc_status_kind* status, BOOL IsFull = FALSE, BOOL isIgnore = TRUE, bool* assumeValid = nullptr, bool* skipWorktree = nullptr, bool update = true);
+	static int GetFileStatus(const CString& gitdir, CString path, git_wc_status2_t& status, BOOL IsFull = FALSE, BOOL isIgnore = TRUE, bool update = true);
 	static int GetDirStatus(const CString& gitdir, const CString& path, git_wc_status_kind* status, BOOL IsFull = false, BOOL IsRecursive = false, BOOL isIgnore = true);
 	static int EnumDirStatus(const CString& gitdir, const CString& path, git_wc_status_kind* dirstatus, FILL_STATUS_CALLBACK callback, void* pData);
 	static int GetFileList(CString path, std::vector<CGitFileName>& list, bool& isRepoRoot);
@@ -95,7 +95,7 @@ public:
 	 * If the status of the text and property part are different
 	 * then the more important status is returned.
 	 */
-	static git_wc_status_kind GetAllStatus(const CTGitPath& path, bool bIsRecursive, bool* assumeValid = nullptr, bool* skipWorktree = nullptr);
+	static int GetAllStatus(const CTGitPath& path, bool bIsRecursive, git_wc_status2_t& status);
 
 	/**
 	 * Returns the status which is more "important" of the two statuses specified.

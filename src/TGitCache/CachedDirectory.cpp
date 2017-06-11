@@ -370,10 +370,8 @@ int CCachedDirectory::EnumFiles(const CTGitPath& path, CString sProjectRoot, con
 
 	if (!path.IsDirectory())
 	{
-		bool assumeValid = false;
-		bool skipWorktree = false;
-		git_wc_status_kind status = git_wc_status_none;
-		if (pStatus->GetFileStatus(sProjectRoot, sSubPath, &status, TRUE, true, &assumeValid, &skipWorktree))
+		git_wc_status2_t status = { git_wc_status_none, false, false };
+		if (pStatus->GetFileStatus(sProjectRoot, sSubPath, status, TRUE, true))
 		{
 			// we could not get the status of a file, try whole directory after a short delay if the whole directory was not already crawled with an error
 			if (m_currentFullStatus == git_wc_status_none)
@@ -382,7 +380,7 @@ int CCachedDirectory::EnumFiles(const CTGitPath& path, CString sProjectRoot, con
 			CGitStatusCache::Instance().AddFolderForCrawling(m_directoryPath);
 			return 0;
 		}
-		GetStatusCallback(path.GetWinPathString(), status, false, path.GetLastWriteTime(), this, assumeValid, skipWorktree);
+		GetStatusCallback(path.GetWinPathString(), &status, false, path.GetLastWriteTime(), this);
 		RefreshMostImportant(false);
 	}
 	else
@@ -470,11 +468,8 @@ CCachedDirectory::GetFullPathString(const CString& cacheKey)
 	return fullpath;
 }
 
-BOOL CCachedDirectory::GetStatusCallback(const CString& path, git_wc_status_kind status, bool isDir, __int64 lastwritetime, void* baton, bool assumeValid, bool skipWorktree)
+BOOL CCachedDirectory::GetStatusCallback(const CString& path, const git_wc_status2_t* pGitStatus, bool isDir, __int64 lastwritetime, void* baton)
 {
-	git_wc_status2_t _status = { status, assumeValid, skipWorktree };
-	git_wc_status2_t *status2 = &_status;
-
 	CTGitPath gitPath(path, isDir);
 
 	auto pThis = reinterpret_cast<CCachedDirectory*>(baton);
@@ -488,14 +483,14 @@ BOOL CCachedDirectory::GetStatusCallback(const CString& path, git_wc_status_kind
 				if (pThis->m_bRecursive)
 				{
 					// Add any versioned directory, which is not our 'self' entry, to the list for having its status updated
-					if (status >= git_wc_status_normal || (CGitStatusCache::Instance().IsUnversionedAsModified() && status == git_wc_status_unversioned))
+					if (pGitStatus->status >= git_wc_status_normal || (CGitStatusCache::Instance().IsUnversionedAsModified() && pGitStatus->status == git_wc_status_unversioned))
 						CGitStatusCache::Instance().AddFolderForCrawling(gitPath);
 				}
 
 				// deleted subfolders are reported as modified whereas deleted submodules are reported as deleted
-				if (status == git_wc_status_deleted || status == git_wc_status_modified)
+				if (pGitStatus->status == git_wc_status_deleted || pGitStatus->status == git_wc_status_modified)
 				{
-					pThis->SetChildStatus(gitPath.GetWinPathString(), status);
+					pThis->SetChildStatus(gitPath.GetWinPathString(), pGitStatus->status);
 					return FALSE;
 				}
 
@@ -507,7 +502,7 @@ BOOL CCachedDirectory::GetStatusCallback(const CString& path, git_wc_status_kind
 		}
 	}
 
-	pThis->AddEntry(gitPath, status2, lastwritetime);
+	pThis->AddEntry(gitPath, pGitStatus, lastwritetime);
 
 	return FALSE;
 }

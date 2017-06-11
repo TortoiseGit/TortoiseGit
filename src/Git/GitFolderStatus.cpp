@@ -91,20 +91,19 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 		}
 	} // if (bIsFolder)
 
-	git_wc_status_kind status;
-	bool assumeValid = false;
-	bool skipWorktree = false;
+	git_wc_status2_t status = { git_wc_status_none, false, false };
 	int t1,t2;
 	t2=t1=0;
 	try
 	{
 		t1 = ::GetCurrentTime();
-		status = m_GitStatus.GetAllStatus(filepath, g_ShellCache.GetCacheType() != ShellCache::dll, &assumeValid, &skipWorktree);
+		if (m_GitStatus.GetAllStatus(filepath, g_ShellCache.GetCacheType() != ShellCache::dll, status))
+			status = { git_wc_status_none, false, false };
 		t2 = ::GetCurrentTime();
 	}
 	catch ( ... )
 	{
-		status = git_wc_status_unknown;
+		status = { git_wc_status_none, false, false };
 	}
 
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": building cache for %s - time %d\n", filepath.GetWinPath(), t2 - t1);
@@ -119,9 +118,9 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 
 	if (ret)
 	{
-		ret->status = status;
-		ret->assumeValid = assumeValid;
-		ret->skipWorktree = skipWorktree;
+		ret->status = status.status;
+		ret->assumeValid = status.assumeValid;
+		ret->skipWorktree = status.skipWorktree;
 	}
 
 	m_mostRecentPath = filepath;

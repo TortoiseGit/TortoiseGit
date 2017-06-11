@@ -150,15 +150,13 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	return 0;
 }
 
-int CGitIndexList::GetFileStatus(const CString& gitdir, const CString& pathorg, git_wc_status_kind* status, __int64 time, __int64 filesize, CGitHash* pHash, bool* assumeValid, bool* skipWorktree)
+int CGitIndexList::GetFileStatus(const CString& gitdir, const CString& pathorg, git_wc_status2_t& status, __int64 time, __int64 filesize, CGitHash* pHash)
 {
-	ATLASSERT(status);
-
 	size_t index = SearchInSortVector(*this, pathorg, -1);
 
 	if (index == NPOS)
 	{
-		*status = git_wc_status_unversioned;
+		status.status = git_wc_status_unversioned;
 		if (pHash)
 			pHash->Empty();
 
@@ -170,30 +168,30 @@ int CGitIndexList::GetFileStatus(const CString& gitdir, const CString& pathorg, 
 		*pHash = entry.m_IndexHash;
 	ATLASSERT(pathorg == entry.m_FileName);
 	CAutoRepository repository;
-	return GetFileStatus(repository, gitdir, entry, status, time, filesize, assumeValid, skipWorktree);
+	return GetFileStatus(repository, gitdir, entry, status, time, filesize);
 }
 
-int CGitIndexList::GetFileStatus(CAutoRepository& repository, const CString& gitdir, CGitIndex& entry, git_wc_status_kind* status, __int64 time, __int64 filesize, bool* assumeValid, bool* skipWorktree)
+int CGitIndexList::GetFileStatus(CAutoRepository& repository, const CString& gitdir, CGitIndex& entry, git_wc_status2_t& status, __int64 time, __int64 filesize)
 {
+	ATLASSERT(!status.assumeValid && !status.skipWorktree);
+
 	// skip-worktree has higher priority than assume-valid
 	if (entry.m_FlagsExtended & GIT_IDXENTRY_SKIP_WORKTREE)
 	{
-		*status = git_wc_status_normal;
-		if (skipWorktree)
-			*skipWorktree = true;
+		status.status = git_wc_status_normal;
+		status.skipWorktree = true;
 	}
 	else if (entry.m_Flags & GIT_IDXENTRY_VALID)
 	{
-		*status = git_wc_status_normal;
-		if (assumeValid)
-			*assumeValid = true;
+		status.status = git_wc_status_normal;
+		status.assumeValid = true;
 	}
 	else if (filesize == -1)
-		*status = git_wc_status_deleted;
+		status.status = git_wc_status_deleted;
 	else if (filesize != entry.m_Size)
-		*status = git_wc_status_modified;
+		status.status = git_wc_status_modified;
 	else if (time == entry.m_ModifyTime)
-		*status = git_wc_status_normal;
+		status.status = git_wc_status_normal;
 	else if (config && filesize < m_iMaxCheckSize)
 	{
 		/*
@@ -215,29 +213,28 @@ int CGitIndexList::GetFileStatus(CAutoRepository& repository, const CString& git
 		if (!git_repository_hashfile(&actual, repository, fileA, GIT_OBJ_BLOB, nullptr) && !git_oid_cmp(&actual, (const git_oid*)entry.m_IndexHash.m_hash))
 		{
 			entry.m_ModifyTime = time;
-			*status = git_wc_status_normal;
+			status.status = git_wc_status_normal;
 		}
 		else
-			*status = git_wc_status_modified;
+			status.status = git_wc_status_modified;
 	}
 	else
-		*status = git_wc_status_modified;
+		status.status = git_wc_status_modified;
 
 	if (entry.m_Flags & GIT_IDXENTRY_STAGEMASK)
-		*status = git_wc_status_conflicted;
+		status.status = git_wc_status_conflicted;
 	else if (entry.m_FlagsExtended & GIT_IDXENTRY_INTENT_TO_ADD)
-		*status = git_wc_status_added;
+		status.status = git_wc_status_added;
 
 	return 0;
 }
 
-int CGitIndexList::GetFileStatus(const CString& gitdir, CString path, git_wc_status_kind* status,
-							 CGitHash *pHash, bool * assumeValid, bool * skipWorktree)
+int CGitIndexList::GetFileStatus(const CString& gitdir, CString path, git_wc_status2_t& status, CGitHash* pHash)
 {
+	ATLASSERT(!status.assumeValid && !status.skipWorktree);
+
 	__int64 time, filesize = 0;
 	bool isDir = false;
-
-	ATLASSERT(status);
 
 	int result;
 	if (path.IsEmpty())
@@ -249,14 +246,14 @@ int CGitIndexList::GetFileStatus(const CString& gitdir, CString path, git_wc_sta
 		filesize = -1;
 
 	if (!isDir)
-		return GetFileStatus(gitdir, path, status, time, filesize, pHash, assumeValid, skipWorktree);
+		return GetFileStatus(gitdir, path, status, time, filesize, pHash);
 
 	if (CStringUtils::EndsWith(path, L'/'))
 	{
 		size_t index = SearchInSortVector(*this, path, -1);
 		if (index == NPOS)
 		{
-			*status = git_wc_status_unversioned;
+			status.status = git_wc_status_unversioned;
 			if (pHash)
 				pHash->Empty();
 
@@ -267,14 +264,14 @@ int CGitIndexList::GetFileStatus(const CString& gitdir, CString path, git_wc_sta
 			*pHash = (*this)[index].m_IndexHash;
 
 		if (!result)
-			*status = git_wc_status_normal;
+			status.status = git_wc_status_normal;
 		else
-			*status = git_wc_status_deleted;
+			status.status = git_wc_status_deleted;
 		return 0;
 	}
 
 	// we should never get here
-	*status = git_wc_status_unversioned;
+	status.status = git_wc_status_unversioned;
 
 	return -1;
 }
