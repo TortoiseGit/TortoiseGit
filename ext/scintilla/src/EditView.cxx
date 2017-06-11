@@ -52,6 +52,7 @@
 #include "EditModel.h"
 #include "MarginView.h"
 #include "EditView.h"
+#include "Editor.h"
 
 using namespace Scintilla;
 
@@ -185,6 +186,7 @@ EditView::EditView() {
 	tabArrowHeight = 4;
 	customDrawTabArrow = NULL;
 	customDrawWrapMarker = NULL;
+	editor = NULL;
 }
 
 EditView::~EditView() {
@@ -1874,7 +1876,17 @@ void EditView::DrawLine(Surface *surface, const EditModel &model, const ViewStyl
 	}
 
 	// See if something overrides the line background color.
-	const ColourOptional background = vsDraw.Background(model.pdoc->GetMark(line), model.caret.active, ll->containsCaret);
+	ColourOptional background = vsDraw.Background(model.pdoc->GetMark(line), model.caret.active, ll->containsCaret);
+	SCNotification scn = { 0 };
+	scn.nmhdr.code = SCN_GETBKCOLOR;
+	scn.line = line;
+	scn.lParam = -1;
+	if (editor)
+		((Editor*)editor)->NotifyParent(&scn);
+	if (scn.lParam != -1) {
+		background.Set(scn.lParam);
+		background.isSet = true;
+	}
 
 	const Sci::Position posLineStart = static_cast<Sci::Position>(model.pdoc->LineStart(line));
 
