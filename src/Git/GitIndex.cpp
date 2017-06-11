@@ -1087,7 +1087,10 @@ void CGitHeadFileMap::CheckHeadAndUpdate(const CString &gitdir)
 
 	ptr = std::make_shared<CGitHeadFileList>();
 	if (ptr->ReadHeadHash(gitdir) || ptr->ReadTree())
+	{
+		SafeClear(gitdir);
 		return;
+	}
 
 	this->SafeSet(gitdir, ptr);
 
