@@ -337,8 +337,10 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 	CAutoRepository repository;
 	for (auto it = filelist.cbegin(), itend = filelist.cend(); it != itend; ++it)
 	{
+		auto& fileentry = *it;
+
 		CString onepath(path);
-		onepath += it->m_FileName;
+		onepath += fileentry.m_FileName;
 
 		bool bIsDir = false;
 		if (!onepath.IsEmpty() && onepath[onepath.GetLength() - 1] == L'/')
@@ -358,36 +360,37 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 			if (g_IgnoreList.IsIgnore(onepath, gitdir, bIsDir))
 				filestatus = git_wc_status_ignored;
 
-			callback(CombinePath(gitdir, onepath), filestatus, bIsDir, it->m_LastModified, pData, false, false);
+			callback(CombinePath(gitdir, onepath), filestatus, bIsDir, fileentry.m_LastModified, pData, false, false);
 		}
 		else if (pos == NPOS && posintree != NPOS) /* check if file delete in index */
-			callback(CombinePath(gitdir, onepath), git_wc_status_deleted, bIsDir, it->m_LastModified, pData, false, false);
+			callback(CombinePath(gitdir, onepath), git_wc_status_deleted, bIsDir, fileentry.m_LastModified, pData, false, false);
 		else if (pos != NPOS && posintree == NPOS) /* Check if file added */
 		{
 			git_wc_status_kind filestatus = git_wc_status_added;
 			if ((*indexptr)[pos].m_Flags & GIT_IDXENTRY_STAGEMASK)
 				filestatus = git_wc_status_conflicted;
-			callback(CombinePath(gitdir, onepath), filestatus, bIsDir, it->m_LastModified, pData, false, false);
+			callback(CombinePath(gitdir, onepath), filestatus, bIsDir, fileentry.m_LastModified, pData, false, false);
 		}
 		else
 		{
 			if (bIsDir)
-				callback(CombinePath(gitdir, onepath), git_wc_status_normal, bIsDir, it->m_LastModified, pData, false, false);
+				callback(CombinePath(gitdir, onepath), git_wc_status_normal, bIsDir, fileentry.m_LastModified, pData, false, false);
 			else
 			{
-				if ((*indexptr)[pos].m_Flags & GIT_IDXENTRY_STAGEMASK)
+				auto& indexentry = (*indexptr)[pos];
+				if (indexentry.m_Flags & GIT_IDXENTRY_STAGEMASK)
 				{
-					callback(CombinePath(gitdir, onepath), git_wc_status_conflicted, false, it->m_LastModified, pData, false, false);
+					callback(CombinePath(gitdir, onepath), git_wc_status_conflicted, false, fileentry.m_LastModified, pData, false, false);
 					continue;
 				}
 				bool assumeValid = false;
 				bool skipWorktree = false;
 				git_wc_status_kind filestatus;
-				if ((*indexptr).GetFileStatus(repository, gitdir, (*indexptr)[pos], &filestatus, CGit::filetime_to_time_t((*it).m_LastModified), (*it).m_Size, &assumeValid, &skipWorktree))
+				if ((*indexptr).GetFileStatus(repository, gitdir, indexentry, &filestatus, CGit::filetime_to_time_t(fileentry.m_LastModified), fileentry.m_Size, &assumeValid, &skipWorktree))
 					return -1;
-				if (filestatus == git_wc_status_normal && !assumeValid && !skipWorktree && (*treeptr)[posintree].m_Hash != (*indexptr)[pos].m_IndexHash)
+				if (filestatus == git_wc_status_normal && !assumeValid && !skipWorktree && (*treeptr)[posintree].m_Hash != indexentry.m_IndexHash)
 					filestatus = git_wc_status_modified;
-				callback(CombinePath(gitdir, onepath), filestatus, false, it->m_LastModified, pData, assumeValid, skipWorktree);
+				callback(CombinePath(gitdir, onepath), filestatus, false, fileentry.m_LastModified, pData, assumeValid, skipWorktree);
 			}
 		}
 	}/*End of For*/
@@ -569,7 +572,8 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 			{
 				for (auto it = indexptr->cbegin() + start, itlast = indexptr->cbegin() + end; it <= itlast; ++it)
 				{
-					pos = SearchInSortVector(*treeptr, (*it).m_FileName, -1);
+					auto& indexentry = *it;
+					pos = SearchInSortVector(*treeptr, indexentry.m_FileName, -1);
 
 					if (pos == NPOS)
 					{
@@ -580,7 +584,7 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 						continue;
 					}
 
-					if (((*it).m_Flags & GIT_IDXENTRY_VALID) == 0 && ((*it).m_FlagsExtended & GIT_IDXENTRY_SKIP_WORKTREE) == 0 && (*treeptr)[pos].m_Hash != (*it).m_IndexHash)
+					if ((indexentry.m_Flags & GIT_IDXENTRY_VALID) == 0 && (indexentry.m_FlagsExtended & GIT_IDXENTRY_SKIP_WORKTREE) == 0 && (*treeptr)[pos].m_Hash != indexentry.m_IndexHash)
 					{
 						*status = GetMoreImportant(git_wc_status_modified, *status); // modified file found
 						break;
@@ -620,14 +624,15 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 
 	for (auto it = indexptr->cbegin() + start, itlast = indexptr->cbegin() + end; it <= itlast; ++it)
 	{
+		auto& indexentry = *it;
 		// skip child directory, but handle submodules
-		if (!IsRecursive && (*it).m_FileName.Find(L'/', path.GetLength()) > 0 && !IsDirectSubmodule((*it).m_FileName, path.GetLength()))
+		if (!IsRecursive && indexentry.m_FileName.Find(L'/', path.GetLength()) > 0 && !IsDirectSubmodule(indexentry.m_FileName, path.GetLength()))
 			continue;
 
 		git_wc_status_kind filestatus = git_wc_status_none;
 		bool assumeValid = false;
 		bool skipWorktree = false;
-		GetFileStatus(gitdir, (*it).m_FileName, &filestatus, IsFul, IsIgnore, &assumeValid, &skipWorktree);
+		GetFileStatus(gitdir, indexentry.m_FileName, &filestatus, IsFul, IsIgnore, &assumeValid, &skipWorktree);
 		switch (filestatus)
 		{
 		case git_wc_status_added:
