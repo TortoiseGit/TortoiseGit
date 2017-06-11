@@ -152,8 +152,7 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 
 int CGitIndexList::GetFileStatus(const CString& gitdir, const CString& pathorg, git_wc_status_kind* status, __int64 time, __int64 filesize, CGitHash* pHash, bool* assumeValid, bool* skipWorktree)
 {
-	if (!status)
-		return 0;
+	ATLASSERT(status);
 
 	size_t index = SearchInSortVector(*this, pathorg, -1);
 
@@ -238,8 +237,7 @@ int CGitIndexList::GetFileStatus(const CString& gitdir, CString path, git_wc_sta
 	__int64 time, filesize = 0;
 	bool isDir = false;
 
-	if (!status)
-		return 0;
+	ATLASSERT(status);
 
 	int result;
 	if (path.IsEmpty())

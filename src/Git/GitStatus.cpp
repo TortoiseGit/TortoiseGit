@@ -167,8 +167,7 @@ typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 
 int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status_kind* status, BOOL IsFull, BOOL IsIgnore, bool* assumeValid, bool* skipWorktree)
 {
-	if (!status)
-		return 0;
+	ATLASSERT(status);
 
 	path.Replace(L'\\', L'/');
 
@@ -487,8 +486,7 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 #ifndef TGITCACHE
 int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_wc_status_kind* status, BOOL IsFul, BOOL IsRecursive, BOOL IsIgnore)
 {
-	if (!status)
-		return 0;
+	ATLASSERT(status);
 
 	CString path = subpath;
 
