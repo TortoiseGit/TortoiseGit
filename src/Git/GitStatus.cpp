@@ -591,7 +591,7 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 				*status = git_wc_status_none;
 				return -1;
 			}
-			if (!treeptr->empty() || treeptr->HeadIsEmpty())
+
 			{
 				for (auto it = indexptr->cbegin() + start, itlast = indexptr->cbegin() + end; it <= itlast; ++it)
 				{
