@@ -277,40 +277,18 @@ int CGitIndexList::GetFileStatus(const CString& gitdir, CString path, git_wc_sta
 	return 0;
 }
 
-int CGitIndexFileMap::Check(const CString &gitdir, bool *isChanged)
+bool CGitIndexFileMap::HasIndexChangedOnDisk(const CString& gitdir)
 {
 	__int64 time;
 
-	CString IndexFile = g_AdminDirMap.GetWorktreeAdminDirConcat(gitdir, L"index");
-
-	if (CGit::GetFileModifyTime(IndexFile, &time))
-	{
-		if (isChanged)
-			*isChanged = true;
-		return 0;
-	}
-
-	SHARED_INDEX_PTR pIndex;
-	pIndex = this->SafeGet(gitdir);
+	auto pIndex = SafeGet(gitdir);
 
 	if (!pIndex)
-	{
-		if(isChanged)
-			*isChanged = true;
-		return 0;
-	}
+		return true;
 
-	if (pIndex->m_LastModifyTime == time)
-	{
-		if (isChanged)
-			*isChanged = false;
-	}
-	else
-	{
-		if (isChanged)
-			*isChanged = true;
-	}
-	return 0;
+	CString IndexFile = g_AdminDirMap.GetWorktreeAdminDirConcat(gitdir, L"index");
+	// no need to refresh if there is no index right now and the current index is empty, but otherwise or lastmodified time differs
+	return (CGit::GetFileModifyTime(IndexFile, &time) && !pIndex->empty()) || pIndex->m_LastModifyTime != time;
 }
 
 int CGitIndexFileMap::LoadIndex(const CString &gitdir)
