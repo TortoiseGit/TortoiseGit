@@ -422,7 +422,7 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 }
 int CGitHeadFileList::ReadHeadHash(const CString& gitdir)
 {
-	ATLASSERT(m_Gitdir.IsEmpty() && m_HeadFile.IsEmpty());
+	ATLASSERT(m_Gitdir.IsEmpty() && m_HeadFile.IsEmpty() && m_Head.IsEmpty());
 
 	m_Gitdir = g_AdminDirMap.GetWorktreeAdminDir(gitdir);
 
@@ -476,10 +476,15 @@ int CGitHeadFileList::ReadHeadHash(const CString& gitdir)
 			m_HeadRefFile.Empty();
 			if (GetPackRef(gitdir))
 				return -1;
-			if (m_PackRefMap.find(ref) == m_PackRefMap.end())
-				return -1;
+			if (m_PackRefMap.find(ref) != m_PackRefMap.end())
+			{
+				m_Head = m_PackRefMap[ref];
+				return 0;
+			}
 
-			m_Head = m_PackRefMap[ref];
+			// unborn branch
+			m_Head.Empty();
+
 			return 0;
 		}
 
@@ -646,7 +651,11 @@ int ReadTreeRecursive(git_repository &repo, const git_tree * tree, const CString
 // ReadTree is/must only be executed on an empty list
 int CGitHeadFileList::ReadTree()
 {
-	ATLASSERT(empty());
+	ATLASSERT(empty() && m_TreeHash.IsEmpty());
+
+	// unborn branch
+	if (m_Head.IsEmpty())
+		return 0;
 
 	CAutoRepository repository(m_Gitdir);
 	CAutoCommit commit;
