@@ -301,7 +301,10 @@ int CGitIndexFileMap::LoadIndex(const CString &gitdir)
 	SHARED_INDEX_PTR pIndex = std::make_shared<CGitIndexList>();
 
 	if (pIndex->ReadIndex(gitdir))
+	{
+		SafeClear(gitdir);
 		return -1;
+	}
 
 	this->SafeSet(gitdir, pIndex);
 
