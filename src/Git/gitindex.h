@@ -225,9 +225,6 @@ public:
 			this->erase(*it);
 		return !toRemove.empty();
 	}
-
-	int GetFileStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,
-						bool isLoaded=false);
 	void CheckHeadAndUpdate(const CString& gitdir);
 };
 
