@@ -234,6 +234,7 @@
     <ClInclude Include="..\scintilla\src\Style.h" />
     <ClInclude Include="..\scintilla\src\UnicodeFromUTF8.h" />
     <ClInclude Include="..\scintilla\src\UniConversion.h" />
+    <ClInclude Include="..\scintilla\src\UniqueString.h" />
     <ClInclude Include="..\scintilla\src\ViewStyle.h" />
     <ClInclude Include="..\scintilla\src\XPM.h" />
     <ClInclude Include="..\scintilla\include\Platform.h" />

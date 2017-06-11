@@ -347,6 +347,7 @@ $(DIR_O)\ContractionState.obj: \
 	../src/ContractionState.cxx \
 	../include/Platform.h \
 	../src/Position.h \
+	../src/UniqueString.h \
 	../src/SplitVector.h \
 	../src/Partitioning.h \
 	../src/RunStyles.h \
@@ -391,6 +392,7 @@ $(DIR_O)\EditModel.obj: \
 	../include/Scintilla.h \
 	../lexlib/StringCopy.h \
 	../src/Position.h \
+	../src/UniqueString.h \
 	../src/SplitVector.h \
 	../src/Partitioning.h \
 	../src/RunStyles.h \
@@ -418,6 +420,7 @@ $(DIR_O)\Editor.obj: \
 	../include/Scintilla.h \
 	../lexlib/StringCopy.h \
 	../src/Position.h \
+	../src/UniqueString.h \
 	../src/SplitVector.h \
 	../src/Partitioning.h \
 	../src/RunStyles.h \
@@ -450,6 +453,7 @@ $(DIR_O)\EditView.obj: \
 	../lexlib/StringCopy.h \
 	../lexlib/CharacterSet.h \
 	../src/Position.h \
+	../src/UniqueString.h \
 	../src/SplitVector.h \
 	../src/Partitioning.h \
 	../src/RunStyles.h \
@@ -779,6 +783,7 @@ $(DIR_O)\MarginView.obj: \
 	../include/Scintilla.h \
 	../lexlib/StringCopy.h \
 	../src/Position.h \
+	../src/UniqueString.h \
 	../src/SplitVector.h \
 	../src/Partitioning.h \
 	../src/RunStyles.h \
@@ -824,6 +829,7 @@ $(DIR_O)\PositionCache.obj: \
 	../include/Sci_Position.h \
 	../include/Scintilla.h \
 	../src/Position.h \
+	../src/UniqueString.h \
 	../src/SplitVector.h \
 	../src/Partitioning.h \
 	../src/RunStyles.h \
@@ -867,6 +873,7 @@ $(DIR_O)\ScintillaBase.obj: \
 	../include/Scintilla.h \
 	../lexlib/PropSetSimple.h \
 	../src/Position.h \
+	../src/UniqueString.h \
 	../src/SplitVector.h \
 	../src/Partitioning.h \
 	../src/RunStyles.h \
@@ -899,6 +906,7 @@ $(DIR_O)\ScintillaBaseL.obj: \
 	../include/Scintilla.h \
 	../lexlib/PropSetSimple.h \
 	../src/Position.h \
+	../src/UniqueString.h \
 	../src/SplitVector.h \
 	../src/Partitioning.h \
 	../src/RunStyles.h \
@@ -931,6 +939,7 @@ $(DIR_O)\ScintillaWin.obj: \
 	../include/Scintilla.h \
 	../lexlib/StringCopy.h \
 	../src/Position.h \
+	../src/UniqueString.h \
 	../src/SplitVector.h \
 	../src/Partitioning.h \
 	../src/RunStyles.h \
@@ -967,6 +976,7 @@ $(DIR_O)\ScintillaWinL.obj: \
 	../include/Scintilla.h \
 	../lexlib/StringCopy.h \
 	../src/Position.h \
+	../src/UniqueString.h \
 	../src/SplitVector.h \
 	../src/Partitioning.h \
 	../src/RunStyles.h \
@@ -1003,6 +1013,7 @@ $(DIR_O)\ScintillaWinS.obj: \
 	../include/Scintilla.h \
 	../lexlib/StringCopy.h \
 	../src/Position.h \
+	../src/UniqueString.h \
 	../src/SplitVector.h \
 	../src/Partitioning.h \
 	../src/RunStyles.h \
@@ -1061,9 +1072,7 @@ $(DIR_O)\ViewStyle.obj: \
 	../include/Scintilla.h \
 	../include/Sci_Position.h \
 	../src/Position.h \
-	../src/SplitVector.h \
-	../src/Partitioning.h \
-	../src/RunStyles.h \
+	../src/UniqueString.h \
 	../src/Indicator.h \
 	../src/XPM.h \
 	../src/LineMarker.h \
