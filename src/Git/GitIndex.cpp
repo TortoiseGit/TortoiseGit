@@ -82,7 +82,10 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 
 	CAutoRepository repository(dgitdir);
 	if (!repository)
+	{
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Could not open git repository in %s: %s\n", (LPCTSTR)dgitdir, (LPCTSTR)CGit::GetLibGit2LastErr());
 		return -1;
+	}
 
 	// add config files
 	config.New();
@@ -108,6 +111,7 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	if (git_repository_index(index.GetPointer(), repository))
 	{
 		config.Free();
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Could not get index of git repository in %s: %s\n", (LPCTSTR)dgitdir, (LPCTSTR)CGit::GetLibGit2LastErr());
 		return -1;
 	}
 
@@ -200,7 +204,10 @@ int CGitIndexList::GetFileStatus(CAutoRepository& repository, const CString& git
 		if (!repository)
 		{
 			if (repository.Open(gitdir))
+			{
+				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Could not open git repository in %s for checking file: %s\n", (LPCTSTR)gitdir, (LPCTSTR)CGit::GetLibGit2LastErr());
 				return -1;
+			}
 			git_repository_set_config(repository, config);
 		}
 
