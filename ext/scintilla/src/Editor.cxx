@@ -103,6 +103,7 @@ static inline bool IsAllSpacesOrTabs(const char *s, unsigned int len) {
 }
 
 Editor::Editor() {
+	view.editor = this;
 	ctrlID = 0;
 
 	stylesValid = false;
