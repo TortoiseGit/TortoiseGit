@@ -229,7 +229,7 @@ int CGitIndexList::GetFileStatus(CAutoRepository& repository, const CString& git
 	return 0;
 }
 
-int CGitIndexList::GetFileStatus(const CString& gitdir, CString path, git_wc_status2_t& status, CGitHash* pHash)
+int CGitIndexList::GetFileStatus(const CString& gitdir, const CString& path, git_wc_status2_t& status, CGitHash* pHash)
 {
 	ATLASSERT(!status.assumeValid && !status.skipWorktree);
 

@@ -49,7 +49,7 @@ public:
 	~CGitIndexList();
 
 	int ReadIndex(CString dotgitdir);
-	int GetFileStatus(const CString& gitdir, CString path, git_wc_status2_t& status, CGitHash* pHash = nullptr);
+	int GetFileStatus(const CString& gitdir, const CString& path, git_wc_status2_t& status, CGitHash* pHash = nullptr);
 	int GetFileStatus(CAutoRepository& repository, const CString& gitdir, CGitIndex& entry, git_wc_status2_t& status, __int64 time, __int64 filesize);
 #ifdef GTEST_INCLUDE_GTEST_GTEST_H_
 	FRIEND_TEST(GitIndexCBasicGitWithTestRepoFixture, GetFileStatus);
