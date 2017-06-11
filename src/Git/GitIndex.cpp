@@ -285,8 +285,9 @@ int CGitIndexFileMap::Check(const CString &gitdir, bool *isChanged)
 
 	if (CGit::GetFileModifyTime(IndexFile, &time))
 	{
-		g_AdminDirMap.ResetAdminDirCache(gitdir);
-		return -1;
+		if (isChanged)
+			*isChanged = true;
+		return 0;
 	}
 
 	SHARED_INDEX_PTR pIndex;
@@ -335,7 +336,7 @@ int CGitIndexFileMap::GetFileStatus(const CString& gitdir, const CString& path, 
 		pIndex->GetFileStatus(gitdir, path, status, pHash, assumeValid, skipWorktree);
 	else
 	{
-		// git working tree has not index
+		// git working tree has broken index
 		*status = git_wc_status_unversioned;
 	}
 

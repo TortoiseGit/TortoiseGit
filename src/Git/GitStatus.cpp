@@ -331,7 +331,7 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 	SHARED_INDEX_PTR indexptr = g_IndexFileMap.SafeGet(gitdir);
 	SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
 
-	// new git working tree has no index file
+	// working tree has broken index file
 	if (!indexptr.get())
 	{
 		for (auto it = filelist.cbegin(); it != filelist.cend(); ++it)
