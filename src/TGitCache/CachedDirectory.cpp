@@ -272,7 +272,25 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, cons
 	GitStatus *pGitStatus = &CGitStatusCache::Instance().m_GitStatus;
 	UNREFERENCED_PARAMETER(pGitStatus);
 
-	EnumFiles(path, sProjectRoot, subpaths, isSelf);
+	if (EnumFiles(path, sProjectRoot, subpaths, isSelf))
+	{
+		// there was an error
+		m_ownStatus = git_wc_status_none;
+		m_currentFullStatus = git_wc_status_none;
+		m_mostImportantFileStatus = git_wc_status_none;
+		{
+			AutoLocker lock(m_critSec);
+			for (auto it = m_childDirectories.cbegin(); it != m_childDirectories.cend(); ++it)
+				CGitStatusCache::Instance().AddFolderForCrawling(it->first);
+			m_childDirectories.clear();
+			m_entryCache.clear();
+		}
+		UpdateCurrentStatus();
+		// make sure that this status times out soon.
+		CGitStatusCache::Instance().m_folderCrawler.BlockPath(m_directoryPath, 20);
+		CGitStatusCache::Instance().AddFolderForCrawling(m_directoryPath);
+		return CStatusCacheEntry();
+	}
 	UpdateCurrentStatus();
 	if (!path.IsDirectory())
 		return GetCacheStatusForMember(path);
@@ -355,7 +373,15 @@ int CCachedDirectory::EnumFiles(const CTGitPath& path, CString sProjectRoot, con
 		bool assumeValid = false;
 		bool skipWorktree = false;
 		git_wc_status_kind status = git_wc_status_none;
-		pStatus->GetFileStatus(sProjectRoot, sSubPath, &status, TRUE, true, &assumeValid, &skipWorktree);
+		if (pStatus->GetFileStatus(sProjectRoot, sSubPath, &status, TRUE, true, &assumeValid, &skipWorktree))
+		{
+			// we could not get the status of a file, try whole directory after a short delay if the whole directory was not already crawled with an error
+			if (m_currentFullStatus == git_wc_status_none)
+				return -1;
+			CGitStatusCache::Instance().m_folderCrawler.BlockPath(m_directoryPath, 20);
+			CGitStatusCache::Instance().AddFolderForCrawling(m_directoryPath);
+			return 0;
+		}
 		GetStatusCallback(path.GetWinPathString(), status, false, path.GetLastWriteTime(), this, assumeValid, skipWorktree);
 		RefreshMostImportant(false);
 	}
@@ -372,7 +398,8 @@ int CCachedDirectory::EnumFiles(const CTGitPath& path, CString sProjectRoot, con
 
 		m_mostImportantFileStatus = git_wc_status_none;
 		git_wc_status_kind folderstatus = git_wc_status_unversioned;
-		pStatus->EnumDirStatus(sProjectRoot, sSubPath, &folderstatus, GetStatusCallback, this);
+		if (pStatus->EnumDirStatus(sProjectRoot, sSubPath, &folderstatus, GetStatusCallback, this))
+			return -1;
 
 		if (isSelf)
 		{

@@ -114,22 +114,13 @@ public:
 		return !toRemove.empty();
 	}
 
-	int Check(const CString &gitdir, bool *isChanged);
+	bool HasIndexChangedOnDisk(const CString& gitdir);
 	int LoadIndex(const CString &gitdir);
 
-	bool CheckAndUpdate(const CString& gitdir)
+	void CheckAndUpdate(const CString& gitdir)
 	{
-		bool isChanged=false;
-		if (Check(gitdir, &isChanged))
-			return false;
-
-		if (isChanged)
-		{
+		if (HasIndexChangedOnDisk(gitdir))
 			LoadIndex(gitdir);
-			return true;
-		}
-
-		return false;
 	}
 	int GetFileStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,
 							CGitHash* pHash = nullptr,

@@ -82,7 +82,10 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 
 	CAutoRepository repository(dgitdir);
 	if (!repository)
+	{
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Could not open git repository in %s: %s\n", (LPCTSTR)dgitdir, (LPCTSTR)CGit::GetLibGit2LastErr());
 		return -1;
+	}
 
 	// add config files
 	config.New();
@@ -108,6 +111,7 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	if (git_repository_index(index.GetPointer(), repository))
 	{
 		config.Free();
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Could not get index of git repository in %s: %s\n", (LPCTSTR)dgitdir, (LPCTSTR)CGit::GetLibGit2LastErr());
 		return -1;
 	}
 
@@ -148,8 +152,7 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 
 int CGitIndexList::GetFileStatus(const CString& gitdir, const CString& pathorg, git_wc_status_kind* status, __int64 time, __int64 filesize, CGitHash* pHash, bool* assumeValid, bool* skipWorktree)
 {
-	if (!status)
-		return 0;
+	ATLASSERT(status);
 
 	size_t index = SearchInSortVector(*this, pathorg, -1);
 
@@ -200,7 +203,10 @@ int CGitIndexList::GetFileStatus(CAutoRepository& repository, const CString& git
 		if (!repository)
 		{
 			if (repository.Open(gitdir))
+			{
+				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Could not open git repository in %s for checking file: %s\n", (LPCTSTR)gitdir, (LPCTSTR)CGit::GetLibGit2LastErr());
 				return -1;
+			}
 			git_repository_set_config(repository, config);
 		}
 
@@ -231,8 +237,7 @@ int CGitIndexList::GetFileStatus(const CString& gitdir, CString path, git_wc_sta
 	__int64 time, filesize = 0;
 	bool isDir = false;
 
-	if (!status)
-		return 0;
+	ATLASSERT(status);
 
 	int result;
 	if (path.IsEmpty())
@@ -244,10 +249,7 @@ int CGitIndexList::GetFileStatus(const CString& gitdir, CString path, git_wc_sta
 		filesize = -1;
 
 	if (!isDir)
-	{
-		GetFileStatus(gitdir, path, status, time, filesize, pHash, assumeValid, skipWorktree);
-		return 0;
-	}
+		return GetFileStatus(gitdir, path, status, time, filesize, pHash, assumeValid, skipWorktree);
 
 	if (CStringUtils::EndsWith(path, L'/'))
 	{
@@ -274,42 +276,21 @@ int CGitIndexList::GetFileStatus(const CString& gitdir, CString path, git_wc_sta
 	// we should never get here
 	*status = git_wc_status_unversioned;
 
-	return 0;
+	return -1;
 }
 
-int CGitIndexFileMap::Check(const CString &gitdir, bool *isChanged)
+bool CGitIndexFileMap::HasIndexChangedOnDisk(const CString& gitdir)
 {
 	__int64 time;
 
-	CString IndexFile = g_AdminDirMap.GetWorktreeAdminDirConcat(gitdir, L"index");
-
-	if (CGit::GetFileModifyTime(IndexFile, &time))
-	{
-		g_AdminDirMap.ResetAdminDirCache(gitdir);
-		return -1;
-	}
-
-	SHARED_INDEX_PTR pIndex;
-	pIndex = this->SafeGet(gitdir);
+	auto pIndex = SafeGet(gitdir);
 
 	if (!pIndex)
-	{
-		if(isChanged)
-			*isChanged = true;
-		return 0;
-	}
+		return true;
 
-	if (pIndex->m_LastModifyTime == time)
-	{
-		if (isChanged)
-			*isChanged = false;
-	}
-	else
-	{
-		if (isChanged)
-			*isChanged = true;
-	}
-	return 0;
+	CString IndexFile = g_AdminDirMap.GetWorktreeAdminDirConcat(gitdir, L"index");
+	// no need to refresh if there is no index right now and the current index is empty, but otherwise or lastmodified time differs
+	return (CGit::GetFileModifyTime(IndexFile, &time) && !pIndex->empty()) || pIndex->m_LastModifyTime != time;
 }
 
 int CGitIndexFileMap::LoadIndex(const CString &gitdir)
@@ -317,7 +298,10 @@ int CGitIndexFileMap::LoadIndex(const CString &gitdir)
 	SHARED_INDEX_PTR pIndex = std::make_shared<CGitIndexList>();
 
 	if (pIndex->ReadIndex(gitdir))
+	{
+		SafeClear(gitdir);
 		return -1;
+	}
 
 	this->SafeSet(gitdir, pIndex);
 
@@ -332,14 +316,13 @@ int CGitIndexFileMap::GetFileStatus(const CString& gitdir, const CString& path, 
 
 	SHARED_INDEX_PTR pIndex = this->SafeGet(gitdir);
 	if (pIndex)
-		pIndex->GetFileStatus(gitdir, path, status, pHash, assumeValid, skipWorktree);
-	else
-	{
-		// git working tree has not index
-		*status = git_wc_status_unversioned;
-	}
+		return pIndex->GetFileStatus(gitdir, path, status, pHash, assumeValid, skipWorktree);
 
-	return 0;
+
+	// git working tree has broken index
+	*status = git_wc_status_none;
+
+	return -1;
 }
 
 // This method is assumed to be called with m_SharedMutex locked.
