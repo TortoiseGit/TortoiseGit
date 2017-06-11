@@ -170,8 +170,6 @@ public:
 	int ReadHeadHash(const CString& gitdir);
 	bool CheckHeadUpdate();
 	bool HeadHashEqualsTreeHash();
-	bool HeadFileIsEmpty();
-	bool HeadIsEmpty();
 	static int CallBack(const unsigned char *, const char *, int, const char *, unsigned int, int, void *);
 };
 
@@ -185,17 +183,13 @@ public:
 	CGitHeadFileMap() { m_critTreeSec.Init(); }
 	~CGitHeadFileMap() { m_critTreeSec.Term(); }
 
-	SHARED_TREE_PTR SafeGet(CString thePath, bool allowEmpty = false)
+	SHARED_TREE_PTR SafeGet(CString thePath)
 	{
 		thePath.MakeLower();
 		CAutoLocker lock(m_critTreeSec);
 		auto lookup = find(thePath);
 		if (lookup == cend())
-		{
-			if (allowEmpty)
-				return SHARED_TREE_PTR();
-			return std::make_shared<CGitHeadFileList>();
-		}
+			return SHARED_TREE_PTR();
 		return lookup->second;
 	}
 
@@ -234,7 +228,7 @@ public:
 
 	int GetFileStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,
 						bool isLoaded=false);
-	bool CheckHeadAndUpdate(const CString& gitdir);
+	void CheckHeadAndUpdate(const CString& gitdir);
 };
 
 class CGitFileName

@@ -194,6 +194,12 @@ int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status_
 
 			// Check Head Tree Hash
 			SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
+			// broken HEAD
+			if (!treeptr)
+			{
+				*status = git_wc_status_none;
+				return -1;
+			}
 
 			// deleted only in index item?
 			if (SearchInSortVector(*treeptr, path, -1) != NPOS)
@@ -223,6 +229,12 @@ int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status_
 
 		// Check Head Tree Hash
 		SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
+		// broken HEAD
+		if (!treeptr)
+		{
+			*status = git_wc_status_none;
+			return -1;
+		}
 
 		//add item
 		size_t start = SearchInSortVector(*treeptr, path, -1);
@@ -330,8 +342,8 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 	SHARED_INDEX_PTR indexptr = g_IndexFileMap.SafeGet(gitdir);
 	SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
 
-	// there was an error loading the index
-	if (!indexptr.get())
+	// there was an error loading the index or the HEAD commit/tree
+	if (!indexptr || !treeptr)
 		return -1;
 
 	CAutoRepository repository;
@@ -513,6 +525,12 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 		g_HeadFileMap.CheckHeadAndUpdate(gitdir);
 
 		SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
+		// broken HEAD
+		if (!treeptr)
+		{
+			*status = git_wc_status_none;
+			return -1;
+		}
 
 		// check whether there files in head with are not in index
 		pos = SearchInSortVector(*treeptr, path, path.GetLength());
@@ -567,8 +585,13 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 		{
 			// Check if new init repository
 			SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
+			// broken HEAD
+			if (!treeptr)
+			{
+				*status = git_wc_status_none;
+				return -1;
+			}
 
-			if (!treeptr->empty() || treeptr->HeadIsEmpty())
 			{
 				for (auto it = indexptr->cbegin() + start, itlast = indexptr->cbegin() + end; it <= itlast; ++it)
 				{

@@ -422,7 +422,7 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 }
 int CGitHeadFileList::ReadHeadHash(const CString& gitdir)
 {
-	ATLASSERT(m_Gitdir.IsEmpty() && m_HeadFile.IsEmpty());
+	ATLASSERT(m_Gitdir.IsEmpty() && m_HeadFile.IsEmpty() && m_Head.IsEmpty());
 
 	m_Gitdir = g_AdminDirMap.GetWorktreeAdminDir(gitdir);
 
@@ -476,10 +476,15 @@ int CGitHeadFileList::ReadHeadHash(const CString& gitdir)
 			m_HeadRefFile.Empty();
 			if (GetPackRef(gitdir))
 				return -1;
-			if (m_PackRefMap.find(ref) == m_PackRefMap.end())
-				return -1;
+			if (m_PackRefMap.find(ref) != m_PackRefMap.end())
+			{
+				m_Head = m_PackRefMap[ref];
+				return 0;
+			}
 
-			m_Head = m_PackRefMap[ref];
+			// unborn branch
+			m_Head.Empty();
+
 			return 0;
 		}
 
@@ -571,16 +576,6 @@ bool CGitHeadFileList::HeadHashEqualsTreeHash()
 	return (m_Head == m_TreeHash);
 }
 
-bool CGitHeadFileList::HeadFileIsEmpty()
-{
-	return m_HeadFile.IsEmpty();
-}
-
-bool CGitHeadFileList::HeadIsEmpty()
-{
-	return m_Head.IsEmpty();
-}
-
 int CGitHeadFileList::CallBack(const unsigned char *sha1, const char *base, int baselen,
 		const char *pathname, unsigned mode, int /*stage*/, void *context)
 {
@@ -646,7 +641,11 @@ int ReadTreeRecursive(git_repository &repo, const git_tree * tree, const CString
 // ReadTree is/must only be executed on an empty list
 int CGitHeadFileList::ReadTree()
 {
-	ATLASSERT(empty());
+	ATLASSERT(empty() && m_TreeHash.IsEmpty());
+
+	// unborn branch
+	if (m_Head.IsEmpty())
+		return 0;
 
 	CAutoRepository repository(m_Gitdir);
 	CAutoCommit commit;
@@ -666,6 +665,7 @@ int CGitHeadFileList::ReadTree()
 	if (!ret)
 	{
 		clear();
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Could not open git repository in %s and read HEAD commit %s: %s\n", (LPCTSTR)m_Gitdir, (LPCTSTR)m_Head.ToString(), (LPCTSTR)CGit::GetLibGit2LastErr());
 		m_LastModifyTimeHead = 0;
 		return -1;
 	}
@@ -1077,18 +1077,21 @@ int CGitIgnoreList::CheckIgnore(const CString &path, const CString &projectroot,
 	return -1;
 }
 
-bool CGitHeadFileMap::CheckHeadAndUpdate(const CString &gitdir)
+void CGitHeadFileMap::CheckHeadAndUpdate(const CString &gitdir)
 {
-	SHARED_TREE_PTR ptr = this->SafeGet(gitdir, true);
+	SHARED_TREE_PTR ptr = this->SafeGet(gitdir);
 
 	if (ptr.get() && !ptr->CheckHeadUpdate() && ptr->HeadHashEqualsTreeHash())
-		return false;
+		return;
 
 	ptr = std::make_shared<CGitHeadFileList>();
-	ptr->ReadHeadHash(gitdir);
-	ptr->ReadTree();
+	if (ptr->ReadHeadHash(gitdir) || ptr->ReadTree())
+	{
+		SafeClear(gitdir);
+		return;
+	}
 
 	this->SafeSet(gitdir, ptr);
 
-	return true;
+	return;
 }
