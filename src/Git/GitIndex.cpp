@@ -576,16 +576,6 @@ bool CGitHeadFileList::HeadHashEqualsTreeHash()
 	return (m_Head == m_TreeHash);
 }
 
-bool CGitHeadFileList::HeadFileIsEmpty()
-{
-	return m_HeadFile.IsEmpty();
-}
-
-bool CGitHeadFileList::HeadIsEmpty()
-{
-	return m_Head.IsEmpty();
-}
-
 int CGitHeadFileList::CallBack(const unsigned char *sha1, const char *base, int baselen,
 		const char *pathname, unsigned mode, int /*stage*/, void *context)
 {

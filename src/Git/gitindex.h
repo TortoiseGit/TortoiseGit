@@ -170,8 +170,6 @@ public:
 	int ReadHeadHash(const CString& gitdir);
 	bool CheckHeadUpdate();
 	bool HeadHashEqualsTreeHash();
-	bool HeadFileIsEmpty();
-	bool HeadIsEmpty();
 	static int CallBack(const unsigned char *, const char *, int, const char *, unsigned int, int, void *);
 };
 
