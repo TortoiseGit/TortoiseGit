@@ -523,22 +523,31 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 			return 0;
 		}
 
-		// Check ignore always.
+		g_HeadFileMap.CheckHeadAndUpdate(gitdir);
+
+		SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
+
+		// check whether there files in head with are not in index
+		pos = SearchInSortVector(*treeptr, path, path.GetLength());
+		if (pos != NPOS)
+		{
+			*status = git_wc_status_deleted;
+			return 0;
+		}
+
+		// WC root is at least normal if there are no files added/deleted
+		if (path.IsEmpty())
+		{
+			*status = git_wc_status_normal;
+			return 0;
+		}
+
+		// Check ignore
 		g_IgnoreList.CheckAndUpdateIgnoreFiles(gitdir, path, true);
 		if (g_IgnoreList.IsIgnore(path, gitdir, true))
 			*status = git_wc_status_ignored;
 		else
 			*status = git_wc_status_unversioned;
-
-		g_HeadFileMap.CheckHeadAndUpdate(gitdir);
-
-		SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
-		// WC root is at least normal if there are no files added/deleted
-		if (treeptr->empty() && path.IsEmpty())
-			*status = git_wc_status_normal;
-		// check if only one file in repository is deleted in index
-		else if (path.IsEmpty() && !treeptr->empty())
-			*status = git_wc_status_deleted;
 
 		return 0;
 	}
