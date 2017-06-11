@@ -174,7 +174,11 @@ int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status_
 	git_wc_status_kind st = git_wc_status_none;
 	CGitHash hash;
 
-	g_IndexFileMap.GetFileStatus(gitdir, path, &st, &hash, assumeValid, skipWorktree);
+	if (g_IndexFileMap.GetFileStatus(gitdir, path, &st, &hash, assumeValid, skipWorktree))
+	{
+		*status = git_wc_status_none;
+		return -1;
+	}
 
 	if (st == git_wc_status_conflicted)
 	{
@@ -326,29 +330,9 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 	SHARED_INDEX_PTR indexptr = g_IndexFileMap.SafeGet(gitdir);
 	SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
 
-	// working tree has broken index file
+	// there was an error loading the index
 	if (!indexptr.get())
-	{
-		for (auto it = filelist.cbegin(); it != filelist.cend(); ++it)
-		{
-			CString casepath = path;
-			casepath += it->m_FileName;
-
-			bool bIsDir = false;
-			if (!it->m_FileName.IsEmpty() && it->m_FileName[it->m_FileName.GetLength() - 1] == L'/')
-				bIsDir = true;
-
-			g_IgnoreList.CheckAndUpdateIgnoreFiles(gitdir, casepath, bIsDir);
-			git_wc_status_kind filestatus = git_wc_status_unversioned;
-			if (g_IgnoreList.IsIgnore(casepath, gitdir, bIsDir))
-				filestatus = git_wc_status_ignored;
-			else if (bIsDir)
-				continue;
-
-			callback(CombinePath(gitdir, casepath), filestatus, bIsDir, it->m_LastModified, pData, false, false);
-		}
-		return 0;
-	}
+		return -1;
 
 	CAutoRepository repository;
 	for (auto it = filelist.cbegin(), itend = filelist.cend(); it != itend; ++it)
@@ -399,7 +383,8 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 				bool assumeValid = false;
 				bool skipWorktree = false;
 				git_wc_status_kind filestatus;
-				(*indexptr).GetFileStatus(repository, gitdir, (*indexptr)[pos], &filestatus, CGit::filetime_to_time_t((*it).m_LastModified), (*it).m_Size, &assumeValid, &skipWorktree);
+				if ((*indexptr).GetFileStatus(repository, gitdir, (*indexptr)[pos], &filestatus, CGit::filetime_to_time_t((*it).m_LastModified), (*it).m_Size, &assumeValid, &skipWorktree))
+					return -1;
 				if (filestatus == git_wc_status_normal && !assumeValid && !skipWorktree && (*treeptr)[posintree].m_Hash != (*indexptr)[pos].m_IndexHash)
 					filestatus = git_wc_status_modified;
 				callback(CombinePath(gitdir, onepath), filestatus, false, it->m_LastModified, pData, assumeValid, skipWorktree);
@@ -498,10 +483,11 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 
 	SHARED_INDEX_PTR indexptr = g_IndexFileMap.SafeGet(gitdir);
 
+	// broken index
 	if (!indexptr)
 	{
-		*status = git_wc_status_unversioned;
-		return 0;
+		*status = git_wc_status_none;
+		return -1;
 	}
 
 	size_t pos = SearchInSortVector(*indexptr, path, path.GetLength());

@@ -249,10 +249,7 @@ int CGitIndexList::GetFileStatus(const CString& gitdir, CString path, git_wc_sta
 		filesize = -1;
 
 	if (!isDir)
-	{
-		GetFileStatus(gitdir, path, status, time, filesize, pHash, assumeValid, skipWorktree);
-		return 0;
-	}
+		return GetFileStatus(gitdir, path, status, time, filesize, pHash, assumeValid, skipWorktree);
 
 	if (CStringUtils::EndsWith(path, L'/'))
 	{
@@ -279,7 +276,7 @@ int CGitIndexList::GetFileStatus(const CString& gitdir, CString path, git_wc_sta
 	// we should never get here
 	*status = git_wc_status_unversioned;
 
-	return 0;
+	return -1;
 }
 
 bool CGitIndexFileMap::HasIndexChangedOnDisk(const CString& gitdir)
@@ -319,14 +316,13 @@ int CGitIndexFileMap::GetFileStatus(const CString& gitdir, const CString& path, 
 
 	SHARED_INDEX_PTR pIndex = this->SafeGet(gitdir);
 	if (pIndex)
-		pIndex->GetFileStatus(gitdir, path, status, pHash, assumeValid, skipWorktree);
-	else
-	{
-		// git working tree has broken index
-		*status = git_wc_status_unversioned;
-	}
+		return pIndex->GetFileStatus(gitdir, path, status, pHash, assumeValid, skipWorktree);
 
-	return 0;
+
+	// git working tree has broken index
+	*status = git_wc_status_none;
+
+	return -1;
 }
 
 // This method is assumed to be called with m_SharedMutex locked.
