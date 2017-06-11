@@ -72,11 +72,7 @@ git_wc_status_kind GitStatus::GetAllStatus(const CTGitPath& path, bool bIsRecurs
 	if(isDir)
 	{
 		err = GetDirStatus(sProjectRoot, sSubPath, &statuskind, isfull, bIsRecursive, isfull);
-		// folders must not be displayed as added or deleted only as modified (this is for Shell Overlay-Modes)
-		if (statuskind == git_wc_status_unversioned && sSubPath.IsEmpty())
-			statuskind = git_wc_status_normal;
-		else 
-			AdjustFolderStatus(statuskind);
+		AdjustFolderStatus(statuskind);
 	}
 	else
 		err = GetFileStatus(sProjectRoot, sSubPath, &statuskind, isfull, isfull, assumeValid, skipWorktree);
@@ -517,6 +513,12 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 	{
 		if (!IsIgnore)
 		{
+			// WC root is at least normal if there are no files added/deleted
+			if (subpath.IsEmpty())
+			{
+				*status = git_wc_status_normal;
+				return 0;
+			}
 			*status = git_wc_status_unversioned;
 			return 0;
 		}
@@ -531,8 +533,8 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 		g_HeadFileMap.CheckHeadAndUpdate(gitdir);
 
 		SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
-		// Check init repository
-		if (treeptr->HeadIsEmpty() && path.IsEmpty())
+		// WC root is at least normal if there are no files added/deleted
+		if (treeptr->empty() && path.IsEmpty())
 			*status = git_wc_status_normal;
 		// check if only one file in repository is deleted in index
 		else if (path.IsEmpty() && !treeptr->empty())
