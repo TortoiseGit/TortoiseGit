@@ -612,6 +612,9 @@
     <ClInclude Include="..\scintilla\src\SparseVector.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\scintilla\src\UniqueString.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\scintilla\win32\ScintRes.rc">

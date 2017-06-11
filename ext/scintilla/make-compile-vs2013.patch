@@ -1,0 +1,29 @@
+ ext/scintilla/src/UniqueString.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/ext/scintilla/src/UniqueString.h b/ext/scintilla/src/UniqueString.h
+index a5c64e053..a32a17a80 100644
+--- a/ext/scintilla/src/UniqueString.h
++++ b/ext/scintilla/src/UniqueString.h
+@@ -13,7 +13,7 @@
+ namespace Scintilla {
+ #endif
+ 
+-using UniqueString = std::unique_ptr<const char[]>;
++using UniqueString = std::unique_ptr<char[]>;
+ 
+ /// Equivalent to strdup but produces a std::unique_ptr<const char[]> allocation to go
+ /// into collections.
+@@ -22,9 +22,9 @@ inline UniqueString UniqueStringCopy(const char *text) {
+ 		return UniqueString();
+ 	}
+ 	const size_t len = strlen(text);
+-	char *sNew = new char[len + 1];
+-	std::copy(text, text + len + 1, sNew);
+-	return UniqueString(sNew);
++	auto sNew = std::make_unique<char[]>(len + 1);
++	std::copy(text, text + len + 1, sNew.get());
++	return sNew;
+ }
+ 
+ #ifdef SCI_NAMESPACE

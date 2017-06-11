@@ -62,9 +62,9 @@ index c6838c238..d5a18d5ca 100644
 --- a/ext/scintilla/src/EditView.h
 +++ b/ext/scintilla/src/EditView.h
 @@ -77,6 +77,7 @@ public:
- 	Surface *pixmapLine;
- 	Surface *pixmapIndentGuide;
- 	Surface *pixmapIndentGuideHighlight;
+ 	std::unique_ptr<Surface> pixmapLine;
+ 	std::unique_ptr<Surface> pixmapIndentGuide;
+ 	std::unique_ptr<Surface> pixmapIndentGuideHighlight;
 +	void	*editor;
  
  	LineLayoutCache llc;
