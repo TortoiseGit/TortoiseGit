@@ -308,23 +308,6 @@ int CGitIndexFileMap::LoadIndex(const CString &gitdir)
 	return 0;
 }
 
-int CGitIndexFileMap::GetFileStatus(const CString& gitdir, const CString& path, git_wc_status_kind* status,
-									CGitHash *pHash,
-									bool* assumeValid, bool* skipWorktree)
-{
-	CheckAndUpdate(gitdir);
-
-	SHARED_INDEX_PTR pIndex = this->SafeGet(gitdir);
-	if (pIndex)
-		return pIndex->GetFileStatus(gitdir, path, status, pHash, assumeValid, skipWorktree);
-
-
-	// git working tree has broken index
-	*status = git_wc_status_none;
-
-	return -1;
-}
-
 // This method is assumed to be called with m_SharedMutex locked.
 int CGitHeadFileList::GetPackRef(const CString &gitdir)
 {

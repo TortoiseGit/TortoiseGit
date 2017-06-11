@@ -165,7 +165,7 @@ void GitStatus::GetStatus(const CTGitPath& path, bool /*update*/ /* = false */, 
 
 typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 
-int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status_kind* status, BOOL IsFull, BOOL IsIgnore, bool* assumeValid, bool* skipWorktree)
+int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status_kind* status, BOOL IsFull, BOOL IsIgnore, bool* assumeValid, bool* skipWorktree, bool update)
 {
 	ATLASSERT(status);
 
@@ -174,8 +174,12 @@ int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status_
 	git_wc_status_kind st = git_wc_status_none;
 	CGitHash hash;
 
-	if (g_IndexFileMap.GetFileStatus(gitdir, path, &st, &hash, assumeValid, skipWorktree))
+	if (update)
+		g_IndexFileMap.CheckAndUpdate(gitdir);
+	auto pIndex = g_IndexFileMap.SafeGet(gitdir);
+	if (!pIndex || pIndex->GetFileStatus(gitdir, path, &st, &hash, assumeValid, skipWorktree))
 	{
+		// git working tree has broken index or an error occurred in GetFileStatus
 		*status = git_wc_status_none;
 		return -1;
 	}
@@ -190,7 +194,8 @@ int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status_
 	{
 		if (IsFull)
 		{
-			g_HeadFileMap.CheckHeadAndUpdate(gitdir);
+			if (update)
+				g_HeadFileMap.CheckHeadAndUpdate(gitdir);
 
 			// Check Head Tree Hash
 			SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
@@ -225,7 +230,8 @@ int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status_
 
 	if ((st == git_wc_status_normal || st == git_wc_status_modified) && IsFull)
 	{
-		g_HeadFileMap.CheckHeadAndUpdate(gitdir);
+		if (update)
+			g_HeadFileMap.CheckHeadAndUpdate(gitdir);
 
 		// Check Head Tree Hash
 		SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
@@ -655,7 +661,7 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 		git_wc_status_kind filestatus = git_wc_status_none;
 		bool assumeValid = false;
 		bool skipWorktree = false;
-		GetFileStatus(gitdir, indexentry.m_FileName, &filestatus, IsFul, IsIgnore, &assumeValid, &skipWorktree);
+		GetFileStatus(gitdir, indexentry.m_FileName, &filestatus, IsFul, IsIgnore, &assumeValid, &skipWorktree, false);
 		switch (filestatus)
 		{
 		case git_wc_status_added:

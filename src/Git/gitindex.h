@@ -122,11 +122,7 @@ public:
 		if (HasIndexChangedOnDisk(gitdir))
 			LoadIndex(gitdir);
 	}
-	int GetFileStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,
-							CGitHash* pHash = nullptr,
-							bool* assumeValid = nullptr, bool* skipWorktree = nullptr);
 };
-
 
 class CGitTreeItem
 {
