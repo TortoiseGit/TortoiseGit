@@ -210,7 +210,7 @@ bool CDirectoryWatcher::AddPath(const CTGitPath& path, bool bCloseInfoMap)
 			}
 		}
 	}
-	if (!newroot.IsEmpty())
+	if (!newroot.IsEmpty() && newroot.HasAdminDir())
 	{
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": add path to watch %s\n", newroot.GetWinPath());
 		watchedPaths.AddPath(newroot);
@@ -219,6 +219,11 @@ bool CDirectoryWatcher::AddPath(const CTGitPath& path, bool bCloseInfoMap)
 			ClearInfoMap();
 
 		return true;
+	}
+	if (!path.HasAdminDir())
+	{
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Path %s prevented from being watched: not versioned\n", path.GetWinPath());
+		return false;
 	}
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": add path to watch %s\n", path.GetWinPath());
 	watchedPaths.AddPath(path);
