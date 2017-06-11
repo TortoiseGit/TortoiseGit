@@ -666,6 +666,7 @@ int CGitHeadFileList::ReadTree()
 	if (!ret)
 	{
 		clear();
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Could not open git repository in %s and read HEAD commit %s: %s\n", (LPCTSTR)m_Gitdir, (LPCTSTR)m_Head.ToString(), (LPCTSTR)CGit::GetLibGit2LastErr());
 		m_LastModifyTimeHead = 0;
 		return -1;
 	}
