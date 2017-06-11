@@ -24,6 +24,8 @@
 #include "UnicodeUtils.h"
 #include "GitStatus.h"
 #include "..\TGitCache\CacheInterface.h"
+#include "GitAdminDir.h"
+#include "StringUtils.h"
 
 // "The Shell calls IShellIconOverlayIdentifier::GetOverlayInfo to request the
 //  location of the handler's icon overlay. The icon overlay handler returns
@@ -252,6 +254,8 @@ STDMETHODIMP CShellExt::IsMemberOf_Wrap(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 						else
 							status = git_wc_status_none;
 					}
+					else if (CStringUtils::EndsWith(pPath, GitAdminDir::GetAdminDirName()))
+						status = git_wc_status_none;
 					else
 					{
 						s = m_CachedStatus.GetFullStatus(CTGitPath(pPath), FALSE);
