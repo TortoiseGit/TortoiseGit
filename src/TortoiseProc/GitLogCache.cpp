@@ -158,7 +158,7 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 		if( !CheckHeader(&m_pCacheIndex->m_Header))
 			break;
 
-		if (indexFileLength < sizeof(SLogCacheIndexHeader) + m_pCacheIndex->m_Header.m_ItemCount * sizeof(SLogCacheIndexItem))
+		if (indexFileLength != sizeof(SLogCacheIndexHeader) + m_pCacheIndex->m_Header.m_ItemCount * sizeof(SLogCacheIndexItem))
 			break;
 
 		if(	m_DataFile == INVALID_HANDLE_VALUE )
@@ -293,7 +293,7 @@ int CLogCache::LoadOneItem(GitRevLoglist& Rev,ULONGLONG offset)
 		CTGitPath path;
 		CString oldfile;
 
-		if (offset + sizeof(SLogCacheRevFileHeader) > m_DataFileLength)
+		if (offset + sizeof(SLogCacheRevFileHeader) >= m_DataFileLength)
 		{
 			Rev.m_Action = 0;
 			Rev.m_Files.Clear();
@@ -301,6 +301,14 @@ int CLogCache::LoadOneItem(GitRevLoglist& Rev,ULONGLONG offset)
 		}
 
 		if(!CheckHeader(fileheader))
+		{
+			Rev.m_Action = 0;
+			Rev.m_Files.Clear();
+			return -2;
+		}
+
+		auto recordLength = sizeof(SLogCacheRevFileHeader) + fileheader->m_FileNameSize * sizeof(TCHAR) + fileheader->m_OldFileNameSize * sizeof(TCHAR) - sizeof(TCHAR);
+		if (!fileheader->m_FileNameSize || offset + recordLength > m_DataFileLength)
 		{
 			Rev.m_Action = 0;
 			Rev.m_Files.Clear();
@@ -329,7 +337,7 @@ int CLogCache::LoadOneItem(GitRevLoglist& Rev,ULONGLONG offset)
 
 		Rev.m_Files.AddPath(path);
 
-		offset += sizeof(*fileheader) + fileheader->m_OldFileNameSize*sizeof(TCHAR) + fileheader->m_FileNameSize*sizeof(TCHAR) - sizeof(TCHAR);
+		offset += recordLength;
 		fileheader = reinterpret_cast<SLogCacheRevFileHeader*>(m_pCacheData + offset);
 	}
 	return 0;
@@ -375,13 +383,12 @@ int CLogCache::SaveCache()
 	SLogCacheIndexFile* pIndex = nullptr;
 	if (m_pCacheIndex && m_pCacheIndex->m_Header.m_ItemCount > 0)
 	{
-		pIndex = reinterpret_cast<SLogCacheIndexFile*>(malloc(sizeof(SLogCacheIndexFile) + sizeof(SLogCacheIndexItem) * (m_pCacheIndex->m_Header.m_ItemCount)));
+		auto len = sizeof(SLogCacheIndexFile) + sizeof(SLogCacheIndexItem) * (m_pCacheIndex->m_Header.m_ItemCount - 1);
+		pIndex = reinterpret_cast<SLogCacheIndexFile*>(malloc(len));
 		if (!pIndex)
 			return -1;
 
-		memcpy(pIndex,this->m_pCacheIndex,
-			sizeof(SLogCacheIndexFile) + sizeof(SLogCacheIndexItem) *( m_pCacheIndex->m_Header.m_ItemCount-1)
-			);
+		memcpy(pIndex, m_pCacheIndex, len);
 	}
 
 	this->CloseDataHandles();
