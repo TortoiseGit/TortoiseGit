@@ -616,7 +616,8 @@ bool CCheckForUpdatesDlg::VerifyUpdateFile(const CString& filename, const CStrin
 	UINT uiDataType = 0;
 	DWORD cchValue = 4096;
 	CString buffer;
-	if (MsiSummaryInfoGetProperty(hSummary, PID_SUBJECT, &uiDataType, nullptr, nullptr, CStrBuf(buffer, cchValue + 1), &cchValue))
+	int intValue;
+	if (MsiSummaryInfoGetProperty(hSummary, PID_SUBJECT, &uiDataType, &intValue, nullptr, CStrBuf(buffer, cchValue + 1), &cchValue))
 	{
 		m_sErrors.AppendFormat(L"%s: Error obtaining version of MSI file (%s).\r\n", (LPCTSTR)reportingFilename, (LPCTSTR)CFormatMessageWrapper(ret));
 		return false;
