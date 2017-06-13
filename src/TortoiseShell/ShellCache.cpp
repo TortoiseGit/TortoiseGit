@@ -77,7 +77,8 @@ ShellCache::ShellCache()
 	m_registryChangeEvent = CreateEvent(nullptr, true, false, nullptr);
 	if (RegNotifyChangeKeyValue(m_hNotifyRegKey, false, REG_NOTIFY_CHANGE_LAST_SET, m_registryChangeEvent, TRUE) != ERROR_SUCCESS)
 	{
-		CloseHandle(m_registryChangeEvent);
+		if (m_registryChangeEvent)
+			CloseHandle(m_registryChangeEvent);
 		m_registryChangeEvent = nullptr;
 		RegCloseKey(m_hNotifyRegKey);
 		m_hNotifyRegKey = nullptr;

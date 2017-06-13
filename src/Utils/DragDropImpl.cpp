@@ -142,8 +142,10 @@ STDMETHODIMP CIDataObject::SetData(
 
 	if (!fetc || !pStgMed)
 	{
-		delete fetc;
-		delete pStgMed;
+		if (fetc)
+			delete fetc;
+		if (pStgMed)
+			delete pStgMed;
 		return E_OUTOFMEMORY;
 	}
 

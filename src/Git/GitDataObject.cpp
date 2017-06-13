@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016 - TortoiseGit
+// Copyright (C) 2016-2017 - TortoiseGit
 // Copyright (C) 2007-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -443,8 +443,10 @@ STDMETHODIMP GitDataObject::SetData(FORMATETC* pformatetc, STGMEDIUM* pmedium, B
 
 	if (!fetc || !pStgMed)
 	{
-		delete fetc;
-		delete pStgMed;
+		if (fetc)
+			delete fetc;
+		if (pStgMed)
+			delete pStgMed;
 		return E_OUTOFMEMORY;
 	}
 	SecureZeroMemory(fetc, sizeof(FORMATETC));

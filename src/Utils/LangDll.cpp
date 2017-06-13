@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016 - TortoiseGit
+// Copyright (C) 2016-2017 - TortoiseGit
 // Copyright (C) 2003-2006, 2008, 2013-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -61,7 +61,8 @@ HINSTANCE CLangDll::Init(LPCTSTR appname, unsigned long langID)
 
 		if (!DoVersionStringsMatch(sVer, langdllpath))
 		{
-			FreeLibrary(m_hInstance);
+			if (m_hInstance)
+				FreeLibrary(m_hInstance);
 			m_hInstance = nullptr;
 		}
 		if (!m_hInstance)

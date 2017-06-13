@@ -91,10 +91,13 @@ bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, UINT idErrM
 			return false;
 		}
 
-		if (bWaitForStartup)
-			WaitForInputIdle(shellinfo.hProcess, 10000);
+		if (shellinfo.hProcess)
+		{
+			if (bWaitForStartup)
+				WaitForInputIdle(shellinfo.hProcess, 10000);
 
-		CloseHandle(shellinfo.hProcess);
+			CloseHandle(shellinfo.hProcess);
+		}
 
 		return true;
 	}
