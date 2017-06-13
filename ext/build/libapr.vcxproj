@@ -46,7 +46,7 @@ if errorlevel 1 type apr_escape_test_char.h &gt;..\apr\include\apr_escape_test_c
     <ClCompile>
       <AdditionalIncludeDirectories>..\apr\include;..\apr\include\arch;..\apr\include\arch\win32;..\apr\include\arch\unix;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>APR_DECLARE_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <ResourceCompile>

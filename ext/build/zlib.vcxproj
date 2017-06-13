@@ -44,7 +44,7 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <WarningLevel>Level2</WarningLevel>
     </ClCompile>
     <Link>
       <ModuleDefinitionFile>..\zlib\win32\zlib.def</ModuleDefinitionFile>

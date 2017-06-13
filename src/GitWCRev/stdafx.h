@@ -11,10 +11,7 @@
 #define WIN32_LEAN_AND_MEAN     // Exclude rarely-used stuff from Windows headers
 #include <windows.h>
 
-#pragma warning(push)
-#pragma warning(disable: 4510 4512 4610)
 #include "git2.h"
-#pragma warning(pop)
 #include "SmartLibgit2Ref.h"
 
 #include <vector>

@@ -17,10 +17,7 @@
 
 #include <windows.h>
 
-#pragma warning(push)
-#pragma warning(disable: 4091)
 #include <ShlObj.h>
-#pragma warning(pop)
 #include <Shlwapi.h>
 
 #include <atlbase.h>
@@ -38,10 +35,7 @@ using namespace ATL;
 #include <deque>
 #include <functional>
 
-#pragma warning(push)
-#pragma warning(disable: 4510 4610)
 #include "git2.h"
-#pragma warning(pop)
 #include "SmartLibgit2Ref.h"
 
 #include "scope_exit_noexcept.h"

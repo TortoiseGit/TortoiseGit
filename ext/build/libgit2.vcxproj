@@ -50,7 +50,7 @@
       <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
       <CompileAs>CompileAsC</CompileAs>
       <ForcedIncludeFiles>precompiled.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
-      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <WarningLevel>Level2</WarningLevel>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>LIBGIT2_FILENAME=\"$(AssemblyName)\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
