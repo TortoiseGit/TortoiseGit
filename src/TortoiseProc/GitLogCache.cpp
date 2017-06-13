@@ -366,17 +366,14 @@ int CLogCache::SaveCache()
 
 	BOOL bIsRebuild=false;
 
-	if (this->m_HashMap.empty()) // is not sufficient, because "working copy changes" are always included
+	if (m_HashMap.empty() || (m_HashMap.size() == 1 && m_HashMap.find(CGitHash()) != m_HashMap.cend()))
 		return 0;
 
 	if( this->m_GitDir.IsEmpty())
 		return 0;
 
-	if (this->m_pCacheIndex && m_pCacheIndex->m_Header.m_ItemCount == 0) // check for empty log list (issue #915)
-		return 0;
-
 	SLogCacheIndexFile* pIndex = nullptr;
-	if(this->m_pCacheIndex)
+	if (m_pCacheIndex && m_pCacheIndex->m_Header.m_ItemCount > 0)
 	{
 		pIndex = reinterpret_cast<SLogCacheIndexFile*>(malloc(sizeof(SLogCacheIndexFile) + sizeof(SLogCacheIndexItem) * (m_pCacheIndex->m_Header.m_ItemCount)));
 		if (!pIndex)
