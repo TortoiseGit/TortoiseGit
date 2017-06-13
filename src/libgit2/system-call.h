@@ -32,7 +32,7 @@ typedef struct {
 } COMMAND_HANDLE;
 
 void command_init(COMMAND_HANDLE *commandHandle);
-int command_start(wchar_t *cmd, COMMAND_HANDLE *commandHandle, LPWSTR pEnv, DWORD flags);
+int command_start(wchar_t *cmd, COMMAND_HANDLE *commandHandle, LPWSTR* pEnv, DWORD flags);
 void command_close_stdout(COMMAND_HANDLE *commandHandle);
 void command_close_stdin(COMMAND_HANDLE *commandHandle);
 DWORD command_close(COMMAND_HANDLE *commandHandle);
