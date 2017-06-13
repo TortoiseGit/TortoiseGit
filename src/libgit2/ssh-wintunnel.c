@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014, 2016 TortoiseGit
+// Copyright (C) 2014, 2016-2017 TortoiseGit
 // Copyright (C) the libgit2 contributors. All rights reserved.
 //               - based on libgit2/src/transports/ssh.c
 
@@ -428,11 +428,9 @@ on_error:
 
 	git_buf_free(&params);
 
-	if (wideParams)
-		git__free(wideParams);
+	git__free(wideParams);
 
-	if (cmd)
-		git__free(cmd);
+	git__free(cmd);
 
 	git__free(host);
 	git__free(port);

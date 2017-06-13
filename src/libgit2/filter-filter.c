@@ -278,8 +278,7 @@ static void filter_free(git_filter *self)
 {
 	struct filter_filter *ffs = (struct filter_filter *)self;
 
-	if (ffs->shexepath)
-		git__free(ffs->shexepath);
+	git__free(ffs->shexepath);
 
 	git__free(self);
 }
