@@ -282,8 +282,8 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 					size_t adds, dels;
 					if (git_patch_line_stats(nullptr, &adds, &dels, patch) < 0)
 						return -1;
-					path.m_StatAdd.Format(L"%d", adds);
-					path.m_StatDel.Format(L"%d", dels);
+					path.m_StatAdd.Format(L"%zu", adds);
+					path.m_StatDel.Format(L"%zu", dels);
 				}
 				m_Files.AddPath(path);
 			}
@@ -414,7 +414,7 @@ int GitRevLoglist::GetRefLog(const CString& ref, std::vector<GitRevLoglist>& ref
 
 			GitRevLoglist rev;
 			rev.m_CommitHash = git_reflog_entry_id_new(entry)->id;
-			rev.m_Ref.Format(L"%s@{%d}", (LPCTSTR)ref, i);
+			rev.m_Ref.Format(L"%s@{%zu}", (LPCTSTR)ref, i);
 			rev.GetCommitterDate() = CTime(git_reflog_entry_committer(entry)->when.time);
 			if (git_reflog_entry_message(entry) != nullptr)
 			{
@@ -461,7 +461,7 @@ int GitRevLoglist::GetRefLog(const CString& ref, std::vector<GitRevLoglist>& ref
 		for (size_t i = tmp.size(), id = 0; i > 0; --i, ++id)
 		{
 			GitRevLoglist rev = tmp[i - 1];
-			rev.m_Ref.Format(L"%s@{%ld}", (LPCTSTR)ref, id);
+			rev.m_Ref.Format(L"%s@{%zu}", (LPCTSTR)ref, id);
 			refloglist.push_back(rev);
 		}
 		return 0;

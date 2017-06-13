@@ -1581,7 +1581,7 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	if(m_IsOldFirst)
 		temp.Format(L"%d", pItem->iItem + 1);
 	else
-		temp.Format(L"%d", m_arShownList.size() - pItem->iItem);
+		temp.Format(L"%zu", m_arShownList.size() - pItem->iItem);
 
 	if (!pLogEntry)
 		return;
