@@ -53,7 +53,7 @@
       <WarningLevel>Level2</WarningLevel>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>LIBGIT2_FILENAME=\"$(AssemblyName)\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>LIBGIT2_FILENAME=\"$(TargetName)\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>rpcrt4.lib;crypt32.lib;winhttp.lib;%(AdditionalDependencies)</AdditionalDependencies>
