@@ -240,9 +240,9 @@ int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status2
 		}
 
 		// staged and not commit
-		if (!status.assumeValid && !status.skipWorktree && (*treeptr)[start].m_Hash != hash)
+		if ((*treeptr)[start].m_Hash != hash)
 		{
-			status.status = git_wc_status_modified;
+			status = { git_wc_status_modified, false, false };
 			return 0;
 		}
 	}
@@ -400,8 +400,8 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 				}
 				if ((*indexptr).GetFileStatus(repository, gitdir, indexentry, status, CGit::filetime_to_time_t(fileentry.m_LastModified), fileentry.m_Size))
 					return -1;
-				if (status.status == git_wc_status_normal && !status.assumeValid && !status.skipWorktree && (*treeptr)[posintree].m_Hash != indexentry.m_IndexHash)
-					status.status = git_wc_status_modified;
+				if (status.status == git_wc_status_normal && (*treeptr)[posintree].m_Hash != indexentry.m_IndexHash)
+					status = { git_wc_status_modified, false, false };
 				callback(CombinePath(gitdir, onepath), &status, false, fileentry.m_LastModified, pData);
 			}
 		}
@@ -609,7 +609,7 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 						continue;
 					}
 
-					if ((indexentry.m_Flags & GIT_IDXENTRY_VALID) == 0 && (indexentry.m_FlagsExtended & GIT_IDXENTRY_SKIP_WORKTREE) == 0 && (*treeptr)[pos].m_Hash != indexentry.m_IndexHash)
+					if ((*treeptr)[pos].m_Hash != indexentry.m_IndexHash)
 					{
 						*status = GetMoreImportant(git_wc_status_modified, *status); // modified file found
 						break;
