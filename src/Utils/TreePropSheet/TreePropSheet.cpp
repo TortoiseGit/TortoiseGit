@@ -486,7 +486,7 @@ HTREEITEM CTreePropSheet::GetPageTreeItem(int nPage, HTREEITEM hRoot /* = TVI_RO
 {
 	// Special handling for root case
 	if (hRoot == TVI_ROOT)
-		hRoot = m_pwndPageTree->GetNextItem(nullptr, TVGN_ROOT);
+		hRoot = m_pwndPageTree->GetNextItem(TVI_ROOT, TVGN_ROOT);
 
 	// Check parameters
 	if (nPage < 0 || nPage >= GetPageCount())

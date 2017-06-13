@@ -445,7 +445,7 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 	m_ListRefLeafs.DeleteAllItems();
 	m_TreeRoot.m_ShadowTree.clear();
 	m_TreeRoot.m_csRefName = L"refs";
-	m_TreeRoot.m_hTree = m_RefTreeCtrl.InsertItem(L"refs", nullptr, nullptr);
+	m_TreeRoot.m_hTree = m_RefTreeCtrl.InsertItem(L"refs");
 	m_RefTreeCtrl.SetItemData(m_TreeRoot.m_hTree,(DWORD_PTR)&m_TreeRoot);
 
 	CString err;
@@ -555,7 +555,7 @@ CShadowTree& CBrowseRefsDlg::GetTreeNode(CString refName, CShadowTree* pTreePos,
 		if (!pNextTree->m_hTree)
 		{
 			//New tree. Create node in control.
-			pNextTree->m_hTree = m_RefTreeCtrl.InsertItem(pNextTree->m_csRefName, pTreePos->m_hTree, nullptr);
+			pNextTree->m_hTree = m_RefTreeCtrl.InsertItem(pNextTree->m_csRefName, pTreePos->m_hTree);
 			m_RefTreeCtrl.SetItemData(pNextTree->m_hTree,(DWORD_PTR)pNextTree);
 		}
 	}
