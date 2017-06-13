@@ -29,11 +29,11 @@ int static Compare(const void *p1, const void*p2)
 CLogCache::CLogCache()
 {
 	m_IndexFile = INVALID_HANDLE_VALUE;
-	m_IndexFileMap = INVALID_HANDLE_VALUE;
+	m_IndexFileMap = nullptr;
 	m_pCacheIndex = nullptr;
 
 	m_DataFile = INVALID_HANDLE_VALUE;
-	m_DataFileMap = INVALID_HANDLE_VALUE;
+	m_DataFileMap = nullptr;
 	m_pCacheData = nullptr;
 	m_DataFileLength = 0;
 	m_bEnabled = CRegDWORD(L"Software\\TortoiseGit\\EnableLogCache", TRUE);
@@ -46,10 +46,10 @@ void CLogCache::CloseDataHandles()
 		UnmapViewOfFile(m_pCacheData);
 		m_pCacheData = nullptr;
 	}
-	if (m_DataFileMap != INVALID_HANDLE_VALUE)
+	if (m_DataFileMap)
 	{
 		CloseHandle(m_DataFileMap);
-		m_DataFileMap=INVALID_HANDLE_VALUE;
+		m_DataFileMap = nullptr;
 	}
 	if (m_DataFile != INVALID_HANDLE_VALUE)
 	{
@@ -66,10 +66,10 @@ void CLogCache::CloseIndexHandles()
 		m_pCacheIndex = nullptr;
 	}
 
-	if (m_IndexFileMap != INVALID_HANDLE_VALUE)
+	if (m_IndexFileMap)
 	{
 		CloseHandle(m_IndexFileMap);
-		m_IndexFileMap = INVALID_HANDLE_VALUE;
+		m_IndexFileMap = nullptr;
 	}
 
 	//this->m_IndexFile.Close();
@@ -137,10 +137,10 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 				break;
 		}
 
-		if( m_IndexFileMap == INVALID_HANDLE_VALUE)
+		if (!m_IndexFileMap)
 		{
 			m_IndexFileMap = CreateFileMapping(m_IndexFile, nullptr, PAGE_READONLY, 0, 0, nullptr);
-			if( m_IndexFileMap == INVALID_HANDLE_VALUE)
+			if (!m_IndexFileMap)
 				break;
 		}
 
@@ -176,10 +176,10 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 				break;
 		}
 
-		if( m_DataFileMap == INVALID_HANDLE_VALUE)
+		if (!m_DataFileMap)
 		{
 			m_DataFileMap = CreateFileMapping(m_DataFile, nullptr, PAGE_READONLY, 0, 0, nullptr);
-			if( m_DataFileMap == INVALID_HANDLE_VALUE)
+			if (!m_DataFileMap)
 				break;
 		}
 		m_DataFileLength = GetFileSize(m_DataFile, nullptr);
@@ -480,7 +480,7 @@ int CLogCache::SaveCache()
 		FlushFileBuffers(m_IndexFile);
 
 		m_IndexFileMap = CreateFileMapping(m_IndexFile, nullptr, PAGE_READWRITE, 0, 0, nullptr);
-		if(m_IndexFileMap == INVALID_HANDLE_VALUE)
+		if (!m_IndexFileMap)
 			break;
 
 		m_pCacheIndex = reinterpret_cast<SLogCacheIndexFile*>(MapViewOfFile(m_IndexFileMap, FILE_MAP_WRITE, 0, 0, 0));
