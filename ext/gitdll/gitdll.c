@@ -657,7 +657,7 @@ int git_get_diff_file(GIT_DIFF diff, GIT_FILE file, int i, char** newname, char*
 }
 
 int git_add_exclude(const char *string, const char *base,
-					int baselen, struct exclude_list *which, int lineno)
+					int baselen, EXCLUDE_LIST which, int lineno)
 {
 	add_exclude(string, base, baselen, which, lineno);
 	return 0;
