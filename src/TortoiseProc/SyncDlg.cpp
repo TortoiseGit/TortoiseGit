@@ -1607,8 +1607,6 @@ void CSyncDlg::OnCancel()
 			return;
 		if (::GenerateConsoleCtrlEvent(CTRL_C_EVENT, 0))
 			::WaitForSingleObject(g_Git.m_CurrentGitPi.hProcess, 10000);
-		else
-			GetLastError();
 
 		CProgressDlg::KillProcessTree(g_Git.m_CurrentGitPi.dwProcessId);
 	}
