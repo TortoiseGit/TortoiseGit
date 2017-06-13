@@ -3664,7 +3664,7 @@ int CAppUtils::ExploreTo(HWND hwnd, CString path)
 {
 	if (PathFileExists(path))
 	{
-		HRESULT ret = -1;
+		HRESULT ret = E_FAIL;
 		ITEMIDLIST __unaligned * pidl = ILCreateFromPath(path);
 		if (pidl)
 		{

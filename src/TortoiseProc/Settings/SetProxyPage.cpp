@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2010-2016 - TortoiseGit
+// Copyright (C) 2010-2017 - TortoiseGit
 // Copyright (C) 2003-2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -233,7 +233,7 @@ BOOL CSetProxyPage::OnApply()
 		{
 			CString escapedUsername;
 
-			if (StringEscape(m_username, &escapedUsername))
+			if (FAILED(StringEscape(m_username, &escapedUsername)))
 			{
 				::MessageBox(nullptr, L"Could not encode username.", L"TortoiseGit", MB_ICONERROR);
 				return FALSE;
@@ -244,7 +244,7 @@ BOOL CSetProxyPage::OnApply()
 			if(!m_password.IsEmpty())
 			{
 				CString escapedPassword;
-				if (StringEscape(m_password, &escapedPassword))
+				if (FAILED(StringEscape(m_password, &escapedPassword)))
 				{
 					::MessageBox(nullptr, L"Could not encode password.", L"TortoiseGit", MB_ICONERROR);
 					return FALSE;

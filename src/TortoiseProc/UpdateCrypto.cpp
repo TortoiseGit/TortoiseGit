@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2016 Sven Strickroth <email@cs-ware.de>
-// Copyright (C) 2014-2016 TortoiseGit
+// Copyright (C) 2013-2017 Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2014-2017 TortoiseGit
 // Copyright (C) VLC project (http://videolan.org)
 // - pgp parsing code was copied from src/misc/update(_crypto)?.c
 // Copyright (C) The Internet Society (1998).  All Rights Reserved.
@@ -246,7 +246,7 @@ static size_t parse_signature_v4_packet(signature_packet_t *p_sig, const uint8_t
 		{
 			if (p + 2 > max_pos)
 				return 0;
-			i_subpacket_len = (*p++ - 192) << 8;
+			i_subpacket_len = ((size_t)(*p++ - 192)) << 8;
 			i_subpacket_len += *p++ + 192;
 		}
 		else
@@ -254,8 +254,8 @@ static size_t parse_signature_v4_packet(signature_packet_t *p_sig, const uint8_t
 			if (p + 4 > max_pos)
 				return 0;
 			i_subpacket_len = size_t(*++p) << 24;
-			i_subpacket_len += *++p << 16;
-			i_subpacket_len += *++p << 8;
+			i_subpacket_len += ((size_t)*++p) << 16;
+			i_subpacket_len += ((size_t)++p) << 8;
 			i_subpacket_len += *++p;
 		}
 

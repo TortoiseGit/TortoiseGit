@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2016 - TortoiseGit
+// Copyright (C) 2013-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -247,7 +247,7 @@ void CGravatar::GravatarThread()
 	}
 }
 
-BOOL CGravatar::DownloadToFile(bool *gravatarExit, const HINTERNET hConnectHandle, bool isHttps, const CString& urlpath, const CString& dest)
+int CGravatar::DownloadToFile(bool* gravatarExit, const HINTERNET hConnectHandle, bool isHttps, const CString& urlpath, const CString& dest)
 {
 	HINTERNET hResourceHandle = HttpOpenRequest(hConnectHandle, nullptr, urlpath, nullptr, nullptr, nullptr, INTERNET_FLAG_KEEP_CONNECTION | (isHttps ? INTERNET_FLAG_SECURE : 0), 0);
 	if (!hResourceHandle)
@@ -256,7 +256,7 @@ BOOL CGravatar::DownloadToFile(bool *gravatarExit, const HINTERNET hConnectHandl
 	SCOPE_EXIT { InternetCloseHandle(hResourceHandle); };
 resend:
 	if (*gravatarExit)
-		return INET_E_DOWNLOAD_FAILURE;
+		return (int)INET_E_DOWNLOAD_FAILURE;
 
 	BOOL httpsendrequest = HttpSendRequest(hResourceHandle, nullptr, 0, nullptr, 0);
 
@@ -265,7 +265,7 @@ resend:
 	if (dwError == ERROR_INTERNET_FORCE_RETRY)
 		goto resend;
 	else if (!httpsendrequest || *gravatarExit)
-		return INET_E_DOWNLOAD_FAILURE;
+		return (int)INET_E_DOWNLOAD_FAILURE;
 
 	DWORD statusCode = 0;
 	DWORD length = sizeof(statusCode);
@@ -275,7 +275,7 @@ resend:
 			return ERROR_FILE_NOT_FOUND;
 		else if (statusCode == 403)
 			return ERROR_ACCESS_DENIED;
-		return INET_E_DOWNLOAD_FAILURE;
+		return (int)INET_E_DOWNLOAD_FAILURE;
 	}
 
 	CFile destinationFile;
@@ -287,12 +287,12 @@ resend:
 	{
 		DWORD size; // size of the data available
 		if (!InternetQueryDataAvailable(hResourceHandle, &size, 0, 0))
-			return INET_E_DOWNLOAD_FAILURE;
+			return (int)INET_E_DOWNLOAD_FAILURE;
 
 		DWORD downloaded; // size of the downloaded data
 		auto buff = std::make_unique<TCHAR[]>(size + 1);
 		if (!InternetReadFile(hResourceHandle, (LPVOID)buff.get(), size, &downloaded))
-			return INET_E_DOWNLOAD_FAILURE;
+			return (int)INET_E_DOWNLOAD_FAILURE;
 
 		if (downloaded == 0)
 			break;
@@ -304,7 +304,7 @@ resend:
 	}
 	destinationFile.Close();
 	if (downloadedSum == 0)
-		return INET_E_DOWNLOAD_FAILURE;
+		return (int)INET_E_DOWNLOAD_FAILURE;
 
 	return 0;
 }
