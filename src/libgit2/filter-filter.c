@@ -230,7 +230,7 @@ static int filter_apply(
 	}
 
 	if (command_write_gitbuf(&commandHandle, from)) {
-		DWORD exitCode = command_close(&commandHandle);
+		exitCode = command_close(&commandHandle);
 		if (exitCode)
 			setProcessError(exitCode, &errBuf);
 		git_buf_free(&errBuf);
@@ -241,7 +241,7 @@ static int filter_apply(
 	command_close_stdin(&commandHandle);
 
 	if (command_wait_stdout_reading_thread(&commandHandle)) {
-		DWORD exitCode = command_close(&commandHandle);
+		exitCode = command_close(&commandHandle);
 		if (exitCode)
 			setProcessError(exitCode, &errBuf);
 		git_buf_free(&errBuf);
