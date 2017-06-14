@@ -147,6 +147,8 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	CGit::GetFileModifyTime(g_AdminDirMap.GetWorktreeAdminDir(dgitdir) + L"index", &m_LastModifyTime);
 	std::sort(this->begin(), this->end(), SortIndex);
 
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Reloaded index for repo: %s\n", (LPCTSTR)dgitdir);
+
 	return 0;
 }
 
@@ -652,6 +654,8 @@ int CGitHeadFileList::ReadTree()
 
 	std::sort(this->begin(), this->end(), SortTree);
 	m_TreeHash = git_commit_id(commit)->id;
+
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Reloaded HEAD tree (commit is %s) for repo: %s\n", (LPCTSTR)m_Head.ToString(), (LPCTSTR)m_Gitdir);
 
 	return 0;
 }
