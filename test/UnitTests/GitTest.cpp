@@ -1369,7 +1369,8 @@ TEST_P(CBasicGitWithTestRepoFixture, GetOneFile)
 
 	CString output;
 	EXPECT_EQ(0, m_Git.Run(L"git.exe add 1.enc", &output, CP_UTF8));
-	EXPECT_STREQ(L"", output);
+	if (!g_Git.ms_bCygwinGit) // on AppVeyor with the VS2017 image we get a warning: "WARNING: can't open config file: /usr/local/ssl/openssl.cnf"
+		EXPECT_STREQ(L"", output);
 
 	CAutoIndex index;
 	ASSERT_EQ(0, git_repository_index(index.GetPointer(), repo));

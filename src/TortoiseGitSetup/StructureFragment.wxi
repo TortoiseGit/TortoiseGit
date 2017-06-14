@@ -14,42 +14,10 @@
 	<Fragment Id="StructureFragment">
 -->
 
-<?if $(var.VisualStudioVersion) = "15.0" ?>
-<?define vcver="140" ?><!-- same as VS 14.0 -->
-<?endif ?>
-<?if $(var.VisualStudioVersion) = "14.0" ?>
-<?define vcver="140" ?>
-<?endif ?>
-<?if $(var.VisualStudioVersion) = "12.0" ?>
-<?define vcver="120" ?>
-<?endif ?>
-<?if $(var.VisualStudioVersion) = "11.0" ?>
-<?define vcver="110" ?>
-<?endif ?>
-
-<?ifdef env.CommonProgramFiles(x86) ?>
-<?define MergeModules="C:\Program Files (x86)\Common Files\Merge Modules" ?>
-<?else?>
-<?define MergeModules="C:\Program Files\Common Files\Merge Modules" ?>
-<?endif?>
-
 <Include>
 	<Directory Id="TARGETDIR" Name="SourceDir">
 		<Directory Id="D__ProgramFilesFolder" Name="Program Files">
 			<Directory Id="INSTALLDIR" Name="TortoiseGit">
-
-				<?if $(var.Platform) = "x86" ?>
-				<Merge Id='CRT' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC$(var.vcver)_CRT_x86.msm' DiskId='1'/>
-				<Merge Id='MFC' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC$(var.vcver)_MFC_x86.msm' DiskId='1'/>
-				<Merge Id='MFCLOC' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC$(var.vcver)_MFCLOC_x86.msm' DiskId='1'/>
-				<?endif ?>
-
-				<?if $(var.Platform) = "x64" ?>
-				<Merge Id='CRT' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC$(var.vcver)_CRT_x64.msm' DiskId='1'/>
-				<Merge Id='MFC' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC$(var.vcver)_MFC_x64.msm' DiskId='1'/>
-				<Merge Id='MFCLOC' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC$(var.vcver)_MFCLOC_x64.msm' DiskId='1'/>
-				<Merge Id='CRT32' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC$(var.vcver)_CRT_x86.msm' DiskId='1'/>
-				<?endif ?>
 
 				<?if $(var.Platform) = "x86" ?>
 				<Merge Id='Ovlays' Language='0' SourceFile='..\..\ext\TortoiseOverlays\TortoiseOverlays-1.1.4.26626-win32.msm' DiskId='1'/>
@@ -951,6 +919,70 @@
 						<RegistryValue Root="HKCU" Key="Software\TortoiseGit" KeyPath="yes" Name="TortoiseGit" Value="TortoiseGit" Type="string" />
 						<Condition>VersionNT64</Condition>
 						<Shortcut Id="S__PlatformConfig" Directory="D_TortoisePrgMenu" Name="Settings" Advertise="no" Target="[INSTALLDIR]bin\TortoiseGitProc.exe" Description="TortoiseGit" Arguments="/command:settings" Show="normal" />
+					</Component>
+
+					<Component Id="C__ucrt" Guid="$(var.GuidUCRT)" Win64="$(var.Win64YesNo)">
+						<File Id="F__ucrtdll1" Name="api-ms-win-core-console-l1-1-0.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-core-console-l1-1-0.dll" />
+						<File Id="F__ucrtdll2" Name="api-ms-win-core-datetime-l1-1-0.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-core-datetime-l1-1-0.dll" />
+						<File Id="F__ucrtdll3" Name="api-ms-win-core-debug-l1-1-0.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-core-debug-l1-1-0.dll" />
+						<File Id="F__ucrtdll4" Name="api-ms-win-core-errorhandling-l1-1-0.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-core-errorhandling-l1-1-0.dll" />
+						<File Id="F__ucrtdll5" Name="api-ms-win-core-file-l1-1-0.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-core-file-l1-1-0.dll" />
+						<File Id="F__ucrtdll6" Name="api-ms-win-core-file-l1-2-0.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-core-file-l1-2-0.dll" />
+						<File Id="F__ucrtdll7" Name="api-ms-win-core-file-l2-1-0.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-core-file-l2-1-0.dll" />
+						<File Id="F__ucrtdll8" Name="api-ms-win-core-handle-l1-1-0.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-core-handle-l1-1-0.dll" />
+						<File Id="F__ucrtdll9" Name="api-ms-win-core-heap-l1-1-0.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-core-heap-l1-1-0.dll" />
+						<File Id="F__ucrtdll10" Name="api-ms-win-core-interlocked-l1-1-0.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-core-interlocked-l1-1-0.dll" />
+						<File Id="F__ucrtdll11" Name="api-ms-win-core-libraryloader-l1-1-0.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-core-libraryloader-l1-1-0.dll" />
+						<File Id="F__ucrtdll12" Name="api-ms-win-core-localization-l1-2-0.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-core-localization-l1-2-0.dll" />
+						<File Id="F__ucrtdll13" Name="api-ms-win-core-memory-l1-1-0.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-core-memory-l1-1-0.dll" />
+						<File Id="F__ucrtdll14" Name="api-ms-win-core-namedpipe-l1-1-0.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-core-namedpipe-l1-1-0.dll" />
+						<File Id="F__ucrtdll15" Name="api-ms-win-core-processenvironment-l1-1-0.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-core-processenvironment-l1-1-0.dll" />
+						<File Id="F__ucrtdll16" Name="api-ms-win-core-processthreads-l1-1-0.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-core-processthreads-l1-1-0.dll" />
+						<File Id="F__ucrtdll17" Name="api-ms-win-core-processthreads-l1-1-1.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-core-processthreads-l1-1-1.dll" />
+						<File Id="F__ucrtdll18" Name="api-ms-win-core-profile-l1-1-0.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-core-profile-l1-1-0.dll" />
+						<File Id="F__ucrtdll19" Name="api-ms-win-core-rtlsupport-l1-1-0.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-core-rtlsupport-l1-1-0.dll" />
+						<File Id="F__ucrtdll20" Name="api-ms-win-core-string-l1-1-0.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-core-string-l1-1-0.dll" />
+						<File Id="F__ucrtdll21" Name="api-ms-win-core-synch-l1-1-0.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-core-synch-l1-1-0.dll" />
+						<File Id="F__ucrtdll22" Name="api-ms-win-core-synch-l1-2-0.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-core-synch-l1-2-0.dll" />
+						<File Id="F__ucrtdll23" Name="api-ms-win-core-sysinfo-l1-1-0.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-core-sysinfo-l1-1-0.dll" />
+						<File Id="F__ucrtdll24" Name="api-ms-win-core-timezone-l1-1-0.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-core-timezone-l1-1-0.dll" />
+						<File Id="F__ucrtdll25" Name="api-ms-win-core-util-l1-1-0.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-core-util-l1-1-0.dll" />
+						<File Id="F__ucrtdll26" Name="api-ms-win-crt-conio-l1-1-0.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-crt-conio-l1-1-0.dll" />
+						<File Id="F__ucrtdll27" Name="api-ms-win-crt-convert-l1-1-0.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-crt-convert-l1-1-0.dll" />
+						<File Id="F__ucrtdll28" Name="api-ms-win-crt-environment-l1-1-0.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-crt-environment-l1-1-0.dll" />
+						<File Id="F__ucrtdll29" Name="api-ms-win-crt-filesystem-l1-1-0.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-crt-filesystem-l1-1-0.dll" />
+						<File Id="F__ucrtdll30" Name="api-ms-win-crt-heap-l1-1-0.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-crt-heap-l1-1-0.dll" />
+						<File Id="F__ucrtdll31" Name="api-ms-win-crt-locale-l1-1-0.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-crt-locale-l1-1-0.dll" />
+						<File Id="F__ucrtdll32" Name="api-ms-win-crt-math-l1-1-0.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-crt-math-l1-1-0.dll" />
+						<File Id="F__ucrtdll33" Name="api-ms-win-crt-multibyte-l1-1-0.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-crt-multibyte-l1-1-0.dll" />
+						<File Id="F__ucrtdll34" Name="api-ms-win-crt-private-l1-1-0.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-crt-private-l1-1-0.dll" />
+						<File Id="F__ucrtdll35" Name="api-ms-win-crt-process-l1-1-0.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-crt-process-l1-1-0.dll" />
+						<File Id="F__ucrtdll36" Name="api-ms-win-crt-runtime-l1-1-0.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-crt-runtime-l1-1-0.dll" />
+						<File Id="F__ucrtdll37" Name="api-ms-win-crt-stdio-l1-1-0.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-crt-stdio-l1-1-0.dll" />
+						<File Id="F__ucrtdll38" Name="api-ms-win-crt-string-l1-1-0.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-crt-string-l1-1-0.dll" />
+						<File Id="F__ucrtdll39" Name="api-ms-win-crt-time-l1-1-0.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-crt-time-l1-1-0.dll" />
+						<File Id="F__ucrtdll40" Name="api-ms-win-crt-utility-l1-1-0.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\api-ms-win-crt-utility-l1-1-0.dll" />
+						<File Id="F__ucrtdll41" Name="ucrtbase.dll" DiskId="1" Source="ucrt\DLLs\$(var.PlatformPathExtension)\ucrtbase.dll" />
+					</Component>
+					<Component Id="C__crtmfc" Guid="$(var.GuidCRTMFC)" Win64="$(var.Win64YesNo)">
+						<File Id="F__concrt140" Name="concrt140.dll" DiskId="1" Source="crtmfc\$(var.PlatformPathExtension)\Microsoft.VC150.CRT\concrt140.dll" />
+						<File Id="F__msvcp140" Name="msvcp140.dll" DiskId="1" Source="crtmfc\$(var.PlatformPathExtension)\Microsoft.VC150.CRT\msvcp140.dll" />
+						<File Id="F__vccorlib140" Name="vccorlib140.dll" DiskId="1" Source="crtmfc\$(var.PlatformPathExtension)\Microsoft.VC150.CRT\vccorlib140.dll" />
+						<File Id="F__vcruntime140" Name="vcruntime140.dll" DiskId="1" Source="crtmfc\$(var.PlatformPathExtension)\Microsoft.VC150.CRT\vcruntime140.dll" />
+						<File Id="F__vcamp140" Name="vcamp140.dll" DiskId="1" Source="crtmfc\$(var.PlatformPathExtension)\Microsoft.VC150.CXXAMP\vcamp140.dll" />
+						<File Id="F__vcomp140" Name="vcomp140.dll" DiskId="1" Source="crtmfc\$(var.PlatformPathExtension)\Microsoft.VC150.OPENMP\vcomp140.dll" />
+						<File Id="F__mfc140u" Name="mfc140u.dll" DiskId="1" Source="crtmfc\$(var.PlatformPathExtension)\Microsoft.VC150.MFC\mfc140u.dll" />
+						<File Id="F__mfcm140u" Name="mfcm140u.dll" DiskId="1" Source="crtmfc\$(var.PlatformPathExtension)\Microsoft.VC150.MFC\mfcm140u.dll" />
+						<File Id="F__mfc140chs" Name="mfc140chs.dll" DiskId="1" Source="crtmfc\$(var.PlatformPathExtension)\Microsoft.VC150.MFCLOC\mfc140chs.dll" />
+						<File Id="F__mfc140cht" Name="mfc140cht.dll" DiskId="1" Source="crtmfc\$(var.PlatformPathExtension)\Microsoft.VC150.MFCLOC\mfc140cht.dll" />
+						<File Id="F__mfc140deu" Name="mfc140deu.dll" DiskId="1" Source="crtmfc\$(var.PlatformPathExtension)\Microsoft.VC150.MFCLOC\mfc140deu.dll" />
+						<File Id="F__mfc140enu" Name="mfc140enu.dll" DiskId="1" Source="crtmfc\$(var.PlatformPathExtension)\Microsoft.VC150.MFCLOC\mfc140enu.dll" />
+						<File Id="F__mfc140esn" Name="mfc140esn.dll" DiskId="1" Source="crtmfc\$(var.PlatformPathExtension)\Microsoft.VC150.MFCLOC\mfc140esn.dll" />
+						<File Id="F__mfc140fra" Name="mfc140fra.dll" DiskId="1" Source="crtmfc\$(var.PlatformPathExtension)\Microsoft.VC150.MFCLOC\mfc140fra.dll" />
+						<File Id="F__mfc140ita" Name="mfc140ita.dll" DiskId="1" Source="crtmfc\$(var.PlatformPathExtension)\Microsoft.VC150.MFCLOC\mfc140ita.dll" />
+						<File Id="F__mfc140jpn" Name="mfc140jpn.dll" DiskId="1" Source="crtmfc\$(var.PlatformPathExtension)\Microsoft.VC150.MFCLOC\mfc140jpn.dll" />
+						<File Id="F__mfc140kor" Name="mfc140kor.dll" DiskId="1" Source="crtmfc\$(var.PlatformPathExtension)\Microsoft.VC150.MFCLOC\mfc140kor.dll" />
+						<File Id="F__mfc140rus" Name="mfc140rus.dll" DiskId="1" Source="crtmfc\$(var.PlatformPathExtension)\Microsoft.VC150.MFCLOC\mfc140rus.dll" />
 					</Component>
 				</Directory>
 

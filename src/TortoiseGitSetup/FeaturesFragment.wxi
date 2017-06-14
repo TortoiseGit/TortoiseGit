@@ -43,14 +43,8 @@
 		<ComponentRef Id="C_LanguagePacks" />
 		<ComponentRef Id="C__touch" />
 
-		<Feature Id="F_CRT" Level="1" Title="C-Runtime" Description="The Visual-C Runtime libs" TypicalDefault="install" Display="hidden">
-			<MergeRef Id="CRT" />
-		</Feature>
-
-		<Feature Id="F_MFC" Level="1" Title="MFC 11.0" Description="The MFC 11.0 libs" TypicalDefault="install" Display="hidden">
-			<MergeRef Id="MFC" />
-			<MergeRef Id="MFCLOC" />
-		</Feature>
+		<ComponentRef Id="C__ucrt" />
+		<ComponentRef Id="C__crtmfc" />
 
 		<Feature Id="F_OVL" Level="1" Title="Tortoise Overlay handler" Description="The overlay handler for all Tortoise clients" TypicalDefault="install" Display="hidden">
 			<MergeRef Id="Ovlays" />
@@ -66,10 +60,6 @@
 
 			<Feature Id="F_OVL32" Level="1" Title="Tortoise Overlay handler" Description="The overlay handler for all Tortoise clients" TypicalDefault="install" Display="hidden">
 				<MergeRef Id="Ovlays32" />
-			</Feature>
-
-			<Feature Id="F_CRT32" Level="1" Title="C-Runtime" Description="The Visual-C Runtime libs" TypicalDefault="install" Display="hidden">
-				<MergeRef Id="CRT32" />
 			</Feature>
 		</Feature>
 		<?endif ?>

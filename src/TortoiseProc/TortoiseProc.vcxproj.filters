@@ -57,7 +57,7 @@
     <Filter Include="Commands\push">
       <UniqueIdentifier>{bfbe5f63-6294-42f3-8cfe-8b61b643602f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Commands\branch%255ctag">
+    <Filter Include="Commands\branch/tag">
       <UniqueIdentifier>{295ea7b9-86ee-4b71-aa2d-d461c4a1b9d3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Commands\Export">
@@ -327,13 +327,13 @@
       <Filter>Commands\push</Filter>
     </ClCompile>
     <ClCompile Include="Commands\BranchCommand.cpp">
-      <Filter>Commands\branch%255ctag</Filter>
+      <Filter>Commands\branch/tag</Filter>
     </ClCompile>
     <ClCompile Include="CreateBranchTagDlg.cpp">
-      <Filter>Commands\branch%255ctag</Filter>
+      <Filter>Commands\branch/tag</Filter>
     </ClCompile>
     <ClCompile Include="Commands\TagCommand.cpp">
-      <Filter>Commands\branch%255ctag</Filter>
+      <Filter>Commands\branch/tag</Filter>
     </ClCompile>
     <ClCompile Include="Commands\ExportCommand.cpp">
       <Filter>Commands\Export</Filter>
@@ -1115,13 +1115,13 @@
       <Filter>Commands\push</Filter>
     </ClInclude>
     <ClInclude Include="Commands\BranchCommand.h">
-      <Filter>Commands\branch%255ctag</Filter>
+      <Filter>Commands\branch/tag</Filter>
     </ClInclude>
     <ClInclude Include="CreateBranchTagDlg.h">
-      <Filter>Commands\branch%255ctag</Filter>
+      <Filter>Commands\branch/tag</Filter>
     </ClInclude>
     <ClInclude Include="Commands\TagCommand.h">
-      <Filter>Commands\branch%255ctag</Filter>
+      <Filter>Commands\branch/tag</Filter>
     </ClInclude>
     <ClInclude Include="Commands\ExportCommand.h">
       <Filter>Commands\Export</Filter>
