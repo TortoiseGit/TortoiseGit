@@ -72,21 +72,21 @@ protected:
 		EXPECT_EQ(0, m_Git.Run(L"git.exe checkout -f master", &output, nullptr, CP_UTF8));
 		EXPECT_STRNE(L"", output);
 
-		if (!CGit::ms_bCygwinGit)
-		{
-			// ====Source of the Sub-Module====
-			// Setup the repository in which the submodule will be fetched from
-			SetUpTestRepo(m_SubmoduleSource);
+		if (CGit::ms_bCygwinGit)
+			return;
 
-			//====Sub-Module Inside of The Main Work Tree (Root Level)====
-			output.Empty();
-			EXPECT_EQ(0, m_Git.Run(L"git.exe submodule add \"" + m_SubmoduleSource + "\" sub1", &output, nullptr, CP_UTF8));
-			EXPECT_STREQ(L"", output);
+		// ====Source of the Sub-Module====
+		// Setup the repository in which the submodule will be fetched from
+		SetUpTestRepo(m_SubmoduleSource);
 
-			output.Empty();
-			EXPECT_EQ(0, m_Git.Run(L"git.exe commit -a -m\"Add submodule for testing\"", &output, nullptr, CP_UTF8));
-			EXPECT_STRNE(L"", output);
-		}
+		//====Sub-Module Inside of The Main Work Tree (Root Level)====
+		output.Empty();
+		EXPECT_EQ(0, m_Git.Run(L"git.exe submodule add \"" + m_SubmoduleSource + "\" sub1", &output, nullptr, CP_UTF8));
+		EXPECT_STREQ(L"", output);
+
+		output.Empty();
+		EXPECT_EQ(0, m_Git.Run(L"git.exe commit -a -m\"Add submodule for testing\"", &output, nullptr, CP_UTF8));
+		EXPECT_STRNE(L"", output);
 
 		// ====Linked Work Tree setup (Absolute Path)====
 		// Linked worktree using git worktree with an absolute path
