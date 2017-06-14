@@ -25,7 +25,7 @@
 #define LOG_DATA_MAGIC		0x99BB0FFF
 #define LOG_DATA_ITEM_MAGIC 0x0FCC9ACC
 #define LOG_DATA_FILE_MAGIC 0x19EE9DFF
-#define LOG_INDEX_VERSION   0x10
+#define LOG_INDEX_VERSION	0x11
 
 #pragma pack (1)
 struct SLogCacheIndexHeader
@@ -50,7 +50,6 @@ struct SLogCacheIndexFile
 struct SLogCacheRevFileHeader
 {
 	DWORD m_Magic;
-	DWORD m_Version;
 	DWORD m_Action;
 	DWORD m_Stage;
 	DWORD m_ParentNo;
@@ -66,7 +65,6 @@ struct SLogCacheRevFileHeader
 struct SLogCacheRevItemHeader
 {
 	DWORD m_Magic;
-	DWORD m_Version;
 	DWORD m_FileCount;
 };
 
@@ -126,18 +124,12 @@ protected:
 		if (header->m_Magic != LOG_DATA_FILE_MAGIC)
 			return FALSE;
 
-		if (header->m_Version != LOG_INDEX_VERSION)
-			return FALSE;
-
 		return TRUE;
 	}
 
 	BOOL CheckHeader(SLogCacheRevItemHeader *header)
 	{
 		if (header->m_Magic != LOG_DATA_ITEM_MAGIC)
-			return FALSE;
-
-		if (header->m_Version != LOG_INDEX_VERSION)
 			return FALSE;
 
 		return TRUE;

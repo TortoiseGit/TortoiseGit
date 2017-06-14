@@ -221,7 +221,6 @@ int CLogCache::SaveOneItem(const GitRevLoglist& Rev, LONG offset)
 	SLogCacheRevItemHeader header;
 
 	header.m_Magic=LOG_DATA_ITEM_MAGIC;
-	header.m_Version=LOG_INDEX_VERSION;
 	header.m_FileCount=Rev.m_Files.GetCount();
 
 	DWORD num;
@@ -235,7 +234,6 @@ int CLogCache::SaveOneItem(const GitRevLoglist& Rev, LONG offset)
 	{
 		SLogCacheRevFileHeader revfileheader;
 		revfileheader.m_Magic = LOG_DATA_FILE_MAGIC;
-		revfileheader.m_Version = LOG_INDEX_VERSION;
 		revfileheader.m_IsSubmodule = Rev.m_Files[i].IsDirectory() ? 1 : 0;
 		revfileheader.m_Action = Rev.m_Files[i].m_Action;
 		revfileheader.m_Stage = Rev.m_Files[i].m_Stage;
