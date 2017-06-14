@@ -60,7 +60,6 @@ struct SLogCacheRevFileHeader
 	DWORD m_OldFileNameSize;
 	TCHAR m_FileName[1];
 };
-# pragma pack ()
 
 struct SLogCacheRevItemHeader
 {
@@ -73,6 +72,7 @@ struct SLogCacheDataFileHeader
 	DWORD m_Magic;
 	DWORD m_Version;
 };
+# pragma pack ()
 
 class CGitHashMap : public std::unordered_map<CGitHash, GitRevLoglist>
 {
@@ -106,7 +106,6 @@ protected:
 
 	void CloseDataHandles();
 	void CloseIndexHandles();
-	void Sort();
 
 	BOOL CheckHeader(SLogCacheIndexHeader *header)
 	{

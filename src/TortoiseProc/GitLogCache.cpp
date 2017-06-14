@@ -71,8 +71,6 @@ void CLogCache::CloseIndexHandles()
 		m_IndexFileMap = nullptr;
 	}
 
-	//this->m_IndexFile.Close();
-	//this->m_DataFile.Close();
 	if (m_IndexFile != INVALID_HANDLE_VALUE)
 	{
 		CloseHandle(m_IndexFile);
@@ -216,7 +214,7 @@ int CLogCache::SaveOneItem(const GitRevLoglist& Rev, LONG offset)
 	if(!Rev.m_IsDiffFiles)
 		return -1;
 
-	SetFilePointer(this->m_DataFile, offset,0, 0);
+	SetFilePointer(m_DataFile, offset, 0, FILE_BEGIN);
 
 	SLogCacheRevItemHeader header;
 
@@ -280,22 +278,19 @@ int CLogCache::LoadOneItem(GitRevLoglist& Rev,ULONGLONG offset)
 		return -2;
 
 	Rev.m_Action = 0;
-	SLogCacheRevFileHeader *fileheader;
 
 	offset += sizeof(SLogCacheRevItemHeader);
-	fileheader = reinterpret_cast<SLogCacheRevFileHeader*>(m_pCacheData + offset);
 
 	for (DWORD i = 0; i < header->m_FileCount; ++i)
 	{
-		CTGitPath path;
-		CString oldfile;
-
 		if (offset + sizeof(SLogCacheRevFileHeader) >= m_DataFileLength)
 		{
 			Rev.m_Action = 0;
 			Rev.m_Files.Clear();
 			return -2;
 		}
+
+		auto fileheader = reinterpret_cast<SLogCacheRevFileHeader*>(m_pCacheData + offset);
 
 		if(!CheckHeader(fileheader))
 		{
@@ -312,10 +307,13 @@ int CLogCache::LoadOneItem(GitRevLoglist& Rev,ULONGLONG offset)
 			return -2;
 		}
 
+		CString oldfile;
 		CString file(fileheader->m_FileName, fileheader->m_FileNameSize);
 		if(fileheader->m_OldFileNameSize)
 			oldfile = CString(fileheader->m_FileName + fileheader->m_FileNameSize, fileheader->m_OldFileNameSize);
-		path.SetFromGit(file, &oldfile, (int*)&fileheader->m_IsSubmodule);
+		CTGitPath path;
+		int isSubmodule = fileheader->m_IsSubmodule;
+		path.SetFromGit(file, oldfile.IsEmpty() ? nullptr : &oldfile, (int*)&isSubmodule);
 
 		path.m_ParentNo = fileheader ->m_ParentNo;
 		path.m_Stage = fileheader ->m_Stage;
@@ -335,7 +333,6 @@ int CLogCache::LoadOneItem(GitRevLoglist& Rev,ULONGLONG offset)
 		Rev.m_Files.AddPath(path);
 
 		offset += recordLength;
-		fileheader = reinterpret_cast<SLogCacheRevFileHeader*>(m_pCacheData + offset);
 	}
 	return 0;
 }
@@ -352,8 +349,8 @@ int CLogCache::RebuildCacheFile()
 	dataheader.m_Magic = LOG_DATA_MAGIC;
 	dataheader.m_Version = LOG_INDEX_VERSION;
 
-	::SetFilePointer(m_IndexFile,0,0,0);
-	::SetFilePointer(m_DataFile,0,0,0);
+	SetFilePointer(m_IndexFile, 0, 0, FILE_BEGIN);
+	SetFilePointer(m_DataFile, 0, 0, FILE_BEGIN);
 	SetEndOfFile(this->m_IndexFile);
 	SetEndOfFile(this->m_DataFile);
 
@@ -446,8 +443,8 @@ int CLogCache::SaveCache()
 		if(bIsRebuild)
 			header.m_ItemCount=0;
 
-		SetFilePointer(m_DataFile,0,0,2);
-		SetFilePointer(m_IndexFile,0,0,2);
+		SetFilePointer(m_DataFile, 0, 0, FILE_END);
+		SetFilePointer(m_IndexFile, 0, 0, FILE_END);
 
 		for (auto i = m_HashMap.cbegin(); i != m_HashMap.cend(); ++i)
 		{
@@ -460,11 +457,11 @@ int CLogCache::SaveCache()
 					offset.HighPart=0;
 					LARGE_INTEGER start;
 					start.QuadPart = 0;
-					SetFilePointerEx(this->m_DataFile,start,&offset,1);
+					SetFilePointerEx(m_DataFile, start, &offset, FILE_CURRENT);
 					if (this->SaveOneItem((*i).second, (LONG)offset.QuadPart))
 					{
 						TRACE(L"Save one item error");
-						SetFilePointerEx(this->m_DataFile,offset, &offset,0);
+						SetFilePointerEx(m_DataFile, offset, &offset, FILE_BEGIN);
 						continue;
 					}
 
@@ -489,7 +486,9 @@ int CLogCache::SaveCache()
 			break;
 
 		m_pCacheIndex->m_Header.m_ItemCount = header.m_ItemCount;
-		Sort();
+
+		std::qsort(m_pCacheIndex->m_Item, m_pCacheIndex->m_Header.m_ItemCount, sizeof(SLogCacheIndexItem), Compare);
+
 		FlushViewOfFile(m_pCacheIndex,0);
 		ret = 0;
 	}while(0);
@@ -499,12 +498,6 @@ int CLogCache::SaveCache()
 
 	free(pIndex);
 	return ret;
-}
-
-void CLogCache::Sort()
-{
-	if (this->m_pCacheIndex)
-		qsort(m_pCacheIndex->m_Item, m_pCacheIndex->m_Header.m_ItemCount, sizeof(SLogCacheIndexItem), Compare);
 }
 
 int CLogCache::ClearAllParent()
