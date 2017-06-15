@@ -2291,7 +2291,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				if (isLocal || showExtendedMenu)
 				{
 					CString str;
-					str.LoadString(IDS_LOG_PUSH);
+					str.LoadString(IDS_MENUPUSH);
 
 					CString branch;
 					size_t index = (size_t)-1;

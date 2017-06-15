@@ -179,7 +179,6 @@
 #define IDC_EXTMERGE                    1016
 #define IDS_PROC_RESETBRANCH            1016
 #define IDC_DIFFVIEWER                  1017
-#define IDS_LOG_PUSH                    1017
 #define IDS_FILEDIFF_LOG                1018
 #define IDS_PROC_TASKS                  1019
 #define IDC_FINDTEXT                    1019

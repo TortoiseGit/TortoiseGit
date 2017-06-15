@@ -3620,7 +3620,6 @@ BEGIN
     IDS_MENURESTORE         "Restore"
     IDS_ERR_TGITBLAME       "Could not start TortoiseGitBlame"
     IDS_PROC_RESETBRANCH    "Reset current branch ""%s"" to"
-    IDS_LOG_PUSH            "Push..."
     IDS_FILEDIFF_LOG        "Show log"
     IDS_PROC_TASKS          "Tasks"
     IDS_STATUSLIST_CONTEXT_COMPARETWOFILES "Compare two files"
