@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -170,7 +170,6 @@ GITDLL_API void git_exit_cleanup(void);
 #define REF_ISPACKED 02
 
 typedef int each_ref_fn(const char *refname, const unsigned char *sha1, int flags, void *cb_data);
-GITDLL_API int git_head_ref(each_ref_fn, void *);
 
 typedef int each_reflog_ent_fn(unsigned char *osha1, unsigned char *nsha1, const char *, unsigned long, int, const char *, void *);
 GITDLL_API int git_for_each_reflog_ent(const char *ref, each_reflog_ent_fn fn, void *cb_data);
