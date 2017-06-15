@@ -5852,7 +5852,7 @@ msgstr ""
 msgid "Merge between original branch, working tree contents, and the branch to switch to"
 msgstr ""
 
-#. Resource IDs: (IDS_LOG_POPUP_MERGEREV, IDS_LOG_POPUP_MERGEREVS)
+#. Resource IDs: (IDS_LOG_POPUP_MERGEREV)
 #, c-format
 msgid "Merge to \"%s\"..."
 msgstr ""
@@ -8174,7 +8174,7 @@ msgstr ""
 msgid "Show branches this commit is on"
 msgstr ""
 
-#. Resource IDs: (IDS_LOG_POPUP_GNUDIFF, IDS_LOG_POPUP_GNUDIFF_CH)
+#. Resource IDs: (IDS_LOG_POPUP_GNUDIFF)
 msgid "Show changes as &unified diff"
 msgstr ""
 

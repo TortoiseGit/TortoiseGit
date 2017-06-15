@@ -1881,7 +1881,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				{
 					if (parentHash.size() == 1)
 					{
-						popup.AppendMenuIcon(ID_GNUDIFF1, IDS_LOG_POPUP_GNUDIFF_CH, IDI_DIFF);
+						popup.AppendMenuIcon(ID_GNUDIFF1, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
 						requiresSeparator = true;
 					}
 					else if (parentHash.size() > 1)
