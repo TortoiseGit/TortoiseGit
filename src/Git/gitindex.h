@@ -425,12 +425,14 @@ public:
 		if (lookup == cend())
 		{
 			CString adminDir;
-			GitAdminDir::GetAdminDirPath(thePath, adminDir);
+			bool isWorktree = false;
+			GitAdminDir::GetAdminDirPath(thePath, adminDir, &isWorktree);
 			if (PathIsDirectory(adminDir))
 			{
 				adminDir = CPathUtils::BuildPathWithPathDelimiter(CPathUtils::NormalizePath(adminDir));
 				(*this)[thePath] = adminDir;
-				m_reverseLookup[adminDir] = thePath;
+				if (!isWorktree) // GitAdminDir::GetAdminDirPath returns the commongit dir ("parent/.git") and this would override the lookup path for the main repo
+					m_reverseLookup[adminDir] = thePath;
 				return (*this)[thePath];
 			}
 			return thePath + L".git\\"; // in case of an error stick to old behavior
