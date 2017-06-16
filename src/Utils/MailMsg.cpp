@@ -214,102 +214,55 @@ BOOL CMailMsg::Send()
 	if (!m_lpMapiSendMail)
 		return FALSE;
 
-	TStrStrMap::iterator	p;
-	int						nIndex = 0;
-	MapiRecipDesc*			pRecipients = nullptr;
-	int						nAttachments = 0;
-	MapiFileDesc*			pAttachments = nullptr;
-	ULONG					status = 0;
-	MapiMessage				message;
-
 	if(!m_bReady && !MAPIInitialize())
 		return FALSE;
 
-	pRecipients = new MapiRecipDesc[1 + m_to.size() + m_cc.size()];
-	if(!pRecipients)
-	{
-		m_sErrorMsg = L"Error allocating memory";
-		return FALSE;
-	}
-
-	nAttachments = (int)m_attachments.size();
-	if (nAttachments)
-	{
-		pAttachments = new MapiFileDesc[nAttachments];
-		if(!pAttachments)
-		{
-			m_sErrorMsg = L"Error allocating memory";
-			delete[] pRecipients;
-			return FALSE;
-		}
-	}
-
 	// set from
-	pRecipients[0].ulReserved = 0;
-	pRecipients[0].ulRecipClass = MAPI_ORIG;
-	pRecipients[0].lpszAddress = (LPSTR)m_from.email.c_str();
-	pRecipients[0].lpszName = (LPSTR)m_from.name.c_str();
-	pRecipients[0].ulEIDSize = 0;
-	pRecipients[0].lpEntryID = nullptr;
+	MapiRecipDesc originator = { 0 };
+	originator.ulRecipClass = MAPI_ORIG;
+	originator.lpszAddress = (LPSTR)m_from.email.c_str();
+	originator.lpszName = (LPSTR)m_from.name.c_str();
 
+	std::vector<MapiRecipDesc> recipients;
+	auto addRecipient = [&recipients](const MailAddress& recipient)
+	{
+		MapiRecipDesc repipDesc = { 0 };
+		repipDesc.ulRecipClass = MAPI_TO;
+		repipDesc.lpszAddress = (LPSTR)recipient.email.c_str();
+		repipDesc.lpszName = (LPSTR)recipient.name.c_str();
+		recipients.emplace_back(repipDesc);
+	};
 	// add to recipients
-	for (size_t i = 0; i < m_to.size(); ++i)
-	{
-		++nIndex;
-		pRecipients[nIndex].ulReserved = 0;
-		pRecipients[nIndex].ulRecipClass = MAPI_TO;
-		pRecipients[nIndex].lpszAddress = (LPSTR)m_to.at(i).email.c_str();
-		pRecipients[nIndex].lpszName = (LPSTR)m_to.at(i).name.c_str();
-		pRecipients[nIndex].ulEIDSize = 0;
-		pRecipients[nIndex].lpEntryID = nullptr;
-	}
-
+	std::for_each(m_to.cbegin(), m_to.cend(), addRecipient);
 	// add cc receipients
-	for (size_t i = 0; i < m_cc.size(); ++i)
-	{
-		++nIndex;
-		pRecipients[nIndex].ulReserved = 0;
-		pRecipients[nIndex].ulRecipClass = MAPI_CC;
-		pRecipients[nIndex].lpszAddress = (LPSTR)m_cc.at(i).email.c_str();
-		pRecipients[nIndex].lpszName = (LPSTR)m_cc.at(i).name.c_str();
-		pRecipients[nIndex].ulEIDSize = 0;
-		pRecipients[nIndex].lpEntryID = nullptr;
-	}
+	std::for_each(m_cc.cbegin(), m_cc.cend(), addRecipient);
 
 	// add attachments
-	for (p = m_attachments.begin(), nIndex = 0; p != m_attachments.end(); ++p, ++nIndex)
+	std::vector<MapiFileDesc> attachments;
+	std::for_each(m_attachments.cbegin(), m_attachments.cend(), [&attachments](auto& attachment)
 	{
-		pAttachments[nIndex].ulReserved		= 0;
-		pAttachments[nIndex].flFlags		= 0;
-		pAttachments[nIndex].nPosition		= 0xFFFFFFFF;
-		pAttachments[nIndex].lpszPathName	= (LPSTR)p->first.c_str();
-		pAttachments[nIndex].lpszFileName	= (LPSTR)p->second.c_str();
-		pAttachments[nIndex].lpFileType		= nullptr;
-	}
+		MapiFileDesc fileDesc = { 0 };
+		fileDesc.nPosition = 0xFFFFFFFF;
+		fileDesc.lpszPathName = (LPSTR)attachment.first.c_str();
+		fileDesc.lpszFileName = (LPSTR)attachment.second.c_str();
+		attachments.emplace_back(fileDesc);
+	});
 
-	message.ulReserved						= 0;
+	MapiMessage message = { 0 };
 	message.lpszSubject						= (LPSTR)m_sSubject.c_str();
 	message.lpszNoteText					= (LPSTR)m_sMessage.c_str();
-	message.lpszMessageType					= nullptr;
-	message.lpszDateReceived				= nullptr;
-	message.lpszConversationID				= nullptr;
-	message.flFlags							= 0;
-	message.lpOriginator					= pRecipients;
-	message.nRecipCount						= (ULONG)(m_to.size() + m_cc.size());
-	message.lpRecips						= &pRecipients[1];
-	message.nFileCount						= nAttachments;
-	message.lpFiles							= nAttachments ? pAttachments : nullptr;
+	message.lpOriginator					= &originator;
+	message.nRecipCount						= (ULONG)recipients.size();
+	message.lpRecips						= recipients.data();
+	message.nFileCount						= (ULONG)attachments.size();
+	message.lpFiles							= attachments.data();
 
-	status = m_lpMapiSendMail(NULL, 0, &message, (m_bShowComposeDialog ? MAPI_DIALOG : 0) | MAPI_LOGON_UI, 0);
+	ULONG status = m_lpMapiSendMail(NULL, 0, &message, (m_bShowComposeDialog ? MAPI_DIALOG : 0) | MAPI_LOGON_UI, 0);
 
 	if(status!=SUCCESS_SUCCESS)
 	{
 		m_sErrorMsg.Format(L"MAPISendMail has failed with code %lu.", status);
 	}
-
-	delete[] pRecipients;
-
-	delete[] pAttachments;
 
 	return (SUCCESS_SUCCESS == status);
 }
