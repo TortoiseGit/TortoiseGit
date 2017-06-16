@@ -185,6 +185,16 @@ msgstr ""
 msgid "%I64d KiB transferred"
 msgstr ""
 
+#. Resource IDs: (62186)
+#, c-format
+msgid "%Ts [Recovered]"
+msgstr ""
+
+#. Resource IDs: (61585, 61586)
+#, c-format
+msgid "%Ts\n%Ts"
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_SYNC_COMMITSAHEAD)
 #, c-format
 msgid "%d commits ahead \"%s\""
@@ -235,11 +245,6 @@ msgstr ""
 msgid "%s - at revision: %d"
 msgstr ""
 
-#. Resource IDs: (62186)
-#, c-format
-msgid "%s [Recovered]"
-msgstr ""
-
 #. Resource IDs: (IDS_PROGRS_FINALINFO)
 #, c-format
 msgid "%s in %s"
@@ -268,11 +273,6 @@ msgstr ""
 #. Resource IDs: (IDS_PROC_EXPORTFOLDERNAME)
 #, c-format
 msgid "%s\\Export of %s"
-msgstr ""
-
-#. Resource IDs: (61585, 61586)
-#, c-format
-msgid "%s\n%s"
 msgstr ""
 
 #. Resource IDs: (IDS_PATCH_ITEMTT)
@@ -1829,12 +1829,12 @@ msgstr ""
 
 #. Resource IDs: (16113)
 #, c-format
-msgid "All your changes will be lost! Do you really want to reset the menu '%s'?"
+msgid "All your changes will be lost! Do you really want to reset the menu '%Ts'?"
 msgstr ""
 
 #. Resource IDs: (16111)
 #, c-format
-msgid "All your changes will be lost! Do you really want to reset the toolbar '%s'?"
+msgid "All your changes will be lost! Do you really want to reset the toolbar '%Ts'?"
 msgstr ""
 
 #. Resource IDs: (32976)
@@ -3940,7 +3940,7 @@ msgstr ""
 
 #. Resource IDs: (16109)
 #, c-format
-msgid "Do you really want to delete the toolbar '%s'?"
+msgid "Do you really want to delete the toolbar '%Ts'?"
 msgstr ""
 
 #. Resource IDs: (IDS_DISABLEUPDATECHECKS)
@@ -4460,7 +4460,7 @@ msgstr ""
 
 #. Resource IDs: (16025)
 #, c-format
-msgid "Expand (%s)"
+msgid "Expand (%Ts)"
 msgstr ""
 
 #. Resource IDs: (16012)
@@ -9872,12 +9872,12 @@ msgstr ""
 
 #. Resource IDs: (61710)
 #, c-format
-msgid "This program is linked to the missing export %s in the file %s. This machine may have an incompatible version of %s."
+msgid "This program is linked to the missing export %Ts in the file %Ts. This machine may have an incompatible version of %Ts."
 msgstr ""
 
 #. Resource IDs: (61709)
 #, c-format
-msgid "This program requires the file %s, which was not found on this system."
+msgid "This program requires the file %Ts, which was not found on this system."
 msgstr ""
 
 #. Resource IDs: (IDS_ERR_PROPNOTONFILE)
