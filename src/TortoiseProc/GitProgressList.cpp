@@ -468,7 +468,7 @@ UINT CGitProgressList::ProgressThread()
 	iFirstResized = 0;
 	bSecondResized = FALSE;
 	m_bFinishedItemAdded = false;
-	DWORD startTime = GetCurrentTime();
+	auto startTime = GetTickCount64();
 
 	if (m_pTaskbarList && m_pPostWnd)
 		m_pTaskbarList->SetProgressState(m_pPostWnd->GetSafeHwnd(), TBPF_INDETERMINATE);
@@ -513,12 +513,12 @@ UINT CGitProgressList::ProgressThread()
 
 	ResizeColumns();
 
-	DWORD time = GetCurrentTime() - startTime;
+	auto time = GetTickCount64() - startTime;
 
 	CString sFinalInfo;
 	if (!m_sTotalBytesTransferred.IsEmpty())
 	{
-		temp.Format(IDS_PROGRS_TIME, (time / 1000) / 60, (time / 1000) % 60);
+		temp.Format(IDS_PROGRS_TIME, (DWORD)(time / 1000) / 60, (DWORD)(time / 1000) % 60);
 		sFinalInfo.Format(IDS_PROGRS_FINALINFO, (LPCTSTR)m_sTotalBytesTransferred, (LPCTSTR)temp);
 		if (m_pProgressLabelCtrl)
 			m_pProgressLabelCtrl->SetWindowText(sFinalInfo);
@@ -731,8 +731,8 @@ void CGitProgressList::AddNotify(NotificationData* data, CColors::Colors color)
 
 int CGitProgressList::UpdateProgress(const git_transfer_progress* stat)
 {
-	static unsigned int start = 0;
-	unsigned int dt = GetCurrentTime() - start;
+	static ULONGLONG start = 0;
+	auto dt = GetTickCount64() - start;
 	double speed = 0;
 	
 	if (m_bCancelled)
@@ -743,7 +743,7 @@ int CGitProgressList::UpdateProgress(const git_transfer_progress* stat)
 
 	if (dt > 100)
 	{
-		start = GetCurrentTime();
+		start = GetTickCount64();
 		size_t ds = stat->received_bytes - m_TotalBytesTransferred;
 		speed = ds * 1000.0/dt;
 		m_TotalBytesTransferred = stat->received_bytes;
