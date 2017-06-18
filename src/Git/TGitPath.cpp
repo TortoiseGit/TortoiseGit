@@ -1316,6 +1316,7 @@ bool CTGitPathList::IsEmpty() const
 }
 void CTGitPathList::Clear()
 {
+	m_Action = 0;
 	m_paths.clear();
 	m_commonBaseDirectory.Reset();
 }
