@@ -211,7 +211,11 @@ STDMETHODIMP GitDataObject::GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium)
 	else if ((pformatetcIn->tymed & TYMED_HGLOBAL) && (pformatetcIn->cfFormat == CF_PREFERREDDROPEFFECT))
 	{
 		HGLOBAL data = GlobalAlloc(GMEM_MOVEABLE | GMEM_SHARE | GMEM_ZEROINIT, sizeof(DWORD));
+		if (!data)
+			return E_OUTOFMEMORY;
 		DWORD* effect = (DWORD*)GlobalLock(data);
+		if (!effect)
+			return E_OUTOFMEMORY;
 		(*effect) = DROPEFFECT_COPY;
 		GlobalUnlock(data);
 		pmedium->hGlobal = data;
