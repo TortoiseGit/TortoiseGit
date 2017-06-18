@@ -212,6 +212,14 @@ enum JumpType
 
 LRESULT CLogDlg::OnGitStatusListCtrlNeedsRefresh(WPARAM, LPARAM)
 {
+	if (m_LogList.m_hasWC && m_LogList.GetSelectedCount() == 1)
+	{
+		POSITION pos = m_LogList.GetFirstSelectedItemPosition();
+		size_t selIndex = m_LogList.GetNextSelectedItem(pos);
+		GitRevLoglist* pLogEntry = m_LogList.m_arShownList.SafeGetAt(selIndex);
+		if (pLogEntry && pLogEntry->m_CommitHash.IsEmpty())
+			m_ChangedFileListCtrl.StoreScrollPos();
+	}
 	m_LogList.ResetWcRev(true);
 	m_LogList.Invalidate();
 	return 0;
