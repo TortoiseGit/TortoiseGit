@@ -441,18 +441,6 @@ public:
 		return lookup->second;
 	}
 
-	void ResetAdminDirCache(const CString& path)
-	{
-		CString thePath(path);
-		thePath.MakeLower();
-		CAutoLocker lock(m_critIndexSec);
-		auto lookup = find(thePath);
-		if (lookup == cend())
-			return;
-		m_reverseLookup.erase(lookup->second.MakeLower().TrimRight(L'\\'));
-		erase(lookup);
-	}
-
 	CString GetAdminDirConcat(const CString& path, const CString& subpath)
 	{
 		CString result(GetAdminDir(path));
