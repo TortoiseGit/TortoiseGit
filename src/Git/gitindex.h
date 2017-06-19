@@ -71,9 +71,9 @@ public:
 	CGitIndexFileMap() { m_critIndexSec.Init(); }
 	~CGitIndexFileMap() { m_critIndexSec.Term(); }
 
-	SHARED_INDEX_PTR SafeGet(CString thePath)
+	SHARED_INDEX_PTR SafeGet(const CString& path)
 	{
-		thePath.MakeLower();
+		CString thePath(CPathUtils::NormalizePath(path));
 		CAutoLocker lock(m_critIndexSec);
 		auto lookup = find(thePath);
 		if (lookup == cend())
@@ -81,16 +81,16 @@ public:
 		return lookup->second;
 	}
 
-	void SafeSet(CString thePath, SHARED_INDEX_PTR ptr)
+	void SafeSet(const CString& path, SHARED_INDEX_PTR ptr)
 	{
-		thePath.MakeLower();
+		CString thePath(CPathUtils::NormalizePath(path));
 		CAutoLocker lock(m_critIndexSec);
 		(*this)[thePath] = ptr;
 	}
 
-	bool SafeClear(CString thePath)
+	bool SafeClear(const CString& path)
 	{
-		thePath.MakeLower();
+		CString thePath(CPathUtils::NormalizePath(path));
 		CAutoLocker lock(m_critIndexSec);
 		auto lookup = find(thePath);
 		if (lookup == cend())
@@ -99,9 +99,9 @@ public:
 		return true;
 	}
 
-	bool SafeClearRecursively(CString thePath)
+	bool SafeClearRecursively(const CString& path)
 	{
-		thePath.MakeLower();
+		CString thePath(CPathUtils::NormalizePath(path));
 		CAutoLocker lock(m_critIndexSec);
 		std::vector<CString> toRemove;
 		for (auto it = this->cbegin(); it != this->cend(); ++it)
@@ -179,9 +179,9 @@ public:
 	CGitHeadFileMap() { m_critTreeSec.Init(); }
 	~CGitHeadFileMap() { m_critTreeSec.Term(); }
 
-	SHARED_TREE_PTR SafeGet(CString thePath)
+	SHARED_TREE_PTR SafeGet(const CString& path)
 	{
-		thePath.MakeLower();
+		CString thePath(CPathUtils::NormalizePath(path));
 		CAutoLocker lock(m_critTreeSec);
 		auto lookup = find(thePath);
 		if (lookup == cend())
@@ -189,16 +189,16 @@ public:
 		return lookup->second;
 	}
 
-	void SafeSet(CString thePath, SHARED_TREE_PTR ptr)
+	void SafeSet(const CString& path, SHARED_TREE_PTR ptr)
 	{
-		thePath.MakeLower();
+		CString thePath(CPathUtils::NormalizePath(path));
 		CAutoLocker lock(m_critTreeSec);
 		(*this)[thePath] = ptr;
 	}
 
-	bool SafeClear(CString thePath)
+	bool SafeClear(const CString& path)
 	{
-		thePath.MakeLower();
+		CString thePath(CPathUtils::NormalizePath(path));
 		CAutoLocker lock(m_critTreeSec);
 		auto lookup = find(thePath);
 		if (lookup == cend())
@@ -207,9 +207,9 @@ public:
 		return true;
 	}
 
-	bool SafeClearRecursively(CString thePath)
+	bool SafeClearRecursively(const CString& path)
 	{
-		thePath.MakeLower();
+		CString thePath(CPathUtils::NormalizePath(path));
 		CAutoLocker lock(m_critTreeSec);
 		std::vector<CString> toRemove;
 		for (auto it = this->cbegin(); it != this->cend(); ++it)
