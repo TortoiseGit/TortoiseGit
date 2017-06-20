@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2016 - TortoiseGit
+// Copyright (C) 2011-2017 - TortoiseGit
 // Copyright (C) 2003-2008, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -49,7 +49,6 @@ protected:
 	virtual BOOL OnApply();
 	afx_msg void OnChange();
 	afx_msg void OnCbnSelchangeDefaultlogscale();
-	afx_msg void OnBnClickedBrowsecheckoutpath();
 	afx_msg void OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct);
 
 private:

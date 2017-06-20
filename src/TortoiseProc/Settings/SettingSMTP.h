@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2013, 2016 - TortoiseGit
+// Copyright (C) 2009, 2013, 2016-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -48,7 +48,6 @@ protected:
 	CComboBox		m_SMTPEncryptionCombo;
 
 	afx_msg void OnBnClickedSmtpAuth();
-	afx_msg void OnBnClickedSmtpUseconfiguredserver();
 
 private:
 	CRegDWORD		m_regDeliveryType;

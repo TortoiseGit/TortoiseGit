@@ -142,8 +142,6 @@ public:
 	 */
 	void			CopySettings(CFileTextLines * pFileToCopySettingsTo) const;
 
-	void			SetCommentTokens();
-
 	bool			NeedsConversion() const { return m_bNeedsConversion; }
 	UnicodeType		GetUnicodeType() const  {return m_SaveParams.m_UnicodeType;}
 	EOL				GetLineEndings() const {return m_SaveParams.m_LineEndings;}

@@ -601,8 +601,6 @@ protected:
 	bool IsBisect(const GitRev * pSelLogEntry);
 	void FetchRemoteList();
 	void FetchTrackingBranchList();
-	void FetchLastLogInfo();
-	void FetchFullLogInfo(CString &from, CString &to);
 
 	virtual afx_msg BOOL OnToolTipText(UINT id, NMHDR * pNMHDR, LRESULT * pResult);
 	virtual INT_PTR OnToolHitTest(CPoint point, TOOLINFO * pTI) const;

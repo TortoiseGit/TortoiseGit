@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009,2011-2014 - TortoiseGit
+// Copyright (C) 2009, 2011-2014, 2017 - TortoiseGit
 // Copyright (C) 2003-2008,2011-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -200,8 +200,6 @@ private:
 	 * Constructing regex objects is expensive. Therefore, cache them here.
 	 */
 	void AutoUpdateRegex();
-
-	bool CheckStringProp(CString& s, const std::string& propname, const CString& propval, LPCSTR prop);
 
 	bool regExNeedUpdate;
 	std::tr1::wregex regCheck;

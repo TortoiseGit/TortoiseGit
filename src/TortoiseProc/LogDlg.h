@@ -109,7 +109,6 @@ protected:
 
 	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
-	afx_msg void OnNMDblclkLoglist(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnLvnItemchangedLogmsg(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnEnLinkMsgview(NMHDR *pNMHDR, LRESULT *pResult);
@@ -117,8 +116,6 @@ protected:
 	afx_msg void OnSelectSearchField();
 	afx_msg void OnExitClearFilter();
 
-	afx_msg void OnNMCustomdrawChangedFileList(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnLvnGetdispinfoChangedFileList(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnEnChangeSearchedit();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnDtnDatetimechangeDateto(NMHDR *pNMHDR, LRESULT *pResult);
@@ -184,7 +181,6 @@ private:
 	void SetSplitterRange();
 	void SetFilterCueText();
 
-	void CopySelectionToClipBoard();
 	void CopyChangedSelectionToClipBoard();
 	void SortShownListArray();
 
@@ -194,7 +190,6 @@ private:
 	void EnableOKButton();
 
 	void SaveSplitterPos();
-	bool ValidateRegexp(LPCTSTR regexp_str, std::tr1::wregex& pat, bool bMatchCase);
 	void CheckRegexpTooltip();
 	void SetDlgTitle();
 	CString GetAbsoluteUrlFromRelativeUrl(const CString& url);

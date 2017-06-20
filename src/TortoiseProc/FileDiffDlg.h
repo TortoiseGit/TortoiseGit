@@ -86,7 +86,6 @@ protected:
 
 	int					AddEntry(const CTGitPath * fd);
 	void				DoDiff(int selIndex, bool blame);
-	void				DiffProps(int selIndex);
 	void				SetURLLabels(int mask=0x3);
 	void				ClearURLabels(int mask);
 	void				Filter(CString sFilterText);

@@ -271,7 +271,6 @@ private:
 	// const-correctness semantics are preserved
 	void SetFwdslashPath(const CString& sPath) const;
 	void SetBackslashPath(const CString& sPath) const;
-	void SetUTF8FwdslashPath(const CString& sPath) const;
 	void EnsureBackslashPathSet() const;
 	void EnsureFwdslashPathSet() const;
 

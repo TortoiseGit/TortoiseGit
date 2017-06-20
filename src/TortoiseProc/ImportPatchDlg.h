@@ -124,7 +124,5 @@ protected:
 	CComPtr<ITaskbarList3>	m_pTaskbarList;
 	afx_msg void OnBnClickedCancel();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	afx_msg void OnHdnItemclickListPatch(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnHdnItemchangingListPatch(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnHdnItemchangedListPatch(NMHDR *pNMHDR, LRESULT *pResult);
 };

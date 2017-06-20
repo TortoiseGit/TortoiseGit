@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2011 - TortoiseSVN
-// Copyright (C) 2012-2016 - TortoiseGit
+// Copyright (C) 2012-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -338,7 +338,6 @@ private:
 	bool			UpdateSelectedEntry (ogdf::node clickedentry);
 	void			AppendMenu (CMenu& popup, UINT title, UINT command, UINT flags = MF_ENABLED);
 	void			AppendMenu(CMenu& popup, CString title, UINT command, CString* extra = nullptr, CMenu* submenu = nullptr);
-	void			AddGitOps (CMenu& popup);
 	void			AddGraphOps (CMenu& popup, const CVisibleGraphNode * node);
 	CString			GetSelectedURL() const;
 	CString			GetWCURL() const;
@@ -383,9 +382,6 @@ private:
 	void			DrawShape (GraphicsDevice& graphics, const Color& penColor, int penWidth, const Pen* pen, const Color& fillColor, const Brush* brush, const RectF& rect, NodeShape shape);
 	void			DrawShadow(GraphicsDevice& graphics, const RectF& rect,
 							   Color shadowColor, NodeShape shape);
-	void			DrawNode(GraphicsDevice& graphics, const RectF& rect,
-							 Color contour, Color overlayColor,
-							 const CVisibleGraphNode *node, NodeShape shape);
 	RectF			TransformRectToScreen (const CRect& rect, const CSize& offset) const;
 	RectF			GetNodeRect (const ogdf::node& v, const CSize& offset) const;
 //	RectF			GetBranchCover (const ILayoutNodeList* nodeList, index_t nodeIndex, bool upward, const CSize& offset);
@@ -407,13 +403,11 @@ private:
 	void			DrawStripes (GraphicsDevice& graphics, const CSize& offset);
 
 	void			DrawShadows (GraphicsDevice& graphics, const CRect& logRect, const CSize& offset);
-	void			DrawNodes (GraphicsDevice& graphics, Image* glyphs, const CRect& logRect, const CSize& offset);
 	void			DrawConnections (GraphicsDevice& graphics, const CRect& logRect, const CSize& offset);
 	void			DrawTexts (GraphicsDevice& graphics, const CRect& logRect, const CSize& offset);
 	void			DrawCurrentNodeGlyphs (GraphicsDevice& graphics, Image* glyphs, const CSize& offset);
 	void			DrawGraph(GraphicsDevice& graphics, const CRect& rect, int nVScrollPos, int nHScrollPos, bool bDirectDraw);
 
 	int				GetEncoderClsid(const WCHAR* format, CLSID* pClsid);
-	void			DrawRubberBand();
 	void	SetNodeRect(GraphicsDevice& graphics, ogdf::node *pnode, CGitHash rev, int mode = 0);
 };

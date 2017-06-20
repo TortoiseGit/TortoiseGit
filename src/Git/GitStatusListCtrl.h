@@ -487,12 +487,6 @@ public:
 	//CGitStatusListCtrl::FileEntry * GetListEntry(const CTGitPath& path);
 
 	/**
-	 * Returns the index of the list control entry with the specified path,
-	 * or -1 if the path is not in the list control.
-	 */
-	int GetIndex(const CTGitPath& path);
-
-	/**
 	 * Returns the file entry data for the specified path in the list control.
 	 */
 	//CGitStatusListCtrl::FileEntry * GetVisibleListEntry(const CTGitPath& path);
@@ -554,13 +548,6 @@ public:
 	CString GetCommonDirectory(bool bStrict);
 
 	/**
-	 * Returns the parent url of all entries in the control.
-	 * if \a bStrict is set to false, then the paths passed to the control
-	 * to fetch the status (in GetStatus()) are used if possible.
-	 */
-	CTGitPath GetCommonURL(bool bStrict);
-
-	/**
 	 * Sets a pointer to a boolean variable which is checked periodically
 	 * during the status fetching. As soon as the variable changes to true,
 	 * the operations stops.
@@ -597,10 +584,7 @@ public:
 	 * Checks if the path already exists in the list.
 	 */
 	bool HasPath(const CTGitPath& path);
-	/**
-	 * Checks if the path is shown/visible in the list control.
-	 */
-	bool IsPathShown(const CTGitPath& path);
+
 	/**
 	 * Forces the children to be checked when the parent folder is checked,
 	 * and the parent folder to be unchecked if one of its children is unchecked.
@@ -730,13 +714,10 @@ private:
 	virtual BOOL OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 	afx_msg void OnSysColorChange();
 	afx_msg void OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg BOOL OnToolTipText(UINT id, NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnHdnItemclick(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnLvnItemchanging(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg BOOL OnLvnItemchanged(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
-
-	void CreateChangeList(const CString& name);
 
 	afx_msg void OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnLvnGetInfoTip(NMHDR *pNMHDR, LRESULT *pResult);

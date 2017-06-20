@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2016 - TortoiseGit
+// Copyright (C) 2008-2013, 2016-2017 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -52,11 +52,8 @@ public:
 	virtual BOOL InitInstance();
 	virtual int ExitInstance();
 
-	BOOL CheckMsysGitDir();
-
 	void CheckUpgrade();
 	void CheckForNewerVersion();
-	void EnableCrashHandler();
 	void InitializeJumpList(const CString& appid);
 	void DoInitializeJumpList(const CString& appid);
 

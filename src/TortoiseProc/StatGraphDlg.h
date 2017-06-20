@@ -135,7 +135,6 @@ protected:
 	void ShowLabels(BOOL bShow);
 	afx_msg void OnCbnSelchangeGraphcombo();
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-	afx_msg void OnBnClickedStacked();
 	afx_msg void OnNeedText(NMHDR *pnmh, LRESULT *pResult);
 	afx_msg void OnBnClickedGraphbarbutton();
 	afx_msg void OnBnClickedGraphbarstackedbutton();

@@ -73,7 +73,6 @@ protected:
 	LRESULT OnRebaseUpdateUI(WPARAM wParam, LPARAM lParam);
 	void DoSize(int delta);
 	void AddRebaseAnchor();
-	void RemoveAnchor();
 
 	void SetSplitterRange();
 	void SaveSplitterPos();
@@ -118,7 +117,6 @@ protected:
 	ProjectProperties m_ProjectProperties;
 
 	int VerifyNoConflict();
-	CString GetRebaseModeName(int rebasemode);
 
 	CString m_SquashMessage;
 	struct SquashFirstMetaData
@@ -187,9 +185,6 @@ protected:
 
 	CMenuButton m_PostButton;
 
-	afx_msg void OnBnClickedPickAll();
-	afx_msg void OnBnClickedSquashAll();
-	afx_msg void OnBnClickedEditAll();
 	afx_msg void OnBnClickedRebaseSplit();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnCbnSelchangeBranch();
