@@ -1532,6 +1532,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 	bool bShift = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
 	CTGitPath * filepath;
 
+	auto selectedCount = GetSelectedCount();
 	int selIndex = GetSelectionMark();
 	if ((point.x == -1) && (point.y == -1))
 	{
@@ -1540,7 +1541,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 		ClientToScreen(&rect);
 		point = rect.CenterPoint();
 	}
-	if ((GetSelectedCount() == 0) && (m_bHasCheckboxes))
+	if (selectedCount == 0 && m_bHasCheckboxes)
 	{
 		// nothing selected could mean the context menu is requested for
 		// a group header
@@ -1564,9 +1565,9 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 		{
 			//Add Menu for version controlled file
 
-			if (GetSelectedCount() > 0 && wcStatus & CTGitPath::LOGACTIONS_UNMERGED)
+			if (selectedCount > 0 && (wcStatus & CTGitPath::LOGACTIONS_UNMERGED))
 			{
-				if (GetSelectedCount() == 1 && (m_dwContextMenus & GITSLC_POPCONFLICT)/*&&(entry->textstatus == git_wc_status_conflicted)*/)
+				if (selectedCount == 1 && (m_dwContextMenus & GITSLC_POPCONFLICT))
 				{
 					popup.AppendMenuIcon(IDGITLC_EDITCONFLICT, IDS_MENUCONFLICT, IDI_CONFLICT);
 					popup.SetDefaultItem(IDGITLC_EDITCONFLICT, FALSE);
@@ -1582,7 +1583,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					popup.AppendMenu(MF_SEPARATOR);
 			}
 
-			if (GetSelectedCount() > 0)
+			if (selectedCount > 0)
 			{
 				if (wcStatus & (CTGitPath::LOGACTIONS_UNVER | CTGitPath::LOGACTIONS_IGNORE))
 				{
@@ -1602,7 +1603,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				}
 			}
 
-			if (!(wcStatus & (CTGitPath::LOGACTIONS_UNVER | CTGitPath::LOGACTIONS_IGNORE)) && !((wcStatus & CTGitPath::LOGACTIONS_MISSING) && wcStatus != (CTGitPath::LOGACTIONS_MISSING | CTGitPath::LOGACTIONS_DELETED) && wcStatus != (CTGitPath::LOGACTIONS_MISSING | CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MODIFIED)) && GetSelectedCount() > 0)
+			if (!(wcStatus & (CTGitPath::LOGACTIONS_UNVER | CTGitPath::LOGACTIONS_IGNORE)) && !((wcStatus & CTGitPath::LOGACTIONS_MISSING) && wcStatus != (CTGitPath::LOGACTIONS_MISSING | CTGitPath::LOGACTIONS_DELETED) && wcStatus != (CTGitPath::LOGACTIONS_MISSING | CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MODIFIED)) && selectedCount > 0)
 			{
 				bool bEntryAdded = false;
 				if (m_dwContextMenus & GITSLC_POPCOMPAREWITHBASE)
@@ -1612,7 +1613,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					else
 						popup.AppendMenuIcon(IDGITLC_COMPARE, IDS_LOG_COMPAREWITHBASE, IDI_DIFF);
 
-					if (!(wcStatus & (CTGitPath::LOGACTIONS_UNMERGED)) || GetSelectedCount() != 1)
+					if (!(wcStatus & (CTGitPath::LOGACTIONS_UNMERGED)) || selectedCount != 1)
 						popup.SetDefaultItem(IDGITLC_COMPARE, FALSE);
 					bEntryAdded = true;
 				}
@@ -1648,9 +1649,9 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			}
 
 			//Select Multi item
-			if (GetSelectedCount() > 0)
+			if (selectedCount > 0)
 			{
-				if ((GetSelectedCount() == 2) && (m_dwContextMenus & GITSLC_POPCOMPARETWOFILES) && (this->m_CurrentVersion.IsEmpty() || this->m_CurrentVersion == GIT_REV_ZERO))
+				if (selectedCount == 2 && (m_dwContextMenus & GITSLC_POPCOMPARETWOFILES) && (m_CurrentVersion.IsEmpty() || m_CurrentVersion == GIT_REV_ZERO))
 				{
 					POSITION pos = GetFirstSelectedItemPosition();
 					int index = GetNextSelectedItem(pos);
@@ -1669,7 +1670,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				}
 			}
 
-			if ( (GetSelectedCount() >0 ) && (!(wcStatus & (CTGitPath::LOGACTIONS_UNVER | CTGitPath::LOGACTIONS_IGNORE))) && m_bHasWC)
+			if (selectedCount > 0 && (!(wcStatus & (CTGitPath::LOGACTIONS_UNVER | CTGitPath::LOGACTIONS_IGNORE))) && m_bHasWC)
 			{
 				if ((m_dwContextMenus & GITSLC_POPCOMMIT) && (this->m_CurrentVersion.IsEmpty() || this->m_CurrentVersion == GIT_REV_ZERO) && !(wcStatus & (CTGitPath::LOGACTIONS_SKIPWORKTREE | CTGitPath::LOGACTIONS_ASSUMEVALID)))
 					popup.AppendMenuIcon(IDGITLC_COMMIT, IDS_STATUSLIST_CONTEXT_COMMIT, IDI_COMMIT);
@@ -1707,8 +1708,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				}
 			}
 
-			if ((GetSelectedCount() == 1)&&(!(wcStatus & CTGitPath::LOGACTIONS_UNVER))
-				&&(!(wcStatus & CTGitPath::LOGACTIONS_IGNORE)))
+			if (selectedCount == 1 && !(wcStatus & (CTGitPath::LOGACTIONS_UNVER | CTGitPath::LOGACTIONS_IGNORE)))
 			{
 				if (m_dwContextMenus & GITSLC_POPSHOWLOG)
 					popup.AppendMenuIcon(IDGITLC_LOG, IDS_REPOBROWSE_SHOWLOG, IDI_LOG);
@@ -1720,14 +1720,13 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					popup.AppendMenuIcon(IDGITLC_BLAME, IDS_MENUBLAME, IDI_BLAME);
 			}
 
-			if (GetSelectedCount() > 0)
+			if (selectedCount > 0)
 			{
 				if ((m_dwContextMenus & GetContextMenuBit(IDGITLC_EXPORT)) && !(wcStatus & (CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MISSING)))
 					popup.AppendMenuIcon(IDGITLC_EXPORT, IDS_LOG_POPUP_EXPORT, IDI_EXPORT);
 			}
 
-//			if ((wcStatus != git_wc_status_deleted)&&(wcStatus != git_wc_status_missing) && (GetSelectedCount() == 1))
-			if ( (GetSelectedCount() == 1) )
+			if (selectedCount == 1)
 			{
 				if (m_dwContextMenus & this->GetContextMenuBit(IDGITLC_SAVEAS) && ! filepath->IsDirectory() && !(wcStatus & CTGitPath::LOGACTIONS_DELETED))
 					popup.AppendMenuIcon(IDGITLC_SAVEAS, IDS_LOG_POPUP_SAVE, IDI_SAVEAS);
@@ -1762,7 +1761,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					}
 				}
 			}
-			if (GetSelectedCount() > 0)
+			if (selectedCount > 0)
 			{
 //				if (((wcStatus == git_wc_status_unversioned)||(wcStatus == git_wc_status_ignored))&&(m_dwContextMenus & SVNSLC_POPDELETE))
 //					popup.AppendMenuIcon(IDSVNLC_DELETE, IDS_MENUREMOVE, IDI_DELETE);
@@ -1830,7 +1829,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 
 
-			if (GetSelectedCount() > 0)
+			if (selectedCount > 0)
 			{
 				popup.AppendMenu(MF_SEPARATOR);
 				popup.AppendMenuIcon(IDGITLC_COPY, IDS_STATUSLIST_CONTEXT_COPY, IDI_COPYCLIP);
@@ -1883,7 +1882,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			}
 
 			m_hShellMenu = nullptr;
-			if (GetSelectedCount() > 0 && !(wcStatus & (CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MISSING)) && m_bHasWC && (this->m_CurrentVersion.IsEmpty() || this->m_CurrentVersion == GIT_REV_ZERO) && shellMenu.CreatePopupMenu())
+			if (selectedCount > 0 && !(wcStatus & (CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MISSING)) && m_bHasWC && (m_CurrentVersion.IsEmpty() || m_CurrentVersion == GIT_REV_ZERO) && shellMenu.CreatePopupMenu())
 			{
 				// insert the shell context menu
 				popup.AppendMenu(MF_SEPARATOR);
@@ -2330,7 +2329,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					}
 
 					CString str;
-					str.Format(IDS_PROC_WARNREVERT,GetSelectedCount());
+					str.Format(IDS_PROC_WARNREVERT, selectedCount);
 
 					if (!bConfirm || MessageBox(str, L"TortoiseGit", MB_YESNO | MB_ICONQUESTION) == IDYES)
 					{
