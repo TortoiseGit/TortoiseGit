@@ -145,6 +145,7 @@ void CRevertDlg::OnOK()
 {
 	if (m_bThreadRunning)
 		return;
+	auto locker(m_RevertList.AcquireReadLock());
 	// save only the files the user has selected into the temporary file
 	m_bRecursive = TRUE;
 	for (int i=0; i<m_RevertList.GetItemCount(); ++i)

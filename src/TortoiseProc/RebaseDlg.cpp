@@ -1059,6 +1059,7 @@ int CRebaseDlg::VerifyNoConflict()
 	if (hasConflicts)
 	{
 		CMessageBox::Show(GetSafeHwnd(), IDS_PROGRS_CONFLICTSOCCURED, IDS_APPNAME, MB_OK | MB_ICONEXCLAMATION);
+		auto locker(m_FileListCtrl.AcquireReadLock());
 		auto pos = m_FileListCtrl.GetFirstSelectedItemPosition();
 		while (pos)
 			m_FileListCtrl.SetItemState(m_FileListCtrl.GetNextSelectedItem(pos), 0, LVIS_SELECTED);
@@ -1302,6 +1303,7 @@ void CRebaseDlg::OnBnClickedContinue()
 		CMassiveGitTask mgtRm(L"rm  --ignore-unmatch");
 		CMassiveGitTask mgtRmFCache(L"rm -f --cache");
 		CMassiveGitTask mgtReset(L"reset", TRUE, true);
+		auto locker(m_FileListCtrl.AcquireReadLock());
 		for (int i = 0; i < m_FileListCtrl.GetItemCount(); i++)
 		{
 			auto entry = m_FileListCtrl.GetListEntry(i);
@@ -2251,6 +2253,7 @@ void CRebaseDlg::ListConflictFile(bool noStoreScrollPosition)
 
 	m_FileListCtrl.Check(GITSLC_SHOWFILES);
 	bool hasSubmoduleChange = false;
+	auto locker(m_FileListCtrl.AcquireReadLock());
 	for (int i = 0; i < m_FileListCtrl.GetItemCount(); i++)
 	{
 		auto entry = m_FileListCtrl.GetListEntry(i);

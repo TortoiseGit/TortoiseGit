@@ -23,6 +23,7 @@
 #include "Colors.h"
 #include "ResizableColumnsListCtrl.h"
 #include "DragDropImpl.h"
+#include "ReaderWriterLock.h"
 
 #define GIT_WC_ENTRY_WORKING_SIZE_UNKNOWN (-1)
 
@@ -127,7 +128,6 @@ GITSLC_SHOWINCOMPLETE|GITSLC_SHOWEXTERNAL|GITSLC_SHOWINEXTERNALS)
 #define OVL_RESTORE			1
 
 typedef int (__cdecl *GENERICCOMPAREFN)(const void * elem1, const void * elem2);
-typedef CComCritSecLock<CComCriticalSection> Locker;
 
 class CGitStatusListCtrlDropTarget;
 
@@ -605,7 +605,7 @@ public:
 public:
 	CString GetLastErrorMessage() {return m_sLastError;}
 
-	void Block(BOOL block, BOOL blockUI) {m_bBlock = block; m_bBlockUI = blockUI;}
+	void BusyCursor(bool bBusy) { m_bWaitCursor = bBusy; }
 
 	LONG GetUnversionedCount() { return m_nShownUnversioned; }
 	LONG GetModifiedCount() { return m_nShownModified; }
@@ -614,6 +614,8 @@ public:
 	LONG GetConflictedCount() { return m_nShownConflicted; }
 	LONG GetFileCount() { return m_nShownFiles; }
 	LONG GetSubmoduleCount() { return m_nShownSubmodules; }
+
+	CAutoReadLock AcquireReadLock() { return CAutoReadLock(m_guard); }
 
 	LONG						m_nTargetCount;		///< number of targets in the file passed to GetStatus()
 
@@ -716,7 +718,6 @@ private:
 	afx_msg void OnSysColorChange();
 	afx_msg void OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnHdnItemclick(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnLvnItemchanging(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg BOOL OnLvnItemchanged(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 
@@ -784,9 +785,8 @@ private:
 	bool						m_bShowIgnores;
 	bool						m_bUpdate;
 	unsigned __int64			m_dwContextMenus;
-	BOOL						m_bBlock;
-	BOOL						m_bBlockUI;
 	bool						m_bBusy;
+	bool						m_bWaitCursor;
 	bool						m_bEmpty;
 	bool						m_bIgnoreRemoveOnly;
 	bool						m_bCheckIfGroupsExist;
@@ -806,7 +806,7 @@ private:
 
 	bool						m_bCheckChildrenWithParent;
 	std::unique_ptr<CGitStatusListCtrlDropTarget> m_pDropTarget;
-
+	volatile LONG				m_nBlockItemChangeHandler;
 	std::map<CString,bool>		m_mapFilenameToChecked; ///< Remember de-/selected items
 	std::set<CString>			m_setDirectFiles;
 	CComCriticalSection			m_critSec;
@@ -838,6 +838,7 @@ public:
 	bool m_bDoNotAutoselectSubmodules;
 	bool m_bNoAutoselectMissing;
 	std::map<CString, CString>	m_restorepaths;
+	mutable CReaderWriterLock	m_guard;
 
 	HMENU			m_hShellMenu;
 	LPCONTEXTMENU	m_pContextMenu;
@@ -864,4 +865,17 @@ public:
 	virtual HRESULT STDMETHODCALLTYPE DragOver(DWORD grfKeyState, POINTL pt, DWORD __RPC_FAR* pdwEffect);
 private:
 	CGitStatusListCtrl* m_pGitStatusListCtrl;
+};
+
+class ScopedInDecrement
+{
+public:
+	ScopedInDecrement(volatile LONG& counter) : m_counter(counter) { InterlockedIncrement(&m_counter); }
+	~ScopedInDecrement() { InterlockedDecrement(&m_counter); }
+
+	ScopedInDecrement(const ScopedInDecrement&) = delete;
+	void operator=(const ScopedInDecrement&) = delete;
+
+private:
+	volatile LONG& m_counter;
 };

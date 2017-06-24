@@ -574,6 +574,8 @@ void CCommitDlg::OnOK()
 	}
 	this->UpdateData();
 
+	auto locker(m_ListCtrl.AcquireReadLock());
+
 	if (m_ListCtrl.GetConflictedCount() != 0 && CMessageBox::ShowCheck(GetSafeHwnd(), IDS_PROGRS_CONFLICTSOCCURED, IDS_APPNAME, 1, IDI_EXCLAMATION, IDS_OKBUTTON, IDS_IGNOREBUTTON, 0, L"CommitWarnOnUnresolved") == 1)
 	{
 		auto pos = m_ListCtrl.GetFirstSelectedItemPosition();
@@ -1263,7 +1265,6 @@ UINT CCommitDlg::StatusThread()
 	//in a list control.
 	m_pathwatcher.Stop();
 
-	m_ListCtrl.SetBusy(true);
 	g_Git.RefreshGitIndex();
 
 	m_bCancelled = false;
@@ -1377,9 +1378,9 @@ UINT CCommitDlg::StatusThread()
 	InterlockedExchange(&m_bBlock, FALSE);
 	if ((DWORD)CRegDWORD(L"Software\\TortoiseGit\\Autocompletion", TRUE) == TRUE)
 	{
-		m_ListCtrl.Block(TRUE, TRUE);
+		m_ListCtrl.BusyCursor(true);
 		GetAutocompletionList();
-		m_ListCtrl.Block(FALSE, FALSE);
+		m_ListCtrl.BusyCursor(false);
 	}
 	SendMessage(WM_UPDATEOKBUTTON);
 	m_ListCtrl.Invalidate();
@@ -1859,6 +1860,7 @@ void CCommitDlg::GetAutocompletionList()
 	// file extensions we can use and the second the corresponding regex strings
 	// to apply to those files.
 
+	auto locker(m_ListCtrl.AcquireReadLock());
 	// the next step is to go over all files shown in the commit dialog
 	// and scan them for strings we can use
 	int nListItems = m_ListCtrl.GetItemCount();
@@ -2080,6 +2082,7 @@ bool CCommitDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
 	if (cmd == m_nPopupPasteListCmd)
 	{
 		CString logmsg;
+		auto locker(m_ListCtrl.AcquireReadLock());
 		int nListItems = m_ListCtrl.GetItemCount();
 		for (int i=0; i<nListItems; ++i)
 		{
@@ -2278,6 +2281,7 @@ void CCommitDlg::FillPatchView(bool onlySetTimer)
 			return;
 		}
 
+		auto locker(m_ListCtrl.AcquireReadLock());
 		POSITION pos=m_ListCtrl.GetFirstSelectedItemPosition();
 		CString cmd,out;
 

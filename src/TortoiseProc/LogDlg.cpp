@@ -1014,6 +1014,7 @@ void CLogDlg::FillPatchView(bool onlySetTimer)
 		return;
 	}
 
+	auto locker(m_ChangedFileListCtrl.AcquireReadLock());
 	POSITION pos = m_ChangedFileListCtrl.GetFirstSelectedItemPosition();
 	CString out;
 
@@ -1259,6 +1260,7 @@ void CLogDlg::CopyChangedSelectionToClipBoard()
 //	CGitRev* pLogEntry = reinterpret_cast<CGitRev* >(m_LogList.m_arShownList.SafeGetAt(m_LogList.GetNextSelectedItem(pos)));
 //	if (posLogList)
 	{
+		auto locker(m_ChangedFileListCtrl.AcquireReadLock());
 		POSITION pos = m_ChangedFileListCtrl.GetFirstSelectedItemPosition();
 		while (pos)
 		{

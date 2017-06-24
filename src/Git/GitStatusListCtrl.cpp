@@ -209,7 +209,6 @@ BEGIN_MESSAGE_MAP(CGitStatusListCtrl, CResizableColumnsListCtrl<CListCtrl>)
 	ON_WM_PAINT()
 	ON_WM_SYSCOLORCHANGE()
 	ON_NOTIFY_REFLECT(LVN_BEGINDRAG, OnBeginDrag)
-	ON_NOTIFY_REFLECT(LVN_ITEMCHANGING, &CGitStatusListCtrl::OnLvnItemchanging)
 END_MESSAGE_MAP()
 
 CGitStatusListCtrl::CGitStatusListCtrl() : CResizableColumnsListCtrl<CListCtrl>()
@@ -218,14 +217,13 @@ CGitStatusListCtrl::CGitStatusListCtrl() : CResizableColumnsListCtrl<CListCtrl>(
 	, m_pSelectButton(nullptr)
 	, m_pConfirmButton(nullptr)
 	, m_bBusy(false)
+	, m_bWaitCursor(false)
 	, m_bEmpty(false)
 	, m_bShowIgnores(false)
 	, m_bIgnoreRemoveOnly(false)
 	, m_bCheckChildrenWithParent(false)
 	, m_bUnversionedLast(true)
 	, m_bHasChangeLists(false)
-	, m_bBlock(false)
-	, m_bBlockUI(false)
 	, m_bHasCheckboxes(false)
 	, m_bCheckIfGroupsExist(true)
 	, m_bFileDropsEnabled(false)
@@ -272,6 +270,7 @@ CGitStatusListCtrl::CGitStatusListCtrl() : CResizableColumnsListCtrl<CListCtrl>(
 	, m_bIsRevertTheirMy(false)
 	, m_nLineAdded(0)
 	, m_nLineDeleted(0)
+	, m_nBlockItemChangeHandler(0)
 {
 	m_critSec.Init();
 	m_bNoAutoselectMissing = CRegDWORD(L"Software\\TortoiseGit\\AutoselectMissingFiles", FALSE) == TRUE;
@@ -285,7 +284,7 @@ CGitStatusListCtrl::~CGitStatusListCtrl()
 void CGitStatusListCtrl::ClearStatusArray()
 {
 #if 0
-	Locker lock(m_critSec);
+	CAutoWriteLock locker(m_guard);
 	for (size_t i = 0; i < m_arStatusArray.size(); ++i)
 	{
 		delete m_arStatusArray[i];
@@ -296,12 +295,13 @@ void CGitStatusListCtrl::ClearStatusArray()
 
 void CGitStatusListCtrl::Init(DWORD dwColumns, const CString& sColumnInfoContainer, unsigned __int64 dwContextMenus /* = GitSLC_POPALL */, bool bHasCheckboxes /* = true */, bool bHasWC /* = true */, DWORD allowedColumns /* = 0xffffffff */)
 {
-	Locker lock(m_critSec);
+	CAutoWriteLock locker(m_guard);
 
 	m_dwDefaultColumns = dwColumns | 1;
 	m_dwContextMenus = dwContextMenus;
 	m_bHasCheckboxes = bHasCheckboxes;
 	m_bHasWC = bHasWC;
+	m_bWaitCursor = true;
 
 	// set the extended style of the listcontrol
 	DWORD exStyle = LVS_EX_DOUBLEBUFFER | LVS_EX_INFOTIP | LVS_EX_SUBITEMIMAGES;
@@ -350,6 +350,7 @@ void CGitStatusListCtrl::Init(DWORD dwColumns, const CString& sColumnInfoContain
 	}
 
 	SetRedraw(true);
+	m_bWaitCursor = false;
 }
 
 bool CGitStatusListCtrl::SetBackgroundImage(UINT nID)
@@ -364,13 +365,15 @@ BOOL CGitStatusListCtrl::GetStatus ( const CTGitPathList* pathList
 									, bool bShowUnRev /* = false */
 									, bool bShowLocalChangesIgnored /* = false */)
 {
-	m_bBusy = true;
+	CAutoWriteLock locker(m_guard);
+
 	m_bEmpty = false;
+	m_bBusy = true;
+	m_bWaitCursor = true;
 	Invalidate();
 
 	m_bIsRevertTheirMy = g_Git.IsRebaseRunning() > 0;
 
-	Locker lock(m_critSec);
 	int mask= CGitStatusListCtrl::FILELIST_MODIFY;
 	if(bShowIgnores)
 		mask|= CGitStatusListCtrl::FILELIST_IGNORE;
@@ -543,6 +546,8 @@ BOOL CGitStatusListCtrl::GetStatus ( const CTGitPathList* pathList
 	SetCursorPos(pt.x, pt.y);
 	return bRet;
 #endif
+	m_bBusy = false;
+	m_bWaitCursor = false;
 	BuildStatistics();
 	return TRUE;
 }
@@ -579,15 +584,12 @@ DWORD CGitStatusListCtrl::GetShowFlagsFromGitStatus(git_wc_status_kind status)
 
 void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, bool /*bShowFolders*/ /* = true */,BOOL UpdateStatusList,bool UseStoredCheckStatus)
 {
+	m_bWaitCursor = true;
 	m_bBusy = true;
 	m_bEmpty = false;
 	Invalidate();
 
-	CWinApp * pApp = AfxGetApp();
-	if (pApp)
-		pApp->DoWaitCursor(1);
-
-	Locker lock(m_critSec);
+	CAutoWriteLock locker(m_guard);
 	WORD langID = (WORD)CRegStdDWORD(L"Software\\TortoiseGit\\LanguageID", GetUserDefaultLangID());
 
 	//SetItemCount(listIndex);
@@ -672,9 +674,7 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 
 	RestoreScrollPos();
 
-	if (pApp)
-		pApp->DoWaitCursor(-1);
-
+	m_bWaitCursor = false;
 	m_bBusy = false;
 	m_bEmpty = (GetItemCount() == 0);
 	Invalidate();
@@ -682,10 +682,6 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 	this->BuildStatistics();
 
 #if 0
-
-	CWinApp * pApp = AfxGetApp();
-	if (pApp)
-		pApp->DoWaitCursor(1);
 
 	m_bShowFolders = bShowFolders;
 
@@ -807,9 +803,6 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 		}
 	}
 
-	if (pApp)
-		pApp->DoWaitCursor(-1);
-
 	m_bEmpty = (GetItemCount() == 0);
 	Invalidate();
 #endif
@@ -817,6 +810,9 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 
 void CGitStatusListCtrl::Show(unsigned int /*dwShow*/, const CTGitPathList& checkedList, bool /*bShowFolders*/ /* = true */)
 {
+	CAutoWriteLock locker(m_guard);
+	m_bWaitCursor = true;
+	m_bBusy = true;
 	m_dwShow = GITSLC_SHOWALL;
 	DeleteAllItems();
 	m_arStatusArray.clear();
@@ -829,16 +825,14 @@ void CGitStatusListCtrl::Show(unsigned int /*dwShow*/, const CTGitPathList& chec
 	AdjustColumnWidths();
 
 	RestoreScrollPos();
-
+	m_bWaitCursor = false;
+	m_bBusy = false;
 	return ;
 #if 0
 
 	Locker lock(m_critSec);
 	WORD langID = (WORD)CRegStdDWORD(L"Software\\TortoiseGit\\LanguageID", GetUserDefaultLangID());
 
-	CWinApp * pApp = AfxGetApp();
-	if (pApp)
-		pApp->DoWaitCursor(1);
 	m_dwShow = dwShow;
 	m_bShowFolders = bShowFolders;
 	m_nSelected = 0;
@@ -949,9 +943,6 @@ void CGitStatusListCtrl::Show(unsigned int /*dwShow*/, const CTGitPathList& chec
 		}
 	}
 
-	if (pApp)
-		pApp->DoWaitCursor(-1);
-
 	m_bEmpty = (GetItemCount() == 0);
 	Invalidate();
 #endif
@@ -1007,13 +998,13 @@ int CGitStatusListCtrl::GetColumnIndex(int mask)
 void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int listIndex)
 {
 	static CString from(MAKEINTRESOURCE(IDS_STATUSLIST_FROM));
-	static HINSTANCE hResourceHandle(AfxGetResourceHandle());
 	static bool abbreviateRenamings(((DWORD)CRegDWORD(L"Software\\TortoiseGit\\AbbreviateRenamings", FALSE)) == TRUE);
 	static bool relativeTimes = (CRegDWORD(L"Software\\TortoiseGit\\RelativeTimes", FALSE) != FALSE);
 
+	CAutoWriteLock locker(m_guard);
+	ScopedInDecrement blocker(m_nBlockItemChangeHandler);
 	CString path = GitPath->GetGitPathString();
 
-	m_bBlock = TRUE;
 	int index = listIndex;
 	int nCol = 1;
 	CString entryname = GitPath->GetGitPathString();
@@ -1116,12 +1107,11 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int list
 		SetItemGroup(index,1);
 	else
 		SetItemGroup(index, GitPath->m_ParentNo&(PARENT_MASK|MERGE_MASK));
-
-	m_bBlock = FALSE;
 }
 
 bool CGitStatusListCtrl::SetItemGroup(int item, int groupindex)
 {
+	CAutoWriteLock locker(m_guard);
 //	if (!(m_dwContextMenus & SVNSLC_POPCHANGELISTS))
 //		return false;
 	if (groupindex < 0)
@@ -1139,32 +1129,20 @@ void CGitStatusListCtrl::OnHdnItemclick(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMHEADER phdr = reinterpret_cast<LPNMHEADER>(pNMHDR);
 	*pResult = 0;
-	if (m_bBlock || m_arStatusArray.empty())
+
+	CAutoReadWeakLock lock(m_guard);
+	if (!lock.IsAcquired())
 		return;
-	m_bBlock = TRUE;
+
+	if (m_arStatusArray.empty())
+		return;
+
 	if (m_nSortedColumn == phdr->iItem)
 		m_bAscending = !m_bAscending;
 	else
 		m_bAscending = TRUE;
 	m_nSortedColumn = phdr->iItem;
 	Show(m_dwShow, 0, m_bShowFolders,false,true);
-
-	m_bBlock = FALSE;
-}
-
-void CGitStatusListCtrl::OnLvnItemchanging(NMHDR *pNMHDR, LRESULT *pResult)
-{
-	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
-	*pResult = 0;
-
-#define ISCHECKED(x) ((x) ? ((((x)&LVIS_STATEIMAGEMASK)>>12)-1) : FALSE)
-	if ((m_bBlock)&&(m_bBlockUI))
-	{
-		// if we're blocked, prevent changing of the check state
-		if ((!ISCHECKED(pNMLV->uOldState) && ISCHECKED(pNMLV->uNewState))||
-			(ISCHECKED(pNMLV->uOldState) && !ISCHECKED(pNMLV->uNewState)))
-			*pResult = TRUE;
-	}
 }
 
 BOOL CGitStatusListCtrl::OnLvnItemchanged(NMHDR *pNMHDR, LRESULT *pResult)
@@ -1175,26 +1153,33 @@ BOOL CGitStatusListCtrl::OnLvnItemchanged(NMHDR *pNMHDR, LRESULT *pResult)
 	if (pParent && pParent->GetSafeHwnd())
 		pParent->SendMessage(GITSLNM_ITEMCHANGED, pNMLV->iItem);
 
+	if (m_nBlockItemChangeHandler)
+		return FALSE;
+
 	if ((pNMLV->uNewState==0)||(pNMLV->uNewState & LVIS_SELECTED)||(pNMLV->uNewState & LVIS_FOCUSED))
 		return FALSE;
 
-	if (m_bBlock)
+	CAutoWriteWeakLock writeLock(m_guard);
+	if (!writeLock.IsAcquired())
+	{
+		NotifyCheck();
 		return FALSE;
+	}
 
 	bool bSelected = !!(ListView_GetItemState(m_hWnd, pNMLV->iItem, LVIS_SELECTED) & LVIS_SELECTED);
 	int nListItems = GetItemCount();
 
-	m_bBlock = TRUE;
 	// was the item checked?
-
-	//CTGitPath *gitpath=(CTGitPath*)GetItemData(pNMLV->iItem);
-	//gitpath->m_Checked=GetCheck(pNMLV->iItem);
 
 	if (GetCheck(pNMLV->iItem))
 	{
-		CheckEntry(pNMLV->iItem, nListItems);
+		{
+			ScopedInDecrement blocker(m_nBlockItemChangeHandler);
+			CheckEntry(pNMLV->iItem, nListItems);
+		}
 		if (bSelected)
 		{
+			ScopedInDecrement blocker(m_nBlockItemChangeHandler);
 			POSITION pos = GetFirstSelectedItemPosition();
 			int index;
 			while ((index = GetNextSelectedItem(pos)) >= 0)
@@ -1206,9 +1191,13 @@ BOOL CGitStatusListCtrl::OnLvnItemchanged(NMHDR *pNMHDR, LRESULT *pResult)
 	}
 	else
 	{
-		UncheckEntry(pNMLV->iItem, nListItems);
+		{
+			ScopedInDecrement blocker(m_nBlockItemChangeHandler);
+			UncheckEntry(pNMLV->iItem, nListItems);
+		}
 		if (bSelected)
 		{
+			ScopedInDecrement blocker(m_nBlockItemChangeHandler);
 			POSITION pos = GetFirstSelectedItemPosition();
 			int index;
 			while ((index = GetNextSelectedItem(pos)) >= 0)
@@ -1220,7 +1209,6 @@ BOOL CGitStatusListCtrl::OnLvnItemchanged(NMHDR *pNMHDR, LRESULT *pResult)
 	}
 
 	GetStatisticsString();
-	m_bBlock = FALSE;
 	NotifyCheck();
 
 	return FALSE;
@@ -1228,14 +1216,12 @@ BOOL CGitStatusListCtrl::OnLvnItemchanged(NMHDR *pNMHDR, LRESULT *pResult)
 
 void CGitStatusListCtrl::CheckEntry(int index, int /*nListItems*/)
 {
-	Locker lock(m_critSec);
-	//FileEntry * entry = GetListEntry(index);
+	CAutoWriteLock locker(m_guard);
 	auto path = GetListEntry(index);
 	if (!path)
 		return;
 	m_mapFilenameToChecked[path->GetGitPathString()] = true;
 	SetCheck(index, TRUE);
-	//entry = GetListEntry(index);
 	// if an unversioned item was checked, then we need to check if
 	// the parent folders are unversioned too. If the parent folders actually
 	// are unversioned, then check those too.
@@ -1301,13 +1287,12 @@ void CGitStatusListCtrl::CheckEntry(int index, int /*nListItems*/)
 
 void CGitStatusListCtrl::UncheckEntry(int index, int /*nListItems*/)
 {
-	Locker lock(m_critSec);
+	CAutoWriteLock locker(m_guard);
 	auto path = GetListEntry(index);
 	if (!path)
 		return;
 	SetCheck(index, FALSE);
 	m_mapFilenameToChecked[path->GetGitPathString()] = false;
-	//entry = GetListEntry(index);
 	// item was unchecked
 #if 0
 	if (entry->path.IsDirectory())
@@ -1353,6 +1338,7 @@ void CGitStatusListCtrl::UncheckEntry(int index, int /*nListItems*/)
 }
 bool CGitStatusListCtrl::BuildStatistics()
 {
+	CAutoReadLock locker(m_guard);
 	bool bRefetchStatus = false;
 
 	// now gather some statistics
@@ -1398,7 +1384,6 @@ bool CGitStatusListCtrl::BuildStatistics()
 	}
 	return !bRefetchStatus;
 }
-
 
 int CGitStatusListCtrl::GetGroupFromPoint(POINT * ppt)
 {
@@ -1469,6 +1454,10 @@ void CGitStatusListCtrl::OnContextMenuGroup(CWnd * /*pWnd*/, CPoint point)
 	ScreenToClient(&clientpoint);
 	if ((IsGroupViewEnabled())&&(GetGroupFromPoint(&clientpoint) >= 0))
 	{
+		CAutoReadWeakLock readLock(m_guard);
+		if (!readLock.IsAcquired())
+			return;
+
 		CMenu popup;
 		if (popup.CreatePopupMenu())
 		{
@@ -1489,7 +1478,6 @@ void CGitStatusListCtrl::OnContextMenuGroup(CWnd * /*pWnd*/, CPoint point)
 					int group = GetGroupFromPoint(&clientpoint);
 					// go through all items and check/uncheck those assigned to the group
 					// but block the OnLvnItemChanged handler
-					m_bBlock = true;
 					for (int i=0; i<GetItemCount(); ++i)
 					{
 						LVITEM lv = { 0 };
@@ -1517,7 +1505,6 @@ void CGitStatusListCtrl::OnContextMenuGroup(CWnd * /*pWnd*/, CPoint point)
 					}
 					GetStatisticsString();
 					NotifyCheck();
-					m_bBlock = false;
 				}
 				break;
 			}
@@ -1527,10 +1514,11 @@ void CGitStatusListCtrl::OnContextMenuGroup(CWnd * /*pWnd*/, CPoint point)
 
 void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 {
-	//WORD langID = (WORD)CRegStdDWORD(L"Software\\TortoiseGit\\LanguageID", GetUserDefaultLangID());
-
 	bool bShift = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
-	CTGitPath * filepath;
+
+	CAutoReadWeakLock readLock(m_guard);
+	if (!readLock.IsAcquired())
+		return;
 
 	auto selectedCount = GetSelectedCount();
 	int selIndex = GetSelectionMark();
@@ -1549,14 +1537,14 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 	}
 	else if (selIndex >= 0)
 	{
-		filepath = GetListEntry(selIndex);
+		CAutoWriteLock writeLock(m_guard);
+		auto filepath = GetListEntry(selIndex);
 		if (!filepath)
 			return;
 
 		//const CTGitPath& filepath = entry->path;
 		int wcStatus = filepath->m_Action;
 		// entry is selected, now show the popup menu
-		Locker lock(m_critSec);
 		CIconMenu popup;
 		CMenu changelistSubMenu;
 		CMenu ignoreSubMenu;
@@ -1937,8 +1925,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			g_pidlArray = nullptr;
 			g_pidlArrayItems = 0;
 
-			m_bBlock = TRUE;
-			AfxGetApp()->DoWaitCursor(1);
+			m_bWaitCursor = true;
 			bShift = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
 			//int iItemCountBeforeMenuCmd = GetItemCount();
 			//bool bForce = false;
@@ -2521,8 +2508,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 #endif
 
 			} // switch (cmd)
-			m_bBlock = FALSE;
-			AfxGetApp()->DoWaitCursor(-1);
+			m_bWaitCursor = false;
 			GetStatisticsString();
 			//int iItemCountAfterMenuCmd = GetItemCount();
 			//if (iItemCountAfterMenuCmd != iItemCountBeforeMenuCmd)
@@ -2541,6 +2527,8 @@ void CGitStatusListCtrl::SetGitIndexFlagsForSelectedFiles(UINT message, BOOL ass
 {
 	if (CMessageBox::Show(GetSafeHwnd(), message, IDS_APPNAME, MB_YESNO | MB_DEFBUTTON2 | MB_ICONQUESTION) != IDYES)
 		return;
+
+	CAutoReadLock locker(m_guard);
 
 	CAutoRepository repository(g_Git.GetGitRepository());
 	if (!repository)
@@ -2605,13 +2593,13 @@ void CGitStatusListCtrl::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 	*pResult = 0;
-	if (m_bBlock || m_bBusy)
+
+	CAutoReadWeakLock readLock(m_guard);
+	if (!readLock.IsAcquired())
 		return;
 
 	if (pNMLV->iItem < 0)
 		return;
-
-	Locker lock(m_critSec);
 
 	auto file = GetListEntry(pNMLV->iItem);
 
@@ -2648,6 +2636,7 @@ void CGitStatusListCtrl::StartDiffTwo(int fileindex)
 	if(fileindex<0)
 		return;
 
+	CAutoReadLock locker(m_guard);
 	auto ptr = GetListEntry(fileindex);
 	if (!ptr)
 		return;
@@ -2666,7 +2655,7 @@ void CGitStatusListCtrl::StartDiffWC(int fileindex)
 	if(fileindex<0)
 		return;
 
-	CString Ver;
+	CAutoReadLock locker(m_guard);
 	if (m_CurrentVersion.IsEmpty())
 		m_CurrentVersion == GIT_REV_ZERO;
 
@@ -2684,6 +2673,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 	if(fileindex<0)
 		return;
 
+	CAutoReadLock locker(m_guard);
 	auto ptr = GetListEntry(fileindex);
 	if (!ptr)
 		return;
@@ -2877,6 +2867,7 @@ CString CGitStatusListCtrl::GetStatisticsString(bool simple)
 
 CString CGitStatusListCtrl::GetCommonDirectory(bool bStrict)
 {
+	CAutoReadLock locker(m_guard);
 	if (!bStrict)
 	{
 		// not strict means that the selected folder has priority
@@ -2901,26 +2892,27 @@ void CGitStatusListCtrl::SelectAll(bool bSelect, bool /*bIncludeNoCommits*/)
 	CWaitCursor waitCursor;
 	// block here so the LVN_ITEMCHANGED messages
 	// get ignored
-	m_bBlock = TRUE;
-	SetRedraw(FALSE);
+	ScopedInDecrement blocker(m_nBlockItemChangeHandler);
 
-	int nListItems = GetItemCount();
-	if (bSelect)
-		m_nSelected = nListItems;
-	else
-		m_nSelected = 0;
-
-	for (int i=0; i<nListItems; ++i)
 	{
-		auto path = GetListEntry(i);
-		if (!path)
-			continue;
-		//if ((bIncludeNoCommits)||(entry->GetChangeList().Compare(SVNSLC_IGNORECHANGELIST)))
-		SetEntryCheck(path,i,bSelect);
-	}
+		CAutoWriteLock locker(m_guard);
+		SetRedraw(FALSE);
 
-	// unblock before redrawing
-	m_bBlock = FALSE;
+		int nListItems = GetItemCount();
+		if (bSelect)
+			m_nSelected = nListItems;
+		else
+			m_nSelected = 0;
+
+		for (int i=0; i<nListItems; ++i)
+		{
+			auto path = GetListEntry(i);
+			if (!path)
+				continue;
+			//if ((bIncludeNoCommits)||(entry->GetChangeList().Compare(SVNSLC_IGNORECHANGELIST)))
+			SetEntryCheck(path,i,bSelect);
+		}
+	}
 	SetRedraw(TRUE);
 	GetStatisticsString();
 	NotifyCheck();
@@ -2931,36 +2923,37 @@ void CGitStatusListCtrl::Check(DWORD dwCheck, bool check)
 	CWaitCursor waitCursor;
 	// block here so the LVN_ITEMCHANGED messages
 	// get ignored
-	m_bBlock = TRUE;
-	SetRedraw(FALSE);
-
-	int nListItems = GetItemCount();
-
-	for (int i = 0; i < nListItems; ++i)
 	{
-		auto entry = GetListEntry(i);
-		if (!entry)
-			continue;
+		CAutoWriteLock locker(m_guard);
+		SetRedraw(FALSE);
+		ScopedInDecrement blocker(m_nBlockItemChangeHandler);
 
-		DWORD showFlags = entry->m_Action;
-		if (entry->IsDirectory())
-			showFlags |= GITSLC_SHOWSUBMODULES;
-		else
-			showFlags |= GITSLC_SHOWFILES;
+		int nListItems = GetItemCount();
 
-		if (check && (showFlags & dwCheck) && !GetCheck(i) && !(entry->IsDirectory() && m_bDoNotAutoselectSubmodules && !(dwCheck & GITSLC_SHOWSUBMODULES)))
+		for (int i = 0; i < nListItems; ++i)
 		{
-			SetEntryCheck(entry, i, true);
-			m_nSelected++;
-		}
-		else if (!check && (showFlags & dwCheck) && GetCheck(i))
-		{
-			SetEntryCheck(entry, i, false);
-			m_nSelected--;
+			auto entry = GetListEntry(i);
+			if (!entry)
+				continue;
+
+			DWORD showFlags = entry->m_Action;
+			if (entry->IsDirectory())
+				showFlags |= GITSLC_SHOWSUBMODULES;
+			else
+				showFlags |= GITSLC_SHOWFILES;
+
+			if (check && (showFlags & dwCheck) && !GetCheck(i) && !(entry->IsDirectory() && m_bDoNotAutoselectSubmodules && !(dwCheck & GITSLC_SHOWSUBMODULES)))
+			{
+				SetEntryCheck(entry, i, true);
+				m_nSelected++;
+			}
+			else if (!check && (showFlags & dwCheck) && GetCheck(i))
+			{
+				SetEntryCheck(entry, i, false);
+				m_nSelected--;
+			}
 		}
 	}
-	// unblock before redrawing
-	m_bBlock = FALSE;
 	SetRedraw(TRUE);
 	GetStatisticsString();
 	NotifyCheck();
@@ -2970,7 +2963,11 @@ void CGitStatusListCtrl::OnLvnGetInfoTip(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMLVGETINFOTIP pGetInfoTip = reinterpret_cast<LPNMLVGETINFOTIP>(pNMHDR);
 	*pResult = 0;
-	if (m_bBlock || CRegDWORD(L"Software\\TortoiseGit\\ShowListFullPathTooltip", TRUE) != TRUE)
+	if (CRegDWORD(L"Software\\TortoiseGit\\ShowListFullPathTooltip", TRUE) != TRUE)
+		return;
+
+	CAutoReadWeakLock readLock(m_guard);
+	if (!readLock.IsAcquired())
 		return;
 
 	auto entry = GetListEntry(pGetInfoTip->iItem);
@@ -3006,7 +3003,8 @@ void CGitStatusListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 
 			// Tell Windows to paint the control itself.
 			*pResult = CDRF_DODEFAULT;
-			if (m_bBlock)
+			CAutoReadWeakLock readLock(m_guard, 0);
+			if (!readLock.IsAcquired())
 				return;
 
 			COLORREF crText = GetSysColor(COLOR_WINDOWTEXT);
@@ -3053,7 +3051,7 @@ BOOL CGitStatusListCtrl::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
 	if (pWnd != this)
 		return CListCtrl::OnSetCursor(pWnd, nHitTest, message);
-	if (!m_bBlock)
+	if (!m_bWaitCursor && !m_bBusy)
 	{
 		HCURSOR hCur = LoadCursor(nullptr, IDC_ARROW);
 		SetCursor(hCur);
@@ -3066,7 +3064,7 @@ BOOL CGitStatusListCtrl::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 
 void CGitStatusListCtrl::RemoveListEntry(int index)
 {
-	Locker lock(m_critSec);
+	CAutoWriteLock locker(m_guard);
 	DeleteItem(index);
 
 	m_arStatusArray.erase(m_arStatusArray.cbegin() + index);
@@ -3086,6 +3084,7 @@ void CGitStatusListCtrl::RemoveListEntry(int index)
 // NEVER, EVER call SetCheck directly, because you'll end-up with the checkboxes and the 'checked' flag getting out of sync
 void CGitStatusListCtrl::SetEntryCheck(CTGitPath* pEntry, int listboxIndex, bool bCheck)
 {
+	CAutoWriteLock locker(m_guard);
 	pEntry->m_Checked = bCheck;
 	m_mapFilenameToChecked[pEntry->GetGitPathString()] = bCheck;
 	SetCheck(listboxIndex, bCheck);
@@ -3093,6 +3092,7 @@ void CGitStatusListCtrl::SetEntryCheck(CTGitPath* pEntry, int listboxIndex, bool
 
 void CGitStatusListCtrl::ResetChecked(const CTGitPath& entry)
 {
+	CAutoWriteLock locker(m_guard);
 	CTGitPath adjustedEntry;
 	if (g_Git.m_CurrentDir[g_Git.m_CurrentDir.GetLength() - 1] == L'\\')
 		adjustedEntry.SetFromWin(entry.GetWinPathString().Right(entry.GetWinPathString().GetLength() - g_Git.m_CurrentDir.GetLength()));
@@ -3116,6 +3116,7 @@ void CGitStatusListCtrl::ResetChecked(const CTGitPath& entry)
 #if 0
 void CGitStatusListCtrl::SetCheckOnAllDescendentsOf(const FileEntry* parentEntry, bool bCheck)
 {
+	CAutoWriteLock locker(m_guard);
 	int nListItems = GetItemCount();
 	for (int j=0; j< nListItems ; ++j)
 	{
@@ -3141,6 +3142,7 @@ void CGitStatusListCtrl::SetCheckOnAllDescendentsOf(const FileEntry* parentEntry
 void CGitStatusListCtrl::WriteCheckedNamesToPathList(CTGitPathList& pathList)
 {
 	pathList.Clear();
+	CAutoReadLock locker(m_guard);
 	int nListItems = GetItemCount();
 	for (int i = 0; i< nListItems; ++i)
 	{
@@ -3157,6 +3159,7 @@ void CGitStatusListCtrl::FillListOfSelectedItemPaths(CTGitPathList& pathList, bo
 {
 	pathList.Clear();
 
+	CAutoReadLock locker(m_guard);
 	POSITION pos = GetFirstSelectedItemPosition();
 	int index;
 	while ((index = GetNextSelectedItem(pos)) >= 0)
@@ -3178,7 +3181,8 @@ UINT CGitStatusListCtrl::OnGetDlgCode()
 void CGitStatusListCtrl::OnNMReturn(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 {
 	*pResult = 0;
-	if (m_bBlock)
+	CAutoReadWeakLock readLock(m_guard);
+	if (!readLock.IsAcquired())
 		return;
 	if (!CheckMultipleDiffs())
 		return;
@@ -3322,7 +3326,7 @@ void CGitStatusListCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 
-	Locker lock(m_critSec);
+	CAutoReadLock locker(m_guard);
 
 	CTGitPathList pathList;
 	FillListOfSelectedItemPaths(pathList);
@@ -3368,6 +3372,7 @@ bool CGitStatusListCtrl::EnableFileDrop()
 
 bool CGitStatusListCtrl::HasPath(const CTGitPath& path)
 {
+	CAutoReadLock locker(m_guard);
 	CTGitPath adjustedEntry;
 	if (g_Git.m_CurrentDir[g_Git.m_CurrentDir.GetLength() - 1] == L'\\')
 		adjustedEntry.SetFromWin(path.GetWinPathString().Right(path.GetWinPathString().GetLength() - g_Git.m_CurrentDir.GetLength()));
@@ -3417,11 +3422,10 @@ BOOL CGitStatusListCtrl::PreTranslateMessage(MSG* pMsg)
 			{
 				if ((GetSelectedCount() > 0) && (m_dwContextMenus & GITSLC_POPDELETE))
 				{
-					m_bBlock = TRUE;
+					CAutoReadLock locker(m_guard);
 					auto filepath = GetListEntry(GetSelectionMark());
 					if (filepath != nullptr && (filepath->m_Action & (CTGitPath::LOGACTIONS_UNVER | CTGitPath::LOGACTIONS_IGNORE)))
 						DeleteSelectedFiles();
-					m_bBlock = FALSE;
 				}
 			}
 			break;
@@ -3460,6 +3464,8 @@ bool CGitStatusListCtrl::CopySelectedEntriesToClipboard(DWORD dwCols)
 
 	if(dwCols)
 		sClipboard += L"\r\n";
+
+	CAutoReadLock locker(m_guard);
 
 	POSITION pos = GetFirstSelectedItemPosition();
 	int index;
@@ -3515,6 +3521,7 @@ bool CGitStatusListCtrl::CopySelectedEntriesToClipboard(DWORD dwCols)
 size_t CGitStatusListCtrl::GetNumberOfChangelistsInSelection()
 {
 #if 0
+	CAutoReadLock locker(m_guard);
 	std::set<CString> changelists;
 	POSITION pos = GetFirstSelectedItemPosition();
 	int index;
@@ -3531,6 +3538,7 @@ size_t CGitStatusListCtrl::GetNumberOfChangelistsInSelection()
 
 bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 {
+	CAutoWriteLock locker(m_guard);
 	bool bHasGroups=false;
 	int	max =0;
 
@@ -3689,6 +3697,7 @@ void CGitStatusListCtrl::NotifyCheck()
 
 int CGitStatusListCtrl::UpdateFileList(const CTGitPathList* list)
 {
+	CAutoWriteLock locker(m_guard);
 	m_CurrentVersion = GIT_REV_ZERO;
 
 	g_Git.GetWorkingTreeChanges(m_StatusFileList, m_amend, list);
@@ -3738,6 +3747,7 @@ int CGitStatusListCtrl::UpdateFileList(const CTGitPathList* list)
 
 int CGitStatusListCtrl::UpdateWithGitPathList(CTGitPathList &list)
 {
+	CAutoWriteLock locker(m_guard);
 	m_arStatusArray.clear();
 	for (int i = 0; i < list.GetCount(); ++i)
 	{
@@ -3754,6 +3764,7 @@ int CGitStatusListCtrl::UpdateWithGitPathList(CTGitPathList &list)
 
 int CGitStatusListCtrl::UpdateUnRevFileList(CTGitPathList &list)
 {
+	CAutoWriteLock locker(m_guard);
 	m_UnRevFileList = list;
 	for (int i = 0; i < m_UnRevFileList.GetCount(); ++i)
 	{
@@ -3766,6 +3777,7 @@ int CGitStatusListCtrl::UpdateUnRevFileList(CTGitPathList &list)
 
 int CGitStatusListCtrl::UpdateUnRevFileList(const CTGitPathList* List)
 {
+	CAutoWriteLock locker(m_guard);
 	CString err;
 	if (m_UnRevFileList.FillUnRev(CTGitPath::LOGACTIONS_UNVER, List, &err))
 	{
@@ -3784,6 +3796,7 @@ int CGitStatusListCtrl::UpdateUnRevFileList(const CTGitPathList* List)
 
 int CGitStatusListCtrl::UpdateIgnoreFileList(const CTGitPathList* List)
 {
+	CAutoWriteLock locker(m_guard);
 	CString err;
 	if (m_IgnoreFileList.FillUnRev(CTGitPath::LOGACTIONS_IGNORE, List, &err))
 	{
@@ -3802,6 +3815,7 @@ int CGitStatusListCtrl::UpdateIgnoreFileList(const CTGitPathList* List)
 
 int CGitStatusListCtrl::UpdateLocalChangesIgnoredFileList(const CTGitPathList* list)
 {
+	CAutoWriteLock locker(m_guard);
 	m_LocalChangesIgnoredFileList.FillBasedOnIndexFlags(GIT_IDXENTRY_VALID, GIT_IDXENTRY_SKIP_WORKTREE, list);
 	for (int i = 0; i < m_LocalChangesIgnoredFileList.GetCount(); ++i)
 	{
@@ -3814,6 +3828,7 @@ int CGitStatusListCtrl::UpdateLocalChangesIgnoredFileList(const CTGitPathList* l
 
 int CGitStatusListCtrl::UpdateFileList(int mask, bool once, const CTGitPathList* List)
 {
+	CAutoWriteLock locker(m_guard);
 	if(mask&CGitStatusListCtrl::FILELIST_MODIFY)
 	{
 		if(once || (!(m_FileLoaded&CGitStatusListCtrl::FILELIST_MODIFY)))
@@ -3845,6 +3860,7 @@ int CGitStatusListCtrl::UpdateFileList(int mask, bool once, const CTGitPathList*
 
 void CGitStatusListCtrl::Clear()
 {
+	CAutoWriteLock locker(m_guard);
 	m_FileLoaded=0;
 	this->DeleteAllItems();
 	this->m_arListArray.clear();
@@ -3998,6 +4014,7 @@ HRESULT STDMETHODCALLTYPE CGitStatusListCtrlDropTarget::DragOver(DWORD grfKeySta
 
 void CGitStatusListCtrl::FilesExport()
 {
+	CAutoReadLock locker(m_guard);
 	CString exportDir;
 	// export all changed files to a folder
 	CBrowseFolder browseFolder;
@@ -4039,6 +4056,7 @@ void CGitStatusListCtrl::FilesExport()
 
 void CGitStatusListCtrl::FileSaveAs(CTGitPath *path)
 {
+	CAutoReadLock locker(m_guard);
 	CString filename;
 	filename.Format(L"%s\\%s-%s%s", (LPCTSTR)g_Git.CombinePath(path->GetContainingDirectory()), (LPCTSTR)path->GetBaseFilename(), (LPCTSTR)m_CurrentVersion.Left(g_Git.GetShortHASHLength()), (LPCTSTR)path->GetFileExtension());
 	if (!CAppUtils::FileOpenSave(filename, nullptr, 0, 0, false, GetSafeHwnd()))
@@ -4065,6 +4083,7 @@ void CGitStatusListCtrl::FileSaveAs(CTGitPath *path)
 
 int CGitStatusListCtrl::RevertSelectedItemToVersion(bool parent)
 {
+	CAutoReadLock locker(m_guard);
 	if(this->m_CurrentVersion.IsEmpty())
 		return 0;
 	if(this->m_CurrentVersion == GIT_REV_ZERO)
@@ -4156,6 +4175,7 @@ void CGitStatusListCtrl::OpenFile(CTGitPath*filepath,int mode)
 
 void CGitStatusListCtrl::DeleteSelectedFiles()
 {
+	CAutoWriteLock locker(m_guard);
 	//Collect paths
 	std::vector<int> selectIndex;
 
@@ -4407,7 +4427,8 @@ BOOL CGitStatusListCtrl::OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LR
 
 CTGitPath* CGitStatusListCtrl::GetListEntry(int index)
 {
-	auto entry = reinterpret_cast<CTGitPath*>(GetItemData(index));
+	ATLASSERT(m_guard.GetCurrentThreadStatus());
+	auto entry = const_cast<CTGitPath*>(m_arStatusArray[index]);
 	ASSERT(entry);
 	return entry;
 }
