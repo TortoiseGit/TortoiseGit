@@ -646,6 +646,7 @@ public:
 	}
 
 private:
+	CString GetCellText(int listIndex, int column);    ///< get the text for a certain grid cell
 	//void AddEntry(FileEntry * entry, WORD langID, int listIndex);	///< add an entry to the control
 	void RemoveListEntry(int index);	///< removes an entry from the listcontrol and both arrays
 	bool BuildStatistics();	///< build the statistics and correct the case of files/folders
@@ -724,6 +725,7 @@ private:
 	afx_msg void OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnLvnGetInfoTip(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnLvnGetdispinfo(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
 	afx_msg UINT OnGetDlgCode();
 	afx_msg void OnNMReturn(NMHDR *pNMHDR, LRESULT *pResult);

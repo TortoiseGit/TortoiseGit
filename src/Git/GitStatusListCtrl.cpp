@@ -202,6 +202,7 @@ BEGIN_MESSAGE_MAP(CGitStatusListCtrl, CResizableColumnsListCtrl<CListCtrl>)
 	ON_NOTIFY_REFLECT(NM_DBLCLK, OnNMDblclk)
 	ON_NOTIFY_REFLECT(LVN_GETINFOTIP, OnLvnGetInfoTip)
 	ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, OnNMCustomdraw)
+	ON_NOTIFY_REFLECT(LVN_GETDISPINFO, OnLvnGetdispinfo)
 	ON_WM_SETCURSOR()
 	ON_WM_GETDLGCODE()
 	ON_NOTIFY_REFLECT(NM_RETURN, OnNMReturn)
@@ -995,19 +996,114 @@ int CGitStatusListCtrl::GetColumnIndex(int mask)
 			mask=mask>>1;
 	return -1;
 }
-void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int listIndex)
+
+CString CGitStatusListCtrl::GetCellText(int listIndex, int column)
 {
 	static CString from(MAKEINTRESOURCE(IDS_STATUSLIST_FROM));
 	static bool abbreviateRenamings(((DWORD)CRegDWORD(L"Software\\TortoiseGit\\AbbreviateRenamings", FALSE)) == TRUE);
 	static bool relativeTimes = (CRegDWORD(L"Software\\TortoiseGit\\RelativeTimes", FALSE) != FALSE);
+	static const CString empty;
 
+	CAutoReadLock locker(m_guard);
+	const auto* entry = GetListEntry(listIndex);
+	if (!entry)
+		return empty;
+
+	switch (column)
+	{
+	case 0: // relative path
+		if (!(entry->m_Action & (CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_COPY) && !entry->GetGitOldPathString().IsEmpty()))
+			return entry->GetGitPathString();
+
+		if (!abbreviateRenamings)
+		{
+			CString entryname = entry->GetGitPathString();
+			entryname += L' ';
+			// relative path
+			entryname.AppendFormat(from, (LPCTSTR)entry->GetGitOldPathString());
+			return entryname;
+		}
+
+		return entry->GetAbbreviatedRename();
+
+	case 1: // GITSLC_COLFILENAME
+		return entry->GetFileOrDirectoryName();
+
+	case 2: // GITSLC_COLEXT
+		return entry->GetFileExtension();
+
+	case 3: // GITSLC_COLSTATUS
+		return entry->GetActionName();
+
+	case 4: // GITSLC_COLADD
+		return entry->m_StatAdd;
+
+	case 5: // GITSLC_COLDEL
+		return entry->m_StatDel;
+
+	case 6: // GITSLC_COLMODIFICATIONDATE
+		if (!(entry->m_Action & CTGitPath::LOGACTIONS_DELETED) && m_ColumnManager.IsRelevant(GetColumnIndex(GITSLC_COLMODIFICATIONDATE)))
+		{
+			CString modificationDate;
+			__int64 filetime = entry->GetLastWriteTime();
+			if (filetime)
+			{
+				FILETIME* f = (FILETIME*)(__int64*)&filetime;
+				modificationDate = CLoglistUtils::FormatDateAndTime(CTime(CGit::filetime_to_time_t(f)), DATE_SHORTDATE, true, relativeTimes);
+			}
+			return modificationDate;
+		}
+		return empty;
+
+	case 7: // GITSLC_COLSIZE
+		if (!(entry->IsDirectory() || !m_ColumnManager.IsRelevant(GetColumnIndex(GITSLC_COLSIZE))))
+		{
+			TCHAR buf[100] = { 0 };
+			StrFormatByteSize64(entry->GetFileSize(), buf, 100);
+			return buf;
+		}
+		return empty;
+
+#if 0
+	default: // user-defined properties
+		if (column < m_ColumnManager.GetColumnCount())
+		{
+			assert(m_ColumnManager.IsUserProp(column));
+
+			const CString& name = m_ColumnManager.GetName(column);
+			auto propEntry = m_PropertyMap.find(entry->GetPath());
+			if (propEntry != m_PropertyMap.end())
+			{
+				if (propEntry->second.HasProperty(name))
+				{
+					const CString& propVal = propEntry->second[name];
+					return propVal.IsEmpty()
+						? m_sNoPropValueText
+						: propVal;
+				}
+			}
+		}
+#endif
+	}
+	return empty;
+}
+
+void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int listIndex)
+{
 	CAutoWriteLock locker(m_guard);
 	ScopedInDecrement blocker(m_nBlockItemChangeHandler);
 	CString path = GitPath->GetGitPathString();
 
 	int index = listIndex;
-	int nCol = 1;
-	CString entryname = GitPath->GetGitPathString();
+	// Load the icons *now* so the icons are cached when showing them later in the
+	// WM_PAINT handler.
+	// Problem is that (at least on Win10), loading the icons in the WM_PAINT
+	// handler triggers an OLE operation, which should not happen in WM_PAINT at all
+	// (see ..\VC\atlmfc\src\mfc\olemsgf.cpp, COleMessageFilter::OnMessagePending() for details about this)
+	// By loading the icons here, they get cached and the OLE operation won't happen
+	// later in the WM_PAINT handler.
+	// This solves the 'hang' which happens in the commit dialog if images are
+	// shown in the file list.
 	int icon_idx = 0;
 	if (GitPath->IsDirectory())
 	{
@@ -1047,53 +1143,16 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int list
 		m_nShownUnversioned++;
 		break;
 	}
-	if(GitPath->m_Action & (CTGitPath::LOGACTIONS_REPLACED|CTGitPath::LOGACTIONS_COPY) && !GitPath->GetGitOldPathString().IsEmpty())
-	{
-		if (!abbreviateRenamings)
-		{
-			entryname += L' ';
-			// relative path
-			entryname.AppendFormat(from, (LPCTSTR)GitPath->GetGitOldPathString());
-		}
-		else
-			entryname = GitPath->GetAbbreviatedRename();
-	}
 
-	InsertItem(index, entryname, icon_idx);
+	LVITEM lvItem = { 0 };
+	lvItem.iItem = listIndex;
+	lvItem.mask = LVIF_TEXT | LVIF_IMAGE | LVIF_STATE;
+	lvItem.pszText = LPSTR_TEXTCALLBACK;
+	lvItem.stateMask = LVIS_OVERLAYMASK;
 	if (m_restorepaths.find(GitPath->GetWinPathString()) != m_restorepaths.end())
-		SetItemState(index, INDEXTOOVERLAYMASK(OVL_RESTORE), TVIS_OVERLAYMASK);
-
-	this->SetItemData(index, (DWORD_PTR)GitPath);
-	// SVNSLC_COLFILENAME
-	SetItemText(index, nCol++, GitPath->GetFileOrDirectoryName());
-	// SVNSLC_COLEXT
-	SetItemText(index, nCol++, GitPath->GetFileExtension());
-	// SVNSLC_COLSTATUS
-	SetItemText(index, nCol++, GitPath->GetActionName());
-
-	SetItemText(index, GetColumnIndex(GITSLC_COLADD),GitPath->m_StatAdd);
-	SetItemText(index, GetColumnIndex(GITSLC_COLDEL),GitPath->m_StatDel);
-
-	if (!(GitPath->m_Action & CTGitPath::LOGACTIONS_DELETED) && m_ColumnManager.IsRelevant(GetColumnIndex(GITSLC_COLMODIFICATIONDATE)))
-	{
-		CString modificationDate;
-		__int64 filetime = GitPath->GetLastWriteTime();
-		if (filetime)
-		{
-			FILETIME* f = (FILETIME*)(__int64*)&filetime;
-			modificationDate = CLoglistUtils::FormatDateAndTime(CTime(CGit::filetime_to_time_t(f)), DATE_SHORTDATE, true, relativeTimes);
-		}
-		SetItemText(index, GetColumnIndex(GITSLC_COLMODIFICATIONDATE), modificationDate);
-	}
-	// SVNSLC_COLSIZE
-	if (GitPath->IsDirectory() || !m_ColumnManager.IsRelevant(GetColumnIndex(GITSLC_COLSIZE)))
-		SetItemText(index, GetColumnIndex(GITSLC_COLSIZE), L"");
-	else
-	{
-		TCHAR buf[100] = { 0 };
-		StrFormatByteSize64(GitPath->GetFileSize(), buf, 100);
-		SetItemText(index, GetColumnIndex(GITSLC_COLSIZE), buf);
-	}
+		lvItem.state = INDEXTOOVERLAYMASK(OVL_RESTORE);
+	lvItem.iImage = icon_idx;
+	InsertItem(&lvItem);
 
 	SetCheck(index, GitPath->m_Checked);
 	if (GitPath->m_Checked)
@@ -3045,6 +3104,27 @@ void CGitStatusListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 		}
 		break;
 	}
+}
+
+void CGitStatusListCtrl::OnLvnGetdispinfo(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	auto pDispInfo = reinterpret_cast<NMLVDISPINFO*>(pNMHDR);
+	*pResult = 0;
+
+	// Create a pointer to the item
+	LV_ITEM* pItem = &(pDispInfo)->item;
+
+	CAutoReadWeakLock readLock(m_guard, 0);
+	if (readLock.IsAcquired())
+	{
+		if (pItem->mask & LVIF_TEXT)
+		{
+			CString text = GetCellText(pItem->iItem, pItem->iSubItem);
+			lstrcpyn(pItem->pszText, text, pItem->cchTextMax - 1);
+		}
+	}
+	else
+		pItem->mask = 0;
 }
 
 BOOL CGitStatusListCtrl::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
