@@ -179,6 +179,7 @@
 #define IDC_EXTMERGE                    1016
 #define IDS_PROC_RESETBRANCH            1016
 #define IDC_DIFFVIEWER                  1017
+#define IDS_STATUSLIST_CONTEXT_COPYFULLPATHS 1017
 #define IDS_FILEDIFF_LOG                1018
 #define IDS_PROC_TASKS                  1019
 #define IDC_FINDTEXT                    1019
@@ -1319,8 +1320,11 @@
 #define IDS_FIRSTSTART_LANGUAGEHINT3    1632
 #define IDC_CHECK_QUOTEPATH             1633
 #define IDS_PROC_LOG_SHOWUNVERSIONED    1633
+#define IDS_STATUSLIST_CONTEXT_COPYFILENAMES 1634
 #define IDC_STATIC_MERGE_MESSAGE        1635
+#define IDS_STATUSLIST_CONTEXT_COPYCOL  1635
 #define IDC_PATCH                       1636
+#define IDS_STATUSLIST_CONTEXT_COPYRELPATHS 1636
 #define IDC_VIEW_PATCH                  1637
 #define IDC_BUTTON_SUBMODULE            1639
 #define IDC_RADIO_EXCLUDE               1640

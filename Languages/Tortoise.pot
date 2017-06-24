@@ -11094,6 +11094,11 @@ msgstr ""
 msgid "bugtraq.warningifnoissue"
 msgstr ""
 
+#. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYCOL)
+#, c-format
+msgid "column '%ls'"
+msgstr ""
+
 #. Resource IDs: (IDS_STATGRAPH_COMMITSBYAUTHORY, IDS_STATGRAPH_COMMITSBYDATEY)
 msgid "commits"
 msgstr ""
@@ -11134,6 +11139,14 @@ msgstr ""
 
 #. Resource IDs: (IDS_STATUSEXTERNAL)
 msgid "external"
+msgstr ""
+
+#. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYFILENAMES)
+msgid "file/foldernames"
+msgstr ""
+
+#. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYFULLPATHS)
+msgid "full paths"
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_PROGRESS_GITUNCLEANEXIT)
@@ -11278,6 +11291,10 @@ msgstr ""
 
 #. Resource IDs: (IDS_STATGRAPH_COMMITSBYDATEXQUARTER)
 msgid "quarter of year"
+msgstr ""
+
+#. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYRELPATHS)
+msgid "relative paths"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 65535)

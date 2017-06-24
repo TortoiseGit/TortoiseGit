@@ -199,7 +199,7 @@ public:
 		IDGITLC_RESOLVEMINE		,
 		IDGITLC_REMOVE			,
 		IDGITLC_COMMIT			,
-		IDGITLC_COPY			,
+		IDGITLC_COPYRELPATHS	,
 		IDGITLC_COPYEXT			,
 		IDGITLC_REMOVEFROMCS	,
 		IDGITLC_CREATECS		,
@@ -229,6 +229,9 @@ public:
 		IDGITLC_UNSETIGNORELOCALCHANGES,
 		IDGITLC_PREPAREDIFF		,
 		IDGITLC_PREPAREDIFF_COMPARE,
+		IDGITLC_COPYCOL			,
+		IDGITLC_COPYFULL		,
+		IDGITLC_COPYFILENAMES	,
 // the IDSVNLC_MOVETOCS *must* be the last index, because it contains a dynamic submenu where
 // the submenu items get command ID's sequent to this number
 		IDGITLC_MOVETOCS		,
@@ -453,7 +456,7 @@ public:
 	 * are separated by newlines.
 	 * \param dwCols the columns to copy. Each column is separated by a tab.
 	 */
-	bool CopySelectedEntriesToClipboard(DWORD dwCols);
+	bool CopySelectedEntriesToClipboard(DWORD dwCols, int cmd);
 
 	/**
 	 * If during the call to GetStatus() some Git:externals are found from different

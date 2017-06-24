@@ -1581,6 +1581,17 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 	auto selectedCount = GetSelectedCount();
 	int selIndex = GetSelectionMark();
+	int selSubitem = -1;
+	if (selectedCount > 0)
+	{
+		CPoint pt = point;
+		ScreenToClient(&pt);
+		LVHITTESTINFO hittest = { 0 };
+		hittest.flags = LVHT_ONITEM;
+		hittest.pt = pt;
+		if (this->SubItemHitTest(&hittest) >= 0)
+			selSubitem = hittest.iSubItem;
+	}
 	if ((point.x == -1) && (point.y == -1))
 	{
 		CRect rect;
@@ -1607,6 +1618,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 		CIconMenu popup;
 		CMenu changelistSubMenu;
 		CMenu ignoreSubMenu;
+		CIconMenu clipSubMenu;
 		CMenu shellMenu;
 		if (popup.CreatePopupMenu())
 		{
@@ -1879,8 +1891,23 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			if (selectedCount > 0)
 			{
 				popup.AppendMenu(MF_SEPARATOR);
-				popup.AppendMenuIcon(IDGITLC_COPY, IDS_STATUSLIST_CONTEXT_COPY, IDI_COPYCLIP);
-				popup.AppendMenuIcon(IDGITLC_COPYEXT, IDS_STATUSLIST_CONTEXT_COPYEXT, IDI_COPYCLIP);
+
+				if (clipSubMenu.CreatePopupMenu())
+				{
+					CString temp;
+					clipSubMenu.AppendMenuIcon(IDGITLC_COPYFULL, IDS_STATUSLIST_CONTEXT_COPYFULLPATHS, IDI_COPYCLIP);
+					clipSubMenu.AppendMenuIcon(IDGITLC_COPYRELPATHS, IDS_STATUSLIST_CONTEXT_COPYRELPATHS, IDI_COPYCLIP);
+					clipSubMenu.AppendMenuIcon(IDGITLC_COPYFILENAMES, IDS_STATUSLIST_CONTEXT_COPYFILENAMES, IDI_COPYCLIP);
+					clipSubMenu.AppendMenuIcon(IDGITLC_COPYEXT, IDS_STATUSLIST_CONTEXT_COPYEXT, IDI_COPYCLIP);
+					if (selSubitem >= 0)
+					{
+						temp.Format(IDS_STATUSLIST_CONTEXT_COPYCOL, (LPCWSTR)m_ColumnManager.GetName(selSubitem));
+						clipSubMenu.AppendMenuIcon(IDGITLC_COPYCOL, temp, IDI_COPYCLIP);
+					}
+					temp.LoadString(IDS_LOG_POPUP_COPYTOCLIPBOARD);
+					popup.InsertMenu((UINT)-1, MF_BYPOSITION | MF_POPUP, (UINT_PTR)clipSubMenu.m_hMenu, temp);
+				}
+
 #if 0
 				if ((m_dwContextMenus & SVNSLC_POPCHANGELISTS))
 					&&(wcStatus != git_wc_status_unversioned)&&(wcStatus != git_wc_status_none))
@@ -2472,11 +2499,16 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			case IDGITLC_UNSETIGNORELOCALCHANGES:
 				SetGitIndexFlagsForSelectedFiles(IDS_PROC_UNSET_IGNORELOCALCHANGES, BST_UNCHECKED, BST_UNCHECKED);
 				break;
-			case IDGITLC_COPY:
-				CopySelectedEntriesToClipboard(0);
+			case IDGITLC_COPYFULL:
+			case IDGITLC_COPYRELPATHS:
+			case IDGITLC_COPYFILENAMES:
+				CopySelectedEntriesToClipboard(GITSLC_COLFILENAME, cmd);
 				break;
 			case IDGITLC_COPYEXT:
-				CopySelectedEntriesToClipboard((DWORD)-1);
+				CopySelectedEntriesToClipboard((DWORD)-1, 0);
+				break;
+			case IDGITLC_COPYCOL:
+				CopySelectedEntriesToClipboard((DWORD)1 << selSubitem, 0);
 				break;
 			case IDGITLC_EXPORT:
 				FilesExport();
@@ -3491,9 +3523,9 @@ BOOL CGitStatusListCtrl::PreTranslateMessage(MSG* pMsg)
 				{
 					// copy all selected paths to the clipboard
 					if (GetAsyncKeyState(VK_SHIFT)&0x8000)
-						CopySelectedEntriesToClipboard(GITSLC_COLSTATUS);
+						CopySelectedEntriesToClipboard(GITSLC_COLFILENAME | GITSLC_COLSTATUS, IDGITLC_COPYRELPATHS);
 					else
-						CopySelectedEntriesToClipboard(0);
+						CopySelectedEntriesToClipboard(GITSLC_COLFILENAME, IDGITLC_COPYRELPATHS);
 					return TRUE;
 				}
 			}
@@ -3515,84 +3547,74 @@ BOOL CGitStatusListCtrl::PreTranslateMessage(MSG* pMsg)
 	return __super::PreTranslateMessage(pMsg);
 }
 
-bool CGitStatusListCtrl::CopySelectedEntriesToClipboard(DWORD dwCols)
+bool CGitStatusListCtrl::CopySelectedEntriesToClipboard(DWORD dwCols, int cmd)
 {
-	static HINSTANCE hResourceHandle(AfxGetResourceHandle());
-//	WORD langID = (WORD)CRegStdDWORD(L"Software\\TortoiseGit\\LanguageID", GetUserDefaultLangID());
-
-	CString sClipboard;
-	CString temp;
-	//TCHAR buf[100];
 	if (GetSelectedCount() == 0)
 		return false;
 
+	CString sClipboard;
+
+	bool bMultipleColumnSelected = ((dwCols & dwCols - 1) != 0); //  multiple columns are selected (clear least signifient bit and check for zero)
+
+#define ADDTOCLIPBOARDSTRING(x) sClipboard += (sClipboard.IsEmpty() || (sClipboard.Right(1)==L"\n")) ? (x) : ('\t' + x)
+#define ADDNEWLINETOCLIPBOARDSTRING() sClipboard += (sClipboard.IsEmpty()) ? L"" : L"\r\n"
+
 	// first add the column titles as the first line
-	// We needn't head when only path copy
-	//temp.LoadString(IDS_STATUSLIST_COLFILE);
-	//sClipboard = temp;
-
 	DWORD selection = 0;
-	for (int i = 0, count = m_ColumnManager.GetColumnCount(); i < count; ++i)
-		if (   ((dwCols == -1) && m_ColumnManager.IsVisible (i))
-			|| ((dwCols != 1) && (i < 32) && ((dwCols & (1 << i)) != 0)))
+	int count = m_ColumnManager.GetColumnCount();
+	for (int column = 0; column < count; ++column)
+	{
+		if ((dwCols == -1 && m_ColumnManager.IsVisible(column)) || (column < GITSLC_NUMCOLUMNS && (dwCols & (1 << column))))
 		{
-			sClipboard += L'\t' + m_ColumnManager.GetName(i);
+			if (bMultipleColumnSelected)
+				ADDTOCLIPBOARDSTRING(m_ColumnManager.GetName(column));
 
-			if (i < 32)
-				selection += 1 << i;
+			selection |= 1 << column;
 		}
+	}
 
-	if(dwCols)
-		sClipboard += L"\r\n";
+	if (bMultipleColumnSelected)
+		ADDNEWLINETOCLIPBOARDSTRING();
+
+	// maybe clear first line when only one column is selected (btw by select not by dwCols) is simpler(not faster) way
+	// but why no title on single column output ?
+	// if (selection & selection-1) == 0 ) sClipboard = "";
 
 	CAutoReadLock locker(m_guard);
 
 	POSITION pos = GetFirstSelectedItemPosition();
-	int index;
-	while ((index = GetNextSelectedItem(pos)) >= 0)
+	while (pos)
 	{
-		auto entry = GetListEntry(index);
-		if (!entry)
-			continue;
-
-		sClipboard += entry->GetWinPathString();
-		if (selection & GITSLC_COLFILENAME)
-			sClipboard += L'\t' + entry->GetFileOrDirectoryName();
-		if (selection & GITSLC_COLEXT)
-			sClipboard += L'\t' + entry->GetFileExtension();
-
-		if (selection & GITSLC_COLSTATUS)
-			sClipboard += L'\t' + entry->GetActionName();
-#if 0
-		if (selection & SVNSLC_COLDATE)
+		int index = GetNextSelectedItem(pos);
+		// we selected only cols we want, so not other then select test needed
+		for (int column = 0; column < count; ++column)
 		{
-			TCHAR datebuf[SVN_DATE_BUFFER];
-			apr_time_t date = entry->last_commit_date;
-			SVN::formatDate(datebuf, date, true);
-			if (date)
-				temp = datebuf;
-			else
-				temp.Empty();
-			sClipboard += L'\t' + temp;
-		}
-		for ( int i = SVNSLC_NUMCOLUMNS, count = m_ColumnManager.GetColumnCount()
-			; i < count
-			; ++i)
-		{
-			if ((dwCols == -1) && m_ColumnManager.IsVisible (i))
+			if (cmd && (GITSLC_COLFILENAME & (1 << column)))
 			{
-				CString value
-					= entry->present_props[m_ColumnManager.GetName(i)];
-				sClipboard += L'\t' + value;
+				auto* entry = GetListEntry(index);
+				if (entry)
+				{
+					CString sPath;
+					switch (cmd)
+					{
+					case IDGITLC_COPYFULL:
+						sPath = g_Git.CombinePath(entry);
+						break;
+					case IDGITLC_COPYRELPATHS:
+						sPath = entry->GetGitPathString();
+						break;
+					case IDGITLC_COPYFILENAMES:
+						sPath = entry->GetFileOrDirectoryName();
+						break;
+					}
+					ADDTOCLIPBOARDSTRING(sPath);
+				}
 			}
+			else if (selection & (1 << column))
+				ADDTOCLIPBOARDSTRING(GetCellText(index, column));
 		}
-#endif
-		if (selection & GITSLC_COLADD)
-			sClipboard += L'\t' + entry->m_StatAdd;
-		if (selection & GITSLC_COLDEL)
-			sClipboard += L'\t' + entry->m_StatDel;
 
-		sClipboard += L"\r\n";
+		ADDNEWLINETOCLIPBOARDSTRING();
 	}
 
 	return CStringUtils::WriteAsciiStringToClipboard(sClipboard);
