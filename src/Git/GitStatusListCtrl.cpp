@@ -621,7 +621,7 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 	if (m_nSortedColumn >= 0)
 	{
 		CSorter predicate (&m_ColumnManager, m_nSortedColumn, m_bAscending);
-		std::sort(m_arStatusArray.begin(), m_arStatusArray.end(), predicate);
+		std::stable_sort(m_arStatusArray.begin(), m_arStatusArray.end(), predicate);
 	}
 
 	int index =0;
