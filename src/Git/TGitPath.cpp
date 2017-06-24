@@ -1673,7 +1673,7 @@ int CTGitPathList::GetAction()
 	return m_Action;
 }
 
-CString CTGitPath::GetAbbreviatedRename()
+CString CTGitPath::GetAbbreviatedRename() const
 {
 	if (GetGitOldPathString().IsEmpty())
 		return GetFileOrDirectoryName();

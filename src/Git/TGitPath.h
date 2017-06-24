@@ -260,7 +260,7 @@ public:
 	 */
 	bool IsValidOnWindows() const;
 
-	CString GetAbbreviatedRename();
+	CString GetAbbreviatedRename() const;
 
 private:
 	// All these functions are const, and all the data
