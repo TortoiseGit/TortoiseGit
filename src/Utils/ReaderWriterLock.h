@@ -80,8 +80,6 @@ public:
     void ReleaseReaderLock() throw();
     bool AcquireWriterLock(DWORD dwTimeout = INFINITE) throw();
     void ReleaseWriterLock() throw();
-    bool TryAcquireReaderLock() throw();
-    bool TryAcquireWriterLock() throw();
     void DowngradeFromWriterLock() throw();
 
     // When a thread calls UpgradeToWriterLock, the reader lock is released,
