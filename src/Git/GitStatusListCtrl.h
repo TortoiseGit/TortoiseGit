@@ -159,6 +159,7 @@ private:
 	ColumnManager* columnManager;
 	int sortedColumn;
 	bool ascending;
+	bool s_bSortLogical;
 };
 
 /**
