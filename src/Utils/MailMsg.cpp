@@ -224,18 +224,18 @@ BOOL CMailMsg::Send()
 	originator.lpszName = (LPSTR)m_from.name.c_str();
 
 	std::vector<MapiRecipDesc> recipients;
-	auto addRecipient = [&recipients](const MailAddress& recipient)
+	auto addRecipient = [&recipients](ULONG ulRecipClass, const MailAddress& recipient)
 	{
 		MapiRecipDesc repipDesc = { 0 };
-		repipDesc.ulRecipClass = MAPI_TO;
+		repipDesc.ulRecipClass = ulRecipClass;
 		repipDesc.lpszAddress = (LPSTR)recipient.email.c_str();
 		repipDesc.lpszName = (LPSTR)recipient.name.c_str();
 		recipients.emplace_back(repipDesc);
 	};
 	// add to recipients
-	std::for_each(m_to.cbegin(), m_to.cend(), addRecipient);
+	std::for_each(m_to.cbegin(), m_to.cend(), std::bind(addRecipient, MAPI_TO, std::placeholders::_1));
 	// add cc receipients
-	std::for_each(m_cc.cbegin(), m_cc.cend(), addRecipient);
+	std::for_each(m_cc.cbegin(), m_cc.cend(), std::bind(addRecipient, MAPI_CC, std::placeholders::_1));
 
 	// add attachments
 	std::vector<MapiFileDesc> attachments;
