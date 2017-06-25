@@ -1330,7 +1330,7 @@ const CTGitPath& CTGitPathList::operator[](INT_PTR index) const
 bool CTGitPathList::AreAllPathsFiles() const
 {
 	// Look through the vector for any directories - if we find them, return false
-	return std::find_if(m_paths.cbegin(), m_paths.cend(), std::mem_fun_ref(&CTGitPath::IsDirectory)) == m_paths.end();
+	return std::find_if(m_paths.cbegin(), m_paths.cend(), std::mem_fn(&CTGitPath::IsDirectory)) == m_paths.end();
 }
 
 #if defined(_MFC_VER)

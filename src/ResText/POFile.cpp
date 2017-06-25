@@ -122,7 +122,7 @@ BOOL CPOFile::ParseFile(LPCTSTR szPath, BOOL bUpdateExisting, bool bAdjustEOLs)
 					msgid = std::wstring(msgid.substr(7, msgid.size() - 8));
 
 					std::wstring s = msgid;
-					s.erase(s.cbegin(), std::find_if(s.cbegin(), s.cend(), std::not1(std::ptr_fun<wint_t, int>(iswspace))));
+					s.erase(s.cbegin(), std::find_if(s.cbegin(), s.cend(), [](const auto& c) { return !iswspace(c); }));
 					if (s.size())
 						nEntries++;
 					type = 1;
@@ -252,7 +252,7 @@ BOOL CPOFile::SaveFile(LPCTSTR szPath, LPCTSTR lpszHeaderFile)
 	for (auto I = this->cbegin(); I != this->cend(); ++I)
 	{
 		std::wstring s = I->first;
-		s.erase(s.cbegin(), std::find_if(s.cbegin(), s.cend(), std::not1(std::ptr_fun<wint_t, int>(iswspace))));
+		s.erase(s.cbegin(), std::find_if(s.cbegin(), s.cend(), [](const auto& c) { return !iswspace(c); }));
 		if (s.empty())
 			continue;
 
