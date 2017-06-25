@@ -154,8 +154,6 @@ private:
 	CString		m_Gitdir;
 	CString		m_PackRefFile;
 
-	CGitHash	m_TreeHash; /* buffered tree hash value */
-
 	std::map<CString,CGitHash> m_PackRefMap;
 
 public:
@@ -171,7 +169,6 @@ public:
 	int ReadTree();
 	int ReadHeadHash(const CString& gitdir);
 	bool CheckHeadUpdate();
-	bool HeadHashEqualsTreeHash();
 	static int CallBack(const unsigned char *, const char *, int, const char *, unsigned int, int, void *);
 };
 

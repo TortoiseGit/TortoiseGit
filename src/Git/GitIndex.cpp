@@ -557,11 +557,6 @@ bool CGitHeadFileList::CheckHeadUpdate()
 	return false;
 }
 
-bool CGitHeadFileList::HeadHashEqualsTreeHash()
-{
-	return (m_Head == m_TreeHash);
-}
-
 int CGitHeadFileList::CallBack(const unsigned char *sha1, const char *base, int baselen,
 		const char *pathname, unsigned mode, int /*stage*/, void *context)
 {
@@ -627,7 +622,7 @@ int ReadTreeRecursive(git_repository &repo, const git_tree * tree, const CString
 // ReadTree is/must only be executed on an empty list
 int CGitHeadFileList::ReadTree()
 {
-	ATLASSERT(empty() && m_TreeHash.IsEmpty());
+	ATLASSERT(empty());
 
 	// unborn branch
 	if (m_Head.IsEmpty())
@@ -658,7 +653,6 @@ int CGitHeadFileList::ReadTree()
 	}
 
 	std::sort(this->begin(), this->end(), SortTree);
-	m_TreeHash = git_commit_id(commit)->id;
 
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Reloaded HEAD tree (commit is %s) for repo: %s\n", (LPCTSTR)m_Head.ToString(), (LPCTSTR)m_Gitdir);
 
@@ -1071,7 +1065,7 @@ void CGitHeadFileMap::CheckHeadAndUpdate(const CString &gitdir)
 {
 	SHARED_TREE_PTR ptr = this->SafeGet(gitdir);
 
-	if (ptr.get() && !ptr->CheckHeadUpdate() && ptr->HeadHashEqualsTreeHash())
+	if (ptr.get() && !ptr->CheckHeadUpdate())
 		return;
 
 	ptr = std::make_shared<CGitHeadFileList>();
