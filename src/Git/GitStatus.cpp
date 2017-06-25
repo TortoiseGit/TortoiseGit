@@ -398,7 +398,7 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 					callback(CombinePath(gitdir, onepath), &status, false, fileentry.m_LastModified, pData);
 					continue;
 				}
-				if ((*indexptr).GetFileStatus(repository, gitdir, indexentry, status, CGit::filetime_to_time_t(fileentry.m_LastModified), fileentry.m_Size))
+				if ((*indexptr).GetFileStatus(repository, gitdir, indexentry, status, fileentry.m_LastModified, fileentry.m_Size))
 					return -1;
 				if (status.status == git_wc_status_normal && (*treeptr)[posintree].m_Hash != indexentry.m_IndexHash)
 					status = { git_wc_status_modified, false, false };

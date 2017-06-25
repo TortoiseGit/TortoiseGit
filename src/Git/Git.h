@@ -446,7 +446,7 @@ public:
 		if (GetFileAttributesEx(filename, GetFileExInfoStandard, &fdata))
 		{
 			if(time)
-				*time = filetime_to_time_t(&fdata.ftLastWriteTime);
+				*time = ((__int64)fdata.ftLastWriteTime.dwHighDateTime << 32) + fdata.ftLastWriteTime.dwLowDateTime;
 
 			if (size)
 				*size = ((__int64)fdata.nFileSizeHigh << 32) + fdata.nFileSizeLow;

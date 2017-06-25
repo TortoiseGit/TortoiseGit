@@ -192,7 +192,7 @@ TEST(CGit, GetFileModifyTime)
 	EXPECT_FALSE(isDir);
 	EXPECT_EQ(27, size);
 
-	Sleep(1200);
+	Sleep(250);
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"this is testing fileöü."));
 	__int64 time3 = -1;
 	isDir = false;
@@ -201,8 +201,8 @@ TEST(CGit, GetFileModifyTime)
 	EXPECT_NE(-1, time3);
 	EXPECT_FALSE(isDir);
 	EXPECT_EQ(25, size);
-	EXPECT_TRUE(time3 >= time);
-	EXPECT_TRUE(time3 - time <= 1 + (__int64)(GetTickCount64() - ticks) / 1000);
+	EXPECT_GE(time3, time);
+	EXPECT_LE(time3 - time, (GetTickCount64() - ticks + 10) * 10000);
 }
 
 TEST(CGit, LoadTextFile)

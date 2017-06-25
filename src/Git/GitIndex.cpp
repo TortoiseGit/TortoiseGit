@@ -194,7 +194,7 @@ int CGitIndexList::GetFileStatus(CAutoRepository& repository, const CString& git
 		status.status = git_wc_status_deleted;
 	else if (filesize != entry.m_Size)
 		status.status = git_wc_status_modified;
-	else if (time == entry.m_ModifyTime)
+	else if (CGit::filetime_to_time_t(time) == entry.m_ModifyTime)
 		status.status = git_wc_status_normal;
 	else if (config && filesize < m_iMaxCheckSize)
 	{

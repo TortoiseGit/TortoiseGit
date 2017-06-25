@@ -3429,7 +3429,7 @@ int CAppUtils::GetMsysgitVersion()
 	__int64 time=0;
 	if (!CGit::GetFileModifyTime(gitpath, &time))
 	{
-		if((DWORD)time == regTime)
+		if ((DWORD)CGit::filetime_to_time_t(time) == regTime)
 		{
 			g_Git.ms_LastMsysGitVersion = regVersion;
 			return regVersion;
