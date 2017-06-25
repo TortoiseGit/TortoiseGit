@@ -192,6 +192,21 @@ bool CloneCommand::Execute()
 		// Handle Git SVN-clone
 		if(dlg.m_bSVN)
 		{
+			// git-svn requires some mangling: \ -> /
+			if (!PathIsURL(url))
+			{
+				url.Replace(L'\\', L'/');
+				if (PathIsUNC(url))
+					url = L"file:" + url;
+				else if (PathIsDirectory(url))
+				{
+					// prefix: file:///, and no colon after drive letter for normal paths
+					if (url.GetLength() > 2 && url.GetAt(1) == L':')
+						url.Delete(1, 1);
+					url = L"file:///" + url;
+				}
+			}
+
 			//g_Git.m_CurrentDir=dlg.m_Directory;
 			cmd.Format(L"git.exe svn clone \"%s\" \"%s\"",
 				(LPCTSTR)url, (LPCTSTR)dlg.m_Directory);

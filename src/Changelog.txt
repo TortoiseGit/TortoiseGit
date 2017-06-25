@@ -43,6 +43,7 @@ Released: unreleased
    * Fixed issue #2818: TGitCache: overlays sometimes blink in and out of existance for several minutes at a time
    * Fixed issue #1242: TGitCache might fall into an (endless) refresh loop
  * Fixed issue #3002: Push underlined hotkey is missing in log window.
+ * Fixed issue #3005: TortoiseGit does not support cloning local svn repositories
 
 = Release 2.4.0 =
 Released: 2017-01-31
