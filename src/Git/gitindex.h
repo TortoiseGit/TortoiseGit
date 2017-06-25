@@ -43,6 +43,7 @@ class CGitIndexList:public std::vector<CGitIndex>
 {
 public:
 	__time64_t  m_LastModifyTime;
+	__int64		m_LastFileSize;
 	BOOL		m_bHasConflicts;
 
 	CGitIndexList();
@@ -144,6 +145,9 @@ private:
 	__time64_t  m_LastModifyTimeRef;
 	__time64_t	m_LastModifyTimePackRef;
 
+	__int64		m_LastFileSizeHead;
+	__int64		m_LastFileSizePackRef;
+
 	CString		m_HeadRefFile;
 	CGitHash	m_Head;
 	CString		m_HeadFile;
@@ -159,6 +163,8 @@ public:
 	: m_LastModifyTimeHead(0)
 	, m_LastModifyTimeRef(0)
 	, m_LastModifyTimePackRef(0)
+	, m_LastFileSizeHead(-1)
+	, m_LastFileSizePackRef(-1)
 	{
 	}
 
@@ -249,6 +255,7 @@ class CGitIgnoreItem
 public:
 	CGitIgnoreItem()
 	: m_LastModifyTime(0)
+	, m_LastFileSize(-1)
 	, m_pExcludeList(nullptr)
 	, m_buffer(nullptr)
 	, m_iIgnoreCase(nullptr)
@@ -263,6 +270,7 @@ public:
 	}
 
 	__time64_t  m_LastModifyTime;
+	__int64		m_LastFileSize;
 	CStringA m_BaseDir;
 	BYTE *m_buffer;
 	EXCLUDE_LIST m_pExcludeList;

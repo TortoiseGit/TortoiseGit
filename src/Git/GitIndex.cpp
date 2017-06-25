@@ -55,6 +55,7 @@ int CGitIndex::Print()
 CGitIndexList::CGitIndexList()
 : m_bHasConflicts(FALSE)
 , m_LastModifyTime(0)
+, m_LastFileSize(-1)
 {
 	m_iMaxCheckSize = (__int64)CRegDWORD(L"Software\\TortoiseGit\\TGitCacheCheckContentMaxSize", 10 * 1024) * 1024; // stored in KiB
 }
@@ -106,6 +107,8 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 
 	git_repository_set_config(repository, config);
 
+	CGit::GetFileModifyTime(g_AdminDirMap.GetWorktreeAdminDir(dgitdir) + L"index", &m_LastModifyTime, nullptr, &m_LastFileSize);
+
 	CAutoIndex index;
 	// load index in order to enumerate files
 	if (git_repository_index(index.GetPointer(), repository))
@@ -144,7 +147,6 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 		m_bHasConflicts |= GIT_IDXENTRY_STAGE(e);
 	}
 
-	CGit::GetFileModifyTime(g_AdminDirMap.GetWorktreeAdminDir(dgitdir) + L"index", &m_LastModifyTime);
 	std::sort(this->begin(), this->end(), SortIndex);
 
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Reloaded index for repo: %s\n", (LPCTSTR)dgitdir);
@@ -280,7 +282,7 @@ int CGitIndexList::GetFileStatus(const CString& gitdir, const CString& path, git
 
 bool CGitIndexFileMap::HasIndexChangedOnDisk(const CString& gitdir)
 {
-	__int64 time;
+	__int64 time = -1, size = -1;
 
 	auto pIndex = SafeGet(gitdir);
 
@@ -289,7 +291,7 @@ bool CGitIndexFileMap::HasIndexChangedOnDisk(const CString& gitdir)
 
 	CString IndexFile = g_AdminDirMap.GetWorktreeAdminDirConcat(gitdir, L"index");
 	// no need to refresh if there is no index right now and the current index is empty, but otherwise or lastmodified time differs
-	return (CGit::GetFileModifyTime(IndexFile, &time) && !pIndex->empty()) || pIndex->m_LastModifyTime != time;
+	return (CGit::GetFileModifyTime(IndexFile, &time, nullptr, &size) && !pIndex->empty()) || pIndex->m_LastModifyTime != time || pIndex->m_LastFileSize != size;
 }
 
 int CGitIndexFileMap::LoadIndex(const CString &gitdir)
@@ -312,20 +314,21 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 {
 	CString PackRef = g_AdminDirMap.GetAdminDirConcat(gitdir, L"packed-refs");
 
-	__int64 mtime;
-	if (CGit::GetFileModifyTime(PackRef, &mtime))
+	__int64 mtime = 0, packsize = -1;
+	if (CGit::GetFileModifyTime(PackRef, &mtime, nullptr, &packsize))
 	{
 		//packed refs is not existed
 		this->m_PackRefFile.Empty();
 		this->m_PackRefMap.clear();
 		return 0;
 	}
-	else if(mtime == m_LastModifyTimePackRef)
+	else if (mtime == m_LastModifyTimePackRef && packsize == m_LastFileSizePackRef)
 		return 0;
 	else
 	{
 		this->m_PackRefFile = PackRef;
 		this->m_LastModifyTimePackRef = mtime;
+		this->m_LastFileSizePackRef = packsize;
 	}
 
 	m_PackRefMap.clear();
@@ -411,7 +414,7 @@ int CGitHeadFileList::ReadHeadHash(const CString& gitdir)
 	m_HeadFile = m_Gitdir;
 	m_HeadFile += L"HEAD";
 
-	if( CGit::GetFileModifyTime(m_HeadFile, &m_LastModifyTimeHead))
+	if (CGit::GetFileModifyTime(m_HeadFile, &m_LastModifyTimeHead, nullptr, &m_LastFileSizeHead))
 		return -1;
 
 	CAutoFile hfile = CreateFile(m_HeadFile,
@@ -519,12 +522,12 @@ bool CGitHeadFileList::CheckHeadUpdate()
 	if (this->m_HeadFile.IsEmpty())
 		return true;
 
-	__int64 mtime=0;
+	__int64 mtime = 0, size = -1;
 
-	if (CGit::GetFileModifyTime(m_HeadFile, &mtime))
+	if (CGit::GetFileModifyTime(m_HeadFile, &mtime, nullptr, &size))
 		return true;
 
-	if (mtime != this->m_LastModifyTimeHead)
+	if (mtime != m_LastModifyTimeHead || size != m_LastFileSizeHead)
 		return true;
 
 	if (!this->m_HeadRefFile.IsEmpty())
@@ -538,10 +541,11 @@ bool CGitHeadFileList::CheckHeadUpdate()
 
 	if(!this->m_PackRefFile.IsEmpty())
 	{
-		if (CGit::GetFileModifyTime(m_PackRefFile, &mtime))
+		size = -1;
+		if (CGit::GetFileModifyTime(m_PackRefFile, &mtime, nullptr, &size))
 			return true;
 
-		if (mtime != this->m_LastModifyTimePackRef)
+		if (mtime != m_LastModifyTimePackRef || size != m_LastFileSizePackRef)
 			return true;
 	}
 
@@ -649,6 +653,7 @@ int CGitHeadFileList::ReadTree()
 		clear();
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Could not open git repository in %s and read HEAD commit %s: %s\n", (LPCTSTR)m_Gitdir, (LPCTSTR)m_Head.ToString(), (LPCTSTR)CGit::GetLibGit2LastErr());
 		m_LastModifyTimeHead = 0;
+		m_LastFileSizeHead = -1;
 		return -1;
 	}
 
@@ -683,7 +688,7 @@ int CGitIgnoreItem::FetchIgnoreList(const CString& projectroot, const CString& f
 		}
 	}
 
-	if (CGit::GetFileModifyTime(file, &m_LastModifyTime))
+	if (CGit::GetFileModifyTime(file, &m_LastModifyTime, nullptr, &m_LastFileSize))
 		return -1;
 
 	CAutoFile hfile = CreateFile(file,
@@ -770,9 +775,9 @@ int CGitIgnoreItem::IsPathIgnored(const CStringA& patha, const char* base, int& 
 
 bool CGitIgnoreList::CheckFileChanged(const CString &path)
 {
-	__int64 time = 0;
+	__int64 time = 0, size = -1;
 
-	int ret = CGit::GetFileModifyTime(path, &time);
+	int ret = CGit::GetFileModifyTime(path, &time, nullptr, &size);
 
 	bool cacheExist;
 	{
@@ -784,6 +789,7 @@ bool CGitIgnoreList::CheckFileChanged(const CString &path)
 	{
 		CAutoWriteLock lock(m_SharedMutex);
 		m_Map[path].m_LastModifyTime = 0;
+		m_Map[path].m_LastFileSize = -1;
 	}
 	// both cache and file is not exist
 	if ((ret != 0) && (!cacheExist))
@@ -800,7 +806,7 @@ bool CGitIgnoreList::CheckFileChanged(const CString &path)
 
 	{
 		CAutoReadLock lock(m_SharedMutex);
-		if (m_Map[path].m_LastModifyTime == time)
+		if (m_Map[path].m_LastModifyTime == time && m_Map[path].m_LastFileSize == size)
 			return false;
 	}
 	return true;
