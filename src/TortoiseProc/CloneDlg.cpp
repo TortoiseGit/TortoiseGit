@@ -489,6 +489,8 @@ void CCloneDlg::OnBnClickedCheckBare()
 		GetDlgItem(IDC_CHECK_RECURSIVE)->EnableWindow(TRUE);
 		GetDlgItem(IDC_CHECK_NOCHECKOUT)->EnableWindow(TRUE);
 	}
+	GetDlgItem(IDC_CHECK_ORIGIN)->EnableWindow(!m_bBare);
+	GetDlgItem(IDC_EDIT_ORIGIN)->EnableWindow(!m_bBare);
 }
 void CCloneDlg::OnBnClickedCheckDepth()
 {
@@ -506,6 +508,7 @@ void CCloneDlg::OnBnClickedCheckOrigin()
 {
 	UpdateData(TRUE);
 	this->GetDlgItem(IDC_EDIT_ORIGIN)->EnableWindow(this->m_bOrigin);
+	GetDlgItem(IDC_CHECK_BARE)->EnableWindow(!m_bOrigin);
 }
 
 void CCloneDlg::OnBnClickedCheckUsername()
