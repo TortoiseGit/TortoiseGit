@@ -51,7 +51,6 @@ CPicture::CPicture()
 	, bIsTiff(false)
 	, m_nSize(0)
 	, m_ColorDepth(0)
-	, hGlobal(nullptr)
 	, gdiplusToken(NULL)
 {
 }

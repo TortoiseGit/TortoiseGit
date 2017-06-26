@@ -168,8 +168,6 @@ public:
 	virtual ~CPicture();
 
 
-	HGLOBAL		hGlobal;
-
 	IPicture* m_IPicture;	///< Same As LPPICTURE (typedef IPicture __RPC_FAR *LPPICTURE)
 
 	LONG		m_Height;	///< Height (in pixels)
