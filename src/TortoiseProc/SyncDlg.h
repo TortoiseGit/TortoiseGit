@@ -184,8 +184,8 @@ protected:
 		g_Git.GetCommitDiffList(rev1,rev2,*pGitList);
 		pCtrlList->m_Rev1=rev1;
 		pCtrlList->m_Rev2=rev2;
-		pCtrlList->Show(0,*pGitList);
 		pCtrlList->SetEmptyString(CString(MAKEINTRESOURCE(IDS_COMPAREREV_NODIFF)));
+		pCtrlList->Show(0,*pGitList);
 		return;
 	}
 
