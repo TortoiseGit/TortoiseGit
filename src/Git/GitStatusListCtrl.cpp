@@ -590,65 +590,65 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 	m_bEmpty = false;
 	Invalidate();
 
-	CAutoWriteLock locker(m_guard);
 	WORD langID = (WORD)CRegStdDWORD(L"Software\\TortoiseGit\\LanguageID", GetUserDefaultLangID());
-
-	//SetItemCount(listIndex);
 	SetRedraw(FALSE);
-	DeleteAllItems();
-	m_nSelected = 0;
-
-	m_nShownUnversioned = 0;
-	m_nShownModified = 0;
-	m_nShownAdded = 0;
-	m_nShownDeleted = 0;
-	m_nShownConflicted = 0;
-	m_nShownFiles = 0;
-	m_nShownSubmodules = 0;
-
-	m_dwShow = dwShow;
-
-	if(UpdateStatusList)
 	{
-		m_arStatusArray.clear();
-		for (int i = 0; i < m_StatusFileList.GetCount(); ++i)
-			m_arStatusArray.push_back(&m_StatusFileList[i]);
+		CAutoWriteLock locker(m_guard);
+		DeleteAllItems();
+		m_nSelected = 0;
 
-		for (int i = 0; i < m_UnRevFileList.GetCount(); ++i)
-			m_arStatusArray.push_back(&m_UnRevFileList[i]);
+		m_nShownUnversioned = 0;
+		m_nShownModified = 0;
+		m_nShownAdded = 0;
+		m_nShownDeleted = 0;
+		m_nShownConflicted = 0;
+		m_nShownFiles = 0;
+		m_nShownSubmodules = 0;
 
-		for (int i = 0; i < m_IgnoreFileList.GetCount(); ++i)
-			m_arStatusArray.push_back(&m_IgnoreFileList[i]);
-	}
-	PrepareGroups();
-	if (m_nSortedColumn >= 0)
-	{
-		CSorter predicate (&m_ColumnManager, m_nSortedColumn, m_bAscending);
-		std::stable_sort(m_arStatusArray.begin(), m_arStatusArray.end(), predicate);
-	}
+		m_dwShow = dwShow;
 
-	int index =0;
-	for (size_t i = 0; i < m_arStatusArray.size(); ++i)
-	{
-		//set default checkbox status
-		auto entry = const_cast<CTGitPath*>(m_arStatusArray[i]);
-		CString path = entry->GetGitPathString();
-		if (!m_mapFilenameToChecked.empty() && m_mapFilenameToChecked.find(path) != m_mapFilenameToChecked.end())
-			entry->m_Checked=m_mapFilenameToChecked[path];
-		else if (!UseStoredCheckStatus)
+		if (UpdateStatusList)
 		{
-			bool autoSelectSubmodules = !(entry->IsDirectory() && m_bDoNotAutoselectSubmodules);
-			if (((entry->m_Action & dwCheck) && !(m_bNoAutoselectMissing && entry->m_Action & CTGitPath::LOGACTIONS_MISSING) || dwShow & GITSLC_SHOWDIRECTFILES && m_setDirectFiles.find(path) != m_setDirectFiles.end()) && autoSelectSubmodules)
-				entry->m_Checked=true;
-			else
-				entry->m_Checked=false;
-			m_mapFilenameToChecked[path] = entry->m_Checked;
+			m_arStatusArray.clear();
+			for (int i = 0; i < m_StatusFileList.GetCount(); ++i)
+				m_arStatusArray.push_back(&m_StatusFileList[i]);
+
+			for (int i = 0; i < m_UnRevFileList.GetCount(); ++i)
+				m_arStatusArray.push_back(&m_UnRevFileList[i]);
+
+			for (int i = 0; i < m_IgnoreFileList.GetCount(); ++i)
+				m_arStatusArray.push_back(&m_IgnoreFileList[i]);
+		}
+		PrepareGroups();
+		if (m_nSortedColumn >= 0)
+		{
+			CSorter predicate(&m_ColumnManager, m_nSortedColumn, m_bAscending);
+			std::stable_sort(m_arStatusArray.begin(), m_arStatusArray.end(), predicate);
 		}
 
-		if(entry->m_Action & dwShow)
+		int index = 0;
+		for (size_t i = 0; i < m_arStatusArray.size(); ++i)
 		{
-			AddEntry(entry,langID,index);
-			index++;
+			//set default checkbox status
+			auto entry = const_cast<CTGitPath*>(m_arStatusArray[i]);
+			CString path = entry->GetGitPathString();
+			if (!m_mapFilenameToChecked.empty() && m_mapFilenameToChecked.find(path) != m_mapFilenameToChecked.end())
+				entry->m_Checked = m_mapFilenameToChecked[path];
+			else if (!UseStoredCheckStatus)
+			{
+				bool autoSelectSubmodules = !(entry->IsDirectory() && m_bDoNotAutoselectSubmodules);
+				if (((entry->m_Action & dwCheck) && !(m_bNoAutoselectMissing && entry->m_Action & CTGitPath::LOGACTIONS_MISSING) || dwShow & GITSLC_SHOWDIRECTFILES && m_setDirectFiles.find(path) != m_setDirectFiles.end()) && autoSelectSubmodules)
+					entry->m_Checked = true;
+				else
+					entry->m_Checked = false;
+				m_mapFilenameToChecked[path] = entry->m_Checked;
+			}
+
+			if (entry->m_Action & dwShow)
+			{
+				AddEntry(entry, langID, index);
+				index++;
+			}
 		}
 	}
 
@@ -811,16 +811,19 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 
 void CGitStatusListCtrl::Show(unsigned int /*dwShow*/, const CTGitPathList& checkedList, bool /*bShowFolders*/ /* = true */)
 {
-	CAutoWriteLock locker(m_guard);
 	m_bWaitCursor = true;
 	m_bBusy = true;
 	m_dwShow = GITSLC_SHOWALL;
-	DeleteAllItems();
-	m_arStatusArray.clear();
-	for (int i = 0; i < checkedList.GetCount(); ++i)
+
 	{
-		this->AddEntry((CTGitPath *)&checkedList[i],0,i);
-		m_arStatusArray.push_back(&checkedList[i]);
+		CAutoWriteLock locker(m_guard);
+		DeleteAllItems();
+		m_arStatusArray.clear();
+		for (int i = 0; i < checkedList.GetCount(); ++i)
+		{
+			AddEntry(const_cast<CTGitPath*>(&checkedList[i]), 0, i);
+			m_arStatusArray.push_back(&checkedList[i]);
+		}
 	}
 
 	AdjustColumnWidths();
