@@ -1220,7 +1220,7 @@ BOOL CSyncDlg::PreTranslateMessage(MSG* pMsg)
 }
 void CSyncDlg::FetchOutList(bool force)
 {
-	if(!m_bInited)
+	if (!m_bInited || m_bWantToExit)
 		return;
 	m_OutChangeFileList.Clear();
 	this->m_OutLogList.Clear();
