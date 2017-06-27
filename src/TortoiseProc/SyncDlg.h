@@ -185,7 +185,8 @@ protected:
 		pCtrlList->m_Rev1=rev1;
 		pCtrlList->m_Rev2=rev2;
 		pCtrlList->SetEmptyString(CString(MAKEINTRESOURCE(IDS_COMPAREREV_NODIFF)));
-		pCtrlList->Show(0,*pGitList);
+		pCtrlList->UpdateWithGitPathList(*pGitList);
+		pCtrlList->Show(GITSLC_SHOWALL);
 		return;
 	}
 

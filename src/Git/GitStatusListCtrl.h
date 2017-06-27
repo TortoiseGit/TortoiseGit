@@ -449,7 +449,6 @@ public:
 	 * \param dwCheck mask of file types to check. Use GitLC_SHOWxxx defines. Default (0) means 'use the entry's stored check status'
 	 */
 	void Show(unsigned int dwShow, unsigned int dwCheck = 0, bool bShowFolders = true,BOOL updateStatusList=FALSE, bool UseStoredCheckStatus=false);
-	void Show(unsigned int dwShow, const CTGitPathList& checkedList, bool bShowFolders = true);
 
 	/**
 	 * Copies the selected entries in the control to the clipboard. The entries

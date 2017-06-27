@@ -1325,9 +1325,9 @@ UINT CCommitDlg::StatusThread()
 	dwShow |= DWORD(m_regAddBeforeCommit) ? GITSLC_SHOWUNVERSIONED : 0;
 	if (success)
 	{
-		if (!m_checkedPathList.IsEmpty())
+		/*if (!m_checkedPathList.IsEmpty())
 			m_ListCtrl.Show(dwShow, m_checkedPathList);
-		else
+		else*/
 		{
 			DWORD dwCheck = m_bSelectFilesForCommit ? dwShow : 0;
 			dwCheck &=~(CTGitPath::LOGACTIONS_UNVER); //don't check unversion file default.
