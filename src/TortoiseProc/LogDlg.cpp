@@ -2868,14 +2868,23 @@ void CLogDlg::UpdateLogInfoLabel()
 	long selectedfiles = 0;
 	int count = (int)m_LogList.m_arShownList.size();
 	int start = 0;
-	if (count)
+	if (count >= 1)
 	{
-		rev1 = m_LogList.m_arShownList.SafeGetAt(0)->m_CommitHash;
-		if(this->m_LogList.m_bShowWC && rev1.IsEmpty()&&(count>1))
-			start = 1;
-		rev1 = m_LogList.m_arShownList.SafeGetAt(start)->m_CommitHash;
-		//pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.SafeGetAt(m_arShownList.GetCount()-1));
-		rev2 = m_LogList.m_arShownList.SafeGetAt(count - 1)->m_CommitHash;
+		auto pRev = m_LogList.m_arShownList.SafeGetAt(0);
+		if (pRev)
+		{
+			rev1 = m_LogList.m_arShownList.SafeGetAt(0)->m_CommitHash;
+			if (m_LogList.m_bShowWC && rev1.IsEmpty() && count > 1)
+			{
+				start = 1;
+				pRev = m_LogList.m_arShownList.SafeGetAt(start);
+				if (pRev)
+					rev1 = pRev->m_CommitHash;
+			}
+		}
+		pRev = m_LogList.m_arShownList.SafeGetAt(count - 1);
+		if (pRev)
+			rev2 = pRev->m_CommitHash;
 		selectedrevs = m_LogList.GetSelectedCount();
 		if (selectedrevs)
 			selectedfiles = m_ChangedFileListCtrl.GetSelectedCount();
