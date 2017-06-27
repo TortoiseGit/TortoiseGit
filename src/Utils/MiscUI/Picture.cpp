@@ -58,9 +58,8 @@ CPicture::CPicture()
 CPicture::~CPicture()
 {
 	FreePictureData(); // Important - Avoid Leaks...
-	delete pBitmap;
-	delete[] pBitmapBuffer;
-	GdiplusShutdown(gdiplusToken);
+	if (gdiplusToken)
+		GdiplusShutdown(gdiplusToken);
 }
 
 
