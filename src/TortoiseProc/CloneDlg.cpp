@@ -480,15 +480,10 @@ void CCloneDlg::OnBnClickedCheckBare()
 	{
 		m_bRecursive = FALSE;
 		m_bNoCheckout = FALSE;
-		GetDlgItem(IDC_CHECK_RECURSIVE)->EnableWindow(FALSE);
-		GetDlgItem(IDC_CHECK_NOCHECKOUT)->EnableWindow(FALSE);
 		UpdateData(FALSE);
 	}
-	else
-	{
-		GetDlgItem(IDC_CHECK_RECURSIVE)->EnableWindow(TRUE);
-		GetDlgItem(IDC_CHECK_NOCHECKOUT)->EnableWindow(TRUE);
-	}
+	GetDlgItem(IDC_CHECK_RECURSIVE)->EnableWindow(!m_bBare);
+	GetDlgItem(IDC_CHECK_NOCHECKOUT)->EnableWindow(!m_bBare);
 	GetDlgItem(IDC_CHECK_ORIGIN)->EnableWindow(!m_bBare);
 	GetDlgItem(IDC_EDIT_ORIGIN)->EnableWindow(!m_bBare);
 }
