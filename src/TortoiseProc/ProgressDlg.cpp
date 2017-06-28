@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -611,8 +611,8 @@ void CProgressDlg::ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctr
 		}
 		log.PostMessage(WM_VSCROLL, SB_BOTTOM, 0);
 
-		int s1 = oneline.ReverseFind(L':');
-		int s2 = oneline.Find(L'%');
+		int s1 = str.ReverseFind(L':');
+		int s2 = str.Find(L'%');
 		if (s1 > 0 && s2 > 0)
 		{
 			if(CurrentWork)
