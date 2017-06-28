@@ -907,6 +907,8 @@ BOOL CSyncDlg::OnInitDialog()
 		TRACE0("Failed to create output commits window\n");
 		return FALSE;      // fail to create
 	}
+	// for some unknown reason, the SetExtendedStyle in OnCreate/PreSubclassWindow is not working here
+	m_InLogList.SetStyle();
 
 	m_ctrlTabCtrl.InsertTab(&m_InLogList, CString(MAKEINTRESOURCE(IDS_PROC_SYNC_INCOMMITS)), -1);
 
@@ -953,6 +955,8 @@ BOOL CSyncDlg::OnInitDialog()
 		return FALSE;      // fail to create
 
 	}
+	// for some unknown reason, the SetExtendedStyle in OnCreate/PreSubclassWindow is not working here
+	m_OutLogList.SetStyle();
 
 	m_ctrlTabCtrl.InsertTab(&m_OutLogList, CString(MAKEINTRESOURCE(IDS_PROC_SYNC_OUTCOMMITS)), -1);
 
