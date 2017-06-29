@@ -556,12 +556,12 @@ int CGit::Run(CString cmd, CString* output, CString* outputErr, int code)
 		ret = Run(cmd, &vector);
 
 	vector.push_back(0);
-	StringAppend(output, &(vector[0]), code);
+	StringAppend(output, vector.data(), code);
 
 	if (outputErr)
 	{
 		vectorErr.push_back(0);
-		StringAppend(outputErr, &(vectorErr[0]), code);
+		StringAppend(outputErr, vectorErr.data(), code);
 	}
 
 	return ret;
@@ -626,7 +626,7 @@ int CGit::Run(CString cmd, const GitReceiverFunc& recv, CString* outputErr)
 		CGitCallCb call(cmd, recv, &vectorErr);
 		int ret = Run(&call);
 		vectorErr.push_back(0);
-		StringAppend(outputErr, &(vectorErr[0]));
+		StringAppend(outputErr, vectorErr.data());
 		return ret;
 	}
 
@@ -1213,7 +1213,7 @@ int CGit::RunLogFile(CString cmd, const CString &filename, CString *stdErr)
 	}
 
 	stderrVector.push_back(0);
-	StringAppend(stdErr, &(stderrVector[0]), CP_UTF8);
+	StringAppend(stdErr, stderrVector.data(), CP_UTF8);
 
 	DWORD exitcode = 0;
 	if (!GetExitCodeProcess(pi.hProcess, &exitcode))
@@ -1931,7 +1931,7 @@ int CGit::DeleteRemoteRefs(const CString& sRemote, const STRING_VECTOR& list)
 		std::vector<char*> vc;
 		vc.reserve(refspecs.size());
 		std::transform(refspecs.begin(), refspecs.end(), std::back_inserter(vc), [](CStringA& s) -> char* { return s.GetBuffer(); });
-		git_strarray specs = { &vc[0], vc.size() };
+		git_strarray specs = { vc.data(), vc.size() };
 
 		if (git_remote_push(remote, &specs, &pushOpts) < 0)
 			return -1;
@@ -3072,7 +3072,7 @@ int CGit::GetUnifiedDiff(const CTGitPath& path, const CString& rev1, const CStri
 		if (!vector.empty())
 		{
 			vector.push_back(0); // vector is not NUL terminated
-			buffer->Append((char *)&vector[0]);
+			buffer->Append((char*)vector.data());
 		}
 		return ret;
 	}
@@ -3242,7 +3242,7 @@ int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, const CTGitPa
 			if (last != BYTE_VECTOR::npos)
 				CGit::StringAppend(&str, &cmdErr[last + 1], CP_UTF8, (int)(cmdErr.size() - last) - 1);
 			else
-				CGit::StringAppend(&str, &cmdErr[0], CP_UTF8, (int)cmdErr.size() - 1);
+				CGit::StringAppend(&str, cmdErr.data(), CP_UTF8, (int)cmdErr.size() - 1);
 			MessageBox(nullptr, str, L"TortoiseGit", MB_OK | MB_ICONERROR);
 		}
 

@@ -52,7 +52,7 @@ BOOL CCmdLineParser::Parse(LPCTSTR sCmdLine)
 	m_sCmdLine = sCmdLine;
 
 	tstring working = sCmdLine;
-	LPTSTR sCurrent = &working[0];
+	auto sCurrent = working.data();
 
 	for(;;)
 	{
@@ -124,7 +124,7 @@ BOOL CCmdLineParser::Parse(LPCTSTR sCmdLine)
 							auto nextQuote = _wcsinc(sEndQuote);
 							if (nextQuote[0] == L'"')
 							{
-								working.erase(working.begin() + (sEndQuote - &working[0]));
+								working.erase(working.begin() + (sEndQuote - working.data()));
 								sEndQuote = wcspbrk(nextQuote, m_sQuotes);
 								continue;
 							}

@@ -79,8 +79,8 @@ int CTortoiseGitBlameData::GetEncode(int *bomoffset)
 	int encoding = 0;
 	BYTE_VECTOR rawAll;
 	for (const auto& rawBytes : m_RawLines)
-		rawAll.append(&rawBytes[0], rawBytes.size());
-	encoding = GetEncode(&rawAll[0], (int)rawAll.size(), bomoffset);
+		rawAll.append(rawBytes.data(), rawBytes.size());
+	encoding = GetEncode(rawAll.data(), (int)rawAll.size(), bomoffset);
 	return encoding;
 }
 
@@ -248,9 +248,9 @@ int CTortoiseGitBlameData::UpdateEncoding(int encode)
 		for (const auto& rawLine : m_RawLines)
 		{
 			if (!rawLine.empty())
-				all.append(&rawLine[0], rawLine.size());
+				all.append(rawLine.data(), rawLine.size());
 		}
-		encoding = GetEncode(&all[0], (int)all.size(), &bomoffset);
+		encoding = GetEncode(all.data(), (int)all.size(), &bomoffset);
 	}
 
 	if (encoding != m_encode)

@@ -200,7 +200,7 @@ void CWaterEffect::DrawWater(int /*page*/, int /*LightModifier*/, DWORD* pSrcIma
 	long lIndex;
 	long lBreak = m_iWidth*m_iHeight;
 
-	int *ptr = &m_iBuffer1[0];
+	int *ptr = m_iBuffer1.get();
 
 
 	for (y = (m_iHeight-1)*m_iWidth; offset < y; offset += 2)

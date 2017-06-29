@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -207,9 +207,9 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 		{
 			CString str;
 			if (!m_BlameData.empty())
-				CGit::StringAppend(&str, &m_BlameData[0], CP_UTF8, (int)m_BlameData.size());
+				CGit::StringAppend(&str, m_BlameData.data(), CP_UTF8, (int)m_BlameData.size());
 			if (!err.empty())
-				CGit::StringAppend(&str, &err[0], CP_UTF8, (int)err.size());
+				CGit::StringAppend(&str, err.data(), CP_UTF8, (int)err.size());
 			MessageBox(nullptr, CString(MAKEINTRESOURCE(IDS_BLAMEERROR)) + L"\n\n" + str, L"TortoiseGitBlame", MB_OK | MB_ICONERROR);
 
 			return FALSE;
