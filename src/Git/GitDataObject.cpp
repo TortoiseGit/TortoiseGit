@@ -447,10 +447,8 @@ STDMETHODIMP GitDataObject::SetData(FORMATETC* pformatetc, STGMEDIUM* pmedium, B
 
 	if (!fetc || !pStgMed)
 	{
-		if (fetc)
-			delete fetc;
-		if (pStgMed)
-			delete pStgMed;
+		delete fetc;
+		delete pStgMed;
 		return E_OUTOFMEMORY;
 	}
 	SecureZeroMemory(fetc, sizeof(FORMATETC));
