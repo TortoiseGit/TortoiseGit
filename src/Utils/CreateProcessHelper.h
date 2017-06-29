@@ -59,7 +59,7 @@ inline bool CCreateProcessHelper::CreateProcess(LPCTSTR applicationName,
 inline bool CCreateProcessHelper::CreateProcess(LPCTSTR applicationName,
     LPTSTR commandLine, LPPROCESS_INFORMATION processInformation)
 {
-    return CreateProcess( applicationName, commandLine, 0, processInformation );
+    return CreateProcess( applicationName, commandLine, nullptr, processInformation );
 }
 
 inline bool CCreateProcessHelper::CreateProcessDetached(LPCTSTR lpApplicationName,
@@ -77,7 +77,7 @@ inline bool CCreateProcessHelper::CreateProcessDetached(LPCTSTR lpApplicationNam
 inline bool CCreateProcessHelper::CreateProcessDetached(LPCTSTR lpApplicationName,
     LPTSTR lpCommandLine)
 {
-    return CreateProcessDetached(lpApplicationName, lpCommandLine, 0);
+    return CreateProcessDetached(lpApplicationName, lpCommandLine, nullptr);
 }
 
 inline bool CCreateProcessHelper::CreateProcessDetached(LPCTSTR lpApplicationName, LPCTSTR lpCommandLine)
@@ -96,5 +96,5 @@ inline bool CCreateProcessHelper::CreateProcessDetached(LPCTSTR lpApplicationNam
 		commandLineBuf = _wcsdup(lpCommandLine);
 	SCOPE_EXIT { free((void*)commandLineBuf); };
 
-	return CreateProcessDetached(lpApplicationName, commandLineBuf, 0);
+	return CreateProcessDetached(lpApplicationName, commandLineBuf, nullptr);
 }
