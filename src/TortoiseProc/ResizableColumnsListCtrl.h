@@ -104,13 +104,19 @@ public:
 
 	void AdjustColumnWidths()
 	{
-		int maxcol = ((CHeaderCtrl*)(GetDlgItem(0)))->GetItemCount() - 1;
+		auto header = GetHeaderCtrl();
+		if (!header)
+			return;
+		int maxcol = header->GetItemCount() - 1;
 		for (int col = 0; col <= maxcol; col++)
 			SetColumnWidth(col, m_ColumnManager.GetWidth(col, true));
 	}
 	virtual void SaveColumnWidths()
 	{
-		int maxcol = ((CHeaderCtrl*)(GetDlgItem(0)))->GetItemCount() - 1;
+		auto header = GetHeaderCtrl();
+		if (!header)
+			return;
+		int maxcol = header->GetItemCount() - 1;
 		for (int col = 0; col <= maxcol; col++)
 			if (m_ColumnManager.IsVisible(col))
 				m_ColumnManager.ColumnResized(col);

@@ -328,7 +328,7 @@ void CGitProgressList::ResizeColumns()
 
 	TCHAR textbuf[MAX_PATH] = {0};
 
-	CHeaderCtrl * pHeaderCtrl = (CHeaderCtrl*)(GetDlgItem(0));
+	auto pHeaderCtrl = GetHeaderCtrl();
 	if (pHeaderCtrl)
 	{
 		int maxcol = pHeaderCtrl->GetItemCount()-1;
@@ -983,7 +983,7 @@ void CGitProgressList::Init()
 	SetExtendedStyle((CRegDWORD(L"Software\\TortoiseGit\\FullRowSelect", TRUE) ? LVS_EX_FULLROWSELECT : 0) | LVS_EX_DOUBLEBUFFER);
 
 	DeleteAllItems();
-	int c = ((CHeaderCtrl*)(GetDlgItem(0)))->GetItemCount()-1;
+	int c = GetHeaderCtrl()->GetItemCount()-1;
 	while (c>=0)
 		DeleteColumn(c--);
 

@@ -1,7 +1,7 @@
 // TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2006, 2008, 2010-2012, 2015 - TortoiseSVN
-// Copyright (C) 2012, 2016 - Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2012, 2016-2017 - Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -126,7 +126,7 @@ BOOL CFilePatchesDlg::Init(GitPatch * pPatch, CPatchFilesDlgCallBack * pCallBack
 	SetWindowTheme(m_cFileList.GetSafeHwnd(), L"Explorer", nullptr);
 	m_cFileList.SetExtendedStyle(LVS_EX_INFOTIP | LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER);
 	m_cFileList.DeleteAllItems();
-	int c = ((CHeaderCtrl*)(m_cFileList.GetDlgItem(0)))->GetItemCount()-1;
+	int c = m_cFileList.GetHeaderCtrl()->GetItemCount() - 1;
 	while (c>=0)
 		m_cFileList.DeleteColumn(c--);
 	m_cFileList.InsertColumn(0, CString(MAKEINTRESOURCE(IDS_PATH)));
@@ -156,7 +156,7 @@ BOOL CFilePatchesDlg::Init(GitPatch * pPatch, CPatchFilesDlgCallBack * pCallBack
 		SetStateText(i, state);
 	}
 	int mincol = 0;
-	int maxcol = ((CHeaderCtrl*)(m_cFileList.GetDlgItem(0)))->GetItemCount()-1;
+	int maxcol = m_cFileList.GetHeaderCtrl()->GetItemCount() - 1;
 	int col;
 	for (col = mincol; col <= maxcol; col++)
 	{
