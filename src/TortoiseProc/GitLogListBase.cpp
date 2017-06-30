@@ -2944,6 +2944,14 @@ UINT CGitLogListBase::LogThread()
 	if (shouldWalk)
 	{
 		g_Git.m_critGitDllSec.Lock();
+		if (!m_DllGitLog)
+		{
+			MessageBox(L"Opening log failed.", L"TortoiseGit", MB_ICONERROR);
+			g_Git.m_critGitDllSec.Unlock();
+			InterlockedExchange(&m_bThreadRunning, FALSE);
+			InterlockedExchange(&m_bNoDispUpdates, FALSE);
+			return 1;
+		}
 		int total = 0;
 		try
 		{
