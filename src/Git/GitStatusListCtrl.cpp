@@ -1436,8 +1436,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 {
 	bool bShift = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
 
-	CAutoReadWeakLock readLock(m_guard);
-	if (!readLock.IsAcquired())
+	CAutoWriteWeakLock writeLock(m_guard);
+	if (!writeLock.IsAcquired())
 		return;
 
 	auto selectedCount = GetSelectedCount();
@@ -1468,7 +1468,6 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 	}
 	else if (selIndex >= 0)
 	{
-		CAutoWriteLock writeLock(m_guard);
 		auto filepath = GetListEntry(selIndex);
 		if (!filepath)
 			return;
