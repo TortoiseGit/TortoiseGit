@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2014, 2016 - TortoiseGit
+// Copyright (C) 2011-2014, 2016-2017 - TortoiseGit
 
 // with code of PullFetchDlg.cpp
 
@@ -149,6 +149,6 @@ void CRequestPullDlg::OnBnClickedButtonLocalBranch()
 	dlg.ShowWorkingTreeChanges(false);
 	// only one revision must be selected however
 	dlg.SingleSelection(true);
-	if ( dlg.DoModal() == IDOK )
+	if (dlg.DoModal() == IDOK && !dlg.GetSelectedHash().empty())
 		m_cStartRevision.SetWindowText(dlg.GetSelectedHash().at(0).ToString());
 }

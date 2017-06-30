@@ -2817,7 +2817,7 @@ void CRebaseDlg::OnBnClickedButtonAdd()
 	dlg.SetSelect(true);
 	// allow multi-select
 	dlg.SingleSelection(false);
-	if (dlg.DoModal() != IDOK)
+	if (dlg.DoModal() != IDOK || dlg.GetSelectedHash().empty())
 		return;
 
 	auto selectedHashes = dlg.GetSelectedHash();

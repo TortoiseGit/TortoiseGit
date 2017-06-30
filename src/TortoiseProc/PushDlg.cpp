@@ -484,7 +484,7 @@ void CPushDlg::OnBnClickedButtonBrowseSourceBranch()
 			dlg.SetParams(CTGitPath(), CTGitPath(), revision, revision, 0);
 			dlg.SetSelect(true);
 			dlg.ShowWorkingTreeChanges(false);
-			if(dlg.DoModal() == IDOK)
+			if (dlg.DoModal() == IDOK && !dlg.GetSelectedHash().empty())
 			{
 				m_BranchSource.SetWindowText(dlg.GetSelectedHash().at(0).ToString());
 				OnCbnSelchangeBranchSource();

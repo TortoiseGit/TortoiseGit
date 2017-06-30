@@ -961,7 +961,7 @@ void CRepositoryBrowser::OnBnClickedButtonRevision()
 		dlg.ShowWorkingTreeChanges(false);
 		// only one revision must be selected however
 		dlg.SingleSelection(true);
-		if (dlg.DoModal() == IDOK)
+		if (dlg.DoModal() == IDOK && !dlg.GetSelectedHash().empty())
 		{
 			m_sRevision = dlg.GetSelectedHash().at(0).ToString();
 			Refresh();

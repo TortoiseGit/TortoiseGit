@@ -187,7 +187,7 @@ void CFormatPatchDlg::OnBnClickedButtonFrom()
 	dlg.ShowWorkingTreeChanges(false);
 	// only one revision must be selected however
 	dlg.SingleSelection(true);
-	if ( dlg.DoModal() == IDOK )
+	if (dlg.DoModal() == IDOK && !dlg.GetSelectedHash().empty())
 	{
 		m_cFrom.AddString(dlg.GetSelectedHash().at(0).ToString());
 		CheckRadioButton(IDC_RADIO_SINCE, IDC_RADIO_RANGE, IDC_RADIO_RANGE);
@@ -205,7 +205,7 @@ void CFormatPatchDlg::OnBnClickedButtonTo()
 	dlg.SetSelect(true);
 	// only one revision must be selected however
 	dlg.SingleSelection(true);
-	if ( dlg.DoModal() == IDOK )
+	if (dlg.DoModal() == IDOK && !dlg.GetSelectedHash().empty())
 	{
 		m_cTo.AddString(dlg.GetSelectedHash().at(0).ToString());
 		CheckRadioButton(IDC_RADIO_SINCE, IDC_RADIO_RANGE, IDC_RADIO_RANGE);
