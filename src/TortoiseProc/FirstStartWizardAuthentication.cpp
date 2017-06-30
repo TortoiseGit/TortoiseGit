@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016 - TortoiseGit
+// Copyright (C) 2016-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -98,7 +98,7 @@ BOOL CFirstStartWizardAuthentication::OnWizardFinish()
 	else if (m_ctrlSSHClient.GetCurSel() == 1 && !IsTool(L"ssh", sshclient))
 		CRegString(L"Software\\TortoiseGit\\SSH") = L"ssh.exe";
 
-	if (m_ctrlSimpleCredential.IsWindowEnabled() || !m_bNoSave && m_ctrlSimpleCredential.GetCurSel() != -1)
+	if (m_ctrlSimpleCredential.IsWindowEnabled() && !m_bNoSave && m_ctrlSimpleCredential.GetCurSel() != -1)
 	{
 		CAutoConfig config(true);
 		int err = git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitGlobalXDGConfig()), GIT_CONFIG_LEVEL_XDG, FALSE);
