@@ -47,6 +47,7 @@ IMPLEMENT_DYNCREATE(CTortoiseGitBlameDoc, CDocument)
 BEGIN_MESSAGE_MAP(CTortoiseGitBlameDoc, CDocument)
 END_MESSAGE_MAP()
 
+typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 
 // CTortoiseGitBlameDoc construction/destruction
 
@@ -139,6 +140,10 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 		{
 			// make sure all config files are read in order to check that none contains an error
 			g_Git.GetConfigValue(L"doesnot.exist");
+
+			// make sure git_init() works and that .git-dir is ok
+			CAutoLocker lock(g_Git.m_critGitDllSec);
+			g_Git.CheckAndInitDll();
 		}
 		catch (char * libgiterr)
 		{
