@@ -1006,7 +1006,8 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int list
 
 	LVITEM lvItem = { 0 };
 	lvItem.iItem = listIndex;
-	lvItem.mask = LVIF_TEXT | LVIF_IMAGE | LVIF_STATE;
+	lvItem.lParam = (LPARAM)GitPath;
+	lvItem.mask = LVIF_TEXT | LVIF_IMAGE | LVIF_STATE | LVIF_PARAM;
 	lvItem.pszText = LPSTR_TEXTCALLBACK;
 	lvItem.stateMask = LVIS_OVERLAYMASK;
 	if (m_restorepaths.find(GitPath->GetWinPathString()) != m_restorepaths.end())
@@ -4390,7 +4391,7 @@ BOOL CGitStatusListCtrl::OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LR
 CTGitPath* CGitStatusListCtrl::GetListEntry(int index)
 {
 	ATLASSERT(m_guard.GetCurrentThreadStatus());
-	auto entry = const_cast<CTGitPath*>(m_arStatusArray[index]);
+	auto entry = reinterpret_cast<CTGitPath*>(GetItemData(index));
 	ASSERT(entry);
 	return entry;
 }
