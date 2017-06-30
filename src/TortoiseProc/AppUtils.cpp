@@ -3285,7 +3285,7 @@ static bool DoMerge(bool noFF, bool ffOnly, bool squash, bool noCommit, const in
 				postCmdList.emplace_back(IDI_RESOLVE, IDS_PROGRS_CMD_RESOLVE, []
 				{
 					CString sCmd;
-					sCmd.Format(L"/command:commit /path:\"%s\"", (LPCTSTR)g_Git.m_CurrentDir);
+					sCmd.Format(L"/command:resolve /path:\"%s\"", (LPCTSTR)g_Git.m_CurrentDir);
 					CAppUtils::RunTortoiseGitProc(sCmd);
 				});
 			}

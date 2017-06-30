@@ -46,6 +46,7 @@ Released: unreleased
  * Fixed issue #3005: TortoiseGit does not support cloning local svn repositories
  * Fixed issue #3011: clone: --bare and --origin options are incompatible
  * Fixed issue #3013: Error message if remote Git output contains non-ASCII chars
+ * Fixed issue #3014: MergeDlg: Commit dialog is opened instead of resovle dialog after resolve button pressed
 
 = Release 2.4.0 =
 Released: 2017-01-31
