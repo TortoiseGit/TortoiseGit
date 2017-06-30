@@ -3288,6 +3288,13 @@ static bool DoMerge(bool noFF, bool ffOnly, bool squash, bool noCommit, const in
 					sCmd.Format(L"/command:resolve /path:\"%s\"", (LPCTSTR)g_Git.m_CurrentDir);
 					CAppUtils::RunTortoiseGitProc(sCmd);
 				});
+
+				postCmdList.emplace_back(IDI_COMMIT, IDS_MENUCOMMIT, []
+				{
+					CString sCmd;
+					sCmd.Format(L"/command:commit /path:\"%s\"", (LPCTSTR)g_Git.m_CurrentDir);
+					CAppUtils::RunTortoiseGitProc(sCmd);
+				});
 			}
 
 			if (CAppUtils::GetMsysgitVersion() >= 0x02090000)
