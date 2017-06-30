@@ -1242,7 +1242,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 
 						std::vector<REFLABEL> refsToShow;
 						STRING_VECTOR remoteTrackingList;
-						STRING_VECTOR refList = m_HashMap[data->m_CommitHash];
+						const STRING_VECTOR& refList = m_HashMap[data->m_CommitHash];
 						for (unsigned int i = 0; i < refList.size(); ++i)
 						{
 							CString str = refList[i];
@@ -3287,7 +3287,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 
 		if ((m_SelectedFilters & LOGFILTER_REFNAME) && m_HashMap.find(pRev->m_CommitHash) != m_HashMap.cend())
 		{
-			STRING_VECTOR refs = m_HashMap[pRev->m_CommitHash];
+			const STRING_VECTOR& refs = m_HashMap[pRev->m_CommitHash];
 			for (const auto& ref : refs)
 			{
 				if (std::regex_search(std::wstring(ref), pat, flags))
@@ -3415,7 +3415,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 
 		if ((m_SelectedFilters & LOGFILTER_REFNAME) && m_HashMap.find(pRev->m_CommitHash) != m_HashMap.cend())
 		{
-			STRING_VECTOR refs = m_HashMap[pRev->m_CommitHash];
+			const STRING_VECTOR& refs = m_HashMap[pRev->m_CommitHash];
 			for (auto it = refs.cbegin(); it != refs.cend(); ++it)
 			{
 				if (it->Find(find) >= 0)
@@ -3661,7 +3661,7 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 			}
 			if ((m_SelectedFilters & LOGFILTER_REFNAME) && m_HashMap.find(m_logEntries.GetGitRevAt(i).m_CommitHash) != m_HashMap.cend())
 			{
-				STRING_VECTOR refs = m_HashMap[m_logEntries.GetGitRevAt(i).m_CommitHash];
+				const STRING_VECTOR& refs = m_HashMap[m_logEntries.GetGitRevAt(i).m_CommitHash];
 				for (auto it = refs.cbegin(); it != refs.cend(); ++it)
 				{
 					if (std::regex_search(std::wstring((LPCTSTR)*it), pat, flags) && IsEntryInDateRange(i))
@@ -3785,7 +3785,7 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 			}
 			if ((m_SelectedFilters & LOGFILTER_REFNAME) && m_HashMap.find(m_logEntries.GetGitRevAt(i).m_CommitHash) != m_HashMap.cend())
 			{
-				STRING_VECTOR refs = m_HashMap[m_logEntries.GetGitRevAt(i).m_CommitHash];
+				const STRING_VECTOR& refs = m_HashMap[m_logEntries.GetGitRevAt(i).m_CommitHash];
 				for (auto it = refs.cbegin(); it != refs.cend(); ++it)
 				{
 					if (it->Find(find) >= 0 && IsEntryInDateRange(i))
