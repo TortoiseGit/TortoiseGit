@@ -3241,8 +3241,10 @@ int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, const CTGitPa
 			CString str;
 			if (last != BYTE_VECTOR::npos)
 				CGit::StringAppend(&str, &cmdErr[last + 1], CP_UTF8, (int)(cmdErr.size() - last) - 1);
-			else
+			else if (!cmdErr.empty())
 				CGit::StringAppend(&str, cmdErr.data(), CP_UTF8, (int)cmdErr.size() - 1);
+			else
+				str.Format(L"\"%s\" exited with an error code, but did not output any error message", (LPCTSTR)cmd);
 			MessageBox(nullptr, str, L"TortoiseGit", MB_OK | MB_ICONERROR);
 		}
 
