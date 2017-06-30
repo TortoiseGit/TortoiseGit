@@ -2578,30 +2578,18 @@ void CLogDlg::OnBnClickedJumpUp()
 		}
 		else if (jumpType == JumpType_Tag || jumpType == JumpType_TagFF)
 		{
-			STRING_VECTOR refList = m_LogList.m_HashMap[data->m_CommitHash];
-			for (size_t j = 0; j < refList.size(); ++j)
-			{
-				if (CStringUtils::StartsWith(refList[j], L"refs/tags/"))
-				{
-					found = true;
-					break;
-				}
-			}
+			auto refList = m_LogList.m_HashMap.find(data->m_CommitHash);
+			if (refList != m_LogList.m_HashMap.cend())
+				found = find_if((*refList).second, [](const auto& ref) { return CStringUtils::StartsWith(ref, L"refs/tags/"); }) != (*refList).second.cend();
 
 			if (found && jumpType == JumpType_TagFF)
 				found = g_Git.IsFastForward(hashValue, data->m_CommitHash);
 		}
 		else if (jumpType == JumpType_Branch || jumpType == JumpType_BranchFF)
 		{
-			STRING_VECTOR refList = m_LogList.m_HashMap[data->m_CommitHash];
-			for (size_t j = 0; j < refList.size(); ++j)
-			{
-				if (CStringUtils::StartsWith(refList[j], L"refs/heads/") || CStringUtils::StartsWith(refList[j], L"refs/remotes/"))
-				{
-					found = true;
-					break;
-				}
-			}
+			auto refList = m_LogList.m_HashMap.find(data->m_CommitHash);
+			if (refList != m_LogList.m_HashMap.cend())
+				found = find_if((*refList).second, [](const auto& ref) { return CStringUtils::StartsWith(ref, L"refs/heads/") || CStringUtils::StartsWith(ref, L"refs/remotes/"); }) != (*refList).second.cend();
 
 			if (found && jumpType == JumpType_BranchFF)
 				found = g_Git.IsFastForward(hashValue, data->m_CommitHash);
@@ -2691,30 +2679,18 @@ void CLogDlg::OnBnClickedJumpDown()
 			found = data->m_CommitHash == hashValue;
 		else if (jumpType == JumpType_Tag || jumpType == JumpType_TagFF)
 		{
-			STRING_VECTOR refList = m_LogList.m_HashMap[data->m_CommitHash];
-			for (size_t j = 0; j < refList.size(); ++j)
-			{
-				if (CStringUtils::StartsWith(refList[j], L"refs/tags/"))
-				{
-					found = true;
-					break;
-				}
-			}
+			auto refList = m_LogList.m_HashMap.find(data->m_CommitHash);
+			if (refList != m_LogList.m_HashMap.cend())
+				found = find_if((*refList).second, [](const auto& ref) { return CStringUtils::StartsWith(ref, L"refs/tags/"); }) != (*refList).second.cend();
 
 			if (found && jumpType == JumpType_TagFF)
 				found = g_Git.IsFastForward(data->m_CommitHash, hashValue);
 		}
 		else if (jumpType == JumpType_Branch || jumpType == JumpType_BranchFF)
 		{
-			STRING_VECTOR refList = m_LogList.m_HashMap[data->m_CommitHash];
-			for (size_t j = 0; j < refList.size(); ++j)
-			{
-				if (CStringUtils::StartsWith(refList[j], L"refs/heads/") || CStringUtils::StartsWith(refList[j], L"refs/remotes/"))
-				{
-					found = true;
-					break;
-				}
-			}
+			auto refList = m_LogList.m_HashMap.find(data->m_CommitHash);
+			if (refList != m_LogList.m_HashMap.cend())
+				found = find_if((*refList).second, [](const auto& ref) { return CStringUtils::StartsWith(ref, L"refs/heads/") || CStringUtils::StartsWith(ref, L"refs/remotes/"); }) != (*refList).second.cend();
 
 			if (found && jumpType == JumpType_BranchFF)
 				found = g_Git.IsFastForward(data->m_CommitHash, hashValue);

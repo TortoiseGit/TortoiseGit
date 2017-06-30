@@ -32,21 +32,6 @@
 #include "IconMenu.h"
 #include "..\TortoiseShell\Resource.h"
 
-template < typename Cont, typename Pred>
-void for_each(Cont& c, Pred p)
-{
-	std::for_each(cbegin(c), cend(c), p);
-}
-
-template<typename T>
-using const_iterator = typename T::const_iterator;
-
-template <typename Cont, typename Pred>
-const_iterator<Cont> find_if(Cont& c, Pred p)
-{
-	return std::find_if(cbegin(c), cend(c), p);
-}
-
 const UINT CGitLogListBase::m_FindDialogMessage = RegisterWindowMessage(FINDMSGSTRING);
 const UINT CGitLogListBase::m_ScrollToMessage = RegisterWindowMessage(L"TORTOISEGIT_LOG_SCROLLTO");
 const UINT CGitLogListBase::m_ScrollToRef = RegisterWindowMessage(L"TORTOISEGIT_LOG_SCROLLTOREF");
@@ -1199,7 +1184,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				{
 					GitRevLoglist* data = m_arShownList.SafeGetAt(pLVCD->nmcd.dwItemSpec);
 
-					if ((!m_HashMap[data->m_CommitHash].empty() || (!m_superProjectHash.IsEmpty() && data->m_CommitHash == m_superProjectHash)) && !(data->GetRebaseAction() & LOGACTIONS_REBASE_DONE))
+					if ((m_HashMap.find(data->m_CommitHash) != m_HashMap.cend() || (!m_superProjectHash.IsEmpty() && data->m_CommitHash == m_superProjectHash)) && !(data->GetRebaseAction() & LOGACTIONS_REBASE_DONE))
 					{
 						CRect rect;
 						GetSubItemRect((int)pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem, LVIR_BOUNDS, rect);
@@ -1663,22 +1648,18 @@ bool CGitLogListBase::IsOnStash(int index)
 
 bool CGitLogListBase::IsStash(const GitRev * pSelLogEntry)
 {
-	for (size_t i = 0; i < m_HashMap[pSelLogEntry->m_CommitHash].size(); ++i)
-	{
-		if (m_HashMap[pSelLogEntry->m_CommitHash][i] == L"refs/stash")
-			return true;
-	}
-	return false;
+	auto refList = m_HashMap.find(pSelLogEntry->m_CommitHash);
+	if (refList == m_HashMap.cend())
+		return false;
+	return find_if((*refList).second, [](const auto& ref) { return ref == L"refs/stash"; }) != (*refList).second.cend();
 }
 
 bool CGitLogListBase::IsBisect(const GitRev * pSelLogEntry)
 {
-	for (size_t i = 0; i < m_HashMap[pSelLogEntry->m_CommitHash].size(); ++i)
-	{
-		if (CStringUtils::StartsWith(m_HashMap[pSelLogEntry->m_CommitHash][i], L"refs/bisect/"))
-			return true;
-	}
-	return false;
+	auto refList = m_HashMap.find(pSelLogEntry->m_CommitHash);
+	if (refList == m_HashMap.cend())
+		return false;
+	return find_if((*refList).second, [](const auto& ref) { return CStringUtils::StartsWith(ref, L"refs/bisect/"); }) != (*refList).second.cend();
 }
 
 void CGitLogListBase::GetParentHashes(GitRev *pRev, GIT_REV_LIST &parentHash)
@@ -2284,7 +2265,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 		if (selectedCount == 1)
 		{
 			bool bAddSeparator = false;
-			if (m_ContextMenuMask&GetContextMenuBit(ID_PUSH) && ((!isStash && !m_HashMap[pSelLogEntry->m_CommitHash].empty()) || showExtendedMenu))
+			if ((m_ContextMenuMask & GetContextMenuBit(ID_PUSH)) && ((!isStash && m_HashMap.find(pSelLogEntry->m_CommitHash) != m_HashMap.cend()) || showExtendedMenu))
 			{
 				// show the push-option only if the log entry has an associated local branch
 				bool isLocal = find_if(m_HashMap[pSelLogEntry->m_CommitHash], [](const CString& ref) { return CStringUtils::StartsWith(ref, L"refs/heads/"); }) != m_HashMap[pSelLogEntry->m_CommitHash].cend();
@@ -2379,7 +2360,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			clipSubMenu.AppendMenuIcon(ID_COPYCLIPBOARDAUTHORSEMAIL, IDS_LOG_POPUP_CLIPBOARD_AUTHORSEMAIL, IDI_COPYCLIP);
 			clipSubMenu.AppendMenuIcon(ID_COPYCLIPBOARDSUBJECTS, IDS_LOG_POPUP_CLIPBOARD_SUBJECTS, IDI_COPYCLIP);
 			clipSubMenu.AppendMenuIcon(ID_COPYCLIPBOARDMESSAGES, IDS_LOG_POPUP_CLIPBOARD_MSGS, IDI_COPYCLIP);
-			if (!m_HashMap[pSelLogEntry->m_CommitHash].empty() && selectedCount == 1)
+			if (m_HashMap.find(pSelLogEntry->m_CommitHash) != m_HashMap.cend() && selectedCount == 1)
 			{
 				clipSubMenu.AppendMenuIcon(ID_COPYCLIPBOARDBRANCHTAG, IDS_LOG_POPUP_CLIPBOARD_TAGBRANCHES, IDI_COPYCLIP);
 				size_t index = (size_t)-1;
@@ -3304,7 +3285,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 				return TRUE;
 		}
 
-		if (m_SelectedFilters & LOGFILTER_REFNAME)
+		if ((m_SelectedFilters & LOGFILTER_REFNAME) && m_HashMap.find(pRev->m_CommitHash) != m_HashMap.cend())
 		{
 			STRING_VECTOR refs = m_HashMap[pRev->m_CommitHash];
 			for (const auto& ref : refs)
@@ -3432,7 +3413,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 				return result;
 		}
 
-		if (m_SelectedFilters & LOGFILTER_REFNAME)
+		if ((m_SelectedFilters & LOGFILTER_REFNAME) && m_HashMap.find(pRev->m_CommitHash) != m_HashMap.cend())
 		{
 			STRING_VECTOR refs = m_HashMap[pRev->m_CommitHash];
 			for (auto it = refs.cbegin(); it != refs.cend(); ++it)
@@ -3490,7 +3471,7 @@ bool CGitLogListBase::ShouldShowFilter(GitRevLoglist* pRev, const std::unordered
 	if (m_ShowFilter & FILTERSHOW_ANYCOMMIT)
 		return true;
 
-	if (m_ShowFilter & FILTERSHOW_REFS)
+	if ((m_ShowFilter & FILTERSHOW_REFS) && m_HashMap.find(pRev->m_CommitHash) != m_HashMap.cend())
 	{
 		// Keep all refs.
 		const STRING_VECTOR &refList = m_HashMap[pRev->m_CommitHash];
@@ -3678,7 +3659,7 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 					continue;
 				}
 			}
-			if (m_SelectedFilters & LOGFILTER_REFNAME)
+			if ((m_SelectedFilters & LOGFILTER_REFNAME) && m_HashMap.find(m_logEntries.GetGitRevAt(i).m_CommitHash) != m_HashMap.cend())
 			{
 				STRING_VECTOR refs = m_HashMap[m_logEntries.GetGitRevAt(i).m_CommitHash];
 				for (auto it = refs.cbegin(); it != refs.cend(); ++it)
@@ -3802,7 +3783,7 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 					continue;
 				}
 			}
-			if (m_SelectedFilters & LOGFILTER_REFNAME)
+			if ((m_SelectedFilters & LOGFILTER_REFNAME) && m_HashMap.find(m_logEntries.GetGitRevAt(i).m_CommitHash) != m_HashMap.cend())
 			{
 				STRING_VECTOR refs = m_HashMap[m_logEntries.GetGitRevAt(i).m_CommitHash];
 				for (auto it = refs.cbegin(); it != refs.cend(); ++it)
@@ -4108,10 +4089,14 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 			str+=pLogEntry->m_CommitHash.ToString();
 			str += L'\n';
 
-			for (size_t j = 0; j < this->m_HashMap[pLogEntry->m_CommitHash].size(); ++j)
+			auto refList = m_HashMap.find(pLogEntry->m_CommitHash);
+			if (refList != m_HashMap.cend())
 			{
-				str+=m_HashMap[pLogEntry->m_CommitHash][j];
-				str += L'\n';
+				for (const auto& ref : (*refList).second)
+				{
+					str += ref;
+					str += L'\n';
+				}
 			}
 
 			str+=pLogEntry->GetAuthorEmail();
@@ -4349,7 +4334,7 @@ CString CGitLogListBase::GetToolTipText(int nItem, int nSubItem)
 		GitRevLoglist* pLogEntry = m_arShownList.SafeGetAt(nItem);
 		if (pLogEntry == nullptr)
 			return CString();
-		if (m_HashMap[pLogEntry->m_CommitHash].empty() && (m_superProjectHash.IsEmpty() || pLogEntry->m_CommitHash != m_superProjectHash))
+		if (m_HashMap.find(pLogEntry->m_CommitHash) == m_HashMap.cend() && (m_superProjectHash.IsEmpty() || pLogEntry->m_CommitHash != m_superProjectHash))
 			return CString();
 		return pLogEntry->GetSubject();
 	}
@@ -4431,6 +4416,10 @@ bool CGitLogListBase::IsMouseOnRefLabelFromPopupMenu(const GitRevLoglist* pLogEn
 bool CGitLogListBase::IsMouseOnRefLabel(const GitRevLoglist* pLogEntry, const POINT& pt, CGit::REF_TYPE& type, CString* pShortname /*nullptr*/, size_t* pIndex /*nullptr*/)
 {
 	if (!pLogEntry)
+		return false;
+
+	auto refList = m_HashMap.find(pLogEntry->m_CommitHash);
+	if (refList == m_HashMap.cend())
 		return false;
 
 	for (size_t i = 0; i < m_HashMap[pLogEntry->m_CommitHash].size(); ++i)

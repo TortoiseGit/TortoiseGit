@@ -36,6 +36,18 @@
 #include "FindDlg.h"
 #include <unordered_set>
 
+template < typename Cont, typename Pred>
+void for_each(Cont& c, Pred&& p)
+{
+	std::for_each(cbegin(c), cend(c), p);
+}
+
+template <typename Cont, typename Pred>
+auto find_if(Cont& c, Pred&& p)
+{
+	return std::find_if(cbegin(c), cend(c), p);
+}
+
 // CGitLogList
 #define ICONITEMBORDER 5
 
