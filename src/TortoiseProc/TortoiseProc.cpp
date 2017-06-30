@@ -272,6 +272,10 @@ BOOL CTortoiseProcApp::InitInstance()
 		CString versionString;
 		versionString.Format(L"%X", CGit::ms_LastMsysGitVersion);
 		CCrashReport::Instance().AddUserInfoToReport(L"msysGitVersion", versionString);
+		if (CGit::ms_bCygwinGit)
+			CCrashReport::Instance().AddUserInfoToReport(L"CygwinHack", L"true");
+		if (CGit::ms_bMsys2Git)
+			CCrashReport::Instance().AddUserInfoToReport(L"Msys2Hack", L"true");
 	}
 
 	if (parser.HasKey(L"urlhandler"))
