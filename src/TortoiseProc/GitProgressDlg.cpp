@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -188,6 +188,8 @@ BOOL CGitProgressDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 			return TRUE;
 		}
 	}
+	if (pWnd && pWnd == GetDlgItem(IDC_INFOTEXT))
+		return CResizableStandAloneDialog::OnSetCursor(pWnd, nHitTest, message);
 	HCURSOR hCur = LoadCursor(nullptr, IDC_ARROW);
 	SetCursor(hCur);
 	return CResizableStandAloneDialog::OnSetCursor(pWnd, nHitTest, message);
