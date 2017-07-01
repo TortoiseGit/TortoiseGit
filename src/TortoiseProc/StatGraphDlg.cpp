@@ -148,10 +148,6 @@ BOOL CStatGraphDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
 
-	// gather statistics data, only needs to be updated when the checkbox with
-	// the case sensitivity of author names is changed
-	GatherData();
-
 	m_tooltips.AddTool(&m_btnGraphPie, IDS_STATGRAPH_PIEBUTTON_TT);
 	m_tooltips.AddTool(&m_btnGraphLineStacked, IDS_STATGRAPH_LINESTACKEDBUTTON_TT);
 	m_tooltips.AddTool(&m_btnGraphLine, IDS_STATGRAPH_LINEBUTTON_TT);
@@ -162,6 +158,10 @@ BOOL CStatGraphDlg::OnInitDialog()
 	m_bAuthorsCaseSensitive = DWORD(CRegDWORD(L"Software\\TortoiseGit\\StatAuthorsCaseSensitive"));
 	m_bSortByCommitCount = DWORD(CRegDWORD(L"Software\\TortoiseGit\\StatSortByCommitCount"));
 	UpdateData(FALSE);
+
+	// gather statistics data, only needs to be updated when the checkbox with
+	// the case sensitivity of author names is changed
+	GatherData();
 
 	//Load statistical queries
 	LoadStatQueries(IDS_STATGRAPH_STATS, AllStat, true);
