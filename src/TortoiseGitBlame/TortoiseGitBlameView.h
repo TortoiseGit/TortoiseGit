@@ -232,8 +232,6 @@ public:
 	bool DoSearch(CTortoiseGitBlameData::SearchDirection direction);
 	bool GotoLine(int line);
 	bool ScrollToLine(long line);
-	void GotoLineDlg();
-	static INT_PTR CALLBACK GotoDlgProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 	void SetSelectedLine(int line) { m_SelectedLine = line;};
 
