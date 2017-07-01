@@ -358,6 +358,8 @@ void CPullFetchDlg::OnBnClickedRd()
 	{
 		CString clippath = CAppUtils::GetClipboardLink(m_IsPull ? L"git pull" : L"git fetch", 1);
 		if (clippath.IsEmpty())
+			clippath = CAppUtils::GetClipboardLink(!m_IsPull ? L"git pull" : L"git fetch", 1);
+		if (clippath.IsEmpty())
 			m_Other.SetCurSel(0);
 		else
 		{
