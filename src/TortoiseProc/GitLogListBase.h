@@ -158,20 +158,17 @@ private:
 
 class CThreadSafePtrArray : public std::vector<GitRevLoglist*>
 {
+	typedef CComCritSecLock<CComCriticalSection> Locker;
 	CComCriticalSection *m_critSec;
 public:
-	CThreadSafePtrArray(CComCriticalSection *section){ m_critSec = section ;}
+	CThreadSafePtrArray(CComCriticalSection* section) : m_critSec(section)
+	{
+		ATLASSERT(m_critSec);
+	}
+
 	GitRevLoglist* SafeGetAt(size_t i)
 	{
-		if(m_critSec)
-			m_critSec->Lock();
-
-		SCOPE_EXIT
-		{
-			if (m_critSec)
-				m_critSec->Unlock();
-		};
-
+		Locker lock(*m_critSec);
 		if (i >= size())
 			return nullptr;
 
@@ -180,24 +177,13 @@ public:
 
 	void SafeAdd(GitRevLoglist* newElement)
 	{
-		if(m_critSec)
-			m_critSec->Lock();
+		Locker lock(*m_critSec);
 		push_back(newElement);
-		if(m_critSec)
-			m_critSec->Unlock();
 	}
 
 	void SafeRemoveAt(size_t i)
 	{
-		if (m_critSec)
-			m_critSec->Lock();
-
-		SCOPE_EXIT
-		{
-			if (m_critSec)
-			m_critSec->Unlock();
-		};
-
+		Locker lock(*m_critSec);
 		if (i >= size())
 			return;
 
@@ -206,20 +192,14 @@ public:
 
 	void SafeAddFront(GitRevLoglist* newElement)
 	{
-		if (m_critSec)
-			m_critSec->Lock();
+		Locker lock(*m_critSec);
 		insert(cbegin(), newElement);
-		if (m_critSec)
-			m_critSec->Unlock();
 	}
 
 	void  SafeRemoveAll()
 	{
-		if(m_critSec)
-			m_critSec->Lock();
+		Locker lock(*m_critSec);
 		clear();
-		if(m_critSec)
-			m_critSec->Unlock();
 	}
 };
 
