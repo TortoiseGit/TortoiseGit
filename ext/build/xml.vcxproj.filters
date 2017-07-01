@@ -14,54 +14,54 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\apr-util\xml\expat\lib\xmlparse.c">
+    <ClCompile Include="..\expat\expat\lib\xmlparse.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\apr-util\xml\expat\lib\xmlrole.c">
+    <ClCompile Include="..\expat\expat\lib\xmlrole.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\apr-util\xml\expat\lib\xmltok.c">
+    <ClCompile Include="..\expat\expat\lib\xmltok.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\apr-util\xml\expat\lib\ascii.h">
+    <ClInclude Include="..\expat\expat\lib\ascii.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\apr-util\xml\expat\lib\asciitab.h">
+    <ClInclude Include="..\expat\expat\lib\asciitab.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\apr-util\xml\expat\lib\expat.h">
+    <ClInclude Include="..\expat\expat\lib\expat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\apr-util\xml\expat\lib\iasciitab.h">
+    <ClInclude Include="..\expat\expat\lib\iasciitab.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\apr-util\xml\expat\lib\internal.h">
+    <ClInclude Include="..\expat\expat\lib\internal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\apr-util\xml\expat\lib\latin1tab.h">
+    <ClInclude Include="..\expat\expat\lib\latin1tab.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\apr-util\xml\expat\lib\nametab.h">
+    <ClInclude Include="..\expat\expat\lib\nametab.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\apr-util\xml\expat\lib\utf8tab.h">
+    <ClInclude Include="..\expat\expat\lib\utf8tab.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\apr-util\xml\expat\lib\xmlrole.h">
+    <ClInclude Include="..\expat\expat\lib\xmlrole.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\apr-util\xml\expat\lib\xmltok.h">
+    <ClInclude Include="..\expat\expat\lib\xmltok.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\apr-util\xml\expat\lib\xmltok_impl.h">
+    <ClInclude Include="..\expat\expat\lib\xmltok_impl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="..\apr-util\xml\expat\lib\winconfig.h">
-      <Filter>Generated Header Files</Filter>
+    <CustomBuild Include="..\expat\expat\lib\winconfig.h">
+      <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>

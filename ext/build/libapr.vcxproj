@@ -46,7 +46,7 @@ if errorlevel 1 type apr_escape_test_char.h &gt;..\apr\include\apr_escape_test_c
     <ClCompile>
       <AdditionalIncludeDirectories>..\apr\include;..\apr\include\arch;..\apr\include\arch\win32;..\apr\include\arch\unix;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>APR_DECLARE_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level2</WarningLevel>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <ResourceCompile>
@@ -122,11 +122,13 @@ if errorlevel 1 type apr_escape_test_char.h &gt;..\apr\include\apr_escape_test_c
     <ClCompile Include="..\apr\poll\unix\pollcb.c" />
     <ClCompile Include="..\apr\poll\unix\pollset.c" />
     <ClCompile Include="..\apr\poll\unix\select.c" />
+    <ClCompile Include="..\apr\poll\unix\wakeup.c" />
     <ClCompile Include="..\apr\random\unix\apr_random.c" />
     <ClCompile Include="..\apr\random\unix\sha2.c" />
     <ClCompile Include="..\apr\random\unix\sha2_glue.c" />
     <ClCompile Include="..\apr\shmem\win32\shm.c" />
     <ClCompile Include="..\apr\strings\apr_cpystrn.c" />
+    <ClCompile Include="..\apr\strings\apr_cstr.c" />
     <ClCompile Include="..\apr\strings\apr_fnmatch.c" />
     <ClCompile Include="..\apr\strings\apr_snprintf.c" />
     <ClCompile Include="..\apr\strings\apr_strings.c" />
@@ -144,6 +146,8 @@ if errorlevel 1 type apr_escape_test_char.h &gt;..\apr\include\apr_escape_test_c
     <ClCompile Include="..\apr\user\win32\userinfo.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\apr\include\apr_cstr.h" />
+    <ClInclude Include="..\apr\include\apr_perms_set.h" />
     <ClInclude Include="..\apr\include\arch\win32\apr_arch_atime.h" />
     <ClInclude Include="..\apr\include\arch\win32\apr_arch_dso.h" />
     <ClInclude Include="..\apr\include\arch\win32\apr_arch_file_io.h" />

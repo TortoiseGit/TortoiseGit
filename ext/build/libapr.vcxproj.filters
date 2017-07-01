@@ -283,6 +283,12 @@
     <ClCompile Include="..\apr\encoding\apr_escape.c">
       <Filter>Source Files\encoding</Filter>
     </ClCompile>
+    <ClCompile Include="..\apr\strings\apr_cstr.c">
+      <Filter>Source Files\strings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\apr\poll\unix\wakeup.c">
+      <Filter>Source Files\poll</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\apr\include\arch\win32\apr_arch_atime.h">
@@ -424,6 +430,12 @@
       <Filter>Public Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\apr\include\apr_want.h">
+      <Filter>Public Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\apr\include\apr_cstr.h">
+      <Filter>Public Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\apr\include\apr_perms_set.h">
       <Filter>Public Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -87,7 +87,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TortoiseGitMerge", "Tortois
 		{5C6B6A95-2053-4593-9617-C4F176736D5A} = {5C6B6A95-2053-4593-9617-C4F176736D5A}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xml", "..\ext\build\xml.vcxproj", "{AE6AAFBA-9992-452A-9EB8-DD69402A4ACE}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "expat", "..\ext\build\xml.vcxproj", "{AE6AAFBA-9992-452A-9EB8-DD69402A4ACE}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libapr", "..\ext\build\libapr.vcxproj", "{4472028D-4ACF-474E-AA95-9B7E12B50F60}"
 EndProject

@@ -28,3 +28,6 @@
 [submodule "ext/googletest"]
 	path = ext/googletest
 	url = https://github.com/google/googletest.git
+[submodule "ext/expat"]
+	path = ext/expat
+	url = https://github.com/libexpat/libexpat.git

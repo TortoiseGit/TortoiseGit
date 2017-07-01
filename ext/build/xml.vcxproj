@@ -21,6 +21,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{AE6AAFBA-9992-452A-9EB8-DD69402A4ACE}</ProjectGuid>
     <RootNamespace>xml</RootNamespace>
+    <ProjectName>expat</ProjectName>
   </PropertyGroup>
   <Import Project="$(SolutionDir)TortoiseGit.toolset.props" />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -38,7 +39,7 @@
   <PropertyGroup Label="UserMacros" />
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\apr-util\xml\expat\lib;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\expat\expat\lib;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>COMPILED_FROM_DSP;XML_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level2</WarningLevel>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
@@ -50,33 +51,27 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\apr-util\xml\expat\lib\xmlparse.c" />
-    <ClCompile Include="..\apr-util\xml\expat\lib\xmlrole.c" />
-    <ClCompile Include="..\apr-util\xml\expat\lib\xmltok.c" />
+    <ClCompile Include="..\expat\expat\lib\xmlparse.c" />
+    <ClCompile Include="..\expat\expat\lib\xmlrole.c" />
+    <ClCompile Include="..\expat\expat\lib\xmltok.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\apr-util\xml\expat\lib\ascii.h" />
-    <ClInclude Include="..\apr-util\xml\expat\lib\asciitab.h" />
-    <ClInclude Include="..\apr-util\xml\expat\lib\expat.h" />
-    <ClInclude Include="..\apr-util\xml\expat\lib\iasciitab.h" />
-    <ClInclude Include="..\apr-util\xml\expat\lib\internal.h" />
-    <ClInclude Include="..\apr-util\xml\expat\lib\latin1tab.h" />
-    <ClInclude Include="..\apr-util\xml\expat\lib\nametab.h" />
-    <ClInclude Include="..\apr-util\xml\expat\lib\utf8tab.h" />
-    <ClInclude Include="..\apr-util\xml\expat\lib\xmlrole.h" />
-    <ClInclude Include="..\apr-util\xml\expat\lib\xmltok.h" />
-    <ClInclude Include="..\apr-util\xml\expat\lib\xmltok_impl.h" />
-    <CustomBuild Include="..\apr-util\xml\expat\lib\winconfig.h">
+    <ClInclude Include="..\expat\expat\lib\ascii.h" />
+    <ClInclude Include="..\expat\expat\lib\asciitab.h" />
+    <ClInclude Include="..\expat\expat\lib\expat.h" />
+    <ClInclude Include="..\expat\expat\lib\iasciitab.h" />
+    <ClInclude Include="..\expat\expat\lib\internal.h" />
+    <ClInclude Include="..\expat\expat\lib\latin1tab.h" />
+    <ClInclude Include="..\expat\expat\lib\nametab.h" />
+    <ClInclude Include="..\expat\expat\lib\utf8tab.h" />
+    <ClInclude Include="..\expat\expat\lib\xmlrole.h" />
+    <ClInclude Include="..\expat\expat\lib\xmltok.h" />
+    <ClInclude Include="..\expat\expat\lib\xmltok_impl.h" />
+    <CustomBuild Include="..\expat\expat\lib\winconfig.h">
       <Message>Creating config.h from winconfig.h</Message>
-      <Command>type ..\apr-util\xml\expat\lib\winconfig.h &gt; ..\apr-util\xml\expat\lib\config.h</Command>
-      <Outputs>..\apr-util\xml\expat\lib\config.h;%(Outputs)</Outputs>
+      <Command>type ..\expat\expat\lib\winconfig.h &gt; ..\expat\expat\lib\config.h</Command>
+      <Outputs>..\expat\expat\lib\config.h;%(Outputs)</Outputs>
     </CustomBuild>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="libapr.vcxproj">
-      <Project>{4472028d-4acf-474e-aa95-9b7e12b50f60}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
