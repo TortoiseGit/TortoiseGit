@@ -155,8 +155,8 @@ BOOL CStatGraphDlg::OnInitDialog()
 	m_tooltips.AddTool(&m_btnGraphBar, IDS_STATGRAPH_BARBUTTON_TT);
 	m_tooltips.Activate(TRUE);
 
-	m_bAuthorsCaseSensitive = DWORD(CRegDWORD(L"Software\\TortoiseGit\\StatAuthorsCaseSensitive"));
-	m_bSortByCommitCount = DWORD(CRegDWORD(L"Software\\TortoiseGit\\StatSortByCommitCount"));
+	m_bAuthorsCaseSensitive = DWORD(CRegDWORD(L"Software\\TortoiseGit\\StatAuthorsCaseSensitive", m_bAuthorsCaseSensitive));
+	m_bSortByCommitCount = DWORD(CRegDWORD(L"Software\\TortoiseGit\\StatSortByCommitCount", m_bSortByCommitCount));
 	UpdateData(FALSE);
 
 	// gather statistics data, only needs to be updated when the checkbox with
