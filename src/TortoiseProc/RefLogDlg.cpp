@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2016 - TortoiseGit
+// Copyright (C) 2009-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -58,6 +58,7 @@ BEGIN_MESSAGE_MAP(CRefLogDlg, CResizableStandAloneDialog)
 	ON_CBN_SELCHANGE(IDC_COMBOBOXEX_REF,   &CRefLogDlg::OnCbnSelchangeRef)
 	ON_MESSAGE(MSG_REFLOG_CHANGED,OnRefLogChanged)
 	ON_REGISTERED_MESSAGE(m_FindDialogMessage, OnFindDialogMessage)
+	ON_BN_CLICKED(IDC_SEARCH, OnFind)
 END_MESSAGE_MAP()
 
 LRESULT CRefLogDlg::OnRefLogChanged(WPARAM /*wParam*/, LPARAM /*lParam*/)
@@ -75,6 +76,7 @@ BOOL CRefLogDlg::OnInitDialog()
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
 	AddAnchor(IDC_REFLOG_BUTTONCLEARSTASH, BOTTOM_LEFT);
+	AddAnchor(IDC_SEARCH, BOTTOM_LEFT);
 	AddAnchor(IDC_REFLOG_LIST,TOP_LEFT,BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 	AddAnchor(IDC_COMBOBOXEX_REF, TOP_LEFT, TOP_RIGHT);

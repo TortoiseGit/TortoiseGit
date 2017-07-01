@@ -20,6 +20,8 @@ Released: unreleased
  * Fixed issue #2964: Blame: gloss over per-line commit reference if duplicated
  * Fixed issue #2429: "Abort merge" should allow to select "git reset --merge"
  * Fixed issue #2448: TortoiseGitBlame: Line Wrapping
+ * Fixed issue #2550: Search functionality on message in the RefLog window
+   CTRL+F and F3 already opened a search dialog, now there also is a search button
 
 == Bug Fixes ==
  * Fixed issue #2909: Commit window unclosable after clicking "No" and "do not ask again"
