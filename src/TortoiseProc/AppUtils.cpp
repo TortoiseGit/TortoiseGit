@@ -1547,7 +1547,33 @@ static bool Reset(const CString& resetTo, int resetType)
 	case 2:
 		type = L"--hard";
 		break;
+	case 3:
+	{
+		CProgressDlg progress;
+		progress.m_GitCmd = L"git.exe reset --merge";
+		progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
+		{
+			if (status)
+			{
+				postCmdList.emplace_back(IDI_REFRESH, IDS_MSGBOX_RETRY, [] { CAppUtils::MergeAbort(); });
+				return;
+			}
+
+			CTGitPath gitPath = g_Git.m_CurrentDir;
+			if (gitPath.HasSubmodules() && resetType == 2)
+			{
+				postCmdList.emplace_back(IDI_UPDATE, IDS_PROC_SUBMODULESUPDATE, [&]
+				{
+					CString sCmd;
+					sCmd.Format(L"/command:subupdate /bkpath:\"%s\"", (LPCTSTR)g_Git.m_CurrentDir);
+					CAppUtils::RunTortoiseGitProc(sCmd);
+				});
+			}
+		};
+		return progress.DoModal() == IDOK;
+	}
 	default:
+		ATLASSERT(false);
 		resetType = 1;
 		type = L"--mixed";
 		break;
@@ -3373,7 +3399,7 @@ BOOL CAppUtils::MergeAbort()
 {
 	CMergeAbortDlg dlg;
 	if (dlg.DoModal() == IDOK)
-		return Reset(L"HEAD", dlg.m_ResetType + 1);
+		return Reset(L"HEAD", (dlg.m_ResetType == 0) ? 3 : dlg.m_ResetType);
 
 	return FALSE;
 }

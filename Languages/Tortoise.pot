@@ -6206,6 +6206,10 @@ msgstr ""
 msgid "Lum"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1550)
+msgid "M&erge: Resets the index and try to reconstruct the pre-merge state"
+msgstr ""
+
 #. Resource IDs: (IDS_SMTP_MAPI)
 msgid "MAPI"
 msgstr ""
