@@ -197,6 +197,9 @@ BOOL CStatGraphDlg::OnInitDialog()
 	m_btnGraphPie.SizeToContent();
 	m_btnGraphPie.Invalidate();
 
+	AdjustControlSize(IDC_AUTHORSCASESENSITIVE);
+	AdjustControlSize(IDC_SORTBYCOMMITCOUNT);
+
 	AddAnchor(IDC_GRAPHTYPELABEL, TOP_LEFT);
 	AddAnchor(IDC_GRAPH, TOP_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_GRAPHCOMBO, TOP_LEFT, TOP_RIGHT);
