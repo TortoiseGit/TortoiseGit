@@ -88,13 +88,14 @@
 #define ID_FIND_PREV                    32805
 #define ID_VIEW_ENABLELEXER             32806
 #define ID_VIEW_ONLYCONSIDERFIRSTPARENTS 32807
+#define ID_VIEW_WRAPLONGLINES           32808
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        312
-#define _APS_NEXT_COMMAND_VALUE         32808
+#define _APS_NEXT_COMMAND_VALUE         32809
 #define _APS_NEXT_CONTROL_VALUE         1004
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

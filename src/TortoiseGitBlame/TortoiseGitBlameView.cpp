@@ -94,6 +94,8 @@ BEGIN_MESSAGE_MAP(CTortoiseGitBlameView, CView)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_COLORBYAGE, OnUpdateViewToggleColorByAge)
 	ON_COMMAND(ID_VIEW_ENABLELEXER, OnViewToggleLexer)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_ENABLELEXER, OnUpdateViewToggleLexer)
+	ON_COMMAND(ID_VIEW_WRAPLONGLINES, OnViewWrapLongLines)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_WRAPLONGLINES, OnUpdateViewWrapLongLines)
 	ON_COMMAND_RANGE(IDM_FORMAT_ENCODE, IDM_FORMAT_ENCODE_END, OnChangeEncode)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
@@ -165,6 +167,7 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 	m_bOnlyFirstParent = (theApp.GetInt(L"OnlyFirstParent", 0) == 1);
 	m_bFollowRenames = (theApp.GetInt(L"FollowRenames", 0) == 1);
 	m_bBlameOuputContainsOtherFilenames = FALSE;
+	m_bWrapLongLines = !!theApp.GetInt(L"WrapLongLines", 0);
 
 	m_FindDialogMessage = ::RegisterWindowMessage(FINDMSGSTRING);
 	// get short/long datetime setting from registry
@@ -345,11 +348,31 @@ void CTortoiseGitBlameView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 	// TODO: add cleanup after printing
 }
 
+int CTortoiseGitBlameView::GetLineUnderCursor(CPoint point)
+{
+	int firstvisibleline = (int)SendEditor(SCI_GETFIRSTVISIBLELINE);
+	int line = (int)SendEditor(SCI_DOCLINEFROMVISIBLE, firstvisibleline);
+	int linesonscreen = (int)SendEditor(SCI_LINESONSCREEN) + 1;
+	int height = (int)SendEditor(SCI_TEXTHEIGHT);
+
+	int i = 0, y = 0;
+	for (i = line; y <= point.y && i < (line + linesonscreen); ++i)
+	{
+		auto wrapcount = (int)SendEditor(SCI_WRAPCOUNT, i);
+		if (wrapcount > 1)
+		{
+			if (i == line)
+				wrapcount -= (int)SendEditor(SCI_DOCLINEFROMVISIBLE, firstvisibleline + wrapcount - 1) - (int)SendEditor(SCI_DOCLINEFROMVISIBLE, firstvisibleline);
+			linesonscreen -= wrapcount - 1;
+		}
+		y += height * wrapcount;
+	}
+	return i - 1;
+}
+
 void CTortoiseGitBlameView::OnRButtonUp(UINT /*nFlags*/, CPoint point)
 {
-	int line = (int)SendEditor(SCI_GETFIRSTVISIBLELINE);
-	int height = (int)SendEditor(SCI_TEXTHEIGHT);
-	line = line + (int)(point.y / height);
+	int line = GetLineUnderCursor(point);
 	if (m_data.IsValidLine(line))
 	{
 		m_MouseLine = line;
@@ -633,7 +656,10 @@ void CTortoiseGitBlameView::InitialiseEditor()
 		SendEditor(SCI_SETBUFFEREDDRAW, 0);
 	}
 
-	SendEditor(SCI_SETWRAPMODE, SC_WRAP_NONE);
+	if (m_bWrapLongLines)
+		SendEditor(SCI_SETWRAPMODE, SC_WRAP_WORD);
+	else
+		SendEditor(SCI_SETWRAPMODE, SC_WRAP_NONE);
 	SendEditor(SCI_STYLECLEARALL);
 }
 
@@ -851,8 +877,9 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 		return;
 
 	HFONT oldfont = nullptr;
-	int line = (int)SendEditor(SCI_GETFIRSTVISIBLELINE);
-	int linesonscreen = (int)SendEditor(SCI_LINESONSCREEN);
+	int firstvisibleline = (int)SendEditor(SCI_GETFIRSTVISIBLELINE);
+	int line = (int)SendEditor(SCI_DOCLINEFROMVISIBLE, firstvisibleline);
+	int linesonscreen = (int)SendEditor(SCI_LINESONSCREEN) + 1;
 	int height = (int)SendEditor(SCI_TEXTHEIGHT);
 	int Y = 0;
 	TCHAR buf[MAX_PATH] = {0};
@@ -863,6 +890,13 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 
 	for (int i = line; i < (line + linesonscreen) && i < m_data.GetNumberOfLines(); ++i)
 	{
+		auto wrapcount = (int)SendEditor(SCI_WRAPCOUNT, i);
+		if (wrapcount > 1)
+		{
+			if (i == line)
+				wrapcount -= (int)SendEditor(SCI_DOCLINEFROMVISIBLE, firstvisibleline + wrapcount - 1) - (int)SendEditor(SCI_DOCLINEFROMVISIBLE, firstvisibleline);
+			linesonscreen -= wrapcount - 1;
+		}
 		CGitHash hash(m_data.GetHash(i));
 		oldfont = (HFONT)::SelectObject(hDC, m_font.GetSafeHandle());
 		::SetBkColor(hDC, m_windowcolor);
@@ -880,8 +914,9 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 		{
 			auto old = ::GetTextColor(hDC);
 			::SetTextColor(hDC, ::GetBkColor(hDC));
-			RECT rc2 = { LOCATOR_WIDTH, Y, m_blamewidth + LOCATOR_WIDTH, Y + height };
-			::ExtTextOut(hDC, 0, Y, ETO_CLIPPED, &rc2, buf, _countof(buf) - 1, 0);
+			RECT rc2 = { LOCATOR_WIDTH, Y, m_blamewidth + LOCATOR_WIDTH, Y + (wrapcount * height) };
+			for (int j = 0; j < wrapcount; ++j)
+				::ExtTextOut(hDC, 0, Y + (j * height), ETO_CLIPPED, &rc2, buf, _countof(buf) - 1, 0);
 			::SetTextColor(hDC, old);
 		}
 
@@ -939,7 +974,7 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 			brush.lbStyle = BS_SOLID;
 			HPEN pen = ExtCreatePen(PS_SOLID | PS_GEOMETRIC, 2, &brush, 0, nullptr);
 			HGDIOBJ hPenOld = SelectObject(hDC, pen);
-			RECT rc2 = { LOCATOR_WIDTH, Y + 1, m_blamewidth, Y + height - 1};
+			RECT rc2 = { LOCATOR_WIDTH, Y + 1, m_blamewidth, Y + (wrapcount * height) - 1};
 			::MoveToEx(hDC, rc2.left, rc2.top, nullptr);
 			::LineTo(hDC, rc2.right, rc2.top);
 			::LineTo(hDC, rc2.right, rc2.bottom);
@@ -948,7 +983,7 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 			SelectObject(hDC, hPenOld);
 			DeleteObject(pen);
 		}
-		Y += height;
+		Y += wrapcount * height;
 		::SelectObject(hDC, oldfont);
 	}
 }
@@ -1627,10 +1662,7 @@ void CTortoiseGitBlameView::OnSciPainted(NMHDR *,LRESULT *)
 
 void CTortoiseGitBlameView::OnLButtonDown(UINT nFlags,CPoint point)
 {
-	int line = (int)SendEditor(SCI_GETFIRSTVISIBLELINE);
-	int height = (int)SendEditor(SCI_TEXTHEIGHT);
-	line = line + (int)(point.y/height);
-
+	int line = GetLineUnderCursor(point);
 	if (line < m_data.GetNumberOfLines())
 	{
 		SetSelectedLine(line);
@@ -1654,7 +1686,6 @@ void CTortoiseGitBlameView::OnLButtonDown(UINT nFlags,CPoint point)
 		{
 			m_SelectedHash.Empty();
 		}
-		//::InvalidateRect(nullptr, FALSE);
 		this->Invalidate();
 		this->m_TextView.Invalidate();
 
@@ -1701,10 +1732,7 @@ void CTortoiseGitBlameView::FocusOn(GitRevLoglist* pRev)
 
 void CTortoiseGitBlameView::OnMouseHover(UINT /*nFlags*/, CPoint point)
 {
-	int line = (int)SendEditor(SCI_GETFIRSTVISIBLELINE);
-	int height = (int)SendEditor(SCI_TEXTHEIGHT);
-	line = line + (point.y/height);
-
+	int line = GetLineUnderCursor(point);
 	if (m_data.IsValidLine(line))
 	{
 		if (line != m_MouseLine)
@@ -1748,12 +1776,7 @@ void CTortoiseGitBlameView::OnMouseHover(UINT /*nFlags*/, CPoint point)
 			m_ToolTip.Pop();
 			m_ToolTip.AddTool(this, str);
 
-			CRect rect;
-			rect.left=LOCATOR_WIDTH;
-			rect.right=this->m_blamewidth+rect.left;
-			rect.top = point.y - (LONG)height;
-			rect.bottom = point.y + (LONG)height;
-			this->InvalidateRect(rect);
+			Invalidate();
 		}
 	}
 }
@@ -2104,6 +2127,23 @@ void CTortoiseGitBlameView::OnViewToggleLexer()
 void CTortoiseGitBlameView::OnUpdateViewToggleLexer(CCmdUI *pCmdUI)
 {
 	pCmdUI->SetCheck(m_bLexer);
+}
+
+void CTortoiseGitBlameView::OnViewWrapLongLines()
+{
+	m_bWrapLongLines = !m_bWrapLongLines;
+
+	theApp.WriteInt(L"WrapLongLines", m_bWrapLongLines);
+
+	if (m_bWrapLongLines)
+		SendEditor(SCI_SETWRAPMODE, SC_WRAP_WORD);
+	else
+		SendEditor(SCI_SETWRAPMODE, SC_WRAP_NONE);
+}
+
+void CTortoiseGitBlameView::OnUpdateViewWrapLongLines(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(m_bWrapLongLines);
 }
 
 void CTortoiseGitBlameView::OnUpdateViewCopyToClipboard(CCmdUI *pCmdUI)

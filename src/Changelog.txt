@@ -19,6 +19,7 @@ Released: unreleased
  * Fixed issue #2999: Log dialog: Copy tag to clipboard
  * Fixed issue #2964: Blame: gloss over per-line commit reference if duplicated
  * Fixed issue #2429: "Abort merge" should allow to select "git reset --merge"
+ * Fixed issue #2448: TortoiseGitBlame: Line Wrapping
 
 == Bug Fixes ==
  * Fixed issue #2909: Commit window unclosable after clicking "No" and "do not ask again"

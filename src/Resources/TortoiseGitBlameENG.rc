@@ -299,6 +299,7 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "Color by age, &continuous",   ID_VIEW_COLORBYAGE
         MENUITEM "Enable syntax highlighting",  ID_VIEW_ENABLELEXER
+        MENUITEM "Wrap long lines",             ID_VIEW_WRAPLONGLINES
     END
     POPUP "&Help"
     BEGIN

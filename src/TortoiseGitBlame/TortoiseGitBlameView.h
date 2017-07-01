@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2016 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2017 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -175,6 +175,8 @@ protected:
 	afx_msg void OnUpdateViewToggleColorByAge(CCmdUI *pCmdUI);
 	afx_msg void OnViewToggleLexer();
 	afx_msg void OnUpdateViewToggleLexer(CCmdUI *pCmdUI);
+	afx_msg void OnViewWrapLongLines();
+	afx_msg void OnUpdateViewWrapLongLines(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateViewCopyToClipboard(CCmdUI *pCmdUI);
 	void OnViewDetectMovedOrCopiedLines(DWORD dwDetectMovedOrCopiedLines);
 	void ContextMenuAction(int cmd, GitRev* pRev, GIT_REV_LIST& parentHash, const std::vector<CString>& parentFilename);
@@ -240,6 +242,7 @@ public:
 	CGitHash				m_selecteddate;
 	bool					m_colorage;
 	bool					m_bLexer;
+	bool					m_bWrapLongLines;
 
 	CTortoiseGitBlameData	m_data;
 	std::vector<int>		m_lineToLogIndex;
@@ -252,6 +255,7 @@ protected:
 	void CreateFont();
 	void SetupLexer(CString filename);
 	void SetupCppLexer();
+	int GetLineUnderCursor(CPoint point);
 	COLORREF GetLineColor(int line);
 	COLORREF InterColor(COLORREF c1, COLORREF c2, int Slider);
 	CFont					m_font;
