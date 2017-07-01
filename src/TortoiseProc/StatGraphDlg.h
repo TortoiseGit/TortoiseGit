@@ -64,7 +64,7 @@ public:
 
 	enum { IDD = IDD_STATGRAPH };
 
-	CThreadSafePtrArray m_ShowList;
+	std::vector<GitRevLoglist*> m_ShowList;
 
 	// Data	passed from	the	caller of the dialog.
 	CDWordArray		m_parDates;

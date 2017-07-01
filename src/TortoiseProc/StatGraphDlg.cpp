@@ -67,7 +67,6 @@ CStatGraphDlg::CStatGraphDlg(CWnd* pParent /*=nullptr*/)
 , m_nTotalLinesNew(0)
 , m_nTotalLinesDel(0)
 , m_bDiffFetched(FALSE)
-, m_ShowList(nullptr)
 , m_minDate(0)
 , m_maxDate(0)
 , m_nTotalFileChanges(0)
@@ -546,160 +545,6 @@ int CStatGraphDlg::GetCalendarWeek(const CTime& time)
 	return iWeekOfYear;
 }
 
-class CDateSorter
-{
-public:
-	class CCommitPointer
-	{
-	public:
-		CCommitPointer()
-		: m_cont(nullptr)
-		, m_place(0)
-		, m_Date(0)
-		, m_Changes(0)
-		, m_lineInc(0)
-		, m_lineDec(0)
-		, m_lineNew(0)
-		, m_lineDel(0)
-		{}
-		CCommitPointer(const CCommitPointer& P_Right)
-		: m_cont(nullptr)
-		, m_place(0)
-		, m_Date(0)
-		, m_Changes(0)
-		, m_lineInc(0)
-		, m_lineDec(0)
-		, m_lineNew(0)
-		, m_lineDel(0)
-		{
-			*this = P_Right;
-		}
-
-		CCommitPointer& operator = (const CCommitPointer& P_Right)
-		{
-			if(IsPointer())
-			{
-				(*m_cont->m_parDates)[m_place]			= P_Right.GetDate();
-				(*m_cont->m_parFileChanges)[m_place]	= P_Right.GetChanges();
-				(*m_cont->m_parAuthors)[m_place]		= P_Right.GetAuthor();
-				(*m_cont->m_lineInc)[m_place]			= P_Right.GetLineInc();
-				(*m_cont->m_lineDec)[m_place]			= P_Right.GetLineDec();
-				(*m_cont->m_lineNew)[m_place]			= P_Right.GetLineNew();
-				(*m_cont->m_lineDel)[m_place]			= P_Right.GetLineDel();
-			}
-			else
-			{
-				m_Date								= P_Right.GetDate();
-				m_Changes							= P_Right.GetChanges();
-				m_csAuthor							= P_Right.GetAuthor();
-				m_lineInc							= P_Right.GetLineInc();
-				m_lineDec							= P_Right.GetLineDec();
-				m_lineNew							= P_Right.GetLineNew();
-				m_lineDel							= P_Right.GetLineDel();
-			}
-			return *this;
-		}
-
-		void Clone(const CCommitPointer& P_Right)
-		{
-			m_cont = P_Right.m_cont;
-			m_place = P_Right.m_place;
-			m_Date = P_Right.m_Date;
-			m_Changes = P_Right.m_Changes;
-			m_csAuthor = P_Right.m_csAuthor;
-		}
-
-		DWORD		 GetDate()		const {return IsPointer() ? (*m_cont->m_parDates)[m_place] : m_Date;}
-		DWORD		 GetChanges()	const {return IsPointer() ? (*m_cont->m_parFileChanges)[m_place] : m_Changes;}
-		DWORD		 GetLineInc()	const {return IsPointer() ? (*m_cont->m_lineInc)[m_place] : m_lineInc;}
-		DWORD		 GetLineDec()	const {return IsPointer() ? (*m_cont->m_lineDec)[m_place] : m_lineDec;}
-		DWORD		 GetLineNew()	const {return IsPointer() ? (*m_cont->m_lineNew)[m_place] : m_lineNew;}
-		DWORD		 GetLineDel()	const {return IsPointer() ? (*m_cont->m_lineDel)[m_place] : m_lineDel;}
-		CString		 GetAuthor()	const {return IsPointer() ? (*m_cont->m_parAuthors)[m_place] : m_csAuthor;}
-
-		bool		IsPointer() const { return m_cont != nullptr; }
-		//When pointer
-		CDateSorter* m_cont;
-		int			 m_place;
-
-		//When element
-		DWORD		 m_Date;
-		DWORD		 m_Changes;
-		DWORD		 m_lineInc;
-		DWORD		 m_lineDec;
-		DWORD		 m_lineNew;
-		DWORD		 m_lineDel;
-		CString		 m_csAuthor;
-
-	};
-	class iterator : public std::iterator<std::random_access_iterator_tag, CCommitPointer>
-	{
-	public:
-		CCommitPointer m_ptr;
-
-		iterator(){}
-		iterator(const iterator& P_Right){*this = P_Right;}
-		iterator& operator=(const iterator& P_Right)
-		{
-			m_ptr.Clone(P_Right.m_ptr);
-			return *this;
-		}
-
-		CCommitPointer& operator*(){return m_ptr;}
-		CCommitPointer* operator->(){return &m_ptr;}
-		const CCommitPointer& operator*()const{return m_ptr;}
-		const CCommitPointer* operator->()const{return &m_ptr;}
-
-		iterator& operator+=(size_t P_iOffset){m_ptr.m_place += (int)P_iOffset;return *this;}
-		iterator& operator-=(size_t P_iOffset){m_ptr.m_place -= (int)P_iOffset;return *this;}
-		iterator operator+(size_t P_iOffset)const{iterator it(*this); it += P_iOffset;return it;}
-		iterator operator-(size_t P_iOffset)const{iterator it(*this); it -= P_iOffset;return it;}
-
-		iterator& operator++(){++m_ptr.m_place;return *this;}
-		iterator& operator--(){--m_ptr.m_place;return *this;}
-		iterator operator++(int){iterator it(*this);++*this;return it;}
-		iterator operator--(int){iterator it(*this);--*this;return it;}
-
-		size_t operator-(const iterator& P_itRight)const{return m_ptr.m_place - P_itRight->m_place;}
-
-		bool operator<(const iterator& P_itRight)const{return m_ptr.m_place < P_itRight->m_place;}
-		bool operator!=(const iterator& P_itRight)const{return m_ptr.m_place != P_itRight->m_place;}
-		bool operator==(const iterator& P_itRight)const{return m_ptr.m_place == P_itRight->m_place;}
-		bool operator>(const iterator& P_itRight)const{return m_ptr.m_place > P_itRight->m_place;}
-	};
-	iterator begin()
-	{
-		iterator it;
-		it->m_place = 0;
-		it->m_cont = this;
-		return it;
-	}
-	iterator end()
-	{
-		iterator it;
-		it->m_place = (int)m_parDates->GetCount();
-		it->m_cont = this;
-		return it;
-	}
-
-	CDWordArray	*	m_parDates;
-	CDWordArray	*	m_parFileChanges;
-	CDWordArray *	m_lineInc;
-	CDWordArray *	m_lineDec;
-	CDWordArray *	m_lineNew;
-	CDWordArray *	m_lineDel;
-	CStringArray *	m_parAuthors;
-};
-
-class CDateSorterLess
-{
-public:
-	bool operator () (const CDateSorter::CCommitPointer& P_Left, const CDateSorter::CCommitPointer& P_Right) const
-	{
-		return P_Left.GetDate() > P_Right.GetDate(); //Last date first
-	}
-};
-
 int CStatGraphDlg::GatherData(BOOL fetchdiff, BOOL keepFetchedData)
 {
 	m_parAuthors.RemoveAll();
@@ -735,18 +580,15 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff, BOOL keepFetchedData)
 	// create arrays which are aware of the current filter
 	ULONGLONG starttime = GetTickCount64();
 
+	std::sort(m_ShowList.begin(), m_ShowList.end(), [](GitRevLoglist* pLhs, GitRevLoglist* pRhs) { return pLhs->GetCommitterDate() > pRhs->GetCommitterDate(); });
+
 	GIT_MAILMAP mailmap = nullptr;
 	git_read_mailmap(&mailmap);
 	for (size_t i = 0; i < m_ShowList.size(); ++i)
 	{
-		GitRevLoglist* pLogEntry = m_ShowList.SafeGetAt(i);
+		auto pLogEntry = m_ShowList[i];
 		int inc, dec, incnewfile, decdeletedfile, files;
 		inc = dec = incnewfile = decdeletedfile = files= 0;
-
-		// do not take working dir changes into statistics
-		if (pLogEntry->m_CommitHash.IsEmpty()) {
-			continue;
-		}
 
 		CString strAuthor = pLogEntry->GetAuthorName();
 		if (strAuthor.IsEmpty())
@@ -817,17 +659,6 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff, BOOL keepFetchedData)
 		m_lineInc2.Copy(m_lineInc);
 		m_lineDec2.Copy(m_lineDec);
 	}
-
-	CDateSorter W_Sorter;
-	W_Sorter.m_parAuthors		= &m_parAuthors;
-	W_Sorter.m_parDates			= &m_parDates;
-	W_Sorter.m_parFileChanges	= &m_parFileChanges;
-	W_Sorter.m_lineNew			= &m_lineNew;
-	W_Sorter.m_lineDel			= &m_lineDel;
-	W_Sorter.m_lineInc			= &m_lineInc;
-	W_Sorter.m_lineDec			= &m_lineDec;
-
-	std::sort(W_Sorter.begin(), W_Sorter.end(), CDateSorterLess());
 
 	m_nTotalCommits = m_parAuthors.GetCount();
 	m_nTotalFileChanges = 0;
