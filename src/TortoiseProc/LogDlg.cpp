@@ -1925,19 +1925,17 @@ void CLogDlg::OnBnClickedStatbutton()
 {
 	if (this->IsThreadRunning())
 		return;
+
 	if (m_LogList.m_arShownList.empty() || m_LogList.m_arShownList.size() == 1 && m_LogList.m_bShowWC)
 		return;		// nothing or just the working copy changes are shown, so no statistics.
-	// the statistics dialog expects the log entries to be sorted by date
-	SortByColumn(3, false);
 
 	CStatGraphDlg dlg;
-	m_LogList.RecalculateShownList(&dlg.m_ShowList);
+	dlg.m_ShowList.reserve(m_LogList.m_arShownList.size());
+	for (int i = m_LogList.m_bShowWC ? 1 : 0; i < m_LogList.m_arShownList.size(); ++i)
+		dlg.m_ShowList.emplace_back(m_LogList.m_arShownList.SafeGetAt(i));
 
 	dlg.m_path = m_orgPath;
 	dlg.DoModal();
-	// restore the previous sorting
-	SortByColumn(m_nSortColumn, m_bAscending);
-	OnTimer(LOGFILTER_TIMER);
 }
 
 void CLogDlg::MoveToSameTop(CWnd *pWndRef, CWnd *pWndTarget)
