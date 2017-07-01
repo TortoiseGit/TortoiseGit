@@ -40,14 +40,9 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalIncludeDirectories>..\expat\expat\lib;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>COMPILED_FROM_DSP;XML_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>XML_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level2</WarningLevel>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-    </ClCompile>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Platform)'=='x64'">
-    <ClCompile>
-      <PreprocessorDefinitions>WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -67,11 +62,7 @@
     <ClInclude Include="..\expat\expat\lib\xmlrole.h" />
     <ClInclude Include="..\expat\expat\lib\xmltok.h" />
     <ClInclude Include="..\expat\expat\lib\xmltok_impl.h" />
-    <CustomBuild Include="..\expat\expat\lib\winconfig.h">
-      <Message>Creating config.h from winconfig.h</Message>
-      <Command>type ..\expat\expat\lib\winconfig.h &gt; ..\expat\expat\lib\config.h</Command>
-      <Outputs>..\expat\expat\lib\config.h;%(Outputs)</Outputs>
-    </CustomBuild>
+    <ClInclude Include="..\expat\expat\lib\winconfig.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

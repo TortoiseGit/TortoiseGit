@@ -9,9 +9,6 @@
       <UniqueIdentifier>{9770de6f-e74e-4439-89fe-1951d702eafc}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl</Extensions>
     </Filter>
-    <Filter Include="Generated Header Files">
-      <UniqueIdentifier>{42772b1b-7e47-4f5c-b973-6d497d230b77}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\expat\expat\lib\xmlparse.c">
@@ -58,10 +55,8 @@
     <ClInclude Include="..\expat\expat\lib\xmltok_impl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="..\expat\expat\lib\winconfig.h">
+    <ClInclude Include="..\expat\expat\lib\winconfig.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
+    </ClInclude>
   </ItemGroup>
 </Project>
