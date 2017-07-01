@@ -104,6 +104,7 @@ BEGIN_MESSAGE_MAP(CTortoiseGitBlameView, CView)
 	ON_WM_RBUTTONDOWN()
 	ON_WM_RBUTTONUP()
 	ON_WM_SYSCOLORCHANGE()
+	ON_WM_ERASEBKGND()
 	ON_NOTIFY(SCN_PAINTED, IDC_SCINTILLA, OnSciPainted)
 	ON_NOTIFY(SCN_GETBKCOLOR, IDC_SCINTILLA, OnSciGetBkColor)
 	ON_REGISTERED_MESSAGE(m_FindDialogMessage, OnFindDialogMessage)
@@ -299,16 +300,24 @@ BOOL CTortoiseGitBlameView::PreCreateWindow(CREATESTRUCT& cs)
 
 // CTortoiseGitBlameView drawing
 
-void CTortoiseGitBlameView::OnDraw(CDC* /*pDC*/)
+BOOL CTortoiseGitBlameView::OnEraseBkgnd(CDC* /*pDC*/)
+{
+	return TRUE;
+}
+
+void CTortoiseGitBlameView::OnDraw(CDC* pDC)
 {
 	CTortoiseGitBlameDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
 
-	DrawBlame(this->GetDC()->m_hDC);
-	DrawLocatorBar(this->GetDC()->m_hDC);
-	// TODO: add draw code for native data here
+	CMemDC myDC(*pDC, this);
+	RECT rc;
+	GetClientRect(&rc);
+	myDC.GetDC().FillSolidRect(&rc, m_windowcolor);
+	DrawBlame(myDC.GetDC());
+	DrawLocatorBar(myDC.GetDC());
 }
 
 
@@ -836,7 +845,7 @@ void CTortoiseGitBlameView::CreateFont()
 
 void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 {
-	if (!hDC)
+	if (!hDC || m_data.GetNumberOfLines() == 0)
 		return;
 	if (!m_font.GetSafeHandle())
 		return;
@@ -847,119 +856,100 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 	int height = (int)SendEditor(SCI_TEXTHEIGHT);
 	int Y = 0;
 	TCHAR buf[MAX_PATH] = {0};
+	std::fill_n(buf, _countof(buf) - 1, L' ');
 	RECT rc;
 	CGitHash oldHash;
 	CString oldFile;
-	//::GetClientRect(this->m_hWnd, &rc);
-	for (int i = line; i < (line + linesonscreen); ++i)
+
+	for (int i = line; i < (line + linesonscreen) && i < m_data.GetNumberOfLines(); ++i)
 	{
-		if (i < m_data.GetNumberOfLines())
+		CGitHash hash(m_data.GetHash(i));
+		oldfont = (HFONT)::SelectObject(hDC, m_font.GetSafeHandle());
+		::SetBkColor(hDC, m_windowcolor);
+		::SetTextColor(hDC, m_textcolor);
+		if (!hash.IsEmpty() && hash == m_SelectedHash)
 		{
-			 CGitHash hash(m_data.GetHash(i));
-		//	if (mergelines[i])
-		//		oldfont = (HFONT)::SelectObject(hDC, m_italicfont.GetSafeHwnd());
-		//	else
-			 oldfont = (HFONT)::SelectObject(hDC, m_font.GetSafeHandle());
-			::SetBkColor(hDC, m_windowcolor);
-			::SetTextColor(hDC, m_textcolor);
-			if (!hash.IsEmpty())
+			::SetBkColor(hDC, m_selectedauthorcolor);
+			::SetTextColor(hDC, m_texthighlightcolor);
+		}
+
+		if (m_MouseLine == i)
+			::SetBkColor(hDC, m_mouserevcolor);
+
+		if ((!hash.IsEmpty() && hash == m_SelectedHash) || m_MouseLine == i)
+		{
+			auto old = ::GetTextColor(hDC);
+			::SetTextColor(hDC, ::GetBkColor(hDC));
+			RECT rc2 = { LOCATOR_WIDTH, Y, m_blamewidth + LOCATOR_WIDTH, Y + height };
+			::ExtTextOut(hDC, 0, Y, ETO_CLIPPED, &rc2, buf, _countof(buf) - 1, 0);
+			::SetTextColor(hDC, old);
+		}
+
+		CString file = m_data.GetFilename(i);
+		if (oldHash != hash || (m_bShowFilename && oldFile != file) || m_bShowOriginalLineNumber)
+		{
+			rc.top = (LONG)Y;
+			rc.left = LOCATOR_WIDTH;
+			rc.bottom = (LONG)(Y + height);
+			rc.right = rc.left + m_blamewidth;
+			if (oldHash != hash)
 			{
-				//if (m_CommitHash[i].Compare(m_MouseHash)==0)
-				//	::SetBkColor(hDC, m_mouseauthorcolor);
-				if (hash == m_SelectedHash)
-				{
-					::SetBkColor(hDC, m_selectedauthorcolor);
-					::SetTextColor(hDC, m_texthighlightcolor);
-				}
+				CString shortHashStr = hash.ToString().Left(g_Git.GetShortHASHLength());
+				::ExtTextOut(hDC, LOCATOR_WIDTH, Y, ETO_CLIPPED, &rc, shortHashStr, shortHashStr.GetLength(), 0);
 			}
+			int Left = m_revwidth;
 
-			if(m_MouseLine == i)
-				::SetBkColor(hDC, m_mouserevcolor);
-
-			//if ((revs[i] == m_mouserev)&&(!sel))
-			//	::SetBkColor(hDC, m_mouserevcolor);
-			//if (revs[i] == m_selectedrev)
-			//{
-			//	::SetBkColor(hDC, m_selectedrevcolor);
-			//	::SetTextColor(hDC, m_texthighlightcolor);
-			//}
-
-			CString file = m_data.GetFilename(i);
-			if (oldHash != hash || (m_bShowFilename && oldFile != file) || m_bShowOriginalLineNumber)
+			if (m_bShowAuthor)
 			{
-				rc.top = (LONG)Y;
-				rc.left = LOCATOR_WIDTH;
-				rc.bottom = (LONG)(Y + height);
-				rc.right = rc.left + m_blamewidth;
+				rc.right = rc.left + Left + m_authorwidth;
 				if (oldHash != hash)
-				{
-					CString shortHashStr = hash.ToString().Left(g_Git.GetShortHASHLength());
-					::ExtTextOut(hDC, LOCATOR_WIDTH, Y, ETO_CLIPPED, &rc, shortHashStr, shortHashStr.GetLength(), 0);
-				}
-				int Left = m_revwidth;
-
-				if (m_bShowAuthor)
-				{
-					rc.right = rc.left + Left + m_authorwidth;
-					if (oldHash != hash)
-						::ExtTextOut(hDC, Left, Y, ETO_CLIPPED, &rc, m_data.GetAuthor(i), m_data.GetAuthor(i).GetLength(), 0);
-					Left += m_authorwidth;
-				}
-				if (m_bShowDate)
-				{
-					rc.right = rc.left + Left + m_datewidth;
-					if (oldHash != hash)
-						::ExtTextOut(hDC, Left, Y, ETO_CLIPPED, &rc, m_data.GetDate(i), m_data.GetDate(i).GetLength(), 0);
-					Left += m_datewidth;
-				}
-				if (m_bShowFilename)
-				{
-					rc.right = rc.left + Left + m_filenameWidth;
-					if (oldFile != file)
-						::ExtTextOut(hDC, Left, Y, ETO_CLIPPED, &rc, m_data.GetFilename(i), m_data.GetFilename(i).GetLength(), 0);
-					Left += m_filenameWidth;
-				}
-				if (m_bShowOriginalLineNumber)
-				{
-					rc.right = rc.left + Left + m_originalLineNumberWidth;
-					CString str;
-					str.Format(L"%5d", m_data.GetOriginalLineNumber(i));
-					::ExtTextOut(hDC, Left, Y, ETO_CLIPPED, &rc, str, str.GetLength(), 0);
-					Left += m_originalLineNumberWidth;
-				}
-				oldHash = hash;
-				oldFile = file;
+					::ExtTextOut(hDC, Left, Y, ETO_CLIPPED, &rc, m_data.GetAuthor(i), m_data.GetAuthor(i).GetLength(), 0);
+				Left += m_authorwidth;
 			}
-			if ((i==m_SelectedLine)&&(m_pFindDialog))
+			if (m_bShowDate)
 			{
-				LOGBRUSH brush;
-				brush.lbColor = m_textcolor;
-				brush.lbHatch = 0;
-				brush.lbStyle = BS_SOLID;
-				HPEN pen = ExtCreatePen(PS_SOLID | PS_GEOMETRIC, 2, &brush, 0, nullptr);
-				HGDIOBJ hPenOld = SelectObject(hDC, pen);
-				RECT rc2 = rc;
-				rc2.top = (LONG)Y;
-				rc2.bottom = (LONG)(Y + height);
-				::MoveToEx(hDC, rc2.left, rc2.top, nullptr);
-				::LineTo(hDC, rc2.right, rc2.top);
-				::LineTo(hDC, rc2.right, rc2.bottom);
-				::LineTo(hDC, rc2.left, rc2.bottom);
-				::LineTo(hDC, rc2.left, rc2.top);
-				SelectObject(hDC, hPenOld);
-				DeleteObject(pen);
+				rc.right = rc.left + Left + m_datewidth;
+				if (oldHash != hash)
+					::ExtTextOut(hDC, Left, Y, ETO_CLIPPED, &rc, m_data.GetDate(i), m_data.GetDate(i).GetLength(), 0);
+				Left += m_datewidth;
 			}
-			Y += height;
-			::SelectObject(hDC, oldfont);
+			if (m_bShowFilename)
+			{
+				rc.right = rc.left + Left + m_filenameWidth;
+				if (oldFile != file)
+					::ExtTextOut(hDC, Left, Y, ETO_CLIPPED, &rc, m_data.GetFilename(i), m_data.GetFilename(i).GetLength(), 0);
+				Left += m_filenameWidth;
+			}
+			if (m_bShowOriginalLineNumber)
+			{
+				rc.right = rc.left + Left + m_originalLineNumberWidth;
+				CString str;
+				str.Format(L"%5d", m_data.GetOriginalLineNumber(i));
+				::ExtTextOut(hDC, Left, Y, ETO_CLIPPED, &rc, str, str.GetLength(), 0);
+				Left += m_originalLineNumberWidth;
+			}
+			oldHash = hash;
+			oldFile = file;
 		}
-		else
+		if (i == m_SelectedLine && m_pFindDialog)
 		{
-			::SetBkColor(hDC, m_windowcolor);
-			for (int j=0; j< MAX_PATH; ++j)
-				buf[j]=' ';
-			::ExtTextOut(hDC, 0, (int)Y, ETO_CLIPPED, &rc, buf, MAX_PATH-1, 0);
-			Y += height;
+			LOGBRUSH brush;
+			brush.lbColor = m_textcolor;
+			brush.lbHatch = 0;
+			brush.lbStyle = BS_SOLID;
+			HPEN pen = ExtCreatePen(PS_SOLID | PS_GEOMETRIC, 2, &brush, 0, nullptr);
+			HGDIOBJ hPenOld = SelectObject(hDC, pen);
+			RECT rc2 = { LOCATOR_WIDTH, Y + 1, m_blamewidth, Y + height - 1};
+			::MoveToEx(hDC, rc2.left, rc2.top, nullptr);
+			::LineTo(hDC, rc2.right, rc2.top);
+			::LineTo(hDC, rc2.right, rc2.bottom);
+			::LineTo(hDC, rc2.left, rc2.bottom);
+			::LineTo(hDC, rc2.left, rc2.top);
+			SelectObject(hDC, hPenOld);
+			DeleteObject(pen);
 		}
+		Y += height;
+		::SelectObject(hDC, oldfont);
 	}
 }
 
@@ -1776,8 +1766,17 @@ void CTortoiseGitBlameView::OnMouseMove(UINT /*nFlags*/, CPoint /*point*/)
 	tme.hwndTrack=this->m_hWnd;
 	tme.dwHoverTime=1;
 	TrackMouseEvent(&tme);
+	Invalidate();
 }
 
+void CTortoiseGitBlameView::OnMouseLeave()
+{
+	if (m_MouseLine == -1)
+		return;
+	
+	m_MouseLine = -1;
+	Invalidate();
+}
 
 BOOL CTortoiseGitBlameView::PreTranslateMessage(MSG* pMsg)
 {
