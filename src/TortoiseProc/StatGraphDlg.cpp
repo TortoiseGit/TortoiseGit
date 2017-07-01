@@ -56,6 +56,8 @@ CStatGraphDlg::CStatGraphDlg(CWnd* pParent /*=nullptr*/)
 , m_GraphType(MyGraph::Bar)
 , m_bAuthorsCaseSensitive(TRUE)
 , m_bSortByCommitCount(TRUE)
+, m_bUseCommitterNames(FALSE)
+, m_bUseCommitDates(TRUE)
 , m_nWeeks(-1)
 , m_nDays(-1)
 , m_langOrder(0)
@@ -96,6 +98,8 @@ void CStatGraphDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_SKIPPER, m_Skipper);
 	DDX_Check(pDX, IDC_AUTHORSCASESENSITIVE, m_bAuthorsCaseSensitive);
 	DDX_Check(pDX, IDC_SORTBYCOMMITCOUNT, m_bSortByCommitCount);
+	DDX_Check(pDX, IDC_COMMITTERNAMES, m_bUseCommitterNames);
+	DDX_Check(pDX, IDC_COMMITDATES, m_bUseCommitDates);
 	DDX_Control(pDX, IDC_GRAPHBARBUTTON, m_btnGraphBar);
 	DDX_Control(pDX, IDC_GRAPHBARSTACKEDBUTTON, m_btnGraphBarStacked);
 	DDX_Control(pDX, IDC_GRAPHLINEBUTTON, m_btnGraphLine);
@@ -117,6 +121,8 @@ BEGIN_MESSAGE_MAP(CStatGraphDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_GRAPHPIEBUTTON, &CStatGraphDlg::OnBnClickedGraphpiebutton)
 	ON_COMMAND(ID_FILE_SAVESTATGRAPHAS, &CStatGraphDlg::OnFileSavestatgraphas)
 	ON_BN_CLICKED(IDC_CALC_DIFF, &CStatGraphDlg::OnBnClickedFetchDiff)
+	ON_BN_CLICKED(IDC_COMMITTERNAMES, &CStatGraphDlg::OnBnClickedCommitternames)
+	ON_BN_CLICKED(IDC_COMMITDATES, &CStatGraphDlg::OnBnClickedCommitdates)
 END_MESSAGE_MAP()
 
 void CStatGraphDlg::LoadStatQueries (__in UINT curStr, Metrics loadMetric, bool setDef /* = false */)
@@ -157,6 +163,8 @@ BOOL CStatGraphDlg::OnInitDialog()
 
 	m_bAuthorsCaseSensitive = DWORD(CRegDWORD(L"Software\\TortoiseGit\\StatAuthorsCaseSensitive", m_bAuthorsCaseSensitive));
 	m_bSortByCommitCount = DWORD(CRegDWORD(L"Software\\TortoiseGit\\StatSortByCommitCount", m_bSortByCommitCount));
+	m_bUseCommitterNames = DWORD(CRegDWORD(L"Software\\TortoiseGit\\StatCommiterNames", m_bUseCommitterNames));
+	m_bUseCommitDates = DWORD(CRegDWORD(L"Software\\TortoiseGit\\StatCommitDates", m_bUseCommitDates));
 	UpdateData(FALSE);
 
 	// gather statistics data, only needs to be updated when the checkbox with
@@ -199,6 +207,8 @@ BOOL CStatGraphDlg::OnInitDialog()
 
 	AdjustControlSize(IDC_AUTHORSCASESENSITIVE);
 	AdjustControlSize(IDC_SORTBYCOMMITCOUNT);
+	AdjustControlSize(IDC_COMMITTERNAMES);
+	AdjustControlSize(IDC_COMMITDATES);
 
 	AddAnchor(IDC_GRAPHTYPELABEL, TOP_LEFT);
 	AddAnchor(IDC_GRAPH, TOP_LEFT, BOTTOM_RIGHT);
@@ -250,6 +260,8 @@ BOOL CStatGraphDlg::OnInitDialog()
 
 	AddAnchor(IDC_AUTHORSCASESENSITIVE, BOTTOM_LEFT);
 	AddAnchor(IDC_SORTBYCOMMITCOUNT, BOTTOM_LEFT);
+	AddAnchor(IDC_COMMITTERNAMES, BOTTOM_LEFT);
+	AddAnchor(IDC_COMMITDATES, BOTTOM_LEFT);
 	AddAnchor(IDC_SKIPPER, BOTTOM_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_SKIPPERLABEL, BOTTOM_LEFT);
 	AddAnchor(IDOK, BOTTOM_RIGHT);
@@ -583,7 +595,10 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff, BOOL keepFetchedData)
 	// create arrays which are aware of the current filter
 	ULONGLONG starttime = GetTickCount64();
 
-	std::sort(m_ShowList.begin(), m_ShowList.end(), [](GitRevLoglist* pLhs, GitRevLoglist* pRhs) { return pLhs->GetCommitterDate() > pRhs->GetCommitterDate(); });
+	if (m_bUseCommitDates)
+		std::sort(m_ShowList.begin(), m_ShowList.end(), [](GitRevLoglist* pLhs, GitRevLoglist* pRhs) { return pLhs->GetCommitterDate() > pRhs->GetCommitterDate(); });
+	else
+		std::sort(m_ShowList.begin(), m_ShowList.end(), [](GitRevLoglist* pLhs, GitRevLoglist* pRhs) { return pLhs->GetAuthorDate() > pRhs->GetAuthorDate(); });
 
 	GIT_MAILMAP mailmap = nullptr;
 	git_read_mailmap(&mailmap);
@@ -593,23 +608,26 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff, BOOL keepFetchedData)
 		int inc, dec, incnewfile, decdeletedfile, files;
 		inc = dec = incnewfile = decdeletedfile = files= 0;
 
-		CString strAuthor = pLogEntry->GetAuthorName();
-		if (strAuthor.IsEmpty())
-			strAuthor.LoadString(IDS_STATGRAPH_EMPTYAUTHOR);
+		CString strAuthor = m_bUseCommitterNames ? pLogEntry->GetCommitterName() : pLogEntry->GetAuthorName();
 		if (mailmap)
 		{
-			CStringA email2A = CUnicodeUtils::GetUTF8(pLogEntry->GetAuthorEmail());
-			struct payload_struct { GitRev* rev; const char *authorName; };
-			payload_struct payload = { pLogEntry, nullptr };
+			CStringA email2A = CUnicodeUtils::GetUTF8(m_bUseCommitterNames ? pLogEntry->GetCommitterEmail() : pLogEntry->GetAuthorEmail());
+			struct payload_struct { GitRev* rev; const char *authorName; BOOL useCommitterNames; };
+			payload_struct payload = { pLogEntry, nullptr, m_bUseCommitterNames };
 			const char* author1 = nullptr;
 			git_lookup_mailmap(mailmap, nullptr, &author1, email2A, &payload, 
-				[](void* payload) -> const char* { return reinterpret_cast<payload_struct*>(payload)->authorName = _strdup(CUnicodeUtils::GetUTF8(reinterpret_cast<payload_struct*>(payload)->rev->GetAuthorName())); });
+				[](void* payload) -> const char* { return reinterpret_cast<payload_struct*>(payload)->authorName = _strdup(CUnicodeUtils::GetUTF8(reinterpret_cast<payload_struct*>(payload)->useCommitterNames ? reinterpret_cast<payload_struct*>(payload)->rev->GetCommitterName() : reinterpret_cast<payload_struct*>(payload)->rev->GetAuthorName())); });
 			free((void *)payload.authorName);
 			if (author1)
 				strAuthor = CUnicodeUtils::GetUnicode(author1);
 		}
+		if (strAuthor.IsEmpty())
+			strAuthor.LoadString(IDS_STATGRAPH_EMPTYAUTHOR);
 		m_parAuthors.Add(strAuthor);
-		m_parDates.Add((DWORD)pLogEntry->GetCommitterDate().GetTime());
+		if (m_bUseCommitDates)
+			m_parDates.Add((DWORD)pLogEntry->GetCommitterDate().GetTime());
+		else
+			m_parDates.Add((DWORD)pLogEntry->GetAuthorDate().GetTime());
 
 		if (fetchdiff && (pLogEntry->m_ParentHash.size() <= 1))
 		{
@@ -1367,6 +1385,20 @@ void CStatGraphDlg::SortModeChanged()
 	RedrawGraph();  // then update the current statistics page
 }
 
+void CStatGraphDlg::OnBnClickedCommitternames()
+{
+	UpdateData();   // update checkbox state
+	GatherData(FALSE, TRUE);   // first regenerate the statistics data
+	RedrawGraph();  // then update the current statistics page
+}
+
+void CStatGraphDlg::OnBnClickedCommitdates()
+{
+	UpdateData();   // update checkbox state
+	GatherData(FALSE, TRUE);   // first regenerate the statistics data
+	RedrawGraph();  // then update the current statistics page
+}
+
 void CStatGraphDlg::ClearGraph()
 {
 	m_graph.Clear();
@@ -1631,6 +1663,12 @@ void CStatGraphDlg::StoreCurrentGraphType()
 
 	CRegDWORD regSort(L"Software\\TortoiseGit\\StatSortByCommitCount");
 	regSort = m_bSortByCommitCount;
+
+	CRegDWORD regCommitterName(L"Software\\TortoiseGit\\StatCommiterNames");
+	regCommitterName = m_bUseCommitterNames;
+
+	CRegDWORD regCommitDates(L"Software\\TortoiseGit\\StatCommitDates");
+	regCommitDates = m_bUseCommitDates;
 }
 
 void CStatGraphDlg::ShowErrorMessage()

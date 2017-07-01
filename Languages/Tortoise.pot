@@ -10395,6 +10395,14 @@ msgstr ""
 msgid "Use both text blocks (this one last)"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_STATGRAPH: Control id 1128)
+msgid "Use commit dates"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_STATGRAPH: Control id 1127)
+msgid "Use committer names"
+msgstr ""
+
 #. Resource IDs: (IDS_SMTP_CONFIGURED)
 msgid "Use configured server"
 msgstr ""

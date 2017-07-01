@@ -143,6 +143,8 @@ protected:
 	afx_msg void OnBnClickedGraphpiebutton();
 	afx_msg void OnFileSavestatgraphas();
 	afx_msg void OnBnClickedFetchDiff();
+	afx_msg void OnBnClickedCommitternames();
+	afx_msg void OnBnClickedCommitdates();
 	DECLARE_MESSAGE_MAP()
 
 	// ** Member functions **
@@ -223,6 +225,8 @@ protected:
 	CSliderCtrl		m_Skipper;
 	BOOL			m_bAuthorsCaseSensitive;
 	BOOL			m_bSortByCommitCount;
+	BOOL			m_bUseCommitterNames;
+	BOOL			m_bUseCommitDates;
 	BOOL			m_bDiffFetched;
 
 	CMFCButton		m_btnGraphBar;
