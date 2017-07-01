@@ -1861,7 +1861,7 @@ LRESULT CTortoiseGitBlameView::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*l
 	// to search for the requested string.
 	if(m_pFindDialog->FindNext())
 	{
-		m_bMatchCase = !!(m_pFindDialog->m_nFlags & FR_MATCHCASE);
+		m_bMatchCase = !!(m_pFindDialog->MatchCase());
 		m_sFindText = m_pFindDialog->GetFindString();
 
 		theApp.WriteInt(L"FindMatchCase", m_bMatchCase ? 1 : 0);

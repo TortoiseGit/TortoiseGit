@@ -252,7 +252,7 @@ LRESULT CRefLogDlg::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*/)
 		CString findString = m_pFindDialog->GetFindString();
 
 		bool bFound = false;
-		bool bCaseSensitive = !!(m_pFindDialog->m_nFlags & FR_MATCHCASE);
+		bool bCaseSensitive = !!(m_pFindDialog->MatchCase());
 
 		if (!bCaseSensitive)
 			findString.MakeLower();
