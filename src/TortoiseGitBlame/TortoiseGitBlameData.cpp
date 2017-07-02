@@ -404,6 +404,8 @@ int CTortoiseGitBlameData::FindFirstLineWrapAround(SearchDirection direction, co
 	CStringA whatNormalizedUtf8 = CUnicodeUtils::GetUTF8(whatNormalized);
 
 	int numberOfLines = GetNumberOfLines();
+	if (numberOfLines == 0)
+		return -1;
 	int i = line;
 	if (direction == SearchPrevious)
 	{

@@ -168,6 +168,7 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 	m_bFollowRenames = (theApp.GetInt(L"FollowRenames", 0) == 1);
 	m_bBlameOuputContainsOtherFilenames = FALSE;
 	m_bWrapLongLines = !!theApp.GetInt(L"WrapLongLines", 0);
+	m_sFindText = theApp.GetString(L"FindString");
 
 	m_FindDialogMessage = ::RegisterWindowMessage(FINDMSGSTRING);
 	// get short/long datetime setting from registry
@@ -1815,7 +1816,7 @@ void CTortoiseGitBlameView::OnEditFind()
 
 	m_pFindDialog=new CFindReplaceDialog();
 
-	CString oneline = theApp.GetString(L"FindString");
+	CString oneline = m_sFindText;
 	if (m_TextView.Call(SCI_GETSELECTIONSTART) != m_TextView.Call(SCI_GETSELECTIONEND))
 	{
 		LRESULT bufsize = m_TextView.Call(SCI_GETSELECTIONEND) - m_TextView.Call(SCI_GETSELECTIONSTART);
@@ -1852,9 +1853,6 @@ LRESULT CTortoiseGitBlameView::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*l
 			m_pFindDialog = nullptr;
 			return 0;
 	}
-
-	if (m_data.GetNumberOfLines()==0)
-		return 0;
 
 	// If the FR_FINDNEXT flag is set,
 	// call the application-defined search routine
