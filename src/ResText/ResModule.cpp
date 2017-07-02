@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2016 - TortoiseGit
-// Copyright (C) 2003-2008, 2010-2016 - TortoiseSVN
+// Copyright (C) 2015-2017 - TortoiseGit
+// Copyright (C) 2003-2008, 2010-2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -28,6 +28,14 @@
 #include <functional>
 #include <locale>
 #include <codecvt>
+
+#pragma warning(push)
+#pragma warning(disable: 4091) // 'typedef ': ignored on left of '' when no variable is declared
+#include <Imagehlp.h>
+#pragma warning(pop)
+
+#pragma comment(lib, "Imagehlp.lib")
+
 #ifndef RT_RIBBON
 #define RT_RIBBON MAKEINTRESOURCE(28)
 #endif
@@ -188,6 +196,9 @@ BOOL CResModule::ExtractResources(LPCTSTR lpszSrcLangDllPath, LPCTSTR lpszPoFile
 		goto DONE_ERROR;
 
 	FreeLibrary(m_hResDll);
+
+	AdjustCheckSum(sDestFile);
+
 	return TRUE;
 
 DONE_ERROR:
@@ -196,10 +207,34 @@ DONE_ERROR:
 	return FALSE;
 }
 
+void CResModule::RemoveSignatures(LPCTSTR lpszDestLangDllPath)
+{
+	// Remove any signatures in the file:
+	// if we don't remove it here, the signature will be invalid after
+	// we modify this file, and the signtool.exe will throw an error and refuse to sign it again.
+	auto hFile = CreateFile(lpszDestLangDllPath, FILE_READ_DATA | FILE_WRITE_DATA, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+	if (hFile == INVALID_HANDLE_VALUE)
+	{
+		CUtils::Error();
+		return;
+	}
+
+	DWORD certcount = 0;
+	DWORD indices[100];
+	ImageEnumerateCertificates(hFile, CERT_SECTION_TYPE_ANY, &certcount, indices, _countof(indices));
+
+	for (DWORD i = 0; i < certcount; ++i)
+		ImageRemoveCertificate(hFile, i);
+
+	CloseHandle(hFile);
+}
+
 BOOL CResModule::CreateTranslatedResources(LPCTSTR lpszSrcLangDllPath, LPCTSTR lpszDestLangDllPath, LPCTSTR lpszPOFilePath)
 {
 	if (!CopyFile(lpszSrcLangDllPath, lpszDestLangDllPath, FALSE))
 		MYERROR;
+
+	RemoveSignatures(lpszDestLangDllPath);
 
 	int count = 0;
 	do
@@ -2350,4 +2385,59 @@ void CResModule::InsertResourceIDs(LPCWSTR lpType, INT_PTR mainId, RESOURCEENTRY
 			entry.resourceIDs.insert(infotext);
 	else
 		entry.resourceIDs.insert(NumToStr(id) + infotext);
+}
+
+bool CResModule::AdjustCheckSum(const std::wstring& resFile)
+{
+	HANDLE hFile = INVALID_HANDLE_VALUE;
+	HANDLE hFileMapping = nullptr;
+
+	try
+	{
+		hFile = CreateFile(resFile.c_str(), FILE_READ_DATA | FILE_WRITE_DATA, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+		if (hFile == INVALID_HANDLE_VALUE)
+			throw GetLastError();
+
+		hFileMapping = CreateFileMapping(hFile, nullptr, PAGE_READWRITE, 0, 0, nullptr);
+		if (!hFileMapping)
+			throw GetLastError();
+
+		PVOID pBaseAddress = MapViewOfFile(hFileMapping, FILE_MAP_ALL_ACCESS, 0, 0, 0);
+		if (!pBaseAddress)
+			throw GetLastError();
+
+		auto fileSize = GetFileSize(hFile, nullptr);
+		if (fileSize == INVALID_FILE_SIZE)
+			throw GetLastError();
+		DWORD dwChecksum = 0;
+		DWORD dwHeaderSum = 0;
+		CheckSumMappedFile(pBaseAddress, fileSize, &dwHeaderSum, &dwChecksum);
+
+		PIMAGE_DOS_HEADER pDOSHeader = static_cast<PIMAGE_DOS_HEADER>(pBaseAddress);
+		if (pDOSHeader->e_magic != IMAGE_DOS_SIGNATURE)
+			throw GetLastError();
+
+		PIMAGE_NT_HEADERS pNTHeader = reinterpret_cast<PIMAGE_NT_HEADERS>((PBYTE)pBaseAddress + pDOSHeader->e_lfanew);
+		if (pNTHeader->Signature != IMAGE_NT_SIGNATURE)
+			throw GetLastError();
+
+		SetLastError(ERROR_SUCCESS);
+
+		DWORD* pChecksum = &(pNTHeader->OptionalHeader.CheckSum);
+		*pChecksum = dwChecksum;
+
+		UnmapViewOfFile(hFileMapping);
+
+		CloseHandle(hFile);
+	}
+	catch (...)
+	{
+		if (hFileMapping)
+			UnmapViewOfFile(hFileMapping);
+		if (hFile != INVALID_HANDLE_VALUE)
+			CloseHandle(hFile);
+		return false;
+	}
+
+	return true;
 }
