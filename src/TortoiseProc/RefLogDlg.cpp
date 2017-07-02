@@ -259,7 +259,10 @@ LRESULT CRefLogDlg::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*/)
 
 		size_t i = m_nSearchLine;
 		if (i >= m_RefList.m_arShownList.size())
+		{
 			i = 0;
+			m_pFindDialog->FlashWindowEx(FLASHW_ALL, 2, 100);
+		}
 
 		do
 		{

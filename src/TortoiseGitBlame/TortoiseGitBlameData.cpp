@@ -386,7 +386,7 @@ static int FindUtf8Lower(const CStringA& strA, bool allAscii, const CString &fin
 	return strW.MakeLower().Find(findW);
 }
 
-int CTortoiseGitBlameData::FindFirstLineWrapAround(SearchDirection direction, const CString& what, int line, bool bCaseSensitive)
+int CTortoiseGitBlameData::FindFirstLineWrapAround(SearchDirection direction, const CString& what, int line, bool bCaseSensitive, std::function<void()> wraparound)
 {
 	bool allAscii = true;
 	for (int i = 0; i < what.GetLength(); ++i)
@@ -435,13 +435,21 @@ int CTortoiseGitBlameData::FindFirstLineWrapAround(SearchDirection direction, co
 		{
 			++i;
 			if (i >= numberOfLines)
+			{
 				i = 0;
+				if (wraparound)
+					wraparound();
+			}
 		}
 		else if (direction == SearchPrevious)
 		{
 			--i;
 			if (i < 0)
+			{
 				i = numberOfLines - 2;
+				if (wraparound)
+					wraparound();
+			}
 		}
 	} while (i != line);
 

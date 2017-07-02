@@ -67,7 +67,7 @@ public:
 		return line;
 	}
 	enum SearchDirection{ SearchNext = 0, SearchPrevious = 1 };
-	int FindFirstLineWrapAround(SearchDirection direction, const CString& what, int line, bool bCaseSensitive);
+	int FindFirstLineWrapAround(SearchDirection direction, const CString& what, int line, bool bCaseSensitive, std::function<void()> wraparound);
 
 	int GetNumberOfLines() const
 	{

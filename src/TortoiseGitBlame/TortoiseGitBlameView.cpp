@@ -668,7 +668,7 @@ bool CTortoiseGitBlameView::DoSearch(CTortoiseGitBlameData::SearchDirection dire
 	int pos = (int)SendEditor(SCI_GETCURRENTPOS);
 	int line = (int)SendEditor(SCI_LINEFROMPOSITION, pos);
 
-	int i = m_data.FindFirstLineWrapAround(direction, m_sFindText, line, m_bMatchCase);
+	int i = m_data.FindFirstLineWrapAround(direction, m_sFindText, line, m_bMatchCase, [hWnd = m_pFindDialog->GetSafeHwnd()]{ FLASHWINFO flags = { sizeof(FLASHWINFO), hWnd, FLASHW_ALL, 2, 100 }; ::FlashWindowEx(&flags); });
 	if (i >= 0)
 	{
 		GotoLine(i + 1);
