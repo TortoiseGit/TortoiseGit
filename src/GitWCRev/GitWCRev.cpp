@@ -53,7 +53,6 @@ DstVersionFile     :   path to save the resulting parsed file.\n\
 -s                 :   if given, submodules are not checked. This increases\n\
                        the checking speed.\n"
 #define HelpText3 "\
--F                 :   if given, does not use the .GitWCRevignore file\n\
 -e                 :   changes the console output encoding to Unicode\n"
 
 #define HelpText4 "\
@@ -511,7 +510,6 @@ int _tmain(int argc, _TCHAR* argv[])
 	BOOL bErrOnMods = FALSE;
 	BOOL bErrOnUnversioned = FALSE;
 	BOOL bQuiet = FALSE;
-	BOOL bUseGitWCRevIgnore = TRUE;
 	GitWCRev_t GitStat;
 
 	SetDllDirectory(L"");
@@ -568,8 +566,6 @@ int _tmain(int argc, _TCHAR* argv[])
 			}
 			if (wcschr(Params, L's') != 0)
 				GitStat.bNoSubmodules = TRUE;
-			if (wcschr(Params, L'F') != 0)
-				bUseGitWCRevIgnore = FALSE;
 		}
 		else
 		{
