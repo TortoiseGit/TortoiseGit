@@ -153,12 +153,6 @@
 #define IDS_MENUIGNOREMULTIPLE2         283
 #define IDS_MENUDELETEIGNOREMULTIPLE2   284
 #define IDS_MENUDELETEIGNOREMULTIPLEMASK2 285
-#define IDS_git_DEPTH_INFINITE          300
-#define IDS_git_DEPTH_IMMEDIATE         301
-#define IDS_git_DEPTH_FILES             302
-#define IDS_git_DEPTH_EMPTY             303
-#define IDS_git_DEPTH_UNKNOWN           305
-#define IDS_git_DEPTH_WORKING           306
 #define IDS_MENUTAG                     307
 #define IDS_MENUFORMATPATCH             308
 #define IDS_MENUIMPORTPATCH             309

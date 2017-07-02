@@ -145,11 +145,6 @@ msgstr ""
 msgid "%1!d! minutes ago"
 msgstr ""
 
-#. Resource IDs: (IDS_REPOBROWSE_INFODIR)
-#, c-format
-msgid "%1!s!"
-msgstr ""
-
 #. Resource IDs: (IDS_REPOBROWSE_INFO)
 #, c-format
 msgid "%1!s!\nShowing %2!d! files, %3!d! submodules and %4!d! folders, %5!d! items in total"
@@ -263,16 +258,6 @@ msgstr ""
 #. Resource IDs: (IDS_DIFF_WCNAME)
 #, c-format
 msgid "%s: Working Tree"
-msgstr ""
-
-#. Resource IDs: (IDS_PROC_EXPORTFOLDERNAME2)
-#, c-format
-msgid "%s\\Export (%d) of %s"
-msgstr ""
-
-#. Resource IDs: (IDS_PROC_EXPORTFOLDERNAME)
-#, c-format
-msgid "%s\\Export of %s"
 msgstr ""
 
 #. Resource IDs: (IDS_PATCH_ITEMTT)
@@ -3027,11 +3012,6 @@ msgstr ""
 msgid "Compares the file with the last committed revision to show you the changes you made"
 msgstr ""
 
-#. Resource IDs: (IDS_PROGRESS_COMPARE)
-#, c-format
-msgid "Comparing %s to %s"
-msgstr ""
-
 #. Resource IDs: (IDS_SVNACTION_COMPLETED)
 msgid "Completed"
 msgstr ""
@@ -3147,11 +3127,6 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_AFXBARRES_KEYMAP: Control id 16991, IDS_PATHACTIONS_COPY, IDS_PROGRS_TITLE_COPY, ID_EDIT_COPY - Ribbon name)
 msgid "Copy"
-msgstr ""
-
-#. Resource IDs: (IDS_PROGRS_CMD_COPY)
-#, c-format
-msgid "Copy %s to %s, Revision %s"
 msgstr ""
 
 #. Resource IDs: (IDS_BLAME_POPUP_COPYHASHTOCLIPBOARD, IDS_COPY_COMMIT_HASH)
@@ -4967,10 +4942,6 @@ msgstr ""
 msgid "Full text search"
 msgstr ""
 
-#. Resource IDs: (IDS_git_DEPTH_INFINITE)
-msgid "Fully recursive"
-msgstr ""
-
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 65535)
 msgid "Further options for the commit dialog are on Dialogs 3 page."
 msgstr ""
@@ -5050,11 +5021,6 @@ msgstr ""
 #. Resource IDs: (IDS_PROGRESSGETFILE)
 #, c-format
 msgid "Getting file %s"
-msgstr ""
-
-#. Resource IDs: (IDS_PROGRESSGETFILEREVISION)
-#, c-format
-msgid "Getting file %s, revision %s"
 msgstr ""
 
 #. Resource IDs: (IDS_PROGRESS_INFO)
@@ -5774,10 +5740,6 @@ msgstr ""
 msgid "Images"
 msgstr ""
 
-#. Resource IDs: (IDS_git_DEPTH_IMMEDIATE)
-msgid "Immediate children, including folders"
-msgstr ""
-
 #. Resource IDs: (IDS_PROGRS_TITLE_IMPORT)
 msgid "Import"
 msgstr ""
@@ -6200,16 +6162,6 @@ msgstr ""
 msgid "Login:"
 msgstr ""
 
-#. Resource IDs: (IDS_REPOSTATUS_WCINFO)
-#, c-format
-msgid "Lowest shown revision: %ld - Highest shown revision: %ld"
-msgstr ""
-
-#. Resource IDs: (IDS_REPOSTATUS_HEADREV)
-#, c-format
-msgid "Lowest shown revision: %ld - Highest shown revision: %ld - HEAD revision: %ld"
-msgstr ""
-
 #. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 16973)
 msgid "Lum"
 msgstr ""
@@ -6355,18 +6307,8 @@ msgstr ""
 msgid "Merging"
 msgstr ""
 
-#. Resource IDs: (IDS_PROGRS_CMD_MERGEURL)
-#, c-format
-msgid "Merging from %s, revision %s to %s, revision %s into %s, %s%s"
-msgstr ""
-
 #. Resource IDs: (IDS_ERR_MERGEIDENTICALREVISIONS)
 msgid "Merging requires different revisions or different URLs in 'From:' and 'To:'"
-msgstr ""
-
-#. Resource IDs: (IDS_PROGRS_CMD_MERGEPEG)
-#, c-format
-msgid "Merging revisions %s of %s into %s, %s%s"
 msgstr ""
 
 #. Resource IDs: (IDS_LOG_MESSAGE, IDS_MESSAGE)
@@ -6967,20 +6909,12 @@ msgstr ""
 msgid "Only consider first parents on blame"
 msgstr ""
 
-#. Resource IDs: (IDS_git_DEPTH_FILES)
-msgid "Only file children"
-msgstr ""
-
 #. Resource IDs: (IDS_BROWSE_REFS_ONLYMERGED)
 msgid "Only merged (to HEAD)"
 msgstr ""
 
 #. Resource IDs: (IDS_COMMITDLG_ONLYNUMBERS)
 msgid "Only numbers (optionally separated by commas)\nare allowed!"
-msgstr ""
-
-#. Resource IDs: (IDS_git_DEPTH_EMPTY)
-msgid "Only this item"
 msgstr ""
 
 #. Resource IDs: (IDS_BROWSE_REFS_ONLYUNMERGED)
@@ -7567,11 +7501,6 @@ msgstr ""
 
 #. Resource IDs: (IDS_PUTTYKEYFILEFILTER)
 msgid "Putty Private Key (*.ppk)|*.ppk|All Files (*.*)|*.*||"
-msgstr ""
-
-#. Resource IDs: (IDS_STATGRAPH_QUARTERLABEL)
-#, c-format
-msgid "Q%d/%.2d"
 msgstr ""
 
 #. Resource IDs: (57665)
@@ -9392,11 +9321,6 @@ msgstr ""
 msgid "Switch"
 msgstr ""
 
-#. Resource IDs: (IDS_PROGRS_CMD_SWITCH)
-#, c-format
-msgid "Switch %s to %s, Revision %s"
-msgstr ""
-
 #. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1522)
 msgid "Switch To"
 msgstr ""
@@ -10258,10 +10182,6 @@ msgstr ""
 msgid "Unknown"
 msgstr ""
 
-#. Resource IDs: (IDS_git_DEPTH_UNKNOWN)
-msgid "Unknown depth"
-msgstr ""
-
 #. Resource IDs: (IDS_VIEWCONTEXTMENU_UNMARKBLOCK)
 msgid "Unmark this block"
 msgstr ""
@@ -10802,7 +10722,7 @@ msgstr ""
 msgid "Within file"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_CHANGEDFILES: Control id 158, IDS_git_DEPTH_WORKING)
+#. Resource IDs: (Dialog IDD_CHANGEDFILES: Control id 158, IDS_WORKING_TREE)
 msgid "Working Tree"
 msgstr ""
 

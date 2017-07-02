@@ -92,7 +92,7 @@ BOOL CSubmoduleDiffDlg::OnInitDialog()
 	{
 		CString toGroup;
 		GetDlgItem(IDC_TOGROUP)->GetWindowText(toGroup);
-		toGroup += L" (" + CString(MAKEINTRESOURCE(IDS_git_DEPTH_WORKING)) +  L')';
+		toGroup += L" (" + CString(MAKEINTRESOURCE(IDS_WORKING_TREE)) +  L')';
 		GetDlgItem(IDC_TOGROUP)->SetWindowText(toGroup);
 	}
 

@@ -141,7 +141,7 @@ void CFileDiffDlg::SetDiff(const CTGitPath* path, const CString &baseRev1, const
 	if (baseRev1 == GIT_REV_ZERO)
 	{
 		m_rev1.m_CommitHash.Empty();
-		m_rev1.GetSubject().LoadString(IDS_git_DEPTH_WORKING);
+		m_rev1.GetSubject().LoadString(IDS_WORKING_TREE);
 	}
 	else
 	{
@@ -154,7 +154,7 @@ void CFileDiffDlg::SetDiff(const CTGitPath* path, const CString &baseRev1, const
 	if(hash2 == GIT_REV_ZERO)
 	{
 		m_rev2.m_CommitHash.Empty();
-		m_rev2.GetSubject().LoadString(IDS_git_DEPTH_WORKING);
+		m_rev2.GetSubject().LoadString(IDS_WORKING_TREE);
 	}
 	else
 	{

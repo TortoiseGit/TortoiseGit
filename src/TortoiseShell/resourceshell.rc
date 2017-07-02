@@ -269,8 +269,6 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_git_DEPTH_UNKNOWN   "Unknown depth"
-    IDS_git_DEPTH_WORKING   "Working Tree"
     IDS_MENUTAG             "Create &Tag..."
     IDS_MENUFORMATPATCH     "Create Patch Serial..."
     IDS_MENUIMPORTPATCH     "Apply Patch Serial..."
@@ -429,14 +427,6 @@ BEGIN
     IDS_MENUDELETEIGNOREMULTIPLE2 "Delete and &ignore multiple items by name"
     IDS_MENUDELETEIGNOREMULTIPLEMASK2 
                             "Delete and ignore multiple items by &extension"
-END
-
-STRINGTABLE
-BEGIN
-    IDS_git_DEPTH_INFINITE  "Fully recursive"
-    IDS_git_DEPTH_IMMEDIATE "Immediate children, including folders"
-    IDS_git_DEPTH_FILES     "Only file children"
-    IDS_git_DEPTH_EMPTY     "Only this item"
 END
 
 #endif    // Englisch (USA) resources

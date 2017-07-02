@@ -3694,7 +3694,7 @@ BEGIN
     IDS_COMMITDLG_POPUP_PICKCOMMITMESSAGE "Pick commit &message"
     IDS_REPOBROWSE_INFO     "%1!s!\nShowing %2!d! files, %3!d! submodules and %4!d! folders, %5!d! items in total"
     IDS_REPOBROWSE_INFOEXT  "Submodule ""%1!s!""\nRevision %2!s!"
-    IDS_REPOBROWSE_INFODIR  "%1!s!"
+    IDS_WORKING_TREE        "Working Tree"
     IDS_REPOBROWSE_INFOFILE "%1!s!\nSize %2!s!"
     IDS_REPOBROWSE_INFOMULTI "%1!d! items selected"
     IDS_SETTINGS_ENABLEGRAVATAR_TT 
@@ -3944,8 +3944,6 @@ BEGIN
     IDS_PROC_FORCEMOVE      "Do you really want to move this file or folder?"
     IDS_PROC_ICONCACHEREBUILT "Shell Icon Cache was rebuilt!"
     IDS_PROC_ICONCACHENOTREBUILT "Error rebuilding Shell Icon Cache!"
-    IDS_PROC_EXPORTFOLDERNAME "%s\\Export of %s"
-    IDS_PROC_EXPORTFOLDERNAME2 "%s\\Export (%d) of %s"
     IDS_PROC_REMOVEFORCEFOLDER 
                             "The folder %s\ncontains unversioned and/or modified file(s). Do you want to remove it anyway?"
 END
@@ -4049,12 +4047,6 @@ BEGIN
     IDS_PROGRS_PATHATREV    "%s - at revision: %d"
     IDS_PROGRS_TIME         "%ld minute(s) and %ld second(s)"
     IDS_PROGRS_FINALINFO    "%s in %s"
-END
-
-STRINGTABLE
-BEGIN
-    IDS_REPOSTATUS_HEADREV  "Lowest shown revision: %ld - Highest shown revision: %ld - HEAD revision: %ld"
-    IDS_REPOSTATUS_WCINFO   "Lowest shown revision: %ld - Highest shown revision: %ld"
 END
 
 STRINGTABLE
@@ -4235,9 +4227,7 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_PROGRESS_COMPARE    "Comparing %s to %s"
     IDS_PROGRESS_INFO       "Getting information..."
-    IDS_PROGRESSGETFILEREVISION "Getting file %s, revision %s"
     IDS_PROGRESSIMPORT      "Importing file %s"
     IDS_PROGRESSREVISIONTEXT "Revision %s"
     IDS_SETTINGS_SHOWREVCOUNTER_TT 
@@ -4300,7 +4290,6 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_STATGRAPH_QUARTERLABEL "Q%d/%.2d"
     IDS_STATGRAPH_PIEBUTTON_TT "Pie Graph"
     IDS_STATGRAPH_LINESTACKEDBUTTON_TT "Stacked Line Graph"
     IDS_STATGRAPH_LINEBUTTON_TT "Line Graph"
@@ -4407,10 +4396,6 @@ STRINGTABLE
 BEGIN
     IDS_PROGRS_CMD_CHECKOUT "Checkout"
     IDS_PROGRS_CMD_IMPORT   "Import %s to %s%s"
-    IDS_PROGRS_CMD_SWITCH   "Switch %s to %s, Revision %s"
-    IDS_PROGRS_CMD_MERGEPEG "Merging revisions %s of %s into %s, %s%s"
-    IDS_PROGRS_CMD_MERGEURL "Merging from %s, revision %s to %s, revision %s into %s, %s%s"
-    IDS_PROGRS_CMD_COPY     "Copy %s to %s, Revision %s"
     IDS_PROGRS_CMD_ADD      "Add"
     IDS_PROGRS_CMD_COMMIT   "Commit"
     IDS_PROGRS_CMD_EXPORT   "Export"
