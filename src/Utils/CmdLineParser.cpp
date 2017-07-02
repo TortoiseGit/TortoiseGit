@@ -43,7 +43,6 @@ CCmdLineParser& CCmdLineParser::operator=(CCmdLineParser&& other)
 BOOL CCmdLineParser::Parse(LPCTSTR sCmdLine)
 {
 	const std::wstring sEmpty;			//use this as a value if no actual value is given in commandline
-	int nArgs = 0;
 
 	if(!sCmdLine)
 		return false;
@@ -163,7 +162,7 @@ BOOL CCmdLineParser::Parse(LPCTSTR sCmdLine)
 		}
 	}
 
-	return (nArgs > 0);		//TRUE if arguments were found
+	return !m_valueMap.empty();		//TRUE if arguments were found
 }
 
 CCmdLineParser::CValsMap::const_iterator CCmdLineParser::findKey(LPCTSTR sKey) const

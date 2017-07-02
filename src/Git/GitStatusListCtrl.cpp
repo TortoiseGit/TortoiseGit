@@ -1256,10 +1256,9 @@ void CGitStatusListCtrl::UncheckEntry(int index, int /*nListItems*/)
 		m_nSelected--;
 	}
 }
-bool CGitStatusListCtrl::BuildStatistics()
+void CGitStatusListCtrl::BuildStatistics()
 {
 	CAutoReadLock locker(m_guard);
-	bool bRefetchStatus = false;
 
 	// now gather some statistics
 	m_nUnversioned = 0;
@@ -1302,7 +1301,6 @@ bool CGitStatusListCtrl::BuildStatistics()
 		if (m_arStatusArray[i]->m_Checked)
 			m_nSelected++;
 	}
-	return !bRefetchStatus;
 }
 
 int CGitStatusListCtrl::GetGroupFromPoint(POINT * ppt)
