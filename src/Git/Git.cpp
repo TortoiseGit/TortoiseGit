@@ -2004,7 +2004,7 @@ int libgit2_addto_map_each_ref_fn(git_reference *ref, void *payload)
 
 	CAutoObject gitObject;
 	if (git_revparse_single(gitObject.GetPointer(), payloadContent->repo, git_reference_name(ref)))
-		return 1;
+		return (git_reference_is_remote(ref) && git_reference_type(ref) == GIT_REF_SYMBOLIC) ? 0 : 1; // don't bail out for symbolic remote references ("git.exe show-ref -d" also doesn't complain), cf. issue #2926
 
 	if (git_object_type(gitObject) == GIT_OBJ_TAG)
 	{
