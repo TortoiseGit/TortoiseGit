@@ -201,7 +201,7 @@ public: //methods
         CString error = CRegBaseCommon<CString>::getErrorString();
 #if defined IDS_REG_ERROR
         CString sTemp;
-        sTemp.FormatMessage(IDS_REG_ERROR, (LPCTSTR)m_key, (LPCTSTR)error);
+        sTemp.Format(IDS_REG_ERROR, (LPCTSTR)m_key, (LPCTSTR)error);
         return sTemp;
 #else
         return error;
