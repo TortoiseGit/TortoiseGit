@@ -2391,6 +2391,7 @@ bool CResModule::AdjustCheckSum(const std::wstring& resFile)
 {
 	HANDLE hFile = INVALID_HANDLE_VALUE;
 	HANDLE hFileMapping = nullptr;
+	PVOID pBaseAddress = nullptr;
 
 	try
 	{
@@ -2402,7 +2403,7 @@ bool CResModule::AdjustCheckSum(const std::wstring& resFile)
 		if (!hFileMapping)
 			throw GetLastError();
 
-		PVOID pBaseAddress = MapViewOfFile(hFileMapping, FILE_MAP_ALL_ACCESS, 0, 0, 0);
+		pBaseAddress = MapViewOfFile(hFileMapping, FILE_MAP_ALL_ACCESS, 0, 0, 0);
 		if (!pBaseAddress)
 			throw GetLastError();
 
@@ -2426,14 +2427,16 @@ bool CResModule::AdjustCheckSum(const std::wstring& resFile)
 		DWORD* pChecksum = &(pNTHeader->OptionalHeader.CheckSum);
 		*pChecksum = dwChecksum;
 
-		UnmapViewOfFile(hFileMapping);
-
+		UnmapViewOfFile(pBaseAddress);
+		CloseHandle(hFileMapping);
 		CloseHandle(hFile);
 	}
 	catch (...)
 	{
+		if (pBaseAddress)
+			UnmapViewOfFile(pBaseAddress);
 		if (hFileMapping)
-			UnmapViewOfFile(hFileMapping);
+			CloseHandle(hFileMapping);
 		if (hFile != INVALID_HANDLE_VALUE)
 			CloseHandle(hFile);
 		return false;
