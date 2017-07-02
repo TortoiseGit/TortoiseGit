@@ -2286,17 +2286,17 @@ size_t CResModule::ScanHeaderFile(const std::wstring & filepath)
 						value = std::stoul(text.substr(spacepos), nullptr, 16);
 					text = text.substr(0, spacepos);
 					trim(text);
-					if (StartsWith(text, "IDS_"))
+					if (StartsWith(text, "IDS_") || StartsWith(text, "AFX_IDS_") || StartsWith(text, "AFX_IDP_"))
 					{
 						m_currentHeaderDataStrings[value] = CUnicodeUtils::StdGetUnicode(text);
 						++count;
 					}
-					else if (StartsWith(text, "IDD_"))
+					else if (StartsWith(text, "IDD_") || StartsWith(text, "AFX_IDD_"))
 					{
 						m_currentHeaderDataDialogs[value] = CUnicodeUtils::StdGetUnicode(text);
 						++count;
 					}
-					else if (StartsWith(text, "ID_"))
+					else if (StartsWith(text, "ID_") || StartsWith(text, "AFX_ID_"))
 					{
 						m_currentHeaderDataMenus[value] = CUnicodeUtils::StdGetUnicode(text);
 						++count;
@@ -2332,17 +2332,17 @@ size_t CResModule::ScanHeaderFile(const std::wstring & filepath)
 						value = std::stoul(text.substr(spacepos), nullptr, 16);
 					text = text.substr(0, spacepos);
 					trim(text);
-					if (StartsWith(text, L"IDS_"))
+					if (StartsWith(text, L"IDS_") || StartsWith(text, L"AFX_IDS_") || StartsWith(text, L"AFX_IDP_"))
 					{
 						m_currentHeaderDataStrings[value] = text;
 						++count;
 					}
-					else if (StartsWith(text, L"IDD_"))
+					else if (StartsWith(text, L"IDD_") || StartsWith(text, L"AFX_IDD_"))
 					{
 						m_currentHeaderDataDialogs[value] = text;
 						++count;
 					}
-					else if (StartsWith(text, L"ID_"))
+					else if (StartsWith(text, L"ID_") || StartsWith(text, L"AFX_ID_"))
 					{
 						m_currentHeaderDataMenus[value] = text;
 						++count;
