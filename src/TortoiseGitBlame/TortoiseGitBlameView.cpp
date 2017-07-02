@@ -1825,7 +1825,7 @@ void CTortoiseGitBlameView::OnEditFind()
 		oneline = m_TextView.StringFromControl(linebuf.get());
 	}
 
-	DWORD flags = FR_DOWN | FR_HIDEWHOLEWORD | FR_HIDEUPDOWN;
+	DWORD flags = FR_DOWN | FR_HIDEWHOLEWORD;
 	if (theApp.GetInt(L"FindMatchCase"))
 		flags |= FR_MATCHCASE;
 
@@ -1867,7 +1867,7 @@ LRESULT CTortoiseGitBlameView::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*l
 		theApp.WriteInt(L"FindMatchCase", m_bMatchCase ? 1 : 0);
 		theApp.WriteString(L"FindString", m_sFindText);
 
-		DoSearch(CTortoiseGitBlameData::SearchNext);
+		DoSearch(m_pFindDialog->SearchDown() ?  CTortoiseGitBlameData::SearchNext : CTortoiseGitBlameData::SearchPrevious);
 	}
 
 	return 0;
