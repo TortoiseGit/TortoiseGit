@@ -4921,6 +4921,7 @@ BEGIN
     IDS_STATUSLIST_CONTEXT_COPYFILENAMES "file/foldernames"
     IDS_STATUSLIST_CONTEXT_COPYCOL "column '%ls'"
     IDS_STATUSLIST_CONTEXT_COPYRELPATHS "relative paths"
+    IDS_PROC_PUSH_ALLBRANCHES "Do you really want to push all local branches?"
 END
 
 #endif    // English (U.S.) resources

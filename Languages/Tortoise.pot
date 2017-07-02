@@ -3968,6 +3968,10 @@ msgstr ""
 msgid "Do you really want to permanently delete the %d selected refs? It can NOT be recovered!"
 msgstr ""
 
+#. Resource IDs: (IDS_PROC_PUSH_ALLBRANCHES)
+msgid "Do you really want to push all local branches?"
+msgstr ""
+
 #. Resource IDs: (IDS_WARN_DELETE_ONE_FROM_INDEX)
 #, c-format
 msgid "Do you really want to remove \"%s\" from the index?"

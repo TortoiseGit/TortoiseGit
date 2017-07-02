@@ -393,7 +393,17 @@ void CPushDlg::OnBnClickedOk()
 	if( GetCheckedRadioButton(IDC_RD_REMOTE,IDC_RD_URL) == IDC_RD_URL)
 		m_URL=m_RemoteURL.GetString();
 
-	if (!m_bPushAllBranches)
+	if (m_bPushAllBranches)
+	{
+		BOOL dontaskagainchecked = FALSE;
+		if (CMessageBox::ShowCheck(GetSafeHwnd(), IDS_PROC_PUSH_ALLBRANCHES, IDS_APPNAME, MB_ICONQUESTION | MB_DEFBUTTON2 | MB_YESNO, L"PushAllBranches", IDS_MSGBOX_DONOTSHOWAGAIN, &dontaskagainchecked) == IDNO)
+		{
+			if (dontaskagainchecked)
+				CMessageBox::SetRegistryValue(L"PushAllBranches", IDYES);
+			return;
+		}
+	}
+	else
 	{
 		this->m_BranchRemoteName=m_BranchRemote.GetString().Trim();
 		this->m_BranchSourceName=m_BranchSource.GetString().Trim();

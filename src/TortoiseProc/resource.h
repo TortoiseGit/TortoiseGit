@@ -1329,6 +1329,7 @@
 #define IDC_PATCH                       1636
 #define IDS_STATUSLIST_CONTEXT_COPYRELPATHS 1636
 #define IDC_VIEW_PATCH                  1637
+#define IDS_PROC_PUSH_ALLBRANCHES       1637
 #define IDC_BUTTON_SUBMODULE            1639
 #define IDC_RADIO_EXCLUDE               1640
 #define IDC_RADIO_GITIGNORE             1641

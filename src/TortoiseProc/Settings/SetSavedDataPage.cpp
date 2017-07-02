@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2013-2016 - TortoiseGit
+// Copyright (C) 2012-2013-2017 - TortoiseGit
 // Copyright (C) 2003-2008,2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -361,6 +361,7 @@ void CSetSavedDataPage::OnBnClickedStoreddecisionsclear()
 		L"StashPopShowConflictChanges",
 		L"CommitWarnOnUnresolved",
 		L"CommitAskBeforeCancel",
+		L"PushAllBranches",
 	};
 	for (const auto& value : tgitvalues)
 	{
