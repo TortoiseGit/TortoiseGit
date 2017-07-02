@@ -1204,6 +1204,10 @@ msgstr ""
 msgid "&Save\tCtrl+S"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_REFLOG: Control id 1687)
+msgid "&Search..."
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_SETMSYSGITPATH)
 msgid "&Set Git path"
 msgstr ""
