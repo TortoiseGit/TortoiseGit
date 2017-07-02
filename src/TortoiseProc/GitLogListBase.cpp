@@ -2268,7 +2268,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			if ((m_ContextMenuMask & GetContextMenuBit(ID_PUSH)) && ((!isStash && m_HashMap.find(pSelLogEntry->m_CommitHash) != m_HashMap.cend()) || showExtendedMenu))
 			{
 				// show the push-option only if the log entry has an associated local branch
-				bool isLocal = find_if(m_HashMap[pSelLogEntry->m_CommitHash], [](const CString& ref) { return CStringUtils::StartsWith(ref, L"refs/heads/"); }) != m_HashMap[pSelLogEntry->m_CommitHash].cend();
+				bool isLocal = find_if(m_HashMap[pSelLogEntry->m_CommitHash], [](const CString& ref) { return CStringUtils::StartsWith(ref, L"refs/heads/") || CStringUtils::StartsWith(ref, L"refs/tags/"); }) != m_HashMap[pSelLogEntry->m_CommitHash].cend();
 				if (isLocal || showExtendedMenu)
 				{
 					CString str;
@@ -2276,9 +2276,10 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 
 					CString branch;
 					size_t index = (size_t)-1;
-					CGit::REF_TYPE type = CGit::REF_TYPE::LOCAL_BRANCH;
+					CGit::REF_TYPE type = CGit::REF_TYPE::UNKNOWN;
 					if (IsMouseOnRefLabelFromPopupMenu(pSelLogEntry, point, type, &branch, &index))
-						str.Insert(str.Find(L'.'), L" \"" + branch + L'"');
+						if (type == CGit::REF_TYPE::LOCAL_BRANCH || type == CGit::REF_TYPE::ANNOTATED_TAG || type == CGit::REF_TYPE::TAG)
+							str.Insert(str.Find(L'.'), L" \"" + branch + L'"');
 
 					popup.AppendMenuIcon(ID_PUSH, str, IDI_PUSH);
 
