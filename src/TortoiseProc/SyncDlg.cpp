@@ -1206,13 +1206,13 @@ BOOL CSyncDlg::PreTranslateMessage(MSG* pMsg)
 		case VK_ESCAPE:
 		case VK_CANCEL:
 			{
-				TCHAR buff[128] = { 0 };
-				::GetClassName(pMsg->hwnd,buff,128);
+				TCHAR buff[129];
+				::GetClassName(pMsg->hwnd, buff, _countof(buff) - 1);
 
 				/* Use MSFTEDIT_CLASS http://msdn.microsoft.com/en-us/library/bb531344.aspx */
-				if (_wcsnicmp(buff, MSFTEDIT_CLASS, 128) == 0 ||	//Unicode and MFC 2012 and later
-					_wcsnicmp(buff, RICHEDIT_CLASS, 128) == 0 ||	//ANSI or MFC 2010
-					_wcsnicmp(buff, L"SysListView32", 128) == 0)
+				if (_wcsnicmp(buff, MSFTEDIT_CLASS, _countof(buff) - 1) == 0 ||	//Unicode and MFC 2012 and later
+					_wcsnicmp(buff, RICHEDIT_CLASS, _countof(buff) - 1) == 0 ||	//ANSI or MFC 2010
+					_wcsnicmp(buff, L"SysListView32", _countof(buff) - 1) == 0)
 				{
 					this->PostMessage(WM_KEYDOWN,VK_ESCAPE,0);
 					return TRUE;

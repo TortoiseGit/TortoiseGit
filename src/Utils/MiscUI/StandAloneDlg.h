@@ -71,9 +71,9 @@ protected:
 			if (nVirtKey == 'A' && (GetKeyState(VK_CONTROL) & 0x8000 ) )
 			{
 				TCHAR buffer[129];
-				::GetClassName(pMsg->hwnd, buffer,128);
+				::GetClassName(pMsg->hwnd, buffer, _countof(buffer) - 1);
 
-				if (_wcsnicmp(buffer, L"EDIT", 128) == 0)
+				if (_wcsnicmp(buffer, L"EDIT", _countof(buffer) - 1) == 0)
 				{
 					::PostMessage(pMsg->hwnd,EM_SETSEL,0,-1);
 					return TRUE;
