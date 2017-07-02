@@ -5378,10 +5378,8 @@ LRESULT CBaseView::OnFindDialogMessage(WPARAM wParam, LPARAM /*lParam*/)
 			size_t count = 0;
 			for (size_t i = 0; i < m_arFindStringLines.size(); ++i)
 				count += m_arFindStringLines[i];
-			CString format;
-			format.LoadString(IDS_FIND_COUNT);
 			CString matches;
-			matches.Format(format, count);
+			matches.Format(IDS_FIND_COUNT, count);
 			m_pFindDialog->SetStatusText(matches);
 		}
 		else if ((CFindDlg::FindType)wParam == CFindDlg::FindType::Replace)
