@@ -22,6 +22,7 @@
 #include "FilterEdit.h"
 #include "ResizableColumnsListCtrl.h"
 #include "gittype.h"
+#include "HistoryCombo.h"
 
 const int gPickRef_Head		= 1;
 const int gPickRef_Tag		= 2;
@@ -237,5 +238,5 @@ private:
 
 public:
 	static CString	PickRef(bool returnAsHash = false, CString initialRef = CString(), int pickRef_Kind = gPickRef_All, bool pickMultipleRefsOrRange = false);
-	static bool		PickRefForCombo(CComboBoxEx* pComboBox, int pickRef_Kind = gPickRef_All);
+	static bool		PickRefForCombo(CHistoryCombo* pComboBox, int pickRef_Kind = gPickRef_All, int useShortName = gPickRef_Head);
 };
