@@ -245,6 +245,10 @@ TEST(CGit, StripRefName)
 	EXPECT_STREQ(L"abc", CGit::StripRefName(L"abc"));
 	EXPECT_STREQ(L"bcd", CGit::StripRefName(L"refs/bcd"));
 	EXPECT_STREQ(L"cde", CGit::StripRefName(L"refs/heads/cde"));
+
+	EXPECT_STREQ(L"notes/commits", CGit::StripRefName(L"refs/notes/commits"));
+	EXPECT_STREQ(L"remotes/origin/abc", CGit::StripRefName(L"refs/remotes/origin/abc"));
+	EXPECT_STREQ(L"tags/abc", CGit::StripRefName(L"refs/tags/abc"));
 }
 
 TEST(CGit, CombinePath)
