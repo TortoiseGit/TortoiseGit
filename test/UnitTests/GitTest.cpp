@@ -472,6 +472,34 @@ TEST_P(CBasicGitWithTestRepoBareFixture, GetCurrentBranch)
 	EXPECT_STREQ(L"master", m_Git.GetCurrentBranch(true));
 }
 
+static void IsLocalBranch(CGit& m_Git)
+{
+	EXPECT_TRUE(m_Git.IsLocalBranch(L"master"));
+	EXPECT_TRUE(m_Git.IsLocalBranch(L"subdir/branch"));
+
+	EXPECT_FALSE(m_Git.IsLocalBranch(L"no_branch_in_repo"));
+
+	EXPECT_FALSE(m_Git.IsLocalBranch(L"commits")); // notes/commits
+
+	EXPECT_FALSE(m_Git.IsLocalBranch(L"stash"));
+
+	EXPECT_FALSE(m_Git.IsLocalBranch(L"3686b9cf74f1a4ef96d6bfe736595ef9abf0fb8d"));
+
+	// exist tags
+	EXPECT_FALSE(m_Git.IsLocalBranch(L"normal-tag"));
+	EXPECT_FALSE(m_Git.IsLocalBranch(L"also-signed"));
+}
+
+TEST_P(CBasicGitWithTestRepoFixture, IsLocalBranch)
+{
+	IsLocalBranch(m_Git);
+}
+
+TEST_P(CBasicGitWithTestRepoBareFixture, IsLocalBranch)
+{
+	IsLocalBranch(m_Git);
+}
+
 static void BranchTagExists_IsBranchTagNameUnique(CGit& m_Git)
 {
 	EXPECT_TRUE(m_Git.BranchTagExists(L"master", true));

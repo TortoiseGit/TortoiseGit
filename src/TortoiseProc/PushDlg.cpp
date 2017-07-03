@@ -438,7 +438,7 @@ void CPushDlg::OnBnClickedOk()
 			this->m_BranchRemote.SaveHistory();
 			m_RemoteReg = m_Remote.GetString();
 
-			if (!m_BranchSourceName.IsEmpty())
+			if (!m_BranchSourceName.IsEmpty() && g_Git.IsLocalBranch(m_BranchSourceName))
 			{
 				CString configName;
 				if (m_bSetPushBranch)

@@ -237,6 +237,7 @@ public:
 	static bool ms_bMsys2Git;
 	static int m_LogEncode;
 	static bool IsBranchNameValid(const CString& branchname);
+	bool IsLocalBranch(const CString& shortName);
 	bool IsBranchTagNameUnique(const CString& name);
 	/**
 	* Checks if a branch or tag with the given name exists
