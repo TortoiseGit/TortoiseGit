@@ -10254,22 +10254,6 @@ msgstr ""
 msgid "Use &other text block"
 msgstr ""
 
-#. Resource IDs: (ID_EDIT_USEMYBLOCK - Menu, ID_EDIT_USEMYBLOCK - Ribbon name)
-msgid "Use 'mine' text block"
-msgstr ""
-
-#. Resource IDs: (ID_EDIT_USEMINETHENTHEIRBLOCK - Menu, ID_EDIT_USEMINETHENTHEIRBLOCK - Ribbon name)
-msgid "Use 'mine' text block then 'theirs'"
-msgstr ""
-
-#. Resource IDs: (ID_EDIT_USETHEIRBLOCK - Menu, ID_EDIT_USETHEIRBLOCK - Ribbon name)
-msgid "Use 'theirs' text block"
-msgstr ""
-
-#. Resource IDs: (ID_EDIT_USETHEIRTHENMYBLOCK - Menu, ID_EDIT_USETHEIRTHENMYBLOCK - Ribbon name)
-msgid "Use 'theirs' text block then 'mine'"
-msgstr ""
-
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1911)
 msgid "Use .mailmap"
 msgstr ""
@@ -10350,6 +10334,14 @@ msgstr ""
 msgid "Use left file"
 msgstr ""
 
+#. Resource IDs: (ID_EDIT_USETHEIRBLOCK - Menu, ID_EDIT_USETHEIRBLOCK - Ribbon name)
+msgid "Use left text block"
+msgstr ""
+
+#. Resource IDs: (ID_EDIT_USETHEIRTHENMYBLOCK - Menu, ID_EDIT_USETHEIRTHENMYBLOCK - Ribbon name)
+msgid "Use left text block then right"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 1762)
 msgid "Use local branch color for current branch"
 msgstr ""
@@ -10366,6 +10358,14 @@ msgstr ""
 msgid "Use right block"
 msgstr ""
 
+#. Resource IDs: (ID_EDIT_USEMYBLOCK - Menu, ID_EDIT_USEMYBLOCK - Ribbon name)
+msgid "Use right text block"
+msgstr ""
+
+#. Resource IDs: (ID_EDIT_USEMINETHENTHEIRBLOCK - Menu, ID_EDIT_USEMINETHENTHEIRBLOCK - Ribbon name)
+msgid "Use right text block then left"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 1091)
 msgid "Use spaces"
 msgstr ""
@@ -10374,36 +10374,36 @@ msgstr ""
 msgid "Use system locale for date/time"
 msgstr ""
 
-#. Resource IDs: (IDS_VIEWCONTEXTMENU_USEYOURBLOCK)
-msgid "Use text block from '&mine'"
-msgstr ""
-
 #. Resource IDs: (IDS_VIEWCONTEXTMENU_USETHEIRBLOCK)
-msgid "Use text block from '&theirs'"
+msgid "Use text block from &left"
 msgstr ""
 
-#. Resource IDs: (IDS_VIEWCONTEXTMENU_USEYOURANDTHEIRBLOCK)
-msgid "Use text block from 'm&ine' before 'theirs'"
-msgstr ""
-
-#. Resource IDs: (32822)
-msgid "Use text block from 'mine' before 'theirs'\nUse 'mine' text block then 'theirs'"
-msgstr ""
-
-#. Resource IDs: (32820)
-msgid "Use text block from 'mine'\nUse 'mine' text block"
+#. Resource IDs: (IDS_VIEWCONTEXTMENU_USEYOURBLOCK)
+msgid "Use text block from &right"
 msgstr ""
 
 #. Resource IDs: (IDS_VIEWCONTEXTMENU_USETHEIRANDYOURBLOCK)
-msgid "Use text block from 't&heirs' before 'mine'"
+msgid "Use text block from l&eft before right"
 msgstr ""
 
 #. Resource IDs: (32821)
-msgid "Use text block from 'theirs' before 'mine'\nUse 'theirs' text block then 'mine'"
+msgid "Use text block from left before right file\nUse left file text block then right"
 msgstr ""
 
 #. Resource IDs: (32819)
-msgid "Use text block from 'theirs'\nUse 'theirs' text block"
+msgid "Use text block from left file\nUse left file text block"
+msgstr ""
+
+#. Resource IDs: (IDS_VIEWCONTEXTMENU_USEYOURANDTHEIRBLOCK)
+msgid "Use text block from r&ight before left"
+msgstr ""
+
+#. Resource IDs: (32822)
+msgid "Use text block from right file before left\nUse right file text block then left"
+msgstr ""
+
+#. Resource IDs: (32820)
+msgid "Use text block from right file\nUse right file text block"
 msgstr ""
 
 #. Resource IDs: (32855)

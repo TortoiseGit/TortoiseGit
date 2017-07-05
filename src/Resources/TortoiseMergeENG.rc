@@ -522,10 +522,10 @@ BEGIN
         MENUITEM "Use block from left before right", ID_EDIT_USEBLOCKFROMLEFTBEFORERIGHT
         MENUITEM "Use block from right before left", ID_EDIT_USEBLOCKFROMRIGHTBEFORELEFT
         MENUITEM SEPARATOR
-        MENUITEM "Use 'theirs' text block",     ID_EDIT_USETHEIRBLOCK
-        MENUITEM "Use 'mine' text block",       ID_EDIT_USEMYBLOCK
-        MENUITEM "Use 'theirs' text block then 'mine'", ID_EDIT_USETHEIRTHENMYBLOCK
-        MENUITEM "Use 'mine' text block then 'theirs'", ID_EDIT_USEMINETHENTHEIRBLOCK
+        MENUITEM "Use left text block",         ID_EDIT_USETHEIRBLOCK
+        MENUITEM "Use right text block",        ID_EDIT_USEMYBLOCK
+        MENUITEM "Use left text block then right", ID_EDIT_USETHEIRTHENMYBLOCK
+        MENUITEM "Use right text block then left", ID_EDIT_USEMINETHENTHEIRBLOCK
         MENUITEM SEPARATOR
         MENUITEM "Find",                        ID_EDIT_FIND
         MENUITEM "Goto Line",                   ID_EDIT_GOTOLINE
@@ -885,12 +885,12 @@ END
 STRINGTABLE
 BEGIN
     IDS_VIEWCONTEXTMENU_USETHISBLOCK "Use th&is text block"
-    IDS_VIEWCONTEXTMENU_USETHEIRBLOCK "Use text block from '&theirs'"
-    IDS_VIEWCONTEXTMENU_USEYOURBLOCK "Use text block from '&mine'"
+    IDS_VIEWCONTEXTMENU_USETHEIRBLOCK "Use text block from &left"
+    IDS_VIEWCONTEXTMENU_USEYOURBLOCK "Use text block from &right"
     IDS_VIEWCONTEXTMENU_USETHEIRANDYOURBLOCK 
-                            "Use text block from 't&heirs' before 'mine'"
+                            "Use text block from l&eft before right"
     IDS_VIEWCONTEXTMENU_USEYOURANDTHEIRBLOCK 
-                            "Use text block from 'm&ine' before 'theirs'"
+                            "Use text block from r&ight before left"
     IDS_VIEWCONTEXTMENU_USETHISFILE "Use this &whole file"
     IDS_VIEWCONTEXTMENU_USEOTHERBLOCK "Use &other text block"
     IDS_VIEWCONTEXTMENU_USEOTHERFILE "Use whole other &file"
@@ -989,12 +989,12 @@ END
 STRINGTABLE
 BEGIN
     ID_VIEW_SHOWFILELIST    "Hide/Show the patch file list\nHides or shows the patch file list"
-    ID_EDIT_USETHEIRBLOCK   "Use text block from 'theirs'\nUse 'theirs' text block"
-    ID_EDIT_USEMYBLOCK      "Use text block from 'mine'\nUse 'mine' text block"
+    ID_EDIT_USETHEIRBLOCK   "Use text block from left file\nUse left file text block"
+    ID_EDIT_USEMYBLOCK      "Use text block from right file\nUse right file text block"
     ID_EDIT_USETHEIRTHENMYBLOCK 
-                            "Use text block from 'theirs' before 'mine'\nUse 'theirs' text block then 'mine'"
+                            "Use text block from left before right file\nUse left file text block then right"
     ID_EDIT_USEMINETHENTHEIRBLOCK 
-                            "Use text block from 'mine' before 'theirs'\nUse 'mine' text block then 'theirs'"
+                            "Use text block from right file before left\nUse right file text block then left"
     ID_VIEW_INLINEDIFFWORD  "Show Inline-Diff word by word\nInline diff word-wise"
     ID_EDIT_CREATEUNIFIEDDIFFFILE 
                             "Creates a patch file from the differences of the two files\nCreate patch file"

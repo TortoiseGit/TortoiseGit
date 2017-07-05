@@ -41,7 +41,7 @@ public:
 	void SetReflectedName(const CString& newReflectedName);
 	CString GetReflectedName();
 	void CreateEmptyFile();
-	CString GetWindowName() const;
+	CString GetWindowName(UINT type = 0) const;
 	CString GetFilename() const		{ return m_sFilename; }
 	void SetOutOfUse();
 

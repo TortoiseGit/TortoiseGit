@@ -1030,8 +1030,7 @@ bool CMainFrame::LoadViews(int line)
 		m_pwndLeftView->m_pViewData = &m_Data.m_TheirBaseBoth;
 		m_pwndLeftView->SetTextType(m_Data.m_arTheirFile.GetUnicodeType());
 		m_pwndLeftView->SetLineEndingStyle(m_Data.m_arTheirFile.GetLineEndings());
-		m_pwndLeftView->m_sWindowName.LoadString(IDS_VIEWTITLE_THEIRS);
-		m_pwndLeftView->m_sWindowName += L" - " + m_Data.m_theirFile.GetWindowName();
+		m_pwndLeftView->m_sWindowName = m_Data.m_theirFile.GetWindowName(IDS_VIEWTITLE_THEIRS);
 		m_pwndLeftView->m_sFullFilePath = m_Data.m_theirFile.GetFilename();
 		m_pwndLeftView->m_sConvertedFilePath = m_Data.m_theirFile.GetConvertedFileName();
 		m_pwndLeftView->m_sReflectedName = m_Data.m_theirFile.GetReflectedName();
@@ -1040,8 +1039,7 @@ bool CMainFrame::LoadViews(int line)
 		m_pwndRightView->m_pViewData = &m_Data.m_YourBaseBoth;
 		m_pwndRightView->SetTextType(m_Data.m_arYourFile.GetUnicodeType());
 		m_pwndRightView->SetLineEndingStyle(m_Data.m_arYourFile.GetLineEndings());
-		m_pwndRightView->m_sWindowName.LoadString(IDS_VIEWTITLE_MINE);
-		m_pwndRightView->m_sWindowName += L" - " + m_Data.m_yourFile.GetWindowName();
+		m_pwndRightView->m_sWindowName = m_Data.m_yourFile.GetWindowName(IDS_VIEWTITLE_MINE);
 		m_pwndRightView->m_sFullFilePath = m_Data.m_yourFile.GetFilename();
 		m_pwndRightView->m_sConvertedFilePath = m_Data.m_yourFile.GetConvertedFileName();
 		m_pwndRightView->m_sReflectedName = m_Data.m_yourFile.GetReflectedName();
