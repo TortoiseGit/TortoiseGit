@@ -2069,6 +2069,34 @@ int CGit::GetMapHashToFriendName(MAP_HASH_NAME &map)
 	return ret;
 }
 
+int CGit::GuessRefForHash(CString& ref, const CGitHash& hash)
+{
+	MAP_HASH_NAME map;
+	if (GetMapHashToFriendName(map))
+		return -1;
+
+	auto it = map.find(hash);
+	if (it == map.cend())
+	{
+		ref = hash.ToString();
+		return 0;
+	}
+
+	const auto& reflist = it->second;
+	for (const auto& reftype : { L"refs/heads/", L"refs/remotes/", L"refs/tags/" })
+	{
+		auto found = std::find_if(reflist.cbegin(), reflist.cend(), [&reftype](const auto& ref) { return CStringUtils::StartsWith(ref, reftype); });
+		if (found == reflist.cend())
+			continue;
+		
+		GetShortName(*found, ref, reftype);
+		return 0;
+	}
+	
+	ref = hash.ToString();
+	return 0;
+}
+
 int CGit::GetBranchDescriptions(MAP_STRING_STRING& map)
 {
 	CAutoConfig config(true);

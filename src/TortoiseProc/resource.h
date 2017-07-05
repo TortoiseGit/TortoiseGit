@@ -1334,8 +1334,11 @@
 #define IDC_BUTTON_SUBMODULE            1639
 #define IDS_CONFLICT_SUBMODULENOTINITIALIZED 1639
 #define IDC_RADIO_EXCLUDE               1640
+#define IDS_CONFLICT_REFTOBEMERGED      1640
 #define IDC_RADIO_GITIGNORE             1641
+#define IDS_CONFLICT_REVERT             1641
 #define IDC_GROUP_TYPE                  1642
+#define IDS_CONFLICT_INFOTEXT           1642
 #define IDC_REV1EDIT                    1643
 #define IDC_REV1GROUP                   1644
 #define IDC_REV2GROUP                   1645

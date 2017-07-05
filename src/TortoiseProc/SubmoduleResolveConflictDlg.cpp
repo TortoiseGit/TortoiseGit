@@ -121,6 +121,10 @@ BOOL CSubmoduleResolveConflictDlg::OnInitDialog()
 	GetDlgItem(IDC_MINECHANGETYPE)->SetWindowText(changeTypeTable[m_nChangeTypeMine]);
 	GetDlgItem(IDC_THEIRSCHANGETYPE)->SetWindowText(changeTypeTable[m_nChangeTypeTheirs]);
 
+	GetDlgItem(IDC_FROMGROUP)->SetWindowText(m_sBaseTitle);
+	GetDlgItem(IDC_TOGROUP)->SetWindowText(m_sMineTitle);
+	GetDlgItem(IDC_TOGROUP2)->SetWindowText(m_sTheirsTitle);
+
 	DialogEnableWindow(IDC_LOG, m_bBaseOK);
 	DialogEnableWindow(IDC_LOG2, m_bMineOK && m_nChangeTypeMine != CGitDiff::DeleteSubmodule);
 	DialogEnableWindow(IDC_LOG3, m_bTheirsOK && m_nChangeTypeTheirs != CGitDiff::DeleteSubmodule);
@@ -154,10 +158,11 @@ HBRUSH CSubmoduleResolveConflictDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlC
 	return CHorizontalResizableStandAloneDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 }
 
-void CSubmoduleResolveConflictDlg::SetDiff(const CString& path, bool revertTheirMy, const CString& baseHash, const CString& baseSubject, bool baseOK, const CString& mineHash, const CString& mineSubject, bool mineOK, CGitDiff::ChangeType mineChangeType, const CString& theirsHash, const CString& theirsSubject, bool theirsOK, CGitDiff::ChangeType theirsChangeType)
+void CSubmoduleResolveConflictDlg::SetDiff(const CString& path, bool revertTheirMy, const CString& baseTitle, const CString& mineTitle, const CString& theirsTitle, const CString& baseHash, const CString& baseSubject, bool baseOK, const CString& mineHash, const CString& mineSubject, bool mineOK, CGitDiff::ChangeType mineChangeType, const CString& theirsHash, const CString& theirsSubject, bool theirsOK, CGitDiff::ChangeType theirsChangeType)
 {
 	m_sPath = path;
 
+	m_sBaseTitle = baseTitle;
 	m_sBaseHash = baseHash;
 	m_sBaseSubject = baseSubject;
 	m_bBaseOK = baseOK;
@@ -166,11 +171,13 @@ void CSubmoduleResolveConflictDlg::SetDiff(const CString& path, bool revertTheir
 
 	if (!m_bRevertTheirMy)
 	{
+		m_sMineTitle = mineTitle;
 		m_sMineHash = mineHash;
 		m_sMineSubject = mineSubject;
 		m_bMineOK = mineOK;
 		m_nChangeTypeMine = mineChangeType;
 
+		m_sTheirsTitle = theirsTitle;
 		m_sTheirsHash = theirsHash;
 		m_sTheirsSubject = theirsSubject;
 		m_bTheirsOK = theirsOK;
@@ -178,11 +185,13 @@ void CSubmoduleResolveConflictDlg::SetDiff(const CString& path, bool revertTheir
 	}
 	else
 	{
+		m_sMineTitle = theirsTitle;
 		m_sMineHash = theirsHash;
 		m_sMineSubject = theirsSubject;
 		m_bMineOK = theirsOK;
 		m_nChangeTypeMine = theirsChangeType;
 
+		m_sTheirsTitle = mineTitle;
 		m_sTheirsHash = mineHash;
 		m_sTheirsSubject = mineSubject;
 		m_bTheirsOK = mineOK;
