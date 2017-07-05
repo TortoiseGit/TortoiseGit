@@ -1,5 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
+// Copyright (C) 2017 - TortoiseGit
 // Copyright (C) 2006-2007, 2011-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -88,7 +89,7 @@ void CWorkingFile::TransferDetailsFrom(CWorkingFile& rightHandFile)
 	m_attribs = rightHandFile.m_attribs;
 }
 
-CString CWorkingFile::GetWindowName() const
+CString CWorkingFile::GetWindowName(UINT type) const
 {
 	CString sErrMsg;
 	// TortoiseMerge allows non-existing files to be used in a merge
@@ -102,7 +103,14 @@ CString CWorkingFile::GetWindowName() const
 	{
 		// We don't have a proper name - use the filename part of the path
 		// return the filename part of the path.
-		return CPathUtils::GetFileNameFromPath(m_sFilename) + L' ' + sErrMsg;
+		CString ret;
+		if (type)
+		{
+			ret.LoadString(type);
+			ret += L" - ";
+		}
+		ret += CPathUtils::GetFileNameFromPath(m_sFilename) + L' ' + sErrMsg;
+		return ret;
 	}
 	else if (sErrMsg.IsEmpty())
 	{

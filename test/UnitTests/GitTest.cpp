@@ -2811,3 +2811,34 @@ TEST_P(CBasicGitWithTestRepoBareFixture, GetGitNotes)
 	GetGitNotes(m_Git, GetParam());
 }
 
+TEST_P(CBasicGitWithTestRepoFixture, GuessRefForHash)
+{
+	CString ref;
+	// HEAD
+	EXPECT_EQ(0, m_Git.GuessRefForHash(ref, CGitHash(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6")));
+	EXPECT_STREQ(L"master", ref);
+
+	// local branch
+	EXPECT_EQ(0, m_Git.GuessRefForHash(ref, CGitHash(L"10385764a4d42d7428bbeb245015f8f338fc1e40")));
+	EXPECT_STREQ(L"forconflict", ref);
+
+	// stash
+	EXPECT_EQ(0, m_Git.GuessRefForHash(ref, CGitHash(L"18da7c332dcad0f37f9977d9176dce0b0c66f3eb")));
+	EXPECT_STREQ(L"18da7c332dcad0f37f9977d9176dce0b0c66f3eb", ref);
+
+	// tag only
+	EXPECT_EQ(0, m_Git.GuessRefForHash(ref, CGitHash(L"b9ef30183497cdad5c30b88d32dc1bed7951dfeb")));
+	EXPECT_STREQ(L"normal-tag", ref);
+
+	// local branch & tag
+	EXPECT_EQ(0, m_Git.GuessRefForHash(ref, CGitHash(L"49ecdfff36bfe2b9b499b33e5034f427e2fa54dd")));
+	EXPECT_STREQ(L"master2", ref);
+
+	// remote branch
+	EXPECT_EQ(0, m_Git.GuessRefForHash(ref, CGitHash(L"a9d53b535cb49640a6099860ac4999f5a0857b91")));
+	EXPECT_STREQ(L"origin/master", ref);
+
+	// no ref
+	EXPECT_EQ(0, m_Git.GuessRefForHash(ref, CGitHash(L"1ce788330fd3a306c8ad37654063ceee13a7f172")));
+	EXPECT_STREQ(L"1ce788330fd3a306c8ad37654063ceee13a7f172", ref);
+}

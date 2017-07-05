@@ -145,6 +145,11 @@ msgstr ""
 msgid "%1!d! minutes ago"
 msgstr ""
 
+#. Resource IDs: (IDS_CONFLICT_INFOTEXT)
+#, c-format
+msgid "%1!s! (%2!s!)"
+msgstr ""
+
 #. Resource IDs: (IDS_REPOBROWSE_INFO)
 #, c-format
 msgid "%1!s!\nShowing %2!d! files, %3!d! submodules and %4!d! folders, %5!d! items in total"
@@ -3623,16 +3628,16 @@ msgstr ""
 msgid "Delete the existing branch or use a different name."
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_RESOLVE_CONFLICT: Control id 4570)
+msgid "Delete/modify merge conflict"
+msgstr ""
+
 #. Resource IDs: (IDS_DELETEWHENEMPTY_TASK3)
 msgid "Delete\nThe file is removed."
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1709, Dialog IDD_SETTINGSOVERLAYHANDLERS: Control id 1551, IDS_DELETED, IDS_PATHACTIONS_DELETE, IDS_SVNACTION_DELETE, IDS_SVN_SUMMARIZEDELETED)
 msgid "Deleted"
-msgstr ""
-
-#. Resource IDs: (Dialog IDD_RESOLVE_CONFLICT: Control id 4570)
-msgid "Deleted merge conflict"
 msgstr ""
 
 #. Resource IDs: (IDS_MENUDESCDELETEIGNORE)
@@ -6110,10 +6115,6 @@ msgstr ""
 msgid "Local status"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_RESOLVE_CONFLICT: Control id 65535)
-msgid "Local:"
-msgstr ""
-
 #. Resource IDs: (IDS_EXPORTFILE_TT)
 msgid "Location where the contents of the\nselected revision of the repository will be saved to."
 msgstr ""
@@ -7077,6 +7078,11 @@ msgstr ""
 msgid "Parent 2"
 msgstr ""
 
+#. Resource IDs: (IDS_CONFLICT_REVERT)
+#, c-format
+msgid "Parent of %2!s!"
+msgstr ""
+
 #. Resource IDs: (IDS_PARENTS)
 msgid "Parent(s)"
 msgstr ""
@@ -7774,7 +7780,7 @@ msgstr ""
 msgid "Remote status"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_DELETEREMOTETAG: Control id 65535, Dialog IDD_RESOLVE_CONFLICT: Control id 65535, Dialog IDD_SETTINREMOTE: Control id 65535)
+#. Resource IDs: (Dialog IDD_DELETEREMOTETAG: Control id 65535, Dialog IDD_SETTINREMOTE: Control id 65535)
 msgid "Remote:"
 msgstr ""
 
@@ -7974,12 +7980,9 @@ msgstr ""
 msgid "Resolve Submodule Conflict"
 msgstr ""
 
-#. Resource IDs: (IDS_SVNPROGRESS_MENUUSEMINE)
-msgid "Resolve conflict using 'mine'"
-msgstr ""
-
-#. Resource IDs: (IDS_SVNPROGRESS_MENUUSETHEIRS)
-msgid "Resolve conflict using 'theirs'"
+#. Resource IDs: (IDS_SVNPROGRESS_MENURESOLVEUSING)
+#, c-format
+msgid "Resolve conflict using \"%s\""
 msgstr ""
 
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_RESOLVED, IDS_SVNACTION_RESOLVE)
@@ -10251,22 +10254,6 @@ msgstr ""
 msgid "Use &other text block"
 msgstr ""
 
-#. Resource IDs: (ID_EDIT_USEMYBLOCK - Menu, ID_EDIT_USEMYBLOCK - Ribbon name)
-msgid "Use 'mine' text block"
-msgstr ""
-
-#. Resource IDs: (ID_EDIT_USEMINETHENTHEIRBLOCK - Menu, ID_EDIT_USEMINETHENTHEIRBLOCK - Ribbon name)
-msgid "Use 'mine' text block then 'theirs'"
-msgstr ""
-
-#. Resource IDs: (ID_EDIT_USETHEIRBLOCK - Menu, ID_EDIT_USETHEIRBLOCK - Ribbon name)
-msgid "Use 'theirs' text block"
-msgstr ""
-
-#. Resource IDs: (ID_EDIT_USETHEIRTHENMYBLOCK - Menu, ID_EDIT_USETHEIRTHENMYBLOCK - Ribbon name)
-msgid "Use 'theirs' text block then 'mine'"
-msgstr ""
-
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1911)
 msgid "Use .mailmap"
 msgstr ""
@@ -10347,6 +10334,14 @@ msgstr ""
 msgid "Use left file"
 msgstr ""
 
+#. Resource IDs: (ID_EDIT_USETHEIRBLOCK - Menu, ID_EDIT_USETHEIRBLOCK - Ribbon name)
+msgid "Use left text block"
+msgstr ""
+
+#. Resource IDs: (ID_EDIT_USETHEIRTHENMYBLOCK - Menu, ID_EDIT_USETHEIRTHENMYBLOCK - Ribbon name)
+msgid "Use left text block then right"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 1762)
 msgid "Use local branch color for current branch"
 msgstr ""
@@ -10363,6 +10358,14 @@ msgstr ""
 msgid "Use right block"
 msgstr ""
 
+#. Resource IDs: (ID_EDIT_USEMYBLOCK - Menu, ID_EDIT_USEMYBLOCK - Ribbon name)
+msgid "Use right text block"
+msgstr ""
+
+#. Resource IDs: (ID_EDIT_USEMINETHENTHEIRBLOCK - Menu, ID_EDIT_USEMINETHENTHEIRBLOCK - Ribbon name)
+msgid "Use right text block then left"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 1091)
 msgid "Use spaces"
 msgstr ""
@@ -10371,36 +10374,36 @@ msgstr ""
 msgid "Use system locale for date/time"
 msgstr ""
 
-#. Resource IDs: (IDS_VIEWCONTEXTMENU_USEYOURBLOCK)
-msgid "Use text block from '&mine'"
-msgstr ""
-
 #. Resource IDs: (IDS_VIEWCONTEXTMENU_USETHEIRBLOCK)
-msgid "Use text block from '&theirs'"
+msgid "Use text block from &left"
 msgstr ""
 
-#. Resource IDs: (IDS_VIEWCONTEXTMENU_USEYOURANDTHEIRBLOCK)
-msgid "Use text block from 'm&ine' before 'theirs'"
-msgstr ""
-
-#. Resource IDs: (32822)
-msgid "Use text block from 'mine' before 'theirs'\nUse 'mine' text block then 'theirs'"
-msgstr ""
-
-#. Resource IDs: (32820)
-msgid "Use text block from 'mine'\nUse 'mine' text block"
+#. Resource IDs: (IDS_VIEWCONTEXTMENU_USEYOURBLOCK)
+msgid "Use text block from &right"
 msgstr ""
 
 #. Resource IDs: (IDS_VIEWCONTEXTMENU_USETHEIRANDYOURBLOCK)
-msgid "Use text block from 't&heirs' before 'mine'"
+msgid "Use text block from l&eft before right"
 msgstr ""
 
 #. Resource IDs: (32821)
-msgid "Use text block from 'theirs' before 'mine'\nUse 'theirs' text block then 'mine'"
+msgid "Use text block from left before right file\nUse left file text block then right"
 msgstr ""
 
 #. Resource IDs: (32819)
-msgid "Use text block from 'theirs'\nUse 'theirs' text block"
+msgid "Use text block from left file\nUse left file text block"
+msgstr ""
+
+#. Resource IDs: (IDS_VIEWCONTEXTMENU_USEYOURANDTHEIRBLOCK)
+msgid "Use text block from r&ight before left"
+msgstr ""
+
+#. Resource IDs: (32822)
+msgid "Use text block from right file before left\nUse right file text block then left"
+msgstr ""
+
+#. Resource IDs: (32820)
+msgid "Use text block from right file\nUse right file text block"
 msgstr ""
 
 #. Resource IDs: (32855)
@@ -11032,6 +11035,10 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ_CONFIG: Control id 65535)
 msgid "bugtraq.warningifnoissue"
+msgstr ""
+
+#. Resource IDs: (IDS_CONFLICT_REFTOBEMERGED)
+msgid "changes to-be-integrated"
 msgstr ""
 
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYCOL)

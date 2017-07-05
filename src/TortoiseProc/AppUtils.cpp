@@ -1695,10 +1695,55 @@ bool ParseHashesFromLsFile(const BYTE_VECTOR& out, CString& hash1, CString& hash
 	return false;
 }
 
-bool CAppUtils::ConflictEdit(CTGitPath& path, bool bAlternativeTool /*= false*/, bool revertTheirMy /*= false*/, HWND resolveMsgHwnd /*= nullptr*/)
+void CAppUtils::GetConflictTitles(CString* baseText, CString& mineText, CString& theirsText, bool rebaseActive)
 {
-	bool bRet = false;
+	if (baseText)
+		baseText->LoadString(IDS_PROC_DIFF_BASE);
+	if (rebaseActive)
+	{
+		CString adminDir;
+		GitAdminDir::GetAdminDirPath(g_Git.m_CurrentDir, adminDir);
+		mineText = L"Branch being rebased onto";
+		if (!CStringUtils::ReadStringFromTextFile(adminDir + L"tgitrebase.active\\onto", mineText))
+		{
+			CGitHash hash;
+			if (!g_Git.GetHash(hash, L"rebase-apply/onto"))
+				g_Git.GuessRefForHash(mineText, hash);
+		}
+		theirsText = L"Branch being rebased";
+		if (!CStringUtils::ReadStringFromTextFile(adminDir + L"tgitrebase.active\\head-name", theirsText))
+		{
+			if (CStringUtils::ReadStringFromTextFile(adminDir + L"rebase-apply/head-name", theirsText))
+				theirsText = CGit::StripRefName(theirsText);
+		}
+		return;
+	}
 
+	static const struct {
+		const wchar_t*	headref;
+		bool			guessRef;
+		UINT			theirstext;
+	} infotexts[] = { { L"MERGE_HEAD", true, IDS_CONFLICT_INFOTEXT }, { L"CHERRY_PICK_HEAD", false, IDS_CONFLICT_INFOTEXT }, { L"REVERT_HEAD", false, IDS_CONFLICT_REVERT } };
+	mineText = L"HEAD";
+	theirsText.LoadString(IDS_CONFLICT_REFTOBEMERGED);
+	for (const auto& infotext : infotexts)
+	{
+		CGitHash hash;
+		if (!g_Git.GetHash(hash, infotext.headref))
+		{
+			CString guessedRef;
+			if (!infotext.guessRef)
+				guessedRef = hash.ToString();
+			else
+				g_Git.GuessRefForHash(guessedRef, hash);
+			theirsText.FormatMessage(infotext.theirstext, infotext.headref, (LPCTSTR)guessedRef);
+			break;
+		}
+	}
+}
+
+bool CAppUtils::ConflictEdit(CTGitPath& path, bool bAlternativeTool /*= false*/, bool isRebase /*= false*/, HWND resolveMsgHwnd /*= nullptr*/)
+{
 	CTGitPath merge=path;
 	CTGitPath directory = merge.GetDirectory();
 
@@ -1709,6 +1754,9 @@ bool CAppUtils::ConflictEdit(CTGitPath& path, bool bAlternativeTool /*= false*/,
 
 	if (g_Git.Run(cmd, &vector))
 		return FALSE;
+
+	CString baseTitle, mineTitle, theirsTitle;
+	GetConflictTitles(&baseTitle, mineTitle, theirsTitle, isRebase);
 
 	if (merge.IsDirectory())
 	{
@@ -1764,7 +1812,7 @@ bool CAppUtils::ConflictEdit(CTGitPath& path, bool bAlternativeTool /*= false*/,
 			return FALSE;
 
 		CSubmoduleResolveConflictDlg resolveSubmoduleConflictDialog;
-		resolveSubmoduleConflictDialog.SetDiff(merge.GetGitPathString(), revertTheirMy, baseHash, baseSubject, baseOK, localHash, mineSubject, mineOK, changeTypeMine, remoteHash, theirsSubject, theirsOK, changeTypeTheirs);
+		resolveSubmoduleConflictDialog.SetDiff(merge.GetGitPathString(), isRebase, baseTitle, mineTitle, theirsTitle, baseHash, baseSubject, baseOK, localHash, mineSubject, mineOK, changeTypeMine, remoteHash, theirsSubject, theirsOK, changeTypeTheirs);
 		resolveSubmoduleConflictDialog.DoModal();
 		if (resolveSubmoduleConflictDialog.m_bResolved && resolveMsgHwnd)
 		{
@@ -1789,7 +1837,7 @@ bool CAppUtils::ConflictEdit(CTGitPath& path, bool bAlternativeTool /*= false*/,
 	CTGitPath mine;
 	CTGitPath base;
 
-	if (revertTheirMy)
+	if (isRebase)
 	{
 		mine.SetFromGit(GetMergeTempFile(L"REMOTE", merge));
 		theirs.SetFromGit(GetMergeTempFile(L"LOCAL", merge));
@@ -1855,10 +1903,10 @@ bool CAppUtils::ConflictEdit(CTGitPath& path, bool bAlternativeTool /*= false*/,
 	if(b_local && b_remote )
 	{
 		merge.SetFromWin(g_Git.CombinePath(merge));
-		if( revertTheirMy )
-			bRet = !!CAppUtils::StartExtMerge(bAlternativeTool, base, mine, theirs, merge, L"BASE", L"REMOTE", L"LOCAL", CString(), false, resolveMsgHwnd, true);
-		else
-			bRet = !!CAppUtils::StartExtMerge(bAlternativeTool, base, theirs, mine, merge, L"BASE", L"REMOTE", L"LOCAL", CString(), false, resolveMsgHwnd, true);
+		if (isRebase)
+			return !!CAppUtils::StartExtMerge(bAlternativeTool, base, mine, theirs, merge, baseTitle, mineTitle, theirsTitle, CString(), false, resolveMsgHwnd, true);
+
+		return !!CAppUtils::StartExtMerge(bAlternativeTool, base, theirs, mine, merge, baseTitle, theirsTitle, mineTitle, CString(), false, resolveMsgHwnd, true);
 	}
 	else
 	{
@@ -1867,37 +1915,19 @@ bool CAppUtils::ConflictEdit(CTGitPath& path, bool bAlternativeTool /*= false*/,
 		::DeleteFile(base.GetWinPathString());
 
 		CDeleteConflictDlg dlg;
-		if (!revertTheirMy)
+		if (!isRebase)
 		{
 			DescribeConflictFile(b_local, b_base, dlg.m_LocalStatus);
 			DescribeConflictFile(b_remote, b_base, dlg.m_RemoteStatus);
-			CGitHash localHash, remoteHash;
-			if (!g_Git.GetHash(localHash, L"HEAD"))
-				dlg.m_LocalHash = localHash.ToString();
-			if (!g_Git.GetHash(remoteHash, L"MERGE_HEAD"))
-				dlg.m_RemoteHash = remoteHash.ToString();
-			else if (!g_Git.GetHash(remoteHash, L"rebase-apply/original-commit"))
-				dlg.m_RemoteHash = remoteHash.ToString();
-			else if (!g_Git.GetHash(remoteHash, L"CHERRY_PICK_HEAD"))
-				dlg.m_RemoteHash = remoteHash.ToString();
-			else if (!g_Git.GetHash(remoteHash, L"REVERT_HEAD"))
-				dlg.m_RemoteHash = remoteHash.ToString();
+			dlg.m_LocalHash = mineTitle;
+			dlg.m_RemoteHash = theirsTitle;
 		}
 		else
 		{
 			DescribeConflictFile(b_local, b_base, dlg.m_RemoteStatus);
 			DescribeConflictFile(b_remote, b_base, dlg.m_LocalStatus);
-			CGitHash localHash, remoteHash;
-			if (!g_Git.GetHash(remoteHash, L"HEAD"))
-				dlg.m_RemoteHash = remoteHash.ToString();
-			if (!g_Git.GetHash(localHash, L"MERGE_HEAD"))
-				dlg.m_LocalHash = localHash.ToString();
-			else if (!g_Git.GetHash(localHash, L"rebase-apply/original-commit"))
-				dlg.m_LocalHash = localHash.ToString();
-			else if (!g_Git.GetHash(localHash, L"CHERRY_PICK_HEAD"))
-				dlg.m_LocalHash = localHash.ToString();
-			else if (!g_Git.GetHash(localHash, L"REVERT_HEAD"))
-				dlg.m_LocalHash = localHash.ToString();
+			dlg.m_LocalHash = theirsTitle;
+			dlg.m_RemoteHash = mineTitle;
 		}
 		dlg.m_bShowModifiedButton = b_base;
 		dlg.m_File=merge.GetGitPathString();
@@ -1921,10 +1951,8 @@ bool CAppUtils::ConflictEdit(CTGitPath& path, bool bAlternativeTool /*= false*/,
 			}
 			return TRUE;
 		}
-		else
-			return FALSE;
+		return FALSE;
 	}
-	return bRet;
 }
 
 bool CAppUtils::IsSSHPutty()

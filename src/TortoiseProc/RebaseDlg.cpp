@@ -122,7 +122,12 @@ void CRebaseDlg::CleanUpRebaseActiveFolder()
 		return;
 	CString adminDir;
 	if (GitAdminDir::GetAdminDirPath(g_Git.m_CurrentDir, adminDir))
-		RemoveDirectory(adminDir + L"tgitrebase.active");
+	{
+		CString dir(adminDir + L"tgitrebase.active");
+		::DeleteFile(dir + L"\\head-name");
+		::DeleteFile(dir + L"\\onto");
+		::RemoveDirectory(dir);
+	}
 }
 
 void CRebaseDlg::AddRebaseAnchor()
@@ -2245,7 +2250,12 @@ void CRebaseDlg::ListConflictFile(bool noStoreScrollPosition)
 	{
 		CString adminDir;
 		if (GitAdminDir::GetAdminDirPath(g_Git.m_CurrentDir, adminDir))
-			CreateDirectory(adminDir + L"tgitrebase.active", nullptr);
+		{
+			CString dir(adminDir + L"tgitrebase.active");
+			::CreateDirectory(dir, nullptr);
+			CStringUtils::WriteStringToTextFile(dir + L"\\head-name", m_BranchCtrl.GetString());
+			CStringUtils::WriteStringToTextFile(dir + L"\\onto", m_Onto.IsEmpty() ? m_UpstreamCtrl.GetString() : m_Onto);
+		}
 	}
 
 	this->m_FileListCtrl.GetStatus(&list,true);
