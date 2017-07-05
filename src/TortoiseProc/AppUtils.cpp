@@ -1655,10 +1655,7 @@ void CAppUtils::RemoveTempMergeFile(const CTGitPath& path)
 }
 CString CAppUtils::GetMergeTempFile(const CString& type, const CTGitPath &merge)
 {
-	CString file;
-	file = g_Git.CombinePath(merge.GetWinPathString() + L'.' + type + merge.GetFileExtension());
-
-	return file;
+	return g_Git.CombinePath(merge.GetWinPathString() + L'.' + type + merge.GetFileExtension());;
 }
 
 bool ParseHashesFromLsFile(const BYTE_VECTOR& out, CString& hash1, CString& hash2, CString& hash3)
@@ -1804,10 +1801,7 @@ bool CAppUtils::ConflictEdit(CTGitPath& path, bool bAlternativeTool /*= false*/,
 	}
 	base.SetFromGit(GetMergeTempFile(L"BASE",merge));
 
-	CString format;
-
-	//format=L"git.exe cat-file blob \":%d:%s\"";
-	format = L"git.exe checkout-index --temp --stage=%d -- \"%s\"";
+	CString format = L"git.exe checkout-index --temp --stage=%d -- \"%s\"";
 	CFile tempfile;
 	//create a empty file, incase stage is not three
 	tempfile.Open(mine.GetWinPathString(),CFile::modeCreate|CFile::modeReadWrite);

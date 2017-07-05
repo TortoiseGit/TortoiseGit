@@ -360,13 +360,10 @@
 #define ID_VIEW_MOVEDBLOCKS             32880
 #define ID_VIEW_WRAPLONGLINES           32881
 #define ID_EDIT_SELECTALL               32883
-#define ID_EDIT_PASTE32888              32888
 #define ID_VIEW_INLINEDIFF              32889
-#define ID_VIEW_INLINEDIFF32890         32890
 #define ID_EDIT_FINDNEXTSTART           32891
 #define ID_EDIT_FINDPREVSTART           32892
 #define ID_EDIT_GOTOLINE                32893
-#define ID_EDIT_GOTOLINE32895           32895
 #define ID_VIEW_IGNORECOMMENTS          32896
 #define ID_LOGOBUTTON                   32897
 #define ID_VIEW_BARS                    32898
