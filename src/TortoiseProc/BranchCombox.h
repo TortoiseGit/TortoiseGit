@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2016 - TortoiseGit
+// Copyright (C) 2009-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -83,7 +83,7 @@ protected:
 	}
 	void  BnClickedButtonBrowseLocalBranch()
 	{
-		if(CBrowseRefsDlg::PickRefForCombo(&m_ctrlLocalBranch, m_LocalBranchFilter))
+		if (CBrowseRefsDlg::PickRefForCombo(m_ctrlLocalBranch, m_LocalBranchFilter))
 			CbnSelchangeLocalBranch();
 	}
 	void  BnClickedButtonBrowseRemoteBranch()
@@ -117,7 +117,7 @@ protected:
 		}
 		else
 		{
-			if(CBrowseRefsDlg::PickRefForCombo(&m_ctrlRemoteBranch, m_RemoteBranchFilter))
+			if (CBrowseRefsDlg::PickRefForCombo(m_ctrlRemoteBranch, m_RemoteBranchFilter))
 				CbnSelchangeRemoteBranch();
 		}
 	}

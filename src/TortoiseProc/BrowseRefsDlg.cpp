@@ -1430,10 +1430,10 @@ CString CBrowseRefsDlg::PickRef(bool /*returnAsHash*/, CString initialRef, int p
 	return dlg.m_pickedRef;
 }
 
-bool CBrowseRefsDlg::PickRefForCombo(CHistoryCombo* pComboBox, int pickRef_Kind /* = gPickRef_All*/, int useShortName /* = gPickRef_Head*/)
+bool CBrowseRefsDlg::PickRefForCombo(CHistoryCombo& refComboBox, int pickRef_Kind /* = gPickRef_All*/, int useShortName /* = gPickRef_Head*/)
 {
 	CString origRef;
-	pComboBox->GetLBText(pComboBox->GetCurSel(), origRef);
+	refComboBox.GetLBText(refComboBox.GetCurSel(), origRef);
 	CString resultRef = PickRef(false,origRef,pickRef_Kind);
 	if(resultRef.IsEmpty())
 		return false;
@@ -1462,7 +1462,7 @@ bool CBrowseRefsDlg::PickRefForCombo(CHistoryCombo* pComboBox, int pickRef_Kind 
 
 	CGit::StripRefName(resultRef);
 
-	pComboBox->AddString(resultRef);
+	refComboBox.AddString(resultRef);
 
 	return true;
 }

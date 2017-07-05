@@ -238,5 +238,5 @@ private:
 
 public:
 	static CString	PickRef(bool returnAsHash = false, CString initialRef = CString(), int pickRef_Kind = gPickRef_All, bool pickMultipleRefsOrRange = false);
-	static bool		PickRefForCombo(CHistoryCombo* pComboBox, int pickRef_Kind = gPickRef_All, int useShortName = gPickRef_Head);
+	static bool		PickRefForCombo(CHistoryCombo& refComboBox, int pickRef_Kind = gPickRef_All, int useShortName = gPickRef_Head);
 };
