@@ -11184,6 +11184,10 @@ msgstr ""
 msgid "no description for this command is available"
 msgstr ""
 
+#. Resource IDs: (IDS_CONFLICT_NOSUBMODULE)
+msgid "no submodule"
+msgstr ""
+
 #. Resource IDs: (IDS_STATUSUNVERSIONED)
 msgid "non-versioned"
 msgstr ""
@@ -11198,6 +11202,10 @@ msgstr ""
 
 #. Resource IDs: (IDS_NOTFOUND)
 msgid "not found"
+msgstr ""
+
+#. Resource IDs: (IDS_CONFLICT_SUBMODULENOTINITIALIZED)
+msgid "not initialized"
 msgstr ""
 
 #. Resource IDs: (IDS_STATUSOBSTRUCTED)

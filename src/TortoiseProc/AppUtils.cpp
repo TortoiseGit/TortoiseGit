@@ -1742,22 +1742,22 @@ bool CAppUtils::ConflictEdit(CTGitPath& path, bool bAlternativeTool /*= false*/,
 		{
 			changeTypeMine = CGitDiff::Identical;
 			changeTypeTheirs = CGitDiff::NewSubmodule;
-			baseSubject = L"no submodule";
+			baseSubject.LoadString(IDS_CONFLICT_NOSUBMODULE);
 			mineSubject = baseSubject;
-			theirsSubject = L"not initialized";
+			theirsSubject.LoadString(IDS_CONFLICT_SUBMODULENOTINITIALIZED);
 		}
 		else if (baseHash.IsEmpty() && localHash != GIT_REV_ZERO && remoteHash == GIT_REV_ZERO) // merge conflict with no submodule initialized, but submodule exists in base and folder with no submodule is merged
 		{
 			baseHash = localHash;
-			baseSubject = L"not initialized";
+			baseSubject.LoadString(IDS_CONFLICT_SUBMODULENOTINITIALIZED);
 			mineSubject = baseSubject;
-			theirsSubject = L"not initialized";
+			theirsSubject.LoadString(IDS_CONFLICT_SUBMODULENOTINITIALIZED);
 			changeTypeMine = CGitDiff::Identical;
 			changeTypeTheirs = CGitDiff::DeleteSubmodule;
 		}
 		else if (baseHash != GIT_REV_ZERO && localHash != GIT_REV_ZERO && remoteHash != GIT_REV_ZERO) // base has submodule, mine has submodule and theirs also, but not initialized
 		{
-			baseSubject = L"not initialized";
+			baseSubject.LoadString(IDS_CONFLICT_SUBMODULENOTINITIALIZED);
 			mineSubject = baseSubject;
 			theirsSubject = baseSubject;
 			if (baseHash == localHash)
