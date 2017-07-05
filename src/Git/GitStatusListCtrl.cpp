@@ -1492,8 +1492,21 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				if (m_dwContextMenus & GITSLC_POPRESOLVE)
 				{
 					popup.AppendMenuIcon(IDGITLC_RESOLVECONFLICT, IDS_STATUSLIST_CONTEXT_RESOLVED, IDI_RESOLVE);
-					popup.AppendMenuIcon(IDGITLC_RESOLVETHEIRS, IDS_SVNPROGRESS_MENUUSETHEIRS, IDI_RESOLVE);
-					popup.AppendMenuIcon(IDGITLC_RESOLVEMINE, IDS_SVNPROGRESS_MENUUSEMINE, IDI_RESOLVE);
+					CString tmp, mineTitle, theirsTitle;
+					CAppUtils::GetConflictTitles(nullptr, mineTitle, theirsTitle, m_bIsRevertTheirMy);
+					tmp.Format(IDS_SVNPROGRESS_MENURESOLVEUSING, (LPCTSTR)theirsTitle);
+					if (m_bIsRevertTheirMy)
+					{
+						popup.AppendMenuIcon(IDGITLC_RESOLVEMINE, tmp, IDI_RESOLVE);
+						tmp.Format(IDS_SVNPROGRESS_MENURESOLVEUSING, (LPCTSTR)mineTitle);
+						popup.AppendMenuIcon(IDGITLC_RESOLVETHEIRS, tmp, IDI_RESOLVE);
+					}
+					else
+					{
+						popup.AppendMenuIcon(IDGITLC_RESOLVETHEIRS, tmp, IDI_RESOLVE);
+						tmp.Format(IDS_SVNPROGRESS_MENURESOLVEUSING, (LPCTSTR)mineTitle);
+						popup.AppendMenuIcon(IDGITLC_RESOLVEMINE, tmp, IDI_RESOLVE);
+					}
 				}
 				if ((m_dwContextMenus & GITSLC_POPCONFLICT)||(m_dwContextMenus & GITSLC_POPRESOLVE))
 					popup.AppendMenu(MF_SEPARATOR);

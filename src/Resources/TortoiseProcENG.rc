@@ -4167,8 +4167,6 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_SVNPROGRESS_MENUUSETHEIRS "Resolve conflict using 'theirs'"
-    IDS_SVNPROGRESS_MENUUSEMINE "Resolve conflict using 'mine'"
     IDS_SVNPROGRESS_MENUOPENPARENT "Open parent folder"
     IDS_SVNPROGRESS_MENUMARKASRESOLVED "Mark as resolved"
     IDS_SVNPROGRESS_RESOLVED "Resolved:\n%s"
@@ -4911,6 +4909,7 @@ BEGIN
     IDS_CONFLICT_REFTOBEMERGED "changes to-be-integrated"
     IDS_CONFLICT_REVERT     "Parent of %2!s!"
     IDS_CONFLICT_INFOTEXT   "%1!s! (%2!s!)"
+    IDS_SVNPROGRESS_MENURESOLVEUSING "Resolve conflict using ""%s"""
 END
 
 #endif    // English (U.S.) resources

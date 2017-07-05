@@ -1695,14 +1695,15 @@ bool ParseHashesFromLsFile(const BYTE_VECTOR& out, CString& hash1, CString& hash
 	return false;
 }
 
-static void GetConflictTitles(CString& baseText, CString& mineText, CString& theirsText, bool rebaseActive)
+void CAppUtils::GetConflictTitles(CString* baseText, CString& mineText, CString& theirsText, bool rebaseActive)
 {
-	baseText.LoadString(IDS_PROC_DIFF_BASE);
+	if (baseText)
+		baseText->LoadString(IDS_PROC_DIFF_BASE);
 	if (rebaseActive)
 	{
 		CString adminDir;
 		GitAdminDir::GetAdminDirPath(g_Git.m_CurrentDir, adminDir);
-		mineText = L"Rebasing onto";
+		mineText = L"Branch being rebased onto";
 		if (!CStringUtils::ReadStringFromTextFile(adminDir + L"tgitrebase.active\\onto", mineText))
 		{
 			CGitHash hash;
@@ -1755,7 +1756,7 @@ bool CAppUtils::ConflictEdit(CTGitPath& path, bool bAlternativeTool /*= false*/,
 		return FALSE;
 
 	CString baseTitle, mineTitle, theirsTitle;
-	GetConflictTitles(baseTitle, mineTitle, theirsTitle, isRebase);
+	GetConflictTitles(&baseTitle, mineTitle, theirsTitle, isRebase);
 
 	if (merge.IsDirectory())
 	{
