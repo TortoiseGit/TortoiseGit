@@ -24,6 +24,7 @@ public:
 		MERGE_FORK,
 		MERGE_FORK_R,
 		MERGE_FORK_L,
+		MERGE_FORK_L_INITIAL,
 		JOIN,
 		JOIN_R,
 		JOIN_L,
@@ -71,7 +72,7 @@ public:
 	void init(const CGitHash& expectedSha);
 	void clear();
 	bool isFork(const CGitHash& sha, bool& isDiscontinuity);
-	void setBoundary(bool isBoundary);
+	void setBoundary(bool isBoundary, bool isInitial);
 	void setFork(const CGitHash& sha);
 	void setMerge(const CGitHashList& parents);
 	void setInitial();

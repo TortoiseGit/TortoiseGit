@@ -868,6 +868,7 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 		break;
 	case Lanes::TAIL_L:
 	case Lanes::INITIAL:
+	case Lanes::MERGE_FORK_L_INITIAL:
 	case Lanes::BOUNDARY:
 	case Lanes::BOUNDARY_C:
 	case Lanes::BOUNDARY_R:
@@ -902,6 +903,7 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 		//p->drawLine(P_180, P_CENTER);
 		break;
 	case Lanes::MERGE_FORK_L:
+	case Lanes::MERGE_FORK_L_INITIAL:
 	case Lanes::HEAD_L:
 	case Lanes::TAIL_L:
 	case Lanes::BOUNDARY_L:
@@ -935,6 +937,7 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 	case Lanes::MERGE_FORK:
 	case Lanes::MERGE_FORK_R:
 	case Lanes::MERGE_FORK_L:
+	case Lanes::MERGE_FORK_L_INITIAL:
 		//p->setPen(Qt::NoPen);
 		//p->setBrush(col);
 		//p->drawRect(R_CENTER);

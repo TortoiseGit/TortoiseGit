@@ -2,7 +2,7 @@
 	Description: history graph computation
 
 	Author: Marco Costalba (C) 2005-2007
-	Copyright (C) 2008-2015 - TortoiseGit
+	Copyright (C) 2008-2015-2017 - TortoiseGit
 
 	Copyright: See COPYING file that comes with this distribution
 
@@ -16,7 +16,7 @@
 void Lanes::init(const CGitHash& expectedSha) {
 	clear();
 	activeLane = 0;
-	setBoundary(false);
+	setBoundary(false, false);
 	bool wasEmptyCross = false;
 	add(BRANCH, expectedSha, activeLane, wasEmptyCross);
 }
@@ -26,12 +26,12 @@ void Lanes::clear() {
 	nextShaVec.clear();
 }
 
-void Lanes::setBoundary(bool b) {
+void Lanes::setBoundary(bool b, bool initial) {
 // changes the state so must be called as first one
 
 	NODE   = b ? BOUNDARY_C : MERGE_FORK;
 	NODE_R = b ? BOUNDARY_R : MERGE_FORK_R;
-	NODE_L = b ? BOUNDARY_L : MERGE_FORK_L;
+	NODE_L = b ? BOUNDARY_L : (initial ? MERGE_FORK_L_INITIAL : MERGE_FORK_L);
 	boundary = b;
 
 	if (boundary)
