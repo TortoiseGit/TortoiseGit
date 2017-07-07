@@ -1086,13 +1086,6 @@ int CRebaseDlg::VerifyNoConflict()
 	return 0;
 }
 
-static bool IsLocalBranch(CString ref)
-{
-	STRING_VECTOR list;
-	g_Git.GetBranchList(list, nullptr, CGit::BRANCH_LOCAL);
-	return std::find(list.cbegin(), list.cend(), ref) != list.cend();
-}
-
 int CRebaseDlg::FinishRebase()
 {
 	if (m_bFinishedRebase)
@@ -1118,7 +1111,7 @@ int CRebaseDlg::FinishRebase()
 	}
 	CString out,cmd;
 
-	if (IsLocalBranch(m_BranchCtrl.GetString()))
+	if (g_Git.IsLocalBranch(m_BranchCtrl.GetString()))
 	{
 		cmd.Format(L"git.exe checkout -f -B %s %s --", (LPCTSTR)m_BranchCtrl.GetString(), (LPCTSTR)head.ToString());
 		AddLogString(cmd);
@@ -1219,7 +1212,7 @@ void CRebaseDlg::OnBnClickedContinue()
 			return;
 		}
 
-		if (IsLocalBranch(m_BranchCtrl.GetString()))
+		if (g_Git.IsLocalBranch(m_BranchCtrl.GetString()))
 		{
 			cmd.Format(L"git.exe checkout --no-track -f -B %s %s --", (LPCTSTR)m_BranchCtrl.GetString(), (LPCTSTR)m_UpstreamCtrl.GetString());
 			AddLogString(cmd);
@@ -2414,7 +2407,7 @@ void CRebaseDlg::OnBnClickedAbort()
 	if (m_OrigHEADBranch == m_BranchCtrl.GetString())
 	{
 		CString cmd, out;
-		if (IsLocalBranch(m_OrigHEADBranch))
+		if (g_Git.IsLocalBranch(m_OrigHEADBranch))
 			cmd.Format(L"git.exe checkout -f -B %s %s --", (LPCTSTR)m_BranchCtrl.GetString(), (LPCTSTR)m_OrigBranchHash.ToString());
 		else
 			cmd.Format(L"git.exe checkout -f %s --", (LPCTSTR)m_OrigBranchHash.ToString());
@@ -2434,7 +2427,7 @@ void CRebaseDlg::OnBnClickedAbort()
 		CString cmd, out;
 		if (m_OrigHEADBranch != g_Git.GetCurrentBranch(true))
 		{
-			if (IsLocalBranch(m_OrigHEADBranch))
+			if (g_Git.IsLocalBranch(m_OrigHEADBranch))
 				cmd.Format(L"git.exe checkout -f -B %s %s --", (LPCTSTR)m_OrigHEADBranch, (LPCTSTR)m_OrigHEADHash.ToString());
 			else
 				cmd.Format(L"git.exe checkout -f %s --", (LPCTSTR)m_OrigHEADHash.ToString());
@@ -2450,7 +2443,7 @@ void CRebaseDlg::OnBnClickedAbort()
 		RunGitCmdRetryOrAbort(cmd);
 
 		// restore moved branch
-		if (IsLocalBranch(m_BranchCtrl.GetString()))
+		if (g_Git.IsLocalBranch(m_BranchCtrl.GetString()))
 		{
 			cmd.Format(L"git.exe branch -f %s %s --", (LPCTSTR)m_BranchCtrl.GetString(), (LPCTSTR)m_OrigBranchHash.ToString());
 			if (g_Git.Run(cmd, &out, CP_UTF8))
@@ -2478,7 +2471,7 @@ void CRebaseDlg::OnBnClickedButtonReverse()
 
 void CRebaseDlg::OnBnClickedButtonBrowse()
 {
-	if(CBrowseRefsDlg::PickRefForCombo(&m_UpstreamCtrl))
+	if (CBrowseRefsDlg::PickRefForCombo(m_UpstreamCtrl))
 		OnCbnSelchangeUpstream();
 }
 

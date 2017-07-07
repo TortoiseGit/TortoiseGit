@@ -23,6 +23,7 @@ Released: unreleased
  * Fixed issue #2550: Search functionality on message in the RefLog window
    CTRL+F and F3 already opened a search dialog, now there also is a search button
  * Fixed issue #2599: Confusing titles when resolving a rebase or a merge conflict
+ * Fixed issue #3008: Allow to push individual tags
 
 == Bug Fixes ==
  * Fixed issue #2909: Commit window unclosable after clicking "No" and "do not ask again"

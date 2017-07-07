@@ -259,7 +259,7 @@ void CFormatPatchDlg::OnBnClickedRadio()
 
 void CFormatPatchDlg::OnBnClickedButtonRef()
 {
-	if(CBrowseRefsDlg::PickRefForCombo(&m_cSince, gPickRef_NoTag))
+	if (CBrowseRefsDlg::PickRefForCombo(m_cSince, gPickRef_NoTag))
 	{
 		CheckRadioButton(IDC_RADIO_SINCE, IDC_RADIO_RANGE, IDC_RADIO_SINCE);
 		OnBnClickedRadio();

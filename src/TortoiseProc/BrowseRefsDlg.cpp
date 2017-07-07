@@ -1430,37 +1430,39 @@ CString CBrowseRefsDlg::PickRef(bool /*returnAsHash*/, CString initialRef, int p
 	return dlg.m_pickedRef;
 }
 
-bool CBrowseRefsDlg::PickRefForCombo(CComboBoxEx* pComboBox, int pickRef_Kind)
+bool CBrowseRefsDlg::PickRefForCombo(CHistoryCombo& refComboBox, int pickRef_Kind /* = gPickRef_All*/, int useShortName /* = gPickRef_Head*/)
 {
 	CString origRef;
-	pComboBox->GetLBText(pComboBox->GetCurSel(), origRef);
+	refComboBox.GetLBText(refComboBox.GetCurSel(), origRef);
 	CString resultRef = PickRef(false,origRef,pickRef_Kind);
 	if(resultRef.IsEmpty())
 		return false;
-	if (CStringUtils::StartsWith(resultRef, L"refs/"))
-		resultRef = resultRef.Mid(5);
-//	if(wcsncmp(resultRef,L"heads/",6)==0)
-//		resultRef = resultRef.Mid(6);
 
-	//Find closest match of choice in combobox
-	int ixFound = -1;
-	int matchLength = 0;
-	CString comboRefName;
-	for(int i = 0; i < pComboBox->GetCount(); ++i)
+	if (useShortName)
 	{
-		pComboBox->GetLBText(i, comboRefName);
-		if(comboRefName.Find(L'/') < 0 && !comboRefName.IsEmpty())
-			comboRefName.Insert(0,L"heads/"); // If combo contains single level ref name, it is usualy from 'heads/'
-		if (matchLength < comboRefName.GetLength() && CStringUtils::EndsWith(resultRef, comboRefName))
+		CGit::REF_TYPE refType;
+		CString shortName = CGit::GetShortName(resultRef, &refType);
+		switch (refType)
 		{
-			matchLength = comboRefName.GetLength();
-			ixFound = i;
+		case CGit::REF_TYPE::LOCAL_BRANCH:
+			if (useShortName & gPickRef_Head)
+				resultRef = shortName;
+			break;
+		case CGit::REF_TYPE::ANNOTATED_TAG:
+		case CGit::REF_TYPE::TAG:
+			if (useShortName & gPickRef_Tag)
+				resultRef = shortName;
+			break;
+		case CGit::REMOTE_BRANCH:
+			if (useShortName & gPickRef_Remote)
+				resultRef = shortName;
+			break;
 		}
 	}
-	if(ixFound >= 0)
-		pComboBox->SetCurSel(ixFound);
-	else
-		ASSERT(FALSE);//No match found. So either pickRef_Kind is wrong or the combobox does not contain the ref specified in the picker (which it should unless the repo has changed before creating the CBrowseRef dialog)
+
+	CGit::StripRefName(resultRef);
+
+	refComboBox.AddString(resultRef);
 
 	return true;
 }

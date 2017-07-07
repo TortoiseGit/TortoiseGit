@@ -254,15 +254,17 @@ void CPushDlg::Refresh()
 		m_BranchSource.SetList(list);
 	else
 		MessageBox(g_Git.GetGitLastErr(L"Could not get list of local branches."), L"TortoiseGit", MB_ICONERROR);
-	if (CStringUtils::StartsWith(m_BranchSourceName, L"refs/"))
-		m_BranchSourceName = m_BranchSourceName.Mid(5);
-	if (CStringUtils::StartsWith(m_BranchSourceName, L"heads/"))
+	if (CStringUtils::StartsWith(m_BranchSourceName, L"refs/heads/"))
 	{
-		m_BranchSourceName = m_BranchSourceName.Mid(6);
+		m_BranchSourceName = m_BranchSourceName.Mid(wcslen(L"refs/heads/"));
 		m_BranchSource.SetCurSel(m_BranchSource.FindStringExact(-1, m_BranchSourceName));
 	}
-	else if (CStringUtils::StartsWith(m_BranchSourceName, L"remotes/"))
+	else if (CStringUtils::StartsWith(m_BranchSourceName, L"refs/remotes/") || CStringUtils::StartsWith(m_BranchSourceName, L"remotes/"))
+	{
+		if (CStringUtils::StartsWith(m_BranchSourceName, L"refs/"))
+			m_BranchSourceName = m_BranchSourceName.Mid(wcslen(L"refs/"));
 		m_BranchSource.SetCurSel(m_BranchSource.FindStringExact(-1, m_BranchSourceName));
+	}
 	else if (m_BranchSourceName.IsEmpty())
 		m_BranchSource.SetCurSel(current);
 	else
@@ -436,7 +438,7 @@ void CPushDlg::OnBnClickedOk()
 			this->m_BranchRemote.SaveHistory();
 			m_RemoteReg = m_Remote.GetString();
 
-			if (!m_BranchSourceName.IsEmpty())
+			if (!m_BranchSourceName.IsEmpty() && g_Git.IsLocalBranch(m_BranchSourceName))
 			{
 				CString configName;
 				if (m_bSetPushBranch)
@@ -481,7 +483,7 @@ void CPushDlg::OnBnClickedButtonBrowseSourceBranch()
 	{
 	case 0: /* Browse Refence*/
 		{
-			if(CBrowseRefsDlg::PickRefForCombo(&m_BranchSource, gPickRef_Head))
+			if (CBrowseRefsDlg::PickRefForCombo(m_BranchSource, gPickRef_Head | gPickRef_Tag))
 				OnCbnSelchangeBranchSource();
 		}
 		break;

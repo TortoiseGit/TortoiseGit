@@ -43,12 +43,13 @@
 
 IMPLEMENT_DYNAMIC(CGitLogList, CHintCtrl<CListCtrl>)
 
-static void GetFirstEntryStartingWith(STRING_VECTOR& heystack, const CString& needle, CString& result)
+static bool GetFirstEntryStartingWith(STRING_VECTOR& heystack, const CString& needle, CString& result)
 {
 	auto it = std::find_if(heystack.cbegin(), heystack.cend(), [&needle](const CString& entry) { return CStringUtils::StartsWith(entry, needle); });
 	if (it == heystack.cend())
-		return;
+		return false;
 	result = *it;
+	return true;
 }
 
 int CGitLogList::RevertSelectedCommits(int parent)
@@ -941,8 +942,10 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				const CString* branch = popmenu ? (const CString*)((CIconMenu*)popmenu)->GetMenuItemData(cmd) : nullptr;
 				if (branch)
 					guessAssociatedBranch = *branch;
-				else
-					GetFirstEntryStartingWith(m_HashMap[pSelLogEntry->m_CommitHash], L"refs/heads/", guessAssociatedBranch);
+				else if (!GetFirstEntryStartingWith(m_HashMap[pSelLogEntry->m_CommitHash], L"refs/heads/", guessAssociatedBranch))
+					GetFirstEntryStartingWith(m_HashMap[pSelLogEntry->m_CommitHash], L"refs/tags/", guessAssociatedBranch);
+
+				guessAssociatedBranch.Replace(L"^{}", L"");
 
 				if (CAppUtils::Push(guessAssociatedBranch))
 					Refresh();

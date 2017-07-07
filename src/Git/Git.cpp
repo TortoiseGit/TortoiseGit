@@ -1495,6 +1495,13 @@ bool CGit::IsBranchTagNameUnique(const CString& name)
 	return (refCnt <= 1);
 }
 
+bool CGit::IsLocalBranch(const CString& shortName)
+{
+	STRING_VECTOR list;
+	GetBranchList(list, nullptr, CGit::BRANCH_LOCAL);
+	return std::find(list.cbegin(), list.cend(), shortName) != list.cend();
+}
+
 bool CGit::BranchTagExists(const CString& name, bool isBranch /*= true*/)
 {
 	if (m_IsUseLibGit2)
