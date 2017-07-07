@@ -1930,7 +1930,7 @@ bool CAppUtils::ConflictEdit(CTGitPath& path, bool bAlternativeTool /*= false*/,
 			dlg.m_RemoteHash = mineTitle;
 		}
 		dlg.m_bShowModifiedButton = b_base;
-		dlg.m_File=merge.GetGitPathString();
+		dlg.m_File = merge;
 		if(dlg.DoModal() == IDOK)
 		{
 			CString out;

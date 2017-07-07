@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2011 - TortoiseGit
+// Copyright (C) 2009-2011, 2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -19,6 +19,7 @@
 #pragma once
 
 #include "StandAloneDlg.h"
+#include "TGitPath.h"
 // CDeleteConflictDlg dialog
 
 class CDeleteConflictDlg : public CStandAloneDialog
@@ -48,6 +49,6 @@ public:
 	CString m_LocalHash;
 	CString m_RemoteHash;
 	BOOL	m_bShowModifiedButton;
-	CString m_File;
+	CTGitPath	m_File;
 	BOOL	m_bIsDelete;
 };
