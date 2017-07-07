@@ -2989,6 +2989,10 @@ msgstr ""
 msgid "Compare selected refs"
 msgstr ""
 
+#. Resource IDs: (IDS_PROC_SYNC_COMPARETAGS)
+msgid "Compare tags"
+msgstr ""
+
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_COMPARETWOFILES)
 msgid "Compare two files"
 msgstr ""
@@ -3599,6 +3603,10 @@ msgstr ""
 msgid "Delete branch/tag"
 msgstr ""
 
+#. Resource IDs: (IDS_DELETE_LOCALTAG)
+msgid "Delete local tag"
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_BROWSEREFS_DELETEREMOTEBRANCH)
 msgid "Delete remote branch"
 msgstr ""
@@ -3622,6 +3630,10 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROC_BROWSEREFS_DELETETAG)
 msgid "Delete tag"
+msgstr ""
+
+#. Resource IDs: (IDS_DELETE_REMOTETAG)
+msgid "Delete tag on remote"
 msgstr ""
 
 #. Resource IDs: (IDS_B_DELETEORDIFFERENTNAME)
@@ -3800,6 +3812,10 @@ msgstr ""
 #. Resource IDs: (IDS_STATUSLIST_GROUP_DIFFWITHPARENT)
 #, c-format
 msgid "Diff with parent %d"
+msgstr ""
+
+#. Resource IDs: (IDS_TAGCOMPARE_DIFFER)
+msgid "Differ"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1302)
@@ -6107,8 +6123,16 @@ msgstr ""
 msgid "Local Branch"
 msgstr ""
 
+#. Resource IDs: (IDS_TAGCOMPARE_LOCALHASH)
+msgid "Local SHA1"
+msgstr ""
+
 #. Resource IDs: (IDS_STATUSLIST_GROUP_IGNORELOCALCHANGES)
 msgid "Local changes ignored (assumed valid/unchanged or skip worktree flagged files)"
+msgstr ""
+
+#. Resource IDs: (IDS_TAGCOMPARE_LOCALMESSAGE)
+msgid "Local message"
 msgstr ""
 
 #. Resource IDs: (IDS_CHSTAT_WCCOL)
@@ -6910,12 +6934,20 @@ msgstr ""
 msgid "Only consider first parents on blame"
 msgstr ""
 
+#. Resource IDs: (IDS_TAGCOMPARE_ONLYLOCAL)
+msgid "Only local"
+msgstr ""
+
 #. Resource IDs: (IDS_BROWSE_REFS_ONLYMERGED)
 msgid "Only merged (to HEAD)"
 msgstr ""
 
 #. Resource IDs: (IDS_COMMITDLG_ONLYNUMBERS)
 msgid "Only numbers (optionally separated by commas)\nare allowed!"
+msgstr ""
+
+#. Resource IDs: (IDS_TAGCOMPARE_ONLYREMOTE)
+msgid "Only remote"
 msgstr ""
 
 #. Resource IDs: (IDS_BROWSE_REFS_ONLYUNMERGED)
@@ -7764,12 +7796,20 @@ msgstr ""
 msgid "Remote Branch"
 msgstr ""
 
+#. Resource IDs: (IDS_TAGCOMPARE_REMOTEHASH)
+msgid "Remote SHA1"
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_GITCONFIG_URLEMPTY)
 msgid "Remote URL must not be empty."
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_REMOTEUPDATE)
 msgid "Remote Update"
+msgstr ""
+
+#. Resource IDs: (IDS_TAGCOMPARE_REMOTEMESSAGE)
+msgid "Remote message"
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_GITCONFIG_REMOTEEMPTY)
@@ -8261,7 +8301,7 @@ msgstr ""
 msgid "Safe Crlf:"
 msgstr ""
 
-#. Resource IDs: (IDS_SAME)
+#. Resource IDs: (IDS_SAME, IDS_TAGCOMPARE_SAME)
 msgid "Same"
 msgstr ""
 

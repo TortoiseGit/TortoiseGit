@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2015-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -19,53 +19,33 @@
 // GitLogList.cpp : implementation file
 //
 #pragma once
-
 #include "HintCtrl.h"
 #include "GitHash.h"
 
-class CGitRefCompareList : public CHintCtrl<CListCtrl>
+class CGitTagCompareList : public CHintCtrl<CListCtrl>
 {
-	DECLARE_DYNAMIC(CGitRefCompareList);
+	DECLARE_DYNAMIC(CGitTagCompareList);
 
-	enum ChangeType
+	struct TagEntry
 	{
-		Unknown,
-		New,
-		Deleted,
-		FastForward,
-		NewerTime,
-		Rewind,
-		OlderTime,
-		SameTime,
-		Same
-	};
-
-	struct RefEntry
-	{
-		CString fullName;
-		CGit::REF_TYPE refType;
-		CString shortName;
-		CString change;
-		ChangeType changeType;
-		CString oldHash;
-		CString oldMessage;
-		CString newHash;
-		CString newMessage;
+		CString		name;
+		CString		diffstate;
+		CGitHash	myHash;
+		CString		myMessage;
+		CGitHash	theirHash;
+		CString		theirMessage;
 	};
 
 public:
-	CGitRefCompareList();
+	CGitTagCompareList();
 
-	virtual ~CGitRefCompareList()
+	virtual ~CGitTagCompareList()
 	{
 	}
 
 	void Init();
 
-	int AddEntry(git_repository* repo, const CString& ref, const CGitHash* oldHash, const CGitHash* newHash);
-	void Show();
-	void Clear();
-	static CString GetCommitMessage(git_commit *commit);
+	int Fill(const CString& remote, CString& err);
 
 protected:
 	afx_msg void OnContextMenu(CWnd *pWnd, CPoint point);
@@ -74,19 +54,22 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 
-private:
-	static bool SortPredicate(const RefEntry &e1, const RefEntry &e2);
+	void AddEntry(git_repository* repo, const CString& tag, const CGitHash* myHash, const CGitHash* theirHash);
+	void Show();
 
-	std::vector<RefEntry>	m_RefList;
-	BOOL					m_bHideUnchanged;
+private:
+	std::vector<TagEntry>	m_TagList;
+	BOOL					m_bHideEqual;
 	static BOOL 			m_bSortLogical;
 
-	int colRef;
-	int colChange;
-	int colOldHash;
-	int colOldMessage;
-	int colNewHash;
-	int colNewMessage;
+	CString	m_remote;
+
+	int colTag;
+	int colDiff;
+	int colMyHash;
+	int colMyMessage;
+	int colTheirHash;
+	int colTheirMessage;
 };
 
 

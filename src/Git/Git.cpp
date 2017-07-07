@@ -1855,7 +1855,7 @@ int CGit::GetRemoteList(STRING_VECTOR &list)
 	});
 }
 
-int CGit::GetRemoteTags(const CString& remote, STRING_VECTOR& list)
+int CGit::GetRemoteTags(const CString& remote, REF_VECTOR& list)
 {
 	size_t prevCount = list.size();
 	if (UsingLibGit2(GIT_CMD_FETCH))
@@ -1888,10 +1888,9 @@ int CGit::GetRemoteTags(const CString& remote, STRING_VECTOR& list)
 			CString shortname;
 			if (!GetShortName(ref, shortname, L"refs/tags/"))
 				continue;
-			// do not include annotated tags twice; this works, because an annotated tag appears twice (one normal tag and one with ^{} at the end)
-			if (ref.Find(L"^{}") >= 1)
-				continue;
-			list.push_back(shortname);
+			CGitHash hash;
+			git_oid_cpy((git_oid*)hash.m_hash, &heads[i]->oid);
+			list.emplace_back(TGitRef{ shortname, hash });
 		}
 		std::sort(list.begin() + prevCount, list.end(), g_bSortTagsReversed ? LogicalCompareReversedPredicate : LogicalComparePredicate);
 		return 0;
@@ -1902,12 +1901,11 @@ int CGit::GetRemoteTags(const CString& remote, STRING_VECTOR& list)
 	gitLastErr = cmd + L'\n';
 	if (Run(cmd, [&](CStringA lineA)
 	{
+		CGitHash hash;
+		hash.ConvertFromStrA(lineA.Mid(0, GIT_HASH_SIZE * 2));
 		lineA = lineA.Mid(51); // sha1, tab + refs/tags/
-		// dot not include annotated tags twice; this works, because an annotated tag appears twice (one normal tag and one with ^{} at the end)
-		if (lineA.Find("^{}") >= 1)
-			return;
 		if (!lineA.IsEmpty())
-			list.push_back(CUnicodeUtils::GetUnicode(lineA));
+			list.emplace_back(TGitRef{ CUnicodeUtils::GetUnicode(lineA), hash });
 	}, &gitLastErr))
 		return -1;
 	std::sort(list.begin() + prevCount, list.end(), g_bSortTagsReversed ? LogicalCompareReversedPredicate : LogicalComparePredicate);

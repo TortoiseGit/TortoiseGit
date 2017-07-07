@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2009,2012-2016 - TortoiseGit
+// Copyright (C) 2008-2009, 2012-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -26,6 +26,7 @@
 #include "GitLoglist.h"
 #include "GitProgressList.h"
 #include "GitRefCompareList.h"
+#include "GitTagCompareList.h"
 #include "SyncTabCtrl.h"
 
 // CSyncDlg dialog
@@ -39,6 +40,7 @@
 #define IDC_OUT_CHANGELIST	0x6
 #define IDC_CMD_GIT_PROG	0x7
 #define IDC_REFLIST			0x8
+#define IDC_TAGCOMPARELIST	0x9
 
 #define IDT_INPUT		108
 
@@ -102,6 +104,7 @@ protected:
 
 	CRichEditCtrl		m_ctrlCmdOut;
 	CGitRefCompareList	m_refList;
+	CGitTagCompareList	m_tagCompareList;
 
 	CTGitPathList		m_arOutChangeList;
 	CTGitPathList		m_arInChangeList;

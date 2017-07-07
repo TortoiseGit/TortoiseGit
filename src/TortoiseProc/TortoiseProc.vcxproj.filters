@@ -962,6 +962,9 @@
     <ClCompile Include="..\Utils\MiscUI\AnimationManager.cpp">
       <Filter>Utils\UI</Filter>
     </ClCompile>
+    <ClCompile Include="GitTagCompareList.cpp">
+      <Filter>Commands\Sync</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1806,6 +1809,9 @@
     </ClInclude>
     <ClInclude Include="..\Utils\MiscUI\AnimationManager.h">
       <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="GitTagCompareList.h">
+      <Filter>Commands\Sync</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

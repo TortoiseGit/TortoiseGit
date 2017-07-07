@@ -132,6 +132,7 @@
     <ClCompile Include="FirstStartWizardLanguage.cpp" />
     <ClCompile Include="FirstStartWizardStart.cpp" />
     <ClCompile Include="FirstStartWizardUser.cpp" />
+    <ClCompile Include="GitTagCompareList.cpp" />
     <ClCompile Include="GravatarPictureBox.cpp" />
     <ClCompile Include="MergeAbortDlg.cpp" />
     <ClCompile Include="GitRefCompareList.cpp" />
@@ -418,6 +419,7 @@
     <ClInclude Include="FirstStartWizardLanguage.h" />
     <ClInclude Include="FirstStartWizardStart.h" />
     <ClInclude Include="FirstStartWizardUser.h" />
+    <ClInclude Include="GitTagCompareList.h" />
     <ClInclude Include="GravatarPictureBox.h" />
     <ClInclude Include="MergeAbortDlg.h" />
     <ClInclude Include="GitRefCompareList.h" />

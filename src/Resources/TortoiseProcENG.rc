@@ -4910,6 +4910,21 @@ BEGIN
     IDS_CONFLICT_REVERT     "Parent of %2!s!"
     IDS_CONFLICT_INFOTEXT   "%1!s! (%2!s!)"
     IDS_SVNPROGRESS_MENURESOLVEUSING "Resolve conflict using ""%s"""
+    IDS_PROC_SYNC_COMPARETAGS "Compare tags"
+    IDS_TAGCOMPARE_SAME     "Same"
+    IDS_TAGCOMPARE_ONLYLOCAL "Only local"
+    IDS_TAGCOMPARE_ONLYREMOTE "Only remote"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_TAGCOMPARE_DIFFER   "Differ"
+    IDS_TAGCOMPARE_LOCALHASH "Local SHA1"
+    IDS_TAGCOMPARE_LOCALMESSAGE "Local message"
+    IDS_TAGCOMPARE_REMOTEHASH "Remote SHA1"
+    IDS_TAGCOMPARE_REMOTEMESSAGE "Remote message"
+    IDS_DELETE_REMOTETAG    "Delete tag on remote"
+    IDS_DELETE_LOCALTAG     "Delete local tag"
 END
 
 #endif    // English (U.S.) resources

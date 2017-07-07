@@ -102,7 +102,11 @@ void CDeleteRemoteTagDlg::Refresh()
 	BringWindowToTop();
 
 	for (int i = 0; i < (int)m_taglist.size(); ++i)
-		m_ctrlTags.InsertItem(i, m_taglist[i]);
+	{
+		if (CStringUtils::EndsWith(m_taglist[i].name, L"^{}"))
+			continue;
+		m_ctrlTags.InsertItem(i, m_taglist[i].name);
+	}
 
 	DialogEnableWindow(IDOK, FALSE);
 }
@@ -139,7 +143,7 @@ void CDeleteRemoteTagDlg::OnBnClickedOk()
 	{
 		POSITION pos = m_ctrlTags.GetFirstSelectedItemPosition();
 		CString msg;
-		msg.Format(IDS_PROC_DELETEBRANCHTAG, (LPCTSTR)m_taglist[(m_ctrlTags.GetNextSelectedItem(pos))]);
+		msg.Format(IDS_PROC_DELETEBRANCHTAG, (LPCTSTR)m_taglist[(m_ctrlTags.GetNextSelectedItem(pos))].name);
 		if (CMessageBox::Show(GetSafeHwnd(), msg, L"TortoiseGit", 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
 			return;
 	}
@@ -148,7 +152,7 @@ void CDeleteRemoteTagDlg::OnBnClickedOk()
 	POSITION pos = m_ctrlTags.GetFirstSelectedItemPosition();
 	int index;
 	while ((index = m_ctrlTags.GetNextSelectedItem(pos)) >= 0)
-		list.push_back(L"refs/tags/" + m_taglist[index]);
+		list.push_back(L"refs/tags/" + m_taglist[index].name);
 	CSysProgressDlg sysProgressDlg;
 	sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
 	sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_DELETING_REMOTE_REFS)));

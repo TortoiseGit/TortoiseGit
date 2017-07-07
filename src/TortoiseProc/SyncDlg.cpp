@@ -32,6 +32,7 @@
 #include "SmartHandle.h"
 #include "ProgressCommands/FetchProgressCommand.h"
 #include "SyncTabCtrl.h"
+#include "SysProgressDlg.h"
 
 // CSyncDlg dialog
 
@@ -188,6 +189,36 @@ void CSyncDlg::OnBnClickedButtonPull()
 		return;
 	}
 
+	if (CurrentEntry == 6)
+	{
+		SwitchToRun();
+		m_ctrlTabCtrl.ShowTab(IDC_LOG - 1, false);
+		m_ctrlTabCtrl.ShowTab(IDC_REFLIST - 1, false);
+		m_ctrlTabCtrl.ShowTab(IDC_OUT_LOGLIST - 1, false);
+		m_ctrlTabCtrl.ShowTab(IDC_OUT_CHANGELIST - 1, false);
+		m_ctrlTabCtrl.ShowTab(IDC_IN_LOGLIST - 1, false);
+		m_ctrlTabCtrl.ShowTab(IDC_IN_CHANGELIST - 1, false);
+		m_ctrlTabCtrl.ShowTab(IDC_IN_CONFLICT - 1, false);
+		m_ctrlTabCtrl.ShowTab(IDC_TAGCOMPARELIST - 1, true);
+
+		CSysProgressDlg sysProgressDlg;
+		sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
+		sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_LOADING)));
+		sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
+		sysProgressDlg.SetShowProgressBar(false);
+		sysProgressDlg.ShowModal(this, true);
+		CString err;
+		auto ret = m_tagCompareList.Fill(m_strURL, err);
+		sysProgressDlg.Stop();
+		if (ret)
+			MessageBox(err, L"TortoiseGit", MB_ICONERROR);
+
+		BringWindowToTop();
+		SwitchToInput();
+		EnableControlButton();
+		return;
+	}
+
 	if (!IsURL() && !m_strRemoteBranch.IsEmpty() && CurrentEntry == 0 && CRegDWORD(L"Software\\TortoiseGit\\AskSetTrackedBranch", TRUE) == TRUE)
 	{
 		if (!AskSetTrackedBranch())
@@ -274,6 +305,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 	m_ctrlTabCtrl.ShowTab(IDC_IN_LOGLIST - 1, false);
 	m_ctrlTabCtrl.ShowTab(IDC_IN_CHANGELIST - 1, false);
 	m_ctrlTabCtrl.ShowTab(IDC_IN_CONFLICT - 1, false);
+	m_ctrlTabCtrl.ShowTab(IDC_TAGCOMPARELIST - 1, false);
 
 	///Pull
 	if(CurrentEntry == 0) //Pull
@@ -1001,6 +1033,11 @@ BOOL CSyncDlg::OnInitDialog()
 		m_refList.SetExtendedStyle(exStyle);
 		m_refList.Init();
 		m_ctrlTabCtrl.InsertTab(&m_refList, CString(MAKEINTRESOURCE(IDS_REFLIST)), -1);
+
+		m_tagCompareList.Create(dwStyle, rectDummy, &m_ctrlTabCtrl, IDC_TAGCOMPARELIST);
+		m_tagCompareList.SetExtendedStyle(exStyle);
+		m_tagCompareList.Init();
+		m_ctrlTabCtrl.InsertTab(&m_tagCompareList, CString(MAKEINTRESOURCE(IDS_PROC_SYNC_COMPARETAGS)), -1);
 	}
 
 	AdjustControlSize(IDC_CHECK_PUTTY_KEY);
@@ -1050,6 +1087,7 @@ BOOL CSyncDlg::OnInitDialog()
 	this->m_ctrlPull.AddEntry(CString(MAKEINTRESOURCE(IDS_PROC_SYNC_FETCHALL)));
 	this->m_ctrlPull.AddEntry(CString(MAKEINTRESOURCE(IDS_PROC_SYNC_REMOTEUPDATE)));
 	this->m_ctrlPull.AddEntry(CString(MAKEINTRESOURCE(IDS_PROC_SYNC_CLEANUPSTALEBRANCHES)));
+	this->m_ctrlPull.AddEntry(CString(MAKEINTRESOURCE(IDS_PROC_SYNC_COMPARETAGS)));
 
 	this->m_ctrlSubmodule.AddEntry(CString(MAKEINTRESOURCE(IDS_PROC_SYNC_SUBKODULEUPDATE)));
 	this->m_ctrlSubmodule.AddEntry(CString(MAKEINTRESOURCE(IDS_PROC_SYNC_SUBKODULEINIT)));
@@ -1113,6 +1151,7 @@ BOOL CSyncDlg::OnInitDialog()
 	m_ctrlTabCtrl.ShowTab(IDC_IN_CONFLICT-1,false);
 	m_ctrlTabCtrl.ShowTab(IDC_CMD_GIT_PROG-1, false);
 	m_ctrlTabCtrl.ShowTab(IDC_REFLIST-1, false);
+	m_ctrlTabCtrl.ShowTab(IDC_TAGCOMPARELIST - 1, false);
 
 	m_ctrlRemoteBranch.m_bWantReturn = TRUE;
 	m_ctrlURL.m_bWantReturn = TRUE;
@@ -1228,6 +1267,9 @@ void CSyncDlg::FetchOutList(bool force)
 		return;
 	m_OutChangeFileList.Clear();
 	this->m_OutLogList.Clear();
+
+	m_ctrlTabCtrl.ShowTab(IDC_OUT_LOGLIST - 1, true);
+	m_ctrlTabCtrl.ShowTab(IDC_OUT_CHANGELIST - 1, true);
 
 	CString remote;
 	this->m_ctrlURL.GetWindowText(remote);
@@ -1723,6 +1765,7 @@ void CSyncDlg::OnTimer(UINT_PTR nIDEvent)
 	{
 		KillTimer(IDT_INPUT);
 		this->FetchOutList(true);
+		m_ctrlTabCtrl.ShowTab(IDC_TAGCOMPARELIST - 1, false);
 	}
 }
 
