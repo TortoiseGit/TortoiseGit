@@ -1444,14 +1444,14 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 	return 0;
 }
 
-static std::map<CString, CGitHash> * HashMapToRefMap(MAP_HASH_NAME &map)
+static REF_VECTOR HashMapToRefMap(MAP_HASH_NAME& map)
 {
-	auto rmap = new std::map<CString, CGitHash>();
+	auto rmap = REF_VECTOR();
 	for (auto mit = map.cbegin(); mit != map.cend(); ++mit)
 	{
 		for (auto rit = mit->second.cbegin(); rit != mit->second.cend(); ++rit)
 		{
-			rmap->insert(std::make_pair(*rit, mit->first));
+			rmap.emplace_back(TGitRef{ *rit, mit->first });
 		}
 	}
 	return rmap;
@@ -1480,29 +1480,29 @@ void CSyncDlg::FillNewRefMap()
 
 	auto oldRefMap = HashMapToRefMap(m_oldHashMap);
 	auto newRefMap = HashMapToRefMap(m_newHashMap);
-	for (auto oit = oldRefMap->cbegin(); oit != oldRefMap->cend(); ++oit)
+	for (auto oit = oldRefMap.cbegin(); oit != oldRefMap.cend(); ++oit)
 	{
 		bool found = false;
-		for (auto nit = newRefMap->cbegin(); nit != newRefMap->cend(); ++nit)
+		for (auto nit = newRefMap.cbegin(); nit != newRefMap.cend(); ++nit)
 		{
 			// changed ref
-			if (oit->first == nit->first)
+			if (oit->name == nit->name)
 			{
 				found = true;
-				m_refList.AddEntry(repo, oit->first, &oit->second, &nit->second);
+				m_refList.AddEntry(repo, oit->name, &oit->hash, &nit->hash);
 				break;
 			}
 		}
 		// deleted ref
 		if (!found)
-			m_refList.AddEntry(repo, oit->first, &oit->second, nullptr);
+			m_refList.AddEntry(repo, oit->name, &oit->hash, nullptr);
 	}
-	for (auto nit = newRefMap->cbegin(); nit != newRefMap->cend(); ++nit)
+	for (auto nit = newRefMap.cbegin(); nit != newRefMap.cend(); ++nit)
 	{
 		bool found = false;
-		for (auto oit = oldRefMap->cbegin(); oit != oldRefMap->cend(); ++oit)
+		for (auto oit = oldRefMap.cbegin(); oit != oldRefMap.cend(); ++oit)
 		{
-			if (oit->first == nit->first)
+			if (oit->name == nit->name)
 			{
 				found = true;
 				break;
@@ -1510,10 +1510,8 @@ void CSyncDlg::FillNewRefMap()
 		}
 		// new ref
 		if (!found)
-			m_refList.AddEntry(repo, nit->first, nullptr, &nit->second);
+			m_refList.AddEntry(repo, nit->name, nullptr, &nit->hash);
 	}
-	delete oldRefMap;
-	delete newRefMap;
 	m_refList.Show();
 }
 
