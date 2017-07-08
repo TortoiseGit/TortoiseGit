@@ -426,22 +426,22 @@ void CFileDiffDlg::DoDiff(int selIndex, bool blame)
 	CTGitPath* fd1 = fd2;
 	if (m_rev2.m_CommitHash.IsEmpty() && g_Git.IsInitRepos())
 	{
-		CGitDiff::DiffNull(fd2, GIT_REV_ZERO);
+		CGitDiff::DiffNull(fd2, GIT_REV_ZERO, true, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 		return;
 	}
 	if (fd1->m_Action & CTGitPath::LOGACTIONS_ADDED)
 	{
-		CGitDiff::DiffNull(fd1, m_rev2.m_CommitHash.ToString(), true);
+		CGitDiff::DiffNull(fd1, m_rev2.m_CommitHash.ToString(), true, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 		return;
 	}
 	if (fd1->m_Action & CTGitPath::LOGACTIONS_DELETED)
 	{
-		CGitDiff::DiffNull(fd1, m_rev1.m_CommitHash.ToString(), false);
+		CGitDiff::DiffNull(fd1, m_rev1.m_CommitHash.ToString(), false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 		return;
 	}
 	if (fd1->m_Action & CTGitPath::LOGACTIONS_REPLACED)
 		fd2 = new CTGitPath(fd1->GetGitOldPathString());
-	CGitDiff::Diff(fd1, fd2, m_rev2.m_CommitHash.ToString(), m_rev1.m_CommitHash.ToString(), blame, FALSE);
+	CGitDiff::Diff(fd1, fd2, m_rev2.m_CommitHash.ToString(), m_rev1.m_CommitHash.ToString(), blame, FALSE, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 	if (fd1 != fd2)
 		delete fd2;
 }
