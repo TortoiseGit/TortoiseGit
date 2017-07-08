@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012 - TortoiseSVN
-// Copyright (C) 2013-2016 - TortoiseGit
+// Copyright (C) 2013-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -420,6 +420,8 @@ CString CHistoryCombo::GetString() const
 	if (sel == CB_ERR ||(m_bURLHistory)||(m_bPathHistory) || (!(style&CBS_SIMPLE)))
 	{
 		GetWindowText(str);
+		if (m_bTrim)
+			str.Trim();
 		return str;
 	}
 

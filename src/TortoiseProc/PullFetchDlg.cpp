@@ -399,7 +399,7 @@ void CPullFetchDlg::OnBnClickedOk()
 	}
 	if( GetCheckedRadioButton(IDC_REMOTE_RD,IDC_OTHER_RD) == IDC_OTHER_RD)
 	{
-		m_Other.GetWindowTextW(m_RemoteURL);
+		m_RemoteURL = m_Other.GetString();
 		m_RemoteBranchName=m_RemoteBranch.GetString();
 
 		// only store URL in history if it's value was used
