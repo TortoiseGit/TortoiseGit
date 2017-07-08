@@ -3748,6 +3748,24 @@ int CGitStatusListCtrl::UpdateUnRevFileList(const CTGitPathList* List)
 		return -1;
 	}
 
+	if (m_StatusFileList.m_Action & CTGitPath::LOGACTIONS_DELETED)
+	{
+		int unrev = 0;
+		int status = 0;
+		while (unrev < m_UnRevFileList.GetCount() && status < m_StatusFileList.GetCount())
+		{
+			auto cmp = CTGitPath::Compare(m_UnRevFileList[unrev], m_StatusFileList[status]);
+			if (cmp < 1)
+			{
+				++unrev;
+				continue;
+			}
+			if (cmp == 1)
+				m_UnRevFileList.RemovePath(m_StatusFileList[status]);
+			++status;
+		}
+	}
+
 	for (int i = 0; i < m_UnRevFileList.GetCount(); ++i)
 	{
 		auto gitpatch = const_cast<CTGitPath*>(&m_UnRevFileList[i]);
