@@ -496,11 +496,13 @@ void CTortoiseGitBlameView::OnRButtonUp(UINT /*nFlags*/, CPoint point)
 		popup.AppendMenuIcon(ID_COPYLOGTOCLIPBOARD, IDS_BLAME_POPUP_COPYLOGTOCLIPBOARD, IDI_BLAME_POPUP_COPY);
 
 		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this);
-		this->ContextMenuAction(cmd, pRev, parentHashWithFile, parentFilename);
+		if (!cmd)
+			return;
+		this->ContextMenuAction(cmd, pRev, parentHashWithFile, parentFilename, line);
 	}
 }
 
-void CTortoiseGitBlameView::ContextMenuAction(int cmd, GitRev *pRev, GIT_REV_LIST& parentHashWithFile, const std::vector<CString>& parentFilename)
+void CTortoiseGitBlameView::ContextMenuAction(int cmd, GitRev *pRev, GIT_REV_LIST& parentHashWithFile, const std::vector<CString>& parentFilename, int selectedLine)
 {
 	switch (cmd & 0xFFFF)
 	{
@@ -512,7 +514,7 @@ void CTortoiseGitBlameView::ContextMenuAction(int cmd, GitRev *pRev, GIT_REV_LIS
 
 			CString path = ResolveCommitFile(parentFilename[index]);
 			CString endrev = parentHashWithFile[index].ToString();
-			int line = m_data.GetOriginalLineNumber(m_MouseLine);
+			int line = m_data.GetOriginalLineNumber(selectedLine);
 
 			CString procCmd = L"/path:\"" + path + L"\" ";
 			procCmd += L" /command:blame";
@@ -547,8 +549,8 @@ void CTortoiseGitBlameView::ContextMenuAction(int cmd, GitRev *pRev, GIT_REV_LIS
 
 	case ID_SHOWLOG:
 		{
-			CString path = ResolveCommitFile(m_MouseLine);
-			CString rev = m_data.GetHash(m_MouseLine).ToString();
+			CString path = ResolveCommitFile(selectedLine);
+			CString rev = m_data.GetHash(selectedLine).ToString();
 
 			CString procCmd = L"/path:\"" + path + L"\" ";
 			procCmd += L" /command:log";
