@@ -4927,6 +4927,7 @@ BEGIN
     IDS_TAGCOMPARE_REMOTEMESSAGE "Remote message"
     IDS_DELETE_REMOTETAG    "Delete tag on remote"
     IDS_DELETE_LOCALTAG     "Delete local tag"
+    IDS_CONFLICT_NOTASUBMODULE "file, not a submodule"
 END
 
 #endif    // English (U.S.) resources

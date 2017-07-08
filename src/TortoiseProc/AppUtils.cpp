@@ -1765,19 +1765,21 @@ bool CAppUtils::ConflictEdit(CTGitPath& path, bool bAlternativeTool /*= false*/,
 	CString baseTitle, mineTitle, theirsTitle;
 	GetConflictTitles(&baseTitle, mineTitle, theirsTitle, isRebase);
 
-	if (merge.IsDirectory())
+	CString baseHash, realBaseHash(GIT_REV_ZERO), localHash(GIT_REV_ZERO), remoteHash(GIT_REV_ZERO);
+	bool baseIsFile = true, localIsFile = true, remoteIsFile = true;
+	if (ParseHashesFromLsFile(vector, realBaseHash, baseIsFile, localHash, localIsFile, remoteHash, remoteIsFile))
+		baseHash = realBaseHash;
+
+	if (!baseIsFile || !localIsFile || !remoteIsFile)
 	{
-		CString baseHash, realBaseHash(GIT_REV_ZERO), localHash(GIT_REV_ZERO), remoteHash(GIT_REV_ZERO);
-		if (merge.HasAdminDir()) {
+		if (merge.HasAdminDir())
+		{
 			CGit subgit;
 			subgit.m_CurrentDir = g_Git.CombinePath(merge);
 			CGitHash hash;
 			subgit.GetHash(hash, L"HEAD");
 			baseHash = hash;
 		}
-		bool baseIsFile = true, localIsFile = true, remoteIsFile = true;
-		if (ParseHashesFromLsFile(vector, realBaseHash, baseIsFile, localHash, localIsFile, remoteHash, remoteIsFile))
-			baseHash = realBaseHash;
 
 		CGitDiff::ChangeType changeTypeMine = CGitDiff::Unknown;
 		CGitDiff::ChangeType changeTypeTheirs = CGitDiff::Unknown;
@@ -1815,6 +1817,51 @@ bool CAppUtils::ConflictEdit(CTGitPath& path, bool bAlternativeTool /*= false*/,
 			theirsSubject = baseSubject;
 			if (baseHash == localHash)
 				changeTypeMine = CGitDiff::Identical;
+		}
+		else if (baseHash == GIT_REV_ZERO && localHash != GIT_REV_ZERO && remoteHash != GIT_REV_ZERO)
+		{
+			baseOK = true;
+			mineSubject = baseSubject;
+			if (remoteIsFile)
+			{
+				theirsSubject.LoadString(IDS_CONFLICT_NOTASUBMODULE);
+				changeTypeMine = CGitDiff::NewSubmodule;
+			}
+			else
+				theirsSubject.LoadString(IDS_CONFLICT_SUBMODULENOTINITIALIZED);
+			if (localIsFile)
+			{
+				mineSubject.LoadString(IDS_CONFLICT_NOTASUBMODULE);
+				changeTypeTheirs = CGitDiff::NewSubmodule;
+			}
+			else
+				mineSubject.LoadString(IDS_CONFLICT_SUBMODULENOTINITIALIZED);
+		}
+		else if (baseHash != GIT_REV_ZERO && (localHash == GIT_REV_ZERO || remoteHash == GIT_REV_ZERO))
+		{
+			baseSubject.LoadString(IDS_CONFLICT_SUBMODULENOTINITIALIZED);
+			if (localHash == GIT_REV_ZERO)
+			{
+				mineSubject.LoadString(IDS_CONFLICT_SUBMODULENOTINITIALIZED);
+				changeTypeMine = CGitDiff::DeleteSubmodule;
+			}
+			else
+			{
+				mineSubject.LoadString(IDS_CONFLICT_SUBMODULENOTINITIALIZED);
+				if (localHash == baseHash)
+					changeTypeMine == CGitDiff::Identical;
+			}
+			if (remoteHash == GIT_REV_ZERO)
+			{
+				theirsSubject.LoadString(IDS_CONFLICT_SUBMODULENOTINITIALIZED);
+				changeTypeTheirs = CGitDiff::DeleteSubmodule;
+			}
+			else
+			{
+				theirsSubject.LoadString(IDS_CONFLICT_SUBMODULENOTINITIALIZED);
+				if (remoteHash == baseHash)
+					changeTypeTheirs == CGitDiff::Identical;
+			}
 		}
 		else
 			return FALSE;

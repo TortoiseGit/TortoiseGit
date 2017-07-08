@@ -11128,6 +11128,10 @@ msgstr ""
 msgid "external"
 msgstr ""
 
+#. Resource IDs: (IDS_CONFLICT_NOTASUBMODULE)
+msgid "file, not a submodule"
+msgstr ""
+
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYFILENAMES)
 msgid "file/foldernames"
 msgstr ""

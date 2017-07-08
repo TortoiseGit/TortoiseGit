@@ -129,9 +129,6 @@ BOOL CSubmoduleResolveConflictDlg::OnInitDialog()
 	DialogEnableWindow(IDC_LOG2, m_bMineOK && m_nChangeTypeMine != CGitDiff::DeleteSubmodule);
 	DialogEnableWindow(IDC_LOG3, m_bTheirsOK && m_nChangeTypeTheirs != CGitDiff::DeleteSubmodule);
 
-	DialogEnableWindow(IDC_BUTTON_UPDATE2, m_sBaseHash != GIT_REV_ZERO && m_sMineHash != GIT_REV_ZERO &&m_sTheirsHash != GIT_REV_ZERO);
-	DialogEnableWindow(IDC_BUTTON_UPDATE3, m_sBaseHash != GIT_REV_ZERO && m_sMineHash != GIT_REV_ZERO &&m_sTheirsHash != GIT_REV_ZERO);
-
 	return FALSE;
 }
 
