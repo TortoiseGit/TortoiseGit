@@ -33,6 +33,7 @@ CDeleteConflictDlg::CDeleteConflictDlg(CWnd* pParent /*=nullptr*/)
 	: CStandAloneDialog(CDeleteConflictDlg::IDD, pParent)
 	, m_bShowModifiedButton(FALSE)
 	, m_bIsDelete(FALSE)
+	, m_bDiffMine(true)
 {
 }
 
@@ -57,6 +58,8 @@ BEGIN_MESSAGE_MAP(CDeleteConflictDlg, CStandAloneDialog)
 	ON_BN_CLICKED(IDC_DELETE, &CDeleteConflictDlg::OnBnClickedDelete)
 	ON_BN_CLICKED(IDC_MODIFY, &CDeleteConflictDlg::OnBnClickedModify)
 	ON_BN_CLICKED(IDHELP, &OnHelp)
+	ON_BN_CLICKED(IDC_SHOWDIFF, &CDeleteConflictDlg::OnBnClickedShowdiff)
+	ON_BN_CLICKED(IDC_SHOWDIFF2, &CDeleteConflictDlg::OnBnClickedShowdiff)
 END_MESSAGE_MAP()
 
 
@@ -65,7 +68,13 @@ BOOL CDeleteConflictDlg::OnInitDialog()
 	CStandAloneDialog::OnInitDialog();
 
 	if(this->m_bShowModifiedButton )
+	{
 		this->GetDlgItem(IDC_MODIFY)->SetWindowText(CString(MAKEINTRESOURCE(IDS_SVNACTION_MODIFIED)));
+		if (m_bDiffMine)
+			GetDlgItem(IDC_SHOWDIFF)->ShowWindow(SW_SHOW);
+		else
+			GetDlgItem(IDC_SHOWDIFF2)->ShowWindow(SW_SHOW);
+	}
 	else
 		this->GetDlgItem(IDC_MODIFY)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_CREATED)));
 	if (m_LocalHash.IsEmpty())
@@ -112,4 +121,20 @@ void CDeleteConflictDlg::ShowLog(CString hash)
 	CString sCmd;
 	sCmd.Format(L"/command:log /path:\"%s\" /endrev:%s", (LPCTSTR)g_Git.CombinePath(m_File), (LPCTSTR)hash);
 	CAppUtils::RunTortoiseGitProc(sCmd, false, false);
+}
+
+void CDeleteConflictDlg::OnBnClickedShowdiff()
+{
+	CString base;
+	base.LoadString(IDS_PROC_DIFF_BASE);
+	CAppUtils::DiffFlags flags;
+	flags.bAlternativeTool = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
+	CAppUtils::StartExtDiff(m_FileBaseVersion.GetWinPathString(), g_Git.CombinePath(m_File),
+		base,
+		m_bDiffMine ? m_LocalHash : m_RemoteHash,
+		m_FileBaseVersion.GetWinPathString(),
+		g_Git.CombinePath(m_File),
+		m_bDiffMine ? m_LocalHash : m_RemoteHash,
+		m_bDiffMine ? m_RemoteHash : m_LocalHash,
+		flags);
 }

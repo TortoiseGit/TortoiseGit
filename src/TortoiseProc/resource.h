@@ -399,8 +399,10 @@
 #define IDS_GITEXEERROR_NOMESSAGE       1132
 #define IDC_GRAPHCOMBO                  1133
 #define IDS_PROC_CLONE_URLDIREMPTY      1133
+#define IDC_SHOWDIFF2                   1133
 #define IDC_GRAPHTYPELABEL              1134
 #define IDS_PROC_COMMIT_SHOWPATCH       1134
+#define IDC_SHOWDIFF                    1134
 #define IDC_COMMITSEACHWEEK             1135
 #define IDS_PROC_COMMIT_HIDEPATCH       1135
 #define IDC_MOSTACTIVEAUTHOR            1136

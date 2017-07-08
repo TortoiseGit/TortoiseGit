@@ -39,6 +39,7 @@ protected:
 	afx_msg void OnBnClickedLog2();
 	afx_msg void OnBnClickedDelete();
 	afx_msg void OnBnClickedModify();
+	afx_msg void OnBnClickedShowdiff();
 	BOOL OnInitDialog();
 	void ShowLog(CString hash);
 	DECLARE_MESSAGE_MAP()
@@ -50,5 +51,7 @@ public:
 	CString m_RemoteHash;
 	BOOL	m_bShowModifiedButton;
 	CTGitPath	m_File;
+	CTGitPath	m_FileBaseVersion;
 	BOOL	m_bIsDelete;
+	bool	m_bDiffMine;
 };

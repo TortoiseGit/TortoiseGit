@@ -1912,7 +1912,13 @@ bool CAppUtils::ConflictEdit(CTGitPath& path, bool bAlternativeTool /*= false*/,
 	{
 		::DeleteFile(mine.GetWinPathString());
 		::DeleteFile(theirs.GetWinPathString());
-		::DeleteFile(base.GetWinPathString());
+		if (!b_base)
+			::DeleteFile(base.GetWinPathString());
+
+		SCOPE_EXIT{
+			if (b_base)
+				::DeleteFile(base.GetWinPathString());
+		};
 
 		CDeleteConflictDlg dlg;
 		if (!isRebase)
@@ -1921,6 +1927,7 @@ bool CAppUtils::ConflictEdit(CTGitPath& path, bool bAlternativeTool /*= false*/,
 			DescribeConflictFile(b_remote, b_base, dlg.m_RemoteStatus);
 			dlg.m_LocalHash = mineTitle;
 			dlg.m_RemoteHash = theirsTitle;
+			dlg.m_bDiffMine = b_local;
 		}
 		else
 		{
@@ -1928,9 +1935,11 @@ bool CAppUtils::ConflictEdit(CTGitPath& path, bool bAlternativeTool /*= false*/,
 			DescribeConflictFile(b_remote, b_base, dlg.m_LocalStatus);
 			dlg.m_LocalHash = theirsTitle;
 			dlg.m_RemoteHash = mineTitle;
+			dlg.m_bDiffMine = !b_local;
 		}
 		dlg.m_bShowModifiedButton = b_base;
 		dlg.m_File = merge;
+		dlg.m_FileBaseVersion = base;
 		if(dlg.DoModal() == IDOK)
 		{
 			CString out;
