@@ -1849,7 +1849,7 @@ bool CAppUtils::ConflictEdit(CTGitPath& path, bool bAlternativeTool /*= false*/,
 			{
 				mineSubject.LoadString(IDS_CONFLICT_SUBMODULENOTINITIALIZED);
 				if (localHash == baseHash)
-					changeTypeMine == CGitDiff::Identical;
+					changeTypeMine = CGitDiff::Identical;
 			}
 			if (remoteHash == GIT_REV_ZERO)
 			{
@@ -1860,7 +1860,7 @@ bool CAppUtils::ConflictEdit(CTGitPath& path, bool bAlternativeTool /*= false*/,
 			{
 				theirsSubject.LoadString(IDS_CONFLICT_SUBMODULENOTINITIALIZED);
 				if (remoteHash == baseHash)
-					changeTypeTheirs == CGitDiff::Identical;
+					changeTypeTheirs = CGitDiff::Identical;
 			}
 		}
 		else
