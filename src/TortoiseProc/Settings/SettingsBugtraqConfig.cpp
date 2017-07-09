@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2014, 2016 - TortoiseGit
+// Copyright (C) 2009-2014, 2016-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -106,6 +106,14 @@ BOOL CSettingsBugtraqConfig::OnInitDialog()
 	AdjustControlSize(IDC_CHECK_INHERIT_BTUUID64);
 	AdjustControlSize(IDC_CHECK_INHERIT_BTPARAMS);
 	GITSETTINGS_ADJUSTCONTROLSIZE
+
+	m_tooltips.AddTool(IDC_CHECK_INHERIT_BTURL, IDS_SETTINGS_GITCONFIG_INHERIT_TT);
+	m_tooltips.AddTool(IDC_CHECK_INHERIT_BTMSG, IDS_SETTINGS_GITCONFIG_INHERIT_TT);
+	m_tooltips.AddTool(IDC_CHECK_INHERIT_BTLABEL, IDS_SETTINGS_GITCONFIG_INHERIT_TT);
+	m_tooltips.AddTool(IDC_CHECK_INHERIT_BTREGEXP, IDS_SETTINGS_GITCONFIG_INHERIT_TT);
+	m_tooltips.AddTool(IDC_CHECK_INHERIT_BTUUID32, IDS_SETTINGS_GITCONFIG_INHERIT_TT);
+	m_tooltips.AddTool(IDC_CHECK_INHERIT_BTUUID64, IDS_SETTINGS_GITCONFIG_INHERIT_TT);
+	m_tooltips.AddTool(IDC_CHECK_INHERIT_BTPARAMS, IDS_SETTINGS_GITCONFIG_INHERIT_TT);
 
 	AddTrueFalseToComboBox(m_cWarningifnoissue);
 	AddTrueFalseToComboBox(m_cAppend);

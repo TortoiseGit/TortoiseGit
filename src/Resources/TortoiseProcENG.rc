@@ -4930,6 +4930,9 @@ BEGIN
     IDS_CONFLICT_NOTASUBMODULE "file, not a submodule"
     IDS_REBASE_CURRENTBRANCHUPTODATE 
                             "Current branch is up to date or newer than the fetched branch. Open rebase anyway?"
+    IDS_GITCONFIG_SETTING   "This option represents ""%s"" git config setting."
+    IDS_SETTINGS_GITCONFIG_INHERIT_TT 
+                            "If this is enabled, no value is stored or overwritten at this config level."
 END
 
 #endif    // English (U.S.) resources

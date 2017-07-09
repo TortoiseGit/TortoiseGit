@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -113,6 +113,18 @@ BOOL CSettingGitRemote::OnInitDialog()
 
 	CString pruneAll = g_Git.GetConfigValue(L"fetch.prune");
 	m_bPruneAll = pruneAll == L"true" ? TRUE : FALSE;
+
+	{
+		CString tmp;
+		tmp.Format(IDS_GITCONFIG_SETTING, L"remote.pushdefault");
+		m_tooltips.AddTool(IDC_CHECK_PUSHDEFAULT, tmp);
+		tmp.Format(IDS_GITCONFIG_SETTING, L"remote.<name>.prune");
+		m_tooltips.AddTool(IDC_CHECK_PRUNE, tmp);
+		tmp.Format(IDS_GITCONFIG_SETTING, L"fetch.prune");
+		m_tooltips.AddTool(IDC_CHECK_PRUNEALL, tmp);
+		tmp.Format(IDS_GITCONFIG_SETTING, L"remote<name>.tagopt");
+		m_tooltips.AddTool(IDC_COMBO_TAGOPT, tmp);
+	}
 
 	//this->GetDlgItem(IDC_EDIT_REMOTE)->EnableWindow(FALSE);
 	this->UpdateData(FALSE);

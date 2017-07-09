@@ -5647,6 +5647,10 @@ msgstr ""
 msgid "If set, then unversioned files will mark the status of the parent directory as modified\ni.e. they get the modified overlay icon."
 msgstr ""
 
+#. Resource IDs: (IDS_SETTINGS_GITCONFIG_INHERIT_TT)
+msgid "If this is enabled, no value is stored or overwritten at this config level."
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_CREATEREPO: Control id 1654)
 msgid "If you plan to work inside this folder, leave this unchecked. Typically a bare repo can only have changes 'pushed' to it. (By convention, a bare repo folder should have a name that ends with '.git')"
 msgstr ""
@@ -9847,6 +9851,11 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROC_LOG_ONLYONCE)
 msgid "This operation cannot be started while the log dialog is still loading commits."
+msgstr ""
+
+#. Resource IDs: (IDS_GITCONFIG_SETTING)
+#, c-format
+msgid "This option represents \"%s\" git config setting."
 msgstr ""
 
 #. Resource IDs: (IDS_REBASE_PRESERVEMERGES_TT)

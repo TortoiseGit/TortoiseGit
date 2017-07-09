@@ -1370,7 +1370,9 @@
 #define IDC_CHECK_3WAY                  1656
 #define IDS_REBASE_CURRENTBRANCHUPTODATE 1656
 #define IDC_CHECK_IGNORE_SPACE          1657
+#define IDS_GITCONFIG_SETTING           1657
 #define IDC_AM_SPLIT                    1658
+#define IDS_SETTINGS_GITCONFIG_INHERIT_TT 1658
 #define IDC_AM_DUMY_TAB                 1659
 #define IDC_REMEMBER                    1660
 #define IDC_HIDEMENUS                   1660
