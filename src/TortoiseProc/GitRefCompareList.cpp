@@ -33,6 +33,8 @@ IMPLEMENT_DYNAMIC(CGitRefCompareList, CHintCtrl<CListCtrl>)
 
 BEGIN_MESSAGE_MAP(CGitRefCompareList, CHintCtrl<CListCtrl>)
 	ON_WM_CONTEXTMENU()
+	ON_NOTIFY(HDN_ITEMCLICKA, 0, OnHdnItemclick)
+	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnHdnItemclick)
 END_MESSAGE_MAP()
 
 BOOL CGitRefCompareList::m_bSortLogical = FALSE;
@@ -58,6 +60,8 @@ CGitRefCompareList::CGitRefCompareList()
 	, colOldMessage(0)
 	, colNewHash(0)
 	, colNewMessage(0)
+	, m_bAscending(false)
+	, m_nSortedColumn(-1)
 {
 	m_bSortLogical = !CRegDWORD(L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\NoStrCmpLogical", 0, false, HKEY_CURRENT_USER);
 	if (m_bSortLogical)
@@ -170,10 +174,59 @@ int CGitRefCompareList::AddEntry(git_repository* repo, const CString& ref, const
 	return (int)m_RefList.size() - 1;
 }
 
+inline static bool StringComparePredicate(bool sortLogical, const CString& e1, const CString& e2)
+{
+	if (sortLogical)
+		return StrCmpLogicalW(e1, e2) < 0;
+	return e1.Compare(e2) < 0;
+}
+
 void CGitRefCompareList::Show()
 {
+	{
+		CString pleaseWait;
+		pleaseWait.LoadString(IDS_PROGRESSWAIT);
+		ShowText(pleaseWait, true);
+	}
+	SetRedraw(false);
 	DeleteAllItems();
-	std::sort(m_RefList.begin(), m_RefList.end(), SortPredicate);
+
+	if (m_nSortedColumn >= 0)
+	{
+		auto predicate = [](bool sortLogical, int sortColumn, const RefEntry& e1, const RefEntry& e2)
+		{
+			switch (sortColumn)
+			{
+			case 0:
+				return StringComparePredicate(sortLogical, e1.shortName, e2.shortName);
+				break;
+			case 1:
+				return StringComparePredicate(false, e1.change, e2.change);
+				break;
+			case 2:
+				return e1.oldHash.Compare(e2.oldHash) < 0;
+				break;
+			case 3:
+				return StringComparePredicate(sortLogical, e1.oldMessage, e2.oldMessage);
+				break;
+			case 4:
+				return e1.newHash.Compare(e2.newHash) < 0;
+				break;
+			case 5:
+				return StringComparePredicate(sortLogical, e1.newMessage, e2.newMessage);
+				break;
+			}
+			return false;
+		};
+
+		if (m_bAscending)
+			std::stable_sort(m_RefList.begin(), m_RefList.end(), std::bind(predicate, m_bSortLogical, m_nSortedColumn, std::placeholders::_1, std::placeholders::_2));
+		else
+			std::stable_sort(m_RefList.begin(), m_RefList.end(), std::bind(predicate, m_bSortLogical, m_nSortedColumn, std::placeholders::_2, std::placeholders::_1));
+	}
+	else
+		std::sort(m_RefList.begin(), m_RefList.end(), SortPredicate);
+
 	int index = 0;
 	for (const auto& entry : m_RefList)
 	{
@@ -193,14 +246,57 @@ void CGitRefCompareList::Show()
 		SetItemText(index, colOldMessage, entry.oldMessage);
 		SetItemText(index, colNewHash, entry.newHash);
 		SetItemText(index, colNewMessage, entry.newMessage);
-		index++;
+		++index;
 	}
+
+	auto pHeader = GetHeaderCtrl();
+	HDITEM HeaderItem = { 0 };
+	HeaderItem.mask = HDI_FORMAT;
+	for (int i = 0; i < pHeader->GetItemCount(); ++i)
+	{
+		pHeader->GetItem(i, &HeaderItem);
+		HeaderItem.fmt &= ~(HDF_SORTDOWN | HDF_SORTUP);
+		pHeader->SetItem(i, &HeaderItem);
+	}
+	if (m_nSortedColumn >= 0)
+	{
+		pHeader->GetItem(m_nSortedColumn, &HeaderItem);
+		HeaderItem.fmt |= (m_bAscending ? HDF_SORTUP : HDF_SORTDOWN);
+		pHeader->SetItem(m_nSortedColumn, &HeaderItem);
+	}
+	SetRedraw(true);
+
+	if (!index)
+	{
+		CString empty;
+		empty.LoadString(IDS_COMPAREREV_NODIFF);
+		ShowText(empty, true);
+	}
+	else
+		ShowText(L"", true);
 }
 
 void CGitRefCompareList::Clear()
 {
 	m_RefList.clear();
 	DeleteAllItems();
+}
+
+void CGitRefCompareList::OnHdnItemclick(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	auto phdr = reinterpret_cast<LPNMHEADER>(pNMHDR);
+	*pResult = 0;
+
+	if (m_RefList.empty())
+		return;
+
+	if (m_nSortedColumn == phdr->iItem)
+		m_bAscending = !m_bAscending;
+	else
+		m_bAscending = TRUE;
+	m_nSortedColumn = phdr->iItem;
+
+	Show();
 }
 
 void CGitRefCompareList::OnContextMenu(CWnd *pWnd, CPoint point)

@@ -48,6 +48,7 @@ public:
 	int Fill(const CString& remote, CString& err);
 
 protected:
+	afx_msg void OnHdnItemclick(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnContextMenu(CWnd *pWnd, CPoint point);
 	void OnContextMenuList(CWnd *pWnd, CPoint point);
 	void OnContextMenuHeader(CWnd *pWnd, CPoint point);
@@ -70,6 +71,7 @@ private:
 	int colMyMessage;
 	int colTheirHash;
 	int colTheirMessage;
+
+	bool	m_bAscending;		///< sort direction
+	int		m_nSortedColumn;	///< which column to sort
 };
-
-

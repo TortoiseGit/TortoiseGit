@@ -36,6 +36,8 @@ IMPLEMENT_DYNAMIC(CGitTagCompareList, CHintCtrl<CListCtrl>)
 
 BEGIN_MESSAGE_MAP(CGitTagCompareList, CHintCtrl<CListCtrl>)
 	ON_WM_CONTEXTMENU()
+	ON_NOTIFY(HDN_ITEMCLICKA, 0, OnHdnItemclick)
+	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnHdnItemclick)
 END_MESSAGE_MAP()
 
 BOOL CGitTagCompareList::m_bSortLogical = FALSE;
@@ -56,7 +58,7 @@ enum IDGITRCLH
 	IDGITRCLH_HIDEUNCHANGED = 1,
 };
 
-static bool SortPredicate(bool sortLogical, const CString& e1, const CString& e2)
+inline static bool SortPredicate(bool sortLogical, const CString& e1, const CString& e2)
 {
 	if (sortLogical)
 		return StrCmpLogicalW(e1, e2) < 0;
@@ -71,6 +73,8 @@ CGitTagCompareList::CGitTagCompareList()
 	, colMyMessage(0)
 	, colTheirHash(0)
 	, colTheirMessage(0)
+	, m_bAscending(false)
+	, m_nSortedColumn(-1)
 {
 	m_bSortLogical = !CRegDWORD(L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\NoStrCmpLogical", 0, false, HKEY_CURRENT_USER);
 	if (m_bSortLogical)
@@ -192,14 +196,21 @@ int CGitTagCompareList::Fill(const CString& remote, CString& err)
 
 	Show();
 
-	if (m_TagList.empty())
+	CHeaderCtrl * pHeader = GetHeaderCtrl();
+	HDITEM HeaderItem = { 0 };
+	HeaderItem.mask = HDI_FORMAT;
+	for (int i = 0; i < pHeader->GetItemCount(); ++i)
 	{
-		CString empty;
-		empty.LoadString(IDS_COMPAREREV_NODIFF);
-		ShowText(empty, true);
+		pHeader->GetItem(i, &HeaderItem);
+		HeaderItem.fmt &= ~(HDF_SORTDOWN | HDF_SORTUP);
+		pHeader->SetItem(i, &HeaderItem);
 	}
-	else
-		ShowText(L"", true);
+	if (m_nSortedColumn >= 0)
+	{
+		pHeader->GetItem(m_nSortedColumn, &HeaderItem);
+		HeaderItem.fmt |= (m_bAscending ? HDF_SORTUP : HDF_SORTDOWN);
+		pHeader->SetItem(m_nSortedColumn, &HeaderItem);
+	}
 
 	return 0;
 }
@@ -243,7 +254,48 @@ void CGitTagCompareList::AddEntry(git_repository* repo, const CString& tag, cons
 
 void CGitTagCompareList::Show()
 {
+	{
+		CString pleaseWait;
+		pleaseWait.LoadString(IDS_PROGRESSWAIT);
+		ShowText(pleaseWait, true);
+	}
+	SetRedraw(false);
 	DeleteAllItems();
+
+	if (m_nSortedColumn >= 0)
+	{
+		auto predicate = [](bool sortLogical, int sortColumn, const TagEntry& e1, const TagEntry& e2)
+		{
+			switch (sortColumn)
+			{
+			case 0:
+				return SortPredicate(sortLogical, e1.name, e2.name);
+				break;
+			case 1:
+				return SortPredicate(false, e1.diffstate, e2.diffstate);
+				break;
+			case 2:
+				return e1.myHash < e2.myHash;
+				break;
+			case 3:
+				return SortPredicate(sortLogical, e1.myMessage, e2.myMessage);
+				break;
+			case 4:
+				return e1.theirHash < e2.theirHash;
+				break;
+			case 5:
+				return SortPredicate(sortLogical, e1.theirMessage, e2.theirMessage);
+				break;
+			}
+			return false;
+		};
+
+		if (m_bAscending)
+			std::stable_sort(m_TagList.begin(), m_TagList.end(), std::bind(predicate, m_bSortLogical, m_nSortedColumn, std::placeholders::_1, std::placeholders::_2));
+		else
+			std::stable_sort(m_TagList.begin(), m_TagList.end(), std::bind(predicate, m_bSortLogical, m_nSortedColumn, std::placeholders::_2, std::placeholders::_1));
+	}
+
 	int index = 0;
 	for (const auto& entry : m_TagList)
 	{
@@ -258,10 +310,53 @@ void CGitTagCompareList::Show()
 		if (!entry.theirHash.IsEmpty())
 			SetItemText(index, colTheirHash, entry.theirHash.ToString().Left(g_Git.GetShortHASHLength()));
 		SetItemText(index, colTheirMessage, entry.theirMessage);
-		index++;
+		++index;
 	}
 	for (int i = 0; i < GetHeaderCtrl()->GetItemCount(); ++i)
 		SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
+
+	auto pHeader = GetHeaderCtrl();
+	HDITEM HeaderItem = { 0 };
+	HeaderItem.mask = HDI_FORMAT;
+	for (int i = 0; i < pHeader->GetItemCount(); ++i)
+	{
+		pHeader->GetItem(i, &HeaderItem);
+		HeaderItem.fmt &= ~(HDF_SORTDOWN | HDF_SORTUP);
+		pHeader->SetItem(i, &HeaderItem);
+	}
+	if (m_nSortedColumn >= 0)
+	{
+		pHeader->GetItem(m_nSortedColumn, &HeaderItem);
+		HeaderItem.fmt |= (m_bAscending ? HDF_SORTUP : HDF_SORTDOWN);
+		pHeader->SetItem(m_nSortedColumn, &HeaderItem);
+	}
+	SetRedraw(true);
+
+	if (!index)
+	{
+		CString empty;
+		empty.LoadString(IDS_COMPAREREV_NODIFF);
+		ShowText(empty, true);
+	}
+	else
+		ShowText(L"", true);
+}
+
+void CGitTagCompareList::OnHdnItemclick(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	auto phdr = reinterpret_cast<LPNMHEADER>(pNMHDR);
+	*pResult = 0;
+
+	if (m_TagList.empty())
+		return;
+
+	if (m_nSortedColumn == phdr->iItem)
+		m_bAscending = !m_bAscending;
+	else
+		m_bAscending = TRUE;
+	m_nSortedColumn = phdr->iItem;
+
+	Show();
 }
 
 void CGitTagCompareList::OnContextMenu(CWnd *pWnd, CPoint point)

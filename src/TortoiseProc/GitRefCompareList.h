@@ -68,6 +68,7 @@ public:
 	static CString GetCommitMessage(git_commit *commit);
 
 protected:
+	afx_msg void OnHdnItemclick(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnContextMenu(CWnd *pWnd, CPoint point);
 	void OnContextMenuList(CWnd *pWnd, CPoint point);
 	void OnContextMenuHeader(CWnd *pWnd, CPoint point);
@@ -87,6 +88,7 @@ private:
 	int colOldMessage;
 	int colNewHash;
 	int colNewMessage;
+
+	bool	m_bAscending;		///< sort direction
+	int		m_nSortedColumn;	///< which column to sort
 };
-
-
