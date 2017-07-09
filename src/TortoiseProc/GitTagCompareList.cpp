@@ -93,6 +93,12 @@ void CGitTagCompareList::Init()
 	colTheirMessage = InsertColumn(index++, CString(MAKEINTRESOURCE(IDS_TAGCOMPARE_REMOTEMESSAGE)));
 
 	SetWindowTheme(m_hWnd, L"Explorer", nullptr);
+
+	if (!!CRegDWORD(L"Software\\TortoiseGit\\SortTagsReversed", 0, false, HKEY_LOCAL_MACHINE) || !!CRegDWORD(L"Software\\TortoiseGit\\SortTagsReversed", 0, false, HKEY_CURRENT_USER))
+	{
+		m_bAscending = false;
+		m_nSortedColumn = 0;
+	}
 }
 
 int CGitTagCompareList::Fill(const CString& remote, CString& err)
