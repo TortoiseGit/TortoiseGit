@@ -25,6 +25,8 @@ Released: unreleased
  * Fixed issue #2599: Confusing titles when resolving a rebase or a merge conflict
  * Fixed issue #3008: Allow to push individual tags
  * Fixed issue #2973: Allow to compare local and remote tags using SyncDlg
+ * Fixed issue #2775: Fetch And Rebase doesn't rebase if nothing is fetched
+   It's configurable now whether opening the rebase dialog is skipped if nothing was fetched or current HEAD is up2date or newer
 
 == Bug Fixes ==
  * Fixed issue #2909: Commit window unclosable after clicking "No" and "do not ask again"

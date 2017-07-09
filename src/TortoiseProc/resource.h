@@ -1368,6 +1368,7 @@
 #define IDS_DELETE_LOCALTAG             1654
 #define IDS_CONFLICT_NOTASUBMODULE      1655
 #define IDC_CHECK_3WAY                  1656
+#define IDS_REBASE_CURRENTBRANCHUPTODATE 1656
 #define IDC_CHECK_IGNORE_SPACE          1657
 #define IDC_AM_SPLIT                    1658
 #define IDC_AM_DUMY_TAB                 1659

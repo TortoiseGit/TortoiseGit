@@ -3461,6 +3461,10 @@ msgstr ""
 msgid "Current branch %s is up to date\n\nIf you want to force the rebase even if the current branch is a descendant of the commit you are rebasing onto, please check below \"Force Rebase\" checkbox."
 msgstr ""
 
+#. Resource IDs: (IDS_REBASE_CURRENTBRANCHUPTODATE)
+msgid "Current branch is up to date or newer than the fetched branch. Open rebase anyway?"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1113)
 msgid "Current version is:"
 msgstr ""

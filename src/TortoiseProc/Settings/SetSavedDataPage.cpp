@@ -347,6 +347,7 @@ void CSetSavedDataPage::OnBnClickedStoreddecisionsclear()
 {
 	static const CString tgitvalues[] = {
 		L"OldMsysgitVersionWarning",
+		L"OpenRebaseRemoteBranchEqualsHEAD",
 		L"OpenRebaseRemoteBranchUnchanged",
 		L"OpenRebaseRemoteBranchFastForwards",
 		L"DaemonNoSecurityWarning",

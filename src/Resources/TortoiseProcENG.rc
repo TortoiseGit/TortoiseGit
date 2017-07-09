@@ -4928,6 +4928,8 @@ BEGIN
     IDS_DELETE_REMOTETAG    "Delete tag on remote"
     IDS_DELETE_LOCALTAG     "Delete local tag"
     IDS_CONFLICT_NOTASUBMODULE "file, not a submodule"
+    IDS_REBASE_CURRENTBRANCHUPTODATE 
+                            "Current branch is up to date or newer than the fetched branch. Open rebase anyway?"
 END
 
 #endif    // English (U.S.) resources
