@@ -92,9 +92,9 @@
 		</para>
 		<para>
 			<guilabel>Recurse submodule</guilabel>
-			None: No checking.
-			Check: Checks if the bounded commits of all submodules are present on the remote repositories. If any of the submodules are not pushed, the superproject push will fail.
-			On-demand: Checks if the bounded commits of all submodules are present on the remote repositories. If the submodules are not pushed yet, it will try to push them.
+			<option>None</option>: No checking.
+			<option>Check</option>: Checks if the bounded commits of all submodules are present on the remote repositories. If any of the submodules are not pushed, the superproject push will fail.
+			<option>On-demand</option>: Checks if the bounded commits of all submodules are present on the remote repositories. If the submodules are not pushed yet, it will try to push them.
 		</para>
 	</sect2>
 	<para>

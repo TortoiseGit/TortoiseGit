@@ -34,7 +34,7 @@
 			<para>
 				Any commit, you click <guibutton>...</guibutton> to launch log
 				dialog to choose commit. You also can input commit hash, or 
-				friendly commit name, such as HEAD~4. 
+				friendly commit name, such as <literal>HEAD~4</literal>.
 			</para>
 		</listitem>
 	</varlistentry>

@@ -86,7 +86,7 @@
 		<title>Revert != "git revert" for files</title>
 		<para>
 			In the TortoiseGit naming a "revert" on a file is comparable to
-			<filename>git checkout HEAD -- filename</filename> (or <filename>git checkout REVISION -- filename</filename>)
+			<literal>git checkout HEAD -- filename</literal> (or <literal>git checkout REVISION -- filename</literal>)
 			for resetting a file to it's last (or a specific) committed state. This has nothing to do with <xref linkend="git-revert(1)"/>!
 		</para>
 		<para>

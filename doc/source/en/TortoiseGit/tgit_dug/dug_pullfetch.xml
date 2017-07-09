@@ -66,11 +66,11 @@
 	will be automatically loaded using Pageant.
   </para>
   <para>
-    <guilabel>Tags</guilabel> has three states (git 1.9 and later): Checked: All tags as well as branches are downloaded (--tags is passed to git), unchecked: No tags are downloaded (--no-tags is passed to git), and third state: use default behavior (based on remote <option>name</option>.tagopt setting).
-    <guilabel>Tags</guilabel> has three states (prior to git 1.9): Only all tags are downloaded but no branches are downloaded (--tags is passed to git), unchecked: No tags are downloaded (--no-tags is passed to git), and third state: use default behavior (based on remote <option>name</option>.tagopt setting).
+    <guilabel>Tags</guilabel> has three states (git 1.9 and later): <option>Checked</option>: All tags as well as branches are downloaded (<literal>--tags</literal> is passed to git), <option>unchecked</option>: No tags are downloaded (<literal>--no-tags</literal> is passed to git), and third state: use default behavior (based on <literal>remote.&lt;name&gt;.tagopt</literal> setting).
+    <guilabel>Tags</guilabel> has three states (prior to git 1.9): <option>Checked</option>: Only all tags are downloaded but no branches are downloaded (<literal>--tags</literal> is passed to git), <option>unchecked</option>: No tags are downloaded (<literal>--no-tags</literal> is passed to git), and third state: use default behavior (based on <literal>remote.&lt;name&gt;.tagopt</literal> setting).
   </para>
   <para>
-    <guilabel>Prune</guilabel> has three states: True to remove remote-tracking branches which no longer exist on the remote, false: not to remove, and third state: use default behavior (based on <literal>remote.&lt;name&gt;.prune</literal> or <literal>fetch.prune</literal> git setting which can be set on <xref linkend="tgit-dug-settings-remote"/>).
+    <guilabel>Prune</guilabel> has three states: <option>True</option> to remove remote-tracking branches which no longer exist on the remote, <option>false</option>: not to remove, and third state: use default behavior (based on <literal>remote.&lt;name&gt;.prune</literal> or <literal>fetch.prune</literal> git setting which can be set on <xref linkend="tgit-dug-settings-remote"/>).
   </para>
 <!--
   <para>

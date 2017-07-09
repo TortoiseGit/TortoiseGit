@@ -20,10 +20,10 @@
 	the SVN repository.
 	</para>
 	<para>
-		If you need/want to use <filename>--use-log-author</filename> or <filename>--add-author-from</filename>, please set those in git config (cf. <xref linkend="git-config(1)"/>), also see <ulink url="https://tortoisegit.org/issue/2824">issue #2824</ulink>.
+		If you need/want to use <literal>--use-log-author</literal> or <literal>--add-author-from</literal>, please set those in git config (cf. <xref linkend="git-config(1)"/>), also see <ulink url="https://tortoisegit.org/issue/2824">issue #2824</ulink>.
 	</para>
 	<para>
-    <guilabel>Git Style Commit(--rmdir)</guilabel>: Remove directories from the SVN tree 
+    <guilabel>Git Style Commit (--rmdir)</guilabel>: Remove directories from the SVN tree 
 	if there are no files left behind. SVN can version empty directories, and they are
 	not removed by default if there are no files left in them. git cannot version empty
 	directories. Enabling this flag will make the commit to SVN act like git.

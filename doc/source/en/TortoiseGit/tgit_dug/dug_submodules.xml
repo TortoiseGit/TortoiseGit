@@ -41,7 +41,7 @@
 		Initialize the submodules and/or update the registered submodules, i.e. clone missing submodules and checkout the commit specified in the index of the containing repository.
 	</para>
 	<para>
-		<guimenuitem>Submodule Sync</guimenuitem>: Synchronizes submodules' remote URL configuration setting to the value specified in .gitmodules. This is useful when submodule URLs change upstream and you need to update your local repositories accordingly. 
+		<guimenuitem>Submodule Sync</guimenuitem>: Synchronizes submodules' remote URL configuration setting to the value specified in <filename>.gitmodules</filename>. This is useful when submodule URLs change upstream and you need to update your local repositories accordingly. 
 	</para>
 	<para>
 		Also if a working tree contains submodules, <xref linkend="tgit-dug-checkout"/> and <xref linkend="tgit-dug-reset"/> contain a button for updating submodules:

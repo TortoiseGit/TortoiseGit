@@ -23,12 +23,12 @@
 		</figure>
   </para>
   <para>
-	Rebasing commits takes places from the bottom of the list to the top (in ascending order of the ID column). For example, "squash" means that the commit gets squashed/combined with the previous commit(s) which are located below in the list (with a lower ID).
+	Rebasing commits takes places from the bottom of the list to the top (in ascending order of the ID column). For example, <option>squash</option> means that the commit gets squashed/combined with the previous commit(s) which are located below in the list (with a lower ID).
   </para>
 	<tip>
 		<para>
-			Instead of setting "pick", "skip", "edit", "squash" by using the context-menu, you can also use the following keys:
-			<keycap>space</keycap>: shifts the state, <keycap>s</keycap>: skip, <keycap>e</keycap>: edit, <keycap>p</keycap>: pick, <keycap>q</keycap>: squash
+			Instead of setting <option>pick</option>, <option>skip</option>, <option>edit</option>, <option>squash</option> by using the context-menu, you can also use the following keys:
+			<keycap>space</keycap>: shifts the state, <keycap>s</keycap>: <option>skip</option>, <keycap>e</keycap>: <option>edit</option>, <keycap>p</keycap>: <option>pick</option>, <keycap>q</keycap>: <option>squash</option>
 		</para>
 	</tip>
 	<tip>

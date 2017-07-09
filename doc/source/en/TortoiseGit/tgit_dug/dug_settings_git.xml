@@ -67,13 +67,11 @@
 		<para> Set git remote configuration </para>
 		<para>
 			<guilabel>Remote</guilabel>
-			The name of the remote, usually the default one is called 'origin'.
+			The name of the remote, usually the default one is called <literal>origin</literal>.
 		</para>
 		<para>
 			<guilabel>URL</guilabel>
 			The URL of the remote. It can be http / https / ssh / git protocol or local file system.
-			Note that for local file system, the path should use forward slash '/'; and
-			for absolute path, use /C/Project1 for C:\Project1.
 		</para>
 		<para>
 			<guilabel>Push URL</guilabel>
@@ -89,12 +87,12 @@
 		</para>
 		<para>
 			<guilabel>Tag</guilabel>
-			This sets remote.name.tagopt config, which controls the default tag fetching behaviour of the specified remote.
-			Reachable: Download tags that are reachable from remote branch heads (default behaviour).
-			None: No tags are downloaded (--no-tags).
-			(git 1.9 and later) All: All tags as well as branches are downloaded (--tags).
-			(prior to git 1.9) All tags only: Only all tags are downloaded but no branches are downloaded (--tags).
-			Use case of All: Always fetch tags from a git-svn mirror. 
+			This sets <literal>remote.&lt;name&gt;.tagopt</literal> config, which controls the default tag fetching behaviour of the specified remote.
+			<option>Reachable</option>: Download tags that are reachable from remote branch heads (default behaviour).
+			<option>None</option>: No tags are downloaded (<literal>--no-tags</literal>).
+			(git 1.9 and later) <option>All</option>: All tags as well as branches are downloaded (<literal>--tags</literal>).
+			(prior to git 1.9) <option>All tags only</option>: Only all tags are downloaded but no branches are downloaded (<literal>--tags</literal>).
+			Use case of <option>All</option>: Always fetch tags from a git-svn mirror. 
 			Subversion tags never exist on trunk, so such tags are not reachable from branch heads.
 		</para>
 		<para>
@@ -104,7 +102,7 @@
 		</para>
 		<para>
 			<guilabel>Prune</guilabel>
-			This sets remote.name.prune config, which controls the default prune option of remote tracking branches of the specified remote.
+			This sets <literal>remote.&lt;name&gt;.prune</literal> config, which controls the default prune option of remote tracking branches of the specified remote.
 			Default is false.
 		</para>
 	</sect3>
@@ -121,7 +119,7 @@
 		<para>
 			<guilabel>Advanced</guilabel>
 			This is used if the credential helper configuration does not match any simple settings.
-			If you choose other than Advanced, except the corrsponding credential.helper, all other config keys credential.* or credential.*.* are removed.
+			If you choose other than <option>Advanced</option>, except the corrsponding <literal>credential.helper</literal>, all other config keys <literal>credential.*</literal> or <literal>credential.*.*</literal> are removed.
 		</para>
 		<para>
 			<guilabel>None</guilabel>
