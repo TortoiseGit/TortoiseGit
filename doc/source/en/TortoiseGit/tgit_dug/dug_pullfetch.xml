@@ -70,7 +70,7 @@
     <guilabel>Tags</guilabel> has three states (prior to git 1.9): Only all tags are downloaded but no branches are downloaded (--tags is passed to git), unchecked: No tags are downloaded (--no-tags is passed to git), and third state: use default behavior (based on remote <option>name</option>.tagopt setting).
   </para>
   <para>
-    <guilabel>Prune</guilabel> has three states: True to remove remote-tracking branches which no longer exist on the remote, false: not to remove, and third state: use default behavior (based on remote <option>name</option>.prune or fetch.prune setting).
+    <guilabel>Prune</guilabel> has three states: True to remove remote-tracking branches which no longer exist on the remote, false: not to remove, and third state: use default behavior (based on <literal>remote.&lt;name&gt;.prune</literal> or <literal>fetch.prune</literal> git setting which can be set on <xref linkend="tgit-dug-settings-remote"/>).
   </para>
 <!--
   <para>
