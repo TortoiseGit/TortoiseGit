@@ -2571,6 +2571,7 @@ static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool l
 		gitdlg.SetCommand(&fetchProgressCommand);
 		fetchProgressCommand.m_PostCmdCallback = progress.m_PostCmdCallback;
 		fetchProgressCommand.SetAutoTag(fetchTags == 1 ? GIT_REMOTE_DOWNLOAD_TAGS_ALL : fetchTags == 2 ? GIT_REMOTE_DOWNLOAD_TAGS_AUTO : GIT_REMOTE_DOWNLOAD_TAGS_NONE);
+		fetchProgressCommand.SetPrune(prune == BST_CHECKED ? GIT_FETCH_PRUNE : prune == BST_INDETERMINATE ? GIT_FETCH_PRUNE_UNSPECIFIED : GIT_FETCH_NO_PRUNE);
 		if (!fetchAllRemotes)
 			fetchProgressCommand.SetRefSpec(remoteBranch);
 		return gitdlg.DoModal() == IDOK;
