@@ -98,6 +98,7 @@ public:
 	 * entries. Default is FALSE.
 	 */
 	void SetPathHistory(BOOL bPathHistory);
+	void SetCustomAutoSuggest(BOOL listEntries, BOOL bPathHistory, BOOL bURLHistory);
 	/**
 	 * Sets the maximum numbers of entries in the history list.
 	 * If the history is larger as \em nMaxItems then the last
@@ -178,4 +179,26 @@ protected:
 	BOOL			m_bDyn;
 	BOOL			m_bTrim;
 	BOOL			m_bCaseSensitive;
+};
+
+class CCustomAutoCompleteSource : public IEnumString
+{
+public:
+	CCustomAutoCompleteSource(const CStringArray& pData);
+
+	//IUnknown
+	virtual HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, void** ppvObject);
+	virtual ULONG STDMETHODCALLTYPE AddRef();
+	virtual ULONG STDMETHODCALLTYPE Release();
+
+	//IEnumString
+	virtual HRESULT STDMETHODCALLTYPE Clone(IEnumString** ppenum);
+	virtual HRESULT STDMETHODCALLTYPE Next(ULONG celt, LPOLESTR* rgelt, ULONG* pceltFetched);
+	virtual HRESULT STDMETHODCALLTYPE Reset();
+	virtual HRESULT STDMETHODCALLTYPE Skip(ULONG celt);
+
+private:
+	volatile ULONG		m_cRefCount;
+	int					m_index;
+	const CStringArray&	m_pData;
 };

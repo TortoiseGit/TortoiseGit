@@ -147,6 +147,7 @@ protected:
 	}
 
 	std::vector<CString> m_GitCmdList;
+	STRING_VECTOR	m_remotelist;
 
 	volatile bool	m_bAbort;
 	bool			m_bDone;

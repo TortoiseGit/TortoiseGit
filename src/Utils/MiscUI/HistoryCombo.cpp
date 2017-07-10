@@ -400,6 +400,73 @@ void CHistoryCombo::SetPathHistory(BOOL bPathHistory)
 #endif
 }
 
+void CHistoryCombo::SetCustomAutoSuggest(BOOL listEntries, BOOL bPathHistory, BOOL bURLHistory)
+{
+	m_bPathHistory = bPathHistory;
+	m_bURLHistory = bURLHistory;
+
+	HWND hwndEdit;
+	// use for ComboEx
+	hwndEdit = (HWND)::SendMessage(this->m_hWnd, CBEM_GETEDITCONTROL, 0, 0);
+	if (!hwndEdit)
+	{
+		CWnd* pWnd = this->GetDlgItem(1001);
+		if (pWnd)
+			hwndEdit = pWnd->GetSafeHwnd();
+	}
+	if (hwndEdit)
+	{
+		CComPtr<IObjMgr> pom;
+		if (!SUCCEEDED(CoCreateInstance(CLSID_ACLMulti, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&pom))))
+			return;
+
+		if (listEntries)
+		{
+			CComPtr<IUnknown> punkSource;
+			CComPtr<CCustomAutoCompleteSource> pcacs = new CCustomAutoCompleteSource(m_arEntries);
+			if (SUCCEEDED(pcacs->QueryInterface(IID_PPV_ARGS(&punkSource))))
+				pom->Append(punkSource);
+		}
+
+		if (m_bPathHistory)
+		{
+			CComPtr<IUnknown> punkSource2;
+			if (SUCCEEDED(CoCreateInstance(CLSID_ACListISF, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&punkSource2))))
+			{
+				CComPtr<IACList2> pal2;
+				if (SUCCEEDED(punkSource2->QueryInterface(IID_PPV_ARGS(&pal2))))
+					pal2->SetOptions(ACLO_FILESYSDIRS);
+				pom->Append(punkSource2);
+			}
+		}
+
+		if (m_bURLHistory)
+		{
+			CComPtr<IUnknown> punkSource3;
+			if (SUCCEEDED(CoCreateInstance(CLSID_ACLHistory, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&punkSource3))))
+				pom->Append(punkSource3);
+
+			CComPtr<IUnknown> punkSource4;
+			if (SUCCEEDED(CoCreateInstance(CLSID_ACLMRU, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&punkSource4))))
+				pom->Append(punkSource4);
+		}
+
+		CComPtr<IAutoComplete> pac;
+		if (!SUCCEEDED(CoCreateInstance(CLSID_AutoComplete, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&pac))))
+			return;
+		pac->Init(hwndEdit, pom, nullptr, nullptr);
+
+		CComPtr<IAutoComplete2> pac2;
+		if (SUCCEEDED(pac->QueryInterface(IID_PPV_ARGS(&pac2))))
+			pac2->SetOptions(ACO_AUTOSUGGEST);
+	}
+
+#ifdef HISTORYCOMBO_WITH_SYSIMAGELIST
+	SetImageList(&SYS_IMAGE_LIST());
+#endif
+}
+
+
 void CHistoryCombo::SetMaxHistoryItems(int nMaxItems)
 {
 	m_nMaxHistoryItems = nMaxItems;
@@ -645,4 +712,90 @@ int CHistoryCombo::FindStringExactCaseSensitive(int nIndexStart, LPCTSTR lpszFin
 		}
 	}
 	return -1;
+}
+
+CCustomAutoCompleteSource::CCustomAutoCompleteSource(const CStringArray& pData)
+	: m_pData(pData)
+	, m_index(0)
+{
+}
+
+STDMETHODIMP CCustomAutoCompleteSource::QueryInterface(REFIID riid, void** ppvObject)
+{
+	if (!ppvObject)
+		return E_POINTER;
+	*ppvObject = nullptr;
+	if (IsEqualIID(IID_IUnknown, riid) || IsEqualIID(IID_IEnumString, riid))
+		*ppvObject = static_cast<IEnumString*>(this);
+	else
+		return E_NOINTERFACE;
+
+	AddRef();
+	return S_OK;
+}
+
+STDMETHODIMP_(ULONG) CCustomAutoCompleteSource::AddRef()
+{
+	return ++m_cRefCount;
+}
+
+STDMETHODIMP_(ULONG) CCustomAutoCompleteSource::Release()
+{
+	--m_cRefCount;
+	if (m_cRefCount == 0)
+	{
+		delete this;
+		return 0;
+	}
+	return m_cRefCount;
+}
+
+STDMETHODIMP_(HRESULT) CCustomAutoCompleteSource::Clone(IEnumString** ppenum)
+{
+	if (!ppenum)
+		return E_POINTER;
+
+	CCustomAutoCompleteSource* pnew = new CCustomAutoCompleteSource(m_pData);
+
+	pnew->AddRef();
+	*ppenum = pnew;
+
+	return S_OK;
+}
+
+STDMETHODIMP_(HRESULT) CCustomAutoCompleteSource::Next(ULONG celt, LPOLESTR* rgelt, ULONG* pceltFetched)
+{
+	if (!celt)
+		celt = 1;
+
+	ULONG i = 0;
+	for (; i < celt && m_index < m_pData.GetCount(); i++)
+	{
+		rgelt[i] = (LPWSTR)::CoTaskMemAlloc(sizeof(WCHAR) * (m_pData.GetAt(m_index).GetLength() + 1));
+		lstrcpy(rgelt[i], m_pData.GetAt(m_index));
+
+		if (pceltFetched)
+			++*pceltFetched;
+
+		++m_index;
+	}
+
+	if (i == celt)
+		return S_OK;
+
+	return S_FALSE;
+}
+
+STDMETHODIMP_(HRESULT) CCustomAutoCompleteSource::Reset()
+{
+	m_index = 0;
+	return S_OK;
+}
+
+STDMETHODIMP_(HRESULT) CCustomAutoCompleteSource::Skip(ULONG celt)
+{
+	m_index += celt;
+	if (m_index >= m_pData.GetCount())
+		return S_FALSE;
+	return S_OK;
 }

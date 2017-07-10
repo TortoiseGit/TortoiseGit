@@ -60,6 +60,7 @@ Released: unreleased
  * Fixed issue #2926: Don't report an error for invalid remote symbolic references
  * Fixed issue #2955: LogDlg: infinite line to parent when initial commit is branched
  * Fixed issue #3017: Spaces at the beginning of the URL breaks pushes
+ * Fixed issue #2258: Autocomplete for Remote URL box in Sync screen doesn't work
 
 = Release 2.4.0 =
 Released: 2017-01-31

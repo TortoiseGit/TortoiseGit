@@ -410,12 +410,8 @@ void CSyncDlg::OnBnClickedButtonPull()
 	{
 		if (m_bAutoLoadPuttyKey)
 		{
-			STRING_VECTOR list;
-			if (!g_Git.GetRemoteList(list))
-			{
-				for (size_t i = 0; i < list.size(); ++i)
-					CAppUtils::LaunchPAgent(nullptr, &list[i]);
-			}
+			for (size_t i = 0; i < m_remotelist.size(); ++i)
+				CAppUtils::LaunchPAgent(nullptr, &m_remotelist[i]);
 		}
 
 		m_CurrentCmd = GIT_COMMAND_REMOTE;
@@ -552,9 +548,7 @@ void CSyncDlg::FetchComplete()
 	m_ctrlURL.GetWindowText(remote);
 	if (!remote.IsEmpty())
 	{
-		STRING_VECTOR remotes;
-		g_Git.GetRemoteList(remotes);
-		if (std::find(remotes.cbegin(), remotes.cend(), remote) == remotes.cend())
+		if (std::find(m_remotelist.cbegin(), m_remotelist.cend(), remote) == m_remotelist.cend())
 			remote.Empty();
 	}
 	m_ctrlRemoteBranch.GetWindowText(remotebranch);
@@ -1124,17 +1118,17 @@ BOOL CSyncDlg::OnInitDialog()
 	EnableSaveRestore(L"SyncDlg");
 
 	m_ctrlURL.SetCaseSensitive(TRUE);
-	m_ctrlURL.SetURLHistory(true);
+
+	m_ctrlURL.SetCustomAutoSuggest(true, true, true);
 	m_ctrlURL.SetMaxHistoryItems(0x7FFFFFFF);
 	this->m_ctrlURL.LoadHistory(L"Software\\TortoiseGit\\History\\SyncURL\\" + WorkingDir, L"url");
 
-	STRING_VECTOR list;
-
-	if(!g_Git.GetRemoteList(list))
+	m_remotelist.clear();
+	if(!g_Git.GetRemoteList(m_remotelist))
 	{
-		for (unsigned int i = 0; i < list.size(); ++i)
+		for (unsigned int i = 0; i < m_remotelist.size(); ++i)
 		{
-			m_ctrlURL.AddString(list[i]);
+			m_ctrlURL.AddString(m_remotelist[i]);
 		}
 	}
 	m_ctrlURL.SetCurSel(0);
@@ -1194,14 +1188,14 @@ void CSyncDlg::Refresh()
 	workingDir.Replace(L':', L'_');
 	this->m_ctrlURL.LoadHistory(L"Software\\TortoiseGit\\History\\SyncURL\\" + workingDir, L"url");
 
-	STRING_VECTOR list;
 	bool found = false;
-	if (!g_Git.GetRemoteList(list))
+	m_remotelist.clear();
+	if (!g_Git.GetRemoteList(m_remotelist))
 	{
-		for (size_t i = 0; i < list.size(); ++i)
+		for (size_t i = 0; i < m_remotelist.size(); ++i)
 		{
-			m_ctrlURL.AddString(list[i]);
-			if (list[i] == url)
+			m_ctrlURL.AddString(m_remotelist[i]);
+			if (m_remotelist[i] == url)
 				found = true;
 		}
 	}
