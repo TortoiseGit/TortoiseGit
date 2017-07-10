@@ -1866,8 +1866,13 @@ int CGit::GetRemoteTags(const CString& remote, REF_VECTOR& list)
 
 		CStringA remoteA = CUnicodeUtils::GetUTF8(remote);
 		CAutoRemote gitremote;
+		// first try with a named remote (e.g. "origin")
 		if (git_remote_lookup(gitremote.GetPointer(), repo, remoteA) < 0)
-			return -1;
+		{
+			// retry with repository located at a specific url
+			if (git_remote_create_anonymous(gitremote.GetPointer(), repo, remoteA) < 0)
+				return -1;
+		}
 
 		git_remote_callbacks callbacks = GIT_REMOTE_CALLBACKS_INIT;
 		callbacks.credentials = g_Git2CredCallback;
