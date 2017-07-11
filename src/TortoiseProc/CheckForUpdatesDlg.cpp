@@ -792,6 +792,7 @@ LRESULT CCheckForUpdatesDlg::OnFillChangelog(WPARAM, LPARAM lParam)
 	m_cLogMessage.SetText(changelog);
 	m_cLogMessage.Call(SCI_SETREADONLY, TRUE);
 	m_cLogMessage.Call(SCI_GOTOPOS, 0);
+	m_cLogMessage.Call(SCI_SETWRAPSTARTINDENT, 3);
 
 	return 0;
 }
