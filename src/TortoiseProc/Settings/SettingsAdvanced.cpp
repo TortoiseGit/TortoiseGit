@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2016 - TortoiseGit
+// Copyright (C) 2012-2017 - TortoiseGit
 // Copyright (C) 2009-2011, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -101,6 +101,10 @@ CSettingsAdvanced::CSettingsAdvanced()
 	settings[i].sName   = L"Msys2Hack";
 	settings[i].type    = CSettingsAdvanced::SettingTypeBoolean;
 	settings[i++].def.b = false;
+
+	settings[i].sName	= L"NamedRemoteFetchAll";
+	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
+	settings[i++].def.b	= true;
 
 	settings[i].sName	= L"NoSortLocalBranchesFirst";
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
