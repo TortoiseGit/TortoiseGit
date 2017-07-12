@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2016 - TortoiseGit
+// Copyright (C) 2013-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -36,7 +36,7 @@ static DWORD VerifyServerCertificate(PCCERT_CONTEXT pServerCert, PTSTR pwszServe
 	ChainPara.RequestedUsage.Usage.rgpszUsageIdentifier = rgszUsages;
 
 	PCCERT_CHAIN_CONTEXT pChainContext = nullptr;
-	if (!CertGetCertificateChain(nullptr, pServerCert, nullptr, pServerCert->hCertStore, &ChainPara, 0, nullptr, &pChainContext))
+	if (!CertGetCertificateChain(nullptr, pServerCert, nullptr, pServerCert->hCertStore, &ChainPara, CERT_CHAIN_REVOCATION_CHECK_CHAIN_EXCLUDE_ROOT, nullptr, &pChainContext))
 		return GetLastError();
 	SCOPE_EXIT { CertFreeCertificateChain(pChainContext); };
 
