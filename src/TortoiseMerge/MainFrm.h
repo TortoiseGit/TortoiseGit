@@ -1,7 +1,7 @@
 // TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2013 - TortoiseGit
-// Copyright (C) 2006-2015 - TortoiseSVN
+// Copyright (C) 2006-2015, 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -57,6 +57,9 @@ public:
 	virtual ~CMainFrame();
 
 	void			ShowDiffBar(bool bShow);
+	void			DiffLeftToBase();
+	void			DiffRightToBase();
+
 #ifdef _DEBUG
 	virtual void	AssertValid() const;
 	virtual void	Dump(CDumpContext& dc) const;
@@ -241,6 +244,7 @@ protected:
 	static bool		HasNextInlineDiff(CBaseView* view);
 	void			BuildRegexSubitems(CMFCPopupMenu* pMenuPopup = nullptr);
 	bool			AdjustUnicodeTypeForLoad(CFileTextLines::UnicodeType& type);
+	void			DiffTwo(const CWorkingFile& file1, const CWorkingFile& file2);
 
 protected:
 	CMFCStatusBar	m_wndStatusBar;

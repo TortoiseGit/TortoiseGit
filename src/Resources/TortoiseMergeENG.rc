@@ -1220,6 +1220,12 @@ BEGIN
     IDS_TEXTIDENTICAL_EOL   "Newlines"
 END
 
+STRINGTABLE
+BEGIN
+    IDS_HEADER_DIFFLEFTTOBASE "Show diff separately"
+    IDS_HEADER_DIFFRIGHTTOBASE "Show diff separately"
+END
+
 #endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 

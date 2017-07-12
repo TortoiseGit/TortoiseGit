@@ -2408,6 +2408,53 @@ int CBaseView::GetLineFromPoint(CPoint point)
 
 void CBaseView::OnContextMenu(CPoint point, DiffStates state)
 {
+	CRect rcClient;
+	GetClientRect(rcClient);
+	CRect textrect(rcClient.left, rcClient.top, rcClient.Width(), m_nLineHeight + HEADERHEIGHT);
+
+	int marginwidth = GetSystemMetrics(SM_CXSMICON) + 2 + 2;
+	if (m_bViewLinenumbers && m_pViewData && m_pViewData->GetCount() && m_nDigits > 0)
+		marginwidth += (m_nDigits * m_nCharWidth) + 2;
+
+	CRect borderrect(rcClient.left, rcClient.top + m_nLineHeight + HEADERHEIGHT, marginwidth, rcClient.bottom);
+
+	CPoint ptLocal = point;
+	ScreenToClient(&ptLocal);
+
+	if (textrect.PtInRect(ptLocal) || borderrect.PtInRect(ptLocal))
+	{
+		// inside the header part of the view (showing the filename)
+		if (IsViewGood(m_pwndBottom))
+		{
+			CString temp;
+			if (this == m_pwndLeft)
+			{
+				CIconMenu popup;
+				if (!popup.CreatePopupMenu())
+					return;
+
+				temp.LoadString(IDS_HEADER_DIFFLEFTTOBASE);
+				popup.AppendMenu(MF_STRING | MF_ENABLED, 10, temp);
+				int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY | TPM_RIGHTBUTTON, point.x, point.y, this);
+				if (cmd == 10)
+					m_pMainFrame->DiffLeftToBase();
+			}
+			if (this == m_pwndRight)
+			{
+				CIconMenu popup;
+				if (!popup.CreatePopupMenu())
+					return;
+
+				temp.LoadString(IDS_HEADER_DIFFRIGHTTOBASE);
+				popup.AppendMenu(MF_STRING | MF_ENABLED, 10, temp);
+				int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY | TPM_RIGHTBUTTON, point.x, point.y, this);
+				if (cmd == 10)
+					m_pMainFrame->DiffRightToBase();
+			}
+		}
+		return;
+	}
+
 	if (!this->IsWindowVisible())
 		return;
 

@@ -1,7 +1,7 @@
 // TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2008-2017 - TortoiseGit
-// Copyright (C) 2004-2015 - TortoiseSVN
+// Copyright (C) 2004-2017 - TortoiseSVN
 // Copyright (C) 2012-2014 - Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
@@ -1295,6 +1295,35 @@ void CMainFrame::OnViewOnewaydiff()
 	m_bOneWay = !m_bOneWay;
 	ShowDiffBar(!m_bOneWay);
 	LoadViews(-1);
+}
+
+void CMainFrame::DiffLeftToBase()
+{
+	DiffTwo(m_Data.m_baseFile, m_Data.m_theirFile);
+}
+
+void CMainFrame::DiffRightToBase()
+{
+	DiffTwo(m_Data.m_baseFile, m_Data.m_yourFile);
+}
+
+void CMainFrame::DiffTwo(const CWorkingFile& file1, const CWorkingFile& file2)
+{
+	wchar_t ownpath[MAX_PATH] = { 0 };
+	GetModuleFileName(nullptr, ownpath, MAX_PATH);
+	CString sCmd;
+	sCmd.Format(L"\"%s\"", ownpath);
+	sCmd += L" /base:\"";
+	sCmd += file1.GetFilename();
+	sCmd += L"\" /mine:\"";
+	sCmd += file2.GetFilename();
+	sCmd += L'"';
+	if (!file1.GetWindowName().IsEmpty())
+		sCmd += L" /basename:\"" + file1.GetWindowName() + L"\"";
+	if (!file2.GetWindowName().IsEmpty())
+		sCmd += L" /yourname:\"" + file2.GetWindowName() + L"\"";
+
+	CAppUtils::LaunchApplication(sCmd, 0, false);
 }
 
 void CMainFrame::ShowDiffBar(bool bShow)
