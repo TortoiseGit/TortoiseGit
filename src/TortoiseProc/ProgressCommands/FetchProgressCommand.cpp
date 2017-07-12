@@ -58,6 +58,7 @@ bool FetchProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, in
 
 	git_fetch_options fetchopts = GIT_FETCH_OPTIONS_INIT;
 	fetchopts.prune = m_Prune;
+	fetchopts.download_tags = m_AutoTag;
 	git_remote_callbacks& callbacks = fetchopts.callbacks;
 	callbacks.update_tips = RemoteUpdatetipsCallback;
 	callbacks.sideband_progress = RemoteProgressCallback;
@@ -67,8 +68,6 @@ bool FetchProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, in
 	callbacks.certificate_check = CAppUtils::Git2CertificateCheck;
 	CGitProgressList::Payload cbpayload = { list, repo };
 	callbacks.payload = &cbpayload;
-
-	git_remote_set_autotag(repo, git_remote_name(remote), (git_remote_autotag_option_t)m_AutoTag);
 
 	if (!m_RefSpec.IsEmpty() && git_remote_add_fetch(repo, git_remote_name(remote), CUnicodeUtils::GetUTF8(m_RefSpec)))
 		goto error;
