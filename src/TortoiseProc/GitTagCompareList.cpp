@@ -380,19 +380,19 @@ void CGitTagCompareList::OnContextMenu(CWnd *pWnd, CPoint point)
 void CGitTagCompareList::OnContextMenuList(CWnd * /*pWnd*/, CPoint point)
 {
 	int selIndex = GetSelectionMark();
-	if (selIndex < 0 || (size_t)selIndex >= m_TagList.size())
+	if (selIndex < 0)
 		return;
 
-	CString tag = m_TagList[selIndex].name;
+	CString tag = GetItemText(selIndex, colTag);
 	tag.Replace(L"^{}", L"");
-	CGitHash myHash = m_TagList[selIndex].myHash;
-	CGitHash theirHash = m_TagList[selIndex].theirHash;
+	CString myHash = GetItemText(selIndex, colMyHash);
+	CString theirHash = GetItemText(selIndex, colTheirHash);
 	CIconMenu popup;
 	popup.CreatePopupMenu();
 	CString logStr;
 	if (!myHash.IsEmpty())
 	{
-		logStr.Format(IDS_SHOWLOG_OF, (LPCTSTR)myHash.ToString());
+		logStr.Format(IDS_SHOWLOG_OF, (LPCTSTR)myHash);
 		popup.AppendMenuIcon(IDGITRCL_MYLOG, logStr, IDI_LOG);
 	}
 
@@ -400,7 +400,7 @@ void CGitTagCompareList::OnContextMenuList(CWnd * /*pWnd*/, CPoint point)
 	{
 		if (!theirHash.IsEmpty())
 		{
-			logStr.Format(IDS_SHOWLOG_OF, (LPCTSTR)theirHash.ToString());
+			logStr.Format(IDS_SHOWLOG_OF, (LPCTSTR)theirHash);
 			popup.AppendMenuIcon(IDGITRCL_THEIRLOG, logStr, IDI_LOG);
 		}
 
@@ -431,14 +431,14 @@ void CGitTagCompareList::OnContextMenuList(CWnd * /*pWnd*/, CPoint point)
 		case IDGITRCL_THEIRLOG:
 		{
 			CString sCmd;
-			sCmd.Format(L"/command:log /path:\"%s\" /endrev:\"%s\"", (LPCTSTR)g_Git.m_CurrentDir, cmd == IDGITRCL_MYLOG ? (LPCTSTR)myHash.ToString() : (LPCTSTR)theirHash.ToString());
+			sCmd.Format(L"/command:log /path:\"%s\" /endrev:\"%s\"", (LPCTSTR)g_Git.m_CurrentDir, cmd == IDGITRCL_MYLOG ? (LPCTSTR)myHash : (LPCTSTR)theirHash);
 			CAppUtils::RunTortoiseGitProc(sCmd);
 			break;
 		}
 		case IDGITRCL_COMPARE:
 		{
 			CString sCmd;
-			sCmd.Format(L"/command:showcompare /path:\"%s\" /revision1:\"%s\" /revision2:\"%s\"", (LPCTSTR)g_Git.m_CurrentDir, (LPCTSTR)myHash.ToString(), (LPCTSTR)theirHash.ToString());
+			sCmd.Format(L"/command:showcompare /path:\"%s\" /revision1:\"%s\" /revision2:\"%s\"", (LPCTSTR)g_Git.m_CurrentDir, (LPCTSTR)myHash, (LPCTSTR)theirHash);
 			if (!!(GetAsyncKeyState(VK_SHIFT) & 0x8000))
 				sCmd += L" /alternative";
 			CAppUtils::RunTortoiseGitProc(sCmd);
