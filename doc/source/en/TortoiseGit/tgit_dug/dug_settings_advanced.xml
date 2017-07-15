@@ -296,6 +296,16 @@
             </listitem>
         </varlistentry>
         <varlistentry>
+            <term condition="pot">OverlaysCaseSensitive</term>
+            <listitem>
+                <para>
+                     Starting with TortoiseGit 2.4.0 the overlay icons are case sensitive on filenames. The change was introduced to fix several issues related to casing (such as <ulink url="https://tortoisegit.org/issue/2654"><citetitle>issue #2654</citetitle></ulink>) and git tools (such as <literal>git log</literal>) being case sensitive on paths.
+                     Upon <ulink url="https://tortoisegit.org/issue/2980"><citetitle>issue #2980</citetitle></ulink> this is configurable starting from TortoiseGit 2.5.0, however, enabling is not recommended.
+                     The default is <literal>true</literal>.
+                </para>
+            </listitem>
+        </varlistentry>
+        <varlistentry>
             <term condition="pot">ProgressDlgLinesLimit</term>
             <listitem>
                 <para>

@@ -28,6 +28,7 @@ Released: unreleased
  * Fixed issue #2775: Fetch And Rebase doesn't rebase if nothing is fetched
    It's configurable now whether opening the rebase dialog is skipped if nothing was fetched or current HEAD is up2date or newer
  * Fixed issue #3016: Add context menus to the header views in three way diff mode to open TMerge again with the diff shown in the corresponding file
+ * Fixed issue #2980: Since TortoiseGit 2.4.0 the icon overlays are case sensitive. if you really want to change this default, you can disable the advanced setting "OverlaysCaseSensitive". This is, however, not the default and not recommended as some git tools such as "git log" are case sensitive on paths and might show an incomplete history.
 
 == Bug Fixes ==
  * Fixed issue #2909: Commit window unclosable after clicking "No" and "do not ask again"

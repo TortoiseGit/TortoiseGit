@@ -55,7 +55,7 @@ public:
 	__time64_t  m_LastModifyTime;
 	__int64		m_LastFileSize;
 	BOOL		m_bHasConflicts;
-	int			m_iIndexCaps;
+	inline bool	IsIgnoreCase() { return m_iIndexCaps & GIT_INDEXCAP_IGNORE_CASE; }
 
 	CGitIndexList();
 	~CGitIndexList();
@@ -67,6 +67,7 @@ public:
 	FRIEND_TEST(GitIndexCBasicGitWithTestRepoFixture, GetFileStatus);
 #endif
 protected:
+	int		m_iIndexCaps;
 	__int64 m_iMaxCheckSize;
 	CAutoConfig config;
 	int GetFileStatus(const CString& gitdir, const CString& path, git_wc_status2_t& status, __int64 time, __int64 filesize, bool isSymlink, CGitHash* pHash = nullptr);
@@ -177,7 +178,7 @@ public:
 	{
 	}
 
-	int ReadTree();
+	int ReadTree(bool ignoreCase);
 	int ReadHeadHash(const CString& gitdir);
 	bool CheckHeadUpdate();
 	static int CallBack(const unsigned char *, const char *, int, const char *, unsigned int, int, void *);
@@ -235,7 +236,7 @@ public:
 			this->erase(*it);
 		return !toRemove.empty();
 	}
-	void CheckHeadAndUpdate(const CString& gitdir);
+	void CheckHeadAndUpdate(const CString& gitdir, bool ignoreCase);
 };
 
 class CGitFileName
@@ -254,11 +255,6 @@ public:
 	__int64 m_LastModified;
 	bool	m_bSymlink;
 };
-
-static bool SortCGitFileName(const CGitFileName& item1, const CGitFileName& item2)
-{
-	return item1.m_FileName.Compare(item2.m_FileName) < 0;
-}
 
 class CGitIgnoreItem
 {
@@ -333,6 +329,15 @@ public:
 	bool IsIgnore(CString path, const CString& root, bool isDir);
 };
 
+template<class T>
+inline void DoSortFilenametSortVector(T& vector, bool ignoreCase)
+{
+	if (ignoreCase)
+		std::sort(vector.begin(), vector.end(), [](const auto& e1, const auto& e2) { return e1.m_FileName.CompareNoCase(e2.m_FileName) < 0; });
+	else
+		std::sort(vector.begin(), vector.end(), [](const auto& e1, const auto& e2) { return e1.m_FileName.Compare(e2.m_FileName) < 0; });
+}
+
 static const size_t NPOS = (size_t)-1; // bad/missing length/position
 static_assert(MAXSIZE_T == NPOS, "NPOS must equal MAXSIZE_T");
 #pragma warning(push)
@@ -341,7 +346,16 @@ static_assert(-1 == (int)NPOS, "NPOS must equal -1");
 #pragma warning(pop)
 
 template<class T>
-int GetRangeInSortVector(const T& vector, LPCTSTR pstr, size_t len, size_t* start, size_t* end, size_t pos)
+inline int GetRangeInSortVector(const T& vector, LPCTSTR pstr, size_t len, bool ignoreCase, size_t* start, size_t* end, size_t pos)
+{
+	if (ignoreCase)
+		return GetRangeInSortVector_int(vector, pstr, len, _wcsnicmp, start, end, pos);
+
+	return GetRangeInSortVector_int(vector, pstr, len, wcsncmp, start, end, pos);
+}
+
+template<class T, class V>
+int GetRangeInSortVector_int(const T& vector, LPCTSTR pstr, size_t len, V compare, size_t* start, size_t* end, size_t pos)
 {
 	if (pos == NPOS)
 		return -1;
@@ -356,7 +370,7 @@ int GetRangeInSortVector(const T& vector, LPCTSTR pstr, size_t len, size_t* star
 	if (pos >= vector.size())
 		return -1;
 
-	if (wcsncmp(vector[pos].m_FileName, pstr, len) != 0)
+	if (compare(vector[pos].m_FileName, pstr, len) != 0)
 		return -1;
 
 	*start = 0;
@@ -368,14 +382,14 @@ int GetRangeInSortVector(const T& vector, LPCTSTR pstr, size_t len, size_t* star
 
 	for (size_t i = pos; i < vector.size(); ++i)
 	{
-		if (wcsncmp(vector[i].m_FileName, pstr, len) != 0)
+		if (compare(vector[i].m_FileName, pstr, len) != 0)
 			break;
 
 		*end = i;
 	}
 	for (size_t i = pos + 1; i-- > 0;)
 	{
-		if (wcsncmp(vector[i].m_FileName, pstr, len) != 0)
+		if (compare(vector[i].m_FileName, pstr, len) != 0)
 			break;
 
 		*start = i;
@@ -385,16 +399,24 @@ int GetRangeInSortVector(const T& vector, LPCTSTR pstr, size_t len, size_t* star
 }
 
 template<class T>
-inline size_t SearchInSortVector(const T& vector, LPCTSTR pstr, int len)
+inline size_t SearchInSortVector(const T& vector, LPCTSTR pstr, int len, bool ignoreCase)
 {
-	if (len < 0)
-		return SearchInSortVector(vector, pstr, wcscmp);
+	if (ignoreCase)
+	{
+		if (len < 0)
+			return SearchInSortVector_int(vector, pstr, _wcsicmp);
 
-	return SearchInSortVector(vector, pstr, [len](const auto& s1, const auto& s2) { return wcsncmp(s1, s2, len); });
+		return SearchInSortVector_int(vector, pstr, [len](const auto& s1, const auto& s2) { return _wcsnicmp(s1, s2, len); });
+	}
+
+	if (len < 0)
+		return SearchInSortVector_int(vector, pstr, wcscmp);
+
+	return SearchInSortVector_int(vector, pstr, [len](const auto& s1, const auto& s2) { return wcsncmp(s1, s2, len); });
 }
 
 template<class T, class V>
-static size_t SearchInSortVector(const T& vector, LPCTSTR pstr, V compare)
+size_t SearchInSortVector_int(const T& vector, LPCTSTR pstr, V compare)
 {
 	size_t end = vector.size() - 1;
 	size_t start = 0;

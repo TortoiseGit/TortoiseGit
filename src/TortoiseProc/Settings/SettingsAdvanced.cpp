@@ -114,6 +114,10 @@ CSettingsAdvanced::CSettingsAdvanced()
 	settings[i].type	= CSettingsAdvanced::SettingTypeNumber;
 	settings[i++].def.l	= 10;
 
+	settings[i].sName	= L"OverlaysCaseSensitive";
+	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
+	settings[i++].def.b	= true;
+
 	settings[i].sName	= L"ProgressDlgLinesLimit";
 	settings[i].type	= CSettingsAdvanced::SettingTypeNumber;
 	settings[i++].def.l	= 50000;

@@ -184,7 +184,7 @@ int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status2
 		if (IsFull)
 		{
 			if (update)
-				g_HeadFileMap.CheckHeadAndUpdate(gitdir);
+				g_HeadFileMap.CheckHeadAndUpdate(gitdir, pIndex->IsIgnoreCase());
 
 			// Check Head Tree Hash
 			SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
@@ -196,7 +196,7 @@ int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status2
 			}
 
 			// deleted only in index item?
-			if (SearchInSortVector(*treeptr, path, -1) != NPOS)
+			if (SearchInSortVector(*treeptr, path, -1, pIndex->IsIgnoreCase()) != NPOS)
 			{
 				status.status = git_wc_status_deleted;
 				return 0;
@@ -219,7 +219,7 @@ int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status2
 	if ((status.status == git_wc_status_normal || status.status == git_wc_status_modified) && IsFull)
 	{
 		if (update)
-			g_HeadFileMap.CheckHeadAndUpdate(gitdir);
+			g_HeadFileMap.CheckHeadAndUpdate(gitdir, pIndex->IsIgnoreCase());
 
 		// Check Head Tree Hash
 		SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
@@ -231,7 +231,7 @@ int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status2
 		}
 
 		//add item
-		size_t start = SearchInSortVector(*treeptr, path, -1);
+		size_t start = SearchInSortVector(*treeptr, path, -1, pIndex->IsIgnoreCase());
 		if (start == NPOS)
 		{
 			status.status = git_wc_status_added;
@@ -279,7 +279,7 @@ bool GitStatus::IsIgnored(const CString& gitdir, const CString& path, bool isDir
 	return g_IgnoreList.IsIgnore(path, gitdir, isDir);
 }
 
-int GitStatus::GetFileList(const CString& path, std::vector<CGitFileName>& list, bool& isRepoRoot)
+int GitStatus::GetFileList(const CString& path, std::vector<CGitFileName>& list, bool& isRepoRoot, bool ignoreCase)
 {
 	WIN32_FIND_DATA data;
 	CAutoFindFile handle = ::FindFirstFileEx(CombinePath(path, L"*.*"), FindExInfoBasic, &data, FindExSearchNameMatch, nullptr, FIND_FIRST_EX_LARGE_FETCH);
@@ -311,7 +311,8 @@ int GitStatus::GetFileList(const CString& path, std::vector<CGitFileName>& list,
 
 	handle.CloseHandle(); // manually close handle here in order to keep handles open as short as possible
 
-	std::sort(list.begin(), list.end(), SortCGitFileName);
+	DoSortFilenametSortVector(list, ignoreCase);
+
 	return 0;
 }
 
@@ -323,23 +324,26 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 	if (!path.IsEmpty() && path[path.GetLength() - 1] != L'/')
 		path += L'/'; // Add trail / to show it is directory, not file name.
 
+	g_IndexFileMap.CheckAndUpdate(gitdir);
+
+	SHARED_INDEX_PTR indexptr = g_IndexFileMap.SafeGet(gitdir);
+	// there was an error loading the index
+	if (!indexptr)
+		return -1;
+
+	g_HeadFileMap.CheckHeadAndUpdate(gitdir, indexptr->IsIgnoreCase());
+
+	SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
+	// there was an error loading the HEAD commit/tree
+	if (!treeptr)
+		return -1;
+
 	std::vector<CGitFileName> filelist;
 	bool isRepoRoot = false;
-	GetFileList(CombinePath(gitdir, subpath), filelist, isRepoRoot);
+	GetFileList(CombinePath(gitdir, subpath), filelist, isRepoRoot, indexptr->IsIgnoreCase());
 	*dirstatus = git_wc_status_unknown;
 	if (isRepoRoot)
 		*dirstatus = git_wc_status_normal;
-
-	g_IndexFileMap.CheckAndUpdate(gitdir);
-
-	g_HeadFileMap.CheckHeadAndUpdate(gitdir);
-
-	SHARED_INDEX_PTR indexptr = g_IndexFileMap.SafeGet(gitdir);
-	SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
-
-	// there was an error loading the index or the HEAD commit/tree
-	if (!indexptr || !treeptr)
-		return -1;
 
 	CAutoRepository repository;
 	for (auto it = filelist.cbegin(), itend = filelist.cend(); it != itend; ++it)
@@ -356,8 +360,8 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 		int matchLength = -1;
 		if (bIsDir)
 			matchLength = onepath.GetLength();
-		size_t pos = SearchInSortVector(*indexptr, onepath, matchLength);
-		size_t posintree = SearchInSortVector(*treeptr, onepath, matchLength);
+		size_t pos = SearchInSortVector(*indexptr, onepath, matchLength, indexptr->IsIgnoreCase());
+		size_t posintree = SearchInSortVector(*treeptr, onepath, matchLength, indexptr->IsIgnoreCase());
 
 		git_wc_status2_t status = { git_wc_status_none, false, false };
 
@@ -411,10 +415,10 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 
 	/* Check deleted file in system */
 	size_t start = 0, end = 0;
-	size_t pos = SearchInSortVector(*indexptr, path, path.GetLength()); // match path prefix, (sub)folders end with slash
+	size_t pos = SearchInSortVector(*indexptr, path, path.GetLength(), indexptr->IsIgnoreCase()); // match path prefix, (sub)folders end with slash
 	std::set<CString> alreadyReported;
 
-	if (GetRangeInSortVector(*indexptr, path, path.GetLength(), &start, &end, pos) == 0)
+	if (GetRangeInSortVector(*indexptr, path, path.GetLength(), indexptr->IsIgnoreCase(), &start, &end, pos) == 0)
 	{
 		*dirstatus = git_wc_status_normal; // here we know that this folder has versioned entries
 		CString oldstring;
@@ -434,7 +438,7 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 				oldstring = filename;
 				int length = filename.GetLength();
 				bool isDir = filename[length - 1] == L'/';
-				if (SearchInSortVector(filelist, filename, isDir ? length : -1) == NPOS) // do full match for filenames and only prefix-match ending with "/" for folders
+				if (SearchInSortVector(filelist, filename, isDir ? length : -1, indexptr->IsIgnoreCase()) == NPOS) // do full match for filenames and only prefix-match ending with "/" for folders
 				{
 					git_wc_status2_t status = { (!isDir || IsDirectSubmodule(entry.m_FileName, commonPrefixLength)) ? git_wc_status_deleted : git_wc_status_modified, false, false }; // only report deleted submodules and files as deletedy
 					if ((entry.m_FlagsExtended & GIT_IDXENTRY_SKIP_WORKTREE) != 0)
@@ -451,7 +455,7 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 					{
 						// folder might be replaced by symlink
 						filename.TrimRight(L'/');
-						auto filepos = SearchInSortVector(filelist, filename, -1);
+						auto filepos = SearchInSortVector(filelist, filename, -1, indexptr->IsIgnoreCase());
 						if (filepos == NPOS || !filelist[filepos].m_bSymlink)
 							continue;
 						status.status = git_wc_status_deleted;
@@ -463,8 +467,8 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 	}
 
 	start = end = 0;
-	pos = SearchInSortVector(*treeptr, path, path.GetLength()); // match path prefix, (sub)folders end with slash
-	if (GetRangeInSortVector(*treeptr, path, path.GetLength(), &start, &end, pos) == 0)
+	pos = SearchInSortVector(*treeptr, path, path.GetLength(), indexptr->IsIgnoreCase()); // match path prefix, (sub)folders end with slash
+	if (GetRangeInSortVector(*treeptr, path, path.GetLength(), indexptr->IsIgnoreCase(), &start, &end, pos) == 0)
 	{
 		*dirstatus = git_wc_status_normal; // here we know that this folder has versioned entries
 		CString oldstring;
@@ -484,7 +488,7 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 				oldstring = filename;
 				int length = filename.GetLength();
 				bool isDir = filename[length - 1] == L'/';
-				if (SearchInSortVector(filelist, filename, isDir ? length : -1) == NPOS) // do full match for filenames and only prefix-match ending with "/" for folders
+				if (SearchInSortVector(filelist, filename, isDir ? length : -1, indexptr->IsIgnoreCase()) == NPOS) // do full match for filenames and only prefix-match ending with "/" for folders
 				{
 					git_wc_status2_t status = { (!isDir || IsDirectSubmodule(entry.m_FileName, commonPrefixLength)) ? git_wc_status_deleted : git_wc_status_modified, false, false };
 					callback(CombinePath(gitdir, subpath, filename), &status, isDir, 0, pData);
@@ -518,7 +522,7 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 		return -1;
 	}
 
-	size_t pos = SearchInSortVector(*indexptr, path, path.GetLength());
+	size_t pos = SearchInSortVector(*indexptr, path, path.GetLength(), indexptr->IsIgnoreCase());
 
 	// Not In Version Contorl
 	if (pos == NPOS)
@@ -535,7 +539,7 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 			return 0;
 		}
 
-		g_HeadFileMap.CheckHeadAndUpdate(gitdir);
+		g_HeadFileMap.CheckHeadAndUpdate(gitdir, indexptr->IsIgnoreCase());
 
 		SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
 		// broken HEAD
@@ -546,7 +550,7 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 		}
 
 		// check whether there files in head with are not in index
-		pos = SearchInSortVector(*treeptr, path, path.GetLength());
+		pos = SearchInSortVector(*treeptr, path, path.GetLength(), indexptr->IsIgnoreCase());
 		if (pos != NPOS)
 		{
 			*status = git_wc_status_deleted;
@@ -576,7 +580,7 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 	size_t start = 0;
 	size_t end = 0;
 
-	GetRangeInSortVector(*indexptr, path, path.GetLength(), &start, &end, pos);
+	GetRangeInSortVector(*indexptr, path,path.GetLength(), indexptr->IsIgnoreCase(), &start, &end, pos);
 
 	// Check Conflict;
 	for (auto it = indexptr->cbegin() + start, itlast = indexptr->cbegin() + end; indexptr->m_bHasConflicts && it <= itlast; ++it)
@@ -592,7 +596,7 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 
 	if (IsFul)
 	{
-		g_HeadFileMap.CheckHeadAndUpdate(gitdir);
+		g_HeadFileMap.CheckHeadAndUpdate(gitdir, indexptr->IsIgnoreCase());
 
 		// Check Add
 		{
@@ -609,7 +613,7 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 				for (auto it = indexptr->cbegin() + start, itlast = indexptr->cbegin() + end; it <= itlast; ++it)
 				{
 					auto& indexentry = *it;
-					pos = SearchInSortVector(*treeptr, indexentry.m_FileName, -1);
+					pos = SearchInSortVector(*treeptr, indexentry.m_FileName, -1, indexptr->IsIgnoreCase());
 
 					if (pos == NPOS)
 					{
@@ -630,17 +634,17 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 				// Check Delete
 				if (*status == git_wc_status_normal)
 				{
-					pos = SearchInSortVector(*treeptr, path, path.GetLength());
+					pos = SearchInSortVector(*treeptr, path, path.GetLength(), indexptr->IsIgnoreCase());
 					if (pos == NPOS)
 						*status = GetMoreImportant(git_wc_status_added, *status); // added file found
 					else
 					{
 						size_t hstart, hend;
 						// we know that pos exists in treeptr
-						GetRangeInSortVector(*treeptr, path, path.GetLength(), &hstart, &hend, pos);
+						GetRangeInSortVector(*treeptr, path, path.GetLength(), indexptr->IsIgnoreCase(), &hstart, &hend, pos);
 						for (auto hit = treeptr->cbegin() + hstart, lastElement = treeptr->cbegin() + hend; hit <= lastElement; ++hit)
 						{
-							if (SearchInSortVector(*indexptr, (*hit).m_FileName, -1) == NPOS)
+							if (SearchInSortVector(*indexptr, (*hit).m_FileName, -1, indexptr->IsIgnoreCase()) == NPOS)
 							{
 								*status = GetMoreImportant(git_wc_status_deleted, *status); // deleted file found
 								break;

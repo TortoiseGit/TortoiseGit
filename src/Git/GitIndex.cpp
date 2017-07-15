@@ -56,23 +56,13 @@ CGitIndexList::CGitIndexList()
 : m_bHasConflicts(FALSE)
 , m_LastModifyTime(0)
 , m_LastFileSize(-1)
-, m_iIndexCaps(GIT_INDEXCAP_NO_SYMLINKS)
+, m_iIndexCaps(GIT_INDEXCAP_IGNORE_CASE | GIT_INDEXCAP_NO_SYMLINKS)
 {
 	m_iMaxCheckSize = (__int64)CRegDWORD(L"Software\\TortoiseGit\\TGitCacheCheckContentMaxSize", 10 * 1024) * 1024; // stored in KiB
 }
 
 CGitIndexList::~CGitIndexList()
 {
-}
-
-static bool SortIndex(const CGitIndex &Item1, const CGitIndex &Item2)
-{
-	return Item1.m_FileName.Compare(Item2.m_FileName) < 0;
-}
-
-static bool SortTree(const CGitTreeItem &Item1, const CGitTreeItem &Item2)
-{
-	return Item1.m_FileName.Compare(Item2.m_FileName) < 0;
 }
 
 int CGitIndexList::ReadIndex(CString dgitdir)
@@ -121,6 +111,8 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 
 	m_bHasConflicts = FALSE;
 	m_iIndexCaps = git_index_caps(index);
+	if (CRegDWORD(L"Software\\TortoiseGit\\OverlaysCaseSensitive", TRUE) != FALSE)
+		m_iIndexCaps &= ~GIT_INDEXCAP_IGNORE_CASE;
 
 	size_t ecount = git_index_entrycount(index);
 	try
@@ -150,7 +142,7 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 		m_bHasConflicts |= GIT_IDXENTRY_STAGE(e);
 	}
 
-	std::sort(this->begin(), this->end(), SortIndex);
+	DoSortFilenametSortVector(*this, IsIgnoreCase());
 
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Reloaded index for repo: %s\n", (LPCTSTR)dgitdir);
 
@@ -159,7 +151,7 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 
 int CGitIndexList::GetFileStatus(const CString& gitdir, const CString& pathorg, git_wc_status2_t& status, __int64 time, __int64 filesize, bool isSymlink, CGitHash* pHash)
 {
-	size_t index = SearchInSortVector(*this, pathorg, -1);
+	size_t index = SearchInSortVector(*this, pathorg, -1, IsIgnoreCase());
 
 	if (index == NPOS)
 	{
@@ -173,7 +165,7 @@ int CGitIndexList::GetFileStatus(const CString& gitdir, const CString& pathorg, 
 	auto& entry = (*this)[index];
 	if (pHash)
 		*pHash = entry.m_IndexHash;
-	ATLASSERT(pathorg == entry.m_FileName);
+	ATLASSERT(IsIgnoreCase() ? pathorg.CompareNoCase(entry.m_FileName) == 0 : pathorg.Compare(entry.m_FileName) == 0);
 	CAutoRepository repository;
 	return GetFileStatus(repository, gitdir, entry, status, time, filesize, isSymlink);
 }
@@ -271,7 +263,7 @@ int CGitIndexList::GetFileStatus(const CString& gitdir, const CString& path, git
 
 	if (CStringUtils::EndsWith(path, L'/'))
 	{
-		size_t index = SearchInSortVector(*this, path, -1);
+		size_t index = SearchInSortVector(*this, path, -1, IsIgnoreCase());
 		if (index == NPOS)
 		{
 			status.status = git_wc_status_unversioned;
@@ -641,7 +633,7 @@ int ReadTreeRecursive(git_repository &repo, const git_tree * tree, const CString
 }
 
 // ReadTree is/must only be executed on an empty list
-int CGitHeadFileList::ReadTree()
+int CGitHeadFileList::ReadTree(bool ignoreCase)
 {
 	ATLASSERT(empty());
 
@@ -673,7 +665,7 @@ int CGitHeadFileList::ReadTree()
 		return -1;
 	}
 
-	std::sort(this->begin(), this->end(), SortTree);
+	DoSortFilenametSortVector(*this, ignoreCase);
 
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Reloaded HEAD tree (commit is %s) for repo: %s\n", (LPCTSTR)m_Head.ToString(), (LPCTSTR)m_Gitdir);
 
@@ -1082,7 +1074,7 @@ int CGitIgnoreList::CheckIgnore(const CString &path, const CString &projectroot,
 	return -1;
 }
 
-void CGitHeadFileMap::CheckHeadAndUpdate(const CString &gitdir)
+void CGitHeadFileMap::CheckHeadAndUpdate(const CString& gitdir, bool ignoreCase)
 {
 	SHARED_TREE_PTR ptr = this->SafeGet(gitdir);
 
@@ -1090,7 +1082,7 @@ void CGitHeadFileMap::CheckHeadAndUpdate(const CString &gitdir)
 		return;
 
 	ptr = std::make_shared<CGitHeadFileList>();
-	if (ptr->ReadHeadHash(gitdir) || ptr->ReadTree())
+	if (ptr->ReadHeadHash(gitdir) || ptr->ReadTree(ignoreCase))
 	{
 		SafeClear(gitdir);
 		return;
