@@ -24,6 +24,7 @@
 #include "gitdll.h"
 #include <functional>
 #include "StringUtils.h"
+#include "PathUtils.h"
 
 #define REG_MSYSGIT_PATH L"Software\\TortoiseGit\\MSysGit"
 #define REG_SYSTEM_GITCONFIGPATH L"Software\\TortoiseGit\\SystemConfig"
@@ -442,7 +443,7 @@ public:
 		return filetime_to_time_t(((__int64)ft->dwHighDateTime << 32) + ft->dwLowDateTime);
 	}
 
-	static int GetFileModifyTime(LPCTSTR filename, __int64* time, bool* isDir = nullptr, __int64* size = nullptr)
+	static int GetFileModifyTime(LPCTSTR filename, __int64* time, bool* isDir = nullptr, __int64* size = nullptr, bool* isSymlink = nullptr)
 	{
 		WIN32_FILE_ATTRIBUTE_DATA fdata;
 		if (GetFileAttributesEx(filename, GetFileExInfoStandard, &fdata))
@@ -455,6 +456,9 @@ public:
 
 			if(isDir)
 				*isDir = !!( fdata.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
+
+			if (isSymlink)
+				*isSymlink = (fdata.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT) && !CPathUtils::ReadLink(filename);
 
 			return 0;
 		}

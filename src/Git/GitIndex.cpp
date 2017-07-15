@@ -56,6 +56,7 @@ CGitIndexList::CGitIndexList()
 : m_bHasConflicts(FALSE)
 , m_LastModifyTime(0)
 , m_LastFileSize(-1)
+, m_iIndexCaps(GIT_INDEXCAP_NO_SYMLINKS)
 {
 	m_iMaxCheckSize = (__int64)CRegDWORD(L"Software\\TortoiseGit\\TGitCacheCheckContentMaxSize", 10 * 1024) * 1024; // stored in KiB
 }
@@ -119,6 +120,7 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	}
 
 	m_bHasConflicts = FALSE;
+	m_iIndexCaps = git_index_caps(index);
 
 	size_t ecount = git_index_entrycount(index);
 	try
@@ -144,6 +146,7 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 		item.m_FlagsExtended = e->flags_extended;
 		item.m_IndexHash = e->id.id;
 		item.m_Size = e->file_size;
+		item.m_Mode = e->mode;
 		m_bHasConflicts |= GIT_IDXENTRY_STAGE(e);
 	}
 
@@ -154,7 +157,7 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	return 0;
 }
 
-int CGitIndexList::GetFileStatus(const CString& gitdir, const CString& pathorg, git_wc_status2_t& status, __int64 time, __int64 filesize, CGitHash* pHash)
+int CGitIndexList::GetFileStatus(const CString& gitdir, const CString& pathorg, git_wc_status2_t& status, __int64 time, __int64 filesize, bool isSymlink, CGitHash* pHash)
 {
 	size_t index = SearchInSortVector(*this, pathorg, -1);
 
@@ -172,10 +175,10 @@ int CGitIndexList::GetFileStatus(const CString& gitdir, const CString& pathorg, 
 		*pHash = entry.m_IndexHash;
 	ATLASSERT(pathorg == entry.m_FileName);
 	CAutoRepository repository;
-	return GetFileStatus(repository, gitdir, entry, status, time, filesize);
+	return GetFileStatus(repository, gitdir, entry, status, time, filesize, isSymlink);
 }
 
-int CGitIndexList::GetFileStatus(CAutoRepository& repository, const CString& gitdir, CGitIndex& entry, git_wc_status2_t& status, __int64 time, __int64 filesize)
+int CGitIndexList::GetFileStatus(CAutoRepository& repository, const CString& gitdir, CGitIndex& entry, git_wc_status2_t& status, __int64 time, __int64 filesize, bool isSymlink)
 {
 	ATLASSERT(!status.assumeValid && !status.skipWorktree);
 
@@ -192,7 +195,9 @@ int CGitIndexList::GetFileStatus(CAutoRepository& repository, const CString& git
 	}
 	else if (filesize == -1)
 		status.status = git_wc_status_deleted;
-	else if (filesize != entry.m_Size)
+	else if ((isSymlink && !S_ISLNK(entry.m_Mode)) || ((m_iIndexCaps & GIT_INDEXCAP_NO_SYMLINKS) != GIT_INDEXCAP_NO_SYMLINKS && isSymlink != S_ISLNK(entry.m_Mode)))
+		status.status = git_wc_status_modified;
+	else if (!isSymlink && filesize != entry.m_Size)
 		status.status = git_wc_status_modified;
 	else if (CGit::filetime_to_time_t(time) == entry.m_ModifyTime)
 		status.status = git_wc_status_normal;
@@ -214,7 +219,18 @@ int CGitIndexList::GetFileStatus(CAutoRepository& repository, const CString& git
 
 		git_oid actual;
 		CStringA fileA = CUnicodeUtils::GetMulti(entry.m_FileName, CP_UTF8);
-		if (!git_repository_hashfile(&actual, repository, fileA, GIT_OBJ_BLOB, nullptr) && !git_oid_cmp(&actual, (const git_oid*)entry.m_IndexHash.m_hash))
+		if (isSymlink && S_ISLNK(entry.m_Mode))
+		{
+			CStringA linkDestination;
+			if (!CPathUtils::ReadLink(CombinePath(gitdir, entry.m_FileName), &linkDestination) && !git_odb_hash(&actual, (void*)(LPCSTR)linkDestination, linkDestination.GetLength(), GIT_OBJ_BLOB) && !git_oid_cmp(&actual, (const git_oid*)entry.m_IndexHash.m_hash))
+			{
+				entry.m_ModifyTime = time;
+				status.status = git_wc_status_normal;
+			}
+			else
+				status.status = git_wc_status_modified;
+		}
+		else if (!git_repository_hashfile(&actual, repository, fileA, GIT_OBJ_BLOB, nullptr) && !git_oid_cmp(&actual, (const git_oid*)entry.m_IndexHash.m_hash))
 		{
 			entry.m_ModifyTime = time;
 			status.status = git_wc_status_normal;
@@ -239,18 +255,19 @@ int CGitIndexList::GetFileStatus(const CString& gitdir, const CString& path, git
 
 	__int64 time, filesize = 0;
 	bool isDir = false;
+	bool isSymlink = false;
 
 	int result;
 	if (path.IsEmpty())
 		result = CGit::GetFileModifyTime(gitdir, &time, &isDir);
 	else
-		result = CGit::GetFileModifyTime(CombinePath(gitdir, path), &time, &isDir, &filesize);
+		result = CGit::GetFileModifyTime(CombinePath(gitdir, path), &time, &isDir, &filesize, &isSymlink);
 
 	if (result)
 		filesize = -1;
 
-	if (!isDir)
-		return GetFileStatus(gitdir, path, status, time, filesize, pHash);
+	if (!isDir || (isSymlink && (m_iIndexCaps & GIT_INDEXCAP_NO_SYMLINKS) != GIT_INDEXCAP_NO_SYMLINKS))
+		return GetFileStatus(gitdir, path, status, time, filesize, isSymlink, pHash);
 
 	if (CStringUtils::EndsWith(path, L'/'))
 	{
@@ -273,6 +290,10 @@ int CGitIndexList::GetFileStatus(const CString& gitdir, const CString& path, git
 			status.status = git_wc_status_deleted;
 		return 0;
 	}
+
+	// we get here for symlinks which are handled as files inside the git index
+	if ((m_iIndexCaps & GIT_INDEXCAP_NO_SYMLINKS) != GIT_INDEXCAP_NO_SYMLINKS)
+		return GetFileStatus(gitdir, path, status, time, filesize, isSymlink, pHash);
 
 	// we should never get here
 	status.status = git_wc_status_unversioned;

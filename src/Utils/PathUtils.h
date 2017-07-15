@@ -101,6 +101,13 @@ public:
 	static CString GetLocalAppDataDirectory();
 
 	/**
+	 * Removes any of the following namespace prefixes from a path, if found: "\??\", "\\?\", "\\?\UNC\".
+	 */
+	static void DropPathPrefixes(CString& path);
+
+	static int ReadLink(LPCTSTR filename, CStringA* target = nullptr);
+
+	/**
 	 * Replaces escaped sequences with the corresponding characters in a string.
 	 */
 	static CStringA PathUnescape(const CStringA& path);

@@ -21,6 +21,8 @@
 #include "PathUtils.h"
 #include <memory>
 #include "StringUtils.h"
+#include "../../ext/libgit2/src/win32/reparse.h"
+#include "SmartHandle.h"
 
 BOOL CPathUtils::MakeSureDirectoryPathExists(LPCTSTR path)
 {
@@ -384,6 +386,63 @@ CString CPathUtils::GetProgramsDirectory()
 	CString path = pszPath;
 	CoTaskMemFree(pszPath);
 	return path;
+}
+
+int CPathUtils::ReadLink(LPCTSTR filename, CStringA* pTargetA)
+{
+	CAutoFile handle  = CreateFileW(filename, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_DELETE, nullptr, OPEN_EXISTING, FILE_FLAG_OPEN_REPARSE_POINT | FILE_FLAG_BACKUP_SEMANTICS, nullptr);
+	if (!handle)
+		return -1;
+
+	DWORD ioctl_ret;
+	BYTE buf[MAXIMUM_REPARSE_DATA_BUFFER_SIZE] = { 0 };
+	auto reparse_buf = reinterpret_cast<GIT_REPARSE_DATA_BUFFER*>(&buf);
+	if (!DeviceIoControl(handle, FSCTL_GET_REPARSE_POINT, nullptr, 0, reparse_buf, sizeof(buf), &ioctl_ret, nullptr))
+		return -1;
+
+	if (reparse_buf->ReparseTag != IO_REPARSE_TAG_SYMLINK)
+		return -1;
+
+	wchar_t* target = reparse_buf->SymbolicLinkReparseBuffer.PathBuffer + (reparse_buf->SymbolicLinkReparseBuffer.SubstituteNameOffset / sizeof(WCHAR));
+	int target_len = reparse_buf->SymbolicLinkReparseBuffer.SubstituteNameLength / sizeof(WCHAR);
+	if (!target_len)
+		return -1;
+
+	// not a symlink
+	if (wcsncmp(target, L"\\??\\Volume{", 11) == 0)
+		return -1;
+
+	if (pTargetA)
+	{
+		CString targetW(target, target_len);
+		// The path may need to have a prefix removed
+		DropPathPrefixes(targetW);
+		targetW.Replace(L'\\', L'/');
+		*pTargetA = CUnicodeUtils::GetUTF8(targetW);
+	}
+
+	return 0;
+}
+
+void CPathUtils::DropPathPrefixes(CString& path)
+{
+	static const wchar_t dosdevices_prefix[] = L"\\\?\?\\";
+	static const wchar_t nt_prefix[] = L"\\\\?\\";
+	static const wchar_t unc_prefix[] = L"UNC\\";
+
+	int skip = 0;
+	if (CStringUtils::StartsWith(path, dosdevices_prefix))
+		skip += (int)wcslen(dosdevices_prefix);
+	else if (CStringUtils::StartsWith(path, nt_prefix))
+		skip += (int)wcslen(nt_prefix);
+
+	if (skip)
+	{
+		if (path.GetLength() - skip > (int)wcslen(unc_prefix) && CStringUtils::StartsWith(path.GetString() + skip, unc_prefix))
+			skip += (int)wcslen(unc_prefix);
+
+		path = path.Mid(skip);
+	}
 }
 
 CStringA CPathUtils::PathUnescape(const CStringA& path)

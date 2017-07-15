@@ -53,6 +53,7 @@ Released: unreleased
    * Fixed issue #2766: TGitCache: Icon Overlay might show ignored files as non-versioned
    * Fixed issue #2818: TGitCache: overlays sometimes blink in and out of existance for several minutes at a time
    * Fixed issue #1242: TGitCache might fall into an (endless) refresh loop
+   * Symlinks are not shown as modified any more
  * Fixed issue #3002: Push underlined hotkey is missing in log window.
  * Fixed issue #3005: TortoiseGit does not support cloning local svn repositories
  * Fixed issue #3011: clone: --bare and --origin options are incompatible

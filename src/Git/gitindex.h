@@ -26,6 +26,15 @@
 #include "StringUtils.h"
 #include "PathUtils.h"
 
+#ifndef S_IFLNK
+#define S_IFLNK 0120000
+#undef _S_IFLNK
+#define _S_IFLNK S_IFLNK
+#endif
+#ifndef S_ISLNK
+#define S_ISLNK(m) (((m) & _S_IFMT) == _S_IFLNK)
+#endif
+
 class CGitIndex
 {
 public:
@@ -35,6 +44,7 @@ public:
 	uint16_t	m_FlagsExtended;
 	CGitHash	m_IndexHash;
 	__int64		m_Size;
+	uint32_t	m_Mode;
 
 	int Print();
 };
@@ -45,20 +55,21 @@ public:
 	__time64_t  m_LastModifyTime;
 	__int64		m_LastFileSize;
 	BOOL		m_bHasConflicts;
+	int			m_iIndexCaps;
 
 	CGitIndexList();
 	~CGitIndexList();
 
 	int ReadIndex(CString dotgitdir);
 	int GetFileStatus(const CString& gitdir, const CString& path, git_wc_status2_t& status, CGitHash* pHash = nullptr);
-	int GetFileStatus(CAutoRepository& repository, const CString& gitdir, CGitIndex& entry, git_wc_status2_t& status, __int64 time, __int64 filesize);
+	int GetFileStatus(CAutoRepository& repository, const CString& gitdir, CGitIndex& entry, git_wc_status2_t& status, __int64 time, __int64 filesize, bool isSymlink);
 #ifdef GTEST_INCLUDE_GTEST_GTEST_H_
 	FRIEND_TEST(GitIndexCBasicGitWithTestRepoFixture, GetFileStatus);
 #endif
 protected:
 	__int64 m_iMaxCheckSize;
 	CAutoConfig config;
-	int GetFileStatus(const CString& gitdir, const CString& path, git_wc_status2_t& status, __int64 time, __int64 filesize, CGitHash* pHash = nullptr);
+	int GetFileStatus(const CString& gitdir, const CString& path, git_wc_status2_t& status, __int64 time, __int64 filesize, bool isSymlink, CGitHash* pHash = nullptr);
 };
 
 typedef std::shared_ptr<CGitIndexList> SHARED_INDEX_PTR;
@@ -235,11 +246,13 @@ public:
 	: m_FileName(filename)
 	, m_Size(size)
 	, m_LastModified(lastmodified)
+	, m_bSymlink(false)
 	{
 	}
 	CString m_FileName;
 	__int64 m_Size;
 	__int64 m_LastModified;
+	bool	m_bSymlink;
 };
 
 static bool SortCGitFileName(const CGitFileName& item1, const CGitFileName& item2)

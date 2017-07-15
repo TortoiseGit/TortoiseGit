@@ -279,11 +279,10 @@ bool GitStatus::IsIgnored(const CString& gitdir, const CString& path, bool isDir
 	return g_IgnoreList.IsIgnore(path, gitdir, isDir);
 }
 
-int GitStatus::GetFileList(CString path, std::vector<CGitFileName>& list, bool& isRepoRoot)
+int GitStatus::GetFileList(const CString& path, std::vector<CGitFileName>& list, bool& isRepoRoot)
 {
-	path += L"\\*.*";
 	WIN32_FIND_DATA data;
-	CAutoFindFile handle = ::FindFirstFileEx(path, FindExInfoBasic, &data, FindExSearchNameMatch, nullptr, FIND_FIRST_EX_LARGE_FETCH);
+	CAutoFindFile handle = ::FindFirstFileEx(CombinePath(path, L"*.*"), FindExInfoBasic, &data, FindExSearchNameMatch, nullptr, FIND_FIRST_EX_LARGE_FETCH);
 	if (!handle)
 		return -1;
 	do
@@ -301,7 +300,9 @@ int GitStatus::GetFileList(CString path, std::vector<CGitFileName>& list, bool& 
 			continue;
 
 		CGitFileName filename(data.cFileName, ((__int64)data.nFileSizeHigh << 32) + data.nFileSizeLow, ((__int64)data.ftLastWriteTime.dwHighDateTime << 32) + data.ftLastWriteTime.dwLowDateTime);
-		if(data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+		if ((data.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT) && !CPathUtils::ReadLink(CombinePath(path, filename.m_FileName)))
+			filename.m_bSymlink = true;
+		else if (data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 			filename.m_FileName += L'/';
 
 		list.push_back(filename);
@@ -398,7 +399,7 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 					callback(CombinePath(gitdir, onepath), &status, false, fileentry.m_LastModified, pData);
 					continue;
 				}
-				if ((*indexptr).GetFileStatus(repository, gitdir, indexentry, status, fileentry.m_LastModified, fileentry.m_Size))
+				if ((*indexptr).GetFileStatus(repository, gitdir, indexentry, status, fileentry.m_LastModified, fileentry.m_Size, fileentry.m_bSymlink))
 					return -1;
 				if (status.status == git_wc_status_normal && (*treeptr)[posintree].m_Hash != indexentry.m_IndexHash)
 					status = { git_wc_status_modified, false, false };
@@ -446,6 +447,16 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 					}
 					alreadyReported.insert(filename);
 					callback(CombinePath(gitdir, subpath, filename), &status, isDir, 0, pData);
+					if (isDir)
+					{
+						// folder might be replaced by symlink
+						filename.TrimRight(L'/');
+						auto filepos = SearchInSortVector(filelist, filename, -1);
+						if (filepos == NPOS || !filelist[filepos].m_bSymlink)
+							continue;
+						status.status = git_wc_status_deleted;
+						callback(CombinePath(gitdir, subpath, filename), &status, false, 0, pData);
+					}
 				}
 			}
 		}
