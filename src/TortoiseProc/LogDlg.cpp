@@ -1931,7 +1931,7 @@ void CLogDlg::OnBnClickedStatbutton()
 
 	CStatGraphDlg dlg;
 	dlg.m_ShowList.reserve(m_LogList.m_arShownList.size());
-	for (int i = m_LogList.m_bShowWC ? 1 : 0; i < m_LogList.m_arShownList.size(); ++i)
+	for (size_t i = m_LogList.m_bShowWC ? 1 : 0; i < m_LogList.m_arShownList.size(); ++i)
 		dlg.m_ShowList.emplace_back(m_LogList.m_arShownList.SafeGetAt(i));
 
 	dlg.m_path = m_orgPath;
