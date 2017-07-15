@@ -7800,7 +7800,7 @@ msgstr ""
 msgid "Remote &tracking branch"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_2: Control id 65535)
+#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_2: Control id 65535, IDS_PROC_REMOTEBRANCH)
 msgid "Remote Branch"
 msgstr ""
 

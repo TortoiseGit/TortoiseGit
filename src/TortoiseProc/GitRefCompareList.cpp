@@ -55,6 +55,7 @@ enum IDGITRCLH
 CGitRefCompareList::CGitRefCompareList()
 	: CHintCtrl<CListCtrl>()
 	, colRef(0)
+	, colRefType(0)
 	, colChange(0)
 	, colOldHash(0)
 	, colOldMessage(0)
@@ -73,6 +74,7 @@ void CGitRefCompareList::Init()
 {
 	int index = 0;
 	colRef = InsertColumn(index++, CString(MAKEINTRESOURCE(IDS_REF)));
+	colRefType = InsertColumn(index++, CString(MAKEINTRESOURCE(IDS_REF)));
 	colChange = InsertColumn(index++, CString(MAKEINTRESOURCE(IDS_CHANGETYPE)));
 	colOldHash = InsertColumn(index++, CString(MAKEINTRESOURCE(IDS_OLDHASH)));
 	colOldMessage = InsertColumn(index++, CString(MAKEINTRESOURCE(IDS_OLDMESSAGE)));
@@ -181,6 +183,25 @@ inline static bool StringComparePredicate(bool sortLogical, const CString& e1, c
 	return e1.Compare(e2) < 0;
 }
 
+static CString RefTypeString(CGit::REF_TYPE reftype)
+{
+	CString type;
+	switch (reftype)
+	{
+	case CGit::REF_TYPE::LOCAL_BRANCH:
+		type.LoadString(IDS_PROC_BRANCH);
+		break;
+	case CGit::REF_TYPE::REMOTE_BRANCH:
+		type.LoadString(IDS_PROC_REMOTEBRANCH);
+		break;
+	case CGit::REF_TYPE::ANNOTATED_TAG:
+	case CGit::REF_TYPE::TAG:
+		type.LoadString(IDS_PROC_TAG);
+		break;
+	}
+	return type;
+}
+
 void CGitRefCompareList::Show()
 {
 	{
@@ -201,18 +222,21 @@ void CGitRefCompareList::Show()
 				return StringComparePredicate(sortLogical, e1.shortName, e2.shortName);
 				break;
 			case 1:
-				return StringComparePredicate(false, e1.change, e2.change);
+				return StringComparePredicate(false, RefTypeString(e1.refType), RefTypeString(e2.refType));
 				break;
 			case 2:
-				return e1.oldHash.Compare(e2.oldHash) < 0;
+				return StringComparePredicate(false, e1.change, e2.change);
 				break;
 			case 3:
-				return StringComparePredicate(sortLogical, e1.oldMessage, e2.oldMessage);
+				return e1.oldHash.Compare(e2.oldHash) < 0;
 				break;
 			case 4:
-				return e1.newHash.Compare(e2.newHash) < 0;
+				return StringComparePredicate(sortLogical, e1.oldMessage, e2.oldMessage);
 				break;
 			case 5:
+				return e1.newHash.Compare(e2.newHash) < 0;
+				break;
+			case 6:
 				return StringComparePredicate(sortLogical, e1.newMessage, e2.newMessage);
 				break;
 			}
@@ -241,6 +265,7 @@ void CGitRefCompareList::Show()
 		else if (entry.refType == CGit::REF_TYPE::ANNOTATED_TAG || entry.refType == CGit::REF_TYPE::TAG)
 			nImage = 0;
 		InsertItem(index, entry.shortName, nImage);
+		SetItemText(index, colRefType, RefTypeString(entry.refType));
 		SetItemText(index, colChange, entry.change);
 		SetItemText(index, colOldHash, entry.oldHash);
 		SetItemText(index, colOldMessage, entry.oldMessage);

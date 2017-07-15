@@ -83,6 +83,7 @@ private:
 	static BOOL 			m_bSortLogical;
 
 	int colRef;
+	int colRefType;
 	int colChange;
 	int colOldHash;
 	int colOldMessage;

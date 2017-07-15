@@ -1374,6 +1374,7 @@
 #define IDC_AM_SPLIT                    1658
 #define IDS_SETTINGS_GITCONFIG_INHERIT_TT 1658
 #define IDC_AM_DUMY_TAB                 1659
+#define IDS_PROC_REMOTEBRANCH           1659
 #define IDC_REMEMBER                    1660
 #define IDC_HIDEMENUS                   1660
 #define IDC_ALTERNATIVEEDITOR_OFF       1661
