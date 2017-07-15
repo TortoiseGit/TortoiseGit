@@ -636,6 +636,11 @@ CStatusCacheEntry CCachedDirectory::GetOwnStatus(bool bRecursive)
 
 void CCachedDirectory::RefreshStatus(bool bRecursive)
 {
+	{
+		AutoLocker lock(m_critSec);
+		m_directoryPath.UpdateCase();
+	}
+
 	// Make sure that our own status is up-to-date
 	GetStatusForMember(m_directoryPath,bRecursive);
 

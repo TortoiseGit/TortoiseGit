@@ -205,6 +205,14 @@ void CTGitPath::SetFromUnknown(const CString& sPath)
 		SetFwdslashPath(sPath);
 }
 
+void CTGitPath::UpdateCase()
+{
+	m_sBackslashPath = CPathUtils::GetLongPathname(GetWinPathString());
+	CPathUtils::TrimTrailingPathDelimiter(m_sBackslashPath);
+	SanitizeRootPath(m_sBackslashPath, false);
+	SetFwdslashPath(m_sBackslashPath);
+}
+
 LPCTSTR CTGitPath::GetWinPath() const
 {
 	if(IsEmpty())

@@ -151,6 +151,8 @@ public:
 	 */
 	CString GetFileExtension() const;
 
+	void UpdateCase();
+
 	bool IsEmpty() const;
 	void Reset();
 	/**
