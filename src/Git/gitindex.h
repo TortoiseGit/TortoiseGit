@@ -385,7 +385,16 @@ int GetRangeInSortVector(const T& vector, LPCTSTR pstr, size_t len, size_t* star
 }
 
 template<class T>
-size_t SearchInSortVector(const T& vector, LPCTSTR pstr, int len)
+inline size_t SearchInSortVector(const T& vector, LPCTSTR pstr, int len)
+{
+	if (len < 0)
+		return SearchInSortVector(vector, pstr, wcscmp);
+
+	return SearchInSortVector(vector, pstr, [len](const auto& s1, const auto& s2) { return wcsncmp(s1, s2, len); });
+}
+
+template<class T, class V>
+static size_t SearchInSortVector(const T& vector, LPCTSTR pstr, V compare)
 {
 	size_t end = vector.size() - 1;
 	size_t start = 0;
@@ -396,12 +405,7 @@ size_t SearchInSortVector(const T& vector, LPCTSTR pstr, int len)
 
 	while(!( start == end && start==mid))
 	{
-		int cmp;
-		if(len < 0)
-			cmp = wcscmp(vector[mid].m_FileName, pstr);
-		else
-			cmp = wcsncmp(vector[mid].m_FileName, pstr, len);
-
+		int cmp = compare(vector[mid].m_FileName, pstr);
 		if (cmp == 0)
 			return mid;
 		else if (cmp < 0)
@@ -412,16 +416,10 @@ size_t SearchInSortVector(const T& vector, LPCTSTR pstr, int len)
 		mid=(start +end ) /2;
 
 	}
-	if(len <0)
-	{
-		if (wcscmp(vector[mid].m_FileName, pstr) == 0)
-			return mid;
-	}
-	else
-	{
-		if (wcsncmp(vector[mid].m_FileName, pstr, len) == 0)
-			return mid;
-	}
+
+	if (compare(vector[mid].m_FileName, pstr) == 0)
+		return mid;
+
 	return NPOS;
 };
 
