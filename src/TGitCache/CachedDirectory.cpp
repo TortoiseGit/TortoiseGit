@@ -639,6 +639,7 @@ void CCachedDirectory::RefreshStatus(bool bRecursive)
 	{
 		AutoLocker lock(m_critSec);
 		m_directoryPath.UpdateCase();
+		m_directoryPath.HasAdminDir(nullptr, true);
 	}
 
 	// Make sure that our own status is up-to-date

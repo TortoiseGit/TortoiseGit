@@ -865,9 +865,9 @@ bool CTGitPath::HasRebaseApply() const
 	return !!PathFileExists(dotGitPath + L"rebase-apply");
 }
 
-bool CTGitPath::HasAdminDir(CString *ProjectTopDir) const
+bool CTGitPath::HasAdminDir(CString* ProjectTopDir /* = nullptr */, bool force /* = false */) const
 {
-	if (m_bHasAdminDirKnown)
+	if (m_bHasAdminDirKnown && !force)
 	{
 		if (ProjectTopDir)
 			*ProjectTopDir = m_sProjectRoot;
