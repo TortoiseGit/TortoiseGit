@@ -271,6 +271,7 @@ void CGitRefCompareList::Show()
 		SetItemText(index, colOldMessage, entry.oldMessage);
 		SetItemText(index, colNewHash, entry.newHash);
 		SetItemText(index, colNewMessage, entry.newMessage);
+		SetItemData(index, index);
 		++index;
 	}
 
@@ -339,12 +340,16 @@ void CGitRefCompareList::OnContextMenu(CWnd *pWnd, CPoint point)
 void CGitRefCompareList::OnContextMenuList(CWnd * /*pWnd*/, CPoint point)
 {
 	int selIndex = GetSelectionMark();
-	if (selIndex < 0 || (size_t)selIndex >= m_RefList.size())
+	if (selIndex < 0)
 		return;
 
-	CString refName = m_RefList[selIndex].fullName;
-	CString oldHash = m_RefList[selIndex].oldHash;
-	CString newHash = m_RefList[selIndex].newHash;
+	int index = (int)GetItemData(selIndex);
+	if (index < 0 || (size_t)index >= m_RefList.size())
+		return;
+
+	CString refName = m_RefList[index].fullName;
+	CString oldHash = m_RefList[index].oldHash;
+	CString newHash = m_RefList[index].newHash;
 	CIconMenu popup;
 	popup.CreatePopupMenu();
 	CString logStr;
