@@ -66,6 +66,17 @@ BOOL CExportDlg::OnInitDialog()
 		((CButton *)GetDlgItem(IDC_WHOLE_PROJECT))->SetCheck(TRUE);
 	}
 
+	InitChooseVersion();
+	if (m_initialRefName.IsEmpty() || m_initialRefName == L"HEAD")
+		SetDefaultChoose(IDC_RADIO_HEAD);
+	else if (CStringUtils::StartsWith(m_initialRefName, L"refs/tags/"))
+		SetDefaultChoose(IDC_RADIO_TAGS);
+
+	CWnd* pHead = GetDlgItem(IDC_RADIO_HEAD);
+	CString headText;
+	pHead->GetWindowText(headText);
+	pHead->SetWindowText(headText + " (" + g_Git.GetCurrentBranch() + ")");
+
 	AdjustControlSize(IDC_RADIO_BRANCH);
 	AdjustControlSize(IDC_RADIO_TAGS);
 	AdjustControlSize(IDC_RADIO_VERSION);
@@ -83,17 +94,7 @@ BOOL CExportDlg::OnInitDialog()
 	SetDlgTitle();
 
 	CHOOSE_VERSION_ADDANCHOR;
-	this->AddOthersToAnchor();
-	InitChooseVersion();
-	if (m_initialRefName.IsEmpty() || m_initialRefName == L"HEAD")
-		SetDefaultChoose(IDC_RADIO_HEAD);
-	else if (CStringUtils::StartsWith(m_initialRefName, L"refs/tags/"))
-		SetDefaultChoose(IDC_RADIO_TAGS);
-
-	CWnd* pHead = GetDlgItem(IDC_RADIO_HEAD);
-	CString headText;
-	pHead->GetWindowText(headText);
-	pHead->SetWindowText(headText + " (" + g_Git.GetCurrentBranch() + ")");
+	AddOthersToAnchor();
 
 	m_tooltips.AddTool(IDC_EXPORTFILE, IDS_EXPORTFILE_TT);
 

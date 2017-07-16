@@ -73,30 +73,6 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
-	AdjustControlSize(IDC_RADIO_BRANCH);
-	AdjustControlSize(IDC_RADIO_TAGS);
-	AdjustControlSize(IDC_RADIO_VERSION);
-	AdjustControlSize(IDC_CHECK_TRACK);
-	AdjustControlSize(IDC_CHECK_FORCE);
-	AdjustControlSize(IDC_CHECK_SWITCH);
-	AdjustControlSize(IDC_CHECK_SIGN);
-	AdjustControlSize(IDC_RADIO_HEAD);
-
-	CHOOSE_VERSION_ADDANCHOR;
-
-	AddAnchor(IDC_BRANCH_TAG, TOP_LEFT, TOP_RIGHT);
-	AddAnchor(IDC_GROUP_BRANCH, TOP_LEFT, TOP_RIGHT);
-
-	AddAnchor(IDC_GROUP_OPTION, TOP_LEFT, TOP_RIGHT);
-
-	AddAnchor(IDOK,BOTTOM_RIGHT);
-	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
-	AddAnchor(IDHELP, BOTTOM_RIGHT);
-	AddAnchor(IDC_GROUP_MESSAGE,TOP_LEFT,BOTTOM_RIGHT);
-	AddAnchor(IDC_EDIT_MESSAGE,TOP_LEFT,BOTTOM_RIGHT);
-
-	this->AddOthersToAnchor();
-
 	this->SetDefaultChoose(IDC_RADIO_HEAD);
 
 	InitChooseVersion();
@@ -126,6 +102,30 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 	CString HeadText;
 	pHead->GetWindowText( HeadText );
 	pHead->SetWindowText( HeadText + " (" + g_Git.GetCurrentBranch() + ")");
+
+	AdjustControlSize(IDC_RADIO_BRANCH);
+	AdjustControlSize(IDC_RADIO_TAGS);
+	AdjustControlSize(IDC_RADIO_VERSION);
+	AdjustControlSize(IDC_CHECK_TRACK);
+	AdjustControlSize(IDC_CHECK_FORCE);
+	AdjustControlSize(IDC_CHECK_SWITCH);
+	AdjustControlSize(IDC_CHECK_SIGN);
+	AdjustControlSize(IDC_RADIO_HEAD);
+
+	CHOOSE_VERSION_ADDANCHOR;
+
+	AddAnchor(IDC_BRANCH_TAG, TOP_LEFT, TOP_RIGHT);
+	AddAnchor(IDC_GROUP_BRANCH, TOP_LEFT, TOP_RIGHT);
+
+	AddAnchor(IDC_GROUP_OPTION, TOP_LEFT, TOP_RIGHT);
+
+	AddAnchor(IDOK, BOTTOM_RIGHT);
+	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
+	AddAnchor(IDHELP, BOTTOM_RIGHT);
+	AddAnchor(IDC_GROUP_MESSAGE, TOP_LEFT, BOTTOM_RIGHT);
+	AddAnchor(IDC_EDIT_MESSAGE, TOP_LEFT, BOTTOM_RIGHT);
+
+	AddOthersToAnchor();
 
 	EnableSaveRestore(L"BranchTagDlg");
 
