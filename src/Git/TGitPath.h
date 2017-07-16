@@ -207,7 +207,6 @@ public:
 
 	/**
 	 * Get the file modification time - returns zero for files which don't exist
-	 * Returns a FILETIME structure cast to an __int64, for easy comparisons
 	 */
 	__int64 GetLastWriteTime() const;
 

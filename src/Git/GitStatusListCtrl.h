@@ -755,12 +755,10 @@ private:
 	std::vector<size_t>			m_arListArray;
 	std::map<CString, int>	    m_changelists;
 	bool						m_bHasIgnoreGroup;
-	//CTGitPathList				m_ConflictFileList;
 	CTGitPathList				m_StatusFileList;
 	CTGitPathList				m_UnRevFileList;
 	CTGitPathList				m_IgnoreFileList;
 	CTGitPathList				m_LocalChangesIgnoredFileList; // assume valid & skip worktree
-	//CTGitPathList				m_StatusUrlList;
 	CString						m_sLastError;
 
 	LONG						m_nUnversioned;

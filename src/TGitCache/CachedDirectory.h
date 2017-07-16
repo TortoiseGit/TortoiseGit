@@ -68,7 +68,6 @@ private:
 	void AddEntry(const CTGitPath& path, const git_wc_status2_t* pGitStatus, __int64 lastwritetime);
 	CString GetCacheKey(const CTGitPath& path);
 	CString GetFullPathString(const CString& cacheKey);
-	CStatusCacheEntry LookForItemInCache(const CTGitPath& path, bool &bFound);
 	void UpdateChildDirectoryStatus(const CTGitPath& childDir, git_wc_status_kind childStatus);
 
 	// Calculate the complete, composite status from ourselves, our files, and our descendants
