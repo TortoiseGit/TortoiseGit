@@ -36,7 +36,6 @@
 #include "GitSwitchDlg.h"
 #include "ResetDlg.h"
 #include "DeleteConflictDlg.h"
-#include "ChangedDlg.h"
 #include "SendMailDlg.h"
 #include "GitProgressDlg.h"
 #include "PushDlg.h"
@@ -174,9 +173,8 @@ bool CAppUtils::StashApply(CString ref, bool showChanges /* true */)
 		{
 			if (CMessageBox::Show(nullptr, message + L'\n' + CString(MAKEINTRESOURCE(IDS_SEECHANGES)), L"TortoiseGit", MB_YESNO | MB_ICONINFORMATION) == IDYES)
 			{
-				CChangedDlg dlg;
-				dlg.m_pathList.AddPath(CTGitPath());
-				dlg.DoModal();
+				cmd.Format(L"/command:repostatus /path:\"%s\"", (LPCTSTR)g_Git.m_CurrentDir);
+				CAppUtils::RunTortoiseGitProc(cmd);
 			}
 			return true;
 		}
@@ -219,9 +217,8 @@ bool CAppUtils::StashPop(int showChanges /* = 1 */)
 		{
 			if (CMessageBox::ShowCheck(nullptr, message + L'\n' + CString(MAKEINTRESOURCE(IDS_SEECHANGES)), L"TortoiseGit", MB_YESNO | (hasConflicts ? MB_ICONEXCLAMATION : MB_ICONINFORMATION), hasConflicts ? L"StashPopShowConflictChanges" : L"StashPopShowChanges") == IDYES)
 			{
-				CChangedDlg dlg;
-				dlg.m_pathList.AddPath(CTGitPath());
-				dlg.DoModal();
+				cmd.Format(L"/command:repostatus /path:\"%s\"", (LPCTSTR)g_Git.m_CurrentDir);
+				CAppUtils::RunTortoiseGitProc(cmd);
 			}
 			return true;
 		}
@@ -2365,9 +2362,8 @@ bool DoPull(const CString& url, bool bAutoLoad, BOOL bFetchTags, bool bNoFF, boo
 
 	if (ret == IDOK && progress.m_GitStatus == 1 && progress.m_LogText.Find(L"CONFLICT") >= 0 && CMessageBox::Show(nullptr, IDS_SEECHANGES, IDS_APPNAME, MB_YESNO | MB_ICONINFORMATION) == IDYES)
 	{
-		CChangedDlg changeddlg;
-		changeddlg.m_pathList.AddPath(CTGitPath());
-		changeddlg.DoModal();
+		cmd.Format(L"/command:repostatus /path:\"%s\"", (LPCTSTR)g_Git.m_CurrentDir);
+		CAppUtils::RunTortoiseGitProc(cmd);
 
 		return true;
 	}
