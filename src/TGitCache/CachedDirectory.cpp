@@ -380,7 +380,7 @@ int CCachedDirectory::EnumFiles(const CTGitPath& path, CString sProjectRoot, con
 			CGitStatusCache::Instance().AddFolderForCrawling(m_directoryPath);
 			return 0;
 		}
-		GetStatusCallback(path.GetWinPathString(), &status, false, path.GetLastWriteTime(), this);
+		GetStatusCallback(path.GetWinPathString(), &status, false, path.GetLastWriteTime(true), this);
 		RefreshMostImportant(false);
 	}
 	else

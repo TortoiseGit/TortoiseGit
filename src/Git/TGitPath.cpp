@@ -317,9 +317,9 @@ bool CTGitPath::Delete(bool bTrash, bool bShowErrorUI) const
 	return bRet;
 }
 
-__int64  CTGitPath::GetLastWriteTime() const
+__int64  CTGitPath::GetLastWriteTime(bool force /* = false */) const
 {
-	if(!m_bLastWriteTimeKnown)
+	if (!m_bLastWriteTimeKnown || force)
 		UpdateAttributes();
 	return m_lastWriteTime;
 }

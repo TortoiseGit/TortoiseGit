@@ -208,7 +208,7 @@ public:
 	/**
 	 * Get the file modification time - returns zero for files which don't exist
 	 */
-	__int64 GetLastWriteTime() const;
+	__int64 GetLastWriteTime(bool force = false) const;
 
 	/**
 	 * Get the file size. Returns zero for directories or files that don't exist.
