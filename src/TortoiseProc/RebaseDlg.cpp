@@ -783,7 +783,7 @@ void CRebaseDlg::AddBranchToolTips(CHistoryCombo *pBranch)
 		GitRev rev;
 		if (rev.GetCommit(text + L"^{}"))
 		{
-			MessageBox(rev.GetLastErr(), L"TortoiseGit", MB_ICONERROR);
+			MessageBox(L"Failed to get commit.\n" + rev.GetLastErr(), L"TortoiseGit", MB_ICONERROR);
 			pBranch->DisableTooltip();
 			return;
 		}
