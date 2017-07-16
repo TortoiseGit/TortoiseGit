@@ -103,6 +103,9 @@ static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool l
 
 bool CAppUtils::StashSave(const CString& msg, bool showPull, bool pullShowPush, bool showMerge, const CString& mergeRev)
 {
+	if (!CheckUserData())
+		return false;
+
 	CStashSaveDlg dlg;
 	dlg.m_sMessage = msg;
 	if (dlg.DoModal() == IDOK)
