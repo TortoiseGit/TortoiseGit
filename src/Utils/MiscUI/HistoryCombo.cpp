@@ -717,6 +717,7 @@ int CHistoryCombo::FindStringExactCaseSensitive(int nIndexStart, LPCTSTR lpszFin
 CCustomAutoCompleteSource::CCustomAutoCompleteSource(const CStringArray& pData)
 	: m_pData(pData)
 	, m_index(0)
+	, m_cRefCount(0)
 {
 }
 
