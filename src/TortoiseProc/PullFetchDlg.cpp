@@ -206,7 +206,7 @@ BOOL CPullFetchDlg::OnInitDialog()
 	m_Remote.SetMaxHistoryItems(0x7FFFFFFF);
 	m_Other.EnableWindow(FALSE);
 	m_RemoteBranch.SetCaseSensitive(TRUE);
-	if (!m_IsPull && !m_bNamedRemoteFetchAll)
+	if (!m_IsPull && m_bNamedRemoteFetchAll)
 	{
 		m_RemoteBranch.EnableWindow(FALSE);
 		GetDlgItem(IDC_BUTTON_BROWSE_REF)->EnableWindow(FALSE);
@@ -352,7 +352,7 @@ void CPullFetchDlg::OnBnClickedRd()
 		DialogEnableWindow(IDC_CHECK_REBASE, TRUE);
 		m_bRebase = m_bRebaseActivatedInConfigForPull;
 		UpdateData(FALSE);
-		if (!m_IsPull && !m_bNamedRemoteFetchAll)
+		if (!m_IsPull && m_bNamedRemoteFetchAll)
 			m_RemoteBranch.EnableWindow(FALSE);
 	}
 	if( GetCheckedRadioButton(IDC_REMOTE_RD,IDC_OTHER_RD) == IDC_OTHER_RD)
@@ -390,7 +390,7 @@ void CPullFetchDlg::OnBnClickedOk()
 	{
 		m_RemoteURL=m_Remote.GetString();
 		m_bAllRemotes = (m_Remote.GetCurSel() == 0 && m_Remote.GetCount() > 1 && !m_IsPull);
-		if (!m_bNamedRemoteFetchAll && (!m_IsPull ||
+		if (m_bNamedRemoteFetchAll && (!m_IsPull ||
 			(m_configPullRemote == m_RemoteURL && m_configPullBranch == m_RemoteBranch.GetString())))
 			//When fetching or when pulling from the configured tracking branch, dont explicitly set the remote branch name,
 			//because otherwise git will not update the remote tracking branches.
