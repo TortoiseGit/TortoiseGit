@@ -1571,7 +1571,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			//Select Multi item
 			if (selectedCount > 0)
 			{
-				if (selectedCount == 2 && (m_dwContextMenus & GITSLC_POPCOMPARETWOFILES) && (m_CurrentVersion.IsEmpty() || m_CurrentVersion == GIT_REV_ZERO))
+				if (selectedCount == 2 && (m_dwContextMenus & GITSLC_POPCOMPARETWOFILES))
 				{
 					POSITION pos = GetFirstSelectedItemPosition();
 					int index = GetNextSelectedItem(pos);
@@ -2009,7 +2009,10 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							break;
 
 						CString sCmd;
-						sCmd.Format(L"/command:diff /path:\"%s\" /endrev:%s /path2:\"%s\" /startrev:%s /hwnd:%p", firstfilepath->GetWinPath(), firstfilepath->Exists() ? GIT_REV_ZERO : L"HEAD", secondfilepath->GetWinPath(), secondfilepath->Exists() ? GIT_REV_ZERO : L"HEAD", (void*)m_hWnd);
+						if (m_CurrentVersion.IsEmpty() || m_CurrentVersion == GIT_REV_ZERO)
+							sCmd.Format(L"/command:diff /path:\"%s\" /endrev:%s /path2:\"%s\" /startrev:%s /hwnd:%p", firstfilepath->GetWinPath(), firstfilepath->Exists() ? GIT_REV_ZERO : L"HEAD", secondfilepath->GetWinPath(), secondfilepath->Exists() ? GIT_REV_ZERO : L"HEAD", (void*)m_hWnd);
+						else
+							sCmd.Format(L"/command:diff /path:\"%s\" /startrev:%s /path2:\"%s\" /endrev:%s /hwnd:%p", firstfilepath->GetWinPath(), firstfilepath->Exists() ? (LPCTSTR)(m_CurrentVersion + L"~1") : (LPCTSTR)m_CurrentVersion, secondfilepath->GetWinPath(), secondfilepath->Exists() ? (LPCTSTR)(m_CurrentVersion + L"~1") : (LPCTSTR)m_CurrentVersion, (void*)m_hWnd);
 						if (bShift)
 							sCmd += L" /alternative";
 						CAppUtils::RunTortoiseGitProc(sCmd);
