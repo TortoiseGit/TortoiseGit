@@ -66,6 +66,7 @@ Released: unreleased
  * Fixed issue #2258: Autocomplete for Remote URL box in Sync screen doesn't work
  * Fixed issue #2976: After setting the config `include.path` key, can't delete the branch which is tracking the remote branch
  * Fixed issue #3028: Error when using TortoiseGit cli diff command with new added file in commit
+ * /startrev: and /endrev: parameters of /command:diff are no longer mixed up
 
 = Release 2.4.0 =
 Released: 2017-01-31

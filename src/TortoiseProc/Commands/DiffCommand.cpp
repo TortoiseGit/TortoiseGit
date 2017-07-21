@@ -49,9 +49,9 @@ bool DiffCommand::Execute()
 			if (parser.HasKey(L"startrev") && parser.HasKey(L"endrev"))
 			{
 				if (parser.HasKey(L"unified"))
-					bRet = !!CAppUtils::StartShowUnifiedDiff(nullptr, cmdLinePath, parser.GetVal(L"endrev"), cmdLinePath, parser.GetVal(L"startrev"), bAlternativeTool);
+					bRet = !!CAppUtils::StartShowUnifiedDiff(nullptr, cmdLinePath, parser.GetVal(L"startrev"), cmdLinePath, parser.GetVal(L"endrev"), bAlternativeTool);
 				else
-					bRet = !!CGitDiff::Diff(&cmdLinePath, &cmdLinePath, parser.GetVal(L"startrev"), parser.GetVal(L"endrev"), false, parser.HasKey(L"unified") == TRUE, parser.GetLongVal(L"line"), bAlternativeTool, false);
+					bRet = !!CGitDiff::Diff(&cmdLinePath, &cmdLinePath, parser.GetVal(L"endrev"), parser.GetVal(L"startrev"), false, parser.HasKey(L"unified") == TRUE, parser.GetLongVal(L"line"), bAlternativeTool, false);
 			}
 			else
 			{
@@ -105,7 +105,7 @@ bool DiffCommand::Execute()
 		if (parser.HasKey(L"startrev") && parser.HasKey(L"endrev") && CStringUtils::StartsWith(path2, g_Git.m_CurrentDir + L"\\"))
 		{
 			CTGitPath tgitPath2 = path2.Mid(g_Git.m_CurrentDir.GetLength() + 1);
-			bRet = !!CGitDiff::Diff(&tgitPath2, &cmdLinePath, parser.GetVal(L"startrev"), parser.GetVal(L"endrev"), false, parser.HasKey(L"unified") == TRUE, parser.GetLongVal(L"line"), bAlternativeTool);
+			bRet = !!CGitDiff::Diff(&tgitPath2, &cmdLinePath, parser.GetVal(L"endrev"), parser.GetVal(L"startrev"), false, parser.HasKey(L"unified") == TRUE, parser.GetLongVal(L"line"), bAlternativeTool);
 		}
 		else
 		{
