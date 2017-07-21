@@ -43,7 +43,7 @@ public:
 	static void GetSubmoduleChangeType(CGit& subgit, const CGitHash& oldhash, const CGitHash& newhash, bool& oldOK, bool& newOK, ChangeType& changeType, CString& oldsub, CString& newsub);
 
 	// Use two path to handle rename cases
-	static int Diff(const CTGitPath* pPath1, const CTGitPath* pPath2, CString rev1, CString rev2, bool blame = false, bool unified = false, int jumpToLine = 0, bool bAlternativeTool = false);
+	static int Diff(const CTGitPath* pPath1, const CTGitPath* pPath2, CString rev1, CString rev2, bool blame = false, bool unified = false, int jumpToLine = 0, bool bAlternativeTool = false, bool mustExist = true);
 	static int SubmoduleDiff(const CTGitPath* pPath1, const CTGitPath* pPath2, const CString& rev1, const CString& rev2, bool blame = false, bool unified = false);
 	static int DiffNull(const CTGitPath* pPath, CString rev1, bool bIsAdd = true, int jumpToLine = 0, bool bAlternative = false);
 	static int DiffCommit(const CTGitPath& path, const GitRev* r1, const GitRev* r2, bool bAlternative = false);

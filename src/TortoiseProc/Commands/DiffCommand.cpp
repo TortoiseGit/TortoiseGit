@@ -51,7 +51,7 @@ bool DiffCommand::Execute()
 				if (parser.HasKey(L"unified"))
 					bRet = !!CAppUtils::StartShowUnifiedDiff(nullptr, cmdLinePath, parser.GetVal(L"endrev"), cmdLinePath, parser.GetVal(L"startrev"), bAlternativeTool);
 				else
-					bRet = !!CGitDiff::Diff(&cmdLinePath, &cmdLinePath, parser.GetVal(L"startrev"), parser.GetVal(L"endrev"), false, parser.HasKey(L"unified") == TRUE, parser.GetLongVal(L"line"), bAlternativeTool);
+					bRet = !!CGitDiff::Diff(&cmdLinePath, &cmdLinePath, parser.GetVal(L"startrev"), parser.GetVal(L"endrev"), false, parser.HasKey(L"unified") == TRUE, parser.GetLongVal(L"line"), bAlternativeTool, false);
 			}
 			else
 			{

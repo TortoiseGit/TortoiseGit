@@ -2591,8 +2591,9 @@ int CGit::GetOneFile(const CString &Refname, const CTGitPath &path, const CStrin
 			return -1;
 
 		CAutoTreeEntry entry;
-		if (git_tree_entry_bypath(entry.GetPointer(), tree, CUnicodeUtils::GetUTF8(path.GetGitPathString())))
-			return -1;
+		int ret = git_tree_entry_bypath(entry.GetPointer(), tree, CUnicodeUtils::GetUTF8(path.GetGitPathString()));
+		if (ret)
+			return ret;
 
 		if (git_tree_entry_filemode(entry) == GIT_FILEMODE_COMMIT)
 		{

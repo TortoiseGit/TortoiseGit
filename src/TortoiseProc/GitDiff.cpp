@@ -342,7 +342,7 @@ void CGitDiff::GetSubmoduleChangeType(CGit& subgit, const CGitHash& oldhash, con
 		changeType = Unknown;
 }
 
-int CGitDiff::Diff(const CTGitPath* pPath, const CTGitPath* pPath2, CString rev1, CString rev2, bool /*blame*/, bool /*unified*/, int jumpToLine, bool bAlternativeTool)
+int CGitDiff::Diff(const CTGitPath* pPath, const CTGitPath* pPath2, CString rev1, CString rev2, bool /*blame*/, bool /*unified*/, int jumpToLine, bool bAlternativeTool, bool mustExist)
 {
 	// make sure we have HASHes here, otherwise filenames might be invalid
 	if (rev1 != GIT_REV_ZERO)
@@ -389,7 +389,8 @@ int CGitDiff::Diff(const CTGitPath* pPath, const CTGitPath* pPath2, CString rev1
 		// use original file extension, an external diff tool might need it
 		file1 = CTempFiles::Instance().GetTempFilePath(false, *pPath, rev1).GetWinPathString();
 		title1 = pPath->GetGitPathString() + L": " + rev1.Left(g_Git.GetShortHASHLength());
-		if (g_Git.GetOneFile(rev1, *pPath, file1))
+		auto ret = g_Git.GetOneFile(rev1, *pPath, file1);
+		if (ret && !(!mustExist && ret == GIT_ENOTFOUND))
 		{
 			CString out;
 			out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)pPath->GetGitPathString(), (LPCTSTR)rev1, (LPCTSTR)file1);
@@ -424,7 +425,8 @@ int CGitDiff::Diff(const CTGitPath* pPath, const CTGitPath* pPath2, CString rev1
 
 		file2 = CTempFiles::Instance().GetTempFilePath(false, fileName, rev2).GetWinPathString();
 		title2 = fileName.GetGitPathString() + L": " + rev2.Left(g_Git.GetShortHASHLength());
-		if (g_Git.GetOneFile(rev2, fileName, file2))
+		auto ret = g_Git.GetOneFile(rev2, fileName, file2);
+		if (ret && !(!mustExist && ret == GIT_ENOTFOUND))
 		{
 			CString out;
 			out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)pPath2->GetGitPathString(), (LPCTSTR)rev2, (LPCTSTR)file2);
