@@ -19,7 +19,14 @@ int got_crypt(void)
         attempted = TRUE;
         crypt = load_system32_dll("crypt32.dll");
         successful = crypt &&
-            GET_WINDOWS_FUNCTION(crypt, CryptProtectMemory);
+#ifdef COVERITY
+            /* The build toolchain I use with Coverity doesn't know
+             * about this function, so can't type-check it */
+            GET_WINDOWS_FUNCTION_NO_TYPECHECK(crypt, CryptProtectMemory)
+#else
+            GET_WINDOWS_FUNCTION(crypt, CryptProtectMemory)
+#endif
+            ;
     }
     return successful;
 }

@@ -8,10 +8,10 @@
  * default stuff used for local development runs of 'make'.
  */
 
-#define RELEASE 0.68
-#define TEXTVER "Release 0.68"
-#define SSHVER "TortoiseGitPlink-Release-0.68"
-#define BINARY_VERSION 0,68,0,0
-#define SOURCE_COMMIT "23fbc4f56b04ca5d387c16720caa05ddf2d63e2f"
+#define RELEASE 0.70
+#define TEXTVER "Release 0.70"
+#define SSHVER "TortoiseGitPlink-Release-0.70"
+#define BINARY_VERSION 0,70,0,0
+#define SOURCE_COMMIT "3cd10509a51edf5a21cdc80aabf7e6a934522d47"
 // don't forget to update windows\TortoisePlink.rc
 

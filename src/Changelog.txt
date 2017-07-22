@@ -34,7 +34,7 @@ Released: unreleased
  * Fixed issue #2909: Commit window unclosable after clicking "No" and "do not ask again"
  * Fixed issue #2911: Doing Add on repository root fails with libgit2 returned invalid path"
  * Fixed issue #2791: Start Bisect UI incomplete
- * Update PuTTY to 0.69 (security fix, cf. https://www.chiark.greenend.org.uk/~sgtatham/putty/changes.html)
+ * Update PuTTY to 0.70 (security fix, cf. https://www.chiark.greenend.org.uk/~sgtatham/putty/changes.html)
  * Fixed issue #2935: Icon overlay not shown for files on network UNC paths
  * Fix possible crash in TortoiseGitMerge when applying patch
  * Fixed issue #2942: Can't update Remote Branch of Pull dialog with Browse references dialog
