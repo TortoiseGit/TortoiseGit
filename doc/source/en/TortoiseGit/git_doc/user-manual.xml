@@ -1189,7 +1189,7 @@ view real errors.</simpara>
 </section>
 <section id="Git User Manual_recovering-lost-changes">
 <title>Recovering lost changes</title>
-<section id="reflogs">
+<section id="Git User Manual_reflogs">
 <title>Reflogs</title>
 <simpara>Say you modify a branch with <link linkend="Git User Manual_fixing-mistakes"><emphasis>git reset --hard</emphasis></link>,
 and then realize that the branch was the only reference you had to
