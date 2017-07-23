@@ -3186,7 +3186,17 @@ void CMainFrame::OnRegexfilter(UINT cmd)
 						MessageBox(L"Regex is invalid!\r\n" + CString(ex.what()));
 					}
 					m_regexIndex = index;
-					LoadViews(-1);
+					try
+					{
+						LoadViews(-1);
+					}
+					catch (const std::regex_error& ex)
+					{
+						MessageBox(L"Regexp error caught:\r\n" + CString(ex.what()) + L"\r\nTrying to recover by unsetting it again.");
+						m_Data.SetRegexTokens(std::wregex(), L"");
+						m_regexIndex = -1;
+						LoadViews(-1);
+					}
 					break;
 				}
 				++index;
