@@ -1,5 +1,5 @@
 ﻿= Release 2.5.0 =
-Released: unreleased
+Released: 2017-07-23
 
 == Major change ==
  * VS2017 is used for building TortoiseGit
@@ -15,6 +15,8 @@ Released: unreleased
  * Fixed issue #2861: Cloning a repository with many files tracked by git-lfs is extremely slow
  * Various High DPI optimizations
  * Update libgit to 2.13.1
+ * Update zlib to 1.2.11
+ * Update apr and apr-util
  * Fixed issue #2988: Add `Show/hide ignore local changes flagged files` in Log Dialog
  * Fixed issue #2999: Log dialog: Copy tag to clipboard
  * Fixed issue #2964: Blame: gloss over per-line commit reference if duplicated
@@ -29,6 +31,13 @@ Released: unreleased
    It's configurable now whether opening the rebase dialog is skipped if nothing was fetched or current HEAD is up2date or newer
  * Fixed issue #3016: Add context menus to the header views in three way diff mode to open TMerge again with the diff shown in the corresponding file
  * Fixed issue #2980: Since TortoiseGit 2.4.0 the icon overlays are case sensitive. if you really want to change this default, you can disable the advanced setting "OverlaysCaseSensitive". This is, however, not the default and not recommended as some git tools such as "git log" are case sensitive on paths and might show an incomplete history.
+ * FileDiffDlg: Allow to use alternative diff tool by pressing Shift
+ * Allow to view diff on Delete/Modified conflicts
+ * Sync smart tab detection code with TortoiseSVN
+ * Ask before pushing all local branches to a remote
+ * TGitBlame: Allow to search both directions
+ * LogDlg and CommitDlg: Provide more copy options
+ * GitStatusListCtrl: Use logical (stable) sort if enabled
 
 == Bug Fixes ==
  * Fixed issue #2909: Commit window unclosable after clicking "No" and "do not ask again"
@@ -55,6 +64,8 @@ Released: unreleased
    * Fixed issue #2818: TGitCache: overlays sometimes blink in and out of existance for several minutes at a time
    * Fixed issue #1242: TGitCache might fall into an (endless) refresh loop
    * Symlinks are not shown as modified any more
+ * Missing index is not an error condition, but need to be handled like an empty index
+ * Shell overlay cache: Don't show .git file with unversioned icon
  * Fixed issue #3002: Push underlined hotkey is missing in log window.
  * Fixed issue #3005: TortoiseGit does not support cloning local svn repositories
  * Fixed issue #3011: clone: --bare and --origin options are incompatible
@@ -65,6 +76,10 @@ Released: unreleased
  * Fixed issue #3017: Spaces at the beginning of the URL breaks pushes
  * Fixed issue #2258: Autocomplete for Remote URL box in Sync screen doesn't work
  * Fixed issue #2976: After setting the config `include.path` key, can't delete the branch which is tracking the remote branch
+ * Fix possible crash if "git.exe diff-index" exits with an exit-code != 0, but no error message
+ * Do not append empty pathspec to "git clean"
+ * TGitBlame: Implement double buffering
+ * LogDlg: Remember scroll position when refreshing working tree status
  * Fixed issue #3028: Error when using TortoiseGit cli diff command with new added file in commit
  * /startrev: and /endrev: parameters of /command:diff are no longer mixed up
 
