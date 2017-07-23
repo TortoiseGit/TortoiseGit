@@ -1,9 +1,10 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2015 the TortoiseGit team
+# Copyright (C) 2008-2017 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
 # Translators:
+# Lübbe TortoiseSVN <luebbe.tortoisesvn@gmail.com>, 2011,2013
 # Martin Šuráb <e.martyn@gmail.com>, 2016
 # pavolmnich, 2014-2015
 # Sven Strickroth <sstrickroth@googlemail.com>, 2014-2015
@@ -12,7 +13,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2016-12-29 16:08+0000\n"
+"PO-Revision-Date: 2017-07-22 13:05+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Slovak (http://www.transifex.com/lznuaa/tortoisegit/language/sk/)\n"
 "MIME-Version: 1.0\n"
@@ -48,27 +49,27 @@ msgstr "počet samostatne zobrazených autorov:"
 msgid "%.2f MiB transferred"
 msgstr "Prenesené dáta: %.2f MiB"
 
-#. Resource IDs: (61878)
+#. Resource IDs: (AFX_IDP_ARCH_BADCLASS)
 #, c-format
 msgid "%1 contained an unexpected object."
 msgstr "%1 obsahoval neočakávaný objekt."
 
-#. Resource IDs: (61859)
+#. Resource IDs: (AFX_IDP_FILE_BAD_PATH)
 #, c-format
 msgid "%1 contains an incorrect path."
 msgstr "%1 obsahuje nesprávnu cestu."
 
-#. Resource IDs: (61879)
+#. Resource IDs: (AFX_IDP_ARCH_BADSCHEMA)
 #, c-format
 msgid "%1 contains an incorrect schema."
 msgstr "%1 obsahuje nesprávnu schému."
 
-#. Resource IDs: (61877)
+#. Resource IDs: (AFX_IDP_ARCH_BADINDEX)
 #, c-format
 msgid "%1 has a bad format."
 msgstr "%1 má zlý formát."
 
-#. Resource IDs: (61858)
+#. Resource IDs: (AFX_IDP_FILE_NOT_FOUND)
 #, c-format
 msgid "%1 was not found."
 msgstr "%1 nebol nájdený."
@@ -148,10 +149,10 @@ msgstr "%1!d! vybraných položiek"
 msgid "%1!d! minutes ago"
 msgstr "Pred %1!d! minútami"
 
-#. Resource IDs: (IDS_REPOBROWSE_INFODIR)
+#. Resource IDs: (IDS_CONFLICT_INFOTEXT)
 #, c-format
-msgid "%1!s!"
-msgstr "%1!s!"
+msgid "%1!s! (%2!s!)"
+msgstr "%1!s! (%2!s!)"
 
 #. Resource IDs: (IDS_REPOBROWSE_INFO)
 #, c-format
@@ -167,14 +168,14 @@ msgid ""
 "Size %2!s!"
 msgstr "%1!s!\nVeľkosť %2!s!"
 
-#. Resource IDs: (61744)
+#. Resource IDs: (AFX_IDP_SCRIPT_ERROR)
 #, c-format
 msgid ""
 "%1: %2\n"
 "Continue running script?"
 msgstr "%1: %2\nPokračovať v skripte?"
 
-#. Resource IDs: (61729)
+#. Resource IDs: (AFX_IDP_FAILED_INVALID_PATH)
 #, c-format
 msgid ""
 "%1\n"
@@ -196,6 +197,18 @@ msgstr "Prenesené dáta: %I64d B"
 #, c-format
 msgid "%I64d KiB transferred"
 msgstr "Prenesené dáta: %I64d KiB"
+
+#. Resource IDs: (AFX_IDS_AUTOSAVE_RECOVERED)
+#, c-format
+msgid "%Ts [Recovered]"
+msgstr "%Ts [Obnovené]"
+
+#. Resource IDs: (AFX_IDS_EMBED_FORMAT, AFX_IDS_LINKSOURCE_FORMAT)
+#, c-format
+msgid ""
+"%Ts\n"
+"%Ts"
+msgstr "%Ts\n%Ts"
 
 #. Resource IDs: (IDS_PROC_SYNC_COMMITSAHEAD)
 #, c-format
@@ -250,11 +263,6 @@ msgstr "%ld z %ld"
 msgid "%s - at revision: %d"
 msgstr ""
 
-#. Resource IDs: (62186)
-#, c-format
-msgid "%s [Recovered]"
-msgstr "%s [Obnovené]"
-
 #. Resource IDs: (IDS_PROGRS_FINALINFO)
 #, c-format
 msgid "%s in %s"
@@ -274,23 +282,6 @@ msgstr ""
 #, c-format
 msgid "%s: Working Tree"
 msgstr ""
-
-#. Resource IDs: (IDS_PROC_EXPORTFOLDERNAME2)
-#, c-format
-msgid "%s\\Export (%d) of %s"
-msgstr ""
-
-#. Resource IDs: (IDS_PROC_EXPORTFOLDERNAME)
-#, c-format
-msgid "%s\\Export of %s"
-msgstr ""
-
-#. Resource IDs: (61585, 61586)
-#, c-format
-msgid ""
-"%s\n"
-"%s"
-msgstr "%s\n%s"
 
 #. Resource IDs: (IDS_PATCH_ITEMTT)
 #, c-format
@@ -314,7 +305,8 @@ msgid ""
 "TortoiseGitMerge can't diff directories."
 msgstr ""
 
-#. Resource IDs: (16923, Dialog IDD_RENAME: Control id 1483)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE7: Control id 16923, Dialog
+#. IDD_RENAME: Control id 1483)
 msgid "&..."
 msgstr "&..."
 
@@ -334,7 +326,7 @@ msgstr "&O TortoiseGitBlame..."
 msgid "&About TortoiseGitMerge..."
 msgstr "&O TortoiseGitMerge..."
 
-#. Resource IDs: (16920)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 16920)
 msgid "&Activate"
 msgstr "&Aktivovať"
 
@@ -343,7 +335,7 @@ msgstr "&Aktivovať"
 msgid "&Add"
 msgstr "&Pridať"
 
-#. Resource IDs: (17075)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE8: Control id 17075)
 msgid "&Add >>"
 msgstr "&Pridať >>"
 
@@ -360,7 +352,7 @@ msgstr "&Pridať nový/Uložiť"
 msgid "&Add it"
 msgstr "&Pridaj"
 
-#. Resource IDs: (17018)
+#. Resource IDs: (IDS_AFXBARRES_ADD_REMOVE_BTNS)
 msgid "&Add or Remove Buttons"
 msgstr "&Pridať odstrániť tlačítka"
 
@@ -394,19 +386,20 @@ msgstr "&Použiť záplatu"
 msgid "&Apply unified diff"
 msgstr "&Použiť záplatu (Unified diff)"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE7: Control id 65535)
 msgid "&Arguments:"
 msgstr "&Argumenty:"
 
-#. Resource IDs: (16645)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 16645, Dialog
+#. IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 16645)
 msgid "&Assign"
 msgstr "&Priradiť"
 
-#. Resource IDs: (16633)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE4: Control id 16633)
 msgid "&Associate double-click event with:"
 msgstr "&Priradiť dvojklik k:"
 
-#. Resource IDs: (17041)
+#. Resource IDs: (IDS_AFXBARRES_AUTOHIDE)
 msgid "&Auto Hide"
 msgstr "&Skryť automaticky"
 
@@ -434,7 +427,7 @@ msgstr "O&bviniť zmeny"
 msgid "&Blame revisions"
 msgstr "&Obviniť revízie"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 65535)
 msgid "&Blue:"
 msgstr "&Modré:"
 
@@ -461,11 +454,11 @@ msgstr "&Prezerať úložisko"
 msgid "&Browse..."
 msgstr "&Prezerať..."
 
-#. Resource IDs: (16913 - Menu)
+#. Resource IDs: (ID_AFXBARRES_TOOLBAR_APPEARANCE - Menu)
 msgid "&Button Appearance..."
 msgstr "&Vzhľad tlačidiel..."
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 65535)
 msgid "&Button text:"
 msgstr "&Popis tlačidla:"
 
@@ -477,15 +470,16 @@ msgstr "&CD-ROM"
 msgid "&Cancel"
 msgstr "&Zrušiť"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 65535)
 msgid "&Categories:"
 msgstr "&Kategórie:"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_KEYMAP: Control id 65535, Dialog
+#. IDD_AFXBARRES_PROPPAGE5: Control id 65535)
 msgid "&Category:"
 msgstr "&Kategória:"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE8: Control id 65535)
 msgid "&Choose commands from:"
 msgstr "&Vybrať príkazy z:"
 
@@ -501,15 +495,16 @@ msgstr ""
 msgid "&Clear stash"
 msgstr ""
 
-#. Resource IDs: (58112, Dialog IDD_CHECKFORUPDATES: Control id 1)
+#. Resource IDs: (Dialog AFX_IDD_PREVIEW_TOOLBAR: Control id 58112, Dialog
+#. IDD_CHECKFORUPDATES: Control id 1)
 msgid "&Close"
 msgstr "&Zatvoriť"
 
-#. Resource IDs: (16922)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 16922)
 msgid "&Close Window(s)"
 msgstr "&Zatvoriť okno(á)"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE7: Control id 65535)
 msgid "&Command:"
 msgstr "&Príkaz:"
 
@@ -549,7 +544,7 @@ msgstr "&Pokračovať"
 msgid "&Copy"
 msgstr "&Kopírovať"
 
-#. Resource IDs: (16911 - Menu)
+#. Resource IDs: (ID_AFXBARRES_COPY_IMAGE - Menu)
 msgid "&Copy Button Image"
 msgstr "&Kopírovať obrázok tlačidla"
 
@@ -570,8 +565,9 @@ msgstr "&Prispôsobenie"
 msgid "&Default"
 msgstr "&Predvolené"
 
-#. Resource IDs: (16617, 16912 - Menu, Dialog IDD_DELETEREMOTETAG: Control id
-#. 1, IDS_DELETEBUTTON, IDS_MENUREMOVE)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE2: Control id 16617, Dialog
+#. IDD_DELETEREMOTETAG: Control id 1, IDS_DELETEBUTTON, IDS_MENUREMOVE,
+#. ID_AFXBARRES_TOOLBAR_DELETE - Menu)
 msgid "&Delete"
 msgstr "&Vymazať"
 
@@ -619,7 +615,7 @@ msgstr "&Zahodiť"
 msgid "&Do the same for the rest"
 msgstr "&Zopakovať pre ostatné"
 
-#. Resource IDs: (17040)
+#. Resource IDs: (IDS_AFXBARRES_DOCKING)
 msgid "&Docking"
 msgstr "&Zachytávanie"
 
@@ -665,7 +661,8 @@ msgstr "&Upraviť filter"
 msgid "&Edit conflicts"
 msgstr "&Upraviť konflikty"
 
-#. Resource IDs: (16510, Dialog IDD_SETTINGSPROGSADV: Control id 1099)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16510, Dialog
+#. IDD_SETTINGSPROGSADV: Control id 1099)
 msgid "&Edit..."
 msgstr "&Upraviť..."
 
@@ -733,7 +730,7 @@ msgstr "&Zväčšiť na veľkosť okna\tF"
 msgid "&Fixed drives"
 msgstr "&Pevné disky"
 
-#. Resource IDs: (17039)
+#. Resource IDs: (IDS_AFXBARRES_FLOATING)
 msgid "&Floating"
 msgstr "&Plávajúce"
 
@@ -787,7 +784,7 @@ msgstr "&Ísť na\tCtrl+G"
 msgid "&Gray Unrelated Changed Paths"
 msgstr ""
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 65535)
 msgid "&Green:"
 msgstr "&Zelené:"
 
@@ -801,7 +798,8 @@ msgstr "&HEAD"
 msgid "&Hard: Reset working tree and index (discard all local changes)"
 msgstr ""
 
-#. Resource IDs: (57670, 65535 - PopupMenu, IDS_MENUHELP)
+#. Resource IDs: (65535 - PopupMenu, Dialog AFX_IDD_NEWTYPEDLG: Control id
+#. 57670, Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 57670, IDS_MENUHELP)
 msgid "&Help"
 msgstr "&Pomoc"
 
@@ -809,7 +807,7 @@ msgstr "&Pomoc"
 msgid "&Help Topics"
 msgstr "Témy &pomocníka"
 
-#. Resource IDs: (17042, 61457, ID_VIEW_OUTPUTWND - Menu)
+#. Resource IDs: (AFX_IDS_HIDE, IDS_AFXBARRES_HIDE, ID_VIEW_OUTPUTWND - Menu)
 msgid "&Hide"
 msgstr "&Skryť"
 
@@ -834,7 +832,7 @@ msgstr ""
 msgid "&Ignore whitespace"
 msgstr "&Ignorovať biele znaky"
 
-#. Resource IDs: (16914 - Menu)
+#. Resource IDs: (ID_AFXBARRES_TOOLBAR_IMAGE - Menu)
 msgid "&Image"
 msgstr "&Obrázok"
 
@@ -842,7 +840,7 @@ msgstr "&Obrázok"
 msgid "&Image info\tI"
 msgstr "&Informácie o obrázku\tI"
 
-#. Resource IDs: (16505)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16505)
 msgid "&Image only"
 msgstr "&Iba obrázky"
 
@@ -850,7 +848,7 @@ msgstr "&Iba obrázky"
 msgid "&Import..."
 msgstr "&Importovať..."
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE7: Control id 65535)
 msgid "&Initial directory:"
 msgstr "&Počiatočný adresár:"
 
@@ -883,7 +881,7 @@ msgstr "&Značky"
 msgid "&Language:"
 msgstr "&Jazyk:"
 
-#. Resource IDs: (16653)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE6: Control id 16653)
 msgid "&Large Icons"
 msgstr "&Veľké ikonky"
 
@@ -928,7 +926,7 @@ msgstr "&Lokálne vetvy"
 msgid "&Local:"
 msgstr ""
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 65535)
 msgid "&Luminence:"
 msgstr "&Jas:"
 
@@ -936,11 +934,11 @@ msgstr "&Jas:"
 msgid "&Max line length for inline diffs"
 msgstr "&Maximálna dĺžka riadku pre riadkové porovnanie"
 
-#. Resource IDs: (16543)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 16543)
 msgid "&Menu animations:"
 msgstr "Animácie &ponuky:"
 
-#. Resource IDs: (16921)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE7: Control id 16921)
 msgid "&Menu contents:"
 msgstr "Obsah &ponuky:"
 
@@ -969,7 +967,7 @@ msgstr "&Správa"
 msgid "&Message:"
 msgstr "&Správa:"
 
-#. Resource IDs: (16925)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 16925)
 msgid "&Minimize"
 msgstr "&Minimalizovať"
 
@@ -999,11 +997,12 @@ msgstr "&Navigovať"
 msgid "&Network drives"
 msgstr "&Sieťové disky"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog AFX_IDD_NEWTYPEDLG: Control id 65535)
 msgid "&New "
 msgstr "&Nový"
 
-#. Resource IDs: (16509, 16615)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16509, Dialog
+#. IDD_AFXBARRES_PROPPAGE2: Control id 16615)
 msgid "&New..."
 msgstr "&Nový"
 
@@ -1011,7 +1010,7 @@ msgstr "&Nový"
 msgid "&Next >"
 msgstr "&Ďalšie >"
 
-#. Resource IDs: (58114)
+#. Resource IDs: (Dialog AFX_IDD_PREVIEW_TOOLBAR: Control id 58114)
 msgid "&Next Page"
 msgstr "&Ďalšia strana"
 
@@ -1019,7 +1018,7 @@ msgstr "&Ďalšia strana"
 msgid "&No"
 msgstr "&Nie"
 
-#. Resource IDs: (16632)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE4: Control id 16632)
 msgid "&No double-click event"
 msgstr "&Žiadna akcia dvojkliku"
 
@@ -1035,11 +1034,12 @@ msgstr "Žiad&ne"
 msgid "&Notepad2"
 msgstr "&Notepad2"
 
-#. Resource IDs: (1, Dialog IDD_REVGRAPHFILTER: Control id 1, IDS_OKBUTTON)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 1, Dialog
+#. IDD_REVGRAPHFILTER: Control id 1, IDS_OKBUTTON)
 msgid "&OK"
 msgstr "&OK"
 
-#. Resource IDs: (61505)
+#. Resource IDs: (AFX_IDS_ONEPAGE)
 msgid "&One Page"
 msgstr "&Jeden panel"
 
@@ -1098,11 +1098,11 @@ msgstr "&Port:"
 msgid "&Preserve merges"
 msgstr ""
 
-#. Resource IDs: (17091)
+#. Resource IDs: (IDS_AFXBARRES_PRINT_PREVIEW)
 msgid "&Print Preview"
 msgstr "&Náhľad pred tlačou"
 
-#. Resource IDs: (58116)
+#. Resource IDs: (Dialog AFX_IDD_PREVIEW_TOOLBAR: Control id 58116)
 msgid "&Print..."
 msgstr "&Tlačiť..."
 
@@ -1138,7 +1138,7 @@ msgstr ""
 msgid "&Recursive"
 msgstr "&Rekurzívne"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 65535)
 msgid "&Red:"
 msgstr "&Červené:"
 
@@ -1175,10 +1175,12 @@ msgstr "&Vzdialené vetvy:"
 msgid "&Remote:"
 msgstr "&Vzdialený:"
 
-#. Resource IDs: (16646, Dialog IDD_APPLY_PATCH_LIST: Control id 1385, Dialog
-#. IDD_SETTINGSCREDENTIAL: Control id 1385, Dialog IDD_SETTINGSPROGSADV:
-#. Control id 1100, Dialog IDD_SETTINREMOTE: Control id 1385,
-#. IDS_REMOVEBUTTON)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 16646, Dialog
+#. IDD_AFXBARRES_PROPPAGE8: Control id 16646, Dialog
+#. IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 16646, Dialog
+#. IDD_APPLY_PATCH_LIST: Control id 1385, Dialog IDD_SETTINGSCREDENTIAL:
+#. Control id 1385, Dialog IDD_SETTINGSPROGSADV: Control id 1100, Dialog
+#. IDD_SETTINREMOTE: Control id 1385, IDS_REMOVEBUTTON)
 msgid "&Remove"
 msgstr "&Odstrániť"
 
@@ -1194,11 +1196,13 @@ msgstr "&Nahradiť"
 msgid "&Repo-browser"
 msgstr "P&rehliadať úložisko"
 
-#. Resource IDs: (16613, 16624)
+#. Resource IDs: (Dialog IDD_AFXBARRES_OUTLOOKBAR_OPTIONS: Control id 16613,
+#. Dialog IDD_AFXBARRES_PROPPAGE2: Control id 16613, Dialog
+#. IDD_AFXBARRES_PROPPAGE3: Control id 16624)
 msgid "&Reset"
 msgstr "&Vrátiť štandardné"
 
-#. Resource IDs: (16300)
+#. Resource IDs: (IDS_AFXBARRES_RESET_TOOLBAR)
 msgid "&Reset Toolbar"
 msgstr "&Prednastaviť lištu"
 
@@ -1206,11 +1210,11 @@ msgstr "&Prednastaviť lištu"
 msgid "&Reset filter"
 msgstr "&Zrušiť filter"
 
-#. Resource IDs: (16657)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE6: Control id 16657)
 msgid "&Reset my usage data"
 msgstr "&Vynulovať moje údaje o používaní"
 
-#. Resource IDs: (16910 - Menu)
+#. Resource IDs: (ID_AFXBARRES_TOOLBAR_RESET - Menu)
 msgid "&Reset to Default"
 msgstr "&Vrátiť štandardné"
 
@@ -1242,11 +1246,12 @@ msgstr ""
 msgid "&SSH client:"
 msgstr "&SSH klient:"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 65535)
 msgid "&Saturation:"
 msgstr "&Saturácia:"
 
-#. Resource IDs: (16921, IDS_SAVEBUTTON)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 16921,
+#. IDS_SAVEBUTTON)
 msgid "&Save"
 msgstr "&Uložiť"
 
@@ -1267,6 +1272,10 @@ msgstr "&Uložiť zoznam vybraných súborov do..."
 msgid "&Save\tCtrl+S"
 msgstr "&Uložiť\tCtrl+S"
 
+#. Resource IDs: (Dialog IDD_REFLOG: Control id 1687)
+msgid "&Search..."
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_SETMSYSGITPATH)
 msgid "&Set Git path"
 msgstr "&Nastaviť cestu Gitu"
@@ -1283,11 +1292,11 @@ msgstr "&Nastavenia"
 msgid "&Settings..."
 msgstr "&Nastavenia..."
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 65535)
 msgid "&Show Menus for:"
 msgstr "&Zobraziť ponuku pre:"
 
-#. Resource IDs: (16612)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE2: Control id 16612)
 msgid "&Show text labels"
 msgstr "&Zobraziť názvy"
 
@@ -1316,7 +1325,7 @@ msgstr ""
 msgid "&Start"
 msgstr "&Začať"
 
-#. Resource IDs: (16917 - Menu)
+#. Resource IDs: (ID_AFXBARRES_TOOLBAR_START_GROUP - Menu)
 msgid "&Start Group"
 msgstr "&Začať skupinu"
 
@@ -1340,7 +1349,7 @@ msgstr "&Zobrazenie znakov"
 msgid "&Tab size:"
 msgstr "Veľkosť &tab.:"
 
-#. Resource IDs: (17088)
+#. Resource IDs: (IDS_AFXBARRES_TABBED)
 msgid "&Tabbed Document"
 msgstr "Dokument so &záložkami"
 
@@ -1358,11 +1367,11 @@ msgstr "&Značky"
 msgid "&Tags:"
 msgstr "&Značky:"
 
-#. Resource IDs: (16915 - Menu)
+#. Resource IDs: (ID_AFXBARRES_TOOLBAR_TEXT - Menu)
 msgid "&Text"
 msgstr "&Text"
 
-#. Resource IDs: (16506)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16506)
 msgid "&Text only"
 msgstr "&Iba Text"
 
@@ -1374,7 +1383,7 @@ msgstr "Časový limi&t pre analýzu automatického doplňovania"
 msgid "&Toolbar"
 msgstr "&Nástrojová lišta"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_TOOLBAR_NAME: Control id 65535)
 msgid "&Toolbar Name:"
 msgstr "Názov &lišty:"
 
@@ -1382,7 +1391,7 @@ msgstr "Názov &lišty:"
 msgid "&Toolbars and Docking Windows"
 msgstr "&Panely nástrojov a Dokovacie okná"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE2: Control id 65535)
 msgid "&Toolbars:"
 msgstr "&Nástroje:"
 
@@ -1403,7 +1412,7 @@ msgstr "&Trunk:"
 msgid "&Try Again"
 msgstr "&Skúsiť znovu"
 
-#. Resource IDs: (61506)
+#. Resource IDs: (AFX_IDS_TWOPAGE)
 msgid "&Two Page"
 msgstr "&Dva panely"
 
@@ -1454,7 +1463,7 @@ msgstr "&Užívateľ:"
 msgid "&View"
 msgstr "&Zobraziť"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE4: Control id 65535)
 msgid "&View:"
 msgstr "&Zobrazenie:"
 
@@ -1539,7 +1548,7 @@ msgstr "- všetko -"
 msgid "--&all"
 msgstr "--&all"
 
-#. Resource IDs: (16108)
+#. Resource IDs: (IDS_AFXBARRES_NO_CONTEXT)
 msgid ""
 "-------------------------------------------------------------------------------------------"
 msgstr "-------------------------------------------------------------------------------------------"
@@ -1571,7 +1580,8 @@ msgstr "------------------------------------------------------------------------
 msgid "..."
 msgstr "..."
 
-#. Resource IDs: (16527)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 16527, Dialog
+#. IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 16527)
 msgid "....."
 msgstr "....."
 
@@ -1599,7 +1609,7 @@ msgstr ".tgitconfig v koreňovom adresári repozitára"
 msgid "< &Previous"
 msgstr "< &Predchádzajúce"
 
-#. Resource IDs: (16506)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 16506)
 msgid "<.....>"
 msgstr "<.....>"
 
@@ -1629,15 +1639,16 @@ msgstr "<Lokálne vetvy>"
 msgid "<No branch>"
 msgstr "<Žiadna vetva>"
 
-#. Resource IDs: (17095)
+#. Resource IDs: (IDS_AFXBARRES_QAT_SEPARATOR)
 msgid "<Separator>"
 msgstr "<Oddeľovač>"
 
-#. Resource IDs: (16104)
+#. Resource IDs: (IDS_AFXBARRES_UNTITLED_TOOLBAR)
 msgid "<Untitled>"
 msgstr "<Nepomenované>"
 
-#. Resource IDs: (16603)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16603, Dialog
+#. IDD_AFXBARRES_PROPPAGE1: Control id 16603)
 msgid "<descr>"
 msgstr "<popis>"
 
@@ -1695,7 +1706,7 @@ msgid ""
 "An empty list will allow overlays on all paths."
 msgstr ""
 
-#. Resource IDs: (61474)
+#. Resource IDs: (AFX_IDS_RESOURCE_EXCEPTION)
 msgid "A required resource was unavailable."
 msgstr "Požadovaný zdroj nebol prístupný."
 
@@ -1772,7 +1783,7 @@ msgstr "O TortoiseGitMerge"
 msgid "Accept certificate"
 msgstr "Akceptovať certifikát"
 
-#. Resource IDs: (61861)
+#. Resource IDs: (AFX_IDP_FILE_ACCESS_DENIED)
 #, c-format
 msgid "Access to %1 was denied."
 msgstr "Prístup k %1 bol zamietnutý."
@@ -1789,15 +1800,15 @@ msgstr "Denník úkonov"
 msgid "Actions"
 msgstr "Akcie"
 
-#. Resource IDs: (61203)
+#. Resource IDs: (AFX_IDS_SCTASKLIST)
 msgid "Activate Task List"
 msgstr "Aktivovať zoznam úloh"
 
-#. Resource IDs: (17043)
+#. Resource IDs: (IDS_AFXBARRES_OPENED_DOCS)
 msgid "Active Files"
 msgstr "Aktívne súbory"
 
-#. Resource IDs: (61838)
+#. Resource IDs: (AFX_IDP_ASK_TO_DISCARD)
 #, c-format
 msgid ""
 "ActiveX objects cannot be saved while exiting Windows!\n"
@@ -1846,7 +1857,7 @@ msgstr "Automaticky pridať nové súbory do Gitu"
 msgid "Add to &ignore list"
 msgstr "Pridaj do zoznamu &ignorovaných"
 
-#. Resource IDs: (17083)
+#. Resource IDs: (IDS_AFXBARRES_ADD_TO_QAT)
 msgid "Add to Quick Access Toolbar"
 msgstr "Pridať do lišty rýchleho prístupu"
 
@@ -1912,11 +1923,11 @@ msgstr "Pokročilé nastavenia zlučovania"
 msgid "All"
 msgstr "Všetko"
 
-#. Resource IDs: (16110)
+#. Resource IDs: (IDS_AFXBARRES_ALL_COMMANDS)
 msgid "All Commands"
 msgstr "Všetky príkazy"
 
-#. Resource IDs: (61442)
+#. Resource IDs: (AFX_IDS_ALLFILTER)
 msgid "All Files (*.*)"
 msgstr "Všetky súbory (*.*)"
 
@@ -1948,29 +1959,30 @@ msgstr "Všetky značky"
 msgid "All tags only"
 msgstr ""
 
-#. Resource IDs: (16112)
+#. Resource IDs: (IDS_AFXBARRES_RESET_ALL_TOOLBARS)
 msgid ""
 "All your changes will be lost! Do you really want to reset all toolbars and "
 "menus?"
 msgstr "Všetky vaše zmeny budú stratené! Naozaj chcete predvolené nastavenie všetkých líšt a ponúk?"
 
-#. Resource IDs: (16115)
+#. Resource IDs: (IDS_AFXBARRES_RESET_KEYBOARD)
 msgid ""
 "All your changes will be lost! Do you really want to reset the keyboard "
 "assignments?"
 msgstr "Všetky vaše zmeny budú stratené! Naozaj chcete predvolené nastavenie priradenia klávesov?"
 
-#. Resource IDs: (16113)
+#. Resource IDs: (IDS_AFXBARRES_RESET_MENU_FMT)
 #, c-format
 msgid ""
-"All your changes will be lost! Do you really want to reset the menu '%s'?"
-msgstr "Všetky vaše zmeny budú stratené! Naozaj chcete predvolené nastavenie pre ponuku  '%s'?"
+"All your changes will be lost! Do you really want to reset the menu '%Ts'?"
+msgstr "Všetky vaše zmeny budú stratené! Naozaj chcete predvolené nastavenie pre ponuku '%Ts'?"
 
-#. Resource IDs: (16111)
+#. Resource IDs: (IDS_AFXBARRES_RESET_TOOLBAR_FMT)
 #, c-format
 msgid ""
-"All your changes will be lost! Do you really want to reset the toolbar '%s'?"
-msgstr "Všetky vaše zmeny budú stratené! Naozaj chcete predvolené nastavenie lišty '%s'?"
+"All your changes will be lost! Do you really want to reset the toolbar "
+"'%Ts'?"
+msgstr "Všetky vaše zmeny budú stratené! Naozaj chcete predvolené nastavenie lišty '%Ts'?"
 
 #. Resource IDs: (32976)
 msgid ""
@@ -2045,16 +2057,16 @@ msgid ""
 "%base: the original file without your changes"
 msgstr ""
 
-#. Resource IDs: (61862)
+#. Resource IDs: (AFX_IDP_FILE_INVALID_FILE)
 #, c-format
 msgid "An incorrect file handle was associated with %1."
 msgstr "Neplatný identifikátor súboru k %1."
 
-#. Resource IDs: (61476)
+#. Resource IDs: (AFX_IDS_USER_EXCEPTION)
 msgid "An unknown error has occurred."
 msgstr "Nastala neznáma chyba."
 
-#. Resource IDs: (61857, 61873)
+#. Resource IDs: (AFX_IDP_ARCH_GENERIC, AFX_IDP_FILE_GENERIC)
 #, c-format
 msgid "An unknown error occurred while accessing %1."
 msgstr "Počas prístupu k %1 nastala neznáma chyba."
@@ -2076,7 +2088,7 @@ msgstr "Pripojiť pravý blok"
 msgid "Append this block to left"
 msgstr "Pripojiť blok do prava"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 65535)
 msgid "Application Frame Menus: "
 msgstr "Rámcová ponuka aplikácie"
 
@@ -2155,7 +2167,8 @@ msgstr "Usporiadať &vertikálne\tV"
 msgid "Assigned to changelist '%s'"
 msgstr "Priradené k zoznamu zmien '%s'"
 
-#. Resource IDs: (16528)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 16528, Dialog
+#. IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 16528)
 msgid "Assigned to:"
 msgstr "Priradené k:"
 
@@ -2192,21 +2205,21 @@ msgstr "Na revízií: %d"
 msgid "At the moment, you can only rename branches."
 msgstr "Momentálne je možné len premenovať vetvy."
 
-#. Resource IDs: (61473)
+#. Resource IDs: (AFX_IDS_NOT_SUPPORTED_EXCEPTION)
 msgid "Attempted an unsupported operation."
 msgstr "Pokus o nepodporovanú operáciu."
 
-#. Resource IDs: (61870, 61875)
+#. Resource IDs: (AFX_IDP_ARCH_ENDOFFILE, AFX_IDP_FILE_EOF)
 #, c-format
 msgid "Attempted to access %1 past its end."
 msgstr "Attempted to access %1 past its end."
 
-#. Resource IDs: (61876)
+#. Resource IDs: (AFX_IDP_ARCH_WRITEONLY)
 #, c-format
 msgid "Attempted to read from the writing %1."
 msgstr "Pri zapisovaní do %1 bol pokus o čítanie."
 
-#. Resource IDs: (61874)
+#. Resource IDs: (AFX_IDP_ARCH_READONLY)
 #, c-format
 msgid "Attempted to write to the reading %1."
 msgstr "Pri čítaní %1 bol pokus o čítanie."
@@ -2236,6 +2249,14 @@ msgstr "Autor"
 msgid "Author Email"
 msgstr "Email autora"
 
+#. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_AUTHORSEMAIL)
+msgid "Author email addresses"
+msgstr ""
+
+#. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_AUTHORSNAME)
+msgid "Author names"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 65535)
 msgid "Author:\t\t\t\tStefan Kueng"
 msgstr "Autor:\t\t\t\tStefan KUENG"
@@ -2244,15 +2265,13 @@ msgstr "Autor:\t\t\t\tStefan KUENG"
 msgid "Authors"
 msgstr "Autori"
 
+#. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_AUTHORSFULL)
+msgid "Authors (full)"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_STATGRAPH: Control id 1265)
 msgid "Authors case sensitive"
 msgstr "Rozlišovať veľkosť písmen v menách autorov"
-
-#. Resource IDs: (Dialog IDD_ABOUTBOX: Control id 65535)
-msgid ""
-"Authors:\tFrank Li (lznuaa@gmail.com),\n"
-"\t\tSven Strickroth (email@cs-ware.de)"
-msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 65535)
 msgid "Auto CrLf convert"
@@ -2262,11 +2281,11 @@ msgstr "Automatická CrLf konverzia"
 msgid "Auto Crlf:"
 msgstr "Auto Crlf:"
 
-#. Resource IDs: (16033)
+#. Resource IDs: (IDS_AFXBARRES_AUTOHIDEBAR)
 msgid "Auto Hide"
 msgstr "Automaticky skryť"
 
-#. Resource IDs: (16036)
+#. Resource IDs: (IDS_AFXBARRES_AUTOHIDE_ALL)
 msgid "Auto Hide All"
 msgstr "Automaticky skryť všetko"
 
@@ -2392,7 +2411,7 @@ msgstr ""
 msgid "Bisect start"
 msgstr ""
 
-#. Resource IDs: (61584)
+#. Resource IDs: (AFX_IDS_BITMAP_FORMAT)
 msgid ""
 "Bitmap\n"
 "a bitmap"
@@ -2426,7 +2445,7 @@ msgstr "Alfa zmiešania"
 
 #. Resource IDs: (156 - Ribbon element)
 msgid "Blocks"
-msgstr ""
+msgstr "Bloky"
 
 #. Resource IDs: (10009, ID_VIEW_APPLOOK_OFF_2007_BLUE - Menu,
 #. ID_VIEW_APPLOOK_OFF_2007_BLUE - Ribbon name)
@@ -2541,7 +2560,7 @@ msgstr "BugTraq"
 msgid "Bugtraq Regex Tester - TortoiseGit"
 msgstr ""
 
-#. Resource IDs: (16132)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16132)
 msgid "Button Appearance"
 msgstr "Zobrazenie tlačidiel"
 
@@ -2567,7 +2586,9 @@ msgstr ""
 msgid "C&heck now"
 msgstr "S&kontroluj teraz"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 65535, Dialog
+#. IDD_AFXBARRES_PROPPAGE8: Control id 65535, Dialog
+#. IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 65535)
 msgid "C&ommands:"
 msgstr "&Príkazy"
 
@@ -2579,7 +2600,8 @@ msgstr ""
 msgid "C&reate branch/tag from revision"
 msgstr "Vytvo&r vetvu/značku z revízie"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 65535, Dialog
+#. IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 65535)
 msgid "C&urrent Keys:"
 msgstr "Ak&tuálny kláves:"
 
@@ -2608,7 +2630,7 @@ msgstr ""
 msgid "Can double-click in log list to compare with previous revision"
 msgstr "Dvojklik na zoznam denníka k porovnaniu s predchádzajúcou revíziou"
 
-#. Resource IDs: (61824)
+#. Resource IDs: (AFX_IDP_STATIC_OBJECT)
 msgid "Can not activate a static ActiveX object."
 msgstr "Nemožno aktivovať statický objekt ActiveX."
 
@@ -2629,7 +2651,7 @@ msgstr "Obrázok nie je možne kopírovať do schránky"
 msgid "Can't create a new image!"
 msgstr "Nie je možné vytvoriť nový obrázok"
 
-#. Resource IDs: (16007)
+#. Resource IDs: (IDS_AFXBARRES_NO_MENUBAR)
 msgid "Can't customize menus!"
 msgstr "Ponuku nie je možné prispôsobiť!"
 
@@ -2637,15 +2659,20 @@ msgstr "Ponuku nie je možné prispôsobiť!"
 msgid "Can't paste bitmap image from the clipboard!"
 msgstr "Nie je možné vložiť obrázok zo schránky!"
 
-#. Resource IDs: (17101, 2, Dialog IDD_ADD: Control id 2, Dialog
-#. IDD_ADD_REMOTE: Control id 2, Dialog IDD_BISECTSTART: Control id 2, Dialog
-#. IDD_BROWSE_REFS: Control id 2, Dialog IDD_BUGTRAQREGEXTESTER: Control id 2,
-#. Dialog IDD_CERTCHECK: Control id 2, Dialog IDD_CLEAN: Control id 2, Dialog
-#. IDD_CLONE: Control id 2, Dialog IDD_COMMITDLG: Control id 2, Dialog
-#. IDD_CREATECHANGELIST: Control id 2, Dialog IDD_CREATEREPO: Control id 2,
-#. Dialog IDD_ENCODING: Control id 2, Dialog IDD_EXPORT: Control id 2, Dialog
-#. IDD_FIND: Control id 2, Dialog IDD_FORMAT_PATCH: Control id 2, Dialog
-#. IDD_GITSWITCH: Control id 2, Dialog IDD_GOTO: Control id 2, Dialog
+#. Resource IDs: (Dialog AFX_IDD_NEWTYPEDLG: Control id 2, Dialog
+#. AFX_IDD_PRINTDLG: Control id 2, Dialog IDD_ADD: Control id 2, Dialog
+#. IDD_ADD_REMOTE: Control id 2, Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id
+#. 2, Dialog IDD_AFXBARRES_COLOR_DLG: Control id 2, Dialog
+#. IDD_AFXBARRES_IMAGE_EDITOR: Control id 2, Dialog
+#. IDD_AFXBARRES_OUTLOOKBAR_OPTIONS: Control id 2, Dialog
+#. IDD_AFXBARRES_TOOLBAR_NAME: Control id 2, Dialog IDD_BISECTSTART: Control
+#. id 2, Dialog IDD_BROWSE_REFS: Control id 2, Dialog IDD_BUGTRAQREGEXTESTER:
+#. Control id 2, Dialog IDD_CERTCHECK: Control id 2, Dialog IDD_CLEAN: Control
+#. id 2, Dialog IDD_CLONE: Control id 2, Dialog IDD_COMMITDLG: Control id 2,
+#. Dialog IDD_CREATECHANGELIST: Control id 2, Dialog IDD_CREATEREPO: Control
+#. id 2, Dialog IDD_ENCODING: Control id 2, Dialog IDD_EXPORT: Control id 2,
+#. Dialog IDD_FIND: Control id 2, Dialog IDD_FORMAT_PATCH: Control id 2,
+#. Dialog IDD_GITSWITCH: Control id 2, Dialog IDD_GOTO: Control id 2, Dialog
 #. IDD_GOTODLG: Control id 2, Dialog IDD_HISTORYDLG: Control id 2, Dialog
 #. IDD_IGNORE: Control id 2, Dialog IDD_INPUTDLG: Control id 2, Dialog
 #. IDD_LOGMESSAGE: Control id 2, Dialog IDD_LOGORDERING: Control id 2, Dialog
@@ -2665,7 +2692,7 @@ msgstr "Nie je možné vložiť obrázok zo schránky!"
 #. IDD_SUBMODULE_UPDATE: Control id 2, Dialog IDD_SVNDCOMMITTYPE: Control id
 #. 2, Dialog IDD_SVNIGNORE: Control id 2, Dialog IDD_SVNPROGRESS: Control id
 #. 2, Dialog IDD_TOOLASSOC: Control id 2, Dialog IDD_URL: Control id 2, Dialog
-#. IDD_USER_PASSWD: Control id 2, IDS_MSGBOX_CANCEL,
+#. IDD_USER_PASSWD: Control id 2, IDS_AFXBARRES_CANCEL, IDS_MSGBOX_CANCEL,
 #. IDS_PROC_OVERWRITEEXPORT_CANCEL)
 msgid "Cancel"
 msgstr "Zrušiť"
@@ -2727,7 +2754,7 @@ msgstr ""
 msgid "Cannot show diff because of inconsistent newlines in the file."
 msgstr "Nemožno zobraziť porovnanie, pretože sú nekonzistentné ukončenia riadkov v súbore."
 
-#. Resource IDs: (16926)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 16926)
 msgid "Casca&de"
 msgstr "Kaská&da"
 
@@ -2739,7 +2766,7 @@ msgstr "Kaskádová kontextová ponuka"
 msgid "Case-sensitive"
 msgstr "Rozlišovať veľkosť písmen"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE1: Control id 65535)
 msgid "Cate&gories:"
 msgstr "Kate&górie:"
 
@@ -2777,11 +2804,11 @@ msgid ""
 "Change Style"
 msgstr "Zmeniť štýl programu\nZmení štýl"
 
-#. Resource IDs: (61185)
+#. Resource IDs: (AFX_IDS_SCMOVE)
 msgid "Change the window position"
 msgstr "Zmeniť polohu okna"
 
-#. Resource IDs: (61184)
+#. Resource IDs: (AFX_IDS_SCSIZE)
 msgid "Change the window size"
 msgstr "Zmeniť veľkosť okna"
 
@@ -2841,7 +2868,7 @@ msgstr "Zmení štýl programu"
 msgid "Char position where to show a border line in commit text boxes:"
 msgstr "Pozícia znaku kde ukazovať čiaru okraja riadku v odovzdávacom okne:"
 
-#. Resource IDs: (62178, IDS_RECURSE_SUBMODULES_CHECK)
+#. Resource IDs: (AFX_IDS_CHECKLISTBOX_CHECK, IDS_RECURSE_SUBMODULES_CHECK)
 msgid "Check"
 msgstr "Skontrolovať"
 
@@ -3068,12 +3095,14 @@ msgstr ""
 msgid "Clone..."
 msgstr "Klonovať..."
 
-#. Resource IDs: (16032, 16105, 17023, 2, Dialog IDD_DELETEREMOTETAG: Control
-#. id 2, Dialog IDD_GITPROGRESS: Control id 1, Dialog IDD_SYNC: Control id 1)
+#. Resource IDs: (17023, Dialog IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id
+#. 2, Dialog IDD_DELETEREMOTETAG: Control id 2, Dialog IDD_GITPROGRESS:
+#. Control id 1, Dialog IDD_SYNC: Control id 1, IDS_AFXBARRES_CLOSE,
+#. IDS_AFXBARRES_CLOSEBAR)
 msgid "Close"
 msgstr "Zatvoriť"
 
-#. Resource IDs: (17025)
+#. Resource IDs: (IDS_AFXBARRES_FULLSCREEN_CLOSE)
 msgid "Close Full Screen"
 msgstr "Zatvoriť celoobrazovkové zobrazenie"
 
@@ -3087,7 +3116,7 @@ msgstr "Zatvoriť náhľad pred tlačou\n&Zatvoriť"
 msgid "Close manually"
 msgstr "Zatvoriť ručne"
 
-#. Resource IDs: (61445)
+#. Resource IDs: (AFX_IDS_PREVIEW_CLOSE)
 msgid ""
 "Close print preview mode\n"
 "Cancel Preview"
@@ -3099,7 +3128,7 @@ msgid ""
 "Close"
 msgstr ""
 
-#. Resource IDs: (61190)
+#. Resource IDs: (AFX_IDS_SCCLOSE)
 msgid "Close the active window and prompts to save the documents"
 msgstr "Zatvorí aktívne okno a vyzve k uloženiu dokumentov"
 
@@ -3113,7 +3142,8 @@ msgid ""
 "Collapse"
 msgstr "Zbaliť nezmenené sekcie\nZbaliť"
 
-#. Resource IDs: (16662)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 16662, Dialog
+#. IDD_AFXBARRES_COLOR_DLG: Control id 16662)
 msgid "Color"
 msgstr "Farba"
 
@@ -3121,13 +3151,15 @@ msgstr "Farba"
 msgid "Color by age, &continuous"
 msgstr "Farby podľa veku - &spojité"
 
-#. Resource IDs: (16961, Dialog IDD_SETCOLORPAGE: Control id 138, Dialog
-#. IDD_SETTINGSTBLAME: Control id 65535, Dialog IDD_SETTINGSUDIFF: Control id
-#. 65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLOR_DLG: Control id 16961, Dialog
+#. IDD_SETCOLORPAGE: Control id 138, Dialog IDD_SETTINGSTBLAME: Control id
+#. 65535, Dialog IDD_SETTINGSUDIFF: Control id 65535)
 msgid "Colors"
 msgstr "Farby"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 65535, Dialog
+#. IDD_AFXBARRES_COLOR_PAGE_ONE: Control id 65535, Dialog
+#. IDD_AFXBARRES_IMAGE_EDITOR: Control id 65535)
 msgid "Colors:"
 msgstr "Farby:"
 
@@ -3139,11 +3171,11 @@ msgstr ""
 msgid "Combine to one commit"
 msgstr ""
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE1: Control id 65535)
 msgid "Comman&ds:"
 msgstr "Príka&zy"
 
-#. Resource IDs: (16029, IDS_PROGRS_CMDINFO)
+#. Resource IDs: (IDS_AFXBARRES_COMMAND, IDS_PROGRS_CMDINFO)
 msgid "Command"
 msgstr "Príkaz"
 
@@ -3155,11 +3187,11 @@ msgstr "Príkazový riadok"
 msgid "Command Line To Execute:"
 msgstr "Príkazový riadok na vykonanie:"
 
-#. Resource IDs: (61705)
+#. Resource IDs: (AFX_IDP_COMMAND_FAILURE)
 msgid "Command failed."
 msgstr "Príkaz zlyhal."
 
-#. Resource IDs: (16104)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE1: Control id 16104)
 msgid "Commands"
 msgstr "Príkazy"
 
@@ -3273,6 +3305,10 @@ msgstr ""
 msgid "Compare selected refs"
 msgstr ""
 
+#. Resource IDs: (IDS_PROC_SYNC_COMPARETAGS)
+msgid "Compare tags"
+msgstr ""
+
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_COMPARETWOFILES)
 msgid "Compare two files"
 msgstr "Porovnať dva súbory"
@@ -3305,11 +3341,6 @@ msgid ""
 "Compares the file with the last committed revision to show you the changes "
 "you made"
 msgstr "Porovná súbor s naposledy odovzdanou revíziou, aby ste videli zmeny, ktoré ste vykonali"
-
-#. Resource IDs: (IDS_PROGRESS_COMPARE)
-#, c-format
-msgid "Comparing %s to %s"
-msgstr "Porovnanie %s s %s"
 
 #. Resource IDs: (IDS_SVNACTION_COMPLETED)
 msgid "Completed"
@@ -3398,7 +3429,7 @@ msgstr "Konflikty"
 msgid "Conflicts: %d"
 msgstr "Konflikty: %d"
 
-#. Resource IDs: (16520)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 16520)
 msgid "Context Menus: "
 msgstr "Kontextové ponuky:"
 
@@ -3410,7 +3441,7 @@ msgstr ""
 msgid "Continue"
 msgstr "Pokračovať"
 
-#. Resource IDs: (16013)
+#. Resource IDs: (IDS_AFXBARRES_CONTRACT_BAR)
 msgid "Contract docked window"
 msgstr "Zúžiť zakotvené okno"
 
@@ -3430,15 +3461,10 @@ msgstr "&Kopíruj"
 msgid "Copied"
 msgstr "Skopírované"
 
-#. Resource IDs: (16991, IDS_PATHACTIONS_COPY, IDS_PROGRS_TITLE_COPY,
-#. ID_EDIT_COPY - Ribbon name)
+#. Resource IDs: (Dialog IDD_AFXBARRES_KEYMAP: Control id 16991,
+#. IDS_PATHACTIONS_COPY, IDS_PROGRS_TITLE_COPY, ID_EDIT_COPY - Ribbon name)
 msgid "Copy"
 msgstr "Kopírovať"
-
-#. Resource IDs: (IDS_PROGRS_CMD_COPY)
-#, c-format
-msgid "Copy %s to %s, Revision %s"
-msgstr "Kopírovať %s do %s, Revízia %s"
 
 #. Resource IDs: (IDS_BLAME_POPUP_COPYHASHTOCLIPBOARD, IDS_COPY_COMMIT_HASH)
 msgid "Copy SHA-1 to clipboard"
@@ -3457,10 +3483,6 @@ msgstr "Kopírovať všetky informácie do schránky"
 #. Resource IDs: (IDS_PROC_COPYRENAME)
 msgid "Copy and rename"
 msgstr "Kopírovať a premenovať"
-
-#. Resource IDs: (IDS_LOG_POPUP_COPYTOCLIPBOARDMESSAGES)
-msgid "Copy log messages to clipboard"
-msgstr "Kopírovať správy denníku do schránky"
 
 #. Resource IDs: (IDS_BLAME_POPUP_COPYLOGTOCLIPBOARD)
 msgid "Copy log to clipboard"
@@ -3502,10 +3524,6 @@ msgstr "Kopírovanie %s"
 msgid "Copying..."
 msgstr "Kopírovanie..."
 
-#. Resource IDs: (Dialog IDD_ABOUTBOX: Control id 1001)
-msgid "Copyright (C) 2009-2016 TortoiseGit"
-msgstr "Copyright (C) 2009-2016 TortoiseGit"
-
 #. Resource IDs: (IDS_SPELLEDIT_CORRECTIONS)
 msgid "Corrections"
 msgstr "Opravy"
@@ -3532,7 +3550,7 @@ msgid ""
 "%s"
 msgstr ""
 
-#. Resource IDs: (61864)
+#. Resource IDs: (AFX_IDP_FILE_DIR_FULL)
 #, c-format
 msgid "Could not create %1 because the directory is full."
 msgstr "%1 nemohol byť vytvorený, pretože je plný adresár."
@@ -3563,7 +3581,7 @@ msgstr ""
 msgid "Could not get the status!"
 msgstr "Nemožno získať stav!"
 
-#. Resource IDs: (61860)
+#. Resource IDs: (AFX_IDP_FILE_TOO_MANY_OPEN)
 #, c-format
 msgid "Could not open %1 because there are too many open files."
 msgstr "%1 nemohol byť otvorený, pretože je otvorených príliš veľa súborov."
@@ -3575,7 +3593,7 @@ msgid ""
 "%s"
 msgstr "Nemožno otvoriť súbor\n%s"
 
-#. Resource IDs: (61863)
+#. Resource IDs: (AFX_IDP_FILE_REMOVE_CURRENT)
 #, c-format
 msgid "Could not remove %1 because it is the current directory."
 msgstr "%1 nemohol byť zmazaný, pretože je to aktuálny adresár."
@@ -3646,7 +3664,7 @@ msgid ""
 "Check help file for \"Extra PATH\"."
 msgstr ""
 
-#. Resource IDs: (61702)
+#. Resource IDs: (AFX_IDP_FAILED_TO_START_PRINT)
 msgid "Could not start print job."
 msgstr "Nemožno začať tlačovú úlohu."
 
@@ -3673,7 +3691,7 @@ msgstr "Poče&t"
 #. Resource IDs: (IDS_FIND_COUNT)
 #, c-format
 msgid "Count: %u matches."
-msgstr ""
+msgstr "Počet: %u zhôd."
 
 #. Resource IDs: (IDS_MENUBRANCH)
 msgid "Create &Branch..."
@@ -3793,7 +3811,7 @@ msgstr ""
 msgid "Cu&t"
 msgstr "Vyreza&ť"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLOR_DLG: Control id 65535)
 msgid "Current"
 msgstr "Aktuálne"
 
@@ -3820,6 +3838,12 @@ msgid ""
 "If you want to force the rebase even if the current branch is a descendant of the commit you are rebasing onto, please check below \"Force Rebase\" checkbox."
 msgstr ""
 
+#. Resource IDs: (IDS_REBASE_CURRENTBRANCHUPTODATE)
+msgid ""
+"Current branch is up to date or newer than the fetched branch. Open rebase "
+"anyway?"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1113)
 msgid "Current version is:"
 msgstr "Aktuálna verzia:"
@@ -3829,27 +3853,28 @@ msgstr "Aktuálna verzia:"
 msgid "Current version is: %s"
 msgstr "Aktuálna verzia: %s"
 
-#. Resource IDs: (17079)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE8: Control id 17079)
 msgid "Cus&tomize..."
 msgstr "Vlas&tné"
 
-#. Resource IDs: (16963)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 16963)
 msgid "Custom"
 msgstr "Prispôsobenie"
 
-#. Resource IDs: (16103, 17074)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE8: Control id 17074,
+#. IDS_AFXBARRES_PROPSHT_CAPTION)
 msgid "Customize"
 msgstr "Prispôsobiť"
 
-#. Resource IDs: (17076)
+#. Resource IDs: (Dialog IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 17076)
 msgid "Customize Keyboard"
 msgstr "Prispôsobiť klávesy"
 
-#. Resource IDs: (17096)
+#. Resource IDs: (IDS_AFXBARRES_CUSTOMIZE_QAT_TOOLTIP)
 msgid "Customize Quick Access Toolbar"
 msgstr "Prispôsobiť lištu rýchleho prístupu"
 
-#. Resource IDs: (17085)
+#. Resource IDs: (IDS_AFXBARRES_CUSTOMIZE_QAT)
 msgid "Customize Quick Access Toolbar..."
 msgstr "Prispôsobiť lištu rýchleho prístupu..."
 
@@ -3883,15 +3908,15 @@ msgstr "Dátum"
 msgid "Date Last Commit"
 msgstr ""
 
-#. Resource IDs: (16114, IDS_DEFAULT)
+#. Resource IDs: (IDS_AFXBARRES_DEFAULT_VIEW, IDS_DEFAULT)
 msgid "Default"
 msgstr "Prednastavené"
 
-#. Resource IDs: (16106)
+#. Resource IDs: (IDS_AFXBARRES_DEFUALT_MENU)
 msgid "Default Menu"
 msgstr "Prednastavená ponuka"
 
-#. Resource IDs: (16107)
+#. Resource IDs: (IDS_AFXBARRES_DEFAULT_MENU_DESCR)
 msgid "Default application menu. Appears when no documents are open."
 msgstr "Predvolená ponuka aplikácie. Zobrazuje sa keď nie je otvorený žiaden dokument."
 
@@ -3903,8 +3928,8 @@ msgstr ""
 msgid "Default to UTF-8 encoding"
 msgstr "Predvolené UTF-8 kódovanie"
 
-#. Resource IDs: (16020, Dialog IDD_RESOLVE_CONFLICT: Control id 4571,
-#. IDS_DELETE_BRANCHTAG_SHORT)
+#. Resource IDs: (Dialog IDD_RESOLVE_CONFLICT: Control id 4571,
+#. IDS_AFXBARRES_DELETE, IDS_DELETE_BRANCHTAG_SHORT)
 msgid "Delete"
 msgstr "Vymazať"
 
@@ -3965,6 +3990,10 @@ msgstr "Zmazať vetvu"
 msgid "Delete branch/tag"
 msgstr "Odstrániť vetvu/značku"
 
+#. Resource IDs: (IDS_DELETE_LOCALTAG)
+msgid "Delete local tag"
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_BROWSEREFS_DELETEREMOTEBRANCH)
 msgid "Delete remote branch"
 msgstr "Zmazať vzdialenú vetvu"
@@ -3990,9 +4019,17 @@ msgstr "Zmazať podmodul"
 msgid "Delete tag"
 msgstr "Odstrániť značku"
 
+#. Resource IDs: (IDS_DELETE_REMOTETAG)
+msgid "Delete tag on remote"
+msgstr ""
+
 #. Resource IDs: (IDS_B_DELETEORDIFFERENTNAME)
 msgid "Delete the existing branch or use a different name."
 msgstr "Zmažte existujúcu vetvu alebo použite iné meno."
+
+#. Resource IDs: (Dialog IDD_RESOLVE_CONFLICT: Control id 4570)
+msgid "Delete/modify merge conflict"
+msgstr ""
 
 #. Resource IDs: (IDS_DELETEWHENEMPTY_TASK3)
 msgid ""
@@ -4005,10 +4042,6 @@ msgstr "Vymazať\nOdstrániť súbor"
 #. IDS_PATHACTIONS_DELETE, IDS_SVNACTION_DELETE, IDS_SVN_SUMMARIZEDELETED)
 msgid "Deleted"
 msgstr "Vymazané"
-
-#. Resource IDs: (Dialog IDD_RESOLVE_CONFLICT: Control id 4570)
-msgid "Deleted merge conflict"
-msgstr ""
 
 #. Resource IDs: (IDS_MENUDESCDELETEIGNORE)
 msgid ""
@@ -4033,7 +4066,7 @@ msgstr "Vymazávanie"
 
 #. Resource IDs: (IDS_SETTINGS_DELCACHE)
 msgid "Deleting cached data"
-msgstr ""
+msgstr "Vymazávanie údajov zo zásobníka"
 
 #. Resource IDs: (IDS_SETTINGS_DELFILE)
 msgid "Deleting file"
@@ -4060,11 +4093,14 @@ msgstr "Popísať"
 msgid "Describe Strategy"
 msgstr "Popísať stratégiu"
 
-#. Resource IDs: (16031, IDS_DESCRIPTION)
+#. Resource IDs: (IDS_AFXBARRES_DESCRIPTION, IDS_DESCRIPTION)
 msgid "Description"
 msgstr "Popis"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 65535, Dialog
+#. IDD_AFXBARRES_PROPPAGE1: Control id 65535, Dialog IDD_AFXBARRES_PROPPAGE5:
+#. Control id 65535, Dialog IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id
+#. 65535)
 msgid "Description:"
 msgstr "Popis:"
 
@@ -4076,7 +4112,7 @@ msgstr "Odznačiť zoznam zmien"
 msgid "Destination"
 msgstr "Cieľ"
 
-#. Resource IDs: (61730)
+#. Resource IDs: (AFX_IDP_FAILED_DISK_FULL)
 msgid "Destination disk drive is full."
 msgstr "Cieľový disk je plný"
 
@@ -4102,7 +4138,7 @@ msgstr ""
 msgid "Detect moved or copied lines within a file"
 msgstr "Zistiť presunuté alebo skopírované riadky v rámci súboru"
 
-#. Resource IDs: (61583)
+#. Resource IDs: (AFX_IDS_DIB_FORMAT)
 msgid ""
 "Device Independent Bitmap\n"
 "a device independent bitmap"
@@ -4118,7 +4154,7 @@ msgstr ""
 
 #. Resource IDs: (156 - Ribbon element)
 msgid "Diff"
-msgstr ""
+msgstr "Porovnať"
 
 #. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1789)
 msgid "Diff Options"
@@ -4138,15 +4174,15 @@ msgstr "Prezerač rozdielov::Zlučovač"
 
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 65535)
 msgid "Diff added lines"
-msgstr ""
+msgstr "Porovať pridané riadky"
 
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 65535)
 msgid "Diff command"
-msgstr ""
+msgstr "Porovnať príkazy"
 
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 65535)
 msgid "Diff comment"
-msgstr ""
+msgstr "Porovať komentáre"
 
 #. Resource IDs: (Dialog IDD_OPENDLG: Control id 65535)
 msgid "Diff file:"
@@ -4154,7 +4190,7 @@ msgstr "Súbor porovnania:"
 
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 65535)
 msgid "Diff header"
-msgstr ""
+msgstr "Porovať hlavičku"
 
 #. Resource IDs: (IDS_MENUDIFFLATER)
 msgid "Diff later"
@@ -4162,11 +4198,11 @@ msgstr "Porovnať neskôr"
 
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 65535)
 msgid "Diff position"
-msgstr ""
+msgstr "Porovnať umiestnenie"
 
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 65535)
 msgid "Diff removed lines"
-msgstr ""
+msgstr "Porovnať odstránené riadky"
 
 #. Resource IDs: (IDS_MENUDIFFNOW)
 #, c-format
@@ -4176,6 +4212,10 @@ msgstr ""
 #. Resource IDs: (IDS_STATUSLIST_GROUP_DIFFWITHPARENT)
 #, c-format
 msgid "Diff with parent %d"
+msgstr ""
+
+#. Resource IDs: (IDS_TAGCOMPARE_DIFFER)
+msgid "Differ"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1302)
@@ -4207,6 +4247,10 @@ msgstr "Adresár:"
 msgid "Disable sounds"
 msgstr "Zakázať zvuky"
 
+#. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1536)
+msgid "Disable status cache for elevated processes"
+msgstr ""
+
 #. Resource IDs: (IDS_SETTINGS_RECURSIVE_TT)
 msgid ""
 "Disable this option if you have really big working trees and experience\n"
@@ -4221,17 +4265,17 @@ msgstr "Zakázať kontroly aktualizácií"
 msgid "Disabled"
 msgstr "Zakázané"
 
-#. Resource IDs: (61869)
+#. Resource IDs: (AFX_IDP_FILE_DISKFULL)
 #, c-format
 msgid "Disk full while accessing %1."
 msgstr "Disk plný pri prístupe k %1."
 
-#. Resource IDs: (61745)
+#. Resource IDs: (AFX_IDP_SCRIPT_DISPATCH_EXCEPTION)
 #, c-format
 msgid "Dispatch exception: %1"
 msgstr "Prijatá výnimka: %1"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_OUTLOOKBAR_OPTIONS: Control id 65535)
 msgid "Display &buttons in this order"
 msgstr "Zobraziť &tačídla v tomto poradí"
 
@@ -4307,10 +4351,10 @@ msgstr ""
 msgid "Do you really want to delete \"%s\"?"
 msgstr "Naozaj chcete zmazať \"%s\"?"
 
-#. Resource IDs: (16109)
+#. Resource IDs: (IDS_AFXBARRES_DELETE_TOOLBAR_FMT)
 #, c-format
-msgid "Do you really want to delete the toolbar '%s'?"
-msgstr "Chcete naozaj odstrániť túto lištu '%s'?"
+msgid "Do you really want to delete the toolbar '%Ts'?"
+msgstr "Chcete naozaj odstrániť túto lištu '%Ts'?"
 
 #. Resource IDs: (IDS_DISABLEUPDATECHECKS)
 msgid ""
@@ -4336,6 +4380,10 @@ msgstr "Naozaj chcete tento súbor alebo adresár presunúť?"
 msgid ""
 "Do you really want to permanently delete the %d selected refs? It can NOT be"
 " recovered!"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_PUSH_ALLBRANCHES)
+msgid "Do you really want to push all local branches?"
 msgstr ""
 
 #. Resource IDs: (IDS_WARN_DELETE_ONE_FROM_INDEX)
@@ -4404,7 +4452,7 @@ msgid ""
 "as resolved?"
 msgstr "Checete označiť súbor\n%s\nza vyriešený?"
 
-#. Resource IDs: (62182)
+#. Resource IDs: (AFX_IDS_AUTOSAVE_RECOVERY_ASK_3)
 msgid "Do you want to recover these auto-saved documents?"
 msgstr "Chcete obnoviť tieto automaticky uložené dokumenty?"
 
@@ -4422,7 +4470,7 @@ msgstr "Chcete vidieť zmeny?"
 msgid "Do you want to stash pop now?"
 msgstr ""
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog AFX_IDD_PRINTDLG: Control id 65535)
 msgid "Document :"
 msgstr "Dokument :"
 
@@ -4435,7 +4483,7 @@ msgstr ""
 msgid "Don't know what will push because you enter URL"
 msgstr ""
 
-#. Resource IDs: (62185)
+#. Resource IDs: (AFX_IDS_AUTOSAVE_RECOVERY_ASK_6)
 msgid ""
 "Don't recover the auto-saved documents\n"
 "Use the last explicitly saved versions of the documents"
@@ -4477,11 +4525,11 @@ msgstr "Stiahnúť"
 msgid "Download language packs:"
 msgstr ""
 
-#. Resource IDs: (16028)
+#. Resource IDs: (IDS_AFX_TEAR_OFF)
 msgid "Drag to make this menu float"
 msgstr "Presunutie spraví túto ponuku plávajúcou"
 
-#. Resource IDs: (16513)
+#. Resource IDs: (Dialog IDD_AFXBARRES_IMAGE_EDITOR: Control id 16513)
 msgid "Draw"
 msgstr "Kresliť"
 
@@ -4495,7 +4543,7 @@ msgstr "Typy diskov"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1315)
 msgid "Drives A: and B:"
-msgstr ""
+msgstr "Disky A: a B:"
 
 #. Resource IDs: (IDS_DROPONESTASH)
 msgid "Drop &one stash"
@@ -4563,7 +4611,7 @@ msgstr "Upraviť &lokálny .git/config"
 msgid "Edit .tgitconfig"
 msgstr "Upraviť .tgitconfig"
 
-#. Resource IDs: (16133)
+#. Resource IDs: (Dialog IDD_AFXBARRES_IMAGE_EDITOR: Control id 16133)
 msgid "Edit Button Image"
 msgstr "Upraviť obrázok tlačidla"
 
@@ -4705,31 +4753,31 @@ msgid ""
 "Hold down the Ctrl key to reload the file with the specified encoding."
 msgstr ""
 
-#. Resource IDs: (61866)
+#. Resource IDs: (AFX_IDP_FILE_HARD_IO)
 #, c-format
 msgid "Encountered a hardware I/O error while accessing %1."
 msgstr "Bola zistená hardvérová chyba pri prístupe k %1."
 
-#. Resource IDs: (61868)
+#. Resource IDs: (AFX_IDP_FILE_LOCKING)
 #, c-format
 msgid "Encountered a locking violation while accessing %1."
 msgstr "Bolo zistené porušenie zamknutia pri prístupe k %1."
 
-#. Resource IDs: (61867)
+#. Resource IDs: (AFX_IDP_FILE_SHARING)
 #, c-format
 msgid "Encountered a sharing violation while accessing %1."
 msgstr "Bolo zistené porušenie zdielania pri prístupe k %1."
 
-#. Resource IDs: (61477)
+#. Resource IDs: (AFX_IDS_INVALID_ARG_EXCEPTION)
 msgid "Encountered an improper argument."
 msgstr "Zistený nesprávny argument."
 
-#. Resource IDs: (61733)
+#. Resource IDs: (AFX_IDP_FAILED_IO_ERROR_READ)
 #, c-format
 msgid "Encountered an unexpected error while reading %1."
 msgstr "Pri čítaní %1 nastala neočakávaná chyba."
 
-#. Resource IDs: (61734)
+#. Resource IDs: (AFX_IDP_FAILED_IO_ERROR_WRITE)
 #, c-format
 msgid "Encountered an unexpected error while writing %1."
 msgstr "Pri zápise %1 nastala neočakávaná chyba."
@@ -4746,7 +4794,7 @@ msgstr "Koniec"
 msgid "End of Line Style"
 msgstr "Štýl koncov riadkov"
 
-#. Resource IDs: (61187)
+#. Resource IDs: (AFX_IDS_SCMAXIMIZE)
 msgid "Enlarge the window to full size"
 msgstr "Zväčšiť okno na plnú veľkosť"
 
@@ -4754,19 +4802,19 @@ msgstr "Zväčšiť okno na plnú veľkosť"
 msgid "Enter URL"
 msgstr "Zadaj URL"
 
-#. Resource IDs: (61722)
+#. Resource IDs: (AFX_IDP_PARSE_GUID)
 msgid "Enter a GUID."
 msgstr "Zadajte GUID."
 
-#. Resource IDs: (61721)
+#. Resource IDs: (AFX_IDP_PARSE_CURRENCY)
 msgid "Enter a currency."
 msgstr "Zadajte menu."
 
-#. Resource IDs: (61720)
+#. Resource IDs: (AFX_IDP_PARSE_DATETIME)
 msgid "Enter a date and/or time."
 msgstr "Zadajte dátum a/alebo čas."
 
-#. Resource IDs: (61724)
+#. Resource IDs: (AFX_IDP_PARSE_DATE)
 msgid "Enter a date."
 msgstr "Zadajte dátum."
 
@@ -4774,33 +4822,33 @@ msgstr "Zadajte dátum."
 msgid "Enter a name for the changelist:"
 msgstr "Zadajte meno zoznamu zmien:"
 
-#. Resource IDs: (61715)
+#. Resource IDs: (AFX_IDP_PARSE_REAL_RANGE)
 #, c-format
 msgid "Enter a number between %1 and %2."
 msgstr "Zadajte číslo medzi %1 a %2."
 
-#. Resource IDs: (61713)
+#. Resource IDs: (AFX_IDP_PARSE_REAL)
 msgid "Enter a number."
 msgstr "Zadajte číslo."
 
-#. Resource IDs: (61719)
+#. Resource IDs: (AFX_IDP_PARSE_UINT)
 msgid "Enter a positive integer."
 msgstr "Zadajte kladné číslo."
 
-#. Resource IDs: (61723)
+#. Resource IDs: (AFX_IDP_PARSE_TIME)
 msgid "Enter a time."
 msgstr "Zadajte čas."
 
-#. Resource IDs: (61714)
+#. Resource IDs: (AFX_IDP_PARSE_INT_RANGE)
 #, c-format
 msgid "Enter an integer between %1 and %2."
 msgstr "Zadajte celé číslo medzi %1 a %2."
 
-#. Resource IDs: (61718)
+#. Resource IDs: (AFX_IDP_PARSE_BYTE)
 msgid "Enter an integer between 0 and 255."
 msgstr "Zadajte celé číslo medzi 0 a 255."
 
-#. Resource IDs: (61712)
+#. Resource IDs: (AFX_IDP_PARSE_INT)
 msgid "Enter an integer."
 msgstr "Zadajte celé číslo."
 
@@ -4812,7 +4860,7 @@ msgstr "Nižšie zadajte obsah súboru na testovanie:"
 msgid "Enter log &message:"
 msgstr "Zadaj &správu denníka:"
 
-#. Resource IDs: (61716)
+#. Resource IDs: (AFX_IDP_PARSE_STRING_SIZE)
 #, c-format
 msgid "Enter no more than %1 characters."
 msgstr "Zadajte nie viac ako %1 znakov."
@@ -4857,7 +4905,7 @@ msgstr ""
 msgid "Everything updated."
 msgstr ""
 
-#. Resource IDs: (16023)
+#. Resource IDs: (IDS_AFXBARRES_CMD_FILTER)
 msgid ""
 "Executable (*.exe)|*.exe|Command (*.com)|*.com|Information "
 "(*.pdf)|*.pdf|Batch (*.bat)|*.bat|All Files (*.*)|*.*||"
@@ -4867,7 +4915,7 @@ msgstr "Spustiteľné (*.exe)|*.exe|Príkazy (*.com)|*.com|Informácie (*.pdf)|*
 msgid "Executable (+x)"
 msgstr "Spustiteľné (+x)"
 
-#. Resource IDs: (16018)
+#. Resource IDs: (IDS_AFXBARRES_EXISTING)
 msgid "Existing"
 msgstr "Existujúce"
 
@@ -4876,12 +4924,12 @@ msgstr "Existujúce"
 msgid "Exit"
 msgstr "Ukončiť"
 
-#. Resource IDs: (16025)
+#. Resource IDs: (IDS_AFXBARRES_EXPAND_FMT)
 #, c-format
-msgid "Expand (%s)"
-msgstr "Rozšíriť (%s)"
+msgid "Expand (%Ts)"
+msgstr "Rozšíriť (%Ts)"
 
-#. Resource IDs: (16012)
+#. Resource IDs: (IDS_AFXBARRES_EXPAND_BAR)
 msgid "Expand docked window"
 msgstr "Rozšíriť zakotvené okno"
 
@@ -4951,7 +4999,7 @@ msgstr "Externý program:"
 msgid "F&etch..."
 msgstr ""
 
-#. Resource IDs: (17113)
+#. Resource IDs: (IDS_AFXBARRES_MENU_ANIMATION_FADE)
 msgid "Fade"
 msgstr "Zoslabiť"
 
@@ -4973,21 +5021,21 @@ msgstr ""
 msgid "Failed to checkout file \"%s\" of revision %s to \"%s\"."
 msgstr ""
 
-#. Resource IDs: (61825)
+#. Resource IDs: (AFX_IDP_FAILED_TO_CONNECT)
 msgid ""
 "Failed to connect.\n"
 "Link may be broken."
 msgstr "Nepodarilo sa pripojiť.\nMôže byť zlé spojenie."
 
-#. Resource IDs: (61835)
+#. Resource IDs: (AFX_IDP_FAILED_TO_CONVERT)
 msgid "Failed to convert ActiveX object."
 msgstr "Konverzia objektu ActiveX zlyhala."
 
-#. Resource IDs: (61700)
+#. Resource IDs: (AFX_IDP_FAILED_TO_CREATE_DOC)
 msgid "Failed to create empty document."
 msgstr "Vytváranie prázdneho dokumentu zlyhalo."
 
-#. Resource IDs: (61839)
+#. Resource IDs: (AFX_IDP_FAILED_TO_CREATE)
 msgid ""
 "Failed to create object.  Make sure the application is entered in the system"
 " registry."
@@ -5005,23 +5053,23 @@ msgstr ""
 msgid "Failed to get merge file."
 msgstr ""
 
-#. Resource IDs: (61703)
+#. Resource IDs: (AFX_IDP_FAILED_TO_LAUNCH_HELP)
 msgid "Failed to launch help."
 msgstr "Zlyhalo spustenie pomoci."
 
-#. Resource IDs: (61830)
+#. Resource IDs: (AFX_IDP_FAILED_TO_LAUNCH)
 msgid "Failed to launch server application."
 msgstr "Zlyhalo spustenie servera."
 
-#. Resource IDs: (61697)
+#. Resource IDs: (AFX_IDP_FAILED_TO_OPEN_DOC)
 msgid "Failed to open document."
 msgstr "Otváranie dokumentu zlyhalo."
 
-#. Resource IDs: (61827)
+#. Resource IDs: (AFX_IDP_BAD_VERB)
 msgid "Failed to perform server operation."
 msgstr "Nepodarilo sa vykonať operáciu na serveri."
 
-#. Resource IDs: (61698)
+#. Resource IDs: (AFX_IDP_FAILED_TO_SAVE_DOC)
 msgid "Failed to save document."
 msgstr "Ukladanie dokumentu zlyhalo."
 
@@ -5105,7 +5153,7 @@ msgstr "Získavanie súboru..."
 msgid "Fetching revision %s of file:"
 msgstr "Získavanie revízie %s súboru:"
 
-#. Resource IDs: (16015, IDS_CHSTAT_FILECOL, IDS_COMMITDLG_FILE,
+#. Resource IDs: (IDS_AFXBARRES_FILE, IDS_CHSTAT_FILECOL, IDS_COMMITDLG_FILE,
 #. IDS_FILEDIFF_FILE, IDS_LOG_FILE)
 msgid "File"
 msgstr "Súbor"
@@ -5311,7 +5359,7 @@ msgstr "Zväčšiť obrázok na výšku okna\tH"
 msgid "Fit image &widths\tW"
 msgstr "Zväčšiť obrázok na šírku okna\tW"
 
-#. Resource IDs: (16016)
+#. Resource IDs: (IDS_AFXBARRES_FOLDER)
 msgid "Folder"
 msgstr "Adresár"
 
@@ -5324,7 +5372,7 @@ msgstr ""
 msgid "Font"
 msgstr "Písmo"
 
-#. Resource IDs: (57345)
+#. Resource IDs: (AFX_IDS_IDLEMESSAGE)
 msgid "For Help, press F1. Scroll horizontally with Ctrl-Scrollwheel"
 msgstr "Pre pomoc stlačte F1. Horizontálne rolovanie môžete rolovacím koliečkom pri súčasnom držaní klávesu Ctrl."
 
@@ -5372,7 +5420,7 @@ msgstr ""
 #. Resource IDs: (Dialog IDD_SETCOLORPAGE: Control id 65535, Dialog
 #. IDD_SETTINGSUDIFF: Control id 65535)
 msgid "Foreground"
-msgstr ""
+msgstr "Popredie"
 
 #. Resource IDs: (Dialog IDD_FORMAT_PATCH: Control id 312)
 msgid "Format Patch"
@@ -5451,17 +5499,21 @@ msgstr "Z upravených súborov"
 msgid "From:"
 msgstr "Od:"
 
-#. Resource IDs: (17026)
+#. Resource IDs: (IDS_AFXBARRES_FULLSCREEN)
 msgid "Full Screen"
 msgstr "Celá obrazovka"
+
+#. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_FULLNOPATHS)
+msgid "Full commit data without changed paths"
+msgstr ""
+
+#. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_FULL)
+msgid "Full data"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_FIND: Control id 20086)
 msgid "Full text search"
 msgstr ""
-
-#. Resource IDs: (IDS_git_DEPTH_INFINITE)
-msgid "Fully recursive"
-msgstr "Plne rekurzívne"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 65535)
 msgid "Further options for the commit dialog are on Dialogs 3 page."
@@ -5545,11 +5597,6 @@ msgstr "Získať denník zlučovania"
 #, c-format
 msgid "Getting file %s"
 msgstr "Získavam súbor %s"
-
-#. Resource IDs: (IDS_PROGRESSGETFILEREVISION)
-#, c-format
-msgid "Getting file %s, revision %s"
-msgstr "Získavam súbor %s revízie %s"
 
 #. Resource IDs: (IDS_PROGRESS_INFO)
 msgid "Getting information..."
@@ -5641,7 +5688,7 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSMAIN: Control id 65535)
 msgid "Git for Windows"
-msgstr "Git pre Windows"
+msgstr "Git for Windows"
 
 #. Resource IDs: (IDS_PROC_REPOCREATEERR)
 msgid "Git reported an error while creating a repository!\n"
@@ -5740,7 +5787,7 @@ msgstr "Graf"
 msgid "Graph type:"
 msgstr "Typ zobrazenia:"
 
-#. Resource IDs: (16972)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLOR_PAGE_ONE: Control id 16972)
 msgid "Gray"
 msgstr "Šedé"
 
@@ -5756,7 +5803,7 @@ msgstr "Skupina zoznamu zmien"
 msgid "H&ide Unrelated Changed Paths"
 msgstr ""
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 65535)
 msgid "H&ue:"
 msgstr "&Odt.:"
 
@@ -5805,7 +5852,7 @@ msgstr "Hebrejské"
 msgid "Help"
 msgstr "Pomoc"
 
-#. Resource IDs: (16982)
+#. Resource IDs: (Dialog IDD_AFXBARRES_KEYMAP: Control id 16982)
 msgid "Help Keyboard"
 msgstr "Klávesy pomoci"
 
@@ -5817,7 +5864,7 @@ msgstr ""
 msgid "Helpers:"
 msgstr ""
 
-#. Resource IDs: (16974)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLOR_PAGE_ONE: Control id 16974)
 msgid "Hex"
 msgstr "Hex"
 
@@ -5829,7 +5876,7 @@ msgstr "Skryť ponuku pre neverziované cesty"
 msgid "Hide Patch<<"
 msgstr ""
 
-#. Resource IDs: (16011)
+#. Resource IDs: (IDS_AFXBARRES_HIDE_BAR)
 msgid "Hide docked window"
 msgstr "Skryť zakotvené okno"
 
@@ -5867,7 +5914,7 @@ msgid ""
 "the text field."
 msgstr ""
 
-#. Resource IDs: (16519)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 16519)
 msgid ""
 "Hint: select the context menu, change the page to 'Commands' and drag the "
 "toolbar buttons into the menu window."
@@ -6219,6 +6266,11 @@ msgid ""
 "i.e. they get the modified overlay icon."
 msgstr "Ak je nastavené, tak neverziované súbory označia stav rodičovského adresára za zmenený\nteda bude mať prekrývajúcu ikonu zmeneného adresára."
 
+#. Resource IDs: (IDS_SETTINGS_GITCONFIG_INHERIT_TT)
+msgid ""
+"If this is enabled, no value is stored or overwritten at this config level."
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_CREATEREPO: Control id 1654)
 msgid ""
 "If you plan to work inside this folder, leave this unchecked. Typically a "
@@ -6344,21 +6396,17 @@ msgid ""
 "Ignore whitespace changes"
 msgstr "Ignorovať zmeny bielych znakov pri porovnávaní\nIgnorovať zmeny bielich znakov"
 
-#. Resource IDs: (16916 - Menu)
+#. Resource IDs: (ID_AFXBARRES_TOOLBAR_IMAGE_AND_TEXT - Menu)
 msgid "Image &and Text"
 msgstr "Obrázok &a text"
 
-#. Resource IDs: (16507)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16507)
 msgid "Image &and text"
 msgstr "Obrázok &a text"
 
-#. Resource IDs: (16508)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16508)
 msgid "Images"
 msgstr "Obrázky"
-
-#. Resource IDs: (IDS_git_DEPTH_IMMEDIATE)
-msgid "Immediate children, including folders"
-msgstr "Priame deti, vrátane adresárov"
 
 #. Resource IDs: (IDS_PROGRS_TITLE_IMPORT)
 msgid "Import"
@@ -6422,7 +6470,7 @@ msgstr ""
 msgid "Include only the following revision range:"
 msgstr "Iba nasledovný rozsah revízií:"
 
-#. Resource IDs: (61696)
+#. Resource IDs: (AFX_IDP_INVALID_FILENAME)
 msgid "Incorrect filename."
 msgstr "Nesprávny názov súboru."
 
@@ -6458,15 +6506,15 @@ msgid ""
 "Paste"
 msgstr "Vloží obsah schránky\nVlož"
 
-#. Resource IDs: (61706)
+#. Resource IDs: (AFX_IDP_FAILED_MEMORY_ALLOC)
 msgid "Insufficient memory to perform operation."
 msgstr "Nedostatok pamäte na vykonanie úkonu."
 
-#. Resource IDs: (61704)
+#. Resource IDs: (AFX_IDP_INTERNAL_FAILURE)
 msgid "Internal application error."
 msgstr "Vnútorná chyba programu."
 
-#. Resource IDs: (61592)
+#. Resource IDs: (AFX_IDS_INVALID_CURRENCY)
 msgid "Invalid Currency."
 msgstr "Chybná mena."
 
@@ -6524,21 +6572,25 @@ msgid ""
 "Jump to first unresolved conflict"
 msgstr "Pokračovať v riešení\nSkoč na prvý nevyriešený konflikt"
 
-#. Resource IDs: (16136)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 16136)
 msgid "Keyboard"
 msgstr "Klávesnica"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE8: Control id 65535)
 msgid "Keyboard shortcuts:"
 msgstr "Klávesové skratky:"
 
-#. Resource IDs: (16030)
+#. Resource IDs: (IDS_AFXBARRES_KEYS)
 msgid "Keys"
 msgstr "Kľúče"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Korean"
 msgstr "Kórejske"
+
+#. Resource IDs: (Dialog IDD_CLONE: Control id 1847)
+msgid "LFS"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_3: Control id 65535)
 msgid "LINE1"
@@ -6708,7 +6760,8 @@ msgid ""
 "\"long/path/for/file.txt (from long/path/to/file.txt)\"."
 msgstr ""
 
-#. Resource IDs: (16631, 16992)
+#. Resource IDs: (Dialog IDD_AFXBARRES_KEYMAP: Control id 16992, Dialog
+#. IDD_AFXBARRES_PROPPAGE4: Control id 16631)
 msgid "List1"
 msgstr "List1"
 
@@ -6747,19 +6800,23 @@ msgstr ""
 msgid "Local Branch"
 msgstr "Lokálna vetva"
 
+#. Resource IDs: (IDS_TAGCOMPARE_LOCALHASH)
+msgid "Local SHA1"
+msgstr ""
+
 #. Resource IDs: (IDS_STATUSLIST_GROUP_IGNORELOCALCHANGES)
 msgid ""
 "Local changes ignored (assumed valid/unchanged or skip worktree flagged "
 "files)"
 msgstr ""
 
+#. Resource IDs: (IDS_TAGCOMPARE_LOCALMESSAGE)
+msgid "Local message"
+msgstr ""
+
 #. Resource IDs: (IDS_CHSTAT_WCCOL)
 msgid "Local status"
 msgstr "Lokálny stav"
-
-#. Resource IDs: (Dialog IDD_RESOLVE_CONFLICT: Control id 65535)
-msgid "Local:"
-msgstr ""
 
 #. Resource IDs: (IDS_EXPORTFILE_TT)
 msgid ""
@@ -6811,21 +6868,13 @@ msgstr "Správy denníka (Zobrazenie denníka)"
 msgid "Login:"
 msgstr "Prihlasovacie meno:"
 
-#. Resource IDs: (IDS_REPOSTATUS_WCINFO)
-#, c-format
-msgid "Lowest shown revision: %ld - Highest shown revision: %ld"
-msgstr ""
-
-#. Resource IDs: (IDS_REPOSTATUS_HEADREV)
-#, c-format
-msgid ""
-"Lowest shown revision: %ld - Highest shown revision: %ld - HEAD revision: "
-"%ld"
-msgstr ""
-
-#. Resource IDs: (16973)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 16973)
 msgid "Lum"
 msgstr "Jas"
+
+#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1550)
+msgid "M&erge: Resets the index and try to reconstruct the pre-merge state"
+msgstr ""
 
 #. Resource IDs: (IDS_SMTP_MAPI)
 msgid "MAPI"
@@ -6839,7 +6888,7 @@ msgstr "Macintosh"
 msgid "Mail"
 msgstr "E-mail"
 
-#. Resource IDs: (61841)
+#. Resource IDs: (AFX_IDP_INVALID_MAPI_DLL)
 msgid "Mail system DLL is invalid."
 msgstr "Neplatná DLL knižnica pre emaily."
 
@@ -6873,7 +6922,7 @@ msgstr "Označiť za vyriešný\nZmení stav súboru na vyriešený"
 
 #. Resource IDs: (IDS_PREPAREDIFF)
 msgid "Mark for comparison"
-msgstr ""
+msgstr "Označiť pre porovnanie"
 
 #. Resource IDs: (IDS_VIEWCONTEXTMENU_MARKBLOCK)
 msgid "Mark this block"
@@ -6914,19 +6963,19 @@ msgstr "Maximálny počet záznamov, ktoré majú byť uchované v pamäti denn�
 msgid "Max. lines in action log"
 msgstr "Riadkov v denníku úkonov"
 
-#. Resource IDs: (16655)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE6: Control id 16655)
 msgid "Me&nus show recently used commands first"
 msgstr "Po&nuka zobrazujúca naposledy použité príkazy"
 
-#. Resource IDs: (16134)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 16134)
 msgid "Menu"
 msgstr "Ponuka"
 
-#. Resource IDs: (16006)
+#. Resource IDs: (IDS_AFXBARRES_MENU_BAR_TITLE)
 msgid "Menu Bar"
 msgstr "Ponuka"
 
-#. Resource IDs: (16626)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 16626)
 msgid "Menu s&hadows"
 msgstr "&Tiene ponuky"
 
@@ -6974,19 +7023,9 @@ msgstr "Zlúčiť inú vetvu"
 msgid "Merging"
 msgstr "Zlučovanie"
 
-#. Resource IDs: (IDS_PROGRS_CMD_MERGEURL)
-#, c-format
-msgid "Merging from %s, revision %s to %s, revision %s into %s, %s%s"
-msgstr ""
-
 #. Resource IDs: (IDS_ERR_MERGEIDENTICALREVISIONS)
 msgid ""
 "Merging requires different revisions or different URLs in 'From:' and 'To:'"
-msgstr ""
-
-#. Resource IDs: (IDS_PROGRS_CMD_MERGEPEG)
-#, c-format
-msgid "Merging revisions %s of %s into %s, %s%s"
 msgstr ""
 
 #. Resource IDs: (IDS_LOG_MESSAGE, IDS_MESSAGE)
@@ -7001,7 +7040,8 @@ msgstr ""
 msgid "Message part &expression:"
 msgstr "Výraz pre &správu:"
 
-#. Resource IDs: (Dialog IDD_MERGE: Control id 1742, IDS_LOG_FILTER_MESSAGES)
+#. Resource IDs: (Dialog IDD_MERGE: Control id 1742, IDS_LOG_FILTER_MESSAGES,
+#. IDS_LOG_POPUP_CLIPBOARD_MSGS)
 msgid "Messages"
 msgstr "Správy"
 
@@ -7014,7 +7054,7 @@ msgstr "Min"
 msgid "Mine"
 msgstr "Moje"
 
-#. Resource IDs: (17086)
+#. Resource IDs: (IDS_AFXBARRES_MINIMIZE_RIBBON)
 msgid "Minimize the Ribbon"
 msgstr "Zminimalizovať na lištu"
 
@@ -7032,7 +7072,7 @@ msgstr "Rôzne"
 msgid "Missing"
 msgstr "Chýbajúce"
 
-#. Resource IDs: (62179, IDS_RESET_MIXED)
+#. Resource IDs: (AFX_IDS_CHECKLISTBOX_MIXED, IDS_RESET_MIXED)
 msgid "Mixed"
 msgstr "Zmiešané"
 
@@ -7040,9 +7080,10 @@ msgstr "Zmiešané"
 msgid "Modification date"
 msgstr "Dátum zmeny"
 
-#. Resource IDs: (17131, Dialog IDD_COMMITDLG: Control id 1706, Dialog
-#. IDD_SETCOLORPAGE: Control id 65535, IDS_PATHACTIONS_MODIFIED,
-#. IDS_SVNACTION_MODIFIED, IDS_SVN_SUMMARIZEMODIFIED)
+#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1706, Dialog
+#. IDD_SETCOLORPAGE: Control id 65535, IDS_AFX_SHELLLISTCTRL_MODIFIED,
+#. IDS_PATHACTIONS_MODIFIED, IDS_SVNACTION_MODIFIED,
+#. IDS_SVN_SUMMARIZEMODIFIED)
 msgid "Modified"
 msgstr "Zmenené"
 
@@ -7050,15 +7091,15 @@ msgstr "Zmenené"
 msgid "Modified Files"
 msgstr "Zmenené súbory"
 
-#. Resource IDs: (17107)
+#. Resource IDs: (IDS_AFXBARRES_MORE)
 msgid "More"
 msgstr "Viac"
 
-#. Resource IDs: (16026)
+#. Resource IDs: (IDS_AFXBARRES_MORE_BUTTONS)
 msgid "More Buttons"
 msgstr "Viac tlačidiel"
 
-#. Resource IDs: (17097)
+#. Resource IDs: (IDS_AFXBARRES_MORE_COMMANDS)
 msgid "More Commands..."
 msgstr "Viac príkazov..."
 
@@ -7074,23 +7115,23 @@ msgstr "Viac..."
 msgid "Most active author:"
 msgstr "Najaktívnejší autor:"
 
-#. Resource IDs: (16135)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE4: Control id 16135)
 msgid "Mouse"
 msgstr "Myš"
 
-#. Resource IDs: (17026)
+#. Resource IDs: (Dialog IDD_AFXBARRES_OUTLOOKBAR_OPTIONS: Control id 17026)
 msgid "Move &Down"
 msgstr "Presunúť &nižšie"
 
-#. Resource IDs: (17025)
+#. Resource IDs: (Dialog IDD_AFXBARRES_OUTLOOKBAR_OPTIONS: Control id 17025)
 msgid "Move &Up"
 msgstr "Presunúť &vyššie"
 
-#. Resource IDs: (16022)
+#. Resource IDs: (IDS_AFXBARRES_MOVEDN)
 msgid "Move Item Down"
 msgstr "Presunúť hore"
 
-#. Resource IDs: (16021)
+#. Resource IDs: (IDS_AFXBARRES_MOVEUP)
 msgid "Move Item Up"
 msgstr "Presunúť dole"
 
@@ -7132,7 +7173,7 @@ msgstr "Môj súbor:"
 msgid "NUM"
 msgstr "NUM"
 
-#. Resource IDs: (17128)
+#. Resource IDs: (IDS_AFX_SHELLLISTCTRL_NAME)
 msgid "Name"
 msgstr "Meno"
 
@@ -7151,11 +7192,11 @@ msgid ""
 "Goto Line"
 msgstr "Skočiť na zadaný riadok v panely\nSkočí na riadok"
 
-#. Resource IDs: (17004)
+#. Resource IDs: (Dialog IDD_AFXBARRES_OUTLOOKBAR_OPTIONS: Control id 17004)
 msgid "Navigation Pane Options"
 msgstr "Nastavenia navigačného panela"
 
-#. Resource IDs: (17031)
+#. Resource IDs: (IDS_AFXBARRES_NAV_PANE_OPTIONS)
 msgid "Navigation Pane Options..."
 msgstr "Nastavenia navigačného panela..."
 
@@ -7171,7 +7212,9 @@ msgstr "Sieť"
 msgid "Network::Email"
 msgstr ""
 
-#. Resource IDs: (16017, 16027, 30721, 65535, IDS_NEW)
+#. Resource IDs: (Dialog AFX_IDD_NEWTYPEDLG: Control id 30721, Dialog
+#. IDD_AFXBARRES_COLOR_DLG: Control id 65535, IDS_AFXBARRES_NEW,
+#. IDS_AFXBARRES_NEW_FILE, IDS_NEW)
 msgid "New"
 msgstr "Nový"
 
@@ -7183,7 +7226,7 @@ msgstr "Nové me&no"
 msgid "New Branch/Tag"
 msgstr "Nová vetva/značka"
 
-#. Resource IDs: (16014)
+#. Resource IDs: (IDS_AFXBARRES_NEW_MENU)
 msgid "New Menu"
 msgstr "Nová ponuka"
 
@@ -7291,11 +7334,11 @@ msgid ""
 "No differences found! Submodule may not be updated. Update submodule now?"
 msgstr ""
 
-#. Resource IDs: (61472)
+#. Resource IDs: (AFX_IDP_NO_ERROR_AVAILABLE)
 msgid "No error message is available."
 msgstr "Chybové hlásenie je nedostupné."
 
-#. Resource IDs: (61856, 61872)
+#. Resource IDs: (AFX_IDP_ARCH_NONE, AFX_IDP_FILE_NONE)
 msgid "No error occurred."
 msgstr "Nenastala žiadna chyba."
 
@@ -7382,8 +7425,8 @@ msgstr ""
 msgid "Node size"
 msgstr ""
 
-#. Resource IDs: (17110, Dialog IDD_SETTINGSOVERLAY: Control id 1272,
-#. IDS_NONE)
+#. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1272,
+#. IDS_AFXBARRES_MENU_ANIMATION_NONE, IDS_NONE)
 msgid "None"
 msgstr "Žiadne"
 
@@ -7408,7 +7451,7 @@ msgstr "Neverziované súbory"
 msgid "Not all files could be downloaded and verified."
 msgstr ""
 
-#. Resource IDs: (61708)
+#. Resource IDs: (AFX_IDP_UNREG_FAILURE)
 msgid "Not all of the system registry entries (or INI file) were removed."
 msgstr "Nie všetky položky systémových registrov (alebo INI súbor) boli vymazané."
 
@@ -7431,7 +7474,7 @@ msgstr ""
 msgid "Note node"
 msgstr ""
 
-#. Resource IDs: (62183)
+#. Resource IDs: (AFX_IDS_AUTOSAVE_RECOVERY_ASK_4)
 msgid ""
 "Note that if you choose to recover the auto-saved documents, you must "
 "explicitly save them to overwrite the original documents.  If you choose to "
@@ -7562,35 +7605,39 @@ msgstr "OEM 869"
 msgid "OEM-US"
 msgstr "OEM-US"
 
-#. Resource IDs: (1, Dialog IDD_ABOUT: Control id 1, Dialog IDD_ABOUTBOX:
-#. Control id 1, Dialog IDD_ADD: Control id 1, Dialog IDD_ADD_REMOTE: Control
-#. id 1, Dialog IDD_BISECTSTART: Control id 1, Dialog IDD_BROWSE_REFS: Control
-#. id 1, Dialog IDD_BUGTRAQREGEXTESTER: Control id 1, Dialog IDD_CHANGEDFILES:
-#. Control id 1, Dialog IDD_CLEAN: Control id 1, Dialog IDD_CLONE: Control id
-#. 1, Dialog IDD_CREATECHANGELIST: Control id 1, Dialog IDD_CREATEREPO:
-#. Control id 1, Dialog IDD_ENCODING: Control id 1, Dialog IDD_EXPORT: Control
-#. id 1, Dialog IDD_FORMAT_PATCH: Control id 1, Dialog IDD_GITSWITCH: Control
-#. id 1, Dialog IDD_GOTO: Control id 1, Dialog IDD_GOTODLG: Control id 1,
-#. Dialog IDD_HISTORYDLG: Control id 1, Dialog IDD_IGNORE: Control id 1,
-#. Dialog IDD_INPUTDLG: Control id 1, Dialog IDD_LOGMESSAGE: Control id 1,
-#. Dialog IDD_LOGORDERING: Control id 1, Dialog IDD_MERGE: Control id 1,
-#. Dialog IDD_MERGEABORT: Control id 1, Dialog IDD_NEW_BRANCH_TAG: Control id
-#. 1, Dialog IDD_OPEN: Control id 1, Dialog IDD_OPENDLG: Control id 1, Dialog
-#. IDD_PROMPT: Control id 1, Dialog IDD_PULLFETCH: Control id 1, Dialog
-#. IDD_PUSH: Control id 1, Dialog IDD_REFLOG: Control id 1, Dialog
-#. IDD_REGEXFILTER: Control id 1, Dialog IDD_REGEXFILTERS: Control id 1,
-#. Dialog IDD_RENAME: Control id 1, Dialog IDD_REPOSITORY_BROWSER: Control id
-#. 1, Dialog IDD_REQUESTPULL: Control id 1, Dialog IDD_RESET: Control id 1,
-#. Dialog IDD_RESOLVE: Control id 1, Dialog IDD_RESOLVE_CONFLICT: Control id
-#. 4569, Dialog IDD_REVERT: Control id 1, Dialog IDD_SETTINGSBUGTRAQADV:
-#. Control id 1, Dialog IDD_SETTINGSHOOKCONFIG: Control id 1, Dialog
-#. IDD_SETTINGSPROGSADV: Control id 1, Dialog IDD_SIMPLEPROMPT: Control id 1,
-#. Dialog IDD_STASH: Control id 1, Dialog IDD_STATGRAPH: Control id 1, Dialog
-#. IDD_SUBMODULE_ADD: Control id 1, Dialog IDD_SUBMODULE_UPDATE: Control id 1,
-#. Dialog IDD_SVNDCOMMITTYPE: Control id 1, Dialog IDD_SVNIGNORE: Control id
-#. 1, Dialog IDD_SVNPROGRESS: Control id 1, Dialog IDD_TOOLASSOC: Control id
-#. 1, Dialog IDD_URL: Control id 1, Dialog IDD_USER_PASSWD: Control id 1,
-#. IDS_MSGBOX_OK)
+#. Resource IDs: (Dialog AFX_IDD_NEWTYPEDLG: Control id 1, Dialog IDD_ABOUT:
+#. Control id 1, Dialog IDD_ABOUTBOX: Control id 1, Dialog IDD_ADD: Control id
+#. 1, Dialog IDD_ADD_REMOTE: Control id 1, Dialog IDD_AFXBARRES_BUTTON_PROPS:
+#. Control id 1, Dialog IDD_AFXBARRES_COLOR_DLG: Control id 1, Dialog
+#. IDD_AFXBARRES_IMAGE_EDITOR: Control id 1, Dialog
+#. IDD_AFXBARRES_OUTLOOKBAR_OPTIONS: Control id 1, Dialog
+#. IDD_AFXBARRES_TOOLBAR_NAME: Control id 1, Dialog IDD_BISECTSTART: Control
+#. id 1, Dialog IDD_BROWSE_REFS: Control id 1, Dialog IDD_BUGTRAQREGEXTESTER:
+#. Control id 1, Dialog IDD_CHANGEDFILES: Control id 1, Dialog IDD_CLEAN:
+#. Control id 1, Dialog IDD_CLONE: Control id 1, Dialog IDD_CREATECHANGELIST:
+#. Control id 1, Dialog IDD_CREATEREPO: Control id 1, Dialog IDD_ENCODING:
+#. Control id 1, Dialog IDD_EXPORT: Control id 1, Dialog IDD_FORMAT_PATCH:
+#. Control id 1, Dialog IDD_GITSWITCH: Control id 1, Dialog IDD_GOTO: Control
+#. id 1, Dialog IDD_GOTODLG: Control id 1, Dialog IDD_HISTORYDLG: Control id
+#. 1, Dialog IDD_IGNORE: Control id 1, Dialog IDD_INPUTDLG: Control id 1,
+#. Dialog IDD_LOGMESSAGE: Control id 1, Dialog IDD_LOGORDERING: Control id 1,
+#. Dialog IDD_MERGE: Control id 1, Dialog IDD_MERGEABORT: Control id 1, Dialog
+#. IDD_NEW_BRANCH_TAG: Control id 1, Dialog IDD_OPEN: Control id 1, Dialog
+#. IDD_OPENDLG: Control id 1, Dialog IDD_PROMPT: Control id 1, Dialog
+#. IDD_PULLFETCH: Control id 1, Dialog IDD_PUSH: Control id 1, Dialog
+#. IDD_REFLOG: Control id 1, Dialog IDD_REGEXFILTER: Control id 1, Dialog
+#. IDD_REGEXFILTERS: Control id 1, Dialog IDD_RENAME: Control id 1, Dialog
+#. IDD_REPOSITORY_BROWSER: Control id 1, Dialog IDD_REQUESTPULL: Control id 1,
+#. Dialog IDD_RESET: Control id 1, Dialog IDD_RESOLVE: Control id 1, Dialog
+#. IDD_RESOLVE_CONFLICT: Control id 4569, Dialog IDD_REVERT: Control id 1,
+#. Dialog IDD_SETTINGSBUGTRAQADV: Control id 1, Dialog IDD_SETTINGSHOOKCONFIG:
+#. Control id 1, Dialog IDD_SETTINGSPROGSADV: Control id 1, Dialog
+#. IDD_SIMPLEPROMPT: Control id 1, Dialog IDD_STASH: Control id 1, Dialog
+#. IDD_STATGRAPH: Control id 1, Dialog IDD_SUBMODULE_ADD: Control id 1, Dialog
+#. IDD_SUBMODULE_UPDATE: Control id 1, Dialog IDD_SVNDCOMMITTYPE: Control id
+#. 1, Dialog IDD_SVNIGNORE: Control id 1, Dialog IDD_SVNPROGRESS: Control id
+#. 1, Dialog IDD_TOOLASSOC: Control id 1, Dialog IDD_URL: Control id 1, Dialog
+#. IDD_USER_PASSWD: Control id 1, IDS_MSGBOX_OK)
 msgid "OK"
 msgstr "OK"
 
@@ -7638,7 +7685,7 @@ msgstr "Staršie riadky"
 msgid "On demand"
 msgstr ""
 
-#. Resource IDs: (62180)
+#. Resource IDs: (AFX_IDS_AUTOSAVE_RECOVERY_ASK_1)
 msgid "One or more auto-saved documents were found."
 msgstr "Bol nájdených jeden alebo viac automaticky uložených dokumentov."
 
@@ -7663,9 +7710,9 @@ msgstr "Iba zlúčené súbory"
 msgid "Only consider first parents on blame"
 msgstr ""
 
-#. Resource IDs: (IDS_git_DEPTH_FILES)
-msgid "Only file children"
-msgstr "Iba súbory"
+#. Resource IDs: (IDS_TAGCOMPARE_ONLYLOCAL)
+msgid "Only local"
+msgstr ""
 
 #. Resource IDs: (IDS_BROWSE_REFS_ONLYMERGED)
 msgid "Only merged (to HEAD)"
@@ -7677,15 +7724,16 @@ msgid ""
 "are allowed!"
 msgstr "Sú povolené iba čísla!\n(eventuálne oddelené čiarkami)"
 
-#. Resource IDs: (IDS_git_DEPTH_EMPTY)
-msgid "Only this item"
-msgstr "Iba tento objekt"
+#. Resource IDs: (IDS_TAGCOMPARE_ONLYREMOTE)
+msgid "Only remote"
+msgstr ""
 
 #. Resource IDs: (IDS_BROWSE_REFS_ONLYUNMERGED)
 msgid "Only unmerged (to HEAD)"
 msgstr ""
 
-#. Resource IDs: (61440, ID_FILE_OPEN - Menu, ID_FILE_OPEN - Ribbon name)
+#. Resource IDs: (AFX_IDS_OPENFILE, ID_FILE_OPEN - Menu, ID_FILE_OPEN - Ribbon
+#. name)
 msgid "Open"
 msgstr "Otvoriť"
 
@@ -7749,9 +7797,9 @@ msgstr ""
 msgid "Option"
 msgstr "Voľby"
 
-#. Resource IDs: (16137, Dialog IDD_NEW_BRANCH_TAG: Control id 1517, Dialog
-#. IDD_PULLFETCH: Control id 1517, Dialog IDD_PUSH: Control id 1502, Dialog
-#. IDD_STASH: Control id 1517)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE6: Control id 16137, Dialog
+#. IDD_NEW_BRANCH_TAG: Control id 1517, Dialog IDD_PULLFETCH: Control id 1517,
+#. Dialog IDD_PUSH: Control id 1502, Dialog IDD_STASH: Control id 1517)
 msgid "Options"
 msgstr "Voľby"
 
@@ -7779,7 +7827,7 @@ msgstr ""
 msgid "Out Commits"
 msgstr ""
 
-#. Resource IDs: (61475)
+#. Resource IDs: (AFX_IDS_MEMORY_EXCEPTION)
 msgid "Out of memory."
 msgstr "Nedostatok pamäte."
 
@@ -7787,7 +7835,7 @@ msgstr "Nedostatok pamäte."
 msgid "Output Directory"
 msgstr ""
 
-#. Resource IDs: (61510)
+#. Resource IDs: (AFX_IDS_PRINTDEFAULT)
 msgid "Output.prn"
 msgstr "Output.prn"
 
@@ -7803,19 +7851,19 @@ msgstr ""
 msgid "P&age setup..."
 msgstr ""
 
-#. Resource IDs: (61507)
+#. Resource IDs: (AFX_IDS_PRINTPAGENUM)
 #, c-format
 msgid "Page %u"
 msgstr "Strana %u"
 
-#. Resource IDs: (61508)
+#. Resource IDs: (AFX_IDS_PREVIEWPAGEDESC)
 #, c-format
 msgid ""
 "Page %u\n"
 "Pages %u-%u\n"
 msgstr "Strana %u\nStrany %u-%u\n"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog AFX_IDD_PRINTDLG: Control id 65535)
 msgid "Page :"
 msgstr "Strana :"
 
@@ -7853,13 +7901,14 @@ msgstr "Rodič 1"
 msgid "Parent 2"
 msgstr "Rodič 2"
 
+#. Resource IDs: (IDS_CONFLICT_REVERT)
+#, c-format
+msgid "Parent of %2!s!"
+msgstr ""
+
 #. Resource IDs: (IDS_PARENTS)
 msgid "Parent(s)"
 msgstr "Rodič(ia)"
-
-#. Resource IDs: (Dialog IDD_ABOUTBOX: Control id 65535)
-msgid "Part of code come from TortoiseSVN Blame"
-msgstr ""
 
 #. Resource IDs: (Dialog IDD_USER_PASSWD: Control id 4585)
 msgid "Password"
@@ -7967,7 +8016,7 @@ msgstr "Percento autorstva"
 msgid "Percents"
 msgstr "Percentá"
 
-#. Resource IDs: (16538)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE6: Control id 16538)
 msgid "Personalized Menus and Toolbars"
 msgstr "Prispôsobená ponuka a nástrojové lišty"
 
@@ -7988,13 +8037,13 @@ msgstr ""
 msgid "Pick up %s"
 msgstr ""
 
-#. Resource IDs: (61582)
+#. Resource IDs: (AFX_IDS_METAFILE_FORMAT)
 msgid ""
 "Picture (Metafile)\n"
 "a picture"
 msgstr "Obrázok (Metafile)\nobrázok"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_IMAGE_EDITOR: Control id 65535)
 msgid "Picture:"
 msgstr "Obrázok:"
 
@@ -8065,7 +8114,7 @@ msgstr "Čakajte, prosím..."
 msgid "Popup"
 msgstr ""
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog AFX_IDD_PRINTDLG: Control id 65535)
 msgid "Port :"
 msgstr "Port :"
 
@@ -8081,7 +8130,7 @@ msgstr "Poodovzdávací pripnutý (hook)skript"
 msgid "Post-Push Hook"
 msgstr ""
 
-#. Resource IDs: (58115)
+#. Resource IDs: (Dialog AFX_IDD_PREVIEW_TOOLBAR: Control id 58115)
 msgid "Pre&v Page"
 msgstr "Pre&došlá strana"
 
@@ -8109,15 +8158,15 @@ msgstr "Prepojiť pravý blok"
 msgid "Prepend this block to left"
 msgstr "Prepojiť tento blok vľavo"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 65535)
 msgid "Press &New Shortcut Key:"
 msgstr "Stlačte &novú klávesovú skratku:"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 65535)
 msgid "Press &new shortcut key:"
 msgstr "Stlačte &novú klávesovú skratku:"
 
-#. Resource IDs: (17094)
+#. Resource IDs: (IDS_AFXBARRES_PREVIEW)
 msgid "Preview"
 msgstr "Náhľad"
 
@@ -8125,7 +8174,7 @@ msgstr "Náhľad"
 msgid "Preview patched file"
 msgstr "Náhľad zaplátaného súboru"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_IMAGE_EDITOR: Control id 65535)
 msgid "Preview: "
 msgstr "Náhľad: "
 
@@ -8158,7 +8207,8 @@ msgstr "Predchádzajúci rozdiel"
 msgid "Previous inline difference"
 msgstr "Predchádzajúci riadkový rozdiel"
 
-#. Resource IDs: (16990, 17092)
+#. Resource IDs: (Dialog IDD_AFXBARRES_KEYMAP: Control id 16990,
+#. IDS_AFXBARRES_PRINT)
 msgid "Print"
 msgstr "Tlačiť"
 
@@ -8180,19 +8230,19 @@ msgid ""
 "Print"
 msgstr ""
 
-#. Resource IDs: (61512)
+#. Resource IDs: (AFX_IDS_PRINTCAPTION)
 msgid "Print to File"
 msgstr "Tlačiť do súboru"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog AFX_IDD_PRINTDLG: Control id 65535)
 msgid "Printer :"
 msgstr "Tlačiareň :"
 
-#. Resource IDs: (61511)
+#. Resource IDs: (AFX_IDS_PRINTFILTER)
 msgid "Printer Files (*.prn)|*.prn|All Files (*.*)|*.*||"
 msgstr "Súbory tlačiarne (*.prn)|*.prn|Všetky súbory (*.*)|*.*||"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog AFX_IDD_PRINTDLG: Control id 65535)
 msgid "Printing"
 msgstr "Tlačenie"
 
@@ -8311,10 +8361,6 @@ msgstr ""
 msgid "Push ta&gs"
 msgstr ""
 
-#. Resource IDs: (IDS_LOG_PUSH)
-msgid "Push..."
-msgstr ""
-
 #. Resource IDs: (Dialog IDD_SETTINREMOTE: Control id 65535)
 msgid "Putty Key:"
 msgstr "Kľúč Putty:"
@@ -8322,11 +8368,6 @@ msgstr "Kľúč Putty:"
 #. Resource IDs: (IDS_PUTTYKEYFILEFILTER)
 msgid "Putty Private Key (*.ppk)|*.ppk|All Files (*.*)|*.*||"
 msgstr ""
-
-#. Resource IDs: (IDS_STATGRAPH_QUARTERLABEL)
-#, c-format
-msgid "Q%d/%.2d"
-msgstr "Q%d/%.2d"
 
 #. Resource IDs: (57665)
 msgid ""
@@ -8348,7 +8389,7 @@ msgstr ""
 msgid "R&AM drives"
 msgstr "R&AM disky"
 
-#. Resource IDs: (16623)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 16623)
 msgid "R&eset"
 msgstr "P&redvolené"
 
@@ -8394,11 +8435,12 @@ msgstr "&Vyberateľné disky"
 msgid "Re&name..."
 msgstr "Preme&novať..."
 
-#. Resource IDs: (16613)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE8: Control id 16613)
 msgid "Re&set"
 msgstr "Pr&edvolené"
 
-#. Resource IDs: (16647)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 16647, Dialog
+#. IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 16647)
 msgid "Re&set All"
 msgstr "P&redvolené všetko"
 
@@ -8440,7 +8482,7 @@ msgstr ""
 msgid "Rebasing... (%d/%d)"
 msgstr ""
 
-#. Resource IDs: (16019)
+#. Resource IDs: (IDS_AFXBARRES_RECENT)
 msgid "Recent"
 msgstr "Minulé"
 
@@ -8460,7 +8502,7 @@ msgstr ""
 msgid "Record Only"
 msgstr "Iba záznam"
 
-#. Resource IDs: (62184)
+#. Resource IDs: (AFX_IDS_AUTOSAVE_RECOVERY_ASK_5)
 msgid ""
 "Recover the auto-saved documents\n"
 "Open the auto-saved versions instead of the explicitly saved versions"
@@ -8486,7 +8528,7 @@ msgstr "Rekurzívne"
 
 #. Resource IDs: (ID_EDIT_REDO - Ribbon name)
 msgid "Redo"
-msgstr ""
+msgstr "Znova"
 
 #. Resource IDs: (57644)
 msgid ""
@@ -8494,7 +8536,7 @@ msgid ""
 "Redo"
 msgstr "Zopakovať predchádzajúci vrátený úkon\nZopakovať"
 
-#. Resource IDs: (61186)
+#. Resource IDs: (AFX_IDS_SCMINIMIZE)
 msgid "Reduce the window to an icon"
 msgstr "Zmenšiť okno na ikonu"
 
@@ -8539,11 +8581,11 @@ msgstr "Obnovovanie..."
 #. Resource IDs: (500, 65535 - PopupMenu, Dialog IDD_REGEXFILTER: Control id
 #. 165, ID_REGEXFILTER - Ribbon name)
 msgid "Regex Filter"
-msgstr ""
+msgstr "Regex Filter"
 
 #. Resource IDs: (Dialog IDD_REGEXFILTERS: Control id 164)
 msgid "Regex Filters"
-msgstr ""
+msgstr "Regex Filtere"
 
 #. Resource IDs: (Dialog IDD_REGEXFILTER: Control id 65535)
 msgid "Regex:"
@@ -8611,9 +8653,14 @@ msgstr ""
 msgid "Remote &tracking branch"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_2: Control id 65535)
+#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_2: Control id 65535,
+#. IDS_PROC_REMOTEBRANCH)
 msgid "Remote Branch"
 msgstr "Vzdialená vetva"
+
+#. Resource IDs: (IDS_TAGCOMPARE_REMOTEHASH)
+msgid "Remote SHA1"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_GITCONFIG_URLEMPTY)
 msgid "Remote URL must not be empty."
@@ -8621,6 +8668,10 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_REMOTEUPDATE)
 msgid "Remote Update"
+msgstr ""
+
+#. Resource IDs: (IDS_TAGCOMPARE_REMOTEMESSAGE)
+msgid "Remote message"
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_GITCONFIG_REMOTEEMPTY)
@@ -8632,8 +8683,7 @@ msgid "Remote status"
 msgstr "Vzdialený stav"
 
 #. Resource IDs: (Dialog IDD_DELETEREMOTETAG: Control id 65535, Dialog
-#. IDD_RESOLVE_CONFLICT: Control id 65535, Dialog IDD_SETTINREMOTE: Control id
-#. 65535)
+#. IDD_SETTINREMOTE: Control id 65535)
 msgid "Remote:"
 msgstr "Vzdialený:"
 
@@ -8674,7 +8724,7 @@ msgstr "Odstráni poznámky pred porovaním, takže zmeny v poznámkach sa nezob
 msgid "Remove from &ignore list"
 msgstr "Odstrániť zo zoznamu &ignorovaných"
 
-#. Resource IDs: (17084)
+#. Resource IDs: (IDS_AFXBARRES_REMOVE_FROM_QAT)
 msgid "Remove from Quick Access Toolbar"
 msgstr "Odstrániť z lišty rýchleho prístupu"
 
@@ -8718,7 +8768,7 @@ msgstr "Odstránené šablóny súborov\n%s\nzo zoznamu vylúčenia."
 msgid "Removes the file or filemask from the list of ignored items"
 msgstr "Odstráni súbor alebo súborovú masku zo zoznamu vylúčených súborov"
 
-#. Resource IDs: (16616)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE2: Control id 16616)
 msgid "Rena&me..."
 msgstr "Preme&novať..."
 
@@ -8757,7 +8807,7 @@ msgstr "Opakovať posledný úkon\nOpakovať"
 
 #. Resource IDs: (Dialog IDD_FIND: Control id 1512)
 msgid "Replace &All"
-msgstr ""
+msgstr "Nahradiť &všetko"
 
 #. Resource IDs: (57641)
 msgid ""
@@ -8767,7 +8817,7 @@ msgstr "Nahradí zadaný text iným textom\nNahradiť"
 
 #. Resource IDs: (Dialog IDD_FIND: Control id 65535)
 msgid "Replace with:"
-msgstr ""
+msgstr "Nahradiť s:"
 
 #. Resource IDs: (Dialog IDD_REGEXFILTER: Control id 65535)
 msgid "Replace:"
@@ -8811,7 +8861,7 @@ msgstr "&Vyriešiť..."
 msgid "Reset"
 msgstr ""
 
-#. Resource IDs: (16614)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE2: Control id 16614)
 msgid "Reset &All"
 msgstr "Predvolené &všetko"
 
@@ -8847,13 +8897,10 @@ msgstr "Vyriešiť"
 msgid "Resolve Submodule Conflict"
 msgstr ""
 
-#. Resource IDs: (IDS_SVNPROGRESS_MENUUSEMINE)
-msgid "Resolve conflict using 'mine'"
-msgstr "Vyriešiť konflikt použitím \"Moje\""
-
-#. Resource IDs: (IDS_SVNPROGRESS_MENUUSETHEIRS)
-msgid "Resolve conflict using 'theirs'"
-msgstr "Vyriešiť konflikt použitím 'Ich'"
+#. Resource IDs: (IDS_SVNPROGRESS_MENURESOLVEUSING)
+#, c-format
+msgid "Resolve conflict using \"%s\""
+msgstr ""
 
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_RESOLVED, IDS_SVNACTION_RESOLVE)
 msgid "Resolved"
@@ -8891,7 +8938,7 @@ msgstr "Obnoviť základné"
 msgid "Restore after commit"
 msgstr "Obnoviť po odovzdaní"
 
-#. Resource IDs: (61202)
+#. Resource IDs: (AFX_IDS_SCRESTORE)
 msgid "Restore the window to normal size"
 msgstr "Obnoviť základnú veľkosť okna"
 
@@ -9007,7 +9054,7 @@ msgstr ""
 msgid "Rewind %d"
 msgstr ""
 
-#. Resource IDs: (61590)
+#. Resource IDs: (AFX_IDS_RTF_FORMAT)
 msgid ""
 "Rich Text (RTF)\n"
 "text with font and paragraph formatting"
@@ -9021,21 +9068,21 @@ msgstr "Pravý pohľad:"
 msgid "Right image"
 msgstr "Pravý obrázok"
 
-#. Resource IDs: (17108)
+#. Resource IDs: (IDS_AFXBARRES_GALLERY_ROW1_FMT)
 #, c-format
 msgid "Row %d of %d"
 msgstr "Riadok %d z %d"
 
-#. Resource IDs: (17109)
+#. Resource IDs: (IDS_AFXBARRES_GALLERY_ROW2_FMT)
 #, c-format
 msgid "Row %d-%d of %d"
 msgstr "Riadok %d-%d z %d"
 
-#. Resource IDs: (17116)
+#. Resource IDs: (IDS_AFXBARRES_GALLERY_ROW_DOWN)
 msgid "Row Down"
 msgstr "Riadok dole"
 
-#. Resource IDs: (17115)
+#. Resource IDs: (IDS_AFXBARRES_GALLERY_ROW_UP)
 msgid "Row Up"
 msgstr "Riadok hore"
 
@@ -9043,19 +9090,19 @@ msgstr "Riadok hore"
 msgid "Run when working tree path is under:"
 msgstr ""
 
-#. Resource IDs: (17045)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLOR_DLG: Control id 17045)
 msgid "S&elect..."
 msgstr "&Vybrať"
 
-#. Resource IDs: (17027)
+#. Resource IDs: (IDS_AFXBARRES_SHOWONEROW)
 msgid "S&how Buttons on One Row"
 msgstr "Tlačidlá z&obraziť v jednom riadku"
 
-#. Resource IDs: (17028)
+#. Resource IDs: (IDS_AFXBARRES_SHOWTWOROWS)
 msgid "S&how Buttons on Two Rows"
 msgstr "Tlačidlá z&obraziť v dvoch riadkoch"
 
-#. Resource IDs: (17078)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE8: Control id 17078)
 msgid "S&how Quick Access Toolbar below the Ribbon"
 msgstr "Zob&raziť lištu rýchleho prístupu pod lištou"
 
@@ -9149,7 +9196,7 @@ msgstr "Sa&feCrLf:"
 msgid "Safe Crlf:"
 msgstr "Safe Crlf:"
 
-#. Resource IDs: (IDS_SAME)
+#. Resource IDs: (IDS_SAME, IDS_TAGCOMPARE_SAME)
 msgid "Same"
 msgstr ""
 
@@ -9187,7 +9234,7 @@ msgstr "Uložiť &ako..."
 msgid "Save &as...\tCtrl+Shift+S"
 msgstr "Uložiť &ako...\tCtrl+Shift+S"
 
-#. Resource IDs: (61441)
+#. Resource IDs: (AFX_IDS_SAVEFILE)
 msgid "Save As"
 msgstr "Uložiť ako"
 
@@ -9267,7 +9314,7 @@ msgid ""
 "You're asked where to save the file"
 msgstr "Uložiť ako\nBudete opýtaný kam sa má súbor uložiť"
 
-#. Resource IDs: (61699)
+#. Resource IDs: (AFX_IDP_ASK_TO_SAVE)
 #, c-format
 msgid "Save changes to %1?"
 msgstr "Uložiť zmeny do %1?"
@@ -9382,7 +9429,7 @@ msgstr "Hľadať:"
 msgid "Searching for better path to apply patch..."
 msgstr "Vyhladávanie lepšej cesty na použitie záplaty"
 
-#. Resource IDs: (61865)
+#. Resource IDs: (AFX_IDP_FILE_BAD_SEEK)
 #, c-format
 msgid "Seek failed on %1"
 msgstr "Vyhľadanie zlyhalo na %1"
@@ -9395,15 +9442,15 @@ msgstr "Vybrať"
 msgid "Select &All"
 msgstr "Ozn&ač všetko"
 
-#. Resource IDs: (16529)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16529)
 msgid "Select &User-defined Image: "
 msgstr "Vybrať &užívateľský obrázok:"
 
-#. Resource IDs: (16508)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 16508)
 msgid "Select &context menu:"
 msgstr "Vybrať &kontextovú ponuku:"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 65535)
 msgid "Select &window:"
 msgstr "Vybrať &okno:"
 
@@ -9421,11 +9468,11 @@ msgstr "Vyber súbor..."
 msgid "Select SSH client"
 msgstr "Vyberte SSH klienta"
 
-#. Resource IDs: (61717)
+#. Resource IDs: (AFX_IDP_PARSE_RADIO_BUTTON)
 msgid "Select a button."
 msgstr "Zvoľte tlačidlo."
 
-#. Resource IDs: (57346)
+#. Resource IDs: (AFX_IDS_HELPMODEMESSAGE)
 msgid "Select an object on which to get Help"
 msgstr "Vybrať objekt, pre ktorý chcete pomoc"
 
@@ -9535,7 +9582,7 @@ msgstr "Odoslať e-mail"
 msgid "Send Mail after create"
 msgstr ""
 
-#. Resource IDs: (61842)
+#. Resource IDs: (AFX_IDP_FAILED_MAPI_SEND)
 msgid "Send Mail failed to send message."
 msgstr "Posielanie e-mail-u zlyhalo."
 
@@ -9567,7 +9614,8 @@ msgstr "Posielanie..."
 msgid "Server &address:"
 msgstr "&Adresa servera:"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 65535, Dialog
+#. IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 65535)
 msgid "Set Accelerator &for:"
 msgstr "Nastaviť klávesovú skratku  &pre:"
 
@@ -9630,7 +9678,7 @@ msgstr "Skrátený zoznam vlastností"
 msgid "Show"
 msgstr "Ukázať"
 
-#. Resource IDs: (16996)
+#. Resource IDs: (Dialog IDD_AFXBARRES_KEYMAP: Control id 16996)
 msgid "Show &Accelerator for:"
 msgstr "Zobraziť skratkové &tlačidlo pre:"
 
@@ -9638,7 +9686,8 @@ msgstr "Zobraziť skratkové &tlačidlo pre:"
 msgid "Show &Reflog"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1073)
+#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1073,
+#. IDS_PROC_LOG_SHOWUNVERSIONED)
 msgid "Show &Unversioned Files"
 msgstr ""
 
@@ -9647,7 +9696,8 @@ msgstr ""
 msgid "Show &Whole Project"
 msgstr ""
 
-#. Resource IDs: (IDS_LOG_POPUP_DIFF)
+#. Resource IDs: (Dialog IDD_RESOLVE_CONFLICT: Control id 1133, Dialog
+#. IDD_RESOLVE_CONFLICT: Control id 1134, IDS_LOG_POPUP_DIFF)
 msgid "Show &changes"
 msgstr "Zobraziť &zmeny"
 
@@ -9668,11 +9718,11 @@ msgstr ""
 msgid "Show &overlays and context menu only in explorer"
 msgstr "Z&obrazovať prekrytie a kontextovú ponuku len v Explorer-y"
 
-#. Resource IDs: (17099)
+#. Resource IDs: (IDS_AFXBARRES_PLACE_ABOVE_RIBBON)
 msgid "Show Above the Ribbon"
 msgstr "Zobraziť nad lištou"
 
-#. Resource IDs: (17098)
+#. Resource IDs: (IDS_AFXBARRES_PLACE_BELOW_RIBBON)
 msgid "Show Below the Ribbon"
 msgstr "Zobraziť pod lištou"
 
@@ -9680,7 +9730,7 @@ msgstr "Zobraziť pod lištou"
 msgid "Show Environment Variables"
 msgstr ""
 
-#. Resource IDs: (17030)
+#. Resource IDs: (IDS_AFXBARRES_SHOW_FEWER_BUTTONS)
 msgid "Show Fewer Buttons"
 msgstr "Zobraziť menej tlačidiel"
 
@@ -9700,19 +9750,19 @@ msgid ""
 "Inline diff"
 msgstr "Zobraziť riadkové rozdiely\nRiadkové rozdiely"
 
-#. Resource IDs: (17029)
+#. Resource IDs: (IDS_AFXBARRES_SHOW_MORE_BUTTONS)
 msgid "Show More Buttons"
 msgstr "Zobraziť viac tlačidiel"
 
-#. Resource IDs: (17082)
+#. Resource IDs: (IDS_AFXBARRES_PLACE_QAT_ABOVE_RIBBON)
 msgid "Show Quick Access Toolbar Above the Ribbon"
 msgstr "Zobraziť lištu rýchleho prístupu nad lištou"
 
-#. Resource IDs: (17081)
+#. Resource IDs: (IDS_AFXBARRES_PLACE_QAT_BELOW_RIBBON)
 msgid "Show Quick Access Toolbar Below the Ribbon"
 msgstr "Zobraziť lištu rýchleho prístupu pod lištou"
 
-#. Resource IDs: (16651)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE6: Control id 16651)
 msgid "Show Screen&Tips on toolbars"
 msgstr "Zobraziť tipy& na lište"
 
@@ -9781,6 +9831,10 @@ msgstr ""
 msgid "Show diff"
 msgstr "Zobraziť zmeny"
 
+#. Resource IDs: (IDS_HEADER_DIFFLEFTTOBASE, IDS_HEADER_DIFFRIGHTTOBASE)
+msgid "Show diff separately"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1556)
 msgid "Show diff to last commit"
 msgstr ""
@@ -9793,7 +9847,7 @@ msgstr ""
 msgid "Show extra changes after merge"
 msgstr ""
 
-#. Resource IDs: (16656)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE6: Control id 16656)
 msgid "Show f&ull menus after a short delay"
 msgstr "Po chvíľke zobraziť &celú ponuku "
 
@@ -9857,7 +9911,7 @@ msgstr ""
 msgid "Show long format even if a tag is exactly on that commit"
 msgstr ""
 
-#. Resource IDs: (20308)
+#. Resource IDs: (25308)
 msgid ""
 "Show next change of selected commit\n"
 "Show next"
@@ -9901,7 +9955,7 @@ msgstr "Zobraz/skry lištu nástrojov\nPrepni lištu nástrojov"
 msgid "Show original line number"
 msgstr "Zobraziť pôvodné číslo riadka"
 
-#. Resource IDs: (20309)
+#. Resource IDs: (25309)
 msgid ""
 "Show previous change of selected commit\n"
 "Show previous"
@@ -9911,7 +9965,7 @@ msgstr ""
 msgid "Show revision properties"
 msgstr "Zobraziť vlastnosti revízie"
 
-#. Resource IDs: (16652)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE6: Control id 16652)
 msgid "Show shortcut &keys in ScreenTips"
 msgstr "Zobraziť &klávesové skratky v tipoch"
 
@@ -9981,7 +10035,8 @@ msgstr ""
 msgid "Si&gn"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_ABOUT: Control id 65535)
+#. Resource IDs: (Dialog IDD_ABOUT: Control id 65535, Dialog IDD_ABOUTBOX:
+#. Control id 65535)
 msgid "Significant contributions by: (see Git repository for a complete list)"
 msgstr ""
 
@@ -9994,7 +10049,8 @@ msgstr "Strieborný štýl"
 msgid "Since"
 msgstr "Od"
 
-#. Resource IDs: (17129, IDS_LOG_SIZE, IDS_STATUSLIST_COLSIZE)
+#. Resource IDs: (IDS_AFX_SHELLLISTCTRL_SIZE, IDS_LOG_SIZE,
+#. IDS_STATUSLIST_COLSIZE)
 msgid "Size"
 msgstr "Veľkosť"
 
@@ -10028,7 +10084,7 @@ msgstr "Preskočené"
 msgid "Skipped missing target"
 msgstr "Preskočené chýbajúce ciele"
 
-#. Resource IDs: (17112)
+#. Resource IDs: (IDS_AFXBARRES_MENU_ANIMATION_SLIDE)
 msgid "Slide"
 msgstr "Posunúť"
 
@@ -10066,7 +10122,12 @@ msgid ""
 "dialog."
 msgstr "Určuje koľko záznamov sa ma pamätať v histórií správ denníka."
 
-#. Resource IDs: (16976, 16977, 16978, 16979, 16980, 16981)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 16976, Dialog
+#. IDD_AFXBARRES_COLORPAGE_TWO: Control id 16977, Dialog
+#. IDD_AFXBARRES_COLORPAGE_TWO: Control id 16978, Dialog
+#. IDD_AFXBARRES_COLORPAGE_TWO: Control id 16979, Dialog
+#. IDD_AFXBARRES_COLORPAGE_TWO: Control id 16980, Dialog
+#. IDD_AFXBARRES_COLORPAGE_TWO: Control id 16981)
 msgid "Spin1"
 msgstr "Spin1"
 
@@ -10096,7 +10157,8 @@ msgstr "Kumulovaný graf"
 msgid "Stacked Line Graph"
 msgstr "Zásobníkový čiarový graf"
 
-#. Resource IDs: (16962, IDS_TOOLBAR_STANDARD)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLOR_PAGE_ONE: Control id 16962,
+#. IDS_TOOLBAR_STANDARD)
 msgid "Standard"
 msgstr "Štandard"
 
@@ -10122,7 +10184,7 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAYHANDLERS: Control id 1542)
 msgid "Start registry editor"
-msgstr ""
+msgstr "Spustiť editor registrov"
 
 #. Resource IDs: (IDS_MENUDESCDAEMON)
 msgid "Starts a git server running git protocol"
@@ -10191,11 +10253,13 @@ msgstr ""
 
 #. Resource IDs: (IDS_STATE)
 msgid "State"
-msgstr ""
+msgstr "Stav"
 
-#. Resource IDs: (16514, Dialog IDD_GITPROGRESS: Control id 1487, Dialog
-#. IDD_RESOLVE_CONFLICT: Control id 4572, Dialog IDD_RESOLVE_CONFLICT: Control
-#. id 4573)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE4: Control id 16514, Dialog
+#. IDD_AFXBARRES_PROPPAGE5: Control id 16514, Dialog
+#. IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 16514, Dialog
+#. IDD_GITPROGRESS: Control id 1487, Dialog IDD_RESOLVE_CONFLICT: Control id
+#. 4572, Dialog IDD_RESOLVE_CONFLICT: Control id 4573)
 msgid "Static"
 msgstr "Statické"
 
@@ -10210,9 +10274,9 @@ msgstr "Stav"
 
 #. Resource IDs: (ID_VIEW_STATUS_BAR - Ribbon name)
 msgid "Status Bar"
-msgstr ""
+msgstr "Stavová lišta"
 
-#. Resource IDs: (17087)
+#. Resource IDs: (IDS_AFXBARRES_STATBAR_CUSTOMIZE)
 msgid "Status Bar Configuration"
 msgstr "Konfigurácia stavového riadku"
 
@@ -10277,6 +10341,10 @@ msgstr "Predmet"
 msgid "Subject:"
 msgstr "Predmet:"
 
+#. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_SUBJECTS)
+msgid "Subjects"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SYNC: Control id 1639)
 msgid "Submodule"
 msgstr "Podmodul"
@@ -10338,11 +10406,6 @@ msgstr "Úspešné"
 msgid "Switch"
 msgstr "Prepnúť"
 
-#. Resource IDs: (IDS_PROGRS_CMD_SWITCH)
-#, c-format
-msgid "Switch %s to %s, Revision %s"
-msgstr ""
-
 #. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1522)
 msgid "Switch To"
 msgstr "Prepnúť do"
@@ -10373,7 +10436,7 @@ msgid ""
 "Switch left and right view"
 msgstr "Prepnúť obsah ľavého a pravého panelu\nPrepnúť ľavý a pravý pohľad"
 
-#. Resource IDs: (61188)
+#. Resource IDs: (AFX_IDS_SCNEXTWINDOW)
 msgid "Switch to the next document window"
 msgstr "Prepnúť do ďalšieho okna dokumentu"
 
@@ -10383,7 +10446,7 @@ msgid ""
 "Next Pane"
 msgstr "Prepnúť na nasledovný panel\nĎalší panel"
 
-#. Resource IDs: (61189)
+#. Resource IDs: (AFX_IDS_SCPREVWINDOW)
 msgid "Switch to the previous document window"
 msgstr "Prepnúť do predchádzajúceho okna dokumentu"
 
@@ -10433,7 +10496,7 @@ msgstr ""
 msgid "System in offline mode. Check Internet Explorer."
 msgstr ""
 
-#. Resource IDs: (61707)
+#. Resource IDs: (AFX_IDP_UNREG_DONE)
 msgid ""
 "System registry entries have been removed and the INI file (if any) was "
 "deleted."
@@ -10459,7 +10522,7 @@ msgstr "TORTOISEGITUDIFF"
 msgid "Ta&gs:"
 msgstr ""
 
-#. Resource IDs: (16970)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLOR_DLG: Control id 16970)
 msgid "Tab Placeholder"
 msgstr "Miesto pre záložku"
 
@@ -10479,6 +10542,10 @@ msgstr ""
 #. Resource IDs: (IDS_PROC_LOG_TAGINFO)
 msgid "Tag Info"
 msgstr "Informácie o značke"
+
+#. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_TAGBRANCHES)
+msgid "Tag/branch names"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_COPY_SUCCESS)
 #, c-format
@@ -10501,7 +10568,7 @@ msgstr ""
 msgid "Tasks"
 msgstr "Úlohy"
 
-#. Resource IDs: (17019)
+#. Resource IDs: (IDS_AFXBARRES_TASKPANE)
 msgid "Tasks Pane"
 msgstr "Panel úloh"
 
@@ -10640,7 +10707,7 @@ msgstr "Súbor\n%s\nje prázdny! \nChcete ho odstrániť?"
 msgid "The file is too big"
 msgstr "Súbor je príliš veľký"
 
-#. Resource IDs: (61701)
+#. Resource IDs: (AFX_IDP_FILE_TOO_LARGE)
 msgid "The file is too large to open."
 msgstr "Súbor je priveľký na otvorenie."
 
@@ -10789,7 +10856,7 @@ msgstr ""
 msgid ""
 "The regular expression is invalid!\n"
 "Please enter a valid regular expression."
-msgstr ""
+msgstr "Chybný regulárny výraz!\nProsím zadajte správny regulárny výraz."
 
 #. Resource IDs: (IDS_PROC_GITCONFIG_OVERWRITEREMOTE)
 #, c-format
@@ -10924,7 +10991,7 @@ msgstr ""
 msgid "Thesaurus"
 msgstr "Tezaurus (slovník)"
 
-#. Resource IDs: (62181)
+#. Resource IDs: (AFX_IDS_AUTOSAVE_RECOVERY_ASK_2)
 msgid ""
 "These are more recently saved than the currently open documents and contain "
 "changes that were made before the application closed."
@@ -10978,6 +11045,11 @@ msgid ""
 "commits."
 msgstr ""
 
+#. Resource IDs: (IDS_GITCONFIG_SETTING)
+#, c-format
+msgid "This option represents \"%s\" git config setting."
+msgstr ""
+
 #. Resource IDs: (IDS_REBASE_PRESERVEMERGES_TT)
 msgid ""
 "This preserves merge commits, however, it has known bugs as re-ordering "
@@ -10985,17 +11057,18 @@ msgid ""
 " see help."
 msgstr ""
 
-#. Resource IDs: (61710)
+#. Resource IDs: (AFX_IDP_DLL_BAD_VERSION)
 #, c-format
 msgid ""
-"This program is linked to the missing export %s in the file %s. This machine"
-" may have an incompatible version of %s."
-msgstr "Program je prepojený s chýbajúcim exportom %s v súbore %s. Tento počítač pravdepodobne nemá kompatibilnú verziu %s."
+"This program is linked to the missing export %Ts in the file %Ts. This "
+"machine may have an incompatible version of %Ts."
+msgstr "Program je prepojený s chýbajúcim exportom %Ts v súbore %Ts. Tento počítač pravdepodobne nemá kompatibilnú verziu %Ts."
 
-#. Resource IDs: (61709)
+#. Resource IDs: (AFX_IDP_DLL_LOAD_FAILED)
 #, c-format
-msgid "This program requires the file %s, which was not found on this system."
-msgstr "Tento program vyžaduje %s, ktorý nebol v tomto systéme nájdený."
+msgid ""
+"This program requires the file %Ts, which was not found on this system."
+msgstr "Tento program vyžaduje %Ts, ktorý nebol v tomto systéme nájdený."
 
 #. Resource IDs: (IDS_ERR_PROPNOTONFILE)
 msgid "This property is only allowed on folders, not files."
@@ -11011,7 +11084,7 @@ msgstr ""
 msgid "This task requires a clean working tree."
 msgstr ""
 
-#. Resource IDs: (16244)
+#. Resource IDs: (IDS_AFXBARRES_RESET_USAGE_WARNING)
 msgid ""
 "This will delete the record of commands you've used in this application and "
 "restore the default set of visible commands to the menus and toolbars. It "
@@ -11022,11 +11095,11 @@ msgstr "Toto vymaže záznam o použitých príkazoch v aplikácií a obnoví pr
 msgid "Three way diff"
 msgstr ""
 
-#. Resource IDs: (16928)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 16928)
 msgid "Tile &Vertically"
 msgstr "Usporiadať &zvislo"
 
-#. Resource IDs: (16924)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 16924)
 msgid "Tile Hori&zontally"
 msgstr "Usporiadať &vodorovne"
 
@@ -11065,15 +11138,15 @@ msgstr "Prepnúť medzi jedno/dvoj stranovým zobrazením\nJedna/dvoj stranové 
 msgid "Toggle filters"
 msgstr "Ponechať filtre"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE6: Control id 65535)
 msgid "Toolbar"
 msgstr "Lišta nástrojov"
 
-#. Resource IDs: (16130)
+#. Resource IDs: (Dialog IDD_AFXBARRES_TOOLBAR_NAME: Control id 16130)
 msgid "Toolbar Name"
 msgstr "Meno lišty:"
 
-#. Resource IDs: (17017)
+#. Resource IDs: (IDS_AFXBARRES_TOOLBAR_OPTIONS)
 msgid "Toolbar Options"
 msgstr "Nastavenia lišty"
 
@@ -11081,15 +11154,15 @@ msgstr "Nastavenia lišty"
 msgid "Toolbar internal error. Please contact your application vendor."
 msgstr "Interná chyba lišty. Prosím kontaktujte Vášho dodávateľa aplikácie."
 
-#. Resource IDs: (16105)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE2: Control id 16105)
 msgid "Toolbars"
 msgstr "Nástroje"
 
-#. Resource IDs: (16928)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE7: Control id 16928)
 msgid "Tools"
 msgstr "Nástroje"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_IMAGE_EDITOR: Control id 65535)
 msgid "Tools:"
 msgstr "Nástroje:"
 
@@ -11162,8 +11235,8 @@ msgstr ""
 msgid "TortoiseGit&UDiff"
 msgstr "TortoiseGit&UDiff"
 
-#. Resource IDs: (57344, Dialog IDD_ABOUTBOX: Control id 1000, Dialog
-#. IDD_SETTINGSTBLAME: Control id 244, IDS_APPNAME)
+#. Resource IDs: (AFX_IDS_APP_TITLE, Dialog IDD_ABOUTBOX: Control id 1000,
+#. Dialog IDD_SETTINGSTBLAME: Control id 244, IDS_APPNAME)
 msgid "TortoiseGitBlame"
 msgstr "TortoiseGitBlame"
 
@@ -11212,8 +11285,8 @@ msgid ""
 "/showinfo\t\tto show the image info boxes"
 msgstr ""
 
-#. Resource IDs: (100, 156 - Ribbon element, 32897, 57344, Dialog IDD_OPENDLG:
-#. Control id 130, IDS_APPNAME)
+#. Resource IDs: (100, 156 - Ribbon element, 32897, AFX_IDS_APP_TITLE, Dialog
+#. IDD_OPENDLG: Control id 130, IDS_APPNAME)
 msgid "TortoiseGitMerge"
 msgstr "TortoiseGitMerge"
 
@@ -11320,7 +11393,8 @@ msgstr "Turecké"
 msgid "Tweak TortoiseGit"
 msgstr ""
 
-#. Resource IDs: (17130, Dialog IDD_SVNIGNORE: Control id 1642)
+#. Resource IDs: (Dialog IDD_SVNIGNORE: Control id 1642,
+#. IDS_AFX_SHELLLISTCTRL_TYPE)
 msgid "Type"
 msgstr "Typ"
 
@@ -11360,20 +11434,20 @@ msgstr "UTF-16 LE"
 msgid "UTF-8"
 msgstr "UTF-8"
 
-#. Resource IDs: (61840)
+#. Resource IDs: (AFX_IDP_FAILED_MAPI_LOAD)
 msgid "Unable to load mail system support."
 msgstr "Nemožno načítať podporu e-mail-ov."
 
-#. Resource IDs: (61826)
+#. Resource IDs: (AFX_IDP_SERVER_BUSY)
 msgid "Unable to process command, server busy."
 msgstr "Nemožno vykonať príkaz, server je zaneprázdnený"
 
-#. Resource IDs: (61731)
+#. Resource IDs: (AFX_IDP_FAILED_ACCESS_READ)
 #, c-format
 msgid "Unable to read from %1, it is opened by someone else."
 msgstr "Nemožno čítať z %1, je už niekým otvorený."
 
-#. Resource IDs: (61836)
+#. Resource IDs: (AFX_IDP_GET_NOT_SUPPORTED)
 msgid "Unable to read write-only property."
 msgstr "Nemožno čítať vlastnosť určenú len na zápis."
 
@@ -11385,16 +11459,16 @@ msgid ""
 "from the top pane in the log dialog."
 msgstr ""
 
-#. Resource IDs: (61837)
+#. Resource IDs: (AFX_IDP_SET_NOT_SUPPORTED)
 msgid "Unable to write read-only property."
 msgstr "Nemožno zapísať vlastnosť, ktorá je len na čítanie."
 
-#. Resource IDs: (61732)
+#. Resource IDs: (AFX_IDP_FAILED_ACCESS_WRITE)
 #, c-format
 msgid "Unable to write to %1, it is read-only or opened by someone else."
 msgstr "Nemožno zapísať do %1, je len na čítanie, alebo otvorený niekym iným."
 
-#. Resource IDs: (62177)
+#. Resource IDs: (AFX_IDS_CHECKLISTBOX_UNCHECK)
 msgid "Uncheck"
 msgstr "Odznačiť"
 
@@ -11402,12 +11476,12 @@ msgstr "Odznačiť"
 msgid "Undo"
 msgstr "Vrátiť"
 
-#. Resource IDs: (17102)
+#. Resource IDs: (IDS_AFXBARRES_UNDO_FMT)
 #, c-format
 msgid "Undo %d Actions"
 msgstr "Vrátiť %d akcií"
 
-#. Resource IDs: (17103)
+#. Resource IDs: (IDS_AFXBARRES_UNDO_ONE)
 msgid "Undo 1 Action"
 msgstr "Vrátiť akciu"
 
@@ -11427,7 +11501,7 @@ msgid ""
 "Undo"
 msgstr "Vrátiť poslednú zmenu\nVrátiť"
 
-#. Resource IDs: (61728)
+#. Resource IDs: (AFX_IDP_FAILED_INVALID_FORMAT)
 msgid "Unexpected file format."
 msgstr "Neočakávaný formát súboru."
 
@@ -11435,11 +11509,11 @@ msgstr "Neočakávaný formát súboru."
 msgid "Unflag as skip-worktree and assume-unchanged"
 msgstr ""
 
-#. Resource IDs: (17111)
+#. Resource IDs: (IDS_AFXBARRES_MENU_ANIMATION_UNFOLD)
 msgid "Unfold"
 msgstr "Rozbaliť"
 
-#. Resource IDs: (61591)
+#. Resource IDs: (AFX_IDS_TEXT_FORMAT)
 msgid ""
 "Unformatted Text\n"
 "text without any formatting"
@@ -11453,10 +11527,6 @@ msgstr "Unifikovaný \"&diff\" HEAD (hlavnej) revízie"
 msgid "Unknown"
 msgstr "Neznáme"
 
-#. Resource IDs: (IDS_git_DEPTH_UNKNOWN)
-msgid "Unknown depth"
-msgstr "Neznáma hĺba"
-
 #. Resource IDs: (IDS_VIEWCONTEXTMENU_UNMARKBLOCK)
 msgid "Unmark this block"
 msgstr ""
@@ -11469,7 +11539,7 @@ msgstr "Nevyriešené konflikty!"
 msgid "Unset tracked branch"
 msgstr ""
 
-#. Resource IDs: (61443)
+#. Resource IDs: (AFX_IDS_UNTITLED)
 msgid "Untitled"
 msgstr "Nepomenované"
 
@@ -11507,7 +11577,7 @@ msgstr ""
 msgid "Updated"
 msgstr "Aktualizované"
 
-#. Resource IDs: (61581)
+#. Resource IDs: (AFX_IDS_UPDATING_ITEMS)
 msgid "Updating ActiveX objects"
 msgstr "Aktualizácia objektov ActiveX"
 
@@ -11515,7 +11585,7 @@ msgstr "Aktualizácia objektov ActiveX"
 msgid "Updating index"
 msgstr ""
 
-#. Resource IDs: (16530)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16530)
 msgid "Use &Default Image: "
 msgstr "Použiť prednastavený &obrázok"
 
@@ -11527,27 +11597,12 @@ msgstr "Predvoliť &jedno-panelové zobrazenie pre dvojsúborové porovnanie"
 msgid "Use &other text block"
 msgstr "Použiť iný bl&ok textu"
 
-#. Resource IDs: (ID_EDIT_USEMYBLOCK - Menu, ID_EDIT_USEMYBLOCK - Ribbon name)
-msgid "Use 'mine' text block"
-msgstr "Použiť blok \"Moje\""
-
-#. Resource IDs: (ID_EDIT_USEMINETHENTHEIRBLOCK - Menu,
-#. ID_EDIT_USEMINETHENTHEIRBLOCK - Ribbon name)
-msgid "Use 'mine' text block then 'theirs'"
-msgstr "Použiť blok \"Moje\" potom \"Ich\""
-
-#. Resource IDs: (ID_EDIT_USETHEIRBLOCK - Menu, ID_EDIT_USETHEIRBLOCK - Ribbon
-#. name)
-msgid "Use 'theirs' text block"
-msgstr "Použiť blok \"Ich\""
-
-#. Resource IDs: (ID_EDIT_USETHEIRTHENMYBLOCK - Menu,
-#. ID_EDIT_USETHEIRTHENMYBLOCK - Ribbon name)
-msgid "Use 'theirs' text block then 'mine'"
-msgstr "Použiť blok \"Ich\" potom \"Moje\""
-
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1911)
 msgid "Use .mailmap"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_USELFS_TT)
+msgid "Use Git LFS"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 1761)
@@ -11610,6 +11665,14 @@ msgstr "Použiť oba bloky (tento prvý)"
 msgid "Use both text blocks (this one last)"
 msgstr "Použiť oba bloky (tento posledný)"
 
+#. Resource IDs: (Dialog IDD_STATGRAPH: Control id 1128)
+msgid "Use commit dates"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_STATGRAPH: Control id 1127)
+msgid "Use committer names"
+msgstr ""
+
 #. Resource IDs: (IDS_SMTP_CONFIGURED)
 msgid "Use configured server"
 msgstr ""
@@ -11623,6 +11686,16 @@ msgstr "Použiť ľavý blok"
 #. name)
 msgid "Use left file"
 msgstr "Použiť"
+
+#. Resource IDs: (ID_EDIT_USETHEIRBLOCK - Menu, ID_EDIT_USETHEIRBLOCK - Ribbon
+#. name)
+msgid "Use left text block"
+msgstr ""
+
+#. Resource IDs: (ID_EDIT_USETHEIRTHENMYBLOCK - Menu,
+#. ID_EDIT_USETHEIRTHENMYBLOCK - Ribbon name)
+msgid "Use left text block then right"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 1762)
 msgid "Use local branch color for current branch"
@@ -11640,6 +11713,15 @@ msgstr "Použiť regulárny výraz"
 msgid "Use right block"
 msgstr "Použiť blok z prava"
 
+#. Resource IDs: (ID_EDIT_USEMYBLOCK - Menu, ID_EDIT_USEMYBLOCK - Ribbon name)
+msgid "Use right text block"
+msgstr ""
+
+#. Resource IDs: (ID_EDIT_USEMINETHENTHEIRBLOCK - Menu,
+#. ID_EDIT_USEMINETHENTHEIRBLOCK - Ribbon name)
+msgid "Use right text block then left"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 1091)
 msgid "Use spaces"
 msgstr "Použiť medzery"
@@ -11648,45 +11730,45 @@ msgstr "Použiť medzery"
 msgid "Use system locale for date/time"
 msgstr "Použiť systémové nastavenie dátumu/času"
 
-#. Resource IDs: (IDS_VIEWCONTEXTMENU_USEYOURBLOCK)
-msgid "Use text block from '&mine'"
-msgstr "Použiť blok \"&Moje\""
-
 #. Resource IDs: (IDS_VIEWCONTEXTMENU_USETHEIRBLOCK)
-msgid "Use text block from '&theirs'"
-msgstr "Použiť blok \"&Ich\""
+msgid "Use text block from &left"
+msgstr ""
 
-#. Resource IDs: (IDS_VIEWCONTEXTMENU_USEYOURANDTHEIRBLOCK)
-msgid "Use text block from 'm&ine' before 'theirs'"
-msgstr "Použiť blok \"M&oje\" pred \"Ich\""
-
-#. Resource IDs: (32822)
-msgid ""
-"Use text block from 'mine' before 'theirs'\n"
-"Use 'mine' text block then 'theirs'"
-msgstr "Použiť blok \"Moje\" pred \"Ich\"\n\"Moje\", potom \"Ich\""
-
-#. Resource IDs: (32820)
-msgid ""
-"Use text block from 'mine'\n"
-"Use 'mine' text block"
-msgstr "Použiť blok z \"Moje\"\nPoužiť \"Moje\""
+#. Resource IDs: (IDS_VIEWCONTEXTMENU_USEYOURBLOCK)
+msgid "Use text block from &right"
+msgstr ""
 
 #. Resource IDs: (IDS_VIEWCONTEXTMENU_USETHEIRANDYOURBLOCK)
-msgid "Use text block from 't&heirs' before 'mine'"
-msgstr "Použiť blok \"I&ch\" pred \"Moje\""
+msgid "Use text block from l&eft before right"
+msgstr ""
 
 #. Resource IDs: (32821)
 msgid ""
-"Use text block from 'theirs' before 'mine'\n"
-"Use 'theirs' text block then 'mine'"
-msgstr "Použiť blok  \"Ich\" pred \"Moje\"\n\"Ich\", potom \"Moje\""
+"Use text block from left before right file\n"
+"Use left file text block then right"
+msgstr ""
 
 #. Resource IDs: (32819)
 msgid ""
-"Use text block from 'theirs'\n"
-"Use 'theirs' text block"
-msgstr "Použiť blok z \"Ich\"\nPoužiť \"Ich\""
+"Use text block from left file\n"
+"Use left file text block"
+msgstr ""
+
+#. Resource IDs: (IDS_VIEWCONTEXTMENU_USEYOURANDTHEIRBLOCK)
+msgid "Use text block from r&ight before left"
+msgstr ""
+
+#. Resource IDs: (32822)
+msgid ""
+"Use text block from right file before left\n"
+"Use right file text block then left"
+msgstr ""
+
+#. Resource IDs: (32820)
+msgid ""
+"Use text block from right file\n"
+"Use right file text block"
+msgstr ""
 
 #. Resource IDs: (32855)
 msgid ""
@@ -11769,6 +11851,10 @@ msgstr ""
 #. IDS_AUTH_USERNAME)
 msgid "Username:"
 msgstr "Meno užívateľa:"
+
+#. Resource IDs: (IDS_SETTINGS_ONLYNONELEVATED_TT)
+msgid "Uses the status cache type 'none' for elevated processes"
+msgstr ""
 
 #. Resource IDs: (IDS_COMMANDLINEHELP)
 msgid ""
@@ -11998,11 +12084,11 @@ msgstr "Biele znaky (tabulátory, medzery)"
 msgid "Whitespaces"
 msgstr "Biele znaky"
 
-#. Resource IDs: (17038)
+#. Resource IDs: (IDS_AFXBARRES_MENU)
 msgid "Window Position"
 msgstr "Pozícia okien"
 
-#. Resource IDs: (16927)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 16927)
 msgid "Windows"
 msgstr "Windows"
 
@@ -12065,8 +12151,7 @@ msgstr ""
 msgid "Within file"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_CHANGEDFILES: Control id 158,
-#. IDS_git_DEPTH_WORKING)
+#. Resource IDs: (Dialog IDD_CHANGEDFILES: Control id 158, IDS_WORKING_TREE)
 msgid "Working Tree"
 msgstr ""
 
@@ -12107,12 +12192,12 @@ msgid ""
 "Disabled handlers won't use up an overlay slot and give other shell extensions a chance to show their overlays."
 msgstr "Tu možete vypnúť popisovače prekrytých ikon.\nVypnutý popisovač nepoužíva slot a dáva ostatným rozšireniam šelu šancu na zobrazenie ich prekrytých ikon."
 
-#. Resource IDs: (16005)
+#. Resource IDs: (IDS_AFXBARRES_WRONG_IMAGE_SIZE)
 #, c-format
 msgid "You can paste bitmap with the size (%d x %d) only!"
 msgstr "Môžete vložiť iba obrázok s rozmermi (%d x %d)!"
 
-#. Resource IDs: (16243)
+#. Resource IDs: (IDS_AFXBARRES_TOO_MANY_TOOLBARS_FMT)
 #, c-format
 msgid "You can't create more than %d user-defined toolbars!"
 msgstr "Nemôžete vytvoriť viac ako %d užívateľských líšt!"
@@ -12176,7 +12261,7 @@ msgid ""
 "Do you want to restore them now? You might lose all changes to this file after marking it."
 msgstr ""
 
-#. Resource IDs: (16024)
+#. Resource IDs: (IDS_AFXBARRES_TOO_MANY_TOOLS_FMT)
 #, c-format
 msgid "You may define up to %d tools."
 msgstr "Najviac môžete definovať %d nástroj."
@@ -12247,15 +12332,15 @@ msgstr "Zip súbor"
 msgid "Zoo&m out\t-"
 msgstr "Vz&dialiť\t-"
 
-#. Resource IDs: (17093)
+#. Resource IDs: (IDS_AFXBARRES_ZOOM)
 msgid "Zoom"
 msgstr "Lupa"
 
-#. Resource IDs: (58117)
+#. Resource IDs: (Dialog AFX_IDD_PREVIEW_TOOLBAR: Control id 58117)
 msgid "Zoom &In"
 msgstr "&Priblížiť"
 
-#. Resource IDs: (58118)
+#. Resource IDs: (Dialog AFX_IDD_PREVIEW_TOOLBAR: Control id 58118)
 msgid "Zoom &Out"
 msgstr "&Vzdialiť"
 
@@ -12300,7 +12385,7 @@ msgstr "Zobraz celú výšku"
 msgid "Zoom to fit in width"
 msgstr "Zobraz celú šírku"
 
-#. Resource IDs: (17114)
+#. Resource IDs: (IDS_AFXBARRES_MENU_ANIMATION_DEFAULT)
 msgid "[Default]"
 msgstr "[Prednastavené]"
 
@@ -12374,7 +12459,7 @@ msgstr "pridané"
 msgid "added files"
 msgstr "pridané súbory"
 
-#. Resource IDs: (61446)
+#. Resource IDs: (AFX_IDS_UNNAMED_FILE)
 msgid "an unnamed file"
 msgstr "nepomenovaný súbor"
 
@@ -12396,7 +12481,7 @@ msgid "author (>= 0.5%)"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 65535)
-msgid "based on TortoiseSVN (http://www.tortoisesvn.net/)"
+msgid "based on TortoiseSVN (https://tortoisesvn.net/)"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ_CONFIG: Control id 65535)
@@ -12427,6 +12512,15 @@ msgstr "bugtraq.url"
 msgid "bugtraq.warningifnoissue"
 msgstr "bugtraq.warningifnoissue"
 
+#. Resource IDs: (IDS_CONFLICT_REFTOBEMERGED)
+msgid "changes to-be-integrated"
+msgstr ""
+
+#. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYCOL)
+#, c-format
+msgid "column '%ls'"
+msgstr "stĺpec '%ls'"
+
 #. Resource IDs: (IDS_STATGRAPH_COMMITSBYAUTHORY,
 #. IDS_STATGRAPH_COMMITSBYDATEY)
 msgid "commits"
@@ -12455,7 +12549,7 @@ msgstr "vymazané"
 msgid "diff from pipe"
 msgstr ""
 
-#. Resource IDs: (58116)
+#. Resource IDs: (Dialog IDD_AFXBAR_RES_PRINT_PREVIEW: Control id 58116)
 msgid "dummy"
 msgstr "dummy"
 
@@ -12475,6 +12569,18 @@ msgstr ""
 #. Resource IDs: (IDS_STATUSEXTERNAL)
 msgid "external"
 msgstr "externé"
+
+#. Resource IDs: (IDS_CONFLICT_NOTASUBMODULE)
+msgid "file, not a submodule"
+msgstr ""
+
+#. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYFILENAMES)
+msgid "file/foldernames"
+msgstr "Mená súborov/adresárov"
+
+#. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYFULLPATHS)
+msgid "full paths"
+msgstr "úplné cesty"
 
 #. Resource IDs: (IDS_PROC_PROGRESS_GITUNCLEANEXIT)
 #, c-format
@@ -12592,6 +12698,10 @@ msgstr "nie"
 msgid "no description for this command is available"
 msgstr "k tomuto príkazu nie je popis "
 
+#. Resource IDs: (IDS_CONFLICT_NOSUBMODULE)
+msgid "no submodule"
+msgstr ""
+
 #. Resource IDs: (IDS_STATUSUNVERSIONED)
 msgid "non-versioned"
 msgstr "neverziované"
@@ -12608,20 +12718,24 @@ msgstr "normálne"
 msgid "not found"
 msgstr "nenájdené"
 
+#. Resource IDs: (IDS_CONFLICT_SUBMODULENOTINITIALIZED)
+msgid "not initialized"
+msgstr ""
+
 #. Resource IDs: (IDS_STATUSOBSTRUCTED)
 msgid "obstructed"
 msgstr "poškodené"
 
-#. Resource IDs: (61504)
+#. Resource IDs: (AFX_IDS_PRINTONPORT)
 #, c-format
 msgid "on %1"
 msgstr "na %1"
 
 #. Resource IDs: (IDS_STATE_PATCHED)
 msgid "patched"
-msgstr ""
+msgstr "zaplátané"
 
-#. Resource IDs: (61888)
+#. Resource IDs: (AFX_IDS_OCC_SCALEUNITS_PIXELS)
 msgid "pixels"
 msgstr "pixely"
 
@@ -12636,13 +12750,17 @@ msgid ""
 "Do you want to"
 msgstr ""
 
-#. Resource IDs: (61509)
+#. Resource IDs: (AFX_IDS_PRINTDEFAULTEXT)
 msgid "prn"
 msgstr "prn"
 
 #. Resource IDs: (IDS_STATGRAPH_COMMITSBYDATEXQUARTER)
 msgid "quarter of year"
 msgstr "štvrťrokov"
+
+#. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYRELPATHS)
+msgid "relative paths"
+msgstr "relatívne cesty"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 65535)
 msgid "renamed"
@@ -12671,7 +12789,7 @@ msgstr "prepnuté do\n%s"
 msgid "take care of submodule changes"
 msgstr ""
 
-#. Resource IDs: (61513)
+#. Resource IDs: (AFX_IDS_PRINTTOFILE)
 #, c-format
 msgid "to %1"
 msgstr "do %1"

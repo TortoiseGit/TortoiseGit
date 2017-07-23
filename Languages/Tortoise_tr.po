@@ -1,15 +1,17 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2015 the TortoiseGit team
+# Copyright (C) 2008-2017 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
 # Translators:
+# Adem YILMAZ, 2016
 # berte <b3hzat@gmail.com>, 2012
 # berte <b3hzat@gmail.com>, 2012
 # Can Berkol <can.berkol@biberltd.com>, 2013
 # Can Berkol <can.berkol@biberltd.com>, 2013
 # Ekrem KAYA <webmaster@e-piksel.com>, 2012-2013
-# Emre Can ÖZTAŞ <mynameisemre@hotmail.com.tr>, 2015
+# Emre Can OZTAS <mynameisemre@hotmail.com.tr>, 2015
+# Emre Can OZTAS <mynameisemre@hotmail.com.tr>, 2015
 # Ekrem KAYA <webmaster@e-piksel.com>, 2012
 # Ertan Tike <ertant@rdgnet.org>, 2013
 # Ertan Tike <ertant@rdgnet.org>, 2013
@@ -20,15 +22,17 @@
 # ks780 <ks780@mynet.com>, 2016
 # ks780 <ks780@mynet.com>, 2016
 # Lübbe TortoiseSVN <luebbe.tortoisesvn@gmail.com>, 2011
+# Mehmet Keçeci <mk@mehmetkececi.com>, 2016
+# Muhammed Yasin Erdoğan <obsessio@gmail.com>, 2015
 # Muhammet Kara <muhammetk@gmail.com>, 2014
 # Ozancan Karataş <ozanc27@icloud.com>, 2015-2016
 # Ozan Tunca <ozantunca90@gmail.com>, 2013
 # Ozan Tunca <ozantunca90@gmail.com>, 2013
-# Ozan Tunca <ozantunca90@gmail.com>, 2013
+# Ozan Tunca <ozantunca90@gmail.com>, 2013,2017
 # Sven Strickroth <sstrickroth@googlemail.com>, 2012-2013
 # Tahir <gtaturk@gmail.com>, 2013
 # Tahir <gtaturk@gmail.com>, 2013
-# Vural Göze <turinhurinov@yahoo.com>, 2011
+# Vural Göze <turinhurinov@yahoo.com>, 2011,2016
 # Vural Göze <vuralgoze@gmail.com>, 2011
 # Ekrem KAYA <webmaster@e-piksel.com>, 2012
 msgid ""
@@ -36,7 +40,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2017-01-29 17:02+0000\n"
+"PO-Revision-Date: 2017-07-22 13:15+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Turkish (http://www.transifex.com/lznuaa/tortoisegit/language/tr/)\n"
 "MIME-Version: 1.0\n"
@@ -65,34 +69,34 @@ msgstr "! %d"
 
 #. Resource IDs: (Dialog IDD_STATGRAPH: Control id 1262)
 msgid "# authors shown individually:"
-msgstr "# yazarların ayrı ayrı görünümü:"
+msgstr "# yazarın ayrı ayrı görünümü:"
 
 #. Resource IDs: (IDS_SVN_PROGRESS_TOTALMBTRANSFERRED)
 #, c-format
 msgid "%.2f MiB transferred"
 msgstr "%.2f MB aktarıldı"
 
-#. Resource IDs: (61878)
+#. Resource IDs: (AFX_IDP_ARCH_BADCLASS)
 #, c-format
 msgid "%1 contained an unexpected object."
 msgstr "%1 beklenmeyen bir nesne içeriyor."
 
-#. Resource IDs: (61859)
+#. Resource IDs: (AFX_IDP_FILE_BAD_PATH)
 #, c-format
 msgid "%1 contains an incorrect path."
 msgstr "%1 yanlış bir yol içeriyor."
 
-#. Resource IDs: (61879)
+#. Resource IDs: (AFX_IDP_ARCH_BADSCHEMA)
 #, c-format
 msgid "%1 contains an incorrect schema."
 msgstr "%1 yanlış bir şema içeriyor."
 
-#. Resource IDs: (61877)
+#. Resource IDs: (AFX_IDP_ARCH_BADINDEX)
 #, c-format
 msgid "%1 has a bad format."
 msgstr "%1 kötü bir biçime sahip."
 
-#. Resource IDs: (61858)
+#. Resource IDs: (AFX_IDP_FILE_NOT_FOUND)
 #, c-format
 msgid "%1 was not found."
 msgstr "%1 bulunamadı."
@@ -172,10 +176,10 @@ msgstr "%1!d! öğe seçildi"
 msgid "%1!d! minutes ago"
 msgstr "%1!d! dakika önce"
 
-#. Resource IDs: (IDS_REPOBROWSE_INFODIR)
+#. Resource IDs: (IDS_CONFLICT_INFOTEXT)
 #, c-format
-msgid "%1!s!"
-msgstr "%1!s!"
+msgid "%1!s! (%2!s!)"
+msgstr "%1!s! (%2!s!)"
 
 #. Resource IDs: (IDS_REPOBROWSE_INFO)
 #, c-format
@@ -191,14 +195,14 @@ msgid ""
 "Size %2!s!"
 msgstr "%1!s!\nBoyut %2!s!"
 
-#. Resource IDs: (61744)
+#. Resource IDs: (AFX_IDP_SCRIPT_ERROR)
 #, c-format
 msgid ""
 "%1: %2\n"
 "Continue running script?"
 msgstr "%1: %2\nBetiğin çalışması sürdürülsün mü?"
 
-#. Resource IDs: (61729)
+#. Resource IDs: (AFX_IDP_FAILED_INVALID_PATH)
 #, c-format
 msgid ""
 "%1\n"
@@ -220,6 +224,18 @@ msgstr "%I64d bayt aktarıldı"
 #, c-format
 msgid "%I64d KiB transferred"
 msgstr "%I64d KB aktarıldı"
+
+#. Resource IDs: (AFX_IDS_AUTOSAVE_RECOVERED)
+#, c-format
+msgid "%Ts [Recovered]"
+msgstr "%Ts [Kurtarıldı]"
+
+#. Resource IDs: (AFX_IDS_EMBED_FORMAT, AFX_IDS_LINKSOURCE_FORMAT)
+#, c-format
+msgid ""
+"%Ts\n"
+"%Ts"
+msgstr "%Ts\n%Ts"
 
 #. Resource IDs: (IDS_PROC_SYNC_COMMITSAHEAD)
 #, c-format
@@ -274,11 +290,6 @@ msgstr "%ld - %ld"
 msgid "%s - at revision: %d"
 msgstr "%s - gözden geçirme: %d"
 
-#. Resource IDs: (62186)
-#, c-format
-msgid "%s [Recovered]"
-msgstr "%s [Kurtarıldı]"
-
 #. Resource IDs: (IDS_PROGRS_FINALINFO)
 #, c-format
 msgid "%s in %s"
@@ -298,23 +309,6 @@ msgstr "%s, %s"
 #, c-format
 msgid "%s: Working Tree"
 msgstr "%s: İş Ağacı"
-
-#. Resource IDs: (IDS_PROC_EXPORTFOLDERNAME2)
-#, c-format
-msgid "%s\\Export (%d) of %s"
-msgstr "%s\\Dışa aktar (%d) / %s"
-
-#. Resource IDs: (IDS_PROC_EXPORTFOLDERNAME)
-#, c-format
-msgid "%s\\Export of %s"
-msgstr "%s\\Dışa aktar %s"
-
-#. Resource IDs: (61585, 61586)
-#, c-format
-msgid ""
-"%s\n"
-"%s"
-msgstr "%s\n%s"
 
 #. Resource IDs: (IDS_PATCH_ITEMTT)
 #, c-format
@@ -338,7 +332,8 @@ msgid ""
 "TortoiseGitMerge can't diff directories."
 msgstr "%s\nbir dizin, bir dosya değil!\nTortoiseGitMerge diff dizinleri olamaz."
 
-#. Resource IDs: (16923, Dialog IDD_RENAME: Control id 1483)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE7: Control id 16923, Dialog
+#. IDD_RENAME: Control id 1483)
 msgid "&..."
 msgstr "&..."
 
@@ -358,7 +353,7 @@ msgstr "TortoiseGitBlame &Hakkında..."
 msgid "&About TortoiseGitMerge..."
 msgstr "TortoiseGitMerge &Hakkında..."
 
-#. Resource IDs: (16920)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 16920)
 msgid "&Activate"
 msgstr "&Etkinleştir"
 
@@ -367,7 +362,7 @@ msgstr "&Etkinleştir"
 msgid "&Add"
 msgstr "&Ekle"
 
-#. Resource IDs: (17075)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE8: Control id 17075)
 msgid "&Add >>"
 msgstr "&Ekle >>"
 
@@ -384,7 +379,7 @@ msgstr "Yeni &Ekle/Kaydet"
 msgid "&Add it"
 msgstr "&Ekle"
 
-#. Resource IDs: (17018)
+#. Resource IDs: (IDS_AFXBARRES_ADD_REMOVE_BTNS)
 msgid "&Add or Remove Buttons"
 msgstr "Düğme &Ekle ya da Kaldır"
 
@@ -418,19 +413,20 @@ msgstr "Yamayı &Uygula"
 msgid "&Apply unified diff"
 msgstr "Birleştirilmiş yamayı &uygula"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE7: Control id 65535)
 msgid "&Arguments:"
 msgstr "&Değişkenler:"
 
-#. Resource IDs: (16645)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 16645, Dialog
+#. IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 16645)
 msgid "&Assign"
 msgstr "&Ata"
 
-#. Resource IDs: (16633)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE4: Control id 16633)
 msgid "&Associate double-click event with:"
 msgstr "Çift tıklatma etkinliğiyle &ilişkilendir:"
 
-#. Resource IDs: (17041)
+#. Resource IDs: (IDS_AFXBARRES_AUTOHIDE)
 msgid "&Auto Hide"
 msgstr "Otomatik &Gizle"
 
@@ -458,7 +454,7 @@ msgstr "&Blame değişiklikleri"
 msgid "&Blame revisions"
 msgstr "&Revizyon sorumluları"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 65535)
 msgid "&Blue:"
 msgstr "&Mavi:"
 
@@ -485,11 +481,11 @@ msgstr "Depoya &gözat"
 msgid "&Browse..."
 msgstr "&Gözat..."
 
-#. Resource IDs: (16913 - Menu)
+#. Resource IDs: (ID_AFXBARRES_TOOLBAR_APPEARANCE - Menu)
 msgid "&Button Appearance..."
 msgstr "&Buton Görünümü..."
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 65535)
 msgid "&Button text:"
 msgstr "&Düğme metni:"
 
@@ -501,15 +497,16 @@ msgstr "&CD-ROM"
 msgid "&Cancel"
 msgstr "&Vazgeç"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 65535)
 msgid "&Categories:"
 msgstr "&Kategoriler:"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_KEYMAP: Control id 65535, Dialog
+#. IDD_AFXBARRES_PROPPAGE5: Control id 65535)
 msgid "&Category:"
 msgstr "&Kategori:"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE8: Control id 65535)
 msgid "&Choose commands from:"
 msgstr "&Şuradan komut seç:"
 
@@ -525,15 +522,16 @@ msgstr "&Temizle"
 msgid "&Clear stash"
 msgstr "&Saklananları temizle"
 
-#. Resource IDs: (58112, Dialog IDD_CHECKFORUPDATES: Control id 1)
+#. Resource IDs: (Dialog AFX_IDD_PREVIEW_TOOLBAR: Control id 58112, Dialog
+#. IDD_CHECKFORUPDATES: Control id 1)
 msgid "&Close"
 msgstr "&Kapat"
 
-#. Resource IDs: (16922)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 16922)
 msgid "&Close Window(s)"
 msgstr "Pencereleri &Kapat"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE7: Control id 65535)
 msgid "&Command:"
 msgstr "&Komut:"
 
@@ -573,7 +571,7 @@ msgstr "&Sürdür"
 msgid "&Copy"
 msgstr "&Kopyala"
 
-#. Resource IDs: (16911 - Menu)
+#. Resource IDs: (ID_AFXBARRES_COPY_IMAGE - Menu)
 msgid "&Copy Button Image"
 msgstr "Düğme Görselini &Kopyala"
 
@@ -594,8 +592,9 @@ msgstr "&Özel"
 msgid "&Default"
 msgstr "&Varsayılan"
 
-#. Resource IDs: (16617, 16912 - Menu, Dialog IDD_DELETEREMOTETAG: Control id
-#. 1, IDS_DELETEBUTTON, IDS_MENUREMOVE)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE2: Control id 16617, Dialog
+#. IDD_DELETEREMOTETAG: Control id 1, IDS_DELETEBUTTON, IDS_MENUREMOVE,
+#. ID_AFXBARRES_TOOLBAR_DELETE - Menu)
 msgid "&Delete"
 msgstr "&Sil"
 
@@ -643,7 +642,7 @@ msgstr "&Çıkart"
 msgid "&Do the same for the rest"
 msgstr "&Geri kalanların tümü için anısını uygula"
 
-#. Resource IDs: (17040)
+#. Resource IDs: (IDS_AFXBARRES_DOCKING)
 msgid "&Docking"
 msgstr "&Yerleştirme"
 
@@ -689,7 +688,8 @@ msgstr "&Düzenleme Filtresi"
 msgid "&Edit conflicts"
 msgstr "&Çakışmaları düzenle"
 
-#. Resource IDs: (16510, Dialog IDD_SETTINGSPROGSADV: Control id 1099)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16510, Dialog
+#. IDD_SETTINGSPROGSADV: Control id 1099)
 msgid "&Edit..."
 msgstr "&Düzenle..."
 
@@ -757,7 +757,7 @@ msgstr "&Görselleri pencereye sığdır"
 msgid "&Fixed drives"
 msgstr "&Sabit sürücüler"
 
-#. Resource IDs: (17039)
+#. Resource IDs: (IDS_AFXBARRES_FLOATING)
 msgid "&Floating"
 msgstr "&Taşınıyor"
 
@@ -811,7 +811,7 @@ msgstr "&Git\tCtrl+G"
 msgid "&Gray Unrelated Changed Paths"
 msgstr "&İlişkisiz Değiştirilmiş Yollar Gri"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 65535)
 msgid "&Green:"
 msgstr "&Yeşil:"
 
@@ -825,7 +825,8 @@ msgstr "&HEAD"
 msgid "&Hard: Reset working tree and index (discard all local changes)"
 msgstr ""
 
-#. Resource IDs: (57670, 65535 - PopupMenu, IDS_MENUHELP)
+#. Resource IDs: (65535 - PopupMenu, Dialog AFX_IDD_NEWTYPEDLG: Control id
+#. 57670, Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 57670, IDS_MENUHELP)
 msgid "&Help"
 msgstr "&Yardım"
 
@@ -833,7 +834,7 @@ msgstr "&Yardım"
 msgid "&Help Topics"
 msgstr "&Yardım Konuları"
 
-#. Resource IDs: (17042, 61457, ID_VIEW_OUTPUTWND - Menu)
+#. Resource IDs: (AFX_IDS_HIDE, IDS_AFXBARRES_HIDE, ID_VIEW_OUTPUTWND - Menu)
 msgid "&Hide"
 msgstr "&Gizle"
 
@@ -852,13 +853,13 @@ msgstr "&Ada göre %d öğeyi yoksay"
 
 #. Resource IDs: (IDS_MENUIGNOREMULTIPLE2)
 msgid "&Ignore multiple items by name"
-msgstr ""
+msgstr "&Tekrarlanan isimleri göz ardı et"
 
 #. Resource IDs: (ID_VIEW_IGNORE_WHITESPACE - Menu)
 msgid "&Ignore whitespace"
 msgstr "&Boşlukları yoksay"
 
-#. Resource IDs: (16914 - Menu)
+#. Resource IDs: (ID_AFXBARRES_TOOLBAR_IMAGE - Menu)
 msgid "&Image"
 msgstr "&Görüntü"
 
@@ -866,7 +867,7 @@ msgstr "&Görüntü"
 msgid "&Image info\tI"
 msgstr "&Görüntü bilgisi\tI"
 
-#. Resource IDs: (16505)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16505)
 msgid "&Image only"
 msgstr "&Yalnızca görüntü"
 
@@ -874,7 +875,7 @@ msgstr "&Yalnızca görüntü"
 msgid "&Import..."
 msgstr "&İçe aktar..."
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE7: Control id 65535)
 msgid "&Initial directory:"
 msgstr "&Başlangıç dizini:"
 
@@ -907,7 +908,7 @@ msgstr "&Etiketler"
 msgid "&Language:"
 msgstr "&Dil:"
 
-#. Resource IDs: (16653)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE6: Control id 16653)
 msgid "&Large Icons"
 msgstr "&Büyük Simgeler"
 
@@ -952,7 +953,7 @@ msgstr "&Yerel dallar"
 msgid "&Local:"
 msgstr "&Yerel:"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 65535)
 msgid "&Luminence:"
 msgstr "&Parlaklık:"
 
@@ -960,11 +961,11 @@ msgstr "&Parlaklık:"
 msgid "&Max line length for inline diffs"
 msgstr "&Satır içi diffler için en fazla satır uzunluğu"
 
-#. Resource IDs: (16543)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 16543)
 msgid "&Menu animations:"
 msgstr "&Menü görselleri:"
 
-#. Resource IDs: (16921)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE7: Control id 16921)
 msgid "&Menu contents:"
 msgstr "&Menü içeriği: "
 
@@ -993,7 +994,7 @@ msgstr "&İleti"
 msgid "&Message:"
 msgstr "&İleti:"
 
-#. Resource IDs: (16925)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 16925)
 msgid "&Minimize"
 msgstr "&Küçült"
 
@@ -1023,11 +1024,12 @@ msgstr "&Gezinti"
 msgid "&Network drives"
 msgstr "&Ağ sürücüleri"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog AFX_IDD_NEWTYPEDLG: Control id 65535)
 msgid "&New "
 msgstr "&Yeni"
 
-#. Resource IDs: (16509, 16615)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16509, Dialog
+#. IDD_AFXBARRES_PROPPAGE2: Control id 16615)
 msgid "&New..."
 msgstr "&Yeni..."
 
@@ -1035,7 +1037,7 @@ msgstr "&Yeni..."
 msgid "&Next >"
 msgstr "&İleri >"
 
-#. Resource IDs: (58114)
+#. Resource IDs: (Dialog AFX_IDD_PREVIEW_TOOLBAR: Control id 58114)
 msgid "&Next Page"
 msgstr "&Sonraki Sayfa"
 
@@ -1043,7 +1045,7 @@ msgstr "&Sonraki Sayfa"
 msgid "&No"
 msgstr "&Hayır"
 
-#. Resource IDs: (16632)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE4: Control id 16632)
 msgid "&No double-click event"
 msgstr "&Çift tıklatma etkinliği yok"
 
@@ -1059,11 +1061,12 @@ msgstr "&Yok"
 msgid "&Notepad2"
 msgstr "&Notepad2"
 
-#. Resource IDs: (1, Dialog IDD_REVGRAPHFILTER: Control id 1, IDS_OKBUTTON)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 1, Dialog
+#. IDD_REVGRAPHFILTER: Control id 1, IDS_OKBUTTON)
 msgid "&OK"
 msgstr "&Tamam"
 
-#. Resource IDs: (61505)
+#. Resource IDs: (AFX_IDS_ONEPAGE)
 msgid "&One Page"
 msgstr "&Bir Sayfa"
 
@@ -1122,11 +1125,11 @@ msgstr "&Bağlantı noktası:"
 msgid "&Preserve merges"
 msgstr ""
 
-#. Resource IDs: (17091)
+#. Resource IDs: (IDS_AFXBARRES_PRINT_PREVIEW)
 msgid "&Print Preview"
 msgstr "&Yazdırma Önizleme"
 
-#. Resource IDs: (58116)
+#. Resource IDs: (Dialog AFX_IDD_PREVIEW_TOOLBAR: Control id 58116)
 msgid "&Print..."
 msgstr "&Yazdır..."
 
@@ -1162,7 +1165,7 @@ msgstr "&Rebase"
 msgid "&Recursive"
 msgstr "&Özyineleme"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 65535)
 msgid "&Red:"
 msgstr "&Kırmızı:"
 
@@ -1199,10 +1202,12 @@ msgstr "&Uzak Dallar:"
 msgid "&Remote:"
 msgstr "&Uzak"
 
-#. Resource IDs: (16646, Dialog IDD_APPLY_PATCH_LIST: Control id 1385, Dialog
-#. IDD_SETTINGSCREDENTIAL: Control id 1385, Dialog IDD_SETTINGSPROGSADV:
-#. Control id 1100, Dialog IDD_SETTINREMOTE: Control id 1385,
-#. IDS_REMOVEBUTTON)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 16646, Dialog
+#. IDD_AFXBARRES_PROPPAGE8: Control id 16646, Dialog
+#. IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 16646, Dialog
+#. IDD_APPLY_PATCH_LIST: Control id 1385, Dialog IDD_SETTINGSCREDENTIAL:
+#. Control id 1385, Dialog IDD_SETTINGSPROGSADV: Control id 1100, Dialog
+#. IDD_SETTINREMOTE: Control id 1385, IDS_REMOVEBUTTON)
 msgid "&Remove"
 msgstr "&Kaldır"
 
@@ -1218,11 +1223,13 @@ msgstr "&Değiştir"
 msgid "&Repo-browser"
 msgstr "&Depo tarayıcısı"
 
-#. Resource IDs: (16613, 16624)
+#. Resource IDs: (Dialog IDD_AFXBARRES_OUTLOOKBAR_OPTIONS: Control id 16613,
+#. Dialog IDD_AFXBARRES_PROPPAGE2: Control id 16613, Dialog
+#. IDD_AFXBARRES_PROPPAGE3: Control id 16624)
 msgid "&Reset"
 msgstr "&Sıfırla"
 
-#. Resource IDs: (16300)
+#. Resource IDs: (IDS_AFXBARRES_RESET_TOOLBAR)
 msgid "&Reset Toolbar"
 msgstr "&Araç çubuğunu sıfırla"
 
@@ -1230,11 +1237,11 @@ msgstr "&Araç çubuğunu sıfırla"
 msgid "&Reset filter"
 msgstr "&Filtreyi sıfırla"
 
-#. Resource IDs: (16657)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE6: Control id 16657)
 msgid "&Reset my usage data"
 msgstr "Kullanım verilerimi &sıfırla"
 
-#. Resource IDs: (16910 - Menu)
+#. Resource IDs: (ID_AFXBARRES_TOOLBAR_RESET - Menu)
 msgid "&Reset to Default"
 msgstr "&Varsayılana geri dön"
 
@@ -1266,11 +1273,12 @@ msgstr "Bu teslimlerden kaynaklanan değişiklikleri geri al"
 msgid "&SSH client:"
 msgstr "&SSH istemcisi:"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 65535)
 msgid "&Saturation:"
 msgstr "&Doygunluk:"
 
-#. Resource IDs: (16921, IDS_SAVEBUTTON)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 16921,
+#. IDS_SAVEBUTTON)
 msgid "&Save"
 msgstr "&Kaydet"
 
@@ -1291,6 +1299,10 @@ msgstr "&Listeden seçilen dosyaları şuraya kaydet..."
 msgid "&Save\tCtrl+S"
 msgstr "&Kaydet\tCtrl+S"
 
+#. Resource IDs: (Dialog IDD_REFLOG: Control id 1687)
+msgid "&Search..."
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_SETMSYSGITPATH)
 msgid "&Set Git path"
 msgstr "&Git yolunu ayarla"
@@ -1307,11 +1319,11 @@ msgstr "&Ayarlar"
 msgid "&Settings..."
 msgstr "&Ayarlar..."
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 65535)
 msgid "&Show Menus for:"
 msgstr "&Menüleri .... için göster:"
 
-#. Resource IDs: (16612)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE2: Control id 16612)
 msgid "&Show text labels"
 msgstr "&Metin etiketlerini göster"
 
@@ -1340,7 +1352,7 @@ msgstr "&TÜMÜNÜ Bastır"
 msgid "&Start"
 msgstr "&Başlat"
 
-#. Resource IDs: (16917 - Menu)
+#. Resource IDs: (ID_AFXBARRES_TOOLBAR_START_GROUP - Menu)
 msgid "&Start Group"
 msgstr "&Grubu Başlat"
 
@@ -1364,7 +1376,7 @@ msgstr "&Sembolik Görünüm"
 msgid "&Tab size:"
 msgstr "&Sekme boyutu:"
 
-#. Resource IDs: (17088)
+#. Resource IDs: (IDS_AFXBARRES_TABBED)
 msgid "&Tabbed Document"
 msgstr "&Sekmeli Belge"
 
@@ -1382,11 +1394,11 @@ msgstr "&Etiketler"
 msgid "&Tags:"
 msgstr "&Etiketler:"
 
-#. Resource IDs: (16915 - Menu)
+#. Resource IDs: (ID_AFXBARRES_TOOLBAR_TEXT - Menu)
 msgid "&Text"
 msgstr "&Metin"
 
-#. Resource IDs: (16506)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16506)
 msgid "&Text only"
 msgstr "&Yalnızca metin"
 
@@ -1398,7 +1410,7 @@ msgstr "&Otomatik-tamamlama çözümlenmesinin durdurulmasına kalan zaman aşı
 msgid "&Toolbar"
 msgstr "&Araç Çubuğu"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_TOOLBAR_NAME: Control id 65535)
 msgid "&Toolbar Name:"
 msgstr "&Araç Çubuğu Adı:"
 
@@ -1406,7 +1418,7 @@ msgstr "&Araç Çubuğu Adı:"
 msgid "&Toolbars and Docking Windows"
 msgstr "&Araç Çubukları ve Pencerelerin Yerleşimi"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE2: Control id 65535)
 msgid "&Toolbars:"
 msgstr "&Araç Çubukları:"
 
@@ -1427,7 +1439,7 @@ msgstr "&Trunk:"
 msgid "&Try Again"
 msgstr "&Yeniden Dene"
 
-#. Resource IDs: (61506)
+#. Resource IDs: (AFX_IDS_TWOPAGE)
 msgid "&Two Page"
 msgstr "&İki Sayfa"
 
@@ -1478,7 +1490,7 @@ msgstr "&Kullanıcı adı:"
 msgid "&View"
 msgstr "&Görüntüle"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE4: Control id 65535)
 msgid "&View:"
 msgstr "&Görüntüle:"
 
@@ -1563,7 +1575,7 @@ msgstr "- tümü -"
 msgid "--&all"
 msgstr "--&tümü"
 
-#. Resource IDs: (16108)
+#. Resource IDs: (IDS_AFXBARRES_NO_CONTEXT)
 msgid ""
 "-------------------------------------------------------------------------------------------"
 msgstr "-------------------------------------------------------------------------------------------"
@@ -1595,7 +1607,8 @@ msgstr "------------------------------------------------------------------------
 msgid "..."
 msgstr "..."
 
-#. Resource IDs: (16527)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 16527, Dialog
+#. IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 16527)
 msgid "....."
 msgstr "....."
 
@@ -1623,7 +1636,7 @@ msgstr ""
 msgid "< &Previous"
 msgstr ""
 
-#. Resource IDs: (16506)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 16506)
 msgid "<.....>"
 msgstr "<.....>"
 
@@ -1653,15 +1666,16 @@ msgstr ""
 msgid "<No branch>"
 msgstr "<Dal yok>"
 
-#. Resource IDs: (17095)
+#. Resource IDs: (IDS_AFXBARRES_QAT_SEPARATOR)
 msgid "<Separator>"
 msgstr "<Ayraç>"
 
-#. Resource IDs: (16104)
+#. Resource IDs: (IDS_AFXBARRES_UNTITLED_TOOLBAR)
 msgid "<Untitled>"
 msgstr "<Başlıksız>"
 
-#. Resource IDs: (16603)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16603, Dialog
+#. IDD_AFXBARRES_PROPPAGE1: Control id 16603)
 msgid "<descr>"
 msgstr "<descr>"
 
@@ -1719,7 +1733,7 @@ msgid ""
 "An empty list will allow overlays on all paths."
 msgstr ""
 
-#. Resource IDs: (61474)
+#. Resource IDs: (AFX_IDS_RESOURCE_EXCEPTION)
 msgid "A required resource was unavailable."
 msgstr "Gereken bir kaynak kullanılabilir değil."
 
@@ -1796,7 +1810,7 @@ msgstr "TortoiseGitMerge Hakkında"
 msgid "Accept certificate"
 msgstr "Sertifikaları onayla"
 
-#. Resource IDs: (61861)
+#. Resource IDs: (AFX_IDP_FILE_ACCESS_DENIED)
 #, c-format
 msgid "Access to %1 was denied."
 msgstr "%1 erişimi engellendi."
@@ -1813,15 +1827,15 @@ msgstr "Eylem günlüğü"
 msgid "Actions"
 msgstr "Eylemler"
 
-#. Resource IDs: (61203)
+#. Resource IDs: (AFX_IDS_SCTASKLIST)
 msgid "Activate Task List"
 msgstr "Görev Listesini Etkinleştir"
 
-#. Resource IDs: (17043)
+#. Resource IDs: (IDS_AFXBARRES_OPENED_DOCS)
 msgid "Active Files"
 msgstr "Etkin Dosyalar"
 
-#. Resource IDs: (61838)
+#. Resource IDs: (AFX_IDP_ASK_TO_DISCARD)
 #, c-format
 msgid ""
 "ActiveX objects cannot be saved while exiting Windows!\n"
@@ -1870,7 +1884,7 @@ msgstr "Git'ten dosyaları otomatik olarak ekle"
 msgid "Add to &ignore list"
 msgstr "Yoksayma listesini ekle"
 
-#. Resource IDs: (17083)
+#. Resource IDs: (IDS_AFXBARRES_ADD_TO_QAT)
 msgid "Add to Quick Access Toolbar"
 msgstr "Hızlı Erişim Araç Çubuğuna Ekle"
 
@@ -1936,11 +1950,11 @@ msgstr "Gelişmiş birleştirme ayarları"
 msgid "All"
 msgstr "Tümü"
 
-#. Resource IDs: (16110)
+#. Resource IDs: (IDS_AFXBARRES_ALL_COMMANDS)
 msgid "All Commands"
 msgstr "Tüm Komutlar"
 
-#. Resource IDs: (61442)
+#. Resource IDs: (AFX_IDS_ALLFILTER)
 msgid "All Files (*.*)"
 msgstr "Tüm Dosyalar (*.*)"
 
@@ -1972,29 +1986,30 @@ msgstr ""
 msgid "All tags only"
 msgstr ""
 
-#. Resource IDs: (16112)
+#. Resource IDs: (IDS_AFXBARRES_RESET_ALL_TOOLBARS)
 msgid ""
 "All your changes will be lost! Do you really want to reset all toolbars and "
 "menus?"
 msgstr "Tüm değişiklikleriniz kaybolacak! Gerçekten tüm araç çubuklarını ve menüleri sıfırlamak istiyor musunuz?"
 
-#. Resource IDs: (16115)
+#. Resource IDs: (IDS_AFXBARRES_RESET_KEYBOARD)
 msgid ""
 "All your changes will be lost! Do you really want to reset the keyboard "
 "assignments?"
 msgstr "Tüm değişiklikleriniz kaybolacak! Gerçekten tüm tuş atamalarını sıfırlamak istiyor musunuz?"
 
-#. Resource IDs: (16113)
+#. Resource IDs: (IDS_AFXBARRES_RESET_MENU_FMT)
 #, c-format
 msgid ""
-"All your changes will be lost! Do you really want to reset the menu '%s'?"
-msgstr "Tüm değişiklikleriniz kaybolacak! Gerçekten '%s'  menüsünü sıfırlamak istiyor musunuz?"
+"All your changes will be lost! Do you really want to reset the menu '%Ts'?"
+msgstr "Tüm değişiklikler kaybolacak! Gerçekten '%Ts' menüsünü sıfırlamak istiyor musunuz ?"
 
-#. Resource IDs: (16111)
+#. Resource IDs: (IDS_AFXBARRES_RESET_TOOLBAR_FMT)
 #, c-format
 msgid ""
-"All your changes will be lost! Do you really want to reset the toolbar '%s'?"
-msgstr "Tüm değişiklikleriniz kaybolacak! Gerçekten '%s araç çubuğunu sıfırlamak istiyor musunuz?"
+"All your changes will be lost! Do you really want to reset the toolbar "
+"'%Ts'?"
+msgstr "Tüm değişiklikler kaybolacak! Gerçekten '%Ts' araç çubuğunu sıfırlamak istiyor musunuz ?"
 
 #. Resource IDs: (32976)
 msgid ""
@@ -2069,16 +2084,16 @@ msgid ""
 "%base: the original file without your changes"
 msgstr ""
 
-#. Resource IDs: (61862)
+#. Resource IDs: (AFX_IDP_FILE_INVALID_FILE)
 #, c-format
 msgid "An incorrect file handle was associated with %1."
 msgstr "%1 ile geçersiz bir dosya tanımı ilişkilendirildi."
 
-#. Resource IDs: (61476)
+#. Resource IDs: (AFX_IDS_USER_EXCEPTION)
 msgid "An unknown error has occurred."
 msgstr "Bilinmeyen bir hata oluştu."
 
-#. Resource IDs: (61857, 61873)
+#. Resource IDs: (AFX_IDP_ARCH_GENERIC, AFX_IDP_FILE_GENERIC)
 #, c-format
 msgid "An unknown error occurred while accessing %1."
 msgstr "%1 erişimi esnasında bilinmeyen hata oluştu."
@@ -2100,7 +2115,7 @@ msgstr "Sağ blok ekle"
 msgid "Append this block to left"
 msgstr "Bu bloğu sola ekle"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 65535)
 msgid "Application Frame Menus: "
 msgstr "Uygulama Pencere Menüleri:"
 
@@ -2179,7 +2194,8 @@ msgstr "&Dikey yerleştirme\tV"
 msgid "Assigned to changelist '%s'"
 msgstr "Atanılan '%s' değişiklik listesi"
 
-#. Resource IDs: (16528)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 16528, Dialog
+#. IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 16528)
 msgid "Assigned to:"
 msgstr "Atanan:"
 
@@ -2216,21 +2232,21 @@ msgstr "Gözden geçirme: %d"
 msgid "At the moment, you can only rename branches."
 msgstr "Şu anda, yalnızca dalları yeniden adlandırabilirsiniz."
 
-#. Resource IDs: (61473)
+#. Resource IDs: (AFX_IDS_NOT_SUPPORTED_EXCEPTION)
 msgid "Attempted an unsupported operation."
 msgstr "Desteklenmeyen bir işlem yapılmaya çalışılıyor."
 
-#. Resource IDs: (61870, 61875)
+#. Resource IDs: (AFX_IDP_ARCH_ENDOFFILE, AFX_IDP_FILE_EOF)
 #, c-format
 msgid "Attempted to access %1 past its end."
 msgstr "Sonunu %1 aşan bir yere erişmeye çalışıldı."
 
-#. Resource IDs: (61876)
+#. Resource IDs: (AFX_IDP_ARCH_WRITEONLY)
 #, c-format
 msgid "Attempted to read from the writing %1."
 msgstr "Yazılan %1 'den okunmaya çalışıldı."
 
-#. Resource IDs: (61874)
+#. Resource IDs: (AFX_IDP_ARCH_READONLY)
 #, c-format
 msgid "Attempted to write to the reading %1."
 msgstr "Okunan %1 'e yazılmaya çalışıldı."
@@ -2260,6 +2276,14 @@ msgstr "Yazar"
 msgid "Author Email"
 msgstr ""
 
+#. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_AUTHORSEMAIL)
+msgid "Author email addresses"
+msgstr ""
+
+#. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_AUTHORSNAME)
+msgid "Author names"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 65535)
 msgid "Author:\t\t\t\tStefan Kueng"
 msgstr "Yazar:\t\t\t\tStefan Kueng"
@@ -2268,15 +2292,13 @@ msgstr "Yazar:\t\t\t\tStefan Kueng"
 msgid "Authors"
 msgstr "Yazarlar"
 
+#. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_AUTHORSFULL)
+msgid "Authors (full)"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_STATGRAPH: Control id 1265)
 msgid "Authors case sensitive"
 msgstr "Yazarlar büyük küçük harfe duyarlı"
-
-#. Resource IDs: (Dialog IDD_ABOUTBOX: Control id 65535)
-msgid ""
-"Authors:\tFrank Li (lznuaa@gmail.com),\n"
-"\t\tSven Strickroth (email@cs-ware.de)"
-msgstr "Yazarlar:\tFrank Li (lznuaa@gmail.com),\n\t\tSven Strickroth (email@cs-ware.de)"
 
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 65535)
 msgid "Auto CrLf convert"
@@ -2286,11 +2308,11 @@ msgstr "Kendiliğinden CrLf dönüşümü"
 msgid "Auto Crlf:"
 msgstr "Auto Crlf:"
 
-#. Resource IDs: (16033)
+#. Resource IDs: (IDS_AFXBARRES_AUTOHIDEBAR)
 msgid "Auto Hide"
 msgstr "Kendiliğinden Gizle"
 
-#. Resource IDs: (16036)
+#. Resource IDs: (IDS_AFXBARRES_AUTOHIDE_ALL)
 msgid "Auto Hide All"
 msgstr "Tümünü Kendiliğinden Gizle"
 
@@ -2416,7 +2438,7 @@ msgstr ""
 msgid "Bisect start"
 msgstr "İkiye bölmeyi başlat"
 
-#. Resource IDs: (61584)
+#. Resource IDs: (AFX_IDS_BITMAP_FORMAT)
 msgid ""
 "Bitmap\n"
 "a bitmap"
@@ -2450,7 +2472,7 @@ msgstr "Alfayı karıştır"
 
 #. Resource IDs: (156 - Ribbon element)
 msgid "Blocks"
-msgstr ""
+msgstr "Bloklar"
 
 #. Resource IDs: (10009, ID_VIEW_APPLOOK_OFF_2007_BLUE - Menu,
 #. ID_VIEW_APPLOOK_OFF_2007_BLUE - Ribbon name)
@@ -2474,7 +2496,7 @@ msgstr "Hem yama dosyası yolu hem de hedef yol mutlak yol olmalıdır!"
 
 #. Resource IDs: (IDS_STATUSBAR_BOTTOMVIEW)
 msgid "Bottom View:"
-msgstr ""
+msgstr "Alt Görüntü:"
 
 #. Resource IDs: (Dialog IDD_OPENDLG: Control id 1007)
 msgid "Br&owse..."
@@ -2565,7 +2587,7 @@ msgstr "BugTraq"
 msgid "Bugtraq Regex Tester - TortoiseGit"
 msgstr ""
 
-#. Resource IDs: (16132)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16132)
 msgid "Button Appearance"
 msgstr "Buton Görünümü"
 
@@ -2591,7 +2613,9 @@ msgstr ""
 msgid "C&heck now"
 msgstr "Şimdi kon&trol et"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 65535, Dialog
+#. IDD_AFXBARRES_PROPPAGE8: Control id 65535, Dialog
+#. IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 65535)
 msgid "C&ommands:"
 msgstr "K&omutlar:"
 
@@ -2603,7 +2627,8 @@ msgstr ""
 msgid "C&reate branch/tag from revision"
 msgstr "&Revizyondan dal/etiket oluştur"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 65535, Dialog
+#. IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 65535)
 msgid "C&urrent Keys:"
 msgstr "Geçerli Tuşlar:"
 
@@ -2632,7 +2657,7 @@ msgstr ""
 msgid "Can double-click in log list to compare with previous revision"
 msgstr "Bir önceki revizyon ile karşılaştırmak icin günlüğün içine çift tıklama yapınız"
 
-#. Resource IDs: (61824)
+#. Resource IDs: (AFX_IDP_STATIC_OBJECT)
 msgid "Can not activate a static ActiveX object."
 msgstr "Statik bir ActiveX nesnesi aktifleştirilemiyor."
 
@@ -2653,7 +2678,7 @@ msgstr "Resim panoya kopyalanamıyor!"
 msgid "Can't create a new image!"
 msgstr "Yeni bir görüntü oluşturulamıyor!"
 
-#. Resource IDs: (16007)
+#. Resource IDs: (IDS_AFXBARRES_NO_MENUBAR)
 msgid "Can't customize menus!"
 msgstr "Menüler özelleştirilemiyor!"
 
@@ -2661,15 +2686,20 @@ msgstr "Menüler özelleştirilemiyor!"
 msgid "Can't paste bitmap image from the clipboard!"
 msgstr "Panodan biteşlem görüntü yapıştırılamıyor!"
 
-#. Resource IDs: (17101, 2, Dialog IDD_ADD: Control id 2, Dialog
-#. IDD_ADD_REMOTE: Control id 2, Dialog IDD_BISECTSTART: Control id 2, Dialog
-#. IDD_BROWSE_REFS: Control id 2, Dialog IDD_BUGTRAQREGEXTESTER: Control id 2,
-#. Dialog IDD_CERTCHECK: Control id 2, Dialog IDD_CLEAN: Control id 2, Dialog
-#. IDD_CLONE: Control id 2, Dialog IDD_COMMITDLG: Control id 2, Dialog
-#. IDD_CREATECHANGELIST: Control id 2, Dialog IDD_CREATEREPO: Control id 2,
-#. Dialog IDD_ENCODING: Control id 2, Dialog IDD_EXPORT: Control id 2, Dialog
-#. IDD_FIND: Control id 2, Dialog IDD_FORMAT_PATCH: Control id 2, Dialog
-#. IDD_GITSWITCH: Control id 2, Dialog IDD_GOTO: Control id 2, Dialog
+#. Resource IDs: (Dialog AFX_IDD_NEWTYPEDLG: Control id 2, Dialog
+#. AFX_IDD_PRINTDLG: Control id 2, Dialog IDD_ADD: Control id 2, Dialog
+#. IDD_ADD_REMOTE: Control id 2, Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id
+#. 2, Dialog IDD_AFXBARRES_COLOR_DLG: Control id 2, Dialog
+#. IDD_AFXBARRES_IMAGE_EDITOR: Control id 2, Dialog
+#. IDD_AFXBARRES_OUTLOOKBAR_OPTIONS: Control id 2, Dialog
+#. IDD_AFXBARRES_TOOLBAR_NAME: Control id 2, Dialog IDD_BISECTSTART: Control
+#. id 2, Dialog IDD_BROWSE_REFS: Control id 2, Dialog IDD_BUGTRAQREGEXTESTER:
+#. Control id 2, Dialog IDD_CERTCHECK: Control id 2, Dialog IDD_CLEAN: Control
+#. id 2, Dialog IDD_CLONE: Control id 2, Dialog IDD_COMMITDLG: Control id 2,
+#. Dialog IDD_CREATECHANGELIST: Control id 2, Dialog IDD_CREATEREPO: Control
+#. id 2, Dialog IDD_ENCODING: Control id 2, Dialog IDD_EXPORT: Control id 2,
+#. Dialog IDD_FIND: Control id 2, Dialog IDD_FORMAT_PATCH: Control id 2,
+#. Dialog IDD_GITSWITCH: Control id 2, Dialog IDD_GOTO: Control id 2, Dialog
 #. IDD_GOTODLG: Control id 2, Dialog IDD_HISTORYDLG: Control id 2, Dialog
 #. IDD_IGNORE: Control id 2, Dialog IDD_INPUTDLG: Control id 2, Dialog
 #. IDD_LOGMESSAGE: Control id 2, Dialog IDD_LOGORDERING: Control id 2, Dialog
@@ -2689,7 +2719,7 @@ msgstr "Panodan biteşlem görüntü yapıştırılamıyor!"
 #. IDD_SUBMODULE_UPDATE: Control id 2, Dialog IDD_SVNDCOMMITTYPE: Control id
 #. 2, Dialog IDD_SVNIGNORE: Control id 2, Dialog IDD_SVNPROGRESS: Control id
 #. 2, Dialog IDD_TOOLASSOC: Control id 2, Dialog IDD_URL: Control id 2, Dialog
-#. IDD_USER_PASSWD: Control id 2, IDS_MSGBOX_CANCEL,
+#. IDD_USER_PASSWD: Control id 2, IDS_AFXBARRES_CANCEL, IDS_MSGBOX_CANCEL,
 #. IDS_PROC_OVERWRITEEXPORT_CANCEL)
 msgid "Cancel"
 msgstr "İptal"
@@ -2722,7 +2752,7 @@ msgstr "İptal Et\nÖnce çakışmaları çözümle."
 msgid ""
 "Cancel\n"
 "Stay with current files"
-msgstr ""
+msgstr "İptal\nGeçerli dosyalar ile kal"
 
 #. Resource IDs: (IDS_ASKFORSAVE_CANCEL_OPTIONS)
 msgid ""
@@ -2751,7 +2781,7 @@ msgstr ""
 msgid "Cannot show diff because of inconsistent newlines in the file."
 msgstr "Diff görüntülenemez çünkü dosyadaki yeni satırlar tutarsız."
 
-#. Resource IDs: (16926)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 16926)
 msgid "Casca&de"
 msgstr "&Basamakla"
 
@@ -2763,7 +2793,7 @@ msgstr "İçerik menüsü basamaklandı"
 msgid "Case-sensitive"
 msgstr "Büyük küçük harf duyarlı"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE1: Control id 65535)
 msgid "Cate&gories:"
 msgstr "&Kategoriler:"
 
@@ -2801,11 +2831,11 @@ msgid ""
 "Change Style"
 msgstr "Uygulamanın stili değiştirilsin mi\nStili Değiştir"
 
-#. Resource IDs: (61185)
+#. Resource IDs: (AFX_IDS_SCMOVE)
 msgid "Change the window position"
 msgstr "Pencere konumunu değiştir"
 
-#. Resource IDs: (61184)
+#. Resource IDs: (AFX_IDS_SCSIZE)
 msgid "Change the window size"
 msgstr "Pencere boyutunu değiştir"
 
@@ -2865,7 +2895,7 @@ msgstr "Uygulamanın görünümünü değiştirir"
 msgid "Char position where to show a border line in commit text boxes:"
 msgstr "Teslim etme metin kutularında gösterilecek sınır çizgisi için karakter pozisyonu: "
 
-#. Resource IDs: (62178, IDS_RECURSE_SUBMODULES_CHECK)
+#. Resource IDs: (AFX_IDS_CHECKLISTBOX_CHECK, IDS_RECURSE_SUBMODULES_CHECK)
 msgid "Check"
 msgstr "Konrol Et"
 
@@ -3066,7 +3096,7 @@ msgstr "Belirli bir uzantı için alternatif birleştirme programları belirtmek
 msgid ""
 "Click to see commands to move blocks of text\n"
 "Use text blocks"
-msgstr ""
+msgstr "Metin bloklarını taşımak için kullanılan komutları görmek için tıklayınız\nMetin bloklarını kullanın"
 
 #. Resource IDs: (IDS_CLIPBOARD_PROGRESS_DEST)
 msgid "Clipboard"
@@ -3092,12 +3122,14 @@ msgstr ""
 msgid "Clone..."
 msgstr "Çoğalt..."
 
-#. Resource IDs: (16032, 16105, 17023, 2, Dialog IDD_DELETEREMOTETAG: Control
-#. id 2, Dialog IDD_GITPROGRESS: Control id 1, Dialog IDD_SYNC: Control id 1)
+#. Resource IDs: (17023, Dialog IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id
+#. 2, Dialog IDD_DELETEREMOTETAG: Control id 2, Dialog IDD_GITPROGRESS:
+#. Control id 1, Dialog IDD_SYNC: Control id 1, IDS_AFXBARRES_CLOSE,
+#. IDS_AFXBARRES_CLOSEBAR)
 msgid "Close"
 msgstr "Kapat"
 
-#. Resource IDs: (17025)
+#. Resource IDs: (IDS_AFXBARRES_FULLSCREEN_CLOSE)
 msgid "Close Full Screen"
 msgstr "Tam Ekranı Kapat"
 
@@ -3111,7 +3143,7 @@ msgstr "Baskı Önizlemeyi Kapat\n&Kapat"
 msgid "Close manually"
 msgstr "Elle Kapatın"
 
-#. Resource IDs: (61445)
+#. Resource IDs: (AFX_IDS_PREVIEW_CLOSE)
 msgid ""
 "Close print preview mode\n"
 "Cancel Preview"
@@ -3123,7 +3155,7 @@ msgid ""
 "Close"
 msgstr ""
 
-#. Resource IDs: (61190)
+#. Resource IDs: (AFX_IDS_SCCLOSE)
 msgid "Close the active window and prompts to save the documents"
 msgstr "Aktif pencereyi kapatır ve dökümanları kayıt etmeniz gerektiğini söyler "
 
@@ -3137,21 +3169,24 @@ msgid ""
 "Collapse"
 msgstr "Değişmemiş bölümleri kapat\nKapat"
 
-#. Resource IDs: (16662)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 16662, Dialog
+#. IDD_AFXBARRES_COLOR_DLG: Control id 16662)
 msgid "Color"
 msgstr "Renk"
 
 #. Resource IDs: (ID_VIEW_COLORBYAGE - Menu)
 msgid "Color by age, &continuous"
-msgstr ""
+msgstr "Renk yaşına göre, devamlı"
 
-#. Resource IDs: (16961, Dialog IDD_SETCOLORPAGE: Control id 138, Dialog
-#. IDD_SETTINGSTBLAME: Control id 65535, Dialog IDD_SETTINGSUDIFF: Control id
-#. 65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLOR_DLG: Control id 16961, Dialog
+#. IDD_SETCOLORPAGE: Control id 138, Dialog IDD_SETTINGSTBLAME: Control id
+#. 65535, Dialog IDD_SETTINGSUDIFF: Control id 65535)
 msgid "Colors"
 msgstr "Renkler"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 65535, Dialog
+#. IDD_AFXBARRES_COLOR_PAGE_ONE: Control id 65535, Dialog
+#. IDD_AFXBARRES_IMAGE_EDITOR: Control id 65535)
 msgid "Colors:"
 msgstr "Renkler:"
 
@@ -3163,11 +3198,11 @@ msgstr ""
 msgid "Combine to one commit"
 msgstr ""
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE1: Control id 65535)
 msgid "Comman&ds:"
 msgstr "&Komutlar:"
 
-#. Resource IDs: (16029, IDS_PROGRS_CMDINFO)
+#. Resource IDs: (IDS_AFXBARRES_COMMAND, IDS_PROGRS_CMDINFO)
 msgid "Command"
 msgstr "Komut"
 
@@ -3179,11 +3214,11 @@ msgstr "Komut satırı"
 msgid "Command Line To Execute:"
 msgstr "Yürütülecek komut satırı:"
 
-#. Resource IDs: (61705)
+#. Resource IDs: (AFX_IDP_COMMAND_FAILURE)
 msgid "Command failed."
 msgstr "Komut başarısız."
 
-#. Resource IDs: (16104)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE1: Control id 16104)
 msgid "Commands"
 msgstr "Komutlar"
 
@@ -3297,6 +3332,10 @@ msgstr ""
 msgid "Compare selected refs"
 msgstr ""
 
+#. Resource IDs: (IDS_PROC_SYNC_COMPARETAGS)
+msgid "Compare tags"
+msgstr ""
+
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_COMPARETWOFILES)
 msgid "Compare two files"
 msgstr "İki dosya karşılaştır"
@@ -3330,11 +3369,6 @@ msgid ""
 "you made"
 msgstr "Yaptığınız değişiklikleri size göstermek için dosyayı en son teslim edilen dosya ile karşılaştırır"
 
-#. Resource IDs: (IDS_PROGRESS_COMPARE)
-#, c-format
-msgid "Comparing %s to %s"
-msgstr "%s ile %s karşılaştırılıyor"
-
 #. Resource IDs: (IDS_SVNACTION_COMPLETED)
 msgid "Completed"
 msgstr "Tamamlandı"
@@ -3355,7 +3389,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_CONFIGUREREGEXES, ID_REGEXFILTER - Menu)
 msgid "Configure Filter Regexes"
-msgstr ""
+msgstr "Filtre Düzenli İfadelerini Konfigüre Et"
 
 #. Resource IDs: (Dialog IDD_SETTINGSHOOKCONFIG: Control id 236)
 msgid "Configure Hook Scripts"
@@ -3422,19 +3456,19 @@ msgstr "Çakışmalar"
 msgid "Conflicts: %d"
 msgstr "Çakışmalar: %d"
 
-#. Resource IDs: (16520)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 16520)
 msgid "Context Menus: "
 msgstr "Sağ-tık Menüsü:"
 
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 65535)
 msgid "Context lines for patches"
-msgstr ""
+msgstr "Yamalar için bağlam satırları"
 
 #. Resource IDs: (Dialog IDD_REBASE: Control id 1564, IDS_CONTINUEBUTTON)
 msgid "Continue"
 msgstr "Devam"
 
-#. Resource IDs: (16013)
+#. Resource IDs: (IDS_AFXBARRES_CONTRACT_BAR)
 msgid "Contract docked window"
 msgstr "Sözleşme yerleşik pencere"
 
@@ -3454,15 +3488,10 @@ msgstr "Kop&yala"
 msgid "Copied"
 msgstr "Kopyalandı"
 
-#. Resource IDs: (16991, IDS_PATHACTIONS_COPY, IDS_PROGRS_TITLE_COPY,
-#. ID_EDIT_COPY - Ribbon name)
+#. Resource IDs: (Dialog IDD_AFXBARRES_KEYMAP: Control id 16991,
+#. IDS_PATHACTIONS_COPY, IDS_PROGRS_TITLE_COPY, ID_EDIT_COPY - Ribbon name)
 msgid "Copy"
 msgstr "Kopyala"
-
-#. Resource IDs: (IDS_PROGRS_CMD_COPY)
-#, c-format
-msgid "Copy %s to %s, Revision %s"
-msgstr "%s öğesini buraya kopyala: %s, Revizyon %s"
 
 #. Resource IDs: (IDS_BLAME_POPUP_COPYHASHTOCLIPBOARD, IDS_COPY_COMMIT_HASH)
 msgid "Copy SHA-1 to clipboard"
@@ -3481,10 +3510,6 @@ msgstr "Bütün bilgileri panoya kopyala"
 #. Resource IDs: (IDS_PROC_COPYRENAME)
 msgid "Copy and rename"
 msgstr "Kopyala ve tekrar adlandır"
-
-#. Resource IDs: (IDS_LOG_POPUP_COPYTOCLIPBOARDMESSAGES)
-msgid "Copy log messages to clipboard"
-msgstr "Günlük mesajlarını panoya kopyala"
 
 #. Resource IDs: (IDS_BLAME_POPUP_COPYLOGTOCLIPBOARD)
 msgid "Copy log to clipboard"
@@ -3526,10 +3551,6 @@ msgstr "%s kopyalanıyor"
 msgid "Copying..."
 msgstr "Kopyalanıyor..."
 
-#. Resource IDs: (Dialog IDD_ABOUTBOX: Control id 1001)
-msgid "Copyright (C) 2009-2016 TortoiseGit"
-msgstr ""
-
 #. Resource IDs: (IDS_SPELLEDIT_CORRECTIONS)
 msgid "Corrections"
 msgstr "Düzeltmeler"
@@ -3556,7 +3577,7 @@ msgid ""
 "%s"
 msgstr ""
 
-#. Resource IDs: (61864)
+#. Resource IDs: (AFX_IDP_FILE_DIR_FULL)
 #, c-format
 msgid "Could not create %1 because the directory is full."
 msgstr "%1 yaratılamadı çünkü dizin dolu."
@@ -3587,7 +3608,7 @@ msgstr ""
 msgid "Could not get the status!"
 msgstr "Durum bilgisine ulaşılamadı!"
 
-#. Resource IDs: (61860)
+#. Resource IDs: (AFX_IDP_FILE_TOO_MANY_OPEN)
 #, c-format
 msgid "Could not open %1 because there are too many open files."
 msgstr "%1 açılamadı çünkü çok fazla açık dosya bulunmakta."
@@ -3599,7 +3620,7 @@ msgid ""
 "%s"
 msgstr "Dosya açılamadı\n%s"
 
-#. Resource IDs: (61863)
+#. Resource IDs: (AFX_IDP_FILE_REMOVE_CURRENT)
 #, c-format
 msgid "Could not remove %1 because it is the current directory."
 msgstr "%1 silinemedi çünkü şu anki dizin."
@@ -3670,7 +3691,7 @@ msgid ""
 "Check help file for \"Extra PATH\"."
 msgstr ""
 
-#. Resource IDs: (61702)
+#. Resource IDs: (AFX_IDP_FAILED_TO_START_PRINT)
 msgid "Could not start print job."
 msgstr "Çıktı alma işlemi başlatılamadı."
 
@@ -3817,7 +3838,7 @@ msgstr ""
 msgid "Cu&t"
 msgstr "Ke&s"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLOR_DLG: Control id 65535)
 msgid "Current"
 msgstr "Geçerli"
 
@@ -3844,6 +3865,12 @@ msgid ""
 "If you want to force the rebase even if the current branch is a descendant of the commit you are rebasing onto, please check below \"Force Rebase\" checkbox."
 msgstr ""
 
+#. Resource IDs: (IDS_REBASE_CURRENTBRANCHUPTODATE)
+msgid ""
+"Current branch is up to date or newer than the fetched branch. Open rebase "
+"anyway?"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1113)
 msgid "Current version is:"
 msgstr "Şu anki versiyon:"
@@ -3853,27 +3880,28 @@ msgstr "Şu anki versiyon:"
 msgid "Current version is: %s"
 msgstr "Şu anki versiyon: %s"
 
-#. Resource IDs: (17079)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE8: Control id 17079)
 msgid "Cus&tomize..."
 msgstr "Kişiselleş&tir..."
 
-#. Resource IDs: (16963)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 16963)
 msgid "Custom"
 msgstr "Özel"
 
-#. Resource IDs: (16103, 17074)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE8: Control id 17074,
+#. IDS_AFXBARRES_PROPSHT_CAPTION)
 msgid "Customize"
 msgstr "Kişiselleştir"
 
-#. Resource IDs: (17076)
+#. Resource IDs: (Dialog IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 17076)
 msgid "Customize Keyboard"
 msgstr "Klavyeyi Özelleştir"
 
-#. Resource IDs: (17096)
+#. Resource IDs: (IDS_AFXBARRES_CUSTOMIZE_QAT_TOOLTIP)
 msgid "Customize Quick Access Toolbar"
 msgstr "Hızlı Erişim Araç Çubuğunu Özelleştir"
 
-#. Resource IDs: (17085)
+#. Resource IDs: (IDS_AFXBARRES_CUSTOMIZE_QAT)
 msgid "Customize Quick Access Toolbar..."
 msgstr "Hızlı Erişim Araç Çubuğunu Özelleştir..."
 
@@ -3907,15 +3935,15 @@ msgstr "Tarih"
 msgid "Date Last Commit"
 msgstr ""
 
-#. Resource IDs: (16114, IDS_DEFAULT)
+#. Resource IDs: (IDS_AFXBARRES_DEFAULT_VIEW, IDS_DEFAULT)
 msgid "Default"
 msgstr "Varsayılan"
 
-#. Resource IDs: (16106)
+#. Resource IDs: (IDS_AFXBARRES_DEFUALT_MENU)
 msgid "Default Menu"
 msgstr "Varsayılan Menü"
 
-#. Resource IDs: (16107)
+#. Resource IDs: (IDS_AFXBARRES_DEFAULT_MENU_DESCR)
 msgid "Default application menu. Appears when no documents are open."
 msgstr "Varsayılan uygulama menüsü. Hiçbir belge açık değilken görünür."
 
@@ -3927,8 +3955,8 @@ msgstr ""
 msgid "Default to UTF-8 encoding"
 msgstr "UTF-8 kodlamasına dön"
 
-#. Resource IDs: (16020, Dialog IDD_RESOLVE_CONFLICT: Control id 4571,
-#. IDS_DELETE_BRANCHTAG_SHORT)
+#. Resource IDs: (Dialog IDD_RESOLVE_CONFLICT: Control id 4571,
+#. IDS_AFXBARRES_DELETE, IDS_DELETE_BRANCHTAG_SHORT)
 msgid "Delete"
 msgstr "Sil"
 
@@ -3966,7 +3994,7 @@ msgstr "%d elemanı sil ve isme göre al&dırma"
 
 #. Resource IDs: (IDS_MENUDELETEIGNOREMULTIPLE2)
 msgid "Delete and &ignore multiple items by name"
-msgstr ""
+msgstr "Tekrarlanan isimleri göz ardı et ve sil"
 
 #. Resource IDs: (IDS_MENUDELETEIGNORE)
 msgid "Delete and add to &ignore list"
@@ -3979,7 +4007,7 @@ msgstr "%d kalemleri &uzantısına göre sil veya atla"
 
 #. Resource IDs: (IDS_MENUDELETEIGNOREMULTIPLEMASK2)
 msgid "Delete and ignore multiple items by &extension"
-msgstr ""
+msgstr "Tekrarlanan uzantıları göz ardı et ve sil"
 
 #. Resource IDs: (IDS_PROC_BROWSEREFS_DELETEBRANCH)
 msgid "Delete branch"
@@ -3988,6 +4016,10 @@ msgstr ""
 #. Resource IDs: (IDS_DELETE_BRANCHTAG)
 msgid "Delete branch/tag"
 msgstr "Kol/Etiket sil"
+
+#. Resource IDs: (IDS_DELETE_LOCALTAG)
+msgid "Delete local tag"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_BROWSEREFS_DELETEREMOTEBRANCH)
 msgid "Delete remote branch"
@@ -4014,8 +4046,16 @@ msgstr "Alt modülü sil"
 msgid "Delete tag"
 msgstr ""
 
+#. Resource IDs: (IDS_DELETE_REMOTETAG)
+msgid "Delete tag on remote"
+msgstr ""
+
 #. Resource IDs: (IDS_B_DELETEORDIFFERENTNAME)
 msgid "Delete the existing branch or use a different name."
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_RESOLVE_CONFLICT: Control id 4570)
+msgid "Delete/modify merge conflict"
 msgstr ""
 
 #. Resource IDs: (IDS_DELETEWHENEMPTY_TASK3)
@@ -4029,10 +4069,6 @@ msgstr "Sil\nDosya silinir."
 #. IDS_PATHACTIONS_DELETE, IDS_SVNACTION_DELETE, IDS_SVN_SUMMARIZEDELETED)
 msgid "Deleted"
 msgstr "Silindi"
-
-#. Resource IDs: (Dialog IDD_RESOLVE_CONFLICT: Control id 4570)
-msgid "Deleted merge conflict"
-msgstr ""
 
 #. Resource IDs: (IDS_MENUDESCDELETEIGNORE)
 msgid ""
@@ -4084,11 +4120,14 @@ msgstr ""
 msgid "Describe Strategy"
 msgstr ""
 
-#. Resource IDs: (16031, IDS_DESCRIPTION)
+#. Resource IDs: (IDS_AFXBARRES_DESCRIPTION, IDS_DESCRIPTION)
 msgid "Description"
 msgstr "Açıklama"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 65535, Dialog
+#. IDD_AFXBARRES_PROPPAGE1: Control id 65535, Dialog IDD_AFXBARRES_PROPPAGE5:
+#. Control id 65535, Dialog IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id
+#. 65535)
 msgid "Description:"
 msgstr "Açıklama:"
 
@@ -4100,7 +4139,7 @@ msgstr "Değişiklik listesini seçme"
 msgid "Destination"
 msgstr "Hedef"
 
-#. Resource IDs: (61730)
+#. Resource IDs: (AFX_IDP_FAILED_DISK_FULL)
 msgid "Destination disk drive is full."
 msgstr "Hedef disk sürücüsü dolu."
 
@@ -4126,7 +4165,7 @@ msgstr ""
 msgid "Detect moved or copied lines within a file"
 msgstr ""
 
-#. Resource IDs: (61583)
+#. Resource IDs: (AFX_IDS_DIB_FORMAT)
 msgid ""
 "Device Independent Bitmap\n"
 "a device independent bitmap"
@@ -4142,7 +4181,7 @@ msgstr ""
 
 #. Resource IDs: (156 - Ribbon element)
 msgid "Diff"
-msgstr ""
+msgstr "Fark"
 
 #. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1789)
 msgid "Diff Options"
@@ -4166,11 +4205,11 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 65535)
 msgid "Diff command"
-msgstr ""
+msgstr "Fark komutu"
 
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 65535)
 msgid "Diff comment"
-msgstr ""
+msgstr "Fark açıklaması"
 
 #. Resource IDs: (Dialog IDD_OPENDLG: Control id 65535)
 msgid "Diff file:"
@@ -4178,7 +4217,7 @@ msgstr "Karşılaştırma dosyası:"
 
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 65535)
 msgid "Diff header"
-msgstr ""
+msgstr "Fark başlığı"
 
 #. Resource IDs: (IDS_MENUDIFFLATER)
 msgid "Diff later"
@@ -4186,11 +4225,11 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 65535)
 msgid "Diff position"
-msgstr ""
+msgstr "Farkı konumu"
 
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 65535)
 msgid "Diff removed lines"
-msgstr ""
+msgstr "Silinen satırları karşılaştır"
 
 #. Resource IDs: (IDS_MENUDIFFNOW)
 #, c-format
@@ -4200,6 +4239,10 @@ msgstr ""
 #. Resource IDs: (IDS_STATUSLIST_GROUP_DIFFWITHPARENT)
 #, c-format
 msgid "Diff with parent %d"
+msgstr ""
+
+#. Resource IDs: (IDS_TAGCOMPARE_DIFFER)
+msgid "Differ"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1302)
@@ -4231,6 +4274,10 @@ msgstr "Dizin:"
 msgid "Disable sounds"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1536)
+msgid "Disable status cache for elevated processes"
+msgstr ""
+
 #. Resource IDs: (IDS_SETTINGS_RECURSIVE_TT)
 msgid ""
 "Disable this option if you have really big working trees and experience\n"
@@ -4245,17 +4292,17 @@ msgstr ""
 msgid "Disabled"
 msgstr ""
 
-#. Resource IDs: (61869)
+#. Resource IDs: (AFX_IDP_FILE_DISKFULL)
 #, c-format
 msgid "Disk full while accessing %1."
 msgstr "%1 'e erişilirken disk dolu."
 
-#. Resource IDs: (61745)
+#. Resource IDs: (AFX_IDP_SCRIPT_DISPATCH_EXCEPTION)
 #, c-format
 msgid "Dispatch exception: %1"
 msgstr "Gönderme hatası: %1"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_OUTLOOKBAR_OPTIONS: Control id 65535)
 msgid "Display &buttons in this order"
 msgstr "Düğmeleri &bu sırayla görüntüle"
 
@@ -4331,10 +4378,10 @@ msgstr ""
 msgid "Do you really want to delete \"%s\"?"
 msgstr ""
 
-#. Resource IDs: (16109)
+#. Resource IDs: (IDS_AFXBARRES_DELETE_TOOLBAR_FMT)
 #, c-format
-msgid "Do you really want to delete the toolbar '%s'?"
-msgstr "'%s' araç çubuğunu gerçekten silmek istiyor musunuz?"
+msgid "Do you really want to delete the toolbar '%Ts'?"
+msgstr ""
 
 #. Resource IDs: (IDS_DISABLEUPDATECHECKS)
 msgid ""
@@ -4360,6 +4407,10 @@ msgstr "Bu dosyayı gerçekten de bu klasöre taşımak istiyor musunuz?"
 msgid ""
 "Do you really want to permanently delete the %d selected refs? It can NOT be"
 " recovered!"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_PUSH_ALLBRANCHES)
+msgid "Do you really want to push all local branches?"
 msgstr ""
 
 #. Resource IDs: (IDS_WARN_DELETE_ONE_FROM_INDEX)
@@ -4428,7 +4479,7 @@ msgid ""
 "as resolved?"
 msgstr ""
 
-#. Resource IDs: (62182)
+#. Resource IDs: (AFX_IDS_AUTOSAVE_RECOVERY_ASK_3)
 msgid "Do you want to recover these auto-saved documents?"
 msgstr "Otomatik kaydedilen bu belgeleri geri döndürmek istiyor musunuz?"
 
@@ -4446,7 +4497,7 @@ msgstr "Değişiklikleri görmek istiyor musunuz ?"
 msgid "Do you want to stash pop now?"
 msgstr "Şimdi pop saklamak istiyor musunuz?"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog AFX_IDD_PRINTDLG: Control id 65535)
 msgid "Document :"
 msgstr "Döküman:"
 
@@ -4459,7 +4510,7 @@ msgstr ""
 msgid "Don't know what will push because you enter URL"
 msgstr ""
 
-#. Resource IDs: (62185)
+#. Resource IDs: (AFX_IDS_AUTOSAVE_RECOVERY_ASK_6)
 msgid ""
 "Don't recover the auto-saved documents\n"
 "Use the last explicitly saved versions of the documents"
@@ -4501,11 +4552,11 @@ msgstr "İndir"
 msgid "Download language packs:"
 msgstr ""
 
-#. Resource IDs: (16028)
+#. Resource IDs: (IDS_AFX_TEAR_OFF)
 msgid "Drag to make this menu float"
 msgstr "Bu menüyü kaydırmak için sürükleyin"
 
-#. Resource IDs: (16513)
+#. Resource IDs: (Dialog IDD_AFXBARRES_IMAGE_EDITOR: Control id 16513)
 msgid "Draw"
 msgstr "Çiz"
 
@@ -4519,7 +4570,7 @@ msgstr "Sürücü Türleri"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1315)
 msgid "Drives A: and B:"
-msgstr ""
+msgstr "Sürücüler A: ve B:"
 
 #. Resource IDs: (IDS_DROPONESTASH)
 msgid "Drop &one stash"
@@ -4587,7 +4638,7 @@ msgstr ""
 msgid "Edit .tgitconfig"
 msgstr ""
 
-#. Resource IDs: (16133)
+#. Resource IDs: (Dialog IDD_AFXBARRES_IMAGE_EDITOR: Control id 16133)
 msgid "Edit Button Image"
 msgstr "Buton Resmini Düzenle"
 
@@ -4729,31 +4780,31 @@ msgid ""
 "Hold down the Ctrl key to reload the file with the specified encoding."
 msgstr ""
 
-#. Resource IDs: (61866)
+#. Resource IDs: (AFX_IDP_FILE_HARD_IO)
 #, c-format
 msgid "Encountered a hardware I/O error while accessing %1."
 msgstr "%1 'e erişilirken bir donanım I/O hatası ile karşılaşıldı"
 
-#. Resource IDs: (61868)
+#. Resource IDs: (AFX_IDP_FILE_LOCKING)
 #, c-format
 msgid "Encountered a locking violation while accessing %1."
 msgstr "%1 'e erişilirken bir kilitleme ihlaliyle karşılaşıldı."
 
-#. Resource IDs: (61867)
+#. Resource IDs: (AFX_IDP_FILE_SHARING)
 #, c-format
 msgid "Encountered a sharing violation while accessing %1."
 msgstr "%1 'e erişilirken bir paylaşım ihlali oluştu."
 
-#. Resource IDs: (61477)
+#. Resource IDs: (AFX_IDS_INVALID_ARG_EXCEPTION)
 msgid "Encountered an improper argument."
 msgstr "Uygun olmayan bir argümanla karşılaşıldı."
 
-#. Resource IDs: (61733)
+#. Resource IDs: (AFX_IDP_FAILED_IO_ERROR_READ)
 #, c-format
 msgid "Encountered an unexpected error while reading %1."
 msgstr "%1 'i okurken beklenilmeyen bir hata ile karşılaşıldı."
 
-#. Resource IDs: (61734)
+#. Resource IDs: (AFX_IDP_FAILED_IO_ERROR_WRITE)
 #, c-format
 msgid "Encountered an unexpected error while writing %1."
 msgstr "%1 'e yazarken beklenilmeyen bir hata ile karşılaşıldı."
@@ -4770,7 +4821,7 @@ msgstr "Son"
 msgid "End of Line Style"
 msgstr "Satır Sonu Biçemi"
 
-#. Resource IDs: (61187)
+#. Resource IDs: (AFX_IDS_SCMAXIMIZE)
 msgid "Enlarge the window to full size"
 msgstr "Pencereyi tam ekran boyutuna büyüt"
 
@@ -4778,19 +4829,19 @@ msgstr "Pencereyi tam ekran boyutuna büyüt"
 msgid "Enter URL"
 msgstr "Bağlantı Giriniz"
 
-#. Resource IDs: (61722)
+#. Resource IDs: (AFX_IDP_PARSE_GUID)
 msgid "Enter a GUID."
 msgstr "Bir GUID girin."
 
-#. Resource IDs: (61721)
+#. Resource IDs: (AFX_IDP_PARSE_CURRENCY)
 msgid "Enter a currency."
 msgstr "Para birimi girin"
 
-#. Resource IDs: (61720)
+#. Resource IDs: (AFX_IDP_PARSE_DATETIME)
 msgid "Enter a date and/or time."
 msgstr "Bir tarih ve/veya saat girin."
 
-#. Resource IDs: (61724)
+#. Resource IDs: (AFX_IDP_PARSE_DATE)
 msgid "Enter a date."
 msgstr "Bir Tarih girin."
 
@@ -4798,33 +4849,33 @@ msgstr "Bir Tarih girin."
 msgid "Enter a name for the changelist:"
 msgstr "Değişim listesi için bir &ad giriniz:"
 
-#. Resource IDs: (61715)
+#. Resource IDs: (AFX_IDP_PARSE_REAL_RANGE)
 #, c-format
 msgid "Enter a number between %1 and %2."
 msgstr "%1 ve %2 arasında bir sayı giriniz."
 
-#. Resource IDs: (61713)
+#. Resource IDs: (AFX_IDP_PARSE_REAL)
 msgid "Enter a number."
 msgstr "Bir sayı girin."
 
-#. Resource IDs: (61719)
+#. Resource IDs: (AFX_IDP_PARSE_UINT)
 msgid "Enter a positive integer."
 msgstr "Pozitif bir tam sayı girin."
 
-#. Resource IDs: (61723)
+#. Resource IDs: (AFX_IDP_PARSE_TIME)
 msgid "Enter a time."
 msgstr "Bir saat girin."
 
-#. Resource IDs: (61714)
+#. Resource IDs: (AFX_IDP_PARSE_INT_RANGE)
 #, c-format
 msgid "Enter an integer between %1 and %2."
 msgstr "%1 ve %2 arasında bir tam sayı girin."
 
-#. Resource IDs: (61718)
+#. Resource IDs: (AFX_IDP_PARSE_BYTE)
 msgid "Enter an integer between 0 and 255."
 msgstr "0 ve 255 arasında bir tam sayı giriniz."
 
-#. Resource IDs: (61712)
+#. Resource IDs: (AFX_IDP_PARSE_INT)
 msgid "Enter an integer."
 msgstr "Bir tam sayı girin."
 
@@ -4836,7 +4887,7 @@ msgstr "Dosya içeriğini test için aşağıya girin:"
 msgid "Enter log &message:"
 msgstr "Günlük mesajı &giriniz:"
 
-#. Resource IDs: (61716)
+#. Resource IDs: (AFX_IDP_PARSE_STRING_SIZE)
 #, c-format
 msgid "Enter no more than %1 characters."
 msgstr "%1 den fazla karakter girmeyin."
@@ -4881,7 +4932,7 @@ msgstr "%1s\n%s kütüğünün anahtarı okunurken/yazılırken hata oluştu"
 msgid "Everything updated."
 msgstr ""
 
-#. Resource IDs: (16023)
+#. Resource IDs: (IDS_AFXBARRES_CMD_FILTER)
 msgid ""
 "Executable (*.exe)|*.exe|Command (*.com)|*.com|Information "
 "(*.pdf)|*.pdf|Batch (*.bat)|*.bat|All Files (*.*)|*.*||"
@@ -4891,7 +4942,7 @@ msgstr "Çalıştırılabilir (*.exe)|*.exe|Komu (*.com)|*.com|Bilgi (*.pdf)|*.p
 msgid "Executable (+x)"
 msgstr ""
 
-#. Resource IDs: (16018)
+#. Resource IDs: (IDS_AFXBARRES_EXISTING)
 msgid "Existing"
 msgstr "Mevcut"
 
@@ -4900,12 +4951,12 @@ msgstr "Mevcut"
 msgid "Exit"
 msgstr "Çıkış"
 
-#. Resource IDs: (16025)
+#. Resource IDs: (IDS_AFXBARRES_EXPAND_FMT)
 #, c-format
-msgid "Expand (%s)"
-msgstr "Genişlet (%s)"
+msgid "Expand (%Ts)"
+msgstr "Genişlet (%Ts)"
 
-#. Resource IDs: (16012)
+#. Resource IDs: (IDS_AFXBARRES_EXPAND_BAR)
 msgid "Expand docked window"
 msgstr "Küçültülmüş pencereyi genişlet"
 
@@ -4975,7 +5026,7 @@ msgstr "Harici Program:"
 msgid "F&etch..."
 msgstr ""
 
-#. Resource IDs: (17113)
+#. Resource IDs: (IDS_AFXBARRES_MENU_ANIMATION_FADE)
 msgid "Fade"
 msgstr "Azal"
 
@@ -4997,21 +5048,21 @@ msgstr ""
 msgid "Failed to checkout file \"%s\" of revision %s to \"%s\"."
 msgstr ""
 
-#. Resource IDs: (61825)
+#. Resource IDs: (AFX_IDP_FAILED_TO_CONNECT)
 msgid ""
 "Failed to connect.\n"
 "Link may be broken."
 msgstr "Bağlantı hatası.\nBağlantı kopuk olabilir."
 
-#. Resource IDs: (61835)
+#. Resource IDs: (AFX_IDP_FAILED_TO_CONVERT)
 msgid "Failed to convert ActiveX object."
 msgstr "ActiveX nesnesi dönüştürülemedi."
 
-#. Resource IDs: (61700)
+#. Resource IDs: (AFX_IDP_FAILED_TO_CREATE_DOC)
 msgid "Failed to create empty document."
 msgstr "Boş döküman yaratılamadı."
 
-#. Resource IDs: (61839)
+#. Resource IDs: (AFX_IDP_FAILED_TO_CREATE)
 msgid ""
 "Failed to create object.  Make sure the application is entered in the system"
 " registry."
@@ -5029,23 +5080,23 @@ msgstr ""
 msgid "Failed to get merge file."
 msgstr ""
 
-#. Resource IDs: (61703)
+#. Resource IDs: (AFX_IDP_FAILED_TO_LAUNCH_HELP)
 msgid "Failed to launch help."
 msgstr "Yardım dosyası açılamadı."
 
-#. Resource IDs: (61830)
+#. Resource IDs: (AFX_IDP_FAILED_TO_LAUNCH)
 msgid "Failed to launch server application."
 msgstr "Sunucu uygulaması çalıştırılamadı."
 
-#. Resource IDs: (61697)
+#. Resource IDs: (AFX_IDP_FAILED_TO_OPEN_DOC)
 msgid "Failed to open document."
 msgstr "Döküman açılamadı."
 
-#. Resource IDs: (61827)
+#. Resource IDs: (AFX_IDP_BAD_VERB)
 msgid "Failed to perform server operation."
 msgstr "Sunucu işlemi gerçekleştirilemedi."
 
-#. Resource IDs: (61698)
+#. Resource IDs: (AFX_IDP_FAILED_TO_SAVE_DOC)
 msgid "Failed to save document."
 msgstr "Döküman kaydedilemedi."
 
@@ -5129,7 +5180,7 @@ msgstr "Dosyaya ulaşılıyor..."
 msgid "Fetching revision %s of file:"
 msgstr "Dosyanın %s revizyonuna ulaşılıyor:"
 
-#. Resource IDs: (16015, IDS_CHSTAT_FILECOL, IDS_COMMITDLG_FILE,
+#. Resource IDs: (IDS_AFXBARRES_FILE, IDS_CHSTAT_FILECOL, IDS_COMMITDLG_FILE,
 #. IDS_FILEDIFF_FILE, IDS_LOG_FILE)
 msgid "File"
 msgstr "Dosya"
@@ -5335,7 +5386,7 @@ msgstr ""
 msgid "Fit image &widths\tW"
 msgstr ""
 
-#. Resource IDs: (16016)
+#. Resource IDs: (IDS_AFXBARRES_FOLDER)
 msgid "Folder"
 msgstr "Klasör"
 
@@ -5348,7 +5399,7 @@ msgstr "Ad değişiklerini takip et"
 msgid "Font"
 msgstr "Font:"
 
-#. Resource IDs: (57345)
+#. Resource IDs: (AFX_IDS_IDLEMESSAGE)
 msgid "For Help, press F1. Scroll horizontally with Ctrl-Scrollwheel"
 msgstr "Yardım için F1 tuşuna basın. Yatay olarak ilerlemek için Ctrl-KaydırmaÇubuğunu kullanın"
 
@@ -5396,7 +5447,7 @@ msgstr ""
 #. Resource IDs: (Dialog IDD_SETCOLORPAGE: Control id 65535, Dialog
 #. IDD_SETTINGSUDIFF: Control id 65535)
 msgid "Foreground"
-msgstr ""
+msgstr "Önplan"
 
 #. Resource IDs: (Dialog IDD_FORMAT_PATCH: Control id 312)
 msgid "Format Patch"
@@ -5475,17 +5526,21 @@ msgstr ""
 msgid "From:"
 msgstr "Buradan:"
 
-#. Resource IDs: (17026)
+#. Resource IDs: (IDS_AFXBARRES_FULLSCREEN)
 msgid "Full Screen"
 msgstr "Tam Ekran"
+
+#. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_FULLNOPATHS)
+msgid "Full commit data without changed paths"
+msgstr ""
+
+#. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_FULL)
+msgid "Full data"
+msgstr "Tam veri"
 
 #. Resource IDs: (Dialog IDD_FIND: Control id 20086)
 msgid "Full text search"
 msgstr "Metin arama"
-
-#. Resource IDs: (IDS_git_DEPTH_INFINITE)
-msgid "Fully recursive"
-msgstr "Tamamen özyineli"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 65535)
 msgid "Further options for the commit dialog are on Dialogs 3 page."
@@ -5569,11 +5624,6 @@ msgstr "Günlük dosyalarını birleştir"
 #, c-format
 msgid "Getting file %s"
 msgstr "%s dosyasını getir"
-
-#. Resource IDs: (IDS_PROGRESSGETFILEREVISION)
-#, c-format
-msgid "Getting file %s, revision %s"
-msgstr "%s dosyasının, %s uyarlamasını getir"
 
 #. Resource IDs: (IDS_PROGRESS_INFO)
 msgid "Getting information..."
@@ -5764,7 +5814,7 @@ msgstr "Diyagram"
 msgid "Graph type:"
 msgstr "Diyagram türü:"
 
-#. Resource IDs: (16972)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLOR_PAGE_ONE: Control id 16972)
 msgid "Gray"
 msgstr "Gri"
 
@@ -5780,7 +5830,7 @@ msgstr "Değişiklik listelerini grupla"
 msgid "H&ide Unrelated Changed Paths"
 msgstr ""
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 65535)
 msgid "H&ue:"
 msgstr "R&enk:"
 
@@ -5829,7 +5879,7 @@ msgstr ""
 msgid "Help"
 msgstr "Yardım"
 
-#. Resource IDs: (16982)
+#. Resource IDs: (Dialog IDD_AFXBARRES_KEYMAP: Control id 16982)
 msgid "Help Keyboard"
 msgstr "Klavye Yardım"
 
@@ -5841,7 +5891,7 @@ msgstr ""
 msgid "Helpers:"
 msgstr ""
 
-#. Resource IDs: (16974)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLOR_PAGE_ONE: Control id 16974)
 msgid "Hex"
 msgstr "Hex"
 
@@ -5853,7 +5903,7 @@ msgstr "Versiyonlanmamış dizinler için menüleri gizle"
 msgid "Hide Patch<<"
 msgstr ""
 
-#. Resource IDs: (16011)
+#. Resource IDs: (IDS_AFXBARRES_HIDE_BAR)
 msgid "Hide docked window"
 msgstr "Eklenmiş pencereyi gizle"
 
@@ -5891,7 +5941,7 @@ msgid ""
 "the text field."
 msgstr ""
 
-#. Resource IDs: (16519)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 16519)
 msgid ""
 "Hint: select the context menu, change the page to 'Commands' and drag the "
 "toolbar buttons into the menu window."
@@ -6243,6 +6293,11 @@ msgid ""
 "i.e. they get the modified overlay icon."
 msgstr ""
 
+#. Resource IDs: (IDS_SETTINGS_GITCONFIG_INHERIT_TT)
+msgid ""
+"If this is enabled, no value is stored or overwritten at this config level."
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_CREATEREPO: Control id 1654)
 msgid ""
 "If you plan to work inside this folder, leave this unchecked. Typically a "
@@ -6368,21 +6423,17 @@ msgid ""
 "Ignore whitespace changes"
 msgstr "Fark alırken boşluk karakterlerindeki değişiklere aldırmaz\nBoşluk karakteri değişikliklerine aldırma"
 
-#. Resource IDs: (16916 - Menu)
+#. Resource IDs: (ID_AFXBARRES_TOOLBAR_IMAGE_AND_TEXT - Menu)
 msgid "Image &and Text"
 msgstr "Görüntü ve Y&azı"
 
-#. Resource IDs: (16507)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16507)
 msgid "Image &and text"
 msgstr "Görüntü ve y&azı"
 
-#. Resource IDs: (16508)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16508)
 msgid "Images"
 msgstr "Görseller"
-
-#. Resource IDs: (IDS_git_DEPTH_IMMEDIATE)
-msgid "Immediate children, including folders"
-msgstr "Mevcut alt elemanlar, klasörler dahil"
 
 #. Resource IDs: (IDS_PROGRS_TITLE_IMPORT)
 msgid "Import"
@@ -6446,7 +6497,7 @@ msgstr ""
 msgid "Include only the following revision range:"
 msgstr "Sadece bu revizyon aralığını dahil et"
 
-#. Resource IDs: (61696)
+#. Resource IDs: (AFX_IDP_INVALID_FILENAME)
 msgid "Incorrect filename."
 msgstr "Geçersiz dosya adı."
 
@@ -6482,15 +6533,15 @@ msgid ""
 "Paste"
 msgstr "Pano içeriğini ekle\nYapıştır"
 
-#. Resource IDs: (61706)
+#. Resource IDs: (AFX_IDP_FAILED_MEMORY_ALLOC)
 msgid "Insufficient memory to perform operation."
 msgstr "İşlemi gerçekletirmek için yetersiz bellek."
 
-#. Resource IDs: (61704)
+#. Resource IDs: (AFX_IDP_INTERNAL_FAILURE)
 msgid "Internal application error."
 msgstr "İçsel uygulama hatası."
 
-#. Resource IDs: (61592)
+#. Resource IDs: (AFX_IDS_INVALID_CURRENCY)
 msgid "Invalid Currency."
 msgstr "Geçersiz Sürüm."
 
@@ -6548,20 +6599,24 @@ msgid ""
 "Jump to first unresolved conflict"
 msgstr ""
 
-#. Resource IDs: (16136)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 16136)
 msgid "Keyboard"
 msgstr "Klavye"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE8: Control id 65535)
 msgid "Keyboard shortcuts:"
 msgstr "Klavye kısa yolları:"
 
-#. Resource IDs: (16030)
+#. Resource IDs: (IDS_AFXBARRES_KEYS)
 msgid "Keys"
 msgstr "Tuşlar"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Korean"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_CLONE: Control id 1847)
+msgid "LFS"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_3: Control id 65535)
@@ -6732,7 +6787,8 @@ msgid ""
 "\"long/path/for/file.txt (from long/path/to/file.txt)\"."
 msgstr ""
 
-#. Resource IDs: (16631, 16992)
+#. Resource IDs: (Dialog IDD_AFXBARRES_KEYMAP: Control id 16992, Dialog
+#. IDD_AFXBARRES_PROPPAGE4: Control id 16631)
 msgid "List1"
 msgstr "List1"
 
@@ -6771,19 +6827,23 @@ msgstr ""
 msgid "Local Branch"
 msgstr "Yerel Dal"
 
+#. Resource IDs: (IDS_TAGCOMPARE_LOCALHASH)
+msgid "Local SHA1"
+msgstr ""
+
 #. Resource IDs: (IDS_STATUSLIST_GROUP_IGNORELOCALCHANGES)
 msgid ""
 "Local changes ignored (assumed valid/unchanged or skip worktree flagged "
 "files)"
 msgstr ""
 
+#. Resource IDs: (IDS_TAGCOMPARE_LOCALMESSAGE)
+msgid "Local message"
+msgstr ""
+
 #. Resource IDs: (IDS_CHSTAT_WCCOL)
 msgid "Local status"
 msgstr "Yerel durum"
-
-#. Resource IDs: (Dialog IDD_RESOLVE_CONFLICT: Control id 65535)
-msgid "Local:"
-msgstr ""
 
 #. Resource IDs: (IDS_EXPORTFILE_TT)
 msgid ""
@@ -6835,21 +6895,13 @@ msgstr "İleti günlüğü (Günlük diyaloğunu göster)"
 msgid "Login:"
 msgstr ""
 
-#. Resource IDs: (IDS_REPOSTATUS_WCINFO)
-#, c-format
-msgid "Lowest shown revision: %ld - Highest shown revision: %ld"
-msgstr "Gösterilen en düşük revizyon: %ld - Gösterilen en yüksek revizyon: %ld"
-
-#. Resource IDs: (IDS_REPOSTATUS_HEADREV)
-#, c-format
-msgid ""
-"Lowest shown revision: %ld - Highest shown revision: %ld - HEAD revision: "
-"%ld"
-msgstr "Gösterilen en düşük revizyon: %ld - Gösterilen en yüksek revizyon: %ld\nBAŞ revizyon: %ld"
-
-#. Resource IDs: (16973)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 16973)
 msgid "Lum"
 msgstr "Aydınlık"
+
+#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1550)
+msgid "M&erge: Resets the index and try to reconstruct the pre-merge state"
+msgstr ""
 
 #. Resource IDs: (IDS_SMTP_MAPI)
 msgid "MAPI"
@@ -6863,7 +6915,7 @@ msgstr "Macintosh"
 msgid "Mail"
 msgstr "E-Posta"
 
-#. Resource IDs: (61841)
+#. Resource IDs: (AFX_IDP_INVALID_MAPI_DLL)
 msgid "Mail system DLL is invalid."
 msgstr "Posta sistemi DLL dosyası geçersiz."
 
@@ -6938,19 +6990,19 @@ msgstr "Günlük mesajlarında saklanacak maksimum mesaj sayısı."
 msgid "Max. lines in action log"
 msgstr "İşlem günlüğünde azami satır adedi"
 
-#. Resource IDs: (16655)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE6: Control id 16655)
 msgid "Me&nus show recently used commands first"
 msgstr "Me&nüler önce en son kullanılan komutları gösteriyor"
 
-#. Resource IDs: (16134)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 16134)
 msgid "Menu"
 msgstr "Menü"
 
-#. Resource IDs: (16006)
+#. Resource IDs: (IDS_AFXBARRES_MENU_BAR_TITLE)
 msgid "Menu Bar"
 msgstr "Menü Çubuğu"
 
-#. Resource IDs: (16626)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 16626)
 msgid "Menu s&hadows"
 msgstr "Menü &gölgeleri"
 
@@ -6998,20 +7050,10 @@ msgstr ""
 msgid "Merging"
 msgstr "Birleştiriliyor"
 
-#. Resource IDs: (IDS_PROGRS_CMD_MERGEURL)
-#, c-format
-msgid "Merging from %s, revision %s to %s, revision %s into %s, %s%s"
-msgstr "%s, revizyon %s şuraya birleştiliriyor: %s, revizyon %s şuraya: %s, %s%s"
-
 #. Resource IDs: (IDS_ERR_MERGEIDENTICALREVISIONS)
 msgid ""
 "Merging requires different revisions or different URLs in 'From:' and 'To:'"
 msgstr "Birleştirme için farklı revizyonlar yada 'From:' ve 'To:'  kısımlarında farklı URL'ler gerekir "
-
-#. Resource IDs: (IDS_PROGRS_CMD_MERGEPEG)
-#, c-format
-msgid "Merging revisions %s of %s into %s, %s%s"
-msgstr "%s, %s revizyonlarını şuraya birleştiriyor: %s, %s%s"
 
 #. Resource IDs: (IDS_LOG_MESSAGE, IDS_MESSAGE)
 msgid "Message"
@@ -7025,7 +7067,8 @@ msgstr ""
 msgid "Message part &expression:"
 msgstr "M&esaj bölümü ifadesi:"
 
-#. Resource IDs: (Dialog IDD_MERGE: Control id 1742, IDS_LOG_FILTER_MESSAGES)
+#. Resource IDs: (Dialog IDD_MERGE: Control id 1742, IDS_LOG_FILTER_MESSAGES,
+#. IDS_LOG_POPUP_CLIPBOARD_MSGS)
 msgid "Messages"
 msgstr "Mesajlar"
 
@@ -7038,7 +7081,7 @@ msgstr "Min"
 msgid "Mine"
 msgstr "Benim"
 
-#. Resource IDs: (17086)
+#. Resource IDs: (IDS_AFXBARRES_MINIMIZE_RIBBON)
 msgid "Minimize the Ribbon"
 msgstr "Şeriti Küçült"
 
@@ -7056,7 +7099,7 @@ msgstr "Çeşitli"
 msgid "Missing"
 msgstr ""
 
-#. Resource IDs: (62179, IDS_RESET_MIXED)
+#. Resource IDs: (AFX_IDS_CHECKLISTBOX_MIXED, IDS_RESET_MIXED)
 msgid "Mixed"
 msgstr "Karışık"
 
@@ -7064,9 +7107,10 @@ msgstr "Karışık"
 msgid "Modification date"
 msgstr "Değiştirilme tarih:"
 
-#. Resource IDs: (17131, Dialog IDD_COMMITDLG: Control id 1706, Dialog
-#. IDD_SETCOLORPAGE: Control id 65535, IDS_PATHACTIONS_MODIFIED,
-#. IDS_SVNACTION_MODIFIED, IDS_SVN_SUMMARIZEMODIFIED)
+#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1706, Dialog
+#. IDD_SETCOLORPAGE: Control id 65535, IDS_AFX_SHELLLISTCTRL_MODIFIED,
+#. IDS_PATHACTIONS_MODIFIED, IDS_SVNACTION_MODIFIED,
+#. IDS_SVN_SUMMARIZEMODIFIED)
 msgid "Modified"
 msgstr "Değiştirilmiş"
 
@@ -7074,15 +7118,15 @@ msgstr "Değiştirilmiş"
 msgid "Modified Files"
 msgstr ""
 
-#. Resource IDs: (17107)
+#. Resource IDs: (IDS_AFXBARRES_MORE)
 msgid "More"
 msgstr "Daha fazla"
 
-#. Resource IDs: (16026)
+#. Resource IDs: (IDS_AFXBARRES_MORE_BUTTONS)
 msgid "More Buttons"
 msgstr "Daha Fazla Buton"
 
-#. Resource IDs: (17097)
+#. Resource IDs: (IDS_AFXBARRES_MORE_COMMANDS)
 msgid "More Commands..."
 msgstr "Daha fazla komut..."
 
@@ -7098,23 +7142,23 @@ msgstr "Daha fazla..."
 msgid "Most active author:"
 msgstr "En aktif yaratıcı:"
 
-#. Resource IDs: (16135)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE4: Control id 16135)
 msgid "Mouse"
 msgstr "Fare"
 
-#. Resource IDs: (17026)
+#. Resource IDs: (Dialog IDD_AFXBARRES_OUTLOOKBAR_OPTIONS: Control id 17026)
 msgid "Move &Down"
 msgstr "&Aşağı Taşı"
 
-#. Resource IDs: (17025)
+#. Resource IDs: (Dialog IDD_AFXBARRES_OUTLOOKBAR_OPTIONS: Control id 17025)
 msgid "Move &Up"
 msgstr "&Yukarı Taşı"
 
-#. Resource IDs: (16022)
+#. Resource IDs: (IDS_AFXBARRES_MOVEDN)
 msgid "Move Item Down"
 msgstr "Öğeyi Aşağı Taşı"
 
-#. Resource IDs: (16021)
+#. Resource IDs: (IDS_AFXBARRES_MOVEUP)
 msgid "Move Item Up"
 msgstr "Öğeyi Yukarı Taşı"
 
@@ -7156,7 +7200,7 @@ msgstr "Benim dosyam:"
 msgid "NUM"
 msgstr "NUM"
 
-#. Resource IDs: (17128)
+#. Resource IDs: (IDS_AFX_SHELLLISTCTRL_NAME)
 msgid "Name"
 msgstr "Ad"
 
@@ -7175,11 +7219,11 @@ msgid ""
 "Goto Line"
 msgstr ""
 
-#. Resource IDs: (17004)
+#. Resource IDs: (Dialog IDD_AFXBARRES_OUTLOOKBAR_OPTIONS: Control id 17004)
 msgid "Navigation Pane Options"
 msgstr "Navigasyon Penceresi Seçenekleri"
 
-#. Resource IDs: (17031)
+#. Resource IDs: (IDS_AFXBARRES_NAV_PANE_OPTIONS)
 msgid "Navigation Pane Options..."
 msgstr "Navigasyon Penceresi Seçenekleri..."
 
@@ -7195,7 +7239,9 @@ msgstr "Ağ Ayarları"
 msgid "Network::Email"
 msgstr "Ağ::E-Posta"
 
-#. Resource IDs: (16017, 16027, 30721, 65535, IDS_NEW)
+#. Resource IDs: (Dialog AFX_IDD_NEWTYPEDLG: Control id 30721, Dialog
+#. IDD_AFXBARRES_COLOR_DLG: Control id 65535, IDS_AFXBARRES_NEW,
+#. IDS_AFXBARRES_NEW_FILE, IDS_NEW)
 msgid "New"
 msgstr "Yeni"
 
@@ -7207,7 +7253,7 @@ msgstr "Yeni &isim:"
 msgid "New Branch/Tag"
 msgstr "Yeni Dal/Etiket"
 
-#. Resource IDs: (16014)
+#. Resource IDs: (IDS_AFXBARRES_NEW_MENU)
 msgid "New Menu"
 msgstr "Yeni Menü"
 
@@ -7242,7 +7288,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_TEXTIDENTICAL_EOL)
 msgid "Newlines"
-msgstr ""
+msgstr "Yeni satırlar"
 
 #. Resource IDs: (ID_VIEW_NEXT - Menu)
 msgid "Next"
@@ -7315,11 +7361,11 @@ msgid ""
 "No differences found! Submodule may not be updated. Update submodule now?"
 msgstr ""
 
-#. Resource IDs: (61472)
+#. Resource IDs: (AFX_IDP_NO_ERROR_AVAILABLE)
 msgid "No error message is available."
 msgstr "Hata mesajı bulunamadı"
 
-#. Resource IDs: (61856, 61872)
+#. Resource IDs: (AFX_IDP_ARCH_NONE, AFX_IDP_FILE_NONE)
 msgid "No error occurred."
 msgstr "Hata oluşmadı."
 
@@ -7406,8 +7452,8 @@ msgstr ""
 msgid "Node size"
 msgstr ""
 
-#. Resource IDs: (17110, Dialog IDD_SETTINGSOVERLAY: Control id 1272,
-#. IDS_NONE)
+#. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1272,
+#. IDS_AFXBARRES_MENU_ANIMATION_NONE, IDS_NONE)
 msgid "None"
 msgstr "Hiçbiri"
 
@@ -7432,7 +7478,7 @@ msgstr ""
 msgid "Not all files could be downloaded and verified."
 msgstr "Tüm dosyaları indirilemedi ve doğrulanmadı."
 
-#. Resource IDs: (61708)
+#. Resource IDs: (AFX_IDP_UNREG_FAILURE)
 msgid "Not all of the system registry entries (or INI file) were removed."
 msgstr "Sistem kütüğüne girilen bileşenlerin (yada INI dosyalarının) hepsi silinemedi."
 
@@ -7455,7 +7501,7 @@ msgstr ""
 msgid "Note node"
 msgstr ""
 
-#. Resource IDs: (62183)
+#. Resource IDs: (AFX_IDS_AUTOSAVE_RECOVERY_ASK_4)
 msgid ""
 "Note that if you choose to recover the auto-saved documents, you must "
 "explicitly save them to overwrite the original documents.  If you choose to "
@@ -7586,35 +7632,39 @@ msgstr "OEM 869"
 msgid "OEM-US"
 msgstr "OEM-US"
 
-#. Resource IDs: (1, Dialog IDD_ABOUT: Control id 1, Dialog IDD_ABOUTBOX:
-#. Control id 1, Dialog IDD_ADD: Control id 1, Dialog IDD_ADD_REMOTE: Control
-#. id 1, Dialog IDD_BISECTSTART: Control id 1, Dialog IDD_BROWSE_REFS: Control
-#. id 1, Dialog IDD_BUGTRAQREGEXTESTER: Control id 1, Dialog IDD_CHANGEDFILES:
-#. Control id 1, Dialog IDD_CLEAN: Control id 1, Dialog IDD_CLONE: Control id
-#. 1, Dialog IDD_CREATECHANGELIST: Control id 1, Dialog IDD_CREATEREPO:
-#. Control id 1, Dialog IDD_ENCODING: Control id 1, Dialog IDD_EXPORT: Control
-#. id 1, Dialog IDD_FORMAT_PATCH: Control id 1, Dialog IDD_GITSWITCH: Control
-#. id 1, Dialog IDD_GOTO: Control id 1, Dialog IDD_GOTODLG: Control id 1,
-#. Dialog IDD_HISTORYDLG: Control id 1, Dialog IDD_IGNORE: Control id 1,
-#. Dialog IDD_INPUTDLG: Control id 1, Dialog IDD_LOGMESSAGE: Control id 1,
-#. Dialog IDD_LOGORDERING: Control id 1, Dialog IDD_MERGE: Control id 1,
-#. Dialog IDD_MERGEABORT: Control id 1, Dialog IDD_NEW_BRANCH_TAG: Control id
-#. 1, Dialog IDD_OPEN: Control id 1, Dialog IDD_OPENDLG: Control id 1, Dialog
-#. IDD_PROMPT: Control id 1, Dialog IDD_PULLFETCH: Control id 1, Dialog
-#. IDD_PUSH: Control id 1, Dialog IDD_REFLOG: Control id 1, Dialog
-#. IDD_REGEXFILTER: Control id 1, Dialog IDD_REGEXFILTERS: Control id 1,
-#. Dialog IDD_RENAME: Control id 1, Dialog IDD_REPOSITORY_BROWSER: Control id
-#. 1, Dialog IDD_REQUESTPULL: Control id 1, Dialog IDD_RESET: Control id 1,
-#. Dialog IDD_RESOLVE: Control id 1, Dialog IDD_RESOLVE_CONFLICT: Control id
-#. 4569, Dialog IDD_REVERT: Control id 1, Dialog IDD_SETTINGSBUGTRAQADV:
-#. Control id 1, Dialog IDD_SETTINGSHOOKCONFIG: Control id 1, Dialog
-#. IDD_SETTINGSPROGSADV: Control id 1, Dialog IDD_SIMPLEPROMPT: Control id 1,
-#. Dialog IDD_STASH: Control id 1, Dialog IDD_STATGRAPH: Control id 1, Dialog
-#. IDD_SUBMODULE_ADD: Control id 1, Dialog IDD_SUBMODULE_UPDATE: Control id 1,
-#. Dialog IDD_SVNDCOMMITTYPE: Control id 1, Dialog IDD_SVNIGNORE: Control id
-#. 1, Dialog IDD_SVNPROGRESS: Control id 1, Dialog IDD_TOOLASSOC: Control id
-#. 1, Dialog IDD_URL: Control id 1, Dialog IDD_USER_PASSWD: Control id 1,
-#. IDS_MSGBOX_OK)
+#. Resource IDs: (Dialog AFX_IDD_NEWTYPEDLG: Control id 1, Dialog IDD_ABOUT:
+#. Control id 1, Dialog IDD_ABOUTBOX: Control id 1, Dialog IDD_ADD: Control id
+#. 1, Dialog IDD_ADD_REMOTE: Control id 1, Dialog IDD_AFXBARRES_BUTTON_PROPS:
+#. Control id 1, Dialog IDD_AFXBARRES_COLOR_DLG: Control id 1, Dialog
+#. IDD_AFXBARRES_IMAGE_EDITOR: Control id 1, Dialog
+#. IDD_AFXBARRES_OUTLOOKBAR_OPTIONS: Control id 1, Dialog
+#. IDD_AFXBARRES_TOOLBAR_NAME: Control id 1, Dialog IDD_BISECTSTART: Control
+#. id 1, Dialog IDD_BROWSE_REFS: Control id 1, Dialog IDD_BUGTRAQREGEXTESTER:
+#. Control id 1, Dialog IDD_CHANGEDFILES: Control id 1, Dialog IDD_CLEAN:
+#. Control id 1, Dialog IDD_CLONE: Control id 1, Dialog IDD_CREATECHANGELIST:
+#. Control id 1, Dialog IDD_CREATEREPO: Control id 1, Dialog IDD_ENCODING:
+#. Control id 1, Dialog IDD_EXPORT: Control id 1, Dialog IDD_FORMAT_PATCH:
+#. Control id 1, Dialog IDD_GITSWITCH: Control id 1, Dialog IDD_GOTO: Control
+#. id 1, Dialog IDD_GOTODLG: Control id 1, Dialog IDD_HISTORYDLG: Control id
+#. 1, Dialog IDD_IGNORE: Control id 1, Dialog IDD_INPUTDLG: Control id 1,
+#. Dialog IDD_LOGMESSAGE: Control id 1, Dialog IDD_LOGORDERING: Control id 1,
+#. Dialog IDD_MERGE: Control id 1, Dialog IDD_MERGEABORT: Control id 1, Dialog
+#. IDD_NEW_BRANCH_TAG: Control id 1, Dialog IDD_OPEN: Control id 1, Dialog
+#. IDD_OPENDLG: Control id 1, Dialog IDD_PROMPT: Control id 1, Dialog
+#. IDD_PULLFETCH: Control id 1, Dialog IDD_PUSH: Control id 1, Dialog
+#. IDD_REFLOG: Control id 1, Dialog IDD_REGEXFILTER: Control id 1, Dialog
+#. IDD_REGEXFILTERS: Control id 1, Dialog IDD_RENAME: Control id 1, Dialog
+#. IDD_REPOSITORY_BROWSER: Control id 1, Dialog IDD_REQUESTPULL: Control id 1,
+#. Dialog IDD_RESET: Control id 1, Dialog IDD_RESOLVE: Control id 1, Dialog
+#. IDD_RESOLVE_CONFLICT: Control id 4569, Dialog IDD_REVERT: Control id 1,
+#. Dialog IDD_SETTINGSBUGTRAQADV: Control id 1, Dialog IDD_SETTINGSHOOKCONFIG:
+#. Control id 1, Dialog IDD_SETTINGSPROGSADV: Control id 1, Dialog
+#. IDD_SIMPLEPROMPT: Control id 1, Dialog IDD_STASH: Control id 1, Dialog
+#. IDD_STATGRAPH: Control id 1, Dialog IDD_SUBMODULE_ADD: Control id 1, Dialog
+#. IDD_SUBMODULE_UPDATE: Control id 1, Dialog IDD_SVNDCOMMITTYPE: Control id
+#. 1, Dialog IDD_SVNIGNORE: Control id 1, Dialog IDD_SVNPROGRESS: Control id
+#. 1, Dialog IDD_TOOLASSOC: Control id 1, Dialog IDD_URL: Control id 1, Dialog
+#. IDD_USER_PASSWD: Control id 1, IDS_MSGBOX_OK)
 msgid "OK"
 msgstr "Tamam"
 
@@ -7662,7 +7712,7 @@ msgstr "Daha eski satırlar"
 msgid "On demand"
 msgstr "Gerektiğinde"
 
-#. Resource IDs: (62180)
+#. Resource IDs: (AFX_IDS_AUTOSAVE_RECOVERY_ASK_1)
 msgid "One or more auto-saved documents were found."
 msgstr "Bir veya daha fazla otomatik kaydedilen belge bulundu"
 
@@ -7687,9 +7737,9 @@ msgstr ""
 msgid "Only consider first parents on blame"
 msgstr ""
 
-#. Resource IDs: (IDS_git_DEPTH_FILES)
-msgid "Only file children"
-msgstr "Sadece dosya alt öğeleri"
+#. Resource IDs: (IDS_TAGCOMPARE_ONLYLOCAL)
+msgid "Only local"
+msgstr ""
 
 #. Resource IDs: (IDS_BROWSE_REFS_ONLYMERGED)
 msgid "Only merged (to HEAD)"
@@ -7701,15 +7751,16 @@ msgid ""
 "are allowed!"
 msgstr "Sadece numara girebilirsiniz (isterseniz virgül ile ayırabilirsiniz)"
 
-#. Resource IDs: (IDS_git_DEPTH_EMPTY)
-msgid "Only this item"
-msgstr "Yalnız bu öğe"
+#. Resource IDs: (IDS_TAGCOMPARE_ONLYREMOTE)
+msgid "Only remote"
+msgstr ""
 
 #. Resource IDs: (IDS_BROWSE_REFS_ONLYUNMERGED)
 msgid "Only unmerged (to HEAD)"
 msgstr ""
 
-#. Resource IDs: (61440, ID_FILE_OPEN - Menu, ID_FILE_OPEN - Ribbon name)
+#. Resource IDs: (AFX_IDS_OPENFILE, ID_FILE_OPEN - Menu, ID_FILE_OPEN - Ribbon
+#. name)
 msgid "Open"
 msgstr "Aç"
 
@@ -7773,9 +7824,9 @@ msgstr ""
 msgid "Option"
 msgstr "Seçenek"
 
-#. Resource IDs: (16137, Dialog IDD_NEW_BRANCH_TAG: Control id 1517, Dialog
-#. IDD_PULLFETCH: Control id 1517, Dialog IDD_PUSH: Control id 1502, Dialog
-#. IDD_STASH: Control id 1517)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE6: Control id 16137, Dialog
+#. IDD_NEW_BRANCH_TAG: Control id 1517, Dialog IDD_PULLFETCH: Control id 1517,
+#. Dialog IDD_PUSH: Control id 1502, Dialog IDD_STASH: Control id 1517)
 msgid "Options"
 msgstr "Seçenekler"
 
@@ -7803,7 +7854,7 @@ msgstr ""
 msgid "Out Commits"
 msgstr ""
 
-#. Resource IDs: (61475)
+#. Resource IDs: (AFX_IDS_MEMORY_EXCEPTION)
 msgid "Out of memory."
 msgstr "Yetersiz hafıza."
 
@@ -7811,7 +7862,7 @@ msgstr "Yetersiz hafıza."
 msgid "Output Directory"
 msgstr "Çıktı Dizini"
 
-#. Resource IDs: (61510)
+#. Resource IDs: (AFX_IDS_PRINTDEFAULT)
 msgid "Output.prn"
 msgstr "Output.prn"
 
@@ -7827,19 +7878,19 @@ msgstr ""
 msgid "P&age setup..."
 msgstr ""
 
-#. Resource IDs: (61507)
+#. Resource IDs: (AFX_IDS_PRINTPAGENUM)
 #, c-format
 msgid "Page %u"
 msgstr "Sayfa %u"
 
-#. Resource IDs: (61508)
+#. Resource IDs: (AFX_IDS_PREVIEWPAGEDESC)
 #, c-format
 msgid ""
 "Page %u\n"
 "Pages %u-%u\n"
 msgstr "Sayfa %u\nSayfalar %u-%u\n"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog AFX_IDD_PRINTDLG: Control id 65535)
 msgid "Page :"
 msgstr "Sayfa:"
 
@@ -7877,12 +7928,13 @@ msgstr "Üst 1"
 msgid "Parent 2"
 msgstr "Üst 2"
 
-#. Resource IDs: (IDS_PARENTS)
-msgid "Parent(s)"
+#. Resource IDs: (IDS_CONFLICT_REVERT)
+#, c-format
+msgid "Parent of %2!s!"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_ABOUTBOX: Control id 65535)
-msgid "Part of code come from TortoiseSVN Blame"
+#. Resource IDs: (IDS_PARENTS)
+msgid "Parent(s)"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_USER_PASSWD: Control id 4585)
@@ -7991,7 +8043,7 @@ msgstr "Yaratıcı yüzdesi"
 msgid "Percents"
 msgstr "Yüzdeler"
 
-#. Resource IDs: (16538)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE6: Control id 16538)
 msgid "Personalized Menus and Toolbars"
 msgstr "Kişiselleştirilmiş Menü ve Araç Çubukları"
 
@@ -8012,13 +8064,13 @@ msgstr ""
 msgid "Pick up %s"
 msgstr ""
 
-#. Resource IDs: (61582)
+#. Resource IDs: (AFX_IDS_METAFILE_FORMAT)
 msgid ""
 "Picture (Metafile)\n"
 "a picture"
 msgstr "Resim (Meta dosyası)\nbir resim"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_IMAGE_EDITOR: Control id 65535)
 msgid "Picture:"
 msgstr "Resim:"
 
@@ -8089,7 +8141,7 @@ msgstr "Lütfen bekleyiniz..."
 msgid "Popup"
 msgstr ""
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog AFX_IDD_PRINTDLG: Control id 65535)
 msgid "Port :"
 msgstr "Port :"
 
@@ -8105,7 +8157,7 @@ msgstr "Teslim-sonrası yakalayıcısı"
 msgid "Post-Push Hook"
 msgstr "Gönderim Sonrası Kancası"
 
-#. Resource IDs: (58115)
+#. Resource IDs: (Dialog AFX_IDD_PREVIEW_TOOLBAR: Control id 58115)
 msgid "Pre&v Page"
 msgstr "&Önceki Sayfa"
 
@@ -8133,15 +8185,15 @@ msgstr ""
 msgid "Prepend this block to left"
 msgstr ""
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 65535)
 msgid "Press &New Shortcut Key:"
 msgstr "&Yeni Kısayolu Tuşuna Basın:"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 65535)
 msgid "Press &new shortcut key:"
 msgstr "&Yeni kısayol tuşuna basın:"
 
-#. Resource IDs: (17094)
+#. Resource IDs: (IDS_AFXBARRES_PREVIEW)
 msgid "Preview"
 msgstr "Önizleme"
 
@@ -8149,7 +8201,7 @@ msgstr "Önizleme"
 msgid "Preview patched file"
 msgstr "Yamalanmış dosyayı önizle"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_IMAGE_EDITOR: Control id 65535)
 msgid "Preview: "
 msgstr "Önizleme:"
 
@@ -8182,7 +8234,8 @@ msgstr "Önceki fark"
 msgid "Previous inline difference"
 msgstr "Önceki satıriçi farklılık"
 
-#. Resource IDs: (16990, 17092)
+#. Resource IDs: (Dialog IDD_AFXBARRES_KEYMAP: Control id 16990,
+#. IDS_AFXBARRES_PRINT)
 msgid "Print"
 msgstr "Yazdır"
 
@@ -8204,19 +8257,19 @@ msgid ""
 "Print"
 msgstr ""
 
-#. Resource IDs: (61512)
+#. Resource IDs: (AFX_IDS_PRINTCAPTION)
 msgid "Print to File"
 msgstr "Dosyaya Yazdır"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog AFX_IDD_PRINTDLG: Control id 65535)
 msgid "Printer :"
 msgstr "Yazıcı:"
 
-#. Resource IDs: (61511)
+#. Resource IDs: (AFX_IDS_PRINTFILTER)
 msgid "Printer Files (*.prn)|*.prn|All Files (*.*)|*.*||"
 msgstr "Yazıcı Dosyaları (*.prn)|*.prn|Tüm dosyalar (*.*)|*.*||"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog AFX_IDD_PRINTDLG: Control id 65535)
 msgid "Printing"
 msgstr "Yazdırılıyor"
 
@@ -8335,10 +8388,6 @@ msgstr ""
 msgid "Push ta&gs"
 msgstr ""
 
-#. Resource IDs: (IDS_LOG_PUSH)
-msgid "Push..."
-msgstr "Gönder"
-
 #. Resource IDs: (Dialog IDD_SETTINREMOTE: Control id 65535)
 msgid "Putty Key:"
 msgstr "Puyyt Anahtarı:"
@@ -8346,11 +8395,6 @@ msgstr "Puyyt Anahtarı:"
 #. Resource IDs: (IDS_PUTTYKEYFILEFILTER)
 msgid "Putty Private Key (*.ppk)|*.ppk|All Files (*.*)|*.*||"
 msgstr ""
-
-#. Resource IDs: (IDS_STATGRAPH_QUARTERLABEL)
-#, c-format
-msgid "Q%d/%.2d"
-msgstr "Q%d/%.2d"
 
 #. Resource IDs: (57665)
 msgid ""
@@ -8372,7 +8416,7 @@ msgstr ""
 msgid "R&AM drives"
 msgstr "R&AM sürücüleri"
 
-#. Resource IDs: (16623)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 16623)
 msgid "R&eset"
 msgstr "R&eset"
 
@@ -8418,11 +8462,12 @@ msgstr "T&aşınabilir sürücüler"
 msgid "Re&name..."
 msgstr "Tekrar ad&landır..."
 
-#. Resource IDs: (16613)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE8: Control id 16613)
 msgid "Re&set"
 msgstr "Sıfır&la"
 
-#. Resource IDs: (16647)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 16647, Dialog
+#. IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 16647)
 msgid "Re&set All"
 msgstr "Hep&sini sıfırla"
 
@@ -8464,7 +8509,7 @@ msgstr "Rebase..."
 msgid "Rebasing... (%d/%d)"
 msgstr ""
 
-#. Resource IDs: (16019)
+#. Resource IDs: (IDS_AFXBARRES_RECENT)
 msgid "Recent"
 msgstr "Son"
 
@@ -8484,7 +8529,7 @@ msgstr ""
 msgid "Record Only"
 msgstr "Sadece kaydet"
 
-#. Resource IDs: (62184)
+#. Resource IDs: (AFX_IDS_AUTOSAVE_RECOVERY_ASK_5)
 msgid ""
 "Recover the auto-saved documents\n"
 "Open the auto-saved versions instead of the explicitly saved versions"
@@ -8510,7 +8555,7 @@ msgstr "Özyineli"
 
 #. Resource IDs: (ID_EDIT_REDO - Ribbon name)
 msgid "Redo"
-msgstr ""
+msgstr "Tekrarla"
 
 #. Resource IDs: (57644)
 msgid ""
@@ -8518,7 +8563,7 @@ msgid ""
 "Redo"
 msgstr "Bir onceki iptal edilen işlemi terarla\nTekrarla"
 
-#. Resource IDs: (61186)
+#. Resource IDs: (AFX_IDS_SCMINIMIZE)
 msgid "Reduce the window to an icon"
 msgstr "Pencereyi küçült"
 
@@ -8563,15 +8608,15 @@ msgstr "Güncelleniyor"
 #. Resource IDs: (500, 65535 - PopupMenu, Dialog IDD_REGEXFILTER: Control id
 #. 165, ID_REGEXFILTER - Ribbon name)
 msgid "Regex Filter"
-msgstr ""
+msgstr "Düzenli İfade Filtresi"
 
 #. Resource IDs: (Dialog IDD_REGEXFILTERS: Control id 164)
 msgid "Regex Filters"
-msgstr ""
+msgstr "Düzenli İfade Filtreleri"
 
 #. Resource IDs: (Dialog IDD_REGEXFILTER: Control id 65535)
 msgid "Regex:"
-msgstr ""
+msgstr "Düzenli İfade:"
 
 #. Resource IDs: (IDS_LOG_FILTER_REGEX_TT)
 msgid ""
@@ -8635,9 +8680,14 @@ msgstr ""
 msgid "Remote &tracking branch"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_2: Control id 65535)
+#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_2: Control id 65535,
+#. IDS_PROC_REMOTEBRANCH)
 msgid "Remote Branch"
 msgstr "Uzaktaki Dal"
+
+#. Resource IDs: (IDS_TAGCOMPARE_REMOTEHASH)
+msgid "Remote SHA1"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_GITCONFIG_URLEMPTY)
 msgid "Remote URL must not be empty."
@@ -8645,6 +8695,10 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_REMOTEUPDATE)
 msgid "Remote Update"
+msgstr ""
+
+#. Resource IDs: (IDS_TAGCOMPARE_REMOTEMESSAGE)
+msgid "Remote message"
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_GITCONFIG_REMOTEEMPTY)
@@ -8656,8 +8710,7 @@ msgid "Remote status"
 msgstr "Uzaktaki durum"
 
 #. Resource IDs: (Dialog IDD_DELETEREMOTETAG: Control id 65535, Dialog
-#. IDD_RESOLVE_CONFLICT: Control id 65535, Dialog IDD_SETTINREMOTE: Control id
-#. 65535)
+#. IDD_SETTINREMOTE: Control id 65535)
 msgid "Remote:"
 msgstr "Uzaktaki:"
 
@@ -8698,7 +8751,7 @@ msgstr ""
 msgid "Remove from &ignore list"
 msgstr "&Aldırmama listesinden çıkar"
 
-#. Resource IDs: (17084)
+#. Resource IDs: (IDS_AFXBARRES_REMOVE_FROM_QAT)
 msgid "Remove from Quick Access Toolbar"
 msgstr "Hızlı Erişim Araç Çubuğundan Kaldır"
 
@@ -8742,7 +8795,7 @@ msgstr "%s\nDosya şablon(ları)\n'Aldırılmayanlar' listesinden silindi."
 msgid "Removes the file or filemask from the list of ignored items"
 msgstr "'Aldırılmayanlar' listesinden dosya(ları) yada dosya maskelerini siler"
 
-#. Resource IDs: (16616)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE2: Control id 16616)
 msgid "Rena&me..."
 msgstr "Yeniden &Adlandır"
 
@@ -8781,7 +8834,7 @@ msgstr "Son işlemi tekrarla\nTekrarla"
 
 #. Resource IDs: (Dialog IDD_FIND: Control id 1512)
 msgid "Replace &All"
-msgstr ""
+msgstr "Hepsi&ni değiştir"
 
 #. Resource IDs: (57641)
 msgid ""
@@ -8791,11 +8844,11 @@ msgstr "Belirli bir metni farklı bir metin ile değiştir\nDeğiştir"
 
 #. Resource IDs: (Dialog IDD_FIND: Control id 65535)
 msgid "Replace with:"
-msgstr ""
+msgstr "Şununla değiştir:"
 
 #. Resource IDs: (Dialog IDD_REGEXFILTER: Control id 65535)
 msgid "Replace:"
-msgstr ""
+msgstr "Değiştir:"
 
 #. Resource IDs: (IDS_FIND_REPLACED)
 #, c-format
@@ -8835,7 +8888,7 @@ msgstr "Çözüm&le"
 msgid "Reset"
 msgstr "Sıfırla"
 
-#. Resource IDs: (16614)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE2: Control id 16614)
 msgid "Reset &All"
 msgstr "Hepsi&ni sıfırla"
 
@@ -8871,13 +8924,10 @@ msgstr "Çözümle"
 msgid "Resolve Submodule Conflict"
 msgstr ""
 
-#. Resource IDs: (IDS_SVNPROGRESS_MENUUSEMINE)
-msgid "Resolve conflict using 'mine'"
-msgstr "'Mine'i kullanarak çakışmayı çözümle"
-
-#. Resource IDs: (IDS_SVNPROGRESS_MENUUSETHEIRS)
-msgid "Resolve conflict using 'theirs'"
-msgstr "'Onların'ı kullanarak çakışmayı çözümle"
+#. Resource IDs: (IDS_SVNPROGRESS_MENURESOLVEUSING)
+#, c-format
+msgid "Resolve conflict using \"%s\""
+msgstr ""
 
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_RESOLVED, IDS_SVNACTION_RESOLVE)
 msgid "Resolved"
@@ -8913,9 +8963,9 @@ msgstr "Varsayılana Geridön"
 
 #. Resource IDs: (IDS_MENUCREATERESTORE)
 msgid "Restore after commit"
-msgstr ""
+msgstr "Gönderdikten sonra geri al"
 
-#. Resource IDs: (61202)
+#. Resource IDs: (AFX_IDS_SCRESTORE)
 msgid "Restore the window to normal size"
 msgstr "Pencereyi normal boyutuna döndür"
 
@@ -9031,7 +9081,7 @@ msgstr ""
 msgid "Rewind %d"
 msgstr ""
 
-#. Resource IDs: (61590)
+#. Resource IDs: (AFX_IDS_RTF_FORMAT)
 msgid ""
 "Rich Text (RTF)\n"
 "text with font and paragraph formatting"
@@ -9045,21 +9095,21 @@ msgstr "Sağ Görünüş:"
 msgid "Right image"
 msgstr "Sağdaki resim"
 
-#. Resource IDs: (17108)
+#. Resource IDs: (IDS_AFXBARRES_GALLERY_ROW1_FMT)
 #, c-format
 msgid "Row %d of %d"
 msgstr "%d ile %d arasındaki satır"
 
-#. Resource IDs: (17109)
+#. Resource IDs: (IDS_AFXBARRES_GALLERY_ROW2_FMT)
 #, c-format
 msgid "Row %d-%d of %d"
 msgstr "%d-%d ile %d arasındaki satır"
 
-#. Resource IDs: (17116)
+#. Resource IDs: (IDS_AFXBARRES_GALLERY_ROW_DOWN)
 msgid "Row Down"
 msgstr "Aşağı Taşı"
 
-#. Resource IDs: (17115)
+#. Resource IDs: (IDS_AFXBARRES_GALLERY_ROW_UP)
 msgid "Row Up"
 msgstr "Satır yukarı"
 
@@ -9067,19 +9117,19 @@ msgstr "Satır yukarı"
 msgid "Run when working tree path is under:"
 msgstr ""
 
-#. Resource IDs: (17045)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLOR_DLG: Control id 17045)
 msgid "S&elect..."
 msgstr "&Seç..."
 
-#. Resource IDs: (17027)
+#. Resource IDs: (IDS_AFXBARRES_SHOWONEROW)
 msgid "S&how Buttons on One Row"
 msgstr "Butonları tek satırda g&öster"
 
-#. Resource IDs: (17028)
+#. Resource IDs: (IDS_AFXBARRES_SHOWTWOROWS)
 msgid "S&how Buttons on Two Rows"
 msgstr "Butonları iki satırda g&öster"
 
-#. Resource IDs: (17078)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE8: Control id 17078)
 msgid "S&how Quick Access Toolbar below the Ribbon"
 msgstr "Hızlı Araç Çubuğu'nu Şerit'in altında g&öster."
 
@@ -9173,7 +9223,7 @@ msgstr "Sa&feCrLf:"
 msgid "Safe Crlf:"
 msgstr "Safe Crlf:"
 
-#. Resource IDs: (IDS_SAME)
+#. Resource IDs: (IDS_SAME, IDS_TAGCOMPARE_SAME)
 msgid "Same"
 msgstr ""
 
@@ -9211,7 +9261,7 @@ msgstr "Farklı &kaydet..."
 msgid "Save &as...\tCtrl+Shift+S"
 msgstr "Farklı &kaydet...\tCtrl+Shift+S"
 
-#. Resource IDs: (61441)
+#. Resource IDs: (AFX_IDS_SAVEFILE)
 msgid "Save As"
 msgstr "Farklı Kaydet"
 
@@ -9291,7 +9341,7 @@ msgid ""
 "You're asked where to save the file"
 msgstr "Farklı kaydet\nDosyanın nereye kaydedileceği sorulacak"
 
-#. Resource IDs: (61699)
+#. Resource IDs: (AFX_IDP_ASK_TO_SAVE)
 #, c-format
 msgid "Save changes to %1?"
 msgstr "%1 'e yapılan değişiklikler kaydedilsin mi?"
@@ -9406,7 +9456,7 @@ msgstr "Bunu ara:"
 msgid "Searching for better path to apply patch..."
 msgstr "Yamayı uygulamak için daha iyi bir adres aranıyor"
 
-#. Resource IDs: (61865)
+#. Resource IDs: (AFX_IDP_FILE_BAD_SEEK)
 #, c-format
 msgid "Seek failed on %1"
 msgstr "Arama %1'de başarısız oldu"
@@ -9419,15 +9469,15 @@ msgstr "Seç"
 msgid "Select &All"
 msgstr "Hepsi&ni seç"
 
-#. Resource IDs: (16529)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16529)
 msgid "Select &User-defined Image: "
 msgstr "&Kullanıcı tanımlı resim seç"
 
-#. Resource IDs: (16508)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 16508)
 msgid "Select &context menu:"
 msgstr "Sağ-tık &menüsü seçin:"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 65535)
 msgid "Select &window:"
 msgstr "&Pencere seç"
 
@@ -9445,11 +9495,11 @@ msgstr "Dosya Seç..."
 msgid "Select SSH client"
 msgstr "SSH client'ını seç"
 
-#. Resource IDs: (61717)
+#. Resource IDs: (AFX_IDP_PARSE_RADIO_BUTTON)
 msgid "Select a button."
 msgstr "Bir düğme seçin."
 
-#. Resource IDs: (57346)
+#. Resource IDs: (AFX_IDS_HELPMODEMESSAGE)
 msgid "Select an object on which to get Help"
 msgstr "Hakkında Yardım istediğiniz bir konu seçiniz"
 
@@ -9559,7 +9609,7 @@ msgstr "ePosta Gönder"
 msgid "Send Mail after create"
 msgstr ""
 
-#. Resource IDs: (61842)
+#. Resource IDs: (AFX_IDP_FAILED_MAPI_SEND)
 msgid "Send Mail failed to send message."
 msgstr "Send Mail mesajınızı gönderemedi"
 
@@ -9591,7 +9641,8 @@ msgstr "Gönderiliyor..."
 msgid "Server &address:"
 msgstr "Sunucu &adresi:"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 65535, Dialog
+#. IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 65535)
 msgid "Set Accelerator &for:"
 msgstr "Hızlandırıcıyı &ayarla:"
 
@@ -9654,7 +9705,7 @@ msgstr "Özellik listesini kısalt"
 msgid "Show"
 msgstr "Göster"
 
-#. Resource IDs: (16996)
+#. Resource IDs: (Dialog IDD_AFXBARRES_KEYMAP: Control id 16996)
 msgid "Show &Accelerator for:"
 msgstr "&Hızlandırıcıyı göster:"
 
@@ -9662,7 +9713,8 @@ msgstr "&Hızlandırıcıyı göster:"
 msgid "Show &Reflog"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1073)
+#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1073,
+#. IDS_PROC_LOG_SHOWUNVERSIONED)
 msgid "Show &Unversioned Files"
 msgstr ""
 
@@ -9671,7 +9723,8 @@ msgstr ""
 msgid "Show &Whole Project"
 msgstr ""
 
-#. Resource IDs: (IDS_LOG_POPUP_DIFF)
+#. Resource IDs: (Dialog IDD_RESOLVE_CONFLICT: Control id 1133, Dialog
+#. IDD_RESOLVE_CONFLICT: Control id 1134, IDS_LOG_POPUP_DIFF)
 msgid "Show &changes"
 msgstr "&Değişiklikleri göster"
 
@@ -9692,11 +9745,11 @@ msgstr ""
 msgid "Show &overlays and context menu only in explorer"
 msgstr "İşaret&lemeleri ve sağ-tık menüsünü sadece explorer'da göster"
 
-#. Resource IDs: (17099)
+#. Resource IDs: (IDS_AFXBARRES_PLACE_ABOVE_RIBBON)
 msgid "Show Above the Ribbon"
 msgstr "Şeritin Üstünde Göster"
 
-#. Resource IDs: (17098)
+#. Resource IDs: (IDS_AFXBARRES_PLACE_BELOW_RIBBON)
 msgid "Show Below the Ribbon"
 msgstr "Şeritin Altında Göster"
 
@@ -9704,7 +9757,7 @@ msgstr "Şeritin Altında Göster"
 msgid "Show Environment Variables"
 msgstr "Ortam Değişkenlerini Göster"
 
-#. Resource IDs: (17030)
+#. Resource IDs: (IDS_AFXBARRES_SHOW_FEWER_BUTTONS)
 msgid "Show Fewer Buttons"
 msgstr "Daha Az Düğme Göster"
 
@@ -9724,19 +9777,19 @@ msgid ""
 "Inline diff"
 msgstr ""
 
-#. Resource IDs: (17029)
+#. Resource IDs: (IDS_AFXBARRES_SHOW_MORE_BUTTONS)
 msgid "Show More Buttons"
 msgstr "Daha Fazla Düğme Göster"
 
-#. Resource IDs: (17082)
+#. Resource IDs: (IDS_AFXBARRES_PLACE_QAT_ABOVE_RIBBON)
 msgid "Show Quick Access Toolbar Above the Ribbon"
 msgstr "Hızlı Erişim Araç Çubuğunu Şeritin Üstünde Göster"
 
-#. Resource IDs: (17081)
+#. Resource IDs: (IDS_AFXBARRES_PLACE_QAT_BELOW_RIBBON)
 msgid "Show Quick Access Toolbar Below the Ribbon"
 msgstr "Hızlı Erişim Araç Çubuğunu Şeritin Altında Göster"
 
-#. Resource IDs: (16651)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE6: Control id 16651)
 msgid "Show Screen&Tips on toolbars"
 msgstr "Ekran&ipuçlarını araç çubuklarında göster."
 
@@ -9805,6 +9858,10 @@ msgstr "Hedef klasörü göster"
 msgid "Show diff"
 msgstr ""
 
+#. Resource IDs: (IDS_HEADER_DIFFLEFTTOBASE, IDS_HEADER_DIFFRIGHTTOBASE)
+msgid "Show diff separately"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1556)
 msgid "Show diff to last commit"
 msgstr ""
@@ -9817,7 +9874,7 @@ msgstr "Normal olarak dışlanan klasörleri göster"
 msgid "Show extra changes after merge"
 msgstr ""
 
-#. Resource IDs: (16656)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE6: Control id 16656)
 msgid "Show f&ull menus after a short delay"
 msgstr "Men&ülerin tamamını kısa aralıklarla göster"
 
@@ -9881,7 +9938,7 @@ msgstr "Günlüğü görüntüle..."
 msgid "Show long format even if a tag is exactly on that commit"
 msgstr ""
 
-#. Resource IDs: (20308)
+#. Resource IDs: (25308)
 msgid ""
 "Show next change of selected commit\n"
 "Show next"
@@ -9925,7 +9982,7 @@ msgstr "Araç çubuğunu göster yada gizle\nAraç çubuğu"
 msgid "Show original line number"
 msgstr ""
 
-#. Resource IDs: (20309)
+#. Resource IDs: (25309)
 msgid ""
 "Show previous change of selected commit\n"
 "Show previous"
@@ -9935,7 +9992,7 @@ msgstr ""
 msgid "Show revision properties"
 msgstr "Revizyon özelliklerini göster"
 
-#. Resource IDs: (16652)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE6: Control id 16652)
 msgid "Show shortcut &keys in ScreenTips"
 msgstr "Kısayolları ve &anahtar sözcükleri İpucuEkranı'nda göster"
 
@@ -10005,7 +10062,8 @@ msgstr ""
 msgid "Si&gn"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_ABOUT: Control id 65535)
+#. Resource IDs: (Dialog IDD_ABOUT: Control id 65535, Dialog IDD_ABOUTBOX:
+#. Control id 65535)
 msgid "Significant contributions by: (see Git repository for a complete list)"
 msgstr ""
 
@@ -10018,7 +10076,8 @@ msgstr "Gümüş stili"
 msgid "Since"
 msgstr "Beri"
 
-#. Resource IDs: (17129, IDS_LOG_SIZE, IDS_STATUSLIST_COLSIZE)
+#. Resource IDs: (IDS_AFX_SHELLLISTCTRL_SIZE, IDS_LOG_SIZE,
+#. IDS_STATUSLIST_COLSIZE)
 msgid "Size"
 msgstr "Boyut"
 
@@ -10052,7 +10111,7 @@ msgstr "Atlandı"
 msgid "Skipped missing target"
 msgstr "Kayıp hedef atlandı"
 
-#. Resource IDs: (17112)
+#. Resource IDs: (IDS_AFXBARRES_MENU_ANIMATION_SLIDE)
 msgid "Slide"
 msgstr "Kaydır"
 
@@ -10090,7 +10149,12 @@ msgid ""
 "dialog."
 msgstr "En son Günlük mesajları diyalogunda kaç tane elemanı saklamak istediğinizi belirtir. "
 
-#. Resource IDs: (16976, 16977, 16978, 16979, 16980, 16981)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 16976, Dialog
+#. IDD_AFXBARRES_COLORPAGE_TWO: Control id 16977, Dialog
+#. IDD_AFXBARRES_COLORPAGE_TWO: Control id 16978, Dialog
+#. IDD_AFXBARRES_COLORPAGE_TWO: Control id 16979, Dialog
+#. IDD_AFXBARRES_COLORPAGE_TWO: Control id 16980, Dialog
+#. IDD_AFXBARRES_COLORPAGE_TWO: Control id 16981)
 msgid "Spin1"
 msgstr "Spin1"
 
@@ -10120,7 +10184,8 @@ msgstr "Yığılı Çubuk Çizelgesi"
 msgid "Stacked Line Graph"
 msgstr "Yığılı Çizgi Çizelgesi"
 
-#. Resource IDs: (16962, IDS_TOOLBAR_STANDARD)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLOR_PAGE_ONE: Control id 16962,
+#. IDS_TOOLBAR_STANDARD)
 msgid "Standard"
 msgstr "Standart"
 
@@ -10215,11 +10280,13 @@ msgstr ""
 
 #. Resource IDs: (IDS_STATE)
 msgid "State"
-msgstr ""
+msgstr "Durum"
 
-#. Resource IDs: (16514, Dialog IDD_GITPROGRESS: Control id 1487, Dialog
-#. IDD_RESOLVE_CONFLICT: Control id 4572, Dialog IDD_RESOLVE_CONFLICT: Control
-#. id 4573)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE4: Control id 16514, Dialog
+#. IDD_AFXBARRES_PROPPAGE5: Control id 16514, Dialog
+#. IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 16514, Dialog
+#. IDD_GITPROGRESS: Control id 1487, Dialog IDD_RESOLVE_CONFLICT: Control id
+#. 4572, Dialog IDD_RESOLVE_CONFLICT: Control id 4573)
 msgid "Static"
 msgstr "Durağan"
 
@@ -10234,9 +10301,9 @@ msgstr "Durum"
 
 #. Resource IDs: (ID_VIEW_STATUS_BAR - Ribbon name)
 msgid "Status Bar"
-msgstr ""
+msgstr "Durum çubuğu"
 
-#. Resource IDs: (17087)
+#. Resource IDs: (IDS_AFXBARRES_STATBAR_CUSTOMIZE)
 msgid "Status Bar Configuration"
 msgstr "Durum Çubuğu Ayarları"
 
@@ -10301,6 +10368,10 @@ msgstr "Konu"
 msgid "Subject:"
 msgstr "Konu:"
 
+#. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_SUBJECTS)
+msgid "Subjects"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SYNC: Control id 1639)
 msgid "Submodule"
 msgstr "Altbirim"
@@ -10362,11 +10433,6 @@ msgstr "Başarılı"
 msgid "Switch"
 msgstr "Değiştir"
 
-#. Resource IDs: (IDS_PROGRS_CMD_SWITCH)
-#, c-format
-msgid "Switch %s to %s, Revision %s"
-msgstr "%s %s olarak değiştir, uyarlama %s"
-
 #. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1522)
 msgid "Switch To"
 msgstr "Değiştir"
@@ -10397,7 +10463,7 @@ msgid ""
 "Switch left and right view"
 msgstr "Sol ve sağ panelin içeriklerini kendi aralarında değiştir\nSol ve sağ paneli kendi aralarında değiştir"
 
-#. Resource IDs: (61188)
+#. Resource IDs: (AFX_IDS_SCNEXTWINDOW)
 msgid "Switch to the next document window"
 msgstr "Bir sonraki belge penceresine geç"
 
@@ -10407,7 +10473,7 @@ msgid ""
 "Next Pane"
 msgstr "Bir sonraki pencereye geç\nSonraki pencere"
 
-#. Resource IDs: (61189)
+#. Resource IDs: (AFX_IDS_SCPREVWINDOW)
 msgid "Switch to the previous document window"
 msgstr "Önceki belge görünümüne geç"
 
@@ -10457,7 +10523,7 @@ msgstr ""
 msgid "System in offline mode. Check Internet Explorer."
 msgstr ""
 
-#. Resource IDs: (61707)
+#. Resource IDs: (AFX_IDP_UNREG_DONE)
 msgid ""
 "System registry entries have been removed and the INI file (if any) was "
 "deleted."
@@ -10483,7 +10549,7 @@ msgstr "TORTOISEGITUDIFF"
 msgid "Ta&gs:"
 msgstr "&Etiketler:"
 
-#. Resource IDs: (16970)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLOR_DLG: Control id 16970)
 msgid "Tab Placeholder"
 msgstr "Çıkıntı Yertutucu"
 
@@ -10503,6 +10569,10 @@ msgstr ""
 #. Resource IDs: (IDS_PROC_LOG_TAGINFO)
 msgid "Tag Info"
 msgstr "Etiket Bilgisi"
+
+#. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_TAGBRANCHES)
+msgid "Tag/branch names"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_COPY_SUCCESS)
 #, c-format
@@ -10525,7 +10595,7 @@ msgstr ""
 msgid "Tasks"
 msgstr "Görevler"
 
-#. Resource IDs: (17019)
+#. Resource IDs: (IDS_AFXBARRES_TASKPANE)
 msgid "Tasks Pane"
 msgstr "Görev Bölümü"
 
@@ -10664,7 +10734,7 @@ msgstr "%s\ndosyası\nboş değil\nDosyayı kaldırmak istiyor musunuz?"
 msgid "The file is too big"
 msgstr "Dosya çok büyük"
 
-#. Resource IDs: (61701)
+#. Resource IDs: (AFX_IDP_FILE_TOO_LARGE)
 msgid "The file is too large to open."
 msgstr "Dosya açmak için çok büyük."
 
@@ -10948,7 +11018,7 @@ msgstr ""
 msgid "Thesaurus"
 msgstr "Sözlük"
 
-#. Resource IDs: (62181)
+#. Resource IDs: (AFX_IDS_AUTOSAVE_RECOVERY_ASK_2)
 msgid ""
 "These are more recently saved than the currently open documents and contain "
 "changes that were made before the application closed."
@@ -11002,6 +11072,11 @@ msgid ""
 "commits."
 msgstr ""
 
+#. Resource IDs: (IDS_GITCONFIG_SETTING)
+#, c-format
+msgid "This option represents \"%s\" git config setting."
+msgstr ""
+
 #. Resource IDs: (IDS_REBASE_PRESERVEMERGES_TT)
 msgid ""
 "This preserves merge commits, however, it has known bugs as re-ordering "
@@ -11009,17 +11084,18 @@ msgid ""
 " see help."
 msgstr ""
 
-#. Resource IDs: (61710)
+#. Resource IDs: (AFX_IDP_DLL_BAD_VERSION)
 #, c-format
 msgid ""
-"This program is linked to the missing export %s in the file %s. This machine"
-" may have an incompatible version of %s."
-msgstr "Bu program var olmayan dışa aktarma %s'ya (%s dosyasında) yönlendirilmiş. Bu makinede %s 'in uyumsuz bir versiyonu olabilir. "
+"This program is linked to the missing export %Ts in the file %Ts. This "
+"machine may have an incompatible version of %Ts."
+msgstr ""
 
-#. Resource IDs: (61709)
+#. Resource IDs: (AFX_IDP_DLL_LOAD_FAILED)
 #, c-format
-msgid "This program requires the file %s, which was not found on this system."
-msgstr "Programın çalışması için bu sistemde bulunamayan %s doyası gerekli."
+msgid ""
+"This program requires the file %Ts, which was not found on this system."
+msgstr ""
 
 #. Resource IDs: (IDS_ERR_PROPNOTONFILE)
 msgid "This property is only allowed on folders, not files."
@@ -11035,7 +11111,7 @@ msgstr ""
 msgid "This task requires a clean working tree."
 msgstr ""
 
-#. Resource IDs: (16244)
+#. Resource IDs: (IDS_AFXBARRES_RESET_USAGE_WARNING)
 msgid ""
 "This will delete the record of commands you've used in this application and "
 "restore the default set of visible commands to the menus and toolbars. It "
@@ -11046,11 +11122,11 @@ msgstr "Bu işlem uygulamada kullandığınız komutların kaydını siler ve me
 msgid "Three way diff"
 msgstr ""
 
-#. Resource IDs: (16928)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 16928)
 msgid "Tile &Vertically"
 msgstr "Dikey& Olarak Döşe"
 
-#. Resource IDs: (16924)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 16924)
 msgid "Tile Hori&zontally"
 msgstr "&Yatay olarak döşe"
 
@@ -11089,15 +11165,15 @@ msgstr "Bir/İki sayfa görüntülemeye geçiş\nBir/İki sayfa görüntülemeye
 msgid "Toggle filters"
 msgstr ""
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE6: Control id 65535)
 msgid "Toolbar"
 msgstr "Araç çubuğu"
 
-#. Resource IDs: (16130)
+#. Resource IDs: (Dialog IDD_AFXBARRES_TOOLBAR_NAME: Control id 16130)
 msgid "Toolbar Name"
 msgstr "Araç Çubuğu İsmi"
 
-#. Resource IDs: (17017)
+#. Resource IDs: (IDS_AFXBARRES_TOOLBAR_OPTIONS)
 msgid "Toolbar Options"
 msgstr "Araç Çubuğu Seçenekleri"
 
@@ -11105,15 +11181,15 @@ msgstr "Araç Çubuğu Seçenekleri"
 msgid "Toolbar internal error. Please contact your application vendor."
 msgstr "Dahili araç çubuğu hatası. Lütfen program satıcınızla iletişime geçin."
 
-#. Resource IDs: (16105)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE2: Control id 16105)
 msgid "Toolbars"
 msgstr "Araç çubukları"
 
-#. Resource IDs: (16928)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE7: Control id 16928)
 msgid "Tools"
 msgstr "Araçlar"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_IMAGE_EDITOR: Control id 65535)
 msgid "Tools:"
 msgstr "Araçlar:"
 
@@ -11186,8 +11262,8 @@ msgstr ""
 msgid "TortoiseGit&UDiff"
 msgstr "TortoiseGit&UDiff"
 
-#. Resource IDs: (57344, Dialog IDD_ABOUTBOX: Control id 1000, Dialog
-#. IDD_SETTINGSTBLAME: Control id 244, IDS_APPNAME)
+#. Resource IDs: (AFX_IDS_APP_TITLE, Dialog IDD_ABOUTBOX: Control id 1000,
+#. Dialog IDD_SETTINGSTBLAME: Control id 244, IDS_APPNAME)
 msgid "TortoiseGitBlame"
 msgstr "TortoiseGitBlame"
 
@@ -11236,8 +11312,8 @@ msgid ""
 "/showinfo\t\tto show the image info boxes"
 msgstr "TortoiseGitIDiff: TortoiseSVN'nin resimler arası farklılıkları karşılaştıran program\n\nGeçerli komutlar:\n/left:\"Soldaki resimin dizini\"\n/lefttitle:\"Soldaki resimin başlığı\"\n/right:\"Sağdaki resimin dizini\"\n/righttitle:\"Sağdaki resimin başlığı\"\n/overlay\t\toverlay modunu aç\n/fit\t\t resimleri pencereye yerleştir\n/showinfo\t\t resim bilgi kutucuklarini göster"
 
-#. Resource IDs: (100, 156 - Ribbon element, 32897, 57344, Dialog IDD_OPENDLG:
-#. Control id 130, IDS_APPNAME)
+#. Resource IDs: (100, 156 - Ribbon element, 32897, AFX_IDS_APP_TITLE, Dialog
+#. IDD_OPENDLG: Control id 130, IDS_APPNAME)
 msgid "TortoiseGitMerge"
 msgstr "TortoiseGitMerge"
 
@@ -11344,7 +11420,8 @@ msgstr "Türkçe"
 msgid "Tweak TortoiseGit"
 msgstr "TortoiseGit Ayarları"
 
-#. Resource IDs: (17130, Dialog IDD_SVNIGNORE: Control id 1642)
+#. Resource IDs: (Dialog IDD_SVNIGNORE: Control id 1642,
+#. IDS_AFX_SHELLLISTCTRL_TYPE)
 msgid "Type"
 msgstr "Tip"
 
@@ -11384,20 +11461,20 @@ msgstr "UTF-16 LE"
 msgid "UTF-8"
 msgstr "UTF-8"
 
-#. Resource IDs: (61840)
+#. Resource IDs: (AFX_IDP_FAILED_MAPI_LOAD)
 msgid "Unable to load mail system support."
 msgstr "E-Posta sistemi desteği yüklenemedi."
 
-#. Resource IDs: (61826)
+#. Resource IDs: (AFX_IDP_SERVER_BUSY)
 msgid "Unable to process command, server busy."
 msgstr "İşlem gerçekleştirilemedi, sunucu meşgul."
 
-#. Resource IDs: (61731)
+#. Resource IDs: (AFX_IDP_FAILED_ACCESS_READ)
 #, c-format
 msgid "Unable to read from %1, it is opened by someone else."
 msgstr "%1'den okunamadı, başkası tarafından kullanılmakta"
 
-#. Resource IDs: (61836)
+#. Resource IDs: (AFX_IDP_GET_NOT_SUPPORTED)
 msgid "Unable to read write-only property."
 msgstr "Salt-okunur özelliği okunamadı."
 
@@ -11409,16 +11486,16 @@ msgid ""
 "from the top pane in the log dialog."
 msgstr ""
 
-#. Resource IDs: (61837)
+#. Resource IDs: (AFX_IDP_SET_NOT_SUPPORTED)
 msgid "Unable to write read-only property."
 msgstr "Salt-okunur özelliği yazılamadı."
 
-#. Resource IDs: (61732)
+#. Resource IDs: (AFX_IDP_FAILED_ACCESS_WRITE)
 #, c-format
 msgid "Unable to write to %1, it is read-only or opened by someone else."
 msgstr "%1 'e yazılamadı, ya salt-okunur bir dosya yada bir başkası tarafından açılmış durumda."
 
-#. Resource IDs: (62177)
+#. Resource IDs: (AFX_IDS_CHECKLISTBOX_UNCHECK)
 msgid "Uncheck"
 msgstr "Boşalt"
 
@@ -11426,12 +11503,12 @@ msgstr "Boşalt"
 msgid "Undo"
 msgstr "Geri al"
 
-#. Resource IDs: (17102)
+#. Resource IDs: (IDS_AFXBARRES_UNDO_FMT)
 #, c-format
 msgid "Undo %d Actions"
 msgstr "%d işlem geri al"
 
-#. Resource IDs: (17103)
+#. Resource IDs: (IDS_AFXBARRES_UNDO_ONE)
 msgid "Undo 1 Action"
 msgstr "1 işlem geri al"
 
@@ -11451,7 +11528,7 @@ msgid ""
 "Undo"
 msgstr ""
 
-#. Resource IDs: (61728)
+#. Resource IDs: (AFX_IDP_FAILED_INVALID_FORMAT)
 msgid "Unexpected file format."
 msgstr "Beklenmedik dosya formatı"
 
@@ -11459,11 +11536,11 @@ msgstr "Beklenmedik dosya formatı"
 msgid "Unflag as skip-worktree and assume-unchanged"
 msgstr ""
 
-#. Resource IDs: (17111)
+#. Resource IDs: (IDS_AFXBARRES_MENU_ANIMATION_UNFOLD)
 msgid "Unfold"
 msgstr "Katları Aç"
 
-#. Resource IDs: (61591)
+#. Resource IDs: (AFX_IDS_TEXT_FORMAT)
 msgid ""
 "Unformatted Text\n"
 "text without any formatting"
@@ -11477,10 +11554,6 @@ msgstr "Baş revizyonlarının birleştirilmiş kar&şılaştırma dosyası"
 msgid "Unknown"
 msgstr ""
 
-#. Resource IDs: (IDS_git_DEPTH_UNKNOWN)
-msgid "Unknown depth"
-msgstr "Bilinmeyen derinlik"
-
 #. Resource IDs: (IDS_VIEWCONTEXTMENU_UNMARKBLOCK)
 msgid "Unmark this block"
 msgstr ""
@@ -11493,7 +11566,7 @@ msgstr "Çözülmemiş çakışmalar!"
 msgid "Unset tracked branch"
 msgstr ""
 
-#. Resource IDs: (61443)
+#. Resource IDs: (AFX_IDS_UNTITLED)
 msgid "Untitled"
 msgstr "Başlıksız"
 
@@ -11531,7 +11604,7 @@ msgstr ""
 msgid "Updated"
 msgstr "Güncellendi"
 
-#. Resource IDs: (61581)
+#. Resource IDs: (AFX_IDS_UPDATING_ITEMS)
 msgid "Updating ActiveX objects"
 msgstr "ActiveX nesneleri güncelleniyor"
 
@@ -11539,7 +11612,7 @@ msgstr "ActiveX nesneleri güncelleniyor"
 msgid "Updating index"
 msgstr ""
 
-#. Resource IDs: (16530)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16530)
 msgid "Use &Default Image: "
 msgstr "&Varsayılan Resmi Kullan:"
 
@@ -11551,27 +11624,12 @@ msgstr "2-dosyalı karşılaştırmanın &tek pencereli görünümü"
 msgid "Use &other text block"
 msgstr "Başka& metin bloğunu kullan"
 
-#. Resource IDs: (ID_EDIT_USEMYBLOCK - Menu, ID_EDIT_USEMYBLOCK - Ribbon name)
-msgid "Use 'mine' text block"
-msgstr "'benim' metin bloğunu kullan"
-
-#. Resource IDs: (ID_EDIT_USEMINETHENTHEIRBLOCK - Menu,
-#. ID_EDIT_USEMINETHENTHEIRBLOCK - Ribbon name)
-msgid "Use 'mine' text block then 'theirs'"
-msgstr "Önce 'benim' metin bloğunu kullan sonra 'onların' kini"
-
-#. Resource IDs: (ID_EDIT_USETHEIRBLOCK - Menu, ID_EDIT_USETHEIRBLOCK - Ribbon
-#. name)
-msgid "Use 'theirs' text block"
-msgstr "'onların' metin bloğunu kullan"
-
-#. Resource IDs: (ID_EDIT_USETHEIRTHENMYBLOCK - Menu,
-#. ID_EDIT_USETHEIRTHENMYBLOCK - Ribbon name)
-msgid "Use 'theirs' text block then 'mine'"
-msgstr "Önce 'onların' metin bloğunu kullan sonra 'benim' kini"
-
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1911)
 msgid "Use .mailmap"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_USELFS_TT)
+msgid "Use Git LFS"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 1761)
@@ -11634,6 +11692,14 @@ msgstr "Metin bloklarının ikisini de kullan (ilk olarak bunu)"
 msgid "Use both text blocks (this one last)"
 msgstr "Metin bloklarının ikisini de kullan (son olarak bunu)"
 
+#. Resource IDs: (Dialog IDD_STATGRAPH: Control id 1128)
+msgid "Use commit dates"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_STATGRAPH: Control id 1127)
+msgid "Use committer names"
+msgstr ""
+
 #. Resource IDs: (IDS_SMTP_CONFIGURED)
 msgid "Use configured server"
 msgstr ""
@@ -11647,6 +11713,16 @@ msgstr "Sol bloğu kullan"
 #. name)
 msgid "Use left file"
 msgstr "Soldaki dosyayı kullan"
+
+#. Resource IDs: (ID_EDIT_USETHEIRBLOCK - Menu, ID_EDIT_USETHEIRBLOCK - Ribbon
+#. name)
+msgid "Use left text block"
+msgstr ""
+
+#. Resource IDs: (ID_EDIT_USETHEIRTHENMYBLOCK - Menu,
+#. ID_EDIT_USETHEIRTHENMYBLOCK - Ribbon name)
+msgid "Use left text block then right"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 1762)
 msgid "Use local branch color for current branch"
@@ -11664,6 +11740,15 @@ msgstr "Kurallı ifade kullan"
 msgid "Use right block"
 msgstr ""
 
+#. Resource IDs: (ID_EDIT_USEMYBLOCK - Menu, ID_EDIT_USEMYBLOCK - Ribbon name)
+msgid "Use right text block"
+msgstr ""
+
+#. Resource IDs: (ID_EDIT_USEMINETHENTHEIRBLOCK - Menu,
+#. ID_EDIT_USEMINETHENTHEIRBLOCK - Ribbon name)
+msgid "Use right text block then left"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 1091)
 msgid "Use spaces"
 msgstr ""
@@ -11672,45 +11757,45 @@ msgstr ""
 msgid "Use system locale for date/time"
 msgstr "Tarih/zaman için sistem yerelini kullan"
 
-#. Resource IDs: (IDS_VIEWCONTEXTMENU_USEYOURBLOCK)
-msgid "Use text block from '&mine'"
-msgstr "'&Benim'den itibaren metin bloğunu kullan"
-
 #. Resource IDs: (IDS_VIEWCONTEXTMENU_USETHEIRBLOCK)
-msgid "Use text block from '&theirs'"
-msgstr "\"&Onların\" 'dan itibaren metin bloğunu kullan"
+msgid "Use text block from &left"
+msgstr ""
 
-#. Resource IDs: (IDS_VIEWCONTEXTMENU_USEYOURANDTHEIRBLOCK)
-msgid "Use text block from 'm&ine' before 'theirs'"
-msgstr "\"Onların\" yerine \"B&enim\" metin bloğunu kullan"
-
-#. Resource IDs: (32822)
-msgid ""
-"Use text block from 'mine' before 'theirs'\n"
-"Use 'mine' text block then 'theirs'"
-msgstr "'Onların'dan önce 'Benim' metin bloğunu kullan\nİlk 'Benim' sonra 'Onların' metin bloğunu kullan"
-
-#. Resource IDs: (32820)
-msgid ""
-"Use text block from 'mine'\n"
-"Use 'mine' text block"
-msgstr "'Benim'deki metin bloğunu kullan\n'Benim' metin bloğunu kullan."
+#. Resource IDs: (IDS_VIEWCONTEXTMENU_USEYOURBLOCK)
+msgid "Use text block from &right"
+msgstr ""
 
 #. Resource IDs: (IDS_VIEWCONTEXTMENU_USETHEIRANDYOURBLOCK)
-msgid "Use text block from 't&heirs' before 'mine'"
-msgstr "'benim'kinden önce 'o&nlar'ın metin bloğunu kullan"
+msgid "Use text block from l&eft before right"
+msgstr ""
 
 #. Resource IDs: (32821)
 msgid ""
-"Use text block from 'theirs' before 'mine'\n"
-"Use 'theirs' text block then 'mine'"
-msgstr "'Onların'dan sonra ve 'Benim'den önceki metin bloğunu kullan\nİlk 'Onların' sonra 'Benim' metin bloğunu kullan"
+"Use text block from left before right file\n"
+"Use left file text block then right"
+msgstr ""
 
 #. Resource IDs: (32819)
 msgid ""
-"Use text block from 'theirs'\n"
-"Use 'theirs' text block"
-msgstr "\"Onların\" 'daki metin bloğunu kullan\n\"Onların\" metin bloğunu kullan."
+"Use text block from left file\n"
+"Use left file text block"
+msgstr ""
+
+#. Resource IDs: (IDS_VIEWCONTEXTMENU_USEYOURANDTHEIRBLOCK)
+msgid "Use text block from r&ight before left"
+msgstr ""
+
+#. Resource IDs: (32822)
+msgid ""
+"Use text block from right file before left\n"
+"Use right file text block then left"
+msgstr ""
+
+#. Resource IDs: (32820)
+msgid ""
+"Use text block from right file\n"
+"Use right file text block"
+msgstr ""
 
 #. Resource IDs: (32855)
 msgid ""
@@ -11793,6 +11878,10 @@ msgstr "&Kullanıcı Adı:"
 #. IDS_AUTH_USERNAME)
 msgid "Username:"
 msgstr "Kullanıcıadı:"
+
+#. Resource IDs: (IDS_SETTINGS_ONLYNONELEVATED_TT)
+msgid "Uses the status cache type 'none' for elevated processes"
+msgstr ""
 
 #. Resource IDs: (IDS_COMMANDLINEHELP)
 msgid ""
@@ -12022,11 +12111,11 @@ msgstr ""
 msgid "Whitespaces"
 msgstr "Boşluk karakterleri"
 
-#. Resource IDs: (17038)
+#. Resource IDs: (IDS_AFXBARRES_MENU)
 msgid "Window Position"
 msgstr "Pencere Konumu"
 
-#. Resource IDs: (16927)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 16927)
 msgid "Windows"
 msgstr "Windows"
 
@@ -12089,8 +12178,7 @@ msgstr ""
 msgid "Within file"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_CHANGEDFILES: Control id 158,
-#. IDS_git_DEPTH_WORKING)
+#. Resource IDs: (Dialog IDD_CHANGEDFILES: Control id 158, IDS_WORKING_TREE)
 msgid "Working Tree"
 msgstr "Çalışma Ağacı"
 
@@ -12131,12 +12219,12 @@ msgid ""
 "Disabled handlers won't use up an overlay slot and give other shell extensions a chance to show their overlays."
 msgstr "Burada belirli Simge yöneticilerini geçersiz kılabilirsiniz.\nGeçersiz kılınan yöneticiler bir simge bölmesi kullanmayacaklar ve diğer kabuk eklentilerinin kendi simgelerini kullanmalarına şans tanıyacaklardır."
 
-#. Resource IDs: (16005)
+#. Resource IDs: (IDS_AFXBARRES_WRONG_IMAGE_SIZE)
 #, c-format
 msgid "You can paste bitmap with the size (%d x %d) only!"
 msgstr "Sadece (%d x %d) boyutlarında biteşlem yapıştırabilirsiniz!"
 
-#. Resource IDs: (16243)
+#. Resource IDs: (IDS_AFXBARRES_TOO_MANY_TOOLBARS_FMT)
 #, c-format
 msgid "You can't create more than %d user-defined toolbars!"
 msgstr "%d den fazla kullanıcı tanımlı araç çubuğu yaratamazsınız!"
@@ -12200,7 +12288,7 @@ msgid ""
 "Do you want to restore them now? You might lose all changes to this file after marking it."
 msgstr ""
 
-#. Resource IDs: (16024)
+#. Resource IDs: (IDS_AFXBARRES_TOO_MANY_TOOLS_FMT)
 #, c-format
 msgid "You may define up to %d tools."
 msgstr "%d adede kadar araç tanımlayabilirsiniz."
@@ -12271,15 +12359,15 @@ msgstr "Zip Dosyası"
 msgid "Zoo&m out\t-"
 msgstr "Uzaklaştı&r\t-"
 
-#. Resource IDs: (17093)
+#. Resource IDs: (IDS_AFXBARRES_ZOOM)
 msgid "Zoom"
 msgstr "Yakınlaştır"
 
-#. Resource IDs: (58117)
+#. Resource IDs: (Dialog AFX_IDD_PREVIEW_TOOLBAR: Control id 58117)
 msgid "Zoom &In"
 msgstr "&Yakınlaştır"
 
-#. Resource IDs: (58118)
+#. Resource IDs: (Dialog AFX_IDD_PREVIEW_TOOLBAR: Control id 58118)
 msgid "Zoom &Out"
 msgstr "&Uzaklaştır"
 
@@ -12324,7 +12412,7 @@ msgstr "Yüksekliğe sığdıracak şekilde büyüt"
 msgid "Zoom to fit in width"
 msgstr "Genişliğe sığdıracak şekilde büyüt"
 
-#. Resource IDs: (17114)
+#. Resource IDs: (IDS_AFXBARRES_MENU_ANIMATION_DEFAULT)
 msgid "[Default]"
 msgstr "varsayılan"
 
@@ -12398,7 +12486,7 @@ msgstr "eklendi"
 msgid "added files"
 msgstr "eklenmiş dosyalar"
 
-#. Resource IDs: (61446)
+#. Resource IDs: (AFX_IDS_UNNAMED_FILE)
 msgid "an unnamed file"
 msgstr "bir adsız dosya"
 
@@ -12420,8 +12508,8 @@ msgid "author (>= 0.5%)"
 msgstr "yazar (>= 0.5%)"
 
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 65535)
-msgid "based on TortoiseSVN (http://www.tortoisesvn.net/)"
-msgstr "TortoiseSVN tabanlı (http://www.tortoisesvn.net/)"
+msgid "based on TortoiseSVN (https://tortoisesvn.net/)"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ_CONFIG: Control id 65535)
 msgid "bugtraq.append"
@@ -12451,6 +12539,15 @@ msgstr "bugtraq.url"
 msgid "bugtraq.warningifnoissue"
 msgstr "bugtraq.warningifnoissue"
 
+#. Resource IDs: (IDS_CONFLICT_REFTOBEMERGED)
+msgid "changes to-be-integrated"
+msgstr ""
+
+#. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYCOL)
+#, c-format
+msgid "column '%ls'"
+msgstr "'%ls' sütunu"
+
 #. Resource IDs: (IDS_STATGRAPH_COMMITSBYAUTHORY,
 #. IDS_STATGRAPH_COMMITSBYDATEY)
 msgid "commits"
@@ -12479,7 +12576,7 @@ msgstr "silindi"
 msgid "diff from pipe"
 msgstr "pipe üzerinden diff"
 
-#. Resource IDs: (58116)
+#. Resource IDs: (Dialog IDD_AFXBAR_RES_PRINT_PREVIEW: Control id 58116)
 msgid "dummy"
 msgstr "sahte"
 
@@ -12499,6 +12596,18 @@ msgstr "verildi\n%s\nden\n%s"
 #. Resource IDs: (IDS_STATUSEXTERNAL)
 msgid "external"
 msgstr "dış"
+
+#. Resource IDs: (IDS_CONFLICT_NOTASUBMODULE)
+msgid "file, not a submodule"
+msgstr ""
+
+#. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYFILENAMES)
+msgid "file/foldernames"
+msgstr ""
+
+#. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYFULLPATHS)
+msgid "full paths"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_PROGRESS_GITUNCLEANEXIT)
 #, c-format
@@ -12616,6 +12725,10 @@ msgstr "hayır"
 msgid "no description for this command is available"
 msgstr "bu komut için açıklama yok"
 
+#. Resource IDs: (IDS_CONFLICT_NOSUBMODULE)
+msgid "no submodule"
+msgstr ""
+
 #. Resource IDs: (IDS_STATUSUNVERSIONED)
 msgid "non-versioned"
 msgstr "sürümlenmemiş"
@@ -12632,11 +12745,15 @@ msgstr "normal"
 msgid "not found"
 msgstr "bulunamadı"
 
+#. Resource IDs: (IDS_CONFLICT_SUBMODULENOTINITIALIZED)
+msgid "not initialized"
+msgstr ""
+
 #. Resource IDs: (IDS_STATUSOBSTRUCTED)
 msgid "obstructed"
 msgstr "engellendi"
 
-#. Resource IDs: (61504)
+#. Resource IDs: (AFX_IDS_PRINTONPORT)
 #, c-format
 msgid "on %1"
 msgstr "%1 üzerinde"
@@ -12645,7 +12762,7 @@ msgstr "%1 üzerinde"
 msgid "patched"
 msgstr "yamalandı"
 
-#. Resource IDs: (61888)
+#. Resource IDs: (AFX_IDS_OCC_SCALEUNITS_PIXELS)
 msgid "pixels"
 msgstr "pikseller"
 
@@ -12660,13 +12777,17 @@ msgid ""
 "Do you want to"
 msgstr ""
 
-#. Resource IDs: (61509)
+#. Resource IDs: (AFX_IDS_PRINTDEFAULTEXT)
 msgid "prn"
 msgstr "prn"
 
 #. Resource IDs: (IDS_STATGRAPH_COMMITSBYDATEXQUARTER)
 msgid "quarter of year"
 msgstr "çeyrek yıl"
+
+#. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYRELPATHS)
+msgid "relative paths"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 65535)
 msgid "renamed"
@@ -12695,7 +12816,7 @@ msgstr "geçilen\n%s"
 msgid "take care of submodule changes"
 msgstr "alt modül değişikliklerini dikkate al"
 
-#. Resource IDs: (61513)
+#. Resource IDs: (AFX_IDS_PRINTTOFILE)
 #, c-format
 msgid "to %1"
 msgstr "%1 üzerine"

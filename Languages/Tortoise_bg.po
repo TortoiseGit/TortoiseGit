@@ -1,10 +1,11 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2015 the TortoiseGit team
+# Copyright (C) 2008-2017 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
 # Translators:
 # Dimitar Tsonev <dimitar.tsonev@gmail.com>, 2015
+# Kosio Stefanov <kosio7@gmail.com>, 2017
 # Lübbe TortoiseSVN <luebbe.tortoisesvn@gmail.com>, 2011
 # petkovmt <petkovmt@gmail.com>, 2011
 # Stefan Ilivanov <ilivanov@gmail.com>, 2012
@@ -14,7 +15,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2016-12-29 16:08+0000\n"
+"PO-Revision-Date: 2017-07-22 13:03+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Bulgarian (http://www.transifex.com/lznuaa/tortoisegit/language/bg/)\n"
 "MIME-Version: 1.0\n"
@@ -48,29 +49,29 @@ msgstr "# автори, показани поотделно:"
 #. Resource IDs: (IDS_SVN_PROGRESS_TOTALMBTRANSFERRED)
 #, c-format
 msgid "%.2f MiB transferred"
-msgstr ""
+msgstr "%.2f MiB трансферирани"
 
-#. Resource IDs: (61878)
+#. Resource IDs: (AFX_IDP_ARCH_BADCLASS)
 #, c-format
 msgid "%1 contained an unexpected object."
 msgstr "%1 съдържаше неочакван обект."
 
-#. Resource IDs: (61859)
+#. Resource IDs: (AFX_IDP_FILE_BAD_PATH)
 #, c-format
 msgid "%1 contains an incorrect path."
 msgstr "%1 съдържа грешен път."
 
-#. Resource IDs: (61879)
+#. Resource IDs: (AFX_IDP_ARCH_BADSCHEMA)
 #, c-format
 msgid "%1 contains an incorrect schema."
 msgstr "%1 съдържа грешна схема."
 
-#. Resource IDs: (61877)
+#. Resource IDs: (AFX_IDP_ARCH_BADINDEX)
 #, c-format
 msgid "%1 has a bad format."
 msgstr "%1 има грешен формат."
 
-#. Resource IDs: (61858)
+#. Resource IDs: (AFX_IDP_FILE_NOT_FOUND)
 #, c-format
 msgid "%1 was not found."
 msgstr "%1 не бе намерен."
@@ -143,40 +144,40 @@ msgstr "Преди %1!d! години"
 #. Resource IDs: (IDS_REPOBROWSE_INFOMULTI)
 #, c-format
 msgid "%1!d! items selected"
-msgstr ""
+msgstr "%1!d! артикула селектирани"
 
 #. Resource IDs: (IDS_MINUTES_AGO)
 #, c-format
 msgid "%1!d! minutes ago"
 msgstr "Преди %1!d! минути"
 
-#. Resource IDs: (IDS_REPOBROWSE_INFODIR)
+#. Resource IDs: (IDS_CONFLICT_INFOTEXT)
 #, c-format
-msgid "%1!s!"
-msgstr "%1!s!"
+msgid "%1!s! (%2!s!)"
+msgstr "%1!s! (%2!s!)"
 
 #. Resource IDs: (IDS_REPOBROWSE_INFO)
 #, c-format
 msgid ""
 "%1!s!\n"
 "Showing %2!d! files, %3!d! submodules and %4!d! folders, %5!d! items in total"
-msgstr ""
+msgstr "%1!s!\nПоказване%2!d! файла, %3!d! подмодула и %4!d! папки, %5!d! общо артикула"
 
 #. Resource IDs: (IDS_REPOBROWSE_INFOFILE)
 #, c-format
 msgid ""
 "%1!s!\n"
 "Size %2!s!"
-msgstr ""
+msgstr "%1!s!\nРазмер %2!s!"
 
-#. Resource IDs: (61744)
+#. Resource IDs: (AFX_IDP_SCRIPT_ERROR)
 #, c-format
 msgid ""
 "%1: %2\n"
 "Continue running script?"
 msgstr "%1: %2\nДа се продължи ли изпълнението на скрипта?"
 
-#. Resource IDs: (61729)
+#. Resource IDs: (AFX_IDP_FAILED_INVALID_PATH)
 #, c-format
 msgid ""
 "%1\n"
@@ -197,7 +198,19 @@ msgstr "%I64d байта прехвърлени"
 #. Resource IDs: (IDS_SVN_PROGRESS_TOTALTRANSFERRED)
 #, c-format
 msgid "%I64d KiB transferred"
-msgstr ""
+msgstr "%I64d KiB трансферирани"
+
+#. Resource IDs: (AFX_IDS_AUTOSAVE_RECOVERED)
+#, c-format
+msgid "%Ts [Recovered]"
+msgstr "%Ts [Възстановени]"
+
+#. Resource IDs: (AFX_IDS_EMBED_FORMAT, AFX_IDS_LINKSOURCE_FORMAT)
+#, c-format
+msgid ""
+"%Ts\n"
+"%Ts"
+msgstr "%Ts\n%Ts"
 
 #. Resource IDs: (IDS_PROC_SYNC_COMMITSAHEAD)
 #, c-format
@@ -207,17 +220,17 @@ msgstr ""
 #. Resource IDs: (IDS_FILESCHANGES)
 #, c-format
 msgid "%d files changed"
-msgstr ""
+msgstr "%d файла променени"
 
 #. Resource IDs: (IDS_PROC_FILESREMOVED)
 #, c-format
 msgid "%d files removed."
-msgstr ""
+msgstr "%d файла премахнати"
 
 #. Resource IDs: (IDS_STATUSLIST_FILESREVERTED)
 #, c-format
 msgid "%d files reverted to %s."
-msgstr ""
+msgstr "%d файла върнати към %s"
 
 #. Resource IDs: (IDS_COMMITDLG_STATISTICSFORMAT)
 #, c-format
@@ -252,11 +265,6 @@ msgstr "%ld от %ld"
 msgid "%s - at revision: %d"
 msgstr "%s - редакция: %d"
 
-#. Resource IDs: (62186)
-#, c-format
-msgid "%s [Recovered]"
-msgstr "%s [Възстановени]"
-
 #. Resource IDs: (IDS_PROGRS_FINALINFO)
 #, c-format
 msgid "%s in %s"
@@ -265,7 +273,7 @@ msgstr "%s в %s"
 #. Resource IDs: (IDS_GITVER_REQUIRED)
 #, c-format
 msgid "%s requires Git >= %s"
-msgstr ""
+msgstr "%s изисква Git >= %s"
 
 #. Resource IDs: (IDS_SVN_PROGRESS_TOTALANDSPEED)
 #, c-format
@@ -275,24 +283,7 @@ msgstr "%s, в %s"
 #. Resource IDs: (IDS_DIFF_WCNAME)
 #, c-format
 msgid "%s: Working Tree"
-msgstr ""
-
-#. Resource IDs: (IDS_PROC_EXPORTFOLDERNAME2)
-#, c-format
-msgid "%s\\Export (%d) of %s"
-msgstr "%s\\Експортиране (%d) от %s"
-
-#. Resource IDs: (IDS_PROC_EXPORTFOLDERNAME)
-#, c-format
-msgid "%s\\Export of %s"
-msgstr "%s\\Експортиране от %s"
-
-#. Resource IDs: (61585, 61586)
-#, c-format
-msgid ""
-"%s\n"
-"%s"
-msgstr "%s\n%s"
+msgstr "%s: Работно Дърво"
 
 #. Resource IDs: (IDS_PATCH_ITEMTT)
 #, c-format
@@ -316,7 +307,8 @@ msgid ""
 "TortoiseGitMerge can't diff directories."
 msgstr "%s\nе директория, а не файл!\nTortoiseGitMerge не може да сравнява директории."
 
-#. Resource IDs: (16923, Dialog IDD_RENAME: Control id 1483)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE7: Control id 16923, Dialog
+#. IDD_RENAME: Control id 1483)
 msgid "&..."
 msgstr "&..."
 
@@ -326,17 +318,17 @@ msgstr ""
 
 #. Resource IDs: (IDS_MSGBOX_ABORT)
 msgid "&Abort"
-msgstr ""
+msgstr "&Прекъсване"
 
 #. Resource IDs: (ID_APP_ABOUT - Menu)
 msgid "&About TortoiseGitBlame..."
-msgstr ""
+msgstr "&За TortoiseGitBlame..."
 
 #. Resource IDs: (ID_APP_ABOUT - Menu)
 msgid "&About TortoiseGitMerge..."
-msgstr ""
+msgstr "&За TortoiseGitMerge..."
 
-#. Resource IDs: (16920)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 16920)
 msgid "&Activate"
 msgstr "&Активиране"
 
@@ -345,24 +337,24 @@ msgstr "&Активиране"
 msgid "&Add"
 msgstr "&Добавяне"
 
-#. Resource IDs: (17075)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE8: Control id 17075)
 msgid "&Add >>"
 msgstr "&Добавяне >>"
 
 #. Resource IDs: (Dialog IDD_REGEXFILTERS: Control id 1505)
 msgid "&Add Filter"
-msgstr ""
+msgstr "&Добави Филтър"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 1382, Dialog
 #. IDD_SETTINREMOTE: Control id 1382)
 msgid "&Add New/Save"
-msgstr ""
+msgstr "&Добави Нов/Запази"
 
 #. Resource IDs: (IDS_PROC_COMMIT_ADDSIGNOFFBUTTON)
 msgid "&Add it"
-msgstr ""
+msgstr "&Добави го"
 
-#. Resource IDs: (17018)
+#. Resource IDs: (IDS_AFXBARRES_ADD_REMOVE_BTNS)
 msgid "&Add or Remove Buttons"
 msgstr "&Добавяне или премахване на бутони"
 
@@ -378,47 +370,48 @@ msgstr "&Допълнителни..."
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1701)
 msgid "&All"
-msgstr ""
+msgstr "&Всички"
 
 #. Resource IDs: (Dialog IDD_LOGMESSAGE: Control id 3936)
 msgid "&All Branches"
-msgstr ""
+msgstr "&Всички Клони"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "&Application Look"
-msgstr ""
+msgstr "&Външен вид на приложението"
 
 #. Resource IDs: (Dialog IDD_SYNC: Control id 1613)
 msgid "&Apply Patch"
-msgstr ""
+msgstr "&Приложи Поправка"
 
 #. Resource IDs: (Dialog IDD_OPENDLG: Control id 1013)
 msgid "&Apply unified diff"
 msgstr "&Кърпене с Unified Diff"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE7: Control id 65535)
 msgid "&Arguments:"
 msgstr "&Аргументи:"
 
-#. Resource IDs: (16645)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 16645, Dialog
+#. IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 16645)
 msgid "&Assign"
 msgstr "&Асоцииране"
 
-#. Resource IDs: (16633)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE4: Control id 16633)
 msgid "&Associate double-click event with:"
 msgstr "&Асоцииране на двойното щракване с:"
 
-#. Resource IDs: (17041)
+#. Resource IDs: (IDS_AFXBARRES_AUTOHIDE)
 msgid "&Auto Hide"
 msgstr "&Автоматично скриване"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 65535)
 msgid "&Autoclose Git.exe dialog:"
-msgstr ""
+msgstr "&Автоматично затваряне на Git.exe диалога:"
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1505)
 msgid "&Autoload Putty Key"
-msgstr ""
+msgstr "&Автоматично зареждане на Putty ключа"
 
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 1015)
 msgid "&Backup original file"
@@ -436,7 +429,7 @@ msgstr "&Авторство на промените"
 msgid "&Blame revisions"
 msgstr "&Авторство на редакции"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 65535)
 msgid "&Blue:"
 msgstr "&Син:"
 
@@ -463,11 +456,11 @@ msgstr "&Разглеждане на хранилище"
 msgid "&Browse..."
 msgstr "&Избор..."
 
-#. Resource IDs: (16913 - Menu)
+#. Resource IDs: (ID_AFXBARRES_TOOLBAR_APPEARANCE - Menu)
 msgid "&Button Appearance..."
 msgstr "&Външен вид на бутоните..."
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 65535)
 msgid "&Button text:"
 msgstr "&Текст на бутоните"
 
@@ -479,15 +472,16 @@ msgstr "&CD-ROM"
 msgid "&Cancel"
 msgstr "&Отказ"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 65535)
 msgid "&Categories:"
 msgstr "&Категории:"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_KEYMAP: Control id 65535, Dialog
+#. IDD_AFXBARRES_PROPPAGE5: Control id 65535)
 msgid "&Category:"
 msgstr "&Категория:"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE8: Control id 65535)
 msgid "&Choose commands from:"
 msgstr "&Изберете команди от:"
 
@@ -497,21 +491,22 @@ msgstr "&Почисти..."
 
 #. Resource IDs: (ID_EDIT_CLEAR - Menu)
 msgid "&Clear"
-msgstr ""
+msgstr "&Изчистване"
 
 #. Resource IDs: (Dialog IDD_REFLOG: Control id 1686)
 msgid "&Clear stash"
 msgstr ""
 
-#. Resource IDs: (58112, Dialog IDD_CHECKFORUPDATES: Control id 1)
+#. Resource IDs: (Dialog AFX_IDD_PREVIEW_TOOLBAR: Control id 58112, Dialog
+#. IDD_CHECKFORUPDATES: Control id 1)
 msgid "&Close"
 msgstr "&Затваряне"
 
-#. Resource IDs: (16922)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 16922)
 msgid "&Close Window(s)"
 msgstr "&Затваряне на прозореца/-ите"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE7: Control id 65535)
 msgid "&Command:"
 msgstr "&Команда:"
 
@@ -544,14 +539,14 @@ msgstr ""
 
 #. Resource IDs: (IDS_MSGBOX_CONTINUE)
 msgid "&Continue"
-msgstr ""
+msgstr "&Продължи"
 
 #. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ: Control id 1471, Dialog
 #. IDD_SETTINGSHOOKS: Control id 1367, IDS_EDIT_COPY, ID_EDIT_COPY - Menu)
 msgid "&Copy"
 msgstr "&Копиране"
 
-#. Resource IDs: (16911 - Menu)
+#. Resource IDs: (ID_AFXBARRES_COPY_IMAGE - Menu)
 msgid "&Copy Button Image"
 msgstr "&Копиране на изображението на бутона"
 
@@ -572,8 +567,9 @@ msgstr "&Допълнително"
 msgid "&Default"
 msgstr "&По подразбиране"
 
-#. Resource IDs: (16617, 16912 - Menu, Dialog IDD_DELETEREMOTETAG: Control id
-#. 1, IDS_DELETEBUTTON, IDS_MENUREMOVE)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE2: Control id 16617, Dialog
+#. IDD_DELETEREMOTETAG: Control id 1, IDS_DELETEBUTTON, IDS_MENUREMOVE,
+#. ID_AFXBARRES_TOOLBAR_DELETE - Menu)
 msgid "&Delete"
 msgstr "&Изтриване"
 
@@ -583,7 +579,7 @@ msgstr "&Изтриване (запазва местните)"
 
 #. Resource IDs: (Dialog IDD_REGEXFILTERS: Control id 1507)
 msgid "&Delete Filter"
-msgstr ""
+msgstr "&Изтрий филтър"
 
 #. Resource IDs: (IDS_PROC_DELETEREMOTEBRANCH_LOCALREMOTE)
 msgid "&Delete remote && local"
@@ -607,45 +603,45 @@ msgstr "&Разлики с предишна версия"
 
 #. Resource IDs: (Dialog IDD_CLONE: Control id 65535)
 msgid "&Directory:"
-msgstr ""
+msgstr "&Директория:"
 
 #. Resource IDs: (ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_DISABLED - Menu)
 msgid "&Disabled"
-msgstr ""
+msgstr "&Изключено"
 
 #. Resource IDs: (IDS_DISCARDBUTTON)
 msgid "&Discard"
-msgstr ""
+msgstr "&Отхвърли"
 
 #. Resource IDs: (IDS_DO_SAME_FOR_REST)
 msgid "&Do the same for the rest"
-msgstr ""
+msgstr "&Направи същото и за останалите"
 
-#. Resource IDs: (17040)
+#. Resource IDs: (IDS_AFXBARRES_DOCKING)
 msgid "&Docking"
 msgstr "&Скачване"
 
 #. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1032)
 msgid "&Don't ask me again"
-msgstr ""
+msgstr "&Не ме питай отново"
 
 #. Resource IDs: (IDS_MSGBOX_DONOTSHOWAGAIN)
 msgid "&Don't show this message again"
-msgstr ""
+msgstr "&Не показвай това съобщение отново"
 
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_AUTHENTICATION: Control id 1839,
 #. Dialog IDD_FIRSTSTARTWIZARD_USER: Control id 1839)
 msgid "&Don't store these settings now."
-msgstr ""
+msgstr "&Не запазвай тези настройки сега"
 
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1384)
 msgid "&Down"
-msgstr ""
+msgstr "&Надолу"
 
 #. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1710,
 #. IDS_PROC_DOWNLOAD)
 msgid "&Download"
-msgstr ""
+msgstr "&Свали"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "&Edit"
@@ -657,17 +653,18 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROC_REBASE_SELECTALL_EDIT)
 msgid "&Edit ALL"
-msgstr ""
+msgstr "&Редактирай всички"
 
 #. Resource IDs: (Dialog IDD_REGEXFILTERS: Control id 1506)
 msgid "&Edit Filter"
-msgstr ""
+msgstr "&Редактирай филтъра"
 
 #. Resource IDs: (IDS_MENUCONFLICT)
 msgid "&Edit conflicts"
 msgstr "&Промяна на конфликти"
 
-#. Resource IDs: (16510, Dialog IDD_SETTINGSPROGSADV: Control id 1099)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16510, Dialog
+#. IDD_SETTINGSPROGSADV: Control id 1099)
 msgid "&Edit..."
 msgstr "&Промяна..."
 
@@ -687,7 +684,7 @@ msgstr ""
 #. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQADV: Control id 1023, Dialog
 #. IDD_SETTINGSHOOKCONFIG: Control id 1023)
 msgid "&Enable"
-msgstr ""
+msgstr "&Включи"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROXY: Control id 1023)
 msgid "&Enable Proxy Server"
@@ -695,7 +692,7 @@ msgstr "&Включване на сървъра-посредник"
 
 #. Resource IDs: (ID_EDIT_ENABLE - Menu)
 msgid "&Enable edit"
-msgstr ""
+msgstr "&Включи редактиране"
 
 #. Resource IDs: (ID_FILE_EXIT - Menu)
 msgid "&Exit\tCtrl+W"
@@ -735,7 +732,7 @@ msgstr "&Събери картинките в прозореца\tF"
 msgid "&Fixed drives"
 msgstr "&Фиксирани устройства"
 
-#. Resource IDs: (17039)
+#. Resource IDs: (IDS_AFXBARRES_FLOATING)
 msgid "&Floating"
 msgstr "&Плаващ"
 
@@ -766,7 +763,7 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_CLONE: Control id 1608)
 msgid "&From:"
-msgstr ""
+msgstr "&От:"
 
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_AUTHENTICATION: Control id 1844)
 msgid "&Generate PuTTY  key pair"
@@ -789,7 +786,7 @@ msgstr ""
 msgid "&Gray Unrelated Changed Paths"
 msgstr ""
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 65535)
 msgid "&Green:"
 msgstr "&Зелен:"
 
@@ -803,7 +800,8 @@ msgstr "&HEAD"
 msgid "&Hard: Reset working tree and index (discard all local changes)"
 msgstr ""
 
-#. Resource IDs: (57670, 65535 - PopupMenu, IDS_MENUHELP)
+#. Resource IDs: (65535 - PopupMenu, Dialog AFX_IDD_NEWTYPEDLG: Control id
+#. 57670, Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 57670, IDS_MENUHELP)
 msgid "&Help"
 msgstr "&Помощ"
 
@@ -811,7 +809,7 @@ msgstr "&Помощ"
 msgid "&Help Topics"
 msgstr "Помощ по &теми"
 
-#. Resource IDs: (17042, 61457, ID_VIEW_OUTPUTWND - Menu)
+#. Resource IDs: (AFX_IDS_HIDE, IDS_AFXBARRES_HIDE, ID_VIEW_OUTPUTWND - Menu)
 msgid "&Hide"
 msgstr "&Скриване"
 
@@ -821,7 +819,7 @@ msgstr "&Комплект с иконки:"
 
 #. Resource IDs: (IDS_IGNOREBUTTON, IDS_MSGBOX_IGNORE)
 msgid "&Ignore"
-msgstr ""
+msgstr "&Игнорирай"
 
 #. Resource IDs: (IDS_MENUIGNOREMULTIPLE)
 #, c-format
@@ -836,7 +834,7 @@ msgstr ""
 msgid "&Ignore whitespace"
 msgstr ""
 
-#. Resource IDs: (16914 - Menu)
+#. Resource IDs: (ID_AFXBARRES_TOOLBAR_IMAGE - Menu)
 msgid "&Image"
 msgstr "&Изображение"
 
@@ -844,7 +842,7 @@ msgstr "&Изображение"
 msgid "&Image info\tI"
 msgstr "Информация за &картинка\tI"
 
-#. Resource IDs: (16505)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16505)
 msgid "&Image only"
 msgstr "&Само изображението"
 
@@ -852,7 +850,7 @@ msgstr "&Само изображението"
 msgid "&Import..."
 msgstr "&Импорт..."
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE7: Control id 65535)
 msgid "&Initial directory:"
 msgstr "&Начална директория:"
 
@@ -862,7 +860,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROC_INSTALL)
 msgid "&Install"
-msgstr ""
+msgstr "&Инсталирай"
 
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 1016)
 msgid "&Jump to first difference when loading"
@@ -878,14 +876,14 @@ msgstr ""
 
 #. Resource IDs: (IDS_VIEW_LABELS)
 msgid "&Labels"
-msgstr ""
+msgstr "&Етикети"
 
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_LANGUAGE: Control id 65535,
 #. Dialog IDD_SETTINGSMAIN: Control id 65535)
 msgid "&Language:"
 msgstr "&Език:"
 
-#. Resource IDs: (16653)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE6: Control id 16653)
 msgid "&Large Icons"
 msgstr "&Големи иконки"
 
@@ -903,12 +901,12 @@ msgstr "&Ограничение:"
 
 #. Resource IDs: (Dialog IDD_GOTO: Control id 1078)
 msgid "&Line number"
-msgstr ""
+msgstr "&Номер на ред"
 
 #. Resource IDs: (IDS_GOTOLINE)
 #, c-format
 msgid "&Line number (%d - %d)"
-msgstr ""
+msgstr "&Ред номер (%d - %d)"
 
 #. Resource IDs: (ID_VIEW_LINKIMAGESTOGETHER - Menu)
 msgid "&Link image positions"
@@ -930,7 +928,7 @@ msgstr ""
 msgid "&Local:"
 msgstr ""
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 65535)
 msgid "&Luminence:"
 msgstr "&Luminence:"
 
@@ -938,11 +936,11 @@ msgstr "&Luminence:"
 msgid "&Max line length for inline diffs"
 msgstr ""
 
-#. Resource IDs: (16543)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 16543)
 msgid "&Menu animations:"
 msgstr "&Анимации на менюто:"
 
-#. Resource IDs: (16921)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE7: Control id 16921)
 msgid "&Menu contents:"
 msgstr "&Съдържание на меню:"
 
@@ -965,13 +963,13 @@ msgstr "&Сливане"
 
 #. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1648)
 msgid "&Message"
-msgstr ""
+msgstr "&Съобщение"
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1241)
 msgid "&Message:"
-msgstr ""
+msgstr "&Съобщение:"
 
-#. Resource IDs: (16925)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 16925)
 msgid "&Minimize"
 msgstr "&Смаляване"
 
@@ -986,12 +984,12 @@ msgstr "&Преместени блокове"
 
 #. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1515)
 msgid "&Name"
-msgstr ""
+msgstr "&Име"
 
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_USER: Control id 65535, Dialog
 #. IDD_SETTINGIT_CONFIG: Control id 65535)
 msgid "&Name:"
-msgstr ""
+msgstr "&Име:"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "&Navigate"
@@ -1001,11 +999,12 @@ msgstr "&Навигация"
 msgid "&Network drives"
 msgstr "&Мрежови устройства"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog AFX_IDD_NEWTYPEDLG: Control id 65535)
 msgid "&New "
 msgstr "&Нов"
 
-#. Resource IDs: (16509, 16615)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16509, Dialog
+#. IDD_AFXBARRES_PROPPAGE2: Control id 16615)
 msgid "&New..."
 msgstr "&Нов..."
 
@@ -1013,15 +1012,15 @@ msgstr "&Нов..."
 msgid "&Next >"
 msgstr "&Напред >"
 
-#. Resource IDs: (58114)
+#. Resource IDs: (Dialog AFX_IDD_PREVIEW_TOOLBAR: Control id 58114)
 msgid "&Next Page"
 msgstr "&Следваща страница"
 
 #. Resource IDs: (IDS_MSGBOX_NO)
 msgid "&No"
-msgstr ""
+msgstr "&Не"
 
-#. Resource IDs: (16632)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE4: Control id 16632)
 msgid "&No double-click event"
 msgstr "&Без двойно щракване"
 
@@ -1031,23 +1030,24 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1702)
 msgid "&None"
-msgstr ""
+msgstr "&Никакъв"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 1661)
 msgid "&Notepad2"
 msgstr "&Notepad2"
 
-#. Resource IDs: (1, Dialog IDD_REVGRAPHFILTER: Control id 1, IDS_OKBUTTON)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 1, Dialog
+#. IDD_REVGRAPHFILTER: Control id 1, IDS_OKBUTTON)
 msgid "&OK"
 msgstr "&OK"
 
-#. Resource IDs: (61505)
+#. Resource IDs: (AFX_IDS_ONEPAGE)
 msgid "&One Page"
 msgstr "&Една страница"
 
 #. Resource IDs: (Dialog IDD_REBASE: Control id 1828)
 msgid "&Onto"
-msgstr ""
+msgstr "&Върху"
 
 #. Resource IDs: (IDS_LOG_POPUP_OPEN, IDS_REPOBROWSE_OPEN)
 msgid "&Open"
@@ -1055,7 +1055,7 @@ msgstr "&Отваряне"
 
 #. Resource IDs: (IDS_PROC_GOTOMSYSGITWEBSITE)
 msgid "&Open Git for Windows WebSite"
-msgstr ""
+msgstr "&Отвори Git за Windows WebSite"
 
 #. Resource IDs: (ID_FILE_OPEN - Menu)
 msgid "&Open...\tCtrl+O"
@@ -1090,7 +1090,7 @@ msgstr "&Вмъкване"
 
 #. Resource IDs: (IDS_PROC_REBASE_SELECTALL_PICK)
 msgid "&Pick ALL"
-msgstr ""
+msgstr "&Вземи всички"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROXY: Control id 1414)
 msgid "&Port:"
@@ -1100,11 +1100,11 @@ msgstr "&Порт:"
 msgid "&Preserve merges"
 msgstr ""
 
-#. Resource IDs: (17091)
+#. Resource IDs: (IDS_AFXBARRES_PRINT_PREVIEW)
 msgid "&Print Preview"
 msgstr "&Преглед за печат"
 
-#. Resource IDs: (58116)
+#. Resource IDs: (Dialog AFX_IDD_PREVIEW_TOOLBAR: Control id 58116)
 msgid "&Print..."
 msgstr "&Печат..."
 
@@ -1114,7 +1114,7 @@ msgstr "&Печат...\tCtrl+P"
 
 #. Resource IDs: (IDS_PROCEEDBUTTON)
 msgid "&Proceed"
-msgstr ""
+msgstr "&Продължи"
 
 #. Resource IDs: (IDS_PROC_SYNC_PULL)
 msgid "&Pull"
@@ -1138,9 +1138,9 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SUBMODULE_UPDATE: Control id 1694)
 msgid "&Recursive"
-msgstr ""
+msgstr "&Рекурсивно"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 65535)
 msgid "&Red:"
 msgstr "&Червен:"
 
@@ -1162,7 +1162,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_REMINDMELATER)
 msgid "&Remind me later"
-msgstr ""
+msgstr "&Напомни ми по-късно"
 
 #. Resource IDs: (Dialog IDD_SYNC: Control id 1617)
 msgid "&Remote Branch:"
@@ -1177,10 +1177,12 @@ msgstr ""
 msgid "&Remote:"
 msgstr ""
 
-#. Resource IDs: (16646, Dialog IDD_APPLY_PATCH_LIST: Control id 1385, Dialog
-#. IDD_SETTINGSCREDENTIAL: Control id 1385, Dialog IDD_SETTINGSPROGSADV:
-#. Control id 1100, Dialog IDD_SETTINREMOTE: Control id 1385,
-#. IDS_REMOVEBUTTON)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 16646, Dialog
+#. IDD_AFXBARRES_PROPPAGE8: Control id 16646, Dialog
+#. IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 16646, Dialog
+#. IDD_APPLY_PATCH_LIST: Control id 1385, Dialog IDD_SETTINGSCREDENTIAL:
+#. Control id 1385, Dialog IDD_SETTINGSPROGSADV: Control id 1100, Dialog
+#. IDD_SETTINREMOTE: Control id 1385, IDS_REMOVEBUTTON)
 msgid "&Remove"
 msgstr "&Премахване"
 
@@ -1190,17 +1192,19 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_FIND: Control id 1511)
 msgid "&Replace"
-msgstr ""
+msgstr "&Замени"
 
 #. Resource IDs: (IDS_MENUREPOBROWSE)
 msgid "&Repo-browser"
 msgstr "&Разглеждане на хранилища"
 
-#. Resource IDs: (16613, 16624)
+#. Resource IDs: (Dialog IDD_AFXBARRES_OUTLOOKBAR_OPTIONS: Control id 16613,
+#. Dialog IDD_AFXBARRES_PROPPAGE2: Control id 16613, Dialog
+#. IDD_AFXBARRES_PROPPAGE3: Control id 16624)
 msgid "&Reset"
 msgstr "&Нулиране"
 
-#. Resource IDs: (16300)
+#. Resource IDs: (IDS_AFXBARRES_RESET_TOOLBAR)
 msgid "&Reset Toolbar"
 msgstr "&Нулиране на лентата с инструменти"
 
@@ -1208,11 +1212,11 @@ msgstr "&Нулиране на лентата с инструменти"
 msgid "&Reset filter"
 msgstr ""
 
-#. Resource IDs: (16657)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE6: Control id 16657)
 msgid "&Reset my usage data"
 msgstr "&Нулиране на данните за използване"
 
-#. Resource IDs: (16910 - Menu)
+#. Resource IDs: (ID_AFXBARRES_TOOLBAR_RESET - Menu)
 msgid "&Reset to Default"
 msgstr "&Нулиране"
 
@@ -1222,7 +1226,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_RESTOREBUTTON)
 msgid "&Restore"
-msgstr ""
+msgstr "&Възстанови"
 
 #. Resource IDs: (IDS_PROC_COMMIT_RESTOREFILES_RESTORE)
 msgid "&Restore old state"
@@ -1230,7 +1234,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_MSGBOX_RETRY)
 msgid "&Retry"
-msgstr ""
+msgstr "&Опитай отново"
 
 #. Resource IDs: (IDS_LOG_POPUP_REVERTREV)
 msgid "&Revert change by this commit"
@@ -1244,11 +1248,12 @@ msgstr ""
 msgid "&SSH client:"
 msgstr "&SSH клиент:"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 65535)
 msgid "&Saturation:"
 msgstr "&Наситеност:"
 
-#. Resource IDs: (16921, IDS_SAVEBUTTON)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 16921,
+#. IDS_SAVEBUTTON)
 msgid "&Save"
 msgstr "&Запис"
 
@@ -1269,6 +1274,10 @@ msgstr "&Запис на списък с избраните файлове в...
 msgid "&Save\tCtrl+S"
 msgstr "&Запис\tCtrl+S"
 
+#. Resource IDs: (Dialog IDD_REFLOG: Control id 1687)
+msgid "&Search..."
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_SETMSYSGITPATH)
 msgid "&Set Git path"
 msgstr ""
@@ -1283,13 +1292,13 @@ msgstr "&Настройки"
 
 #. Resource IDs: (ID_FILE_SETTINGS - Menu)
 msgid "&Settings..."
-msgstr ""
+msgstr "&Настройки..."
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 65535)
 msgid "&Show Menus for:"
 msgstr "&Показване на менютата за:"
 
-#. Resource IDs: (16612)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE2: Control id 16612)
 msgid "&Show text labels"
 msgstr "&Показване на текстови етикети"
 
@@ -1299,7 +1308,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_SKIPBUTTON)
 msgid "&Skip"
-msgstr ""
+msgstr "&Пропусни"
 
 #. Resource IDs: (Dialog IDD_RESET: Control id 1550)
 msgid "&Soft: Leave working tree and index untouched"
@@ -1316,9 +1325,9 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_REQUESTPULL: Control id 1616)
 msgid "&Start"
-msgstr ""
+msgstr "&Стартирай"
 
-#. Resource IDs: (16917 - Menu)
+#. Resource IDs: (ID_AFXBARRES_TOOLBAR_START_GROUP - Menu)
 msgid "&Start Group"
 msgstr "&Стартова група"
 
@@ -1342,7 +1351,7 @@ msgstr "С&имволен изглед"
 msgid "&Tab size:"
 msgstr "Размер на &табулатора:"
 
-#. Resource IDs: (17088)
+#. Resource IDs: (IDS_AFXBARRES_TABBED)
 msgid "&Tabbed Document"
 msgstr "&Табулиран документ"
 
@@ -1358,13 +1367,13 @@ msgstr "&Етикети"
 
 #. Resource IDs: (Dialog IDD_DELETEREMOTETAG: Control id 65535)
 msgid "&Tags:"
-msgstr ""
+msgstr "&Етикети:"
 
-#. Resource IDs: (16915 - Menu)
+#. Resource IDs: (ID_AFXBARRES_TOOLBAR_TEXT - Menu)
 msgid "&Text"
 msgstr "&Текст"
 
-#. Resource IDs: (16506)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16506)
 msgid "&Text only"
 msgstr "&Само текст"
 
@@ -1376,7 +1385,7 @@ msgstr "&Изчакване (в секунди) на разбора за авт�
 msgid "&Toolbar"
 msgstr "&Лента с инструменти"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_TOOLBAR_NAME: Control id 65535)
 msgid "&Toolbar Name:"
 msgstr "&Име на лентата с инструменти:"
 
@@ -1384,7 +1393,7 @@ msgstr "&Име на лентата с инструменти:"
 msgid "&Toolbars and Docking Windows"
 msgstr ""
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE2: Control id 65535)
 msgid "&Toolbars:"
 msgstr "&Ленти с инструменти:"
 
@@ -1403,9 +1412,9 @@ msgstr "&Trunk:"
 
 #. Resource IDs: (IDS_MSGBOX_TRYAGAIN)
 msgid "&Try Again"
-msgstr ""
+msgstr "&Опитай отново"
 
-#. Resource IDs: (61506)
+#. Resource IDs: (AFX_IDS_TWOPAGE)
 msgid "&Two Page"
 msgstr "&Две страници"
 
@@ -1456,7 +1465,7 @@ msgstr "&Потребител:"
 msgid "&View"
 msgstr "&Изглед"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE4: Control id 65535)
 msgid "&View:"
 msgstr "&Изглед:"
 
@@ -1476,11 +1485,11 @@ msgstr "&Цяла дума"
 
 #. Resource IDs: (ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_WITHIN_FILE - Menu)
 msgid "&Within file"
-msgstr ""
+msgstr "&Във файла"
 
 #. Resource IDs: (IDS_MSGBOX_YES)
 msgid "&Yes"
-msgstr ""
+msgstr "&Да"
 
 #. Resource IDs: (Dialog IDD_REBASE: Control id 1682)
 msgid "&add \"cherry picked from\""
@@ -1492,7 +1501,7 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1498)
 msgid "&known changes"
-msgstr ""
+msgstr "&познати промени"
 
 #. Resource IDs: (IDS_TORTOISEGITDEFAULT)
 msgid "(TortoiseGit default)"
@@ -1541,7 +1550,7 @@ msgstr "- всички -"
 msgid "--&all"
 msgstr "--&all"
 
-#. Resource IDs: (16108)
+#. Resource IDs: (IDS_AFXBARRES_NO_CONTEXT)
 msgid ""
 "-------------------------------------------------------------------------------------------"
 msgstr "-------------------------------------------------------------------------------------------"
@@ -1573,7 +1582,8 @@ msgstr "------------------------------------------------------------------------
 msgid "..."
 msgstr "..."
 
-#. Resource IDs: (16527)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 16527, Dialog
+#. IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 16527)
 msgid "....."
 msgstr "....."
 
@@ -1599,9 +1609,9 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_FINDBAR: Control id 1020)
 msgid "< &Previous"
-msgstr ""
+msgstr "<&Предишен"
 
-#. Resource IDs: (16506)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 16506)
 msgid "<.....>"
 msgstr "<.....>"
 
@@ -1631,15 +1641,16 @@ msgstr ""
 msgid "<No branch>"
 msgstr "<Без бранш>"
 
-#. Resource IDs: (17095)
+#. Resource IDs: (IDS_AFXBARRES_QAT_SEPARATOR)
 msgid "<Separator>"
 msgstr "<Разделител>"
 
-#. Resource IDs: (16104)
+#. Resource IDs: (IDS_AFXBARRES_UNTITLED_TOOLBAR)
 msgid "<Untitled>"
 msgstr "<Неозаглавен>"
 
-#. Resource IDs: (16603)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16603, Dialog
+#. IDD_AFXBARRES_PROPPAGE1: Control id 16603)
 msgid "<descr>"
 msgstr "<descr>"
 
@@ -1697,7 +1708,7 @@ msgid ""
 "An empty list will allow overlays on all paths."
 msgstr ""
 
-#. Resource IDs: (61474)
+#. Resource IDs: (AFX_IDS_RESOURCE_EXCEPTION)
 msgid "A required resource was unavailable."
 msgstr "Необходим ресурс не е наличен."
 
@@ -1774,7 +1785,7 @@ msgstr "Относно TortoiseGitMerge"
 msgid "Accept certificate"
 msgstr ""
 
-#. Resource IDs: (61861)
+#. Resource IDs: (AFX_IDP_FILE_ACCESS_DENIED)
 #, c-format
 msgid "Access to %1 was denied."
 msgstr "Отказан  бе достъпът до %1."
@@ -1791,15 +1802,15 @@ msgstr "Дневник на действията"
 msgid "Actions"
 msgstr "Действия"
 
-#. Resource IDs: (61203)
+#. Resource IDs: (AFX_IDS_SCTASKLIST)
 msgid "Activate Task List"
 msgstr "Показване на списък със задачите"
 
-#. Resource IDs: (17043)
+#. Resource IDs: (IDS_AFXBARRES_OPENED_DOCS)
 msgid "Active Files"
 msgstr "Активни файлове"
 
-#. Resource IDs: (61838)
+#. Resource IDs: (AFX_IDP_ASK_TO_DISCARD)
 #, c-format
 msgid ""
 "ActiveX objects cannot be saved while exiting Windows!\n"
@@ -1848,7 +1859,7 @@ msgstr ""
 msgid "Add to &ignore list"
 msgstr "Добавяне в списъка за &игнориране"
 
-#. Resource IDs: (17083)
+#. Resource IDs: (IDS_AFXBARRES_ADD_TO_QAT)
 msgid "Add to Quick Access Toolbar"
 msgstr "Добавяне към лентата за бърз достъп"
 
@@ -1914,11 +1925,11 @@ msgstr "Допълнителни настройки на сливане"
 msgid "All"
 msgstr "Всички"
 
-#. Resource IDs: (16110)
+#. Resource IDs: (IDS_AFXBARRES_ALL_COMMANDS)
 msgid "All Commands"
 msgstr "Всички команди"
 
-#. Resource IDs: (61442)
+#. Resource IDs: (AFX_IDS_ALLFILTER)
 msgid "All Files (*.*)"
 msgstr "Всички файлове (*.*)"
 
@@ -1944,35 +1955,36 @@ msgstr ""
 
 #. Resource IDs: (IDS_ALLTAGS)
 msgid "All tags"
-msgstr ""
+msgstr "Всички етикети"
 
 #. Resource IDs: (IDS_FETCH_TAGS_ONLY)
 msgid "All tags only"
 msgstr "Всички тагове само"
 
-#. Resource IDs: (16112)
+#. Resource IDs: (IDS_AFXBARRES_RESET_ALL_TOOLBARS)
 msgid ""
 "All your changes will be lost! Do you really want to reset all toolbars and "
 "menus?"
 msgstr "Ще загубите всичките си промени! Наистина ли желаете да нулирате всички ленти с инструменти и менюта?"
 
-#. Resource IDs: (16115)
+#. Resource IDs: (IDS_AFXBARRES_RESET_KEYBOARD)
 msgid ""
 "All your changes will be lost! Do you really want to reset the keyboard "
 "assignments?"
 msgstr "Ще загубите всичките си промени! Наистина ли желаете да нулирате всички клавишни комбинации?"
 
-#. Resource IDs: (16113)
+#. Resource IDs: (IDS_AFXBARRES_RESET_MENU_FMT)
 #, c-format
 msgid ""
-"All your changes will be lost! Do you really want to reset the menu '%s'?"
-msgstr "Ще загубите всичките си промени! Наистина ли желаете да нулирате менюто '%s'?"
+"All your changes will be lost! Do you really want to reset the menu '%Ts'?"
+msgstr "Ще загубите всичките си промени! Наистина ли желаете да нулирате менюто '%Ts'?"
 
-#. Resource IDs: (16111)
+#. Resource IDs: (IDS_AFXBARRES_RESET_TOOLBAR_FMT)
 #, c-format
 msgid ""
-"All your changes will be lost! Do you really want to reset the toolbar '%s'?"
-msgstr "Ще загубите всичките си промени! Наистина ли желаете да нулирате лентата с инструменти '%s'?"
+"All your changes will be lost! Do you really want to reset the toolbar "
+"'%Ts'?"
+msgstr "Ще загубите всичките си промени! Наистина ли желаете да нулирате лентата с инструменти '%Ts'?"
 
 #. Resource IDs: (32976)
 msgid ""
@@ -2004,7 +2016,7 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1805)
 msgid "Always show long format"
-msgstr ""
+msgstr "Винаги показвай дълъг формат"
 
 #. Resource IDs: (IDS_SETTINGS_USESYSTEMLOCALEFORDATES_TT)
 msgid "Always use the system locale settings to show times and dates"
@@ -2047,16 +2059,16 @@ msgid ""
 "%base: the original file without your changes"
 msgstr ""
 
-#. Resource IDs: (61862)
+#. Resource IDs: (AFX_IDP_FILE_INVALID_FILE)
 #, c-format
 msgid "An incorrect file handle was associated with %1."
 msgstr "Грешен файлов псевдоним бе свързан с %1."
 
-#. Resource IDs: (61476)
+#. Resource IDs: (AFX_IDS_USER_EXCEPTION)
 msgid "An unknown error has occurred."
 msgstr "Непозната грешка."
 
-#. Resource IDs: (61857, 61873)
+#. Resource IDs: (AFX_IDP_ARCH_GENERIC, AFX_IDP_FILE_GENERIC)
 #, c-format
 msgid "An unknown error occurred while accessing %1."
 msgstr "Неизвестна грешка при достъп до %1."
@@ -2078,7 +2090,7 @@ msgstr ""
 msgid "Append this block to left"
 msgstr ""
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 65535)
 msgid "Application Frame Menus: "
 msgstr "Менюта на приложната рамка:"
 
@@ -2157,7 +2169,8 @@ msgstr "Подреди &вертикално\tV"
 msgid "Assigned to changelist '%s'"
 msgstr "Добавен към списъка с промени '%s'"
 
-#. Resource IDs: (16528)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 16528, Dialog
+#. IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 16528)
 msgid "Assigned to:"
 msgstr "Присвоено на:"
 
@@ -2194,21 +2207,21 @@ msgstr "В редакция: %d"
 msgid "At the moment, you can only rename branches."
 msgstr ""
 
-#. Resource IDs: (61473)
+#. Resource IDs: (AFX_IDS_NOT_SUPPORTED_EXCEPTION)
 msgid "Attempted an unsupported operation."
 msgstr "Опит за неподдържана операция."
 
-#. Resource IDs: (61870, 61875)
+#. Resource IDs: (AFX_IDP_ARCH_ENDOFFILE, AFX_IDP_FILE_EOF)
 #, c-format
 msgid "Attempted to access %1 past its end."
 msgstr "Опит за достъп до %1 след края му."
 
-#. Resource IDs: (61876)
+#. Resource IDs: (AFX_IDP_ARCH_WRITEONLY)
 #, c-format
 msgid "Attempted to read from the writing %1."
 msgstr "Опит да се чете от файл %1, отворен за писане."
 
-#. Resource IDs: (61874)
+#. Resource IDs: (AFX_IDP_ARCH_READONLY)
 #, c-format
 msgid "Attempted to write to the reading %1."
 msgstr "Опит за запис във файл %1, отворен за четене."
@@ -2238,6 +2251,14 @@ msgstr "Автор"
 msgid "Author Email"
 msgstr "Поща на автор"
 
+#. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_AUTHORSEMAIL)
+msgid "Author email addresses"
+msgstr ""
+
+#. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_AUTHORSNAME)
+msgid "Author names"
+msgstr "Имена на авторите"
+
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 65535)
 msgid "Author:\t\t\t\tStefan Kueng"
 msgstr "Автор:\t\t\t\tStefan Kueng"
@@ -2246,15 +2267,13 @@ msgstr "Автор:\t\t\t\tStefan Kueng"
 msgid "Authors"
 msgstr "Автори"
 
+#. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_AUTHORSFULL)
+msgid "Authors (full)"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_STATGRAPH: Control id 1265)
 msgid "Authors case sensitive"
 msgstr "Чувствителност към регистъра за имената на авторите"
-
-#. Resource IDs: (Dialog IDD_ABOUTBOX: Control id 65535)
-msgid ""
-"Authors:\tFrank Li (lznuaa@gmail.com),\n"
-"\t\tSven Strickroth (email@cs-ware.de)"
-msgstr "Автори:\tFrank Li (lznuaa@gmail.com),\n\t\tSven Strickroth (email@cs-ware.de)"
 
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 65535)
 msgid "Auto CrLf convert"
@@ -2264,11 +2283,11 @@ msgstr ""
 msgid "Auto Crlf:"
 msgstr "Auto Crlf:"
 
-#. Resource IDs: (16033)
+#. Resource IDs: (IDS_AFXBARRES_AUTOHIDEBAR)
 msgid "Auto Hide"
 msgstr "Автоматично скриване"
 
-#. Resource IDs: (16036)
+#. Resource IDs: (IDS_AFXBARRES_AUTOHIDE_ALL)
 msgid "Auto Hide All"
 msgstr "Автоматично скриване на всичко"
 
@@ -2394,7 +2413,7 @@ msgstr ""
 msgid "Bisect start"
 msgstr ""
 
-#. Resource IDs: (61584)
+#. Resource IDs: (AFX_IDS_BITMAP_FORMAT)
 msgid ""
 "Bitmap\n"
 "a bitmap"
@@ -2543,7 +2562,7 @@ msgstr "BugTraq"
 msgid "Bugtraq Regex Tester - TortoiseGit"
 msgstr ""
 
-#. Resource IDs: (16132)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16132)
 msgid "Button Appearance"
 msgstr "Външен вид на бутоните"
 
@@ -2569,7 +2588,9 @@ msgstr ""
 msgid "C&heck now"
 msgstr "&Незабавна проверка"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 65535, Dialog
+#. IDD_AFXBARRES_PROPPAGE8: Control id 65535, Dialog
+#. IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 65535)
 msgid "C&ommands:"
 msgstr "&Команди:"
 
@@ -2581,7 +2602,8 @@ msgstr ""
 msgid "C&reate branch/tag from revision"
 msgstr "Съ&здаване на разклонение/етикет от редакцията"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 65535, Dialog
+#. IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 65535)
 msgid "C&urrent Keys:"
 msgstr "&Текущи клавиши:"
 
@@ -2610,7 +2632,7 @@ msgstr ""
 msgid "Can double-click in log list to compare with previous revision"
 msgstr "Двойно щракване върху редакция в дневника я сравнява с предишната редакция"
 
-#. Resource IDs: (61824)
+#. Resource IDs: (AFX_IDP_STATIC_OBJECT)
 msgid "Can not activate a static ActiveX object."
 msgstr "Грешка при активиране на статичен обект тип ActiveX."
 
@@ -2631,7 +2653,7 @@ msgstr "Грешка при копиране на растерно изобра�
 msgid "Can't create a new image!"
 msgstr "Грешка при създаване на ново изображение!"
 
-#. Resource IDs: (16007)
+#. Resource IDs: (IDS_AFXBARRES_NO_MENUBAR)
 msgid "Can't customize menus!"
 msgstr "Грешка при персонализиране на менютата!"
 
@@ -2639,15 +2661,20 @@ msgstr "Грешка при персонализиране на менютата
 msgid "Can't paste bitmap image from the clipboard!"
 msgstr "Грешка при поставяне на растерно изображение от системния буфер!"
 
-#. Resource IDs: (17101, 2, Dialog IDD_ADD: Control id 2, Dialog
-#. IDD_ADD_REMOTE: Control id 2, Dialog IDD_BISECTSTART: Control id 2, Dialog
-#. IDD_BROWSE_REFS: Control id 2, Dialog IDD_BUGTRAQREGEXTESTER: Control id 2,
-#. Dialog IDD_CERTCHECK: Control id 2, Dialog IDD_CLEAN: Control id 2, Dialog
-#. IDD_CLONE: Control id 2, Dialog IDD_COMMITDLG: Control id 2, Dialog
-#. IDD_CREATECHANGELIST: Control id 2, Dialog IDD_CREATEREPO: Control id 2,
-#. Dialog IDD_ENCODING: Control id 2, Dialog IDD_EXPORT: Control id 2, Dialog
-#. IDD_FIND: Control id 2, Dialog IDD_FORMAT_PATCH: Control id 2, Dialog
-#. IDD_GITSWITCH: Control id 2, Dialog IDD_GOTO: Control id 2, Dialog
+#. Resource IDs: (Dialog AFX_IDD_NEWTYPEDLG: Control id 2, Dialog
+#. AFX_IDD_PRINTDLG: Control id 2, Dialog IDD_ADD: Control id 2, Dialog
+#. IDD_ADD_REMOTE: Control id 2, Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id
+#. 2, Dialog IDD_AFXBARRES_COLOR_DLG: Control id 2, Dialog
+#. IDD_AFXBARRES_IMAGE_EDITOR: Control id 2, Dialog
+#. IDD_AFXBARRES_OUTLOOKBAR_OPTIONS: Control id 2, Dialog
+#. IDD_AFXBARRES_TOOLBAR_NAME: Control id 2, Dialog IDD_BISECTSTART: Control
+#. id 2, Dialog IDD_BROWSE_REFS: Control id 2, Dialog IDD_BUGTRAQREGEXTESTER:
+#. Control id 2, Dialog IDD_CERTCHECK: Control id 2, Dialog IDD_CLEAN: Control
+#. id 2, Dialog IDD_CLONE: Control id 2, Dialog IDD_COMMITDLG: Control id 2,
+#. Dialog IDD_CREATECHANGELIST: Control id 2, Dialog IDD_CREATEREPO: Control
+#. id 2, Dialog IDD_ENCODING: Control id 2, Dialog IDD_EXPORT: Control id 2,
+#. Dialog IDD_FIND: Control id 2, Dialog IDD_FORMAT_PATCH: Control id 2,
+#. Dialog IDD_GITSWITCH: Control id 2, Dialog IDD_GOTO: Control id 2, Dialog
 #. IDD_GOTODLG: Control id 2, Dialog IDD_HISTORYDLG: Control id 2, Dialog
 #. IDD_IGNORE: Control id 2, Dialog IDD_INPUTDLG: Control id 2, Dialog
 #. IDD_LOGMESSAGE: Control id 2, Dialog IDD_LOGORDERING: Control id 2, Dialog
@@ -2667,7 +2694,7 @@ msgstr "Грешка при поставяне на растерно изобр�
 #. IDD_SUBMODULE_UPDATE: Control id 2, Dialog IDD_SVNDCOMMITTYPE: Control id
 #. 2, Dialog IDD_SVNIGNORE: Control id 2, Dialog IDD_SVNPROGRESS: Control id
 #. 2, Dialog IDD_TOOLASSOC: Control id 2, Dialog IDD_URL: Control id 2, Dialog
-#. IDD_USER_PASSWD: Control id 2, IDS_MSGBOX_CANCEL,
+#. IDD_USER_PASSWD: Control id 2, IDS_AFXBARRES_CANCEL, IDS_MSGBOX_CANCEL,
 #. IDS_PROC_OVERWRITEEXPORT_CANCEL)
 msgid "Cancel"
 msgstr "Отказ"
@@ -2729,7 +2756,7 @@ msgstr ""
 msgid "Cannot show diff because of inconsistent newlines in the file."
 msgstr "Не може да се покажат промени, заради несъвместими знаци за нов ред във файла."
 
-#. Resource IDs: (16926)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 16926)
 msgid "Casca&de"
 msgstr "&Каскада"
 
@@ -2741,7 +2768,7 @@ msgstr "Падащо контекстно меню"
 msgid "Case-sensitive"
 msgstr "Чувствителност към регистъра"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE1: Control id 65535)
 msgid "Cate&gories:"
 msgstr "&Категории:"
 
@@ -2779,11 +2806,11 @@ msgid ""
 "Change Style"
 msgstr ""
 
-#. Resource IDs: (61185)
+#. Resource IDs: (AFX_IDS_SCMOVE)
 msgid "Change the window position"
 msgstr "Промяна на позицията на прозореца"
 
-#. Resource IDs: (61184)
+#. Resource IDs: (AFX_IDS_SCSIZE)
 msgid "Change the window size"
 msgstr "Промяна на размера на прозореца"
 
@@ -2843,7 +2870,7 @@ msgstr ""
 msgid "Char position where to show a border line in commit text boxes:"
 msgstr "Позиция за показване на гранична линия в поверяващи диалози:"
 
-#. Resource IDs: (62178, IDS_RECURSE_SUBMODULES_CHECK)
+#. Resource IDs: (AFX_IDS_CHECKLISTBOX_CHECK, IDS_RECURSE_SUBMODULES_CHECK)
 msgid "Check"
 msgstr "Поставяне на отметка"
 
@@ -3070,12 +3097,14 @@ msgstr ""
 msgid "Clone..."
 msgstr "Клониране..."
 
-#. Resource IDs: (16032, 16105, 17023, 2, Dialog IDD_DELETEREMOTETAG: Control
-#. id 2, Dialog IDD_GITPROGRESS: Control id 1, Dialog IDD_SYNC: Control id 1)
+#. Resource IDs: (17023, Dialog IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id
+#. 2, Dialog IDD_DELETEREMOTETAG: Control id 2, Dialog IDD_GITPROGRESS:
+#. Control id 1, Dialog IDD_SYNC: Control id 1, IDS_AFXBARRES_CLOSE,
+#. IDS_AFXBARRES_CLOSEBAR)
 msgid "Close"
 msgstr "Затвори"
 
-#. Resource IDs: (17025)
+#. Resource IDs: (IDS_AFXBARRES_FULLSCREEN_CLOSE)
 msgid "Close Full Screen"
 msgstr "Изход от цял екран"
 
@@ -3089,7 +3118,7 @@ msgstr "Затваряне на прегледа за печат\n&Затвар�
 msgid "Close manually"
 msgstr "Ръчно затваряне"
 
-#. Resource IDs: (61445)
+#. Resource IDs: (AFX_IDS_PREVIEW_CLOSE)
 msgid ""
 "Close print preview mode\n"
 "Cancel Preview"
@@ -3101,7 +3130,7 @@ msgid ""
 "Close"
 msgstr ""
 
-#. Resource IDs: (61190)
+#. Resource IDs: (AFX_IDS_SCCLOSE)
 msgid "Close the active window and prompts to save the documents"
 msgstr "Затваря активния прозорец и напомня да се запишат документите"
 
@@ -3115,7 +3144,8 @@ msgid ""
 "Collapse"
 msgstr "Свиване на непроменените секции\nСвиване"
 
-#. Resource IDs: (16662)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 16662, Dialog
+#. IDD_AFXBARRES_COLOR_DLG: Control id 16662)
 msgid "Color"
 msgstr "Цвят"
 
@@ -3123,13 +3153,15 @@ msgstr "Цвят"
 msgid "Color by age, &continuous"
 msgstr ""
 
-#. Resource IDs: (16961, Dialog IDD_SETCOLORPAGE: Control id 138, Dialog
-#. IDD_SETTINGSTBLAME: Control id 65535, Dialog IDD_SETTINGSUDIFF: Control id
-#. 65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLOR_DLG: Control id 16961, Dialog
+#. IDD_SETCOLORPAGE: Control id 138, Dialog IDD_SETTINGSTBLAME: Control id
+#. 65535, Dialog IDD_SETTINGSUDIFF: Control id 65535)
 msgid "Colors"
 msgstr "Цветове"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 65535, Dialog
+#. IDD_AFXBARRES_COLOR_PAGE_ONE: Control id 65535, Dialog
+#. IDD_AFXBARRES_IMAGE_EDITOR: Control id 65535)
 msgid "Colors:"
 msgstr "Цветове:"
 
@@ -3141,11 +3173,11 @@ msgstr "Комбинирай една поща"
 msgid "Combine to one commit"
 msgstr "Комбинирай в едно поверяване"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE1: Control id 65535)
 msgid "Comman&ds:"
 msgstr "&Команди:"
 
-#. Resource IDs: (16029, IDS_PROGRS_CMDINFO)
+#. Resource IDs: (IDS_AFXBARRES_COMMAND, IDS_PROGRS_CMDINFO)
 msgid "Command"
 msgstr "Команда"
 
@@ -3157,11 +3189,11 @@ msgstr "Команден ред"
 msgid "Command Line To Execute:"
 msgstr "Команден ред за изпълнение:"
 
-#. Resource IDs: (61705)
+#. Resource IDs: (AFX_IDP_COMMAND_FAILURE)
 msgid "Command failed."
 msgstr "Командата се провали."
 
-#. Resource IDs: (16104)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE1: Control id 16104)
 msgid "Commands"
 msgstr "Команди"
 
@@ -3275,6 +3307,10 @@ msgstr ""
 msgid "Compare selected refs"
 msgstr "Сравняване на избраните отпратки"
 
+#. Resource IDs: (IDS_PROC_SYNC_COMPARETAGS)
+msgid "Compare tags"
+msgstr ""
+
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_COMPARETWOFILES)
 msgid "Compare two files"
 msgstr "Сравни два файла"
@@ -3307,11 +3343,6 @@ msgid ""
 "Compares the file with the last committed revision to show you the changes "
 "you made"
 msgstr "Сравнява файла със последната поверена редакция, за да Ви покаже промените, които сте направили"
-
-#. Resource IDs: (IDS_PROGRESS_COMPARE)
-#, c-format
-msgid "Comparing %s to %s"
-msgstr "Сравняване на %s с %s"
 
 #. Resource IDs: (IDS_SVNACTION_COMPLETED)
 msgid "Completed"
@@ -3400,7 +3431,7 @@ msgstr "Конфликти"
 msgid "Conflicts: %d"
 msgstr "Конфликти: %d"
 
-#. Resource IDs: (16520)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 16520)
 msgid "Context Menus: "
 msgstr "Контекстни менюта:"
 
@@ -3412,7 +3443,7 @@ msgstr ""
 msgid "Continue"
 msgstr "Продължаване"
 
-#. Resource IDs: (16013)
+#. Resource IDs: (IDS_AFXBARRES_CONTRACT_BAR)
 msgid "Contract docked window"
 msgstr "Свиване на скачен прозорец"
 
@@ -3432,15 +3463,10 @@ msgstr "&Копиране"
 msgid "Copied"
 msgstr "Копиран"
 
-#. Resource IDs: (16991, IDS_PATHACTIONS_COPY, IDS_PROGRS_TITLE_COPY,
-#. ID_EDIT_COPY - Ribbon name)
+#. Resource IDs: (Dialog IDD_AFXBARRES_KEYMAP: Control id 16991,
+#. IDS_PATHACTIONS_COPY, IDS_PROGRS_TITLE_COPY, ID_EDIT_COPY - Ribbon name)
 msgid "Copy"
 msgstr "Копиране"
-
-#. Resource IDs: (IDS_PROGRS_CMD_COPY)
-#, c-format
-msgid "Copy %s to %s, Revision %s"
-msgstr "Копиране на %s в %s, редакция %s"
 
 #. Resource IDs: (IDS_BLAME_POPUP_COPYHASHTOCLIPBOARD, IDS_COPY_COMMIT_HASH)
 msgid "Copy SHA-1 to clipboard"
@@ -3459,10 +3485,6 @@ msgstr "Копиране на цялата информация в систем�
 #. Resource IDs: (IDS_PROC_COPYRENAME)
 msgid "Copy and rename"
 msgstr "Копиране и преименуване"
-
-#. Resource IDs: (IDS_LOG_POPUP_COPYTOCLIPBOARDMESSAGES)
-msgid "Copy log messages to clipboard"
-msgstr "Копирай лог съобщенията в системния буфер"
 
 #. Resource IDs: (IDS_BLAME_POPUP_COPYLOGTOCLIPBOARD)
 msgid "Copy log to clipboard"
@@ -3504,10 +3526,6 @@ msgstr "Копиране %s"
 msgid "Copying..."
 msgstr "Копиране..."
 
-#. Resource IDs: (Dialog IDD_ABOUTBOX: Control id 1001)
-msgid "Copyright (C) 2009-2016 TortoiseGit"
-msgstr ""
-
 #. Resource IDs: (IDS_SPELLEDIT_CORRECTIONS)
 msgid "Corrections"
 msgstr "Поправки"
@@ -3534,7 +3552,7 @@ msgid ""
 "%s"
 msgstr ""
 
-#. Resource IDs: (61864)
+#. Resource IDs: (AFX_IDP_FILE_DIR_FULL)
 #, c-format
 msgid "Could not create %1 because the directory is full."
 msgstr "Не може да се създаде %1, защото директорията е пълна."
@@ -3565,7 +3583,7 @@ msgstr ""
 msgid "Could not get the status!"
 msgstr "Грешка при получаване на състоянието!"
 
-#. Resource IDs: (61860)
+#. Resource IDs: (AFX_IDP_FILE_TOO_MANY_OPEN)
 #, c-format
 msgid "Could not open %1 because there are too many open files."
 msgstr "Не може да се отвори %1, защото са отворени прекалено много файлове."
@@ -3577,7 +3595,7 @@ msgid ""
 "%s"
 msgstr "Грешка при отваряне на файла\n%s"
 
-#. Resource IDs: (61863)
+#. Resource IDs: (AFX_IDP_FILE_REMOVE_CURRENT)
 #, c-format
 msgid "Could not remove %1 because it is the current directory."
 msgstr "Не може да се премахне %1, защото е текущата директория."
@@ -3648,7 +3666,7 @@ msgid ""
 "Check help file for \"Extra PATH\"."
 msgstr ""
 
-#. Resource IDs: (61702)
+#. Resource IDs: (AFX_IDP_FAILED_TO_START_PRINT)
 msgid "Could not start print job."
 msgstr "Грешка при отпечатване."
 
@@ -3795,7 +3813,7 @@ msgstr ""
 msgid "Cu&t"
 msgstr "&Изрязване"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLOR_DLG: Control id 65535)
 msgid "Current"
 msgstr "Текущ"
 
@@ -3822,6 +3840,12 @@ msgid ""
 "If you want to force the rebase even if the current branch is a descendant of the commit you are rebasing onto, please check below \"Force Rebase\" checkbox."
 msgstr ""
 
+#. Resource IDs: (IDS_REBASE_CURRENTBRANCHUPTODATE)
+msgid ""
+"Current branch is up to date or newer than the fetched branch. Open rebase "
+"anyway?"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1113)
 msgid "Current version is:"
 msgstr "Текущата версия е:"
@@ -3831,27 +3855,28 @@ msgstr "Текущата версия е:"
 msgid "Current version is: %s"
 msgstr "Текущата версия е: %s"
 
-#. Resource IDs: (17079)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE8: Control id 17079)
 msgid "Cus&tomize..."
 msgstr "&Настройване..."
 
-#. Resource IDs: (16963)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 16963)
 msgid "Custom"
 msgstr "Потребителски"
 
-#. Resource IDs: (16103, 17074)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE8: Control id 17074,
+#. IDS_AFXBARRES_PROPSHT_CAPTION)
 msgid "Customize"
 msgstr "Персонализиране"
 
-#. Resource IDs: (17076)
+#. Resource IDs: (Dialog IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 17076)
 msgid "Customize Keyboard"
 msgstr "Персонализиране на клавиатурата"
 
-#. Resource IDs: (17096)
+#. Resource IDs: (IDS_AFXBARRES_CUSTOMIZE_QAT_TOOLTIP)
 msgid "Customize Quick Access Toolbar"
 msgstr "Персонализиране на лентата за бърз достъп"
 
-#. Resource IDs: (17085)
+#. Resource IDs: (IDS_AFXBARRES_CUSTOMIZE_QAT)
 msgid "Customize Quick Access Toolbar..."
 msgstr "Персонализиране на лентата за бърз достъп..."
 
@@ -3885,15 +3910,15 @@ msgstr "Дата"
 msgid "Date Last Commit"
 msgstr "Дата на последното поверяване"
 
-#. Resource IDs: (16114, IDS_DEFAULT)
+#. Resource IDs: (IDS_AFXBARRES_DEFAULT_VIEW, IDS_DEFAULT)
 msgid "Default"
 msgstr "По подразбиране"
 
-#. Resource IDs: (16106)
+#. Resource IDs: (IDS_AFXBARRES_DEFUALT_MENU)
 msgid "Default Menu"
 msgstr "Меню по подразбиране"
 
-#. Resource IDs: (16107)
+#. Resource IDs: (IDS_AFXBARRES_DEFAULT_MENU_DESCR)
 msgid "Default application menu. Appears when no documents are open."
 msgstr "Меню на приложението по подразбиране. Появява се, ако няма отворени документи."
 
@@ -3905,8 +3930,8 @@ msgstr ""
 msgid "Default to UTF-8 encoding"
 msgstr "Знакова кодировка UTF-8 по подразбиране"
 
-#. Resource IDs: (16020, Dialog IDD_RESOLVE_CONFLICT: Control id 4571,
-#. IDS_DELETE_BRANCHTAG_SHORT)
+#. Resource IDs: (Dialog IDD_RESOLVE_CONFLICT: Control id 4571,
+#. IDS_AFXBARRES_DELETE, IDS_DELETE_BRANCHTAG_SHORT)
 msgid "Delete"
 msgstr "Изтриване"
 
@@ -3967,6 +3992,10 @@ msgstr "Изтрии бранш"
 msgid "Delete branch/tag"
 msgstr "Изтрий бранш/етикет"
 
+#. Resource IDs: (IDS_DELETE_LOCALTAG)
+msgid "Delete local tag"
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_BROWSEREFS_DELETEREMOTEBRANCH)
 msgid "Delete remote branch"
 msgstr "Изтрий отдалечен бранш/таг"
@@ -3992,8 +4021,16 @@ msgstr "Изтрий подмодул"
 msgid "Delete tag"
 msgstr "Изтрий етикет"
 
+#. Resource IDs: (IDS_DELETE_REMOTETAG)
+msgid "Delete tag on remote"
+msgstr ""
+
 #. Resource IDs: (IDS_B_DELETEORDIFFERENTNAME)
 msgid "Delete the existing branch or use a different name."
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_RESOLVE_CONFLICT: Control id 4570)
+msgid "Delete/modify merge conflict"
 msgstr ""
 
 #. Resource IDs: (IDS_DELETEWHENEMPTY_TASK3)
@@ -4007,10 +4044,6 @@ msgstr "Изтрий\nФайлът е премахнат."
 #. IDS_PATHACTIONS_DELETE, IDS_SVNACTION_DELETE, IDS_SVN_SUMMARIZEDELETED)
 msgid "Deleted"
 msgstr "Изтрит"
-
-#. Resource IDs: (Dialog IDD_RESOLVE_CONFLICT: Control id 4570)
-msgid "Deleted merge conflict"
-msgstr ""
 
 #. Resource IDs: (IDS_MENUDESCDELETEIGNORE)
 msgid ""
@@ -4062,11 +4095,14 @@ msgstr ""
 msgid "Describe Strategy"
 msgstr ""
 
-#. Resource IDs: (16031, IDS_DESCRIPTION)
+#. Resource IDs: (IDS_AFXBARRES_DESCRIPTION, IDS_DESCRIPTION)
 msgid "Description"
 msgstr "Описание"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 65535, Dialog
+#. IDD_AFXBARRES_PROPPAGE1: Control id 65535, Dialog IDD_AFXBARRES_PROPPAGE5:
+#. Control id 65535, Dialog IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id
+#. 65535)
 msgid "Description:"
 msgstr "Описание:"
 
@@ -4078,7 +4114,7 @@ msgstr "Размаркиране на списък с промени"
 msgid "Destination"
 msgstr "Цел"
 
-#. Resource IDs: (61730)
+#. Resource IDs: (AFX_IDP_FAILED_DISK_FULL)
 msgid "Destination disk drive is full."
 msgstr "Дискът е пълен."
 
@@ -4104,7 +4140,7 @@ msgstr ""
 msgid "Detect moved or copied lines within a file"
 msgstr ""
 
-#. Resource IDs: (61583)
+#. Resource IDs: (AFX_IDS_DIB_FORMAT)
 msgid ""
 "Device Independent Bitmap\n"
 "a device independent bitmap"
@@ -4180,6 +4216,10 @@ msgstr ""
 msgid "Diff with parent %d"
 msgstr ""
 
+#. Resource IDs: (IDS_TAGCOMPARE_DIFFER)
+msgid "Differ"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1302)
 msgid "Difference between"
 msgstr "Разлика между"
@@ -4209,6 +4249,10 @@ msgstr "Директория:"
 msgid "Disable sounds"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1536)
+msgid "Disable status cache for elevated processes"
+msgstr ""
+
 #. Resource IDs: (IDS_SETTINGS_RECURSIVE_TT)
 msgid ""
 "Disable this option if you have really big working trees and experience\n"
@@ -4223,17 +4267,17 @@ msgstr ""
 msgid "Disabled"
 msgstr ""
 
-#. Resource IDs: (61869)
+#. Resource IDs: (AFX_IDP_FILE_DISKFULL)
 #, c-format
 msgid "Disk full while accessing %1."
 msgstr "Пълен диск при достъп до %1."
 
-#. Resource IDs: (61745)
+#. Resource IDs: (AFX_IDP_SCRIPT_DISPATCH_EXCEPTION)
 #, c-format
 msgid "Dispatch exception: %1"
 msgstr "Изключение при разпределяне: %1"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_OUTLOOKBAR_OPTIONS: Control id 65535)
 msgid "Display &buttons in this order"
 msgstr "Показване на &бутоните в този ред"
 
@@ -4309,10 +4353,10 @@ msgstr ""
 msgid "Do you really want to delete \"%s\"?"
 msgstr ""
 
-#. Resource IDs: (16109)
+#. Resource IDs: (IDS_AFXBARRES_DELETE_TOOLBAR_FMT)
 #, c-format
-msgid "Do you really want to delete the toolbar '%s'?"
-msgstr "Наистина ли желаете да изтриете лентата с инструменти '%s'?"
+msgid "Do you really want to delete the toolbar '%Ts'?"
+msgstr "Наистина ли желаете да изтриете лентата с инструменти '%Ts'?"
 
 #. Resource IDs: (IDS_DISABLEUPDATECHECKS)
 msgid ""
@@ -4338,6 +4382,10 @@ msgstr "Наистина ли желаете да преместите този 
 msgid ""
 "Do you really want to permanently delete the %d selected refs? It can NOT be"
 " recovered!"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_PUSH_ALLBRANCHES)
+msgid "Do you really want to push all local branches?"
 msgstr ""
 
 #. Resource IDs: (IDS_WARN_DELETE_ONE_FROM_INDEX)
@@ -4406,7 +4454,7 @@ msgid ""
 "as resolved?"
 msgstr ""
 
-#. Resource IDs: (62182)
+#. Resource IDs: (AFX_IDS_AUTOSAVE_RECOVERY_ASK_3)
 msgid "Do you want to recover these auto-saved documents?"
 msgstr "Искате ли да възстановите тези автоматично запазени документи?"
 
@@ -4424,7 +4472,7 @@ msgstr ""
 msgid "Do you want to stash pop now?"
 msgstr ""
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog AFX_IDD_PRINTDLG: Control id 65535)
 msgid "Document :"
 msgstr "Документ :"
 
@@ -4437,7 +4485,7 @@ msgstr ""
 msgid "Don't know what will push because you enter URL"
 msgstr ""
 
-#. Resource IDs: (62185)
+#. Resource IDs: (AFX_IDS_AUTOSAVE_RECOVERY_ASK_6)
 msgid ""
 "Don't recover the auto-saved documents\n"
 "Use the last explicitly saved versions of the documents"
@@ -4479,11 +4527,11 @@ msgstr "Свали"
 msgid "Download language packs:"
 msgstr ""
 
-#. Resource IDs: (16028)
+#. Resource IDs: (IDS_AFX_TEAR_OFF)
 msgid "Drag to make this menu float"
 msgstr "Плъзнете, за да направите това меню плаващо"
 
-#. Resource IDs: (16513)
+#. Resource IDs: (Dialog IDD_AFXBARRES_IMAGE_EDITOR: Control id 16513)
 msgid "Draw"
 msgstr "Рисуване"
 
@@ -4497,7 +4545,7 @@ msgstr "Тип устройства"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1315)
 msgid "Drives A: and B:"
-msgstr ""
+msgstr "Устройства A: и B:"
 
 #. Resource IDs: (IDS_DROPONESTASH)
 msgid "Drop &one stash"
@@ -4565,7 +4613,7 @@ msgstr ""
 msgid "Edit .tgitconfig"
 msgstr ""
 
-#. Resource IDs: (16133)
+#. Resource IDs: (Dialog IDD_AFXBARRES_IMAGE_EDITOR: Control id 16133)
 msgid "Edit Button Image"
 msgstr "Редакция на изображението на бутона"
 
@@ -4707,31 +4755,31 @@ msgid ""
 "Hold down the Ctrl key to reload the file with the specified encoding."
 msgstr ""
 
-#. Resource IDs: (61866)
+#. Resource IDs: (AFX_IDP_FILE_HARD_IO)
 #, c-format
 msgid "Encountered a hardware I/O error while accessing %1."
 msgstr "Хардуерна входно/изходна грешка по време на достъп до %1."
 
-#. Resource IDs: (61868)
+#. Resource IDs: (AFX_IDP_FILE_LOCKING)
 #, c-format
 msgid "Encountered a locking violation while accessing %1."
 msgstr "Установено е нарушаване на заключване при достъп до %1."
 
-#. Resource IDs: (61867)
+#. Resource IDs: (AFX_IDP_FILE_SHARING)
 #, c-format
 msgid "Encountered a sharing violation while accessing %1."
 msgstr "Установено е нарушаване на споделяне при достъп до %1."
 
-#. Resource IDs: (61477)
+#. Resource IDs: (AFX_IDS_INVALID_ARG_EXCEPTION)
 msgid "Encountered an improper argument."
 msgstr "Невалиден аргумент."
 
-#. Resource IDs: (61733)
+#. Resource IDs: (AFX_IDP_FAILED_IO_ERROR_READ)
 #, c-format
 msgid "Encountered an unexpected error while reading %1."
 msgstr "Неочаквана грешка при четене от %1."
 
-#. Resource IDs: (61734)
+#. Resource IDs: (AFX_IDP_FAILED_IO_ERROR_WRITE)
 #, c-format
 msgid "Encountered an unexpected error while writing %1."
 msgstr "Неочаквана грешка при запис във %1."
@@ -4748,7 +4796,7 @@ msgstr "Край"
 msgid "End of Line Style"
 msgstr ""
 
-#. Resource IDs: (61187)
+#. Resource IDs: (AFX_IDS_SCMAXIMIZE)
 msgid "Enlarge the window to full size"
 msgstr "Разширяване на прозореца на цял екран"
 
@@ -4756,19 +4804,19 @@ msgstr "Разширяване на прозореца на цял екран"
 msgid "Enter URL"
 msgstr "Въведете URL"
 
-#. Resource IDs: (61722)
+#. Resource IDs: (AFX_IDP_PARSE_GUID)
 msgid "Enter a GUID."
 msgstr "Въведете GUID."
 
-#. Resource IDs: (61721)
+#. Resource IDs: (AFX_IDP_PARSE_CURRENCY)
 msgid "Enter a currency."
 msgstr "Въведете валута."
 
-#. Resource IDs: (61720)
+#. Resource IDs: (AFX_IDP_PARSE_DATETIME)
 msgid "Enter a date and/or time."
 msgstr "Въведете дата и/или време."
 
-#. Resource IDs: (61724)
+#. Resource IDs: (AFX_IDP_PARSE_DATE)
 msgid "Enter a date."
 msgstr "Въведете дата."
 
@@ -4776,33 +4824,33 @@ msgstr "Въведете дата."
 msgid "Enter a name for the changelist:"
 msgstr "Въведете име за списъка с промени:"
 
-#. Resource IDs: (61715)
+#. Resource IDs: (AFX_IDP_PARSE_REAL_RANGE)
 #, c-format
 msgid "Enter a number between %1 and %2."
 msgstr "Въведете число между %1 и %2."
 
-#. Resource IDs: (61713)
+#. Resource IDs: (AFX_IDP_PARSE_REAL)
 msgid "Enter a number."
 msgstr "Въведете число."
 
-#. Resource IDs: (61719)
+#. Resource IDs: (AFX_IDP_PARSE_UINT)
 msgid "Enter a positive integer."
 msgstr "Въведете положително цяло число."
 
-#. Resource IDs: (61723)
+#. Resource IDs: (AFX_IDP_PARSE_TIME)
 msgid "Enter a time."
 msgstr "Въведете време."
 
-#. Resource IDs: (61714)
+#. Resource IDs: (AFX_IDP_PARSE_INT_RANGE)
 #, c-format
 msgid "Enter an integer between %1 and %2."
 msgstr "Въведете цяло число между %1 и %2."
 
-#. Resource IDs: (61718)
+#. Resource IDs: (AFX_IDP_PARSE_BYTE)
 msgid "Enter an integer between 0 and 255."
 msgstr "Въведете цяло число между 0 и 255."
 
-#. Resource IDs: (61712)
+#. Resource IDs: (AFX_IDP_PARSE_INT)
 msgid "Enter an integer."
 msgstr "Въведете цяло число."
 
@@ -4814,7 +4862,7 @@ msgstr "Въведете съдържание на файл за тестван�
 msgid "Enter log &message:"
 msgstr "Въведете съобщение за &дневника:"
 
-#. Resource IDs: (61716)
+#. Resource IDs: (AFX_IDP_PARSE_STRING_SIZE)
 #, c-format
 msgid "Enter no more than %1 characters."
 msgstr "Въведете не повече от %1 знака."
@@ -4859,7 +4907,7 @@ msgstr ""
 msgid "Everything updated."
 msgstr ""
 
-#. Resource IDs: (16023)
+#. Resource IDs: (IDS_AFXBARRES_CMD_FILTER)
 msgid ""
 "Executable (*.exe)|*.exe|Command (*.com)|*.com|Information "
 "(*.pdf)|*.pdf|Batch (*.bat)|*.bat|All Files (*.*)|*.*||"
@@ -4869,7 +4917,7 @@ msgstr "Изпълними файлове (*.exe)|*.exe|Команди (*.com)|*
 msgid "Executable (+x)"
 msgstr ""
 
-#. Resource IDs: (16018)
+#. Resource IDs: (IDS_AFXBARRES_EXISTING)
 msgid "Existing"
 msgstr "Съществуващ"
 
@@ -4878,12 +4926,12 @@ msgstr "Съществуващ"
 msgid "Exit"
 msgstr "Изход"
 
-#. Resource IDs: (16025)
+#. Resource IDs: (IDS_AFXBARRES_EXPAND_FMT)
 #, c-format
-msgid "Expand (%s)"
-msgstr "Разширяване (%s)"
+msgid "Expand (%Ts)"
+msgstr "Разширяване (%Ts)"
 
-#. Resource IDs: (16012)
+#. Resource IDs: (IDS_AFXBARRES_EXPAND_BAR)
 msgid "Expand docked window"
 msgstr "Разширяване на скачен прозорец"
 
@@ -4953,7 +5001,7 @@ msgstr "Външна програма:"
 msgid "F&etch..."
 msgstr ""
 
-#. Resource IDs: (17113)
+#. Resource IDs: (IDS_AFXBARRES_MENU_ANIMATION_FADE)
 msgid "Fade"
 msgstr "Преливане"
 
@@ -4975,21 +5023,21 @@ msgstr ""
 msgid "Failed to checkout file \"%s\" of revision %s to \"%s\"."
 msgstr ""
 
-#. Resource IDs: (61825)
+#. Resource IDs: (AFX_IDP_FAILED_TO_CONNECT)
 msgid ""
 "Failed to connect.\n"
 "Link may be broken."
 msgstr "Грешка при свързване.\nВъзможно е връзката да е грешна."
 
-#. Resource IDs: (61835)
+#. Resource IDs: (AFX_IDP_FAILED_TO_CONVERT)
 msgid "Failed to convert ActiveX object."
 msgstr "Грешка при превръщане на обект ActiveX."
 
-#. Resource IDs: (61700)
+#. Resource IDs: (AFX_IDP_FAILED_TO_CREATE_DOC)
 msgid "Failed to create empty document."
 msgstr "Грешка при създаване на празен документ."
 
-#. Resource IDs: (61839)
+#. Resource IDs: (AFX_IDP_FAILED_TO_CREATE)
 msgid ""
 "Failed to create object.  Make sure the application is entered in the system"
 " registry."
@@ -5007,23 +5055,23 @@ msgstr ""
 msgid "Failed to get merge file."
 msgstr ""
 
-#. Resource IDs: (61703)
+#. Resource IDs: (AFX_IDP_FAILED_TO_LAUNCH_HELP)
 msgid "Failed to launch help."
 msgstr "Грешка при стартиране на системната помощ."
 
-#. Resource IDs: (61830)
+#. Resource IDs: (AFX_IDP_FAILED_TO_LAUNCH)
 msgid "Failed to launch server application."
 msgstr "Грешка при стартиране на сървърно приложение."
 
-#. Resource IDs: (61697)
+#. Resource IDs: (AFX_IDP_FAILED_TO_OPEN_DOC)
 msgid "Failed to open document."
 msgstr "Грешка при отваряне на документ."
 
-#. Resource IDs: (61827)
+#. Resource IDs: (AFX_IDP_BAD_VERB)
 msgid "Failed to perform server operation."
 msgstr "Грешка при изпълнение на сървърна операция."
 
-#. Resource IDs: (61698)
+#. Resource IDs: (AFX_IDP_FAILED_TO_SAVE_DOC)
 msgid "Failed to save document."
 msgstr "Грешка при запис на документ."
 
@@ -5107,7 +5155,7 @@ msgstr "Изтегляне на файл..."
 msgid "Fetching revision %s of file:"
 msgstr "Изтегляне на редакция %s на файл:"
 
-#. Resource IDs: (16015, IDS_CHSTAT_FILECOL, IDS_COMMITDLG_FILE,
+#. Resource IDs: (IDS_AFXBARRES_FILE, IDS_CHSTAT_FILECOL, IDS_COMMITDLG_FILE,
 #. IDS_FILEDIFF_FILE, IDS_LOG_FILE)
 msgid "File"
 msgstr "Файл"
@@ -5313,7 +5361,7 @@ msgstr ""
 msgid "Fit image &widths\tW"
 msgstr ""
 
-#. Resource IDs: (16016)
+#. Resource IDs: (IDS_AFXBARRES_FOLDER)
 msgid "Folder"
 msgstr "Папка"
 
@@ -5326,7 +5374,7 @@ msgstr ""
 msgid "Font"
 msgstr "Шрифт"
 
-#. Resource IDs: (57345)
+#. Resource IDs: (AFX_IDS_IDLEMESSAGE)
 msgid "For Help, press F1. Scroll horizontally with Ctrl-Scrollwheel"
 msgstr "За Помощ, натиснете F1. За хоризонтално превъртане превъртане ползвайте клавиша 'Ctrl' и колелцето за превъртане на мишката"
 
@@ -5453,17 +5501,21 @@ msgstr ""
 msgid "From:"
 msgstr "От:"
 
-#. Resource IDs: (17026)
+#. Resource IDs: (IDS_AFXBARRES_FULLSCREEN)
 msgid "Full Screen"
 msgstr "Цял екран"
+
+#. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_FULLNOPATHS)
+msgid "Full commit data without changed paths"
+msgstr ""
+
+#. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_FULL)
+msgid "Full data"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_FIND: Control id 20086)
 msgid "Full text search"
 msgstr ""
-
-#. Resource IDs: (IDS_git_DEPTH_INFINITE)
-msgid "Fully recursive"
-msgstr "Напълно рекурсивно"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 65535)
 msgid "Further options for the commit dialog are on Dialogs 3 page."
@@ -5547,11 +5599,6 @@ msgstr "Получаване на дневниците за сливанията
 #, c-format
 msgid "Getting file %s"
 msgstr "Получаване на файл %s"
-
-#. Resource IDs: (IDS_PROGRESSGETFILEREVISION)
-#, c-format
-msgid "Getting file %s, revision %s"
-msgstr "Получаване на файл %s, редакция %s"
 
 #. Resource IDs: (IDS_PROGRESS_INFO)
 msgid "Getting information..."
@@ -5742,7 +5789,7 @@ msgstr "Диаграма"
 msgid "Graph type:"
 msgstr "Тип на диаграмата:"
 
-#. Resource IDs: (16972)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLOR_PAGE_ONE: Control id 16972)
 msgid "Gray"
 msgstr "Сив"
 
@@ -5758,7 +5805,7 @@ msgstr "Групиране на списъци с промени"
 msgid "H&ide Unrelated Changed Paths"
 msgstr ""
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 65535)
 msgid "H&ue:"
 msgstr "&Тон:"
 
@@ -5807,7 +5854,7 @@ msgstr "Иврит"
 msgid "Help"
 msgstr "Помощ"
 
-#. Resource IDs: (16982)
+#. Resource IDs: (Dialog IDD_AFXBARRES_KEYMAP: Control id 16982)
 msgid "Help Keyboard"
 msgstr "Помощна клавиатура"
 
@@ -5819,7 +5866,7 @@ msgstr ""
 msgid "Helpers:"
 msgstr ""
 
-#. Resource IDs: (16974)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLOR_PAGE_ONE: Control id 16974)
 msgid "Hex"
 msgstr "Шестнайсетично"
 
@@ -5831,7 +5878,7 @@ msgstr "Скрий менютата за неревизирани папки"
 msgid "Hide Patch<<"
 msgstr ""
 
-#. Resource IDs: (16011)
+#. Resource IDs: (IDS_AFXBARRES_HIDE_BAR)
 msgid "Hide docked window"
 msgstr "Скриване на скачен прозорец"
 
@@ -5869,7 +5916,7 @@ msgid ""
 "the text field."
 msgstr ""
 
-#. Resource IDs: (16519)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 16519)
 msgid ""
 "Hint: select the context menu, change the page to 'Commands' and drag the "
 "toolbar buttons into the menu window."
@@ -6221,6 +6268,11 @@ msgid ""
 "i.e. they get the modified overlay icon."
 msgstr "Ако е включено, наличието на неконтролирани файлове ще отбележи състоянието на съдържащата папка като променено,\nт.е. тя ще получи модификация на иконката за променена папка."
 
+#. Resource IDs: (IDS_SETTINGS_GITCONFIG_INHERIT_TT)
+msgid ""
+"If this is enabled, no value is stored or overwritten at this config level."
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_CREATEREPO: Control id 1654)
 msgid ""
 "If you plan to work inside this folder, leave this unchecked. Typically a "
@@ -6346,21 +6398,17 @@ msgid ""
 "Ignore whitespace changes"
 msgstr "При сравняване се игнорират промените в празните символи\nИгнориране на промените в празните символи"
 
-#. Resource IDs: (16916 - Menu)
+#. Resource IDs: (ID_AFXBARRES_TOOLBAR_IMAGE_AND_TEXT - Menu)
 msgid "Image &and Text"
 msgstr "Изображение &и текст"
 
-#. Resource IDs: (16507)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16507)
 msgid "Image &and text"
 msgstr "Изображение &и текст"
 
-#. Resource IDs: (16508)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16508)
 msgid "Images"
 msgstr "Изображения"
-
-#. Resource IDs: (IDS_git_DEPTH_IMMEDIATE)
-msgid "Immediate children, including folders"
-msgstr "Непосредствените деца, включително и папки"
 
 #. Resource IDs: (IDS_PROGRS_TITLE_IMPORT)
 msgid "Import"
@@ -6424,7 +6472,7 @@ msgstr ""
 msgid "Include only the following revision range:"
 msgstr "Включване само на следния обхват от редакции:"
 
-#. Resource IDs: (61696)
+#. Resource IDs: (AFX_IDP_INVALID_FILENAME)
 msgid "Incorrect filename."
 msgstr "Грешно име на файл"
 
@@ -6460,15 +6508,15 @@ msgid ""
 "Paste"
 msgstr "Вмъква съдържанието на системния буфер\nПоставяне"
 
-#. Resource IDs: (61706)
+#. Resource IDs: (AFX_IDP_FAILED_MEMORY_ALLOC)
 msgid "Insufficient memory to perform operation."
 msgstr "Недостиг на оперативна памет за извършването на тази операция."
 
-#. Resource IDs: (61704)
+#. Resource IDs: (AFX_IDP_INTERNAL_FAILURE)
 msgid "Internal application error."
 msgstr "Вътрешна програмна грешка."
 
-#. Resource IDs: (61592)
+#. Resource IDs: (AFX_IDS_INVALID_CURRENCY)
 msgid "Invalid Currency."
 msgstr "Невалидна валута."
 
@@ -6526,21 +6574,25 @@ msgid ""
 "Jump to first unresolved conflict"
 msgstr ""
 
-#. Resource IDs: (16136)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 16136)
 msgid "Keyboard"
 msgstr "Клавиатура"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE8: Control id 65535)
 msgid "Keyboard shortcuts:"
 msgstr "Клавишни комбинации:"
 
-#. Resource IDs: (16030)
+#. Resource IDs: (IDS_AFXBARRES_KEYS)
 msgid "Keys"
 msgstr "Клавиши"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Korean"
 msgstr "Корейски"
+
+#. Resource IDs: (Dialog IDD_CLONE: Control id 1847)
+msgid "LFS"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_3: Control id 65535)
 msgid "LINE1"
@@ -6710,7 +6762,8 @@ msgid ""
 "\"long/path/for/file.txt (from long/path/to/file.txt)\"."
 msgstr ""
 
-#. Resource IDs: (16631, 16992)
+#. Resource IDs: (Dialog IDD_AFXBARRES_KEYMAP: Control id 16992, Dialog
+#. IDD_AFXBARRES_PROPPAGE4: Control id 16631)
 msgid "List1"
 msgstr "List1"
 
@@ -6749,19 +6802,23 @@ msgstr ""
 msgid "Local Branch"
 msgstr "Локален бранш"
 
+#. Resource IDs: (IDS_TAGCOMPARE_LOCALHASH)
+msgid "Local SHA1"
+msgstr ""
+
 #. Resource IDs: (IDS_STATUSLIST_GROUP_IGNORELOCALCHANGES)
 msgid ""
 "Local changes ignored (assumed valid/unchanged or skip worktree flagged "
 "files)"
 msgstr ""
 
+#. Resource IDs: (IDS_TAGCOMPARE_LOCALMESSAGE)
+msgid "Local message"
+msgstr ""
+
 #. Resource IDs: (IDS_CHSTAT_WCCOL)
 msgid "Local status"
 msgstr "Локално състояние"
-
-#. Resource IDs: (Dialog IDD_RESOLVE_CONFLICT: Control id 65535)
-msgid "Local:"
-msgstr ""
 
 #. Resource IDs: (IDS_EXPORTFILE_TT)
 msgid ""
@@ -6813,21 +6870,13 @@ msgstr "Съобщения от дневника (Диалогов прозор�
 msgid "Login:"
 msgstr "Вход:"
 
-#. Resource IDs: (IDS_REPOSTATUS_WCINFO)
-#, c-format
-msgid "Lowest shown revision: %ld - Highest shown revision: %ld"
-msgstr ""
-
-#. Resource IDs: (IDS_REPOSTATUS_HEADREV)
-#, c-format
-msgid ""
-"Lowest shown revision: %ld - Highest shown revision: %ld - HEAD revision: "
-"%ld"
-msgstr ""
-
-#. Resource IDs: (16973)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 16973)
 msgid "Lum"
 msgstr "Осветеност"
+
+#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1550)
+msgid "M&erge: Resets the index and try to reconstruct the pre-merge state"
+msgstr ""
 
 #. Resource IDs: (IDS_SMTP_MAPI)
 msgid "MAPI"
@@ -6841,7 +6890,7 @@ msgstr "Макинтош"
 msgid "Mail"
 msgstr "Поща"
 
-#. Resource IDs: (61841)
+#. Resource IDs: (AFX_IDP_INVALID_MAPI_DLL)
 msgid "Mail system DLL is invalid."
 msgstr "DLL файлът на системата за електронна поще е невалиден."
 
@@ -6916,19 +6965,19 @@ msgstr "Максимален брой съобщения за съхранени
 msgid "Max. lines in action log"
 msgstr "Максимален брой редове в дневника на действията"
 
-#. Resource IDs: (16655)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE6: Control id 16655)
 msgid "Me&nus show recently used commands first"
 msgstr "&Менютата показват най-отгоре скоро използваните команди"
 
-#. Resource IDs: (16134)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 16134)
 msgid "Menu"
 msgstr "Меню"
 
-#. Resource IDs: (16006)
+#. Resource IDs: (IDS_AFXBARRES_MENU_BAR_TITLE)
 msgid "Menu Bar"
 msgstr "Лента на менюто"
 
-#. Resource IDs: (16626)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 16626)
 msgid "Menu s&hadows"
 msgstr "&Сенки в менюто"
 
@@ -6976,20 +7025,10 @@ msgstr ""
 msgid "Merging"
 msgstr "Сливане"
 
-#. Resource IDs: (IDS_PROGRS_CMD_MERGEURL)
-#, c-format
-msgid "Merging from %s, revision %s to %s, revision %s into %s, %s%s"
-msgstr ""
-
 #. Resource IDs: (IDS_ERR_MERGEIDENTICALREVISIONS)
 msgid ""
 "Merging requires different revisions or different URLs in 'From:' and 'To:'"
 msgstr "Сливането изисква различни редакции или различни URL-и за 'От:' и 'Към:'"
-
-#. Resource IDs: (IDS_PROGRS_CMD_MERGEPEG)
-#, c-format
-msgid "Merging revisions %s of %s into %s, %s%s"
-msgstr "Сливане на редакции %s от %s в %s, %s%s"
 
 #. Resource IDs: (IDS_LOG_MESSAGE, IDS_MESSAGE)
 msgid "Message"
@@ -7003,7 +7042,8 @@ msgstr ""
 msgid "Message part &expression:"
 msgstr "Израз на част от &съобщение:"
 
-#. Resource IDs: (Dialog IDD_MERGE: Control id 1742, IDS_LOG_FILTER_MESSAGES)
+#. Resource IDs: (Dialog IDD_MERGE: Control id 1742, IDS_LOG_FILTER_MESSAGES,
+#. IDS_LOG_POPUP_CLIPBOARD_MSGS)
 msgid "Messages"
 msgstr "Съобщения"
 
@@ -7016,7 +7056,7 @@ msgstr "Мин"
 msgid "Mine"
 msgstr "Мой"
 
-#. Resource IDs: (17086)
+#. Resource IDs: (IDS_AFXBARRES_MINIMIZE_RIBBON)
 msgid "Minimize the Ribbon"
 msgstr "Смаляване на панделката"
 
@@ -7034,7 +7074,7 @@ msgstr "Други"
 msgid "Missing"
 msgstr ""
 
-#. Resource IDs: (62179, IDS_RESET_MIXED)
+#. Resource IDs: (AFX_IDS_CHECKLISTBOX_MIXED, IDS_RESET_MIXED)
 msgid "Mixed"
 msgstr "Смесен"
 
@@ -7042,9 +7082,10 @@ msgstr "Смесен"
 msgid "Modification date"
 msgstr "Дата на промяна"
 
-#. Resource IDs: (17131, Dialog IDD_COMMITDLG: Control id 1706, Dialog
-#. IDD_SETCOLORPAGE: Control id 65535, IDS_PATHACTIONS_MODIFIED,
-#. IDS_SVNACTION_MODIFIED, IDS_SVN_SUMMARIZEMODIFIED)
+#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1706, Dialog
+#. IDD_SETCOLORPAGE: Control id 65535, IDS_AFX_SHELLLISTCTRL_MODIFIED,
+#. IDS_PATHACTIONS_MODIFIED, IDS_SVNACTION_MODIFIED,
+#. IDS_SVN_SUMMARIZEMODIFIED)
 msgid "Modified"
 msgstr "Променен"
 
@@ -7052,15 +7093,15 @@ msgstr "Променен"
 msgid "Modified Files"
 msgstr ""
 
-#. Resource IDs: (17107)
+#. Resource IDs: (IDS_AFXBARRES_MORE)
 msgid "More"
 msgstr "Още"
 
-#. Resource IDs: (16026)
+#. Resource IDs: (IDS_AFXBARRES_MORE_BUTTONS)
 msgid "More Buttons"
 msgstr "Още бутони"
 
-#. Resource IDs: (17097)
+#. Resource IDs: (IDS_AFXBARRES_MORE_COMMANDS)
 msgid "More Commands..."
 msgstr "Още команди..."
 
@@ -7076,23 +7117,23 @@ msgstr "Още..."
 msgid "Most active author:"
 msgstr "Най-активен автор:"
 
-#. Resource IDs: (16135)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE4: Control id 16135)
 msgid "Mouse"
 msgstr "Мишка"
 
-#. Resource IDs: (17026)
+#. Resource IDs: (Dialog IDD_AFXBARRES_OUTLOOKBAR_OPTIONS: Control id 17026)
 msgid "Move &Down"
 msgstr "Преместване на&долу"
 
-#. Resource IDs: (17025)
+#. Resource IDs: (Dialog IDD_AFXBARRES_OUTLOOKBAR_OPTIONS: Control id 17025)
 msgid "Move &Up"
 msgstr "Преместване на&горе"
 
-#. Resource IDs: (16022)
+#. Resource IDs: (IDS_AFXBARRES_MOVEDN)
 msgid "Move Item Down"
 msgstr "Преместване на обекта надолу"
 
-#. Resource IDs: (16021)
+#. Resource IDs: (IDS_AFXBARRES_MOVEUP)
 msgid "Move Item Up"
 msgstr "Преместване на обекта нагоре"
 
@@ -7134,7 +7175,7 @@ msgstr "Мой файл:"
 msgid "NUM"
 msgstr "NUM"
 
-#. Resource IDs: (17128)
+#. Resource IDs: (IDS_AFX_SHELLLISTCTRL_NAME)
 msgid "Name"
 msgstr "Име"
 
@@ -7153,11 +7194,11 @@ msgid ""
 "Goto Line"
 msgstr ""
 
-#. Resource IDs: (17004)
+#. Resource IDs: (Dialog IDD_AFXBARRES_OUTLOOKBAR_OPTIONS: Control id 17004)
 msgid "Navigation Pane Options"
 msgstr "Настройки на навигационното пано"
 
-#. Resource IDs: (17031)
+#. Resource IDs: (IDS_AFXBARRES_NAV_PANE_OPTIONS)
 msgid "Navigation Pane Options..."
 msgstr "Настройки на навигационното пано..."
 
@@ -7173,7 +7214,9 @@ msgstr "Мрежа"
 msgid "Network::Email"
 msgstr ""
 
-#. Resource IDs: (16017, 16027, 30721, 65535, IDS_NEW)
+#. Resource IDs: (Dialog AFX_IDD_NEWTYPEDLG: Control id 30721, Dialog
+#. IDD_AFXBARRES_COLOR_DLG: Control id 65535, IDS_AFXBARRES_NEW,
+#. IDS_AFXBARRES_NEW_FILE, IDS_NEW)
 msgid "New"
 msgstr "Нов"
 
@@ -7185,7 +7228,7 @@ msgstr "Ново &име:"
 msgid "New Branch/Tag"
 msgstr "Нов бранш/етикет"
 
-#. Resource IDs: (16014)
+#. Resource IDs: (IDS_AFXBARRES_NEW_MENU)
 msgid "New Menu"
 msgstr "Ново меню"
 
@@ -7293,11 +7336,11 @@ msgid ""
 "No differences found! Submodule may not be updated. Update submodule now?"
 msgstr ""
 
-#. Resource IDs: (61472)
+#. Resource IDs: (AFX_IDP_NO_ERROR_AVAILABLE)
 msgid "No error message is available."
 msgstr "Няма налично съобщение за грешка."
 
-#. Resource IDs: (61856, 61872)
+#. Resource IDs: (AFX_IDP_ARCH_NONE, AFX_IDP_FILE_NONE)
 msgid "No error occurred."
 msgstr "Няма грешки."
 
@@ -7384,8 +7427,8 @@ msgstr ""
 msgid "Node size"
 msgstr ""
 
-#. Resource IDs: (17110, Dialog IDD_SETTINGSOVERLAY: Control id 1272,
-#. IDS_NONE)
+#. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1272,
+#. IDS_AFXBARRES_MENU_ANIMATION_NONE, IDS_NONE)
 msgid "None"
 msgstr "Никакъв"
 
@@ -7410,7 +7453,7 @@ msgstr ""
 msgid "Not all files could be downloaded and verified."
 msgstr ""
 
-#. Resource IDs: (61708)
+#. Resource IDs: (AFX_IDP_UNREG_FAILURE)
 msgid "Not all of the system registry entries (or INI file) were removed."
 msgstr "Не всички записи в системния регистър (или INI файлът) са премахнати."
 
@@ -7433,7 +7476,7 @@ msgstr ""
 msgid "Note node"
 msgstr ""
 
-#. Resource IDs: (62183)
+#. Resource IDs: (AFX_IDS_AUTOSAVE_RECOVERY_ASK_4)
 msgid ""
 "Note that if you choose to recover the auto-saved documents, you must "
 "explicitly save them to overwrite the original documents.  If you choose to "
@@ -7564,35 +7607,39 @@ msgstr "OEM 869"
 msgid "OEM-US"
 msgstr "OEM-US"
 
-#. Resource IDs: (1, Dialog IDD_ABOUT: Control id 1, Dialog IDD_ABOUTBOX:
-#. Control id 1, Dialog IDD_ADD: Control id 1, Dialog IDD_ADD_REMOTE: Control
-#. id 1, Dialog IDD_BISECTSTART: Control id 1, Dialog IDD_BROWSE_REFS: Control
-#. id 1, Dialog IDD_BUGTRAQREGEXTESTER: Control id 1, Dialog IDD_CHANGEDFILES:
-#. Control id 1, Dialog IDD_CLEAN: Control id 1, Dialog IDD_CLONE: Control id
-#. 1, Dialog IDD_CREATECHANGELIST: Control id 1, Dialog IDD_CREATEREPO:
-#. Control id 1, Dialog IDD_ENCODING: Control id 1, Dialog IDD_EXPORT: Control
-#. id 1, Dialog IDD_FORMAT_PATCH: Control id 1, Dialog IDD_GITSWITCH: Control
-#. id 1, Dialog IDD_GOTO: Control id 1, Dialog IDD_GOTODLG: Control id 1,
-#. Dialog IDD_HISTORYDLG: Control id 1, Dialog IDD_IGNORE: Control id 1,
-#. Dialog IDD_INPUTDLG: Control id 1, Dialog IDD_LOGMESSAGE: Control id 1,
-#. Dialog IDD_LOGORDERING: Control id 1, Dialog IDD_MERGE: Control id 1,
-#. Dialog IDD_MERGEABORT: Control id 1, Dialog IDD_NEW_BRANCH_TAG: Control id
-#. 1, Dialog IDD_OPEN: Control id 1, Dialog IDD_OPENDLG: Control id 1, Dialog
-#. IDD_PROMPT: Control id 1, Dialog IDD_PULLFETCH: Control id 1, Dialog
-#. IDD_PUSH: Control id 1, Dialog IDD_REFLOG: Control id 1, Dialog
-#. IDD_REGEXFILTER: Control id 1, Dialog IDD_REGEXFILTERS: Control id 1,
-#. Dialog IDD_RENAME: Control id 1, Dialog IDD_REPOSITORY_BROWSER: Control id
-#. 1, Dialog IDD_REQUESTPULL: Control id 1, Dialog IDD_RESET: Control id 1,
-#. Dialog IDD_RESOLVE: Control id 1, Dialog IDD_RESOLVE_CONFLICT: Control id
-#. 4569, Dialog IDD_REVERT: Control id 1, Dialog IDD_SETTINGSBUGTRAQADV:
-#. Control id 1, Dialog IDD_SETTINGSHOOKCONFIG: Control id 1, Dialog
-#. IDD_SETTINGSPROGSADV: Control id 1, Dialog IDD_SIMPLEPROMPT: Control id 1,
-#. Dialog IDD_STASH: Control id 1, Dialog IDD_STATGRAPH: Control id 1, Dialog
-#. IDD_SUBMODULE_ADD: Control id 1, Dialog IDD_SUBMODULE_UPDATE: Control id 1,
-#. Dialog IDD_SVNDCOMMITTYPE: Control id 1, Dialog IDD_SVNIGNORE: Control id
-#. 1, Dialog IDD_SVNPROGRESS: Control id 1, Dialog IDD_TOOLASSOC: Control id
-#. 1, Dialog IDD_URL: Control id 1, Dialog IDD_USER_PASSWD: Control id 1,
-#. IDS_MSGBOX_OK)
+#. Resource IDs: (Dialog AFX_IDD_NEWTYPEDLG: Control id 1, Dialog IDD_ABOUT:
+#. Control id 1, Dialog IDD_ABOUTBOX: Control id 1, Dialog IDD_ADD: Control id
+#. 1, Dialog IDD_ADD_REMOTE: Control id 1, Dialog IDD_AFXBARRES_BUTTON_PROPS:
+#. Control id 1, Dialog IDD_AFXBARRES_COLOR_DLG: Control id 1, Dialog
+#. IDD_AFXBARRES_IMAGE_EDITOR: Control id 1, Dialog
+#. IDD_AFXBARRES_OUTLOOKBAR_OPTIONS: Control id 1, Dialog
+#. IDD_AFXBARRES_TOOLBAR_NAME: Control id 1, Dialog IDD_BISECTSTART: Control
+#. id 1, Dialog IDD_BROWSE_REFS: Control id 1, Dialog IDD_BUGTRAQREGEXTESTER:
+#. Control id 1, Dialog IDD_CHANGEDFILES: Control id 1, Dialog IDD_CLEAN:
+#. Control id 1, Dialog IDD_CLONE: Control id 1, Dialog IDD_CREATECHANGELIST:
+#. Control id 1, Dialog IDD_CREATEREPO: Control id 1, Dialog IDD_ENCODING:
+#. Control id 1, Dialog IDD_EXPORT: Control id 1, Dialog IDD_FORMAT_PATCH:
+#. Control id 1, Dialog IDD_GITSWITCH: Control id 1, Dialog IDD_GOTO: Control
+#. id 1, Dialog IDD_GOTODLG: Control id 1, Dialog IDD_HISTORYDLG: Control id
+#. 1, Dialog IDD_IGNORE: Control id 1, Dialog IDD_INPUTDLG: Control id 1,
+#. Dialog IDD_LOGMESSAGE: Control id 1, Dialog IDD_LOGORDERING: Control id 1,
+#. Dialog IDD_MERGE: Control id 1, Dialog IDD_MERGEABORT: Control id 1, Dialog
+#. IDD_NEW_BRANCH_TAG: Control id 1, Dialog IDD_OPEN: Control id 1, Dialog
+#. IDD_OPENDLG: Control id 1, Dialog IDD_PROMPT: Control id 1, Dialog
+#. IDD_PULLFETCH: Control id 1, Dialog IDD_PUSH: Control id 1, Dialog
+#. IDD_REFLOG: Control id 1, Dialog IDD_REGEXFILTER: Control id 1, Dialog
+#. IDD_REGEXFILTERS: Control id 1, Dialog IDD_RENAME: Control id 1, Dialog
+#. IDD_REPOSITORY_BROWSER: Control id 1, Dialog IDD_REQUESTPULL: Control id 1,
+#. Dialog IDD_RESET: Control id 1, Dialog IDD_RESOLVE: Control id 1, Dialog
+#. IDD_RESOLVE_CONFLICT: Control id 4569, Dialog IDD_REVERT: Control id 1,
+#. Dialog IDD_SETTINGSBUGTRAQADV: Control id 1, Dialog IDD_SETTINGSHOOKCONFIG:
+#. Control id 1, Dialog IDD_SETTINGSPROGSADV: Control id 1, Dialog
+#. IDD_SIMPLEPROMPT: Control id 1, Dialog IDD_STASH: Control id 1, Dialog
+#. IDD_STATGRAPH: Control id 1, Dialog IDD_SUBMODULE_ADD: Control id 1, Dialog
+#. IDD_SUBMODULE_UPDATE: Control id 1, Dialog IDD_SVNDCOMMITTYPE: Control id
+#. 1, Dialog IDD_SVNIGNORE: Control id 1, Dialog IDD_SVNPROGRESS: Control id
+#. 1, Dialog IDD_TOOLASSOC: Control id 1, Dialog IDD_URL: Control id 1, Dialog
+#. IDD_USER_PASSWD: Control id 1, IDS_MSGBOX_OK)
 msgid "OK"
 msgstr "OK"
 
@@ -7640,7 +7687,7 @@ msgstr "По-стари редове"
 msgid "On demand"
 msgstr ""
 
-#. Resource IDs: (62180)
+#. Resource IDs: (AFX_IDS_AUTOSAVE_RECOVERY_ASK_1)
 msgid "One or more auto-saved documents were found."
 msgstr "Намерени са един или повече запазени документи."
 
@@ -7665,9 +7712,9 @@ msgstr ""
 msgid "Only consider first parents on blame"
 msgstr ""
 
-#. Resource IDs: (IDS_git_DEPTH_FILES)
-msgid "Only file children"
-msgstr "Само деца от тип файлове"
+#. Resource IDs: (IDS_TAGCOMPARE_ONLYLOCAL)
+msgid "Only local"
+msgstr ""
 
 #. Resource IDs: (IDS_BROWSE_REFS_ONLYMERGED)
 msgid "Only merged (to HEAD)"
@@ -7679,15 +7726,16 @@ msgid ""
 "are allowed!"
 msgstr "Разрешени са само числа (евентуално разделени\nсъс запетаи)!"
 
-#. Resource IDs: (IDS_git_DEPTH_EMPTY)
-msgid "Only this item"
-msgstr "Само този обект"
+#. Resource IDs: (IDS_TAGCOMPARE_ONLYREMOTE)
+msgid "Only remote"
+msgstr ""
 
 #. Resource IDs: (IDS_BROWSE_REFS_ONLYUNMERGED)
 msgid "Only unmerged (to HEAD)"
 msgstr ""
 
-#. Resource IDs: (61440, ID_FILE_OPEN - Menu, ID_FILE_OPEN - Ribbon name)
+#. Resource IDs: (AFX_IDS_OPENFILE, ID_FILE_OPEN - Menu, ID_FILE_OPEN - Ribbon
+#. name)
 msgid "Open"
 msgstr "Отваряне"
 
@@ -7751,9 +7799,9 @@ msgstr ""
 msgid "Option"
 msgstr "Опция"
 
-#. Resource IDs: (16137, Dialog IDD_NEW_BRANCH_TAG: Control id 1517, Dialog
-#. IDD_PULLFETCH: Control id 1517, Dialog IDD_PUSH: Control id 1502, Dialog
-#. IDD_STASH: Control id 1517)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE6: Control id 16137, Dialog
+#. IDD_NEW_BRANCH_TAG: Control id 1517, Dialog IDD_PULLFETCH: Control id 1517,
+#. Dialog IDD_PUSH: Control id 1502, Dialog IDD_STASH: Control id 1517)
 msgid "Options"
 msgstr "Настройки"
 
@@ -7781,7 +7829,7 @@ msgstr ""
 msgid "Out Commits"
 msgstr ""
 
-#. Resource IDs: (61475)
+#. Resource IDs: (AFX_IDS_MEMORY_EXCEPTION)
 msgid "Out of memory."
 msgstr "Недостиг на оперативна памет."
 
@@ -7789,7 +7837,7 @@ msgstr "Недостиг на оперативна памет."
 msgid "Output Directory"
 msgstr "Изходна директория:"
 
-#. Resource IDs: (61510)
+#. Resource IDs: (AFX_IDS_PRINTDEFAULT)
 msgid "Output.prn"
 msgstr "Output.prn"
 
@@ -7805,19 +7853,19 @@ msgstr ""
 msgid "P&age setup..."
 msgstr ""
 
-#. Resource IDs: (61507)
+#. Resource IDs: (AFX_IDS_PRINTPAGENUM)
 #, c-format
 msgid "Page %u"
 msgstr "Страница %u"
 
-#. Resource IDs: (61508)
+#. Resource IDs: (AFX_IDS_PREVIEWPAGEDESC)
 #, c-format
 msgid ""
 "Page %u\n"
 "Pages %u-%u\n"
 msgstr "Страница %u\nСтраници %u-%u\n"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog AFX_IDD_PRINTDLG: Control id 65535)
 msgid "Page :"
 msgstr "Страница :"
 
@@ -7855,12 +7903,13 @@ msgstr ""
 msgid "Parent 2"
 msgstr ""
 
-#. Resource IDs: (IDS_PARENTS)
-msgid "Parent(s)"
+#. Resource IDs: (IDS_CONFLICT_REVERT)
+#, c-format
+msgid "Parent of %2!s!"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_ABOUTBOX: Control id 65535)
-msgid "Part of code come from TortoiseSVN Blame"
+#. Resource IDs: (IDS_PARENTS)
+msgid "Parent(s)"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_USER_PASSWD: Control id 4585)
@@ -7969,7 +8018,7 @@ msgstr "Дял от авторството"
 msgid "Percents"
 msgstr "Проценти"
 
-#. Resource IDs: (16538)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE6: Control id 16538)
 msgid "Personalized Menus and Toolbars"
 msgstr "Персонализирани менюта и ленти с инструменти"
 
@@ -7990,13 +8039,13 @@ msgstr ""
 msgid "Pick up %s"
 msgstr ""
 
-#. Resource IDs: (61582)
+#. Resource IDs: (AFX_IDS_METAFILE_FORMAT)
 msgid ""
 "Picture (Metafile)\n"
 "a picture"
 msgstr "Картинка (Метафайл)\nкартинка"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_IMAGE_EDITOR: Control id 65535)
 msgid "Picture:"
 msgstr "Картинка:"
 
@@ -8067,7 +8116,7 @@ msgstr "Моля, изчакайте..."
 msgid "Popup"
 msgstr "Изкачащ прозорец"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog AFX_IDD_PRINTDLG: Control id 65535)
 msgid "Port :"
 msgstr "Порт :"
 
@@ -8083,7 +8132,7 @@ msgstr "Кука след поверяване"
 msgid "Post-Push Hook"
 msgstr ""
 
-#. Resource IDs: (58115)
+#. Resource IDs: (Dialog AFX_IDD_PREVIEW_TOOLBAR: Control id 58115)
 msgid "Pre&v Page"
 msgstr "&Предна страница"
 
@@ -8111,15 +8160,15 @@ msgstr ""
 msgid "Prepend this block to left"
 msgstr ""
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 65535)
 msgid "Press &New Shortcut Key:"
 msgstr "Натиснете &нова клавишна комбинация:"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 65535)
 msgid "Press &new shortcut key:"
 msgstr "Натиснете &нова клавишна комбинация:"
 
-#. Resource IDs: (17094)
+#. Resource IDs: (IDS_AFXBARRES_PREVIEW)
 msgid "Preview"
 msgstr "Преглед"
 
@@ -8127,7 +8176,7 @@ msgstr "Преглед"
 msgid "Preview patched file"
 msgstr "Преглед на закърпения файл"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_IMAGE_EDITOR: Control id 65535)
 msgid "Preview: "
 msgstr "Преглед:"
 
@@ -8160,7 +8209,8 @@ msgstr ""
 msgid "Previous inline difference"
 msgstr ""
 
-#. Resource IDs: (16990, 17092)
+#. Resource IDs: (Dialog IDD_AFXBARRES_KEYMAP: Control id 16990,
+#. IDS_AFXBARRES_PRINT)
 msgid "Print"
 msgstr "Печат"
 
@@ -8182,19 +8232,19 @@ msgid ""
 "Print"
 msgstr ""
 
-#. Resource IDs: (61512)
+#. Resource IDs: (AFX_IDS_PRINTCAPTION)
 msgid "Print to File"
 msgstr "Печатане във файл"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog AFX_IDD_PRINTDLG: Control id 65535)
 msgid "Printer :"
 msgstr "Принтер :"
 
-#. Resource IDs: (61511)
+#. Resource IDs: (AFX_IDS_PRINTFILTER)
 msgid "Printer Files (*.prn)|*.prn|All Files (*.*)|*.*||"
 msgstr "Printer Files (*.prn)|*.prn|Всички файлове (*.*)|*.*||"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog AFX_IDD_PRINTDLG: Control id 65535)
 msgid "Printing"
 msgstr "Печатане"
 
@@ -8313,10 +8363,6 @@ msgstr ""
 msgid "Push ta&gs"
 msgstr ""
 
-#. Resource IDs: (IDS_LOG_PUSH)
-msgid "Push..."
-msgstr ""
-
 #. Resource IDs: (Dialog IDD_SETTINREMOTE: Control id 65535)
 msgid "Putty Key:"
 msgstr ""
@@ -8324,11 +8370,6 @@ msgstr ""
 #. Resource IDs: (IDS_PUTTYKEYFILEFILTER)
 msgid "Putty Private Key (*.ppk)|*.ppk|All Files (*.*)|*.*||"
 msgstr ""
-
-#. Resource IDs: (IDS_STATGRAPH_QUARTERLABEL)
-#, c-format
-msgid "Q%d/%.2d"
-msgstr "Q%d/%.2d"
 
 #. Resource IDs: (57665)
 msgid ""
@@ -8350,7 +8391,7 @@ msgstr ""
 msgid "R&AM drives"
 msgstr "&RAM устройства"
 
-#. Resource IDs: (16623)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 16623)
 msgid "R&eset"
 msgstr "&Нулиране"
 
@@ -8396,11 +8437,12 @@ msgstr "&Сменяеми устройства"
 msgid "Re&name..."
 msgstr "&Преименуване..."
 
-#. Resource IDs: (16613)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE8: Control id 16613)
 msgid "Re&set"
 msgstr "&Нулиране"
 
-#. Resource IDs: (16647)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 16647, Dialog
+#. IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 16647)
 msgid "Re&set All"
 msgstr "&Нулиране на всичко"
 
@@ -8442,7 +8484,7 @@ msgstr ""
 msgid "Rebasing... (%d/%d)"
 msgstr ""
 
-#. Resource IDs: (16019)
+#. Resource IDs: (IDS_AFXBARRES_RECENT)
 msgid "Recent"
 msgstr "Последни"
 
@@ -8462,7 +8504,7 @@ msgstr ""
 msgid "Record Only"
 msgstr "Само запис"
 
-#. Resource IDs: (62184)
+#. Resource IDs: (AFX_IDS_AUTOSAVE_RECOVERY_ASK_5)
 msgid ""
 "Recover the auto-saved documents\n"
 "Open the auto-saved versions instead of the explicitly saved versions"
@@ -8496,7 +8538,7 @@ msgid ""
 "Redo"
 msgstr "Възстановявa отменено преди това действие\nВъзстановяване"
 
-#. Resource IDs: (61186)
+#. Resource IDs: (AFX_IDS_SCMINIMIZE)
 msgid "Reduce the window to an icon"
 msgstr "Смали прозореца до иконка"
 
@@ -8613,9 +8655,14 @@ msgstr ""
 msgid "Remote &tracking branch"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_2: Control id 65535)
+#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_2: Control id 65535,
+#. IDS_PROC_REMOTEBRANCH)
 msgid "Remote Branch"
 msgstr "Отдалечен бранш"
+
+#. Resource IDs: (IDS_TAGCOMPARE_REMOTEHASH)
+msgid "Remote SHA1"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_GITCONFIG_URLEMPTY)
 msgid "Remote URL must not be empty."
@@ -8623,6 +8670,10 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_REMOTEUPDATE)
 msgid "Remote Update"
+msgstr ""
+
+#. Resource IDs: (IDS_TAGCOMPARE_REMOTEMESSAGE)
+msgid "Remote message"
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_GITCONFIG_REMOTEEMPTY)
@@ -8634,8 +8685,7 @@ msgid "Remote status"
 msgstr "Отдалечено състояние"
 
 #. Resource IDs: (Dialog IDD_DELETEREMOTETAG: Control id 65535, Dialog
-#. IDD_RESOLVE_CONFLICT: Control id 65535, Dialog IDD_SETTINREMOTE: Control id
-#. 65535)
+#. IDD_SETTINREMOTE: Control id 65535)
 msgid "Remote:"
 msgstr "Отдалечено:"
 
@@ -8676,7 +8726,7 @@ msgstr ""
 msgid "Remove from &ignore list"
 msgstr "Премахване от списъка за &игнориране"
 
-#. Resource IDs: (17084)
+#. Resource IDs: (IDS_AFXBARRES_REMOVE_FROM_QAT)
 msgid "Remove from Quick Access Toolbar"
 msgstr "Премахване от лентата за бърз достъп"
 
@@ -8720,7 +8770,7 @@ msgstr "Шаблона/-ите на имена на файлове са прем
 msgid "Removes the file or filemask from the list of ignored items"
 msgstr "Премахва избраните файлове или шаблон за файлове от списъка за игнориране"
 
-#. Resource IDs: (16616)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE2: Control id 16616)
 msgid "Rena&me..."
 msgstr "&Преименуване..."
 
@@ -8813,7 +8863,7 @@ msgstr ""
 msgid "Reset"
 msgstr "Нулиране"
 
-#. Resource IDs: (16614)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE2: Control id 16614)
 msgid "Reset &All"
 msgstr "&Нулиране на всичко"
 
@@ -8849,13 +8899,10 @@ msgstr "Разрешаване"
 msgid "Resolve Submodule Conflict"
 msgstr ""
 
-#. Resource IDs: (IDS_SVNPROGRESS_MENUUSEMINE)
-msgid "Resolve conflict using 'mine'"
-msgstr "Разрешаване на конфликт, използвайки 'моя'"
-
-#. Resource IDs: (IDS_SVNPROGRESS_MENUUSETHEIRS)
-msgid "Resolve conflict using 'theirs'"
-msgstr "Разрешаване на конфликт, използвайки 'техния'"
+#. Resource IDs: (IDS_SVNPROGRESS_MENURESOLVEUSING)
+#, c-format
+msgid "Resolve conflict using \"%s\""
+msgstr ""
 
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_RESOLVED, IDS_SVNACTION_RESOLVE)
 msgid "Resolved"
@@ -8893,7 +8940,7 @@ msgstr "Възстановяване на настройките по подра
 msgid "Restore after commit"
 msgstr "Възстанови след поверяване"
 
-#. Resource IDs: (61202)
+#. Resource IDs: (AFX_IDS_SCRESTORE)
 msgid "Restore the window to normal size"
 msgstr "Възстановяване на прозореца до нормален размер"
 
@@ -9009,7 +9056,7 @@ msgstr ""
 msgid "Rewind %d"
 msgstr ""
 
-#. Resource IDs: (61590)
+#. Resource IDs: (AFX_IDS_RTF_FORMAT)
 msgid ""
 "Rich Text (RTF)\n"
 "text with font and paragraph formatting"
@@ -9023,21 +9070,21 @@ msgstr "Изглед вдясно:"
 msgid "Right image"
 msgstr "Дясно изображение"
 
-#. Resource IDs: (17108)
+#. Resource IDs: (IDS_AFXBARRES_GALLERY_ROW1_FMT)
 #, c-format
 msgid "Row %d of %d"
 msgstr "Ред %d от %d"
 
-#. Resource IDs: (17109)
+#. Resource IDs: (IDS_AFXBARRES_GALLERY_ROW2_FMT)
 #, c-format
 msgid "Row %d-%d of %d"
 msgstr "Ред %d-%d от %d"
 
-#. Resource IDs: (17116)
+#. Resource IDs: (IDS_AFXBARRES_GALLERY_ROW_DOWN)
 msgid "Row Down"
 msgstr "Ред надолу"
 
-#. Resource IDs: (17115)
+#. Resource IDs: (IDS_AFXBARRES_GALLERY_ROW_UP)
 msgid "Row Up"
 msgstr "Ред нагоре"
 
@@ -9045,19 +9092,19 @@ msgstr "Ред нагоре"
 msgid "Run when working tree path is under:"
 msgstr ""
 
-#. Resource IDs: (17045)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLOR_DLG: Control id 17045)
 msgid "S&elect..."
 msgstr "&Избор..."
 
-#. Resource IDs: (17027)
+#. Resource IDs: (IDS_AFXBARRES_SHOWONEROW)
 msgid "S&how Buttons on One Row"
 msgstr "&Бутоните - на един ред"
 
-#. Resource IDs: (17028)
+#. Resource IDs: (IDS_AFXBARRES_SHOWTWOROWS)
 msgid "S&how Buttons on Two Rows"
 msgstr "&Бутоните - на два реда"
 
-#. Resource IDs: (17078)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE8: Control id 17078)
 msgid "S&how Quick Access Toolbar below the Ribbon"
 msgstr "&Показване на лента за бърз достъп под панделката"
 
@@ -9151,7 +9198,7 @@ msgstr "Sa&feCrLf:"
 msgid "Safe Crlf:"
 msgstr "Safe Crlf:"
 
-#. Resource IDs: (IDS_SAME)
+#. Resource IDs: (IDS_SAME, IDS_TAGCOMPARE_SAME)
 msgid "Same"
 msgstr ""
 
@@ -9189,7 +9236,7 @@ msgstr "Запис &като..."
 msgid "Save &as...\tCtrl+Shift+S"
 msgstr "Запис &като...\tCtrl+Shift+S"
 
-#. Resource IDs: (61441)
+#. Resource IDs: (AFX_IDS_SAVEFILE)
 msgid "Save As"
 msgstr "Запис като"
 
@@ -9269,7 +9316,7 @@ msgid ""
 "You're asked where to save the file"
 msgstr "Запази като\nКъде да бъде запазен файла"
 
-#. Resource IDs: (61699)
+#. Resource IDs: (AFX_IDP_ASK_TO_SAVE)
 #, c-format
 msgid "Save changes to %1?"
 msgstr "Да се запишат ли промените в %1?"
@@ -9384,7 +9431,7 @@ msgstr "Търсене за:"
 msgid "Searching for better path to apply patch..."
 msgstr "Търсене на по-подходящ път за налагане на кръпката..."
 
-#. Resource IDs: (61865)
+#. Resource IDs: (AFX_IDP_FILE_BAD_SEEK)
 #, c-format
 msgid "Seek failed on %1"
 msgstr "Търсенето се провали на %1"
@@ -9397,15 +9444,15 @@ msgstr "Избиране"
 msgid "Select &All"
 msgstr "&Избиране на всички"
 
-#. Resource IDs: (16529)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16529)
 msgid "Select &User-defined Image: "
 msgstr "Избор на &потребителско изображение:"
 
-#. Resource IDs: (16508)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 16508)
 msgid "Select &context menu:"
 msgstr "Изберете &контекстно меню:"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 65535)
 msgid "Select &window:"
 msgstr "&Избор на прозорец:"
 
@@ -9423,11 +9470,11 @@ msgstr "Избор на файл..."
 msgid "Select SSH client"
 msgstr "Избор на SSH клиент"
 
-#. Resource IDs: (61717)
+#. Resource IDs: (AFX_IDP_PARSE_RADIO_BUTTON)
 msgid "Select a button."
 msgstr "Изберете бутон."
 
-#. Resource IDs: (57346)
+#. Resource IDs: (AFX_IDS_HELPMODEMESSAGE)
 msgid "Select an object on which to get Help"
 msgstr "Избор на обект, за който да се получи помощ"
 
@@ -9537,7 +9584,7 @@ msgstr "Изпращане на писмо"
 msgid "Send Mail after create"
 msgstr "Изпращане на писмо след създаване"
 
-#. Resource IDs: (61842)
+#. Resource IDs: (AFX_IDP_FAILED_MAPI_SEND)
 msgid "Send Mail failed to send message."
 msgstr "'Изпращане на поща' не можа да изпрати съобщение."
 
@@ -9569,7 +9616,8 @@ msgstr "Изпращане..."
 msgid "Server &address:"
 msgstr "&Адрес на сървъра:"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 65535, Dialog
+#. IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 65535)
 msgid "Set Accelerator &for:"
 msgstr "Задаване на бърз клавиш &за:"
 
@@ -9632,7 +9680,7 @@ msgstr "Съкратен списък със свойства"
 msgid "Show"
 msgstr "Показване"
 
-#. Resource IDs: (16996)
+#. Resource IDs: (Dialog IDD_AFXBARRES_KEYMAP: Control id 16996)
 msgid "Show &Accelerator for:"
 msgstr "Показване на &кратък клавиш за:"
 
@@ -9640,7 +9688,8 @@ msgstr "Показване на &кратък клавиш за:"
 msgid "Show &Reflog"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1073)
+#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1073,
+#. IDS_PROC_LOG_SHOWUNVERSIONED)
 msgid "Show &Unversioned Files"
 msgstr ""
 
@@ -9649,7 +9698,8 @@ msgstr ""
 msgid "Show &Whole Project"
 msgstr ""
 
-#. Resource IDs: (IDS_LOG_POPUP_DIFF)
+#. Resource IDs: (Dialog IDD_RESOLVE_CONFLICT: Control id 1133, Dialog
+#. IDD_RESOLVE_CONFLICT: Control id 1134, IDS_LOG_POPUP_DIFF)
 msgid "Show &changes"
 msgstr "&Промени"
 
@@ -9670,11 +9720,11 @@ msgstr ""
 msgid "Show &overlays and context menu only in explorer"
 msgstr "&Модификации на иконките и контекстно меню - само в Windows Explorer"
 
-#. Resource IDs: (17099)
+#. Resource IDs: (IDS_AFXBARRES_PLACE_ABOVE_RIBBON)
 msgid "Show Above the Ribbon"
 msgstr "Показване над панделката"
 
-#. Resource IDs: (17098)
+#. Resource IDs: (IDS_AFXBARRES_PLACE_BELOW_RIBBON)
 msgid "Show Below the Ribbon"
 msgstr "Показване под панделката"
 
@@ -9682,7 +9732,7 @@ msgstr "Показване под панделката"
 msgid "Show Environment Variables"
 msgstr ""
 
-#. Resource IDs: (17030)
+#. Resource IDs: (IDS_AFXBARRES_SHOW_FEWER_BUTTONS)
 msgid "Show Fewer Buttons"
 msgstr "Показване на по-малко бутони"
 
@@ -9702,19 +9752,19 @@ msgid ""
 "Inline diff"
 msgstr ""
 
-#. Resource IDs: (17029)
+#. Resource IDs: (IDS_AFXBARRES_SHOW_MORE_BUTTONS)
 msgid "Show More Buttons"
 msgstr "Показване на повече бутони"
 
-#. Resource IDs: (17082)
+#. Resource IDs: (IDS_AFXBARRES_PLACE_QAT_ABOVE_RIBBON)
 msgid "Show Quick Access Toolbar Above the Ribbon"
 msgstr "Показване на лента за бърз достъп над панделката"
 
-#. Resource IDs: (17081)
+#. Resource IDs: (IDS_AFXBARRES_PLACE_QAT_BELOW_RIBBON)
 msgid "Show Quick Access Toolbar Below the Ribbon"
 msgstr "Показване на лента за бърз достъп под панделката"
 
-#. Resource IDs: (16651)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE6: Control id 16651)
 msgid "Show Screen&Tips on toolbars"
 msgstr "Показване на &екранни съвети на лентите с инструменти"
 
@@ -9783,6 +9833,10 @@ msgstr ""
 msgid "Show diff"
 msgstr ""
 
+#. Resource IDs: (IDS_HEADER_DIFFLEFTTOBASE, IDS_HEADER_DIFFRIGHTTOBASE)
+msgid "Show diff separately"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1556)
 msgid "Show diff to last commit"
 msgstr ""
@@ -9795,7 +9849,7 @@ msgstr ""
 msgid "Show extra changes after merge"
 msgstr ""
 
-#. Resource IDs: (16656)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE6: Control id 16656)
 msgid "Show f&ull menus after a short delay"
 msgstr "&Пълно меню след кратко забавяне"
 
@@ -9859,7 +9913,7 @@ msgstr "Показва дневник..."
 msgid "Show long format even if a tag is exactly on that commit"
 msgstr ""
 
-#. Resource IDs: (20308)
+#. Resource IDs: (25308)
 msgid ""
 "Show next change of selected commit\n"
 "Show next"
@@ -9903,7 +9957,7 @@ msgstr "Показване или скриване лентата с инстр�
 msgid "Show original line number"
 msgstr ""
 
-#. Resource IDs: (20309)
+#. Resource IDs: (25309)
 msgid ""
 "Show previous change of selected commit\n"
 "Show previous"
@@ -9913,7 +9967,7 @@ msgstr ""
 msgid "Show revision properties"
 msgstr "Показване на свойствата на редакцията"
 
-#. Resource IDs: (16652)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE6: Control id 16652)
 msgid "Show shortcut &keys in ScreenTips"
 msgstr "Показване на &клавишните комбинации в екранните съвети"
 
@@ -9983,7 +10037,8 @@ msgstr ""
 msgid "Si&gn"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_ABOUT: Control id 65535)
+#. Resource IDs: (Dialog IDD_ABOUT: Control id 65535, Dialog IDD_ABOUTBOX:
+#. Control id 65535)
 msgid "Significant contributions by: (see Git repository for a complete list)"
 msgstr ""
 
@@ -9996,7 +10051,8 @@ msgstr ""
 msgid "Since"
 msgstr "След"
 
-#. Resource IDs: (17129, IDS_LOG_SIZE, IDS_STATUSLIST_COLSIZE)
+#. Resource IDs: (IDS_AFX_SHELLLISTCTRL_SIZE, IDS_LOG_SIZE,
+#. IDS_STATUSLIST_COLSIZE)
 msgid "Size"
 msgstr "Размер"
 
@@ -10030,7 +10086,7 @@ msgstr "Прескочен"
 msgid "Skipped missing target"
 msgstr "Прескочени липсващи цели"
 
-#. Resource IDs: (17112)
+#. Resource IDs: (IDS_AFXBARRES_MENU_ANIMATION_SLIDE)
 msgid "Slide"
 msgstr "Плъзване"
 
@@ -10068,7 +10124,12 @@ msgid ""
 "dialog."
 msgstr "Указва максималния брой съобщения, които бихте искали да пазите в хронологията."
 
-#. Resource IDs: (16976, 16977, 16978, 16979, 16980, 16981)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 16976, Dialog
+#. IDD_AFXBARRES_COLORPAGE_TWO: Control id 16977, Dialog
+#. IDD_AFXBARRES_COLORPAGE_TWO: Control id 16978, Dialog
+#. IDD_AFXBARRES_COLORPAGE_TWO: Control id 16979, Dialog
+#. IDD_AFXBARRES_COLORPAGE_TWO: Control id 16980, Dialog
+#. IDD_AFXBARRES_COLORPAGE_TWO: Control id 16981)
 msgid "Spin1"
 msgstr "Spin1"
 
@@ -10098,7 +10159,8 @@ msgstr "Диаграма с насложени ленти"
 msgid "Stacked Line Graph"
 msgstr "Диаграма с насложени линии"
 
-#. Resource IDs: (16962, IDS_TOOLBAR_STANDARD)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLOR_PAGE_ONE: Control id 16962,
+#. IDS_TOOLBAR_STANDARD)
 msgid "Standard"
 msgstr "Стандартен"
 
@@ -10195,9 +10257,11 @@ msgstr ""
 msgid "State"
 msgstr ""
 
-#. Resource IDs: (16514, Dialog IDD_GITPROGRESS: Control id 1487, Dialog
-#. IDD_RESOLVE_CONFLICT: Control id 4572, Dialog IDD_RESOLVE_CONFLICT: Control
-#. id 4573)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE4: Control id 16514, Dialog
+#. IDD_AFXBARRES_PROPPAGE5: Control id 16514, Dialog
+#. IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 16514, Dialog
+#. IDD_GITPROGRESS: Control id 1487, Dialog IDD_RESOLVE_CONFLICT: Control id
+#. 4572, Dialog IDD_RESOLVE_CONFLICT: Control id 4573)
 msgid "Static"
 msgstr "Статичен"
 
@@ -10214,7 +10278,7 @@ msgstr "Състояние"
 msgid "Status Bar"
 msgstr ""
 
-#. Resource IDs: (17087)
+#. Resource IDs: (IDS_AFXBARRES_STATBAR_CUSTOMIZE)
 msgid "Status Bar Configuration"
 msgstr "Настройки на лентата за състоянието"
 
@@ -10279,6 +10343,10 @@ msgstr ""
 msgid "Subject:"
 msgstr ""
 
+#. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_SUBJECTS)
+msgid "Subjects"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SYNC: Control id 1639)
 msgid "Submodule"
 msgstr ""
@@ -10340,11 +10408,6 @@ msgstr "Успешно"
 msgid "Switch"
 msgstr "Превключи"
 
-#. Resource IDs: (IDS_PROGRS_CMD_SWITCH)
-#, c-format
-msgid "Switch %s to %s, Revision %s"
-msgstr ""
-
 #. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1522)
 msgid "Switch To"
 msgstr "Смяна на"
@@ -10375,7 +10438,7 @@ msgid ""
 "Switch left and right view"
 msgstr "Разменяне на съдържанието на левия и десния изглед\nРазменя левия с десния изглед"
 
-#. Resource IDs: (61188)
+#. Resource IDs: (AFX_IDS_SCNEXTWINDOW)
 msgid "Switch to the next document window"
 msgstr "Превключване към следващият прозорец на документа"
 
@@ -10385,7 +10448,7 @@ msgid ""
 "Next Pane"
 msgstr "Превключване към следващото пано на прозореца\nСледващо пано"
 
-#. Resource IDs: (61189)
+#. Resource IDs: (AFX_IDS_SCPREVWINDOW)
 msgid "Switch to the previous document window"
 msgstr "Превключване към предишния прозорец на документа"
 
@@ -10435,7 +10498,7 @@ msgstr ""
 msgid "System in offline mode. Check Internet Explorer."
 msgstr ""
 
-#. Resource IDs: (61707)
+#. Resource IDs: (AFX_IDP_UNREG_DONE)
 msgid ""
 "System registry entries have been removed and the INI file (if any) was "
 "deleted."
@@ -10461,7 +10524,7 @@ msgstr "TORTOISEGITUDIFF"
 msgid "Ta&gs:"
 msgstr ""
 
-#. Resource IDs: (16970)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLOR_DLG: Control id 16970)
 msgid "Tab Placeholder"
 msgstr "Заместител на страница"
 
@@ -10480,6 +10543,10 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROC_LOG_TAGINFO)
 msgid "Tag Info"
+msgstr ""
+
+#. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_TAGBRANCHES)
+msgid "Tag/branch names"
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_COPY_SUCCESS)
@@ -10503,7 +10570,7 @@ msgstr ""
 msgid "Tasks"
 msgstr "Задачи"
 
-#. Resource IDs: (17019)
+#. Resource IDs: (IDS_AFXBARRES_TASKPANE)
 msgid "Tasks Pane"
 msgstr "Панел на задачите"
 
@@ -10642,7 +10709,7 @@ msgstr "Файлът \n%s\nе празен.\nЖелаете ли да го из�
 msgid "The file is too big"
 msgstr "Файлът е прекалено голям"
 
-#. Resource IDs: (61701)
+#. Resource IDs: (AFX_IDP_FILE_TOO_LARGE)
 msgid "The file is too large to open."
 msgstr "Този файл е прекалено голям, за да бъде отворен."
 
@@ -10926,7 +10993,7 @@ msgstr ""
 msgid "Thesaurus"
 msgstr "Синонимен речник"
 
-#. Resource IDs: (62181)
+#. Resource IDs: (AFX_IDS_AUTOSAVE_RECOVERY_ASK_2)
 msgid ""
 "These are more recently saved than the currently open documents and contain "
 "changes that were made before the application closed."
@@ -10980,6 +11047,11 @@ msgid ""
 "commits."
 msgstr ""
 
+#. Resource IDs: (IDS_GITCONFIG_SETTING)
+#, c-format
+msgid "This option represents \"%s\" git config setting."
+msgstr ""
+
 #. Resource IDs: (IDS_REBASE_PRESERVEMERGES_TT)
 msgid ""
 "This preserves merge commits, however, it has known bugs as re-ordering "
@@ -10987,17 +11059,18 @@ msgid ""
 " see help."
 msgstr ""
 
-#. Resource IDs: (61710)
+#. Resource IDs: (AFX_IDP_DLL_BAD_VERSION)
 #, c-format
 msgid ""
-"This program is linked to the missing export %s in the file %s. This machine"
-" may have an incompatible version of %s."
-msgstr "Тази програма е свързана с липсващ износ %s във файла %s. Тази система вероятно има несъвместима версия на %s."
+"This program is linked to the missing export %Ts in the file %Ts. This "
+"machine may have an incompatible version of %Ts."
+msgstr "Тази програма е свързана с липсващ износ %Ts във файла %Ts. Тази система вероятно има несъвместима версия на %Ts."
 
-#. Resource IDs: (61709)
+#. Resource IDs: (AFX_IDP_DLL_LOAD_FAILED)
 #, c-format
-msgid "This program requires the file %s, which was not found on this system."
-msgstr "Програмата изисква файлът %s, който не е открит в тази система."
+msgid ""
+"This program requires the file %Ts, which was not found on this system."
+msgstr "Програмата изисква файлът %Ts, който не е открит в тази система."
 
 #. Resource IDs: (IDS_ERR_PROPNOTONFILE)
 msgid "This property is only allowed on folders, not files."
@@ -11013,7 +11086,7 @@ msgstr ""
 msgid "This task requires a clean working tree."
 msgstr ""
 
-#. Resource IDs: (16244)
+#. Resource IDs: (IDS_AFXBARRES_RESET_USAGE_WARNING)
 msgid ""
 "This will delete the record of commands you've used in this application and "
 "restore the default set of visible commands to the menus and toolbars. It "
@@ -11024,11 +11097,11 @@ msgstr "Ще бъде изтрит записа на командите, кои�
 msgid "Three way diff"
 msgstr ""
 
-#. Resource IDs: (16928)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 16928)
 msgid "Tile &Vertically"
 msgstr "&Вертикално подреждане"
 
-#. Resource IDs: (16924)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 16924)
 msgid "Tile Hori&zontally"
 msgstr "&Хоризонтално подреждане"
 
@@ -11067,15 +11140,15 @@ msgstr "Превключване между показване на една и�
 msgid "Toggle filters"
 msgstr ""
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE6: Control id 65535)
 msgid "Toolbar"
 msgstr "Лента с инструменти"
 
-#. Resource IDs: (16130)
+#. Resource IDs: (Dialog IDD_AFXBARRES_TOOLBAR_NAME: Control id 16130)
 msgid "Toolbar Name"
 msgstr "Име на лентата с инструменти"
 
-#. Resource IDs: (17017)
+#. Resource IDs: (IDS_AFXBARRES_TOOLBAR_OPTIONS)
 msgid "Toolbar Options"
 msgstr "Настройки на лентите с инструменти"
 
@@ -11083,15 +11156,15 @@ msgstr "Настройки на лентите с инструменти"
 msgid "Toolbar internal error. Please contact your application vendor."
 msgstr "Вътрешна грешка на лента с инструменти. Моля, обърнете се към доставчика на тази програма."
 
-#. Resource IDs: (16105)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE2: Control id 16105)
 msgid "Toolbars"
 msgstr "Ленти с инструменти"
 
-#. Resource IDs: (16928)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE7: Control id 16928)
 msgid "Tools"
 msgstr "Инструменти"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_IMAGE_EDITOR: Control id 65535)
 msgid "Tools:"
 msgstr "Инструменти:"
 
@@ -11164,8 +11237,8 @@ msgstr ""
 msgid "TortoiseGit&UDiff"
 msgstr "TortoiseGit&UDiff"
 
-#. Resource IDs: (57344, Dialog IDD_ABOUTBOX: Control id 1000, Dialog
-#. IDD_SETTINGSTBLAME: Control id 244, IDS_APPNAME)
+#. Resource IDs: (AFX_IDS_APP_TITLE, Dialog IDD_ABOUTBOX: Control id 1000,
+#. Dialog IDD_SETTINGSTBLAME: Control id 244, IDS_APPNAME)
 msgid "TortoiseGitBlame"
 msgstr "TortoiseGitBlame"
 
@@ -11214,8 +11287,8 @@ msgid ""
 "/showinfo\t\tto show the image info boxes"
 msgstr "TortoiseGitIDiff: програма за сравняване на изображения за TortoiseSVN\n\nНаличните параметри на командния ред са:\n/left:'път до лявото изображение'\n/lefttitle:'заглавие за лявото изображение'\n/right:'път до дясното изображение'\n/righttitle:'заглавие за дясното изображение'\n/overlay\t\tза включване не режим с припокриване\n/fit\t\tза напасване на размера на изображенията\n/showinfo\t\tза показване на полетата с информация за изображенията"
 
-#. Resource IDs: (100, 156 - Ribbon element, 32897, 57344, Dialog IDD_OPENDLG:
-#. Control id 130, IDS_APPNAME)
+#. Resource IDs: (100, 156 - Ribbon element, 32897, AFX_IDS_APP_TITLE, Dialog
+#. IDD_OPENDLG: Control id 130, IDS_APPNAME)
 msgid "TortoiseGitMerge"
 msgstr "TortoiseGitMerge"
 
@@ -11322,7 +11395,8 @@ msgstr ""
 msgid "Tweak TortoiseGit"
 msgstr ""
 
-#. Resource IDs: (17130, Dialog IDD_SVNIGNORE: Control id 1642)
+#. Resource IDs: (Dialog IDD_SVNIGNORE: Control id 1642,
+#. IDS_AFX_SHELLLISTCTRL_TYPE)
 msgid "Type"
 msgstr "Тип"
 
@@ -11362,20 +11436,20 @@ msgstr "UTF-16 LE"
 msgid "UTF-8"
 msgstr "UTF-8"
 
-#. Resource IDs: (61840)
+#. Resource IDs: (AFX_IDP_FAILED_MAPI_LOAD)
 msgid "Unable to load mail system support."
 msgstr "Грешка при стартиране на системата за електронна поща."
 
-#. Resource IDs: (61826)
+#. Resource IDs: (AFX_IDP_SERVER_BUSY)
 msgid "Unable to process command, server busy."
 msgstr "Невъзможно е да се обработи командата - сървърът е зает."
 
-#. Resource IDs: (61731)
+#. Resource IDs: (AFX_IDP_FAILED_ACCESS_READ)
 #, c-format
 msgid "Unable to read from %1, it is opened by someone else."
 msgstr "Грешка при при четене от %1 - отворен е от някой друг."
 
-#. Resource IDs: (61836)
+#. Resource IDs: (AFX_IDP_GET_NOT_SUPPORTED)
 msgid "Unable to read write-only property."
 msgstr "Невъзможно е да се чете свойство само за установяване."
 
@@ -11387,16 +11461,16 @@ msgid ""
 "from the top pane in the log dialog."
 msgstr ""
 
-#. Resource IDs: (61837)
+#. Resource IDs: (AFX_IDP_SET_NOT_SUPPORTED)
 msgid "Unable to write read-only property."
 msgstr "Невъзможно е да се променя свойство само за четене."
 
-#. Resource IDs: (61732)
+#. Resource IDs: (AFX_IDP_FAILED_ACCESS_WRITE)
 #, c-format
 msgid "Unable to write to %1, it is read-only or opened by someone else."
 msgstr "Грешка при запис в %1 - или е само за четене, или е отворен от някой друг."
 
-#. Resource IDs: (62177)
+#. Resource IDs: (AFX_IDS_CHECKLISTBOX_UNCHECK)
 msgid "Uncheck"
 msgstr "Премахване на отметка"
 
@@ -11404,12 +11478,12 @@ msgstr "Премахване на отметка"
 msgid "Undo"
 msgstr ""
 
-#. Resource IDs: (17102)
+#. Resource IDs: (IDS_AFXBARRES_UNDO_FMT)
 #, c-format
 msgid "Undo %d Actions"
 msgstr "Отмяна на %d действия"
 
-#. Resource IDs: (17103)
+#. Resource IDs: (IDS_AFXBARRES_UNDO_ONE)
 msgid "Undo 1 Action"
 msgstr "Отмяна на едно действие"
 
@@ -11429,7 +11503,7 @@ msgid ""
 "Undo"
 msgstr ""
 
-#. Resource IDs: (61728)
+#. Resource IDs: (AFX_IDP_FAILED_INVALID_FORMAT)
 msgid "Unexpected file format."
 msgstr "Неочакван файлов формат."
 
@@ -11437,11 +11511,11 @@ msgstr "Неочакван файлов формат."
 msgid "Unflag as skip-worktree and assume-unchanged"
 msgstr ""
 
-#. Resource IDs: (17111)
+#. Resource IDs: (IDS_AFXBARRES_MENU_ANIMATION_UNFOLD)
 msgid "Unfold"
 msgstr "Разгъване"
 
-#. Resource IDs: (61591)
+#. Resource IDs: (AFX_IDS_TEXT_FORMAT)
 msgid ""
 "Unformatted Text\n"
 "text without any formatting"
@@ -11455,10 +11529,6 @@ msgstr "Унифицирани &разлики на главните редак�
 msgid "Unknown"
 msgstr ""
 
-#. Resource IDs: (IDS_git_DEPTH_UNKNOWN)
-msgid "Unknown depth"
-msgstr "Неизвестна дълбочина"
-
 #. Resource IDs: (IDS_VIEWCONTEXTMENU_UNMARKBLOCK)
 msgid "Unmark this block"
 msgstr ""
@@ -11471,7 +11541,7 @@ msgstr "Неразрешени конфликти!"
 msgid "Unset tracked branch"
 msgstr ""
 
-#. Resource IDs: (61443)
+#. Resource IDs: (AFX_IDS_UNTITLED)
 msgid "Untitled"
 msgstr "Неозаглавен"
 
@@ -11509,7 +11579,7 @@ msgstr ""
 msgid "Updated"
 msgstr "Обновен"
 
-#. Resource IDs: (61581)
+#. Resource IDs: (AFX_IDS_UPDATING_ITEMS)
 msgid "Updating ActiveX objects"
 msgstr "Обновяване на обекти тип ActiveX"
 
@@ -11517,7 +11587,7 @@ msgstr "Обновяване на обекти тип ActiveX"
 msgid "Updating index"
 msgstr ""
 
-#. Resource IDs: (16530)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16530)
 msgid "Use &Default Image: "
 msgstr "Използване на изображението по &подразбиране:"
 
@@ -11529,27 +11599,12 @@ msgstr "Изглед с &единично пано по подразбиране
 msgid "Use &other text block"
 msgstr "Използване на &другия текстов блок"
 
-#. Resource IDs: (ID_EDIT_USEMYBLOCK - Menu, ID_EDIT_USEMYBLOCK - Ribbon name)
-msgid "Use 'mine' text block"
-msgstr ""
-
-#. Resource IDs: (ID_EDIT_USEMINETHENTHEIRBLOCK - Menu,
-#. ID_EDIT_USEMINETHENTHEIRBLOCK - Ribbon name)
-msgid "Use 'mine' text block then 'theirs'"
-msgstr ""
-
-#. Resource IDs: (ID_EDIT_USETHEIRBLOCK - Menu, ID_EDIT_USETHEIRBLOCK - Ribbon
-#. name)
-msgid "Use 'theirs' text block"
-msgstr ""
-
-#. Resource IDs: (ID_EDIT_USETHEIRTHENMYBLOCK - Menu,
-#. ID_EDIT_USETHEIRTHENMYBLOCK - Ribbon name)
-msgid "Use 'theirs' text block then 'mine'"
-msgstr ""
-
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1911)
 msgid "Use .mailmap"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_USELFS_TT)
+msgid "Use Git LFS"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 1761)
@@ -11612,6 +11667,14 @@ msgstr "Използване и на двата текстови блока (т�
 msgid "Use both text blocks (this one last)"
 msgstr "Използване и на двата текстови блока (този последен)"
 
+#. Resource IDs: (Dialog IDD_STATGRAPH: Control id 1128)
+msgid "Use commit dates"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_STATGRAPH: Control id 1127)
+msgid "Use committer names"
+msgstr ""
+
 #. Resource IDs: (IDS_SMTP_CONFIGURED)
 msgid "Use configured server"
 msgstr ""
@@ -11625,6 +11688,16 @@ msgstr ""
 #. name)
 msgid "Use left file"
 msgstr "Използване на левият файл"
+
+#. Resource IDs: (ID_EDIT_USETHEIRBLOCK - Menu, ID_EDIT_USETHEIRBLOCK - Ribbon
+#. name)
+msgid "Use left text block"
+msgstr ""
+
+#. Resource IDs: (ID_EDIT_USETHEIRTHENMYBLOCK - Menu,
+#. ID_EDIT_USETHEIRTHENMYBLOCK - Ribbon name)
+msgid "Use left text block then right"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 1762)
 msgid "Use local branch color for current branch"
@@ -11642,6 +11715,15 @@ msgstr "С регулярни изрази"
 msgid "Use right block"
 msgstr ""
 
+#. Resource IDs: (ID_EDIT_USEMYBLOCK - Menu, ID_EDIT_USEMYBLOCK - Ribbon name)
+msgid "Use right text block"
+msgstr ""
+
+#. Resource IDs: (ID_EDIT_USEMINETHENTHEIRBLOCK - Menu,
+#. ID_EDIT_USEMINETHENTHEIRBLOCK - Ribbon name)
+msgid "Use right text block then left"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 1091)
 msgid "Use spaces"
 msgstr ""
@@ -11650,45 +11732,45 @@ msgstr ""
 msgid "Use system locale for date/time"
 msgstr "Използване на системния локал за дата и час"
 
-#. Resource IDs: (IDS_VIEWCONTEXTMENU_USEYOURBLOCK)
-msgid "Use text block from '&mine'"
-msgstr "Използване на текстовият блок от '&моя'"
-
 #. Resource IDs: (IDS_VIEWCONTEXTMENU_USETHEIRBLOCK)
-msgid "Use text block from '&theirs'"
-msgstr "Използване на текстовият блок от '&техния'"
+msgid "Use text block from &left"
+msgstr ""
 
-#. Resource IDs: (IDS_VIEWCONTEXTMENU_USEYOURANDTHEIRBLOCK)
-msgid "Use text block from 'm&ine' before 'theirs'"
-msgstr "Използване на текстовият блок от '&моя' преди 'техния'"
-
-#. Resource IDs: (32822)
-msgid ""
-"Use text block from 'mine' before 'theirs'\n"
-"Use 'mine' text block then 'theirs'"
-msgstr "Използване на текстовият блок от 'моя' преди 'техния'\nИзползване на 'моя' текстов блок и тогава 'техния'"
-
-#. Resource IDs: (32820)
-msgid ""
-"Use text block from 'mine'\n"
-"Use 'mine' text block"
-msgstr "Използване на текстовият блок от 'моя'\nИзползване на 'моя' текстов блок"
+#. Resource IDs: (IDS_VIEWCONTEXTMENU_USEYOURBLOCK)
+msgid "Use text block from &right"
+msgstr ""
 
 #. Resource IDs: (IDS_VIEWCONTEXTMENU_USETHEIRANDYOURBLOCK)
-msgid "Use text block from 't&heirs' before 'mine'"
-msgstr "Използване на текстовият блок от '&техния' преди 'моя'"
+msgid "Use text block from l&eft before right"
+msgstr ""
 
 #. Resource IDs: (32821)
 msgid ""
-"Use text block from 'theirs' before 'mine'\n"
-"Use 'theirs' text block then 'mine'"
-msgstr "Използване на текстовият блок от 'моя' преди 'техния'\nИзползване на 'моя' текстов блок и тогава 'техния'"
+"Use text block from left before right file\n"
+"Use left file text block then right"
+msgstr ""
 
 #. Resource IDs: (32819)
 msgid ""
-"Use text block from 'theirs'\n"
-"Use 'theirs' text block"
-msgstr "Използване на текстовият блок от 'техния'\nИзползване на 'техния' текстов блок"
+"Use text block from left file\n"
+"Use left file text block"
+msgstr ""
+
+#. Resource IDs: (IDS_VIEWCONTEXTMENU_USEYOURANDTHEIRBLOCK)
+msgid "Use text block from r&ight before left"
+msgstr ""
+
+#. Resource IDs: (32822)
+msgid ""
+"Use text block from right file before left\n"
+"Use right file text block then left"
+msgstr ""
+
+#. Resource IDs: (32820)
+msgid ""
+"Use text block from right file\n"
+"Use right file text block"
+msgstr ""
 
 #. Resource IDs: (32855)
 msgid ""
@@ -11771,6 +11853,10 @@ msgstr ""
 #. IDS_AUTH_USERNAME)
 msgid "Username:"
 msgstr "Потребителско име:"
+
+#. Resource IDs: (IDS_SETTINGS_ONLYNONELEVATED_TT)
+msgid "Uses the status cache type 'none' for elevated processes"
+msgstr ""
 
 #. Resource IDs: (IDS_COMMANDLINEHELP)
 msgid ""
@@ -12000,11 +12086,11 @@ msgstr ""
 msgid "Whitespaces"
 msgstr "Празни символи"
 
-#. Resource IDs: (17038)
+#. Resource IDs: (IDS_AFXBARRES_MENU)
 msgid "Window Position"
 msgstr "Позицията на прозореца"
 
-#. Resource IDs: (16927)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 16927)
 msgid "Windows"
 msgstr "Windows"
 
@@ -12067,8 +12153,7 @@ msgstr ""
 msgid "Within file"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_CHANGEDFILES: Control id 158,
-#. IDS_git_DEPTH_WORKING)
+#. Resource IDs: (Dialog IDD_CHANGEDFILES: Control id 158, IDS_WORKING_TREE)
 msgid "Working Tree"
 msgstr "Работно дърво"
 
@@ -12109,12 +12194,12 @@ msgid ""
 "Disabled handlers won't use up an overlay slot and give other shell extensions a chance to show their overlays."
 msgstr "Тук може да изключите определени модификации на иконките.\nИзключените модификации няма да заемат слот за модификация и ще дадат шанс на други разширения на обвивката да покажат техните модификации."
 
-#. Resource IDs: (16005)
+#. Resource IDs: (IDS_AFXBARRES_WRONG_IMAGE_SIZE)
 #, c-format
 msgid "You can paste bitmap with the size (%d x %d) only!"
 msgstr "Може да поставите растерно изображение само с размери (%d x %d)!"
 
-#. Resource IDs: (16243)
+#. Resource IDs: (IDS_AFXBARRES_TOO_MANY_TOOLBARS_FMT)
 #, c-format
 msgid "You can't create more than %d user-defined toolbars!"
 msgstr "Не можете да създадете повече от %d потребителски ленти с инструменти!"
@@ -12178,7 +12263,7 @@ msgid ""
 "Do you want to restore them now? You might lose all changes to this file after marking it."
 msgstr ""
 
-#. Resource IDs: (16024)
+#. Resource IDs: (IDS_AFXBARRES_TOO_MANY_TOOLS_FMT)
 #, c-format
 msgid "You may define up to %d tools."
 msgstr "Можете да дефинирате най-много %d инструмента."
@@ -12249,15 +12334,15 @@ msgstr "ZIP файл"
 msgid "Zoo&m out\t-"
 msgstr "С&маляване\t-"
 
-#. Resource IDs: (17093)
+#. Resource IDs: (IDS_AFXBARRES_ZOOM)
 msgid "Zoom"
 msgstr "Увеличаване"
 
-#. Resource IDs: (58117)
+#. Resource IDs: (Dialog AFX_IDD_PREVIEW_TOOLBAR: Control id 58117)
 msgid "Zoom &In"
 msgstr "&Увеличаване"
 
-#. Resource IDs: (58118)
+#. Resource IDs: (Dialog AFX_IDD_PREVIEW_TOOLBAR: Control id 58118)
 msgid "Zoom &Out"
 msgstr "&Смаляване"
 
@@ -12302,7 +12387,7 @@ msgstr "Оптимален мащаб по височина"
 msgid "Zoom to fit in width"
 msgstr "Оптимален мащаб по ширина"
 
-#. Resource IDs: (17114)
+#. Resource IDs: (IDS_AFXBARRES_MENU_ANIMATION_DEFAULT)
 msgid "[Default]"
 msgstr "[По подразбиране]"
 
@@ -12376,7 +12461,7 @@ msgstr "добавен"
 msgid "added files"
 msgstr "добавени файлове"
 
-#. Resource IDs: (61446)
+#. Resource IDs: (AFX_IDS_UNNAMED_FILE)
 msgid "an unnamed file"
 msgstr "неозаглавен файл"
 
@@ -12398,7 +12483,7 @@ msgid "author (>= 0.5%)"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 65535)
-msgid "based on TortoiseSVN (http://www.tortoisesvn.net/)"
+msgid "based on TortoiseSVN (https://tortoisesvn.net/)"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ_CONFIG: Control id 65535)
@@ -12429,6 +12514,15 @@ msgstr "bugtraq.url"
 msgid "bugtraq.warningifnoissue"
 msgstr "bugtraq.warningifnoissue"
 
+#. Resource IDs: (IDS_CONFLICT_REFTOBEMERGED)
+msgid "changes to-be-integrated"
+msgstr ""
+
+#. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYCOL)
+#, c-format
+msgid "column '%ls'"
+msgstr ""
+
 #. Resource IDs: (IDS_STATGRAPH_COMMITSBYAUTHORY,
 #. IDS_STATGRAPH_COMMITSBYDATEY)
 msgid "commits"
@@ -12457,7 +12551,7 @@ msgstr "изтрит"
 msgid "diff from pipe"
 msgstr ""
 
-#. Resource IDs: (58116)
+#. Resource IDs: (Dialog IDD_AFXBAR_RES_PRINT_PREVIEW: Control id 58116)
 msgid "dummy"
 msgstr "dummy"
 
@@ -12477,6 +12571,18 @@ msgstr "изнесени\n%s\nв\n%s"
 #. Resource IDs: (IDS_STATUSEXTERNAL)
 msgid "external"
 msgstr "външни"
+
+#. Resource IDs: (IDS_CONFLICT_NOTASUBMODULE)
+msgid "file, not a submodule"
+msgstr ""
+
+#. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYFILENAMES)
+msgid "file/foldernames"
+msgstr ""
+
+#. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYFULLPATHS)
+msgid "full paths"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_PROGRESS_GITUNCLEANEXIT)
 #, c-format
@@ -12594,6 +12700,10 @@ msgstr "не"
 msgid "no description for this command is available"
 msgstr "не е налично описание за тази команда"
 
+#. Resource IDs: (IDS_CONFLICT_NOSUBMODULE)
+msgid "no submodule"
+msgstr ""
+
 #. Resource IDs: (IDS_STATUSUNVERSIONED)
 msgid "non-versioned"
 msgstr "неконтролиран"
@@ -12610,11 +12720,15 @@ msgstr "нормален"
 msgid "not found"
 msgstr ""
 
+#. Resource IDs: (IDS_CONFLICT_SUBMODULENOTINITIALIZED)
+msgid "not initialized"
+msgstr ""
+
 #. Resource IDs: (IDS_STATUSOBSTRUCTED)
 msgid "obstructed"
 msgstr "задръстен"
 
-#. Resource IDs: (61504)
+#. Resource IDs: (AFX_IDS_PRINTONPORT)
 #, c-format
 msgid "on %1"
 msgstr "на %1"
@@ -12623,7 +12737,7 @@ msgstr "на %1"
 msgid "patched"
 msgstr ""
 
-#. Resource IDs: (61888)
+#. Resource IDs: (AFX_IDS_OCC_SCALEUNITS_PIXELS)
 msgid "pixels"
 msgstr "точки"
 
@@ -12638,13 +12752,17 @@ msgid ""
 "Do you want to"
 msgstr ""
 
-#. Resource IDs: (61509)
+#. Resource IDs: (AFX_IDS_PRINTDEFAULTEXT)
 msgid "prn"
 msgstr "prn"
 
 #. Resource IDs: (IDS_STATGRAPH_COMMITSBYDATEXQUARTER)
 msgid "quarter of year"
 msgstr "тримесечие"
+
+#. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYRELPATHS)
+msgid "relative paths"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 65535)
 msgid "renamed"
@@ -12673,7 +12791,7 @@ msgstr "превключено към\n%s"
 msgid "take care of submodule changes"
 msgstr ""
 
-#. Resource IDs: (61513)
+#. Resource IDs: (AFX_IDS_PRINTTOFILE)
 #, c-format
 msgid "to %1"
 msgstr "към %1"

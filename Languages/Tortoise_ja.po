@@ -1,26 +1,45 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2015 the TortoiseGit team
+# Copyright (C) 2008-2017 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
 # Translators:
+# ABE Tsunehiko, 2015
+# carrotsoft <www.carrotsoft@gmail.com>, 2012
+# Diego Búrigo Zacarão <diegobz@indifex.com>, 2011
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2008
+# hirose y <yh1224@gmail.com>, 2012,2017
+# Ilias-Dimitrios Vrachnis, 2013
+# タカハシ <indexial@outlook.jp>, 2013
+# Joseph Ting <josephting90@gmail.com>, 2017
 #  Koto <>, 2012
-# Masahiro Fujimoto <mfujimot@gmail.com>, 2015
+# Lübbe  <luebbe.tortoisesvn@googlemail.com>, 2012
+# 藤本理弘 <mfujimot@gmail.com>, 2015
+# Nozomu Kaneko <nozom.kaneko@gmail.com>, 2013
+# Osamu NAKAMURA, 2013
+# Ratnadeep Debnath <rtnpro@transifex.com>, 2012
+# Shinya Okano <tokibito@gmail.com>, 2011
 # Sven Strickroth <sstrickroth@googlemail.com>, 2012-2013
+# Tadashi Jokagi <elf@elf.no-ip.org>, 2011
 # Takumi Shotoku <sinsoku.listy@gmail.com>, 2012
 # Tetsuhiko Koto, 2014
 # Tetsuhiko Koto, 2012-2014
-# Tetsuhiko Koto, 2014-2016
+# Tetsuhiko Koto, 2014-2017
+# Tetsuya Morimoto <tetsuya.morimoto@gmail.com>, 2011
 # YANO Tetsu <tetuyano+transi@gmail.com>, 2012-2013
 # YANO Tetsu <tetuyano+transi@gmail.com>, 2013
 # YANO Tetsu <tetuyano+transi@gmail.com>, 2013-2015
-# Yoshiharu Hirose <yh1224@gmail.com>, 2012
+# hirose y <yh1224@gmail.com>, 2012
+# Yoshitaka Yamashita <drum@magic-touch.org>, 2013
+# youten, 2011
+# 大川剛 <tu44okawa3@gmail.com>, 2016
+# 藤本理弘 <mfujimot@gmail.com>, 2013,2015,2017
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2016-12-29 16:08+0000\n"
+"PO-Revision-Date: 2017-07-22 13:04+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Japanese (http://www.transifex.com/lznuaa/tortoisegit/language/ja/)\n"
 "MIME-Version: 1.0\n"
@@ -49,34 +68,34 @@ msgstr "! %d"
 
 #. Resource IDs: (Dialog IDD_STATGRAPH: Control id 1262)
 msgid "# authors shown individually:"
-msgstr "別個に表示する作者の人数:"
+msgstr "別個に表示する著者の人数:"
 
 #. Resource IDs: (IDS_SVN_PROGRESS_TOTALMBTRANSFERRED)
 #, c-format
 msgid "%.2f MiB transferred"
 msgstr "%.2f MiB 転送しました"
 
-#. Resource IDs: (61878)
+#. Resource IDs: (AFX_IDP_ARCH_BADCLASS)
 #, c-format
 msgid "%1 contained an unexpected object."
 msgstr "%1 は想定外のオブジェクトを含んでいます。"
 
-#. Resource IDs: (61859)
+#. Resource IDs: (AFX_IDP_FILE_BAD_PATH)
 #, c-format
 msgid "%1 contains an incorrect path."
 msgstr "%1 は正しくないパスを含んでいます。"
 
-#. Resource IDs: (61879)
+#. Resource IDs: (AFX_IDP_ARCH_BADSCHEMA)
 #, c-format
 msgid "%1 contains an incorrect schema."
 msgstr "%1 は正しくないスキーマを含んでいます。"
 
-#. Resource IDs: (61877)
+#. Resource IDs: (AFX_IDP_ARCH_BADINDEX)
 #, c-format
 msgid "%1 has a bad format."
 msgstr "%1 のフォーマットが不正です。"
 
-#. Resource IDs: (61858)
+#. Resource IDs: (AFX_IDP_FILE_NOT_FOUND)
 #, c-format
 msgid "%1 was not found."
 msgstr "%1 は見つかりませんでした。"
@@ -109,12 +128,12 @@ msgstr "%1!d! 分前"
 #. Resource IDs: (IDS_MONTH_AGO)
 #, c-format
 msgid "%1!d! Month ago"
-msgstr "%1!d! 月前"
+msgstr "%1!d! ヶ月前"
 
 #. Resource IDs: (IDS_MONTHS_AGO)
 #, c-format
 msgid "%1!d! Months ago"
-msgstr "%1!d! 月前"
+msgstr "%1!d! ヶ月前"
 
 #. Resource IDs: (IDS_SECOND_AGO)
 #, c-format
@@ -156,10 +175,10 @@ msgstr "%1!d! 個のアイテムを選択"
 msgid "%1!d! minutes ago"
 msgstr "%1!d! 分前"
 
-#. Resource IDs: (IDS_REPOBROWSE_INFODIR)
+#. Resource IDs: (IDS_CONFLICT_INFOTEXT)
 #, c-format
-msgid "%1!s!"
-msgstr "%1!s!"
+msgid "%1!s! (%2!s!)"
+msgstr "%1!s! (%2!s!)"
 
 #. Resource IDs: (IDS_REPOBROWSE_INFO)
 #, c-format
@@ -175,14 +194,14 @@ msgid ""
 "Size %2!s!"
 msgstr "%1!s!\nサイズ %2!s!"
 
-#. Resource IDs: (61744)
+#. Resource IDs: (AFX_IDP_SCRIPT_ERROR)
 #, c-format
 msgid ""
 "%1: %2\n"
 "Continue running script?"
 msgstr "%1: %2\nスクリプトの実行を続けますか？"
 
-#. Resource IDs: (61729)
+#. Resource IDs: (AFX_IDP_FAILED_INVALID_PATH)
 #, c-format
 msgid ""
 "%1\n"
@@ -204,6 +223,18 @@ msgstr "%I64d バイトを転送しました"
 #, c-format
 msgid "%I64d KiB transferred"
 msgstr "%I64d KiB 転送しました"
+
+#. Resource IDs: (AFX_IDS_AUTOSAVE_RECOVERED)
+#, c-format
+msgid "%Ts [Recovered]"
+msgstr "%Ts [復元済]"
+
+#. Resource IDs: (AFX_IDS_EMBED_FORMAT, AFX_IDS_LINKSOURCE_FORMAT)
+#, c-format
+msgid ""
+"%Ts\n"
+"%Ts"
+msgstr "%Ts\n%Ts"
 
 #. Resource IDs: (IDS_PROC_SYNC_COMMITSAHEAD)
 #, c-format
@@ -258,11 +289,6 @@ msgstr "%ld / %ld"
 msgid "%s - at revision: %d"
 msgstr "%s - リビジョン: %d"
 
-#. Resource IDs: (62186)
-#, c-format
-msgid "%s [Recovered]"
-msgstr "%s [復元済]"
-
 #. Resource IDs: (IDS_PROGRS_FINALINFO)
 #, c-format
 msgid "%s in %s"
@@ -282,23 +308,6 @@ msgstr "%s (%s)"
 #, c-format
 msgid "%s: Working Tree"
 msgstr "%s : 作業ツリー"
-
-#. Resource IDs: (IDS_PROC_EXPORTFOLDERNAME2)
-#, c-format
-msgid "%s\\Export (%d) of %s"
-msgstr "%s のエクスポート(%d個) %s"
-
-#. Resource IDs: (IDS_PROC_EXPORTFOLDERNAME)
-#, c-format
-msgid "%s\\Export of %s"
-msgstr "%s のエクスポート %s"
-
-#. Resource IDs: (61585, 61586)
-#, c-format
-msgid ""
-"%s\n"
-"%s"
-msgstr "%s\n%s"
 
 #. Resource IDs: (IDS_PATCH_ITEMTT)
 #, c-format
@@ -322,7 +331,8 @@ msgid ""
 "TortoiseGitMerge can't diff directories."
 msgstr "%s\nはファイルではなくディレクトリです。\nTortoiseGitMerge はディレクトリの差分を取ることはできません。"
 
-#. Resource IDs: (16923, Dialog IDD_RENAME: Control id 1483)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE7: Control id 16923, Dialog
+#. IDD_RENAME: Control id 1483)
 msgid "&..."
 msgstr "&..."
 
@@ -342,7 +352,7 @@ msgstr "TortoiseGitBlameについて(&A)..."
 msgid "&About TortoiseGitMerge..."
 msgstr "TortoiseGitMergeについて(&A) ..."
 
-#. Resource IDs: (16920)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 16920)
 msgid "&Activate"
 msgstr "アクティブにする(&A)"
 
@@ -351,7 +361,7 @@ msgstr "アクティブにする(&A)"
 msgid "&Add"
 msgstr "追加(&A)"
 
-#. Resource IDs: (17075)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE8: Control id 17075)
 msgid "&Add >>"
 msgstr "追加(&A) >>"
 
@@ -368,7 +378,7 @@ msgstr "新規に追加/保存(&A)"
 msgid "&Add it"
 msgstr "追加する(&A)"
 
-#. Resource IDs: (17018)
+#. Resource IDs: (IDS_AFXBARRES_ADD_REMOVE_BTNS)
 msgid "&Add or Remove Buttons"
 msgstr "ボタンの追加/削除(&A)"
 
@@ -402,19 +412,20 @@ msgstr "パッチを適用(&A)"
 msgid "&Apply unified diff"
 msgstr "Unified 形式の差分を適用(&A)"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE7: Control id 65535)
 msgid "&Arguments:"
 msgstr "引数(&A):"
 
-#. Resource IDs: (16645)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 16645, Dialog
+#. IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 16645)
 msgid "&Assign"
 msgstr "割り当て(&A)"
 
-#. Resource IDs: (16633)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE4: Control id 16633)
 msgid "&Associate double-click event with:"
 msgstr "ダブルクリックイベントの関連付け(&A):"
 
-#. Resource IDs: (17041)
+#. Resource IDs: (IDS_AFXBARRES_AUTOHIDE)
 msgid "&Auto Hide"
 msgstr "自動的に隠す(&A)"
 
@@ -442,7 +453,7 @@ msgstr "変更の注釈履歴(行毎の由来)(&B)"
 msgid "&Blame revisions"
 msgstr "リビジョンの注釈履歴(行毎の由来)(&B)"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 65535)
 msgid "&Blue:"
 msgstr "青(&B):"
 
@@ -469,11 +480,11 @@ msgstr "リポジトリを参照(&B)"
 msgid "&Browse..."
 msgstr "参照(&B)..."
 
-#. Resource IDs: (16913 - Menu)
+#. Resource IDs: (ID_AFXBARRES_TOOLBAR_APPEARANCE - Menu)
 msgid "&Button Appearance..."
 msgstr "ボタンの外観(&B)..."
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 65535)
 msgid "&Button text:"
 msgstr "ボタンのテキスト(&B):"
 
@@ -485,15 +496,16 @@ msgstr "&CD-ROM"
 msgid "&Cancel"
 msgstr "キャンセル(&C)"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 65535)
 msgid "&Categories:"
 msgstr "カテゴリ(&C):"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_KEYMAP: Control id 65535, Dialog
+#. IDD_AFXBARRES_PROPPAGE5: Control id 65535)
 msgid "&Category:"
 msgstr "カテゴリ(&C):"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE8: Control id 65535)
 msgid "&Choose commands from:"
 msgstr "コマンドを選択(&C):"
 
@@ -509,15 +521,16 @@ msgstr "クリア(&C)"
 msgid "&Clear stash"
 msgstr "スタッシュをクリア(&C)"
 
-#. Resource IDs: (58112, Dialog IDD_CHECKFORUPDATES: Control id 1)
+#. Resource IDs: (Dialog AFX_IDD_PREVIEW_TOOLBAR: Control id 58112, Dialog
+#. IDD_CHECKFORUPDATES: Control id 1)
 msgid "&Close"
 msgstr "閉じる(&C)"
 
-#. Resource IDs: (16922)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 16922)
 msgid "&Close Window(s)"
 msgstr "ウィンドウを閉じる(&C)"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE7: Control id 65535)
 msgid "&Command:"
 msgstr "コマンド(&C):"
 
@@ -557,7 +570,7 @@ msgstr "続行(&C)"
 msgid "&Copy"
 msgstr "コピー(&C)"
 
-#. Resource IDs: (16911 - Menu)
+#. Resource IDs: (ID_AFXBARRES_COPY_IMAGE - Menu)
 msgid "&Copy Button Image"
 msgstr "ボタンイメージのコピー(&C)"
 
@@ -568,7 +581,7 @@ msgstr "コピー(&C)\tCtrl+C"
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_AUTHENTICATION: Control id
 #. 65535)
 msgid "&Credential helper:"
-msgstr ""
+msgstr "資格情報ヘルパー(&C):"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 1662)
 msgid "&Custom"
@@ -578,8 +591,9 @@ msgstr "カスタム(&C)"
 msgid "&Default"
 msgstr "デフォルト(&D)"
 
-#. Resource IDs: (16617, 16912 - Menu, Dialog IDD_DELETEREMOTETAG: Control id
-#. 1, IDS_DELETEBUTTON, IDS_MENUREMOVE)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE2: Control id 16617, Dialog
+#. IDD_DELETEREMOTETAG: Control id 1, IDS_DELETEBUTTON, IDS_MENUREMOVE,
+#. ID_AFXBARRES_TOOLBAR_DELETE - Menu)
 msgid "&Delete"
 msgstr "削除(&D)"
 
@@ -627,7 +641,7 @@ msgstr "破棄(&D)"
 msgid "&Do the same for the rest"
 msgstr "残りを同様に実行する(&D)"
 
-#. Resource IDs: (17040)
+#. Resource IDs: (IDS_AFXBARRES_DOCKING)
 msgid "&Docking"
 msgstr "ドッキング(&D)"
 
@@ -642,7 +656,7 @@ msgstr "このメッセージを再び表示しない(&D)"
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_AUTHENTICATION: Control id 1839,
 #. Dialog IDD_FIRSTSTARTWIZARD_USER: Control id 1839)
 msgid "&Don't store these settings now."
-msgstr ""
+msgstr "今はこの設定を保存しない(&D)"
 
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1384)
 msgid "&Down"
@@ -673,7 +687,8 @@ msgstr "フィルターを編集(&E)"
 msgid "&Edit conflicts"
 msgstr "競合の編集(&E)"
 
-#. Resource IDs: (16510, Dialog IDD_SETTINGSPROGSADV: Control id 1099)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16510, Dialog
+#. IDD_SETTINGSPROGSADV: Control id 1099)
 msgid "&Edit..."
 msgstr "編集(&E)..."
 
@@ -693,7 +708,7 @@ msgstr "メール(&E):"
 #. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQADV: Control id 1023, Dialog
 #. IDD_SETTINGSHOOKCONFIG: Control id 1023)
 msgid "&Enable"
-msgstr ""
+msgstr "有効(&E)"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROXY: Control id 1023)
 msgid "&Enable Proxy Server"
@@ -719,7 +734,7 @@ msgstr "外部(&E)"
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 65535, Dialog
 #. IDD_SETTINGSMAIN: Control id 65535)
 msgid "&Extra PATH:"
-msgstr ""
+msgstr "追加のPATH(&E)"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "&File"
@@ -741,7 +756,7 @@ msgstr "画像をウィンドウサイズに合わせる(&F)\tF"
 msgid "&Fixed drives"
 msgstr "固定ドライブ(&F)"
 
-#. Resource IDs: (17039)
+#. Resource IDs: (IDS_AFXBARRES_FLOATING)
 msgid "&Floating"
 msgstr "フローティング(&F)"
 
@@ -776,7 +791,7 @@ msgstr "&From:"
 
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_AUTHENTICATION: Control id 1844)
 msgid "&Generate PuTTY  key pair"
-msgstr ""
+msgstr "PuTTYで公開鍵・秘密鍵を作成する(&G)"
 
 #. Resource IDs: (Dialog IDD_SVNDCOMMITTYPE: Control id 2153)
 msgid "&Git Style Commit (--rmdir)"
@@ -785,7 +800,7 @@ msgstr "&Git スタイル コミット (--rmdir)"
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 65535, Dialog
 #. IDD_SETTINGSMAIN: Control id 65535)
 msgid "&Git.exe Path:"
-msgstr ""
+msgstr "&Git.exeへのパス:"
 
 #. Resource IDs: (ID_EDIT_GOTO - Menu)
 msgid "&Go to\tCtrl+G"
@@ -795,7 +810,7 @@ msgstr "指定先へ移動(&G)\tCtrl+G"
 msgid "&Gray Unrelated Changed Paths"
 msgstr "無関係な変更のパスをグレーで表示(&G)"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 65535)
 msgid "&Green:"
 msgstr "緑(&G):"
 
@@ -807,9 +822,10 @@ msgstr "&HEAD"
 #. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1552, Dialog IDD_RESET:
 #. Control id 1552)
 msgid "&Hard: Reset working tree and index (discard all local changes)"
-msgstr ""
+msgstr "Hard: 作業ツリーとインデックスをリセット（コミットしていない変更をすべて破棄）(&H)"
 
-#. Resource IDs: (57670, 65535 - PopupMenu, IDS_MENUHELP)
+#. Resource IDs: (65535 - PopupMenu, Dialog AFX_IDD_NEWTYPEDLG: Control id
+#. 57670, Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 57670, IDS_MENUHELP)
 msgid "&Help"
 msgstr "ヘルプ(&H)"
 
@@ -817,7 +833,7 @@ msgstr "ヘルプ(&H)"
 msgid "&Help Topics"
 msgstr "トピックス(&H)"
 
-#. Resource IDs: (17042, 61457, ID_VIEW_OUTPUTWND - Menu)
+#. Resource IDs: (AFX_IDS_HIDE, IDS_AFXBARRES_HIDE, ID_VIEW_OUTPUTWND - Menu)
 msgid "&Hide"
 msgstr "隠す(&H)"
 
@@ -836,13 +852,13 @@ msgstr "名前により %d 項目を無視する(&I)"
 
 #. Resource IDs: (IDS_MENUIGNOREMULTIPLE2)
 msgid "&Ignore multiple items by name"
-msgstr ""
+msgstr "名前で複数アイテムを無視する(&I)"
 
 #. Resource IDs: (ID_VIEW_IGNORE_WHITESPACE - Menu)
 msgid "&Ignore whitespace"
 msgstr "空白類を無視(&I)"
 
-#. Resource IDs: (16914 - Menu)
+#. Resource IDs: (ID_AFXBARRES_TOOLBAR_IMAGE - Menu)
 msgid "&Image"
 msgstr "画像(&I)"
 
@@ -850,7 +866,7 @@ msgstr "画像(&I)"
 msgid "&Image info\tI"
 msgstr "イメージ情報(&I)\tI"
 
-#. Resource IDs: (16505)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16505)
 msgid "&Image only"
 msgstr "画像のみ(&I)"
 
@@ -858,7 +874,7 @@ msgstr "画像のみ(&I)"
 msgid "&Import..."
 msgstr "インポート(&I)..."
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE7: Control id 65535)
 msgid "&Initial directory:"
 msgstr "初期ディレクトリ(&I):"
 
@@ -891,7 +907,7 @@ msgstr "ラベル(&L)"
 msgid "&Language:"
 msgstr "言語(&Language):"
 
-#. Resource IDs: (16653)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE6: Control id 16653)
 msgid "&Large Icons"
 msgstr "大きなアイコン(&L)"
 
@@ -936,7 +952,7 @@ msgstr "ローカルブランチ(&L)"
 msgid "&Local:"
 msgstr "ローカル(&L):"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 65535)
 msgid "&Luminence:"
 msgstr "明度(&L):"
 
@@ -944,11 +960,11 @@ msgstr "明度(&L):"
 msgid "&Max line length for inline diffs"
 msgstr "行内差分を調べる最大の1行の長さ(&M)"
 
-#. Resource IDs: (16543)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 16543)
 msgid "&Menu animations:"
 msgstr "メニューのアニメーション(&M):"
 
-#. Resource IDs: (16921)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE7: Control id 16921)
 msgid "&Menu contents:"
 msgstr "メニューの内容(&M):"
 
@@ -959,7 +975,7 @@ msgstr "マージ(&M)"
 
 #. Resource IDs: (IDS_MERGE_UNRELATED)
 msgid "&Merge unrelated history"
-msgstr ""
+msgstr "無関係な履歴をマージする(&M)"
 
 #. Resource IDs: (IDS_MENUMERGE)
 msgid "&Merge..."
@@ -977,14 +993,14 @@ msgstr "メッセージ(&M)"
 msgid "&Message:"
 msgstr "メッセージ(&M):"
 
-#. Resource IDs: (16925)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 16925)
 msgid "&Minimize"
 msgstr "最小化(&M)"
 
 #. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1551, Dialog IDD_RESET:
 #. Control id 1551)
 msgid "&Mixed: Leave working tree untouched, reset index"
-msgstr ""
+msgstr "Mixed: 作業ツリーは現状を維持し、インデックスはリセット(&M)"
 
 #. Resource IDs: (ID_VIEW_MOVEDBLOCKS - Menu)
 msgid "&Moved blocks"
@@ -1007,11 +1023,12 @@ msgstr "移動(&N)"
 msgid "&Network drives"
 msgstr "ネットワークドライブ(&N)"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog AFX_IDD_NEWTYPEDLG: Control id 65535)
 msgid "&New "
 msgstr "新規(&N)"
 
-#. Resource IDs: (16509, 16615)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16509, Dialog
+#. IDD_AFXBARRES_PROPPAGE2: Control id 16615)
 msgid "&New..."
 msgstr "新規(&N)..."
 
@@ -1019,7 +1036,7 @@ msgstr "新規(&N)..."
 msgid "&Next >"
 msgstr "次へ(&N) >"
 
-#. Resource IDs: (58114)
+#. Resource IDs: (Dialog AFX_IDD_PREVIEW_TOOLBAR: Control id 58114)
 msgid "&Next Page"
 msgstr "次のページ(&N)"
 
@@ -1027,7 +1044,7 @@ msgstr "次のページ(&N)"
 msgid "&No"
 msgstr "いいえ(&N)"
 
-#. Resource IDs: (16632)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE4: Control id 16632)
 msgid "&No double-click event"
 msgstr "ダブルクリックイベントを発生しない(&N)"
 
@@ -1043,11 +1060,12 @@ msgstr "無し(&N)"
 msgid "&Notepad2"
 msgstr "&Notepad2"
 
-#. Resource IDs: (1, Dialog IDD_REVGRAPHFILTER: Control id 1, IDS_OKBUTTON)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 1, Dialog
+#. IDD_REVGRAPHFILTER: Control id 1, IDS_OKBUTTON)
 msgid "&OK"
 msgstr "&OK"
 
-#. Resource IDs: (61505)
+#. Resource IDs: (AFX_IDS_ONEPAGE)
 msgid "&One Page"
 msgstr "1ページ(&O)"
 
@@ -1081,7 +1099,7 @@ msgstr "オーバーレイイメージ(&O)\tO"
 
 #. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1523)
 msgid "&Override branch if exists"
-msgstr ""
+msgstr "既存ブランチがあれば上書きする(&O)"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROXY: Control id 1411, Dialog
 #. IDD_SIMPLEPROMPT: Control id 65535, Dialog IDD_USER_PASSWD: Control id
@@ -1106,11 +1124,11 @@ msgstr "ポート(&P):"
 msgid "&Preserve merges"
 msgstr "マージを保つ(&P)"
 
-#. Resource IDs: (17091)
+#. Resource IDs: (IDS_AFXBARRES_PRINT_PREVIEW)
 msgid "&Print Preview"
 msgstr "印刷プレビュー(&P)"
 
-#. Resource IDs: (58116)
+#. Resource IDs: (Dialog AFX_IDD_PREVIEW_TOOLBAR: Control id 58116)
 msgid "&Print..."
 msgstr "印刷(&P)..."
 
@@ -1146,7 +1164,7 @@ msgstr "リベース(&R)"
 msgid "&Recursive"
 msgstr "再帰的(&R)"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 65535)
 msgid "&Red:"
 msgstr "赤(&R):"
 
@@ -1183,10 +1201,12 @@ msgstr "リモートブランチ(&R)"
 msgid "&Remote:"
 msgstr "リモート(&R):"
 
-#. Resource IDs: (16646, Dialog IDD_APPLY_PATCH_LIST: Control id 1385, Dialog
-#. IDD_SETTINGSCREDENTIAL: Control id 1385, Dialog IDD_SETTINGSPROGSADV:
-#. Control id 1100, Dialog IDD_SETTINREMOTE: Control id 1385,
-#. IDS_REMOVEBUTTON)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 16646, Dialog
+#. IDD_AFXBARRES_PROPPAGE8: Control id 16646, Dialog
+#. IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 16646, Dialog
+#. IDD_APPLY_PATCH_LIST: Control id 1385, Dialog IDD_SETTINGSCREDENTIAL:
+#. Control id 1385, Dialog IDD_SETTINGSPROGSADV: Control id 1100, Dialog
+#. IDD_SETTINREMOTE: Control id 1385, IDS_REMOVEBUTTON)
 msgid "&Remove"
 msgstr "削除(&R)"
 
@@ -1202,11 +1222,13 @@ msgstr "置換(&R)"
 msgid "&Repo-browser"
 msgstr "リポジトリブラウザー(&R)"
 
-#. Resource IDs: (16613, 16624)
+#. Resource IDs: (Dialog IDD_AFXBARRES_OUTLOOKBAR_OPTIONS: Control id 16613,
+#. Dialog IDD_AFXBARRES_PROPPAGE2: Control id 16613, Dialog
+#. IDD_AFXBARRES_PROPPAGE3: Control id 16624)
 msgid "&Reset"
 msgstr "リセット(&R)"
 
-#. Resource IDs: (16300)
+#. Resource IDs: (IDS_AFXBARRES_RESET_TOOLBAR)
 msgid "&Reset Toolbar"
 msgstr "ツールバーをリセット(&R)"
 
@@ -1214,11 +1236,11 @@ msgstr "ツールバーをリセット(&R)"
 msgid "&Reset filter"
 msgstr "フィルターをリセット(&R)"
 
-#. Resource IDs: (16657)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE6: Control id 16657)
 msgid "&Reset my usage data"
 msgstr "使用データのリセット(&R)"
 
-#. Resource IDs: (16910 - Menu)
+#. Resource IDs: (ID_AFXBARRES_TOOLBAR_RESET - Menu)
 msgid "&Reset to Default"
 msgstr "デフォルトの状態に戻す(&R)"
 
@@ -1250,11 +1272,12 @@ msgstr "これらのコミットの変更を戻す(&R)"
 msgid "&SSH client:"
 msgstr "SSHクライアント(&S):"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 65535)
 msgid "&Saturation:"
 msgstr "彩度(&S):"
 
-#. Resource IDs: (16921, IDS_SAVEBUTTON)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 16921,
+#. IDS_SAVEBUTTON)
 msgid "&Save"
 msgstr "保存(&S)"
 
@@ -1275,6 +1298,10 @@ msgstr "選択ファイルのリストを保存(&S)..."
 msgid "&Save\tCtrl+S"
 msgstr "保存(&S)\tCtrl+S"
 
+#. Resource IDs: (Dialog IDD_REFLOG: Control id 1687)
+msgid "&Search..."
+msgstr "検索(&S)..."
+
 #. Resource IDs: (IDS_PROC_SETMSYSGITPATH)
 msgid "&Set Git path"
 msgstr "Gitへのパスを設定(&S)"
@@ -1291,11 +1318,11 @@ msgstr "設定(&S)"
 msgid "&Settings..."
 msgstr "設定(&S)..."
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 65535)
 msgid "&Show Menus for:"
 msgstr "メニューを表示(&S):"
 
-#. Resource IDs: (16612)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE2: Control id 16612)
 msgid "&Show text labels"
 msgstr "テキストラベルを表示(&S)"
 
@@ -1309,7 +1336,7 @@ msgstr "スキップ(&S)"
 
 #. Resource IDs: (Dialog IDD_RESET: Control id 1550)
 msgid "&Soft: Leave working tree and index untouched"
-msgstr ""
+msgstr "Soft: 作業ツリーとインデックスは現状を維持(&S)"
 
 #. Resource IDs: (Dialog IDD_MERGE: Control id 1524, Dialog IDD_PULLFETCH:
 #. Control id 1524)
@@ -1324,7 +1351,7 @@ msgstr "すべて融合(&S)"
 msgid "&Start"
 msgstr "開始(&S)"
 
-#. Resource IDs: (16917 - Menu)
+#. Resource IDs: (ID_AFXBARRES_TOOLBAR_START_GROUP - Menu)
 msgid "&Start Group"
 msgstr "グループの始まり(&S)"
 
@@ -1348,7 +1375,7 @@ msgstr "アイコン表示(&S)"
 msgid "&Tab size:"
 msgstr "タブ幅(&T):"
 
-#. Resource IDs: (17088)
+#. Resource IDs: (IDS_AFXBARRES_TABBED)
 msgid "&Tabbed Document"
 msgstr "タブ型ドキュメント(&T)"
 
@@ -1366,11 +1393,11 @@ msgstr "タグ(&T)"
 msgid "&Tags:"
 msgstr "タグ(&T):"
 
-#. Resource IDs: (16915 - Menu)
+#. Resource IDs: (ID_AFXBARRES_TOOLBAR_TEXT - Menu)
 msgid "&Text"
 msgstr "テキスト(&T)"
 
-#. Resource IDs: (16506)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16506)
 msgid "&Text only"
 msgstr "テキストのみ表示(&T)"
 
@@ -1382,7 +1409,7 @@ msgstr "自動補完リストの作成がタイムアウトになるまでの秒
 msgid "&Toolbar"
 msgstr "ツールバー(&T)"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_TOOLBAR_NAME: Control id 65535)
 msgid "&Toolbar Name:"
 msgstr "ツールバー名(&T):"
 
@@ -1390,7 +1417,7 @@ msgstr "ツールバー名(&T):"
 msgid "&Toolbars and Docking Windows"
 msgstr "ツールバーとドッキングウィンドウ(&T)"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE2: Control id 65535)
 msgid "&Toolbars:"
 msgstr "ツールバー(&T):"
 
@@ -1411,7 +1438,7 @@ msgstr "&Trunk:"
 msgid "&Try Again"
 msgstr "やり直し(&T)"
 
-#. Resource IDs: (61506)
+#. Resource IDs: (AFX_IDS_TWOPAGE)
 msgid "&Two Page"
 msgstr "2ページ(&T)"
 
@@ -1462,7 +1489,7 @@ msgstr "ユーザー名(&U):"
 msgid "&View"
 msgstr "表示(&V)"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE4: Control id 65535)
 msgid "&View:"
 msgstr "表示(&V):"
 
@@ -1547,7 +1574,7 @@ msgstr "- すべて -"
 msgid "--&all"
 msgstr "すべて (--&all)"
 
-#. Resource IDs: (16108)
+#. Resource IDs: (IDS_AFXBARRES_NO_CONTEXT)
 msgid ""
 "-------------------------------------------------------------------------------------------"
 msgstr "-------------------------------------------------------------------------------------------"
@@ -1579,7 +1606,8 @@ msgstr "------------------------------------------------------------------------
 msgid "..."
 msgstr "..."
 
-#. Resource IDs: (16527)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 16527, Dialog
+#. IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 16527)
 msgid "....."
 msgstr "....."
 
@@ -1607,7 +1635,7 @@ msgstr "リポジトリルートの .tgitconfig ファイル"
 msgid "< &Previous"
 msgstr "< 前へ (&P)"
 
-#. Resource IDs: (16506)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 16506)
 msgid "<.....>"
 msgstr "<.....>"
 
@@ -1627,7 +1655,7 @@ msgstr "<Git の自動生成>"
 
 #. Resource IDs: (IDS_PROC_LOG_BASIC_REFS)
 msgid "<Basic Refs>"
-msgstr ""
+msgstr "<基本的な参照>"
 
 #. Resource IDs: (IDS_PROC_LOG_LOCAL_BRANCHES)
 msgid "<Local Branches>"
@@ -1637,15 +1665,16 @@ msgstr "<ローカルブランチ>"
 msgid "<No branch>"
 msgstr "<ブランチなし>"
 
-#. Resource IDs: (17095)
+#. Resource IDs: (IDS_AFXBARRES_QAT_SEPARATOR)
 msgid "<Separator>"
 msgstr "<Separator>"
 
-#. Resource IDs: (16104)
+#. Resource IDs: (IDS_AFXBARRES_UNTITLED_TOOLBAR)
 msgid "<Untitled>"
 msgstr "<Untitled>"
 
-#. Resource IDs: (16603)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16603, Dialog
+#. IDD_AFXBARRES_PROPPAGE1: Control id 16603)
 msgid "<descr>"
 msgstr "<descr>"
 
@@ -1686,7 +1715,7 @@ msgid ""
 "A newline separated list of paths for which icon overlays are shown.\n"
 "If you add an '?' char at the end of a path, then only this path will be included.\n"
 "If you add an '*' or no char at all at the end of a path, then all files and subdirs inside that path are included too."
-msgstr ""
+msgstr "アイコンオーバーレイを表示させるパスのリストを改行で区切って入力してください。\nパスの末尾に「?」を追加すると、そのパスのみが対象となります。\nパスの末尾に「*」を追加するか何もつけなかった場合、そのパス配下のすべてのファイルやサブディレクトリも対象となります。"
 
 #. Resource IDs: (IDS_SETTINGS_EXCLUDECONTEXTLIST_TT)
 msgid ""
@@ -1701,9 +1730,9 @@ msgid ""
 "If you add an '?' char at the end of a path, then only this path will be excluded.\n"
 "If you add an '*' or no char at all at the end of a path, then all files and subdirs inside that path are excluded too.\n"
 "An empty list will allow overlays on all paths."
-msgstr ""
+msgstr "アイコンオーバーレイを表示させないパスのリストを改行で区切って入力してください。\nパスの末尾に「?」を追加すると、そのパスのみが対象となります。\nパスの末尾に「*」を追加するか何もつけなかった場合、そのパス配下のすべてのファイルやサブディレクトリも対象となります。\n何も入力しないと、すべてのパス上でアイコンオーバーレイが表示されます。"
 
-#. Resource IDs: (61474)
+#. Resource IDs: (AFX_IDS_RESOURCE_EXCEPTION)
 msgid "A required resource was unavailable."
 msgstr "要求されたリソースは使用できませんでした。"
 
@@ -1780,7 +1809,7 @@ msgstr "TortoiseGitMergeについて"
 msgid "Accept certificate"
 msgstr "証明書を受け入れる"
 
-#. Resource IDs: (61861)
+#. Resource IDs: (AFX_IDP_FILE_ACCESS_DENIED)
 #, c-format
 msgid "Access to %1 was denied."
 msgstr "%1 へのアクセスは拒否されました。"
@@ -1797,15 +1826,15 @@ msgstr "アクションログ"
 msgid "Actions"
 msgstr "アクション"
 
-#. Resource IDs: (61203)
+#. Resource IDs: (AFX_IDS_SCTASKLIST)
 msgid "Activate Task List"
 msgstr "タスクリストをアクティブにする"
 
-#. Resource IDs: (17043)
+#. Resource IDs: (IDS_AFXBARRES_OPENED_DOCS)
 msgid "Active Files"
 msgstr "アクティブなファイル"
 
-#. Resource IDs: (61838)
+#. Resource IDs: (AFX_IDP_ASK_TO_DISCARD)
 #, c-format
 msgid ""
 "ActiveX objects cannot be saved while exiting Windows!\n"
@@ -1854,7 +1883,7 @@ msgstr "新しいファイルを自動的にGitに追加"
 msgid "Add to &ignore list"
 msgstr "無視リストに追加(&I)"
 
-#. Resource IDs: (17083)
+#. Resource IDs: (IDS_AFXBARRES_ADD_TO_QAT)
 msgid "Add to Quick Access Toolbar"
 msgstr "クイックアクセスツールバーに追加"
 
@@ -1920,11 +1949,11 @@ msgstr "マージの高度な設定"
 msgid "All"
 msgstr "すべて"
 
-#. Resource IDs: (16110)
+#. Resource IDs: (IDS_AFXBARRES_ALL_COMMANDS)
 msgid "All Commands"
 msgstr "すべてのコマンド"
 
-#. Resource IDs: (61442)
+#. Resource IDs: (AFX_IDS_ALLFILTER)
 msgid "All Files (*.*)"
 msgstr "すべてのファイル (*.*)"
 
@@ -1938,7 +1967,7 @@ msgstr "すべての親"
 
 #. Resource IDs: (IDS_PROC_LOG_SELECT_BASIC_REFS)
 msgid "All basic refs"
-msgstr ""
+msgstr "すべての基本的な参照"
 
 #. Resource IDs: (IDS_PROC_LOG_SELECT_LOCAL_BRANCHES)
 msgid "All local branches"
@@ -1956,29 +1985,30 @@ msgstr "すべてのタグ"
 msgid "All tags only"
 msgstr "タグのみ"
 
-#. Resource IDs: (16112)
+#. Resource IDs: (IDS_AFXBARRES_RESET_ALL_TOOLBARS)
 msgid ""
 "All your changes will be lost! Do you really want to reset all toolbars and "
 "menus?"
 msgstr "すべての変更が失われます。本当にツールバーとメニューのすべてをリセットしてもよろしいですか？"
 
-#. Resource IDs: (16115)
+#. Resource IDs: (IDS_AFXBARRES_RESET_KEYBOARD)
 msgid ""
 "All your changes will be lost! Do you really want to reset the keyboard "
 "assignments?"
 msgstr "すべての変更が失われます。本当にキーボードの割り当てをリセットしてもよろしいですか？"
 
-#. Resource IDs: (16113)
+#. Resource IDs: (IDS_AFXBARRES_RESET_MENU_FMT)
 #, c-format
 msgid ""
-"All your changes will be lost! Do you really want to reset the menu '%s'?"
-msgstr "すべての変更が失われます。本当にメニュー「%s」をリセットしてもよろしいですか？"
+"All your changes will be lost! Do you really want to reset the menu '%Ts'?"
+msgstr "すべての変更が失われます。本当にメニュー「%Ts」をリセットしてもよろしいですか？"
 
-#. Resource IDs: (16111)
+#. Resource IDs: (IDS_AFXBARRES_RESET_TOOLBAR_FMT)
 #, c-format
 msgid ""
-"All your changes will be lost! Do you really want to reset the toolbar '%s'?"
-msgstr "すべての変更が失われます。本当にツールバー「%s」をリセットしてもよろしいですか？"
+"All your changes will be lost! Do you really want to reset the toolbar "
+"'%Ts'?"
+msgstr "すべての変更が失われます。本当にツールバー「%Ts」をリセットしてもよろしいですか？"
 
 #. Resource IDs: (32976)
 msgid ""
@@ -2053,16 +2083,16 @@ msgid ""
 "%base: the original file without your changes"
 msgstr "ファイルの競合を解決するために使用する\n外部マージツールを指定する。\n\nパスに次のパラメーターを使用することができます。\n%merged : 保存先の競合ファイル名\n%theirs : リポジトリ内のファイル\n%mine : あなたが変更したファイル\n%base : 変更前のオリジナルファイル"
 
-#. Resource IDs: (61862)
+#. Resource IDs: (AFX_IDP_FILE_INVALID_FILE)
 #, c-format
 msgid "An incorrect file handle was associated with %1."
 msgstr "無効なファイルハンドルが %1 に関連付けられています。"
 
-#. Resource IDs: (61476)
+#. Resource IDs: (AFX_IDS_USER_EXCEPTION)
 msgid "An unknown error has occurred."
 msgstr "何らかのエラーが発生しました。"
 
-#. Resource IDs: (61857, 61873)
+#. Resource IDs: (AFX_IDP_ARCH_GENERIC, AFX_IDP_FILE_GENERIC)
 #, c-format
 msgid "An unknown error occurred while accessing %1."
 msgstr "%1 にアクセス中に何らかのエラーが発生しました。"
@@ -2084,7 +2114,7 @@ msgstr "右側のブロックを後ろへ追加"
 msgid "Append this block to left"
 msgstr "このブロックを左側の後ろへ追加"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 65535)
 msgid "Application Frame Menus: "
 msgstr "アプリケーションメニュー: "
 
@@ -2136,7 +2166,7 @@ msgstr "リベース処理を中断してもよろしいですか？"
 
 #. Resource IDs: (IDS_REALLYCANCEL)
 msgid "Are you sure you want to cancel?"
-msgstr ""
+msgstr "キャンセルしてよろしいですか？"
 
 #. Resource IDs: (IDS_PROC_RESOLVE)
 msgid "Are you sure you want to mark the conflicted file(s) as resolved?"
@@ -2147,7 +2177,7 @@ msgstr "本当に、ファイルの競合を解決済としてもよろしいで
 msgid ""
 "Are you sure you want to revert %d item(s)? You will lose ALL changes since "
 "the last update!"
-msgstr ""
+msgstr "本当に%d個の項目をの変更を取り消してもよろしいですか？ 最後の更新以降のすべての変更が失われます。"
 
 #. Resource IDs: (IDS_WARNUSERSAFEDIFFERENT)
 #, c-format
@@ -2163,7 +2193,8 @@ msgstr "垂直方向に並べる(&V)\tV"
 msgid "Assigned to changelist '%s'"
 msgstr "変更リスト「%s」に割り当てる"
 
-#. Resource IDs: (16528)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 16528, Dialog
+#. IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 16528)
 msgid "Assigned to:"
 msgstr "割り当て:"
 
@@ -2200,21 +2231,21 @@ msgstr "リビジョン %d になりました"
 msgid "At the moment, you can only rename branches."
 msgstr "この場合、ブランチ名を変更する事しか出来ません。"
 
-#. Resource IDs: (61473)
+#. Resource IDs: (AFX_IDS_NOT_SUPPORTED_EXCEPTION)
 msgid "Attempted an unsupported operation."
 msgstr "未サポートの操作を行おうとしました。"
 
-#. Resource IDs: (61870, 61875)
+#. Resource IDs: (AFX_IDP_ARCH_ENDOFFILE, AFX_IDP_FILE_EOF)
 #, c-format
 msgid "Attempted to access %1 past its end."
 msgstr "%1 へのアクセスがその終わりを通り越して行われました。"
 
-#. Resource IDs: (61876)
+#. Resource IDs: (AFX_IDP_ARCH_WRITEONLY)
 #, c-format
 msgid "Attempted to read from the writing %1."
 msgstr "書き込み中の %1 から読み込もうとしました。"
 
-#. Resource IDs: (61874)
+#. Resource IDs: (AFX_IDP_ARCH_READONLY)
 #, c-format
 msgid "Attempted to write to the reading %1."
 msgstr "読み取り中の %1 へ書き込もうとしました。"
@@ -2230,7 +2261,7 @@ msgstr "認証"
 
 #. Resource IDs: (IDS_FIRSTSTART_AUTHENTICATIONTITLE)
 msgid "Authentication and credential store"
-msgstr ""
+msgstr "認証/資格情報ストア"
 
 #. Resource IDs: (Dialog IDD_SETTINGSSAVEDDATA: Control id 1278)
 msgid "Authentication data"
@@ -2238,11 +2269,19 @@ msgstr "認証データ"
 
 #. Resource IDs: (IDS_LOG_AUTHOR, IDS_STATUSLIST_COLAUTHOR)
 msgid "Author"
-msgstr "作者"
+msgstr "著者"
 
 #. Resource IDs: (IDS_PROC_LOG_AUTHOREMAIL)
 msgid "Author Email"
 msgstr "著者アドレス"
+
+#. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_AUTHORSEMAIL)
+msgid "Author email addresses"
+msgstr "著者メールアドレス"
+
+#. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_AUTHORSNAME)
+msgid "Author names"
+msgstr "著者名"
 
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 65535)
 msgid "Author:\t\t\t\tStefan Kueng"
@@ -2250,17 +2289,15 @@ msgstr "作者:\t\t\t\tStefan Kueng"
 
 #. Resource IDs: (IDS_LOG_FILTER_AUTHORS)
 msgid "Authors"
-msgstr "作者"
+msgstr "著者"
+
+#. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_AUTHORSFULL)
+msgid "Authors (full)"
+msgstr "著者（フル）"
 
 #. Resource IDs: (Dialog IDD_STATGRAPH: Control id 1265)
 msgid "Authors case sensitive"
-msgstr "作者名の大文字/小文字を区別する"
-
-#. Resource IDs: (Dialog IDD_ABOUTBOX: Control id 65535)
-msgid ""
-"Authors:\tFrank Li (lznuaa@gmail.com),\n"
-"\t\tSven Strickroth (email@cs-ware.de)"
-msgstr "Authors:\tFrank Li (lznuaa@gmail.com),\n\t\tSven Strickroth (email@cs-ware.de)"
+msgstr "著者名の大文字/小文字を区別する"
 
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 65535)
 msgid "Auto CrLf convert"
@@ -2270,11 +2307,11 @@ msgstr "自動改行コード変換"
 msgid "Auto Crlf:"
 msgstr "Auto Crlf:"
 
-#. Resource IDs: (16033)
+#. Resource IDs: (IDS_AFXBARRES_AUTOHIDEBAR)
 msgid "Auto Hide"
 msgstr "自動的に隠す"
 
-#. Resource IDs: (16036)
+#. Resource IDs: (IDS_AFXBARRES_AUTOHIDE_ALL)
 msgid "Auto Hide All"
 msgstr "自動的にすべてを隠す"
 
@@ -2389,18 +2426,18 @@ msgstr "二分探索: good"
 
 #. Resource IDs: (IDS_MENUBISECTRESET)
 msgid "Bisect reset"
-msgstr "二分探索リセット"
+msgstr "二分探索: リセット"
 
 #. Resource IDs: (IDS_MENUBISECTSKIP)
 msgid "Bisect skip"
-msgstr ""
+msgstr "二分探索: スキップ"
 
 #. Resource IDs: (Dialog IDD_BISECTSTART: Control id 4574,
 #. IDS_MENUBISECTSTART)
 msgid "Bisect start"
 msgstr "二分探索開始"
 
-#. Resource IDs: (61584)
+#. Resource IDs: (AFX_IDS_BITMAP_FORMAT)
 msgid ""
 "Bitmap\n"
 "a bitmap"
@@ -2549,7 +2586,7 @@ msgstr "BugTraq"
 msgid "Bugtraq Regex Tester - TortoiseGit"
 msgstr "Bugtraq 正規表現テスト - TortoiseGit"
 
-#. Resource IDs: (16132)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16132)
 msgid "Button Appearance"
 msgstr "ボタンの外観"
 
@@ -2567,7 +2604,7 @@ msgstr "ボタン３"
 msgid ""
 "By default Git does not save/cache credentials. However, you can configure a"
 " credential helper (recommended) or manually use %HOME%/_netrc."
-msgstr ""
+msgstr "デフォルトではGitは資格情報を保存/キャッシュしません。ただし、資格情報ヘルパーを設定するか（推奨）、手動で %HOME%/_netrc を使用することもできます。"
 
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 1216, Dialog
 #. IDD_SETTINGSMAIN: Control id 1215, Dialog IDD_SETTINGSMAIN: Control id
@@ -2575,7 +2612,9 @@ msgstr ""
 msgid "C&heck now"
 msgstr "今すぐチェック(&H)"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 65535, Dialog
+#. IDD_AFXBARRES_PROPPAGE8: Control id 65535, Dialog
+#. IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 65535)
 msgid "C&ommands:"
 msgstr "コマンド(&O):"
 
@@ -2587,7 +2626,8 @@ msgstr "コミット(&O)"
 msgid "C&reate branch/tag from revision"
 msgstr "このリビジョンからブランチ/タグを作成(&R)"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 65535, Dialog
+#. IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 65535)
 msgid "C&urrent Keys:"
 msgstr "現在のキー(&U):"
 
@@ -2610,13 +2650,13 @@ msgstr "計算"
 #. Resource IDs: (IDS_ERR_GITCALLFAILED)
 #, c-format
 msgid "Calling git.exe failed (exit code: %d). Please check the git.exe path."
-msgstr ""
+msgstr "git.exeの呼び出しに失敗しました (終了コード: %d)。git.exeのパスを確認してください。"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1127)
 msgid "Can double-click in log list to compare with previous revision"
 msgstr "ログリスト内のダブルクリックで直前のリビジョンと比較する"
 
-#. Resource IDs: (61824)
+#. Resource IDs: (AFX_IDP_STATIC_OBJECT)
 msgid "Can not activate a static ActiveX object."
 msgstr "静的な ActiveX オブジェクトをアクティブにできません。"
 
@@ -2637,7 +2677,7 @@ msgstr "クリップボードにビットマップ画像をコピーできませ
 msgid "Can't create a new image!"
 msgstr "新規に画像を作成することはできません。"
 
-#. Resource IDs: (16007)
+#. Resource IDs: (IDS_AFXBARRES_NO_MENUBAR)
 msgid "Can't customize menus!"
 msgstr "メニューをカスタマイズできません!"
 
@@ -2645,15 +2685,20 @@ msgstr "メニューをカスタマイズできません!"
 msgid "Can't paste bitmap image from the clipboard!"
 msgstr "クリップボードからビットマップ画像を貼り付けることはできません。"
 
-#. Resource IDs: (17101, 2, Dialog IDD_ADD: Control id 2, Dialog
-#. IDD_ADD_REMOTE: Control id 2, Dialog IDD_BISECTSTART: Control id 2, Dialog
-#. IDD_BROWSE_REFS: Control id 2, Dialog IDD_BUGTRAQREGEXTESTER: Control id 2,
-#. Dialog IDD_CERTCHECK: Control id 2, Dialog IDD_CLEAN: Control id 2, Dialog
-#. IDD_CLONE: Control id 2, Dialog IDD_COMMITDLG: Control id 2, Dialog
-#. IDD_CREATECHANGELIST: Control id 2, Dialog IDD_CREATEREPO: Control id 2,
-#. Dialog IDD_ENCODING: Control id 2, Dialog IDD_EXPORT: Control id 2, Dialog
-#. IDD_FIND: Control id 2, Dialog IDD_FORMAT_PATCH: Control id 2, Dialog
-#. IDD_GITSWITCH: Control id 2, Dialog IDD_GOTO: Control id 2, Dialog
+#. Resource IDs: (Dialog AFX_IDD_NEWTYPEDLG: Control id 2, Dialog
+#. AFX_IDD_PRINTDLG: Control id 2, Dialog IDD_ADD: Control id 2, Dialog
+#. IDD_ADD_REMOTE: Control id 2, Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id
+#. 2, Dialog IDD_AFXBARRES_COLOR_DLG: Control id 2, Dialog
+#. IDD_AFXBARRES_IMAGE_EDITOR: Control id 2, Dialog
+#. IDD_AFXBARRES_OUTLOOKBAR_OPTIONS: Control id 2, Dialog
+#. IDD_AFXBARRES_TOOLBAR_NAME: Control id 2, Dialog IDD_BISECTSTART: Control
+#. id 2, Dialog IDD_BROWSE_REFS: Control id 2, Dialog IDD_BUGTRAQREGEXTESTER:
+#. Control id 2, Dialog IDD_CERTCHECK: Control id 2, Dialog IDD_CLEAN: Control
+#. id 2, Dialog IDD_CLONE: Control id 2, Dialog IDD_COMMITDLG: Control id 2,
+#. Dialog IDD_CREATECHANGELIST: Control id 2, Dialog IDD_CREATEREPO: Control
+#. id 2, Dialog IDD_ENCODING: Control id 2, Dialog IDD_EXPORT: Control id 2,
+#. Dialog IDD_FIND: Control id 2, Dialog IDD_FORMAT_PATCH: Control id 2,
+#. Dialog IDD_GITSWITCH: Control id 2, Dialog IDD_GOTO: Control id 2, Dialog
 #. IDD_GOTODLG: Control id 2, Dialog IDD_HISTORYDLG: Control id 2, Dialog
 #. IDD_IGNORE: Control id 2, Dialog IDD_INPUTDLG: Control id 2, Dialog
 #. IDD_LOGMESSAGE: Control id 2, Dialog IDD_LOGORDERING: Control id 2, Dialog
@@ -2673,7 +2718,7 @@ msgstr "クリップボードからビットマップ画像を貼り付けるこ
 #. IDD_SUBMODULE_UPDATE: Control id 2, Dialog IDD_SVNDCOMMITTYPE: Control id
 #. 2, Dialog IDD_SVNIGNORE: Control id 2, Dialog IDD_SVNPROGRESS: Control id
 #. 2, Dialog IDD_TOOLASSOC: Control id 2, Dialog IDD_URL: Control id 2, Dialog
-#. IDD_USER_PASSWD: Control id 2, IDS_MSGBOX_CANCEL,
+#. IDD_USER_PASSWD: Control id 2, IDS_AFXBARRES_CANCEL, IDS_MSGBOX_CANCEL,
 #. IDS_PROC_OVERWRITEEXPORT_CANCEL)
 msgid "Cancel"
 msgstr "キャンセル"
@@ -2735,7 +2780,7 @@ msgstr "履歴を追跡(Blame)出来ません。 \"%s\" は Git による管理�
 msgid "Cannot show diff because of inconsistent newlines in the file."
 msgstr "ファイルの改行コードに一貫性がないため、差分を表示できません。"
 
-#. Resource IDs: (16926)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 16926)
 msgid "Casca&de"
 msgstr "重ねる(&D)"
 
@@ -2747,7 +2792,7 @@ msgstr "コンテキストメニューに表示する項目"
 msgid "Case-sensitive"
 msgstr "大文字/小文字を区別"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE1: Control id 65535)
 msgid "Cate&gories:"
 msgstr "カテゴリ(&G):"
 
@@ -2785,11 +2830,11 @@ msgid ""
 "Change Style"
 msgstr "アプリケーションのスタイルを変更\nスタイル変更"
 
-#. Resource IDs: (61185)
+#. Resource IDs: (AFX_IDS_SCMOVE)
 msgid "Change the window position"
 msgstr "ウィンドウ位置を変更する"
 
-#. Resource IDs: (61184)
+#. Resource IDs: (AFX_IDS_SCSIZE)
 msgid "Change the window size"
 msgstr "ウィンドウサイズを変更する"
 
@@ -2849,7 +2894,7 @@ msgstr "アプリケーションのスタイルを変更"
 msgid "Char position where to show a border line in commit text boxes:"
 msgstr "コミットのテキストボックスにおける、折り返し線の位置:"
 
-#. Resource IDs: (62178, IDS_RECURSE_SUBMODULES_CHECK)
+#. Resource IDs: (AFX_IDS_CHECKLISTBOX_CHECK, IDS_RECURSE_SUBMODULES_CHECK)
 msgid "Check"
 msgstr "チェック"
 
@@ -2867,7 +2912,7 @@ msgstr "変更をチェック(&F)"
 
 #. Resource IDs: (IDS_SEEMANUALGITEXEPATH)
 msgid "Check out the help file for \"Git.exe Path\"."
-msgstr ""
+msgstr "ヘルプファイルの \"Git.exe Path\" を確認してください。"
 
 #. Resource IDs: (IDS_SVNERR_CHECKPATHORURL)
 msgid "Check the path and/or URL you've entered."
@@ -2877,13 +2922,13 @@ msgstr "入力したパス、もしくは URL をチェックしてください�
 msgid ""
 "Check those menu entries you want to appear in the top context menu instead "
 "of the TortoiseGit submenu"
-msgstr "TortoiseGit のサブメニューではなく、コンテキストメニューに直接表示したいメニュー項目にチェックしてください。"
+msgstr "TortoiseGit サブメニューではなく、コンテキストメニューに直接表示したいメニュー項目にチェックしてください。"
 
 #. Resource IDs: (IDS_SETTINGS_EXTMENULAYOUT_TT)
 msgid ""
 "Check those menu entries you want to appear only in the extended context "
 "menu (SHIFT + right click)"
-msgstr ""
+msgstr "拡張コンテキストメニュー(Shift + 右クリック) だけに表示したいメニュー項目にチェックしてください。"
 
 #. Resource IDs: (IDS_SETTINGS_RELATIVETIMES_TT)
 msgid "Check to show relative times in log messages"
@@ -3076,12 +3121,14 @@ msgstr "Bareリポジトリにクローン"
 msgid "Clone..."
 msgstr "クローン(複製)..."
 
-#. Resource IDs: (16032, 16105, 17023, 2, Dialog IDD_DELETEREMOTETAG: Control
-#. id 2, Dialog IDD_GITPROGRESS: Control id 1, Dialog IDD_SYNC: Control id 1)
+#. Resource IDs: (17023, Dialog IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id
+#. 2, Dialog IDD_DELETEREMOTETAG: Control id 2, Dialog IDD_GITPROGRESS:
+#. Control id 1, Dialog IDD_SYNC: Control id 1, IDS_AFXBARRES_CLOSE,
+#. IDS_AFXBARRES_CLOSEBAR)
 msgid "Close"
 msgstr "閉じる"
 
-#. Resource IDs: (17025)
+#. Resource IDs: (IDS_AFXBARRES_FULLSCREEN_CLOSE)
 msgid "Close Full Screen"
 msgstr "全画面表示を閉じる"
 
@@ -3095,7 +3142,7 @@ msgstr "印刷プレビューを閉じる\n閉じる(&C)"
 msgid "Close manually"
 msgstr "手動で閉じる"
 
-#. Resource IDs: (61445)
+#. Resource IDs: (AFX_IDS_PREVIEW_CLOSE)
 msgid ""
 "Close print preview mode\n"
 "Cancel Preview"
@@ -3107,7 +3154,7 @@ msgid ""
 "Close"
 msgstr "有効なドキュメントを閉じる\n閉じる"
 
-#. Resource IDs: (61190)
+#. Resource IDs: (AFX_IDS_SCCLOSE)
 msgid "Close the active window and prompts to save the documents"
 msgstr "ドキュメントを保存するために、アクティブなウィンドウとプロンプトを閉じる"
 
@@ -3121,7 +3168,8 @@ msgid ""
 "Collapse"
 msgstr "未変更のセクションを折りたたむ\n折りたたむ"
 
-#. Resource IDs: (16662)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 16662, Dialog
+#. IDD_AFXBARRES_COLOR_DLG: Control id 16662)
 msgid "Color"
 msgstr "色"
 
@@ -3129,13 +3177,15 @@ msgstr "色"
 msgid "Color by age, &continuous"
 msgstr "変更時期に応じて徐々に色を変える(&c)"
 
-#. Resource IDs: (16961, Dialog IDD_SETCOLORPAGE: Control id 138, Dialog
-#. IDD_SETTINGSTBLAME: Control id 65535, Dialog IDD_SETTINGSUDIFF: Control id
-#. 65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLOR_DLG: Control id 16961, Dialog
+#. IDD_SETCOLORPAGE: Control id 138, Dialog IDD_SETTINGSTBLAME: Control id
+#. 65535, Dialog IDD_SETTINGSUDIFF: Control id 65535)
 msgid "Colors"
 msgstr "色"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 65535, Dialog
+#. IDD_AFXBARRES_COLOR_PAGE_ONE: Control id 65535, Dialog
+#. IDD_AFXBARRES_IMAGE_EDITOR: Control id 65535)
 msgid "Colors:"
 msgstr "色:"
 
@@ -3147,11 +3197,11 @@ msgstr "一つのメールにまとめる"
 msgid "Combine to one commit"
 msgstr "一つのコミットに集約"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE1: Control id 65535)
 msgid "Comman&ds:"
 msgstr "コマンド(&D):"
 
-#. Resource IDs: (16029, IDS_PROGRS_CMDINFO)
+#. Resource IDs: (IDS_AFXBARRES_COMMAND, IDS_PROGRS_CMDINFO)
 msgid "Command"
 msgstr "コマンド"
 
@@ -3163,11 +3213,11 @@ msgstr "コマンドライン"
 msgid "Command Line To Execute:"
 msgstr "実行するコマンドライン:"
 
-#. Resource IDs: (61705)
+#. Resource IDs: (AFX_IDP_COMMAND_FAILURE)
 msgid "Command failed."
 msgstr "コマンドの実行に失敗しました。"
 
-#. Resource IDs: (16104)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE1: Control id 16104)
 msgid "Commands"
 msgstr "コマンド"
 
@@ -3234,7 +3284,7 @@ msgstr "コミット..."
 
 #. Resource IDs: (IDS_STATGRAPH_COMMITSBYAUTHOR)
 msgid "Commits by author"
-msgstr "作者×コミット数"
+msgstr "著者×コミット数"
 
 #. Resource IDs: (IDS_STATGRAPH_COMMITSBYDATE)
 msgid "Commits by date"
@@ -3275,11 +3325,15 @@ msgstr "&HEADのリビジョンを比較(&H)"
 
 #. Resource IDs: (IDS_LOG_POPUP_COMPARECHANGESET)
 msgid "Compare change sets"
-msgstr ""
+msgstr "変更を比較"
 
 #. Resource IDs: (IDS_PROC_BROWSEREFS_COMPAREREFS)
 msgid "Compare selected refs"
 msgstr "選択した ref を比較"
+
+#. Resource IDs: (IDS_PROC_SYNC_COMPARETAGS)
+msgid "Compare tags"
+msgstr "タグを比較"
 
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_COMPARETWOFILES)
 msgid "Compare two files"
@@ -3313,11 +3367,6 @@ msgid ""
 "Compares the file with the last committed revision to show you the changes "
 "you made"
 msgstr "変更点を表示するために、最後にコミットしたリビジョンとファイルを比較する"
-
-#. Resource IDs: (IDS_PROGRESS_COMPARE)
-#, c-format
-msgid "Comparing %s to %s"
-msgstr "%s と %s を比較してます"
 
 #. Resource IDs: (IDS_SVNACTION_COMPLETED)
 msgid "Completed"
@@ -3357,7 +3406,7 @@ msgstr "*nix 行を編集可能なエディターを設定"
 
 #. Resource IDs: (IDS_FIRSTSTART_GITTITLE)
 msgid "Configure git.exe"
-msgstr ""
+msgstr "git.exeを設定"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSDIFF: Control id 65535)
 msgid "Configure the program used for comparing different revisions of files"
@@ -3369,7 +3418,7 @@ msgstr "ファイルの競合を解決するために使用するプログラム
 
 #. Resource IDs: (IDS_FIRSTSTART_USERTITLE)
 msgid "Configure user information"
-msgstr ""
+msgstr "ユーザー情報を設定"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSDIFF: Control id 65535)
 msgid "Configure viewer program for GNU diff files (patch files)"
@@ -3406,7 +3455,7 @@ msgstr "競合"
 msgid "Conflicts: %d"
 msgstr "競合: %d"
 
-#. Resource IDs: (16520)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 16520)
 msgid "Context Menus: "
 msgstr "コンテキストメニュー: "
 
@@ -3418,7 +3467,7 @@ msgstr "パッチのコンテキスト行数"
 msgid "Continue"
 msgstr "続行"
 
-#. Resource IDs: (16013)
+#. Resource IDs: (IDS_AFXBARRES_CONTRACT_BAR)
 msgid "Contract docked window"
 msgstr "ドッキングしているウィンドウをコントラクトする"
 
@@ -3438,15 +3487,10 @@ msgstr "コピー(&Y)"
 msgid "Copied"
 msgstr "コピー"
 
-#. Resource IDs: (16991, IDS_PATHACTIONS_COPY, IDS_PROGRS_TITLE_COPY,
-#. ID_EDIT_COPY - Ribbon name)
+#. Resource IDs: (Dialog IDD_AFXBARRES_KEYMAP: Control id 16991,
+#. IDS_PATHACTIONS_COPY, IDS_PROGRS_TITLE_COPY, ID_EDIT_COPY - Ribbon name)
 msgid "Copy"
 msgstr "コピー"
-
-#. Resource IDs: (IDS_PROGRS_CMD_COPY)
-#, c-format
-msgid "Copy %s to %s, Revision %s"
-msgstr "%s を %s にコピー, リビジョン %s"
 
 #. Resource IDs: (IDS_BLAME_POPUP_COPYHASHTOCLIPBOARD, IDS_COPY_COMMIT_HASH)
 msgid "Copy SHA-1 to clipboard"
@@ -3465,10 +3509,6 @@ msgstr "クリップボードにすべての情報をコピー"
 #. Resource IDs: (IDS_PROC_COPYRENAME)
 msgid "Copy and rename"
 msgstr "コピーして名前を変更"
-
-#. Resource IDs: (IDS_LOG_POPUP_COPYTOCLIPBOARDMESSAGES)
-msgid "Copy log messages to clipboard"
-msgstr "ログをクリップボードにコピー"
 
 #. Resource IDs: (IDS_BLAME_POPUP_COPYLOGTOCLIPBOARD)
 msgid "Copy log to clipboard"
@@ -3510,10 +3550,6 @@ msgstr "%s をコピー中"
 msgid "Copying..."
 msgstr "コピー中..."
 
-#. Resource IDs: (Dialog IDD_ABOUTBOX: Control id 1001)
-msgid "Copyright (C) 2009-2016 TortoiseGit"
-msgstr "Copyright (C) 2009-2016 TortoiseGit"
-
 #. Resource IDs: (IDS_SPELLEDIT_CORRECTIONS)
 msgid "Corrections"
 msgstr "訂正"
@@ -3540,7 +3576,7 @@ msgid ""
 "%s"
 msgstr "ファイルをコピーできませんでした。\n\n%s"
 
-#. Resource IDs: (61864)
+#. Resource IDs: (AFX_IDP_FILE_DIR_FULL)
 #, c-format
 msgid "Could not create %1 because the directory is full."
 msgstr "ディレクトリがいっぱいなので %1 を作成できません。"
@@ -3558,20 +3594,20 @@ msgid ""
 "Could not find \"msysgit\" or \"windows\" in versionstring of git.exe.\n"
 "If you are using git of the cygwin or msys2 environment you need to enable special hacks.\n"
 "For more information see the help file for the keyword \"cygwin git\" or \"msys2 git\"."
-msgstr ""
+msgstr "git.exe のバージョン文字列に \"msysgit\" または \"windows\" が見つかりませんでした。\ncygwinまたはmsys2環境のgitを使用している場合は、特別なハックを有効にする必要があります。\n詳細については、ヘルプファイルをキーワード \"cygwin git\" または \"msys2 git\" で参照してください。"
 
 #. Resource IDs: (IDS_ERR_GITNOVALIDOUTPUT)
 #, c-format
 msgid ""
 "Could not get read version information from git.exe.\n"
 "Got: \"%s\""
-msgstr ""
+msgstr "git.exeの出力からバージョン情報を得られません。出力: \"%s\""
 
 #. Resource IDs: (IDS_ERR_NOSTATUS)
 msgid "Could not get the status!"
 msgstr "状態を取得できませんでした。"
 
-#. Resource IDs: (61860)
+#. Resource IDs: (AFX_IDP_FILE_TOO_MANY_OPEN)
 #, c-format
 msgid "Could not open %1 because there are too many open files."
 msgstr "非常に多くのファイルを開いているため、%1 を開くことができません。"
@@ -3583,7 +3619,7 @@ msgid ""
 "%s"
 msgstr "ファイルを開くことができません\n%s"
 
-#. Resource IDs: (61863)
+#. Resource IDs: (AFX_IDP_FILE_REMOVE_CURRENT)
 #, c-format
 msgid "Could not remove %1 because it is the current directory."
 msgstr "%1 はカレントディレクトリのため削除出来ません。"
@@ -3652,9 +3688,9 @@ msgid ""
 "Could not start git.exe. A dynamic library (dll) is missing.\n"
 "You might need to specify an extra PATH.\n"
 "Check help file for \"Extra PATH\"."
-msgstr ""
+msgstr "git.exeを起動できませんでした。ダイナミックライブラリ（dll）が見つかりません。\n追加の PATH を指定する必要があるかもしれません。\nヘルプファイルの \"Extra PATH\" を確認してください。"
 
-#. Resource IDs: (61702)
+#. Resource IDs: (AFX_IDP_FAILED_TO_START_PRINT)
 msgid "Could not start print job."
 msgstr "印刷ジョブを開始できません。"
 
@@ -3693,7 +3729,7 @@ msgstr "ライブラリを作成(&L)"
 
 #. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1527)
 msgid "Create &New Branch"
-msgstr ""
+msgstr "新しいブランチを作成(&N)"
 
 #. Resource IDs: (IDS_MENUTAG)
 msgid "Create &Tag..."
@@ -3801,7 +3837,7 @@ msgstr "資格情報"
 msgid "Cu&t"
 msgstr "切り取り(&T)"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLOR_DLG: Control id 65535)
 msgid "Current"
 msgstr "現在の"
 
@@ -3818,7 +3854,7 @@ msgstr "現在のブランチ:"
 msgid ""
 "Current HEAD is detached, you are working on (no branch).\n"
 "Do you want to create a branch now?"
-msgstr ""
+msgstr "現在の HEAD は切り離されており (Detached)、つまりブランチ無し (no branch) で作業しています。\nブランチを今作成しますか？"
 
 #. Resource IDs: (IDS_REBASE_UPTODATE_FMT)
 #, c-format
@@ -3827,6 +3863,12 @@ msgid ""
 "\n"
 "If you want to force the rebase even if the current branch is a descendant of the commit you are rebasing onto, please check below \"Force Rebase\" checkbox."
 msgstr "現在のブランチ %s は最新です。\n\n現在のブランチは接続しようとしているコミットの子孫ですが、それでもリベースしたいのであれば、\"強制リベース\" にチェックを入れて下さい。"
+
+#. Resource IDs: (IDS_REBASE_CURRENTBRANCHUPTODATE)
+msgid ""
+"Current branch is up to date or newer than the fetched branch. Open rebase "
+"anyway?"
+msgstr "現在のブランチは、フェッチされたブランチと同じか、より新しいものです。それでもリベースしますか?"
 
 #. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1113)
 msgid "Current version is:"
@@ -3837,27 +3879,28 @@ msgstr "最新のバージョン:"
 msgid "Current version is: %s"
 msgstr "最新のバージョン: %s"
 
-#. Resource IDs: (17079)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE8: Control id 17079)
 msgid "Cus&tomize..."
 msgstr "カスタマイズ(&T)..."
 
-#. Resource IDs: (16963)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 16963)
 msgid "Custom"
 msgstr "ユーザー設定"
 
-#. Resource IDs: (16103, 17074)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE8: Control id 17074,
+#. IDS_AFXBARRES_PROPSHT_CAPTION)
 msgid "Customize"
 msgstr "カスタマイズ"
 
-#. Resource IDs: (17076)
+#. Resource IDs: (Dialog IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 17076)
 msgid "Customize Keyboard"
 msgstr "キーボードのカスタマイズ"
 
-#. Resource IDs: (17096)
+#. Resource IDs: (IDS_AFXBARRES_CUSTOMIZE_QAT_TOOLTIP)
 msgid "Customize Quick Access Toolbar"
 msgstr "クイックアクセスツールバーをカスタマイズする"
 
-#. Resource IDs: (17085)
+#. Resource IDs: (IDS_AFXBARRES_CUSTOMIZE_QAT)
 msgid "Customize Quick Access Toolbar..."
 msgstr "クイックアクセスツールバーをカスタマイズする..."
 
@@ -3891,15 +3934,15 @@ msgstr "日時"
 msgid "Date Last Commit"
 msgstr "最終コミット日付"
 
-#. Resource IDs: (16114, IDS_DEFAULT)
+#. Resource IDs: (IDS_AFXBARRES_DEFAULT_VIEW, IDS_DEFAULT)
 msgid "Default"
 msgstr "デフォルト"
 
-#. Resource IDs: (16106)
+#. Resource IDs: (IDS_AFXBARRES_DEFUALT_MENU)
 msgid "Default Menu"
 msgstr "デフォルトメニュー"
 
-#. Resource IDs: (16107)
+#. Resource IDs: (IDS_AFXBARRES_DEFAULT_MENU_DESCR)
 msgid "Default application menu. Appears when no documents are open."
 msgstr "デフォルトのアプリケーションメニュー。ドキュメントを開いていない場合に表示されます。"
 
@@ -3911,8 +3954,8 @@ msgstr "ログメッセージ数のデフォルトの制限:"
 msgid "Default to UTF-8 encoding"
 msgstr "UTF-8エンコーディングをデフォルトにする"
 
-#. Resource IDs: (16020, Dialog IDD_RESOLVE_CONFLICT: Control id 4571,
-#. IDS_DELETE_BRANCHTAG_SHORT)
+#. Resource IDs: (Dialog IDD_RESOLVE_CONFLICT: Control id 4571,
+#. IDS_AFXBARRES_DELETE, IDS_DELETE_BRANCHTAG_SHORT)
 msgid "Delete"
 msgstr "削除"
 
@@ -3950,7 +3993,7 @@ msgstr "名前で %d 個のアイテムを削除して無視(&I)"
 
 #. Resource IDs: (IDS_MENUDELETEIGNOREMULTIPLE2)
 msgid "Delete and &ignore multiple items by name"
-msgstr ""
+msgstr "複数を削除し、名前で無視(&I)"
 
 #. Resource IDs: (IDS_MENUDELETEIGNORE)
 msgid "Delete and add to &ignore list"
@@ -3963,7 +4006,7 @@ msgstr "拡張子で %d 個のアイテムを削除して無視(&E) "
 
 #. Resource IDs: (IDS_MENUDELETEIGNOREMULTIPLEMASK2)
 msgid "Delete and ignore multiple items by &extension"
-msgstr ""
+msgstr "複数を削除し、拡張子で無視(&E)"
 
 #. Resource IDs: (IDS_PROC_BROWSEREFS_DELETEBRANCH)
 msgid "Delete branch"
@@ -3972,6 +4015,10 @@ msgstr "ブランチを削除"
 #. Resource IDs: (IDS_DELETE_BRANCHTAG)
 msgid "Delete branch/tag"
 msgstr "ブランチ/タグを削除"
+
+#. Resource IDs: (IDS_DELETE_LOCALTAG)
+msgid "Delete local tag"
+msgstr "ローカルタグを削除"
 
 #. Resource IDs: (IDS_PROC_BROWSEREFS_DELETEREMOTEBRANCH)
 msgid "Delete remote branch"
@@ -3998,9 +4045,17 @@ msgstr "サブモジュールを削除"
 msgid "Delete tag"
 msgstr "タグを削除"
 
+#. Resource IDs: (IDS_DELETE_REMOTETAG)
+msgid "Delete tag on remote"
+msgstr "リモートのタグを削除"
+
 #. Resource IDs: (IDS_B_DELETEORDIFFERENTNAME)
 msgid "Delete the existing branch or use a different name."
 msgstr "既にあるブランチを削除するか、違う名前を使ってください"
+
+#. Resource IDs: (Dialog IDD_RESOLVE_CONFLICT: Control id 4570)
+msgid "Delete/modify merge conflict"
+msgstr "マージの競合を削除/修正"
 
 #. Resource IDs: (IDS_DELETEWHENEMPTY_TASK3)
 msgid ""
@@ -4013,10 +4068,6 @@ msgstr "削除\nこのファイルは削除"
 #. IDS_PATHACTIONS_DELETE, IDS_SVNACTION_DELETE, IDS_SVN_SUMMARIZEDELETED)
 msgid "Deleted"
 msgstr "削除"
-
-#. Resource IDs: (Dialog IDD_RESOLVE_CONFLICT: Control id 4570)
-msgid "Deleted merge conflict"
-msgstr "削除されたマージの競合"
 
 #. Resource IDs: (IDS_MENUDESCDELETEIGNORE)
 msgid ""
@@ -4068,11 +4119,14 @@ msgstr "Describe"
 msgid "Describe Strategy"
 msgstr "Describe の方式"
 
-#. Resource IDs: (16031, IDS_DESCRIPTION)
+#. Resource IDs: (IDS_AFXBARRES_DESCRIPTION, IDS_DESCRIPTION)
 msgid "Description"
 msgstr "説明"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 65535, Dialog
+#. IDD_AFXBARRES_PROPPAGE1: Control id 65535, Dialog IDD_AFXBARRES_PROPPAGE5:
+#. Control id 65535, Dialog IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id
+#. 65535)
 msgid "Description:"
 msgstr "説明:"
 
@@ -4084,7 +4138,7 @@ msgstr "変更リストを選択解除する"
 msgid "Destination"
 msgstr "宛先"
 
-#. Resource IDs: (61730)
+#. Resource IDs: (AFX_IDP_FAILED_DISK_FULL)
 msgid "Destination disk drive is full."
 msgstr "送り先ディスクドライブはいっぱいです。"
 
@@ -4110,7 +4164,7 @@ msgstr "同じのコミットで変更されたファイルから、移動/複�
 msgid "Detect moved or copied lines within a file"
 msgstr "ファイルの中で、移動/複製された行を検知する"
 
-#. Resource IDs: (61583)
+#. Resource IDs: (AFX_IDS_DIB_FORMAT)
 msgid ""
 "Device Independent Bitmap\n"
 "a device independent bitmap"
@@ -4186,6 +4240,10 @@ msgstr "\"%s\" と差分を取る"
 msgid "Diff with parent %d"
 msgstr "親%d との差分"
 
+#. Resource IDs: (IDS_TAGCOMPARE_DIFFER)
+msgid "Differ"
+msgstr "異なる"
+
 #. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1302)
 msgid "Difference between"
 msgstr "以下の間の差分"
@@ -4215,6 +4273,10 @@ msgstr "ディレクトリ:"
 msgid "Disable sounds"
 msgstr "音を無効にする"
 
+#. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1536)
+msgid "Disable status cache for elevated processes"
+msgstr "昇格したプロセスでは状態キャッシュを無効にする"
+
 #. Resource IDs: (IDS_SETTINGS_RECURSIVE_TT)
 msgid ""
 "Disable this option if you have really big working trees and experience\n"
@@ -4229,17 +4291,17 @@ msgstr "更新チェックを無効にする"
 msgid "Disabled"
 msgstr "無効"
 
-#. Resource IDs: (61869)
+#. Resource IDs: (AFX_IDP_FILE_DISKFULL)
 #, c-format
 msgid "Disk full while accessing %1."
 msgstr "%1 にアクセス中にディスクがいっぱいになりました。"
 
-#. Resource IDs: (61745)
+#. Resource IDs: (AFX_IDP_SCRIPT_DISPATCH_EXCEPTION)
 #, c-format
 msgid "Dispatch exception: %1"
 msgstr "ディスパッチ例外: %1"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_OUTLOOKBAR_OPTIONS: Control id 65535)
 msgid "Display &buttons in this order"
 msgstr "この順序でボタンを表示(&B)"
 
@@ -4308,17 +4370,17 @@ msgstr "ごみ箱は使用しない"
 #. Resource IDs: (IDS_PROC_DELETEALLSTASH)
 #, c-format
 msgid "Do you really want to delete ALL %d stash?"
-msgstr ""
+msgstr "本当に %d のスタッシュすべてを削除しても宜しいですか？"
 
 #. Resource IDs: (IDS_PROC_DELETEBRANCHTAG)
 #, c-format
 msgid "Do you really want to delete \"%s\"?"
-msgstr ""
+msgstr "本当に \"%s\" を削除してもよろしいですか？"
 
-#. Resource IDs: (16109)
+#. Resource IDs: (IDS_AFXBARRES_DELETE_TOOLBAR_FMT)
 #, c-format
-msgid "Do you really want to delete the toolbar '%s'?"
-msgstr "本当にこのツールバー「%s」を削除してもよろしいですか？"
+msgid "Do you really want to delete the toolbar '%Ts'?"
+msgstr "本当にこのツールバー「%Ts」を削除してもよろしいですか？"
 
 #. Resource IDs: (IDS_DISABLEUPDATECHECKS)
 msgid ""
@@ -4344,7 +4406,11 @@ msgstr "本当にこのファイルもしくはフォルダーを移動させて
 msgid ""
 "Do you really want to permanently delete the %d selected refs? It can NOT be"
 " recovered!"
-msgstr ""
+msgstr "本当に選択した %d refs を完全に削除していいですか？ 取り消す事はできません！"
+
+#. Resource IDs: (IDS_PROC_PUSH_ALLBRANCHES)
+msgid "Do you really want to push all local branches?"
+msgstr "本当にすべてのローカルブランチをプッシュしますか?"
 
 #. Resource IDs: (IDS_WARN_DELETE_ONE_FROM_INDEX)
 #, c-format
@@ -4412,7 +4478,7 @@ msgid ""
 "as resolved?"
 msgstr "以下のファイルを解決済みとしてマークしますか？\n%s"
 
-#. Resource IDs: (62182)
+#. Resource IDs: (AFX_IDS_AUTOSAVE_RECOVERY_ASK_3)
 msgid "Do you want to recover these auto-saved documents?"
 msgstr "自動保存したドキュメントを復元しますか？"
 
@@ -4430,7 +4496,7 @@ msgstr "変更点を表示しますか？"
 msgid "Do you want to stash pop now?"
 msgstr "スタッシュに保存した変更を復元しますか？"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog AFX_IDD_PRINTDLG: Control id 65535)
 msgid "Document :"
 msgstr "ドキュメント:"
 
@@ -4443,7 +4509,7 @@ msgstr "ブランチ「%s」を把握していないため何をプッシュす�
 msgid "Don't know what will push because you enter URL"
 msgstr "URLが入力されたために何をプッシュするか不明です"
 
-#. Resource IDs: (62185)
+#. Resource IDs: (AFX_IDS_AUTOSAVE_RECOVERY_ASK_6)
 msgid ""
 "Don't recover the auto-saved documents\n"
 "Use the last explicitly saved versions of the documents"
@@ -4483,13 +4549,13 @@ msgstr "ダウンロード"
 
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_LANGUAGE: Control id 65535)
 msgid "Download language packs:"
-msgstr ""
+msgstr "言語パックをダウンロード:"
 
-#. Resource IDs: (16028)
+#. Resource IDs: (IDS_AFX_TEAR_OFF)
 msgid "Drag to make this menu float"
 msgstr "ドラッグするとメニューがフローティング表示になります"
 
-#. Resource IDs: (16513)
+#. Resource IDs: (Dialog IDD_AFXBARRES_IMAGE_EDITOR: Control id 16513)
 msgid "Draw"
 msgstr "描画"
 
@@ -4503,11 +4569,11 @@ msgstr "ドライブの種類"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1315)
 msgid "Drives A: and B:"
-msgstr ""
+msgstr "ドライブ A: と B:"
 
 #. Resource IDs: (IDS_DROPONESTASH)
 msgid "Drop &one stash"
-msgstr ""
+msgstr "最後のスタッシュを破棄(&O)"
 
 #. Resource IDs: (Dialog IDD_CLEAN: Control id 1731)
 msgid "Dry run"
@@ -4571,7 +4637,7 @@ msgstr "ローカルリポジトリ設定を編集(&L)"
 msgid "Edit .tgitconfig"
 msgstr ".tgitconfigを編集"
 
-#. Resource IDs: (16133)
+#. Resource IDs: (Dialog IDD_AFXBARRES_IMAGE_EDITOR: Control id 16133)
 msgid "Edit Button Image"
 msgstr "ボタンイメージを編集"
 
@@ -4581,7 +4647,7 @@ msgstr "ノートを編集"
 
 #. Resource IDs: (IDS_LOG_POPUP_EDITAUTHOR)
 msgid "Edit author"
-msgstr "作者を編集"
+msgstr "著者を編集"
 
 #. Resource IDs: (IDS_PROC_BROWSEREFS_EDITDESCRIPTION)
 msgid "Edit description"
@@ -4683,11 +4749,11 @@ msgstr "ログダイアログでGravatar画像の表示を有効にする"
 
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 1842)
 msgid "Enable special hack for Cygwin git"
-msgstr ""
+msgstr "Cygwin git の特別なハックを有効にする"
 
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 1843)
 msgid "Enable special hack for Msys2 git"
-msgstr ""
+msgstr "Msys2 git の特別なハックを有効にする"
 
 #. Resource IDs: (ID_VIEW_ENABLELEXER - Menu)
 msgid "Enable syntax highlighting"
@@ -4713,31 +4779,31 @@ msgid ""
 "Hold down the Ctrl key to reload the file with the specified encoding."
 msgstr "エンコーディング\n特定のエンコーディングに変換\n特定のエンコーディングでファイルを再読込するには、Ctrlキーを押し続けてください。"
 
-#. Resource IDs: (61866)
+#. Resource IDs: (AFX_IDP_FILE_HARD_IO)
 #, c-format
 msgid "Encountered a hardware I/O error while accessing %1."
 msgstr "%1 にアクセス中にハードウェア I/O エラーが通知されました。"
 
-#. Resource IDs: (61868)
+#. Resource IDs: (AFX_IDP_FILE_LOCKING)
 #, c-format
 msgid "Encountered a locking violation while accessing %1."
 msgstr "%1 にアクセス中にロック違反が発生しました。"
 
-#. Resource IDs: (61867)
+#. Resource IDs: (AFX_IDP_FILE_SHARING)
 #, c-format
 msgid "Encountered a sharing violation while accessing %1."
 msgstr "%1 にアクセス中に共有違反が発生しました。"
 
-#. Resource IDs: (61477)
+#. Resource IDs: (AFX_IDS_INVALID_ARG_EXCEPTION)
 msgid "Encountered an improper argument."
 msgstr "不適切な引数に遭遇しました。"
 
-#. Resource IDs: (61733)
+#. Resource IDs: (AFX_IDP_FAILED_IO_ERROR_READ)
 #, c-format
 msgid "Encountered an unexpected error while reading %1."
 msgstr "%1 の読み込み中に想定外のエラーが発生しました。"
 
-#. Resource IDs: (61734)
+#. Resource IDs: (AFX_IDP_FAILED_IO_ERROR_WRITE)
 #, c-format
 msgid "Encountered an unexpected error while writing %1."
 msgstr "%1 の書き込み中に想定外のエラーが発生しました。"
@@ -4754,7 +4820,7 @@ msgstr "終わり"
 msgid "End of Line Style"
 msgstr "改行コードの形式"
 
-#. Resource IDs: (61187)
+#. Resource IDs: (AFX_IDS_SCMAXIMIZE)
 msgid "Enlarge the window to full size"
 msgstr "ウィンドウを最大化する"
 
@@ -4762,19 +4828,19 @@ msgstr "ウィンドウを最大化する"
 msgid "Enter URL"
 msgstr "URLを入力"
 
-#. Resource IDs: (61722)
+#. Resource IDs: (AFX_IDP_PARSE_GUID)
 msgid "Enter a GUID."
 msgstr "GUIDを入力してください。"
 
-#. Resource IDs: (61721)
+#. Resource IDs: (AFX_IDP_PARSE_CURRENCY)
 msgid "Enter a currency."
 msgstr "通貨を入力してください。"
 
-#. Resource IDs: (61720)
+#. Resource IDs: (AFX_IDP_PARSE_DATETIME)
 msgid "Enter a date and/or time."
 msgstr "日付/時刻を入力してください。"
 
-#. Resource IDs: (61724)
+#. Resource IDs: (AFX_IDP_PARSE_DATE)
 msgid "Enter a date."
 msgstr "日付を入力してください。"
 
@@ -4782,33 +4848,33 @@ msgstr "日付を入力してください。"
 msgid "Enter a name for the changelist:"
 msgstr "変更リストの名前を入力して下さい:"
 
-#. Resource IDs: (61715)
+#. Resource IDs: (AFX_IDP_PARSE_REAL_RANGE)
 #, c-format
 msgid "Enter a number between %1 and %2."
 msgstr "%1 ～ %2 の間の数値を入力してください。"
 
-#. Resource IDs: (61713)
+#. Resource IDs: (AFX_IDP_PARSE_REAL)
 msgid "Enter a number."
 msgstr "数値を入力してください。"
 
-#. Resource IDs: (61719)
+#. Resource IDs: (AFX_IDP_PARSE_UINT)
 msgid "Enter a positive integer."
 msgstr "正の整数を入力してください。"
 
-#. Resource IDs: (61723)
+#. Resource IDs: (AFX_IDP_PARSE_TIME)
 msgid "Enter a time."
 msgstr "時刻を入力してください。"
 
-#. Resource IDs: (61714)
+#. Resource IDs: (AFX_IDP_PARSE_INT_RANGE)
 #, c-format
 msgid "Enter an integer between %1 and %2."
 msgstr "%1 ～ %2 の間の整数を入力してください。"
 
-#. Resource IDs: (61718)
+#. Resource IDs: (AFX_IDP_PARSE_BYTE)
 msgid "Enter an integer between 0 and 255."
 msgstr "0 ～ 255 の間の整数を入力してください。"
 
-#. Resource IDs: (61712)
+#. Resource IDs: (AFX_IDP_PARSE_INT)
 msgid "Enter an integer."
 msgstr "整数を入力してください。"
 
@@ -4820,7 +4886,7 @@ msgstr "テストするファイルの内容を入力:"
 msgid "Enter log &message:"
 msgstr "ログメッセージを入力(&M):"
 
-#. Resource IDs: (61716)
+#. Resource IDs: (AFX_IDP_PARSE_STRING_SIZE)
 #, c-format
 msgid "Enter no more than %1 characters."
 msgstr "%1 文字以上は入力できません。"
@@ -4865,7 +4931,7 @@ msgstr "レジストリーキー %s の読み込み/書き込みに失敗しま�
 msgid "Everything updated."
 msgstr "すべての更新を完了しました。"
 
-#. Resource IDs: (16023)
+#. Resource IDs: (IDS_AFXBARRES_CMD_FILTER)
 msgid ""
 "Executable (*.exe)|*.exe|Command (*.com)|*.com|Information "
 "(*.pdf)|*.pdf|Batch (*.bat)|*.bat|All Files (*.*)|*.*||"
@@ -4875,7 +4941,7 @@ msgstr "実行ファイル (*.exe)|*.exe|コマンド (*.com)|*.com|PDFファイ
 msgid "Executable (+x)"
 msgstr "実行可能 (+x)"
 
-#. Resource IDs: (16018)
+#. Resource IDs: (IDS_AFXBARRES_EXISTING)
 msgid "Existing"
 msgstr "存在しています"
 
@@ -4884,12 +4950,12 @@ msgstr "存在しています"
 msgid "Exit"
 msgstr "終了"
 
-#. Resource IDs: (16025)
+#. Resource IDs: (IDS_AFXBARRES_EXPAND_FMT)
 #, c-format
-msgid "Expand (%s)"
-msgstr "展開（%s）"
+msgid "Expand (%Ts)"
+msgstr "展開（%Ts）"
 
-#. Resource IDs: (16012)
+#. Resource IDs: (IDS_AFXBARRES_EXPAND_BAR)
 msgid "Expand docked window"
 msgstr "ドッキングしたウィンドウを展開する"
 
@@ -4959,7 +5025,7 @@ msgstr "外部プログラム:"
 msgid "F&etch..."
 msgstr "フェッチ(&E)..."
 
-#. Resource IDs: (17113)
+#. Resource IDs: (IDS_AFXBARRES_MENU_ANIMATION_FADE)
 msgid "Fade"
 msgstr "フェード"
 
@@ -4981,21 +5047,21 @@ msgstr "\"%s\" のチェックアウトに失敗しました"
 msgid "Failed to checkout file \"%s\" of revision %s to \"%s\"."
 msgstr "\"%s\" のリビジョン %s を \"%s\" にチェックアウトする事に失敗しました。"
 
-#. Resource IDs: (61825)
+#. Resource IDs: (AFX_IDP_FAILED_TO_CONNECT)
 msgid ""
 "Failed to connect.\n"
 "Link may be broken."
 msgstr "接続に失敗しました。\nリンクが壊れている可能性があります。"
 
-#. Resource IDs: (61835)
+#. Resource IDs: (AFX_IDP_FAILED_TO_CONVERT)
 msgid "Failed to convert ActiveX object."
 msgstr "ActiveX オブジェクトの変換に失敗しました。"
 
-#. Resource IDs: (61700)
+#. Resource IDs: (AFX_IDP_FAILED_TO_CREATE_DOC)
 msgid "Failed to create empty document."
 msgstr "空のドキュメントの作成に失敗しました。"
 
-#. Resource IDs: (61839)
+#. Resource IDs: (AFX_IDP_FAILED_TO_CREATE)
 msgid ""
 "Failed to create object.  Make sure the application is entered in the system"
 " registry."
@@ -5013,23 +5079,23 @@ msgstr "ベースファイルの取得に失敗しました。"
 msgid "Failed to get merge file."
 msgstr "マージファイルの取得に失敗しました。"
 
-#. Resource IDs: (61703)
+#. Resource IDs: (AFX_IDP_FAILED_TO_LAUNCH_HELP)
 msgid "Failed to launch help."
 msgstr "ヘルプを起動できませんでした。"
 
-#. Resource IDs: (61830)
+#. Resource IDs: (AFX_IDP_FAILED_TO_LAUNCH)
 msgid "Failed to launch server application."
 msgstr "サーバーアプリケーションの実行に失敗しました。"
 
-#. Resource IDs: (61697)
+#. Resource IDs: (AFX_IDP_FAILED_TO_OPEN_DOC)
 msgid "Failed to open document."
 msgstr "ドキュメントを開くことができませんでした。"
 
-#. Resource IDs: (61827)
+#. Resource IDs: (AFX_IDP_BAD_VERB)
 msgid "Failed to perform server operation."
 msgstr "サーバー操作の実行に失敗しました。"
 
-#. Resource IDs: (61698)
+#. Resource IDs: (AFX_IDP_FAILED_TO_SAVE_DOC)
 msgid "Failed to save document."
 msgstr "ドキュメントを保存できませんでした。"
 
@@ -5081,7 +5147,7 @@ msgstr "フェッチ＆リベース(&B)"
 
 #. Resource IDs: (IDS_PROC_SYNC_FETCHALL)
 msgid "Fetch all refs"
-msgstr ""
+msgstr "すべてのRefをフェッチ"
 
 #. Resource IDs: (IDS_MENUDESCFETCH)
 msgid "Fetch commits from a remote repository."
@@ -5113,7 +5179,7 @@ msgstr "ファイルを取り出す..."
 msgid "Fetching revision %s of file:"
 msgstr "リビジョン %s のファイルを取得中:"
 
-#. Resource IDs: (16015, IDS_CHSTAT_FILECOL, IDS_COMMITDLG_FILE,
+#. Resource IDs: (IDS_AFXBARRES_FILE, IDS_CHSTAT_FILECOL, IDS_COMMITDLG_FILE,
 #. IDS_FILEDIFF_FILE, IDS_LOG_FILE)
 msgid "File"
 msgstr "ファイル"
@@ -5305,7 +5371,7 @@ msgstr "1つ目の親だけ"
 #. IDD_FIRSTSTARTWIZARD_START: Control id 276, Dialog
 #. IDD_FIRSTSTARTWIZARD_USER: Control id 4597)
 msgid "First Start Wizard - TortoiseGit"
-msgstr ""
+msgstr "初期設定ウィザード - TortoiseGit"
 
 #. Resource IDs: (Dialog IDD_BISECTSTART: Control id 1617)
 msgid "First known &bad:"
@@ -5319,7 +5385,7 @@ msgstr "画像の高さを合わせる(&H)\tH"
 msgid "Fit image &widths\tW"
 msgstr "画像の幅を合わせる(&W)\tW"
 
-#. Resource IDs: (16016)
+#. Resource IDs: (IDS_AFXBARRES_FOLDER)
 msgid "Folder"
 msgstr "フォルダー"
 
@@ -5332,7 +5398,7 @@ msgstr "名前の変更を超えてさかのぼる"
 msgid "Font"
 msgstr "フォント"
 
-#. Resource IDs: (57345)
+#. Resource IDs: (AFX_IDS_IDLEMESSAGE)
 msgid "For Help, press F1. Scroll horizontally with Ctrl-Scrollwheel"
 msgstr "F1でヘルプ、Ctrl+ホイール操作で横スクロール"
 
@@ -5403,14 +5469,14 @@ msgstr "前進 %d"
 msgid ""
 "Found \"msysgit\" or \"windows\" in versionstring of git.exe, however, you have git.exe hacks enabled. These hacks must be disabled for proper operation with Git for Windows!\n"
 "You can find more information in the help file for the keyword \"cygwin git\" or \"msys2 git\"."
-msgstr ""
+msgstr "git.exe のバージョン文字列に \"msysgit\" または \"windows\" が見つかったにもかかわらず、特別なハックが有効になっています。これらのハックは Git for Windows を利用する場合無効にする必要があります。\n詳細については、ヘルプファイルをキーワード \"cygwin git\" または \"msys2 git\" で参照してください。"
 
 #. Resource IDs: (IDS_REBASELOCKFILEFOUND)
 msgid ""
 "Found a lock file indicating that a TortoiseGit rebase process is running. This blocks this operation.\n"
 "\n"
 "If you are not runnig a TortoiseGit rebase process right now, you can remove the stale lock file in order to continue."
-msgstr ""
+msgstr "TortoiseGit のリベース処理が実行中であることを示すロックファイルが見つかりました。これはこの操作をブロックします。\n\nあなたが現在 TortoiseGit のリベース処理を実行していない場合、古いロックファイルを削除して、続行することができます。"
 
 #. Resource IDs: (IDS_PROC_REBASE_EMPTYCOMMITMSG)
 msgid ""
@@ -5459,17 +5525,21 @@ msgstr "変更されたファイルから"
 msgid "From:"
 msgstr "From:"
 
-#. Resource IDs: (17026)
+#. Resource IDs: (IDS_AFXBARRES_FULLSCREEN)
 msgid "Full Screen"
 msgstr "フルスクリーン"
+
+#. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_FULLNOPATHS)
+msgid "Full commit data without changed paths"
+msgstr "変更されたパスを除く全てのコミットデータ"
+
+#. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_FULL)
+msgid "Full data"
+msgstr "全データ"
 
 #. Resource IDs: (Dialog IDD_FIND: Control id 20086)
 msgid "Full text search"
 msgstr "全文検索"
-
-#. Resource IDs: (IDS_git_DEPTH_INFINITE)
-msgid "Fully recursive"
-msgstr "完全再帰"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 65535)
 msgid "Further options for the commit dialog are on Dialogs 3 page."
@@ -5553,11 +5623,6 @@ msgstr "マージのログを取得する"
 #, c-format
 msgid "Getting file %s"
 msgstr "%s を取得中"
-
-#. Resource IDs: (IDS_PROGRESSGETFILEREVISION)
-#, c-format
-msgid "Getting file %s, revision %s"
-msgstr "%s のリビジョン%sを取得中"
 
 #. Resource IDs: (IDS_PROGRESS_INFO)
 msgid "Getting information..."
@@ -5659,7 +5724,7 @@ msgstr "リポジトリを作成する際にエラーが発生しました！\n"
 msgid ""
 "Git requires that you set up a user name and email address. Both are used as"
 " meta data for your commits (not for authentication)."
-msgstr ""
+msgstr "Gitでは、ユーザー名と電子メールアドレスを設定する必要があります。どちらも、あなたがコミットするときにメタデータとして使用されます（認証にではなく）。"
 
 #. Resource IDs: (32787)
 msgid "Git revision list contains the complete file history"
@@ -5748,7 +5813,7 @@ msgstr "グラフ"
 msgid "Graph type:"
 msgstr "グラフの種類:"
 
-#. Resource IDs: (16972)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLOR_PAGE_ONE: Control id 16972)
 msgid "Gray"
 msgstr "灰色"
 
@@ -5764,7 +5829,7 @@ msgstr "変更リストのグループ化"
 msgid "H&ide Unrelated Changed Paths"
 msgstr "無関係な変更のパスを隠す(&H)"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 65535)
 msgid "H&ue:"
 msgstr "色相(&H):"
 
@@ -5780,7 +5845,7 @@ msgstr "HEAD:"
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_AUTHENTICATION: Control id
 #. 65535)
 msgid "HTTP (URLs start with \"http://\" or \"https://\")"
-msgstr ""
+msgstr "HTTP (\"http://\" または \"https://\" で始まるURL)"
 
 #. Resource IDs: (IDS_RESET_HARD)
 msgid "Hard"
@@ -5813,7 +5878,7 @@ msgstr "ヘブライ語"
 msgid "Help"
 msgstr "ヘルプ"
 
-#. Resource IDs: (16982)
+#. Resource IDs: (Dialog IDD_AFXBARRES_KEYMAP: Control id 16982)
 msgid "Help Keyboard"
 msgstr "キーボード支援"
 
@@ -5825,7 +5890,7 @@ msgstr "ヘルパー:"
 msgid "Helpers:"
 msgstr "ヘルパー:"
 
-#. Resource IDs: (16974)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLOR_PAGE_ONE: Control id 16974)
 msgid "Hex"
 msgstr "16進"
 
@@ -5837,7 +5902,7 @@ msgstr "バージョン管理外のパスではメニューを表示しない"
 msgid "Hide Patch<<"
 msgstr "パッチを隠す<<"
 
-#. Resource IDs: (16011)
+#. Resource IDs: (IDS_AFXBARRES_HIDE_BAR)
 msgid "Hide docked window"
 msgstr "ドッキングしているウィンドウを隠す"
 
@@ -5873,9 +5938,9 @@ msgstr "ヒント"
 msgid ""
 "Hint: Recently used commit messages are available using the context menu of "
 "the text field."
-msgstr ""
+msgstr "ヒント：最近使用したコミットメッセージは、テキストフィールドのコンテキストメニューから利用できます。"
 
-#. Resource IDs: (16519)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 16519)
 msgid ""
 "Hint: select the context menu, change the page to 'Commands' and drag the "
 "toolbar buttons into the menu window."
@@ -5907,7 +5972,7 @@ msgstr "フックの種類:"
 
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 1841)
 msgid "I don't use Git for Windows and need special workarounds"
-msgstr ""
+msgstr "私はGit for Windowsを使用せず、特別な回避策が必要です"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 65535)
 msgid "I&nclude paths:"
@@ -6227,6 +6292,11 @@ msgid ""
 "i.e. they get the modified overlay icon."
 msgstr "有効にすると、バージョン管理外のファイルを含むフォルダーの状態を変更としてマークします。\nつまり、変更のオーバーレイアイコンが付きます。"
 
+#. Resource IDs: (IDS_SETTINGS_GITCONFIG_INHERIT_TT)
+msgid ""
+"If this is enabled, no value is stored or overwritten at this config level."
+msgstr "有効にすると、この設定レベルでは値は保存/上書きされません"
+
 #. Resource IDs: (Dialog IDD_CREATEREPO: Control id 1654)
 msgid ""
 "If you plan to work inside this folder, leave this unchecked. Typically a "
@@ -6239,7 +6309,7 @@ msgid ""
 "If you want to use a translated version of TortoiseGit and your language is "
 "missing, <a id=\"download\">download</a> and install a matching language "
 "pack now and hit \"Refresh\" before continuing."
-msgstr ""
+msgstr "もし、翻訳された TortoiseGit を使用したいのに言語が見つからない場合、言語パックを <a id=\"download\">ダウンロード</a>してインストールし、「更新」ボタンを押してください。"
 
 #. Resource IDs: (IDS_EXTRAPATH_TT)
 #, c-format
@@ -6247,7 +6317,7 @@ msgid ""
 "If your git installation needs an extra entry in the PATH environment "
 "variable, you can enter it here and it will get appended to %PATH% "
 "automatically when TortoiseGit starts."
-msgstr ""
+msgstr "もし、使用する git が、PATH環境変数に追加のエントリを要求する場合、ここに入力することができます。TortoiseGit が git を呼び出すときに自動的に %PATH% に追加されます。"
 
 #. Resource IDs: (Dialog IDD_IGNORE: Control id 4577)
 msgid "Ignore"
@@ -6308,7 +6378,7 @@ msgstr "改行コードを無視する（推奨）(&E)"
 
 #. Resource IDs: (IDS_MENUIGNOREMULTIPLEMASK2)
 msgid "Ignore multiple items by &extension"
-msgstr ""
+msgstr "複数を拡張子で無視(&E)"
 
 #. Resource IDs: (IDS_DIFFOPTION_IGNORESPACEATEOL)
 msgid "Ignore space at EOL"
@@ -6352,21 +6422,17 @@ msgid ""
 "Ignore whitespace changes"
 msgstr "差分時にホワイトスペースの変更を無視\n空白類の変更を無視"
 
-#. Resource IDs: (16916 - Menu)
+#. Resource IDs: (ID_AFXBARRES_TOOLBAR_IMAGE_AND_TEXT - Menu)
 msgid "Image &and Text"
 msgstr "イメージとテキスト(&A)"
 
-#. Resource IDs: (16507)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16507)
 msgid "Image &and text"
 msgstr "イメージとテキスト(&A)"
 
-#. Resource IDs: (16508)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16508)
 msgid "Images"
 msgstr "画像"
-
-#. Resource IDs: (IDS_git_DEPTH_IMMEDIATE)
-msgid "Immediate children, including folders"
-msgstr "直接の子階層（フォルダーを含む）"
 
 #. Resource IDs: (IDS_PROGRS_TITLE_IMPORT)
 msgid "Import"
@@ -6412,7 +6478,7 @@ msgstr "マージ操作を中止するには、(HEADへの)リセットが必要
 msgid ""
 "In the following combobox you can find all installed language packs which "
 "can be used by this version of TortoiseGit."
-msgstr ""
+msgstr "下のコンボボックスに、インストール済みで、このバージョンの TortoiseGit で使用できる、すべての言語パックがリストアップされます。"
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1499)
 msgid "Include &Tags"
@@ -6430,7 +6496,7 @@ msgstr "ブランチの選択ダイアログに FETCH_HEAD も含める"
 msgid "Include only the following revision range:"
 msgstr "次のリビジョン範囲のみを含める:"
 
-#. Resource IDs: (61696)
+#. Resource IDs: (AFX_IDP_INVALID_FILENAME)
 msgid "Incorrect filename."
 msgstr "ファイル名が正しくありません。"
 
@@ -6466,15 +6532,15 @@ msgid ""
 "Paste"
 msgstr "クリップボードの内容を挿入する\n貼り付け"
 
-#. Resource IDs: (61706)
+#. Resource IDs: (AFX_IDP_FAILED_MEMORY_ALLOC)
 msgid "Insufficient memory to perform operation."
 msgstr "操作を行うのに、十分なメモリがありません。"
 
-#. Resource IDs: (61704)
+#. Resource IDs: (AFX_IDP_INTERNAL_FAILURE)
 msgid "Internal application error."
 msgstr "内部アプリケーションエラー。"
 
-#. Resource IDs: (61592)
+#. Resource IDs: (AFX_IDS_INVALID_CURRENCY)
 msgid "Invalid Currency."
 msgstr "無効な通貨です。"
 
@@ -6489,7 +6555,7 @@ msgstr "Issuer:"
 #. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGNOMERGECHECK)
 msgid ""
 "It has not been checked if these branches have been fully merged into HEAD."
-msgstr ""
+msgstr "これらのブランチがHEADにマージされているかどうかは、確認されていません"
 
 #. Resource IDs: (IDS_PROC_CASERENAME)
 msgid ""
@@ -6532,21 +6598,25 @@ msgid ""
 "Jump to first unresolved conflict"
 msgstr "競合の修正を続ける\n最初の未解決の競合に移動します"
 
-#. Resource IDs: (16136)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 16136)
 msgid "Keyboard"
 msgstr "キーボード"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE8: Control id 65535)
 msgid "Keyboard shortcuts:"
 msgstr "キーボードショートカット:"
 
-#. Resource IDs: (16030)
+#. Resource IDs: (IDS_AFXBARRES_KEYS)
 msgid "Keys"
 msgstr "キー"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Korean"
 msgstr "朝鮮語"
+
+#. Resource IDs: (Dialog IDD_CLONE: Control id 1847)
+msgid "LFS"
+msgstr "LFS"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_3: Control id 65535)
 msgid "LINE1"
@@ -6634,7 +6704,7 @@ msgstr "競合を解決するために、外部の差分/マージプログラ�
 
 #. Resource IDs: (Dialog IDD_STATGRAPH: Control id 1137)
 msgid "Least active author:"
-msgstr "最も活発でない作者:"
+msgstr "最も活発でない著者:"
 
 #. Resource IDs: (IDS_MARKASRESOLVED_TASK4)
 msgid ""
@@ -6716,7 +6786,8 @@ msgid ""
 "\"long/path/for/file.txt (from long/path/to/file.txt)\"."
 msgstr "名前の変更れたファイルを、\"path/for/file.txt (from path/to/file.txt)\" ではなく \"path/{to => for}/file.txt\" のように表示する"
 
-#. Resource IDs: (16631, 16992)
+#. Resource IDs: (Dialog IDD_AFXBARRES_KEYMAP: Control id 16992, Dialog
+#. IDD_AFXBARRES_PROPPAGE4: Control id 16631)
 msgid "List1"
 msgstr "List1"
 
@@ -6755,19 +6826,23 @@ msgstr "ローカル"
 msgid "Local Branch"
 msgstr "ローカルブランチ"
 
+#. Resource IDs: (IDS_TAGCOMPARE_LOCALHASH)
+msgid "Local SHA1"
+msgstr "ローカルSHA1"
+
 #. Resource IDs: (IDS_STATUSLIST_GROUP_IGNORELOCALCHANGES)
 msgid ""
 "Local changes ignored (assumed valid/unchanged or skip worktree flagged "
 "files)"
 msgstr "ローカルの変更を無視 (\"assume-unchanged (変更なしとみなす)\" もしくは \"skip-worktree (作業ツリーを保持)\" フラグが付いたファイル)"
 
+#. Resource IDs: (IDS_TAGCOMPARE_LOCALMESSAGE)
+msgid "Local message"
+msgstr "ローカル メッセージ"
+
 #. Resource IDs: (IDS_CHSTAT_WCCOL)
 msgid "Local status"
 msgstr "ローカルの状態"
-
-#. Resource IDs: (Dialog IDD_RESOLVE_CONFLICT: Control id 65535)
-msgid "Local:"
-msgstr "ローカル:"
 
 #. Resource IDs: (IDS_EXPORTFILE_TT)
 msgid ""
@@ -6819,21 +6894,13 @@ msgstr "ログメッセージ（ログダイアログ）"
 msgid "Login:"
 msgstr "ログイン:"
 
-#. Resource IDs: (IDS_REPOSTATUS_WCINFO)
-#, c-format
-msgid "Lowest shown revision: %ld - Highest shown revision: %ld"
-msgstr "一番下の表示リビジョン: %ld - 一番上の表示リビジョン: %ld"
-
-#. Resource IDs: (IDS_REPOSTATUS_HEADREV)
-#, c-format
-msgid ""
-"Lowest shown revision: %ld - Highest shown revision: %ld - HEAD revision: "
-"%ld"
-msgstr "一番下の表示リビジョン: %ld - 一番上の表示リビジョン: %ld - HEAD リビジョン: %ld"
-
-#. Resource IDs: (16973)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 16973)
 msgid "Lum"
 msgstr "明度"
+
+#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1550)
+msgid "M&erge: Resets the index and try to reconstruct the pre-merge state"
+msgstr "マージ: インデックスをリセットし、マージ前の状態の復元に試みる(&E)"
 
 #. Resource IDs: (IDS_SMTP_MAPI)
 msgid "MAPI"
@@ -6847,7 +6914,7 @@ msgstr "マッキントッシュ"
 msgid "Mail"
 msgstr "メールl"
 
-#. Resource IDs: (61841)
+#. Resource IDs: (AFX_IDP_INVALID_MAPI_DLL)
 msgid "Mail system DLL is invalid."
 msgstr "メールシステムDLLは無効です。"
 
@@ -6922,19 +6989,19 @@ msgstr "ログメッセージの履歴で表示する最大の項目数"
 msgid "Max. lines in action log"
 msgstr "アクションログに保持する最大の行数"
 
-#. Resource IDs: (16655)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE6: Control id 16655)
 msgid "Me&nus show recently used commands first"
 msgstr "最近使用したコマンドをメニューの最初に表示する(&N)"
 
-#. Resource IDs: (16134)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 16134)
 msgid "Menu"
 msgstr "メニュー"
 
-#. Resource IDs: (16006)
+#. Resource IDs: (IDS_AFXBARRES_MENU_BAR_TITLE)
 msgid "Menu Bar"
 msgstr "メニューバー"
 
-#. Resource IDs: (16626)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 16626)
 msgid "Menu s&hadows"
 msgstr "メニューの影(&H)"
 
@@ -6982,20 +7049,10 @@ msgstr "他のブランチをマージする"
 msgid "Merging"
 msgstr "マージ"
 
-#. Resource IDs: (IDS_PROGRS_CMD_MERGEURL)
-#, c-format
-msgid "Merging from %s, revision %s to %s, revision %s into %s, %s%s"
-msgstr "%s のリビジョン %s から %s のリビジョン %s までを、%s, %s%s へマージ"
-
 #. Resource IDs: (IDS_ERR_MERGEIDENTICALREVISIONS)
 msgid ""
 "Merging requires different revisions or different URLs in 'From:' and 'To:'"
 msgstr "マージを行うには、「元:」と「先:」に異なるリビジョン、もしくは異なるURLを指定する必要があります。"
-
-#. Resource IDs: (IDS_PROGRS_CMD_MERGEPEG)
-#, c-format
-msgid "Merging revisions %s of %s into %s, %s%s"
-msgstr "リビジョン %s (%s の) を %s, %s%s へマージ"
 
 #. Resource IDs: (IDS_LOG_MESSAGE, IDS_MESSAGE)
 msgid "Message"
@@ -7009,7 +7066,8 @@ msgstr "メッセージのみ (&Y)"
 msgid "Message part &expression:"
 msgstr "メッセージ部の正規表現(&E):"
 
-#. Resource IDs: (Dialog IDD_MERGE: Control id 1742, IDS_LOG_FILTER_MESSAGES)
+#. Resource IDs: (Dialog IDD_MERGE: Control id 1742, IDS_LOG_FILTER_MESSAGES,
+#. IDS_LOG_POPUP_CLIPBOARD_MSGS)
 msgid "Messages"
 msgstr "メッセージ"
 
@@ -7022,7 +7080,7 @@ msgstr "最小"
 msgid "Mine"
 msgstr "こちら側"
 
-#. Resource IDs: (17086)
+#. Resource IDs: (IDS_AFXBARRES_MINIMIZE_RIBBON)
 msgid "Minimize the Ribbon"
 msgstr "リボンを最小化する"
 
@@ -7040,7 +7098,7 @@ msgstr "その他"
 msgid "Missing"
 msgstr "行方不明"
 
-#. Resource IDs: (62179, IDS_RESET_MIXED)
+#. Resource IDs: (AFX_IDS_CHECKLISTBOX_MIXED, IDS_RESET_MIXED)
 msgid "Mixed"
 msgstr "ミックス"
 
@@ -7048,9 +7106,10 @@ msgstr "ミックス"
 msgid "Modification date"
 msgstr "変更日"
 
-#. Resource IDs: (17131, Dialog IDD_COMMITDLG: Control id 1706, Dialog
-#. IDD_SETCOLORPAGE: Control id 65535, IDS_PATHACTIONS_MODIFIED,
-#. IDS_SVNACTION_MODIFIED, IDS_SVN_SUMMARIZEMODIFIED)
+#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1706, Dialog
+#. IDD_SETCOLORPAGE: Control id 65535, IDS_AFX_SHELLLISTCTRL_MODIFIED,
+#. IDS_PATHACTIONS_MODIFIED, IDS_SVNACTION_MODIFIED,
+#. IDS_SVN_SUMMARIZEMODIFIED)
 msgid "Modified"
 msgstr "変更"
 
@@ -7058,15 +7117,15 @@ msgstr "変更"
 msgid "Modified Files"
 msgstr "変更されたファイル"
 
-#. Resource IDs: (17107)
+#. Resource IDs: (IDS_AFXBARRES_MORE)
 msgid "More"
 msgstr "その他"
 
-#. Resource IDs: (16026)
+#. Resource IDs: (IDS_AFXBARRES_MORE_BUTTONS)
 msgid "More Buttons"
 msgstr "その他のボタン"
 
-#. Resource IDs: (17097)
+#. Resource IDs: (IDS_AFXBARRES_MORE_COMMANDS)
 msgid "More Commands..."
 msgstr "その他のコマンド..."
 
@@ -7080,25 +7139,25 @@ msgstr "その他..."
 
 #. Resource IDs: (Dialog IDD_STATGRAPH: Control id 1136)
 msgid "Most active author:"
-msgstr "最も活発な作者:"
+msgstr "最も活発な著者:"
 
-#. Resource IDs: (16135)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE4: Control id 16135)
 msgid "Mouse"
 msgstr "マウス"
 
-#. Resource IDs: (17026)
+#. Resource IDs: (Dialog IDD_AFXBARRES_OUTLOOKBAR_OPTIONS: Control id 17026)
 msgid "Move &Down"
 msgstr "下へ移動(&D)"
 
-#. Resource IDs: (17025)
+#. Resource IDs: (Dialog IDD_AFXBARRES_OUTLOOKBAR_OPTIONS: Control id 17025)
 msgid "Move &Up"
 msgstr "上へ移動(&U)"
 
-#. Resource IDs: (16022)
+#. Resource IDs: (IDS_AFXBARRES_MOVEDN)
 msgid "Move Item Down"
 msgstr "項目を下へ移動"
 
-#. Resource IDs: (16021)
+#. Resource IDs: (IDS_AFXBARRES_MOVEUP)
 msgid "Move Item Up"
 msgstr "項目を上へ移動"
 
@@ -7140,7 +7199,7 @@ msgstr "My ファイル:"
 msgid "NUM"
 msgstr "NUM"
 
-#. Resource IDs: (17128)
+#. Resource IDs: (IDS_AFX_SHELLLISTCTRL_NAME)
 msgid "Name"
 msgstr "名前"
 
@@ -7159,11 +7218,11 @@ msgid ""
 "Goto Line"
 msgstr "ビューの指定行へ移動\n行移動"
 
-#. Resource IDs: (17004)
+#. Resource IDs: (Dialog IDD_AFXBARRES_OUTLOOKBAR_OPTIONS: Control id 17004)
 msgid "Navigation Pane Options"
 msgstr "ナビゲーション領域の設定"
 
-#. Resource IDs: (17031)
+#. Resource IDs: (IDS_AFXBARRES_NAV_PANE_OPTIONS)
 msgid "Navigation Pane Options..."
 msgstr "ナビゲーション領域の設定..."
 
@@ -7179,7 +7238,9 @@ msgstr "ネットワーク"
 msgid "Network::Email"
 msgstr "ネットワーク::メール"
 
-#. Resource IDs: (16017, 16027, 30721, 65535, IDS_NEW)
+#. Resource IDs: (Dialog AFX_IDD_NEWTYPEDLG: Control id 30721, Dialog
+#. IDD_AFXBARRES_COLOR_DLG: Control id 65535, IDS_AFXBARRES_NEW,
+#. IDS_AFXBARRES_NEW_FILE, IDS_NEW)
 msgid "New"
 msgstr "新規"
 
@@ -7191,7 +7252,7 @@ msgstr "新しい名前(&N):"
 msgid "New Branch/Tag"
 msgstr "新規ブランチタグ/タグ"
 
-#. Resource IDs: (16014)
+#. Resource IDs: (IDS_AFXBARRES_NEW_MENU)
 msgid "New Menu"
 msgstr "新規メニュー"
 
@@ -7299,11 +7360,11 @@ msgid ""
 "No differences found! Submodule may not be updated. Update submodule now?"
 msgstr "違いは見つかりませんでした。サブモジュールは更新していません。今サブモジュールを更新しますか？"
 
-#. Resource IDs: (61472)
+#. Resource IDs: (AFX_IDP_NO_ERROR_AVAILABLE)
 msgid "No error message is available."
 msgstr "どのエラーメッセージも使用できません。"
 
-#. Resource IDs: (61856, 61872)
+#. Resource IDs: (AFX_IDP_ARCH_NONE, AFX_IDP_FILE_NONE)
 msgid "No error occurred."
 msgstr "エラーは何も起きませんでした。"
 
@@ -7341,7 +7402,7 @@ msgid ""
 "No git.exe found.\n"
 "\n"
 "TortoiseGit requires a git.exe for its operations (e.g., such as provided by the Git for Windows package)."
-msgstr ""
+msgstr "git.exe が見つかりませんでした。\n\nTortoiseGit はその動作に git.exe を必要とします（例えば、Git for Windows パッケージによって提供されるものなど）。"
 
 #. Resource IDs: (IDS_REVGRAPH_ERR_NOGRAPH)
 msgid "No graph available"
@@ -7390,8 +7451,8 @@ msgstr "ワーキングディレクトリーが見つかりません。"
 msgid "Node size"
 msgstr "ノードサイズ"
 
-#. Resource IDs: (17110, Dialog IDD_SETTINGSOVERLAY: Control id 1272,
-#. IDS_NONE)
+#. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1272,
+#. IDS_AFXBARRES_MENU_ANIMATION_NONE, IDS_NONE)
 msgid "None"
 msgstr "無し"
 
@@ -7416,7 +7477,7 @@ msgstr "バージョン管理下のファイルではありません"
 msgid "Not all files could be downloaded and verified."
 msgstr "一部（もしくは全部）のファイルがダウンロード・検査されませんでした。"
 
-#. Resource IDs: (61708)
+#. Resource IDs: (AFX_IDP_UNREG_FAILURE)
 msgid "Not all of the system registry entries (or INI file) were removed."
 msgstr "システムレジストリのエントリ（またはINIファイル）がすべて削除されたわけではありません。"
 
@@ -7439,7 +7500,7 @@ msgstr "パッチは生成されませんでした。"
 msgid "Note node"
 msgstr "ノートノード"
 
-#. Resource IDs: (62183)
+#. Resource IDs: (AFX_IDS_AUTOSAVE_RECOVERY_ASK_4)
 msgid ""
 "Note that if you choose to recover the auto-saved documents, you must "
 "explicitly save them to overwrite the original documents.  If you choose to "
@@ -7492,7 +7553,7 @@ msgstr "%sの数"
 
 #. Resource IDs: (Dialog IDD_STATGRAPH: Control id 1161)
 msgid "Number of authors:"
-msgstr "作者の数:"
+msgstr "著者の数:"
 
 #. Resource IDs: (Dialog IDD_SETTINGSTBLAME: Control id 65535)
 msgid "Number of characters required for moved or copied line detection:"
@@ -7570,35 +7631,39 @@ msgstr "OEM 869"
 msgid "OEM-US"
 msgstr "OEM-US"
 
-#. Resource IDs: (1, Dialog IDD_ABOUT: Control id 1, Dialog IDD_ABOUTBOX:
-#. Control id 1, Dialog IDD_ADD: Control id 1, Dialog IDD_ADD_REMOTE: Control
-#. id 1, Dialog IDD_BISECTSTART: Control id 1, Dialog IDD_BROWSE_REFS: Control
-#. id 1, Dialog IDD_BUGTRAQREGEXTESTER: Control id 1, Dialog IDD_CHANGEDFILES:
-#. Control id 1, Dialog IDD_CLEAN: Control id 1, Dialog IDD_CLONE: Control id
-#. 1, Dialog IDD_CREATECHANGELIST: Control id 1, Dialog IDD_CREATEREPO:
-#. Control id 1, Dialog IDD_ENCODING: Control id 1, Dialog IDD_EXPORT: Control
-#. id 1, Dialog IDD_FORMAT_PATCH: Control id 1, Dialog IDD_GITSWITCH: Control
-#. id 1, Dialog IDD_GOTO: Control id 1, Dialog IDD_GOTODLG: Control id 1,
-#. Dialog IDD_HISTORYDLG: Control id 1, Dialog IDD_IGNORE: Control id 1,
-#. Dialog IDD_INPUTDLG: Control id 1, Dialog IDD_LOGMESSAGE: Control id 1,
-#. Dialog IDD_LOGORDERING: Control id 1, Dialog IDD_MERGE: Control id 1,
-#. Dialog IDD_MERGEABORT: Control id 1, Dialog IDD_NEW_BRANCH_TAG: Control id
-#. 1, Dialog IDD_OPEN: Control id 1, Dialog IDD_OPENDLG: Control id 1, Dialog
-#. IDD_PROMPT: Control id 1, Dialog IDD_PULLFETCH: Control id 1, Dialog
-#. IDD_PUSH: Control id 1, Dialog IDD_REFLOG: Control id 1, Dialog
-#. IDD_REGEXFILTER: Control id 1, Dialog IDD_REGEXFILTERS: Control id 1,
-#. Dialog IDD_RENAME: Control id 1, Dialog IDD_REPOSITORY_BROWSER: Control id
-#. 1, Dialog IDD_REQUESTPULL: Control id 1, Dialog IDD_RESET: Control id 1,
-#. Dialog IDD_RESOLVE: Control id 1, Dialog IDD_RESOLVE_CONFLICT: Control id
-#. 4569, Dialog IDD_REVERT: Control id 1, Dialog IDD_SETTINGSBUGTRAQADV:
-#. Control id 1, Dialog IDD_SETTINGSHOOKCONFIG: Control id 1, Dialog
-#. IDD_SETTINGSPROGSADV: Control id 1, Dialog IDD_SIMPLEPROMPT: Control id 1,
-#. Dialog IDD_STASH: Control id 1, Dialog IDD_STATGRAPH: Control id 1, Dialog
-#. IDD_SUBMODULE_ADD: Control id 1, Dialog IDD_SUBMODULE_UPDATE: Control id 1,
-#. Dialog IDD_SVNDCOMMITTYPE: Control id 1, Dialog IDD_SVNIGNORE: Control id
-#. 1, Dialog IDD_SVNPROGRESS: Control id 1, Dialog IDD_TOOLASSOC: Control id
-#. 1, Dialog IDD_URL: Control id 1, Dialog IDD_USER_PASSWD: Control id 1,
-#. IDS_MSGBOX_OK)
+#. Resource IDs: (Dialog AFX_IDD_NEWTYPEDLG: Control id 1, Dialog IDD_ABOUT:
+#. Control id 1, Dialog IDD_ABOUTBOX: Control id 1, Dialog IDD_ADD: Control id
+#. 1, Dialog IDD_ADD_REMOTE: Control id 1, Dialog IDD_AFXBARRES_BUTTON_PROPS:
+#. Control id 1, Dialog IDD_AFXBARRES_COLOR_DLG: Control id 1, Dialog
+#. IDD_AFXBARRES_IMAGE_EDITOR: Control id 1, Dialog
+#. IDD_AFXBARRES_OUTLOOKBAR_OPTIONS: Control id 1, Dialog
+#. IDD_AFXBARRES_TOOLBAR_NAME: Control id 1, Dialog IDD_BISECTSTART: Control
+#. id 1, Dialog IDD_BROWSE_REFS: Control id 1, Dialog IDD_BUGTRAQREGEXTESTER:
+#. Control id 1, Dialog IDD_CHANGEDFILES: Control id 1, Dialog IDD_CLEAN:
+#. Control id 1, Dialog IDD_CLONE: Control id 1, Dialog IDD_CREATECHANGELIST:
+#. Control id 1, Dialog IDD_CREATEREPO: Control id 1, Dialog IDD_ENCODING:
+#. Control id 1, Dialog IDD_EXPORT: Control id 1, Dialog IDD_FORMAT_PATCH:
+#. Control id 1, Dialog IDD_GITSWITCH: Control id 1, Dialog IDD_GOTO: Control
+#. id 1, Dialog IDD_GOTODLG: Control id 1, Dialog IDD_HISTORYDLG: Control id
+#. 1, Dialog IDD_IGNORE: Control id 1, Dialog IDD_INPUTDLG: Control id 1,
+#. Dialog IDD_LOGMESSAGE: Control id 1, Dialog IDD_LOGORDERING: Control id 1,
+#. Dialog IDD_MERGE: Control id 1, Dialog IDD_MERGEABORT: Control id 1, Dialog
+#. IDD_NEW_BRANCH_TAG: Control id 1, Dialog IDD_OPEN: Control id 1, Dialog
+#. IDD_OPENDLG: Control id 1, Dialog IDD_PROMPT: Control id 1, Dialog
+#. IDD_PULLFETCH: Control id 1, Dialog IDD_PUSH: Control id 1, Dialog
+#. IDD_REFLOG: Control id 1, Dialog IDD_REGEXFILTER: Control id 1, Dialog
+#. IDD_REGEXFILTERS: Control id 1, Dialog IDD_RENAME: Control id 1, Dialog
+#. IDD_REPOSITORY_BROWSER: Control id 1, Dialog IDD_REQUESTPULL: Control id 1,
+#. Dialog IDD_RESET: Control id 1, Dialog IDD_RESOLVE: Control id 1, Dialog
+#. IDD_RESOLVE_CONFLICT: Control id 4569, Dialog IDD_REVERT: Control id 1,
+#. Dialog IDD_SETTINGSBUGTRAQADV: Control id 1, Dialog IDD_SETTINGSHOOKCONFIG:
+#. Control id 1, Dialog IDD_SETTINGSPROGSADV: Control id 1, Dialog
+#. IDD_SIMPLEPROMPT: Control id 1, Dialog IDD_STASH: Control id 1, Dialog
+#. IDD_STATGRAPH: Control id 1, Dialog IDD_SUBMODULE_ADD: Control id 1, Dialog
+#. IDD_SUBMODULE_UPDATE: Control id 1, Dialog IDD_SVNDCOMMITTYPE: Control id
+#. 1, Dialog IDD_SVNIGNORE: Control id 1, Dialog IDD_SVNPROGRESS: Control id
+#. 1, Dialog IDD_TOOLASSOC: Control id 1, Dialog IDD_URL: Control id 1, Dialog
+#. IDD_USER_PASSWD: Control id 1, IDS_MSGBOX_OK)
 msgid "OK"
 msgstr "OK"
 
@@ -7646,7 +7711,7 @@ msgstr "古い行"
 msgid "On demand"
 msgstr "オンデマンド"
 
-#. Resource IDs: (62180)
+#. Resource IDs: (AFX_IDS_AUTOSAVE_RECOVERY_ASK_1)
 msgid "One or more auto-saved documents were found."
 msgstr "一つ以上の自動保存されたドキュメントが見つかりました。"
 
@@ -7669,15 +7734,15 @@ msgstr "マージしたファイルのみ"
 #. Resource IDs: (Dialog IDD_SETTINGSTBLAME: Control id 1677,
 #. ID_VIEW_ONLYCONSIDERFIRSTPARENTS - Menu)
 msgid "Only consider first parents on blame"
-msgstr ""
+msgstr "注釈履歴で最初の親だけを扱う"
 
-#. Resource IDs: (IDS_git_DEPTH_FILES)
-msgid "Only file children"
-msgstr "子階層のファイルのみ"
+#. Resource IDs: (IDS_TAGCOMPARE_ONLYLOCAL)
+msgid "Only local"
+msgstr "ローカルのみ"
 
 #. Resource IDs: (IDS_BROWSE_REFS_ONLYMERGED)
 msgid "Only merged (to HEAD)"
-msgstr ""
+msgstr "マージされたもののみ (HEADへ)"
 
 #. Resource IDs: (IDS_COMMITDLG_ONLYNUMBERS)
 msgid ""
@@ -7685,15 +7750,16 @@ msgid ""
 "are allowed!"
 msgstr "数値のみ（コンマで分割可能）が入力可能です。"
 
-#. Resource IDs: (IDS_git_DEPTH_EMPTY)
-msgid "Only this item"
-msgstr "この項目のみ"
+#. Resource IDs: (IDS_TAGCOMPARE_ONLYREMOTE)
+msgid "Only remote"
+msgstr "リモートのみ"
 
 #. Resource IDs: (IDS_BROWSE_REFS_ONLYUNMERGED)
 msgid "Only unmerged (to HEAD)"
-msgstr ""
+msgstr "マージされていないもののみ (HEADへ)"
 
-#. Resource IDs: (61440, ID_FILE_OPEN - Menu, ID_FILE_OPEN - Ribbon name)
+#. Resource IDs: (AFX_IDS_OPENFILE, ID_FILE_OPEN - Menu, ID_FILE_OPEN - Ribbon
+#. name)
 msgid "Open"
 msgstr "開く"
 
@@ -7757,9 +7823,9 @@ msgstr "リポジトリブラウザーを開く"
 msgid "Option"
 msgstr "オプション"
 
-#. Resource IDs: (16137, Dialog IDD_NEW_BRANCH_TAG: Control id 1517, Dialog
-#. IDD_PULLFETCH: Control id 1517, Dialog IDD_PUSH: Control id 1502, Dialog
-#. IDD_STASH: Control id 1517)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE6: Control id 16137, Dialog
+#. IDD_NEW_BRANCH_TAG: Control id 1517, Dialog IDD_PULLFETCH: Control id 1517,
+#. Dialog IDD_PUSH: Control id 1502, Dialog IDD_STASH: Control id 1517)
 msgid "Options"
 msgstr "オプション"
 
@@ -7787,7 +7853,7 @@ msgstr "送り出し変更リスト"
 msgid "Out Commits"
 msgstr "送り出しコミット"
 
-#. Resource IDs: (61475)
+#. Resource IDs: (AFX_IDS_MEMORY_EXCEPTION)
 msgid "Out of memory."
 msgstr "メモリ不足です。"
 
@@ -7795,7 +7861,7 @@ msgstr "メモリ不足です。"
 msgid "Output Directory"
 msgstr "出力ディレクトリー"
 
-#. Resource IDs: (61510)
+#. Resource IDs: (AFX_IDS_PRINTDEFAULT)
 msgid "Output.prn"
 msgstr "Output.prn"
 
@@ -7805,25 +7871,25 @@ msgstr "上書き"
 
 #. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1521)
 msgid "Overwrite working tree changes (&force)"
-msgstr ""
+msgstr "作業ツリーの変更を上書きする (&force)"
 
 #. Resource IDs: (ID_FILE_PAGESETUP - Menu)
 msgid "P&age setup..."
 msgstr "ページ設定(&A)..."
 
-#. Resource IDs: (61507)
+#. Resource IDs: (AFX_IDS_PRINTPAGENUM)
 #, c-format
 msgid "Page %u"
 msgstr "ページ %u"
 
-#. Resource IDs: (61508)
+#. Resource IDs: (AFX_IDS_PREVIEWPAGEDESC)
 #, c-format
 msgid ""
 "Page %u\n"
 "Pages %u-%u\n"
 msgstr "ページ %u\nページ %u-%u\n"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog AFX_IDD_PRINTDLG: Control id 65535)
 msgid "Page :"
 msgstr "ページ :"
 
@@ -7861,13 +7927,14 @@ msgstr "親1"
 msgid "Parent 2"
 msgstr "親2"
 
+#. Resource IDs: (IDS_CONFLICT_REVERT)
+#, c-format
+msgid "Parent of %2!s!"
+msgstr "%2!s! の親"
+
 #. Resource IDs: (IDS_PARENTS)
 msgid "Parent(s)"
 msgstr "親"
-
-#. Resource IDs: (Dialog IDD_ABOUTBOX: Control id 65535)
-msgid "Part of code come from TortoiseSVN Blame"
-msgstr "コードの一部は、TortoiseSVN Blame から来ています。"
 
 #. Resource IDs: (Dialog IDD_USER_PASSWD: Control id 4585)
 msgid "Password"
@@ -7969,13 +8036,13 @@ msgstr "鉛筆ツール\n鉛筆"
 
 #. Resource IDs: (IDS_STATGRAPH_PERCENTAGE_OF_AUTHORSHIP)
 msgid "Percent of authorship"
-msgstr "作者別の貢献度"
+msgstr "著者別の貢献度"
 
 #. Resource IDs: (IDS_STATGRAPH_PERCENTAGE_OF_AUTHORSHIPY)
 msgid "Percents"
 msgstr "パーセント"
 
-#. Resource IDs: (16538)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE6: Control id 16538)
 msgid "Personalized Menus and Toolbars"
 msgstr "個人用メニューとツールバー"
 
@@ -7996,13 +8063,13 @@ msgstr "コミットメッセージを選択(&M)"
 msgid "Pick up %s"
 msgstr "%s をピックアップ"
 
-#. Resource IDs: (61582)
+#. Resource IDs: (AFX_IDS_METAFILE_FORMAT)
 msgid ""
 "Picture (Metafile)\n"
 "a picture"
 msgstr "画像（メタファイル）\n画像"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_IMAGE_EDITOR: Control id 65535)
 msgid "Picture:"
 msgstr "画像:"
 
@@ -8031,14 +8098,14 @@ msgstr "実行するフックスクリプトを入力してください。"
 msgid ""
 "Please enter a path where to apply the hook script to. Use \"*\" for all "
 "paths."
-msgstr ""
+msgstr "フックスクリプトを適用するパスを入力してください。「*」ですべてのパスに適用します。"
 
 #. Resource IDs: (IDS_FIRSTSTART_HINT3)
 msgid ""
 "Please see the <a id=\"manual\">manual</a> for general hints. E.g. in most "
 "dialogs there are some shared shortcuts such as F5 for refresh or CTRL+F for"
 " search and oftentimes there are powerfull context menus."
-msgstr ""
+msgstr "一般的なヒントについては、<a id=\"manual\">マニュアル</a>を参照してください。例えば、ほとんどのダイアログでは、リフレッシュのための F5 や検索のための CTRL+F など、いくつかの共通のショートカットや、パワフルなコンテキストメニューがあります。"
 
 #. Resource IDs: (IDS_ERR_NOHOOKTYPESPECIFIED)
 msgid "Please select a hook type"
@@ -8073,7 +8140,7 @@ msgstr "しばらくお待ちください ..."
 msgid "Popup"
 msgstr "ポップアップ"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog AFX_IDD_PRINTDLG: Control id 65535)
 msgid "Port :"
 msgstr "ポート:"
 
@@ -8089,7 +8156,7 @@ msgstr "Commit後フック"
 msgid "Post-Push Hook"
 msgstr "Push後フック"
 
-#. Resource IDs: (58115)
+#. Resource IDs: (Dialog AFX_IDD_PREVIEW_TOOLBAR: Control id 58115)
 msgid "Pre&v Page"
 msgstr "1つ前のページ(&V)"
 
@@ -8103,7 +8170,7 @@ msgstr "Push前フック"
 
 #. Resource IDs: (IDS_HOOKTYPE_PREREBASE)
 msgid "Pre-rebase hook"
-msgstr ""
+msgstr "Rebase前フック"
 
 #. Resource IDs: (IDS_PROC_COMMIT_PREPARECOMMIT)
 msgid "Preparing commit..."
@@ -8117,15 +8184,15 @@ msgstr "右側のブロックを前に追加"
 msgid "Prepend this block to left"
 msgstr "このブロックを左側の前に追加"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 65535)
 msgid "Press &New Shortcut Key:"
 msgstr "新しいショートカットキーを押してください(&N):"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 65535)
 msgid "Press &new shortcut key:"
 msgstr "新しいショートカットキーを押してください(&N):"
 
-#. Resource IDs: (17094)
+#. Resource IDs: (IDS_AFXBARRES_PREVIEW)
 msgid "Preview"
 msgstr "プレビュー"
 
@@ -8133,7 +8200,7 @@ msgstr "プレビュー"
 msgid "Preview patched file"
 msgstr "パッチ結果をプレビューする"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_IMAGE_EDITOR: Control id 65535)
 msgid "Preview: "
 msgstr "プレビュー: "
 
@@ -8166,7 +8233,8 @@ msgstr "前の 相違"
 msgid "Previous inline difference"
 msgstr "前の 行内相違"
 
-#. Resource IDs: (16990, 17092)
+#. Resource IDs: (Dialog IDD_AFXBARRES_KEYMAP: Control id 16990,
+#. IDS_AFXBARRES_PRINT)
 msgid "Print"
 msgstr "印刷"
 
@@ -8188,19 +8256,19 @@ msgid ""
 "Print"
 msgstr "作業中のドキュメントを印刷\n印刷"
 
-#. Resource IDs: (61512)
+#. Resource IDs: (AFX_IDS_PRINTCAPTION)
 msgid "Print to File"
 msgstr "ファイルへ印刷"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog AFX_IDD_PRINTDLG: Control id 65535)
 msgid "Printer :"
 msgstr "プリンター:"
 
-#. Resource IDs: (61511)
+#. Resource IDs: (AFX_IDS_PRINTFILTER)
 msgid "Printer Files (*.prn)|*.prn|All Files (*.*)|*.*||"
 msgstr "プリンターファイル (*.prn)|*.prn|すべてのファイル (*.*)|*.*||"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog AFX_IDD_PRINTDLG: Control id 65535)
 msgid "Printing"
 msgstr "印刷中"
 
@@ -8319,10 +8387,6 @@ msgstr "ノートをプッシュ"
 msgid "Push ta&gs"
 msgstr "タグをプッシュ(&G)"
 
-#. Resource IDs: (IDS_LOG_PUSH)
-msgid "Push..."
-msgstr "プッシュ..."
-
 #. Resource IDs: (Dialog IDD_SETTINREMOTE: Control id 65535)
 msgid "Putty Key:"
 msgstr "Putty 認証キー:"
@@ -8330,11 +8394,6 @@ msgstr "Putty 認証キー:"
 #. Resource IDs: (IDS_PUTTYKEYFILEFILTER)
 msgid "Putty Private Key (*.ppk)|*.ppk|All Files (*.*)|*.*||"
 msgstr "Putty のプライベート鍵 (*.ppk)|*.ppk|すべてのファイル (*.*)|*.*||"
-
-#. Resource IDs: (IDS_STATGRAPH_QUARTERLABEL)
-#, c-format
-msgid "Q%d/%.2d"
-msgstr "Q%d/%.2d"
 
 #. Resource IDs: (57665)
 msgid ""
@@ -8356,7 +8415,7 @@ msgstr "パスの非ASCIIを数値で"
 msgid "R&AM drives"
 msgstr "RAM ドライブ(&A)"
 
-#. Resource IDs: (16623)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 16623)
 msgid "R&eset"
 msgstr "リセット(&E)"
 
@@ -8402,11 +8461,12 @@ msgstr "リムーバブルドライブ(&M)"
 msgid "Re&name..."
 msgstr "名前を変更(&N)..."
 
-#. Resource IDs: (16613)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE8: Control id 16613)
 msgid "Re&set"
 msgstr "リセット(&S)"
 
-#. Resource IDs: (16647)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 16647, Dialog
+#. IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 16647)
 msgid "Re&set All"
 msgstr "すべてリセット(&S)"
 
@@ -8420,7 +8480,7 @@ msgstr "変更の取り消し(&V)..."
 
 #. Resource IDs: (Dialog IDD_SETTINGSMAIN: Control id 1684)
 msgid "Re-run &First Start Wizard"
-msgstr ""
+msgstr "初期設定ウィザードを再実施(&F)"
 
 #. Resource IDs: (IDS_FETCH_REACHABLE)
 msgid "Reachable"
@@ -8448,7 +8508,7 @@ msgstr "リベース(ブランチの付け替え)..."
 msgid "Rebasing... (%d/%d)"
 msgstr "リベース中... (%d/%d)"
 
-#. Resource IDs: (16019)
+#. Resource IDs: (IDS_AFXBARRES_RECENT)
 msgid "Recent"
 msgstr "最近"
 
@@ -8462,13 +8522,13 @@ msgstr "最近変更された行"
 
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 65535)
 msgid "Recommended: Git for Windows"
-msgstr ""
+msgstr "推奨: Git for Windows"
 
 #. Resource IDs: (IDS_MERGE_RECORDONLY)
 msgid "Record Only"
 msgstr "記録のみ"
 
-#. Resource IDs: (62184)
+#. Resource IDs: (AFX_IDS_AUTOSAVE_RECOVERY_ASK_5)
 msgid ""
 "Recover the auto-saved documents\n"
 "Open the auto-saved versions instead of the explicitly saved versions"
@@ -8502,7 +8562,7 @@ msgid ""
 "Redo"
 msgstr "以前に行われた元に戻す操作をやり直す\nやり直し"
 
-#. Resource IDs: (61186)
+#. Resource IDs: (AFX_IDS_SCMINIMIZE)
 msgid "Reduce the window to an icon"
 msgstr "ウィンドウをアイコン化する"
 
@@ -8529,7 +8589,7 @@ msgstr "RefLog"
 
 #. Resource IDs: (Dialog IDD_COMMITISONREFS: Control id 4596)
 msgid "References commit is on"
-msgstr ""
+msgstr "コミットを含む参照"
 
 #. Resource IDs: (IDS_LOG_FILTER_REFNAME)
 msgid "Refname"
@@ -8538,7 +8598,7 @@ msgstr "Ref名"
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_LANGUAGE: Control id 1382,
 #. Dialog IDD_LOGMESSAGE: Control id 1382, IDS_MENUREFRESH)
 msgid "Refresh"
-msgstr "最新に更新"
+msgstr "更新"
 
 #. Resource IDs: (IDS_PROC_SYNC_REFRESHING)
 msgid "Refreshing..."
@@ -8619,9 +8679,14 @@ msgstr "リモート URL(&U):"
 msgid "Remote &tracking branch"
 msgstr "リモート追跡ブランチ(&T)"
 
-#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_2: Control id 65535)
+#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_2: Control id 65535,
+#. IDS_PROC_REMOTEBRANCH)
 msgid "Remote Branch"
 msgstr "リモートブランチ"
+
+#. Resource IDs: (IDS_TAGCOMPARE_REMOTEHASH)
+msgid "Remote SHA1"
+msgstr "リモート SHA1"
 
 #. Resource IDs: (IDS_PROC_GITCONFIG_URLEMPTY)
 msgid "Remote URL must not be empty."
@@ -8630,6 +8695,10 @@ msgstr "リモート URL は空白を指定できません。"
 #. Resource IDs: (IDS_PROC_SYNC_REMOTEUPDATE)
 msgid "Remote Update"
 msgstr "リモートを更新"
+
+#. Resource IDs: (IDS_TAGCOMPARE_REMOTEMESSAGE)
+msgid "Remote message"
+msgstr "リモート メッセージ"
 
 #. Resource IDs: (IDS_PROC_GITCONFIG_REMOTEEMPTY)
 msgid "Remote name must not be empty."
@@ -8640,8 +8709,7 @@ msgid "Remote status"
 msgstr "リモートの状態"
 
 #. Resource IDs: (Dialog IDD_DELETEREMOTETAG: Control id 65535, Dialog
-#. IDD_RESOLVE_CONFLICT: Control id 65535, Dialog IDD_SETTINREMOTE: Control id
-#. 65535)
+#. IDD_SETTINREMOTE: Control id 65535)
 msgid "Remote:"
 msgstr "リモート:"
 
@@ -8682,7 +8750,7 @@ msgstr "差分を取る前にすべてのコメントを削除するので、コ
 msgid "Remove from &ignore list"
 msgstr "無視リストから削除(&I)"
 
-#. Resource IDs: (17084)
+#. Resource IDs: (IDS_AFXBARRES_REMOVE_FROM_QAT)
 msgid "Remove from Quick Access Toolbar"
 msgstr "クイックアクセスツールバーから削除"
 
@@ -8696,7 +8764,7 @@ msgstr "無視リストに該当するファイルを削除"
 
 #. Resource IDs: (IDS_REMOVESTALEBUTTON)
 msgid "Remove stale lock file"
-msgstr ""
+msgstr "状態ロックファイルを削除"
 
 #. Resource IDs: (Dialog IDD_CLEAN: Control id 1626)
 msgid "Remove untracked directories (-d)"
@@ -8726,7 +8794,7 @@ msgstr "ファイルパターン\n%s\nを無視リストから削除しました
 msgid "Removes the file or filemask from the list of ignored items"
 msgstr "ファイルもしくはファイルマスクを無視リストから削除"
 
-#. Resource IDs: (16616)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE2: Control id 16616)
 msgid "Rena&me..."
 msgstr "名前を変更(&M)..."
 
@@ -8819,7 +8887,7 @@ msgstr "解決する(&O)..."
 msgid "Reset"
 msgstr "リセット"
 
-#. Resource IDs: (16614)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE2: Control id 16614)
 msgid "Reset &All"
 msgstr "すべてリセット(&A)"
 
@@ -8855,13 +8923,10 @@ msgstr "競合の解決"
 msgid "Resolve Submodule Conflict"
 msgstr "サブモジュールの競合の解決"
 
-#. Resource IDs: (IDS_SVNPROGRESS_MENUUSEMINE)
-msgid "Resolve conflict using 'mine'"
-msgstr "「こちら側」を使用して競合を解決する"
-
-#. Resource IDs: (IDS_SVNPROGRESS_MENUUSETHEIRS)
-msgid "Resolve conflict using 'theirs'"
-msgstr "「あちら側」を使用して競合を解決する"
+#. Resource IDs: (IDS_SVNPROGRESS_MENURESOLVEUSING)
+#, c-format
+msgid "Resolve conflict using \"%s\""
+msgstr "\"%s\" を使って競合を解決"
 
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_RESOLVED, IDS_SVNACTION_RESOLVE)
 msgid "Resolved"
@@ -8899,7 +8964,7 @@ msgstr "デフォルトを復元"
 msgid "Restore after commit"
 msgstr "コミット後に復元"
 
-#. Resource IDs: (61202)
+#. Resource IDs: (AFX_IDS_SCRESTORE)
 msgid "Restore the window to normal size"
 msgstr "ウィンドウを通常のサイズに復元"
 
@@ -9015,7 +9080,7 @@ msgstr "巻き戻し"
 msgid "Rewind %d"
 msgstr "後退 %d"
 
-#. Resource IDs: (61590)
+#. Resource IDs: (AFX_IDS_RTF_FORMAT)
 msgid ""
 "Rich Text (RTF)\n"
 "text with font and paragraph formatting"
@@ -9029,48 +9094,48 @@ msgstr "右ビュー: "
 msgid "Right image"
 msgstr "右側の画像"
 
-#. Resource IDs: (17108)
+#. Resource IDs: (IDS_AFXBARRES_GALLERY_ROW1_FMT)
 #, c-format
 msgid "Row %d of %d"
 msgstr "行 %d / %d"
 
-#. Resource IDs: (17109)
+#. Resource IDs: (IDS_AFXBARRES_GALLERY_ROW2_FMT)
 #, c-format
 msgid "Row %d-%d of %d"
 msgstr "行 %d-%d / %d"
 
-#. Resource IDs: (17116)
+#. Resource IDs: (IDS_AFXBARRES_GALLERY_ROW_DOWN)
 msgid "Row Down"
 msgstr "一行下へ"
 
-#. Resource IDs: (17115)
+#. Resource IDs: (IDS_AFXBARRES_GALLERY_ROW_UP)
 msgid "Row Up"
 msgstr "一行上へ"
 
 #. Resource IDs: (Dialog IDD_SETTINGSHOOKCONFIG: Control id 1335)
 msgid "Run when working tree path is under:"
-msgstr ""
+msgstr "作業ツリーが以下のパスの下にあるときに実行:"
 
-#. Resource IDs: (17045)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLOR_DLG: Control id 17045)
 msgid "S&elect..."
 msgstr "選択(&E)..."
 
-#. Resource IDs: (17027)
+#. Resource IDs: (IDS_AFXBARRES_SHOWONEROW)
 msgid "S&how Buttons on One Row"
 msgstr "ボタンを1行で表示(&H)"
 
-#. Resource IDs: (17028)
+#. Resource IDs: (IDS_AFXBARRES_SHOWTWOROWS)
 msgid "S&how Buttons on Two Rows"
 msgstr "ボタンを2行で表示(&H)"
 
-#. Resource IDs: (17078)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE8: Control id 17078)
 msgid "S&how Quick Access Toolbar below the Ribbon"
 msgstr "リボンの下にクイックアクセスツールバーを表示(&H)"
 
 #. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1383, Dialog IDD_RESET:
 #. Control id 1383)
 msgid "S&how modified files in working tree"
-msgstr ""
+msgstr "作業ツリーにおいて変更されたファイルを表示(&H)"
 
 #. Resource IDs: (IDS_PROC_REBASE_UNSELECTED_SKIP)
 msgid "S&kip unselected"
@@ -9119,7 +9184,7 @@ msgstr "SSH"
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_AUTHENTICATION: Control id
 #. 65535)
 msgid "SSH (URLs look like \"git@example.com\")"
-msgstr ""
+msgstr "SSH (\"git@example.com\" のようなURL)"
 
 #. Resource IDs: (IDS_ENCRYPT_SSL)
 msgid "SSL/TLS"
@@ -9157,7 +9222,7 @@ msgstr "Sa&feCrLf:"
 msgid "Safe Crlf:"
 msgstr "Safe Crlf:"
 
-#. Resource IDs: (IDS_SAME)
+#. Resource IDs: (IDS_SAME, IDS_TAGCOMPARE_SAME)
 msgid "Same"
 msgstr "同じ"
 
@@ -9195,7 +9260,7 @@ msgstr "名前を付けて保存(&A)..."
 msgid "Save &as...\tCtrl+Shift+S"
 msgstr "名前を付けて保存(&A)...\tCtrl+Shift+S"
 
-#. Resource IDs: (61441)
+#. Resource IDs: (AFX_IDS_SAVEFILE)
 msgid "Save As"
 msgstr "名前を付けて保存"
 
@@ -9275,7 +9340,7 @@ msgid ""
 "You're asked where to save the file"
 msgstr "名前を付けて保存\nファイルを保存する場所を指定してください。"
 
-#. Resource IDs: (61699)
+#. Resource IDs: (AFX_IDP_ASK_TO_SAVE)
 #, c-format
 msgid "Save changes to %1?"
 msgstr "変更を %1 へ保存しますか？"
@@ -9390,7 +9455,7 @@ msgstr "検索する文字列:"
 msgid "Searching for better path to apply patch..."
 msgstr "パッチ適用のよりよいパスを検索..."
 
-#. Resource IDs: (61865)
+#. Resource IDs: (AFX_IDP_FILE_BAD_SEEK)
 #, c-format
 msgid "Seek failed on %1"
 msgstr "%1 のシークに失敗しました。"
@@ -9403,15 +9468,15 @@ msgstr "選択"
 msgid "Select &All"
 msgstr "すべて選択(&A)"
 
-#. Resource IDs: (16529)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16529)
 msgid "Select &User-defined Image: "
 msgstr "ユーザー定義の画像を選択(&U): "
 
-#. Resource IDs: (16508)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE3: Control id 16508)
 msgid "Select &context menu:"
 msgstr "コンテキストメニューを選択(&C):"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 65535)
 msgid "Select &window:"
 msgstr "ウィンドウを選択(&W):"
 
@@ -9429,11 +9494,11 @@ msgstr "ファイルを選択..."
 msgid "Select SSH client"
 msgstr "SSHクライアントを選択"
 
-#. Resource IDs: (61717)
+#. Resource IDs: (AFX_IDP_PARSE_RADIO_BUTTON)
 msgid "Select a button."
 msgstr "ボタンを選択してください。"
 
-#. Resource IDs: (57346)
+#. Resource IDs: (AFX_IDS_HELPMODEMESSAGE)
 msgid "Select an object on which to get Help"
 msgstr "ヘルプを表示するために、オブジェクトを選択する"
 
@@ -9543,7 +9608,7 @@ msgstr "メールを送信"
 msgid "Send Mail after create"
 msgstr "作成後にメール送信"
 
-#. Resource IDs: (61842)
+#. Resource IDs: (AFX_IDP_FAILED_MAPI_SEND)
 msgid "Send Mail failed to send message."
 msgstr "Send Mail はメッセージの送信に失敗しました。"
 
@@ -9575,7 +9640,8 @@ msgstr "送信中..."
 msgid "Server &address:"
 msgstr "サーバーアドレス(&A):"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE5: Control id 65535, Dialog
+#. IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 65535)
 msgid "Set Accelerator &for:"
 msgstr "アクセラレータを設定(&F):"
 
@@ -9638,7 +9704,7 @@ msgstr "プロパティリストを短縮する"
 msgid "Show"
 msgstr "表示"
 
-#. Resource IDs: (16996)
+#. Resource IDs: (Dialog IDD_AFXBARRES_KEYMAP: Control id 16996)
 msgid "Show &Accelerator for:"
 msgstr "アクセラレータを表示(&A):"
 
@@ -9646,7 +9712,8 @@ msgstr "アクセラレータを表示(&A):"
 msgid "Show &Reflog"
 msgstr "Reflogを表示(&R)"
 
-#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1073)
+#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1073,
+#. IDS_PROC_LOG_SHOWUNVERSIONED)
 msgid "Show &Unversioned Files"
 msgstr "バージョン管理外のファイルを表示(&U)"
 
@@ -9655,7 +9722,8 @@ msgstr "バージョン管理外のファイルを表示(&U)"
 msgid "Show &Whole Project"
 msgstr "プロジェクト全体を表示(&W)"
 
-#. Resource IDs: (IDS_LOG_POPUP_DIFF)
+#. Resource IDs: (Dialog IDD_RESOLVE_CONFLICT: Control id 1133, Dialog
+#. IDD_RESOLVE_CONFLICT: Control id 1134, IDS_LOG_POPUP_DIFF)
 msgid "Show &changes"
 msgstr "変更を表示(&C)"
 
@@ -9676,11 +9744,11 @@ msgstr "ネストした ref を表示 (&N)"
 msgid "Show &overlays and context menu only in explorer"
 msgstr "エクスプローラー上でのみオーバーレイとコンテキストメニューを表示(&O)"
 
-#. Resource IDs: (17099)
+#. Resource IDs: (IDS_AFXBARRES_PLACE_ABOVE_RIBBON)
 msgid "Show Above the Ribbon"
 msgstr "リボンの上に表示"
 
-#. Resource IDs: (17098)
+#. Resource IDs: (IDS_AFXBARRES_PLACE_BELOW_RIBBON)
 msgid "Show Below the Ribbon"
 msgstr "リボンの下に表示"
 
@@ -9688,7 +9756,7 @@ msgstr "リボンの下に表示"
 msgid "Show Environment Variables"
 msgstr "環境変数を表示"
 
-#. Resource IDs: (17030)
+#. Resource IDs: (IDS_AFXBARRES_SHOW_FEWER_BUTTONS)
 msgid "Show Fewer Buttons"
 msgstr "少しのボタンを表示"
 
@@ -9708,19 +9776,19 @@ msgid ""
 "Inline diff"
 msgstr "行内差分を表示\n行内差分"
 
-#. Resource IDs: (17029)
+#. Resource IDs: (IDS_AFXBARRES_SHOW_MORE_BUTTONS)
 msgid "Show More Buttons"
 msgstr "多くのボタンを表示"
 
-#. Resource IDs: (17082)
+#. Resource IDs: (IDS_AFXBARRES_PLACE_QAT_ABOVE_RIBBON)
 msgid "Show Quick Access Toolbar Above the Ribbon"
 msgstr "リボンの上にクイックアクセスツールバーを表示"
 
-#. Resource IDs: (17081)
+#. Resource IDs: (IDS_AFXBARRES_PLACE_QAT_BELOW_RIBBON)
 msgid "Show Quick Access Toolbar Below the Ribbon"
 msgstr "リボンの下にクイックアクセスツールバーを表示"
 
-#. Resource IDs: (16651)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE6: Control id 16651)
 msgid "Show Screen&Tips on toolbars"
 msgstr "ツールバーの上にスクリーンチップを表示(&T)"
 
@@ -9743,7 +9811,7 @@ msgstr "ログダイアログにおいて、ログのプレフィックスのア
 
 #. Resource IDs: (ID_VIEW_SHOWAUTHOR - Menu)
 msgid "Show author"
-msgstr "作者を表示"
+msgstr "著者を表示"
 
 #. Resource IDs: (IDS_SETTINGS_SHOWREVCOUNTER_TT)
 msgid ""
@@ -9789,6 +9857,10 @@ msgstr "宛先のフォルダーを表示"
 msgid "Show diff"
 msgstr "相違点を表示"
 
+#. Resource IDs: (IDS_HEADER_DIFFLEFTTOBASE, IDS_HEADER_DIFFRIGHTTOBASE)
+msgid "Show diff separately"
+msgstr "差分を別々に表示"
+
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1556)
 msgid "Show diff to last commit"
 msgstr "最後のコミットとの差分を表示"
@@ -9801,7 +9873,7 @@ msgstr "除外されたフォルダーを修正なしとして表示する"
 msgid "Show extra changes after merge"
 msgstr "マージ後の追加の変更を表示"
 
-#. Resource IDs: (16656)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE6: Control id 16656)
 msgid "Show f&ull menus after a short delay"
 msgstr "少しの遅延の後にすべてのメニューを表示(&U)"
 
@@ -9865,7 +9937,7 @@ msgstr "ログを表示..."
 msgid "Show long format even if a tag is exactly on that commit"
 msgstr "該当コミットにタグがあっても、長いフォーマットで表示する"
 
-#. Resource IDs: (20308)
+#. Resource IDs: (25308)
 msgid ""
 "Show next change of selected commit\n"
 "Show next"
@@ -9909,7 +9981,7 @@ msgstr "ツールバーを表示/非表示にする\nツールバーを表示"
 msgid "Show original line number"
 msgstr "オリジナルの行番号を表示"
 
-#. Resource IDs: (20309)
+#. Resource IDs: (25309)
 msgid ""
 "Show previous change of selected commit\n"
 "Show previous"
@@ -9919,7 +9991,7 @@ msgstr "選択したコミットの直近の変更を表示\n１つ前を表示"
 msgid "Show revision properties"
 msgstr "リビジョンプロパティを表示"
 
-#. Resource IDs: (16652)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE6: Control id 16652)
 msgid "Show shortcut &keys in ScreenTips"
 msgstr "スクリーンチップ上にショートカットキーを表示(&K)"
 
@@ -9989,7 +10061,8 @@ msgstr "選択したファイル/フォルダーのログを表示"
 msgid "Si&gn"
 msgstr "署名(&G)"
 
-#. Resource IDs: (Dialog IDD_ABOUT: Control id 65535)
+#. Resource IDs: (Dialog IDD_ABOUT: Control id 65535, Dialog IDD_ABOUTBOX:
+#. Control id 65535)
 msgid "Significant contributions by: (see Git repository for a complete list)"
 msgstr "主な貢献者: (完全なリストはGitのリポジトリを参照してください)"
 
@@ -10002,7 +10075,8 @@ msgstr "シルバースタイル"
 msgid "Since"
 msgstr "このコミットから"
 
-#. Resource IDs: (17129, IDS_LOG_SIZE, IDS_STATUSLIST_COLSIZE)
+#. Resource IDs: (IDS_AFX_SHELLLISTCTRL_SIZE, IDS_LOG_SIZE,
+#. IDS_STATUSLIST_COLSIZE)
 msgid "Size"
 msgstr "サイズ"
 
@@ -10017,7 +10091,7 @@ msgstr "パッチをスキップ: %s"
 
 #. Resource IDs: (IDS_MENUDESCBISECTSKIP)
 msgid "Skip current revision in bisecting process"
-msgstr ""
+msgstr "二分探索処理でこのリビジョンをスキップする"
 
 #. Resource IDs: (Dialog IDD_PROPPAGE: Control id 11029,
 #. IDS_PATHACTIONS_SKIPWORKTREE, IDS_STATUSLIST_SKIPWORKTREE)
@@ -10036,7 +10110,7 @@ msgstr "スキップ"
 msgid "Skipped missing target"
 msgstr "ターゲットが見つからないのでスキップ"
 
-#. Resource IDs: (17112)
+#. Resource IDs: (IDS_AFXBARRES_MENU_ANIMATION_SLIDE)
 msgid "Slide"
 msgstr "スライド"
 
@@ -10074,7 +10148,12 @@ msgid ""
 "dialog."
 msgstr "最近のログメッセージを表示するダイアログで、表示する項目数を指定する。"
 
-#. Resource IDs: (16976, 16977, 16978, 16979, 16980, 16981)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLORPAGE_TWO: Control id 16976, Dialog
+#. IDD_AFXBARRES_COLORPAGE_TWO: Control id 16977, Dialog
+#. IDD_AFXBARRES_COLORPAGE_TWO: Control id 16978, Dialog
+#. IDD_AFXBARRES_COLORPAGE_TWO: Control id 16979, Dialog
+#. IDD_AFXBARRES_COLORPAGE_TWO: Control id 16980, Dialog
+#. IDD_AFXBARRES_COLORPAGE_TWO: Control id 16981)
 msgid "Spin1"
 msgstr "Spin1"
 
@@ -10104,7 +10183,8 @@ msgstr "積み重ね棒グラフ"
 msgid "Stacked Line Graph"
 msgstr "積み重ね面グラフ"
 
-#. Resource IDs: (16962, IDS_TOOLBAR_STANDARD)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLOR_PAGE_ONE: Control id 16962,
+#. IDS_TOOLBAR_STANDARD)
 msgid "Standard"
 msgstr "標準"
 
@@ -10151,15 +10231,15 @@ msgstr "隠した変更を再現"
 
 #. Resource IDs: (IDS_PROC_STASHAPPLYFAILED)
 msgid "Stash Apply failed!"
-msgstr ""
+msgstr "スタッシュ再現失敗"
 
 #. Resource IDs: (IDS_PROC_STASHAPPLYFAILEDCONFLICTS)
 msgid "Stash Apply failed, there are conflicts"
-msgstr ""
+msgstr "スタッシュ再現失敗 (競合があります)"
 
 #. Resource IDs: (IDS_PROC_STASHAPPLYSUCCESS)
 msgid "Stash Apply successful"
-msgstr ""
+msgstr "スタッシュ再現成功"
 
 #. Resource IDs: (IDS_MENUSTASHLIST)
 msgid "Stash List"
@@ -10167,15 +10247,15 @@ msgstr "スタッシュ一覧"
 
 #. Resource IDs: (IDS_PROC_STASHPOPFAILED)
 msgid "Stash POP failed!"
-msgstr ""
+msgstr "スタッシュ復元失敗"
 
 #. Resource IDs: (IDS_PROC_STASHPOPFAILEDCONFLICTS)
 msgid "Stash POP failed, there are conflicts"
-msgstr ""
+msgstr "スタッシュ復元失敗 (競合があります)"
 
 #. Resource IDs: (IDS_PROC_STASHPOPSUCCESS)
 msgid "Stash POP successful"
-msgstr ""
+msgstr "スタッシュ復元成功"
 
 #. Resource IDs: (IDS_MENUSTASHPOP)
 msgid "Stash Pop"
@@ -10187,11 +10267,11 @@ msgstr "スタッシュへ変更を隠す"
 
 #. Resource IDs: (IDS_PROC_STASHSUCCESS)
 msgid "Stash Success"
-msgstr ""
+msgstr "スタッシュ成功"
 
 #. Resource IDs: (IDS_PROC_STASHFAILED)
 msgid "Stash failed!"
-msgstr ""
+msgstr "スタッシュ失敗"
 
 #. Resource IDs: (IDS_PROC_STASHRUNNING)
 msgid "Stash operation running..."
@@ -10201,9 +10281,11 @@ msgstr "スタッシュ処理中です..."
 msgid "State"
 msgstr "状態"
 
-#. Resource IDs: (16514, Dialog IDD_GITPROGRESS: Control id 1487, Dialog
-#. IDD_RESOLVE_CONFLICT: Control id 4572, Dialog IDD_RESOLVE_CONFLICT: Control
-#. id 4573)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE4: Control id 16514, Dialog
+#. IDD_AFXBARRES_PROPPAGE5: Control id 16514, Dialog
+#. IDD_AFXBARRES_RIBBON_KEYBOARD_DLG: Control id 16514, Dialog
+#. IDD_GITPROGRESS: Control id 1487, Dialog IDD_RESOLVE_CONFLICT: Control id
+#. 4572, Dialog IDD_RESOLVE_CONFLICT: Control id 4573)
 msgid "Static"
 msgstr "Static"
 
@@ -10220,7 +10302,7 @@ msgstr "状態"
 msgid "Status Bar"
 msgstr "ステータスバー"
 
-#. Resource IDs: (17087)
+#. Resource IDs: (IDS_AFXBARRES_STATBAR_CUSTOMIZE)
 msgid "Status Bar Configuration"
 msgstr "ステータスバーの設定"
 
@@ -10285,6 +10367,10 @@ msgstr "件名"
 msgid "Subject:"
 msgstr "件名:"
 
+#. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_SUBJECTS)
+msgid "Subjects"
+msgstr "件名"
+
 #. Resource IDs: (Dialog IDD_SYNC: Control id 1639)
 msgid "Submodule"
 msgstr "サブモジュール"
@@ -10346,11 +10432,6 @@ msgstr "成功"
 msgid "Switch"
 msgstr "切り替え"
 
-#. Resource IDs: (IDS_PROGRS_CMD_SWITCH)
-#, c-format
-msgid "Switch %s to %s, Revision %s"
-msgstr "%s を %s のリビジョン%sに切り替え"
-
 #. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1522)
 msgid "Switch To"
 msgstr "切り替え先"
@@ -10381,7 +10462,7 @@ msgid ""
 "Switch left and right view"
 msgstr "左と右のビューの内容を入れ替える\n左右のビューを入れ替え"
 
-#. Resource IDs: (61188)
+#. Resource IDs: (AFX_IDS_SCNEXTWINDOW)
 msgid "Switch to the next document window"
 msgstr "次のドキュメントウィンドウに切り替える"
 
@@ -10391,7 +10472,7 @@ msgid ""
 "Next Pane"
 msgstr "次のウィンドウ区画に切り替える\n次の区画"
 
-#. Resource IDs: (61189)
+#. Resource IDs: (AFX_IDS_SCPREVWINDOW)
 msgid "Switch to the previous document window"
 msgstr "前のドキュメントウィンドウに切り替える"
 
@@ -10441,7 +10522,7 @@ msgstr "システム"
 msgid "System in offline mode. Check Internet Explorer."
 msgstr "システムはオフラインモードです。Internet Explorerをチェックしてください。"
 
-#. Resource IDs: (61707)
+#. Resource IDs: (AFX_IDP_UNREG_DONE)
 msgid ""
 "System registry entries have been removed and the INI file (if any) was "
 "deleted."
@@ -10449,7 +10530,7 @@ msgstr "システムレジストリのエントリー、およびINIファイル
 
 #. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1520)
 msgid "T&rack"
-msgstr ""
+msgstr "追跡(&R)"
 
 #. Resource IDs: (5065 - Menu)
 msgid "TIS-620"
@@ -10467,7 +10548,7 @@ msgstr "TORTOISEGITUDIFF"
 msgid "Ta&gs:"
 msgstr "タグ(&G):"
 
-#. Resource IDs: (16970)
+#. Resource IDs: (Dialog IDD_AFXBARRES_COLOR_DLG: Control id 16970)
 msgid "Tab Placeholder"
 msgstr "タブプレースホルダー"
 
@@ -10488,6 +10569,10 @@ msgstr "タグ(FF)"
 msgid "Tag Info"
 msgstr "タグ情報"
 
+#. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_TAGBRANCHES)
+msgid "Tag/branch names"
+msgstr "タグ/ブランチ名"
+
 #. Resource IDs: (IDS_PROC_COPY_SUCCESS)
 #, c-format
 msgid "Tagged the working tree to %s"
@@ -10503,13 +10588,13 @@ msgstr "タグ:"
 
 #. Resource IDs: (IDS_ERR_MUSTBESAMEWT)
 msgid "Target and source must be in the same working tree!"
-msgstr ""
+msgstr "ターゲットとソースは同じ作業ツリーになければなりません"
 
 #. Resource IDs: (IDS_PROC_TASKS)
 msgid "Tasks"
 msgstr "タスク"
 
-#. Resource IDs: (17019)
+#. Resource IDs: (IDS_AFXBARRES_TASKPANE)
 msgid "Tasks Pane"
 msgstr "タスク領域"
 
@@ -10551,7 +10636,7 @@ msgid ""
 "The branch \"%s\" is a remote branch.\n"
 "\n"
 "Do you really want to delete it?"
-msgstr ""
+msgstr "\"%s\" はリモートブランチです。\n\n本当に削除しますか？"
 
 #. Resource IDs: (IDS_ERR_PATCH_CHUNKMISMATCH)
 msgid "The chunk size did not match the number of added/removed lines!"
@@ -10570,7 +10655,7 @@ msgid ""
 "When you merge changes, conflicts can arise that must be solved manually (i.e., you need to integrate your changes into a file which was also modified on another branch).\n"
 "\n"
 "See help for more information."
-msgstr ""
+msgstr "あなたが作業しているコミットは特別なコミットです。これはマージコミットで、つまり、あなたの変更だけでなく、マージされたブランチの変更も含まれています。\n\n何を意味するか分からないのであれば、ファイルのチェックを外してはいけません。\n\n変更をマージすると、手動で解決する必要がある競合が発生する可能性があります（つまり、あなたの変更を、別のブランチで変更されたファイルに統合する必要があります）。\n\n詳細はヘルプを参照してください。"
 
 #. Resource IDs: (IDS_GITCREDENTIAL_OVERWRITEHELPER)
 #, c-format
@@ -10648,7 +10733,7 @@ msgstr "ファイル\n%s\nは空です。\nファイルを削除してもよろ�
 msgid "The file is too big"
 msgstr "ファイルが大きすぎます"
 
-#. Resource IDs: (61701)
+#. Resource IDs: (AFX_IDP_FILE_TOO_LARGE)
 msgid "The file is too large to open."
 msgstr "ファイルが大きすぎて開けません。"
 
@@ -10932,7 +11017,7 @@ msgstr "追加するものがありません。\n全てのファイルとフォ�
 msgid "Thesaurus"
 msgstr "シソーラス"
 
-#. Resource IDs: (62181)
+#. Resource IDs: (AFX_IDS_AUTOSAVE_RECOVERY_ASK_2)
 msgid ""
 "These are more recently saved than the currently open documents and contain "
 "changes that were made before the application closed."
@@ -10944,15 +11029,15 @@ msgid ""
 "These settings will be stored to your global git configuration "
 "(%HOME%/.gitconfig) and will be used for all your git repositories as a "
 "default."
-msgstr ""
+msgstr "これらの設定は、グローバルの git設定 (%HOME%/.gitconfig) に保存され、あなたのすべてのgitリポジトリのデフォルトとして使用されます。"
 
 #. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGDELETEREMOTEBRANCHES)
 msgid "This action will remove the branches on the remote."
-msgstr ""
+msgstr "この操作はリモートのブランチを削除します。"
 
 #. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGUNMERGED)
 msgid "This branch is not fully merged into HEAD."
-msgstr ""
+msgstr "このブランチはまだ完全にHEADにマージされていません。"
 
 #. Resource IDs: (IDS_ERR_MISSINGVALUE)
 msgid "This field is required and must not be empty."
@@ -10978,13 +11063,18 @@ msgid ""
 "have a look into its settings dialog. The settings dialog is reachable using"
 " the start menu or the context menu of the Windows Explorer: TortoiseGit -> "
 "Settings."
-msgstr ""
+msgstr "このダイアログは、あなたが基本的な設定を行うのを助ける、初期設定ウィザードです。 TortoiseGit は様々に設定できるので、設定ダイアログを見ることをお勧めします。設定ダイアログには、スタートメニューまたはWindowsエクスプローラのコンテキストメニュー（TortoiseGit → Settings）からアクセスできます。"
 
 #. Resource IDs: (IDS_PROC_LOG_ONLYONCE)
 msgid ""
 "This operation cannot be started while the log dialog is still loading "
 "commits."
 msgstr "この操作は、ログダイアログがコミットを読み込んでいる最中は開始できません"
+
+#. Resource IDs: (IDS_GITCONFIG_SETTING)
+#, c-format
+msgid "This option represents \"%s\" git config setting."
+msgstr "このオプションは、git config 設定の \"%s\" に当たります。"
 
 #. Resource IDs: (IDS_REBASE_PRESERVEMERGES_TT)
 msgid ""
@@ -10993,17 +11083,18 @@ msgid ""
 " see help."
 msgstr "コミットのマージを保ちます。しかし、これには、並び替えられたコミットについて、正しく動作しないというバグがあります（同様の問題が git rebase にもあります）。ヘルプを参照してください。"
 
-#. Resource IDs: (61710)
+#. Resource IDs: (AFX_IDP_DLL_BAD_VERSION)
 #, c-format
 msgid ""
-"This program is linked to the missing export %s in the file %s. This machine"
-" may have an incompatible version of %s."
-msgstr "このプログラムは不明な %s （ファイル %s）へリンクされています。 この計算機は %s とは互換性のないバージョンの可能性があります。"
+"This program is linked to the missing export %Ts in the file %Ts. This "
+"machine may have an incompatible version of %Ts."
+msgstr "このプログラムは不明な %Ts （ファイル %Ts）へリンクされています。 この計算機は %Ts とは互換性のないバージョンの可能性があります。"
 
-#. Resource IDs: (61709)
+#. Resource IDs: (AFX_IDP_DLL_LOAD_FAILED)
 #, c-format
-msgid "This program requires the file %s, which was not found on this system."
-msgstr "このプログラムはファイル %s を必要としますが、このシステム上で見つけることができませんでした。"
+msgid ""
+"This program requires the file %Ts, which was not found on this system."
+msgstr "このプログラムはファイル %Ts を必要としますが、このシステム上で見つけることができませんでした。"
 
 #. Resource IDs: (IDS_ERR_PROPNOTONFILE)
 msgid "This property is only allowed on folders, not files."
@@ -11019,7 +11110,7 @@ msgstr "このリモート名は、他のリモートのフェッチの refspec 
 msgid "This task requires a clean working tree."
 msgstr "作業ツリーにコミットされていない変更が残っているため、実行できません。"
 
-#. Resource IDs: (16244)
+#. Resource IDs: (IDS_AFXBARRES_RESET_USAGE_WARNING)
 msgid ""
 "This will delete the record of commands you've used in this application and "
 "restore the default set of visible commands to the menus and toolbars. It "
@@ -11030,11 +11121,11 @@ msgstr "このアプリケーションで使用しているコマンドのレコ
 msgid "Three way diff"
 msgstr "3-Way差分"
 
-#. Resource IDs: (16928)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 16928)
 msgid "Tile &Vertically"
 msgstr "垂直方向に並べる(&V)"
 
-#. Resource IDs: (16924)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 16924)
 msgid "Tile Hori&zontally"
 msgstr "水平方向に並べる(&Z)"
 
@@ -11073,15 +11164,15 @@ msgstr "1ページ表示/2ページ表示を切り替え\n1ページ表示/2ペ�
 msgid "Toggle filters"
 msgstr "フィルターを反転"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE6: Control id 65535)
 msgid "Toolbar"
 msgstr "ツールバー"
 
-#. Resource IDs: (16130)
+#. Resource IDs: (Dialog IDD_AFXBARRES_TOOLBAR_NAME: Control id 16130)
 msgid "Toolbar Name"
 msgstr "ツールバー名"
 
-#. Resource IDs: (17017)
+#. Resource IDs: (IDS_AFXBARRES_TOOLBAR_OPTIONS)
 msgid "Toolbar Options"
 msgstr "ツールバーオプション"
 
@@ -11089,15 +11180,15 @@ msgstr "ツールバーオプション"
 msgid "Toolbar internal error. Please contact your application vendor."
 msgstr "ツールバーの内部エラー。アプリケーションの配布元に問い合わせてください。"
 
-#. Resource IDs: (16105)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE2: Control id 16105)
 msgid "Toolbars"
 msgstr "ツールバー"
 
-#. Resource IDs: (16928)
+#. Resource IDs: (Dialog IDD_AFXBARRES_PROPPAGE7: Control id 16928)
 msgid "Tools"
 msgstr "ツール"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (Dialog IDD_AFXBARRES_IMAGE_EDITOR: Control id 65535)
 msgid "Tools:"
 msgstr "ツール:"
 
@@ -11120,7 +11211,7 @@ msgstr "TortoiseGit %d.%d.%d.%d %s\n%s\n"
 
 #. Resource IDs: (IDS_FIRSTSTART_LANGUAGEHINT1)
 msgid "TortoiseGit can be localized using language packs."
-msgstr ""
+msgstr "TortoiseGit は言語パックを使用してローカライズできます。"
 
 #. Resource IDs: (IDS_ASK_REMOVE_FROM_INDEX)
 #, c-format
@@ -11145,21 +11236,21 @@ msgid ""
 "To use TortoiseGit please open the explorer and right-click on any folder you like\n"
 "to bring up the context menu where you will find all TortoiseGit commands.\n"
 "And read the manual!"
-msgstr ""
+msgstr "TortoiseGit はシェル拡張です。\nつまり、Windows エクスプローラに統合されています。\nTortoiseGit を使用するには、エクスプローラを開き、好きなフォルダを右クリックしてコンテキストメニューを開くと、TortoiseGitのすべてのコマンドが表示されます。\nそして、マニュアルを参照してください。"
 
 #. Resource IDs: (IDS_FIRSTSTART_HINT1)
 msgid ""
 "TortoiseGit is designed as a Shell Extension. Therefore the main interaction"
 " with TortoiseGit will be using the context menu of the Windows shell such "
 "as the Windows Explorer."
-msgstr ""
+msgstr "TortoiseGit はシェルエクステンションとして設計されています。したがって、TortoiseGit との主なやりとりは、Windowsエクスプローラなどの Windowsシェルのコンテキストメニューを使用します。"
 
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 65535)
 msgid ""
 "TortoiseGit requires a git.exe for its operations. TortoiseGit tries to "
 "automatically detect a working git.exe, but if that doesn't work or you want"
 " to use a different one please specify the path manually!"
-msgstr ""
+msgstr "TortoiseGit はその動作に git.exe が必要です。TortoiseGit は動作する git.exe を自動的に検出しようとしますが、うまくいかない場合や別のものを使用したい場合は、手動でパスを指定してください。"
 
 #. Resource IDs: (IDS_SETTINGS_OVERLAYINFO2)
 #, c-format
@@ -11170,8 +11261,8 @@ msgstr "TortoiseGit は次のオーバーレイを表示しません: %s"
 msgid "TortoiseGit&UDiff"
 msgstr "TortoiseGitUDiff(&U)"
 
-#. Resource IDs: (57344, Dialog IDD_ABOUTBOX: Control id 1000, Dialog
-#. IDD_SETTINGSTBLAME: Control id 244, IDS_APPNAME)
+#. Resource IDs: (AFX_IDS_APP_TITLE, Dialog IDD_ABOUTBOX: Control id 1000,
+#. Dialog IDD_SETTINGSTBLAME: Control id 244, IDS_APPNAME)
 msgid "TortoiseGitBlame"
 msgstr "TortoiseGitBlame"
 
@@ -11220,8 +11311,8 @@ msgid ""
 "/showinfo\t\tto show the image info boxes"
 msgstr "TortoiseGitIDiff: TortoiseSVNの画像差分ビュアー\n\n利用可能なコマンドラインパラメーター:\n/left:\"左の画像のパス\"\n/lefttitle:\"左の画像のタイトル\"\n/right:\"右の画像のパス\"\n/righttitle:\"右の画像のタイトル\"\n/overlay\t\tオーバーレイモードを有効\n/fit\t\tイメージサイズに合わせる\n/showinfo\t\t画像の情報ボックスを表示"
 
-#. Resource IDs: (100, 156 - Ribbon element, 32897, 57344, Dialog IDD_OPENDLG:
-#. Control id 130, IDS_APPNAME)
+#. Resource IDs: (100, 156 - Ribbon element, 32897, AFX_IDS_APP_TITLE, Dialog
+#. IDD_OPENDLG: Control id 130, IDS_APPNAME)
 msgid "TortoiseGitMerge"
 msgstr "TortoiseGitMerge"
 
@@ -11254,7 +11345,7 @@ msgid ""
 "agent for caching the password (done automatically if a PuTTY key is "
 "configured for a remote). For advanced tips & tricks see our <a "
 "id=\"manual\">manual</a> and <a id=\"sshfaq\">FAQ</a>."
-msgstr ""
+msgstr "TortoiseGitPlink は推奨される SSHクライアントです。鍵ペアがまだない場合は、鍵ペアを生成する必要があります。秘密鍵は保管し、公開鍵をホスティングプラットフォームに設定します。 PuTTY認証エージェントを使用してパスワードをキャッシュします（PuTTYキーがリモート用に構成されている場合は自動的に実行されます）。高度なヒントについては、<a id=\"manual\">マニュアル</a>と <a id=\"sshfaq\">FAQ</a> を参照してください。"
 
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 357, IDS_APP_TITLE)
 msgid "TortoiseGitUDiff"
@@ -11328,7 +11419,8 @@ msgstr "トルコ語"
 msgid "Tweak TortoiseGit"
 msgstr "TortoiseGit を調整"
 
-#. Resource IDs: (17130, Dialog IDD_SVNIGNORE: Control id 1642)
+#. Resource IDs: (Dialog IDD_SVNIGNORE: Control id 1642,
+#. IDS_AFX_SHELLLISTCTRL_TYPE)
 msgid "Type"
 msgstr "タイプ"
 
@@ -11368,20 +11460,20 @@ msgstr "UTF-16 LE"
 msgid "UTF-8"
 msgstr "UTF-8"
 
-#. Resource IDs: (61840)
+#. Resource IDs: (AFX_IDP_FAILED_MAPI_LOAD)
 msgid "Unable to load mail system support."
 msgstr "メールシステムサポートをロードできません。"
 
-#. Resource IDs: (61826)
+#. Resource IDs: (AFX_IDP_SERVER_BUSY)
 msgid "Unable to process command, server busy."
 msgstr "コマンドを処理することができません。サーバーがビジー状態です。"
 
-#. Resource IDs: (61731)
+#. Resource IDs: (AFX_IDP_FAILED_ACCESS_READ)
 #, c-format
 msgid "Unable to read from %1, it is opened by someone else."
 msgstr "%1 から読み込めません。他の誰かが開いています。"
 
-#. Resource IDs: (61836)
+#. Resource IDs: (AFX_IDP_GET_NOT_SUPPORTED)
 msgid "Unable to read write-only property."
 msgstr "書き込み専用プロパティのため読み込めません。"
 
@@ -11393,16 +11485,16 @@ msgid ""
 "from the top pane in the log dialog."
 msgstr "作業ツリーのパスを再構築できません。\nファイル名が変更されているかもしれません。\nこのファイルのログダイアログを表示し、一番上のリストから\n変更の取り消しを行ってください。"
 
-#. Resource IDs: (61837)
+#. Resource IDs: (AFX_IDP_SET_NOT_SUPPORTED)
 msgid "Unable to write read-only property."
 msgstr "読み込み専用プロパティのため書き込めません。"
 
-#. Resource IDs: (61732)
+#. Resource IDs: (AFX_IDP_FAILED_ACCESS_WRITE)
 #, c-format
 msgid "Unable to write to %1, it is read-only or opened by someone else."
 msgstr "%1 に書き込めません。読み取り専用か、他の誰かが開いています。"
 
-#. Resource IDs: (62177)
+#. Resource IDs: (AFX_IDS_CHECKLISTBOX_UNCHECK)
 msgid "Uncheck"
 msgstr "未チェック"
 
@@ -11410,12 +11502,12 @@ msgstr "未チェック"
 msgid "Undo"
 msgstr "元に戻す"
 
-#. Resource IDs: (17102)
+#. Resource IDs: (IDS_AFXBARRES_UNDO_FMT)
 #, c-format
 msgid "Undo %d Actions"
 msgstr "%d のアクションを元に戻す"
 
-#. Resource IDs: (17103)
+#. Resource IDs: (IDS_AFXBARRES_UNDO_ONE)
 msgid "Undo 1 Action"
 msgstr "アクションを1つ元に戻す"
 
@@ -11435,7 +11527,7 @@ msgid ""
 "Undo"
 msgstr "直前に行った変更を取り消す\n元に戻す"
 
-#. Resource IDs: (61728)
+#. Resource IDs: (AFX_IDP_FAILED_INVALID_FORMAT)
 msgid "Unexpected file format."
 msgstr "想定外のファイル形式です。"
 
@@ -11443,11 +11535,11 @@ msgstr "想定外のファイル形式です。"
 msgid "Unflag as skip-worktree and assume-unchanged"
 msgstr "フラグ assume-unchanged と skip-worktree を削除"
 
-#. Resource IDs: (17111)
+#. Resource IDs: (IDS_AFXBARRES_MENU_ANIMATION_UNFOLD)
 msgid "Unfold"
 msgstr "展開する"
 
-#. Resource IDs: (61591)
+#. Resource IDs: (AFX_IDS_TEXT_FORMAT)
 msgid ""
 "Unformatted Text\n"
 "text without any formatting"
@@ -11461,10 +11553,6 @@ msgstr "HEADリビジョン同士のUnified形式の差分(&D)"
 msgid "Unknown"
 msgstr "管理外"
 
-#. Resource IDs: (IDS_git_DEPTH_UNKNOWN)
-msgid "Unknown depth"
-msgstr "把握外の深さ"
-
 #. Resource IDs: (IDS_VIEWCONTEXTMENU_UNMARKBLOCK)
 msgid "Unmark this block"
 msgstr "このブロックのマークを外す"
@@ -11477,7 +11565,7 @@ msgstr "未解決の競合!"
 msgid "Unset tracked branch"
 msgstr "ブランチを追跡しない"
 
-#. Resource IDs: (61443)
+#. Resource IDs: (AFX_IDS_UNTITLED)
 msgid "Untitled"
 msgstr "未タイトル"
 
@@ -11515,7 +11603,7 @@ msgstr "モジュールを更新"
 msgid "Updated"
 msgstr "更新"
 
-#. Resource IDs: (61581)
+#. Resource IDs: (AFX_IDS_UPDATING_ITEMS)
 msgid "Updating ActiveX objects"
 msgstr "ActiveX オブジェクトを更新しています"
 
@@ -11523,7 +11611,7 @@ msgstr "ActiveX オブジェクトを更新しています"
 msgid "Updating index"
 msgstr "インデックスを更新中"
 
-#. Resource IDs: (16530)
+#. Resource IDs: (Dialog IDD_AFXBARRES_BUTTON_PROPS: Control id 16530)
 msgid "Use &Default Image: "
 msgstr "デフォルトの画像を使用(&D): "
 
@@ -11535,28 +11623,13 @@ msgstr "2つのファイルの差分に、デフォルトで1画面表示を使�
 msgid "Use &other text block"
 msgstr "他のテキストブロックを使用(&O)"
 
-#. Resource IDs: (ID_EDIT_USEMYBLOCK - Menu, ID_EDIT_USEMYBLOCK - Ribbon name)
-msgid "Use 'mine' text block"
-msgstr "「こちら側」のテキストブロックを使う"
-
-#. Resource IDs: (ID_EDIT_USEMINETHENTHEIRBLOCK - Menu,
-#. ID_EDIT_USEMINETHENTHEIRBLOCK - Ribbon name)
-msgid "Use 'mine' text block then 'theirs'"
-msgstr "「こちら側」のテキストブロックを使用してから、「あちら側」を使用"
-
-#. Resource IDs: (ID_EDIT_USETHEIRBLOCK - Menu, ID_EDIT_USETHEIRBLOCK - Ribbon
-#. name)
-msgid "Use 'theirs' text block"
-msgstr "「あちら側」のテキストブロックを使用"
-
-#. Resource IDs: (ID_EDIT_USETHEIRTHENMYBLOCK - Menu,
-#. ID_EDIT_USETHEIRTHENMYBLOCK - Ribbon name)
-msgid "Use 'theirs' text block then 'mine'"
-msgstr "「あちら側」のテキストブロックを使用してから、「こちら側」を使用"
-
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1911)
 msgid "Use .mailmap"
-msgstr ""
+msgstr ".mailmap を使用"
+
+#. Resource IDs: (IDS_PROC_USELFS_TT)
+msgid "Use Git LFS"
+msgstr "Git LFS を使用"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 1761)
 msgid "Use HTTP path component"
@@ -11618,6 +11691,14 @@ msgstr "両方のテキストブロックを使用（こちらを前にする）
 msgid "Use both text blocks (this one last)"
 msgstr "両方のテキストブロックを使用（こちらを後にする）"
 
+#. Resource IDs: (Dialog IDD_STATGRAPH: Control id 1128)
+msgid "Use commit dates"
+msgstr "コミットの日時を使用"
+
+#. Resource IDs: (Dialog IDD_STATGRAPH: Control id 1127)
+msgid "Use committer names"
+msgstr "コミッターの名前を使用"
+
 #. Resource IDs: (IDS_SMTP_CONFIGURED)
 msgid "Use configured server"
 msgstr "設定済サーバーを使用"
@@ -11630,7 +11711,17 @@ msgstr "左ブロック を使用"
 #. Resource IDs: (ID_EDIT_USELEFTFILE - Menu, ID_EDIT_USELEFTFILE - Ribbon
 #. name)
 msgid "Use left file"
-msgstr "左側のファイルを使用"
+msgstr "左の ファイル を使用"
+
+#. Resource IDs: (ID_EDIT_USETHEIRBLOCK - Menu, ID_EDIT_USETHEIRBLOCK - Ribbon
+#. name)
+msgid "Use left text block"
+msgstr "左の テキスト ブロック を使用"
+
+#. Resource IDs: (ID_EDIT_USETHEIRTHENMYBLOCK - Menu,
+#. ID_EDIT_USETHEIRTHENMYBLOCK - Ribbon name)
+msgid "Use left text block then right"
+msgstr "左→右の順で テキスト ブロック を使用"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 1762)
 msgid "Use local branch color for current branch"
@@ -11646,7 +11737,16 @@ msgstr "正規表現を使用する"
 
 #. Resource IDs: (IDS_VIEWCONTEXTMENU_USERIGHT)
 msgid "Use right block"
-msgstr "右側のブロックを使用"
+msgstr "右ブロック を使用"
+
+#. Resource IDs: (ID_EDIT_USEMYBLOCK - Menu, ID_EDIT_USEMYBLOCK - Ribbon name)
+msgid "Use right text block"
+msgstr "右の テキスト ブロック を使用"
+
+#. Resource IDs: (ID_EDIT_USEMINETHENTHEIRBLOCK - Menu,
+#. ID_EDIT_USEMINETHENTHEIRBLOCK - Ribbon name)
+msgid "Use right text block then left"
+msgstr "右→左の順で テキスト ブロック を使用"
 
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 1091)
 msgid "Use spaces"
@@ -11656,45 +11756,45 @@ msgstr "スペース を使用"
 msgid "Use system locale for date/time"
 msgstr "日付/時刻にシステムロケールを使用する"
 
-#. Resource IDs: (IDS_VIEWCONTEXTMENU_USEYOURBLOCK)
-msgid "Use text block from '&mine'"
-msgstr "「こちら側」のテキストブロックを使用(&M)"
-
 #. Resource IDs: (IDS_VIEWCONTEXTMENU_USETHEIRBLOCK)
-msgid "Use text block from '&theirs'"
-msgstr "「あちら側」のテキストブロックを使用(&T)"
+msgid "Use text block from &left"
+msgstr "左の テキスト ブロック を使用(&L)"
 
-#. Resource IDs: (IDS_VIEWCONTEXTMENU_USEYOURANDTHEIRBLOCK)
-msgid "Use text block from 'm&ine' before 'theirs'"
-msgstr "「あちら側」の前に「こちら側」のテキストブロックを使用(&I)"
-
-#. Resource IDs: (32822)
-msgid ""
-"Use text block from 'mine' before 'theirs'\n"
-"Use 'mine' text block then 'theirs'"
-msgstr "「あちら側」の前に「こちら側」のテキストブロックを使用する\n「こちら側」、「あちら側」の順にテキストブロックを使用"
-
-#. Resource IDs: (32820)
-msgid ""
-"Use text block from 'mine'\n"
-"Use 'mine' text block"
-msgstr "「こちら側」のテキストブロックを使用する\n「こちら側」のテキストブロックを使用"
+#. Resource IDs: (IDS_VIEWCONTEXTMENU_USEYOURBLOCK)
+msgid "Use text block from &right"
+msgstr "右の テキスト ブロック を使用(&R)"
 
 #. Resource IDs: (IDS_VIEWCONTEXTMENU_USETHEIRANDYOURBLOCK)
-msgid "Use text block from 't&heirs' before 'mine'"
-msgstr "「こちら側」の前に「あちら側」のテキストブロックを使用(&H)"
+msgid "Use text block from l&eft before right"
+msgstr "左→右の順で テキスト ブロック を使用(&E)"
 
 #. Resource IDs: (32821)
 msgid ""
-"Use text block from 'theirs' before 'mine'\n"
-"Use 'theirs' text block then 'mine'"
-msgstr "「こちら側」の前に「あちら側」のテキストブロックを使用する\n「あちら側」のテキストブロックを使用してから、「こちら側」を使用"
+"Use text block from left before right file\n"
+"Use left file text block then right"
+msgstr "左→右の順で テキスト ブロック を使用\n左のファイルのテキストブロックを使用し、それから右を使用する"
 
 #. Resource IDs: (32819)
 msgid ""
-"Use text block from 'theirs'\n"
-"Use 'theirs' text block"
-msgstr "「あちら側」のテキストブロックを使用する\n「あちら側」のテキストブロックを使用"
+"Use text block from left file\n"
+"Use left file text block"
+msgstr "左の テキスト ブロック を使用\n左のファイルのテキストブロックを使用する"
+
+#. Resource IDs: (IDS_VIEWCONTEXTMENU_USEYOURANDTHEIRBLOCK)
+msgid "Use text block from r&ight before left"
+msgstr "右→左の順で テキスト ブロック を使用(&I)"
+
+#. Resource IDs: (32822)
+msgid ""
+"Use text block from right file before left\n"
+"Use right file text block then left"
+msgstr "右→左の順で テキスト ブロック を使用\n右のファイルのテキストブロックを使用し、それから左を使用する"
+
+#. Resource IDs: (32820)
+msgid ""
+"Use text block from right file\n"
+"Use right file text block"
+msgstr "右の テキスト ブロック を使用\n右のファイルのテキストブロックを使用する"
 
 #. Resource IDs: (32855)
 msgid ""
@@ -11704,7 +11804,7 @@ msgstr "左ビューのテキストブロックを使用する\n左側のブロ�
 
 #. Resource IDs: (IDS_VIEWCONTEXTMENU_USETHISBLOCK)
 msgid "Use th&is text block"
-msgstr "このテキストブロックを使用(&I)"
+msgstr "この テキスト ブロック を使用(&I)"
 
 #. Resource IDs: (IDS_COMMIT_AS_COMMIT_DATE_TT)
 msgid "Use the current time by setting the author date to the commit date."
@@ -11778,6 +11878,10 @@ msgstr "ユーザー名(&N):"
 msgid "Username:"
 msgstr "ユーザー名:"
 
+#. Resource IDs: (IDS_SETTINGS_ONLYNONELEVATED_TT)
+msgid "Uses the status cache type 'none' for elevated processes"
+msgstr "昇格されたプロセスについては、状態キャッシュは「無し」として扱います。"
+
 #. Resource IDs: (IDS_COMMANDLINEHELP)
 msgid ""
 "Valid command line options are:\n"
@@ -11814,20 +11918,20 @@ msgstr "バージョン %d.%d.%d.%d"
 #. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1644,
 #. IDS_PROC_FILEDIFF_VERSION1BASE)
 msgid "Version 1 (Base)"
-msgstr ""
+msgstr "バージョン1 (ベース)"
 
 #. Resource IDs: (IDS_PROC_FILEDIFF_VERSION1BASENEWER)
 msgid "Version 1 (Base, Newer commit time)"
-msgstr ""
+msgstr "バージョン1 (ベース, コミット日時がより新しい)"
 
 #. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1645,
 #. IDS_PROC_FILEDIFF_VERSION2)
 msgid "Version 2"
-msgstr ""
+msgstr "バージョン2"
 
 #. Resource IDs: (IDS_PROC_FILEDIFF_VERSION2NEWER)
 msgid "Version 2 (Newer commit time)"
-msgstr ""
+msgstr "バージョン2 (コミット日時がより新しい)"
 
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 1075)
 msgid "Version Information"
@@ -11928,11 +12032,11 @@ msgid ""
 "We hope you enjoy the usage of TortoiseGit! In case of questions or "
 "problems, please consult our manual or go to <a "
 "id=\"support\">https://tortoisegit.org/support/</a>"
-msgstr ""
+msgstr "TortoiseGit をお楽しみください！ 質問や問題が発生した場合は、マニュアルを参照するか、 <a id=\"support\">https://tortoisegit.org/support/</a> にアクセスしてください。"
 
 #. Resource IDs: (IDS_FIRSTSTART_STARTTITLE)
 msgid "Welcome to TortoiseGit!"
-msgstr ""
+msgstr "TortoiseGit へようこそ！"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Western European"
@@ -12006,11 +12110,11 @@ msgstr "ホワイトスペースの変更(タブ,スペース)"
 msgid "Whitespaces"
 msgstr "ホワイトスペース"
 
-#. Resource IDs: (17038)
+#. Resource IDs: (IDS_AFXBARRES_MENU)
 msgid "Window Position"
 msgstr "ウィンドウ位置"
 
-#. Resource IDs: (16927)
+#. Resource IDs: (Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 16927)
 msgid "Windows"
 msgstr "Windows"
 
@@ -12073,8 +12177,7 @@ msgstr "ファイル内:"
 msgid "Within file"
 msgstr "ファイルの中で"
 
-#. Resource IDs: (Dialog IDD_CHANGEDFILES: Control id 158,
-#. IDS_git_DEPTH_WORKING)
+#. Resource IDs: (Dialog IDD_CHANGEDFILES: Control id 158, IDS_WORKING_TREE)
 msgid "Working Tree"
 msgstr "作業ツリー"
 
@@ -12084,7 +12187,7 @@ msgstr "作業ツリーのパス:"
 
 #. Resource IDs: (IDS_LOG_WORKINGDIRCHANGES)
 msgid "Working tree changes"
-msgstr ""
+msgstr "作業ツリーの変更"
 
 #. Resource IDs: (ID_VIEW_WRAPLONGLINES - Menu, ID_VIEW_WRAPLONGLINES - Ribbon
 #. name)
@@ -12115,12 +12218,12 @@ msgid ""
 "Disabled handlers won't use up an overlay slot and give other shell extensions a chance to show their overlays."
 msgstr "特定のオーバーレイハンドラーを無効にすることができます。\nハンドラーを無効化すると、使用するオーバーレイスロットが減るので、その分、他のシェルエクステンションがオーバーレイ表示できるようになります。"
 
-#. Resource IDs: (16005)
+#. Resource IDs: (IDS_AFXBARRES_WRONG_IMAGE_SIZE)
 #, c-format
 msgid "You can paste bitmap with the size (%d x %d) only!"
 msgstr "%d × %d サイズのビットマップ画像のみ貼り付けることができます。"
 
-#. Resource IDs: (16243)
+#. Resource IDs: (IDS_AFXBARRES_TOO_MANY_TOOLBARS_FMT)
 #, c-format
 msgid "You can't create more than %d user-defined toolbars!"
 msgstr "ユーザー定義ツールバーは %d 個までしか作成できません。"
@@ -12142,7 +12245,7 @@ msgid ""
 "You have an old unsupported version of Git installed.\n"
 "\n"
 "You should consider an upgrade to %s."
-msgstr ""
+msgstr "サポートされていないバージョンの Git がインストールされています。\n\n%s へのアップグレードを検討してください。"
 
 #. Resource IDs: (IDS_STASHSAVE_INCLUDEUNTRACKED)
 msgid ""
@@ -12184,7 +12287,7 @@ msgid ""
 "Do you want to restore them now? You might lose all changes to this file after marking it."
 msgstr "「コミット後に復元」といくつかのファイルがマークされました。\n今、それらを復元しますか？  マークした後の、このファイルに対するすべての変更が失われるかもしれません。"
 
-#. Resource IDs: (16024)
+#. Resource IDs: (IDS_AFXBARRES_TOO_MANY_TOOLS_FMT)
 #, c-format
 msgid "You may define up to %d tools."
 msgstr "%d 個までしかツールを定義することができません。"
@@ -12226,7 +12329,7 @@ msgstr "画像を選択してください。"
 msgid ""
 "You've changed the icon set from \"%s\" to \"%s\".\n"
 "That change won't take effect until you restart your computer or logoff and logon again!"
-msgstr ""
+msgstr "アイコンセットを  \"%s\" から \"%s\" へ変更しました。\nこの変更は、コンピュータを再起動するか、ログオフして再度ログオンするまで有効になりません。"
 
 #. Resource IDs: (IDS_COMMITDLG_HISTORYHINT_TT)
 msgid ""
@@ -12245,7 +12348,7 @@ msgstr "現在使用中のバージョン: %d.%d.%d.%d"
 
 #. Resource IDs: (IDS_ARCHIVEFILEFILTER)
 msgid "ZIP archive (*.zip)|*.zip|All Files (*.*)|*.*||"
-msgstr ""
+msgstr "ZIPアーカイブ (*.zip)|*.zip|すべてのファイル (*.*)|*.*||"
 
 #. Resource IDs: (Dialog IDD_EXPORT: Control id 1074)
 msgid "Zip File"
@@ -12255,15 +12358,15 @@ msgstr "zipファイル"
 msgid "Zoo&m out\t-"
 msgstr "ズームアウト(&M)\t-"
 
-#. Resource IDs: (17093)
+#. Resource IDs: (IDS_AFXBARRES_ZOOM)
 msgid "Zoom"
 msgstr "ズーム"
 
-#. Resource IDs: (58117)
+#. Resource IDs: (Dialog AFX_IDD_PREVIEW_TOOLBAR: Control id 58117)
 msgid "Zoom &In"
 msgstr "ズームイン(&I)"
 
-#. Resource IDs: (58118)
+#. Resource IDs: (Dialog AFX_IDD_PREVIEW_TOOLBAR: Control id 58118)
 msgid "Zoom &Out"
 msgstr "ズームアウト(&O)"
 
@@ -12308,7 +12411,7 @@ msgstr "高さがフィットするようにズーム"
 msgid "Zoom to fit in width"
 msgstr "幅がフィットするようにズーム"
 
-#. Resource IDs: (17114)
+#. Resource IDs: (IDS_AFXBARRES_MENU_ANIMATION_DEFAULT)
 msgid "[Default]"
 msgstr "[デフォルト]"
 
@@ -12362,7 +12465,7 @@ msgid ""
 "\"%s\" will be permanently deleted. It can NOT be recovered!\n"
 "\n"
 "Do you really want to continue?"
-msgstr ""
+msgstr "\"%s\" は完全に削除されます。削除後は取り消す事はできません！\n\n本当に続行しますか？"
 
 #. Resource IDs: (IDS_PROC_APPLYPATCH_GITAMACTIVE)
 msgid ""
@@ -12382,7 +12485,7 @@ msgstr "追加"
 msgid "added files"
 msgstr "追加されたファイル"
 
-#. Resource IDs: (61446)
+#. Resource IDs: (AFX_IDS_UNNAMED_FILE)
 msgid "an unnamed file"
 msgstr "名前無しファイル"
 
@@ -12396,16 +12499,16 @@ msgstr "assume-unchanged (変更なしとみなす)"
 
 #. Resource IDs: (IDS_STATGRAPH_COMMITSBYAUTHORX)
 msgid "author"
-msgstr "作者"
+msgstr "著者"
 
 #. Resource IDs: (IDS_STATGRAPH_COMMITSBYAUTHORMOREX)
 #, c-format
 msgid "author (>= 0.5%)"
-msgstr "作者 (0.5%以上)"
+msgstr "著者 (0.5%以上)"
 
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 65535)
-msgid "based on TortoiseSVN (http://www.tortoisesvn.net/)"
-msgstr "TortoiseSVN (http://www.tortoisesvn.net/)　を基に製作されました。"
+msgid "based on TortoiseSVN (https://tortoisesvn.net/)"
+msgstr "TortoiseSVN (https://tortoisesvn.net/) を基に製作されました。"
 
 #. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ_CONFIG: Control id 65535)
 msgid "bugtraq.append"
@@ -12435,6 +12538,15 @@ msgstr "bugtraq.url"
 msgid "bugtraq.warningifnoissue"
 msgstr "bugtraq.warningifnoissue"
 
+#. Resource IDs: (IDS_CONFLICT_REFTOBEMERGED)
+msgid "changes to-be-integrated"
+msgstr "統合される変更"
+
+#. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYCOL)
+#, c-format
+msgid "column '%ls'"
+msgstr "カラム '%ls'"
+
 #. Resource IDs: (IDS_STATGRAPH_COMMITSBYAUTHORY,
 #. IDS_STATGRAPH_COMMITSBYDATEY)
 msgid "commits"
@@ -12449,7 +12561,7 @@ msgstr "競合"
 msgid ""
 "copied from\n"
 "%s - revision %ld"
-msgstr "コピー元\n%s - リビジョン %ld!ld!"
+msgstr "コピー元\n%s - リビジョン %ld"
 
 #. Resource IDs: (IDS_STATGRAPH_COMMITSBYDATEXDAY)
 msgid "day"
@@ -12463,7 +12575,7 @@ msgstr "削除"
 msgid "diff from pipe"
 msgstr "パイプからの差分"
 
-#. Resource IDs: (58116)
+#. Resource IDs: (Dialog IDD_AFXBAR_RES_PRINT_PREVIEW: Control id 58116)
 msgid "dummy"
 msgstr "dummy"
 
@@ -12484,6 +12596,18 @@ msgstr "エクスポート終了\n%s\nから\n%s"
 msgid "external"
 msgstr "外部"
 
+#. Resource IDs: (IDS_CONFLICT_NOTASUBMODULE)
+msgid "file, not a submodule"
+msgstr "サブモジュールでないファイル"
+
+#. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYFILENAMES)
+msgid "file/foldernames"
+msgstr "ファイル/フォルダ名"
+
+#. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYFULLPATHS)
+msgid "full paths"
+msgstr "フルパス"
+
 #. Resource IDs: (IDS_PROC_PROGRESS_GITUNCLEANEXIT)
 #, c-format
 msgid "git did not exit cleanly (exit code %d)"
@@ -12491,7 +12615,7 @@ msgstr "gitは正常に終了しませんでした (終了コード %d)"
 
 #. Resource IDs: (IDS_GITEXEFILEFILTER)
 msgid "git.exe|git.exe||"
-msgstr ""
+msgstr "git.exe|git.exe||"
 
 #. Resource IDs: (IDS_STATUSIGNORED)
 msgid "ignored"
@@ -12600,6 +12724,10 @@ msgstr "いいえ"
 msgid "no description for this command is available"
 msgstr "このコマンドの説明は提供されません"
 
+#. Resource IDs: (IDS_CONFLICT_NOSUBMODULE)
+msgid "no submodule"
+msgstr "サブモジュールでない"
+
 #. Resource IDs: (IDS_STATUSUNVERSIONED)
 msgid "non-versioned"
 msgstr "バージョン管理外"
@@ -12616,11 +12744,15 @@ msgstr "通常"
 msgid "not found"
 msgstr "見つかりません"
 
+#. Resource IDs: (IDS_CONFLICT_SUBMODULENOTINITIALIZED)
+msgid "not initialized"
+msgstr "未初期化"
+
 #. Resource IDs: (IDS_STATUSOBSTRUCTED)
 msgid "obstructed"
 msgstr "妨害"
 
-#. Resource IDs: (61504)
+#. Resource IDs: (AFX_IDS_PRINTONPORT)
 #, c-format
 msgid "on %1"
 msgstr "on %1"
@@ -12629,7 +12761,7 @@ msgstr "on %1"
 msgid "patched"
 msgstr "パッチ適用済"
 
-#. Resource IDs: (61888)
+#. Resource IDs: (AFX_IDS_OCC_SCALEUNITS_PIXELS)
 msgid "pixels"
 msgstr "画素"
 
@@ -12642,15 +12774,19 @@ msgid ""
 "previous rebase directory rebase-apply still exists but mbox given.\n"
 "\n"
 "Do you want to"
-msgstr ""
+msgstr "mboxが与えられましたが、前のリベースディレクトリにrebase-applyファイルが残っています。\n\nどうしますか？"
 
-#. Resource IDs: (61509)
+#. Resource IDs: (AFX_IDS_PRINTDEFAULTEXT)
 msgid "prn"
 msgstr "prn"
 
 #. Resource IDs: (IDS_STATGRAPH_COMMITSBYDATEXQUARTER)
 msgid "quarter of year"
 msgstr "四半期"
+
+#. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYRELPATHS)
+msgid "relative paths"
+msgstr "相対パス"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 65535)
 msgid "renamed"
@@ -12679,7 +12815,7 @@ msgstr "%s に切り替え"
 msgid "take care of submodule changes"
 msgstr "サブモジュールの変更を管理"
 
-#. Resource IDs: (61513)
+#. Resource IDs: (AFX_IDS_PRINTTOFILE)
 #, c-format
 msgid "to %1"
 msgstr "to %1"
