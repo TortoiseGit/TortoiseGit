@@ -151,6 +151,7 @@
 #define IDI_TORTOISEUDIFF               356
 #define IDD_SETTINGSUDIFF               357
 #define IDI_LIBRARY_WIN10               358
+#define IDR_REVISIONGRAPH               359
 #define IDS_CHSTAT_FILECOL              1000
 #define IDS_CHSTAT_WCCOL                1001
 #define IDS_CHSTAT_REPOCOL              1002

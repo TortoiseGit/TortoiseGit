@@ -488,7 +488,7 @@ msgstr ""
 msgid "&Commit..."
 msgstr ""
 
-#. Resource IDs: (IDS_LOG_POPUP_COMPARETWO, IDS_REVGRAPH_POPUP_COMPAREREVS)
+#. Resource IDs: (IDS_LOG_POPUP_COMPARETWO, IDS_REVGRAPH_POPUP_COMPAREREVS, ID_VIEW_COMPAREREVISIONS - Menu)
 msgid "&Compare revisions"
 msgstr ""
 
@@ -644,6 +644,10 @@ msgstr ""
 msgid "&Enable edit"
 msgstr ""
 
+#. Resource IDs: (ID_MENUEXIT - Menu)
+msgid "&Exit"
+msgstr ""
+
 #. Resource IDs: (ID_FILE_EXIT - Menu)
 msgid "&Exit\tCtrl+W"
 msgstr ""
@@ -662,6 +666,10 @@ msgstr ""
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "&File"
+msgstr ""
+
+#. Resource IDs: (ID_VIEW_FILTER - Menu)
+msgid "&Filter"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_FIND: Control id 1)
@@ -712,6 +720,10 @@ msgstr ""
 msgid "&Generate PuTTY  key pair"
 msgstr ""
 
+#. Resource IDs: (65535 - PopupMenu)
+msgid "&Git"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SVNDCOMMITTYPE: Control id 2153)
 msgid "&Git Style Commit (--rmdir)"
 msgstr ""
@@ -740,7 +752,7 @@ msgstr ""
 msgid "&Hard: Reset working tree and index (discard all local changes)"
 msgstr ""
 
-#. Resource IDs: (65535 - PopupMenu, Dialog AFX_IDD_NEWTYPEDLG: Control id 57670, Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 57670, IDS_MENUHELP)
+#. Resource IDs: (65535 - PopupMenu, Dialog AFX_IDD_NEWTYPEDLG: Control id 57670, Dialog IDD_AFXBARRES_WINDOWS_DLG: Control id 57670, IDS_MENUHELP, ID_MENUHELP - Menu)
 msgid "&Help"
 msgstr ""
 
@@ -1182,7 +1194,7 @@ msgstr ""
 msgid "&Save authentication"
 msgstr ""
 
-#. Resource IDs: (IDS_REVGRAPH_SAVEPIC, ID_FILE_SAVESTATGRAPHAS - Menu)
+#. Resource IDs: (IDS_REVGRAPH_SAVEPIC, ID_FILE_SAVEGRAPHAS - Menu, ID_FILE_SAVESTATGRAPHAS - Menu)
 msgid "&Save graph as..."
 msgstr ""
 
@@ -1342,7 +1354,7 @@ msgstr ""
 msgid "&Undo"
 msgstr ""
 
-#. Resource IDs: (IDS_REVGRAPH_POPUP_UNIDIFFREVS)
+#. Resource IDs: (IDS_REVGRAPH_POPUP_UNIDIFFREVS, ID_VIEW_UNIFIEDDIFF - Menu)
 msgid "&Unified diff"
 msgstr ""
 
@@ -2977,7 +2989,7 @@ msgstr ""
 msgid "Common Name:"
 msgstr ""
 
-#. Resource IDs: (IDS_REVGRAPH_POPUP_COMPAREHEADS)
+#. Resource IDs: (IDS_REVGRAPH_POPUP_COMPAREHEADS, ID_VIEW_COMPAREHEADREVISIONS - Menu)
 msgid "Compare &HEAD revisions"
 msgstr ""
 
@@ -4829,12 +4841,24 @@ msgstr ""
 msgid "First known &bad:"
 msgstr ""
 
+#. Resource IDs: (ID_VIEW_ZOOMALL - Menu)
+msgid "Fit graph"
+msgstr ""
+
+#. Resource IDs: (ID_VIEW_ZOOMHEIGHT - Menu)
+msgid "Fit height"
+msgstr ""
+
 #. Resource IDs: (ID_VIEW_FITIMAGEHEIGHTS - Menu)
 msgid "Fit image &heights\tH"
 msgstr ""
 
 #. Resource IDs: (ID_VIEW_FITIMAGEWIDTHS - Menu)
 msgid "Fit image &widths\tW"
+msgstr ""
+
+#. Resource IDs: (ID_VIEW_ZOOMWIDTH - Menu)
+msgid "Fit width"
 msgstr ""
 
 #. Resource IDs: (IDS_AFXBARRES_FOLDER)
@@ -8791,6 +8815,10 @@ msgstr ""
 msgid "Show More Buttons"
 msgstr ""
 
+#. Resource IDs: (ID_VIEW_SHOWOVERVIEW - Menu)
+msgid "Show Ove&rview"
+msgstr ""
+
 #. Resource IDs: (IDS_AFXBARRES_PLACE_QAT_ABOVE_RIBBON)
 msgid "Show Quick Access Toolbar Above the Ribbon"
 msgstr ""
@@ -10234,7 +10262,7 @@ msgstr ""
 msgid "Unformatted Text\ntext without any formatting"
 msgstr ""
 
-#. Resource IDs: (IDS_REVGRAPH_POPUP_UNIDIFFHEADS)
+#. Resource IDs: (IDS_REVGRAPH_POPUP_UNIDIFFHEADS, ID_VIEW_UNIFIEDDIFFOFHEADREVISIONS - Menu)
 msgid "Unified &diff of HEAD revisions"
 msgstr ""
 
@@ -10945,6 +10973,14 @@ msgstr ""
 msgid "Zoom &Out"
 msgstr ""
 
+#. Resource IDs: (ID_VIEW_ZOOMIN - Menu)
+msgid "Zoom &in\tCtrl-+"
+msgstr ""
+
+#. Resource IDs: (ID_VIEW_ZOOMOUT - Menu)
+msgid "Zoom &out\tCtrl--"
+msgstr ""
+
 #. Resource IDs: (32803)
 #, c-format
 msgid "Zoom 100%"
@@ -10968,6 +11004,10 @@ msgstr ""
 
 #. Resource IDs: (32773)
 msgid "Zoom out"
+msgstr ""
+
+#. Resource IDs: (ID_VIEW_ZOOM100 - Menu)
+msgid "Zoom to &100%"
 msgstr ""
 
 #. Resource IDs: (32804)
