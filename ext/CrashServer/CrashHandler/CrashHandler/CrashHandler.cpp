@@ -1,4 +1,4 @@
-// Copyright 2014 Idol Software, Inc.
+// Copyright 2012, 2014-2015 Idol Software, Inc.
 //
 // This file is part of Doctor Dump SDK.
 //
@@ -316,6 +316,7 @@ void InitCrtErrorHandlers()
         _T("msvcr110"), _T("msvcr110d"),
         _T("msvcr120"), _T("msvcr120d"),
         _T("msvcr130"), _T("msvcr130d"),
+        _T("vcruntime140"), _T("vcruntime140d"),
     };
 
     HMODULE hMsvcrDll = NULL;
