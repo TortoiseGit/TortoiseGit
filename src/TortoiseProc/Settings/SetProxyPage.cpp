@@ -269,10 +269,7 @@ BOOL CSetProxyPage::OnApply()
 			return FALSE;
 	}
 	else
-	{
-		if (g_Git.UnsetConfigValue(L"http.proxy", CONFIG_GLOBAL))
-			return FALSE;
-	}
+		g_Git.UnsetConfigValue(L"http.proxy", CONFIG_GLOBAL);
 	m_regSSHClient = m_SSHClient;
 	SetModified(FALSE);
 	return ISettingsPropPage::OnApply();
