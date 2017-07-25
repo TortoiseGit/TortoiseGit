@@ -1,4 +1,10 @@
-﻿= Release 2.5.0 =
+﻿= Release 2.6.0 =
+Released: unreleased
+
+== Bug Fixes ==
+ * Fixed issue #3029: LogDlg: Action column icons painted over Graph or message columns when turned off or resized
+
+= Release 2.5.0 =
 Released: 2017-07-23
 
 == Major change ==

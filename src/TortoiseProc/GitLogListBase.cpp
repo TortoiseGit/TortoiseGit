@@ -1399,7 +1399,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 
 			if (pLVCD->iSubItem == LOGLIST_ACTION)
 			{
-				if(this->m_IsIDReplaceAction)
+				if (m_IsIDReplaceAction || !m_ColumnManager.IsVisible(LOGLIST_ACTION))
 				{
 					*pResult = CDRF_DODEFAULT;
 					return;
@@ -1420,36 +1420,39 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				// Get the selected state of the
 				// item being drawn.
 
+				CMemDC myDC(*CDC::FromHandle(pLVCD->nmcd.hdc), rect);
+				BitBlt(myDC.GetDC(), rect.left, rect.top, rect.Width(), rect.Height(), pLVCD->nmcd.hdc, rect.left, rect.top, SRCCOPY);
+
 				// Fill the background if necessary
-				FillBackGround(pLVCD->nmcd.hdc, pLVCD->nmcd.dwItemSpec, rect);
+				FillBackGround(myDC.GetDC(), pLVCD->nmcd.dwItemSpec, rect);
 
 				// Draw the icon(s) into the compatible DC
 				int action = pLogEntry->GetAction(this);
 				if (!pLogEntry->m_IsDiffFiles)
 				{
-					::DrawIconEx(pLVCD->nmcd.hdc, rect.left + ICONITEMBORDER, rect.top, m_hFetchIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
+					::DrawIconEx(myDC.GetDC(), rect.left + ICONITEMBORDER, rect.top, m_hFetchIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
 					*pResult = CDRF_SKIPDEFAULT;
 					return;
 				}
 
 				if (action & CTGitPath::LOGACTIONS_MODIFIED)
-					::DrawIconEx(pLVCD->nmcd.hdc, rect.left + ICONITEMBORDER, rect.top, m_hModifiedIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
+					::DrawIconEx(myDC.GetDC(), rect.left + ICONITEMBORDER, rect.top, m_hModifiedIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
 				++nIcons;
 
 				if (action & (CTGitPath::LOGACTIONS_ADDED | CTGitPath::LOGACTIONS_COPY))
-					::DrawIconEx(pLVCD->nmcd.hdc, rect.left + nIcons * iconwidth + ICONITEMBORDER, rect.top, m_hAddedIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
+					::DrawIconEx(myDC.GetDC(), rect.left + nIcons * iconwidth + ICONITEMBORDER, rect.top, m_hAddedIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
 				++nIcons;
 
 				if (action & CTGitPath::LOGACTIONS_DELETED)
-					::DrawIconEx(pLVCD->nmcd.hdc, rect.left + nIcons * iconwidth + ICONITEMBORDER, rect.top, m_hDeletedIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
+					::DrawIconEx(myDC.GetDC(), rect.left + nIcons * iconwidth + ICONITEMBORDER, rect.top, m_hDeletedIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
 				++nIcons;
 
 				if (action & CTGitPath::LOGACTIONS_REPLACED)
-					::DrawIconEx(pLVCD->nmcd.hdc, rect.left + nIcons * iconwidth + ICONITEMBORDER, rect.top, m_hReplacedIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
+					::DrawIconEx(myDC.GetDC(), rect.left + nIcons * iconwidth + ICONITEMBORDER, rect.top, m_hReplacedIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
 				++nIcons;
 
 				if (action & CTGitPath::LOGACTIONS_UNMERGED)
-					::DrawIconEx(pLVCD->nmcd.hdc, rect.left + nIcons * iconwidth + ICONITEMBORDER, rect.top, m_hConflictedIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
+					::DrawIconEx(myDC.GetDC(), rect.left + nIcons * iconwidth + ICONITEMBORDER, rect.top, m_hConflictedIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
 				++nIcons;
 
 				*pResult = CDRF_SKIPDEFAULT;
