@@ -252,8 +252,10 @@ void CGitRefCompareList::Show()
 		std::sort(m_RefList.begin(), m_RefList.end(), SortPredicate);
 
 	int index = 0;
+	int listIdx = -1;
 	for (const auto& entry : m_RefList)
 	{
+		++listIdx;
 		if (entry.changeType == ChangeType::Same && m_bHideUnchanged)
 			continue;
 
@@ -271,7 +273,7 @@ void CGitRefCompareList::Show()
 		SetItemText(index, colOldMessage, entry.oldMessage);
 		SetItemText(index, colNewHash, entry.newHash);
 		SetItemText(index, colNewMessage, entry.newMessage);
-		SetItemData(index, index);
+		SetItemData(index, listIdx);
 		++index;
 	}
 
