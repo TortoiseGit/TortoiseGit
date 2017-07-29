@@ -52,7 +52,7 @@ static void GetGitRevRefMap()
 	EXPECT_STREQ(L"test", rev.m_Description);
 
 	rev = refMap[L"refs/heads/subdir/branch"];
-	EXPECT_STREQ(L"4c5c93d2a0b368bc4570d5ec02ab03b9c4334d44", rev.m_CommitHash.ToString());
+	EXPECT_STREQ(L"31ff87c86e9f6d3853e438cb151043f30f09029a", rev.m_CommitHash.ToString());
 	EXPECT_STREQ(L"Sven Strickroth", rev.GetAuthorName());
 	EXPECT_STREQ(L"2015-03-16 12:52:29", rev.GetAuthorDate().FormatGmt(L"%Y-%m-%d %H:%M:%S"));
 	EXPECT_STREQ(L"Several actions", rev.GetSubject());

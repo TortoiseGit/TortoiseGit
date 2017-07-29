@@ -426,7 +426,12 @@ void CTGitPath::Reset()
 	m_bExistsKnown = false;
 
 	m_sBackslashPath.Empty();
+	m_sLongBackslashPath.Empty();
 	m_sFwdslashPath.Empty();
+	m_sUIPath.Empty();
+	m_sProjectRoot.Empty();
+	m_sOldFwdslashPath.Empty();
+
 	this->m_Action=0;
 	this->m_StatAdd.Empty();
 	this->m_StatDel.Empty();

@@ -217,38 +217,38 @@ static void SafeFetchFullInfo(CGit* cGit)
 	EXPECT_STREQ(L"ansi.txt", rev.GetFiles(nullptr)[0].GetGitPathString());
 	EXPECT_STREQ(L"", rev.GetFiles(nullptr)[0].GetGitOldPathString());
 	rev.Clear();
-	rev.m_CommitHash = L"4c5c93d2a0b368bc4570d5ec02ab03b9c4334d44";
+	rev.m_CommitHash = L"31ff87c86e9f6d3853e438cb151043f30f09029a";
 	EXPECT_EQ(0, rev.SafeFetchFullInfo(cGit));
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED | CTGitPath::LOGACTIONS_MODIFIED | CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_DELETED, rev.GetAction(nullptr));
 	ASSERT_EQ(4, rev.GetFiles(nullptr).GetCount());
 	list = rev.GetFiles(nullptr);
-	EXPECT_STREQ(L"newfiles2 - Cöpy.txt", list[0].GetGitPathString());
-	EXPECT_STREQ(L"", list[0].GetGitOldPathString());
-	EXPECT_STREQ(L"1", list[0].m_StatAdd);
+	EXPECT_STREQ(L"it-was-ansi.txt", list[0].GetGitPathString());
+	EXPECT_STREQ(L"ansi.txt", list[0].GetGitOldPathString());
+	EXPECT_STREQ(L"0", list[0].m_StatAdd);
 	EXPECT_STREQ(L"0", list[0].m_StatDel);
 	EXPECT_EQ(0, list[0].m_ParentNo);
-	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, list[0].m_Action);
-	EXPECT_FALSE(list[0].IsDirectory());
-	EXPECT_STREQ(L"utf16-be-nobom.txt", list[1].GetGitPathString()); // changed from file to symlink
-	EXPECT_STREQ(L"", list[1].GetGitOldPathString());
-	EXPECT_STREQ(L"-", list[1].m_StatAdd);
-	EXPECT_STREQ(L"-", list[1].m_StatDel);
-	EXPECT_EQ(0, list[1].m_ParentNo);
-	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[1].m_Action);
+	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, list[0].m_Action);
 	EXPECT_FALSE(list[1].IsDirectory());
-	EXPECT_STREQ(L"utf8-bom.txt", list[2].GetGitPathString());
+	EXPECT_STREQ(L"newfiles2 - Cöpy.txt", list[1].GetGitPathString());
+	EXPECT_STREQ(L"", list[1].GetGitOldPathString());
+	EXPECT_STREQ(L"1", list[1].m_StatAdd);
+	EXPECT_STREQ(L"0", list[1].m_StatDel);
+	EXPECT_EQ(0, list[1].m_ParentNo);
+	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, list[1].m_Action);
+	EXPECT_FALSE(list[1].IsDirectory());
+	EXPECT_STREQ(L"utf16-be-nobom.txt", list[2].GetGitPathString()); // changed from file to symlink
 	EXPECT_STREQ(L"", list[2].GetGitOldPathString());
-	EXPECT_STREQ(L"0", list[2].m_StatAdd);
-	EXPECT_STREQ(L"9", list[2].m_StatDel);
+	EXPECT_STREQ(L"-", list[2].m_StatAdd);
+	EXPECT_STREQ(L"-", list[2].m_StatDel);
 	EXPECT_EQ(0, list[2].m_ParentNo);
-	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, list[2].m_Action);
+	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[2].m_Action);
 	EXPECT_FALSE(list[2].IsDirectory());
-	EXPECT_STREQ(L"was-ansi.txt", list[3].GetGitPathString());
-	EXPECT_STREQ(L"ansi.txt", list[3].GetGitOldPathString());
+	EXPECT_STREQ(L"utf8-bom.txt", list[3].GetGitPathString());
+	EXPECT_STREQ(L"", list[3].GetGitOldPathString());
 	EXPECT_STREQ(L"0", list[3].m_StatAdd);
-	EXPECT_STREQ(L"0", list[3].m_StatDel);
+	EXPECT_STREQ(L"9", list[3].m_StatDel);
 	EXPECT_EQ(0, list[3].m_ParentNo);
-	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, list[3].m_Action);
+	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, list[3].m_Action);
 	EXPECT_FALSE(list[3].IsDirectory());
 }
 
