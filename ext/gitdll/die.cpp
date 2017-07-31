@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011, 2013, 2016 - TortoiseGit
+// Copyright (C) 2008-2011, 2013, 2016-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,22 +25,35 @@ extern "C" char g_last_error[MAX_ERROR_STR_SIZE]={0};
 extern "C" int close_all();
 static int dyingRecCnt = 0;
 
-extern "C" void die_dll(const char *err, va_list params)
+static void reset_dll_state()
 {
-	memset(g_last_error,0,MAX_ERROR_STR_SIZE);
-	vsnprintf(g_last_error, MAX_ERROR_STR_SIZE-1, err, params);
 	close_all();
 	dyingRecCnt = 0;
+}
+
+static void set_last_error(const char *err, va_list params)
+{
+	memset(g_last_error, 0, MAX_ERROR_STR_SIZE);
+	vsnprintf(g_last_error, MAX_ERROR_STR_SIZE - 1, err, params);
+}
+
+extern "C" void die_dll(const char *err, va_list params)
+{
+	set_last_error(err, params);
+	reset_dll_state();
 	throw g_last_error;
 }
 
 void die(const char *err, ...)
 {
 	va_list params;
-
 	va_start(params, err);
-	die_dll(err, params);
-	// va_end(params); // we never come here
+	set_last_error(err, params);
+	va_end(params);
+
+	reset_dll_state();
+
+	throw g_last_error;
 }
 
 extern "C" void handle_error(const char*, va_list)
