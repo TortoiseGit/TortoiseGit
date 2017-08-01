@@ -940,7 +940,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			{
 				CString guessAssociatedBranch = pSelLogEntry->m_CommitHash;
 				const CString* branch = popmenu ? (const CString*)((CIconMenu*)popmenu)->GetMenuItemData(cmd) : nullptr;
-				if (branch)
+				if (branch && !CStringUtils::StartsWith(*branch, L"refs/remotes/"))
 					guessAssociatedBranch = *branch;
 				else if (!GetFirstEntryStartingWith(m_HashMap[pSelLogEntry->m_CommitHash], L"refs/heads/", guessAssociatedBranch))
 					GetFirstEntryStartingWith(m_HashMap[pSelLogEntry->m_CommitHash], L"refs/tags/", guessAssociatedBranch);
