@@ -37,14 +37,14 @@ static void set_last_error(const char *err, va_list params)
 	vsnprintf(g_last_error, MAX_ERROR_STR_SIZE - 1, err, params);
 }
 
-extern "C" void die_dll(const char *err, va_list params)
+extern "C" [[noreturn]] void die_dll(const char* err, va_list params)
 {
 	set_last_error(err, params);
 	reset_dll_state();
 	throw g_last_error;
 }
 
-void die(const char *err, ...)
+[[noreturn]] void die(const char* err, ...)
 {
 	va_list params;
 	va_start(params, err);
@@ -66,7 +66,7 @@ extern "C" void handle_warning(const char*, va_list)
 // ignore for now
 }
 
-extern "C" void vc_exit(int code)
+extern "C" [[noreturn]] void vc_exit(int code)
 {
 	if (strlen(g_last_error))
 	{
