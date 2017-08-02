@@ -7298,7 +7298,7 @@ msgid "Please enter a path where to apply the hook script to. Use \"*\" for all 
 msgstr ""
 
 #. Resource IDs: (IDS_FIRSTSTART_HINT3)
-msgid "Please see the <a id=\"manual\">manual</a> for general hints. E.g. in most dialogs there are some shared shortcuts such as F5 for refresh or CTRL+F for search and oftentimes there are powerfull context menus."
+msgid "Please see the <a id=\"manual\">manual</a> for general hints. E.g. in most dialogs there are some shared shortcuts such as F5 for refresh or CTRL+F for search and oftentimes there are powerful context menus."
 msgstr ""
 
 #. Resource IDs: (IDS_ERR_NOHOOKTYPESPECIFIED)
@@ -9878,7 +9878,7 @@ msgid "This is not a valid path!\nA valid path must not contain '<<>|\"?*:' or o
 msgstr ""
 
 #. Resource IDs: (IDS_FIRSTSTART_HINT2)
-msgid "This is the First Start Wizard which will help you configuring the basic settings. TortoiseGit is highly configurable, so it is advisable that you have a look into its settings dialog. The settings dialog is reachable using the start menu or the context menu of the Windows Explorer: TortoiseGit -> Settings."
+msgid "This is the First Start Wizard which will help you configure the basic settings. TortoiseGit is highly configurable, so it is advisable that you have a look into its settings dialog. The settings dialog is reachable using the start menu or the context menu of the Windows Explorer: TortoiseGit -> Settings."
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_LOG_ONLYONCE)
@@ -10083,7 +10083,7 @@ msgid "TortoiseGitMerge cannot process this patch file. The filename \"%s\" appe
 msgstr ""
 
 #. Resource IDs: (IDS_FIRSTSTART_SSHHINT)
-msgid "TortoiseGitPlink is recommended as SSH client. If you don't have a key pair yet, you should generate one. Keep the private one in a save place and set up the public key on your hosting platform. Use the PuTTY authentication agent for caching the password (done automatically if a PuTTY key is configured for a remote). For advanced tips & tricks see our <a id=\"manual\">manual</a> and <a id=\"sshfaq\">FAQ</a>."
+msgid "TortoiseGitPlink is the recommended as SSH client. If you don't have a key pair yet, you should generate one. Keep the private one in a safe place and set up the public key on your hosting platform. Use the PuTTY authentication agent for caching the password (done automatically if a PuTTY key is configured for a remote). For advanced tips & tricks see our <a id=\"manual\">manual</a> and <a id=\"sshfaq\">FAQ</a>."
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 357, IDS_APP_TITLE)
@@ -10687,7 +10687,7 @@ msgid "Warning!"
 msgstr ""
 
 #. Resource IDs: (IDS_FIRSTSTART_HINT4)
-msgid "We hope you enjoy the usage of TortoiseGit! In case of questions or problems, please consult our manual or go to <a id=\"support\">https://tortoisegit.org/support/</a>"
+msgid "We hope you enjoy using TortoiseGit! In case of questions or problems, please consult our manual or go to <a id=\"support\">https://tortoisegit.org/support/</a>"
 msgstr ""
 
 #. Resource IDs: (IDS_FIRSTSTART_STARTTITLE)

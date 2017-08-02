@@ -3,6 +3,7 @@ Released: unreleased
 
 == Bug Fixes ==
  * Fixed issue #3029: LogDlg: Action column icons painted over Graph or message columns when turned off or resized
+ * Fixed issue #3042: Spelling and grammar errors in First Start Wizard
 
 = Release 2.5.0 =
 Released: 2017-07-23
