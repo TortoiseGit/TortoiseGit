@@ -142,6 +142,24 @@ static void GetRevParsingTests()
 	EXPECT_STREQ(L"", rev.GetLastErr());
 	rev.Clear();
 	// GPG signed commit which was also amended with different dates
+	EXPECT_EQ(0, rev.GetCommit(L"signed-commit"));
+	EXPECT_STREQ(L"4c5c93d2a0b368bc4570d5ec02ab03b9c4334d44", rev.m_CommitHash.ToString());
+	EXPECT_STREQ(L"Sven Strickroth", rev.GetAuthorName());
+	EXPECT_STREQ(L"email@cs-ware.de", rev.GetAuthorEmail());
+	EXPECT_STREQ(L"2015-03-16 12:52:29", rev.GetAuthorDate().FormatGmt(L"%Y-%m-%d %H:%M:%S"));
+	EXPECT_STREQ(L"Sven Strickroth", rev.GetCommitterName());
+	EXPECT_STREQ(L"email@cs-ware.de", rev.GetCommitterEmail());
+	EXPECT_STREQ(L"2015-03-16 13:06:08", rev.GetCommitterDate().FormatGmt(L"%Y-%m-%d %H:%M:%S"));
+	EXPECT_STREQ(L"Several actions", rev.GetSubject());
+	EXPECT_STREQ(L"\n* amended with different date\n* make utf16-be-nobom.txt a symlink ti ascii.txt\n* remove utf8-bom.txt\n* Copied ascii.txt\n\nSigned-off-by: Sven Strickroth <email@cs-ware.de>\n", rev.GetBody());
+	EXPECT_STREQ(L"", rev.GetLastErr());
+	EXPECT_EQ(0, rev.ParentsCount());
+	EXPECT_EQ(0, rev.GetParentFromHash(rev.m_CommitHash));
+	ASSERT_EQ(1, rev.ParentsCount());
+	EXPECT_STREQ(L"aa5b97f89cea6863222823c8289ce392d06d1691", rev.m_ParentHash[0].ToString());
+	EXPECT_STREQ(L"", rev.GetLastErr());
+	rev.Clear();
+	// commit with different committer
 	EXPECT_EQ(0, rev.GetCommit(L"subdir/branch"));
 	EXPECT_STREQ(L"31ff87c86e9f6d3853e438cb151043f30f09029a", rev.m_CommitHash.ToString());
 	EXPECT_STREQ(L"Sven Strickroth", rev.GetAuthorName());
