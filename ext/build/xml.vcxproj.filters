@@ -20,6 +20,9 @@
     <ClCompile Include="..\expat\expat\lib\xmltok.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\expat\expat\lib\loadlibrary.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\expat\expat\lib\ascii.h">

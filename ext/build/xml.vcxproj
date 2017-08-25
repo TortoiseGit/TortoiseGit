@@ -46,6 +46,7 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\expat\expat\lib\loadlibrary.c" />
     <ClCompile Include="..\expat\expat\lib\xmlparse.c" />
     <ClCompile Include="..\expat\expat\lib\xmlrole.c" />
     <ClCompile Include="..\expat\expat\lib\xmltok.c" />
