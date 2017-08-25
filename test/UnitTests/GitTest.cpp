@@ -2500,7 +2500,7 @@ TEST_P(CBasicGitWithSubmoduleRepositoryFixture, GetWorkingTreeChanges_Submodules
 	// test for added, uncommitted submodule
 	output.Empty();
 	EXPECT_EQ(0, m_Git.Run(L"git.exe add submodule", &output, CP_UTF8));
-	EXPECT_STREQ(L"", output);
+	//EXPECT_STREQ(L"", output); // Git 2.14 starts to print a warning here
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, nullptr));
 	ASSERT_EQ(1, list.GetCount());
 	// EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, list.GetAction()); // we do not care here for the list action, as its only used in GitLogListBase and there we re-calculate it in AsyncDiffThread
@@ -2653,7 +2653,7 @@ TEST_P(CBasicGitWithSubmoduleRepositoryFixture, GetWorkingTreeChanges_Submodules
 	EXPECT_STRNE(L"", output);
 	output.Empty();
 	EXPECT_EQ(0, m_Git.Run(L"git.exe add something", &output, CP_UTF8));
-	EXPECT_STREQ(L"", output);
+	//EXPECT_STREQ(L"", output); // Git 2.14 starts to print a warning here
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, nullptr));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_STREQ(L"something", list[0].GetGitPathString());
