@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014 - TortoiseGit
+// Copyright (C) 2014, 2017 - TortoiseGit
 // Copyright (C) 2003-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -1061,27 +1061,19 @@ T& CKeyList<T>::GetAt (int index) const
  */
 
 #ifdef __CSTRINGT_H__
-CRegDWORDCommon<CRegBase>;
 typedef CRegDWORDCommon<CRegBase> CRegDWORD;
-CRegStringCommon<CRegBase>;
 typedef CRegStringCommon<CRegBase> CRegString;
 
 #ifdef _MAP_
-CKeyList<CRegDWORD>;
 typedef CKeyList<CRegDWORD> CRegDWORDList;
-CKeyList<CRegString>;
 typedef CKeyList<CRegString> CRegStringList;
 #endif
 #endif
 
-CRegDWORDCommon<CRegStdBase>;
 typedef CRegDWORDCommon<CRegStdBase> CRegStdDWORD;
-CRegStringCommon<CRegStdBase>;
 typedef CRegStringCommon<CRegStdBase> CRegStdString;
 
 #ifdef _MAP_
-CKeyList<CRegStdDWORD>;
 typedef CKeyList<CRegStdDWORD> CRegStdDWORDList;
-CKeyList<CRegStdString>;
 typedef CKeyList<CRegStdString> CRegStdStringList;
 #endif
