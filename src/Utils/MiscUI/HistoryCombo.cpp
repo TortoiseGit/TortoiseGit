@@ -165,13 +165,13 @@ int CHistoryCombo::InsertEntry(const CString& combostring, INT_PTR pos)
 #ifdef HISTORYCOMBO_WITH_SYSIMAGELIST
 	if (m_bURLHistory)
 	{
-		cbei.iImage = SYS_IMAGE_LIST().GetFileIconIndex(combostring);
+		cbei.iImage = SYS_IMAGE_LIST().GetPathIconIndex(combostring);
 		if (cbei.iImage == 0 || cbei.iImage == SYS_IMAGE_LIST().GetDefaultIconIndex())
 		{
 			if (CStringUtils::StartsWith(combostring, L"http:"))
-				cbei.iImage = SYS_IMAGE_LIST().GetFileIconIndex(L".html");
+				cbei.iImage = SYS_IMAGE_LIST().GetPathIconIndex(L".html");
 			else if (CStringUtils::StartsWith(combostring, L"https:"))
-				cbei.iImage = SYS_IMAGE_LIST().GetFileIconIndex(L".html");
+				cbei.iImage = SYS_IMAGE_LIST().GetPathIconIndex(L".html");
 			else if (CStringUtils::StartsWith(combostring, L"file:"))
 				cbei.iImage = SYS_IMAGE_LIST().GetDirIconIndex();
 			else if (CStringUtils::StartsWith(combostring, L"git:"))
@@ -186,7 +186,7 @@ int CHistoryCombo::InsertEntry(const CString& combostring, INT_PTR pos)
 	}
 	if (m_bPathHistory)
 	{
-		cbei.iImage = SYS_IMAGE_LIST().GetFileIconIndex(combostring);
+		cbei.iImage = SYS_IMAGE_LIST().GetPathIconIndex(combostring);
 		if (cbei.iImage == SYS_IMAGE_LIST().GetDefaultIconIndex())
 		{
 			cbei.iImage = SYS_IMAGE_LIST().GetDirIconIndex();

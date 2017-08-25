@@ -152,7 +152,7 @@ BOOL CFilePatchesDlg::Init(GitPatch * pPatch, CPatchFilesDlgCallBack * pCallBack
 		m_arFileStates.Add(state);
 		CString sFileName = GetFullPath(i);
 		sFileName = CPathUtils::GetFileNameFromPath(sFileName);
-		m_cFileList.InsertItem(i, sFile, SYS_IMAGE_LIST().GetFileIconIndex(sFileName));
+		m_cFileList.InsertItem(i, sFile, SYS_IMAGE_LIST().GetPathIconIndex(sFileName));
 		SetStateText(i, state);
 	}
 	int mincol = 0;

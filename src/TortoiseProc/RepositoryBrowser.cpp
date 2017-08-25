@@ -585,7 +585,7 @@ void CRepositoryBrowser::FillListCtrlForShadowTree(CShadowFilesTree* pTree)
 		int icon = m_nIconFolder;
 		if (!(*itShadowTree).second.m_bFolder && !(*itShadowTree).second.m_bSubmodule)
 		{
-			icon = SYS_IMAGE_LIST().GetFileIconIndex((*itShadowTree).second.m_sName);
+			icon = SYS_IMAGE_LIST().GetPathIconIndex((*itShadowTree).second.m_sName);
 		}
 
 		int indexItem = m_RepoList.InsertItem(m_RepoList.GetItemCount(), (*itShadowTree).second.m_sName, icon);
