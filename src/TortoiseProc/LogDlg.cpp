@@ -189,6 +189,7 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 
 	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::GITSLNM_ITEMCHANGED, &CLogDlg::OnFileListCtrlItemChanged)
 	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::GITSLNM_NEEDSREFRESH, OnGitStatusListCtrlNeedsRefresh)
+	ON_REGISTERED_MESSAGE(CGitLogListBase::LOGLIST_RESET_WCREV, OnResetWcRev)
 	ON_WM_MOVE()
 	ON_WM_MOVING()
 	ON_WM_SIZING()
@@ -209,6 +210,14 @@ enum JumpType
 	JumpType_BranchFF,
 	JumpType_History,
 };
+
+LRESULT CLogDlg::OnResetWcRev(WPARAM, LPARAM)
+{
+	if (m_LogList.m_hasWC && (m_ChangedFileListCtrl.m_CurrentVersion.IsEmpty() || m_ChangedFileListCtrl.m_CurrentVersion == GIT_REV_ZERO))
+		m_ChangedFileListCtrl.Clear();
+
+	return 0;
+}
 
 LRESULT CLogDlg::OnGitStatusListCtrlNeedsRefresh(WPARAM, LPARAM)
 {

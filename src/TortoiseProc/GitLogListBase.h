@@ -224,6 +224,12 @@ public:
 
 	void ResetWcRev(bool refresh = false)
 	{
+		if (GetSafeHwnd())
+		{
+			CWnd* pParent = GetParent();
+			if (pParent && pParent->GetSafeHwnd())
+				pParent->SendMessage(LOGLIST_RESET_WCREV);
+		}
 		m_wcRev.Clear();
 		m_wcRev.GetSubject().LoadString(IDS_LOG_WORKINGDIRCHANGES);
 		m_wcRev.m_Mark = L'-';
@@ -426,6 +432,7 @@ protected:
 public:
 	static const UINT	m_ScrollToRef;
 	static const UINT	m_RebaseActionMessage;
+	static const UINT	LOGLIST_RESET_WCREV;
 
 	inline int ShownCountWithStopped() const { return (int)m_arShownList.size() + (m_bStrictStopped ? 1 : 0); }
 	void FetchLogAsync(void* data = nullptr);

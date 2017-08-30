@@ -149,6 +149,7 @@ protected:
 	afx_msg void OnEditCopy();
 	afx_msg void OnEnChangeFileFilter();
 	afx_msg void OnEnscrollMsgview();
+	afx_msg LRESULT OnResetWcRev(WPARAM, LPARAM);
 
 	virtual void OnCancel();
 	virtual void OnOK();
