@@ -36,6 +36,7 @@ const UINT CGitLogListBase::m_FindDialogMessage = RegisterWindowMessage(FINDMSGS
 const UINT CGitLogListBase::m_ScrollToMessage = RegisterWindowMessage(L"TORTOISEGIT_LOG_SCROLLTO");
 const UINT CGitLogListBase::m_ScrollToRef = RegisterWindowMessage(L"TORTOISEGIT_LOG_SCROLLTOREF");
 const UINT CGitLogListBase::m_RebaseActionMessage = RegisterWindowMessage(L"TORTOISEGIT_LOG_REBASEACTION");
+const UINT CGitLogListBase::LOGLIST_RESET_WCREV = RegisterWindowMessage(L"TORTOISEGIT_LOG_RESET_WCREV");
 
 IMPLEMENT_DYNAMIC(CGitLogListBase, CHintCtrl<CResizableColumnsListCtrl<CListCtrl>>)
 
