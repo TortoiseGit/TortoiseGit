@@ -751,7 +751,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 	// empty the changed files list
 	m_ChangedFileListCtrl.SetRedraw(FALSE);
 //	InterlockedExchange(&m_bNoDispUpdates, TRUE);
-	m_ChangedFileListCtrl.DeleteAllItems();
+	m_ChangedFileListCtrl.Clear();
 
 	// if we're not here to really show a selected revision, just
 	// get out of here after clearing the views, which is what is intended
