@@ -13,6 +13,7 @@ call :nmake 1028 zh_TW
 call :nmake 1029 cs
 call :nmake 1030 da
 call :nmake 1031 de
+call :nmake 1032 el
 call :nmake 1034 es
 call :nmake 1035 fi
 call :nmake 1036 fr
