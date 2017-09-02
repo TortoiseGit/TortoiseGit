@@ -2412,11 +2412,7 @@ void CBaseView::OnContextMenu(CPoint point, DiffStates state)
 	GetClientRect(rcClient);
 	CRect textrect(rcClient.left, rcClient.top, rcClient.Width(), m_nLineHeight + HEADERHEIGHT);
 
-	int marginwidth = GetSystemMetrics(SM_CXSMICON) + 2 + 2;
-	if (m_bViewLinenumbers && m_pViewData && m_pViewData->GetCount() && m_nDigits > 0)
-		marginwidth += (m_nDigits * m_nCharWidth) + 2;
-
-	CRect borderrect(rcClient.left, rcClient.top + m_nLineHeight + HEADERHEIGHT, marginwidth, rcClient.bottom);
+	CRect borderrect(rcClient.left, rcClient.top + m_nLineHeight + HEADERHEIGHT, 0, rcClient.bottom);
 
 	CPoint ptLocal = point;
 	ScreenToClient(&ptLocal);

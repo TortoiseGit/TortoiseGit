@@ -5,6 +5,7 @@ Released: unreleased
  * Fixed issue #3029: LogDlg: Action column icons painted over Graph or message columns when turned off or resized
  * Fixed issue #3042: Spelling and grammar errors in First Start Wizard
  * Fixed issue #3035: TortoiseGit 2.5.0.0 might crash in LogDlg after fetch or refreshing working tree status
+ * Fixed issue #3050: TortoiseGitMerge UI: Context menu is not available on margin left to text any more
 
 = Release 2.5.0 =
 Released: 2017-07-23
