@@ -29,6 +29,7 @@
 #include "ProgressDlg.h"
 #include "MenuButton.h"
 #include "ACEdit.h"
+#include "GestureEnabledControl.h"
 #define IDT_FILTER		101
 #define IDT_INPUT		102
 
@@ -139,7 +140,7 @@ private:
 
 	CMFCButton			m_SwitchButton;
 	CColors				m_colors;
-	CHintCtrl<CListCtrl>	m_cFileList;
+	CGestureEnabledControlTmpl<CHintCtrl<CListCtrl>>	m_cFileList;
 	bool				m_bBlame;
 	CTGitPathList		m_arFileList;
 	std::vector<CTGitPath*> m_arFilteredList;

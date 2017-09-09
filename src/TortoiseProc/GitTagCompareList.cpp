@@ -541,3 +541,8 @@ void CGitTagCompareList::OnContextMenuHeader(CWnd * /*pWnd*/, CPoint point)
 		}
 	}
 }
+
+ULONG CGitTagCompareList::GetGestureStatus(CPoint /*ptTouch*/)
+{
+	return 0;
+}

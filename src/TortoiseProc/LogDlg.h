@@ -35,6 +35,7 @@
 #include "GravatarPictureBox.h"
 #include "PatchViewDlg.h"
 #include "MenuButton.h"
+#include "GestureEnabledControl.h"
 
 #define LOGFILTER_TIMER	101
 #define LOGFTIME_TIMER	102
@@ -216,7 +217,7 @@ private:
 	CGitLogList			m_LogList;
 	CGitStatusListCtrl  m_ChangedFileListCtrl;
 	CFilterEdit			m_cFilter;
-	CHyperLink			m_staticRef;
+	CGestureEnabledControlTmpl<CHyperLink> m_staticRef;
 	CProgressCtrl		m_LogProgress;
 	CTGitPath			m_path;
 	CTGitPath			m_orgPath;
@@ -263,7 +264,7 @@ private:
 	CRect				m_ChgOrigRect;
 
 	//volatile LONG		m_bNoDispUpdates;
-	CDateTimeCtrl		m_DateFrom;
+	CGestureEnabledControlTmpl<CDateTimeCtrl> m_DateFrom;
 	CRegString			m_regLastSelectedFromDate;
 	CDateTimeCtrl		m_DateTo;
 	CComboBox			m_JumpType;

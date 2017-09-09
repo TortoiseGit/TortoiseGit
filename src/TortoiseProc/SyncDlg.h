@@ -28,6 +28,7 @@
 #include "GitRefCompareList.h"
 #include "GitTagCompareList.h"
 #include "SyncTabCtrl.h"
+#include "GestureEnabledControl.h"
 
 // CSyncDlg dialog
 #define IDC_SYNC_TAB 0x1000000
@@ -102,7 +103,7 @@ protected:
 	CGitStatusListCtrl	m_InChangeFileList;
 	CGitStatusListCtrl	m_ConflictFileList;
 
-	CRichEditCtrl		m_ctrlCmdOut;
+	CGestureEnabledControlTmpl<CRichEditCtrl>	m_ctrlCmdOut;
 	CGitRefCompareList	m_refList;
 	CGitTagCompareList	m_tagCompareList;
 

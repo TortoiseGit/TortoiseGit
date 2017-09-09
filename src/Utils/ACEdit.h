@@ -82,6 +82,7 @@ public:
 	//{{AFX_VIRTUAL(CACEdit)
 public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	virtual ULONG GetGestureStatus(CPoint /*ptTouch*/) { return 0; }
 	//}}AFX_VIRTUAL
 
 	// Implementierung

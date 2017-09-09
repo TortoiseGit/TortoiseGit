@@ -450,3 +450,7 @@ bool CGitRefCompareList::SortPredicate(const RefEntry &e1, const RefEntry &e2)
 	return e1.fullName.Compare(e2.fullName) < 0;
 }
 
+ULONG CGitRefCompareList::GetGestureStatus(CPoint /*ptTouch*/)
+{
+	return 0;
+}

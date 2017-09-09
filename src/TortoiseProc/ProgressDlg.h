@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,6 +21,7 @@
 #include "StandAloneDlg.h"
 #include "Git.h"
 #include "MenuButton.h"
+#include "GestureEnabledControl.h"
 
 #define MSG_PROGRESSDLG_UPDATE_UI	(WM_USER+121)
 
@@ -113,7 +114,7 @@ private:
 
 	CProgressCtrl			m_Progress;
 
-	CRichEditCtrl			m_Log;
+	CGestureEnabledControlTmpl<CRichEditCtrl> m_Log;
 	CAnimateCtrl			m_Animate;
 	CStatic					m_CurrentWork;
 	CWinThread*				m_pThread;

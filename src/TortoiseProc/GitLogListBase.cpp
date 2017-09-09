@@ -4595,3 +4595,8 @@ void CGitLogListBase::DrawDropInsertMarkerLine(int nIndex)
 
 	ReleaseDC(pDC);
 }
+
+ULONG CGitLogListBase::GetGestureStatus(CPoint /*ptTouch*/)
+{
+	return 0;
+}

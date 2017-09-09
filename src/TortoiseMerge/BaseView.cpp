@@ -1,7 +1,7 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2003-2017 - TortoiseSVN
-// Copyright (C) 2011-2012 Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2011-2012, 2017 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -6597,4 +6597,9 @@ void CBaseView::InsertText(const CString& sText)
 	RefreshViews();
 	BuildAllScreen2ViewVector();
 	UpdateCaretViewPosition(ptCaretViewPos);
+}
+
+ULONG CBaseView::GetGestureStatus(CPoint /*ptTouch*/)
+{
+	return 0;
 }

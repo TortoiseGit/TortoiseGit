@@ -593,6 +593,7 @@ protected:
 	afx_msg void OnLvnOdfinditemLoglist(NMHDR *pNMHDR, LRESULT *pResult);
 	void PreSubclassWindow();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	virtual ULONG GetGestureStatus(CPoint ptTouch);
 	static UINT LogThreadEntry(LPVOID pVoid);
 	UINT LogThread();
 	bool IsOnStash(int index);

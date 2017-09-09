@@ -25,6 +25,7 @@
 #include "MenuButton.h"
 #include "FilterEdit.h"
 #include "HintCtrl.h"
+#include "GestureEnabledControl.h"
 
 // CCommitIsOnRefsDlg dialog
 
@@ -106,7 +107,7 @@ private:
 	volatile LONG		m_bThreadRunning;
 	bool				m_bRefsLoaded;
 	CString				m_sLastSelected;
-	CHintCtrl<CListCtrl>	m_cRefList;
+	CGestureEnabledControlTmpl<CHintCtrl<CListCtrl>>	m_cRefList;
 	CACEdit				m_cRevEdit;
 	CMenuButton			m_cSelRevBtn;
 	CFilterEdit			m_cFilter;

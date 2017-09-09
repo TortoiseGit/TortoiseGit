@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2016 - TortoiseGit
+// Copyright (C) 2011-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -23,6 +23,7 @@
 #include "StandAloneDlg.h"
 #include "LoglistCommonResource.h"
 #include "registry.h"
+#include "GestureEnabledControl.h"
 
 // CFindDlg dialog
 
@@ -82,6 +83,6 @@ protected:
 	void AddToList();
 
 public:
-	CListCtrl m_ctrlRefList;
+	CGestureEnabledControlTmpl<CListCtrl> m_ctrlRefList;
 	CEdit m_ctrlFilter;
 };

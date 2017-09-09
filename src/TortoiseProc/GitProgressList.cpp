@@ -1180,3 +1180,8 @@ void CGitProgressList::OnSysColorChange()
 	if (m_nBackgroundImageID)
 		CAppUtils::SetListCtrlBackgroundImage(GetSafeHwnd(), m_nBackgroundImageID);
 }
+
+ULONG CGitProgressList::GetGestureStatus(CPoint /*ptTouch*/)
+{
+	return 0;
+}

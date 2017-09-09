@@ -2178,3 +2178,11 @@ void CTortoiseGitBlameView::OnSysColorChange()
 	InitialiseEditor();
 	SetupLexer(GetDocument()->m_CurrentFileName);
 }
+
+ULONG CTortoiseGitBlameView::GetGestureStatus(CPoint ptTouch)
+{
+	int line = GetLineUnderCursor(ptTouch);
+	if (m_data.IsValidLine(line))
+		return 0;
+	return __super::GetGestureStatus(ptTouch);
+}

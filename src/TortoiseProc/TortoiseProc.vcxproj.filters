@@ -1813,6 +1813,9 @@
     <ClInclude Include="GitTagCompareList.h">
       <Filter>Commands\Sync</Filter>
     </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\GestureEnabledControl.h">
+      <Filter>Utils\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resources\actionadded.ico">

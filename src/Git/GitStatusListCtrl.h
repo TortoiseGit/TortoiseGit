@@ -718,6 +718,7 @@ private:
 	virtual void PreSubclassWindow();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual BOOL OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult);
+	virtual ULONG GetGestureStatus(CPoint ptTouch);
 	afx_msg void OnSysColorChange();
 	afx_msg void OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnHdnItemclick(NMHDR *pNMHDR, LRESULT *pResult);

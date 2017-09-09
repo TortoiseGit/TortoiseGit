@@ -4423,3 +4423,8 @@ void CGitStatusListCtrl::OnSysColorChange()
 	if (m_nBackgroundImageID)
 		CAppUtils::SetListCtrlBackgroundImage(GetSafeHwnd(), m_nBackgroundImageID);
 }
+
+ULONG CGitStatusListCtrl::GetGestureStatus(CPoint /*ptTouch*/)
+{
+	return 0;
+}

@@ -1722,3 +1722,8 @@ void CSciEdit::RestyleBugIDs()
 	// style the bug IDs
 	MarkEnteredBugID(0, endstylepos);
 }
+
+ULONG CSciEdit::GetGestureStatus(CPoint /*ptTouch*/)
+{
+	return 0;
+}

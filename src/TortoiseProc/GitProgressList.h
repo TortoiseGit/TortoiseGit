@@ -228,6 +228,8 @@ protected:
 	afx_msg void OnClose();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg void OnSysColorChange();
+	virtual ULONG GetGestureStatus(CPoint ptTouch);
+
 	UINT m_nBackgroundImageID;
 };
 

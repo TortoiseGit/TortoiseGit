@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016 - TortoiseGit
+// Copyright (C) 2016-2017 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -124,6 +124,7 @@ public:
 protected:
 	virtual void	PreSubclassWindow( );
 	virtual BOOL	PreTranslateMessage( MSG* pMsg );
+	virtual ULONG	GetGestureStatus(CPoint ptTouch);
 
 	afx_msg BOOL	OnEraseBkgnd(CDC* pDC);
 	afx_msg void	OnLButtonUp(UINT nFlags, CPoint point);

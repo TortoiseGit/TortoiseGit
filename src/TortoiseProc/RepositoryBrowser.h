@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2014, 2016 - TortoiseGit
+// Copyright (C) 2009-2014, 2016-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,6 +22,7 @@
 #include "StandAloneDlg.h"
 #include "GitHash.h"
 #include "GitStatusListCtrl.h"
+#include "GestureEnabledControl.h"
 
 #define REPOBROWSER_CTRL_MIN_WIDTH	20
 
@@ -134,8 +135,8 @@ private:
 	virtual BOOL			OnInitDialog();
 	afx_msg void			OnSysColorChange();
 
-	CTreeCtrl				m_RepoTree;
-	CListCtrl				m_RepoList;
+	CGestureEnabledControlTmpl<CTreeCtrl>	m_RepoTree;
+	CGestureEnabledControlTmpl<CListCtrl>	m_RepoList;
 	ColumnManager			m_ColumnManager;
 
 	afx_msg void			OnLvnColumnclickRepoList(NMHDR *pNMHDR, LRESULT *pResult);

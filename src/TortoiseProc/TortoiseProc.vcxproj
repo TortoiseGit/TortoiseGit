@@ -363,6 +363,7 @@
     <ClInclude Include="..\Utils\MiscUI\FileDlgEventHandler.h" />
     <ClInclude Include="..\Utils\MiscUI\FileDropEdit.h" />
     <ClInclude Include="..\Utils\MiscUI\FilterEdit.h" />
+    <ClInclude Include="..\Utils\MiscUI\GestureEnabledControl.h" />
     <ClInclude Include="..\Utils\MiscUI\HighColorTab.hpp" />
     <ClInclude Include="..\Utils\MiscUI\HintCtrl.h" />
     <ClInclude Include="..\Utils\MiscUI\HistoryCombo.h" />

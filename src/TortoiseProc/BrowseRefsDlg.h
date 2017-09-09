@@ -23,6 +23,7 @@
 #include "ResizableColumnsListCtrl.h"
 #include "gittype.h"
 #include "HistoryCombo.h"
+#include "GestureEnabledControl.h"
 
 const int gPickRef_Head		= 1;
 const int gPickRef_Tag		= 2;
@@ -184,8 +185,8 @@ private:
 
 	CShadowTree		m_TreeRoot;
 	CShadowTree*	m_pListCtrlRoot;
-	CTreeCtrl		m_RefTreeCtrl;
-	CResizableColumnsListCtrl<CListCtrl>	m_ListRefLeafs;
+	CGestureEnabledControlTmpl<CTreeCtrl>	m_RefTreeCtrl;
+	CGestureEnabledControlTmpl<CResizableColumnsListCtrl<CListCtrl>>	m_ListRefLeafs;
 
 	CFilterEdit		m_ctrlFilter;
 	afx_msg void OnEnChangeEditFilter();
