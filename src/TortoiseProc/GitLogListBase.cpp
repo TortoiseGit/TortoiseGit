@@ -1705,7 +1705,6 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 		point = rect.CenterPoint();
 	}
 	m_nSearchIndex = selIndex;
-	m_bCancelled = FALSE;
 
 	bool showExtendedMenu = (GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0;
 

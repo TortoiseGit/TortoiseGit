@@ -54,7 +54,6 @@ CLogDlg::CLogDlg(CWnd* pParent /*=nullptr*/)
 
 	, m_bSelectionMustBeContinuous(false)
 
-	, m_bCancelled(FALSE)
 	, m_pNotifyWindow(nullptr)
 
 	, m_bAscending(FALSE)
@@ -1219,13 +1218,6 @@ void CLogDlg::Refresh (bool clearfilter /*autoGoOnline*/)
 	FillLogMessageCtrl(false);
 }
 
-
-
-BOOL CLogDlg::Cancel()
-{
-	return m_bCancelled;
-}
-
 void CLogDlg::SaveSplitterPos()
 {
 	if (!IsIconic())
@@ -1579,7 +1571,6 @@ void CLogDlg::OnOK()
 	temp.LoadString(IDS_MSGBOX_CANCEL);
 	if (temp.Compare(buttontext) != 0)
 		__super::OnOK();	// only exit if the button text matches, and that will match only if the thread isn't running anymore
-	m_bCancelled = TRUE;
 	m_selectedRevs.Clear();
 	m_selectedRevsOneRange.Clear();
 	if (m_pNotifyWindow)

@@ -128,7 +128,6 @@ private:
 
 	STRING_VECTOR		m_Reflist;
 
-	BOOL		Cancel() { return m_bCancelled; }
 	virtual BOOL DestroyWindow() override;
 	void OnTextUpdate(CACEdit *pEdit);
 
@@ -158,8 +157,6 @@ private:
 	volatile LONG		m_bThreadRunning;
 
 	volatile LONG		m_bLoadingRef;
-
-	bool				m_bCancelled;
 
 	void				Sort();
 	static bool			SortCompare(const CTGitPath& Data1, const CTGitPath& Data2);

@@ -95,7 +95,6 @@ public:
 	}
 protected:
 	//implement the virtual methods from Git base class
-	BOOL Cancel();
 	virtual bool Validate(LPCTSTR string) override;
 
 	virtual void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
@@ -230,7 +229,6 @@ private:
 	bool				m_bSelectionMustBeContinuous;
 	bool				m_bSelectionMustBeSingle;
 	bool				m_bShowWC;
-	bool				m_bCancelled;
 
 	CFilterEdit			m_cFileFilter;
 

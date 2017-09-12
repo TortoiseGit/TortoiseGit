@@ -60,7 +60,6 @@ IMPLEMENT_DYNAMIC(CFileDiffDlg, CResizableStandAloneDialog)
 CFileDiffDlg::CFileDiffDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CFileDiffDlg::IDD, pParent)
 	, m_bBlame(false)
-	, m_bCancelled(false)
 	, m_nIconFolder(0)
 	, m_bThreadRunning(FALSE)
 	, m_bIgnoreSpaceAtEol(false)
@@ -591,7 +590,6 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		popup.AppendMenuIcon(ID_CLIPBOARD_ALL, IDS_STATUSLIST_CONTEXT_COPYEXT, IDI_COPYCLIP);
 
 		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this);
-		m_bCancelled = false;
 		switch (cmd)
 		{
 		case ID_COMPARE:
@@ -939,10 +937,7 @@ BOOL CFileDiffDlg::PreTranslateMessage(MSG* pMsg)
 void CFileDiffDlg::OnCancel()
 {
 	if (m_bThreadRunning)
-	{
-		m_bCancelled = true;
 		return;
-	}
 	__super::OnCancel();
 }
 

@@ -258,7 +258,6 @@ public:
 	BOOL m_bShowBugtraqColumn;
 protected:
 	BOOL m_bSearchIndex;
-	BOOL m_bCancelled;
 public:
 	bool m_bIsCherryPick;
 	unsigned __int64 m_ContextMenuMask;
