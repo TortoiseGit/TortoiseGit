@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012, 2015 - TortoiseSVN
-// Copyright (C) 2012-2016 - TortoiseGit
+// Copyright (C) 2012-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -1752,4 +1752,9 @@ void CRevisionGraphWnd::SetDlgTitle (bool /*offline*/)
 
 	CAppUtils::SetWindowTitle(GetParent()->GetSafeHwnd(), m_sPath, newTitle);
 #endif
+}
+
+ULONG CRevisionGraphWnd::GetGestureStatus(CPoint /*ptTouch*/)
+{
+	return 0;
 }

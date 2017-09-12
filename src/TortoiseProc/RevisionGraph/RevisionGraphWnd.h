@@ -251,6 +251,7 @@ protected:
 	int	 GetTopBottomMargin() {return 5;};
 	virtual void	DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 	afx_msg void	OnPaint();
+	virtual ULONG	GetGestureStatus(CPoint ptTouch) override;
 	afx_msg BOOL	OnEraseBkgnd(CDC* pDC);
 	afx_msg void	OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	afx_msg void	OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);

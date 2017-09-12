@@ -332,6 +332,9 @@
     <ClInclude Include="..\Utils\MiscUI\CommonDialogFunctions.h">
       <Filter>Utils\MiscUI</Filter>
     </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\GestureEnabledControl.h">
+      <Filter>Utils\MiscUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resources\blameres\output_wnd.ico">

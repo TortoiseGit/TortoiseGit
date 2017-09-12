@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012, 2016 - TortoiseGit
+// Copyright (C) 2012, 2017 - TortoiseGit
 // Copyright (C) 2011, 2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -64,4 +64,9 @@ HBRUSH CRegexEdit::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
 		this->Invalidate();
 
 	return nullptr;
+}
+
+ULONG CRegexEdit::GetGestureStatus(CPoint /*ptTouch*/)
+{
+	return 0;
 }

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011, 2015-2016 - TortoiseGit
+// Copyright (C) 2008-2011, 2015-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,6 +21,7 @@
 #pragma once
 
 #include "GitRevLoglist.h"
+#include "GestureEnabledControl.h"
 
 class CPropertiesToolBar : public CMFCToolBar
 {
@@ -54,7 +55,7 @@ public:
 
 protected:
 	CFont m_fntPropList;
-	CMFCPropertyGridCtrl m_wndPropList;
+	CGestureEnabledControlTmpl<CMFCPropertyGridCtrl> m_wndPropList;
 
 	void RemoveParent();
 // Implementation
