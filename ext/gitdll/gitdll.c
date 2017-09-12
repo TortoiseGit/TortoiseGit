@@ -33,7 +33,7 @@
 #include "dir.h"
 #include "builtin.h"
 #include "exec_cmd.h"
-#include "cache.h"
+#include "config.h"
 #include "quote.h"
 #include "run-command.h"
 #include "mailmap.h"
@@ -219,13 +219,16 @@ int git_get_commit_from_hash(GIT_COMMIT* commit, const GIT_HASH hash)
 	int ret = 0;
 
 	struct commit *p;
+	struct object_id oid;
 
 	if (commit == NULL)
 		return -1;
 
 	memset(commit,0,sizeof(GIT_COMMIT));
 
-	commit->m_pGitCommit = p = lookup_commit(hash);
+	hashcpy(oid.hash, hash);
+
+	commit->m_pGitCommit = p = lookup_commit(&oid);
 
 	if(p == NULL)
 		return -1;
@@ -537,12 +540,15 @@ int git_diff_flush(GIT_DIFF diff)
 int git_root_diff(GIT_DIFF diff, GIT_HASH hash,GIT_FILE *file, int *count, int isstat)
 {
 	int ret;
+	struct object_id oid;
 	struct rev_info *p_Rev;
 	struct diff_queue_struct *q = &diff_queued_diff;
 
 	p_Rev = (struct rev_info *)diff;
 
-	ret=diff_root_tree_sha1(hash, "", &p_Rev->diffopt);
+	hashcpy(oid.hash, hash);
+
+	ret = diff_root_tree_oid(&oid, "", &p_Rev->diffopt);
 
 	if(ret)
 		return ret;
@@ -571,11 +577,15 @@ int git_do_diff(GIT_DIFF diff, GIT_HASH hash1, GIT_HASH hash2, GIT_FILE * file, 
 {
 	struct rev_info *p_Rev;
 	int ret;
+	struct object_id oid1, oid2;
 	struct diff_queue_struct *q = &diff_queued_diff;
 
 	p_Rev = (struct rev_info *)diff;
 
-	ret = diff_tree_sha1(hash1,hash2,"",&p_Rev->diffopt);
+	hashcpy(oid1.hash, hash1);
+	hashcpy(oid2.hash, hash2);
+
+	ret = diff_tree_oid(&oid1, &oid2, "", &p_Rev->diffopt);
 	if( ret )
 	{
 		free_all_pack();
@@ -688,15 +698,17 @@ int git_check_excluded_1(const char *pathname,
 							EXCLUDE_LIST el, int ignorecase)
 {
 	ignore_case = ignorecase;
-	return is_excluded_from_list(pathname, pathlen, basename, dtype, el);
+	return is_excluded_from_list(pathname, pathlen, basename, dtype, el, &the_index);
 }
 
 int git_get_notes(const GIT_HASH hash, char** p_note)
 {
+	struct object_id oid;
 	struct strbuf sb;
 	size_t size;
 	strbuf_init(&sb,0);
-	format_display_notes(hash, &sb, "utf-8", 1);
+	hashcpy(oid.hash, hash);
+	format_display_notes(&oid, &sb, "utf-8", 1);
 	*p_note = strbuf_detach(&sb,&size);
 
 	return 0;
@@ -782,17 +794,17 @@ int git_checkout_file(const char* ref, const char* path, char* outputpath)
 {
 	struct cache_entry *ce;
 	int ret;
-	GIT_HASH sha1;
+	struct object_id oid;
 	struct tree * root;
 	struct checkout state;
 	struct pathspec pathspec;
 	const char *matchbuf[1];
-	ret = get_sha1(ref, sha1);
+	ret = get_oid(ref, &oid);
 	if(ret)
 		return ret;
 
 	reprepare_packed_git();
-	root = parse_tree_indirect(sha1);
+	root = parse_tree_indirect(&oid);
 
 	if(!root)
 	{
@@ -905,7 +917,7 @@ int git_get_config(const char *key, char *buffer, int size)
 	{
 		char* local = git_pathdup("config");
 		config_source.file = local;
-		git_config_with_options(get_config, &buf, &config_source, &opts);
+		config_with_options(get_config, &buf, &config_source, &opts);
 		free(local);
 		if (buf.seen)
 			return !buf.seen;
@@ -918,7 +930,7 @@ int git_get_config(const char *key, char *buffer, int size)
 		if (global)
 		{
 			config_source.file = global;
-			git_config_with_options(get_config, &buf, &config_source, &opts);
+			config_with_options(get_config, &buf, &config_source, &opts);
 			free(global);
 			if (buf.seen)
 				return !buf.seen;
@@ -927,7 +939,7 @@ int git_get_config(const char *key, char *buffer, int size)
 		if (globalxdg)
 		{
 			config_source.file = globalxdg;
-			git_config_with_options(get_config, &buf, &config_source, &opts);
+			config_with_options(get_config, &buf, &config_source, &opts);
 			free(globalxdg);
 			if (buf.seen)
 				return !buf.seen;
@@ -938,7 +950,7 @@ int git_get_config(const char *key, char *buffer, int size)
 	if (system)
 	{
 		config_source.file = system;
-		git_config_with_options(get_config, &buf, &config_source, &opts);
+		config_with_options(get_config, &buf, &config_source, &opts);
 		if (buf.seen)
 			return !buf.seen;
 	}
@@ -947,7 +959,7 @@ int git_get_config(const char *key, char *buffer, int size)
 	if (programdata)
 	{
 		config_source.file = programdata;
-		git_config_with_options(get_config, &buf, &config_source, &opts);
+		config_with_options(get_config, &buf, &config_source, &opts);
 	}
 
 	return !buf.seen;

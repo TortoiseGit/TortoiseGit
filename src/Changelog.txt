@@ -10,6 +10,8 @@ Released: unreleased
  * Fixed issue #3064: Commit dialog ignores "Select items automatically" when refreshing
  * Fixed issue #3036: Can not save changes in Settings -> Network after trying to add command-line option to the SSH-client
  * Fixed issue #3066: Message field needs vertical scrollbar in Create Tag dialog
+ * Fixed issue #3033: Cannot view submodule log if repository sits under directory symlink
+   Update libgit to 2.14.1 based on Git for Windows source.
 
 = Release 2.5.0 =
 Released: 2017-07-23

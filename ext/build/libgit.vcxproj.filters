@@ -893,6 +893,12 @@
     <ClCompile Include="..\tgit\oidset.c">
       <Filter>git</Filter>
     </ClCompile>
+    <ClCompile Include="..\tgit\repository.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\sub-process.c">
+      <Filter>git</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\tgit\compat\msvc.h">
@@ -1260,6 +1266,15 @@
       <Filter>git\refs</Filter>
     </ClInclude>
     <ClInclude Include="..\tgit\oidset.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\repository.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\sub-process.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

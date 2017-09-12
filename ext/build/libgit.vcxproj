@@ -186,6 +186,7 @@
     <ClCompile Include="..\tgit\refs\ref-cache.c" />
     <ClCompile Include="..\tgit\remote.c" />
     <ClCompile Include="..\tgit\replace_object.c" />
+    <ClCompile Include="..\tgit\repository.c" />
     <ClCompile Include="..\tgit\rerere.c" />
     <ClCompile Include="..\tgit\resolve-undo.c" />
     <ClCompile Include="..\tgit\revision.c" />
@@ -206,6 +207,7 @@
     <ClCompile Include="..\tgit\strbuf.c" />
     <ClCompile Include="..\tgit\streaming.c" />
     <ClCompile Include="..\tgit\string-list.c" />
+    <ClCompile Include="..\tgit\sub-process.c" />
     <ClCompile Include="..\tgit\submodule-config.c" />
     <ClCompile Include="..\tgit\submodule.c" />
     <ClCompile Include="..\tgit\symlinks.c" />
@@ -395,6 +397,7 @@
     <ClInclude Include="..\tgit\color.h" />
     <ClInclude Include="..\tgit\column.h" />
     <ClInclude Include="..\tgit\commit.h" />
+    <ClInclude Include="..\tgit\config.h" />
     <ClInclude Include="..\tgit\connect.h" />
     <ClInclude Include="..\tgit\connected.h" />
     <ClInclude Include="..\tgit\csum-file.h" />
@@ -453,6 +456,7 @@
     <ClInclude Include="..\tgit\refs\ref-cache.h" />
     <ClInclude Include="..\tgit\refs\refs-internal.h" />
     <ClInclude Include="..\tgit\remote.h" />
+    <ClInclude Include="..\tgit\repository.h" />
     <ClInclude Include="..\tgit\rerere.h" />
     <ClInclude Include="..\tgit\revision.h" />
     <ClInclude Include="..\tgit\run-command.h" />
@@ -467,6 +471,7 @@
     <ClInclude Include="..\tgit\strbuf.h" />
     <ClInclude Include="..\tgit\streaming.h" />
     <ClInclude Include="..\tgit\string-list.h" />
+    <ClInclude Include="..\tgit\sub-process.h" />
     <ClInclude Include="..\tgit\submodule-config.h" />
     <ClInclude Include="..\tgit\tag.h" />
     <ClInclude Include="..\tgit\tar.h" />
