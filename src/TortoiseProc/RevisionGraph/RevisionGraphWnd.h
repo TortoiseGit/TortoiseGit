@@ -19,10 +19,7 @@
 //
 #pragma once
 //#include "RevisionGraph/RevisionGraphState.h"
-#pragma warning(push)
-#pragma warning(disable: 4481) // nonstandard extension used: override specifier 'override'
 #include "Future.h"
-#pragma warning(pop)
 #include "ProgressDlg.h"
 #include "Colors.h"
 //#include "SVNDiff.h"
