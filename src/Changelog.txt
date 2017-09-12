@@ -7,6 +7,7 @@ Released: unreleased
  * Fixed issue #3035: TortoiseGit 2.5.0.0 might crash in LogDlg after fetch or refreshing working tree status
  * Fixed issue #3050: TortoiseGitMerge UI: Context menu is not available on margin left to text any more
  * Fixed issue #3059: Right click in touch mode is not working
+ * Fixed issue #3064: Commit dialog ignores "Select items automatically" when refreshing
 
 = Release 2.5.0 =
 Released: 2017-07-23

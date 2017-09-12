@@ -1332,7 +1332,6 @@ UINT CCommitDlg::StatusThread()
 			DWORD dwCheck = m_bSelectFilesForCommit ? dwShow : 0;
 			dwCheck &=~(CTGitPath::LOGACTIONS_UNVER); //don't check unversion file default.
 			m_ListCtrl.Show(dwShow, dwCheck);
-			m_bSelectFilesForCommit = true;
 		}
 
 		if (m_ListCtrl.HasExternalsFromDifferentRepos())
