@@ -46,7 +46,9 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalIncludeDirectories>..\zlib;..\libgit2\src;..\libgit2\include;..\libgit2\deps\regex;..\libgit2\deps\http-parser;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>GIT_WINHTTP;GIT_THREADS;GIT_SHA1_WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>HAVE_QSORT_S;GIT_HTTPS;GIT_WINHTTP;GIT_USE_NSEC;GIT_THREADS;GIT_SHA1_WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Platform)'=='Win32'">GIT_ARCH_32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Platform)'=='x64'">GIT_ARCH_64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
       <CompileAs>CompileAsC</CompileAs>
       <ForcedIncludeFiles>precompiled.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
