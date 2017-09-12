@@ -58,9 +58,9 @@ public:
 	void DisableTooltip(){m_bDyn = FALSE;} //because rebase need disable combox tooltip to show version info
 protected:
 	DECLARE_MESSAGE_MAP()
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	virtual void PreSubclassWindow();
+	virtual BOOL PreCreateWindow(CREATESTRUCT& cs) override;
+	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
+	virtual void PreSubclassWindow() override;
 
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
@@ -187,15 +187,15 @@ public:
 	CCustomAutoCompleteSource(const CStringArray& pData);
 
 	//IUnknown
-	virtual HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, void** ppvObject);
-	virtual ULONG STDMETHODCALLTYPE AddRef();
-	virtual ULONG STDMETHODCALLTYPE Release();
+	virtual HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, void** ppvObject) override;
+	virtual ULONG STDMETHODCALLTYPE AddRef() override;
+	virtual ULONG STDMETHODCALLTYPE Release() override;
 
 	//IEnumString
-	virtual HRESULT STDMETHODCALLTYPE Clone(IEnumString** ppenum);
-	virtual HRESULT STDMETHODCALLTYPE Next(ULONG celt, LPOLESTR* rgelt, ULONG* pceltFetched);
-	virtual HRESULT STDMETHODCALLTYPE Reset();
-	virtual HRESULT STDMETHODCALLTYPE Skip(ULONG celt);
+	virtual HRESULT STDMETHODCALLTYPE Clone(IEnumString** ppenum) override;
+	virtual HRESULT STDMETHODCALLTYPE Next(ULONG celt, LPOLESTR* rgelt, ULONG* pceltFetched) override;
+	virtual HRESULT STDMETHODCALLTYPE Reset() override;
+	virtual HRESULT STDMETHODCALLTYPE Skip(ULONG celt) override;
 
 private:
 	volatile ULONG		m_cRefCount;

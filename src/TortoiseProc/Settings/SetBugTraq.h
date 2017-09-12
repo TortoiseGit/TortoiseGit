@@ -33,15 +33,15 @@ public:
 	CSetBugTraq();   // standard constructor
 	virtual ~CSetBugTraq();
 
-	UINT GetIconID() {return IDI_BUGTRAQ;}
+	UINT GetIconID() override { return IDI_BUGTRAQ; }
 
 // Dialog Data
 	enum { IDD = IDD_SETTINGSBUGTRAQ };
 
 protected:
-	virtual BOOL OnInitDialog();
-	virtual BOOL OnApply();
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual BOOL OnInitDialog() override;
+	virtual BOOL OnApply() override;
+	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
 	afx_msg void OnBnClickedRemovebutton();
 	afx_msg void OnBnClickedEditbutton();
 	afx_msg void OnBnClickedAddbutton();

@@ -37,14 +37,14 @@ public:
 
 	//@{
 	/// IUnknown members
-	STDMETHODIMP			QueryInterface(REFIID, LPVOID FAR *);
-	STDMETHODIMP_(ULONG)	AddRef();
-	STDMETHODIMP_(ULONG)	Release();
+	STDMETHODIMP			QueryInterface(REFIID, LPVOID FAR *) override;
+	STDMETHODIMP_(ULONG)	AddRef() override;
+	STDMETHODIMP_(ULONG)	Release() override;
 	//@}
 
 	//@{
 	/// IClassFactory members
-	STDMETHODIMP			CreateInstance(LPUNKNOWN, REFIID, LPVOID FAR *);
-	STDMETHODIMP			LockServer(BOOL);
+	STDMETHODIMP			CreateInstance(LPUNKNOWN, REFIID, LPVOID FAR *) override;
+	STDMETHODIMP			LockServer(BOOL) override;
 	//@}
 };

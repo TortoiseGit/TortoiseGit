@@ -84,10 +84,10 @@ public:
 	bool	m_bAlwaysShowArrow;
 
 protected:
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
 
 	bool	m_bRealMenuIsActive;
-	virtual void OnShowMenu();
+	virtual void OnShowMenu() override;
 	afx_msg void OnDraw(CDC* pDC, const CRect& rect, UINT uiState);
 	afx_msg void OnSysColorChange();
 	afx_msg LRESULT OnThemeChanged();

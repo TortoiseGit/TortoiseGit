@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2016 - TortoiseGit
+// Copyright (C) 2013-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -32,23 +32,23 @@ public:
 	CSetDialogs3();
 	virtual ~CSetDialogs3();
 
-	UINT GetIconID() {return IDI_DIALOGS;}
+	UINT GetIconID() override { return IDI_DIALOGS; }
 
 // Dialog Data
 	enum { IDD = IDD_SETTINGSDIALOGS3 };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
 
-	virtual BOOL OnInitDialog();
-	virtual BOOL OnApply();
+	virtual BOOL OnInitDialog() override;
+	virtual BOOL OnApply() override;
 
-	virtual void LoadDataImpl(CAutoConfig& config);
-	virtual BOOL SafeDataImpl(CAutoConfig& config);
-	virtual void EnDisableControls();
-	HWND GetDialogHwnd() const { return GetSafeHwnd(); }
+	virtual void LoadDataImpl(CAutoConfig& config) override;
+	virtual BOOL SafeDataImpl(CAutoConfig& config) override;
+	virtual void EnDisableControls() override;
+	virtual HWND GetDialogHwnd() const override { return GetSafeHwnd(); }
 
 	afx_msg void OnChange();
 	afx_msg void OnBnClickedIconfileBrowse();

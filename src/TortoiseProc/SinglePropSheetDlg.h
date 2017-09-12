@@ -34,7 +34,7 @@ public:
 	void RemovePropPages();
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
 
@@ -42,5 +42,5 @@ private:
 	ISettingsPropPage*	m_pThePropPage;
 
 public:
-	virtual BOOL OnInitDialog();
+	virtual BOOL OnInitDialog() override;
 };

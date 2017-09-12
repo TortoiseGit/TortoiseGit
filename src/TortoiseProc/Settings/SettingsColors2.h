@@ -32,16 +32,16 @@ public:
 	CSettingsColors2();
 	virtual ~CSettingsColors2();
 
-	UINT GetIconID() {return IDI_LOOKANDFEEL;}
+	UINT GetIconID() override { return IDI_LOOKANDFEEL; }
 
 	enum { IDD = IDD_SETTINGSCOLORS_2 };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual BOOL OnInitDialog();
+	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	virtual BOOL OnInitDialog() override;
 	afx_msg void OnBnClickedColor();
 	afx_msg void OnBnClickedRestore();
-	virtual BOOL OnApply();
+	virtual BOOL OnApply() override;
 
 	DECLARE_MESSAGE_MAP()
 

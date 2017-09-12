@@ -33,15 +33,15 @@ public:
 	CSetOverlayIcons();
 	virtual ~CSetOverlayIcons();
 
-	UINT GetIconID() {return IDI_ICONSET;}
+	UINT GetIconID() override { return IDI_ICONSET; }
 
 // Dialog Data
 	enum { IDD = IDD_SETOVERLAYICONS };
 
 protected:
-	virtual void	DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual BOOL	OnInitDialog();
-	virtual BOOL	OnApply();
+	virtual void	DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	virtual BOOL	OnInitDialog() override;
+	virtual BOOL	OnApply() override;
 	afx_msg void	OnBnClickedListradio();
 	afx_msg void	OnBnClickedSymbolradio();
 	afx_msg void	OnCbnSelchangeIconsetcombo();

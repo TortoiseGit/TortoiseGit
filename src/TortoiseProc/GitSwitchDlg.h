@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2016 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -41,9 +41,9 @@ public:
 	CString	m_NewBranch;
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual BOOL OnInitDialog();
-	void OnBnClickedOk();
+	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	virtual BOOL OnInitDialog() override;
+	afx_msg void OnBnClickedOk();
 
 	afx_msg void OnBnClickedChooseRadioHost();
 	afx_msg void OnBnClickedShow();
@@ -54,8 +54,7 @@ protected:
 
 	afx_msg void OnBnClickedCheckBranch();
 	void SetDefaultName(BOOL isUpdateCreateBranch);
-	virtual void OnVersionChanged();
-	afx_msg void OnCbnSelchangeComboboxexBranch();
+	virtual void OnVersionChanged() override;
 	afx_msg void OnDestroy();
 	afx_msg void OnCbnEditchangeComboboxexVersion();
 	afx_msg void OnEnChangeEditBranch();

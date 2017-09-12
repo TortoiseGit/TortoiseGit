@@ -46,7 +46,7 @@ protected:
 	{
 		m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 	}
-	virtual BOOL OnInitDialog()
+	virtual BOOL OnInitDialog() override
 	{
 		BaseType::OnInitDialog();
 
@@ -61,7 +61,7 @@ protected:
 		return FALSE;
 	}
 
-	virtual BOOL PreTranslateMessage(MSG* pMsg)
+	virtual BOOL PreTranslateMessage(MSG* pMsg) override
 	{
 		m_tooltips.RelayEvent(pMsg, this);
 		if (pMsg->message == WM_KEYDOWN)
@@ -144,7 +144,7 @@ private:
 		return static_cast<HCURSOR>(m_hIcon);
 	}
 protected:
-	virtual void HtmlHelp(DWORD_PTR dwData, UINT nCmd = 0x000F)
+	virtual void HtmlHelp(DWORD_PTR dwData, UINT nCmd = 0x000F) override
 	{
 		CWinApp* pApp = AfxGetApp();
 		ASSERT_VALID(pApp);
@@ -217,7 +217,7 @@ protected:
 		LoadWindowRect(pszSection, bRectOnly, false, false);
 	};
 
-	virtual CWnd* GetResizableWnd() const
+	virtual CWnd* GetResizableWnd() const override
 	{
 		// make the layout know its parent window
 		return CWnd::FromHandle(m_hWnd);
@@ -242,7 +242,7 @@ private:
 	DECLARE_DYNAMIC(CResizableStandAloneDialog)
 
 protected:
-	virtual BOOL	OnInitDialog();
+	virtual BOOL	OnInitDialog() override;
 	afx_msg void	OnSizing(UINT fwSide, LPRECT pRect);
 	afx_msg void	OnMoving(UINT fwSide, LPRECT pRect);
 	afx_msg void	OnNcMButtonUp(UINT nHitTest, CPoint point);

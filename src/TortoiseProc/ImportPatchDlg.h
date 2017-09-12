@@ -73,8 +73,8 @@ protected:
 
 	void AddLogString(CString str);
 
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual BOOL OnInitDialog();
+	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	virtual BOOL OnInitDialog() override;
 
 	CMFCTabCtrl m_ctrlTabCtrl;
 
@@ -118,11 +118,11 @@ protected:
 	void UpdateOkCancelText();
 
 	afx_msg void OnSize(UINT nType, int cx, int cy);
-	virtual LRESULT DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+	virtual LRESULT DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam) override;
 
 	afx_msg LRESULT	OnTaskbarBtnCreated(WPARAM wParam, LPARAM lParam);
 	CComPtr<ITaskbarList3>	m_pTaskbarList;
 	afx_msg void OnBnClickedCancel();
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
 	afx_msg void OnHdnItemchangedListPatch(NMHDR *pNMHDR, LRESULT *pResult);
 };

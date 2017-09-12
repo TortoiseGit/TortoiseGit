@@ -28,7 +28,7 @@ public:
 	CSettingsAdvanced();
 	virtual ~CSettingsAdvanced();
 
-	UINT GetIconID() { return IDI_GENERAL; }
+	UINT GetIconID() override { return IDI_GENERAL; }
 
 // Dialog Data
 	enum { IDD = IDD_SETTINGS_CONFIG };
@@ -56,10 +56,10 @@ public:
 	};
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual BOOL OnApply();
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	virtual BOOL OnInitDialog();
+	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	virtual BOOL OnApply() override;
+	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
+	virtual BOOL OnInitDialog() override;
 	afx_msg void OnLvnBeginlabeledit(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnLvnEndlabeledit(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnNMDblclkConfig(NMHDR *pNMHDR, LRESULT *pResult);

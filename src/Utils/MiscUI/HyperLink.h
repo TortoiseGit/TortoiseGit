@@ -49,10 +49,10 @@ public:
     int			GetUnderline() const;
 
 public:
-    virtual BOOL PreTranslateMessage(MSG* pMsg);
-	virtual BOOL DestroyWindow();
+    virtual BOOL PreTranslateMessage(MSG* pMsg) override;
+    virtual BOOL DestroyWindow() override;
 protected:
-    virtual void PreSubclassWindow();
+    virtual void PreSubclassWindow() override;
 
 protected:
     HINSTANCE	GotoURL(LPCTSTR url);

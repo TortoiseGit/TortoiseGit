@@ -81,8 +81,8 @@ public:
 	// Vom Klassen-Assistenten generierte virtuelle Funktionsüberschreibungen
 	//{{AFX_VIRTUAL(CACEdit)
 public:
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	virtual ULONG GetGestureStatus(CPoint /*ptTouch*/) { return 0; }
+	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
+	virtual ULONG GetGestureStatus(CPoint /*ptTouch*/) override { return 0; }
 	//}}AFX_VIRTUAL
 
 	// Implementierung

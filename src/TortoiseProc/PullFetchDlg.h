@@ -37,11 +37,11 @@ public:
 	enum { IDD = IDD_PULLFETCH };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
 	CHistoryCombo	m_Remote;
 	CHistoryCombo	m_Other;
 	CHistoryCombo	m_RemoteBranch;
-	virtual BOOL OnInitDialog();
+	virtual BOOL OnInitDialog() override;
 	CRegString	m_RemoteReg;
 	CRegDWORD	m_regRebase;
 	CRegDWORD	m_regFFonly;

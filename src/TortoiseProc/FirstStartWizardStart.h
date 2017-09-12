@@ -33,9 +33,9 @@ public:
 	enum { IDD = IDD_FIRSTSTARTWIZARD_START };
 
 protected:
-	virtual void	DoDataExchange(CDataExchange* pDX);
-	virtual BOOL	OnInitDialog();
-	virtual BOOL	OnSetActive();
+	virtual void	DoDataExchange(CDataExchange* pDX) override;
+	virtual BOOL	OnInitDialog() override;
+	virtual BOOL	OnSetActive() override;
 	afx_msg LRESULT	OnDialogDisplayed(WPARAM wParam, LPARAM lParam);
 	afx_msg void	OnClickedLink(NMHDR* pNMHDR, LRESULT* pResult);
 

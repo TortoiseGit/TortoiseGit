@@ -30,5 +30,5 @@ public:
 	{}
 
 	void SetSendMailOption(CSendMail *sendmail) { m_SendMail = sendmail; }
-	virtual bool Run(CGitProgressList* list, CString& sWindowTitle, int& m_itemCountTotal, int& m_itemCount);
+	virtual bool Run(CGitProgressList* list, CString& sWindowTitle, int& m_itemCountTotal, int& m_itemCount) override;
 };

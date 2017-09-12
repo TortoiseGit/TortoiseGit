@@ -45,8 +45,8 @@ public:
 	CString	m_OldSelectBranch;
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual BOOL OnInitDialog();
+	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	virtual BOOL OnInitDialog() override;
 
 	CHOOSE_EVENT_RADIO();
 
@@ -56,6 +56,6 @@ protected:
 	afx_msg void OnCbnSelchangeComboboxexBranch();
 	afx_msg void OnEnChangeBranchTag();
 
-	virtual void OnVersionChanged();
+	virtual void OnVersionChanged() override;
 	afx_msg void OnDestroy();
 };

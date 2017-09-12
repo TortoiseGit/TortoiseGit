@@ -48,16 +48,16 @@ public:
 	CTGitPath m_GitPath;
 
 // Overrides
-	virtual BOOL OnNewDocument();
-	virtual BOOL OnOpenDocument(LPCTSTR lpszPathName);
-	virtual BOOL OnOpenDocument(LPCTSTR lpszPathName,CString Rev);
-	virtual void SetPathName(LPCTSTR lpszPathName, BOOL bAddToMRU = TRUE);
+	virtual BOOL OnNewDocument() override;
+	virtual BOOL OnOpenDocument(LPCTSTR lpszPathName) override;
+	BOOL OnOpenDocument(LPCTSTR lpszPathName, CString Rev);
+	virtual void SetPathName(LPCTSTR lpszPathName, BOOL bAddToMRU = TRUE) override;
 
 // Implementation
 	virtual ~CTortoiseGitBlameDoc();
 #ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+	virtual void AssertValid() const override;
+	virtual void Dump(CDumpContext& dc) const override;
 #endif
 	CMainFrame *GetMainFrame()
 	{

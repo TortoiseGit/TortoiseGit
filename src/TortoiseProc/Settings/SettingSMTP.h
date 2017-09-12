@@ -28,19 +28,19 @@ class CSettingSMTP : public ISettingsPropPage
 public:
 	CSettingSMTP();
 	virtual ~CSettingSMTP();
-	UINT GetIconID() { return IDI_MENUSENDMAIL; }
+	UINT GetIconID() override { return IDI_MENUSENDMAIL; }
 
 // Dialog Data
 	enum { IDD = IDD_SETTINGSMTP };
 
-	BOOL OnInitDialog();
-	BOOL OnApply();
+	virtual BOOL OnInitDialog() override;
+	virtual BOOL OnApply() override;
 	afx_msg void OnModified();
 	afx_msg void OnModifiedEncryptionCombo();
 	afx_msg void OnModifiedDeliveryCombo();
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
 

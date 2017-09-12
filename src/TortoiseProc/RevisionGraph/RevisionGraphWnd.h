@@ -249,7 +249,7 @@ protected:
 
 	int	 GetLeftRightMargin() {return 20;};
 	int	 GetTopBottomMargin() {return 5;};
-	virtual void	DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
+	virtual void	DoDataExchange(CDataExchange* pDX) override;	// DDX/DDV support
 	afx_msg void	OnPaint();
 	virtual ULONG	GetGestureStatus(CPoint ptTouch) override;
 	afx_msg BOOL	OnEraseBkgnd(CDC* pDC);

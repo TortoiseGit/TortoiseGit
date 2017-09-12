@@ -445,10 +445,10 @@ public:
 	afx_msg void OnButton1();
 	afx_msg void OnButton2();
 	afx_msg void OnButton3();
-	virtual BOOL OnInitDialog();
+	virtual BOOL OnInitDialog() override;
 
 	BOOL m_bChecked;
 protected:
-	virtual void OnCancel();
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	virtual void OnCancel() override;
+	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
 };

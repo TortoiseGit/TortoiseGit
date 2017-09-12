@@ -34,17 +34,17 @@ public:
 	CSettingsProgsDiff();
 	virtual ~CSettingsProgsDiff();
 
-	UINT GetIconID() {return IDI_DIFF;}
+	UINT GetIconID() override { return IDI_DIFF; }
 
 	enum { IDD = IDD_SETTINGSPROGSDIFF };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
 protected:
-	virtual BOOL OnInitDialog();
-	virtual BOOL OnApply();
+	virtual BOOL OnInitDialog() override;
+	virtual BOOL OnApply() override;
 	afx_msg void OnBnClickedExtdiffOff();
 	afx_msg void OnBnClickedExtdiffOn();
 	afx_msg void OnBnClickedExtdiffbrowse();

@@ -29,14 +29,14 @@ public:
 	CSetExtMenu();
 	virtual ~CSetExtMenu();
 
-	UINT GetIconID() {return IDI_MISC;}
+	UINT GetIconID() override { return IDI_MISC; }
 
 // Dialog Data
 	enum { IDD = IDD_SETTINGSEXTMENU };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual BOOL OnApply();
+	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	virtual BOOL OnApply() override;
 	afx_msg void OnLvnItemchangedMenulist(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedSelectall();
 	afx_msg void OnBnClickedRestoreDefaults();
@@ -44,7 +44,7 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
-	virtual BOOL OnInitDialog();
+	virtual BOOL OnInitDialog() override;
 
 private:
 	CRegStdDWORD			m_regExtmenu;

@@ -26,12 +26,12 @@
 class CPropertiesToolBar : public CMFCToolBar
 {
 public:
-	virtual void OnUpdateCmdUI(CFrameWnd* /*pTarget*/, BOOL bDisableIfNoHndler)
+	virtual void OnUpdateCmdUI(CFrameWnd* /*pTarget*/, BOOL bDisableIfNoHndler) override
 	{
 		CMFCToolBar::OnUpdateCmdUI((CFrameWnd*) GetOwner(), bDisableIfNoHndler);
 	}
 
-	virtual BOOL AllowShowOnList() const { return FALSE; }
+	virtual BOOL AllowShowOnList() const override { return FALSE; }
 };
 
 class CPropertiesWnd : public CDockablePane

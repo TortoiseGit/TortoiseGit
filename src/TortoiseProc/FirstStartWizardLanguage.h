@@ -34,10 +34,10 @@ public:
 	enum { IDD = IDD_FIRSTSTARTWIZARD_LANGUAGE };
 
 protected:
-	virtual void	DoDataExchange(CDataExchange* pDX);
-	virtual BOOL	OnInitDialog();
-	virtual BOOL	OnSetActive();
-	virtual LRESULT	OnWizardNext();
+	virtual void	DoDataExchange(CDataExchange* pDX) override;
+	virtual BOOL	OnInitDialog() override;
+	virtual BOOL	OnSetActive() override;
+	virtual LRESULT	OnWizardNext() override;
 	afx_msg LRESULT	OnDialogDisplayed(WPARAM wParam, LPARAM lParam);
 	afx_msg void	OnClickedLink(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void	OnBnClickedRefresh();

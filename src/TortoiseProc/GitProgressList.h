@@ -126,12 +126,12 @@ public:
 		} git_wc_notify_action_t;
 
 		WC_File_NotificationData(const CTGitPath& path, git_wc_notify_action_t action);
-		virtual void SetColorCode(CColors& colors);
+		virtual void SetColorCode(CColors& colors) override;
 
 		git_wc_notify_action_t action;
 
-		virtual void GetContextMenu(CIconMenu& popup, ContextMenuActionList& actions);
-		virtual void HandleDblClick() const;
+		virtual void GetContextMenu(CIconMenu& popup, ContextMenuActionList& actions) override;
+		virtual void HandleDblClick() const override;
 	};
 
 	void AddNotify(NotificationData* data, CColors::Colors color = CColors::COLOR_END);
@@ -226,9 +226,9 @@ public:
 
 protected:
 	afx_msg void OnClose();
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
 	afx_msg void OnSysColorChange();
-	virtual ULONG GetGestureStatus(CPoint ptTouch);
+	virtual ULONG GetGestureStatus(CPoint ptTouch) override;
 
 	UINT m_nBackgroundImageID;
 };

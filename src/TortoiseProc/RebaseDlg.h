@@ -65,12 +65,12 @@ public:
 	};
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
-	virtual BOOL OnInitDialog();
+	virtual void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
+	virtual BOOL OnInitDialog() override;
 	DECLARE_MESSAGE_MAP()
-	virtual LRESULT DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam);
-	virtual HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
-	LRESULT OnRebaseUpdateUI(WPARAM wParam, LPARAM lParam);
+	virtual LRESULT DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam) override;
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	afx_msg LRESULT OnRebaseUpdateUI(WPARAM wParam, LPARAM lParam);
 	void DoSize(int delta);
 	void AddRebaseAnchor();
 
@@ -86,7 +86,7 @@ protected:
 	CRect m_CommitListOrigRect;
 	CString m_sStatusText;
 	bool m_bStatusWarning;
-	BOOL PreTranslateMessage(MSG* pMsg);
+	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
 	bool LogListHasFocus(HWND hwnd);
 	bool LogListHasMenuItem(int i);
 

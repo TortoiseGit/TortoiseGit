@@ -191,7 +191,7 @@ public:
 
 	BOOL IsBoundary() { return m_Mark == L'-'; }
 
-	virtual void Clear();
+	virtual void Clear() override;
 
 	int SafeFetchFullInfo(CGit* git);
 

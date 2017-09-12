@@ -37,10 +37,10 @@ public:
 	BOOL	m_bNoSave;
 
 protected:
-	virtual void	DoDataExchange(CDataExchange* pDX);
-	virtual LRESULT	OnWizardNext();
-	virtual BOOL	OnInitDialog();
-	virtual BOOL	OnSetActive();
+	virtual void	DoDataExchange(CDataExchange* pDX) override;
+	virtual LRESULT	OnWizardNext() override;
+	virtual BOOL	OnInitDialog() override;
+	virtual BOOL	OnSetActive() override;
 
 	afx_msg void	OnClickedNoSave();
 

@@ -52,7 +52,7 @@ protected:
 	afx_msg void OnContextMenu(CWnd *pWnd, CPoint point);
 	void OnContextMenuList(CWnd *pWnd, CPoint point);
 	void OnContextMenuHeader(CWnd *pWnd, CPoint point);
-	virtual ULONG GetGestureStatus(CPoint ptTouch);
+	virtual ULONG GetGestureStatus(CPoint ptTouch) override;
 
 	DECLARE_MESSAGE_MAP()
 

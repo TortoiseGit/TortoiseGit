@@ -35,16 +35,16 @@ public:
 	CSetOverlayPage();
 	virtual ~CSetOverlayPage();
 
-	UINT GetIconID() {return IDI_SET_OVERLAYS;}
+	UINT GetIconID() override { return IDI_SET_OVERLAYS; }
 
 // Dialog Data
 	enum { IDD = IDD_SETTINGSOVERLAY };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual BOOL OnInitDialog();
+	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	virtual BOOL OnInitDialog() override;
 	afx_msg void OnChange();
-	virtual BOOL OnApply();
+	virtual BOOL OnApply() override;
 
 	DECLARE_MESSAGE_MAP()
 

@@ -24,5 +24,5 @@ public:
 	virtual ~CGestureEnabledControlTmpl() {};
 
 protected:
-	virtual ULONG GetGestureStatus(CPoint /*ptTouch*/) { return 0; }
+	virtual ULONG GetGestureStatus(CPoint /*ptTouch*/) override { return 0; }
 };

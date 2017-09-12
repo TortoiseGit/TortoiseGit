@@ -42,9 +42,9 @@ public:
 	enum { IDD = IDD_SETTINGSBUGTRAQADV };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual BOOL OnInitDialog();
-	virtual void OnOK();
+	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	virtual BOOL OnInitDialog() override;
+	virtual void OnOK() override;
 	afx_msg void OnDestroy();
 	afx_msg void OnBnClickedBugTraqbrowse();
 	afx_msg void OnCbnSelchangeBugtraqprovidercombo();

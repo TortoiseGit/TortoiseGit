@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016 - TortoiseGit
+// Copyright (C) 2016-2017 - TortoiseGit
 // Copyright (C) 2007-2008, 2010, 2012-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -51,27 +51,27 @@ public:
 	~GitDataObject();
 
 	//IUnknown
-	virtual HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, void** ppvObject);
-	virtual ULONG STDMETHODCALLTYPE AddRef(void);
-	virtual ULONG STDMETHODCALLTYPE Release(void);
+	virtual HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, void** ppvObject) override;
+	virtual ULONG STDMETHODCALLTYPE AddRef(void) override;
+	virtual ULONG STDMETHODCALLTYPE Release(void) override;
 
 	//IDataObject
-	virtual HRESULT STDMETHODCALLTYPE GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium);
-	virtual HRESULT STDMETHODCALLTYPE GetDataHere(FORMATETC* pformatetc, STGMEDIUM* pmedium);
-	virtual HRESULT STDMETHODCALLTYPE QueryGetData(FORMATETC* pformatetc);
-	virtual HRESULT STDMETHODCALLTYPE GetCanonicalFormatEtc(FORMATETC* pformatectIn, FORMATETC* pformatetcOut);
-	virtual HRESULT STDMETHODCALLTYPE SetData(FORMATETC* pformatetc, STGMEDIUM* pmedium, BOOL fRelease);
-	virtual HRESULT STDMETHODCALLTYPE EnumFormatEtc(DWORD dwDirection, IEnumFORMATETC** ppenumFormatEtc);
-	virtual HRESULT STDMETHODCALLTYPE DAdvise(FORMATETC* pformatetc, DWORD advf, IAdviseSink* pAdvSink, DWORD* pdwConnection);
-	virtual HRESULT STDMETHODCALLTYPE DUnadvise(DWORD dwConnection);
-	virtual HRESULT STDMETHODCALLTYPE EnumDAdvise(IEnumSTATDATA** ppenumAdvise);
+	virtual HRESULT STDMETHODCALLTYPE GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium) override;
+	virtual HRESULT STDMETHODCALLTYPE GetDataHere(FORMATETC* pformatetc, STGMEDIUM* pmedium) override;
+	virtual HRESULT STDMETHODCALLTYPE QueryGetData(FORMATETC* pformatetc) override;
+	virtual HRESULT STDMETHODCALLTYPE GetCanonicalFormatEtc(FORMATETC* pformatectIn, FORMATETC* pformatetcOut) override;
+	virtual HRESULT STDMETHODCALLTYPE SetData(FORMATETC* pformatetc, STGMEDIUM* pmedium, BOOL fRelease) override;
+	virtual HRESULT STDMETHODCALLTYPE EnumFormatEtc(DWORD dwDirection, IEnumFORMATETC** ppenumFormatEtc) override;
+	virtual HRESULT STDMETHODCALLTYPE DAdvise(FORMATETC* pformatetc, DWORD advf, IAdviseSink* pAdvSink, DWORD* pdwConnection) override;
+	virtual HRESULT STDMETHODCALLTYPE DUnadvise(DWORD dwConnection) override;
+	virtual HRESULT STDMETHODCALLTYPE EnumDAdvise(IEnumSTATDATA** ppenumAdvise) override;
 
 	//IDataObjectAsyncCapability
-	virtual HRESULT STDMETHODCALLTYPE SetAsyncMode(BOOL fDoOpAsync);
-	virtual HRESULT STDMETHODCALLTYPE GetAsyncMode(BOOL* pfIsOpAsync);
-	virtual HRESULT STDMETHODCALLTYPE StartOperation(IBindCtx* pbcReserved);
-	virtual HRESULT STDMETHODCALLTYPE InOperation(BOOL* pfInAsyncOp);
-	virtual HRESULT STDMETHODCALLTYPE EndOperation(HRESULT hResult, IBindCtx* pbcReserved, DWORD dwEffects);
+	virtual HRESULT STDMETHODCALLTYPE SetAsyncMode(BOOL fDoOpAsync) override;
+	virtual HRESULT STDMETHODCALLTYPE GetAsyncMode(BOOL* pfIsOpAsync) override;
+	virtual HRESULT STDMETHODCALLTYPE StartOperation(IBindCtx* pbcReserved) override;
+	virtual HRESULT STDMETHODCALLTYPE InOperation(BOOL* pfInAsyncOp) override;
+	virtual HRESULT STDMETHODCALLTYPE EndOperation(HRESULT hResult, IBindCtx* pbcReserved, DWORD dwEffects) override;
 
 	HRESULT SetDropDescription(DROPIMAGETYPE image, LPCTSTR format, LPCTSTR insert);
 
@@ -102,15 +102,15 @@ public:
 	CGitEnumFormatEtc(const std::vector<FORMATETC*>& vec, bool localonly, bool containsExistingFiles);
 	CGitEnumFormatEtc(const std::vector<FORMATETC>& vec, bool localonly, bool containsExistingFiles);
 	//IUnknown members
-	STDMETHOD(QueryInterface)(REFIID, void**);
-	STDMETHOD_(ULONG, AddRef)(void);
-	STDMETHOD_(ULONG, Release)(void);
+	STDMETHOD(QueryInterface)(REFIID, void**) override;
+	STDMETHOD_(ULONG, AddRef)(void) override;
+	STDMETHOD_(ULONG, Release)(void) override;
 
 	//IEnumFORMATETC members
-	STDMETHOD(Next)(ULONG, LPFORMATETC, ULONG*);
-	STDMETHOD(Skip)(ULONG);
-	STDMETHOD(Reset)(void);
-	STDMETHOD(Clone)(IEnumFORMATETC**);
+	STDMETHOD(Next)(ULONG, LPFORMATETC, ULONG*) override;
+	STDMETHOD(Skip)(ULONG) override;
+	STDMETHOD(Reset)(void) override;
+	STDMETHOD(Clone)(IEnumFORMATETC**) override;
 private:
 	void						Init(bool localonly, bool containsExistingFiles);
 private:

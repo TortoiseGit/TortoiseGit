@@ -43,8 +43,8 @@ public:
 	enum { IDD = IDD_PATCH_VIEW };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
 
 public:
 	CSciEdit			m_ctrlPatchView;
@@ -52,7 +52,7 @@ public:
 protected:
 	DECLARE_MESSAGE_MAP()
 
-	virtual BOOL OnInitDialog();
+	virtual BOOL OnInitDialog() override;
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnMoving(UINT fwSide, LPRECT pRect);
 	afx_msg void OnSysColorChange();
@@ -76,7 +76,7 @@ protected:
 	HACCEL				m_hAccel;
 
 	// CSciEditContextMenuInterface
-	virtual void		InsertMenuItems(CMenu& mPopup, int& nCmd);
-	virtual bool		HandleMenuItemClick(int cmd, CSciEdit* pSciEdit);
+	virtual void		InsertMenuItems(CMenu& mPopup, int& nCmd) override;
+	virtual bool		HandleMenuItemClick(int cmd, CSciEdit* pSciEdit) override;
 	int					m_nPopupSave;
 };

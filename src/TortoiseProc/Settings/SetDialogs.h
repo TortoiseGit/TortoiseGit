@@ -35,18 +35,18 @@ public:
 	CSetDialogs();
 	virtual ~CSetDialogs();
 
-	UINT GetIconID() {return IDI_DIALOGS;}
+	UINT GetIconID() override { return IDI_DIALOGS; }
 
 // Dialog Data
 	enum { IDD = IDD_SETTINGSDIALOGS };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
 
-	virtual BOOL OnInitDialog();
-	virtual BOOL OnApply();
+	virtual BOOL OnInitDialog() override;
+	virtual BOOL OnApply() override;
 	afx_msg void OnChange();
 	afx_msg void OnCbnSelchangeDefaultlogscale();
 	afx_msg void OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct);

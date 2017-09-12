@@ -39,13 +39,13 @@ public:
 	static UINT				WM_FINDRESET;
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
 
-	virtual BOOL OnInitDialog();
-	virtual void OnOK();
-	virtual void OnCancel();
+	virtual BOOL OnInitDialog() override;
+	virtual void OnOK() override;
+	virtual void OnCancel() override;
 	afx_msg void OnFindTextChange();
 	afx_msg void OnFindNext();
 	afx_msg void OnFindPrev();

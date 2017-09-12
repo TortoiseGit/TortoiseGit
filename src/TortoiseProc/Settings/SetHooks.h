@@ -31,15 +31,15 @@ public:
 	CSetHooks();   // standard constructor
 	virtual ~CSetHooks();
 
-	UINT GetIconID() {return IDI_HOOK;}
+	UINT GetIconID() override { return IDI_HOOK; }
 
 // Dialog Data
 	enum { IDD = IDD_SETTINGSHOOKS };
 
 protected:
-	virtual BOOL OnInitDialog();
-	virtual BOOL OnApply();
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual BOOL OnInitDialog() override;
+	virtual BOOL OnApply() override;
+	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
 	afx_msg void OnBnClickedRemovebutton();
 	afx_msg void OnBnClickedEditbutton();
 	afx_msg void OnBnClickedAddbutton();

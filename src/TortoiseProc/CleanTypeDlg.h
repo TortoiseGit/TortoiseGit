@@ -37,7 +37,7 @@ public:
 	enum { IDD = IDD_CLEAN };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
 
 	CRegDWORD m_regDir;
 	CRegDWORD m_regType;
@@ -45,8 +45,8 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 
-	virtual	BOOL OnInitDialog();
-	virtual	void OnOK();
+	virtual	BOOL OnInitDialog() override;
+	virtual	void OnOK() override;
 	void SetDlgTitle();
 
 public:

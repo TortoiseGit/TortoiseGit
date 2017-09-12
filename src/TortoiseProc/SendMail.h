@@ -52,7 +52,7 @@ public:
 	CSendMailCombineable(const CString& To, const CString& CC, const CString& subject, bool bAttachment, bool bCombine);
 	~CSendMailCombineable(void);
 
-	virtual int Send(const CTGitPathList& list, CGitProgressList* instance);
+	virtual int Send(const CTGitPathList& list, CGitProgressList* instance) override;
 
 protected:
 	virtual int SendAsSingleMail(const CTGitPath& path, CGitProgressList* instance);

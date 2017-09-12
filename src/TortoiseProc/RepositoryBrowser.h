@@ -125,14 +125,14 @@ public:
 	};
 
 private:
-	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX) override;	// DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
 
 	afx_msg void			OnOK();
 	afx_msg void			OnCancel();
 	afx_msg void			OnDestroy();
-	virtual BOOL			OnInitDialog();
+	virtual BOOL			OnInitDialog() override;
 	afx_msg void			OnSysColorChange();
 
 	CGestureEnabledControlTmpl<CTreeCtrl>	m_RepoTree;
@@ -178,7 +178,7 @@ private:
 
 	afx_msg void			OnBnClickedButtonRevision();
 
-	virtual BOOL			PreTranslateMessage(MSG* pMsg);
+	virtual BOOL			PreTranslateMessage(MSG* pMsg) override;
 
 	CString					m_sMarkForDiffFilename;
 	CGitHash				m_sMarkForDiffVersion;

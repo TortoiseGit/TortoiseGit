@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2011-2013 - Sven Strickroth <email@cs-ware.de>
-// Copyright (C) 2013-2014, 2016 - TortoiseGit
+// Copyright (C) 2013-2014, 2016-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -31,9 +31,9 @@ public:
 	bool					ExecuteWithNotify(CTGitPathList* pathList, volatile BOOL& cancel, CGitProgressList::WC_File_NotificationData::git_wc_notify_action_t action, CGitProgressList* instance);
 
 private:
-	void					ReportError(const CString& out, int exitCode);
-	void					ReportProgress(const CTGitPath& path, int index);
-	void					ReportUserCanceled();
+	virtual void			ReportError(const CString& out, int exitCode) override;
+	virtual void			ReportProgress(const CTGitPath& path, int index) override;
+	virtual void			ReportUserCanceled() override;
 	CGitProgressList *		m_NotifyCallbackInstance;
 	CGitProgressList::WC_File_NotificationData::git_wc_notify_action_t	m_NotifyCallbackAction;
 };

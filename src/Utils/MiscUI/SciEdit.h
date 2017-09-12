@@ -154,9 +154,9 @@ private:
 	bool		m_blockModifiedHandler;
 	static bool IsValidURLChar(unsigned char ch);
 protected:
-	virtual BOOL OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pLResult);
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	virtual ULONG GetGestureStatus(CPoint ptTouch);
+	virtual BOOL OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pLResult) override;
+	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
+	virtual ULONG GetGestureStatus(CPoint ptTouch) override;
 	void		CheckSpelling(int startpos, int endpos);
 	void		SuggestSpellingAlternatives(void);
 	void		DoAutoCompletion(int nMinPrefixLength);
@@ -173,7 +173,7 @@ protected:
 	CStringA	GetWordForSpellChecker(const CString& sWord);
 	CString		GetWordFromSpellChecker(const CStringA& sWordA);
 
-	virtual afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/);
 	DECLARE_MESSAGE_MAP()
 };

@@ -33,7 +33,7 @@ public:
 	/**
 	 * Executes the command.
 	 */
-	virtual bool			Execute()
+	virtual bool			Execute() override
 	{
 		crasher.Enable(!parser.HasKey(L"nocustom"));
 		CMessageBox::Show(hwndExplorer, L"You are testing the crashhandler.\n<ct=0x0000FF>Do NOT send the crashreport!!!!</ct>", L"TortoiseGit", MB_ICONINFORMATION);

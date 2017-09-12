@@ -34,14 +34,14 @@ public:
 	CSettingsProgsAlternativeEditor();
 	virtual ~CSettingsProgsAlternativeEditor();
 
-	UINT GetIconID() {return IDI_DIFF;}
+	UINT GetIconID() override { return IDI_DIFF; }
 
 	enum { IDD = IDD_SETTINGSPROGSALTERNATIVEEDITOR };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual BOOL OnInitDialog();
-	virtual BOOL OnApply();
+	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	virtual BOOL OnInitDialog() override;
+	virtual BOOL OnApply() override;
 	afx_msg void OnBnClickedAlternativeEditorOff();
 	afx_msg void OnBnClickedAlternativeEditorOn();
 	afx_msg void OnBnClickedAlternativeEditorBrowse();

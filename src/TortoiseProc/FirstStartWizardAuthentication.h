@@ -33,10 +33,10 @@ public:
 	enum { IDD = IDD_FIRSTSTARTWIZARD_AUTHENTICATION };
 
 protected:
-	virtual void	DoDataExchange(CDataExchange* pDX);
-	virtual BOOL	OnWizardFinish();
-	virtual BOOL	OnInitDialog();
-	virtual BOOL	OnSetActive();
+	virtual void	DoDataExchange(CDataExchange* pDX) override;
+	virtual BOOL	OnWizardFinish() override;
+	virtual BOOL	OnInitDialog() override;
+	virtual BOOL	OnSetActive() override;
 
 	afx_msg void	OnBnClickedGenerateputtykey();
 	afx_msg void	OnBnClickedAdvancedconfiguration();

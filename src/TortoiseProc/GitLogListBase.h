@@ -581,8 +581,8 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 	afx_msg void OnDestroy();
-	virtual afx_msg void OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult);
-	virtual afx_msg void OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnNMCustomdrawLoglist(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnLvnGetdispinfoLoglist(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg LRESULT OnFindDialogMessage(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnScrollToMessage(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnScrollToRef(WPARAM wParam, LPARAM lParam);
@@ -592,8 +592,8 @@ protected:
 	void OnNMDblclkLoglist(NMHDR * /*pNMHDR*/, LRESULT *pResult);
 	afx_msg void OnLvnOdfinditemLoglist(NMHDR *pNMHDR, LRESULT *pResult);
 	void PreSubclassWindow();
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	virtual ULONG GetGestureStatus(CPoint ptTouch);
+	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
+	virtual ULONG GetGestureStatus(CPoint ptTouch) override;
 	static UINT LogThreadEntry(LPVOID pVoid);
 	UINT LogThread();
 	bool IsOnStash(int index);
@@ -602,8 +602,8 @@ protected:
 	void FetchRemoteList();
 	void FetchTrackingBranchList();
 
-	virtual afx_msg BOOL OnToolTipText(UINT id, NMHDR * pNMHDR, LRESULT * pResult);
-	virtual INT_PTR OnToolHitTest(CPoint point, TOOLINFO * pTI) const;
+	afx_msg BOOL OnToolTipText(UINT id, NMHDR* pNMHDR, LRESULT* pResult);
+	virtual INT_PTR OnToolHitTest(CPoint point, TOOLINFO* pTI) const override;
 	CString GetToolTipText(int nItem, int nSubItem);
 
 	/** Checks whether a referenfe label is under pt and returns the index/type

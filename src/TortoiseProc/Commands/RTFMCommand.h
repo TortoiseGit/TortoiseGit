@@ -34,7 +34,7 @@ public:
 	/**
 	 * Executes the command.
 	 */
-	virtual bool			Execute()
+	virtual bool			Execute() override
 	{
 		// If the user tries to start TortoiseProc from the link in the programs start menu
 		// show an explanation about what TSVN is (shell extension) and open up an explorer window

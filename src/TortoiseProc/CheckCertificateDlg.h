@@ -38,8 +38,8 @@ public:
 	git_cert_x509* cert;
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual BOOL OnInitDialog();
+	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	virtual BOOL OnInitDialog() override;
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedOpencert();
 

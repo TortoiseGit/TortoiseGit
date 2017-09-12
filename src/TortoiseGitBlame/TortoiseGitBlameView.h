@@ -104,28 +104,28 @@ public:
 
 // Overrides
 public:
-	virtual void OnDraw(CDC* pDC);  // overridden to draw this view
-	virtual BOOL OnEraseBkgnd(CDC* pDC);
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+	afx_msg void OnDraw(CDC* pDC);  // overridden to draw this view
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+	virtual BOOL PreCreateWindow(CREATESTRUCT& cs) override;
 protected:
-	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
-	virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
-	virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
-	virtual ULONG GetGestureStatus(CPoint ptTouch);
+	afx_msg BOOL OnPreparePrinting(CPrintInfo* pInfo);
+	afx_msg void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
+	afx_msg void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
+	virtual ULONG GetGestureStatus(CPoint ptTouch) override;
 
 // Implementation
 public:
 	virtual ~CTortoiseGitBlameView();
 #ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+	virtual void AssertValid() const override;
+	virtual void Dump(CDumpContext& dc) const override;
 #endif
 
 protected:
 
 // Generated message map functions
 protected:
-	BOOL PreTranslateMessage(MSG* pMsg);
+	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
 	afx_msg void OnSysColorChange();
 	afx_msg void OnChangeEncode(UINT nID);
 	afx_msg void OnEditFind();

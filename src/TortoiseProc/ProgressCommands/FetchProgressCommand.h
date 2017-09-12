@@ -38,5 +38,5 @@ public:
 
 	void SetAutoTag(git_remote_autotag_option_t tag){ m_AutoTag = tag; }
 	void SetPrune(git_fetch_prune_t prune) { m_Prune = prune; }
-	virtual bool Run(CGitProgressList* list, CString& sWindowTitle, int& m_itemCountTotal, int& m_itemCount);
+	virtual bool Run(CGitProgressList* list, CString& sWindowTitle, int& m_itemCountTotal, int& m_itemCount) override;
 };

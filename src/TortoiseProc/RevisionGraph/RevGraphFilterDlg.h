@@ -42,12 +42,12 @@ public:
 	BOOL m_bLocalBranches;
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX) override;	// DDX/DDV support
 	afx_msg void OnBnClickedResetfilter();
 	afx_msg void OnBnClickedCurrentBranch();
 	afx_msg void OnBnClickedLocalBranches();
-	virtual BOOL OnInitDialog();
-	virtual void OnOK();
+	virtual BOOL OnInitDialog() override;
+	virtual void OnOK() override;
 
 	DECLARE_MESSAGE_MAP()
 	CString	m_sFromRev;

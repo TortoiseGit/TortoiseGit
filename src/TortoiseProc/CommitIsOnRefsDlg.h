@@ -57,11 +57,11 @@ public:
 	};
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual void OnCancel();
-	virtual BOOL OnInitDialog();
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	virtual void PostNcDestroy();
+	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	virtual void OnCancel() override;
+	virtual BOOL OnInitDialog() override;
+	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
+	virtual void PostNcDestroy() override;
 	afx_msg void OnEnChangeEditFilter();
 	afx_msg LRESULT OnClickedCancelFilter(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnBnClickedSelRevBtn();

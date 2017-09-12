@@ -36,14 +36,14 @@ public:
 	CSetProxyPage();
 	virtual ~CSetProxyPage();
 
-	UINT GetIconID() {return IDI_PROXY;}
+	UINT GetIconID() override { return IDI_PROXY; }
 
 	enum { IDD = IDD_SETTINGSPROXY };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual BOOL OnApply();
-	virtual BOOL OnInitDialog();
+	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	virtual BOOL OnApply() override;
+	virtual BOOL OnInitDialog() override;
 	afx_msg void OnChange();
 	afx_msg void OnBnClickedEnable();
 	afx_msg void OnBnClickedSshbrowse();

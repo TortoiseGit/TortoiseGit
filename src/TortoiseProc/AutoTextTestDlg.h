@@ -1,4 +1,4 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2009, 2013 - TortoiseSVN
 
@@ -34,8 +34,8 @@ public:
 	enum { IDD = IDD_AUTOTEXTTESTDLG };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
-	virtual BOOL OnInitDialog();
+	virtual void DoDataExchange(CDataExchange* pDX) override;	// DDX/DDV support
+	virtual BOOL OnInitDialog() override;
 	afx_msg void OnBnClickedAutotextscan();
 
 	DECLARE_MESSAGE_MAP()

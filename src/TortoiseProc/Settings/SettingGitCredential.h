@@ -36,7 +36,7 @@ public:
 	};
 	CSettingGitCredential();
 	virtual ~CSettingGitCredential();
-	UINT GetIconID() { return IDI_GITCREDENTIAL; }
+	UINT GetIconID() override { return IDI_GITCREDENTIAL; }
 // Dialog Data
 	enum { IDD = IDD_SETTINGSCREDENTIAL };
 
@@ -125,7 +125,7 @@ protected:
 		}
 	}
 
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
 
@@ -139,8 +139,8 @@ protected:
 	afx_msg void OnBnClickedCheckUsehttppath();
 	afx_msg void OnBnClickedButtonRemove();
 
-	BOOL OnInitDialog();
-	BOOL OnApply();
+	virtual BOOL OnInitDialog() override;
+	virtual BOOL OnApply() override;
 
 	void EnableAdvancedOptions();
 	BOOL IsUrlExist(CString &text);

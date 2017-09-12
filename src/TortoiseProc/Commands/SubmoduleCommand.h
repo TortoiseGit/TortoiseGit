@@ -25,13 +25,13 @@ public:
 	/**
 	 * Executes the command.
 	 */
-	virtual bool			Execute();
+	virtual bool			Execute() override;
 };
 
 class SubmoduleCommand:public Command
 {
 public:
-	virtual bool Execute(CString cmd, CString arg = L"");
+	bool Execute(CString cmd, CString arg = L"");
 };
 
 class SubmoduleUpdateCommand : public Command
@@ -40,7 +40,7 @@ public:
 	/**
 	 * Executes the command.
 	 */
-	virtual bool			Execute();
+	virtual bool			Execute() override;
 };
 
 class SubmoduleSyncCommand : public SubmoduleCommand
@@ -49,7 +49,7 @@ public:
 	/**
 	 * Executes the command.
 	 */
-	virtual bool			Execute() { return SubmoduleCommand::Execute(L"sync"); };
+	virtual bool			Execute() override { return SubmoduleCommand::Execute(L"sync"); };
 };
 
 

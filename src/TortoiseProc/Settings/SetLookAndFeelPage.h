@@ -34,14 +34,14 @@ public:
 	CSetLookAndFeelPage();
 	virtual ~CSetLookAndFeelPage();
 
-	UINT GetIconID() {return IDI_MISC;}
+	UINT GetIconID() override { return IDI_MISC; }
 
 // Dialog Data
 	enum { IDD = IDD_SETTINGSLOOKANDFEEL };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual BOOL OnApply();
+	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	virtual BOOL OnApply() override;
 	afx_msg void OnBnClickedSelectall();
 	afx_msg void OnBnClickedRestoreDefaults();
 	afx_msg void OnLvnItemchangedMenulist(NMHDR *pNMHDR, LRESULT *pResult);
@@ -50,7 +50,7 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 
-	virtual BOOL OnInitDialog();
+	virtual BOOL OnInitDialog() override;
 
 private:
 	CRegStdDWORD			m_regTopmenu;

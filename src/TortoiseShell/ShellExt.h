@@ -173,68 +173,68 @@ public:
 	 * IUnknown members
 	 */
 	//@{
-	STDMETHODIMP         QueryInterface(REFIID, LPVOID FAR *);
-	STDMETHODIMP_(ULONG) AddRef();
-	STDMETHODIMP_(ULONG) Release();
+	STDMETHODIMP         QueryInterface(REFIID, LPVOID FAR *) override;
+	STDMETHODIMP_(ULONG) AddRef() override;
+	STDMETHODIMP_(ULONG) Release() override;
 	//@}
 
 	/** \name IContextMenu2
 	 * IContextMenu2 members
 	 */
 	//@{
-	STDMETHODIMP	QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmdFirst, UINT idCmdLast, UINT uFlags);
-	STDMETHODIMP	InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi);
-	STDMETHODIMP	GetCommandString(UINT_PTR idCmd, UINT uFlags, UINT FAR *reserved, LPSTR pszName, UINT cchMax);
-	STDMETHODIMP	HandleMenuMsg(UINT uMsg, WPARAM wParam, LPARAM lParam);
+	STDMETHODIMP	QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmdFirst, UINT idCmdLast, UINT uFlags) override;
+	STDMETHODIMP	InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi) override;
+	STDMETHODIMP	GetCommandString(UINT_PTR idCmd, UINT uFlags, UINT FAR *reserved, LPSTR pszName, UINT cchMax) override;
+	STDMETHODIMP	HandleMenuMsg(UINT uMsg, WPARAM wParam, LPARAM lParam) override;
 	//@}
 
 	/** \name IContextMenu3
 	 * IContextMenu3 members
 	 */
 	//@{
-	STDMETHODIMP	HandleMenuMsg2(UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT *pResult);
+	STDMETHODIMP	HandleMenuMsg2(UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT *pResult) override;
 	//@}
 
 	/** \name IShellExtInit
 	 * IShellExtInit methods
 	 */
 	//@{
-	STDMETHODIMP	Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataObj, HKEY hKeyID);
+	STDMETHODIMP	Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataObj, HKEY hKeyID) override;
 	//@}
 
 	/** \name IPersistFile
 	 * IPersistFile methods
 	 */
 	//@{
-	STDMETHODIMP	GetClassID(CLSID *pclsid);
-	STDMETHODIMP	Load(LPCOLESTR pszFileName, DWORD dwMode);
-	STDMETHODIMP	IsDirty(void) { return S_OK; };
-	STDMETHODIMP	Save(LPCOLESTR /*pszFileName*/, BOOL /*fRemember*/) { return S_OK; };
-	STDMETHODIMP	SaveCompleted(LPCOLESTR /*pszFileName*/) { return S_OK; };
-	STDMETHODIMP	GetCurFile(LPOLESTR * /*ppszFileName*/) { return S_OK; };
+	STDMETHODIMP	GetClassID(CLSID *pclsid) override;
+	STDMETHODIMP	Load(LPCOLESTR pszFileName, DWORD dwMode) override;
+	STDMETHODIMP	IsDirty(void) override { return S_OK; };
+	STDMETHODIMP	Save(LPCOLESTR /*pszFileName*/, BOOL /*fRemember*/)  override { return S_OK; };
+	STDMETHODIMP	SaveCompleted(LPCOLESTR /*pszFileName*/) override { return S_OK; };
+	STDMETHODIMP	GetCurFile(LPOLESTR * /*ppszFileName*/) override { return S_OK; };
 	//@}
 
 	/** \name IShellIconOverlayIdentifier
 	 * IShellIconOverlayIdentifier methods
 	 */
 	//@{
-	STDMETHODIMP	GetOverlayInfo(LPWSTR pwszIconFile, int cchMax, int *pIndex, DWORD *pdwFlags);
-	STDMETHODIMP	GetPriority(int *pPriority);
-	STDMETHODIMP	IsMemberOf(LPCWSTR pwszPath, DWORD dwAttrib);
+	STDMETHODIMP	GetOverlayInfo(LPWSTR pwszIconFile, int cchMax, int *pIndex, DWORD *pdwFlags) override;
+	STDMETHODIMP	GetPriority(int *pPriority) override;
+	STDMETHODIMP	IsMemberOf(LPCWSTR pwszPath, DWORD dwAttrib) override;
 	//@}
 
 	/** \name IShellPropSheetExt
 	 * IShellPropSheetExt methods
 	 */
 	//@{
-	STDMETHODIMP	AddPages(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam);
-	STDMETHODIMP	ReplacePage (UINT, LPFNADDPROPSHEETPAGE, LPARAM);
+	STDMETHODIMP	AddPages(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam) override;
+	STDMETHODIMP	ReplacePage (UINT, LPFNADDPROPSHEETPAGE, LPARAM) override;
 	//@}
 
 	/** \name ICopyHook
 	 * ICopyHook members
 	 */
 	//@{
-	STDMETHODIMP_(UINT) CopyCallback(HWND hWnd, UINT wFunc, UINT wFlags, LPCTSTR pszSrcFile, DWORD dwSrcAttribs, LPCTSTR pszDestFile, DWORD dwDestAttribs);
+	STDMETHODIMP_(UINT) CopyCallback(HWND hWnd, UINT wFunc, UINT wFlags, LPCTSTR pszSrcFile, DWORD dwSrcAttribs, LPCTSTR pszDestFile, DWORD dwDestAttribs) override;
 	//@}
 };

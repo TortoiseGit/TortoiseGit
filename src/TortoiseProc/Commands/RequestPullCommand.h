@@ -30,5 +30,5 @@ public:
 	/**
 	 * Executes the command.
 	 */
-	virtual bool			Execute();
+	virtual bool			Execute() override;
 };

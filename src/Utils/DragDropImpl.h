@@ -29,7 +29,7 @@ public:
 	{
 	}
 
-	HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, void** ppvObject)
+	HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, void** ppvObject) override
 	{
 		if(!ppvObject)
 			return E_POINTER;
@@ -48,12 +48,12 @@ public:
 		return S_OK;
 	}
 
-	ULONG STDMETHODCALLTYPE AddRef(void)
+	ULONG STDMETHODCALLTYPE AddRef(void) override
 	{
 		return InterlockedIncrement(&refCount);
 	}
 
-	ULONG STDMETHODCALLTYPE Release(void)
+	ULONG STDMETHODCALLTYPE Release(void) override
 	{
 		ULONG ret = InterlockedDecrement(&refCount);
 		if(!ret) {
@@ -62,12 +62,12 @@ public:
 		return ret;
 	}
 
-	HRESULT STDMETHODCALLTYPE DragEnterTarget(HWND /*hWndTarget*/)
+	HRESULT STDMETHODCALLTYPE DragEnterTarget(HWND /*hWndTarget*/) override
 	{
 		return S_OK;
 	}
 
-	HRESULT STDMETHODCALLTYPE DragLeaveTarget(void)
+	HRESULT STDMETHODCALLTYPE DragLeaveTarget(void) override
 	{
 		return S_OK;
 	}
@@ -86,15 +86,15 @@ class CEnumFormatEtc : public IEnumFORMATETC
 	 CEnumFormatEtc(const CSimpleArray<FORMATETC>& ArrFE);
 	 CEnumFormatEtc(const CSimpleArray<FORMATETC*>& ArrFE);
 	 //IUnknown members
-	 STDMETHOD(QueryInterface)(REFIID, void FAR* FAR*);
-	 STDMETHOD_(ULONG, AddRef)(void);
-	 STDMETHOD_(ULONG, Release)(void);
+	 STDMETHOD(QueryInterface)(REFIID, void FAR* FAR*) override;
+	 STDMETHOD_(ULONG, AddRef)(void) override;
+	 STDMETHOD_(ULONG, Release)(void) override;
 
 	 //IEnumFORMATETC members
-	 STDMETHOD(Next)(ULONG, LPFORMATETC, ULONG FAR *);
-	 STDMETHOD(Skip)(ULONG);
-	 STDMETHOD(Reset)(void);
-	 STDMETHOD(Clone)(IEnumFORMATETC FAR * FAR*);
+	 STDMETHOD(Next)(ULONG, LPFORMATETC, ULONG FAR *) override;
+	 STDMETHOD(Skip)(ULONG) override;
+	 STDMETHOD(Reset)(void) override;
+	 STDMETHOD(Clone)(IEnumFORMATETC FAR* FAR*) override;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -131,16 +131,16 @@ public:
 	//IUnknown
 	virtual HRESULT STDMETHODCALLTYPE QueryInterface(
 			/* [in] */ REFIID riid,
-			/* [iid_is][out] */ void __RPC_FAR *__RPC_FAR *ppvObject);
-	virtual ULONG STDMETHODCALLTYPE AddRef( void);
-	virtual ULONG STDMETHODCALLTYPE Release( void);
+			/* [iid_is][out] */ void __RPC_FAR *__RPC_FAR *ppvObject) override;
+	virtual ULONG STDMETHODCALLTYPE AddRef( void) override;
+	virtual ULONG STDMETHODCALLTYPE Release( void) override;
 	//IDropSource
 	virtual HRESULT STDMETHODCALLTYPE QueryContinueDrag(
 		/* [in] */ BOOL fEscapePressed,
-		/* [in] */ DWORD grfKeyState);
+		/* [in] */ DWORD grfKeyState) override;
 
 	virtual HRESULT STDMETHODCALLTYPE GiveFeedback(
-		/* [in] */ DWORD dwEffect);
+		/* [in] */ DWORD dwEffect) override;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -157,46 +157,46 @@ public:
 	//IUnknown
 	virtual HRESULT STDMETHODCALLTYPE QueryInterface(
 			/* [in] */ REFIID riid,
-			/* [iid_is][out] */ void __RPC_FAR *__RPC_FAR *ppvObject);
-	virtual ULONG STDMETHODCALLTYPE AddRef( void);
-	virtual ULONG STDMETHODCALLTYPE Release( void);
+			/* [iid_is][out] */ void __RPC_FAR *__RPC_FAR *ppvObject) override;
+	virtual ULONG STDMETHODCALLTYPE AddRef( void) override;
+	virtual ULONG STDMETHODCALLTYPE Release( void) override;
 
 	//IDataObject
 	virtual /* [local] */ HRESULT STDMETHODCALLTYPE GetData(
 		/* [unique][in] */ FORMATETC __RPC_FAR *pformatetcIn,
-		/* [out] */ STGMEDIUM __RPC_FAR *pmedium);
+		/* [out] */ STGMEDIUM __RPC_FAR *pmedium) override;
 
 	virtual /* [local] */ HRESULT STDMETHODCALLTYPE GetDataHere(
 		/* [unique][in] */ FORMATETC __RPC_FAR *pformatetc,
-		/* [out][in] */ STGMEDIUM __RPC_FAR *pmedium);
+		/* [out][in] */ STGMEDIUM __RPC_FAR *pmedium) override;
 
 	virtual HRESULT STDMETHODCALLTYPE QueryGetData(
-		/* [unique][in] */ FORMATETC __RPC_FAR *pformatetc);
+		/* [unique][in] */ FORMATETC __RPC_FAR *pformatetc) override;
 
 	virtual HRESULT STDMETHODCALLTYPE GetCanonicalFormatEtc(
 		/* [unique][in] */ FORMATETC __RPC_FAR *pformatectIn,
-		/* [out] */ FORMATETC __RPC_FAR *pformatetcOut);
+		/* [out] */ FORMATETC __RPC_FAR *pformatetcOut) override;
 
 	virtual /* [local] */ HRESULT STDMETHODCALLTYPE SetData(
 		/* [unique][in] */ FORMATETC __RPC_FAR *pformatetc,
 		/* [unique][in] */ STGMEDIUM __RPC_FAR *pmedium,
-		/* [in] */ BOOL fRelease);
+		/* [in] */ BOOL fRelease) override;
 
 	virtual HRESULT STDMETHODCALLTYPE EnumFormatEtc(
 		/* [in] */ DWORD dwDirection,
-		/* [out] */ IEnumFORMATETC __RPC_FAR *__RPC_FAR *ppenumFormatEtc);
+		/* [out] */ IEnumFORMATETC __RPC_FAR *__RPC_FAR *ppenumFormatEtc) override;
 
 	virtual HRESULT STDMETHODCALLTYPE DAdvise(
 		/* [in] */ FORMATETC __RPC_FAR *pformatetc,
 		/* [in] */ DWORD advf,
 		/* [unique][in] */ IAdviseSink __RPC_FAR *pAdvSink,
-		/* [out] */ DWORD __RPC_FAR *pdwConnection);
+		/* [out] */ DWORD __RPC_FAR *pdwConnection) override;
 
 	virtual HRESULT STDMETHODCALLTYPE DUnadvise(
-		/* [in] */ DWORD dwConnection);
+		/* [in] */ DWORD dwConnection) override;
 
 	virtual HRESULT STDMETHODCALLTYPE EnumDAdvise(
-		/* [out] */ IEnumSTATDATA __RPC_FAR *__RPC_FAR *ppenumAdvise);
+		/* [out] */ IEnumSTATDATA __RPC_FAR *__RPC_FAR *ppenumAdvise) override;
 
 	//IAsyncOperation
 	//virtual HRESULT STDMETHODCALLTYPE SetAsyncMode(
@@ -258,26 +258,26 @@ public:
 
 	virtual HRESULT STDMETHODCALLTYPE QueryInterface(
 		/* [in] */ REFIID riid,
-		/* [iid_is][out] */ void __RPC_FAR *__RPC_FAR *ppvObject);
-	virtual ULONG STDMETHODCALLTYPE AddRef( void) { ATLTRACE("CIDropTarget::AddRef\n"); return ++m_cRefCount; }
-	virtual ULONG STDMETHODCALLTYPE Release( void);
+		/* [iid_is][out] */ void __RPC_FAR *__RPC_FAR *ppvObject) override;
+	virtual ULONG STDMETHODCALLTYPE AddRef( void) override { ATLTRACE("CIDropTarget::AddRef\n"); return ++m_cRefCount; }
+	virtual ULONG STDMETHODCALLTYPE Release( void) override;
 
 	bool QueryDrop(DWORD grfKeyState, LPDWORD pdwEffect);
 	virtual HRESULT STDMETHODCALLTYPE DragEnter(
 		/* [unique][in] */ IDataObject __RPC_FAR *pDataObj,
 		/* [in] */ DWORD grfKeyState,
 		/* [in] */ POINTL pt,
-		/* [out][in] */ DWORD __RPC_FAR *pdwEffect);
+		/* [out][in] */ DWORD __RPC_FAR *pdwEffect) override;
 	virtual HRESULT STDMETHODCALLTYPE DragOver(
 		/* [in] */ DWORD grfKeyState,
 		/* [in] */ POINTL pt,
-		/* [out][in] */ DWORD __RPC_FAR *pdwEffect);
-	virtual HRESULT STDMETHODCALLTYPE DragLeave( void);
+		/* [out][in] */ DWORD __RPC_FAR *pdwEffect) override;
+	virtual HRESULT STDMETHODCALLTYPE DragLeave( void) override;
 	virtual HRESULT STDMETHODCALLTYPE Drop(
 		/* [unique][in] */ IDataObject __RPC_FAR *pDataObj,
 		/* [in] */ DWORD grfKeyState,
 		/* [in] */ POINTL pt,
-		/* [out][in] */ DWORD __RPC_FAR *pdwEffect);
+		/* [out][in] */ DWORD __RPC_FAR *pdwEffect) override;
 
 	// helper function
 	HRESULT SetDropDescription(DROPIMAGETYPE image, LPCTSTR format, LPCTSTR insert);

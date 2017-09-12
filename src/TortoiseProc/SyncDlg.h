@@ -65,12 +65,12 @@ public:
 			GIT_COMMAND_STASH
 		};
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
 	BRANCH_COMBOX_EVENT_HANDLE();
 
-	virtual BOOL OnInitDialog();
+	virtual BOOL OnInitDialog() override;
 	afx_msg void OnBnClickedButtonManage();
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
 	afx_msg void OnCbnEditchangeComboboxex();
 	afx_msg void OnBnClickedButtonPull();
 	afx_msg void OnBnClickedButtonPush();
@@ -120,8 +120,8 @@ protected:
 
 	void				ParserCmdOutput(char ch);
 
-	virtual void LocalBranchChange(){FetchOutList();};
-	virtual void RemoteBranchChange(){};
+	virtual void LocalBranchChange() override { FetchOutList(); };
+	virtual void RemoteBranchChange() override {};
 
 	void ShowTab(int windowid)
 	{
@@ -133,7 +133,7 @@ protected:
 
 	bool IsURL();
 
-	void SetRemote(CString remote)
+	virtual void SetRemote(CString remote) override
 	{
 		if(!remote.IsEmpty())
 		{
@@ -227,8 +227,8 @@ protected:
 	void EnableControlButton(bool bEnabled=true);
 	afx_msg void OnBnClickedButtonCommit();
 
-	virtual void OnOK();
-	void	OnCancel();
+	virtual void	OnOK() override;
+	virtual void	OnCancel() override;
 	void	Refresh();
 	bool	AskSetTrackedBranch();
 

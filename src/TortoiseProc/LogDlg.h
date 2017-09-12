@@ -95,10 +95,10 @@ public:
 	}
 protected:
 	//implement the virtual methods from Git base class
-	virtual BOOL Cancel();
-	virtual bool Validate(LPCTSTR string);
+	BOOL Cancel();
+	virtual bool Validate(LPCTSTR string) override;
 
-	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
 
 	afx_msg LRESULT	OnTaskbarBtnCreated(WPARAM wParam, LPARAM lParam);
 	CComPtr<ITaskbarList3>	m_pTaskbarList;
@@ -152,10 +152,10 @@ protected:
 	afx_msg void OnEnscrollMsgview();
 	afx_msg LRESULT OnResetWcRev(WPARAM, LPARAM);
 
-	virtual void OnCancel();
-	virtual void OnOK();
-	virtual BOOL OnInitDialog();
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	virtual void OnCancel() override;
+	virtual void OnOK() override;
+	virtual BOOL OnInitDialog() override;
+	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnPaint();
 
@@ -200,13 +200,13 @@ private:
 	CPatchViewDlg		m_patchViewdlg;
 	void FillPatchView(bool onlySetTimer = false);
 	CWnd * GetPatchViewParentWnd() { return this; }
-	virtual void TogglePatchView();
+	void TogglePatchView();
 	LRESULT OnFileListCtrlItemChanged(WPARAM /*wparam*/, LPARAM /*lparam*/);
 	afx_msg LRESULT	OnGitStatusListCtrlNeedsRefresh(WPARAM, LPARAM);
 	afx_msg void OnMoving(UINT fwSide, LPRECT pRect);
 	afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
 
-	virtual LRESULT DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+	virtual LRESULT DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam) override;
 
 public:
 	CWnd *				m_pNotifyWindow;

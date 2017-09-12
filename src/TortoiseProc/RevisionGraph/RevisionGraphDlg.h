@@ -76,11 +76,11 @@ protected:
 
 	BOOL			InitializeToolbar();
 
-	virtual void	DoDataExchange(CDataExchange* pDX);		// DDX/DDV support
-	virtual BOOL	OnInitDialog();
-	virtual void	OnCancel();
-	virtual void	OnOK();
-	virtual BOOL	PreTranslateMessage(MSG* pMsg);
+	virtual void	DoDataExchange(CDataExchange* pDX) override;		// DDX/DDV support
+	virtual BOOL	OnInitDialog() override;
+	virtual void	OnCancel() override;
+	virtual void	OnOK() override;
+	virtual BOOL	PreTranslateMessage(MSG* pMsg) override;
 	afx_msg void	OnSize(UINT nType, int cx, int cy);
 	afx_msg void	OnViewFilter();
 	afx_msg void	OnViewZoomin();

@@ -83,7 +83,7 @@ public:
 	virtual ~CProgressDlg();
 
 private:
-	virtual BOOL OnInitDialog();
+	virtual BOOL OnInitDialog() override;
 
 	// Dialog Data
 	enum { IDD = IDD_GITPROGRESS };
@@ -123,7 +123,7 @@ private:
 	bool					m_bDone;
 	ULONGLONG				m_startTick;
 
-	virtual void			DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void			DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
 	static UINT				ProgressThreadEntry(LPVOID pVoid);
 	UINT					ProgressThread();
 
@@ -178,7 +178,7 @@ private:
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedButton1();
 
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
 
 	typedef struct {
 		int id;
@@ -187,7 +187,7 @@ private:
 	} ACCELLERATOR;
 	std::map<TCHAR, ACCELLERATOR>	m_accellerators;
 	HACCEL							m_hAccel;
-	virtual LRESULT DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+	virtual LRESULT DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam) override;
 };
 
 class CCommitProgressDlg:public CProgressDlg
@@ -197,5 +197,5 @@ public:
 	{
 	}
 
-	virtual CString Convert2UnionCode(char *buff, int size=-1);
+	virtual CString Convert2UnionCode(char* buff, int size = -1) override;
 };

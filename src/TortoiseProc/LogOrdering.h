@@ -36,9 +36,9 @@ public:
 	enum { IDD = IDD_LOGORDERING };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);
-	virtual BOOL OnInitDialog();
-	virtual void OnOK();
+	virtual void DoDataExchange(CDataExchange* pDX) override;
+	virtual BOOL OnInitDialog() override;
+	virtual void OnOK() override;
 
 	DECLARE_MESSAGE_MAP()
 

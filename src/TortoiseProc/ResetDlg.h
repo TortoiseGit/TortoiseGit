@@ -34,15 +34,15 @@ public:
 	enum { IDD = IDD_RESET };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual BOOL OnInitDialog();
+	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	virtual BOOL OnInitDialog() override;
 	afx_msg void OnDestroy();
 	afx_msg void OnBnClickedChooseRadioHost();
 	afx_msg void OnBnClickedShow();
 	afx_msg void OnBnClickedButtonBrowseRefHost(){OnBnClickedButtonBrowseRef();}
 	LRESULT OnUpdateGUIHost(WPARAM, LPARAM) { UpdateGUI(); return 0; }
-	virtual void OnVersionChanged();
-	virtual void OnOK();
+	virtual void OnVersionChanged() override;
+	virtual void OnOK() override;
 	afx_msg void OnBnClickedShowModifiedFiles();
 
 	DECLARE_MESSAGE_MAP()

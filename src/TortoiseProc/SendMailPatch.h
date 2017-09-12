@@ -28,6 +28,6 @@ public:
 	~CSendMailPatch(void);
 
 protected:
-	virtual int SendAsSingleMail(const CTGitPath& path, CGitProgressList* instance);
-	virtual int SendAsCombinedMail(const CTGitPathList& list, CGitProgressList* instance);
+	virtual int SendAsSingleMail(const CTGitPath& path, CGitProgressList* instance) override;
+	virtual int SendAsCombinedMail(const CTGitPathList& list, CGitProgressList* instance) override;
 };

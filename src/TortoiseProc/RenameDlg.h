@@ -38,11 +38,11 @@ public:
 	enum { IDD = IDD_RENAME };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
 
-	virtual BOOL OnInitDialog();
-	virtual void OnOK();
-	virtual void OnCancel();
+	virtual BOOL OnInitDialog() override;
+	virtual void OnOK() override;
+	virtual void OnCancel() override;
 
 	afx_msg void OnEnSetfocusName();
 	afx_msg void OnBnClickedButtonBrowseRef();

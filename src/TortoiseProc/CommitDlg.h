@@ -64,9 +64,9 @@ public:
 
 protected:
 	// CSciEditContextMenuInterface
-	virtual void		InsertMenuItems(CMenu& mPopup, int& nCmd);
-	virtual bool		HandleMenuItemClick(int cmd, CSciEdit * pSciEdit);
-	virtual void		HandleSnippet(int type, const CString &text, CSciEdit *pSciEdit);
+	virtual void		InsertMenuItems(CMenu& mPopup, int& nCmd) override;
+	virtual bool		HandleMenuItemClick(int cmd, CSciEdit* pSciEdit) override;
+	virtual void		HandleSnippet(int type, const CString& text, CSciEdit* pSciEdit) override;
 
 public:
 	void ShowViewPatchText(bool b=true)
@@ -95,7 +95,7 @@ private:
 	UINT StatusThread();
 	void FillPatchView(bool onlySetTimer = false);
 	CWnd * GetPatchViewParentWnd() { return this; }
-	virtual void TogglePatchView();
+	void TogglePatchView();
 	void SetDlgTitle();
 	CString GetSignedOffByLine();
 	CString m_sTitle;
@@ -104,13 +104,13 @@ private:
 	enum { IDD = IDD_COMMITDLG };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
 
-	virtual BOOL OnInitDialog();
-	virtual void OnOK();
-	virtual void OnCancel();
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	virtual LRESULT DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+	virtual BOOL OnInitDialog() override;
+	virtual void OnOK() override;
+	virtual void OnCancel() override;
+	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
+	virtual LRESULT DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam) override;
 	afx_msg void OnBnClickedShowunversioned();
 	afx_msg void OnBnClickedHistory();
 	afx_msg void OnBnClickedBugtraqbutton();

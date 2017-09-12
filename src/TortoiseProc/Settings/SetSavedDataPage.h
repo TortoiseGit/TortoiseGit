@@ -33,12 +33,12 @@ public:
 	CSetSavedDataPage();
 	virtual ~CSetSavedDataPage();
 
-	UINT GetIconID() {return IDI_SAVEDDATA;}
+	UINT GetIconID() override { return IDI_SAVEDDATA; }
 
 	enum { IDD = IDD_SETTINGSSAVEDDATA };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
 
@@ -53,8 +53,8 @@ protected:
 	afx_msg void OnBnClickedStoreddecisionsclear();
 	afx_msg void OnModified();
 
-	virtual BOOL OnInitDialog();
-	virtual BOOL OnApply();
+	virtual BOOL OnInitDialog() override;
+	virtual BOOL OnApply() override;
 	void DeleteViaShell(LPCTSTR path, UINT progressText);
 
 private:

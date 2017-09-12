@@ -116,7 +116,7 @@ public:
 
 protected:
 	DECLARE_MESSAGE_MAP()
-	virtual BOOL OnInitDialog();
+	virtual BOOL OnInitDialog() override;
 };
 
 

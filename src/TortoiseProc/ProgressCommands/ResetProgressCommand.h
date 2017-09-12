@@ -31,5 +31,5 @@ public:
 
 	void SetRevision(const CString& revision) { m_revision = revision; }
 	void SetResetType(int resetType){ m_resetType = resetType; }
-	virtual bool Run(CGitProgressList* list, CString& sWindowTitle, int& m_itemCountTotal, int& m_itemCount);
+	virtual bool Run(CGitProgressList* list, CString& sWindowTitle, int& m_itemCountTotal, int& m_itemCount) override;
 };

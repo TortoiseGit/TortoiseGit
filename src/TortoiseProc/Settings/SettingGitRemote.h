@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2015, 2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -39,14 +39,14 @@ public:
 	};
 	CSettingGitRemote();
 	virtual ~CSettingGitRemote();
-	UINT GetIconID() {return IDI_GITREMOTE;}
+	UINT GetIconID() override { return IDI_GITREMOTE; }
 // Dialog Data
 	enum { IDD = IDD_SETTINREMOTE };
 
 	bool		m_bNoFetch;
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
 
@@ -65,8 +65,8 @@ protected:
 	afx_msg void OnBnClickedButtonRemove();
 	afx_msg void OnBnClickedButtonRenameRemote();
 
-	BOOL OnInitDialog();
-	BOOL OnApply();
+	virtual BOOL OnInitDialog() override;
+	virtual BOOL OnApply() override;
 
 	BOOL IsRemoteExist(CString &remote);
 	bool IsRemoteCollideWithRefspec(CString remote);

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2013, 2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -42,21 +42,21 @@ public:
 
 // Overrides
 public:
-	virtual BOOL InitInstance();
+	virtual BOOL InitInstance() override;
 
 // Implementation
 	UINT  m_nAppLook;
 	BOOL  m_bHiColorIcons;
 
-	virtual void PreLoadState();
-	virtual void LoadCustomState();
-	virtual void SaveCustomState();
+	virtual void PreLoadState() override;
+	virtual void LoadCustomState() override;
+	virtual void SaveCustomState() override;
 
 	CString m_Rev;
 	afx_msg void OnAppAbout();
 	afx_msg void OnFileSettings();
 	DECLARE_MESSAGE_MAP()
-	virtual int ExitInstance();
+	virtual int ExitInstance() override;
 };
 
 extern CTortoiseGitBlameApp theApp;

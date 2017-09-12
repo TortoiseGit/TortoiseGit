@@ -33,17 +33,17 @@ public:
 	CSettingsProgsMerge();
 	virtual ~CSettingsProgsMerge();
 
-	UINT GetIconID() {return IDI_MERGE;}
+	UINT GetIconID() override { return IDI_MERGE; }
 // Dialog Data
 	enum { IDD = IDD_SETTINGSPROGSMERGE };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
 public:
-	virtual BOOL OnInitDialog();
-	virtual BOOL OnApply();
+	virtual BOOL OnInitDialog() override;
+	virtual BOOL OnApply() override;
 	afx_msg void OnBnClickedExtmergeOff();
 	afx_msg void OnBnClickedExtmergeOn();
 	afx_msg void OnBnClickedExtmergebrowse();

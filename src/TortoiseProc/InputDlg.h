@@ -39,10 +39,10 @@ public:
 protected:
 	CFont			m_logFont;
 
-	virtual void DoDataExchange(CDataExchange* pDX);
-	virtual BOOL OnInitDialog();
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	virtual void OnOK();
+	virtual void DoDataExchange(CDataExchange* pDX) override;
+	virtual BOOL OnInitDialog() override;
+	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
+	virtual void OnOK() override;
 
 	afx_msg void OnEnChangeLogmessage();
 	afx_msg void OnSysColorChange();

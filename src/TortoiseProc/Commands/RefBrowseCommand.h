@@ -22,7 +22,7 @@
 
 class RefBrowseCommand : public Command
 {
-	virtual bool Execute()
+	virtual bool Execute() override
 	{
 		CBrowseRefsDlg(orgCmdLinePath.GetWinPath()).DoModal();
 		return true;

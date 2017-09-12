@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2011, 2015-2016 - TortoiseGit
+// Copyright (C) 2009-2011, 2015-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -39,7 +39,7 @@ public:
 	std::vector<GitRevLoglist> m_RevCache;
 
 protected:
-	virtual void OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult);
-	virtual void OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult);
-	virtual BOOL OnToolTipText(UINT id, NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnLvnGetdispinfoLoglist(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnNMCustomdrawLoglist(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg BOOL OnToolTipText(UINT id, NMHDR* pNMHDR, LRESULT* pResult);
 };
