@@ -84,6 +84,13 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 		mainWindow.SetTitle(parser.GetVal(L"title"));
 	else if (parser.HasVal(L"patchfile"))
 		mainWindow.SetTitle(parser.GetVal(L"patchfile"));
+	else if (lpCmdLine[0])
+	{
+		// remove double quotes
+		std::wstring path = lpCmdLine;
+		path.erase(std::remove(path.begin(), path.end(), L'"'), path.end());
+		mainWindow.SetTitle(path.c_str());
+	}
 	else
 	{
 		ResString rPipeTitle(hResource, IDS_PIPETITLE);
