@@ -42,6 +42,8 @@
 extern char g_last_error[];
 const char * g_prefix;
 
+static_assert(sizeof(struct object_id) == sizeof(struct GIT_OBJECT_OID), "Required to be equal in gitdll.h");
+
 extern NORETURN void die_dll(const char* err, va_list params);
 extern void handle_error(const char* err, va_list params);
 extern void handle_warning(const char* warn, va_list params);
@@ -60,6 +62,7 @@ extern int write_entry(struct cache_entry* ce, char* path, const struct checkout
 extern struct object* deref_tag(struct object* o, const char* warn, int warnlen);
 extern void diff_flush_stat(struct diff_filepair* p, struct diff_options* o, struct diffstat_t* diffstat);
 extern void free_diffstat_info(struct diffstat_t* diffstat);
+static_assert(sizeof(unsigned long long) == sizeof(timestamp_t), "Required for each_reflog_ent_fn definition in gitdll.h");
 extern int for_each_reflog_ent(const char* refname, each_reflog_ent_fn fn, void* cb_data);
 extern int for_each_ref_in(const char* prefix, each_ref_fn fn, void* cb_data);
 

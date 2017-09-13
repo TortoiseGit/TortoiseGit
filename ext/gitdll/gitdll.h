@@ -52,6 +52,10 @@ public:
 
 typedef unsigned char GIT_HASH[GIT_HASH_SIZE];
 
+struct GIT_OBJECT_OID {
+	unsigned char hash[GIT_HASH_SIZE];
+};
+
 typedef void *  GIT_HANDLE;
 typedef void *  GIT_LOG;
 
@@ -169,9 +173,9 @@ GITDLL_API void git_exit_cleanup(void);
 #define REF_ISSYMREF 01
 #define REF_ISPACKED 02
 
-typedef int each_ref_fn(const char *refname, const unsigned char *sha1, int flags, void *cb_data);
+typedef int each_ref_fn(const char* refname, const struct GIT_OBJECT_OID* oid, int flags, void* cb_data);
 
-typedef int each_reflog_ent_fn(unsigned char *osha1, unsigned char *nsha1, const char *, unsigned long, int, const char *, void *);
+typedef int each_reflog_ent_fn(struct GIT_OBJECT_OID* old_oid, struct GIT_OBJECT_OID* new_oid, const char* committer, unsigned long long timestamp, int tz, const char* msg, void* cb_data);
 GITDLL_API int git_for_each_reflog_ent(const char *ref, each_reflog_ent_fn fn, void *cb_data);
 
 GITDLL_API int git_checkout_file(const char* ref, const char* path, char* outputpath);
