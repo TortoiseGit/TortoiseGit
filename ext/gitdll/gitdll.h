@@ -142,9 +142,6 @@ GITDLL_API int git_close_diff(GIT_DIFF diff);
 
 GITDLL_API int git_get_diff_file(GIT_DIFF diff, GIT_FILE file, int i, char** newname, char** oldname, int* IsDir, int* status, int* IsBin, int* inc, int* dec);
 
-#define READ_TREE_RECURSIVE 1
-typedef int (*read_tree_fn_t)(const unsigned char*, struct strbuf*, const char*, unsigned int, int, void*);
-
 
 typedef void * EXCLUDE_LIST;
 
