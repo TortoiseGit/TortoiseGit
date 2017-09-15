@@ -580,8 +580,8 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 	afx_msg void OnDestroy();
-	afx_msg void OnNMCustomdrawLoglist(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnLvnGetdispinfoLoglist(NMHDR* pNMHDR, LRESULT* pResult);
+	virtual afx_msg void OnNMCustomdrawLoglist(NMHDR* pNMHDR, LRESULT* pResult);
+	virtual afx_msg void OnLvnGetdispinfoLoglist(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg LRESULT OnFindDialogMessage(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnScrollToMessage(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnScrollToRef(WPARAM wParam, LPARAM lParam);
@@ -601,7 +601,7 @@ protected:
 	void FetchRemoteList();
 	void FetchTrackingBranchList();
 
-	afx_msg BOOL OnToolTipText(UINT id, NMHDR* pNMHDR, LRESULT* pResult);
+	virtual afx_msg BOOL OnToolTipText(UINT id, NMHDR* pNMHDR, LRESULT* pResult);
 	virtual INT_PTR OnToolHitTest(CPoint point, TOOLINFO* pTI) const override;
 	CString GetToolTipText(int nItem, int nSubItem);
 

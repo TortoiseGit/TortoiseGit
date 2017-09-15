@@ -39,7 +39,7 @@ public:
 	std::vector<GitRevLoglist> m_RevCache;
 
 protected:
-	afx_msg void OnLvnGetdispinfoLoglist(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnNMCustomdrawLoglist(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg BOOL OnToolTipText(UINT id, NMHDR* pNMHDR, LRESULT* pResult);
+	virtual void OnLvnGetdispinfoLoglist(NMHDR* pNMHDR, LRESULT* pResult) override;
+	virtual void OnNMCustomdrawLoglist(NMHDR* pNMHDR, LRESULT* pResult) override;
+	virtual BOOL OnToolTipText(UINT id, NMHDR* pNMHDR, LRESULT* pResult) override;
 };
