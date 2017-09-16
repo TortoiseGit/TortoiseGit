@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2012, 2014, 2016-2017 - TortoiseGit
-// Copyright (C) 2007, 2012-2013, 2017 - TortoiseSVN
+// Copyright (C) 2007, 2012-2014, 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -379,16 +379,12 @@ void CFilterEdit::DrawDimText()
 		return;
 
 	CClientDC	dcDraw(this);
-	CRect		rRect;
 	int			iState = dcDraw.SaveDC();
-
-	GetClientRect(&rRect);
-	rRect.OffsetRect(1, 1);
 
 	dcDraw.SelectObject((*GetFont()));
 	dcDraw.SetTextColor(GetSysColor(COLOR_GRAYTEXT));
 	dcDraw.SetBkColor(GetSysColor(COLOR_WINDOW));
-	dcDraw.DrawText(m_sCueBanner, m_sCueBanner.GetLength(), &rRect, DT_CENTER | DT_VCENTER);
+	dcDraw.DrawText(m_sCueBanner, m_sCueBanner.GetLength(), &m_rcEditArea, DT_CENTER | DT_VCENTER);
 	dcDraw.RestoreDC(iState);
 	return;
 }
