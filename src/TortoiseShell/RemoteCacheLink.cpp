@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2009-2014, 2016-2017 - TortoiseGit
-// Copyright (C) 2003-2014 - TortoiseSVN
+// Copyright (C) 2003-2014, 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -39,8 +39,7 @@ CRemoteCacheLink::~CRemoteCacheLink(void)
 	m_critSec.Term();
 }
 
-bool CRemoteCacheLink::InternalEnsurePipeOpen ( CAutoFile& hPipe
-											  , const CString& pipeName) const
+bool CRemoteCacheLink::InternalEnsurePipeOpen(CAutoFile& hPipe, const CString& pipeName, bool overlapped) const
 {
 	if (hPipe)
 		return true;
@@ -56,7 +55,7 @@ bool CRemoteCacheLink::InternalEnsurePipeOpen ( CAutoFile& hPipe
 							0,                              // no sharing
 							nullptr,                        // default security attributes
 							OPEN_EXISTING,                  // opens existing pipe
-							FILE_FLAG_OVERLAPPED,           // default attributes
+							overlapped ? FILE_FLAG_OVERLAPPED : 0, // default attributes
 							nullptr);                       // no template file
 		if ((!hPipe) && (GetLastError() == ERROR_PIPE_BUSY))
 		{
@@ -92,7 +91,7 @@ bool CRemoteCacheLink::EnsurePipeOpen()
 {
 	AutoLocker lock(m_critSec);
 
-	if (InternalEnsurePipeOpen (m_hPipe, GetCachePipeName()))
+	if (InternalEnsurePipeOpen(m_hPipe, GetCachePipeName(), true))
 	{
 		// create an unnamed (=local) manual reset event for use in the overlapped structure
 		if (m_hEvent)
@@ -111,8 +110,7 @@ bool CRemoteCacheLink::EnsurePipeOpen()
 
 bool CRemoteCacheLink::EnsureCommandPipeOpen()
 {
-	AutoLocker lock(m_critSec);
-	return InternalEnsurePipeOpen (m_hCommandPipe, GetCacheCommandPipeName());
+	return InternalEnsurePipeOpen(m_hCommandPipe, GetCacheCommandPipeName(), false);
 }
 
 void CRemoteCacheLink::ClosePipe()
@@ -236,6 +234,7 @@ bool CRemoteCacheLink::GetStatusFromRemoteCache(const CTGitPath& Path, TGITCache
 
 bool CRemoteCacheLink::ReleaseLockForPath(const CTGitPath& path)
 {
+	AutoLocker lock(m_critSec);
 	EnsureCommandPipeOpen();
 	if (m_hCommandPipe)
 	{

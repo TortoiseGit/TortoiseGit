@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2011, 2014 - TortoiseSVN
+// Copyright (C) 2003-2011, 2014, 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -39,7 +39,7 @@ public:
 	bool ReleaseLockForPath(const CTGitPath& path);
 
 private:
-	bool InternalEnsurePipeOpen (CAutoFile& hPipe, const CString& pipeName) const;
+	bool InternalEnsurePipeOpen(CAutoFile& hPipe, const CString& pipeName, bool overlapped) const;
 
 	bool EnsurePipeOpen();
 	void ClosePipe();
