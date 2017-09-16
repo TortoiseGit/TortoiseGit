@@ -20,9 +20,6 @@
 #pragma once
 #include <memory>
 
-#define WM_FILTEREDIT_INFOCLICKED	(WM_USER + 102)
-#define WM_FILTEREDIT_CANCELCLICKED	(WM_USER + 101)
-
 /**
  * \ingroup Utils
  * Validator interface for the Filter edit control CFilterEdit
@@ -70,6 +67,9 @@ class CFilterEdit : public CEdit
 public:
 	CFilterEdit();
 	virtual ~CFilterEdit();
+
+	static const UINT WM_FILTEREDIT_INFOCLICKED;
+	static const UINT WM_FILTEREDIT_CANCELCLICKED;
 
 	/**
 	 * Sets the icons to show for the cancel button. The first icon represents

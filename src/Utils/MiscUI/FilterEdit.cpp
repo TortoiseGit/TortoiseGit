@@ -20,6 +20,10 @@
 #include "stdafx.h"
 #include "FilterEdit.h"
 
+
+const UINT CFilterEdit::WM_FILTEREDIT_INFOCLICKED = ::RegisterWindowMessage(L"TGITWM_FILTEREDIT_INFOCLICKED");
+const UINT CFilterEdit::WM_FILTEREDIT_CANCELCLICKED = ::RegisterWindowMessage(L"TGITWM_FILTEREDIT_CANCELCLICKED");
+
 IMPLEMENT_DYNAMIC(CFilterEdit, CEdit)
 
 CFilterEdit::CFilterEdit()
