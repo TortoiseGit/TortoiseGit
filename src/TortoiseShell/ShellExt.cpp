@@ -258,10 +258,23 @@ UINT __stdcall CShellExt::CopyCallback_Wrap(HWND /*hWnd*/, UINT wFunc, UINT /*wF
 	case FO_RENAME:
 		if (pszSrcFile && pszSrcFile[0] && g_ShellCache.IsPathAllowed(pszSrcFile))
 		{
-			CString topDir;
-			if (GitAdminDir::HasAdminDir(pszSrcFile, &topDir))
-				m_CachedStatus.m_GitStatus.ReleasePath(topDir);
-			m_remoteCacheLink.ReleaseLockForPath(CTGitPath(pszSrcFile));
+			auto cacheType = g_ShellCache.GetCacheType();
+			switch (cacheType)
+			{
+			case ShellCache::exe:
+				m_remoteCacheLink.ReleaseLockForPath(CTGitPath(pszSrcFile));
+				break;
+			case ShellCache::dll:
+			case ShellCache::dllFull:
+			{
+				CString topDir;
+				if (GitAdminDir::HasAdminDir(pszSrcFile, &topDir))
+					m_CachedStatus.m_GitStatus.ReleasePath(topDir);
+				break;
+			}
+			default:
+				break;
+			}
 		}
 		break;
 	default:
