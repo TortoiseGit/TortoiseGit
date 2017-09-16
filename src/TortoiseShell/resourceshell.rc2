@@ -4,6 +4,6 @@
 //
 #ifdef TSVNSHELL
 
-#include "..\\Resources\\TortoiseShell.rc2"  // non-Microsoft Visual C++ edited resources
+#include "../Resources/TortoiseShell.rc2"  // non-Microsoft Visual C++ edited resources
 
 #endif

@@ -5,7 +5,7 @@
 #pragma once
 #define XMESSAGEBOX_APPREGPATH "Software\\TortoiseGit\\"
 
-#include "..\targetver.h"
+#include "../targetver.h"
 
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS	// some CString constructors will be explicit
 

@@ -18,7 +18,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #include "stdafx.h"
-#include "..\Resources\LoglistCommonResource.h"
+#include "../Resources/LoglistCommonResource.h"
 #include "CommonAppUtils.h"
 #include "PathUtils.h"
 #include "StringUtils.h"

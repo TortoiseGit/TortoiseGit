@@ -25,7 +25,7 @@
 #include "LogDlg.h"
 #include "AddRemoteDlg.h"
 #include "AppUtils.h"
-#include "Settings\SettingGitRemote.h"
+#include "Settings/SettingGitRemote.h"
 #include "SinglePropSheetDlg.h"
 #include "MessageBox.h"
 #include "RefLogDlg.h"

@@ -22,7 +22,7 @@
 #include "DirFileEnum.h"
 #include "CacheInterface.h"
 #include <WinInet.h>
-#include ".\cachedlg.h"
+#include "CacheDlg.h"
 #include <random>
 
 #ifdef _DEBUG

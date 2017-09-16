@@ -22,7 +22,7 @@
 #include "Settings.h"
 #include "Git.h"
 #include "MessageBox.h"
-#include "..\..\TGitCache\CacheInterface.h"
+#include "../../TGitCache\CacheInterface.h"
 #include "GitAdminDir.h"
 #include "AppUtils.h"
 

@@ -11,7 +11,7 @@
 // Add manually edited resources here...
 
 /////////////////////////////////////////////////////////////////////////////
-#include "..\..\version.h"
+#include "../../version.h"
 /////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////////////
@@ -41,7 +41,7 @@ BEGIN
             VALUE "FileDescription", "Restarts explorer after upgrade.\0"
             VALUE "FileVersion", STRFILEVER
             VALUE "InternalName", "RestartExplorer.exe\0"
-            VALUE "LegalCopyright", "Copyright (C) 2016 - TortoiseGit\0"
+            VALUE "LegalCopyright", "Copyright (C) 2016-2017 - TortoiseGit\0"
             VALUE "OriginalFilename", "RestartExplorer.exe\0"
             VALUE "ProductName", "RestartExplorer\0"
             VALUE "ProductVersion", STRPRODUCTVER

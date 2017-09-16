@@ -23,7 +23,7 @@
 #include "AppUtils.h"
 #include "PathUtils.h"
 #include "DirFileEnum.h"
-#include "..\version.h"
+#include "../version.h"
 #include "Git.h"
 #include "MessageBox.h"
 #include "GitForWindows.h"

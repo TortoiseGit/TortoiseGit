@@ -19,7 +19,7 @@
 #include "stdafx.h"
 #include "SettingsCommand.h"
 
-#include "..\Settings\Settings.h"
+#include "../Settings/Settings.h"
 
 bool SettingsCommand::Execute()
 {

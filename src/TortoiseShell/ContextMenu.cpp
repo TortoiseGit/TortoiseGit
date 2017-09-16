@@ -28,7 +28,7 @@
 #include "PathUtils.h"
 #include "CreateProcessHelper.h"
 #include "FormatMessageWrapper.h"
-#include "..\TGitCache\CacheInterface.h"
+#include "../TGitCache/CacheInterface.h"
 #include "resource.h"
 
 #define GetPIDLFolder(pida) (LPCITEMIDLIST)(((LPBYTE)pida)+(pida)->aoffset[0])

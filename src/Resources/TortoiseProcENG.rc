@@ -1,6 +1,6 @@
 // Microsoft Visual C++ generated resource script.
 //
-#include "..\TortoiseProc\resource.h"
+#include "../TortoiseProc/resource.h"
 
 #define APSTUDIO_READONLY_SYMBOLS
 /////////////////////////////////////////////////////////////////////////////
@@ -4955,7 +4955,7 @@ LANGUAGE LANG_GERMAN, SUBLANG_GERMAN_SWISS
 
 1 TEXTINCLUDE 
 BEGIN
-    "..\\TortoiseProc\\resource.h\0"
+    "../TortoiseProc/resource.h\0"
 END
 
 2 TEXTINCLUDE 

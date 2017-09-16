@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2009,2011,2013-2016 - TortoiseGit
+// Copyright (C) 2008-2009,2011,2013-2017 - TortoiseGit
 // Copyright (C) 2003-2008, 2011, 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@
 #include "SetOverlayPage.h"
 #include "SetOverlayIcons.h"
 #include "Globals.h"
-#include "..\TGitCache\CacheInterface.h"
+#include "../TGitCache/CacheInterface.h"
 #include "StringUtils.h"
 
 IMPLEMENT_DYNAMIC(CSetOverlayPage, ISettingsPropPage)

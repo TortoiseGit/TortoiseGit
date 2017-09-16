@@ -13,7 +13,7 @@
 //
 // Version
 //
-#include "..\version.h"
+#include "../version.h"
 VS_VERSION_INFO VERSIONINFO
  FILEVERSION FILEVER
  PRODUCTVERSION PRODUCTVER

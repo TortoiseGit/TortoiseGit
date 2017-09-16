@@ -26,7 +26,7 @@
 #include "FormatMessageWrapper.h"
 #include <atlenc.h>
 #define NEED_SIGNING_KEY
-#include "..\version.h"
+#include "../version.h"
 #include "TempFile.h"
 #include "SmartHandle.h"
 

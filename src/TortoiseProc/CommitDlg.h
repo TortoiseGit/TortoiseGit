@@ -28,7 +28,7 @@
 #include "LinkControl.h"
 #include "PathWatcher.h"
 #include "BugTraqAssociations.h"
-#include "..\IBugTraqProvider\IBugTraqProvider_h.h"
+#include "../IBugTraqProvider/IBugTraqProvider_h.h"
 #include "HyperLink.h"
 #include "PatchViewDlg.h"
 #include "MenuButton.h"

@@ -18,7 +18,7 @@
 //
 #include "stdafx.h"
 #include "UpdateDownloader.h"
-#include "..\version.h"
+#include "../version.h"
 
 CUpdateDownloader::CUpdateDownloader(HWND hwnd, bool force, UINT msg, CEvent *eventStop)
 : m_hWnd(hwnd)

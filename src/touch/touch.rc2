@@ -11,7 +11,7 @@
 // Add manually edited resources here...
 
 /////////////////////////////////////////////////////////////////////////////
-#include "..\version.h"
+#include "../version.h"
 /////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////////////
@@ -41,7 +41,7 @@ BEGIN
             VALUE "FileDescription", "Creates a file.\0"
             VALUE "FileVersion", STRFILEVER
             VALUE "InternalName", "tgittouch.exe\0"
-            VALUE "LegalCopyright", "Copyright (C) 2010-2016 - TortoiseGit\0"
+            VALUE "LegalCopyright", "Copyright (C) 2010-2017 - TortoiseGit\0"
             VALUE "OriginalFilename", "tgittouch.exe\0"
             VALUE "ProductName", "tgittouch\0"
             VALUE "ProductVersion", STRPRODUCTVER

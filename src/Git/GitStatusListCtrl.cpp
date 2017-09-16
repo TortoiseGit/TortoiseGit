@@ -20,7 +20,7 @@
 
 #include "stdafx.h"
 #include "resource.h"
-#include "..\\TortoiseShell\resource.h"
+#include "../TortoiseShell/resource.h"
 #include "GitStatusListCtrl.h"
 #include "MessageBox.h"
 #include "MyMemDC.h"

@@ -21,7 +21,7 @@
 #include "FirstStartWizard.h"
 #include "FirstStartWizardAuthentication.h"
 #include "Git.h"
-#include "Settings\SettingGitCredential.h"
+#include "Settings/SettingGitCredential.h"
 #include "PathUtils.h"
 
 #define WM_SETPAGEFOCUS WM_APP+2

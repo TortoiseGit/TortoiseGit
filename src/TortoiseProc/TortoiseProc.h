@@ -26,7 +26,7 @@
 
 #include "resource.h"		// main symbols
 
-#include "..\\TortoiseShell\\resource.h"
+#include "../TortoiseShell/resource.h"
 #include "LoglistCommonResource.h"
 
 /**

@@ -5,7 +5,7 @@
 #pragma once
 #define XMESSAGEBOX_APPREGPATH "Software\\TortoiseGit\\"
 
-#include "..\..\src\targetver.h"
+#include "../../src\targetver.h"
 
 #include <afxwin.h>         // MFC core and standard components
 #include <afxext.h>         // MFC extensions

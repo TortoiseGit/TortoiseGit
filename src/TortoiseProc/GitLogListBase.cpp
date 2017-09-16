@@ -30,7 +30,7 @@
 #include "StringUtils.h"
 #include "UnicodeUtils.h"
 #include "IconMenu.h"
-#include "..\TortoiseShell\Resource.h"
+#include "../TortoiseShell/Resource.h"
 
 const UINT CGitLogListBase::m_FindDialogMessage = RegisterWindowMessage(FINDMSGSTRING);
 const UINT CGitLogListBase::m_ScrollToMessage = RegisterWindowMessage(L"TORTOISEGIT_LOG_SCROLLTO");

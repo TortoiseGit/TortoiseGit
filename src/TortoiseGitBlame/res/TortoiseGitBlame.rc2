@@ -11,9 +11,9 @@
 // Add manually edited resources here...
 
 /////////////////////////////////////////////////////////////////////////////
-#include "..\version.h"
-#include "..\\TortoiseShell\\resourceshell.rc"
-#include "..\Resources\TortoiseLoglistCommon.rc2"
+#include "../version.h"
+#include "../TortoiseShell/resourceshell.rc"
+#include "../Resources/TortoiseLoglistCommon.rc2"
 /////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////////////
@@ -22,7 +22,7 @@
 //
 // Version
 //
-#include "..\version.h"
+#include "../version.h"
 VS_VERSION_INFO VERSIONINFO
  FILEVERSION FILEVER
  PRODUCTVERSION PRODUCTVER

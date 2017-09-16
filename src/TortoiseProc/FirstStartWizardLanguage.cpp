@@ -22,7 +22,7 @@
 #include "FirstStartWizardStart.h"
 #include "PathUtils.h"
 #include "DirFileEnum.h"
-#include "..\version.h"
+#include "../version.h"
 #include "FirstStartWizardLanguage.h"
 
 #define DOWNLOAD_URL L"https://tortoisegit.org/download/"

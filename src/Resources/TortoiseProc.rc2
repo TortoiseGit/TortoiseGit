@@ -13,7 +13,7 @@
 //
 // Version
 //
-#include "..\version.h"
+#include "../version.h"
 VS_VERSION_INFO VERSIONINFO
  FILEVERSION FILEVER
  PRODUCTVERSION PRODUCTVER
@@ -35,7 +35,7 @@ BEGIN
             VALUE "FileDescription", "TortoiseGit client\0"
             VALUE "FileVersion", STRFILEVER
             VALUE "InternalName", "TortoiseGitProc.exe\0"
-            VALUE "LegalCopyright", "Copyright (C) 2008-2017 - TortoiseGit and Copyright (C) 2003-2016 - TortoiseSVN\0"
+            VALUE "LegalCopyright", "Copyright (C) 2008-2017 - TortoiseGit and Copyright (C) 2003-2017 - TortoiseSVN\0"
             VALUE "OriginalFilename", "TortoiseGitProc.exe\0"
             VALUE "ProductName", "TortoiseGit\0"
             VALUE "ProductVersion", STRPRODUCTVER
@@ -47,6 +47,6 @@ BEGIN
     END
 END
 
-#include "..\\TortoiseShell\\resourceshell.rc"
-#include "..\\Resources\\TortoiseLoglistCommon.rc2"
+#include "../TortoiseShell/resourceshell.rc"
+#include "../Resources/TortoiseLoglistCommon.rc2"
 /////////////////////////////////////////////////////////////////////////////

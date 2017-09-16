@@ -11,7 +11,7 @@
 // Add manually edited resources here...
 
 /////////////////////////////////////////////////////////////////////////////
-#include "..\version.h"
+#include "../version.h"
 /////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////////////
@@ -41,7 +41,7 @@ BEGIN
             VALUE "FileDescription", "TortoiseGit - git CLI stdin wrapper\0"
             VALUE "FileVersion", STRFILEVER
             VALUE "InternalName", "SshAskPass.exe\0"
-            VALUE "LegalCopyright", "Copyright (C) 2009-2016 - TortoiseGit\0"
+            VALUE "LegalCopyright", "Copyright (C) 2009-2017 - TortoiseGit\0"
             VALUE "OriginalFilename", "SshAskPass.exe\0"
             VALUE "ProductName", "SSHAskPass\0"
             VALUE "ProductVersion", STRPRODUCTVER

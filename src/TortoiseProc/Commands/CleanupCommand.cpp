@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2011-2016 - TortoiseGit
+// Copyright (C) 2009, 2011-2017 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -24,7 +24,7 @@
 #include "ProgressDlg.h"
 #include "ShellUpdater.h"
 #include "CleanTypeDlg.h"
-#include "..\Utils\UnicodeUtils.h"
+#include "../Utils/UnicodeUtils.h"
 #include "SysProgressDlg.h"
 
 static CString UnescapeQuotePath(CString s)

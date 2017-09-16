@@ -23,7 +23,7 @@
 #include "PreserveChdir.h"
 #include "UnicodeUtils.h"
 #include "GitStatus.h"
-#include "..\TGitCache\CacheInterface.h"
+#include "../TGitCache/CacheInterface.h"
 #include "GitAdminDir.h"
 #include "StringUtils.h"
 

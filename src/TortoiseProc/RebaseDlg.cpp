@@ -31,7 +31,7 @@
 #include "ProgressDlg.h"
 #include "SmartHandle.h"
 #include "../TGitCache/CacheInterface.h"
-#include "Settings\Settings.h"
+#include "Settings/Settings.h"
 #include "MassiveGitTask.h"
 #include "CommitDlg.h"
 #include "StringUtils.h"

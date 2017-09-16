@@ -21,7 +21,7 @@
 #include "TortoiseProc.h"
 #include "Git.h"
 #include "LoglistCommonResource.h"
-#include "..\version.h"
+#include "../version.h"
 #include "MessageBox.h"
 #include "CheckForUpdatesDlg.h"
 #include "registry.h"

@@ -43,7 +43,7 @@
 #include "MergeDlg.h"
 #include "MergeAbortDlg.h"
 #include "Hooks.h"
-#include "..\Settings\Settings.h"
+#include "../Settings/Settings.h"
 #include "InputDlg.h"
 #include "SVNDCommitDlg.h"
 #include "requestpulldlg.h"

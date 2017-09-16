@@ -27,7 +27,7 @@
 #include "UnicodeUtils.h"
 #include "IconMenu.h"
 #include "AppUtils.h"
-#include "..\TortoiseShell\resource.h"
+#include "../TortoiseShell/resource.h"
 #include "LoglistCommonResource.h"
 #include "SysProgressDlg.h"
 #include "ProgressDlg.h"

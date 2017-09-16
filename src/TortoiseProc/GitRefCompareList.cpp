@@ -26,7 +26,7 @@
 #include "UnicodeUtils.h"
 #include "IconMenu.h"
 #include "AppUtils.h"
-#include "..\TortoiseShell\resource.h"
+#include "../TortoiseShell/resource.h"
 #include "LoglistCommonResource.h"
 
 IMPLEMENT_DYNAMIC(CGitRefCompareList, CHintCtrl<CListCtrl>)

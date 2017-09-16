@@ -13,7 +13,7 @@
 //
 // Version
 //
-#include "..\version.h"
+#include "../version.h"
 VS_VERSION_INFO VERSIONINFO
  FILEVERSION FILEVER
  PRODUCTVERSION PRODUCTVER
@@ -35,7 +35,7 @@ BEGIN
             VALUE "FileDescription", "TortoiseGitIDiff\0"
             VALUE "FileVersion", STRFILEVER
             VALUE "InternalName", "TortoiseGitIDiff.exe\0"
-            VALUE "LegalCopyright", "Copyright (C) 2009-2017 - TortoiseGit and Copyright (C) 2006-2016 - TortoiseSVN\0"
+            VALUE "LegalCopyright", "Copyright (C) 2009-2017 - TortoiseGit and Copyright (C) 2006-2017 - TortoiseSVN\0"
             VALUE "OriginalFilename", "TortoiseGitIDiff.exe\0"
             VALUE "ProductName", "TortoiseGitIDiff\0"
             VALUE "ProductVersion", STRPRODUCTVER

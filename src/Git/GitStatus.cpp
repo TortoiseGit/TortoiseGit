@@ -19,7 +19,7 @@
 
 #include "stdafx.h"
 #include "registry.h"
-#include "..\TortoiseShell\resource.h"
+#include "../TortoiseShell/resource.h"
 #include "GitStatus.h"
 #include "UnicodeUtils.h"
 #include "Git.h"
