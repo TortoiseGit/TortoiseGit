@@ -256,7 +256,7 @@ UINT __stdcall CShellExt::CopyCallback_Wrap(HWND /*hWnd*/, UINT wFunc, UINT /*wF
 	case FO_MOVE:
 	case FO_DELETE:
 	case FO_RENAME:
-		if (pszSrcFile && pszSrcFile[0])
+		if (pszSrcFile && pszSrcFile[0] && g_ShellCache.IsPathAllowed(pszSrcFile))
 		{
 			CString topDir;
 			if (GitAdminDir::HasAdminDir(pszSrcFile, &topDir))
