@@ -42,7 +42,6 @@ protected:
 
 	CListCtrl m_ctrlTags;
 	CButton	m_SelectAll;
-	REF_VECTOR m_taglist;
 
 	void Refresh();
 

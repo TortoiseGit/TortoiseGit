@@ -85,7 +85,6 @@ void CDeleteRemoteTagDlg::Refresh()
 {
 	m_ctrlTags.DeleteAllItems();
 	m_SelectAll.SetCheck(BST_UNCHECKED);
-	m_taglist.clear();
 
 	CSysProgressDlg sysProgressDlg;
 	sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
@@ -93,7 +92,8 @@ void CDeleteRemoteTagDlg::Refresh()
 	sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
 	sysProgressDlg.SetShowProgressBar(false);
 	sysProgressDlg.ShowModal(this, true);
-	if (g_Git.GetRemoteTags(m_sRemote, m_taglist))
+	REF_VECTOR tags;
+	if (g_Git.GetRemoteTags(m_sRemote, tags))
 	{
 		sysProgressDlg.Stop();
 		MessageBox(g_Git.GetGitLastErr(L"Could not retrieve remote tags.", CGit::GIT_CMD_FETCH), L"TortoiseGit", MB_ICONERROR);
@@ -101,11 +101,11 @@ void CDeleteRemoteTagDlg::Refresh()
 	sysProgressDlg.Stop();
 	BringWindowToTop();
 
-	for (int i = 0; i < (int)m_taglist.size(); ++i)
+	for (int i = 0; i < (int)tags.size(); ++i)
 	{
-		if (CStringUtils::EndsWith(m_taglist[i].name, L"^{}"))
+		if (CStringUtils::EndsWith(tags[i].name, L"^{}"))
 			continue;
-		m_ctrlTags.InsertItem(i, m_taglist[i].name);
+		m_ctrlTags.InsertItem(i, tags[i].name);
 	}
 
 	DialogEnableWindow(IDOK, FALSE);
@@ -143,7 +143,7 @@ void CDeleteRemoteTagDlg::OnBnClickedOk()
 	{
 		POSITION pos = m_ctrlTags.GetFirstSelectedItemPosition();
 		CString msg;
-		msg.Format(IDS_PROC_DELETEBRANCHTAG, (LPCTSTR)m_taglist[(m_ctrlTags.GetNextSelectedItem(pos))].name);
+		msg.Format(IDS_PROC_DELETEBRANCHTAG, (LPCTSTR)m_ctrlTags.GetItemText(m_ctrlTags.GetNextSelectedItem(pos), 0));
 		if (CMessageBox::Show(GetSafeHwnd(), msg, L"TortoiseGit", 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
 			return;
 	}
@@ -152,7 +152,7 @@ void CDeleteRemoteTagDlg::OnBnClickedOk()
 	POSITION pos = m_ctrlTags.GetFirstSelectedItemPosition();
 	int index;
 	while ((index = m_ctrlTags.GetNextSelectedItem(pos)) >= 0)
-		list.push_back(L"refs/tags/" + m_taglist[index].name);
+		list.push_back(L"refs/tags/" + m_ctrlTags.GetItemText(index, 0));
 	CSysProgressDlg sysProgressDlg;
 	sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
 	sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_DELETING_REMOTE_REFS)));
