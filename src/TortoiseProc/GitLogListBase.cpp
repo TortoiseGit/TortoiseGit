@@ -3542,31 +3542,28 @@ void CGitLogListBase::ShowGraphColumn(bool bShow)
 
 CString CGitLogListBase::GetTagInfo(GitRev* pLogEntry)
 {
-	CString cmd;
-	CString output;
+	if (m_HashMap.find(pLogEntry->m_CommitHash) == m_HashMap.end())
+		return L"";
 
-	if (m_HashMap.find(pLogEntry->m_CommitHash) != m_HashMap.end())
+	CString tagInfo;
+	const STRING_VECTOR& vector = m_HashMap[pLogEntry->m_CommitHash];
+	for (auto it = vector.cbegin(); it != vector.cend(); ++it)
 	{
-		STRING_VECTOR &vector = m_HashMap[pLogEntry->m_CommitHash];
-		for (size_t i = 0; i < vector.size(); ++i)
-		{
-			if (CStringUtils::StartsWith(vector[i], L"refs/tags/"))
-			{
-				CString tag = vector[i];
-				int start = vector[i].Find(L"^{}");
-				if (start > 0)
-					tag = tag.Left(start);
-				else
-					continue;
+		if (!CStringUtils::StartsWith((*it), L"refs/tags/"))
+			continue;
+		if (!CStringUtils::EndsWith((*it), L"^{}"))
+			continue;
 
-				cmd.Format(L"git.exe cat-file tag %s", (LPCTSTR)tag);
-				if (g_Git.Run(cmd, &output, nullptr, CP_UTF8) == 0)
-					output.Trim().AppendChar(L'\n');
-			}
-		}
+		CString cmd;
+		cmd.Format(L"git.exe cat-file tag %s", (LPCTSTR)(*it).Left((*it).GetLength() - (int)wcslen(L"^{}")));
+		CString output;
+		if (g_Git.Run(cmd, &output, nullptr, CP_UTF8) != 0)
+			continue;
+
+		output.Trim().AppendChar(L'\n');
+		tagInfo += output;
 	}
-
-	return output;
+	return tagInfo;
 }
 
 void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
