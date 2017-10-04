@@ -34,7 +34,7 @@ BEGIN
             VALUE "CompanyName", "https://tortoisegit.org/"
             VALUE "FileDescription", "TortoiseGit status cache"
             VALUE "FileVersion", STRFILEVER
-            VALUE "InternalName", "TGitCache.exe"
+            VALUE "InternalName", "TGitCache"
             VALUE "LegalCopyright", "Copyright (C) 2008-2017 - TortoiseGit and Copyright (C) 2003-2017 - TortoiseSVN"
             VALUE "OriginalFilename", "TGitCache.exe"
             VALUE "ProductName", "TortoiseGit"

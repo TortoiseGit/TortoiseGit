@@ -34,7 +34,7 @@ BEGIN
             VALUE "CompanyName", "https://tortoisegit.org/"
             VALUE "FileDescription", "TortoiseGitMerge"
             VALUE "FileVersion", STRFILEVER
-            VALUE "InternalName", "TortoiseGitMerge.exe"
+            VALUE "InternalName", "TortoiseGitMerge"
             VALUE "LegalCopyright", "Copyright (C) 2011-2017 - TortoiseGit and Copyright (C) 2003-2017 - TortoiseSVN"
             VALUE "OriginalFilename", "TortoiseGitMerge.exe"
             VALUE "ProductName", "TortoiseGitMerge"

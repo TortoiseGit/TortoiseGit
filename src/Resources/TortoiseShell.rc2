@@ -34,7 +34,7 @@ BEGIN
             VALUE "CompanyName", "https://tortoisegit.org/"
             VALUE "FileDescription", "TortoiseGit shell extension client"
             VALUE "FileVersion", STRFILEVER
-            VALUE "InternalName", "TortoiseGit.dll"
+            VALUE "InternalName", "TortoiseGit"
             VALUE "LegalCopyright", "Copyright (C) 2008-2017 - TortoiseGit and Copyright (C) 2003-2017 - TortoiseSVN"
             VALUE "OriginalFilename", "TortoiseGit.dll"
             VALUE "ProductName", "TortoiseGit"

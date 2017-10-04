@@ -40,7 +40,7 @@ BEGIN
             VALUE "CompanyName", "https://tortoisegit.org/"
             VALUE "FileDescription", "Restarts explorer after upgrade."
             VALUE "FileVersion", STRFILEVER
-            VALUE "InternalName", "RestartExplorer.exe"
+            VALUE "InternalName", "RestartExplorer"
             VALUE "LegalCopyright", "Copyright (C) 2016-2017 - TortoiseGit"
             VALUE "OriginalFilename", "RestartExplorer.exe"
             VALUE "ProductName", "RestartExplorer"

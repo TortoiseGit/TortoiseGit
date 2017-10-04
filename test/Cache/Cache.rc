@@ -73,7 +73,7 @@ BEGIN
             VALUE "CompanyName", "TODO: <Company name>"
             VALUE "FileDescription", "TODO: <File description>"
             VALUE "FileVersion", "1.0.0.1"
-            VALUE "InternalName", "Cache.exe"
+            VALUE "InternalName", "Cache"
             VALUE "LegalCopyright", "TODO: (c) <Company name>.  All rights reserved."
             VALUE "OriginalFilename", "Cache.exe"
             VALUE "ProductName", "TODO: <Product name>"
