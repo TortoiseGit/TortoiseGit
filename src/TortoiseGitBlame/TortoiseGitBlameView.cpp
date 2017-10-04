@@ -640,9 +640,15 @@ void CTortoiseGitBlameView::InitialiseEditor()
 			);
 	SendEditor(SCI_SETTABWIDTH, (DWORD)CRegStdDWORD(L"Software\\TortoiseGit\\BlameTabSize", 4));
 	SendEditor(SCI_SETREADONLY, TRUE);
-	LRESULT pix = SendEditor(SCI_TEXTWIDTH, STYLE_LINENUMBER, (LPARAM)this->m_TextView.StringForControl(L"_99999").GetBuffer());
+	int numberOfLines = m_data.GetNumberOfLines();
+	int numDigits = 2;
+	while (numberOfLines)
+	{
+		numberOfLines /= 10;
+		++numDigits;
+	}
 	if (m_bShowLine)
-		SendEditor(SCI_SETMARGINWIDTHN, 0, pix);
+		SendEditor(SCI_SETMARGINWIDTHN, 0, int(numDigits * SendEditor(SCI_TEXTWIDTH, STYLE_LINENUMBER, (LPARAM)"8")));
 	else
 		SendEditor(SCI_SETMARGINWIDTHN, 0);
 	SendEditor(SCI_SETMARGINWIDTHN, 1);
