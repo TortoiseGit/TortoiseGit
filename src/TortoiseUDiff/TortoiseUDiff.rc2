@@ -31,13 +31,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "https://tortoisegit.org\0"
-            VALUE "FileDescription", "TortoiseGitUDiff\0"
+            VALUE "CompanyName", "https://tortoisegit.org/"
+            VALUE "FileDescription", "TortoiseGitUDiff"
             VALUE "FileVersion", STRFILEVER
-            VALUE "InternalName", "TortoiseGitUDiff.exe\0"
-            VALUE "LegalCopyright", "Copyright (C) 2009-2017 - TortoiseGit and Copyright (C) 2007-2016 - TortoiseSVN\0"
-            VALUE "OriginalFilename", "TortoiseGitUDiff.exe\0"
-            VALUE "ProductName", "TortoiseGitUDiff\0"
+            VALUE "InternalName", "TortoiseGitUDiff.exe"
+            VALUE "LegalCopyright", "Copyright (C) 2009-2017 - TortoiseGit and Copyright (C) 2007-2016 - TortoiseSVN"
+            VALUE "OriginalFilename", "TortoiseGitUDiff.exe"
+            VALUE "ProductName", "TortoiseGitUDiff"
             VALUE "ProductVersion", STRPRODUCTVER
         END
     END

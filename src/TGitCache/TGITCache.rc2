@@ -31,13 +31,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "https://tortoisegit.org/\0"
-            VALUE "FileDescription", "TortoiseGit status cache\0"
+            VALUE "CompanyName", "https://tortoisegit.org/"
+            VALUE "FileDescription", "TortoiseGit status cache"
             VALUE "FileVersion", STRFILEVER
-            VALUE "InternalName", "TGitCache.exe\0"
-            VALUE "LegalCopyright", "Copyright (C) 2008-2017 - TortoiseGit and Copyright (C) 2003-2017 - TortoiseSVN\0"
-            VALUE "OriginalFilename", "TGitCache.exe\0"
-            VALUE "ProductName", "TortoiseGit\0"
+            VALUE "InternalName", "TGitCache.exe"
+            VALUE "LegalCopyright", "Copyright (C) 2008-2017 - TortoiseGit and Copyright (C) 2003-2017 - TortoiseSVN"
+            VALUE "OriginalFilename", "TGitCache.exe"
+            VALUE "ProductName", "TortoiseGit"
             VALUE "ProductVersion", STRPRODUCTVER
         END
     END
