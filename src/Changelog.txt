@@ -1,6 +1,9 @@
 ﻿= Release 2.6.0 =
 Released: unreleased
 
+== Features ==
+ * Fixed issue #3089: Show parent SHA1 on cherry picking a merge commit
+
 == Bug Fixes ==
  * Fixed issue #3029: LogDlg: Action column icons painted over Graph or message columns when turned off or resized
  * Fixed issue #3042: Spelling and grammar errors in First Start Wizard

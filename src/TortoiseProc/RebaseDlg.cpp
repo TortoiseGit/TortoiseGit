@@ -1926,8 +1926,10 @@ int CRebaseDlg::DoRebase()
 		msg.Format(IDS_CHERRYPICK_MERGECOMMIT, (LPCTSTR)pRev->m_CommitHash.ToString(), (LPCTSTR)pRev->GetSubject());
 		CString parent1;
 		parent1.Format(IDS_PARENT, 1);
+		parent1.AppendFormat(L"\n(%s)", (LPCTSTR)pRev->m_ParentHash.at(0).ToString());
 		CString parent2;
 		parent2.Format(IDS_PARENT, 2);
+		parent2.AppendFormat(L"\n(%s)", (LPCTSTR)pRev->m_ParentHash.at(1).ToString());
 		CString cancel;
 		cancel.LoadString(IDS_MSGBOX_CANCEL);
 		auto ret = CMessageBox::Show(m_hWnd, msg, L"TortoiseGit", 3, IDI_QUESTION, parent1, parent2, cancel);
