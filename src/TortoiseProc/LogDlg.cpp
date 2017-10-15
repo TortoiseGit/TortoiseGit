@@ -903,6 +903,8 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 				m_ChangedFileListCtrl.SetBusyString(CString(MAKEINTRESOURCE(IDS_PROC_LOG_FETCHINGFILES)));
 				m_ChangedFileListCtrl.SetBusy(TRUE);
 				m_ChangedFileListCtrl.SetRedraw(TRUE);
+				// entry might not already been enqueued for updating, issue #3090
+				pLogEntry->GetAction(&m_LogList);
 				return;
 			}
 

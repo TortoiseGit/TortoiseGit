@@ -17,6 +17,7 @@ Released: unreleased
    Update libgit to 2.14.1 based on Git for Windows source.
  * Fixed issue #3055: Explorer crash when deleting two independent folders
  * Fixed issue #3047: When Log Messages window is narrow, Filter box placeholder text may cover up the Filter Types button
+ * Fixed issue #3090: Show Log window stuck with "Fetching changed files..."
 
 = Release 2.5.0 =
 Released: 2017-07-23
