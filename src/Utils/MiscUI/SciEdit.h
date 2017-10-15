@@ -173,7 +173,7 @@ protected:
 	CStringA	GetWordForSpellChecker(const CString& sWord);
 	CString		GetWordFromSpellChecker(const CStringA& sWordA);
 
-	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+	virtual afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/);
 	DECLARE_MESSAGE_MAP()
 };
