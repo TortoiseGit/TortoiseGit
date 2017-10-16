@@ -14,6 +14,7 @@
 // Dan Sheridan, 2008
 // Davide Orlandi and Hans-Emil Skogh, 2005
 // Richard Horton, 2011
+// Paolo Nesti Poggi, 2017
 //
 
 var objArgs, num, sTheirDoc, sMyDoc, sBaseDoc, sMergedDoc,
@@ -72,8 +73,10 @@ catch (e)
 
 word.visible = true;
 
-// Show usage hint message
+// Anticipate creation of shell object
 WSHShell = WScript.CreateObject("WScript.Shell");
+
+// Show usage hint message
 WSHShell.Popup("After you click 'OK' we'll create a merge document. Please wait.\nThen reject or accept changes and save the document renaming it to the original conflicting filename.", 0, "TortoiseGit Word Merge", 64);
 
 // Open the base document
@@ -88,14 +91,9 @@ else if (parseInt(word.Version, 10) < vOffice2007)
 {
     baseDoc.Compare(sMergedDoc, "Comparison", wdCompareTargetNew, true, true);
 }
-else if (parseInt(word.Version, 10) < vOffice2010)
-{
-    baseDoc.Merge(sMergedDoc);
-}
 else
 {
-    //2010 - handle slightly differently as the basic merge isn't that good
-    //note this is designed specifically for svn 3 way merges, during the commit conflict resolution process
+    // this implements the three-way comparison for versions >= 2007
     theirDoc = baseDoc;
     baseDoc = word.Documents.Open(sBaseDoc);
     myDoc = word.Documents.Open(sMyDoc);
@@ -106,10 +104,11 @@ else
     baseDoc.Activate(); //required otherwise it compares the wrong docs !!!
     baseDoc.Compare(sMyDoc, "mine", wdCompareTargetSelected, true, true);
 
-    //theirDoc.Save();
-    //myDoc.Save();
     myDoc.Activate(); //required? just in case
     myDoc.Merge(sTheirDoc, wdMergeTargetCurrent);
+
+    // bring focus to the window, for accept/reject buttons to be active.
+    WSHShell.AppActivate(word.windows.Item(1).caption);
 }
 
 // Show the merge result
@@ -119,7 +118,7 @@ if (parseInt(word.Version, 10) < vOffice2007)
 }
 
 // Close the first document
-if ((parseInt(word.Version, 10) >= vOffice2002) && (parseInt(word.Version, 10) < vOffice2010))
+if (parseInt(word.Version, 10) >= vOffice2002)
 {
     baseDoc.Close();
 }
