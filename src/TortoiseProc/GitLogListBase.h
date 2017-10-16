@@ -203,7 +203,11 @@ public:
 	}
 };
 
-class CGitLogListBase : public CHintCtrl<CResizableColumnsListCtrl<CListCtrl>>
+class IAsyncDiffCB
+{
+};
+
+class CGitLogListBase : public CHintCtrl<CResizableColumnsListCtrl<CListCtrl>>, public IAsyncDiffCB
 {
 	DECLARE_DYNAMIC(CGitLogListBase)
 
@@ -640,7 +644,7 @@ protected:
 	CWinThread*			m_DiffingThread;
 	volatile LONG m_AsyncThreadRunning;
 
-	static int DiffAsync(GitRevLoglist* rev, void* pdata)
+	static int DiffAsync(GitRevLoglist* rev, IAsyncDiffCB* pdata)
 	{
 		auto data = reinterpret_cast<CGitLogListBase*>(pdata);
 		ULONGLONG offset = data->m_LogCache.GetOffset(rev->m_CommitHash);

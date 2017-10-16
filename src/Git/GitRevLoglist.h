@@ -26,8 +26,9 @@ class CGit;
 extern CGit g_Git;
 class GitRevLoglist;
 class CLogCache;
+class IAsyncDiffCB;
 
-typedef int CALL_UPDATE_DIFF_ASYNC(GitRevLoglist* pRev, void* data);
+typedef int CALL_UPDATE_DIFF_ASYNC(GitRevLoglist* pRev, IAsyncDiffCB* data);
 
 class GitRevLoglist : public GitRev
 {
@@ -77,7 +78,7 @@ public:
 	}
 
 public:
-	int& GetAction(void* data)
+	int& GetAction(IAsyncDiffCB* data)
 	{
 		CheckAndParser();
 		if (!m_IsDiffFiles && m_CallDiffAsync)
@@ -92,7 +93,7 @@ public:
 		return m_RebaseAction;
 	}
 
-	CTGitPathList& GetFiles(void* data)
+	CTGitPathList& GetFiles(IAsyncDiffCB* data)
 	{
 		CheckAndParser();
 		if (data && !m_IsDiffFiles && m_CallDiffAsync)
