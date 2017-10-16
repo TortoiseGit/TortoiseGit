@@ -24,21 +24,26 @@ VS_VERSION_INFO VERSIONINFO
 BEGIN
     BLOCK "StringFileInfo"
     BEGIN
-        BLOCK "040004e4"
+        BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "https://tortoisegit.org/"
             VALUE "FileDescription", "TortoiseGit shell extension client"
             VALUE "FileVersion", STRFILEVER
-            VALUE "InternalName", "TortoiseStub.dll"
             VALUE "LegalCopyright", "Copyright (C) 2012-2013 TortoiseGit, Copyright (C) 2007-2012 TortoiseSVN"
-            VALUE "OriginalFilename", "TortoiseStub.dll"
+#ifdef _WIN64
+            VALUE "OriginalFilename", "TortoiseGitStub.dll"
+            VALUE "InternalName", "TortoiseGitStub"
+#else
+            VALUE "OriginalFilename", "TortoiseGitStub32.dll"
+            VALUE "InternalName", "TortoiseGitStub32"
+#endif
             VALUE "ProductName", "TortoiseGit"
             VALUE "ProductVersion", STRPRODUCTVER
         END
     END
     BLOCK "VarFileInfo"
     BEGIN
-        VALUE "Translation", 0x400, 1252
+        VALUE "Translation", 0x409, 1252
     END
 END
 

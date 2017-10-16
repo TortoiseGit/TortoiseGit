@@ -35,21 +35,21 @@ VS_VERSION_INFO VERSIONINFO
 BEGIN
     BLOCK "StringFileInfo"
     BEGIN
-        BLOCK "040004e4"
+        BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "https://tortoisegit.org/\0"
-            VALUE "FileDescription", "Creates a file.\0"
+            VALUE "CompanyName", "https://tortoisegit.org/"
+            VALUE "FileDescription", "Creates a file."
             VALUE "FileVersion", STRFILEVER
-            VALUE "InternalName", "tgittouch.exe\0"
-            VALUE "LegalCopyright", "Copyright (C) 2010-2017 - TortoiseGit\0"
-            VALUE "OriginalFilename", "tgittouch.exe\0"
-            VALUE "ProductName", "tgittouch\0"
+            VALUE "InternalName", "tgittouch"
+            VALUE "LegalCopyright", "Copyright (C) 2010-2017 - TortoiseGit"
+            VALUE "OriginalFilename", "tgittouch.exe"
+            VALUE "ProductName", "tgittouch"
             VALUE "ProductVersion", STRPRODUCTVER
         END
     END
     BLOCK "VarFileInfo"
     BEGIN
-        VALUE "Translation", 0x400, 1252
+        VALUE "Translation", 0x409, 1252
     END
 END
 

@@ -35,21 +35,21 @@ VS_VERSION_INFO VERSIONINFO
 BEGIN
     BLOCK "StringFileInfo"
     BEGIN
-        BLOCK "040004e4"
+        BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "https://tortoisegit.org/\0"
-            VALUE "FileDescription", "Restarts explorer after upgrade.\0"
+            VALUE "CompanyName", "https://tortoisegit.org/"
+            VALUE "FileDescription", "Restarts explorer after upgrade."
             VALUE "FileVersion", STRFILEVER
-            VALUE "InternalName", "RestartExplorer.exe\0"
-            VALUE "LegalCopyright", "Copyright (C) 2016-2017 - TortoiseGit\0"
-            VALUE "OriginalFilename", "RestartExplorer.exe\0"
-            VALUE "ProductName", "RestartExplorer\0"
+            VALUE "InternalName", "RestartExplorer"
+            VALUE "LegalCopyright", "Copyright (C) 2016-2017 - TortoiseGit"
+            VALUE "OriginalFilename", "RestartExplorer.exe"
+            VALUE "ProductName", "RestartExplorer"
             VALUE "ProductVersion", STRPRODUCTVER
         END
     END
     BLOCK "VarFileInfo"
     BEGIN
-        VALUE "Translation", 0x400, 1252
+        VALUE "Translation", 0x409, 1252
     END
 END
 

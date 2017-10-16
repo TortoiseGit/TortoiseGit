@@ -29,12 +29,12 @@ VS_VERSION_INFO VERSIONINFO
 BEGIN
     BLOCK "StringFileInfo"
     BEGIN
-        BLOCK "040004e4"
+        BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "https://tortoisegit.org/"
             VALUE "FileDescription", "TortoiseGitMerge"
             VALUE "FileVersion", STRFILEVER
-            VALUE "InternalName", "TortoiseGitMerge.exe"
+            VALUE "InternalName", "TortoiseGitMerge"
             VALUE "LegalCopyright", "Copyright (C) 2011-2017 - TortoiseGit and Copyright (C) 2003-2017 - TortoiseSVN"
             VALUE "OriginalFilename", "TortoiseGitMerge.exe"
             VALUE "ProductName", "TortoiseGitMerge"
@@ -43,7 +43,7 @@ BEGIN
     END
     BLOCK "VarFileInfo"
     BEGIN
-        VALUE "Translation", 0x400, 1252
+        VALUE "Translation", 0x409, 1252
     END
 END
 

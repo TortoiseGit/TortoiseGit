@@ -29,21 +29,21 @@ VS_VERSION_INFO VERSIONINFO
 BEGIN
     BLOCK "StringFileInfo"
     BEGIN
-        BLOCK "040004e4"
+        BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "https://tortoisegit.org/\0"
-            VALUE "FileDescription", "TortoiseGit client\0"
+            VALUE "CompanyName", "https://tortoisegit.org/"
+            VALUE "FileDescription", "TortoiseGit client"
             VALUE "FileVersion", STRFILEVER
-            VALUE "InternalName", "TortoiseGitProc.exe\0"
-            VALUE "LegalCopyright", "Copyright (C) 2008-2017 - TortoiseGit and Copyright (C) 2003-2017 - TortoiseSVN\0"
-            VALUE "OriginalFilename", "TortoiseGitProc.exe\0"
-            VALUE "ProductName", "TortoiseGit\0"
+            VALUE "InternalName", "TortoiseGitProc"
+            VALUE "LegalCopyright", "Copyright (C) 2008-2017 - TortoiseGit and Copyright (C) 2003-2017 - TortoiseSVN"
+            VALUE "OriginalFilename", "TortoiseGitProc.exe"
+            VALUE "ProductName", "TortoiseGit"
             VALUE "ProductVersion", STRPRODUCTVER
         END
     END
     BLOCK "VarFileInfo"
     BEGIN
-        VALUE "Translation", 0x400, 1252
+        VALUE "Translation", 0x409, 1252
     END
 END
 

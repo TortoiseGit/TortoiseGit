@@ -29,21 +29,26 @@ VS_VERSION_INFO VERSIONINFO
 BEGIN
     BLOCK "StringFileInfo"
     BEGIN
-        BLOCK "040004e4"
+        BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "https://tortoisegit.org/\0"
-            VALUE "FileDescription", "libgit (based on git version " GIT_VERSION ") implementation for TortoiseGit\0"
+            VALUE "CompanyName", "https://tortoisegit.org/"
+            VALUE "FileDescription", "libgit (based on git version " GIT_VERSION ") implementation for TortoiseGit"
             VALUE "FileVersion", STRFILEVER
-            VALUE "InternalName", "gitdll.dll\0"
-            VALUE "LegalCopyright", "Copyright (C) 2008-2017 - TortoiseGit, Copyright (C) 2005-2016 - Git developers\0"
-            VALUE "OriginalFilename", "gitdll.dll\0"
-            VALUE "ProductName", "TortoiseGit\0"
+            VALUE "LegalCopyright", "Copyright (C) 2008-2017 - TortoiseGit, Copyright (C) 2005-2016 - Git developers"
+#ifdef _WIN64
+            VALUE "OriginalFilename", "gitdll.dll"
+            VALUE "InternalName", "gitdll"
+#else
+            VALUE "OriginalFilename", "gitdll32.dll"
+            VALUE "InternalName", "gitdll32"
+#endif
+            VALUE "ProductName", "TortoiseGit"
             VALUE "ProductVersion", STRPRODUCTVER
         END
     END
     BLOCK "VarFileInfo"
     BEGIN
-        VALUE "Translation", 0x400, 1252
+        VALUE "Translation", 0x409, 1252
     END
 END
 
