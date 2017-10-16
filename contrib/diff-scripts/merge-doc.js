@@ -72,6 +72,10 @@ catch (e)
 
 word.visible = true;
 
+// Show usage hint message
+WSHShell = WScript.CreateObject("WScript.Shell");
+WSHShell.Popup("After you click 'OK' we'll create a merge document. Please wait.\nThen reject or accept changes and save the document renaming it to the original conflicting filename.", 0, "TortoiseGit Word Merge", 64);
+
 // Open the base document
 baseDoc = word.Documents.Open(sTheirDoc);
 
@@ -120,9 +124,3 @@ if ((parseInt(word.Version, 10) >= vOffice2002) && (parseInt(word.Version, 10) <
     baseDoc.Close();
 }
 
-// Show usage hint message
-WSHShell = WScript.CreateObject("WScript.Shell");
-if (WSHShell.Popup("You have to accept or reject the changes before\nsaving the document to prevent future problems.\n\nWould you like to see a help page on how to do this?", 0, "TSVN Word Merge", 4 + 64) === 6)
-{
-    WSHShell.Run("http://office.microsoft.com/en-us/assistance/HP030823691033.aspx");
-}
