@@ -106,6 +106,7 @@ else
 
     myDoc.Activate(); //required? just in case
     myDoc.Merge(sTheirDoc, wdMergeTargetCurrent);
+    theirDoc.close();
 
     // bring focus to the window, for accept/reject buttons to be active.
     WSHShell.AppActivate(word.windows.Item(1).caption);
