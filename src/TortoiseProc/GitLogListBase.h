@@ -646,7 +646,7 @@ protected:
 
 	static int DiffAsync(GitRevLoglist* rev, IAsyncDiffCB* pdata)
 	{
-		auto data = reinterpret_cast<CGitLogListBase*>(pdata);
+		auto data = static_cast<CGitLogListBase*>(pdata);
 		ULONGLONG offset = data->m_LogCache.GetOffset(rev->m_CommitHash);
 		if (!offset || data->m_LogCache.LoadOneItem(*rev, offset))
 		{
