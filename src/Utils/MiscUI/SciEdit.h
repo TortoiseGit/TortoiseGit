@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2016 - TortoiseGit
+// Copyright (C) 2009-2017 - TortoiseGit
 // Copyright (C) 2003-2008, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -126,6 +126,7 @@ public:
 	CString		GetWordUnderCursor(bool bSelectWord = false);
 
 	void		RegisterContextMenuHandler(CSciEditContextMenuInterface * object) {m_arContextHandlers.Add(object);}
+	void		ClearContextMenuHandlers() { m_arContextHandlers.RemoveAll(); }
 
 	CStringA	StringForControl(const CString& text);
 	CString		StringFromControl(const CStringA& text);

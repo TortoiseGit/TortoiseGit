@@ -21,6 +21,7 @@ Released: unreleased
  * Fixed issue #3084: Improve info message for merge-doc.js and drop broken URL
  * Fixed issue #3085: merge-doc.js: Word 2007 does not make a three-way comparison and the documents are shown in wrong order
  * Fixed issue #3086: merge-doc.js: Merge document in word >=2010 leaves three open windows
+ * Fixed issue #3096: Duplicate 'Save as...' context menu items appear when closing and opening 'View Patch' window
 
 = Release 2.5.0 =
 Released: 2017-07-23

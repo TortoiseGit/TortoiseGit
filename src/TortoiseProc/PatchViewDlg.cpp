@@ -256,6 +256,7 @@ void CPatchViewDlg::OnDestroy()
 	CRect rect;
 	GetWindowRect(&rect);
 	CRegStdDWORD(L"Software\\TortoiseGit\\TortoiseProc\\PatchDlgWidth") = rect.Width();
+	m_ctrlPatchView.ClearContextMenuHandlers();
 }
 
 // CSciEditContextMenuInterface
