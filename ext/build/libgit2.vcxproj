@@ -255,7 +255,6 @@
     <ClInclude Include="..\libgit2\include\git2\sys\refdb_backend.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\reflog.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\refs.h" />
-    <ClInclude Include="..\libgit2\include\git2\sys\remote.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\repository.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\stream.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\time.h" />

@@ -1099,9 +1099,6 @@
     <ClInclude Include="..\libgit2\include\git2\sys\merge.h">
       <Filter>Public Header Files\sys</Filter>
     </ClInclude>
-    <ClInclude Include="..\libgit2\include\git2\sys\remote.h">
-      <Filter>Public Header Files\sys</Filter>
-    </ClInclude>
     <ClInclude Include="..\libgit2\include\git2\proxy.h">
       <Filter>Public Header Files</Filter>
     </ClInclude>
