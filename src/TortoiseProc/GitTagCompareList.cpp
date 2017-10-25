@@ -162,15 +162,15 @@ int CGitTagCompareList::Fill(const CString& remote, CString& err)
 			}
 		});
 	}
-	std::sort(remoteTags.begin(), remoteTags.end(), std::bind(SortPredicate, m_bSortLogical, std::placeholders::_1, std::placeholders::_2));
-	std::sort(localTags.begin(), localTags.end(), std::bind(SortPredicate, m_bSortLogical, std::placeholders::_1, std::placeholders::_2));
+	std::sort(remoteTags.begin(), remoteTags.end(), std::bind(SortPredicate, !!m_bSortLogical, std::placeholders::_1, std::placeholders::_2));
+	std::sort(localTags.begin(), localTags.end(), std::bind(SortPredicate, !!m_bSortLogical, std::placeholders::_1, std::placeholders::_2));
 
 	auto remoteIt = remoteTags.cbegin();
 	auto localIt = localTags.cbegin();
 
 	while (remoteIt != remoteTags.cend() && localIt != localTags.cend())
 	{
-		if (SortPredicate(m_bSortLogical, remoteIt->name, localIt->name))
+		if (SortPredicate(!!m_bSortLogical, remoteIt->name, localIt->name))
 		{
 			AddEntry(repo, remoteIt->name, nullptr, &remoteIt->hash);
 			++remoteIt;
@@ -297,9 +297,9 @@ void CGitTagCompareList::Show()
 		};
 
 		if (m_bAscending)
-			std::stable_sort(m_TagList.begin(), m_TagList.end(), std::bind(predicate, m_bSortLogical, m_nSortedColumn, std::placeholders::_1, std::placeholders::_2));
+			std::stable_sort(m_TagList.begin(), m_TagList.end(), std::bind(predicate, !!m_bSortLogical, m_nSortedColumn, std::placeholders::_1, std::placeholders::_2));
 		else
-			std::stable_sort(m_TagList.begin(), m_TagList.end(), std::bind(predicate, m_bSortLogical, m_nSortedColumn, std::placeholders::_2, std::placeholders::_1));
+			std::stable_sort(m_TagList.begin(), m_TagList.end(), std::bind(predicate, !!m_bSortLogical, m_nSortedColumn, std::placeholders::_2, std::placeholders::_1));
 	}
 
 	int index = 0;

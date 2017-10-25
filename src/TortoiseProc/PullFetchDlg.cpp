@@ -48,7 +48,7 @@ CPullFetchDlg::CPullFetchDlg(CWnd* pParent /*=nullptr*/)
 	, m_bPrune(BST_INDETERMINATE)
 	, m_bAutoLoad(CAppUtils::IsSSHPutty())
 	, m_bAutoLoadEnable(CAppUtils::IsSSHPutty())
-	, m_bNamedRemoteFetchAll(CRegDWORD(L"Software\\TortoiseGit\\NamedRemoteFetchAll", true))
+	, m_bNamedRemoteFetchAll(!!CRegDWORD(L"Software\\TortoiseGit\\NamedRemoteFetchAll", TRUE))
 {
 }
 
