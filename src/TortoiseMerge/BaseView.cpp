@@ -2641,7 +2641,7 @@ void CBaseView::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 				}
 
 				SetupAllViewSelection(nViewBlockStart, nViewBlockEnd);
-				UpdateCaretPosition(point);
+				UpdateCaretPosition(SetupPoint(0, nViewLine));
 			}
 		}
 	}
