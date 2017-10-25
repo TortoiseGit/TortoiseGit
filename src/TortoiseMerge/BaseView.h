@@ -107,7 +107,7 @@ public: // methods
 	void			UpdateCaret();
 
 	bool			ArePointsSame(const POINT &pt1, const POINT &pt2) {return (pt1.x == pt2.x) && (pt1.y == pt2.y); };
-	POINT			SetupPoint(int x, int y) {POINT ptRet={x, y}; return ptRet; };
+	POINT			SetupPoint(int x, int y) const {POINT ptRet={x, y}; return ptRet; };
 	POINT			ConvertScreenPosToView(const POINT& pt);
 	POINT			ConvertViewPosToScreen(const POINT& pt);
 
