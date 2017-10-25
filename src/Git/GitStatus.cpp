@@ -338,12 +338,22 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 	if (!treeptr)
 		return -1;
 
+	size_t indexpos = SearchInSortVector(*indexptr, path, path.GetLength(), indexptr->IsIgnoreCase()); // match path prefix, (sub)folders end with slash
+	size_t treepos = SearchInSortVector(*treeptr, path, path.GetLength(), indexptr->IsIgnoreCase()); // match path prefix, (sub)folders end with slash
+
 	std::vector<CGitFileName> filelist;
 	bool isRepoRoot = false;
 	GetFileList(CombinePath(gitdir, subpath), filelist, isRepoRoot, indexptr->IsIgnoreCase());
 	*dirstatus = git_wc_status_unknown;
 	if (isRepoRoot)
 		*dirstatus = git_wc_status_normal;
+	else if (indexpos == NPOS && treepos == NPOS)
+	{
+		// if folder does not contain any versioned items, it might be ignored
+		g_IgnoreList.CheckAndUpdateIgnoreFiles(gitdir, subpath, true);
+		if (g_IgnoreList.IsIgnore(subpath, gitdir, true))
+			*dirstatus = git_wc_status_ignored;
+	}
 
 	CAutoRepository repository;
 	for (auto it = filelist.cbegin(), itend = filelist.cend(); it != itend; ++it)
@@ -367,12 +377,16 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 
 		if (pos == NPOS && posintree == NPOS)
 		{
-			status.status = git_wc_status_unversioned;
-
-			g_IgnoreList.CheckAndUpdateIgnoreFiles(gitdir, onepath, bIsDir);
-			if (g_IgnoreList.IsIgnore(onepath, gitdir, bIsDir))
+			if (*dirstatus == git_wc_status_ignored)
 				status.status = git_wc_status_ignored;
+			else
+			{
+				status.status = git_wc_status_unversioned;
 
+				g_IgnoreList.CheckAndUpdateIgnoreFiles(gitdir, onepath, bIsDir);
+				if (g_IgnoreList.IsIgnore(onepath, gitdir, bIsDir))
+					status.status = git_wc_status_ignored;
+			}
 			callback(CombinePath(gitdir, onepath), &status, bIsDir, fileentry.m_LastModified, pData);
 		}
 		else if (pos == NPOS && posintree != NPOS) /* check if file delete in index */
@@ -415,10 +429,8 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 
 	/* Check deleted file in system */
 	size_t start = 0, end = 0;
-	size_t pos = SearchInSortVector(*indexptr, path, path.GetLength(), indexptr->IsIgnoreCase()); // match path prefix, (sub)folders end with slash
 	std::set<CString> alreadyReported;
-
-	if (GetRangeInSortVector(*indexptr, path, path.GetLength(), indexptr->IsIgnoreCase(), &start, &end, pos) == 0)
+	if (GetRangeInSortVector(*indexptr, path, path.GetLength(), indexptr->IsIgnoreCase(), &start, &end, indexpos) == 0)
 	{
 		*dirstatus = git_wc_status_normal; // here we know that this folder has versioned entries
 		CString oldstring;
@@ -467,8 +479,7 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 	}
 
 	start = end = 0;
-	pos = SearchInSortVector(*treeptr, path, path.GetLength(), indexptr->IsIgnoreCase()); // match path prefix, (sub)folders end with slash
-	if (GetRangeInSortVector(*treeptr, path, path.GetLength(), indexptr->IsIgnoreCase(), &start, &end, pos) == 0)
+	if (GetRangeInSortVector(*treeptr, path, path.GetLength(), indexptr->IsIgnoreCase(), &start, &end, treepos) == 0)
 	{
 		*dirstatus = git_wc_status_normal; // here we know that this folder has versioned entries
 		CString oldstring;

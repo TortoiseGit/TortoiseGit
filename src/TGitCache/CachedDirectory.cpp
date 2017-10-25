@@ -380,6 +380,12 @@ int CCachedDirectory::EnumFiles(const CTGitPath& path, CString sProjectRoot, con
 			CGitStatusCache::Instance().AddFolderForCrawling(m_directoryPath);
 			return 0;
 		}
+		// if unversioned files mark parent folders as modified we must not report files as unversioned in ignored folders (we don't know if the folder was already ignored or not here), see issue #3093
+		if (status.status == git_wc_status_unversioned && CGitStatusCache::Instance().IsUnversionedAsModified())
+		{
+			CGitStatusCache::Instance().AddFolderForCrawling(m_directoryPath);
+			return 0;
+		}
 		GetStatusCallback(path.GetWinPathString(), &status, false, path.GetLastWriteTime(true), this);
 		RefreshMostImportant(false);
 	}
@@ -409,18 +415,8 @@ int CCachedDirectory::EnumFiles(const CTGitPath& path, CString sProjectRoot, con
 		}
 
 		RefreshMostImportant(false);
-		// need to set/construct m_ownStatus (only unversioned and normal are valid values)
-		m_ownStatus = git_wc_status_unversioned;
-		if (folderstatus == git_wc_status_normal) {
-			git_wc_status2_t status2 = { git_wc_status_normal, false, false };
-			m_ownStatus.SetStatus(&status2);
-		}
-		else if (m_mostImportantFileStatus == git_wc_status_ignored || m_mostImportantFileStatus == git_wc_status_unversioned)
-		{
-			bool isIgnored = pStatus->IsIgnored(sProjectRoot, sSubPath, true);
-			git_wc_status2_t status2 = { isIgnored ? git_wc_status_ignored : git_wc_status_unversioned, false, false };
-			m_ownStatus.SetStatus(&status2);
-		}
+		// need to update m_ownStatus
+		m_ownStatus = folderstatus;
 	}
 
 	return 0;
