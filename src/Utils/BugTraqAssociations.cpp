@@ -79,7 +79,7 @@ void CBugTraqAssociations::Load(LPCTSTR uuid /* = nullptr */, LPCTSTR params /* 
 			RegQueryValueEx(hk2, L"Parameters", nullptr, nullptr, nullptr, &cbParameters);
 			auto szParameters = std::make_unique<TCHAR[]>(cbParameters + 1);
 			RegQueryValueEx(hk2, L"Parameters", nullptr, nullptr, (LPBYTE)szParameters.get(), &cbParameters);
-			szParameters.get()[cbParameters] = 0;
+			szParameters[cbParameters] = 0;
 
 			DWORD enabled = TRUE;
 			DWORD size = sizeof(enabled);

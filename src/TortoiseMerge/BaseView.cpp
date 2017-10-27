@@ -1934,7 +1934,7 @@ void CBaseView::DrawTextLine(
 					do
 					{
 						int middle = (upper + lower + 1) / 2;
-						int width = posBuffer.get()[middle];
+						int width = posBuffer[middle];
 						if (rc.left - nLeft < width)
 							upper = middle - 1;
 						else
@@ -1943,7 +1943,7 @@ void CBaseView::DrawTextLine(
 
 					offset = lower;
 					nTextLength -= offset;
-					leftcoord += lower > 0 ? posBuffer.get()[lower - 1] : 0;
+					leftcoord += lower > 0 ? posBuffer[lower - 1] : 0;
 				}
 
 				pDC->ExtTextOut(leftcoord, coords.y, ETO_CLIPPED, &rc, p_zBlockText + offset, min(nTextLength, 4094), nullptr);
@@ -3765,7 +3765,7 @@ int CBaseView::CalcColFromPoint(int xpos, int lineIndex)
 		do
 		{
 			int middle = (upper + lower + 1) / 2;
-			int width = posBuffer.get()[middle];
+			int width = posBuffer[middle];
 			if (xcheck < width)
 				upper = middle - 1;
 			else
@@ -3775,8 +3775,8 @@ int CBaseView::CalcColFromPoint(int xpos, int lineIndex)
 		xpos2 = lower;
 		if (lower < fit - 1)
 		{
-			int charWidth = posBuffer.get()[lower] - (lower > 0 ? posBuffer.get()[lower - 1] : 0);
-			if (posBuffer.get()[lower] - xcheck <= charWidth / 2)
+			int charWidth = posBuffer[lower] - (lower > 0 ? posBuffer[lower - 1] : 0);
+			if (posBuffer[lower] - xcheck <= charWidth / 2)
 				xpos2++;
 		}
 	}

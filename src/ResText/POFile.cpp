@@ -77,7 +77,7 @@ BOOL CPOFile::ParseFile(LPCTSTR szPath, BOOL bUpdateExisting, bool bAdjustEOLs)
 	do
 	{
 		File.getline(line.get(), 2*MAX_STRING_LENGTH);
-		if (line.get()[0]==0)
+		if (line[0]==0)
 		{
 			//empty line means end of entry!
 			RESOURCEENTRY resEntry = {0};

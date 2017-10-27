@@ -823,7 +823,7 @@ static int check_hash(HCRYPTHASH hHash, signature_packet_t *p_sig)
 	auto pHash = std::make_unique<BYTE[]>(hashLen);
 	CryptGetHashParam(hHash, HP_HASHVAL, pHash.get(), &hashLen, 0);
 
-	if (pHash.get()[0] != p_sig->hash_verification[0] || pHash.get()[1] != p_sig->hash_verification[1])
+	if (pHash[0] != p_sig->hash_verification[0] || pHash[1] != p_sig->hash_verification[1])
 		return -1;
 
 	return 0;
