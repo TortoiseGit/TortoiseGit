@@ -767,7 +767,7 @@ bool CTGitPath::HasStashDir(const CString& dotGitPath) const
 	DWORD size = 0;
 	auto buff = std::make_unique<char[]>(filesize + 1);
 	ReadFile(hfile, buff.get(), filesize, &size, nullptr);
-	buff.get()[filesize] = '\0';
+	buff[filesize] = '\0';
 
 	if (size != filesize)
 		return false;
