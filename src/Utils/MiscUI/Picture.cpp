@@ -338,8 +338,7 @@ bool CPicture::Load(tstring sFilePathName)
 								}
 							}
 						}
-						if (piFormatConverter)
-							piFormatConverter->Release();
+						piFormatConverter->Release();
 					}
 					pSource->Release();
 					pBitmapFrameDecode->Release();

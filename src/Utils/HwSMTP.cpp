@@ -859,12 +859,12 @@ BOOL CHwSMTP::SendEmail (
 		// Create a buffer.
 		cbIoBufferLength = Sizes.cbHeader + Sizes.cbMaximumMessage + Sizes.cbTrailer;
 		pbIoBuffer = (PBYTE)LocalAlloc(LMEM_FIXED, cbIoBufferLength);
-		SecureZeroMemory(pbIoBuffer, cbIoBufferLength);
 		if (pbIoBuffer == nullptr)
 		{
 			m_csLastError = L"Could not allocate memory";
 			goto cleanup;
 		}
+		SecureZeroMemory(pbIoBuffer, cbIoBufferLength);
 	}
 
 	if (m_iSecurityLevel <= ssl)
