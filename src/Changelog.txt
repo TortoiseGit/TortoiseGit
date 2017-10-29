@@ -26,6 +26,11 @@ Released: unreleased
  * Fixed issue #3076: Commit dialog opens with incomplete rendering in Windows 7 classic theme
  * Fixed issue #3094: Diff command results in crash
 
+== Known issues ==
+ * Issue #3087: TortoiseGitMerge Ribbon took long time to start and use lots of CPU on Win 10
+   Workaround: Start TortoiseGitMerge and disable the ribbon bar in settings.
+   Also see: https://developercommunity.visualstudio.com/content/problem/136952/mfc-ribbon-slow-on-first-loadshow.html
+
 = Release 2.5.0 =
 Released: 2017-07-23
 
