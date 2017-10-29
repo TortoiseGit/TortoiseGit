@@ -425,6 +425,7 @@ BOOL CLogDlg::OnInitDialog()
 	}
 
 	SetSplitterRange();
+	Invalidate();
 
 	if (m_bSelect)
 	{

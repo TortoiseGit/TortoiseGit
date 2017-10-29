@@ -23,6 +23,7 @@ Released: unreleased
  * Fixed issue #3086: merge-doc.js: Merge document in word >=2010 leaves three open windows
  * Fixed issue #3096: Duplicate 'Save as...' context menu items appear when closing and opening 'View Patch' window
  * Fixed issue #3093: Icon overlay might show ignored directories containing files as modified
+ * Fixed issue #3076: Commit dialog opens with incomplete rendering in Windows 7 classic theme
 
 = Release 2.5.0 =
 Released: 2017-07-23

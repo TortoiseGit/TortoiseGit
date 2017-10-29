@@ -438,6 +438,7 @@ BOOL CCommitDlg::OnInitDialog()
 		{
 			m_wndSplitter.SetWindowPos(nullptr, rectSplitter.left, yPos, 0, 0, SWP_NOSIZE);
 			DoSize(delta);
+			Invalidate();
 		}
 	}
 
