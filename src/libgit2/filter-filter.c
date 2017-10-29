@@ -47,6 +47,9 @@ static int filter_check(
 	GIT_UNUSED(self);
 	GIT_UNUSED(src);
 
+	if (!attr_values)
+		return GIT_PASSTHROUGH;
+
 	if (GIT_ATTR_UNSPECIFIED(attr_values[0]))
 		return GIT_PASSTHROUGH;
 
