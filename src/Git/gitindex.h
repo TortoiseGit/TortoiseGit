@@ -181,7 +181,9 @@ public:
 	int ReadTree(bool ignoreCase);
 	int ReadHeadHash(const CString& gitdir);
 	bool CheckHeadUpdate();
-	static int CallBack(const unsigned char *, const char *, int, const char *, unsigned int, int, void *);
+
+private:
+	int ReadTreeRecursive(git_repository& repo, const git_tree* tree, const CStringA& base);
 };
 
 typedef std::shared_ptr<CGitHeadFileList> SHARED_TREE_PTR;

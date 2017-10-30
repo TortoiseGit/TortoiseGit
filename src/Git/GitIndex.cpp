@@ -570,34 +570,9 @@ bool CGitHeadFileList::CheckHeadUpdate()
 	return false;
 }
 
-#define READ_TREE_RECURSIVE 1
-int CGitHeadFileList::CallBack(const unsigned char *sha1, const char *base, int baselen,
-		const char *pathname, unsigned mode, int /*stage*/, void *context)
+int CGitHeadFileList::ReadTreeRecursive(git_repository& repo, const git_tree* tree, const CStringA& base)
 {
 #define S_IFGITLINK	0160000
-
-	CGitHeadFileList* p = reinterpret_cast<CGitHeadFileList*>(context);
-
-	if ((mode & S_IFDIR) && (mode & S_IFMT) != S_IFGITLINK)
-		return READ_TREE_RECURSIVE;
-
-	CGitTreeItem item;
-	item.m_Hash = sha1;
-	CGit::StringAppend(&item.m_FileName, (BYTE*)base, CP_UTF8, baselen);
-	CGit::StringAppend(&item.m_FileName, (BYTE*)pathname, CP_UTF8);
-	if ((mode & S_IFMT) == S_IFGITLINK)
-		item.m_FileName += L'/';
-
-	p->push_back(item);
-
-	if( (mode&S_IFMT) == S_IFGITLINK)
-		return 0;
-
-	return READ_TREE_RECURSIVE;
-}
-
-int ReadTreeRecursive(git_repository &repo, const git_tree * tree, const CStringA& base, int (*CallBack) (const unsigned char *, const char *, int, const char *, unsigned int, int, void *), void *data)
-{
 	size_t count = git_tree_entrycount(tree);
 	for (size_t i = 0; i < count; ++i)
 	{
@@ -605,29 +580,28 @@ int ReadTreeRecursive(git_repository &repo, const git_tree * tree, const CString
 		if (!entry)
 			continue;
 		int mode = git_tree_entry_filemode(entry);
-		if( CallBack(git_tree_entry_id(entry)->id,
-			base,
-			base.GetLength(),
-			git_tree_entry_name(entry),
-			mode,
-			0,
-			data) == READ_TREE_RECURSIVE
-		  )
+		bool isDir = (mode & S_IFDIR) == S_IFDIR;
+		bool isSubmodule = (mode & S_IFMT) == S_IFGITLINK;
+		if (!isDir || isSubmodule)
 		{
-			if(mode&S_IFDIR)
-			{
-				git_object* object = nullptr;
-				git_tree_entry_to_object(&object, &repo, entry);
-				if (!object)
-					continue;
-				CStringA parent = base;
-				parent += git_tree_entry_name(entry);
-				parent += "/";
-				ReadTreeRecursive(repo, (git_tree*)object, parent, CallBack, data);
-				git_object_free(object);
-			}
+			CGitTreeItem item;
+			item.m_Hash = git_tree_entry_id(entry)->id;
+			CGit::StringAppend(&item.m_FileName, (BYTE*)(LPCSTR)base, CP_UTF8, base.GetLength());
+			CGit::StringAppend(&item.m_FileName, (BYTE*)git_tree_entry_name(entry), CP_UTF8);
+			if (isSubmodule)
+				item.m_FileName += L'/';
+			push_back(item);
+			continue;
 		}
 
+		CAutoObject object;
+		git_tree_entry_to_object(object.GetPointer(), &repo, entry);
+		if (!object)
+			continue;
+		CStringA parent = base;
+		parent += git_tree_entry_name(entry);
+		parent += "/";
+		ReadTreeRecursive(repo, (git_tree*)(git_object*)object, parent);
 	}
 
 	return 0;
@@ -650,7 +624,7 @@ int CGitHeadFileList::ReadTree(bool ignoreCase)
 	ret = ret && !git_commit_tree(tree.GetPointer(), commit);
 	try
 	{
-		ret = ret && !ReadTreeRecursive(*repository, tree, "", CGitHeadFileList::CallBack, this);
+		ret = ret && !ReadTreeRecursive(*repository, tree, "");
 	}
 	catch (const std::bad_alloc& ex)
 	{
