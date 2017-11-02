@@ -177,12 +177,12 @@ void SetUUIDOverlayIcon( HWND hWnd )
         // AND mask - monochrome - determines which pixels get drawn
         auto AND = std::make_unique<BYTE[]>(iconWidth * iconWidth);
         for (int i = 0; i < iconWidth * iconWidth; ++i)
-            AND.get()[i] = 0xff;
+            AND[i] = 0xff;
 
         // XOR mask - 32bpp ARGB - determines the pixel values
         auto XOR = std::make_unique<DWORD[]>(iconWidth * iconWidth);
         for (int i = 0; i < iconWidth * iconWidth; ++i)
-            XOR.get()[i] = colors[foundUUIDIndex % 6];
+            XOR[i] = colors[foundUUIDIndex % 6];
 
         icon = ::CreateIcon(nullptr, iconWidth, iconHeight, 1, 32, AND.get(), (BYTE*)XOR.get());
     }

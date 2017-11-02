@@ -2569,16 +2569,16 @@ void CRebaseDlg::OnBnClickedButtonDown()
 	auto indexes = std::make_unique<int[]>(m_CommitList.GetSelectedCount());
 	int i = 0;
 	while(pos)
-		indexes.get()[i++] = m_CommitList.GetNextSelectedItem(pos);
+		indexes[i++] = m_CommitList.GetNextSelectedItem(pos);
 	// don't move any item if the last selected item is the last item in the m_CommitList
 	// (that would change the order of the selected items)
-	if (!moveToBottom && indexes.get()[m_CommitList.GetSelectedCount() - 1] >= m_CommitList.GetItemCount() - 1)
+	if (!moveToBottom && indexes[m_CommitList.GetSelectedCount() - 1] >= m_CommitList.GetItemCount() - 1)
 		return;
 	int count = m_CommitList.GetItemCount() - 1;
 	// iterate over the indexes backwards in order to correctly move multiselected items
 	for (i = m_CommitList.GetSelectedCount() - 1; i >= 0; i--)
 	{
-		int index = indexes.get()[i];
+		int index = indexes[i];
 		count = moveToBottom ? count : (index + 1);
 		while (index < count)
 		{
@@ -2593,7 +2593,7 @@ void CRebaseDlg::OnBnClickedButtonDown()
 		}
 		count--;
 	}
-	m_CommitList.EnsureVisible(indexes.get()[m_CommitList.GetSelectedCount() - 1] + 1, false);
+	m_CommitList.EnsureVisible(indexes[m_CommitList.GetSelectedCount() - 1] + 1, false);
 	if (changed)
 	{
 		m_CommitList.Invalidate();
