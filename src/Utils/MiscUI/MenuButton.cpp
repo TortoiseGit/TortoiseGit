@@ -225,7 +225,10 @@ void CMenuButton::OnShowMenu()
 	m_bMenuIsActive = TRUE;
 	Invalidate();
 
-	m_nMenuResult = ::TrackPopupMenu(m_hMenu, TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_NONOTIFY | TPM_RETURNCMD, x, y, 0, GetSafeHwnd(), NULL);
+	TPMPARAMS params;
+	params.cbSize = sizeof(TPMPARAMS);
+	params.rcExclude = rectWindow;
+	m_nMenuResult = ::TrackPopupMenuEx(m_hMenu, TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_NONOTIFY | TPM_RETURNCMD, x, y, GetSafeHwnd(), &params);
 
 	CWnd* pParent = GetParent();
 
