@@ -54,7 +54,7 @@
     <ClCompile>
       <AdditionalIncludeDirectories>$(ProjectDir);..\..\src\Resources;..\..\src\Git;..\..\ext\hunspell;..\..\ext\scintilla\include;..\..\src\Utils;..\..\src\Utils\MiscUI;..\..\src\TortoiseShell;..\..\ext\gitdll;..\..\ext\libgit2\include;..\..\ext\googletest\googletest\include;..\..\ext\googletest\googlemock\include;..\..\ext\ResizableLib;..\..\src\TortoiseProc;..\..\src\TortoiseMerge;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ExceptionHandling>Async</ExceptionHandling>
+      <ExceptionHandling>SyncCThrow</ExceptionHandling>
       <AdditionalOptions>/Zm110 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
