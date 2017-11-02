@@ -1860,7 +1860,6 @@ void CCommitDlg::GetAutocompletionList()
 	// file extensions we can use and the second the corresponding regex strings
 	// to apply to those files.
 
-	auto locker(m_ListCtrl.AcquireReadLock());
 	// the next step is to go over all files shown in the commit dialog
 	// and scan them for strings we can use
 	int nListItems = m_ListCtrl.GetItemCount();
@@ -1871,12 +1870,22 @@ void CCommitDlg::GetAutocompletionList()
 		if ((!m_bRunThread) || (GetTickCount64() - starttime > timeoutvalue))
 			return;
 
-		auto path = m_ListCtrl.GetListEntry(i);
+		CString sWinPath;
+		CString sPartPath;
+		CString sExt;
+		int action;
+		{
+			auto locker(m_ListCtrl.AcquireReadLock());
+			auto path = m_ListCtrl.GetListEntry(i);
 
-		if (!path)
-			continue;
+			if (!path)
+				continue;
 
-		CString sPartPath =path->GetGitPathString();
+			sWinPath = path->GetWinPathString();
+			sPartPath = path->GetGitPathString();
+			sExt = path->GetFileExtension();
+			action = path->m_Action;
+		}
 		m_autolist.emplace(sPartPath, AUTOCOMPLETE_FILENAME);
 
 		int pos = 0;
@@ -1897,19 +1906,18 @@ void CCommitDlg::GetAutocompletionList()
 				m_autolist.emplace(sPartPath.Mid(lastPos, dotPos - lastPos), AUTOCOMPLETE_FILENAME);
 		}
 
-		if (path->m_Action == CTGitPath::LOGACTIONS_UNVER && !CRegDWORD(L"Software\\TortoiseGit\\AutocompleteParseUnversioned", FALSE))
+		if (action == CTGitPath::LOGACTIONS_UNVER && !CRegDWORD(L"Software\\TortoiseGit\\AutocompleteParseUnversioned", FALSE))
 			continue;
-		if (path->m_Action == CTGitPath::LOGACTIONS_IGNORE)
+		if (action == CTGitPath::LOGACTIONS_IGNORE)
 			continue;
 
-		CString sExt = path->GetFileExtension();
 		sExt.MakeLower();
 		// find the regex string which corresponds to the file extension
 		CString rdata = mapRegex[sExt];
 		if (rdata.IsEmpty())
 			continue;
 
-		ScanFile(path->GetWinPathString(), rdata, sExt);
+		ScanFile(sWinPath, rdata, sExt);
 	}
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Auto completion list loaded in %I64u msec\n", GetTickCount64() - starttime);
 }

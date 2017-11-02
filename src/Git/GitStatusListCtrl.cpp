@@ -620,6 +620,8 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 				m_arStatusArray.push_back(&m_IgnoreFileList[i]);
 		}
 		PrepareGroups();
+		m_arListArray.clear();
+		m_arListArray.reserve(m_arStatusArray.size());
 		if (m_nSortedColumn >= 0)
 		{
 			CSorter predicate(&m_ColumnManager, m_nSortedColumn, m_bAscending);
@@ -1014,6 +1016,8 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int list
 		lvItem.state = INDEXTOOVERLAYMASK(OVL_RESTORE);
 	lvItem.iImage = icon_idx;
 	InsertItem(&lvItem);
+
+	m_arListArray.push_back(index);
 
 	SetCheck(index, GitPath->m_Checked);
 	if (GitPath->m_Checked)
@@ -4412,9 +4416,17 @@ BOOL CGitStatusListCtrl::OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LR
 CTGitPath* CGitStatusListCtrl::GetListEntry(int index)
 {
 	ATLASSERT(m_guard.GetCurrentThreadStatus());
-	auto entry = reinterpret_cast<CTGitPath*>(GetItemData(index));
-	ASSERT(entry);
-	return entry;
+	if ((size_t)index >= m_arListArray.size())
+	{
+		ATLASSERT(FALSE);
+		return nullptr;
+	}
+	if (m_arListArray[index] >= m_arStatusArray.size())
+	{
+		ATLASSERT(FALSE);
+		return nullptr;
+	}
+	return const_cast<CTGitPath*>(m_arStatusArray[m_arListArray[index]]);
 }
 
 void CGitStatusListCtrl::OnSysColorChange()

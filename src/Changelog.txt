@@ -25,6 +25,7 @@ Released: unreleased
  * Fixed issue #3093: Icon overlay might show ignored directories containing files as modified
  * Fixed issue #3076: Commit dialog opens with incomplete rendering in Windows 7 classic theme
  * Fixed issue #3094: Diff command results in crash
+ * Fixed issue #3041: Commit Window might freeze when clicking on the last modified header shortly after opening
 
 == Known issues ==
  * Issue #3087: TortoiseGitMerge Ribbon took long time to start and use lots of CPU on Win 10
