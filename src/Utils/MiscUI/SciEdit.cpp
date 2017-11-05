@@ -223,6 +223,9 @@ void CSciEdit::Init(LONG lLanguage)
 	Call(SCI_ASSIGNCMDKEY, SCK_HOME + (SCMOD_SHIFT << 16), SCI_HOMEWRAPEXTEND);
 	if (CRegStdDWORD(L"Software\\TortoiseGit\\ScintillaDirect2D", FALSE) != FALSE)
 	{
+		// set font quality for the popup window, since that window does not use D2D
+		Call(SCI_SETFONTQUALITY, SC_EFF_QUALITY_LCD_OPTIMIZED);
+		// now enable D2D
 		Call(SCI_SETTECHNOLOGY, SC_TECHNOLOGY_DIRECTWRITERETAIN);
 		Call(SCI_SETBUFFEREDDRAW, 0);
 	}
