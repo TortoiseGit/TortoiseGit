@@ -1371,15 +1371,15 @@ UINT CCommitDlg::StatusThread()
 
 	SetDlgTitle();
 
-	m_autolist.clear();
 	// we don't have to block the commit dialog while we fetch the
 	// auto completion list.
 	m_pathwatcher.ClearChangedPaths();
 	InterlockedExchange(&m_bBlock, FALSE);
+	std::map<CString, int> autolist;
 	if ((DWORD)CRegDWORD(L"Software\\TortoiseGit\\Autocompletion", TRUE) == TRUE)
 	{
 		m_ListCtrl.BusyCursor(true);
-		GetAutocompletionList();
+		GetAutocompletionList(autolist);
 		m_ListCtrl.BusyCursor(false);
 	}
 	SendMessage(WM_UPDATEOKBUTTON);
@@ -1432,7 +1432,7 @@ UINT CCommitDlg::StatusThread()
 		UpdateCheckLinks();
 
 		// we have the list, now signal the main thread about it
-		SendMessage(WM_AUTOLISTREADY);	// only send the message if the thread wasn't told to quit!
+		SendMessage(WM_AUTOLISTREADY, 0, (LPARAM)&autolist);	// only send the message if the thread wasn't told to quit!
 	}
 
 	InterlockedExchange(&m_bRunThread, FALSE);
@@ -1725,9 +1725,9 @@ LRESULT CCommitDlg::OnFileDropped(WPARAM, LPARAM lParam)
 	return 0;
 }
 
-LRESULT CCommitDlg::OnAutoListReady(WPARAM, LPARAM)
+LRESULT CCommitDlg::OnAutoListReady(WPARAM, LPARAM lparam)
 {
-	m_cLogMessage.SetAutoCompletionList(m_autolist, '*');
+	m_cLogMessage.SetAutoCompletionList(std::move(*reinterpret_cast<std::map<CString, int>*>(lparam)), '*');
 	return 0;
 }
 
@@ -1819,7 +1819,7 @@ void CCommitDlg::ParseSnippetFile(const CString& sFile, std::map<CString, CStrin
 	}
 }
 
-void CCommitDlg::GetAutocompletionList()
+void CCommitDlg::GetAutocompletionList(std::map<CString, int>& autolist)
 {
 	// the auto completion list is made of strings from each selected files.
 	// the strings used are extracted from the files with regexes found
@@ -1852,7 +1852,7 @@ void CCommitDlg::GetAutocompletionList()
 	if (PathFileExists(sSnippetFile))
 		ParseSnippetFile(sSnippetFile, m_snippet);
 	for (const auto& snip : m_snippet)
-		m_autolist.emplace(snip.first, AUTOCOMPLETE_SNIPPET);
+		autolist.emplace(snip.first, AUTOCOMPLETE_SNIPPET);
 
 	ULONGLONG starttime = GetTickCount64();
 
@@ -1886,7 +1886,7 @@ void CCommitDlg::GetAutocompletionList()
 			sExt = path->GetFileExtension();
 			action = path->m_Action;
 		}
-		m_autolist.emplace(sPartPath, AUTOCOMPLETE_FILENAME);
+		autolist.emplace(sPartPath, AUTOCOMPLETE_FILENAME);
 
 		int pos = 0;
 		int lastPos = 0;
@@ -1894,7 +1894,7 @@ void CCommitDlg::GetAutocompletionList()
 		{
 			++pos;
 			lastPos = pos;
-			m_autolist.emplace(sPartPath.Mid(pos), AUTOCOMPLETE_FILENAME);
+			autolist.emplace(sPartPath.Mid(pos), AUTOCOMPLETE_FILENAME);
 		}
 
 		// Last inserted entry is a file name.
@@ -1903,7 +1903,7 @@ void CCommitDlg::GetAutocompletionList()
 		{
 			int dotPos = sPartPath.ReverseFind('.');
 			if ((dotPos >= 0) && (dotPos > lastPos))
-				m_autolist.emplace(sPartPath.Mid(lastPos, dotPos - lastPos), AUTOCOMPLETE_FILENAME);
+				autolist.emplace(sPartPath.Mid(lastPos, dotPos - lastPos), AUTOCOMPLETE_FILENAME);
 		}
 
 		if (action == CTGitPath::LOGACTIONS_UNVER && !CRegDWORD(L"Software\\TortoiseGit\\AutocompleteParseUnversioned", FALSE))
@@ -1917,12 +1917,12 @@ void CCommitDlg::GetAutocompletionList()
 		if (rdata.IsEmpty())
 			continue;
 
-		ScanFile(sWinPath, rdata, sExt);
+		ScanFile(autolist, sWinPath, rdata, sExt);
 	}
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Auto completion list loaded in %I64u msec\n", GetTickCount64() - starttime);
 }
 
-void CCommitDlg::ScanFile(const CString& sFilePath, const CString& sRegex, const CString& sExt)
+void CCommitDlg::ScanFile(std::map<CString, int>& autolist, const CString& sFilePath, const CString& sRegex, const CString& sExt)
 {
 	static std::map<CString, std::tr1::wregex> regexmap;
 
@@ -2012,7 +2012,7 @@ void CCommitDlg::ScanFile(const CString& sFilePath, const CString& sRegex, const
 			for (size_t i = 1; i < match.size(); ++i)
 			{
 				if (match[i].second-match[i].first)
-					m_autolist.emplace(std::wstring(match[i]).c_str(), AUTOCOMPLETE_PROGRAMCODE);
+					autolist.emplace(std::wstring(match[i]).c_str(), AUTOCOMPLETE_PROGRAMCODE);
 			}
 		}
 	}

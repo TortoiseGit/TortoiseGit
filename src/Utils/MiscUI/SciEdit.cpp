@@ -465,7 +465,7 @@ void CSciEdit::SetFont(CString sFontName, int iFontSizeInPoints)
 	Call(SCI_SETHOTSPOTACTIVEUNDERLINE, (LPARAM)TRUE);
 }
 
-void CSciEdit::SetAutoCompletionList(const std::map<CString, int>& list, TCHAR separator, TCHAR typeSeparator)
+void CSciEdit::SetAutoCompletionList(std::map<CString, int>&& list, TCHAR separator, TCHAR typeSeparator)
 {
 	//copy the auto completion list.
 
@@ -473,7 +473,7 @@ void CSciEdit::SetAutoCompletionList(const std::map<CString, int>& list, TCHAR s
 	//to the list and use that instead. But then the caller would have to make
 	//sure that the list persists over the lifetime of the control!
 	m_autolist.clear();
-	m_autolist = list;
+	m_autolist = std::move(list);
 	m_separator = separator;
 	m_typeSeparator = typeSeparator;
 }

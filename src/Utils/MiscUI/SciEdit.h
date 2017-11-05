@@ -119,7 +119,7 @@ public:
 	/**
 	 * Adds a list of words for use in auto completion.
 	 */
-	void		SetAutoCompletionList(const std::map<CString, int>& list, TCHAR separator = ';', TCHAR typeSeparator = '?');
+	void		SetAutoCompletionList(std::map<CString, int>&& list, TCHAR separator = ';', TCHAR typeSeparator = '?');
 	/**
 	 * Returns the word located under the cursor.
 	 */

@@ -134,8 +134,8 @@ protected:
 	void Refresh();
 	void StartStatusThread();
 	void StopStatusThread();
-	void GetAutocompletionList();
-	void ScanFile(const CString& sFilePath, const CString& sRegex, const CString& sExt);
+	void GetAutocompletionList(std::map<CString, int>& autolist);
+	void ScanFile(std::map<CString, int>& autolist, const CString& sFilePath, const CString& sRegex, const CString& sExt);
 	void DoSize(int delta);
 	void SetSplitterRange();
 	void SaveSplitterPos();
@@ -183,7 +183,6 @@ protected:
 
 private:
 	CWinThread*			m_pThread;
-	std::map<CString, int>	m_autolist;
 	std::map<CString, CString>	m_snippet;
 	CGitStatusListCtrl	m_ListCtrl;
 	BOOL				m_bShowUnversioned;
