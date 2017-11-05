@@ -123,7 +123,7 @@ public:
 	/**
 	 * Returns the word located under the cursor.
 	 */
-	CString		GetWordUnderCursor(bool bSelectWord = false);
+	CString		GetWordUnderCursor(bool bSelectWord = false, bool allchars = false);
 
 	void		RegisterContextMenuHandler(CSciEditContextMenuInterface * object) {m_arContextHandlers.Add(object);}
 	void		ClearContextMenuHandlers() { m_arContextHandlers.RemoveAll(); }

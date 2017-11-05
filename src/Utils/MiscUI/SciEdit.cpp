@@ -397,7 +397,7 @@ CString CSciEdit::GetText()
 	return StringFromControl(sTextA);
 }
 
-CString CSciEdit::GetWordUnderCursor(bool bSelectWord)
+CString CSciEdit::GetWordUnderCursor(bool bSelectWord, bool allchars)
 {
 	TEXTRANGEA textrange;
 	int pos = (int)Call(SCI_GETCURRENTPOS);
@@ -410,7 +410,7 @@ CString CSciEdit::GetWordUnderCursor(bool bSelectWord)
 	textrange.lpstrText = textbuffer.get();
 	Call(SCI_GETTEXTRANGE, 0, (LPARAM)&textrange);
 	CString sRet = StringFromControl(textbuffer.get());
-	if (m_bDoStyle)
+	if (m_bDoStyle && !allchars)
 	{
 		for (const auto styleindicator : { '*', '_', '^' })
 		{
@@ -425,7 +425,7 @@ CString CSciEdit::GetWordUnderCursor(bool bSelectWord)
 				break;
 			if (sRet[0] == styleindicator)
 			{
-				++textrange.chrg.cpMin; 
+				++textrange.chrg.cpMin;
 				sRet = sRet.Right(sRet.GetLength() - 1);
 			}
 		}
@@ -654,65 +654,90 @@ void CSciEdit::DoAutoCompletion(int nMinPrefixLength)
 {
 	if (m_autolist.empty())
 		return;
-	CString word = GetWordUnderCursor();
-	if (word.GetLength() < nMinPrefixLength)
-		return;		//don't auto complete yet, word is too short
 	int pos = (int)Call(SCI_GETCURRENTPOS);
 	if (pos != Call(SCI_WORDENDPOSITION, pos, TRUE))
-		return;	//don't auto complete if we're not at the end of a word
+		return;	// don't auto complete if we're not at the end of a word
+	CString word = GetWordUnderCursor();
+	if (word.GetLength() < nMinPrefixLength)
+	{
+		word = GetWordUnderCursor(false, true);
+		if (word.GetLength() < nMinPrefixLength)
+			return;		// don't auto complete yet, word is too short
+	}
 	CString sAutoCompleteList;
 
-	std::vector<CString> words;
-
-	pos = word.Find('-');
-
-	CString wordLower = word;
-	wordLower.MakeLower();
-	CString wordHigher = word;
-	wordHigher.MakeUpper();
-
-	words.push_back(word);
-	words.push_back(wordLower);
-	words.push_back(wordHigher);
-
-	if (pos >= 0)
+	for (int i = 0; i < 2; ++i)
 	{
-		CString s = wordLower.Left(pos);
-		if (s.GetLength() >= nMinPrefixLength)
-			words.push_back(s);
-		s = wordLower.Mid(pos+1);
-		if (s.GetLength() >= nMinPrefixLength)
-			words.push_back(s);
-		s = wordHigher.Left(pos);
-		if (s.GetLength() >= nMinPrefixLength)
-			words.push_back(wordHigher.Left(pos));
-		s = wordHigher.Mid(pos+1);
-		if (s.GetLength() >= nMinPrefixLength)
-			words.push_back(wordHigher.Mid(pos+1));
-	}
+		std::vector<CString> words;
 
-	std::map<CString, int> wordset;
-	for (const auto& w : words)
-	{
-		for (auto lowerit = m_autolist.lower_bound(w);
-		lowerit != m_autolist.end(); ++lowerit)
+		pos = word.Find('-');
+
+		CString wordLower = word;
+		wordLower.MakeLower();
+		CString wordHigher = word;
+		wordHigher.MakeUpper();
+
+		words.push_back(word);
+		words.push_back(wordLower);
+		words.push_back(wordHigher);
+
+		if (pos >= 0)
 		{
-			int compare = w.CompareNoCase(lowerit->first.Left(w.GetLength()));
-			if (compare>0)
-				continue;
-			else if (compare == 0)
-				wordset.emplace(lowerit->first, lowerit->second);
+			CString s = wordLower.Left(pos);
+			if (s.GetLength() >= nMinPrefixLength)
+				words.push_back(s);
+			s = wordLower.Mid(pos + 1);
+			if (s.GetLength() >= nMinPrefixLength)
+				words.push_back(s);
+			s = wordHigher.Left(pos);
+			if (s.GetLength() >= nMinPrefixLength)
+				words.push_back(wordHigher.Left(pos));
+			s = wordHigher.Mid(pos + 1);
+			if (s.GetLength() >= nMinPrefixLength)
+				words.push_back(wordHigher.Mid(pos+1));
+		}
+
+		// note: the m_autolist is case-sensitive because
+		// its contents are also used to mark words in it
+		// as correctly spelled. If it would be case-insensitive,
+		// case spelling mistakes would not show up as misspelled.
+		std::map<CString, int> wordset;
+		for (const auto& w : words)
+		{
+			for (auto lowerit = m_autolist.lower_bound(w);
+				 lowerit != m_autolist.end(); ++lowerit)
+			{
+				int compare = w.CompareNoCase(lowerit->first.Left(w.GetLength()));
+				if (compare > 0)
+					continue;
+				else if (compare == 0)
+					wordset.emplace(lowerit->first, lowerit->second);
+				else
+					break;
+			}
+		}
+
+		for (const auto& w : wordset)
+			sAutoCompleteList.AppendFormat(L"%s%c%d%c", (LPCTSTR)w.first, m_typeSeparator, w.second, m_separator);
+
+		sAutoCompleteList.TrimRight(m_separator);
+
+		if (i == 0)
+		{
+			if (sAutoCompleteList.IsEmpty())
+			{
+				// retry with all chars
+				word = GetWordUnderCursor(false, true);
+			}
 			else
 				break;
 		}
+		if (i == 1)
+		{
+			if (sAutoCompleteList.IsEmpty())
+				return;
+		}
 	}
-
-	for (const auto& w : wordset)
-		sAutoCompleteList.AppendFormat(L"%s%c%d%c", (LPCTSTR)w.first, m_typeSeparator, w.second, m_separator);
-
-	sAutoCompleteList.TrimRight(m_separator);
-	if (sAutoCompleteList.IsEmpty())
-		return;
 
 	Call(SCI_AUTOCSETSEPARATOR, (WPARAM)CStringA(m_separator).GetAt(0));
 	Call(SCI_AUTOCSETTYPESEPARATOR, (WPARAM)m_typeSeparator);
