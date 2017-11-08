@@ -156,6 +156,7 @@
     <ClCompile Include="..\tgit\notes-utils.c" />
     <ClCompile Include="..\tgit\notes.c" />
     <ClCompile Include="..\tgit\object.c" />
+    <ClCompile Include="..\tgit\oidmap.c" />
     <ClCompile Include="..\tgit\oidset.c" />
     <ClCompile Include="..\tgit\pack-bitmap-write.c" />
     <ClCompile Include="..\tgit\pack-bitmap.c" />
@@ -163,6 +164,7 @@
     <ClCompile Include="..\tgit\pack-objects.c" />
     <ClCompile Include="..\tgit\pack-revindex.c" />
     <ClCompile Include="..\tgit\pack-write.c" />
+    <ClCompile Include="..\tgit\packfile.c" />
     <ClCompile Include="..\tgit\pager.c" />
     <ClCompile Include="..\tgit\parse-options-cb.c" />
     <ClCompile Include="..\tgit\parse-options.c" />
@@ -183,6 +185,7 @@
     <ClCompile Include="..\tgit\refs.c" />
     <ClCompile Include="..\tgit\refs\files-backend.c" />
     <ClCompile Include="..\tgit\refs\iterator.c" />
+    <ClCompile Include="..\tgit\refs\packed-backend.c" />
     <ClCompile Include="..\tgit\refs\ref-cache.c" />
     <ClCompile Include="..\tgit\remote.c" />
     <ClCompile Include="..\tgit\replace_object.c" />
@@ -437,11 +440,13 @@
     <ClInclude Include="..\tgit\notes-utils.h" />
     <ClInclude Include="..\tgit\notes.h" />
     <ClInclude Include="..\tgit\object.h" />
+    <ClInclude Include="..\tgit\oidmap.h" />
     <ClInclude Include="..\tgit\oidset.h" />
     <ClInclude Include="..\tgit\pack-bitmap.h" />
     <ClInclude Include="..\tgit\pack-objects.h" />
     <ClInclude Include="..\tgit\pack-revindex.h" />
     <ClInclude Include="..\tgit\pack.h" />
+    <ClInclude Include="..\tgit\packfile.h" />
     <ClInclude Include="..\tgit\parse-options.h" />
     <ClInclude Include="..\tgit\patch-ids.h" />
     <ClInclude Include="..\tgit\pathspec.h" />
@@ -453,6 +458,7 @@
     <ClInclude Include="..\tgit\ref-filter.h" />
     <ClInclude Include="..\tgit\reflog-walk.h" />
     <ClInclude Include="..\tgit\refs.h" />
+    <ClInclude Include="..\tgit\refs\packed-backend.h" />
     <ClInclude Include="..\tgit\refs\ref-cache.h" />
     <ClInclude Include="..\tgit\refs\refs-internal.h" />
     <ClInclude Include="..\tgit\remote.h" />

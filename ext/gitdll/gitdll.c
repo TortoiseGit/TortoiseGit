@@ -28,6 +28,7 @@
 #include "cache.h"
 #include "commit.h"
 #include "diff.h"
+#include "packfile.h"
 #include "revision.h"
 #include "diffcore.h"
 #include "dir.h"
@@ -76,7 +77,10 @@ void dll_entry(void)
 
 int git_get_sha1(const char *name, GIT_HASH sha1)
 {
-	return get_sha1(name,sha1);
+	struct object_id oid = { 0 };
+	int ret = get_oid(name, &oid);
+	hashcpy(sha1, oid.hash);
+	return ret;
 }
 
 static int convert_slash(char * path)

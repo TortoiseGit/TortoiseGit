@@ -15,7 +15,7 @@ Released: unreleased
  * Fixed issue #3036: Can not save changes in Settings -> Network after trying to add command-line option to the SSH-client
  * Fixed issue #3066: Message field needs vertical scrollbar in Create Tag dialog
  * Fixed issue #3033: Cannot view submodule log if repository sits under directory symlink
-   Update libgit to 2.14.1 based on Git for Windows source.
+   Update libgit to 2.15 based on Git for Windows source.
  * Fixed issue #3055: Explorer crash when deleting two independent folders
  * Fixed issue #3047: When Log Messages window is narrow, Filter box placeholder text may cover up the Filter Types button
  * Fixed issue #3090: Show Log window stuck with "Fetching changed files..."

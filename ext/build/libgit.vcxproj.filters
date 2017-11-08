@@ -899,6 +899,15 @@
     <ClCompile Include="..\tgit\sub-process.c">
       <Filter>git</Filter>
     </ClCompile>
+    <ClCompile Include="..\tgit\packfile.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\oidmap.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\refs\packed-backend.c">
+      <Filter>git\refs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\tgit\compat\msvc.h">
@@ -1275,6 +1284,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\tgit\sub-process.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\packfile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\refs\packed-backend.h">
+      <Filter>git\refs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\oidmap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
