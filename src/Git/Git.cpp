@@ -2110,7 +2110,7 @@ int CGit::GuessRefForHash(CString& ref, const CGitHash& hash)
 int CGit::GetBranchDescriptions(MAP_STRING_STRING& map)
 {
 	CAutoConfig config(true);
-	if (git_config_add_file_ondisk(config, CGit::GetGitPathStringA(GetGitLocalConfig()), GIT_CONFIG_LEVEL_LOCAL, FALSE) < 0)
+	if (git_config_add_file_ondisk(config, CGit::GetGitPathStringA(GetGitLocalConfig()), GIT_CONFIG_LEVEL_LOCAL, nullptr, FALSE) < 0)
 		return -1;
 	return git_config_foreach_match(config, "^branch\\..*\\.description$", [](const git_config_entry* entry, void* data)
 	{

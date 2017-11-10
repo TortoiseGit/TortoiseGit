@@ -133,7 +133,6 @@
     <ClCompile Include="..\libgit2\src\oid.c" />
     <ClCompile Include="..\libgit2\src\oidarray.c" />
     <ClCompile Include="..\libgit2\src\oidmap.c" />
-    <ClCompile Include="..\libgit2\src\openssl_stream.c" />
     <ClCompile Include="..\libgit2\src\pack-objects.c" />
     <ClCompile Include="..\libgit2\src\pack.c" />
     <ClCompile Include="..\libgit2\src\patch.c" />
@@ -161,10 +160,11 @@
     <ClCompile Include="..\libgit2\src\settings.c" />
     <ClCompile Include="..\libgit2\src\sha1_lookup.c" />
     <ClCompile Include="..\libgit2\src\signature.c" />
-    <ClCompile Include="..\libgit2\src\socket_stream.c" />
     <ClCompile Include="..\libgit2\src\sortedcache.c" />
     <ClCompile Include="..\libgit2\src\stash.c" />
     <ClCompile Include="..\libgit2\src\status.c" />
+    <ClCompile Include="..\libgit2\src\streams\openssl.c" />
+    <ClCompile Include="..\libgit2\src\streams\socket.c" />
     <ClCompile Include="..\libgit2\src\strmap.c" />
     <ClCompile Include="..\libgit2\src\submodule.c" />
     <ClCompile Include="..\libgit2\src\sysdir.c" />
@@ -321,7 +321,6 @@
     <ClInclude Include="..\libgit2\src\oid.h" />
     <ClInclude Include="..\libgit2\src\oidarray.h" />
     <ClInclude Include="..\libgit2\src\oidmap.h" />
-    <ClInclude Include="..\libgit2\src\openssl_stream.h" />
     <ClInclude Include="..\libgit2\src\pack-objects.h" />
     <ClInclude Include="..\libgit2\src\pack.h" />
     <ClInclude Include="..\libgit2\src\patch.h" />
@@ -345,10 +344,11 @@
     <ClInclude Include="..\libgit2\src\revwalk.h" />
     <ClInclude Include="..\libgit2\src\sha1_lookup.h" />
     <ClInclude Include="..\libgit2\src\signature.h" />
-    <ClInclude Include="..\libgit2\src\socket_stream.h" />
     <ClInclude Include="..\libgit2\src\sortedcache.h" />
     <ClInclude Include="..\libgit2\src\status.h" />
     <ClInclude Include="..\libgit2\src\stream.h" />
+    <ClInclude Include="..\libgit2\src\streams\openssl.h" />
+    <ClInclude Include="..\libgit2\src\streams\socket.h" />
     <ClInclude Include="..\libgit2\src\strmap.h" />
     <ClInclude Include="..\libgit2\src\strnlen.h" />
     <ClInclude Include="..\libgit2\src\submodule.h" />

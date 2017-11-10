@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2016 - TortoiseGit
+// Copyright (C) 2013-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -32,7 +32,7 @@ CVersioncheckParser::~CVersioncheckParser()
 
 bool CVersioncheckParser::Load(const CString& filename, CString& err)
 {
-	git_config_add_file_ondisk(m_versioncheckfile, CUnicodeUtils::GetUTF8(filename), GIT_CONFIG_LEVEL_GLOBAL, 0);
+	git_config_add_file_ondisk(m_versioncheckfile, CUnicodeUtils::GetUTF8(filename), GIT_CONFIG_LEVEL_GLOBAL, nullptr, 0);
 
 	if (m_versioncheckfile.GetString(L"tortoisegit.version", m_version.version))
 	{

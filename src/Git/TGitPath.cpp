@@ -711,7 +711,7 @@ int CTGitPath::GetAdminDirMask() const
 				if (PathFileExists(topProjectDir + L"\\.gitmodules"))
 				{
 					CAutoConfig config(true);
-					git_config_add_file_ondisk(config, CGit::GetGitPathStringA(topProjectDir + L"\\.gitmodules"), GIT_CONFIG_LEVEL_APP, FALSE);
+					git_config_add_file_ondisk(config, CGit::GetGitPathStringA(topProjectDir + L"\\.gitmodules"), GIT_CONFIG_LEVEL_APP, nullptr, FALSE);
 					CString relativePath = GetWinPathString().Mid(topProjectDir.GetLength());
 					relativePath.Replace(L'\\', L'/');
 					relativePath.Trim(L'/');

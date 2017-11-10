@@ -88,13 +88,13 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	CString systemConfig(CRegString(REG_SYSTEM_GITCONFIGPATH, L"", FALSE));
 	CString programDataConfig(GetProgramDataGitConfig());
 
-	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(projectConfig), GIT_CONFIG_LEVEL_LOCAL, FALSE);
-	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(globalConfig), GIT_CONFIG_LEVEL_GLOBAL, FALSE);
-	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(globalXDGConfig), GIT_CONFIG_LEVEL_XDG, FALSE);
+	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(projectConfig), GIT_CONFIG_LEVEL_LOCAL, repository, FALSE);
+	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(globalConfig), GIT_CONFIG_LEVEL_GLOBAL, repository, FALSE);
+	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(globalXDGConfig), GIT_CONFIG_LEVEL_XDG, repository, FALSE);
 	if (!systemConfig.IsEmpty())
-		git_config_add_file_ondisk(config, CGit::GetGitPathStringA(systemConfig), GIT_CONFIG_LEVEL_SYSTEM, FALSE);
+		git_config_add_file_ondisk(config, CGit::GetGitPathStringA(systemConfig), GIT_CONFIG_LEVEL_SYSTEM, repository, FALSE);
 	if (!programDataConfig.IsEmpty())
-		git_config_add_file_ondisk(config, CGit::GetGitPathStringA(programDataConfig), GIT_CONFIG_LEVEL_PROGRAMDATA, FALSE);
+		git_config_add_file_ondisk(config, CGit::GetGitPathStringA(programDataConfig), GIT_CONFIG_LEVEL_PROGRAMDATA, repository, FALSE);
 
 	git_repository_set_config(repository, config);
 
@@ -915,13 +915,14 @@ bool CGitIgnoreList::CheckAndUpdateCoreExcludefile(const CString &adminDir)
 		return false;
 
 	CAutoConfig config(true);
-	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(projectConfig), GIT_CONFIG_LEVEL_LOCAL, FALSE);
-	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(globalConfig), GIT_CONFIG_LEVEL_GLOBAL, FALSE);
-	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(globalXDGConfig), GIT_CONFIG_LEVEL_XDG, FALSE);
+	CAutoRepository repo(adminDir);
+	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(projectConfig), GIT_CONFIG_LEVEL_LOCAL, repo, FALSE);
+	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(globalConfig), GIT_CONFIG_LEVEL_GLOBAL, repo, FALSE);
+	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(globalXDGConfig), GIT_CONFIG_LEVEL_XDG, repo, FALSE);
 	if (!m_sGitSystemConfigPath.IsEmpty())
-		git_config_add_file_ondisk(config, CGit::GetGitPathStringA(m_sGitSystemConfigPath), GIT_CONFIG_LEVEL_SYSTEM, FALSE);
+		git_config_add_file_ondisk(config, CGit::GetGitPathStringA(m_sGitSystemConfigPath), GIT_CONFIG_LEVEL_SYSTEM, repo, FALSE);
 	if (!m_sGitProgramDataConfigPath.IsEmpty())
-		git_config_add_file_ondisk(config, CGit::GetGitPathStringA(m_sGitProgramDataConfigPath), GIT_CONFIG_LEVEL_PROGRAMDATA, FALSE);
+		git_config_add_file_ondisk(config, CGit::GetGitPathStringA(m_sGitProgramDataConfigPath), GIT_CONFIG_LEVEL_PROGRAMDATA, repo, FALSE);
 
 	config.GetString(L"core.excludesfile", excludesFile);
 	if (excludesFile.IsEmpty())

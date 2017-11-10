@@ -101,9 +101,9 @@ BOOL CFirstStartWizardAuthentication::OnWizardFinish()
 	if (m_ctrlSimpleCredential.IsWindowEnabled() && !m_bNoSave && m_ctrlSimpleCredential.GetCurSel() != -1)
 	{
 		CAutoConfig config(true);
-		int err = git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitGlobalXDGConfig()), GIT_CONFIG_LEVEL_XDG, FALSE);
+		int err = git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitGlobalXDGConfig()), GIT_CONFIG_LEVEL_XDG, nullptr, FALSE);
 		if (!err && (PathFileExists(g_Git.GetGitGlobalConfig()) || !PathFileExists(g_Git.GetGitGlobalXDGConfig())))
-			err = git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitGlobalConfig()), GIT_CONFIG_LEVEL_GLOBAL, FALSE);
+			err = git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitGlobalConfig()), GIT_CONFIG_LEVEL_GLOBAL, nullptr, FALSE);
 		if (err)
 		{
 			MessageBox(g_Git.GetLibGit2LastErr(), L"TortoiseGit", MB_ICONEXCLAMATION);
@@ -146,19 +146,19 @@ BOOL CFirstStartWizardAuthentication::OnInitDialog()
 	GetDlgItem(IDC_FIRSTSTART_SSHHINT)->SetWindowText(tmp);
 
 	CAutoConfig config(true);
-	if (git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitGlobalConfig()), GIT_CONFIG_LEVEL_GLOBAL, FALSE))
+	if (git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitGlobalConfig()), GIT_CONFIG_LEVEL_GLOBAL, nullptr, FALSE))
 		MessageBox(g_Git.GetLibGit2LastErr(), L"TortoiseGit", MB_ICONEXCLAMATION);
 	else
 	{
-		if (git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitGlobalXDGConfig()), GIT_CONFIG_LEVEL_XDG, FALSE))
+		if (git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitGlobalXDGConfig()), GIT_CONFIG_LEVEL_XDG, nullptr, FALSE))
 			MessageBox(g_Git.GetLibGit2LastErr(), L"TortoiseGit", MB_ICONEXCLAMATION);
 	}
 	if (!g_Git.ms_bCygwinGit && !g_Git.ms_bMsys2Git)
 	{
-		if (git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitProgramDataConfig()), GIT_CONFIG_LEVEL_PROGRAMDATA, FALSE))
+		if (git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitProgramDataConfig()), GIT_CONFIG_LEVEL_PROGRAMDATA, nullptr, FALSE))
 			MessageBox(g_Git.GetLibGit2LastErr(), L"TortoiseGit", MB_ICONEXCLAMATION);
 	}
-	if (git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitSystemConfig()), GIT_CONFIG_LEVEL_SYSTEM, FALSE))
+	if (git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitSystemConfig()), GIT_CONFIG_LEVEL_SYSTEM, nullptr, FALSE))
 		MessageBox(g_Git.GetLibGit2LastErr(), L"TortoiseGit", MB_ICONEXCLAMATION);
 
 	STRING_VECTOR defaultList;

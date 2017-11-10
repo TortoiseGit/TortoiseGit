@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2011, 2013-2016 - TortoiseGit
+// Copyright (C) 2003-2011, 2013-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -48,25 +48,26 @@ ProjectProperties::ProjectProperties(void)
 int ProjectProperties::ReadProps()
 {
 	CAutoConfig gitconfig(true);
+	CAutoRepository repo(g_Git.GetGitRepository());
 	CString adminDirPath;
 	if (GitAdminDir::GetAdminDirPath(g_Git.m_CurrentDir, adminDirPath))
-		git_config_add_file_ondisk(gitconfig, CGit::GetGitPathStringA(adminDirPath + L"config"), GIT_CONFIG_LEVEL_APP, FALSE); // this needs to have the highest priority in order to override .tgitconfig settings
+		git_config_add_file_ondisk(gitconfig, CGit::GetGitPathStringA(adminDirPath + L"config"), GIT_CONFIG_LEVEL_APP, repo, FALSE); // this needs to have the highest priority in order to override .tgitconfig settings
 
 	if (!GitAdminDir::IsBareRepo(g_Git.m_CurrentDir))
-		git_config_add_file_ondisk(gitconfig, CGit::GetGitPathStringA(g_Git.CombinePath(L".tgitconfig")), GIT_CONFIG_LEVEL_LOCAL, FALSE); // this needs to have the second highest priority
+		git_config_add_file_ondisk(gitconfig, CGit::GetGitPathStringA(g_Git.CombinePath(L".tgitconfig")), GIT_CONFIG_LEVEL_LOCAL, nullptr, FALSE); // this needs to have the second highest priority
 	else
 	{
 		CString tmpFile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
 		CTGitPath path(L".tgitconfig");
 		if (g_Git.GetOneFile(L"HEAD", path, tmpFile) == 0)
-			git_config_add_file_ondisk(gitconfig, CGit::GetGitPathStringA(tmpFile), GIT_CONFIG_LEVEL_LOCAL, FALSE); // this needs to have the second highest priority
+			git_config_add_file_ondisk(gitconfig, CGit::GetGitPathStringA(tmpFile), GIT_CONFIG_LEVEL_LOCAL, nullptr, FALSE); // this needs to have the second highest priority
 	}
 
-	git_config_add_file_ondisk(gitconfig, CGit::GetGitPathStringA(g_Git.GetGitGlobalConfig()), GIT_CONFIG_LEVEL_GLOBAL, FALSE);
-	git_config_add_file_ondisk(gitconfig,CGit::GetGitPathStringA(g_Git.GetGitGlobalXDGConfig()), GIT_CONFIG_LEVEL_XDG, FALSE);
-	git_config_add_file_ondisk(gitconfig, CGit::GetGitPathStringA(g_Git.GetGitSystemConfig()), GIT_CONFIG_LEVEL_SYSTEM, FALSE);
+	git_config_add_file_ondisk(gitconfig, CGit::GetGitPathStringA(g_Git.GetGitGlobalConfig()), GIT_CONFIG_LEVEL_GLOBAL, repo, FALSE);
+	git_config_add_file_ondisk(gitconfig,CGit::GetGitPathStringA(g_Git.GetGitGlobalXDGConfig()), GIT_CONFIG_LEVEL_XDG, repo, FALSE);
+	git_config_add_file_ondisk(gitconfig, CGit::GetGitPathStringA(g_Git.GetGitSystemConfig()), GIT_CONFIG_LEVEL_SYSTEM, repo, FALSE);
 	if (!g_Git.ms_bCygwinGit && !g_Git.ms_bMsys2Git)
-		git_config_add_file_ondisk(gitconfig, CGit::GetGitPathStringA(g_Git.GetGitProgramDataConfig()), GIT_CONFIG_LEVEL_PROGRAMDATA, FALSE);
+		git_config_add_file_ondisk(gitconfig, CGit::GetGitPathStringA(g_Git.GetGitProgramDataConfig()), GIT_CONFIG_LEVEL_PROGRAMDATA, repo, FALSE);
 	giterr_clear();
 
 	CString sPropVal;

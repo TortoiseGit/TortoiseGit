@@ -54,6 +54,12 @@
     <Filter Include="Header Files\transports">
       <UniqueIdentifier>{4af4e697-1a6c-4f2a-b096-bba6fd8759c5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\streams">
+      <UniqueIdentifier>{fe3318b5-e667-4e81-8c1d-096619d56591}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\streams">
+      <UniqueIdentifier>{d9fbd958-e3c7-48f0-b768-aacf2db2ed45}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\libgit2\src\attr.c">
@@ -452,17 +458,11 @@
     <ClCompile Include="..\libgit2\src\rebase.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\libgit2\src\socket_stream.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\libgit2\src\win32\path_w32.c">
       <Filter>Source Files\win32</Filter>
     </ClCompile>
     <ClCompile Include="..\libgit2\src\win32\w32_buffer.c">
       <Filter>Source Files\win32</Filter>
-    </ClCompile>
-    <ClCompile Include="..\libgit2\src\openssl_stream.c">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\libgit2\src\merge_driver.c">
       <Filter>Source Files</Filter>
@@ -505,6 +505,12 @@
     </ClCompile>
     <ClCompile Include="..\libgit2\src\worktree.c">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libgit2\src\streams\socket.c">
+      <Filter>Source Files\streams</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libgit2\src\streams\openssl.c">
+      <Filter>Source Files\streams</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1075,9 +1081,6 @@
     <ClInclude Include="..\libgit2\src\stream.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\libgit2\src\socket_stream.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\libgit2\src\integer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1092,9 +1095,6 @@
     </ClInclude>
     <ClInclude Include="..\libgit2\src\win32\win32-compat.h">
       <Filter>Header Files\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libgit2\src\openssl_stream.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\libgit2\include\git2\sys\merge.h">
       <Filter>Public Header Files\sys</Filter>
@@ -1143,6 +1143,12 @@
     </ClInclude>
     <ClInclude Include="..\libgit2\src\worktree.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\streams\openssl.h">
+      <Filter>Header Files\streams</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\streams\socket.h">
+      <Filter>Header Files\streams</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

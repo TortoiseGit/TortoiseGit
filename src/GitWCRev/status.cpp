@@ -132,16 +132,16 @@ int GetStatus(const TCHAR* path, GitWCRev_t& GitStat)
 
 	CAutoConfig config(true);
 	std::string gitdir(dotgitdir->ptr, dotgitdir->size);
-	git_config_add_file_ondisk(config, (gitdir + "config").c_str(), GIT_CONFIG_LEVEL_LOCAL, FALSE);
+	git_config_add_file_ondisk(config, (gitdir + "config").c_str(), GIT_CONFIG_LEVEL_LOCAL, repo, FALSE);
 	std::string home(CUnicodeUtils::StdGetUTF8(GetHomePath()));
-	git_config_add_file_ondisk(config, (home + "\\.gitconfig").c_str(), GIT_CONFIG_LEVEL_GLOBAL, FALSE);
-	git_config_add_file_ondisk(config, (home + "\\.config\\git\\config").c_str(), GIT_CONFIG_LEVEL_XDG, FALSE);
+	git_config_add_file_ondisk(config, (home + "\\.gitconfig").c_str(), GIT_CONFIG_LEVEL_GLOBAL, repo, FALSE);
+	git_config_add_file_ondisk(config, (home + "\\.config\\git\\config").c_str(), GIT_CONFIG_LEVEL_XDG, repo, FALSE);
 	std::wstring systemConfig = GetSystemGitConfig();
 	if (!systemConfig.empty())
-		git_config_add_file_ondisk(config, CUnicodeUtils::StdGetUTF8(systemConfig).c_str(), GIT_CONFIG_LEVEL_SYSTEM, FALSE);
+		git_config_add_file_ondisk(config, CUnicodeUtils::StdGetUTF8(systemConfig).c_str(), GIT_CONFIG_LEVEL_SYSTEM, repo, FALSE);
 	std::wstring programDataConfig = GetProgramDataConfig();
 	if (!programDataConfig.empty())
-		git_config_add_file_ondisk(config, CUnicodeUtils::StdGetUTF8(programDataConfig).c_str(), GIT_CONFIG_LEVEL_PROGRAMDATA, FALSE);
+		git_config_add_file_ondisk(config, CUnicodeUtils::StdGetUTF8(programDataConfig).c_str(), GIT_CONFIG_LEVEL_PROGRAMDATA, repo, FALSE);
 	git_repository_set_config(repo, config);
 
 	if (git_repository_head_unborn(repo))
