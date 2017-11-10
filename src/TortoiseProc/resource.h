@@ -1598,6 +1598,7 @@
 #define IDC_ADVANCEDCONFIGURATION       1845
 #define IDC_FIRSTSTART_SSHHINT          1846
 #define IDC_CHECK_LFS                   1847
+#define IDC_TOGGLE_ADVANCED             1848
 #define IDS_LOG_FILTER_BY               1850
 #define IDS_LOG_FILTER_PATHS            1851
 #define IDS_LOG_FILTER_AUTHORS          1852
@@ -2039,9 +2040,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        361
+#define _APS_NEXT_RESOURCE_VALUE        362
 #define _APS_NEXT_COMMAND_VALUE         32874
-#define _APS_NEXT_CONTROL_VALUE         1848
+#define _APS_NEXT_CONTROL_VALUE         1849
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

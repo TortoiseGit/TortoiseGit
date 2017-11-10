@@ -84,6 +84,7 @@ CCommitDlg::CCommitDlg(CWnd* pParent /*=nullptr*/)
 	, m_hAccelOkButton(nullptr)
 	, m_bDoNotStoreLastSelectedLine(true)
 	, m_bCommitAmend(FALSE)
+	, m_showingAdvanced(true)
 {
 }
 
@@ -127,6 +128,7 @@ void CCommitDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CHECKFILES, m_CheckFiles);
 	DDX_Control(pDX, IDC_CHECKSUBMODULES, m_CheckSubmodules);
 	DDX_Control(pDX, IDOK, m_ctrlOkButton);
+	DDX_Control(pDX, IDC_TOGGLE_ADVANCED, m_ctrlAdvButton);
 }
 
 BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
@@ -166,6 +168,7 @@ BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_COMMIT_AS_COMMIT_DATE, &CCommitDlg::OnBnClickedCommitAsCommitDate)
 	ON_BN_CLICKED(IDC_CHECK_NEWBRANCH, &CCommitDlg::OnBnClickedCheckNewBranch)
 	ON_BN_CLICKED(IDC_COMMIT_SETAUTHOR, &CCommitDlg::OnBnClickedCommitSetauthor)
+	ON_STN_CLICKED(IDC_TOGGLE_ADVANCED, &CCommitDlg::OnBnClickedToggleAdvanced)
 END_MESSAGE_MAP()
 
 int GetCommitTemplate(CString &msg)
@@ -371,6 +374,12 @@ BOOL CCommitDlg::OnInitDialog()
 	GetClientRect(m_DlgOrigRect);
 	m_cLogMessage.GetClientRect(m_LogMsgOrigRect);
 
+	// Advanced message properties lie between the bottom of the message log and the message panel 
+	CWnd* panel = GetDlgItem(IDC_MESSAGEGROUP);
+	CRect panelRect;
+	panel->GetClientRect(&panelRect);
+	m_logAdvancedSectionHeight = panelRect.bottom - m_LogMsgOrigRect.bottom - 35;
+
 	AddAnchor(IDC_COMMITLABEL, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_BUGIDLABEL, TOP_RIGHT);
 	AddAnchor(IDC_BUGID, TOP_RIGHT);
@@ -417,7 +426,7 @@ BOOL CCommitDlg::OnInitDialog()
 	AddAnchor(IDC_CHECKMODIFIED, TOP_LEFT);
 	AddAnchor(IDC_CHECKFILES, TOP_LEFT);
 	AddAnchor(IDC_CHECKSUBMODULES, TOP_LEFT);
-
+	AddAnchor(IDC_TOGGLE_ADVANCED, TOP_RIGHT);
 	if (hWndExplorer)
 		CenterWindow(CWnd::FromHandle(hWndExplorer));
 	EnableSaveRestore(L"CommitDlg");
@@ -468,6 +477,7 @@ BOOL CCommitDlg::OnInitDialog()
 	err = FALSE;
 
 	this->m_ctrlShowPatch.SetURL(CString());
+	this->m_ctrlAdvButton.SetURL(CString());
 
 	if (g_Git.GetConfigValueBool(L"tgit.commitshowpatch"))
 		OnStnClickedViewPatch();
@@ -2895,4 +2905,67 @@ void CCommitDlg::OnSysColorChange()
 	__super::OnSysColorChange();
 	m_cLogMessage.SetColors(true);
 	m_cLogMessage.SetFont(CAppUtils::GetLogFontName(), CAppUtils::GetLogFontSize());
+}
+
+void CCommitDlg::OnBnClickedToggleAdvanced()
+{
+	int advControls[] = {
+		IDC_COMMIT_SETAUTHOR,
+		IDC_COMMIT_AUTHORDATA,
+		IDC_SIGNOFF,
+		IDC_COMMIT_SETDATETIME,
+		IDC_COMMIT_AMENDDIFF,
+		IDC_COMMIT_AMEND,
+		IDC_CHECK_NEWBRANCH,
+		IDC_COMMIT_AS_COMMIT_DATE,
+		IDC_NOAUTOSELECTSUBMODULES,
+		IDC_COMMIT_MESSAGEONLY,
+		IDC_VIEW_PATCH,
+		IDC_BUGIDLABEL,
+		IDC_TEXT_INFO
+	};
+
+	RemoveAnchor(IDC_LOGMESSAGE);
+	CRect logRect, logRect2;
+	m_cLogMessage.GetClientRect(&logRect2);
+	m_cLogMessage.GetWindowRect(&logRect);
+	ScreenToClient(&logRect);
+	if (m_showingAdvanced)
+	{
+		m_ctrlAdvButton.SetWindowTextW(L"Advanced>");
+
+		// resize the message log to fill to the edge of its containing panel
+		logRect.bottom += m_logAdvancedSectionHeight;
+		m_cLogMessage.SetWindowPos(
+			NULL,
+			logRect.left, logRect.top,
+			logRect.Width(),
+			logRect.Height(),
+			SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOZORDER);
+
+		m_LogMsgOrigRect.bottom = m_LogMsgOrigRect.bottom + m_logAdvancedSectionHeight;
+	}
+	else
+	{
+		m_ctrlAdvButton.SetWindowTextW(L"Simple>");
+
+		// restore the message log to its original height but maintain
+		// its existing width as the window may have been resized
+		logRect.bottom -= m_logAdvancedSectionHeight;
+		m_cLogMessage.SetWindowPos(
+			NULL, 
+			logRect.top, logRect.left,
+			logRect.Width(), logRect.Height(),
+			SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOZORDER);
+
+		m_LogMsgOrigRect.bottom -= m_logAdvancedSectionHeight;
+	}
+	AddAnchor(IDC_LOGMESSAGE, TOP_LEFT, TOP_RIGHT);
+
+	m_showingAdvanced = !m_showingAdvanced;
+
+	for (auto id : advControls) {
+		GetDlgItem(id)->ShowWindow(m_showingAdvanced ? SW_SHOW : SW_HIDE);
+	}
+	this->m_ctrlAdvButton.Invalidate();
 }
