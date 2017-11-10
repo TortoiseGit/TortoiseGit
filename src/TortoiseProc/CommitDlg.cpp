@@ -236,6 +236,8 @@ BOOL CCommitDlg::OnInitDialog()
 	m_regDoNotAutoselectSubmodules = CRegDWORD(L"Software\\TortoiseGit\\DoNotAutoselectSubmodules", FALSE);
 	m_bDoNotAutoselectSubmodules = m_regDoNotAutoselectSubmodules;
 
+	m_showSimpleView = CRegDWORD(L"Software\\TortoiseGit\\CommitDlgSimpleView", FALSE);
+
 	m_hAccel = LoadAccelerators(AfxGetResourceHandle(),MAKEINTRESOURCE(IDR_ACC_COMMITDLG));
 
 	if (m_pathList.IsEmpty())
@@ -489,6 +491,9 @@ BOOL CCommitDlg::OnInitDialog()
 		GetDlgItem(IDC_MERGEACTIVE)->ShowWindow(SW_SHOW);
 		CMessageBox::ShowCheck(GetSafeHwnd(), IDS_COMMIT_MERGE_HINT, IDS_APPNAME, MB_ICONINFORMATION, L"CommitMergeHint", IDS_MSGBOX_DONOTSHOWAGAIN);
 	}
+
+	if (m_showSimpleView == TRUE)
+		OnBnClickedToggleAdvanced();
 
 	PrepareOkButton();
 
@@ -2967,5 +2972,8 @@ void CCommitDlg::OnBnClickedToggleAdvanced()
 	for (auto id : advControls) {
 		GetDlgItem(id)->ShowWindow(m_showingAdvanced ? SW_SHOW : SW_HIDE);
 	}
+
+	m_showSimpleView = !m_showingAdvanced;
+
 	this->m_ctrlAdvButton.Invalidate();
 }

@@ -223,6 +223,7 @@ private:
 	CHyperLink			m_ctrlAdvButton;
 	bool				m_showingAdvanced;
 	int					m_logAdvancedSectionHeight;
+	CRegDWORD			m_showSimpleView;
 	void				PrepareOkButton();
 	typedef struct
 	{
