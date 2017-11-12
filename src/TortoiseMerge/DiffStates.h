@@ -1,6 +1,6 @@
-// TortoiseGitMerge - a Diff/Patch program
+// TortoiseMerge - a Diff/Patch program
 
-// Copyright (C) 2007-2008, 2010, 2013 - TortoiseSVN
+// Copyright (C) 2007-2008, 2010, 2013, 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -46,5 +46,6 @@ enum DiffStates
 	DIFFSTATE_YOURSREMOVED,				///< removed line in yours
 	DIFFSTATE_YOURSADDED,				///< added line in yours
 	DIFFSTATE_EDITED,					///< manually edited line
+	DIFFSTATE_FILTEREDDIFF,				///< filtered-out diffs (e.g., ignored comments, regex filters, ...)
 	DIFFSTATE_END						///< end marker for enum
 };

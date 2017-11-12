@@ -102,6 +102,7 @@
 #define IDC_FGCONFLICTED                1043
 #define IDC_FGCONFLICTRESOLVED          1044
 #define IDC_FGEMPTY                     1045
+#define IDC_BKFILTERED                  1046
 #define IDC_VERSIONABOUT                1054
 #define IDC_LINENUMBERS                 1063
 #define IDC_MATCHCASE                   1064

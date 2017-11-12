@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2008, 2012-2014 - TortoiseSVN
+// Copyright (C) 2006-2008, 2012-2014, 2017 - TortoiseSVN
 // Copyright (C) 2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
@@ -103,6 +103,9 @@ void CSetColorPage::SaveData()
 	cFg = GetColorFromButton(m_cFgWhitespaces);
 	CRegDWORD regWhitespaceColor(L"Software\\TortoiseGitMerge\\Colors\\Whitespace", GetSysColor(COLOR_3DSHADOW));
 	regWhitespaceColor = cFg;
+
+	cBk = GetColorFromButton(m_cBkFiltered);
+	CDiffColors::GetInstance().SetColors(DIFFSTATE_FILTEREDDIFF, cBk, DIFFSTATE_NORMAL_DEFAULT_FG);
 }
 
 void CSetColorPage::DoDataExchange(CDataExchange* pDX)
@@ -124,6 +127,7 @@ void CSetColorPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_FGEMPTY, m_cFgEmpty);
 	DDX_Control(pDX, IDC_FGCONFLICTED, m_cFgConflict);
 	DDX_Control(pDX, IDC_FGCONFLICTRESOLVED, m_cFgConflictResolved);
+	DDX_Control(pDX, IDC_BKFILTERED, m_cBkFiltered);
 }
 
 
@@ -144,6 +148,7 @@ BEGIN_MESSAGE_MAP(CSetColorPage, CPropertyPage)
 	ON_BN_CLICKED(IDC_FGCONFLICTED, &CSetColorPage::OnBnClickedColor)
 	ON_BN_CLICKED(IDC_FGCONFLICTRESOLVED, &CSetColorPage::OnBnClickedColor)
 	ON_BN_CLICKED(IDC_FGWHITESPACES, &CSetColorPage::OnBnClickedColor)
+	ON_BN_CLICKED(IDC_BKFILTERED, &CSetColorPage::OnBnClickedColor)
 	ON_BN_CLICKED(IDC_RESTORE, &CSetColorPage::OnBnClickedRestore)
 END_MESSAGE_MAP()
 
@@ -226,6 +231,11 @@ BOOL CSetColorPage::OnInitDialog()
 	m_cFgWhitespaces.EnableAutomaticButton(sDefaultText, GetSysColor(COLOR_3DSHADOW));
 	m_cFgWhitespaces.EnableOtherButton(sCustomText);
 
+	CDiffColors::GetInstance().GetColors(DIFFSTATE_FILTEREDDIFF, cBk, cFg);
+	m_cBkFiltered.SetColor(cBk);
+	m_cBkEmpty.EnableAutomaticButton(sDefaultText, DIFFSTATE_FILTERED_DEFAULT_BG);
+	m_cBkEmpty.EnableOtherButton(sCustomText);
+
 	m_bInit = TRUE;
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -263,5 +273,6 @@ void CSetColorPage::OnBnClickedRestore()
 	m_cFgConflict.SetColor(DIFFSTATE_CONFLICTED_DEFAULT_FG);
 	m_cFgConflictResolved.SetColor(DIFFSTATE_CONFLICTRESOLVED_DEFAULT_FG);
 	m_cFgWhitespaces.SetColor(GetSysColor(COLOR_3DSHADOW));
+	m_cBkFiltered.SetColor(DIFFSTATE_FILTERED_DEFAULT_BG);
 	SetModified();
 }

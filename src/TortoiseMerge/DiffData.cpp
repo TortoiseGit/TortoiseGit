@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2016 - TortoiseSVN
+// Copyright (C) 2006-2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -475,64 +475,15 @@ CDiffData::DoTwoWayDiff(const CString& sBaseFilename, const CString& sYourFilena
 				if (sCurrentBaseLine != sCurrentYourLine)
 				{
 					bool changedWS = false;
-					bool bWhiteSpaceChanges = true;
 					if (dwIgnoreWS == 2 || dwIgnoreWS == 3)
 						changedWS = CompareWithIgnoreWS(sCurrentBaseLine, sCurrentYourLine, dwIgnoreWS);
-					else if (dwIgnoreWS == 0)
+					auto ds = DIFFSTATE_WHITESPACE;
+					if (!changedWS)
 					{
-						// the strings could be identical in relation to the regex filter.
-						// so to find out if there are whitespace changes, we have to strip the strings
-						// of all non-whitespace chars and then compare them.
-						// Note: this is not really fast! So we only do that if the lines are not too long (arbitrary value)
-						if ((sCurrentBaseLine.GetLength() < maxstringlengthforwhitespacecheck) &&
-							(sCurrentYourLine.GetLength() < maxstringlengthforwhitespacecheck))
-						{
-							auto pLine1 = (LPCWSTR)sCurrentBaseLine;
-							auto pLine2 = (LPCWSTR)sCurrentYourLine;
-							auto pS1 = s1.get();
-							auto pS2 = s2.get();
-							while (*pLine1)
-							{
-								if ((*pLine1 == ' ') || (*pLine1 == '\t'))
-								{
-									*pS1 = *pLine1;
-									++pS1;
-								}
-								++pLine1;
-							}
-							*pS1 = '\0';
-
-							pS1 = s1.get();
-							while (*pLine2)
-							{
-								if ((*pLine2 == ' ') || (*pLine2 == '\t'))
-								{
-									*pS2 = *pLine2;
-									++pS2;
-								}
-								++pLine2;
-							}
-							*pS2 = '\0';
-							bWhiteSpaceChanges = wcscmp(s1.get(), s2.get()) != 0;
-						}
+						ds = DIFFSTATE_FILTEREDDIFF;
 					}
-					if (changedWS || ((dwIgnoreWS == 0) && bWhiteSpaceChanges))
-					{
-						auto ds = DIFFSTATE_WHITESPACE;
-						if (!bWhiteSpaceChanges && (dwIgnoreWS == 0))
-						{
-							// if there are no whitespace changes but diffs only because of a regex filter,
-							// mark the lines as normal and not with whitespace changes.
-							ds = DIFFSTATE_NORMAL;
-						}
-						m_YourBaseLeft.AddData(sCurrentBaseLine, ds, baseline, endingBase, HIDESTATE_SHOWN, -1);
-						m_YourBaseRight.AddData(sCurrentYourLine, ds, yourline, endingYours, HIDESTATE_SHOWN, -1);
-					}
-					else
-					{
-						m_YourBaseLeft.AddData(sCurrentBaseLine, DIFFSTATE_NORMAL, baseline, endingBase, HIDESTATE_HIDDEN, -1);
-						m_YourBaseRight.AddData(sCurrentYourLine, DIFFSTATE_NORMAL, yourline, endingYours, HIDESTATE_HIDDEN, -1);
-					}
+					m_YourBaseLeft.AddData(sCurrentBaseLine, ds, baseline, endingBase, HIDESTATE_SHOWN, -1);
+					m_YourBaseRight.AddData(sCurrentYourLine, ds, yourline, endingYours, HIDESTATE_SHOWN, -1);
 				}
 				else
 				{

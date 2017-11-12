@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2007-2008, 2011, 2013, 2015 - TortoiseSVN
+// Copyright (C) 2007-2008, 2011, 2013, 2015, 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -76,6 +76,7 @@
 #define DIFFSTATE_YOURSADDED_DEFAULT_BG				DIFFSTATE_ADDED_DEFAULT_BG
 #define DIFFSTATE_CONFLICTRESOLVED_DEFAULT_BG		RGB(200,255,200)
 #define DIFFSTATE_EDITED_DEFAULT_BG					MODIFIED_COLOR
+#define DIFFSTATE_FILTERED_DEFAULT_BG				RGB(220,255,220)
 
 /**
  * \ingroup TortoiseMerge

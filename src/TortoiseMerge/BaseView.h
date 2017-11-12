@@ -153,7 +153,7 @@ public: // methods
 	static void		SetupViewSelection(CBaseView* view, int start, int end);
 	void			SetupViewSelection(int start, int end);
 	CString			GetSelectedText() const;
-	void			CheckModifications(bool& hasMods, bool& hasConflicts, bool& hasWhitespaceMods);
+	void			CheckModifications(bool& hasMods, bool& hasConflicts, bool& hasWhitespaceMods, bool& hasFilteredMods);
 
 	// state classifying methods; note: state may belong to more classes
 	static bool		IsStateConflicted(DiffStates state);

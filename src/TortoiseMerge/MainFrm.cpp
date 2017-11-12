@@ -981,8 +981,8 @@ bool CMainFrame::LoadViews(int line)
 			m_pwndRightView->SetHidden(FALSE);
 			m_pwndBottomView->SetHidden(TRUE);
 		}
-		bool hasMods, hasConflicts, hasWhitespaceMods;
-		pwndActiveView->CheckModifications(hasMods, hasConflicts, hasWhitespaceMods);
+		bool hasMods, hasConflicts, hasWhitespaceMods, hasFilteredMods;
+		pwndActiveView->CheckModifications(hasMods, hasConflicts, hasWhitespaceMods, hasFilteredMods);
 		if (!hasMods && !hasConflicts)
 		{
 			// files appear identical, show a dialog informing the user that there are or might
