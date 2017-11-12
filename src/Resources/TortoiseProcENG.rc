@@ -4977,7 +4977,6 @@ BEGIN
     "#include ""TortoiseProc.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
     "#include <afxres.rc>         // Standard components\r\n"
     "#include <afxprint.rc>  // printing/print preview resources\r\n"
-    "#include <afxribbon.rc> // ribbon and control bar resources\r\n"
     "#include <afxolecl.rc>  // OLE container resources\r\n"
     "#endif\r\n"
     "\0"
@@ -5006,7 +5005,6 @@ LANGUAGE 9, 1
 #include "TortoiseProc.rc2"  // non-Microsoft Visual C++ edited resources
 #include <afxres.rc>         // Standard components
 #include <afxprint.rc>  // printing/print preview resources
-#include <afxribbon.rc> // ribbon and control bar resources
 #include <afxolecl.rc>  // OLE container resources
 #endif
 
