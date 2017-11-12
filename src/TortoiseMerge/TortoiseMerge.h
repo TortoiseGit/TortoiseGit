@@ -40,9 +40,6 @@ public:
 	virtual BOOL InitInstance();
 	virtual int ExitInstance();
 
-// Implementation
-	UINT  m_nAppLook;
-
 protected:
 	afx_msg void OnAppAbout();
 	DECLARE_MESSAGE_MAP()

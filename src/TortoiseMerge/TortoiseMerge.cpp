@@ -66,7 +66,6 @@ public:
 
 
 CTortoiseMergeApp::CTortoiseMergeApp()
-	: m_nAppLook(0)
 {
 	EnableHtmlHelp();
 	git_libgit2_init();
@@ -196,7 +195,6 @@ BOOL CTortoiseMergeApp::InitInstance()
 	// visual styles.  Otherwise, any window creation will fail.
 	InitCommonControls();
 
-	CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows));
 	CMFCButton::EnableWindowsTheming();
 	EnableTaskbarInteraction(FALSE);
 

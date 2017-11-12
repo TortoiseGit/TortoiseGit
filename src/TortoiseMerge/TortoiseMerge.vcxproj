@@ -451,6 +451,9 @@
       <SubType>Designer</SubType>
     </CustomBuild>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Resources\ribbon\Filter16.bmp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
