@@ -36,18 +36,14 @@
 #define IDI_MOVEDLINE                   152
 #define IDC_MARGINCURSOR                153
 #define IDD_GOTO                        155
-#define IDR_RIBBON                      156
-#define IDB_RIBBONLARGE                 157
-#define IDB_RIBBONSMALL                 158
 #define IDB_LOGO                        159
-#define IDB_RIBBONSMALLHDPI             161
-#define IDB_RIBBONLARGEHDPI             162
 #define IDD_REGEXFILTERS                164
 #define IDD_REGEXFILTER                 165
 #define IDR_REGEXFILTERINI              166
 #define IDB_LOGOFLIPPED                 168
 #define IDR_IGNORECOMMENTSTXT           169
 #define IDI_LINEMARKED                  170
+#define IDB_REGEX_FILTER                171
 #define IDS_SELECTFILE                  200
 #define IDD_ENCODING                    300
 #define IDC_STATIC_ENCODING             301
@@ -376,13 +372,15 @@
 #define ID_FILE_ENABLEEDIT              32978
 #define ID_EDIT_REGEXFILTER             32992
 #define ID_REGEXFILTER_REGEXFILTER      32993
+#define ID_EDIT_THREEWAY_ACTIONS        33001
+#define ID_REGEX_NO_FILTER              33002
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        171
-#define _APS_NEXT_COMMAND_VALUE         32994
+#define _APS_NEXT_RESOURCE_VALUE        172
+#define _APS_NEXT_COMMAND_VALUE         33003
 #define _APS_NEXT_CONTROL_VALUE         1513
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Application xmlns='http://schemas.microsoft.com/windows/2009/Ribbon'>
+  <Application.Commands>
+    <Command Name="cmdTabEdit"
+             Id="10000" Keytip="E">
+      <Command.LabelTitle>
+        <String Id ="20000">Edit</String>
+      </Command.LabelTitle>
+    </Command>
+    <!--
+    Optional Symbol and Id properties are not defined for the following commands.
+    A Symbol same as the name of the command 
+    and a valid Id for this command will be automatically generated.
+    -->
+    <Command Name="cmdGroupEdit" LabelTitle="Edit"/>
+    <Command Name="cmdGroupNavigate" LabelTitle="Navigate"/>
+    <Command Name="cmdGroupBlocks" LabelTitle="Blocks"/>
+    <Command Name="cmdGroupWhitespaces" LabelTitle="Whitespaces"/>
+    <Command Name="cmdGroupDiff" LabelTitle="Diff" />
+    <Command Name="cmdGroupView" LabelTitle="View"/>
+
+    <Command Name="cmdOpen" LabelTitle="&amp;Open" Keytip="o1" Id="0xE101">
+      <Command.LargeImages>
+        <Image Source="ribbon/Open.bmp"/>
+      </Command.LargeImages>
+    </Command>
+    <Command Name="cmdSave" LabelTitle="&amp;Save" Keytip="S" Id="0xE103">
+      <Command.LargeImages>
+        <Image Source="ribbon/Save.bmp"/>
+      </Command.LargeImages>
+    </Command>
+    <Command Name="cmdSaveAs" LabelTitle="Save &amp;as" Id="0xE104">
+      <Command.LargeImages>
+        <Image Source="ribbon/SaveAs.bmp"/>
+      </Command.LargeImages>
+    </Command>
+    <Command Name="cmdShowFileList" LabelTitle="&amp;Hide/Show the patch file list" Id="32817">
+      <Command.LargeImages>
+        <Image Source="ribbon/FileList.bmp"/>
+      </Command.LargeImages>
+    </Command>
+    <Command Name="cmdSettings" LabelTitle="Settings" Id="32782">
+      <Command.LargeImages>
+        <Image Source="ribbon/Settings.bmp"/>
+      </Command.LargeImages>
+    </Command>
+    <Command Name="cmdCreateUnifiedDiff" LabelTitle="Create &amp;patch file" Id="32828">
+      <Command.LargeImages>
+        <Image Source="ribbon/UniDiff.bmp"/>
+      </Command.LargeImages>
+    </Command>
+    <Command Name="cmdAbout" LabelTitle="Abou&amp;t TortoiseGitMerge" Id="0xE140">
+      <Command.LargeImages>
+        <Image Source="ribbon/About.bmp"/>
+      </Command.LargeImages>
+    </Command>
+    <Command Name="cmdUndo" LabelTitle="Undo" Id="0xE12B" Keytip="Z">
+      <Command.LargeImages>
+        <Image Source="ribbon/Undo.bmp"/>
+      </Command.LargeImages>
+    </Command>
+    <Command Name="cmdRedo" LabelTitle="Redo" Id="0xE12C" Keytip="Y">
+      <Command.LargeImages>
+        <Image Source="ribbon/Redo.bmp"/>
+      </Command.LargeImages>
+    </Command>
+    <Command Name="cmdReload" LabelTitle="Reload" Id="32794" Keytip="R">
+      <Command.LargeImages>
+        <Image Source="ribbon/Refresh.bmp"/>
+      </Command.LargeImages>
+    </Command>
+    <Command Name="cmdEditEnabled" LabelTitle="Enable Edit" Id="32976" Keytip="E">
+      <Command.LargeImages>
+        <Image Source="ribbon/EditEnabled.bmp"/>
+      </Command.LargeImages>
+    </Command>
+    <Command Name="cmdCopy" LabelTitle="Copy" Id="0xE122" Keytip="C">
+      <Command.LargeImages>
+        <Image Source="ribbon/Copy.bmp"/>
+      </Command.LargeImages>
+    </Command>
+    <Command Name="cmdPaste" LabelTitle="Paste" Id="0xE125" Keytip="V">
+      <Command.LargeImages>
+        <Image Source="ribbon/Paste.bmp"/>
+      </Command.LargeImages>
+    </Command>
+    <Command Name="cmdFind" LabelTitle="Find" Id="0xE124" Keytip="F">
+      <Command.LargeImages>
+        <Image Source="ribbon/Search.bmp"/>
+      </Command.LargeImages>
+    </Command>
+    <Command Name="cmdGotoLine" LabelTitle="Goto Line" Id="32893" Keytip="G">
+      <Command.LargeImages>
+        <Image Source="ribbon/Goto.bmp"/>
+      </Command.LargeImages>
+    </Command>
+    <Command Name="cmdMarkResolved" Id="32808" LabelTitle="Mark as resolved" Keytip="">
+      <Command.LargeImages>
+        <Image Source="ribbon/Check.bmp"/>
+      </Command.LargeImages>
+    </Command>
+
+    <Command Name="cmdNavigatePreviousDifference" LabelTitle="Previous difference" Id="32780" Keytip="PD">
+      <Command.LargeImages>
+        <Image Source="ribbon/UpGreen.bmp"/>
+      </Command.LargeImages>
+    </Command>
+    <Command Name="cmdNavigateNextDifference" LabelTitle="Next difference" Id="32779" Keytip="ND">
+      <Command.LargeImages>
+        <Image Source="ribbon/DownGreen.bmp"/>
+      </Command.LargeImages>
+    </Command>
+    <Command Name="cmdNavigatePreviousConflict" LabelTitle="Previous conflict" Id="32802" Keytip="PC">
+      <Command.LargeImages>
+        <Image Source="ribbon/UpRed.bmp"/>
+      </Command.LargeImages>
+    </Command>
+    <Command Name="cmdNavigateNextConflict" LabelTitle="Next conflict" Id="32804" Keytip="NC">
+      <Command.LargeImages>
+        <Image Source="ribbon/DownRed.bmp"/>
+      </Command.LargeImages>
+    </Command>
+    <Command Name="cmdNavigatePreviousInlineDiff" LabelTitle="Previous inline difference" Id="32876" Keytip="PI">
+      <Command.LargeImages>
+        <Image Source="ribbon/LeftGreenDots.bmp"/>
+      </Command.LargeImages>
+    </Command>
+    <Command Name="cmdNavigateNextInlineDiff" LabelTitle="Next inline difference" Id="32875" Keytip="NI">
+      <Command.LargeImages>
+        <Image Source="ribbon/RightGreenDots.bmp"/>
+      </Command.LargeImages>
+    </Command>
+
+    <Command Name="cmdUseLeftBlock" LabelTitle="Use left block" Id="32855" Keytip="">
+      <Command.LargeImages>
+        <Image Source="ribbon/UseLeftBlock.bmp" />
+      </Command.LargeImages>
+    </Command>
+    <Command Name="cmdUseLeftFile" LabelTitle="Use left file" Id="32856">
+      <Command.LargeImages>
+        <Image Source="ribbon/UseLeftFile.bmp" />
+      </Command.LargeImages>
+    </Command>
+    <Command Name="cmdUseBlockFromLeftBeforeRight" LabelTitle="Use block from left before right" Id="32857">
+      <Command.LargeImages>
+        <Image Source="ribbon/UseLeftRight.bmp" />
+      </Command.LargeImages>
+    </Command>
+    <Command Name="cmdUseBlockFromRightBeforeLeft" LabelTitle="Use block from right before left" Id="32859">
+      <Command.LargeImages>
+        <Image Source="ribbon/UseRightLeft.bmp" />
+      </Command.LargeImages>
+    </Command>
+    <Command Name="cmdUseTheirsBlock" LabelTitle="Use 'theirs' text block" Id="32819">
+      <Command.LargeImages>
+        <Image Source="ribbon/UseTheirs.bmp" />
+      </Command.LargeImages>
+    </Command>
+    <Command Name="cmdUseMineBlock" LabelTitle="Use 'mine' text block" Id="32820">
+      <Command.LargeImages>
+        <Image Source="ribbon/UseMine.bmp" />
+      </Command.LargeImages>
+    </Command>
+    <Command Name="cmdUseTheirsThenMineBlock" LabelTitle="Use 'theirs' text block then 'mine'" Id="32821">
+      <Command.LargeImages>
+        <Image Source="ribbon/UseTheirsMine.bmp" />
+      </Command.LargeImages>
+    </Command>
+    <Command Name="cmdUseMineThenTheirsBlock" LabelTitle="Use 'mine' text block then 'theirs'" Id="32822">
+      <Command.LargeImages>
+        <Image Source="ribbon/UseMineTheirs.bmp" />
+      </Command.LargeImages>
+    </Command>
+    <Command Name="cmdQat"/>
+    <Command Name="cmdFileMenu"/>
+    <Command Name="cmdExit" Id="0xE141">
+      <Command.LabelTitle>
+        <String Id ="290">E&amp;xit</String>
+      </Command.LabelTitle>
+      <Command.LargeImages>
+        <Image Source="ribbon/Exit.bmp" />
+      </Command.LargeImages>
+    </Command>
+    <Command Name="cmdHelp" Id="0xE146">
+    </Command>
+    <Command Name="cmdUseBlocks" Id="32914" />
+    <Command Name="cmdThreeWayActions" Id="33001"/>
+    <Command Name="cmdShowWhitespaces" LabelTitle="Show Whitespaces" Id="32774" Keytip="W">
+      <Command.LargeImages>
+        <Image Source="ribbon/Pilcrow.bmp" />
+      </Command.LargeImages>
+    </Command>
+    <Command Name="cmdCompareWhitespaces" LabelTitle="Compare whitespaces" Id="32871">
+      <Command.LargeImages>
+        <Image Source="ribbon/Whitespace1.bmp" />
+      </Command.LargeImages>
+    </Command>
+    <Command Name="cmdIgnoreWhitespaceChanges" LabelTitle="Ignore whitespace changes" Id="32872">
+      <Command.LargeImages>
+        <Image Source="ribbon/Whitespace2.bmp" />
+      </Command.LargeImages>
+    </Command>
+    <Command Name="cmdIgnoreAllWhitespaceChanges" LabelTitle="Ignore all whitespace changes" Id="32873">
+      <Command.LargeImages>
+        <Image Source="ribbon/Whitespace3.bmp" />
+      </Command.LargeImages>
+    </Command>
+
+    <Command Name="cmdViewBars" LabelTitle="View Bars" Id="32898">
+      <Command.LargeImages>
+        <Image Source="ribbon/ViewBars.bmp" />
+      </Command.LargeImages>
+    </Command>
+
+    <Command Name="cmdViewWrapLines" LabelTitle="Wrap Lines" Id="32881" Keytip="L">
+      <Command.LargeImages>
+        <Image Source="ribbon/WrapLines.bmp" />
+      </Command.LargeImages>
+    </Command>
+
+    <Command Name="cmdViewOneWayDiff" LabelTitle="Switch between single and double pane view" Id="32775">
+      <Command.LargeImages>
+        <Image Source="ribbon/OneWayDiff.bmp" />
+      </Command.LargeImages>
+    </Command>
+
+    <Command Name="cmdViewSwitchLeft" LabelTitle="Switch left and right view" Id="32811">
+      <Command.LargeImages>
+        <Image Source="ribbon/Switch.bmp" />
+      </Command.LargeImages>
+    </Command>
+
+    <Command Name="cmdViewInlineDiff" LabelTitle="Inline diff" Id="32889">
+      <Command.LargeImages>
+        <Image Source="ribbon/InlineDiff.bmp" />
+      </Command.LargeImages>
+    </Command>
+
+    <Command Name="cmdViewInlineDiffWord" LabelTitle="Inline diff word-wise" Id="32825">
+      <Command.LargeImages>
+        <Image Source="ribbon/InlineDiffWord.bmp" />
+      </Command.LargeImages>
+    </Command>
+
+    <Command Name="cmdRegexFilterConfig1" LabelTitle="Regex Filter" Id="500">
+      <Command.LargeImages>
+        <Image Source="ribbon/FilterConfig16.bmp" />
+      </Command.LargeImages>
+    </Command>
+
+    <Command Name="cmdRegexFilterConfig2" LabelTitle="Configure Filter Regex" Id="501">
+      <Command.LargeImages>
+        <Image Source="ribbon/FilterConfig16.bmp" />
+      </Command.LargeImages>
+    </Command>
+    
+    <Command Name="cmdViewIgnoreComments" LabelTitle="Ignore Comments" Id="32896">
+      <Command.LargeImages>
+        <Image Source="ribbon/Comment.bmp" />
+      </Command.LargeImages>
+    </Command>
+
+    <Command Name="cmdViewCollapsed" LabelTitle="Collapse" Id="32870">
+      <Command.LargeImages>
+        <Image Source="ribbon/Collapse.bmp " />
+      </Command.LargeImages>
+    </Command>
+
+    <Command Name="cmdViewLineDiffBar" LabelTitle="Line diff bar" Id="32853">
+    </Command>
+    <Command Name="cmdViewLocatorBar" LabelTitle="Locator bar" Id="32854">
+    </Command>
+    <Command Name="cmdViewStatusBar" LabelTitle="Status Bar" Id="0xE801">
+    </Command>
+  </Application.Commands>
+  <Application.Views>
+    <Ribbon>
+      <Ribbon.ApplicationMenu>
+        <ApplicationMenu CommandName="cmdFileMenu">
+          <MenuGroup Class="MajorItems">
+            <Button CommandName="cmdOpen" />
+            <Button CommandName="cmdSave" />
+            <Button CommandName="cmdSaveAs" />
+          </MenuGroup>
+          <MenuGroup Class="MajorItems">
+            <Button CommandName="cmdCreateUnifiedDiff" />
+          </MenuGroup>
+          <MenuGroup Class="MajorItems">
+            <Button CommandName="cmdShowFileList" />
+            <Button CommandName="cmdSettings" />
+          </MenuGroup>
+          <MenuGroup Class="MajorItems">
+            <Button CommandName="cmdAbout" />
+          </MenuGroup>
+          <MenuGroup Class="StandardItems">
+            <Button CommandName="cmdExit" />
+          </MenuGroup>
+        </ApplicationMenu>
+      </Ribbon.ApplicationMenu>
+      <Ribbon.HelpButton>
+        <HelpButton CommandName="cmdHelp"/>
+      </Ribbon.HelpButton>
+      <Ribbon.Tabs>
+        <Tab CommandName="cmdTabEdit">
+          <Tab.ScalingPolicy>
+            <ScalingPolicy>
+              <ScalingPolicy.IdealSizes>
+                <!-- This describes the maximum size of each group in the tab. -->
+                <Scale Group="cmdGroupEdit" Size="Large" />
+                <Scale Group="cmdGroupNavigate" Size="Large" />
+                <Scale Group="cmdGroupWhitespaces" Size="Medium" />
+                <Scale Group="cmdGroupDiff" Size="Large" />
+                <Scale Group="cmdGroupView" Size="Large" />
+              </ScalingPolicy.IdealSizes>
+              <!-- This describes the order and how the groups shrink when the window is resized. -->
+              <Scale Group="cmdGroupNavigate" Size="Medium" />
+              <Scale Group="cmdGroupView" Size="Small" />
+              <Scale Group="cmdGroupDiff" Size="Small" />
+              <Scale Group="cmdGroupEdit" Size="Medium" />
+              <Scale Group="cmdGroupWhitespaces" Size="Small" />
+            </ScalingPolicy>
+          </Tab.ScalingPolicy>
+          <Group CommandName="cmdGroupEdit">
+            <SizeDefinition >
+              <GroupSizeDefinition Size="Large">
+                <ControlSizeDefinition ImageSize="Large"/>
+                <ColumnBreak ShowSeparator="true"/>
+                <ControlSizeDefinition ImageSize="Large" />
+                <Row>
+                  <ControlSizeDefinition ImageSize="Small" />
+                </Row>
+                <Row>
+                  <ControlSizeDefinition ImageSize="Small" />
+                </Row>
+                <Row>
+                  <ControlSizeDefinition ImageSize="Small" />
+                </Row>
+                <ColumnBreak ShowSeparator="true"/>
+                <ControlSizeDefinition ImageSize="Large" />
+                <ControlSizeDefinition ImageSize="Large" />
+                <ColumnBreak ShowSeparator="true"/>
+                <ControlSizeDefinition ImageSize="Large" />
+                <ControlSizeDefinition ImageSize="Large" />
+                <ColumnBreak ShowSeparator="true"/>
+                <ControlSizeDefinition ImageSize="Large" />
+              </GroupSizeDefinition>
+              <GroupSizeDefinition Size="Medium">
+                <ControlSizeDefinition ImageSize="Large"/>
+                <ColumnBreak ShowSeparator="true"/>
+                <ControlSizeDefinition ImageSize="Large" />
+                <Row>
+                  <ControlSizeDefinition ImageSize="Small" />
+                </Row>
+                <Row>
+                  <ControlSizeDefinition ImageSize="Small" />
+                </Row>
+                <Row>
+                  <ControlSizeDefinition ImageSize="Small" />
+                </Row>
+                <ColumnBreak ShowSeparator="true"/>
+                <Row>
+                  <ControlSizeDefinition ImageSize="Small" />
+                </Row>
+                <Row>
+                  <ControlSizeDefinition ImageSize="Small" />
+                </Row>
+                <ColumnBreak ShowSeparator="true"/>
+                <Row>
+                  <ControlSizeDefinition ImageSize="Small" />
+                </Row>
+                <Row>
+                  <ControlSizeDefinition ImageSize="Small" />
+                </Row>
+                <ColumnBreak ShowSeparator="true"/>
+                <ControlSizeDefinition ImageSize="Large" />
+              </GroupSizeDefinition>
+              <GroupSizeDefinition Size="Small">
+                <ControlSizeDefinition ImageSize="Large"/>
+                <ColumnBreak ShowSeparator="true"/>
+                <ControlSizeDefinition ImageSize="Large" />
+                <Row>
+                  <ControlSizeDefinition ImageSize="Small" />
+                </Row>
+                <Row>
+                  <ControlSizeDefinition ImageSize="Small" />
+                </Row>
+                <Row>
+                  <ControlSizeDefinition ImageSize="Small" />
+                </Row>
+                <ColumnBreak ShowSeparator="true"/>
+                <Row>
+                  <ControlSizeDefinition ImageSize="Small" />
+                </Row>
+                <Row>
+                  <ControlSizeDefinition ImageSize="Small" />
+                </Row>
+                <ColumnBreak ShowSeparator="true"/>
+                <Row>
+                  <ControlSizeDefinition ImageSize="Small" />
+                </Row>
+                <Row>
+                  <ControlSizeDefinition ImageSize="Small" />
+                </Row>
+                <ColumnBreak ShowSeparator="true"/>
+                <ControlSizeDefinition ImageSize="Large" />
+              </GroupSizeDefinition>
+            </SizeDefinition>
+            <Button CommandName="cmdSave" />
+            <Button CommandName="cmdReload" />
+            <Button CommandName="cmdUndo" />
+            <Button CommandName="cmdRedo" />
+            <ToggleButton CommandName="cmdEditEnabled" />
+            <Button CommandName="cmdCopy" />
+            <Button CommandName="cmdPaste" />
+            <Button CommandName="cmdFind" />
+            <Button CommandName="cmdGotoLine" />
+            <Button CommandName="cmdMarkResolved" />
+          </Group>
+
+          <Group CommandName="cmdGroupNavigate" SizeDefinition="SixButtons-TwoColumns">
+            <Button CommandName="cmdNavigatePreviousDifference" />
+            <Button CommandName="cmdNavigateNextDifference" />
+            <Button CommandName="cmdNavigatePreviousConflict" />
+            <Button CommandName="cmdNavigateNextConflict" />
+            <Button CommandName="cmdNavigatePreviousInlineDiff" />
+            <Button CommandName="cmdNavigateNextInlineDiff" />
+          </Group>
+          <Group CommandName="cmdGroupBlocks" SizeDefinition="TwoButtons">
+            <SplitButton CommandName="cmdUseBlocks">
+              <SplitButton.ButtonItem>
+                <Button CommandName="cmdUseLeftBlock"/>
+              </SplitButton.ButtonItem>
+              <Button CommandName="cmdUseLeftFile"/>
+              <Button CommandName="cmdUseBlockFromLeftBeforeRight"/>
+              <Button CommandName="cmdUseBlockFromRightBeforeLeft"/>
+            </SplitButton>
+            <SplitButton CommandName="cmdThreeWayActions">
+              <SplitButton.ButtonItem>
+                <Button CommandName="cmdUseTheirsBlock"/>
+              </SplitButton.ButtonItem>
+              <Button CommandName="cmdUseMineBlock"/>
+              <Button CommandName="cmdUseTheirsThenMineBlock"/>
+              <Button CommandName="cmdUseMineThenTheirsBlock"/>
+            </SplitButton>
+          </Group>
+          <Group CommandName="cmdGroupWhitespaces" SizeDefinition="FourButtons">
+            <ToggleButton CommandName="cmdShowWhitespaces" />
+            <ToggleButton CommandName="cmdCompareWhitespaces" />
+            <ToggleButton CommandName="cmdIgnoreWhitespaceChanges" />
+            <ToggleButton CommandName="cmdIgnoreAllWhitespaceChanges" />
+          </Group>
+
+          <Group CommandName="cmdGroupDiff" SizeDefinition="FourButtons">
+            <ToggleButton CommandName="cmdViewInlineDiff" />
+            <ToggleButton CommandName="cmdViewInlineDiffWord" />
+            <SplitButtonGallery CommandName="cmdRegexFilterConfig1" Type="Items">
+              <SplitButtonGallery.MenuLayout>
+                <VerticalMenuLayout Gripper="None"/>
+              </SplitButtonGallery.MenuLayout>
+            </SplitButtonGallery>
+            <ToggleButton CommandName="cmdViewIgnoreComments" />
+          </Group>
+
+          <Group CommandName="cmdGroupView" SizeDefinition="FiveButtons">
+            <DropDownButton CommandName="cmdViewBars">
+              <CheckBox CommandName="cmdViewLineDiffBar"/>
+              <CheckBox CommandName="cmdViewLocatorBar"/>
+              <CheckBox CommandName="cmdViewStatusBar"/>
+            </DropDownButton>
+            <ToggleButton CommandName="cmdViewWrapLines" />
+            <ToggleButton CommandName="cmdViewOneWayDiff" />
+            <Button CommandName="cmdViewSwitchLeft" />
+            <ToggleButton CommandName="cmdViewCollapsed" />
+          </Group>
+        </Tab>
+      </Ribbon.Tabs>
+      <Ribbon.QuickAccessToolbar>
+        <QuickAccessToolbar CommandName="cmdQat">
+          <QuickAccessToolbar.ApplicationDefaults>
+            <Button CommandName="cmdSave" ApplicationDefaults.IsChecked="false" />
+            <Button CommandName="cmdUndo" ApplicationDefaults.IsChecked="false" />
+            <Button CommandName="cmdRedo" ApplicationDefaults.IsChecked="false" />
+          </QuickAccessToolbar.ApplicationDefaults>
+        </QuickAccessToolbar>
+      </Ribbon.QuickAccessToolbar>
+    </Ribbon>
+  </Application.Views>
+</Application>

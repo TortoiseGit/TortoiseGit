@@ -107,6 +107,7 @@ END
 
 IDB_LOGOFLIPPED         BITMAP                  "tortoisemerge_logoflipped.bmp"
 IDB_TTF_BMP             BITMAP                  "ttf_glyph.bmp"
+IDB_REGEX_FILTER        BITMAP                  "ribbon\\Filter16.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -120,11 +121,7 @@ IDC_MARGINCURSOR        CURSOR                  "Margin.cur"
 // PNG
 //
 
-IDB_RIBBONLARGE         PNG                     "ribbon\\ribbonlarge.png"
-IDB_RIBBONSMALL         PNG                     "ribbon\\ribbonsmall.png"
 IDB_LOGO                PNG                     "ribbon\\TortoiseMerge.png"
-IDB_RIBBONSMALLHDPI     PNG                     "ribbon\\ribbonsmallhdpi.png"
-IDB_RIBBONLARGEHDPI     PNG                     "ribbon\\ribbonlargehdpi.png"
 #endif    // Neutral resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -677,14 +674,6 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// Ribbon
-//
-
-IDR_RIBBON              RT_RIBBON_XML           "ribbon.mfcribbon-ms"
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
 // CONFIG
 //
 
@@ -712,6 +701,7 @@ BEGIN
     IDS_MSGBOX_YES          "&Yes"
     IDS_MSGBOX_NO           "&No"
     IDS_MSGBOX_CANCEL       "Cancel"
+    ID_REGEX_NO_FILTER      "No filter"
 END
 
 STRINGTABLE
@@ -1269,7 +1259,6 @@ BEGIN
     "#include ""TortoiseMerge.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
     "#include <afxres.rc>         // Standard components\r\n"
     "#include <afxprint.rc>  // printing/print preview resources\r\n"
-    "#include <afxribbon.rc> // ribbon and control bar resources\r\n"
     "#include <afxolecl.rc>  // OLE container resources\r\n"
     "#endif\r\n"
     "\0"
@@ -1298,7 +1287,6 @@ LANGUAGE 9, 1
 #include "TortoiseMerge.rc2"  // non-Microsoft Visual C++ edited resources
 #include <afxres.rc>         // Standard components
 #include <afxprint.rc>  // printing/print preview resources
-#include <afxribbon.rc> // ribbon and control bar resources
 #include <afxolecl.rc>  // OLE container resources
 #endif
 
