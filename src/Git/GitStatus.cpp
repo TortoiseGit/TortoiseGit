@@ -342,6 +342,7 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 	size_t treepos = SearchInSortVector(*treeptr, path, path.GetLength(), indexptr->IsIgnoreCase()); // match path prefix, (sub)folders end with slash
 
 	std::vector<CGitFileName> filelist;
+	int folderignoredchecked = false;
 	bool isRepoRoot = false;
 	GetFileList(CombinePath(gitdir, subpath), filelist, isRepoRoot, indexptr->IsIgnoreCase());
 	*dirstatus = git_wc_status_unknown;
@@ -353,6 +354,7 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 		g_IgnoreList.CheckAndUpdateIgnoreFiles(gitdir, subpath, true);
 		if (g_IgnoreList.IsIgnore(subpath, gitdir, true))
 			*dirstatus = git_wc_status_ignored;
+		folderignoredchecked = true;
 	}
 
 	CAutoRepository repository;
@@ -384,7 +386,17 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 				status.status = git_wc_status_unversioned;
 
 				g_IgnoreList.CheckAndUpdateIgnoreFiles(gitdir, onepath, bIsDir);
-				if (g_IgnoreList.IsIgnore(onepath, gitdir, bIsDir))
+				// whole folder might be ignored, check this once if we are not the root folder in order to speed up all following ignored files
+				if (!folderignoredchecked && *dirstatus != git_wc_status_normal)
+				{
+					if (g_IgnoreList.IsIgnore(subpath, gitdir, true))
+					{
+						*dirstatus = git_wc_status_ignored;
+						status.status = git_wc_status_ignored;
+					}
+					folderignoredchecked = true;
+				}
+				if (status.status != git_wc_status_ignored && g_IgnoreList.IsIgnore(onepath, gitdir, bIsDir))
 					status.status = git_wc_status_ignored;
 			}
 			callback(CombinePath(gitdir, onepath), &status, bIsDir, fileentry.m_LastModified, pData);

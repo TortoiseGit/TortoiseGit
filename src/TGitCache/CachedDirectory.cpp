@@ -380,12 +380,6 @@ int CCachedDirectory::EnumFiles(const CTGitPath& path, CString sProjectRoot, con
 			CGitStatusCache::Instance().AddFolderForCrawling(m_directoryPath);
 			return 0;
 		}
-		// if unversioned files mark parent folders as modified we must not report files as unversioned in ignored folders (we don't know if the folder was already ignored or not here), see issue #3093
-		if (status.status == git_wc_status_unversioned && CGitStatusCache::Instance().IsUnversionedAsModified())
-		{
-			CGitStatusCache::Instance().AddFolderForCrawling(m_directoryPath);
-			return 0;
-		}
 		GetStatusCallback(path.GetWinPathString(), &status, false, path.GetLastWriteTime(true), this);
 		RefreshMostImportant(false);
 	}

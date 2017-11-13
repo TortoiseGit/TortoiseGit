@@ -973,7 +973,7 @@ bool CGitIgnoreList::IsIgnore(CString str, const CString& projectroot, bool isDi
 			return (ret == 1);
 
 		str.Truncate(start);
-		ret = CheckIgnore(str, projectroot, isDir);
+		ret = CheckIgnore(str, projectroot, TRUE);
 	}
 
 	return (ret == 1);
