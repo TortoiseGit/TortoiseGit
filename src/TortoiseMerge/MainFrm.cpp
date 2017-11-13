@@ -20,7 +20,6 @@
 //
 #include "stdafx.h"
 #include "TortoiseMerge.h"
-#include "CustomMFCRibbonButton.h"
 #include "OpenDlg.h"
 #include "SysProgressDlg.h"
 #include "Settings.h"
@@ -41,8 +40,6 @@
 #define new DEBUG_NEW
 #endif
 
-CCustomMFCRibbonButton button1;
-
 // CMainFrame
 #define IDT_RELOADCHECKTIMER 123
 
@@ -50,8 +47,7 @@ IMPLEMENT_DYNCREATE(CMainFrame, CFrameWndEx)
 
 BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_WM_CREATE()
-	ON_COMMAND_RANGE(ID_VIEW_APPLOOK_WIN7, ID_VIEW_APPLOOK_OFF_2007_AQUA, &CMainFrame::OnApplicationLook)
-	ON_UPDATE_COMMAND_UI_RANGE(IDC_STYLEBUTTON, ID_VIEW_APPLOOK_OFF_2007_AQUA, &CMainFrame::OnUpdateApplicationLook)
+	ON_WM_DESTROY()
 	// Global help commands
 	ON_COMMAND(ID_HELP_FINDER, CFrameWndEx::OnHelpFinder)
 	ON_COMMAND(ID_HELP, CFrameWndEx::OnHelp)
@@ -68,6 +64,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_ONEWAYDIFF, OnUpdateViewOnewaydiff)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_WHITESPACES, OnUpdateViewWhitespaces)
 	ON_COMMAND(ID_VIEW_OPTIONS, OnViewOptions)
+	ON_MESSAGE(WM_IDLEUPDATECMDUI, OnIdleUpdateCmdUI)
 	ON_WM_CLOSE()
 	ON_WM_ACTIVATE()
 	ON_COMMAND(ID_FILE_RELOAD, OnFileReload)
@@ -146,6 +143,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_IGNORECOMMENTS, &CMainFrame::OnUpdateViewIgnorecomments)
 	ON_COMMAND_RANGE(ID_REGEXFILTER, ID_REGEXFILTER+400, &CMainFrame::OnRegexfilter)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_REGEXFILTER, ID_REGEXFILTER+400, &CMainFrame::OnUpdateViewRegexFilter)
+	ON_COMMAND(ID_REGEX_NO_FILTER, &CMainFrame::OnRegexNoFilter)
+	ON_UPDATE_COMMAND_UI(ID_REGEX_NO_FILTER, &CMainFrame::OnUpdateRegexNoFilter)
 	ON_COMMAND(ID_INDICATOR_LEFTVIEWCOMBOENCODING, &CMainFrame::OnDummyEnabled)
 	ON_COMMAND(ID_INDICATOR_RIGHTVIEWCOMBOENCODING, &CMainFrame::OnDummyEnabled)
 	ON_COMMAND(ID_INDICATOR_BOTTOMVIEWCOMBOENCODING, &CMainFrame::OnDummyEnabled)
@@ -155,6 +154,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND(ID_INDICATOR_LEFTVIEWCOMBOTABMODE, &CMainFrame::OnDummyEnabled)
 	ON_COMMAND(ID_INDICATOR_RIGHTVIEWCOMBOTABMODE, &CMainFrame::OnDummyEnabled)
 	ON_COMMAND(ID_INDICATOR_BOTTOMVIEWCOMBOTABMODE, &CMainFrame::OnDummyEnabled)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_THREEWAY_ACTIONS, &CMainFrame::OnUpdateThreeWayActions)
 	ON_COMMAND_RANGE(ID_INDICATOR_LEFTENCODINGSTART, ID_INDICATOR_LEFTENCODINGSTART+19, &CMainFrame::OnEncodingLeft)
 	ON_COMMAND_RANGE(ID_INDICATOR_RIGHTENCODINGSTART, ID_INDICATOR_RIGHTENCODINGSTART+19, &CMainFrame::OnEncodingRight)
 	ON_COMMAND_RANGE(ID_INDICATOR_BOTTOMENCODINGSTART, ID_INDICATOR_BOTTOMENCODINGSTART+19, &CMainFrame::OnEncodingBottom)
@@ -173,7 +173,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_INDICATOR_LEFTTABMODESTART, ID_INDICATOR_LEFTTABMODESTART+19, &CMainFrame::OnUpdateTabModeLeft)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_INDICATOR_RIGHTTABMODESTART, ID_INDICATOR_RIGHTTABMODESTART+19, &CMainFrame::OnUpdateTabModeRight)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_INDICATOR_BOTTOMTABMODESTART, ID_INDICATOR_BOTTOMTABMODESTART+19, &CMainFrame::OnUpdateTabModeBottom)
-	ON_WM_NCCALCSIZE()
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -220,13 +219,11 @@ CMainFrame::CMainFrame()
 	, m_regexIndex(-1)
 {
 	m_bOneWay = (0 != ((DWORD)m_regOneWay));
-	theApp.m_nAppLook = theApp.GetInt(L"ApplicationLook", ID_VIEW_APPLOOK_VS_2005);
 	m_bCollapsed = !!(DWORD)m_regCollapsed;
 	m_bViewMovedBlocks = !!(DWORD)m_regViewModedBlocks;
 	m_bWrapLines = !!(DWORD)m_regWrapLines;
 	m_bInlineDiff = !!m_regInlineDiff;
 	m_bUseRibbons = !!m_regUseRibbons;
-	CMFCVisualManagerWindows::m_b3DTabsXPTheme = TRUE;
 }
 
 CMainFrame::~CMainFrame()
@@ -245,42 +242,31 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (CFrameWndEx::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
-	OnApplicationLook(theApp.m_nAppLook);
-
 	if (m_bUseRibbons)
 	{
-		m_wndRibbonBar.Create(this);
-		m_wndRibbonBar.LoadFromResource(IDR_RIBBON);
-
-		// enable the dialog launch button on the view panel
-		CMFCRibbonCategory * pMainCat = m_wndRibbonBar.GetCategory(1);
-		if (pMainCat)
+		HRESULT hr;
+		hr = m_pRibbonFramework.CoCreateInstance(__uuidof(UIRibbonFramework));
+		if (FAILED(hr))
 		{
-			CMFCRibbonPanel * pPanel = pMainCat->GetPanel(0);
-			if (pPanel)
-				pPanel->EnableLaunchButton(ID_VIEW_OPTIONS);
+			TRACE(L"Failed to create ribbon framework (%08x)\n", hr);
+			return -1; // fail to create
 		}
-		// now replace all buttons with our custom button class
-		for (int i = 0; i < m_wndRibbonBar.GetCategoryCount(); ++i)
+
+		m_pRibbonApp.reset(new CNativeRibbonApp(this, m_pRibbonFramework));
+		m_pRibbonApp->SetSettingsFileName(CPathUtils::GetAppDataDirectory() + L"TortoiseGitMerge-RibbonSettings");
+
+		hr = m_pRibbonFramework->Initialize(m_hWnd, m_pRibbonApp.get());
+		if (FAILED(hr))
 		{
-			CMFCRibbonCategory * pCat = m_wndRibbonBar.GetCategory(i);
-			for (int j = 0; j < pCat->GetPanelCount(); ++j)
-			{
-				CMFCRibbonPanel * pPanel = pCat->GetPanel(j);
-				CList<UINT, UINT> lstItems;
-				pPanel->GetItemIDsList(lstItems);
-				while (!lstItems.IsEmpty())
-				{
-					UINT id = lstItems.GetHead();
-					lstItems.RemoveHead();
-					CMFCRibbonButton * pButton = dynamic_cast<CMFCRibbonButton*>(pPanel->FindByID(id));
-					if (pButton)
-					{
-						CCustomMFCRibbonButton * c = new CCustomMFCRibbonButton(id, pButton->GetText());
-						pPanel->ReplaceByID(id, c);
-					}
-				}
-			}
+			TRACE(L"Failed to initialize ribbon framework (%08x)\n", hr);
+			return -1; // fail to create
+		}
+
+		hr = m_pRibbonFramework->LoadUI(AfxGetResourceHandle(), L"TORTOISEGITMERGERIBBON_RIBBON");
+		if (FAILED(hr))
+		{
+			TRACE(L"Failed to load ribbon UI (%08x)\n", hr);
+			return -1; // fail to create
 		}
 		BuildRegexSubitems();
 		if (!m_wndRibbonStatusBar.Create(this))
@@ -384,97 +370,20 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	return 0;
 }
 
+void CMainFrame::OnDestroy()
+{
+	if (m_pRibbonFramework)
+		m_pRibbonFramework->Destroy();
+
+	CFrameWndEx::OnDestroy();
+}
+
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
 	if( !CFrameWndEx::PreCreateWindow(cs) )
 		return FALSE;
 	return TRUE;
 }
-
-void CMainFrame::OnApplicationLook(UINT id)
-{
-	CWaitCursor wait;
-
-	theApp.m_nAppLook = id;
-
-	switch (theApp.m_nAppLook)
-	{
-	case ID_VIEW_APPLOOK_WIN_2000:
-		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManager));
-		m_wndRibbonBar.SetWindows7Look(FALSE);
-		break;
-
-	case ID_VIEW_APPLOOK_OFF_XP:
-		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerOfficeXP));
-		m_wndRibbonBar.SetWindows7Look(FALSE);
-		break;
-
-	case ID_VIEW_APPLOOK_WIN_XP:
-		CMFCVisualManagerWindows::m_b3DTabsXPTheme = TRUE;
-		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows));
-		m_wndRibbonBar.SetWindows7Look(FALSE);
-		break;
-
-	case ID_VIEW_APPLOOK_OFF_2003:
-		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerOffice2003));
-		CDockingManager::SetDockingMode(DT_SMART);
-		m_wndRibbonBar.SetWindows7Look(FALSE);
-		break;
-
-	case ID_VIEW_APPLOOK_VS_2005:
-		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerVS2005));
-		CDockingManager::SetDockingMode(DT_SMART);
-		m_wndRibbonBar.SetWindows7Look(FALSE);
-		break;
-
-	case ID_VIEW_APPLOOK_VS_2008:
-		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerVS2008));
-		CDockingManager::SetDockingMode(DT_SMART);
-		m_wndRibbonBar.SetWindows7Look(FALSE);
-		break;
-
-	case ID_VIEW_APPLOOK_WIN7:
-		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows7));
-		CDockingManager::SetDockingMode(DT_SMART);
-		m_wndRibbonBar.SetWindows7Look(TRUE);
-		break;
-
-	default:
-		switch (theApp.m_nAppLook)
-		{
-		case ID_VIEW_APPLOOK_OFF_2007_BLUE:
-			CMFCVisualManagerOffice2007::SetStyle(CMFCVisualManagerOffice2007::Office2007_LunaBlue);
-			break;
-
-		case ID_VIEW_APPLOOK_OFF_2007_BLACK:
-			CMFCVisualManagerOffice2007::SetStyle(CMFCVisualManagerOffice2007::Office2007_ObsidianBlack);
-			break;
-
-		case ID_VIEW_APPLOOK_OFF_2007_SILVER:
-			CMFCVisualManagerOffice2007::SetStyle(CMFCVisualManagerOffice2007::Office2007_Silver);
-			break;
-
-		case ID_VIEW_APPLOOK_OFF_2007_AQUA:
-			CMFCVisualManagerOffice2007::SetStyle(CMFCVisualManagerOffice2007::Office2007_Aqua);
-			break;
-		}
-
-		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerOffice2007));
-		CDockingManager::SetDockingMode(DT_SMART);
-		m_wndRibbonBar.SetWindows7Look(FALSE);
-	}
-
-	RedrawWindow(nullptr, nullptr, RDW_ALLCHILDREN | RDW_INVALIDATE | RDW_UPDATENOW | RDW_FRAME | RDW_ERASE);
-
-	theApp.WriteInt(L"ApplicationLook", theApp.m_nAppLook);
-}
-
-void CMainFrame::OnUpdateApplicationLook(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable();
-	pCmdUI->SetRadio(theApp.m_nAppLook == pCmdUI->m_nID);
-}
-
 
 // CMainFrame diagnostics
 
@@ -1159,6 +1068,14 @@ void CMainFrame::UpdateLayout()
 		m_wndSplitter.CenterSplitter();
 		m_wndSplitter2.CenterSplitter();
 	}
+}
+
+void CMainFrame::RecalcLayout(BOOL bNotify)
+{
+	GetClientRect(&m_dockManager.m_rectInPlace);
+	if (m_pRibbonApp)
+		m_dockManager.m_rectInPlace.top += m_pRibbonApp->GetRibbonHeight();
+	CFrameWndEx::RecalcLayout(bNotify);
 }
 
 void CMainFrame::OnSize(UINT nType, int cx, int cy)
@@ -3156,7 +3073,7 @@ void CMainFrame::OnRegexfilter(UINT cmd)
 	}
 	else
 	{
-		if (cmd == (UINT)m_regexIndex)
+		if (cmd == (UINT)m_regexIndex && !m_bUseRibbons)
 		{
 			if (CheckForSave(CHFSR_OPTIONS)==IDCANCEL)
 				return;
@@ -3164,7 +3081,7 @@ void CMainFrame::OnRegexfilter(UINT cmd)
 			m_regexIndex = -1;
 			LoadViews(-1);
 		}
-		else
+		else if (cmd != (UINT)m_regexIndex)
 		{
 			CSimpleIni::TNamesDepend sections;
 			m_regexIni.GetAllSections(sections);
@@ -3245,26 +3162,16 @@ void CMainFrame::BuildRegexSubitems(CMFCPopupMenu* pMenuPopup)
 
 	if (m_bUseRibbons)
 	{
-		CArray<CMFCRibbonBaseElement*, CMFCRibbonBaseElement*> arButtons;
-		m_wndRibbonBar.GetElementsByID(ID_REGEXFILTER, arButtons);
-		if (arButtons.GetCount() == 1)
+		std::list<CNativeRibbonDynamicItemInfo> items;
+		int cmdIndex = 2;
+		items.push_back(CNativeRibbonDynamicItemInfo(ID_REGEX_NO_FILTER, CString(MAKEINTRESOURCE(ID_REGEX_NO_FILTER)), IDB_REGEX_FILTER));
+		for (const auto& section : sections)
 		{
-			CMFCRibbonButton * pButton = (CMFCRibbonButton*)arButtons.GetAt(0);
-			if (pButton)
-			{
-				pButton->RemoveAllSubItems();
-				pButton->AddSubItem(new CMFCRibbonButton(ID_REGEXFILTER + 1, CString(MAKEINTRESOURCE(IDS_CONFIGUREREGEXES)), 47, 47));
-
-				if (!sections.empty())
-					pButton->AddSubItem(new CMFCRibbonSeparator(TRUE));
-				int cmdIndex = 2;
-				for (const auto& section : sections)
-				{
-					pButton->AddSubItem(new CMFCRibbonButton(ID_REGEXFILTER + cmdIndex, section.pItem, 46, 46));
-					cmdIndex++;
-				}
-			}
+			items.emplace_back(ID_REGEXFILTER + cmdIndex, section.pItem, IDB_REGEX_FILTER);
+			cmdIndex++;
 		}
+
+		m_pRibbonApp->SetItems(ID_REGEXFILTER, items);
 	}
 	else if (pMenuPopup)
 	{
@@ -3623,31 +3530,33 @@ BOOL CMainFrame::OnShowPopupMenu(CMFCPopupMenu* pMenuPopup)
 	return TRUE;
 }
 
-void CMainFrame::OnNcCalcSize(BOOL bCalcValidRects, NCCALCSIZE_PARAMS* lpncsp)
+LRESULT CMainFrame::OnIdleUpdateCmdUI(WPARAM wParam, LPARAM lParam)
 {
-	__super::OnNcCalcSize(bCalcValidRects, lpncsp);
+	__super::OnIdleUpdateCmdUI(wParam, lParam);
 
-	// the original OnNcCalcSize handler extends the client are over the window borders if DWM composition is enabled,
-	// but that leads to ugly gaps when the window is maximized and the task bar is set
-	// to auto-hide. Seems Windows tries to adjust a maximized window itself to ensure that
-	// the window either covers everything (fullscreen window) or does not cover the last pixel
-	// on the side where the task bar is. But that adjustment doesn't work properly if the window
-	// does not have borders.
-	// So: to work around this problem, we undo what the original OnNcCalcSize() handler has done
-	// if the window is maximized, the task bar is set to auto-hide and DWM composition is enabled.
-	// problem reported here: https://developercommunity.visualstudio.com/content/problem/44368/maximizing-mfc-ribbon-app-is-wrong-when-task-bar-i.html
-	if (GetRibbonBar()->GetSafeHwnd() && ((GetRibbonBar()->IsWindowVisible()) || !IsWindowVisible()) && GetRibbonBar()->IsReplaceFrameCaption())
+	if (m_pRibbonApp)
 	{
-		if (GetGlobalData()->IsDwmCompositionEnabled() && (GetStyle() & WS_MAXIMIZE))
-		{
-			int nShellAutohideBars = GetGlobalData()->GetShellAutohideBars();
-			if (nShellAutohideBars)
-			{
-				CSize szSystemBorder(afxGlobalUtils.GetSystemBorders(this));
-				lpncsp->rgrc[0].left -= szSystemBorder.cx;
-				lpncsp->rgrc[0].right += szSystemBorder.cx;
-				lpncsp->rgrc[0].bottom += szSystemBorder.cy;
-			}
-		}
+		BOOL bDisableIfNoHandler = (BOOL)wParam;
+		m_pRibbonApp->UpdateCmdUI(bDisableIfNoHandler);
 	}
+	return 0;
+}
+
+void CMainFrame::OnUpdateThreeWayActions(CCmdUI * pCmdUI)
+{
+	pCmdUI->Enable();
+}
+
+void CMainFrame::OnRegexNoFilter()
+{
+	if (CheckForSave(CHFSR_OPTIONS) == IDCANCEL)
+		return;
+	m_Data.SetRegexTokens(std::wregex(), L"");
+	m_regexIndex = -1;
+	LoadViews(-1);
+}
+
+void CMainFrame::OnUpdateRegexNoFilter(CCmdUI * pCmdUI)
+{
+	pCmdUI->SetCheck(m_regexIndex < 0);
 }

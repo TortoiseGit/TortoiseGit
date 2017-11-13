@@ -35,11 +35,22 @@
   <Import Project="$(SolutionDir)TortoiseGit.common-dll.props" />
   <Import Project="$(SolutionDir)TortoiseGit.common-langs.props" />
   <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\Resources\TortoiseMergeENG.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\Resources\TortoiseGitMergeRibbon.xml">
+      <Command>"$(WindowsSdkDir_10)bin\10.0.16299.0\x86\uicc.exe" "%(FullPath)" "$(IntDir)TortoiseGitMergeRibbon.bml" /header:"$(IntDir)TortoiseGitMergeRibbon.h" /res:"$(IntDir)TortoiseGitMergeRibbon.rc" /name:TortoiseGitMergeRibbon</Command>
+      <Outputs>$(IntDir)TortoiseGitMergeRibbon.bml;$(IntDir)TortoiseGitMergeRibbon.rc;$(IntDir)TortoiseGitMergeRibbon.h;%(Outputs)</Outputs>
+    </CustomBuild>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

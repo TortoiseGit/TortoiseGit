@@ -29,6 +29,7 @@
 #include "../../ext/SimpleIni/SimpleIni.h"
 #include "CustomMFCRibbonStatusBar.h"
 #include <tuple>
+#include "NativeRibbonApp.h"
 
 class CLeftView;
 class CRightView;
@@ -77,10 +78,10 @@ protected:
 	bool			LoadViews(int line = -2);
 	void			ClearViewNamesAndPaths();
 	void			SetWindowTitle();
+	void			RecalcLayout(BOOL bNotify = TRUE) override;
 
 	afx_msg LRESULT	OnTaskbarButtonCreated(WPARAM wParam, LPARAM lParam);
-	afx_msg void	OnApplicationLook(UINT id);
-	afx_msg void	OnUpdateApplicationLook(CCmdUI* pCmdUI);
+	afx_msg LRESULT	OnIdleUpdateCmdUI(WPARAM wParam, LPARAM);
 
 	afx_msg void	OnFileSave();
 	afx_msg void	OnFileSaveAs();
@@ -92,6 +93,7 @@ protected:
 	afx_msg void	OnActivate(UINT, CWnd*, BOOL);
 	afx_msg void	OnViewWhitespaces();
 	afx_msg int		OnCreate(LPCREATESTRUCT lpCreateStruct);
+	afx_msg void	OnDestroy();
 	afx_msg void	OnSize(UINT nType, int cx, int cy);
 	afx_msg void	OnUpdateFileSave(CCmdUI *pCmdUI);
 	afx_msg void	OnUpdateFileSaveAs(CCmdUI *pCmdUI);
@@ -191,7 +193,9 @@ protected:
 	afx_msg void	OnUpdateTabModeLeft(CCmdUI *pCmdUI);
 	afx_msg void	OnUpdateTabModeRight(CCmdUI *pCmdUI);
 	afx_msg void	OnUpdateTabModeBottom(CCmdUI *pCmdUI);
-	afx_msg void	OnNcCalcSize(BOOL bCalcValidRects, NCCALCSIZE_PARAMS* lpncsp);
+	afx_msg void	OnUpdateThreeWayActions(CCmdUI* pCmdUI);
+	afx_msg	void	OnRegexNoFilter();
+	afx_msg void	OnUpdateRegexNoFilter(CCmdUI* pCmdUI);
 
 	DECLARE_MESSAGE_MAP()
 protected:
@@ -267,9 +271,6 @@ protected:
 	bool			m_bLocatorBar;
 	bool			m_bUseRibbons;
 
-	CMFCRibbonBar				m_wndRibbonBar;
-	CMFCRibbonApplicationButton	m_MainButton;
-
 	CRegDWORD		m_regWrapLines;
 	CRegDWORD		m_regViewModedBlocks;
 	CRegDWORD		m_regOneWay;
@@ -307,4 +308,7 @@ public:
 	void			FillTabModeButton(CMFCRibbonButton * pButton, int start);
 	CMFCMenuBar		m_wndMenuBar;
 	CMFCToolBar		m_wndToolBar;
+
+	std::unique_ptr<CNativeRibbonApp> m_pRibbonApp;
+	CComPtr<IUIFramework> m_pRibbonFramework;
 };

@@ -339,6 +339,9 @@
     <ClCompile Include="..\Utils\SysImageList.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="NativeRibbonApp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AboutDlg.h">
@@ -429,9 +432,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Patch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CustomMFCRibbonButton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EncodingDlg.h">
@@ -569,6 +569,9 @@
     <ClInclude Include="..\Utils\DpiScale.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="NativeRibbonApp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\lineadded.ico">
@@ -625,22 +628,7 @@
     <None Include="..\Resources\Margin.cur">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\Resources\ribbon.mfcribbon-ms">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="..\Resources\ribbon\TortoiseMerge.png">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\Resources\ribbon\ribbonlarge.png">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\Resources\ribbon\ribbonlargehdpi.png">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\Resources\ribbon\ribbonsmall.png">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\Resources\ribbon\ribbonsmallhdpi.png">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="..\Resources\RegexFilter.ini">
@@ -654,5 +642,15 @@
     <ResourceCompile Include="..\Resources\TortoiseMergeENG.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\Resources\TortoiseGitMergeRibbon.xml">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Resources\ribbon\Filter16.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

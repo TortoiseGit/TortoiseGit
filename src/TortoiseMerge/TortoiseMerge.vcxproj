@@ -132,6 +132,7 @@
       <PreprocessorDefinitions>WIN32;WINNT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
     </ClCompile>
+    <ClCompile Include="NativeRibbonApp.cpp" />
     <ClCompile Include="Patch.cpp" />
     <ClCompile Include="TempFile.cpp" />
     <ClCompile Include="AboutDlg.cpp" />
@@ -334,11 +335,11 @@
     <ClInclude Include="CustomMFCRibbonStatusBar.h" />
     <ClInclude Include="EditorConfigWrapper.h" />
     <ClInclude Include="EncodingDlg.h" />
+    <ClInclude Include="NativeRibbonApp.h" />
     <ClInclude Include="TempFile.h" />
     <ClInclude Include="AboutDlg.h" />
     <ClInclude Include="BaseView.h" />
     <ClInclude Include="BottomView.h" />
-    <ClInclude Include="CustomMFCRibbonButton.h" />
     <ClInclude Include="DiffColors.h" />
     <ClInclude Include="DiffData.h" />
     <ClInclude Include="DiffStates.h" />
@@ -403,11 +404,6 @@
     <None Include="..\Resources\Margin.cur" />
     <None Include="..\Resources\moved.ico" />
     <None Include="..\Resources\RegexFilter.ini" />
-    <None Include="..\Resources\ribbon.mfcribbon-ms" />
-    <None Include="..\Resources\ribbon\ribbonlarge.png" />
-    <None Include="..\Resources\ribbon\ribbonlargehdpi.png" />
-    <None Include="..\Resources\ribbon\ribbonsmall.png" />
-    <None Include="..\Resources\ribbon\ribbonsmallhdpi.png" />
     <None Include="..\Resources\ribbon\TortoiseMerge.png" />
     <None Include="..\Resources\Toolbar.bmp" />
     <None Include="..\Resources\TortoiseMerge.ico" />
@@ -447,6 +443,16 @@
       <Project>{4be529fb-c2f2-49f7-a897-054b955564cf}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\Resources\TortoiseGitMergeRibbon.xml">
+      <Command>"$(WindowsSdkDir_10)bin\10.0.16299.0\x86\uicc.exe" "%(FullPath)" "$(IntDir)TortoiseGitMergeRibbon.bml" /header:"$(IntDir)TortoiseGitMergeRibbon.h" /res:"$(IntDir)TortoiseGitMergeRibbon.rc" /name:TortoiseGitMergeRibbon</Command>
+      <Outputs>$(IntDir)TortoiseGitMergeRibbon.bml;$(IntDir)TortoiseGitMergeRibbon.rc;$(IntDir)TortoiseGitMergeRibbon.h;%(Outputs)</Outputs>
+      <SubType>Designer</SubType>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Resources\ribbon\Filter16.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

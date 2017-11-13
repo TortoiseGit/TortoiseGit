@@ -4,6 +4,8 @@ Released: unreleased
 == Features ==
  * Fixed issue #3089: Show parent SHA1 on cherry picking a merge commit
  * Fixed issue #3052: Filename autocomplete in commit dialog ignores filenames starting with underscores
+ * TortoiseGitMerge no uses native ribbon instead of MFC wrapped
+   This results in a noticeable speed up (cf. issue #1616) and also fixes issues with rounded corners for maximized windows (cf. issue #1767)
 
 == Bug Fixes ==
  * Fixed issue #3029: LogDlg: Action column icons painted over Graph or message columns when turned off or resized
@@ -31,8 +33,7 @@ Released: unreleased
  * Fixed issue #3108: Versioned file in ignored folder causes wrong overlays
 
 == Known issues ==
- * Issue #3087: TortoiseGitMerge Ribbon took long time to start and use lots of CPU on Win 10
-   Workaround: Start TortoiseGitMerge and disable the ribbon bar in settings.
+ * Issue #3087: Due to changes in Win 10 TortoiseGitMerge might start up slowly or gets slower over time.
    Also see: https://developercommunity.visualstudio.com/content/problem/136952/mfc-ribbon-slow-on-first-loadshow.html
 
 = Release 2.5.0 =

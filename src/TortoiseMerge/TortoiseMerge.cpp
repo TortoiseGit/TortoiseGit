@@ -38,6 +38,7 @@
 #endif
 
 #pragma comment(linker, "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
+#pragma comment(lib, "Propsys.lib")
 
 BEGIN_MESSAGE_MAP(CTortoiseMergeApp, CWinAppEx)
 	ON_COMMAND(ID_APP_ABOUT, OnAppAbout)
@@ -65,10 +66,8 @@ public:
 
 
 CTortoiseMergeApp::CTortoiseMergeApp()
-	: m_nAppLook(0)
 {
 	EnableHtmlHelp();
-	m_bHiColorIcons = TRUE;
 	git_libgit2_init();
 }
 
@@ -196,7 +195,6 @@ BOOL CTortoiseMergeApp::InitInstance()
 	// visual styles.  Otherwise, any window creation will fail.
 	InitCommonControls();
 
-	CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows));
 	CMFCButton::EnableWindowsTheming();
 	EnableTaskbarInteraction(FALSE);
 

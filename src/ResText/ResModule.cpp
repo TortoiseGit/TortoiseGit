@@ -2301,6 +2301,16 @@ size_t CResModule::ScanHeaderFile(const std::wstring & filepath)
 						m_currentHeaderDataMenus[value] = CUnicodeUtils::StdGetUnicode(text);
 						++count;
 					}
+					else if (StartsWith(text, "cmd"))
+					{
+						m_currentHeaderDataStrings[value] = CUnicodeUtils::StdGetUnicode(text);
+						++count;
+					}
+					else if (text.find("_RESID") != std::string::npos)
+					{
+						m_currentHeaderDataStrings[value] = CUnicodeUtils::StdGetUnicode(text);
+						++count;
+					}
 				}
 
 			}
@@ -2345,6 +2355,16 @@ size_t CResModule::ScanHeaderFile(const std::wstring & filepath)
 					else if (StartsWith(text, L"ID_") || StartsWith(text, L"AFX_ID_"))
 					{
 						m_currentHeaderDataMenus[value] = text;
+						++count;
+					}
+					else if (StartsWith(text, L"cmd"))
+					{
+						m_currentHeaderDataStrings[value] = text;
+						++count;
+					}
+					else if (text.find(L"_RESID") != std::string::npos)
+					{
+						m_currentHeaderDataStrings[value] = text;
 						++count;
 					}
 				}

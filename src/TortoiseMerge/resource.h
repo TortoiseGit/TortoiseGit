@@ -36,18 +36,14 @@
 #define IDI_MOVEDLINE                   152
 #define IDC_MARGINCURSOR                153
 #define IDD_GOTO                        155
-#define IDR_RIBBON                      156
-#define IDB_RIBBONLARGE                 157
-#define IDB_RIBBONSMALL                 158
 #define IDB_LOGO                        159
-#define IDB_RIBBONSMALLHDPI             161
-#define IDB_RIBBONLARGEHDPI             162
 #define IDD_REGEXFILTERS                164
 #define IDD_REGEXFILTER                 165
 #define IDR_REGEXFILTERINI              166
 #define IDB_LOGOFLIPPED                 168
 #define IDR_IGNORECOMMENTSTXT           169
 #define IDI_LINEMARKED                  170
+#define IDB_REGEX_FILTER                171
 #define IDS_SELECTFILE                  200
 #define IDD_ENCODING                    300
 #define IDC_STATIC_ENCODING             301
@@ -305,19 +301,6 @@
 #define IDS_EDIT_TAB2SPACE              8003
 #define IDS_EDIT_SPACE2TAB              8004
 #define IDS_EDIT_TRIM                   8005
-#define IDC_STYLEBUTTON                 10000
-#define ID_VIEW_APPLOOK_WIN7            10001
-#define ID_VIEW_APPLOOK_VS_2008         10002
-#define ID_VIEW_APPLOOK_WIN_2000        10003
-#define ID_VIEW_APPLOOK_OFF_XP          10004
-#define ID_VIEW_APPLOOK_WIN_XP          10005
-#define ID_VIEW_APPLOOK_OFF_2003        10006
-#define ID_VIEW_APPLOOK_VS_2005         10007
-#define ID_OFFICE2007                   10008
-#define ID_VIEW_APPLOOK_OFF_2007_BLUE   10009
-#define ID_VIEW_APPLOOK_OFF_2007_BLACK  10010
-#define ID_VIEW_APPLOOK_OFF_2007_SILVER 10011
-#define ID_VIEW_APPLOOK_OFF_2007_AQUA   10012
 #define ID_VIEW_WHITESPACES             32774
 #define ID_VIEW_ONEWAYDIFF              32775
 #define ID_NAVIGATE_NEXTDIFFERENCE      32779
@@ -371,18 +354,19 @@
 #define ID_LOGOBUTTON                   32897
 #define ID_VIEW_BARS                    32898
 #define ID_USEBLOCKS                    32914
-#define ID_APPLOOK                      32956
 #define ID_EDIT_ENABLE                  32976
 #define ID_FILE_ENABLEEDIT              32978
 #define ID_EDIT_REGEXFILTER             32992
 #define ID_REGEXFILTER_REGEXFILTER      32993
+#define ID_EDIT_THREEWAY_ACTIONS        33001
+#define ID_REGEX_NO_FILTER              33002
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        171
-#define _APS_NEXT_COMMAND_VALUE         32994
+#define _APS_NEXT_RESOURCE_VALUE        172
+#define _APS_NEXT_COMMAND_VALUE         33003
 #define _APS_NEXT_CONTROL_VALUE         1513
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

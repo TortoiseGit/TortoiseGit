@@ -107,6 +107,7 @@ END
 
 IDB_LOGOFLIPPED         BITMAP                  "tortoisemerge_logoflipped.bmp"
 IDB_TTF_BMP             BITMAP                  "ttf_glyph.bmp"
+IDB_REGEX_FILTER        BITMAP                  "ribbon\\Filter16.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -120,11 +121,7 @@ IDC_MARGINCURSOR        CURSOR                  "Margin.cur"
 // PNG
 //
 
-IDB_RIBBONLARGE         PNG                     "ribbon\\ribbonlarge.png"
-IDB_RIBBONSMALL         PNG                     "ribbon\\ribbonsmall.png"
 IDB_LOGO                PNG                     "ribbon\\TortoiseMerge.png"
-IDB_RIBBONSMALLHDPI     PNG                     "ribbon\\ribbonsmallhdpi.png"
-IDB_RIBBONLARGEHDPI     PNG                     "ribbon\\ribbonlargehdpi.png"
 #endif    // Neutral resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -572,23 +569,6 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "Hide/Show the patch file list", ID_VIEW_SHOWFILELIST
         MENUITEM SEPARATOR
-        POPUP "Style"
-        BEGIN
-            MENUITEM "Windows 2000",                ID_VIEW_APPLOOK_WIN_2000
-            MENUITEM "Office XP",                   ID_VIEW_APPLOOK_OFF_XP
-            MENUITEM "Windows XP",                  ID_VIEW_APPLOOK_WIN_XP
-            MENUITEM "Office 2003",                 ID_VIEW_APPLOOK_OFF_2003
-            MENUITEM "Visual Studio 2005",          ID_VIEW_APPLOOK_VS_2005
-            MENUITEM "Visual Studio 2008",          ID_VIEW_APPLOOK_VS_2008
-            MENUITEM "Windows 7",                   ID_VIEW_APPLOOK_WIN7
-            POPUP "Office 2007 colors"
-            BEGIN
-                MENUITEM "Blue Style",                  ID_VIEW_APPLOOK_OFF_2007_BLUE
-                MENUITEM "Black Style",                 ID_VIEW_APPLOOK_OFF_2007_BLACK
-                MENUITEM "Silver Style",                ID_VIEW_APPLOOK_OFF_2007_SILVER
-                MENUITEM "Aqua Style",                  ID_VIEW_APPLOOK_OFF_2007_AQUA
-            END
-        END
     END
     POPUP "&Help"
     BEGIN
@@ -677,14 +657,6 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// Ribbon
-//
-
-IDR_RIBBON              RT_RIBBON_XML           "ribbon.mfcribbon-ms"
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
 // CONFIG
 //
 
@@ -712,6 +684,11 @@ BEGIN
     IDS_MSGBOX_YES          "&Yes"
     IDS_MSGBOX_NO           "&No"
     IDS_MSGBOX_CANCEL       "Cancel"
+END
+
+STRINGTABLE
+BEGIN
+    ID_REGEX_NO_FILTER      "No filter"
 END
 
 STRINGTABLE
@@ -1055,23 +1032,6 @@ END
 
 STRINGTABLE
 BEGIN
-    IDC_STYLEBUTTON         "Change the style of the application\nChange Style"
-    ID_VIEW_APPLOOK_WIN7    "Windows 7"
-    ID_VIEW_APPLOOK_VS_2008 "Visual Studio 2008"
-    ID_VIEW_APPLOOK_WIN_2000 "Windows 2000"
-    ID_VIEW_APPLOOK_OFF_XP  "Office XP"
-    ID_VIEW_APPLOOK_WIN_XP  "Windows XP"
-    ID_VIEW_APPLOOK_OFF_2003 "Office 2003"
-    ID_VIEW_APPLOOK_VS_2005 "Visual Studio 2005"
-    ID_OFFICE2007           "Office 2007 colors"
-    ID_VIEW_APPLOOK_OFF_2007_BLUE "Blue Style"
-    ID_VIEW_APPLOOK_OFF_2007_BLACK "Black Style"
-    ID_VIEW_APPLOOK_OFF_2007_SILVER "Silver Style"
-    ID_VIEW_APPLOOK_OFF_2007_AQUA "Aqua Style"
-END
-
-STRINGTABLE
-BEGIN
     ID_VIEW_LINEDIFFBAR     "Show or hide the line diff bar\nToggle LineDiffBar"
     ID_VIEW_LOCATORBAR      "Show or hide the locator bar\nToggle LocatorBar"
     ID_EDIT_USELEFTBLOCK    "Use text block from the left view\nUse left block"
@@ -1160,11 +1120,6 @@ STRINGTABLE
 BEGIN
     ID_VIEW_IGNORECOMMENTS  "Remove all comments before doing the diff so changes inside comments don't show as different"
     ID_LOGOBUTTON           "TortoiseGitMerge"
-END
-
-STRINGTABLE
-BEGIN
-    ID_APPLOOK              "Changes the style of the application"
 END
 
 STRINGTABLE
@@ -1269,7 +1224,6 @@ BEGIN
     "#include ""TortoiseMerge.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
     "#include <afxres.rc>         // Standard components\r\n"
     "#include <afxprint.rc>  // printing/print preview resources\r\n"
-    "#include <afxribbon.rc> // ribbon and control bar resources\r\n"
     "#include <afxolecl.rc>  // OLE container resources\r\n"
     "#endif\r\n"
     "\0"
@@ -1298,7 +1252,6 @@ LANGUAGE 9, 1
 #include "TortoiseMerge.rc2"  // non-Microsoft Visual C++ edited resources
 #include <afxres.rc>         // Standard components
 #include <afxprint.rc>  // printing/print preview resources
-#include <afxribbon.rc> // ribbon and control bar resources
 #include <afxolecl.rc>  // OLE container resources
 #endif
 
