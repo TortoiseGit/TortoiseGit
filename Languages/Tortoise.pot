@@ -4784,6 +4784,10 @@ msgstr ""
 msgid "Filter: "
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_SETCOLORPAGE: Control id 65535)
+msgid "Filtered"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_FIND: Control id 139, Dialog IDD_FIND: Control id 20100, ID_EDIT_FIND - Menu, ID_EDIT_FIND - Ribbon name)
 msgid "Find"
 msgstr ""
