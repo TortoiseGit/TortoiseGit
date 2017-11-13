@@ -512,6 +512,12 @@
     <ClCompile Include="..\libgit2\src\streams\openssl.c">
       <Filter>Source Files\streams</Filter>
     </ClCompile>
+    <ClCompile Include="..\libgit2\src\config_parse.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libgit2\src\parse.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libgit2\src\attr.h">
@@ -1149,6 +1155,12 @@
     </ClInclude>
     <ClInclude Include="..\libgit2\src\streams\socket.h">
       <Filter>Header Files\streams</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\config_parse.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\parse.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
