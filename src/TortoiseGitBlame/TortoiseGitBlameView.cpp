@@ -533,8 +533,8 @@ void CTortoiseGitBlameView::ContextMenuAction(int cmd, GitRev *pRev, GIT_REV_LIS
 				index -= 1;
 
 			CString path = ResolveCommitFile(parentFilename[index]);
-			CString startrev = pRev->m_CommitHash.ToString();
-			CString endrev = parentHashWithFile[index].ToString();
+			CString startrev = parentHashWithFile[index].ToString();
+			CString endrev = pRev->m_CommitHash.ToString();
 
 			CString procCmd = L"/path:\"" + path + L"\" ";
 			procCmd += L" /command:diff";

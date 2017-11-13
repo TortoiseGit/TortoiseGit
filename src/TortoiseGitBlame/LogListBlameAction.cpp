@@ -115,8 +115,8 @@ void CGitBlameLogList::ContextMenuAction(int cmd, int /*FirstSelect*/, int /*Las
 				{
 					CString procCmd = L"/path:\"" + pView->ResolveCommitFile(parentFilenames[i]) + L"\" ";
 					procCmd += L" /command:diff";
-					procCmd += L" /startrev:" + pRev->m_CommitHash.ToString();
-					procCmd += L" /endrev:" + parentHash.ToString();
+					procCmd += L" /startrev:" + parentHash.ToString();
+					procCmd += L" /endrev:" + pRev->m_CommitHash.ToString();
 					if ((cmd & 0xFFFF) == ID_GNUDIFF1)
 						procCmd += L" /unified";
 					if (!!(GetAsyncKeyState(VK_SHIFT) & 0x8000))
