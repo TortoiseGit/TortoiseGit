@@ -228,7 +228,7 @@ void CMenuButton::OnShowMenu()
 	TPMPARAMS params;
 	params.cbSize = sizeof(TPMPARAMS);
 	params.rcExclude = rectWindow;
-	m_nMenuResult = ::TrackPopupMenuEx(m_hMenu, TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_NONOTIFY | TPM_RETURNCMD, x, y, GetSafeHwnd(), &params);
+	m_nMenuResult = ::TrackPopupMenuEx(m_hMenu, TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_NONOTIFY | TPM_RETURNCMD | TPM_VERTICAL, x, y, GetSafeHwnd(), &params);
 
 	CWnd* pParent = GetParent();
 

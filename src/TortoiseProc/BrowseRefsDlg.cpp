@@ -244,7 +244,10 @@ void CBrowseRefsDlg::OnBnClickedOk()
 
 	RECT rect;
 	GetDlgItem(IDOK)->GetWindowRect(&rect);
-	int selection = popupMenu.TrackPopupMenuEx(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, rect.left, rect.top, this, nullptr);
+	TPMPARAMS params;
+	params.cbSize = sizeof(TPMPARAMS);
+	params.rcExclude = rect;
+	int selection = popupMenu.TrackPopupMenuEx(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY | TPM_VERTICAL, rect.left, rect.top, this, &params);
 	switch (selection)
 	{
 	case 1:

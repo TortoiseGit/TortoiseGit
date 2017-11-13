@@ -3219,7 +3219,10 @@ void CLogDlg::OnBnClickedWalkBehaviour()
 		m_tooltips.Pop();
 		RECT rect;
 		GetDlgItem(IDC_WALKBEHAVIOUR)->GetWindowRect(&rect);
-		int selection = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, rect.left, rect.top, this);
+		TPMPARAMS params;
+		params.cbSize = sizeof(TPMPARAMS);
+		params.rcExclude = rect;
+		int selection = popup.TrackPopupMenuEx(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY | TPM_VERTICAL, rect.left, rect.top, this, &params);
 		switch (selection)
 		{
 		case WALKBEHAVIOUR_FIRSTPARENT:
@@ -3284,7 +3287,10 @@ void CLogDlg::OnBnClickedView()
 		m_tooltips.Pop();
 		RECT rect;
 		GetDlgItem(IDC_VIEW)->GetWindowRect(&rect);
-		int selection = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, rect.left, rect.top, this);
+		TPMPARAMS params;
+		params.cbSize = sizeof(TPMPARAMS);
+		params.rcExclude = rect;
+		int selection = popup.TrackPopupMenuEx(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY | TPM_VERTICAL, rect.left, rect.top, this, &params);
 		switch (selection)
 		{
 		case VIEW_HIDEPATHS:

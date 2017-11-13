@@ -409,7 +409,10 @@ void CChangedDlg::OnBnClickedStash()
 
 		RECT rect;
 		GetDlgItem(IDC_BUTTON_STASH)->GetWindowRect(&rect);
-		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, rect.left, rect.top, this);
+		TPMPARAMS params;
+		params.cbSize = sizeof(TPMPARAMS);
+		params.rcExclude = rect;
+		int cmd = popup.TrackPopupMenuEx(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY | TPM_VERTICAL, rect.left, rect.top, this, &params);
 
 		switch (cmd & 0xFFFF)
 		{
