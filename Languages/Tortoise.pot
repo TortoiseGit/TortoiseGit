@@ -7326,6 +7326,10 @@ msgstr ""
 msgid "Remove stale lock file"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_CLEAN: Control id 1631)
+msgid "Remove unmanaged directories with .git folder (-f)"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_CLEAN: Control id 1626)
 msgid "Remove untracked directories (-d)"
 msgstr ""

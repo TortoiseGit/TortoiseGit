@@ -158,7 +158,7 @@ static bool GetFilesToCleanUp(CTGitPathList& delList, const CString& baseCmd, CG
 	return true;
 }
 
-static bool DoCleanUp(const CTGitPathList& pathList, int cleanType, bool bDir, bool bSubmodules, bool bDryRun, bool bNoRecycleBin)
+static bool DoCleanUp(const CTGitPathList& pathList, int cleanType, bool bDir, bool bDirUnmanagedRepos, bool bSubmodules, bool bDryRun, bool bNoRecycleBin)
 {
 	CString cmd;
 	cmd.Format(L"git.exe clean");
@@ -178,6 +178,8 @@ static bool DoCleanUp(const CTGitPathList& pathList, int cleanType, bool bDir, b
 		cmd += L" -fX";
 		break;
 	}
+	if (bDirUnmanagedRepos)
+		cmd += L" -f";
 
 	STRING_VECTOR submoduleList;
 	if (bSubmodules)
@@ -224,20 +226,20 @@ static bool DoCleanUp(const CTGitPathList& pathList, int cleanType, bool bDir, b
 		progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
 		{
 			if (status)
-				postCmdList.emplace_back(IDS_MSGBOX_RETRY, [&]{ DoCleanUp(pathList, cleanType, bDir, bSubmodules, bDryRun, bNoRecycleBin); });
+				postCmdList.emplace_back(IDS_MSGBOX_RETRY, [&]{ DoCleanUp(pathList, cleanType, bDir, bDirUnmanagedRepos, bSubmodules, bDryRun, bNoRecycleBin); });
 
 			if (status || !bDryRun)
 				return;
 
 			if (bNoRecycleBin)
 			{
-				postCmdList.emplace_back(IDS_CLEAN_NO_RECYCLEBIN, [&]{ DoCleanUp(pathList, cleanType, bDir, bSubmodules, FALSE, TRUE); });
-				postCmdList.emplace_back(IDS_CLEAN_TO_RECYCLEBIN, [&]{ DoCleanUp(pathList, cleanType, bDir, bSubmodules, FALSE, FALSE); });
+				postCmdList.emplace_back(IDS_CLEAN_NO_RECYCLEBIN, [&]{ DoCleanUp(pathList, cleanType, bDir, bDirUnmanagedRepos, bSubmodules, FALSE, TRUE); });
+				postCmdList.emplace_back(IDS_CLEAN_TO_RECYCLEBIN, [&]{ DoCleanUp(pathList, cleanType, bDir, bDirUnmanagedRepos, bSubmodules, FALSE, FALSE); });
 			}
 			else
 			{
-				postCmdList.emplace_back(IDS_CLEAN_TO_RECYCLEBIN, [&]{ DoCleanUp(pathList, cleanType, bDir, bSubmodules, FALSE, FALSE); });
-				postCmdList.emplace_back(IDS_CLEAN_NO_RECYCLEBIN, [&]{ DoCleanUp(pathList, cleanType, bDir, bSubmodules, FALSE, TRUE); });
+				postCmdList.emplace_back(IDS_CLEAN_TO_RECYCLEBIN, [&]{ DoCleanUp(pathList, cleanType, bDir, bDirUnmanagedRepos, bSubmodules, FALSE, FALSE); });
+				postCmdList.emplace_back(IDS_CLEAN_NO_RECYCLEBIN, [&]{ DoCleanUp(pathList, cleanType, bDir, bDirUnmanagedRepos, bSubmodules, FALSE, TRUE); });
 			}
 		};
 
@@ -292,7 +294,7 @@ bool CleanupCommand::Execute()
 	dlg.m_pathList = pathList;
 	if (dlg.DoModal() == IDOK)
 	{
-		bRet = DoCleanUp(pathList, dlg.m_CleanType, dlg.m_bDir == BST_CHECKED, dlg.m_bSubmodules == BST_CHECKED, dlg.m_bDryRun == BST_CHECKED, dlg.m_bNoRecycleBin == BST_CHECKED);
+		bRet = DoCleanUp(pathList, dlg.m_CleanType, dlg.m_bDir == BST_CHECKED, dlg.m_bDirUnmanagedRepo == BST_CHECKED, dlg.m_bSubmodules == BST_CHECKED, dlg.m_bDryRun == BST_CHECKED, dlg.m_bNoRecycleBin == BST_CHECKED);
 
 		CShellUpdater::Instance().Flush();
 	}

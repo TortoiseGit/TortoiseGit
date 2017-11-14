@@ -48,9 +48,11 @@ protected:
 	virtual	BOOL OnInitDialog() override;
 	virtual	void OnOK() override;
 	void SetDlgTitle();
+	afx_msg void OnBnClickedCheckDir();
 
 public:
 	BOOL	m_bDir;
+	BOOL	m_bDirUnmanagedRepo;
 	int		m_CleanType;
 	BOOL	m_bNoRecycleBin;
 	BOOL	m_bDryRun;
