@@ -25,17 +25,6 @@
 #define IDI_PROPERTIES_WND              167
 #define IDI_PROPERTIES_WND_HC           168
 #define IDR_OUTPUT_POPUP                182
-#define ID_VIEW_APPLOOK_WIN_2000        208
-#define ID_VIEW_APPLOOK_VS_2008         209
-#define ID_VIEW_APPLOOK_WIN7            210
-#define ID_VIEW_APPLOOK_OFF_XP          211
-#define ID_VIEW_APPLOOK_WIN_XP          212
-#define ID_VIEW_APPLOOK_OFF_2003        213
-#define ID_VIEW_APPLOOK_VS_2005         214
-#define ID_VIEW_APPLOOK_OFF_2007_BLUE   215
-#define ID_VIEW_APPLOOK_OFF_2007_BLACK  216
-#define ID_VIEW_APPLOOK_OFF_2007_SILVER 217
-#define ID_VIEW_APPLOOK_OFF_2007_AQUA   218
 #define ID_EDIT_GOTO                    220
 #define IDD_GOTODLG                     221
 #define IDC_LINENUMBER                  222

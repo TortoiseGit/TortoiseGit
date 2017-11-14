@@ -257,23 +257,6 @@ BEGIN
             MENUITEM "<placeholder>",               ID_VIEW_TOOLBAR
         END
         MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
-        POPUP "&Application Look"
-        BEGIN
-            MENUITEM "Windows 2000",                ID_VIEW_APPLOOK_WIN_2000
-            MENUITEM "Office XP",                   ID_VIEW_APPLOOK_OFF_XP
-            MENUITEM "Windows XP",                  ID_VIEW_APPLOOK_WIN_XP
-            MENUITEM "Office 2003",                 ID_VIEW_APPLOOK_OFF_2003
-            MENUITEM "Visual Studio 2005",          ID_VIEW_APPLOOK_VS_2005
-            POPUP "Office 2007"
-            BEGIN
-                MENUITEM "Blue Style",                  ID_VIEW_APPLOOK_OFF_2007_BLUE
-                MENUITEM "Black Style",                 ID_VIEW_APPLOOK_OFF_2007_BLACK
-                MENUITEM "Silver Style",                ID_VIEW_APPLOOK_OFF_2007_SILVER
-                MENUITEM "Aqua Style",                  ID_VIEW_APPLOOK_OFF_2007_AQUA
-            END
-            MENUITEM "Visual Studio 2008",          ID_VIEW_APPLOOK_VS_2008
-            MENUITEM "Windows 7",                   ID_VIEW_APPLOOK_WIN7
-        END
         MENUITEM SEPARATOR
         MENUITEM "Show author",                 ID_VIEW_SHOWAUTHOR
         MENUITEM "Show date",                   ID_VIEW_SHOWDATE

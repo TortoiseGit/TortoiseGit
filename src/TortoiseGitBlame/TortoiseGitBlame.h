@@ -45,7 +45,6 @@ public:
 	virtual BOOL InitInstance() override;
 
 // Implementation
-	UINT  m_nAppLook;
 	BOOL  m_bHiColorIcons;
 
 	virtual void PreLoadState() override;

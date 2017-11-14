@@ -332,10 +332,6 @@ msgstr ""
 msgid "&All Branches"
 msgstr ""
 
-#. Resource IDs: (65535 - PopupMenu)
-msgid "&Application Look"
-msgstr ""
-
 #. Resource IDs: (Dialog IDD_SYNC: Control id 1613)
 msgid "&Apply Patch"
 msgstr ""
@@ -1722,10 +1718,6 @@ msgstr ""
 msgid "Apply unified diff"
 msgstr ""
 
-#. Resource IDs: (ID_VIEW_APPLOOK_OFF_2007_AQUA - Menu)
-msgid "Aqua Style"
-msgstr ""
-
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Arabic"
 msgstr ""
@@ -1989,10 +1981,6 @@ msgstr ""
 msgid "Bitmap\na bitmap"
 msgstr ""
 
-#. Resource IDs: (ID_VIEW_APPLOOK_OFF_2007_BLACK - Menu)
-msgid "Black Style"
-msgstr ""
-
 #. Resource IDs: (Dialog IDD_SETTINGSTBLAME: Control id 65535, IDS_LOG_POPUP_BLAME)
 msgid "Blame"
 msgstr ""
@@ -2015,10 +2003,6 @@ msgstr ""
 
 #. Resource IDs: (cmdGroupBlocks_LabelTitle_RESID)
 msgid "Blocks"
-msgstr ""
-
-#. Resource IDs: (ID_VIEW_APPLOOK_OFF_2007_BLUE - Menu)
-msgid "Blue Style"
 msgstr ""
 
 #. Resource IDs: (IDS_BODY)
@@ -6386,18 +6370,6 @@ msgstr ""
 msgid "OLE initialization failed.  Make sure that the OLE libraries are the correct version."
 msgstr ""
 
-#. Resource IDs: (ID_VIEW_APPLOOK_OFF_2003 - Menu)
-msgid "Office 2003"
-msgstr ""
-
-#. Resource IDs: (65535 - PopupMenu)
-msgid "Office 2007"
-msgstr ""
-
-#. Resource IDs: (ID_VIEW_APPLOOK_OFF_XP - Menu)
-msgid "Office XP"
-msgstr ""
-
 #. Resource IDs: (IDS_OLDHASH)
 msgid "Old hash"
 msgstr ""
@@ -8396,10 +8368,6 @@ msgstr ""
 msgid "Significant contributions by: (see Git repository for a complete list)"
 msgstr ""
 
-#. Resource IDs: (ID_VIEW_APPLOOK_OFF_2007_SILVER - Menu)
-msgid "Silver Style"
-msgstr ""
-
 #. Resource IDs: (Dialog IDD_FORMAT_PATCH: Control id 1532)
 msgid "Since"
 msgstr ""
@@ -9907,14 +9875,6 @@ msgstr ""
 msgid "Visit our website"
 msgstr ""
 
-#. Resource IDs: (ID_VIEW_APPLOOK_VS_2005 - Menu)
-msgid "Visual Studio 2005"
-msgstr ""
-
-#. Resource IDs: (ID_VIEW_APPLOOK_VS_2008 - Menu)
-msgid "Visual Studio 2008"
-msgstr ""
-
 #. Resource IDs: (cmdShowWhitespaces_Keytip_RESID)
 msgid "W"
 msgstr ""
@@ -10005,18 +9965,6 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETCOLORPAGE: Control id 65535, cmdGroupWhitespaces_LabelTitle_RESID)
 msgid "Whitespaces"
-msgstr ""
-
-#. Resource IDs: (ID_VIEW_APPLOOK_WIN_2000 - Menu)
-msgid "Windows 2000"
-msgstr ""
-
-#. Resource IDs: (ID_VIEW_APPLOOK_WIN7 - Menu)
-msgid "Windows 7"
-msgstr ""
-
-#. Resource IDs: (ID_VIEW_APPLOOK_WIN_XP - Menu)
-msgid "Windows XP"
 msgstr ""
 
 #. Resource IDs: (5020 - Menu)
