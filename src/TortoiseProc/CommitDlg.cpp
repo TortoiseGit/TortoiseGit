@@ -428,7 +428,7 @@ BOOL CCommitDlg::OnInitDialog()
 	AddAnchor(IDC_CHECKMODIFIED, TOP_LEFT);
 	AddAnchor(IDC_CHECKFILES, TOP_LEFT);
 	AddAnchor(IDC_CHECKSUBMODULES, TOP_LEFT);
-	AddAnchor(IDC_TOGGLE_ADVANCED, TOP_RIGHT);
+	AddAnchor(IDC_TOGGLE_ADVANCED, BOTTOM_RIGHT);
 	if (hWndExplorer)
 		CenterWindow(CWnd::FromHandle(hWndExplorer));
 	EnableSaveRestore(L"CommitDlg");
@@ -2926,7 +2926,6 @@ void CCommitDlg::OnBnClickedToggleAdvanced()
 		IDC_NOAUTOSELECTSUBMODULES,
 		IDC_COMMIT_MESSAGEONLY,
 		IDC_VIEW_PATCH,
-		IDC_BUGIDLABEL,
 		IDC_TEXT_INFO
 	};
 
@@ -2937,7 +2936,7 @@ void CCommitDlg::OnBnClickedToggleAdvanced()
 	ScreenToClient(&logRect);
 	if (m_showingAdvanced)
 	{
-		m_ctrlAdvButton.SetWindowTextW(L"Advanced>");
+		m_ctrlAdvButton.SetWindowTextW(L"Advanced view>");
 
 		// resize the message log to fill to the edge of its containing panel
 		logRect.bottom += m_logAdvancedSectionHeight;
@@ -2952,7 +2951,7 @@ void CCommitDlg::OnBnClickedToggleAdvanced()
 	}
 	else
 	{
-		m_ctrlAdvButton.SetWindowTextW(L"Simple>");
+		m_ctrlAdvButton.SetWindowTextW(L"Simple view>");
 
 		// restore the message log to its original height but maintain
 		// its existing width as the window may have been resized
