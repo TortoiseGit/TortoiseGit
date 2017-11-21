@@ -220,6 +220,10 @@ private:
 	CString				m_sLogTemplate;
 	CMenuButton			m_ctrlOkButton;
 	CRegDWORD			m_regLastAction;
+	CHyperLink			m_ctrlAdvButton;
+	bool				m_showingAdvanced;
+	int					m_logAdvancedSectionHeight;
+	CRegDWORD			m_showSimpleView;
 	void				PrepareOkButton();
 	typedef struct
 	{
@@ -239,6 +243,7 @@ protected:
 	afx_msg void OnBnClickedCommitAmend();
 	afx_msg void OnBnClickedCommitMessageOnly();
 	afx_msg void OnBnClickedWholeProject();
+	afx_msg void OnBnClickedToggleAdvanced();
 	afx_msg void OnScnUpdateUI(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnStnClickedViewPatch();
 	afx_msg void OnMoving(UINT fwSide, LPRECT pRect);
