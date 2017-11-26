@@ -48,7 +48,9 @@
     <None Include="Tortoise_bg.po" />
     <None Include="Tortoise_ca.po" />
     <None Include="Tortoise_cs.po" />
+    <None Include="Tortoise_da.po" />
     <None Include="Tortoise_de.po" />
+    <None Include="Tortoise_el.po" />
     <None Include="Tortoise_es.po" />
     <None Include="Tortoise_fa.po" />
     <None Include="Tortoise_fi.po" />
