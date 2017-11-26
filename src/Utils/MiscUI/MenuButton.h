@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2016-2017 - TortoiseGit
 // Copyright (C) 2011, 2016 - Sven Strickroth <email@cs-ware.de>
 
 //based on:
@@ -44,8 +45,7 @@ public:
 	 * \return the index of the inserted item. This index is
 	 * returned in GetCurrentEntry().
 	 */
-	INT_PTR AddEntry(const CString& sEntry);
-	INT_PTR AddEntry(UINT iconId, const CString& sEntry);
+	INT_PTR AddEntry(const CString& sEntry, UINT uIcon = 0U);
 
 	/**
 	 * Inserts an array of strings to be shown in the

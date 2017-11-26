@@ -276,7 +276,7 @@ LRESULT	CGitProgressDlg::OnCmdEnd(WPARAM /*wParam*/, LPARAM /*lParam*/)
 		for (const auto& entry : m_PostCmdList)
 		{
 			++i;
-			m_cMenuButton.AddEntry(entry.icon, entry.label);
+			m_cMenuButton.AddEntry(entry.label, entry.icon);
 			TCHAR accellerator = CStringUtils::GetAccellerator(entry.label);
 			if (accellerator == L'\0')
 				continue;

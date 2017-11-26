@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2011, 2015-2017 - TortoiseGit
 // Copyright (C) 2011,2015-2016 - Sven Strickroth <email@cs-ware.de>
 
 //based on:
@@ -75,22 +76,10 @@ void CMenuButton::RemoveAll()
 	m_bMenuIsActive = TRUE;
 }
 
-INT_PTR CMenuButton::AddEntry(UINT iconId, const CString& sEntry)
+INT_PTR CMenuButton::AddEntry(const CString& sEntry, UINT uIcon /*= 0U*/)
 {
 	INT_PTR ret = m_sEntries.Add(sEntry);
-	m_btnMenu.AppendMenuIcon(m_sEntries.GetCount(), sEntry, iconId);
-	if (m_sEntries.GetCount() == 2)
-		m_bMenuIsActive = FALSE;
-
-	if (ret == 0)
-		SetCurrentEntry(ret);
-	return ret;
-}
-
-INT_PTR CMenuButton::AddEntry(const CString& sEntry)
-{
-	INT_PTR ret = m_sEntries.Add(sEntry);
-	m_btnMenu.AppendMenuIcon(m_sEntries.GetCount(), sEntry);
+	m_btnMenu.AppendMenuIcon(m_sEntries.GetCount(), sEntry, uIcon);
 	if (m_sEntries.GetCount() == 2)
 		m_bMenuIsActive = FALSE;
 
