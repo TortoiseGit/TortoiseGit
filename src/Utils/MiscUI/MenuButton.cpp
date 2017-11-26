@@ -33,7 +33,7 @@ static char THIS_FILE[]=__FILE__;
 IMPLEMENT_DYNCREATE(CMenuButton, CMFCMenuButton)
 
 CMenuButton::CMenuButton(void) : CMFCMenuButton()
-	, m_nDefault(-1)
+	, m_nDefault(0)
 	, m_bMarkDefault(TRUE)
 	, m_bShowCurrentItem(true)
 	, m_bRealMenuIsActive(false)
@@ -71,7 +71,7 @@ void CMenuButton::RemoveAll()
 	for (int index = 0; index < m_sEntries.GetCount(); index++)
 		m_btnMenu.RemoveMenu(0, MF_BYPOSITION);
 	m_sEntries.RemoveAll();
-	m_nDefault = m_nMenuResult = -1;
+	m_nDefault = m_nMenuResult = 0;
 	m_bMenuIsActive = TRUE;
 }
 
