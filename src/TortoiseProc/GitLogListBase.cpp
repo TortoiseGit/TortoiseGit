@@ -1469,22 +1469,22 @@ CString FindSVNRev(const CString& msg)
 {
 	try
 	{
-		const std::tr1::wsregex_iterator end;
+		const std::wsregex_iterator end;
 		std::wstring s = msg;
-		std::tr1::wregex regex1(L"^\\s*git-svn-id:\\s+(.*)\\@(\\d+)\\s([a-f\\d\\-]+)$");
-		for (std::tr1::wsregex_iterator it(s.cbegin(), s.cend(), regex1); it != end; ++it)
+		std::wregex regex1(L"^\\s*git-svn-id:\\s+(.*)\\@(\\d+)\\s([a-f\\d\\-]+)$");
+		for (std::wsregex_iterator it(s.cbegin(), s.cend(), regex1); it != end; ++it)
 		{
-			const std::tr1::wsmatch match = *it;
+			const std::wsmatch match = *it;
 			if (match.size() == 4)
 			{
 				ATLTRACE(L"matched rev: %s\n", std::wstring(match[2]).c_str());
 				return std::wstring(match[2]).c_str();
 			}
 		}
-		std::tr1::wregex regex2(L"^\\s*git-svn-id:\\s(\\d+)\\@([a-f\\d\\-]+)$");
-		for (std::tr1::wsregex_iterator it(s.cbegin(), s.cend(), regex2); it != end; ++it)
+		std::wregex regex2(L"^\\s*git-svn-id:\\s(\\d+)\\@([a-f\\d\\-]+)$");
+		for (std::wsregex_iterator it(s.cbegin(), s.cend(), regex2); it != end; ++it)
 		{
-			const std::tr1::wsmatch match = *it;
+			const std::wsmatch match = *it;
 			if (match.size() == 3)
 			{
 				ATLTRACE(L"matched rev: %s\n", std::wstring(match[1]).c_str());
@@ -2888,7 +2888,7 @@ UINT CGitLogListBase::LogThread()
 		return 1;
 	}
 
-	std::tr1::wregex pat;//(L"Remove", tr1::regex_constants::icase);
+	std::wregex pat;//(L"Remove", regex_constants::icase);
 	bool bRegex = false;
 	if (m_bFilterWithRegex)
 		bRegex = ValidateRegexp(m_sFilterText, pat, false);
@@ -3212,23 +3212,23 @@ void CGitLogListBase::StartLoadingThread()
 	}
 }
 
-bool CGitLogListBase::ValidateRegexp(LPCTSTR regexp_str, std::tr1::wregex& pat, bool bMatchCase /* = false */)
+bool CGitLogListBase::ValidateRegexp(LPCTSTR regexp_str, std::wregex& pat, bool bMatchCase /* = false */)
 {
 	try
 	{
-		std::tr1::regex_constants::syntax_option_type type = std::tr1::regex_constants::ECMAScript;
+		std::regex_constants::syntax_option_type type = std::regex_constants::ECMAScript;
 		if (!bMatchCase)
-			type |= std::tr1::regex_constants::icase;
-		pat = std::tr1::wregex(regexp_str, type);
+			type |= std::regex_constants::icase;
+		pat = std::wregex(regexp_str, type);
 		return true;
 	}
 	catch (std::exception&) {}
 	return false;
 }
-BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::wregex& pat)
+BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::wregex& pat)
 {
 	BOOL result = TRUE;
-	std::tr1::regex_constants::match_flag_type flags = std::tr1::regex_constants::match_any;
+	std::regex_constants::match_flag_type flags = std::regex_constants::match_any;
 	CString sRev;
 
 	if ((bRegex)&&(m_bFilterWithRegex))
@@ -3596,12 +3596,12 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 {
 	pShownlist->SafeRemoveAll();
 
-	std::tr1::wregex pat;//(L"Remove", tr1::regex_constants::icase);
+	std::wregex pat;//(L"Remove", regex_constants::icase);
 	bool bRegex = false;
 	if (m_bFilterWithRegex)
 		bRegex = ValidateRegexp(m_sFilterText, pat, false);
 
-	std::tr1::regex_constants::match_flag_type flags = std::tr1::regex_constants::match_any;
+	std::regex_constants::match_flag_type flags = std::regex_constants::match_any;
 	CString sRev;
 	for (DWORD i=0; i<m_logEntries.size(); ++i)
 	{
@@ -4089,12 +4089,12 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 		CString findText = m_pFindDialog->GetFindString();
 		bool bMatchCase = (m_pFindDialog->MatchCase() == TRUE);
 
-		std::tr1::wregex pat;
+		std::wregex pat;
 		bool bRegex = false;
 		if (m_pFindDialog->Regex())
 			bRegex = ValidateRegexp(findText, pat, bMatchCase);
 
-		std::tr1::regex_constants::match_flag_type flags = std::tr1::regex_constants::match_not_null;
+		std::regex_constants::match_flag_type flags = std::regex_constants::match_not_null;
 
 		for (i = m_nSearchIndex + 1; ; ++i)
 		{

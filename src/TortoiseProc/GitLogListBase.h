@@ -420,7 +420,7 @@ public:
 	int  FillGitLog(std::unordered_set<CGitHash>& hashes);
 protected:
 	CString MessageDisplayStr(GitRev* pLogEntry);
-	BOOL IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::wregex& pat);
+	BOOL IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::wregex& pat);
 	bool ShouldShowFilter(GitRevLoglist* pRev, const std::unordered_map<CGitHash, std::unordered_set<CGitHash>>& commitChildren);
 public:
 	void ShowGraphColumn(bool bShow);
@@ -451,7 +451,7 @@ public:
 	CLogDataVector		m_logEntries;
 	void RemoveFilter();
 	void StartFilter();
-	bool ValidateRegexp(LPCTSTR regexp_str, std::tr1::wregex& pat, bool bMatchCase = false );
+	bool ValidateRegexp(LPCTSTR regexp_str, std::wregex& pat, bool bMatchCase = false );
 	CString				m_sFilterText;
 
 	CFilterData			m_Filter;

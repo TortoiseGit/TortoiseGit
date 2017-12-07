@@ -76,12 +76,12 @@ void CAutoTextTestDlg::OnBnClickedAutotextscan()
 			std::wstring s = m_sContent;
 			CHighResClock timer;
 
-			std::tr1::wregex regCheck;
-			regCheck = std::tr1::wregex(m_sRegex, std::tr1::regex_constants::icase | std::tr1::regex_constants::ECMAScript);
-			const std::tr1::wsregex_iterator end;
-			for (std::tr1::wsregex_iterator it(s.cbegin(), s.cend(), regCheck); it != end; ++it)
+			std::wregex regCheck;
+			regCheck = std::wregex(m_sRegex, std::regex_constants::icase | std::regex_constants::ECMAScript);
+			const std::wsregex_iterator end;
+			for (std::wsregex_iterator it(s.cbegin(), s.cend(), regCheck); it != end; ++it)
 			{
-				const std::tr1::wsmatch match = *it;
+				const std::wsmatch match = *it;
 				for (size_t i=1; i<match.size(); ++i)
 				{
 					if (match[i].second-match[i].first)

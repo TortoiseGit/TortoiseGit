@@ -930,11 +930,11 @@ bool CTGitPath::IsValidOnWindows() const
 
 	try
 	{
-		std::tr1::wregex rx(sPattern, std::tr1::regex_constants::icase | std::tr1::regex_constants::ECMAScript);
-		std::tr1::wsmatch match;
+		std::wregex rx(sPattern, std::regex_constants::icase | std::regex_constants::ECMAScript);
+		std::wsmatch match;
 
 		std::wstring rmatch = std::wstring((LPCTSTR)sMatch);
-		if (std::tr1::regex_match(rmatch, match, rx))
+		if (std::regex_match(rmatch, match, rx))
 		{
 			if (std::wstring(match[0]).compare(sMatch)==0)
 				m_bIsValidOnWindows = true;
@@ -942,9 +942,9 @@ bool CTGitPath::IsValidOnWindows() const
 		if (m_bIsValidOnWindows)
 		{
 			// now check for illegal filenames
-			std::tr1::wregex rx2(L"\\\\(lpt\\d|com\\d|aux|nul|prn|con)(\\\\|$)", std::tr1::regex_constants::icase | std::tr1::regex_constants::ECMAScript);
+			std::wregex rx2(L"\\\\(lpt\\d|com\\d|aux|nul|prn|con)(\\\\|$)", std::regex_constants::icase | std::regex_constants::ECMAScript);
 			rmatch = m_sBackslashPath;
-			if (std::tr1::regex_search(rmatch, rx2, std::tr1::regex_constants::match_default))
+			if (std::regex_search(rmatch, rx2, std::regex_constants::match_default))
 				m_bIsValidOnWindows = false;
 		}
 	}

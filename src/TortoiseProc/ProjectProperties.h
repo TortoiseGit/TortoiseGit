@@ -202,8 +202,8 @@ private:
 	void AutoUpdateRegex();
 
 	bool regExNeedUpdate;
-	std::tr1::wregex regCheck;
-	std::tr1::wregex regBugID;
+	std::wregex regCheck;
+	std::wregex regBugID;
 
 	int			nBugIdPos;				///< result	of sMessage.Find(L"%BUGID%");
 

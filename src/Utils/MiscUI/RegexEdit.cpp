@@ -46,7 +46,7 @@ HBRUSH CRegexEdit::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
 	{
 		CString sRegex;
 		GetWindowText(sRegex);
-		const std::tr1::wregex regMatch(sRegex, std::tr1::regex_constants::icase | std::tr1::regex_constants::ECMAScript);
+		const std::wregex regMatch(sRegex, std::regex_constants::icase | std::regex_constants::ECMAScript);
 	}
 	catch (std::exception&)
 	{

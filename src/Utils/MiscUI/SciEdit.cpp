@@ -1355,9 +1355,9 @@ BOOL CSciEdit::MarkEnteredBugID(int startstylepos, int endstylepos)
 		if (!m_sBugID.IsEmpty())
 		{
 			// match with two regex strings (without grouping!)
-			const std::tr1::regex regCheck(m_sCommand);
-			const std::tr1::regex regBugID(m_sBugID);
-			const std::tr1::sregex_iterator end;
+			const std::regex regCheck(m_sCommand);
+			const std::regex regBugID(m_sBugID);
+			const std::sregex_iterator end;
 			std::string s = msg;
 			LONG pos = 0;
 			// note:
@@ -1366,7 +1366,7 @@ BOOL CSciEdit::MarkEnteredBugID(int startstylepos, int endstylepos)
 			// problem is: this only works *while* entering log messages. If a log message is pasted in whole or
 			// multiple lines are pasted, start_pos can be 0 and styling goes over multiple lines. In that case, those
 			// additional line starts also match ^
-			for (std::tr1::sregex_iterator it(s.cbegin(), s.cend(), regCheck, start_pos != 0 ? std::tr1::regex_constants::match_not_bol : std::tr1::regex_constants::match_default); it != end; ++it)
+			for (std::sregex_iterator it(s.cbegin(), s.cend(), regCheck, start_pos != 0 ? std::regex_constants::match_not_bol : std::regex_constants::match_default); it != end; ++it)
 			{
 				// clear the styles up to the match position
 				Call(SCI_SETSTYLING, it->position(0)-pos, STYLE_DEFAULT);
@@ -1374,7 +1374,7 @@ BOOL CSciEdit::MarkEnteredBugID(int startstylepos, int endstylepos)
 				// (*it)[0] is the matched string
 				std::string matchedString = (*it)[0];
 				LONG matchedpos = 0;
-				for (std::tr1::sregex_iterator it2(matchedString.cbegin(), matchedString.cend(), regBugID); it2 != end; ++it2)
+				for (std::sregex_iterator it2(matchedString.cbegin(), matchedString.cend(), regBugID); it2 != end; ++it2)
 				{
 					ATLTRACE("matched id : %s\n", std::string((*it2)[0]).c_str());
 
@@ -1399,18 +1399,18 @@ BOOL CSciEdit::MarkEnteredBugID(int startstylepos, int endstylepos)
 		}
 		else
 		{
-			const std::tr1::regex regCheck(m_sCommand);
-			const std::tr1::sregex_iterator end;
+			const std::regex regCheck(m_sCommand);
+			const std::sregex_iterator end;
 			std::string s = msg;
 			LONG pos = 0;
-			for (std::tr1::sregex_iterator it(s.cbegin(), s.cend(), regCheck); it != end; ++it)
+			for (std::sregex_iterator it(s.cbegin(), s.cend(), regCheck); it != end; ++it)
 			{
 				// clear the styles up to the match position
 				if (it->position(0) - pos >= 0)
 					Call(SCI_SETSTYLING, it->position(0) - pos, STYLE_DEFAULT);
 				pos = (LONG)it->position(0);
 
-				const std::tr1::smatch match = *it;
+				const std::smatch match = *it;
 				// we define group 1 as the whole issue text and
 				// group 2 as the bug ID
 				if (match.size() >= 2)
