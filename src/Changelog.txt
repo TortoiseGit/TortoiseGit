@@ -32,6 +32,7 @@ Released: unreleased
  * Fixed issue #3041: Commit Window might freeze when clicking on the last modified header shortly after opening
  * Fixed issue #3061: MenuButton popup might show directly under mouse arrow
  * Fixed issue #3108: Versioned file in ignored folder causes wrong overlays
+ * Fixed issue #3109: Bad greying out of outer paths (other paths with same prefix also match)
 
 == Known issues ==
  * Issue #3087: Due to changes in Win 10 TortoiseGitMerge might start up slowly or gets slower over time.

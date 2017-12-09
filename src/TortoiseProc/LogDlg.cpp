@@ -915,13 +915,16 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			int count = files.GetCount();
 			if (!m_bWholeProject && !matchpath.IsEmpty() && m_iHidePaths)
 			{
+				if (m_path.IsDirectory() && !CStringUtils::EndsWith(matchpath, L'/'))
+					matchpath.AppendChar(L'/');
 				int matchPathLen = matchpath.GetLength();
 				bool somethingHidden = false;
 				for (int i = 0; i < count; ++i)
 				{
 					((CTGitPath&)files[i]).m_Action &= ~(CTGitPath::LOGACTIONS_HIDE | CTGitPath::LOGACTIONS_GRAY);
 
-					if (wcsncmp(files[i].GetGitPathString(), matchpath, matchPathLen) && ((files[i].m_Action & (CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_COPY)) == 0 || wcsncmp(files[i].GetGitOldPathString(), matchpath, matchPathLen)))
+					bool bothAreDirectory = m_path.IsDirectory() && files[i].IsDirectory() && files[i].GetGitPathString().GetLength() == matchPathLen - 1; // submodules don't end with slash, but we must also not match a submodule in a fodler with an equal prefix
+					if ((bothAreDirectory && wcsncmp(files[i].GetGitPathString(), matchpath, matchPathLen - 1) || !bothAreDirectory && wcsncmp(files[i].GetGitPathString(), matchpath, matchPathLen)) && ((files[i].m_Action & (CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_COPY)) == 0 || (bothAreDirectory && wcsncmp(files[i].GetGitOldPathString(), matchpath, matchPathLen - 1) || !bothAreDirectory && wcsncmp(files[i].GetGitOldPathString(), matchpath, matchPathLen))))
 					{
 						somethingHidden = true;
 						if (m_iHidePaths == 1)
