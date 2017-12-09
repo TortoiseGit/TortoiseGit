@@ -188,6 +188,8 @@ BOOL CTortoiseGitBlameApp::InitInstance()
 	InitCtrls.dwICC = ICC_WIN95_CLASSES;
 	InitCommonControlsEx(&InitCtrls);
 
+	CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows7));
+
 	CWinAppEx::InitInstance();
 
 	Gdiplus::GdiplusStartupInput gdiplusStartupInput;

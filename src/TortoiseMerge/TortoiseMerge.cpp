@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2013-2016 - TortoiseGit
+// Copyright (C) 2013-2017 - TortoiseGit
 // Copyright (C) 2006-2014, 2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -195,6 +195,7 @@ BOOL CTortoiseMergeApp::InitInstance()
 	// visual styles.  Otherwise, any window creation will fail.
 	InitCommonControls();
 
+	CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows7));
 	CMFCButton::EnableWindowsTheming();
 	EnableTaskbarInteraction(FALSE);
 
