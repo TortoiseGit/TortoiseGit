@@ -135,6 +135,7 @@ bool CAppUtils::StashSave(const CString& msg, bool showPull, bool pullShowPush, 
 				postCmdList.emplace_back(IDI_PULL, IDS_MENUPULL, [&]{ CAppUtils::Pull(pullShowPush, true); });
 			if (showMerge)
 				postCmdList.emplace_back(IDI_MERGE, IDS_MENUMERGE, [&]{ CAppUtils::Merge(&mergeRev, true); });
+			postCmdList.emplace_back(IDI_RELOCATE, IDS_MENUSTASHPOP, [] { CAppUtils::StashPop(); });
 		};
 		return (progress.DoModal() == IDOK);
 	}
