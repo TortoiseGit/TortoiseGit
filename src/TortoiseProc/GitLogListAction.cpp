@@ -210,6 +210,12 @@ int CGitLogList::DeleteRef(const CString& ref)
 
 	CString msg;
 	msg.Format(IDS_PROC_DELETEBRANCHTAG, (LPCTSTR)ref);
+	// Check if branch is fully merged in HEAD
+	if (CGit::GetShortName(ref, shortname, L"refs/heads/") && !g_Git.IsFastForward(ref, L"HEAD"))
+	{
+		msg += L"\n\n";
+		msg += CString(MAKEINTRESOURCE(IDS_PROC_BROWSEREFS_WARNINGUNMERGED));
+	}
 	if (CMessageBox::Show(GetSafeOwner()->GetSafeHwnd(), msg, L"TortoiseGit", 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 1)
 	{
 		if (g_Git.DeleteRef(ref))
