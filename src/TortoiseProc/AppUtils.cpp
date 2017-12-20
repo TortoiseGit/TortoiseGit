@@ -3248,28 +3248,13 @@ void CAppUtils::EditNote(GitRevLoglist* rev, ProjectProperties* projectPropertie
 	dlg.m_bUseLogWidth = true;
 	if(dlg.DoModal() == IDOK)
 	{
-		CString cmd,output;
-		cmd = L"notes add -f -F \"";
-
-		CString tempfile=::GetTempFile();
-		if (!CStringUtils::WriteStringToTextFile(tempfile, dlg.m_sInputText))
+		if (g_Git.SetGitNote(rev->m_CommitHash, dlg.m_sInputText))
 		{
-			CMessageBox::Show(nullptr, IDS_PROC_FAILEDSAVINGNOTES, IDS_APPNAME, MB_OK | MB_ICONERROR);
+			CString err;
+			err.LoadString(IDS_PROC_FAILEDSAVINGNOTES);
+			MessageBox(nullptr, g_Git.GetLibGit2LastErr(err), L"TortoiseGit", MB_OK | MB_ICONERROR);
 			return;
 		}
-		cmd += tempfile;
-		cmd += L"\" ";
-		cmd += rev->m_CommitHash.ToString();
-
-		try
-		{
-			if (git_run_cmd("notes", CUnicodeUtils::GetMulti(cmd, CP_UTF8).GetBuffer()))
-				CMessageBox::Show(nullptr, IDS_PROC_FAILEDSAVINGNOTES, IDS_APPNAME, MB_OK | MB_ICONERROR);
-		}catch(...)
-		{
-			CMessageBox::Show(nullptr, IDS_PROC_FAILEDSAVINGNOTES, IDS_APPNAME, MB_OK | MB_ICONERROR);
-		}
-		::DeleteFile(tempfile);
 
 		if (g_Git.GetGitNotes(rev->m_CommitHash, rev->m_Notes))
 			MessageBox(nullptr, g_Git.GetLibGit2LastErr(L"Could not load notes for commit " + rev->m_CommitHash.ToString() + L'.'), L"TortoiseGit", MB_OK | MB_ICONERROR);

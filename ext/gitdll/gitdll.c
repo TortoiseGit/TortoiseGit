@@ -730,7 +730,6 @@ struct cmd_struct {
 #define RUN_SETUP	(1<<0)
 
 static struct cmd_struct commands[] = {
-		{ "notes", cmd_notes, RUN_SETUP },
 		{ "update-index", cmd_update_index, RUN_SETUP },
 	};
 

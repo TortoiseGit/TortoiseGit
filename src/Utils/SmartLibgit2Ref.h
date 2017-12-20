@@ -145,6 +145,7 @@ typedef CSmartLibgit2Ref<git_reference_iterator,	git_reference_iterator_free>	CA
 typedef CSmartLibgit2Ref<git_describe_result,		git_describe_result_free>		CAutoDescribeResult;
 typedef CSmartLibgit2Ref<git_status_list,			git_status_list_free>			CAutoStatusList;
 typedef CSmartLibgit2Ref<git_note,					git_note_free>					CAutoNote;
+typedef CSmartLibgit2Ref<git_signature,				git_signature_free>				CAutoSignature;
 
 class CAutoRepository : public CSmartLibgit2Ref<git_repository, git_repository_free>
 {

@@ -3482,3 +3482,20 @@ int CGit::GetGitNotes(const CGitHash& hash, CString& notes)
 	notes = CUnicodeUtils::GetUnicode(git_note_message(note));
 	return 0;
 }
+
+int CGit::SetGitNote(const CGitHash& hash, const CString& notes)
+{
+	CAutoRepository repo(GetGitRepository());
+	if (!repo)
+		return -1;
+
+	CAutoSignature signature;
+	if (git_signature_default(signature.GetPointer(), repo) < 0)
+		return -1;
+
+	git_oid oid;
+	if (git_note_create(&oid, repo, nullptr, signature, signature, reinterpret_cast<const git_oid*>(hash.m_hash), CUnicodeUtils::GetUTF8(notes), 1) < 0)
+		return -1;
+
+	return 0;
+}
