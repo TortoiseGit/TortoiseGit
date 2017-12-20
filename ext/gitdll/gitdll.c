@@ -50,6 +50,7 @@ extern void handle_error(const char* err, va_list params);
 extern void handle_warning(const char* warn, va_list params);
 extern int die_is_recursing_dll(void);
 
+extern void libgit_initialize(void);
 extern void free_all_pack(void);
 extern void reset_git_env(void);
 extern void drop_all_attr_stacks(void);
@@ -73,6 +74,7 @@ void dll_entry(void)
 	set_error_routine(handle_error);
 	set_warn_routine(handle_warning);
 	set_die_is_recursing_routine(die_is_recursing_dll);
+	libgit_initialize();
 }
 
 int git_get_sha1(const char *name, GIT_HASH sha1)
@@ -1165,3 +1167,8 @@ void git_free_mailmap(GIT_MAILMAP mailmap)
 	free(mailmap);
 }
 
+// just for regression tests
+int git_mkdir(const char* path)
+{
+	return mkdir(path, 0);
+}

@@ -125,3 +125,15 @@ TEST(libgit, Mailmap)
 	EXPECT_STREQ("sven@tortoisegit.org", email1);
 	EXPECT_STREQ("Sven S.", author1);
 }
+
+TEST(libgit, MkDir)
+{
+	CAutoTempDir tempdir;
+	CString subdir = tempdir.GetTempDir() + L"\\abc";
+
+	EXPECT_FALSE(PathFileExists(subdir));
+	EXPECT_EQ(0, git_mkdir(CUnicodeUtils::GetUTF8(subdir)));
+	EXPECT_TRUE(PathFileExists(subdir));
+	EXPECT_TRUE(PathIsDirectory(subdir));
+	EXPECT_EQ(-1, git_mkdir(CUnicodeUtils::GetUTF8(subdir)));
+}
