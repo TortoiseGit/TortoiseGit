@@ -3178,7 +3178,7 @@ int CGit::DeleteRef(const CString& reference)
 		else if (git_reference_is_remote(ref))
 			result = git_branch_delete(ref);
 		else
-			giterr_set_str(GITERR_REFERENCE, CUnicodeUtils::GetUTF8(L"unsupported reference type: " + reference));
+			result = git_reference_delete(ref);
 
 		return result;
 	}
