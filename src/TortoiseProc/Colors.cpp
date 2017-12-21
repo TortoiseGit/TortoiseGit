@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2007 - TortoiseSVN
-// Copyright (C) 2009-2013, 2016 - TortoiseGit
+// Copyright (C) 2009-2013, 2016-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -49,6 +49,7 @@ CColors::COLOR_DATA CColors::m_ColorArray[]=
 	{ BisectGood, CRegDWORD(L"Software\\TortoiseGit\\Colors\\BisectGood", RGB(0, 100, 200)) },
 	{ BisectBad, CRegDWORD(L"Software\\TortoiseGit\\Colors\\BisectBad", RGB(255, 0, 0)) },
 	{ BisectSkip, CRegDWORD(L"Software\\TortoiseGit\\Colors\\BisectBad", RGB(192, 192, 192)) },
+	{ OtherRef, CRegDWORD(L"Software\\TortoiseGit\\Colors\\OtherRef", RGB(224, 224, 224)) },
 };
 
 CColors::CColors(void)

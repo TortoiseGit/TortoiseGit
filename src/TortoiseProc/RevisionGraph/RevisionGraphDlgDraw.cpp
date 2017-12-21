@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2011, 2015 - TortoiseSVN
-// Copyright (C) 2012-2013, 2015-2016 - TortoiseGit
+// Copyright (C) 2012-2013, 2015-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -1057,7 +1057,7 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 				rect.Width = (REAL)noderect.Width;
 				rect.Height = (REAL)hight;
 
-				COLORREF colRef = RGB(224, 224, 224);
+				COLORREF colRef = m_Colors.GetColor(CColors::OtherRef);
 
 				CGit::REF_TYPE refType;
 				shortname = CGit::GetShortName(str, &refType);

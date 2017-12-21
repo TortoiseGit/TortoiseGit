@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2011-2013, 2016 - TortoiseGit
+// Copyright (C) 2011-2013, 2016-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -41,6 +41,7 @@ void CSettingsColors::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_MERGEDCOLOR, m_cMerged);
 	DDX_Control(pDX, IDC_MODIFIEDCOLOR, m_cModified);
 	DDX_Control(pDX, IDC_NOTENODECOLOR, m_cNoteNode);
+	DDX_Control(pDX, IDC_OTHERREFSCOLOR, m_cOtherRefs);
 	DDX_Control(pDX, IDC_RENAMEDCOLOR, m_cRenamed);
 	DDX_Control(pDX, IDC_REVGRAPHUSELOCALFORCUR, m_RevGraphUseLocalForCur);
 }
@@ -68,6 +69,7 @@ BOOL CSettingsColors::OnInitDialog()
 	m_cModified.SetColor(m_Colors.GetColor(CColors::Modified));
 	m_cConflict.SetColor(m_Colors.GetColor(CColors::Conflict));
 	m_cNoteNode.SetColor(m_Colors.GetColor(CColors::NoteNode));
+	m_cOtherRefs.SetColor(m_Colors.GetColor(CColors::OtherRef));
 	m_cRenamed.SetColor(m_Colors.GetColor(CColors::Renamed));
 	DWORD revGraphUseLocalForCur = m_regRevGraphUseLocalForCur;
 	m_RevGraphUseLocalForCur.SetCheck(!!revGraphUseLocalForCur);
@@ -87,6 +89,8 @@ BOOL CSettingsColors::OnInitDialog()
 	m_cConflict.EnableOtherButton(sCustomText);
 	m_cNoteNode.EnableAutomaticButton(sDefaultText, m_Colors.GetColor(CColors::NoteNode, true));
 	m_cNoteNode.EnableOtherButton(sCustomText);
+	m_cOtherRefs.EnableAutomaticButton(sDefaultText, m_Colors.GetColor(CColors::OtherRef, true));
+	m_cOtherRefs.EnableOtherButton(sCustomText);
 	m_cRenamed.EnableAutomaticButton(sDefaultText, m_Colors.GetColor(CColors::Renamed, true));
 	m_cRenamed.EnableOtherButton(sCustomText);
 
@@ -101,6 +105,7 @@ void CSettingsColors::OnBnClickedRestore()
 	m_cModified.SetColor(m_Colors.GetColor(CColors::Modified, true));
 	m_cConflict.SetColor(m_Colors.GetColor(CColors::Conflict, true));
 	m_cNoteNode.SetColor(m_Colors.GetColor(CColors::NoteNode, true));
+	m_cOtherRefs.SetColor(m_Colors.GetColor(CColors::OtherRef, true));
 	m_cRenamed.SetColor(m_Colors.GetColor(CColors::Renamed, true));
 	m_RevGraphUseLocalForCur.SetCheck(FALSE);
 	SetModified(TRUE);
@@ -114,6 +119,7 @@ BOOL CSettingsColors::OnApply()
 	m_Colors.SetColor(CColors::Modified, m_cModified.GetColor() == -1 ? m_cModified.GetAutomaticColor() : m_cModified.GetColor());
 	m_Colors.SetColor(CColors::Conflict, m_cConflict.GetColor() == -1 ? m_cConflict.GetAutomaticColor() : m_cConflict.GetColor());
 	m_Colors.SetColor(CColors::NoteNode, m_cNoteNode.GetColor() == -1 ? m_cNoteNode.GetAutomaticColor() : m_cNoteNode.GetColor());
+	m_Colors.SetColor(CColors::OtherRef, m_cOtherRefs.GetColor() == -1 ? m_cOtherRefs.GetAutomaticColor() : m_cOtherRefs.GetColor());
 	m_Colors.SetColor(CColors::Renamed, m_cRenamed.GetColor() == -1 ? m_cRenamed.GetAutomaticColor() : m_cRenamed.GetColor());
 	m_Colors.SetColor(CColors::PropertyChanged, m_cModified.GetColor() == -1 ? m_cModified.GetAutomaticColor() : m_cModified.GetColor());
 	DWORD revGraphUseLocalForCur = m_RevGraphUseLocalForCur.GetCheck();

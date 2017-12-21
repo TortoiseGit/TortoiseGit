@@ -1389,8 +1389,10 @@ BEGIN
     LTEXT           "Note node",IDC_STATIC,14,142,137,8
     PUSHBUTTON      "",IDC_NOTENODECOLOR,158,139,101,14
     PUSHBUTTON      "Restore Default",IDC_RESTORE,211,196,82,14
+    LTEXT           "Unknown ref-types",IDC_STATIC,14,159,137,8
+    PUSHBUTTON      "",IDC_OTHERREFSCOLOR,158,156,101,14
     CONTROL         "Use local branch color for current branch",IDC_REVGRAPHUSELOCALFORCUR,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,158,146,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,172,146,10
 END
 
 IDD_SETTINGSCOLORS_3 DIALOGEX 0, 0, 300, 217
