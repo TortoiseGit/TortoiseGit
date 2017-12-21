@@ -71,6 +71,7 @@ enum RevisionGraphContextMenuCommands
 	ID_UPDATE,
 	ID_SWITCHTOHEAD,
 	ID_SWITCH,
+	ID_DELETE,
 	ID_COPYREFS = 0x400,
 	ID_EXPAND_ALL = 0x500,
 	ID_JOIN_ALL,
@@ -1431,16 +1432,14 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 	AppendMenu (popup, IDS_REPOBROWSE_SHOWLOG, ID_SHOWLOG);
 
 	STRING_VECTOR branchNames;
+	STRING_VECTOR allRefNames;
 	if (m_SelectedEntry1 && (m_SelectedEntry2 == nullptr))
 	{
 		AppendMenu(popup, IDS_LOG_BROWSEREPO, ID_BROWSEREPO);
 
 		CString currentBranch = g_Git.GetCurrentBranch();
 		CGit::REF_TYPE refType = CGit::LOCAL_BRANCH;
-		STRING_VECTOR allBranchNames = GetFriendRefNames(m_SelectedEntry1, &refType, 1);
-		for (size_t i = 0; i < allBranchNames.size(); ++i)
-			if (allBranchNames[i] != currentBranch)
-				branchNames.push_back(allBranchNames[i]);
+		branchNames = GetFriendRefNames(m_SelectedEntry1, &currentBranch, &refType);
 		if (branchNames.size() == 1)
 		{
 			CString text;
@@ -1457,6 +1456,32 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		}
 
 		AppendMenu(popup, IDS_COPY_REF_NAMES, ID_COPYREFS);
+
+		allRefNames = GetFriendRefNames(m_SelectedEntry1, &currentBranch);
+		if (allRefNames.size() == 1)
+		{
+			CString str;
+			str.LoadString(IDS_DELETE_BRANCHTAG_SHORT);
+			str += L' ';
+			str += allRefNames[0];
+			AppendMenu(popup, str, ID_DELETE, &allRefNames[0]);
+		}
+		else if (allRefNames.size() > 1)
+		{
+			CString str;
+			str.LoadString(IDS_DELETE_BRANCHTAG);
+			CIconMenu submenu;
+			submenu.CreatePopupMenu();
+			for (size_t i = 0; i < allRefNames.size(); ++i)
+			{
+				submenu.AppendMenuIcon(ID_DELETE + (i << 16), allRefNames[i]);
+				submenu.SetMenuItemData(ID_DELETE + (i << 16), (ULONG_PTR)&allRefNames[i]);
+			}
+			submenu.AppendMenuIcon(ID_DELETE + (allRefNames.size() << 16), IDS_ALL);
+			submenu.SetMenuItemData(ID_DELETE + (allRefNames.size() << 16), (ULONG_PTR)MAKEINTRESOURCE(IDS_ALL));
+
+			AppendMenu(popup, str, ID_DELETE, nullptr, &submenu);
+		}
 
 		AppendMenu(popup, IDS_REVGRAPH_POPUP_COMPAREHEADS, ID_COMPAREHEADS);
 		AppendMenu(popup, IDS_REVGRAPH_POPUP_UNIDIFFHEADS,  ID_UNIDIFFHEADS);
@@ -1515,6 +1540,35 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 	case ID_COPYREFS:
 		DoCopyRefs();
 		break;
+	case ID_DELETE:
+	{
+		MENUITEMINFO mii = { 0 };
+		mii.cbSize = sizeof(mii);
+		mii.fMask |= MIIM_DATA;
+		GetMenuItemInfo(popup, cmd, FALSE, &mii);
+		CString *rev = (CString*)mii.dwItemData;
+		if (!rev)
+			break;
+
+		CString shortname;
+		if (rev == (CString*)MAKEINTRESOURCE(IDS_ALL))
+		{
+			bool nothingDeleted = true;
+			for (const auto& ref : allRefNames)
+			{
+				if (!CAppUtils::DeleteRef(this, ref))
+					break;
+				nothingDeleted = false;
+			}
+			if (nothingDeleted)
+				return;
+		}
+		else if (!CAppUtils::DeleteRef(this, *rev))
+			return;
+
+		m_parent->UpdateFullHistory();
+		break;
+	}
 	case ID_BROWSEREPO:
 		DoBrowseRepo();
 		break;

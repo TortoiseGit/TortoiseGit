@@ -144,90 +144,6 @@ int CGitLogList::CherryPickFrom(CString from, CString to)
 	return 0;
 }
 
-int CGitLogList::DeleteRef(const CString& ref)
-{
-	CString shortname;
-	if (CGit::GetShortName(ref, shortname, L"refs/remotes/"))
-	{
-		CString msg;
-		msg.Format(IDS_PROC_DELETEREMOTEBRANCH, (LPCTSTR)ref);
-		int result = CMessageBox::Show(GetSafeOwner()->GetSafeHwnd(), msg, L"TortoiseGit", 3, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_PROC_DELETEREMOTEBRANCH_LOCALREMOTE)), CString(MAKEINTRESOURCE(IDS_PROC_DELETEREMOTEBRANCH_LOCAL)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)));
-		if (result == 1)
-		{
-			CString remoteName = shortname.Left(shortname.Find(L'/'));
-			shortname = shortname.Mid(shortname.Find(L'/') + 1);
-			if (CAppUtils::IsSSHPutty())
-				CAppUtils::LaunchPAgent(nullptr, &remoteName);
-
-			CSysProgressDlg sysProgressDlg;
-			sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
-			sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_DELETING_REMOTE_REFS)));
-			sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
-			sysProgressDlg.SetShowProgressBar(false);
-			sysProgressDlg.ShowModal(this, true);
-			STRING_VECTOR list;
-			list.push_back(L"refs/heads/" + shortname);
-			if (g_Git.DeleteRemoteRefs(remoteName, list))
-				CMessageBox::Show(GetSafeOwner()->GetSafeHwnd(), g_Git.GetGitLastErr(L"Could not delete remote ref.", CGit::GIT_CMD_PUSH), L"TortoiseGit", MB_OK | MB_ICONERROR);
-			sysProgressDlg.Stop();
-			return TRUE;
-		}
-		else if (result == 2)
-		{
-			if (g_Git.DeleteRef(ref))
-			{
-				CMessageBox::Show(GetSafeOwner()->GetSafeHwnd(), g_Git.GetGitLastErr(L"Could not delete reference.", CGit::GIT_CMD_DELETETAGBRANCH), L"TortoiseGit", MB_OK | MB_ICONERROR);
-				return FALSE;
-			}
-			return TRUE;
-		}
-		return FALSE;
-	}
-	else if (CGit::GetShortName(ref, shortname, L"refs/stash"))
-	{
-		CString err;
-		std::vector<GitRevLoglist> stashList;
-		size_t count = !GitRevLoglist::GetRefLog(ref, stashList, err) ? stashList.size() : 0;
-		CString msg;
-		msg.Format(IDS_PROC_DELETEALLSTASH, count);
-		int choose = CMessageBox::Show(GetSafeOwner()->GetSafeHwnd(), msg, L"TortoiseGit", 3, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_DROPONESTASH)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)));
-		if (choose == 1)
-		{
-			CString out;
-			if (g_Git.Run(L"git.exe stash clear", &out, CP_UTF8))
-				CMessageBox::Show(GetSafeOwner()->GetSafeHwnd(), out, L"TortoiseGit", MB_OK | MB_ICONERROR);
-			return TRUE;
-		}
-		else if (choose == 2)
-		{
-			CString out;
-			if (g_Git.Run(L"git.exe stash drop refs/stash@{0}", &out, CP_UTF8))
-				CMessageBox::Show(GetSafeOwner()->GetSafeHwnd(), out, L"TortoiseGit", MB_OK | MB_ICONERROR);
-			return TRUE;
-		}
-		return FALSE;
-	}
-
-	CString msg;
-	msg.Format(IDS_PROC_DELETEBRANCHTAG, (LPCTSTR)ref);
-	// Check if branch is fully merged in HEAD
-	if (CGit::GetShortName(ref, shortname, L"refs/heads/") && !g_Git.IsFastForward(ref, L"HEAD"))
-	{
-		msg += L"\n\n";
-		msg += CString(MAKEINTRESOURCE(IDS_PROC_BROWSEREFS_WARNINGUNMERGED));
-	}
-	if (CMessageBox::Show(GetSafeOwner()->GetSafeHwnd(), msg, L"TortoiseGit", 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 1)
-	{
-		if (g_Git.DeleteRef(ref))
-		{
-			CMessageBox::Show(GetSafeOwner()->GetSafeHwnd(), g_Git.GetGitLastErr(L"Could not delete reference.", CGit::GIT_CMD_DELETETAGBRANCH), L"TortoiseGit", MB_OK | MB_ICONERROR);
-			return FALSE;
-		}
-		return TRUE;
-	}
-	return FALSE;
-}
-
 void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMenu *popmenu)
 {
 	POSITION pos = GetFirstSelectedItemPosition();
@@ -1014,14 +930,14 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					{
 						if (ref == currentBranch)
 							continue;
-						if (!DeleteRef(ref))
+						if (!CAppUtils::DeleteRef(this, ref))
 							break;
 						nothingDeleted = false;
 					}
 					if (nothingDeleted)
 						return;
 				}
-				else if (!DeleteRef(*branch))
+				else if (!CAppUtils::DeleteRef(this, *branch))
 					return;
 				this->ReloadHashMap();
 				if (m_pFindDialog)

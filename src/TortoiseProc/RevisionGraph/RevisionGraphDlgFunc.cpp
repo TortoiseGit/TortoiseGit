@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2011 - TortoiseSVN
-// Copyright (C) 2012-2016 - TortoiseGit
+// Copyright (C) 2012-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -393,7 +393,7 @@ CString	CRevisionGraphWnd::GetFriendRefName(ogdf::node v)
 		return m_HashMap[hash][0];
 }
 
-STRING_VECTOR CRevisionGraphWnd::GetFriendRefNames(ogdf::node v, CGit::REF_TYPE *refTypes, int refTypeCount)
+STRING_VECTOR CRevisionGraphWnd::GetFriendRefNames(ogdf::node v, const CString* exclude, CGit::REF_TYPE* onlyRefType)
 {
 	if (!v)
 		return STRING_VECTOR();
@@ -412,14 +412,12 @@ STRING_VECTOR CRevisionGraphWnd::GetFriendRefNames(ogdf::node v, CGit::REF_TYPE 
 		{
 			CGit::REF_TYPE refType;
 			CString shortName = CGit::GetShortName(all[i], &refType);
-			if (!refTypes)
+			if (exclude && *exclude == shortName)
+				continue;
+			if (!onlyRefType)
+				list.push_back(all[i]);
+			else if (*onlyRefType == refType)
 				list.push_back(shortName);
-			else
-			{
-				for (int j = 0; j < refTypeCount; ++j)
-					if (refTypes[j] == refType)
-						list.push_back(shortName);
-			}
 		}
 		return list;
 	}

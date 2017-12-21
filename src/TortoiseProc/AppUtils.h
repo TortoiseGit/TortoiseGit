@@ -239,6 +239,8 @@ public:
 
 	static int ExploreTo(HWND hwnd, CString path);
 
+	static bool DeleteRef(CWnd* parent, const CString& ref);
+
 	enum resolve_with {
 		RESOLVE_WITH_CURRENT,
 		RESOLVE_WITH_MINE,

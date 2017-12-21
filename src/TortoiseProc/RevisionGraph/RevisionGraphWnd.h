@@ -236,7 +236,7 @@ protected:
 										// (will be activated only after some delay)
 
 	CString		GetFriendRefName(ogdf::node);
-	STRING_VECTOR		GetFriendRefNames(ogdf::node, CGit::REF_TYPE* refTypes = nullptr, int refTypeCount = 0);
+	STRING_VECTOR	GetFriendRefNames(ogdf::node, const CString* exclude = nullptr, CGit::REF_TYPE* onlyRefType = nullptr);
 
 	ogdf::Graph	m_Graph;
 	ogdf::GraphAttributes m_GraphAttr;
