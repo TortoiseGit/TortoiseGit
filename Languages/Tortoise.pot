@@ -6502,6 +6502,10 @@ msgstr ""
 msgid "Origin Name"
 msgstr ""
 
+#. Resource IDs: (IDS_VIEW_SHOWROTHERLABELS)
+msgid "Other refs"
+msgstr ""
+
 #. Resource IDs: (IDS_STATGRAPH_OTHERGROUP)
 msgid "Others"
 msgstr ""

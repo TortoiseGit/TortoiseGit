@@ -7,6 +7,7 @@ Released: unreleased
  * TortoiseGitMerge no uses native ribbon instead of MFC wrapped
    This results in a noticeable speed up (cf. issue #1616) and also fixes issues with rounded corners for maximized windows (cf. issue #1767)
  * Fixed issue #3107: Clean: Allow to remove orphaned submodules (i.e., clean -f -f)
+ * Fixed issue #3126: Add an option to show all refs of a commit in the log (all refs are shown now by default)
 
 == Bug Fixes ==
  * Fixed issue #3029: LogDlg: Action column icons painted over Graph or message columns when turned off or resized

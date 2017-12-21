@@ -76,6 +76,7 @@ auto find_if(Cont& c, Pred&& p)
 #define LOGLIST_SHOWTAGS				0x0004
 #define LOGLIST_SHOWSTASH				0x0008
 #define LOGLIST_SHOWBISECT				0x0010
+#define LOGLIST_SHOWOTHERREFS			0x0020
 #define LOGLIST_SHOWALLREFS				0xFFFF
 
 //typedef void CALLBACK_PROCESS(void * data, int progress);

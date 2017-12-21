@@ -1380,6 +1380,7 @@
 #define IDS_PROC_REMOTEBRANCH           1659
 #define IDC_REMEMBER                    1660
 #define IDC_HIDEMENUS                   1660
+#define IDS_VIEW_SHOWROTHERLABELS       1660
 #define IDC_ALTERNATIVEEDITOR_OFF       1661
 #define IDC_ALTERNATIVEEDITOR_ON        1662
 #define IDC_ALTERNATIVEEDITOR           1663

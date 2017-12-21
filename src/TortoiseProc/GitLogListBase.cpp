@@ -1365,8 +1365,16 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 									continue;
 								refLabel.color = (refLabel.refType == CGit::REF_TYPE::BISECT_GOOD) ? m_Colors.GetColor(CColors::BisectGood) : ((refLabel.refType == CGit::REF_TYPE::BISECT_SKIP) ? m_Colors.GetColor(CColors::BisectSkip) : m_Colors.GetColor(CColors::BisectBad));
 								break;
+							case CGit::REF_TYPE::NOTES:
+								if (!(m_ShowRefMask & LOGLIST_SHOWOTHERREFS))
+									continue;
+								refLabel.color = m_Colors.GetColor(CColors::NoteNode);
+								break;
 							default:
-								continue;
+								if (!(m_ShowRefMask & LOGLIST_SHOWOTHERREFS))
+									continue;
+								refLabel.color = m_Colors.GetColor(CColors::OtherRef);
+								break;
 							}
 							refsToShow.push_back(refLabel);
 						}

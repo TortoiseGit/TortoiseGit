@@ -168,6 +168,7 @@ private:
 	CRegDWORD m_regbShowTags;
 	CRegDWORD m_regbShowLocalBranches;
 	CRegDWORD m_regbShowRemoteBranches;
+	CRegDWORD m_regbShowOtherRefs;
 	CRegDWORD m_regbShowGravatar;
 	CRegDWORD m_regShowWholeProject;
 	CRegDWORD m_regAddBeforeCommit;
@@ -242,6 +243,7 @@ private:
 	bool				m_bShowTags;
 	bool				m_bShowLocalBranches;
 	bool				m_bShowRemoteBranches;
+	bool				m_bShowOtherRefs;
 	bool				m_bShowGravatar;
 	bool				m_bShowDescribe;
 	bool				m_bShowBranchRevNo;
