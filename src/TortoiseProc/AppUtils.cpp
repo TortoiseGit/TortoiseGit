@@ -3248,7 +3248,7 @@ void CAppUtils::EditNote(GitRevLoglist* rev, ProjectProperties* projectPropertie
 	dlg.m_bUseLogWidth = true;
 	if(dlg.DoModal() == IDOK)
 	{
-		if (g_Git.SetGitNote(rev->m_CommitHash, dlg.m_sInputText))
+		if (g_Git.SetGitNotes(rev->m_CommitHash, dlg.m_sInputText))
 		{
 			CString err;
 			err.LoadString(IDS_PROC_FAILEDSAVINGNOTES);

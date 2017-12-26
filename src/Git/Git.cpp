@@ -3483,7 +3483,7 @@ int CGit::GetGitNotes(const CGitHash& hash, CString& notes)
 	return 0;
 }
 
-int CGit::SetGitNote(const CGitHash& hash, const CString& notes)
+int CGit::SetGitNotes(const CGitHash& hash, const CString& notes)
 {
 	CAutoRepository repo(GetGitRepository());
 	if (!repo)
