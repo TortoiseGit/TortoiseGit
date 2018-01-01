@@ -35,9 +35,10 @@ Released: unreleased
  * Fixed issue #3061: MenuButton popup might show directly under mouse arrow
  * Fixed issue #3108: Versioned file in ignored folder causes wrong overlays
  * Fixed issue #3109: Bad greying out of outer paths (other paths with same prefix also match)
+ * Fixed issue #3132: Post commit hook doesn't show up on settings dialog
 
 == Known issues ==
- * Issue #3087: Due to changes in Win 10 TortoiseGitMerge might start up slowly or gets slower over time.
+ * Issue #3087: Due to changes in Win 10 TortoiseGit(Merge) might start up slowly or gets slower over time.
    Also see: https://developercommunity.visualstudio.com/content/problem/136952/mfc-ribbon-slow-on-first-loadshow.html
 
 = Release 2.5.0 =
