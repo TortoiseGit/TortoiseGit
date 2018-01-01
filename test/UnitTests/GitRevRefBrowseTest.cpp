@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2017 - TortoiseGit
+// Copyright (C) 2015-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -41,7 +41,7 @@ static void GetGitRevRefMap()
 	CString err;
 	EXPECT_EQ(0, GitRevRefBrowser::GetGitRevRefMap(refMap, 0, err));
 	EXPECT_STREQ(L"", err);
-	EXPECT_EQ(12, refMap.size());
+	EXPECT_EQ(12U, refMap.size());
 
 	GitRevRefBrowser rev = refMap[L"refs/heads/master"];
 	EXPECT_STREQ(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6", rev.m_CommitHash.ToString());
@@ -70,7 +70,7 @@ static void GetGitRevRefMap()
 	refMap.clear();
 	EXPECT_EQ(0, GitRevRefBrowser::GetGitRevRefMap(refMap, 0, err, [](const CString& refName) { return CStringUtils::StartsWith(refName, L"refs/heads/"); }));
 	EXPECT_STREQ(L"", err);
-	EXPECT_EQ(6, refMap.size());
+	EXPECT_EQ(6U, refMap.size());
 	EXPECT_TRUE(refMap.find(L"refs/heads/master") != refMap.end());
 	for (auto it = refMap.cbegin(); it != refMap.cend(); ++it)
 		EXPECT_TRUE(CStringUtils::StartsWith(it->first, L"refs/heads/"));
@@ -78,14 +78,14 @@ static void GetGitRevRefMap()
 	refMap.clear();
 	EXPECT_EQ(0, GitRevRefBrowser::GetGitRevRefMap(refMap, 1, err));
 	EXPECT_STREQ(L"", err);
-	EXPECT_EQ(6, refMap.size());
+	EXPECT_EQ(6U, refMap.size());
 	for (const auto& branch : { L"refs/heads/master", L"refs/heads/master2", L"refs/remotes/origin/master", L"refs/tags/all-files-signed", L"refs/tags/also-signed", L"refs/tags/normal-tag" })
 		EXPECT_TRUE(refMap.find(branch) != refMap.end());
 
 	refMap.clear();
 	EXPECT_EQ(0, GitRevRefBrowser::GetGitRevRefMap(refMap, 2, err));
 	EXPECT_STREQ(L"", err);
-	EXPECT_EQ(6, refMap.size());
+	EXPECT_EQ(6U, refMap.size());
 	EXPECT_TRUE(refMap.find(L"refs/heads/master") == refMap.end());
 	for (const auto& branch : { L"refs/heads/forconflict", L"refs/heads/signed-commit", L"refs/heads/simple-conflict", L"refs/heads/subdir/branch", L"refs/notes/commits", L"refs/stash" })
 		EXPECT_TRUE(refMap.find(branch) != refMap.end());

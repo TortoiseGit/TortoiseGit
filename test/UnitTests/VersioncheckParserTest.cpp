@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016 - TortoiseGit
+// Copyright (C) 2016, 2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -52,10 +52,10 @@ TEST(CVersioncheckParser, ParseTestMinimal)
 
 	auto version = parser.GetTortoiseGitVersion();
 	EXPECT_STREQ(version.version, version.version_for_filename);
-	EXPECT_EQ(2, version.major);
-	EXPECT_EQ(3, version.minor);
-	EXPECT_EQ(4, version.micro);
-	EXPECT_EQ(0, version.build);
+	EXPECT_EQ(2U, version.major);
+	EXPECT_EQ(3U, version.minor);
+	EXPECT_EQ(4U, version.micro);
+	EXPECT_EQ(0U, version.build);
 
 	EXPECT_STREQ(L"", parser.GetTortoiseGitInfoText());
 	EXPECT_STREQ(L"", parser.GetTortoiseGitInfoTextURL());
@@ -73,7 +73,7 @@ TEST(CVersioncheckParser, ParseTestMinimal)
 #endif
 
 	auto langs = parser.GetTortoiseGitLanguagePacks();
-	EXPECT_EQ(0, langs.size());
+	EXPECT_EQ(0U, langs.size());
 }
 
 TEST(CVersioncheckParser, ParseTestRelease)
@@ -87,10 +87,10 @@ TEST(CVersioncheckParser, ParseTestRelease)
 
 	auto version = parser.GetTortoiseGitVersion();
 	EXPECT_STREQ(version.version, version.version_for_filename);
-	EXPECT_EQ(2, version.major);
-	EXPECT_EQ(3, version.minor);
-	EXPECT_EQ(4, version.micro);
-	EXPECT_EQ(5, version.build);
+	EXPECT_EQ(2U, version.major);
+	EXPECT_EQ(3U, version.minor);
+	EXPECT_EQ(4U, version.micro);
+	EXPECT_EQ(5U, version.build);
 
 	EXPECT_STREQ(L"Hallo\ntest", parser.GetTortoiseGitInfoText());
 	EXPECT_STREQ(L"someurl", parser.GetTortoiseGitInfoTextURL());
@@ -108,12 +108,12 @@ TEST(CVersioncheckParser, ParseTestRelease)
 #endif
 
 	auto langs = parser.GetTortoiseGitLanguagePacks();
-	ASSERT_EQ(4, langs.size());
+	ASSERT_EQ(4U, langs.size());
 
-	EXPECT_EQ(1031, langs[0].m_LocaleID);
-	EXPECT_EQ(1046, langs[1].m_LocaleID);
-	EXPECT_EQ(2074, langs[2].m_LocaleID);
-	EXPECT_EQ(1028, langs[3].m_LocaleID);
+	EXPECT_EQ(1031U, langs[0].m_LocaleID);
+	EXPECT_EQ(1046U, langs[1].m_LocaleID);
+	EXPECT_EQ(2074U, langs[2].m_LocaleID);
+	EXPECT_EQ(1028U, langs[3].m_LocaleID);
 
 	EXPECT_STREQ(L"de", langs[0].m_LangCode);
 	EXPECT_STREQ(L"pt_BR", langs[1].m_LangCode);
@@ -144,10 +144,10 @@ TEST(CVersioncheckParser, ParseTestPreview)
 
 	auto version = parser.GetTortoiseGitVersion();
 	EXPECT_STREQ(L"preview-1.8.14.2-20150705-92b29f6", version.version_for_filename);
-	EXPECT_EQ(1, version.major);
-	EXPECT_EQ(8, version.minor);
-	EXPECT_EQ(14, version.micro);
-	EXPECT_EQ(2, version.build);
+	EXPECT_EQ(1U, version.major);
+	EXPECT_EQ(8U, version.minor);
+	EXPECT_EQ(14U, version.micro);
+	EXPECT_EQ(2U, version.build);
 
 	EXPECT_STREQ(L"http://updater.download.tortoisegit.org/tgit/previews/", parser.GetTortoiseGitBaseURL());
 	EXPECT_STREQ(L"https://tortoisegit.org/issue/%BUGID%", parser.GetTortoiseGitIssuesURL());
@@ -162,7 +162,7 @@ TEST(CVersioncheckParser, ParseTestPreview)
 #endif
 
 	auto langs = parser.GetTortoiseGitLanguagePacks();
-	EXPECT_EQ(0, langs.size());
+	EXPECT_EQ(0U, langs.size());
 }
 
 TEST(CVersioncheckParser, ParseTestHotfix)
@@ -176,10 +176,10 @@ TEST(CVersioncheckParser, ParseTestHotfix)
 
 	auto version = parser.GetTortoiseGitVersion();
 	EXPECT_STREQ(L"hfüx", version.version_for_filename);
-	EXPECT_EQ(1, version.major);
-	EXPECT_EQ(8, version.minor);
-	EXPECT_EQ(14, version.micro);
-	EXPECT_EQ(2, version.build);
+	EXPECT_EQ(1U, version.major);
+	EXPECT_EQ(8U, version.minor);
+	EXPECT_EQ(14U, version.micro);
+	EXPECT_EQ(2U, version.build);
 
 	EXPECT_STREQ(L"http://updater.download.tortoisegit.org/tgit/hfüx/", parser.GetTortoiseGitBaseURL());
 	EXPECT_TRUE(parser.GetTortoiseGitIsHotfix());
@@ -193,5 +193,5 @@ TEST(CVersioncheckParser, ParseTestHotfix)
 #endif
 
 	auto langs = parser.GetTortoiseGitLanguagePacks();
-	EXPECT_EQ(0, langs.size());
+	EXPECT_EQ(0U, langs.size());
 }

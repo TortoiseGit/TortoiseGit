@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2017 - TortoiseGit
+// Copyright (C) 2015-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -117,7 +117,7 @@ static void SafeFetchFullInfo(CGit* cGit)
 	EXPECT_EQ(FALSE, rev.m_IsFull);
 	EXPECT_EQ(FALSE, rev.m_IsDiffFiles);
 	EXPECT_EQ(FALSE, rev.m_IsCommitParsed);
-	EXPECT_EQ(0, rev.GetAction(nullptr));
+	EXPECT_EQ(0U, rev.GetAction(nullptr));
 	EXPECT_EQ(0, rev.GetFiles(nullptr).GetCount());
 	rev.Clear();
 	rev.m_CommitHash = L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6";
@@ -462,7 +462,7 @@ static void SafeGetSimpleList(CGit* cGit)
 	EXPECT_EQ(FALSE, rev.m_IsFull);
 	EXPECT_EQ(FALSE, rev.m_IsDiffFiles);
 	EXPECT_EQ(FALSE, rev.m_IsCommitParsed);
-	ASSERT_EQ(1, rev.m_SimpleFileList.size());
+	ASSERT_EQ(1U, rev.m_SimpleFileList.size());
 	EXPECT_STREQ(L"ascii.txt", rev.m_SimpleFileList[0]);
 	rev.Clear();
 	rev.m_CommitHash = L"dead91b4aedeaddeaddead2a56d3c473c705dead"; // non-existent commit
@@ -477,7 +477,7 @@ static void SafeGetSimpleList(CGit* cGit)
 	rev.m_CommitHash = L"35c91b4ae2f77f4f21a7aba56d3c473c705d89e6";
 	EXPECT_EQ(0, rev.SafeGetSimpleList(cGit));
 	EXPECT_EQ(TRUE, rev.m_IsSimpleListReady);
-	ASSERT_EQ(4, rev.m_SimpleFileList.size());
+	ASSERT_EQ(4U, rev.m_SimpleFileList.size());
 	EXPECT_STREQ(L"copy/ansi.txt", rev.m_SimpleFileList[0]);
 	EXPECT_STREQ(L"copy/utf16-be-nobom.txt", rev.m_SimpleFileList[1]);
 	EXPECT_STREQ(L"copy/utf8-bom.txt", rev.m_SimpleFileList[2]);
@@ -485,22 +485,22 @@ static void SafeGetSimpleList(CGit* cGit)
 	rev.Clear();
 	rev.m_CommitHash = L"8d1ebbcc7eeb63af10ff8bcf7712afb9fcc90b8a"; // merge commit
 	EXPECT_EQ(0, rev.SafeGetSimpleList(cGit));
-	ASSERT_EQ(1, rev.m_SimpleFileList.size());
+	ASSERT_EQ(1U, rev.m_SimpleFileList.size());
 	EXPECT_STREQ(L"newfiles3.txt", rev.m_SimpleFileList[0]);
 	rev.Clear();
 	rev.m_CommitHash = L"18da7c332dcad0f37f9977d9176dce0b0c66f3eb"; // stash commit
 	EXPECT_EQ(0, rev.SafeGetSimpleList(cGit));
-	ASSERT_EQ(1, rev.m_SimpleFileList.size());
+	ASSERT_EQ(1U, rev.m_SimpleFileList.size());
 	EXPECT_STREQ(L"newfiles.txt", rev.m_SimpleFileList[0]);
 	rev.Clear();
 	rev.m_CommitHash = L"844309789a13614b52d5e7cbfe6350dd73d1dc72"; // root commit
 	EXPECT_EQ(0, rev.SafeGetSimpleList(cGit));
-	ASSERT_EQ(1, rev.m_SimpleFileList.size());
+	ASSERT_EQ(1U, rev.m_SimpleFileList.size());
 	EXPECT_STREQ(L"ansi.txt", rev.m_SimpleFileList[0]);
 	rev.Clear();
 	rev.m_CommitHash = L"4c5c93d2a0b368bc4570d5ec02ab03b9c4334d44";
 	EXPECT_EQ(0, rev.SafeGetSimpleList(cGit));
-	ASSERT_EQ(5, rev.m_SimpleFileList.size());
+	ASSERT_EQ(5U, rev.m_SimpleFileList.size());
 	EXPECT_STREQ(L"ansi.txt", rev.m_SimpleFileList[0]); // has same hash as was-ansi.txt?!
 	EXPECT_STREQ(L"newfiles2 - Cöpy.txt", rev.m_SimpleFileList[1]);
 	EXPECT_STREQ(L"utf16-be-nobom.txt", rev.m_SimpleFileList[2]);
@@ -524,32 +524,32 @@ static void SafeGetSimpleList_Submodule(CGit* cGit)
 	// for "easy" tests see SafeGetSimpleList
 	rev.m_CommitHash = L"900539cd24776a94d1b642358ccfdb9d897c8254"; // added submodule
 	EXPECT_EQ(0, rev.SafeGetSimpleList(cGit));
-	ASSERT_EQ(1, rev.m_SimpleFileList.size());
+	ASSERT_EQ(1U, rev.m_SimpleFileList.size());
 	EXPECT_STREQ(L"something", rev.m_SimpleFileList[0]);
 	rev.Clear();
 	rev.m_CommitHash = L"c8d17f57c7b511aff4aa2fbfae158902281cad8e"; // modified submodule
 	EXPECT_EQ(0, rev.SafeGetSimpleList(cGit));
-	ASSERT_EQ(1, rev.m_SimpleFileList.size());
+	ASSERT_EQ(1U, rev.m_SimpleFileList.size());
 	EXPECT_STREQ(L"something", rev.m_SimpleFileList[0]);
 	rev.Clear();
 	rev.m_CommitHash = L"4ed8d1f9ce9aedc6ad044d9051cb584a8bc294ac"; // deleted submodule
 	EXPECT_EQ(0, rev.SafeGetSimpleList(cGit));
-	ASSERT_EQ(1, rev.m_SimpleFileList.size());
+	ASSERT_EQ(1U, rev.m_SimpleFileList.size());
 	EXPECT_STREQ(L"something", rev.m_SimpleFileList[0]);
 	rev.Clear();
 	rev.m_CommitHash = L"2e63f1a55bc3dce074897200b226009f575fbcae"; // submodule to file
 	EXPECT_EQ(0, rev.SafeGetSimpleList(cGit));
-	ASSERT_EQ(1, rev.m_SimpleFileList.size());
+	ASSERT_EQ(1U, rev.m_SimpleFileList.size());
 	EXPECT_STREQ(L"something", rev.m_SimpleFileList[0]);
 	rev.Clear();
 	rev.m_CommitHash = L"07ac6e5916c03747f7485195deb7ec9100d1c2ef"; // file to submodule
 	EXPECT_EQ(0, rev.SafeGetSimpleList(cGit));
-	ASSERT_EQ(1, rev.m_SimpleFileList.size());
+	ASSERT_EQ(1U, rev.m_SimpleFileList.size());
 	EXPECT_STREQ(L"something", rev.m_SimpleFileList[0]);
 	rev.Clear();
 	rev.m_CommitHash = L"2d2017245cf3d016c64e5ad4eb6b0f1bccd1cf7f"; // merge use third
 	EXPECT_EQ(0, rev.SafeGetSimpleList(cGit));
-	ASSERT_EQ(1, rev.m_SimpleFileList.size());
+	ASSERT_EQ(1U, rev.m_SimpleFileList.size());
 	EXPECT_STREQ(L"something", rev.m_SimpleFileList[0]);
 }
 
@@ -588,13 +588,13 @@ TEST(GitRevLoglist, GetUnRevFiles)
 TEST(GitRevLoglist, GetAction)
 {
 	GitRevLoglist rev;
-	EXPECT_EQ(0, rev.GetAction(nullptr));
-	int& action = rev.GetAction(nullptr);
+	EXPECT_EQ(0U, rev.GetAction(nullptr));
+	auto& action = rev.GetAction(nullptr);
 	action = 5;
-	EXPECT_EQ(5, rev.GetAction(nullptr));
+	EXPECT_EQ(5U, rev.GetAction(nullptr));
 	rev.Clear();
-	EXPECT_EQ(0, action);
-	EXPECT_EQ(0, rev.GetAction(nullptr));
+	EXPECT_EQ(0U, action);
+	EXPECT_EQ(0U, rev.GetAction(nullptr));
 }
 
 static void GetReflog()
@@ -602,21 +602,21 @@ static void GetReflog()
 	CString err;
 	std::vector<GitRevLoglist> revloglist;
 	EXPECT_EQ(0, GitRevLoglist::GetRefLog(L"refs/stash", revloglist, err));
-	EXPECT_EQ(0, revloglist.size());
+	EXPECT_EQ(0U, revloglist.size());
 	EXPECT_STREQ(L"", err);
 
 	EXPECT_EQ(0, GitRevLoglist::GetRefLog(L"HEAD", revloglist, err));
-	EXPECT_EQ(12, revloglist.size());
+	EXPECT_EQ(12U, revloglist.size());
 	EXPECT_STREQ(L"", err);
 
 	revloglist.clear();
 	EXPECT_EQ(0, GitRevLoglist::GetRefLog(L"refs/heads/does-not-exist", revloglist, err));
-	EXPECT_EQ(0, revloglist.size());
+	EXPECT_EQ(0U, revloglist.size());
 	EXPECT_STREQ(L"", err);
 
 	err.Empty();
 	EXPECT_EQ(0, GitRevLoglist::GetRefLog(L"refs/heads/master", revloglist, err));
-	ASSERT_EQ(7, revloglist.size());
+	ASSERT_EQ(7U, revloglist.size());
 	EXPECT_STREQ(L"", err);
 
 	EXPECT_STREQ(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6", revloglist[0].m_CommitHash.ToString());

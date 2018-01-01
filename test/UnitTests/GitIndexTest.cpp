@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2017 - TortoiseGit
+// Copyright (C) 2015-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -109,12 +109,12 @@ TEST_P(GitIndexCBasicGitFixture, EmptyDir)
 {
 	CGitIndexList indexList;
 	EXPECT_EQ(-1, indexList.ReadIndex(m_Dir.GetTempDir()));
-	EXPECT_EQ(0, indexList.size());
+	EXPECT_EQ(0U, indexList.size());
 	EXPECT_FALSE(indexList.m_bHasConflicts);
 }
 
 
-static void ReadAndCheckIndex(CGitIndexList& indexList, const CString& gitdir, int offset = 0)
+static void ReadAndCheckIndex(CGitIndexList& indexList, const CString& gitdir, unsigned int offset = 0)
 {
 	EXPECT_EQ(0, indexList.ReadIndex(gitdir));
 	ASSERT_EQ(14 + offset, indexList.size());
@@ -261,7 +261,7 @@ TEST_P(GitIndexCBasicGitWithTestRepoFixture, GetFileStatus)
 	EXPECT_STRNE(L"", output);
 
 	EXPECT_EQ(0, indexList.ReadIndex(m_Dir.GetTempDir()));
-	EXPECT_EQ(9, indexList.size());
+	EXPECT_EQ(9U, indexList.size());
 	EXPECT_TRUE(indexList.m_bHasConflicts);
 
 	EXPECT_EQ(0, CGit::GetFileModifyTime(CombinePath(m_Dir.GetTempDir(), L"ansi.txt"), &time, nullptr, &filesize));
@@ -280,9 +280,9 @@ TEST(GitIndex, SearchInSortVector)
 	vector.push_back(CGitFileName(L"One", 0, 0));
 	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"something", 9, false));
 	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"something", -1, false));
-	EXPECT_EQ(0, SearchInSortVector(vector, L"something", 0, false)); // do we really need this behavior?
-	EXPECT_EQ(0, SearchInSortVector(vector, L"One", 3, false));
-	EXPECT_EQ(0, SearchInSortVector(vector, L"One", -1, false));
+	EXPECT_EQ(0U, SearchInSortVector(vector, L"something", 0, false)); // do we really need this behavior?
+	EXPECT_EQ(0U, SearchInSortVector(vector, L"One", 3, false));
+	EXPECT_EQ(0U, SearchInSortVector(vector, L"One", -1, false));
 	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"One/", 4, false));
 	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"one", 3, false));
 	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"one", -1, false));
@@ -291,11 +291,11 @@ TEST(GitIndex, SearchInSortVector)
 	vector.push_back(CGitFileName(L"tWo", 0, 0));
 	DoSortFilenametSortVector(vector, false);
 	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"something", 9, false));
-	EXPECT_EQ(0, SearchInSortVector(vector, L"One", 3, false));
+	EXPECT_EQ(0U, SearchInSortVector(vector, L"One", 3, false));
 	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"one", 3, false));
-	EXPECT_EQ(1, SearchInSortVector(vector, L"tWo", 3, false));
+	EXPECT_EQ(1U, SearchInSortVector(vector, L"tWo", 3, false));
 	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"two", 3, false));
-	EXPECT_EQ(1, SearchInSortVector(vector, L"t", 1, false));
+	EXPECT_EQ(1U, SearchInSortVector(vector, L"t", 1, false));
 	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"0", 1, false));
 	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"z", 1, false));
 
@@ -306,14 +306,14 @@ TEST(GitIndex, SearchInSortVector)
 	vector.push_back(CGitFileName(L"b/4", 0, 0));
 	vector.push_back(CGitFileName(L"b/5", 0, 0));
 	DoSortFilenametSortVector(vector, false);
-	EXPECT_EQ(0, SearchInSortVector(vector, L"One", 3, false));
-	EXPECT_EQ(3, SearchInSortVector(vector, L"b/2", 3, false));
-	EXPECT_EQ(3, SearchInSortVector(vector, L"b/2", -1, false));
-	EXPECT_LT((size_t)2, SearchInSortVector(vector, L"b/", 2, false));
-	EXPECT_GE((size_t)6, SearchInSortVector(vector, L"b/", 2, false));
+	EXPECT_EQ(0U, SearchInSortVector(vector, L"One", 3, false));
+	EXPECT_EQ(3U, SearchInSortVector(vector, L"b/2", 3, false));
+	EXPECT_EQ(3U, SearchInSortVector(vector, L"b/2", -1, false));
+	EXPECT_LT(2U, SearchInSortVector(vector, L"b/", 2, false));
+	EXPECT_GE(6U, SearchInSortVector(vector, L"b/", 2, false));
 	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"b/6", 3, false));
-	EXPECT_EQ(1, SearchInSortVector(vector, L"a", 1, false));
-	EXPECT_EQ(7, SearchInSortVector(vector, L"tWo", 3, false));
+	EXPECT_EQ(1U, SearchInSortVector(vector, L"a", 1, false));
+	EXPECT_EQ(7U, SearchInSortVector(vector, L"tWo", 3, false));
 }
 
 TEST(GitIndex, SearchInSortVector_IgnoreCase)
@@ -326,22 +326,22 @@ TEST(GitIndex, SearchInSortVector_IgnoreCase)
 	vector.push_back(CGitFileName(L"One", 0, 0));
 	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"something", 9, true));
 	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"something", -1, true));
-	EXPECT_EQ(0, SearchInSortVector(vector, L"something", 0, true)); // do we really need this behavior?
-	EXPECT_EQ(0, SearchInSortVector(vector, L"One", 3, true));
-	EXPECT_EQ(0, SearchInSortVector(vector, L"One", -1, true));
+	EXPECT_EQ(0U, SearchInSortVector(vector, L"something", 0, true)); // do we really need this behavior?
+	EXPECT_EQ(0U, SearchInSortVector(vector, L"One", 3, true));
+	EXPECT_EQ(0U, SearchInSortVector(vector, L"One", -1, true));
 	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"One/", 4, true));
-	EXPECT_EQ(0, SearchInSortVector(vector, L"one", 3, true));
-	EXPECT_EQ(0, SearchInSortVector(vector, L"one", -1, true));
+	EXPECT_EQ(0U, SearchInSortVector(vector, L"one", 3, true));
+	EXPECT_EQ(0U, SearchInSortVector(vector, L"one", -1, true));
 	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"one/", 4, true));
 
 	vector.push_back(CGitFileName(L"tWo", 0, 0));
 	DoSortFilenametSortVector(vector, true);
 	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"something", 9, true));
-	EXPECT_EQ(0, SearchInSortVector(vector, L"One", 3, true));
-	EXPECT_EQ(0, SearchInSortVector(vector, L"one", 3, true));
-	EXPECT_EQ(1, SearchInSortVector(vector, L"tWo", 3, true));
-	EXPECT_EQ(1, SearchInSortVector(vector, L"two", 3, true));
-	EXPECT_EQ(1, SearchInSortVector(vector, L"t", 1, true));
+	EXPECT_EQ(0U, SearchInSortVector(vector, L"One", 3, true));
+	EXPECT_EQ(0U, SearchInSortVector(vector, L"one", 3, true));
+	EXPECT_EQ(1U, SearchInSortVector(vector, L"tWo", 3, true));
+	EXPECT_EQ(1U, SearchInSortVector(vector, L"two", 3, true));
+	EXPECT_EQ(1U, SearchInSortVector(vector, L"t", 1, true));
 	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"0", 1, true));
 	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"z", 1, true));
 
@@ -352,14 +352,14 @@ TEST(GitIndex, SearchInSortVector_IgnoreCase)
 	vector.push_back(CGitFileName(L"b/4", 0, 0));
 	vector.push_back(CGitFileName(L"b/5", 0, 0));
 	DoSortFilenametSortVector(vector, true);
-	EXPECT_EQ(0, SearchInSortVector(vector, L"a", 1, true));
-	EXPECT_EQ(2, SearchInSortVector(vector, L"b/2", 3, true));
-	EXPECT_EQ(2, SearchInSortVector(vector, L"b/2", -1, true));
-	EXPECT_LT((size_t)1, SearchInSortVector(vector, L"b/", 2, true));
-	EXPECT_GE((size_t)5, SearchInSortVector(vector, L"b/", 2, true));
+	EXPECT_EQ(0U, SearchInSortVector(vector, L"a", 1, true));
+	EXPECT_EQ(2U, SearchInSortVector(vector, L"b/2", 3, true));
+	EXPECT_EQ(2U, SearchInSortVector(vector, L"b/2", -1, true));
+	EXPECT_LT(1U, SearchInSortVector(vector, L"b/", 2, true));
+	EXPECT_GE(5U, SearchInSortVector(vector, L"b/", 2, true));
 	EXPECT_EQ(NPOS, SearchInSortVector(vector, L"b/6", 3, true));
-	EXPECT_EQ(6, SearchInSortVector(vector, L"One", 3, true));
-	EXPECT_EQ(7, SearchInSortVector(vector, L"tWo", 3, true));
+	EXPECT_EQ(6U, SearchInSortVector(vector, L"One", 3, true));
+	EXPECT_EQ(7U, SearchInSortVector(vector, L"tWo", 3, true));
 }
 
 static void CheckRangeInSortVector(bool ignoreCase)
@@ -390,8 +390,8 @@ static void CheckRangeInSortVector(bool ignoreCase)
 	EXPECT_EQ(-1, GetRangeInSortVector(vector, L"a", 1, ignoreCase, nullptr, &end, 1));
 	start = end = NPOS;
 	EXPECT_EQ(0, GetRangeInSortVector(vector, L"", 0, ignoreCase, &start, &end, 0));
-	EXPECT_EQ(0, start);
-	EXPECT_EQ(0, end);
+	EXPECT_EQ(0U, start);
+	EXPECT_EQ(0U, end);
 	start = end = NPOS;
 	EXPECT_EQ(-1, GetRangeInSortVector(vector, L"", 0, ignoreCase, &start, &end, 1));
 
@@ -406,8 +406,8 @@ static void CheckRangeInSortVector(bool ignoreCase)
 
 	start = end = NPOS;
 	EXPECT_EQ(0, GetRangeInSortVector(vector, L"a", 1, ignoreCase, &start, &end, 0));
-	EXPECT_EQ(0, start);
-	EXPECT_EQ(0, end);
+	EXPECT_EQ(0U, start);
+	EXPECT_EQ(0U, end);
 
 	vector.push_back(CGitFileName(L"b/1", 0, 0));
 	vector.push_back(CGitFileName(L"b/2", 0, 0));
@@ -417,28 +417,28 @@ static void CheckRangeInSortVector(bool ignoreCase)
 
 	start = end = NPOS;
 	EXPECT_EQ(0, GetRangeInSortVector(vector, L"a", 1, ignoreCase, &start, &end, 0));
-	EXPECT_EQ(0, start);
-	EXPECT_EQ(0, end);
+	EXPECT_EQ(0U, start);
+	EXPECT_EQ(0U, end);
 
 	start = end = NPOS;
 	EXPECT_EQ(0, GetRangeInSortVector(vector, L"b/", 2, ignoreCase, &start, &end, 1));
-	EXPECT_EQ(1, start);
-	EXPECT_EQ(5, end);
+	EXPECT_EQ(1U, start);
+	EXPECT_EQ(5U, end);
 
 	start = end = NPOS;
 	EXPECT_EQ(0, GetRangeInSortVector(vector, L"b/", 2, ignoreCase, &start, &end, 2));
-	EXPECT_EQ(1, start);
-	EXPECT_EQ(5, end);
+	EXPECT_EQ(1U, start);
+	EXPECT_EQ(5U, end);
 
 	start = end = NPOS;
 	EXPECT_EQ(0, GetRangeInSortVector(vector, L"b/", 2, ignoreCase, &start, &end, 4));
-	EXPECT_EQ(1, start);
-	EXPECT_EQ(5, end);
+	EXPECT_EQ(1U, start);
+	EXPECT_EQ(5U, end);
 
 	start = end = NPOS;
 	EXPECT_EQ(0, GetRangeInSortVector(vector, L"b/", 2, ignoreCase, &start, &end, 5));
-	EXPECT_EQ(1, start);
-	EXPECT_EQ(5, end);
+	EXPECT_EQ(1U, start);
+	EXPECT_EQ(5U, end);
 
 	EXPECT_EQ(-1, GetRangeInSortVector(vector, L"b/", 2, ignoreCase, &start, &end, 6)); // 6 is >= vector.size()
 
@@ -457,23 +457,23 @@ static void CheckRangeInSortVector(bool ignoreCase)
 
 	start = end = NPOS;
 	EXPECT_EQ(0, GetRangeInSortVector(vector, L"b/", 2, ignoreCase, &start, &end, 1));
-	EXPECT_EQ(1, start);
-	EXPECT_EQ(5, end);
+	EXPECT_EQ(1U, start);
+	EXPECT_EQ(5U, end);
 
 	start = end = NPOS;
 	EXPECT_EQ(0, GetRangeInSortVector(vector, L"b/", 2, ignoreCase, &start, &end, 2));
-	EXPECT_EQ(1, start);
-	EXPECT_EQ(5, end);
+	EXPECT_EQ(1U, start);
+	EXPECT_EQ(5U, end);
 
 	start = end = NPOS;
 	EXPECT_EQ(0, GetRangeInSortVector(vector, L"b/", 2, ignoreCase, &start, &end, 4));
-	EXPECT_EQ(1, start);
-	EXPECT_EQ(5, end);
+	EXPECT_EQ(1U, start);
+	EXPECT_EQ(5U, end);
 
 	start = end = NPOS;
 	EXPECT_EQ(0, GetRangeInSortVector(vector, L"b/", 2, ignoreCase, &start, &end, 5));
-	EXPECT_EQ(1, start);
-	EXPECT_EQ(5, end);
+	EXPECT_EQ(1U, start);
+	EXPECT_EQ(5U, end);
 
 	start = end = NPOS;
 	EXPECT_EQ(-1, GetRangeInSortVector(vector, L"c/", 2, ignoreCase, &start, &end, 6));
@@ -482,13 +482,13 @@ static void CheckRangeInSortVector(bool ignoreCase)
 
 	start = end = NPOS;
 	EXPECT_EQ(0, GetRangeInSortVector(vector, L"c", 1, ignoreCase, &start, &end, 6));
-	EXPECT_EQ(6, start);
-	EXPECT_EQ(6, end);
+	EXPECT_EQ(6U, start);
+	EXPECT_EQ(6U, end);
 
 	start = end = NPOS;
 	EXPECT_EQ(0, GetRangeInSortVector(vector, L"", 0, ignoreCase, &start, &end, 0));
-	EXPECT_EQ(0, start);
-	EXPECT_EQ(7, end);
+	EXPECT_EQ(0U, start);
+	EXPECT_EQ(7U, end);
 }
 
 TEST(GitIndex, GetRangeInSortVector)

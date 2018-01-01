@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015, 2017 - TortoiseGit
+// Copyright (C) 2015, 2017-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -47,25 +47,25 @@ TEST(CLogDataVector, Empty)
 	CLogDataVector logDataVector;
 	logDataVector.m_logOrderBy = CGit::LOG_ORDER_TOPOORDER;
 
-	EXPECT_EQ(0, logDataVector.size());
-	EXPECT_EQ(0, logDataVector.m_HashMap.size());
+	EXPECT_EQ(0U, logDataVector.size());
+	EXPECT_EQ(0U, logDataVector.m_HashMap.size());
 }
 
 TEST(CLogCache, GetCacheData)
 {
 	CLogCache logCache;
-	EXPECT_EQ(0, logCache.m_HashMap.size());
+	EXPECT_EQ(0U, logCache.m_HashMap.size());
 	CGitHash hash1(L"4c5c93d2a0b368bc4570d5ec02ab03b9c4334d44");
 	GitRevLoglist* pRev = logCache.GetCacheData(hash1);
 	ASSERT_TRUE(pRev);
 	EXPECT_EQ(hash1, pRev->m_CommitHash);
-	EXPECT_EQ(1, logCache.m_HashMap.size());
+	EXPECT_EQ(1U, logCache.m_HashMap.size());
 
 	CGitHash hash2(L"dead91b4aedeaddeaddead2a56d3c473c705dead");
 	pRev = logCache.GetCacheData(hash2);
 	ASSERT_TRUE(pRev);
 	EXPECT_EQ(hash2, pRev->m_CommitHash);
-	EXPECT_EQ(2, logCache.m_HashMap.size());
+	EXPECT_EQ(2U, logCache.m_HashMap.size());
 }
 
 TEST(CLogCache, ClearAllParent)
@@ -75,30 +75,30 @@ TEST(CLogCache, ClearAllParent)
 	GitRevLoglist* pRev = logCache.GetCacheData(hash1);
 	ASSERT_TRUE(pRev);
 	pRev->m_ParentHash.push_back(CGitHash(L"0000000000000000000000000000000000000000"));
-	EXPECT_EQ(1, pRev->m_ParentHash.size());
+	EXPECT_EQ(1U, pRev->m_ParentHash.size());
 	pRev->m_Lanes.push_back(1);
 	pRev->m_Lanes.push_back(2);
 	pRev->m_Lanes.push_back(3);
-	EXPECT_EQ(3, pRev->m_Lanes.size());
+	EXPECT_EQ(3U, pRev->m_Lanes.size());
 	CGitHash hash2(L"dead91b4aedeaddeaddead2a56d3c473c705dead");
 	pRev = logCache.GetCacheData(hash2);
 	ASSERT_TRUE(pRev);
 	pRev->m_ParentHash.push_back(CGitHash(L"1111111111111111111111111111111111111111"));
 	pRev->m_ParentHash.push_back(CGitHash(L"1111111111111111111111111111111111111112"));
-	EXPECT_EQ(2, pRev->m_ParentHash.size());
+	EXPECT_EQ(2U, pRev->m_ParentHash.size());
 	pRev->m_Lanes.push_back(4);
-	EXPECT_EQ(1, pRev->m_Lanes.size());
+	EXPECT_EQ(1U, pRev->m_Lanes.size());
 
 	logCache.ClearAllParent();
 	pRev = logCache.GetCacheData(hash1);
 	ASSERT_TRUE(pRev);
-	EXPECT_EQ(0, pRev->m_ParentHash.size());
-	EXPECT_EQ(0, pRev->m_Lanes.size());
+	EXPECT_EQ(0U, pRev->m_ParentHash.size());
+	EXPECT_EQ(0U, pRev->m_Lanes.size());
 
 	pRev = logCache.GetCacheData(hash2);
 	ASSERT_TRUE(pRev);
-	EXPECT_EQ(0, pRev->m_ParentHash.size());
-	EXPECT_EQ(0, pRev->m_Lanes.size());
+	EXPECT_EQ(0U, pRev->m_ParentHash.size());
+	EXPECT_EQ(0U, pRev->m_Lanes.size());
 }
 
 TEST(CLogCache, ClearAllLanes)
@@ -108,30 +108,30 @@ TEST(CLogCache, ClearAllLanes)
 	GitRevLoglist* pRev = logCache.GetCacheData(hash1);
 	ASSERT_TRUE(pRev);
 	pRev->m_ParentHash.push_back(CGitHash(L"0000000000000000000000000000000000000000"));
-	EXPECT_EQ(1, pRev->m_ParentHash.size());
+	EXPECT_EQ(1U, pRev->m_ParentHash.size());
 	pRev->m_Lanes.push_back(1);
 	pRev->m_Lanes.push_back(2);
 	pRev->m_Lanes.push_back(3);
-	EXPECT_EQ(3, pRev->m_Lanes.size());
+	EXPECT_EQ(3U, pRev->m_Lanes.size());
 	CGitHash hash2(L"dead91b4aedeaddeaddead2a56d3c473c705dead");
 	pRev = logCache.GetCacheData(hash2);
 	ASSERT_TRUE(pRev);
 	pRev->m_ParentHash.push_back(CGitHash(L"1111111111111111111111111111111111111111"));
 	pRev->m_ParentHash.push_back(CGitHash(L"1111111111111111111111111111111111111112"));
-	EXPECT_EQ(2, pRev->m_ParentHash.size());
+	EXPECT_EQ(2U, pRev->m_ParentHash.size());
 	pRev->m_Lanes.push_back(4);
-	EXPECT_EQ(1, pRev->m_Lanes.size());
+	EXPECT_EQ(1U, pRev->m_Lanes.size());
 
 	logCache.ClearAllLanes();
 	pRev = logCache.GetCacheData(hash1);
 	ASSERT_TRUE(pRev);
-	EXPECT_EQ(1, pRev->m_ParentHash.size());
-	EXPECT_EQ(0, pRev->m_Lanes.size());
+	EXPECT_EQ(1U, pRev->m_ParentHash.size());
+	EXPECT_EQ(0U, pRev->m_Lanes.size());
 
 	pRev = logCache.GetCacheData(hash2);
 	ASSERT_TRUE(pRev);
-	EXPECT_EQ(2, pRev->m_ParentHash.size());
-	EXPECT_EQ(0, pRev->m_Lanes.size());
+	EXPECT_EQ(2U, pRev->m_ParentHash.size());
+	EXPECT_EQ(0U, pRev->m_Lanes.size());
 }
 
 static void ParserFromLogTests()
@@ -142,20 +142,20 @@ static void ParserFromLogTests()
 	logDataVector.SetLogCache(&logCache);
 
 	EXPECT_EQ(0, logDataVector.ParserFromLog());
-	EXPECT_EQ(12, logDataVector.size());
-	EXPECT_EQ(12, logDataVector.m_HashMap.size());
-	EXPECT_EQ(12, logCache.m_HashMap.size());
+	EXPECT_EQ(12U, logDataVector.size());
+	EXPECT_EQ(12U, logDataVector.m_HashMap.size());
+	EXPECT_EQ(12U, logCache.m_HashMap.size());
 
 	logCache.m_HashMap.clear();
 	logDataVector.ClearAll();
-	EXPECT_EQ(0, logDataVector.size());
-	EXPECT_EQ(0, logDataVector.m_HashMap.size());
-	EXPECT_EQ(0, logCache.m_HashMap.size());
+	EXPECT_EQ(0U, logDataVector.size());
+	EXPECT_EQ(0U, logDataVector.m_HashMap.size());
+	EXPECT_EQ(0U, logCache.m_HashMap.size());
 
 	EXPECT_EQ(0, logDataVector.ParserFromLog(nullptr, 5));
-	ASSERT_EQ(5, logDataVector.size());
-	EXPECT_EQ(5, logDataVector.m_HashMap.size());
-	EXPECT_EQ(5, logCache.m_HashMap.size());
+	ASSERT_EQ(5U, logDataVector.size());
+	EXPECT_EQ(5U, logDataVector.m_HashMap.size());
+	EXPECT_EQ(5U, logCache.m_HashMap.size());
 	EXPECT_STREQ(L"Changed ASCII file", logDataVector.GetGitRevAt(0).GetSubject());
 	EXPECT_STREQ(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6", logDataVector.GetGitRevAt(0).m_CommitHash.ToString());
 	EXPECT_STREQ(L"49ecdfff36bfe2b9b499b33e5034f427e2fa54dd", logDataVector.GetGitRevAt(2).m_CommitHash.ToString());
@@ -164,9 +164,9 @@ static void ParserFromLogTests()
 	logCache.m_HashMap.clear();
 	logDataVector.ClearAll();
 	EXPECT_EQ(0, logDataVector.ParserFromLog(nullptr, 0, CGit::LOG_INFO_ALL_BRANCH));
-	ASSERT_EQ(24, logDataVector.size());
-	EXPECT_EQ(24, logDataVector.m_HashMap.size());
-	EXPECT_EQ(24, logCache.m_HashMap.size());
+	ASSERT_EQ(24U, logDataVector.size());
+	EXPECT_EQ(24U, logDataVector.m_HashMap.size());
+	EXPECT_EQ(24U, logCache.m_HashMap.size());
 	EXPECT_STREQ(L"31ff87c86e9f6d3853e438cb151043f30f09029a", logDataVector.GetGitRevAt(0).m_CommitHash.ToString());
 	EXPECT_STREQ(L"4c5c93d2a0b368bc4570d5ec02ab03b9c4334d44", logDataVector.GetGitRevAt(1).m_CommitHash.ToString());
 	EXPECT_STREQ(L"4517b91ee8f7497d40cf93d112f12196a7cec995", logDataVector.GetGitRevAt(12).m_CommitHash.ToString());
@@ -177,56 +177,56 @@ static void ParserFromLogTests()
 	logDataVector.ClearAll();
 	CString range(L"does-not-exist");
 	EXPECT_EQ(-1, logDataVector.ParserFromLog(nullptr, 0, CGit::LOG_INFO_ALL_BRANCH, &range));
-	EXPECT_EQ(0, logDataVector.size());
-	EXPECT_EQ(0, logDataVector.m_HashMap.size());
-	EXPECT_EQ(0, logCache.m_HashMap.size());
+	EXPECT_EQ(0U, logDataVector.size());
+	EXPECT_EQ(0U, logDataVector.m_HashMap.size());
+	EXPECT_EQ(0U, logCache.m_HashMap.size());
 
 	EXPECT_EQ(-1, logDataVector.ParserFromLog(nullptr, 0, 0, &range));
-	EXPECT_EQ(0, logDataVector.size());
-	EXPECT_EQ(0, logDataVector.m_HashMap.size());
-	EXPECT_EQ(0, logCache.m_HashMap.size());
+	EXPECT_EQ(0U, logDataVector.size());
+	EXPECT_EQ(0U, logDataVector.m_HashMap.size());
+	EXPECT_EQ(0U, logCache.m_HashMap.size());
 
 	logCache.m_HashMap.clear();
 	logDataVector.ClearAll();
 	range = L"master2..master";
 	EXPECT_EQ(0, logDataVector.ParserFromLog(nullptr, 0, 0, &range));
-	ASSERT_EQ(2, logDataVector.size());
-	EXPECT_EQ(2, logDataVector.m_HashMap.size());
-	EXPECT_EQ(2, logCache.m_HashMap.size());
+	ASSERT_EQ(2U, logDataVector.size());
+	EXPECT_EQ(2U, logDataVector.m_HashMap.size());
+	EXPECT_EQ(2U, logCache.m_HashMap.size());
 	EXPECT_STREQ(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6", logDataVector.GetGitRevAt(0).m_CommitHash.ToString());
 	EXPECT_STREQ(L"1fc3c9688e27596d8717b54f2939dc951568f6cb", logDataVector.GetGitRevAt(1).m_CommitHash.ToString());
 
 	logCache.m_HashMap.clear();
 	logDataVector.ClearAll();
 	EXPECT_EQ(0, logDataVector.ParserFromLog(nullptr, 0, CGit::LOG_INFO_ALL_BRANCH, &range)); // useless test?, all branches has higher precedence
-	ASSERT_EQ(24, logDataVector.size());
-	EXPECT_EQ(24, logDataVector.m_HashMap.size());
-	EXPECT_EQ(24, logCache.m_HashMap.size());
+	ASSERT_EQ(24U, logDataVector.size());
+	EXPECT_EQ(24U, logDataVector.m_HashMap.size());
+	EXPECT_EQ(24U, logCache.m_HashMap.size());
 
 	logCache.m_HashMap.clear();
 	logDataVector.ClearAll();
 	CTGitPath path(L"does-not-exist.txt");
 	EXPECT_EQ(0, logDataVector.ParserFromLog(&path));
-	EXPECT_EQ(0, logDataVector.size());
-	EXPECT_EQ(0, logDataVector.m_HashMap.size());
-	EXPECT_EQ(0, logCache.m_HashMap.size());
+	EXPECT_EQ(0U, logDataVector.size());
+	EXPECT_EQ(0U, logDataVector.m_HashMap.size());
+	EXPECT_EQ(0U, logCache.m_HashMap.size());
 
 	logCache.m_HashMap.clear();
 	logDataVector.ClearAll();
 	path = CTGitPath(L"copy/utf16-be-bom.txt");
 	EXPECT_EQ(0, logDataVector.ParserFromLog(&path));
-	ASSERT_EQ(2, logDataVector.size());
-	EXPECT_EQ(2, logDataVector.m_HashMap.size());
-	EXPECT_EQ(2, logCache.m_HashMap.size());
+	ASSERT_EQ(2U, logDataVector.size());
+	EXPECT_EQ(2U, logDataVector.m_HashMap.size());
+	EXPECT_EQ(2U, logCache.m_HashMap.size());
 	EXPECT_STREQ(L"49ecdfff36bfe2b9b499b33e5034f427e2fa54dd", logDataVector.GetGitRevAt(0).m_CommitHash.ToString());
 	EXPECT_STREQ(L"560deea87853158b22d0c0fd73f60a458d47838a", logDataVector.GetGitRevAt(1).m_CommitHash.ToString());
 
 	logCache.m_HashMap.clear();
 	logDataVector.ClearAll();
 	EXPECT_EQ(0, logDataVector.ParserFromLog(&path, 0, CGit::LOG_INFO_FOLLOW));
-	ASSERT_EQ(4, logDataVector.size());
-	EXPECT_EQ(4, logDataVector.m_HashMap.size());
-	EXPECT_EQ(4, logCache.m_HashMap.size());
+	ASSERT_EQ(4U, logDataVector.size());
+	EXPECT_EQ(4U, logDataVector.m_HashMap.size());
+	EXPECT_EQ(4U, logCache.m_HashMap.size());
 	EXPECT_STREQ(L"49ecdfff36bfe2b9b499b33e5034f427e2fa54dd", logDataVector.GetGitRevAt(0).m_CommitHash.ToString());
 	EXPECT_STREQ(L"560deea87853158b22d0c0fd73f60a458d47838a", logDataVector.GetGitRevAt(1).m_CommitHash.ToString());
 	EXPECT_STREQ(L"ff1fbef1a54a9849afd4a5e94d2ca4d80d5b96c2", logDataVector.GetGitRevAt(3).m_CommitHash.ToString());
@@ -235,9 +235,9 @@ static void ParserFromLogTests()
 	logDataVector.ClearAll();
 	range = L"4c5c93d2a0b368bc4570d5ec02ab03b9c4334d44";
 	EXPECT_EQ(0, logDataVector.ParserFromLog(&path, 0, CGit::LOG_INFO_FOLLOW, &range));
-	ASSERT_EQ(3, logDataVector.size());
-	EXPECT_EQ(3, logDataVector.m_HashMap.size());
-	EXPECT_EQ(3, logCache.m_HashMap.size());
+	ASSERT_EQ(3U, logDataVector.size());
+	EXPECT_EQ(3U, logDataVector.m_HashMap.size());
+	EXPECT_EQ(3U, logCache.m_HashMap.size());
 	EXPECT_STREQ(L"560deea87853158b22d0c0fd73f60a458d47838a", logDataVector.GetGitRevAt(0).m_CommitHash.ToString());
 	EXPECT_STREQ(L"a9d53b535cb49640a6099860ac4999f5a0857b91", logDataVector.GetGitRevAt(1).m_CommitHash.ToString());
 	EXPECT_STREQ(L"ff1fbef1a54a9849afd4a5e94d2ca4d80d5b96c2", logDataVector.GetGitRevAt(2).m_CommitHash.ToString());
@@ -245,9 +245,9 @@ static void ParserFromLogTests()
 	logCache.m_HashMap.clear();
 	logDataVector.ClearAll();
 	EXPECT_EQ(0, logDataVector.ParserFromLog(&path, 0, CGit::LOG_INFO_FULL_DIFF, &range));
-	ASSERT_EQ(1, logDataVector.size());
-	EXPECT_EQ(1, logDataVector.m_HashMap.size());
-	EXPECT_EQ(1, logCache.m_HashMap.size());
+	ASSERT_EQ(1U, logDataVector.size());
+	EXPECT_EQ(1U, logDataVector.m_HashMap.size());
+	EXPECT_EQ(1U, logCache.m_HashMap.size());
 	EXPECT_STREQ(L"560deea87853158b22d0c0fd73f60a458d47838a", logDataVector.GetGitRevAt(0).m_CommitHash.ToString());
 
 	// check whether libgit ref_cache is correctly invalidated
@@ -257,9 +257,9 @@ static void ParserFromLogTests()
 	logCache.m_HashMap.clear();
 	logDataVector.ClearAll();
 	EXPECT_EQ(0, logDataVector.ParserFromLog(nullptr, 0, CGit::LOG_INFO_ALL_BRANCH));
-	ASSERT_EQ(23, logDataVector.size());
-	EXPECT_EQ(23, logDataVector.m_HashMap.size());
-	EXPECT_EQ(23, logCache.m_HashMap.size());
+	ASSERT_EQ(23U, logDataVector.size());
+	EXPECT_EQ(23U, logDataVector.m_HashMap.size());
+	EXPECT_EQ(23U, logCache.m_HashMap.size());
 	EXPECT_STREQ(L"31ff87c86e9f6d3853e438cb151043f30f09029a", logDataVector.GetGitRevAt(0).m_CommitHash.ToString());
 	EXPECT_STREQ(L"4c5c93d2a0b368bc4570d5ec02ab03b9c4334d44", logDataVector.GetGitRevAt(1).m_CommitHash.ToString());
 	EXPECT_STREQ(L"4517b91ee8f7497d40cf93d112f12196a7cec995", logDataVector.GetGitRevAt(12).m_CommitHash.ToString());
@@ -273,9 +273,9 @@ static void ParserFromLogTests()
 	logCache.m_HashMap.clear();
 	logDataVector.ClearAll();
 	EXPECT_EQ(0, logDataVector.ParserFromLog(nullptr, 0, CGit::LOG_INFO_ALL_BRANCH));
-	ASSERT_EQ(22, logDataVector.size());
-	EXPECT_EQ(22, logDataVector.m_HashMap.size());
-	EXPECT_EQ(22, logCache.m_HashMap.size());
+	ASSERT_EQ(22U, logDataVector.size());
+	EXPECT_EQ(22U, logDataVector.m_HashMap.size());
+	EXPECT_EQ(22U, logCache.m_HashMap.size());
 	EXPECT_STREQ(L"31ff87c86e9f6d3853e438cb151043f30f09029a", logDataVector.GetGitRevAt(0).m_CommitHash.ToString());
 	EXPECT_STREQ(L"4c5c93d2a0b368bc4570d5ec02ab03b9c4334d44", logDataVector.GetGitRevAt(1).m_CommitHash.ToString());
 	EXPECT_STREQ(L"4517b91ee8f7497d40cf93d112f12196a7cec995", logDataVector.GetGitRevAt(12).m_CommitHash.ToString());
@@ -302,9 +302,9 @@ static void ParserFromLogTests_EmptyRepo()
 	logDataVector.m_logOrderBy = CGit::LOG_ORDER_TOPOORDER;
 	logDataVector.SetLogCache(&logCache);
 	EXPECT_EQ(-1, logDataVector.ParserFromLog());
-	EXPECT_EQ(0, logDataVector.size());
-	EXPECT_EQ(0, logDataVector.m_HashMap.size());
-	EXPECT_EQ(0, logCache.m_HashMap.size());
+	EXPECT_EQ(0U, logDataVector.size());
+	EXPECT_EQ(0U, logDataVector.m_HashMap.size());
+	EXPECT_EQ(0U, logCache.m_HashMap.size());
 }
 
 TEST_P(CLogDataVectorCBasicGitWithEmptyRepositoryFixturee, ParserFromLog)
@@ -326,29 +326,29 @@ static void FillTests()
 
 	std::unordered_set<CGitHash> hashes;
 	EXPECT_EQ(0, logDataVector.Fill(hashes));
-	EXPECT_EQ(0, logDataVector.size());
-	EXPECT_EQ(0, logCache.m_HashMap.size());
+	EXPECT_EQ(0U, logDataVector.size());
+	EXPECT_EQ(0U, logCache.m_HashMap.size());
 
 	hashes.insert(CGitHash(L"35c91b4ae2f77f4f21a7aba56d3c473c705d89e6"));
 	logCache.m_HashMap.clear();
 	logDataVector.ClearAll();
 	EXPECT_EQ(0, logDataVector.Fill(hashes));
-	ASSERT_EQ(1, logDataVector.size());
+	ASSERT_EQ(1U, logDataVector.size());
 	EXPECT_TRUE(logDataVector.GetGitRevAt(0).m_CommitHash.ToString() == L"35c91b4ae2f77f4f21a7aba56d3c473c705d89e6");
-	EXPECT_EQ(1, logCache.m_HashMap.size());
+	EXPECT_EQ(1U, logCache.m_HashMap.size());
 
 	hashes.insert(CGitHash(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6"));
 	logCache.m_HashMap.clear();
 	logDataVector.ClearAll();
 	EXPECT_EQ(0, logDataVector.Fill(hashes));
-	EXPECT_EQ(2, logDataVector.size());
-	EXPECT_EQ(2, logCache.m_HashMap.size());
+	EXPECT_EQ(2U, logDataVector.size());
+	EXPECT_EQ(2U, logCache.m_HashMap.size());
 
 	hashes.insert(CGitHash(L"dead91b4aedeaddeaddead2a56d3c473c705dead")); // non-existent commit
 	logCache.m_HashMap.clear();
 	logDataVector.ClearAll();
 	EXPECT_EQ(-1, logDataVector.Fill(hashes));
-	EXPECT_EQ(0, logDataVector.size());
+	EXPECT_EQ(0U, logDataVector.size());
 	// size of logCache.m_HashMap.size() depends on the order of the set
 }
 

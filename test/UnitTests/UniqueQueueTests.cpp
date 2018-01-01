@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015 - TortoiseGit
+// Copyright (C) 2015, 2018 - TortoiseGit
 // Copyright (C) 2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -24,30 +24,30 @@
 TEST(UniqueQueue, CString)
 {
 	UniqueQueue<CString> myQueue;
-	EXPECT_EQ(0, myQueue.size());
+	EXPECT_EQ(0U, myQueue.size());
 	EXPECT_TRUE(myQueue.Pop().IsEmpty());
-	EXPECT_EQ(0, myQueue.erase(L"doesnotexist"));
+	EXPECT_EQ(0U, myQueue.erase(L"doesnotexist"));
 	myQueue.Push(CString(L"one"));
-	EXPECT_EQ(1, myQueue.size());
+	EXPECT_EQ(1U, myQueue.size());
 	myQueue.Push(CString(L"two"));
-	EXPECT_EQ(2, myQueue.size());
+	EXPECT_EQ(2U, myQueue.size());
 	myQueue.Push(CString(L"one"));
-	EXPECT_EQ(2, myQueue.size());
+	EXPECT_EQ(2U, myQueue.size());
 	myQueue.Push(CString(L"three"));
-	EXPECT_EQ(3, myQueue.size());
-	EXPECT_EQ(3, myQueue.erase(L"doesnotexist"));
+	EXPECT_EQ(3U, myQueue.size());
+	EXPECT_EQ(3U, myQueue.erase(L"doesnotexist"));
 	myQueue.Push(CString(L"three"));
-	EXPECT_EQ(3, myQueue.size());
-	EXPECT_EQ(2, myQueue.erase(CString(L"three")));
-	EXPECT_EQ(2, myQueue.size());
+	EXPECT_EQ(3U, myQueue.size());
+	EXPECT_EQ(2U, myQueue.erase(CString(L"three")));
+	EXPECT_EQ(2U, myQueue.size());
 	myQueue.Push(CString(L"three"));
-	EXPECT_EQ(3, myQueue.size());
+	EXPECT_EQ(3U, myQueue.size());
 
 	EXPECT_TRUE(myQueue.Pop().Compare(L"two") == 0);
-	EXPECT_EQ(2, myQueue.size());
+	EXPECT_EQ(2U, myQueue.size());
 	EXPECT_TRUE(myQueue.Pop().Compare(L"one") == 0);
-	EXPECT_EQ(1, myQueue.size());
+	EXPECT_EQ(1U, myQueue.size());
 	EXPECT_TRUE(myQueue.Pop().Compare(L"three") == 0);
-	EXPECT_EQ(0, myQueue.size());
+	EXPECT_EQ(0U, myQueue.size());
 	EXPECT_TRUE(myQueue.Pop().IsEmpty());
 }
