@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2017 - TortoiseGit
+// Copyright (C) 2015-2018 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -1628,6 +1628,12 @@ TEST(CTGitPath, HashStashDir)
 
 	CAutoRepository repo;
 	ASSERT_TRUE(git_repository_init(repo.GetPointer(), CUnicodeUtils::GetUTF8(tmpDir.GetTempDir()), false) == 0);
+	// "git commit" follows and requires user to be set
+	CString configFile = tmpDir.GetTempDir() + L"\\.git\\config";
+	CString text;
+	ASSERT_TRUE(CStringUtils::ReadStringFromTextFile(configFile, text));
+	text += L"[user]\n  name = User\n  email = user@example.com\n";
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(configFile, text));
 
 	g_Git.m_CurrentDir = tmpDir.GetTempDir();
 

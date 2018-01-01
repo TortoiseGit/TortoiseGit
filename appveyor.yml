@@ -3,12 +3,14 @@ skip_tags: true
 image: Visual Studio 2017
 init:
 - git version
-- git config --global user.email "dummy@example.com"
-- git config --global user.name "Dummy Name"
 build_script:
 - git submodule update --init -- ext/googletest ext/libgit2 ext/tgit ext/zlib
 - cd ext\libgit2
+- git config --global user.email "dummy@example.com"
+- git config --global user.name "Dummy Name"
 - for %%G in (..\libgit2-*.patch) do ( type %%G | git am )
+- git config --unset --global user.email
+- git config --unset --global user.name
 - cd ..\..
 - msbuild "src\TortoiseGit.sln" /t:"test\UnitTests" /m /verbosity:minimal /p:Configuration=Debug /p:PlatformToolset=v141 /p:Platform=x64 /maxcpucount /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 - msbuild "src\TortoiseGit.sln" /t:"test\UnitTests" /m /verbosity:minimal /p:Configuration=Debug /p:PlatformToolset=v141 /p:Platform=Win32 /maxcpucount /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
