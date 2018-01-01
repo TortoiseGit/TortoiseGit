@@ -9,6 +9,7 @@ Released: unreleased
  * Fixed issue #3107: Clean: Allow to remove orphaned submodules (i.e., clean -f -f)
  * Fixed issue #3126: Add an option to show all refs of a commit in the log (all refs are shown now by default)
  * Fixed issue #3116: Revision graph: add ability to delete branches
+ * Fixed issue #3121: Create shorter branch names when checking out a commit
 
 == Bug Fixes ==
  * Fixed issue #3029: LogDlg: Action column icons painted over Graph or message columns when turned off or resized

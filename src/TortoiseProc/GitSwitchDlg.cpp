@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -192,6 +192,8 @@ void CGitSwitchDlg::SetDefaultName(BOOL isUpdateCreateBranch)
 	{
 		if (CStringUtils::StartsWith(m_VersionName, L"refs/heads/"))
 			version = m_VersionName.Mid(11);
+		else
+			version = version.Left(g_Git.GetShortHASHLength());
 		m_NewBranch = L"Branch_" + version;
 		this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(FALSE);
 
