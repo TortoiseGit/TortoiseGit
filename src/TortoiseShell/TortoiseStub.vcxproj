@@ -48,7 +48,6 @@
     </ClCompile>
     <Link>
       <ModuleDefinitionFile>TortoiseStub.def</ModuleDefinitionFile>
-      <BaseAddress>0x5940000</BaseAddress>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">

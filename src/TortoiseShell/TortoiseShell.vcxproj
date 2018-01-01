@@ -54,7 +54,6 @@
     <Link>
       <AdditionalDependencies>comctl32.lib;shlwapi.lib;version.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>ShellExt.def</ModuleDefinitionFile>
-      <BaseAddress>0x5960000</BaseAddress>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

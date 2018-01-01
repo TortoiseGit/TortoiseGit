@@ -56,7 +56,6 @@ if errorlevel 1 type apu.hw &gt;..\apr-util\include\apu.hw
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>ws2_32.lib;mswsock.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <BaseAddress>0x6EE60000</BaseAddress>
     </Link>
     <PostBuildEvent>
       <Message>Embed .manifest</Message>

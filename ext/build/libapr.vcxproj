@@ -56,7 +56,6 @@ if errorlevel 1 type apr_escape_test_char.h &gt;..\apr\include\apr_escape_test_c
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>ws2_32.lib;mswsock.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <BaseAddress>0x6EEC0000</BaseAddress>
     </Link>
     <PostBuildEvent>
       <Message>Embed .manifest</Message>
