@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -40,7 +40,7 @@ public:
 
 protected:
 	int				m_RebaseAction;
-	int				m_Action;
+	unsigned int	m_Action;
 	CTGitPathList	m_Files;
 	CTGitPathList	m_UnRevFiles;
 
@@ -78,7 +78,7 @@ public:
 	}
 
 public:
-	int& GetAction(IAsyncDiffCB* data)
+	unsigned int& GetAction(IAsyncDiffCB* data)
 	{
 		CheckAndParser();
 		if (!m_IsDiffFiles && m_CallDiffAsync)

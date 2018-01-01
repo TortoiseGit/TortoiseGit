@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -71,7 +71,7 @@ CTGitPath::CTGitPath(const CString& sUnknownPath, bool bIsDirectory) : CTGitPath
 	m_bIsDirectory = bIsDirectory;
 }
 
-int CTGitPath::ParserAction(BYTE action)
+unsigned int CTGitPath::ParserAction(BYTE action)
 {
 	//action=action.TrimLeft();
 	//TCHAR c=action.GetAt(0);
@@ -95,7 +95,7 @@ int CTGitPath::ParserAction(BYTE action)
 	return m_Action;
 }
 
-int CTGitPath::ParserAction(git_delta_t action)
+unsigned int CTGitPath::ParserAction(git_delta_t action)
 {
 	if (action == GIT_DELTA_MODIFIED)
 		m_Action |= LOGACTIONS_MODIFIED;
@@ -1645,7 +1645,7 @@ const CTGitPath* CTGitPathList::LookForGitPath(const CString& path)
 	return nullptr;
 }
 
-CString CTGitPath::GetActionName(int action)
+CString CTGitPath::GetActionName(unsigned int action)
 {
 	if(action  & CTGitPath::LOGACTIONS_UNMERGED)
 		return MAKEINTRESOURCE(IDS_PATHACTIONS_CONFLICT);
@@ -1681,7 +1681,7 @@ CString CTGitPath::GetActionName() const
 	return GetActionName(m_Action);
 }
 
-int CTGitPathList::GetAction()
+unsigned int CTGitPathList::GetAction()
 {
 	return m_Action;
 }

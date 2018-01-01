@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 // Copyright (C) 2005-2007 Marco Costalba
 
 // This program is free software; you can redistribute it and/or
@@ -189,7 +189,7 @@ int CGitLogListBase::AsyncDiffThread()
 				pRev->m_ParentHash.push_back(m_HeadHash);
 				g_Git.RefreshGitIndex();
 				g_Git.GetWorkingTreeChanges(files);
-				int& action = pRev->GetAction(this);
+				auto& action = pRev->GetAction(this);
 				action = 0;
 				for (int j = 0; j < files.GetCount(); ++j)
 					action |= files[j].m_Action;

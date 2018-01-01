@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -62,10 +62,10 @@ public:
 	CString m_StatDel;
 	unsigned int		m_Action;
 	bool    m_Checked;
-	int	ParserAction(BYTE action);
-	int ParserAction(git_delta_t action);
+	unsigned int ParserAction(BYTE action);
+	unsigned int ParserAction(git_delta_t action);
 	CString GetActionName() const;
-	static CString GetActionName(int action);
+	static CString GetActionName(unsigned int action);
 	/**
 	 * Set the path as an UTF8 string with forward slashes
 	 */
@@ -347,7 +347,7 @@ public:
 	CTGitPathList();
 	// A constructor which allows a path list to be easily built with one initial entry in
 	explicit CTGitPathList(const CTGitPath& firstEntry);
-	int m_Action;
+	unsigned int m_Action;
 
 public:
 	void AddPath(const CTGitPath& newPath);
@@ -358,7 +358,7 @@ public:
 	int ParserFromLsFile(BYTE_VECTOR &out,bool staged=true);
 	int FillUnRev(unsigned int Action, const CTGitPathList* filterlist = nullptr, CString* err = nullptr);
 	int FillBasedOnIndexFlags(unsigned short flag, unsigned short flagextended, const CTGitPathList* filterlist = nullptr);
-	int GetAction();
+	unsigned int GetAction();
 	/**
 	 * Load from the path argument string, when the 'path' parameter is used
 	 * This is a list of paths, with '*' between them
