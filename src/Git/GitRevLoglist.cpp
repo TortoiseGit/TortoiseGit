@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -350,12 +350,12 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 			int status, isBin, inc, dec, isDir;
 			git_get_diff_file(git->GetGitDiff(), file, j, &newname, &oldname, &isDir, &status, &isBin, &inc, &dec);
 
-			git->StringAppend(&strnewname, (BYTE*)newname, CP_UTF8);
+			CGit::StringAppend(&strnewname, (BYTE*)newname, CP_UTF8);
 			if (strcmp(newname, oldname) == 0)
 				path.SetFromGit(strnewname, isDir != FALSE);
 			else
 			{
-				git->StringAppend(&stroldname, (BYTE*)oldname, CP_UTF8);
+				CGit::StringAppend(&stroldname, (BYTE*)oldname, CP_UTF8);
 				path.SetFromGit(strnewname, &stroldname, &isDir);
 			}
 			path.ParserAction((BYTE)status);
