@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (c) 2003 by Andreas Kapust <info@akinstaller.de>; <http://www.codeproject.com/Articles/2607/AutoComplete-without-IAutoComplete>
-// Copyright (C) 2009, 2012-2013, 2015-2016 - TortoiseGit
+// Copyright (C) 2009, 2012-2013, 2015-2016, 2018 - TortoiseGit
 
 // Licensed under: The Code Project Open License (CPOL); <http://www.codeproject.com/info/cpol10.aspx>
 
@@ -192,7 +192,7 @@ void CACEdit::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 bool CACEdit::HandleKey(UINT nChar, bool m_bFromChild)
 {
-	if (nChar == VK_ESCAPE ||nChar == VK_RETURN)
+	if (nChar == VK_ESCAPE || nChar == VK_RETURN && !m_Liste.IsWindowVisible())
 	{
 		m_Liste.ShowWindow(false);
 		return true;
@@ -200,7 +200,7 @@ bool CACEdit::HandleKey(UINT nChar, bool m_bFromChild)
 
 	if (nChar == VK_DOWN || nChar == VK_UP
 		|| nChar == VK_PRIOR || nChar == VK_NEXT
-		|| nChar == VK_HOME || nChar == VK_END)
+		|| nChar == VK_HOME || nChar == VK_END || nChar == VK_RETURN)
 	{
 		/*
 		** Vers. 1.1
@@ -238,24 +238,31 @@ bool CACEdit::HandleKey(UINT nChar, bool m_bFromChild)
 						m_EditText = m_EditText.Mid(0,m_EditText.GetLength()-1);
 				}
 
-				m_Liste.SelectItem(-1);
-				SetWindowText(m_EditText);
-				pos = m_EditText.GetLength();
-
-				if(m_iType == _COMBOBOX_)
+				if (nChar != VK_RETURN)
+					m_Liste.SelectItem(m_Liste.GetSelectedItem());
+				else
 				{
-					m_pEdit->SetSel(pos,pos,true);
-					m_pEdit->SetModify(true);
-				}
+					m_Liste.SelectItem(-1);
+					SetWindowText(m_EditText);
+					pos = m_EditText.GetLength();
 
-				if(m_iType == _EDIT_)
-				{
-					((CEdit*)this)->SetSel(pos,pos,true);
-					((CEdit*)this)->SetModify(true);
+					if (m_iType == _COMBOBOX_)
+					{
+						m_pEdit->SetSel(pos, pos, true);
+						m_pEdit->SetModify(true);
+					}
+
+					if (m_iType == _EDIT_)
+					{
+						((CEdit*)this)->SetSel(pos, pos, true);
+						((CEdit*)this)->SetModify(true);
+					}
 				}
 
 				GetParent()->SendMessage(ENAC_UPDATE, WM_KEYDOWN, GetDlgCtrlID());
 				m_CursorMode = false;
+				if (nChar == VK_RETURN)
+					m_Liste.ShowWindow(false);
 				return true;
 			}
 
@@ -284,34 +291,40 @@ bool CACEdit::HandleKey(UINT nChar, bool m_bFromChild)
 				else
 					m_Text += m_Liste.GetString();
 
-				m_Liste.SelectItem(-1);
-				m_Text += m_EditText.Mid(right);
-				len = m_Liste.GetString().GetLength();
-
-				m_Text += this->m_SeparationStr;
-
-				SetWindowText(m_Text);
-				GetParent()->SendMessage(ENAC_UPDATE, WM_KEYDOWN, GetDlgCtrlID());
-
-				right = FindSepLeftPos2(pos2-1);
-				left -= right;
-				len += right;
-
-				left+=m_SeparationStr.GetLength();
-
-				if(m_iType == _EDIT_)
+				if (nChar != VK_RETURN)
+					m_Liste.SelectItem(m_Liste.GetSelectedItem());
+				else
 				{
-					((CEdit*)this)->SetModify(true);
-					((CEdit*)this)->SetSel(left+len,left+len,false);
-				}
+					m_Liste.SelectItem(-1);
+					m_Text += m_EditText.Mid(right);
+					len = m_Liste.GetString().GetLength();
 
-				if(m_iType == _COMBOBOX_)
-				{
-					m_pEdit->SetModify(true);
-					m_pEdit->SetSel(left,left+len,true);
-				}
+					m_Text += this->m_SeparationStr;
 
+					SetWindowText(m_Text);
+					GetParent()->SendMessage(ENAC_UPDATE, WM_KEYDOWN, GetDlgCtrlID());
+
+					right = FindSepLeftPos2(pos2 - 1);
+					left -= right;
+					len += right;
+
+					left += m_SeparationStr.GetLength();
+
+					if (m_iType == _EDIT_)
+					{
+						((CEdit*)this)->SetModify(true);
+						((CEdit*)this)->SetSel(left + len, left + len, false);
+					}
+
+					if (m_iType == _COMBOBOX_)
+					{
+						m_pEdit->SetModify(true);
+						m_pEdit->SetSel(left, left + len, true);
+					}
+				}
 				m_CursorMode = false;
+				if (nChar == VK_RETURN)
+					m_Liste.ShowWindow(false);
 				return true;
 			}
 		}
@@ -462,7 +475,7 @@ LRESULT CACEdit::OnUpdateFromList(WPARAM lParam, LPARAM /*wParam*/)
 	UpdateData(true);
 
 	if(lParam == WM_KEYDOWN)
-		HandleKey(VK_DOWN,true);
+		HandleKey(VK_RETURN, true);
 	return 0;
 }
 

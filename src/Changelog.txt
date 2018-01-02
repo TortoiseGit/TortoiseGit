@@ -40,6 +40,7 @@ Released: unreleased
  * Fixed issue #3108: Versioned file in ignored folder causes wrong overlays
  * Fixed issue #3109: Bad greying out of outer paths (other paths with same prefix also match)
  * Fixed issue #3132: Post commit hook doesn't show up on settings dialog
+ * Fixed issue #2990: SendmailDlg: Don't auto select entries when using arrow keys
 
 == Known issues ==
  * Issue #3087: Due to changes in Win 10 TortoiseGit(Merge) might start up slowly or gets slower over time.
