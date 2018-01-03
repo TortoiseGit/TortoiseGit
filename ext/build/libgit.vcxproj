@@ -243,7 +243,9 @@
     <ClCompile Include="..\tgit\wt-status.c" />
     <ClCompile Include="..\tgit\xdiff-interface.c" />
     <ClCompile Include="..\tgit\zlib.c" />
-    <ClCompile Include="..\tgit\xdiff\xdiffi.c" />
+    <ClCompile Include="..\tgit\xdiff\xdiffi.c">
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Disabled</Optimization>
+    </ClCompile>
     <ClCompile Include="..\tgit\xdiff\xemit.c" />
     <ClCompile Include="..\tgit\xdiff\xhistogram.c" />
     <ClCompile Include="..\tgit\xdiff\xmerge.c" />
