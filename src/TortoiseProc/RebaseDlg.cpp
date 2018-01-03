@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -1307,7 +1307,7 @@ void CRebaseDlg::OnBnClickedContinue()
 			auto entry = m_FileListCtrl.GetListEntry(i);
 			if (entry->m_Checked)
 			{
-				if ((entry->m_Action & CTGitPath::LOGACTIONS_UNVER) || entry->IsDirectory())
+				if ((entry->m_Action & CTGitPath::LOGACTIONS_UNVER) || (entry->IsDirectory() && !(entry->m_Action & CTGitPath::LOGACTIONS_DELETED)))
 					mgtAdd.AddFile(entry->GetGitPathString());
 				else if (entry->m_Action & CTGitPath::LOGACTIONS_DELETED)
 					mgtUpdateIndexForceRemove.AddFile(entry->GetGitPathString());
