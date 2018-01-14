@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 // Copyright (C) 2003-2008, 2013-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -2016,7 +2016,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						if (m_CurrentVersion.IsEmpty() || m_CurrentVersion == GIT_REV_ZERO)
 							sCmd.Format(L"/command:diff /path:\"%s\" /endrev:%s /path2:\"%s\" /startrev:%s /hwnd:%p", firstfilepath->GetWinPath(), firstfilepath->Exists() ? GIT_REV_ZERO : L"HEAD", secondfilepath->GetWinPath(), secondfilepath->Exists() ? GIT_REV_ZERO : L"HEAD", (void*)m_hWnd);
 						else
-							sCmd.Format(L"/command:diff /path:\"%s\" /startrev:%s /path2:\"%s\" /endrev:%s /hwnd:%p", firstfilepath->GetWinPath(), firstfilepath->Exists() ? (LPCTSTR)(m_CurrentVersion + L"~1") : (LPCTSTR)m_CurrentVersion, secondfilepath->GetWinPath(), secondfilepath->Exists() ? (LPCTSTR)(m_CurrentVersion + L"~1") : (LPCTSTR)m_CurrentVersion, (void*)m_hWnd);
+							sCmd.Format(L"/command:diff /path:\"%s\" /startrev:%s /path2:\"%s\" /endrev:%s /hwnd:%p", firstfilepath->GetWinPath(), firstfilepath->m_Action & CTGitPath::LOGACTIONS_DELETED ? (LPCTSTR)(m_CurrentVersion + L"~1") : (LPCTSTR)m_CurrentVersion, secondfilepath->GetWinPath(), secondfilepath->m_Action & CTGitPath::LOGACTIONS_DELETED ? (LPCTSTR)(m_CurrentVersion + L"~1") : (LPCTSTR)m_CurrentVersion, (void*)m_hWnd);
 						if (bShift)
 							sCmd += L" /alternative";
 						CAppUtils::RunTortoiseGitProc(sCmd);
