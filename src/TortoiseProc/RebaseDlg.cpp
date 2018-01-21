@@ -2237,9 +2237,6 @@ void CRebaseDlg::ListConflictFile(bool noStoreScrollPosition)
 		m_FileListCtrl.StoreScrollPos();
 	this->m_FileListCtrl.Clear();
 	m_FileListCtrl.SetHasCheckboxes(true);
-	CTGitPathList list;
-	CTGitPath path;
-	list.AddPath(path);
 
 	if (!m_IsCherryPick)
 	{
@@ -2253,7 +2250,7 @@ void CRebaseDlg::ListConflictFile(bool noStoreScrollPosition)
 		}
 	}
 
-	this->m_FileListCtrl.GetStatus(&list,true);
+	this->m_FileListCtrl.GetStatus(nullptr, true);
 	m_FileListCtrl.Show(CTGitPath::LOGACTIONS_UNMERGED | CTGitPath::LOGACTIONS_MODIFIED | CTGitPath::LOGACTIONS_ADDED | CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_REPLACED, CTGitPath::LOGACTIONS_UNMERGED);
 
 	m_FileListCtrl.Check(GITSLC_SHOWFILES);

@@ -1031,6 +1031,7 @@ int CTGitPathList::FillUnRev(unsigned int action, const CTGitPathList* list, CSt
 		count=1;
 	else
 		count=list->GetCount();
+	ATLASSERT(count > 0);
 	for (int i = 0; i < count; ++i)
 	{
 		CString cmd;
@@ -1046,6 +1047,7 @@ int CTGitPathList::FillUnRev(unsigned int action, const CTGitPathList* list, CSt
 		}
 		else
 		{
+			ATLASSERT(!(*list)[i].GetWinPathString().IsEmpty());
 			cmd.Format(L"git.exe ls-files --exclude-standard --full-name --others -z%s -- \"%s\"",
 					(LPCTSTR)ignored,
 					(*list)[i].GetWinPath());

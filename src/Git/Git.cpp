@@ -3247,6 +3247,7 @@ int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, const CTGitPa
 	int count = 1;
 	if (filterlist)
 		count = filterlist->GetCount();
+	ATLASSERT(count > 0);
 
 	CString head = L"HEAD";
 	if (amend)
@@ -3254,6 +3255,7 @@ int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, const CTGitPa
 
 	for (int i = 0; i < count; ++i)
 	{
+		ATLASSERT(!filterlist || !(*filterlist)[i].GetGitPathString().IsEmpty()); // pathspec must not be empty, be compatible with Git >= 2.16.0
 		BYTE_VECTOR cmdout;
 		CString cmd;
 		if (ms_bCygwinGit || ms_bMsys2Git)

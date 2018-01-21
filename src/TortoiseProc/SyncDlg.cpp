@@ -508,11 +508,7 @@ void CSyncDlg::PullComplete()
 		if (hasConflicts)
 		{
 			this->m_ConflictFileList.Clear();
-			CTGitPathList list;
-			CTGitPath path;
-			list.AddPath(path);
-
-			this->m_ConflictFileList.GetStatus(&list,true);
+			this->m_ConflictFileList.GetStatus(nullptr, true);
 			this->m_ConflictFileList.Show(CTGitPath::LOGACTIONS_UNMERGED,
 											CTGitPath::LOGACTIONS_UNMERGED);
 
@@ -637,11 +633,7 @@ void CSyncDlg::StashComplete()
 		if (hasConflicts)
 		{
 			m_ConflictFileList.Clear();
-			CTGitPathList list;
-			CTGitPath path;
-			list.AddPath(path);
-
-			m_ConflictFileList.GetStatus(&list,true);
+			m_ConflictFileList.GetStatus(nullptr, true);
 			m_ConflictFileList.Show(CTGitPath::LOGACTIONS_UNMERGED, CTGitPath::LOGACTIONS_UNMERGED);
 
 			ShowTab(IDC_IN_CONFLICT);
