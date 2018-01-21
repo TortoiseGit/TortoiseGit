@@ -123,7 +123,10 @@ bool CAppUtils::StashSave(const CString& msg, bool showPull, bool pullShowPush, 
 		{
 			CString message = dlg.m_sMessage;
 			message.Replace(L"\"", L"\"\"");
-			cmd += L" -- \"" + message + L'"';
+			if (CAppUtils::IsGitVersionNewerOrEqual(2, 14))
+				cmd += L" -m \"" + message + L'"';
+			else
+				cmd += L" -- \"" + message + L'"';
 		}
 
 		CProgressDlg progress;
