@@ -1270,6 +1270,8 @@ void CRebaseDlg::OnBnClickedContinue()
 	{
 		if(VerifyNoConflict())
 			return;
+		if (CAppUtils::MessageContainsConflictHints(GetSafeHwnd(), m_LogMessageCtrl.GetText()))
+			return;
 		GitRevLoglist* curRev = m_CommitList.m_arShownList.SafeGetAt(m_CurrentRebaseIndex);
 		if(this->CheckNextCommitIsSquash())
 		{//next commit is not squash;
@@ -1287,6 +1289,9 @@ void CRebaseDlg::OnBnClickedContinue()
 	if( m_RebaseStage == REBASE_CONFLICT )
 	{
 		if(VerifyNoConflict())
+			return;
+
+		if (CAppUtils::MessageContainsConflictHints(GetSafeHwnd(), m_LogMessageCtrl.GetText()))
 			return;
 
 		GitRevLoglist* curRev = m_CommitList.m_arShownList.SafeGetAt(m_CurrentRebaseIndex);

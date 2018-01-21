@@ -4939,6 +4939,8 @@ BEGIN
     IDS_SETTINGS_GITCONFIG_INHERIT_TT 
                             "If this is enabled, no value is stored or overwritten at this config level."
     IDS_VIEW_SHOWROTHERLABELS "Other refs"
+    IDS_CONFLICT_HINT_IN_COMMIT_MESSAGE 
+                            "It looks as if there is a conflict hint (a line like ""# Conflicts:"") in your commit message. This hint is automatically added by Git for cli users and there is no need to keep it.\n\nDo you want to ignore this warning and keep these lines or abort committing in order to edit the commit message?\n\nYou can automatically remove these lines by enabling ""Strip lines starting with ""#"" in commit messages"" in TortoiseGit settings."
 END
 
 #endif    // English (U.S.) resources

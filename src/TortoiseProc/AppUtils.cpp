@@ -2185,6 +2185,36 @@ int CAppUtils::GetLogOutputEncode(CGit *pGit)
 	else
 		return CUnicodeUtils::GetCPCode(output);
 }
+
+bool CAppUtils::MessageContainsConflictHints(HWND hWnd, const CString& message)
+{
+	bool stripComments = (CRegDWORD(L"Software\\TortoiseGit\\StripCommentedLines", FALSE) == TRUE);
+	if (stripComments)
+		return false;
+	CString cleanupMode = g_Git.GetConfigValue(L"core.cleanup", L"default");
+	if (cleanupMode == L"verbatim" || cleanupMode == L"whitespace" || cleanupMode == L"scissors")
+		return false;
+	TCHAR commentChar = L'#';
+	CString commentCharValue = g_Git.GetConfigValue(L"core.commentchar");
+	if (!commentCharValue.IsEmpty())
+		commentChar = commentCharValue[0];
+
+	CString conflictsHint;
+	conflictsHint.Format(L"\n%c Conflicts:\n%c\t", commentChar, commentChar);
+
+	if (message.Find(conflictsHint) <= 0)
+		return false;
+
+	BOOL dontaskagainchecked = FALSE;
+	if (CMessageBox::ShowCheck(hWnd, IDS_CONFLICT_HINT_IN_COMMIT_MESSAGE, IDS_APPNAME, 2, IDI_QUESTION, IDS_IGNOREBUTTON, IDS_ABORTBUTTON, 0, L"CommitMessageContainsConflictHint", IDS_MSGBOX_DONOTSHOWAGAIN, &dontaskagainchecked) == 2)
+	{
+		if (dontaskagainchecked)
+			CMessageBox::RemoveRegistryKey(L"CommitMessageContainsConflictHint");
+		return true;
+	}
+	return false;
+}
+
 int CAppUtils::SaveCommitUnicodeFile(const CString& filename, CString &message)
 {
 	try

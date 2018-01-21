@@ -202,6 +202,7 @@ public:
 	static bool SendPatchMail(const CString& cmd, const CString& formatpatchoutput, bool bIsMainWnd = false);
 
 	static int  SaveCommitUnicodeFile(const CString& filename, CString& mesage);
+	static bool MessageContainsConflictHints(HWND hWnd, const CString& message);
 
 	static int  GetLogOutputEncode(CGit *pGit=&g_Git);
 

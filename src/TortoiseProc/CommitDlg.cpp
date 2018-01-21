@@ -653,6 +653,9 @@ void CCommitDlg::OnOK()
 			return;
 	}
 
+	if (CAppUtils::MessageContainsConflictHints(GetSafeHwnd(), m_sLogMessage))
+		return;
+
 	if (CHooks::Instance().IsHookPresent(pre_commit_hook, g_Git.m_CurrentDir)) {
 		DWORD exitcode = 0xFFFFFFFF;
 		CString error;

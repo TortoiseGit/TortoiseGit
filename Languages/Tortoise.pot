@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2017 the TortoiseGit team
+# Copyright (C) 2008-2018 the TortoiseGit team
 #
 # This file is distributed under the same license as TortoiseGit
 #
@@ -5446,6 +5446,10 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROC_CASERENAME)
 msgid "It is not possible to rename a file by changing the case of its name alone.\nFor example, you can't make MyFile.txt become MYFILE.txt.\nPlease consult the documentation for a way to work around this limitation."
+msgstr ""
+
+#. Resource IDs: (IDS_CONFLICT_HINT_IN_COMMIT_MESSAGE)
+msgid "It looks as if there is a conflict hint (a line like \"# Conflicts:\") in your commit message. This hint is automatically added by Git for cli users and there is no need to keep it.\n\nDo you want to ignore this warning and keep these lines or abort committing in order to edit the commit message?\n\nYou can automatically remove these lines by enabling \"Strip lines starting with \"#\" in commit messages\" in TortoiseGit settings."
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 1074)
