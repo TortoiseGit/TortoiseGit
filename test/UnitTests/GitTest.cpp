@@ -234,6 +234,7 @@ TEST(CGit, IsBranchNameValid)
 	CGit cgit;
 	EXPECT_TRUE(cgit.IsBranchNameValid(L"master"));
 	EXPECT_TRUE(cgit.IsBranchNameValid(L"def/master")); 
+	EXPECT_FALSE(cgit.IsBranchNameValid(L"HEAD"));
 	EXPECT_FALSE(cgit.IsBranchNameValid(L"-test"));
 	EXPECT_FALSE(cgit.IsBranchNameValid(L"jfjf>ff"));
 	EXPECT_FALSE(cgit.IsBranchNameValid(L"jf ff"));
