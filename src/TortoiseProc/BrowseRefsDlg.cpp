@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2017 - TortoiseGit
+// Copyright (C) 2009-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -327,7 +327,7 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 	m_cBranchFilter.AddString(CString(MAKEINTRESOURCE(IDS_BROWSE_REFS_ONLYMERGED)));
 	m_cBranchFilter.AddString(CString(MAKEINTRESOURCE(IDS_BROWSE_REFS_ONLYUNMERGED)));
 	m_cBranchFilter.SetCurSel(0);
-	if (CAppUtils::GetMsysgitVersion() < 0x02070000)
+	if (!CAppUtils::IsGitVersionNewerOrEqual(2, 7))
 	{
 		m_cBranchFilter.EnableWindow(FALSE);
 		CString temp;

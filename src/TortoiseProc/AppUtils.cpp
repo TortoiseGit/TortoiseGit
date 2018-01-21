@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 // Copyright (C) 2003-2011, 2013-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -2297,7 +2297,7 @@ bool DoPull(const CString& url, bool bAutoLoad, BOOL bFetchTags, bool bNoFF, boo
 	{
 		if (status)
 		{
-			if (CAppUtils::GetMsysgitVersion() >= 0x02090000)
+			if (CAppUtils::IsGitVersionNewerOrEqual(2, 9))
 			{
 				STRING_VECTOR remotes;
 				g_Git.GetRemoteList(remotes);
@@ -2658,7 +2658,7 @@ bool CAppUtils::DoPush(bool autoloadKey, bool pack, bool tags, bool allRemotes, 
 	}
 
 	int iRecurseSubmodules = 0;
-	if (GetMsysgitVersion() >= 0x02070000)
+	if (IsGitVersionNewerOrEqual(2, 7))
 	{
 		CString sRecurseSubmodules = g_Git.GetConfigValue(L"push.recurseSubmodules");
 		if (sRecurseSubmodules == L"check")
@@ -3154,7 +3154,7 @@ static bool DoMerge(bool noFF, bool ffOnly, bool squash, bool noCommit, const in
 				});
 			}
 
-			if (CAppUtils::GetMsysgitVersion() >= 0x02090000)
+			if (CAppUtils::IsGitVersionNewerOrEqual(2, 9))
 			{
 				CGitHash common;
 				g_Git.IsFastForward(L"HEAD", mergeVersion, &common);
@@ -3259,6 +3259,17 @@ void CAppUtils::EditNote(GitRevLoglist* rev, ProjectProperties* projectPropertie
 		if (g_Git.GetGitNotes(rev->m_CommitHash, rev->m_Notes))
 			MessageBox(nullptr, g_Git.GetLibGit2LastErr(L"Could not load notes for commit " + rev->m_CommitHash.ToString() + L'.'), L"TortoiseGit", MB_OK | MB_ICONERROR);
 	}
+}
+
+inline static int ConvertToVersionInt(int major, int minor, int patchlevel, int build)
+{
+	return (major << 24) + (minor << 16) + (patchlevel << 8) + build;
+}
+
+inline bool CAppUtils::IsGitVersionNewerOrEqual(int major, int minor, int patchlevel, int build)
+{
+	auto ver = GetMsysgitVersion();
+	return ver >= ConvertToVersionInt(major, minor, patchlevel, build);
 }
 
 int CAppUtils::GetMsysgitVersion()

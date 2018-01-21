@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -228,6 +228,7 @@ public:
 	static void RemoveTempMergeFile(const CTGitPath& path);
 	static void EditNote(GitRevLoglist* rev, ProjectProperties* projectProperties);
 	static int GetMsysgitVersion();
+	static bool IsGitVersionNewerOrEqual(int major, int minor, int patchlevel = 0, int build = 0);
 	static void MarkWindowAsUnpinnable(HWND hWnd);
 
 	static bool BisectStart(const CString& lastGood, const CString& firstBad, bool bIsMainWnd = false);

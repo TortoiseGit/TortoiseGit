@@ -1054,7 +1054,7 @@ void CCommitDlg::OnOK()
 			m_CommitDate.GetTime(date);
 			m_CommitTime.GetTime(time);
 			if (m_bCommitAmend && m_AsCommitDateCtrl.GetCheck())
-				dateTime = CAppUtils::GetMsysgitVersion() > 0x02010000 ? L"--date=\"now\"" : L"--date=\"\"" ;
+				dateTime = CAppUtils::IsGitVersionNewerOrEqual(2, 1) ? L"--date=\"now\"" : L"--date=\"\"" ;
 			else
 				dateTime.Format(L"--date=%sT%s", (LPCTSTR)date.Format(L"%Y-%m-%d"), (LPCTSTR)time.Format(L"%H:%M:%S"));
 		}
