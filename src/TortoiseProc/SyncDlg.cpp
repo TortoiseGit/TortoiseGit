@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -1728,7 +1728,9 @@ void CSyncDlg::OnBnClickedButtonStash()
 	switch (m_ctrlStash.GetCurrentEntry())
 	{
 	case 0:
-		cmd = L"git.exe stash save";
+		cmd = L"git.exe stash push";
+		if (!CAppUtils::IsGitVersionNewerOrEqual(2, 14))
+			cmd = L"git.exe stash save";
 		break;
 	case 1:
 		cmd = L"git.exe stash pop";

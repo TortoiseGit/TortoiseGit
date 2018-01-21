@@ -110,7 +110,9 @@ bool CAppUtils::StashSave(const CString& msg, bool showPull, bool pullShowPush, 
 	dlg.m_sMessage = msg;
 	if (dlg.DoModal() == IDOK)
 	{
-		CString cmd = L"git.exe stash save";
+		CString cmd = L"git.exe stash push";
+		if (!CAppUtils::IsGitVersionNewerOrEqual(2, 14))
+			cmd = L"git.exe stash save";
 
 		if (dlg.m_bIncludeUntracked)
 			cmd += L" --include-untracked";
