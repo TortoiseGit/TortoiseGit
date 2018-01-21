@@ -648,7 +648,7 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 
 			if (entry->m_Action & dwShow)
 			{
-				AddEntry(entry, langID, index);
+				AddEntry(i, entry, langID, index);
 				index++;
 			}
 		}
@@ -950,13 +950,12 @@ CString CGitStatusListCtrl::GetCellText(int listIndex, int column)
 	return empty;
 }
 
-void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int listIndex)
+void CGitStatusListCtrl::AddEntry(size_t arStatusArrayIndex, CTGitPath * GitPath, WORD /*langID*/, int listIndex)
 {
 	CAutoWriteLock locker(m_guard);
 	ScopedInDecrement blocker(m_nBlockItemChangeHandler);
 	CString path = GitPath->GetGitPathString();
 
-	int index = listIndex;
 	// Load the icons *now* so the icons are cached when showing them later in the
 	// WM_PAINT handler.
 	// Problem is that (at least on Win10), loading the icons in the WM_PAINT
@@ -1017,20 +1016,20 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int list
 	lvItem.iImage = icon_idx;
 	InsertItem(&lvItem);
 
-	m_arListArray.push_back(index);
+	m_arListArray.push_back(arStatusArrayIndex);
 
-	SetCheck(index, GitPath->m_Checked);
+	SetCheck(listIndex, GitPath->m_Checked);
 	if (GitPath->m_Checked)
 		m_nSelected++;
 
 	if ((GitPath->m_Action & CTGitPath::LOGACTIONS_SKIPWORKTREE) || (GitPath->m_Action & CTGitPath::LOGACTIONS_ASSUMEVALID))
-		SetItemGroup(index, 3);
+		SetItemGroup(listIndex, 3);
 	else if (GitPath->m_Action & CTGitPath::LOGACTIONS_IGNORE)
-		SetItemGroup(index, 2);
+		SetItemGroup(listIndex, 2);
 	else if( GitPath->m_Action & CTGitPath::LOGACTIONS_UNVER)
-		SetItemGroup(index,1);
+		SetItemGroup(listIndex,1);
 	else
-		SetItemGroup(index, GitPath->m_ParentNo&(PARENT_MASK|MERGE_MASK));
+		SetItemGroup(listIndex, GitPath->m_ParentNo&(PARENT_MASK|MERGE_MASK));
 }
 
 bool CGitStatusListCtrl::SetItemGroup(int item, int groupindex)

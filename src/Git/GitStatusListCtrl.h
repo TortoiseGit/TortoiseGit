@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -834,7 +834,7 @@ public:
 
 	int UpdateWithGitPathList(CTGitPathList &list);
 
-	void AddEntry(CTGitPath* path, WORD langID, int ListIndex);
+	void AddEntry(size_t arStatusArrayIndex, CTGitPath* path, WORD langID, int ListIndex);
 	void Clear();
 	int m_FileLoaded;
 	CString m_CurrentVersion;
