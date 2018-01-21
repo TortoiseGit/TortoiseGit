@@ -2329,6 +2329,28 @@ bool DoPull(const CString& url, bool bAutoLoad, BOOL bFetchTags, bool bNoFF, boo
 	{
 		if (status)
 		{
+			int hasConflicts = g_Git.HasWorkingTreeConflicts();
+			if (hasConflicts < 0)
+				CMessageBox::Show(nullptr, g_Git.GetGitLastErr(L"Checking for conflicts failed.", CGit::GIT_CMD_CHECKCONFLICTS), L"TortoiseGit", MB_ICONEXCLAMATION);
+			else if (hasConflicts)
+			{
+				CMessageBox::ShowCheck(nullptr, IDS_NEED_TO_RESOLVE_CONFLICTS_HINT, IDS_APPNAME, MB_ICONINFORMATION, L"MergeConflictsNeedsCommit", IDS_MSGBOX_DONOTSHOWAGAIN);
+				postCmdList.emplace_back(IDI_RESOLVE, IDS_PROGRS_CMD_RESOLVE, []
+				{
+					CString sCmd;
+					sCmd.Format(L"/command:resolve /path:\"%s\"", (LPCTSTR)g_Git.m_CurrentDir);
+					CAppUtils::RunTortoiseGitProc(sCmd);
+				});
+
+				postCmdList.emplace_back(IDI_COMMIT, IDS_MENUCOMMIT, []
+				{
+					CString sCmd;
+					sCmd.Format(L"/command:commit /path:\"%s\"", (LPCTSTR)g_Git.m_CurrentDir);
+					CAppUtils::RunTortoiseGitProc(sCmd);
+				});
+				return;
+			}
+
 			if (CAppUtils::IsGitVersionNewerOrEqual(2, 9))
 			{
 				STRING_VECTOR remotes;
@@ -3170,7 +3192,7 @@ static bool DoMerge(bool noFF, bool ffOnly, bool squash, bool noCommit, const in
 			else if (hasConflicts)
 			{
 				// there are conflict files
-
+				CMessageBox::ShowCheck(nullptr, IDS_NEED_TO_RESOLVE_CONFLICTS_HINT, IDS_APPNAME, MB_ICONINFORMATION, L"MergeConflictsNeedsCommit", IDS_MSGBOX_DONOTSHOWAGAIN);
 				postCmdList.emplace_back(IDI_RESOLVE, IDS_PROGRS_CMD_RESOLVE, []
 				{
 					CString sCmd;

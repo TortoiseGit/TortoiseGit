@@ -513,6 +513,7 @@ void CSyncDlg::PullComplete()
 											CTGitPath::LOGACTIONS_UNMERGED);
 
 			this->ShowTab(IDC_IN_CONFLICT);
+			CMessageBox::ShowCheck(GetSafeHwnd(), IDS_NEED_TO_RESOLVE_CONFLICTS_HINT, IDS_APPNAME, MB_ICONINFORMATION, L"MergeConflictsNeedsCommit", IDS_MSGBOX_DONOTSHOWAGAIN);
 		}
 		else
 			this->ShowTab(IDC_CMD_LOG);
