@@ -2198,6 +2198,8 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	if(!sshclient.IsEmpty())
 	{
 		m_Environment.SetEnv(L"GIT_SSH", sshclient);
+		if (CStringUtils::EndsWithI(sshclient, L"tortoisegitplink") || CStringUtils::EndsWithI(sshclient, L"tortoisegitplink.exe"))
+			m_Environment.SetEnv(L"GIT_SSH_VARIANT", L"ssh");
 		m_Environment.SetEnv(L"SVN_SSH", sshclient);
 	}
 	else
@@ -2208,6 +2210,7 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 		if (ptr) {
 			wcscpy_s(ptr + 1, _countof(sPlink) - (ptr - sPlink + 1), L"TortoiseGitPlink.exe");
 			m_Environment.SetEnv(L"GIT_SSH", sPlink);
+			m_Environment.SetEnv(L"GIT_SSH_VARIANT", L"ssh");
 			m_Environment.SetEnv(L"SVN_SSH", sPlink);
 		}
 	}
