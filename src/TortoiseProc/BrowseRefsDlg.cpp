@@ -308,7 +308,7 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 	AddAnchor(IDC_CURRENTBRANCH, BOTTOM_RIGHT);
 
 	m_bIncludeNestedRefs = !!m_regIncludeNestedRefs;
-	UpdateData();
+	UpdateData(FALSE);
 
 	Refresh(m_initialRef);
 
