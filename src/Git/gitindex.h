@@ -145,7 +145,7 @@ public:
 	int			m_Flags;
 };
 
-/* After object create, never change field agains
+/* After object create, never change field against
  * that needn't lock to get field
 */
 class CGitHeadFileList:public std::vector<CGitTreeItem>

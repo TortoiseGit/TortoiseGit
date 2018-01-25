@@ -374,7 +374,7 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION* piOut, HANDLE* hReadOut, HA
 	return 0;
 }
 //Must use sperate function to convert ANSI str to union code string
-//Becuase A2W use stack as internal convert buffer.
+//Because A2W use stack as internal convert buffer.
 void CGit::StringAppend(CString *str, const BYTE *p, int code,int length)
 {
 	if (!str)

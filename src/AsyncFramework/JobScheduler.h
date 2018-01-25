@@ -66,7 +66,7 @@ class CThread;
  * worker threads.
  *
  * Please note that the job queue must be empty upon destruction.
- * You may call \ref WaitForEmptyQueue() to achive this.
+ * You may call \ref WaitForEmptyQueue() to achieve this.
  * If you use multiple job schedulers, you may also use that
  * method to wait efficiently for a whole group of jobs
  * to be finished.

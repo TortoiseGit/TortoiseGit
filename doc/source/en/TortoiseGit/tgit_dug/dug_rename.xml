@@ -191,7 +191,7 @@
 		<para>
 			In that case, you have to decide which one of them you want to 
 			keep and delete the other(s) from the repository (or rename the other(s)).
-			Easiest way is to do that on a case-sensitive file system, followed by commiting and pushing the changes.
+			Easiest way is to do that on a case-sensitive file system, followed by committing and pushing the changes.
 			Doing it on Windows requires several steps (and two commits):
 		</para>
 		<para>

@@ -58,7 +58,7 @@ public:
 
     /// call this to put the job into the scheduler.
     /// If \ref transferOwnership is set, the scheduler must
-    /// delete this instance after exection.
+    /// delete this instance after execution.
 
     virtual void Schedule ( bool transferOwnership
                           , CJobScheduler* scheduler) = 0;

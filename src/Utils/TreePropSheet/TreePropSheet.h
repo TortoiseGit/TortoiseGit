@@ -56,7 +56,7 @@ Appearance
 Directories
 \endverbatim
 If you would like to use a double colon, which should not be
-interpreted as a path seperator, prefix it with a backslash ("\\::").
+interpreted as a path separator, prefix it with a backslash ("\\::").
 
 To disable tree view mode and use the standard tabbed mode, call
 the SetTreeViewMode() method. This also allows you, to enable page
@@ -231,7 +231,7 @@ public:
 		as an icon.
 
 	@return
-		TRUE on success, FALSE if an error occured.
+		TRUE on success, FALSE if an error occurred.
 	*/
 	static BOOL SetPageIcon(CPropertyPage *pPage, HICON hIcon);
 	static BOOL SetPageIcon(CPropertyPage *pPage, UINT unIconId);
@@ -337,7 +337,7 @@ protected:
 	CString SplitPageTreePath(CString &strRest);
 
 	/**
-	Tries to deactivate the current page, and hides it if successfull,
+	Tries to deactivate the current page, and hides it if successful,
 	so that an empty page becomes visible.
 
 	@return

@@ -46,7 +46,7 @@ bool SVNIgnoreCommand::Execute()
 			progress.m_GitCmd = L"git.exe svn create-ignore";
 			break;
 		default:
-			MessageBox(hwndExplorer, L"Unkown SVN Ignore Type", L"TortoiseGit", MB_OK | MB_ICONERROR);
+			MessageBox(hwndExplorer, L"Unknown SVN Ignore Type", L"TortoiseGit", MB_OK | MB_ICONERROR);
 			return FALSE;
 		}
 

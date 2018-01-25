@@ -7,7 +7,7 @@
     <primary>Rebase</primary>
   </indexterm>
   <para>
-	Rebase is quite complex and it alters/rewrites the history of a repository. Please make sure you understood its principles before using it (for general hints where to find more information about Git and rebasing see <xref linkend="tgit-preface-readingguide"/> and especialy <xref linkend="git-rebase(1)"/>).
+	Rebase is quite complex and it alters/rewrites the history of a repository. Please make sure you understood its principles before using it (for general hints where to find more information about Git and rebasing see <xref linkend="tgit-preface-readingguide"/> and especially <xref linkend="git-rebase(1)"/>).
   </para>
   <para>
 	<menuchoice>

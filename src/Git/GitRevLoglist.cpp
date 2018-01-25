@@ -436,7 +436,7 @@ int GitRevLoglist::GetRefLog(const CString& ref, std::vector<GitRevLoglist>& ref
 	{
 		g_Git.CheckAndInitDll();
 		std::vector<GitRevLoglist> tmp;
-		// no error checking, because the only error which could occour is file not found
+		// no error checking, because the only error which could occur is file not found
 		git_for_each_reflog_ent(CUnicodeUtils::GetUTF8(ref), [](struct GIT_OBJECT_OID* /*old_oid*/, struct GIT_OBJECT_OID* new_oid, const char* /*committer*/, unsigned long long time, int /*sz*/, const char* msg, void* data)
 		{
 			std::vector<GitRevLoglist>* vector = (std::vector<GitRevLoglist>*)data;

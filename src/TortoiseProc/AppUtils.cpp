@@ -855,7 +855,7 @@ bool CAppUtils::FindStyleChars(const CString& sText, TCHAR stylechar, int& start
 		nextChar = sText[i + 1];
 
 		// IsCharAlphaNumeric can be somewhat expensive.
-		// Long lines of "*****" or "----" will be pre-empted efficiently
+		// Long lines of "*****" or "----" will be pre-emptied efficiently
 		// by the (c != nextChar) condition.
 
 		if ((c == stylechar) && (c != nextChar))

@@ -26,7 +26,7 @@ namespace async
 {
 
 /**
- * Execute a call to a funtion asynchronuously in the background.
+ * Execute a call to a function asynchronuously in the background.
  * Return the result in \ref GetResult. The latter will wait for
  * the call to finished, if necessary.
  *

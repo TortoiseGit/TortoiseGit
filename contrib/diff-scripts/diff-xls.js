@@ -135,7 +135,7 @@ if (!bFastMode && objNewWorkbook.ProtectWindows)
     bFastMode = true;
 }
 
-// Create a special workbook for formula convertion.
+// Create a special workbook for formula conversion.
 var objSpecialWorkbook = objExcelApp.Workbooks.Add;
 
 // Mark differences in sNewDoc red

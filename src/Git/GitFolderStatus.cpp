@@ -42,7 +42,7 @@ GitFolderStatus::GitFolderStatus(void)
 	sCacheKey.reserve(MAX_PATH);
 
 	g_Git.SetCurrentDir(L"");
-	m_hInvalidationEvent = CreateEvent(nullptr, FALSE, FALSE, L"TortoiseGitCacheInvalidationEvent"); // no need to explicitely close m_hInvalidationEvent in ~GitFolderStatus as it is CAutoGeneralHandle
+	m_hInvalidationEvent = CreateEvent(nullptr, FALSE, FALSE, L"TortoiseGitCacheInvalidationEvent"); // no need to explicitly close m_hInvalidationEvent in ~GitFolderStatus as it is CAutoGeneralHandle
 }
 
 GitFolderStatus::~GitFolderStatus(void)

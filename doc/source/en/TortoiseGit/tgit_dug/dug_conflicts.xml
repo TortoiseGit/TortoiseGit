@@ -157,7 +157,7 @@
 				<title>Uninitialized submodules</title>
 				<para>
 					If the submodule is not yet initialized the resolve submodule conflict dialog only shows the commit IDs (SHA-1). Also, the conflict cannot be resolved automatically:
-					First, you have to manually clone the submodule into the right folder. Then, you can resolve the conflict using TortoiseGit or git (by checking out the right commit in the submodule and commiting the parent working tree).
+					First, you have to manually clone the submodule into the right folder. Then, you can resolve the conflict using TortoiseGit or git (by checking out the right commit in the submodule and committing the parent working tree).
 				</para>
 			</important>
 		</sect3>

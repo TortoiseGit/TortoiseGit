@@ -1063,7 +1063,7 @@ int CRebaseDlg::VerifyNoConflict()
 	}
 	if (hasConflicts)
 	{
-		CMessageBox::Show(GetSafeHwnd(), IDS_PROGRS_CONFLICTSOCCURED, IDS_APPNAME, MB_OK | MB_ICONEXCLAMATION);
+		CMessageBox::Show(GetSafeHwnd(), IDS_PROGRS_CONFLICTSOCCURRED, IDS_APPNAME, MB_OK | MB_ICONEXCLAMATION);
 		auto locker(m_FileListCtrl.AcquireReadLock());
 		auto pos = m_FileListCtrl.GetFirstSelectedItemPosition();
 		while (pos)

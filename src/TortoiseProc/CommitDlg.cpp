@@ -577,7 +577,7 @@ void CCommitDlg::OnOK()
 
 	auto locker(m_ListCtrl.AcquireReadLock());
 
-	if (m_ListCtrl.GetConflictedCount() != 0 && CMessageBox::ShowCheck(GetSafeHwnd(), IDS_PROGRS_CONFLICTSOCCURED, IDS_APPNAME, 1, IDI_EXCLAMATION, IDS_OKBUTTON, IDS_IGNOREBUTTON, 0, L"CommitWarnOnUnresolved") == 1)
+	if (m_ListCtrl.GetConflictedCount() != 0 && CMessageBox::ShowCheck(GetSafeHwnd(), IDS_PROGRS_CONFLICTSOCCURRED, IDS_APPNAME, 1, IDI_EXCLAMATION, IDS_OKBUTTON, IDS_IGNOREBUTTON, 0, L"CommitWarnOnUnresolved") == 1)
 	{
 		auto pos = m_ListCtrl.GetFirstSelectedItemPosition();
 		while (pos)

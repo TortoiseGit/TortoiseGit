@@ -417,36 +417,36 @@ HTREEITEM CTreePropSheet::CreatePageTreeItem(LPCTSTR lpszPath, HTREEITEM hParent
 
 CString CTreePropSheet::SplitPageTreePath(CString &strRest)
 {
-	int	nSeperatorPos = 0;
+	int	nSeparatorPos = 0;
 #pragma warning(push)
 #pragma warning(disable: 4127)	// conditional expression constant
 	while (TRUE)
 	{
-		nSeperatorPos = strRest.Find(L"::", nSeperatorPos);
-		if (nSeperatorPos == -1)
+		nSeparatorPos = strRest.Find(L"::", nSeparatorPos);
+		if (nSeparatorPos == -1)
 		{
 			CString	strItem(strRest);
 			strRest.Empty();
 			return strItem;
 		}
-		else if (nSeperatorPos>0)
+		else if (nSeparatorPos>0)
 		{
 			// if there is an odd number of backslashes infront of the
-			// seperator, than do not interpret it as separator
+			// separator, than do not interpret it as separator
 			int	nBackslashCount = 0;
-			for (int nPos = nSeperatorPos-1; nPos >= 0 && strRest[nPos] == L'\\'; --nPos, ++nBackslashCount);
+			for (int nPos = nSeparatorPos-1; nPos >= 0 && strRest[nPos] == L'\\'; --nPos, ++nBackslashCount);
 			if (nBackslashCount%2 == 0)
 				break;
 			else
-				++nSeperatorPos;
+				++nSeparatorPos;
 		}
 	}
 #pragma warning(pop)
 
-	CString	strItem(strRest.Left(nSeperatorPos));
+	CString	strItem(strRest.Left(nSeparatorPos));
 	strItem.Replace(L"\\::", L"::");
 	strItem.Replace(L"\\\\", L"\\");
-	strRest = strRest.Mid(nSeperatorPos+2);
+	strRest = strRest.Mid(nSeparatorPos+2);
 	return strItem;
 }
 

@@ -39,7 +39,7 @@ GetWnd() method, which
 returns a pointer to the CWnd-obect of the window, that has been
 created by the call to the Create() method. An implementation can
 provide the CWnd-object by using it as a property or by deriving
-from CWnd or a more specialiced class. This way has been choosen
+from CWnd or a more specialiced class. This way has been chosen
 instead of deriving CPropPageFrame from CWnd, to allow derived class
 to derive from more specialized classes than CWnd
 (i.e. CStatic, etc.). From the WM_PAINT-handler of your derived class

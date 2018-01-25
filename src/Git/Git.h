@@ -40,7 +40,7 @@ public:
 
 	enum
 	{
-		SHOW_NO_LIMIT, // NOTE: no limitation does not mean "without all limitations", it's just without the following limitations. That say, the log still could be limited by auther, committer, etc.
+		SHOW_NO_LIMIT, // NOTE: no limitation does not mean "without all limitations", it's just without the following limitations. That say, the log still could be limited by author, committer, etc.
 		SHOW_LAST_SEL_DATE,
 		SHOW_LAST_N_COMMITS,
 		SHOW_LAST_N_YEARS,
@@ -391,7 +391,7 @@ public:
 	CString DerefFetchHead();
 
 	// FixBranchName():
-	// When branchName == FETCH_HEAD, derefrence it.
+	// When branchName == FETCH_HEAD, dereference it.
 	// A selected branch name got from GetBranchList(), with flag BRANCH_FETCH_HEAD enabled,
 	// should go through this function before it is used.
 	CString	FixBranchName_Mod(CString& branchName);

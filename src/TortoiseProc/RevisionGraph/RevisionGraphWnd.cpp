@@ -176,7 +176,7 @@ CRevisionGraphWnd::CRevisionGraphWnd()
 
 #endif
 	FastHierarchyLayout *pOHL = ::new FastHierarchyLayout;
-	//It will auto delte when m_SugiyamLayout destory
+	//It will auto delte when m_SugiyamLayout destroy
 
 	pOHL->layerDistance(30.0);
 	pOHL->nodeDistance(25.0);

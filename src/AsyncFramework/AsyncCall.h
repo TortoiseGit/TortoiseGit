@@ -26,7 +26,7 @@ namespace async
 {
 
 /**
- * Execute a call to a funtion returning @a void asynchronuously
+ * Execute a call to a function returning @a void asynchronuously
  * in the background.
  *
  * Accepts a pointer to some free function or member function plus

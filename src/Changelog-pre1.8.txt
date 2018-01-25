@@ -104,9 +104,9 @@ Released: 2012-09-30
  * Fixed issue #1361: git push: Entered source ref is ambiguous
  * Fixed issue #1076: Error trying to delete remote branch named 1.0.0
  * Fixed issue #1375: Wrong default action on dialog to delete references
- * Fixed issue #1378: Ignoring a file into info/exclude with seperate .git directory failed
+ * Fixed issue #1378: Ignoring a file into info/exclude with separate .git directory failed
  * Fixed issue #1371: Log window does not always remember column order correctly
- * Fixed issue #1380: When chosing Pull Remote Branch using Browse Reference the remote branch name won't get updated
+ * Fixed issue #1380: When choosing Pull Remote Branch using Browse Reference the remote branch name won't get updated
  * Fixed issue #1287: Setting Remote URL not translated to '/' when clicking Apply or OK
  * Fixed issue #1382: Log messages with PGP signatures showing badly
  * Fixed issue #1394: Submodule Diff Dialog cannot jump to a commit that not belongs to current branch
@@ -252,7 +252,7 @@ Released: 2012-05-05
 
 == Bug Fixes ==
  * Fixed issue #1123: Apply patch serial does not correctly add patches to list if >3 patches are selected
- * Fixed issue #1061: Enviroment variables ignored: GIT_AUTHOR_NAME and GIT_AUTHOR_EMAIL
+ * Fixed issue #1061: Environment variables ignored: GIT_AUTHOR_NAME and GIT_AUTHOR_EMAIL
  * Fixed issue #1028: overlays with separate-git-dir (e.g. .git\modules\... for submodules) not working
  * Fixed issue #1131: "Whole project" checkbox in commit dialog selects all files
  * Fixed issue #1065: Explorer crashes when rendering a file conflict icon
@@ -889,7 +889,7 @@ Released: 2010-06-03 (internal release)
  * Fixed issue #396: Fix 'Copy paths to clipboard' option
  * Fixed issue #398: Settings/Revision Graph/Help button doesn't work
  * Fixed issue #392: Implement refresh button in sync dialog
- * Fixed issue #395: [BUG] Infomation error when "Switch the comparison"
+ * Fixed issue #395: [BUG] Information error when "Switch the comparison"
  * Fixed issue #385: Bug In properties->Git dialog
  * Clear HOME at gitdll dll after load git config
  * Fixed issue #403: Diff Show changes, but commit not
@@ -940,7 +940,7 @@ Released: 2010-04-06
 
 == Features ==
  * Log dialog find support search tag and branch
- * Fixed issue #354: impliment revert of this commit at log dialog
+ * Fixed issue #354: implement revert of this commit at log dialog
  * Add Merge command at log context menu
  * Fixed issue #350: Implement "Copy and rename" from context menu
 
@@ -996,7 +996,7 @@ Released: 2010-03-31
  * Fixed issue #329: path wrong at "Save revision to...
  * Fixed issue #327: Crash in the commit dialog after you changed a file for Linux formatted
  * Fixed issue #321: Wrong Company/Product name in Metadata
- * Fixed issue #309: Mispelled words in the Git Synchronization dialog
+ * Fixed issue #309: Misspelled words in the Git Synchronization dialog
  * Fixed issue #304: Adding a file in the commit dialog resets selection
  * Fixed issue #305: Filtering showlog make crash
 
@@ -1057,7 +1057,7 @@ Released: 2010-01-18
 == Features ==
  * Improve Log Dialog. Speed up log fetch speed.
    Build Git source as a DLL. LogDialog will call gitdll to fetch log instead of capture git.exe output.
-   Improve refresh and all branch user experience. refresh can abort runing fetch log commit.
+   Improve refresh and all branch user experience. refresh can abort running fetch log commit.
 
  * Improve icon-overlay
    Give up igit.exe and use tgit which build from git source by VS.
@@ -1234,7 +1234,7 @@ Released: 2009-07-31
  * Fixed issue #124: Incorrect Date header in patch e-mail
  * Fixed issue #122: Garbage text in "Git Command Progress" / suspected buffer overflow Improve commit speed when many added files.
  * Fixed issue #121: Refresh in "Check for modifications" dialog duplicates added state entries when new repository
- * Fixed issue #71: (TortoiseProc problem)Icon Overlays don't work in root of drive When m_CurrentDir =C:\, not C:,  pathlist calulate wrong.
+ * Fixed issue #71: (TortoiseProc problem)Icon Overlays don't work in root of drive When m_CurrentDir =C:\, not C:,  pathlist calculate wrong.
  * Fixed issue #116: SVN Rebase doesn't work
  * Fixed issue #115: Windows XP: Initial "Git Clone..." from SVN Repository doesn't work
  * Fix "ESC" = "push" when after commit and Add Alt-P  for Push

@@ -1677,7 +1677,7 @@ msgstr ""
 msgid "An unknown error occurred while accessing %1."
 msgstr ""
 
-#. Resource IDs: (IDS_ERR_PATCH_UNKOWNLINETYPE)
+#. Resource IDs: (IDS_ERR_PATCH_UNKNOWNLINETYPE)
 #, c-format
 msgid "An unknown line type was found in line %d !"
 msgstr ""
@@ -6398,7 +6398,7 @@ msgstr ""
 msgid "One or more auto-saved documents were found."
 msgstr ""
 
-#. Resource IDs: (IDS_PROGRS_CONFLICTSOCCURED)
+#. Resource IDs: (IDS_PROGRS_CONFLICTSOCCURRED)
 msgid "One or more files are in a conflicted state."
 msgstr ""
 
@@ -9915,7 +9915,7 @@ msgstr ""
 msgid "Warning"
 msgstr ""
 
-#. Resource IDs: (IDS_PROGRS_CONFLICTSOCCURED_WARNING)
+#. Resource IDs: (IDS_PROGRS_CONFLICTSOCCURRED_WARNING)
 msgid "Warning!"
 msgstr ""
 

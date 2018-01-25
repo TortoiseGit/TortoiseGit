@@ -1,4 +1,4 @@
-This articel documents some of the main steps for releasing a new version.
+This article documents some of the main steps for releasing a new version.
 
 * Upgrade version number in (for preview releases don't commit):
   * doc/doc.build.include

@@ -594,7 +594,7 @@
 		</para>
 		<important>
 			<para>
-				If you have problems entering/storing data please see <xref linkend="tgit-dug-settings-hierachical"/>.
+				If you have problems entering/storing data please see <xref linkend="tgit-dug-settings-hierarchical"/>.
 			</para>
 		</important>
 		<variablelist>

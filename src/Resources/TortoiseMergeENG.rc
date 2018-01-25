@@ -821,7 +821,7 @@ STRINGTABLE
 BEGIN
     IDS_ERR_PATCH_NOADDFILELINE 
                             "The line indicating the new file was expected in line %d !"
-    IDS_ERR_PATCH_UNKOWNLINETYPE "An unknown line type was found in line %d !"
+    IDS_ERR_PATCH_UNKNOWNLINETYPE "An unknown line type was found in line %d !"
     IDS_ERR_PATCH_CHUNKMISMATCH 
                             "The chunk size did not match the number of added/removed lines!"
 END

@@ -2,7 +2,7 @@
 <!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 <sect2 id="tgit-dug-settings-git">
 	<title>Git</title>
-	<sect3 id="tgit-dug-settings-hierachical">
+	<sect3 id="tgit-dug-settings-hierarchical">
 		<title>The hierarchical git configuration</title>
 		<para>
 			Git uses the concept of a hierarchical configuration (cf. <xref linkend="git-config(1)"/>). I.e. there are multiple levels; settings in higher levels override values in lower levels. The <guilabel>Effective</guilabel> tab shows you the effective values for the current scope (read-only).
@@ -51,7 +51,7 @@
 		<para> <guilabel>QuotePath</guilabel> Controls the <literal>core.quotepath</literal> setting which might be interesting when you have non ASCII filenames: See <xref linkend="git-config(1)"/>.</para>
 		<important>
 			<para>
-				If you have problems entering/storing data please see <xref linkend="tgit-dug-settings-hierachical"/>.
+				If you have problems entering/storing data please see <xref linkend="tgit-dug-settings-hierarchical"/>.
 			</para>
 		</important>
 	</sect3>

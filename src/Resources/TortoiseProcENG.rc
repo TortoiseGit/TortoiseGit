@@ -4064,8 +4064,8 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_PROGRS_CONFLICTSOCCURED_WARNING "Warning!"
-    IDS_PROGRS_CONFLICTSOCCURED "One or more files are in a conflicted state."
+    IDS_PROGRS_CONFLICTSOCCURRED_WARNING "Warning!"
+    IDS_PROGRS_CONFLICTSOCCURRED "One or more files are in a conflicted state."
     IDS_PROGRS_DRYRUN       "Test Only"
     IDS_PROGRS_FINISHED     "Finished!"
 END

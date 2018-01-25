@@ -49,7 +49,7 @@ replace the text before and after the tabulator resp. the "↩" new line
 character.
 
 Character sequences such as "%i", "%d", "%ld", "%I64d", "%u" and "%.1f"
-(will be substituted by a number each) and "%s" (will be substituded by
+(will be substituted by a number each) and "%s" (will be substituted by
 a string/text) MUST be included in the SAME ORDER as in the original
 text (otherwise the program will crash at run-time). These sequences are
 called "format specifiers" (see

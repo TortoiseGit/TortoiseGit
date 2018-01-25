@@ -328,7 +328,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 				else
 				{
 					//none of those lines! what the hell happened here?
-					m_sErrorMessage.Format(IDS_ERR_PATCH_UNKOWNLINETYPE, nIndex);
+					m_sErrorMessage.Format(IDS_ERR_PATCH_UNKNOWNLINETYPE, nIndex);
 					goto errorcleanup;
 				}
 				if ((chunk->lAddLength == (nAddLineCount + nContextLineCount)) &&

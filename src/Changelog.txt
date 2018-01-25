@@ -4,7 +4,7 @@ Released: unreleased
 == Features ==
  * Fixed issue #3089: Show parent SHA1 on cherry picking a merge commit
  * Fixed issue #3052: Filename autocomplete in commit dialog ignores filenames starting with underscores
- * TortoiseGitMerge no uses native ribbon instead of MFC wrapped
+ * TortoiseGitMerge now uses native ribbon instead of MFC wrapped
    This results in a noticeable speed up (cf. issue #1616) and also fixes issues with rounded corners for maximized windows (cf. issue #1767)
  * Fixed issue #3107: Clean: Allow to remove orphaned submodules (i.e., clean -f -f)
  * Fixed issue #3126: Add an option to show all refs of a commit in the log (all refs are shown now by default)
@@ -114,7 +114,7 @@ Released: 2017-07-23
  * Significant TGitCache rewrite which reduces disk access and fixes other issues:
    * Fixed issue #2989: TGitCache: Significantly reduce refresh requests send to Windows Explorer (causing Explorer to freeze)
    * Fixed issue #2766: TGitCache: Icon Overlay might show ignored files as non-versioned
-   * Fixed issue #2818: TGitCache: overlays sometimes blink in and out of existance for several minutes at a time
+   * Fixed issue #2818: TGitCache: overlays sometimes blink in and out of existence for several minutes at a time
    * Fixed issue #1242: TGitCache might fall into an (endless) refresh loop
    * Symlinks are not shown as modified any more
  * Missing index is not an error condition, but need to be handled like an empty index

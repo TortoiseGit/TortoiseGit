@@ -219,7 +219,7 @@ public:
 	BOOL m_bShowCompleteLog;
 	BOOL m_bOnlyFirstParent;
 	BOOL m_bFollowRenames;
-	BOOL m_bBlameOuputContainsOtherFilenames;
+	BOOL m_bBlameOutputContainsOtherFilenames;
 
 	LRESULT SendEditor(UINT Msg, WPARAM wParam=0, LPARAM lParam=0);
 

@@ -119,7 +119,7 @@ git.exe and ssh.exe.
 Both, git.exe and ssh.exe (from OpenSSH) are command line tools. When executed
 from TortoiseGitProc.exe there is no terminal attached and, thus, those tools
 cannot ask for credentials. However, git.exe and ssh.exe allow to "register"
-a helper utility (using the enviroment variables SSH_ASKPASS and GIT_ASKPASS).
+a helper utility (using the environment variables SSH_ASKPASS and GIT_ASKPASS).
 
 All SshAskPass.exe does is, it displays the command line parameters in the GUI
 and passes the entered values to STDOUT (where it is read by the calling tool).
