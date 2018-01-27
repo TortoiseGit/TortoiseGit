@@ -43,6 +43,7 @@ CCachedDirectory::CCachedDirectory(const CTGitPath& directoryPath)
 
 	directoryPath.HasAdminDir(); // make sure HasAdminDir is always initialized
 	m_directoryPath = directoryPath;
+	m_directoryPath.UpdateCase();
 	m_directoryPath.GetGitPathString(); // make sure git path string is set
 }
 
