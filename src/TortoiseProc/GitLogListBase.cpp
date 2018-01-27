@@ -1786,7 +1786,13 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 
 	if (popup.CreatePopupMenu())
 	{
-		bool isHeadCommit = (pSelLogEntry->m_CommitHash == m_HeadHash);
+		CGitHash headHash;
+		if (g_Git.GetHash(headHash, L"HEAD"))
+		{
+			MessageBox(g_Git.GetGitLastErr(L"Could not get HEAD hash."), L"TortoiseGit", MB_ICONERROR);
+			return;
+		}
+		bool isHeadCommit = (pSelLogEntry->m_CommitHash == headHash);
 		CString currentBranch = L"refs/heads/" + g_Git.GetCurrentBranch();
 		CTGitPath workingTree(g_Git.m_CurrentDir);
 		bool isMergeActive = workingTree.IsMergeActive();
@@ -2124,7 +2130,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 
 				str.Format(IDS_REBASE_THIS_FORMAT, (LPCTSTR)g_Git.GetCurrentBranch());
 
-				if (pSelLogEntry->m_CommitHash != m_HeadHash && m_hasWC && !isMergeActive && !isStash)
+				if (pSelLogEntry->m_CommitHash != headHash && m_hasWC && !isMergeActive && !isStash)
 					if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_TO_VERSION))
 						popup.AppendMenuIcon(ID_REBASE_TO_VERSION, str , IDI_REBASE);
 
