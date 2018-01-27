@@ -3512,7 +3512,7 @@ bool CAppUtils::BisectOperation(const CString& op, const CString& ref, bool bIsM
 		}
 
 		if (op != L"reset")
-			postCmdList.emplace_back(IDS_MENUBISECTRESET, []{ CAppUtils::RunTortoiseGitProc(L"/command:bisect /reset"); });
+			postCmdList.emplace_back(IDI_BISECT_RESET, IDS_MENUBISECTRESET, []{ CAppUtils::RunTortoiseGitProc(L"/command:bisect /reset"); });
 	};
 
 	INT_PTR ret = progress.DoModal();
