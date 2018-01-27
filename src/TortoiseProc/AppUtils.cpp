@@ -1607,6 +1607,13 @@ static bool Reset(const CString& resetTo, int resetType)
 				CAppUtils::RunTortoiseGitProc(sCmd);
 			});
 		}
+
+		if (gitPath.IsBisectActive())
+		{
+			postCmdList.emplace_back(IDI_THUMB_UP, IDS_MENUBISECTGOOD, [] { CAppUtils::RunTortoiseGitProc(L"/command:bisect /good"); });
+			postCmdList.emplace_back(IDI_THUMB_DOWN, IDS_MENUBISECTBAD, [] { CAppUtils::RunTortoiseGitProc(L"/command:bisect /bad"); });
+			postCmdList.emplace_back(IDI_BISECT_RESET, IDS_MENUBISECTRESET, [] { CAppUtils::RunTortoiseGitProc(L"/command:bisect /reset"); });
+		}
 	};
 
 	INT_PTR ret;
@@ -3471,6 +3478,10 @@ bool CAppUtils::BisectStart(const CString& lastGood, const CString& firstBad, bo
 					CAppUtils::RunTortoiseGitProc(sCmd);
 				});
 			}
+
+			postCmdList.emplace_back(IDI_THUMB_UP, IDS_MENUBISECTGOOD, [] { CAppUtils::RunTortoiseGitProc(L"/command:bisect /good"); });
+			postCmdList.emplace_back(IDI_THUMB_DOWN, IDS_MENUBISECTBAD, [] { CAppUtils::RunTortoiseGitProc(L"/command:bisect /bad"); });
+			postCmdList.emplace_back(IDI_BISECT_RESET, IDS_MENUBISECTRESET, [] { CAppUtils::RunTortoiseGitProc(L"/command:bisect /reset"); });
 		};
 
 		INT_PTR ret = progress.DoModal();
@@ -3511,6 +3522,8 @@ bool CAppUtils::BisectOperation(const CString& op, const CString& ref, bool bIsM
 			});
 		}
 
+		postCmdList.emplace_back(IDI_THUMB_UP, IDS_MENUBISECTGOOD, [] { CAppUtils::RunTortoiseGitProc(L"/command:bisect /good"); });
+		postCmdList.emplace_back(IDI_THUMB_DOWN, IDS_MENUBISECTBAD, [] { CAppUtils::RunTortoiseGitProc(L"/command:bisect /bad"); });
 		if (op != L"reset")
 			postCmdList.emplace_back(IDI_BISECT_RESET, IDS_MENUBISECTRESET, []{ CAppUtils::RunTortoiseGitProc(L"/command:bisect /reset"); });
 	};

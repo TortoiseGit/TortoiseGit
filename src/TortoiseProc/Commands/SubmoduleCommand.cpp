@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2009, 2012-2016 - TortoiseGit
+// Copyright (C) 2008-2009, 2012-2016, 2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -152,6 +152,20 @@ bool SubmoduleUpdateCommand::Execute()
 		str.Format(L"git.exe submodule update%s -- \"%s\"", (LPCTSTR)params, (LPCTSTR)submoduleUpdateDlg.m_PathList[i]);
 		progress.m_GitCmdList.push_back(str);
 	}
+
+	progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
+	{
+		if (status)
+			return;
+
+		CTGitPath gitPath = g_Git.m_CurrentDir;
+		if (gitPath.IsBisectActive())
+		{
+			postCmdList.emplace_back(IDI_THUMB_UP, IDS_MENUBISECTGOOD, [] { CAppUtils::RunTortoiseGitProc(L"/command:bisect /good"); });
+			postCmdList.emplace_back(IDI_THUMB_DOWN, IDS_MENUBISECTBAD, [] { CAppUtils::RunTortoiseGitProc(L"/command:bisect /bad"); });
+			postCmdList.emplace_back(IDI_BISECT_RESET, IDS_MENUBISECTRESET, [] { CAppUtils::RunTortoiseGitProc(L"/command:bisect /reset"); });
+		}
+	};
 
 	progress.DoModal();
 

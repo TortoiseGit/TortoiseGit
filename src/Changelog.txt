@@ -15,6 +15,7 @@ Released: unreleased
    * apr to 1.6.3 and apr-util to 1.6.1
  * Commit now informs the user if there is a conflict hint in the commit message (line starting with "# Conflicts:")
  * Fixed issue #3137: Add TortoiseGit to Win10 default program list
+ * Fixed issue #3141: bisect: add good/bad continue options to progress dialog
 
 == Bug Fixes ==
  * Fixed issue #3029: LogDlg: Action column icons painted over Graph or message columns when turned off or resized
