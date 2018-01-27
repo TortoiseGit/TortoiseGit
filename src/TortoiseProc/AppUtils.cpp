@@ -3325,15 +3325,10 @@ void CAppUtils::EditNote(GitRevLoglist* rev, ProjectProperties* projectPropertie
 	}
 }
 
-inline static int ConvertToVersionInt(int major, int minor, int patchlevel, int build)
-{
-	return (major << 24) + (minor << 16) + (patchlevel << 8) + build;
-}
-
 inline bool CAppUtils::IsGitVersionNewerOrEqual(int major, int minor, int patchlevel, int build)
 {
 	auto ver = GetMsysgitVersion();
-	return ver >= ConvertToVersionInt(major, minor, patchlevel, build);
+	return ver >= ConvertVersionToInt(major, minor, patchlevel, build);
 }
 
 int CAppUtils::GetMsysgitVersion()

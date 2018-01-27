@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 // Copyright (C) 2003-2008, 2012-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -596,7 +596,7 @@ void CTortoiseProcApp::CheckUpgrade()
 	CMessageBox::RemoveRegistryKey(L"OldMsysgitVersionWarning");
 
 	CRegDWORD checkNewerWeekDay = CRegDWORD(L"Software\\TortoiseGit\\CheckNewerWeekDay", 0);
-	if (!checkNewerWeekDay.exists() || lVersion <= 0x01081000)
+	if (!checkNewerWeekDay.exists() || lVersion <= ConvertVersionToInt(1, 8, 16))
 	{
 		std::random_device rd;
 		std::mt19937 mt(rd());
@@ -605,19 +605,19 @@ void CTortoiseProcApp::CheckUpgrade()
 	}
 
 	// version specific updates
-	if (lVersion <= 0x02040100)
+	if (lVersion <= ConvertVersionToInt(2, 4, 1))
 	{
 		CRegStdDWORD(L"Software\\TortoiseGit\\CommitAskBeforeCancel").removeValue();
 	}
 
-	if (lVersion <= 0x02040000)
+	if (lVersion <= ConvertVersionToInt(2, 4, 0))
 	{
 		CRegStdDWORD commmitAskBeforeCancel(L"Software\\TortoiseGit\\CommitAskBeforeCancel");
 		if (commmitAskBeforeCancel.exists() && commmitAskBeforeCancel != IDYES)
 			commmitAskBeforeCancel = IDYES;
 	}
 
-	if (lVersion <= 0x02020100)
+	if (lVersion <= ConvertVersionToInt(2, 2, 1))
 	{
 		CString username = CRegString(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\Username", L""); 
 		CString password = CRegString(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\Password", L"");
@@ -637,7 +637,7 @@ void CTortoiseProcApp::CheckUpgrade()
 		}
 	}
 
-	if (lVersion <= 0x02010500)
+	if (lVersion <= ConvertVersionToInt(2, 1, 5))
 	{
 		// We updated GITSLC_COL_VERSION, but only significant changes were made for GitStatusList
 		// so, smoothly migrate GitLoglistBase settings
@@ -649,7 +649,7 @@ void CTortoiseProcApp::CheckUpgrade()
 		}
 	}
 
-	if (lVersion <= 0x01090000)
+	if (lVersion <= ConvertVersionToInt(1, 9, 0))
 	{
 		if (CRegDWORD(L"Software\\TortoiseGit\\TGitCacheCheckContent", TRUE) == FALSE)
 		{
@@ -658,27 +658,27 @@ void CTortoiseProcApp::CheckUpgrade()
 		}
 	}
 
-	if (lVersion <= 0x01080801)
+	if (lVersion <= ConvertVersionToInt(1, 8, 8, 1))
 	{
 		CRegStdDWORD(L"Software\\TortoiseGit\\StatusColumns\\BrowseRefs").removeValue();
 		CRegStdString(L"Software\\TortoiseGit\\StatusColumns\\BrowseRefs_Order").removeValue();
 		CRegStdString(L"Software\\TortoiseGit\\StatusColumns\\BrowseRefs_Width").removeValue();
 	}
 
-	if (lVersion <= 0x01080401)
+	if (lVersion <= ConvertVersionToInt(1, 8, 4, 1))
 	{
 		if (CRegStdDWORD(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\UseMAPI", FALSE) == TRUE)
 			CRegStdDWORD(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\DeliveryType") = SEND_MAIL_MAPI;
 		CRegStdDWORD(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\UseMAPI").removeValue();
 	}
 
-	if (lVersion <= 0x01080202)
+	if (lVersion <= ConvertVersionToInt(1, 8, 2, 2))
 	{
 		// upgrade to 1.8.3: force recreation of all diff scripts.
 		CAppUtils::SetupDiffScripts(true, CString());
 	}
 
-	if (lVersion <= 0x01080100)
+	if (lVersion <= ConvertVersionToInt(1, 8, 1))
 	{
 		if (CRegStdDWORD(L"Software\\TortoiseGit\\LogTopoOrder", TRUE) == FALSE)
 			CRegStdDWORD(L"Software\\TortoiseGit\\LogOrderBy") = 0;
@@ -698,12 +698,12 @@ void CTortoiseProcApp::CheckUpgrade()
 		}
 	}
 
-	if (lVersion <= 0x01040000)
+	if (lVersion <= ConvertVersionToInt(1, 4, 0))
 	{
 		CRegStdDWORD(L"Software\\TortoiseGit\\OwnerdrawnMenus").removeValue();
 	}
 
-	if (lVersion <= 0x01070600)
+	if (lVersion <= ConvertVersionToInt(1, 7, 6))
 	{
 		CoInitialize(nullptr);
 		EnsureGitLibrary();
