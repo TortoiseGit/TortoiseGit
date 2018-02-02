@@ -98,6 +98,7 @@
 	<?define GuidProtocolTGit="59646B9D-5524-4236-83E4-2A2D88175ED4"?>
 	<?define GuidProtocolGit="0AD2B787-A9B3-4AD7-99A5-EC6DFF0EB2B7"?>
 	<?define GuidProtocolGithub="78544CC9-8E07-4968-BD03-2D3260301784"?>
+	<?define GuidProtocolXGithubClient="91b67a41-96ad-410c-a64b-ca15d4abcbf2"?>
 	<?define GuidProtocolSmartgit="294096FE-7AD3-445C-8F7C-77B048315FB9"?>
 	<?define GuidPlainSettingsShortcuts="D78CE764-1770-4D38-9229-F5068D8738FD"?>
 	<?define GuidPlatformSettingsShortcuts="256F134F-87F1-418F-BA9A-AFA92270D42D"?>
@@ -184,6 +185,7 @@
 	<?define GuidProtocolTGit="83AEB17F-36A5-4FE1-90DA-57904A085A98"?>
 	<?define GuidProtocolGit="508DD925-273C-4170-9D81-55222E2E36AB"?>
 	<?define GuidProtocolGithub="02D10663-4B9B-4164-B6DA-6EC8BC222A92"?>
+	<?define GuidProtocolXGithubClient="4d1fa7d4-a012-4317-8a0e-685bab6a474b"?>
 	<?define GuidProtocolSmartgit="C114A9E4-2427-4435-B3BE-11EDC9C39B8C"?>
 	<?define GuidPlainSettingsShortcuts="49263747-C09E-4FFE-A0A4-8E8966CBD807"?>
 	<?define GuidPlatformSettingsShortcuts="F1B92E39-6F75-4ED4-9099-CB5DC7A91831"?>

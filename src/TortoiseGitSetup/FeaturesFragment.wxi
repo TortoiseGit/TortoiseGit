@@ -102,6 +102,9 @@
 			<Feature Id="ProtocolAssocSmartgit" Level="4" Title="Register smartgit://-link handler" Description="Associate smartgit://-links with TortoiseGit clone command" TypicalDefault="install" Absent="allow" AllowAdvertise="no">
 				<ComponentRef Id="ProtocolSmartgit"/>
 			</Feature>
+			<Feature Id="ProtocolAssocXGithubClient" Level="4" Title="Register x-github-client://-link handler" Description="Associate x-github-client://-links with TortoiseGit clone command" TypicalDefault="install" Absent="allow" AllowAdvertise="no">
+				<ComponentRef Id="ProtocolXGithubClient"/>
+			</Feature>
 		</Feature>
 
 		<?if $(var.DictionaryENGB) = 1 ?>

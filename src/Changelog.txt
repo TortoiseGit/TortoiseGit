@@ -16,6 +16,7 @@ Released: unreleased
  * Commit now informs the user if there is a conflict hint in the commit message (line starting with "# Conflicts:")
  * Fixed issue #3137: Add TortoiseGit to Win10 default program list
  * Fixed issue #3141: bisect: add good/bad continue options to progress dialog
+ * Add support for github's new client protocol (x-github-client)
 
 == Bug Fixes ==
  * Fixed issue #3029: LogDlg: Action column icons painted over Graph or message columns when turned off or resized

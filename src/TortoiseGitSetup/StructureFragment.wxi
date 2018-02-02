@@ -332,6 +332,7 @@
 					<RegistryValue Root="HKLM" Key="Software\TortoiseGit\Capabilities\UrlAssociations" Name="github-windows" Value="TortoiseGitURL" Type="string" />
 					<RegistryValue Root="HKLM" Key="Software\TortoiseGit\Capabilities\UrlAssociations" Name="smartgit" Value="TortoiseGitURL" Type="string" />
 					<RegistryValue Root="HKLM" Key="Software\TortoiseGit\Capabilities\UrlAssociations" Name="git" Value="TortoiseGitURL" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\TortoiseGit\Capabilities\UrlAssociations" Name="x-github-client" Value="TortoiseGitURL" Type="string" />
 					<RegistryValue Root="HKLM" Key="Software\Classes\TortoiseGitURL" Value="URL: TortoiseGit" Type="string" />
 					<RegistryValue Root="HKLM" Key="Software\Classes\TortoiseGitURL" Name="FriendlyTypeName" Value="URL: TortoiseGit" Type="string"/>
 					<RegistryValue Root="HKLM" Key="Software\Classes\TortoiseGitURL" Name="URL Protocol" Value="" Type="string"/>
@@ -765,6 +766,12 @@
 						<RegistryValue Root="HKLM" Key="Software\Classes\github-windows" Name="URL Protocol" Value="" Type="string"/>
 						<RegistryValue Root="HKLM" Key="Software\Classes\github-windows\DefaultIcon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,0" Type="string" />
 						<RegistryValue Root="HKLM" Key="Software\Classes\github-windows\shell\open\command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /urlhandler:&quot;%1&quot;" Type="string" KeyPath="yes"/>
+					</Component>
+					<Component Id="ProtocolXGithubClient" Guid="$(var.GuidProtocolXGithubClient)" Win64="$(var.Win64YesNo)">
+						<RegistryValue Root="HKLM" Key="Software\Classes\x-github-client" Value="URL: X-Github-Client Protocol" Type="string" />
+						<RegistryValue Root="HKLM" Key="Software\Classes\x-github-client" Name="URL Protocol" Value="" Type="string"/>
+						<RegistryValue Root="HKLM" Key="Software\Classes\x-github-client\DefaultIcon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,0" Type="string" />
+						<RegistryValue Root="HKLM" Key="Software\Classes\x-github-client\shell\open\command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /urlhandler:&quot;%1&quot;" Type="string" KeyPath="yes"/>
 					</Component>
 					<Component Id="ProtocolSmartgit" Guid="$(var.GuidProtocolSmartgit)" Win64="$(var.Win64YesNo)">
 						<RegistryValue Root="HKLM" Key="Software\Classes\smartgit" Value="URL: Smartgit Protocol" Type="string" />

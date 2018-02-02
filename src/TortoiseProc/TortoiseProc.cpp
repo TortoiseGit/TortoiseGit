@@ -290,6 +290,12 @@ BOOL CTortoiseProcApp::InitInstance()
 			if (questioMark > 0)
 				url = url.Left(questioMark);
 		}
+		else if (CStringUtils::StartsWith(url, L"x-github-client://openRepo/")) {
+			url = url.Mid(27); // 27 = "x-github-client://openRepo/".GetLength()
+			int questioMark = url.Find('?');
+			if (questioMark > 0)
+				url = url.Left(questioMark);
+		}
 		else if (CStringUtils::StartsWith(url, L"smartgit://cloneRepo/"))
 			url = url.Mid(21); // 21 = "smartgit://cloneRepo/".GetLength()
 		else
