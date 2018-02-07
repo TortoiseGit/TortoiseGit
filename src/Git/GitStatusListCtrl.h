@@ -618,6 +618,7 @@ public:
 	LONG GetSubmoduleCount() { return m_nShownSubmodules; }
 
 	CAutoReadLock AcquireReadLock() { return CAutoReadLock(m_guard); }
+	CAutoReadWeakLock AcquireReadWeakLock(DWORD timeout) { return CAutoReadWeakLock(m_guard, timeout); }
 
 	LONG						m_nTargetCount;		///< number of targets in the file passed to GetStatus()
 

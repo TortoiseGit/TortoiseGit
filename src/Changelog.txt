@@ -50,6 +50,7 @@ Released: unreleased
  * Fixed issue #3139: Git SSH operations do not work after git update to version 2.16.0 if ssh URL contains a port
  * Fixed issue #3143: Remember last selection of "Show nested refs" when browsing references
  * Fixed issue #3152: TortoiseGitMerge: Single pane view as default
+ * Fixed issue #3158: TortoiseGitProc.exe hangs with 100% CPU when displaying commit window
 
 == Known issues ==
  * Issue #3087: Due to changes in Win 10 TortoiseGit(Merge) might start up slowly or gets slower over time.

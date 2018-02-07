@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2009, 2015 - TortoiseSVN
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -1034,7 +1034,12 @@ void CLogDlg::FillPatchView(bool onlySetTimer)
 		return;
 	}
 
-	auto locker(m_ChangedFileListCtrl.AcquireReadLock());
+	auto locker(m_ChangedFileListCtrl.AcquireReadWeakLock(50));
+	if (!locker.IsAcquired())
+	{
+		SetTimer(LOG_FILLPATCHVTIMER, 100, nullptr);
+		return;
+	}
 	POSITION pos = m_ChangedFileListCtrl.GetFirstSelectedItemPosition();
 	CString out;
 

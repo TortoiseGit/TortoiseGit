@@ -2292,7 +2292,12 @@ void CCommitDlg::FillPatchView(bool onlySetTimer)
 			return;
 		}
 
-		auto locker(m_ListCtrl.AcquireReadLock());
+		auto locker(m_ListCtrl.AcquireReadWeakLock(50));
+		if (!locker.IsAcquired())
+		{
+			SetTimer(FILLPATCHVTIMER, 100, nullptr);
+			return;
+		}
 		POSITION pos=m_ListCtrl.GetFirstSelectedItemPosition();
 		CString cmd,out;
 
