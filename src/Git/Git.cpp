@@ -255,12 +255,18 @@ bool CGit::IsBranchNameValid(const CString& branchname)
 
 int CGit::RunAsync(CString cmd, PROCESS_INFORMATION* piOut, HANDLE* hReadOut, HANDLE* hErrReadOut, const CString* StdioFile)
 {
-	CAutoGeneralHandle hRead, hWrite, hReadErr, hWriteErr;
+	CAutoGeneralHandle hRead, hWrite, hReadErr, hWriteErr, hWriteIn, hReadIn;
 	CAutoFile hStdioFile;
 
 	SECURITY_ATTRIBUTES sa = { 0 };
 	sa.nLength = sizeof(SECURITY_ATTRIBUTES);
 	sa.bInheritHandle=TRUE;
+	if (!CreatePipe(hReadIn.GetPointer(), hWriteIn.GetPointer(), &sa, 0))
+	{
+		CString err = CFormatMessageWrapper();
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": could not open stdin pipe: %s\n", (LPCTSTR)err.Trim());
+		return TGIT_GIT_ERROR_OPEN_PIP;
+	}
 	if (!CreatePipe(hRead.GetPointer(), hWrite.GetPointer(), &sa, 0))
 	{
 		CString err = CFormatMessageWrapper();
@@ -280,7 +286,7 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION* piOut, HANDLE* hReadOut, HA
 	STARTUPINFO si = { 0 };
 	PROCESS_INFORMATION pi = { 0 };
 	si.cb=sizeof(STARTUPINFO);
-
+	si.hStdInput = hReadIn;
 	if (hErrReadOut)
 		si.hStdError = hWriteErr;
 	else
@@ -295,7 +301,6 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION* piOut, HANDLE* hReadOut, HA
 
 	LPTSTR pEnv = m_Environment;
 	DWORD dwFlags = CREATE_UNICODE_ENVIRONMENT;
-
 	dwFlags |= CREATE_NEW_PROCESS_GROUP | DETACHED_PROCESS;
 
 	memset(&this->m_CurrentGitPi,0,sizeof(PROCESS_INFORMATION));
@@ -329,6 +334,9 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION* piOut, HANDLE* hReadOut, HA
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": error while executing command: %s\n", (LPCTSTR)err.Trim());
 		return TGIT_GIT_ERROR_CREATE_PROCESS;
 	}
+
+	// Close the pipe handle so the child process stops reading.
+	hWriteIn.CloseHandle();
 
 	m_CurrentGitPi = pi;
 
