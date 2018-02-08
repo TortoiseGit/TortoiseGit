@@ -3371,7 +3371,7 @@ int CAppUtils::GetMsysgitVersion()
 		}
 	}
 
-	regTime = time&0xFFFFFFFF;
+	regTime = (DWORD)CGit::filetime_to_time_t(time);
 	regVersion = ver;
 	g_Git.ms_LastMsysGitVersion = ver;
 
