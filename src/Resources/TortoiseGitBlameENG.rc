@@ -308,6 +308,7 @@ END
 
 IDR_TORTOISE_GIT_BLAME_MAINFRAME ACCELERATORS
 BEGIN
+    VK_ESCAPE,      ID_APP_EXIT,            VIRTKEY, NOINVERT
     "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL
     "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL
     "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL
@@ -323,6 +324,7 @@ BEGIN
     VK_F1,          ID_HELP,                VIRTKEY 
     VK_F3,          ID_FIND_NEXT,           VIRTKEY, NOINVERT
     VK_F3,          ID_FIND_PREV,           VIRTKEY, SHIFT, NOINVERT
+    "Q",            ID_APP_EXIT,            VIRTKEY, CONTROL, NOINVERT
 END
 
 

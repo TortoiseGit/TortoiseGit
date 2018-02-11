@@ -17,6 +17,7 @@ Released: unreleased
  * Fixed issue #3137: Add TortoiseGit to Win10 default program list
  * Fixed issue #3141: bisect: add good/bad continue options to progress dialog
  * Add support for github's new client protocol (x-github-client)
+ * Fixed issue #3160: Close TortoiseGitBlame window by ESC key (you might need to reset keyboard shortcut settings manually)
 
 == Bug Fixes ==
  * Fixed issue #3029: LogDlg: Action column icons painted over Graph or message columns when turned off or resized
