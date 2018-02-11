@@ -51,6 +51,8 @@ Released: unreleased
  * Fixed issue #3143: Remember last selection of "Show nested refs" when browsing references
  * Fixed issue #3152: TortoiseGitMerge: Single pane view as default
  * Fixed issue #3158: TortoiseGitProc.exe hangs with 100% CPU when displaying commit window
+ * Fixed issue #3153: "Failed to parse config file" if .gitconfig or .gitmodules use CRLF and contain blank lines
+ * Fixed issue #3155: Can't parse config or .gitmodules files if the encoding is UTF-8 BOM
 
 == Known issues ==
  * Issue #3087: Due to changes in Win 10 TortoiseGit(Merge) might start up slowly or gets slower over time.
