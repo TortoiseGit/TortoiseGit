@@ -57,7 +57,8 @@ Released: unreleased
 
 == Known issues ==
  * Issue #3087: Due to changes in Win 10 TortoiseGit(Merge) might start up slowly or gets slower over time.
-   Also see: https://developercommunity.visualstudio.com/content/problem/136952/mfc-ribbon-slow-on-first-loadshow.html
+   The patch KB4058258 (OS Build 16299.214) released on 2018-01-31 fixes this issue; check Windows update.
+ * Issue #3145: Mouse Jumps on Drag in Commit Windows on Windows 10, due to a bug in Windows 10 1709
 
 = Release 2.5.0 =
 Released: 2017-07-23
