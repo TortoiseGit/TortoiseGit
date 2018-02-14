@@ -180,10 +180,10 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			case ID_GNUDIFF1: // compare with WC, unified
 			{
 				GitRev* r1 = m_arShownList.SafeGetAt(FirstSelect);
-				bool bMerge = false, bCombine = false;
-				CString hash2;
 				if(!r1->m_CommitHash.IsEmpty())
 				{
+					CString hash2;
+					bool bMerge = false, bCombine = false;
 					CString merge;
 					cmd >>= 16;
 					if( (cmd&0xFFFF) == 0xFFFF)
@@ -238,10 +238,25 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 								hash2 = r1->m_ParentHash[cmd-1].ToString();
 						}
 					}
-					CAppUtils::StartShowUnifiedDiff(nullptr, CTGitPath(), hash2, CTGitPath(), r1->m_CommitHash.ToString(), bShiftPressed, false, false, bMerge, bCombine);
+					if (m_Path.IsDirectory() || !(m_ShowMask & CGit::LOG_INFO_FOLLOW))
+						CAppUtils::StartShowUnifiedDiff(nullptr, m_Path, hash2, m_Path, r1->m_CommitHash.ToString(), bShiftPressed, false, false, bMerge, bCombine);
+					else
+					{
+						CString path = m_Path.GetGitPathString();
+						// start with 1 (0 = working copy changes)
+						for (int i = m_bShowWC ? 1 : 0; i < FirstSelect; ++i)
+						{
+							GitRevLoglist* first = m_arShownList.SafeGetAt(i);
+							CTGitPathList list = first->GetFiles(nullptr);
+							const CTGitPath* file = list.LookForGitPath(path);
+							if (file && !file->GetGitOldPathString().IsEmpty())
+								path = file->GetGitOldPathString();
+						}
+						CAppUtils::StartShowUnifiedDiff(nullptr, CTGitPath(path), hash2, CTGitPath(path), r1->m_CommitHash.ToString(), bShiftPressed, false, false, bMerge, bCombine);
+					}
 				}
 				else
-					CAppUtils::StartShowUnifiedDiff(nullptr, CTGitPath(), L"HEAD", CTGitPath(), GitRev::GetWorkingCopy(), bShiftPressed, false, false, bMerge, bCombine);
+					CAppUtils::StartShowUnifiedDiff(nullptr, m_Path, L"HEAD", m_Path, GitRev::GetWorkingCopy(), bShiftPressed);
 			}
 			break;
 
@@ -249,7 +264,22 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			{
 				GitRev* r1 = m_arShownList.SafeGetAt(FirstSelect);
 				GitRev* r2 = m_arShownList.SafeGetAt(LastSelect);
-				CAppUtils::StartShowUnifiedDiff(nullptr, CTGitPath(), r2->m_CommitHash.ToString(), CTGitPath(), r1->m_CommitHash.ToString(), bShiftPressed);
+				if (m_Path.IsDirectory() || !(m_ShowMask & CGit::LOG_INFO_FOLLOW))
+					CAppUtils::StartShowUnifiedDiff(nullptr, m_Path, r2->m_CommitHash.ToString(), m_Path, r1->m_CommitHash.ToString(), bShiftPressed);
+				else
+				{
+					CString path = m_Path.GetGitPathString();
+					// start with 1 (0 = working copy changes)
+					for (int i = m_bShowWC ? 1 : 0; i < FirstSelect; ++i)
+					{
+						GitRevLoglist* first = m_arShownList.SafeGetAt(i);
+						CTGitPathList list = first->GetFiles(nullptr);
+						const CTGitPath* file = list.LookForGitPath(path);
+						if (file && !file->GetGitOldPathString().IsEmpty())
+							path = file->GetGitOldPathString();
+					}
+					CAppUtils::StartShowUnifiedDiff(nullptr, CTGitPath(path), r2->m_CommitHash.ToString(), CTGitPath(path), r1->m_CommitHash.ToString(), bShiftPressed);
+				}
 			}
 			break;
 
