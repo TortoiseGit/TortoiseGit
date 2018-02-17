@@ -65,7 +65,7 @@ Released: 2017-07-23
 
 == Major change ==
  * VS2017 is used for building TortoiseGit
-   On x64 versions of Windows, the TortoiseGit context menu and overlays won't show for pure 32-bit applications in their file-open/save dialogs until you install the 2015 C-runtime for x86.
+   On x64 versions of Windows, the TortoiseGit context menu and overlays won't show for pure 32-bit applications in their file-open/save dialogs until you install the 2015 C++-runtime for x86.
    https://www.microsoft.com/en-us/download/details.aspx?id=52685 (select the vc_redist.x86.exe file for download).
 
 == Features ==
