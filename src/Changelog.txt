@@ -1,5 +1,7 @@
 ﻿= Release 2.6.0 =
-Released: unreleased
+Released: 2018-02-17
+
+This is planned to be the last version compatible with MsysGit 1.9.5 (i.e., Git for Windows < 1.9.5).
 
 == Features ==
  * Fixed issue #3089: Show parent SHA1 on cherry picking a merge commit
@@ -56,9 +58,8 @@ Released: unreleased
  * Fixed issue #3155: Can't parse config or .gitmodules files if the encoding is UTF-8 BOM
 
 == Known issues ==
- * Issue #3087: Due to changes in Win 10 TortoiseGit(Merge) might start up slowly or gets slower over time.
-   The patch KB4058258 (OS Build 16299.214) released on 2018-01-31 fixes this issue; check Windows update.
- * Issue #3145: Mouse Jumps on Drag in Commit Windows on Windows 10, due to a bug in Windows 10 1709
+ * Due to changes in Win 10 1709 TortoiseGit(Merge) might start up slowly or gets slower over time without the patch KB4058258 (OS Build 16299.214) released on 2018-01-31; check Windows update (cf. issue #3087).
+ * Due to a bug in Windows 10 1709 the mouse might jump on Drag in Commit Dialog (cf. issue #3145)
 
 = Release 2.5.0 =
 Released: 2017-07-23
