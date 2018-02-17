@@ -7,6 +7,7 @@ if %OUTDIR:~-1%==\ set OUTDIR=%OUTDIR:~0,-1%
 set CLEAN=
 if [%2]==[clean] set CLEAN="clean"
 
+call :nmake 0130 oc
 call :nmake 1026 bg
 call :nmake 1027 ca
 call :nmake 1028 zh_TW
