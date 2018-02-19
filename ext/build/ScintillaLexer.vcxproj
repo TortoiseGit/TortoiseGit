@@ -45,7 +45,7 @@
       <AdditionalIncludeDirectories>..\scintilla\include;..\scintilla\src;..\scintilla\lexlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NDEBUG;SCI_LEXER;USE_D2D;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <WarningLevel>Level2</WarningLevel>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalDependencies>imm32.lib;comctl32.lib;msimg32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -71,6 +71,7 @@
     <ClCompile Include="..\scintilla\lexers\LexRust.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexSTTXT.cxx" />
     <ClCompile Include="..\scintilla\lexlib\CharacterCategory.cxx" />
+    <ClCompile Include="..\scintilla\lexlib\DefaultLexer.cxx" />
     <ClCompile Include="..\scintilla\src\AutoComplete.cxx" />
     <ClCompile Include="..\scintilla\src\CallTip.cxx" />
     <ClCompile Include="..\scintilla\src\CaseConvert.cxx" />
@@ -79,6 +80,7 @@
     <ClCompile Include="..\scintilla\src\CellBuffer.cxx" />
     <ClCompile Include="..\scintilla\src\CharClassify.cxx" />
     <ClCompile Include="..\scintilla\src\ContractionState.cxx" />
+    <ClCompile Include="..\scintilla\src\DBCS.cxx" />
     <ClCompile Include="..\scintilla\src\Decoration.cxx" />
     <ClCompile Include="..\scintilla\src\Document.cxx" />
     <ClCompile Include="..\scintilla\src\EditModel.cxx" />
@@ -200,8 +202,13 @@
     <ClCompile Include="..\scintilla\win32\ScintillaWin.cxx" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\scintilla\include\ILexer.h" />
+    <ClInclude Include="..\scintilla\include\ILoader.h" />
+    <ClInclude Include="..\scintilla\include\SciLexer.h" />
+    <ClInclude Include="..\scintilla\include\Scintilla.h" />
     <ClInclude Include="..\scintilla\include\Sci_Position.h" />
     <ClInclude Include="..\scintilla\lexlib\CharacterCategory.h" />
+    <ClInclude Include="..\scintilla\lexlib\DefaultLexer.h" />
     <ClInclude Include="..\scintilla\src\AutoComplete.h" />
     <ClInclude Include="..\scintilla\src\CallTip.h" />
     <ClInclude Include="..\scintilla\src\CaseConvert.h" />
@@ -210,6 +217,7 @@
     <ClInclude Include="..\scintilla\src\CellBuffer.h" />
     <ClInclude Include="..\scintilla\src\CharClassify.h" />
     <ClInclude Include="..\scintilla\src\ContractionState.h" />
+    <ClInclude Include="..\scintilla\src\DBCS.h" />
     <ClInclude Include="..\scintilla\src\Decoration.h" />
     <ClInclude Include="..\scintilla\src\Document.h" />
     <ClInclude Include="..\scintilla\src\EditModel.h" />

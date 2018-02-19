@@ -21,10 +21,9 @@
 #include "StyleContext.h"
 #include "CharacterSet.h"
 #include "LexerModule.h"
+#include "DefaultLexer.h"
 
-#ifdef SCI_NAMESPACE
 using namespace Scintilla;
-#endif
 
 
 static const char *const DMISWordListDesc[] = {
@@ -38,7 +37,7 @@ static const char *const DMISWordListDesc[] = {
 };
 
 
-class LexerDMIS : public ILexer
+class LexerDMIS : public DefaultLexer
 {
 	private:
 		char *m_wordListSets;
@@ -57,7 +56,7 @@ class LexerDMIS : public ILexer
 		virtual ~LexerDMIS(void);
 
 		int SCI_METHOD Version() const override {
-			return lvOriginal;
+			return lvRelease4;
 		}
 
 		void SCI_METHOD Release() override {
@@ -86,7 +85,7 @@ class LexerDMIS : public ILexer
 			return NULL;
 		}
 
-		static ILexer *LexerFactoryDMIS() {
+		static ILexer4 *LexerFactoryDMIS() {
 			return new LexerDMIS;
 		}
 

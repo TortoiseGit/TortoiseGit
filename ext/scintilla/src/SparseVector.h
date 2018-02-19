@@ -8,16 +8,14 @@
 #ifndef SPARSEVECTOR_H
 #define SPARSEVECTOR_H
 
-#ifdef SCI_NAMESPACE
 namespace Scintilla {
-#endif
 
 // SparseVector is similar to RunStyles but is more efficient for cases where values occur
 // for one position instead of over a range of positions.
 template <typename T>
 class SparseVector {
 private:
-	std::unique_ptr<Partitioning> starts;
+	std::unique_ptr<Partitioning<int>> starts;
 	std::unique_ptr<SplitVector<T>> values;
 	T empty;
 	// Deleted so SparseVector objects can not be copied.
@@ -28,7 +26,7 @@ private:
 	}
 public:
 	SparseVector() : empty() {
-		starts.reset(new Partitioning(8));
+		starts.reset(new Partitioning<int>(8));
 		values.reset(new SplitVector<T>());
 		values->InsertEmpty(0, 2);
 	}
@@ -151,8 +149,6 @@ public:
 	}
 };
 
-#ifdef SCI_NAMESPACE
 }
-#endif
 
 #endif

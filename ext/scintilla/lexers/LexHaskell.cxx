@@ -41,10 +41,9 @@
 #include "CharacterCategory.h"
 #include "LexerModule.h"
 #include "OptionSet.h"
+#include "DefaultLexer.h"
 
-#ifdef SCI_NAMESPACE
 using namespace Scintilla;
-#endif
 
 // See https://github.com/ghc/ghc/blob/master/compiler/parser/Lexer.x#L1682
 // Note, letter modifiers are prohibited.
@@ -269,7 +268,7 @@ struct OptionSetHaskell : public OptionSet<OptionsHaskell> {
    }
 };
 
-class LexerHaskell : public ILexer {
+class LexerHaskell : public DefaultLexer {
    bool literate;
    Sci_Position firstImportLine;
    int firstImportIndent;
@@ -401,7 +400,7 @@ public:
    }
 
    int SCI_METHOD Version() const override {
-      return lvOriginal;
+      return lvRelease4;
    }
 
    const char * SCI_METHOD PropertyNames() override {
@@ -432,11 +431,11 @@ public:
       return 0;
    }
 
-   static ILexer *LexerFactoryHaskell() {
+   static ILexer4 *LexerFactoryHaskell() {
       return new LexerHaskell(false);
    }
 
-   static ILexer *LexerFactoryLiterateHaskell() {
+   static ILexer4 *LexerFactoryLiterateHaskell() {
       return new LexerHaskell(true);
    }
 };

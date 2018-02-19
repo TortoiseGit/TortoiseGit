@@ -38,10 +38,9 @@ Differentiate between labels and variables
 #include "LexerModule.h"
 #include "OptionSet.h"
 #include "SparseState.h"
+#include "DefaultLexer.h"
 
-#ifdef SCI_NAMESPACE
 using namespace Scintilla;
-#endif
 
 namespace {
    // Use an unnamed namespace to protect the functions and classes from name conflicts
@@ -122,7 +121,7 @@ namespace {
    };
 }
 
-class LexerABL : public ILexer {
+class LexerABL : public DefaultLexer {
    CharacterSet setWord;
    CharacterSet setNegationOp;
    CharacterSet setArithmethicOp;
@@ -149,7 +148,7 @@ public:
       delete this;
    }
    int SCI_METHOD Version() const override {
-      return lvOriginal;
+      return lvRelease4;
    }
    const char * SCI_METHOD PropertyNames() override {
       return osABL.PropertyNames();
@@ -172,10 +171,10 @@ public:
    void * SCI_METHOD PrivateCall(int, void *) override {
       return 0;
    }
-   int SCI_METHOD LineEndTypesSupported() {
+   int SCI_METHOD LineEndTypesSupported() override {
       return SC_LINE_END_TYPE_DEFAULT;
    }
-   static ILexer *LexerFactoryABL() {
+   static ILexer4 *LexerFactoryABL() {
       return new LexerABL();
    }
 };
