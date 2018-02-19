@@ -1,6 +1,6 @@
 // TortoiseGitBlame - a Viewer for Git Blames
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // Copyright (C)2003 Don HO <donho@altern.org>
@@ -351,10 +351,10 @@ void CTortoiseGitBlameView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 
 int CTortoiseGitBlameView::GetLineUnderCursor(CPoint point)
 {
-	int firstvisibleline = (int)SendEditor(SCI_GETFIRSTVISIBLELINE);
-	int line = (int)SendEditor(SCI_DOCLINEFROMVISIBLE, firstvisibleline);
-	int linesonscreen = (int)SendEditor(SCI_LINESONSCREEN) + 1;
-	int height = (int)SendEditor(SCI_TEXTHEIGHT);
+	auto firstvisibleline = (int)SendEditor(SCI_GETFIRSTVISIBLELINE);
+	auto line = (int)SendEditor(SCI_DOCLINEFROMVISIBLE, firstvisibleline);
+	auto linesonscreen = (int)SendEditor(SCI_LINESONSCREEN) + 1;
+	auto height = (int)SendEditor(SCI_TEXTHEIGHT);
 
 	int i = 0, y = 0;
 	for (i = line; y <= point.y && i < (line + linesonscreen); ++i)
@@ -640,7 +640,7 @@ void CTortoiseGitBlameView::InitialiseEditor()
 			);
 	SendEditor(SCI_SETTABWIDTH, (DWORD)CRegStdDWORD(L"Software\\TortoiseGit\\BlameTabSize", 4));
 	SendEditor(SCI_SETREADONLY, TRUE);
-	int numberOfLines = m_data.GetNumberOfLines();
+	auto numberOfLines = m_data.GetNumberOfLines();
 	int numDigits = 2;
 	while (numberOfLines)
 	{
@@ -648,7 +648,7 @@ void CTortoiseGitBlameView::InitialiseEditor()
 		++numDigits;
 	}
 	if (m_bShowLine)
-		SendEditor(SCI_SETMARGINWIDTHN, 0, int(numDigits * SendEditor(SCI_TEXTWIDTH, STYLE_LINENUMBER, (LPARAM)"8")));
+		SendEditor(SCI_SETMARGINWIDTHN, 0, numDigits * (int)SendEditor(SCI_TEXTWIDTH, STYLE_LINENUMBER, (LPARAM)"8"));
 	else
 		SendEditor(SCI_SETMARGINWIDTHN, 0);
 	SendEditor(SCI_SETMARGINWIDTHN, 1);
@@ -674,15 +674,15 @@ void CTortoiseGitBlameView::InitialiseEditor()
 
 bool CTortoiseGitBlameView::DoSearch(CTortoiseGitBlameData::SearchDirection direction)
 {
-	int pos = (int)SendEditor(SCI_GETCURRENTPOS);
-	int line = (int)SendEditor(SCI_LINEFROMPOSITION, pos);
+	auto pos = (Sci_Position)SendEditor(SCI_GETCURRENTPOS);
+	auto line = (int)SendEditor(SCI_LINEFROMPOSITION, pos);
 
 	int i = m_data.FindFirstLineWrapAround(direction, m_sFindText, line, m_bMatchCase, [hWnd = m_pFindDialog->GetSafeHwnd()]{ FLASHWINFO flags = { sizeof(FLASHWINFO), hWnd, FLASHW_ALL, 2, 100 }; ::FlashWindowEx(&flags); });
 	if (i >= 0)
 	{
 		GotoLine(i + 1);
-		int selstart = (int)SendEditor(SCI_GETCURRENTPOS);
-		int selend = (int)SendEditor(SCI_POSITIONFROMLINE, i + 1);
+		auto selstart = (int)(Sci_Position)SendEditor(SCI_GETCURRENTPOS);
+		auto selend = (int)(Sci_Position)SendEditor(SCI_POSITIONFROMLINE, i + 1);
 		SendEditor(SCI_SETSELECTIONSTART, selstart);
 		SendEditor(SCI_SETSELECTIONEND, selend);
 		m_SelectedLine = i;
@@ -710,7 +710,7 @@ void CTortoiseGitBlameView::OnFindNext()
 bool CTortoiseGitBlameView::GotoLine(int line)
 {
 	--line;
-	int numberOfLines = m_data.GetNumberOfLines();
+	int numberOfLines = (int)m_data.GetNumberOfLines();
 	if (line < 0 || numberOfLines == 0)
 		return false;
 	if (line >= numberOfLines)
@@ -718,7 +718,7 @@ bool CTortoiseGitBlameView::GotoLine(int line)
 		line = numberOfLines - 1;
 	}
 
-	int nCurrentPos = (int)SendEditor(SCI_GETCURRENTPOS);
+	auto nCurrentPos = (Sci_Position)SendEditor(SCI_GETCURRENTPOS);
 	int nCurrentLine = (int)SendEditor(SCI_LINEFROMPOSITION,nCurrentPos);
 	int nFirstVisibleLine = (int)SendEditor(SCI_GETFIRSTVISIBLELINE);
 	int nLinesOnScreen = (int)SendEditor(SCI_LINESONSCREEN);
@@ -797,8 +797,8 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 	{
 		SIZE maxwidth = {0};
 
-		int numberOfLines = m_data.GetNumberOfLines();
-		for (int i = 0; i < numberOfLines; ++i)
+		auto numberOfLines = m_data.GetNumberOfLines();
+		for (size_t i = 0; i < numberOfLines; ++i)
 		{
 			::GetTextExtentPoint32(hDC, m_data.GetDate(i), m_data.GetDate(i).GetLength(), &width);
 			if (width.cx > maxwidth.cx)
@@ -811,8 +811,8 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 	{
 		SIZE maxwidth = {0};
 
-		int numberOfLines = m_data.GetNumberOfLines();
-		for (int i = 0; i < numberOfLines; ++i)
+		size_t numberOfLines = m_data.GetNumberOfLines();
+		for (size_t i = 0; i < numberOfLines; ++i)
 		{
 			::GetTextExtentPoint32(hDC,m_data.GetAuthor(i) , m_data.GetAuthor(i).GetLength(), &width);
 			if (width.cx > maxwidth.cx)
@@ -825,8 +825,8 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 	{
 		SIZE maxwidth = {0};
 
-		int numberOfLines = m_data.GetNumberOfLines();
-		for (int i = 0; i < numberOfLines; ++i)
+		size_t numberOfLines = m_data.GetNumberOfLines();
+		for (size_t i = 0; i < numberOfLines; ++i)
 		{
 			::GetTextExtentPoint32(hDC, m_data.GetFilename(i), m_data.GetFilename(i).GetLength(), &width);
 			if (width.cx > maxwidth.cx)
@@ -839,9 +839,9 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 	{
 		SIZE maxwidth = {0};
 
-		int numberOfLines = m_data.GetNumberOfLines();
+		size_t numberOfLines = m_data.GetNumberOfLines();
 		CString str;
-		for (int i = 0; i < numberOfLines; ++i)
+		for (size_t i = 0; i < numberOfLines; ++i)
 		{
 			str.Format(L"%5d", m_data.GetOriginalLineNumber(i));
 			::GetTextExtentPoint32(hDC, str, str.GetLength(), &width);
@@ -897,7 +897,7 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 	CGitHash oldHash;
 	CString oldFile;
 
-	for (int i = line; i < (line + linesonscreen) && i < m_data.GetNumberOfLines(); ++i)
+	for (int i = line; i < (line + linesonscreen) && (size_t)i < m_data.GetNumberOfLines(); ++i)
 	{
 		auto wrapcount = (int)SendEditor(SCI_WRAPCOUNT, i);
 		if (wrapcount > 1)
@@ -1016,9 +1016,9 @@ void CTortoiseGitBlameView::DrawLocatorBar(HDC hDC)
 	RECT lineRect = rc;
 	LONG height = rc.bottom-rc.top;
 
-	int numberOfLines = m_data.GetNumberOfLines();
+	auto numberOfLines = (int)m_data.GetNumberOfLines();
 	// draw the colored bar
-	for (int currentLine = 0; currentLine<numberOfLines; ++currentLine)
+	for (int currentLine = 0; currentLine < numberOfLines; ++currentLine)
 	{
 		COLORREF cr = GetLineColor(currentLine);
 		// get the line color
@@ -1028,7 +1028,7 @@ void CTortoiseGitBlameView::DrawLocatorBar(HDC hDC)
 		}
 		SetBkColor(hDC, cr);
 		lineRect.top = (LONG)Y;
-		lineRect.bottom = ((currentLine + 1) * height / numberOfLines);
+		lineRect.bottom = (((int)currentLine + 1) * height / (int)numberOfLines);
 		::ExtTextOut(hDC, 0, 0, ETO_OPAQUE, &lineRect, nullptr, 0, nullptr);
 		Y = lineRect.bottom;
 	}
@@ -1037,10 +1037,10 @@ void CTortoiseGitBlameView::DrawLocatorBar(HDC hDC)
 	{
 		// now draw two lines indicating the scroll position of the source view
 		SetBkColor(hDC, blackColor);
-		lineRect.top = (LONG)line * height / numberOfLines;
+		lineRect.top = (LONG)line * height / (int)numberOfLines;
 		lineRect.bottom = lineRect.top+1;
 		::ExtTextOut(hDC, 0, 0, ETO_OPAQUE, &lineRect, nullptr, 0, nullptr);
-		lineRect.top = (LONG)(line + linesonscreen) * height / numberOfLines;
+		lineRect.top = (LONG)(line + linesonscreen) * height / (int)numberOfLines;
 		lineRect.bottom = lineRect.top+1;
 		::ExtTextOut(hDC, 0, 0, ETO_OPAQUE, &lineRect, nullptr, 0, nullptr);
 	}
@@ -1256,7 +1256,6 @@ targetPath tellTarget toggleHighQuality trace unescape unloadMovie unLoadMovieNu
 			(wcscmp(line, L"wxs") == 0))
 		{
 			SendEditor(SCI_SETLEXER, SCLEX_HTML);
-			SendEditor(SCI_SETSTYLEBITS, 7);
 			SendEditor(SCI_SETKEYWORDS, 0, (LPARAM)(m_TextView.StringForControl(L"a abbr acronym address applet area b base basefont \
 bdo big blockquote body br button caption center \
 cite code col colgroup dd del dfn dir div dl dt em \
@@ -1503,10 +1502,10 @@ void CTortoiseGitBlameView::MapLineToLogIndex()
 	std::vector<int> lineToLogIndex;
 
 
-	int numberOfLines = m_data.GetNumberOfLines();
+	size_t numberOfLines = m_data.GetNumberOfLines();
 	lineToLogIndex.reserve(numberOfLines);
 	size_t logSize = this->GetLogData()->size();
-	for (int j = 0; j < numberOfLines; ++j)
+	for (size_t j = 0; j < numberOfLines; ++j)
 	{
 		CGitHash& hash = m_data.GetHash(j);
 
@@ -1540,7 +1539,7 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 
 	int encoding = m_data.UpdateEncoding(Encode);
 
-	int numberOfLines = m_data.GetNumberOfLines();
+	auto numberOfLines = (int)m_data.GetNumberOfLines();
 	if (numberOfLines > 0)
 	{
 		CStringA text;
@@ -1639,9 +1638,9 @@ CString CTortoiseGitBlameView::ResolveCommitFile(const CString& path)
 	}
 }
 
-COLORREF CTortoiseGitBlameView::GetLineColor(int line)
+COLORREF CTortoiseGitBlameView::GetLineColor(size_t line)
 {
-	if (m_colorage && line >= 0 && (size_t)line < m_lineToLogIndex.size())
+	if (m_colorage && line < m_lineToLogIndex.size())
 	{
 		int logIndex = m_lineToLogIndex[line];
 		if (logIndex >= 0)
@@ -1672,7 +1671,7 @@ void CTortoiseGitBlameView::OnSciPainted(NMHDR *,LRESULT *)
 void CTortoiseGitBlameView::OnLButtonDown(UINT nFlags,CPoint point)
 {
 	int line = GetLineUnderCursor(point);
-	if (line < m_data.GetNumberOfLines())
+	if ((size_t)line < m_data.GetNumberOfLines())
 	{
 		SetSelectedLine(line);
 		if (m_data.GetHash(line) != m_SelectedHash)
@@ -1711,7 +1710,7 @@ void CTortoiseGitBlameView::OnSciGetBkColor(NMHDR* hdr, LRESULT* /*result*/)
 {
 	SCNotification *notification=reinterpret_cast<SCNotification *>(hdr);
 
-	if (notification->line < m_data.GetNumberOfLines())
+	if (notification->line < (Sci_Position)m_data.GetNumberOfLines())
 	{
 		if (m_data.GetHash(notification->line) == this->m_SelectedHash)
 			notification->lParam = m_selectedauthorcolor;

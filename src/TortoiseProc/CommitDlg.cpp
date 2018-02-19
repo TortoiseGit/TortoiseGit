@@ -2641,9 +2641,9 @@ void CCommitDlg::OnFocusFileList()
 
 void CCommitDlg::OnScnUpdateUI(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 {
-	int pos = (int)this->m_cLogMessage.Call(SCI_GETCURRENTPOS);
-	int line = (int)this->m_cLogMessage.Call(SCI_LINEFROMPOSITION,pos);
-	int column = (int)this->m_cLogMessage.Call(SCI_GETCOLUMN,pos);
+	auto pos = (Sci_Position)m_cLogMessage.Call(SCI_GETCURRENTPOS);
+	auto line = (int)m_cLogMessage.Call(SCI_LINEFROMPOSITION, pos);
+	auto column = (int)m_cLogMessage.Call(SCI_GETCOLUMN, pos);
 
 	CString str;
 	str.Format(L"%d/%d", line + 1, column + 1);

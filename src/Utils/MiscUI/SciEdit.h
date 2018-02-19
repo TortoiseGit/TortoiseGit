@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2017 - TortoiseGit
-// Copyright (C) 2003-2008, 2013 - TortoiseSVN
+// Copyright (C) 2009-2018 - TortoiseGit
+// Copyright (C) 2003-2008, 2013, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -158,18 +158,18 @@ protected:
 	virtual BOOL OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pLResult) override;
 	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
 	virtual ULONG GetGestureStatus(CPoint ptTouch) override;
-	void		CheckSpelling(int startpos, int endpos);
+	void		CheckSpelling(Sci_Position startpos, Sci_Position endpos);
 	void		SuggestSpellingAlternatives(void);
-	void		DoAutoCompletion(int nMinPrefixLength);
+	void		DoAutoCompletion(Sci_Position nMinPrefixLength);
 	BOOL		LoadDictionaries(LONG lLanguageID);
-	BOOL		MarkEnteredBugID(int startstylepos, int endstylepos);
-	bool		StyleEnteredText(int startstylepos, int endstylepos);
-	void		StyleURLs(int startstylepos, int endstylepos);
-	bool		WrapLines(int startpos, int endpos);
-	bool		FindStyleChars(const char * line, char styler, int& start, int& end);
+	BOOL		MarkEnteredBugID(Sci_Position startstylepos, Sci_Position endstylepos);
+	bool		StyleEnteredText(Sci_Position startstylepos, Sci_Position endstylepos);
+	void		StyleURLs(Sci_Position startstylepos, Sci_Position endstylepos);
+	bool		WrapLines(Sci_Position startpos, Sci_Position endpos);
+	bool		FindStyleChars(const char* line, char styler, Sci_Position& start, Sci_Position& end);
 	void		AdvanceUTF8(const char * str, int& pos);
 	BOOL		IsMisspelled(const CString& sWord);
-	DWORD		GetStyleAt(int pos) { return (DWORD)Call(SCI_GETSTYLEAT, pos) & 0x1f; }
+	int			GetStyleAt(Sci_Position pos) { return (int)Call(SCI_GETSTYLEAT, pos) & 0x1f; }
 	bool		IsUrlOrEmail(const CStringA& sText);
 	CStringA	GetWordForSpellChecker(const CString& sWord);
 	CString		GetWordFromSpellChecker(const CStringA& sWordA);

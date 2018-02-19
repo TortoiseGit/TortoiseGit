@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2016 - TortoiseGit
+// Copyright (C) 2012-2018 - TortoiseGit
 // Copyright (C) 2003-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -317,8 +317,8 @@ LRESULT CMainWindow::DoCommand(int id)
 			pdlg.nStartPage = START_PAGE_GENERAL;
 
 			// See if a range has been selected
-			size_t startPos = SendEditor(SCI_GETSELECTIONSTART);
-			size_t endPos = SendEditor(SCI_GETSELECTIONEND);
+			auto startPos = (Sci_Position)SendEditor(SCI_GETSELECTIONSTART);
+			auto endPos = (Sci_Position)SendEditor(SCI_GETSELECTIONEND);
 
 			if (startPos == endPos)
 				pdlg.Flags |= PD_NOSELECTION;
@@ -330,16 +330,16 @@ LRESULT CMainWindow::DoCommand(int id)
 				return 0;
 
 			// reset all indicators
-			size_t endpos = SendEditor(SCI_GETLENGTH);
+			auto endpos = (int)SendEditor(SCI_GETLENGTH);
 			for (int i = INDIC_CONTAINER; i <= INDIC_MAX; ++i)
 			{
 				SendEditor(SCI_SETINDICATORCURRENT, i);
 				SendEditor(SCI_INDICATORCLEARRANGE, 0, endpos);
 			}
 			// store and reset UI settings
-			int viewws = (int)SendEditor(SCI_GETVIEWWS);
+			auto viewws = (int)SendEditor(SCI_GETVIEWWS);
 			SendEditor(SCI_SETVIEWWS, 0);
-			int edgemode = (int)SendEditor(SCI_GETEDGEMODE);
+			auto edgemode = (int)SendEditor(SCI_GETEDGEMODE);
 			SendEditor(SCI_SETEDGEMODE, EDGE_NONE);
 			SendEditor(SCI_SETWRAPVISUALFLAGS, SC_WRAPVISUALFLAG_END);
 
@@ -449,7 +449,7 @@ LRESULT CMainWindow::DoCommand(int id)
 				return 0;
 			}
 
-			size_t lengthDoc = SendEditor(SCI_GETLENGTH);
+			size_t lengthDoc = (int)SendEditor(SCI_GETLENGTH);
 			size_t lengthDocMax = lengthDoc;
 			size_t lengthPrinted = 0;
 
@@ -680,7 +680,6 @@ void CMainWindow::SetupColors(bool recolorize)
 	SendEditor(SCI_SETWHITESPACEFORE, true, ::GetSysColor(COLOR_3DSHADOW));
 
 	SendEditor(SCI_CLEARDOCUMENTSTYLE, 0, 0);
-	SendEditor(SCI_SETSTYLEBITS, 5, 0);
 
 	HIGHCONTRAST highContrast = { 0 };
 	highContrast.cbSize = sizeof(HIGHCONTRAST);
@@ -726,7 +725,7 @@ bool CMainWindow::SaveFile(LPCTSTR filename)
 	if (!fp)
 		return false;
 
-	LRESULT len = SendEditor(SCI_GETTEXT, 0, 0);
+	auto len = (int)SendEditor(SCI_GETTEXT, 0, 0);
 	auto data = std::make_unique<char[]>(len + 1);
 	SendEditor(SCI_GETTEXT, len, reinterpret_cast<LPARAM>(static_cast<char *>(data.get())));
 	fwrite(data.get(), sizeof(char), len-1, fp);

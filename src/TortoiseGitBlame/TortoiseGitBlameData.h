@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2017 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -69,12 +69,12 @@ public:
 	enum SearchDirection{ SearchNext = 0, SearchPrevious = 1 };
 	int FindFirstLineWrapAround(SearchDirection direction, const CString& what, int line, bool bCaseSensitive, std::function<void()> wraparound);
 
-	int GetNumberOfLines() const
+	size_t GetNumberOfLines() const
 	{
-		return (int)m_Hash.size();
+		return m_Hash.size();
 	}
 
-	CGitHash& GetHash(int line)
+	CGitHash& GetHash(size_t line)
 	{
 		return m_Hash[line];
 	}
@@ -88,27 +88,27 @@ public:
 		}
 	}
 
-	const CString& GetDate(int line) const
+	const CString& GetDate(size_t line) const
 	{
 		return m_Dates[line];
 	}
 
-	const CString& GetAuthor(int line) const
+	const CString& GetAuthor(size_t line) const
 	{
 		return m_Authors[line];
 	}
 
-	const CString& GetFilename(int line) const
+	const CString& GetFilename(size_t line) const
 	{
 		return m_Filenames[line];
 	}
 
-	int GetOriginalLineNumber(int line) const
+	int GetOriginalLineNumber(size_t line) const
 	{
 		return m_OriginalLineNumbers[line];
 	}
 
-	const CStringA& GetUtf8Line(int line) const
+	const CStringA& GetUtf8Line(size_t line) const
 	{
 		return m_Utf8Lines[line];
 	}
