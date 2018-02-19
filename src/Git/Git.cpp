@@ -253,31 +253,6 @@ bool CGit::IsBranchNameValid(const CString& branchname)
 	return !!git_reference_is_valid_name(branchA);
 }
 
-static bool IsPowerShell(CString cmd)
-{
-	cmd.MakeLower();
-	int powerShellPos = cmd.Find(L"powershell");
-	if (powerShellPos < 0)
-		return false;
-
-	// found the word powershell, check that it is the command and not any parameter
-	int end = cmd.GetLength();
-	if (end > 0 && cmd[0] == L'"')
-	{
-		int secondDoubleQuote = cmd.Find(L'"', 1);
-		if (secondDoubleQuote > 0)
-			end = secondDoubleQuote;
-	}
-	else
-	{
-		int firstSpace = cmd.Find(L' ');
-		if (firstSpace > 0)
-			end = firstSpace;
-	}
-
-	return (end - (int)wcslen(L"powershell") - (int)wcslen(L".exe") == powerShellPos || end - (int)wcslen(L"powershell") == powerShellPos);
-}
-
 int CGit::RunAsync(CString cmd, PROCESS_INFORMATION* piOut, HANDLE* hReadOut, HANDLE* hErrReadOut, const CString* StdioFile)
 {
 	CAutoGeneralHandle hRead, hWrite, hReadErr, hWriteErr;
@@ -321,15 +296,7 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION* piOut, HANDLE* hReadOut, HA
 	LPTSTR pEnv = m_Environment;
 	DWORD dwFlags = CREATE_UNICODE_ENVIRONMENT;
 
-	dwFlags |= CREATE_NEW_PROCESS_GROUP;
-
-	// CREATE_NEW_CONSOLE makes git (but not ssh.exe, see issue #2257) recognize that it has no console in order to launch askpass to ask for the password,
-	// DETACHED_PROCESS which was originally used here has the same effect (but works with git.exe AND ssh.exe), however, it prevents PowerShell from working (cf. issue #2143)
-	// => we keep using DETACHED_PROCESS as the default, but if cmd contains pwershell we use CREATE_NEW_CONSOLE
-	if (IsPowerShell(cmd))
-		dwFlags |= CREATE_NEW_CONSOLE;
-	else
-		dwFlags |= DETACHED_PROCESS;
+	dwFlags |= CREATE_NEW_PROCESS_GROUP | DETACHED_PROCESS;
 
 	memset(&this->m_CurrentGitPi,0,sizeof(PROCESS_INFORMATION));
 
