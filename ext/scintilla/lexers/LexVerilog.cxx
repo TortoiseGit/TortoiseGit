@@ -31,10 +31,9 @@
 
 #include "OptionSet.h"
 #include "SubStyles.h"
+#include "DefaultLexer.h"
 
-#ifdef SCI_NAMESPACE
 using namespace Scintilla;
-#endif
 
 namespace {
 	// Use an unnamed namespace to protect the functions and classes from name conflicts
@@ -172,7 +171,7 @@ const char styleSubable[] = {0};
 
 }
 
-class LexerVerilog : public ILexerWithSubStyles {
+class LexerVerilog : public DefaultLexer {
 	CharacterSet setWord;
 	WordList keywords;
 	WordList keywords2;
@@ -218,7 +217,7 @@ public:
 		}
 	virtual ~LexerVerilog() {}
 	int SCI_METHOD Version() const override {
-		return lvSubStyles;
+		return lvRelease4;
 	}
 	void SCI_METHOD Release() override {
 		delete this;
@@ -276,7 +275,7 @@ public:
 	const char * SCI_METHOD GetSubStyleBases() override {
 		return styleSubable;
 	}
-	static ILexer* LexerFactoryVerilog() {
+	static ILexer4* LexerFactoryVerilog() {
 		return new LexerVerilog();
 	}
 	static int MaskActive(int style) {

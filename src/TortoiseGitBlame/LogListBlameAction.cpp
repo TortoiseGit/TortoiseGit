@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2017 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2018 - TortoiseGit
 // Copyright (C) 2011-2013 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
@@ -174,8 +174,8 @@ void CGitBlameLogList::GetPaths(const CGitHash& hash, std::vector<CTGitPath>& pa
 	{
 		{
 			std::set<CString> filenames;
-			int numberOfLines = pView->m_data.GetNumberOfLines();
-			for (int i = 0; i < numberOfLines; ++i)
+			auto numberOfLines = pView->m_data.GetNumberOfLines();
+			for (size_t i = 0; i < numberOfLines; ++i)
 			{
 				if (pView->m_data.GetHash(i) == hash)
 					filenames.insert(pView->m_data.GetFilename(i));

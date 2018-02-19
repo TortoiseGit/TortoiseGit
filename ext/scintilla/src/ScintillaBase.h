@@ -8,9 +8,7 @@
 #ifndef SCINTILLABASE_H
 #define SCINTILLABASE_H
 
-#ifdef SCI_NAMESPACE
 namespace Scintilla {
-#endif
 
 #ifdef SCI_LEXER
 class LexState;
@@ -18,7 +16,7 @@ class LexState;
 
 /**
  */
-class ScintillaBase : public Editor {
+class ScintillaBase : public Editor, IListBoxDelegate {
 protected:
 	/** Enumeration of commands and child windows. */
 	enum {
@@ -76,7 +74,8 @@ protected:
 	void AutoCompleteCharacterDeleted();
 	void AutoCompleteCompleted(char ch, unsigned int completionMethod);
 	void AutoCompleteMoveToCurrentWord();
-	static void AutoCompleteDoubleClick(void *p);
+	void AutoCompleteSelection();
+	void ListNotify(ListBoxEvent *plbe) override;
 
 	void CallTipClick();
 	void CallTipShow(Point pt, const char *defn);
@@ -87,7 +86,6 @@ protected:
 	void ContextMenu(Point pt);
 
 	void ButtonDownWithModifiers(Point pt, unsigned int curTime, int modifiers) override;
-	void ButtonDown(Point pt, unsigned int curTime, bool shift, bool ctrl, bool alt) override;
 	void RightButtonDownWithModifiers(Point pt, unsigned int curTime, int modifiers) override;
 
 	void NotifyStyleToNeeded(Sci::Position endStyleNeeded) override;
@@ -98,8 +96,6 @@ public:
 	sptr_t WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) override;
 };
 
-#ifdef SCI_NAMESPACE
 }
-#endif
 
 #endif

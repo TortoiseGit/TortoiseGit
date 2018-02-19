@@ -7,14 +7,12 @@
 #ifndef DECORATION_H
 #define DECORATION_H
 
-#ifdef SCI_NAMESPACE
 namespace Scintilla {
-#endif
 
 class Decoration {
 	int indicator;
 public:
-	RunStyles rs;
+	RunStyles<int, int> rs;
 
 	explicit Decoration(int indicator_);
 	~Decoration();
@@ -74,8 +72,6 @@ public:
 	}
 };
 
-#ifdef SCI_NAMESPACE
 }
-#endif
 
 #endif

@@ -27,10 +27,9 @@
 #include "CharacterSet.h"
 #include "LexerModule.h"
 #include "OptionSet.h"
+#include "DefaultLexer.h"
 
-#ifdef SCI_NAMESPACE
 using namespace Scintilla;
-#endif
 
 /* Nested comments require keeping the value of the nesting level for every
    position in the document.  But since scintilla always styles line by line,
@@ -145,7 +144,7 @@ struct OptionSetD : public OptionSet<OptionsD> {
 	}
 };
 
-class LexerD : public ILexer {
+class LexerD : public DefaultLexer {
 	bool caseSensitive;
 	WordList keywords;
 	WordList keywords2;
@@ -166,7 +165,7 @@ public:
 		delete this;
 	}
 	int SCI_METHOD Version() const override {
-		return lvOriginal;
+		return lvRelease4;
 	}
 	const char * SCI_METHOD PropertyNames() override {
 		return osD.PropertyNames();
@@ -189,10 +188,10 @@ public:
 		return 0;
 	}
 
-	static ILexer *LexerFactoryD() {
+	static ILexer4 *LexerFactoryD() {
 		return new LexerD(true);
 	}
-	static ILexer *LexerFactoryDInsensitive() {
+	static ILexer4 *LexerFactoryDInsensitive() {
 		return new LexerD(false);
 	}
 };

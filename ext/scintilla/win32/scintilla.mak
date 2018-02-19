@@ -25,7 +25,7 @@ XP_LINK=-SUBSYSTEM:WINDOWS,5.01
 !ENDIF
 
 CRTFLAGS=-D_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1 -D_CRT_SECURE_NO_DEPRECATE=1 -D_SCL_SECURE_NO_WARNINGS=1 $(XP_DEFINE)
-CXXFLAGS=-Zi -TP -MP -W4 -EHsc $(CRTFLAGS)
+CXXFLAGS=-Zi -TP -MP -W4 -EHsc -std:c++latest $(CRTFLAGS)
 CXXDEBUG=-Od -MTd -DDEBUG
 CXXNDEBUG=-O1 -MT -DNDEBUG -GL
 NAME=-Fo
@@ -38,6 +38,10 @@ NOLOGO=-nologo
 CXX=@$(CXX)
 CXXFLAGS=$(CXXFLAGS) $(NOLOGO)
 LDFLAGS=$(LDFLAGS) $(NOLOGO)
+!ENDIF
+
+!IFDEF ENABLE_BIDIRECTIONAL
+CXXFLAGS=$(CXXFLAGS) -DENABLE_BIDIRECTIONAL
 !ENDIF
 
 !IF [cl -c -nologo CheckD2D.cxx >NUL:]
@@ -75,6 +79,7 @@ SHAREDOBJS=\
 	$(DIR_O)\CharacterSet.obj \
 	$(DIR_O)\CharClassify.obj \
 	$(DIR_O)\ContractionState.obj \
+	$(DIR_O)\DBCS.obj \
 	$(DIR_O)\Decoration.obj \
 	$(DIR_O)\Document.obj \
 	$(DIR_O)\EditModel.obj \
@@ -218,6 +223,7 @@ LOBJS=\
 	$(DIR_O)\Accessor.obj \
 	$(DIR_O)\Catalogue.obj \
 	$(DIR_O)\ExternalLexer.obj \
+	$(DIR_O)\DefaultLexer.obj \
 	$(DIR_O)\LexerBase.obj \
 	$(DIR_O)\LexerModule.obj \
 	$(DIR_O)\LexerSimple.obj \

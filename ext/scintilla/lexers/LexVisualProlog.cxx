@@ -39,10 +39,9 @@
 #include "CharacterCategory.h"
 #include "LexerModule.h"
 #include "OptionSet.h"
+#include "DefaultLexer.h"
 
-#ifdef SCI_NAMESPACE
 using namespace Scintilla;
-#endif
 
 // Options used for LexerVisualProlog
 struct OptionsVisualProlog {
@@ -64,7 +63,7 @@ struct OptionSetVisualProlog : public OptionSet<OptionsVisualProlog> {
     }
 };
 
-class LexerVisualProlog : public ILexer {
+class LexerVisualProlog : public DefaultLexer {
     WordList majorKeywords;
     WordList minorKeywords;
     WordList directiveKeywords;
@@ -80,7 +79,7 @@ public:
         delete this;
     }
     int SCI_METHOD Version() const override {
-        return lvOriginal;
+        return lvRelease4;
     }
     const char * SCI_METHOD PropertyNames() override {
         return osVisualProlog.PropertyNames();
@@ -103,7 +102,7 @@ public:
         return 0;
     }
 
-    static ILexer *LexerFactoryVisualProlog() {
+    static ILexer4 *LexerFactoryVisualProlog() {
         return new LexerVisualProlog();
     }
 };
@@ -365,6 +364,7 @@ void SCI_METHOD LexerVisualProlog::Lex(Sci_PositionU startPos, Sci_Position leng
         case SCE_VISUALPROLOG_STRING_ESCAPE_ERROR:
             // return to SCE_VISUALPROLOG_STRING and treat as such (fall-through)
             sc.SetState(SCE_VISUALPROLOG_STRING);
+            // Falls through.
         case SCE_VISUALPROLOG_STRING:
             if (sc.atLineEnd) {
                 sc.SetState(SCE_VISUALPROLOG_STRING_EOL_OPEN);
@@ -384,6 +384,7 @@ void SCI_METHOD LexerVisualProlog::Lex(Sci_PositionU startPos, Sci_Position leng
         case SCE_VISUALPROLOG_STRING_VERBATIM_EOL:
             // return to SCE_VISUALPROLOG_STRING_VERBATIM and treat as such (fall-through)
             sc.SetState(SCE_VISUALPROLOG_STRING_VERBATIM);
+            // Falls through.
         case SCE_VISUALPROLOG_STRING_VERBATIM:
             if (sc.atLineEnd) {
                 sc.SetState(SCE_VISUALPROLOG_STRING_VERBATIM_EOL);

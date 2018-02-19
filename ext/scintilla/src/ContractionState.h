@@ -8,9 +8,7 @@
 #ifndef CONTRACTIONSTATE_H
 #define CONTRACTIONSTATE_H
 
-#ifdef SCI_NAMESPACE
 namespace Scintilla {
-#endif
 
 template<class T>
 class SparseVector;
@@ -19,11 +17,11 @@ class SparseVector;
  */
 class ContractionState {
 	// These contain 1 element for every document line.
-	std::unique_ptr<RunStyles> visible;
-	std::unique_ptr<RunStyles> expanded;
-	std::unique_ptr<RunStyles> heights;
+	std::unique_ptr<RunStyles<int, int>> visible;
+	std::unique_ptr<RunStyles<int, int>> expanded;
+	std::unique_ptr<RunStyles<int, int>> heights;
 	std::unique_ptr<SparseVector<UniqueString>> foldDisplayTexts;
-	std::unique_ptr<Partitioning> displayLines;
+	std::unique_ptr<Partitioning<int>> displayLines;
 	Sci::Line linesInDocument;
 
 	void EnsureData();
@@ -73,8 +71,6 @@ public:
 	void Check() const;
 };
 
-#ifdef SCI_NAMESPACE
 }
-#endif
 
 #endif

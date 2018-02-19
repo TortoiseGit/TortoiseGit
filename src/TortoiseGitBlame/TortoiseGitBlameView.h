@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2017 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2018 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -255,7 +255,7 @@ protected:
 	void SetupLexer(CString filename);
 	void SetupCppLexer();
 	int GetLineUnderCursor(CPoint point);
-	COLORREF GetLineColor(int line);
+	COLORREF GetLineColor(size_t line);
 	COLORREF InterColor(COLORREF c1, COLORREF c2, int Slider);
 	CFont					m_font;
 	CFont					m_italicfont;

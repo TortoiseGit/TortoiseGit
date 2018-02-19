@@ -26,9 +26,7 @@
 #include "Style.h"
 #include "ViewStyle.h"
 
-#ifdef SCI_NAMESPACE
 using namespace Scintilla;
-#endif
 
 MarginStyle::MarginStyle(int style_, int width_, int mask_) :
 	style(style_), width(width_), mask(mask_), sensitive(false), cursor(SC_CURSORREVERSEARROW) {
@@ -194,7 +192,7 @@ void ViewStyle::CalculateMarginWidthAndMask() {
 	}
 	maskDrawInText = 0;
 	for (int markBit = 0; markBit < 32; markBit++) {
-		const int maskBit = 1 << markBit;
+		const int maskBit = 1U << markBit;
 		switch (markers[markBit].markType) {
 		case SC_MARK_EMPTY:
 			maskInLine &= ~maskBit;
@@ -460,7 +458,7 @@ void ViewStyle::CalcLargestMarkerHeight() {
 }
 
 int ViewStyle::GetFrameWidth() const {
-	return Platform::Clamp(caretLineFrame, 1, lineHeight / 3);
+	return static_cast<int>(std::clamp(caretLineFrame, 1, lineHeight / 3));
 }
 
 bool ViewStyle::IsLineFrameOpaque(bool caretActive, bool lineContainsCaret) const {
