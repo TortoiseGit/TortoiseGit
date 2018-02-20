@@ -20,6 +20,7 @@
 #include "stdafx.h"
 #include "Git.h"
 #include "StringUtils.h"
+#include "gitdll.h"
 
 TEST(libgit, BrokenConfig)
 {
@@ -136,4 +137,120 @@ TEST(libgit, MkDir)
 	EXPECT_TRUE(PathFileExists(subdir));
 	EXPECT_TRUE(PathIsDirectory(subdir));
 	EXPECT_EQ(-1, git_mkdir(CUnicodeUtils::GetUTF8(subdir)));
+}
+
+TEST(libgit, RefreshIndex)
+{
+	CAutoTempDir tempdir;
+	g_Git.m_CurrentDir = tempdir.GetTempDir();
+	g_Git.m_bInitialized = false;
+	g_Git.m_IsGitDllInited = false;
+	g_Git.m_IsUseGitDLL = true;
+	g_Git.m_IsUseLibGit2 = false;
+	g_Git.m_IsUseLibGit2_mask = 0;
+
+	// libgit relies on CWD being set to working tree
+	SetCurrentDirectory(g_Git.m_CurrentDir);
+
+	git_repository_init_options options = GIT_REPOSITORY_INIT_OPTIONS_INIT;
+	options.flags = GIT_REPOSITORY_INIT_MKPATH | GIT_REPOSITORY_INIT_EXTERNAL_TEMPLATE;
+	CAutoRepository repo;
+	ASSERT_EQ(0, git_repository_init_ext(repo.GetPointer(), CUnicodeUtils::GetUTF8(tempdir.GetTempDir()), &options));
+	CAutoConfig config(repo);
+	ASSERT_TRUE(config.IsValid());
+	CStringA path = CUnicodeUtils::GetUTF8(g_Git.m_CurrentDir);
+	path.Replace('\\', '/');
+	EXPECT_EQ(0, git_config_set_string(config, "filter.openssl.clean", path + "/clean_filter_openssl"));
+	EXPECT_EQ(0, git_config_set_string(config, "filter.openssl.smudge", path + "/smudge_filter_openssl"));
+	EXPECT_EQ(0, git_config_set_bool(config, "filter.openssl.required", 1));
+	CString cleanFilterFilename = g_Git.m_CurrentDir + L"\\clean_filter_openssl";
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(cleanFilterFilename, L"#!/bin/bash\nopenssl enc -base64 -aes-256-ecb -S FEEDDEADBEEF -k PASS_FIXED"));
+	CString smudgeFilterFilename = g_Git.m_CurrentDir + L"\\smudge_filter_openssl";
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(smudgeFilterFilename, L"#!/bin/bash\nopenssl enc -d -base64 -aes-256-ecb -k PASS_FIXED"));
+	EXPECT_EQ(0, git_config_set_string(config, "filter.test.clean", path + "/clean_filter_openssl"));
+	EXPECT_EQ(0, git_config_set_string(config, "filter.test.smudge", path + "/smudge_filter_openssl"));
+	EXPECT_EQ(0, git_config_set_string(config, "filter.test.process", path + "/clean_filter_openssl"));
+	EXPECT_EQ(0, git_config_set_bool(config, "filter.test.required", 1));
+
+	// need to make sure sh.exe is on PATH
+	g_Git.CheckMsysGitDir();
+	size_t size;
+	_wgetenv_s(&size, nullptr, 0, L"PATH");
+	EXPECT_LT(0, size);
+	TCHAR* oldEnv = (TCHAR*)alloca(size * sizeof(TCHAR));
+	ASSERT_TRUE(oldEnv);
+	_wgetenv_s(&size, oldEnv, size, L"PATH");
+	_wputenv_s(L"PATH", g_Git.m_Environment.GetEnv(L"PATH"));
+	g_Git.CheckAndInitDll();
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(g_Git.m_CurrentDir + L"\\somefile.txt", L"some content"));
+
+	g_Git.RefreshGitIndex();
+
+	CString output;
+	EXPECT_EQ(0, g_Git.Run(L"git.exe add somefile.txt", &output, CP_UTF8));
+	EXPECT_STREQ(L"", output);
+
+	g_Git.RefreshGitIndex();
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(g_Git.m_CurrentDir + L"\\somefile.txt", L"some other content"));
+
+	g_Git.RefreshGitIndex();
+
+	output.Empty();
+	EXPECT_EQ(0, g_Git.Run(L"git.exe add somefile.txt", &output, CP_UTF8));
+	EXPECT_STREQ(L"", output);
+
+	g_Git.RefreshGitIndex();
+
+	// now check with external command filters defined
+	CString attributesFile = g_Git.m_CurrentDir + L"\\.gitattributes";
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(attributesFile, L"*.enc filter=openssl\n"));
+
+	CString encryptedFileOne = g_Git.m_CurrentDir + L"\\1.enc";
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(encryptedFileOne, L"This should be encrypted...\nAnd decrypted on the fly\n"));
+
+	output.Empty();
+	EXPECT_EQ(0, g_Git.Run(L"git.exe add 1.enc", &output, CP_UTF8));
+	if (!g_Git.ms_bCygwinGit) // on AppVeyor with the VS2017 image we get a warning: "WARNING: can't open config file: /usr/local/ssl/openssl.cnf"
+		EXPECT_STREQ(L"", output);
+
+	WIN32_FILE_ATTRIBUTE_DATA fdata;
+	GetFileAttributesEx(g_Git.m_CurrentDir + L"\\.git\\index", GetFileExInfoStandard, &fdata);
+
+	g_Git.RefreshGitIndex();
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(g_Git.m_CurrentDir + L"\\1.enc", L"some other content"));
+
+	g_Git.RefreshGitIndex();
+
+	// need racy timestamp
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(g_Git.m_CurrentDir + L"\\1.enc", L"somE other content"));
+	{
+		CAutoGeneralHandle handle = ::CreateFile(g_Git.m_CurrentDir + L"\\1.enc", FILE_WRITE_ATTRIBUTES, 0, nullptr, 0, 0, nullptr);
+		SetFileTime(handle, &fdata.ftCreationTime, &fdata.ftLastAccessTime, &fdata.ftLastWriteTime);
+	}
+
+	g_Git.RefreshGitIndex();
+
+	// now check with external command filters with multi-filter (process) defined
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(attributesFile, L"*.enc filter=test\n"));
+
+	g_Git.RefreshGitIndex();
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(g_Git.m_CurrentDir + L"\\1.enc", L"somE other conTentsome other conTentsome other conTen"));
+
+	g_Git.RefreshGitIndex();
+
+	// need racy timestamp
+	GetFileAttributesEx(g_Git.m_CurrentDir + L"\\.git\\index", GetFileExInfoStandard, &fdata);
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(g_Git.m_CurrentDir + L"\\1.enc", L"some other conTentsome other conTentsome other conTen"));
+	{
+		CAutoGeneralHandle handle = ::CreateFile(g_Git.m_CurrentDir + L"\\1.enc", FILE_WRITE_ATTRIBUTES, 0, nullptr, 0, 0, nullptr);
+		SetFileTime(handle, &fdata.ftCreationTime, &fdata.ftLastAccessTime, &fdata.ftLastWriteTime);
+	}
+
+	g_Git.RefreshGitIndex();
+
+	_wputenv_s(L"PATH", oldEnv);
 }

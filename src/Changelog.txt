@@ -3,6 +3,7 @@ Released: unreleased
 
 == Bug Fixes ==
  * Fixed issue #3167: Crash when aborting cherry-picks
+ * Fixed issue #3164: TortoiseGit crashing on commit (with racy git situation and git lfs)
 
 = Release 2.6.0 =
 Released: 2018-02-17
