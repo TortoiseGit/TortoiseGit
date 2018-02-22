@@ -594,7 +594,10 @@ int CBaseView::GetMaxLineLength()
 		m_nMaxLineLength = 0;
 		int nLineCount = GetLineCount();
 		if (nLineCount == 1)
-			return GetLineLengthWithTabsConverted(0);
+		{
+			m_nMaxLineLength = GetLineLengthWithTabsConverted(0);
+			return m_nMaxLineLength;
+		}
 		for (int i=0; i<nLineCount; i++)
 		{
 			int nActualLength = GetLineLengthWithTabsConverted(i);
@@ -5367,6 +5370,7 @@ void CBaseView::WrapChanged()
 {
 	m_nMaxLineLength = -1;
 	m_nOffsetChar = 0;
+	RecalcHorzScrollBar();
 }
 
 void CBaseView::OnEditFind()
