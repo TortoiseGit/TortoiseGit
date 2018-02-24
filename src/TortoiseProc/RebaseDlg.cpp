@@ -60,6 +60,7 @@ CRebaseDlg::CRebaseDlg(CWnd* pParent /*=nullptr*/)
 	, m_bForce(BST_UNCHECKED)
 	, m_IsFastForward(FALSE)
 	, m_iSquashdate((int)CRegDWORD(L"Software\\TortoiseGit\\SquashDate", 0))
+	, m_bAbort(FALSE)
 {
 }
 
@@ -1187,6 +1188,7 @@ void CRebaseDlg::OnBnClickedContinue()
 			return;
 	}
 
+	m_bAbort = FALSE;
 	if( this->m_IsFastForward )
 	{
 		GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(FALSE);
@@ -2193,7 +2195,7 @@ int CRebaseDlg::RebaseThread()
 	CBlockCacheForPath cacheBlock(g_Git.m_CurrentDir);
 
 	int ret=0;
-	while(1)
+	while (!m_bAbort)
 	{
 		if( m_RebaseStage == REBASE_START )
 		{
@@ -2233,6 +2235,8 @@ int CRebaseDlg::RebaseThread()
 
 	InterlockedExchange(&m_bThreadRunning, FALSE);
 	this->PostMessage(MSG_REBASE_UPDATE_UI);
+	if (m_bAbort)
+		PostMessage(WM_COMMAND, MAKELONG(IDC_REBASE_ABORT, BN_CLICKED), (LPARAM)GetDlgItem(IDC_REBASE_ABORT)->GetSafeHwnd());
 	return ret;
 }
 
@@ -2370,6 +2374,14 @@ void CRebaseDlg::OnCancel()
 
 void CRebaseDlg::OnBnClickedAbort()
 {
+	if (m_bThreadRunning)
+	{
+		if (CMessageBox::Show(GetSafeHwnd(), IDS_PROC_REBASE_ABORT, IDS_APPNAME, MB_YESNO | MB_ICONQUESTION) != IDYES)
+			return;
+		m_bAbort = TRUE;
+		return;
+	}
+
 	if (m_pTaskbarList)
 		m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
 
@@ -2387,7 +2399,7 @@ void CRebaseDlg::OnBnClickedAbort()
 		goto end;
 	}
 
-	if (CMessageBox::Show(GetSafeHwnd(), IDS_PROC_REBASE_ABORT, IDS_APPNAME, MB_YESNO | MB_ICONQUESTION) != IDYES)
+	if (!m_bAbort && CMessageBox::Show(GetSafeHwnd(), IDS_PROC_REBASE_ABORT, IDS_APPNAME, MB_YESNO | MB_ICONQUESTION) != IDYES)
 		goto end;
 
 	if(this->m_IsFastForward)

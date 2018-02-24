@@ -1,4 +1,10 @@
-﻿= Release 2.6.0 =
+﻿= Release 2.7.0 =
+Released: unreleased
+
+== Bug Fixes ==
+ * Fixed issue #3167: Crash when aborting cherry-picks
+
+= Release 2.6.0 =
 Released: 2018-02-17
 
 This is planned to be the last version compatible with MsysGit 1.9.5 (i.e., Git for Windows < 1.9.5).

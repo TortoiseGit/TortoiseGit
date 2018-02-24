@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -101,6 +101,7 @@ protected:
 	afx_msg LRESULT OnGitStatusListCtrlNeedsRefresh(WPARAM, LPARAM);
 	void Refresh();
 	volatile LONG m_bThreadRunning;
+	volatile LONG m_bAbort;
 	int  RebaseThread();
 	static UINT RebaseThreadEntry(LPVOID pVoid) { return reinterpret_cast<CRebaseDlg*>(pVoid)->RebaseThread(); };
 	BOOL IsEnd();
