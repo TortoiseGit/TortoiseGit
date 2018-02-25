@@ -41,6 +41,7 @@ void InsertMenuItemToList(CListCtrl *list,CImageList *imagelist)
 		   menuInfo[i].command != ShellSubMenuFile &&
 		   menuInfo[i].command != ShellSubMenuFolder &&
 		   menuInfo[i].command != ShellSubMenuLink &&
+		   menuInfo[i].command != ShellMenuMergeAbort &&
 		   menuInfo[i].command != ShellSubMenuMultiple) &&
 		   (i == 0 || menuInfo[i - 1].menuID != menuInfo[i].menuID))
 		{
