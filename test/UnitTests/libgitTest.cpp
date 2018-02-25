@@ -176,7 +176,7 @@ TEST(libgit, RefreshIndex)
 	g_Git.CheckMsysGitDir();
 	size_t size;
 	_wgetenv_s(&size, nullptr, 0, L"PATH");
-	EXPECT_LT(0, size);
+	EXPECT_LT(0U, size);
 	TCHAR* oldEnv = (TCHAR*)alloca(size * sizeof(TCHAR));
 	ASSERT_TRUE(oldEnv);
 	_wgetenv_s(&size, oldEnv, size, L"PATH");
