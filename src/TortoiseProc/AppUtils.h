@@ -27,7 +27,7 @@ struct git_transfer_progress;
 class CIgnoreFile;
 class ProjectProperties;
 
-constexpr static inline int ConvertVersionToInt(int major, int minor, int patchlevel, int build = 0)
+constexpr static inline int ConvertVersionToInt(unsigned __int8 major, unsigned __int8 minor, unsigned __int8 patchlevel, unsigned __int8 build = 0)
 {
 	return (major << 24) + (minor << 16) + (patchlevel << 8) + build;
 }
@@ -234,7 +234,7 @@ public:
 	static void RemoveTempMergeFile(const CTGitPath& path);
 	static void EditNote(GitRevLoglist* rev, ProjectProperties* projectProperties);
 	static int GetMsysgitVersion();
-	static bool IsGitVersionNewerOrEqual(int major, int minor, int patchlevel = 0, int build = 0);
+	static bool IsGitVersionNewerOrEqual(unsigned __int8 major, unsigned __int8 minor, unsigned __int8 patchlevel = 0, unsigned __int8 build = 0);
 	static void MarkWindowAsUnpinnable(HWND hWnd);
 
 	static bool BisectStart(const CString& lastGood, const CString& firstBad, bool bIsMainWnd = false);
