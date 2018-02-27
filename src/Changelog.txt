@@ -5,6 +5,7 @@ Released: unreleased
  * Fixed issue #3167: Crash when aborting cherry-picks
  * Fixed issue #3164: TortoiseGit crashing on commit (with racy git situation and git lfs)
  * Fixed issue #2035: Can not un-check the menu item "Abort Merge" in Settings dialog
+ * Fixed issue #3078: Faulty behaviour of "Commit" feature in "check for modifications"
 
 = Release 2.6.0 =
 Released: 2018-02-17

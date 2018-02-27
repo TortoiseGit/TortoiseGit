@@ -3816,7 +3816,7 @@ int CGitStatusListCtrl::UpdateLocalChangesIgnoredFileList(const CTGitPathList* l
 int CGitStatusListCtrl::UpdateFileList(int mask, bool once, const CTGitPathList* pList)
 {
 	CAutoWriteLock locker(m_guard);
-	auto List = (pList && pList->GetCount() == 1 && !(*pList)[0].GetWinPathString().IsEmpty()) ? pList : nullptr;
+	auto List = (pList && pList->GetCount() >= 1 && !(*pList)[0].GetWinPathString().IsEmpty()) ? pList : nullptr;
 	if(mask&CGitStatusListCtrl::FILELIST_MODIFY)
 	{
 		if(once || (!(m_FileLoaded&CGitStatusListCtrl::FILELIST_MODIFY)))

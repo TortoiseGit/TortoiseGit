@@ -377,7 +377,7 @@ void CChangedDlg::UpdateStatistics()
 void CChangedDlg::OnBnClickedCommit()
 {
 	CTGitPathList pathList;
-	bool bSingleFile = ((m_pathList.GetCount()==1)&&(!m_pathList[0].IsEmpty())&&(!m_pathList[0].IsDirectory()));
+	bool bSingleFile = (m_pathList.GetCount() >= 1 && !m_pathList[0].IsEmpty() && !m_pathList[0].IsDirectory());
 	if (bSingleFile)
 		pathList.AddPath(m_pathList[0]);
 	else
