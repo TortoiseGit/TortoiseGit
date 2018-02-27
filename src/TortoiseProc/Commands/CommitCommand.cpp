@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -39,7 +39,6 @@ CString CommitCommand::LoadLogMessage()
 
 bool CommitCommand::Execute()
 {
-	CTGitPathList selectedList;
 	if (parser.HasKey(L"logmsg") && parser.HasKey(L"logmsgfile"))
 	{
 		CMessageBox::Show(hwndExplorer, IDS_ERR_TWOLOGPARAMS, IDS_APPNAME, MB_ICONERROR);
@@ -58,6 +57,5 @@ bool CommitCommand::Execute()
 								parser.HasKey(L"wholeproject"),
 								sLogMsg,
 								pathList,
-								selectedList,
 								bSelectFilesForCommit);
 }

@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -160,8 +160,6 @@ public:
 	BOOL				m_bWholeProject;
 	BOOL				m_bWholeProject2;
 	CTGitPathList		m_pathList;
-	CTGitPathList		m_checkedPathList;
-	CTGitPathList		m_updatedPathList;
 	GIT_POSTCOMMIT_CMD	m_PostCmd;
 	BOOL				m_bAmendDiffToLastCommit;
 	BOOL				m_bCommitMessageOnly;

@@ -225,7 +225,6 @@ public:
 
 	static BOOL Commit(const CString& bugid, BOOL bWholeProject, CString &sLogMsg,
 					CTGitPathList &pathList,
-					CTGitPathList &selectedList,
 					bool bSelectFilesForCommit);
 
 	static BOOL SVNDCommit();

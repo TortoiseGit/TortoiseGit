@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 // Copyright (C) 2005-2007 Marco Costalba
 
 // This program is free software; you can redistribute it and/or
@@ -161,12 +161,11 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			case ID_COMMIT:
 			{
 				CTGitPathList pathlist;
-				CTGitPathList selectedlist;
 				pathlist.AddPath(this->m_Path);
 				bool bSelectFilesForCommit = !!DWORD(CRegStdDWORD(L"Software\\TortoiseGit\\SelectFilesForCommit", TRUE));
 				CString str;
 				CAppUtils::Commit(CString(),false,str,
-								  pathlist,selectedlist,bSelectFilesForCommit);
+								  pathlist, bSelectFilesForCommit);
 				//this->Refresh();
 				this->GetParent()->PostMessage(WM_COMMAND,ID_LOGDLG_REFRESH,0);
 			}
@@ -1027,11 +1026,10 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					if (CMessageBox::Show(m_hWnd, IDS_REVREVERTED, IDS_APPNAME, 1, IDI_QUESTION, IDS_OKBUTTON, IDS_COMMITBUTTON) == 2)
 					{
 						CTGitPathList pathlist;
-						CTGitPathList selectedlist;
 						pathlist.AddPath(this->m_Path);
 						bool bSelectFilesForCommit = !!DWORD(CRegStdDWORD(L"Software\\TortoiseGit\\SelectFilesForCommit", TRUE));
 						CString str;
-						CAppUtils::Commit(CString(), false, str, pathlist, selectedlist, bSelectFilesForCommit);
+						CAppUtils::Commit(CString(), false, str, pathlist, bSelectFilesForCommit);
 					}
 					this->Refresh();
 				}

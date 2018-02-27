@@ -386,12 +386,10 @@ void CChangedDlg::OnBnClickedCommit()
 	bool bSelectFilesForCommit = !!DWORD(CRegStdDWORD(L"Software\\TortoiseGit\\SelectFilesForCommit", TRUE));
 
 	CString logmsg;
-	CTGitPathList selected;
 	CAppUtils::Commit(L"",
 		m_bWholeProject,
 		logmsg,
 		pathList,
-		selected,
 		bSelectFilesForCommit);
 
 	OnBnClickedRefresh();

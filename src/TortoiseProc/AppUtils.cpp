@@ -1338,11 +1338,10 @@ bool CAppUtils::PerformSwitch(const CString& ref, bool bForce /* false */, const
 
 			postCmdList.emplace_back(IDI_COMMIT, IDS_MENUCOMMIT, []{
 				CTGitPathList pathlist;
-				CTGitPathList selectedlist;
 				pathlist.AddPath(CTGitPath());
 				bool bSelectFilesForCommit = !!DWORD(CRegStdDWORD(L"Software\\TortoiseGit\\SelectFilesForCommit", TRUE));
 				CString str;
-				Commit(CString(), false, str, pathlist, selectedlist, bSelectFilesForCommit);
+				Commit(CString(), false, str, pathlist, bSelectFilesForCommit);
 			});
 		}
 		else
@@ -2978,7 +2977,6 @@ bool CAppUtils::CheckUserData()
 
 BOOL CAppUtils::Commit(const CString& bugid, BOOL bWholeProject, CString &sLogMsg,
 					CTGitPathList &pathList,
-					CTGitPathList &selectedList,
 					bool bSelectFilesForCommit)
 {
 	bool bFailed = true;
@@ -2996,7 +2994,6 @@ BOOL CAppUtils::Commit(const CString& bugid, BOOL bWholeProject, CString &sLogMs
 
 		dlg.m_sLogMessage = sLogMsg;
 		dlg.m_pathList = pathList;
-		dlg.m_checkedPathList = selectedList;
 		dlg.m_bSelectFilesForCommit = bSelectFilesForCommit;
 		if (dlg.DoModal() == IDOK)
 		{
@@ -3009,9 +3006,6 @@ BOOL CAppUtils::Commit(const CString& bugid, BOOL bWholeProject, CString &sLogMs
 			// to check the parent folder (which might not even show)
 			// instead, we simply use an empty list and let the
 			// default checking do its job.
-			if (!dlg.m_pathList.IsEqual(pathList))
-				selectedList = dlg.m_pathList;
-			pathList = dlg.m_updatedPathList;
 			sLogMsg = dlg.m_sLogMessage;
 			bSelectFilesForCommit = true;
 

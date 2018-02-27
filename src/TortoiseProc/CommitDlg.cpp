@@ -455,8 +455,6 @@ BOOL CCommitDlg::OnInitDialog()
 			m_pathwatcher.AddPath(m_pathList[i]);
 	}*/
 
-	m_updatedPathList = m_pathList;
-
 	StartStatusThread();
 	CRegDWORD err = CRegDWORD(L"Software\\TortoiseGit\\ErrorOccurred", FALSE);
 	CRegDWORD historyhint = CRegDWORD(L"Software\\TortoiseGit\\HistoryHintShown", FALSE);
@@ -1693,8 +1691,6 @@ LRESULT CCommitDlg::OnFileDropped(WPARAM, LPARAM lParam)
 		{
 			m_pathList.AddPath(path);
 			m_pathList.RemoveDuplicates();
-			m_updatedPathList.AddPath(path);
-			m_updatedPathList.RemoveDuplicates();
 		}
 		else
 		{
@@ -1715,8 +1711,6 @@ LRESULT CCommitDlg::OnFileDropped(WPARAM, LPARAM lParam)
 			{
 				m_pathList.AddPath(path);
 				m_pathList.RemoveDuplicates();
-				m_updatedPathList.AddPath(path);
-				m_updatedPathList.RemoveDuplicates();
 			}
 		}
 	}
