@@ -1,7 +1,7 @@
 // TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2008-2017 - TortoiseGit
-// Copyright (C) 2004-2017 - TortoiseSVN
+// Copyright (C) 2004-2018 - TortoiseSVN
 // Copyright (C) 2012-2014 - Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
@@ -1785,11 +1785,11 @@ void CMainFrame::OnViewOptions()
 	}
 	CDiffColors::GetInstance().LoadRegistry();
 	if (m_pwndBottomView)
-		m_pwndBottomView->Invalidate();
+		m_pwndBottomView->DocumentUpdated();
 	if (m_pwndLeftView)
-		m_pwndLeftView->Invalidate();
+		m_pwndLeftView->DocumentUpdated();
 	if (m_pwndRightView)
-		m_pwndRightView->Invalidate();
+		m_pwndRightView->DocumentUpdated();
 }
 
 void CMainFrame::OnClose()
