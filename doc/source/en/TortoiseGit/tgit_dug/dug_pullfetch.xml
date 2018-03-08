@@ -87,7 +87,7 @@
 			please see <xref linkend="tgit-dug-conflicts"/> on how to resolve conflicts.
 		</para>
 		<para>
-			Please note, that "REMOTE"/"theirs" in the conflict editor refers to the to the changes your on the branch you selected for pulling/merging and "LOCAL"/"mine" to your HEAD version in your working tree.
+			Please note, that "REMOTE"/"theirs" in the conflict editor refers to the changes your on the branch you selected for pulling/merging and "LOCAL"/"mine" to your HEAD version in your working tree.
 		</para>
 	</important>
   <para>

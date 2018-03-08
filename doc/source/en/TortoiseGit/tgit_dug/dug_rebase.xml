@@ -59,7 +59,7 @@
 			please see <xref linkend="tgit-dug-conflicts"/> on how to resolve conflicts.
 		</para>
 		<para>
-			Please note, that "REMOTE"/"theirs" in the conflict editor refers to the to the changes of the branch you rebase onto and "LOCAL"/"mine" to your version on the branch which you are rebasing.
+			Please note, that "REMOTE"/"theirs" in the conflict editor refers to the changes of the branch you rebase onto and "LOCAL"/"mine" to your version on the branch which you are rebasing.
 		</para>
 	</important>
 </sect1>
