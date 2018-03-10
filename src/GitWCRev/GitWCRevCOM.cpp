@@ -279,11 +279,26 @@ HRESULT __stdcall GitWCRev::get_IsSubmoduleUp2Date(/*[out, retval]*/VARIANT_BOOL
 	return BoolToVariantBool(GitStat.bHasSubmoduleNewCommits, up2date);
 }
 
+HRESULT __stdcall GitWCRev::get_CommitCount(/*[out, retval]*/VARIANT* rev)
+{
+	return LongToVariant((LONG)GitStat.NumCommits, rev);
+}
+
 HRESULT GitWCRev::BoolToVariantBool(BOOL value, VARIANT_BOOL* result)
 {
 	if (!result)
 		return E_POINTER;
 	*result = (value == 0) ? VARIANT_FALSE : VARIANT_TRUE;
+	return S_OK;
+}
+
+HRESULT GitWCRev::LongToVariant(LONG value, VARIANT* result)
+{
+	if (!result)
+		return E_POINTER;
+
+	result->vt = VT_I4;
+	result->lVal = value;
 	return S_OK;
 }
 

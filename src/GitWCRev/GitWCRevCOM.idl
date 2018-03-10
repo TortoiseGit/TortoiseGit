@@ -73,6 +73,9 @@ library LibGitWCRev
 
 		[propget, helpstring("TRUE if all submodule HEADs match the committed ones")]
 		HRESULT IsSubmoduleUp2Date([out, retval]VARIANT_BOOL* up2date);
+
+		[propget, helpstring("Number of first-parent commits from HEAD to start")]
+		HRESULT CommitCount([out, retval]VARIANT* rev);
 	}
 
 

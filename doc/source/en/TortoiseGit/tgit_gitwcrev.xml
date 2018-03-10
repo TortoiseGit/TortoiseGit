@@ -315,6 +315,25 @@ doc/*
               </entry>
             </row>
             <row>
+              <entry condition="pot">$WCLOGCOUNT$, $WCLOGCOUNT&amp;$, $WCLOGCOUNT+$, $WCLOGCOUNT-$</entry>
+              <entry>
+                Replaced with the number of first-parent commits from HEAD back to the first commit.
+                This number is guaranteed to increase with every commit on the very same branch as long no
+                history is rewritten and can be used as part of a version number (see
+                <ulink url="https://gcc.gnu.org/ml/gcc/2015-08/msg00148.html">
+                    <citetitle>https://gcc.gnu.org/ml/gcc/2015-08/msg00148.html</citetitle>
+                </ulink>
+                and
+                <ulink url="https://gitlab.com/tortoisegit/tortoisegit/merge_requests/1">
+                    <citetitle>https://gitlab.com/tortoisegit/tortoisegit/merge_requests/1</citetitle>
+                </ulink> for more details).
+                The <literal>$WCLOGCOUNT&amp;$</literal>, <literal>$WCLOGCOUNT+$</literal> and
+                <literal>$WCLOGCOUNT-$</literal> can be used to <literal>AND</literal>, add or subtract
+                a predefined number from/to the number of commits. For example
+                <literal>$WCLOGCOUNT&amp;65535$</literal> will ensure the number is not exceeding 16 bit.
+              </entry>
+            </row>
+            <row>
               <entry condition="pot">$WCDATE$, $WCDATEUTC$</entry>
               <entry>
                 Replaced with the commit date/time of the
