@@ -3088,6 +3088,7 @@ void CBaseView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			if (bControl)
 			{
 				ScrollAllToLine(0);
+				ScrollAllToChar(0);
 				SetCaretToViewStart();
 				m_nCaretGoalPos = 0;
 				if (bShift)
