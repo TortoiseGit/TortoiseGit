@@ -76,9 +76,9 @@ class GitStatus
 {
 public:
 
-	static int GetFileStatus(const CString& gitdir, CString path, git_wc_status2_t& status, BOOL IsFull = FALSE, BOOL isIgnore = TRUE, bool update = true);
-	static int GetDirStatus(const CString& gitdir, const CString& path, git_wc_status_kind* status, BOOL IsFull = false, BOOL IsRecursive = false, BOOL isIgnore = true);
-	static int EnumDirStatus(const CString& gitdir, const CString& path, git_wc_status_kind* dirstatus, FILL_STATUS_CALLBACK callback, void* pData);
+	static int GetFileStatus(const CString& gitdir, const CString& gitdirNormalized, CString path, git_wc_status2_t& status, BOOL IsFull = FALSE, BOOL isIgnore = TRUE, bool update = true);
+	static int GetDirStatus(const CString& gitdir, const CString& gitdirNormalized, const CString& path, git_wc_status_kind* status, BOOL IsFull = false, BOOL IsRecursive = false, BOOL isIgnore = true);
+	static int EnumDirStatus(const CString& gitdir, const CString& gitdirNormalized, const CString& path, git_wc_status_kind* dirstatus, FILL_STATUS_CALLBACK callback, void* pData);
 	static int GetFileList(const CString& path, std::vector<CGitFileName>& list, bool& isRepoRoot, bool ignoreCase);
 	static bool CheckAndUpdateIgnoreFiles(const CString& gitdir, const CString& subpaths, bool isDir);
 	/** Checks whether a file/directory is ignored - does not reload .ignore files */

@@ -84,11 +84,10 @@ public:
 	CGitIndexFileMap() { m_critIndexSec.Init(); }
 	~CGitIndexFileMap() { m_critIndexSec.Term(); }
 
-	SHARED_INDEX_PTR SafeGet(const CString& path)
+	SHARED_INDEX_PTR SafeGetNormalized(const CString& pathNormalized)
 	{
-		CString thePath(CPathUtils::NormalizePath(path));
 		CAutoLocker lock(m_critIndexSec);
-		auto lookup = find(thePath);
+		auto lookup = find(pathNormalized);
 		if (lookup == cend())
 			return SHARED_INDEX_PTR();
 		return lookup->second;
@@ -196,11 +195,10 @@ public:
 	CGitHeadFileMap() { m_critTreeSec.Init(); }
 	~CGitHeadFileMap() { m_critTreeSec.Term(); }
 
-	SHARED_TREE_PTR SafeGet(const CString& path)
+	SHARED_TREE_PTR SafeGetNormalized(const CString& pathNormalized)
 	{
-		CString thePath(CPathUtils::NormalizePath(path));
 		CAutoLocker lock(m_critTreeSec);
-		auto lookup = find(thePath);
+		auto lookup = find(pathNormalized);
 		if (lookup == cend())
 			return SHARED_TREE_PTR();
 		return lookup->second;
