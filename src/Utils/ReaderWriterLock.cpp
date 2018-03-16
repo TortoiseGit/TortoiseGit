@@ -73,15 +73,14 @@ bool CReaderWriterLockNonReentrance::_ReaderWait(DWORD dwTimeout) throw()
 
     if(INFINITE == dwTimeout) // INFINITE is a special value
     {
-        do
-        {
+		while (0 != m_iNumOfWriter)
+		{
             LeaveCS();
             WaitForSingleObject(m_hSafeToReadEvent, INFINITE);
             // There might be one or more Writers entered, that's
-            // why we need DO-WHILE loop here
+            // why we need loop here
             EnterCS();
         }
-        while(0 != m_iNumOfWriter);
 
         ++m_iNumOfReaderEntered;
         blCanRead = TRUE;
