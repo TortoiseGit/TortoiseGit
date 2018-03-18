@@ -171,7 +171,6 @@ bool InsertRevision(char* def, char* pBuf, size_t& index, size_t& filelength, si
 		if ((pEnd - pStart) > 1024)
 			return false; // value specifier too big
 		exp = pEnd - pStart + 1;
-		SecureZeroMemory(format, sizeof(format));
 		memcpy(format, pStart, pEnd - pStart);
 		unsigned long number = strtoul(format, nullptr, 0);
 		if (strcmp(def, VERDEFSHORT) == 0 && number < hashlen)
@@ -205,7 +204,7 @@ bool InsertRevisionW(wchar_t* def, wchar_t* pBuf, size_t& index, size_t& filelen
 	ptrdiff_t exp = 0;
 	if ((wcscmp(def, TEXT(VERDEFSHORT)) == 0))
 	{
-		wchar_t format[1024];
+		wchar_t format[1024] = { 0 };
 		wchar_t* pStart = pBuf + index + wcslen(def);
 		wchar_t* pEnd = pStart;
 
@@ -218,7 +217,6 @@ bool InsertRevisionW(wchar_t* def, wchar_t* pBuf, size_t& index, size_t& filelen
 		if ((pEnd - pStart) > 1024)
 			return false; // Format specifier too big
 		exp = pEnd - pStart + 1;
-		SecureZeroMemory(format, sizeof(format));
 		memcpy(format, pStart, (pEnd - pStart) * sizeof(wchar_t));
 		unsigned long number = wcstoul(format, nullptr, 0);
 		if (wcscmp(def, TEXT(VERDEFSHORT)) == 0 && number < hashlen)
@@ -228,13 +226,13 @@ bool InsertRevisionW(wchar_t* def, wchar_t* pBuf, size_t& index, size_t& filelen
 	wchar_t* pBuild = pBuf + index;
 	ptrdiff_t Expansion = hashlen - exp - wcslen(def);
 	if (Expansion < 0)
-		memmove(pBuild, pBuild - Expansion, (filelength - ((pBuild - Expansion) - pBuf)));
+		memmove(pBuild, pBuild - Expansion, (filelength - ((pBuild - Expansion) - pBuf) * sizeof(wchar_t)));
 	else if (Expansion > 0)
 	{
 		// Check for buffer overflow
-		if (maxlength < Expansion + filelength)
+		if (maxlength < Expansion * sizeof(wchar_t) + filelength)
 			return false;
-		memmove(pBuild + Expansion, pBuild, (filelength - (pBuild - pBuf)));
+		memmove(pBuild + Expansion, pBuild, (filelength - (pBuild - pBuf) * sizeof(wchar_t)));
 	}
 	std::wstring hash = CUnicodeUtils::StdGetUnicode(GitStat->HeadHashReadable);
 	memmove(pBuild, hash.c_str(), hashlen * sizeof(wchar_t));
@@ -267,7 +265,6 @@ bool InsertNumber(char* def, char* pBuf, size_t& index, size_t& filelength, size
 			return false; // value specifier too big
 
 		exp = pEnd - pStart + 1;
-		SecureZeroMemory(format, sizeof(format));
 		memcpy(format, pStart, pEnd - pStart);
 		unsigned long number = strtoul(format, NULL, 0);
 		if (strcmp(def, VALDEFAND) == 0)
@@ -318,7 +315,7 @@ bool InsertNumberW(wchar_t* def, wchar_t* pBuf, size_t& index, size_t& filelengt
 	ptrdiff_t exp = 0;
 	if ((wcscmp(def, TEXT(VALDEFAND)) == 0) || (wcscmp(def, TEXT(VALDEFOFFSET1)) == 0) || (wcscmp(def, TEXT(VALDEFOFFSET2)) == 0))
 	{
-		wchar_t format[1024];
+		wchar_t format[1024] = { 0 };
 		wchar_t* pStart = pBuf + index + wcslen(def);
 		wchar_t* pEnd = pStart;
 
@@ -332,7 +329,6 @@ bool InsertNumberW(wchar_t* def, wchar_t* pBuf, size_t& index, size_t& filelengt
 			return false; // Format specifier too big
 
 		exp = pEnd - pStart + 1;
-		SecureZeroMemory(format, sizeof(format));
 		memcpy(format, pStart, (pEnd - pStart) * sizeof(wchar_t));
 		unsigned long number = wcstoul(format, NULL, 0);
 		if (wcscmp(def, TEXT(VALDEFAND)) == 0)
@@ -359,13 +355,13 @@ bool InsertNumberW(wchar_t* def, wchar_t* pBuf, size_t& index, size_t& filelengt
 	wchar_t* pBuild = pBuf + index;
 	ptrdiff_t Expansion = wcslen(destbuf) - exp - wcslen(def);
 	if (Expansion < 0)
-		memmove(pBuild, pBuild - Expansion, (filelength - ((pBuild - Expansion) - pBuf)));
+		memmove(pBuild, pBuild - Expansion, (filelength - ((pBuild - Expansion) - pBuf) * sizeof(wchar_t)));
 	else if (Expansion > 0)
 	{
 		// Check for buffer overflow
-		if (maxlength < Expansion + filelength)
+		if (maxlength < Expansion * sizeof(wchar_t) + filelength)
 			return false;
-		memmove(pBuild + Expansion, pBuild, (filelength - (pBuild - pBuf)));
+		memmove(pBuild + Expansion, pBuild, (filelength - (pBuild - pBuf) * sizeof(wchar_t)));
 	}
 	memmove(pBuild, destbuf, wcslen(destbuf) * sizeof(wchar_t));
 	filelength += (Expansion * sizeof(wchar_t));
@@ -424,7 +420,6 @@ bool InsertDate(char* def, char* pBuf, size_t& index, size_t& filelength, size_t
 		}
 		if ((pEnd - pStart) > 1024)
 			return false; // Format specifier too big
-		SecureZeroMemory(format, sizeof(format));
 		memcpy(format,pStart,pEnd - pStart);
 
 		// to avoid wcsftime aborting if the user specified an invalid time format,
@@ -491,7 +486,7 @@ bool InsertDateW(wchar_t* def, wchar_t* pBuf, size_t& index, size_t& filelength,
 		(wcscmp(def,TEXT(DATEWFMTDEFUTC)) == 0) || (wcscmp(def,TEXT(NOWWFMTDEFUTC)) == 0))
 	{
 		// Format the date/time according to the supplied strftime format string
-		wchar_t format[1024];
+		wchar_t format[1024] = { 0 };
 		wchar_t* pStart = pBuf + index + wcslen(def);
 		wchar_t* pEnd = pStart;
 
@@ -503,7 +498,6 @@ bool InsertDateW(wchar_t* def, wchar_t* pBuf, size_t& index, size_t& filelength,
 		}
 		if ((pEnd - pStart) > 1024)
 			return false; // Format specifier too big
-		SecureZeroMemory(format, sizeof(format));
 		memcpy(format, pStart, (pEnd - pStart) * sizeof(wchar_t));
 
 		// to avoid wcsftime aborting if the user specified an invalid time format,
@@ -529,13 +523,13 @@ bool InsertDateW(wchar_t* def, wchar_t* pBuf, size_t& index, size_t& filelength,
 	}
 	// Replace the def string with the actual commit date
 	if (Expansion < 0)
-		memmove(pBuild, pBuild - Expansion, (filelength - ((pBuild - Expansion) - pBuf)));
+		memmove(pBuild, pBuild - Expansion, (filelength - ((pBuild - Expansion) - pBuf) * sizeof(wchar_t)));
 	else if (Expansion > 0)
 	{
 		// Check for buffer overflow
-		if (maxlength < Expansion + filelength)
+		if (maxlength < Expansion * sizeof(wchar_t) + filelength)
 			return false;
-		memmove(pBuild + Expansion, pBuild, (filelength - (pBuild - pBuf)));
+		memmove(pBuild + Expansion, pBuild, (filelength - (pBuild - pBuf) * sizeof(wchar_t)));
 	}
 	memmove(pBuild, destbuf, wcslen(destbuf) * sizeof(wchar_t));
 	filelength += Expansion * sizeof(wchar_t);
@@ -623,21 +617,21 @@ bool InsertBooleanW(wchar_t* def, wchar_t* pBuf, size_t& index, size_t& fileleng
 	{
 		// Replace $WCxxx?TrueText:FalseText$ with TrueText
 		// Remove :FalseText$
-		memmove(pSplit, pEnd + 1, (filelength - (pEnd + 1 - pBuf)) * sizeof(wchar_t));
+		memmove(pSplit, pEnd + 1, (filelength - (pEnd + 1 - pBuf) * sizeof(wchar_t)));
 		filelength -= ((pEnd + 1 - pSplit) * sizeof(wchar_t));
 		// Remove $WCxxx?
 		size_t deflen = wcslen(def);
-		memmove(pBuild, pBuild + deflen, (filelength - (pBuild + deflen - pBuf)));
+		memmove(pBuild, pBuild + deflen, (filelength - (pBuild + deflen - pBuf) * sizeof(wchar_t)));
 		filelength -= (deflen * sizeof(wchar_t));
 	}
 	else
 	{
 		// Replace $WCxxx?TrueText:FalseText$ with FalseText
 		// Remove terminating $
-		memmove(pEnd, pEnd + 1, (filelength - (pEnd + 1 - pBuf)));
+		memmove(pEnd, pEnd + 1, (filelength - (pEnd + 1 - pBuf) * sizeof(wchar_t)));
 		filelength -= sizeof(wchar_t);
 		// Remove $WCxxx?TrueText:
-		memmove(pBuild, pSplit + 1, (filelength - (pSplit + 1 - pBuf)));
+		memmove(pBuild, pSplit + 1, (filelength - (pSplit + 1 - pBuf) * sizeof(wchar_t)));
 		filelength -= ((pSplit + 1 - pBuild) * sizeof(wchar_t));
 	}
 	return true;
@@ -679,13 +673,13 @@ bool InsertTextW(wchar_t* def, wchar_t* pBuf, size_t& index, size_t& filelength,
 	wchar_t* pBuild = pBuf + index;
 	ptrdiff_t Expansion = Value.length() - wcslen(def);
 	if (Expansion < 0)
-		memmove(pBuild, pBuild - Expansion, (filelength - ((pBuild - Expansion) - pBuf)));
+		memmove(pBuild, pBuild - Expansion, (filelength - ((pBuild - Expansion) - pBuf) * sizeof(wchar_t)));
 	else if (Expansion > 0)
 	{
 		// Check for buffer overflow
-		if (maxlength < Expansion + filelength)
+		if (maxlength < Expansion * sizeof(wchar_t) + filelength)
 			return false;
-		memmove(pBuild + Expansion, pBuild, (filelength - (pBuild - pBuf)));
+		memmove(pBuild + Expansion, pBuild, (filelength - (pBuild - pBuf) * sizeof(wchar_t)));
 	}
 	std::wstring wValue = CUnicodeUtils::StdGetUnicode(Value);
 	memmove(pBuild, wValue.c_str(), wValue.length() * sizeof(wchar_t));
@@ -874,7 +868,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			_tprintf(L"Could not determine file size of '%s'\n", src);
 			return ERR_READ;
 		}
-		maxlength = filelength + 4096; // We might be increasing file size.
+		maxlength = filelength + 8192; // We might be increasing file size.
 		pBuf = std::make_unique<char[]>(maxlength);
 		if (!pBuf)
 		{
