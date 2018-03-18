@@ -97,7 +97,7 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 	try
 	{
 		t1 = ::GetCurrentTime();
-		if (m_GitStatus.GetAllStatus(filepath, g_ShellCache.GetCacheType() != ShellCache::dll, status))
+		if (m_GitStatus.GetAllStatus(filepath, 0, g_ShellCache.GetCacheType() != ShellCache::dll, status))
 			status = { git_wc_status_none, false, false };
 		t2 = ::GetCurrentTime();
 	}

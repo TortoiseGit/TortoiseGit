@@ -28,6 +28,26 @@
 #include "SmartHandle.h"
 #include "git2/sys/repository.h"
 
+struct Win32FindDataNameComparator
+{
+	bool operator()(TCHAR const *const a, TCHAR const *const b) const
+	{
+		return _tcscmp(a, b) < 0;
+	}
+	bool operator()(WIN32_FIND_DATA const &a, TCHAR const *const b) const
+	{
+		return (*this)(a.cFileName, b);
+	}
+	bool operator()(TCHAR const *const a, WIN32_FIND_DATA const &b) const
+	{
+		return (*this)(a, b.cFileName);
+	}
+	bool operator()(WIN32_FIND_DATA const &a, WIN32_FIND_DATA const &b) const
+	{
+		return (*this)(a.cFileName, b);
+	}
+};
+
 CGitAdminDirMap g_AdminDirMap;
 
 static CString GetProgramDataGitConfig()
@@ -170,6 +190,11 @@ int CGitIndexList::GetFileStatus(const CString& gitdir, const CString& pathorg, 
 	return GetFileStatus(repository, gitdir, entry, status, time, filesize, isSymlink);
 }
 
+void CGitIndexList::ClearDirectoryCache()
+{
+	m_dirStatuses.clear();
+}
+
 int CGitIndexList::GetFileStatus(CAutoRepository& repository, const CString& gitdir, CGitIndex& entry, git_wc_status2_t& status, __int64 time, __int64 filesize, bool isSymlink)
 {
 	ATLASSERT(!status.assumeValid && !status.skipWorktree);
@@ -250,10 +275,57 @@ int CGitIndexList::GetFileStatus(const CString& gitdir, const CString& path, git
 	bool isSymlink = false;
 
 	int result;
-	if (path.IsEmpty())
+	CString combinedPath(CombinePath(gitdir, path));
+	CString fileName = CPathUtils::GetFileNameFromPath(combinedPath);
+	CString parentPath = combinedPath.Mid(0, combinedPath.GetLength() - fileName.GetLength());
+	DirectoryStatuses::iterator dir = m_dirStatuses.find(parentPath);
+	Win32FindDataNameComparator comparator;
+	if (dir == m_dirStatuses.end())
+	{
+		WIN32_FIND_DATA fData;
+		CSmartHandle<HANDLE, CCloseFindFile> hFind = ::FindFirstFileEx(CombinePath(parentPath, L"*"), FindExInfoBasic, &fData, FindExSearchNameMatch, nullptr, FIND_FIRST_EX_LARGE_FETCH);
+		if (hFind != INVALID_HANDLE_VALUE)
+		{
+			dir = m_dirStatuses.insert(dir, DirectoryStatuses::value_type(parentPath, DirectoryStatuses::value_type::second_type()));
+			dir->second.reserve(0x8);
+			dir->second.push_back(fData);
+			do
+			{
+				dir->second.resize(dir->second.size() + 1);
+			} while (::FindNextFile(hFind, &dir->second.back()));
+			if (::GetLastError() == ERROR_NO_MORE_FILES)
+			{
+				dir->second.pop_back();
+				std::sort(dir->second.begin(), dir->second.end(), comparator);
+			}
+			else
+			{
+				m_dirStatuses.erase(dir);
+				dir = m_dirStatuses.end();
+			}
+		}
+	}
+	if (dir != m_dirStatuses.end())
+	{
+		DirectoryStatuses::value_type::second_type::const_iterator file =
+			std::lower_bound(dir->second.begin(), dir->second.end(), fileName.GetString(), comparator);
+		if (file != dir->second.end() && !comparator(fileName.GetString(), file->cFileName))
+		{
+			time = ((__int64)file->ftLastWriteTime.dwHighDateTime << 32) + file->ftLastWriteTime.dwLowDateTime;
+			filesize = ((__int64)file->nFileSizeHigh << 32) + file->nFileSizeLow;
+			isDir = !!( file->dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
+			isSymlink = (file->dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT) && !CPathUtils::ReadLink(fileName);
+			result = 0;
+		}
+		else
+		{
+			result = -1;
+		}
+	}
+	else if (path.IsEmpty())
 		result = CGit::GetFileModifyTime(gitdir, &time, &isDir);
 	else
-		result = CGit::GetFileModifyTime(CombinePath(gitdir, path), &time, &isDir, &filesize, &isSymlink);
+		result = CGit::GetFileModifyTime(combinedPath, &time, &isDir, &filesize, &isSymlink);
 
 	if (result)
 		filesize = -1;
