@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2017 - TortoiseGit
+// Copyright (C) 2017-2018 - TortoiseGit
 // Copyright (C) 2007-2008, 2010-2011, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -50,6 +50,8 @@ public:
 
 	virtual HRESULT __stdcall get_Revision(/*[out, retval]*/VARIANT* rev) override;
 
+	virtual HRESULT __stdcall get_Branch(/*[out, retval]*/VARIANT* branch) override;
+
 	virtual HRESULT __stdcall get_Date(/*[out, retval]*/VARIANT* date) override;
 
 	virtual HRESULT __stdcall get_Author(/*[out, retval]*/VARIANT* author) override;
@@ -72,11 +74,14 @@ public:
 
 	virtual HRESULT __stdcall get_IsSubmoduleUp2Date(/*[out, retval]*/VARIANT_BOOL* up2date) override;
 
+	virtual HRESULT __stdcall get_CommitCount(/*[out, retval]*/VARIANT* rev);
+
 private:
 	BOOL CopyDateToString(WCHAR* destbuf, int buflen, __time64_t time);
 
 	HRESULT LoadTypeInfo(ITypeInfo ** pptinfo, const CLSID& libid, const CLSID& iid, LCID lcid);
 	static HRESULT BoolToVariantBool(BOOL value, VARIANT_BOOL* result);
+	static HRESULT LongToVariant(LONG value, VARIANT* result);
 	static HRESULT Utf8StringToVariant(const char* string, VARIANT* result );
 	HRESULT __stdcall GetWCInfoInternal(/*[in]*/ BSTR wcPath, /*[in]*/VARIANT_BOOL ignore_submodules);
 

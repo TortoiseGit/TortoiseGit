@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2017 - TortoiseGit
+// Copyright (C) 2017-2018 - TortoiseGit
 // Copyright (C) 2003-2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -149,12 +149,19 @@ int GetStatus(const TCHAR* path, GitWCRev_t& GitStat)
 		memset(GitStat.HeadHash, 0, sizeof(GitStat.HeadHash));
 		strncpy_s(GitStat.HeadHashReadable, GIT_OID_HEX_ZERO, strlen(GIT_OID_HEX_ZERO));
 		GitStat.bIsUnborn = TRUE;
+
+		CAutoReference head;
+		if (git_repository_head(head.GetPointer(), repo) != GIT_EUNBORNBRANCH)
+			return ERR_GIT_ERR;
+		GitStat.CurrentBranch = git_reference_shorthand(head);
+
 		return 0;
 	}
 
 	CAutoReference head;
 	if (git_repository_head(head.GetPointer(), repo) < 0)
 		return ERR_GIT_ERR;
+	GitStat.CurrentBranch = git_reference_shorthand(head);
 
 	CAutoObject object;
 	if (git_reference_peel(object.GetPointer(), head, GIT_OBJ_COMMIT) < 0)
@@ -246,6 +253,17 @@ int GetStatus(const TCHAR* path, GitWCRev_t& GitStat)
 		else
 			GitStat.HasMods = TRUE;
 	}
+
+	// count the first-parent revisions from HEAD to the first commit
+	CAutoRevwalk walker;
+	if (git_revwalk_new(walker.GetPointer(), repo) < 0)
+		return ERR_GIT_ERR;
+	git_revwalk_simplify_first_parent(walker);
+	if (git_revwalk_push_head(walker) < 0)
+		return ERR_GIT_ERR;
+	git_oid oidlog;
+	while (!git_revwalk_next(&oidlog, walker))
+		++GitStat.NumCommits;
 
 	std::transform(pathA.begin(), pathA.end(), pathA.begin(), [](char c) { return (c == '\\') ? '/' : c; });
 	pathA.erase(pathA.begin(), pathA.begin() + min(workdir.length(), pathA.length())); // workdir always ends with a slash, however, wcA is not guaranteed to

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2017 - TortoiseGit
+// Copyright (C) 2017-2018 - TortoiseGit
 // Copyright (C) 2003-2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -65,6 +65,8 @@ SrcVersionFile is then copied to DstVersionFile but the placeholders\n\
 are replaced with information about the working tree as follows:\n\
 \n\
 $WCREV$         HEAD commit revision\n\
+$WCREV=$        HEAD commit revision, truncated after the numner of chars\n\
+                provided after the =\n\
 $WCDATE$        Date of the HEAD revision\n\
 $WCDATE=$       Like $WCDATE$ with an added strftime format after the =\n\
 $WCNOW$         Current system date & time\n\
@@ -81,7 +83,13 @@ TrueText if the tested condition is true, and FalseText if false.\n\
 $WCMODS$        True if uncommitted modifications were found\n\
 $WCUNVER        True if unversioned and unignored files were found\n\
 $WCISTAGGED$    True if the HEAD commit is tagged\n\
-$WCINGIT$       True if the item is versioned\n"
+$WCINGIT$       True if the item is versioned\n\
+$WCLOGCOUNT$    Number of first-parent commits for the current branch\n\
+$WCLOGCOUNT&$   Number of commits ANDed with the number after the &\n\
+$WCLOGCOUNT+$   Number of commits added with the number after the &\n\
+$WCLOGCOUNT-$   Number of commits subtracted with the number after the &\n\
+$WCBRANCH$      Current branch name, SHA - 1 if head is detached\n"
+
 // End of multi-line help text.
 
 #define	VERDEF			"$WCREV$"
@@ -105,6 +113,11 @@ $WCINGIT$       True if the item is versioned\n"
 #define	UNVERINSUBDEF	"$WCUNVERINSUBMODULE?"
 #define	UNVERFULLDEF	"$WCUNVERFULL?"
 #define	MODFULLDEF		"$WCMODSFULL?"
+#define	VALDEF			"$WCLOGCOUNT$"
+#define	VALDEFAND		"$WCLOGCOUNT&"
+#define	VALDEFOFFSET1	"$WCLOGCOUNT-"
+#define	VALDEFOFFSET2	"$WCLOGCOUNT+"
+#define	BRANCHDEF		"$WCBRANCH$"
 
 // Value for apr_time_t to signify "now"
 #define USE_TIME_NOW    -2 // 0 and -1 might already be significant.
@@ -158,7 +171,6 @@ bool InsertRevision(char* def, char* pBuf, size_t& index, size_t& filelength, si
 		if ((pEnd - pStart) > 1024)
 			return false; // value specifier too big
 		exp = pEnd - pStart + 1;
-		SecureZeroMemory(format, sizeof(format));
 		memcpy(format, pStart, pEnd - pStart);
 		unsigned long number = strtoul(format, nullptr, 0);
 		if (strcmp(def, VERDEFSHORT) == 0 && number < hashlen)
@@ -192,7 +204,7 @@ bool InsertRevisionW(wchar_t* def, wchar_t* pBuf, size_t& index, size_t& filelen
 	ptrdiff_t exp = 0;
 	if ((wcscmp(def, TEXT(VERDEFSHORT)) == 0))
 	{
-		wchar_t format[1024];
+		wchar_t format[1024] = { 0 };
 		wchar_t* pStart = pBuf + index + wcslen(def);
 		wchar_t* pEnd = pStart;
 
@@ -205,7 +217,6 @@ bool InsertRevisionW(wchar_t* def, wchar_t* pBuf, size_t& index, size_t& filelen
 		if ((pEnd - pStart) > 1024)
 			return false; // Format specifier too big
 		exp = pEnd - pStart + 1;
-		SecureZeroMemory(format, sizeof(format));
 		memcpy(format, pStart, (pEnd - pStart) * sizeof(wchar_t));
 		unsigned long number = wcstoul(format, nullptr, 0);
 		if (wcscmp(def, TEXT(VERDEFSHORT)) == 0 && number < hashlen)
@@ -215,16 +226,144 @@ bool InsertRevisionW(wchar_t* def, wchar_t* pBuf, size_t& index, size_t& filelen
 	wchar_t* pBuild = pBuf + index;
 	ptrdiff_t Expansion = hashlen - exp - wcslen(def);
 	if (Expansion < 0)
-		memmove(pBuild, pBuild - Expansion, (filelength - ((pBuild - Expansion) - pBuf)));
+		memmove(pBuild, pBuild - Expansion, (filelength - ((pBuild - Expansion) - pBuf) * sizeof(wchar_t)));
+	else if (Expansion > 0)
+	{
+		// Check for buffer overflow
+		if (maxlength < Expansion * sizeof(wchar_t) + filelength)
+			return false;
+		memmove(pBuild + Expansion, pBuild, (filelength - (pBuild - pBuf) * sizeof(wchar_t)));
+	}
+	std::wstring hash = CUnicodeUtils::StdGetUnicode(GitStat->HeadHashReadable);
+	memmove(pBuild, hash.c_str(), hashlen * sizeof(wchar_t));
+	filelength += (Expansion * sizeof(wchar_t));
+	return true;
+}
+
+bool InsertNumber(char* def, char* pBuf, size_t& index, size_t& filelength, size_t maxlength, size_t Value)
+{
+	// Search for first occurrence of def in the buffer, starting at index.
+	if (!FindPlaceholder(def, pBuf, index, filelength))
+	{
+		// No more matches found.
+		return false;
+	}
+	ptrdiff_t exp = 0;
+	if ((strcmp(def, VALDEFAND) == 0) || (strcmp(def, VALDEFOFFSET1) == 0) || (strcmp(def, VALDEFOFFSET2) == 0))
+	{
+		char format[1024] = { 0 };
+		char* pStart = pBuf + index + strlen(def);
+		char* pEnd = pStart;
+
+		while (*pEnd != '$')
+		{
+			++pEnd;
+			if (pEnd - pBuf >= (__int64)filelength)
+				return false; // No terminator - malformed so give up.
+		}
+		if ((pEnd - pStart) > 1024)
+			return false; // value specifier too big
+
+		exp = pEnd - pStart + 1;
+		memcpy(format, pStart, pEnd - pStart);
+		unsigned long number = strtoul(format, NULL, 0);
+		if (strcmp(def, VALDEFAND) == 0)
+		{
+			if (Value != -1)
+				Value &= number;
+		}
+		if (strcmp(def, VALDEFOFFSET1) == 0)
+		{
+			if (Value != -1)
+				Value -= number;
+		}
+		if (strcmp(def, VALDEFOFFSET2) == 0)
+		{
+			if (Value != -1)
+				Value += number;
+		}
+	}
+	// Format the text to insert at the placeholder
+	char destbuf[1024] = { 0 };
+	sprintf_s(destbuf, "%lld", Value);
+
+	// Replace the $WCxxx$ string with the actual revision number
+	char* pBuild = pBuf + index;
+	ptrdiff_t Expansion = strlen(destbuf) - exp - strlen(def);
+	if (Expansion < 0)
+		memmove(pBuild, pBuild - Expansion, filelength - ((pBuild - Expansion) - pBuf));
 	else if (Expansion > 0)
 	{
 		// Check for buffer overflow
 		if (maxlength < Expansion + filelength)
 			return false;
-		memmove(pBuild + Expansion, pBuild, (filelength - (pBuild - pBuf)));
+		memmove(pBuild + Expansion, pBuild, filelength - (pBuild - pBuf));
 	}
-	std::wstring hash = CUnicodeUtils::StdGetUnicode(GitStat->HeadHashReadable);
-	memmove(pBuild, hash.c_str(), hashlen * sizeof(wchar_t));
+	memmove(pBuild, destbuf, strlen(destbuf));
+	filelength += Expansion;
+	return true;
+}
+bool InsertNumberW(wchar_t* def, wchar_t* pBuf, size_t& index, size_t& filelength, size_t maxlength, size_t Value)
+{
+	// Search for first occurrence of def in the buffer, starting at index.
+	if (!FindPlaceholderW(def, pBuf, index, filelength))
+	{
+		// No more matches found.
+		return false;
+	}
+
+	ptrdiff_t exp = 0;
+	if ((wcscmp(def, TEXT(VALDEFAND)) == 0) || (wcscmp(def, TEXT(VALDEFOFFSET1)) == 0) || (wcscmp(def, TEXT(VALDEFOFFSET2)) == 0))
+	{
+		wchar_t format[1024] = { 0 };
+		wchar_t* pStart = pBuf + index + wcslen(def);
+		wchar_t* pEnd = pStart;
+
+		while (*pEnd != '$')
+		{
+			++pEnd;
+			if (((__int64)(pEnd - pBuf)) * ((__int64)sizeof(wchar_t)) >= (__int64)filelength)
+				return false; // No terminator - malformed so give up.
+		}
+		if ((pEnd - pStart) > 1024)
+			return false; // Format specifier too big
+
+		exp = pEnd - pStart + 1;
+		memcpy(format, pStart, (pEnd - pStart) * sizeof(wchar_t));
+		unsigned long number = wcstoul(format, NULL, 0);
+		if (wcscmp(def, TEXT(VALDEFAND)) == 0)
+		{
+			if (Value != -1)
+				Value &= number;
+		}
+		if (wcscmp(def, TEXT(VALDEFOFFSET1)) == 0)
+		{
+			if (Value != -1)
+				Value -= number;
+		}
+		if (wcscmp(def, TEXT(VALDEFOFFSET2)) == 0)
+		{
+			if (Value != -1)
+				Value += number;
+		}
+	}
+
+	// Format the text to insert at the placeholder
+	wchar_t destbuf[40];
+	swprintf_s(destbuf, L"%lld", Value);
+	// Replace the $WCxxx$ string with the actual revision number
+	wchar_t* pBuild = pBuf + index;
+	ptrdiff_t Expansion = wcslen(destbuf) - exp - wcslen(def);
+	if (Expansion < 0)
+		memmove(pBuild, pBuild - Expansion, (filelength - ((pBuild - Expansion) - pBuf) * sizeof(wchar_t)));
+	else if (Expansion > 0)
+	{
+		// Check for buffer overflow
+		if (maxlength < Expansion * sizeof(wchar_t) + filelength)
+			return false;
+		memmove(pBuild + Expansion, pBuild, (filelength - (pBuild - pBuf) * sizeof(wchar_t)));
+	}
+	memmove(pBuild, destbuf, wcslen(destbuf) * sizeof(wchar_t));
 	filelength += (Expansion * sizeof(wchar_t));
 	return true;
 }
@@ -281,7 +420,6 @@ bool InsertDate(char* def, char* pBuf, size_t& index, size_t& filelength, size_t
 		}
 		if ((pEnd - pStart) > 1024)
 			return false; // Format specifier too big
-		SecureZeroMemory(format, sizeof(format));
 		memcpy(format,pStart,pEnd - pStart);
 
 		// to avoid wcsftime aborting if the user specified an invalid time format,
@@ -348,7 +486,7 @@ bool InsertDateW(wchar_t* def, wchar_t* pBuf, size_t& index, size_t& filelength,
 		(wcscmp(def,TEXT(DATEWFMTDEFUTC)) == 0) || (wcscmp(def,TEXT(NOWWFMTDEFUTC)) == 0))
 	{
 		// Format the date/time according to the supplied strftime format string
-		wchar_t format[1024];
+		wchar_t format[1024] = { 0 };
 		wchar_t* pStart = pBuf + index + wcslen(def);
 		wchar_t* pEnd = pStart;
 
@@ -360,7 +498,6 @@ bool InsertDateW(wchar_t* def, wchar_t* pBuf, size_t& index, size_t& filelength,
 		}
 		if ((pEnd - pStart) > 1024)
 			return false; // Format specifier too big
-		SecureZeroMemory(format, sizeof(format));
 		memcpy(format, pStart, (pEnd - pStart) * sizeof(wchar_t));
 
 		// to avoid wcsftime aborting if the user specified an invalid time format,
@@ -386,13 +523,13 @@ bool InsertDateW(wchar_t* def, wchar_t* pBuf, size_t& index, size_t& filelength,
 	}
 	// Replace the def string with the actual commit date
 	if (Expansion < 0)
-		memmove(pBuild, pBuild - Expansion, (filelength - ((pBuild - Expansion) - pBuf)));
+		memmove(pBuild, pBuild - Expansion, (filelength - ((pBuild - Expansion) - pBuf) * sizeof(wchar_t)));
 	else if (Expansion > 0)
 	{
 		// Check for buffer overflow
-		if (maxlength < Expansion + filelength)
+		if (maxlength < Expansion * sizeof(wchar_t) + filelength)
 			return false;
-		memmove(pBuild + Expansion, pBuild, (filelength - (pBuild - pBuf)));
+		memmove(pBuild + Expansion, pBuild, (filelength - (pBuild - pBuf) * sizeof(wchar_t)));
 	}
 	memmove(pBuild, destbuf, wcslen(destbuf) * sizeof(wchar_t));
 	filelength += Expansion * sizeof(wchar_t);
@@ -480,23 +617,73 @@ bool InsertBooleanW(wchar_t* def, wchar_t* pBuf, size_t& index, size_t& fileleng
 	{
 		// Replace $WCxxx?TrueText:FalseText$ with TrueText
 		// Remove :FalseText$
-		memmove(pSplit, pEnd + 1, (filelength - (pEnd + 1 - pBuf)) * sizeof(wchar_t));
+		memmove(pSplit, pEnd + 1, (filelength - (pEnd + 1 - pBuf) * sizeof(wchar_t)));
 		filelength -= ((pEnd + 1 - pSplit) * sizeof(wchar_t));
 		// Remove $WCxxx?
 		size_t deflen = wcslen(def);
-		memmove(pBuild, pBuild + deflen, (filelength - (pBuild + deflen - pBuf)));
+		memmove(pBuild, pBuild + deflen, (filelength - (pBuild + deflen - pBuf) * sizeof(wchar_t)));
 		filelength -= (deflen * sizeof(wchar_t));
 	}
 	else
 	{
 		// Replace $WCxxx?TrueText:FalseText$ with FalseText
 		// Remove terminating $
-		memmove(pEnd, pEnd + 1, (filelength - (pEnd + 1 - pBuf)));
+		memmove(pEnd, pEnd + 1, (filelength - (pEnd + 1 - pBuf) * sizeof(wchar_t)));
 		filelength -= sizeof(wchar_t);
 		// Remove $WCxxx?TrueText:
-		memmove(pBuild, pSplit + 1, (filelength - (pSplit + 1 - pBuf)));
+		memmove(pBuild, pSplit + 1, (filelength - (pSplit + 1 - pBuf) * sizeof(wchar_t)));
 		filelength -= ((pSplit + 1 - pBuild) * sizeof(wchar_t));
 	}
+	return true;
+}
+
+bool InsertText(char* def, char* pBuf, size_t& index, size_t& filelength, size_t maxlength, const std::string& Value)
+{
+	// Search for first occurrence of def in the buffer, starting at index.
+	if (!FindPlaceholder(def, pBuf, index, filelength))
+	{
+		// No more matches found.
+		return false;
+	}
+	// Replace the $WCxxx$ string with the actual value
+	char* pBuild = pBuf + index;
+	ptrdiff_t Expansion = Value.length() - strlen(def);
+	if (Expansion < 0)
+		memmove(pBuild, pBuild - Expansion, filelength - ((pBuild - Expansion) - pBuf));
+	else if (Expansion > 0)
+	{
+		// Check for buffer overflow
+		if (maxlength < Expansion + filelength)
+			return false;
+		memmove(pBuild + Expansion, pBuild, filelength - (pBuild - pBuf));
+	}
+	memmove(pBuild, Value.c_str(), Value.length());
+	filelength += Expansion;
+	return true;
+}
+bool InsertTextW(wchar_t* def, wchar_t* pBuf, size_t& index, size_t& filelength, size_t maxlength, const std::string& Value)
+{
+	// Search for first occurrence of def in the buffer, starting at index.
+	if (!FindPlaceholderW(def, pBuf, index, filelength))
+	{
+		// No more matches found.
+		return false;
+	}
+	// Replace the $WCxxx$ string with the actual revision number
+	wchar_t* pBuild = pBuf + index;
+	ptrdiff_t Expansion = Value.length() - wcslen(def);
+	if (Expansion < 0)
+		memmove(pBuild, pBuild - Expansion, (filelength - ((pBuild - Expansion) - pBuf) * sizeof(wchar_t)));
+	else if (Expansion > 0)
+	{
+		// Check for buffer overflow
+		if (maxlength < Expansion * sizeof(wchar_t) + filelength)
+			return false;
+		memmove(pBuild + Expansion, pBuild, (filelength - (pBuild - pBuf) * sizeof(wchar_t)));
+	}
+	std::wstring wValue = CUnicodeUtils::StdGetUnicode(Value);
+	memmove(pBuild, wValue.c_str(), wValue.length() * sizeof(wchar_t));
+	filelength += (Expansion * sizeof(wchar_t));
 	return true;
 }
 
@@ -681,7 +868,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			_tprintf(L"Could not determine file size of '%s'\n", src);
 			return ERR_READ;
 		}
-		maxlength = filelength + 4096; // We might be increasing file size.
+		maxlength = filelength + 8192; // We might be increasing file size.
 		pBuf = std::make_unique<char[]>(maxlength);
 		if (!pBuf)
 		{
@@ -848,6 +1035,30 @@ int _tmain(int argc, _TCHAR* argv[])
 	while (InsertBoolean(MODSFILEDEF, pBuf.get(), index, filelength, GitStat.HasMods));
 	index = 0;
 	while (InsertBooleanW(TEXT(MODSFILEDEF), (wchar_t*)pBuf.get(), index, filelength, GitStat.HasMods));
+
+	while (InsertNumber(VALDEF, pBuf.get(), index, filelength, maxlength, GitStat.NumCommits));
+	index = 0;
+	while (InsertNumberW(TEXT(VALDEF), (wchar_t*)pBuf.get(), index, filelength, maxlength, GitStat.NumCommits));
+
+	index = 0;
+	while (InsertNumber(VALDEFAND, pBuf.get(), index, filelength, maxlength, GitStat.NumCommits));
+	index = 0;
+	while (InsertNumberW(TEXT(VALDEFAND), (wchar_t*)pBuf.get(), index, filelength, maxlength, GitStat.NumCommits));
+
+	index = 0;
+	while (InsertNumber(VALDEFOFFSET1, pBuf.get(), index, filelength, maxlength, GitStat.NumCommits));
+	index = 0;
+	while (InsertNumberW(TEXT(VALDEFOFFSET1), (wchar_t*)pBuf.get(), index, filelength, maxlength, GitStat.NumCommits));
+
+	index = 0;
+	while (InsertNumber(VALDEFOFFSET2, pBuf.get(), index, filelength, maxlength, GitStat.NumCommits));
+	index = 0;
+	while (InsertNumberW(TEXT(VALDEFOFFSET2), (wchar_t*)pBuf.get(), index, filelength, maxlength, GitStat.NumCommits));
+
+	index = 0;
+	while (InsertText(BRANCHDEF, pBuf.get(), index, filelength, maxlength, GitStat.CurrentBranch));
+	index = 0;
+	while (InsertTextW(TEXT(BRANCHDEF), (wchar_t*)pBuf.get(), index, filelength, maxlength, GitStat.CurrentBranch));
 
 	CAutoFile hFile = CreateFile(dst, GENERIC_WRITE | GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_ALWAYS, 0, 0);
 	if (!hFile)

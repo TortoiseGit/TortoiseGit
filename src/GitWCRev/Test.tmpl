@@ -2,13 +2,14 @@
 
 char* Revision                    = "$WCREV$";
 char* RevisionShort               = "$WCREV=7$";
+char* CurrentBranch               = "$WCBRANCH$";
 char* Modified                    = "$WCMODS?Modified:Not modified$";
 char* Unversioned                 = "$WCUNVER?Unversioned items found:no unversioned items$";
 char* Date                        = "$WCDATE$";
 char* DateUTC                     = "$WCDATEUTC$";
 char* CustDate                    = "$WCDATE=%a, %d %B %Y$";
 char* CustDateEmpty               = "$WCDATE=$";
-char* CustDateInval               = "$WCDATE=%a, %c %B %Y$";
+char* CustDateInval               = "$WCDATE=%a, %q %B %Y$";
 char* CustDateUTC                 = "$WCDATEUTC=%a, %d %B %Y$";
 char* TimeNow                     = "$WCNOW$";
 char* TimeNowUTC                  = "$WCNOWUTC$";
@@ -21,6 +22,10 @@ char* SubmoduleHasModifications   = "$WCMODSINSUBMODULE?At least one submodule h
 char* SubmoduleHasUnversioned     = "$WCUNVERINSUBMODULE?At least one submodule has unversioned files:No submodule with unversioned files$";
 char* ModifiedAlsoInSubmodules    = "$WCMODSFULL?Modified items found (recursively):No modified items found (also not in submodules)$";
 char* UnversionedAlsoInSubmodules = "$WCUNVERFULL?Unversioned items found (recursively):No unversioned items found (also not in submodules)$";
+char* RevisionCount               = "$WCLOGCOUNT$";
+char* RevisionCount16             = "$WCLOGCOUNT&0xFF$";
+char* RevisionCountp100           = "$WCLOGCOUNT+100$";
+char* RevisionCountm100           = "$WCLOGCOUNT-100$";
 
 #if $WCMODSFULL?1:0$
 #error Source is modified

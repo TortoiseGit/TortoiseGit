@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2017 - TortoiseGit
+// Copyright (C) 2017-2018 - TortoiseGit
 // Copyright (C) 2007-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -41,6 +41,9 @@ library LibGitWCRev
 		[propget, helpstring("Returns the working tree revision")]
 		HRESULT Revision([out, retval]VARIANT* rev);
 
+		[propget, helpstring("Returns the name of the current branch, SHA-1 if HEAD is detached")]
+		HRESULT Branch([out, retval]VARIANT* branch);
+
 		[propget, helpstring("Returns the working tree HEAD commit date as a string")]
 		HRESULT Date([out, retval]VARIANT* date);
 
@@ -73,6 +76,9 @@ library LibGitWCRev
 
 		[propget, helpstring("TRUE if all submodule HEADs match the committed ones")]
 		HRESULT IsSubmoduleUp2Date([out, retval]VARIANT_BOOL* up2date);
+
+		[propget, helpstring("Number of first-parent commits from HEAD to start")]
+		HRESULT CommitCount([out, retval]VARIANT* rev);
 	}
 
 

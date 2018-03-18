@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2017 - TortoiseGit
+// Copyright (C) 2017-2018 - TortoiseGit
 // Copyright (C) 2007-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -199,6 +199,11 @@ HRESULT __stdcall GitWCRev::get_Revision(/*[out, retval]*/VARIANT* rev)
 	return Utf8StringToVariant(GitStat.HeadHashReadable, rev);
 }
 
+HRESULT __stdcall GitWCRev::get_Branch(/*[out, retval]*/VARIANT* branch)
+{
+	return Utf8StringToVariant(GitStat.CurrentBranch.c_str(), branch);
+}
+
 HRESULT __stdcall GitWCRev::get_Date(/*[out, retval]*/VARIANT* date)
 {
 	if (!date)
@@ -279,11 +284,26 @@ HRESULT __stdcall GitWCRev::get_IsSubmoduleUp2Date(/*[out, retval]*/VARIANT_BOOL
 	return BoolToVariantBool(GitStat.bHasSubmoduleNewCommits, up2date);
 }
 
+HRESULT __stdcall GitWCRev::get_CommitCount(/*[out, retval]*/VARIANT* rev)
+{
+	return LongToVariant((LONG)GitStat.NumCommits, rev);
+}
+
 HRESULT GitWCRev::BoolToVariantBool(BOOL value, VARIANT_BOOL* result)
 {
 	if (!result)
 		return E_POINTER;
 	*result = (value == 0) ? VARIANT_FALSE : VARIANT_TRUE;
+	return S_OK;
+}
+
+HRESULT GitWCRev::LongToVariant(LONG value, VARIANT* result)
+{
+	if (!result)
+		return E_POINTER;
+
+	result->vt = VT_I4;
+	result->lVal = value;
 	return S_OK;
 }
 
