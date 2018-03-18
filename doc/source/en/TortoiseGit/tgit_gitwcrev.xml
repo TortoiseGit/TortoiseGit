@@ -315,6 +315,12 @@ doc/*
               </entry>
             </row>
             <row>
+              <entry condition="pot">$WCBRANCH$</entry>
+              <entry>
+                Replaced with the name of the current branch (or SHA-1 if HEAD is detached) of the working tree.
+              </entry>
+            </row>
+            <row>
               <entry condition="pot">$WCLOGCOUNT$, $WCLOGCOUNT&amp;$, $WCLOGCOUNT+$, $WCLOGCOUNT-$</entry>
               <entry>
                 Replaced with the number of first-parent commits from HEAD back to the first commit.

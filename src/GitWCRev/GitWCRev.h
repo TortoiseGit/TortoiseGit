@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2017 - TortoiseGit
+// Copyright (C) 2017-2018 - TortoiseGit
 // Copyright (C) 2003-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -59,5 +59,6 @@ struct GitWCRev_t
 	BOOL bIsTagged;					// True if HEAD is tagged
 	BOOL bIsUnborn;					// True if branch in unborn
 	size_t NumCommits;				// Number of commits for the current branch
+	std::string CurrentBranch;		// Name of the current branch, SHA-1 if detached head
 	std::set<std::string> ignorepatterns; // a list of file patterns to ignore
 };

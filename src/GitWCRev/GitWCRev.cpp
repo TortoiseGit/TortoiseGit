@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2017 - TortoiseGit
+// Copyright (C) 2017-2018 - TortoiseGit
 // Copyright (C) 2003-2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -85,7 +85,8 @@ $WCINGIT$       True if the item is versioned\n\
 $WCLOGCOUNT$    Number of first-parent commits for the current branch\n\
 $WCLOGCOUNT&$   Number of commits ANDed with the number after the &\n\
 $WCLOGCOUNT+$   Number of commits added with the number after the &\n\
-$WCLOGCOUNT-$   Number of commits subtracted with the number after the &\n"
+$WCLOGCOUNT-$   Number of commits subtracted with the number after the &\n\
+$WCBRANCH$      Current branch name, SHA - 1 if head is detached\n"
 
 // End of multi-line help text.
 
@@ -114,6 +115,7 @@ $WCLOGCOUNT-$   Number of commits subtracted with the number after the &\n"
 #define	VALDEFAND		"$WCLOGCOUNT&"
 #define	VALDEFOFFSET1	"$WCLOGCOUNT-"
 #define	VALDEFOFFSET2	"$WCLOGCOUNT+"
+#define	BRANCHDEF		"$WCBRANCH$"
 
 // Value for apr_time_t to signify "now"
 #define USE_TIME_NOW    -2 // 0 and -1 might already be significant.
@@ -639,6 +641,56 @@ bool InsertBooleanW(wchar_t* def, wchar_t* pBuf, size_t& index, size_t& fileleng
 	return true;
 }
 
+bool InsertText(char* def, char* pBuf, size_t& index, size_t& filelength, size_t maxlength, const std::string& Value)
+{
+	// Search for first occurrence of def in the buffer, starting at index.
+	if (!FindPlaceholder(def, pBuf, index, filelength))
+	{
+		// No more matches found.
+		return false;
+	}
+	// Replace the $WCxxx$ string with the actual value
+	char* pBuild = pBuf + index;
+	ptrdiff_t Expansion = Value.length() - strlen(def);
+	if (Expansion < 0)
+		memmove(pBuild, pBuild - Expansion, filelength - ((pBuild - Expansion) - pBuf));
+	else if (Expansion > 0)
+	{
+		// Check for buffer overflow
+		if (maxlength < Expansion + filelength)
+			return false;
+		memmove(pBuild + Expansion, pBuild, filelength - (pBuild - pBuf));
+	}
+	memmove(pBuild, Value.c_str(), Value.length());
+	filelength += Expansion;
+	return true;
+}
+bool InsertTextW(wchar_t* def, wchar_t* pBuf, size_t& index, size_t& filelength, size_t maxlength, const std::string& Value)
+{
+	// Search for first occurrence of def in the buffer, starting at index.
+	if (!FindPlaceholderW(def, pBuf, index, filelength))
+	{
+		// No more matches found.
+		return false;
+	}
+	// Replace the $WCxxx$ string with the actual revision number
+	wchar_t* pBuild = pBuf + index;
+	ptrdiff_t Expansion = Value.length() - wcslen(def);
+	if (Expansion < 0)
+		memmove(pBuild, pBuild - Expansion, (filelength - ((pBuild - Expansion) - pBuf)));
+	else if (Expansion > 0)
+	{
+		// Check for buffer overflow
+		if (maxlength < Expansion + filelength)
+			return false;
+		memmove(pBuild + Expansion, pBuild, (filelength - (pBuild - pBuf)));
+	}
+	std::wstring wValue = CUnicodeUtils::StdGetUnicode(Value);
+	memmove(pBuild, wValue.c_str(), wValue.length() * sizeof(wchar_t));
+	filelength += (Expansion * sizeof(wchar_t));
+	return true;
+}
+
 int _tmain(int argc, _TCHAR* argv[])
 {
 	// we have three parameters
@@ -1006,6 +1058,11 @@ int _tmain(int argc, _TCHAR* argv[])
 	while (InsertNumber(VALDEFOFFSET2, pBuf.get(), index, filelength, maxlength, GitStat.NumCommits));
 	index = 0;
 	while (InsertNumberW(TEXT(VALDEFOFFSET2), (wchar_t*)pBuf.get(), index, filelength, maxlength, GitStat.NumCommits));
+
+	index = 0;
+	while (InsertText(BRANCHDEF, pBuf.get(), index, filelength, maxlength, GitStat.CurrentBranch));
+	index = 0;
+	while (InsertTextW(TEXT(BRANCHDEF), (wchar_t*)pBuf.get(), index, filelength, maxlength, GitStat.CurrentBranch));
 
 	CAutoFile hFile = CreateFile(dst, GENERIC_WRITE | GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_ALWAYS, 0, 0);
 	if (!hFile)

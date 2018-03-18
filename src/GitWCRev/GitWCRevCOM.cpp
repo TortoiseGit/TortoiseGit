@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2017 - TortoiseGit
+// Copyright (C) 2017-2018 - TortoiseGit
 // Copyright (C) 2007-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -197,6 +197,11 @@ HRESULT __stdcall GitWCRev::GetWCInfo(/*[in]*/ BSTR wcPath, /*[in]*/VARIANT_BOOL
 HRESULT __stdcall GitWCRev::get_Revision(/*[out, retval]*/VARIANT* rev)
 {
 	return Utf8StringToVariant(GitStat.HeadHashReadable, rev);
+}
+
+HRESULT __stdcall GitWCRev::get_Branch(/*[out, retval]*/VARIANT* branch)
+{
+	return Utf8StringToVariant(GitStat.CurrentBranch.c_str(), branch);
 }
 
 HRESULT __stdcall GitWCRev::get_Date(/*[out, retval]*/VARIANT* date)

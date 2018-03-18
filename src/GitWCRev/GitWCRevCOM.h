@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2017 - TortoiseGit
+// Copyright (C) 2017-2018 - TortoiseGit
 // Copyright (C) 2007-2008, 2010-2011, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -49,6 +49,8 @@ public:
 	virtual HRESULT __stdcall GetWCInfo(/*[in]*/ BSTR wcPath, /*[in]*/VARIANT_BOOL ignore_submodules) override;
 
 	virtual HRESULT __stdcall get_Revision(/*[out, retval]*/VARIANT* rev) override;
+
+	virtual HRESULT __stdcall get_Branch(/*[out, retval]*/VARIANT* branch) override;
 
 	virtual HRESULT __stdcall get_Date(/*[out, retval]*/VARIANT* date) override;
 

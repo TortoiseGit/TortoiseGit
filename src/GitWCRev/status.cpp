@@ -149,12 +149,19 @@ int GetStatus(const TCHAR* path, GitWCRev_t& GitStat)
 		memset(GitStat.HeadHash, 0, sizeof(GitStat.HeadHash));
 		strncpy_s(GitStat.HeadHashReadable, GIT_OID_HEX_ZERO, strlen(GIT_OID_HEX_ZERO));
 		GitStat.bIsUnborn = TRUE;
+
+		CAutoReference head;
+		if (git_repository_head(head.GetPointer(), repo) != GIT_EUNBORNBRANCH)
+			return ERR_GIT_ERR;
+		GitStat.CurrentBranch = git_reference_shorthand(head);
+
 		return 0;
 	}
 
 	CAutoReference head;
 	if (git_repository_head(head.GetPointer(), repo) < 0)
 		return ERR_GIT_ERR;
+	GitStat.CurrentBranch = git_reference_shorthand(head);
 
 	CAutoObject object;
 	if (git_reference_peel(object.GetPointer(), head, GIT_OBJ_COMMIT) < 0)
