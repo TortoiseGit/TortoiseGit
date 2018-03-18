@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -159,19 +159,21 @@ void GitStatus::GetStatus(const CTGitPath& path, bool /*update*/ /* = false */, 
 
 typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 
-int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status2_t& status, BOOL IsFull, BOOL IsIgnore, bool update)
+typedef struct CGitRepoLists
 {
+	SHARED_INDEX_PTR pIndex;
+	SHARED_TREE_PTR pTree;
+} CGitRepoLists;
+
+static int GetFileStatus_int(const CString& gitdir, CGitRepoLists& repolists, const CString& path, git_wc_status2_t& status, BOOL IsFull, BOOL IsIgnore, BOOL update)
+{
+	ATLASSERT(repolists.pIndex);
 	ATLASSERT(!status.assumeValid && !status.skipWorktree);
 
-	path.Replace(L'\\', L'/');
-
-	if (update)
-		g_IndexFileMap.CheckAndUpdate(gitdir);
-	auto pIndex = g_IndexFileMap.SafeGet(gitdir);
 	CGitHash hash;
-	if (!pIndex || pIndex->GetFileStatus(gitdir, path, status, &hash))
+	if (repolists.pIndex->GetFileStatus(gitdir, path, status, &hash))
 	{
-		// git working tree has broken index or an error occurred in GetFileStatus
+		// an error occurred in GetFileStatus
 		status.status = git_wc_status_none;
 		return -1;
 	}
@@ -183,20 +185,23 @@ int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status2
 	{
 		if (IsFull)
 		{
-			if (update)
-				g_HeadFileMap.CheckHeadAndUpdate(gitdir, pIndex->IsIgnoreCase());
+			if (!repolists.pTree)
+			{
+				if (update)
+					g_HeadFileMap.CheckHeadAndUpdate(gitdir, repolists.pIndex->IsIgnoreCase());
 
-			// Check Head Tree Hash
-			SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
+				// Check Head Tree Hash
+				repolists.pTree = g_HeadFileMap.SafeGet(gitdir);
+			}
 			// broken HEAD
-			if (!treeptr)
+			if (!repolists.pTree)
 			{
 				status.status = git_wc_status_none;
 				return -1;
 			}
 
 			// deleted only in index item?
-			if (SearchInSortVector(*treeptr, path, -1, pIndex->IsIgnoreCase()) != NPOS)
+			if (SearchInSortVector(*repolists.pTree, path, -1, repolists.pIndex->IsIgnoreCase()) != NPOS)
 			{
 				status.status = git_wc_status_deleted;
 				return 0;
@@ -218,20 +223,23 @@ int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status2
 
 	if ((status.status == git_wc_status_normal || status.status == git_wc_status_modified) && IsFull)
 	{
-		if (update)
-			g_HeadFileMap.CheckHeadAndUpdate(gitdir, pIndex->IsIgnoreCase());
+		if (!repolists.pTree)
+		{
+			if (update)
+				g_HeadFileMap.CheckHeadAndUpdate(gitdir, repolists.pIndex->IsIgnoreCase());
 
-		// Check Head Tree Hash
-		SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
+			// Check Head Tree Hash
+			repolists.pTree = g_HeadFileMap.SafeGet(gitdir);
+		}
 		// broken HEAD
-		if (!treeptr)
+		if (!repolists.pTree)
 		{
 			status.status = git_wc_status_none;
 			return -1;
 		}
 
 		//add item
-		size_t start = SearchInSortVector(*treeptr, path, -1, pIndex->IsIgnoreCase());
+		size_t start = SearchInSortVector(*repolists.pTree, path, -1, repolists.pIndex->IsIgnoreCase());
 		if (start == NPOS)
 		{
 			status.status = git_wc_status_added;
@@ -240,7 +248,7 @@ int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status2
 		}
 
 		// staged and not commit
-		if ((*treeptr)[start].m_Hash != hash)
+		if ((*repolists.pTree)[start].m_Hash != hash)
 		{
 			status = { git_wc_status_modified, false, false };
 			return 0;
@@ -248,6 +256,26 @@ int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status2
 	}
 
 	return 0;
+}
+
+int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status2_t& status, BOOL IsFull, BOOL IsIgnore, bool update)
+{
+	ATLASSERT(!status.assumeValid && !status.skipWorktree);
+
+	path.Replace(L'\\', L'/');
+
+	CGitRepoLists sharedRepoLists;
+	if (update)
+		g_IndexFileMap.CheckAndUpdate(gitdir);
+	sharedRepoLists.pIndex = g_IndexFileMap.SafeGet(gitdir);
+	if (!sharedRepoLists.pIndex)
+	{
+		// git working tree has broken index
+		status.status = git_wc_status_none;
+		return -1;
+	}
+
+	return GetFileStatus_int(gitdir, sharedRepoLists, path, status, IsFull, IsIgnore, update);
 }
 
 // checks whether indexPath is a direct submodule and not one in a subfolder
@@ -536,16 +564,17 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 
 	g_IndexFileMap.CheckAndUpdate(gitdir);
 
-	SHARED_INDEX_PTR indexptr = g_IndexFileMap.SafeGet(gitdir);
+	CGitRepoLists sharedRepoLists;
+	sharedRepoLists.pIndex = g_IndexFileMap.SafeGet(gitdir);
 
 	// broken index
-	if (!indexptr)
+	if (!sharedRepoLists.pIndex)
 	{
 		*status = git_wc_status_none;
 		return -1;
 	}
 
-	size_t pos = SearchInSortVector(*indexptr, path, path.GetLength(), indexptr->IsIgnoreCase());
+	size_t pos = SearchInSortVector(*sharedRepoLists.pIndex, path, path.GetLength(), sharedRepoLists.pIndex->IsIgnoreCase());
 
 	// Not In Version Contorl
 	if (pos == NPOS)
@@ -562,18 +591,18 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 			return 0;
 		}
 
-		g_HeadFileMap.CheckHeadAndUpdate(gitdir, indexptr->IsIgnoreCase());
+		g_HeadFileMap.CheckHeadAndUpdate(gitdir, sharedRepoLists.pIndex->IsIgnoreCase());
 
-		SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
+		sharedRepoLists.pTree = g_HeadFileMap.SafeGet(gitdir);
 		// broken HEAD
-		if (!treeptr)
+		if (!sharedRepoLists.pTree)
 		{
 			*status = git_wc_status_none;
 			return -1;
 		}
 
 		// check whether there files in head with are not in index
-		pos = SearchInSortVector(*treeptr, path, path.GetLength(), indexptr->IsIgnoreCase());
+		pos = SearchInSortVector(*sharedRepoLists.pTree, path, path.GetLength(), sharedRepoLists.pIndex->IsIgnoreCase());
 		if (pos != NPOS)
 		{
 			*status = git_wc_status_deleted;
@@ -603,10 +632,10 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 	size_t start = 0;
 	size_t end = 0;
 
-	GetRangeInSortVector(*indexptr, path,path.GetLength(), indexptr->IsIgnoreCase(), &start, &end, pos);
+	GetRangeInSortVector(*sharedRepoLists.pIndex, path,path.GetLength(), sharedRepoLists.pIndex->IsIgnoreCase(), &start, &end, pos);
 
 	// Check Conflict;
-	for (auto it = indexptr->cbegin() + start, itlast = indexptr->cbegin() + end; indexptr->m_bHasConflicts && it <= itlast; ++it)
+	for (auto it = sharedRepoLists.pIndex->cbegin() + start, itlast = sharedRepoLists.pIndex->cbegin() + end; sharedRepoLists.pIndex->m_bHasConflicts && it <= itlast; ++it)
 	{
 		if (((*it).m_Flags & GIT_IDXENTRY_STAGEMASK) != 0)
 		{
@@ -619,24 +648,24 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 
 	if (IsFul)
 	{
-		g_HeadFileMap.CheckHeadAndUpdate(gitdir, indexptr->IsIgnoreCase());
+		g_HeadFileMap.CheckHeadAndUpdate(gitdir, sharedRepoLists.pIndex->IsIgnoreCase());
 
 		// Check Add
 		{
 			// Check if new init repository
-			SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
+			sharedRepoLists.pTree = g_HeadFileMap.SafeGet(gitdir);
 			// broken HEAD
-			if (!treeptr)
+			if (!sharedRepoLists.pTree)
 			{
 				*status = git_wc_status_none;
 				return -1;
 			}
 
 			{
-				for (auto it = indexptr->cbegin() + start, itlast = indexptr->cbegin() + end; it <= itlast; ++it)
+				for (auto it = sharedRepoLists.pIndex->cbegin() + start, itlast = sharedRepoLists.pIndex->cbegin() + end; it <= itlast; ++it)
 				{
 					auto& indexentry = *it;
-					pos = SearchInSortVector(*treeptr, indexentry.m_FileName, -1, indexptr->IsIgnoreCase());
+					pos = SearchInSortVector(*sharedRepoLists.pTree, indexentry.m_FileName, -1, sharedRepoLists.pIndex->IsIgnoreCase());
 
 					if (pos == NPOS)
 					{
@@ -647,7 +676,7 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 						continue;
 					}
 
-					if ((*treeptr)[pos].m_Hash != indexentry.m_IndexHash)
+					if ((*sharedRepoLists.pTree)[pos].m_Hash != indexentry.m_IndexHash)
 					{
 						*status = GetMoreImportant(git_wc_status_modified, *status); // modified file found
 						break;
@@ -657,17 +686,17 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 				// Check Delete
 				if (*status == git_wc_status_normal)
 				{
-					pos = SearchInSortVector(*treeptr, path, path.GetLength(), indexptr->IsIgnoreCase());
+					pos = SearchInSortVector(*sharedRepoLists.pTree, path, path.GetLength(), sharedRepoLists.pIndex->IsIgnoreCase());
 					if (pos == NPOS)
 						*status = GetMoreImportant(git_wc_status_added, *status); // added file found
 					else
 					{
 						size_t hstart, hend;
 						// we know that pos exists in treeptr
-						GetRangeInSortVector(*treeptr, path, path.GetLength(), indexptr->IsIgnoreCase(), &hstart, &hend, pos);
-						for (auto hit = treeptr->cbegin() + hstart, lastElement = treeptr->cbegin() + hend; hit <= lastElement; ++hit)
+						GetRangeInSortVector(*sharedRepoLists.pTree, path, path.GetLength(), sharedRepoLists.pIndex->IsIgnoreCase(), &hstart, &hend, pos);
+						for (auto hit = sharedRepoLists.pTree->cbegin() + hstart, lastElement = sharedRepoLists.pTree->cbegin() + hend; hit <= lastElement; ++hit)
 						{
-							if (SearchInSortVector(*indexptr, (*hit).m_FileName, -1, indexptr->IsIgnoreCase()) == NPOS)
+							if (SearchInSortVector(*sharedRepoLists.pIndex, (*hit).m_FileName, -1, sharedRepoLists.pIndex->IsIgnoreCase()) == NPOS)
 							{
 								*status = GetMoreImportant(git_wc_status_deleted, *status); // deleted file found
 								break;
@@ -685,7 +714,7 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 	if (mostImportantPossibleFolderStatus == *status)
 		return 0;
 
-	for (auto it = indexptr->cbegin() + start, itlast = indexptr->cbegin() + end; it <= itlast; ++it)
+	for (auto it = sharedRepoLists.pIndex->cbegin() + start, itlast = sharedRepoLists.pIndex->cbegin() + end; it <= itlast; ++it)
 	{
 		auto& indexentry = *it;
 		// skip child directory, but handle submodules
@@ -693,7 +722,7 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 			continue;
 
 		git_wc_status2_t filestatus = { git_wc_status_none, false, false };
-		GetFileStatus(gitdir, indexentry.m_FileName, filestatus, IsFul, IsIgnore, false);
+		GetFileStatus_int(gitdir, sharedRepoLists, indexentry.m_FileName, filestatus, IsFul, IsIgnore, false);
 		switch (filestatus.status)
 		{
 		case git_wc_status_added:
