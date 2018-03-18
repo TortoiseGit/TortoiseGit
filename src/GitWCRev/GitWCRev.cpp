@@ -65,6 +65,8 @@ SrcVersionFile is then copied to DstVersionFile but the placeholders\n\
 are replaced with information about the working tree as follows:\n\
 \n\
 $WCREV$         HEAD commit revision\n\
+$WCREV=$        HEAD commit revision, truncated after the numner of chars\n\
+                provided after the =\n\
 $WCDATE$        Date of the HEAD revision\n\
 $WCDATE=$       Like $WCDATE$ with an added strftime format after the =\n\
 $WCNOW$         Current system date & time\n\
