@@ -297,7 +297,7 @@ bool CGitIndexFileMap::HasIndexChangedOnDisk(const CString& gitdir)
 {
 	__int64 time = -1, size = -1;
 
-	auto pIndex = SafeGet(gitdir);
+	auto pIndex = SafeGetNormalized(CPathUtils::NormalizePath(gitdir));
 
 	if (!pIndex)
 		return true;
@@ -1052,7 +1052,7 @@ int CGitIgnoreList::CheckIgnore(const CString &path, const CString &projectroot,
 
 void CGitHeadFileMap::CheckHeadAndUpdate(const CString& gitdir, bool ignoreCase)
 {
-	SHARED_TREE_PTR ptr = this->SafeGet(gitdir);
+	SHARED_TREE_PTR ptr = this->SafeGetNormalized(CPathUtils::NormalizePath(gitdir));
 
 	if (ptr.get() && !ptr->CheckHeadUpdate())
 		return;

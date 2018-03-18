@@ -66,12 +66,12 @@ int GitStatus::GetAllStatus(const CTGitPath& path, bool bIsRecursive, git_wc_sta
 
 	if(isDir)
 	{
-		auto err = GetDirStatus(sProjectRoot, sSubPath, &status.status, isfull, bIsRecursive, isfull);
+		auto err = GetDirStatus(sProjectRoot, CPathUtils::NormalizePath(sProjectRoot), sSubPath, &status.status, isfull, bIsRecursive, isfull);
 		AdjustFolderStatus(status.status);
 		return err;
 	}
 
-	return GetFileStatus(sProjectRoot, sSubPath, status, isfull, isfull);
+	return GetFileStatus(sProjectRoot, CPathUtils::NormalizePath(sProjectRoot), sSubPath, status, isfull, isfull);
 }
 #endif
 
@@ -140,11 +140,11 @@ void GitStatus::GetStatus(const CTGitPath& path, bool /*update*/ /* = false */, 
 
 	if (path.IsDirectory())
 	{
-		err = GetDirStatus(sProjectRoot, lpszSubPath, &m_status.status, isfull, false, !noignore);
+		err = GetDirStatus(sProjectRoot, CPathUtils::NormalizePath(sProjectRoot), lpszSubPath, &m_status.status, isfull, false, !noignore);
 		AdjustFolderStatus(m_status.status);
 	}
 	else
-		err = GetFileStatus(sProjectRoot, lpszSubPath, m_status, isfull, !noignore);
+		err = GetFileStatus(sProjectRoot, CPathUtils::NormalizePath(sProjectRoot), lpszSubPath, m_status, isfull, !noignore);
 
 	// Error present if function is not under version control
 	if (err)
@@ -159,7 +159,7 @@ void GitStatus::GetStatus(const CTGitPath& path, bool /*update*/ /* = false */, 
 
 typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 
-int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status2_t& status, BOOL IsFull, BOOL IsIgnore, bool update)
+int GitStatus::GetFileStatus(const CString& gitdir, const CString& gitdirNormalized, CString path, git_wc_status2_t& status, BOOL IsFull, BOOL IsIgnore, bool update)
 {
 	ATLASSERT(!status.assumeValid && !status.skipWorktree);
 
@@ -167,7 +167,7 @@ int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status2
 
 	if (update)
 		g_IndexFileMap.CheckAndUpdate(gitdir);
-	auto pIndex = g_IndexFileMap.SafeGet(gitdir);
+	auto pIndex = g_IndexFileMap.SafeGetNormalized(gitdirNormalized);
 	CGitHash hash;
 	if (!pIndex || pIndex->GetFileStatus(gitdir, path, status, &hash))
 	{
@@ -187,7 +187,7 @@ int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status2
 				g_HeadFileMap.CheckHeadAndUpdate(gitdir, pIndex->IsIgnoreCase());
 
 			// Check Head Tree Hash
-			SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
+			SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGetNormalized(gitdirNormalized);
 			// broken HEAD
 			if (!treeptr)
 			{
@@ -222,7 +222,7 @@ int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status2
 			g_HeadFileMap.CheckHeadAndUpdate(gitdir, pIndex->IsIgnoreCase());
 
 		// Check Head Tree Hash
-		SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
+		SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGetNormalized(gitdirNormalized);
 		// broken HEAD
 		if (!treeptr)
 		{
@@ -316,7 +316,7 @@ int GitStatus::GetFileList(const CString& path, std::vector<CGitFileName>& list,
 	return 0;
 }
 
-int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_wc_status_kind* dirstatus, FILL_STATUS_CALLBACK callback, void* pData)
+int GitStatus::EnumDirStatus(const CString& gitdir, const CString& gitdirNormalized, const CString& subpath, git_wc_status_kind* dirstatus, FILL_STATUS_CALLBACK callback, void* pData)
 {
 	CString path = subpath;
 
@@ -326,14 +326,14 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 
 	g_IndexFileMap.CheckAndUpdate(gitdir);
 
-	SHARED_INDEX_PTR indexptr = g_IndexFileMap.SafeGet(gitdir);
+	SHARED_INDEX_PTR indexptr = g_IndexFileMap.SafeGetNormalized(gitdirNormalized);
 	// there was an error loading the index
 	if (!indexptr)
 		return -1;
 
 	g_HeadFileMap.CheckHeadAndUpdate(gitdir, indexptr->IsIgnoreCase());
 
-	SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
+	SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGetNormalized(gitdirNormalized);
 	// there was an error loading the HEAD commit/tree
 	if (!treeptr)
 		return -1;
@@ -524,7 +524,7 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 #endif
 
 #ifndef TGITCACHE
-int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_wc_status_kind* status, BOOL IsFul, BOOL IsRecursive, BOOL IsIgnore)
+int GitStatus::GetDirStatus(const CString& gitdir, const CString& gitdirNormalized, const CString& subpath, git_wc_status_kind* status, BOOL IsFul, BOOL IsRecursive, BOOL IsIgnore)
 {
 	ATLASSERT(status);
 
@@ -536,7 +536,7 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 
 	g_IndexFileMap.CheckAndUpdate(gitdir);
 
-	SHARED_INDEX_PTR indexptr = g_IndexFileMap.SafeGet(gitdir);
+	SHARED_INDEX_PTR indexptr = g_IndexFileMap.SafeGetNormalized(gitdirNormalized);
 
 	// broken index
 	if (!indexptr)
@@ -564,7 +564,7 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 
 		g_HeadFileMap.CheckHeadAndUpdate(gitdir, indexptr->IsIgnoreCase());
 
-		SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
+		SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGetNormalized(gitdirNormalized);
 		// broken HEAD
 		if (!treeptr)
 		{
@@ -624,7 +624,7 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 		// Check Add
 		{
 			// Check if new init repository
-			SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
+			SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGetNormalized(gitdirNormalized);
 			// broken HEAD
 			if (!treeptr)
 			{
@@ -693,7 +693,7 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 			continue;
 
 		git_wc_status2_t filestatus = { git_wc_status_none, false, false };
-		GetFileStatus(gitdir, indexentry.m_FileName, filestatus, IsFul, IsIgnore, false);
+		GetFileStatus(gitdir, gitdirNormalized, indexentry.m_FileName, filestatus, IsFul, IsIgnore, false);
 		switch (filestatus.status)
 		{
 		case git_wc_status_added:
