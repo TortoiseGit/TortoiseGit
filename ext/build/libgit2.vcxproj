@@ -165,6 +165,7 @@
     <ClCompile Include="..\libgit2\src\sortedcache.c" />
     <ClCompile Include="..\libgit2\src\stash.c" />
     <ClCompile Include="..\libgit2\src\status.c" />
+    <ClCompile Include="..\libgit2\src\streams\curl.c" />
     <ClCompile Include="..\libgit2\src\streams\openssl.c" />
     <ClCompile Include="..\libgit2\src\streams\socket.c" />
     <ClCompile Include="..\libgit2\src\strmap.c" />
@@ -352,6 +353,7 @@
     <ClInclude Include="..\libgit2\src\sortedcache.h" />
     <ClInclude Include="..\libgit2\src\status.h" />
     <ClInclude Include="..\libgit2\src\stream.h" />
+    <ClInclude Include="..\libgit2\src\streams\curl.h" />
     <ClInclude Include="..\libgit2\src\streams\openssl.h" />
     <ClInclude Include="..\libgit2\src\streams\socket.h" />
     <ClInclude Include="..\libgit2\src\strmap.h" />
@@ -365,6 +367,8 @@
     <ClInclude Include="..\libgit2\src\transports\auth.h" />
     <ClInclude Include="..\libgit2\src\transports\auth_negotiate.h" />
     <ClInclude Include="..\libgit2\src\transports\cred.h" />
+    <ClInclude Include="..\libgit2\src\transports\http.h" />
+    <ClInclude Include="..\libgit2\src\transports\ssh.h" />
     <ClInclude Include="..\libgit2\src\tree-cache.h" />
     <ClInclude Include="..\libgit2\src\tree.h" />
     <ClInclude Include="..\libgit2\src\util.h" />
