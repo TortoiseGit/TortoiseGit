@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -923,6 +923,7 @@ int git_get_config(const char *key, char *buffer, int size)
 
 	if (have_git_dir())
 	{
+		opts.git_dir = get_git_dir();
 		char* local = git_pathdup("config");
 		config_source.file = local;
 		config_with_options(get_config, &buf, &config_source, &opts);

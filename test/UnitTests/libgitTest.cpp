@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2017 - TortoiseGit
+// Copyright (C) 2016-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -253,4 +253,49 @@ TEST(libgit, RefreshIndex)
 	g_Git.RefreshGitIndex();
 
 	_wputenv_s(L"PATH", oldEnv);
+}
+
+TEST(libgit, IncludeIf)
+{
+	CAutoTempDir tempdir;
+	g_Git.m_bInitialized = false;
+	g_Git.m_IsGitDllInited = false;
+	g_Git.m_IsUseGitDLL = true;
+	g_Git.m_IsUseLibGit2 = false;
+	g_Git.m_IsUseLibGit2_mask = 0;
+
+	// .git dir
+	CString repoDir = tempdir.GetTempDir() + L"\\RepoWithAInPath";
+	g_Git.m_CurrentDir = repoDir;
+	EXPECT_TRUE(CreateDirectory(repoDir, nullptr));
+	// libgit relies on CWD being set to working tree
+	EXPECT_TRUE(SetCurrentDirectory(repoDir));
+
+	git_repository_init_options options = GIT_REPOSITORY_INIT_OPTIONS_INIT;
+	options.flags = GIT_REPOSITORY_INIT_EXTERNAL_TEMPLATE;
+	CAutoRepository repo;
+	ASSERT_EQ(0, git_repository_init_ext(repo.GetPointer(), CUnicodeUtils::GetUTF8(repoDir), &options));
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(repoDir + L"\\.git\\config", L"[core]\n	repositoryformatversion = 0\n	filemode = false\n	bare = false\n	logallrefupdates = true\n	symlinks = false\n	ignorecase = true\n	hideDotFiles = dotGitOnly\n[something]\n	thevalue = jap\n[includeIf \"gitdir:RepoWithAInPath/**\"]\n	path = configA\n[includeIf \"gitdir:RepoWithBInPath/**\"]\n	path = configB\n"));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(repoDir + L"\\.git\\configA", L"[somethinga]\n	thevalue = jop\n"));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(repoDir + L"\\.git\\configB", L"[somethingb]\n	thevalue = jup\n"));
+
+	EXPECT_STREQ(L"jap", g_Git.GetConfigValue(L"something.thevalue"));
+	EXPECT_STREQ(L"jop",g_Git.GetConfigValue(L"somethinga.thevalue"));
+	EXPECT_STREQ(L"", g_Git.GetConfigValue(L"somethingb.thevalue"));
+
+	// .git file
+	g_Git.m_bInitialized = false;
+	g_Git.m_IsGitDllInited = false;
+	g_Git.m_IsUseGitDLL = true;
+	repoDir = tempdir.GetTempDir() + L"\\RepoWithBInPath";
+	g_Git.m_CurrentDir = repoDir;
+	EXPECT_TRUE(CreateDirectory(repoDir, nullptr));
+	// libgit relies on CWD being set to working tree
+	EXPECT_TRUE(SetCurrentDirectory(repoDir));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(repoDir + L"\\.git", L"gitdir: ../RepoWithAInPath/.git\n"));
+
+	EXPECT_STREQ(L"jap", g_Git.GetConfigValue(L"something.thevalue"));
+	EXPECT_STREQ(L"jop", g_Git.GetConfigValue(L"somethinga.thevalue"));
+	EXPECT_STREQ(L"", g_Git.GetConfigValue(L"somethingb.thevalue"));
 }
