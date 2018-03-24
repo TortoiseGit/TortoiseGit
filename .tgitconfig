@@ -7,3 +7,8 @@
 	warnnosignedoffby = true
 	projectlanguage = 1033
 	icon = src/Resources/Tortoise.ico
+
+[hook "precommit"]
+	cmdline = WScript %root%\\contrib\\hook-scripts\\client-side\\checkyear.js
+	wait = true
+	show = false
