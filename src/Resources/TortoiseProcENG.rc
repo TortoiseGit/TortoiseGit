@@ -4950,6 +4950,16 @@ BEGIN
     IDS_TAGCOMPARE_ONLYREMOTE "Only remote"
 END
 
+STRINGTABLE
+BEGIN
+    IDS_HOOKS_APPROVE_TASK1 "This working copy has a client-side hook script configured. Do you want this script to run?\nThe command line to run is:\n%ls"
+    IDS_HOOKS_APPROVE_TASK2 "Approve or reject client-side hook script"
+    IDS_HOOKS_APPROVE_TASK3 "&Run\nRun the hook script"
+    IDS_HOOKS_APPROVE_TASK4 "&Don't run\nDo not run the script"
+    IDS_HOOKS_APPROVE_TASK5 "Do not ask again for this script"
+    IDS_ERR_HOOKNOTAPPROVED "The hook script was not approved to run!"
+END
+
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 

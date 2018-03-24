@@ -109,7 +109,9 @@
 		the hook script is attached to the current repository and configured
 		automatically for every clone and checkout (the hook information is stored in
 		the file <filename>.tgitconfig</filename> in the repository root so that it will
-		be automatically shared with all other developers using TortoiseGit &gt;= 2.7.1).
+		be automatically shared with all other developers using TortoiseGit &gt;= 2.7.1;
+		for security reasons TortoiseGit asks the user before running a hook which
+		is configured and shared in the repository).
 		In this case, you can specify paths for the command line with the
 		replacement string <literal>%root%</literal> for the path to the
 		working tree folder. The hook script has to be inside the repository and

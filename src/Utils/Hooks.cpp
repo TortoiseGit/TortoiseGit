@@ -24,9 +24,45 @@
 #include "TempFile.h"
 #include "SmartHandle.h"
 #include "Git.h"
+#include "resource.h"
+#include <afxtaskdialog.h>
+#include <WinCrypt.h>
 
 CHooks* CHooks::m_pInstance;
 CTGitPath CHooks::m_RootPath;
+
+static CString CalcSHA256(const CString& text)
+{
+	HCRYPTPROV hProv = 0;
+	if (!CryptAcquireContext(&hProv, nullptr, nullptr, PROV_RSA_AES, CRYPT_VERIFYCONTEXT))
+		return L"";
+	SCOPE_EXIT{ CryptReleaseContext(hProv, 0); };
+
+	HCRYPTHASH hHash = 0;
+	if (!CryptCreateHash(hProv, CALG_SHA_256, 0, 0, &hHash))
+		return L"";
+	SCOPE_EXIT{ CryptDestroyHash(hHash); };
+
+	CStringA textA = CUnicodeUtils::GetUTF8(text);
+	if (!CryptHashData(hHash, (LPBYTE)(LPCSTR)textA, textA.GetLength(), 0))
+		return L"";
+
+	CString hash;
+	BYTE rgbHash[32];
+	DWORD cbHash = _countof(rgbHash);
+	if (!CryptGetHashParam(hHash, HP_HASHVAL, rgbHash, &cbHash, 0))
+		return L"";
+
+	for (DWORD i = 0; i < cbHash; i++)
+	{
+		BYTE hi = rgbHash[i] >> 4;
+		BYTE lo = rgbHash[i] & 0xf;
+		hash.AppendChar(hi + (hi > 9 ? 87 : 48));
+		hash.AppendChar(lo + (lo > 9 ? 87 : 48));
+	}
+
+	return hash;
+}
 
 CHooks::CHooks()
 {
@@ -262,11 +298,17 @@ CTGitPath CHooks::AddMessageFileParam(CString& sCmd, const CString& message)
 	return tempPath;
 }
 
-bool CHooks::StartCommit(const CString& workingTree, const CTGitPathList& pathList, CString& message, DWORD& exitcode, CString& error)
+bool CHooks::StartCommit(HWND hWnd, const CString& workingTree, const CTGitPathList& pathList, CString& message, DWORD& exitcode, CString& error)
 {
 	auto it = FindItem(start_commit_hook, workingTree);
 	if (it == end())
 		return false;
+	if (!ApproveHook(hWnd, it))
+	{
+		exitcode = 1;
+		error.LoadString(IDS_ERR_HOOKNOTAPPROVED);
+		return false;
+	}
 	CString sCmd = it->second.commandline;
 	sCmd.Replace(L"%root%", m_RootPath.GetWinPathString());
 	AddPathParam(sCmd, pathList);
@@ -280,11 +322,17 @@ bool CHooks::StartCommit(const CString& workingTree, const CTGitPathList& pathLi
 	return true;
 }
 
-bool CHooks::PreCommit(const CString& workingTree, const CTGitPathList& pathList, CString& message, DWORD& exitcode, CString& error)
+bool CHooks::PreCommit(HWND hWnd, const CString& workingTree, const CTGitPathList& pathList, CString& message, DWORD& exitcode, CString& error)
 {
 	auto it = FindItem(pre_commit_hook, workingTree);
 	if (it == end())
 		return false;
+	if (!ApproveHook(hWnd, it))
+	{
+		exitcode = 1;
+		error.LoadString(IDS_ERR_HOOKNOTAPPROVED);
+		return false;
+	}
 	CString sCmd = it->second.commandline;
 	sCmd.Replace(L"%root%", m_RootPath.GetWinPathString());
 	AddPathParam(sCmd, pathList);
@@ -296,11 +344,17 @@ bool CHooks::PreCommit(const CString& workingTree, const CTGitPathList& pathList
 	return true;
 }
 
-bool CHooks::PostCommit(const CString& workingTree, bool amend, DWORD& exitcode, CString& error)
+bool CHooks::PostCommit(HWND hWnd, const CString& workingTree, bool amend, DWORD& exitcode, CString& error)
 {
 	auto it = FindItem(post_commit_hook, workingTree);
 	if (it == end())
 		return false;
+	if (!ApproveHook(hWnd, it))
+	{
+		exitcode = 1;
+		error.LoadString(IDS_ERR_HOOKNOTAPPROVED);
+		return false;
+	}
 	CString sCmd = it->second.commandline;
 	sCmd.Replace(L"%root%", m_RootPath.GetWinPathString());
 	AddCWDParam(sCmd, workingTree);
@@ -312,11 +366,17 @@ bool CHooks::PostCommit(const CString& workingTree, bool amend, DWORD& exitcode,
 	return true;
 }
 
-bool CHooks::PrePush(const CString& workingTree, DWORD& exitcode, CString& error)
+bool CHooks::PrePush(HWND hWnd, const CString& workingTree, DWORD& exitcode, CString& error)
 {
 	auto it = FindItem(pre_push_hook, workingTree);
 	if (it == end())
 		return false;
+	if (!ApproveHook(hWnd, it))
+	{
+		exitcode = 1;
+		error.LoadString(IDS_ERR_HOOKNOTAPPROVED);
+		return false;
+	}
 	CString sCmd = it->second.commandline;
 	sCmd.Replace(L"%root%", m_RootPath.GetWinPathString());
 	AddErrorParam(sCmd, error);
@@ -325,11 +385,17 @@ bool CHooks::PrePush(const CString& workingTree, DWORD& exitcode, CString& error
 	return true;
 }
 
-bool CHooks::PostPush(const CString& workingTree, DWORD& exitcode, CString& error)
+bool CHooks::PostPush(HWND hWnd, const CString& workingTree, DWORD& exitcode, CString& error)
 {
 	auto it = FindItem(post_push_hook, workingTree);
 	if (it == end())
 		return false;
+	if (!ApproveHook(hWnd, it))
+	{
+		exitcode = 1;
+		error.LoadString(IDS_ERR_HOOKNOTAPPROVED);
+		return false;
+	}
 	CString sCmd = it->second.commandline;
 	sCmd.Replace(L"%root%", m_RootPath.GetWinPathString());
 	AddErrorParam(sCmd, error);
@@ -338,11 +404,17 @@ bool CHooks::PostPush(const CString& workingTree, DWORD& exitcode, CString& erro
 	return true;
 }
 
-bool CHooks::PreRebase(const CString& workingTree, const CString& upstream, const CString& rebasedBranch, DWORD& exitcode, CString& error)
+bool CHooks::PreRebase(HWND hWnd, const CString& workingTree, const CString& upstream, const CString& rebasedBranch, DWORD& exitcode, CString& error)
 {
 	auto it = FindItem(pre_rebase_hook, workingTree);
 	if (it == end())
 		return false;
+	if (!ApproveHook(hWnd, it))
+	{
+		exitcode = 1;
+		error.LoadString(IDS_ERR_HOOKNOTAPPROVED);
+		return false;
+	}
 	CString sCmd = it->second.commandline;
 	sCmd.Replace(L"%root%", m_RootPath.GetWinPathString());
 	AddParam(sCmd, upstream);
@@ -353,13 +425,13 @@ bool CHooks::PreRebase(const CString& workingTree, const CString& upstream, cons
 	return true;
 }
 
-bool CHooks::IsHookPresent(hooktype t, const CString& workingTree) const
+bool CHooks::IsHookPresent(hooktype t, const CString& workingTree)
 {
 	auto it = FindItem(t, workingTree);
 	return it != end();
 }
 
-const_hookiterator CHooks::FindItem(hooktype t, const CString& workingTree) const
+hookiterator CHooks::FindItem(hooktype t, const CString& workingTree)
 {
 	hookkey key;
 	CTGitPath path = workingTree;
@@ -414,6 +486,8 @@ void CHooks::ParseHookString(CString strhooks, bool bLocal)
 	int pos = 0;
 	hookcmd cmd;
 	cmd.bLocal = bLocal;
+	cmd.bApproved = !bLocal; // user configured scripts are pre-approved
+	cmd.bStored = false;
 	while ((pos = strhooks.Find(L'\n')) >= 0)
 	{
 		// line 1
@@ -465,6 +539,17 @@ void CHooks::ParseHookString(CString strhooks, bool bLocal)
 							strhooks = strhooks.Mid(pos + 1);
 						else
 							strhooks.Empty();
+						if (cmd.bLocal)
+						{
+							CString temp;
+							temp.Format(L"%d%s", (int)key.htype, (LPCWSTR)cmd.commandline);
+
+							cmd.sRegKey = L"Software\\TortoiseGit\\approvedhooks\\" + CalcSHA256(temp);
+							CRegDWORD reg(cmd.sRegKey, 0);
+							cmd.bApproved = (DWORD(reg) != 0);
+							cmd.bStored = reg.exists();
+						}
+
 						bComplete = true;
 					}
 				}
@@ -581,3 +666,32 @@ DWORD CHooks::RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bW
 	return exitcode;
 }
 
+bool CHooks::ApproveHook(HWND hWnd, hookiterator it)
+{
+	if (it->second.bApproved || it->second.bStored)
+		return it->second.bApproved;
+
+	CString sQuestion;
+	sQuestion.Format(IDS_HOOKS_APPROVE_TASK1, (LPCWSTR)it->second.commandline);
+	bool bApproved = false;
+	bool bDoNotAskAgain = false;
+	CTaskDialog taskdlg(sQuestion, CString(MAKEINTRESOURCE(IDS_HOOKS_APPROVE_TASK2)), L"TortoiseGit", 0, TDF_USE_COMMAND_LINKS | TDF_ALLOW_DIALOG_CANCELLATION | TDF_POSITION_RELATIVE_TO_WINDOW | TDF_SIZE_TO_CONTENT);
+	taskdlg.AddCommandControl(1, CString(MAKEINTRESOURCE(IDS_HOOKS_APPROVE_TASK3)));
+	taskdlg.AddCommandControl(2, CString(MAKEINTRESOURCE(IDS_HOOKS_APPROVE_TASK4)));
+	taskdlg.SetCommonButtons(TDCBF_CANCEL_BUTTON);
+	taskdlg.SetVerificationCheckboxText(CString(MAKEINTRESOURCE(IDS_HOOKS_APPROVE_TASK5)));
+	taskdlg.SetVerificationCheckbox(false);
+	taskdlg.SetDefaultCommandControl(2);
+	taskdlg.SetMainIcon(TD_WARNING_ICON);
+	bApproved = taskdlg.DoModal(hWnd) == 1;
+	bDoNotAskAgain = !!taskdlg.GetVerificationCheckboxState();
+
+	if (bDoNotAskAgain)
+	{
+		CRegDWORD reg(it->second.sRegKey, 0);
+		reg = bApproved ? 1 : 0;
+		it->second.bStored = true;
+	}
+	it->second.bApproved = bApproved;
+	return bApproved;
+}
