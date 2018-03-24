@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2011, 2013-2017 - TortoiseGit
+// Copyright (C) 2003-2011, 2013-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -128,6 +128,13 @@ int ProjectProperties::ReadProps()
 			nMinLogSize = _wtoi(val);
 	}
 
+	FetchHookString(gitconfig, PROJECTPROPNAME_STARTCOMMITHOOK, sStartCommitHook);
+	FetchHookString(gitconfig, PROJECTPROPNAME_PRECOMMITHOOK, sPreCommitHook);
+	FetchHookString(gitconfig, PROJECTPROPNAME_POSTCOMMITHOOK, sPostCommitHook);
+	FetchHookString(gitconfig, PROJECTPROPNAME_PREPUSHHOOK, sPrePushHook);
+	FetchHookString(gitconfig, PROJECTPROPNAME_POSTPUSHHOOK, sPostPushHook);
+	FetchHookString(gitconfig, PROJECTPROPNAME_PREREBASEHOOK, sPreRebaseHook);
+
 	return 0;
 }
 
@@ -224,6 +231,28 @@ void ProjectProperties::AutoUpdateRegex()
 
 		regExNeedUpdate = false;
 	}
+}
+
+void ProjectProperties::FetchHookString(CAutoConfig& gitconfig, const CString& sBase, CString& sHook)
+{
+	sHook.Empty();
+	CString sVal;
+	gitconfig.GetString(sBase + L"cmdline", sVal);
+	if (sVal.IsEmpty())
+		return;
+	sHook += sVal + L'\n';
+	bool boolval = false;
+	gitconfig.GetBool(sBase + L"wait", boolval);
+	if (boolval)
+		sHook += L"true\n";
+	else
+		sHook += L"false\n";
+	boolval = false;
+	gitconfig.GetBool(sBase + L"show", boolval);
+	if (boolval)
+		sHook += L"true";
+	else
+		sHook += L"false";
 }
 
 std::vector<CHARRANGE> ProjectProperties::FindBugIDPositions(const CString& msg)

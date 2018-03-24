@@ -1604,6 +1604,7 @@
 #define IDC_ADVANCEDCONFIGURATION       1845
 #define IDC_FIRSTSTART_SSHHINT          1846
 #define IDC_CHECK_LFS                   1847
+#define IDC_LOCALCHECK                  1848
 #define IDS_LOG_FILTER_BY               1850
 #define IDS_LOG_FILTER_PATHS            1851
 #define IDS_LOG_FILTER_AUTHORS          1852

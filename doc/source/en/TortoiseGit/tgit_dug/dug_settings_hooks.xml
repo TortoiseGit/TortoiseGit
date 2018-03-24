@@ -105,6 +105,17 @@
 		Use <literal>*</literal> for matching all working trees.
 	</para>
 	<para>
+		If the checkbox <guibutton>Run for this repository</guibutton> is checked then
+		the hook script is attached to the current repository and configured
+		automatically for every clone and checkout (the hook information is stored in
+		the file <filename>.tgitconfig</filename> in the repository root so that it will
+		be automatically shared with all other developers using TortoiseGit &gt;= 2.7.1).
+		In this case, you can specify paths for the command line with the
+		replacement string <literal>%root%</literal> for the path to the
+		working tree folder. The hook script has to be inside the repository and
+		also be checked out of course.
+	</para>
+	<para>
 		Next you must specify the command line to execute, starting with the path
 		to the hook script or executable.
 		This could be a batch file, an executable file or any other file which

@@ -26,6 +26,7 @@
 #include "Git.h"
 
 CHooks* CHooks::m_pInstance;
+CTGitPath CHooks::m_RootPath;
 
 CHooks::CHooks()
 {
@@ -41,7 +42,7 @@ bool CHooks::Create()
 		m_pInstance = new CHooks();
 	CRegString reghooks(L"Software\\TortoiseGit\\hooks");
 	CString strhooks = reghooks;
-	ParseHookString(strhooks);
+	ParseHookString(strhooks, false);
 	return true;
 }
 
@@ -60,6 +61,8 @@ bool CHooks::Save()
 	CString strhooks;
 	for (hookiterator it = begin(); it != end(); ++it)
 	{
+		if (it->second.bLocal)
+			continue;
 		strhooks += GetHookTypeString(it->first.htype);
 		strhooks += '\n';
 		if (!it->second.bEnabled)
@@ -77,6 +80,57 @@ bool CHooks::Save()
 	reghooks = strhooks;
 	if (reghooks.GetLastError())
 		return false;
+
+	if (g_Git.m_CurrentDir.IsEmpty() || GitAdminDir::IsBareRepo(g_Git.m_CurrentDir))
+		return true;
+
+	// load the .tgitconfig file
+	CAutoConfig gitconfig(true);
+	git_config_add_file_ondisk(gitconfig, CGit::GetGitPathStringA(g_Git.CombinePath(L".tgitconfig")), GIT_CONFIG_LEVEL_LOCAL, nullptr, FALSE); // this needs to have the second highest priority
+
+	// delete all existing local hooks
+	for (const auto& hook : { PROJECTPROPNAME_STARTCOMMITHOOK, PROJECTPROPNAME_PRECOMMITHOOK, PROJECTPROPNAME_POSTCOMMITHOOK, PROJECTPROPNAME_PREPUSHHOOK, PROJECTPROPNAME_POSTPUSHHOOK, PROJECTPROPNAME_PREREBASEHOOK })
+	{
+		CStringA hookA = CUnicodeUtils::GetUTF8(hook);
+		for (const auto& val : { "cmdline", "wait", "show" })
+		{
+			git_config_delete_entry(gitconfig, hookA + val);
+		}
+	}
+
+	// now save the local hooks to .tgitconfig
+	for (const auto& hook : CHooks::Instance())
+	{
+		if (!hook.second.bLocal)
+			continue;
+
+		CStringA sHookPropName;
+		switch (hook.first.htype)
+		{
+		case start_commit_hook:
+			sHookPropName = CUnicodeUtils::GetUTF8(PROJECTPROPNAME_STARTCOMMITHOOK);
+			break;
+		case pre_commit_hook:
+			sHookPropName = CUnicodeUtils::GetUTF8(PROJECTPROPNAME_PRECOMMITHOOK);
+			break;
+		case post_commit_hook:
+			sHookPropName = CUnicodeUtils::GetUTF8(PROJECTPROPNAME_POSTCOMMITHOOK);
+			break;
+		case pre_push_hook:
+			sHookPropName = CUnicodeUtils::GetUTF8(PROJECTPROPNAME_PREPUSHHOOK);
+			break;
+		case post_push_hook:
+			sHookPropName = CUnicodeUtils::GetUTF8(PROJECTPROPNAME_POSTPUSHHOOK);
+			break;
+		case pre_rebase_hook:
+			sHookPropName = CUnicodeUtils::GetUTF8(PROJECTPROPNAME_PREREBASEHOOK);
+			break;
+		}
+		git_config_set_string(gitconfig, sHookPropName + "cmdline", CUnicodeUtils::GetUTF8(hook.second.commandline));
+		git_config_set_bool(gitconfig, sHookPropName + "wait", hook.second.bWait);
+		git_config_set_bool(gitconfig, sHookPropName + "show", hook.second.bShow);
+	}
+
 	return true;
 }
 
@@ -85,7 +139,7 @@ bool CHooks::Remove(const hookkey &key)
 	return (erase(key) > 0);
 }
 
-void CHooks::Add(hooktype ht, const CTGitPath& Path, LPCTSTR szCmd, bool bWait, bool bShow, bool bEnabled)
+void CHooks::Add(hooktype ht, const CTGitPath& Path, LPCTSTR szCmd, bool bWait, bool bShow, bool bEnabled, bool bLocal)
 {
 	hookkey key;
 	key.htype = ht;
@@ -99,6 +153,7 @@ void CHooks::Add(hooktype ht, const CTGitPath& Path, LPCTSTR szCmd, bool bWait, 
 	cmd.bWait = bWait;
 	cmd.bShow = bShow;
 	cmd.bEnabled = bEnabled;
+	cmd.bLocal = bLocal;
 	insert(std::pair<hookkey, hookcmd>(key, cmd));
 }
 
@@ -151,6 +206,26 @@ hooktype CHooks::GetHookType(const CString& s)
 	return unknown_hook;
 }
 
+void CHooks::SetProjectProperties(const CTGitPath& Path, const ProjectProperties& pp)
+{
+	m_RootPath = Path;
+
+	CString sHookString;
+	if (!pp.sPreCommitHook.IsEmpty())
+		sHookString += GetHookTypeString(pre_commit_hook) + L"\n?\n" + pp.sPreCommitHook + L"\n";
+	if (!pp.sStartCommitHook.IsEmpty())
+		sHookString += GetHookTypeString(start_commit_hook) + L"\n?\n" + pp.sStartCommitHook + L"\n";
+	if (!pp.sPostCommitHook.IsEmpty())
+		sHookString += GetHookTypeString(post_commit_hook) + L"\n?\n" + pp.sPostCommitHook + L"\n";
+	if (!pp.sPrePushHook.IsEmpty())
+		sHookString += GetHookTypeString(pre_push_hook) + L"\n?\n" + pp.sPrePushHook + L"\n";
+	if (!pp.sPostPushHook.IsEmpty())
+		sHookString += GetHookTypeString(post_push_hook) + L"\n?\n" + pp.sPostPushHook + L"\n";
+	if (!pp.sPreRebaseHook.IsEmpty())
+		sHookString += GetHookTypeString(pre_rebase_hook) + L"\n?\n" + pp.sPreRebaseHook + L"\n";
+	ParseHookString(sHookString, true);
+}
+
 void CHooks::AddParam(CString& sCmd, const CString& param)
 {
 	sCmd += L" \"";
@@ -193,6 +268,7 @@ bool CHooks::StartCommit(const CString& workingTree, const CTGitPathList& pathLi
 	if (it == end())
 		return false;
 	CString sCmd = it->second.commandline;
+	sCmd.Replace(L"%root%", m_RootPath.GetWinPathString());
 	AddPathParam(sCmd, pathList);
 	CTGitPath temppath = AddMessageFileParam(sCmd, message);
 	AddCWDParam(sCmd, workingTree);
@@ -210,6 +286,7 @@ bool CHooks::PreCommit(const CString& workingTree, const CTGitPathList& pathList
 	if (it == end())
 		return false;
 	CString sCmd = it->second.commandline;
+	sCmd.Replace(L"%root%", m_RootPath.GetWinPathString());
 	AddPathParam(sCmd, pathList);
 	CTGitPath temppath = AddMessageFileParam(sCmd, message);
 	AddCWDParam(sCmd, workingTree);
@@ -225,6 +302,7 @@ bool CHooks::PostCommit(const CString& workingTree, bool amend, DWORD& exitcode,
 	if (it == end())
 		return false;
 	CString sCmd = it->second.commandline;
+	sCmd.Replace(L"%root%", m_RootPath.GetWinPathString());
 	AddCWDParam(sCmd, workingTree);
 	if (amend)
 		AddParam(sCmd, L"true");
@@ -240,6 +318,7 @@ bool CHooks::PrePush(const CString& workingTree, DWORD& exitcode, CString& error
 	if (it == end())
 		return false;
 	CString sCmd = it->second.commandline;
+	sCmd.Replace(L"%root%", m_RootPath.GetWinPathString());
 	AddErrorParam(sCmd, error);
 	AddCWDParam(sCmd, workingTree);
 	exitcode = RunScript(sCmd, workingTree, error, it->second.bWait, it->second.bShow);
@@ -252,6 +331,7 @@ bool CHooks::PostPush(const CString& workingTree, DWORD& exitcode, CString& erro
 	if (it == end())
 		return false;
 	CString sCmd = it->second.commandline;
+	sCmd.Replace(L"%root%", m_RootPath.GetWinPathString());
 	AddErrorParam(sCmd, error);
 	AddCWDParam(sCmd, workingTree);
 	exitcode = RunScript(sCmd, workingTree, error, it->second.bWait, it->second.bShow);
@@ -264,6 +344,7 @@ bool CHooks::PreRebase(const CString& workingTree, const CString& upstream, cons
 	if (it == end())
 		return false;
 	CString sCmd = it->second.commandline;
+	sCmd.Replace(L"%root%", m_RootPath.GetWinPathString());
 	AddParam(sCmd, upstream);
 	AddParam(sCmd, rebasedBranch);
 	AddErrorParam(sCmd, error);
@@ -300,10 +381,24 @@ const_hookiterator CHooks::FindItem(hooktype t, const CString& workingTree) cons
 		return it;
 	}
 
+	// try the root path
+	key.htype = t;
+	key.path = m_RootPath;
+	it = find(key);
+	if (it != end())
+		return it;
+
+	// look for a script with a path as '*'
+	key.htype = t;
+	key.path = CTGitPath(L"*");
+	it = find(key);
+	if (it != end())
+		return it;
+
 	return end();
 }
 
-void CHooks::ParseHookString(CString strhooks)
+void CHooks::ParseHookString(CString strhooks, bool bLocal)
 {
 	// now fill the map with all the hooks defined in the string
 	// the string consists of multiple lines, where one hook script is defined
@@ -311,12 +406,14 @@ void CHooks::ParseHookString(CString strhooks)
 	// line 1: the hook type
 	// line 2: path to working copy where to apply the hook script,
 	//         if it starts with "!" this hook is disabled (this should provide backward and forward compatibility)
+	//         if it starts with "?" this hook is for the current project folder
 	// line 3: command line to execute
 	// line 4: 'true' or 'false' for waiting for the script to finish
 	// line 5: 'show' or 'hide' on how to start the hook script
 	hookkey key;
 	int pos = 0;
 	hookcmd cmd;
+	cmd.bLocal = bLocal;
 	while ((pos = strhooks.Find(L'\n')) >= 0)
 	{
 		// line 1
@@ -336,7 +433,10 @@ void CHooks::ParseHookString(CString strhooks)
 				strhooks = strhooks.Mid((int)wcslen(L"!"));
 				--pos;
 			}
-			key.path = CTGitPath(strhooks.Left(pos));
+			if (strhooks[0] == L'?' && pos > 0)
+				key.path = CTGitPath(m_RootPath);
+			else
+				key.path = CTGitPath(strhooks.Left(pos));
 			if (pos + 1 < strhooks.GetLength())
 				strhooks = strhooks.Mid(pos + 1);
 			else
