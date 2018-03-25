@@ -41,6 +41,11 @@
 			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>Bisect bad</guimenuitem>.
 		</menuchoice>
+		To skip this revision hit
+		<menuchoice>
+			<guimenu>TortoiseGit</guimenu>
+			<guimenuitem>Bisect skip</guimenuitem>.
+		</menuchoice>
 		Git will proceed with the binary search and switches to the "next" revision, so that you can test it.
 		This goes on until the faulty revision is found or you abort this operation by clicking on
 		<menuchoice>
