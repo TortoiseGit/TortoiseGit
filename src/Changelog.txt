@@ -3,6 +3,7 @@ Released: unreleased
 
 == Features ==
  * Fixed issue #3186: Bisect skip missing on dialogs and in automation and bisect docs 
+ * Fixed issue #3188: Add progress support for submodule clone
 
 == Bug Fixes ==
  * Fixed issue #3167: Crash when aborting cherry-picks

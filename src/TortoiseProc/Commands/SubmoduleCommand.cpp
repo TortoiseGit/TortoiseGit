@@ -145,6 +145,8 @@ bool SubmoduleUpdateCommand::Execute()
 		params += L" --rebase";
 	if (submoduleUpdateDlg.m_bRemote)
 		params += L" --remote";
+	if (CAppUtils::IsGitVersionNewerOrEqual(2, 11))
+		params += L" --progress";
 
 	for (size_t i = 0; i < submoduleUpdateDlg.m_PathList.size(); ++i)
 	{
