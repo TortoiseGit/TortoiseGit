@@ -1036,6 +1036,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	index = 0;
 	while (InsertBooleanW(TEXT(MODSFILEDEF), (wchar_t*)pBuf.get(), index, filelength, GitStat.HasMods));
 
+	index = 0;
 	while (InsertNumber(VALDEF, pBuf.get(), index, filelength, maxlength, GitStat.NumCommits));
 	index = 0;
 	while (InsertNumberW(TEXT(VALDEF), (wchar_t*)pBuf.get(), index, filelength, maxlength, GitStat.NumCommits));
