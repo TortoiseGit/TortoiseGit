@@ -1,6 +1,9 @@
 ﻿= Release 2.7.0 =
 Released: unreleased
 
+== Features ==
+ * Fixed issue #3186: Bisect skip missing on dialogs and in automation and bisect docs 
+
 == Bug Fixes ==
  * Fixed issue #3167: Crash when aborting cherry-picks
  * Fixed issue #3164: TortoiseGit crashing on commit (with racy git situation and git lfs)
