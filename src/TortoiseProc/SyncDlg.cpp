@@ -227,7 +227,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 
 	if (m_bAutoLoadPuttyKey && CurrentEntry != 4) // CurrentEntry (Remote Update) handles this on its own)
 	{
-		CAppUtils::LaunchPAgent(nullptr, &m_strURL);
+		CAppUtils::LaunchPAgent(this->GetSafeHwnd(), nullptr, &m_strURL);
 	}
 
 	if (g_Git.GetMapHashToFriendName(m_oldHashMap))
@@ -411,7 +411,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 		if (m_bAutoLoadPuttyKey)
 		{
 			for (size_t i = 0; i < m_remotelist.size(); ++i)
-				CAppUtils::LaunchPAgent(nullptr, &m_remotelist[i]);
+				CAppUtils::LaunchPAgent(this->GetSafeHwnd(), nullptr, &m_remotelist[i]);
 		}
 
 		m_CurrentCmd = GIT_COMMAND_REMOTE;
@@ -716,7 +716,7 @@ void CSyncDlg::OnBnClickedButtonPush()
 
 	if(this->m_bAutoLoadPuttyKey)
 	{
-		CAppUtils::LaunchPAgent(nullptr, &m_strURL);
+		CAppUtils::LaunchPAgent(this->GetSafeHwnd(), nullptr, &m_strURL);
 	}
 
 	m_pThread = AfxBeginThread(ProgressThreadEntry, this, THREAD_PRIORITY_NORMAL,0,CREATE_SUSPENDED);

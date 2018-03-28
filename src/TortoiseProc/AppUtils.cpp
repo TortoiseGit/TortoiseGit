@@ -2288,7 +2288,7 @@ int CAppUtils::SaveCommitUnicodeFile(const CString& filename, CString &message)
 bool DoPull(HWND hWnd, const CString& url, bool bAutoLoad, BOOL bFetchTags, bool bNoFF, bool bFFonly, bool bSquash, bool bNoCommit, int* nDepth, BOOL bPrune, const CString& remoteBranchName, bool showPush, bool showStashPop, bool bUnrelated)
 {
 	if (bAutoLoad)
-		CAppUtils::LaunchPAgent(hWnd, &url);
+		CAppUtils::LaunchPAgent(hWnd, nullptr, &url);
 
 	CGitHash hashOld;
 	if (g_Git.GetHash(hashOld, L"HEAD"))
@@ -2526,10 +2526,10 @@ static bool DoFetch(HWND hWnd, const CString& url, const bool fetchAllRemotes, c
 			g_Git.GetRemoteList(list);
 
 			for (const auto& remote : list)
-				CAppUtils::LaunchPAgent(hWnd, &remote);
+				CAppUtils::LaunchPAgent(hWnd, nullptr, &remote);
 		}
 		else
-			CAppUtils::LaunchPAgent(hWnd, &url);
+			CAppUtils::LaunchPAgent(hWnd, nullptr, &url);
 	}
 
 	CString upstream = L"FETCH_HEAD";
@@ -2763,7 +2763,7 @@ bool CAppUtils::DoPush(HWND hWnd, bool autoloadKey, bool pack, bool tags, bool a
 	for (unsigned int i = 0; i < remotesList.size(); ++i)
 	{
 		if (autoloadKey)
-			CAppUtils::LaunchPAgent(hWnd, &remotesList[i]);
+			CAppUtils::LaunchPAgent(hWnd, nullptr, &remotesList[i]);
 
 		CString cmd;
 		if (allBranches)
@@ -3811,7 +3811,7 @@ bool CAppUtils::DeleteRef(CWnd* parent, const CString& ref)
 			CString remoteName = shortname.Left(shortname.Find(L'/'));
 			shortname = shortname.Mid(shortname.Find(L'/') + 1);
 			if (CAppUtils::IsSSHPutty())
-				CAppUtils::LaunchPAgent(parent->GetSafeHwnd(), &remoteName);
+				CAppUtils::LaunchPAgent(parent->GetSafeHwnd(), nullptr, &remoteName);
 
 			CSysProgressDlg sysProgressDlg;
 			sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));

@@ -771,7 +771,7 @@ bool CBrowseRefsDlg::DoDeleteRef(CString completeRefName)
 			return false;
 
 		if (CAppUtils::IsSSHPutty())
-			CAppUtils::LaunchPAgent(nullptr, &remoteName);
+			CAppUtils::LaunchPAgent(this->GetSafeHwnd(), nullptr, &remoteName);
 
 		CSysProgressDlg sysProgressDlg;
 		sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
