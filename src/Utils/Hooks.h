@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2017 - TortoiseGit
+// Copyright (C) 2011-2018 - TortoiseGit
 // Copyright (C) 2006-2008, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -190,5 +190,8 @@ private:
 	 * path in \c workingTree.
 	 */
 	const_hookiterator	FindItem(hooktype t, const CString& workingTree) const;
+
+	static void ParseHookString(CString strhooks);
+
 	static CHooks *		m_pInstance;
 };

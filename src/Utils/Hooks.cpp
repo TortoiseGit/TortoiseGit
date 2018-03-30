@@ -41,75 +41,7 @@ bool CHooks::Create()
 		m_pInstance = new CHooks();
 	CRegString reghooks(L"Software\\TortoiseGit\\hooks");
 	CString strhooks = reghooks;
-	// now fill the map with all the hooks defined in the string
-	// the string consists of multiple lines, where one hook script is defined
-	// as four lines:
-	// line 1: the hook type
-	// line 2: path to working copy where to apply the hook script, if it starts with "!" this hook is disabled (this should provide backward and forward compatibility)
-	// line 3: command line to execute
-	// line 4: 'true' or 'false' for waiting for the script to finish
-	// line 5: 'show' or 'hide' on how to start the hook script
-	hookkey key;
-	int pos = 0;
-	hookcmd cmd;
-	while ((pos = strhooks.Find('\n')) >= 0)
-	{
-		// line 1
-		key.htype = GetHookType(strhooks.Left(pos));
-		if (pos+1 < strhooks.GetLength())
-			strhooks = strhooks.Mid(pos+1);
-		else
-			strhooks.Empty();
-		bool bComplete = false;
-		if ((pos = strhooks.Find('\n')) >= 0)
-		{
-			// line 2
-			cmd.bEnabled = true;
-			if (strhooks[0] == L'!' && pos > 1)
-			{
-				cmd.bEnabled = false;
-				strhooks = strhooks.Mid((int)wcslen(L"!"));
-				--pos;
-			}
-			key.path = CTGitPath(strhooks.Left(pos));
-			if (pos+1 < strhooks.GetLength())
-				strhooks = strhooks.Mid(pos+1);
-			else
-				strhooks.Empty();
-			if ((pos = strhooks.Find('\n')) >= 0)
-			{
-				// line 3
-				cmd.commandline = strhooks.Left(pos);
-				if (pos+1 < strhooks.GetLength())
-					strhooks = strhooks.Mid(pos+1);
-				else
-					strhooks.Empty();
-				if ((pos = strhooks.Find('\n')) >= 0)
-				{
-					// line 4
-					cmd.bWait = (strhooks.Left(pos).CompareNoCase(L"true") == 0);
-					if (pos+1 < strhooks.GetLength())
-						strhooks = strhooks.Mid(pos+1);
-					else
-						strhooks.Empty();
-					if ((pos = strhooks.Find('\n')) >= 0)
-					{
-						// line 5
-						cmd.bShow = (strhooks.Left(pos).CompareNoCase(L"show") == 0);
-						if (pos+1 < strhooks.GetLength())
-							strhooks = strhooks.Mid(pos+1);
-						else
-							strhooks.Empty();
-						bComplete = true;
-					}
-				}
-			}
-		}
-		if (bComplete)
-		{
-			m_pInstance->insert(std::pair<hookkey, hookcmd>(key, cmd));
-		}
-	}
+	ParseHookString(strhooks);
 	return true;
 }
 
@@ -369,6 +301,78 @@ const_hookiterator CHooks::FindItem(hooktype t, const CString& workingTree) cons
 	}
 
 	return end();
+}
+
+void CHooks::ParseHookString(CString strhooks)
+{
+	// now fill the map with all the hooks defined in the string
+	// the string consists of multiple lines, where one hook script is defined
+	// as four lines:
+	// line 1: the hook type
+	// line 2: path to working copy where to apply the hook script,
+	//         if it starts with "!" this hook is disabled (this should provide backward and forward compatibility)
+	// line 3: command line to execute
+	// line 4: 'true' or 'false' for waiting for the script to finish
+	// line 5: 'show' or 'hide' on how to start the hook script
+	hookkey key;
+	int pos = 0;
+	hookcmd cmd;
+	while ((pos = strhooks.Find(L'\n')) >= 0)
+	{
+		// line 1
+		key.htype = GetHookType(strhooks.Left(pos));
+		if (pos + 1 < strhooks.GetLength())
+			strhooks = strhooks.Mid(pos + 1);
+		else
+			strhooks.Empty();
+		bool bComplete = false;
+		if ((pos = strhooks.Find(L'\n')) >= 0)
+		{
+			// line 2
+			cmd.bEnabled = true;
+			if (strhooks[0] == L'!' && pos > 1)
+			{
+				cmd.bEnabled = false;
+				strhooks = strhooks.Mid((int)wcslen(L"!"));
+				--pos;
+			}
+			key.path = CTGitPath(strhooks.Left(pos));
+			if (pos + 1 < strhooks.GetLength())
+				strhooks = strhooks.Mid(pos + 1);
+			else
+				strhooks.Empty();
+			if ((pos = strhooks.Find(L'\n')) >= 0)
+			{
+				// line 3
+				cmd.commandline = strhooks.Left(pos);
+				if (pos + 1 < strhooks.GetLength())
+					strhooks = strhooks.Mid(pos + 1);
+				else
+					strhooks.Empty();
+				if ((pos = strhooks.Find(L'\n')) >= 0)
+				{
+					// line 4
+					cmd.bWait = (strhooks.Left(pos).CompareNoCase(L"true") == 0);
+					if (pos + 1 < strhooks.GetLength())
+						strhooks = strhooks.Mid(pos + 1);
+					else
+						strhooks.Empty();
+					if ((pos = strhooks.Find(L'\n')) >= 0)
+					{
+						// line 5
+						cmd.bShow = (strhooks.Left(pos).CompareNoCase(L"show") == 0);
+						if (pos + 1 < strhooks.GetLength())
+							strhooks = strhooks.Mid(pos + 1);
+						else
+							strhooks.Empty();
+						bComplete = true;
+					}
+				}
+			}
+		}
+		if (bComplete)
+			m_pInstance->insert(std::pair<hookkey, hookcmd>(key, cmd));
+	}
 }
 
 DWORD CHooks::RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bWait, bool bShow)
