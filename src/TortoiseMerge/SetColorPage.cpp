@@ -233,8 +233,8 @@ BOOL CSetColorPage::OnInitDialog()
 
 	CDiffColors::GetInstance().GetColors(DIFFSTATE_FILTEREDDIFF, cBk, cFg);
 	m_cBkFiltered.SetColor(cBk);
-	m_cBkEmpty.EnableAutomaticButton(sDefaultText, DIFFSTATE_FILTERED_DEFAULT_BG);
-	m_cBkEmpty.EnableOtherButton(sCustomText);
+	m_cBkFiltered.EnableAutomaticButton(sDefaultText, DIFFSTATE_FILTERED_DEFAULT_BG);
+	m_cBkFiltered.EnableOtherButton(sCustomText);
 
 	m_bInit = TRUE;
 
