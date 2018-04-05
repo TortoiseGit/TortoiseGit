@@ -51,7 +51,7 @@ CDiffColors::CDiffColors(void)
 	m_regForegroundColors[DIFFSTATE_YOURSREMOVED] = CRegDWORD(L"Software\\TortoiseGitMerge\\Colors\\ColorYoursRemovedF", DIFFSTATE_YOURSREMOVED_DEFAULT_FG);
 	m_regForegroundColors[DIFFSTATE_YOURSADDED] = CRegDWORD(L"Software\\TortoiseGitMerge\\Colors\\ColorYoursAddedF", DIFFSTATE_YOURSADDED_DEFAULT_FG);
 	m_regForegroundColors[DIFFSTATE_EDITED] = CRegDWORD(L"Software\\TortoiseGitMerge\\Colors\\ColorEditedF", DIFFSTATE_EDITED_DEFAULT_FG);
-	m_regForegroundColors[DIFFSTATE_FILTEREDDIFF] = CRegDWORD(L"Software\\TortoiseMerge\\Colors\\ColorFilteredF", DIFFSTATE_EDITED_DEFAULT_FG);
+	m_regForegroundColors[DIFFSTATE_FILTEREDDIFF] = CRegDWORD(L"Software\\TortoiseGitMerge\\Colors\\ColorFilteredF", DIFFSTATE_EDITED_DEFAULT_FG);
 
 	m_regBackgroundColors[DIFFSTATE_UNKNOWN] = CRegDWORD(L"Software\\TortoiseGitMerge\\Colors\\ColorUnknownB", DIFFSTATE_UNKNOWN_DEFAULT_BG);
 	m_regBackgroundColors[DIFFSTATE_NORMAL] = CRegDWORD(L"Software\\TortoiseGitMerge\\Colors\\ColorNormalB", DIFFSTATE_NORMAL_DEFAULT_BG);
@@ -75,7 +75,7 @@ CDiffColors::CDiffColors(void)
 	m_regBackgroundColors[DIFFSTATE_YOURSREMOVED] = CRegDWORD(L"Software\\TortoiseGitMerge\\Colors\\ColorYoursRemovedB", DIFFSTATE_YOURSREMOVED_DEFAULT_BG);
 	m_regBackgroundColors[DIFFSTATE_YOURSADDED] = CRegDWORD(L"Software\\TortoiseGitMerge\\Colors\\ColorYoursAddedB", DIFFSTATE_YOURSADDED_DEFAULT_BG);
 	m_regBackgroundColors[DIFFSTATE_EDITED] = CRegDWORD(L"Software\\TortoiseGitMerge\\Colors\\ColorEditedB", DIFFSTATE_EDITED_DEFAULT_BG);
-	m_regBackgroundColors[DIFFSTATE_FILTEREDDIFF] = CRegDWORD(L"Software\\TortoiseMerge\\Colors\\ColorFilteredB", DIFFSTATE_FILTERED_DEFAULT_BG);
+	m_regBackgroundColors[DIFFSTATE_FILTEREDDIFF] = CRegDWORD(L"Software\\TortoiseGitMerge\\Colors\\ColorFilteredB", DIFFSTATE_FILTERED_DEFAULT_BG);
 }
 
 CDiffColors::~CDiffColors(void)
