@@ -1885,6 +1885,11 @@ void CLogDlg::OnEnLinkMsgview(NMHDR *pNMHDR, LRESULT *pResult)
 	ENLINK *pEnLink = reinterpret_cast<ENLINK *>(pNMHDR);
 	if ((pEnLink->msg == WM_LBUTTONUP) || (pEnLink->msg == WM_SETCURSOR))
 	{
+		auto pEdit = reinterpret_cast<CRichEditCtrl*>(GetDlgItem(IDC_MSGVIEW));
+		CHARRANGE selRange;
+		pEdit->GetSel(selRange);
+		bool hasSelection = (selRange.cpMax != selRange.cpMin);
+
 		CString url, msg;
 		GetDlgItemText(IDC_MSGVIEW, msg);
 		msg.Replace(L"\r\n", L"\n");
@@ -1904,7 +1909,10 @@ void CLogDlg::OnEnLinkMsgview(NMHDR *pNMHDR, LRESULT *pResult)
 		if (::PathIsURL(url))
 		{
 			if (pEnLink->msg == WM_LBUTTONUP)
-				ShellExecute(GetSafeHwnd(), L"open", url, nullptr, nullptr, SW_SHOWDEFAULT);
+			{
+				if (!hasSelection)
+					ShellExecute(GetSafeHwnd(), L"open", url, nullptr, nullptr, SW_SHOWDEFAULT);
+			}
 			else
 			{
 				static RECT prevRect = { 0 };
@@ -1928,7 +1936,7 @@ void CLogDlg::OnEnLinkMsgview(NMHDR *pNMHDR, LRESULT *pResult)
 				}
 			}
 		}
-		else if(pEnLink->msg == WM_LBUTTONUP)
+		else if(pEnLink->msg == WM_LBUTTONUP && !hasSelection)
 		{
 			int pos = 0;
 			if (LookLikeGitHash(url, pos))

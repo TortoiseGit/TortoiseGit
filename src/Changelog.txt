@@ -13,6 +13,7 @@ Released: unreleased
  * Fixed issue #3184: Committing asks for user data although they are set via includeif
  * Fixed issue #3193: Not able to set alternative editor
  * Fixed issue #3195: TGitMerge tool is not saving color to correct Windows registry location
+ * Fixed issue #3194: Commit message control launches links on selection
 
 = Release 2.6.0 =
 Released: 2018-02-17

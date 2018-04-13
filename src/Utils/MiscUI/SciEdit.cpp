@@ -822,7 +822,7 @@ BOOL CSciEdit::OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT
 			break;
 		}
 		case SCN_DWELLSTART:
-		case SCN_HOTSPOTCLICK:
+		case SCN_HOTSPOTRELEASECLICK:
 			{
 				Sci_TextRange textrange;
 				textrange.chrg.cpMin = static_cast<Sci_PositionCR>(lpSCN->position);
@@ -852,7 +852,7 @@ BOOL CSciEdit::OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT
 				}
 				if (!url.IsEmpty())
 				{
-					if (lpnmhdr->code == SCN_HOTSPOTCLICK)
+					if (lpnmhdr->code == SCN_HOTSPOTRELEASECLICK)
 						ShellExecute(GetParent()->GetSafeHwnd(), L"open", url, nullptr, nullptr, SW_SHOWDEFAULT);
 					else
 					{
