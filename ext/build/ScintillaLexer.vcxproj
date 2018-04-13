@@ -65,6 +65,7 @@
     <ClCompile Include="..\scintilla\lexers\LexKVIrc.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexLaTeX.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexMake.cxx" />
+    <ClCompile Include="..\scintilla\lexers\LexMaxima.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexNull.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexProps.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexRegistry.cxx" />
@@ -199,6 +200,7 @@
     <ClCompile Include="..\scintilla\lexlib\WordList.cxx" />
     <ClCompile Include="..\scintilla\win32\HanjaDic.cxx" />
     <ClCompile Include="..\scintilla\win32\PlatWin.cxx" />
+    <ClCompile Include="..\scintilla\win32\ScintillaDLL.cxx" />
     <ClCompile Include="..\scintilla\win32\ScintillaWin.cxx" />
   </ItemGroup>
   <ItemGroup>
@@ -240,7 +242,6 @@
     <ClInclude Include="..\scintilla\src\SparseVector.h" />
     <ClInclude Include="..\scintilla\src\SplitVector.h" />
     <ClInclude Include="..\scintilla\src\Style.h" />
-    <ClInclude Include="..\scintilla\src\UnicodeFromUTF8.h" />
     <ClInclude Include="..\scintilla\src\UniConversion.h" />
     <ClInclude Include="..\scintilla\src\UniqueString.h" />
     <ClInclude Include="..\scintilla\src\ViewStyle.h" />
@@ -259,6 +260,7 @@
     <ClInclude Include="..\scintilla\lexlib\StyleContext.h" />
     <ClInclude Include="..\scintilla\lexlib\WordList.h" />
     <ClInclude Include="..\scintilla\win32\HanjaDic.h" />
+    <ClInclude Include="..\scintilla\win32\ScintillaWin.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\scintilla\win32\ScintRes.rc" />

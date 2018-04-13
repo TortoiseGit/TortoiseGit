@@ -466,6 +466,12 @@
     <ClCompile Include="..\scintilla\src\DBCS.cxx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\scintilla\win32\ScintillaDLL.cxx">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scintilla\lexers\LexMaxima.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\scintilla\src\AutoComplete.h">
@@ -594,9 +600,6 @@
     <ClInclude Include="..\scintilla\src\CaseFolder.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\scintilla\src\UnicodeFromUTF8.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\scintilla\src\EditModel.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -638,6 +641,9 @@
     </ClInclude>
     <ClInclude Include="..\scintilla\src\DBCS.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scintilla\win32\ScintillaWin.h">
+      <Filter>win32</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

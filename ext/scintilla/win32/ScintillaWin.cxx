@@ -33,7 +33,7 @@
 #include <zmouse.h>
 #include <ole2.h>
 
-#if defined(NTDDI_WIN7) && !defined(DISABLE_D2D)
+#if !defined(DISABLE_D2D)
 #define USE_D2D 1
 #endif
 
@@ -65,7 +65,6 @@
 #include "CallTip.h"
 #include "KeyMap.h"
 #include "Indicator.h"
-#include "XPM.h"
 #include "LineMarker.h"
 #include "Style.h"
 #include "ViewStyle.h"
@@ -91,6 +90,7 @@
 
 #include "PlatWin.h"
 #include "HanjaDic.h"
+#include "ScintillaWin.h"
 
 #ifndef SPI_GETWHEELSCROLLLINES
 #define SPI_GETWHEELSCROLLLINES   104
@@ -3392,13 +3392,13 @@ sptr_t ScintillaWin::DirectFunction(
 	return reinterpret_cast<ScintillaWin *>(ptr)->WndProc(iMessage, wParam, lParam);
 }
 
-extern "C"
-#ifndef STATIC_BUILD
-__declspec(dllexport)
-#endif
-sptr_t __stdcall Scintilla_DirectFunction(
+namespace Scintilla {
+
+sptr_t DirectFunction(
     ScintillaWin *sci, UINT iMessage, uptr_t wParam, sptr_t lParam) {
 	return sci->WndProc(iMessage, wParam, lParam);
+}
+
 }
 
 LRESULT PASCAL ScintillaWin::SWndProc(
@@ -3445,28 +3445,17 @@ int Scintilla_RegisterClasses(void *hInstance) {
 	return result;
 }
 
-static int ResourcesRelease(bool fromDllMain) {
+namespace Scintilla {
+
+int ResourcesRelease(bool fromDllMain) {
 	const bool result = ScintillaWin::Unregister();
 	Platform_Finalise(fromDllMain);
 	return result;
 }
 
-// This function is externally visible so it can be called from container when building statically.
-int Scintilla_ReleaseResources() {
-	return ResourcesRelease(false);
 }
 
-#ifndef STATIC_BUILD
-extern "C" int APIENTRY DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpvReserved) {
-	//Platform::DebugPrintf("Scintilla::DllMain %d %d\n", hInstance, dwReason);
-	if (dwReason == DLL_PROCESS_ATTACH) {
-		if (!Scintilla_RegisterClasses(hInstance))
-			return FALSE;
-	} else if (dwReason == DLL_PROCESS_DETACH) {
-		if (lpvReserved == NULL) {
-			ResourcesRelease(true);
-		}
-	}
-	return TRUE;
+// This function is externally visible so it can be called from container when building statically.
+int Scintilla_ReleaseResources() {
+	return Scintilla::ResourcesRelease(false);
 }
-#endif

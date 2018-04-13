@@ -412,7 +412,7 @@ struct OptionSetCPP : public OptionSet<OptionsCPP> {
 
 		DefineProperty("fold.cpp.explicit.anywhere", &OptionsCPP::foldExplicitAnywhere,
 			"Set this property to 1 to enable explicit fold points anywhere, not just in line comments.");
-		
+
 		DefineProperty("fold.cpp.preprocessor.at.else", &OptionsCPP::foldPreprocessorAtElse,
 			"This option enables folding on a preprocessor #else or #endif line of an #if statement.");
 
@@ -1441,7 +1441,7 @@ void SCI_METHOD LexerCPP::Fold(Sci_PositionU startPos, Sci_Position length, int 
 				} else if (styler.Match(j, "end")) {
 					levelNext--;
 				}
-				
+
 				if (options.foldPreprocessorAtElse && (styler.Match(j, "else") || styler.Match(j, "elif"))) {
 					levelMinCurrent--;
 				}
