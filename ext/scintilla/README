@@ -42,7 +42,7 @@ The current make file only supports static linking between SciTE and Scintilla.
 
 *** Windows version ***
 
-A C++ 11 compiler is required.
+A C++ 17 compiler is required.
 Visual Studio 2017 is the development system used for most development
 although Mingw-w64 7.1 is also supported.
 
@@ -71,7 +71,7 @@ To build Scintilla, make in the scintilla/gtk directory
 
 *** macOS Cocoa version ***
 
-Xcode 8 may be used to build Scintilla on macOS.
+Xcode 9.2 or later may be used to build Scintilla on macOS.
 
 There is no open source version of SciTE for macOS but there is a commercial
 version available through the App Store.

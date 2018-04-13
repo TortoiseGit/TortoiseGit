@@ -10,6 +10,14 @@
 
 namespace Scintilla {
 
+class DocWatcher;
+class DocModification;
+class Document;
+class LineMarkers;
+class LineLevels;
+class LineState;
+class LineAnnotation;
+
 enum EncodingFamily { efEightBit, efUnicode, efDBCS };
 
 /**
@@ -77,10 +85,6 @@ public:
 	}
 };
 
-class DocWatcher;
-class DocModification;
-class Document;
-
 /**
  * Interface class for regular expression searching
  */
@@ -88,7 +92,7 @@ class RegexSearchBase {
 public:
 	virtual ~RegexSearchBase() {}
 
-	virtual long FindText(Document *doc, Sci::Position minPos, Sci::Position maxPos, const char *s,
+	virtual Sci::Position FindText(Document *doc, Sci::Position minPos, Sci::Position maxPos, const char *s,
                         bool caseSensitive, bool word, bool wordStart, int flags, Sci::Position *length) = 0;
 
 	///@return String with the substitutions, must remain valid until the next call or destruction
@@ -160,12 +164,6 @@ public:
 	bool isEnabled;
 };
 
-class Document;
-class LineMarkers;
-class LineLevels;
-class LineState;
-class LineAnnotation;
-
 inline int LevelNumber(int level) {
 	return level & SC_FOLDLEVELNUMBERMASK;
 }
@@ -181,7 +179,7 @@ public:
 	virtual ~LexInterface() {
 	}
 	void Colourise(Sci::Position start, Sci::Position end);
-	int LineEndTypesSupported();
+	virtual int LineEndTypesSupported();
 	bool UseContainerLexing() const {
 		return instance == 0;
 	}
@@ -263,7 +261,7 @@ public:
 	bool backspaceUnindents;
 	double durationStyleOneLine;
 
-	DecorationList decorations;
+	std::unique_ptr<IDecorationList> decorations;
 
 	Document(int options);
 	// Deleted so Document objects can not be copied.
@@ -403,7 +401,7 @@ public:
 	bool MatchesWordOptions(bool word, bool wordStart, Sci::Position pos, Sci::Position length) const;
 	bool HasCaseFolder() const;
 	void SetCaseFolder(CaseFolder *pcf_);
-	long FindText(Sci::Position minPos, Sci::Position maxPos, const char *search, int flags, Sci::Position *length);
+	Sci::Position FindText(Sci::Position minPos, Sci::Position maxPos, const char *search, int flags, Sci::Position *length);
 	const char *SubstituteByPosition(const char *text, Sci::Position *length);
 	Sci::Line LinesTotal() const;
 
