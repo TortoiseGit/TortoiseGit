@@ -854,14 +854,14 @@ BOOL CRebaseDlg::PreTranslateMessage(MSG*pMsg)
 		case 'U':
 			if (LogListHasFocus(pMsg->hwnd))
 			{
-				OnBnClickedButtonDown();
+				OnBnClickedButtonUp();
 				return TRUE;
 			}
 			break;
 		case 'D':
 			if (LogListHasFocus(pMsg->hwnd))
 			{
-				OnBnClickedButtonUp();
+				OnBnClickedButtonDown();
 				return TRUE;
 			}
 			break;
