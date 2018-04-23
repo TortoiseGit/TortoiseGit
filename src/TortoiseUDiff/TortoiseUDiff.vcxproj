@@ -64,6 +64,7 @@
   <ItemGroup>
     <ClInclude Include="..\Utils\CmdLineParser.h" />
     <ClInclude Include="..\Utils\CreateProcessHelper.h" />
+    <ClInclude Include="..\Utils\DPIAware.h" />
     <ClInclude Include="..\Utils\LangDll.h" />
     <ClInclude Include="..\Utils\MiscUI\BaseDialog.h" />
     <ClInclude Include="..\Utils\MiscUI\BaseWindow.h" />

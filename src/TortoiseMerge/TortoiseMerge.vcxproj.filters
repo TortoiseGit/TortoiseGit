@@ -566,11 +566,11 @@
     <ClInclude Include="..\..\ext\simpleini\SimpleIni.h">
       <Filter>SimpleIni</Filter>
     </ClInclude>
-    <ClInclude Include="..\Utils\DpiScale.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
     <ClInclude Include="NativeRibbonApp.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\DPIAware.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

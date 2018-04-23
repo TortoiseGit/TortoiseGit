@@ -26,6 +26,7 @@
 #include "CreateProcessHelper.h"
 #include "UDiffColors.h"
 #include "registry.h"
+#include "DPIAware.h"
 
 const UINT TaskBarButtonCreated = RegisterWindowMessage(L"TaskbarButtonCreated");
 
@@ -113,11 +114,11 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
 			{
 				::SetWindowPos(m_hWndEdit, HWND_TOP,
 					rect.left, rect.top,
-					rect.right-rect.left, rect.bottom-rect.top-30,
+					rect.right - rect.left, rect.bottom - rect.top - int(30 * CDPIAware::Instance().ScaleFactorY()),
 					SWP_SHOWWINDOW);
 				::SetWindowPos(m_FindBar, HWND_TOP,
-					rect.left, rect.bottom-30,
-					rect.right-rect.left, 30,
+					rect.left, rect.bottom - int(30 * CDPIAware::Instance().ScaleFactorY()),
+					rect.right - rect.left, int(30 * CDPIAware::Instance().ScaleFactorY()),
 					SWP_SHOWWINDOW);
 			}
 			else
@@ -217,11 +218,11 @@ LRESULT CMainWindow::DoCommand(int id)
 			GetClientRect(*this, &rect);
 			::SetWindowPos(m_hWndEdit, HWND_TOP,
 				rect.left, rect.top,
-				rect.right-rect.left, rect.bottom-rect.top-30,
+				rect.right - rect.left, rect.bottom - rect.top - int(30 * CDPIAware::Instance().ScaleFactorY()),
 				SWP_SHOWWINDOW);
 			::SetWindowPos(m_FindBar, HWND_TOP,
-				rect.left, rect.bottom-30,
-				rect.right-rect.left, 30,
+				rect.left, rect.bottom - int(30 * CDPIAware::Instance().ScaleFactorY()),
+				rect.right - rect.left, int(30 * CDPIAware::Instance().ScaleFactorY()),
 				SWP_SHOWWINDOW);
 			::SetFocus(m_FindBar);
 			SendEditor(SCI_SETSELECTIONSTART, 0);
