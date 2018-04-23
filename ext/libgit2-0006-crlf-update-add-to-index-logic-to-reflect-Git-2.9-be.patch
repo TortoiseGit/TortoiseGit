@@ -1,25 +1,27 @@
-From db3d45c7a5b8773f6221516c015add695708e0fe Mon Sep 17 00:00:00 2001
+From 28ae62788be6a43144a9e8c80285c9ee97781e9e Mon Sep 17 00:00:00 2001
 From: Sven Strickroth <email@cs-ware.de>
 Date: Sun, 29 Jan 2017 02:12:07 +0100
-Subject: [PATCH] Update workdir_to_infex CrLf conversion to match Git >=
- 2.9 logic
+Subject: [PATCH 6/7] crlf: update add to index logic to reflect Git 2.9+
+ behavior
+
+The logic differs on *nix and Windows now.
 
 Signed-off-by: Sven Strickroth <email@cs-ware.de>
 ---
- src/crlf.c   | 19 +++++++++++--------
- 1 files changed, 10 insertions(+), 9 deletions(-)
+ src/crlf.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
 diff --git a/src/crlf.c b/src/crlf.c
-index 468f33b4c..97b29af5c 100644
+index 013f22e29..f0f1e26af 100644
 --- a/src/crlf.c
 +++ b/src/crlf.c
-@@ -161,9 +161,10 @@ static int crlf_apply_to_odb(
+@@ -165,9 +165,10 @@ static int crlf_apply_to_odb(
  
  	/* If safecrlf is enabled, sanity-check the result. */
  	if (ca->crlf_action == GIT_CRLF_INPUT ||
 -		(ca->auto_crlf == GIT_AUTO_CRLF_INPUT &&
 -		(ca->crlf_action == GIT_CRLF_GUESS || ca->crlf_action == GIT_CRLF_AUTO ||
--		(ca->crlf_action == GIT_CRLF_TEXT && ca->eol==GIT_EOL_UNSET)))) {
+-		(ca->crlf_action == GIT_CRLF_TEXT && ca->eol == GIT_EOL_UNSET)))) {
 +		(ca->crlf_action == GIT_CRLF_GUESS || ca->crlf_action == GIT_CRLF_AUTO || ca->crlf_action == GIT_CRLF_TEXT) && ca->eol == GIT_EOL_LF ||
 +		(ca->auto_crlf == GIT_AUTO_CRLF_INPUT && (ca->crlf_action == GIT_CRLF_GUESS)) ||
 +		(ca->auto_crlf == GIT_AUTO_CRLF_INPUT && (ca->crlf_action == GIT_CRLF_AUTO || ca->crlf_action == GIT_CRLF_TEXT) && ca->eol == GIT_EOL_UNSET) ||
@@ -27,7 +29,7 @@ index 468f33b4c..97b29af5c 100644
  		if (stats.crlf) {
  			switch (ca->safe_crlf) {
  			case GIT_SAFE_CRLF_FAIL:
-@@ -178,9 +179,11 @@ static int crlf_apply_to_odb(
+@@ -182,9 +183,11 @@ static int crlf_apply_to_odb(
  				break;
  			}
  		}
@@ -42,7 +44,7 @@ index 468f33b4c..97b29af5c 100644
  		if (stats.lf != stats.crlf) {
  			switch (ca->safe_crlf) {
  			case GIT_SAFE_CRLF_FAIL:
-@@ -321,8 +324,6 @@ static int crlf_check(
+@@ -326,8 +329,6 @@ static int crlf_check(
  	 * Use the core Git logic to see if we should perform CRLF for this file
  	 * based on its attributes & the value of `core.autocrlf`
  	 */
@@ -51,8 +53,8 @@ index 468f33b4c..97b29af5c 100644
  	if (ca.crlf_action == GIT_CRLF_BINARY)
  		return GIT_PASSTHROUGH;
  
-@@ -330,6 +331,8 @@ static int crlf_check(
- 		((ca.crlf_action == GIT_CRLF_AUTO || ca.crlf_action == GIT_CRLF_TEXT) &&
+@@ -336,6 +337,8 @@ static int crlf_check(
+ 		ca.crlf_action == GIT_CRLF_TEXT) &&
  		git_filter_source_mode(src) == GIT_FILTER_SMUDGE)) {
  
 +		ca.crlf_action = crlf_input_action(&ca);
@@ -61,5 +63,5 @@ index 468f33b4c..97b29af5c 100644
  			ca.auto_crlf == GIT_AUTO_CRLF_FALSE)
  			return GIT_PASSTHROUGH;
 -- 
-2.11.0.windows.3
+2.16.1.windows.4
 

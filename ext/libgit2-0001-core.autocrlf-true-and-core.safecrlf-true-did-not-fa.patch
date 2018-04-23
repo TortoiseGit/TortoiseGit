@@ -1,22 +1,20 @@
-From 2146afb93ec53691421d58c01d883e622f7effba Mon Sep 17 00:00:00 2001
+From b39680cc8fb4a52058d2e8ba8e9d349eb6014c1e Mon Sep 17 00:00:00 2001
 From: Sven Strickroth <email@cs-ware.de>
 Date: Fri, 23 Jan 2015 14:16:34 +0100
-Subject: [PATCH] core.autocrlf=true and core.safecrlf=true did not fail on
+Subject: [PATCH 1/7] core.autocrlf=true and core.safecrlf=true did not fail on
  LF-only file as vanilla git does
 
 Reported-by: Yue Lin Ho <b8732003@student.nsysu.edu.tw>
 Signed-off-by: Sven Strickroth <email@cs-ware.de>
 ---
- src/crlf.c          |  4 ++--
- tests/filter/crlf.c |  6 +++---
- tests/index/crlf.c  | 38 +++++++++++++++++++++++++++++++++++++-
- 3 files changed, 42 insertions(+), 6 deletions(-)
+ src/crlf.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/src/crlf.c b/src/crlf.c
-index b8ae5cda1..6e39b0b9f 100644
+index 96cd2d807..62b4d6a38 100644
 --- a/src/crlf.c
 +++ b/src/crlf.c
-@@ -138,8 +138,8 @@ static int crlf_apply_to_odb(
+@@ -142,8 +142,8 @@ static int crlf_apply_to_odb(
  		if (git_buf_text_gather_stats(&stats, from, false))
  			return GIT_PASSTHROUGH;
  
@@ -27,81 +25,6 @@ index b8ae5cda1..6e39b0b9f 100644
  			return GIT_PASSTHROUGH;
  
  		/* If safecrlf is enabled, sanity-check the result. */
-diff --git a/tests/filter/crlf.c b/tests/filter/crlf.c
-index a8ebd949f..3490f1e0d 100644
---- a/tests/filter/crlf.c
-+++ b/tests/filter/crlf.c
-@@ -99,12 +99,12 @@ void test_filter_crlf__with_safecrlf(void)
- 	cl_git_fail(git_filter_list_apply_to_data(&out, fl, &in));
- 	cl_assert_equal_i(giterr_last()->klass, GITERR_FILTER);
- 
--	/* Normalized \n is reversible, so does not fail with safecrlf */
-+	/* Normalized \n fails with safecrlf if AutoCrLf=true which is the case here */
- 	in.ptr = "Normal\nLF\nonly\nline-endings.\n";
- 	in.size = strlen(in.ptr);
- 
--	cl_git_pass(git_filter_list_apply_to_data(&out, fl, &in));
--	cl_assert_equal_s(in.ptr, out.ptr);
-+	cl_git_fail(git_filter_list_apply_to_data(&out, fl, &in));
-+	cl_assert_equal_i(giterr_last()->klass, GITERR_FILTER);
- 
- 	git_filter_list_free(fl);
- 	git_buf_free(&out);
-diff --git a/tests/index/crlf.c b/tests/index/crlf.c
-index 6544d9b52..024f4b056 100644
---- a/tests/index/crlf.c
-+++ b/tests/index/crlf.c
-@@ -340,13 +340,49 @@ void test_index_crlf__autocrlf_input_text_auto_attr(void)
- 	cl_assert_equal_oid(&oid, &entry->id);
- }
- 
-+void test_index_crlf__safecrlf_true_autocrlf_input_text_auto_attr(void)
-+{
-+	const git_index_entry *entry;
-+	git_oid oid;
-+
-+	cl_git_mkfile("./crlf/.gitattributes", "* text=auto\n");
-+
-+	cl_repo_set_string(g_repo, "core.autocrlf", "input");
-+	cl_repo_set_bool(g_repo, "core.safecrlf", true);
-+
-+	cl_git_mkfile("./crlf/newfile.txt", FILE_CONTENTS_LF);
-+
-+	cl_git_pass(git_index_add_bypath(g_index, "newfile.txt"));
-+	entry = git_index_get_bypath(g_index, "newfile.txt", 0);
-+
-+	cl_git_pass(git_oid_fromstr(&oid, FILE_OID_LF));
-+	cl_assert_equal_oid(&oid, &entry->id);
-+}
-+
-+void test_index_crlf__safecrlf_true_autocrlf_input_text__no_attr(void)
-+{
-+	const git_index_entry *entry;
-+	git_oid oid;
-+
-+	cl_repo_set_string(g_repo, "core.autocrlf", "input");
-+	cl_repo_set_bool(g_repo, "core.safecrlf", true);
-+
-+	cl_git_mkfile("./crlf/newfile.txt", FILE_CONTENTS_LF);
-+
-+	cl_git_pass(git_index_add_bypath(g_index, "newfile.txt"));
-+	entry = git_index_get_bypath(g_index, "newfile.txt", 0);
-+
-+	cl_git_pass(git_oid_fromstr(&oid, FILE_OID_LF));
-+	cl_assert_equal_oid(&oid, &entry->id);
-+}
-+
- void test_index_crlf__safecrlf_true_no_attrs(void)
- {
- 	cl_repo_set_bool(g_repo, "core.autocrlf", true);
- 	cl_repo_set_bool(g_repo, "core.safecrlf", true);
- 
- 	cl_git_mkfile("crlf/newfile.txt", ALL_LF_TEXT_RAW);
--	cl_git_pass(git_index_add_bypath(g_index, "newfile.txt"));
-+	cl_git_fail(git_index_add_bypath(g_index, "newfile.txt")); /* vanilla git fails here (on CrLf as well as on Lf-ony platforms): "fatal: LF would be replaced by CRLF in crlf/newfile.txt" */
- 
- 	cl_git_mkfile("crlf/newfile.txt", ALL_CRLF_TEXT_RAW);
- 	cl_git_pass(git_index_add_bypath(g_index, "newfile.txt"));
 -- 
-2.11.0.windows.3
+2.16.1.windows.4
 

@@ -1,20 +1,19 @@
-From 41bfaa4b73c16cc2cd833e8600be6d95d85729a7 Mon Sep 17 00:00:00 2001
+From 4a3f2fa9ed7260ed0d8fca1aa6130521d8cedb49 Mon Sep 17 00:00:00 2001
 From: Sven Strickroth <email@cs-ware.de>
 Date: Fri, 23 Jan 2015 15:34:14 +0100
-Subject: [PATCH] Adding a CRLF-file with core.autocrlf=input and
+Subject: [PATCH 3/7] Adding a CRLF-file with core.autocrlf=input and
  core.safecrlf=true does not fail as with vanilla git
 
 Signed-off-by: Sven Strickroth <email@cs-ware.de>
 ---
- src/crlf.c         | 13 +++++++++++++
- tests/index/crlf.c |  6 ++++++
- 2 files changed, 19 insertions(+)
+ src/crlf.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
 diff --git a/src/crlf.c b/src/crlf.c
-index 27ba7eefd..dd5a7625c 100644
+index c1f87485e..d88ad00f3 100644
 --- a/src/crlf.c
 +++ b/src/crlf.c
-@@ -156,6 +156,19 @@ static int crlf_apply_to_odb(
+@@ -160,6 +160,19 @@ static int crlf_apply_to_odb(
  			default:
  				break;
  			}
@@ -34,30 +33,6 @@ index 27ba7eefd..dd5a7625c 100644
  		}
  
  		/*
-diff --git a/tests/index/crlf.c b/tests/index/crlf.c
-index 024f4b056..875001349 100644
---- a/tests/index/crlf.c
-+++ b/tests/index/crlf.c
-@@ -357,6 +357,9 @@ void test_index_crlf__safecrlf_true_autocrlf_input_text_auto_attr(void)
- 
- 	cl_git_pass(git_oid_fromstr(&oid, FILE_OID_LF));
- 	cl_assert_equal_oid(&oid, &entry->id);
-+
-+	cl_git_mkfile("./crlf/newfile2.txt", FILE_CONTENTS_CRLF);
-+	cl_git_fail(git_index_add_bypath(g_index, "newfile2.txt"));
- }
- 
- void test_index_crlf__safecrlf_true_autocrlf_input_text__no_attr(void)
-@@ -374,6 +377,9 @@ void test_index_crlf__safecrlf_true_autocrlf_input_text__no_attr(void)
- 
- 	cl_git_pass(git_oid_fromstr(&oid, FILE_OID_LF));
- 	cl_assert_equal_oid(&oid, &entry->id);
-+
-+	cl_git_mkfile("./crlf/newfile2.txt", FILE_CONTENTS_CRLF);
-+	cl_git_fail(git_index_add_bypath(g_index, "newfile2.txt"));
- }
- 
- void test_index_crlf__safecrlf_true_no_attrs(void)
 -- 
-2.11.0.windows.3
+2.16.1.windows.4
 

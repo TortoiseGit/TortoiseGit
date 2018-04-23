@@ -166,6 +166,7 @@
     <ClCompile Include="..\libgit2\src\stash.c" />
     <ClCompile Include="..\libgit2\src\status.c" />
     <ClCompile Include="..\libgit2\src\streams\curl.c" />
+    <ClCompile Include="..\libgit2\src\streams\mbedtls.c" />
     <ClCompile Include="..\libgit2\src\streams\openssl.c" />
     <ClCompile Include="..\libgit2\src\streams\socket.c" />
     <ClCompile Include="..\libgit2\src\strmap.c" />
@@ -354,6 +355,7 @@
     <ClInclude Include="..\libgit2\src\status.h" />
     <ClInclude Include="..\libgit2\src\stream.h" />
     <ClInclude Include="..\libgit2\src\streams\curl.h" />
+    <ClInclude Include="..\libgit2\src\streams\mbedtls.h" />
     <ClInclude Include="..\libgit2\src\streams\openssl.h" />
     <ClInclude Include="..\libgit2\src\streams\socket.h" />
     <ClInclude Include="..\libgit2\src\strmap.h" />

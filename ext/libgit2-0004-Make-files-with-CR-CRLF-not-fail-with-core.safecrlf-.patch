@@ -1,20 +1,19 @@
-From 78b6049046afcb041d785b56641664f5ffa99e9f Mon Sep 17 00:00:00 2001
+From 489591b883f404052dd187962e334342cbebf5d7 Mon Sep 17 00:00:00 2001
 From: Sven Strickroth <email@cs-ware.de>
 Date: Fri, 23 Jan 2015 17:15:16 +0100
-Subject: [PATCH] Make files with #CR!=#CRLF not fail with
+Subject: [PATCH 4/7] Make files with #CR!=#CRLF not fail with
  core.safecrlf=true
 
 Signed-off-by: Sven Strickroth <email@cs-ware.de>
 ---
- src/crlf.c          | 18 +++++++++---------
- tests/filter/crlf.c |  7 +++++++
- 2 files changed, 16 insertions(+), 9 deletions(-)
+ src/crlf.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
 diff --git a/src/crlf.c b/src/crlf.c
-index dd5a7625c..858a94484 100644
+index d88ad00f3..f476fe32a 100644
 --- a/src/crlf.c
 +++ b/src/crlf.c
-@@ -138,12 +138,20 @@ static int crlf_apply_to_odb(
+@@ -142,12 +142,20 @@ static int crlf_apply_to_odb(
  		if (git_buf_text_gather_stats(&stats, from, false))
  			return GIT_PASSTHROUGH;
  
@@ -36,7 +35,7 @@ index dd5a7625c..858a94484 100644
  			switch (ca->safe_crlf) {
  			case GIT_SAFE_CRLF_FAIL:
  				giterr_set(
-@@ -171,14 +179,6 @@ static int crlf_apply_to_odb(
+@@ -175,14 +183,6 @@ static int crlf_apply_to_odb(
  			}
  		}
  
@@ -51,24 +50,6 @@ index dd5a7625c..858a94484 100644
  		if (ca->crlf_action == GIT_CRLF_GUESS) {
  			/*
  			 * If the file in the index has any CR in it, do not convert.
-diff --git a/tests/filter/crlf.c b/tests/filter/crlf.c
-index 3490f1e0d..d1bf7a450 100644
---- a/tests/filter/crlf.c
-+++ b/tests/filter/crlf.c
-@@ -106,6 +106,13 @@ void test_filter_crlf__with_safecrlf(void)
- 	cl_git_fail(git_filter_list_apply_to_data(&out, fl, &in));
- 	cl_assert_equal_i(giterr_last()->klass, GITERR_FILTER);
- 
-+	/* String with \r but without \r\n does not fail with safecrlf */
-+	in.ptr = "Normal\nCR only\rand some more\nline-endings.\n";
-+	in.size = strlen(in.ptr);
-+
-+	cl_git_pass(git_filter_list_apply_to_data(&out, fl, &in));
-+	cl_assert_equal_s("Normal\nCR only\rand some more\nline-endings.\n", out.ptr);
-+
- 	git_filter_list_free(fl);
- 	git_buf_free(&out);
- }
 -- 
-2.11.0.windows.3
+2.16.1.windows.4
 
