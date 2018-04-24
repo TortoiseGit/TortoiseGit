@@ -44,18 +44,7 @@ const COLORREF lightBlue = RGB(0xA6, 0xCA, 0xF0);
 const int blockSize = 128 * 1024;
 
 #define BLAMESPACE 5
-#define HEADER_HEIGHT 18
 #define LOCATOR_WIDTH 10
-
-#define MAX_LOG_LENGTH 2000
-
-
-#ifndef GET_X_LPARAM
-#define GET_X_LPARAM(lp)                        ((int)(short)LOWORD(lp))
-#endif
-#ifndef GET_Y_LPARAM
-#define GET_Y_LPARAM(lp)                        ((int)(short)HIWORD(lp))
-#endif
 
 class CSciEditBlame: public CSciEdit
 {
