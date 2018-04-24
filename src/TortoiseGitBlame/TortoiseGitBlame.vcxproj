@@ -115,6 +115,7 @@
     <ClInclude Include="..\TortoiseProc\ColumnManager.h" />
     <ClInclude Include="..\Utils\CmdLineParser.h" />
     <ClInclude Include="..\Utils\DebugOutput.h" />
+    <ClInclude Include="..\Utils\DPIAware.h" />
     <ClInclude Include="..\Utils\LruCache.h" />
     <ClInclude Include="..\Utils\MiscUI\CommonDialogFunctions.h" />
     <ClInclude Include="..\Utils\MiscUI\FilterEdit.h" />

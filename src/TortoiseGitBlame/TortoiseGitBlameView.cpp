@@ -39,6 +39,7 @@
 #include "BlameDetectMovedOrCopiedLines.h"
 #include "TGitPath.h"
 #include "IconMenu.h"
+#include "DPIAware.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -268,7 +269,7 @@ int CTortoiseGitBlameView::OnCreate(LPCREATESTRUCT lpcs)
 {
 	CRect rect,rect1;
 	this->GetWindowRect(&rect1);
-	rect.left=m_blamewidth+LOCATOR_WIDTH;
+	rect.left = m_blamewidth + CDPIAware::Instance().ScaleX(LOCATOR_WIDTH);
 	rect.right=rect.Width();
 	rect.top=0;
 	rect.bottom=rect.Height();
@@ -790,7 +791,7 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 
 	CString shortHash('f', g_Git.GetShortHASHLength() + 1);
 	::GetTextExtentPoint32(hDC, shortHash, g_Git.GetShortHASHLength() + 1, &width);
-	m_revwidth = width.cx + BLAMESPACE;
+	m_revwidth = width.cx + CDPIAware::Instance().ScaleX(BLAMESPACE);
 	blamewidth += m_revwidth;
 
 	if (m_bShowDate)
@@ -804,7 +805,7 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 			if (width.cx > maxwidth.cx)
 				maxwidth = width;
 		}
-		m_datewidth = maxwidth.cx + BLAMESPACE;
+		m_datewidth = maxwidth.cx + CDPIAware::Instance().ScaleX(BLAMESPACE);
 		blamewidth += m_datewidth;
 	}
 	if ( m_bShowAuthor)
@@ -818,7 +819,7 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 			if (width.cx > maxwidth.cx)
 				maxwidth = width;
 		}
-		m_authorwidth = maxwidth.cx + BLAMESPACE;
+		m_authorwidth = maxwidth.cx + CDPIAware::Instance().ScaleX(BLAMESPACE);
 		blamewidth += m_authorwidth;
 	}
 	if (m_bShowFilename)
@@ -832,7 +833,7 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 			if (width.cx > maxwidth.cx)
 				maxwidth = width;
 		}
-		m_filenameWidth = maxwidth.cx + BLAMESPACE;
+		m_filenameWidth = maxwidth.cx + CDPIAware::Instance().ScaleX(BLAMESPACE);
 		blamewidth += m_filenameWidth;
 	}
 	if (m_bShowOriginalLineNumber)
@@ -848,7 +849,7 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 			if (width.cx > maxwidth.cx)
 				maxwidth = width;
 		}
-		m_originalLineNumberWidth = maxwidth.cx + BLAMESPACE;
+		m_originalLineNumberWidth = maxwidth.cx + CDPIAware::Instance().ScaleX(BLAMESPACE);
 		blamewidth += m_originalLineNumberWidth;
 	}
 	::SelectObject(hDC, oldfont);
@@ -923,7 +924,7 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 		{
 			auto old = ::GetTextColor(hDC);
 			::SetTextColor(hDC, ::GetBkColor(hDC));
-			RECT rc2 = { LOCATOR_WIDTH, Y, m_blamewidth + LOCATOR_WIDTH, Y + (wrapcount * height) };
+			RECT rc2 = { CDPIAware::Instance().ScaleX(LOCATOR_WIDTH), Y, m_blamewidth + CDPIAware::Instance().ScaleX(LOCATOR_WIDTH), Y + (wrapcount * height) };
 			for (int j = 0; j < wrapcount; ++j)
 				::ExtTextOut(hDC, 0, Y + (j * height), ETO_CLIPPED, &rc2, buf, _countof(buf) - 1, 0);
 			::SetTextColor(hDC, old);
@@ -933,13 +934,13 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 		if (oldHash != hash || (m_bShowFilename && oldFile != file) || m_bShowOriginalLineNumber)
 		{
 			rc.top = (LONG)Y;
-			rc.left = LOCATOR_WIDTH;
+			rc.left = CDPIAware::Instance().ScaleX(LOCATOR_WIDTH);
 			rc.bottom = (LONG)(Y + height);
 			rc.right = rc.left + m_blamewidth;
 			if (oldHash != hash)
 			{
 				CString shortHashStr = hash.ToString().Left(g_Git.GetShortHASHLength());
-				::ExtTextOut(hDC, LOCATOR_WIDTH, Y, ETO_CLIPPED, &rc, shortHashStr, shortHashStr.GetLength(), 0);
+				::ExtTextOut(hDC, CDPIAware::Instance().ScaleX(LOCATOR_WIDTH), Y, ETO_CLIPPED, &rc, shortHashStr, shortHashStr.GetLength(), 0);
 			}
 			int Left = m_revwidth;
 
@@ -983,7 +984,7 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 			brush.lbStyle = BS_SOLID;
 			HPEN pen = ExtCreatePen(PS_SOLID | PS_GEOMETRIC, 2, &brush, 0, nullptr);
 			HGDIOBJ hPenOld = SelectObject(hDC, pen);
-			RECT rc2 = { LOCATOR_WIDTH, Y + 1, m_blamewidth, Y + (wrapcount * height) - 1};
+			RECT rc2 = { CDPIAware::Instance().ScaleX(LOCATOR_WIDTH), Y + 1, m_blamewidth, Y + (wrapcount * height) - 1};
 			::MoveToEx(hDC, rc2.left, rc2.top, nullptr);
 			::LineTo(hDC, rc2.right, rc2.top);
 			::LineTo(hDC, rc2.right, rc2.bottom);
@@ -1011,7 +1012,7 @@ void CTortoiseGitBlameView::DrawLocatorBar(HDC hDC)
 	//::GetClientRect(wLocator, &rc);
 	this->GetClientRect(&rc);
 
-	rc.right=LOCATOR_WIDTH;
+	rc.right = CDPIAware::Instance().ScaleX(LOCATOR_WIDTH);
 
 	RECT lineRect = rc;
 	LONG height = rc.bottom-rc.top;
