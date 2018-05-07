@@ -15,6 +15,7 @@ Released: unreleased
  * Fixed issue #3195: TGitMerge tool is not saving color to correct Windows registry location
  * Fixed issue #3194: Commit message control launches links on selection
  * Fixed issue #3202: Deletion of inactive branch inside not main working copy fails
+ * Fixed issue #3200: Problem when adding files to a worktree which is based on a bare repo
 
 = Release 2.6.0 =
 Released: 2018-02-17
