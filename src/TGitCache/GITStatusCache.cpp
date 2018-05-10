@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2006,2008,2010,2014 - TortoiseSVN
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -348,7 +348,32 @@ void CGitStatusCache::ClearCache()
 	m_directoryCache.clear();
 }
 
-bool CGitStatusCache::RemoveCacheForDirectory(CCachedDirectory * cdir)
+void CGitStatusCache::RemoveCacheForDirectoryChildren(CCachedDirectory* cdir, const CTGitPath& origPath)
+{
+	m_directoryCache.erase(origPath);
+
+	// we could have entries versioned and/or stored in our cache which are
+	// children of the specified directory, but not in the m_childDirectories
+	// member
+	CCachedDirectory::ItDir itMap = m_directoryCache.lower_bound(origPath);
+	do
+	{
+		if (itMap != m_directoryCache.end())
+		{
+			if (origPath.IsAncestorOf(itMap->first))
+			{
+				// just in case (see TortoiseSVN issue #255)
+				if (itMap->second == cdir)
+					m_directoryCache.erase(itMap);
+				else
+					RemoveCacheForDirectory(itMap->second, CTGitPath(itMap->first));
+			}
+		}
+		itMap = m_directoryCache.lower_bound(origPath);
+	} while (itMap != m_directoryCache.end() && origPath.IsAncestorOf(itMap->first));
+}
+
+bool CGitStatusCache::RemoveCacheForDirectory(CCachedDirectory* cdir, const CTGitPath& origPath)
 {
 	if (!cdir)
 		return false;
@@ -360,33 +385,15 @@ bool CGitStatusCache::RemoveCacheForDirectory(CCachedDirectory * cdir)
 		{
 			CCachedDirectory * childdir = CGitStatusCache::Instance().GetDirectoryCacheEntryNoCreate(it->first);
 			if ((childdir) && (!cdir->m_directoryPath.IsEquivalentTo(childdir->m_directoryPath)) && (cdir->m_directoryPath.GetFileOrDirectoryName() != L".."))
-				RemoveCacheForDirectory(childdir);
+				RemoveCacheForDirectory(childdir, it->first);
 			cdir->m_childDirectories.erase(it->first);
 			it = cdir->m_childDirectories.begin();
 		}
 	}
 	cdir->m_childDirectories.clear();
-	m_directoryCache.erase(cdir->m_directoryPath);
 
-	// we could have entries versioned and/or stored in our cache which are
-	// children of the specified directory, but not in the m_childDirectories
-	// member
-	CCachedDirectory::ItDir itMap = m_directoryCache.lower_bound(cdir->m_directoryPath);
-	do
-	{
-		if (itMap != m_directoryCache.end())
-		{
-			if (cdir->m_directoryPath.IsAncestorOf(itMap->first))
-			{
-				// just in case (see TortoiseSVN issue #255)
-				if (itMap->second == cdir)
-					m_directoryCache.erase(itMap);
-				else
-					RemoveCacheForDirectory(itMap->second);
-			}
-		}
-		itMap = m_directoryCache.lower_bound(cdir->m_directoryPath);
-	} while (itMap != m_directoryCache.end() && cdir->m_directoryPath.IsAncestorOf(itMap->first));
+	RemoveCacheForDirectoryChildren(cdir, origPath);
+	RemoveCacheForDirectoryChildren(cdir, cdir->m_directoryPath);
 
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": removed from cache %s\n", cdir->m_directoryPath.GetWinPath());
 	delete cdir;
@@ -406,7 +413,7 @@ void CGitStatusCache::RemoveCacheForPath(const CTGitPath& path)
 	if (!dirtoremove)
 		return;
 	ATLASSERT(path.IsEquivalentToWithoutCase(dirtoremove->m_directoryPath));
-	RemoveCacheForDirectory(dirtoremove);
+	RemoveCacheForDirectory(dirtoremove, path);
 }
 
 CCachedDirectory * CGitStatusCache::GetDirectoryCacheEntry(const CTGitPath& path)
