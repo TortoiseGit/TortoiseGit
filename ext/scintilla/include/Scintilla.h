@@ -27,12 +27,7 @@ int Scintilla_LinkLexers(void);
 #endif
 
 // Include header that defines basic numeric types.
-#if defined(_MSC_VER)
-// Older releases of MSVC did not have stdint.h.
-#include <stddef.h>
-#else
 #include <stdint.h>
-#endif
 
 // Define uptr_t, an unsigned integer type large enough to hold a pointer.
 typedef uintptr_t uptr_t;
@@ -395,6 +390,7 @@ typedef sptr_t (*SciFnDirect)(sptr_t ptr, unsigned int iMessage, uptr_t wParam, 
 #define SC_PRINT_BLACKONWHITE 2
 #define SC_PRINT_COLOURONWHITE 3
 #define SC_PRINT_COLOURONWHITEDEFAULTBG 4
+#define SC_PRINT_SCREENCOLOURS 5
 #define SCI_SETPRINTCOLOURMODE 2148
 #define SCI_GETPRINTCOLOURMODE 2149
 #define SCFIND_WHOLEWORD 0x2
@@ -690,10 +686,12 @@ typedef sptr_t (*SciFnDirect)(sptr_t ptr, unsigned int iMessage, uptr_t wParam, 
 #define SCI_SETZOOM 2373
 #define SCI_GETZOOM 2374
 #define SC_DOCUMENTOPTION_DEFAULT 0
-#define SC_DOCUMENTOPTION_STYLES_NONE 1
+#define SC_DOCUMENTOPTION_STYLES_NONE 0x1
+#define SC_DOCUMENTOPTION_TEXT_LARGE 0x100
 #define SCI_CREATEDOCUMENT 2375
 #define SCI_ADDREFDOCUMENT 2376
 #define SCI_RELEASEDOCUMENT 2377
+#define SCI_GETDOCUMENTOPTIONS 2379
 #define SCI_GETMODEVENTMASK 2378
 #define SCI_SETFOCUS 2380
 #define SCI_GETFOCUS 2381

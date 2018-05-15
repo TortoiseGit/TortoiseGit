@@ -99,7 +99,7 @@ public:
 	XYPOSITION x;
 	XYPOSITION y;
 
-	explicit Point(XYPOSITION x_=0, XYPOSITION y_=0) : x(x_), y(y_) {
+	constexpr explicit Point(XYPOSITION x_=0, XYPOSITION y_=0) : x(x_), y(y_) {
 	}
 
 	static Point FromInts(int x_, int y_) {
@@ -217,15 +217,15 @@ public:
 		return co;
 	}
 
-	unsigned int GetRed() const {
+	unsigned char GetRed() const {
 		return co & 0xff;
 	}
 
-	unsigned int GetGreen() const {
+	unsigned char GetGreen() const {
 		return (co >> 8) & 0xff;
 	}
 
-	unsigned int GetBlue() const {
+	unsigned char GetBlue() const {
 		return (co >> 16) & 0xff;
 	}
 };
@@ -339,11 +339,6 @@ public:
 };
 
 /**
- * A simple callback action passing one piece of untyped user data.
- */
-typedef void (*CallBackAction)(void*);
-
-/**
  * Class to hide the details of window manipulation.
  * Does not own the window which will normally have a longer life than this object.
  */
@@ -406,10 +401,10 @@ public:
 class ListBox : public Window {
 public:
 	ListBox();
-	virtual ~ListBox();
+	~ListBox() override;
 	static ListBox *Allocate();
 
-	virtual void SetFont(Font &font)=0;
+	void SetFont(Font &font) override =0;
 	virtual void Create(Window &parent, int ctrlID, Point location, int lineHeight_, bool unicodeMode_, int technology_)=0;
 	virtual void SetAverageCharWidth(int width)=0;
 	virtual void SetVisibleRows(int rows)=0;
@@ -443,7 +438,7 @@ public:
 	void Show(Point pt, Window &w);
 };
 
-class ElapsedTime {
+class[[deprecated("Use ElapsedPeriod")]] ElapsedTime {
 	long bigBit;
 	long littleBit;
 public:

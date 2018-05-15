@@ -45,7 +45,7 @@ public:
 	virtual void ShowAll()=0;
 };
 
-std::unique_ptr<IContractionState> ContractionStateCreate();
+std::unique_ptr<IContractionState> ContractionStateCreate(bool largeDocument);
 
 }
 

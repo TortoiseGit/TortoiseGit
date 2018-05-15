@@ -645,6 +645,12 @@
     <ClInclude Include="..\scintilla\win32\ScintillaWin.h">
       <Filter>win32</Filter>
     </ClInclude>
+    <ClInclude Include="..\scintilla\src\ElapsedPeriod.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scintilla\src\IntegerRectangle.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\scintilla\win32\ScintRes.rc">

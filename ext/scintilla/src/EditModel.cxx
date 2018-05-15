@@ -51,7 +51,7 @@ using namespace Scintilla;
 Caret::Caret() :
 	active(false), on(false), period(500) {}
 
-EditModel::EditModel() {
+EditModel::EditModel() : braces{} {
 	inOverstrike = false;
 	xOffset = 0;
 	trackLineWidth = false;
@@ -70,7 +70,7 @@ EditModel::EditModel() {
 	wrapWidth = LineLayout::wrapWidthInfinite;
 	pdoc = new Document(SC_DOCUMENTOPTION_DEFAULT);
 	pdoc->AddRef();
-	pcs = ContractionStateCreate();
+	pcs = ContractionStateCreate(pdoc->IsLarge());
 }
 
 EditModel::~EditModel() {
