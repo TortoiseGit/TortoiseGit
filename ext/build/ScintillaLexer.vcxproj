@@ -225,9 +225,11 @@
     <ClInclude Include="..\scintilla\src\EditModel.h" />
     <ClInclude Include="..\scintilla\src\Editor.h" />
     <ClInclude Include="..\scintilla\src\EditView.h" />
+    <ClInclude Include="..\scintilla\src\ElapsedPeriod.h" />
     <ClInclude Include="..\scintilla\src\ExternalLexer.h" />
     <ClInclude Include="..\scintilla\src\FontQuality.h" />
     <ClInclude Include="..\scintilla\src\Indicator.h" />
+    <ClInclude Include="..\scintilla\src\IntegerRectangle.h" />
     <ClInclude Include="..\scintilla\src\KeyMap.h" />
     <ClInclude Include="..\scintilla\src\LineMarker.h" />
     <ClInclude Include="..\scintilla\src\MarginView.h" />

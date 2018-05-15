@@ -5,6 +5,7 @@
 // Copyright 2009 by Neil Hodgson <neilh@scintilla.org>
 // The License.txt file describes the conditions under which this software may be distributed.
 
+#include <cstddef>
 #include <cstdlib>
 
 #include <stdexcept>
@@ -403,7 +404,7 @@ Sci::Position Selection::VirtualSpaceFor(Sci::Position pos) const {
 
 void Selection::Clear() {
 	ranges.clear();
-	ranges.push_back(SelectionRange());
+	ranges.emplace_back();
 	mainRange = ranges.size() - 1;
 	selType = selStream;
 	moveExtends = false;

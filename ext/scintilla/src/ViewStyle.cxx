@@ -377,10 +377,10 @@ void ViewStyle::ReleaseAllExtendedStyles() {
 }
 
 int ViewStyle::AllocateExtendedStyles(int numberStyles) {
-	const int startRange = static_cast<int>(nextExtendedStyle);
+	const int startRange = nextExtendedStyle;
 	nextExtendedStyle += numberStyles;
 	EnsureStyle(nextExtendedStyle);
-	for (size_t i=startRange; i<nextExtendedStyle; i++) {
+	for (int i=startRange; i<nextExtendedStyle; i++) {
 		styles[i].ClearTo(styles[STYLE_DEFAULT]);
 	}
 	return startRange;
@@ -458,7 +458,7 @@ void ViewStyle::CalcLargestMarkerHeight() {
 }
 
 int ViewStyle::GetFrameWidth() const {
-	return static_cast<int>(std::clamp(caretLineFrame, 1, lineHeight / 3));
+	return std::clamp(caretLineFrame, 1, lineHeight / 3);
 }
 
 bool ViewStyle::IsLineFrameOpaque(bool caretActive, bool lineContainsCaret) const {

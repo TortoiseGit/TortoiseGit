@@ -70,8 +70,6 @@ public:
 	int codePage;
 	int characterSet;
 	SelectionText() : rectangular(false), lineCopy(false), codePage(0), characterSet(0) {}
-	~SelectionText() {
-	}
 	void Clear() {
 		s.clear();
 		rectangular = false;
@@ -256,8 +254,10 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 
 	Editor();
 	// Deleted so Editor objects can not be copied.
-	explicit Editor(const Editor &) = delete;
+	Editor(const Editor &) = delete;
+	Editor(Editor &&) = delete;
 	Editor &operator=(const Editor &) = delete;
+	Editor &operator=(Editor &&) = delete;
 	~Editor() override;
 	virtual void Initialise() = 0;
 	virtual void Finalise();
@@ -271,20 +271,19 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 
 	// The top left visible point in main window coordinates. Will be 0,0 except for
 	// scroll views where it will be equivalent to the current scroll position.
-	virtual Point GetVisibleOriginInMain() const override;
+	Point GetVisibleOriginInMain() const override;
 	PointDocument DocumentPointFromView(Point ptView) const;  // Convert a point from view space to document
 	Sci::Line TopLineOfMain() const override;   // Return the line at Main's y coordinate 0
 	virtual PRectangle GetClientRectangle() const;
 	virtual PRectangle GetClientDrawingRectangle();
 	PRectangle GetTextRectangle() const;
 
-	virtual Sci::Line LinesOnScreen() const override;
+	Sci::Line LinesOnScreen() const override;
 	Sci::Line LinesToScroll() const;
 	Sci::Line MaxScrollPos() const;
 	SelectionPosition ClampPositionIntoDocument(SelectionPosition sp) const;
 	Point LocationFromPosition(SelectionPosition pos, PointEnd pe=peDefault);
 	Point LocationFromPosition(Sci::Position pos, PointEnd pe=peDefault);
-	int XFromPosition(Sci::Position pos);
 	int XFromPosition(SelectionPosition sp);
 	SelectionPosition SPositionFromLocation(Point pt, bool canReturnInvalid=false, bool charPosition=false, bool virtualSpace=true);
 	Sci::Position PositionFromLocation(Point pt, bool canReturnInvalid = false, bool charPosition = false);
@@ -375,10 +374,10 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 	void LinesJoin();
 	void LinesSplit(int pixelWidth);
 
-	void PaintSelMargin(Surface *surfaceWindow, PRectangle &rc);
+	void PaintSelMargin(Surface *surfaceWindow, const PRectangle &rc);
 	void RefreshPixMaps(Surface *surfaceWindow);
 	void Paint(Surface *surfaceWindow, PRectangle rcArea);
-	Sci::Position FormatRange(bool draw, Sci_RangeToFormat *pfr);
+	Sci::Position FormatRange(bool draw, const Sci_RangeToFormat *pfr);
 	int TextWidth(int style, const char *text);
 
 	virtual void SetVerticalScrollPos() = 0;
@@ -394,9 +393,9 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 	void AddChar(char ch);
 	virtual void AddCharUTF(const char *s, unsigned int len, bool treatAsDBCS=false);
 	void ClearBeforeTentativeStart();
-	void InsertPaste(const char *text, int len);
+	void InsertPaste(const char *text, Sci::Position len);
 	enum PasteShape { pasteStream=0, pasteRectangular = 1, pasteLine = 2 };
-	void InsertPasteShape(const char *text, int len, PasteShape shape);
+	void InsertPasteShape(const char *text, Sci::Position len, PasteShape shape);
 	void ClearSelection(bool retainMultipleSelections = false);
 	void ClearAll();
 	void ClearDocumentStyle();
@@ -483,7 +482,7 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 	std::string RangeText(Sci::Position start, Sci::Position end) const;
 	void CopySelectionRange(SelectionText *ss, bool allowLineCopy=false);
 	void CopyRangeToClipboard(Sci::Position start, Sci::Position end);
-	void CopyText(int length, const char *text);
+	void CopyText(size_t length, const char *text);
 	void SetDragPosition(SelectionPosition newPos);
 	virtual void DisplayCursor(Window::Cursor c);
 	virtual bool DragThreshold(Point ptStart, Point ptNow);
@@ -557,8 +556,8 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 
 	int CodePage() const;
 	virtual bool ValidCodePage(int /* codePage */) const { return true; }
-	int WrapCount(int line);
-	void AddStyledText(char *buffer, Sci::Position appendLength);
+	Sci::Line WrapCount(Sci::Line line);
+	void AddStyledText(const char *buffer, Sci::Position appendLength);
 
 	virtual sptr_t DefWndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) = 0;
 	bool ValidMargin(uptr_t wParam) const;
@@ -568,11 +567,33 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 
 	static const char *StringFromEOLMode(int eolMode);
 
+	// Coercion functions for transforming WndProc parameters into pointers
+	static void *PtrFromSPtr(sptr_t lParam) {
+		return reinterpret_cast<void *>(lParam);
+	}
+	static const char *ConstCharPtrFromSPtr(sptr_t lParam) {
+		return static_cast<const char *>(PtrFromSPtr(lParam));
+	}
+	static const unsigned char *ConstUCharPtrFromSPtr(sptr_t lParam) {
+		return static_cast<const unsigned char *>(PtrFromSPtr(lParam));
+	}
+	static char *CharPtrFromSPtr(sptr_t lParam) {
+		return static_cast<char *>(PtrFromSPtr(lParam));
+	}
+	static unsigned char *UCharPtrFromSPtr(sptr_t lParam) {
+		return static_cast<unsigned char *>(PtrFromSPtr(lParam));
+	}
+	static void *PtrFromUPtr(uptr_t wParam) {
+		return reinterpret_cast<void *>(wParam);
+	}
+	static const char *ConstCharPtrFromUPtr(uptr_t wParam) {
+		return static_cast<const char *>(PtrFromUPtr(wParam));
+	}
+
 	static sptr_t StringResult(sptr_t lParam, const char *val);
 	static sptr_t BytesResult(sptr_t lParam, const unsigned char *val, size_t len);
 
 public:
-	virtual void NotifyParent(SCNotification* scn) = 0;
 	// Public so the COM thunks can access it.
 	bool IsUnicodeMode() const;
 	// Public so scintilla_send_message can use it.
@@ -582,7 +603,6 @@ public:
 	// Public so COM methods for drag and drop can set it.
 	int errorStatus;
 	friend class AutoSurface;
-	friend class SelectionLineIterator;
 };
 
 /**
@@ -610,13 +630,15 @@ public:
 	}
 	// Deleted so AutoSurface objects can not be copied.
 	AutoSurface(const AutoSurface &) = delete;
+	AutoSurface(AutoSurface &&) = delete;
 	void operator=(const AutoSurface &) = delete;
+	void operator=(AutoSurface &&) = delete;
 	~AutoSurface() {
 	}
-	Surface *operator->() const {
+	Surface *operator->() const noexcept {
 		return surf.get();
 	}
-	operator Surface *() const {
+	operator Surface *() const noexcept {
 		return surf.get();
 	}
 };

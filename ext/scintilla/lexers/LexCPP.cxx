@@ -13,6 +13,7 @@
 #include <assert.h>
 #include <ctype.h>
 
+#include <utility>
 #include <string>
 #include <vector>
 #include <map>
@@ -101,7 +102,7 @@ std::vector<std::string> StringSplit(const std::string &text, int separator) {
 	std::vector<std::string> vs(text.empty() ? 0 : 1);
 	for (const char ch : text) {
 		if (ch == separator) {
-			vs.push_back(std::string());
+			vs.emplace_back();
 		} else {
 			vs.back() += ch;
 		}
@@ -1145,7 +1146,7 @@ void SCI_METHOD LexerCPP::Lex(Sci_PositionU startPos, Sci_Position length, int i
 				}
 				break;
 			case SCE_C_TRIPLEVERBATIM:
-				if (sc.Match("\"\"\"")) {
+				if (sc.Match(R"(""")")) {
 					while (sc.Match('"')) {
 						sc.Forward();
 					}
@@ -1176,7 +1177,7 @@ void SCI_METHOD LexerCPP::Lex(Sci_PositionU startPos, Sci_Position length, int i
 			if (sc.Match('@', '\"')) {
 				sc.SetState(SCE_C_VERBATIM|activitySet);
 				sc.Forward();
-			} else if (options.triplequotedStrings && sc.Match("\"\"\"")) {
+			} else if (options.triplequotedStrings && sc.Match(R"(""")")) {
 				sc.SetState(SCE_C_TRIPLEVERBATIM|activitySet);
 				sc.Forward(2);
 			} else if (options.hashquotedStrings && sc.Match('#', '\"')) {

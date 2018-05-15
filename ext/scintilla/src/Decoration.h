@@ -50,9 +50,9 @@ public:
 	virtual void SetClickNotified(bool notified) = 0;
 };
 
-std::unique_ptr<IDecoration> DecorationCreate(int indicator);
+std::unique_ptr<IDecoration> DecorationCreate(bool largeDocument, int indicator);
 
-std::unique_ptr<IDecorationList> DecorationListCreate();
+std::unique_ptr<IDecorationList> DecorationListCreate(bool largeDocument);
 
 }
 

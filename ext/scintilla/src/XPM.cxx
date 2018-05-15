@@ -89,7 +89,7 @@ void XPM::Init(const char *const *linesForm) {
 	if (!linesForm)
 		return;
 
-	std::fill(colourCodeTable, std::end(colourCodeTable), 0);
+	std::fill(colourCodeTable, std::end(colourCodeTable), ColourDesired(0));
 	const char *line0 = linesForm[0];
 	width = atoi(line0);
 	line0 = NextField(line0);
@@ -105,22 +105,22 @@ void XPM::Init(const char *const *linesForm) {
 
 	for (int c=0; c<nColours; c++) {
 		const char *colourDef = linesForm[c+1];
-		int code = static_cast<unsigned char>(colourDef[0]);
+		const char code = colourDef[0];
 		colourDef += 4;
 		ColourDesired colour(0xff, 0xff, 0xff);
 		if (*colourDef == '#') {
 			colour.Set(colourDef);
 		} else {
-			codeTransparent = static_cast<char>(code);
+			codeTransparent = code;
 		}
-		colourCodeTable[code] = colour;
+		colourCodeTable[static_cast<unsigned char>(code)] = colour;
 	}
 
 	for (int y=0; y<height; y++) {
 		const char *lform = linesForm[y+nColours+1];
 		const size_t len = MeasureLength(lform);
 		for (size_t x = 0; x<len; x++)
-			pixels[y * width + x] = static_cast<unsigned char>(lform[x]);
+			pixels[y * width + x] = lform[x];
 	}
 }
 
@@ -148,16 +148,16 @@ void XPM::Draw(Surface *surface, const PRectangle &rc) {
 
 void XPM::PixelAt(int x, int y, ColourDesired &colour, bool &transparent) const {
 	if (pixels.empty() || (x<0) || (x >= width) || (y<0) || (y >= height)) {
-		colour = 0;
+		colour = ColourDesired(0);
 		transparent = true;
 		return;
 	}
-	int code = pixels[y * width + x];
+	const int code = pixels[y * width + x];
 	transparent = code == codeTransparent;
 	if (transparent) {
-		colour = 0;
+		colour = ColourDesired(0);
 	} else {
-		colour = ColourFromCode(code).AsLong();
+		colour = ColourFromCode(code);
 	}
 }
 
@@ -234,9 +234,9 @@ const unsigned char *RGBAImage::Pixels() const {
 void RGBAImage::SetPixel(int x, int y, ColourDesired colour, int alpha) {
 	unsigned char *pixel = &pixelBytes[0] + (y*width+x) * 4;
 	// RGBA
-	pixel[0] = static_cast<unsigned char>(colour.GetRed());
-	pixel[1] = static_cast<unsigned char>(colour.GetGreen());
-	pixel[2] = static_cast<unsigned char>(colour.GetBlue());
+	pixel[0] = colour.GetRed();
+	pixel[1] = colour.GetGreen();
+	pixel[2] = colour.GetBlue();
 	pixel[3] = static_cast<unsigned char>(alpha);
 }
 
