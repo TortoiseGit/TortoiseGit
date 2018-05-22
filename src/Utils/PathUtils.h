@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2017 - TortoiseGit
+// Copyright (C) 2016-2018 - TortoiseGit
 // Copyright (C) 2003-2008, 2013-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -34,18 +34,10 @@ public:
 	CPathUtils() = delete;
 	static BOOL			MakeSureDirectoryPathExists(LPCTSTR path);
 	static void			ConvertToBackslash(LPTSTR dest, LPCTSTR src, size_t len);
-	/**
-	 * Replaces escaped sequences with the corresponding characters in a string.
-	 */
-	static void Unescape(char * psz);
-
-	/**
-	 * Replaces non-URI chars with the corresponding escape sequences.
-	 */
-	static CStringA PathEscape(const CStringA& path);
-
 
 #ifdef CSTRING_AVAILABLE
+	inline static void	ConvertToBackslash(CString& path);
+
 	/**
 	 * returns the filename of a full path
 	 */
@@ -106,12 +98,6 @@ public:
 	static void DropPathPrefixes(CString& path);
 
 	static int ReadLink(LPCTSTR filename, CStringA* target = nullptr);
-
-	/**
-	 * Replaces escaped sequences with the corresponding characters in a string.
-	 */
-	static CStringA PathUnescape(const CStringA& path);
-	static CStringW PathUnescape(const CStringW& path);
 
 	/**
 	* Escapes regexp-specific chars.

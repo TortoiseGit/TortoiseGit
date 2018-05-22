@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2017 - TortoiseGit
+// Copyright (C) 2015-2018 - TortoiseGit
 // Copyright (C) 2003-2008, 2013-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -20,15 +20,6 @@
 
 #include "stdafx.h"
 #include "PathUtils.h"
-
-TEST(CPathUtils, UnescapeTest)
-{
-	CString test(L"file:///d:/REpos1/uCOS-100/Trunk/name%20with%20spaces/NewTest%20%%20NewTest");
-	CString test2 = CPathUtils::PathUnescape(test);
-	EXPECT_STREQ(L"file:///d:/REpos1/uCOS-100/Trunk/name with spaces/NewTest % NewTest", test2);
-	CStringA test3 = CPathUtils::PathEscape("file:///d:/REpos1/uCOS-100/Trunk/name with spaces/NewTest % NewTest");
-	EXPECT_STREQ("file:///d:/REpos1/uCOS-100/Trunk/name%20with%20spaces/NewTest%20%%20NewTest", test3);
-}
 
 TEST(CPathUtils, GetFileNameFromPath)
 {
