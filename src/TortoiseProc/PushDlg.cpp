@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -273,8 +273,6 @@ void CPushDlg::Refresh()
 		m_BranchSource.SetWindowText(m_BranchSourceName);
 
 	GetRemoteBranch(m_BranchSource.GetString());
-
-	this->GetDlgItem(IDOK)->EnableWindow(m_BranchSource.GetCount() != 0);
 
 	if (list.size() > 1 && m_bPushAllRemotes)
 		m_Remote.SetCurSel(0);

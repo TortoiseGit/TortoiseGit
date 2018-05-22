@@ -19,6 +19,7 @@ Released: unreleased
  * Fixed issue #3200: Problem when adding files to a worktree which is based on a bare repo
  * Fixed issue #3201: Frequent TGitCache crashes
  * Fixed issue #3197: Bad generated path while renaming file with changing folder
+ * Fixed issue #3211: Push from detached head not possible when no local branch exists
 
 = Release 2.6.0 =
 Released: 2018-02-17
