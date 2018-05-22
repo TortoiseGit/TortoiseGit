@@ -265,6 +265,8 @@ void CPushDlg::Refresh()
 			m_BranchSourceName = m_BranchSourceName.Mid((int)wcslen(L"refs/"));
 		m_BranchSource.SetCurSel(m_BranchSource.FindStringExact(-1, m_BranchSourceName));
 	}
+	else if (m_BranchSourceName.IsEmpty() && current == -1 && !g_Git.IsInitRepos())
+		m_BranchSource.SetWindowText(L"HEAD");
 	else if (m_BranchSourceName.IsEmpty())
 		m_BranchSource.SetCurSel(current);
 	else
