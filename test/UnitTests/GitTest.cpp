@@ -77,7 +77,7 @@ TEST(CGit, RunGit_Error)
 
 	output.Empty();
 	EXPECT_EQ(128, cgit.Run(L"git.exe add file.txt", &output, CP_UTF8));
-	EXPECT_TRUE(CStringUtils::StartsWith(output, L"fatal: Not a git repository (or any"));
+	EXPECT_TRUE(CStringUtils::StartsWithI(output, L"fatal: not a git repository (or any"));
 }
 
 TEST_P(CBasicGitWithTestRepoBareFixture, RunGit_AbsolutePath)
@@ -126,7 +126,7 @@ TEST(CGit, RunLogFile_Error)
 	cgit.m_CurrentDir = tempdir.GetTempDir();
 
 	EXPECT_EQ(128, cgit.RunLogFile(L"git.exe add file.txt", tmpfile, &error));
-	EXPECT_TRUE(CStringUtils::StartsWith(error, L"fatal: Not a git repository (or any"));
+	EXPECT_TRUE(CStringUtils::StartsWithI(error, L"fatal: not a git repository (or any"));
 	__int64 size = -1;
 	EXPECT_EQ(0, CGit::GetFileModifyTime(tmpfile, nullptr, nullptr, &size));
 	EXPECT_EQ(0, size);
