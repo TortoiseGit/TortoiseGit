@@ -664,13 +664,14 @@ BEGIN
     PUSHBUTTON      "&Advanced...",IDC_EXTMERGEADVANCED,206,73,87,14
 END
 
-IDD_SETTINGSLOOKANDFEEL DIALOGEX 0, 0, 300, 225
+IDD_SETTINGSLOOKANDFEEL DIALOGEX 0, 0, 301, 238
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "General::Context Menu"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
-    GROUPBOX        "Cascaded context menu",IDC_STATIC,7,7,286,139
-    CONTROL         "",IDC_MENULIST,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_ALIGNLEFT | LVS_NOCOLUMNHEADER | WS_BORDER | WS_TABSTOP,12,19,274,103
+    GROUPBOX        "Show the selected items on the first level of the context menu:",IDC_STATIC,7,7,287,139
+    LTEXT           "Unchecked items will appear in the TortoiseGit submenu, checked items directly in the main context menu.",IDC_STATIC,12,18,274,18
+    CONTROL         "",IDC_MENULIST,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_ALIGNLEFT | LVS_NOCOLUMNHEADER | WS_BORDER | WS_TABSTOP,12,37,274,85
     CONTROL         "Select/deselect &all",IDC_SELECTALL,"Button",BS_AUTO3STATE | WS_TABSTOP,12,126,108,14
     PUSHBUTTON      "Restore Default",IDC_RESTORE,204,126,82,14
     CONTROL         "Hide Menus for unversioned paths",IDC_HIDEMENUS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,148,274,10
@@ -1710,11 +1711,12 @@ END
 
 IDD_SETTINGSEXTMENU DIALOGEX 0, 0, 300, 225
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
-CAPTION "General::Set Extend Menu Item"
+CAPTION "General::Context Menu 2"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
-    GROUPBOX        "Don't show the selected items: (press shift key to show them)",-1,7,7,286,210
-    CONTROL         "",IDC_MENULIST,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_ALIGNLEFT | LVS_NOCOLUMNHEADER | WS_BORDER | WS_TABSTOP,12,19,274,175
+    GROUPBOX        "Hide the selected items in the context menu:",IDC_STATIC,7,7,286,210
+    LTEXT           "Checked items will be hidden in the context menu by default and will only be visible if the shift key is pressed while opening the context menu.",IDC_STATIC,12,18,274,18
+    CONTROL         "",IDC_MENULIST,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_ALIGNLEFT | LVS_NOCOLUMNHEADER | WS_BORDER | WS_TABSTOP,12,37,274,153
     CONTROL         "Select/deselect &all",IDC_SELECTALL,"Button",BS_AUTO3STATE | WS_TABSTOP,12,198,106,14
     PUSHBUTTON      "Restore Default",IDC_RESTORE,204,198,82,14
 END
@@ -2481,11 +2483,12 @@ BEGIN
     IDD_SETTINGSLOOKANDFEEL, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 293
+        RIGHTMARGIN, 294
         VERTGUIDE, 12
+        VERTGUIDE, 64
         VERTGUIDE, 286
         TOPMARGIN, 7
-        BOTTOMMARGIN, 217
+        BOTTOMMARGIN, 230
     END
 
     IDD_SETTINGSDIALOGS, DIALOG

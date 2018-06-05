@@ -171,9 +171,11 @@
 				<graphic fileref="../images/SettingsContext.png"/>
 			</figure>
 			This page allows you to specify which of the TortoiseGit context menu
-			entries will show up in the main context menu, and which will appear
+			entries will show up in the main context menu (on the first level),
+			and which entries will appear
 			in the TortoiseGit submenu. By default most items are unchecked and
 			appear in the submenu.
+			If you want to hide specific entries, see <xref linkend="tgit-dug-settings-look-feel-extended"/>.
 		</para>
 		<para>
 			Most of the time, you won't need the TortoiseGit context menu, apart
@@ -200,19 +202,17 @@
 	</sect3>
 	
 	<sect3 id="tgit-dug-settings-look-feel-extended">
-		<title>Set Extend Menu Item</title>
+		<title>Context Menu 2 Settings</title>
 		<?dbhh topicname="HIDD_SETTINGSEXTMENU"?>
 		<para>
 			<figure id="tgit-dug-settings-ext-menu">
-				<title>The Settings Dialog, Set Extend Menu Item</title>
+				<title>The Settings Dialog, Context Menu 2</title>
 				<graphic fileref="../images/SettingsExtendMenu.png"/>
 			</figure>
 			This page allows you to specify which of the TortoiseGit context menu
-			entries will show up in the extend context menu (press <keycap>Shift</keycap>
-			key on <action>right click</action>), 
-			and which will appear in the normal context menu. 
-			This config will help reduce the context menu number at normal usage case
-			according to your usage module. 
+			entries will be hidden by default. Selected item will only be visible when you hold the <keycap>Shift</keycap>
+			key on <action>right click</action> (this is the so-called extended context menu, please don't mix this with the TortoiseGit submenu, which is also configurable (cf. <xref linkend="tgit-dug-settings-look-feel"/>)).
+			This configuration helps you to reduce the number of context menu entries according to your needs.
 		</para>
 	</sect3>
 	
