@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2017 - TortoiseGit
+// Copyright (C) 2012-2018 - TortoiseGit
 // Copyright (C) 2003-2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -153,6 +153,8 @@ bool ShellCache::RefreshIfNeeded()
 	menumaskhigh_lm.read();
 	menumasklow_cu.read();
 	menumaskhigh_cu.read();
+	menuextlow.read();
+	menuexthigh.read();
 	nocontextpaths.read();
 
 	Locker lock(m_critSec);
