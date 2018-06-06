@@ -274,7 +274,7 @@ BEGIN
     IDS_MENUIMPORTPATCH     "Apply Patch Serial..."
     IDS_MENUFETCH           "F&etch..."
     IDS_MENUREBASE          "Rebase..."
-    IDS_MENUSTASHSAVE       "Stash Save"
+    IDS_MENUSTASHSAVE       "Stash changes"
     IDS_MENUSTASHAPPLY      "Stash Apply"
     IDS_MENUSUBADD          "Submodule Add..."
     IDS_MENUSUBSYNC         "Submodule Sync"
