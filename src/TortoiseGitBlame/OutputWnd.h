@@ -61,11 +61,6 @@ public:
 	CGitBlameLogList m_LogList;
 	CGravatar m_Gravatar;
 
-protected:
-	void AdjustHorzScroll(CListBox& wndListBox);
-
-private:
-
 // Implementation
 public:
 	virtual ~COutputWnd();

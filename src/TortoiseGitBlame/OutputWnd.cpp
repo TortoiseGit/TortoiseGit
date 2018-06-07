@@ -56,7 +56,6 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (CDockablePane::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
-	TRACE(L"%u\n", LVN_ITEMCHANGED);
 	m_Font.CreateStockObject(DEFAULT_GUI_FONT);
 
 	CRect rectDummy;
@@ -112,25 +111,6 @@ void COutputWnd::OnSize(UINT nType, int cx, int cy)
 		return;
 	}
 	m_LogList.SetWindowPos(nullptr, -1, -1, cx, cy, SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOZORDER);
-}
-
-void COutputWnd::AdjustHorzScroll(CListBox& wndListBox)
-{
-	CClientDC dc(this);
-	CFont* pOldFont = dc.SelectObject(&m_Font);
-
-	int cxExtentMax = 0;
-
-	for (int i = 0; i < wndListBox.GetCount(); ++i)
-	{
-		CString strItem;
-		wndListBox.GetText(i, strItem);
-
-		cxExtentMax = max(cxExtentMax, dc.GetTextExtent(strItem).cx);
-	}
-
-	wndListBox.SetHorizontalExtent(cxExtentMax);
-	dc.SelectObject(pOldFont);
 }
 
 int COutputWnd::LoadHistory(CString filename, CString revision, bool follow)
