@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -596,7 +596,7 @@ protected:
 	afx_msg LRESULT OnLoad(WPARAM wParam, LPARAM lParam);
 	void OnNMDblclkLoglist(NMHDR * /*pNMHDR*/, LRESULT *pResult);
 	afx_msg void OnLvnOdfinditemLoglist(NMHDR *pNMHDR, LRESULT *pResult);
-	void PreSubclassWindow();
+	void PreSubclassWindow() override;
 	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
 	virtual ULONG GetGestureStatus(CPoint ptTouch) override;
 	static UINT LogThreadEntry(LPVOID pVoid);
