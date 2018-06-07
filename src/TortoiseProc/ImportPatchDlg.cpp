@@ -167,7 +167,7 @@ BOOL CImportPatchDlg::OnInitDialog()
 	AddAmAnchor();
 
 	m_PathList.SortByPathname(true);
-	m_cList.SetExtendedStyle( m_cList.GetExtendedStyle()| LVS_EX_CHECKBOXES );
+	m_cList.SetExtendedStyle(m_cList.GetExtendedStyle() | LVS_EX_CHECKBOXES | LVS_EX_DOUBLEBUFFER);
 	m_cList.InsertColumn(0, L"");
 	m_cList.SetExtendedStyle((CRegDWORD(L"Software\\TortoiseGit\\FullRowSelect", TRUE) ? LVS_EX_FULLROWSELECT : 0) | m_cList.GetExtendedStyle());
 
