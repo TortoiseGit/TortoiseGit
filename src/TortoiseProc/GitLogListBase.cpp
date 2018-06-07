@@ -79,16 +79,6 @@ CGitLogListBase::CGitLogListBase() : CHintCtrl<CResizableColumnsListCtrl<CListCt
 	// use the default GUI font, create a copy of it and
 	// change the copy to BOLD (leave the rest of the font
 	// the same)
-	HFONT hFont = (HFONT)GetStockObject(DEFAULT_GUI_FONT);
-	LOGFONT lf = {0};
-	GetObject(hFont, sizeof(LOGFONT), &lf);
-	lf.lfWeight = FW_BOLD;
-	m_boldFont.CreateFontIndirect(&lf);
-	lf.lfWeight = FW_DONTCARE;
-	lf.lfItalic = TRUE;
-	m_FontItalics.CreateFontIndirect(&lf);
-	lf.lfWeight = FW_BOLD;
-	m_boldItalicsFont.CreateFontIndirect(&lf);
 
 	this->m_critSec.Init();
 	ResetWcRev(false);
@@ -350,6 +340,19 @@ void CGitLogListBase::InsertGitColumn()
 	CString temp;
 
 	Init();
+
+	// use the default font, create a copy of it and
+	// change the copy to BOLD (leave the rest of the font
+	// the same)
+	LOGFONT lf = { 0 };
+	GetFont()->GetLogFont(&lf);
+	lf.lfWeight = FW_BOLD;
+	m_boldFont.CreateFontIndirect(&lf);
+	lf.lfWeight = FW_DONTCARE;
+	lf.lfItalic = TRUE;
+	m_FontItalics.CreateFontIndirect(&lf);
+	lf.lfWeight = FW_BOLD;
+	m_boldItalicsFont.CreateFontIndirect(&lf);
 
 	// only load properties if we have a repository
 	if (GitAdminDir::IsWorkingTreeOrBareRepo(g_Git.m_CurrentDir))

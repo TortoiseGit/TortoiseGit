@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011, 2013, 2015 - TortoiseSVN
+// Copyright (C) 2011, 2013, 2015, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -28,8 +28,18 @@
 template <typename BaseType> class CHintCtrl : public BaseType
 {
 public:
-	CHintCtrl() : BaseType() {}
-	~CHintCtrl() {}
+	CHintCtrl() : BaseType(), m_uiFont(nullptr)
+	{
+		NONCLIENTMETRICS metrics = { 0 };
+		metrics.cbSize = sizeof(NONCLIENTMETRICS);
+		SystemParametersInfo(SPI_GETNONCLIENTMETRICS, 0, &metrics, FALSE);
+		m_uiFont = CreateFontIndirect(&metrics.lfMessageFont);
+	}
+	virtual ~CHintCtrl()
+	{
+		if (m_uiFont)
+			DeleteObject(m_uiFont);
+	}
 
 	void ShowText(const CString& sText, bool forceupdate = false)
 	{
@@ -90,7 +100,7 @@ protected:
 				else
 					memDC.FillSolidRect(rc, clrTextBk);
 				rc.top += 10;
-				CGdiObject * oldfont = memDC.SelectStockObject(DEFAULT_GUI_FONT);
+				CGdiObject* oldfont = memDC.SelectObject(CGdiObject::FromHandle(m_uiFont));
 				memDC.DrawText(m_sText, rc, DT_CENTER | DT_VCENTER |
 					DT_WORDBREAK | DT_NOPREFIX | DT_NOCLIP);
 				memDC.SelectObject(oldfont);
@@ -111,6 +121,7 @@ protected:
 
 private:
 	CString			m_sText;
+	HFONT			m_uiFont;
 };
 
 BEGIN_TEMPLATE_MESSAGE_MAP(CHintCtrl, BaseType, BaseType)

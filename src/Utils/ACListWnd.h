@@ -95,6 +95,7 @@ protected:
 	CFont *pFontDC;
 	CFont fontDC, boldFontDC;
 	CEdit *m_pEditParent;
+	CFont m_uiFont;
 	LOGFONT logfont;
 
 	int m_nIDTimer;

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2012-2016 - TortoiseSVN
+// Copyright (C) 2009, 2012-2016, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -51,19 +51,18 @@ void CLinkControl::PreSubclassWindow()
 	}
 
 	// Create an updated font by adding an underline.
-	CFont* pFont = GetFont();
-	if (!pFont)
-	{
-		HFONT hFont = (HFONT)GetStockObject(DEFAULT_GUI_FONT);
-		if (!hFont)
-			hFont = (HFONT)GetStockObject(ANSI_VAR_FONT);
-		if (hFont)
-			pFont = CFont::FromHandle(hFont);
-	}
-	ASSERT(pFont && pFont->GetSafeHandle());
-
 	LOGFONT lf;
-	pFont->GetObject(sizeof(lf), &lf);
+	CFont* pFont = GetFont();
+	if (pFont)
+		pFont->GetObject(sizeof(lf), &lf);
+	else
+	{
+		NONCLIENTMETRICS metrics = { 0 };
+		metrics.cbSize = sizeof(NONCLIENTMETRICS);
+		SystemParametersInfo(SPI_GETNONCLIENTMETRICS, 0, &metrics, FALSE);
+		memcpy_s(&lf, sizeof(LOGFONT), &metrics.lfMessageFont, sizeof(LOGFONT));
+	}
+
 	lf.lfWeight = FW_BOLD;
 	m_NormalFont.CreateFontIndirect(&lf);
 

@@ -292,6 +292,8 @@ private:
 
 	/** Style to use when drawing the message text m_strMsg. */
 	DWORD m_dwMsgFormat;
+
+	HFONT m_uiFont;
 };
 
 

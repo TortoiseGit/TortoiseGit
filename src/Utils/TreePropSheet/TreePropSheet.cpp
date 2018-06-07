@@ -802,8 +802,11 @@ BOOL CTreePropSheet::OnInitDialog()
 	CRect	rectTree(rectFrame);
 	rectTree.right = rectTree.left + nTreeWidth - nTreeSpace;
 
-	int frameCaptionHeight = ::GetSystemMetrics(SM_CYCAPTION);
-	m_pFrame->SetCaptionHeight(frameCaptionHeight);
+	// calculate caption height
+	NONCLIENTMETRICS metrics = { 0 };
+	metrics.cbSize = sizeof(NONCLIENTMETRICS);
+	SystemParametersInfo(SPI_GETNONCLIENTMETRICS, 0, &metrics, FALSE);
+	m_pFrame->SetCaptionHeight(metrics.iCaptionHeight);
 
 	// if no caption should be displayed, make the window smaller in
 	// height
@@ -812,20 +815,20 @@ BOOL CTreePropSheet::OnInitDialog()
 		// make frame smaller
 		m_pFrame->GetWnd()->GetWindowRect(rectFrame);
 		ScreenToClient(rectFrame);
-		rectFrame.top+= frameCaptionHeight;
+		rectFrame.top += metrics.iCaptionHeight;
 		m_pFrame->GetWnd()->MoveWindow(rectFrame);
 
 		// move all child windows up
-		MoveChildWindows(0, -frameCaptionHeight);
+		MoveChildWindows(0, -metrics.iCaptionHeight);
 
 		// modify rectangle for the tree ctrl
-		rectTree.bottom -= frameCaptionHeight;
+		rectTree.bottom -= metrics.iCaptionHeight;
 
 		// make us smaller
 		CRect	rect;
 		GetWindowRect(rect);
-		rect.top += frameCaptionHeight / 2;
-		rect.bottom -= frameCaptionHeight - frameCaptionHeight / 2;
+		rect.top += metrics.iCaptionHeight / 2;
+		rect.bottom -= metrics.iCaptionHeight - metrics.iCaptionHeight / 2;
 		if (GetParent())
 			GetParent()->ScreenToClient(rect);
 		MoveWindow(rect);

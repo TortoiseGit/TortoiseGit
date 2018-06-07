@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2011 - TortoiseSVN
-// Copyright (C) 2012-2017 - TortoiseGit
+// Copyright (C) 2012-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -35,6 +35,7 @@
 //#include "RevisionGraph/StandardLayout.h"
 //#include "RevisionGraph/ShowWC.h"
 //#include "RevisionGraph/ShowWCModification.h"
+#include "DPIAware.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -67,8 +68,8 @@ void CRevisionGraphWnd::BuildPreview()
 	float origZoom = m_fZoomFactor;
 
 	CRect clientRect = GetClientRect();
-	CSize preViewSize (max (REVGRAPH_PREVIEW_WIDTH, clientRect.Width() / 4)
-					  ,max (REVGRAPH_PREVIEW_HEIGHT, clientRect.Height() / 4));
+	CSize preViewSize(max(CDPIAware::Instance().ScaleX(REVGRAPH_PREVIEW_WIDTH), clientRect.Width() / 4),
+					  max(CDPIAware::Instance().ScaleY(REVGRAPH_PREVIEW_HEIGHT), clientRect.Height() / 4));
 
 	// zoom the graph so that it is completely visible in the window
 	CRect graphRect = GetGraphRect();

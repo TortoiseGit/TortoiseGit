@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013, 2015-2016 - TortoiseGit
+// Copyright (C) 2009-2013, 2015-2016, 2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -33,17 +33,24 @@ IMPLEMENT_DYNAMIC(CPatchListCtrl, CListCtrl)
 CPatchListCtrl::CPatchListCtrl()
 : m_ContextMenuMask(0xFFFFFFFF)
 {
-	HFONT hFont = (HFONT)GetStockObject(DEFAULT_GUI_FONT);
-	LOGFONT lf = {0};
-	GetObject(hFont, sizeof(LOGFONT), &lf);
-	lf.lfWeight = FW_BOLD;
-	m_boldFont.CreateFontIndirect(&lf);
 }
 
 CPatchListCtrl::~CPatchListCtrl()
 {
 }
 
+void CPatchListCtrl::PreSubclassWindow()
+{
+	__super::PreSubclassWindow();
+
+	// use the default font, create a copy of it and
+	// change the copy to BOLD (leave the rest of the font
+	// the same)
+	LOGFONT lf = { 0 };
+	GetFont()->GetLogFont(&lf);
+	lf.lfWeight = FW_BOLD;
+	m_boldFont.CreateFontIndirect(&lf);
+}
 
 BEGIN_MESSAGE_MAP(CPatchListCtrl, CListCtrl)
 	ON_NOTIFY_REFLECT(NM_DBLCLK, &CPatchListCtrl::OnNMDblclk)

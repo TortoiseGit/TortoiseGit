@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (c) 2003 by Andreas Kapust <info@akinstaller.de>; <http://www.codeproject.com/Articles/2607/AutoComplete-without-IAutoComplete>
-// Copyright (C) 2009, 2012-2013, 2015-2016 - TortoiseGit
+// Copyright (C) 2009, 2012-2013, 2015-2016, 2018 - TortoiseGit
 
 // Licensed under: The Code Project Open License (CPOL); <http://www.codeproject.com/info/cpol10.aspx>
 
@@ -55,6 +55,11 @@ CACListWnd::CACListWnd()
 	pFontDC = nullptr;
 	m_nIDTimer = 0;
 	SecureZeroMemory(&logfont, sizeof(LOGFONT));
+
+	NONCLIENTMETRICS metrics = { 0 };
+	metrics.cbSize = sizeof(NONCLIENTMETRICS);
+	SystemParametersInfo(SPI_GETNONCLIENTMETRICS, 0, &metrics, FALSE);
+	m_uiFont.CreateFontIndirect(&metrics.lfMessageFont);
 }
 
 /**********************************************************************/
@@ -158,7 +163,7 @@ void CACListWnd::OnPaint()
 	long width = rcWnd.Width() - ScrollBarWidth();
 
 	MemDC.FillSolidRect(rcWnd,::GetSysColor(COLOR_WINDOW));
-	MemDC.SelectObject(GetStockObject(DEFAULT_GUI_FONT));
+	MemDC.SelectObject(m_uiFont);
 	MemDC.SetBkMode(TRANSPARENT);
 
 	for(i = m_lTopIndex; i < m_lCount;i++)
