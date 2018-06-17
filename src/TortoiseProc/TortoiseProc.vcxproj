@@ -650,7 +650,6 @@
     <Image Include="..\Resources\lookandfeel.ico" />
     <Image Include="..\Resources\menuabout.ico" />
     <Image Include="..\Resources\menuadd.ico" />
-    <Image Include="..\Resources\menublame.ico" />
     <Image Include="..\Resources\menucheckout.ico" />
     <Image Include="..\Resources\menucleanup.ico" />
     <Image Include="..\Resources\menucommit.ico" />

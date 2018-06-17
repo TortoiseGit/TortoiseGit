@@ -364,9 +364,6 @@
     <Image Include="..\Resources\copy.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\Resources\menublame.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="..\Resources\menucompare.ico">
       <Filter>Resource Files</Filter>
     </Image>
