@@ -29,13 +29,14 @@
 bool FormatPatchCommand::Execute()
 {
 	CFormatPatchDlg dlg;
-//	dlg.m_bIsTag=TRUE;
 	CString startval = parser.GetVal(L"startrev");
 	CString endval = parser.GetVal(L"endrev");
 
 	if( endval.IsEmpty() && (!startval.IsEmpty()))
 	{
 		dlg.m_Since=startval;
+		dlg.m_From = startval + L"~1";
+		dlg.m_To = startval;
 		dlg.m_Radio = IDC_RADIO_SINCE;
 	}
 	else if( (!endval.IsEmpty()) && (!startval.IsEmpty()))
