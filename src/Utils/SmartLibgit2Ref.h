@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014-2017 - TortoiseGit
+// Copyright (C) 2014-2018 - TortoiseGit
 // based on SmartHandle of TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -55,7 +55,7 @@ private:
 	HandleType m_Ref;
 };
 
-typedef CSmartBuffer<git_buf,			git_buf_free>						CAutoBuf;
+typedef CSmartBuffer<git_buf,			git_buf_dispose>					CAutoBuf;
 typedef CSmartBuffer<git_strarray,		git_strarray_free>					CAutoStrArray;
 
 template <typename ReferenceType, void FreeFunction(ReferenceType*)>

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014, 2016-2017 TortoiseGit
+// Copyright (C) 2014, 2016-2018 TortoiseGit
 // Copyright (C) the libgit2 contributors. All rights reserved.
 //               - based on libgit2/src/transports/ssh.c
 
@@ -132,7 +132,7 @@ static void ssh_stream_free(git_smart_subtransport_stream *stream)
 			else
 				giterr_set(GITERR_SSH, "Command exited non-zero: %ld", exitcode);
 		}
-		git_buf_free(s->commandHandle.errBuf);
+		git_buf_dispose(s->commandHandle.errBuf);
 		git__free(s->commandHandle.errBuf);
 	}
 
@@ -392,7 +392,7 @@ post_extract:
 		giterr_set_oom();
 		goto on_error;
 	}
-	git_buf_free(&params);
+	git_buf_dispose(&params);
 
 	length = wcslen(ssh) + wcslen(wideParams) + 3;
 	cmd = git__calloc(length, sizeof(wchar_t));
@@ -426,7 +426,7 @@ on_error:
 	if (*stream)
 		ssh_stream_free(*stream);
 
-	git_buf_free(&params);
+	git_buf_dispose(&params);
 
 	git__free(wideParams);
 

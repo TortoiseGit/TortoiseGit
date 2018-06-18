@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014, 2016-2017 TortoiseGit
+// Copyright (C) 2014, 2016-2018 TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -106,7 +106,7 @@ static int expandPerCentF(git_buf *buf, const char *replaceWith)
 			return -1;
 		}
 		git_buf_swap(buf, &expanded);
-		git_buf_free(&expanded);
+		git_buf_dispose(&expanded);
 	}
 	return 0;
 }
@@ -150,7 +150,7 @@ static int filter_apply(
 	}
 
 	error = git_config_get_bool(&isRequired, config, configKey.ptr);
-	git_buf_free(&configKey);
+	git_buf_dispose(&configKey);
 	if (error && error != GIT_ENOTFOUND)
 		return -1;
 
@@ -166,7 +166,7 @@ static int filter_apply(
 	}
 
 	error = git_config_get_string_buf(&cmd, config, configKey.ptr);
-	git_buf_free(&configKey);
+	git_buf_dispose(&configKey);
 	if (error && error != GIT_ENOTFOUND)
 		return -1;
 
@@ -186,21 +186,21 @@ static int filter_apply(
 		git_buf_text_puts_escaped(&shParams, cmd.ptr, "\"\\", "\\");
 		git_buf_puts(&shParams, "\"");
 		if (git_buf_oom(&shParams)) {
-			git_buf_free(&cmd);
+			git_buf_dispose(&cmd);
 			giterr_set_oom();
 			return -1;
 		}
 		git_buf_swap(&shParams, &cmd);
-		git_buf_free(&shParams);
+		git_buf_dispose(&shParams);
 	}
 
 	if (git__utf8_to_16_alloc(&wide_cmd, cmd.ptr) < 0)
 	{
-		git_buf_free(&cmd);
+		git_buf_dispose(&cmd);
 		giterr_set_oom();
 		return -1;
 	}
-	git_buf_free(&cmd);
+	git_buf_dispose(&cmd);
 
 	if (ffs->shexepath) {
 		// build cmd, i.e. shexepath + params
@@ -236,7 +236,7 @@ static int filter_apply(
 		exitCode = command_close(&commandHandle);
 		if (exitCode)
 			setProcessError(exitCode, &errBuf);
-		git_buf_free(&errBuf);
+		git_buf_dispose(&errBuf);
 		if (isRequired)
 			return -1;
 		return GIT_PASSTHROUGH;
@@ -247,7 +247,7 @@ static int filter_apply(
 		exitCode = command_close(&commandHandle);
 		if (exitCode)
 			setProcessError(exitCode, &errBuf);
-		git_buf_free(&errBuf);
+		git_buf_dispose(&errBuf);
 		if (isRequired)
 			return -1;
 		return GIT_PASSTHROUGH;
@@ -257,14 +257,14 @@ static int filter_apply(
 	if (exitCode) {
 		if (isRequired) {
 			setProcessError(exitCode, &errBuf);
-			git_buf_free(&errBuf);
+			git_buf_dispose(&errBuf);
 			return -1;
 		}
-		git_buf_free(&errBuf);
+		git_buf_dispose(&errBuf);
 		return GIT_PASSTHROUGH;
 	}
 
-	git_buf_free(&errBuf);
+	git_buf_dispose(&errBuf);
 
 	return 0;
 }

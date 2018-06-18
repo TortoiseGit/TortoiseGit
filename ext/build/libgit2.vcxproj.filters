@@ -527,6 +527,15 @@
     <ClCompile Include="..\libgit2\src\streams\mbedtls.c">
       <Filter>Source Files\streams</Filter>
     </ClCompile>
+    <ClCompile Include="..\libgit2\src\mailmap.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libgit2\src\stdalloc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libgit2\src\alloc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libgit2\src\attr.h">
@@ -1182,6 +1191,21 @@
     </ClInclude>
     <ClInclude Include="..\libgit2\src\streams\mbedtls.h">
       <Filter>Header Files\streams</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\include\git2\mailmap.h">
+      <Filter>Public Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\include\git2\sys\alloc.h">
+      <Filter>Public Header Files\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\mailmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\stdalloc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\alloc.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

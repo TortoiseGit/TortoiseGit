@@ -66,6 +66,7 @@
     <ClCompile Include="..\..\src\libgit2\ssh-wintunnel.c" />
     <ClCompile Include="..\..\src\libgit2\system-call.c" />
     <ClCompile Include="..\libgit2\deps\http-parser\http_parser.c" />
+    <ClCompile Include="..\libgit2\src\alloc.c" />
     <ClCompile Include="..\libgit2\src\annotated_commit.c" />
     <ClCompile Include="..\libgit2\src\apply.c" />
     <ClCompile Include="..\libgit2\src\attr.c" />
@@ -117,6 +118,7 @@
     <ClCompile Include="..\libgit2\src\index.c" />
     <ClCompile Include="..\libgit2\src\indexer.c" />
     <ClCompile Include="..\libgit2\src\iterator.c" />
+    <ClCompile Include="..\libgit2\src\mailmap.c" />
     <ClCompile Include="..\libgit2\src\merge.c" />
     <ClCompile Include="..\libgit2\src\merge_driver.c" />
     <ClCompile Include="..\libgit2\src\merge_file.c" />
@@ -165,6 +167,7 @@
     <ClCompile Include="..\libgit2\src\sortedcache.c" />
     <ClCompile Include="..\libgit2\src\stash.c" />
     <ClCompile Include="..\libgit2\src\status.c" />
+    <ClCompile Include="..\libgit2\src\stdalloc.c" />
     <ClCompile Include="..\libgit2\src\streams\curl.c" />
     <ClCompile Include="..\libgit2\src\streams\mbedtls.c" />
     <ClCompile Include="..\libgit2\src\streams\openssl.c" />
@@ -234,6 +237,7 @@
     <ClInclude Include="..\libgit2\include\git2\filter.h" />
     <ClInclude Include="..\libgit2\include\git2\global.h" />
     <ClInclude Include="..\libgit2\include\git2\graph.h" />
+    <ClInclude Include="..\libgit2\include\git2\mailmap.h" />
     <ClInclude Include="..\libgit2\include\git2\merge.h" />
     <ClInclude Include="..\libgit2\include\git2\message.h" />
     <ClInclude Include="..\libgit2\include\git2\patch.h" />
@@ -247,6 +251,7 @@
     <ClInclude Include="..\libgit2\include\git2\stash.h" />
     <ClInclude Include="..\libgit2\include\git2\strarray.h" />
     <ClInclude Include="..\libgit2\include\git2\submodule.h" />
+    <ClInclude Include="..\libgit2\include\git2\sys\alloc.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\commit.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\config.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\diff.h" />
@@ -268,6 +273,7 @@
     <ClInclude Include="..\libgit2\include\git2\transaction.h" />
     <ClInclude Include="..\libgit2\include\git2\transport.h" />
     <ClInclude Include="..\libgit2\include\git2\worktree.h" />
+    <ClInclude Include="..\libgit2\src\alloc.h" />
     <ClInclude Include="..\libgit2\src\annotated_commit.h" />
     <ClInclude Include="..\libgit2\src\apply.h" />
     <ClInclude Include="..\libgit2\src\array.h" />
@@ -314,6 +320,7 @@
     <ClInclude Include="..\libgit2\src\integer.h" />
     <ClInclude Include="..\libgit2\src\iterator.h" />
     <ClInclude Include="..\libgit2\src\khash.h" />
+    <ClInclude Include="..\libgit2\src\mailmap.h" />
     <ClInclude Include="..\libgit2\src\map.h" />
     <ClInclude Include="..\libgit2\src\merge.h" />
     <ClInclude Include="..\libgit2\src\merge_driver.h" />
@@ -353,6 +360,7 @@
     <ClInclude Include="..\libgit2\src\signature.h" />
     <ClInclude Include="..\libgit2\src\sortedcache.h" />
     <ClInclude Include="..\libgit2\src\status.h" />
+    <ClInclude Include="..\libgit2\src\stdalloc.h" />
     <ClInclude Include="..\libgit2\src\stream.h" />
     <ClInclude Include="..\libgit2\src\streams\curl.h" />
     <ClInclude Include="..\libgit2\src\streams\mbedtls.h" />
