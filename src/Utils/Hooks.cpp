@@ -542,7 +542,7 @@ void CHooks::ParseHookString(CString strhooks, bool bLocal)
 						if (cmd.bLocal)
 						{
 							CString temp;
-							temp.Format(L"%d%s", (int)key.htype, (LPCWSTR)cmd.commandline);
+							temp.Format(L"%s|%d%s", m_RootPath.GetWinPath(), (int)key.htype, (LPCTSTR)cmd.commandline);
 
 							cmd.sRegKey = L"Software\\TortoiseGit\\approvedhooks\\" + CalcSHA256(temp);
 							CRegDWORD reg(cmd.sRegKey, 0);
