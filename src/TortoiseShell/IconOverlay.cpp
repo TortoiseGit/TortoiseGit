@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013, 2015-2017 - TortoiseGit
+// Copyright (C) 2009-2013, 2015-2018 - TortoiseGit
 // Copyright (C) 2003-2008, 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -33,18 +33,6 @@
 //  that file. The Shell then adds the icon overlay to the system image list."
 
 STDMETHODIMP CShellExt::GetOverlayInfo(LPWSTR pwszIconFile, int cchMax, int* pIndex, DWORD* pdwFlags)
-{
-	__try
-	{
-		return GetOverlayInfo_Wrap(pwszIconFile, cchMax, pIndex, pdwFlags);
-	}
-	__except(CCrashReport::Instance().SendReport(GetExceptionInformation()))
-	{
-	}
-	return E_FAIL;
-}
-
-STDMETHODIMP CShellExt::GetOverlayInfo_Wrap(LPWSTR pwszIconFile, int cchMax, int* pIndex, DWORD* pdwFlags)
 {
 	if (!pwszIconFile)
 		return E_POINTER;
@@ -83,18 +71,6 @@ STDMETHODIMP CShellExt::GetOverlayInfo_Wrap(LPWSTR pwszIconFile, int cchMax, int
 };
 
 STDMETHODIMP CShellExt::GetPriority(int *pPriority)
-{
-	__try
-	{
-		return GetPriority_Wrap(pPriority);
-	}
-	__except(CCrashReport::Instance().SendReport(GetExceptionInformation()))
-	{
-	}
-	return E_FAIL;
-}
-
-STDMETHODIMP CShellExt::GetPriority_Wrap(int *pPriority)
 {
 	if (!pPriority)
 		return E_POINTER;
@@ -136,19 +112,7 @@ STDMETHODIMP CShellExt::GetPriority_Wrap(int *pPriority)
 //  IShellIconOverlayIdentifier::GetOverlayInfo method to determine which icon
 //  to display."
 
-STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD dwAttrib)
-{
-	__try
-	{
-		return IsMemberOf_Wrap(pwszPath, dwAttrib);
-	}
-	__except(CCrashReport::Instance().SendReport(GetExceptionInformation()))
-	{
-	}
-	return E_FAIL;
-}
-
-STDMETHODIMP CShellExt::IsMemberOf_Wrap(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
+STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 {
 	if (!pwszPath)
 		return E_INVALIDARG;

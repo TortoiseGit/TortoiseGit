@@ -41,21 +41,7 @@ static int g_syncSeq = 0;
 
 STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
                                    LPDATAOBJECT pDataObj,
-                                   HKEY  hRegKey)
-{
-	__try
-	{
-		return Initialize_Wrap(pIDFolder, pDataObj, hRegKey);
-	}
-	__except(CCrashReport::Instance().SendReport(GetExceptionInformation()))
-	{
-	}
-	return E_FAIL;
-}
-
-STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
-                                        LPDATAOBJECT pDataObj,
-                                        HKEY /* hRegKey */)
+                                   HKEY /* hRegKey */)
 {
 	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Shell :: Initialize\n");
 	PreserveChdir preserveChdir;
@@ -846,24 +832,8 @@ STDMETHODIMP CShellExt::QueryDropContext(UINT uFlags, UINT idCmdFirst, HMENU hMe
 STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
                                          UINT indexMenu,
                                          UINT idCmdFirst,
-                                         UINT idCmdLast,
+                                         UINT /*idCmdLast*/,
                                          UINT uFlags)
-{
-	__try
-	{
-		return QueryContextMenu_Wrap(hMenu, indexMenu, idCmdFirst, idCmdLast, uFlags);
-	}
-	__except(CCrashReport::Instance().SendReport(GetExceptionInformation()))
-	{
-	}
-	return E_FAIL;
-}
-
-STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
-                                              UINT indexMenu,
-                                              UINT idCmdFirst,
-                                              UINT /*idCmdLast*/,
-                                              UINT uFlags)
 {
 	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Shell :: QueryContextMenu itemStates=%ld\n", itemStates);
 	PreserveChdir preserveChdir;
@@ -1192,20 +1162,8 @@ void CShellExt::AddPathFileDropCommand(tstring& gitCmd, LPCTSTR command)
 	gitCmd += L'"';
 }
 
-STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
-{
-	__try
-	{
-		return InvokeCommand_Wrap(lpcmi);
-	}
-	__except(CCrashReport::Instance().SendReport(GetExceptionInformation()))
-	{
-	}
-	return E_FAIL;
-}
-
 // This is called when you invoke a command on the menu:
-STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
+STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 {
 	PreserveChdir preserveChdir;
 	HRESULT hr = E_INVALIDARG;
@@ -1671,26 +1629,9 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 // This is for the status bar and things like that:
 STDMETHODIMP CShellExt::GetCommandString(UINT_PTR idCmd,
                                          UINT uFlags,
-                                         UINT FAR * reserved,
+                                         UINT FAR * /*reserved*/,
                                          LPSTR pszName,
                                          UINT cchMax)
-{
-	__try
-	{
-		return GetCommandString_Wrap(idCmd, uFlags, reserved, pszName, cchMax);
-	}
-	__except(CCrashReport::Instance().SendReport(GetExceptionInformation()))
-	{
-	}
-	return E_FAIL;
-}
-
-// This is for the status bar and things like that:
-STDMETHODIMP CShellExt::GetCommandString_Wrap(UINT_PTR idCmd,
-                                              UINT uFlags,
-                                              UINT FAR * /*reserved*/,
-                                              LPSTR pszName,
-                                              UINT cchMax)
 {
 	PreserveChdir preserveChdir;
 	//do we know the id?
@@ -1761,35 +1702,11 @@ STDMETHODIMP CShellExt::GetCommandString_Wrap(UINT_PTR idCmd,
 
 STDMETHODIMP CShellExt::HandleMenuMsg(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	__try
-	{
-		return HandleMenuMsg_Wrap(uMsg, wParam, lParam);
-	}
-	__except(CCrashReport::Instance().SendReport(GetExceptionInformation()))
-	{
-	}
-	return E_FAIL;
-}
-
-STDMETHODIMP CShellExt::HandleMenuMsg_Wrap(UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
 	LRESULT res;
 	return HandleMenuMsg2(uMsg, wParam, lParam, &res);
 }
 
 STDMETHODIMP CShellExt::HandleMenuMsg2(UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT *pResult)
-{
-	__try
-	{
-		return HandleMenuMsg2_Wrap(uMsg, wParam, lParam, pResult);
-	}
-	__except(CCrashReport::Instance().SendReport(GetExceptionInformation()))
-	{
-	}
-	return E_FAIL;
-}
-
-STDMETHODIMP CShellExt::HandleMenuMsg2_Wrap(UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT *pResult)
 {
 	PreserveChdir preserveChdir;
 

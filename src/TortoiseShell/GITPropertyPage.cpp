@@ -729,18 +729,6 @@ void CGitPropertyPage::InitWorkfileView()
 // CShellExt member functions (needed for IShellPropSheetExt)
 STDMETHODIMP CShellExt::AddPages(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam)
 {
-	__try
-	{
-		return AddPages_Wrap(lpfnAddPage, lParam);
-	}
-	__except(CCrashReport::Instance().SendReport(GetExceptionInformation()))
-	{
-	}
-	return E_FAIL;
-}
-
-STDMETHODIMP CShellExt::AddPages_Wrap(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam)
-{
 	if (files_.empty())
 		return S_OK;
 

@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2018 - TortoiseGit
 // Copyright (C) 2003-2012, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -27,8 +28,6 @@
 #include "GitFolderStatus.h"
 #include "IconBitmapUtils.h"
 #include "MenuInfo.h"
-#include "CrashReport.h"
-#include "../version.h"
 
 extern	volatile LONG		g_cRefThisDll;			// Reference count of this DLL.
 extern	HINSTANCE			g_hmodThisDll;			// Instance handle for this DLL
@@ -96,10 +95,6 @@ protected:
 	CRemoteCacheLink	m_remoteCacheLink;
 	IconBitmapUtils		m_iconBitmapUtils;
 
-#if ENABLE_CRASHHANLDER
-	CCrashReportTGit	m_crasher;
-#endif
-
 #define MAKESTRING(ID) LoadStringEx(g_hResInst, ID, stringtablebuffer, _countof(stringtablebuffer), (WORD)CRegStdDWORD(L"Software\\TortoiseGit\\LanguageID", MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)))
 private:
 	void			InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UINT stringid, UINT icon, UINT idCmdFirst, GitCommands com, UINT uFlags);
@@ -116,54 +111,6 @@ private:
 	STDMETHODIMP	QueryDropContext(UINT uFlags, UINT idCmdFirst, HMENU hMenu, UINT &indexMenu);
 	bool			IsIllegalFolder(const std::wstring& folder, int* cslidarray);
 	static void		RunCommand(const tstring& path, const tstring& command, LPCTSTR errorMessage);
-
-	/** \name IContextMenu2 wrappers
-	 * IContextMenu2 wrapper functions to catch exceptions and send crash reports
-	 */
-	//@{
-	STDMETHODIMP	QueryContextMenu_Wrap(HMENU hMenu, UINT indexMenu, UINT idCmdFirst, UINT idCmdLast, UINT uFlags);
-	STDMETHODIMP	InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi);
-	STDMETHODIMP	GetCommandString_Wrap(UINT_PTR idCmd, UINT uFlags, UINT FAR *reserved, LPSTR pszName, UINT cchMax);
-	STDMETHODIMP	HandleMenuMsg_Wrap(UINT uMsg, WPARAM wParam, LPARAM lParam);
-	//@}
-
-	/** \name IContextMenu3 wrappers
-	 * IContextMenu3 wrapper functions to catch exceptions and send crash reports
-	 */
-	//@{
-	STDMETHODIMP	HandleMenuMsg2_Wrap(UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT *pResult);
-	//@}
-
-	/** \name IShellExtInit wrappers
-	 * IShellExtInit wrapper functions to catch exceptions and send crash reports
-	 */
-	//@{
-	STDMETHODIMP	Initialize_Wrap(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataObj, HKEY hKeyID);
-	//@}
-
-	/** \name IShellIconOverlayIdentifier wrappers
-	 * IShellIconOverlayIdentifier wrapper functions to catch exceptions and send crash reports
-	 */
-	//@{
-	STDMETHODIMP	GetOverlayInfo_Wrap(LPWSTR pwszIconFile, int cchMax, int *pIndex, DWORD *pdwFlags);
-	STDMETHODIMP	GetPriority_Wrap(int *pPriority);
-	STDMETHODIMP	IsMemberOf_Wrap(LPCWSTR pwszPath, DWORD dwAttrib);
-	//@}
-
-	/** \name IShellPropSheetExt wrappers
-	 * IShellPropSheetExt wrapper functions to catch exceptions and send crash reports
-	 */
-	//@{
-	STDMETHODIMP	AddPages_Wrap(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam);
-	//STDMETHODIMP	ReplacePage_Wrap(UINT, LPFNADDPROPSHEETPAGE, LPARAM);
-	//@}
-
-	/** \name ICopyHook wrapper
-	 * ICopyHook wrapper functions to catch exceptions and send crash reports
-	 */
-	//@{
-	STDMETHODIMP_(UINT) CopyCallback_Wrap(HWND hWnd, UINT wFunc, UINT wFlags, LPCTSTR pszSrcFile, DWORD dwSrcAttribs, LPCTSTR pszDestFile, DWORD dwDestAttribs);
-	//@}
 
 public:
 	CShellExt(FileState state);
