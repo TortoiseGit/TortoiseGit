@@ -56,6 +56,7 @@
 	<?define GuidGitWCRev="9642A3D3-7425-49F6-8F75-6A001F716AED"?>
 	<?define GuidGitWCRevTypeLib="F2E334DC-2799-4961-9FCC-C324CB5FD205"?>
 	<?define GuidGitWCRevInterface="41886E22-73C4-49E8-8831-37F79CED16FE"?>
+	<?define GuidPermanentProtocols="ca93ed24-fab4-4da7-8958-88ba04092f98"?>
 
 	<!-- Target specific component GUIDs ............................................. -->
 
