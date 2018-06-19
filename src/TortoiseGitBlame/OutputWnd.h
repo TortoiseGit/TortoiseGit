@@ -56,8 +56,6 @@ public:
 
 // Attributes
 public:
-	CFont m_Font;
-
 	CGitBlameLogList m_LogList;
 	CGravatar m_Gravatar;
 
