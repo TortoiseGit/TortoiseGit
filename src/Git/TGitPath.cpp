@@ -881,7 +881,7 @@ bool CTGitPath::HasAdminDir(CString* ProjectTopDir /* = nullptr */, bool force /
 
 	EnsureBackslashPathSet();
 	bool isAdminDir = false;
-	m_bHasAdminDir = GitAdminDir::HasAdminDir(m_sBackslashPath, IsDirectory(), &m_sProjectRoot);
+	m_bHasAdminDir = GitAdminDir::HasAdminDir(m_sBackslashPath, IsDirectory(), &m_sProjectRoot, &isAdminDir);
 	m_bHasAdminDirKnown = true;
 	if ((m_bHasAdminDir || isAdminDir) && !m_bIsAdminDirKnown)
 	{
@@ -901,10 +901,10 @@ bool CTGitPath::IsAdminDir() const
 	EnsureBackslashPathSet();
 	m_bIsAdminDir = GitAdminDir::IsAdminDirPath(m_sBackslashPath);
 	m_bIsAdminDirKnown = true;
-	if (m_bIsAdminDir && !m_bIsAdminDirKnown)
+	if (m_bIsAdminDir && !m_bHasAdminDirKnown)
 	{
 		m_bHasAdminDir = false;
-		m_bIsAdminDirKnown = true;
+		m_bHasAdminDirKnown = true;
 	}
 	return m_bIsAdminDir;
 }
