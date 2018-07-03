@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2016 - TortoiseGit
+// Copyright (C) 2015-2016, 2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -123,4 +123,27 @@ TEST(CGitHash, MatchesPrefix)
 	prefix = L"3012b76";
 	prefixHash = L"3012b76000000000000000000000000000000000";
 	EXPECT_FALSE(hash.MatchesPrefix(prefixHash, prefix, prefix.GetLength()));
+}
+
+TEST(CGitHash, stdhash)
+{
+	EXPECT_EQ(std::hash<CGitHash>()(CGitHash(GIT_REV_ZERO)), (size_t)0);
+	EXPECT_EQ(std::hash<CGitHash>()(CGitHash(L"ffffffffffffffff000000000000000000000000")), SIZE_T_MAX);
+
+	EXPECT_EQ(std::hash<CGitHash>()(CGitHash(L"1000000000000000000000000000000000000000")), (size_t)16);
+	EXPECT_EQ(std::hash<CGitHash>()(CGitHash(L"0100000000000000000000000000000000000000")), (size_t)1);
+	EXPECT_EQ(std::hash<CGitHash>()(CGitHash(L"0010000000000000000000000000000000000000")), (size_t)4096);
+	EXPECT_EQ(std::hash<CGitHash>()(CGitHash(L"0001000000000000000000000000000000000000")), (size_t)256);
+	EXPECT_EQ(std::hash<CGitHash>()(CGitHash(L"0000100000000000000000000000000000000000")), (size_t)1048576);
+	EXPECT_EQ(std::hash<CGitHash>()(CGitHash(L"0000000100000000000000000000000000000000")), (size_t)16777216);
+#ifdef WIN64
+	EXPECT_EQ(std::hash<CGitHash>()(CGitHash(L"0000000010000000000000000000000000000000")), (size_t)68719476736);
+	EXPECT_EQ(std::hash<CGitHash>()(CGitHash(L"0000000000000010000000000000000000000000")), (size_t)1152921504606846976);
+	EXPECT_EQ(std::hash<CGitHash>()(CGitHash(L"0000000000000001000000000000000000000000")), (size_t)72057594037927936);
+#else
+	EXPECT_EQ(std::hash<CGitHash>()(CGitHash(L"0000000010000000000000000000000000000000")), (size_t)0);
+	EXPECT_EQ(std::hash<CGitHash>()(CGitHash(L"0000000000000010000000000000000000000000")), (size_t)0);
+	EXPECT_EQ(std::hash<CGitHash>()(CGitHash(L"0000000000000001000000000000000000000000")), (size_t)0);
+#endif
+	EXPECT_EQ(std::hash<CGitHash>()(CGitHash(L"0000000000000000100000000000000000000000")), (size_t)0);
 }

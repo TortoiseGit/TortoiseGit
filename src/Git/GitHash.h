@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -173,7 +173,7 @@ namespace std
 	{
 		std::size_t operator()(const CGitHash& k) const
 		{
-			return(size_t)*k.m_hash;
+			return *(size_t*)k.m_hash;
 		}
 	};
 }
