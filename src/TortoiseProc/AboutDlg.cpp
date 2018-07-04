@@ -49,6 +49,7 @@ BEGIN_MESSAGE_MAP(CAboutDlg, CStandAloneDialog)
 	ON_WM_TIMER()
 	ON_WM_MOUSEMOVE()
 	ON_BN_CLICKED(IDC_UPDATE, OnBnClickedUpdate)
+	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
 static CString Lf2Crlf(const CString& text)
@@ -170,4 +171,12 @@ void CAboutDlg::OnMouseMove(UINT nFlags, CPoint point)
 void CAboutDlg::OnBnClickedUpdate()
 {
 	CAppUtils::RunTortoiseGitProc(L"/command:updatecheck /visible", false, false);
+}
+
+void CAboutDlg::OnClose()
+{
+	KillTimer(ID_EFFECTTIMER);
+	KillTimer(ID_DROPTIMER);
+
+	__super::OnClose();
 }
