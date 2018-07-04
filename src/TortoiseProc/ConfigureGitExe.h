@@ -35,11 +35,11 @@ public:
 
 	static bool CheckGitVersion(HWND hwnd)
 	{
-		if (CAppUtils::IsGitVersionNewerOrEqual(hwnd, 1, 9, 5))
+		if (CAppUtils::IsGitVersionNewerOrEqual(hwnd, 2, 11))
 			return true;
 
 		CString tmp;
-		tmp.Format(IDS_PROC_OLDMSYSGIT, L"1.9.5+");
+		tmp.Format(IDS_PROC_OLDMSYSGIT, L"2.11+");
 		int ret = CMessageBox::ShowCheck(hwnd, tmp, L"TortoiseGit", 1, IDI_EXCLAMATION, CString(MAKEINTRESOURCE(IDS_PROC_GOTOMSYSGITWEBSITE)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)), CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), L"OldMsysgitVersionWarning", CString(MAKEINTRESOURCE(IDS_PROC_NOTSHOWAGAINIGNORE)));
 		if (ret == 3)
 			return true;

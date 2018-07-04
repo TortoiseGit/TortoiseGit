@@ -2361,28 +2361,25 @@ bool DoPull(HWND hWnd, const CString& url, bool bAutoLoad, BOOL bFetchTags, bool
 				return;
 			}
 
-			if (CAppUtils::IsGitVersionNewerOrEqual(hWnd, 2, 9))
+			STRING_VECTOR remotes;
+			g_Git.GetRemoteList(remotes);
+			if (std::find(remotes.begin(), remotes.end(), url) != remotes.end())
 			{
-				STRING_VECTOR remotes;
-				g_Git.GetRemoteList(remotes);
-				if (std::find(remotes.begin(), remotes.end(), url) != remotes.end())
+				CString currentBranch;
+				if (g_Git.GetCurrentBranchFromFile(g_Git.m_CurrentDir, currentBranch))
+					currentBranch.Empty();
+				CString remoteRef = L"remotes/" + url + L"/" + remoteBranchName;
+				if (!currentBranch.IsEmpty() && remoteBranchName.IsEmpty())
 				{
-					CString currentBranch;
-					if (g_Git.GetCurrentBranchFromFile(g_Git.m_CurrentDir, currentBranch))
-						currentBranch.Empty();
-					CString remoteRef = L"remotes/" + url + L"/" + remoteBranchName;
-					if (!currentBranch.IsEmpty() && remoteBranchName.IsEmpty())
-					{
-						CString pullRemote, pullBranch;
-						g_Git.GetRemoteTrackedBranch(currentBranch, pullRemote, pullBranch);
-						if (!pullRemote.IsEmpty() && !pullBranch.IsEmpty())
-							remoteRef = L"remotes/" + pullRemote + L"/" + pullBranch;
-					}
-					CGitHash common;
-					g_Git.IsFastForward(L"HEAD", remoteRef, &common);
-					if (common.IsEmpty())
-						postCmdList.emplace_back(IDI_MERGE, IDS_MERGE_UNRELATED, [=, &hWnd] { DoPull(hWnd, url, bAutoLoad, bFetchTags, bNoFF, bFFonly, bSquash, bNoCommit, nDepth, bPrune, remoteBranchName, showPush, showStashPop, true); });
+					CString pullRemote, pullBranch;
+					g_Git.GetRemoteTrackedBranch(currentBranch, pullRemote, pullBranch);
+					if (!pullRemote.IsEmpty() && !pullBranch.IsEmpty())
+						remoteRef = L"remotes/" + pullRemote + L"/" + pullBranch;
 				}
+				CGitHash common;
+				g_Git.IsFastForward(L"HEAD", remoteRef, &common);
+				if (common.IsEmpty())
+					postCmdList.emplace_back(IDI_MERGE, IDS_MERGE_UNRELATED, [=, &hWnd] { DoPull(hWnd, url, bAutoLoad, bFetchTags, bNoFF, bFFonly, bSquash, bNoCommit, nDepth, bPrune, remoteBranchName, showPush, showStashPop, true); });
 			}
 
 			postCmdList.emplace_back(IDI_PULL, IDS_MENUPULL, [&hWnd]{ CAppUtils::Pull(hWnd); });
@@ -2723,14 +2720,11 @@ bool CAppUtils::DoPush(HWND hWnd, bool autoloadKey, bool pack, bool tags, bool a
 	}
 
 	int iRecurseSubmodules = 0;
-	if (IsGitVersionNewerOrEqual(hWnd, 2, 7))
-	{
-		CString sRecurseSubmodules = g_Git.GetConfigValue(L"push.recurseSubmodules");
-		if (sRecurseSubmodules == L"check")
-			iRecurseSubmodules = 1;
-		else if (sRecurseSubmodules == L"on-demand")
-			iRecurseSubmodules = 2;
-	}
+	CString sRecurseSubmodules = g_Git.GetConfigValue(L"push.recurseSubmodules");
+	if (sRecurseSubmodules == L"check")
+		iRecurseSubmodules = 1;
+	else if (sRecurseSubmodules == L"on-demand")
+		iRecurseSubmodules = 2;
 
 	CString arg;
 	if (pack)
@@ -3214,13 +3208,10 @@ static bool DoMerge(HWND hWnd, bool noFF, bool ffOnly, bool squash, bool noCommi
 				});
 			}
 
-			if (CAppUtils::IsGitVersionNewerOrEqual(hWnd, 2, 9))
-			{
-				CGitHash common;
-				g_Git.IsFastForward(L"HEAD", mergeVersion, &common);
-				if (common.IsEmpty())
-					postCmdList.emplace_back(IDI_MERGE, IDS_MERGE_UNRELATED, [=, &hWnd] { DoMerge(hWnd, noFF, ffOnly, squash, noCommit, log, true, mergeStrategy, strategyOption, strategyParam, logMessage, version, isBranch, showStashPop); });
-			}
+			CGitHash common;
+			g_Git.IsFastForward(L"HEAD", mergeVersion, &common);
+			if (common.IsEmpty())
+				postCmdList.emplace_back(IDI_MERGE, IDS_MERGE_UNRELATED, [=, &hWnd] { DoMerge(hWnd, noFF, ffOnly, squash, noCommit, log, true, mergeStrategy, strategyOption, strategyParam, logMessage, version, isBranch, showStashPop); });
 
 			postCmdList.emplace_back(IDI_COMMIT, IDS_MENUSTASHSAVE, [mergeVersion, &hWnd]{ CAppUtils::StashSave(hWnd, L"", false, false, true, mergeVersion); });
 

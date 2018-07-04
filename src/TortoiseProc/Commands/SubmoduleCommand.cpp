@@ -130,7 +130,7 @@ bool SubmoduleUpdateCommand::Execute()
 
 	g_Git.m_CurrentDir = super;
 
-	CString params;
+	CString params = L" --progress";
 	if (submoduleUpdateDlg.m_bInit)
 		params = L" --init";
 	if (submoduleUpdateDlg.m_bRecursive)
@@ -145,8 +145,6 @@ bool SubmoduleUpdateCommand::Execute()
 		params += L" --rebase";
 	if (submoduleUpdateDlg.m_bRemote)
 		params += L" --remote";
-	if (CAppUtils::IsGitVersionNewerOrEqual(hWndExplorer, 2, 11))
-		params += L" --progress";
 
 	for (size_t i = 0; i < submoduleUpdateDlg.m_PathList.size(); ++i)
 	{

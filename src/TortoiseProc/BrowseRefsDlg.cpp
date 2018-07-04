@@ -327,13 +327,6 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 	m_cBranchFilter.AddString(CString(MAKEINTRESOURCE(IDS_BROWSE_REFS_ONLYMERGED)));
 	m_cBranchFilter.AddString(CString(MAKEINTRESOURCE(IDS_BROWSE_REFS_ONLYUNMERGED)));
 	m_cBranchFilter.SetCurSel(0);
-	if (!CAppUtils::IsGitVersionNewerOrEqual(GetSafeHwnd(), 2, 7))
-	{
-		m_cBranchFilter.EnableWindow(FALSE);
-		CString temp;
-		temp.Format(IDS_GITVER_REQUIRED, L"\"git for-each-ref --merged\"", L"2.7");
-		m_tooltips.AddTool(IDC_BROWSE_REFS_BRANCHFILTER, temp);
-	}
 
 	m_ListRefLeafs.SetFocus();
 	return FALSE;

@@ -1,6 +1,9 @@
 ﻿= Release 2.7.0 =
 Released: unreleased
 
+== Changes ==
+ * Git (for Windows) 2.11 or newer is now required
+
 == Features ==
  * Fixed issue #3186: Bisect skip missing on dialogs and in automation and bisect docs 
  * Fixed issue #3188: Add progress support for submodule clone

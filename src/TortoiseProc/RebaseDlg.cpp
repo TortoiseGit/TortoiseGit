@@ -1529,7 +1529,7 @@ void CRebaseDlg::OnBnClickedContinue()
 		CString out,cmd;
 
 		if (m_RebaseStage == REBASE_SQUASH_EDIT)
-			cmd.Format(L"git.exe commit %s-F \"%s\"", (LPCTSTR)m_SquashFirstMetaData.GetAsParam(GetSafeHwnd(), m_iSquashdate == 2), (LPCTSTR)tempfile);
+			cmd.Format(L"git.exe commit %s-F \"%s\"", (LPCTSTR)m_SquashFirstMetaData.GetAsParam(m_iSquashdate == 2), (LPCTSTR)tempfile);
 		else
 		{
 			CString options;
