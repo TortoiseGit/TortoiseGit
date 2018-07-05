@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -106,8 +106,8 @@ BOOL CGitProgressDlg::OnInitDialog()
 	m_ProgList.m_pPostWnd = this;
 	m_ProgList.m_bSetTitle = true;
 
-	if (hWndExplorer)
-		CenterWindow(CWnd::FromHandle(hWndExplorer));
+	if (GetExplorerHWND())
+		CenterWindow(CWnd::FromHandle(GetExplorerHWND()));
 	EnableSaveRestore(L"GITProgressDlg");
 
 	m_background_brush.CreateSolidBrush(GetSysColor(COLOR_WINDOW));

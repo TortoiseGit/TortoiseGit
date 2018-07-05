@@ -391,8 +391,8 @@ BOOL CLogDlg::OnInitDialog()
 	m_JumpUp.SetIcon((HICON)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_JUMPUP), IMAGE_ICON, iconWidth, iconHeight, LR_DEFAULTCOLOR));
 	m_JumpDown.SetIcon((HICON)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_JUMPDOWN), IMAGE_ICON, iconWidth, iconHeight, LR_DEFAULTCOLOR));
 
-	if (hWndExplorer)
-		CenterWindow(CWnd::FromHandle(hWndExplorer));
+	if (GetExplorerHWND())
+		CenterWindow(CWnd::FromHandle(GetExplorerHWND()));
 	EnableSaveRestore(L"LogDlg");
 
 	DWORD yPos1 = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\ResizableState\\LogDlgSizer1");

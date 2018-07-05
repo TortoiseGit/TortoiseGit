@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2011-2017 - TortoiseGit
+// Copyright (C) 2009, 2011-2018 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -106,7 +106,7 @@ static bool GetSubmodulePathList(SubmodulePayload &payload)
 
 	if (git_submodule_foreach(repo, SubmoduleCallback, &payload))
 	{
-		MessageBox(hWndExplorer, CGit::GetLibGit2LastErr(L"Could not get submodule list."), L"TortoiseGit", MB_ICONERROR);
+		MessageBox(GetExplorerHWND(), CGit::GetLibGit2LastErr(L"Could not get submodule list."), L"TortoiseGit", MB_ICONERROR);
 		return false;
 	}
 
@@ -124,13 +124,13 @@ static bool GetFilesToCleanUp(CTGitPathList& delList, const CString& baseCmd, CG
 	{
 		if (cmdouterr.IsEmpty())
 			cmdouterr.Format(IDS_GITEXEERROR_NOMESSAGE, (LPCTSTR)cmdout);
-		MessageBox(hWndExplorer, cmdouterr, L"TortoiseGit", MB_ICONERROR);
+		MessageBox(GetExplorerHWND(), cmdouterr, L"TortoiseGit", MB_ICONERROR);
 		return false;
 	}
 
 	if (sysProgressDlg.HasUserCancelled())
 	{
-		CMessageBox::Show(hWndExplorer, IDS_USERCANCELLED, IDS_APPNAME, MB_OK);
+		CMessageBox::Show(GetExplorerHWND(), IDS_USERCANCELLED, IDS_APPNAME, MB_OK);
 		return false;
 	}
 
@@ -151,7 +151,7 @@ static bool GetFilesToCleanUp(CTGitPathList& delList, const CString& baseCmd, CG
 
 	if (sysProgressDlg.HasUserCancelled())
 	{
-		CMessageBox::Show(hWndExplorer, IDS_USERCANCELLED, IDS_APPNAME, MB_OK);
+		CMessageBox::Show(GetExplorerHWND(), IDS_USERCANCELLED, IDS_APPNAME, MB_OK);
 		return false;
 	}
 

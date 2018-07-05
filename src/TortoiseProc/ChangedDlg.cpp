@@ -118,8 +118,8 @@ BOOL CChangedDlg::OnInitDialog()
 	AddAnchor(IDC_REFRESH, BOTTOM_RIGHT);
 	AddAnchor(IDOK, BOTTOM_RIGHT);
 //	SetPromptParentWindow(m_hWnd);
-	if (hWndExplorer)
-		CenterWindow(CWnd::FromHandle(hWndExplorer));
+	if (GetExplorerHWND())
+		CenterWindow(CWnd::FromHandle(GetExplorerHWND()));
 	EnableSaveRestore(L"ChangedDlg");
 
 	m_ctrlStash.m_bAlwaysShowArrow = true;

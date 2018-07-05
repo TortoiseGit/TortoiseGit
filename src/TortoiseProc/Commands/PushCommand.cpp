@@ -27,12 +27,12 @@ bool PushCommand::Execute()
 {
 	if (!GitAdminDir::IsWorkingTreeOrBareRepo(g_Git.m_CurrentDir))
 	{
-		CMessageBox::Show(hwndExplorer, IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
+		CMessageBox::Show(GetExplorerHWND(), IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
 		return false;
 	}
 
 	CString branch;
 	if (parser.HasVal(L"branch"))
 		branch = parser.GetVal(L"branch");
-	return CAppUtils::Push(hwndExplorer, branch);
+	return CAppUtils::Push(GetExplorerHWND(), branch);
 }

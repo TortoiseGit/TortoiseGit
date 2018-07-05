@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2011-2017 - TortoiseGit
+// Copyright (C) 2009, 2011-2018 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -35,7 +35,7 @@ bool DropMoveCommand::Execute()
 
 	if (g_Git.m_CurrentDir.CompareNoCase(ProjectTop) != 0)
 	{
-		CMessageBox::Show(hwndExplorer, IDS_ERR_MUSTBESAMEWT, IDS_APPNAME, MB_OK | MB_ICONEXCLAMATION);
+		CMessageBox::Show(GetExplorerHWND(), IDS_ERR_MUSTBESAMEWT, IDS_APPNAME, MB_OK | MB_ICONEXCLAMATION);
 		return FALSE;
 	}
 
@@ -74,7 +74,7 @@ bool DropMoveCommand::Execute()
 	{
 		progress.SetTitle(IDS_PROC_MOVING);
 		progress.SetTime(true);
-		progress.ShowModeless(CWnd::FromHandle(hwndExplorer));
+		progress.ShowModeless(CWnd::FromHandle(GetExplorerHWND()));
 	}
 	for (int nPath = 0; nPath < pathList.GetCount(); ++nPath)
 	{
@@ -108,7 +108,7 @@ bool DropMoveCommand::Execute()
 			progress.SetTitle(IDS_PROC_MOVING);
 			progress.SetTime(true);
 			progress.SetProgress(count, pathList.GetCount());
-			progress.ShowModeless(CWnd::FromHandle(hwndExplorer));
+			progress.ShowModeless(CWnd::FromHandle(GetExplorerHWND()));
 
 			// Rebuild the destination path, with the new name
 			destPath.SetFromUnknown(droppath);
@@ -119,12 +119,12 @@ bool DropMoveCommand::Execute()
 		cmd.Format(L"git.exe mv -- \"%s\" \"%s\"", (LPCTSTR)pathList[nPath].GetGitPathString(), (LPCTSTR)destPath.GetGitPathString());
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
-			if (CMessageBox::Show(hwndExplorer, out, L"TortoiseGit", 2, IDI_EXCLAMATION, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 1)
+			if (CMessageBox::Show(GetExplorerHWND(), out, L"TortoiseGit", 2, IDI_EXCLAMATION, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 1)
 			{
 #if 0
 					if (!svn.Move(CTSVNPathList(pathList[nPath]), destPath, TRUE))
 					{
-						CMessageBox::Show(hwndExplorer, svn.GetLastErrorMessage(), L"TortoiseGit", MB_ICONERROR);
+						CMessageBox::Show(GetExplorerHWND(), svn.GetLastErrorMessage(), L"TortoiseGit", MB_ICONERROR);
 						return FALSE;		//get out of here
 					}
 					CShellUpdater::Instance().AddPathForUpdate(destPath);
@@ -132,7 +132,7 @@ bool DropMoveCommand::Execute()
 			}
 			else
 			{
-				CMessageBox::Show(hwndExplorer, IDS_USERCANCELLED, IDS_APPNAME, MB_ICONERROR);
+				CMessageBox::Show(GetExplorerHWND(), IDS_USERCANCELLED, IDS_APPNAME, MB_ICONERROR);
 				return FALSE;		//get out of here
 			}
 		}
@@ -147,7 +147,7 @@ bool DropMoveCommand::Execute()
 		}
 		if ((progress.IsValid())&&(progress.HasUserCancelled()))
 		{
-			CMessageBox::Show(hwndExplorer, IDS_USERCANCELLED, IDS_APPNAME, MB_ICONINFORMATION);
+			CMessageBox::Show(GetExplorerHWND(), IDS_USERCANCELLED, IDS_APPNAME, MB_ICONINFORMATION);
 			return FALSE;
 		}
 	}

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2017 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2018 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -30,7 +30,7 @@ bool DropCopyCommand::Execute()
 	CString sDroppath = parser.GetVal(L"droptarget");
 	if (CTGitPath(sDroppath).IsAdminDir())
 	{
-		MessageBox(hwndExplorer, L"Can't drop to .git repository directory\n", L"TortoiseGit", MB_OK | MB_ICONERROR);
+		MessageBox(GetExplorerHWND(), L"Can't drop to .git repository directory\n", L"TortoiseGit", MB_OK | MB_ICONERROR);
 		return FALSE;
 	}
 	unsigned long count = 0;
@@ -58,7 +58,7 @@ bool DropCopyCommand::Execute()
 	CSysProgressDlg progress;
 	progress.SetTitle(IDS_PROC_COPYING);
 	progress.SetTime(true);
-	progress.ShowModeless(CWnd::FromHandle(hwndExplorer));
+	progress.ShowModeless(CWnd::FromHandle(GetExplorerHWND()));
 	for (int nPath = 0; nPath < pathList.GetCount(); ++nPath)
 	{
 		const CTGitPath& sourcePath = orgPathList[nPath];
@@ -95,7 +95,7 @@ bool DropCopyCommand::Execute()
 			progress.SetTitle(IDS_PROC_COPYING);
 			progress.SetTime(true);
 			progress.SetProgress(count, pathList.GetCount());
-			progress.ShowModeless(CWnd::FromHandle(hwndExplorer));
+			progress.ShowModeless(CWnd::FromHandle(GetExplorerHWND()));
 			// Rebuild the destination path, with the new name
 			fullDropPath.SetFromUnknown(sDroppath);
 			fullDropPath.AppendPathString(dlg.m_name);
@@ -120,7 +120,7 @@ bool DropCopyCommand::Execute()
 
 				CString output;
 				if (g_Git.Run(cmd, &output, CP_UTF8))
-					MessageBox(hwndExplorer, output, L"TortoiseGit", MB_OK | MB_ICONERROR);
+					MessageBox(GetExplorerHWND(), output, L"TortoiseGit", MB_OK | MB_ICONERROR);
 				else
 					CShellUpdater::Instance().AddPathForUpdate(fullDropPath);
 			}
@@ -135,7 +135,7 @@ bool DropCopyCommand::Execute()
 			str += L"\" failed:\n";
 			str += CFormatMessageWrapper();
 
-			MessageBox(hwndExplorer, str, L"TortoiseGit", MB_OK | MB_ICONERROR);
+			MessageBox(GetExplorerHWND(), str, L"TortoiseGit", MB_OK | MB_ICONERROR);
 		}
 
 		++count;
@@ -147,7 +147,7 @@ bool DropCopyCommand::Execute()
 		}
 		if ((progress.IsValid())&&(progress.HasUserCancelled()))
 		{
-			CMessageBox::Show(hwndExplorer, IDS_USERCANCELLED, IDS_APPNAME, MB_ICONINFORMATION);
+			CMessageBox::Show(GetExplorerHWND(), IDS_USERCANCELLED, IDS_APPNAME, MB_ICONINFORMATION);
 			return false;
 		}
 	}

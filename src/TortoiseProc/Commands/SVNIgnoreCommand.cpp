@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2007-2008, 2012, 2014-2016 - TortoiseGit
+// Copyright (C) 2007-2008, 2012, 2014-2016, 2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -46,7 +46,7 @@ bool SVNIgnoreCommand::Execute()
 			progress.m_GitCmd = L"git.exe svn create-ignore";
 			break;
 		default:
-			MessageBox(hwndExplorer, L"Unknown SVN Ignore Type", L"TortoiseGit", MB_OK | MB_ICONERROR);
+			MessageBox(GetExplorerHWND(), L"Unknown SVN Ignore Type", L"TortoiseGit", MB_OK | MB_ICONERROR);
 			return FALSE;
 		}
 

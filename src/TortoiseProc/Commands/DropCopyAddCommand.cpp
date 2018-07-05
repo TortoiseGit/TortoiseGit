@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011, 2013-2016 - TortoiseGit
+// Copyright (C) 2011, 2013-2016, 2018 - TortoiseGit
 // Copyright (C) 2007-2008,2010,2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -59,7 +59,7 @@ bool DropCopyAddCommand::Execute()
 			CString sBtn1(MAKEINTRESOURCE(IDS_PROC_OVERWRITEEXPORT_OVERWRITE));
 			CString sBtn2(MAKEINTRESOURCE(IDS_PROC_OVERWRITEEXPORT_KEEP));
 			CString sBtn3(MAKEINTRESOURCE(IDS_PROC_OVERWRITEEXPORT_CANCEL));
-			UINT ret = CMessageBox::Show(hwndExplorer, strMessage, L"TortoiseGit", 2, IDI_QUESTION, sBtn1, sBtn2, sBtn3);
+			UINT ret = CMessageBox::Show(GetExplorerHWND(), strMessage, L"TortoiseGit", 2, IDI_QUESTION, sBtn1, sBtn2, sBtn3);
 
 			if (ret == 3)
 				return FALSE; //cancel the whole operation
@@ -121,7 +121,7 @@ bool DropCopyAddCommand::Execute()
 								msg.Format(IDS_PROC_COPY_SUBMODULE, (LPCTSTR)lastRepo);
 							else
 								msg.Format(IDS_PROC_COPY_REPOSITORY, (LPCTSTR)lastRepo);
-							int ret = CMessageBox::Show(hwndExplorer, msg, L"TortoiseGit", 1, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)));
+							int ret = CMessageBox::Show(GetExplorerHWND(), msg, L"TortoiseGit", 1, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)));
 							if (ret == 3)
 								return FALSE;
 							if (ret == 1)
@@ -164,5 +164,5 @@ void DropCopyAddCommand::ShowErrorMessage()
 	CFormatMessageWrapper errorDetails;
 	CString strMessage;
 	strMessage.Format(IDS_ERR_COPYFILES, (LPCTSTR)errorDetails);
-	MessageBox(hwndExplorer, strMessage, L"TortoiseGit", MB_OK | MB_ICONINFORMATION);
+	MessageBox(GetExplorerHWND(), strMessage, L"TortoiseGit", MB_OK | MB_ICONINFORMATION);
 }

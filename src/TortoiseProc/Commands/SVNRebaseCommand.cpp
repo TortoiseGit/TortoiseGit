@@ -32,7 +32,7 @@ bool SVNRebaseCommand::Execute()
 
 	if(!g_Git.CheckCleanWorkTree())
 	{
-		if (CMessageBox::Show(hwndExplorer, g_Git.m_CurrentDir + L"\r\n" + CString(MAKEINTRESOURCE(IDS_ERROR_NOCLEAN_STASH)), L"TortoiseGit", 1, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_STASHBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 1)
+		if (CMessageBox::Show(GetExplorerHWND(), g_Git.m_CurrentDir + L"\r\n" + CString(MAKEINTRESOURCE(IDS_ERROR_NOCLEAN_STASH)), L"TortoiseGit", 1, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_STASHBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 1)
 		{
 			CSysProgressDlg sysProgressDlg;
 			sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
@@ -46,7 +46,7 @@ bool SVNRebaseCommand::Execute()
 			if (g_Git.Run(L"git.exe stash", &out, CP_UTF8))
 			{
 				sysProgressDlg.Stop();
-				MessageBox(hwndExplorer, out, L"TortoiseGit", MB_OK | MB_ICONERROR);
+				MessageBox(GetExplorerHWND(), out, L"TortoiseGit", MB_OK | MB_ICONERROR);
 				return false;
 			}
 			sysProgressDlg.Stop();
@@ -77,7 +77,7 @@ bool SVNRebaseCommand::Execute()
 	}
 	else
 	{
-		MessageBox(hwndExplorer, L"Could not get \"svn-remote.svn.fetch\" config value.\n" + out + L'\n' + err, L"TortoiseGit", MB_OK | MB_ICONERROR);
+		MessageBox(GetExplorerHWND(), L"Could not get \"svn-remote.svn.fetch\" config value.\n" + out + L'\n' + err, L"TortoiseGit", MB_OK | MB_ICONERROR);
 		return false;
 	}
 
@@ -86,12 +86,12 @@ bool SVNRebaseCommand::Execute()
 	CGitHash UpStreamOldHash,HeadHash,UpStreamNewHash;
 	if (g_Git.GetHash(UpStreamOldHash, out))
 	{
-		MessageBox(hwndExplorer, g_Git.GetGitLastErr(L"Could not get hash of SVN branch."), L"TortoiseGit", MB_ICONERROR);
+		MessageBox(GetExplorerHWND(), g_Git.GetGitLastErr(L"Could not get hash of SVN branch."), L"TortoiseGit", MB_ICONERROR);
 		return false;
 	}
 	if (g_Git.GetHash(HeadHash, L"HEAD"))
 	{
-		MessageBox(hwndExplorer, g_Git.GetGitLastErr(L"Could not get HEAD hash."), L"TortoiseGit", MB_ICONERROR);
+		MessageBox(GetExplorerHWND(), g_Git.GetGitLastErr(L"Could not get HEAD hash."), L"TortoiseGit", MB_ICONERROR);
 		return false;
 	}
 	CProgressDlg progress;
@@ -106,14 +106,14 @@ bool SVNRebaseCommand::Execute()
 
 	if (g_Git.GetHash(UpStreamNewHash, out))
 	{
-		MessageBox(hwndExplorer, g_Git.GetGitLastErr(L"Could not get upstream hash after fetching."), L"TortoiseGit", MB_ICONERROR);
+		MessageBox(GetExplorerHWND(), g_Git.GetGitLastErr(L"Could not get upstream hash after fetching."), L"TortoiseGit", MB_ICONERROR);
 		return false;
 	}
 
 	//everything updated
 	if(UpStreamNewHash==HeadHash)
 	{
-		MessageBox(hwndExplorer, g_Git.m_CurrentDir + L"\r\n" + CString(MAKEINTRESOURCE(IDS_PROC_EVERYTHINGUPDATED)), L"TortoiseGit", MB_OK | MB_ICONQUESTION);
+		MessageBox(GetExplorerHWND(), g_Git.m_CurrentDir + L"\r\n" + CString(MAKEINTRESOURCE(IDS_PROC_EVERYTHINGUPDATED)), L"TortoiseGit", MB_OK | MB_ICONQUESTION);
 		if(isStash)
 			askIfUserWantsToStashPop();
 
@@ -133,7 +133,7 @@ bool SVNRebaseCommand::Execute()
 			return false;
 		else
 		{
-			MessageBox(hwndExplorer, g_Git.m_CurrentDir + L"\r\n" + CString(MAKEINTRESOURCE(IDS_PROC_FASTFORWARD)) + L":\n" + progressReset.m_LogText, L"TortoiseGit", MB_OK | MB_ICONQUESTION);
+			MessageBox(GetExplorerHWND(), g_Git.m_CurrentDir + L"\r\n" + CString(MAKEINTRESOURCE(IDS_PROC_FASTFORWARD)) + L":\n" + progressReset.m_LogText, L"TortoiseGit", MB_OK | MB_ICONQUESTION);
 			if(isStash)
 				askIfUserWantsToStashPop();
 
@@ -161,6 +161,6 @@ bool SVNRebaseCommand::Execute()
 
 void SVNRebaseCommand::askIfUserWantsToStashPop()
 {
-	if (MessageBox(hwndExplorer, g_Git.m_CurrentDir + L"\r\n" + CString(MAKEINTRESOURCE(IDS_DCOMMIT_STASH_POP)), L"TortoiseGit", MB_YESNO | MB_ICONINFORMATION) == IDYES)
-		CAppUtils::StashPop(hwndExplorer);
+	if (MessageBox(GetExplorerHWND(), g_Git.m_CurrentDir + L"\r\n" + CString(MAKEINTRESOURCE(IDS_DCOMMIT_STASH_POP)), L"TortoiseGit", MB_YESNO | MB_ICONINFORMATION) == IDYES)
+		CAppUtils::StashPop(GetExplorerHWND());
 }

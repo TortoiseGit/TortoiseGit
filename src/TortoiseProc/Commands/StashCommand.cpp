@@ -25,15 +25,15 @@ bool StashSaveCommand::Execute()
 	CString msg;
 	if (parser.HasKey(L"msg"))
 		msg = parser.GetVal(L"msg");
-	return CAppUtils::StashSave(hwndExplorer, msg);
+	return CAppUtils::StashSave(GetExplorerHWND(), msg);
 }
 
 bool StashApplyCommand::Execute()
 {
-	return CAppUtils::StashApply(hwndExplorer, L"", true);
+	return CAppUtils::StashApply(GetExplorerHWND(), L"", true);
 }
 
 bool StashPopCommand::Execute()
 {
-	return !CAppUtils::StashPop(hwndExplorer);
+	return !CAppUtils::StashPop(GetExplorerHWND());
 }

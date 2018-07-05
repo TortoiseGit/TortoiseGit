@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2009, 2011, 2013-2014, 2016 - TortoiseGit
+// Copyright (C) 2008-2009, 2011, 2013-2014, 2016, 2018 - TortoiseGit
 // Copyright (C) 2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -71,12 +71,16 @@ public:
 								}
 							}
 	void					SetExplorerHwnd(HWND hWnd) {hwndExplorer = hWnd;}
+	HWND					GetExplorerHWND() const { return ::IsWindow(hwndExplorer) ? hwndExplorer : nullptr; }
+
 protected:
 	CCmdLineParser			parser;
 	CTGitPathList			pathList;
 	CTGitPathList			orgPathList;
 	CTGitPath				cmdLinePath;
 	CTGitPath				orgCmdLinePath;
+
+private:
 	HWND					hwndExplorer;
 };
 

@@ -418,8 +418,8 @@ BOOL CCommitDlg::OnInitDialog()
 	AddAnchor(IDC_CHECKFILES, TOP_LEFT);
 	AddAnchor(IDC_CHECKSUBMODULES, TOP_LEFT);
 
-	if (hWndExplorer)
-		CenterWindow(CWnd::FromHandle(hWndExplorer));
+	if (GetExplorerHWND())
+		CenterWindow(CWnd::FromHandle(GetExplorerHWND()));
 	EnableSaveRestore(L"CommitDlg");
 	DWORD yPos = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\ResizableState\\CommitDlgSizer");
 	RECT rcDlg, rcLogMsg, rcFileList;

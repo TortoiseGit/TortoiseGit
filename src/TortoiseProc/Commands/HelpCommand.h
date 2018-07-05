@@ -32,7 +32,7 @@ public:
 	 */
 	virtual bool			Execute() override
 	{
-		return ((INT_PTR)ShellExecute(hwndExplorer, L"open", theApp.m_pszHelpFilePath, nullptr, nullptr, SW_SHOWNORMAL) > 32);
+		return ((INT_PTR)ShellExecute(GetExplorerHWND(), L"open", theApp.m_pszHelpFilePath, nullptr, nullptr, SW_SHOWNORMAL) > 32);
 	}
 };
 

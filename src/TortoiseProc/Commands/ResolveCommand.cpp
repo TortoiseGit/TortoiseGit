@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2016 - TortoiseGit
+// Copyright (C) 2009-2016, 2018 - TortoiseGit
 // Copyright (C) 2007-2008,2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -43,7 +43,7 @@ bool ResolveCommand::Execute()
 					cmd.Format(L"git.exe add -f -- \"%s\"", (LPCTSTR)dlg.m_pathList[i].GetGitPathString());
 					if (g_Git.Run(cmd, &out, CP_UTF8))
 					{
-						MessageBox(hwndExplorer, out, L"TortoiseGit", MB_OK | MB_ICONERROR);
+						MessageBox(GetExplorerHWND(), out, L"TortoiseGit", MB_OK | MB_ICONERROR);
 						return false;
 					}
 
@@ -60,7 +60,7 @@ bool ResolveCommand::Execute()
 			}
 			else
 			{
-				CGitProgressDlg progDlg(CWnd::FromHandle(hWndExplorer));
+				CGitProgressDlg progDlg(CWnd::FromHandle(GetExplorerHWND()));
 				theApp.m_pMainWnd = &progDlg;
 				ResolveProgressCommand resolveProgressCommand;
 				progDlg.SetCommand(&resolveProgressCommand);

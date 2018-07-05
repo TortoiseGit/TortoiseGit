@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2011-2013, 2015-2017 - TortoiseGit
+// Copyright (C) 2009, 2011-2013, 2015-2018 - TortoiseGit
 // Copyright (C) 2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -43,7 +43,7 @@ bool PasteCopyCommand::Execute()
 	CSysProgressDlg progress;
 	progress.SetTitle(IDS_PROC_COPYING);
 	progress.SetTime(true);
-	progress.ShowModeless(CWnd::FromHandle(hwndExplorer));
+	progress.ShowModeless(CWnd::FromHandle(GetExplorerHWND()));
 	for (int nPath = 0; nPath < orgPathList.GetCount(); ++nPath)
 	{
 		const CTGitPath& sourcePath = orgPathList[nPath];
@@ -68,7 +68,7 @@ bool PasteCopyCommand::Execute()
 			progress.SetTitle(IDS_PROC_COPYING);
 			progress.SetTime(true);
 			progress.SetProgress(count, orgPathList.GetCount());
-			progress.ShowModeless(CWnd::FromHandle(hwndExplorer));
+			progress.ShowModeless(CWnd::FromHandle(GetExplorerHWND()));
 			// Rebuild the destination path, with the new name
 			fullDropPath.SetFromUnknown(sDroppath);
 			fullDropPath.AppendPathString(dlg.m_name);
@@ -84,7 +84,7 @@ bool PasteCopyCommand::Execute()
 			if (g_Git.Run(cmd, &output, CP_UTF8))
 			{
 				TRACE(L"%s\n", (LPCTSTR)output);
-				CMessageBox::Show(hwndExplorer, output, L"TortoiseGit", MB_ICONERROR);
+				CMessageBox::Show(GetExplorerHWND(), output, L"TortoiseGit", MB_ICONERROR);
 				return FALSE;		//get out of here
 			}
 			else
@@ -95,7 +95,7 @@ bool PasteCopyCommand::Execute()
 		//	if (!svn.Copy(CTSVNPathList(sourcePath), fullDropPath, SVNRev::REV_WC, SVNRev()))
 		//	{
 		//		TRACE(L"%s\n", (LPCTSTR)svn.GetLastErrorMessage());
-		//		CMessageBox::Show(hwndExplorer, svn.GetLastErrorMessage(), L"TortoiseSVN", MB_ICONERROR);
+		//		CMessageBox::Show(GetExplorerHWND(), svn.GetLastErrorMessage(), L"TortoiseSVN", MB_ICONERROR);
 		//		return FALSE;		//get out of here
 		//	}
 		//	else
@@ -110,7 +110,7 @@ bool PasteCopyCommand::Execute()
 		}
 		if ((progress.IsValid())&&(progress.HasUserCancelled()))
 		{
-			CMessageBox::Show(hwndExplorer, IDS_USERCANCELLED, IDS_APPNAME, MB_ICONINFORMATION);
+			CMessageBox::Show(GetExplorerHWND(), IDS_USERCANCELLED, IDS_APPNAME, MB_ICONINFORMATION);
 			return false;
 		}
 	}

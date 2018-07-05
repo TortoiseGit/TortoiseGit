@@ -41,7 +41,7 @@ bool CommitCommand::Execute()
 {
 	if (parser.HasKey(L"logmsg") && parser.HasKey(L"logmsgfile"))
 	{
-		CMessageBox::Show(hwndExplorer, IDS_ERR_TWOLOGPARAMS, IDS_APPNAME, MB_ICONERROR);
+		CMessageBox::Show(GetExplorerHWND(), IDS_ERR_TWOLOGPARAMS, IDS_APPNAME, MB_ICONERROR);
 		return false;
 	}
 	CString sLogMsg = LoadLogMessage();
@@ -49,11 +49,11 @@ bool CommitCommand::Execute()
 
 	if (!GitAdminDir::HasAdminDir(g_Git.m_CurrentDir))
 	{
-		CMessageBox::Show(hwndExplorer, IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
+		CMessageBox::Show(GetExplorerHWND(), IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
 		return false;
 	}
 
-	return !!CAppUtils::Commit(hwndExplorer,
+	return !!CAppUtils::Commit(GetExplorerHWND(),
 								parser.GetVal(L"bugid"),
 								parser.HasKey(L"wholeproject"),
 								sLogMsg,

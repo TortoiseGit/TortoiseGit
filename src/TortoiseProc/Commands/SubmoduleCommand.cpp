@@ -36,7 +36,7 @@ bool SubmoduleAddCommand::Execute()
 	if( dlg.DoModal() == IDOK )
 	{
 		if (dlg.m_bAutoloadPuttyKeyFile)
-			CAppUtils::LaunchPAgent(hwndExplorer, &dlg.m_strPuttyKeyFile);
+			CAppUtils::LaunchPAgent(GetExplorerHWND(), &dlg.m_strPuttyKeyFile);
 
 		CString cmd;
 		if (CStringUtils::StartsWith(dlg.m_strPath, g_Git.m_CurrentDir))
@@ -72,7 +72,7 @@ bool SubmoduleAddCommand::Execute()
 
 				if (subgit.SetConfigValue(L"remote.origin.puttykeyfile", dlg.m_strPuttyKeyFile, CONFIG_LOCAL))
 				{
-					CMessageBox::Show(hwndExplorer, L"Fail set config remote.origin.puttykeyfile", L"TortoiseGit", MB_OK | MB_ICONERROR);
+					CMessageBox::Show(GetExplorerHWND(), L"Fail set config remote.origin.puttykeyfile", L"TortoiseGit", MB_OK | MB_ICONERROR);
 					return FALSE;
 				}
 			}
@@ -99,7 +99,7 @@ bool SubmoduleUpdateCommand::Execute()
 	CString super = GitAdminDir::GetSuperProjectRoot(bkpath);
 	if (super.IsEmpty())
 	{
-		CMessageBox::Show(hwndExplorer, IDS_ERR_NOTFOUND_SUPER_PRJECT, IDS_APPNAME, MB_OK | MB_ICONERROR);
+		CMessageBox::Show(GetExplorerHWND(), IDS_ERR_NOTFOUND_SUPER_PRJECT, IDS_APPNAME, MB_OK | MB_ICONERROR);
 		//change current project root to super project
 		return false;
 	}
@@ -191,7 +191,7 @@ bool SubmoduleCommand::Execute(CString cmd,  CString arg)
 	CString super = GitAdminDir::GetSuperProjectRoot(bkpath);
 	if(super.IsEmpty())
 	{
-		CMessageBox::Show(hwndExplorer, IDS_ERR_NOTFOUND_SUPER_PRJECT, IDS_APPNAME, MB_OK | MB_ICONERROR);
+		CMessageBox::Show(GetExplorerHWND(), IDS_ERR_NOTFOUND_SUPER_PRJECT, IDS_APPNAME, MB_OK | MB_ICONERROR);
 		//change current project root to super project
 		return false;
 	}

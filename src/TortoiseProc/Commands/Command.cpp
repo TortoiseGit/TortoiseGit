@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 // Copyright (C) 2007-2009 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -383,11 +383,11 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 #endif
 	case cmdPGPFP:
 		{
-			CMessageBox::Show(hWndExplorer, L"This is the fingerprint of the TortoiseGit Release Signing Key.\nIt can be used to establish a trust path from this release to another one.\n\nTortoiseGit Release Signing Key, 4096-bit RSA:\n74A2 1AE3 01B3 CA5B D807  2F5E F7F1 7B3F 9DD9 539E", L"TortoiseGit", MB_OK);
+			CMessageBox::Show(GetExplorerHWND(), L"This is the fingerprint of the TortoiseGit Release Signing Key.\nIt can be used to establish a trust path from this release to another one.\n\nTortoiseGit Release Signing Key, 4096-bit RSA:\n74A2 1AE3 01B3 CA5B D807  2F5E F7F1 7B3F 9DD9 539E", L"TortoiseGit", MB_OK);
 			return nullptr;
 		}
 	default:
-		CMessageBox::Show(hWndExplorer, L"Command not implemented", L"TortoiseGit", MB_ICONERROR);
+		CMessageBox::Show(GetExplorerHWND(), L"Command not implemented", L"TortoiseGit", MB_ICONERROR);
 		return new AboutCommand;
 	}
 }

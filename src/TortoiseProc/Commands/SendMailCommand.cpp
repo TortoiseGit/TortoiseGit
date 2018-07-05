@@ -22,5 +22,5 @@
 
 bool SendMailCommand::Execute()
 {
-	return CAppUtils::SendPatchMail(hwndExplorer, orgPathList, true);
+	return CAppUtils::SendPatchMail(GetExplorerHWND(), orgPathList, true);
 }

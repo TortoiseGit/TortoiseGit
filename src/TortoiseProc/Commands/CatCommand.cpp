@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2011-2016 - TortoiseGit
+// Copyright (C) 2009, 2011-2016, 2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -36,7 +36,7 @@ bool CatCommand::Execute()
 		if (!repo)
 		{
 			::DeleteFile(savepath);
-			MessageBox(hwndExplorer, g_Git.GetLibGit2LastErr(L"Could not open repository."), L"TortoiseGit", MB_ICONERROR);
+			MessageBox(GetExplorerHWND(), g_Git.GetLibGit2LastErr(L"Could not open repository."), L"TortoiseGit", MB_ICONERROR);
 			return false;
 		}
 
@@ -44,7 +44,7 @@ bool CatCommand::Execute()
 		if (git_revparse_single(obj.GetPointer(), repo, CUnicodeUtils::GetUTF8(revision)))
 		{
 			::DeleteFile(savepath);
-			MessageBox(hwndExplorer, g_Git.GetLibGit2LastErr(L"Could not parse revision."), L"TortoiseGit", MB_ICONERROR);
+			MessageBox(GetExplorerHWND(), g_Git.GetLibGit2LastErr(L"Could not parse revision."), L"TortoiseGit", MB_ICONERROR);
 			return false;
 		}
 
@@ -54,7 +54,7 @@ bool CatCommand::Execute()
 			if (file == nullptr)
 			{
 				::DeleteFile(savepath);
-				MessageBox(hwndExplorer, L"Could not open file for writing.", L"TortoiseGit", MB_ICONERROR);
+				MessageBox(GetExplorerHWND(), L"Could not open file for writing.", L"TortoiseGit", MB_ICONERROR);
 				return false;
 			}
 
@@ -62,14 +62,14 @@ bool CatCommand::Execute()
 			if (git_blob_filtered_content(buf, (git_blob *)(git_object *)obj, CUnicodeUtils::GetUTF8(cmdLinePath.GetGitPathString()), 0))
 			{
 				::DeleteFile(savepath);
-				MessageBox(hwndExplorer, g_Git.GetLibGit2LastErr(L"Could not get filtered content."), L"TortoiseGit", MB_ICONERROR);
+				MessageBox(GetExplorerHWND(), g_Git.GetLibGit2LastErr(L"Could not get filtered content."), L"TortoiseGit", MB_ICONERROR);
 				return false;
 			}
 			if (fwrite(buf->ptr, sizeof(char), buf->size, file) != buf->size)
 			{
 				::DeleteFile(savepath);
 				CString err = CFormatMessageWrapper();
-				CMessageBox::Show(hwndExplorer, L"Could not write to file: " + err, L"TortoiseGit", MB_ICONERROR);
+				CMessageBox::Show(GetExplorerHWND(), L"Could not write to file: " + err, L"TortoiseGit", MB_ICONERROR);
 				return false;
 			}
 			return true;
@@ -77,7 +77,7 @@ bool CatCommand::Execute()
 
 		if (g_Git.GetOneFile(revision, cmdLinePath, savepath))
 		{
-			MessageBox(hwndExplorer, g_Git.GetGitLastErr(L"Could get file.", CGit::GIT_CMD_GETONEFILE), L"TortoiseGit", MB_ICONERROR);
+			MessageBox(GetExplorerHWND(), g_Git.GetGitLastErr(L"Could get file.", CGit::GIT_CMD_GETONEFILE), L"TortoiseGit", MB_ICONERROR);
 			return false;
 		}
 		return true;
@@ -89,7 +89,7 @@ bool CatCommand::Execute()
 	if (g_Git.Run(cmd, &output, &err, CP_UTF8))
 	{
 		::DeleteFile(savepath);
-		MessageBox(hwndExplorer, output + L'\n' + err, L"TortoiseGit", MB_ICONERROR);
+		MessageBox(GetExplorerHWND(), output + L'\n' + err, L"TortoiseGit", MB_ICONERROR);
 		return false;
 	}
 
@@ -101,7 +101,7 @@ bool CatCommand::Execute()
 	if (g_Git.RunLogFile(cmd, savepath, &err))
 	{
 		::DeleteFile(savepath);
-		MessageBox(hwndExplorer, L"Cat file failed:\n" + err, L"TortoiseGit", MB_ICONERROR);
+		MessageBox(GetExplorerHWND(), L"Cat file failed:\n" + err, L"TortoiseGit", MB_ICONERROR);
 		return false;
 	}
 	return true;

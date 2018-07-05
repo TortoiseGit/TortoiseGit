@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2016, 2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -42,14 +42,14 @@ bool SVNFetchCommand::Execute()
 	}
 	else
 	{
-		MessageBox(hwndExplorer, L"Found no SVN remote.", L"TortoiseGit", MB_OK | MB_ICONERROR);
+		MessageBox(GetExplorerHWND(), L"Found no SVN remote.", L"TortoiseGit", MB_OK | MB_ICONERROR);
 		return false;
 	}
 
 	CGitHash upstreamOldHash;
 	if (g_Git.GetHash(upstreamOldHash, out))
 	{
-		MessageBox(hwndExplorer, g_Git.GetGitLastErr(L"Could not get upstream hash."), L"TortoiseGit", MB_ICONERROR);
+		MessageBox(GetExplorerHWND(), g_Git.GetGitLastErr(L"Could not get upstream hash."), L"TortoiseGit", MB_ICONERROR);
 		return false;
 	}
 
@@ -64,7 +64,7 @@ bool SVNFetchCommand::Execute()
 
 		if (g_Git.GetHash(upstreamNewHash, out))
 		{
-			MessageBox(hwndExplorer, g_Git.GetGitLastErr(L"Could not get upstream hash after fetching."), L"TortoiseGit", MB_ICONERROR);
+			MessageBox(GetExplorerHWND(), g_Git.GetGitLastErr(L"Could not get upstream hash after fetching."), L"TortoiseGit", MB_ICONERROR);
 			return;
 		}
 		if (upstreamOldHash == upstreamNewHash)

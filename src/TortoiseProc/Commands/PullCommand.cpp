@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015 - TortoiseGit
+// Copyright (C) 2008-2013, 2015, 2018 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -27,7 +27,7 @@ bool PullCommand::Execute()
 {
 	if (!GitAdminDir::HasAdminDir(g_Git.m_CurrentDir))
 	{
-		CMessageBox::Show(hwndExplorer, IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
+		CMessageBox::Show(GetExplorerHWND(), IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
 		return false;
 	}
 

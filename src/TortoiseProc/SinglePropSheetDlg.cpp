@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009,2013 - TortoiseGit
+// Copyright (C) 2009, 2013, 2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -76,7 +76,7 @@ BOOL CSinglePropSheetDlg::OnInitDialog()
 //	m_pThePropPage->MoveWindow(clientRect);
 
 
-	CenterWindow(CWnd::FromHandle(hWndExplorer));
+	CenterWindow(CWnd::FromHandle(GetExplorerHWND()));
 
 	return bReturn;
 }

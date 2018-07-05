@@ -24,7 +24,7 @@
 bool MergeCommand::Execute()
 {
 	if (parser.HasKey(L"abort"))
-		return !!CAppUtils::MergeAbort(hwndExplorer);
+		return !!CAppUtils::MergeAbort(GetExplorerHWND());
 
-	return !!CAppUtils::Merge(hwndExplorer);
+	return !!CAppUtils::Merge(GetExplorerHWND());
 }

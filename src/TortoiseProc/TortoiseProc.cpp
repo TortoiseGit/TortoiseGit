@@ -62,6 +62,7 @@ END_MESSAGE_MAP()
 //////////////////////////////////////////////////////////////////////////
 
 CTortoiseProcApp::CTortoiseProcApp()
+	: hWndExplorer(nullptr)
 {
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Constructor\n");
 	SetDllDirectory(L"");
@@ -92,7 +93,10 @@ CString sOrigCWD;
 CString g_sGroupingUUID;
 CString g_sGroupingIcon;
 bool g_bGroupingRemoveIcon = false;
-HWND hWndExplorer;
+HWND GetExplorerHWND()
+{
+	return theApp.GetExplorerHWND();
+}
 
 #if ENABLE_CRASHHANLDER
 CCrashReportTGit crasher(L"TortoiseGit " _T(APP_X64_STRING), TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, TGIT_VERDATE);

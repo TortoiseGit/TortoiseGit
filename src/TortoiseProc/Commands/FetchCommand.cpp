@@ -26,9 +26,9 @@ bool FetchCommand::Execute()
 {
 	if (!GitAdminDir::IsWorkingTreeOrBareRepo(g_Git.m_CurrentDir))
 	{
-		CMessageBox::Show(hwndExplorer, IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
+		CMessageBox::Show(GetExplorerHWND(), IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
 		return false;
 	}
 
-	return CAppUtils::Fetch(hwndExplorer, parser.GetVal(L"remote"));
+	return CAppUtils::Fetch(GetExplorerHWND(), parser.GetVal(L"remote"));
 }

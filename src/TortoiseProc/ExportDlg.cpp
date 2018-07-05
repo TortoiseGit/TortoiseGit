@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -100,8 +100,8 @@ BOOL CExportDlg::OnInitDialog()
 
 	SHAutoComplete(GetDlgItem(IDC_EXPORTFILE)->m_hWnd, SHACF_FILESYSTEM);
 
-	if (!m_pParentWnd && hWndExplorer)
-		CenterWindow(CWnd::FromHandle(hWndExplorer));
+	if (!m_pParentWnd && GetExplorerHWND())
+		CenterWindow(CWnd::FromHandle(GetExplorerHWND()));
 	EnableSaveRestore(L"ExportDlg");
 	return TRUE;
 }

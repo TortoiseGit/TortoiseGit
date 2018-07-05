@@ -80,7 +80,7 @@ bool FormatPatchCommand::Execute()
 		if(!progress.m_GitStatus)
 		{
 			if(dlg.m_bSendMail)
-				CAppUtils::SendPatchMail(hwndExplorer, cmd, progress.m_LogText, true);
+				CAppUtils::SendPatchMail(GetExplorerHWND(), cmd, progress.m_LogText, true);
 		}
 		return !progress.m_GitStatus;
 	}

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013, 2015-2017 - TortoiseGit
+// Copyright (C) 2009-2013, 2015-2018 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -53,7 +53,7 @@ bool RemoveCommand::Execute()
 		{
 			if (!svn.Remove(pathList, TRUE, parser.HasKey(L"keep"), dlg.GetLogMessage()))
 			{
-				CMessageBox::Show(hwndExplorer, svn.GetLastErrorMessage(), L"TortoiseGit", MB_ICONERROR);
+				CMessageBox::Show(GetExplorerHWND(), svn.GetLastErrorMessage(), L"TortoiseGit", MB_ICONERROR);
 				return FALSE;
 			}
 			return true;
@@ -88,7 +88,7 @@ bool RemoveCommand::Execute()
 					yes.LoadString(IDS_MSGBOX_YES);
 					no.LoadString(IDS_MSGBOX_NO);
 					yestoall.LoadString(IDS_PROC_YESTOALL);
-					UINT ret = CMessageBox::Show(hwndExplorer, msg, L"TortoiseGit", 2, IDI_ERROR, yes, no, yestoall);
+					UINT ret = CMessageBox::Show(GetExplorerHWND(), msg, L"TortoiseGit", 2, IDI_ERROR, yes, no, yestoall);
 					if (ret == 3)
 						bForce = TRUE;
 					if ((ret == 1)||(ret==3))
@@ -96,13 +96,13 @@ bool RemoveCommand::Execute()
 						CTSVNPath delPath = removePathList[0];
 						delPath.Delete(true);
 						if (!svn.Remove(removePathList, TRUE, parser.HasKey(L"keep")))
-							CMessageBox::Show(hwndExplorer, svn.GetLastErrorMessage(), L"TortoiseGit", MB_ICONERROR);
+							CMessageBox::Show(GetExplorerHWND(), svn.GetLastErrorMessage(), L"TortoiseGit", MB_ICONERROR);
 						else
 							bRet = true;
 					}
 				}
 				else
-					CMessageBox::Show(hwndExplorer, svn.GetLastErrorMessage(), L"TortoiseGit", MB_ICONERROR);
+					CMessageBox::Show(GetExplorerHWND(), svn.GetLastErrorMessage(), L"TortoiseGit", MB_ICONERROR);
 			}
 		}
 	}
@@ -112,7 +112,7 @@ bool RemoveCommand::Execute()
 
 	//we don't ask user about if keep local copy.
 	//because there are command "Delete(keep local copy)" at explore context menu
-	//int key = CMessageBox::Show(hwndExplorer, L"File will removed from version control\r\n Do you want to keep local copy", L"TortoiseGit", MB_ICONINFORMATION | MB_YESNOCANCEL);
+	//int key = CMessageBox::Show(GetExplorerHWND(), L"File will removed from version control\r\n Do you want to keep local copy", L"TortoiseGit", MB_ICONINFORMATION | MB_YESNOCANCEL);
 	//if(key == IDCANCEL)
 
 	CString format;
@@ -121,7 +121,7 @@ bool RemoveCommand::Execute()
 		format.Format(keepLocal ? IDS_WARN_DELETE_MANY_FROM_INDEX : IDS_WARN_DELETE_MANY, pathList.GetCount());
 	else
 		format.Format(keepLocal ? IDS_WARN_DELETE_ONE_FROM_INDEX : IDS_WARN_REMOVE, (LPCTSTR)pathList[0].GetGitPathString());
-	if (CMessageBox::Show(hwndExplorer, format, L"TortoiseGit", 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_REMOVEBUTTON)), CString(MAKEINTRESOURCE(IDS_MSGBOX_ABORT))) == 2)
+	if (CMessageBox::Show(GetExplorerHWND(), format, L"TortoiseGit", 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_REMOVEBUTTON)), CString(MAKEINTRESOURCE(IDS_MSGBOX_ABORT))) == 2)
 		return false;
 
 	if (keepLocal)
@@ -137,7 +137,7 @@ bool RemoveCommand::Execute()
 		cmd.Format(format, (LPCTSTR)pathList[nPath].GetGitPathString());
 		if (g_Git.Run(cmd, &output, CP_UTF8))
 		{
-			if (CMessageBox::Show(hwndExplorer, output, L"TortoiseGit", 2, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
+			if (CMessageBox::Show(GetExplorerHWND(), output, L"TortoiseGit", 2, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
 				return FALSE;
 		}
 	}
@@ -146,7 +146,7 @@ bool RemoveCommand::Execute()
 
 	CShellUpdater::Instance().AddPathsForUpdate(pathList);
 
-	CMessageBox::Show(hwndExplorer, output, L"TortoiseGit", MB_ICONINFORMATION | MB_OK);
+	CMessageBox::Show(GetExplorerHWND(), output, L"TortoiseGit", MB_ICONINFORMATION | MB_OK);
 
 	CShellUpdater::Instance().Flush();
 	return bRet;

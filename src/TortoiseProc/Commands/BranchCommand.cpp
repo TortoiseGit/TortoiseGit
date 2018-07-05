@@ -29,5 +29,5 @@ bool BranchCommand::Execute()
 	if(base.IsEmpty())
 		p = nullptr;
 
-	return CAppUtils::CreateBranchTag(hwndExplorer, FALSE, p);
+	return CAppUtils::CreateBranchTag(GetExplorerHWND(), FALSE, p);
 }

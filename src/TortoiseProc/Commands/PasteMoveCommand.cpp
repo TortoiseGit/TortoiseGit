@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008, 2012-2013, 2015-2017 - TortoiseGit
+// Copyright (C) 2008, 2012-2013, 2015-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -41,7 +41,7 @@ bool PasteMoveCommand::Execute()
 	CSysProgressDlg progress;
 	progress.SetTitle(IDS_PROC_MOVING);
 	progress.SetTime(true);
-	progress.ShowModeless(CWnd::FromHandle(hwndExplorer));
+	progress.ShowModeless(CWnd::FromHandle(GetExplorerHWND()));
 	for (int nPath = 0; nPath < orgPathList.GetCount(); ++nPath)
 	{
 		CTGitPath destPath;
@@ -76,7 +76,7 @@ bool PasteMoveCommand::Execute()
 			//if (!Git.Add(CTGitorgPathList(destPath), &props, Git_depth_infinity, true, false, true))
 			{
 				TRACE(L"%s\n", (LPCTSTR)output);
-				CMessageBox::Show(hwndExplorer, output, L"TortoiseGit", MB_ICONERROR);
+				CMessageBox::Show(GetExplorerHWND(), output, L"TortoiseGit", MB_ICONERROR);
 				return FALSE;		//get out of here
 			}
 			CShellUpdater::Instance().AddPathForUpdate(destPath);
@@ -97,11 +97,11 @@ bool PasteMoveCommand::Execute()
 					CString temp = Git.GetLastErrorMessage();
 					CString sQuestion(MAKEINTRESOURCE(IDS_PROC_FORCEMOVE));
 					temp += L'\n' + sQuestion;
-					if (CMessageBox::Show(hwndExplorer, temp, L"TortoiseGit", MB_YESNO) == IDYES)
+					if (CMessageBox::Show(GetExplorerHWND(), temp, L"TortoiseGit", MB_YESNO) == IDYES)
 					{
 						if (!Git.Move(CTGitPathList(pathList[nPath]), destPath, TRUE))
 						{
-							CMessageBox::Show(hwndExplorer, Git.GetLastErrorMessage(), L"TortoiseGit", MB_ICONERROR);
+							CMessageBox::Show(GetExplorerHWND(), Git.GetLastErrorMessage(), L"TortoiseGit", MB_ICONERROR);
 							return FALSE;		//get out of here
 						}
 						CShellUpdater::Instance().AddPathForUpdate(destPath);
@@ -111,7 +111,7 @@ bool PasteMoveCommand::Execute()
 #endif
 				{
 					TRACE(L"%s\n", (LPCTSTR)output);
-					CMessageBox::Show(hwndExplorer, output, L"TortoiseGit", MB_ICONERROR);
+					CMessageBox::Show(GetExplorerHWND(), output, L"TortoiseGit", MB_ICONERROR);
 					return FALSE;		//get out of here
 				}
 			}
@@ -127,7 +127,7 @@ bool PasteMoveCommand::Execute()
 		}
 		if ((progress.IsValid())&&(progress.HasUserCancelled()))
 		{
-			CMessageBox::Show(hwndExplorer, IDS_USERCANCELLED, IDS_APPNAME, MB_ICONINFORMATION);
+			CMessageBox::Show(GetExplorerHWND(), IDS_USERCANCELLED, IDS_APPNAME, MB_ICONINFORMATION);
 			return FALSE;
 		}
 	}

@@ -68,7 +68,7 @@ static void StorePuttyKey(const CString& repoRoot, const CString& remote, const 
 	return;
 
 error:
-	MessageBox(hWndExplorer, CGit::GetLibGit2LastErr(L"Could not open repository"), L"TortoiseGit", MB_ICONERROR);
+	MessageBox(GetExplorerHWND(), CGit::GetLibGit2LastErr(L"Could not open repository"), L"TortoiseGit", MB_ICONERROR);
 }
 
 bool CloneCommand::Execute()
@@ -124,7 +124,7 @@ bool CloneCommand::Execute()
 			originStr = L" --origin " + dlg.m_strOrigin;
 
 		if(dlg.m_bAutoloadPuttyKeyFile)
-			CAppUtils::LaunchPAgent(hwndExplorer, &dlg.m_strPuttyKeyFile);
+			CAppUtils::LaunchPAgent(GetExplorerHWND(), &dlg.m_strPuttyKeyFile);
 
 		CAppUtils::RemoveTrailSlash(dlg.m_Directory);
 		if (!dlg.m_bSVN)
@@ -186,7 +186,7 @@ bool CloneCommand::Execute()
 				CAppUtils::RunTortoiseGitProc(cmd);
 			});
 
-			postCmdList.emplace_back(IDI_EXPLORER, IDS_STATUSLIST_CONTEXT_EXPLORE, [&]{ CAppUtils::ExploreTo(hWndExplorer, dlg.m_Directory); });
+			postCmdList.emplace_back(IDI_EXPLORER, IDS_STATUSLIST_CONTEXT_EXPLORE, [&]{ CAppUtils::ExploreTo(GetExplorerHWND(), dlg.m_Directory); });
 		};
 
 		// Handle Git SVN-clone

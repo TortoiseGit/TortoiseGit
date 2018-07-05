@@ -29,5 +29,5 @@ bool ExportCommand::Execute()
 	if(base.IsEmpty())
 		p = nullptr;
 
-	return CAppUtils::Export(hwndExplorer, p, &orgCmdLinePath);
+	return CAppUtils::Export(GetExplorerHWND(), p, &orgCmdLinePath);
 }

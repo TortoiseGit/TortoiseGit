@@ -29,5 +29,5 @@ bool TagCommand::Execute()
 	if(base.IsEmpty())
 		p = nullptr;
 
-	return CAppUtils::CreateBranchTag(hWndExplorer, true, p, false, parser.HasVal(L"name") ? parser.GetVal(L"name") : nullptr);
+	return CAppUtils::CreateBranchTag(GetExplorerHWND(), true, p, false, parser.HasVal(L"name") ? parser.GetVal(L"name") : nullptr);
 }

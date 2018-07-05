@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012, 2014-2017 - TortoiseGit
+// Copyright (C) 2012, 2014-2018 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -92,8 +92,8 @@ BOOL CInputDlg::OnInitDialog()
 	AddAnchor(IDOK, BOTTOM_RIGHT);
 
 	EnableSaveRestore(L"InputDlg");
-	if (hWndExplorer)
-		CenterWindow(CWnd::FromHandle(hWndExplorer));
+	if (GetExplorerHWND())
+		CenterWindow(CWnd::FromHandle(GetExplorerHWND()));
 	GetDlgItem(IDC_INPUTTEXT)->SetFocus();
 	// clear the selection
 	m_cInput.Call(SCI_SETSEL, (WPARAM)-1, (LPARAM)-1);

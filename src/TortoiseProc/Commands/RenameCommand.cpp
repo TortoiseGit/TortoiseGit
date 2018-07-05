@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012, 2015-2017 - TortoiseGit
+// Copyright (C) 2008-2012, 2015-2018 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -71,7 +71,7 @@ bool RenameCommand::Execute()
 
 	if (g_Git.Run(cmd, &output, CP_UTF8))
 	{
-		CMessageBox::Show(hwndExplorer, output, L"TortoiseGit", MB_OK);
+		CMessageBox::Show(GetExplorerHWND(), output, L"TortoiseGit", MB_OK);
 		bRet = false;
 	}
 

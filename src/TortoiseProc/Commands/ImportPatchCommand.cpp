@@ -40,13 +40,13 @@ bool ImportPatchCommand::Execute()
 		{
 			CString err;
 			err.Format(IDS_ERR_NOT_REPOSITORY, (LPCTSTR)g_Git.m_CurrentDir);
-			MessageBox(hwndExplorer, err, L"TortoiseGit", MB_OK | MB_ICONERROR);
+			MessageBox(GetExplorerHWND(), err, L"TortoiseGit", MB_OK | MB_ICONERROR);
 			return FALSE;
 		}
 	}
 	else if (!orgPathList.IsEmpty() && !orgPathList[0].HasAdminDir())
 	{
-		CString str = CAppUtils::ChooseRepository(hwndExplorer, nullptr);
+		CString str = CAppUtils::ChooseRepository(GetExplorerHWND(), nullptr);
 		if(str.IsEmpty())
 			return FALSE;
 
@@ -57,7 +57,7 @@ bool ImportPatchCommand::Execute()
 		{
 			CString err;
 			err.Format(IDS_ERR_NOT_REPOSITORY, (LPCTSTR)str);
-			MessageBox(hwndExplorer, err, L"TortoiseGit", MB_OK | MB_ICONERROR);
+			MessageBox(GetExplorerHWND(), err, L"TortoiseGit", MB_OK | MB_ICONERROR);
 			return FALSE;
 		}
 		g_Git.m_CurrentDir=str;

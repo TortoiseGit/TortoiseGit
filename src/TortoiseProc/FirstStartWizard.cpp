@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016 - TortoiseGit
+// Copyright (C) 2016, 2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -55,8 +55,8 @@ BOOL CFirstStartWizard::OnInitDialog()
 	BOOL bResult = __super::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
-	if (!m_pParentWnd  && hWndExplorer)
-		CenterWindow(CWnd::FromHandle(hWndExplorer));
+	if (!m_pParentWnd && GetExplorerHWND())
+		CenterWindow(CWnd::FromHandle(GetExplorerHWND()));
 
 	return bResult;
 }
