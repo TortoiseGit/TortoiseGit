@@ -31,5 +31,5 @@ bool PullCommand::Execute()
 		return false;
 	}
 
-	return CAppUtils::Pull(false);
+	return CAppUtils::Pull(GetExplorerHWND(), false);
 }

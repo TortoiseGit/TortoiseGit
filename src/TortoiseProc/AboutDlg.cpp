@@ -119,7 +119,7 @@ BOOL CAboutDlg::OnInitDialog()
 	m_cWebLink.SetURL(L"https://tortoisegit.org/");
 	m_cSupportLink.SetURL(L"https://tortoisegit.org/donate");
 
-	CenterWindow(CWnd::FromHandle(hWndExplorer));
+	CenterWindow(CWnd::FromHandle(GetExplorerHWND()));
 	GetDlgItem(IDOK)->SetFocus();
 	return FALSE;
 }
