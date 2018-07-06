@@ -34,7 +34,7 @@ bool BisectCommand::Execute()
 		if (parser.HasKey(L"bad"))
 			firstBad = parser.GetVal(L"bad");
 
-		return CAppUtils::BisectStart(GetExplorerHWND(), lastGood, firstBad, true);
+		return CAppUtils::BisectStart(GetExplorerHWND(), lastGood, firstBad);
 	}
 	else if ((this->parser.HasKey(L"good") || this->parser.HasKey(L"bad") || this->parser.HasKey(L"skip") || this->parser.HasKey(L"reset")) && path.IsBisectActive())
 	{
