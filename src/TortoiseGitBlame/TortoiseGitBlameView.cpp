@@ -866,8 +866,7 @@ void CTortoiseGitBlameView::CreateFont()
 		return;
 	LOGFONT lf = {0};
 	lf.lfWeight = 400;
-	HDC hDC = ::GetDC(wBlame);
-	lf.lfHeight = -MulDiv((DWORD)CRegStdDWORD(L"Software\\TortoiseGit\\BlameFontSize", 10), GetDeviceCaps(hDC, LOGPIXELSY), 72);
+	lf.lfHeight = -CDPIAware::Instance().PointsToPixelsY((DWORD)CRegStdDWORD(L"Software\\TortoiseGit\\BlameFontSize", 10));
 	lf.lfCharSet = DEFAULT_CHARSET;
 	CRegStdString fontname = CRegStdString(L"Software\\TortoiseGit\\BlameFontName", L"Consolas");
 	wcscpy_s(lf.lfFaceName, 32, ((std::wstring)fontname).c_str());
@@ -875,8 +874,6 @@ void CTortoiseGitBlameView::CreateFont()
 
 	lf.lfItalic = TRUE;
 	m_italicfont.CreateFontIndirect(&lf);
-
-	::ReleaseDC(wBlame, hDC);
 }
 
 void CTortoiseGitBlameView::DrawBlame(HDC hDC)

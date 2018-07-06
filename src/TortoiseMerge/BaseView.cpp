@@ -1,7 +1,7 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2003-2018 - TortoiseSVN
-// Copyright (C) 2011-2012, 2017 Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2011-2012, 2017-2018 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -497,12 +497,7 @@ CFont* CBaseView::GetFont(BOOL bItalic /*= FALSE*/, BOOL bBold /*= FALSE*/)
 		m_lfBaseFont.lfCharSet = DEFAULT_CHARSET;
 		m_lfBaseFont.lfWeight = bBold ? FW_BOLD : FW_NORMAL;
 		m_lfBaseFont.lfItalic = (BYTE) bItalic;
-		CDC * pDC = GetDC();
-		if (pDC)
-		{
-			m_lfBaseFont.lfHeight = -MulDiv((DWORD)CRegDWORD(L"Software\\TortoiseGitMerge\\LogFontSize", 10), GetDeviceCaps(pDC->m_hDC, LOGPIXELSY), 72);
-			ReleaseDC(pDC);
-		}
+		m_lfBaseFont.lfHeight = -CDPIAware::Instance().PointsToPixelsY((DWORD)CRegDWORD(L"Software\\TortoiseGitMerge\\LogFontSize", 10));
 		wcsncpy_s(m_lfBaseFont.lfFaceName, (LPCTSTR)(CString)CRegString(L"Software\\TortoiseGitMerge\\LogFontName", L"Consolas"), _countof(m_lfBaseFont.lfFaceName) - 1);
 		if (!m_apFonts[nIndex]->CreateFontIndirect(&m_lfBaseFont))
 		{

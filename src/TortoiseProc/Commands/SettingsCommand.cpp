@@ -18,8 +18,8 @@
 //
 #include "stdafx.h"
 #include "SettingsCommand.h"
-
 #include "../Settings/Settings.h"
+#include "DPIAware.h"
 
 bool SettingsCommand::Execute()
 {
@@ -27,7 +27,7 @@ bool SettingsCommand::Execute()
 
 	CSettings dlg(IDS_PROC_SETTINGS_TITLE,&orgCmdLinePath);
 	dlg.SetTreeViewMode(TRUE, TRUE, TRUE);
-	dlg.SetTreeWidth(220);
+	dlg.SetTreeWidth(220 * CDPIAware::Instance().GetDPIX());
 	dlg.m_DefaultPage = defaultpage;
 
 	dlg.DoModal();

@@ -1,7 +1,7 @@
 // TortoiseIDiff - an image diff viewer in TortoiseSVN
 
-// Copyright (C) 2006-2013 - TortoiseSVN
-// Copyright (C) 2016 - TortoiseGit
+// Copyright (C) 2006-2013, 2018 - TortoiseSVN
+// Copyright (C) 2016, 2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -23,6 +23,7 @@
 #include "PicWindow.h"
 #include <math.h>
 #include <memory>
+#include "../Utils/DPIAware.h"
 
 #pragma comment(lib, "Msimg32.lib")
 #pragma comment(lib, "shell32.lib")
@@ -574,7 +575,7 @@ void CPicWindow::SetPic(const tstring& path, const tstring& title, bool bFirst)
 void CPicWindow::DrawViewTitle(HDC hDC, RECT * rect)
 {
     HFONT hFont = nullptr;
-    hFont = CreateFont(-MulDiv(pSecondPic ? 8 : 10, GetDeviceCaps(hDC, LOGPIXELSY), 72), 0, 0, 0, FW_DONTCARE, false, false, false, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, L"MS Shell Dlg");
+    hFont = CreateFont(-CDPIAware::Instance().PointsToPixelsY(pSecondPic ? 8 : 10), 0, 0, 0, FW_DONTCARE, false, false, false, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, L"MS Shell Dlg");
     HFONT hFontOld = (HFONT)SelectObject(hDC, (HGDIOBJ)hFont);
 
     RECT textrect;

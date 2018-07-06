@@ -67,6 +67,7 @@
 #include "SubmoduleResolveConflictDlg.h"
 #include "GitDiff.h"
 #include "../TGitCache/CacheInterface.h"
+#include "DPIAware.h"
 
 static struct last_accepted_cert {
 	BYTE*		data;
@@ -663,7 +664,7 @@ void CAppUtils::CreateFontForLogs(CFont& fontToCreate)
 {
 	LOGFONT logFont;
 	HDC hScreenDC = ::GetDC(nullptr);
-	logFont.lfHeight = -MulDiv(GetLogFontSize(), GetDeviceCaps(hScreenDC, LOGPIXELSY), 72);
+	logFont.lfHeight = -CDPIAware::Instance().PointsToPixelsY(GetLogFontSize());
 	::ReleaseDC(nullptr, hScreenDC);
 	logFont.lfWidth				= 0;
 	logFont.lfEscapement		= 0;
@@ -754,7 +755,7 @@ bool CAppUtils::LaunchRemoteSetting()
 	CTGitPath path(g_Git.m_CurrentDir);
 	CSettings dlg(IDS_PROC_SETTINGS_TITLE, &path);
 	dlg.SetTreeViewMode(TRUE, TRUE, TRUE);
-	dlg.SetTreeWidth(220);
+	dlg.SetTreeWidth(220 * CDPIAware::Instance().GetDPIX());
 	dlg.m_DefaultPage = L"gitremote";
 
 	dlg.DoModal();

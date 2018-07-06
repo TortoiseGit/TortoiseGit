@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012, 2014, 2016-2017 - TortoiseGit
-// Copyright (C) 2007, 2012-2014, 2017 - TortoiseSVN
+// Copyright (C) 2012, 2014, 2016-2018 - TortoiseGit
+// Copyright (C) 2007, 2012-2014, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -19,7 +19,7 @@
 //
 #include "stdafx.h"
 #include "FilterEdit.h"
-
+#include "DPIAware.h"
 
 const UINT CFilterEdit::WM_FILTEREDIT_INFOCLICKED = ::RegisterWindowMessage(L"TGITWM_FILTEREDIT_INFOCLICKED");
 const UINT CFilterEdit::WM_FILTEREDIT_CANCELCLICKED = ::RegisterWindowMessage(L"TGITWM_FILTEREDIT_CANCELCLICKED");
@@ -395,10 +395,8 @@ void CFilterEdit::DrawDimText()
 
 HICON CFilterEdit::LoadDpiScaledIcon(UINT resourceId, int cx96dpi, int cy96dpi)
 {
-	CWindowDC dc(this);
-
-	int cx = MulDiv(cx96dpi, dc.GetDeviceCaps(LOGPIXELSX), 96);
-	int cy = MulDiv(cy96dpi, dc.GetDeviceCaps(LOGPIXELSY), 96);
+	int cx = CDPIAware::Instance().PointsToPixelsX(cx96dpi);
+	int cy = CDPIAware::Instance().PointsToPixelsY(cy96dpi);
 
 	return (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(resourceId), IMAGE_ICON, cx, cy, LR_DEFAULTCOLOR);
 }

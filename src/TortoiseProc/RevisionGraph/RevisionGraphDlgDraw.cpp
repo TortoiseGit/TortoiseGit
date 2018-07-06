@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2011, 2015 - TortoiseSVN
-// Copyright (C) 2012-2013, 2015-2017 - TortoiseGit
+// Copyright (C) 2012-2013, 2015-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -33,6 +33,7 @@
 //#include "ShowTreeStripes.h"
 #include "registry.h"
 #include "UnicodeUtils.h"
+#include "DPIAware.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -66,9 +67,7 @@ CFont* CRevisionGraphWnd::GetFont(BOOL bItalic /*= FALSE*/, BOOL bBold /*= FALSE
 		m_lfBaseFont.lfWeight = bBold ? FW_BOLD : FW_NORMAL;
 		m_lfBaseFont.lfItalic = (BYTE) bItalic;
 		m_lfBaseFont.lfStrikeOut = (BYTE) FALSE;
-		CDC * pDC = GetDC();
-		m_lfBaseFont.lfHeight = -MulDiv(m_nFontSize, GetDeviceCaps(pDC->m_hDC, LOGPIXELSY), 72);
-		ReleaseDC(pDC);
+		m_lfBaseFont.lfHeight = -CDPIAware::Instance().PointsToPixelsY(m_nFontSize);
 		// use the empty font name, so GDI takes the first font which matches
 		// the specs. Maybe this will help render chinese/japanese chars correctly.
 		wcsncpy_s(m_lfBaseFont.lfFaceName, L"MS Shell Dlg 2", _countof(m_lfBaseFont.lfFaceName) - 1);

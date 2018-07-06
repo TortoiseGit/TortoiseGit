@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2016 - TortoiseGit
+// Copyright (C) 2012-2016, 2018 - TortoiseGit
 // Copyright (C) 2003-2008,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -23,6 +23,7 @@
 #include "ClipboardHelper.h"
 #include "SmartHandle.h"
 #include <afxtaskdialog.h>
+#include "DPIAware.h"
 
 #define BTN_OFFSET 100 // use an offset in order to not interfere with IDYES and so on...
 
@@ -641,7 +642,7 @@ UINT CMessageBox::GoModal(CWnd * pWnd, const CString& title, const CString& msg,
 		return ::MessageBox(hw, msg, title, m_uType | defButton);
 	}
 
-	int pix = -MulDiv(m_LogFont.lfHeight, 72, GetDeviceCaps(hdc, LOGPIXELSY));
+	int pix = -CDPIAware::Instance().PointsToPixelsY(m_LogFont.lfHeight);
 	CDlgTemplate dialogTemplate = CDlgTemplate(title, WS_CAPTION | DS_CENTER,
 		0, 0, 0, 0, m_LogFont.lfFaceName, pix);
 	dialogTemplate.AddButton(L"Button1", WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_PUSHBUTTON | ((nDefaultButton == 1) ? BS_DEFPUSHBUTTON : 0), 0,
