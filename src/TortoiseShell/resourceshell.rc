@@ -61,7 +61,7 @@ IDI_MENUMULTIPLE        ICON                    "..\\Resources\\tsvnmenumultiple
 IDI_APPSMALL            ICON                    "..\\Resources\\TortoiseSmall.ico"
 IDI_CLIPPASTE           ICON                    "..\\Resources\\clippaste.ico"
 IDI_PUSH                ICON                    "..\\resources\\Push.ico"
-IDI_CLONE               ICON                    "..\\resources\\checkout.ico"
+IDI_CLONE               ICON                    "..\\resources\\menucheckout.ico"
 IDI_TAG                 ICON                    "..\\resources\\Tag.ico"
 IDI_REBASE              ICON                    "..\\resources\\menurebase.ico"
 IDI_COMBINE             ICON                    "..\\resources\\menucombine.ico"
