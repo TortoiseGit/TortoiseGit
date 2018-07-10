@@ -1,6 +1,6 @@
 // TortoiseIDiff - an image diff viewer in TortoiseSVN
 
-// Copyright (C) 2015-2017 - TortoiseGit
+// Copyright (C) 2015-2018 - TortoiseGit
 // Copyright (C) 2006-2013, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -25,6 +25,7 @@
 #include "AboutDlg.h"
 #include "TaskbarUUID.h"
 #include "PathUtils.h"
+#include "DPIAware.h"
 
 #pragma comment(lib, "comctl32.lib")
 
@@ -1188,7 +1189,7 @@ bool CMainWindow::CreateToolbar()
 
     TBBUTTON tbb[13];
     // create an imagelist containing the icons for the toolbar
-    hToolbarImgList = ImageList_Create(24, 24, ILC_COLOR32 | ILC_MASK, 12, 4);
+    hToolbarImgList = ImageList_Create(CDPIAware::Instance().ScaleX(24), CDPIAware::Instance().ScaleY(24), ILC_COLOR32 | ILC_MASK, 12, 4);
     if (!hToolbarImgList)
         return false;
     int index = 0;
