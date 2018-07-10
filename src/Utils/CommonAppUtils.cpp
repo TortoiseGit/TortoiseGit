@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2017 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2018 - TortoiseGit
 // Copyright (C) 2003-2008,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -25,6 +25,7 @@
 #include "FormatMessageWrapper.h"
 #include "registry.h"
 #include "SelectFileFilter.h"
+#include "DPIAware.h"
 
 extern CString sOrigCWD;
 extern CString g_sGroupingUUID;
@@ -163,7 +164,12 @@ bool CCommonAppUtils::IsAdminLogin()
 	return !!isInAdminGroup;
 }
 
-bool CCommonAppUtils::SetListCtrlBackgroundImage(HWND hListCtrl, UINT nID, int width /* = 128 */, int height /* = 128 */)
+bool CCommonAppUtils::SetListCtrlBackgroundImage(HWND hListCtrl, UINT nID)
+{
+	return SetListCtrlBackgroundImage(hListCtrl, nID, CDPIAware::Instance().ScaleX(128), CDPIAware::Instance().ScaleY(128));
+}
+
+bool CCommonAppUtils::SetListCtrlBackgroundImage(HWND hListCtrl, UINT nID, int width, int height)
 {
 	if ((((DWORD)CRegStdDWORD(L"Software\\TortoiseGit\\ShowListBackgroundImage", TRUE)) == FALSE))
 		return false;

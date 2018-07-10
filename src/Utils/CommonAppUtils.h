@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2017 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2018 - TortoiseGit
 // Copyright (C) 2003-2008,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -36,7 +36,8 @@ public:
 
 	static bool IsAdminLogin();
 
-	static bool SetListCtrlBackgroundImage(HWND hListCtrl, UINT nID, int width = 128, int height = 128);
+	static bool SetListCtrlBackgroundImage(HWND hListCtrl, UINT nID);
+	static bool SetListCtrlBackgroundImage(HWND hListCtrl, UINT nID, int width, int height);
 
 	static bool FileOpenSave(CString& path, int* filterindex, UINT title, UINT filterId, bool bOpen, HWND hwndOwner = nullptr, LPCTSTR defaultExt = nullptr, bool handleAsFile = false);
 
