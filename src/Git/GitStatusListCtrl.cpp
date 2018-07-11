@@ -1625,7 +1625,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				if ((m_dwContextMenus & GITSLC_POPASSUMEVALID) && (this->m_CurrentVersion.IsEmpty() || this->m_CurrentVersion == GIT_REV_ZERO) && !(wcStatus & (CTGitPath::LOGACTIONS_ADDED | CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_UNMERGED | CTGitPath::LOGACTIONS_ASSUMEVALID)))
 					popup.AppendMenuIcon(IDGITLC_ASSUMEVALID, IDS_MENUASSUMEVALID);
 
-				if ((m_dwContextMenus & GITLC_POPUNSETIGNORELOCALCHANGES) && (this->m_CurrentVersion.IsEmpty() || this->m_CurrentVersion == GIT_REV_ZERO) && (wcStatus & (CTGitPath::LOGACTIONS_SKIPWORKTREE | CTGitPath::LOGACTIONS_ASSUMEVALID)))
+				if ((m_dwContextMenus & GITSLC_POPUNSETIGNORELOCALCHANGES) && (this->m_CurrentVersion.IsEmpty() || this->m_CurrentVersion == GIT_REV_ZERO) && (wcStatus & (CTGitPath::LOGACTIONS_SKIPWORKTREE | CTGitPath::LOGACTIONS_ASSUMEVALID)))
 					popup.AppendMenuIcon(IDGITLC_UNSETIGNORELOCALCHANGES, IDS_STATUSLIST_UNSETIGNORELOCALCHANGES);
 
 				if (m_dwContextMenus & GITSLC_POPRESTORE && !filepath->IsDirectory())
@@ -1682,7 +1682,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				if (m_dwContextMenus & GITSLC_POPEXPLORE && !(wcStatus & CTGitPath::LOGACTIONS_DELETED) && m_bHasWC)
 					popup.AppendMenuIcon(IDGITLC_EXPLORE, IDS_STATUSLIST_CONTEXT_EXPLORE, IDI_EXPLORER);
 
-				if (m_dwContextMenus & GITSLC_PREPAREDIFF && !(wcStatus & CTGitPath::LOGACTIONS_DELETED))
+				if (m_dwContextMenus & GITSLC_POPPREPAREDIFF && !(wcStatus & CTGitPath::LOGACTIONS_DELETED))
 				{
 					popup.AppendMenu(MF_SEPARATOR);
 					popup.AppendMenuIcon(IDGITLC_PREPAREDIFF, IDS_PREPAREDIFF, IDI_DIFF);
