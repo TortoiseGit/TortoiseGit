@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2007-2008 - TortoiseSVN
+// Copyright (C) 2007-2008, 2018 - TortoiseSVN
 // Copyright (C) 2011-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
@@ -163,6 +163,7 @@ BOOL CSettingsTBlame::OnInitDialog()
 	}
 	m_cFontNames.Setup(DEVICE_FONTTYPE|RASTER_FONTTYPE|TRUETYPE_FONTTYPE, 1, FIXED_PITCH);
 	m_cFontNames.SelectFont(m_sFontName);
+	m_cFontNames.SendMessage(CB_SETITEMHEIGHT, (WPARAM)-1, m_cFontSizes.GetItemHeight(-1));
 
 	CString sDetectMovedOrCopiedLinesDisabled;
 	CString sDetectMovedOrCopiedLinesWithinFile;

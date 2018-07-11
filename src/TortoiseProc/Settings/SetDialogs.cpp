@@ -253,6 +253,7 @@ BOOL CSetDialogs::OnInitDialog()
 
 	m_cFontNames.Setup(DEVICE_FONTTYPE|RASTER_FONTTYPE|TRUETYPE_FONTTYPE, 1, FIXED_PITCH);
 	m_cFontNames.SelectFont(m_sFontName);
+	m_cFontNames.SendMessage(CB_SETITEMHEIGHT, (WPARAM)-1, m_cFontSizes.GetItemHeight(-1));
 
 	m_cGravatarUrl.AddString(L"http://www.gravatar.com/avatar/%HASH%");
 	m_cGravatarUrl.AddString(L"http://www.gravatar.com/avatar/%HASH%?d=mm");

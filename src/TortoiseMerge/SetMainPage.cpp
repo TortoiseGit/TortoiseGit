@@ -1,7 +1,7 @@
 // TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2013-2014 - TortoiseGit
-// Copyright (C) 2006-2010, 2012-2014, 2016 - TortoiseSVN
+// Copyright (C) 2006-2010, 2012-2014, 2016, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -204,6 +204,8 @@ BOOL CSetMainPage::OnInitDialog()
 	}
 	m_cFontNames.Setup(DEVICE_FONTTYPE|RASTER_FONTTYPE|TRUETYPE_FONTTYPE, 1, FIXED_PITCH);
 	m_cFontNames.SelectFont(m_sFontName);
+
+	m_cFontNames.SendMessage(CB_SETITEMHEIGHT, (WPARAM)-1, m_cFontSizes.GetItemHeight(-1));
 
 	UpdateData(FALSE);
 	return TRUE;  // return TRUE unless you set the focus to a control
