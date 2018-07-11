@@ -770,7 +770,7 @@ int git_run_cmd(char *cmd, char *arg)
 void git_exit_cleanup(void)
 {
 	git_atexit_dispatch();
-	git_atexit_clear();
+	// do not clear the atexit list, as lots of methods register it just once (and have a local static int flag)
 }
 
 int git_for_each_reflog_ent(const char *ref, each_reflog_ent_fn fn, void *cb_data)
