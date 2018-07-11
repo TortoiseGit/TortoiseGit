@@ -24,6 +24,7 @@ Released: unreleased
  * Fixed issue #3201: Frequent TGitCache crashes
  * Fixed issue #3197: Bad generated path while renaming file with changing folder
  * Fixed issue #3211: Push from detached head not possible when no local branch exists
+ * Fixed issue #3210: index.lock left behind after refreshing working tree changes when using Git LFS
 
 = Release 2.6.0 =
 Released: 2018-02-17

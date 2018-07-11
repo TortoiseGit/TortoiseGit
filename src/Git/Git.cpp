@@ -2530,7 +2530,10 @@ unsigned int CGit::Hash2int(const CGitHash &hash)
 
 int CGit::RefreshGitIndex()
 {
-	if(g_Git.m_IsUseGitDLL)
+	CString adminDir;
+	GitAdminDir::GetAdminDirPath(g_Git.m_CurrentDir, adminDir);
+	// HACK: don't use internal update-index if we have a git-lfs enabled repository as the libgit version fails when executing the filter, issue #3220
+	if (g_Git.m_IsUseGitDLL && !PathFileExists(adminDir + L"lfs"))
 	{
 		CAutoLocker lock(g_Git.m_critGitDllSec);
 		try
