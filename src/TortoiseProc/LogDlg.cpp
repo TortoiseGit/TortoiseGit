@@ -388,8 +388,8 @@ BOOL CLogDlg::OnInitDialog()
 	m_JumpType.SetCurSel(0);
 	int iconWidth = GetSystemMetrics(SM_CXSMICON);
 	int iconHeight = GetSystemMetrics(SM_CYSMICON);
-	m_JumpUp.SetIcon((HICON)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_JUMPUP), IMAGE_ICON, iconWidth, iconHeight, LR_DEFAULTCOLOR));
-	m_JumpDown.SetIcon((HICON)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_JUMPDOWN), IMAGE_ICON, iconWidth, iconHeight, LR_DEFAULTCOLOR));
+	m_JumpUp.SetIcon((HICON)::LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_JUMPUP), IMAGE_ICON, iconWidth, iconHeight, LR_DEFAULTCOLOR));
+	m_JumpDown.SetIcon((HICON)::LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_JUMPDOWN), IMAGE_ICON, iconWidth, iconHeight, LR_DEFAULTCOLOR));
 
 	if (GetExplorerHWND())
 		CenterWindow(CWnd::FromHandle(GetExplorerHWND()));

@@ -1223,7 +1223,7 @@ void CRevisionGraphWnd::DrawGraph(GraphicsDevice& graphics, const CRect& rect, i
 	//if (m_fZoomFactor > SHADOW_ZOOM_THRESHOLD)
 	//	DrawShadows (graphics, logRect, offset);
 
-	Bitmap glyphs (AfxGetInstanceHandle(), MAKEINTRESOURCE(IDR_REVGRAPHGLYPHS));
+	Bitmap glyphs (AfxGetResourceHandle(), MAKEINTRESOURCE(IDR_REVGRAPHGLYPHS));
 
 	DrawTexts (graphics, logRect, offset);
 	DrawConnections (graphics, logRect, offset);

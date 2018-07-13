@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2016 - TortoiseGit
+// Copyright (C) 2015-2016, 2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -43,7 +43,7 @@ BOOL CFindBar::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	m_hIcon = (HICON)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_CANCELNORMAL), IMAGE_ICON, 0, 0, LR_DEFAULTCOLOR);
+	m_hIcon = (HICON)::LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_CANCELNORMAL), IMAGE_ICON, 0, 0, LR_DEFAULTCOLOR);
 	GetDlgItem(IDC_FINDEXIT)->SendMessage(BM_SETIMAGE, IMAGE_ICON, (LPARAM)m_hIcon);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
