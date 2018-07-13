@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2017 - TortoiseGit
+// Copyright (C) 2009-2018 - TortoiseGit
 // Copyright (C) 2003-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -854,7 +854,7 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 	case eCmd_CompareWC:
 		{
 			CTGitPath file(selectedLeafs.at(0)->GetFullName());
-			CGitDiff::Diff(&file, &file, GIT_REV_ZERO, m_sRevision);
+			CGitDiff::Diff(GetSafeHwnd(), &file, &file, GIT_REV_ZERO, m_sRevision);
 		}
 		break;
 	case eCmd_Revert:
@@ -908,7 +908,7 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 				MessageBox(g_Git.GetGitLastErr(L"Could not get SHA-1 for " + m_sRevision), L"TortoiseGit", MB_ICONERROR);
 				return;
 			}
-			CGitDiff::Diff(&selectedFile, &savedFile, currentHash, m_sMarkForDiffVersion);
+			CGitDiff::Diff(GetSafeHwnd(), &selectedFile, &savedFile, currentHash, m_sMarkForDiffVersion);
 		}
 		break;
 	}

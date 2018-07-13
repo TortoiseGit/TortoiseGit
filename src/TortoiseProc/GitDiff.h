@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014, 2016-2017 - TortoiseGit
+// Copyright (C) 2008-2014, 2016-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -43,12 +43,12 @@ public:
 	static void GetSubmoduleChangeType(CGit& subgit, const CGitHash& oldhash, const CGitHash& newhash, bool& oldOK, bool& newOK, ChangeType& changeType, CString& oldsub, CString& newsub);
 
 	// Use two path to handle rename cases
-	static int Diff(const CTGitPath* pPath1, const CTGitPath* pPath2, CString rev1, CString rev2, bool blame = false, bool unified = false, int jumpToLine = 0, bool bAlternativeTool = false, bool mustExist = true);
-	static int SubmoduleDiff(const CTGitPath* pPath1, const CTGitPath* pPath2, const CString& rev1, const CString& rev2, bool blame = false, bool unified = false);
-	static int DiffNull(const CTGitPath* pPath, CString rev1, bool bIsAdd = true, int jumpToLine = 0, bool bAlternative = false);
-	static int DiffCommit(const CTGitPath& path, const GitRev* r1, const GitRev* r2, bool bAlternative = false);
-	static int DiffCommit(const CTGitPath& path1, const CTGitPath& path2, const GitRev* r1, const GitRev* r2, bool bAlternative = false);
-	static int DiffCommit(const CTGitPath& path, const CString& r1, const CString& r2, bool bAlternative = false);
-	static int DiffCommit(const CTGitPath& path1, const CTGitPath& path2, const CString& r1, const CString& r2, bool bAlternative = false);
-	static int SubmoduleDiffNull(const CTGitPath* pPath1, const CString& rev1);
+	static int Diff(HWND hWnd, const CTGitPath* pPath1, const CTGitPath* pPath2, CString rev1, CString rev2, bool blame = false, bool unified = false, int jumpToLine = 0, bool bAlternativeTool = false, bool mustExist = true);
+	static int SubmoduleDiff(HWND hWnd, const CTGitPath* pPath1, const CTGitPath* pPath2, const CString& rev1, const CString& rev2, bool blame = false, bool unified = false);
+	static int DiffNull(HWND hWnd, const CTGitPath* pPath, CString rev1, bool bIsAdd = true, int jumpToLine = 0, bool bAlternative = false);
+	static int DiffCommit(HWND hWnd, const CTGitPath& path, const GitRev* r1, const GitRev* r2, bool bAlternative = false);
+	static int DiffCommit(HWND hWnd, const CTGitPath& path1, const CTGitPath& path2, const GitRev* r1, const GitRev* r2, bool bAlternative = false);
+	static int DiffCommit(HWND hWnd, const CTGitPath& path, const CString& r1, const CString& r2, bool bAlternative = false);
+	static int DiffCommit(HWND hWnd, const CTGitPath& path1, const CTGitPath& path2, const CString& r1, const CString& r2, bool bAlternative = false);
+	static int SubmoduleDiffNull(HWND hWnd, const CTGitPath* pPath1, const CString& rev1);
 };

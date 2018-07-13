@@ -52,5 +52,5 @@ bool PrevDiffCommand::Execute()
 		return false;
 	}
 
-	return !!CGitDiff::Diff(&cmdLinePath, &cmdLinePath, GIT_REV_ZERO, revs.GetGitRevAt(1).m_CommitHash.ToString(), false, bUnified, 0, bAlternativeTool);
+	return !!CGitDiff::Diff(GetExplorerHWND(), &cmdLinePath, &cmdLinePath, GIT_REV_ZERO, revs.GetGitRevAt(1).m_CommitHash.ToString(), false, bUnified, 0, bAlternativeTool);
 }

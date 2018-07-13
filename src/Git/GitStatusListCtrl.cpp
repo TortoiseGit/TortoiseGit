@@ -1923,7 +1923,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			case IDGITLC_PREPAREDIFF_COMPARE:
 				{
 					CTGitPath savedFile(m_sMarkForDiffFilename);
-					CGitDiff::Diff(filepath, &savedFile, m_CurrentVersion, m_sMarkForDiffVersion, false, false, 0, bShift);
+					CGitDiff::Diff(GetParentHWND(), filepath, &savedFile, m_CurrentVersion, m_sMarkForDiffVersion, false, false, 0, bShift);
 				}
 				break;
 
@@ -2619,11 +2619,11 @@ void CGitStatusListCtrl::StartDiffTwo(int fileindex)
 	CTGitPath file1 = *ptr;
 
 	if (file1.m_Action & CTGitPath::LOGACTIONS_ADDED)
-		CGitDiff::DiffNull(&file1, m_Rev1, true, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
+		CGitDiff::DiffNull(GetParentHWND(), &file1, m_Rev1, true, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 	else if (file1.m_Action & CTGitPath::LOGACTIONS_DELETED)
-		CGitDiff::DiffNull(&file1, m_Rev2, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
+		CGitDiff::DiffNull(GetParentHWND(), &file1, m_Rev2, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 	else
-		CGitDiff::Diff(&file1, &file1, m_Rev1, m_Rev2, false, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
+		CGitDiff::Diff(GetParentHWND(), &file1, &file1, m_Rev1, m_Rev2, false, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 }
 
 void CGitStatusListCtrl::StartDiffWC(int fileindex)
@@ -2641,7 +2641,7 @@ void CGitStatusListCtrl::StartDiffWC(int fileindex)
 	CTGitPath file1 = *ptr;
 	file1.m_Action = 0; // reset action, so that diff is not started as added/deleted file; see issue #1757
 
-	CGitDiff::Diff(&file1, &file1, GIT_REV_ZERO, m_CurrentVersion, false, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
+	CGitDiff::Diff(GetParentHWND(), &file1, &file1, GIT_REV_ZERO, m_CurrentVersion, false, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 }
 
 void CGitStatusListCtrl::StartDiff(int fileindex)
@@ -2666,16 +2666,16 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 		if(m_amend && (file1.m_Action & CTGitPath::LOGACTIONS_ADDED) == 0)
 			fromwhere = L"~1";
 		if( g_Git.IsInitRepos())
-			CGitDiff::DiffNull(GetListEntry(fileindex),
+			CGitDiff::DiffNull(GetParentHWND(), GetListEntry(fileindex),
 			GIT_REV_ZERO, true, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 		else if( file1.m_Action&CTGitPath::LOGACTIONS_ADDED )
-			CGitDiff::DiffNull(GetListEntry(fileindex),
+			CGitDiff::DiffNull(GetParentHWND(), GetListEntry(fileindex),
 			m_CurrentVersion + fromwhere, true, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 		else if( file1.m_Action&CTGitPath::LOGACTIONS_DELETED )
-			CGitDiff::DiffNull(GetListEntry(fileindex),
+			CGitDiff::DiffNull(GetParentHWND(), GetListEntry(fileindex),
 			GitRev::GetHead() + fromwhere, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 		else
-			CGitDiff::Diff(&file1,&file2,
+			CGitDiff::Diff(GetParentHWND(), &file1,&file2,
 					CString(GIT_REV_ZERO),
 					GitRev::GetHead() + fromwhere, false, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 	}
@@ -2687,13 +2687,13 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 			fromwhere = m_CurrentVersion + L"~2";
 		bool revfail = !!g_Git.GetHash(hash, fromwhere);
 		if (revfail || (file1.m_Action & file1.LOGACTIONS_ADDED))
-			CGitDiff::DiffNull(&file1, m_CurrentVersion, true, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
+			CGitDiff::DiffNull(GetParentHWND(), &file1, m_CurrentVersion, true, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 		else if (file1.m_Action & file1.LOGACTIONS_DELETED)
 		{
 			if (file1.m_ParentNo > 0)
 				fromwhere.Format(L"%s^%d", (LPCTSTR)m_CurrentVersion, file1.m_ParentNo + 1);
 
-			CGitDiff::DiffNull(&file1, fromwhere, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
+			CGitDiff::DiffNull(GetParentHWND(), &file1, fromwhere, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 		}
 		else
 		{
@@ -2780,7 +2780,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 					str = L"~1";
 				else
 					str.Format(L"^%d", (file1.m_ParentNo & PARENT_MASK) + 1);
-				CGitDiff::Diff(&file1,&file2,
+				CGitDiff::Diff(GetParentHWND(), &file1,&file2,
 					m_CurrentVersion,
 					m_CurrentVersion + str, false, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 			}
