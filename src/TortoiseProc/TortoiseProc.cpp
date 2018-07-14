@@ -252,6 +252,7 @@ BOOL CTortoiseProcApp::InitInstance()
 			}
 		}
 		CFirstStartWizard wizard(IDS_APPNAME, CWnd::FromHandle(hWndExplorer), parser.GetLongVal(L"page"));
+		theApp.m_pMainWnd = &wizard;
 		return (wizard.DoModal() == ID_WIZFINISH);
 	}
 
@@ -263,6 +264,7 @@ BOOL CTortoiseProcApp::InitInstance()
 		else if (ret == 1)
 		{
 			CFirstStartWizard wizard(IDS_APPNAME, CWnd::FromHandle(hWndExplorer), 2);
+			theApp.m_pMainWnd = &wizard;
 			wizard.DoModal();
 		}
 		return FALSE;

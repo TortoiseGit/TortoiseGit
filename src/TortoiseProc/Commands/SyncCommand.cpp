@@ -34,6 +34,7 @@ bool SyncCommand::Execute()
 
 	bool bRet = false;
 	CSyncDlg dlg;
+	theApp.m_pMainWnd = &dlg;
 	dlg.m_seq = parser.GetLongVal(L"seq");
 	if(dlg.DoModal() == IDOK)
 		bRet=true;

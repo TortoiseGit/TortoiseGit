@@ -30,6 +30,7 @@ bool CommitIsOnRefsCommand::Execute()
 	}
 
 	CCommitIsOnRefsDlg dlg;
+	theApp.m_pMainWnd = &dlg;
 	dlg.m_Rev = parser.GetVal(L"rev");
 	return !!dlg.DoModal();
 }

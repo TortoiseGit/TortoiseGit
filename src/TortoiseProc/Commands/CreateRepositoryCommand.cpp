@@ -69,6 +69,7 @@ bool CreateRepositoryCommand::Execute()
 	}
 
 	CCreateRepoDlg dlg;
+	theApp.m_pMainWnd = &dlg;
 	dlg.m_folder = folder;
 	if(dlg.DoModal() == IDOK)
 	{

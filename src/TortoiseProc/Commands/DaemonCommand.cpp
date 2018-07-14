@@ -81,6 +81,7 @@ bool DaemonCommand::Execute()
 	CString cmd;
 	cmd.Format(L"git.exe daemon --verbose --export-all --base-path=\"%s\"", (LPCTSTR)basePath);
 	CProgressDlg progDlg;
+	theApp.m_pMainWnd = &progDlg;
 	progDlg.m_GitCmd = cmd;
 	if (ips.empty())
 		progDlg.m_PreText = L"git://localhost/";

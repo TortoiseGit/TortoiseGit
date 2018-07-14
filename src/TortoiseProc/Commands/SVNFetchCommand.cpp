@@ -54,6 +54,7 @@ bool SVNFetchCommand::Execute()
 	}
 
 	CProgressDlg progress;
+	theApp.m_pMainWnd = &progress;
 	progress.m_GitCmd = L"git.exe svn fetch";
 
 	CGitHash upstreamNewHash; // declare outside lambda, because it is captured by reference
@@ -73,6 +74,7 @@ bool SVNFetchCommand::Execute()
 		postCmdList.emplace_back(IDI_DIFF, L"Fetched Diff", [&]
 		{
 			CFileDiffDlg dlg;
+			theApp.m_pMainWnd = &dlg;
 			dlg.SetDiff(nullptr, upstreamOldHash.ToString(), upstreamNewHash.ToString());
 			dlg.DoModal();
 		});
@@ -80,6 +82,7 @@ bool SVNFetchCommand::Execute()
 		postCmdList.emplace_back(IDI_LOG, L"Fetched Log", [&]
 		{
 			CLogDlg dlg;
+			theApp.m_pMainWnd = &dlg;
 			dlg.SetParams(CTGitPath(L""), CTGitPath(L""), L"", upstreamOldHash.ToString() + L".." + upstreamNewHash.ToString(), 0);
 			dlg.DoModal();
 		});

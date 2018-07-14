@@ -29,6 +29,8 @@
 bool FormatPatchCommand::Execute()
 {
 	CFormatPatchDlg dlg;
+	theApp.m_pMainWnd = &dlg;
+
 	CString startval = parser.GetVal(L"startrev");
 	CString endval = parser.GetVal(L"endrev");
 
@@ -71,6 +73,7 @@ bool FormatPatchCommand::Execute()
 			);
 
 		CProgressDlg progress;
+		theApp.m_pMainWnd = &progress;
 		progress.m_GitCmd=cmd;
 		progress.DoModal();
 

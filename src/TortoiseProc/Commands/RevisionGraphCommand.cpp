@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2007, 2009-2011 - TortoiseSVN
-// Copyright (C) 2012, 2017 - TortoiseGit
+// Copyright (C) 2012, 2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,6 +25,7 @@
 bool RevisionGraphCommand::Execute()
 {
 	CRevisionGraphDlg dlg;
+	theApp.m_pMainWnd = &dlg;
 	dlg.SetPath(g_Git.m_CurrentDir);
 	if (parser.HasVal(L"output"))
 	{

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2016 - TortoiseGit
+// Copyright (C) 2008-2013, 2016, 2018 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -55,6 +55,7 @@ bool AddCommand::Execute()
 		else
 		{
 			CAddDlg dlg;
+			theApp.m_pMainWnd = &dlg;
 			dlg.m_pathList = pathList;
 			if (dlg.DoModal() == IDOK)
 			{

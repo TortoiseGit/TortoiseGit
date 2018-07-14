@@ -32,7 +32,7 @@ bool PrevDiffCommand::Execute()
 	if (this->orgCmdLinePath.IsDirectory())
 	{
 		CFileDiffDlg dlg;
-
+		theApp.m_pMainWnd = &dlg;
 		dlg.m_strRev1 = L"HEAD~1";
 		dlg.m_strRev2 = GIT_REV_ZERO;
 		dlg.m_sFilter = this->cmdLinePath.GetGitPathString();

@@ -1,5 +1,6 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2018 - TortoiseGit
 // Copyright (C) 2008, 2011-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -33,6 +34,7 @@ public:
 	virtual bool			Execute() override
 	{
 		CAutoTextTestDlg dlg;
+		theApp.m_pMainWnd = &dlg;
 		dlg.DoModal();
 		return true;
 	}

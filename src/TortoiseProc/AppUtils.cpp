@@ -108,6 +108,8 @@ bool CAppUtils::StashSave(HWND hWnd, const CString& msg, bool showPull, bool pul
 		return false;
 
 	CStashSaveDlg dlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
+	if (GetExplorerHWND() == hWnd)
+		theApp.m_pMainWnd = &dlg;
 	dlg.m_sMessage = msg;
 	if (dlg.DoModal() == IDOK)
 	{
@@ -131,6 +133,8 @@ bool CAppUtils::StashSave(HWND hWnd, const CString& msg, bool showPull, bool pul
 		}
 
 		CProgressDlg progress(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
+		if (GetExplorerHWND() == hWnd)
+			theApp.m_pMainWnd = &progress;
 		progress.m_GitCmd = cmd;
 		progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
 		{
@@ -1128,6 +1132,8 @@ bool CAppUtils::Export(HWND hWnd, const CString* BashHash, const CTGitPath* orgP
 {
 		// ask from where the export has to be done
 	CExportDlg dlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
+	if (GetExplorerHWND() == hWnd)
+		theApp.m_pMainWnd = &dlg;
 	if(BashHash)
 		dlg.m_initialRefName=*BashHash;
 	if (orgPath)
@@ -1145,6 +1151,8 @@ bool CAppUtils::Export(HWND hWnd, const CString* BashHash, const CTGitPath* orgP
 					(LPCTSTR)dlg.m_strFile, (LPCTSTR)g_Git.FixBranchName(dlg.m_VersionName));
 
 		CProgressDlg pro(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
+		if (GetExplorerHWND() == hWnd)
+			theApp.m_pMainWnd = &pro;
 		pro.m_GitCmd=cmd;
 		pro.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
 		{
@@ -1261,6 +1269,9 @@ bool CAppUtils::CreateBranchTag(HWND hWnd, bool isTag /*true*/, const CString* c
 bool CAppUtils::Switch(HWND hWnd, const CString& initialRefName)
 {
 	CGitSwitchDlg dlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
+	if (GetExplorerHWND() == hWnd)
+		theApp.m_pMainWnd = &dlg;
+
 	if(!initialRefName.IsEmpty())
 		dlg.m_initialRefName = initialRefName;
 
@@ -1311,6 +1322,8 @@ bool CAppUtils::PerformSwitch(HWND hWnd, const CString& ref, bool bForce /* fals
 		 (LPCTSTR)g_Git.FixBranchName(ref));
 
 	CProgressDlg progress(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
+	if (GetExplorerHWND() == hWnd)
+		theApp.m_pMainWnd = &progress;
 	progress.m_GitCmd = cmd;
 
 	CString currentBranch;
@@ -1452,6 +1465,8 @@ bool CAppUtils::OpenIgnoreFile(HWND hWnd, CIgnoreFile &file, const CString& file
 bool CAppUtils::IgnoreFile(HWND hWnd, const CTGitPathList& path,bool IsMask)
 {
 	CIgnoreDlg ignoreDlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
+	if (GetExplorerHWND() == hWnd)
+		theApp.m_pMainWnd = &ignoreDlg;
 	if (ignoreDlg.DoModal() == IDOK)
 	{
 		CString ignorefile;
@@ -1881,6 +1896,8 @@ bool CAppUtils::ConflictEdit(HWND hWnd, CTGitPath& path, bool bAlternativeTool /
 			return FALSE;
 
 		CSubmoduleResolveConflictDlg resolveSubmoduleConflictDialog(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
+		if (GetExplorerHWND() == hWnd)
+			theApp.m_pMainWnd = &resolveSubmoduleConflictDialog;
 		resolveSubmoduleConflictDialog.SetDiff(merge.GetGitPathString(), isRebase, baseTitle, mineTitle, theirsTitle, baseHash, baseSubject, baseOK, localHash, mineSubject, mineOK, changeTypeMine, remoteHash, theirsSubject, theirsOK, changeTypeTheirs);
 		resolveSubmoduleConflictDialog.DoModal();
 		if (resolveSubmoduleConflictDialog.m_bResolved && resolveMsgHwnd)
@@ -1990,6 +2007,8 @@ bool CAppUtils::ConflictEdit(HWND hWnd, CTGitPath& path, bool bAlternativeTool /
 		};
 
 		CDeleteConflictDlg dlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
+		if (GetExplorerHWND() == hWnd)
+			theApp.m_pMainWnd = &dlg;
 		if (!isRebase)
 		{
 			DescribeConflictFile(b_local, b_base, dlg.m_LocalStatus);
@@ -2129,6 +2148,8 @@ CString CAppUtils::ChooseRepository(HWND hWnd, const CString* path)
 bool CAppUtils::SendPatchMail(HWND hWnd, CTGitPathList& list)
 {
 	CSendMailDlg dlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
+	if (GetExplorerHWND() == hWnd)
+		theApp.m_pMainWnd = &dlg;
 
 	dlg.m_PathList  = list;
 
@@ -2138,7 +2159,8 @@ bool CAppUtils::SendPatchMail(HWND hWnd, CTGitPathList& list)
 			return FALSE;
 
 		CGitProgressDlg progDlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
-		theApp.m_pMainWnd = &progDlg;
+		if (GetExplorerHWND() == hWnd)
+			theApp.m_pMainWnd = &progDlg;
 		SendMailProgressCommand sendMailProgressCommand;
 		progDlg.SetCommand(&sendMailProgressCommand);
 
@@ -2332,6 +2354,8 @@ bool DoPull(HWND hWnd, const CString& url, bool bAutoLoad, BOOL bFetchTags, bool
 	CString cmd;
 	cmd.Format(L"git.exe pull --progress -v%s \"%s\" %s", (LPCTSTR)args, (LPCTSTR)url, (LPCTSTR)remoteBranchName);
 	CProgressDlg progress(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
+	if (GetExplorerHWND() == hWnd)
+		theApp.m_pMainWnd = &progress;
 	progress.m_GitCmd = cmd;
 
 	CGitHash hashNew; // declare outside lambda, because it is captured by reference
@@ -2442,6 +2466,8 @@ bool CAppUtils::Pull(HWND hWnd, bool showPush, bool showStashPop)
 		return false;
 
 	CPullFetchDlg dlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
+	if (GetExplorerHWND() == hWnd)
+		theApp.m_pMainWnd = &dlg;
 	dlg.m_IsPull = TRUE;
 	if (dlg.DoModal() == IDOK)
 	{
@@ -2470,6 +2496,8 @@ bool CAppUtils::RebaseAfterFetch(HWND hWnd, const CString& upstream, int rebase,
 	while (true)
 	{
 		CRebaseDlg dlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
+		if (GetExplorerHWND() == hWnd)
+			theApp.m_pMainWnd = &dlg;
 		if (!upstream.IsEmpty())
 			dlg.m_Upstream = upstream;
 		dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENULOG)));
@@ -2584,6 +2612,8 @@ static bool DoFetch(HWND hWnd, const CString& url, const bool fetchAllRemotes, c
 		cmd.Format(L"git.exe fetch -v%s \"%s\" %s", (LPCTSTR)arg, (LPCTSTR)url, (LPCTSTR)remoteBranch);
 
 	CProgressDlg progress(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
+	if (GetExplorerHWND() == hWnd)
+		theApp.m_pMainWnd = &progress;
 	progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
 	{
 		if (status)
@@ -2628,6 +2658,8 @@ static bool DoFetch(HWND hWnd, const CString& url, const bool fetchAllRemotes, c
 	{
 		CGitProgressDlg gitdlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
 		FetchProgressCommand fetchProgressCommand;
+		if (GetExplorerHWND() == hWnd)
+			theApp.m_pMainWnd = &gitdlg;
 		if (!fetchAllRemotes)
 			fetchProgressCommand.SetUrl(url);
 		gitdlg.SetCommand(&fetchProgressCommand);
@@ -2665,6 +2697,8 @@ static bool DoFetch(HWND hWnd, const CString& url, const bool fetchAllRemotes, c
 			if (ret == 1)
 			{
 				CProgressDlg mergeProgress(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
+				if (GetExplorerHWND() == hWnd)
+					theApp.m_pMainWnd = &mergeProgress;
 				mergeProgress.m_GitCmd = L"git.exe merge --ff-only " + upstream;
 				mergeProgress.m_AutoClose = AUTOCLOSE_IF_NO_ERRORS;
 				mergeProgress.m_PostCmdCallback = [](DWORD status, PostCmdList& postCmdList)
@@ -2694,6 +2728,8 @@ static bool DoFetch(HWND hWnd, const CString& url, const bool fetchAllRemotes, c
 bool CAppUtils::Fetch(HWND hWnd, const CString& remoteName, bool allRemotes)
 {
 	CPullFetchDlg dlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
+	if (GetExplorerHWND() == hWnd)
+		theApp.m_pMainWnd = &dlg;
 	dlg.m_PreSelectRemote = remoteName;
 	dlg.m_IsPull=FALSE;
 	dlg.m_bAllRemotes = allRemotes;
@@ -2747,6 +2783,8 @@ bool CAppUtils::DoPush(HWND hWnd, bool autoloadKey, bool pack, bool tags, bool a
 	arg += L"--progress ";
 
 	CProgressDlg progress(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
+	if (GetExplorerHWND() == hWnd)
+		theApp.m_pMainWnd = &progress;
 
 	STRING_VECTOR remotesList;
 	if (allRemotes)
@@ -2843,6 +2881,8 @@ bool CAppUtils::DoPush(HWND hWnd, bool autoloadKey, bool pack, bool tags, bool a
 bool CAppUtils::Push(HWND hWnd, const CString& selectLocalBranch)
 {
 	CPushDlg dlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
+	if (GetExplorerHWND() == hWnd)
+		theApp.m_pMainWnd = &dlg;
 	dlg.m_BranchSourceName = selectLocalBranch;
 
 	if (dlg.DoModal() == IDOK)
@@ -2854,6 +2894,8 @@ bool CAppUtils::Push(HWND hWnd, const CString& selectLocalBranch)
 bool CAppUtils::RequestPull(HWND hWnd, const CString& endrevision, const CString& repositoryUrl)
 {
 	CRequestPullDlg dlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
+	if (GetExplorerHWND() == hWnd)
+		theApp.m_pMainWnd = &dlg;
 	dlg.m_RepositoryURL = repositoryUrl;
 	dlg.m_EndRevision = endrevision;
 	if (dlg.DoModal()==IDOK)
@@ -2893,6 +2935,8 @@ bool CAppUtils::RequestPull(HWND hWnd, const CString& endrevision, const CString
 		if (dlg.m_bSendMail)
 		{
 			CSendMailDlg sendmaildlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
+			if (GetExplorerHWND() == hWnd)
+				theApp.m_pMainWnd = &sendmaildlg;
 			sendmaildlg.m_PathList = CTGitPathList(CTGitPath(tempFileName));
 			sendmaildlg.m_bCustomSubject = true;
 
@@ -2902,7 +2946,8 @@ bool CAppUtils::RequestPull(HWND hWnd, const CString& endrevision, const CString
 					return FALSE;
 
 				CGitProgressDlg progDlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
-				theApp.m_pMainWnd = &progDlg;
+				if (GetExplorerHWND() == hWnd)
+					theApp.m_pMainWnd = &progDlg;
 				SendMailProgressCommand sendMailProgressCommand;
 				progDlg.SetCommand(&sendMailProgressCommand);
 
@@ -2983,6 +3028,8 @@ BOOL CAppUtils::Commit(HWND hWnd, const CString& bugid, BOOL bWholeProject, CStr
 	{
 		bFailed = false;
 		CCommitDlg dlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
+		if (GetExplorerHWND() == hWnd)
+			theApp.m_pMainWnd = &dlg;
 		dlg.m_sBugID = bugid;
 
 		dlg.m_bWholeProject = bWholeProject;
@@ -3049,6 +3096,8 @@ BOOL CAppUtils::Commit(HWND hWnd, const CString& bugid, BOOL bWholeProject, CStr
 BOOL CAppUtils::SVNDCommit(HWND hWnd)
 {
 	CSVNDCommitDlg dcommitdlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
+	if (GetExplorerHWND() == hWnd)
+		theApp.m_pMainWnd = &dcommitdlg;
 	CString gitSetting = g_Git.GetConfigValue(L"svn.rmdir");
 	if (gitSetting.IsEmpty()) {
 		if (dcommitdlg.DoModal() != IDOK)
@@ -3100,6 +3149,8 @@ BOOL CAppUtils::SVNDCommit(HWND hWnd)
 	}
 
 	CProgressDlg progress(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
+	if (GetExplorerHWND() == hWnd)
+		theApp.m_pMainWnd = &progress;
 	if (dcommitdlg.m_rmdir)
 		progress.m_GitCmd = L"git.exe svn dcommit --rmdir";
 	else
@@ -3179,6 +3230,8 @@ static bool DoMerge(HWND hWnd, bool noFF, bool ffOnly, bool squash, bool noCommi
 	cmd.Format(L"git.exe merge%s %s", (LPCTSTR)args, (LPCTSTR)mergeVersion);
 
 	CProgressDlg Prodlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
+	if (GetExplorerHWND() == hWnd)
+		theApp.m_pMainWnd = &Prodlg;
 	Prodlg.m_GitCmd = cmd;
 
 	Prodlg.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
@@ -3279,6 +3332,8 @@ BOOL CAppUtils::Merge(HWND hWnd, const CString* commit, bool showStashPop)
 BOOL CAppUtils::MergeAbort(HWND hWnd)
 {
 	CMergeAbortDlg dlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
+	if (GetExplorerHWND() == hWnd)
+		theApp.m_pMainWnd = &dlg;
 	if (dlg.DoModal() == IDOK)
 		return Reset(hWnd, L"HEAD", (dlg.m_ResetType == 0) ? 3 : dlg.m_ResetType);
 
@@ -3429,6 +3484,8 @@ bool CAppUtils::BisectStart(HWND hWnd, const CString& lastGood, const CString& f
 	}
 
 	CBisectStartDlg bisectStartDlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
+	if (GetExplorerHWND() == hWnd)
+		theApp.m_pMainWnd = &bisectStartDlg;
 
 	if (!lastGood.IsEmpty())
 		bisectStartDlg.m_sLastGood = lastGood;
@@ -3438,7 +3495,8 @@ bool CAppUtils::BisectStart(HWND hWnd, const CString& lastGood, const CString& f
 	if (bisectStartDlg.DoModal() == IDOK)
 	{
 		CProgressDlg progress(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
-		theApp.m_pMainWnd = &progress;
+		if (GetExplorerHWND() == hWnd)
+			theApp.m_pMainWnd = &progress;
 		progress.m_GitCmdList.push_back(L"git.exe bisect start");
 		progress.m_GitCmdList.push_back(L"git.exe bisect good " + bisectStartDlg.m_LastGoodRevision);
 		progress.m_GitCmdList.push_back(L"git.exe bisect bad " + bisectStartDlg.m_FirstBadRevision);
@@ -3483,7 +3541,8 @@ bool CAppUtils::BisectOperation(HWND hWnd, const CString& op, const CString& ref
 	}
 
 	CProgressDlg progress(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
-	theApp.m_pMainWnd = &progress;
+	if (GetExplorerHWND() == hWnd)
+		theApp.m_pMainWnd = &progress;
 	progress.m_GitCmd = cmd;
 
 	progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)

@@ -27,6 +27,7 @@
 bool ResolveCommand::Execute()
 {
 	CResolveDlg dlg;
+	theApp.m_pMainWnd = &dlg;
 	dlg.m_pathList = pathList;
 	INT_PTR ret = IDOK;
 	if (!parser.HasKey(L"noquestion"))

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012, 2016 - TortoiseGit
+// Copyright (C) 2012, 2016, 2018 - TortoiseGit
 // Copyright (C) 2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -25,6 +25,7 @@
 bool UpdateCheckCommand::Execute()
 {
 	CCheckForUpdatesDlg dlg;
+	theApp.m_pMainWnd = &dlg;
 	if (parser.HasKey(L"visible"))
 		dlg.m_bShowInfo = TRUE;
 	if (parser.HasKey(L"force"))

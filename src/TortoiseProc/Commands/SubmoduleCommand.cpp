@@ -31,6 +31,7 @@ bool SubmoduleAddCommand::Execute()
 {
 	bool bRet = false;
 	CSubmoduleAddDlg dlg;
+	theApp.m_pMainWnd = &dlg;
 	dlg.m_strPath = cmdLinePath.GetDirectory().GetWinPathString();
 	dlg.m_strProject = g_Git.m_CurrentDir;
 	if( dlg.DoModal() == IDOK )
@@ -58,6 +59,7 @@ bool SubmoduleAddCommand::Execute()
 						(LPCTSTR)dlg.m_strRepos, (LPCTSTR)dlg.m_strPath);
 
 		CProgressDlg progress;
+		theApp.m_pMainWnd = &progress;
 		progress.m_GitCmd=cmd;
 		progress.DoModal();
 
@@ -116,6 +118,7 @@ bool SubmoduleUpdateCommand::Execute()
 	}
 
 	CSubmoduleUpdateDlg submoduleUpdateDlg;
+	theApp.m_pMainWnd = &submoduleUpdateDlg;
 	submoduleUpdateDlg.m_PathFilterList = pathFilterList;
 	if (parser.HasKey(L"selectedpath"))
 	{
@@ -127,6 +130,7 @@ bool SubmoduleUpdateCommand::Execute()
 		return false;
 
 	CProgressDlg progress;
+	theApp.m_pMainWnd = &progress;
 
 	g_Git.m_CurrentDir = super;
 
@@ -176,6 +180,8 @@ bool SubmoduleUpdateCommand::Execute()
 bool SubmoduleCommand::Execute(CString cmd,  CString arg)
 {
 	CProgressDlg progress;
+	theApp.m_pMainWnd = &progress;
+
 	CString bkpath;
 
 	if (parser.HasKey(L"bkpath"))

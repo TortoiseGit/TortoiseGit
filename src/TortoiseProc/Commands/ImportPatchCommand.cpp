@@ -27,6 +27,8 @@
 bool ImportPatchCommand::Execute()
 {
 	CImportPatchDlg dlg;
+	theApp.m_pMainWnd = &dlg;
+
 	CString cmd;
 	CString output;
 

@@ -32,6 +32,7 @@ bool RepoStatusCommand::Execute()
 	}
 
 	CChangedDlg dlg;
+	theApp.m_pMainWnd = &dlg;
 	dlg.m_pathList = pathList;
 	dlg.DoModal();
 	return true;

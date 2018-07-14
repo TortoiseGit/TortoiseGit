@@ -34,6 +34,8 @@ bool RepositoryBrowserCommand::Execute()
 	CString val = parser.GetVal(L"rev");
 	if (!val.IsEmpty())
 		rev = val;
-	CRepositoryBrowser(rev).DoModal();
+	CRepositoryBrowser dlg(rev);
+	theApp.m_pMainWnd = &dlg;
+	dlg.DoModal();
 	return true;
 }
