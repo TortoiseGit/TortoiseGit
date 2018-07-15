@@ -759,7 +759,7 @@ bool CAppUtils::LaunchRemoteSetting()
 	CTGitPath path(g_Git.m_CurrentDir);
 	CSettings dlg(IDS_PROC_SETTINGS_TITLE, &path);
 	dlg.SetTreeViewMode(TRUE, TRUE, TRUE);
-	dlg.SetTreeWidth(220 * CDPIAware::Instance().GetDPIX());
+	dlg.SetTreeWidth(CDPIAware::Instance().ScaleX(220));
 	dlg.m_DefaultPage = L"gitremote";
 
 	dlg.DoModal();

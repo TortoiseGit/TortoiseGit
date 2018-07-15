@@ -29,7 +29,7 @@ bool SettingsCommand::Execute()
 	CSettings dlg(IDS_PROC_SETTINGS_TITLE,&orgCmdLinePath);
 	theApp.m_pMainWnd = &dlg;
 	dlg.SetTreeViewMode(TRUE, TRUE, TRUE);
-	dlg.SetTreeWidth(220 * CDPIAware::Instance().GetDPIX());
+	dlg.SetTreeWidth(CDPIAware::Instance().ScaleX(220));
 	dlg.m_DefaultPage = defaultpage;
 
 	dlg.DoModal();
