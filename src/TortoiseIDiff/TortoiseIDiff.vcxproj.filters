@@ -134,6 +134,9 @@
     <ClInclude Include="..\Utils\StringUtils.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\Utils\DPIAware.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\alphatoggle.ico">
