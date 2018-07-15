@@ -136,7 +136,7 @@ bool SubmoduleUpdateCommand::Execute()
 
 	CString params = L" --progress";
 	if (submoduleUpdateDlg.m_bInit)
-		params = L" --init";
+		params += L" --init";
 	if (submoduleUpdateDlg.m_bRecursive)
 		params += L" --recursive";
 	if (submoduleUpdateDlg.m_bForce)
