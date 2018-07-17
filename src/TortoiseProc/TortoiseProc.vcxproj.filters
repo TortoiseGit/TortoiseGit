@@ -2136,6 +2136,9 @@
     <Image Include="..\Resources\library-win10.ico">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="..\Resources\reset.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\download.avi">

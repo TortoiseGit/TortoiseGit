@@ -96,6 +96,7 @@ IDI_SNIPPET             ICON                    "snippet.ico"
 IDI_CERTCHECK           ICON                    "certcheck.ico"
 IDI_TORTOISEUDIFF       ICON                    "..\\TortoiseUDiff\\TortoiseUDiff.ico"
 IDI_LIBRARY_WIN10       ICON                    "library-win10.ico"
+IDI_RESET               ICON                    "reset.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //

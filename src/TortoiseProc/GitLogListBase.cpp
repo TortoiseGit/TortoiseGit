@@ -2067,7 +2067,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				str.Format(IDS_RESET_TO_THIS_FORMAT, (LPCTSTR)g_Git.GetCurrentBranch());
 
 				if (m_ContextMenuMask&GetContextMenuBit(ID_RESET) && m_hasWC && !isStash)
-					popup.AppendMenuIcon(ID_RESET,str,IDI_REVERT);
+					popup.AppendMenuIcon(ID_RESET, str, IDI_RESET);
 
 
 				// Add Switch Branch express Menu

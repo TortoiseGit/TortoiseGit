@@ -681,6 +681,7 @@
     <Image Include="..\Resources\refresh.ico" />
     <Image Include="..\Resources\reftype.bmp" />
     <Image Include="..\Resources\RepoBrowserBackground.ico" />
+    <Image Include="..\Resources\reset.ico" />
     <Image Include="..\Resources\ResolveBackground.ico" />
     <Image Include="..\Resources\restore.ico" />
     <Image Include="..\Resources\restoreovl.ico" />
