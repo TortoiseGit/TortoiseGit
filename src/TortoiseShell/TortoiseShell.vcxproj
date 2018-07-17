@@ -184,7 +184,6 @@
     <Image Include="..\Resources\tsvnmenufolder.ico" />
     <Image Include="..\Resources\tsvnmenulink.ico" />
     <Image Include="..\Resources\tsvnmenumultiple.ico" />
-    <Image Include="..\Resources\update1.ico" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resourceshell.rc" />

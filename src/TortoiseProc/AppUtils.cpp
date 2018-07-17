@@ -2619,7 +2619,7 @@ static bool DoFetch(HWND hWnd, const CString& url, const bool fetchAllRemotes, c
 			CAppUtils::GitReset(hWnd, &defaultUpstream, 2);
 		});
 
-		postCmdList.emplace_back(IDI_PULL, IDS_MENUFETCH, [&hWnd]{ CAppUtils::Fetch(hWnd); });
+		postCmdList.emplace_back(IDI_UPDATE, IDS_MENUFETCH, [&hWnd]{ CAppUtils::Fetch(hWnd); });
 
 		if (!runRebase && !GitAdminDir::IsBareRepo(g_Git.m_CurrentDir))
 			postCmdList.emplace_back(IDI_REBASE, IDS_MENUREBASE, [&]{ runRebase = false; CAppUtils::RebaseAfterFetch(hWnd); });
@@ -2819,7 +2819,7 @@ bool CAppUtils::DoPush(HWND hWnd, bool autoloadKey, bool pack, bool tags, bool a
 			if (rejected)
 			{
 				postCmdList.emplace_back(IDI_PULL, IDS_MENUPULL, [&hWnd]{ Pull(hWnd, true); });
-				postCmdList.emplace_back(IDI_PULL, IDS_MENUFETCH, [&]{ Fetch(hWnd, allRemotes ? L"" : remote, allRemotes); });
+				postCmdList.emplace_back(IDI_UPDATE, IDS_MENUFETCH, [&]{ Fetch(hWnd, allRemotes ? L"" : remote, allRemotes); });
 			}
 			postCmdList.emplace_back(IDI_PUSH, IDS_MENUPUSH, [&]{ Push(hWnd, localBranch); });
 			return;

@@ -926,7 +926,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		if(bShowFetchOption)
 		{
 			bAddSeparator = true;
-			popupMenu.AppendMenuIcon(eCmd_Fetch, fetchFromCmd, IDI_PULL);
+			popupMenu.AppendMenuIcon(eCmd_Fetch, fetchFromCmd, IDI_UPDATE);
 		}
 
 		if(bAddSeparator)
@@ -1047,7 +1047,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 				{
 					CString temp;
 					temp.Format(IDS_PROC_BROWSEREFS_FETCHFROM, (LPCTSTR)remoteName);
-					popupMenu.AppendMenuIcon(eCmd_Fetch, temp, IDI_PULL);
+					popupMenu.AppendMenuIcon(eCmd_Fetch, temp, IDI_UPDATE);
 
 					temp.LoadString(IDS_DELETEREMOTETAG);
 					popupMenu.AppendMenuIcon(eCmd_DeleteRemoteTag | (pos << 16), temp, IDI_DELETE);

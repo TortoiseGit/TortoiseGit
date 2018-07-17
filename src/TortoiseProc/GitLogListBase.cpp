@@ -2012,7 +2012,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						popup.AppendMenuIcon(ID_PULL, IDS_MENUPULL, IDI_PULL);
 
 					if(m_ContextMenuMask&GetContextMenuBit(ID_FETCH))
-						popup.AppendMenuIcon(ID_FETCH, IDS_MENUFETCH, IDI_PULL);
+						popup.AppendMenuIcon(ID_FETCH, IDS_MENUFETCH, IDI_UPDATE);
 
 					if ((m_ContextMenuMask & GetContextMenuBit(ID_SUBMODULE_UPDATE)) && workingTree.HasSubmodules())
 						popup.AppendMenuIcon(ID_SUBMODULE_UPDATE, IDS_PROC_SYNC_SUBKODULEUPDATE, IDI_UPDATE);

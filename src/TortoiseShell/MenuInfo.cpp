@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2016, 2018 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -32,7 +32,7 @@ MenuInfo menuInfo[] =
 	{ ShellMenuPull,						MENUPULL,			IDI_PULL,				IDS_MENUPULL,				IDS_MENUDESCPULL,
 		{ITEMIS_FOLDERINGIT|ITEMIS_ONLYONE, ITEMIS_BISECT|ITEMIS_MERGEACTIVE}, {0, 0}, {0, 0}, {0, 0} },
 
-	{ ShellMenuFetch,						MENUFETCH,			IDI_PULL,				IDS_MENUFETCH,				IDS_MENUDESCFETCH,
+	{ ShellMenuFetch,						MENUFETCH,			IDI_UPDATE,				IDS_MENUFETCH,				IDS_MENUDESCFETCH,
 		{ITEMIS_FOLDERINGIT|ITEMIS_ONLYONE, 0}, {ITEMIS_BAREREPO, 0}, {0, 0}, {0, 0} },
 
 	{ ShellMenuPush,						MENUPUSH,			IDI_PUSH,				IDS_MENUPUSH,				IDS_MENUDESCPUSH,
@@ -53,7 +53,7 @@ MenuInfo menuInfo[] =
 	{ ShellMenuGitSVNRebase,				MENUSVNREBASE,		IDI_REBASE,				IDS_MENUSVNREBASE,			IDS_MENUSVNREBASE_DESC,
 		{ITEMIS_FOLDERINGIT|ITEMIS_GITSVN|ITEMIS_ONLYONE, ITEMIS_BISECT|ITEMIS_MERGEACTIVE}, {0, 0}, {0, 0}, {0, 0} },
 
-	{ ShellMenuGitSVNDFetch,				MENUSVNFETCH,		IDI_PULL,				IDS_MENUSVNFETCH,			IDS_MENUDESCSVNFETCH,
+	{ ShellMenuGitSVNDFetch,				MENUSVNFETCH,		IDI_UPDATE,				IDS_MENUSVNFETCH,			IDS_MENUDESCSVNFETCH,
 		{ITEMIS_FOLDERINGIT|ITEMIS_GITSVN|ITEMIS_ONLYONE, 0}, {0, 0}, {0, 0}, {0, 0} },
 
 	{ ShellMenuGitSVNIgnore,				MENUSVNIGNORE,		IDI_IGNORE,				IDS_MENUSVNIGNORE,			IDS_MENUSVNIGNORE_DESC,

@@ -381,9 +381,6 @@
     <Image Include="..\Resources\tsvnmenumultiple.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\Resources\update1.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="..\Resources\menurevisiongraph.ico">
       <Filter>Resource Files</Filter>
     </Image>
