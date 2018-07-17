@@ -35,7 +35,6 @@ bool RenameCommand::Execute()
 	// name (one that's different to the original name
 	CString sNewName;
 	CRenameDlg dlg;
-	theApp.m_pMainWnd = &dlg;
 	dlg.SetInputValidator([&](const int /*nID*/, const CString& input) -> CString
 	{
 		CString newName;

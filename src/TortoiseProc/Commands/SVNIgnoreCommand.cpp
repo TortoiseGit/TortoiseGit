@@ -27,7 +27,6 @@ bool SVNIgnoreCommand::Execute()
 {
 	CSVNIgnoreTypeDlg dlg;
 	CProgressDlg progress;
-	theApp.m_pMainWnd = &progress;
 
 	if( dlg.DoModal() == IDOK)
 	{
@@ -51,6 +50,7 @@ bool SVNIgnoreCommand::Execute()
 			return FALSE;
 		}
 
+		theApp.m_pMainWnd = &progress;
 		if (progress.DoModal() == IDOK)
 			return progress.m_GitStatus == 0;
 	}

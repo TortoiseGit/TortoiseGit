@@ -205,8 +205,6 @@ static bool DoCleanUp(const CTGitPathList& pathList, int cleanType, bool bDir, b
 	if (bDryRun || bNoRecycleBin)
 	{
 		CProgressDlg progress;
-		theApp.m_pMainWnd = &progress;
-
 		for (int i = 0; i < pathList.GetCount(); ++i)
 		{
 			CString path;
@@ -293,7 +291,6 @@ bool CleanupCommand::Execute()
 	bool bRet = false;
 
 	CCleanTypeDlg dlg;
-	theApp.m_pMainWnd = &dlg;
 	dlg.m_pathList = pathList;
 	if (dlg.DoModal() == IDOK)
 	{

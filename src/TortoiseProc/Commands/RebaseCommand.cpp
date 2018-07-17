@@ -29,7 +29,6 @@ bool RebaseCommand::Execute()
 	while(1)
 	{
 		CRebaseDlg dlg;
-		theApp.m_pMainWnd = &dlg;
 		dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENULOG)));
 		dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_PROC_RESTARTREBASE)));
 		INT_PTR ret = dlg.DoModal();

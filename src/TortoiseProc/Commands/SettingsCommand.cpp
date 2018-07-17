@@ -27,7 +27,6 @@ bool SettingsCommand::Execute()
 	CString defaultpage = parser.GetVal(L"page");
 
 	CSettings dlg(IDS_PROC_SETTINGS_TITLE,&orgCmdLinePath);
-	theApp.m_pMainWnd = &dlg;
 	dlg.SetTreeViewMode(TRUE, TRUE, TRUE);
 	dlg.SetTreeWidth(CDPIAware::Instance().ScaleX(220));
 	dlg.m_DefaultPage = defaultpage;

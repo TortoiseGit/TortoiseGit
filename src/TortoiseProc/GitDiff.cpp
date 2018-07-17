@@ -70,8 +70,6 @@ int CGitDiff::SubmoduleDiffNull(HWND hWnd, const CTGitPath* pPath, const CString
 		}
 
 		CSubmoduleDiffDlg submoduleDiffDlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
-		if (GetExplorerHWND() == hWnd)
-			theApp.m_pMainWnd = &submoduleDiffDlg;
 		if (pPath->m_Action & CTGitPath::LOGACTIONS_DELETED)
 			submoduleDiffDlg.SetDiff(pPath->GetWinPath(), false, newhash, newsub, toOK, GIT_REV_ZERO, L"", false, dirty, DeleteSubmodule);
 		else
@@ -264,8 +262,6 @@ int CGitDiff::SubmoduleDiff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* 
 		GetSubmoduleChangeType(subgit, oldhash, newhash, oldOK, newOK, changeType, oldsub, newsub);
 
 	CSubmoduleDiffDlg submoduleDiffDlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
-	if (GetExplorerHWND() == hWnd)
-		theApp.m_pMainWnd = &submoduleDiffDlg;
 	submoduleDiffDlg.SetDiff(pPath->GetWinPath(), isWorkingCopy, oldhash, oldsub, oldOK, newhash, newsub, newOK, dirty, changeType);
 	submoduleDiffDlg.DoModal();
 	if (submoduleDiffDlg.IsRefresh())
@@ -470,16 +466,12 @@ int CGitDiff::DiffCommit(HWND hWnd, const CTGitPath& path1, const CTGitPath& pat
 	if (path1.GetWinPathString().IsEmpty())
 	{
 		CFileDiffDlg dlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
-		if (GetExplorerHWND() == hWnd)
-			theApp.m_pMainWnd = &dlg;
 		dlg.SetDiff(nullptr, *r2, *r1);
 		dlg.DoModal();
 	}
 	else if (path1.IsDirectory())
 	{
 		CFileDiffDlg dlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
-		if (GetExplorerHWND() == hWnd)
-			theApp.m_pMainWnd = &dlg;
 		dlg.SetDiff(&path1, *r2, *r1);
 		dlg.DoModal();
 	}
@@ -498,16 +490,12 @@ int CGitDiff::DiffCommit(HWND hWnd, const CTGitPath& path1, const CTGitPath& pat
 	if (path1.GetWinPathString().IsEmpty())
 	{
 		CFileDiffDlg dlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
-		if (GetExplorerHWND() == hWnd)
-			theApp.m_pMainWnd = &dlg;
 		dlg.SetDiff(nullptr, r2, r1);
 		dlg.DoModal();
 	}
 	else if (path1.IsDirectory())
 	{
 		CFileDiffDlg dlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
-		if (GetExplorerHWND() == hWnd)
-			theApp.m_pMainWnd = &dlg;
 		dlg.SetDiff(&path1, r2, r1);
 		dlg.DoModal();
 	}

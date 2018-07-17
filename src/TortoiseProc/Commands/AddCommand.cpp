@@ -55,7 +55,6 @@ bool AddCommand::Execute()
 		else
 		{
 			CAddDlg dlg;
-			theApp.m_pMainWnd = &dlg;
 			dlg.m_pathList = pathList;
 			if (dlg.DoModal() == IDOK)
 			{

@@ -95,7 +95,6 @@ bool SVNRebaseCommand::Execute()
 		return false;
 	}
 	CProgressDlg progress;
-	theApp.m_pMainWnd = &progress;
 	progress.m_GitCmd = L"git.exe svn fetch";
 	progress.m_AutoClose = AUTOCLOSE_IF_NO_ERRORS;
 
@@ -125,7 +124,6 @@ bool SVNRebaseCommand::Execute()
 	if (g_Git.IsFastForward(L"HEAD", out))
 	{
 		CProgressDlg progressReset;
-		theApp.m_pMainWnd = &progressReset;
 		CString cmd;
 		cmd.Format(L"git.exe reset --hard %s --", (LPCTSTR)out);
 		progressReset.m_GitCmd = cmd;
@@ -145,7 +143,6 @@ bool SVNRebaseCommand::Execute()
 
 	dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENULOG)));
 	//need rebase
-	theApp.m_pMainWnd = &dlg;
 	INT_PTR response = dlg.DoModal();
 	if (response == IDOK || response == IDC_REBASE_POST_BUTTON)
 	{

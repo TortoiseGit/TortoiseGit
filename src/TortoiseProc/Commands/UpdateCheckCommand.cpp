@@ -25,7 +25,6 @@
 bool UpdateCheckCommand::Execute()
 {
 	CCheckForUpdatesDlg dlg;
-	theApp.m_pMainWnd = &dlg;
 	if (parser.HasKey(L"visible"))
 		dlg.m_bShowInfo = TRUE;
 	if (parser.HasKey(L"force"))
