@@ -23,7 +23,6 @@
 #define IDD_FILEPATCHES                 135
 #define IDD_ABOUT                       136
 #define IDD_LINEDIFF                    137
-#define IDB_TTF_BMP                     137
 #define IDD_SETCOLORPAGE                138
 #define IDD_FIND                        139
 #define IDI_WHITESPACELINE              140

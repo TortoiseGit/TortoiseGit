@@ -24,7 +24,6 @@
 #define IDS_MENUMERGE                   129
 #define IDI_MERGE                       129
 #define IDS_MENUBRANCH                  130
-#define IDI_IMPORT                      130
 #define IDS_MENUIMPORT                  131
 #define IDI_EXPORT                      131
 #define IDS_MENUEXPORT                  132
@@ -216,7 +215,6 @@
 #define IDI_MENUFOLDER                  5155
 #define IDI_MENULINK                    5156
 #define IDI_MENUMULTIPLE                5157
-#define IDI_PROPERTIES                  5158
 #define IDI_APPSMALL                    5160
 #define IDI_CLIPPASTE                   5164
 #define IDI_PUSH                        5166

@@ -23,11 +23,9 @@
 #define IDD_INPUTDLG                    161
 #define IDI_DRIVES                      164
 #define IDD_URL                         164
-#define IDI_SSH                         165
 #define IDI_PROXY                       166
 #define IDI_MISC                        167
 #define IDB_LOGOFLIPPED                 168
-#define IDB_TTF_BMP                     169
 #define IDD_SETTINGSPROGSADV            170
 #define IDD_TOOLASSOC                   171
 #define IDD_CHECKFORUPDATES             174
@@ -88,8 +86,6 @@
 #define IDD_SETTINGSBUGTRAQ             283
 #define IDI_BUGTRAQ                     284
 #define IDD_SETTINGSBUGTRAQADV          284
-#define IDI_UP                          286
-#define IDI_MKDIR                       289
 #define IDI_REFRESH                     290
 #define IDI_SAVE                        291
 #define IDI_SAVEAS                      292
