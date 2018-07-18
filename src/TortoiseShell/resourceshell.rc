@@ -79,6 +79,8 @@ IDI_DAEMON              ICON                    "..\\Resources\\menudaemon.ico"
 IDI_MERGEABORT          ICON                    "..\\Resources\\menumergeabort.ico"
 IDI_BISECT              ICON                    "..\\Resources\\menubisect.ico"
 IDI_BISECT_RESET        ICON                    "..\\Resources\\menubisectreset.ico"
+IDI_SHELVE              ICON                    "..\\Resources\\menushelve.ico"
+IDI_UNSHELVE            ICON                    "..\\Resources\\menuunshelve.ico"
 #endif    // Neutral resources
 /////////////////////////////////////////////////////////////////////////////
 

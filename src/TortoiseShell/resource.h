@@ -215,6 +215,8 @@
 #define IDI_MENULINK                    5156
 #define IDI_MENUMULTIPLE                5157
 #define IDI_APPSMALL                    5160
+#define IDI_SHELVE                      5161
+#define IDI_UNSHELVE                    5162
 #define IDI_CLIPPASTE                   5164
 #define IDI_PUSH                        5166
 #define IDI_CLONE                       5167
