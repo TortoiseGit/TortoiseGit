@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -747,6 +747,9 @@ STDMETHODIMP CShellExt::AddPages(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam
 	PROPSHEETPAGE psp = { 0 };
 	HPROPSHEETPAGE hPage;
 	CGitPropertyPage *sheetpage = new (std::nothrow) CGitPropertyPage(files_);
+
+	if (!sheetpage)
+		return E_OUTOFMEMORY;
 
 	psp.dwSize = sizeof (psp);
 	psp.dwFlags = PSP_USEREFPARENT | PSP_USETITLE | PSP_USEICONID | PSP_USECALLBACK;
