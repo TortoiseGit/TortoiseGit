@@ -619,9 +619,6 @@
     <None Include="..\Resources\tortoisemerge_logoflipped.bmp">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\Resources\ttf_glyph.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="..\Resources\moved.ico">
       <Filter>Resource Files</Filter>
     </None>

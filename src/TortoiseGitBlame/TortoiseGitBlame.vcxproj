@@ -160,7 +160,6 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resources\copy.ico" />
-    <Image Include="..\Resources\menublame.ico" />
     <Image Include="..\Resources\menucompare.ico" />
     <Image Include="..\Resources\blameres\output_wnd.ico" />
     <Image Include="..\Resources\blameres\output_wnd_hc.ico" />

@@ -252,9 +252,6 @@
     <Image Include="..\Resources\menubisectreset.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\Resources\menublame.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="..\Resources\menucheckout.ico">
       <Filter>Resource Files</Filter>
     </Image>
@@ -282,9 +279,6 @@
     <Image Include="..\Resources\menudelete.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\Resources\menudelunversioned.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="..\Resources\menudiff.ico">
       <Filter>Resource Files</Filter>
     </Image>
@@ -300,9 +294,6 @@
     <Image Include="..\Resources\menuignore.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\Resources\menuimport.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="..\Resources\menulog.ico">
       <Filter>Resource Files</Filter>
     </Image>
@@ -313,9 +304,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\menupick.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\Resources\menuproperties.ico">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\menurebase.ico">
@@ -391,9 +379,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\tsvnmenumultiple.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\Resources\update1.ico">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\menurevisiongraph.ico">

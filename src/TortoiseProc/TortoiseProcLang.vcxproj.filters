@@ -47,9 +47,6 @@
     <Image Include="..\Resources\CommitBackground.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\Resources\DelunversionedBackground.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="..\Resources\dialogs.ico">
       <Filter>Resource Files</Filter>
     </Image>
@@ -107,34 +104,10 @@
     <Image Include="..\Resources\RevertBackground.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\Resources\revgraph_added.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\Resources\revgraph_addedplus.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\Resources\revgraph_deleted.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\Resources\revgraph_lastcommit.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\Resources\revgraph_renamed.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\Resources\revgraph_replaced.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\Resources\revgraph_tag.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="..\Resources\revgraphbar.bmp">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\saveddata.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\Resources\ssh.ico">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\switch.ico">
@@ -147,9 +120,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\tortoisegit_logoflipped.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\Resources\ttf_glyph.bmp">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\UpdateBackground.ico">

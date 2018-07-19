@@ -9,6 +9,7 @@ Released: unreleased
  * Fixed issue #3188: Add progress support for submodule clone
  * Fixed issue #3212: With Detached Head, Push Dialog has Local Branch filled with HEAD or Commit Hash
  * Fixed issue #3223: Format Patch: Set From and To for single commits
+ * Lots of high DPI improvements
 
 == Bug Fixes ==
  * Fixed issue #3167: Crash when aborting cherry-picks

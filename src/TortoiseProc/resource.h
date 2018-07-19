@@ -23,11 +23,9 @@
 #define IDD_INPUTDLG                    161
 #define IDI_DRIVES                      164
 #define IDD_URL                         164
-#define IDI_SSH                         165
 #define IDI_PROXY                       166
 #define IDI_MISC                        167
 #define IDB_LOGOFLIPPED                 168
-#define IDB_TTF_BMP                     169
 #define IDD_SETTINGSPROGSADV            170
 #define IDD_TOOLASSOC                   171
 #define IDD_CHECKFORUPDATES             174
@@ -88,8 +86,6 @@
 #define IDD_SETTINGSBUGTRAQ             283
 #define IDI_BUGTRAQ                     284
 #define IDD_SETTINGSBUGTRAQADV          284
-#define IDI_UP                          286
-#define IDI_MKDIR                       289
 #define IDI_REFRESH                     290
 #define IDI_SAVE                        291
 #define IDI_SAVEAS                      292
@@ -152,6 +148,7 @@
 #define IDD_SETTINGSUDIFF               357
 #define IDI_LIBRARY_WIN10               358
 #define IDR_REVISIONGRAPH               359
+#define IDI_RESET                       361
 #define IDS_CHSTAT_FILECOL              1000
 #define IDS_CHSTAT_WCCOL                1001
 #define IDS_CHSTAT_REPOCOL              1002
@@ -2044,7 +2041,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        361
+#define _APS_NEXT_RESOURCE_VALUE        362
 #define _APS_NEXT_COMMAND_VALUE         32874
 #define _APS_NEXT_CONTROL_VALUE         1848
 #define _APS_NEXT_SYMED_VALUE           201

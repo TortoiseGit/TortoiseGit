@@ -1944,7 +1944,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				{
 					if(m_ContextMenuMask&GetContextMenuBit(ID_STASH_SAVE))
 					{
-						popup.AppendMenuIcon(ID_STASH_SAVE, IDS_MENUSTASHSAVE, IDI_COMMIT);
+						popup.AppendMenuIcon(ID_STASH_SAVE, IDS_MENUSTASHSAVE, IDI_SHELVE);
 						requiresSeparator = true;
 					}
 				}
@@ -1953,7 +1953,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				{
 					if (m_ContextMenuMask&GetContextMenuBit(ID_STASH_POP))
 					{
-						popup.AppendMenuIcon(ID_STASH_POP, IDS_MENUSTASHPOP, IDI_RELOCATE);
+						popup.AppendMenuIcon(ID_STASH_POP, IDS_MENUSTASHPOP, IDI_UNSHELVE);
 						requiresSeparator = true;
 					}
 
@@ -2012,7 +2012,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						popup.AppendMenuIcon(ID_PULL, IDS_MENUPULL, IDI_PULL);
 
 					if(m_ContextMenuMask&GetContextMenuBit(ID_FETCH))
-						popup.AppendMenuIcon(ID_FETCH, IDS_MENUFETCH, IDI_PULL);
+						popup.AppendMenuIcon(ID_FETCH, IDS_MENUFETCH, IDI_UPDATE);
 
 					if ((m_ContextMenuMask & GetContextMenuBit(ID_SUBMODULE_UPDATE)) && workingTree.HasSubmodules())
 						popup.AppendMenuIcon(ID_SUBMODULE_UPDATE, IDS_PROC_SYNC_SUBKODULEUPDATE, IDI_UPDATE);
@@ -2067,7 +2067,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				str.Format(IDS_RESET_TO_THIS_FORMAT, (LPCTSTR)g_Git.GetCurrentBranch());
 
 				if (m_ContextMenuMask&GetContextMenuBit(ID_RESET) && m_hasWC && !isStash)
-					popup.AppendMenuIcon(ID_RESET,str,IDI_REVERT);
+					popup.AppendMenuIcon(ID_RESET, str, IDI_RESET);
 
 
 				// Add Switch Branch express Menu
@@ -2177,7 +2177,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 		{
 			popup.AppendMenuIcon(ID_REFLOG_DEL, IDS_REFLOG_DEL, IDI_DELETE);
 			if (selectedCount == 1 && CStringUtils::StartsWith(pSelLogEntry->m_Ref, L"refs/stash"))
-				popup.AppendMenuIcon(ID_REFLOG_STASH_APPLY, IDS_MENUSTASHAPPLY, IDI_RELOCATE);
+				popup.AppendMenuIcon(ID_REFLOG_STASH_APPLY, IDS_MENUSTASHAPPLY, IDI_UNSHELVE);
 			if (selectedCount <= 2)
 				popup.AppendMenu(MF_SEPARATOR, NULL);
 		}
@@ -2271,9 +2271,9 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			}
 			if (m_ContextMenuMask&GetContextMenuBit(ID_CHERRY_PICK) && !isHeadCommit && m_hasWC && !isMergeActive) {
 				if (selectedCount >= 2)
-					popup.AppendMenuIcon(ID_CHERRY_PICK, IDS_CHERRY_PICK_VERSIONS, IDI_EXPORT);
+					popup.AppendMenuIcon(ID_CHERRY_PICK, IDS_CHERRY_PICK_VERSIONS, IDI_PICK);
 				else
-					popup.AppendMenuIcon(ID_CHERRY_PICK, IDS_CHERRY_PICK_VERSION, IDI_EXPORT);
+					popup.AppendMenuIcon(ID_CHERRY_PICK, IDS_CHERRY_PICK_VERSION, IDI_PICK);
 				bAddSeparator = true;
 			}
 

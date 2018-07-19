@@ -50,7 +50,6 @@
     <Image Include="..\Resources\cancel-pressed.ico" />
     <Image Include="..\Resources\CFMBackground.ico" />
     <Image Include="..\Resources\CommitBackground.ico" />
-    <Image Include="..\Resources\DelunversionedBackground.ico" />
     <Image Include="..\Resources\dialogs.ico" />
     <Image Include="..\Resources\Drives.ico" />
     <Image Include="..\Resources\filteredit.ico" />
@@ -70,21 +69,12 @@
     <Image Include="..\Resources\RepoBrowserBackground.ico" />
     <Image Include="..\Resources\ResolveBackground.ico" />
     <Image Include="..\Resources\RevertBackground.ico" />
-    <Image Include="..\Resources\revgraph_added.ico" />
-    <Image Include="..\Resources\revgraph_addedplus.ico" />
-    <Image Include="..\Resources\revgraph_deleted.ico" />
-    <Image Include="..\Resources\revgraph_lastcommit.ico" />
-    <Image Include="..\Resources\revgraph_renamed.ico" />
-    <Image Include="..\Resources\revgraph_replaced.ico" />
-    <Image Include="..\Resources\revgraph_tag.ico" />
     <Image Include="..\Resources\revgraphbar.bmp" />
     <Image Include="..\Resources\saveddata.ico" />
-    <Image Include="..\Resources\ssh.ico" />
     <Image Include="..\Resources\switch.ico" />
     <Image Include="..\Resources\SwitchBackground.ico" />
     <Image Include="..\Resources\Tortoise.ico" />
     <Image Include="..\Resources\tortoisegit_logoflipped.bmp" />
-    <Image Include="..\Resources\ttf_glyph.bmp" />
     <Image Include="..\Resources\UpdateBackground.ico" />
     <Image Include="..\Resources\warning-general.ico" />
   </ItemGroup>

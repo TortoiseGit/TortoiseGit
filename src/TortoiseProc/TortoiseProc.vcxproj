@@ -621,7 +621,6 @@
     <Image Include="..\Resources\code.ico" />
     <Image Include="..\Resources\CommitBackground.ico" />
     <Image Include="..\Resources\copy.ico" />
-    <Image Include="..\Resources\DelunversionedBackground.ico" />
     <Image Include="..\Resources\dialogs.ico" />
     <Image Include="..\Resources\Drives.ico" />
     <Image Include="..\Resources\executableovl.ico" />
@@ -651,7 +650,6 @@
     <Image Include="..\Resources\lookandfeel.ico" />
     <Image Include="..\Resources\menuabout.ico" />
     <Image Include="..\Resources\menuadd.ico" />
-    <Image Include="..\Resources\menublame.ico" />
     <Image Include="..\Resources\menucheckout.ico" />
     <Image Include="..\Resources\menucleanup.ico" />
     <Image Include="..\Resources\menucommit.ico" />
@@ -660,16 +658,13 @@
     <Image Include="..\Resources\menucopy.ico" />
     <Image Include="..\Resources\menucreaterepos.ico" />
     <Image Include="..\Resources\menudelete.ico" />
-    <Image Include="..\Resources\menudelunversioned.ico" />
     <Image Include="..\Resources\menudiff.ico" />
     <Image Include="..\Resources\menuexport.ico" />
     <Image Include="..\Resources\menuhelp.ico" />
     <Image Include="..\Resources\menuignore.ico" />
-    <Image Include="..\Resources\menuimport.ico" />
     <Image Include="..\Resources\menulog.ico" />
     <Image Include="..\Resources\menumerge.ico" />
     <Image Include="..\Resources\menupatch.ico" />
-    <Image Include="..\Resources\menuproperties.ico" />
     <Image Include="..\Resources\menurelocate.ico" />
     <Image Include="..\Resources\menurename.ico" />
     <Image Include="..\Resources\menuresolve.ico" />
@@ -679,7 +674,6 @@
     <Image Include="..\Resources\menuswitch.ico" />
     <Image Include="..\Resources\menuupdate.ico" />
     <Image Include="..\Resources\misc.ico" />
-    <Image Include="..\Resources\newfolder.ico" />
     <Image Include="..\Resources\open.ico" />
     <Image Include="..\Resources\Overlays.ico" />
     <Image Include="..\Resources\proxy.ico" />
@@ -687,17 +681,11 @@
     <Image Include="..\Resources\refresh.ico" />
     <Image Include="..\Resources\reftype.bmp" />
     <Image Include="..\Resources\RepoBrowserBackground.ico" />
+    <Image Include="..\Resources\reset.ico" />
     <Image Include="..\Resources\ResolveBackground.ico" />
     <Image Include="..\Resources\restore.ico" />
     <Image Include="..\Resources\restoreovl.ico" />
     <Image Include="..\Resources\RevertBackground.ico" />
-    <Image Include="..\Resources\revgraph_added.ico" />
-    <Image Include="..\Resources\revgraph_addedplus.ico" />
-    <Image Include="..\Resources\revgraph_deleted.ico" />
-    <Image Include="..\Resources\revgraph_lastcommit.ico" />
-    <Image Include="..\Resources\revgraph_renamed.ico" />
-    <Image Include="..\Resources\revgraph_replaced.ico" />
-    <Image Include="..\Resources\revgraph_tag.ico" />
     <Image Include="..\Resources\revgraphbar.bmp" />
     <Image Include="..\Resources\revgraphglyphs.bmp" />
     <Image Include="..\Resources\save.ico" />
@@ -707,7 +695,6 @@
     <Image Include="..\Resources\snippet.ico" />
     <Image Include="..\Resources\spell.ico" />
     <Image Include="..\Resources\UpdateBackground.ico" />
-    <Image Include="..\Resources\ssh.ico" />
     <Image Include="..\Resources\switch.ico" />
     <Image Include="..\Resources\SwitchBackground.ico" />
     <Image Include="..\Resources\symlinkovl.ico" />
@@ -721,9 +708,6 @@
     <Image Include="..\Resources\tsvnmenufolder.ico" />
     <Image Include="..\Resources\tsvnmenulink.ico" />
     <Image Include="..\Resources\tsvnmenumultiple.ico" />
-    <Image Include="..\Resources\ttf_glyph.bmp" />
-    <Image Include="..\Resources\up.ico" />
-    <Image Include="..\Resources\update1.ico" />
     <Image Include="..\Resources\warning-general.ico" />
     <Image Include="..\TortoiseUDiff\TortoiseUDiff.ico" />
     <Image Include="..\Resources\library-win10.ico" />

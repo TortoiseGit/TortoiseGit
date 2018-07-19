@@ -106,7 +106,6 @@ END
 //
 
 IDB_LOGOFLIPPED         BITMAP                  "tortoisemerge_logoflipped.bmp"
-IDB_TTF_BMP             BITMAP                  "ttf_glyph.bmp"
 IDB_REGEX_FILTER        BITMAP                  "ribbon\\Filter16.bmp"
 
 /////////////////////////////////////////////////////////////////////////////

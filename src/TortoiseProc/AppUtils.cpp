@@ -141,7 +141,7 @@ bool CAppUtils::StashSave(HWND hWnd, const CString& msg, bool showPull, bool pul
 				postCmdList.emplace_back(IDI_PULL, IDS_MENUPULL, [&]{ CAppUtils::Pull(hWnd, pullShowPush, true); });
 			if (showMerge)
 				postCmdList.emplace_back(IDI_MERGE, IDS_MENUMERGE, [&]{ CAppUtils::Merge(hWnd, &mergeRev, true); });
-			postCmdList.emplace_back(IDI_RELOCATE, IDS_MENUSTASHPOP, [&hWnd] { CAppUtils::StashPop(hWnd); });
+			postCmdList.emplace_back(IDI_UNSHELVE, IDS_MENUSTASHPOP, [&hWnd] { CAppUtils::StashPop(hWnd); });
 		};
 		return (progress.DoModal() == IDOK);
 	}
@@ -2386,12 +2386,12 @@ bool DoPull(HWND hWnd, const CString& url, bool bAutoLoad, BOOL bFetchTags, bool
 			}
 
 			postCmdList.emplace_back(IDI_PULL, IDS_MENUPULL, [&hWnd]{ CAppUtils::Pull(hWnd); });
-			postCmdList.emplace_back(IDI_COMMIT, IDS_MENUSTASHSAVE, [&hWnd]{ CAppUtils::StashSave(hWnd, L"", true); });
+			postCmdList.emplace_back(IDI_SHELVE, IDS_MENUSTASHSAVE, [&hWnd]{ CAppUtils::StashSave(hWnd, L"", true); });
 			return;
 		}
 
 		if (showStashPop)
-			postCmdList.emplace_back(IDI_RELOCATE, IDS_MENUSTASHPOP, [&hWnd]{ CAppUtils::StashPop(hWnd); });
+			postCmdList.emplace_back(IDI_UNSHELVE, IDS_MENUSTASHPOP, [&hWnd]{ CAppUtils::StashPop(hWnd); });
 
 		if (g_Git.GetHash(hashNew, L"HEAD"))
 			MessageBox(hWnd, g_Git.GetGitLastErr(L"Could not get HEAD hash after pulling."), L"TortoiseGit", MB_ICONERROR);
@@ -2609,7 +2609,7 @@ static bool DoFetch(HWND hWnd, const CString& url, const bool fetchAllRemotes, c
 			CAppUtils::RunTortoiseGitProc(cmd);
 		});
 
-		postCmdList.emplace_back(IDI_REVERT, IDS_PROC_RESET, [&hWnd]
+		postCmdList.emplace_back(IDI_RESET, IDS_PROC_RESET, [&hWnd]
 		{
 			CString pullRemote, pullBranch;
 			g_Git.GetRemoteTrackedBranchForHEAD(pullRemote, pullBranch);
@@ -2619,7 +2619,7 @@ static bool DoFetch(HWND hWnd, const CString& url, const bool fetchAllRemotes, c
 			CAppUtils::GitReset(hWnd, &defaultUpstream, 2);
 		});
 
-		postCmdList.emplace_back(IDI_PULL, IDS_MENUFETCH, [&hWnd]{ CAppUtils::Fetch(hWnd); });
+		postCmdList.emplace_back(IDI_UPDATE, IDS_MENUFETCH, [&hWnd]{ CAppUtils::Fetch(hWnd); });
 
 		if (!runRebase && !GitAdminDir::IsBareRepo(g_Git.m_CurrentDir))
 			postCmdList.emplace_back(IDI_REBASE, IDS_MENUREBASE, [&]{ runRebase = false; CAppUtils::RebaseAfterFetch(hWnd); });
@@ -2819,7 +2819,7 @@ bool CAppUtils::DoPush(HWND hWnd, bool autoloadKey, bool pack, bool tags, bool a
 			if (rejected)
 			{
 				postCmdList.emplace_back(IDI_PULL, IDS_MENUPULL, [&hWnd]{ Pull(hWnd, true); });
-				postCmdList.emplace_back(IDI_PULL, IDS_MENUFETCH, [&]{ Fetch(hWnd, allRemotes ? L"" : remote, allRemotes); });
+				postCmdList.emplace_back(IDI_UPDATE, IDS_MENUFETCH, [&]{ Fetch(hWnd, allRemotes ? L"" : remote, allRemotes); });
 			}
 			postCmdList.emplace_back(IDI_PUSH, IDS_MENUPUSH, [&]{ Push(hWnd, localBranch); });
 			return;
@@ -3214,13 +3214,13 @@ static bool DoMerge(HWND hWnd, bool noFF, bool ffOnly, bool squash, bool noCommi
 			if (common.IsEmpty())
 				postCmdList.emplace_back(IDI_MERGE, IDS_MERGE_UNRELATED, [=, &hWnd] { DoMerge(hWnd, noFF, ffOnly, squash, noCommit, log, true, mergeStrategy, strategyOption, strategyParam, logMessage, version, isBranch, showStashPop); });
 
-			postCmdList.emplace_back(IDI_COMMIT, IDS_MENUSTASHSAVE, [mergeVersion, &hWnd]{ CAppUtils::StashSave(hWnd, L"", false, false, true, mergeVersion); });
+			postCmdList.emplace_back(IDI_SHELVE, IDS_MENUSTASHSAVE, [mergeVersion, &hWnd]{ CAppUtils::StashSave(hWnd, L"", false, false, true, mergeVersion); });
 
 			return;
 		}
 
 		if (showStashPop)
-			postCmdList.emplace_back(IDI_RELOCATE, IDS_MENUSTASHPOP, [&hWnd]{ CAppUtils::StashPop(hWnd); });
+			postCmdList.emplace_back(IDI_UNSHELVE, IDS_MENUSTASHPOP, [&hWnd]{ CAppUtils::StashPop(hWnd); });
 
 		if (noCommit || squash)
 		{
