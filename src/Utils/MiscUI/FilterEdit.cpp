@@ -395,9 +395,9 @@ void CFilterEdit::DrawDimText()
 
 HICON CFilterEdit::LoadDpiScaledIcon(UINT resourceId, int cx96dpi, int cy96dpi)
 {
-	int cx = CDPIAware::Instance().PointsToPixelsX(cx96dpi);
-	int cy = CDPIAware::Instance().PointsToPixelsY(cy96dpi);
-
+	CWindowDC dc(this); 
+	int cx = MulDiv(cx96dpi, dc.GetDeviceCaps(LOGPIXELSX), 96);
+	int cy = MulDiv(cy96dpi, dc.GetDeviceCaps(LOGPIXELSY), 96);
 	return (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(resourceId), IMAGE_ICON, cx, cy, LR_DEFAULTCOLOR);
 }
 
