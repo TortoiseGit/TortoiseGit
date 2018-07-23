@@ -21,8 +21,66 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="..\Resources\TortoiseGitMergeRibbon.xml">
+    <CustomBuild Include="..\Resources\TortoiseGitMergeRibbon.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Resources\TortoiseMerge.ico">
       <Filter>Resource Files</Filter>
-    </Xml>
+    </Image>
+    <Image Include="..\Resources\lineremoved.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\lineadded.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\lineconflicted.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\linewhitespace.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\lineequal.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\LineEndingCR.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\LineEndingCRLF.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\LineEndingLF.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\lineconflictedignored.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\lineedited.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\moved.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\linemarked.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\tortoisemerge_logoflipped.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\ribbon\Filter16.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\ribbon\TortoiseMerge.png" />
+    <Image Include="..\Resources\Toolbar.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Resources\Margin.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Resources\RegexFilter.ini" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\Resources\ignorecomments.txt" />
   </ItemGroup>
 </Project>

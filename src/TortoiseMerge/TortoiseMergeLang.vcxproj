@@ -52,6 +52,32 @@
       <Outputs>$(IntDir)TortoiseGitMergeRibbon.bml;$(IntDir)TortoiseGitMergeRibbon.rc;$(IntDir)TortoiseGitMergeRibbon.h;%(Outputs)</Outputs>
     </CustomBuild>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Resources\lineadded.ico" />
+    <Image Include="..\Resources\lineconflicted.ico" />
+    <Image Include="..\Resources\lineconflictedignored.ico" />
+    <Image Include="..\Resources\lineedited.ico" />
+    <Image Include="..\Resources\LineEndingCR.ico" />
+    <Image Include="..\Resources\LineEndingCRLF.ico" />
+    <Image Include="..\Resources\LineEndingLF.ico" />
+    <Image Include="..\Resources\lineequal.ico" />
+    <Image Include="..\Resources\linemarked.ico" />
+    <Image Include="..\Resources\lineremoved.ico" />
+    <Image Include="..\Resources\linewhitespace.ico" />
+    <Image Include="..\Resources\moved.ico" />
+    <Image Include="..\Resources\ribbon\Filter16.bmp" />
+    <Image Include="..\Resources\ribbon\TortoiseMerge.png" />
+    <Image Include="..\Resources\Toolbar.bmp" />
+    <Image Include="..\Resources\TortoiseMerge.ico" />
+    <Image Include="..\Resources\tortoisemerge_logoflipped.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Resources\Margin.cur" />
+    <None Include="..\Resources\RegexFilter.ini" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\Resources\ignorecomments.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
