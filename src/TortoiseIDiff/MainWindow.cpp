@@ -978,32 +978,46 @@ LRESULT CMainWindow::Splitter_OnLButtonUp(HWND hwnd, UINT /*iMsg*/, WPARAM /*wPa
 #define MINWINSIZE 10
     if (bVertical)
     {
-        if (bDrag2)
+        if (selectionPaths.size() != 3)
         {
-            if (pt.y < (nSplitterPos+MINWINSIZE))
-                pt.y = nSplitterPos+MINWINSIZE;
-            nSplitterPos2 = pt.y;
+            nSplitterPos = pt.y;
         }
         else
         {
-            if (pt.y > (nSplitterPos2-MINWINSIZE))
-                pt.y = nSplitterPos2-MINWINSIZE;
-            nSplitterPos = pt.y;
+            if (bDrag2)
+            {
+                if (pt.y < (nSplitterPos+MINWINSIZE))
+                    pt.y = nSplitterPos+MINWINSIZE;
+                nSplitterPos2 = pt.y;
+            }
+            else
+            {
+                if (pt.y > (nSplitterPos2-MINWINSIZE))
+                    pt.y = nSplitterPos2-MINWINSIZE;
+                nSplitterPos = pt.y;
+            }
         }
     }
     else
     {
-        if (bDrag2)
+        if (selectionPaths.size() != 3)
         {
-            if (pt.x < (nSplitterPos+MINWINSIZE))
-                pt.x = nSplitterPos+MINWINSIZE;
-            nSplitterPos2 = pt.x;
+            nSplitterPos = pt.x;
         }
         else
         {
-            if (pt.x > (nSplitterPos2-MINWINSIZE))
-                pt.x = nSplitterPos2-MINWINSIZE;
-            nSplitterPos = pt.x;
+            if (bDrag2)
+            {
+                if (pt.x < (nSplitterPos+MINWINSIZE))
+                    pt.x = nSplitterPos+MINWINSIZE;
+                nSplitterPos2 = pt.x;
+            }
+            else
+            {
+                if (pt.x > (nSplitterPos2-MINWINSIZE))
+                    pt.x = nSplitterPos2-MINWINSIZE;
+                nSplitterPos = pt.x;
+            }
         }
     }
 
