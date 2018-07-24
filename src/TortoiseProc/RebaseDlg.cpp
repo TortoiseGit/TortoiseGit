@@ -852,14 +852,14 @@ BOOL CRebaseDlg::PreTranslateMessage(MSG*pMsg)
 			}
 			break;
 		case 'U':
-			if (LogListHasFocus(pMsg->hwnd))
+			if (LogListHasFocus(pMsg->hwnd) && GetDlgItem(IDC_BUTTON_UP)->IsWindowEnabled() == TRUE)
 			{
 				OnBnClickedButtonUp();
 				return TRUE;
 			}
 			break;
 		case 'D':
-			if (LogListHasFocus(pMsg->hwnd))
+			if (LogListHasFocus(pMsg->hwnd) && GetDlgItem(IDC_BUTTON_DOWN)->IsWindowEnabled() == TRUE)
 			{
 				OnBnClickedButtonDown();
 				return TRUE;
