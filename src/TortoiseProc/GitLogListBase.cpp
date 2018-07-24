@@ -29,8 +29,8 @@
 #include "LoglistUtils.h"
 #include "StringUtils.h"
 #include "UnicodeUtils.h"
-#include "IconMenu.h"
 #include "../TortoiseShell/Resource.h"
+#include "CommonAppUtils.h"
 
 const UINT CGitLogListBase::m_FindDialogMessage = RegisterWindowMessage(FINDMSGSTRING);
 const UINT CGitLogListBase::m_ScrollToMessage = RegisterWindowMessage(L"TORTOISEGIT_LOG_SCROLLTO");
@@ -85,12 +85,12 @@ CGitLogListBase::CGitLogListBase() : CHintCtrl<CResizableColumnsListCtrl<CListCt
 
 	int cx = GetSystemMetrics(SM_CXSMICON);
 	int cy = GetSystemMetrics(SM_CYSMICON);
-	m_hModifiedIcon = (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONMODIFIED), IMAGE_ICON, cx, cy, 0);
-	m_hReplacedIcon = (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONREPLACED), IMAGE_ICON, cx, cy, 0);
-	m_hConflictedIcon = (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONCONFLICTED), IMAGE_ICON, cx, cy, 0);
-	m_hAddedIcon = (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONADDED), IMAGE_ICON, cx, cy, 0);
-	m_hDeletedIcon = (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONDELETED), IMAGE_ICON, cx, cy, 0);
-	m_hFetchIcon = (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONFETCHING), IMAGE_ICON, cx, cy, 0);
+	m_hModifiedIcon = CCommonAppUtils::LoadIconEx(IDI_ACTIONMODIFIED, cx, cy);
+	m_hReplacedIcon = CCommonAppUtils::LoadIconEx(IDI_ACTIONREPLACED, cx, cy);
+	m_hConflictedIcon = CCommonAppUtils::LoadIconEx(IDI_ACTIONCONFLICTED, cx, cy);
+	m_hAddedIcon = CCommonAppUtils::LoadIconEx(IDI_ACTIONADDED, cx, cy);
+	m_hDeletedIcon = CCommonAppUtils::LoadIconEx(IDI_ACTIONDELETED, cx, cy);
+	m_hFetchIcon = CCommonAppUtils::LoadIconEx(IDI_ACTIONFETCHING, cx, cy);
 
 	m_bFilterWithRegex = !!CRegDWORD(L"Software\\TortoiseGit\\UseRegexFilter", FALSE);
 	m_bFilterCaseSensitively = !!CRegDWORD(L"Software\\TortoiseGit\\FilterCaseSensitively", FALSE);

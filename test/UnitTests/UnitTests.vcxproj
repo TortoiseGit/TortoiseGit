@@ -89,6 +89,7 @@
     <ClInclude Include="..\..\src\Utils\DebugHelpers.h" />
     <ClInclude Include="..\..\src\Utils\DebugOutput.h" />
     <ClInclude Include="..\..\src\Utils\DirFileEnum.h" />
+    <ClInclude Include="..\..\src\Utils\LoadIconEx.h" />
     <ClInclude Include="..\..\src\Utils\LruCache.h" />
     <ClInclude Include="..\..\src\Utils\PathUtils.h" />
     <ClInclude Include="..\..\src\Utils\PersonalDictionary.h" />
@@ -131,6 +132,7 @@
     <ClCompile Include="..\..\src\Utils\CommonAppUtils.cpp" />
     <ClCompile Include="..\..\src\Utils\DebugOutput.cpp" />
     <ClCompile Include="..\..\src\Utils\DirFileEnum.cpp" />
+    <ClCompile Include="..\..\src\Utils\LoadIconEx.cpp" />
     <ClCompile Include="..\..\src\Utils\PathUtils.cpp" />
     <ClCompile Include="..\..\src\Utils\PersonalDictionary.cpp" />
     <ClCompile Include="..\..\src\Utils\ProfilingInfo.cpp" />

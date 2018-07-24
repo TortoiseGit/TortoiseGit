@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2012, 2014-2016 - TortoiseSVN
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2003-2012, 2014-2016, 2018 - TortoiseSVN
+// Copyright (C) 2008-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -30,6 +30,7 @@
 #include "FormatMessageWrapper.h"
 #include "../TGitCache/CacheInterface.h"
 #include "resource.h"
+#include "LoadIconEx.h"
 
 #define GetPIDLFolder(pida) (LPCITEMIDLIST)(((LPBYTE)pida)+(pida)->aoffset[0])
 #define GetPIDLItem(pida, i) (LPCITEMIDLIST)(((LPBYTE)pida)+(pida)->aoffset[i+1])
@@ -1739,7 +1740,7 @@ STDMETHODIMP CShellExt::HandleMenuMsg2(UINT uMsg, WPARAM wParam, LPARAM lParam, 
 				return S_OK;
 			int iconWidth = GetSystemMetrics(SM_CXSMICON);
 			int iconHeight = GetSystemMetrics(SM_CYSMICON);
-			HICON hIcon = (HICON)LoadImage(g_hResInst, resource, IMAGE_ICON, iconWidth, iconHeight, LR_DEFAULTCOLOR);
+			auto hIcon = LoadIconEx(g_hResInst, resource, iconWidth, iconHeight);
 			if (!hIcon)
 				return S_OK;
 			DrawIconEx(lpdis->hDC,

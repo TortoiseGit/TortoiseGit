@@ -171,6 +171,9 @@
     <ClCompile Include="..\TortoiseProc\ColumnManager.cpp">
       <Filter>TortoiseGitProc</Filter>
     </ClCompile>
+    <ClCompile Include="..\Utils\LoadIconEx.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditGotoDlg.h">
@@ -336,6 +339,9 @@
       <Filter>Utils\MiscUI</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\DPIAware.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\LoadIconEx.h">
       <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>

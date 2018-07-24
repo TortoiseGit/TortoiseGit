@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2014, 2016-2017 - TortoiseGit
+// Copyright (C) 2013-2014, 2016-2018 - TortoiseGit
 // Copyright (C) 2011-2012, 2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@
 #include "TaskbarUUID.h"
 #include "registry.h"
 #include "CmdLineParser.h"
-
+#include "LoadIconEx.h"
 #include <Shobjidl.h>
 #include "SmartHandle.h"
 #include <atlbase.h>
@@ -152,7 +152,7 @@ void SetUUIDOverlayIcon( HWND hWnd )
     if (!sicon.empty())
     {
         if (sicon.size() >= 4 && !_wcsicmp(sicon.substr(sicon.size() - 4).c_str(), L".ico"))
-            icon = (HICON)::LoadImage(nullptr, sicon.c_str(), IMAGE_ICON, iconWidth, iconHeight, LR_LOADFROMFILE | LR_SHARED);
+            icon = LoadIconEx(nullptr, sicon.c_str(), iconWidth, iconHeight);
         else
         {
             ULONG_PTR gdiplusToken = 0;

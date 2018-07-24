@@ -96,6 +96,9 @@
     <ClCompile Include="..\TortoiseShell\ShellCache.cpp">
       <Filter>TortoiseShell</Filter>
     </ClCompile>
+    <ClCompile Include="..\Utils\LoadIconEx.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CachedDirectory.h">
@@ -180,6 +183,9 @@
       <Filter>Git</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\CreateProcessHelper.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\LoadIconEx.h">
       <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>

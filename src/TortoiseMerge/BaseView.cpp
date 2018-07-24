@@ -131,18 +131,18 @@ CBaseView::CBaseView()
 
 	int cxIcon = GetSystemMetrics(SM_CXSMICON);
 	int cyIcon = GetSystemMetrics(SM_CYSMICON);
-	m_hConflictedIcon = (HCURSOR)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_CONFLICTEDLINE), IMAGE_ICON, cxIcon, cyIcon, 0);
-	m_hConflictedIgnoredIcon = (HCURSOR)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_CONFLICTEDIGNOREDLINE), IMAGE_ICON, cxIcon, cyIcon, 0);
-	m_hRemovedIcon = (HCURSOR)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_REMOVEDLINE), IMAGE_ICON, cxIcon, cyIcon, 0);
-	m_hAddedIcon = (HCURSOR)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ADDEDLINE), IMAGE_ICON, cxIcon, cyIcon, 0);
-	m_hWhitespaceBlockIcon = (HCURSOR)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_WHITESPACELINE), IMAGE_ICON, cxIcon, cyIcon, 0);
-	m_hEqualIcon = (HCURSOR)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_EQUALLINE), IMAGE_ICON, cxIcon, cyIcon, 0);
-	m_hLineEndingCR = (HCURSOR)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_LINEENDINGCR), IMAGE_ICON, cxIcon, cyIcon, 0);
-	m_hLineEndingCRLF = (HCURSOR)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_LINEENDINGCRLF), IMAGE_ICON, cxIcon, cyIcon, 0);
-	m_hLineEndingLF = (HCURSOR)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_LINEENDINGLF), IMAGE_ICON, cxIcon, cyIcon, 0);
-	m_hEditedIcon = (HCURSOR)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_LINEEDITED), IMAGE_ICON, cxIcon, cyIcon, 0);
-	m_hMovedIcon = (HCURSOR)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_MOVEDLINE), IMAGE_ICON, cxIcon, cyIcon, 0);
-	m_hMarkedIcon = (HCURSOR)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_LINEMARKED), IMAGE_ICON, cxIcon, cyIcon, 0);
+	m_hConflictedIcon = CCommonAppUtils::LoadIconEx(IDI_CONFLICTEDLINE, cxIcon, cyIcon);
+	m_hConflictedIgnoredIcon = CCommonAppUtils::LoadIconEx(IDI_CONFLICTEDIGNOREDLINE, cxIcon, cyIcon);
+	m_hRemovedIcon = CCommonAppUtils::LoadIconEx(IDI_REMOVEDLINE, cxIcon, cyIcon);
+	m_hAddedIcon = CCommonAppUtils::LoadIconEx(IDI_ADDEDLINE, cxIcon, cyIcon);
+	m_hWhitespaceBlockIcon = CCommonAppUtils::LoadIconEx(IDI_WHITESPACELINE, cxIcon, cyIcon);
+	m_hEqualIcon = CCommonAppUtils::LoadIconEx(IDI_EQUALLINE, cxIcon, cyIcon);
+	m_hLineEndingCR = CCommonAppUtils::LoadIconEx(IDI_LINEENDINGCR, cxIcon, cyIcon);
+	m_hLineEndingCRLF = CCommonAppUtils::LoadIconEx(IDI_LINEENDINGCRLF, cxIcon, cyIcon);
+	m_hLineEndingLF = CCommonAppUtils::LoadIconEx(IDI_LINEENDINGLF, cxIcon, cyIcon);
+	m_hEditedIcon = CCommonAppUtils::LoadIconEx(IDI_LINEEDITED, cxIcon, cyIcon);
+	m_hMovedIcon = CCommonAppUtils::LoadIconEx(IDI_MOVEDLINE, cxIcon, cyIcon);
+	m_hMarkedIcon = CCommonAppUtils::LoadIconEx(IDI_LINEMARKED, cxIcon, cyIcon);
 	m_margincursor = (HCURSOR)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDC_MARGINCURSOR), IMAGE_CURSOR, 0, 0, LR_DEFAULTSIZE);
 
 	for (int i=0; i<1024; ++i)
@@ -4477,15 +4477,6 @@ void CBaseView::CompensateForKeyboard(CPoint& point)
 		GetWindowRect(&rect);
 		point = rect.CenterPoint();
 	}
-}
-
-HICON CBaseView::LoadIcon(WORD iconId)
-{
-	int iconWidth = GetSystemMetrics(SM_CXSMICON);
-	int iconHeight = GetSystemMetrics(SM_CYSMICON);
-	HANDLE icon = ::LoadImage( AfxGetResourceHandle(), MAKEINTRESOURCE(iconId),
-						IMAGE_ICON, iconWidth, iconHeight, LR_DEFAULTCOLOR);
-	return (HICON)icon;
 }
 
 void CBaseView::ReleaseBitmap()

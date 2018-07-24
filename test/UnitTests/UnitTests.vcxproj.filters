@@ -161,6 +161,9 @@
     <ClInclude Include="..\..\src\TortoiseShell\PreserveChdir.h">
       <Filter>TortoiseShell</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\Utils\LoadIconEx.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -339,6 +342,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\TortoiseShell\PreserveChdir.cpp">
       <Filter>TortoiseShell</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Utils\LoadIconEx.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2016 - TortoiseGit
-// Copyright (C) 2009-2012, 2014 - TortoiseSVN
+// Copyright (C) 2009-2012, 2014, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,6 +20,7 @@
 #include "stdafx.h"
 #include "IconBitmapUtils.h"
 #include "registry.h"
+#include "LoadIconEx.h"
 
 #pragma comment(lib, "UxTheme.lib")
 
@@ -40,7 +41,7 @@ HBITMAP IconBitmapUtils::IconToBitmap(HINSTANCE hInst, UINT uIcon)
     if (bitmap_it != bitmaps.end() && bitmap_it->first == uIcon)
         return bitmap_it->second;
 
-    HICON hIcon = (HICON)LoadImage(hInst, MAKEINTRESOURCE(uIcon), IMAGE_ICON, 12, 12, LR_DEFAULTCOLOR);
+    auto hIcon = LoadIconEx(hInst, MAKEINTRESOURCE(uIcon), 12, 12);
     if (!hIcon)
         return nullptr;
     SCOPE_EXIT { DestroyIcon(hIcon); };
@@ -99,7 +100,7 @@ HBITMAP IconBitmapUtils::IconToBitmapPARGB32(HINSTANCE hInst, UINT uIcon)
         return bitmap_it->second;
     int iconWidth = GetSystemMetrics(SM_CXSMICON);
     int iconHeight = GetSystemMetrics(SM_CYSMICON);
-    HICON hIcon = (HICON)LoadImage(hInst, MAKEINTRESOURCE(uIcon), IMAGE_ICON, iconWidth, iconHeight, LR_DEFAULTCOLOR);
+    auto hIcon = LoadIconEx(hInst, MAKEINTRESOURCE(uIcon), iconWidth, iconHeight);
 
     HBITMAP hBmp = IconToBitmapPARGB32(hIcon, iconWidth, iconHeight);
 

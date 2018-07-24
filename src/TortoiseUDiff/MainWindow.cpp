@@ -27,6 +27,7 @@
 #include "UDiffColors.h"
 #include "registry.h"
 #include "DPIAware.h"
+#include "LoadIconEx.h"
 
 const UINT TaskBarButtonCreated = RegisterWindowMessage(L"TaskbarButtonCreated");
 
@@ -59,10 +60,10 @@ bool CMainWindow::RegisterAndCreateWindow()
 	wcx.hCursor = nullptr;
 	ResString clsname(hResource, IDS_APP_TITLE);
 	wcx.lpszClassName = clsname;
-	wcx.hIcon = LoadIcon(hResource, MAKEINTRESOURCE(IDI_TORTOISEUDIFF));
+	wcx.hIcon = LoadIconEx(hResource, MAKEINTRESOURCE(IDI_TORTOISEUDIFF));
 	wcx.hbrBackground = (HBRUSH)(COLOR_3DFACE+1);
 	wcx.lpszMenuName = MAKEINTRESOURCE(IDC_TORTOISEUDIFF);
-	wcx.hIconSm = LoadIcon(wcx.hInstance, MAKEINTRESOURCE(IDI_TORTOISEUDIFF));
+	wcx.hIconSm = LoadIconEx(wcx.hInstance, MAKEINTRESOURCE(IDI_TORTOISEUDIFF));
 	if (RegisterWindow(&wcx))
 	{
 		if (Create(WS_CAPTION | WS_MAXIMIZEBOX | WS_MINIMIZEBOX | WS_SIZEBOX | WS_SYSMENU | WS_CLIPCHILDREN, nullptr))

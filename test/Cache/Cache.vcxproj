@@ -42,6 +42,7 @@
     <ClCompile Include="..\..\src\Git\Git.cpp" />
     <ClCompile Include="..\..\src\Git\MassiveGitTaskBase.cpp" />
     <ClCompile Include="..\..\src\Utils\DebugOutput.cpp" />
+    <ClCompile Include="..\..\src\Utils\LoadIconEx.cpp" />
     <ClCompile Include="..\..\src\Utils\SysInfo.cpp" />
     <ClCompile Include="Cache.cpp" />
     <ClCompile Include="CacheDlg.cpp" />
@@ -65,6 +66,7 @@
     <ClInclude Include="..\..\src\Git\MassiveGitTaskBase.h" />
     <ClInclude Include="..\..\src\Git\TGitPath.h" />
     <ClInclude Include="..\..\src\Utils\DebugOutput.h" />
+    <ClInclude Include="..\..\src\Utils\LoadIconEx.h" />
     <ClInclude Include="..\..\src\Utils\SysInfo.h" />
     <ClInclude Include="Cache.h" />
     <ClInclude Include="CacheDlg.h" />

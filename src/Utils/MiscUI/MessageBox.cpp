@@ -24,6 +24,7 @@
 #include "SmartHandle.h"
 #include <afxtaskdialog.h>
 #include "DPIAware.h"
+#include "LoadIconEx.h"
 
 #define BTN_OFFSET 100 // use an offset in order to not interfere with IDYES and so on...
 
@@ -152,9 +153,9 @@ UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, int
 	box.m_sButton1 = lpButton1;
 	box.m_sButton2 = lpButton2;
 	box.m_sButton3 = lpButton3;
-	box.m_hIcon = (HICON)::LoadImage(AfxGetResourceHandle(), icon, IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
+	box.m_hIcon = LoadIconEx(AfxGetResourceHandle(), icon, GetSystemMetrics(SM_CXICON), GetSystemMetrics(SM_CYICON));
 	if (!box.m_hIcon)
-		box.m_hIcon = (HICON)::LoadImage(nullptr, icon, IMAGE_ICON, 0, 0, LR_SHARED | LR_DEFAULTSIZE);
+		box.m_hIcon = LoadIconEx(nullptr, icon, GetSystemMetrics(SM_CXICON), GetSystemMetrics(SM_CYICON));
 	else
 		box.m_bDestroyIcon = TRUE;
 	if (!IsWindow(hWnd))
@@ -183,9 +184,9 @@ UINT CMessageBox::Show(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, int nDef
 	box.m_sButton1 = lpButton1;
 	box.m_sButton2 = lpButton2;
 	box.m_sButton3 = lpButton3;
-	box.m_hIcon = (HICON)::LoadImage(AfxGetResourceHandle(), icon, IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
+	box.m_hIcon = LoadIconEx(AfxGetResourceHandle(), icon, GetSystemMetrics(SM_CXICON), GetSystemMetrics(SM_CYICON));
 	if (!box.m_hIcon)
-		box.m_hIcon = (HICON)::LoadImage(nullptr, icon, IMAGE_ICON, 0, 0, LR_SHARED | LR_DEFAULTSIZE);
+		box.m_hIcon = LoadIconEx(nullptr, icon, GetSystemMetrics(SM_CXICON), GetSystemMetrics(SM_CYICON));
 	else
 		box.m_bDestroyIcon = TRUE;
 	if (!IsWindow(hWnd))
@@ -435,19 +436,19 @@ int CMessageBox::FillBoxStandard(UINT uType)
 	switch (uType & 0xf0)
 	{
 	case MB_ICONEXCLAMATION:
-		m_hIcon = (HICON)::LoadImage(nullptr, IDI_EXCLAMATION, IMAGE_ICON, 0, 0, LR_SHARED | LR_DEFAULTSIZE);
+		m_hIcon = LoadIconEx(nullptr, IDI_EXCLAMATION, GetSystemMetrics(SM_CXICON), GetSystemMetrics(SM_CYICON));
 		::MessageBeep(MB_ICONEXCLAMATION);
 		break;
 	case MB_ICONASTERISK:
-		m_hIcon = (HICON)::LoadImage(nullptr, IDI_ASTERISK, IMAGE_ICON, 0, 0, LR_SHARED | LR_DEFAULTSIZE);
+		m_hIcon = LoadIconEx(nullptr, IDI_ASTERISK, GetSystemMetrics(SM_CXICON), GetSystemMetrics(SM_CYICON));
 		::MessageBeep(MB_ICONASTERISK);
 		break;
 	case MB_ICONQUESTION:
-		m_hIcon = (HICON)::LoadImage(nullptr, IDI_QUESTION, IMAGE_ICON, 0, 0, LR_SHARED | LR_DEFAULTSIZE);
+		m_hIcon = LoadIconEx(nullptr, IDI_QUESTION, GetSystemMetrics(SM_CXICON), GetSystemMetrics(SM_CYICON));
 		::MessageBeep(MB_ICONQUESTION);
 		break;
 	case MB_ICONHAND:
-		m_hIcon = (HICON)::LoadImage(nullptr, IDI_HAND, IMAGE_ICON, 0, 0, LR_SHARED | LR_DEFAULTSIZE);
+		m_hIcon = LoadIconEx(nullptr, IDI_HAND, GetSystemMetrics(SM_CXICON), GetSystemMetrics(SM_CYICON));
 		::MessageBeep(MB_ICONHAND);
 		break;
 	}

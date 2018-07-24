@@ -330,7 +330,7 @@ BOOL CRebaseDlg::OnInitDialog()
 		GetDlgItem(IDC_CHECK_CHERRYPICKED_FROM)->ShowWindow(SW_HIDE);
 		int iconWidth = GetSystemMetrics(SM_CXSMICON);
 		int iconHeight = GetSystemMetrics(SM_CYSMICON);
-		((CButton*)GetDlgItem(IDC_BUTTON_REVERSE))->SetIcon((HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_SWITCHLEFTRIGHT), IMAGE_ICON, iconWidth, iconHeight, LR_DEFAULTCOLOR));
+		((CButton*)GetDlgItem(IDC_BUTTON_REVERSE))->SetIcon(CCommonAppUtils::LoadIconEx(IDI_SWITCHLEFTRIGHT, iconWidth, iconHeight));
 		SetContinueButtonText();
 		m_CommitList.DeleteAllItems();
 		FetchLogList();

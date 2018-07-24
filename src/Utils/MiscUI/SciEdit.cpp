@@ -26,6 +26,7 @@
 #include "SciEdit.h"
 #include "SmartHandle.h"
 #include "../../TortoiseUDiff/UDiffColors.h"
+#include "LoadIconEx.h"
 
 void CSciEditContextMenuInterface::InsertMenuItems(CMenu&, int&) {return;}
 bool CSciEditContextMenuInterface::HandleMenuItemClick(int, CSciEdit *) {return false;}
@@ -264,7 +265,7 @@ void CSciEdit::SetIcon(const std::map<int, UINT> &icons)
 	Call(SCI_RGBAIMAGESETHEIGHT, iconHeight);
 	for (auto icon : icons)
 	{
-		auto hIcon = (HICON)::LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(icon.second), IMAGE_ICON, iconWidth, iconHeight, LR_DEFAULTCOLOR);
+		auto hIcon = LoadIconEx(AfxGetInstanceHandle(), MAKEINTRESOURCE(icon.second), iconWidth, iconHeight);
 		auto bytes = Icon2Image(hIcon);
 		DestroyIcon(hIcon);
 		Call(SCI_REGISTERRGBAIMAGE, icon.first, (LPARAM)bytes.get());

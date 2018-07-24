@@ -41,6 +41,9 @@ public:
 
 	static bool FileOpenSave(CString& path, int* filterindex, UINT title, UINT filterId, bool bOpen, HWND hwndOwner = nullptr, LPCTSTR defaultExt = nullptr, bool handleAsFile = false);
 
+	// Wrapper for LoadImage(IMAGE_ICON)
+	static HICON LoadIconEx(UINT resourceId, UINT cx, UINT cy);
+
 	/**
 	 * Apply the @a effects or color (depending on @a mask)
 	 * for all char ranges given in @a positions to the

@@ -229,9 +229,9 @@ BOOL CRepositoryBrowser::OnInitDialog()
 	exStyle = TVS_EX_FADEINOUTEXPANDOS | TVS_EX_AUTOHSCROLL | TVS_EX_DOUBLEBUFFER;
 	m_RepoTree.SetExtendedStyle(exStyle, exStyle);
 
-	m_nExternalOvl = SYS_IMAGE_LIST().AddIcon((HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_EXTERNALOVL), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE));
-	m_nExecutableOvl = SYS_IMAGE_LIST().AddIcon((HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_EXECUTABLEOVL), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE));
-	m_nSymlinkOvl = SYS_IMAGE_LIST().AddIcon((HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_SYMLINKOVL), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE));
+	m_nExternalOvl = SYS_IMAGE_LIST().AddIcon(CCommonAppUtils::LoadIconEx(IDI_EXTERNALOVL, 0, 0));
+	m_nExecutableOvl = SYS_IMAGE_LIST().AddIcon(CCommonAppUtils::LoadIconEx(IDI_EXECUTABLEOVL, 0, 0));
+	m_nSymlinkOvl = SYS_IMAGE_LIST().AddIcon(CCommonAppUtils::LoadIconEx(IDI_SYMLINKOVL, 0, 0));
 	// set externaloverlay in SYS_IMAGE_LIST() in Refresh method, so that it is updated after every launch of the logdialog
 
 	SetWindowTheme(m_RepoTree.GetSafeHwnd(), L"Explorer", nullptr);

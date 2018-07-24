@@ -218,7 +218,7 @@ BOOL CTortoiseProcApp::InitInstance()
 	CWinAppEx::InitInstance();
 	SetRegistryKey(L"TortoiseGit");
 	SYS_IMAGE_LIST();
-	CHistoryCombo::m_nGitIconIndex = SYS_IMAGE_LIST().AddIcon((HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_GITCONFIG), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE));
+	CHistoryCombo::m_nGitIconIndex = SYS_IMAGE_LIST().AddIcon(CCommonAppUtils::LoadIconEx(IDI_GITCONFIG, 0, 0));
 	AfxGetApp()->m_pszProfileName = _wcsdup(L"TortoiseProc"); // w/o this ResizableLib will store data under TortoiseGitProc which is not compatible with older versions
 
 	CCmdLineParser parser(AfxGetApp()->m_lpCmdLine);

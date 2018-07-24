@@ -965,6 +965,9 @@
     <ClCompile Include="GitTagCompareList.cpp">
       <Filter>Commands\Sync</Filter>
     </ClCompile>
+    <ClCompile Include="..\Utils\LoadIconEx.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1815,6 +1818,9 @@
     </ClInclude>
     <ClInclude Include="..\Utils\MiscUI\GestureEnabledControl.h">
       <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\LoadIconEx.h">
+      <Filter>Utils\General</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

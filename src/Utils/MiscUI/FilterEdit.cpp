@@ -20,6 +20,7 @@
 #include "stdafx.h"
 #include "FilterEdit.h"
 #include "DPIAware.h"
+#include "LoadIconEx.h"
 
 const UINT CFilterEdit::WM_FILTEREDIT_INFOCLICKED = ::RegisterWindowMessage(L"TGITWM_FILTEREDIT_INFOCLICKED");
 const UINT CFilterEdit::WM_FILTEREDIT_CANCELCLICKED = ::RegisterWindowMessage(L"TGITWM_FILTEREDIT_CANCELCLICKED");
@@ -398,7 +399,7 @@ HICON CFilterEdit::LoadDpiScaledIcon(UINT resourceId, int cx96dpi, int cy96dpi)
 	CWindowDC dc(this); 
 	int cx = MulDiv(cx96dpi, dc.GetDeviceCaps(LOGPIXELSX), 96);
 	int cy = MulDiv(cy96dpi, dc.GetDeviceCaps(LOGPIXELSY), 96);
-	return (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(resourceId), IMAGE_ICON, cx, cy, LR_DEFAULTCOLOR);
+	return LoadIconEx(AfxGetResourceHandle(), MAKEINTRESOURCE(resourceId), cx, cy);
 }
 
 void CFilterEdit::OnEnKillfocus()

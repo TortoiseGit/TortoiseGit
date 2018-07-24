@@ -34,6 +34,7 @@
 #include "SmartHandle.h"
 #include "CreateProcessHelper.h"
 #include "gitindex.h"
+#include "LoadIconEx.h"
 
 #ifndef GET_X_LPARAM
 #define GET_X_LPARAM(lp)                        ((int)(short)LOWORD(lp))
@@ -160,13 +161,7 @@ static void AddSystrayIcon()
 	niData.uFlags = NIF_ICON | NIF_MESSAGE;
 
 	// load the icon
-	niData.hIcon =
-		(HICON)LoadImage(GetModuleHandle(nullptr),
-		MAKEINTRESOURCE(IDI_TGITCACHE),
-		IMAGE_ICON,
-		GetSystemMetrics(SM_CXSMICON),
-		GetSystemMetrics(SM_CYSMICON),
-		LR_DEFAULTCOLOR);
+	niData.hIcon = LoadIconEx(GetModuleHandle(nullptr), MAKEINTRESOURCE(IDI_TGITCACHE));
 
 	// set the message to send
 	// note: the message value should be in the
@@ -380,12 +375,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": WM_CLOSE/DESTROY/ENDSESSION/QUIT\n");
 			if (niData.hWnd)
 			{
-				niData.hIcon = (HICON)LoadImage(GetModuleHandle(nullptr),
-					MAKEINTRESOURCE(IDI_TGITCACHE_STOPPING),
-					IMAGE_ICON,
-					GetSystemMetrics(SM_CXSMICON),
-					GetSystemMetrics(SM_CYSMICON),
-					LR_DEFAULTCOLOR);
+				niData.hIcon = LoadIconEx(GetModuleHandle(nullptr), MAKEINTRESOURCE(IDI_TGITCACHE_STOPPING));
 				Shell_NotifyIcon(NIM_MODIFY, &niData);
 			}
 			CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());

@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2017 - TortoiseGit
-// Copyright (C) 2003-2011, 2014-2016 - TortoiseSVN
+// Copyright (C) 2003-2011, 2014-2016, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -189,19 +189,19 @@ BOOL CStatGraphDlg::OnInitDialog()
 
 	int iconWidth = GetSystemMetrics(SM_CXSMICON);
 	int iconHeight = GetSystemMetrics(SM_CYSMICON);
-	m_btnGraphBar.SetImage((HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_GRAPHBAR), IMAGE_ICON, iconWidth, iconHeight, LR_DEFAULTCOLOR));
+	m_btnGraphBar.SetImage(CCommonAppUtils::LoadIconEx(IDI_GRAPHBAR, iconWidth, iconHeight));
 	m_btnGraphBar.SizeToContent();
 	m_btnGraphBar.Invalidate();
-	m_btnGraphBarStacked.SetImage((HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_GRAPHBARSTACKED), IMAGE_ICON, iconWidth, iconHeight, LR_DEFAULTCOLOR));
+	m_btnGraphBarStacked.SetImage(CCommonAppUtils::LoadIconEx(IDI_GRAPHBARSTACKED, iconWidth, iconHeight));
 	m_btnGraphBarStacked.SizeToContent();
 	m_btnGraphBarStacked.Invalidate();
-	m_btnGraphLine.SetImage((HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_GRAPHLINE), IMAGE_ICON, iconWidth, iconHeight, LR_DEFAULTCOLOR));
+	m_btnGraphLine.SetImage(CCommonAppUtils::LoadIconEx(IDI_GRAPHLINE, iconWidth, iconHeight));
 	m_btnGraphLine.SizeToContent();
 	m_btnGraphLine.Invalidate();
-	m_btnGraphLineStacked.SetImage((HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_GRAPHLINESTACKED), IMAGE_ICON, iconWidth, iconHeight, LR_DEFAULTCOLOR));
+	m_btnGraphLineStacked.SetImage(CCommonAppUtils::LoadIconEx(IDI_GRAPHLINESTACKED, iconWidth, iconHeight));
 	m_btnGraphLineStacked.SizeToContent();
 	m_btnGraphLineStacked.Invalidate();
-	m_btnGraphPie.SetImage((HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_GRAPHPIE), IMAGE_ICON, iconWidth, iconHeight, LR_DEFAULTCOLOR));
+	m_btnGraphPie.SetImage(CCommonAppUtils::LoadIconEx(IDI_GRAPHPIE, iconWidth, iconHeight));
 	m_btnGraphPie.SizeToContent();
 	m_btnGraphPie.Invalidate();
 

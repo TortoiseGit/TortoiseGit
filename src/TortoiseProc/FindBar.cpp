@@ -19,6 +19,7 @@
 #include "stdafx.h"
 #include "resource.h"
 #include "FindBar.h"
+#include "LoadIconEx.h"
 
 UINT CFindBar::WM_FINDEXIT = RegisterWindowMessage(L"TORTOISEGIT_PATCHVIEW_FINDEXIT_MSG");
 UINT CFindBar::WM_FINDNEXT = RegisterWindowMessage(L"TORTOISEGIT_PATCHVIEW_FINDNEXT_MSG");
@@ -43,7 +44,7 @@ BOOL CFindBar::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	m_hIcon = (HICON)::LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_CANCELNORMAL), IMAGE_ICON, 0, 0, LR_DEFAULTCOLOR);
+	m_hIcon = LoadIconEx(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_CANCELNORMAL));
 	GetDlgItem(IDC_FINDEXIT)->SendMessage(BM_SETIMAGE, IMAGE_ICON, (LPARAM)m_hIcon);
 
 	return TRUE;  // return TRUE unless you set the focus to a control

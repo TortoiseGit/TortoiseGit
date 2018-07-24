@@ -26,6 +26,7 @@
 #include "registry.h"
 #include "SelectFileFilter.h"
 #include "DPIAware.h"
+#include "LoadIconEx.h"
 
 extern CString sOrigCWD;
 extern CString g_sGroupingUUID;
@@ -176,7 +177,7 @@ bool CCommonAppUtils::SetListCtrlBackgroundImage(HWND hListCtrl, UINT nID, int w
 	ListView_SetTextBkColor(hListCtrl, CLR_NONE);
 	COLORREF bkColor = ListView_GetBkColor(hListCtrl);
 	// create a bitmap from the icon
-	HICON hIcon = (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(nID), IMAGE_ICON, width, height, LR_DEFAULTCOLOR);
+	auto hIcon = ::LoadIconEx(AfxGetResourceHandle(), MAKEINTRESOURCE(nID), width, height);
 	if (!hIcon)
 		return false;
 	SCOPE_EXIT { DestroyIcon(hIcon); };
@@ -318,6 +319,11 @@ bool CCommonAppUtils::FileOpenSave(CString& path, int* filterindex, UINT title, 
 		*filterindex = fi;
 	}
 	return true;
+}
+
+HICON CCommonAppUtils::LoadIconEx(UINT resourceId, UINT cx, UINT cy)
+{
+	return ::LoadIconEx(AfxGetResourceHandle(), MAKEINTRESOURCE(resourceId), cx, cy);
 }
 
 void CCommonAppUtils::SetCharFormat(CWnd* window, DWORD mask , DWORD effects, const std::vector<CHARRANGE>& positions)

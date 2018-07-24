@@ -24,6 +24,7 @@
 #include <math.h>
 #include <memory>
 #include "../Utils/DPIAware.h"
+#include "../Utils/LoadIconEx.h"
 
 #pragma comment(lib, "Msimg32.lib")
 #pragma comment(lib, "shell32.lib")
@@ -41,10 +42,10 @@ bool CPicWindow::RegisterAndCreateWindow(HWND hParent)
     wcx.hInstance = hResource;
     wcx.hCursor = LoadCursor(nullptr, IDC_ARROW);
     wcx.lpszClassName = L"TortoiseGitIDiffPicWindow";
-    wcx.hIcon = LoadIcon(hResource, MAKEINTRESOURCE(IDI_TORTOISEIDIFF));
+    wcx.hIcon = LoadIconEx(hResource, MAKEINTRESOURCE(IDI_TORTOISEIDIFF));
     wcx.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);
     wcx.lpszMenuName = MAKEINTRESOURCE(IDC_TORTOISEIDIFF);
-    wcx.hIconSm = LoadIcon(wcx.hInstance, MAKEINTRESOURCE(IDI_TORTOISEIDIFF));
+    wcx.hIconSm = LoadIconEx(wcx.hInstance, MAKEINTRESOURCE(IDI_TORTOISEIDIFF));
     RegisterWindow(&wcx);
     if (CreateEx(WS_EX_ACCEPTFILES | WS_EX_CLIENTEDGE, WS_CHILD | WS_HSCROLL | WS_VSCROLL | WS_VISIBLE, hParent))
     {
@@ -1394,7 +1395,7 @@ bool CPicWindow::CreateButtons()
         return false;
     int iconWidth = GetSystemMetrics(SM_CXSMICON);
     int iconHeight = GetSystemMetrics(SM_CYSMICON);
-    hLeft = (HICON)LoadImage(hResource, MAKEINTRESOURCE(IDI_BACKWARD), IMAGE_ICON, iconWidth, iconHeight, LR_LOADTRANSPARENT);
+	hLeft = LoadIconEx(hResource, MAKEINTRESOURCE(IDI_BACKWARD), iconWidth, iconHeight);
     SendMessage(hwndLeftBtn, BM_SETIMAGE, (WPARAM)IMAGE_ICON, (LPARAM)hLeft);
     hwndRightBtn = CreateWindowEx(0,
                                 L"BUTTON",
@@ -1407,7 +1408,7 @@ bool CPicWindow::CreateButtons()
                                 nullptr);
     if (hwndRightBtn == INVALID_HANDLE_VALUE)
         return false;
-    hRight = (HICON)LoadImage(hResource, MAKEINTRESOURCE(IDI_FORWARD), IMAGE_ICON, iconWidth, iconHeight, LR_LOADTRANSPARENT);
+	hRight = LoadIconEx(hResource, MAKEINTRESOURCE(IDI_FORWARD), iconWidth, iconHeight);
     SendMessage(hwndRightBtn, BM_SETIMAGE, (WPARAM)IMAGE_ICON, (LPARAM)hRight);
     hwndPlayBtn = CreateWindowEx(0,
                                 L"BUTTON",
@@ -1420,8 +1421,8 @@ bool CPicWindow::CreateButtons()
                                 nullptr);
     if (hwndPlayBtn == INVALID_HANDLE_VALUE)
         return false;
-    hPlay = (HICON)LoadImage(hResource, MAKEINTRESOURCE(IDI_START), IMAGE_ICON, iconWidth, iconHeight, LR_LOADTRANSPARENT);
-    hStop = (HICON)LoadImage(hResource, MAKEINTRESOURCE(IDI_STOP), IMAGE_ICON, iconWidth, iconHeight, LR_LOADTRANSPARENT);
+	hPlay = LoadIconEx(hResource, MAKEINTRESOURCE(IDI_START), iconWidth, iconHeight);
+	hStop = LoadIconEx(hResource, MAKEINTRESOURCE(IDI_STOP), iconWidth, iconHeight);
     SendMessage(hwndPlayBtn, BM_SETIMAGE, (WPARAM)IMAGE_ICON, (LPARAM)hPlay);
     hwndAlphaToggleBtn = CreateWindowEx(0,
                                 L"BUTTON",
@@ -1434,7 +1435,7 @@ bool CPicWindow::CreateButtons()
                                 nullptr);
     if (hwndAlphaToggleBtn == INVALID_HANDLE_VALUE)
         return false;
-    hAlphaToggle = (HICON)LoadImage(hResource, MAKEINTRESOURCE(IDI_ALPHATOGGLE), IMAGE_ICON, iconWidth, iconHeight, LR_LOADTRANSPARENT);
+	hAlphaToggle = LoadIconEx(hResource, MAKEINTRESOURCE(IDI_ALPHATOGGLE), iconWidth, iconHeight);
     SendMessage(hwndAlphaToggleBtn, BM_SETIMAGE, (WPARAM)IMAGE_ICON, (LPARAM)hAlphaToggle);
 
     TOOLINFO ti = {0};

@@ -57,6 +57,9 @@
     <ClCompile Include="..\Utils\UnicodeUtils.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\Utils\LoadIconEx.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FindBar.h">
@@ -108,6 +111,9 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\DPIAware.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\LoadIconEx.h">
       <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>

@@ -332,7 +332,7 @@ void CGitStatusListCtrl::Init(DWORD dwColumns, const CString& sColumnInfoContain
 	SetWindowTheme(m_hWnd, L"Explorer", nullptr);
 
 	m_nIconFolder = SYS_IMAGE_LIST().GetDirIconIndex();
-	m_nRestoreOvl = SYS_IMAGE_LIST().AddIcon((HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_RESTOREOVL), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE));
+	m_nRestoreOvl = SYS_IMAGE_LIST().AddIcon(CCommonAppUtils::LoadIconEx(IDI_RESTOREOVL, 0, 0));
 	SYS_IMAGE_LIST().SetOverlayImage(m_nRestoreOvl, OVL_RESTORE);
 	SetImageList(&SYS_IMAGE_LIST(), LVSIL_SMALL);
 

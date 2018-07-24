@@ -45,7 +45,7 @@ void InsertMenuItemToList(CListCtrl *list,CImageList *imagelist)
 		   menuInfo[i].command != ShellSubMenuMultiple) &&
 		   (i == 0 || menuInfo[i - 1].menuID != menuInfo[i].menuID))
 		{
-			HICON hIcon = reinterpret_cast<HICON>(::LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(menuInfo[i].iconID),IMAGE_ICON, iconWidth, iconHeight, LR_LOADTRANSPARENT));
+			auto hIcon = CAppUtils::LoadIconEx(menuInfo[i].iconID, iconWidth, iconHeight);
 
 			int nImage = imagelist -> Add(hIcon);
 
