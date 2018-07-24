@@ -1187,7 +1187,7 @@ bool CMainWindow::CreateToolbar()
     icex.dwICC  = ICC_BAR_CLASSES | ICC_WIN95_CLASSES;
     InitCommonControlsEx(&icex);
 
-    hwndTB = CreateWindowEx(0,
+    hwndTB = CreateWindowEx(TBSTYLE_EX_DOUBLEBUFFER,
                             TOOLBARCLASSNAME,
                             (LPCTSTR)nullptr,
                             WS_CHILD | WS_BORDER | WS_VISIBLE | TBSTYLE_FLAT | TBSTYLE_TOOLTIPS,
