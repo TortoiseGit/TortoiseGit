@@ -60,7 +60,7 @@ bool CMainWindow::RegisterAndCreateWindow()
 	wcx.hCursor = nullptr;
 	ResString clsname(hResource, IDS_APP_TITLE);
 	wcx.lpszClassName = clsname;
-	wcx.hIcon = LoadIconEx(hResource, MAKEINTRESOURCE(IDI_TORTOISEUDIFF));
+	wcx.hIcon = LoadIconEx(hResource, MAKEINTRESOURCE(IDI_TORTOISEUDIFF), GetSystemMetrics(SM_CXICON), GetSystemMetrics(SM_CYICON));
 	wcx.hbrBackground = (HBRUSH)(COLOR_3DFACE+1);
 	wcx.lpszMenuName = MAKEINTRESOURCE(IDC_TORTOISEUDIFF);
 	wcx.hIconSm = LoadIconEx(wcx.hInstance, MAKEINTRESOURCE(IDI_TORTOISEUDIFF));

@@ -52,7 +52,7 @@ bool CMainWindow::RegisterAndCreateWindow()
     wcx.hCursor = LoadCursor(nullptr, IDC_SIZEWE);
     ResString clsname(hResource, IDS_APP_TITLE);
     wcx.lpszClassName = clsname;
-    wcx.hIcon = LoadIconEx(hResource, MAKEINTRESOURCE(IDI_TORTOISEIDIFF));
+    wcx.hIcon = LoadIconEx(hResource, MAKEINTRESOURCE(IDI_TORTOISEIDIFF), GetSystemMetrics(SM_CXICON), GetSystemMetrics(SM_CYICON));
     wcx.hbrBackground = (HBRUSH)(COLOR_3DFACE+1);
     if (selectionPaths.empty())
         wcx.lpszMenuName = MAKEINTRESOURCE(IDC_TORTOISEIDIFF);
