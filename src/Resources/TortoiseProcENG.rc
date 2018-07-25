@@ -3541,8 +3541,6 @@ BEGIN
     IDS_PROC_EXPORT_1       "Select folder to export to.\nYou might need to create a new folder before performing this export."
     IDS_PROC_EXPORT_2       "Export unversioned files too"
     IDS_PROC_EXPORT_3       "Exporting..."
-    IDS_PROC_EXPORT_4       "exported\n%s\nto\n%s"
-    IDS_PROC_COPY_SUCCESS   "Tagged the working tree to %s"
 END
 
 STRINGTABLE
@@ -4049,8 +4047,6 @@ BEGIN
                             "Clears the stored authentication.\nYou will have to enter your username/password again for all repositories."
     IDS_SETTINGS_ONLYNONELEVATED_TT 
                             "Uses the status cache type 'none' for elevated processes"
-    IDS_SETTINGS_ICONSETCHANGED 
-                            "You've changed the icon set from ""%s"" to ""%s"".\nThat change won't take effect until you restart your computer or logoff and logon again!"
     IDS_SETTINGS_READONLYNAME "assume-valid"
     IDS_SETTINGS_LOCKEDNAME "skip-worktree"
     IDS_SETTINGS_AUTOCOMPLETION_TT 
