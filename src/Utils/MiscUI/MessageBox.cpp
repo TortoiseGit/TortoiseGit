@@ -643,7 +643,7 @@ UINT CMessageBox::GoModal(CWnd * pWnd, const CString& title, const CString& msg,
 		return ::MessageBox(hw, msg, title, m_uType | defButton);
 	}
 
-	int pix = -CDPIAware::Instance().PointsToPixelsY(m_LogFont.lfHeight);
+	int pix = -CDPIAware::Instance().PixelsToPointsY(m_LogFont.lfHeight);
 	CDlgTemplate dialogTemplate = CDlgTemplate(title, WS_CAPTION | DS_CENTER,
 		0, 0, 0, 0, m_LogFont.lfFaceName, pix);
 	dialogTemplate.AddButton(L"Button1", WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_PUSHBUTTON | ((nDefaultButton == 1) ? BS_DEFPUSHBUTTON : 0), 0,

@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2018 - TortoiseGit
 // Copyright (C) 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -57,6 +58,8 @@ public:
 	inline int UnscaleY(int y) { return Unscale(y); }
 	inline int PointsToPixelsX(int pt) { return PointsToPixels(pt); }
 	inline int PointsToPixelsY(int pt) { return PointsToPixels(pt); }
+	inline int PixelsToPointsX(int px) { return PixelsToPoints(px); }
+	inline int PixelsToPointsY(int px) { return PixelsToPoints(px); }
 
 	// Determine the screen dimensions in relative pixels.
 	int ScaledScreenWidth() { return _ScaledSystemMetric(SM_CXSCREEN); }
@@ -94,6 +97,7 @@ public:
 private:
 	// Convert a point size (1/72 of an inch) to raw pixels.
 	int PointsToPixels(int pt) { _Init(); return MulDiv(pt, m_dpi, 72); }
+	int PixelsToPoints(int px) { _Init(); return MulDiv(px, 72, m_dpi); }
 
 public:
 	// returns the system metrics. For Windows 10, it returns the metrics dpi scaled.
