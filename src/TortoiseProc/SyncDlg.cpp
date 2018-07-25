@@ -125,7 +125,7 @@ bool CSyncDlg::AskSetTrackedBranch()
 		if (remoteBranch.IsEmpty())
 			remoteBranch = m_strLocalBranch;
 		CString temp;
-		temp.Format(IDS_NOTYET_SETTRACKEDBRANCH, (LPCTSTR)m_strLocalBranch, (LPCTSTR)remoteBranch);
+		temp.FormatMessage(IDS_NOTYET_SETTRACKEDBRANCH, (LPCTSTR)m_strLocalBranch, (LPCTSTR)remoteBranch);
 		BOOL dontShowAgain = FALSE;
 		auto ret = CMessageBox::ShowCheck(GetSafeHwnd(), temp, L"TortoiseGit", MB_ICONQUESTION | MB_YESNOCANCEL, nullptr, CString(MAKEINTRESOURCE(IDS_MSGBOX_DONOTSHOW)), &dontShowAgain);
 		if (dontShowAgain)
@@ -1311,7 +1311,7 @@ void CSyncDlg::FetchOutList(bool force)
 			if (remotebranchHash == localBranchHash)
 			{
 				CString str;
-				str.Format(IDS_PROC_SYNC_COMMITSAHEAD, 0, (LPCTSTR)remotebranch);
+				str.FormatMessage(IDS_PROC_SYNC_COMMITSAHEAD, 0, (LPCTSTR)remotebranch);
 				m_OutLogList.ShowText(str);
 				this->m_ctrlStatus.SetWindowText(str);
 				this->m_ctrlTabCtrl.ShowTab(m_OutChangeFileList.GetDlgCtrlID()-1,FALSE);
@@ -1324,7 +1324,7 @@ void CSyncDlg::FetchOutList(bool force)
 				//fast forward
 				m_OutLogList.FillGitLog(nullptr, &range, CGit::LOG_INFO_STAT | CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE);
 				CString str;
-				str.Format(IDS_PROC_SYNC_COMMITSAHEAD, m_OutLogList.GetItemCount(), (LPCTSTR)remotebranch);
+				str.FormatMessage(IDS_PROC_SYNC_COMMITSAHEAD, m_OutLogList.GetItemCount(), (LPCTSTR)remotebranch);
 				this->m_ctrlStatus.SetWindowText(str);
 
 				if (isFastForward)
@@ -1340,7 +1340,7 @@ void CSyncDlg::FetchOutList(bool force)
 			else
 			{
 				CString str;
-				str.Format(IDS_PROC_SYNC_NOFASTFORWARD, (LPCTSTR)localbranch, (LPCTSTR)remotebranch);
+				str.FormatMessage(IDS_PROC_SYNC_NOFASTFORWARD, (LPCTSTR)localbranch, (LPCTSTR)remotebranch);
 				m_OutLogList.ShowText(str);
 				this->m_ctrlStatus.SetWindowText(str);
 				this->m_ctrlTabCtrl.ShowTab(m_OutChangeFileList.GetDlgCtrlID() - 1, FALSE);

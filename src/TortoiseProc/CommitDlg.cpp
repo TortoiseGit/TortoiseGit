@@ -1010,7 +1010,7 @@ void CCommitDlg::OnOK()
 			{
 				COMError ce(hr);
 				CString sErr;
-				sErr.Format(IDS_ERR_FAILEDISSUETRACKERCOM, (LPCTSTR)m_bugtraq_association.GetProviderName(), ce.GetMessageAndDescription().c_str());
+				sErr.FormatMessage(IDS_ERR_FAILEDISSUETRACKERCOM, (LPCTSTR)m_bugtraq_association.GetProviderName(), ce.GetMessageAndDescription().c_str());
 				CMessageBox::Show(GetSafeHwnd(), sErr, L"TortoiseGit", MB_ICONERROR);
 			}
 			else
@@ -1131,7 +1131,7 @@ void CCommitDlg::OnOK()
 					else
 					{
 						COMError ce(hr);
-						sErr.Format(IDS_ERR_FAILEDISSUETRACKERCOM, ce.GetSource().c_str(), ce.GetMessageAndDescription().c_str());
+						sErr.FormatMessage(IDS_ERR_FAILEDISSUETRACKERCOM, ce.GetSource().c_str(), ce.GetMessageAndDescription().c_str());
 						CMessageBox::Show(GetSafeHwnd(), sErr, L"TortoiseGit", MB_OK | MB_ICONERROR);
 					}
 				}
@@ -2228,7 +2228,7 @@ void CCommitDlg::OnBnClickedBugtraqbutton()
 		if (FAILED(hr = pProvider2->GetCommitMessage2(GetSafeHwnd(), parameters, repositoryRoot, commonRoot, pathList, originalMessage, bugID, &bugIDOut, &revPropNames, &revPropValues, &temp)))
 		{
 			CString sErr;
-			sErr.Format(IDS_ERR_FAILEDISSUETRACKERCOM, (LPCTSTR)m_bugtraq_association.GetProviderName(), _com_error(hr).ErrorMessage());
+			sErr.FormatMessage(IDS_ERR_FAILEDISSUETRACKERCOM, (LPCTSTR)m_bugtraq_association.GetProviderName(), _com_error(hr).ErrorMessage());
 			CMessageBox::Show(GetSafeHwnd(), sErr, L"TortoiseGit", MB_ICONERROR);
 		}
 		else
@@ -2250,7 +2250,7 @@ void CCommitDlg::OnBnClickedBugtraqbutton()
 		if (FAILED(hr))
 		{
 			CString sErr;
-			sErr.Format(IDS_ERR_FAILEDISSUETRACKERCOM, (LPCTSTR)m_bugtraq_association.GetProviderName(), _com_error(hr).ErrorMessage());
+			sErr.FormatMessage(IDS_ERR_FAILEDISSUETRACKERCOM, (LPCTSTR)m_bugtraq_association.GetProviderName(), _com_error(hr).ErrorMessage());
 			CMessageBox::Show(GetSafeHwnd(), sErr, L"TortoiseGit", MB_ICONERROR);
 			return;
 		}
@@ -2258,7 +2258,7 @@ void CCommitDlg::OnBnClickedBugtraqbutton()
 		if (FAILED(hr = pProvider->GetCommitMessage(GetSafeHwnd(), parameters, commonRoot, pathList, originalMessage, &temp)))
 		{
 			CString sErr;
-			sErr.Format(IDS_ERR_FAILEDISSUETRACKERCOM, (LPCTSTR)m_bugtraq_association.GetProviderName(), _com_error(hr).ErrorMessage());
+			sErr.FormatMessage(IDS_ERR_FAILEDISSUETRACKERCOM, (LPCTSTR)m_bugtraq_association.GetProviderName(), _com_error(hr).ErrorMessage());
 			CMessageBox::Show(GetSafeHwnd(), sErr, L"TortoiseGit", MB_ICONERROR);
 		}
 		else

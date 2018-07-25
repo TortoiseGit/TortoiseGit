@@ -3372,7 +3372,7 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_PROC_LOG_STATS      "Showing %ld revision(s), from revision %s to revision %s - %ld revision(s) selected, %ld file(s) selected"
+    IDS_PROC_LOG_STATS      "Showing %1!ld! revision(s), from revision %2!s! to revision %3!s! - %4!ld! revision(s) selected, %5!ld! file(s) selected"
     IDS_PROC_LOG_ALLBRANCHES "<All Branches>"
     IDS_PROC_LOG_NOBRANCH   "<No branch>"
     IDS_SETTINGS_CREATELIB_TT 
@@ -3565,7 +3565,7 @@ BEGIN
     IDS_ERR_TWOLOGPARAMS    "Both /logmsg and /logmsgfile were specified!\nOnly one of those can be specified."
     IDS_ERR_TEXTVIEWSTART   "Could not start text viewer!\n\n%s"
     IDS_ERR_FAILEDISSUETRACKERCOM 
-                            "Failed to start the issue tracker COM provider '%s'.\n%s"
+                            "Failed to start the issue tracker COM provider '%1!s!'.\n%2!s!"
 END
 
 STRINGTABLE
@@ -3719,7 +3719,7 @@ BEGIN
     IDS_B_CANNOTFORCECURRENT 
                             "Cannot force updating current branch. Use reset command if you want to do so."
     IDS_REPOBROWSEASKSUBMODULEUPDATE 
-                            "Commit %s not found in ""%s"". Update submodule now?"
+                            "Commit %1!s! not found in ""%2!s!"". Update submodule now?"
     IDS_TRACKEDBRANCH       "Tracked branch"
     IDS_REBASE_AUTOSKIPPED  "Please take a look at the skipped commits"
     IDS_PROC_REBASE_SELECTALL_SQUASH "&Squash ALL"
@@ -3816,8 +3816,8 @@ BEGIN
     IDS_STATUSLIST_FAILEDGETMERGEFILE "Failed to get merge file."
     IDS_STATUSLIST_FAILEDGETBASEFILE "Failed to get base file."
     IDS_STATUSLIST_CHECKOUTFILEFAILED 
-                            "Failed to checkout file ""%s"" of revision %s to ""%s""."
-    IDS_STATUSLIST_FILESREVERTED "%d files reverted to %s."
+                            "Failed to checkout file ""%1!s!"" of revision %2!s! to ""%3!s!""."
+    IDS_STATUSLIST_FILESREVERTED "%1!d! files reverted to %2!s!."
     IDS_REFBROWSE           "RefBrowse"
     IDS_REFLOG              "RefLog"
     IDS_PROGS_TITLE_REVERTCOMMIT "Revert commit"
@@ -3837,7 +3837,7 @@ BEGIN
     IDS_PROC_NEWBRANCHTAG_FORCE_TT 
                             "Force creation of branch/tag - even if one with same name already exists."
     IDS_PROC_NEWBRANCHTAG_SIGN_TT "GPG signs the tag, see manual for details"
-    IDS_ERR_COPYITSELF      "Can't copy \n%s\nto\n%s"
+    IDS_ERR_COPYITSELF      "Can't copy \n%1!s!\nto\n%2!s!"
     IDS_ERR_INVALIDREV      "Invalid revision number!"
     IDS_SUBMODULE_EMPTYDIFF "No differences found! Submodule may not be updated. Update submodule now?"
     IDS_ERR_NOTHINGTOADD    "There is nothing to add.\nAll the files and folders are either under version control,\nhave been ignored or the global ignore configuration setting."
@@ -3913,7 +3913,7 @@ BEGIN
     IDS_SAVEBUTTON          "&Save"
     IDS_DISCARDBUTTON       "&Discard"
     IDS_PROC_SAVECONFIGFAILED 
-                            "Saving config failed (key: ""%s"", value: ""%s"")."
+                            "Saving config failed (key: ""%1!s!"", value: ""%2!s!"")."
     IDS_WARN_REMOVE         "Do you really want to remove ""%s""?"
     IDS_PROC_GITCONFIG_EDITLOCALGONCFIG "Edit local git config"
     IDS_PROC_GITCONFIG_NOMSYSGIT 
@@ -3934,7 +3934,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_COMMITDLG_EXTERNALS "There are changes or unversioned items inside one or more submodule.\nThose files are not listed for commit. You need to commit those files in submodule"
-    IDS_COMMITDLG_STATISTICSFORMAT "%d files selected, %d files total"
+    IDS_COMMITDLG_STATISTICSFORMAT "%1!d! files selected, %2!d! files total"
     IDS_COMMITDLG_ONLYNUMBERS 
                             "Only numbers (optionally separated by commas)\nare allowed!"
     IDS_COMMITDLG_NOISSUEWARNING 
@@ -3990,7 +3990,7 @@ BEGIN
     IDS_SVN_PROGRESS_SPEED  "Transferring at %s"
     IDS_SVN_PROGRESS_TOTALTRANSFERRED "%I64d KiB transferred"
     IDS_SVN_PROGRESS_TOTALMBTRANSFERRED "%.2f MiB transferred"
-    IDS_SVN_PROGRESS_TOTALANDSPEED "%s, at %s"
+    IDS_SVN_PROGRESS_TOTALANDSPEED "%1!s!, at %2!s!"
     IDS_SVN_PROGRESS_TOTALBYTESTRANSFERRED "%I64d Bytes transferred"
     IDS_SETTINGS_CONF_NAMECOL "Option"
     IDS_SETTINGS_CONF_VALUECOL "Value"
@@ -4022,7 +4022,7 @@ BEGIN
     IDS_STATUSLIST_COLREVISION "Revision"
     IDS_STATUSLIST_COLMODIFICATIONDATE "Modification date"
     IDS_STATUSLIST_COLFILENAME "Filename"
-    IDS_STATUSLIST_COPYFROM "copied from\n%s - revision %ld"
+    IDS_STATUSLIST_COPYFROM "copied from\n%1!s! - revision %2!ld!"
     IDS_STATUSLIST_SWITCHEDTO "switched to\n%s"
 END
 
@@ -4067,9 +4067,9 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_PROGRS_PATHATREV    "%s - at revision: %d"
-    IDS_PROGRS_TIME         "%ld minute(s) and %ld second(s)"
-    IDS_PROGRS_FINALINFO    "%s in %s"
+    IDS_PROGRS_PATHATREV    "%1!s! - at revision: %2!d!"
+    IDS_PROGRS_TIME         "%1!ld! minute(s) and %2!ld! second(s)"
+    IDS_PROGRS_FINALINFO    "%1!s! in %2!s!"
 END
 
 STRINGTABLE
@@ -4231,13 +4231,13 @@ BEGIN
     IDS_SETTINGS_CACHENONE_TT 
                             "No status cache. Only versioned folders get an overlay, files don't get an overlay"
     IDS_SETTINGS_SAVEDDATA_LOGHIST_TT 
-                            "Clears %ld log messages stored for %ld working trees"
+                            "Clears %1!ld! log messages stored for %2!ld! working trees"
     IDS_SETTINGS_SAVEDDATA_URLHIST_TT 
-                            "Clears %ld URLs stored for %ld working trees"
+                            "Clears %1!ld! URLs stored for %2!ld! working trees"
     IDS_SETTINGS_SAVEDDATA_RESIZABLE_TT 
                             "Clears the stored sizes and positions of %ld dialogs"
     IDS_SETTINGS_SAVEDDATA_AUTH_TT 
-                            "Clears %ld username/password pairs, %ld ssl certificates and %ld usernames"
+                            "Clears %1!ld! username/password pairs, %2!ld! ssl certificates and %3!ld! usernames"
     IDS_SETTINGS_RESTARTSYSTEM 
                             "You must restart your system for the changes to take effect."
     IDS_SETTINGS_UNVERSIONEDASMODIFIED_TT 
@@ -4278,7 +4278,7 @@ BEGIN
                             "Could not reset to first commit (first step). Aborting..."
     IDS_PROC_COMBINE_ERRORSTEP2 
                             "Could not reset to last commit (second step). Aborting..."
-    IDS_REG_ERROR           "Error while reading/writing the registry key %s\n%s"
+    IDS_REG_ERROR           "Error while reading/writing the registry key %1!s!\n%2!s!"
     IDS_PROC_COMBINE_ERRORRESETHEAD "Could not reset to original HEAD."
     IDS_PROC_DELETENREFS    "Do you really want to permanently delete the %d selected refs? It can NOT be recovered!"
     IDS_PROC_DELETEREF      """%s"" will be permanently deleted. It can NOT be recovered!\n\nDo you really want to continue?"
@@ -4317,13 +4317,13 @@ BEGIN
     IDS_STATGRAPH_BARSTACKEDBUTTON_TT "Stacked Bar Graph"
     IDS_STATGRAPH_BARBUTTON_TT "Bar Graph"
     IDS_STATGRAPH_AUTHORSLIDER_TT 
-                            "%d most active author(s) with at least %d commits each (%d %%)"
+                            "%1!d! most active author(s) with at least %2!d! commits each (%3!d! %%)"
 END
 
 STRINGTABLE
 BEGIN
-    IDS_FILEDIFF_CHANGEDLISTINTRO "Changed files between %s, %s and %s, %s"
-    IDS_FILEDIFF_CHANGEDLISTINTROROOT "Changed files between %s and %s"
+    IDS_FILEDIFF_CHANGEDLISTINTRO "Changed files between %1!s!, %2!s! and %3!s!, %4!s!"
+    IDS_FILEDIFF_CHANGEDLISTINTROROOT "Changed files between %1!s! and %2!s!"
 END
 
 STRINGTABLE
@@ -4416,7 +4416,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_PROGRS_CMD_CHECKOUT "Checkout"
-    IDS_PROGRS_CMD_IMPORT   "Import %s to %s%s"
+    IDS_PROGRS_CMD_IMPORT   "Import %1!s! to %2!s!%3!s!"
     IDS_PROGRS_CMD_ADD      "Add"
     IDS_PROGRS_CMD_COMMIT   "Commit"
     IDS_PROGRS_CMD_EXPORT   "Export"
@@ -4485,8 +4485,8 @@ END
 STRINGTABLE
 BEGIN
     IDS_REBASE_FASTFORWARD_FMT 
-                            "Branch %s behind %s\n%s will fastforward to %s"
-    IDS_REBASE_EQUAL_FMT    "Nothing need rebase\n%s equal %s"
+                            "Branch %1!s! behind %2!s!\n%3!s! will fastforward to %4!s!"
+    IDS_REBASE_EQUAL_FMT    "Nothing need rebase\n%1!s! equal %2!s!"
     IDS_CLONE_DEPTH_TT      "Create a shallow clone with a history truncated to the specified number of revisions. A shallow repository has a number of limitations (you cannot clone or fetch from it, nor push from nor into it), but is adequate if you are only interested in the recent history of a large project with a long history, and would want to send in fixes as patches."
     IDS_HOOKTYPE_PREPUSH    "Pre-Push Hook"
     IDS_HOOKTYPE_POSTPUSH   "Post-Push Hook"
@@ -4555,7 +4555,7 @@ BEGIN
     IDS_PROC_REBASE_STARTREBASE "Start Rebase"
     IDS_PROC_REBASEFINISHED "Finished rebasing."
     IDS_PROC_COMMITMESSAGE_EMPTY "The commit message must not be empty."
-    IDS_PROC_REBASING_PROGRESS "Rebasing... (%d/%d)"
+    IDS_PROC_REBASING_PROGRESS "Rebasing... (%1!d!/%2!d!)"
     IDS_PROC_REBASE_FFTO    "Fast forward to %s"
     IDS_PROC_CONFLICTFILES  "Conflict Files"
     IDS_AMENDBUTTON         "Amend"
@@ -4618,7 +4618,7 @@ BEGIN
     IDS_PROC_SYNC_PULLWRONGBRANCH 
                             "Pull requires the selected local branch to be the current branch."
     IDS_PROC_SYNC_REFRESHING "Refreshing..."
-    IDS_PROC_SYNC_COMMITSAHEAD "%d commits ahead ""%s"""
+    IDS_PROC_SYNC_COMMITSAHEAD "%1!d! commits ahead ""%2!s!"""
     IDS_PROC_SYNC_WAINTINPUT "Waiting for input"
     IDS_PROC_SYNC_PUSH_UNKNOWN 
                             "Don't know what will push because you enter URL"
@@ -4688,7 +4688,7 @@ STRINGTABLE
 BEGIN
     IDS_PROC_PUSHFETCH_ALLREMOTES "- all -"
     IDS_PROC_SYNC_NOFASTFORWARD 
-                            "The local branch ""%s"" does not fast-forward to the remote branch ""%s""."
+                            "The local branch ""%1!s!"" does not fast-forward to the remote branch ""%2!s!""."
     IDS_PUSHDLG_PUSHBRANCH_TT 
                             "Sets the remote branch as the ""pushbranch"" for the selected local branch."
     IDS_PUSHDLG_PUSHREMOTE_TT 
@@ -4719,7 +4719,7 @@ BEGIN
     IDS_FILEDIFF_EXT        "Extension"
     IDS_ERR_EMPTYDIFF       "No differences found!"
     IDS_PROC_TAG_FF         "Tag (FF)"
-    IDS_GITVER_REQUIRED     "%s requires Git >= %s"
+    IDS_GITVER_REQUIRED     "%1!s! requires Git >= %2!s!"
     IDS_SETTINGS_SYMBOLIZEREFNAMES_TT 
                             "Show symbols on ref labels to substitute part of the ref names"
     IDS_PROC_SYNC_PUSHNOTES "Push notes"
@@ -4783,7 +4783,7 @@ BEGIN
     IDS_HIERARCHICALCONFIG  "Git uses the concept of a hierarchical configuration.\nI.e. there are multiple levels; settings in higher levels override values in lower levels.\nThe ""Effective"" tab shows you the effective values for the current scope (read-only).\nSelect any level to see the values stored there.\nIn order to change settings select a level, enter the values and select where to store to."
     IDS_OFFLINEMODE         "System in offline mode. Check Internet Explorer."
     IDS_CHECKNEWER_NETERROR_FORMAT 
-                            "Could not check for a newer version! %s (Error code: 0x%08X)"
+                            "Could not check for a newer version! %1!s! (Error code: 0x%2!08X!)"
     IDS_PROC_BRANCH_FF      "Branch (FF)"
     IDS_PROC_LOG_LOCAL_BRANCHES "<Local Branches>"
     IDS_PROC_LOG_SELECT_LOCAL_BRANCHES "All local branches"
@@ -4881,7 +4881,7 @@ BEGIN
     IDS_PROC_LOG_BASIC_REFS "<Basic Refs>"
     IDS_PROC_LOG_SELECT_BASIC_REFS "All basic refs"
     IDS_CHERRYPICK_MERGECOMMIT 
-                            """%s"" - ""%s""\nis a merge commit.\n\nWhich parent do you want to pick?"
+                            """%1!s!"" - ""%2!s!""\nis a merge commit.\n\nWhich parent do you want to pick?"
     IDS_COMMIT_COMMIT       "C&ommit"
     IDS_COMMIT_RECOMMIT     "&ReCommit"
     IDS_COMMIT_COMMITPUSH   "Commit && &Push"
@@ -4890,7 +4890,7 @@ BEGIN
                             "You asked to pull, but did not specify a remote branch."
     IDS_PROC_SYNC_FETCHALL  "Fetch all refs"
     IDS_NOTYET_SETTRACKEDBRANCH 
-                            "For the current branch ""%s"" no tracked branch is configured.\nDo you want to set the selected branch ""%s"" as tracked branch?\nThis will automatically select it for push and pull in the future."
+                            "For the current branch ""%1!s!"" no tracked branch is configured.\nDo you want to set the selected branch ""%2!s!"" as tracked branch?\nThis will automatically select it for push and pull in the future."
     IDS_PROC_DIFF_BASE      "Base"
     IDS_REMOVESTALEBUTTON   "Remove stale lock file"
 END

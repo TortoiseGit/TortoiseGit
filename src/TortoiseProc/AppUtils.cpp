@@ -3066,7 +3066,7 @@ BOOL CAppUtils::SVNDCommit(HWND hWnd)
 				if (g_Git.SetConfigValue(L"svn.rmdir", gitSetting))
 				{
 					CString msg;
-					msg.Format(IDS_PROC_SAVECONFIGFAILED, L"svn.rmdir", (LPCTSTR)gitSetting);
+					msg.FormatMessage(IDS_PROC_SAVECONFIGFAILED, L"svn.rmdir", (LPCTSTR)gitSetting);
 					MessageBox(hWnd, msg, L"TortoiseGit", MB_OK | MB_ICONERROR);
 				}
 			}

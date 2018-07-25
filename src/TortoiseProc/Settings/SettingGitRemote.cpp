@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -393,7 +393,7 @@ BOOL CSettingGitRemote::Save(CString key,CString value)
 		if (!g_Git.GetConfigValue(cmd).IsEmpty())
 		{
 			CString msg;
-			msg.Format(IDS_PROC_SAVECONFIGFAILED, (LPCTSTR)cmd, (LPCTSTR)value);
+			msg.FormatMessage(IDS_PROC_SAVECONFIGFAILED, (LPCTSTR)cmd, (LPCTSTR)value);
 			CMessageBox::Show(GetSafeHwnd(), msg, L"TortoiseGit", MB_OK | MB_ICONERROR);
 			return FALSE;
 		}
@@ -403,7 +403,7 @@ BOOL CSettingGitRemote::Save(CString key,CString value)
 	if (g_Git.SetConfigValue(cmd, value, CONFIG_LOCAL))
 	{
 		CString msg;
-		msg.Format(IDS_PROC_SAVECONFIGFAILED, (LPCTSTR)cmd, (LPCTSTR)value);
+		msg.FormatMessage(IDS_PROC_SAVECONFIGFAILED, (LPCTSTR)cmd, (LPCTSTR)value);
 		CMessageBox::Show(GetSafeHwnd(), msg, L"TortoiseGit", MB_OK | MB_ICONERROR);
 		return FALSE;
 	}
@@ -419,7 +419,7 @@ BOOL CSettingGitRemote::SaveGeneral(CString key, CString value)
 		if (!g_Git.GetConfigValue(key).IsEmpty())
 		{
 			CString msg;
-			msg.Format(IDS_PROC_SAVECONFIGFAILED, (LPCTSTR)key, (LPCTSTR)value);
+			msg.FormatMessage(IDS_PROC_SAVECONFIGFAILED, (LPCTSTR)key, (LPCTSTR)value);
 			CMessageBox::Show(GetSafeHwnd(), msg, L"TortoiseGit", MB_OK | MB_ICONERROR);
 			return FALSE;
 		}
@@ -429,7 +429,7 @@ BOOL CSettingGitRemote::SaveGeneral(CString key, CString value)
 	if (g_Git.SetConfigValue(key, value, CONFIG_LOCAL))
 	{
 		CString msg;
-		msg.Format(IDS_PROC_SAVECONFIGFAILED, (LPCTSTR)key, (LPCTSTR)value);
+		msg.FormatMessage(IDS_PROC_SAVECONFIGFAILED, (LPCTSTR)key, (LPCTSTR)value);
 		CMessageBox::Show(GetSafeHwnd(), msg, L"TortoiseGit", MB_OK | MB_ICONERROR);
 		return FALSE;
 	}

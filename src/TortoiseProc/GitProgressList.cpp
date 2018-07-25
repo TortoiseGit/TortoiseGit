@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -518,8 +518,8 @@ UINT CGitProgressList::ProgressThread()
 	CString sFinalInfo;
 	if (!m_sTotalBytesTransferred.IsEmpty())
 	{
-		temp.Format(IDS_PROGRS_TIME, (DWORD)(time / 1000) / 60, (DWORD)(time / 1000) % 60);
-		sFinalInfo.Format(IDS_PROGRS_FINALINFO, (LPCTSTR)m_sTotalBytesTransferred, (LPCTSTR)temp);
+		temp.FormatMessage(IDS_PROGRS_TIME, (DWORD)(time / 1000) / 60, (DWORD)(time / 1000) % 60);
+		sFinalInfo.FormatMessage(IDS_PROGRS_FINALINFO, (LPCTSTR)m_sTotalBytesTransferred, (LPCTSTR)temp);
 		if (m_pProgressLabelCtrl)
 			m_pProgressLabelCtrl->SetWindowText(sFinalInfo);
 	}
@@ -787,7 +787,7 @@ int CGitProgressList::UpdateProgress(const git_transfer_progress* stat)
 	else
 		str.Format(L"%.2f MiB/s", speed / 1048576.0);
 
-	progText.Format(IDS_SVN_PROGRESS_TOTALANDSPEED, (LPCTSTR)m_sTotalBytesTransferred, (LPCTSTR)str);
+	progText.FormatMessage(IDS_SVN_PROGRESS_TOTALANDSPEED, (LPCTSTR)m_sTotalBytesTransferred, (LPCTSTR)str);
 	if (m_pProgressLabelCtrl)
 		m_pProgressLabelCtrl->SetWindowText(progText);
 
@@ -802,7 +802,7 @@ void CGitProgressList::OnTimer(UINT_PTR nIDEvent)
 	{
 		CString progText;
 		CString progSpeed = L"0 B/s";
-		progText.Format(IDS_SVN_PROGRESS_TOTALANDSPEED, (LPCTSTR)m_sTotalBytesTransferred, (LPCTSTR)progSpeed);
+		progText.FormatMessage(IDS_SVN_PROGRESS_TOTALANDSPEED, (LPCTSTR)m_sTotalBytesTransferred, (LPCTSTR)progSpeed);
 		if (m_pProgressLabelCtrl)
 			m_pProgressLabelCtrl->SetWindowText(progText);
 
