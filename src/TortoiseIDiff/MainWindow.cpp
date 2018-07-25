@@ -1,4 +1,4 @@
-﻿// TortoiseIDiff - an image diff viewer in TortoiseSVN
+﻿// TortoiseGitIDiff - an image diff viewer in TortoiseSVN
 
 // Copyright (C) 2015-2018 - TortoiseGit
 // Copyright (C) 2006-2013, 2015, 2018 - TortoiseSVN
@@ -75,6 +75,7 @@ void CMainWindow::PositionChildren(RECT * clientrect /* = nullptr */)
     RECT tbRect;
     if (!clientrect)
         return;
+    const auto splitter_border = CDPIAware::Instance().ScaleX(SPLITTER_BORDER);
     SendMessage(hwndTB, TB_AUTOSIZE, 0, 0);
     GetWindowRect(hwndTB, &tbRect);
     LONG tbHeight = tbRect.bottom-tbRect.top-1;
@@ -94,9 +95,9 @@ void CMainWindow::PositionChildren(RECT * clientrect /* = nullptr */)
                 child.left = clientrect->left;
                 child.top = clientrect->top+tbHeight;
                 child.right = clientrect->right;
-                child.bottom = nSplitterPos-(SPLITTER_BORDER/2);
+                child.bottom = nSplitterPos - (splitter_border / 2);
                 if (hdwp) hdwp = DeferWindowPos(hdwp, picWindow1, nullptr, child.left, child.top, child.right - child.left, child.bottom - child.top, SWP_FRAMECHANGED | SWP_SHOWWINDOW);
-                child.top = nSplitterPos+(SPLITTER_BORDER/2);
+                child.top = nSplitterPos + (splitter_border / 2);
                 child.bottom = clientrect->bottom;
                 if (hdwp) hdwp = DeferWindowPos(hdwp, picWindow2, nullptr, child.left, child.top, child.right - child.left, child.bottom - child.top, SWP_FRAMECHANGED | SWP_SHOWWINDOW);
             }
@@ -107,12 +108,12 @@ void CMainWindow::PositionChildren(RECT * clientrect /* = nullptr */)
                 child.left = clientrect->left;
                 child.top = clientrect->top+tbHeight;
                 child.right = clientrect->right;
-                child.bottom = nSplitterPos-(SPLITTER_BORDER/2);
+                child.bottom = nSplitterPos - (splitter_border / 2);
                 if (hdwp) hdwp = DeferWindowPos(hdwp, picWindow1, nullptr, child.left, child.top, child.right - child.left, child.bottom - child.top, SWP_FRAMECHANGED | SWP_SHOWWINDOW);
-                child.top = nSplitterPos+(SPLITTER_BORDER/2);
-                child.bottom = nSplitterPos2-(SPLITTER_BORDER/2);
+                child.top = nSplitterPos + (splitter_border / 2);
+                child.bottom = nSplitterPos2 - (splitter_border / 2);
                 if (hdwp) hdwp = DeferWindowPos(hdwp, picWindow2, nullptr, child.left, child.top, child.right - child.left, child.bottom - child.top, SWP_FRAMECHANGED | SWP_SHOWWINDOW);
-                child.top = nSplitterPos2+(SPLITTER_BORDER/2);
+                child.top = nSplitterPos2 + (splitter_border / 2);
                 child.bottom = clientrect->bottom;
                 if (hdwp) hdwp = DeferWindowPos(hdwp, picWindow3, nullptr, child.left, child.top, child.right - child.left, child.bottom - child.top, SWP_FRAMECHANGED | SWP_SHOWWINDOW);
             }
@@ -125,10 +126,10 @@ void CMainWindow::PositionChildren(RECT * clientrect /* = nullptr */)
                 RECT child;
                 child.left = clientrect->left;
                 child.top = clientrect->top+tbHeight;
-                child.right = nSplitterPos-(SPLITTER_BORDER/2);
+                child.right = nSplitterPos - (splitter_border / 2);
                 child.bottom = clientrect->bottom;
                 if (hdwp) hdwp = DeferWindowPos(hdwp, picWindow1, nullptr, child.left, child.top, child.right - child.left, child.bottom - child.top, SWP_FRAMECHANGED | SWP_SHOWWINDOW);
-                child.left = nSplitterPos+(SPLITTER_BORDER/2);
+                child.left = nSplitterPos + (splitter_border / 2);
                 child.right = clientrect->right;
                 if (hdwp) hdwp = DeferWindowPos(hdwp, picWindow2, nullptr, child.left, child.top, child.right - child.left, child.bottom - child.top, SWP_FRAMECHANGED | SWP_SHOWWINDOW);
             }
@@ -138,13 +139,13 @@ void CMainWindow::PositionChildren(RECT * clientrect /* = nullptr */)
                 RECT child;
                 child.left = clientrect->left;
                 child.top = clientrect->top+tbHeight;
-                child.right = nSplitterPos-(SPLITTER_BORDER/2);
+                child.right = nSplitterPos - (splitter_border / 2);
                 child.bottom = clientrect->bottom;
                 if (hdwp) hdwp = DeferWindowPos(hdwp, picWindow1, nullptr, child.left, child.top, child.right - child.left, child.bottom - child.top, SWP_FRAMECHANGED | SWP_SHOWWINDOW);
-                child.left = nSplitterPos+(SPLITTER_BORDER/2);
-                child.right = nSplitterPos2-(SPLITTER_BORDER/2);
+                child.left = nSplitterPos + (splitter_border / 2);
+                child.right = nSplitterPos2 - (splitter_border / 2);
                 if (hdwp) hdwp = DeferWindowPos(hdwp, picWindow2, nullptr, child.left, child.top, child.right - child.left, child.bottom - child.top, SWP_FRAMECHANGED | SWP_SHOWWINDOW);
-                child.left = nSplitterPos2+(SPLITTER_BORDER/2);
+                child.left = nSplitterPos2 + (splitter_border / 2);
                 child.right = clientrect->right;
                 if (hdwp) hdwp = DeferWindowPos(hdwp, picWindow3, nullptr, child.left, child.top, child.right - child.left, child.bottom - child.top, SWP_FRAMECHANGED | SWP_SHOWWINDOW);
             }
@@ -935,6 +936,9 @@ LRESULT CMainWindow::Splitter_OnLButtonUp(HWND hwnd, UINT /*iMsg*/, WPARAM /*wPa
     if (bDragMode == FALSE)
         return 0;
 
+    const auto bordersm = CDPIAware::Instance().ScaleX(2);
+    const auto borderl = CDPIAware::Instance().ScaleY(4);
+
     GetClientRect(hwnd, &clientrect);
     GetWindowRect(hwnd, &rect);
     POINT zero = {0,0};
@@ -949,18 +953,18 @@ LRESULT CMainWindow::Splitter_OnLButtonUp(HWND hwnd, UINT /*iMsg*/, WPARAM /*wPa
 
     if (pt.x < 0)
         pt.x = 0;
-    if (pt.x > rect.right-4)
-        pt.x = rect.right-4;
+    if (pt.x > rect.right - borderl)
+        pt.x = rect.right - borderl;
     if (pt.y < 0)
         pt.y = 0;
-    if (pt.y > rect.bottom-4)
-        pt.y = rect.bottom-4;
+    if (pt.y > rect.bottom - borderl)
+        pt.y = rect.bottom - borderl;
 
     hdc = GetWindowDC(hwnd);
     if (bVertical)
-        DrawXorBar(hdc, clientrect.left, oldy+2, clientrect.right-clientrect.left-2, 4);
+        DrawXorBar(hdc, clientrect.left, oldy + bordersm, clientrect.right - clientrect.left - bordersm, borderl);
     else
-        DrawXorBar(hdc, oldx+2, clientrect.top, 4, clientrect.bottom-clientrect.top-2);
+        DrawXorBar(hdc, oldx + bordersm, clientrect.top, borderl, clientrect.bottom - clientrect.top - bordersm);
     ReleaseDC(hwnd, hdc);
 
     oldx = pt.x;
@@ -1039,6 +1043,9 @@ LRESULT CMainWindow::Splitter_OnMouseMove(HWND hwnd, UINT /*iMsg*/, WPARAM wPara
     if (bDragMode == FALSE)
         return 0;
 
+    const auto bordersm = CDPIAware::Instance().ScaleX(2);
+    const auto borderl = CDPIAware::Instance().ScaleY(4);
+
     pt.x = (short)LOWORD(lParam);  // horizontal position of cursor
     pt.y = (short)HIWORD(lParam);
 
@@ -1059,12 +1066,12 @@ LRESULT CMainWindow::Splitter_OnMouseMove(HWND hwnd, UINT /*iMsg*/, WPARAM wPara
 
     if (pt.x < 0)
         pt.x = 0;
-    if (pt.x > rect.right-4)
-        pt.x = rect.right-4;
+    if (pt.x > rect.right - borderl)
+        pt.x = rect.right - borderl;
     if (pt.y < 0)
         pt.y = 0;
-    if (pt.y > rect.bottom-4)
-        pt.y = rect.bottom-4;
+    if (pt.y > rect.bottom - borderl)
+        pt.y = rect.bottom - borderl;
 
     if ((wParam & MK_LBUTTON) && ((bVertical && (pt.y != oldy)) || (!bVertical && (pt.x != oldx))))
     {
@@ -1072,13 +1079,13 @@ LRESULT CMainWindow::Splitter_OnMouseMove(HWND hwnd, UINT /*iMsg*/, WPARAM wPara
 
         if (bVertical)
         {
-            DrawXorBar(hdc, clientrect.left, oldy+2, clientrect.right-clientrect.left-2, 4);
-            DrawXorBar(hdc, clientrect.left, pt.y+2, clientrect.right-clientrect.left-2, 4);
+            DrawXorBar(hdc, clientrect.left, oldy + bordersm, clientrect.right - clientrect.left - bordersm, borderl);
+            DrawXorBar(hdc, clientrect.left, pt.y + bordersm, clientrect.right - clientrect.left - bordersm, borderl);
         }
         else
         {
-            DrawXorBar(hdc, oldx+2, clientrect.top, 4, clientrect.bottom-clientrect.top-2);
-            DrawXorBar(hdc, pt.x+2, clientrect.top, 4, clientrect.bottom-clientrect.top-2);
+            DrawXorBar(hdc, oldx + bordersm, clientrect.top, borderl, clientrect.bottom - clientrect.top - bordersm);
+            DrawXorBar(hdc, pt.x + bordersm, clientrect.top, borderl, clientrect.bottom - clientrect.top - bordersm);
         }
 
         ReleaseDC(hwnd, hdc);
