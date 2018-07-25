@@ -407,6 +407,36 @@ protected:
 	//{{AFX_VIRTUAL(CTreePropSheet)
 	public:
 	virtual BOOL OnInitDialog();
+	void BuildPropPageArray() override
+	{
+		CPropertySheet::BuildPropPageArray();
+
+		// create a copy of existing PROPSHEETPAGE array which can be modified
+		int nPages = static_cast<int>(m_pages.GetSize());
+		int nBytes = 0;
+		for (decltype(nPages) i = 0; i < nPages; ++i)
+		{
+			auto pPage = GetPage(i);
+			nBytes += pPage->m_psp.dwSize;
+		}
+		auto ppsp0 = static_cast<LPPROPSHEETPAGE>(malloc(nBytes));
+		Checked::memcpy_s(ppsp0, nBytes, m_psh.ppsp, nBytes);
+		auto ppsp = ppsp0;
+		for (decltype(nPages) i = 0; i < nPages; ++i)
+		{
+			const DLGTEMPLATE* pResource = ppsp->pResource;
+			CDialogTemplate dlgTemplate(pResource);
+			dlgTemplate.SetFont(L"MS Shell Dlg 2", 9);
+			HGLOBAL hNew = GlobalAlloc(GPTR, dlgTemplate.m_dwTemplateSize);
+			ppsp->pResource = (DLGTEMPLATE*)GlobalLock(hNew);
+			Checked::memcpy_s((void*)ppsp->pResource, dlgTemplate.m_dwTemplateSize, dlgTemplate.m_hTemplate, dlgTemplate.m_dwTemplateSize);
+			GlobalUnlock(hNew);
+			(BYTE*&)ppsp += ppsp->dwSize;
+		}
+		// free existing PROPSHEETPAGE array and assign the new one
+		free((void*)m_psh.ppsp);
+		m_psh.ppsp = ppsp0;
+	}
 	//}}AFX_VIRTUAL
 
 // Message handlers

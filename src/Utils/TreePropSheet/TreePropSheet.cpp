@@ -33,6 +33,21 @@ static char THIS_FILE[] = __FILE__;
 
 namespace TreePropSheet
 {
+	int CALLBACK PropSheetProc(HWND /*hWndDlg*/, UINT uMsg, LPARAM lParam)
+	{
+		switch (uMsg)
+		{
+		case PSCB_PRECREATE:
+		{
+			auto pResource = reinterpret_cast<LPDLGTEMPLATE>(lParam);
+			CDialogTemplate dlgTemplate(pResource);
+			dlgTemplate.SetFont(L"MS Shell Dlg 2", 9);
+			memmove((void*)lParam, dlgTemplate.m_hTemplate, dlgTemplate.m_dwTemplateSize);
+		}
+		break;
+		}
+		return 0;
+	}
 
 //-------------------------------------------------------------------
 // class CTreePropSheet
@@ -67,7 +82,10 @@ CTreePropSheet::CTreePropSheet()
 	m_nPageTreeWidth(150),
 	m_pwndPageTree(nullptr),
 	m_pFrame(nullptr)
-{}
+{
+	m_psh.pfnCallback = PropSheetProc;
+	m_psh.dwFlags |= PSH_USECALLBACK;
+}
 
 
 CTreePropSheet::CTreePropSheet(UINT nIDCaption, CWnd* pParentWnd, UINT iSelectPage)
@@ -80,6 +98,8 @@ CTreePropSheet::CTreePropSheet(UINT nIDCaption, CWnd* pParentWnd, UINT iSelectPa
 	m_pwndPageTree(nullptr),
 	m_pFrame(nullptr)
 {
+	m_psh.pfnCallback = PropSheetProc;
+	m_psh.dwFlags |= PSH_USECALLBACK;
 }
 
 
@@ -93,6 +113,8 @@ CTreePropSheet::CTreePropSheet(LPCTSTR pszCaption, CWnd* pParentWnd, UINT iSelec
 	m_pwndPageTree(nullptr),
 	m_pFrame(nullptr)
 {
+	m_psh.pfnCallback = PropSheetProc;
+	m_psh.dwFlags |= PSH_USECALLBACK;
 }
 
 

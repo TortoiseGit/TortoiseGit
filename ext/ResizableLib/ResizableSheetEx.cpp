@@ -527,3 +527,32 @@ LRESULT CResizableSheetEx::WindowProc(UINT message, WPARAM wParam, LPARAM lParam
 	HandleNcCalcSize(TRUE, (LPNCCALCSIZE_PARAMS)lParam, lResult);
 	return lResult;
 }
+
+int CALLBACK CResizableSheetEx::XmnPropSheetCallback(HWND hWnd, UINT message, LPARAM lParam)
+{
+	extern int CALLBACK AfxPropSheetCallback(HWND, UINT message, LPARAM lParam);
+	// XMN: Call MFC's callback
+	int nRes = AfxPropSheetCallback(hWnd, message, lParam);
+
+	switch (message)
+	{
+	case PSCB_PRECREATE:
+		// Change the font and font size
+		auto pResource = reinterpret_cast<LPDLGTEMPLATE>(lParam);
+		CDialogTemplate dlgTemplate(pResource);
+		dlgTemplate.SetFont(L"MS Shell Dlg 2", 9);
+		memmove((void*)lParam, dlgTemplate.m_hTemplate, dlgTemplate.m_dwTemplateSize);
+		break;
+	}
+	return nRes;
+}
+
+// Overriding DoModal() allows us to hook our callback into
+//    the prop sheet creation
+INT_PTR CResizableSheetEx::DoModal()
+{
+	// Hook into property sheet creation code
+	m_psh.dwFlags |= PSH_USECALLBACK;
+	m_psh.pfnCallback = XmnPropSheetCallback;
+	return CPropertySheet::DoModal();
+}
