@@ -4477,7 +4477,7 @@ BEGIN
     IDS_ERROR_NOTHING_COMMIT "Nothing to commit"
     IDS_COMMIT_FINISH       "Commit Finish"
     IDS_COMMITDLG_POPUP_LOGHISTORY "Paste r&ecent message..."
-    IDS_REBASE_UPTODATE_FMT "Current branch %s is up to date\n\nIf you want to force the rebase even if the current branch is a descendant of the commit you are rebasing onto, please check below ""Force Rebase"" checkbox."
+    IDS_REBASE_UPTODATE_FMT "Current branch ""%s"" is up to date\n\nIf you want to force a rebase even if the current branch is a descendant of the commit you are rebasing onto, please check below ""Force Rebase"" checkbox."
     IDS_REBASE_FORCE_TT     "Force the rebase even if the current branch is a descendant of the commit you are rebasing onto.\nNormally the command will exit with the message ""Current branch is up to date"" in such a situation."
     IDS_REBASE_ABORT_TT     "Recover to the status before rebase"
 END
@@ -4485,8 +4485,8 @@ END
 STRINGTABLE
 BEGIN
     IDS_REBASE_FASTFORWARD_FMT 
-                            "Branch %1!s! behind %2!s!\n%3!s! will fastforward to %4!s!"
-    IDS_REBASE_EQUAL_FMT    "Nothing need rebase\n%1!s! equal %2!s!"
+                            "Branch ""%1!s!"" behind ""%2!s!""\n""%3!s!"" will fastforward to ""%4!s!"""
+    IDS_REBASE_EQUAL_FMT    "No need to rebase\n""%1!s!"" equals ""%2!s!"""
     IDS_CLONE_DEPTH_TT      "Create a shallow clone with a history truncated to the specified number of revisions. A shallow repository has a number of limitations (you cannot clone or fetch from it, nor push from nor into it), but is adequate if you are only interested in the recent history of a large project with a long history, and would want to send in fixes as patches."
     IDS_HOOKTYPE_PREPUSH    "Pre-Push Hook"
     IDS_HOOKTYPE_POSTPUSH   "Post-Push Hook"
@@ -4556,7 +4556,7 @@ BEGIN
     IDS_PROC_REBASEFINISHED "Finished rebasing."
     IDS_PROC_COMMITMESSAGE_EMPTY "The commit message must not be empty."
     IDS_PROC_REBASING_PROGRESS "Rebasing... (%1!d!/%2!d!)"
-    IDS_PROC_REBASE_FFTO    "Fast forward to %s"
+    IDS_PROC_REBASE_FFTO    "Fast forward to ""%s"""
     IDS_PROC_CONFLICTFILES  "Conflict Files"
     IDS_AMENDBUTTON         "Amend"
     IDS_CONTINUEBUTTON      "Continue"
