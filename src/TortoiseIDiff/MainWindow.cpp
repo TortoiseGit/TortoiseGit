@@ -1209,7 +1209,7 @@ bool CMainWindow::CreateToolbar()
 
     SendMessage(hwndTB, TB_BUTTONSTRUCTSIZE, (WPARAM) sizeof(TBBUTTON), 0);
 
-    TBBUTTON tbb[13];
+    TBBUTTON tbb[14];
     // create an imagelist containing the icons for the toolbar
     auto imgSizeX = CDPIAware::Instance().ScaleX(24);
     auto imgSizeY = CDPIAware::Instance().ScaleY(24);
@@ -1233,6 +1233,13 @@ bool CMainWindow::CreateToolbar()
         tbb[index].idCommand = ID_VIEW_BLENDALPHA;
         tbb[index].fsState = 0;
         tbb[index].fsStyle = BTNS_BUTTON;
+        tbb[index].dwData = 0;
+        tbb[index++].iString = 0;
+
+        tbb[index].iBitmap = 0;
+        tbb[index].idCommand = 0;
+        tbb[index].fsState = TBSTATE_ENABLED;
+        tbb[index].fsStyle = BTNS_SEP;
         tbb[index].dwData = 0;
         tbb[index++].iString = 0;
 
@@ -1267,13 +1274,6 @@ bool CMainWindow::CreateToolbar()
         tbb[index].dwData = 0;
         tbb[index++].iString = 0;
     }
-    hIcon = LoadIconEx(hResource, MAKEINTRESOURCE(IDI_VERTICAL), imgSizeX, imgSizeY);
-    tbb[index].iBitmap = ImageList_AddIcon(hToolbarImgList, hIcon);
-    tbb[index].idCommand = ID_VIEW_ARRANGEVERTICAL;
-    tbb[index].fsState = TBSTATE_ENABLED;
-    tbb[index].fsStyle = BTNS_BUTTON;
-    tbb[index].dwData = 0;
-    tbb[index++].iString = 0;
 
     hIcon = LoadIconEx(hResource, MAKEINTRESOURCE(IDI_FITINWINDOW), imgSizeX, imgSizeY);
     tbb[index].iBitmap = ImageList_AddIcon(hToolbarImgList, hIcon);
@@ -1317,6 +1317,14 @@ bool CMainWindow::CreateToolbar()
     hIcon = LoadIconEx(hResource, MAKEINTRESOURCE(IDI_IMGINFO), imgSizeX, imgSizeY);
     tbb[index].iBitmap = ImageList_AddIcon(hToolbarImgList, hIcon);
     tbb[index].idCommand = ID_VIEW_IMAGEINFO;
+    tbb[index].fsState = TBSTATE_ENABLED;
+    tbb[index].fsStyle = BTNS_BUTTON;
+    tbb[index].dwData = 0;
+    tbb[index++].iString = 0;
+
+    hIcon = LoadIconEx(hResource, MAKEINTRESOURCE(IDI_VERTICAL), imgSizeX, imgSizeY);
+    tbb[index].iBitmap = ImageList_AddIcon(hToolbarImgList, hIcon);
+    tbb[index].idCommand = ID_VIEW_ARRANGEVERTICAL;
     tbb[index].fsState = TBSTATE_ENABLED;
     tbb[index].fsStyle = BTNS_BUTTON;
     tbb[index].dwData = 0;
