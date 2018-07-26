@@ -2889,7 +2889,7 @@ void CLogDlg::UpdateLogInfoLabel()
 			selectedfiles = m_ChangedFileListCtrl.GetSelectedCount();
 	}
 	CString sTemp;
-	sTemp.Format(IDS_PROC_LOG_STATS,
+	sTemp.FormatMessage(IDS_PROC_LOG_STATS,
 		count - start,
 		(LPCTSTR)rev2.ToString().Left(g_Git.GetShortHASHLength()), (LPCTSTR)rev1.ToString().Left(g_Git.GetShortHASHLength()), selectedrevs, selectedfiles);
 

@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2009-2013, 2015-2017 - TortoiseGit
+// Copyright (C) 2009-2013, 2015-2018 - TortoiseGit
 // Copyright (C) 2012-2013 - Sven Strickroth <email@cs-ware.de>
 // Copyright (C) 2004-2009,2011-2014 - TortoiseSVN
 
@@ -524,19 +524,19 @@ int CPatch::PatchFile(const int strip, int nIndex, const CString& sPatchPath, co
 				{
 					if ((lAddLine > PatchLines.GetCount())||(PatchLines.GetCount()==0))
 					{
-						m_sErrorMessage.Format(IDS_ERR_PATCH_DOESNOTMATCH, L"", (LPCTSTR)sPatchLine);
+						m_sErrorMessage.FormatMessage(IDS_ERR_PATCH_DOESNOTMATCH, L"", (LPCTSTR)sPatchLine);
 						return FALSE;
 					}
 					if (lAddLine == 0)
 						lAddLine = 1;
 					if ((sPatchLine.Compare(PatchLines.GetAt(lAddLine-1))!=0)&&(!HasExpandedKeyWords(sPatchLine)))
 					{
-						m_sErrorMessage.Format(IDS_ERR_PATCH_DOESNOTMATCH, (LPCTSTR)sPatchLine, (LPCTSTR)PatchLines.GetAt(lAddLine-1));
+						m_sErrorMessage.FormatMessage(IDS_ERR_PATCH_DOESNOTMATCH, (LPCTSTR)sPatchLine, (LPCTSTR)PatchLines.GetAt(lAddLine-1));
 						return FALSE;
 					}
 					if (lAddLine > PatchLines.GetCount())
 					{
-						m_sErrorMessage.Format(IDS_ERR_PATCH_DOESNOTMATCH, (LPCTSTR)sPatchLine, L"");
+						m_sErrorMessage.FormatMessage(IDS_ERR_PATCH_DOESNOTMATCH, (LPCTSTR)sPatchLine, L"");
 						return FALSE;
 					}
 					PatchLines.RemoveAt(lAddLine-1);
@@ -568,7 +568,7 @@ int CPatch::PatchFile(const int strip, int nIndex, const CString& sPatchPath, co
 					{
 						if (k >= chunk->arLines.GetCount())
 							k = j;
-						m_sErrorMessage.Format(IDS_ERR_PATCH_DOESNOTMATCH, (LPCTSTR)PatchLines.GetAt(lAddLine - 1), (LPCTSTR)chunk->arLines.GetAt(k));
+						m_sErrorMessage.FormatMessage(IDS_ERR_PATCH_DOESNOTMATCH, (LPCTSTR)PatchLines.GetAt(lAddLine - 1), (LPCTSTR)chunk->arLines.GetAt(k));
 						return FALSE;
 					}
 				}
@@ -577,7 +577,7 @@ int CPatch::PatchFile(const int strip, int nIndex, const CString& sPatchPath, co
 				{
 					if (lAddLine > PatchLines.GetCount())
 					{
-						m_sErrorMessage.Format(IDS_ERR_PATCH_DOESNOTMATCH, L"", (LPCTSTR)sPatchLine);
+						m_sErrorMessage.FormatMessage(IDS_ERR_PATCH_DOESNOTMATCH, L"", (LPCTSTR)sPatchLine);
 						return FALSE;
 					}
 					if (lAddLine == 0)
@@ -597,7 +597,7 @@ int CPatch::PatchFile(const int strip, int nIndex, const CString& sPatchPath, co
 							++lRemoveLine;
 						else
 						{
-							m_sErrorMessage.Format(IDS_ERR_PATCH_DOESNOTMATCH, (LPCTSTR)sPatchLine, (LPCTSTR)PatchLines.GetAt(lAddLine-1));
+							m_sErrorMessage.FormatMessage(IDS_ERR_PATCH_DOESNOTMATCH, (LPCTSTR)sPatchLine, (LPCTSTR)PatchLines.GetAt(lAddLine-1));
 							return FALSE;
 						}
 					}

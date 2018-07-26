@@ -564,7 +564,7 @@ void CRebaseDlg::FetchLogList()
 	{
 		m_CommitList.Clear();
 		CString text;
-		text.Format(IDS_REBASE_EQUAL_FMT, (LPCTSTR)m_BranchCtrl.GetString(), (LPCTSTR)this->m_UpstreamCtrl.GetString());
+		text.FormatMessage(IDS_REBASE_EQUAL_FMT, (LPCTSTR)m_BranchCtrl.GetString(), (LPCTSTR)this->m_UpstreamCtrl.GetString());
 
 		m_CommitList.ShowText(text);
 		this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(false);
@@ -579,7 +579,7 @@ void CRebaseDlg::FetchLogList()
 
 		m_CommitList.Clear();
 		CString text;
-		text.Format(IDS_REBASE_FASTFORWARD_FMT, (LPCTSTR)m_BranchCtrl.GetString(), (LPCTSTR)this->m_UpstreamCtrl.GetString(),
+		text.FormatMessage(IDS_REBASE_FASTFORWARD_FMT, (LPCTSTR)m_BranchCtrl.GetString(), (LPCTSTR)this->m_UpstreamCtrl.GetString(),
 						(LPCTSTR)m_BranchCtrl.GetString(), (LPCTSTR)this->m_UpstreamCtrl.GetString());
 
 		m_CommitList.ShowText(text);
@@ -1779,7 +1779,7 @@ void CRebaseDlg::UpdateProgress()
 	if(m_CurrentRebaseIndex>=0 && m_CurrentRebaseIndex< m_CommitList.GetItemCount())
 	{
 		CString text;
-		text.Format(IDS_PROC_REBASING_PROGRESS, index, m_CommitList.GetItemCount());
+		text.FormatMessage(IDS_PROC_REBASING_PROGRESS, index, m_CommitList.GetItemCount());
 		m_sStatusText = text;
 		m_CtrlStatusText.SetWindowText(text);
 		m_bStatusWarning = false;
@@ -1930,7 +1930,7 @@ int CRebaseDlg::DoRebase()
 	if (m_IsCherryPick && pRev->m_ParentHash.size() > 1)
 	{
 		CString msg;
-		msg.Format(IDS_CHERRYPICK_MERGECOMMIT, (LPCTSTR)pRev->m_CommitHash.ToString(), (LPCTSTR)pRev->GetSubject());
+		msg.FormatMessage(IDS_CHERRYPICK_MERGECOMMIT, (LPCTSTR)pRev->m_CommitHash.ToString(), (LPCTSTR)pRev->GetSubject());
 		CString parent1;
 		parent1.Format(IDS_PARENT, 1);
 		parent1.AppendFormat(L"\n(%s)", (LPCTSTR)pRev->m_ParentHash.at(0).ToString());

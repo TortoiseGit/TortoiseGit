@@ -55,11 +55,11 @@ text (otherwise the program will crash at run-time). These sequences are
 called "format specifiers" (see
 https://msdn.microsoft.com/en-us/library/75w45ekt.aspx for more
 information).
-There is only one exception: Only if a exclamation mark, a number and
-another exclamation mark such as "!1!" is between the per cent sign and
-the specifier such as "%!1!s" or "%!3!d" then the order can be exchanged
-(the number between the exclamation marks indicates which input will be
-inserted at run-time).
+There is only one exception: Only if a number, an exclamation mark, a
+format specifier and another exclamation mark (such as "1!s!") is after
+the per cent sign (such as "%!1!s" or "%!3!d") then the order can be
+exchanged (the number before the first exclamation mark indicates which
+input will be inserted at run-time).
 
 An ampercent (&) before a letter such as "&Open" indicates that "O" is
 an accelerator key in the current context (e.g., in a menu or in a

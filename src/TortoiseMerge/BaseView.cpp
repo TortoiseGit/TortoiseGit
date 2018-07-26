@@ -5818,7 +5818,7 @@ void CBaseView::OnEditGotoline()
 	int nFirstLineNumber=1; // first is always 1
 
 	CString sText;
-	sText.Format(IDS_GOTOLINE, nFirstLineNumber, nLastLineNumber);
+	sText.FormatMessage(IDS_GOTOLINE, nFirstLineNumber, nLastLineNumber);
 
 	CGotoLineDlg dlg(this);
 	dlg.SetLabel(sText);

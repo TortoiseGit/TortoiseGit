@@ -73,7 +73,7 @@ void CGotoLineDlg::OnOK()
 	if ((m_nLine < m_nLow)||(m_nLine > m_nHigh))
 	{
 		CString sError;
-		sError.Format(IDS_GOTO_OUTOFRANGE, m_nLow, m_nHigh);
+		sError.FormatMessage(IDS_GOTO_OUTOFRANGE, m_nLow, m_nHigh);
 		m_cNumber.ShowBalloonTip(L"", sError);
 		m_cNumber.SetSel(0, -1);
 		return;

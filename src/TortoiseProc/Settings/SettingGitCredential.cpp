@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2017 - TortoiseGit
+// Copyright (C) 2013-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -494,7 +494,7 @@ void CSettingGitCredential::Save(CString key, CString value)
 	if (g_Git.SetConfigValue(cmd, value, configLevel))
 	{
 		CString msg;
-		msg.Format(IDS_PROC_SAVECONFIGFAILED, (LPCTSTR)cmd, (LPCTSTR)value);
+		msg.FormatMessage(IDS_PROC_SAVECONFIGFAILED, (LPCTSTR)cmd, (LPCTSTR)value);
 		CMessageBox::Show(GetSafeHwnd(), msg, L"TortoiseGit", MB_OK | MB_ICONERROR);
 	}
 	if (value.IsEmpty())
@@ -502,7 +502,7 @@ void CSettingGitCredential::Save(CString key, CString value)
 		if (g_Git.UnsetConfigValue(cmd, configLevel))
 		{
 			CString msg;
-			msg.Format(IDS_PROC_SAVECONFIGFAILED, (LPCTSTR)cmd, (LPCTSTR)value);
+			msg.FormatMessage(IDS_PROC_SAVECONFIGFAILED, (LPCTSTR)cmd, (LPCTSTR)value);
 			CMessageBox::Show(GetSafeHwnd(), msg, L"TortoiseGit", MB_OK | MB_ICONERROR);
 		}
 	}
@@ -565,7 +565,7 @@ int CSettingGitCredential::DeleteOtherKeys(int type)
 			if (g_Git.UnsetConfigValue(key, configLevel))
 			{
 				CString msg;
-				msg.Format(IDS_PROC_SAVECONFIGFAILED, (LPCTSTR)key, L"");
+				msg.FormatMessage(IDS_PROC_SAVECONFIGFAILED, (LPCTSTR)key, L"");
 				CMessageBox::Show(GetSafeHwnd(), msg, L"TortoiseGit", MB_OK | MB_ICONERROR);
 				result = 1;
 				break;
@@ -631,7 +631,7 @@ bool CSettingGitCredential::SaveSimpleCredential(int type)
 	if (g_Git.SetConfigValue(L"credential.helper", value, configLevel))
 	{
 		CString msg;
-		msg.Format(IDS_PROC_SAVECONFIGFAILED, L"credential.helper", (LPCTSTR)value);
+		msg.FormatMessage(IDS_PROC_SAVECONFIGFAILED, L"credential.helper", (LPCTSTR)value);
 		CMessageBox::Show(GetSafeHwnd(), msg, L"TortoiseGit", MB_OK | MB_ICONERROR);
 		return false;
 	}

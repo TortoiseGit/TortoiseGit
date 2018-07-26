@@ -2821,7 +2821,7 @@ CString CGitStatusListCtrl::GetStatisticsString(bool simple)
 			);
 	}
 	CString sStats;
-	sStats.Format(IDS_COMMITDLG_STATISTICSFORMAT, m_nSelected, GetItemCount());
+	sStats.FormatMessage(IDS_COMMITDLG_STATISTICSFORMAT, m_nSelected, GetItemCount());
 	if (m_pStatLabel)
 		m_pStatLabel->SetWindowText(sStats);
 
@@ -4052,7 +4052,7 @@ void CGitStatusListCtrl::FilesExport()
 			if (g_Git.GetOneFile(m_CurrentVersion, *fd, filename))
 			{
 				CString out;
-				out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)fd->GetGitPathString(), (LPCTSTR)m_CurrentVersion, (LPCTSTR)filename);
+				out.FormatMessage(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)fd->GetGitPathString(), (LPCTSTR)m_CurrentVersion, (LPCTSTR)filename);
 				if (CMessageBox::Show(GetParentHWND(), g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), L"TortoiseGit", 2, IDI_WARNING, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
 					return;
 			}
@@ -4080,7 +4080,7 @@ void CGitStatusListCtrl::FileSaveAs(CTGitPath *path)
 		if (g_Git.GetOneFile(m_CurrentVersion, *path, filename))
 		{
 			CString out;
-			out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)path->GetGitPathString(), (LPCTSTR)m_CurrentVersion, (LPCTSTR)filename);
+			out.FormatMessage(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)path->GetGitPathString(), (LPCTSTR)m_CurrentVersion, (LPCTSTR)filename);
 			CMessageBox::Show(GetParentHWND(), g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), L"TortoiseGit", MB_OK);
 			return;
 		}
@@ -4138,7 +4138,7 @@ int CGitStatusListCtrl::RevertSelectedItemToVersion(bool parent)
 	for (auto it = versionMap.cbegin(); it != versionMap.cend(); ++it)
 	{
 		CString versionEntry;
-		versionEntry.Format(IDS_STATUSLIST_FILESREVERTED, it->second, (LPCTSTR)it->first);
+		versionEntry.FormatMessage(IDS_STATUSLIST_FILESREVERTED, it->second, (LPCTSTR)it->first);
 		out += versionEntry + L"\r\n";
 	}
 	if (!out.IsEmpty())
@@ -4161,7 +4161,7 @@ void CGitStatusListCtrl::OpenFile(CTGitPath*filepath,int mode)
 		CString cmd,out;
 		if(g_Git.GetOneFile(m_CurrentVersion, *filepath, file))
 		{
-			out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)filepath->GetGitPathString(), (LPCTSTR)m_CurrentVersion, (LPCTSTR)file);
+			out.FormatMessage(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)filepath->GetGitPathString(), (LPCTSTR)m_CurrentVersion, (LPCTSTR)file);
 			CMessageBox::Show(GetParentHWND(), g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), L"TortoiseGit", MB_OK);
 			return;
 		}

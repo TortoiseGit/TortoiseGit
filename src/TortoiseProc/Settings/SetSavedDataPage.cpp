@@ -156,16 +156,16 @@ BOOL CSetSavedDataPage::OnInitDialog()
 	EnableToolTips();
 
 	CString sTT;
-	sTT.Format(IDS_SETTINGS_SAVEDDATA_LOGHIST_TT, nLogHistMsg, nLogHistWC);
+	sTT.FormatMessage(IDS_SETTINGS_SAVEDDATA_LOGHIST_TT, nLogHistMsg, nLogHistWC);
 	m_tooltips.AddTool(IDC_LOGHISTORY, sTT);
 	m_tooltips.AddTool(IDC_LOGHISTCLEAR, sTT);
-	sTT.Format(IDS_SETTINGS_SAVEDDATA_URLHIST_TT, nUrlHistItems, nUrlHistWC);
+	sTT.FormatMessage(IDS_SETTINGS_SAVEDDATA_URLHIST_TT, nUrlHistItems, nUrlHistWC);
 	m_tooltips.AddTool(IDC_URLHISTORY, sTT);
 	m_tooltips.AddTool(IDC_URLHISTCLEAR, sTT);
 	sTT.Format(IDS_SETTINGS_SAVEDDATA_RESIZABLE_TT, nResizableDialogs);
 	m_tooltips.AddTool(IDC_RESIZABLEHISTORY, sTT);
 	m_tooltips.AddTool(IDC_RESIZABLEHISTCLEAR, sTT);
-	sTT.Format(IDS_SETTINGS_SAVEDDATA_AUTH_TT, nSimple, nSSL, nUsername);
+	sTT.FormatMessage(IDS_SETTINGS_SAVEDDATA_AUTH_TT, nSimple, nSSL, nUsername);
 	m_tooltips.AddTool(IDC_AUTHHISTORY, sTT);
 	m_tooltips.AddTool(IDC_AUTHHISTCLEAR, sTT);
 	sTT.Format(IDS_SETTINGS_SAVEDDATA_REPOLOGHIST_TT, nLogHistRepo);

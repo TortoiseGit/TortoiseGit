@@ -819,8 +819,8 @@ END
 STRINGTABLE
 BEGIN
     IDS_ERR_PATCH_NOADDFILELINE 
-                            "The line indicating the new file was expected in line %d !"
-    IDS_ERR_PATCH_UNKNOWNLINETYPE "An unknown line type was found in line %d !"
+                            "The line indicating the new file was expected in line %d!"
+    IDS_ERR_PATCH_UNKNOWNLINETYPE "An unknown line type was found in line %d!"
     IDS_ERR_PATCH_CHUNKMISMATCH 
                             "The chunk size did not match the number of added/removed lines!"
 END
@@ -831,13 +831,13 @@ BEGIN
     IDS_ERR_PATCH_FILENOTINPATCH 
                             "The file %s was not found in the patch file!"
     IDS_ERR_PATCH_DOESNOTMATCH 
-                            "The patch seems outdated! The file line\n%s\nand the patchline\n%s\ndo not match!"
+                            "The patch seems outdated! The file line\n%1!s!\nand the patchline\n%2!s!\ndo not match!"
 END
 
 STRINGTABLE
 BEGIN
     IDS_ERR_MAINFRAME_FILEVERSIONNOTFOUND 
-                            "Could not retrieve revision %s of the file %s.\nPatching is not possible!"
+                            "Could not retrieve revision %1!s! of the file %2!s!.\nPatching is not possible!"
     IDS_ERR_MAINFRAME_FILEHASCONFLICTS 
                             "There are still unresolved conflicts in line %d!\nYou should resolve those conflicts first before saving.\nDo you want to save the file with the conflicts still there?\nIf you click YES, then you have to manually resolve the conflicts in another editor!"
 END
@@ -981,7 +981,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_WARNBETTERPATCHPATHFOUND 
-                            "The path\n%s\nseems not to match the paths in the patchfile.\nBut TortoiseGitMerge found the path\n%s\nmatches it better. Do you want to use the suggested path instead?"
+                            "The path\n%1!s!\nseems not to match the paths in the patchfile.\nBut TortoiseGitMerge found the path\n%2!s!\nmatches it better. Do you want to use the suggested path instead?"
     IDS_NOTFOUNDVIEWTITLEINDICATOR "(not found)"
     IDS_DELETEWHENEMPTY     "The file \n%s\nis empty.\nDo you want to remove the file?"
     IDS_EMPTYLINETT         "(no line number)"
@@ -1111,8 +1111,8 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_GOTOLINE            "&Line number (%d - %d)"
-    IDS_GOTO_OUTOFRANGE     "The line number must be in between %d and %d"
+    IDS_GOTOLINE            "&Line number (%1!d! - %2!d!)"
+    IDS_GOTO_OUTOFRANGE     "The line number must be in between %1!d! and %2!d!"
 END
 
 STRINGTABLE

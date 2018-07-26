@@ -606,7 +606,7 @@ BOOL CMainFrame::DiffFiles(CString sURL1, CString sRev1, CString sURL2, CString 
 	{
 		progDlg.Stop();
 		CString sErrMsg;
-		sErrMsg.Format(IDS_ERR_MAINFRAME_FILEVERSIONNOTFOUND, (LPCTSTR)sRev1, (LPCTSTR)sURL1);
+		sErrMsg.FormatMessage(IDS_ERR_MAINFRAME_FILEVERSIONNOTFOUND, (LPCTSTR)sRev1, (LPCTSTR)sURL1);
 		MessageBox(sErrMsg, nullptr, MB_ICONERROR);
 		return FALSE;
 	}
@@ -618,7 +618,7 @@ BOOL CMainFrame::DiffFiles(CString sURL1, CString sRev1, CString sURL2, CString 
 	{
 		progDlg.Stop();
 		CString sErrMsg;
-		sErrMsg.Format(IDS_ERR_MAINFRAME_FILEVERSIONNOTFOUND, (LPCTSTR)sRev2, (LPCTSTR)sURL2);
+		sErrMsg.FormatMessage(IDS_ERR_MAINFRAME_FILEVERSIONNOTFOUND, (LPCTSTR)sRev2, (LPCTSTR)sURL2);
 		MessageBox(sErrMsg, nullptr, MB_ICONERROR);
 		return FALSE;
 	}
@@ -782,7 +782,7 @@ bool CMainFrame::LoadViews(int line)
 			if (betterpatchpath.CompareNoCase(m_Data.m_sPatchPath)!=0)
 			{
 				CString msg;
-				msg.Format(IDS_WARNBETTERPATCHPATHFOUND, (LPCTSTR)m_Data.m_sPatchPath, (LPCTSTR)betterpatchpath);
+				msg.FormatMessage(IDS_WARNBETTERPATCHPATHFOUND, (LPCTSTR)m_Data.m_sPatchPath, (LPCTSTR)betterpatchpath);
 				CTaskDialog taskdlg(msg,
 									CString(MAKEINTRESOURCE(IDS_WARNBETTERPATCHPATHFOUND_TASK2)),
 									L"TortoiseGitMerge",

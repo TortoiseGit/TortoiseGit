@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2012-2013, 2015-2017 - TortoiseGit
+// Copyright (C) 2012-2013, 2015-2018 - TortoiseGit
 // Copyright (C) 2010-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -167,7 +167,7 @@ bool GitPatch::PatchFile(int nIndex, CString &datapath)
 			sBaseFile = CTempFiles::Instance().GetTempFilePathString();
 			if (!CAppUtils::GetVersionedFile(sFilePath, sVersion, sBaseFile, m_pProgDlg))
 			{
-				m_errorStr.Format(IDS_ERR_MAINFRAME_FILEVERSIONNOTFOUND, (LPCTSTR)sVersion, (LPCTSTR)sFilePath);
+				m_errorStr.FormatMessage(IDS_ERR_MAINFRAME_FILEVERSIONNOTFOUND, (LPCTSTR)sVersion, (LPCTSTR)sFilePath);
 
 				return false;
 			}

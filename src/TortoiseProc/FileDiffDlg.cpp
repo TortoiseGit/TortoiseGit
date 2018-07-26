@@ -686,9 +686,9 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 						CStdioFile file(savePath.GetWinPathString(), CFile::typeBinary | CFile::modeReadWrite | CFile::modeCreate);
 						CString temp;
 						if (m_path1.IsEmpty() && m_path2.IsEmpty())
-							temp.Format(IDS_FILEDIFF_CHANGEDLISTINTROROOT, (LPCTSTR)m_rev1.m_CommitHash.ToString(), (LPCTSTR)m_rev2.m_CommitHash.ToString());
+							temp.FormatMessage(IDS_FILEDIFF_CHANGEDLISTINTROROOT, (LPCTSTR)m_rev1.m_CommitHash.ToString(), (LPCTSTR)m_rev2.m_CommitHash.ToString());
 						else
-							temp.Format(IDS_FILEDIFF_CHANGEDLISTINTRO, (LPCTSTR)m_path1.GetGitPathString(), (LPCTSTR)m_rev1.m_CommitHash.ToString(), (LPCTSTR)m_path2.GetGitPathString(), (LPCTSTR)m_rev2.m_CommitHash.ToString());
+							temp.FormatMessage(IDS_FILEDIFF_CHANGEDLISTINTRO, (LPCTSTR)m_path1.GetGitPathString(), (LPCTSTR)m_rev1.m_CommitHash.ToString(), (LPCTSTR)m_path2.GetGitPathString(), (LPCTSTR)m_rev2.m_CommitHash.ToString());
 						file.WriteString(temp + L"\r\n");
 						POSITION pos = m_cFileList.GetFirstSelectedItemPosition();
 						while (pos)
@@ -748,7 +748,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 							if (g_Git.GetOneFile(m_rev2.m_CommitHash, *fd, filename))
 							{
 								CString out;
-								out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)fd->GetGitPathString(), (LPCTSTR)m_rev2.m_CommitHash.ToString(), (LPCTSTR)filename);
+								out.FormatMessage(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)fd->GetGitPathString(), (LPCTSTR)m_rev2.m_CommitHash.ToString(), (LPCTSTR)filename);
 								if (CMessageBox::Show(GetSafeHwnd(), g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), L"TortoiseGit", 2, IDI_WARNING, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
 									return;
 							}
@@ -1302,7 +1302,7 @@ int CFileDiffDlg::RevertSelectedItemToVersion(CString rev)
 	}
 
 	CString out;
-	out.Format(IDS_STATUSLIST_FILESREVERTED, count, (LPCTSTR)rev);
+	out.FormatMessage(IDS_STATUSLIST_FILESREVERTED, count, (LPCTSTR)rev);
 	CMessageBox::Show(GetSafeHwnd(), out, L"TortoiseGit", MB_OK);
 	return 0;
 }
