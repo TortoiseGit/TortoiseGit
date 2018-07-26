@@ -352,23 +352,7 @@ void CChangedDlg::OnBnClickedRefresh()
 
 void CChangedDlg::UpdateStatistics()
 {
-	CString temp;
-#if 0
-	LONG lMin, lMax;
-
-	m_FileListCtrl.GetMinMaxRevisions(lMin, lMax, true, false);
-	if (LONG(m_FileListCtrl.m_HeadRev) >= 0)
-	{
-		temp.Format(IDS_REPOSTATUS_HEADREV, lMin, lMax, LONG(m_FileListCtrl.m_HeadRev));
-		SetDlgItemText(IDC_SUMMARYTEXT, temp);
-	}
-	else
-	{
-		temp.Format(IDS_REPOSTATUS_WCINFO, lMin, lMax);
-		SetDlgItemText(IDC_SUMMARYTEXT, temp);
-	}
-#endif
-	temp = m_FileListCtrl.GetStatisticsString();
+	CString temp = m_FileListCtrl.GetStatisticsString();
 	temp.Replace(L" = ", L"=");
 	temp.Replace(L"\n", L", ");
 	SetDlgItemText(IDC_INFOLABEL, temp);
