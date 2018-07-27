@@ -1,0 +1,48 @@
+; Check http://editorconfig.org/ for more informations
+
+; Top-most EditorConfig file
+root = true
+
+[*.{sln,wixproj,wxi,wxs,xml}]
+charset                  = utf-8-bom
+end_of_line              = crlf
+trim_trailing_whitespace = true
+insert_final_newline     = true
+indent_style             = tab
+indent_size              = 4
+
+[{src,tests,ext/gitdll}/**.{cpp,c,h}]
+charset                  = utf-8-bom
+end_of_line              = crlf
+trim_trailing_whitespace = true
+insert_final_newline     = true
+indent_style             = tab
+indent_size              = 4
+
+[ext/tgit/**.{c,h}]
+charset                  = ascii
+trim_trailing_whitespace = true
+insert_final_newline     = true
+indent_style             = tab
+indent_size              = 4
+
+[*.{txt,md,yml}]
+trim_trailing_whitespace = true
+insert_final_newline     = true
+indent_style             = space
+indent_size              = 2
+
+[*.{js,vbs}]
+end_of_line              = crlf
+trim_trailing_whitespace = true
+insert_final_newline     = true
+indent_style             = space
+indent_size              = 4
+
+[*.{vcxproj,vcxproj.filters,props}]
+charset                  = utf-8-bom
+end_of_line              = crlf
+trim_trailing_whitespace = true
+insert_final_newline     = false
+indent_style             = space
+indent_size              = 2
