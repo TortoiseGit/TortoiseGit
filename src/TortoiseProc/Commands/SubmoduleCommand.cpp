@@ -174,7 +174,7 @@ bool SubmoduleUpdateCommand::Execute()
 	return !progress.m_GitStatus;
 }
 
-bool SubmoduleCommand::Execute(CString cmd,  CString arg)
+bool SubmoduleSyncCommand::Execute()
 {
 	CProgressDlg progress;
 	theApp.m_pMainWnd = &progress;
@@ -201,14 +201,12 @@ bool SubmoduleCommand::Execute(CString cmd,  CString arg)
 
 	g_Git.m_CurrentDir=super;
 
-	//progress.m_GitCmd.Format(L"git.exe submodule update --init ");
-
 	CString str;
 	for (int i = 0; i < this->orgPathList.GetCount(); ++i)
 	{
 		if(orgPathList[i].IsDirectory())
 		{
-			str.Format(L"git.exe submodule %s %s -- \"%s\"", (LPCTSTR)cmd, (LPCTSTR)arg, (LPCTSTR)((CTGitPath &)orgPathList[i]).GetSubPath(CTGitPath(super)).GetGitPathString());
+			str.Format(L"git.exe submodule sync -- \"%s\"", (LPCTSTR)((CTGitPath &)orgPathList[i]).GetSubPath(CTGitPath(super)).GetGitPathString());
 			progress.m_GitCmdList.push_back(str);
 		}
 	}
