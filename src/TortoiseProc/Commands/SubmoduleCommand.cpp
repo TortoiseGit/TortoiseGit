@@ -206,7 +206,11 @@ bool SubmoduleSyncCommand::Execute()
 	{
 		if(orgPathList[i].IsDirectory())
 		{
-			str.Format(L"git.exe submodule sync -- \"%s\"", (LPCTSTR)((CTGitPath &)orgPathList[i]).GetSubPath(CTGitPath(super)).GetGitPathString());
+			CString path = ((CTGitPath &)orgPathList[i]).GetSubPath(CTGitPath(super)).GetGitPathString();
+			if (path.IsEmpty())
+				str = L"git.exe submodule sync";
+			else
+				str.Format(L"git.exe submodule sync -- \"%s\"", (LPCTSTR)path);
 			progress.m_GitCmdList.push_back(str);
 		}
 	}
