@@ -2301,9 +2301,6 @@ bool DoPull(HWND hWnd, const CString& url, bool bAutoLoad, BOOL bFetchTags, bool
 	}
 
 	CString args;
-	if (CRegDWORD(L"Software\\TortoiseGit\\PullRebaseBehaviorLike1816", FALSE) == FALSE)
-		args += L" --no-rebase";
-
 	if (bFetchTags == BST_UNCHECKED)
 		args += L" --no-tags";
 	else if (bFetchTags == BST_CHECKED)
@@ -2333,7 +2330,7 @@ bool DoPull(HWND hWnd, const CString& url, bool bAutoLoad, BOOL bFetchTags, bool
 		args += L" --allow-unrelated-histories";
 
 	CString cmd;
-	cmd.Format(L"git.exe pull --progress -v%s \"%s\" %s", (LPCTSTR)args, (LPCTSTR)url, (LPCTSTR)remoteBranchName);
+	cmd.Format(L"git.exe pull --progress -v --no-rebase%s \"%s\" %s", (LPCTSTR)args, (LPCTSTR)url, (LPCTSTR)remoteBranchName);
 	CProgressDlg progress(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
 	progress.m_GitCmd = cmd;
 
