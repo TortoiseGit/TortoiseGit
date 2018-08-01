@@ -145,8 +145,6 @@ UINT CChangedDlg::ChangedStatusThread()
 {
 	InterlockedExchange(&m_bBlock, TRUE);
 
-	g_Git.RefreshGitIndex();
-
 	m_bCanceled = false;
 	SetDlgItemText(IDOK, CString(MAKEINTRESOURCE(IDS_MSGBOX_CANCEL)));
 	DialogEnableWindow(IDC_REFRESH, FALSE);
@@ -154,6 +152,9 @@ UINT CChangedDlg::ChangedStatusThread()
 	DialogEnableWindow(IDC_SHOWUNMODIFIED, FALSE);
 	DialogEnableWindow(IDC_SHOWIGNORED, FALSE);
 	DialogEnableWindow(IDC_SHOWLOCALCHANGESIGNORED, FALSE);
+
+	g_Git.RefreshGitIndex();
+
 	m_FileListCtrl.StoreScrollPos();
 	m_FileListCtrl.Clear();
 	if (!m_FileListCtrl.GetStatus(m_bWholeProject ? nullptr : &m_pathList, m_bRemote, m_bShowIgnored != FALSE, m_bShowUnversioned != FALSE, m_bShowLocalChangesIgnored != FALSE))

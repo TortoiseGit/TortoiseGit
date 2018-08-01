@@ -1267,8 +1267,6 @@ UINT CCommitDlg::StatusThread()
 	//in a list control.
 	m_pathwatcher.Stop();
 
-	g_Git.RefreshGitIndex();
-
 	m_bCancelled = false;
 
 	DialogEnableWindow(IDOK, false);
@@ -1291,6 +1289,8 @@ UINT CCommitDlg::StatusThread()
 	DialogEnableWindow(IDC_CHECKMODIFIED, false);
 	DialogEnableWindow(IDC_CHECKFILES, false);
 	DialogEnableWindow(IDC_CHECKSUBMODULES, false);
+
+	g_Git.RefreshGitIndex();
 
 	CString dotGitPath;
 	GitAdminDir::GetWorktreeAdminDirPath(g_Git.m_CurrentDir, dotGitPath);
