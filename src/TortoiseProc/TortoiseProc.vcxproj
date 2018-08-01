@@ -676,6 +676,7 @@
     <Image Include="..\Resources\menuswitch.ico" />
     <Image Include="..\Resources\menuupdate.ico" />
     <Image Include="..\Resources\misc.ico" />
+    <Image Include="..\Resources\notepad.ico" />
     <Image Include="..\Resources\open.ico" />
     <Image Include="..\Resources\Overlays.ico" />
     <Image Include="..\Resources\proxy.ico" />

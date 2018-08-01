@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2011 - Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2011, 2018 - Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -34,7 +34,7 @@ public:
 	CSettingsProgsAlternativeEditor();
 	virtual ~CSettingsProgsAlternativeEditor();
 
-	UINT GetIconID() override { return IDI_DIFF; }
+	UINT GetIconID() override { return IDI_NOTEPAD; }
 
 	enum { IDD = IDD_SETTINGSPROGSALTERNATIVEEDITOR };
 

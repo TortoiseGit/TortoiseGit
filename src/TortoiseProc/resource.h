@@ -149,6 +149,7 @@
 #define IDI_LIBRARY_WIN10               358
 #define IDR_REVISIONGRAPH               359
 #define IDI_RESET                       361
+#define IDI_NOTEPAD                     362
 #define IDS_CHSTAT_FILECOL              1000
 #define IDS_CHSTAT_WCCOL                1001
 #define IDS_CHSTAT_REPOCOL              1002
@@ -2037,7 +2038,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        362
+#define _APS_NEXT_RESOURCE_VALUE        363
 #define _APS_NEXT_COMMAND_VALUE         32874
 #define _APS_NEXT_CONTROL_VALUE         1848
 #define _APS_NEXT_SYMED_VALUE           201
