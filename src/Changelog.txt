@@ -10,6 +10,7 @@ Released: unreleased
  * Fixed issue #3212: With Detached Head, Push Dialog has Local Branch filled with HEAD or Commit Hash
  * Fixed issue #3223: Format Patch: Set From and To for single commits
  * Lots of high DPI improvements
+ * Fixes issue #2635: The font of git log is too small
 
 == Bug Fixes ==
  * Fixed issue #3167: Crash when aborting cherry-picks
