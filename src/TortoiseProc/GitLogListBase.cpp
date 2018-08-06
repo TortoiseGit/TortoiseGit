@@ -31,6 +31,7 @@
 #include "UnicodeUtils.h"
 #include "../TortoiseShell/Resource.h"
 #include "CommonAppUtils.h"
+#include "DPIAware.h"
 
 const UINT CGitLogListBase::m_FindDialogMessage = RegisterWindowMessage(FINDMSGSTRING);
 const UINT CGitLogListBase::m_ScrollToMessage = RegisterWindowMessage(L"TORTOISEGIT_LOG_SCROLLTO");
@@ -298,7 +299,7 @@ END_MESSAGE_MAP()
 void CGitLogListBase::MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct)
 {
 	//if (m_nRowHeight>0)
-		lpMeasureItemStruct->itemHeight = 50;
+		lpMeasureItemStruct->itemHeight = CDPIAware::Instance().ScaleY(50);
 }
 
 int CGitLogListBase:: OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -376,22 +377,24 @@ void CGitLogListBase::InsertGitColumn()
 		IDS_LOG_SVNREV,
 	};
 
+	auto iconItemBorder = CDPIAware::Instance().ScaleX(ICONITEMBORDER);
+	auto columnWidth = CDPIAware::Instance().ScaleX(ICONITEMBORDER + 16 * 4);
 	static int with[] =
 	{
-		ICONITEMBORDER+16*4,
-		ICONITEMBORDER+16*4,
-		ICONITEMBORDER+16*4,
-		ICONITEMBORDER+16*4,
-		2 * ICONITEMBORDER + GetSystemMetrics(SM_CXSMICON) * 5,
-		LOGLIST_MESSAGE_MIN,
-		ICONITEMBORDER+16*4,
-		ICONITEMBORDER+16*4,
-		ICONITEMBORDER+16*4,
-		ICONITEMBORDER+16*4,
-		ICONITEMBORDER+16*4,
-		ICONITEMBORDER+16*4,
-		ICONITEMBORDER+16*4,
-		ICONITEMBORDER+16*4,
+		columnWidth,
+		columnWidth,
+		columnWidth,
+		columnWidth,
+		2 * iconItemBorder + GetSystemMetrics(SM_CXSMICON) * 5,
+		CDPIAware::Instance().ScaleX(LOGLIST_MESSAGE_MIN),
+		columnWidth,
+		columnWidth,
+		columnWidth,
+		columnWidth,
+		columnWidth,
+		columnWidth,
+		columnWidth,
+		columnWidth,
 	};
 	m_dwDefaultColumns = GIT_LOG_GRAPH|GIT_LOG_ACTIONS|GIT_LOG_MESSAGE|GIT_LOG_AUTHOR|GIT_LOG_DATE;
 
@@ -1448,31 +1451,32 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 
 				// Draw the icon(s) into the compatible DC
 				int action = pLogEntry->GetAction(this);
+				auto iconItemBorder = CDPIAware::Instance().ScaleX(ICONITEMBORDER);
 				if (!pLogEntry->m_IsDiffFiles)
 				{
-					::DrawIconEx(myDC.GetDC(), rect.left + ICONITEMBORDER, rect.top, m_hFetchIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
+					::DrawIconEx(myDC.GetDC(), rect.left + iconItemBorder, rect.top, m_hFetchIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
 					*pResult = CDRF_SKIPDEFAULT;
 					return;
 				}
 
 				if (action & CTGitPath::LOGACTIONS_MODIFIED)
-					::DrawIconEx(myDC.GetDC(), rect.left + ICONITEMBORDER, rect.top, m_hModifiedIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
+					::DrawIconEx(myDC.GetDC(), rect.left + iconItemBorder, rect.top, m_hModifiedIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
 				++nIcons;
 
 				if (action & (CTGitPath::LOGACTIONS_ADDED | CTGitPath::LOGACTIONS_COPY))
-					::DrawIconEx(myDC.GetDC(), rect.left + nIcons * iconwidth + ICONITEMBORDER, rect.top, m_hAddedIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
+					::DrawIconEx(myDC.GetDC(), rect.left + nIcons * iconwidth + iconItemBorder, rect.top, m_hAddedIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
 				++nIcons;
 
 				if (action & CTGitPath::LOGACTIONS_DELETED)
-					::DrawIconEx(myDC.GetDC(), rect.left + nIcons * iconwidth + ICONITEMBORDER, rect.top, m_hDeletedIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
+					::DrawIconEx(myDC.GetDC(), rect.left + nIcons * iconwidth + iconItemBorder, rect.top, m_hDeletedIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
 				++nIcons;
 
 				if (action & CTGitPath::LOGACTIONS_REPLACED)
-					::DrawIconEx(myDC.GetDC(), rect.left + nIcons * iconwidth + ICONITEMBORDER, rect.top, m_hReplacedIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
+					::DrawIconEx(myDC.GetDC(), rect.left + nIcons * iconwidth + iconItemBorder, rect.top, m_hReplacedIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
 				++nIcons;
 
 				if (action & CTGitPath::LOGACTIONS_UNMERGED)
-					::DrawIconEx(myDC.GetDC(), rect.left + nIcons * iconwidth + ICONITEMBORDER, rect.top, m_hConflictedIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
+					::DrawIconEx(myDC.GetDC(), rect.left + nIcons * iconwidth + iconItemBorder, rect.top, m_hConflictedIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
 				++nIcons;
 
 				*pResult = CDRF_SKIPDEFAULT;
