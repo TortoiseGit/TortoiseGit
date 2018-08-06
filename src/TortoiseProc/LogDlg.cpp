@@ -2006,7 +2006,6 @@ void CLogDlg::DoSizeV1(int delta)
 
 	AddMainAnchors();
 	ArrangeLayout();
-	AdjustMinSize();
 	SetSplitterRange();
 	m_LogList.Invalidate();
 	m_ChangedFileListCtrl.Invalidate();
@@ -2040,7 +2039,6 @@ void CLogDlg::DoSizeV2(int delta)
 
 	AddMainAnchors();
 	ArrangeLayout();
-	AdjustMinSize();
 	SetSplitterRange();
 	GetDlgItem(IDC_MSGVIEW)->Invalidate();
 	m_ChangedFileListCtrl.Invalidate();
@@ -2115,22 +2113,6 @@ void CLogDlg::RemoveMainAnchors()
 	RemoveAnchor(IDHELP);
 }
 
-void CLogDlg::AdjustMinSize()
-{
-	// adjust the minimum size of the dialog to prevent the resizing from
-	// moving the list control too far down.
-	CRect rcChgListView;
-	m_ChangedFileListCtrl.GetClientRect(rcChgListView);
-	CRect rcLogList;
-	m_LogList.GetClientRect(rcLogList);
-	CRect rcLogMsg;
-	GetDlgItem(IDC_MSGVIEW)->GetClientRect(rcLogMsg);
-
-	SetMinTrackSize(CSize(m_DlgOrigRect.Width(),
-		m_DlgOrigRect.Height()-m_ChgOrigRect.Height()-m_LogListOrigRect.Height()-m_MsgViewOrigRect.Height()
-		+ rcLogMsg.Height() + abs(rcChgListView.Height() - rcLogList.Height()) + 2 * (MIN_CTRL_HEIGHT + MIN_SPLITTER_HEIGHT)));
-}
-
 LRESULT CLogDlg::DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message) {
@@ -2158,9 +2140,11 @@ void CLogDlg::SetSplitterRange()
 		CRect rcTop;
 		m_LogList.GetWindowRect(rcTop);
 		ScreenToClient(rcTop);
+
 		CRect rcBottom;
 		m_ChangedFileListCtrl.GetWindowRect(rcBottom);
 		ScreenToClient(rcBottom);
+
 		m_wndSplitter1.SetRange(rcTop.top + MIN_CTRL_HEIGHT, rcBottom.bottom - (2 * MIN_CTRL_HEIGHT + MIN_SPLITTER_HEIGHT));
 		m_wndSplitter2.SetRange(rcTop.top + (2 * MIN_CTRL_HEIGHT + MIN_SPLITTER_HEIGHT), rcBottom.bottom - MIN_CTRL_HEIGHT);
 	}
@@ -2920,8 +2904,123 @@ void CLogDlg::OnDtnDropdownDatefrom(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 void CLogDlg::OnSize(UINT nType, int cx, int cy)
 {
 	__super::OnSize(nType, cx, cy);
-	//set range
-	SetSplitterRange();
+	if ((m_LogList) && (m_ChangedFileListCtrl) && (nType == 0) && (cx >0) && (cy > 0))
+	{
+		// correct the splitter positions if they're out of bounds
+		CRect rcTop;
+		m_LogList.GetWindowRect(rcTop);
+		ScreenToClient(rcTop);
+
+		CRect rcMiddle;
+		GetDlgItem(IDC_MSGVIEW)->GetWindowRect(rcMiddle);
+		ScreenToClient(rcMiddle);
+
+		CRect rcBottom;
+		m_ChangedFileListCtrl.GetWindowRect(rcBottom);
+		ScreenToClient(rcBottom);
+
+		CRect rcBottomLimit;
+		GetDlgItem(IDC_LOGINFO)->GetWindowRect(rcBottomLimit);
+		ScreenToClient(rcBottomLimit);
+
+		auto minCtrlHeight = MIN_CTRL_HEIGHT;
+
+		// the IDC_LOGINFO and the changed file list control
+		// have a space of 3 dlg units between them (check in the dlg resource editor)
+		CRect dlgUnitRect(0, 0, 3, 3);
+		MapDialogRect(&dlgUnitRect);
+
+		if ((rcTop.Height() < minCtrlHeight) ||
+			(rcMiddle.Height() < minCtrlHeight) ||
+			(rcBottom.Height() < minCtrlHeight) ||
+			(rcBottom.bottom > rcBottomLimit.top - dlgUnitRect.bottom))
+		{
+			// controls sizes and splitters need adjusting
+			RemoveMainAnchors();
+
+			auto hdwp = BeginDeferWindowPos(5);
+			auto hdwpflags = SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOREDRAW | SWP_NOZORDER;
+			auto splitterHeight = MIN_SPLITTER_HEIGHT;
+
+			if ((rcBottom.bottom > rcBottomLimit.top - dlgUnitRect.bottom) || (rcBottom.Height() < minCtrlHeight))
+			{
+				// the bottom of the changed files list control is
+				// below the point it should get, so move it upwards.
+				// or the control is too small and needs extending.
+				rcBottom.bottom = rcBottomLimit.top + dlgUnitRect.bottom;
+				rcBottom.top = min(rcBottom.top, rcBottom.bottom - minCtrlHeight);
+				DeferWindowPos(hdwp, m_ChangedFileListCtrl.GetSafeHwnd(), nullptr, rcBottom.left, rcBottom.top, rcBottom.Width(), rcBottom.Height(), hdwpflags);
+				if (rcBottom.top < rcMiddle.bottom + splitterHeight)
+				{
+					// we also need to move splitter2 and rcMiddle.bottom upwards
+					CRect rcSplitter2;
+					m_wndSplitter2.GetWindowRect(rcSplitter2);
+					ScreenToClient(rcSplitter2);
+					rcSplitter2.top = rcBottom.top - splitterHeight;
+					rcSplitter2.bottom = rcBottom.top;
+					DeferWindowPos(hdwp, m_wndSplitter2.GetSafeHwnd(), nullptr, rcSplitter2.left, rcSplitter2.top, rcSplitter2.Width(), rcSplitter2.Height(), hdwpflags);
+					rcMiddle.bottom = rcSplitter2.top;
+					if (rcMiddle.Height() < minCtrlHeight)
+					{
+						// now the message view is too small, we have to
+						// move splitter1 upwards and resize the top view
+						CRect rcSplitter1;
+						m_wndSplitter1.GetWindowRect(rcSplitter1);
+						ScreenToClient(rcSplitter1);
+						rcMiddle.top = min(rcMiddle.top, rcMiddle.bottom - minCtrlHeight);
+						rcSplitter1.top = rcMiddle.top - splitterHeight;
+						rcSplitter1.bottom = rcMiddle.top;
+						DeferWindowPos(hdwp, m_wndSplitter1.GetSafeHwnd(), nullptr, rcSplitter1.left, rcSplitter1.top, rcSplitter1.Width(), rcSplitter1.Height(), hdwpflags);
+						rcTop.bottom = rcSplitter1.top;
+						DeferWindowPos(hdwp, m_LogList.GetSafeHwnd(), nullptr, rcTop.left, rcTop.top, rcTop.Width(), rcTop.Height(), hdwpflags);
+					}
+					rcMiddle.top = min(rcMiddle.top, rcMiddle.bottom - minCtrlHeight);
+					DeferWindowPos(hdwp, GetDlgItem(IDC_MSGVIEW)->GetSafeHwnd(), nullptr, rcMiddle.left, rcMiddle.top, rcMiddle.Width(), rcMiddle.Height(), hdwpflags);
+				}
+			}
+			if (rcTop.Height() < minCtrlHeight)
+			{
+				// the log list view is too small. Extend its height down and move splitter1 down.
+				rcTop.bottom = rcTop.top + minCtrlHeight;
+				DeferWindowPos(hdwp, m_LogList.GetSafeHwnd(), nullptr, rcTop.left, rcTop.top, rcTop.Width(), rcTop.Height(), hdwpflags);
+				CRect rcSplitter1;
+				m_wndSplitter1.GetWindowRect(rcSplitter1);
+				ScreenToClient(rcSplitter1);
+				rcSplitter1.top = rcTop.bottom;
+				rcSplitter1.bottom = rcSplitter1.top + splitterHeight;
+				DeferWindowPos(hdwp, m_wndSplitter1.GetSafeHwnd(), nullptr, rcSplitter1.left, rcSplitter1.top, rcSplitter1.Width(), rcSplitter1.Height(), hdwpflags);
+				// since splitter1 moves down, also adjust the message view
+				rcMiddle.top = rcSplitter1.bottom;
+				DeferWindowPos(hdwp, GetDlgItem(IDC_MSGVIEW)->GetSafeHwnd(), nullptr, rcMiddle.left, rcMiddle.top, rcMiddle.Width(), rcMiddle.Height(), hdwpflags);
+			}
+			if (rcMiddle.Height() < minCtrlHeight)
+			{
+				// the message view is too small. Extend its height down and move splitter2 down;
+				rcMiddle.bottom = rcMiddle.top + minCtrlHeight;
+				DeferWindowPos(hdwp, GetDlgItem(IDC_MSGVIEW)->GetSafeHwnd(), nullptr, rcMiddle.left, rcMiddle.top, rcMiddle.Width(), rcMiddle.Height(), hdwpflags);
+				CRect rcSplitter2;
+				m_wndSplitter2.GetWindowRect(rcSplitter2);
+				ScreenToClient(rcSplitter2);
+				rcSplitter2.top = rcMiddle.bottom;
+				rcSplitter2.bottom = rcSplitter2.top + splitterHeight;
+				DeferWindowPos(hdwp, m_wndSplitter2.GetSafeHwnd(), nullptr, rcSplitter2.left, rcSplitter2.top, rcSplitter2.Width(), rcSplitter2.Height(), hdwpflags);
+				// since splitter2 moves down, also adjust the changed files list control
+				rcBottom.top = rcSplitter2.bottom;
+				DeferWindowPos(hdwp, m_ChangedFileListCtrl.GetSafeHwnd(), nullptr, rcBottom.left, rcBottom.top, rcBottom.Width(), rcBottom.Height(), hdwpflags);
+			}
+			EndDeferWindowPos(hdwp);
+
+			AddMainAnchors();
+			ArrangeLayout();
+		}
+
+		m_wndSplitter1.SetRange(rcTop.top + MIN_CTRL_HEIGHT, rcBottom.bottom - (2 * MIN_CTRL_HEIGHT + MIN_SPLITTER_HEIGHT));
+		m_wndSplitter2.SetRange(rcTop.top + (2 * MIN_CTRL_HEIGHT + MIN_SPLITTER_HEIGHT), rcBottom.bottom - MIN_CTRL_HEIGHT);
+
+		m_LogList.Invalidate();
+		m_ChangedFileListCtrl.Invalidate();
+		GetDlgItem(IDC_MSGVIEW)->Invalidate();
+	}
 }
 
 void CLogDlg::OnRefresh()

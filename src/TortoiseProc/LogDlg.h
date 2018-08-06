@@ -179,7 +179,6 @@ private:
 	void RemoveMainAnchors();
 	void DoSizeV1(int delta);
 	void DoSizeV2(int delta);
-	void AdjustMinSize();
 	void SetSplitterRange();
 	void SetFilterCueText();
 
