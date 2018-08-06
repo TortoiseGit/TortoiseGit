@@ -39,6 +39,7 @@
 #include "BstrSafeVector.h"
 #include "StringUtils.h"
 #include "FileTextLines.h"
+#include "DPIAware.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -434,7 +435,7 @@ BOOL CCommitDlg::OnInitDialog()
 		m_wndSplitter.GetWindowRect(&rectSplitter);
 		ScreenToClient(&rectSplitter);
 		int delta = yPos - rectSplitter.top;
-		if ((rcLogMsg.bottom + delta > rcLogMsg.top)&&(rcLogMsg.bottom + delta < rcFileList.bottom - 30))
+		if ((rcLogMsg.bottom + delta > rcLogMsg.top) && (rcLogMsg.bottom + delta < rcFileList.bottom - CDPIAware::Instance().ScaleY(30)))
 		{
 			m_wndSplitter.SetWindowPos(nullptr, rectSplitter.left, yPos, 0, 0, SWP_NOSIZE);
 			DoSize(delta);
@@ -2415,7 +2416,7 @@ void CCommitDlg::SetSplitterRange()
 		m_ListCtrl.GetWindowRect(rcMiddle);
 		ScreenToClient(rcMiddle);
 		if (rcMiddle.Height() && rcMiddle.Width())
-			m_wndSplitter.SetRange(rcTop.top + 100, rcMiddle.bottom - 80);
+			m_wndSplitter.SetRange(rcTop.top + CDPIAware::Instance().ScaleY(120), rcMiddle.bottom - CDPIAware::Instance().ScaleY(80));
 	}
 }
 

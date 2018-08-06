@@ -31,6 +31,10 @@
 #include "SmartHandle.h"
 #include "LogOrdering.h"
 #include "ClipboardHelper.h"
+#include "DPIAware.h"
+
+#define MIN_CTRL_HEIGHT (CDPIAware::Instance().ScaleY(20))
+#define MIN_SPLITTER_HEIGHT (CDPIAware::Instance().ScaleY(10))
 
 #define WM_TGIT_REFRESH_SELECTION   (WM_APP + 1)
 
@@ -403,27 +407,27 @@ BOOL CLogDlg::OnInitDialog()
 	ScreenToClient(&rcLogList);
 	m_ChangedFileListCtrl.GetWindowRect(&rcChgMsg);
 	ScreenToClient(&rcChgMsg);
-	if (yPos1 && ((LONG)yPos1 < rcDlg.bottom - 185))
+	if (yPos1 && ((LONG)yPos1 < rcDlg.bottom - CDPIAware::Instance().ScaleY(185)))
 	{
 		RECT rectSplitter;
 		m_wndSplitter1.GetWindowRect(&rectSplitter);
 		ScreenToClient(&rectSplitter);
 		int delta = yPos1 - rectSplitter.top;
 
-		if ((rcLogList.bottom + delta > rcLogList.top)&&(rcLogList.bottom + delta < rcChgMsg.bottom - 30))
+		if ((rcLogList.bottom + delta > rcLogList.top) && (rcLogList.bottom + delta < rcChgMsg.bottom - CDPIAware::Instance().ScaleY(30)))
 		{
 			m_wndSplitter1.SetWindowPos(nullptr, rectSplitter.left, yPos1, 0, 0, SWP_NOSIZE);
 			DoSizeV1(delta);
 		}
 	}
-	if (yPos2 && ((LONG)yPos2 < rcDlg.bottom - 153))
+	if (yPos2 && ((LONG)yPos2 < rcDlg.bottom - CDPIAware::Instance().ScaleY(153)))
 	{
 		RECT rectSplitter;
 		m_wndSplitter2.GetWindowRect(&rectSplitter);
 		ScreenToClient(&rectSplitter);
 		int delta = yPos2 - rectSplitter.top;
 
-		if ((rcChgMsg.top + delta < rcChgMsg.bottom)&&(rcChgMsg.top + delta > rcLogList.top + 30))
+		if ((rcChgMsg.top + delta < rcChgMsg.bottom) && (rcChgMsg.top + delta > rcLogList.top + CDPIAware::Instance().ScaleY(30)))
 		{
 			m_wndSplitter2.SetWindowPos(nullptr, rectSplitter.left, yPos2, 0, 0, SWP_NOSIZE);
 			DoSizeV2(delta);
@@ -1988,7 +1992,7 @@ void CLogDlg::DoSizeV1(int delta)
 	CRect messageViewRect;
 	GetDlgItem(IDC_MSGVIEW)->GetClientRect(messageViewRect);
 
-	int messageViewDelta = max(-delta, 20 - messageViewRect.Height());
+	int messageViewDelta = max(-delta, CDPIAware::Instance().ScaleY(20) - messageViewRect.Height());
 	int changeFileListDelta = -delta - messageViewDelta;
 
 	// set new sizes & positions
@@ -2022,7 +2026,7 @@ void CLogDlg::DoSizeV2(int delta)
 	CRect messageViewRect;
 	GetDlgItem(IDC_MSGVIEW)->GetClientRect(messageViewRect);
 
-	int messageViewDelta = max(delta, 20 - messageViewRect.Height());
+	int messageViewDelta = max(delta, CDPIAware::Instance().ScaleY(20) - messageViewRect.Height());
 	int logListDelta = delta - messageViewDelta;
 
 	// set new sizes & positions
@@ -2124,7 +2128,7 @@ void CLogDlg::AdjustMinSize()
 
 	SetMinTrackSize(CSize(m_DlgOrigRect.Width(),
 		m_DlgOrigRect.Height()-m_ChgOrigRect.Height()-m_LogListOrigRect.Height()-m_MsgViewOrigRect.Height()
-		+ rcLogMsg.Height() + abs(rcChgListView.Height() - rcLogList.Height()) + 60));
+		+ rcLogMsg.Height() + abs(rcChgListView.Height() - rcLogList.Height()) + 2 * (MIN_CTRL_HEIGHT + MIN_SPLITTER_HEIGHT)));
 }
 
 LRESULT CLogDlg::DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam)
@@ -2157,8 +2161,8 @@ void CLogDlg::SetSplitterRange()
 		CRect rcBottom;
 		m_ChangedFileListCtrl.GetWindowRect(rcBottom);
 		ScreenToClient(rcBottom);
-		m_wndSplitter1.SetRange(rcTop.top + 20, rcBottom.bottom - 50);
-		m_wndSplitter2.SetRange(rcTop.top + 50, rcBottom.bottom - 20);
+		m_wndSplitter1.SetRange(rcTop.top + MIN_CTRL_HEIGHT, rcBottom.bottom - (2 * MIN_CTRL_HEIGHT + MIN_SPLITTER_HEIGHT));
+		m_wndSplitter2.SetRange(rcTop.top + (2 * MIN_CTRL_HEIGHT + MIN_SPLITTER_HEIGHT), rcBottom.bottom - MIN_CTRL_HEIGHT);
 	}
 }
 

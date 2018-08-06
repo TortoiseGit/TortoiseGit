@@ -27,6 +27,7 @@
 #include "AppUtils.h"
 #include "SmartHandle.h"
 #include "LoglistCommonResource.h"
+#include "DPIAware.h"
 
 // CImportPatchDlg dialog
 
@@ -91,7 +92,7 @@ void CImportPatchDlg::SetSplitterRange()
 		m_ctrlTabCtrl.GetWindowRect(rcMiddle);
 		ScreenToClient(rcMiddle);
 		if (rcMiddle.Height() && rcMiddle.Width())
-			m_wndSplitter.SetRange(rcTop.top+160, rcMiddle.bottom-160);
+			m_wndSplitter.SetRange(rcTop.top + CDPIAware::Instance().ScaleY(160), rcMiddle.bottom - CDPIAware::Instance().ScaleY(160));
 	}
 }
 
@@ -191,7 +192,7 @@ BOOL CImportPatchDlg::OnInitDialog()
 		m_wndSplitter.GetWindowRect(&rectSplitter);
 		ScreenToClient(&rectSplitter);
 		int delta = yPos - rectSplitter.top;
-		if ((rcLogMsg.bottom + delta > rcLogMsg.top)&&(rcLogMsg.bottom + delta < rcFileList.bottom - 30))
+		if ((rcLogMsg.bottom + delta > rcLogMsg.top) && (rcLogMsg.bottom + delta < rcFileList.bottom - CDPIAware::Instance().ScaleY(30)))
 		{
 			m_wndSplitter.SetWindowPos(nullptr, 0, yPos, 0, 0, SWP_NOSIZE);
 			DoSize(delta);
