@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -933,19 +933,19 @@ bool CGitIgnoreList::CheckAndUpdateCoreExcludefile(const CString &adminDir)
 	CAutoWriteLock lockMap(m_SharedMutex);
 	m_IgnoreCase[adminDir] = 1;
 	config.GetBOOL(L"core.ignorecase", m_IgnoreCase[adminDir]);
-	CGit::GetFileModifyTime(projectConfig, &m_Map[projectConfig].m_LastModifyTime);
-	CGit::GetFileModifyTime(globalXDGConfig, &m_Map[globalXDGConfig].m_LastModifyTime);
+	CGit::GetFileModifyTime(projectConfig, &m_Map[projectConfig].m_LastModifyTime, nullptr, &m_Map[projectConfig].m_LastFileSize);
+	CGit::GetFileModifyTime(globalXDGConfig, &m_Map[globalXDGConfig].m_LastModifyTime, nullptr, &m_Map[globalXDGConfig].m_LastFileSize);
 	if (m_Map[globalXDGConfig].m_LastModifyTime == 0)
 		m_Map.erase(globalXDGConfig);
-	CGit::GetFileModifyTime(globalConfig, &m_Map[globalConfig].m_LastModifyTime);
+	CGit::GetFileModifyTime(globalConfig, &m_Map[globalConfig].m_LastModifyTime, nullptr, &m_Map[globalConfig].m_LastFileSize);
 	if (m_Map[globalConfig].m_LastModifyTime == 0)
 		m_Map.erase(globalConfig);
 	if (!m_sGitSystemConfigPath.IsEmpty())
-		CGit::GetFileModifyTime(m_sGitSystemConfigPath, &m_Map[m_sGitSystemConfigPath].m_LastModifyTime);
+		CGit::GetFileModifyTime(m_sGitSystemConfigPath, &m_Map[m_sGitSystemConfigPath].m_LastModifyTime, nullptr, &m_Map[m_sGitSystemConfigPath].m_LastFileSize);
 	if (m_Map[m_sGitSystemConfigPath].m_LastModifyTime == 0 || m_sGitSystemConfigPath.IsEmpty())
 		m_Map.erase(m_sGitSystemConfigPath);
 	if (!m_sGitProgramDataConfigPath.IsEmpty())
-		CGit::GetFileModifyTime(m_sGitProgramDataConfigPath, &m_Map[m_sGitProgramDataConfigPath].m_LastModifyTime);
+		CGit::GetFileModifyTime(m_sGitProgramDataConfigPath, &m_Map[m_sGitProgramDataConfigPath].m_LastModifyTime, nullptr, &m_Map[m_sGitProgramDataConfigPath].m_LastFileSize);
 	if (m_Map[m_sGitProgramDataConfigPath].m_LastModifyTime == 0 || m_sGitProgramDataConfigPath.IsEmpty())
 		m_Map.erase(m_sGitProgramDataConfigPath);
 	m_CoreExcludesfiles[adminDir] = excludesFile;

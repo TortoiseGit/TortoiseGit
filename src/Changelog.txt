@@ -29,6 +29,7 @@ Released: unreleased
  * Fixed issue #3210: index.lock left behind after refreshing working tree changes when using Git LFS
  * Fixed issue #3234: Shortcuts for Up/Down still work while rebasing
  * Fixed issue #3239: Properly indicate processing in diff dialog
+ * Fixed an regression which caused a major slowdown in TGitCache in repos with lots of unversioned files
 
 = Release 2.6.0 =
 Released: 2018-02-17
