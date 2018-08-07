@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 <sect2 id="tgit-dug-settings-main">
 	<?dbhh topicname="HIDD_SETTINGSMAIN"?>
@@ -43,7 +43,7 @@
 			<term>Automatically check for newer versions every week</term>
 			<listitem>
 				<para>
-					If checked, TortoiseGit will contact its download site once a week 
+					If checked, TortoiseGit will contact its download site once a week
 					to see if there is a newer version of the program available.
 					Use <guibutton>Check now</guibutton> if you want an answer
 					right away. The new version will not be downloaded; you
@@ -185,7 +185,7 @@
 			for unversioned paths</literal>, TortoiseGit will not add its entries
 			to the context menu for unversioned folders. But the entries are
 			added for all items and paths in a versioned folder. And you can
-			get the entries back for unversioned folders by holding the 
+			get the entries back for unversioned folders by holding the
 			<keycap>Shift</keycap> key down while showing the context menu.
 		</para>
 		<para>
@@ -194,13 +194,13 @@
 			the box at the bottom.
 		</para>
 		<para>
-			If you right click and drag folder/file in Windows Explorer, 
+			If you right click and drag folder/file in Windows Explorer,
 			a context menu will be shown when you drop. It provides some TortoiseGit actions.
 			You can uncheck <guibutton>Enable drag context menu</guibutton>
 			to prevent from carelessly clicking the TortoiseGit actions.
 		</para>
 	</sect3>
-	
+
 	<sect3 id="tgit-dug-settings-look-feel-extended">
 		<title>Context Menu 2 Settings</title>
 		<?dbhh topicname="HIDD_SETTINGSEXTMENU"?>
@@ -215,7 +215,7 @@
 			This configuration helps you to reduce the number of context menu entries according to your needs.
 		</para>
 	</sect3>
-	
+
 	<sect3 id="tgit-dug-settings-dialogs">
 		<title>TortoiseGit Dialog Settings</title>
 		<?dbhh topicname="HIDD_SETTINGSDIALOGS"?>
@@ -243,7 +243,7 @@
 				<term>Short date / time format in log messages</term>
 				<listitem>
 					<para>
-						If the standard long messages use up too much 
+						If the standard long messages use up too much
 						space on your screen use the short format.
 					</para>
 				</listitem>
@@ -325,7 +325,7 @@
 						or use your own avatar server.
 						The default URL is <literal>http://www.gravatar.com/avatar/%HASH%?d=identicon</literal>
 						Currently, the supported parameter is <literal>%HASH%</literal>, which is the MD5 email hash.
-						To specify a default image, add <literal>d=</literal> parameter, 
+						To specify a default image, add <literal>d=</literal> parameter,
 						e.g. <literal>http://www.gravatar.com/avatar/%HASH%?d=identicon</literal>
 						See <ulink url="http://en.gravatar.com/site/implement/images/">
 							<citetitle>Gravatar: Image Requests</citetitle>
@@ -399,7 +399,7 @@
 				<listitem>
 					<para>
 						Whether to use the long format even when a shorter name could be used.
-						For example, when the commit <literal>g28f087c</literal> has tag <literal>v0.21.0</literal>, 
+						For example, when the commit <literal>g28f087c</literal> has tag <literal>v0.21.0</literal>,
 						it still shows long format <literal>v0.21.0-0-g28f087c</literal> instead of just <literal>v0.21.0</literal>.
 					</para>
 				</listitem>
@@ -422,7 +422,7 @@
 				<term>Git.exe Progress Dialog</term>
 				<listitem>
 					<para>
-						TortoiseGit can automatically close all progress dialogs 
+						TortoiseGit can automatically close all progress dialogs
 						when the action is finished without error. This setting
 						allows you to select the conditions for closing the
 						dialogs. The default (recommended) setting is
@@ -664,13 +664,13 @@
 				<term>Overlay Icon</term>
 				<listitem>
 					<para>
-						<literal>tgit.icon</literal> is used with projects which wish to show the logo 
+						<literal>tgit.icon</literal> is used with projects which wish to show the logo
 						on the taskbar for easier identification when multiple TortoiseGit application instances
 						of different projects are running at the same time.
 						<graphic fileref="../images/TaskbarOverlayIcon.png"/>
 						If icon is not 16x16 px in size, it will be automatically scaled.
 						Supported formats are ico, png, jpg, gif, bmp.
-						If no icon is included by that project, you may find one on you own, 
+						If no icon is included by that project, you may find one on you own,
 						put it in .git folder and set the relative path in local config. e.g. <literal>.git/logo.ico</literal>
 						If you want to disable it, you may set <literal>tgit.icon</literal> as an empty string in local config.
 						It will fallback to a color block when disabled or load failed.

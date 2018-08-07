@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2006 - Stefan Kueng
 
@@ -48,7 +48,7 @@ public:
 	 * \param bRightAligned if set to true, the tooltip is right aligned with pos,
 	 *        depending on the text width shown in the tooltip
 	 */
-    bool Init(LPPOINT pos, bool bRightAligned = false);
+	bool Init(LPPOINT pos, bool bRightAligned = false);
 	/**
 	 * Sets the text which should be shown in the tooltip.
 	 * \param pos the position in screen coordinates where the tooltip should be shown
@@ -69,7 +69,7 @@ public:
 protected:
 	DECLARE_MESSAGE_MAP()
 private:
-    TOOLINFO ti;
-    bool m_bInitCalled;
+	TOOLINFO ti;
+	bool m_bInitCalled;
 	bool m_bRightAligned;
 };

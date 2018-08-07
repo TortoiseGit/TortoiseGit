@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tgit-dug-merge" xmlns:xi="http://www.w3.org/2001/XInclude">
 	<title>Merging</title>
@@ -38,13 +38,13 @@
 		<emphasis>all</emphasis> changes (depending on the mode, in case of <guilabel>hard</guilabel>).
 	</para>
 	<para>
-		You can choose one commit that you want to merge from. 
-		<xi:include href="./dug_chooseversion.xml"/> 
+		You can choose one commit that you want to merge from.
+		<xi:include href="./dug_chooseversion.xml"/>
 	</para>
 	<para>
 		<guilabel>Squash</guilabel> Just merge change from the other branch. Can't
 		recorder Merge information. The new commit will not record merge branch as
-		one parent commit. Log view will not show merge line between two branch. 
+		one parent commit. Log view will not show merge line between two branch.
 	</para>
 	<para>
 		<guilabel>No Fast Forward</guilabel> Generate a merge commit even if the
@@ -54,14 +54,14 @@
 		<guilabel>No Commit</guilabel> Do not automatically create a commit after merge.
 	</para>
 	<para>
-		<guilabel>Messages</guilabel> Populate the log message with one-line descriptions 
-		from the actual commits that are being merged. Can specify the number of commits 
+		<guilabel>Messages</guilabel> Populate the log message with one-line descriptions
+		from the actual commits that are being merged. Can specify the number of commits
 		to be included in the merge message.
 	</para>
 	<important>
 		<title>Conflicts</title>
 		<para>
-			Although major merge work is done by git automatically, a conflict may happen during merge (i.e., a file is modified in both branches, the current one and the one you want to merge), 
+			Although major merge work is done by git automatically, a conflict may happen during merge (i.e., a file is modified in both branches, the current one and the one you want to merge),
 			please see <xref linkend="tgit-dug-conflicts"/> on how to resolve conflicts.
 		</para>
 		<para>

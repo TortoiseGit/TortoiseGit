@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2012-2018 - TortoiseGit
 // Copyright (C) 2003-2008, 2013-2015 - TortoiseSVN
@@ -152,27 +152,27 @@ CString CPathUtils::ParsePathInString(const CString& Str)
 
 CString CPathUtils::GetAppDirectory(HMODULE hMod /* = nullptr */)
 {
-    CString path;
-    DWORD len = 0;
-    DWORD bufferlen = MAX_PATH;     // MAX_PATH is not the limit here!
-    path.GetBuffer(bufferlen);
-    do
-    {
-        bufferlen += MAX_PATH;      // MAX_PATH is not the limit here!
-        path.ReleaseBuffer(0);
-        len = GetModuleFileName(hMod, path.GetBuffer(bufferlen+1), bufferlen);
-    } while(len == bufferlen);
-    path.ReleaseBuffer();
-    path = path.Left(path.ReverseFind('\\')+1);
-    return GetLongPathname(path);
+	CString path;
+	DWORD len = 0;
+	DWORD bufferlen = MAX_PATH;     // MAX_PATH is not the limit here!
+	path.GetBuffer(bufferlen);
+	do
+	{
+		bufferlen += MAX_PATH;      // MAX_PATH is not the limit here!
+		path.ReleaseBuffer(0);
+		len = GetModuleFileName(hMod, path.GetBuffer(bufferlen+1), bufferlen);
+	} while(len == bufferlen);
+	path.ReleaseBuffer();
+	path = path.Left(path.ReverseFind('\\')+1);
+	return GetLongPathname(path);
 }
 
 CString CPathUtils::GetAppParentDirectory(HMODULE hMod /* = nullptr */)
 {
-    CString path = GetAppDirectory(hMod);
-    path = path.Left(path.ReverseFind('\\'));
-    path = path.Left(path.ReverseFind('\\')+1);
-    return path;
+	CString path = GetAppDirectory(hMod);
+	path = path.Left(path.ReverseFind('\\'));
+	path = path.Left(path.ReverseFind('\\')+1);
+	return path;
 }
 
 CString CPathUtils::GetAppDataDirectory()

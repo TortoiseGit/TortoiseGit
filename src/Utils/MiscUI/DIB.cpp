@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2006, 2017 - TortoiseSVN
 
@@ -22,29 +22,29 @@
 CDib::CDib()
 	: m_hBitmap(nullptr)
 {
-    DeleteObject();
+	DeleteObject();
 }
 
 CDib::~CDib()
 {
-    DeleteObject();
+	DeleteObject();
 }
 
 int CDib::BytesPerLine(int nWidth, int nBitsPerPixel)
 {
-    int nBytesPerLine = nWidth * nBitsPerPixel;
-    nBytesPerLine = ( (nBytesPerLine + 31) & (~31) ) / 8;
-    return nBytesPerLine;
+	int nBytesPerLine = nWidth * nBitsPerPixel;
+	nBytesPerLine = ( (nBytesPerLine + 31) & (~31) ) / 8;
+	return nBytesPerLine;
 }
 
 void CDib::DeleteObject()
 {
-    m_pBits = nullptr;
-    if (m_hBitmap)
-        ::DeleteObject(m_hBitmap);
-    m_hBitmap = nullptr;
+	m_pBits = nullptr;
+	if (m_hBitmap)
+		::DeleteObject(m_hBitmap);
+	m_hBitmap = nullptr;
 
-    memset(&m_BMinfo, 0, sizeof(m_BMinfo));
+	memset(&m_BMinfo, 0, sizeof(m_BMinfo));
 }
 
 void CDib::Create32BitFromPicture (CPictureHolder* pPicture, int iWidth, int iHeight)
@@ -67,17 +67,17 @@ void CDib::Create32BitFromPicture (CPictureHolder* pPicture, int iWidth, int iHe
 	std::vector<DWORD> pBits(iWidth * iHeight);
 
 	BITMAPINFO bi;
-    bi.bmiHeader.biSize          = sizeof(BITMAPINFOHEADER);
-    bi.bmiHeader.biWidth         = iWidth;
-    bi.bmiHeader.biHeight        = iHeight;
-    bi.bmiHeader.biPlanes        = 1;
-    bi.bmiHeader.biBitCount      = 32;
-    bi.bmiHeader.biCompression   = BI_RGB;
-    bi.bmiHeader.biSizeImage     = 0;
-    bi.bmiHeader.biXPelsPerMeter = 0;
-    bi.bmiHeader.biYPelsPerMeter = 0;
-    bi.bmiHeader.biClrUsed       = 0;
-    bi.bmiHeader.biClrImportant  = 0;
+	bi.bmiHeader.biSize          = sizeof(BITMAPINFOHEADER);
+	bi.bmiHeader.biWidth         = iWidth;
+	bi.bmiHeader.biHeight        = iHeight;
+	bi.bmiHeader.biPlanes        = 1;
+	bi.bmiHeader.biBitCount      = 32;
+	bi.bmiHeader.biCompression   = BI_RGB;
+	bi.bmiHeader.biSizeImage     = 0;
+	bi.bmiHeader.biXPelsPerMeter = 0;
+	bi.bmiHeader.biYPelsPerMeter = 0;
+	bi.bmiHeader.biClrUsed       = 0;
+	bi.bmiHeader.biClrImportant  = 0;
 
 
 	SetBitmap(&bi, pBits.data());
@@ -98,63 +98,63 @@ void CDib::Create32BitFromPicture (CPictureHolder* pPicture, int iWidth, int iHe
 
 BOOL CDib::SetBitmap(const LPBITMAPINFO lpBitmapInfo, const LPVOID lpBits)
 {
-    DeleteObject();
+	DeleteObject();
 
-    if (!lpBitmapInfo || !lpBits)
-        return FALSE;
+	if (!lpBitmapInfo || !lpBits)
+		return FALSE;
 
-    HDC hDC = nullptr;
+	HDC hDC = nullptr;
 
-    DWORD dwBitmapInfoSize = sizeof(BITMAPINFO);
+	DWORD dwBitmapInfoSize = sizeof(BITMAPINFO);
 
-    memcpy(&m_BMinfo, lpBitmapInfo, dwBitmapInfoSize);
+	memcpy(&m_BMinfo, lpBitmapInfo, dwBitmapInfoSize);
 
-    hDC = ::GetDC(nullptr);
-    if (!hDC)
+	hDC = ::GetDC(nullptr);
+	if (!hDC)
 	{
 		DeleteObject();
 		return FALSE;
 	}
 
-    m_hBitmap = CreateDIBSection(hDC, &m_BMinfo,
-                                    DIB_RGB_COLORS, &m_pBits, nullptr, 0);
-    ::ReleaseDC(nullptr, hDC);
-    if (!m_hBitmap)
+	m_hBitmap = CreateDIBSection(hDC, &m_BMinfo,
+									DIB_RGB_COLORS, &m_pBits, nullptr, 0);
+	::ReleaseDC(nullptr, hDC);
+	if (!m_hBitmap)
 	{
 		DeleteObject();
 		return FALSE;
 	}
 
-    DWORD dwImageSize = m_BMinfo.bmiHeader.biSizeImage;
-    if (dwImageSize == 0)
-    {
-        int nBytesPerLine = BytesPerLine(lpBitmapInfo->bmiHeader.biWidth,
-                                            lpBitmapInfo->bmiHeader.biBitCount);
-        dwImageSize = nBytesPerLine * lpBitmapInfo->bmiHeader.biHeight;
-    }
+	DWORD dwImageSize = m_BMinfo.bmiHeader.biSizeImage;
+	if (dwImageSize == 0)
+	{
+		int nBytesPerLine = BytesPerLine(lpBitmapInfo->bmiHeader.biWidth,
+											lpBitmapInfo->bmiHeader.biBitCount);
+		dwImageSize = nBytesPerLine * lpBitmapInfo->bmiHeader.biHeight;
+	}
 
-    GdiFlush();
+	GdiFlush();
 
-    memcpy(m_pBits, lpBits, dwImageSize);
+	memcpy(m_pBits, lpBits, dwImageSize);
 
-    return TRUE;
+	return TRUE;
 }
 
 BOOL CDib::Draw(CDC* pDC, CPoint ptDest)
 {
-    if (!m_hBitmap)
-        return FALSE;
+	if (!m_hBitmap)
+		return FALSE;
 
-    CSize size = GetSize();
-    CPoint SrcOrigin = CPoint(0,0);
+	CSize size = GetSize();
+	CPoint SrcOrigin = CPoint(0,0);
 
-    return SetDIBitsToDevice(pDC->GetSafeHdc(),
-                                ptDest.x, ptDest.y,
-                                size.cx, size.cy,
-                                SrcOrigin.x, SrcOrigin.y,
-                                SrcOrigin.y, size.cy - SrcOrigin.y,
-                                GetDIBits(), &m_BMinfo,
-                                DIB_RGB_COLORS);
+	return SetDIBitsToDevice(pDC->GetSafeHdc(),
+								ptDest.x, ptDest.y,
+								size.cx, size.cy,
+								SrcOrigin.x, SrcOrigin.y,
+								SrcOrigin.y, size.cy - SrcOrigin.y,
+								GetDIBits(), &m_BMinfo,
+								DIB_RGB_COLORS);
 }
 
 COLORREF CDib::FixColorRef(COLORREF clr)
@@ -165,4 +165,3 @@ COLORREF CDib::FixColorRef(COLORREF clr)
 
 	return RGB(b,g,r);
 }
-

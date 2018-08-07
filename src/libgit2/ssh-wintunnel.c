@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2014, 2016-2018 TortoiseGit
 // Copyright (C) the libgit2 contributors. All rights reserved.

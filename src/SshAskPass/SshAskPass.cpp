@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2016 - TortoiseGit
 
@@ -69,7 +69,7 @@ int APIENTRY _tWinMain(HINSTANCE	/*hInstance*/,
 			wprintf(L"no");
 		return 0;
 	}
-	
+
 	if (StrStrI(lpCmdLine, L"Should I try again?"))
 	{
 		if (::MessageBox(nullptr, g_Prompt, L"TortoiseGit - git CLI yes/no wrapper", MB_YESNO | MB_ICONQUESTION) == IDYES)

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Application xmlns='http://schemas.microsoft.com/windows/2009/Ribbon'>
   <Application.Commands>
     <Command Name="cmdTabEdit"
@@ -9,7 +9,7 @@
     </Command>
     <!--
     Optional Symbol and Id properties are not defined for the following commands.
-    A Symbol same as the name of the command 
+    A Symbol same as the name of the command
     and a valid Id for this command will be automatically generated.
     -->
     <Command Name="cmdGroupEdit" LabelTitle="Edit"/>
@@ -253,7 +253,7 @@
         <Image Source="ribbon/FilterConfig16.bmp" />
       </Command.LargeImages>
     </Command>
-    
+
     <Command Name="cmdViewIgnoreComments" LabelTitle="Ignore Comments" Id="32896">
       <Command.LargeImages>
         <Image Source="ribbon/Comment.bmp" />

@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2018 - TortoiseGit
 
@@ -2386,7 +2386,7 @@ void CRebaseDlg::OnBnClickedAbort()
 		m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
 
 	m_tooltips.Pop();
-	
+
 	SaveSplitterPos();
 
 	if(m_OrigUpstreamHash.IsEmpty())
@@ -2728,7 +2728,7 @@ void CRebaseDlg::OnBnClickedSplitAllOptions()
 {
 	switch (m_SplitAllOptions.GetCurrentEntry())
 	{
-	case 0: 
+	case 0:
 		SetAllRebaseAction(CGitLogListBase::LOGACTIONS_REBASE_PICK);
 		break;
 	case 1:

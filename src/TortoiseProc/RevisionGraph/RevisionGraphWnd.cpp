@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012, 2015 - TortoiseSVN
 // Copyright (C) 2012-2018 - TortoiseGit
@@ -1693,7 +1693,7 @@ void CRevisionGraphWnd::OnMouseMove(UINT nFlags, CPoint point)
 		}
 	}
 	SetCapture();
-	
+
 	int pos_h = GetScrollPos(SB_HORZ);
 	pos_h -= point.x - m_ptMoveCanvas.x;
 	SetScrollPos(SB_HORZ, pos_h);

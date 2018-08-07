@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tgit-dug-bugtracker">
 	<?dbhh topicname="HIDD_SETTINGSBUGTRAQ_CONFIG"?>
@@ -89,7 +89,7 @@
 						<para>
 							Set this to <literal>true</literal>, if you want
 							TortoiseGit to warn you
-							because of an empty issue-number text field. Valid values 
+							because of an empty issue-number text field. Valid values
 							are <literal>true/false</literal>.
 							<emphasis>
 								If not defined, <literal>false</literal> is assumed.
@@ -122,7 +122,7 @@
 								in a consistent format and can be parsed by your
 								bug tracking tool to associate the issue number with a
 								particular commit. As an example you might use
-								<literal>Issue : %BUGID%</literal>, 
+								<literal>Issue : %BUGID%</literal>,
 								but this depends on your Tool.
 							</para>
 						</listitem>
@@ -152,7 +152,7 @@
 								<literal>Bug-ID / Issue-Nr:</literal> will be displayed.
 								Keep in mind though that the window will not be resized
 								to fit this label, so keep the size of the label below
-								20-25 characters. 
+								20-25 characters.
 							</para>
 						</listitem>
 					</varlistentry>
@@ -163,7 +163,7 @@
 								If set to <literal>true</literal> only numbers are allowed
 								in the issue-number text field.
 								An exception is the comma, so you can comma separate several
-								numbers. Valid values are <literal>true/false</literal>. 
+								numbers. Valid values are <literal>true/false</literal>.
 								<emphasis>
 									If not defined, <literal>true</literal> is assumed.
 								</emphasis>
@@ -332,12 +332,12 @@
 			</ulink>.
 			(<xref linkend="tgit-preface-source"/> explains how to access the repository).
 			A summary of the API is also given in <xref linkend="tgit-ibugtraqprovider"/>
-			
-			Another (working) example plugin in C# is 
+
+			Another (working) example plugin in C# is
 			<ulink url="https://code.google.com/p/gurtle/">
 				<citetitle>Gurtle</citetitle>
 			</ulink>
-			which implements the required COM interface to interact with the 
+			which implements the required COM interface to interact with the
 			<ulink url="https://code.google.com/hosting/">
 				<citetitle>Google Code</citetitle>
 			</ulink>

@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2015-2017 - TortoiseGit
 
@@ -176,7 +176,7 @@ int CGitTagCompareList::Fill(const CString& remote, CString& err)
 			++remoteIt;
 			continue;
 		}
-		
+
 		if (remoteIt->name == localIt->name)
 		{
 			AddEntry(repo, remoteIt->name, &localIt->hash, &remoteIt->hash);

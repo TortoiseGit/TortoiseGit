@@ -1,4 +1,4 @@
-/*
+﻿/*
 	Author: Marco Costalba (C) 2005-2007
 	Author: TortoiseGit (C) 2008-2013, 2017
 
@@ -54,12 +54,9 @@ public:
 	static inline bool isTail(int x) { return (x == TAIL || x == TAIL_R || x == TAIL_L); }
 	static inline bool isJoin(int x) { return (x == JOIN || x == JOIN_R || x == JOIN_L); }
 	static inline bool isFreeLane(int x) { return (x == NOT_ACTIVE || x == CROSS || isJoin(x)); }
-	static inline bool isBoundary(int x) { return (x == BOUNDARY || x == BOUNDARY_C ||
-	                                        x == BOUNDARY_R || x == BOUNDARY_L); }
-	static inline bool isMerge(int x) { return (x == MERGE_FORK || x == MERGE_FORK_R ||
-	                                     x == MERGE_FORK_L || isBoundary(x)); }
-	static inline bool isActive(int x) { return (x == ACTIVE || x == INITIAL || x == BRANCH ||
-	                                      isMerge(x)); }
+	static inline bool isBoundary(int x) { return (x == BOUNDARY || x == BOUNDARY_C || x == BOUNDARY_R || x == BOUNDARY_L); }
+	static inline bool isMerge(int x) { return (x == MERGE_FORK || x == MERGE_FORK_R || x == MERGE_FORK_L || isBoundary(x)); }
+	static inline bool isActive(int x) { return (x == ACTIVE || x == INITIAL || x == BRANCH || isMerge(x)); }
 
 	Lanes() // init() will setup us later, when data is available
 		: activeLane(0)

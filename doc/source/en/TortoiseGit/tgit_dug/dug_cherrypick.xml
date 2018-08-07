@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tgit-dug-cherrypick">
 	<title>Cherry picking</title>
@@ -22,7 +22,7 @@
 	<important>
 		<title>Conflicts</title>
 		<para>
-			Although major merge work is done by git automatically while cherry-picking, a conflict may happen during cherry-picking (i.e., a file was modified in your current branch and also in one or more commits you are cherry-picking), 
+			Although major merge work is done by git automatically while cherry-picking, a conflict may happen during cherry-picking (i.e., a file was modified in your current branch and also in one or more commits you are cherry-picking),
 			please see <xref linkend="tgit-dug-conflicts"/> on how to resolve conflicts.
 		</para>
 		<para>

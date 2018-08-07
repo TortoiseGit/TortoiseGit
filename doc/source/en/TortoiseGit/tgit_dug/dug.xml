@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE chapter SYSTEM "../../../dtd/dblite.dtd">
 <chapter id="tgit-dug" xmlns:xi="http://www.w3.org/2001/XInclude">
 	<title>TortoiseGit Daily Use Guide</title>
@@ -8,8 +8,8 @@
 		<para>
 			This document describes day to day usage of the TortoiseGit client.
 			It is <emphasis>not</emphasis> an introduction to version control
-			systems, and <emphasis>not</emphasis> an introduction to Git. It is 
-			more like a place you may turn to when you know	approximately 
+			systems, and <emphasis>not</emphasis> an introduction to Git. It is
+			more like a place you may turn to when you know	approximately
 			what you want to do, but don't quite remember how to do it.
 		</para>
 		<para>
@@ -84,8 +84,8 @@
 	<xi:include href="./dug_branchtag.xml"/>
 	<xi:include href="./dug_merge.xml"/>
 	<xi:include href="./dug_cherrypick.xml"/>
-    <xi:include href="./dug_rebase.xml"/>
-    <xi:include href="./dug_conflicts.xml"/>
+	<xi:include href="./dug_rebase.xml"/>
+	<xi:include href="./dug_conflicts.xml"/>
 
 	<xi:include href="./dug_patch.xml"/>
 	<xi:include href="./dug_blame.xml"/>

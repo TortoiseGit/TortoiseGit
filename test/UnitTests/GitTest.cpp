@@ -22,7 +22,7 @@
 #include "StringUtils.h"
 #include "RepositoryFixtures.h"
 
-// For performance reason, turn LIBGIT off by default, 
+// For performance reason, turn LIBGIT off by default,
 INSTANTIATE_TEST_CASE_P(CGit, CBasicGitFixture, testing::Values(GIT_CLI, /*LIBGIT,*/ LIBGIT2, LIBGIT2_ALL));
 INSTANTIATE_TEST_CASE_P(CGit, CBasicGitWithEmptyRepositoryFixture, testing::Values(GIT_CLI, /*LIBGIT,*/ LIBGIT2, LIBGIT2_ALL));
 INSTANTIATE_TEST_CASE_P(CGit, CBasicGitWithEmptyBareRepositoryFixture, testing::Values(GIT_CLI, /*LIBGIT,*/ LIBGIT2, LIBGIT2_ALL));
@@ -70,7 +70,7 @@ TEST(CGit, RunGit_Error)
 	CAutoTempDir tempdir;
 	CGit cgit;
 	cgit.m_CurrentDir = tempdir.GetTempDir();
-	
+
 	CString output;
 	EXPECT_NE(0, cgit.Run(L"git-not-found.exe", &output, CP_UTF8)); // Git for Windows returns 2, cygwin-hack returns 127
 	//EXPECT_STREQ(L"", output); with cygwin-hack we get an error message from sh.exe
@@ -233,7 +233,7 @@ TEST(CGit, IsBranchNameValid)
 {
 	CGit cgit;
 	EXPECT_TRUE(cgit.IsBranchNameValid(L"master"));
-	EXPECT_TRUE(cgit.IsBranchNameValid(L"def/master")); 
+	EXPECT_TRUE(cgit.IsBranchNameValid(L"def/master"));
 	EXPECT_FALSE(cgit.IsBranchNameValid(L"HEAD"));
 	EXPECT_FALSE(cgit.IsBranchNameValid(L"-test"));
 	EXPECT_FALSE(cgit.IsBranchNameValid(L"jfjf>ff"));
@@ -2508,7 +2508,7 @@ TEST_P(CBasicGitWithSubmoduleRepositoryFixture, GetWorkingTreeChanges_Submodules
 	EXPECT_STREQ(L"submodule", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, list[0].m_Action);
 	EXPECT_TRUE(list[0].IsDirectory());
-	
+
 	// cleanup
 	CAutoTempDir::DeleteDirectoryRecursive(submoduleDir);
 	submoduleDir = m_Dir.GetTempDir() + L"\\something";
@@ -2588,7 +2588,7 @@ TEST_P(CBasicGitWithSubmoduleRepositoryFixture, GetWorkingTreeChanges_Submodules
 		EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED | CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
 		EXPECT_FALSE(list[0].IsDirectory()); // file is in filesystem
 	}
-	
+
 	// test for merge conflict submodule/file (remote submodule, local file)
 	output.Empty();
 	CAutoTempDir::DeleteDirectoryRecursive(submoduleDir);
@@ -2744,7 +2744,7 @@ TEST_P(CBasicGitWithTestRepoFixture, GetRefsCommitIsOn)
 	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6"), true, true));
 	ASSERT_EQ(1U, list.size());
 	EXPECT_STREQ(L"refs/heads/master", list[0]);
-	
+
 	list.clear();
 	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash(L"1fc3c9688e27596d8717b54f2939dc951568f6cb"), true, true));
 	ASSERT_EQ(1U, list.size());

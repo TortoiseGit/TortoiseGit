@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tgit-dug-diff">
 	<title>Viewing Differences</title>
@@ -13,7 +13,7 @@
 		see what has changed. You might want to look at the differences
 		between two revisions of the same file, or the differences between
 		two separate files.
-		TortoiseGit provides a built-in tool named 
+		TortoiseGit provides a built-in tool named
 		<application>TortoiseGitMerge</application> for viewing differences of
 		text files. For viewing differences of image files, TortoiseGit
 		also has a tool named <application>TortoiseGitIDiff</application>.
@@ -123,7 +123,7 @@
 					</para>
 				</listitem>
 			</varlistentry>
-      <!--
+<!--
 			<varlistentry>
 				<term>Difference with blame information</term>
 				<listitem>
@@ -135,7 +135,7 @@
 					</para>
 				</listitem>
 			</varlistentry>
-      -->
+-->
 			<varlistentry>
 				<term>Difference between folders</term>
 				<listitem>
@@ -296,10 +296,10 @@
 			<primary>Submodule Diff Dialog</primary>
 		</indexterm>
 		<para>
-			The built-in diff command of git is available for diffing submodules, 
+			The built-in diff command of git is available for diffing submodules,
 			but we often find ourselves wanting to see more details how
 			a submodule has changed too. That's why we created Submodule Diff Dialog.
-			The Submodule Diff Dialog is only accessible using the <xref linkend="tgit-dug-commit"/> or <xref linkend="tgit-dug-wcstatus"/> dialogs using the <guimenuitem>COmpare with base</guimenuitem> entry in the context menu for a submodule. 
+			The Submodule Diff Dialog is only accessible using the <xref linkend="tgit-dug-commit"/> or <xref linkend="tgit-dug-wcstatus"/> dialogs using the <guimenuitem>COmpare with base</guimenuitem> entry in the context menu for a submodule.
 		</para>
 		<para>
 			<figure id="tgit-dug-submodulediff-dia-1">
@@ -315,7 +315,7 @@
 			the Show Log button brings you to a new Log Dialog and jump to that revision.
 		</para>
 		<para>
-			To better draw the attention of the change of revision of submodule mounted, 
+			To better draw the attention of the change of revision of submodule mounted,
 			we added some indicators.
 			In 'To' group box, there is a change type field. Here list out the types:
 			<variablelist>
@@ -356,7 +356,7 @@
 					<term>Same commit time</term>
 					<listitem>
 						<para>
-							Time-based. The commit time is the same. 
+							Time-based. The commit time is the same.
 							This may be produced by auto-generating commits or committing at the same time by two persons.
 						</para>
 					</listitem>
@@ -387,7 +387,7 @@
 				</varlistentry>
 			</variablelist>
 
-			If current workspace of the submodule is dirty, 
+			If current workspace of the submodule is dirty,
 			the commit hash will be rendered in yellow background and red text.
 		</para>
 		<para>
@@ -585,9 +585,9 @@
 							<citetitle>here</citetitle>
 						</ulink>.
 					</para>
-          <para>
-            Notepad2 is included in the TortoiseGit Setup as an alternative editor which support LF only line endings. An entry in the start menu named <guilabel>Notepad2</guilabel> is created.
-          </para>
+					<para>
+						Notepad2 is included in the TortoiseGit Setup as an alternative editor which support LF only line endings. An entry in the start menu named <guilabel>Notepad2</guilabel> is created.
+					</para>
 				</listitem>
 			</varlistentry>
 		</variablelist>

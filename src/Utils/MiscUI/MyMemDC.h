@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 //////////////////////////////////////////////////
 // CMyMemDC - memory DC
@@ -22,28 +22,28 @@ class CMyMemDC : public CDC
 public:
 	// constructor sets up the memory DC
 	CMyMemDC(CDC* pDC, bool bTempOnly = false, int nOffset = 0) : CDC()
-    {
+	{
 		ASSERT(pDC);
 
 		m_pDC = pDC;
 		m_pOldBitmap = nullptr;
-        m_bMyMemDC = ((!pDC->IsPrinting()) && (!GetSystemMetrics(SM_REMOTESESSION)));
+		m_bMyMemDC = ((!pDC->IsPrinting()) && (!GetSystemMetrics(SM_REMOTESESSION)));
 		m_bTempOnly = bTempOnly;
 
-        if (m_bMyMemDC)	// Create a Memory DC
+		if (m_bMyMemDC)	// Create a Memory DC
 		{
-            pDC->GetClipBox(&m_rect);
-            CreateCompatibleDC(pDC);
-            m_bitmap.CreateCompatibleBitmap(pDC, m_rect.Width() - nOffset, m_rect.Height());
+			pDC->GetClipBox(&m_rect);
+			CreateCompatibleDC(pDC);
+			m_bitmap.CreateCompatibleBitmap(pDC, m_rect.Width() - nOffset, m_rect.Height());
 			m_pOldBitmap = SelectObject(&m_bitmap);
-            SetWindowOrg(m_rect.left, m_rect.top);
-        }
+			SetWindowOrg(m_rect.left, m_rect.top);
+		}
 		else		// Make a copy of the relevant parts of the current DC for printing
 		{
-            m_bPrinting = pDC->m_bPrinting;
-            m_hDC		= pDC->m_hDC;
-            m_hAttribDC = pDC->m_hAttribDC;
-        }
+			m_bPrinting = pDC->m_bPrinting;
+			m_hDC		= pDC->m_hDC;
+			m_hAttribDC = pDC->m_hAttribDC;
+		}
 
 		FillSolidRect(m_rect, pDC->GetBkColor());
 	}
@@ -93,15 +93,15 @@ public:
 
 	// Destructor copies the contents of the mem DC to the original DC
 	~CMyMemDC()
-    {
+	{
 		if (m_bMyMemDC) {
 			// Copy the off screen bitmap onto the screen.
 			if (!m_bTempOnly)
 				m_pDC->BitBlt(m_rect.left, m_rect.top, m_rect.Width(), m_rect.Height(),
 								this, m_rect.left, m_rect.top, SRCCOPY);
 
-            //Swap back the original bitmap.
-            SelectObject(m_pOldBitmap);
+			//Swap back the original bitmap.
+			SelectObject(m_pOldBitmap);
 		} else {
 			// All we need to do is replace the DC with an illegal value,
 			// this keeps us from accidentally deleting the handles associated with
@@ -111,17 +111,17 @@ public:
 	}
 
 	// Allow usage as a pointer
-    CMyMemDC* operator->() {return this;}
+	CMyMemDC* operator->() {return this;}
 
-    // Allow usage as a pointer
-    operator CMyMemDC*() {return this;}
+	// Allow usage as a pointer
+	operator CMyMemDC*() {return this;}
 
 private:
 	CBitmap  m_bitmap;		// Off screen bitmap
-    CBitmap* m_pOldBitmap;	// bitmap originally found in CMyMemDC
-    CDC*     m_pDC;			// Saves CDC passed in constructor
-    CRect    m_rect;		// Rectangle of drawing area.
-    BOOL     m_bMyMemDC;		// TRUE if CDC really is a Memory DC.
+	CBitmap* m_pOldBitmap;	// bitmap originally found in CMyMemDC
+	CDC*     m_pDC;			// Saves CDC passed in constructor
+	CRect    m_rect;		// Rectangle of drawing area.
+	BOOL     m_bMyMemDC;		// TRUE if CDC really is a Memory DC.
 	BOOL	 m_bTempOnly;	// Whether to copy the contents on the real DC on destroy
 };
 #else
@@ -177,4 +177,3 @@ private:
 };
 
 #endif
-

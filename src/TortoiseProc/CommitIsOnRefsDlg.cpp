@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2016-2017 - TortoiseGit
 
@@ -424,7 +424,7 @@ void CCommitIsOnRefsDlg::StartGetRefsThread()
 	DialogEnableWindow(IDC_LOG, FALSE);
 	DialogEnableWindow(IDC_SELREF, FALSE);
 	DialogEnableWindow(IDC_FILTER, FALSE);
-	
+
 	m_RefList.clear();
 	m_cRefList.ShowText(CString(MAKEINTRESOURCE(IDS_STATUSLIST_BUSYMSG)));
 	m_cRefList.DeleteAllItems();

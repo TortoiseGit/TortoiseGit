@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2009-2018 - TortoiseGit
 // Copyright (C) 2003-2008, 2012-2018 - TortoiseSVN
@@ -141,7 +141,7 @@ static std::unique_ptr<UINT[]> Icon2Image(HICON hIcon)
 			imagePixels[currentDestPos] = (((UINT)(
 				(
 					((pixelsIconRGB[currentSrcPos + 2]  /*Red*/)
-					| (pixelsIconRGB[currentSrcPos + 1] << 8 /*Green*/)) 
+					| (pixelsIconRGB[currentSrcPos + 1] << 8 /*Green*/))
 					| pixelsIconRGB[currentSrcPos] << 16 /*Blue*/
 				)
 				| ((alphaPixels[currentSrcPos] ? 0 : 0xff) << 24))) & 0xffffffff);
@@ -1041,7 +1041,7 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		if (!bIsReadOnly && Call(SCI_GETEDGECOLUMN))
 		{
 			popup.AppendMenu(MF_SEPARATOR);
-			
+
 			sMenuItemText.LoadString(IDS_SCIEDIT_SPLITLINES);
 			popup.AppendMenu(bHasSelection ? uEnabledMenu : uDisabledMenu, SCI_LINESSPLIT, sMenuItemText);
 		}

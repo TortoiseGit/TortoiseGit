@@ -230,7 +230,7 @@ TEST_P(GitIndexCBasicGitWithTestRepoFixture, GetFileStatus)
 	EXPECT_EQ(git_wc_status_normal, status.status);
 	EXPECT_FALSE(status.assumeValid);
 	EXPECT_TRUE(status.skipWorktree);
-	
+
 	EXPECT_EQ(0, CGit::GetFileModifyTime(CombinePath(m_Dir.GetTempDir(), L"just-added.txt"), &time, nullptr, &filesize));
 	status = { git_wc_status_none, false, false };
 	EXPECT_EQ(0, indexList.GetFileStatus(m_Dir.GetTempDir(), L"just-added.txt", status, time, filesize, false));

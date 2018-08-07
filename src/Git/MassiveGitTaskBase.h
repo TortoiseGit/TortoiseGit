@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2011-2013 - Sven Strickroth <email@cs-ware.de>
 // Copyright (C) 2013-2017 - TortoiseGit
@@ -51,4 +51,3 @@ private:
 	CTGitPathList			m_pathList;
 	STRING_VECTOR			m_itemList;
 };
-

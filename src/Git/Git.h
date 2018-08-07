@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2018 - TortoiseGit
 
@@ -367,7 +367,7 @@ public:
 		LOG_INFO_FOLLOW = 0x800,
 		LOG_INFO_SHOW_MERGEDFILE=0x1000,
 		LOG_INFO_FULL_DIFF = 0x2000,
-		LOG_INFO_SIMPILFY_BY_DECORATION = 0x4000, 
+		LOG_INFO_SIMPILFY_BY_DECORATION = 0x4000,
 		LOG_INFO_LOCAL_BRANCHES = 0x8000,
 		LOG_INFO_BASIC_REFS = 0x10000,
 	}LOG_INFO_MASK;

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tgit-dug-blame">
 	<title>Who Changed Which Line?</title>
@@ -37,7 +37,7 @@
 				<title>TortoiseGitBlame</title>
 				<graphic fileref="../images/TortoiseBlame.png"/>
 			</figure>
-			TortoiseGitBlame, which is included with TortoiseGit. 
+			TortoiseGitBlame, which is included with TortoiseGit.
 			When you hover the mouse over a line in the blame info
 			column, all lines with the same revision are shown with a darker
 			background. Lines from other revisions which were changed by the same author
@@ -117,7 +117,7 @@
 				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Settings...</guimenuitem>
 			</menuchoice>
-			on the TortoiseGitBlame tab. Refer to 
+			on the TortoiseGitBlame tab. Refer to
 			<xref linkend="tgit-dug-settings-tortoiseblame"/>.
 		</para>
 	</sect2>

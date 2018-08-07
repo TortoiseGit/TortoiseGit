@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2015-2018 - TortoiseGit
 // Copyright (C) 2003-2008, 2013-2014 - TortoiseSVN
@@ -126,7 +126,7 @@ TEST(CPathUtils, TrimTrailingPathDelimiter)
 	tPath = L"C:\\my\\path";
 	CPathUtils::TrimTrailingPathDelimiter(tPath);
 	EXPECT_STREQ(tPath, L"C:\\my\\path");
-	
+
 	tPath = L"C:\\my\\path\\";
 	CPathUtils::TrimTrailingPathDelimiter(tPath);
 	EXPECT_STREQ(tPath, L"C:\\my\\path");

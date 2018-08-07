@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2013-2018 - TortoiseGit
 
@@ -689,10 +689,10 @@ BOOL CSettingGitCredential::OnApply()
 		}
 		m_strUrl.Replace(L'\\', L'/');
 		m_strHelper.Replace(L'\\', L'/');
-		
+
 		Save(L"helper", m_strHelper);
 		m_ChangedMask &= ~CREDENTIAL_HELPER;
-		
+
 		sel = m_ctrlConfigType.GetCurSel();
 		CString prefix = sel == ConfigType::System ? L"S" : sel == ConfigType::Global ? L"G" : L"L";
 		CString text;

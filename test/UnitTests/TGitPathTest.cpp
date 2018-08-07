@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2015-2018 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
@@ -1137,7 +1137,7 @@ TEST(CTGitPath, FillBasedOnIndexFlags)
 	CString output;
 	CAutoRepository repo;
 	EXPECT_TRUE(git_repository_init(repo.GetPointer(), CUnicodeUtils::GetUTF8(tmpDir.GetTempDir()), 0) == 0);
-	
+
 	ASSERT_TRUE(CreateDirectory(tmpDir.GetTempDir() + L"\\a", nullptr));
 	ASSERT_TRUE(CreateDirectory(tmpDir.GetTempDir() + L"\\b", nullptr));
 
@@ -1182,7 +1182,7 @@ TEST(CTGitPath, FillBasedOnIndexFlags)
 	EXPECT_STREQ(L"a/skip-worktree", testList[0].GetGitPathString());
 	EXPECT_STREQ(L"b/skip-worktree", testList[1].GetGitPathString());
 	EXPECT_STREQ(L"skip-worktree", testList[2].GetGitPathString());
-	
+
 	testList.Clear();
 	EXPECT_TRUE(testList.FillBasedOnIndexFlags(GIT_IDXENTRY_VALID, GIT_IDXENTRY_SKIP_WORKTREE) == 0);
 	EXPECT_EQ(6, testList.GetCount());
@@ -1750,7 +1750,7 @@ TEST(CTGitPath, AreAllPathsFiles)
 
 	list.Clear();
 	EXPECT_TRUE(list.AreAllPathsFiles());
-	
+
 	// now test relative paths
 	PreserveChdir chdir;
 	CAutoTempDir tmp;

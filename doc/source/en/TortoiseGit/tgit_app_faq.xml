@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE appendix SYSTEM "../../dtd/dblite.dtd">
 <appendix id="tgit-faq" xmlns:xi="http://www.w3.org/2001/XInclude">
 	<title>Frequently Asked Questions (FAQ)</title>
@@ -9,12 +9,12 @@
 		<para>
 			Because TortoiseGit is being developed all the time
 			it is sometimes hard to keep the documentation completely
-			up to date. 
-			
+			up to date.
+
 			<ulink url="https://tortoisegit.org/faq">
 				<citetitle>online FAQ</citetitle>
 			</ulink>
-			
+
 			which contains a selection of the questions we are asked
 			the most on the TortoiseGit mailing lists
 			<email>tortoisegit-dev@googlegroups.com</email> and
@@ -42,7 +42,7 @@
 	</simplesect>
 </appendix>
 <!--
-local variables: 
+local variables:
 sgml-parent-document: ("book.xml" "appendix")
 end:
 -->

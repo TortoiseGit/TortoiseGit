@@ -1,60 +1,60 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tgit-dug-sync">
-  <title>Sync</title>
-  <?dbhh topicname="HIDD_SYNC"?>
-  <indexterm>
-    <primary>Sync</primary>
-  </indexterm>
-  <para>
-	The Sync Dialog provides an interface for all operations related with remote repositories in one dialog. 
-	This includes push, pull, fetch, remote update, submodule update, send patch... However, the sync dialog provides less options as the regarding dialogs (cf. <xref linkend="tgit-dug-pull"/> and <xref linkend="tgit-dug-push"/>).
-  </para>
-  <para>
-	The sync dialog can be opened using
-	<menuchoice>
-	  <guimenuitem>Sync... </guimenuitem>
-	</menuchoice>. 
-  </para>
-  <para>
+	<title>Sync</title>
+	<?dbhh topicname="HIDD_SYNC"?>
+	<indexterm>
+		<primary>Sync</primary>
+	</indexterm>
+	<para>
+		The Sync Dialog provides an interface for all operations related with remote repositories in one dialog.
+		This includes push, pull, fetch, remote update, submodule update, send patch... However, the sync dialog provides less options as the regarding dialogs (cf. <xref linkend="tgit-dug-pull"/> and <xref linkend="tgit-dug-push"/>).
+	</para>
+	<para>
+		The sync dialog can be opened using
+		<menuchoice>
+			<guimenuitem>Sync... </guimenuitem>
+		</menuchoice>.
+	</para>
+	<para>
 		The Sync Dialog will show.
 		<figure id="tgit-dug-sync-dia-syncdialog">
 			<title>Sync dialog</title>
 			<graphic fileref="../images/GitSync.png"/>
 		</figure>
-  </para>
-  <sect2>
-	<title>Branch</title>
-	<para>
-		<guilabel>Local Branch:</guilabel> The source branch which will push/pull to/from other repository. If the current branch or the selected local branch has a remote tracked branch set, the remote branch and remote repository are automatically selected. A remote tracked branch can be set using the reference browser (cf. <xref linkend="tgit-dug-browse-ref"/>) or using the push dialog (cf. <xref linkend="tgit-dug-push"/>).
 	</para>
-	<para>
-		<guilabel>Remote Branch:</guilabel> The remote branch of a remote repository.
-	</para>
-  </sect2>
-  <sect2>
-	<title>Destination</title>
-	<para>
-		<guilabel>Remote URL:</guilabel> Choose remote repository or input remote repository URL.
-	</para>
-	<para>
-		<guilabel>Manage</guilabel> Add new remote name.
-	</para>
-  </sect2>
-  <sect2>
-	<title>Options</title>
-	<para>
-		<guilabel>Force</guilabel> 
-		Force Overwrite Existing Branch(May discard changes)
-	</para>
-	<para>
-		<guilabel>Autoload putty key</guilabel> 
-		Autoload putty key when push or pull
-	</para>
-	<tip>
+	<sect2>
+		<title>Branch</title>
 		<para>
-			When you press the <keycap>shift</keycap>-key while selecting <guilabel>fetch</guilabel>, <guilabel>pull</guilabel>, <guilabel>fetch</guilabel>, <guilabel>stash changes</guilabel> or <guilabel>submodule update/sync</guilabel> you can open the separate dialog boxen which allows you to control more parameters for the specific operations.
+			<guilabel>Local Branch:</guilabel> The source branch which will push/pull to/from other repository. If the current branch or the selected local branch has a remote tracked branch set, the remote branch and remote repository are automatically selected. A remote tracked branch can be set using the reference browser (cf. <xref linkend="tgit-dug-browse-ref"/>) or using the push dialog (cf. <xref linkend="tgit-dug-push"/>).
 		</para>
-	</tip>
-  </sect2>
+		<para>
+			<guilabel>Remote Branch:</guilabel> The remote branch of a remote repository.
+		</para>
+	</sect2>
+	<sect2>
+		<title>Destination</title>
+		<para>
+			<guilabel>Remote URL:</guilabel> Choose remote repository or input remote repository URL.
+		</para>
+		<para>
+			<guilabel>Manage</guilabel> Add new remote name.
+		</para>
+	</sect2>
+	<sect2>
+		<title>Options</title>
+		<para>
+			<guilabel>Force</guilabel>
+			Force Overwrite Existing Branch(May discard changes)
+		</para>
+		<para>
+			<guilabel>Autoload putty key</guilabel>
+			Autoload putty key when push or pull
+		</para>
+		<tip>
+			<para>
+				When you press the <keycap>shift</keycap>-key while selecting <guilabel>fetch</guilabel>, <guilabel>pull</guilabel>, <guilabel>fetch</guilabel>, <guilabel>stash changes</guilabel> or <guilabel>submodule update/sync</guilabel> you can open the separate dialog boxen which allows you to control more parameters for the specific operations.
+			</para>
+		</tip>
+	</sect2>
 </sect1>

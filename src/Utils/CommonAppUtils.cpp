@@ -291,7 +291,7 @@ bool CCommonAppUtils::FileOpenSave(CString& path, int* filterindex, UINT title, 
 		{
 			if (PathRemoveFileSpec(dir.GetBuffer()))
 				dir.ReleaseBuffer();
-			else	
+			else
 				dir.Empty();
 		}
 		if (!dir.IsEmpty() && SUCCEEDED(SHCreateItemFromParsingName(dir, nullptr, IID_PPV_ARGS(&psiFolder))))

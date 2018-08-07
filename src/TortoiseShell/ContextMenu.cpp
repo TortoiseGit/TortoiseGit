@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012, 2014-2016, 2018 - TortoiseSVN
 // Copyright (C) 2008-2018 - TortoiseGit
@@ -40,9 +40,7 @@ int g_shellidlist=RegisterClipboardFormat(CFSTR_SHELLIDLIST);
 extern MenuInfo menuInfo[];
 static int g_syncSeq = 0;
 
-STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
-                                   LPDATAOBJECT pDataObj,
-                                   HKEY /* hRegKey */)
+STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataObj, HKEY /* hRegKey */)
 {
 	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Shell :: Initialize\n");
 	PreserveChdir preserveChdir;
@@ -702,7 +700,7 @@ bool CShellExt::WriteClipboardPathsToTempFile(std::wstring& tempfile)
 		::WriteFile (file, filename.c_str(), (DWORD)filename.size()*sizeof(TCHAR), &written, 0);
 		::WriteFile(file, L"\n", 2, &written, 0);
 	}
-	
+
 	return true;
 }
 
@@ -832,11 +830,7 @@ STDMETHODIMP CShellExt::QueryDropContext(UINT uFlags, UINT idCmdFirst, HMENU hMe
 	return ResultFromScode(MAKE_SCODE(SEVERITY_SUCCESS, 0, (USHORT)(idCmd - idCmdFirst)));
 }
 
-STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
-                                         UINT indexMenu,
-                                         UINT idCmdFirst,
-                                         UINT /*idCmdLast*/,
-                                         UINT uFlags)
+STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmdFirst, UINT /*idCmdLast*/, UINT uFlags)
 {
 	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Shell :: QueryContextMenu itemStates=%ld\n", itemStates);
 	PreserveChdir preserveChdir;
@@ -1070,7 +1064,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
 	MENUITEMINFO menuiteminfo = { 0 };
 	menuiteminfo.cbSize = sizeof(menuiteminfo);
 	menuiteminfo.fType = MFT_STRING;
- 	menuiteminfo.dwTypeData = stringtablebuffer;
+	menuiteminfo.dwTypeData = stringtablebuffer;
 
 	UINT uIcon = bShowIcons ? IDI_APP : 0;
 	if (!folder_.empty())
@@ -1630,11 +1624,7 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 }
 
 // This is for the status bar and things like that:
-STDMETHODIMP CShellExt::GetCommandString(UINT_PTR idCmd,
-                                         UINT uFlags,
-                                         UINT FAR * /*reserved*/,
-                                         LPSTR pszName,
-                                         UINT cchMax)
+STDMETHODIMP CShellExt::GetCommandString(UINT_PTR idCmd, UINT uFlags, UINT FAR * /*reserved*/, LPSTR pszName, UINT cchMax)
 {
 	PreserveChdir preserveChdir;
 	//do we know the id?

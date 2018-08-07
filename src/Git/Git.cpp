@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2018 - TortoiseGit
 
@@ -148,7 +148,7 @@ static CString FindExecutableOnPath(const CString& executable, LPCTSTR env)
 	filename = FindFileOnPath(filename, env);
 	if (!filename.IsEmpty())
 		return filename;
-	
+
 	return executable;
 }
 
@@ -2083,11 +2083,11 @@ int CGit::GuessRefForHash(CString& ref, const CGitHash& hash)
 		auto found = std::find_if(reflist.cbegin(), reflist.cend(), [&reftype](const auto& ref) { return CStringUtils::StartsWith(ref, reftype); });
 		if (found == reflist.cend())
 			continue;
-		
+
 		GetShortName(*found, ref, reftype);
 		return 0;
 	}
-	
+
 	ref = hash.ToString();
 	return 0;
 }
@@ -2997,10 +2997,10 @@ static int GetUnifiedDiffLibGit2(const CTGitPath& path, const CString& revOld, c
 		if (git_diff_tree_to_index(diff.GetPointer(), repo, t1, nullptr, &opts))
 			return -1;
 
-		if (git_diff_index_to_workdir(diff2.GetPointer(), repo, nullptr, &opts)) 
+		if (git_diff_index_to_workdir(diff2.GetPointer(), repo, nullptr, &opts))
 			return -1;
 
-		if (git_diff_merge(diff, diff2)) 
+		if (git_diff_merge(diff, diff2))
 			return -1;
 	}
 	else

@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2016 - TortoiseGit
 // Copyright (C) 2009-2010 - TortoiseSVN
@@ -28,56 +28,48 @@
 class CCreateProcessHelper
 {
 public:
-    static bool CreateProcess(LPCTSTR lpApplicationName,
-                    LPTSTR lpCommandLine,
-                    LPCTSTR lpCurrentDirectory,
-                    LPPROCESS_INFORMATION lpProcessInformation);
-    static bool CreateProcess(LPCTSTR lpApplicationName,
-                    LPTSTR lpCommandLine,
-                    LPPROCESS_INFORMATION lpProcessInformation);
+	static bool CreateProcess(LPCTSTR lpApplicationName, LPTSTR lpCommandLine, LPCTSTR lpCurrentDirectory, LPPROCESS_INFORMATION lpProcessInformation);
+	static bool CreateProcess(LPCTSTR lpApplicationName, LPTSTR lpCommandLine, LPPROCESS_INFORMATION lpProcessInformation);
 
-    static bool CreateProcessDetached(LPCTSTR lpApplicationName,
-                    LPTSTR lpCommandLine,
-                    LPCTSTR lpCurrentDirectory);
-    static bool CreateProcessDetached(LPCTSTR lpApplicationName,
-                    LPTSTR lpCommandLine);
-    static bool CreateProcessDetached(LPCTSTR lpApplicationName, LPCTSTR lpCommandLine);
+	static bool CreateProcessDetached(LPCTSTR lpApplicationName, LPTSTR lpCommandLine, LPCTSTR lpCurrentDirectory);
+	static bool CreateProcessDetached(LPCTSTR lpApplicationName, LPTSTR lpCommandLine);
+	static bool CreateProcessDetached(LPCTSTR lpApplicationName, LPCTSTR lpCommandLine);
 };
 
 inline bool CCreateProcessHelper::CreateProcess(LPCTSTR applicationName,
-    LPTSTR commandLine, LPCTSTR currentDirectory,
-    LPPROCESS_INFORMATION processInfo)
+	LPTSTR commandLine, LPCTSTR currentDirectory,
+	LPPROCESS_INFORMATION processInfo)
 {
 	STARTUPINFO startupInfo = { 0 };
-    startupInfo.cb = sizeof(STARTUPINFO);
+	startupInfo.cb = sizeof(STARTUPINFO);
 
-    memset(processInfo, 0, sizeof(PROCESS_INFORMATION));
-    const BOOL result = ::CreateProcess(applicationName, commandLine, nullptr, nullptr, FALSE, CREATE_UNICODE_ENVIRONMENT, nullptr, currentDirectory, &startupInfo, processInfo);
-    return result != 0;
+	memset(processInfo, 0, sizeof(PROCESS_INFORMATION));
+	const BOOL result = ::CreateProcess(applicationName, commandLine, nullptr, nullptr, FALSE, CREATE_UNICODE_ENVIRONMENT, nullptr, currentDirectory, &startupInfo, processInfo);
+	return result != 0;
 }
 
 inline bool CCreateProcessHelper::CreateProcess(LPCTSTR applicationName,
-    LPTSTR commandLine, LPPROCESS_INFORMATION processInformation)
+	LPTSTR commandLine, LPPROCESS_INFORMATION processInformation)
 {
-    return CreateProcess( applicationName, commandLine, nullptr, processInformation );
+	return CreateProcess( applicationName, commandLine, nullptr, processInformation );
 }
 
 inline bool CCreateProcessHelper::CreateProcessDetached(LPCTSTR lpApplicationName,
-    LPTSTR lpCommandLine, LPCTSTR lpCurrentDirectory)
+	LPTSTR lpCommandLine, LPCTSTR lpCurrentDirectory)
 {
-    PROCESS_INFORMATION process;
-    if (!CreateProcess(lpApplicationName, lpCommandLine, lpCurrentDirectory, &process))
-        return false;
+	PROCESS_INFORMATION process;
+	if (!CreateProcess(lpApplicationName, lpCommandLine, lpCurrentDirectory, &process))
+		return false;
 
-    CloseHandle(process.hThread);
-    CloseHandle(process.hProcess);
-    return true;
+	CloseHandle(process.hThread);
+	CloseHandle(process.hProcess);
+	return true;
 }
 
 inline bool CCreateProcessHelper::CreateProcessDetached(LPCTSTR lpApplicationName,
-    LPTSTR lpCommandLine)
+	LPTSTR lpCommandLine)
 {
-    return CreateProcessDetached(lpApplicationName, lpCommandLine, nullptr);
+	return CreateProcessDetached(lpApplicationName, lpCommandLine, nullptr);
 }
 
 inline bool CCreateProcessHelper::CreateProcessDetached(LPCTSTR lpApplicationName, LPCTSTR lpCommandLine)

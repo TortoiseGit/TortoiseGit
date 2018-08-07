@@ -1,80 +1,80 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE chapter SYSTEM "../../dtd/dblite.dtd">
 <sect1 id="tmerge-dug-toolbar">
-    <title>Buttons and Other Controls</title>
-    <para>
-        Depending on your setting, you either see a toolbar or a ribbon
-        with many buttons. The buttons all show a tooltip explaining their
-        function when you hover the mouse pointer over them.
-    </para>
-    <para>
-        On the left side of the window is a locator bar. This provides
-        a quick visual reference as to where the changes lie within the
-        file. The bar has three columns. The left column refers to the
-        left pane, the right column to the right pane, and the centre
-        column to the bottom pane (if present). In one-pane view only
-        the left column is used. The locator bar can also be used as a
-        scroll bar to scroll all the windows simultaneously.
-    </para>
-    <para>
-        If you double click on a word then every occurrence of that word will
-        be highlighted throughout the document, both in the main panes and the
-        locator bar. Double click on the word again to remove the highlighting.
-    </para>
-    <para>
-        If you click in the left margin, or if you triple click within a line,
-        that whole line will be selected.
-    </para>
-    <para>
-        Below the bottom window is the status bar. This shows the number of
-        lines added and deleted in <literal>Theirs</literal> and
-        <literal>Mine</literal>, and the number of unresolved
-        conflicts remaining.
-    </para>
-    <para>
-        The status bar also contains combo box controls which indicate how the
-        files are handled and treated:
-        <variablelist>
-            <varlistentry>
-                <term>Encoding</term>
-                <listitem>
-                    <para>
-                        The encoding specifies how the characters in the views are
-                        loaded/saved and shown. The most common encoding in English is
-                        ASCII (which means the local encoding of the OS language), but
-                        you can change this to be UTF8, UTF16LE, UTF16BE, UTF32LE and
-                        UTF32BE, both with or without a byte order mark (BOM).
-                    </para>
-                </listitem>
-            </varlistentry>
-            <varlistentry>
-                <term>Line Endings</term>
-                <listitem>
-                    <para>
-                        The most common line endings on Windows is CRLF, but you can
-                        change the line endings to whatever you like. Note that if you
-                        change the line endings, then <emphasis>all</emphasis> line
-                        endings in the whole file will change, even if when loaded the
-                        line endings were not all the same.
-                    </para>
-                </listitem>
-            </varlistentry>
-            <varlistentry>
-                <term>Tabs</term>
-                <listitem>
-                    <para>
-                        The option at the top of the combo box menu indicates whether
-                        tabs or spaces are inserted when you press the tab key.
-                        The <emphasis>smart tab char</emphasis> option if enabled uses
-                        an algorithm to determine whether one or the other is best used.
-                    </para>
-                    <para>
-                        The tab size specifies how many space chars are inserted when
-                        editing and pressing the tab char, or how many chars the next
-                        word is indented when a tab char is encountered.
-                    </para>
-                </listitem>
-            </varlistentry>
-        </variablelist>
-    </para>
+	<title>Buttons and Other Controls</title>
+	<para>
+		Depending on your setting, you either see a toolbar or a ribbon
+		with many buttons. The buttons all show a tooltip explaining their
+		function when you hover the mouse pointer over them.
+	</para>
+	<para>
+		On the left side of the window is a locator bar. This provides
+		a quick visual reference as to where the changes lie within the
+		file. The bar has three columns. The left column refers to the
+		left pane, the right column to the right pane, and the centre
+		column to the bottom pane (if present). In one-pane view only
+		the left column is used. The locator bar can also be used as a
+		scroll bar to scroll all the windows simultaneously.
+	</para>
+	<para>
+		If you double click on a word then every occurrence of that word will
+		be highlighted throughout the document, both in the main panes and the
+		locator bar. Double click on the word again to remove the highlighting.
+	</para>
+	<para>
+		If you click in the left margin, or if you triple click within a line,
+		that whole line will be selected.
+	</para>
+	<para>
+		Below the bottom window is the status bar. This shows the number of
+		lines added and deleted in <literal>Theirs</literal> and
+		<literal>Mine</literal>, and the number of unresolved
+		conflicts remaining.
+	</para>
+	<para>
+		The status bar also contains combo box controls which indicate how the
+		files are handled and treated:
+		<variablelist>
+			<varlistentry>
+				<term>Encoding</term>
+				<listitem>
+					<para>
+						The encoding specifies how the characters in the views are
+						loaded/saved and shown. The most common encoding in English is
+						ASCII (which means the local encoding of the OS language), but
+						you can change this to be UTF8, UTF16LE, UTF16BE, UTF32LE and
+						UTF32BE, both with or without a byte order mark (BOM).
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Line Endings</term>
+				<listitem>
+					<para>
+						The most common line endings on Windows is CRLF, but you can
+						change the line endings to whatever you like. Note that if you
+						change the line endings, then <emphasis>all</emphasis> line
+						endings in the whole file will change, even if when loaded the
+						line endings were not all the same.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Tabs</term>
+				<listitem>
+					<para>
+						The option at the top of the combo box menu indicates whether
+						tabs or spaces are inserted when you press the tab key.
+						The <emphasis>smart tab char</emphasis> option if enabled uses
+						an algorithm to determine whether one or the other is best used.
+					</para>
+					<para>
+						The tab size specifies how many space chars are inserted when
+						editing and pressing the tab char, or how many chars the next
+						word is indented when a tab char is encountered.
+					</para>
+				</listitem>
+			</varlistentry>
+		</variablelist>
+	</para>
 </sect1>

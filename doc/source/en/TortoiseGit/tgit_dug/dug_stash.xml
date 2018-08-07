@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tgit-dug-stash">
 	<?dbhh topicname="HIDD_STASH"?>
@@ -38,7 +38,7 @@
 	<important>
 		<title>Conflicts</title>
 		<para>
-			Although major merge work is done by git automatically applying a stash, a conflict may happen during cherry-picking (i.e., a file was modified in your current branch and also in the stash), 
+			Although major merge work is done by git automatically applying a stash, a conflict may happen during cherry-picking (i.e., a file was modified in your current branch and also in the stash),
 			please see <xref linkend="tgit-dug-conflicts"/> on how to resolve conflicts.
 		</para>
 		<para>

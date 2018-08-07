@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2012, 2014, 2016-2018 - TortoiseGit
 // Copyright (C) 2007, 2012-2014, 2018 - TortoiseSVN
@@ -396,7 +396,7 @@ void CFilterEdit::DrawDimText()
 
 HICON CFilterEdit::LoadDpiScaledIcon(UINT resourceId, int cx96dpi, int cy96dpi)
 {
-	CWindowDC dc(this); 
+	CWindowDC dc(this);
 	int cx = MulDiv(cx96dpi, dc.GetDeviceCaps(LOGPIXELSX), 96);
 	int cy = MulDiv(cy96dpi, dc.GetDeviceCaps(LOGPIXELSY), 96);
 	return LoadIconEx(AfxGetResourceHandle(), MAKEINTRESOURCE(resourceId), cx, cy);

@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2011, 2015 - TortoiseSVN
 // Copyright (C) 2012-2013, 2015-2018 - TortoiseGit
@@ -1116,14 +1116,14 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 
 				}
 				else if (graphics.pSVG)
-					graphics.pSVG->Text((int)(noderect.X + this->GetLeftRightMargin() * m_fZoomFactor), 
+					graphics.pSVG->Text((int)(noderect.X + this->GetLeftRightMargin() * m_fZoomFactor),
 										(int)(noderect.Y + this->GetTopBottomMargin() * m_fZoomFactor + hight * i + m_nFontSize),
 										CUnicodeUtils::GetUTF8(fontname), m_nFontSize,
 										false, false, (ARGB)Color::Black, CUnicodeUtils::GetUTF8(shortname));
 				else if (graphics.pGraphviz)
 					graphics.pGraphviz->DrawTableNode(shortname, color);
 			}
-			
+
 			if (graphics.pGraphviz)
 				graphics.pGraphviz->EndDrawTableNode();
 		}

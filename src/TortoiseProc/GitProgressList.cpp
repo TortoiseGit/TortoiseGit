@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2018 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
@@ -734,7 +734,7 @@ int CGitProgressList::UpdateProgress(const git_transfer_progress* stat)
 	static ULONGLONG start = 0;
 	auto dt = GetTickCount64() - start;
 	double speed = 0;
-	
+
 	if (m_bCancelled)
 	{
 		giterr_set_str(GITERR_NONE, "User cancelled.");
@@ -872,7 +872,7 @@ void CGitProgressList::OnContextMenu(CWnd* pWnd, CPoint point)
 		return;	// don't do anything in a dry-run.
 
 	if (pWnd != this)
-		return; 
+		return;
 
 	int selIndex = GetSelectionMark();
 	if ((point.x == -1) && (point.y == -1))

@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2010 - TortoiseSVN
 
@@ -39,7 +39,7 @@ inline CClipboardHelper::~CClipboardHelper()
 inline bool CClipboardHelper::Open(HWND hOwningWnd)
 {
 	bClipBoardOpen = (OpenClipboard(hOwningWnd) != 0);
-	    return bClipBoardOpen;
+	return bClipBoardOpen;
 }
 
 inline HGLOBAL CClipboardHelper::GlobalAlloc(SIZE_T dwBytes)

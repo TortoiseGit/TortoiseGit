@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tgit-dug-patch">
 	<title>Creating and Applying Patches and Pull Requests</title>
@@ -64,7 +64,7 @@
 		</figure>
 		<para>
 			<guilabel>Directory</guilabel> is output directory of patch.
-			Patch file name will be created by commit subject. 
+			Patch file name will be created by commit subject.
 		</para>
 		<para>
 			<guilabel>Since</guilabel> create patch from point. You can click
@@ -74,7 +74,7 @@
 			<guilabel>Number Commits</guilabel> is limited how much patch will created.
 		</para>
 		<para>
-			<guilabel>Range</guilabel> is choose range of <guilabel>from</guilabel> commit 
+			<guilabel>Range</guilabel> is choose range of <guilabel>from</guilabel> commit
 			to <guilabel>to</guilabel>. You can click <guibutton>...</guibutton> to launch
 			log dialog to choose commit.
 		</para>
@@ -174,7 +174,7 @@
 				<graphic fileref="../images/ApplyPatch.png"/>
 			</figure>
 		</para>
-		
+
 		<para>
 			<guibutton>Add</guibutton> Insert patch
 		</para>

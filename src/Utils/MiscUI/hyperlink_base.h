@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Module ID: hyperlink.h
  * Title    : CHyperLink Declaration.
  *
@@ -26,11 +26,11 @@
 class CHyperLink
 {
 public:
-    CHyperLink(void);
-    virtual ~CHyperLink(void);
+	CHyperLink(void);
+	virtual ~CHyperLink(void);
 
-    BOOL ConvertStaticToHyperlink(HWND hwndCtl, LPCTSTR strURL);
-    BOOL ConvertStaticToHyperlink(HWND hwndParent, UINT uiCtlId, LPCTSTR strURL);
+	BOOL ConvertStaticToHyperlink(HWND hwndCtl, LPCTSTR strURL);
+	BOOL ConvertStaticToHyperlink(HWND hwndParent, UINT uiCtlId, LPCTSTR strURL);
 
 	BOOL setURL( LPCTSTR strURL);
 	LPCTSTR getURL(void) const { return m_strURL; }
@@ -50,14 +50,14 @@ private:
 	static HCURSOR  g_hLinkCursor;                  // Cursor for hyperlink
 	static HFONT    g_UnderlineFont;                // Font for underline display
 	static int      g_counter;						// Global resources user counter
-    BOOL     m_bOverControl;                        // cursor over control?
-    BOOL     m_bVisited;                            // Has it been visited?
-    HFONT    m_StdFont;                             // Standard font
+	BOOL     m_bOverControl;                        // cursor over control?
+	BOOL     m_bVisited;                            // Has it been visited?
+	HFONT    m_StdFont;                             // Standard font
 	WNDPROC  m_pfnOrigCtlProc;
 
 	void createUnderlineFont(void);
 	static void createLinkCursor(void);
-    void createGlobalResources(void)
+	void createGlobalResources(void)
 	{
 		createUnderlineFont();
 		createLinkCursor();
@@ -76,10 +76,8 @@ private:
 	void Navigate(void);
 
 	static void DrawFocusRect(HWND hwnd);
-    static LRESULT CALLBACK _HyperlinkParentProc(HWND hwnd, UINT message,
-		                                         WPARAM wParam, LPARAM lParam);
-	static LRESULT CALLBACK _HyperlinkProc(HWND hwnd, UINT message,
-		                                   WPARAM wParam, LPARAM lParam);
+	static LRESULT CALLBACK _HyperlinkParentProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
+	static LRESULT CALLBACK _HyperlinkProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 };
 
 #endif /* _HYPERLINK_H_ */

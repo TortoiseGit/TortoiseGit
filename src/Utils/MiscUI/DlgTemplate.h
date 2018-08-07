@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2006,2008 - TortoiseSVN
 
@@ -26,13 +26,13 @@ public:
 		totalBufferLength = 0;
 		dialogTemplate = 0;
 	};
-    CDlgTemplate(LPCTSTR caption, DWORD style, short x, short y, short w, short h,
-        LPCTSTR font = nullptr, LONG fontSize = 8)
-    {
-        usedBufferLength = sizeof(DLGTEMPLATE );
-        totalBufferLength = usedBufferLength;
+	CDlgTemplate(LPCTSTR caption, DWORD style, short x, short y, short w, short h,
+		LPCTSTR font = nullptr, LONG fontSize = 8)
+	{
+		usedBufferLength = sizeof(DLGTEMPLATE );
+		totalBufferLength = usedBufferLength;
 
-        dialogTemplate = (DLGTEMPLATE*)malloc(totalBufferLength);
+		dialogTemplate = (DLGTEMPLATE*)malloc(totalBufferLength);
 
 		if (dialogTemplate)
 		{
@@ -62,156 +62,156 @@ public:
 		}
 	}
 
-    void AddComponent(LPCTSTR type, LPCTSTR caption, DWORD style, DWORD exStyle,
-        short x, short y, short w, short h, WORD id)
-    {
-        DLGITEMTEMPLATE item;
+	void AddComponent(LPCTSTR type, LPCTSTR caption, DWORD style, DWORD exStyle,
+		short x, short y, short w, short h, WORD id)
+	{
+		DLGITEMTEMPLATE item;
 
-        item.style = style;
-        item.x     = x;
-        item.y     = y;
-        item.cx    = w;
-        item.cy    = h;
-        item.id    = id;
+		item.style = style;
+		item.x     = x;
+		item.y     = y;
+		item.cx    = w;
+		item.cy    = h;
+		item.id    = id;
 
-        item.dwExtendedStyle = exStyle;
+		item.dwExtendedStyle = exStyle;
 
-        AppendData(&item, sizeof(DLGITEMTEMPLATE));
+		AppendData(&item, sizeof(DLGITEMTEMPLATE));
 
-        AppendString(type);
-        AppendString(caption);
+		AppendString(type);
+		AppendString(caption);
 
-        WORD creationDataLength = 0;
-        AppendData(&creationDataLength, sizeof(WORD));
+		WORD creationDataLength = 0;
+		AppendData(&creationDataLength, sizeof(WORD));
 
-        //increment the component count
+		//increment the component count
 
-        dialogTemplate->cdit++;
-    }
+		dialogTemplate->cdit++;
+	}
 
-    void AddButton(LPCTSTR caption, DWORD style, DWORD exStyle, short x, short y,
-        short w, short h, WORD id)
-    {
-        AddStandardComponent(0x0080, caption, style, exStyle, x, y, w, h, id);
+	void AddButton(LPCTSTR caption, DWORD style, DWORD exStyle, short x, short y,
+		short w, short h, WORD id)
+	{
+		AddStandardComponent(0x0080, caption, style, exStyle, x, y, w, h, id);
 
-        WORD creationDataLength = 0;
-        AppendData(&creationDataLength, sizeof(WORD));
-    }
+		WORD creationDataLength = 0;
+		AppendData(&creationDataLength, sizeof(WORD));
+	}
 
-    void AddEditBox(LPCTSTR caption, DWORD style, DWORD exStyle, short x, short y,
-        short w, short h, WORD id)
-    {
-        AddStandardComponent(0x0081, caption, style, exStyle, x, y, w, h, id);
+	void AddEditBox(LPCTSTR caption, DWORD style, DWORD exStyle, short x, short y,
+		short w, short h, WORD id)
+	{
+		AddStandardComponent(0x0081, caption, style, exStyle, x, y, w, h, id);
 
-        WORD creationDataLength = 0;
-        AppendData(&creationDataLength, sizeof(WORD));
-    }
+		WORD creationDataLength = 0;
+		AppendData(&creationDataLength, sizeof(WORD));
+	}
 
-    void AddStatic(LPCTSTR caption, DWORD style, DWORD exStyle, short x, short y,
-        short w, short h, WORD id)
-    {
-        AddStandardComponent(0x0082, caption, style, exStyle, x, y, w, h, id);
+	void AddStatic(LPCTSTR caption, DWORD style, DWORD exStyle, short x, short y,
+		short w, short h, WORD id)
+	{
+		AddStandardComponent(0x0082, caption, style, exStyle, x, y, w, h, id);
 
-        WORD creationDataLength = 0;
-        AppendData(&creationDataLength, sizeof(WORD));
-    }
+		WORD creationDataLength = 0;
+		AppendData(&creationDataLength, sizeof(WORD));
+	}
 
-    void AddListBox(LPCTSTR caption, DWORD style, DWORD exStyle, short x, short y,
-        short w, short h, WORD id)
-    {
-        AddStandardComponent(0x0083, caption, style, exStyle, x, y, w, h, id);
+	void AddListBox(LPCTSTR caption, DWORD style, DWORD exStyle, short x, short y,
+		short w, short h, WORD id)
+	{
+		AddStandardComponent(0x0083, caption, style, exStyle, x, y, w, h, id);
 
-        WORD creationDataLength = 0;
-        AppendData(&creationDataLength, sizeof(WORD));
-    }
+		WORD creationDataLength = 0;
+		AppendData(&creationDataLength, sizeof(WORD));
+	}
 
-    void AddScrollBar(LPCTSTR caption, DWORD style, DWORD exStyle, short x, short y,
-        short w, short h, WORD id)
-    {
-        AddStandardComponent(0x0084, caption, style, exStyle, x, y, w, h, id);
+	void AddScrollBar(LPCTSTR caption, DWORD style, DWORD exStyle, short x, short y,
+		short w, short h, WORD id)
+	{
+		AddStandardComponent(0x0084, caption, style, exStyle, x, y, w, h, id);
 
-        WORD creationDataLength = 0;
-        AppendData(&creationDataLength, sizeof(WORD));
-    }
+		WORD creationDataLength = 0;
+		AppendData(&creationDataLength, sizeof(WORD));
+	}
 
-    void AddComboBox(LPCTSTR caption, DWORD style, DWORD exStyle, short x, short y,
-        short w, short h, WORD id)
-    {
-        AddStandardComponent(0x0085, caption, style, exStyle, x, y, w, h, id);
+	void AddComboBox(LPCTSTR caption, DWORD style, DWORD exStyle, short x, short y,
+		short w, short h, WORD id)
+	{
+		AddStandardComponent(0x0085, caption, style, exStyle, x, y, w, h, id);
 
-        WORD creationDataLength = 0;
-        AppendData(&creationDataLength, sizeof(WORD));
-    }
+		WORD creationDataLength = 0;
+		AppendData(&creationDataLength, sizeof(WORD));
+	}
 
-    /**
-     * Returns a pointer to the Win32 dialog template which the object
-     * represents. This pointer may become invalid if additional
-     * components are added to the template.
-     */
+	/**
+	 * Returns a pointer to the Win32 dialog template which the object
+	 * represents. This pointer may become invalid if additional
+	 * components are added to the template.
+	 */
 
-    operator const DLGTEMPLATE*() const
-    {
-        return dialogTemplate;
-    }
+	operator const DLGTEMPLATE*() const
+	{
+		return dialogTemplate;
+	}
 
-    virtual ~CDlgTemplate()
-    {
-        free(dialogTemplate);
-    }
+	virtual ~CDlgTemplate()
+	{
+		free(dialogTemplate);
+	}
 
 protected:
 
-    void AddStandardComponent(WORD type, LPCTSTR caption, DWORD style,
-        DWORD exStyle, short x, short y, short w, short h, WORD id)
-    {
-        DLGITEMTEMPLATE item;
+	void AddStandardComponent(WORD type, LPCTSTR caption, DWORD style,
+		DWORD exStyle, short x, short y, short w, short h, WORD id)
+	{
+		DLGITEMTEMPLATE item;
 
-        // DWORD align the beginning of the component data
+		// DWORD align the beginning of the component data
 
-        AlignData(sizeof(DWORD));
+		AlignData(sizeof(DWORD));
 
-        item.style = style;
-        item.x     = x;
-        item.y     = y;
-        item.cx    = w;
-        item.cy    = h;
-        item.id    = id;
+		item.style = style;
+		item.x     = x;
+		item.y     = y;
+		item.cx    = w;
+		item.cy    = h;
+		item.id    = id;
 
-        item.dwExtendedStyle = exStyle;
+		item.dwExtendedStyle = exStyle;
 
-        AppendData(&item, sizeof(DLGITEMTEMPLATE));
+		AppendData(&item, sizeof(DLGITEMTEMPLATE));
 
-        WORD preType = 0xFFFF;
+		WORD preType = 0xFFFF;
 
-        AppendData(&preType, sizeof(WORD));
-        AppendData(&type, sizeof(WORD));
+		AppendData(&preType, sizeof(WORD));
+		AppendData(&type, sizeof(WORD));
 
-        AppendString(caption);
+		AppendString(caption);
 
-        // Increment the component count
+		// Increment the component count
 
-        dialogTemplate->cdit++;
-    }
+		dialogTemplate->cdit++;
+	}
 
-    void AlignData(int size)
-    {
-        int paddingSize = usedBufferLength % size;
+	void AlignData(int size)
+	{
+		int paddingSize = usedBufferLength % size;
 
-        if (paddingSize != 0)
-        {
-            EnsureSpace(paddingSize);
-            usedBufferLength += paddingSize;
-        }
-    }
+		if (paddingSize != 0)
+		{
+			EnsureSpace(paddingSize);
+			usedBufferLength += paddingSize;
+		}
+	}
 
-    void AppendString(LPCTSTR string)
-    {
+	void AppendString(LPCTSTR string)
+	{
 #ifndef _UNICODE
-        int length = MultiByteToWideChar(CP_ACP, 0, string, -1, nullptr, 0);
+		int length = MultiByteToWideChar(CP_ACP, 0, string, -1, nullptr, 0);
 #else
 		int length = (int)wcslen(string)+1;
 #endif
-        WCHAR* wideString = (WCHAR*)malloc(sizeof(WCHAR) * length);
+		WCHAR* wideString = (WCHAR*)malloc(sizeof(WCHAR) * length);
 		if (wideString)
 		{
 #ifndef _UNICODE
@@ -219,37 +219,37 @@ protected:
 #else
 			wcscpy_s(wideString, length, string);
 #endif
-		 	AppendData(wideString, length * sizeof(WCHAR));
+			AppendData(wideString, length * sizeof(WCHAR));
 			free(wideString);
 		}
 	}
 
-    void AppendData(void* data, int dataLength)
-    {
-        EnsureSpace(dataLength);
+	void AppendData(void* data, int dataLength)
+	{
+		EnsureSpace(dataLength);
 
-        memcpy((char*)dialogTemplate + usedBufferLength, data, dataLength);
-        usedBufferLength += dataLength;
-    }
+		memcpy((char*)dialogTemplate + usedBufferLength, data, dataLength);
+		usedBufferLength += dataLength;
+	}
 
-    void EnsureSpace(int length)
-    {
-        if (length + usedBufferLength > totalBufferLength)
-        {
-            totalBufferLength += length * 2;
+	void EnsureSpace(int length)
+	{
+		if (length + usedBufferLength > totalBufferLength)
+		{
+			totalBufferLength += length * 2;
 
-            void* newBuffer = malloc(totalBufferLength);
-            memcpy(newBuffer, dialogTemplate, usedBufferLength);
+			void* newBuffer = malloc(totalBufferLength);
+			memcpy(newBuffer, dialogTemplate, usedBufferLength);
 
-            free(dialogTemplate);
-            dialogTemplate = (DLGTEMPLATE*)newBuffer;
-        }
-    }
+			free(dialogTemplate);
+			dialogTemplate = (DLGTEMPLATE*)newBuffer;
+		}
+	}
 
 private:
 
-    DLGTEMPLATE* dialogTemplate;
+	DLGTEMPLATE* dialogTemplate;
 
-    int totalBufferLength;
-    int usedBufferLength;
+	int totalBufferLength;
+	int usedBufferLength;
 };

@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2015-2017 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
@@ -164,7 +164,7 @@ TEST(CGitAdminDir, HasAdminDir)
 	EXPECT_STREQ(tmpDir.GetTempDir(), repoRoot);
 
 	EXPECT_FALSE(GitAdminDir::HasAdminDir(tmpDir.GetTempDir() + L"\\.git", &repoRoot));
-	
+
 	repoRoot.Empty();
 	EXPECT_TRUE(GitAdminDir::HasAdminDir(tmpDir.GetTempDir() + L"\\.gitmodules", &repoRoot));
 	EXPECT_STREQ(tmpDir.GetTempDir(), repoRoot);

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tgit-dug-checkout">
 	<title>Checking Out A Working Tree (Switch to commit)</title>
@@ -30,16 +30,16 @@
 		</figure>
 		If you enter a branch name at <guilabel>Create New Branch</guilabel>, a new branch will be created. Also, the new branch will be set as the current branch (HEAD).
 	</para>
-  <para>
-    You can click on the <guibutton>...</guibutton> to browse the references/branches/log to choose a branch to checkout.
-  </para>
-  <para>
-    Check <guilabel>Overwrite working tree changes (force)</guilabel> will overwrite uncommitted changes in the working tree with the selected version.
-  </para>
-  <para>
-    When you selected a remote branch, you can check <guilabel>Track</guilabel> in order to track the remote branch.
-    When you open the <link linkend="tgit-dug-push">push</link>, <link linkend="tgit-dug-pull">pull</link> or <link linkend="tgit-dug-sync">sync</link> dialog, the remote branch will be pre-selected automatically.
-  </para>
+	<para>
+		You can click on the <guibutton>...</guibutton> to browse the references/branches/log to choose a branch to checkout.
+	</para>
+	<para>
+		Check <guilabel>Overwrite working tree changes (force)</guilabel> will overwrite uncommitted changes in the working tree with the selected version.
+	</para>
+	<para>
+		When you selected a remote branch, you can check <guilabel>Track</guilabel> in order to track the remote branch.
+		When you open the <link linkend="tgit-dug-push">push</link>, <link linkend="tgit-dug-pull">pull</link> or <link linkend="tgit-dug-sync">sync</link> dialog, the remote branch will be pre-selected automatically.
+	</para>
 	<!--
 	<sect2 id="tgit-dug-checkout-depth">
 		<title>Checkout Depth</title>
@@ -227,7 +227,7 @@
 			This can be easily fixed by creating a branch at this version and switching to it.
 		</para>
 	</important>
-	
+
 	<tip>
 		<title>Exporting</title>
 		<para>

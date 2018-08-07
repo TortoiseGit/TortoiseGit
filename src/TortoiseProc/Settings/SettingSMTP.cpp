@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2009, 2013-2016 - TortoiseGit
 
@@ -104,7 +104,7 @@ BOOL CSettingSMTP::OnInitDialog()
 
 	if ((int)m_dwSMTPEnrcyption >= m_SMTPEncryptionCombo.GetCount())
 		m_dwSMTPEnrcyption = 0;
-		
+
 	m_SMTPEncryptionCombo.SetCurSel(m_dwSMTPEnrcyption);
 
 	this->UpdateData(FALSE);

@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2018 - TortoiseGit
 
@@ -888,7 +888,7 @@ bool CGitIgnoreList::CheckAndUpdateGitSystemConfigPath(bool force)
 }
 bool CGitIgnoreList::CheckAndUpdateCoreExcludefile(const CString &adminDir)
 {
-	CString projectConfig(adminDir); 
+	CString projectConfig(adminDir);
 	projectConfig += L"config";
 	CString globalConfig = g_Git.GetGitGlobalConfig();
 	CString globalXDGConfig = g_Git.GetGitGlobalXDGConfig();

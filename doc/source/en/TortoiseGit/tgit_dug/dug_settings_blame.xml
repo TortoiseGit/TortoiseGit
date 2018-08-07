@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 <sect2 id="tgit-dug-settings-tortoiseblame">
 	<?dbhh topicname="HIDD_SETTINGSTBLAME"?>
@@ -55,12 +55,12 @@
 				<para>
 					<guilabel>Within file</guilabel>
 					Extra passes of inspection are applied to detect moved and
-					copied lines within the file (<literal>git blame -M</literal>). 
+					copied lines within the file (<literal>git blame -M</literal>).
 				</para>
 				<para>
 					<guilabel>From modified files</guilabel>
-					In addition to the annotated file detect moved or copied lines 
-					from all modified files within a commit (<literal>git blame -C</literal>). 
+					In addition to the annotated file detect moved or copied lines
+					from all modified files within a commit (<literal>git blame -C</literal>).
 				</para>
 				<para>
 					<guilabel>At file creation</guilabel>
@@ -79,18 +79,18 @@
 			<term>Number of characters required for moved or copied line detection</term>
 			<listitem>
 				<para>
-					Lower bound on the number of alphanumeric characters that Git must detect 
+					Lower bound on the number of alphanumeric characters that Git must detect
 					as moving/copying between files for it to associate those lines with the parent commit.
 				</para>
 				<para>
 					<guilabel>Within a file</guilabel>
-					Number of alphanumeric characters required to detect moving lines within a file 
-					(<literal>git blame -M|&lt;num&gt;|</literal>). 
+					Number of alphanumeric characters required to detect moving lines within a file
+					(<literal>git blame -M|&lt;num&gt;|</literal>).
 				</para>
 				<para>
 					<guilabel>Between files</guilabel>
 					Number of alphanumeric characters required to detect moved or copied lines between files
-					(<literal>git blame -C|&lt;num&gt;|</literal>). 
+					(<literal>git blame -C|&lt;num&gt;|</literal>).
 				</para>
 			</listitem>
 		</varlistentry>

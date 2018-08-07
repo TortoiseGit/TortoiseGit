@@ -5,7 +5,7 @@ Released: 2018-08-19
  * Git (for Windows) 2.11 or newer is now required
 
 == Features ==
- * Fixed issue #3186: Bisect skip missing on dialogs and in automation and bisect docs 
+ * Fixed issue #3186: Bisect skip missing on dialogs and in automation and bisect docs
  * Fixed issue #3188: Add progress support for submodule clone
  * Fixed issue #3212: With Detached Head, Push Dialog has Local Branch filled with HEAD or Commit Hash
  * Fixed issue #3223: Format Patch: Set From and To for single commits
@@ -235,7 +235,7 @@ Released: 2017-01-31
  * Fixed issue #2837: Fixed layout issues on settings dialog
  * Fixed issue #2839: The dialog "check for updates" has a resize issue
  * Fixed issue #2845: Sticky button when resizing the "Rename dialog"
- * Fixed issue #2846: Spell checker won't add unknown words to dictionary. The dictionaries are now saved as UTF-8. 
+ * Fixed issue #2846: Spell checker won't add unknown words to dictionary. The dictionaries are now saved as UTF-8.
    If you have non ascii chars in your dictionary and want to keep those, you need to manually convert these to UTF-8.
    The dictionaries can be found in %APPDATA%\TortoiseGit\*.dic.
  * Fixed issue #2850: The installer does not completely support high-contrast-mode
@@ -271,7 +271,7 @@ Released: 2017-01-31
 Released: 2016-10-01
 
 == Features ==
- * Fixed issue #2755: TortoiseGitMerge: find dialog box does not remember desktop location between invocations 
+ * Fixed issue #2755: TortoiseGitMerge: find dialog box does not remember desktop location between invocations
  * When an alternative/external diff or merge tool is configured, you can now press the shift key while opening the diff to fall back to TortoiseGitMerge
  * Fixed issue #2812: Better indicate conflicts on stash pop and allow to automatically show changes
  * Fixed issue #2439: Add 'show branches this revision is on' to the blame window
@@ -315,7 +315,7 @@ Released: 2016-07-02
  * Fixed issue #2770: Include complete relative path in TortoiseGitMerge
 
 == Bug Fixes ==
- * Fixed issue #2745: TortoiseGit 2.1 crashes on broken git config 
+ * Fixed issue #2745: TortoiseGit 2.1 crashes on broken git config
  * Fixed issue #2759: Swapped THEIRS and MINE in cherry-pick conflict dialogs and context menus
  * Fixed issue #2767: The online help of Settings->Git->Remote should explain the "Push Default" checkbox
  * Fixed issue #2772: Comparing with added file might result in comparison with empty file
@@ -384,7 +384,7 @@ Released: 2016-02-29
  * Fixed issue #2692: Add support for pull.rebase and branch.name.rebase
  * Fixed issue #2701: Add and Revert should respect Autoclose settings and not show any dialog boxes
    Maybe we introduce finer grained auto close levels later.
- * Fixed issue #1899: Support cherry-picking merge revisions 
+ * Fixed issue #1899: Support cherry-picking merge revisions
  * Fixed issue #2551: Allow to create patches w/o a/ and b/ prefixes
  * Fixed issue #2302: One button to do Commit & push
  * Fixed issue #527: Fix the dialog after commit for us to be able to continue committing
@@ -410,7 +410,7 @@ Released: 2016-02-29
 Released: 2015-11-01
 
 == Features ==
- * Updated libgit to version 2.5.0 
+ * Updated libgit to version 2.5.0
  * Fixed issue #2563: No Windows 10-specific library icon
  * Fixed issue #2568: Add Fast Forward Only option to the merge dialog (--ff-only)
  * Fixed issue #2579: Add option to retry push after failed push followed by rebase
@@ -442,7 +442,7 @@ Released: 2015-11-01
  * Fixed issue #2558: Can't create a new temp file/folder after upgrading to Win10
  * Fixed issue #2581: Blame is slow on big files
  * Fixed issue #2567: Log performance slow on huge repository
- * Fixed issue #2585: Language pack files aren't deleted after removing TortoiseGit 
+ * Fixed issue #2585: Language pack files aren't deleted after removing TortoiseGit
  * Fixed issue #2553: Git cleanup fails for renamed submodules
  * Fixed issue #2598: Git Daemon error with root path (as "D:\")
  * Fixed issue #2615: Error during Rebase Edit/Split on a root path
@@ -680,7 +680,7 @@ Released: 2014-08-12
 == Known Issues ==
  * There seems to be a bug in the MFC library which occurs when opening the revision graph in the x64
    version on AMD CPUs, we cannot fix this. Please vote for this on Microsoft Connect:
-   https://connect.microsoft.com/VisualStudio/feedback/details/893171/c000001d-illegal-instruction-on-msvcr120-log-0x2d3-on-x64. 
+   https://connect.microsoft.com/VisualStudio/feedback/details/893171/c000001d-illegal-instruction-on-msvcr120-log-0x2d3-on-x64.
 
 = Release 1.8.9.0 =
 Released: 2014-06-09

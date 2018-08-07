@@ -36,7 +36,7 @@ TEST(CPersonalDictionary, UseDictionary)
 	ASSERT_FALSE(PathFileExists(GetPath(LCID_INVALID)));
 	CPersonalDictionary dict;
 	dict.Init(LCID_INVALID);
-	
+
 	for (const CString& word : { L"", L"Test", L"Täst", L"рефакторинг" })
 		EXPECT_FALSE(dict.FindWord(word));
 

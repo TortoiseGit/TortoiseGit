@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE glossary SYSTEM "../dtd/dblite.dtd">
 <!--
- Enter Glossary definitions in alphabetical Order! 
+ Enter Glossary definitions in alphabetical Order!
  DocBook doesn't sort them automatically.
 -->
 <glossary id="tgit-glossary">
@@ -85,7 +85,7 @@
 		<glossterm>Conflict</glossterm>
 		<glossdef>
 			<para>
-				When changes from the repository are merged with local changes, 
+				When changes from the repository are merged with local changes,
 				sometimes those changes occur on the same lines. In this case
 				Git cannot automatically decide which version to use and
 				the file is said to be in conflict. You have to edit the file manually
@@ -210,9 +210,9 @@
 		<glossterm>Repository</glossterm>
 		<glossdef>
 			<para>
-				A repository is a place where data is stored and maintained. 
-				A repository can be a place where multiple databases or files are located for 
-				distribution over a network, or a repository can be a location that is 
+				A repository is a place where data is stored and maintained.
+				A repository can be a place where multiple databases or files are located for
+				distribution over a network, or a repository can be a location that is
 				directly accessible to the user without having to travel across a network.
 				Git is a distributed version control system - each working tree contains its own repository (in the <filename>.git</filename> folder).
 				A Git repository does not require network to work with most operations.
@@ -310,7 +310,7 @@
 	</glossentry>
 </glossary>
 <!--
-local variables: 
+local variables:
 sgml-parent-document: ("book.xml" "glossary")
 end:
 -->

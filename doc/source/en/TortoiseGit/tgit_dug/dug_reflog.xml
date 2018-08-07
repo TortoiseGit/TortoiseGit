@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tgit-dug-reflog">
 	<title>Reference Log</title>
@@ -11,9 +11,9 @@
 		<menuchoice>
 			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>RefLog</guimenuitem>
-		</menuchoice>, howerver, 
+		</menuchoice>, howerver,
 		you have to hold the <keycap>Shift</keycap> key while right clicking on
-		on a folder in the explorer in order to see this, because it is 
+		on a folder in the explorer in order to see this, because it is
 		in the extended context menu by default.
 		<figure id="tgit-dug-reflog-dia-reflogdialog">
 				<title>RefLog Dialog</title>

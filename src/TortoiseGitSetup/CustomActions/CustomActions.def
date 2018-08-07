@@ -2,9 +2,9 @@
 ;
 ; defines the exported functions which will be available to the MSI engine
 ;
-LIBRARY    "CustomActions"
+LIBRARY "CustomActions"
 EXPORTS
-    TerminateCache
-    OpenDonatePage
-    SetLanguage
+	TerminateCache
+	OpenDonatePage
+	SetLanguage
 	RestartExplorer

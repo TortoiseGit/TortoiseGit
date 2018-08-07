@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE appendix SYSTEM "../../dtd/dblite.dtd">
 <appendix id="tgit-admins" xmlns:xi="http://www.w3.org/2001/XInclude">
 	<title>Useful Tips For Administrators</title>
@@ -49,7 +49,7 @@
 			computer you want to install TortoiseGit as per user.
 		</para>
 		<para>
-			You can provide a default setting for the ssh client in 
+			You can provide a default setting for the ssh client in
 			<filename>HKLM\TortoiseGit\SSH</filename>.
 		</para>
 		<para>
@@ -248,7 +248,7 @@ langs="1031;de"
 							<entry condition="pot">0x0000000000080000</entry>
 							<entry>Refence Browse</entry>
 						</row>
-						
+
 						<row>
 							<entry condition="pot">0x0000000000100000</entry>
 							<entry>Check for modifications</entry>
@@ -390,7 +390,7 @@ langs="1031;de"
 			</table>
 		</para>
 		<para>
-			Example: to disable the <quote>Sendmail</quote> the 
+			Example: to disable the <quote>Sendmail</quote> the
 			<quote>Rebase</quote>
 			and the <quote>Settings</quote> menu entries, add the values assigned
 			to the entries like this:

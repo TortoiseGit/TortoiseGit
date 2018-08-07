@@ -1224,7 +1224,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 						}
 						else if (state & LVIS_SELECTED)
 						{
-							if (::GetFocus() == m_hWnd)	
+							if (::GetFocus() == m_hWnd)
 								txtState = LISS_SELECTED;
 							else
 								txtState = LISS_SELECTEDNOTFOCUS;
@@ -3207,7 +3207,7 @@ void CGitLogListBase::Refresh(BOOL IsCleanFilter)
 		m_AsynDiffList.clear();
 		m_AsynDiffListLock.Unlock();
 		StartAsyncDiffThread();
-		
+
 		StartLoadingThread();
 	}
 }

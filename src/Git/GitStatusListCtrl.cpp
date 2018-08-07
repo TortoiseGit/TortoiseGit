@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2018 - TortoiseGit
 // Copyright (C) 2003-2008, 2013-2015 - TortoiseSVN
@@ -4241,7 +4241,7 @@ void CGitStatusListCtrl::DeleteSelectedFiles()
 	{
 		if (needWriteIndex && git_index_write(gitIndex))
 			MessageBox(g_Git.GetLibGit2LastErr(L"Could not write index."), L"TortoiseGit", MB_OK);
-		
+
 		if (needWriteIndex)
 		{
 			CWnd* pParent = GetLogicalParent();

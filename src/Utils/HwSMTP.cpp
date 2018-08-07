@@ -1,4 +1,4 @@
-// HwSMTP.cpp: implementation of the CHwSMTP class.
+ï»¿// HwSMTP.cpp: implementation of the CHwSMTP class.
 //
 // Schannel/SSPI implementation based on http://www.coastrd.com/c-schannel-smtp
 //
@@ -125,7 +125,7 @@ BOOL CHwSMTP::SendSpeedEmail
 		PDNS_RECORD pDnsRecord;
 		PDNS_RECORD pNext;
 
-		DNS_STATUS status = 
+		DNS_STATUS status =
 		DnsQuery(itr1->first ,
 						DNS_TYPE_MX,DNS_QUERY_STANDARD,
 						nullptr,		//Contains DNS server IP address.
@@ -520,7 +520,7 @@ static LONG DisconnectFromServer(CSocket * Socket, PCredHandle phCreds, CtxtHand
 	if (FAILED(Status))
 	{
 		// printf("**** Error 0x%x returned by ApplyControlToken\n", Status);
-		goto cleanup; 
+		goto cleanup;
 	}
 
 	// Build an SSL close notify message.
@@ -616,7 +616,7 @@ static SECURITY_STATUS ReadDecrypt(CSocket * Socket, PCredHandle phCreds, CtxtHa
 				cbIoBuffer += cbData;
 			}
 		}
-		
+
 		// Decrypt the received data.
 		Buffers[0].pvBuffer     = pbIoBuffer;
 		Buffers[0].cbBuffer     = cbIoBuffer;
@@ -699,7 +699,7 @@ BOOL CHwSMTP::SendEmail (
 		LPCTSTR lpszAddrTo,
 		LPCTSTR lpszSubject,
 		LPCTSTR lpszBody,
-		LPCTSTR lpszCharSet,						// ×Ö·û¼¯ÀàĞÍ£¬ÀıÈç£º·±ÌåÖĞÎÄÕâÀïÓ¦ÊäÈë"big5"£¬¼òÌåÖĞÎÄÊ±ÊäÈë"gb2312"
+		LPCTSTR lpszCharSet,						// Ã—Ã–Â·Ã»Â¼Â¯Ã€Ã ÃÃÂ£Â¬Ã€Ã½ÃˆÃ§Â£ÂºÂ·Â±ÃŒÃ¥Ã–ÃÃÃ„Ã•Ã¢Ã€Ã¯Ã“Â¦ÃŠÃ¤ÃˆÃ«"big5"Â£Â¬Â¼Ã²ÃŒÃ¥Ã–ÃÃÃ„ÃŠÂ±ÃŠÃ¤ÃˆÃ«"gb2312"
 		CStringArray* pStrAryAttach/*=nullptr*/,
 		LPCTSTR pStrAryCC/*=nullptr*/,
 		UINT nSmtpSrvPort,/*=25*/
@@ -757,7 +757,7 @@ BOOL CHwSMTP::SendEmail (
 	if ( m_StrAryAttach.GetSize() < 1 )
 		m_csMIMEContentType.Format(L"text/plain; %s", (LPCTSTR)m_csCharSet);
 
-	// ´´½¨Socket
+	// Â´Â´Â½Â¨Socket
 	m_SendSock.Close();
 	if ( !m_SendSock.Create () )
 	{
@@ -873,7 +873,7 @@ BOOL CHwSMTP::SendEmail (
 			goto cleanup;
 		m_bConnected = TRUE;
 	}
-	
+
 	ret = SendEmail();
 
 cleanup:

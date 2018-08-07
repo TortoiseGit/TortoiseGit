@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2015-2016, 2018 - TortoiseGit
 
@@ -65,7 +65,7 @@ BEGIN_MESSAGE_MAP(CFindBar, CDialog)
 END_MESSAGE_MAP()
 
 void CFindBar::OnOK()
-{	
+{
 	// Do nothing if enter is pressed
 }
 
