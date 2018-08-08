@@ -743,6 +743,7 @@ static int DescribeCommit(CGitHash& hash, CString& result)
 	CAutoDescribeResult describe;
 	git_describe_options describe_options = GIT_DESCRIBE_OPTIONS_INIT;
 	describe_options.describe_strategy = CRegDWORD(L"Software\\TortoiseGit\\DescribeStrategy", GIT_DESCRIBE_DEFAULT);
+	describe_options.only_follow_first_parent = CRegDWORD(L"Software\\TortoiseGit\\DescribeOnlyFollowFirstParent", 0);
 	if (git_describe_commit(describe.GetPointer(), (git_object *)commit, &describe_options))
 		return -1;
 

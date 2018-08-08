@@ -6419,6 +6419,10 @@ msgstr ""
 msgid "Only consider first parents on blame"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1808)
+msgid "Only follow first parent"
+msgstr ""
+
 #. Resource IDs: (IDS_TAGCOMPARE_ONLYLOCAL)
 msgid "Only local"
 msgstr ""

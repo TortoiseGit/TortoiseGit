@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -42,6 +42,7 @@ CSetDialogs::CSetDialogs()
 	, m_DescribeStrategy(GIT_DESCRIBE_DEFAULT)
 	, m_DescribeAbbreviatedSize(GIT_DESCRIBE_DEFAULT_ABBREVIATED_SIZE)
 	, m_bDescribeAlwaysLong(FALSE)
+	, m_bDescribeOnlyFollowFirstParent(FALSE)
 	, m_bFullCommitMessageOnLogLine(FALSE)
 	, m_bMailmapOnLog(FALSE)
 {
@@ -65,6 +66,7 @@ CSetDialogs::CSetDialogs()
 	m_regDescribeStrategy = CRegDWORD(L"Software\\TortoiseGit\\DescribeStrategy", GIT_DESCRIBE_DEFAULT);
 	m_regDescribeAbbreviatedSize = CRegDWORD(L"Software\\TortoiseGit\\DescribeAbbreviatedSize", GIT_DESCRIBE_DEFAULT_ABBREVIATED_SIZE);
 	m_regDescribeAlwaysLong = CRegDWORD(L"Software\\TortoiseGit\\DescribeAlwaysLong", FALSE);
+	m_regDescribeOnlyFollowFirstParent = CRegDWORD(L"Software\\TortoiseGit\\DescribeOnlyFollowFirstParent", FALSE);
 	m_regFullCommitMessageOnLogLine = CRegDWORD(L"Software\\TortoiseGit\\FullCommitMessageOnLogLine", FALSE);
 	m_regMailmapOnLog = CRegDWORD(L"Software\\TortoiseGit\\LogDialog\\UseMailmap", FALSE);
 }
@@ -105,6 +107,7 @@ void CSetDialogs::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_DESCRIBESTRATEGY, m_cDescribeStrategy);
 	DDX_Text(pDX, IDC_DESCRIBEABBREVIATEDSIZE, m_DescribeAbbreviatedSize);
 	DDX_Check(pDX, IDC_DESCRIBEALWAYSLONG, m_bDescribeAlwaysLong);
+	DDX_Check(pDX, IDC_DESCRIBEONLYFIRSTPARENT, m_bDescribeOnlyFollowFirstParent);
 	DDX_Check(pDX, IDC_FULLCOMMITMESSAGEONLOGLINE, m_bFullCommitMessageOnLogLine);
 	DDX_Control(pDX, IDC_DEFAULT_NUMBER_OF, m_DefaultNumberOfCtl);
 	DDX_Check(pDX, IDC_USEMAILMAP, m_bMailmapOnLog);
@@ -131,6 +134,7 @@ BEGIN_MESSAGE_MAP(CSetDialogs, ISettingsPropPage)
 	ON_CBN_SELCHANGE(IDC_DESCRIBESTRATEGY, OnChange)
 	ON_EN_CHANGE(IDC_DESCRIBEABBREVIATEDSIZE, OnChange)
 	ON_BN_CLICKED(IDC_DESCRIBEALWAYSLONG, OnChange)
+	ON_BN_CLICKED(IDC_DESCRIBEONLYFIRSTPARENT, OnChange)
 	ON_BN_CLICKED(IDC_FULLCOMMITMESSAGEONLOGLINE, OnChange)
 	ON_BN_CLICKED(IDC_USEMAILMAP, OnChange)
 	ON_WM_MEASUREITEM()
@@ -156,6 +160,7 @@ BOOL CSetDialogs::OnInitDialog()
 	AdjustControlSize(IDC_SHOWDESCRIBE);
 	AdjustControlSize(IDC_SHOWREVCOUNTER);
 	AdjustControlSize(IDC_DESCRIBEALWAYSLONG);
+	AdjustControlSize(IDC_DESCRIBEONLYFIRSTPARENT);
 	AdjustControlSize(IDC_FULLCOMMITMESSAGEONLOGLINE);
 	AdjustControlSize(IDC_USEMAILMAP);
 
@@ -179,6 +184,7 @@ BOOL CSetDialogs::OnInitDialog()
 	m_DescribeStrategy = m_regDescribeStrategy;
 	m_DescribeAbbreviatedSize = m_regDescribeAbbreviatedSize;
 	m_bDescribeAlwaysLong = m_regDescribeAlwaysLong;
+	m_bDescribeOnlyFollowFirstParent = m_regDescribeOnlyFollowFirstParent;
 	m_bFullCommitMessageOnLogLine = m_regFullCommitMessageOnLogLine;
 	m_bMailmapOnLog = m_regMailmapOnLog;
 
@@ -323,6 +329,7 @@ BOOL CSetDialogs::OnApply()
 	Store(m_DescribeStrategy, m_regDescribeStrategy);
 	Store(m_DescribeAbbreviatedSize, m_regDescribeAbbreviatedSize);
 	Store(m_bDescribeAlwaysLong, m_regDescribeAlwaysLong);
+	Store(m_bDescribeOnlyFollowFirstParent, m_regDescribeOnlyFollowFirstParent);
 	Store(m_bFullCommitMessageOnLogLine, m_regFullCommitMessageOnLogLine);
 	Store(m_bMailmapOnLog, m_regMailmapOnLog);
 
