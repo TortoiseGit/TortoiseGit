@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -177,7 +177,7 @@ public:
 			return m_GitDiff;
 		else
 		{
-			git_open_diff(&m_GitDiff,"-C -M -r");
+			git_open_diff(&m_GitDiff, "-C -M -r"); //cf. GitRevLoglist::SafeFetchFullInfo
 			return m_GitDiff;
 		}
 	}

@@ -224,7 +224,9 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 			if (git_diff_tree_to_tree(diff.GetPointer(), repo, parentTree, commitTree, nullptr) < 0)
 				return -1;
 
-			if (git_diff_find_similar(diff, nullptr) < 0)
+			git_diff_find_options diffopts = GIT_DIFF_FIND_OPTIONS_INIT;
+			diffopts.flags = GIT_DIFF_FIND_COPIES | GIT_DIFF_FIND_RENAMES; // cf. GetGitDiff()
+			if (git_diff_find_similar(diff, &diffopts) < 0)
 				return-1;
 
 			const git_diff_delta* lastDelta = nullptr;
