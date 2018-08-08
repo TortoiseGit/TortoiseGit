@@ -74,6 +74,10 @@ CSettingsAdvanced::CSettingsAdvanced()
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
 	settings[i++].def.b	= false;
 
+	settings[i].sName   = L"DiffSimilarityIndexThreshold";
+	settings[i].type    = CSettingsAdvanced::SettingTypeNumber;
+	settings[i++].def.l = 50;
+
 	settings[i].sName	= L"FullRowSelect";
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
 	settings[i++].def.b	= true;

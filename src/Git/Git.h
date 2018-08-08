@@ -177,7 +177,11 @@ public:
 			return m_GitDiff;
 		else
 		{
-			git_open_diff(&m_GitDiff, "-C -M -r"); //cf. GitRevLoglist::SafeFetchFullInfo
+			// cf. GitRevLoglist::SafeFetchFullInfo
+			CStringA params;
+			params.Format("-C%d%% -M%d%% -r", ms_iSimilarityIndexThreshold, ms_iSimilarityIndexThreshold);
+			git_open_diff(&m_GitDiff, params.GetBuffer());
+			params.ReleaseBuffer();
 			return m_GitDiff;
 		}
 	}
@@ -236,6 +240,7 @@ public:
 	static int ms_LastMsysGitVersion;
 	static bool ms_bCygwinGit;
 	static bool ms_bMsys2Git;
+	static int ms_iSimilarityIndexThreshold;
 	static int m_LogEncode;
 	static bool IsBranchNameValid(const CString& branchname);
 	bool IsLocalBranch(const CString& shortName);

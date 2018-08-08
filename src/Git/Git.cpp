@@ -34,8 +34,16 @@
 #include "../libgit2/filter-filter.h"
 #include "../libgit2/ssh-wintunnel.h"
 
+static int CalculateDiffSimilarityIndexThreshold(DWORD index)
+{
+	if (index < 0 || index > 100)
+		return 50;
+	return index;
+}
+
 bool CGit::ms_bCygwinGit = (CRegDWORD(L"Software\\TortoiseGit\\CygwinHack", FALSE) == TRUE);
 bool CGit::ms_bMsys2Git = (CRegDWORD(L"Software\\TortoiseGit\\Msys2Hack", FALSE) == TRUE);
+int CGit::ms_iSimilarityIndexThreshold = CalculateDiffSimilarityIndexThreshold(CRegDWORD(L"Software\\TortoiseGit\\DiffSimilarityIndexThreshold", 50));
 int CGit::m_LogEncode=CP_UTF8;
 typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 
@@ -1007,10 +1015,10 @@ CString CGit::GetLogCmd(CString range, const CTGitPath* path, int mask, CFilterD
 	}
 
 	if(mask& CGit::LOG_INFO_DETECT_COPYRENAME)
-		param += L" -C";
+		param.AppendFormat(L" -C%d%%", ms_iSimilarityIndexThreshold);
 
 	if(mask& CGit::LOG_INFO_DETECT_RENAME )
-		param += L" -M";
+		param.AppendFormat(L" -M%d%%", ms_iSimilarityIndexThreshold);
 
 	if(mask& CGit::LOG_INFO_FIRST_PARENT )
 		param += L" --first-parent";
@@ -1316,12 +1324,12 @@ int CGit::GetCommitDiffList(const CString &rev1, const CString &rev2, CTGitPathL
 	if(rev1 == GIT_REV_ZERO || rev2 == GIT_REV_ZERO)
 	{
 		if(rev1 == GIT_REV_ZERO)
-			cmd.Format(L"git.exe diff -r --raw -C -M --numstat -z %s %s --", (LPCTSTR)ignore, (LPCTSTR)rev2);
+			cmd.Format(L"git.exe diff -r --raw -C%d%% -M%d%% --numstat -z %s %s --", ms_iSimilarityIndexThreshold, ms_iSimilarityIndexThreshold, (LPCTSTR)ignore, (LPCTSTR)rev2);
 		else
-			cmd.Format(L"git.exe diff -r -R --raw -C -M --numstat -z %s %s --", (LPCTSTR)ignore, (LPCTSTR)rev1);
+			cmd.Format(L"git.exe diff -r -R --raw -C%d%% -M%d%% --numstat -z %s %s --", ms_iSimilarityIndexThreshold, ms_iSimilarityIndexThreshold, (LPCTSTR)ignore, (LPCTSTR)rev1);
 	}
 	else
-		cmd.Format(L"git.exe diff-tree -r --raw -C -M --numstat -z %s %s %s --", (LPCTSTR)ignore, (LPCTSTR)rev2, (LPCTSTR)rev1);
+		cmd.Format(L"git.exe diff-tree -r --raw -C%d%% -M%d%% --numstat -z %s %s %s --", ms_iSimilarityIndexThreshold, ms_iSimilarityIndexThreshold, (LPCTSTR)ignore, (LPCTSTR)rev2, (LPCTSTR)rev1);
 
 	BYTE_VECTOR out;
 	if (Run(cmd, &out))
@@ -3251,12 +3259,13 @@ int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, const CTGitPa
 		}
 
 		// also list staged files which will be in the commit
-		Run(L"git.exe diff-index --cached --raw " + head + L" --numstat -C -M -z --", &cmdout);
+		cmd.Format(L"git.exe diff-index --cached --raw %s --numstat -C%d%% -M%d%% -z --", (LPCTSTR)head, ms_iSimilarityIndexThreshold, ms_iSimilarityIndexThreshold);
+		Run(cmd, &cmdout);
 
 		if (!filterlist)
-			cmd = (L"git.exe diff-index --raw " + head + L" --numstat -C -M -z --");
+			cmd.Format(L"git.exe diff-index --raw %s --numstat -C%d%% -M%d%% -z --", (LPCTSTR)head, ms_iSimilarityIndexThreshold, ms_iSimilarityIndexThreshold);
 		else
-			cmd.Format(L"git.exe diff-index --raw " + head + L" --numstat -C -M -z -- \"%s\"", (LPCTSTR)(*filterlist)[i].GetGitPathString());
+			cmd.Format(L"git.exe diff-index --raw %s --numstat -C%d%% -M%d%% -z -- \"%s\"", (LPCTSTR)head, ms_iSimilarityIndexThreshold, ms_iSimilarityIndexThreshold, (LPCTSTR)(*filterlist)[i].GetGitPathString());
 
 		BYTE_VECTOR cmdErr;
 		if (Run(cmd, &cmdout, &cmdErr))

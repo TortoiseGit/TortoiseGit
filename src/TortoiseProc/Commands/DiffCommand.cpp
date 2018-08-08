@@ -65,8 +65,10 @@ bool DiffCommand::Execute()
 					if (!g_Git.IsInitRepos())
 					{
 						// this might be a rename, try to find original name
+						CString cmd;
+						cmd.Format(L"git.exe diff-index --raw HEAD -M%d%% -C%d%% -z --", CGit::ms_iSimilarityIndexThreshold, CGit::ms_iSimilarityIndexThreshold);
 						BYTE_VECTOR cmdout;
-						g_Git.Run(L"git.exe diff-index --raw HEAD -M -C -z --", &cmdout);
+						g_Git.Run(cmd, &cmdout);
 						CTGitPathList changedFiles;
 						changedFiles.ParserFromLog(cmdout);
 						for (int i = 0; i < changedFiles.GetCount(); ++i)

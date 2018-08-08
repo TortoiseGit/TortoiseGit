@@ -224,10 +224,15 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 			if (git_diff_tree_to_tree(diff.GetPointer(), repo, parentTree, commitTree, nullptr) < 0)
 				return -1;
 
-			git_diff_find_options diffopts = GIT_DIFF_FIND_OPTIONS_INIT;
-			diffopts.flags = GIT_DIFF_FIND_COPIES | GIT_DIFF_FIND_RENAMES; // cf. GetGitDiff()
-			if (git_diff_find_similar(diff, &diffopts) < 0)
-				return-1;
+			// cf. CGit::GetGitDiff()
+			if (CGit::ms_iSimilarityIndexThreshold > 0)
+			{
+				git_diff_find_options diffopts = GIT_DIFF_FIND_OPTIONS_INIT;
+				diffopts.flags = GIT_DIFF_FIND_COPIES | GIT_DIFF_FIND_RENAMES;
+				diffopts.rename_threshold = diffopts.copy_threshold = (uint16_t)CGit::ms_iSimilarityIndexThreshold;
+				if (git_diff_find_similar(diff, &diffopts) < 0)
+					return-1;
+			}
 
 			const git_diff_delta* lastDelta = nullptr;
 			int oldAction = 0;
