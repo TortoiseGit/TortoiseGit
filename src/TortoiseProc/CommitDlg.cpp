@@ -1192,6 +1192,14 @@ void CCommitDlg::OnOK()
 			{
 				m_AmendStr.Empty();
 				m_bCommitAmend = FALSE;
+				GetDlgItem(IDC_COMMIT_AMENDDIFF)->ShowWindow(SW_HIDE);
+				m_bSetCommitDateTime = FALSE;
+				m_AsCommitDateCtrl.ShowWindow(SW_HIDE);
+				m_AsCommitDateCtrl.SetCheck(FALSE);
+				GetDlgItem(IDC_COMMIT_DATEPICKER)->ShowWindow(SW_HIDE);
+				GetDlgItem(IDC_COMMIT_TIMEPICKER)->ShowWindow(SW_HIDE);
+				m_bSetAuthor = FALSE;
+				GetDlgItem(IDC_COMMIT_AUTHORDATA)->ShowWindow(SW_HIDE);
 			}
 
 			UpdateData(FALSE);
