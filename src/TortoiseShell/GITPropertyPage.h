@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2006, 2014 - TortoiseSVN
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2014, 2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
 class CGitPropertyPage
 {
 public:
-	CGitPropertyPage(const std::vector<std::wstring>& filenames);
+	CGitPropertyPage(const std::vector<std::wstring>& filenames, CString projectTopDir);
 	virtual ~CGitPropertyPage();
 
 	/**
@@ -58,6 +58,8 @@ protected:
 
 	HWND m_hwnd;
 	std::vector<std::wstring> filenames;
+	CString	m_ProjectTopDir;
+	int		m_iStripLength;
 	/**
 	 * Were executable, assumeValid or skip-worktree flags changes
 	 */

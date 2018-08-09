@@ -69,11 +69,15 @@ UINT CALLBACK PropPageCallbackProc ( HWND /*hwnd*/, UINT uMsg, LPPROPSHEETPAGE p
 // *********************** CGitPropertyPage *************************
 const UINT CGitPropertyPage::m_UpdateLastCommit = RegisterWindowMessage(L"TORTOISEGIT_PROP_UPDATELASTCOMMIT");
 
-CGitPropertyPage::CGitPropertyPage(const std::vector<std::wstring>& newFilenames)
-	:filenames(newFilenames)
+CGitPropertyPage::CGitPropertyPage(const std::vector<std::wstring>& newFilenames, CString projectTopDir)
+	: filenames(newFilenames)
+	, m_ProjectTopDir(projectTopDir)
 	,m_bChanged(false)
 	, m_hwnd(nullptr)
 {
+	m_iStripLength = m_ProjectTopDir.GetLength();
+	if (m_ProjectTopDir[m_iStripLength - 1] != L'\\')
+		++m_iStripLength;
 }
 
 CGitPropertyPage::~CGitPropertyPage(void)
@@ -106,15 +110,10 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 				do
 				{
 					CTGitPath path(filenames.front().c_str());
-					CString projectTopDir;
-					if(!path.HasAdminDir(&projectTopDir) || path.IsDirectory())
+					if (path.IsDirectory())
 						break;
 
-					int stripLength = projectTopDir.GetLength();
-					if (projectTopDir[stripLength - 1] != L'\\')
-						++stripLength;
-
-					CAutoRepository repository(CUnicodeUtils::GetUTF8(projectTopDir));
+					CAutoRepository repository(CUnicodeUtils::GetUTF8(m_ProjectTopDir));
 					if (!repository)
 						break;
 
@@ -132,7 +131,7 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 					for (const auto& filename : filenames)
 					{
 						CTGitPath file;
-						file.SetFromWin(CString(filename.c_str()).Mid(stripLength));
+						file.SetFromWin(CString(filename.c_str()).Mid(m_iStripLength));
 						CStringA pathA = CUnicodeUtils::GetMulti(file.GetGitPathString(), CP_UTF8);
 						size_t idx;
 						if (!git_index_find(&idx, index, pathA))
@@ -252,14 +251,9 @@ void CGitPropertyPage::PageProcOnCommand(WPARAM wParam)
 		break;
 	case IDC_SHOWSETTINGS:
 		{
-			CTGitPath path(filenames.front().c_str());
-			CString projectTopDir;
-			if(!path.HasAdminDir(&projectTopDir))
-				return;
-
 			tstring gitCmd = L" /command:";
 			gitCmd += L"settings /path:\"";
-			gitCmd += projectTopDir;
+			gitCmd += m_ProjectTopDir;
 			gitCmd += L'"';
 			RunCommand(gitCmd);
 		}
@@ -489,20 +483,12 @@ int CGitPropertyPage::LogThread()
 {
 	CTGitPath path(filenames.front().c_str());
 
-	CString ProjectTopDir;
-	if(!path.HasAdminDir(&ProjectTopDir))
-		return 0;
-
-	CAutoRepository repository(CUnicodeUtils::GetUTF8(ProjectTopDir));
+	CAutoRepository repository(CUnicodeUtils::GetUTF8(m_ProjectTopDir));
 	if (!repository)
 		return 0;
 
-	int stripLength = ProjectTopDir.GetLength();
-	if (ProjectTopDir[stripLength - 1] != L'\\')
-		++stripLength;
-
 	CTGitPath relatepath;
-	relatepath.SetFromWin(path.GetWinPathString().Mid(stripLength));
+	relatepath.SetFromWin(path.GetWinPathString().Mid(m_iStripLength));
 
 	CAutoCommit commit(FindFileRecentCommit(repository, relatepath.GetGitPathString()));
 	if (commit)
@@ -529,11 +515,7 @@ void CGitPropertyPage::InitWorkfileView()
 
 	CTGitPath path(filenames.front().c_str());
 
-	CString ProjectTopDir;
-	if(!path.HasAdminDir(&ProjectTopDir))
-		return;
-
-	CAutoRepository repository(CUnicodeUtils::GetUTF8(ProjectTopDir));
+	CAutoRepository repository(CUnicodeUtils::GetUTF8(m_ProjectTopDir));
 	if (!repository)
 		return;
 
@@ -608,10 +590,6 @@ void CGitPropertyPage::InitWorkfileView()
 		DisplayCommit(HEADcommit, IDC_HEAD_HASH, IDC_HEAD_SUBJECT, IDC_HEAD_AUTHOR, IDC_HEAD_DATE);
 
 	{
-		int stripLength = ProjectTopDir.GetLength();
-		if (ProjectTopDir[stripLength - 1] != L'\\')
-			++stripLength;
-
 		bool allAreFiles = true;
 		for (const auto& filename : filenames)
 		{
@@ -636,7 +614,7 @@ void CGitPropertyPage::InitWorkfileView()
 				for (const auto& filename : filenames)
 				{
 					CTGitPath file;
-					file.SetFromWin(CString(filename.c_str()).Mid(stripLength));
+					file.SetFromWin(CString(filename.c_str()).Mid(m_iStripLength));
 					CStringA pathA = CUnicodeUtils::GetMulti(file.GetGitPathString(), CP_UTF8);
 					size_t idx;
 					if (!git_index_find(&idx, index, pathA))
@@ -746,7 +724,7 @@ STDMETHODIMP CShellExt::AddPages(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam
 	LoadLangDll();
 	PROPSHEETPAGE psp = { 0 };
 	HPROPSHEETPAGE hPage;
-	CGitPropertyPage *sheetpage = new (std::nothrow) CGitPropertyPage(files_);
+	CGitPropertyPage* sheetpage = new (std::nothrow) CGitPropertyPage(files_, projectTopDir);
 
 	if (!sheetpage)
 		return E_OUTOFMEMORY;
