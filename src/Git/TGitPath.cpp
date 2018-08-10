@@ -705,22 +705,8 @@ int CTGitPath::GetAdminDirMask() const
 		{
 			status |= ITEMIS_WCROOT;
 
-			CString topProjectDir;
-			if (GitAdminDir::HasAdminDir(GetWinPathString(), false, &topProjectDir))
-			{
-				if (PathFileExists(topProjectDir + L"\\.gitmodules"))
-				{
-					CAutoConfig config(true);
-					git_config_add_file_ondisk(config, CGit::GetGitPathStringA(topProjectDir + L"\\.gitmodules"), GIT_CONFIG_LEVEL_APP, nullptr, FALSE);
-					CString relativePath = GetWinPathString().Mid(topProjectDir.GetLength());
-					relativePath.Replace(L'\\', L'/');
-					relativePath.Trim(L'/');
-					CStringA submodulePath = CUnicodeUtils::GetUTF8(relativePath);
-					if (git_config_foreach_match(config, "submodule\\..*\\.path", 
-						[](const git_config_entry *entry, void *data) { return entry->value == *(CStringA *)data ? GIT_EUSER : 0; }, &submodulePath) == GIT_EUSER)
-						status |= ITEMIS_SUBMODULE;
-				}
-			}
+			if (IsRegisteredSubmoduleOfParentProject())
+				status |= ITEMIS_SUBMODULE;
 		}
 	}
 
@@ -749,6 +735,29 @@ int CTGitPath::GetAdminDirMask() const
 		status |= ITEMIS_SUBMODULECONTAINER;
 
 	return status;
+}
+
+bool CTGitPath::IsRegisteredSubmoduleOfParentProject(CString* parentProjectRoot /* nullptr */) const
+{
+	CString topProjectDir;
+	if (!GitAdminDir::HasAdminDir(GetWinPathString(), false, &topProjectDir))
+		return false;
+
+	if (parentProjectRoot)
+		*parentProjectRoot = topProjectDir;
+
+	if (!PathFileExists(topProjectDir + L"\\.gitmodules"))
+		return false;
+
+	CAutoConfig config(true);
+	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(topProjectDir + L"\\.gitmodules"), GIT_CONFIG_LEVEL_APP, nullptr, FALSE);
+	CString relativePath = GetWinPathString().Mid(topProjectDir.GetLength());
+	relativePath.Replace(L'\\', L'/');
+	relativePath.Trim(L'/');
+	CStringA submodulePath = CUnicodeUtils::GetUTF8(relativePath);
+	if (git_config_foreach_match(config, "submodule\\..*\\.path", [](const git_config_entry *entry, void *data) { return entry->value == *(CStringA *)data ? GIT_EUSER : 0; }, &submodulePath) == GIT_EUSER)
+		return true;
+	return false;
 }
 
 bool CTGitPath::HasStashDir(const CString& dotGitPath) const

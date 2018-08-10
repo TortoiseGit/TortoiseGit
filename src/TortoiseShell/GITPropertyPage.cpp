@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 // Copyright (C) 2008-2018 - TortoiseGit
@@ -27,6 +27,8 @@
 #include "CreateProcessHelper.h"
 #include "FormatMessageWrapper.h"
 #include "StringUtils.h"
+#include "Git.h"
+#include "GitAdminDir.h"
 
 #define MAX_STRING_LENGTH	4096	//should be big enough
 
@@ -69,11 +71,12 @@ UINT CALLBACK PropPageCallbackProc ( HWND /*hwnd*/, UINT uMsg, LPPROPSHEETPAGE p
 // *********************** CGitPropertyPage *************************
 const UINT CGitPropertyPage::m_UpdateLastCommit = RegisterWindowMessage(L"TORTOISEGIT_PROP_UPDATELASTCOMMIT");
 
-CGitPropertyPage::CGitPropertyPage(const std::vector<std::wstring>& newFilenames, CString projectTopDir)
+CGitPropertyPage::CGitPropertyPage(const std::vector<std::wstring>& newFilenames, CString projectTopDir, bool bIsSubmodule)
 	: filenames(newFilenames)
 	, m_ProjectTopDir(projectTopDir)
 	,m_bChanged(false)
 	, m_hwnd(nullptr)
+	, m_bIsSubmodule(bIsSubmodule)
 {
 	m_iStripLength = m_ProjectTopDir.GetLength();
 	if (m_ProjectTopDir[m_iStripLength - 1] != L'\\')
@@ -109,10 +112,6 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 			{
 				do
 				{
-					CTGitPath path(filenames.front().c_str());
-					if (path.IsDirectory())
-						break;
-
 					CAutoRepository repository(CUnicodeUtils::GetUTF8(m_ProjectTopDir));
 					if (!repository)
 						break;
@@ -125,6 +124,8 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 					BOOL skipWorktree = (BOOL)SendMessage(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), BM_GETCHECK, 0, 0);
 					BOOL executable = (BOOL)SendMessage(GetDlgItem(m_hwnd, IDC_EXECUTABLE), BM_GETCHECK, 0, 0);
 					BOOL symlink = (BOOL)SendMessage(GetDlgItem(m_hwnd, IDC_SYMLINK), BM_GETCHECK, 0, 0);
+					if (m_fileStats.submodule != 0)
+						executable = symlink = BST_INDETERMINATE; // don't update executable or symlink state if we have at least one submodule
 
 					bool changed = false;
 
@@ -246,6 +247,8 @@ void CGitPropertyPage::PageProcOnCommand(WPARAM wParam)
 			gitCmd += L"log /path:\"";
 			gitCmd += filenames.front().c_str();
 			gitCmd += L'"';
+			if (m_bIsSubmodule)
+				gitCmd += L" /submodule";
 			RunCommand(gitCmd);
 		}
 		break;
@@ -589,112 +592,106 @@ void CGitPropertyPage::InitWorkfileView()
 	if (!git_reference_name_to_id(&oid, repository, "HEAD") && !git_commit_lookup(HEADcommit.GetPointer(), repository, &oid) && HEADcommit)
 		DisplayCommit(HEADcommit, IDC_HEAD_HASH, IDC_HEAD_SUBJECT, IDC_HEAD_AUTHOR, IDC_HEAD_DATE);
 
+	m_fileStats.allAreVersionedItems = false;
+	do
 	{
-		bool allAreFiles = true;
+		CAutoIndex index;
+		if (git_repository_index(index.GetPointer(), repository))
+			break;
+
+		m_fileStats.allAreVersionedItems = true;
 		for (const auto& filename : filenames)
 		{
-			if (PathIsDirectory(filename.c_str()))
+			CTGitPath file;
+			file.SetFromWin(CString(filename.c_str()).Mid(m_iStripLength));
+			CStringA pathA = CUnicodeUtils::GetMulti(file.GetGitPathString(), CP_UTF8);
+			size_t idx;
+			if (!git_index_find(&idx, index, pathA))
 			{
-				allAreFiles = false;
+				const git_index_entry *e = git_index_get_byindex(index, idx);
+
+				if (e->flags & GIT_IDXENTRY_VALID)
+					++m_fileStats.assumevalid;
+
+				if (e->flags_extended & GIT_IDXENTRY_SKIP_WORKTREE)
+					++m_fileStats.skipworktree;
+
+				if (e->mode & 0111)
+					++m_fileStats.executable;
+
+				if ((e->mode & GIT_FILEMODE_COMMIT) == GIT_FILEMODE_COMMIT)
+					++m_fileStats.submodule;
+
+				if ((e->mode & GIT_FILEMODE_LINK) == GIT_FILEMODE_LINK)
+					++m_fileStats.symlink;
+			}
+			else
+			{
+				m_fileStats.allAreVersionedItems = false;
 				break;
 			}
 		}
-		if (allAreFiles)
+	} while (0);
+
+	if (m_fileStats.allAreVersionedItems)
+	{
+		if (m_fileStats.assumevalid != 0 && m_fileStats.assumevalid != filenames.size())
 		{
-			size_t assumevalid = 0;
-			size_t skipworktree = 0;
-			size_t executable = 0;
-			size_t symlink = 0;
-			do
-			{
-				CAutoIndex index;
-				if (git_repository_index(index.GetPointer(), repository))
-					break;
+			SendMessage(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), BM_SETSTYLE, (DWORD)GetWindowLong(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), GWL_STYLE) & ~BS_AUTOCHECKBOX | BS_AUTO3STATE, 0);
+			SendMessage(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), BM_SETCHECK, BST_INDETERMINATE, 0);
+		}
+		else
+			SendMessage(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), BM_SETCHECK, (m_fileStats.assumevalid == 0) ? BST_UNCHECKED : BST_CHECKED, 0);
 
-				for (const auto& filename : filenames)
-				{
-					CTGitPath file;
-					file.SetFromWin(CString(filename.c_str()).Mid(m_iStripLength));
-					CStringA pathA = CUnicodeUtils::GetMulti(file.GetGitPathString(), CP_UTF8);
-					size_t idx;
-					if (!git_index_find(&idx, index, pathA))
-					{
-						const git_index_entry *e = git_index_get_byindex(index, idx);
+		if (m_fileStats.skipworktree != 0 && m_fileStats.skipworktree != filenames.size())
+		{
+			SendMessage(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), BM_SETSTYLE, (DWORD)GetWindowLong(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), GWL_STYLE) & ~BS_AUTOCHECKBOX | BS_AUTO3STATE, 0);
+			SendMessage(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), BM_SETCHECK, BST_INDETERMINATE, 0);
+		}
+		else
+			SendMessage(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), BM_SETCHECK, (m_fileStats.skipworktree == 0) ? BST_UNCHECKED : BST_CHECKED, 0);
 
-						if (e->flags & GIT_IDXENTRY_VALID)
-							++assumevalid;
-
-						if (e->flags_extended & GIT_IDXENTRY_SKIP_WORKTREE)
-							++skipworktree;
-
-						if (e->mode & 0111)
-							++executable;
-
-						if ((e->mode & GIT_FILEMODE_LINK) == GIT_FILEMODE_LINK)
-							++symlink;
-					}
-					else
-					{
-						// do not show checkboxes for unversioned files
-						ShowWindow(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), SW_HIDE);
-						ShowWindow(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), SW_HIDE);
-						ShowWindow(GetDlgItem(m_hwnd, IDC_EXECUTABLE), SW_HIDE);
-						ShowWindow(GetDlgItem(m_hwnd, IDC_SYMLINK), SW_HIDE);
-						break;
-					}
-				}
-			} while (0);
-
-			if (assumevalid != 0 && assumevalid != filenames.size())
-			{
-				SendMessage(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), BM_SETSTYLE, (DWORD)GetWindowLong(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), GWL_STYLE) & ~BS_AUTOCHECKBOX | BS_AUTO3STATE, 0);
-				SendMessage(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), BM_SETCHECK, BST_INDETERMINATE, 0);
-			}
-			else
-				SendMessage(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), BM_SETCHECK, (assumevalid == 0) ? BST_UNCHECKED : BST_CHECKED, 0);
-
-			if (skipworktree != 0 && skipworktree != filenames.size())
-			{
-				SendMessage(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), BM_SETSTYLE, (DWORD)GetWindowLong(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), GWL_STYLE) & ~BS_AUTOCHECKBOX | BS_AUTO3STATE, 0);
-				SendMessage(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), BM_SETCHECK, BST_INDETERMINATE, 0);
-			}
-			else
-				SendMessage(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), BM_SETCHECK, (skipworktree == 0) ? BST_UNCHECKED : BST_CHECKED, 0);
-
-			if (executable != 0 && executable != filenames.size())
-			{
-				SendMessage(GetDlgItem(m_hwnd, IDC_EXECUTABLE), BM_SETSTYLE, (DWORD)GetWindowLong(GetDlgItem(m_hwnd, IDC_EXECUTABLE), GWL_STYLE) & ~BS_AUTOCHECKBOX | BS_AUTO3STATE, 0);
-				SendMessage(GetDlgItem(m_hwnd, IDC_EXECUTABLE), BM_SETCHECK, BST_INDETERMINATE, 0);
-				EnableWindow(GetDlgItem(m_hwnd, IDC_SYMLINK), TRUE);
-			}
-			else
-			{
-				SendMessage(GetDlgItem(m_hwnd, IDC_EXECUTABLE), BM_SETCHECK, (executable == 0) ? BST_UNCHECKED : BST_CHECKED, 0);
-				EnableWindow(GetDlgItem(m_hwnd, IDC_SYMLINK), (executable == 0) ? TRUE : FALSE);
-			}
-
-			if (symlink != 0 && symlink != filenames.size())
-			{
-				SendMessage(GetDlgItem(m_hwnd, IDC_SYMLINK), BM_SETSTYLE, (DWORD)GetWindowLong(GetDlgItem(m_hwnd, IDC_SYMLINK), GWL_STYLE) & ~BS_AUTOCHECKBOX | BS_AUTO3STATE, 0);
-				SendMessage(GetDlgItem(m_hwnd, IDC_SYMLINK), BM_SETCHECK, BST_INDETERMINATE, 0);
-				EnableWindow(GetDlgItem(m_hwnd, IDC_EXECUTABLE), TRUE);
-			}
-			else
-			{
-				SendMessage(GetDlgItem(m_hwnd, IDC_SYMLINK), BM_SETCHECK, (symlink == 0) ? BST_UNCHECKED : BST_CHECKED, 0);
-				EnableWindow(GetDlgItem(m_hwnd, IDC_EXECUTABLE), (symlink == 0) ? TRUE : FALSE);
-			}
+		if (m_fileStats.executable != 0 && m_fileStats.executable != filenames.size())
+		{
+			SendMessage(GetDlgItem(m_hwnd, IDC_EXECUTABLE), BM_SETSTYLE, (DWORD)GetWindowLong(GetDlgItem(m_hwnd, IDC_EXECUTABLE), GWL_STYLE) & ~BS_AUTOCHECKBOX | BS_AUTO3STATE, 0);
+			SendMessage(GetDlgItem(m_hwnd, IDC_EXECUTABLE), BM_SETCHECK, BST_INDETERMINATE, 0);
+			EnableWindow(GetDlgItem(m_hwnd, IDC_SYMLINK), TRUE);
 		}
 		else
 		{
-			ShowWindow(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), SW_HIDE);
-			ShowWindow(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), SW_HIDE);
+			SendMessage(GetDlgItem(m_hwnd, IDC_EXECUTABLE), BM_SETCHECK, (m_fileStats.executable == 0) ? BST_UNCHECKED : BST_CHECKED, 0);
+			EnableWindow(GetDlgItem(m_hwnd, IDC_SYMLINK), (m_fileStats.executable == 0) ? TRUE : FALSE);
+		}
+
+		if (m_fileStats.symlink != 0 && m_fileStats.symlink != filenames.size())
+		{
+			SendMessage(GetDlgItem(m_hwnd, IDC_SYMLINK), BM_SETSTYLE, (DWORD)GetWindowLong(GetDlgItem(m_hwnd, IDC_SYMLINK), GWL_STYLE) & ~BS_AUTOCHECKBOX | BS_AUTO3STATE, 0);
+			SendMessage(GetDlgItem(m_hwnd, IDC_SYMLINK), BM_SETCHECK, BST_INDETERMINATE, 0);
+			EnableWindow(GetDlgItem(m_hwnd, IDC_EXECUTABLE), TRUE);
+		}
+		else
+		{
+			SendMessage(GetDlgItem(m_hwnd, IDC_SYMLINK), BM_SETCHECK, (m_fileStats.symlink == 0) ? BST_UNCHECKED : BST_CHECKED, 0);
+			EnableWindow(GetDlgItem(m_hwnd, IDC_EXECUTABLE), (m_fileStats.symlink == 0) ? TRUE : FALSE);
+		}
+
+		// check this last, so that we hide executable and symlink checkboxes in any case if we have at least one submodule
+		if (m_fileStats.submodule != 0)
+		{
 			ShowWindow(GetDlgItem(m_hwnd, IDC_EXECUTABLE), SW_HIDE);
 			ShowWindow(GetDlgItem(m_hwnd, IDC_SYMLINK), SW_HIDE);
 		}
 	}
+	else
+	{
+		// do not show checkboxes for unversioned files
+		ShowWindow(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), SW_HIDE);
+		ShowWindow(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), SW_HIDE);
+		ShowWindow(GetDlgItem(m_hwnd, IDC_EXECUTABLE), SW_HIDE);
+		ShowWindow(GetDlgItem(m_hwnd, IDC_SYMLINK), SW_HIDE);
+	}
 
-	if (filenames.size() == 1 && !PathIsDirectory(filenames[0].c_str()))
+	if (filenames.size() == 1 && m_fileStats.allAreVersionedItems)
 	{
 		SetDlgItemText(m_hwnd, IDC_LAST_SUBJECT, CString(MAKEINTRESOURCE(IDS_LOADING)));
 		_beginthread(LogThreadEntry, 0, this);
@@ -710,9 +707,45 @@ STDMETHODIMP CShellExt::AddPages(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam
 	if (files_.empty())
 		return S_OK;
 
+	CTGitPath firstFile(files_[0].c_str());
+
 	CString projectTopDir;
-	if (!CTGitPath(files_[0].c_str()).HasAdminDir(&projectTopDir))
+	if (!firstFile.HasAdminDir(&projectTopDir))
 		return S_OK;
+
+	if (files_.size() == 1 && firstFile.IsWCRoot()) // might be a submodule
+	{
+		CString parentRepo;
+		if (firstFile.IsRegisteredSubmoduleOfParentProject(&parentRepo))
+		{
+			LoadLangDll();
+			PROPSHEETPAGE psp = { 0 };
+			HPROPSHEETPAGE hPage;
+			CGitPropertyPage* sheetpage = new (std::nothrow) CGitPropertyPage(files_, parentRepo, true);
+
+			if (!sheetpage)
+				return E_OUTOFMEMORY;
+
+			psp.dwSize = sizeof(psp);
+			psp.dwFlags = PSP_USEREFPARENT | PSP_USETITLE | PSP_USEICONID | PSP_USECALLBACK;
+			psp.hInstance = g_hResInst;
+			psp.pszTemplate = MAKEINTRESOURCE(IDD_PROPPAGE);
+			psp.pszIcon = MAKEINTRESOURCE(IDI_APPSMALL);
+			psp.pszTitle = L"Git Submodule";
+			psp.pfnDlgProc = (DLGPROC)PageProc;
+			psp.lParam = (LPARAM)sheetpage;
+			psp.pfnCallback = PropPageCallbackProc;
+			psp.pcRefParent = (UINT*)&g_cRefThisDll;
+
+			hPage = CreatePropertySheetPage(&psp);
+
+			if (hPage && !lpfnAddPage(hPage, lParam))
+			{
+				delete sheetpage;
+				DestroyPropertySheetPage(hPage);
+			}
+		}
+	}
 
 	for (const auto& file_ : files_)
 	{
@@ -724,7 +757,7 @@ STDMETHODIMP CShellExt::AddPages(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam
 	LoadLangDll();
 	PROPSHEETPAGE psp = { 0 };
 	HPROPSHEETPAGE hPage;
-	CGitPropertyPage* sheetpage = new (std::nothrow) CGitPropertyPage(files_, projectTopDir);
+	CGitPropertyPage* sheetpage = new (std::nothrow) CGitPropertyPage(files_, projectTopDir, false);
 
 	if (!sheetpage)
 		return E_OUTOFMEMORY;

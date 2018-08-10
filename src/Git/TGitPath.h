@@ -245,6 +245,8 @@ public:
 
 	int  GetAdminDirMask() const;
 
+	bool IsRegisteredSubmoduleOfParentProject(CString* parentProjectRoot = nullptr) const;
+
 	/**
 	 * Checks if the path point to or below a git admin directory (.Git).
 	 */

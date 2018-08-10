@@ -13,6 +13,7 @@ Released: unreleased
  * Fixes issue #2635: The font of git log is too small
  * Fixed issue #3240: Allow changing the similarity index threshold (using the advanced option "DiffSimilarityIndexThreshold")
  * Fixed issue #3227: Add support to git describe option --first-parent
+ * Fixed issue #3187: Assume unchanged for submodule directory can't be undone in TGit
 
 == Bug Fixes ==
  * Fixed issue #3167: Crash when aborting cherry-picks

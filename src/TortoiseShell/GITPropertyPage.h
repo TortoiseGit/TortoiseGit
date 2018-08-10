@@ -28,7 +28,7 @@
 class CGitPropertyPage
 {
 public:
-	CGitPropertyPage(const std::vector<std::wstring>& filenames, CString projectTopDir);
+	CGitPropertyPage(const std::vector<std::wstring>& filenames, CString projectTopDir, bool bIsSubmodule);
 	virtual ~CGitPropertyPage();
 
 	/**
@@ -60,6 +60,16 @@ protected:
 	std::vector<std::wstring> filenames;
 	CString	m_ProjectTopDir;
 	int		m_iStripLength;
+	bool	m_bIsSubmodule;
+	struct
+	{
+		bool allAreVersionedItems = false;
+		size_t assumevalid = 0;
+		size_t skipworktree = 0;
+		size_t executable = 0;
+		size_t symlink = 0;
+		size_t submodule = 0;
+	} m_fileStats;
 	/**
 	 * Were executable, assumeValid or skip-worktree flags changes
 	 */
