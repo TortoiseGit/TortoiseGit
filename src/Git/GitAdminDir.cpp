@@ -48,13 +48,6 @@ CString GitAdminDir::GetSuperProjectRoot(const CString& path)
 	return L"";
 }
 
-CString GitAdminDir::GetGitTopDir(const CString& path)
-{
-	CString str;
-	HasAdminDir(path,!!PathIsDirectory(path),&str);
-	return str;
-}
-
 bool GitAdminDir::IsWorkingTreeOrBareRepo(const CString& path)
 {
 	return HasAdminDir(path) || IsBareRepo(path);

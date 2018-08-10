@@ -288,46 +288,6 @@ TEST(CGitAdminDir, ReadGitLink)
 	EXPECT_STREQ(L"C:\\.git\\modules\\dontcare", GitAdminDir::ReadGitLink(L"C:\\somerepo", gitFile));
 }
 
-TEST(CGitAdminDir, GetGitTopDir)
-{
-	CAutoTempDir tmpDir;
-
-	EXPECT_STREQ(L"", GitAdminDir::GetGitTopDir(tmpDir.GetTempDir()));
-
-	CString gitFile = tmpDir.GetTempDir() + L"\\.git";
-	CString testFile = tmpDir.GetTempDir() + L"\\.git\\test";
-	EXPECT_TRUE(::CreateDirectory(gitFile, nullptr));
-	EXPECT_STREQ(L"", GitAdminDir::GetGitTopDir(gitFile));
-	EXPECT_STREQ(L"", GitAdminDir::GetGitTopDir(gitFile + L"\\test"));
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"something"));
-	EXPECT_STREQ(L"", GitAdminDir::GetGitTopDir(gitFile + L"\\test"));
-	EXPECT_TRUE(::DeleteFile(testFile));
-	EXPECT_TRUE(::RemoveDirectory(gitFile));
-
-	// should not matter whether .git is a directory or file
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(gitFile, L"gitdir: dontcare"));
-
-	EXPECT_STREQ(tmpDir.GetTempDir(), GitAdminDir::GetGitTopDir(gitFile));
-	EXPECT_STREQ(tmpDir.GetTempDir(), GitAdminDir::GetGitTopDir(tmpDir.GetTempDir()));
-	testFile = tmpDir.GetTempDir() + L"\\test";
-	EXPECT_STREQ(tmpDir.GetTempDir(), GitAdminDir::GetGitTopDir(testFile));
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"something"));
-	EXPECT_STREQ(tmpDir.GetTempDir(), GitAdminDir::GetGitTopDir(testFile));
-
-	EXPECT_TRUE(::CreateDirectory(tmpDir.GetTempDir() + L"\\subdir", nullptr));
-	EXPECT_STREQ(tmpDir.GetTempDir(), GitAdminDir::GetGitTopDir(tmpDir.GetTempDir() + L"\\subdir"));
-	testFile = tmpDir.GetTempDir() + L"\\subdir\\test";
-	EXPECT_STREQ(tmpDir.GetTempDir(), GitAdminDir::GetGitTopDir(testFile));
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"something"));
-	EXPECT_STREQ(tmpDir.GetTempDir(), GitAdminDir::GetGitTopDir(testFile));
-
-	// make subdir a nested repository
-	gitFile = tmpDir.GetTempDir() + L"\\subdir\\.git";
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(gitFile, L"gitdir: dontcare"));
-	EXPECT_STREQ(tmpDir.GetTempDir() + L"\\subdir", GitAdminDir::GetGitTopDir(tmpDir.GetTempDir() + L"\\subdir"));
-	EXPECT_STREQ(tmpDir.GetTempDir() + L"\\subdir", GitAdminDir::GetGitTopDir(testFile));
-}
-
 TEST(CGitAdminDir, GetSuperProjectRoot)
 {
 	CAutoTempDir tmpDir;

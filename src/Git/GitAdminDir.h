@@ -46,7 +46,5 @@ public:
 	static bool GetWorktreeAdminDirPath(const CString& projectTopDir, CString& adminDir);
 	static CString ReadGitLink(const CString& topDir, const CString& dotGitPath);
 
-	static CString GetGitTopDir(const CString& path);
-
 	static CString GetAdminDirName() { return L".git"; }
 };
