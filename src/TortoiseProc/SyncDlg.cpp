@@ -146,9 +146,14 @@ bool CSyncDlg::AskSetTrackedBranch()
 
 void CSyncDlg::OnBnClickedButtonPull()
 {
+	bool bShift = (GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0;
+
 	int CurrentEntry;
 	CurrentEntry = (int)this->m_ctrlPull.GetCurrentEntry();
 	this->m_regPullButton = CurrentEntry;
+
+	if (bShift && CurrentEntry > 1)
+		return;
 
 	this->m_bAbort=false;
 	this->m_GitCmdList.clear();
@@ -232,6 +237,42 @@ void CSyncDlg::OnBnClickedButtonPull()
 
 	if (g_Git.GetMapHashToFriendName(m_oldHashMap))
 		MessageBox(g_Git.GetGitLastErr(L"Could not get all refs."), L"TortoiseGit", MB_ICONERROR);
+
+	if (bShift && (CurrentEntry == 0 || CurrentEntry == 1))
+	{
+		if (CurrentEntry == 1 || CurrentEntry == 2 || CurrentEntry == 3)
+			CAppUtils::Fetch(GetSafeHwnd(), !IsURL() ? m_strURL : L"");
+		else
+			CAppUtils::Pull(GetSafeHwnd());
+
+		FillNewRefMap();
+		FetchOutList(true);
+
+		int hasConflicts = g_Git.HasWorkingTreeConflicts();
+		if (hasConflicts < 0)
+		{
+			this->m_ctrlCmdOut.SetSel(-1, -1);
+			this->m_ctrlCmdOut.ReplaceSel(g_Git.GetGitLastErr(L"Checking for conflicts failed.", CGit::GIT_CMD_CHECKCONFLICTS));
+
+			this->ShowTab(IDC_CMD_LOG);
+			return;
+		}
+
+		if (hasConflicts)
+		{
+			this->m_ConflictFileList.Clear();
+			this->m_ConflictFileList.GetStatus(nullptr, true);
+			this->m_ConflictFileList.Show(CTGitPath::LOGACTIONS_UNMERGED,
+				CTGitPath::LOGACTIONS_UNMERGED);
+
+			this->ShowTab(IDC_IN_CONFLICT);
+			CMessageBox::ShowCheck(GetSafeHwnd(), IDS_NEED_TO_RESOLVE_CONFLICTS_HINT, IDS_APPNAME, MB_ICONINFORMATION, L"MergeConflictsNeedsCommit", IDS_MSGBOX_DONOTSHOWAGAIN);
+		}
+		else
+			ShowInCommits(L"HEAD");
+
+		return;
+	}
 
 	CString force;
 	if(this->m_bForce)
@@ -646,8 +687,21 @@ void CSyncDlg::StashComplete()
 
 void CSyncDlg::OnBnClickedButtonPush()
 {
+	bool bShift = (GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0;
 	this->UpdateData();
 	UpdateCombox();
+
+	if (bShift)
+	{
+		if (m_ctrlPush.GetCurrentEntry() == 0)
+		{
+			CAppUtils::Push(GetSafeHwnd(), g_Git.FixBranchName(m_strLocalBranch));
+			FillNewRefMap();
+			FetchOutList(true);
+		}
+		return;
+	}
+
 	m_ctrlCmdOut.SetWindowText(L"");
 	m_LogText.Empty();
 
@@ -1654,8 +1708,25 @@ void CSyncDlg::OnCancel()
 
 void CSyncDlg::OnBnClickedButtonSubmodule()
 {
+	bool bShift = (GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0;
 	this->UpdateData();
 	UpdateCombox();
+
+	if (bShift)
+	{
+		switch (m_ctrlSubmodule.GetCurrentEntry())
+		{
+		case 0:
+		case 1: // fall-through
+			CAppUtils::RunTortoiseGitProc(L"/command:subupdate /bkpath:\"" + g_Git.m_CurrentDir + L"\"");
+			break;
+		case 2:
+			CAppUtils::RunTortoiseGitProc(L"/command:subsync /bkpath:\"" + g_Git.m_CurrentDir + L"\"");
+			break;
+		}
+		return;
+	}
+
 	m_ctrlCmdOut.SetWindowText(L"");
 	m_LogText.Empty();
 
@@ -1701,8 +1772,17 @@ void CSyncDlg::OnBnClickedButtonSubmodule()
 
 void CSyncDlg::OnBnClickedButtonStash()
 {
+	bool bShift = (GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0;
 	UpdateData();
 	UpdateCombox();
+
+	if (bShift)
+	{
+		if (m_ctrlStash.GetCurrentEntry() == 0)
+			CAppUtils::RunTortoiseGitProc(L"/command:stashsave");
+		return;
+	}
+
 	m_ctrlCmdOut.SetWindowText(L"");
 	m_LogText.Empty();
 

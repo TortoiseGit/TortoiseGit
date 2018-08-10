@@ -14,6 +14,7 @@ Released: unreleased
  * Fixed issue #3240: Allow changing the similarity index threshold (using the advanced option "DiffSimilarityIndexThreshold")
  * Fixed issue #3227: Add support to git describe option --first-parent
  * Fixed issue #3187: Assume unchanged for submodule directory can't be undone in TGit
+ * SyncDlg: Allow to open the separate dialog boxes for fetch, pull, push, stash changes and submodule update/sync when holding the shift key when clicking on the buttons
 
 == Bug Fixes ==
  * Fixed issue #3167: Crash when aborting cherry-picks

@@ -51,5 +51,10 @@
 		<guilabel>Autoload putty key</guilabel> 
 		Autoload putty key when push or pull
 	</para>
+	<tip>
+		<para>
+			When you press the <keycap>shift</keycap>-key while selecting <guilabel>fetch</guilabel>, <guilabel>pull</guilabel>, <guilabel>fetch</guilabel>, <guilabel>stash changes</guilabel> or <guilabel>submodule update/sync</guilabel> you can open the separate dialog boxen which allows you to control more parameters for the specific operations.
+		</para>
+	</tip>
   </sect2>
 </sect1>
