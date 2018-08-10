@@ -172,7 +172,7 @@ int CGitDiff::SubmoduleDiff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* 
 
 		isWorkingCopy = true;
 
-		cmd.Format(L"git.exe diff %s -- \"%s\"",
+		cmd.Format(L"git.exe diff --submodule=short %s -- \"%s\"",
 		(LPCTSTR)rev, (LPCTSTR)pPath->GetGitPathString());
 
 		CString output, err;
@@ -187,7 +187,7 @@ int CGitDiff::SubmoduleDiff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* 
 			output.Empty();
 			err.Empty();
 			// also compare against index
-			cmd.Format(L"git.exe diff -- \"%s\"", (LPCTSTR)pPath->GetGitPathString());
+			cmd.Format(L"git.exe diff --submodule=short -- \"%s\"", (LPCTSTR)pPath->GetGitPathString());
 			if (g_Git.Run(cmd, &output, &err, CP_UTF8))
 			{
 				CMessageBox::Show(hWnd, output + L'\n' + err, L"TortoiseGit", MB_OK | MB_ICONERROR);
