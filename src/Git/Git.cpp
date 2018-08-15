@@ -3242,6 +3242,10 @@ int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, const CTGitPa
 	if (amend)
 		head = L"HEAD~1";
 
+	CString gitStatusParams;
+	if (ms_LastMsysGitVersion >= ConvertVersionToInt(2, 17, 0))
+		gitStatusParams = L" --no-ahead-behind";
+
 	for (int i = 0; i < count; ++i)
 	{
 		ATLASSERT(!filterlist || !(*filterlist)[i].GetGitPathString().IsEmpty()); // pathspec must not be empty, be compatible with Git >= 2.16.0
@@ -3251,9 +3255,9 @@ int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, const CTGitPa
 		{
 			// Prevent showing all files as modified when using cygwin's git
 			if (!filterlist)
-				cmd = L"git.exe status --";
+				cmd.Format(L"git.exe status%s --", (LPCTSTR)gitStatusParams);
 			else
-				cmd.Format(L"git.exe status -- \"%s\"", (LPCTSTR)(*filterlist)[i].GetGitPathString());
+				cmd.Format(L"git.exe status%s -- \"%s\"", (LPCTSTR)gitStatusParams, (LPCTSTR)(*filterlist)[i].GetGitPathString());
 			Run(cmd, &cmdout);
 			cmdout.clear();
 		}

@@ -27,11 +27,6 @@ struct git_transfer_progress;
 class CIgnoreFile;
 class ProjectProperties;
 
-constexpr static inline int ConvertVersionToInt(unsigned __int8 major, unsigned __int8 minor, unsigned __int8 patchlevel, unsigned __int8 build = 0)
-{
-	return (major << 24) + (minor << 16) + (patchlevel << 8) + build;
-}
-
 /**
  * \ingroup TortoiseProc
  * An utility class with static functions.
