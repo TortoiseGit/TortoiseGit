@@ -1842,7 +1842,7 @@ msgid "Author names"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 65535)
-msgid "Author:\t\t\t\tStefan Kueng"
+msgid "Author:\t\t\tStefan Kueng"
 msgstr ""
 
 #. Resource IDs: (IDS_LOG_FILTER_AUTHORS)
@@ -9182,10 +9182,6 @@ msgstr ""
 msgid "This program requires the file %Ts, which was not found on this system."
 msgstr ""
 
-#. Resource IDs: (IDS_ERR_PROPNOTONFILE)
-msgid "This property is only allowed on folders, not files."
-msgstr ""
-
 #. Resource IDs: (IDS_B_T_REMOTE_NAME_COLLIDE)
 msgid "This remote name collides with fetch refspec of other remotes\nPlease use another name"
 msgstr ""
@@ -10334,11 +10330,6 @@ msgstr ""
 
 #. Resource IDs: (IDS_STATUSCONFLICTED)
 msgid "conflicted"
-msgstr ""
-
-#. Resource IDs: (IDS_STATUSLIST_COPYFROM)
-#, c-format
-msgid "copied from\n%1!s! - revision %2!ld!"
 msgstr ""
 
 #. Resource IDs: (IDS_STATGRAPH_COMMITSBYDATEXDAY)

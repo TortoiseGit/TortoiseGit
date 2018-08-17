@@ -132,7 +132,6 @@
 #define IDS_MENUREPOBROWSE              227
 #define IDS_MENUDESCREPOBROWSE          228
 #define IDS_MENUDESCMERGEABORT          229
-#define IDS_ERR_PROPNOTONFILE           230
 #define IDS_MENUIGNOREMULTIPLE          231
 #define IDS_MENUDIFFLATER               232
 #define IDS_MENUDESCDIFFLATER           233

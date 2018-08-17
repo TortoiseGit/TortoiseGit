@@ -4025,7 +4025,6 @@ BEGIN
     IDS_STATUSLIST_COLREVISION "Revision"
     IDS_STATUSLIST_COLMODIFICATIONDATE "Modification date"
     IDS_STATUSLIST_COLFILENAME "Filename"
-    IDS_STATUSLIST_COPYFROM "copied from\n%1!s! - revision %2!ld!"
     IDS_STATUSLIST_SWITCHEDTO "switched to\n%s"
 END
 
