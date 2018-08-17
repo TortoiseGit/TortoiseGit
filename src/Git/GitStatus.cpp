@@ -22,7 +22,6 @@
 #include "../TortoiseShell/resource.h"
 #include "GitStatus.h"
 #include "UnicodeUtils.h"
-#include "Git.h"
 #include "gitindex.h"
 #include "ShellCache.h"
 #include "SysInfo.h"
