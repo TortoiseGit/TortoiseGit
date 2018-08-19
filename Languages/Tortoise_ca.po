@@ -11,7 +11,8 @@
 # Joan Monguillot <jmonguillot@gmail.com>, 2013
 # Joan Monguillot <jmonguillot@gmail.com>, 2013,2016-2018
 # el_libre como el chaval <el.libre@gmail.com>, 2011
-# Lübbe Onken <luebbe.opensource@gmail.com>, 2013
+# luebbe <luebbe.opensource@gmail.com>, 2013
+# luebbe <luebbe.opensource@gmail.com>, 2013
 # Sven Strickroth <sstrickroth@googlemail.com>, 2013,2015
 # TempEmail.net <abanibi@tempemail.net>, 2013
 msgid ""
@@ -19,8 +20,8 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2018-02-14 23:03+0000\n"
-"Last-Translator: Joan Monguillot <jmonguillot@gmail.com>\n"
+"PO-Revision-Date: 2018-08-17 14:58+0000\n"
+"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Catalan (http://www.transifex.com/lznuaa/tortoisegit/language/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -145,6 +146,21 @@ msgstr "fa %1!d! any"
 msgid "%1!d! Years ago"
 msgstr "fa %1!d! anys"
 
+#. Resource IDs: (IDS_PROC_SYNC_COMMITSAHEAD)
+#, c-format
+msgid "%1!d! commits ahead \"%2!s!\""
+msgstr "%1!d! entregues per davant de \"%2!s!\""
+
+#. Resource IDs: (IDS_STATUSLIST_FILESREVERTED)
+#, c-format
+msgid "%1!d! files reverted to %2!s!."
+msgstr "%1!d! arxius restituïts a %2!s!."
+
+#. Resource IDs: (IDS_COMMITDLG_STATISTICSFORMAT)
+#, c-format
+msgid "%1!d! files selected, %2!d! files total"
+msgstr "%1!d! fitxers seleccionats, %2!d! fitxers en total"
+
 #. Resource IDs: (IDS_REPOBROWSE_INFOMULTI)
 #, c-format
 msgid "%1!d! items selected"
@@ -155,10 +171,41 @@ msgstr "%1!d! elements seleccionats"
 msgid "%1!d! minutes ago"
 msgstr "fa %1!d! minuts"
 
+#. Resource IDs: (IDS_STATGRAPH_AUTHORSLIDER_TT)
+#, c-format
+msgid ""
+"%1!d! most active author(s) with at least %2!d! commits each (%3!d! %%)"
+msgstr "%1!d! autor(s) més actiu(s) amb almenys %2!d! pujades cadascun (%3!d! %%)"
+
+#. Resource IDs: (IDS_PROGRS_TIME)
+#, c-format
+msgid "%1!ld! minute(s) and %2!ld! second(s)"
+msgstr "%1!ld! minut(s) i %2!ld! segon(s)"
+
 #. Resource IDs: (IDS_CONFLICT_INFOTEXT)
 #, c-format
 msgid "%1!s! (%2!s!)"
 msgstr "%1!s! (%2!s!)"
+
+#. Resource IDs: (IDS_PROGRS_PATHATREV)
+#, c-format
+msgid "%1!s! - at revision: %2!d!"
+msgstr "%1!s! - a la revisió: %2!d!"
+
+#. Resource IDs: (IDS_PROGRS_FINALINFO)
+#, c-format
+msgid "%1!s! in %2!s!"
+msgstr "%1!s! a %2!s!"
+
+#. Resource IDs: (IDS_GITVER_REQUIRED)
+#, c-format
+msgid "%1!s! requires Git >= %2!s!"
+msgstr "%1!s! requereix Git >= %2!s!"
+
+#. Resource IDs: (IDS_SVN_PROGRESS_TOTALANDSPEED)
+#, c-format
+msgid "%1!s!, at %2!s!"
+msgstr "%1!s!, a %2!s!"
 
 #. Resource IDs: (IDS_REPOBROWSE_INFO)
 #, c-format
@@ -216,11 +263,6 @@ msgid ""
 "%Ts"
 msgstr "%Ts\n%Ts"
 
-#. Resource IDs: (IDS_PROC_SYNC_COMMITSAHEAD)
-#, c-format
-msgid "%d commits ahead \"%s\""
-msgstr "%d entregues per davant de \"%s\""
-
 #. Resource IDs: (IDS_FILESCHANGES)
 #, c-format
 msgid "%d files changed"
@@ -231,21 +273,6 @@ msgstr "%d arxius modificats"
 msgid "%d files removed."
 msgstr "%d arxius eliminats."
 
-#. Resource IDs: (IDS_STATUSLIST_FILESREVERTED)
-#, c-format
-msgid "%d files reverted to %s."
-msgstr "%d arxius restituïts a %s"
-
-#. Resource IDs: (IDS_COMMITDLG_STATISTICSFORMAT)
-#, c-format
-msgid "%d files selected, %d files total"
-msgstr "%d arxius seleccionats, %d arxius total"
-
-#. Resource IDs: (IDS_STATGRAPH_AUTHORSLIDER_TT)
-#, c-format
-msgid "%d most active author(s) with at least %d commits each (%d %%)"
-msgstr "els %d autor(s) més actius que tenen, com a mínim, %d entregues cadascú (%d %%)"
-
 #. Resource IDs: (IDS_ALPHABUTTONTT)
 #, c-format
 msgid ""
@@ -254,35 +281,10 @@ msgid ""
 "double click to automatically toggle alpha"
 msgstr "%i%% alfa\nclica per alternar l'alfa\nfes doble clic per canviar alfa automàticament"
 
-#. Resource IDs: (IDS_PROGRS_TIME)
-#, c-format
-msgid "%ld minute(s) and %ld second(s)"
-msgstr "%ld minut(s) i %ld segon(s)"
-
 #. Resource IDs: (IDS_DIMENSIONSANDFRAMES)
 #, c-format
 msgid "%ld of %ld"
 msgstr "%ld de %ld"
-
-#. Resource IDs: (IDS_PROGRS_PATHATREV)
-#, c-format
-msgid "%s - at revision: %d"
-msgstr "%s - revisió %d"
-
-#. Resource IDs: (IDS_PROGRS_FINALINFO)
-#, c-format
-msgid "%s in %s"
-msgstr "%s a %s"
-
-#. Resource IDs: (IDS_GITVER_REQUIRED)
-#, c-format
-msgid "%s requires Git >= %s"
-msgstr "%s requereix Git >= %s"
-
-#. Resource IDs: (IDS_SVN_PROGRESS_TOTALANDSPEED)
-#, c-format
-msgid "%s, at %s"
-msgstr "%s, a %s"
 
 #. Resource IDs: (IDS_DIFF_WCNAME)
 #, c-format
@@ -825,8 +827,8 @@ msgstr "Número de línia"
 
 #. Resource IDs: (IDS_GOTOLINE)
 #, c-format
-msgid "&Line number (%d - %d)"
-msgstr "Número de línia (%d - %d)"
+msgid "&Line number (%1!d! - %2!d!)"
+msgstr "Número de &línia (%1!d! - %2!d!)"
 
 #. Resource IDs: (ID_VIEW_LINKIMAGESTOGETHER - Menu)
 msgid "&Link image positions"
@@ -1838,8 +1840,8 @@ msgstr "S'ha produït un error desconegut mentre s'accedia a %1."
 
 #. Resource IDs: (IDS_ERR_PATCH_UNKNOWNLINETYPE)
 #, c-format
-msgid "An unknown line type was found in line %d !"
-msgstr "Un tipus de línia desconegut s´ha trobat a la línia %d !"
+msgid "An unknown line type was found in line %d!"
+msgstr "S'ha trobat un tipus de línia desconegut a la línia %d"
 
 #. Resource IDs: (IDS_ANNOTATEDTAGS)
 msgid "Annotated tags"
@@ -2009,8 +2011,8 @@ msgid "Author names"
 msgstr "Noms dels autors"
 
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 65535)
-msgid "Author:\t\t\t\tStefan Kueng"
-msgstr "Autor:\t\t\t\tStefan Kueng"
+msgid "Author:\t\t\tStefan Kueng"
+msgstr ""
 
 #. Resource IDs: (IDS_LOG_FILTER_AUTHORS)
 msgid "Authors"
@@ -2214,13 +2216,6 @@ msgstr "&Branca:"
 msgid "Branch"
 msgstr "Bifurcació"
 
-#. Resource IDs: (IDS_REBASE_FASTFORWARD_FMT)
-#, c-format
-msgid ""
-"Branch %s behind %s\n"
-"%s will fastforward to %s"
-msgstr "Branca %s està per darrera de %s\n%s sera avançada a %s"
-
 #. Resource IDs: (IDS_PROC_BRANCH_FF)
 msgid "Branch (FF)"
 msgstr "Branca (FF)"
@@ -2232,6 +2227,13 @@ msgstr "Nom de la branca"
 #. Resource IDs: (IDS_REV_COUNTER)
 msgid "Branch RevNo"
 msgstr "Branca RevNo"
+
+#. Resource IDs: (IDS_REBASE_FASTFORWARD_FMT)
+#, c-format
+msgid ""
+"Branch \"%1!s!\" behind \"%2!s!\"\n"
+"\"%3!s!\" will fastforward to \"%4!s!\""
+msgstr "La branca \"%1!s!\" està per darrera de \"%2!s!\"\n\"%3!s!\" sera avançada a \"%4!s!\""
 
 #. Resource IDs: (IDS_B_T_INVALID)
 msgid "Branch/Tag name is invalid."
@@ -2356,10 +2358,10 @@ msgstr "No es pot activar un objecte ActiveX estàtic."
 #, c-format
 msgid ""
 "Can't copy \n"
-"%s\n"
+"%1!s!\n"
 "to\n"
-"%s"
-msgstr "No es pot copiar\n%s\na\n%s"
+"%2!s!"
+msgstr "No es pot copiar \n%1!s!\na\n%2!s!"
 
 #. Resource IDs: (Dialog AFX_IDD_NEWTYPEDLG: Control id 2, Dialog
 #. AFX_IDD_PRINTDLG: Control id 2, Dialog IDD_ADD: Control id 2, Dialog
@@ -2452,10 +2454,6 @@ msgstr "No es pot mostrar l'autoria \"%s\" no està sota el control de versions 
 msgid "Cannot show diff because of inconsistent newlines in the file."
 msgstr "No es poden mostrar diferències degut a noves línies inconsistents al fitxer."
 
-#. Resource IDs: (Dialog IDD_SETTINGSLOOKANDFEEL: Control id 65535)
-msgid "Cascaded context menu"
-msgstr "Menú de contexte en cascada"
-
 #. Resource IDs: (IDS_LOG_FILTER_CASESENSITIVE)
 msgid "Case-sensitive"
 msgstr "Considera Majúsc./minúsc."
@@ -2506,13 +2504,13 @@ msgstr "Fitxers canviats"
 
 #. Resource IDs: (IDS_FILEDIFF_CHANGEDLISTINTROROOT)
 #, c-format
-msgid "Changed files between %s and %s"
-msgstr "Fitxers modificats entre %s i %s"
+msgid "Changed files between %1!s! and %2!s!"
+msgstr "Fitxers modificats entre %1!s! i %2!s!"
 
 #. Resource IDs: (IDS_FILEDIFF_CHANGEDLISTINTRO)
 #, c-format
-msgid "Changed files between %s, %s and %s, %s"
-msgstr "Fitxers modificats entre %s, %s i %s, %s"
+msgid "Changed files between %1!s!, %2!s! and %3!s!, %4!s!"
+msgstr "Fitxers modificats entre %1!s!, %2!s! i %3!s!, %4!s!"
 
 #. Resource IDs: (IDS_CHECKUPDATE_SUMMARY)
 #, c-format
@@ -2595,6 +2593,12 @@ msgstr "Marca per utilitzar un format de temps/data simplificat en els missatges
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1700)
 msgid "Check:"
 msgstr "Selecciona:"
+
+#. Resource IDs: (Dialog IDD_SETTINGSEXTMENU: Control id 65535)
+msgid ""
+"Checked items will be hidden in the context menu by default and will only be"
+" visible if the shift key is pressed while opening the context menu."
+msgstr "Els elements seleccionats quedaran amagats per defecte en el menú contextual. Només es mostraran prement la tecla Majúscula quan s'obri el menú contextual."
 
 #. Resource IDs: (IDS_PROGRS_CMD_CHECKOUT, IDS_PROGRS_TITLE_CHECKOUT)
 msgid "Checkout"
@@ -2689,19 +2693,20 @@ msgstr "Esborra"
 
 #. Resource IDs: (IDS_SETTINGS_SAVEDDATA_URLHIST_TT)
 #, c-format
-msgid "Clears %ld URLs stored for %ld working trees"
-msgstr "Neteja %ld URLs desades per %ld directoris de treball"
+msgid "Clears %1!ld! URLs stored for %2!ld! working trees"
+msgstr "Neteja %1!ld! URLs desades per %2!ld! directoris de treball"
 
 #. Resource IDs: (IDS_SETTINGS_SAVEDDATA_LOGHIST_TT)
 #, c-format
-msgid "Clears %ld log messages stored for %ld working trees"
-msgstr "Neteja %ld missatges de registre desats per %ld directoris de treball"
+msgid "Clears %1!ld! log messages stored for %2!ld! working trees"
+msgstr "Neteja %1!ld! missatges de registre desats per %2!ld! directoris de treball"
 
 #. Resource IDs: (IDS_SETTINGS_SAVEDDATA_AUTH_TT)
 #, c-format
 msgid ""
-"Clears %ld username/password pairs, %ld ssl certificates and %ld usernames"
-msgstr "Elimina %ld usuaris/contrasenyes. %ld certificats SSL i %ld usuaris"
+"Clears %1!ld! username/password pairs, %2!ld! ssl certificates and %3!ld! "
+"usernames"
+msgstr "Neteja %1!ld! parelles nom d'usuari/contrasenya, %2!ld! certificats ssl i %3!ld! noms d'usuari"
 
 #. Resource IDs: (IDS_SETTINGS_SAVEDDATA_REPOLOGHIST_TT)
 #, c-format
@@ -2845,15 +2850,15 @@ msgstr "La comanda ha fallat."
 msgid "Commit"
 msgstr "Entrega"
 
+#. Resource IDs: (IDS_REPOBROWSEASKSUBMODULEUPDATE)
+#, c-format
+msgid "Commit %1!s! not found in \"%2!s!\". Update submodule now?"
+msgstr "No s'ha trobat l'entrega %1!s! a \"%2!s!\". Actualitzar ara el sub-mòdul?"
+
 #. Resource IDs: (IDS_LOG_NOT_VISIBLE)
 #, c-format
 msgid "Commit %s is NOT visible right now."
 msgstr "L'entrega %s NO es pot veure ara mateix."
-
-#. Resource IDs: (IDS_REPOBROWSEASKSUBMODULEUPDATE)
-#, c-format
-msgid "Commit %s not found in \"%s\". Update submodule now?"
-msgstr "No s'ha trobat l'entrega %s a \"%s\". Actualitzar ara el sub-mòdul?"
 
 #. Resource IDs: (IDS_COMMIT_COMMITPUSH)
 msgid "Commit && &Push"
@@ -3173,8 +3178,8 @@ msgstr "No s'ha pogut comprovar si hi ha una versió més nova!"
 
 #. Resource IDs: (IDS_CHECKNEWER_NETERROR_FORMAT)
 #, c-format
-msgid "Could not check for a newer version! %s (Error code: 0x%08X)"
-msgstr "No s'ha pogut comprovar si hi ha una nova versió. %s (Codi d'error: 0x%08X)"
+msgid "Could not check for a newer version! %1!s! (Error code: 0x%2!08X!)"
+msgstr "No s'ha pogut comprovar si hi ha una nova versió. %1!s! (Codi d'error 0x%2!08X!)"
 
 #. Resource IDs: (IDS_ERR_COPYFILES)
 #, c-format
@@ -3259,9 +3264,9 @@ msgstr "No s'ha pogut obtenir la URL del fitxer!\n%s"
 #. Resource IDs: (IDS_ERR_MAINFRAME_FILEVERSIONNOTFOUND)
 #, c-format
 msgid ""
-"Could not retrieve revision %s of the file %s.\n"
+"Could not retrieve revision %1!s! of the file %2!s!.\n"
 "Patching is not possible!"
-msgstr "No s'ha pogut obtenir la revisió %s de l'arxiu %s.\nNo és possible aplicar el pedaç."
+msgstr "No s'ha pogut obtenir la revisió %1!s! de l'arxiu %2!s!.\nNo és possible aplicar el pedaç."
 
 #. Resource IDs: (IDS_ERR_TGITBLAME)
 msgid "Could not start TortoiseGitBlame"
@@ -3466,10 +3471,10 @@ msgstr "El HEAD actual està desvinculat, esteu treballant en (cap branca).\nVol
 #. Resource IDs: (IDS_REBASE_UPTODATE_FMT)
 #, c-format
 msgid ""
-"Current branch %s is up to date\n"
+"Current branch \"%s\" is up to date\n"
 "\n"
-"If you want to force the rebase even if the current branch is a descendant of the commit you are rebasing onto, please check below \"Force Rebase\" checkbox."
-msgstr "La branca actual %s està al dia.\n\nSi vol forçar un Rebase fins i tot si la branca és descendent de l'entrega a on voleu fer el Rebase, heu d'activar l'opció de \"Força rebase\"."
+"If you want to force a rebase even if the current branch is a descendant of the commit you are rebasing onto, please check below \"Force Rebase\" checkbox."
+msgstr "La branca actual \"%s\" està al dia.\n\nSi voleu forçar un Rebase fins i tot si la branca és descendent de l'entrega a on voleu fer el Rebase, heu d'activar l'opció de \"Força rebase\"."
 
 #. Resource IDs: (IDS_REBASE_CURRENTBRANCHUPTODATE)
 msgid ""
@@ -4085,10 +4090,6 @@ msgid ""
 "Reload the views without saving the modifications"
 msgstr "No ho desis\nRecarrega les vistes sense desar les modificacions"
 
-#. Resource IDs: (Dialog IDD_SETTINGSEXTMENU: Control id 65535)
-msgid "Don't show the selected items: (press shift key to show them)"
-msgstr "No mostrar els elements seleccionats: (prémer Maj per mostrar-los)"
-
 #. Resource IDs: (IDS_MSGBOX_DONOTSHOW)
 msgid "Don't show this message again"
 msgstr "No mostrar més aquest missatge "
@@ -4467,9 +4468,9 @@ msgstr "Hi ha un error validant el certificat del servidor per \"%s\":"
 #. Resource IDs: (IDS_REG_ERROR)
 #, c-format
 msgid ""
-"Error while reading/writing the registry key %s\n"
-"%s"
-msgstr "Error intentant llegir/escriure la clau de registre %s\n%s"
+"Error while reading/writing the registry key %1!s!\n"
+"%2!s!"
+msgstr "Error intentant llegir/escriure la clau de registre %1!s!\n%2!s!"
 
 #. Resource IDs: (IDS_PROC_EVERYTHINGUPDATED)
 msgid "Everything updated."
@@ -4561,15 +4562,15 @@ msgstr "Ha fracassat"
 msgid "Failed revert"
 msgstr "La restitució ha fallat"
 
+#. Resource IDs: (IDS_STATUSLIST_CHECKOUTFILEFAILED)
+#, c-format
+msgid "Failed to checkout file \"%1!s!\" of revision %2!s! to \"%3!s!\"."
+msgstr "No s'ha pogut extreure l'arxiu \"%1!s!\" de la revisió %2!s! a la \"%3!s!\"."
+
 #. Resource IDs: (IDS_CHECKOUTFAILED)
 #, c-format
 msgid "Failed to checkout file \"%s\""
 msgstr "Ha fracassat l'intent d'extreure l'arxiu \"%s\""
-
-#. Resource IDs: (IDS_STATUSLIST_CHECKOUTFILEFAILED)
-#, c-format
-msgid "Failed to checkout file \"%s\" of revision %s to \"%s\"."
-msgstr "Ha fracassat l'intent d'extreure l'arxiu \"%s\" de les revisions de la %s a la \"%s\"."
 
 #. Resource IDs: (AFX_IDP_FAILED_TO_CONNECT)
 msgid ""
@@ -4631,9 +4632,9 @@ msgstr "No ha pogut configurar/treure la llista de canvis '%s'"
 #. Resource IDs: (IDS_ERR_FAILEDISSUETRACKERCOM)
 #, c-format
 msgid ""
-"Failed to start the issue tracker COM provider '%s'.\n"
-"%s"
-msgstr "Error en iniciar el proveïdor COM de seguiment d'incidències '%s'.\n%s"
+"Failed to start the issue tracker COM provider '%1!s!'.\n"
+"%2!s!"
+msgstr "No s'ha pogut iniciar el proveïdor COM de seguiment d'incidències '%1!s!'.\n%2!s!"
 
 #. Resource IDs: (IDS_ERR_PAEGENTTIMEOUT)
 msgid "Failed waiting for pageant to finish loading key."
@@ -4654,8 +4655,8 @@ msgstr "&Només avançament ràpid"
 
 #. Resource IDs: (IDS_PROC_REBASE_FFTO)
 #, c-format
-msgid "Fast forward to %s"
-msgstr "Avançament ràpid a %s"
+msgid "Fast forward to \"%s\""
+msgstr "Avançament ràpid a \"%s\""
 
 #. Resource IDs: (IDS_PROC_SYNC_FETCH)
 msgid "Fetc&h"
@@ -4893,7 +4894,7 @@ msgstr "Només el primer pare"
 #. IDD_FIRSTSTARTWIZARD_START: Control id 276, Dialog
 #. IDD_FIRSTSTARTWIZARD_USER: Control id 4597)
 msgid "First Start Wizard - TortoiseGit"
-msgstr "Auxiliar del primer inici - TortoiseGit"
+msgstr "Assistent inicial - TortoiseGit"
 
 #. Resource IDs: (Dialog IDD_BISECTSTART: Control id 1617)
 msgid "First known &bad:"
@@ -4939,10 +4940,10 @@ msgstr "Per a un històric complet desmarqueu 'Atura còpia/canvi de nom '"
 #. Resource IDs: (IDS_NOTYET_SETTRACKEDBRANCH)
 #, c-format
 msgid ""
-"For the current branch \"%s\" no tracked branch is configured.\n"
-"Do you want to set the selected branch \"%s\" as tracked branch?\n"
+"For the current branch \"%1!s!\" no tracked branch is configured.\n"
+"Do you want to set the selected branch \"%2!s!\" as tracked branch?\n"
 "This will automatically select it for push and pull in the future."
-msgstr "No s'ha configurat cap branca rastrejada per a la branca actual \"%s\".\nVoleu activar la branca seleccionada \"%s\" com a branca rastrejada?\nAixò farà que d'ara endavant es seleccioni automàticament per a empènyer i estirar."
+msgstr "No s'ha configurat cap branca rastrejada per a la branca actual \"%1!s!\".\nVoleu activar la branca seleccionada \"%2!s!\" com a branca rastrejada?\nAixò farà que d'ara endavant es seleccioni automàticament per a empènyer i estirar."
 
 #. Resource IDs: (IDS_PROC_NEWBRANCHTAG_FORCE_TT)
 msgid ""
@@ -5125,6 +5126,10 @@ msgstr "General::Colors 3"
 msgid "General::Context Menu"
 msgstr "General:: Menú Contextual"
 
+#. Resource IDs: (Dialog IDD_SETTINGSEXTMENU: Control id 4573)
+msgid "General::Context Menu 2"
+msgstr "General::Menú Contextual 2"
+
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 196)
 msgid "General::Dialogs 1"
 msgstr "General::Diàlegs 1"
@@ -5136,10 +5141,6 @@ msgstr "General::Diàlegs 2"
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 4593)
 msgid "General::Dialogs 3"
 msgstr "General::Diàlegs 3"
-
-#. Resource IDs: (Dialog IDD_SETTINGSEXTMENU: Control id 4573)
-msgid "General::Set Extend Menu Item"
-msgstr "General::Menú contextual estès"
 
 #. Resource IDs: (IDS_LOG_POPUP_GETMERGELOGS)
 msgid "Get merge logs"
@@ -5415,6 +5416,10 @@ msgstr "Amaga pedaç<<"
 #. Resource IDs: (Dialog IDD_SETTINGSHOOKCONFIG: Control id 1326)
 msgid "Hide the script while running"
 msgstr "Amaga el script mentres s'està executant"
+
+#. Resource IDs: (Dialog IDD_SETTINGSEXTMENU: Control id 65535)
+msgid "Hide the selected items in the context menu:"
+msgstr "Amaga els elements seleccionats en el menú contextual:"
 
 #. Resource IDs: (IDS_HIDEUNCHANGED)
 msgid "Hide unchanged"
@@ -5924,8 +5929,8 @@ msgstr "Importa"
 
 #. Resource IDs: (IDS_PROGRS_CMD_IMPORT)
 #, c-format
-msgid "Import %s to %s%s"
-msgstr "Importa %s a %s%s"
+msgid "Import %1!s! to %2!s!%3!s!"
+msgstr "Importa %1!s! a %2!s!%3!s!"
 
 #. Resource IDs: (Dialog IDD_SVNIGNORE: Control id 329,
 #. IDS_MENUSVNIGNORE_DESC)
@@ -6835,6 +6840,13 @@ msgstr "Sense límit"
 msgid "No more revisions found."
 msgstr "No s'han trobat més revisions."
 
+#. Resource IDs: (IDS_REBASE_EQUAL_FMT)
+#, c-format
+msgid ""
+"No need to rebase\n"
+"\"%1!s!\" equals \"%2!s!\""
+msgstr "No cal fer rebase\n\"%1!s!\" equival a \"%2!s!\""
+
 #. Resource IDs: (IDS_PROC_NOPREVIOUSVERSION)
 msgid "No previous version."
 msgstr "No hi ha versió anterior."
@@ -6935,13 +6947,6 @@ msgstr "Nota: això afecta tots els clients Git, no només TortoiseGit!"
 #. Resource IDs: (IDS_NOTES)
 msgid "Notes"
 msgstr "Notes"
-
-#. Resource IDs: (IDS_REBASE_EQUAL_FMT)
-#, c-format
-msgid ""
-"Nothing need rebase\n"
-"%s equal %s"
-msgstr "Res necessita fer un Rebase\n%s és igual que %s"
 
 #. Resource IDs: (IDS_PROC_NOTHINGTOREBASE)
 msgid "Nothing to Rebase"
@@ -7126,6 +7131,10 @@ msgstr "Només arxius fusionats"
 #. ID_VIEW_ONLYCONSIDERFIRSTPARENTS - Menu)
 msgid "Only consider first parents on blame"
 msgstr "Considera només els primers pares a l'autoria"
+
+#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1808)
+msgid "Only follow first parent"
+msgstr "Segueix només el primer pare"
 
 #. Resource IDs: (IDS_TAGCOMPARE_ONLYLOCAL)
 msgid "Only local"
@@ -7820,7 +7829,7 @@ msgstr "Re&stitueix..."
 
 #. Resource IDs: (Dialog IDD_SETTINGSMAIN: Control id 1684)
 msgid "Re-run &First Start Wizard"
-msgstr "Torna a executar l'auxiliar del &primer inici"
+msgstr "Torna a executar l'assistent inicial"
 
 #. Resource IDs: (IDS_FETCH_REACHABLE)
 msgid "Reachable"
@@ -7845,8 +7854,8 @@ msgstr "Rebase..."
 
 #. Resource IDs: (IDS_PROC_REBASING_PROGRESS)
 #, c-format
-msgid "Rebasing... (%d/%d)"
-msgstr "Rebasing... (%d/%d)"
+msgid "Rebasing... (%1!d!/%2!d!)"
+msgstr "Rebasing... (%1!d!/%2!d!)"
 
 #. Resource IDs: (ID_FILE_MRU_FILE1 - Menu)
 msgid "Recent File"
@@ -8534,7 +8543,7 @@ msgid ""
 "Fixed issue #123\n"
 "Resolves issue #88.\n"
 "Closes issue #99.\n"
-msgstr ""
+msgstr "Mostreja el missatge de log per provar el bugtraq: cadenes regex.\n\nProvant esments d'incidències dins un text: Esmenta una sola incidència #55. Esmenta incidències #77, #78, i #79. Esmenta més incidències #123, #124 and #125 i més d'altres separades: Incidència #45, incidència #46 i incidència #47.\n\n\nActualitza incidència #101\nRepara incidència #202\nIncidència #123 reparada\nResol incidència #88.\nTanca incidència #99.\n"
 
 #. Resource IDs: (Dialog IDD_BUGTRAQREGEXTESTER: Control id 1612)
 msgid "Sample text:"
@@ -8705,8 +8714,8 @@ msgstr "Dades desades"
 
 #. Resource IDs: (IDS_PROC_SAVECONFIGFAILED)
 #, c-format
-msgid "Saving config failed (key: \"%s\", value: \"%s\")."
-msgstr "No s'ha pogut desar la configuració (clau: \"%s\", valor: \"%s\")."
+msgid "Saving config failed (key: \"%1!s!\", value: \"%2!s!\")."
+msgstr "No s'ha pogut desar la configuració (key: \"%1!s!\", value: \"%2!s!\")."
 
 #. Resource IDs: (IDS_PROC_FAILEDSAVINGNOTES)
 msgid "Saving notes failed."
@@ -9055,7 +9064,7 @@ msgid ""
 "Show branch revision number (git rev-list --count --first-parent) in log "
 "dialog and after a push to a remote branch; this is not guaranteed to be "
 "unique, please see help"
-msgstr ""
+msgstr "Mostra el número de revisió de la branca (git rev-list --count --first-parent) en el diàleg de log i després d'empènyer a una branca remota; no es garanteix que sigui únic, vegeu l'ajuda"
 
 #. Resource IDs: (IDS_LOG_POPUP_SHOWBRANCHES)
 msgid "Show branches this commit is on"
@@ -9238,6 +9247,10 @@ msgstr "Mostra l'estat dels subdipòsits a les carpetes pare"
 msgid "Show symbols on ref labels to substitute part of the ref names"
 msgstr "Mostra símbols a les etiquetes de refs que substitueixin part dels noms de refs"
 
+#. Resource IDs: (Dialog IDD_SETTINGSLOOKANDFEEL: Control id 65535)
+msgid "Show the selected items on the first level of the context menu:"
+msgstr "Mostra els elements seleccionats en el primer nivell del menú contextual:"
+
 #. Resource IDs: (Dialog IDD_CHANGEDFILES: Control id 1209)
 msgid "Show un&modified files"
 msgstr "Mostra arxius no modificats"
@@ -9258,9 +9271,9 @@ msgstr "Mostrant %1!d! ref(s), %2!d! ref(s) seleccionats"
 #. Resource IDs: (IDS_PROC_LOG_STATS)
 #, c-format
 msgid ""
-"Showing %ld revision(s), from revision %s to revision %s - %ld revision(s) "
-"selected, %ld file(s) selected"
-msgstr "Mostrant %ld revision(s), des de la %s fins a la %s - %ld revision(s) seleccionades, %ld arxiu(s) seleccionats"
+"Showing %1!ld! revision(s), from revision %2!s! to revision %3!s! - %4!ld! "
+"revision(s) selected, %5!ld! file(s) selected"
+msgstr "Mostrant %1!ld! revisió(ns), des de la %2!s! fins a la %3!s! - %4!ld! revisió(ns) seleccionada(es), %5!ld! arxiu(s) seleccionat(s)"
 
 #. Resource IDs: (IDS_MENUDESCREVISIONGRAPH)
 msgid "Shows a graphical representation of copies/tags/branches"
@@ -9470,13 +9483,13 @@ msgstr "S'ha tret de l'Stash satisfactòriament"
 msgid "Stash Pop"
 msgstr "Treu del Stash"
 
-#. Resource IDs: (IDS_MENUSTASHSAVE)
-msgid "Stash Save"
-msgstr "Desa al Stash"
-
 #. Resource IDs: (IDS_PROC_STASHSUCCESS)
 msgid "Stash Success"
 msgstr "Stash reeixit"
+
+#. Resource IDs: (IDS_MENUSTASHSAVE)
+msgid "Stash changes"
+msgstr "Canvis de l'Stash"
 
 #. Resource IDs: (IDS_PROC_STASHFAILED)
 msgid "Stash failed!"
@@ -9770,11 +9783,6 @@ msgstr "Informació de l'etiqueta"
 msgid "Tag/branch names"
 msgstr "Etiqueta/noms de branca"
 
-#. Resource IDs: (IDS_PROC_COPY_SUCCESS)
-#, c-format
-msgid "Tagged the working tree to %s"
-msgstr "S'ha etiquetat el directori de treball amb %s"
-
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1485)
 msgid "Tags"
 msgstr "Etiquetes"
@@ -9848,7 +9856,7 @@ msgid ""
 "When you merge changes, conflicts can arise that must be solved manually (i.e., you need to integrate your changes into a file which was also modified on another branch).\n"
 "\n"
 "See help for more information."
-msgstr ""
+msgstr "L'entrega que esteu preparant és especial. És una entrega fusionada, així doncs conté els vostres canvis i els canvis d'una branca fusionada.\n\nNo desmarqueu fitxers llevat que tingueu clar el que feu.\n\nQuan fusioneu canvis poden sorgir conflictes que s'han de resoldre manualment (p. ex. heu d'integrar els vostres canvis a un fitxer que també s'ha modificat en una altra branca).\n\nVegeu més informació a l'ajuda."
 
 #. Resource IDs: (IDS_GITCREDENTIAL_OVERWRITEHELPER)
 #, c-format
@@ -9985,18 +9993,20 @@ msgstr "El proveïdor del seguidor d'incidències no ha pogut validar la cadena 
 
 #. Resource IDs: (IDS_ERR_PATCH_NOADDFILELINE)
 #, c-format
-msgid "The line indicating the new file was expected in line %d !"
-msgstr "S'esperava una línia indicant que s'esperava un nou fitxer a la línea %d !"
+msgid "The line indicating the new file was expected in line %d!"
+msgstr "La línia que indica el nou fitxer s'esperava a la línia %d."
 
 #. Resource IDs: (IDS_GOTO_OUTOFRANGE)
 #, c-format
-msgid "The line number must be in between %d and %d"
-msgstr "El número de línia ha d'estar entre %d i %d."
+msgid "The line number must be in between %1!d! and %2!d!"
+msgstr "El número de línia ha d'estar entre %1!d! i %2!d!"
 
 #. Resource IDs: (IDS_PROC_SYNC_NOFASTFORWARD)
 #, c-format
-msgid "The local branch \"%s\" does not fast-forward to the remote branch \"%s\"."
-msgstr "La branca local \"%s\" no pot fer un avançament ràpid fins a la branca remota \"%s\"."
+msgid ""
+"The local branch \"%1!s!\" does not fast-forward to the remote branch "
+"\"%2!s!\"."
+msgstr "La branca local \"%1!s!\" no fa un avançament ràpid fins a la branca remota \"%2!s!\"."
 
 #. Resource IDs: (IDS_B_T_BOTHEMPTY)
 msgid ""
@@ -10037,11 +10047,11 @@ msgstr "El pedaç no s'aplica de manera neta a %s i no hi ha informació de la v
 #, c-format
 msgid ""
 "The patch seems outdated! The file line\n"
-"%s\n"
+"%1!s!\n"
 "and the patchline\n"
-"%s\n"
+"%2!s!\n"
 "do not match!"
-msgstr "El pedaç sembla antic. La línia de l'arxiu:\n%s\ni la línia del pedaç\n%s\nno encaixen!"
+msgstr "El pedaç sembla antic. La línia de l'arxiu\n%1!s!\ni la línia del pedaç\n%2!s!\nno són equivalents."
 
 #. Resource IDs: (IDS_WARN_NOVALIDPATH)
 msgid ""
@@ -10058,12 +10068,12 @@ msgstr "La ruta que heu introduït no sembla legal.\nPodeu fer-la servir, però 
 #, c-format
 msgid ""
 "The path\n"
-"%s\n"
+"%1!s!\n"
 "seems not to match the paths in the patchfile.\n"
 "But TortoiseGitMerge found the path\n"
-"%s\n"
+"%2!s!\n"
 "matches it better. Do you want to use the suggested path instead?"
-msgstr "La ruta\n%s\nsembla no encaixar les rutes del pedaç.\nPerò TortoiseGitMerge ha trobat la ruta\n%s\nque millor encaixa. Voleu utilitzar la ruta suggerida?"
+msgstr "El camí\n%1!s!\nsembla que no encaixa amb els camins del fitxer pedaç.\nPerò TortoiseGitMerge ha trobat el camí\n%2!s!\nque encaixa millor. Voleu utilitzar el camí suggerit?"
 
 #. Resource IDs: (IDS_PROC_CONFIRMKILLPROCESS)
 msgid ""
@@ -10256,7 +10266,7 @@ msgid ""
 "have a look into its settings dialog. The settings dialog is reachable using"
 " the start menu or the context menu of the Windows Explorer: TortoiseGit -> "
 "Settings."
-msgstr ""
+msgstr "Aquest assistent inicial us ajudarà a definir la configuració bàsica. El TortoiseGit és altament configurable, per tant recomanem que feu una ullada al diàleg de configuració. S'hi arriba utilitzant el menú d'inici del menú contextual de l'explorador de Windows: TortoiseGit -> Configuració."
 
 #. Resource IDs: (IDS_PROC_LOG_ONLYONCE)
 msgid ""
@@ -10274,7 +10284,7 @@ msgid ""
 "This preserves merge commits, however, it has known bugs as re-ordering "
 "commits is not working properly (same limitation as for vanilla git rebase),"
 " see help."
-msgstr ""
+msgstr "Això preserva les entregues fusionades, tot i que té errors coneguts com ara el funcionament incorrecte de la reordenació de les entregues (la mateixa limitació que el rebase git vanilla), vegeu l'ajuda."
 
 #. Resource IDs: (AFX_IDP_DLL_BAD_VERSION)
 #, c-format
@@ -10288,10 +10298,6 @@ msgstr "Aquest programa és enllaçat a una funció que no es troba a %Ts del fi
 msgid ""
 "This program requires the file %Ts, which was not found on this system."
 msgstr "Aquest programa requereix el fitxer %Ts, que no s'ha trobat al sistema."
-
-#. Resource IDs: (IDS_ERR_PROPNOTONFILE)
-msgid "This property is only allowed on folders, not files."
-msgstr "Aquesta propietat només s'accepta en carpetes, no en fitxers."
 
 #. Resource IDs: (IDS_B_T_REMOTE_NAME_COLLIDE)
 msgid ""
@@ -10324,7 +10330,7 @@ msgid ""
 "\n"
 "If you wish to completely clear Gravatar images,\n"
 "you may also need to clear Internet Explorer Temporary Internet Files."
-msgstr ""
+msgstr "Per tal de suprimir arxius temporals, assegureu que no s'estigui executant cap altre aplicació TortoiseGit.\n\nSi voleu suprimir del tot les imatges Gravatar,\ntambé heu de suprimir els fitxers internet temporals de l'Internet Explorer."
 
 #. Resource IDs: (Dialog IDD_FORMAT_PATCH: Control id 65535, Dialog
 #. IDD_LOGMESSAGE: Control id 1201, Dialog IDD_REVGRAPHFILTER: Control id
@@ -10489,7 +10495,7 @@ msgid ""
 " agent for caching the password (done automatically if a PuTTY key is "
 "configured for a remote). For advanced tips & tricks see our <a "
 "id=\"manual\">manual</a> and <a id=\"sshfaq\">FAQ</a>."
-msgstr ""
+msgstr "Recomanem TortoiseGitPlink com a client SSH client. Si encara no disposeu d'una parella de claus, genereu-ne una. Manteniu la clau privada en un lloc segur i disposeu la clau pública a la vostra plataforma d'allotjament. Utilitzeu l'agent d'autenticació del PuTTY per desar la contrasenya a memòria cau (això és automàtic si es configura una clau PuTTY per a remot). Vegeu el nostre <a id=\"manual\">manual</a> i <a id=\"sshfaq\">FAQ</a> per consells avançats i trucs."
 
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 357, IDS_APP_TITLE)
 msgid "TortoiseGitUDiff"
@@ -10640,6 +10646,12 @@ msgstr "No es possible escriure a %1, es de només lectura o és oberta per alg�
 #. Resource IDs: (AFX_IDS_CHECKLISTBOX_UNCHECK)
 msgid "Uncheck"
 msgstr "Desactiva"
+
+#. Resource IDs: (Dialog IDD_SETTINGSLOOKANDFEEL: Control id 65535)
+msgid ""
+"Unchecked items will appear in the TortoiseGit submenu, checked items "
+"directly in the main context menu."
+msgstr "Els elements no seleccionats es mostraran en el submenú del TortoiseGit, i els elements seleccionats es mostraran directament al menú contextual principal."
 
 #. Resource IDs: (cmdUndo_LabelTitle_RESID)
 msgid "Undo"
@@ -11199,7 +11211,7 @@ msgstr "Quan s'apliqui un pedaç, ignora els canvis en els espais en blanc, si f
 msgid ""
 "When closing a progress dialog with a running git process, ask for "
 "confirmation before killing it"
-msgstr ""
+msgstr "Quan es tanqui un diàleg de progrés amb un procés git executant-se, demaneu confirmació abans de matar-lo"
 
 #. Resource IDs: (IDS_SETTINGS_ENABLEDRAGCONTEXTMENU_TT)
 msgid ""
@@ -11230,11 +11242,11 @@ msgstr "Quan el pedaç no s'aplica fàcilment, intenta fer una fusió a 3 bandes
 msgid ""
 "When you type the URL, the remote name will be automatically filled with "
 "\"origin\" if the remote name is empty, so you do not have to."
-msgstr ""
+msgstr "Quan escriviu l'URL, el nom remot s'omplirà automàticament amb \"origen\" si el nom remot està buit, així no heu de fer-ho."
 
 #. Resource IDs: (IDS_SETTINGS_DESCRIBESTRATEGY_TT)
 msgid "Whether to reference only annotated tags, all tags or all refs"
-msgstr ""
+msgstr "Si fer referència només a etiquetes anotades, a totes les etiquetes o a tots els refs"
 
 #. Resource IDs: (IDS_NEED_TO_RESOLVE_CONFLICTS_HINT)
 msgid ""
@@ -11245,7 +11257,7 @@ msgid ""
 "If you want to abort the merge, do a hard reset on HEAD or select abort merge on the context menu.\n"
 "\n"
 "See help for more information."
-msgstr ""
+msgstr "Durant la fusió, això és integrant els canvis d'una altra branca (remota) a la branca local, s'ha produït un conflicte en almenys un fitxer. Ho haureu de resoldre manualment (cal que integreu els vostres canvis en un fitxer que també s'ha modificat en una altra branca).\n\nDesprés de resoldre tots els fitxers cal fer una entrega per tal de completar la fusió.\n\nSi voleu avortar la fusió, reinicieu sobre el HEAD o seleccioneu avorta fusió en el menú contextual.\n\nVegeu més informació a l'ajuda."
 
 #. Resource IDs: (IDS_DAEMON_SECURITY_WARN)
 msgid ""
@@ -11437,13 +11449,6 @@ msgid ""
 "The file will be added to version control when you commit."
 msgstr "Heu seleccionat un fitxer sense versionar.\nEl fitxer serà afegit al control de versions quan feu una entrega."
 
-#. Resource IDs: (IDS_SETTINGS_ICONSETCHANGED)
-#, c-format
-msgid ""
-"You've changed the icon set from \"%s\" to \"%s\".\n"
-"That change won't take effect until you restart your computer or logoff and logon again!"
-msgstr ""
-
 #. Resource IDs: (IDS_COMMITDLG_HISTORYHINT_TT)
 msgid ""
 "Your previously entered log messages have been saved.\n"
@@ -11527,32 +11532,32 @@ msgstr "Zoom per ajustar en amplada"
 #. Resource IDs: (IDS_CHERRYPICK_MERGECOMMIT)
 #, c-format
 msgid ""
-"\"%s\" - \"%s\"\n"
+"\"%1!s!\" - \"%2!s!\"\n"
 "is a merge commit.\n"
 "\n"
 "Which parent do you want to pick?"
-msgstr "\"%s\" - \"%s\"\nés una entrega fusionada.\n\nQuin pare voleu escollir?"
+msgstr "\"%1!s!\" - \"%2!s!\"\nés una entrega fusionada.\n\nQuin pare voleu escollir?"
 
 #. Resource IDs: (IDS_PROC_COPY_REPOSITORY)
 #, c-format
 msgid ""
 "\"%s\" contains a git repository. It will not work as a submodule out of the box.\n"
 "Do you want to delete the .git-entry and add all files to the top repository or keep it as a separate repository in a subdirectory?"
-msgstr ""
+msgstr "\"%s\" conté un dipòsit git. D'entrada, no funcionarà bé com a submòdul.\nVoleu suprimir el .git-entry i afegir tots els fitxers al dipòsit principal o mantenir-lo com un dipòsit separat en un subdirectori?"
 
 #. Resource IDs: (IDS_PROC_COPY_SUBMODULE)
 #, c-format
 msgid ""
 "\"%s\" contains a git submodule. It is likely that this doesn't work any more on the destination after copying.\n"
 "Do you want to delete the .git-entry and add all files to the top repository or ignore this possible issue and keep it?"
-msgstr ""
+msgstr "\"%s\" conté un submòdul git. Probablement ja no funcionarà més a la destinació després de copiar.\nVoleu suprimir el .git-entry i afegir tots els fitxers al dipòsit principal o ignorar aquesta possible incidència i mantenir-lo?"
 
 #. Resource IDs: (IDS_GITEXEERROR_NOMESSAGE)
 #, c-format
 msgid ""
 "\"%s\" exited with an error, however, without generating any output such as "
 "an error message."
-msgstr ""
+msgstr "\"%s\" ha finalitzat amb error, però sense generar cap sortida com ara un missatge d'error."
 
 #. Resource IDs: (IDS_PROC_REFINVALID)
 #, c-format
@@ -11657,13 +11662,6 @@ msgstr "Entregues"
 msgid "conflicted"
 msgstr "en conflicte"
 
-#. Resource IDs: (IDS_STATUSLIST_COPYFROM)
-#, c-format
-msgid ""
-"copied from\n"
-"%s - revision %ld"
-msgstr "copiat desde\n%s - revisió %ld"
-
 #. Resource IDs: (IDS_STATGRAPH_COMMITSBYDATEXDAY)
 msgid "day"
 msgstr "dia"
@@ -11674,20 +11672,11 @@ msgstr "suprimit"
 
 #. Resource IDs: (IDS_PIPETITLE)
 msgid "diff from pipe"
-msgstr ""
+msgstr "diferències del canal"
 
 #. Resource IDs: (Dialog IDD_SENDMAIL: Control id 1580)
 msgid "eMail settings"
 msgstr "Configuració de correu electrònic"
-
-#. Resource IDs: (IDS_PROC_EXPORT_4)
-#, c-format
-msgid ""
-"exported\n"
-"%s\n"
-"to\n"
-"%s"
-msgstr "exportat\n%s\na\n%s"
 
 #. Resource IDs: (IDS_STATUSEXTERNAL)
 msgid "external"
@@ -11875,7 +11864,7 @@ msgid ""
 "previous rebase directory rebase-apply still exists but mbox given.\n"
 "\n"
 "Do you want to"
-msgstr ""
+msgstr "encara existeix el directori previ de rebase rebase-apply però s'ha donat mbox.\n\nVoleu"
 
 #. Resource IDs: (AFX_IDS_PRINTDEFAULTEXT)
 msgid "prn"

@@ -34,11 +34,13 @@
 # Linus Fredrich Levisse <linukcs@live.fr>, 2011
 # lkppo, 2012
 # Lübbe Onken <l.onken@rac.de>, 2011
-# Lübbe Onken <luebbe.opensource@gmail.com>, 2011
+# luebbe <luebbe.opensource@gmail.com>, 2011
+# luebbe <luebbe.opensource@gmail.com>, 2011
 # Lucas Mascaro <mascaro.lucas@yahoo.fr>, 2015
+# luebbe <luebbe.opensource@gmail.com>, 2011
 # Mathieu Lavigne <bludwarf@gmail.com>, 2017-2018
 # Mickael Patron <mickael_patron@hotmail.com>, 2012
-# bauland <nicolas.bauland@laposte.net>, 2014-2016
+# bauland <nicolas.bauland@laposte.net>, 2014-2016,2018
 # peter griffin <softy@yopmail.com>, 2013
 # Philippe <kissifrot@gmail.com>, 2012
 # Philippe PERIN, 2016
@@ -59,8 +61,8 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2018-02-07 20:07+0000\n"
-"Last-Translator: Stéphane Aulery <saulery@legtux.org>\n"
+"PO-Revision-Date: 2018-08-17 14:58+0000\n"
+"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: French (http://www.transifex.com/lznuaa/tortoisegit/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -185,6 +187,21 @@ msgstr "%1!d! année"
 msgid "%1!d! Years ago"
 msgstr "%1!d! années"
 
+#. Resource IDs: (IDS_PROC_SYNC_COMMITSAHEAD)
+#, c-format
+msgid "%1!d! commits ahead \"%2!s!\""
+msgstr "%1!d! livraisons en attente \"%2!s!\""
+
+#. Resource IDs: (IDS_STATUSLIST_FILESREVERTED)
+#, c-format
+msgid "%1!d! files reverted to %2!s!."
+msgstr "%1!d! fichiers restaurés dans %2!s!."
+
+#. Resource IDs: (IDS_COMMITDLG_STATISTICSFORMAT)
+#, c-format
+msgid "%1!d! files selected, %2!d! files total"
+msgstr "%1!d! fichiers sélectionnés, %2!d! fichiers au total"
+
 #. Resource IDs: (IDS_REPOBROWSE_INFOMULTI)
 #, c-format
 msgid "%1!d! items selected"
@@ -195,10 +212,41 @@ msgstr "%1!d! objets sélectionnés"
 msgid "%1!d! minutes ago"
 msgstr "%1!d! minutes"
 
+#. Resource IDs: (IDS_STATGRAPH_AUTHORSLIDER_TT)
+#, c-format
+msgid ""
+"%1!d! most active author(s) with at least %2!d! commits each (%3!d! %%)"
+msgstr "Les %1!d! auteurs les plus actifs avec au moins %2!d! livraisons chacun (%3!d! %%)"
+
+#. Resource IDs: (IDS_PROGRS_TIME)
+#, c-format
+msgid "%1!ld! minute(s) and %2!ld! second(s)"
+msgstr "%1!ld! minute(s) et %2!ld! seconde(s)"
+
 #. Resource IDs: (IDS_CONFLICT_INFOTEXT)
 #, c-format
 msgid "%1!s! (%2!s!)"
 msgstr "%1!s! (%2!s!)"
+
+#. Resource IDs: (IDS_PROGRS_PATHATREV)
+#, c-format
+msgid "%1!s! - at revision: %2!d!"
+msgstr "%1!s! - à la révision: %2!d!"
+
+#. Resource IDs: (IDS_PROGRS_FINALINFO)
+#, c-format
+msgid "%1!s! in %2!s!"
+msgstr "%1!s! dans %2!s!"
+
+#. Resource IDs: (IDS_GITVER_REQUIRED)
+#, c-format
+msgid "%1!s! requires Git >= %2!s!"
+msgstr "%1!s! nécessite Git >= %2!s!"
+
+#. Resource IDs: (IDS_SVN_PROGRESS_TOTALANDSPEED)
+#, c-format
+msgid "%1!s!, at %2!s!"
+msgstr "%1!s!, à %2!s!"
 
 #. Resource IDs: (IDS_REPOBROWSE_INFO)
 #, c-format
@@ -256,11 +304,6 @@ msgid ""
 "%Ts"
 msgstr "%Ts\n%Ts"
 
-#. Resource IDs: (IDS_PROC_SYNC_COMMITSAHEAD)
-#, c-format
-msgid "%d commits ahead \"%s\""
-msgstr "%d livraisons en attente \"%s\""
-
 #. Resource IDs: (IDS_FILESCHANGES)
 #, c-format
 msgid "%d files changed"
@@ -271,21 +314,6 @@ msgstr "%d files modifiés"
 msgid "%d files removed."
 msgstr "%d fichiers supprimés."
 
-#. Resource IDs: (IDS_STATUSLIST_FILESREVERTED)
-#, c-format
-msgid "%d files reverted to %s."
-msgstr "%d fichiers restaurés dans %s."
-
-#. Resource IDs: (IDS_COMMITDLG_STATISTICSFORMAT)
-#, c-format
-msgid "%d files selected, %d files total"
-msgstr "%d fichiers sélectionnés, %d fichiers au total"
-
-#. Resource IDs: (IDS_STATGRAPH_AUTHORSLIDER_TT)
-#, c-format
-msgid "%d most active author(s) with at least %d commits each (%d %%)"
-msgstr "Les %d auteurs les plus actifs avec au moins %d livraisons chacun (%d %%)"
-
 #. Resource IDs: (IDS_ALPHABUTTONTT)
 #, c-format
 msgid ""
@@ -294,35 +322,10 @@ msgid ""
 "double click to automatically toggle alpha"
 msgstr "transparence %i%%\ncliquez pour activer / désactiver la transparence\ndouble-cliquez pour activer / désactiver automatiquement la transparence"
 
-#. Resource IDs: (IDS_PROGRS_TIME)
-#, c-format
-msgid "%ld minute(s) and %ld second(s)"
-msgstr "%ld minute(s) et %ld seconde(s)"
-
 #. Resource IDs: (IDS_DIMENSIONSANDFRAMES)
 #, c-format
 msgid "%ld of %ld"
 msgstr "%ld de %ld"
-
-#. Resource IDs: (IDS_PROGRS_PATHATREV)
-#, c-format
-msgid "%s - at revision: %d"
-msgstr "%s - à la révision : %d"
-
-#. Resource IDs: (IDS_PROGRS_FINALINFO)
-#, c-format
-msgid "%s in %s"
-msgstr "%s en %s"
-
-#. Resource IDs: (IDS_GITVER_REQUIRED)
-#, c-format
-msgid "%s requires Git >= %s"
-msgstr "%s nécessite Git >= %s"
-
-#. Resource IDs: (IDS_SVN_PROGRESS_TOTALANDSPEED)
-#, c-format
-msgid "%s, at %s"
-msgstr "%s, à %s"
 
 #. Resource IDs: (IDS_DIFF_WCNAME)
 #, c-format
@@ -865,8 +868,8 @@ msgstr "Numéro de &ligne"
 
 #. Resource IDs: (IDS_GOTOLINE)
 #, c-format
-msgid "&Line number (%d - %d)"
-msgstr "Numéro de &ligne (%d - %d)"
+msgid "&Line number (%1!d! - %2!d!)"
+msgstr "Numéro de la &Ligne (%1!d! - %2!d!)"
 
 #. Resource IDs: (ID_VIEW_LINKIMAGESTOGETHER - Menu)
 msgid "&Link image positions"
@@ -1878,8 +1881,8 @@ msgstr "Une erreur inconnue est survenue lors de l'accès à %1."
 
 #. Resource IDs: (IDS_ERR_PATCH_UNKNOWNLINETYPE)
 #, c-format
-msgid "An unknown line type was found in line %d !"
-msgstr "Un type de ligne inconnu a été trouvé à la ligne %d !"
+msgid "An unknown line type was found in line %d!"
+msgstr "Un type inconnu de ligne a été trouvé à la ligne %d!"
 
 #. Resource IDs: (IDS_ANNOTATEDTAGS)
 msgid "Annotated tags"
@@ -2049,8 +2052,8 @@ msgid "Author names"
 msgstr "Noms de l'auteur"
 
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 65535)
-msgid "Author:\t\t\t\tStefan Kueng"
-msgstr "Auteur:\t\t\t\tStefan Kueng"
+msgid "Author:\t\t\tStefan Kueng"
+msgstr ""
 
 #. Resource IDs: (IDS_LOG_FILTER_AUTHORS)
 msgid "Authors"
@@ -2254,13 +2257,6 @@ msgstr "Branc&he:"
 msgid "Branch"
 msgstr "Branche"
 
-#. Resource IDs: (IDS_REBASE_FASTFORWARD_FMT)
-#, c-format
-msgid ""
-"Branch %s behind %s\n"
-"%s will fastforward to %s"
-msgstr "Branche %s en retard sur %s\n%s sera transférée rapidement vers %s"
-
 #. Resource IDs: (IDS_PROC_BRANCH_FF)
 msgid "Branch (FF)"
 msgstr "Branche (FF)"
@@ -2272,6 +2268,13 @@ msgstr "Nom de la branche"
 #. Resource IDs: (IDS_REV_COUNTER)
 msgid "Branch RevNo"
 msgstr "Révision de Branche numéro"
+
+#. Resource IDs: (IDS_REBASE_FASTFORWARD_FMT)
+#, c-format
+msgid ""
+"Branch \"%1!s!\" behind \"%2!s!\"\n"
+"\"%3!s!\" will fastforward to \"%4!s!\""
+msgstr "Branche \"%1!s!\" en retard sur \"%2!s!\"\n\"%3!s!\" sera transférée rapidement vers \"%4!s!\""
 
 #. Resource IDs: (IDS_B_T_INVALID)
 msgid "Branch/Tag name is invalid."
@@ -2396,10 +2399,10 @@ msgstr "Ne peut pas activer un objet ActiveX statique."
 #, c-format
 msgid ""
 "Can't copy \n"
-"%s\n"
+"%1!s!\n"
 "to\n"
-"%s"
-msgstr "Impossible de Copier \n%s\nvers\n%s"
+"%2!s!"
+msgstr "Impossible de copier \n%1!s!\nvers\n%2!s!"
 
 #. Resource IDs: (Dialog AFX_IDD_NEWTYPEDLG: Control id 2, Dialog
 #. AFX_IDD_PRINTDLG: Control id 2, Dialog IDD_ADD: Control id 2, Dialog
@@ -2492,10 +2495,6 @@ msgstr "Impossible d'afficher l'annotation. \"%s\" n'est pas versionné par git.
 msgid "Cannot show diff because of inconsistent newlines in the file."
 msgstr "Il n'est pas possible de monter la diff en raison de retours à la ligne incompatibles dans ce fichier"
 
-#. Resource IDs: (Dialog IDD_SETTINGSLOOKANDFEEL: Control id 65535)
-msgid "Cascaded context menu"
-msgstr "Menu contextuel en cascade"
-
 #. Resource IDs: (IDS_LOG_FILTER_CASESENSITIVE)
 msgid "Case-sensitive"
 msgstr "Sensible à la casse"
@@ -2546,13 +2545,13 @@ msgstr "Fichiers modifiés"
 
 #. Resource IDs: (IDS_FILEDIFF_CHANGEDLISTINTROROOT)
 #, c-format
-msgid "Changed files between %s and %s"
-msgstr "Fichiers modifiées entre %s et %s"
+msgid "Changed files between %1!s! and %2!s!"
+msgstr "Fichiers modifiés entre %1!s! et %2!s!"
 
 #. Resource IDs: (IDS_FILEDIFF_CHANGEDLISTINTRO)
 #, c-format
-msgid "Changed files between %s, %s and %s, %s"
-msgstr "Fichiers modifiés entre %s, %s et %s, %s"
+msgid "Changed files between %1!s!, %2!s! and %3!s!, %4!s!"
+msgstr "Fichiers modifiés entre %1!s!, %2!s! et %3!s!, %4!s!"
 
 #. Resource IDs: (IDS_CHECKUPDATE_SUMMARY)
 #, c-format
@@ -2635,6 +2634,12 @@ msgstr "Sélectionnez pour utiliser un format de date et heure moins détaillé 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1700)
 msgid "Check:"
 msgstr "Vérifier : "
+
+#. Resource IDs: (Dialog IDD_SETTINGSEXTMENU: Control id 65535)
+msgid ""
+"Checked items will be hidden in the context menu by default and will only be"
+" visible if the shift key is pressed while opening the context menu."
+msgstr "Les éléments vérifiés seront cachés par défaut dans le menu contextuel et seront uniquement visibles si la touche majuscule est appuyée lors de l'ouverture du menu contextuel."
 
 #. Resource IDs: (IDS_PROGRS_CMD_CHECKOUT, IDS_PROGRS_TITLE_CHECKOUT)
 msgid "Checkout"
@@ -2729,19 +2734,20 @@ msgstr "Nettoyer"
 
 #. Resource IDs: (IDS_SETTINGS_SAVEDDATA_URLHIST_TT)
 #, c-format
-msgid "Clears %ld URLs stored for %ld working trees"
-msgstr "Efface %ld URL stockées pour %ld arborescences de travail"
+msgid "Clears %1!ld! URLs stored for %2!ld! working trees"
+msgstr "Efface %1!ld! URLs stockées pour %2!ld! arborescences de travail"
 
 #. Resource IDs: (IDS_SETTINGS_SAVEDDATA_LOGHIST_TT)
 #, c-format
-msgid "Clears %ld log messages stored for %ld working trees"
-msgstr "Efface %ld commentaires stockés pour %ld arborescences de travail"
+msgid "Clears %1!ld! log messages stored for %2!ld! working trees"
+msgstr "Efface %1!ld! messages d'historiques stockés pour %2!ld! arborescences de travail"
 
 #. Resource IDs: (IDS_SETTINGS_SAVEDDATA_AUTH_TT)
 #, c-format
 msgid ""
-"Clears %ld username/password pairs, %ld ssl certificates and %ld usernames"
-msgstr "Efface %ld paires nom d'utilisateur/mot de passe, %ld certificats SSL et %ld noms d'utilisateur"
+"Clears %1!ld! username/password pairs, %2!ld! ssl certificates and %3!ld! "
+"usernames"
+msgstr "Efface %1!ld! paires d'utilisateur/mot de passe, %2!ld! certificats SSL et %3!ld! noms d'utilisateurs."
 
 #. Resource IDs: (IDS_SETTINGS_SAVEDDATA_REPOLOGHIST_TT)
 #, c-format
@@ -2885,15 +2891,15 @@ msgstr "Échec de la commande."
 msgid "Commit"
 msgstr "Livrer"
 
+#. Resource IDs: (IDS_REPOBROWSEASKSUBMODULEUPDATE)
+#, c-format
+msgid "Commit %1!s! not found in \"%2!s!\". Update submodule now?"
+msgstr ""
+
 #. Resource IDs: (IDS_LOG_NOT_VISIBLE)
 #, c-format
 msgid "Commit %s is NOT visible right now."
 msgstr "La livraison %s N'EST PAS encore visible."
-
-#. Resource IDs: (IDS_REPOBROWSEASKSUBMODULEUPDATE)
-#, c-format
-msgid "Commit %s not found in \"%s\". Update submodule now?"
-msgstr "Livraison %s non trouvée dans \"%s\". Mettre à jour le sous-module maintenant?"
 
 #. Resource IDs: (IDS_COMMIT_COMMITPUSH)
 msgid "Commit && &Push"
@@ -3213,8 +3219,8 @@ msgstr "Ne peut pas vérifier la disponibilité d'une nouvelle version!"
 
 #. Resource IDs: (IDS_CHECKNEWER_NETERROR_FORMAT)
 #, c-format
-msgid "Could not check for a newer version! %s (Error code: 0x%08X)"
-msgstr "Ne peut pas vérifier la disponibilité d'une nouvelle version! %s (Code d'erreur: 0x%08X)"
+msgid "Could not check for a newer version! %1!s! (Error code: 0x%2!08X!)"
+msgstr ""
 
 #. Resource IDs: (IDS_ERR_COPYFILES)
 #, c-format
@@ -3299,9 +3305,9 @@ msgstr "Ne peut pas obtenir l'URL du fichier!\n%s"
 #. Resource IDs: (IDS_ERR_MAINFRAME_FILEVERSIONNOTFOUND)
 #, c-format
 msgid ""
-"Could not retrieve revision %s of the file %s.\n"
+"Could not retrieve revision %1!s! of the file %2!s!.\n"
 "Patching is not possible!"
-msgstr "Ne peut pas récupérer la révision %s du fichier %s.\nL'application du patch n'est pas possible!"
+msgstr ""
 
 #. Resource IDs: (IDS_ERR_TGITBLAME)
 msgid "Could not start TortoiseGitBlame"
@@ -3506,10 +3512,10 @@ msgstr "HEAD actuelle détachée, vous travaillez sur (aucune branche).\nVoulez-
 #. Resource IDs: (IDS_REBASE_UPTODATE_FMT)
 #, c-format
 msgid ""
-"Current branch %s is up to date\n"
+"Current branch \"%s\" is up to date\n"
 "\n"
-"If you want to force the rebase even if the current branch is a descendant of the commit you are rebasing onto, please check below \"Force Rebase\" checkbox."
-msgstr "La branche courante %s est à jour\n\nSi vous voulez forcer le rebase, même si la branche courante est un descendant de la livraison sur laquelle vous rebasez, veuillez cocher la case \"Forcer Rebase\" ci-dessous."
+"If you want to force a rebase even if the current branch is a descendant of the commit you are rebasing onto, please check below \"Force Rebase\" checkbox."
+msgstr ""
 
 #. Resource IDs: (IDS_REBASE_CURRENTBRANCHUPTODATE)
 msgid ""
@@ -4125,10 +4131,6 @@ msgid ""
 "Reload the views without saving the modifications"
 msgstr "Ne pas sauver\nRecharger les vues sans sauver les modifications"
 
-#. Resource IDs: (Dialog IDD_SETTINGSEXTMENU: Control id 65535)
-msgid "Don't show the selected items: (press shift key to show them)"
-msgstr "Ne pas afficher les éléments sélectionnés: (appuyez sur la touche shift pour les afficher)"
-
 #. Resource IDs: (IDS_MSGBOX_DONOTSHOW)
 msgid "Don't show this message again"
 msgstr "Ne plus afficher ce message"
@@ -4507,9 +4509,9 @@ msgstr "Erreur de validation du certificat de serveur pour \"%s\" :"
 #. Resource IDs: (IDS_REG_ERROR)
 #, c-format
 msgid ""
-"Error while reading/writing the registry key %s\n"
-"%s"
-msgstr "Erreur lors de la lecture/écriture de la clé de registre %s\n%s"
+"Error while reading/writing the registry key %1!s!\n"
+"%2!s!"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_EVERYTHINGUPDATED)
 msgid "Everything updated."
@@ -4601,15 +4603,15 @@ msgstr "Échoué"
 msgid "Failed revert"
 msgstr "Échec pour retourner à l'ancienne version"
 
+#. Resource IDs: (IDS_STATUSLIST_CHECKOUTFILEFAILED)
+#, c-format
+msgid "Failed to checkout file \"%1!s!\" of revision %2!s! to \"%3!s!\"."
+msgstr ""
+
 #. Resource IDs: (IDS_CHECKOUTFAILED)
 #, c-format
 msgid "Failed to checkout file \"%s\""
 msgstr "Echec de l'extraction du fichier \"%s\""
-
-#. Resource IDs: (IDS_STATUSLIST_CHECKOUTFILEFAILED)
-#, c-format
-msgid "Failed to checkout file \"%s\" of revision %s to \"%s\"."
-msgstr "Echec de l'extraction du fichier \"%s\" de la révision %s vers \"%s\"."
 
 #. Resource IDs: (AFX_IDP_FAILED_TO_CONNECT)
 msgid ""
@@ -4671,9 +4673,9 @@ msgstr "Échec de la définition / suppression de la liste de modifications '%s'
 #. Resource IDs: (IDS_ERR_FAILEDISSUETRACKERCOM)
 #, c-format
 msgid ""
-"Failed to start the issue tracker COM provider '%s'.\n"
-"%s"
-msgstr "Échec au démarrage du fournisseur COM du système de suivi des problèmes '%s'.\n%s"
+"Failed to start the issue tracker COM provider '%1!s!'.\n"
+"%2!s!"
+msgstr ""
 
 #. Resource IDs: (IDS_ERR_PAEGENTTIMEOUT)
 msgid "Failed waiting for pageant to finish loading key."
@@ -4694,8 +4696,8 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROC_REBASE_FFTO)
 #, c-format
-msgid "Fast forward to %s"
-msgstr "Transfert rapide vers %s"
+msgid "Fast forward to \"%s\""
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_FETCH)
 msgid "Fetc&h"
@@ -4941,7 +4943,7 @@ msgstr "Dernière &mauvaise version connue :"
 
 #. Resource IDs: (ID_VIEW_ZOOMALL - Menu)
 msgid "Fit graph"
-msgstr ""
+msgstr "Adapter le graphique"
 
 #. Resource IDs: (ID_VIEW_ZOOMHEIGHT - Menu)
 msgid "Fit height"
@@ -4979,10 +4981,10 @@ msgstr "Pour l'historique complet, désélectionnez 'Arrêt à la copie/renommag
 #. Resource IDs: (IDS_NOTYET_SETTRACKEDBRANCH)
 #, c-format
 msgid ""
-"For the current branch \"%s\" no tracked branch is configured.\n"
-"Do you want to set the selected branch \"%s\" as tracked branch?\n"
+"For the current branch \"%1!s!\" no tracked branch is configured.\n"
+"Do you want to set the selected branch \"%2!s!\" as tracked branch?\n"
 "This will automatically select it for push and pull in the future."
-msgstr "Pour la branche courante \"%s\" , aucune branche surveillée n'est configurée. Voulez-vous désigner la branche \"%s\" comme une branche surveillée?\nCela va la sélectionner automatiquement pour les futurs poussées et tirages."
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_NEWBRANCHTAG_FORCE_TT)
 msgid ""
@@ -5165,6 +5167,10 @@ msgstr "Général::Couleurs 3"
 msgid "General::Context Menu"
 msgstr "Général::Menu Contextuel"
 
+#. Resource IDs: (Dialog IDD_SETTINGSEXTMENU: Control id 4573)
+msgid "General::Context Menu 2"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 196)
 msgid "General::Dialogs 1"
 msgstr "Général::Boîtes de dialogue 1"
@@ -5176,10 +5182,6 @@ msgstr "Général::Boîtes de dialogue 2"
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 4593)
 msgid "General::Dialogs 3"
 msgstr "Général::Boîtes de dialogue 3"
-
-#. Resource IDs: (Dialog IDD_SETTINGSEXTMENU: Control id 4573)
-msgid "General::Set Extend Menu Item"
-msgstr "Général::Sélectionner un élément de menu contextuel étendu"
 
 #. Resource IDs: (IDS_LOG_POPUP_GETMERGELOGS)
 msgid "Get merge logs"
@@ -5455,6 +5457,10 @@ msgstr "Cacher le patch<<"
 #. Resource IDs: (Dialog IDD_SETTINGSHOOKCONFIG: Control id 1326)
 msgid "Hide the script while running"
 msgstr "Masquer le script pendant l'exécution"
+
+#. Resource IDs: (Dialog IDD_SETTINGSEXTMENU: Control id 65535)
+msgid "Hide the selected items in the context menu:"
+msgstr ""
 
 #. Resource IDs: (IDS_HIDEUNCHANGED)
 msgid "Hide unchanged"
@@ -5964,8 +5970,8 @@ msgstr "Importer"
 
 #. Resource IDs: (IDS_PROGRS_CMD_IMPORT)
 #, c-format
-msgid "Import %s to %s%s"
-msgstr "Importe %s vers %s%s"
+msgid "Import %1!s! to %2!s!%3!s!"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_SVNIGNORE: Control id 329,
 #. IDS_MENUSVNIGNORE_DESC)
@@ -6371,7 +6377,7 @@ msgstr "Barre localisateur"
 
 #. Resource IDs: (cmdViewLocatorBar_LabelTitle_RESID)
 msgid "Locator bar"
-msgstr ""
+msgstr "Barre de localisation"
 
 #. Resource IDs: (Dialog IDD_SETTINGSTBLAME: Control id 65535, IDS_LOG)
 msgid "Log"
@@ -6875,6 +6881,13 @@ msgstr "Pas de restriction"
 msgid "No more revisions found."
 msgstr "Aucune révision trouvée"
 
+#. Resource IDs: (IDS_REBASE_EQUAL_FMT)
+#, c-format
+msgid ""
+"No need to rebase\n"
+"\"%1!s!\" equals \"%2!s!\""
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_NOPREVIOUSVERSION)
 msgid "No previous version."
 msgstr "Pas de révision précédente."
@@ -6975,13 +6988,6 @@ msgstr "Note : cela affecte tous les clients Tortoise, pas seulement TortoiseGit
 #. Resource IDs: (IDS_NOTES)
 msgid "Notes"
 msgstr "Remarques"
-
-#. Resource IDs: (IDS_REBASE_EQUAL_FMT)
-#, c-format
-msgid ""
-"Nothing need rebase\n"
-"%s equal %s"
-msgstr "Pas besoin de rebase\n%s identique à %s"
 
 #. Resource IDs: (IDS_PROC_NOTHINGTOREBASE)
 msgid "Nothing to Rebase"
@@ -7166,6 +7172,10 @@ msgstr "Fichiers fusionnés seulement"
 #. ID_VIEW_ONLYCONSIDERFIRSTPARENTS - Menu)
 msgid "Only consider first parents on blame"
 msgstr "Tenir compte uniquement des premiers parents pour le blame"
+
+#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1808)
+msgid "Only follow first parent"
+msgstr ""
 
 #. Resource IDs: (IDS_TAGCOMPARE_ONLYLOCAL)
 msgid "Only local"
@@ -7885,8 +7895,8 @@ msgstr "Rebase..."
 
 #. Resource IDs: (IDS_PROC_REBASING_PROGRESS)
 #, c-format
-msgid "Rebasing... (%d/%d)"
-msgstr "Rebase en cours... (%d/%d)"
+msgid "Rebasing... (%1!d!/%2!d!)"
+msgstr ""
 
 #. Resource IDs: (ID_FILE_MRU_FILE1 - Menu)
 msgid "Recent File"
@@ -8745,8 +8755,8 @@ msgstr "Données sauvegardées"
 
 #. Resource IDs: (IDS_PROC_SAVECONFIGFAILED)
 #, c-format
-msgid "Saving config failed (key: \"%s\", value: \"%s\")."
-msgstr "l'enregistrement de la configuration a échoué (clef : \"%s\", valeur : \"%s\")."
+msgid "Saving config failed (key: \"%1!s!\", value: \"%2!s!\")."
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_FAILEDSAVINGNOTES)
 msgid "Saving notes failed."
@@ -9067,7 +9077,7 @@ msgstr "Afficher la différence en ligne\nDifférence en ligne"
 
 #. Resource IDs: (ID_VIEW_SHOWOVERVIEW - Menu)
 msgid "Show Ove&rview"
-msgstr ""
+msgstr "Afficher la &vue générale"
 
 #. Resource IDs: (ID_VIEW_WHITESPACES - Menu,
 #. cmdShowWhitespaces_LabelTitle_RESID)
@@ -9278,6 +9288,10 @@ msgstr "Montrer le statuts des sous répertoire dans les dossiers parents"
 msgid "Show symbols on ref labels to substitute part of the ref names"
 msgstr "Afficher les symboles sur les étiquettes des ref afin de remplacer une partie des noms de référence"
 
+#. Resource IDs: (Dialog IDD_SETTINGSLOOKANDFEEL: Control id 65535)
+msgid "Show the selected items on the first level of the context menu:"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_CHANGEDFILES: Control id 1209)
 msgid "Show un&modified files"
 msgstr "Voir les fichiers non &modifiés"
@@ -9298,9 +9312,9 @@ msgstr "Affichage de %1!d! ref(s), %2!d! ref(s) sélectionnées"
 #. Resource IDs: (IDS_PROC_LOG_STATS)
 #, c-format
 msgid ""
-"Showing %ld revision(s), from revision %s to revision %s - %ld revision(s) "
-"selected, %ld file(s) selected"
-msgstr "Affichage de %ld révision(s), de la révision %s à la révision %s - %ld révision(s) sélectionnées, %ld fichier(s) sélectionnés"
+"Showing %1!ld! revision(s), from revision %2!s! to revision %3!s! - %4!ld! "
+"revision(s) selected, %5!ld! file(s) selected"
+msgstr ""
 
 #. Resource IDs: (IDS_MENUDESCREVISIONGRAPH)
 msgid "Shows a graphical representation of copies/tags/branches"
@@ -9510,13 +9524,13 @@ msgstr "Sortie de remise réussie"
 msgid "Stash Pop"
 msgstr "Sortir de la remise"
 
-#. Resource IDs: (IDS_MENUSTASHSAVE)
-msgid "Stash Save"
-msgstr "Remiser"
-
 #. Resource IDs: (IDS_PROC_STASHSUCCESS)
 msgid "Stash Success"
 msgstr "Remisage réussi"
+
+#. Resource IDs: (IDS_MENUSTASHSAVE)
+msgid "Stash changes"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_STASHFAILED)
 msgid "Stash failed!"
@@ -9810,11 +9824,6 @@ msgstr "Information sur l'étiquette"
 msgid "Tag/branch names"
 msgstr "Noms de tag / branche"
 
-#. Resource IDs: (IDS_PROC_COPY_SUCCESS)
-#, c-format
-msgid "Tagged the working tree to %s"
-msgstr "Étiquettage de l'arborescence de travail sous %s"
-
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1485)
 msgid "Tags"
 msgstr "É&tiquettes"
@@ -10025,18 +10034,20 @@ msgstr "Le fournisseur du système de suivi des problèmes n'a pas été capable
 
 #. Resource IDs: (IDS_ERR_PATCH_NOADDFILELINE)
 #, c-format
-msgid "The line indicating the new file was expected in line %d !"
-msgstr "La ligne indiquant le nouveau fichier était attendu à la ligne %d !"
+msgid "The line indicating the new file was expected in line %d!"
+msgstr ""
 
 #. Resource IDs: (IDS_GOTO_OUTOFRANGE)
 #, c-format
-msgid "The line number must be in between %d and %d"
-msgstr "Le numéro de ligne doit être entre %d et %d"
+msgid "The line number must be in between %1!d! and %2!d!"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_NOFASTFORWARD)
 #, c-format
-msgid "The local branch \"%s\" does not fast-forward to the remote branch \"%s\"."
-msgstr "La branche locale \"%s\" ne correspond pas à une mise à jour de la branche distante \"%s\"."
+msgid ""
+"The local branch \"%1!s!\" does not fast-forward to the remote branch "
+"\"%2!s!\"."
+msgstr ""
 
 #. Resource IDs: (IDS_B_T_BOTHEMPTY)
 msgid ""
@@ -10077,11 +10088,11 @@ msgstr "Le patch ne s'applique pas correctement à %s et aucune information sur 
 #, c-format
 msgid ""
 "The patch seems outdated! The file line\n"
-"%s\n"
+"%1!s!\n"
 "and the patchline\n"
-"%s\n"
+"%2!s!\n"
 "do not match!"
-msgstr "Le patch semble périmé! La ligne\n%s\net la ligne du patch\n%s\nne correspondent pas!"
+msgstr ""
 
 #. Resource IDs: (IDS_WARN_NOVALIDPATH)
 msgid ""
@@ -10098,12 +10109,12 @@ msgstr "Le chemin/URL que vous avez entré semble illégal sous Windows!\nVous p
 #, c-format
 msgid ""
 "The path\n"
-"%s\n"
+"%1!s!\n"
 "seems not to match the paths in the patchfile.\n"
 "But TortoiseGitMerge found the path\n"
-"%s\n"
+"%2!s!\n"
 "matches it better. Do you want to use the suggested path instead?"
-msgstr "Le chemin\n%s\nne semble pas correspondre aux chemins du fichier de patch.\nMais TortoiseGitMerge a trouvé le chemin\n%s\nqui correspond mieux. Voulez-vous utiliser le chemin suggéré à la place?"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_CONFIRMKILLPROCESS)
 msgid ""
@@ -10328,10 +10339,6 @@ msgstr "Ce programme est lié à l'exportation manquante %Ts dans le fichier %Ts
 msgid ""
 "This program requires the file %Ts, which was not found on this system."
 msgstr "Ce programme demande le fichier %Ts, lequel n'a pas été trouvé."
-
-#. Resource IDs: (IDS_ERR_PROPNOTONFILE)
-msgid "This property is only allowed on folders, not files."
-msgstr "Cette propriété est seulement autorisée sur les répertoires, pas sur les fichiers."
 
 #. Resource IDs: (IDS_B_T_REMOTE_NAME_COLLIDE)
 msgid ""
@@ -10680,6 +10687,12 @@ msgstr "Impossible d'écrire dans %1, il est en lecture seule ou ouvert par quel
 #. Resource IDs: (AFX_IDS_CHECKLISTBOX_UNCHECK)
 msgid "Uncheck"
 msgstr "Annuler sélection"
+
+#. Resource IDs: (Dialog IDD_SETTINGSLOOKANDFEEL: Control id 65535)
+msgid ""
+"Unchecked items will appear in the TortoiseGit submenu, checked items "
+"directly in the main context menu."
+msgstr ""
 
 #. Resource IDs: (cmdUndo_LabelTitle_RESID)
 msgid "Undo"
@@ -11477,13 +11490,6 @@ msgid ""
 "The file will be added to version control when you commit."
 msgstr "Vous avez sélectionné un fichier non versionné.\nLe fichier va être ajouté au contrôle de version à la livraison."
 
-#. Resource IDs: (IDS_SETTINGS_ICONSETCHANGED)
-#, c-format
-msgid ""
-"You've changed the icon set from \"%s\" to \"%s\".\n"
-"That change won't take effect until you restart your computer or logoff and logon again!"
-msgstr "Vous avez changé le jeu d'icônes \"%s\" par \"%s\".\nCe changement ne prendra effet qu'après le redémarrage de votre ordinateur ou l'ouverture d'une nouvelle session !"
-
 #. Resource IDs: (IDS_COMMITDLG_HISTORYHINT_TT)
 msgid ""
 "Your previously entered log messages have been saved.\n"
@@ -11567,11 +11573,11 @@ msgstr "Zoom avec largeur ajustée"
 #. Resource IDs: (IDS_CHERRYPICK_MERGECOMMIT)
 #, c-format
 msgid ""
-"\"%s\" - \"%s\"\n"
+"\"%1!s!\" - \"%2!s!\"\n"
 "is a merge commit.\n"
 "\n"
 "Which parent do you want to pick?"
-msgstr "\"%s\" - \"%s\"\nEst une livraison fusionnée.\n\nQuelle branche parente voulez-vous choisir?"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_COPY_REPOSITORY)
 #, c-format
@@ -11697,13 +11703,6 @@ msgstr "livraisons"
 msgid "conflicted"
 msgstr "en conflit"
 
-#. Resource IDs: (IDS_STATUSLIST_COPYFROM)
-#, c-format
-msgid ""
-"copied from\n"
-"%s - revision %ld"
-msgstr "copié depuis\n%s - à la révision %ld"
-
 #. Resource IDs: (IDS_STATGRAPH_COMMITSBYDATEXDAY)
 msgid "day"
 msgstr "jour"
@@ -11719,15 +11718,6 @@ msgstr "Voir les différences du tube."
 #. Resource IDs: (Dialog IDD_SENDMAIL: Control id 1580)
 msgid "eMail settings"
 msgstr "Configuration de l'email"
-
-#. Resource IDs: (IDS_PROC_EXPORT_4)
-#, c-format
-msgid ""
-"exported\n"
-"%s\n"
-"to\n"
-"%s"
-msgstr "exporté\n%s\nvers\n%s"
 
 #. Resource IDs: (IDS_STATUSEXTERNAL)
 msgid "external"

@@ -10,7 +10,7 @@
 # bodyguard 1 <q20162018@gmail.com>, 2016
 # Dmytro Kutianskyi <dmytro.kutyansky@gmail.com>, 2015
 # intrueder <intrueder@gmail.com>, 2015
-# Ivan Yakushchenko <kosistivan@gmail.com>, 2016-2017
+# Ivan Yakushchenko <kosistivan@gmail.com>, 2016-2018
 # ktretyak <ktretyak.in.ua@gmail.com>, 2016
 # ktretyak <ktretyak.in.ua@gmail.com>, 2013
 # ktretyak <ktretyak.in.ua@gmail.com>, 2013,2016
@@ -27,14 +27,14 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2018-01-21 21:11+0000\n"
+"PO-Revision-Date: 2018-08-17 14:58+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Ukrainian (http://www.transifex.com/lznuaa/tortoisegit/language/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: uk\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
 
 #. Resource IDs: (IDS_STATUSBAR_CONFLICTEDLINES)
 # msgid/msgstr fields for Accelerator keys
@@ -153,6 +153,21 @@ msgstr "%1!d! рік тому"
 msgid "%1!d! Years ago"
 msgstr "%1!d! років тому"
 
+#. Resource IDs: (IDS_PROC_SYNC_COMMITSAHEAD)
+#, c-format
+msgid "%1!d! commits ahead \"%2!s!\""
+msgstr "%1!d! комітів попереду \"%2!s!\""
+
+#. Resource IDs: (IDS_STATUSLIST_FILESREVERTED)
+#, c-format
+msgid "%1!d! files reverted to %2!s!."
+msgstr ""
+
+#. Resource IDs: (IDS_COMMITDLG_STATISTICSFORMAT)
+#, c-format
+msgid "%1!d! files selected, %2!d! files total"
+msgstr "Вибрано %1!d! файлів, усього %2!d! файлів"
+
 #. Resource IDs: (IDS_REPOBROWSE_INFOMULTI)
 #, c-format
 msgid "%1!d! items selected"
@@ -163,10 +178,41 @@ msgstr "%1!d! елементів вибрано"
 msgid "%1!d! minutes ago"
 msgstr "%1!d! хвилин тому"
 
+#. Resource IDs: (IDS_STATGRAPH_AUTHORSLIDER_TT)
+#, c-format
+msgid ""
+"%1!d! most active author(s) with at least %2!d! commits each (%3!d! %%)"
+msgstr "%1!d! найактивніших авторів, кожен принаймі з %2!d! фіксуваннями (%3!d! %%)"
+
+#. Resource IDs: (IDS_PROGRS_TIME)
+#, c-format
+msgid "%1!ld! minute(s) and %2!ld! second(s)"
+msgstr "%1!ld! хвилин(и) і %2!ld! секунд(и)"
+
 #. Resource IDs: (IDS_CONFLICT_INFOTEXT)
 #, c-format
 msgid "%1!s! (%2!s!)"
 msgstr "%1!s! (%2!s!)"
+
+#. Resource IDs: (IDS_PROGRS_PATHATREV)
+#, c-format
+msgid "%1!s! - at revision: %2!d!"
+msgstr ""
+
+#. Resource IDs: (IDS_PROGRS_FINALINFO)
+#, c-format
+msgid "%1!s! in %2!s!"
+msgstr ""
+
+#. Resource IDs: (IDS_GITVER_REQUIRED)
+#, c-format
+msgid "%1!s! requires Git >= %2!s!"
+msgstr ""
+
+#. Resource IDs: (IDS_SVN_PROGRESS_TOTALANDSPEED)
+#, c-format
+msgid "%1!s!, at %2!s!"
+msgstr ""
 
 #. Resource IDs: (IDS_REPOBROWSE_INFO)
 #, c-format
@@ -224,11 +270,6 @@ msgid ""
 "%Ts"
 msgstr "%Ts\n%Ts"
 
-#. Resource IDs: (IDS_PROC_SYNC_COMMITSAHEAD)
-#, c-format
-msgid "%d commits ahead \"%s\""
-msgstr "%d фіксацій перед \"%s\""
-
 #. Resource IDs: (IDS_FILESCHANGES)
 #, c-format
 msgid "%d files changed"
@@ -239,21 +280,6 @@ msgstr "%d файлів змінено"
 msgid "%d files removed."
 msgstr "%d файлів видалено"
 
-#. Resource IDs: (IDS_STATUSLIST_FILESREVERTED)
-#, c-format
-msgid "%d files reverted to %s."
-msgstr "%d файлів відновлено до %s."
-
-#. Resource IDs: (IDS_COMMITDLG_STATISTICSFORMAT)
-#, c-format
-msgid "%d files selected, %d files total"
-msgstr "%d файлів вибрано, %d файлів усього"
-
-#. Resource IDs: (IDS_STATGRAPH_AUTHORSLIDER_TT)
-#, c-format
-msgid "%d most active author(s) with at least %d commits each (%d %%)"
-msgstr "%d найбільш активні автор(и) принаймні з %d фіксацій у кожного (%d %%)"
-
 #. Resource IDs: (IDS_ALPHABUTTONTT)
 #, c-format
 msgid ""
@@ -262,35 +288,10 @@ msgid ""
 "double click to automatically toggle alpha"
 msgstr "%i%% альфа\nклікніть щоб перемкнути альфу\nклікніть двічі для автоматичного перемикання альфи"
 
-#. Resource IDs: (IDS_PROGRS_TIME)
-#, c-format
-msgid "%ld minute(s) and %ld second(s)"
-msgstr "%ld хвилин і %ld секунд"
-
 #. Resource IDs: (IDS_DIMENSIONSANDFRAMES)
 #, c-format
 msgid "%ld of %ld"
 msgstr "%ld з %ld"
-
-#. Resource IDs: (IDS_PROGRS_PATHATREV)
-#, c-format
-msgid "%s - at revision: %d"
-msgstr "%s - на ревізії: %d"
-
-#. Resource IDs: (IDS_PROGRS_FINALINFO)
-#, c-format
-msgid "%s in %s"
-msgstr "%s за %s"
-
-#. Resource IDs: (IDS_GITVER_REQUIRED)
-#, c-format
-msgid "%s requires Git >= %s"
-msgstr "%s Потребує Git версії >= %s"
-
-#. Resource IDs: (IDS_SVN_PROGRESS_TOTALANDSPEED)
-#, c-format
-msgid "%s, at %s"
-msgstr "%s, на швидкості %s"
 
 #. Resource IDs: (IDS_DIFF_WCNAME)
 #, c-format
@@ -833,8 +834,8 @@ msgstr "&Номер рядка"
 
 #. Resource IDs: (IDS_GOTOLINE)
 #, c-format
-msgid "&Line number (%d - %d)"
-msgstr "&Номер рядка (%d - %d)"
+msgid "&Line number (%1!d! - %2!d!)"
+msgstr ""
 
 #. Resource IDs: (ID_VIEW_LINKIMAGESTOGETHER - Menu)
 msgid "&Link image positions"
@@ -1846,8 +1847,8 @@ msgstr "Під час доступу до %1 трапилася невідома
 
 #. Resource IDs: (IDS_ERR_PATCH_UNKNOWNLINETYPE)
 #, c-format
-msgid "An unknown line type was found in line %d !"
-msgstr "У рядку %d виявлено невідомий тип рядка!"
+msgid "An unknown line type was found in line %d!"
+msgstr ""
 
 #. Resource IDs: (IDS_ANNOTATEDTAGS)
 msgid "Annotated tags"
@@ -2017,8 +2018,8 @@ msgid "Author names"
 msgstr "Ім'я автора"
 
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 65535)
-msgid "Author:\t\t\t\tStefan Kueng"
-msgstr "Автор:\t\t\t\tStefan Kueng"
+msgid "Author:\t\t\tStefan Kueng"
+msgstr ""
 
 #. Resource IDs: (IDS_LOG_FILTER_AUTHORS)
 msgid "Authors"
@@ -2222,13 +2223,6 @@ msgstr "Гілка"
 msgid "Branch"
 msgstr "Гілка"
 
-#. Resource IDs: (IDS_REBASE_FASTFORWARD_FMT)
-#, c-format
-msgid ""
-"Branch %s behind %s\n"
-"%s will fastforward to %s"
-msgstr ""
-
 #. Resource IDs: (IDS_PROC_BRANCH_FF)
 msgid "Branch (FF)"
 msgstr ""
@@ -2239,6 +2233,13 @@ msgstr "Назва гілки"
 
 #. Resource IDs: (IDS_REV_COUNTER)
 msgid "Branch RevNo"
+msgstr ""
+
+#. Resource IDs: (IDS_REBASE_FASTFORWARD_FMT)
+#, c-format
+msgid ""
+"Branch \"%1!s!\" behind \"%2!s!\"\n"
+"\"%3!s!\" will fastforward to \"%4!s!\""
 msgstr ""
 
 #. Resource IDs: (IDS_B_T_INVALID)
@@ -2364,10 +2365,10 @@ msgstr "Не вдається активувати статичний об'єк�
 #, c-format
 msgid ""
 "Can't copy \n"
-"%s\n"
+"%1!s!\n"
 "to\n"
-"%s"
-msgstr "Не можу скопіювати \n%s\nу\n%s"
+"%2!s!"
+msgstr ""
 
 #. Resource IDs: (Dialog AFX_IDD_NEWTYPEDLG: Control id 2, Dialog
 #. AFX_IDD_PRINTDLG: Control id 2, Dialog IDD_ADD: Control id 2, Dialog
@@ -2460,10 +2461,6 @@ msgstr ""
 msgid "Cannot show diff because of inconsistent newlines in the file."
 msgstr "Не вдається показати відмінності через неузгоджені нові рядки у файлі."
 
-#. Resource IDs: (Dialog IDD_SETTINGSLOOKANDFEEL: Control id 65535)
-msgid "Cascaded context menu"
-msgstr "Каскадні контекстні меню"
-
 #. Resource IDs: (IDS_LOG_FILTER_CASESENSITIVE)
 msgid "Case-sensitive"
 msgstr "Чутливі до регістра"
@@ -2514,13 +2511,13 @@ msgstr "Змінені файли"
 
 #. Resource IDs: (IDS_FILEDIFF_CHANGEDLISTINTROROOT)
 #, c-format
-msgid "Changed files between %s and %s"
-msgstr "Змінені файли між %s та %s"
+msgid "Changed files between %1!s! and %2!s!"
+msgstr ""
 
 #. Resource IDs: (IDS_FILEDIFF_CHANGEDLISTINTRO)
 #, c-format
-msgid "Changed files between %s, %s and %s, %s"
-msgstr "Змінені файли між %s, %s та %s, %s"
+msgid "Changed files between %1!s!, %2!s! and %3!s!, %4!s!"
+msgstr ""
 
 #. Resource IDs: (IDS_CHECKUPDATE_SUMMARY)
 #, c-format
@@ -2603,6 +2600,12 @@ msgstr "Позначте щоб використовувати менш докл
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1700)
 msgid "Check:"
 msgstr "Перевірити:"
+
+#. Resource IDs: (Dialog IDD_SETTINGSEXTMENU: Control id 65535)
+msgid ""
+"Checked items will be hidden in the context menu by default and will only be"
+" visible if the shift key is pressed while opening the context menu."
+msgstr ""
 
 #. Resource IDs: (IDS_PROGRS_CMD_CHECKOUT, IDS_PROGRS_TITLE_CHECKOUT)
 msgid "Checkout"
@@ -2697,19 +2700,20 @@ msgstr "Очистити"
 
 #. Resource IDs: (IDS_SETTINGS_SAVEDDATA_URLHIST_TT)
 #, c-format
-msgid "Clears %ld URLs stored for %ld working trees"
+msgid "Clears %1!ld! URLs stored for %2!ld! working trees"
 msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_SAVEDDATA_LOGHIST_TT)
 #, c-format
-msgid "Clears %ld log messages stored for %ld working trees"
+msgid "Clears %1!ld! log messages stored for %2!ld! working trees"
 msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_SAVEDDATA_AUTH_TT)
 #, c-format
 msgid ""
-"Clears %ld username/password pairs, %ld ssl certificates and %ld usernames"
-msgstr ""
+"Clears %1!ld! username/password pairs, %2!ld! ssl certificates and %3!ld! "
+"usernames"
+msgstr "Очищує %1!ld! пар ім'я/пароль, %2!ld! сертифікатів ssl і %3!ld! імен користувачів"
 
 #. Resource IDs: (IDS_SETTINGS_SAVEDDATA_REPOLOGHIST_TT)
 #, c-format
@@ -2853,14 +2857,14 @@ msgstr "Команду спіткала невдача."
 msgid "Commit"
 msgstr "Фіксування"
 
+#. Resource IDs: (IDS_REPOBROWSEASKSUBMODULEUPDATE)
+#, c-format
+msgid "Commit %1!s! not found in \"%2!s!\". Update submodule now?"
+msgstr ""
+
 #. Resource IDs: (IDS_LOG_NOT_VISIBLE)
 #, c-format
 msgid "Commit %s is NOT visible right now."
-msgstr ""
-
-#. Resource IDs: (IDS_REPOBROWSEASKSUBMODULEUPDATE)
-#, c-format
-msgid "Commit %s not found in \"%s\". Update submodule now?"
 msgstr ""
 
 #. Resource IDs: (IDS_COMMIT_COMMITPUSH)
@@ -3181,8 +3185,8 @@ msgstr "Не вдалося перевірити наявність новішо
 
 #. Resource IDs: (IDS_CHECKNEWER_NETERROR_FORMAT)
 #, c-format
-msgid "Could not check for a newer version! %s (Error code: 0x%08X)"
-msgstr "Не вдалося перевірити наявність новішої версії! %s (Код помилки: 0x%08X)"
+msgid "Could not check for a newer version! %1!s! (Error code: 0x%2!08X!)"
+msgstr ""
 
 #. Resource IDs: (IDS_ERR_COPYFILES)
 #, c-format
@@ -3267,7 +3271,7 @@ msgstr "Не вдалося отримати URL файла!\n%s"
 #. Resource IDs: (IDS_ERR_MAINFRAME_FILEVERSIONNOTFOUND)
 #, c-format
 msgid ""
-"Could not retrieve revision %s of the file %s.\n"
+"Could not retrieve revision %1!s! of the file %2!s!.\n"
 "Patching is not possible!"
 msgstr ""
 
@@ -3474,9 +3478,9 @@ msgstr ""
 #. Resource IDs: (IDS_REBASE_UPTODATE_FMT)
 #, c-format
 msgid ""
-"Current branch %s is up to date\n"
+"Current branch \"%s\" is up to date\n"
 "\n"
-"If you want to force the rebase even if the current branch is a descendant of the commit you are rebasing onto, please check below \"Force Rebase\" checkbox."
+"If you want to force a rebase even if the current branch is a descendant of the commit you are rebasing onto, please check below \"Force Rebase\" checkbox."
 msgstr ""
 
 #. Resource IDs: (IDS_REBASE_CURRENTBRANCHUPTODATE)
@@ -4093,10 +4097,6 @@ msgid ""
 "Reload the views without saving the modifications"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_SETTINGSEXTMENU: Control id 65535)
-msgid "Don't show the selected items: (press shift key to show them)"
-msgstr "Не показувати обрані пункти: (нажміть клавішу shift щоб показати)"
-
 #. Resource IDs: (IDS_MSGBOX_DONOTSHOW)
 msgid "Don't show this message again"
 msgstr "Не показувати це повідомлення знову"
@@ -4475,9 +4475,9 @@ msgstr "Помилка перевірки сертіфікату сервера 
 #. Resource IDs: (IDS_REG_ERROR)
 #, c-format
 msgid ""
-"Error while reading/writing the registry key %s\n"
-"%s"
-msgstr "Помилка читання/запису ключа реестру %s\n%s"
+"Error while reading/writing the registry key %1!s!\n"
+"%2!s!"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_EVERYTHINGUPDATED)
 msgid "Everything updated."
@@ -4569,14 +4569,14 @@ msgstr "Невдача"
 msgid "Failed revert"
 msgstr "Не вдалося відвернути"
 
+#. Resource IDs: (IDS_STATUSLIST_CHECKOUTFILEFAILED)
+#, c-format
+msgid "Failed to checkout file \"%1!s!\" of revision %2!s! to \"%3!s!\"."
+msgstr ""
+
 #. Resource IDs: (IDS_CHECKOUTFAILED)
 #, c-format
 msgid "Failed to checkout file \"%s\""
-msgstr ""
-
-#. Resource IDs: (IDS_STATUSLIST_CHECKOUTFILEFAILED)
-#, c-format
-msgid "Failed to checkout file \"%s\" of revision %s to \"%s\"."
 msgstr ""
 
 #. Resource IDs: (AFX_IDP_FAILED_TO_CONNECT)
@@ -4639,9 +4639,9 @@ msgstr ""
 #. Resource IDs: (IDS_ERR_FAILEDISSUETRACKERCOM)
 #, c-format
 msgid ""
-"Failed to start the issue tracker COM provider '%s'.\n"
-"%s"
-msgstr "Не вдалося запустити COM постачальника  issue tracker  '%s'.\n%s"
+"Failed to start the issue tracker COM provider '%1!s!'.\n"
+"%2!s!"
+msgstr ""
 
 #. Resource IDs: (IDS_ERR_PAEGENTTIMEOUT)
 msgid "Failed waiting for pageant to finish loading key."
@@ -4662,7 +4662,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROC_REBASE_FFTO)
 #, c-format
-msgid "Fast forward to %s"
+msgid "Fast forward to \"%s\""
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_FETCH)
@@ -4909,11 +4909,11 @@ msgstr ""
 
 #. Resource IDs: (ID_VIEW_ZOOMALL - Menu)
 msgid "Fit graph"
-msgstr ""
+msgstr "Умістити граф"
 
 #. Resource IDs: (ID_VIEW_ZOOMHEIGHT - Menu)
 msgid "Fit height"
-msgstr ""
+msgstr "Умістити ввись"
 
 #. Resource IDs: (ID_VIEW_FITIMAGEHEIGHTS - Menu)
 msgid "Fit image &heights\tH"
@@ -4925,7 +4925,7 @@ msgstr ""
 
 #. Resource IDs: (ID_VIEW_ZOOMWIDTH - Menu)
 msgid "Fit width"
-msgstr ""
+msgstr "Умістити вшир"
 
 #. Resource IDs: (Dialog IDD_SETTINGSTBLAME: Control id 1675)
 msgid "Follow renames"
@@ -4947,8 +4947,8 @@ msgstr "Для повної історії зніміть виділення з�
 #. Resource IDs: (IDS_NOTYET_SETTRACKEDBRANCH)
 #, c-format
 msgid ""
-"For the current branch \"%s\" no tracked branch is configured.\n"
-"Do you want to set the selected branch \"%s\" as tracked branch?\n"
+"For the current branch \"%1!s!\" no tracked branch is configured.\n"
+"Do you want to set the selected branch \"%2!s!\" as tracked branch?\n"
 "This will automatically select it for push and pull in the future."
 msgstr ""
 
@@ -5133,6 +5133,10 @@ msgstr "Загальне::Кольори 3"
 msgid "General::Context Menu"
 msgstr "Загальне::Контекстне меню"
 
+#. Resource IDs: (Dialog IDD_SETTINGSEXTMENU: Control id 4573)
+msgid "General::Context Menu 2"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 196)
 msgid "General::Dialogs 1"
 msgstr "Загальне::Діалоги 1"
@@ -5144,10 +5148,6 @@ msgstr "Загальне::Діалоги 2"
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 4593)
 msgid "General::Dialogs 3"
 msgstr "Загальне::Діалоги 3"
-
-#. Resource IDs: (Dialog IDD_SETTINGSEXTMENU: Control id 4573)
-msgid "General::Set Extend Menu Item"
-msgstr "Загальне::Установки додаткових пунктів меню"
 
 #. Resource IDs: (IDS_LOG_POPUP_GETMERGELOGS)
 msgid "Get merge logs"
@@ -5423,6 +5423,10 @@ msgstr ""
 #. Resource IDs: (Dialog IDD_SETTINGSHOOKCONFIG: Control id 1326)
 msgid "Hide the script while running"
 msgstr "Ховати скрипт поки він виконується"
+
+#. Resource IDs: (Dialog IDD_SETTINGSEXTMENU: Control id 65535)
+msgid "Hide the selected items in the context menu:"
+msgstr ""
 
 #. Resource IDs: (IDS_HIDEUNCHANGED)
 msgid "Hide unchanged"
@@ -5932,8 +5936,8 @@ msgstr "Імпорт"
 
 #. Resource IDs: (IDS_PROGRS_CMD_IMPORT)
 #, c-format
-msgid "Import %s to %s%s"
-msgstr "Імпорт %s у %s%s"
+msgid "Import %1!s! to %2!s!%3!s!"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_SVNIGNORE: Control id 329,
 #. IDS_MENUSVNIGNORE_DESC)
@@ -6843,6 +6847,13 @@ msgstr "Без обмежень"
 msgid "No more revisions found."
 msgstr ""
 
+#. Resource IDs: (IDS_REBASE_EQUAL_FMT)
+#, c-format
+msgid ""
+"No need to rebase\n"
+"\"%1!s!\" equals \"%2!s!\""
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_NOPREVIOUSVERSION)
 msgid "No previous version."
 msgstr ""
@@ -6943,13 +6954,6 @@ msgstr ""
 #. Resource IDs: (IDS_NOTES)
 msgid "Notes"
 msgstr "Примітки"
-
-#. Resource IDs: (IDS_REBASE_EQUAL_FMT)
-#, c-format
-msgid ""
-"Nothing need rebase\n"
-"%s equal %s"
-msgstr ""
 
 #. Resource IDs: (IDS_PROC_NOTHINGTOREBASE)
 msgid "Nothing to Rebase"
@@ -7133,6 +7137,10 @@ msgstr "Тільки злити файли"
 #. Resource IDs: (Dialog IDD_SETTINGSTBLAME: Control id 1677,
 #. ID_VIEW_ONLYCONSIDERFIRSTPARENTS - Menu)
 msgid "Only consider first parents on blame"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1808)
+msgid "Only follow first parent"
 msgstr ""
 
 #. Resource IDs: (IDS_TAGCOMPARE_ONLYLOCAL)
@@ -7853,7 +7861,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROC_REBASING_PROGRESS)
 #, c-format
-msgid "Rebasing... (%d/%d)"
+msgid "Rebasing... (%1!d!/%2!d!)"
 msgstr ""
 
 #. Resource IDs: (ID_FILE_MRU_FILE1 - Menu)
@@ -8713,7 +8721,7 @@ msgstr "Збережені дані"
 
 #. Resource IDs: (IDS_PROC_SAVECONFIGFAILED)
 #, c-format
-msgid "Saving config failed (key: \"%s\", value: \"%s\")."
+msgid "Saving config failed (key: \"%1!s!\", value: \"%2!s!\")."
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_FAILEDSAVINGNOTES)
@@ -9035,7 +9043,7 @@ msgstr ""
 
 #. Resource IDs: (ID_VIEW_SHOWOVERVIEW - Menu)
 msgid "Show Ove&rview"
-msgstr ""
+msgstr "Показати &огляд"
 
 #. Resource IDs: (ID_VIEW_WHITESPACES - Menu,
 #. cmdShowWhitespaces_LabelTitle_RESID)
@@ -9246,6 +9254,10 @@ msgstr "Показувати статус підсховищ у батьківс
 msgid "Show symbols on ref labels to substitute part of the ref names"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_SETTINGSLOOKANDFEEL: Control id 65535)
+msgid "Show the selected items on the first level of the context menu:"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_CHANGEDFILES: Control id 1209)
 msgid "Show un&modified files"
 msgstr "Показувати не&модіфіковані файли."
@@ -9266,9 +9278,9 @@ msgstr ""
 #. Resource IDs: (IDS_PROC_LOG_STATS)
 #, c-format
 msgid ""
-"Showing %ld revision(s), from revision %s to revision %s - %ld revision(s) "
-"selected, %ld file(s) selected"
-msgstr "Показано %ld ревізію(-й), з ревізії %s до ревізії %s - %ld обрано ревізій, %ld файлів обрано"
+"Showing %1!ld! revision(s), from revision %2!s! to revision %3!s! - %4!ld! "
+"revision(s) selected, %5!ld! file(s) selected"
+msgstr ""
 
 #. Resource IDs: (IDS_MENUDESCREVISIONGRAPH)
 msgid "Shows a graphical representation of copies/tags/branches"
@@ -9478,12 +9490,12 @@ msgstr ""
 msgid "Stash Pop"
 msgstr ""
 
-#. Resource IDs: (IDS_MENUSTASHSAVE)
-msgid "Stash Save"
-msgstr ""
-
 #. Resource IDs: (IDS_PROC_STASHSUCCESS)
 msgid "Stash Success"
+msgstr ""
+
+#. Resource IDs: (IDS_MENUSTASHSAVE)
+msgid "Stash changes"
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_STASHFAILED)
@@ -9652,7 +9664,7 @@ msgstr "Повернутися на панель попереднього вік
 #. Resource IDs: (ID_VIEW_ONEWAYDIFF - Menu,
 #. cmdViewOneWayDiff_LabelTitle_RESID)
 msgid "Switch between single and double pane view"
-msgstr ""
+msgstr "Переключитися між одно та двопанельним поданням"
 
 #. Resource IDs: (cmdViewOneWayDiff)
 msgid ""
@@ -9776,11 +9788,6 @@ msgstr ""
 
 #. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_TAGBRANCHES)
 msgid "Tag/branch names"
-msgstr ""
-
-#. Resource IDs: (IDS_PROC_COPY_SUCCESS)
-#, c-format
-msgid "Tagged the working tree to %s"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1485)
@@ -9993,17 +10000,19 @@ msgstr "Постачальник проблемобліку не зміг пер
 
 #. Resource IDs: (IDS_ERR_PATCH_NOADDFILELINE)
 #, c-format
-msgid "The line indicating the new file was expected in line %d !"
-msgstr "У рядку %d мав би бути рядок, який вказує на новий файл!"
+msgid "The line indicating the new file was expected in line %d!"
+msgstr ""
 
 #. Resource IDs: (IDS_GOTO_OUTOFRANGE)
 #, c-format
-msgid "The line number must be in between %d and %d"
-msgstr "Номер строки повине бути між  %d та  %d"
+msgid "The line number must be in between %1!d! and %2!d!"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_NOFASTFORWARD)
 #, c-format
-msgid "The local branch \"%s\" does not fast-forward to the remote branch \"%s\"."
+msgid ""
+"The local branch \"%1!s!\" does not fast-forward to the remote branch "
+"\"%2!s!\"."
 msgstr ""
 
 #. Resource IDs: (IDS_B_T_BOTHEMPTY)
@@ -10045,9 +10054,9 @@ msgstr ""
 #, c-format
 msgid ""
 "The patch seems outdated! The file line\n"
-"%s\n"
+"%1!s!\n"
 "and the patchline\n"
-"%s\n"
+"%2!s!\n"
 "do not match!"
 msgstr ""
 
@@ -10066,10 +10075,10 @@ msgstr ""
 #, c-format
 msgid ""
 "The path\n"
-"%s\n"
+"%1!s!\n"
 "seems not to match the paths in the patchfile.\n"
 "But TortoiseGitMerge found the path\n"
-"%s\n"
+"%2!s!\n"
 "matches it better. Do you want to use the suggested path instead?"
 msgstr ""
 
@@ -10296,10 +10305,6 @@ msgstr "Ця програма пов'язана з відсутнім експо
 msgid ""
 "This program requires the file %Ts, which was not found on this system."
 msgstr "Цій програмі потрібен файл %Ts, який у системі відсутній."
-
-#. Resource IDs: (IDS_ERR_PROPNOTONFILE)
-msgid "This property is only allowed on folders, not files."
-msgstr "Ця властивість дозволена лише для каталогів, а не для файлів."
 
 #. Resource IDs: (IDS_B_T_REMOTE_NAME_COLLIDE)
 msgid ""
@@ -10648,6 +10653,12 @@ msgstr "Нездатен писати у %1, він лише-для-читанн
 #. Resource IDs: (AFX_IDS_CHECKLISTBOX_UNCHECK)
 msgid "Uncheck"
 msgstr "Зняти позначку"
+
+#. Resource IDs: (Dialog IDD_SETTINGSLOOKANDFEEL: Control id 65535)
+msgid ""
+"Unchecked items will appear in the TortoiseGit submenu, checked items "
+"directly in the main context menu."
+msgstr ""
 
 #. Resource IDs: (cmdUndo_LabelTitle_RESID)
 msgid "Undo"
@@ -11445,13 +11456,6 @@ msgid ""
 "The file will be added to version control when you commit."
 msgstr ""
 
-#. Resource IDs: (IDS_SETTINGS_ICONSETCHANGED)
-#, c-format
-msgid ""
-"You've changed the icon set from \"%s\" to \"%s\".\n"
-"That change won't take effect until you restart your computer or logoff and logon again!"
-msgstr ""
-
 #. Resource IDs: (IDS_COMMITDLG_HISTORYHINT_TT)
 msgid ""
 "Your previously entered log messages have been saved.\n"
@@ -11493,11 +11497,11 @@ msgstr "З&меншити"
 
 #. Resource IDs: (ID_VIEW_ZOOMIN - Menu)
 msgid "Zoom &in\tCtrl-+"
-msgstr ""
+msgstr "З&більшити\tCtrl-+"
 
 #. Resource IDs: (ID_VIEW_ZOOMOUT - Menu)
 msgid "Zoom &out\tCtrl--"
-msgstr ""
+msgstr "З&більшити\tCtrl--"
 
 #. Resource IDs: (32803)
 #, c-format
@@ -11518,7 +11522,7 @@ msgstr "Зменшити"
 
 #. Resource IDs: (ID_VIEW_ZOOM100 - Menu)
 msgid "Zoom to &100%"
-msgstr ""
+msgstr "Масштабувати до &100%"
 
 #. Resource IDs: (32804)
 msgid "Zoom to fit"
@@ -11535,7 +11539,7 @@ msgstr "Масштабувати щоб умістилось вшир"
 #. Resource IDs: (IDS_CHERRYPICK_MERGECOMMIT)
 #, c-format
 msgid ""
-"\"%s\" - \"%s\"\n"
+"\"%1!s!\" - \"%2!s!\"\n"
 "is a merge commit.\n"
 "\n"
 "Which parent do you want to pick?"
@@ -11665,13 +11669,6 @@ msgstr "фіксувань"
 msgid "conflicted"
 msgstr "конфліктних"
 
-#. Resource IDs: (IDS_STATUSLIST_COPYFROM)
-#, c-format
-msgid ""
-"copied from\n"
-"%s - revision %ld"
-msgstr "скопіьовано з\n%s - ревізія %ld"
-
 #. Resource IDs: (IDS_STATGRAPH_COMMITSBYDATEXDAY)
 msgid "day"
 msgstr "день"
@@ -11686,15 +11683,6 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SENDMAIL: Control id 1580)
 msgid "eMail settings"
-msgstr ""
-
-#. Resource IDs: (IDS_PROC_EXPORT_4)
-#, c-format
-msgid ""
-"exported\n"
-"%s\n"
-"to\n"
-"%s"
 msgstr ""
 
 #. Resource IDs: (IDS_STATUSEXTERNAL)
