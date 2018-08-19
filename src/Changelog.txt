@@ -1,5 +1,5 @@
 ﻿= Release 2.7.0 =
-Released: unreleased
+Released: 2018-08-19
 
 == Changes ==
  * Git (for Windows) 2.11 or newer is now required
