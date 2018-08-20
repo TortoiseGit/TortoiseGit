@@ -745,7 +745,7 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 		if (selType == ONLY_FILES || selType == ONLY_FILESSUBMODULES)
 		{
 			popupMenu.AppendMenuIcon(eCmd_OpenWith, IDS_LOG_POPUP_OPENWITH, IDI_OPEN);
-			popupMenu.AppendMenuIcon(eCmd_OpenWithAlternativeEditor, IDS_LOG_POPUP_VIEWREV);
+			popupMenu.AppendMenuIcon(eCmd_OpenWithAlternativeEditor, IDS_LOG_POPUP_VIEWREV, IDI_NOTEPAD);
 		}
 
 		popupMenu.AppendMenu(MF_SEPARATOR);
