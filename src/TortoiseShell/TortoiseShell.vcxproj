@@ -177,6 +177,7 @@
     <Image Include="..\Resources\menuupdate.ico" />
     <Image Include="..\Resources\pull1.ico" />
     <Image Include="..\Resources\Push.ico" />
+    <Image Include="..\Resources\showbranches.ico" />
     <Image Include="..\Resources\tag.ico" />
     <Image Include="..\Resources\thumb_down.ico" />
     <Image Include="..\Resources\thumb_up.ico" />

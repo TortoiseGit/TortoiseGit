@@ -115,7 +115,6 @@
 #define IDD_ADD_REMOTE                  323
 #define IDR_ACC_COMMITDLG               325
 #define IDD_SYNC                        326
-#define IDI_SHOWBRANCHES                326
 #define IDD_BUGTRAQREGEXTESTER          327
 #define IDD_PATCH_VIEW                  328
 #define IDD_SVNIGNORE                   329

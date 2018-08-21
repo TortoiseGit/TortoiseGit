@@ -2064,9 +2064,6 @@
     <Image Include="..\Resources\saveddata.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\Resources\showbranches.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="..\Resources\switch.ico">
       <Filter>Resource Files</Filter>
     </Image>

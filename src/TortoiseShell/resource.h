@@ -234,6 +234,7 @@
 #define IDI_MERGEABORT                  5181
 #define IDI_BISECT                      5182
 #define IDI_BISECT_RESET                5183
+#define IDI_SHOWBRANCHES                5184
 #define IDC_CONFIG_AUTOCRLF             11020
 #define IDC_EDITPROPERTIES              11021
 #define IDC_REPOURLUNESCAPED            11022
@@ -256,7 +257,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        5182
+#define _APS_NEXT_RESOURCE_VALUE        5185
 #define _APS_NEXT_COMMAND_VALUE         40001
 #define _APS_NEXT_CONTROL_VALUE         11032
 #define _APS_NEXT_SYMED_VALUE           5101

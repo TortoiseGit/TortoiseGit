@@ -694,7 +694,6 @@
     <Image Include="..\Resources\save.ico" />
     <Image Include="..\Resources\saveas.ico" />
     <Image Include="..\Resources\saveddata.ico" />
-    <Image Include="..\Resources\showbranches.ico" />
     <Image Include="..\Resources\snippet.ico" />
     <Image Include="..\Resources\spell.ico" />
     <Image Include="..\Resources\UpdateBackground.ico" />

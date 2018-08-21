@@ -360,6 +360,9 @@
     <Image Include="..\Resources\Push.ico">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="..\Resources\showbranches.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
     <Image Include="..\Resources\tag.ico">
       <Filter>Resource Files</Filter>
     </Image>
