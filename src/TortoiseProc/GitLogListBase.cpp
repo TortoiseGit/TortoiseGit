@@ -20,7 +20,6 @@
 // GitLogList.cpp : implementation file
 //
 #include "stdafx.h"
-#include "resource.h"
 #include "GitLogListBase.h"
 #include "IconMenu.h"
 #include "GitProgressDlg.h"
