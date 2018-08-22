@@ -297,8 +297,7 @@ int git_free_commit(GIT_COMMIT *commit)
 
 #pragma warning(push)
 #pragma warning(disable: 4090)
-	if (commit->buffer)
-		free(commit->buffer);
+	free(commit->buffer);
 #pragma warning(pop)
 
 	p->object.parsed = 0;
@@ -472,8 +471,7 @@ int git_close_log(GIT_LOG handle)
 	{
 		struct rev_info *p_Rev;
 		p_Rev=(struct rev_info *)handle;
-		if(p_Rev->pPrivate)
-			free(p_Rev->pPrivate);
+		free(p_Rev->pPrivate);
 		free(handle);
 	}
 	free_all_pack();
@@ -514,8 +512,7 @@ int git_close_diff(GIT_DIFF handle)
 	{
 		struct rev_info *p_Rev;
 		p_Rev=(struct rev_info *)handle;
-		if(p_Rev->pPrivate)
-			free(p_Rev->pPrivate);
+		free(p_Rev->pPrivate);
 		free(handle);
 	}
 	return 0;
@@ -753,8 +750,7 @@ int git_run_cmd(char *cmd, char *arg)
 
 			ret = commands[i].fn(argc, argv, NULL);
 
-			if(argv)
-				free(argv);
+			free(argv);
 
 			discard_cache();
 			free_all_pack();
