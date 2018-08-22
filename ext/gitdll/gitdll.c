@@ -316,6 +316,8 @@ static char** strtoargv(const char* arg, int* size)
 	char* p;
 	int i=0;
 
+	assert(arg && parg);
+
 	while (*parg)
 	{
 		if (*parg == ' ')
@@ -389,9 +391,7 @@ int git_open_log(GIT_LOG* handle, const char* arg)
 		}
 	}
 
-	if(arg != NULL)
-		argv = strtoargv(arg,&argc);
-
+	argv = strtoargv(arg, &argc);
 	if (!argv)
 		return -1;
 
@@ -483,8 +483,7 @@ int git_open_diff(GIT_DIFF* diff, const char* arg)
 	char ** argv=0;
 	int argc=0;
 
-	if(arg != NULL)
-		argv = strtoargv(arg,&argc);
+	argv = strtoargv(arg, &argc);
 
 	p_Rev = malloc(sizeof(struct rev_info));
 	memset(p_Rev,0,sizeof(struct rev_info));
@@ -740,8 +739,7 @@ int git_run_cmd(char *cmd, const char *arg)
 		if(strcmp(cmd,commands[i].cmd)==0)
 		{
 			int ret;
-			if(arg != NULL)
-				argv = strtoargv(arg,&argc);
+			argv = strtoargv(arg,&argc);
 
 			ret = commands[i].fn(argc, argv, NULL);
 
