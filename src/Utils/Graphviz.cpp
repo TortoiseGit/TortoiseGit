@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2013-2014, 2016 - TortoiseGit
 
@@ -60,7 +60,7 @@ void Graphviz::BeginDrawTableNode(CString id, CString fontName, int fontSize, in
 		content.AppendFormat(L"fontsize=\"%d\"", fontSize);
 		hasAttr = true;
 	}
-		
+
 	if (hasAttr)
 		content.Append(L", ");
 	content.Append(L"color=transparent");

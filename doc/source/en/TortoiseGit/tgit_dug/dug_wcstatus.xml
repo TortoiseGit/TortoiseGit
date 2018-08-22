@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tgit-dug-wcstatus">
 	<title>Getting Status Information</title>
@@ -57,13 +57,13 @@
 			the icon changes to a yellow exclamation mark.
 		</para>
 		<para>
-			<graphic fileref="../images/ReadOnlyIcon.png"/> 
+			<graphic fileref="../images/ReadOnlyIcon.png"/>
 			Staged. If you use "git update-index" to tell git this file will be committed,
 			Git makes that file staged.
 		</para>
 		<!--
 		<para>
-			<graphic fileref="../images/LockedIcon.png"/> 
+			<graphic fileref="../images/LockedIcon.png"/>
 			If you hold a lock on a file, and the Git status is
 			<emphasis>normal</emphasis>, this icon overlay reminds you that you
 			should release the lock if you are not using it to allow others to
@@ -71,24 +71,24 @@
 		</para>
 		-->
 		<para>
-			<graphic fileref="../images/DeletedIcon.png"/> 
+			<graphic fileref="../images/DeletedIcon.png"/>
 			This icon shows you that some files or folders inside the current folder
 			have been scheduled to be <emphasis>deleted</emphasis> from version control
 			or a file under version control is missing in a folder.
 		</para>
 		<para>
-			<graphic fileref="../images/AddedIcon.png"/> 
+			<graphic fileref="../images/AddedIcon.png"/>
 			The plus sign tells you that a file or folder has been scheduled to be
 			<emphasis>added</emphasis> to version control.
 		</para>
 		<para>
-			<graphic fileref="../images/IgnoredIcon.png"/> 
+			<graphic fileref="../images/IgnoredIcon.png"/>
 			The bar sign tells you that a file or folder is
 			<emphasis>ignored</emphasis> for version control purposes.
 			This overlay is optional.
 		</para>
 		<para>
-			<graphic fileref="../images/UnversionedIcon.png"/> 
+			<graphic fileref="../images/UnversionedIcon.png"/>
 			This icon shows files and folders which are not under version control,
 			but have not been ignored.
 			This overlay is optional.
@@ -148,7 +148,7 @@
 			button only fetches the remote status with the checkout depth
 			of the working tree. If you want to see all files and folders
 			in the repository, even those you have not checked out, then you
-			have to hold down the <keycap>Shift</keycap> key when you 
+			have to hold down the <keycap>Shift</keycap> key when you
 			click on the <guibutton>Check Repository</guibutton> button.
 		</para>
 		-->
@@ -308,7 +308,7 @@
 				choose <guimenuitem>Diff</guimenuitem> from TortoiseGit's
 				context menu. The file clicked last (the one with the focus,
 				i.e. the dotted rectangle) will be regarded as the later
-				one. 
+				one.
 			</para>
 		</tip>
 	</sect2>

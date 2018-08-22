@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Module ID: hyperlink.cpp
  * Title    : CHyperLink definition.
  *
@@ -48,7 +48,7 @@ class CGlobalAtom
 public:
 	CGlobalAtom(void)
 	{ atom = GlobalAddAtom(TEXT("_Hyperlink_Object_Pointer_")
-	         TEXT("\\{AFEED740-CC6D-47c5-831D-9848FD916EEF}")); }
+			 TEXT("\\{AFEED740-CC6D-47c5-831D-9848FD916EEF}")); }
 	~CGlobalAtom(void)
 	{ DeleteAtom(atom); }
 
@@ -82,11 +82,11 @@ inline void INFLATERECT( PRECT r, int dx, int dy )
 
 CHyperLink::CHyperLink(void)
 {
-    m_bOverControl      = FALSE;                // Cursor not yet over control
-    m_bVisited          = FALSE;                // Hasn't been visited yet.
+	m_bOverControl      = FALSE;                // Cursor not yet over control
+	m_bVisited          = FALSE;                // Hasn't been visited yet.
 	m_StdFont           = nullptr;
 	m_pfnOrigCtlProc    = nullptr;
-    m_strURL            = nullptr;
+	m_strURL            = nullptr;
 }
 
 CHyperLink::~CHyperLink(void)
@@ -103,7 +103,7 @@ CHyperLink::~CHyperLink(void)
  */
 BOOL CHyperLink::ConvertStaticToHyperlink(HWND hwndCtl, LPCTSTR strURL)
 {
-    if( !(setURL(strURL)) )
+	if( !(setURL(strURL)) )
 		return FALSE;
 
 	// Subclass the parent so we can color the controls as we desire.
@@ -160,7 +160,7 @@ BOOL CHyperLink::setURL(LPCTSTR strURL)
 	if ((m_strURL = new TCHAR[lstrlen(strURL) + 1]) == nullptr)
 		return FALSE;
 
-    lstrcpy(m_strURL, strURL);
+	lstrcpy(m_strURL, strURL);
 
 	return TRUE;
 }
@@ -173,7 +173,7 @@ BOOL CHyperLink::setURL(LPCTSTR strURL)
  * Function CHyperLink::_HyperlinkParentProc
  */
 LRESULT CALLBACK CHyperLink::_HyperlinkParentProc(HWND hwnd, UINT message,
-		                                         WPARAM wParam, LPARAM lParam)
+												 WPARAM wParam, LPARAM lParam)
 {
 	WNDPROC pfnOrigProc = (WNDPROC) GetProp(hwnd, PROP_ORIGINAL_PROC);
 
@@ -188,7 +188,7 @@ LRESULT CALLBACK CHyperLink::_HyperlinkParentProc(HWND hwnd, UINT message,
 			if(pHyperLink)
 			{
 				LRESULT lr = CallWindowProc(pfnOrigProc, hwnd, message,
-					                        wParam, lParam);
+											wParam, lParam);
 				if (!pHyperLink->m_bVisited)
 				{
 					// This is the most common case for static branch prediction
@@ -236,7 +236,7 @@ inline void CHyperLink::DrawFocusRect(HWND hwnd)
 	HWND hwndParent = ::GetParent(hwnd);
 
 	if( hwndParent )
-    {
+	{
 		// calculate where to draw focus rectangle, in screen coords
 		RECT rc;
 		GetWindowRect(hwnd, &rc);
@@ -244,7 +244,7 @@ inline void CHyperLink::DrawFocusRect(HWND hwnd)
 		INFLATERECT(&rc,1,1);					 // add one pixel all around
 												 // convert to parent window client coords
 		::ScreenToClient(hwndParent, (LPPOINT)&rc);
-		::ScreenToClient(hwndParent, ((LPPOINT)&rc)+1);		
+		::ScreenToClient(hwndParent, ((LPPOINT)&rc)+1);
 		HDC dcParent = GetDC(hwndParent);		 // parent window's DC
 		::DrawFocusRect(dcParent, &rc);			 // draw it!
 		ReleaseDC(hwndParent,dcParent);
@@ -263,7 +263,7 @@ inline void CHyperLink::DrawFocusRect(HWND hwnd)
  *       as expected.
  */
 LRESULT CALLBACK CHyperLink::_HyperlinkProc(HWND hwnd, UINT message,
-		                                   WPARAM wParam, LPARAM lParam)
+										   WPARAM wParam, LPARAM lParam)
 {
 	auto pHyperLink = reinterpret_cast<CHyperLink*>(GetProp(hwnd, PROP_OBJECT_PTR));
 
@@ -289,7 +289,7 @@ LRESULT CALLBACK CHyperLink::_HyperlinkProc(HWND hwnd, UINT message,
 			{
 				pHyperLink->m_bOverControl = TRUE;
 				SendMessage(hwnd, WM_SETFONT,
-					        (WPARAM)CHyperLink::g_UnderlineFont, FALSE);
+							(WPARAM)CHyperLink::g_UnderlineFont, FALSE);
 				InvalidateRect(hwnd, nullptr, FALSE);
 				pHyperLink->OnSelect();
 				SetCapture(hwnd);
@@ -306,7 +306,7 @@ LRESULT CALLBACK CHyperLink::_HyperlinkProc(HWND hwnd, UINT message,
 			pHyperLink->m_bOverControl = FALSE;
 			pHyperLink->OnDeselect();
 			SendMessage(hwnd, WM_SETFONT,
-				        (WPARAM)pHyperLink->m_StdFont, FALSE);
+						(WPARAM)pHyperLink->m_StdFont, FALSE);
 			InvalidateRect(hwnd, nullptr, FALSE);
 			return 0;
 		}
@@ -354,7 +354,7 @@ LRESULT CALLBACK CHyperLink::_HyperlinkProc(HWND hwnd, UINT message,
 	}
 
 	return CallWindowProc(pHyperLink->m_pfnOrigCtlProc, hwnd, message,
-		                  wParam, lParam);
+						  wParam, lParam);
 }
 
 /*
@@ -376,7 +376,7 @@ void CHyperLink::createLinkCursor(void)
 {
 	g_hLinkCursor = ::LoadCursor(nullptr, IDC_HAND); // Load Windows' hand cursor
 	if( !g_hLinkCursor )    // if not available, use the standard Arrow cursor
-    {
+	{
 		/*
 		 * There exist an alternative way to get the IDC_HAND by loading winhlp32.exe but I
 		 * estimated that it didn't worth the trouble as IDC_HAND is supported since Win98.

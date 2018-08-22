@@ -1,4 +1,4 @@
-/*********************************************************************
+﻿/*********************************************************************
 CReaderWriterLock: A simple and fast reader-writer lock class in C++
 has characters of .NET ReaderWriterLock class
 Copyright (C) 2006 Quynh Nguyen Huu
@@ -74,41 +74,41 @@ class CReaderWriterLock;
 class CReaderWriterLockNonReentrance
 {
 public:
-    CReaderWriterLockNonReentrance() throw();
-    ~CReaderWriterLockNonReentrance() throw();
-    bool AcquireReaderLock(DWORD dwTimeout = INFINITE) throw();
-    void ReleaseReaderLock() throw();
-    bool AcquireWriterLock(DWORD dwTimeout = INFINITE) throw();
-    void ReleaseWriterLock() throw();
-    void DowngradeFromWriterLock() throw();
+	CReaderWriterLockNonReentrance() throw();
+	~CReaderWriterLockNonReentrance() throw();
+	bool AcquireReaderLock(DWORD dwTimeout = INFINITE) throw();
+	void ReleaseReaderLock() throw();
+	bool AcquireWriterLock(DWORD dwTimeout = INFINITE) throw();
+	void ReleaseWriterLock() throw();
+	void DowngradeFromWriterLock() throw();
 
-    // When a thread calls UpgradeToWriterLock, the reader lock is released,
-    // and the thread goes to the end of the writer queue. Thus, other threads
-    // might write to resources before this method returns
-    bool UpgradeToWriterLock(DWORD dwTimeout = INFINITE) throw();
+	// When a thread calls UpgradeToWriterLock, the reader lock is released,
+	// and the thread goes to the end of the writer queue. Thus, other threads
+	// might write to resources before this method returns
+	bool UpgradeToWriterLock(DWORD dwTimeout = INFINITE) throw();
 protected:
-    // A critical section to guard all the other members
-    mutable CRITICAL_SECTION m_cs;
-    // Auto-reset event, will be dynamically created/destroyed on demand
-    volatile HANDLE m_hSafeToWriteEvent;
-    // Manual-reset event, will be dynamically created/destroyed on demand
-    volatile HANDLE m_hSafeToReadEvent;
-    // Total number of writers on this object
-    volatile INT m_iNumOfWriter;
-    // Total number of readers have already owned this object
-    volatile INT m_iNumOfReaderEntered;
-    // Total number of readers are waiting to be owners of this object
-    volatile INT m_iNumOfReaderWaiting;
-    // Internal/Real implementation
-    void EnterCS() const throw();
-    void LeaveCS() const throw();
-    bool _ReaderWait(DWORD dwTimeout) throw();
-    bool _WriterWaitAndLeaveCSIfSuccess(DWORD dwTimeout) throw();
-    bool _UpgradeToWriterLockAndLeaveCS(DWORD dwTimeout) throw();
-    void _ReaderRelease() throw();
-    void _WriterRelease(bool blDowngrade) throw();
+	// A critical section to guard all the other members
+	mutable CRITICAL_SECTION m_cs;
+	// Auto-reset event, will be dynamically created/destroyed on demand
+	volatile HANDLE m_hSafeToWriteEvent;
+	// Manual-reset event, will be dynamically created/destroyed on demand
+	volatile HANDLE m_hSafeToReadEvent;
+	// Total number of writers on this object
+	volatile INT m_iNumOfWriter;
+	// Total number of readers have already owned this object
+	volatile INT m_iNumOfReaderEntered;
+	// Total number of readers are waiting to be owners of this object
+	volatile INT m_iNumOfReaderWaiting;
+	// Internal/Real implementation
+	void EnterCS() const throw();
+	void LeaveCS() const throw();
+	bool _ReaderWait(DWORD dwTimeout) throw();
+	bool _WriterWaitAndLeaveCSIfSuccess(DWORD dwTimeout) throw();
+	bool _UpgradeToWriterLockAndLeaveCS(DWORD dwTimeout) throw();
+	void _ReaderRelease() throw();
+	void _WriterRelease(bool blDowngrade) throw();
 
-    friend CReaderWriterLock;
+	friend CReaderWriterLock;
 };
 
 //////////////////////////////////////////////////////////////////
@@ -117,34 +117,34 @@ protected:
 class CReaderWriterLock
 {
 public:
-    CReaderWriterLock();
-    ~CReaderWriterLock();
+	CReaderWriterLock();
+	~CReaderWriterLock();
 
-    bool AcquireReaderLock(DWORD dwTimeout = INFINITE) throw();
-    void ReleaseReaderLock() throw();
+	bool AcquireReaderLock(DWORD dwTimeout = INFINITE) throw();
+	void ReleaseReaderLock() throw();
 
-    // If current thread was already a reader
-    // it will be upgraded to be writer automatically.
-    // BE CAREFUL! Other threads might write to the resource
-    // before current thread is successfully upgraded.
-    bool AcquireWriterLock(DWORD dwTimeout = INFINITE) throw();
-    void ReleaseWriterLock() throw();
+	// If current thread was already a reader
+	// it will be upgraded to be writer automatically.
+	// BE CAREFUL! Other threads might write to the resource
+	// before current thread is successfully upgraded.
+	bool AcquireWriterLock(DWORD dwTimeout = INFINITE) throw();
+	void ReleaseWriterLock() throw();
 
-    // Regardless of how many times current thread acquired reader
-    // or writer locks, a call to this method will release all locks.
-    // After that, any call to ReleaseWriterLock or ReleaseReaderLock
-    // will raise exception in DEBUG mode.
-    void ReleaseAllLocks() throw();
+	// Regardless of how many times current thread acquired reader
+	// or writer locks, a call to this method will release all locks.
+	// After that, any call to ReleaseWriterLock or ReleaseReaderLock
+	// will raise exception in DEBUG mode.
+	void ReleaseAllLocks() throw();
 
-    // Query thread's status
-    DWORD GetCurrentThreadStatus() const throw();
-    void GetCurrentThreadStatus(DWORD* lpdwReaderLockCounter,
-        DWORD* lpdwWriterLockCounter) const throw();
+	// Query thread's status
+	DWORD GetCurrentThreadStatus() const throw();
+	void GetCurrentThreadStatus(DWORD* lpdwReaderLockCounter,
+		DWORD* lpdwWriterLockCounter) const throw();
 protected:
-    CReaderWriterLockNonReentrance m_impl;
+	CReaderWriterLockNonReentrance m_impl;
 
-    typedef std::map<DWORD,DWORD> CMapThreadToState;
-    CMapThreadToState m_map;
+	typedef std::map<DWORD,DWORD> CMapThreadToState;
+	CMapThreadToState m_map;
 };
 
 //////////////////////////////////////////////////////////////////
@@ -158,100 +158,100 @@ template<typename T>
 class CAutoReadLockT
 {
 public:
-    CAutoReadLockT(T& objLock) throw() : m_lock(objLock)
-    {
-        m_lock.AcquireReaderLock();
-    }
-    ~CAutoReadLockT() throw()
-    {
-        m_lock.ReleaseReaderLock();
-    }
+	CAutoReadLockT(T& objLock) throw() : m_lock(objLock)
+	{
+		m_lock.AcquireReaderLock();
+	}
+	~CAutoReadLockT() throw()
+	{
+		m_lock.ReleaseReaderLock();
+	}
 	CAutoReadLockT(CAutoReadLockT&) = delete;
 	CAutoReadLockT(CAutoReadLockT&& that) = default;
 	CAutoReadLockT& operator=(const CAutoReadLockT&) = delete;
 protected:
-    T& m_lock;
+	T& m_lock;
 };
 
 template<typename T>
 class CAutoWriteLockT
 {
 public :
-    CAutoWriteLockT(T& objLock) throw() : m_lock(objLock)
-    {
-        m_lock.AcquireWriterLock();
-    }
-    ~CAutoWriteLockT() throw()
-    {
-        m_lock.ReleaseWriterLock();
-    }
+	CAutoWriteLockT(T& objLock) throw() : m_lock(objLock)
+	{
+		m_lock.AcquireWriterLock();
+	}
+	~CAutoWriteLockT() throw()
+	{
+		m_lock.ReleaseWriterLock();
+	}
 	CAutoWriteLockT(CAutoWriteLockT&) = delete;
 	CAutoWriteLockT(CAutoWriteLockT&&) = default;
 	CAutoWriteLockT& operator=(const CAutoWriteLockT&) = delete;
 protected:
-    T& m_lock;
+	T& m_lock;
 };
 
 template<typename T>
 class CAutoReadWeakLockT
 {
 public:
-    CAutoReadWeakLockT(T& objLock, DWORD timeout = 1) throw() : m_lock(objLock)
-    {
-        isAcquired = m_lock.AcquireReaderLock(timeout);
-    }
-    ~CAutoReadWeakLockT() throw()
-    {
-        if (isAcquired)
-            m_lock.ReleaseReaderLock();
-    }
-    bool IsAcquired() const
-    {
-        return isAcquired;
-    }
+	CAutoReadWeakLockT(T& objLock, DWORD timeout = 1) throw() : m_lock(objLock)
+	{
+		isAcquired = m_lock.AcquireReaderLock(timeout);
+	}
+	~CAutoReadWeakLockT() throw()
+	{
+		if (isAcquired)
+			m_lock.ReleaseReaderLock();
+	}
+	bool IsAcquired() const
+	{
+		return isAcquired;
+	}
 	CAutoReadWeakLockT(CAutoReadWeakLockT&) = delete;
 	CAutoReadWeakLockT(CAutoReadWeakLockT&&) = default;
 	CAutoReadWeakLockT& operator=(const CAutoReadWeakLockT&) = delete;
 protected:
-    T& m_lock;
-    bool isAcquired;
+	T& m_lock;
+	bool isAcquired;
 };
 
 template<typename T>
 class CAutoWriteWeakLockT
 {
 public :
-    CAutoWriteWeakLockT(T& objLock, DWORD timeout = 1) throw() : m_lock(objLock)
-    {
-        isAcquired = m_lock.AcquireWriterLock(timeout);
-    }
-    ~CAutoWriteWeakLockT() throw()
-    {
-        release();
-    }
-    void Release()
-    {
-        release();
-    }
-    bool IsAcquired() const
-    {
-        return isAcquired;
-    }
+	CAutoWriteWeakLockT(T& objLock, DWORD timeout = 1) throw() : m_lock(objLock)
+	{
+		isAcquired = m_lock.AcquireWriterLock(timeout);
+	}
+	~CAutoWriteWeakLockT() throw()
+	{
+		release();
+	}
+	void Release()
+	{
+		release();
+	}
+	bool IsAcquired() const
+	{
+		return isAcquired;
+	}
 	CAutoWriteWeakLockT(CAutoWriteWeakLockT&) = delete;
 	CAutoWriteWeakLockT(CAutoWriteWeakLockT&&) = default;
 	CAutoWriteWeakLockT& operator=(const CAutoWriteWeakLockT&) = delete;
 protected:
-    T& m_lock;
-    bool isAcquired;
+	T& m_lock;
+	bool isAcquired;
 
-    void release()
-    {
-        if (isAcquired)
-        {
-            m_lock.ReleaseWriterLock();
-            isAcquired = false;
-        }
-    }
+	void release()
+	{
+		if (isAcquired)
+		{
+			m_lock.ReleaseWriterLock();
+			isAcquired = false;
+		}
+	}
 };
 
 //////////////////////////////////////////////////////////////////
@@ -266,11 +266,11 @@ typedef CAutoWriteWeakLockT<CReaderWriterLock> CAutoWriteWeakLock;
 // Inline methods
 
 __forceinline
-    void CReaderWriterLockNonReentrance::EnterCS() const throw() {
-        ::EnterCriticalSection(&m_cs);
+	void CReaderWriterLockNonReentrance::EnterCS() const throw() {
+		::EnterCriticalSection(&m_cs);
 }
 
 __forceinline
-    void CReaderWriterLockNonReentrance::LeaveCS() const throw(){
-        ::LeaveCriticalSection(&m_cs);
+	void CReaderWriterLockNonReentrance::LeaveCS() const throw(){
+		::LeaveCriticalSection(&m_cs);
 }

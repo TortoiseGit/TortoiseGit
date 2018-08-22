@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE appendix SYSTEM "../../dtd/dblite.dtd">
 <appendix id="tgit-automation">
 	<title>Automating TortoiseGit</title>
@@ -32,8 +32,8 @@
 			The TortoiseGit GUI program is called <literal>TortoiseGitProc.exe</literal>.
 			All commands are specified with the parameter <option>/command:abcd</option>
 			where <literal>abcd</literal> is the required command name. Most of these
-			commands need at least one path argument, which is given with 
-			<option>/path:"some\path"</option>. In the following table the command 
+			commands need at least one path argument, which is given with
+			<option>/path:"some\path"</option>. In the following table the command
 			refers to the <option>/command:abcd</option> parameter and the path
 			refers to the <option>/path:"some\path"</option> parameter.
 		</para>
@@ -220,10 +220,10 @@ Don't touch these lines:
 								The <option>/url</option> specifies the URL to clone from.
 								The <option>/path</option> specifies the target directory
 								to clone to.
-								If <option>/exactpath</option> is not specfied, the 
+								If <option>/exactpath</option> is not specfied, the
 								repository name (without trailing .git) will be appended to
 								target directory. This is the default behaviour.
-								If <option>/exactpath</option> is specfied, the 
+								If <option>/exactpath</option> is specfied, the
 								exact <option>/path</option> is considered the target directory,
 								without appending repository name to it.
 							</entry>
@@ -292,8 +292,8 @@ Don't touch these lines:
 						<row>
 							<entry condition="pot">:resolve</entry>
 							<entry>
-								Marks a conflicted file specified in 
-								<option>/path</option> as resolved. If 
+								Marks a conflicted file specified in
+								<option>/path</option> as resolved. If
 								<option>/noquestion</option> is given, then resolving
 								is done without asking the user first if it really
 								should be done.
@@ -386,7 +386,7 @@ Don't touch these lines:
 								Add <option>/line:NN</option> to get scroll to the mentioned line.
 <!--
 								If <option>/blame</option> is set and <option>/path2</option>
-								is not set, then the diff is done by first blaming 
+								is not set, then the diff is done by first blaming
 								the files with the given revisions.
 -->
 							</entry>
@@ -396,9 +396,9 @@ Don't touch these lines:
 							<entry>
 								<para>
 								Depending on revisions to compare and the path, this
-								either shows a unified diff (if the option <option>unified</option> is set), 
-								a dialog with a list of files that have changed (filtered by a possibly entered subpath) or if 
-								the path point to a file starts the diff viewer for 
+								either shows a unified diff (if the option <option>unified</option> is set),
+								a dialog with a list of files that have changed (filtered by a possibly entered subpath) or if
+								the path point to a file starts the diff viewer for
 								those the file in the different revisions.
 								Use <option>/revision1:xxx</option> and <option>/revision2:xxx</option> to specify the revisions to compare,
 								whereas <option>/revision1:xxx</option> indicates the base revision to compare with.
@@ -449,7 +449,7 @@ Don't touch these lines:
 							<entry condition="pot">:blame</entry>
 							<entry>
 								<para>
-								Opens <link linkend="tgit-dug-blame">TortoiseGitBlame</link> for the file specified 
+								Opens <link linkend="tgit-dug-blame">TortoiseGitBlame</link> for the file specified
 								in <option>/path</option>.
 								</para>
 								<para>

@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2012, 2015-2016 - TortoiseGit
 // Copyright (C) 2010-2012, 2016 - TortoiseSVN
@@ -43,43 +43,43 @@ DEFINE_GUID(FOLDERTYPEID_GITWC,       0xb118c031, 0xa977, 0x4a67, 0x93, 0x44, 0x
  */
 void EnsureGitLibrary(bool bCreate /* = true*/)
 {
-    // when running the 32-bit version of TortoiseProc on x64 OS,
-    // we must not create the library! This would break
-    // the library in the x64 explorer.
-    BOOL bIsWow64 = FALSE;
-    IsWow64Process(GetCurrentProcess(), &bIsWow64);
-    if (bIsWow64)
-        return;
+	// when running the 32-bit version of TortoiseProc on x64 OS,
+	// we must not create the library! This would break
+	// the library in the x64 explorer.
+	BOOL bIsWow64 = FALSE;
+	IsWow64Process(GetCurrentProcess(), &bIsWow64);
+	if (bIsWow64)
+		return;
 
-    CComPtr<IShellLibrary> pLibrary;
-    if (FAILED(OpenShellLibrary(L"Git", &pLibrary)))
-    {
-        if (!bCreate)
-            return;
-        if (FAILED(SHCreateLibrary(IID_PPV_ARGS(&pLibrary))))
-            return;
+	CComPtr<IShellLibrary> pLibrary;
+	if (FAILED(OpenShellLibrary(L"Git", &pLibrary)))
+	{
+		if (!bCreate)
+			return;
+		if (FAILED(SHCreateLibrary(IID_PPV_ARGS(&pLibrary))))
+			return;
 
-        // Save the new library under the user's Libraries folder.
-        CComPtr<IShellItem> pSavedTo;
-        if (FAILED(pLibrary->SaveInKnownFolder(FOLDERID_UsersLibraries, L"Git", LSF_OVERRIDEEXISTING, &pSavedTo)))
-            return;
-    }
+		// Save the new library under the user's Libraries folder.
+		CComPtr<IShellItem> pSavedTo;
+		if (FAILED(pLibrary->SaveInKnownFolder(FOLDERID_UsersLibraries, L"Git", LSF_OVERRIDEEXISTING, &pSavedTo)))
+			return;
+	}
 
-    if (SUCCEEDED(pLibrary->SetFolderType(SysInfo::Instance().IsWin8OrLater() ? FOLDERTYPEID_Documents : FOLDERTYPEID_GITWC)))
-    {
-        // create the path for the icon
-        CString path;
-        CString appDir = CPathUtils::GetAppDirectory();
-        if (appDir.GetLength() < MAX_PATH)
-        {
-            TCHAR buf[MAX_PATH] = {0};
-            PathCanonicalize(buf, (LPCTSTR)appDir);
-            appDir = buf;
-        }
-        path.Format(L"%s%s,-%d", (LPCTSTR)appDir, L"TortoiseGitProc.exe", SysInfo::Instance().IsWin10() ? IDI_LIBRARY_WIN10 : IDI_LIBRARY);
-        pLibrary->SetIcon((LPCTSTR)path);
-        pLibrary->Commit();
-    }
+	if (SUCCEEDED(pLibrary->SetFolderType(SysInfo::Instance().IsWin8OrLater() ? FOLDERTYPEID_Documents : FOLDERTYPEID_GITWC)))
+	{
+		// create the path for the icon
+		CString path;
+		CString appDir = CPathUtils::GetAppDirectory();
+		if (appDir.GetLength() < MAX_PATH)
+		{
+			TCHAR buf[MAX_PATH] = {0};
+			PathCanonicalize(buf, (LPCTSTR)appDir);
+			appDir = buf;
+		}
+		path.Format(L"%s%s,-%d", (LPCTSTR)appDir, L"TortoiseGitProc.exe", SysInfo::Instance().IsWin10() ? IDI_LIBRARY_WIN10 : IDI_LIBRARY);
+		pLibrary->SetIcon((LPCTSTR)path);
+		pLibrary->Commit();
+	}
 }
 
 /**
@@ -97,18 +97,18 @@ void EnsureGitLibrary(bool bCreate /* = true*/)
  */
 HRESULT OpenShellLibrary(LPWSTR pwszLibraryName, IShellLibrary** ppShellLib)
 {
-    HRESULT hr;
-    *ppShellLib = nullptr;
+	HRESULT hr;
+	*ppShellLib = nullptr;
 
-    CComPtr<IShellItem2> pShellItem;
-    hr = GetShellLibraryItem(pwszLibraryName, &pShellItem);
-    if (FAILED(hr))
-        return hr;
+	CComPtr<IShellItem2> pShellItem;
+	hr = GetShellLibraryItem(pwszLibraryName, &pShellItem);
+	if (FAILED(hr))
+		return hr;
 
-    // Get the shell library object from the shell item with a read and write permissions
-    hr = SHLoadLibraryFromItem(pShellItem, STGM_READWRITE, IID_PPV_ARGS(ppShellLib));
+	// Get the shell library object from the shell item with a read and write permissions
+	hr = SHLoadLibraryFromItem(pShellItem, STGM_READWRITE, IID_PPV_ARGS(ppShellLib));
 
-    return hr;
+	return hr;
 }
 
 /**
@@ -125,11 +125,11 @@ HRESULT OpenShellLibrary(LPWSTR pwszLibraryName, IShellLibrary** ppShellLib)
  */
 HRESULT GetShellLibraryItem(LPWSTR pwszLibraryName, IShellItem2** ppShellItem)
 {
-    *ppShellItem = nullptr;
+	*ppShellItem = nullptr;
 
-    // Create the real library file name
-    WCHAR wszRealLibraryName[MAX_PATH] = {0};
-    swprintf_s(wszRealLibraryName, L"%s%s", pwszLibraryName, L".library-ms");
+	// Create the real library file name
+	WCHAR wszRealLibraryName[MAX_PATH] = {0};
+	swprintf_s(wszRealLibraryName, L"%s%s", pwszLibraryName, L".library-ms");
 
-    return SHCreateItemInKnownFolder(FOLDERID_UsersLibraries, KF_FLAG_DEFAULT_PATH | KF_FLAG_NO_ALIAS, wszRealLibraryName, IID_PPV_ARGS(ppShellItem));
+	return SHCreateItemInKnownFolder(FOLDERID_UsersLibraries, KF_FLAG_DEFAULT_PATH | KF_FLAG_NO_ALIAS, wszRealLibraryName, IID_PPV_ARGS(ppShellItem));
 }

@@ -1,30 +1,30 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tgit-dug-rebase">
-  <title>Rebase</title>
-  <?dbhh topicname="HIDD_REBASE"?>
-  <indexterm>
-    <primary>Rebase</primary>
-  </indexterm>
-  <para>
-	Rebase is quite complex and it alters/rewrites the history of a repository. Please make sure you understood its principles before using it (for general hints where to find more information about Git and rebasing see <xref linkend="tgit-preface-readingguide"/> and especially <xref linkend="git-rebase(1)"/>).
-  </para>
-  <para>
-	<menuchoice>
-		<guimenu>TortoiseGit</guimenu>
-		<guimenuitem>Rebase</guimenuitem>
-	</menuchoice>
-  </para>
-  <para>
+	<title>Rebase</title>
+	<?dbhh topicname="HIDD_REBASE"?>
+	<indexterm>
+		<primary>Rebase</primary>
+	</indexterm>
+	<para>
+		Rebase is quite complex and it alters/rewrites the history of a repository. Please make sure you understood its principles before using it (for general hints where to find more information about Git and rebasing see <xref linkend="tgit-preface-readingguide"/> and especially <xref linkend="git-rebase(1)"/>).
+	</para>
+	<para>
+		<menuchoice>
+			<guimenu>TortoiseGit</guimenu>
+			<guimenuitem>Rebase</guimenuitem>
+		</menuchoice>
+	</para>
+	<para>
 		The Rebase dialog will be shown.
 		<figure id="tgit-dug-rebase-dia-rebasedialog">
 			<title>Rebase dialog</title>
 			<graphic fileref="../images/GitRebase.png"/>
 		</figure>
-  </para>
-  <para>
-	Rebasing commits takes places from the bottom of the list to the top (in ascending order of the ID column). For example, <option>squash</option> means that the commit gets squashed/combined with the previous commit(s) which are located below in the list (with a lower ID).
-  </para>
+	</para>
+	<para>
+		Rebasing commits takes places from the bottom of the list to the top (in ascending order of the ID column). For example, <option>squash</option> means that the commit gets squashed/combined with the previous commit(s) which are located below in the list (with a lower ID).
+	</para>
 	<tip>
 		<para>
 			Instead of setting <option>pick</option>, <option>skip</option>, <option>edit</option>, <option>squash</option> by using the context-menu, you can also use the following keys:
@@ -34,16 +34,16 @@
 	<tip>
 		<para>
 			There is a button that swaps branch and upstream.
-			Assume you are currently working on <literal>master</literal> branch, 
+			Assume you are currently working on <literal>master</literal> branch,
 			and wish to rebase <literal>feature</literal> branch onto <literal>master</literal>.
-			Instead of switching to <literal>feature</literal> in advance, 
-			select the commit of <literal>feature</literal> in log list, 
+			Instead of switching to <literal>feature</literal> in advance,
+			select the commit of <literal>feature</literal> in log list,
 			<menuchoice>
 				<guimenu>Context Menu</guimenu>
 				<guimenuitem>Rebase</guimenuitem>
 			</menuchoice>
 			and click this swap button.
-			TortoiseGit's rebase moves <literal>feature</literal> to <literal>master</literal> directly, then 
+			TortoiseGit's rebase moves <literal>feature</literal> to <literal>master</literal> directly, then
 			cherry-picks the commits. This approach touches fewer files and runs faster.
 		</para>
 	</tip>
@@ -55,7 +55,7 @@
 	<important>
 		<title>Conflicts</title>
 		<para>
-			Although major merge work is done by git automatically while rebasing, a conflict may happen during rebase (i.e., a file was modified in both branches, the one you are rebasing one and the on which you are rebasing), 
+			Although major merge work is done by git automatically while rebasing, a conflict may happen during rebase (i.e., a file was modified in both branches, the one you are rebasing one and the on which you are rebasing),
 			please see <xref linkend="tgit-dug-conflicts"/> on how to resolve conflicts.
 		</para>
 		<para>

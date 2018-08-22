@@ -38,8 +38,8 @@
 	<xi:include href="./tgit_gitwcrev.xml"/>
 	<xi:include href="./tgit_bugtraqprovider.xml"/>
 	<xi:include href="./tgit_app_admins.xml" />
-	<xi:include href="./tgit_app_automation.xml"/>	
-	
+	<xi:include href="./tgit_app_automation.xml"/>
+
 	<xi:include href="./tgit_app_internals.xml"/>
 
 	<xi:include href="./tgit_app_ssh.xml"/>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE variablelist SYSTEM "../../../dtd/dblite.dtd">
 <variablelist>
 	<varlistentry>
@@ -9,7 +9,7 @@
 			</para>
 		</listitem>
 	</varlistentry>
-				
+
 	<varlistentry>
 		<term><guilabel>Branch</guilabel></term>
 		<listitem>
@@ -18,7 +18,7 @@
 			</para>
 		</listitem>
 	</varlistentry>
-	
+
 	<varlistentry>
 		<term><guilabel>Tag</guilabel></term>
 		<listitem>
@@ -27,16 +27,16 @@
 			</para>
 		</listitem>
 	</varlistentry>
-	
+
 	<varlistentry>
 		<term><guilabel>Commit</guilabel></term>
 		<listitem>
 			<para>
 				Any commit, you click <guibutton>...</guibutton> to launch log
-				dialog to choose commit. You also can input commit hash, or 
+				dialog to choose commit. You also can input commit hash, or
 				friendly commit name, such as <literal>HEAD~4</literal>.
 			</para>
 		</listitem>
 	</varlistentry>
-	
+
 </variablelist>

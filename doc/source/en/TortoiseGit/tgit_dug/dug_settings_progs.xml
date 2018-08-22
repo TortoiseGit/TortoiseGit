@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 <sect2 id="tgit-dug-settings-progs">
 	<title>External Program Settings</title>
@@ -106,7 +106,7 @@
 			The window titles are not pure filenames.
 			TortoiseGit treats that as a name to display and creates
 			the names accordingly. So e.g. if you're doing a
-			diff from a file in revision 123 with a file 
+			diff from a file in revision 123 with a file
 			in your working tree, the names will be
 			<filename>filename: revision 123</filename>
 			and

@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2013, 2016-2017 - TortoiseGit
 // Copyright (C) 2003-2006,2012 - Stefan Kueng
@@ -91,7 +91,7 @@ BOOL CCmdLineParser::Parse(LPCTSTR sCmdLine)
 					while (sVal[0] == L' ')
 						sVal = _wcsinc(sVal);
 				}
-				
+
 				LPCTSTR nextArg = wcspbrk(sVal, m_sDelims);
 
 				sQuote = wcspbrk(sVal, m_sQuotes);

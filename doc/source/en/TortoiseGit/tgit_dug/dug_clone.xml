@@ -1,50 +1,49 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tgit-dug-clone">
-  <title>Clone Repository</title>
-  <?dbhh topicname="HIDD_CLONE"?>
-  <indexterm>
-    <primary>Clone Repository</primary>
-  </indexterm>
-  <indexterm>
-    <primary>Repository</primary>
-  </indexterm>
-  <para>
-    This section talks about how to clone a git repository from an existing repository. This operation is used to get a full copy of a remote repository.
-    Cloning a git repository is very simple. At an empty directory, 
-    just use the explorer context menu and select
-    <menuchoice>
-      <guimenu>Git Clone...
-      </guimenu>
-    </menuchoice>. 
-  </para>
-  <para>
+	<title>Clone Repository</title>
+	<?dbhh topicname="HIDD_CLONE"?>
+	<indexterm>
+		<primary>Clone Repository</primary>
+	</indexterm>
+	<indexterm>
+		<primary>Repository</primary>
+	</indexterm>
+	<para>
+		This section talks about how to clone a git repository from an existing repository. This operation is used to get a full copy of a remote repository.
+		Cloning a git repository is very simple. At an empty directory,
+		just use the explorer context menu and select
+		<menuchoice>
+			<guimenu>Git Clone...</guimenu>
+	</menuchoice>.
+	</para>
+	<para>
 		The Clone Dialog will show.
 		<figure id="tgit-dug-clone-dia-clonedialog">
 			<title>Clone dialog</title>
 			<graphic fileref="../images/GitClone.png"/>
 		</figure>
-  </para>
-  <para>
-    <guilabel>URL:</guilabel> Input repository URL address, which you will clone <emphasis>from</emphasis>.
-    You can click <guibutton>Browse</guibutton> to browse directory.
-  </para>
-  <para>
-    <guilabel>Directory:</guilabel>Input your local directory, which you will clone <emphasis>to</emphasis>.
-    You can click <guibutton>Browse</guibutton> to browse directory. 
-  </para>
-  <para>
-    If you check the <guilabel>Load Putty Key</guilabel> checkbox, clone will auto load putty key file with Pageant.
-    You can click <guibutton>...</guibutton> to browse for a putty key file.
-  </para>
-  <para>
-    Clone will checkout current HEAD to work space automatically. 
-  </para>
-  <para>
-    Git clone supports http, git and ssh protocol. <xref linkend="tgit-dug-settings-network"/> shows how to choose SSH client.
-    OpenSSH, Plink or TortoiseGitPlink. 
-  </para>
-  <para>
-    You can find more information at <xref linkend="git-clone(1)"/>
-  </para>
+	</para>
+	<para>
+		<guilabel>URL:</guilabel> Input repository URL address, which you will clone <emphasis>from</emphasis>.
+		You can click <guibutton>Browse</guibutton> to browse directory.
+	</para>
+	<para>
+		<guilabel>Directory:</guilabel>Input your local directory, which you will clone <emphasis>to</emphasis>.
+		You can click <guibutton>Browse</guibutton> to browse directory.
+	</para>
+	<para>
+		If you check the <guilabel>Load Putty Key</guilabel> checkbox, clone will auto load putty key file with Pageant.
+		You can click <guibutton>...</guibutton> to browse for a putty key file.
+	</para>
+	<para>
+		Clone will checkout current HEAD to work space automatically.
+	</para>
+	<para>
+		Git clone supports http, git and ssh protocol. <xref linkend="tgit-dug-settings-network"/> shows how to choose SSH client.
+		OpenSSH, Plink or TortoiseGitPlink.
+	</para>
+	<para>
+		You can find more information at <xref linkend="git-clone(1)"/>
+	</para>
 </sect1>

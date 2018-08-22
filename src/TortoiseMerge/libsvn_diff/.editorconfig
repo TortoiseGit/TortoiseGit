@@ -1,0 +1,8 @@
+; Check http://editorconfig.org/ for more informations
+
+[*.{c,h}]
+end_of_line              = crlf
+trim_trailing_whitespace = true
+insert_final_newline     = true
+indent_style             = space
+indent_size              = 2

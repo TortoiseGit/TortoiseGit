@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2009-2013, 2016-2017 - TortoiseGit
 // Copyright (C) 2003-2006,2008-2011,2015 - TortoiseSVN
@@ -273,7 +273,7 @@ void CSysProgressDlg::Stop()
 			// the modal messagebox is shown over the parent window.
 			// This situation can even lead to the messagebox appearing *behind*
 			// the parent window (race condition)
-			// 
+			//
 			// So, to really ensure that the progress dialog is fully stopped
 			// and destroyed, we have to attach to its UI thread and handle
 			// all messages until there are no more messages: that's when

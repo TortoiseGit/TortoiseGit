@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tgit-dug-push">
 	<title>Push</title>
@@ -31,7 +31,7 @@
 			<guilabel>Local</guilabel>: The source branch which will be pushed to the other repository. If the current branch or the selected local branch has a remote tracked branch set, the remote branch and remote repository are automatically selected. A remote tracked branch can be set using the reference browser (cf. <xref linkend="tgit-dug-browse-ref"/>) or by using <guilabel>Set upstream/track remote branch</guilabel>. This can be overridden in this dialog by using one of the <guilabel>Always push to the selected remote ...</guilabel> options, so that for pushing a different branch is autoselected as for merging and pulling.
 		</para>
 		<para>
-			<guilabel>Remote</guilabel>: The remote branch of the other repository. 
+			<guilabel>Remote</guilabel>: The remote branch of the other repository.
 		</para>
 	</sect2>
 	<sect2>
@@ -40,10 +40,10 @@
 			<guilabel>Remote</guilabel>: Choose an already configured remote repository.
 		</para>
 		<para>
-			<guilabel>Arbitrary URL</guilabel>: The URL of a remote repository. 
+			<guilabel>Arbitrary URL</guilabel>: The URL of a remote repository.
 		</para>
 		<para>
-			You must push change to a bare repository. 
+			You must push change to a bare repository.
 			Pushing changes to repository which has a working tree can lead to unexpected results.
 		</para>
 	</sect2>

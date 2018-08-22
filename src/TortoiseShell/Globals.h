@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2012 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
@@ -84,10 +84,10 @@
  */
 enum FileState
 {
-    FileStateUncontrolled,
-    FileStateVersioned,
-    FileStateModified,
-    FileStateConflict,
+	FileStateUncontrolled,
+	FileStateVersioned,
+	FileStateModified,
+	FileStateConflict,
 	FileStateDeleted,
 	FileStateReadOnly,
 	FileStateLockedOverlay,

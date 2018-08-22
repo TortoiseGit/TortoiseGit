@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2017 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
@@ -197,10 +197,10 @@ void CSetMainPage::OnBnClickedChecknewerbutton()
 void CSetMainPage::OnBrowseDir()
 {
 	UpdateData(TRUE);
-	
+
 	if (!SelectFolder(GetSafeHwnd(), m_sMsysGitPath, m_sMsysGitExtranPath))
 		return;
-	
+
 	UpdateData(FALSE);
 	SetModified(TRUE);
 }

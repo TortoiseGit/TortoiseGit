@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tgit-dug-branchtag" xmlns:xi="http://www.w3.org/2001/XInclude">
 	<title>Branching/Tagging</title>
@@ -49,7 +49,7 @@
 			</figure>
 		</para>
 		<para>
-			<guilabel>Branch:</guilabel> input your branch name. 
+			<guilabel>Branch:</guilabel> input your branch name.
 		</para>
 		<para>
 			Creating a tag is very simple:
@@ -57,19 +57,19 @@
 				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Create Tag...</guimenuitem>
 			</menuchoice>
-			
+
 			<figure id="tgit-dug-branchtag-dia-2">
 				<title>The Tag Dialog</title>
 				<graphic fileref="../images/Tag.png"/>
 			</figure>
-			
+
 		</para>
 		<para>
-			<guilabel>Tag:</guilabel> input your tag name. 
+			<guilabel>Tag:</guilabel> input your tag name.
 		</para>
 		<para>
-			You can choose one commit that base on. 
-			<xi:include href="./dug_chooseversion.xml"/> 
+			You can choose one commit that base on.
+			<xi:include href="./dug_chooseversion.xml"/>
 		</para>
 		<para>
 			If you want your working tree to be switched to the newly created
@@ -106,7 +106,7 @@
 			</tip>
 		</para>
 		<para>
-			Press <guibutton>OK</guibutton> to create branch or tag at  
+			Press <guibutton>OK</guibutton> to create branch or tag at
 			<emphasis>local repository</emphasis>.
 		</para>
 		<para>

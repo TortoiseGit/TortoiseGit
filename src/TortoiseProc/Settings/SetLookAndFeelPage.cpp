@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2011-2016 - TortoiseGit
 // Copyright (C) 2003-2008, 2011, 2014 - TortoiseSVN
@@ -299,7 +299,7 @@ CSetExtMenu::CSetExtMenu()
 	: ISettingsPropPage(CSetExtMenu::IDD)
 {
 	ShellCache shell;
-	
+
 	m_bBlock = false;
 
 	m_regExtmenu = shell.menuextlow;

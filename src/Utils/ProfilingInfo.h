@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 // TortoiseGit - a Windows shell extension for easy version control
 
@@ -53,45 +53,43 @@ class CProfilingRecord
 {
 private:
 
-    /// identification
+	/// identification
 
-    const char* name;
-    const char* file;
-    int line;
+	const char* name;
+	const char* file;
+	int line;
 
-    /// collected profiling info
+	/// collected profiling info
 
-    size_t count;
-    unsigned __int64 sum;
-    unsigned __int64 minValue;
-    unsigned __int64 maxValue;
+	size_t count;
+	unsigned __int64 sum;
+	unsigned __int64 minValue;
+	unsigned __int64 maxValue;
 
 public:
 
-    /// construction
+	/// construction
 
-    CProfilingRecord ( const char* name
-                     , const char* file
-                     , int line);
+	CProfilingRecord ( const char* name, const char* file, int line);
 
-    /// record values
+	/// record values
 
-    void Add (unsigned __int64 value);
+	void Add (unsigned __int64 value);
 
-    /// modification
+	/// modification
 
-    void Reset();
+	void Reset();
 
-    /// data access
+	/// data access
 
 	const char* GetName() const {return name;}
 	const char* GetFile() const {return file;}
 	int GetLine() const {return line;}
 
 	size_t GetCount() const {return count;}
-    unsigned __int64 GetSum() const {return sum;}
+	unsigned __int64 GetSum() const {return sum;}
 	unsigned __int64 GetMinValue() const {return minValue;}
-    unsigned __int64 GetMaxValue() const {return maxValue;}
+	unsigned __int64 GetMaxValue() const {return maxValue;}
 };
 
 /**
@@ -103,17 +101,17 @@ class CRecordProfileEvent
 {
 private:
 
-    CProfilingRecord* record;
+	CProfilingRecord* record;
 
 	/// the initial CPU counter value
 
-    unsigned __int64 start;
+	unsigned __int64 start;
 
 public:
 
-    /// construction: start clock
+	/// construction: start clock
 
-    CRecordProfileEvent (CProfilingRecord* aRecord);
+	CRecordProfileEvent (CProfilingRecord* aRecord);
 
 	/// destruction: time interval to profiling record,
 	/// if Stop() had not been called before
@@ -130,8 +128,8 @@ public:
 /// construction / destruction
 
 inline CRecordProfileEvent::CRecordProfileEvent (CProfilingRecord* aRecord)
-    : record (aRecord)
-    , start (__rdtsc())
+	: record (aRecord)
+	, start (__rdtsc())
 {
 }
 
@@ -163,16 +161,16 @@ class CProfilingInfo
 {
 private:
 
-    typedef std::vector<CProfilingRecord*> TRecords;
-    TRecords records;
+	typedef std::vector<CProfilingRecord*> TRecords;
+	TRecords records;
 
-    /// construction / destruction
+	/// construction / destruction
 
-    CProfilingInfo();
-    ~CProfilingInfo(void);
-    // prevent cloning
-    CProfilingInfo(const CProfilingInfo&) = delete;
-    CProfilingInfo& operator=(const CProfilingInfo&) = delete;
+	CProfilingInfo();
+	~CProfilingInfo(void);
+	// prevent cloning
+	CProfilingInfo(const CProfilingInfo&) = delete;
+	CProfilingInfo& operator=(const CProfilingInfo&) = delete;
 
 	/// create report
 
@@ -180,15 +178,13 @@ private:
 
 public:
 
-    /// access to default instance
+	/// access to default instance
 
-    static CProfilingInfo* GetInstance();
+	static CProfilingInfo* GetInstance();
 
-    /// add a new record
+	/// add a new record
 
-    CProfilingRecord* Create ( const char* name
-                             , const char* file
-                             , int line);
+	CProfilingRecord* Create ( const char* name, const char* file, int line);
 };
 
 /**
@@ -202,16 +198,15 @@ public:
 /// measures the time from the point of usage to the end of the respective block
 
 #define PROFILE_BLOCK\
-    static CProfilingRecord* PROFILE_CONCAT(record,__LINE__) \
-        = CProfilingInfo::GetInstance()->Create(__FUNCTION__,__FILE__,__LINE__);\
-    CRecordProfileEvent PROFILE_CONCAT(profileSection,__LINE__) (PROFILE_CONCAT(record,__LINE__));
+	static CProfilingRecord* PROFILE_CONCAT(record,__LINE__) \
+		= CProfilingInfo::GetInstance()->Create(__FUNCTION__,__FILE__,__LINE__);\
+	CRecordProfileEvent PROFILE_CONCAT(profileSection,__LINE__) (PROFILE_CONCAT(record,__LINE__));
 
 /// measures the time taken to execute the respective code line
 
 #define PROFILE_LINE(line)\
-    static CProfilingRecord* PROFILE_CONCAT(record,__LINE__) \
-        = CProfilingInfo::GetInstance()->Create(__FUNCTION__,__FILE__,__LINE__);\
-    CRecordProfileEvent PROFILE_CONCAT(profileSection,__LINE__) (PROFILE_CONCAT(record,__LINE__));\
-    line;\
-    PROFILE_CONCAT(profileSection,__LINE__).Stop();
-
+	static CProfilingRecord* PROFILE_CONCAT(record,__LINE__) \
+		= CProfilingInfo::GetInstance()->Create(__FUNCTION__,__FILE__,__LINE__);\
+	CRecordProfileEvent PROFILE_CONCAT(profileSection,__LINE__) (PROFILE_CONCAT(record,__LINE__));\
+	line;\
+	PROFILE_CONCAT(profileSection,__LINE__).Stop();

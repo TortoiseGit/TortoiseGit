@@ -22,7 +22,7 @@
  * \brief helper class for the Windows Animation Manager.
  * Provides convenience methods to use the Windows Animation Manager using
  * timer events.
- * 
+ *
  * Example to animate transparency:
  * \code
  * // create the animation variable for the alpha value to animate.

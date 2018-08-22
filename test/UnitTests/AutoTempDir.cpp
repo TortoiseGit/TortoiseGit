@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2015-2016 - TortoiseGit
 
@@ -56,7 +56,7 @@ void CAutoTempDir::DeleteDirectoryRecursive(const CString& dir)
 				failed = !DeleteFile(file);
 			}
 		}
-	} while(FindNextFile(hp, &ffd)); 
+	} while(FindNextFile(hp, &ffd));
 	FindClose(hp);
 
 	RemoveDirectory(dir);

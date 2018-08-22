@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE appendix SYSTEM "../../dtd/dblite.dtd">
 <appendix id="tgit-ssh-howto">
 	<title>Tips and tricks for SSH/PuTTY</title>
@@ -19,9 +19,9 @@
 			<para>
 				Many people like to use Pageant for storing all their keys.
 				Because a PuTTY session is capable of storing a key, you don't
-				always need Pageant. But imagine you want to store different keys for several 
+				always need Pageant. But imagine you want to store different keys for several
 				different servers; in that case you would have to edit the
-				PuTTY session over and over again, depending on the server you are 
+				PuTTY session over and over again, depending on the server you are
 				trying to connect with. In this situation Pageant makes perfect sense,
 				because when PuTTY, Plink, TortoiseGitPlink or any other PuTTY-based tool
 				is trying to connect to an SSH server, it checks all private keys that
@@ -35,7 +35,7 @@
 			This section is based on the descriptions above and will bring some examples for the usage with TortoiseGit (and plink).
 		</para>
 		<para>
-			The examples assume that you want to clone <literal>git@example.com:/test.git</literal>. 
+			The examples assume that you want to clone <literal>git@example.com:/test.git</literal>.
 		</para>
 		<sect2 id="tgit-ssh-faq-defaultkey">
 			<title>How to use a default key for all SSH connections</title>
@@ -61,10 +61,10 @@
 					Start PuTTY, fill in the servername (<emphasis>example.com</emphasis> here) in the <guilabel>Host Name</guilabel>-field and put the servername followed by e.g. a number into the <guilabel>Saved Sessions</guilabel> field (e.g. <emphasis>example.com1</emphasis> or whatever you like). Change the port number to the number you need and click on <guibutton>Save</guibutton>.
 				</para>
 				<para>
-					Now, when you want to use this saved session use <emphasis>example.com1</emphasis> as the servername: Clone <emphasis>git@example.com1:/test.git</emphasis>. Plink detects that this is a saved session and loads the correct servername and port from the session. 
+					Now, when you want to use this saved session use <emphasis>example.com1</emphasis> as the servername: Clone <emphasis>git@example.com1:/test.git</emphasis>. Plink detects that this is a saved session and loads the correct servername and port from the session.
 				</para>
 				<para>
-					You can create several sessions for a server with different session names, but make sure you do not use the servername (<emphasis>example.com</emphasis> here) as the exact session name, otherwise these settings will be the default ones if you try to connect to the server (<emphasis>example.com</emphasis>). 
+					You can create several sessions for a server with different session names, but make sure you do not use the servername (<emphasis>example.com</emphasis> here) as the exact session name, otherwise these settings will be the default ones if you try to connect to the server (<emphasis>example.com</emphasis>).
 				</para>
 			</sect3>
 		</sect2>
@@ -75,7 +75,7 @@
 				Start PuTTY, fill in the servername (<emphasis>example.com</emphasis> here) in the <guilabel>Host Name</guilabel>-field and put the servername followed by e.g. a number into the <guilabel>Saved Sessions</guilabel> field (e.g. <emphasis>example.com1</emphasis> or whatever you like). Go to <guilabel>Connection</guilabel>-><guilabel>SSH</guilabel>-><guilabel>Auth</guilabel> and select the key which should be used for this connection. Now go back to <guilabel>Session</guilabel> and hit <guibutton>Save</guibutton>.
 			</para>
 			<para>
-				Now, when you want to use this saved session use <emphasis>example.com1</emphasis> as the servername: Clone <emphasis>git@example.com1:/test.git</emphasis>. Plink detects that this is a saved session and loads the correct servername and ssh key from the session. 
+				Now, when you want to use this saved session use <emphasis>example.com1</emphasis> as the servername: Clone <emphasis>git@example.com1:/test.git</emphasis>. Plink detects that this is a saved session and loads the correct servername and ssh key from the session.
 			</para>
 		</sect2>
 	</sect1>

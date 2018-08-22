@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tgit-dug-showlog">
 	<title>Log Dialog</title>
@@ -69,7 +69,7 @@
 				<listitem>
 					<para>
 						From the explorer context menu using
-				 		<menuchoice>
+						<menuchoice>
 							<guimenu>TortoiseGit</guimenu>
 							<guimenuitem>Show log...</guimenuitem>
 						</menuchoice>.
@@ -720,14 +720,14 @@
 		<para>
 			You can use the dropdown control on the upper right to select a navigation type
 			(e.g. Author Email, Parent 1, Selection history),
-			then use the <guibutton>Up</guibutton> 
+			then use the <guibutton>Up</guibutton>
 			and <guibutton>Down</guibutton> green buttons
 			to navigate through the commits which match the navigation type
 			relative to the current selected one.
 		</para>
 		<para>
 			Alternatively to the <guibutton>Up</guibutton>
-			and <guibutton>Down</guibutton> green buttons, 
+			and <guibutton>Down</guibutton> green buttons,
 			hotkeys <keycap>ALT</keycap>+<keycap>UP</keycap>
 			and <keycap>ALT</keycap>+<keycap>DOWN</keycap>
 			are also available.
@@ -746,11 +746,11 @@
 			on mouse are also available.
 		</para>
 		<para>
-			If you also press <keycap>SHIFT</keycap> 
-			you can navigate through the selection history 
+			If you also press <keycap>SHIFT</keycap>
+			you can navigate through the selection history
 			without selecting the last commits
 			(i.e., just scrolling to and highlighting them).
-			This helps you to navigate through commits 
+			This helps you to navigate through commits
 			and then select the commit(s) you really want to select
 			(e.g. you can compare the current selected commit
 			with the one you selected before).

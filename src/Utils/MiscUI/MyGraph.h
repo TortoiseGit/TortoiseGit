@@ -1,4 +1,4 @@
-// MyGraph.h
+﻿// MyGraph.h
 
 #if !defined(MYGRAPHH__9DB68B4D_3C7C_47E2_9F72_EEDA5D2CDBB0__INCLUDED_)
 #define MYGRAPHH__9DB68B4D_3C7C_47E2_9F72_EEDA5D2CDBB0__INCLUDED_
@@ -33,7 +33,7 @@ public:
 // Implementation.
 private:
 	int		GetMaxDataValue(bool bStackedGraph) const;
- 	int		GetAverageDataValue() const;
+	int		GetAverageDataValue() const;
 	int		GetNonZeroElementCount() const;
 	int		GetDataTotal() const;
 	void	SetTipRegion(int nGroup, const CRect& rc);

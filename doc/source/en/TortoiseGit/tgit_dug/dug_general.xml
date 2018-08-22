@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tgit-dug-general">
 	<title>Getting Started</title>
@@ -74,8 +74,8 @@
 				<graphic fileref="../images/RightDragMenu.png"/>
 			</figure>
 			Other commands are available as drag handlers, when you <action>right drag</action>
-			files or folders to a new location inside working trees or when you 
-			<action>right drag</action> a non-versioned file or folder into a directory 
+			files or folders to a new location inside working trees or when you
+			<action>right drag</action> a non-versioned file or folder into a directory
 			which is under version control.
 		</para>
 	</sect2>
@@ -168,7 +168,7 @@
 				see <xref linkend="tgit-dug-settings-network"/> and
 				<ulink url="https://stackoverflow.com/a/32115724/3906760">
 					<citetitle>this answer on StackOverflow</citetitle>
-				</ulink>. When OpenSSH is used, you can also make use of <filename>~/.ssh/config</filename> (cf. 
+				</ulink>. When OpenSSH is used, you can also make use of <filename>~/.ssh/config</filename> (cf.
 				<ulink url="https://stackoverflow.com/q/30320458/3906760">
 					<citetitle>this answer on StackOverflow</citetitle>
 				</ulink>).

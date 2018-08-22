@@ -1,503 +1,503 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 <sect2 id="tgit-dug-settings-registry">
-    <?dbhh topicname="HIDD_SETTINGS_CONFIG"?>
-    <title>Advanced Settings</title>
-    <indexterm>
-        <primary>registry</primary>
-    </indexterm>
-    <para>
-        A few infrequently used settings are available only in the advanced
-        page of the settings dialog. These settings modify the registry directly
-        and you have to know what each of these settings is used for and what
-        it does. Do not modify these settings unless you are sure you need to
-        change them.
-    </para>
-    <variablelist>
-        <varlistentry>
-            <term condition="pot">AutoCompleteMinChars</term>
-            <listitem>
-                <para>
-                    The minimum amount of chars from which the editor
-                    shows an auto-completion popup. The default value
-                    is <literal>3</literal>.
-                </para>
-            </listitem>
-        </varlistentry>
-        <varlistentry>
-            <term condition="pot">AutocompleteParseMaxSize</term>
-            <listitem>
-                <para>
-                    The auto-completion list shown in the commit message editor
-                    can parse source code files and displays methods and variable names.
-                    This limits files to be parsed by their size in bytes. The default value
-                    is <literal>300000</literal>.
-                </para>
-            </listitem>
-        </varlistentry>
-        <varlistentry>
-            <term condition="pot">AutocompleteParseUnversioned</term>
-            <listitem>
-                <para>
-                    The auto-completion list shown in the commit message editor
-                    can parse source code files and displays methods and variable names.
-                    By default only versioned files are parsed. Set this value
-                    to <literal>true</literal> in order to also parse unversioned files.
-                </para>
-            </listitem>
-        </varlistentry>
-        <varlistentry>
-            <term condition="pot">AutocompleteRemovesExtensions</term>
-            <listitem>
-                <para>
-                    The auto-completion list shown in the commit message editor
-                    displays the names of files listed for commit.
-                    To also include these names with extensions removed,
-                    set this value to <literal>true</literal>.
-                </para>
-            </listitem>
-        </varlistentry>
-        <varlistentry>
-            <term condition="pot">BlockStatus</term>
-            <listitem>
-                <para>
-                    If you don't want the explorer to update the status overlays
-                    while another TortoiseGit command is running
-                    (e.g. Update, Commit, ...) then set this value to
-                    <literal>true</literal>.
-                </para>
-            </listitem>
-        </varlistentry>
-        <varlistentry>
-            <term condition="pot">CacheTrayIcon</term>
-            <listitem>
-                <para>
-                    To add a cache tray icon for the TGitCache program, set
-                    this value to <literal>true</literal>.
-                    This is really only useful for developers as it allows
-                    you to terminate the program gracefully.
-                </para>
-            </listitem>
-        </varlistentry>
-        <varlistentry>
-            <term condition="pot">CacheSave</term>
-            <listitem>
-                <para>
-                    To disable loading and saving cache for the TGitCache program, set
-                    this value to <literal>false</literal>.
-                    This is useful if you do not want to write the cache to disk,
-                    which can be a large file.
-                    The default is <literal>true</literal>.
-                </para>
-            </listitem>
-        </varlistentry>
-        <varlistentry>
-            <term condition="pot">CygwinHack</term>
-            <listitem>
-                <para>
-                    This enables some workarounds which enables TortoiseGit to be used with Cygwin Git.
-                    Cygwin Git, however, is not officially supported by TortoiseGit.
-                    See <xref linkend="tgit-dug-settings-main"/> for more information.
-                    The default is <literal>false</literal>.
-                </para>
-            </listitem>
-        </varlistentry>
-        <varlistentry>
-            <term condition="pot">Debug</term>
-            <listitem>
-                <para>
-                    Set this to <literal>true</literal> if you want a dialog to
-                    pop up for every command showing the command line used to
-                    start TortoiseGitProc.exe.
-                </para>
-            </listitem>
-        </varlistentry>
-        <varlistentry>
-            <term condition="pot">DebugOutputString</term>
-            <listitem>
-                <para>
-                    Set this to <literal>true</literal> if you want TortoiseGit
-                    to print out debug messages during execution. The messages
-                    can be captured with special debugging tools only (like
-                    <ulink url="http://technet.microsoft.com/en-us/sysinternals/bb896647.aspx"><citetitle>Debug View</citetitle></ulink>
-                    from the SysInternals Suite).
-                </para>
-            </listitem>
-        </varlistentry>
-        <varlistentry>
-            <term condition="pot">DiffSimilarityIndexThreshold</term>
-            <listitem>
-                <para>
-                    This setting controls which similarity index threshold is passed to git diff (as the value for the parameters <literal>-M</literal> and <literal>-C</literal> in per cent, cf. <literal>--find-copies</literal> in <xref linkend="git-diff(1)"/>).
-                    The default value is <literal>50</literal>. You can disable finding renamed and copied
-                    files by setting this to <literal>0</literal>, for only detecting exact renames use <literal>100</literal>.
-                    You might need to remove the cache files <filename>tortoisegit.data</filename> and <filename>tortoisegit.index</filename> in the <filename>.git</filename> folders after changing this value.
-                </para>
-            </listitem>
-        </varlistentry>
+	<?dbhh topicname="HIDD_SETTINGS_CONFIG"?>
+	<title>Advanced Settings</title>
+	<indexterm>
+		<primary>registry</primary>
+	</indexterm>
+	<para>
+		A few infrequently used settings are available only in the advanced
+		page of the settings dialog. These settings modify the registry directly
+		and you have to know what each of these settings is used for and what
+		it does. Do not modify these settings unless you are sure you need to
+		change them.
+	</para>
+	<variablelist>
+		<varlistentry>
+			<term condition="pot">AutoCompleteMinChars</term>
+			<listitem>
+				<para>
+					The minimum amount of chars from which the editor
+					shows an auto-completion popup. The default value
+					is <literal>3</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term condition="pot">AutocompleteParseMaxSize</term>
+			<listitem>
+				<para>
+					The auto-completion list shown in the commit message editor
+					can parse source code files and displays methods and variable names.
+					This limits files to be parsed by their size in bytes. The default value
+					is <literal>300000</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term condition="pot">AutocompleteParseUnversioned</term>
+			<listitem>
+				<para>
+					The auto-completion list shown in the commit message editor
+					can parse source code files and displays methods and variable names.
+					By default only versioned files are parsed. Set this value
+					to <literal>true</literal> in order to also parse unversioned files.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term condition="pot">AutocompleteRemovesExtensions</term>
+			<listitem>
+				<para>
+					The auto-completion list shown in the commit message editor
+					displays the names of files listed for commit.
+					To also include these names with extensions removed,
+					set this value to <literal>true</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term condition="pot">BlockStatus</term>
+			<listitem>
+				<para>
+					If you don't want the explorer to update the status overlays
+					while another TortoiseGit command is running
+					(e.g. Update, Commit, ...) then set this value to
+					<literal>true</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term condition="pot">CacheTrayIcon</term>
+			<listitem>
+				<para>
+					To add a cache tray icon for the TGitCache program, set
+					this value to <literal>true</literal>.
+					This is really only useful for developers as it allows
+					you to terminate the program gracefully.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term condition="pot">CacheSave</term>
+			<listitem>
+				<para>
+					To disable loading and saving cache for the TGitCache program, set
+					this value to <literal>false</literal>.
+					This is useful if you do not want to write the cache to disk,
+					which can be a large file.
+					The default is <literal>true</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term condition="pot">CygwinHack</term>
+			<listitem>
+				<para>
+					This enables some workarounds which enables TortoiseGit to be used with Cygwin Git.
+					Cygwin Git, however, is not officially supported by TortoiseGit.
+					See <xref linkend="tgit-dug-settings-main"/> for more information.
+					The default is <literal>false</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term condition="pot">Debug</term>
+			<listitem>
+				<para>
+					Set this to <literal>true</literal> if you want a dialog to
+					pop up for every command showing the command line used to
+					start TortoiseGitProc.exe.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term condition="pot">DebugOutputString</term>
+			<listitem>
+				<para>
+					Set this to <literal>true</literal> if you want TortoiseGit
+					to print out debug messages during execution. The messages
+					can be captured with special debugging tools only (like
+					<ulink url="http://technet.microsoft.com/en-us/sysinternals/bb896647.aspx"><citetitle>Debug View</citetitle></ulink>
+					from the SysInternals Suite).
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term condition="pot">DiffSimilarityIndexThreshold</term>
+			<listitem>
+				<para>
+					This setting controls which similarity index threshold is passed to git diff (as the value for the parameters <literal>-M</literal> and <literal>-C</literal> in per cent, cf. <literal>--find-copies</literal> in <xref linkend="git-diff(1)"/>).
+					The default value is <literal>50</literal>. You can disable finding renamed and copied
+					files by setting this to <literal>0</literal>, for only detecting exact renames use <literal>100</literal>.
+					You might need to remove the cache files <filename>tortoisegit.data</filename> and <filename>tortoisegit.index</filename> in the <filename>.git</filename> folders after changing this value.
+				</para>
+			</listitem>
+		</varlistentry>
 <!--
-        <varlistentry>
-            <term condition="pot">DiffBlamesWithTortoiseMerge</term>
-            <listitem>
-                <para>
-                    TortoiseGit allows you to assign an external diff viewer.
-                    Most such viewers, however, are not suited for change blaming
-                    (<xref linkend="tgit-dug-blame-diffs"/>),
-                    so you might wish to fall back to TortoiseGitMerge in this case.
-                    To do so, set this value to <literal>true</literal>.
-                </para>
-            </listitem>
-        </varlistentry>
+		<varlistentry>
+			<term condition="pot">DiffBlamesWithTortoiseMerge</term>
+			<listitem>
+				<para>
+					TortoiseGit allows you to assign an external diff viewer.
+					Most such viewers, however, are not suited for change blaming
+					(<xref linkend="tgit-dug-blame-diffs"/>),
+					so you might wish to fall back to TortoiseGitMerge in this case.
+					To do so, set this value to <literal>true</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
 -->
-        <varlistentry>
-            <term condition="pot">FullRowSelect</term>
-            <listitem>
-                <para>
-                    The status list control which is used in various dialogs
-                    (e.g., commit, check-for-modifications, add, revert, ...)
-                    uses full row selection (i.e., if you select an entry, the
-                    full row is selected, not just the first column).
-                    This is fine, but the selected row then also covers the
-                    background image on the bottom right, which can look ugly.
-                    To disable full row select, set this value to
-                    <literal>false</literal>.
-                </para>
-            </listitem>
-        </varlistentry>
-        <varlistentry>
-            <term condition="pot">GroupTaskbarIconsPerRepo</term>
-            <listitem>
-                <para>
-                    This option determines how the Win7 taskbar icons of the various
-                    TortoiseGit dialogs and windows are grouped together.
-                </para>
-                <para>
-                    <orderedlist>
-                        <listitem>
-                            <para>
-                                The default value is <literal>3</literal>. With this setting, the
-                                icons are grouped together by application type per working tree.
-                                All dialogs from TortoiseGit of one working tree are grouped together,
-                                all windows from TortoiseGitMerge of one working tree are grouped together, ...
-                                For example, if you have
-                                a log dialog and a push dialog open for working tree
-                                <literal>C:\A</literal>, and a check-for-modifications
-                                dialog and a log dialog for working tree <literal>C:\B</literal>,
-                                then there are two application icon groups shown
-                                in the Win7 taskbar, one group for each working tree.
-                                But TortoiseGitMerge windows are not grouped together
-                                with TortoiseGit dialogs.
-                                <figure id="tgit-dug-settings-registry-task1-1">
-                                    <title>Taskbar with default grouping</title>
-                                    <graphic fileref="../images/TaskbarGroup1.png"/>
-                                </figure>
-                            </para>
-                        </listitem>
-                        <listitem>
-                            <para>
-                                If set to <literal>4</literal>, then the grouping works as with
-                                the setting set to <literal>3</literal>, except that TortoiseGit, TortoiseGitMerge,
-                                TortoiseGitBlame, TortoiseGitIDiff and TortoiseGitUDiff windows
-                                of one working tree
-                                are all grouped together. For example, if you have
-                                the log dialog open and then double click on
-                                a modified file, the opened TortoiseGitMerge diff window
-                                will be put in the same icon group on the taskbar
-                                as the log dialog icon.
-                                <figure id="tgit-dug-settings-registry-task2-1">
-                                    <title>Taskbar with repository grouping</title>
-                                    <graphic fileref="../images/TaskbarGroup2.png"/>
-                                </figure>
-                            </para>
-                        </listitem>
-                        <listitem>
-                            <para>
-                                If set to <literal>1</literal>, then the grouping works as with
-                                the setting set to <literal>3</literal> (grouping by application),
-                                except that grouping takes place
-                                independently of the working tree. This was the default
-                                before TGit 1.8.1.2.
-                            </para>
-                        </listitem>
-                        <listitem>
-                            <para>
-                                If set to <literal>2</literal>, then the grouping works as with
-                                the setting set to <literal>4</literal>, except that grouping takes place
-                                independently of the working tree. Thus all TortoiseGit
-                                icons are grouped to only show one icon.
-                            </para>
-                        </listitem>
-                    </orderedlist>
-                </para>
-            </listitem>
-        </varlistentry>
-        <varlistentry>
-            <term condition="pot">GroupTaskbarIconsPerRepoOverlay</term>
-            <listitem>
-                <para>
-                    This has no effect if the option <literal>GroupTaskbarIconsPerRepo</literal>
-                    is set to <literal>0</literal> (see above).
-                </para>
-                <para>
-                    If this option is set to <literal>true</literal>, then every
-                    icon on the Win7 taskbar shows a small colored rectangle overlay,
-                    indicating the working tree the dialogs/windows are used for.
-                    <figure id="tgit-dug-settings-registry-overlay-1">
-                        <title>Taskbar grouping with repository color overlays</title>
-                        <graphic fileref="../images/TaskbarGroupOverlay.png"/>
-                    </figure>
-                </para>
-            </listitem>
-        </varlistentry>
-        <varlistentry>
-            <term condition="pot">LogShowSuperProjectSubmodulePointer</term>
-            <listitem>
-                <para>
-                    This option defines whether the commit of a submodule to which the super repository points to is highlighted with a branch like label (cf. <ulink url="https://tortoisegit.org/issue/2826"><citetitle>issue #2826</citetitle></ulink>).
-                    The default is <literal>true</literal>.
-                </para>
-            </listitem>
-        </varlistentry>
-        <varlistentry>
-            <term condition="pot">MaxRefHistoryItems</term>
-            <listitem>
-                <para>
-                    This options sets the maximum browse ref history (Right click ref hyperlink to find it).
-                    The default is <literal>5</literal>.
-                </para>
-            </listitem>
-        </varlistentry>
-        <varlistentry>
-            <term condition="pot">Msys2Hack</term>
-            <listitem>
-                <para>
-                    This enables some workarounds which enables TortoiseGit to be used with Msys2 Git (do not enable this for the Git for Windows package!).
-                    Msys2 Git, however, is not officially supported by TortoiseGit.
-                    See <xref linkend="tgit-dug-settings-main"/> for more information.
-                    The default is <literal>false</literal>.
-                </para>
-            </listitem>
-        </varlistentry>
-        <varlistentry>
-            <term condition="pot">NamedRemoteFetchAll</term>
-            <listitem>
-                <para>
-                    When set to <literal>false</literal>, <literal>fetch</literal> and <literal>pull</literal> don't fetch the default refspec for a named remote.
-                    The default is <literal>true</literal>.
-                </para>
-            </listitem>
-        </varlistentry>
-        <varlistentry>
-            <term condition="pot">NoSortLocalBranchesFirst</term>
-            <listitem>
-                <para>
-                    This option toggles if the branches are sorted fully by name (<literal>true</literal>) or if local branches should appear above remote ones (git default, <literal>false</literal>).
-                    The default value is <literal>false</literal>.
-                </para>
-            </listitem>
-        </varlistentry>
-        <varlistentry>
-            <term condition="pot">NumDiffWarning</term>
-            <listitem>
-                <para>
-                    If you want to show the diff at once for more items
-                    than specified with this settings, a warning dialog
-                    is shown first. The default is <literal>10</literal>.
-                </para>
-            </listitem>
-        </varlistentry>
-        <varlistentry>
-            <term condition="pot">OverlaysCaseSensitive</term>
-            <listitem>
-                <para>
-                     Starting with TortoiseGit 2.4.0 the overlay icons are case sensitive on filenames. The change was introduced to fix several issues related to casing (such as <ulink url="https://tortoisegit.org/issue/2654"><citetitle>issue #2654</citetitle></ulink>) and git tools (such as <literal>git log</literal>) being case sensitive on paths.
-                     Upon <ulink url="https://tortoisegit.org/issue/2980"><citetitle>issue #2980</citetitle></ulink> this is configurable starting from TortoiseGit 2.5.0, however, enabling is not recommended.
-                     The default is <literal>true</literal>.
-                </para>
-            </listitem>
-        </varlistentry>
-        <varlistentry>
-            <term condition="pot">ProgressDlgLinesLimit</term>
-            <listitem>
-                <para>
-                    The Git progress dialog shows the output of the executed git.exe commands.
-                    The number of lines are limited for performance reasons. The default is <literal>50000</literal>, minimum is <literal>50</literal>.
-                </para>
-            </listitem>
-        </varlistentry>
-        <varlistentry>
-            <term condition="pot">ReaddUnselectedAddedFilesAfterCommit</term>
-            <listitem>
-                <para>
-                    This option toggles the re-adding of unselected added files after a commit. Up to
-                    TortoiseGit 1.7.10 added files which were not checked on a commit, were removed from
-                    the index and unversioned after the commit. Set this value to <literal>false</literal>
-                    to restore the old behavior.
-                    Set this value to <literal>true</literal> to readd these files again after the commit (default).
-                </para>
-            </listitem>
-        </varlistentry>
-        <varlistentry>
-            <term condition="pot">RefreshFileListAfterResolvingConflict</term>
-            <listitem>
-                <para>
-                    This option toggles whether the file lists of the commit dialog, resolve conflicts and rebase dialog automatically refresh
-                    when a conflict is marked as resolved. By default this is set to <literal>true</literal>, but in certain cases, e.g.
-                    when refreshing takes lots of time or you want to prevent the scrolling to the top, this can be set to <literal>false</literal>.
-                    However, then a manual refresh (e.g. by pressing <keycap>F5</keycap>) is necessary.
-                </para>
-            </listitem>
-        </varlistentry>
-        <varlistentry>
-            <term condition="pot">RememberFileListPosition</term>
-            <listitem>
-                <para>
-                    This option toggles whether the file lists of the add, commit, revert, resolve and rebase dialog remember the last selected
-                    line on a refresh. The default is <literal>true</literal>.
-                </para>
-            </listitem>
-        </varlistentry>
-        <varlistentry>
-            <term condition="pot">SanitizeCommitMsg</term>
-            <listitem>
-                <para>
-                    This option trims space, CR, LF characters at the end of commit messages you enter.
-                    This covers commit, rebase, notes, annotated tag.
-                    This value is <literal>true</literal> by default.
-                    If such trimming breaks your scripts/plugins,
-                    you can disable trimming by set it to <literal>false</literal>.
-                </para>
-            </listitem>
-        </varlistentry>
-        <varlistentry>
-            <term condition="pot">ScintillaDirect2D</term>
-            <listitem>
-                <para>
-                    This option enables the use of Direct2D accelerated
-                    drawing in the Scintilla control which is used
-                    as the edit box in e.g. the commit dialog (also for the attached patch window), the
-                    unified diff viewer and TortoiseGitBlame.
-                    With some graphic cards, however, this sometimes
-                    doesn't work properly so that the cursor to enter
-                    text isn't always visible, the redraw does not work
-                    or the background is flashing. It's disabled by default. You
-                    can turn this feature on by setting this value
-                    to <literal>true</literal>.
-                </para>
-            </listitem>
-        </varlistentry>
-        <varlistentry>
-            <term condition="pot">ShellMenuAccelerators</term>
-            <listitem>
-                <para>
-                    TortoiseGit uses accelerators for its explorer context menu
-                    entries. Since this can lead to doubled accelerators (e.g.
-                    the <literal>Git Commit</literal> has the <keycap>Alt-C</keycap>
-                    accelerator, but so does the <literal>Copy</literal> entry
-                    of explorer).
-                    If you don't want or need the accelerators of the TortoiseGit
-                    entries, set this value to <literal>false</literal>.
-                </para>
-            </listitem>
-        </varlistentry>
-        <varlistentry>
-            <term condition="pot">ShowContextMenuIcons</term>
-            <listitem>
-                <para>
-                    This can be useful if you use something other than the windows explorer
-                    or if you get problems with the context menu displaying incorrectly.
-                    Set this value to <literal>false</literal>
-                    if you don't want TortoiseGit to show icons for the
-                    shell context menu items.
-                    Set this value to <literal>true</literal> to show the icons again.
-                </para>
-            </listitem>
-        </varlistentry>
-        <varlistentry>
-            <term condition="pot">ShowAppContextMenuIcons</term>
-            <listitem>
-                <para>
-                    If you don't want TortoiseGit to show icons for the context menus
-                    in its own dialogs, set this value to <literal>false</literal>.
-                </para>
-            </listitem>
-        </varlistentry>
-        <varlistentry>
-            <term condition="pot">ShowListBackgroundImage</term>
-            <listitem>
-                <para>
-                    If you do not want to have a small background image in list controls (e.g. Commit Dialog)
-                    set this value to <literal>false</literal>.
-                    Set this value to <literal>true</literal> to show the images again (default).
-                </para>
-            </listitem>
-        </varlistentry>
-        <varlistentry>
-            <term condition="pot">SquashDate</term>
-            <listitem>
-                <para>
-                    Using this setting you can control which date is used on squashing commits.
-                    Set this value to <literal>1</literal> if you want to use the date of the latest commit.
-                    Set this value to <literal>2</literal> if you want to use the current date.
-                    Set this value to <literal>0</literal> to use the date of the first commit (into which all others are squashed, default).
-                </para>
-            </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term condition="pot">StyleCommitMessages</term>
-          <listitem>
-            <para>
-              The commit and log dialog use styling (e.g. bold, italic)
-              in commit messages
-              (see <xref linkend="tgit-dug-commit-log"/> for details).
-              If you don't want to do this, set the value to
-              <literal>false</literal>.
-            </para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-            <term condition="pot">TGitCacheCheckContentMaxSize</term>
-            <listitem>
-                <para>
-                    TGitCache checks the content of files by hashing them and comparing the SHA1 in order to
-                    calculate the file statuses if the timestamps (to index) mismatch.
-                    This option allows to restrict this behavior for files which do not exceed a specific size (in KiB).
-                    The default maximum file size is 10 MiB (i.e., 10 * 1024 KiB = <literal>10240</literal> KiB).
-                    Set this to 0 in order to make TGitCache only check the timestamps (as TortoiseGit 1.7.0 up to 1.7.12 did;
-                    before TortoiseGit 1.9.0.0 this was controlled by TGitCacheCheckContent).
-                    Disabling checking the file contents can lower disk access and CPU time of the TGitCache process, however, overlay
-                    accuracy might not be as accurate as with checking of the file contents enabled.
-                </para>
-            </listitem>
-        </varlistentry>
-        <varlistentry>
-            <term condition="pot">UseLibgit2</term>
-            <listitem>
-                <para>
-                    This makes TortoiseGit to use libgit2 as much as possible (e.g. for
-                    adding files to the index).
-                    If you do not want TortoiseGit to use libgit2 for file operations, set this value to <literal>false</literal>.
-                </para>
-            </listitem>
-        </varlistentry>
-        <varlistentry>
-            <term condition="pot">VersionCheck</term>
-            <listitem>
-                <para>
-                    TortoiseGit checks whether there's a new version available
-                    about once a week. If you don't want TortoiseGit to do this
-                    check, set this value to <literal>false</literal>.
-                </para>
-            </listitem>
-        </varlistentry>
-        <varlistentry>
-            <term condition="pot">VersionCheckPreview</term>
-            <listitem>
-                <para>
-                    Set this to <literal>true</literal> to make TortoiseGit also check for new preview releases.
-                    The default in all stable releases is <literal>false</literal>.
-                </para>
-            </listitem>
-        </varlistentry>
-    </variablelist>
+		<varlistentry>
+			<term condition="pot">FullRowSelect</term>
+			<listitem>
+				<para>
+					The status list control which is used in various dialogs
+					(e.g., commit, check-for-modifications, add, revert, ...)
+					uses full row selection (i.e., if you select an entry, the
+					full row is selected, not just the first column).
+					This is fine, but the selected row then also covers the
+					background image on the bottom right, which can look ugly.
+					To disable full row select, set this value to
+					<literal>false</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term condition="pot">GroupTaskbarIconsPerRepo</term>
+			<listitem>
+				<para>
+					This option determines how the Win7 taskbar icons of the various
+					TortoiseGit dialogs and windows are grouped together.
+				</para>
+				<para>
+					<orderedlist>
+						<listitem>
+							<para>
+								The default value is <literal>3</literal>. With this setting, the
+								icons are grouped together by application type per working tree.
+								All dialogs from TortoiseGit of one working tree are grouped together,
+								all windows from TortoiseGitMerge of one working tree are grouped together, ...
+								For example, if you have
+								a log dialog and a push dialog open for working tree
+								<literal>C:\A</literal>, and a check-for-modifications
+								dialog and a log dialog for working tree <literal>C:\B</literal>,
+								then there are two application icon groups shown
+								in the Win7 taskbar, one group for each working tree.
+								But TortoiseGitMerge windows are not grouped together
+								with TortoiseGit dialogs.
+								<figure id="tgit-dug-settings-registry-task1-1">
+									<title>Taskbar with default grouping</title>
+									<graphic fileref="../images/TaskbarGroup1.png"/>
+								</figure>
+							</para>
+						</listitem>
+						<listitem>
+							<para>
+								If set to <literal>4</literal>, then the grouping works as with
+								the setting set to <literal>3</literal>, except that TortoiseGit, TortoiseGitMerge,
+								TortoiseGitBlame, TortoiseGitIDiff and TortoiseGitUDiff windows
+								of one working tree
+								are all grouped together. For example, if you have
+								the log dialog open and then double click on
+								a modified file, the opened TortoiseGitMerge diff window
+								will be put in the same icon group on the taskbar
+								as the log dialog icon.
+								<figure id="tgit-dug-settings-registry-task2-1">
+									<title>Taskbar with repository grouping</title>
+									<graphic fileref="../images/TaskbarGroup2.png"/>
+								</figure>
+							</para>
+						</listitem>
+						<listitem>
+							<para>
+								If set to <literal>1</literal>, then the grouping works as with
+								the setting set to <literal>3</literal> (grouping by application),
+								except that grouping takes place
+								independently of the working tree. This was the default
+								before TGit 1.8.1.2.
+							</para>
+						</listitem>
+						<listitem>
+							<para>
+								If set to <literal>2</literal>, then the grouping works as with
+								the setting set to <literal>4</literal>, except that grouping takes place
+								independently of the working tree. Thus all TortoiseGit
+								icons are grouped to only show one icon.
+							</para>
+						</listitem>
+					</orderedlist>
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term condition="pot">GroupTaskbarIconsPerRepoOverlay</term>
+			<listitem>
+				<para>
+					This has no effect if the option <literal>GroupTaskbarIconsPerRepo</literal>
+					is set to <literal>0</literal> (see above).
+				</para>
+				<para>
+					If this option is set to <literal>true</literal>, then every
+					icon on the Win7 taskbar shows a small colored rectangle overlay,
+					indicating the working tree the dialogs/windows are used for.
+					<figure id="tgit-dug-settings-registry-overlay-1">
+						<title>Taskbar grouping with repository color overlays</title>
+						<graphic fileref="../images/TaskbarGroupOverlay.png"/>
+					</figure>
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term condition="pot">LogShowSuperProjectSubmodulePointer</term>
+			<listitem>
+				<para>
+					This option defines whether the commit of a submodule to which the super repository points to is highlighted with a branch like label (cf. <ulink url="https://tortoisegit.org/issue/2826"><citetitle>issue #2826</citetitle></ulink>).
+					The default is <literal>true</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term condition="pot">MaxRefHistoryItems</term>
+			<listitem>
+				<para>
+					This options sets the maximum browse ref history (Right click ref hyperlink to find it).
+					The default is <literal>5</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term condition="pot">Msys2Hack</term>
+			<listitem>
+				<para>
+					This enables some workarounds which enables TortoiseGit to be used with Msys2 Git (do not enable this for the Git for Windows package!).
+					Msys2 Git, however, is not officially supported by TortoiseGit.
+					See <xref linkend="tgit-dug-settings-main"/> for more information.
+					The default is <literal>false</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term condition="pot">NamedRemoteFetchAll</term>
+			<listitem>
+				<para>
+					When set to <literal>false</literal>, <literal>fetch</literal> and <literal>pull</literal> don't fetch the default refspec for a named remote.
+					The default is <literal>true</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term condition="pot">NoSortLocalBranchesFirst</term>
+			<listitem>
+				<para>
+					This option toggles if the branches are sorted fully by name (<literal>true</literal>) or if local branches should appear above remote ones (git default, <literal>false</literal>).
+					The default value is <literal>false</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term condition="pot">NumDiffWarning</term>
+			<listitem>
+				<para>
+					If you want to show the diff at once for more items
+					than specified with this settings, a warning dialog
+					is shown first. The default is <literal>10</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term condition="pot">OverlaysCaseSensitive</term>
+			<listitem>
+				<para>
+					 Starting with TortoiseGit 2.4.0 the overlay icons are case sensitive on filenames. The change was introduced to fix several issues related to casing (such as <ulink url="https://tortoisegit.org/issue/2654"><citetitle>issue #2654</citetitle></ulink>) and git tools (such as <literal>git log</literal>) being case sensitive on paths.
+					 Upon <ulink url="https://tortoisegit.org/issue/2980"><citetitle>issue #2980</citetitle></ulink> this is configurable starting from TortoiseGit 2.5.0, however, enabling is not recommended.
+					 The default is <literal>true</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term condition="pot">ProgressDlgLinesLimit</term>
+			<listitem>
+				<para>
+					The Git progress dialog shows the output of the executed git.exe commands.
+					The number of lines are limited for performance reasons. The default is <literal>50000</literal>, minimum is <literal>50</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term condition="pot">ReaddUnselectedAddedFilesAfterCommit</term>
+			<listitem>
+				<para>
+					This option toggles the re-adding of unselected added files after a commit. Up to
+					TortoiseGit 1.7.10 added files which were not checked on a commit, were removed from
+					the index and unversioned after the commit. Set this value to <literal>false</literal>
+					to restore the old behavior.
+					Set this value to <literal>true</literal> to readd these files again after the commit (default).
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term condition="pot">RefreshFileListAfterResolvingConflict</term>
+			<listitem>
+				<para>
+					This option toggles whether the file lists of the commit dialog, resolve conflicts and rebase dialog automatically refresh
+					when a conflict is marked as resolved. By default this is set to <literal>true</literal>, but in certain cases, e.g.
+					when refreshing takes lots of time or you want to prevent the scrolling to the top, this can be set to <literal>false</literal>.
+					However, then a manual refresh (e.g. by pressing <keycap>F5</keycap>) is necessary.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term condition="pot">RememberFileListPosition</term>
+			<listitem>
+				<para>
+					This option toggles whether the file lists of the add, commit, revert, resolve and rebase dialog remember the last selected
+					line on a refresh. The default is <literal>true</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term condition="pot">SanitizeCommitMsg</term>
+			<listitem>
+				<para>
+					This option trims space, CR, LF characters at the end of commit messages you enter.
+					This covers commit, rebase, notes, annotated tag.
+					This value is <literal>true</literal> by default.
+					If such trimming breaks your scripts/plugins,
+					you can disable trimming by set it to <literal>false</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term condition="pot">ScintillaDirect2D</term>
+			<listitem>
+				<para>
+					This option enables the use of Direct2D accelerated
+					drawing in the Scintilla control which is used
+					as the edit box in e.g. the commit dialog (also for the attached patch window), the
+					unified diff viewer and TortoiseGitBlame.
+					With some graphic cards, however, this sometimes
+					doesn't work properly so that the cursor to enter
+					text isn't always visible, the redraw does not work
+					or the background is flashing. It's disabled by default. You
+					can turn this feature on by setting this value
+					to <literal>true</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term condition="pot">ShellMenuAccelerators</term>
+			<listitem>
+				<para>
+					TortoiseGit uses accelerators for its explorer context menu
+					entries. Since this can lead to doubled accelerators (e.g.
+					the <literal>Git Commit</literal> has the <keycap>Alt-C</keycap>
+					accelerator, but so does the <literal>Copy</literal> entry
+					of explorer).
+					If you don't want or need the accelerators of the TortoiseGit
+					entries, set this value to <literal>false</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term condition="pot">ShowContextMenuIcons</term>
+			<listitem>
+				<para>
+					This can be useful if you use something other than the windows explorer
+					or if you get problems with the context menu displaying incorrectly.
+					Set this value to <literal>false</literal>
+					if you don't want TortoiseGit to show icons for the
+					shell context menu items.
+					Set this value to <literal>true</literal> to show the icons again.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term condition="pot">ShowAppContextMenuIcons</term>
+			<listitem>
+				<para>
+					If you don't want TortoiseGit to show icons for the context menus
+					in its own dialogs, set this value to <literal>false</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term condition="pot">ShowListBackgroundImage</term>
+			<listitem>
+				<para>
+					If you do not want to have a small background image in list controls (e.g. Commit Dialog)
+					set this value to <literal>false</literal>.
+					Set this value to <literal>true</literal> to show the images again (default).
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term condition="pot">SquashDate</term>
+			<listitem>
+				<para>
+					Using this setting you can control which date is used on squashing commits.
+					Set this value to <literal>1</literal> if you want to use the date of the latest commit.
+					Set this value to <literal>2</literal> if you want to use the current date.
+					Set this value to <literal>0</literal> to use the date of the first commit (into which all others are squashed, default).
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+		  <term condition="pot">StyleCommitMessages</term>
+		  <listitem>
+			<para>
+			  The commit and log dialog use styling (e.g. bold, italic)
+			  in commit messages
+			  (see <xref linkend="tgit-dug-commit-log"/> for details).
+			  If you don't want to do this, set the value to
+			  <literal>false</literal>.
+			</para>
+		  </listitem>
+		</varlistentry>
+		<varlistentry>
+			<term condition="pot">TGitCacheCheckContentMaxSize</term>
+			<listitem>
+				<para>
+					TGitCache checks the content of files by hashing them and comparing the SHA1 in order to
+					calculate the file statuses if the timestamps (to index) mismatch.
+					This option allows to restrict this behavior for files which do not exceed a specific size (in KiB).
+					The default maximum file size is 10 MiB (i.e., 10 * 1024 KiB = <literal>10240</literal> KiB).
+					Set this to 0 in order to make TGitCache only check the timestamps (as TortoiseGit 1.7.0 up to 1.7.12 did;
+					before TortoiseGit 1.9.0.0 this was controlled by TGitCacheCheckContent).
+					Disabling checking the file contents can lower disk access and CPU time of the TGitCache process, however, overlay
+					accuracy might not be as accurate as with checking of the file contents enabled.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term condition="pot">UseLibgit2</term>
+			<listitem>
+				<para>
+					This makes TortoiseGit to use libgit2 as much as possible (e.g. for
+					adding files to the index).
+					If you do not want TortoiseGit to use libgit2 for file operations, set this value to <literal>false</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term condition="pot">VersionCheck</term>
+			<listitem>
+				<para>
+					TortoiseGit checks whether there's a new version available
+					about once a week. If you don't want TortoiseGit to do this
+					check, set this value to <literal>false</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term condition="pot">VersionCheckPreview</term>
+			<listitem>
+				<para>
+					Set this to <literal>true</literal> to make TortoiseGit also check for new preview releases.
+					The default in all stable releases is <literal>false</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
+	</variablelist>
 </sect2>

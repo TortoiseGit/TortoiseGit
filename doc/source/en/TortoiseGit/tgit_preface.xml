@@ -86,13 +86,13 @@ and
 			explain the different approaches to version
 			control, and how Git works (with a bunch of examples).
 		</para>
-    <!--
+<!--
 		<para>
 			Even most Git users will never have to set up a server themselves.
 			The next chapter deals with how to set up such a server, and is useful
 			for administrators.
 		</para>
-    -->
+-->
 		<para>
 			The <xref linkend="tgit-dug"/> is the most important section as
 			it explains all the main features of TortoiseGit and how to use them.
@@ -127,7 +127,7 @@ and
 		</para>
 		<para>
 			TortoiseGit is an Open Source project. That means you have full
-			read access to the source code of this program. Project Home is 
+			read access to the source code of this program. Project Home is
 			<ulink url="https://tortoisegit.org/">
 				<citetitle>https://tortoisegit.org/</citetitle>
 			</ulink>
@@ -186,7 +186,7 @@ and
 				<term>myagi (Georg Fischer) "snowcoder@gmail.com"</term>
 				<listitem>
 					<para>
-					
+
 					For hard work to get TortoiseGit Overlay work.
 					</para>
 				</listitem>
@@ -276,7 +276,7 @@ and
 	<sect1 id="tgit-preface-terminoloty">
 		<title>Terminology used in this document</title>
 		<para>
-			To make reading the docs easier, the names of all the screens and Menus 
+			To make reading the docs easier, the names of all the screens and Menus
 			from TortoiseGit are marked up in a different font.
 			The <guilabel>Log Dialog</guilabel> for instance.
 		</para>

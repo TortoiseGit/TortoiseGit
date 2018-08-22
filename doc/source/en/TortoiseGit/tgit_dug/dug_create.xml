@@ -1,35 +1,35 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tgit-dug-create">
 	<?dbhh topicname="HIDD_CREATEREPO"?>
-  <title>Create Repository</title>
-  <indexterm>
-    <primary>Create Repository</primary>
-  </indexterm>
-  <indexterm>
-    <primary>Repository</primary>
-  </indexterm>
-  <para>
-    This section talks about how to create a git repository.
-    Creating an empty git repository is very simple. At an empty directory, 
-    just use the explorer context menu and select
-    <menuchoice>
-      <guimenu>Git Create Repository here
-      </guimenu>
-    </menuchoice>. 
+	<title>Create Repository</title>
+	<indexterm>
+		<primary>Create Repository</primary>
+	</indexterm>
+	<indexterm>
+		<primary>Repository</primary>
+	</indexterm>
+	<para>
+		This section talks about how to create a git repository.
+		Creating an empty git repository is very simple. At an empty directory,
+		just use the explorer context menu and select
+		<menuchoice>
+			<guimenu>Git Create Repository here
+			</guimenu>
+		</menuchoice>.
 		<figure id="tgit-dug-create-dia-createdialog">
 			<title>Create repository dialog</title>
 			<graphic fileref="../images/GitCreate.png"/>
 		</figure>
-  </para>
-  <para>
+	</para>
+	<para>
 		You can choose here between a bare and normal git repository. A normal repository has a working tree attached to which files can be checkout out and committed whereas a bare repository only can be pushed to and pulled from.
 		After a (non bare) repository is created a messagebox will be shown:
 		<figure id="tgit-dug-create-dia-created">
 			<title>Successful repository creation message</title>
 			<graphic fileref="../images/GitCreateMsg.png"/>
 		</figure>
-  </para>
+	</para>
 	<para>
 		You can find more information at <xref linkend="git-init(1)"/>.
 	</para>

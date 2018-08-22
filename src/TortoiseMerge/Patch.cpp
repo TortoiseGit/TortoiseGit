@@ -1,4 +1,4 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2009-2013, 2015-2018 - TortoiseGit
 // Copyright (C) 2012-2013 - Sven Strickroth <email@cs-ware.de>
@@ -558,7 +558,7 @@ int CPatch::PatchFile(const int strip, int nIndex, const CString& sPatchPath, co
 						else
 							break;
 					}
-					
+
 					if (insertOk)
 					{
 						PatchLines.InsertAt(lAddLine-1, sPatchLine, ending);

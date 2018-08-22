@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tgit-dug-conflicts">
 	<?dbhh topicname="HIDD_RESOLVE"?>
@@ -80,7 +80,7 @@
 		</menuchoice>
 		and commit your modifications to the repository (if the conflict occurred while rebasing or cherry-picking make sure you use the cherry-pick resp. rebase dialog for committing and not the normal commit dialog!).
 		Please note that the Resolve command does not really
-		resolve the conflict. 
+		resolve the conflict.
 		It uses "git add" to mark file status as resolved
 		to allow you to commit your changes
 		and it removes the
@@ -92,7 +92,7 @@
 		If you have conflicts with binary files, Git does
 		not attempt to merge the files itself. The local file remains
 		unchanged (exactly as you last changed it).
-		In order to resolve the conflict use 
+		In order to resolve the conflict use
 		<menuchoice>
 			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>Resolve...</guimenuitem>

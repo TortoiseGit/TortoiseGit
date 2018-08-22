@@ -1,4 +1,4 @@
-// TortoiseGitBlame - a Viewer for Git Blames
+﻿// TortoiseGitBlame - a Viewer for Git Blames
 
 // Copyright (C) 2008-2018 - TortoiseGit
 // Copyright (C) 2003 Don HO <donho@altern.org>

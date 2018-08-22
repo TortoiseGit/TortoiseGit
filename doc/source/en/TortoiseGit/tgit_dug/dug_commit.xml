@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tgit-dug-commit">
 	<title>Committing Your Changes To The Repository</title>
@@ -44,7 +44,7 @@
 			just check that file to add it to the commit.
 		</para>
 		<para>
-			Default commit dialog just list select paths and their child directory files. 
+			Default commit dialog just list select paths and their child directory files.
 			If you want to list all files of project, you can just click <guibutton>
 			Whole Project</guibutton>.
 		</para>
@@ -66,7 +66,7 @@
 						</para>
 					</listitem>
 				</itemizedlist>
-				Read <xref linkend="tgit-dug-ignore"/> for more information. 
+				Read <xref linkend="tgit-dug-ignore"/> for more information.
 			</para>
 		</tip>
 		<para>
@@ -303,7 +303,7 @@
 		<tip>
 			<title>Integration with Bug Tracking Tools</title>
 			<para>
-				If you have activated the bug tracking system, you can set one or more 
+				If you have activated the bug tracking system, you can set one or more
 				Issues in the <guilabel>Bug-ID / Issue-Nr:</guilabel> text box. Multiple
 				issues should be comma separated. Alternatively, if you are using
 				regex-based bug tracking support, just add your issue references
@@ -314,7 +314,7 @@
 		<tip>
 			<title>Adjust the size of message text box</title>
 			<para>
-				Move your mouse to the gap between "Message" group box and 
+				Move your mouse to the gap between "Message" group box and
 				"Changes made" group box, then drag the separator.
 			</para>
 		</tip>

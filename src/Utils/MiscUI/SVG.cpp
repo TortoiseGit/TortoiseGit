@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2010-2011, 2014 - TortoiseSVN
 
@@ -70,7 +70,7 @@ void SVG::RoundedRectangle( int x, int y, int width, int height, Gdiplus::Color 
 		sObj += "<path d=\"";
 		if(mode & 0x1)
 		{
-			tmp.Format("M %d %d a %d %d 0 0 1 %d %d ", x, y+radius, radius, radius, radius, -radius); 
+			tmp.Format("M %d %d a %d %d 0 0 1 %d %d ", x, y+radius, radius, radius, radius, -radius);
 			sObj += tmp;
 			tmp.Format("h %d ", width - 2*radius);
 			sObj += tmp;
@@ -78,7 +78,7 @@ void SVG::RoundedRectangle( int x, int y, int width, int height, Gdiplus::Color 
 			sObj += tmp;
 		}else
 		{
-			tmp.Format("M %d %d h %d ",x, y, width); 
+			tmp.Format("M %d %d h %d ",x, y, width);
 			sObj += tmp;
 		}
 
@@ -90,7 +90,7 @@ void SVG::RoundedRectangle( int x, int y, int width, int height, Gdiplus::Color 
 			sObj += tmp;
 		}else
 		{
-			tmp.Format("V %d h %d z ", y+height, -width); 
+			tmp.Format("V %d h %d z ", y+height, -width);
 			sObj += tmp;
 		}
 		sObj += L"\" ";
@@ -233,4 +233,3 @@ DWORD SVG::GetColor( Gdiplus::Color c ) const
 {
 	return ((DWORD)c.GetRed() << 16) | ((DWORD)c.GetGreen() << 8) | ((DWORD)c.GetBlue());
 }
-

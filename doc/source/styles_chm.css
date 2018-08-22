@@ -18,11 +18,11 @@ body {
 
 PRE
 {
-    font-size: 10pt;
+	font-size: 10pt;
 }
 TT
 {
-    font-size: 12pt;
+	font-size: 12pt;
 }
 
 TT.Filename, TT.Literal{
@@ -59,13 +59,13 @@ div.figure p {
 
 .author
 {
-    font-size: 12pt;
-    font-style: italic;
-    font-weight: normal;
-    color: black;
+	font-size: 12pt;
+	font-style: italic;
+	font-weight: normal;
+	color: black;
 }
 
-div.navheader, 
+div.navheader,
 div.navfooter {
   width:100%; filter:progid:DXImageTransform.Microsoft.Gradient(startColorstr='#809BC8', endColorstr='#FFFFFF', gradientType='0');
   color: white;
@@ -83,7 +83,7 @@ div.navheader table th {
 div.navfooter table td {
 	color: black;
 }
-    
+
 div.navheader table td a,
 div.navfooter table td a {
 	color: #black;
@@ -108,12 +108,12 @@ div.navheader hr, div.navfooter hr{
 
 div.book,
 div.chapter,
-div.sect1, 
+div.sect1,
 div.sect2,
 div.sect3,
 div.preface,
-div.appendix, 
-div.section, 
+div.appendix,
+div.section,
 div.article,
 div.glossary {
 	margin: 20px;
@@ -233,7 +233,7 @@ div.table td {
 	padding: 10px;
 	border: 1px solid #bbb;
 	background-color: #eee;
-	color: #000;   
+	color: #000;
 	overflow: auto;
 	border-radius: 2.5px;
 	-moz-border-radius: 2.5px;
@@ -247,7 +247,7 @@ div.table td {
 	padding: 10px;
 	border: 1px solid #bbb;
 	background-color: #ddd;
-	color: #000;   
+	color: #000;
 	overflow: auto;
 	border-radius: 2.5px;
 	-moz-border-radius: 2.5px;
@@ -261,16 +261,16 @@ font-style: italic;
 }
 
 div.literallayout p {
-  padding: 0em;
-  margin: 0em;
+	padding: 0em;
+	margin: 0em;
 }
 
 div.literallayout {
-  font-family: monospace;
+	font-family: monospace;
 #  margin: 0.5em 10% 0.5em 1em;
-  margin: 0em;
-  color: navy;
-  border: 1px solid silver;
-  background: #f4f4f4;
-  padding: 0.5em;
+	margin: 0em;
+	color: navy;
+	border: 1px solid silver;
+	background: #f4f4f4;
+	padding: 0.5em;
 }

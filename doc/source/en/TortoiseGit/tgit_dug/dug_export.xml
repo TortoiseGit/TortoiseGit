@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tgit-dug-export" xmlns:xi="http://www.w3.org/2001/XInclude">
 	<title>Exporting a Git Working Tree</title>
@@ -40,7 +40,7 @@
 			<guimenu>Context Menu</guimenu>
 			<guimenuitem>Git Export here</guimenuitem>
 		</menuchoice>
-		or 
+		or
 		<menuchoice>
 			<guimenu>Context Menu</guimenu>
 			<guimenuitem>Git Export all here</guimenuitem>

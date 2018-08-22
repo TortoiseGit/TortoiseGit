@@ -1,4 +1,4 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2006 - Stefan Kueng
 
@@ -61,8 +61,7 @@ protected:
 
 	void TouchFile(const CString& path);
 	void CopyRemoveCopy(const CString& path);
-	
+
 	static UINT WatchTestThreadEntry(LPVOID pVoid);
 	UINT WatchTestThread();
-public:
 };

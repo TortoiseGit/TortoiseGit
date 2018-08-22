@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2011, 2017 - TortoiseGit
 
@@ -21,10 +21,7 @@
 #include "stdafx.h"
 void dll_entry(void);
 
-BOOL APIENTRY DllMain( HMODULE hModule,
-                       DWORD  ul_reason_for_call,
-                       LPVOID lpReserved
-					 )
+BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
 {
 	UNREFERENCED_PARAMETER(hModule);
 	UNREFERENCED_PARAMETER(lpReserved);
@@ -40,4 +37,3 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 	}
 	return TRUE;
 }
-

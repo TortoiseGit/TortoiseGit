@@ -1,4 +1,4 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2008-2017 - TortoiseGit
 // Copyright (C) 2004-2018 - TortoiseSVN
@@ -1602,7 +1602,7 @@ bool CMainFrame::FileSave(bool bCheckResolved /*=true*/)
 				else
 					subpath = subpath.Right(subpath.GetLength() - projectRoot.GetLength());
 			}
-			
+
 			CAutoRepository repository(projectRoot);
 			bool hasConflictInIndex = false;
 			do

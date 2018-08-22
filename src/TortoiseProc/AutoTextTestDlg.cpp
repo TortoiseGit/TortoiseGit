@@ -1,4 +1,4 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2009, 2011, 2013-2014 - TortoiseSVN
 
@@ -110,4 +110,3 @@ void CAutoTextTestDlg::OnBnClickedAutotextscan()
 	}
 	UpdateData(FALSE);
 }
-

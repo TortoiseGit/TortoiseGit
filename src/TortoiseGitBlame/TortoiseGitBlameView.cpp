@@ -1,4 +1,4 @@
-// TortoiseGitBlame - a Viewer for Git Blames
+﻿// TortoiseGitBlame - a Viewer for Git Blames
 
 // Copyright (C) 2008-2018 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
@@ -1802,7 +1802,7 @@ void CTortoiseGitBlameView::OnMouseLeave()
 {
 	if (m_MouseLine == -1)
 		return;
-	
+
 	m_MouseLine = -1;
 	Invalidate();
 }

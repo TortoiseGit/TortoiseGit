@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tgit-dug-rename">
 	<title>Deleting, Moving and Renaming</title>
@@ -34,7 +34,7 @@
 			to remove files or folders from Git.
 		</para>
 		<para>
-			When you 
+			When you
 			<menuchoice>
 				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Delete</guimenuitem>
@@ -76,12 +76,12 @@
 			you really want to do.
 		</para>
 -->
-    
+
 		<tip>
 			<title>Getting a deleted file or folder back</title>
 			<para>
 				If you have deleted a file or a folder and already committed
-				that delete operation to the repository, then a normal 
+				that delete operation to the repository, then a normal
 				<menuchoice>
 					<guimenu>TortoiseGit</guimenu>
 					<guimenuitem>Revert</guimenuitem>
@@ -189,7 +189,7 @@
 			file system, like Linux, or when the setting core.ignorecase is set to false (cf. <xref linkend="git-config(1)"/>).
 		</para>
 		<para>
-			In that case, you have to decide which one of them you want to 
+			In that case, you have to decide which one of them you want to
 			keep and delete the other(s) from the repository (or rename the other(s)).
 			Easiest way is to do that on a case-sensitive file system, followed by committing and pushing the changes.
 			Doing it on Windows requires several steps (and two commits):
@@ -203,7 +203,7 @@
 						<caution>
 							<para>
 								Do NOT use the <guimenuitem>Delete</guimenuitem>
-								or the <guimenuitem>Delete (keep local)</guimenuitem> command 
+								or the <guimenuitem>Delete (keep local)</guimenuitem> command
 								in the TortoiseGit submenu!
 							</para>
 						</caution>

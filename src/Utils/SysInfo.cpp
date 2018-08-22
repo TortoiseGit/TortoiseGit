@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008 - TortoiseSVN
 
@@ -29,9 +29,6 @@ SysInfo::~SysInfo(void)
 
 const SysInfo& SysInfo::Instance()
 {
-    static SysInfo instance;
-    return instance;
+	static SysInfo instance;
+	return instance;
 }
-
-
-

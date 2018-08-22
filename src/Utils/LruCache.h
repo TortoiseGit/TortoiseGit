@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2016 - TortoiseSVN
 
@@ -26,78 +26,80 @@ template<typename key_t, typename value_t>
 class LruCache
 {
 public:
-    LruCache(size_t maxSize)
-        : maxSize(maxSize)
-    {
-    }
+	LruCache(size_t maxSize)
+		: maxSize(maxSize)
+	{
+	}
 
-    void insert_or_assign(const key_t & key, const value_t & val)
-    {
-        ItemsMap::iterator mapIt = itemsMap.find(key);
-        if (mapIt == itemsMap.end())
-        {
-            evict(maxSize - 1);
+	void insert_or_assign(const key_t & key, const value_t & val)
+	{
+		ItemsMap::iterator mapIt = itemsMap.find(key);
+		if (mapIt == itemsMap.end())
+		{
+			evict(maxSize - 1);
 
-            ItemsList::iterator listIt = itemsList.insert(itemsList.cend(), ListItem(key, val));
-            itemsMap.insert(std::make_pair(key, listIt));
-        }
-        else
-        {
-            mapIt->second->val = val;
-        }
-    }
+			ItemsList::iterator listIt = itemsList.insert(itemsList.cend(), ListItem(key, val));
+			itemsMap.insert(std::make_pair(key, listIt));
+		}
+		else
+		{
+			mapIt->second->val = val;
+		}
+	}
 
-    const value_t * try_get(const key_t & key)
-    {
-        ItemsMap::const_iterator it = itemsMap.find(key);
-        if (it == itemsMap.end())
-            return nullptr;
+	const value_t * try_get(const key_t & key)
+	{
+		ItemsMap::const_iterator it = itemsMap.find(key);
+		if (it == itemsMap.end())
+			return nullptr;
 
-        // Move last recently accessed item to the end.
-        if (it->second != itemsList.end())
-        {
-            itemsList.splice(itemsList.end(), itemsList, it->second);
-        }
+		// Move last recently accessed item to the end.
+		if (it->second != itemsList.end())
+		{
+			itemsList.splice(itemsList.end(), itemsList, it->second);
+		}
 
-        return &it->second->val;
-    }
+		return &it->second->val;
+	}
 
-    void reserve(size_t size)
-    {
-        itemsMap.reserve(min(maxSize, size));
-    }
+	void reserve(size_t size)
+	{
+		itemsMap.reserve(min(maxSize, size));
+	}
 
-    void clear()
-    {
-        itemsMap.clear();
-        itemsList.clear();
-    }
+	void clear()
+	{
+		itemsMap.clear();
+		itemsList.clear();
+	}
+
 protected:
-    void evict(size_t itemsToKeep)
-    {
-        for(ItemsList::iterator it = itemsList.begin();
-            itemsList.size() > itemsToKeep && it != itemsList.end();)
-        {
-            itemsMap.erase(it->key);
-            it = itemsList.erase(it);
-        }
-    }
+	void evict(size_t itemsToKeep)
+	{
+		for(ItemsList::iterator it = itemsList.begin();
+			itemsList.size() > itemsToKeep && it != itemsList.end();)
+		{
+			itemsMap.erase(it->key);
+			it = itemsList.erase(it);
+		}
+	}
+
 private:
-    struct ListItem
-    {
-        ListItem(const key_t & key, const value_t & val)
-            : key(key), val(val)
-        {
-        }
+	struct ListItem
+	{
+		ListItem(const key_t & key, const value_t & val)
+			: key(key), val(val)
+		{
+		}
 
-        key_t key;
-        value_t val;
-    };
+		key_t key;
+		value_t val;
+	};
 
-    typedef std::list<ListItem> ItemsList;
-    typedef std::unordered_map<key_t, typename ItemsList::iterator> ItemsMap;
+	typedef std::list<ListItem> ItemsList;
+	typedef std::unordered_map<key_t, typename ItemsList::iterator> ItemsMap;
 
-    size_t maxSize;
-    ItemsMap itemsMap;
-    ItemsList itemsList;
+	size_t maxSize;
+	ItemsMap itemsMap;
+	ItemsList itemsList;
 };

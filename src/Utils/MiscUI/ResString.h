@@ -1,4 +1,4 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+﻿// TortoiseSVN - a Windows shell extension for easy version control
 
 // Copyright (C) 2013, 2015 - TortoiseSVN
 
@@ -43,7 +43,7 @@ public:
 	}
 	operator TCHAR const * () const { return str.c_str(); }
 	operator std::wstring () const { return str; }
+
 private:
 	std::wstring str;
 };
-

@@ -1,76 +1,76 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tgit-dug-browse-ref">
-  <title>Browse All Refs</title>
-  <?dbhh topicname="HIDD_BROWSE_REFS"?>
-  <indexterm>
-    <primary>Browse All Refs</primary>
-  </indexterm>
-  <indexterm>
-    <primary>refs</primary>
-  </indexterm>
-  <indexterm>
-    <primary>Delete remote tags</primary>
-  </indexterm>
-  <para>
+	<title>Browse All Refs</title>
+	<?dbhh topicname="HIDD_BROWSE_REFS"?>
+	<indexterm>
+		<primary>Browse All Refs</primary>
+	</indexterm>
+	<indexterm>
+		<primary>refs</primary>
+	</indexterm>
+	<indexterm>
+		<primary>Delete remote tags</primary>
+	</indexterm>
+	<para>
 		This section talks about the reference browser, which allows you to view and work with all refs (tags, branches, remote branches, stash and so on). It can be opened using
 		<menuchoice>
 			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>Browse Reference...</guimenuitem>
 		</menuchoice>.
-  </para>
-  <para>
+	</para>
+	<para>
 	<figure id="tgit-dug-browse-ref-dia-1">
 		<title>Browse References Dialog dialog</title>
 		<graphic fileref="../images/BrowseRef.png"/>
 	</figure>
-  </para>
-  <para>
-    The left panel displays the ref "types" in a tree such as tags, heads (local branches) and so on.
-  </para>
-  <para>
-    Right panel shows all refs for a selected type (recursively if not disabled using <guibutton>Show nested refs</guibutton>) including the latest commit, description and (for local branches) their remote tracked branch.
-  </para>
-  <para>
-    On both panels there is a powerful context menu which provides further options such as deleting/renaming refs, configuring the remote tracked branch (for local branches) and deleting tags for a remote (on the left panel when a remote is selected). If exactly two refs are selected it is possible to compare them or open the log for all commits which are on both branches (<guimenuitem>Show log of branch1...branch2</guimenuitem>) or just on one of the two (<guimenuitem>Show log of branch1..branch2</guimenuitem>).
-  </para>
+	</para>
+	<para>
+		The left panel displays the ref "types" in a tree such as tags, heads (local branches) and so on.
+	</para>
+	<para>
+		Right panel shows all refs for a selected type (recursively if not disabled using <guibutton>Show nested refs</guibutton>) including the latest commit, description and (for local branches) their remote tracked branch.
+	</para>
+	<para>
+		On both panels there is a powerful context menu which provides further options such as deleting/renaming refs, configuring the remote tracked branch (for local branches) and deleting tags for a remote (on the left panel when a remote is selected). If exactly two refs are selected it is possible to compare them or open the log for all commits which are on both branches (<guimenuitem>Show log of branch1...branch2</guimenuitem>) or just on one of the two (<guimenuitem>Show log of branch1..branch2</guimenuitem>).
+	</para>
 <!--
-  <para>
-	<menuchoice>
-		<guimenu>Context menu</guimenu>
-		<guimenuitem>Show log</guimenuitem>
-	</menuchoice>
-  </para>
-  <para>
-	<menuchoice>
-		<guimenu>Context menu</guimenu>
-		<guimenuitem>Show reflog</guimenuitem>
-	</menuchoice>
-  </para>
-  <para>
-	<menuchoice>
-		<guimenu>Context menu</guimenu>
-		<guimenuitem>Switch to this ref</guimenuitem>
-	</menuchoice>
-  </para>
-  <para>
-	<menuchoice>
-		<guimenu>Context menu</guimenu>
-		<guimenuitem>Delete branch</guimenuitem>
-	</menuchoice>
-  </para>
-  <para>
-	<menuchoice>
-		<guimenu>Context menu</guimenu>
-		<guimenuitem>Create branch</guimenuitem>
-	</menuchoice>
-  </para>
+	<para>
+		<menuchoice>
+			<guimenu>Context menu</guimenu>
+			<guimenuitem>Show log</guimenuitem>
+		</menuchoice>
+	</para>
+	<para>
+		<menuchoice>
+			<guimenu>Context menu</guimenu>
+			<guimenuitem>Show reflog</guimenuitem>
+		</menuchoice>
+	</para>
+	<para>
+		<menuchoice>
+			<guimenu>Context menu</guimenu>
+			<guimenuitem>Switch to this ref</guimenuitem>
+		</menuchoice>
+	</para>
+	<para>
+		<menuchoice>
+			<guimenu>Context menu</guimenu>
+			<guimenuitem>Delete branch</guimenuitem>
+		</menuchoice>
+	</para>
+	<para>
+		<menuchoice>
+			<guimenu>Context menu</guimenu>
+			<guimenuitem>Create branch</guimenuitem>
+		</menuchoice>
+	</para>
 -->
-  <para>
-    In order to delete remote tags, use the context menu on a remote on he left and select <guimenuitem>Delete remote tags...</guimenuitem>. Then the following dialog will come up. There you can delete multiple remote tags at once.
-	<figure id="tgit-dug-browse-ref-dia-delremotetags">
-		<title>Delete remote tags dialog</title>
-		<graphic fileref="../images/DeleteRemoteTag.png"/>
-	</figure>
-  </para>
+	<para>
+		In order to delete remote tags, use the context menu on a remote on he left and select <guimenuitem>Delete remote tags...</guimenuitem>. Then the following dialog will come up. There you can delete multiple remote tags at once.
+		<figure id="tgit-dug-browse-ref-dia-delremotetags">
+			<title>Delete remote tags dialog</title>
+			<graphic fileref="../images/DeleteRemoteTag.png"/>
+		</figure>
+	</para>
 </sect1>

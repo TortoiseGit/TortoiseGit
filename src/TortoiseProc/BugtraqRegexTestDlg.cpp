@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2014-2016 - TortoiseGit
 // Copyright (C) 2011 - TortoiseSVN
@@ -108,7 +108,7 @@ void CBugtraqRegexTestDlg::UpdateLogControl()
 void CBugtraqRegexTestDlg::OnSysColorChange()
 {
 	__super::OnSysColorChange();
-	
+
 	m_cLogMessage.SetColors(true);
 	m_cLogMessage.SetFont(CAppUtils::GetLogFontName(), CAppUtils::GetLogFontSize());
 }

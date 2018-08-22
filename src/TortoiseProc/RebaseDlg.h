@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2018 - TortoiseGit
 
@@ -126,7 +126,7 @@ protected:
 		CString email;
 		CTime time;
 		bool set = false;
-		
+
 		SquashFirstMetaData()
 			: set(false)
 		{

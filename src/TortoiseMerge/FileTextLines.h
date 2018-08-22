@@ -1,4 +1,4 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2006-2007, 2012-2016 - TortoiseSVN
 
@@ -36,7 +36,7 @@ public:
 		if (m_vec.size()==m_vec.capacity()) {
 			m_vec.reserve(m_vec.capacity() ? m_vec.capacity()*2 : 256);
 		}
-		m_vec.push_back(strVal); 
+		m_vec.push_back(strVal);
 	}
 	void RemoveAll()				{ m_vec.clear(); }
 	void Reserve(int nHintSize)		{ m_vec.reserve(nHintSize); }

@@ -26,7 +26,7 @@ TEST(CVersioncheckParser, Invalid)
 {
 	CString tmpfile = GetTempFile();
 	CStringUtils::WriteStringToTextFile(tmpfile, L"");
-	
+
 	CVersioncheckParser parser;
 	CString err;
 	EXPECT_FALSE(parser.Load(tmpfile, err));

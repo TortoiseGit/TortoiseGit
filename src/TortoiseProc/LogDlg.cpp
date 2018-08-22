@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2009, 2015 - TortoiseSVN
 // Copyright (C) 2008-2018 - TortoiseGit
@@ -101,7 +101,7 @@ CLogDlg::CLogDlg(CWnd* pParent /*=nullptr*/)
 
 	m_regAddBeforeCommit = CRegDWORD(L"Software\\TortoiseGit\\AddBeforeCommit", TRUE);
 	m_bShowUnversioned = !!m_regAddBeforeCommit;
-	
+
 	m_bShowGravatar = !!CRegDWORD(L"Software\\TortoiseGit\\EnableGravatar", FALSE);
 	m_regbShowGravatar = CRegDWORD(L"Software\\TortoiseGit\\LogDialog\\ShowGravatar\\" + str, m_bShowGravatar);
 	m_bShowGravatar = !!m_regbShowGravatar;
@@ -515,7 +515,7 @@ void CLogDlg::OnPaint()
 
 	if (!(m_LogList.m_Filter.m_NumberOfLogsScale >= CFilterData::SHOW_LAST_N_COMMITS || m_LogList.m_Filter.m_NumberOfLogsScale == CFilterData::SHOW_LAST_SEL_DATE && m_LogList.m_Filter.m_From != -1))
 		return;
-	
+
 	CWnd* pWnd = GetDlgItem(IDC_FROMLABEL);
 	if (!pWnd)
 		return;
@@ -1900,7 +1900,7 @@ void CLogDlg::OnEnLinkMsgview(NMHDR *pNMHDR, LRESULT *pResult)
 		msg.Replace(L"\r\n", L"\n");
 		url = msg.Mid(pEnLink->chrg.cpMin, pEnLink->chrg.cpMax-pEnLink->chrg.cpMin);
 		auto findResult = m_LogList.m_ProjectProperties.FindBugIDPositions(msg);
-		if (std::find_if(findResult.cbegin(), findResult.cend(), 
+		if (std::find_if(findResult.cbegin(), findResult.cend(),
 			[=] (const CHARRANGE &cr) -> bool { return cr.cpMin == pEnLink->chrg.cpMin && cr.cpMax == pEnLink->chrg.cpMax; }
 		) != findResult.cend())
 		{
@@ -3280,7 +3280,7 @@ void CLogDlg::ShowStartRef()
 			m_staticRef.SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_LOG_LOCAL_BRANCHES)));
 			break;
 		}
-		
+
 		m_staticRef.Invalidate(TRUE);
 		m_tooltips.DelTool(GetDlgItem(IDC_STATIC_REF));
 		return;

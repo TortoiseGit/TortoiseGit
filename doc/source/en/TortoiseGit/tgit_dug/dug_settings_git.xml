@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 <sect2 id="tgit-dug-settings-git">
 	<title>Git</title>
@@ -35,17 +35,17 @@
 			to LF when reading from the filesystem, and convert in reverse when
 			writing to the filesystem. The variable can be set to input,
 			in which case the conversion happens only while reading from
-			the filesystem but files are written out with LF at the end of lines. 
-			A file is considered "text" (i.e. be subjected to the autocrlf mechanism) 
-			based on the file's crlf attribute, or if crlf is unspecified, 
+			the filesystem but files are written out with LF at the end of lines.
+			A file is considered "text" (i.e. be subjected to the autocrlf mechanism)
+			based on the file's crlf attribute, or if crlf is unspecified,
 			based on the file's contents.
 		</para>
 		<para> <guilabel>SafeCrlf</guilabel>
 			If true, makes git check if converting CRLF as controlled by core.autocrlf is reversible.
-			Git will verify if a command modifies a file in the work tree either directly or indirectly. 
-			For example, committing a file followed by checking out the same file should yield the original file in the work tree. 
-			If this is not the case for the current setting of core.autocrlf, git will reject the file. 
-			The variable can be set to "warn", 
+			Git will verify if a command modifies a file in the work tree either directly or indirectly.
+			For example, committing a file followed by checking out the same file should yield the original file in the work tree.
+			If this is not the case for the current setting of core.autocrlf, git will reject the file.
+			The variable can be set to "warn",
 			in which case git will only warn about an irreversible conversion but continue the operation.
 		</para>
 		<para> <guilabel>QuotePath</guilabel> Controls the <literal>core.quotepath</literal> setting which might be interesting when you have non ASCII filenames: See <xref linkend="git-config(1)"/>.</para>
@@ -92,7 +92,7 @@
 			<option>None</option>: No tags are downloaded (<literal>--no-tags</literal>).
 			(git 1.9 and later) <option>All</option>: All tags as well as branches are downloaded (<literal>--tags</literal>).
 			(prior to git 1.9) <option>All tags only</option>: Only all tags are downloaded but no branches are downloaded (<literal>--tags</literal>).
-			Use case of <option>All</option>: Always fetch tags from a git-svn mirror. 
+			Use case of <option>All</option>: Always fetch tags from a git-svn mirror.
 			Subversion tags never exist on trunk, so such tags are not reachable from branch heads.
 		</para>
 		<para>
@@ -167,7 +167,7 @@
 		</para>
 		<para>
 			<guilabel>Username</guilabel>
-			A default username, if one is not provided in the URL. 
+			A default username, if one is not provided in the URL.
 		</para>
 		<para>
 			<guilabel>Use HTTP path component</guilabel>

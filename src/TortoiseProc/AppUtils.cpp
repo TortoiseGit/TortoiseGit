@@ -992,7 +992,7 @@ bool CAppUtils::StartShowUnifiedDiff(HWND hWnd, const CTGitPath& url1, const CSt
 												const CTGitPath& /*url2*/, const CString& rev2,
 												//const GitRev& peg /* = GitRev */, const GitRev& headpeg /* = GitRev */,
 												bool bAlternateDiff /* = false */, bool /*bIgnoreAncestry*/ /* = false */,
-												bool /* blame = false */, 
+												bool /* blame = false */,
 												bool bMerge,
 												bool bCombine,
 												bool bNoPrefix)
@@ -1809,7 +1809,7 @@ bool CAppUtils::ConflictEdit(HWND hWnd, CTGitPath& path, bool bAlternativeTool /
 			CGitDiff::GetSubmoduleChangeType(subgit, baseHash, localHash, baseOK, mineOK, changeTypeMine, baseSubject, mineSubject);
 			CGitDiff::GetSubmoduleChangeType(subgit, baseHash, remoteHash, baseOK, theirsOK, changeTypeTheirs, baseSubject, theirsSubject);
 		}
-		else if (baseHash == GIT_REV_ZERO && localHash == GIT_REV_ZERO && remoteHash != GIT_REV_ZERO) // merge conflict with no submodule, but submodule in merged revision (not initialized) 
+		else if (baseHash == GIT_REV_ZERO && localHash == GIT_REV_ZERO && remoteHash != GIT_REV_ZERO) // merge conflict with no submodule, but submodule in merged revision (not initialized)
 		{
 			changeTypeMine = CGitDiff::Identical;
 			changeTypeTheirs = CGitDiff::NewSubmodule;
