@@ -56,7 +56,6 @@ public:
 	CFilterData()
 	{
 		m_From=m_To=-1;
-		m_IsRegex=1;
 		m_NumberOfLogsScale = SHOW_NO_LIMIT;
 		m_NumberOfLogs = 1;
 	}
@@ -65,10 +64,6 @@ public:
 	DWORD m_NumberOfLogs;
 	__time64_t m_From;
 	__time64_t m_To;
-	CString m_Author;
-	CString m_Committer;
-	CString m_MessageFilter;
-	BOOL m_IsRegex;
 };
 
 class CGitCall
@@ -355,8 +350,6 @@ public:
 	{
 		LOG_INFO_STAT=0x1,
 		LOG_INFO_FILESTATE=0x2,
-		LOG_INFO_PATCH=0x4,
-		LOG_INFO_FULLHISTORY=0x8,
 		LOG_INFO_BOUNDARY=0x10,
 		LOG_INFO_ALL_BRANCH=0x20,
 		LOG_INFO_ONLY_HASH=0x40,

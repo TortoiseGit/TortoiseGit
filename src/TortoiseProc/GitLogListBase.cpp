@@ -2743,16 +2743,6 @@ int CGitLogListBase::BeginFetchLog()
 	if (m_sRange.IsEmpty())
 		m_sRange = L"HEAD";
 
-#if 0 /* use tortoiegit filter */
-	if (this->m_nSelectedFilter == LOGFILTER_ALL || m_nSelectedFilter == LOGFILTER_AUTHORS)
-		data.m_Author = this->m_sFilterText;
-
-	if(this->m_nSelectedFilter == LOGFILTER_ALL || m_nSelectedFilter == LOGFILTER_MESSAGES)
-		data.m_MessageFilter = this->m_sFilterText;
-
-	data.m_IsRegex = m_bFilterWithRegex;
-#endif
-
 	// follow does not work for directories
 	if (!path || path->IsDirectory())
 		mask &= ~CGit::LOG_INFO_FOLLOW;

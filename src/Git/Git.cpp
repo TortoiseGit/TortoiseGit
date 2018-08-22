@@ -986,9 +986,6 @@ CString CGit::GetLogCmd(CString range, const CTGitPath* path, int mask, CFilterD
 	if(mask& LOG_INFO_FILESTATE)
 		param += L" --raw";
 
-	if(mask& LOG_INFO_FULLHISTORY)
-		param += L" --full-history";
-
 	if(mask& LOG_INFO_BOUNDARY)
 		param += L" --left-right --boundary";
 
@@ -1068,33 +1065,6 @@ CString CGit::GetLogCmd(CString range, const CTGitPath* path, int mask, CFilterD
 
 	if( Filter && (Filter->m_To != -1))
 		param.AppendFormat(L" --min-age=%I64u", Filter->m_To);
-
-	bool isgrep = false;
-	if( Filter && (!Filter->m_Author.IsEmpty()))
-	{
-		param.AppendFormat(L" --author=\"%s\"", (LPCTSTR)Filter->m_Author);
-		isgrep = true;
-	}
-
-	if( Filter && (!Filter->m_Committer.IsEmpty()))
-	{
-		param.AppendFormat(L" --committer=\"%s\"", (LPCTSTR)Filter->m_Author);
-		isgrep = true;
-	}
-
-	if( Filter && (!Filter->m_MessageFilter.IsEmpty()))
-	{
-		param.AppendFormat(L" --grep=\"%s\"", (LPCTSTR)Filter->m_MessageFilter);
-		isgrep = true;
-	}
-
-	if(Filter && isgrep)
-	{
-		if(!Filter->m_IsRegex)
-			param += L" --fixed-strings";
-
-		param += L" --regexp-ignore-case --extended-regexp";
-	}
 
 	if (logOrderBy == LOG_ORDER_TOPOORDER || (mask & CGit::LOG_ORDER_TOPOORDER))
 		param += L" --topo-order";
