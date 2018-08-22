@@ -1967,6 +1967,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							continue;
 						if (CopyFile(m_restorepaths[entry2->GetWinPathString()], g_Git.CombinePath(entry2), FALSE))
 						{
+							CPathUtils::Touch(entry2->GetWinPathString());
 							m_restorepaths.erase(entry2->GetWinPathString());
 							SetItemState(index, 0, LVIS_OVERLAYMASK);
 						}

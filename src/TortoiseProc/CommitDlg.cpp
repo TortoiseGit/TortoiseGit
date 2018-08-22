@@ -2842,7 +2842,11 @@ bool CCommitDlg::RestoreFiles(bool doNotAsk, bool allowCancel)
 	}
 
 	for (const auto& item : m_ListCtrl.m_restorepaths)
-		CopyFile(item.second, g_Git.CombinePath(item.first), FALSE);
+	{
+		CString dest = g_Git.CombinePath(item.first);
+		CopyFile(item.second, dest, FALSE);
+		CPathUtils::Touch(dest);
+	}
 	m_ListCtrl.m_restorepaths.clear();
 
 	return true;

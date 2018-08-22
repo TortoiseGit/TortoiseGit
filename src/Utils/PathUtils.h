@@ -175,5 +175,10 @@ public:
 	static bool ArePathStringsEqualWithCase(const CString& sP1, const CString& sP2);
 
 	static CString GetCopyrightForSelf();
+
+	/**
+	 * Sets the last-write-time of the file to the current time
+	 */
+	static bool Touch(const CString& path);
 #endif
 };

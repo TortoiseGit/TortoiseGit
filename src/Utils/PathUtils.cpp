@@ -65,6 +65,22 @@ void CPathUtils::ConvertToBackslash(CString& path)
 }
 
 #ifdef CSTRING_AVAILABLE
+bool CPathUtils::Touch(const CString& path)
+{
+	CAutoFile hFile = CreateFile(path, GENERIC_WRITE, FILE_SHARE_DELETE, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+	if (!hFile)
+		return false;
+
+	FILETIME ft;
+	SYSTEMTIME st;
+	GetSystemTime(&st);					// Gets the current system time
+	SystemTimeToFileTime(&st, &ft);		// Converts the current system time to file time format
+	return SetFileTime(hFile,			// Sets last-write time of the file 
+		(LPFILETIME)nullptr,			// to the converted current system time 
+		(LPFILETIME)nullptr,
+		&ft) != FALSE;
+}
+
 CString CPathUtils::GetFileNameFromPath(CString sPath)
 {
 	CString ret;
