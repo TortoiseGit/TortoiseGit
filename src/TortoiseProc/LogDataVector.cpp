@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013, 2015-2017 - TortoiseGit
+// Copyright (C) 2009-2013, 2015-2018 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -86,7 +86,7 @@ int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, 
 	try
 	{
 		CAutoLocker lock(g_Git.m_critGitDllSec);
-		if (git_open_log(&handle,CUnicodeUtils::GetMulti(cmd, CP_UTF8).GetBuffer()))
+		if (git_open_log(&handle, CUnicodeUtils::GetMulti(cmd, CP_UTF8)))
 			return -1;
 	}
 	catch (char* msg)

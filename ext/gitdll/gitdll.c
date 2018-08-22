@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2018 - TortoiseGit
 
@@ -308,65 +308,60 @@ int git_free_commit(GIT_COMMIT *commit)
 	return 0;
 }
 
-char **strtoargv(char *arg, int *size)
+static char** strtoargv(const char* arg, int* size)
 {
 	int count=0;
-	char *p=arg;
+	const char* parg = arg;
 	char **argv;
-
+	char* p;
 	int i=0;
-	while(*p)
-	{
-		if(*p == '\\')
-			*p='/';
-		++p;
-	}
-	p=arg;
 
-	while(*p)
+	while (*parg)
 	{
-		if(*p == ' ')
+		if (*parg == ' ')
 			++count;
-		++p;
+		assert(*parg != '\\' && "no backslashes allowed, use a Git path (with slashes) - no escaping of chars possible");
+		++parg;
 	}
 
 	argv=malloc(strlen(arg)+1 + (count +2)*sizeof(void*));
 	p=(char*)(argv+count+2);
 
-	while(*arg)
+	parg = arg;
+	while (*parg)
 	{
-		if(*arg != ' ')
+		if (*parg != ' ')
 		{
 			char space=' ';
 			argv[i]=p;
 
-			while(*arg)
+			while (*parg)
 			{
-				if(*arg == '"')
+				if (*parg == '"')
 				{
-					++arg;
+					++parg;
 					if(space == ' ')
 						space = '"';
 					else
 						space = ' ';
 				}
-				if((*arg == space) || (*arg == 0))
+				if (*parg == space || !*parg)
 					break;
 
-				*p++ = *arg++;
+				*p++ = *parg++;
 			}
 			++i;
 			*p++=0;
 		}
-		if(*arg == 0)
+		if (!*parg)
 			break;
-		++arg;
+		++parg;
 	}
 	argv[i]=NULL;
 	*size = i;
 	return argv;
 }
-int git_open_log(GIT_LOG * handle, char * arg)
+int git_open_log(GIT_LOG* handle, const char* arg)
 {
 	struct rev_info *p_Rev;
 	char ** argv=0;
@@ -482,7 +477,7 @@ int git_close_log(GIT_LOG handle)
 	return 0;
 }
 
-int git_open_diff(GIT_DIFF *diff, char * arg)
+int git_open_diff(GIT_DIFF* diff, const char* arg)
 {
 	struct rev_info *p_Rev;
 	char ** argv=0;
@@ -732,7 +727,7 @@ static struct cmd_struct commands[] = {
 		{ "update-index", cmd_update_index, RUN_SETUP },
 	};
 
-int git_run_cmd(char *cmd, char *arg)
+int git_run_cmd(char *cmd, const char *arg)
 {
 
 	char ** argv=0;

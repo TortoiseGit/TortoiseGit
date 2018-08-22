@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -103,7 +103,7 @@ GITDLL_API int git_get_sha1(const char *name, GIT_HASH sha1);
  */
 GITDLL_API int git_init(void);
 
-GITDLL_API int git_open_log(GIT_LOG * handle, char * arg);
+GITDLL_API int git_open_log(GIT_LOG* handle, const char* arg);
 GITDLL_API int git_get_log_firstcommit(GIT_LOG handle);
 GITDLL_API int git_get_log_estimate_commit_count(GIT_LOG handle);
 
@@ -133,7 +133,7 @@ GITDLL_API int git_get_commit_next_parent(GIT_COMMIT_LIST *list, GIT_HASH hash);
 
 GITDLL_API int git_free_commit(GIT_COMMIT *commit);
 
-GITDLL_API int git_open_diff(GIT_DIFF *diff, char * arg);
+GITDLL_API int git_open_diff(GIT_DIFF* diff, const char* arg);
 GITDLL_API int git_do_diff(GIT_DIFF diff, GIT_HASH hash1,GIT_HASH hash2, GIT_FILE * file, int *count, int isstat);
 GITDLL_API int git_root_diff(GIT_DIFF diff, GIT_HASH hash,GIT_FILE *file, int *count,int isstat);
 GITDLL_API int git_diff_flush(GIT_DIFF diff);
@@ -164,7 +164,7 @@ GITDLL_API int git_free_exclude_list(EXCLUDE_LIST which);
 //caller need free p_note
 GITDLL_API int git_get_notes(const GIT_HASH hash, char** p_note);
 
-GITDLL_API int git_run_cmd(char *cmd, char *arg);
+GITDLL_API int git_run_cmd(char* cmd, const char* arg);
 GITDLL_API void git_exit_cleanup(void);
 
 #define REF_ISSYMREF 01

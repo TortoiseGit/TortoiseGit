@@ -180,8 +180,7 @@ public:
 			// cf. GitRevLoglist::SafeFetchFullInfo
 			CStringA params;
 			params.Format("-C%d%% -M%d%% -r", ms_iSimilarityIndexThreshold, ms_iSimilarityIndexThreshold);
-			git_open_diff(&m_GitDiff, params.GetBuffer());
-			params.ReleaseBuffer();
+			git_open_diff(&m_GitDiff, params);
 			return m_GitDiff;
 		}
 	}
