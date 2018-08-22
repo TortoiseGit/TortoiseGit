@@ -326,8 +326,11 @@ static char** strtoargv(const char* arg, int* size)
 		++parg;
 	}
 
-	argv=malloc(strlen(arg)+1 + (count +2)*sizeof(void*));
-	p=(char*)(argv+count+2);
+	argv = malloc(strlen(arg) + 2 + (count + 3) * sizeof(char*)); // 1 char* for every parameter + 1 for argv[0] + 1 NULL as end end; and some space for the actual parameters: strlen() + 1 for \0, + 1 for \0 for argv[0]
+	p = (char*)(argv + count + 3);
+
+	argv[i++] = p;
+	*p++ = '\0';
 
 	parg = arg;
 	while (*parg)

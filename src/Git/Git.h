@@ -191,7 +191,7 @@ public:
 			return m_GitSimpleListDiff;
 		else
 		{
-			git_open_diff(&m_GitSimpleListDiff,"-r -r");
+			git_open_diff(&m_GitSimpleListDiff, "-r");
 			return m_GitSimpleListDiff;
 		}
 	}

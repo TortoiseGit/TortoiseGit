@@ -1076,7 +1076,7 @@ CString CGit::GetLogCmd(CString range, const CTGitPath* path, int mask, CFilterD
 	if (path)
 		file.Format(L" \"%s\"", (LPCTSTR)path->GetGitPathString());
 	// gitdll.dll:setup_revisions() only looks at args[1] and greater. To account for this, pass a dummy parameter in the 0th place
-	cmd.Format(L"--ignore-this-parameter -z%s %s --parents --%s", (LPCTSTR)param, (LPCTSTR)range, (LPCTSTR)file);
+	cmd.Format(L"-z%s %s --parents --%s", (LPCTSTR)param, (LPCTSTR)range, (LPCTSTR)file);
 
 	return cmd;
 }
