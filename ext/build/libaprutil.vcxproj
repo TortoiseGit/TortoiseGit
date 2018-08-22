@@ -45,8 +45,8 @@ if errorlevel 1 type apu.hw &gt;..\apr-util\include\apu.hw
 </Command>
     </PreBuildEvent>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\apr-util\include;..\apr\include;..\apr-util\include\private;..\apr-util\dbm\sdbm;..\expat\expat\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>APU_DECLARE_EXPORT;APU_USE_SDBM;XML_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\apr-util\include;..\apr\include;..\apr-util\include\private;..\apr-util\dbm\sdbm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>APU_DECLARE_EXPORT;APU_USE_SDBM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level2</WarningLevel>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -130,7 +130,6 @@ if errorlevel 1 type apu.hw &gt;..\apr-util\include\apu.hw
     <ClCompile Include="..\apr-util\strmatch\apr_strmatch.c" />
     <ClCompile Include="..\apr-util\uri\apr_uri.c" />
     <ClCompile Include="..\apr-util\xlate\xlate.c" />
-    <ClCompile Include="..\apr-util\xml\apr_xml.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\apr-util\dbm\sdbm\sdbm_pair.h" />
@@ -212,10 +211,6 @@ if errorlevel 1 type ..\apr-util\include\apu_want.hw &gt; ..\apr-util\include\ap
   <ItemGroup>
     <ProjectReference Include="libapr.vcxproj">
       <Project>{4472028d-4acf-474e-aa95-9b7e12b50f60}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="xml.vcxproj">
-      <Project>{ae6aafba-9992-452a-9eb8-dd69402a4ace}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>

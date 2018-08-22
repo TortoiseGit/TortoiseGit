@@ -43,9 +43,6 @@
     <Filter Include="Source Files\xlate">
       <UniqueIdentifier>{c671c992-3e51-48b1-953b-b170df53c4d3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\xml">
-      <UniqueIdentifier>{de8bcd0b-1f33-4a54-ae65-ebc55a122193}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Generated Files">
       <UniqueIdentifier>{c597fcb9-a02e-4638-8d38-3ebcc7a45e4b}</UniqueIdentifier>
     </Filter>
@@ -197,9 +194,6 @@
     </ClCompile>
     <ClCompile Include="..\apr-util\xlate\xlate.c">
       <Filter>Source Files\xlate</Filter>
-    </ClCompile>
-    <ClCompile Include="..\apr-util\xml\apr_xml.c">
-      <Filter>Source Files\xml</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

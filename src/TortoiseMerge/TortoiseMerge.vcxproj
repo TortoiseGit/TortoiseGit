@@ -431,10 +431,6 @@
     <ProjectReference Include="..\..\ext\build\libgit2.vcxproj">
       <Project>{2b4f366c-93ba-491e-87af-5ef7b37f75f7}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\ext\build\xml.vcxproj">
-      <Project>{ae6aafba-9992-452a-9eb8-dd69402a4ace}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
     <ProjectReference Include="..\..\ext\build\zlib.vcxproj">
       <Project>{5c6b6a95-2053-4593-9617-c4f176736d5a}</Project>
     </ProjectReference>
