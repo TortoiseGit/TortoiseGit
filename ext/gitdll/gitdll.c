@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2018 - TortoiseGit
 
@@ -308,65 +308,67 @@ int git_free_commit(GIT_COMMIT *commit)
 	return 0;
 }
 
-char **strtoargv(char *arg, int *size)
+static char** strtoargv(const char* arg, int* size)
 {
 	int count=0;
-	char *p=arg;
+	const char* parg = arg;
 	char **argv;
-
+	char* p;
 	int i=0;
-	while(*p)
-	{
-		if(*p == '\\')
-			*p='/';
-		++p;
-	}
-	p=arg;
 
-	while(*p)
+	assert(arg && parg);
+
+	while (*parg)
 	{
-		if(*p == ' ')
+		if (*parg == ' ')
 			++count;
-		++p;
+		assert(*parg != '\\' && "no backslashes allowed, use a Git path (with slashes) - no escaping of chars possible");
+		++parg;
 	}
 
-	argv=malloc(strlen(arg)+1 + (count +2)*sizeof(void*));
-	p=(char*)(argv+count+2);
+	argv = malloc(strlen(arg) + 2 + (count + 3) * sizeof(char*)); // 1 char* for every parameter + 1 for argv[0] + 1 NULL as end end; and some space for the actual parameters: strlen() + 1 for \0, + 1 for \0 for argv[0]
+	if (!argv)
+		return NULL;
+	p = (char*)(argv + count + 3);
 
-	while(*arg)
+	argv[i++] = p;
+	*p++ = '\0';
+
+	parg = arg;
+	while (*parg)
 	{
-		if(*arg != ' ')
+		if (*parg != ' ')
 		{
 			char space=' ';
 			argv[i]=p;
 
-			while(*arg)
+			while (*parg)
 			{
-				if(*arg == '"')
+				if (*parg == '"')
 				{
-					++arg;
+					++parg;
 					if(space == ' ')
 						space = '"';
 					else
 						space = ' ';
 				}
-				if((*arg == space) || (*arg == 0))
+				if (*parg == space || !*parg)
 					break;
 
-				*p++ = *arg++;
+				*p++ = *parg++;
 			}
 			++i;
 			*p++=0;
 		}
-		if(*arg == 0)
+		if (!*parg)
 			break;
-		++arg;
+		++parg;
 	}
 	argv[i]=NULL;
 	*size = i;
 	return argv;
 }
-int git_open_log(GIT_LOG * handle, char * arg)
+int git_open_log(GIT_LOG* handle, const char* arg)
 {
 	struct rev_info *p_Rev;
 	char ** argv=0;
@@ -394,9 +396,7 @@ int git_open_log(GIT_LOG * handle, char * arg)
 		}
 	}
 
-	if(arg != NULL)
-		argv = strtoargv(arg,&argc);
-
+	argv = strtoargv(arg, &argc);
 	if (!argv)
 		return -1;
 
@@ -482,14 +482,15 @@ int git_close_log(GIT_LOG handle)
 	return 0;
 }
 
-int git_open_diff(GIT_DIFF *diff, char * arg)
+int git_open_diff(GIT_DIFF* diff, const char* arg)
 {
 	struct rev_info *p_Rev;
 	char ** argv=0;
 	int argc=0;
 
-	if(arg != NULL)
-		argv = strtoargv(arg,&argc);
+	argv = strtoargv(arg, &argc);
+	if (!argv)
+		return -1;
 
 	p_Rev = malloc(sizeof(struct rev_info));
 	memset(p_Rev,0,sizeof(struct rev_info));
@@ -732,7 +733,7 @@ static struct cmd_struct commands[] = {
 		{ "update-index", cmd_update_index, RUN_SETUP },
 	};
 
-int git_run_cmd(char *cmd, char *arg)
+int git_run_cmd(char *cmd, const char *arg)
 {
 
 	char ** argv=0;
@@ -745,8 +746,9 @@ int git_run_cmd(char *cmd, char *arg)
 		if(strcmp(cmd,commands[i].cmd)==0)
 		{
 			int ret;
-			if(arg != NULL)
-				argv = strtoargv(arg,&argc);
+			argv = strtoargv(arg,&argc);
+			if (!argv)
+				return -1;
 
 			ret = commands[i].fn(argc, argv, NULL);
 

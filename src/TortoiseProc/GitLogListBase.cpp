@@ -2790,7 +2790,7 @@ int CGitLogListBase::BeginFetchLog()
 
 	g_Git.m_critGitDllSec.Lock();
 	try {
-		if (git_open_log(&m_DllGitLog, CUnicodeUtils::GetMulti(cmd, CP_UTF8).GetBuffer()))
+		if (git_open_log(&m_DllGitLog, CUnicodeUtils::GetMulti(cmd, CP_UTF8)))
 		{
 			g_Git.m_critGitDllSec.Unlock();
 			return -1;
