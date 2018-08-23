@@ -45,6 +45,20 @@
 		<Condition Message="Please uninstall all 32-bit versions of TortoiseGit before installing [ProductName].">NOT WIN32TGITFOUND</Condition>
 		<?endif ?>
 
+		<!-- test for the universal CRT -->
+		<Property Id="UCRTVERSION" Secure="yes">
+			<?if $(var.Platform) = "x64" ?>
+			<DirectorySearch Id="SystemFolder64V" Path="[System64Folder]">
+				<FileSearch Name="ucrtbase.dll" MinVersion="0.0.0.0"/>
+			</DirectorySearch>
+			<?else?>
+			<DirectorySearch Id="SystemFolder32V" Path="[SystemFolder]">
+				<FileSearch Name="ucrtbase.dll" MinVersion="0.0.0.0"/>
+			</DirectorySearch>
+			<?endif?>
+		</Property>
+		<Condition Message="Please install the Universal CRT first. You can install it via Windows Update (KB2999226) or you can manually download it from Microsoft by doing a search for 'vcredist 2019 download'">UCRTVERSION</Condition>
+
 		<!-- Show/Don't-show changelog related properties and custom actions ..................................................... -->
 		<Property Id="TEXTEDITOR" Secure="yes">
 			<DirectorySearch Id="FileSearchTextEditorExe" Path="[WindowsFolder]">

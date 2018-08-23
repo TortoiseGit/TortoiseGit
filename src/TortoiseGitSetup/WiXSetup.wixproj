@@ -28,7 +28,7 @@
 	</PropertyGroup>
 	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.WindowsSDK.props" />
 	<PropertyGroup>
-		<!-- for shipping UCRT library -->
+		<!-- for signing the Windows 11 context menu extension -->
 		<DefineConstants>WindowsSdkDir_10=$(WindowsSdkDir_10);$(DefineConstants)</DefineConstants>
 		<Win10SDKVer Condition="'$(Win10SDKVer)' == ''">$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v10.0@ProductVersion)</Win10SDKVer>
 		<Win10SDKVer Condition="'$(Win10SDKVer)' == ''">$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Microsoft SDKs\Windows\v10.0@ProductVersion)</Win10SDKVer>
@@ -56,7 +56,6 @@
 	</PropertyGroup>
 	<Target Name="CheckVCRedistVersion">
 		<Warning Text="CRT/MFC RedistFiles: $(VCToolsRedistVersion) is newer than the last known version. Check '$(VCInstallDir)Redist\MSVC\$(VCToolsRedistVersion)\$(PackagePlatforms)' for new files and adjust 'VCToolsRedistVersionCheck'." Condition="$(VCToolsRedistVersion.Substring(0, 5)) &gt; 14.34" />
-		<Warning Text="UCRT RedistFiles: $(Win10SDKVer) is newer than the last known version. Check '$(WindowsSdkDir_10)Redist\$(Win10SDKVer)\ucrt\DLLs\$(PackagePlatforms)\' for new files." Condition="$(Win10SDKVer.Substring(5)) &gt; 19041" />
 	</Target>
 	<Target Name="EnsureWixToolsetInstalled" Condition=" '$(WixTargetsImported)' != 'true' ">
 		<Error Text="The WiX Toolset v3.11 (or newer) build tools must be installed to build this project. To download the WiX Toolset, see https://wixtoolset.org/releases/" />
