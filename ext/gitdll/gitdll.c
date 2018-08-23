@@ -327,6 +327,8 @@ static char** strtoargv(const char* arg, int* size)
 	}
 
 	argv = malloc(strlen(arg) + 2 + (count + 3) * sizeof(char*)); // 1 char* for every parameter + 1 for argv[0] + 1 NULL as end end; and some space for the actual parameters: strlen() + 1 for \0, + 1 for \0 for argv[0]
+	if (!argv)
+		return NULL;
 	p = (char*)(argv + count + 3);
 
 	argv[i++] = p;
@@ -487,6 +489,8 @@ int git_open_diff(GIT_DIFF* diff, const char* arg)
 	int argc=0;
 
 	argv = strtoargv(arg, &argc);
+	if (!argv)
+		return -1;
 
 	p_Rev = malloc(sizeof(struct rev_info));
 	memset(p_Rev,0,sizeof(struct rev_info));
@@ -743,6 +747,8 @@ int git_run_cmd(char *cmd, const char *arg)
 		{
 			int ret;
 			argv = strtoargv(arg,&argc);
+			if (!argv)
+				return -1;
 
 			ret = commands[i].fn(argc, argv, NULL);
 
