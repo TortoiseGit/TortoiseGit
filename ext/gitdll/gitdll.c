@@ -701,48 +701,24 @@ int git_get_notes(const GIT_HASH hash, char** p_note)
 	return 0;
 }
 
-struct cmd_struct {
-	const char *cmd;
-	int (*fn)(int, const char **, const char *);
-	int option;
-};
-
-#define RUN_SETUP	(1<<0)
-
-static struct cmd_struct commands[] = {
-		{ "update-index", cmd_update_index, RUN_SETUP },
-	};
-
-int git_run_cmd(char *cmd, const char *arg)
+int git_update_index(void)
 {
-
-	char ** argv=0;
-	int argc=0;
+	char** argv = NULL;
+	int argc = 0;
+	int ret;
 
 	git_init();
 
-	for (int i = 0; i < sizeof(commands) / sizeof(struct cmd_struct); ++i)
-	{
-		if(strcmp(cmd,commands[i].cmd)==0)
-		{
-			int ret;
-			argv = strtoargv(arg,&argc);
-			if (!argv)
-				return -1;
+	argv = strtoargv("-q --refresh", &argc);
+	if (!argv)
+		return -1;
+	ret = cmd_update_index(argc, argv, NULL);
+	free(argv);
 
-			ret = commands[i].fn(argc, argv, NULL);
+	discard_cache();
+	free_all_pack();
 
-			free(argv);
-
-			discard_cache();
-			free_all_pack();
-
-			return ret;
-
-
-		}
-	}
-	return -1;
+	return ret;
 }
 
 void git_exit_cleanup(void)

@@ -164,7 +164,8 @@ GITDLL_API int git_free_exclude_list(EXCLUDE_LIST which);
 //caller need free p_note
 GITDLL_API int git_get_notes(const GIT_HASH hash, char** p_note);
 
-GITDLL_API int git_run_cmd(char* cmd, const char* arg);
+GITDLL_API int git_update_index(void);
+
 GITDLL_API void git_exit_cleanup(void);
 
 #define REF_ISSYMREF 01
