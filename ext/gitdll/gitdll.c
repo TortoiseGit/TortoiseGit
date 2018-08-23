@@ -33,15 +33,12 @@
 #include "diffcore.h"
 #include "dir.h"
 #include "builtin.h"
-#include "exec_cmd.h"
 #include "config.h"
-#include "quote.h"
-#include "run-command.h"
 #include "mailmap.h"
 #pragma warning(pop)
 
 extern char g_last_error[];
-const char * g_prefix;
+static const char* g_prefix;
 
 static_assert(sizeof(struct object_id) == sizeof(struct GIT_OBJECT_OID), "Required to be equal in gitdll.h");
 
@@ -85,30 +82,13 @@ int git_get_sha1(const char *name, GIT_HASH sha1)
 	return ret;
 }
 
-static int convert_slash(char * path)
-{
-	while(*path)
-	{
-		if(*path == '\\' )
-			*path = '/';
-		++path;
-	}
-	return 0;
-}
-
 int git_init(void)
 {
-	char path[MAX_PATH+1];
-
 	_fmode = _O_BINARY;
 	_setmode(_fileno(stdin), _O_BINARY);
 	_setmode(_fileno(stdout), _O_BINARY);
 	_setmode(_fileno(stderr), _O_BINARY);
 
-	GetModuleFileName(NULL, path, MAX_PATH);
-	convert_slash(path);
-
-	git_extract_argv0_path(path);
 	reset_git_env();
 	// set HOME if not set already
 	gitsetenv("HOME", get_windows_home_directory(), 0);
