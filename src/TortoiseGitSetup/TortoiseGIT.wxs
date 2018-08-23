@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 	<?include Includes.wxi?>
 	<Product UpgradeCode="$(var.UpgradeGuid)" Name="$(var.ProductName) $(var.VersionNumberUserVisible) $(var.PlatformUserVisible)" Id="*" Version="$(var.VersionNumberInternal)" Manufacturer="TortoiseGit" Language="1033" Codepage="1252">
@@ -41,6 +41,20 @@
 		</Upgrade>
 		<Condition Message="Please uninstall all 32-bit versions of TortoiseGit before installing [ProductName].">NOT WIN32TGITFOUND</Condition>
 		<?endif ?>
+
+		<!-- test for the universal CRT -->
+		<Property Id="UCRTVERSION" Secure="yes">
+			<?if $(env.Platform) = "x64" ?>
+			<DirectorySearch Id="SystemFolder64V" Path="[System64Folder]">
+				<FileSearch Name="ucrtbase.dll" MinVersion="0.0.0.0"/>
+			</DirectorySearch>
+			<?else?>
+			<DirectorySearch Id="SystemFolder32V" Path="[SystemFolder]">
+				<FileSearch Name="ucrtbase.dll" MinVersion="0.0.0.0"/>
+			</DirectorySearch>
+			<?endif?>
+		</Property>
+		<Condition Message="Please install the Universal CRT first. You can install it via Windows Update (KB2999226) or you can manually download it from Microsoft by doing a search for 'vcredist 2019 download'">UCRTVERSION</Condition>
 
 		<!-- Show/Don't-show changelog related properties and custom actions ..................................................... -->
 		<Property Id="TEXTEDITOR" Secure="yes">

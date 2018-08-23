@@ -449,49 +449,6 @@
 						<Shortcut Id="S__PlatformConfig" Directory="D_TortoisePrgMenu" Name="Settings" Advertise="no" Target="[INSTALLDIR]bin\TortoiseGitProc.exe" Description="TortoiseGit" Arguments="/command:settings" Show="normal" />
 					</Component>
 
-					<Component Id="C__ucrt" Guid="$(var.GuidUCRT)" Win64="$(var.Win64YesNo)">
-						<File Id="F__ucrtdll1" Name="api-ms-win-core-console-l1-1-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-core-console-l1-1-0.dll" />
-						<File Id="F__ucrtdll2" Name="api-ms-win-core-datetime-l1-1-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-core-datetime-l1-1-0.dll" />
-						<File Id="F__ucrtdll3" Name="api-ms-win-core-debug-l1-1-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-core-debug-l1-1-0.dll" />
-						<File Id="F__ucrtdll4" Name="api-ms-win-core-errorhandling-l1-1-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-core-errorhandling-l1-1-0.dll" />
-						<File Id="F__ucrtdll5" Name="api-ms-win-core-file-l1-1-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-core-file-l1-1-0.dll" />
-						<File Id="F__ucrtdll6" Name="api-ms-win-core-file-l1-2-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-core-file-l1-2-0.dll" />
-						<File Id="F__ucrtdll7" Name="api-ms-win-core-file-l2-1-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-core-file-l2-1-0.dll" />
-						<File Id="F__ucrtdll8" Name="api-ms-win-core-handle-l1-1-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-core-handle-l1-1-0.dll" />
-						<File Id="F__ucrtdll9" Name="api-ms-win-core-heap-l1-1-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-core-heap-l1-1-0.dll" />
-						<File Id="F__ucrtdll10" Name="api-ms-win-core-interlocked-l1-1-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-core-interlocked-l1-1-0.dll" />
-						<File Id="F__ucrtdll11" Name="api-ms-win-core-libraryloader-l1-1-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-core-libraryloader-l1-1-0.dll" />
-						<File Id="F__ucrtdll12" Name="api-ms-win-core-localization-l1-2-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-core-localization-l1-2-0.dll" />
-						<File Id="F__ucrtdll13" Name="api-ms-win-core-memory-l1-1-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-core-memory-l1-1-0.dll" />
-						<File Id="F__ucrtdll14" Name="api-ms-win-core-namedpipe-l1-1-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-core-namedpipe-l1-1-0.dll" />
-						<File Id="F__ucrtdll15" Name="api-ms-win-core-processenvironment-l1-1-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-core-processenvironment-l1-1-0.dll" />
-						<File Id="F__ucrtdll16" Name="api-ms-win-core-processthreads-l1-1-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-core-processthreads-l1-1-0.dll" />
-						<File Id="F__ucrtdll17" Name="api-ms-win-core-processthreads-l1-1-1.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-core-processthreads-l1-1-1.dll" />
-						<File Id="F__ucrtdll18" Name="api-ms-win-core-profile-l1-1-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-core-profile-l1-1-0.dll" />
-						<File Id="F__ucrtdll19" Name="api-ms-win-core-rtlsupport-l1-1-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-core-rtlsupport-l1-1-0.dll" />
-						<File Id="F__ucrtdll20" Name="api-ms-win-core-string-l1-1-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-core-string-l1-1-0.dll" />
-						<File Id="F__ucrtdll21" Name="api-ms-win-core-synch-l1-1-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-core-synch-l1-1-0.dll" />
-						<File Id="F__ucrtdll22" Name="api-ms-win-core-synch-l1-2-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-core-synch-l1-2-0.dll" />
-						<File Id="F__ucrtdll23" Name="api-ms-win-core-sysinfo-l1-1-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-core-sysinfo-l1-1-0.dll" />
-						<File Id="F__ucrtdll24" Name="api-ms-win-core-timezone-l1-1-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-core-timezone-l1-1-0.dll" />
-						<File Id="F__ucrtdll25" Name="api-ms-win-core-util-l1-1-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-core-util-l1-1-0.dll" />
-						<File Id="F__ucrtdll26" Name="api-ms-win-crt-conio-l1-1-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-crt-conio-l1-1-0.dll" />
-						<File Id="F__ucrtdll27" Name="api-ms-win-crt-convert-l1-1-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-crt-convert-l1-1-0.dll" />
-						<File Id="F__ucrtdll28" Name="api-ms-win-crt-environment-l1-1-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-crt-environment-l1-1-0.dll" />
-						<File Id="F__ucrtdll29" Name="api-ms-win-crt-filesystem-l1-1-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-crt-filesystem-l1-1-0.dll" />
-						<File Id="F__ucrtdll30" Name="api-ms-win-crt-heap-l1-1-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-crt-heap-l1-1-0.dll" />
-						<File Id="F__ucrtdll31" Name="api-ms-win-crt-locale-l1-1-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-crt-locale-l1-1-0.dll" />
-						<File Id="F__ucrtdll32" Name="api-ms-win-crt-math-l1-1-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-crt-math-l1-1-0.dll" />
-						<File Id="F__ucrtdll33" Name="api-ms-win-crt-multibyte-l1-1-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-crt-multibyte-l1-1-0.dll" />
-						<File Id="F__ucrtdll34" Name="api-ms-win-crt-private-l1-1-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-crt-private-l1-1-0.dll" />
-						<File Id="F__ucrtdll35" Name="api-ms-win-crt-process-l1-1-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-crt-process-l1-1-0.dll" />
-						<File Id="F__ucrtdll36" Name="api-ms-win-crt-runtime-l1-1-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-crt-runtime-l1-1-0.dll" />
-						<File Id="F__ucrtdll37" Name="api-ms-win-crt-stdio-l1-1-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-crt-stdio-l1-1-0.dll" />
-						<File Id="F__ucrtdll38" Name="api-ms-win-crt-string-l1-1-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-crt-string-l1-1-0.dll" />
-						<File Id="F__ucrtdll39" Name="api-ms-win-crt-time-l1-1-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-crt-time-l1-1-0.dll" />
-						<File Id="F__ucrtdll40" Name="api-ms-win-crt-utility-l1-1-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-crt-utility-l1-1-0.dll" />
-						<File Id="F__ucrtdll41" Name="ucrtbase.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\ucrtbase.dll" />
-					</Component>
 					<Component Id="C__crtmfc" Guid="$(var.GuidCRTMFC)" Win64="$(var.Win64YesNo)">
 						<File Id="F__concrt140" Name="concrt140.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\concrt140.dll" />
 						<File Id="F__msvcp140" Name="msvcp140.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\msvcp140.dll" />

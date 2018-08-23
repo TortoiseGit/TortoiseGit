@@ -45,7 +45,6 @@
 		<ComponentRef Id="C_LanguagePacks" />
 		<ComponentRef Id="C__touch" />
 
-		<ComponentRef Id="C__ucrt" />
 		<ComponentRef Id="C__crtmfc" />
 
 		<Feature Id="F_OVL" Level="1" Title="Tortoise Overlay handler" Description="The overlay handler for all Tortoise clients" TypicalDefault="install" Display="hidden">

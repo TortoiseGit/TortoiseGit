@@ -22,14 +22,6 @@
 		<!-- for shipping CRT/MFC library -->
 		<DefineConstants>VCInstallDir=$(VCInstallDir);VCToolsRedistVersion=$(VCToolsRedistVersion);PlatformToolsetVersion=$(PlatformToolsetVersion);$(DefineConstants)</DefineConstants>
 	</PropertyGroup>
-	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.WindowsSDK.props" />
-	<PropertyGroup>
-		<!-- for shipping UCRT library -->
-		<DefineConstants>WindowsSdkDir_10=$(WindowsSdkDir_10);$(DefineConstants)</DefineConstants>
-		<Win10SDKVer Condition="'$(Win10SDKVer)' == ''">$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v10.0@ProductVersion)</Win10SDKVer>
-		<Win10SDKVer Condition="'$(Win10SDKVer)' == ''">$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Microsoft SDKs\Windows\v10.0@ProductVersion)</Win10SDKVer>
-		<DefineConstants Condition="'$(Win10SDKVer)' != ''">Win10SDKVer=$(Win10SDKVer).0;$(DefineConstants)</DefineConstants>
-	</PropertyGroup>
 	<PropertyGroup>
 		<OutputPath Condition="'$(Configuration)'=='Release'">..\..\bin\setup\$(Platform)\</OutputPath>
 		<OutputPath Condition="'$(Configuration)'=='Debug'">..\..\bin\setup\debug-$(Platform)\</OutputPath>
