@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Include Id="TgitInclude">
 	<?include VersionNumberInclude.wxi ?>
 
@@ -71,7 +71,6 @@
 	<?define GuidApproveShellComponents="E7E43AE0-DB46-4AF9-95EA-2EF7AD3F2119"?>
 	<?define GuidApproveShellComponents32="56A11ACF-3DE2-40F8-A6A8-4CC334E19571"?>
 
-	<?define GuidAPR="72EB77A1-E5CD-4CDB-BFC2-77FDCFD04ACF"?>
 	<?define GuidTGit="CA01E04E-4D42-4C1E-B615-0D09D12380D4"?>
 	<?define GuidGitLibs="61EC5A0E-0B76-4E47-90A9-E0CF2E893444"?>
 	<?define GuidGitLibs32="69FBADA2-E356-45E6-BF22-D544057EB07E"?>
@@ -160,7 +159,6 @@
 	<?define GuidMachineRegistry="27FA9458-F68B-4A26-A36B-D452FD9EABBA"?>
 	<?define GuidApproveShellComponents="E3B982F9-7B17-457F-A72F-2F47E9DB1719"?>
 
-	<?define GuidAPR="DFBE3185-5272-4880-9ED3-F50F21EA9BE7"?>
 	<?define GuidTGit="F62E9AD5-EAC7-4EB9-825E-A8EF5CBA6730"?>
 	<?define GuidGitLibs="45615857-0FA0-43C1-9595-4C72A03AD1AC"?>
 	<?define GuidCrashRpt="2B7AD90B-41D9-4A10-834F-1CDD6E366AC7"?>

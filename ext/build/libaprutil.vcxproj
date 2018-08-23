@@ -25,7 +25,7 @@
   <Import Project="$(SolutionDir)TortoiseGit.toolset.props" />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'" Label="Configuration">
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -33,7 +33,7 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   <Import Project="$(SolutionDir)TortoiseGit.common.props" />
-  <Import Project="$(SolutionDir)TortoiseGit.common-dll.props" />
+  <Import Project="$(SolutionDir)TortoiseGit.common-staticlib.props" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <TargetName>$(ProjectName)_tgitmerge</TargetName>
@@ -46,21 +46,13 @@ if errorlevel 1 type apu.hw &gt;..\apr-util\include\apu.hw
     </PreBuildEvent>
     <ClCompile>
       <AdditionalIncludeDirectories>..\apr-util\include;..\apr\include;..\apr-util\include\private;..\apr-util\dbm\sdbm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>APU_DECLARE_EXPORT;APU_USE_SDBM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>APR_DECLARE_STATIC;APU_DECLARE_STATIC;APU_USE_SDBM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level2</WarningLevel>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ResourceCompile>
-      <PreprocessorDefinitions>APU_VERSION_ONLY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\apr-util\include;..\apr\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ResourceCompile>
-    <Link>
-      <AdditionalDependencies>ws2_32.lib;mswsock.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-    <PostBuildEvent>
-      <Message>Embed .manifest</Message>
-      <Command>if exist $(TargetPath).manifest mt.exe -manifest $(TargetPath).manifest -outputresource:$(TargetPath)%3b2</Command>
-    </PostBuildEvent>
+    <Lib>
+      <AdditionalDependencies>rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Platform)'=='x64'">
     <ClCompile>
@@ -203,10 +195,6 @@ if errorlevel 1 type ..\apr-util\include\apu_want.hw &gt; ..\apr-util\include\ap
 </Command>
       <Outputs>..\apr-util\include\apu_want.h;%(Outputs)</Outputs>
     </CustomBuild>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="..\apr-util\libaprutil.rc">
-    </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="libapr.vcxproj">

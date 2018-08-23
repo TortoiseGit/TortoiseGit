@@ -440,9 +440,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\apr\libapr.rc" />
-  </ItemGroup>
-  <ItemGroup>
     <CustomBuild Include="..\apr\include\apr.h.in">
       <Filter>Public Header Files</Filter>
     </CustomBuild>

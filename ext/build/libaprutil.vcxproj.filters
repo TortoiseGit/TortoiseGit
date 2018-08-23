@@ -303,9 +303,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\apr-util\libaprutil.rc" />
-  </ItemGroup>
-  <ItemGroup>
     <CustomBuild Include="..\apr-util\include\apr_ldap.hw">
       <Filter>Generated Files</Filter>
     </CustomBuild>
