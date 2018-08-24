@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2017-2018 - TortoiseGit
 // Copyright (C) 2003-2016 - TortoiseSVN
@@ -274,6 +274,6 @@ int GetStatus(const TCHAR* path, GitWCRev_t& GitStat)
 	}
 	unsigned int status_flags = 0;
 	int ret = git_status_file(&status_flags, repo, pathA.c_str());
-	GitStat.bIsGitItem = (ret == GIT_EAMBIGUOUS || (ret == 0 && !(status_flags & GIT_STATUS_IGNORED)));
+	GitStat.bIsGitItem = (ret == GIT_EAMBIGUOUS || (ret == 0 && !(status_flags & (GIT_STATUS_WT_NEW | GIT_STATUS_IGNORED))));
 	return 0;
 }

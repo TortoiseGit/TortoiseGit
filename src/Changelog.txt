@@ -1,4 +1,11 @@
-﻿= Release 2.7.0 =
+﻿= Release 2.8.0 =
+Released: unreleased
+
+== Bug Fixes ==
+ * Fixed issue #3250: GitWCRev: IsGitItem return true for item that had never been committed
+
+
+= Release 2.7.0 =
 Released: 2018-08-19
 
 == Changes ==
