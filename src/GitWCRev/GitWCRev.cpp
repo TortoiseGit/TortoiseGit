@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2017-2018 - TortoiseGit
 // Copyright (C) 2003-2016 - TortoiseSVN
@@ -285,7 +285,7 @@ bool InsertNumber(char* def, char* pBuf, size_t& index, size_t& filelength, size
 	}
 	// Format the text to insert at the placeholder
 	char destbuf[1024] = { 0 };
-	sprintf_s(destbuf, "%lld", Value);
+	sprintf_s(destbuf, "%zd", Value);
 
 	// Replace the $WCxxx$ string with the actual revision number
 	char* pBuild = pBuf + index;
@@ -350,7 +350,7 @@ bool InsertNumberW(wchar_t* def, wchar_t* pBuf, size_t& index, size_t& filelengt
 
 	// Format the text to insert at the placeholder
 	wchar_t destbuf[40];
-	swprintf_s(destbuf, L"%lld", Value);
+	swprintf_s(destbuf, L"%zd", Value);
 	// Replace the $WCxxx$ string with the actual revision number
 	wchar_t* pBuild = pBuf + index;
 	ptrdiff_t Expansion = wcslen(destbuf) - exp - wcslen(def);
