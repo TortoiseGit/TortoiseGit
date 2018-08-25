@@ -174,6 +174,9 @@
     <ClCompile Include="..\Utils\LoadIconEx.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\TortoiseProc\LogDlgFilter.cpp">
+      <Filter>TortoiseGitProc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditGotoDlg.h">
@@ -343,6 +346,9 @@
     </ClInclude>
     <ClInclude Include="..\Utils\LoadIconEx.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TortoiseProc\LogDlgFilter.h">
+      <Filter>TortoiseGitProc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

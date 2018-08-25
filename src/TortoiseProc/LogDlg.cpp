@@ -68,7 +68,7 @@ CLogDlg::CLogDlg(CWnd* pParent /*=nullptr*/)
 	m_bFilterWithRegex = !!CRegDWORD(L"Software\\TortoiseGit\\UseRegexFilter", FALSE);
 	m_bFilterCaseSensitively = !!CRegDWORD(L"Software\\TortoiseGit\\FilterCaseSensitively", FALSE);
 	m_bAsteriskLogPrefix = !!CRegDWORD(L"Software\\TortoiseGit\\AsteriskLogPrefix", TRUE);
-	m_LogList.m_SelectedFilters = CRegDWORD(L"Software\\TortoiseGit\\SelectedLogFilters", LOGFILTER_ALL);
+	m_SelectedFilters = CRegDWORD(L"Software\\TortoiseGit\\SelectedLogFilters", LOGFILTER_ALL);
 
 	CString str = g_Git.m_CurrentDir;
 	str.Replace(L':', L'_');
@@ -128,7 +128,7 @@ void CLogDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_PROGRESS, m_LogProgress);
 	DDX_Control(pDX, IDC_SPLITTERTOP, m_wndSplitter1);
 	DDX_Control(pDX, IDC_SPLITTERBOTTOM, m_wndSplitter2);
-	DDX_Text(pDX, IDC_SEARCHEDIT, m_LogList.m_sFilterText);
+	DDX_Text(pDX, IDC_SEARCHEDIT, m_sFilterText);
 	DDX_Control(pDX, IDC_DATEFROM, m_DateFrom);
 	DDX_Control(pDX, IDC_DATETO, m_DateTo);
 	DDX_Control(pDX, IDC_LOG_JUMPTYPE, m_JumpType);
@@ -274,10 +274,9 @@ void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString
 
 void CLogDlg::SetFilter(const CString& findstr, LONG findtype, bool findregex)
 {
-	m_LogList.m_sFilterText = findstr;
-	if (findtype)
-		m_LogList.m_SelectedFilters = findtype;
-	m_LogList.m_bFilterWithRegex = m_bFilterWithRegex = findregex;
+	m_LogList.m_LogFilter = std::make_shared<CLogDlgFilter>(findstr, m_bFilterWithRegex, (DWORD)findtype, m_bFilterCaseSensitively);
+	m_sFilterText = findstr;
+	m_bFilterWithRegex = findregex;
 }
 
 BOOL CLogDlg::OnInitDialog()
@@ -1234,7 +1233,10 @@ void CLogDlg::Refresh (bool clearfilter /*autoGoOnline*/)
 {
 	if (m_bSelect)
 		DialogEnableWindow(IDOK, FALSE);
+	m_LogList.m_LogFilter = std::make_shared<CLogDlgFilter>(m_sFilterText, m_bFilterWithRegex, (DWORD)m_SelectedFilters, m_bFilterCaseSensitively);
 	m_LogList.Refresh(clearfilter);
+	if (clearfilter)
+		m_sFilterText.Empty();
 	EnableOKButton();
 	ShowStartRef();
 	FillLogMessageCtrl(false);
@@ -2169,7 +2171,7 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM wParam, LPARAM lParam)
 	CPoint point;
 	CString temp;
 	point = CPoint(rect->left, rect->bottom);
-#define LOGMENUFLAGS(x) (MF_STRING | MF_ENABLED | ((m_LogList.m_SelectedFilters & x) ? MF_CHECKED : MF_UNCHECKED))
+#define LOGMENUFLAGS(x) (MF_STRING | MF_ENABLED | ((m_SelectedFilters & x) ? MF_CHECKED : MF_UNCHECKED))
 	CMenu popup;
 	if (popup.CreatePopupMenu())
 	{
@@ -2230,7 +2232,6 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM wParam, LPARAM lParam)
 				m_bFilterWithRegex = !m_bFilterWithRegex;
 				CRegDWORD b(L"Software\\TortoiseGit\\UseRegexFilter", FALSE);
 				b = m_bFilterWithRegex;
-				m_LogList.m_bFilterWithRegex = m_bFilterWithRegex;
 				SetFilterCueText();
 				CheckRegexpTooltip();
 				m_cFilter.ValidateAndRedraw();
@@ -2240,26 +2241,25 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM wParam, LPARAM lParam)
 				m_bFilterCaseSensitively = !m_bFilterCaseSensitively;
 				CRegDWORD b(L"Software\\TortoiseGit\\FilterCaseSensitively", FALSE);
 				b = m_bFilterCaseSensitively;
-				m_LogList.m_bFilterCaseSensitively = m_bFilterCaseSensitively;
 			}
 			else if (selection == LOGFILTER_TOGGLE)
 			{
-				m_LogList.m_SelectedFilters = (~m_LogList.m_SelectedFilters) & LOGFILTER_ALL;
+				m_SelectedFilters = (~m_SelectedFilters) & LOGFILTER_ALL;
 				SetFilterCueText();
 			}
 			else if (selection == LOGFILTER_ALL)
 			{
-				m_LogList.m_SelectedFilters = selection;
+				m_SelectedFilters = selection;
 				SetFilterCueText();
 			}
 			else
 			{
-				m_LogList.m_SelectedFilters ^= selection;
+				m_SelectedFilters ^= selection;
 				SetFilterCueText();
 			}
-			CRegDWORD(L"Software\\TortoiseGit\\SelectedLogFilters") = m_LogList.m_SelectedFilters;
+			CRegDWORD(L"Software\\TortoiseGit\\SelectedLogFilters") = m_SelectedFilters;
 			// Reload only if a search text is entered
-			if (m_LogList.HasFilterText())
+			if (m_LogList.m_LogFilter->IsFilterActive())
 				SetTimer(LOGFILTER_TIMER, 1000, nullptr);
 		}
 	}
@@ -2278,12 +2278,12 @@ LRESULT CLogDlg::OnClickedCancelFilter(WPARAM wParam, LPARAM /*lParam*/)
 
 	KillTimer(LOGFILTER_TIMER);
 
-	m_LogList.m_sFilterText.Empty();
+	m_sFilterText.Empty();
 	UpdateData(FALSE);
 	theApp.DoWaitCursor(1);
 	FillLogMessageCtrl(false);
 
-	Refresh();
+	Refresh(true);
 
 	theApp.DoWaitCursor(-1);
 	GetDlgItem(IDC_SEARCHEDIT)->ShowWindow(SW_HIDE);
@@ -2300,61 +2300,61 @@ void CLogDlg::SetFilterCueText()
 	CString temp(MAKEINTRESOURCE(IDS_LOG_FILTER_BY));
 	temp += L' ';
 
-	if (m_LogList.m_SelectedFilters & LOGFILTER_SUBJECT)
+	if (m_SelectedFilters & LOGFILTER_SUBJECT)
 	{
 		temp += CString(MAKEINTRESOURCE(IDS_LOG_FILTER_SUBJECT));
 	}
 
-	if (m_LogList.m_SelectedFilters & LOGFILTER_MESSAGES)
+	if (m_SelectedFilters & LOGFILTER_MESSAGES)
 	{
 		if (!CStringUtils::EndsWith(temp, L' '))
 			temp += L", ";
 		temp += CString(MAKEINTRESOURCE(IDS_LOG_FILTER_MESSAGES));
 	}
 
-	if (m_LogList.m_SelectedFilters & LOGFILTER_PATHS)
+	if (m_SelectedFilters & LOGFILTER_PATHS)
 	{
 		if (!CStringUtils::EndsWith(temp, L' '))
 			temp += L", ";
 		temp += CString(MAKEINTRESOURCE(IDS_LOG_FILTER_PATHS));
 	}
 
-	if (m_LogList.m_SelectedFilters & LOGFILTER_AUTHORS)
+	if (m_SelectedFilters & LOGFILTER_AUTHORS)
 	{
 		if (!CStringUtils::EndsWith(temp, L' '))
 			temp += L", ";
 		temp += CString(MAKEINTRESOURCE(IDS_LOG_FILTER_AUTHORS));
 	}
 
-	if (m_LogList.m_SelectedFilters & LOGFILTER_EMAILS)
+	if (m_SelectedFilters & LOGFILTER_EMAILS)
 	{
 		if (!CStringUtils::EndsWith(temp, L' '))
 			temp += L", ";
 		temp += CString(MAKEINTRESOURCE(IDS_LOG_FILTER_EMAILS));
 	}
 
-	if (m_LogList.m_SelectedFilters & LOGFILTER_REVS)
+	if (m_SelectedFilters & LOGFILTER_REVS)
 	{
 		if (!CStringUtils::EndsWith(temp, L' '))
 			temp += L", ";
 		temp += CString(MAKEINTRESOURCE(IDS_LOG_FILTER_REVS));
 	}
 
-	if (m_LogList.m_SelectedFilters & LOGFILTER_REFNAME)
+	if (m_SelectedFilters & LOGFILTER_REFNAME)
 	{
 		if (!CStringUtils::EndsWith(temp, L' '))
 			temp += L", ";
 		temp += CString(MAKEINTRESOURCE(IDS_LOG_FILTER_REFNAME));
 	}
 
-	if (m_LogList.m_SelectedFilters & LOGFILTER_NOTES)
+	if (m_SelectedFilters & LOGFILTER_NOTES)
 	{
 		if (!CStringUtils::EndsWith(temp, L' '))
 			temp += L", ";
 		temp += CString(MAKEINTRESOURCE(IDS_NOTES));
 	}
 
-	if (m_LogList.m_bShowBugtraqColumn && m_LogList.m_SelectedFilters & LOGFILTER_BUGID)
+	if (m_LogList.m_bShowBugtraqColumn && m_SelectedFilters & LOGFILTER_BUGID)
 	{
 		if (!CStringUtils::EndsWith(temp, L' '))
 			temp += L", ";
@@ -2370,8 +2370,8 @@ bool CLogDlg::Validate(LPCTSTR string)
 {
 	if (!m_bFilterWithRegex)
 		return true;
-	std::wregex pat;
-	return m_LogList.ValidateRegexp(string, pat, false);
+	std::vector<std::wregex> pats;
+	return m_LogList.m_LogFilter->ValidateRegexp(string, pats);
 }
 
 void CLogDlg::OnEnChangeFileFilter()
@@ -3110,14 +3110,14 @@ void CLogDlg::ShowGravatar()
 void CLogDlg::OnEnChangeSearchedit()
 {
 	UpdateData();
-	if (!m_LogList.HasFilterText())
+	if (m_sFilterText.IsEmpty())
 	{
 		// clear the filter, i.e. make all entries appear
 		theApp.DoWaitCursor(1);
 		KillTimer(LOGFILTER_TIMER);
 		FillLogMessageCtrl(false);
 
-		Refresh();
+		Refresh(true);
 
 		theApp.DoWaitCursor(-1);
 		GetDlgItem(IDC_SEARCHEDIT)->ShowWindow(SW_HIDE);
@@ -3126,7 +3126,7 @@ void CLogDlg::OnEnChangeSearchedit()
 		DialogEnableWindow(IDC_STATBUTTON, !(this->IsThreadRunning() || m_LogList.m_arShownList.empty()));
 		return;
 	}
-	if (Validate(m_LogList.m_sFilterText))
+	if (Validate(m_sFilterText))
 		SetTimer(LOGFILTER_TIMER, 1000, nullptr);
 	else
 		KillTimer(LOGFILTER_TIMER);
@@ -3533,7 +3533,7 @@ LRESULT CLogDlg::OnRefreshSelection(WPARAM /*wParam*/, LPARAM /*lParam*/)
 
 void CLogDlg::OnExitClearFilter()
 {
-	if (!m_LogList.m_sFilterText.IsEmpty())
+	if (m_LogList.m_LogFilter->IsFilterActive())
 	{
 		OnClickedCancelFilter(NULL, NULL);
 		return;

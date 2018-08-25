@@ -60,6 +60,7 @@
     <ClCompile Include="..\TortoiseProc\Colors.cpp" />
     <ClCompile Include="..\TortoiseProc\ColumnManager.cpp" />
     <ClCompile Include="..\TortoiseProc\GravatarPictureBox.cpp" />
+    <ClCompile Include="..\TortoiseProc\LogDlgFilter.cpp" />
     <ClCompile Include="..\Utils\CmdLineParser.cpp" />
     <ClCompile Include="..\Utils\CommonAppUtils.cpp" />
     <ClCompile Include="..\Utils\DebugOutput.cpp" />
@@ -114,6 +115,7 @@
     <ClInclude Include="..\Git\TGitPath.h" />
     <ClInclude Include="..\Resources\LoglistCommonResource.h" />
     <ClInclude Include="..\TortoiseProc\ColumnManager.h" />
+    <ClInclude Include="..\TortoiseProc\LogDlgFilter.h" />
     <ClInclude Include="..\Utils\CmdLineParser.h" />
     <ClInclude Include="..\Utils\DebugOutput.h" />
     <ClInclude Include="..\Utils\DPIAware.h" />

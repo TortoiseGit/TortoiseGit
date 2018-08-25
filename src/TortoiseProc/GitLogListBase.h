@@ -35,6 +35,7 @@
 #include "GitStatusListCtrl.h"
 #include "FindDlg.h"
 #include <unordered_set>
+#include "LogDlgFilter.h"
 
 template < typename Cont, typename Pred>
 void for_each(Cont& c, Pred&& p)
@@ -421,7 +422,6 @@ public:
 	int  FillGitLog(std::unordered_set<CGitHash>& hashes);
 protected:
 	CString MessageDisplayStr(GitRev* pLogEntry);
-	BOOL IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::wregex& pat);
 	bool ShouldShowFilter(GitRevLoglist* pRev, const std::unordered_map<CGitHash, std::unordered_set<CGitHash>>& commitChildren);
 public:
 	void ShowGraphColumn(bool bShow);
@@ -443,14 +443,10 @@ public:
 	void Refresh(BOOL IsCleanFilter=TRUE);
 	void Clear();
 
-	DWORD				m_SelectedFilters;
 	FilterShow			m_ShowFilter;
-	bool				m_bFilterWithRegex;
-	bool				m_bFilterCaseSensitively;
 	CLogDataVector		m_logEntries;
-	bool ValidateRegexp(LPCTSTR regexp_str, std::wregex& pat, bool bMatchCase = false );
-	CString				m_sFilterText;
 
+	std::shared_ptr<CLogDlgFilter> m_LogFilter;
 	CFilterData			m_Filter;
 
 	CTGitPath			m_Path;
@@ -550,8 +546,6 @@ public:
 	}
 
 	CString GetRange() const { return m_sRange; }
-
-	bool HasFilterText() const { return !m_sFilterText.IsEmpty() && m_sFilterText != L"!"; }
 
 	int					m_nSearchIndex;
 protected:

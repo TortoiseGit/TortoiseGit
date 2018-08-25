@@ -45,7 +45,6 @@ CGitLogListBase::CGitLogListBase() : CHintCtrl<CResizableColumnsListCtrl<CListCt
 	,m_nSearchIndex(0)
 	,m_bNoDispUpdates(FALSE)
 	, m_bThreadRunning(FALSE)
-	, m_SelectedFilters(LOGFILTER_ALL)
 	, m_ShowFilter(FILTERSHOW_ALL)
 	, m_bShowWC(false)
 	, m_logEntries(&m_LogCache)
@@ -74,6 +73,7 @@ CGitLogListBase::CGitLogListBase() : CHintCtrl<CResizableColumnsListCtrl<CListCt
 	, m_nDropIndex(-1)
 	, m_nDropMarkerLast(-1)
 	, m_nDropMarkerLastHot(-1)
+	, m_LogFilter(std::make_shared<CLogDlgFilter>())
 {
 	// use the default GUI font, create a copy of it and
 	// change the copy to BOLD (leave the rest of the font
@@ -90,9 +90,6 @@ CGitLogListBase::CGitLogListBase() : CHintCtrl<CResizableColumnsListCtrl<CListCt
 	m_hAddedIcon = CCommonAppUtils::LoadIconEx(IDI_ACTIONADDED, cx, cy);
 	m_hDeletedIcon = CCommonAppUtils::LoadIconEx(IDI_ACTIONDELETED, cx, cy);
 	m_hFetchIcon = CCommonAppUtils::LoadIconEx(IDI_ACTIONFETCHING, cx, cy);
-
-	m_bFilterWithRegex = !!CRegDWORD(L"Software\\TortoiseGit\\UseRegexFilter", FALSE);
-	m_bFilterCaseSensitively = !!CRegDWORD(L"Software\\TortoiseGit\\FilterCaseSensitively", FALSE);
 
 	m_Filter.m_NumberOfLogsScale = (DWORD)CRegDWORD(L"Software\\TortoiseGit\\LogDialog\\NumberOfLogsScale", CFilterData::SHOW_NO_LIMIT);
 	if (m_Filter.m_NumberOfLogsScale == CFilterData::SHOW_LAST_SEL_DATE)
@@ -1158,7 +1155,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		break;
 	case CDDS_ITEMPREPAINT|CDDS_ITEM|CDDS_SUBITEM:
 		{
-			if (pLVCD->iSubItem == LOGLIST_GRAPH && !HasFilterText() && (m_ShowFilter & FILTERSHOW_MERGEPOINTS))
+			if (pLVCD->iSubItem == LOGLIST_GRAPH && !m_LogFilter.IsFilterActive() && (m_ShowFilter & FILTERSHOW_MERGEPOINTS))
 			{
 				if (m_arShownList.size() > pLVCD->nmcd.dwItemSpec && !this->m_IsRebaseReplaceGraph)
 				{
@@ -2845,10 +2842,9 @@ UINT CGitLogListBase::LogThread()
 		return 1;
 	}
 
-	std::wregex pat;//(L"Remove", regex_constants::icase);
-	bool bRegex = false;
-	if (m_bFilterWithRegex)
-		bRegex = ValidateRegexp(m_sFilterText[0] == '!' ? m_sFilterText.Mid(1) : m_sFilterText, pat, false);
+	// create a copy we can safely work on in this thread
+	auto shared_filter(m_LogFilter);
+	auto& filter = *shared_filter;
 
 	TRACE(L"\n===Begin===\n");
 	//Update work copy item;
@@ -3000,12 +2996,7 @@ UINT CGitLogListBase::LogThread()
 			TRACE(L"\n");
 #endif
 
-			bool visible = true;
-			if (HasFilterText())
-			{
-				if(!IsMatchFilter(bRegex,pRev,pat))
-					visible = false;
-			}
+			bool visible = filter(pRev, this);
 			if (visible && !ShouldShowFilter(pRev, commitChildren))
 				visible = false;
 			this->m_critSec.Lock();
@@ -3125,10 +3116,8 @@ void CGitLogListBase::Refresh(BOOL IsCleanFilter)
 	{
 		m_logEntries.clear();
 
-		if(IsCleanFilter)
-		{
-			m_sFilterText.Empty();
-		}
+		if (IsCleanFilter)
+			m_LogFilter = std::make_shared<CLogDlgFilter>();
 
 		SafeTerminateAsyncDiffThread();
 		m_AsynDiffListLock.Lock();
@@ -3167,263 +3156,6 @@ void CGitLogListBase::StartLoadingThread()
 		InterlockedExchange(&m_bNoDispUpdates, FALSE);
 		CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 	}
-}
-
-bool CGitLogListBase::ValidateRegexp(LPCTSTR regexp_str, std::wregex& pat, bool bMatchCase /* = false */)
-{
-	try
-	{
-		std::regex_constants::syntax_option_type type = std::regex_constants::ECMAScript;
-		if (!bMatchCase)
-			type |= std::regex_constants::icase;
-		pat = std::wregex(regexp_str, type);
-		return true;
-	}
-	catch (std::exception&) {}
-	return false;
-}
-BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::wregex& pat)
-{
-	BOOL result = m_sFilterText[0] == '!' ? FALSE : TRUE;
-	std::regex_constants::match_flag_type flags = std::regex_constants::match_any;
-	CString sRev;
-
-	if ((bRegex)&&(m_bFilterWithRegex))
-	{
-		if (m_SelectedFilters & LOGFILTER_BUGID)
-		{
-			if(this->m_bShowBugtraqColumn)
-			{
-				CString sBugIds = m_ProjectProperties.FindBugID(pRev->GetSubjectBody());
-
-				ATLTRACE(L"bugID = \"%s\"\n", (LPCTSTR)sBugIds);
-				if (std::regex_search(std::wstring(sBugIds), pat, flags))
-					return result;
-			}
-		}
-
-		if ((m_SelectedFilters & LOGFILTER_SUBJECT) || (m_SelectedFilters & LOGFILTER_MESSAGES))
-		{
-			ATLTRACE(L"messge = \"%s\"\n", (LPCTSTR)pRev->GetSubject());
-			if (std::regex_search(std::wstring((LPCTSTR)pRev->GetSubject()), pat, flags))
-				return result;
-		}
-
-		if (m_SelectedFilters & LOGFILTER_MESSAGES)
-		{
-			ATLTRACE(L"messge = \"%s\"\n", (LPCTSTR)pRev->GetBody());
-			if (std::regex_search(std::wstring((LPCTSTR)pRev->GetBody()), pat, flags))
-				return result;
-		}
-
-		if (m_SelectedFilters & LOGFILTER_AUTHORS)
-		{
-			if (std::regex_search(std::wstring(pRev->GetAuthorName()), pat, flags))
-				return result;
-
-			if (std::regex_search(std::wstring(pRev->GetCommitterName()), pat, flags))
-				return result;
-		}
-
-		if (m_SelectedFilters & LOGFILTER_EMAILS)
-		{
-			if (std::regex_search(std::wstring(pRev->GetAuthorEmail()), pat, flags))
-				return result;
-
-			if (std::regex_search(std::wstring(pRev->GetCommitterEmail()), pat, flags))
-				return result;
-		}
-
-		if (m_SelectedFilters & LOGFILTER_REVS)
-		{
-			sRev = pRev->m_CommitHash.ToString();
-			if (std::regex_search(std::wstring((LPCTSTR)sRev), pat, flags))
-			{
-				return result;
-			}
-		}
-
-		if (m_SelectedFilters & LOGFILTER_NOTES)
-		{
-			if (std::regex_search(std::wstring(pRev->m_Notes), pat, flags))
-				return result;
-		}
-
-		if ((m_SelectedFilters & LOGFILTER_REFNAME) && m_HashMap.find(pRev->m_CommitHash) != m_HashMap.cend())
-		{
-			const STRING_VECTOR& refs = m_HashMap[pRev->m_CommitHash];
-			for (const auto& ref : refs)
-			{
-				if (std::regex_search(std::wstring(ref), pat, flags))
-					return result;
-			}
-		}
-
-		if (m_SelectedFilters & LOGFILTER_ANNOTATEDTAG)
-		{
-			if (std::regex_search(std::wstring(GetTagInfo(pRev)), pat, flags))
-				return result;
-		}
-
-		if (m_SelectedFilters & LOGFILTER_PATHS)
-		{
-			CTGitPathList* pathList = nullptr;
-			if( pRev->m_IsDiffFiles)
-				pathList = &pRev->GetFiles(this);
-			else
-			{
-				if(!pRev->m_IsSimpleListReady)
-					pRev->SafeGetSimpleList(&g_Git);
-			}
-
-			if(pathList)
-				for (INT_PTR cpPathIndex = 0; cpPathIndex < pathList->GetCount(); ++cpPathIndex)
-				{
-					if (std::regex_search(std::wstring((LPCTSTR)pathList->m_paths[cpPathIndex].GetGitOldPathString()), pat, flags))
-						return result;
-					if (std::regex_search(std::wstring((LPCTSTR)pathList->m_paths[cpPathIndex].GetGitPathString()), pat, flags))
-						return result;
-				}
-
-			for (size_t i = 0; i < pRev->m_SimpleFileList.size(); ++i)
-			{
-				if (std::regex_search(std::wstring((LPCTSTR)pRev->m_SimpleFileList[i]), pat, flags))
-					return result;
-			}
-		}
-	}
-	else
-	{
-		CString find = m_sFilterText;
-		if (!m_bFilterCaseSensitively)
-			find.MakeLower();
-		result = find[0] == '!' ? FALSE : TRUE;
-		if (!result)
-			find = find.Mid(1);
-
-		if (m_SelectedFilters & LOGFILTER_BUGID)
-		{
-			if(this->m_bShowBugtraqColumn)
-			{
-				CString sBugIds = m_ProjectProperties.FindBugID(pRev->GetSubjectBody());
-
-				if (!m_bFilterCaseSensitively)
-					sBugIds.MakeLower();
-				if ((sBugIds.Find(find) >= 0))
-					return result;
-			}
-		}
-
-		if ((m_SelectedFilters & LOGFILTER_SUBJECT) || (m_SelectedFilters & LOGFILTER_MESSAGES))
-		{
-			CString msg = pRev->GetSubject();
-
-			if (!m_bFilterCaseSensitively)
-				msg = msg.MakeLower();
-			if ((msg.Find(find) >= 0))
-				return result;
-		}
-
-		if (m_SelectedFilters & LOGFILTER_MESSAGES)
-		{
-			CString msg = pRev->GetBody();
-
-			if (!m_bFilterCaseSensitively)
-				msg = msg.MakeLower();
-			if ((msg.Find(find) >= 0))
-				return result;
-		}
-
-		if (m_SelectedFilters & LOGFILTER_AUTHORS)
-		{
-			CString msg = pRev->GetAuthorName();
-			if (!m_bFilterCaseSensitively)
-				msg = msg.MakeLower();
-			if ((msg.Find(find) >= 0))
-				return result;
-		}
-
-		if (m_SelectedFilters & LOGFILTER_EMAILS)
-		{
-			CString msg = pRev->GetAuthorEmail();
-			if (!m_bFilterCaseSensitively)
-				msg = msg.MakeLower();
-			if ((msg.Find(find) >= 0))
-				return result;
-		}
-
-		if (m_SelectedFilters & LOGFILTER_NOTES)
-		{
-			CString msg = pRev->m_Notes;
-			if (!m_bFilterCaseSensitively)
-				msg = msg.MakeLower();
-			if ((msg.Find(find) >= 0))
-				return result;
-		}
-
-		if (m_SelectedFilters & LOGFILTER_REVS)
-		{
-			sRev = pRev->m_CommitHash.ToString();
-			if ((sRev.Find(find) >= 0))
-				return result;
-		}
-
-		if (m_SelectedFilters & LOGFILTER_ANNOTATEDTAG)
-		{
-			CString msg = GetTagInfo(pRev);
-			if (!m_bFilterCaseSensitively)
-				msg = msg.MakeLower();
-			if ((msg.Find(find) >= 0))
-				return result;
-		}
-
-		if ((m_SelectedFilters & LOGFILTER_REFNAME) && m_HashMap.find(pRev->m_CommitHash) != m_HashMap.cend())
-		{
-			const STRING_VECTOR& refs = m_HashMap[pRev->m_CommitHash];
-			for (auto it = refs.cbegin(); it != refs.cend(); ++it)
-			{
-				if (it->Find(find) >= 0)
-					return result;
-			}
-		}
-
-		if (m_SelectedFilters & LOGFILTER_PATHS)
-		{
-			CTGitPathList* pathList = nullptr;
-			if( pRev->m_IsDiffFiles)
-				pathList = &pRev->GetFiles(this);
-			else
-			{
-				if(!pRev->m_IsSimpleListReady)
-					pRev->SafeGetSimpleList(&g_Git);
-			}
-			if(pathList)
-				for (INT_PTR cpPathIndex = 0; cpPathIndex < pathList->GetCount() ; ++cpPathIndex)
-				{
-					CTGitPath* cpath = &pathList->m_paths[cpPathIndex];
-					CString path = cpath->GetGitOldPathString();
-					if (!m_bFilterCaseSensitively)
-						path.MakeLower();
-					if ((path.Find(find)>=0))
-						return result;
-					path = cpath->GetGitPathString();
-					if (!m_bFilterCaseSensitively)
-						path.MakeLower();
-					if ((path.Find(find)>=0))
-						return result;
-				}
-
-			for (size_t i = 0; i < pRev->m_SimpleFileList.size(); ++i)
-			{
-				CString path = pRev->m_SimpleFileList[i];
-				if (!m_bFilterCaseSensitively)
-					path.MakeLower();
-				if ((path.Find(find)>=0))
-					return result;
-			}
-		}
-	} // else (from if (bRegex))
-	return !result;
 }
 
 static bool CStringStartsWith(const CString &str, const CString &prefix)
@@ -3741,15 +3473,7 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 	if (m_pFindDialog->FindNext() && !bFound)
 	{
 		//read data from dialog
-		CString findText = m_pFindDialog->GetFindString();
-		bool bMatchCase = (m_pFindDialog->MatchCase() == TRUE);
-
-		std::wregex pat;
-		bool bRegex = false;
-		if (m_pFindDialog->Regex())
-			bRegex = ValidateRegexp(findText, pat, bMatchCase);
-
-		std::regex_constants::match_flag_type flags = std::regex_constants::match_not_null;
+		CLogDlgFilter filter { m_pFindDialog->GetFindString(), m_pFindDialog->Regex(), LOGFILTER_ALL, m_pFindDialog->MatchCase() == TRUE };
 
 		for (i = m_nSearchIndex + 1; ; ++i)
 		{
@@ -3768,102 +3492,13 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 				}
 			}
 
-			GitRevLoglist* pLogEntry = m_arShownList.SafeGetAt(i);
-
-			CString str;
-			str+=pLogEntry->m_CommitHash.ToString();
-			str += L'\n';
-
-			auto refList = m_HashMap.find(pLogEntry->m_CommitHash);
-			if (refList != m_HashMap.cend())
+			if (filter(m_arShownList.SafeGetAt(i), this))
 			{
-				for (const auto& ref : (*refList).second)
-				{
-					str += ref;
-					str += L'\n';
-				}
+				bFound = true;
+				break;
 			}
-
-			str+=pLogEntry->GetAuthorEmail();
-			str += L'\n';
-			str+=pLogEntry->GetAuthorName();
-			str += L'\n';
-			str+=pLogEntry->GetBody();
-			str += L'\n';
-			str+=pLogEntry->GetCommitterEmail();
-			str += L'\n';
-			str+=pLogEntry->GetCommitterName();
-			str += L'\n';
-			str+=pLogEntry->GetSubject();
-			str += L'\n';
-			str+=pLogEntry->m_Notes;
-			str += L'\n';
-			str+=GetTagInfo(pLogEntry);
-			str += L'\n';
-
-
-			/*Because changed files list is loaded on demand when gui show,
-			  files will empty when files have not fetched.
-
-			  we can add it back by using one-way diff(with outnumber changed and rename detect.
-			  here just need changed filename list. one-way is much quicker.
-			*/
-			if(pLogEntry->m_IsFull)
-			{
-				for (int j = 0; j < pLogEntry->GetFiles(this).GetCount(); ++j)
-				{
-					str += pLogEntry->GetFiles(this)[j].GetWinPath();
-					str += L'\n';
-					str += pLogEntry->GetFiles(this)[j].GetGitOldPathString();
-					str += L'\n';
-				}
-			}
-			else
-			{
-				if(!pLogEntry->m_IsSimpleListReady)
-					pLogEntry->SafeGetSimpleList(&g_Git);
-
-				for (size_t j = 0; j < pLogEntry->m_SimpleFileList.size(); ++j)
-				{
-					str += pLogEntry->m_SimpleFileList[j];
-					str += L'\n';
-				}
-			}
-
-			if (bRegex)
-			{
-				if (std::regex_search(std::wstring(str), pat, flags))
-				{
-					bFound = true;
-					break;
-				}
-			}
-			else
-			{
-				if (bMatchCase)
-				{
-					if (str.Find(findText) >= 0)
-					{
-						bFound = true;
-						break;
-					}
-				}
-				else
-				{
-					CString msg = str;
-					msg = msg.MakeLower();
-					CString find = findText.MakeLower();
-					if (msg.Find(find) >= 0)
-					{
-						bFound = TRUE;
-						break;
-					}
-				}
-			}
-		} // for (i = this->m_nSearchIndex; i<m_arShownList.GetItemCount()&&!bFound; ++i)
-
+		}
 	} // if(m_pFindDialog->FindNext())
-	//UpdateLogInfoLabel();
 
 	if (bFound)
 	{
