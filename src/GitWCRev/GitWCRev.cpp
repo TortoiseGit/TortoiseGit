@@ -33,17 +33,18 @@
 // Define the help text as a multi-line macro
 // Every line except the last must be terminated with a backslash
 #define HelpText1 "\
-Usage: GitWCRev WorkingCopyPath [SrcVersionFile DstVersionFile] [-mMuUdqsFe]\n\
+Usage: GitWCRev Path [SrcVersionFile DstVersionFile] [-mMuUdqsFe]\n\
 \n\
 Params:\n\
-WorkingCopyPath    :   path to a Git working tree.\n\
+Path               :   path to a Git working tree OR\n\
+                       a directory/file inside a working tree.\n\
 SrcVersionFile     :   path to a template file containing keywords.\n\
 DstVersionFile     :   path to save the resulting parsed file.\n\
--m                 :   if given, then GitWCRev will error if the working\n\
-                       tree contains local modifications.\n\
+-m                 :   if given, then GitWCRev will error if the passed\n\
+                       path contains local modifications.\n\
 -M                 :   same as above, but recursively\n\
--u                 :   if given, then GitWCRev will error if the working\n\
-                       tree contains unversioned items.\n\
+-u                 :   if given, then GitWCRev will error if the passed\n\
+                       path contains unversioned items.\n\
 -U                 :   same as above, but recursively\n\
 -d                 :   if given, then GitWCRev will only do its job if\n\
                        DstVersionFile does not exist.\n\
@@ -58,7 +59,7 @@ DstVersionFile     :   path to save the resulting parsed file.\n\
 #define HelpText4 "\
 Switches must be given in a single argument, e.g. '-nm' not '-n -m'.\n\
 \n\
-GitWCRev reads the Git status of all files in a working tree\n\
+GitWCRev reads the Git status of all files in the passed path\n\
 including submodules. If SrcVersionFile is specified, it is scanned\n\
 for special placeholders of the form \"$WCxxx$\".\n\
 SrcVersionFile is then copied to DstVersionFile but the placeholders\n\
@@ -838,7 +839,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		_tprintf(L"Directory or file '%s' does not exist\n", wc);
 		if (wcschr(wc, '\"')) // dir contains a quotation mark
 		{
-			_tprintf(L"The WorkingCopyPath contains a quotation mark.\n");
+			_tprintf(L"The Path contains a quotation mark.\n");
 			_tprintf(L"this indicates a problem when calling GitWCRev from an interpreter which treats\n");
 			_tprintf(L"a backslash char specially.\n");
 			_tprintf(L"Try using double backslashes or insert a dot after the last backslash when\n");

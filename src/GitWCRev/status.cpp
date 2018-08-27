@@ -37,8 +37,6 @@ void LoadIgnorePatterns(const char* wc, GitWCRev_t* GitStat)
 	if (!infile.good())
 		return;
 
-	GitStat->ignorepatterns.emplace("*");
-
 	std::string line;
 	while (std::getline(infile, line))
 	{
@@ -213,16 +211,29 @@ int GetStatus(const TCHAR* path, GitWCRev_t& GitStat)
 		git_status_options.flags |= GIT_STATUS_OPT_EXCLUDE_SUBMODULES;
 
 	std::string workdir(git_repository_workdir(repo));
+	std::transform(pathA.begin(), pathA.end(), pathA.begin(), [](char c) { return (c == '\\') ? '/' : c; });
+	pathA.erase(pathA.begin(), pathA.begin() + min(workdir.length(), pathA.length())); // workdir always ends with a slash, however, wcA is not guaranteed to
 	LoadIgnorePatterns(workdir.c_str(), &GitStat);
 
 	std::vector<char*> pathspec;
+	if (!pathA.empty())
+	{
+		pathspec.emplace_back(const_cast<char*>(pathA.c_str()));
+		git_status_options.pathspec.count = 1;
+	}
 	if (!GitStat.ignorepatterns.empty())
 	{
 		for (auto& i : GitStat.ignorepatterns)
 			pathspec.emplace_back(const_cast<char*>(i.c_str()));
-		git_status_options.pathspec.count = GitStat.ignorepatterns.size();
-		git_status_options.pathspec.strings = pathspec.data();
+		git_status_options.pathspec.count += GitStat.ignorepatterns.size();
+		if (pathA.empty())
+		{
+			pathspec.push_back("*");
+			git_status_options.pathspec.count += 1;
+		}
 	}
+	if (git_status_options.pathspec.count > 0)
+		git_status_options.pathspec.strings = pathspec.data();
 
 	CAutoStatusList status;
 	if (git_status_list_new(status.GetPointer(), repo, &git_status_options) < 0)
@@ -265,15 +276,18 @@ int GetStatus(const TCHAR* path, GitWCRev_t& GitStat)
 	while (!git_revwalk_next(&oidlog, walker))
 		++GitStat.NumCommits;
 
-	std::transform(pathA.begin(), pathA.end(), pathA.begin(), [](char c) { return (c == '\\') ? '/' : c; });
-	pathA.erase(pathA.begin(), pathA.begin() + min(workdir.length(), pathA.length())); // workdir always ends with a slash, however, wcA is not guaranteed to
 	if (pathA.empty()) // working tree root is always versioned
 	{
 		GitStat.bIsGitItem = TRUE;
 		return 0;
 	}
+	else if (PathIsDirectory(path)) // directories are unversioned in Git
+	{
+		GitStat.bIsGitItem = FALSE;
+		return 0;
+	}
 	unsigned int status_flags = 0;
 	int ret = git_status_file(&status_flags, repo, pathA.c_str());
-	GitStat.bIsGitItem = (ret == GIT_EAMBIGUOUS || (ret == 0 && !(status_flags & (GIT_STATUS_WT_NEW | GIT_STATUS_IGNORED))));
+	GitStat.bIsGitItem = (ret == GIT_OK && !(status_flags & (GIT_STATUS_WT_NEW | GIT_STATUS_IGNORED)));
 	return 0;
 }

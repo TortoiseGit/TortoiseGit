@@ -20,7 +20,7 @@
 		</indexterm>
 		<para>
 			GitWCRev is Windows console program which can be used to read
-			the status of a Git working tree and optionally perform
+			the status of a Git working tree or specific files inside a working tree and optionally perform
 			keyword substitution in a template file - another alternative could be git filters (cf. <xref linkend="gitattributes(5)"/>).
 			This is often used as part of the build process as a means of
 			incorporating working tree information into the object you
@@ -35,10 +35,10 @@
 		<title>The GitWCRev Command Line</title>
 		<para>
 			GitWCRev reads the Git status of all files in a working
-			tree including submodules. It records the HEAD commit revision
-			and the commit timestamp,
-			it also records whether there are local modifications in the working
-			tree. The status revision and modification status are displayed on stdout.
+			tree OR a directory/file inside a working tree including submodules.
+			It records the HEAD commit revision and the commit timestamp,
+			it also records whether there are local modifications in the passed path.
+			The status revision and modification status are displayed on stdout.
 		</para>
 		<para>
 			GitWCRev.exe is called from the command line or a script, and
@@ -49,7 +49,8 @@ GitWCRev WorkingTreePath [SrcVersionFile DstVersionFile] [-mMuUsdq]
 		</para>
 		<para>
 			<literal>WorkingTreePath</literal> is the path to the working
-			tree being checked.The path may be absolute or relative to the current working directory.
+			tree OR a directory/file inside a working tree to check.
+			The path may be absolute or relative to the current working directory.
 		</para>
 		<para>
 			If you want GitWCRev to perform keyword substitution, so that
@@ -127,7 +128,7 @@ doc/*
 							<entry condition="pot">-m</entry>
 							<entry>
 								If this switch is given, GitWCRev will exit with
-								<literal>ERRORLEVEL 7</literal> if the working tree
+								<literal>ERRORLEVEL 7</literal> if the passed path
 								contains local modifications. This may be used to
 								prevent building with uncommitted changes present.
 							</entry>
@@ -142,7 +143,7 @@ doc/*
 							<entry condition="pot">-u</entry>
 							<entry>
 								If this switch is given, GitWCRev will exit with
-								<literal>ERRORLEVEL 11</literal> if the working tree
+								<literal>ERRORLEVEL 11</literal> if the passed path
 								contains unversioned items that are not ignored.
 							</entry>
 						</row>
@@ -263,14 +264,14 @@ doc/*
 						<row>
 							<entry condition="pot">10</entry>
 							<entry>
-								The specified path is neither a working tree nor
+								The specified path is neither a working tree, a bare repository nor
 								part of one.
 							</entry>
 						</row>
 						<row>
 							<entry condition="pot">11</entry>
 							<entry>
-								The working tree has unversioned files or folders in it.
+								The passed path has unversioned files or folders in it.
 								This requires the <literal>-u</literal> or <literal>-U</literal> switch.
 							</entry>
 						</row>
@@ -303,14 +304,14 @@ doc/*
 							<entry condition="pot">$WCREV$</entry>
 							<entry>
 								Replaced with the HEAD commit revision
-								in the working tree.
+								of the working tree.
 							</entry>
 						</row>
 						<row>
 							<entry condition="pot">$WCREV=n$</entry>
 							<entry>
 								Replaced with the HEAD commit revision
-								in the working tree, trimmed to <literal>n</literal> chars. For example:
+								of the working tree, trimmed to <literal>n</literal> chars. For example:
 								<literal>$WCREV=7$</literal>
 							</entry>
 						</row>
@@ -370,8 +371,8 @@ doc/*
 							<entry>
 								<literal>$WCMODS?TText:FText$</literal> is
 								replaced with <literal>TText</literal> if there are local
-								modifications, or <literal>FText</literal> if not.
-								This will also evaluate to <literal>true</literal> ff a submodule is checked out at a different commit (requires submodules not to be ignored).
+								modifications in the passed path, or <literal>FText</literal> if not.
+								This will also evaluate to <literal>true</literal> if a submodule is checked out at a different commit (requires submodules not to be ignored).
 							</entry>
 						</row>
 						<row>
@@ -379,7 +380,7 @@ doc/*
 							<entry>
 								<literal>$WCFILEMODS?TText:FText$</literal> is
 								replaced with <literal>TText</literal> if there are local
-								modifications, or <literal>FText</literal> if not.
+								modifications in the passed path, or <literal>FText</literal> if not.
 								This does not check the checked out commit of submodules.
 							</entry>
 						</row>
@@ -388,7 +389,7 @@ doc/*
 							<entry>
 								<literal>$WCUNVER?TText:FText$</literal> is
 								replaced with <literal>TText</literal> if there are unversioned
-								items in the working tree, or <literal>FText</literal> if not.
+								items in the passed path, or <literal>FText</literal> if not.
 							</entry>
 						</row>
 						<row>
@@ -405,13 +406,14 @@ doc/*
 								<literal>$WCINGIT?TText:FText$</literal> is
 								replaced with <literal>TText</literal> if the entry is versioned,
 								or <literal>FText</literal> if not.
+								The result for directories is <literal>false</literal>, the only exception is the repository root.
 							</entry>
 						</row>
 						<row>
 							<entry condition="pot">$WCSUBMODULE$</entry>
 							<entry>
 								<literal>$WCSUBMODULE?TText:FText$</literal> is
-								replaced with <literal>TText</literal> if the working tree has submodules,
+								replaced with <literal>TText</literal> if the passed path contains a submodules,
 								or <literal>FText</literal> if not.
 							</entry>
 						</row>
@@ -443,7 +445,7 @@ doc/*
 							<entry condition="pot">$WCMODSFULL$</entry>
 							<entry>
 								<literal>$WCMODSFULL?TText:FText$</literal> combines is <literal>$WCMODS$</literal> and <literal>$WCMODSINSUBMODULE$</literal> and can be seen as a recursive check.
-								replaced with <literal>TText</literal> if the working tree or any submodule contains uncommitted changes,
+								replaced with <literal>TText</literal> if the passed path or any submodule under the passed path contains uncommitted changes,
 								or <literal>FText</literal> if not.
 							</entry>
 						</row>
@@ -451,7 +453,7 @@ doc/*
 							<entry condition="pot">$WCUNVERFULL$</entry>
 							<entry>
 								<literal>$WCUNVERFULL?TText:FText$</literal> combines is <literal>$WCUNVER$</literal> and <literal>$WCUNVERINSUBMODULE$</literal> and can be seen as a recursive check.
-								replaced with <literal>TText</literal> if the working tree or any submodule contains unversioned items,
+								replaced with <literal>TText</literal> if the passed path or any submodule under the passed path contains unversioned items,
 								or <literal>FText</literal> if not.
 							</entry>
 						</row>
@@ -575,7 +577,7 @@ char* UnversionedAlsoInSubmodules = "Unversioned items found (recursively)";
 			<primary>COM GitWCRev interface</primary>
 		</indexterm>
 		<para>
-			If you need to access Subversion revision information from other
+			If you need to access Git revision information from other
 			programs, you can use the COM interface of GitWCRev. The object to
 			create is <literal>GitWCRev.object</literal>, and the following
 			methods are supported:
@@ -594,7 +596,7 @@ char* UnversionedAlsoInSubmodules = "Unversioned items found (recursively)";
 						<row>
 							<entry condition="pot">.GetWCInfo</entry>
 							<entry>
-								This method traverses the working tree gathering the
+								This method checks and traverses the passed path gathering the
 								status and revision information. Naturally you must call this before
 								you can access the information using the remaining methods.
 								The first parameter is the path.
@@ -605,36 +607,36 @@ char* UnversionedAlsoInSubmodules = "Unversioned items found (recursively)";
 						<row>
 							<entry condition="pot">.Revision</entry>
 							<entry>
-								The highest commit revision in the working tree.
+								The HEAD commit revision of the working tree.
 								Equivalent to <literal>$WCREV$</literal>.
 							</entry>
 						</row>
 						<row>
 							<entry condition="pot">.Date</entry>
 							<entry>
-								The commit date/time of the highest commit revision.
+								The commit date/time of the HEAD commit.
 								Equivalent to <literal>$WCDATE$</literal>.
 							</entry>
 						</row>
 						<row>
 							<entry condition="pot">.Author</entry>
 							<entry>
-								The author of the highest commit revision, that is, the
+								The author of the HEAD commit, that is, the
 								last person to commit changes to the working tree.
 							</entry>
 						</row>
 						<row>
 							<entry condition="pot">.HasModifications</entry>
-							<entry>True if there are local modifications</entry>.
+							<entry>True if there are local modifications under the passed path</entry>.
 						</row>
 						<row>
 							<entry condition="pot">.HasUnversioned</entry>
-							<entry>True if there are unversioned items</entry>.
+							<entry>True if there are unversioned items under the passed path</entry>.
 						</row>
 						<row>
 							<entry condition="pot">.IsGitItem</entry>
 							<entry>
-								True if the item is versioned.
+								True if the item is versioned (false for directories except the working tree root).
 							</entry>
 						</row>
 						<row>
@@ -646,7 +648,7 @@ char* UnversionedAlsoInSubmodules = "Unversioned items found (recursively)";
 						<row>
 							<entry condition="pot">.HasSubmodule</entry>
 							<entry>
-								True if working tree contains submodules.
+								True if passed path contains submodules.
 							</entry>
 						</row>
 						<row>
