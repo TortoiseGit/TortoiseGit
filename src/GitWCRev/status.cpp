@@ -221,7 +221,7 @@ int GetStatus(const TCHAR* path, GitWCRev_t& GitStat)
 		for (auto& i : GitStat.ignorepatterns)
 			pathspec.emplace_back(const_cast<char*>(i.c_str()));
 		git_status_options.pathspec.count = GitStat.ignorepatterns.size();
-		git_status_options.pathspec.strings = &pathspec.at(0);
+		git_status_options.pathspec.strings = pathspec.data();
 	}
 
 	CAutoStatusList status;
