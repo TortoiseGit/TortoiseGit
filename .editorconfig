@@ -11,7 +11,7 @@ insert_final_newline     = true
 indent_style             = tab
 indent_size              = 4
 
-[{src,tests,ext/gitdll}/**.{cpp,c,h}]
+[{src,test,ext/gitdll}/**.{cpp,c,h}]
 charset                  = utf-8-bom
 end_of_line              = crlf
 trim_trailing_whitespace = true
