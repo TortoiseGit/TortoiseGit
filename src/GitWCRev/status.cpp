@@ -117,6 +117,32 @@ static std::wstring GetSystemGitConfig()
 	return path;
 }
 
+int GetStatusUnCleanPath(const TCHAR* wcPath, GitWCRev_t& GitStat)
+{
+	DWORD reqLen = GetFullPathName(wcPath, 0, nullptr, nullptr);
+	auto wcfullPath = std::make_unique<TCHAR[]>(reqLen + 1);
+	GetFullPathName(wcPath, reqLen, wcfullPath.get(), nullptr);
+	// GetFullPathName() sometimes returns the full path with the wrong
+	// case. This is not a problem on Windows since its filesystem is
+	// case-insensitive. But for Git that's a problem if the wrong case
+	// is inside a working copy: the git index is case sensitive.
+	// To fix the casing of the path, we use a trick:
+	// convert the path to its short form, then back to its long form.
+	// That will fix the wrong casing of the path.
+	int shortlen = GetShortPathName(wcfullPath.get(), nullptr, 0);
+	if (shortlen)
+	{
+		auto shortPath = std::make_unique<TCHAR[]>(shortlen + 1);
+		if (GetShortPathName(wcfullPath.get(), shortPath.get(), shortlen + 1))
+		{
+			reqLen = GetLongPathName(shortPath.get(), nullptr, 0);
+			wcfullPath = std::make_unique<TCHAR[]>(reqLen + 1);
+			GetLongPathName(shortPath.get(), wcfullPath.get(), reqLen);
+		}
+	}
+	return GetStatus(wcfullPath.get(), GitStat);
+}
+
 int GetStatus(const TCHAR* path, GitWCRev_t& GitStat)
 {
 	std::string pathA = CUnicodeUtils::StdGetUTF8(path);
@@ -280,7 +306,7 @@ int GetStatus(const TCHAR* path, GitWCRev_t& GitStat)
 	{
 		GitStat.bIsGitItem = TRUE;
 		return 0;
-	}
+}
 	else if (PathIsDirectory(path)) // directories are unversioned in Git
 	{
 		GitStat.bIsGitItem = FALSE;

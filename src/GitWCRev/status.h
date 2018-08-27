@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2017 - TortoiseGit
+// Copyright (C) 2017-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -34,3 +34,4 @@
 #define ERR_GIT_UNVER	11	// Unversioned items found (-uU)
 
 int GetStatus(const TCHAR* wc, GitWCRev_t& GitStat);
+int GetStatusUnCleanPath(const TCHAR* wc, GitWCRev_t& GitStat);
