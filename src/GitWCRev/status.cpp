@@ -177,11 +177,15 @@ int GetStatus(const TCHAR* path, GitWCRev_t& GitStat)
 		strncpy_s(GitStat.HeadHashReadable, GIT_OID_HEX_ZERO, strlen(GIT_OID_HEX_ZERO));
 		GitStat.bIsUnborn = TRUE;
 
-		CAutoReference head;
-		if (git_repository_head(head.GetPointer(), repo) != GIT_EUNBORNBRANCH)
+		CAutoReference symbolicHead;
+		if (git_reference_lookup(symbolicHead.GetPointer(), repo, "HEAD"))
 			return ERR_GIT_ERR;
-		GitStat.CurrentBranch = git_reference_shorthand(head);
-
+		auto branchName = git_reference_symbolic_target(symbolicHead);
+		if (CStringUtils::StartsWith(branchName, "refs/heads/"))
+			branchName += strlen("refs/heads/");
+		else if (CStringUtils::StartsWith(branchName, "refs/"))
+			branchName += strlen("refs/");
+		GitStat.CurrentBranch = branchName;
 		return 0;
 	}
 
