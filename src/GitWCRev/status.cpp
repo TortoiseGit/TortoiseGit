@@ -154,6 +154,9 @@ int GetStatus(const TCHAR* path, GitWCRev_t& GitStat)
 	if (git_repository_open(repo.GetPointer(), dotgitdir->ptr))
 		return ERR_NOWC;
 
+	if (git_repository_is_bare(repo))
+		return ERR_NOWC;
+
 	CAutoConfig config(true);
 	std::string gitdir(dotgitdir->ptr, dotgitdir->size);
 	git_config_add_file_ondisk(config, (gitdir + "config").c_str(), GIT_CONFIG_LEVEL_LOCAL, repo, FALSE);
