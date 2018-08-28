@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2017-2018 - TortoiseGit
 // Copyright (C) 2007-2015 - TortoiseSVN
@@ -177,7 +177,7 @@ HRESULT GitWCRev::GetWCInfoInternal(/*[in]*/ BSTR wcPath, /*[in]*/VARIANT_BOOL i
 	if (!PathFileExists(wcPath))
 		return S_FALSE;
 
-	if (GetStatus(wcPath, GitStat) == 0)
+	if (GetStatusUnCleanPath(wcPath, GitStat) == 0)
 		return S_OK;
 
 	return S_FALSE;

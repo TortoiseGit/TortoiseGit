@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2018 - TortoiseGit
 
@@ -20,7 +20,8 @@
 #pragma once
 #define GIT_HASH_SIZE 20
 
-#define GIT_REV_ZERO L"0000000000000000000000000000000000000000"
+#define GIT_REV_ZERO_C "0000000000000000000000000000000000000000"
+#define GIT_REV_ZERO _T(GIT_REV_ZERO_C)
 
 class CGitHash
 {

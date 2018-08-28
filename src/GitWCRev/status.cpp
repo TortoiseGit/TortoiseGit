@@ -37,8 +37,6 @@ void LoadIgnorePatterns(const char* wc, GitWCRev_t* GitStat)
 	if (!infile.good())
 		return;
 
-	GitStat->ignorepatterns.emplace("*");
-
 	std::string line;
 	while (std::getline(infile, line))
 	{
@@ -119,6 +117,110 @@ static std::wstring GetSystemGitConfig()
 	return path;
 }
 
+static int RepoStatus(const TCHAR* path, std::string pathA, git_repository* repo, GitWCRev_t& GitStat)
+{
+	git_status_options git_status_options = GIT_STATUS_OPTIONS_INIT;
+	git_status_options.flags = GIT_STATUS_OPT_INCLUDE_UNTRACKED | GIT_STATUS_OPT_RECURSE_UNTRACKED_DIRS;
+	if (GitStat.bNoSubmodules)
+		git_status_options.flags |= GIT_STATUS_OPT_EXCLUDE_SUBMODULES;
+
+	std::string workdir(git_repository_workdir(repo));
+	std::transform(pathA.begin(), pathA.end(), pathA.begin(), [](char c) { return (c == '\\') ? '/' : c; });
+	pathA.erase(pathA.begin(), pathA.begin() + min(workdir.length(), pathA.length())); // workdir always ends with a slash, however, wcA is not guaranteed to
+	LoadIgnorePatterns(workdir.c_str(), &GitStat);
+
+	std::vector<char*> pathspec;
+	if (!pathA.empty())
+	{
+		pathspec.emplace_back(const_cast<char*>(pathA.c_str()));
+		git_status_options.pathspec.count = 1;
+	}
+	if (!GitStat.ignorepatterns.empty())
+	{
+		for (auto& i : GitStat.ignorepatterns)
+			pathspec.emplace_back(const_cast<char*>(i.c_str()));
+		git_status_options.pathspec.count += GitStat.ignorepatterns.size();
+		if (pathA.empty())
+		{
+			pathspec.push_back("*");
+			git_status_options.pathspec.count += 1;
+		}
+	}
+	if (git_status_options.pathspec.count > 0)
+		git_status_options.pathspec.strings = pathspec.data();
+
+	CAutoStatusList status;
+	if (git_status_list_new(status.GetPointer(), repo, &git_status_options) < 0)
+		return ERR_GIT_ERR;
+
+	for (size_t i = 0, maxi = git_status_list_entrycount(status); i < maxi; ++i)
+	{
+		const git_status_entry* s = git_status_byindex(status, i);
+		if (s->index_to_workdir && s->index_to_workdir->new_file.mode == GIT_FILEMODE_COMMIT)
+		{
+			GitStat.bHasSubmodule = TRUE;
+			unsigned int smstatus = 0;
+			if (!git_submodule_status(&smstatus, repo, s->index_to_workdir->new_file.path, GIT_SUBMODULE_IGNORE_UNSPECIFIED))
+			{
+				if (smstatus & GIT_SUBMODULE_STATUS_WD_MODIFIED) // HEAD of submodule not matching
+					GitStat.bHasSubmoduleNewCommits = TRUE;
+				else if ((smstatus & GIT_SUBMODULE_STATUS_WD_INDEX_MODIFIED) || (smstatus & GIT_SUBMODULE_STATUS_WD_WD_MODIFIED))
+					GitStat.bHasSubmoduleMods = TRUE;
+				else if (smstatus & GIT_SUBMODULE_STATUS_WD_UNTRACKED)
+					GitStat.bHasSubmoduleUnversioned = TRUE;
+			}
+			continue;
+		}
+		if (s->status == GIT_STATUS_CURRENT)
+			continue;
+		if (s->status == GIT_STATUS_WT_NEW || s->status == GIT_STATUS_INDEX_NEW)
+			GitStat.HasUnversioned = TRUE;
+		else
+			GitStat.HasMods = TRUE;
+	}
+
+	if (pathA.empty()) // working tree root is always versioned
+	{
+		GitStat.bIsGitItem = TRUE;
+		return 0;
+	}
+	else if (PathIsDirectory(path)) // directories are unversioned in Git
+	{
+		GitStat.bIsGitItem = FALSE;
+		return 0;
+	}
+	unsigned int status_flags = 0;
+	int ret = git_status_file(&status_flags, repo, pathA.c_str());
+	GitStat.bIsGitItem = (ret == GIT_OK && !(status_flags & (GIT_STATUS_WT_NEW | GIT_STATUS_IGNORED | GIT_STATUS_INDEX_NEW)));
+	return 0;
+}
+
+int GetStatusUnCleanPath(const TCHAR* wcPath, GitWCRev_t& GitStat)
+{
+	DWORD reqLen = GetFullPathName(wcPath, 0, nullptr, nullptr);
+	auto wcfullPath = std::make_unique<TCHAR[]>(reqLen + 1);
+	GetFullPathName(wcPath, reqLen, wcfullPath.get(), nullptr);
+	// GetFullPathName() sometimes returns the full path with the wrong
+	// case. This is not a problem on Windows since its filesystem is
+	// case-insensitive. But for Git that's a problem if the wrong case
+	// is inside a working copy: the git index is case sensitive.
+	// To fix the casing of the path, we use a trick:
+	// convert the path to its short form, then back to its long form.
+	// That will fix the wrong casing of the path.
+	int shortlen = GetShortPathName(wcfullPath.get(), nullptr, 0);
+	if (shortlen)
+	{
+		auto shortPath = std::make_unique<TCHAR[]>(shortlen + 1);
+		if (GetShortPathName(wcfullPath.get(), shortPath.get(), shortlen + 1))
+		{
+			reqLen = GetLongPathName(shortPath.get(), nullptr, 0);
+			wcfullPath = std::make_unique<TCHAR[]>(reqLen + 1);
+			GetLongPathName(shortPath.get(), wcfullPath.get(), reqLen);
+		}
+	}
+	return GetStatus(wcfullPath.get(), GitStat);
+}
+
 int GetStatus(const TCHAR* path, GitWCRev_t& GitStat)
 {
 	std::string pathA = CUnicodeUtils::StdGetUTF8(path);
@@ -128,6 +230,9 @@ int GetStatus(const TCHAR* path, GitWCRev_t& GitStat)
 
 	CAutoRepository repo;
 	if (git_repository_open(repo.GetPointer(), dotgitdir->ptr))
+		return ERR_NOWC;
+
+	if (git_repository_is_bare(repo))
 		return ERR_NOWC;
 
 	CAutoConfig config(true);
@@ -150,12 +255,17 @@ int GetStatus(const TCHAR* path, GitWCRev_t& GitStat)
 		strncpy_s(GitStat.HeadHashReadable, GIT_OID_HEX_ZERO, strlen(GIT_OID_HEX_ZERO));
 		GitStat.bIsUnborn = TRUE;
 
-		CAutoReference head;
-		if (git_repository_head(head.GetPointer(), repo) != GIT_EUNBORNBRANCH)
+		CAutoReference symbolicHead;
+		if (git_reference_lookup(symbolicHead.GetPointer(), repo, "HEAD"))
 			return ERR_GIT_ERR;
-		GitStat.CurrentBranch = git_reference_shorthand(head);
+		auto branchName = git_reference_symbolic_target(symbolicHead);
+		if (CStringUtils::StartsWith(branchName, "refs/heads/"))
+			branchName += strlen("refs/heads/");
+		else if (CStringUtils::StartsWith(branchName, "refs/"))
+			branchName += strlen("refs/");
+		GitStat.CurrentBranch = branchName;
 
-		return 0;
+		return RepoStatus(path, pathA, repo, GitStat);
 	}
 
 	CAutoReference head;
@@ -207,53 +317,6 @@ int GetStatus(const TCHAR* path, GitWCRev_t& GitStat)
 	}, &tagpayload))
 		return ERR_GIT_ERR;
 
-	git_status_options git_status_options = GIT_STATUS_OPTIONS_INIT;
-	git_status_options.flags = GIT_STATUS_OPT_INCLUDE_UNTRACKED | GIT_STATUS_OPT_RECURSE_UNTRACKED_DIRS;
-	if (GitStat.bNoSubmodules)
-		git_status_options.flags |= GIT_STATUS_OPT_EXCLUDE_SUBMODULES;
-
-	std::string workdir(git_repository_workdir(repo));
-	LoadIgnorePatterns(workdir.c_str(), &GitStat);
-
-	std::vector<char*> pathspec;
-	if (!GitStat.ignorepatterns.empty())
-	{
-		for (auto& i : GitStat.ignorepatterns)
-			pathspec.emplace_back(const_cast<char*>(i.c_str()));
-		git_status_options.pathspec.count = GitStat.ignorepatterns.size();
-		git_status_options.pathspec.strings = pathspec.data();
-	}
-
-	CAutoStatusList status;
-	if (git_status_list_new(status.GetPointer(), repo, &git_status_options) < 0)
-		return ERR_GIT_ERR;
-
-	for (size_t i = 0, maxi = git_status_list_entrycount(status); i < maxi; ++i)
-	{
-		const git_status_entry* s = git_status_byindex(status, i);
-		if (s->index_to_workdir && s->index_to_workdir->new_file.mode == GIT_FILEMODE_COMMIT)
-		{
-			GitStat.bHasSubmodule = TRUE;
-			unsigned int smstatus = 0;
-			if (!git_submodule_status(&smstatus, repo, s->index_to_workdir->new_file.path, GIT_SUBMODULE_IGNORE_UNSPECIFIED))
-			{
-				if (smstatus & GIT_SUBMODULE_STATUS_WD_MODIFIED) // HEAD of submodule not matching
-					GitStat.bHasSubmoduleNewCommits = TRUE;
-				else if ((smstatus & GIT_SUBMODULE_STATUS_WD_INDEX_MODIFIED) || (smstatus & GIT_SUBMODULE_STATUS_WD_WD_MODIFIED))
-					GitStat.bHasSubmoduleMods = TRUE;
-				else if (smstatus & GIT_SUBMODULE_STATUS_WD_UNTRACKED)
-					GitStat.bHasSubmoduleUnversioned = TRUE;
-			}
-			continue;
-		}
-		if (s->status == GIT_STATUS_CURRENT)
-			continue;
-		if (s->status == GIT_STATUS_WT_NEW)
-			GitStat.HasUnversioned = TRUE;
-		else
-			GitStat.HasMods = TRUE;
-	}
-
 	// count the first-parent revisions from HEAD to the first commit
 	CAutoRevwalk walker;
 	if (git_revwalk_new(walker.GetPointer(), repo) < 0)
@@ -265,15 +328,5 @@ int GetStatus(const TCHAR* path, GitWCRev_t& GitStat)
 	while (!git_revwalk_next(&oidlog, walker))
 		++GitStat.NumCommits;
 
-	std::transform(pathA.begin(), pathA.end(), pathA.begin(), [](char c) { return (c == '\\') ? '/' : c; });
-	pathA.erase(pathA.begin(), pathA.begin() + min(workdir.length(), pathA.length())); // workdir always ends with a slash, however, wcA is not guaranteed to
-	if (pathA.empty()) // working tree root is always versioned
-	{
-		GitStat.bIsGitItem = TRUE;
-		return 0;
-	}
-	unsigned int status_flags = 0;
-	int ret = git_status_file(&status_flags, repo, pathA.c_str());
-	GitStat.bIsGitItem = (ret == GIT_EAMBIGUOUS || (ret == 0 && !(status_flags & (GIT_STATUS_WT_NEW | GIT_STATUS_IGNORED))));
-	return 0;
+	return RepoStatus(path, pathA, repo, GitStat);
 }

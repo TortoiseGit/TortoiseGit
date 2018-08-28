@@ -35,7 +35,7 @@ library LibGitWCRev
 	]
 	interface IGitWCRev : IDispatch
 	{
-		[helpstring("Fetches the status information. Call this to initialize all the properties")]
+		[helpstring("Fetches the status information. Call this to initialize all the properties. The properties then reflect the status of the specified path.")]
 		HRESULT GetWCInfo([in] BSTR wcPath, [in]VARIANT_BOOL ignore_submodules);
 
 		[propget, helpstring("Returns the working tree revision")]
@@ -50,10 +50,10 @@ library LibGitWCRev
 		[propget, helpstring("Returns the working tree HEAD author as a string")]
 		HRESULT Author([out, retval]VARIANT* author);
 
-		[propget, helpstring("TRUE if the working tree has modifications")]
+		[propget, helpstring("TRUE if the path passed to GetWCInfo has modifications")]
 		HRESULT HasModifications([out, retval]VARIANT_BOOL* modifications);
 
-		[propget, helpstring("TRUE if the working tree has unversioned items")]
+		[propget, helpstring("TRUE if the path passed to GetWCInfo has unversioned items")]
 		HRESULT HasUnversioned([out, retval]VARIANT_BOOL* unversioned);
 
 		[propget, helpstring("TRUE if the HEAD commit is tagged")]
@@ -62,10 +62,10 @@ library LibGitWCRev
 		[propget, helpstring("TRUE if the working tree branch is unborn")]
 		HRESULT IsUnborn([out, retval]VARIANT_BOOL* unborn);
 
-		[propget, helpstring("TRUE if the file or folder is under Git version control")]
+		[propget, helpstring("TRUE if the path passed to GetWCInfo is under Git version control (directories return FALSE if not the working tree root)")]
 		HRESULT IsGitItem([out, retval]VARIANT_BOOL* versioned);
 
-		[propget, helpstring("TRUE if the working tree has at least one submodule")]
+		[propget, helpstring("TRUE if the path passed to GetWCInfo has at least one submodule")]
 		HRESULT HasSubmodule([out, retval]VARIANT_BOOL* has_submodule);
 
 		[propget, helpstring("TRUE if the at least one submodule has uncommitted changes")]

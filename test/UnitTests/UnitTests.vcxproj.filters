@@ -24,6 +24,9 @@
     <Filter Include="TortoiseShell">
       <UniqueIdentifier>{3afc6978-ab69-4a83-8199-c978ef2284e9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GitWCRev">
+      <UniqueIdentifier>{ab843fd4-d515-4367-a170-58810191edfe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -163,6 +166,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Utils\LoadIconEx.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\GitWCRev\status.h">
+      <Filter>GitWCRev</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -345,6 +351,12 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Utils\LoadIconEx.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\GitWCRev\status.cpp">
+      <Filter>GitWCRev</Filter>
+    </ClCompile>
+    <ClCompile Include="GitWCRevStatusTest.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
