@@ -292,7 +292,7 @@ int GetStatus(const TCHAR* path, GitWCRev_t& GitStat)
 		}
 		if (s->status == GIT_STATUS_CURRENT)
 			continue;
-		if (s->status == GIT_STATUS_WT_NEW)
+		if (s->status == GIT_STATUS_WT_NEW | GIT_STATUS_INDEX_NEW)
 			GitStat.HasUnversioned = TRUE;
 		else
 			GitStat.HasMods = TRUE;
@@ -321,6 +321,6 @@ int GetStatus(const TCHAR* path, GitWCRev_t& GitStat)
 	}
 	unsigned int status_flags = 0;
 	int ret = git_status_file(&status_flags, repo, pathA.c_str());
-	GitStat.bIsGitItem = (ret == GIT_OK && !(status_flags & (GIT_STATUS_WT_NEW | GIT_STATUS_IGNORED)));
+	GitStat.bIsGitItem = (ret == GIT_OK && !(status_flags & (GIT_STATUS_WT_NEW | GIT_STATUS_IGNORED | GIT_STATUS_INDEX_NEW)));
 	return 0;
 }
