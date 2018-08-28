@@ -35,7 +35,7 @@ using namespace Gdiplus;
 
 // BinaryPredicate for comparing authors based on their commit count
 template<class DataType>
-class MoreCommitsThan : public std::binary_function<tstring, tstring, bool> {
+class MoreCommitsThan {
 public:
 	typedef std::map<tstring, DataType> MapType;
 	MoreCommitsThan(MapType &author_commits) : m_authorCommits(author_commits) {}

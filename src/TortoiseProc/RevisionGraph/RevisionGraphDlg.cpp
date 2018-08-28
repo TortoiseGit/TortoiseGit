@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012, 2018 - TortoiseSVN
 // Copyright (C) 2012-2016, 2018 - TortoiseGit
@@ -699,7 +699,7 @@ BOOL CRevisionGraphDlg::OnToggleRedrawOption (UINT controlID)
 void CRevisionGraphDlg::StartWorkerThread()
 {
 	if (!m_Graph.IsUpdateJobRunning())
-		m_Graph.updateJob.reset (new CFuture<bool>(this, &CRevisionGraphDlg::UpdateData));
+		m_Graph.updateJob = std::make_unique<CFuture<bool>>(this, &CRevisionGraphDlg::UpdateData);
 }
 
 void CRevisionGraphDlg::OnCancel()
