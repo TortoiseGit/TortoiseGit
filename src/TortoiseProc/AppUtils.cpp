@@ -3704,12 +3704,15 @@ int CAppUtils::ResolveConflict(HWND hWnd, CTGitPath& path, resolve_with resolveW
 				{
 					CString origPath = g_Git.m_CurrentDir;
 					g_Git.m_CurrentDir = g_Git.CombinePath(path);
+					SetCurrentDirectory(g_Git.m_CurrentDir);
 					if (!GitReset(hWnd, &hash))
 					{
 						g_Git.m_CurrentDir = origPath;
+						SetCurrentDirectory(g_Git.m_CurrentDir);
 						return -1;
 					}
 					g_Git.m_CurrentDir = origPath;
+					SetCurrentDirectory(g_Git.m_CurrentDir);
 				}
 			}
 			else
