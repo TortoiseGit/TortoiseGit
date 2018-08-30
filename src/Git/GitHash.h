@@ -122,10 +122,6 @@ public:
 			str.AppendFormat(L"%02x", m_hash[i]);
 		return str;
 	}
-	operator CString () const
-	{
-		return ToString();
-	}
 
 	bool operator == (const CGitHash &hash) const
 	{

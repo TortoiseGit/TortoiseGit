@@ -2692,7 +2692,7 @@ void CRebaseDlg::FillLogMessageCtrl()
 		int selIndex = m_CommitList.GetNextSelectedItem(pos);
 		GitRevLoglist* pLogEntry = m_CommitList.m_arShownList.SafeGetAt(selIndex);
 		m_FileListCtrl.UpdateWithGitPathList(pLogEntry->GetFiles(&m_CommitList));
-		m_FileListCtrl.m_CurrentVersion = pLogEntry->m_CommitHash;
+		m_FileListCtrl.m_CurrentVersion = pLogEntry->m_CommitHash.ToString();
 		m_FileListCtrl.Show(GITSLC_SHOWVERSIONED);
 		m_LogMessageCtrl.Call(SCI_SETREADONLY, FALSE);
 		m_LogMessageCtrl.SetText(pLogEntry->GetSubject() + L'\n' + pLogEntry->GetBody());
@@ -2843,7 +2843,7 @@ void CRebaseDlg::OnBnClickedButtonAdd()
 	for (auto it = selectedHashes.crbegin(); it != selectedHashes.crend(); ++it)
 	{
 		GitRevLoglist* pRev = m_CommitList.m_logEntries.m_pLogCache->GetCacheData(*it);
-		if (pRev->GetCommit(*it))
+		if (pRev->GetCommit(it->ToString()))
 			return;
 		if (pRev->GetParentFromHash(pRev->m_CommitHash))
 			return;

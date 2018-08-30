@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2009-2018 - TortoiseGit
 // Copyright (C) 2003-2013 - TortoiseSVN
@@ -798,7 +798,7 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 		{
 			CString diffWith;
 			if (selectedLeafs.at(0)->GetFullName() == m_sMarkForDiffFilename)
-				diffWith = m_sMarkForDiffVersion;
+				diffWith = m_sMarkForDiffVersion.ToString();
 			else
 			{
 				PathCompactPathEx(CStrBuf(diffWith, 2 * GIT_HASH_SIZE), m_sMarkForDiffFilename, 2 * GIT_HASH_SIZE, 0);
@@ -909,7 +909,7 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 				MessageBox(g_Git.GetGitLastErr(L"Could not get SHA-1 for " + m_sRevision), L"TortoiseGit", MB_ICONERROR);
 				return;
 			}
-			CGitDiff::Diff(GetSafeHwnd(), &selectedFile, &savedFile, currentHash, m_sMarkForDiffVersion);
+			CGitDiff::Diff(GetSafeHwnd(), &selectedFile, &savedFile, currentHash.ToString(), m_sMarkForDiffVersion.ToString());
 		}
 		break;
 	}
@@ -1326,7 +1326,7 @@ void CRepositoryBrowser::CopyHashToClipboard(TShadowFilesTreeList &selectedLeafs
 		{
 			if (!first)
 				sClipdata += L"\r\n";
-			sClipdata += selectedLeafs[i]->m_hash;
+			sClipdata += selectedLeafs[i]->m_hash.ToString();
 			first = false;
 		}
 		CStringUtils::WriteAsciiStringToClipboard(sClipdata, GetSafeHwnd());

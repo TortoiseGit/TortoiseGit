@@ -2558,7 +2558,7 @@ void CGitLogListBase::CopySelectionToClipBoard(int toCopy)
 			{
 				if (!first)
 					sClipdata += L"\r\n";
-				sClipdata += pLogEntry->m_CommitHash;
+				sClipdata += pLogEntry->m_CommitHash.ToString();
 			}
 
 			first = false;
@@ -3973,7 +3973,7 @@ int CGitLogListBase::GetHeadIndex()
 		GitRev* pRev = m_arShownList.SafeGetAt(i);
 		if(pRev)
 		{
-			if(pRev->m_CommitHash.ToString() == m_HeadHash )
+			if (pRev->m_CommitHash == m_HeadHash)
 				return (int)i;
 		}
 	}

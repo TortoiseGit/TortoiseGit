@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
 // Copyright (C) 2008-2018 - TortoiseGit
@@ -317,10 +317,10 @@ void CGitDiff::GetSubmoduleChangeType(CGit& subgit, const CGitHash& oldhash, con
 	}
 	else if (oldhash != newhash)
 	{
-		bool ffNewer = subgit.IsFastForward(oldhash, newhash);
+		bool ffNewer = subgit.IsFastForward(oldhash.ToString(), newhash.ToString());
 		if (!ffNewer)
 		{
-			bool ffOlder = subgit.IsFastForward(newhash, oldhash);
+			bool ffOlder = subgit.IsFastForward(newhash.ToString(), oldhash.ToString());
 			if (!ffOlder)
 			{
 				if (newTime > oldTime)
