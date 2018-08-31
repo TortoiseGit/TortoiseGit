@@ -104,13 +104,15 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 			case 1:
 			{
 				//index
-				if (CStringUtils::StartsWith(sLine, L"index"))
+				if (CStringUtils::StartsWith(sLine, L"index "))
 				{
-					int dotstart = sLine.Find(L"..");
-					if(dotstart>=0 && chunks)
+					int dotstart = sLine.Find(L"..", (int)wcslen(L"index "));
+					if (dotstart > 0 && chunks)
 					{
-						chunks->sRevision = sLine.Mid(dotstart-7,7);
-						chunks->sRevision2 = sLine.Mid(dotstart+2,7);
+						chunks->sRevision = sLine.Mid((int)wcslen(L"index "), dotstart - (int)wcslen(L"index "));
+						int end = sLine.Find(L' ', dotstart + 2);
+						if (end > 0)
+							chunks->sRevision2 = sLine.Mid(dotstart + 2, end - (dotstart + 2));
 					}
 					break;
 				}
@@ -400,7 +402,9 @@ errorcleanup:
 
 BOOL CPatch::OpenUnifiedDiffFile(const CString& filename)
 {
+#ifndef GTEST_INCLUDE_GTEST_GTEST_H_
 	CCrashReport::Instance().AddFile2(filename, nullptr, L"unified diff file", CR_AF_MAKE_FILE_COPY);
+#endif
 
 	CFileTextLines PatchLines;
 	if (!PatchLines.Load(filename))
@@ -488,10 +492,12 @@ int CPatch::PatchFile(const int strip, int nIndex, const CString& sPatchPath, co
 
 	CString sLine;
 	CString sPatchFile = sBaseFile.IsEmpty() ? sPath : sBaseFile;
+#ifndef GTEST_INCLUDE_GTEST_GTEST_H_
 	if (PathFileExists(sPatchFile))
 	{
 		CCrashReport::Instance().AddFile2(sPatchFile, nullptr, L"File to patch", CR_AF_MAKE_FILE_COPY);
 	}
+#endif
 	CFileTextLines PatchLines;
 	CFileTextLines PatchLinesResult;
 	PatchLines.Load(sPatchFile);

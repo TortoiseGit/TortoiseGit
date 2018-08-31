@@ -1,0 +1,54 @@
+Index: new file.txt
+===================================================================
+--- new file.txt	(nonexistent)
++++ new file.txt	(working copy)
+@@ -0,0 +1,5 @@
++this is a new file
++bla
++kfjsfd
++sdf
++dsf
+
+Property changes on: new file.txt
+___________________________________________________________________
+Added: svn:eol-style
+## -0,0 +1 ##
++native
+\ No newline at end of property
+Index: Utils/StringUtils.cpp
+===================================================================
+--- Utils/StringUtils.cpp	(revision 28340)
++++ Utils/StringUtils.cpp	(working copy)
+@@ -1,4 +1,4 @@
+-// TortoiseSVN - a Windows shell extension for easy version control
++﻿// TortoiseSVN - a Windows shell extension for easy version control
+ 
+ // Copyright (C) 2003-2011, 2013-2017 - TortoiseSVN
+ // Copyright (C) 2016 - TortoiseGit
+@@ -536,7 +536,7 @@
+     if (CryptStringToBinaryA(text, (DWORD)strlen(text), CRYPT_STRING_HEX, NULL, &dwLen, NULL, NULL) == FALSE)
+         return NULL;
+ 
+-    std::unique_ptr<BYTE[]> strIn(new BYTE[dwLen + 1]);
++    auto strIn = std::make_unique<BYTE[]>(dwLen + 1);
+     if (CryptStringToBinaryA(text, (DWORD)strlen(text), CRYPT_STRING_HEX, strIn.get(), &dwLen, NULL, NULL) == FALSE)
+         return NULL;
+ 
+@@ -549,7 +549,7 @@
+         return NULL;
+     SecureZeroMemory(blobin.pbData, blobin.cbData);
+ 
+-    std::unique_ptr<char[]> result(new char[blobout.cbData + 1]);
++    auto result = std::make_unique<char[]>(blobout.cbData + 1);
+     strncpy_s(result.get(), blobout.cbData+1, (const char*)blobout.pbData, blobout.cbData);
+     SecureZeroMemory(blobout.pbData, blobout.cbData);
+     LocalFree(blobout.pbData);
+@@ -563,7 +563,7 @@
+     if (CryptStringToBinaryW(text, (DWORD)wcslen(text), CRYPT_STRING_HEX, NULL, &dwLen, NULL, NULL) == FALSE)
+         return NULL;
+ 
+-    std::unique_ptr<BYTE[]> strIn(new BYTE[dwLen + 1]);
++    auto strIn = std::make_unique<BYTE[]>(dwLen + 1);
+     if (CryptStringToBinaryW(text, (DWORD)wcslen(text), CRYPT_STRING_HEX, strIn.get(), &dwLen, NULL, NULL) == FALSE)
+         return NULL;
+ 

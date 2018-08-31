@@ -1,0 +1,35 @@
+From cf6938703026288086c1892937b3914e4feef678 Mon Sep 17 00:00:00 2001
+From: Sven Strickroth <email@cs-ware.de>
+Date: Wed, 29 Aug 2018 22:29:34 +0200
+Subject: [PATCH] Show correct log
+
+When there is a submodule conflict on Edit conflict -> Use this -> "..." (pick commit) the log of the superproject was shown.
+
+Signed-off-by: Sven Strickroth <email@cs-ware.de>
+---
+ src/TortoiseProc/AppUtils.cpp | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git src/TortoiseProc/AppUtils.cpp src/TortoiseProc/AppUtils.cpp
+index fe40643e9..f74cfec7e 100644
+--- src/TortoiseProc/AppUtils.cpp
++++ src/TortoiseProc/AppUtils.cpp
+@@ -3704,12 +3704,15 @@ int CAppUtils::ResolveConflict(HWND hWnd, CTGitPath& path, resolve_with resolveW
+ 				{
+ 					CString origPath = g_Git.m_CurrentDir;
+ 					g_Git.m_CurrentDir = g_Git.CombinePath(path);
++					SetCurrentDirectory(g_Git.m_CurrentDir);
+ 					if (!GitReset(hWnd, &hash))
+ 					{
+ 						g_Git.m_CurrentDir = origPath;
++						SetCurrentDirectory(g_Git.m_CurrentDir);
+ 						return -1;
+ 					}
+ 					g_Git.m_CurrentDir = origPath;
++					SetCurrentDirectory(g_Git.m_CurrentDir);
+ 				}
+ 			}
+ 			else
+-- 
+2.18.0.windows.1
+

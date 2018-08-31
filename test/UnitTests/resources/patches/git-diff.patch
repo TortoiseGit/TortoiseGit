@@ -1,0 +1,178 @@
+ appveyor.yml                             | 30 ------------------------------
+ src/Git/GitPatch.cpp                     |  4 ++--
+ src/TortoiseMerge/Patch.cpp              | 16 +++++++++++-----
+ test/UnitTests/UnitTests.vcxproj         |  3 +++
+ test/UnitTests/UnitTests.vcxproj.filters |  9 +++++++++
+ wusel dusel.txt                          |  5 +++++
+ 6 files changed, 30 insertions(+), 37 deletions(-)
+
+diff --git a/appveyor.yml b/appveyor.yml
+deleted file mode 100644
+index e6b688767..000000000
+--- a/appveyor.yml
++++ /dev/null
+@@ -1,30 +0,0 @@
+-version: '{branch}.{build}'
+-skip_tags: true
+-image: Visual Studio 2017
+-init:
+-- git version
+-build_script:
+-- git submodule update --init -- ext/googletest ext/libgit2 ext/simpleini ext/tgit ext/zlib
+-- cd ext\libgit2
+-- git config --global user.email "dummy@example.com"
+-- git config --global user.name "Dummy Name"
+-- for %%G in (..\libgit2-*.patch) do ( type %%G | git am )
+-- git config --unset --global user.email
+-- git config --unset --global user.name
+-- cd ..\..
+-- msbuild "src\TortoiseGit.sln" /t:"test\UnitTests" /m /verbosity:minimal /p:Configuration=Debug /p:PlatformToolset=v141 /p:Platform=x64 /maxcpucount /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+-- msbuild "src\TortoiseGit.sln" /t:"test\UnitTests" /m /verbosity:minimal /p:Configuration=Debug /p:PlatformToolset=v141 /p:Platform=Win32 /maxcpucount /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+-test_script:
+-- bin\Debug\bin\tests.exe
+-- bin\Debug64\bin\tests.exe
+-- reg add HKCU\Software\TortoiseGit /v CygwinHack /t REG_DWORD /f /d 1
+-- reg add HKCU\Software\TortoiseGit /v MSysGit /t REG_SZ /f /d "c:\cygwin\bin"
+-- set HOME=%USERPROFILE%
+-- c:\cygwin\bin\git version
+-- bin\Debug\bin\tests.exe
+-- bin\Debug64\bin\tests.exe
+-- reg delete HKCU\Software\TortoiseGit /v CygwinHack /f
+-- reg delete HKCU\Software\TortoiseGit /v MSysGit /f
+-- msbuild "src\TortoiseGit.sln" /t:"GitWCRev" /t:"GitWCRevCom" /t:"TortoiseGitSetup\CustomActions" /t:"TortoiseGitSetup\RestartExplorer" /t:"ext\Crash-Server\CrashServerSDK\CrashHandler" /t:"ext\Crash-Server\CrashServerSDK\SendRpt" /m /verbosity:minimal /p:Configuration=Release /p:Platform=x64 /maxcpucount /p:PlatformToolset=v141 /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+-- git submodule update --init -- ext/apr ext/apr-util ext/editorconfig ext/pcre
+-- msbuild "src\TortoiseGit.sln" /t:"TGitCache" /t:"TortoiseGitBlame" /t:"TortoiseGitIDiff" /t:"TortoiseGitMerge" /t:"TortoiseGitPlink" /t:"TortoiseGitProc" /t:"TortoiseGitStub" /t:"TortoiseGitUDiff" /t:"TortoiseShell" /t:"SshAskPass" /t:"tgittouch" /t:"GitWCRev" /t:"GitWCRevCom" /m /verbosity:minimal /p:Configuration=Debug /p:Platform=x64 /maxcpucount /p:PlatformToolset=v141 /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+diff --git a/src/Git/GitPatch.cpp b/src/Git/GitPatch.cpp
+index c85b034cd..9f99b1cc4 100644
+--- a/src/Git/GitPatch.cpp
++++ b/src/Git/GitPatch.cpp
+@@ -1,4 +1,4 @@
+-// TortoiseGitMerge - a Diff/Patch program
++﻿// TortoiseGitMerge - a Diff/Patch program
+ 
+ // Copyright (C) 2012-2013, 2015-2018 - TortoiseGit
+ // Copyright (C) 2010-2012 - TortoiseSVN
+@@ -155,7 +155,7 @@ bool GitPatch::PatchFile(int nIndex, CString &datapath)
+ 		CString sVersion = m_patch.GetRevision(nIndex);
+ 
+ 		CString sBaseFile;
+-		if (sVersion == L"0000000" || sFilePath == L"NUL")
++		if ((sVersion.GetLength() >= 7 && wcsncmp(sVersion, GIT_REV_ZERO, sVersion.GetLength()) == 0) || sFilePath == L"NUL")
+ 			sBaseFile = CTempFiles::Instance().GetTempFilePathString();
+ 		else
+ 		{
+diff --git a/src/TortoiseMerge/Patch.cpp b/src/TortoiseMerge/Patch.cpp
+index a4cd5787e..af90b981e 100644
+--- a/src/TortoiseMerge/Patch.cpp
++++ b/src/TortoiseMerge/Patch.cpp
+@@ -104,13 +104,15 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
+ 			case 1:
+ 			{
+ 				//index
+-				if (CStringUtils::StartsWith(sLine, L"index"))
++				if (CStringUtils::StartsWith(sLine, L"index "))
+ 				{
+-					int dotstart = sLine.Find(L"..");
+-					if(dotstart>=0 && chunks)
++					int dotstart = sLine.Find(L"..", (int)wcslen(L"index "));
++					if (dotstart > 0 && chunks)
+ 					{
+-						chunks->sRevision = sLine.Mid(dotstart-7,7);
+-						chunks->sRevision2 = sLine.Mid(dotstart+2,7);
++						chunks->sRevision = sLine.Mid((int)wcslen(L"index "), dotstart - (int)wcslen(L"index "));
++						int end = sLine.Find(L' ', dotstart + 2);
++						if (end > 0)
++							chunks->sRevision2 = sLine.Mid(dotstart + 2, end - (dotstart + 2));
+ 					}
+ 					break;
+ 				}
+@@ -400,7 +402,9 @@ errorcleanup:
+ 
+ BOOL CPatch::OpenUnifiedDiffFile(const CString& filename)
+ {
++#ifndef GTEST_INCLUDE_GTEST_GTEST_H_
+ 	CCrashReport::Instance().AddFile2(filename, nullptr, L"unified diff file", CR_AF_MAKE_FILE_COPY);
++#endif
+ 
+ 	CFileTextLines PatchLines;
+ 	if (!PatchLines.Load(filename))
+@@ -488,10 +492,12 @@ int CPatch::PatchFile(const int strip, int nIndex, const CString& sPatchPath, co
+ 
+ 	CString sLine;
+ 	CString sPatchFile = sBaseFile.IsEmpty() ? sPath : sBaseFile;
++#ifndef GTEST_INCLUDE_GTEST_GTEST_H_
+ 	if (PathFileExists(sPatchFile))
+ 	{
+ 		CCrashReport::Instance().AddFile2(sPatchFile, nullptr, L"File to patch", CR_AF_MAKE_FILE_COPY);
+ 	}
++#endif
+ 	CFileTextLines PatchLines;
+ 	CFileTextLines PatchLinesResult;
+ 	PatchLines.Load(sPatchFile);
+diff --git a/test/UnitTests/UnitTests.vcxproj b/test/UnitTests/UnitTests.vcxproj
+index 864f9caa7..3bb663bfb 100644
+--- a/test/UnitTests/UnitTests.vcxproj
++++ b/test/UnitTests/UnitTests.vcxproj
+@@ -76,6 +76,7 @@
+     <ClInclude Include="..\..\src\Git\MassiveGitTaskBase.h" />
+     <ClInclude Include="..\..\src\Git\TGitPath.h" />
+     <ClInclude Include="..\..\src\TortoiseMerge\FileTextLines.h" />
++    <ClInclude Include="..\..\src\TortoiseMerge\Patch.h" />
+     <ClInclude Include="..\..\src\TortoiseProc\gitlogcache.h" />
+     <ClInclude Include="..\..\src\TortoiseProc\lanes.h" />
+     <ClInclude Include="..\..\src\TortoiseProc\LogDlgHelper.h" />
+@@ -124,6 +125,7 @@
+     <ClCompile Include="..\..\src\Git\MassiveGitTaskBase.cpp" />
+     <ClCompile Include="..\..\src\Git\TGitPath.cpp" />
+     <ClCompile Include="..\..\src\TortoiseMerge\FileTextLines.cpp" />
++    <ClCompile Include="..\..\src\TortoiseMerge\Patch.cpp" />
+     <ClCompile Include="..\..\src\TortoiseProc\GitLogCache.cpp" />
+     <ClCompile Include="..\..\src\TortoiseProc\lanes.cpp" />
+     <ClCompile Include="..\..\src\TortoiseProc\LogDataVector.cpp" />
+@@ -163,6 +165,7 @@
+     <ClCompile Include="libgitTest.cpp" />
+     <ClCompile Include="LogDataVectorTest.cpp" />
+     <ClCompile Include="LruCacheTest.cpp" />
++    <ClCompile Include="PatchTest.cpp" />
+     <ClCompile Include="PathUtilsTest.cpp" />
+     <ClCompile Include="PersonalDictionaryTest.cpp" />
+     <ClCompile Include="ProjectPropertiesTest.cpp" />
+diff --git a/test/UnitTests/UnitTests.vcxproj.filters b/test/UnitTests/UnitTests.vcxproj.filters
+index 7644bea3b..fd436f9bb 100644
+--- a/test/UnitTests/UnitTests.vcxproj.filters
++++ b/test/UnitTests/UnitTests.vcxproj.filters
+@@ -170,6 +170,9 @@
+     <ClInclude Include="..\..\src\GitWCRev\status.h">
+       <Filter>GitWCRev</Filter>
+     </ClInclude>
++    <ClInclude Include="..\..\src\TortoiseMerge\Patch.h">
++      <Filter>TortoiseGitMerge</Filter>
++    </ClInclude>
+   </ItemGroup>
+   <ItemGroup>
+     <ClCompile Include="stdafx.cpp">
+@@ -358,5 +361,11 @@
+     <ClCompile Include="GitWCRevStatusTest.cpp">
+       <Filter>Source Files</Filter>
+     </ClCompile>
++    <ClCompile Include="..\..\src\TortoiseMerge\Patch.cpp">
++      <Filter>TortoiseGitMerge</Filter>
++    </ClCompile>
++    <ClCompile Include="PatchTest.cpp">
++      <Filter>Source Files</Filter>
++    </ClCompile>
+   </ItemGroup>
+ </Project>
+\ No newline at end of file
+diff --git a/wusel dusel.txt b/wusel dusel.txt
+new file mode 100644
+index 000000000..b936c8026
+--- /dev/null
++++ b/wusel dusel.txt	
+@@ -0,0 +1,5 @@
++new file
++dfkdsf#dsf
++
++
++dsf
+\ No newline at end of file

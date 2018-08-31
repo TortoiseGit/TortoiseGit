@@ -1,0 +1,127 @@
+diff --git a/doc/doc.build b/doc/doc.build
+index 36d19f2..365406a 100644
+--- a/doc/doc.build
++++ b/doc/doc.build
+@@ -19,7 +19,7 @@ All user/site specific configuration is stored in doc.build.user.
+ 	</description>
+ 	
+ 	<!-- default: we don't clean first -->
+-	<property name="cleanup" value="" overwrite="false" />
++	<property name="cleanup" value="yes" overwrite="false" />
+ 
+ 	<include buildfile="doc.build.include"/>
+ 
+diff --git a/doc/doc.build.include b/doc/doc.build.include
+index 69bd153..ca2f366 100644
+--- a/doc/doc.build.include
++++ b/doc/doc.build.include
+@@ -36,7 +36,7 @@ This will only build the english HTML help file for TortoiseGit
+ 	
+ 	<!-- pdf,chm,html,htmlsingle -->
+ 	<property name="docformats" 
+-		value="chm" 
++		value="html" 
+ 		unless="${property::exists('docformats')}"
+ 	/>
+ 	
+diff --git a/doc/source/styles_chm.css b/doc/source/styles_chm.css
+index 607887c..f87bca1 100644
+--- a/doc/source/styles_chm.css
++++ b/doc/source/styles_chm.css
+@@ -79,29 +79,6 @@ div.navheader table th {
+ 	font-size: medium;
+ }
+ 
+-/* normal text in the footer */
+-div.navfooter table td {
+-	color: black;
+-}
+-    
+-div.navheader table td a,
+-div.navfooter table td a {
+-	color: #black;
+-	text-decoration: none;
+-}
+-
+-/* links in header and footer */
+-div.navheader table td a:hover,
+-div.navfooter table td a:hover {
+-	text-decoration: underline;
+-	background-color: transparent;
+-}
+-
+-div.navheader table td a:visited,
+-div.navfooter table td a:visited {
+-	color: black;
+-}
+-
+ div.navheader hr, div.navfooter hr{
+ 	display: none;
+ }
+@@ -121,12 +98,7 @@ div.glossary {
+ 
+ /* table of contents */
+ div.toc {
+-	border: 1px solid black;
+-	padding: 0px 10px;
+-	background-color: #fff9cd;
+-	color: black;
+ 	margin-bottom: 1cm;
+-	width: 80%;
+ }
+ 
+ div.toc b { font-size: 140%; }
+@@ -148,21 +120,23 @@ div.table title { background-color: #FFFFFF; width:100%; border: 0px; }
+ div.table p { text-align: center; }
+ div.table tr td p { text-align: left; }
+ div.table table {
+-	background-color: #7099C5;
+ 	font-size: 90%;
+ 	border-width: 0px;
+ }
+ div.table th {
+ 	text-align: center;
+ 	color: white;
+-	background-color: #7099C5;
++	background-color: #4b8eb4;
+ 	padding: 1px 4px 1px 4px;
+ 	border: none;
+ 	vertical-align: top;
+ }
+-div.table tr {
++div.table tr:nth-child(odd) {
+ 	background-color: #f0f0ff;
+ }
++div.table tr:nth-child(even) {
++	background-color: #ffffff;
++}
+ div.table td {
+ 	vertical-align: top;
+ 	padding: 2px 4px 1px 4px;
+@@ -267,7 +241,6 @@ div.literallayout p {
+ 
+ div.literallayout {
+   font-family: monospace;
+-#  margin: 0.5em 10% 0.5em 1em;
+   margin: 0em;
+   color: navy;
+   border: 1px solid silver;
+diff --git a/doc/source/styles_html.css b/doc/source/styles_html.css
+index b2127f7..d41e7c3 100644
+--- a/doc/source/styles_html.css
++++ b/doc/source/styles_html.css
+@@ -20,14 +20,6 @@ H1, H2, H3 H4
+ P,LI,UL,OL,DD,DT,TD
+ */
+ 
+-p a, p a:hover {
+-  margin-left: 5px;
+-  padding-left: 10px;
+-  background-image: url("images/link.png");
+-  background-repeat: no-repeat;
+-  background-position: center left;
+-}
+-
+ /* Don't display indexterms */
+ .indexterm {
+   margin: 0;

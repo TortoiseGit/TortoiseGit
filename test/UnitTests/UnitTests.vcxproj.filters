@@ -170,6 +170,9 @@
     <ClInclude Include="..\..\src\GitWCRev\status.h">
       <Filter>GitWCRev</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\TortoiseMerge\Patch.h">
+      <Filter>TortoiseGitMerge</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -356,6 +359,12 @@
       <Filter>GitWCRev</Filter>
     </ClCompile>
     <ClCompile Include="GitWCRevStatusTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\TortoiseMerge\Patch.cpp">
+      <Filter>TortoiseGitMerge</Filter>
+    </ClCompile>
+    <ClCompile Include="PatchTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -76,6 +76,7 @@
     <ClInclude Include="..\..\src\Git\MassiveGitTaskBase.h" />
     <ClInclude Include="..\..\src\Git\TGitPath.h" />
     <ClInclude Include="..\..\src\TortoiseMerge\FileTextLines.h" />
+    <ClInclude Include="..\..\src\TortoiseMerge\Patch.h" />
     <ClInclude Include="..\..\src\TortoiseProc\gitlogcache.h" />
     <ClInclude Include="..\..\src\TortoiseProc\lanes.h" />
     <ClInclude Include="..\..\src\TortoiseProc\LogDlgHelper.h" />
@@ -124,6 +125,7 @@
     <ClCompile Include="..\..\src\Git\MassiveGitTaskBase.cpp" />
     <ClCompile Include="..\..\src\Git\TGitPath.cpp" />
     <ClCompile Include="..\..\src\TortoiseMerge\FileTextLines.cpp" />
+    <ClCompile Include="..\..\src\TortoiseMerge\Patch.cpp" />
     <ClCompile Include="..\..\src\TortoiseProc\GitLogCache.cpp" />
     <ClCompile Include="..\..\src\TortoiseProc\lanes.cpp" />
     <ClCompile Include="..\..\src\TortoiseProc\LogDataVector.cpp" />
@@ -163,6 +165,7 @@
     <ClCompile Include="libgitTest.cpp" />
     <ClCompile Include="LogDataVectorTest.cpp" />
     <ClCompile Include="LruCacheTest.cpp" />
+    <ClCompile Include="PatchTest.cpp" />
     <ClCompile Include="PathUtilsTest.cpp" />
     <ClCompile Include="PersonalDictionaryTest.cpp" />
     <ClCompile Include="ProjectPropertiesTest.cpp" />

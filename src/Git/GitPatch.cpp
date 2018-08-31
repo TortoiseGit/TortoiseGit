@@ -1,4 +1,4 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2012-2013, 2015-2018 - TortoiseGit
 // Copyright (C) 2010-2012 - TortoiseSVN
@@ -155,7 +155,7 @@ bool GitPatch::PatchFile(int nIndex, CString &datapath)
 		CString sVersion = m_patch.GetRevision(nIndex);
 
 		CString sBaseFile;
-		if (sVersion == L"0000000" || sFilePath == L"NUL")
+		if ((sVersion.GetLength() >= 7 && wcsncmp(sVersion, GIT_REV_ZERO, sVersion.GetLength()) == 0) || sFilePath == L"NUL")
 			sBaseFile = CTempFiles::Instance().GetTempFilePathString();
 		else
 		{
