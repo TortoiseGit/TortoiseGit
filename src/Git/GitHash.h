@@ -144,6 +144,7 @@ public:
 	CString ToString() const
 	{
 		CString str;
+		str.Preallocate(GIT_HASH_SIZE * 2);
 		for (int i = 0; i < GIT_HASH_SIZE; ++i)
 			str.AppendFormat(L"%02x", m_hash[i]);
 		return str;
