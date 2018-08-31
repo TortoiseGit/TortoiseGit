@@ -20,14 +20,22 @@
 #pragma once
 #define GIT_HASH_SIZE 20
 
+/* also see gitdll.c */
+static_assert(GIT_HASH_SIZE == GIT_OID_RAWSZ, "hash size needs to be the same as in libgit2");
+static_assert(sizeof(git_oid::id) == GIT_HASH_SIZE, "hash size needs to be the same as in libgit2");
+
 #define GIT_REV_ZERO_C "0000000000000000000000000000000000000000"
 #define GIT_REV_ZERO _T(GIT_REV_ZERO_C)
 
+class CGitHash;
+template<>
+struct std::hash<CGitHash>;
+
 class CGitHash
 {
-public:
+private:
 	unsigned char m_hash[GIT_HASH_SIZE];
-
+public:
 	CGitHash()
 	{
 		memset(m_hash,0, GIT_HASH_SIZE);
@@ -36,15 +44,33 @@ public:
 	{
 		memcpy(m_hash,p,GIT_HASH_SIZE);
 	}
-	CGitHash & operator = (const CString &str)
+	CGitHash(const git_oid* oid)
+	{
+		git_oid_cpy((git_oid*)m_hash, oid);
+	}
+	CGitHash(const git_oid oid)
+	{
+		git_oid_cpy((git_oid*)m_hash, &oid);
+	}
+	CGitHash& operator = (const CString& str)
 	{
 		CGitHash hash(str);
 		*this = hash;
 		return *this;
 	}
-	CGitHash & operator = (const unsigned char *p)
+	CGitHash& operator = (const unsigned char *p)
 	{
 		memcpy(m_hash, p, GIT_HASH_SIZE);
+		return *this;
+	}
+	CGitHash& operator = (const git_oid* oid)
+	{
+		git_oid_cpy((git_oid*)m_hash, oid);
+		return *this;
+	}
+	CGitHash& operator = (const git_oid oid)
+	{
+		git_oid_cpy((git_oid*)m_hash, &oid);
 		return *this;
 	}
 	CGitHash(const CString &str)
@@ -118,13 +144,20 @@ public:
 	CString ToString() const
 	{
 		CString str;
+		str.Preallocate(GIT_HASH_SIZE * 2);
 		for (int i = 0; i < GIT_HASH_SIZE; ++i)
 			str.AppendFormat(L"%02x", m_hash[i]);
 		return str;
 	}
-	operator CString () const
+
+	operator const git_oid*() const
 	{
-		return ToString();
+		return (const git_oid*)m_hash;
+	}
+
+	operator const unsigned char*() const
+	{
+		return m_hash;
 	}
 
 	bool operator == (const CGitHash &hash) const
@@ -165,6 +198,8 @@ public:
 		}
 		return true;
 	}
+
+	friend struct std::hash<CGitHash>;
 };
 
 namespace std

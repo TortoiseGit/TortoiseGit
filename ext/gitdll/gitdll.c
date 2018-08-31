@@ -40,6 +40,8 @@
 extern char g_last_error[];
 static const char* g_prefix;
 
+/* also see GitHash.h */
+static_assert(GIT_SHA1_RAWSZ == GIT_HASH_SIZE && GIT_MAX_RAWSZ == GIT_HASH_SIZE, "Required to be equal in gitdll.h");
 static_assert(sizeof(struct object_id) == sizeof(struct GIT_OBJECT_OID), "Required to be equal in gitdll.h");
 
 extern NORETURN void die_dll(const char* err, va_list params);
@@ -524,7 +526,7 @@ int git_diff_flush(GIT_DIFF diff)
 	return 0;
 }
 
-int git_root_diff(GIT_DIFF diff, GIT_HASH hash,GIT_FILE *file, int *count, int isstat)
+int git_root_diff(GIT_DIFF diff, const GIT_HASH hash, GIT_FILE* file, int* count, int isstat)
 {
 	int ret;
 	struct object_id oid;
@@ -560,7 +562,7 @@ int git_root_diff(GIT_DIFF diff, GIT_HASH hash,GIT_FILE *file, int *count, int i
 	return 0;
 }
 
-int git_do_diff(GIT_DIFF diff, GIT_HASH hash1, GIT_HASH hash2, GIT_FILE * file, int *count,int isstat)
+int git_do_diff(GIT_DIFF diff, const GIT_HASH hash1, const GIT_HASH hash2, GIT_FILE* file, int* count, int isstat)
 {
 	struct rev_info *p_Rev;
 	int ret;

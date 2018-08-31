@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2018 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
@@ -840,7 +840,7 @@ public:
 	void AddEntry(size_t arStatusArrayIndex, CTGitPath* path, WORD langID, int ListIndex);
 	void Clear();
 	int m_FileLoaded;
-	CString m_CurrentVersion;
+	CGitHash m_CurrentVersion;
 	bool m_bDoNotAutoselectSubmodules;
 	bool m_bNoAutoselectMissing;
 	std::map<CString, CString>	m_restorepaths;

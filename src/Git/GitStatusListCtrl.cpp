@@ -1567,7 +1567,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 				if ((m_dwContextMenus & this->GetContextMenuBit(IDGITLC_COMPAREWC)) && m_bHasWC)
 				{
-					if ((!m_CurrentVersion.IsEmpty()) && m_CurrentVersion != GIT_REV_ZERO)
+					if (!m_CurrentVersion.IsEmpty())
 					{
 						popup.AppendMenuIcon(IDGITLC_COMPAREWC, IDS_LOG_POPUP_COMPARE, IDI_DIFF);
 						bEntryAdded = true;
@@ -1613,19 +1613,19 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 			if (selectedCount > 0 && (!(wcStatus & (CTGitPath::LOGACTIONS_UNVER | CTGitPath::LOGACTIONS_IGNORE))) && m_bHasWC)
 			{
-				if ((m_dwContextMenus & GITSLC_POPCOMMIT) && (this->m_CurrentVersion.IsEmpty() || this->m_CurrentVersion == GIT_REV_ZERO) && !(wcStatus & (CTGitPath::LOGACTIONS_SKIPWORKTREE | CTGitPath::LOGACTIONS_ASSUMEVALID)))
+				if ((m_dwContextMenus & GITSLC_POPCOMMIT) && m_CurrentVersion.IsEmpty() && !(wcStatus & (CTGitPath::LOGACTIONS_SKIPWORKTREE | CTGitPath::LOGACTIONS_ASSUMEVALID)))
 					popup.AppendMenuIcon(IDGITLC_COMMIT, IDS_STATUSLIST_CONTEXT_COMMIT, IDI_COMMIT);
 
-				if ((m_dwContextMenus & GITSLC_POPREVERT) && (this->m_CurrentVersion.IsEmpty() || this->m_CurrentVersion == GIT_REV_ZERO))
+				if ((m_dwContextMenus & GITSLC_POPREVERT) && m_CurrentVersion.IsEmpty())
 					popup.AppendMenuIcon(IDGITLC_REVERT, IDS_MENUREVERT, IDI_REVERT);
 
-				if ((m_dwContextMenus & GITSLC_POPSKIPWORKTREE) && (this->m_CurrentVersion.IsEmpty() || this->m_CurrentVersion == GIT_REV_ZERO) && !(wcStatus & (CTGitPath::LOGACTIONS_ADDED | CTGitPath::LOGACTIONS_UNMERGED | CTGitPath::LOGACTIONS_SKIPWORKTREE)))
+				if ((m_dwContextMenus & GITSLC_POPSKIPWORKTREE) && m_CurrentVersion.IsEmpty() && !(wcStatus & (CTGitPath::LOGACTIONS_ADDED | CTGitPath::LOGACTIONS_UNMERGED | CTGitPath::LOGACTIONS_SKIPWORKTREE)))
 					popup.AppendMenuIcon(IDGITLC_SKIPWORKTREE, IDS_STATUSLIST_SKIPWORKTREE);
 
-				if ((m_dwContextMenus & GITSLC_POPASSUMEVALID) && (this->m_CurrentVersion.IsEmpty() || this->m_CurrentVersion == GIT_REV_ZERO) && !(wcStatus & (CTGitPath::LOGACTIONS_ADDED | CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_UNMERGED | CTGitPath::LOGACTIONS_ASSUMEVALID)))
+				if ((m_dwContextMenus & GITSLC_POPASSUMEVALID) && m_CurrentVersion.IsEmpty() && !(wcStatus & (CTGitPath::LOGACTIONS_ADDED | CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_UNMERGED | CTGitPath::LOGACTIONS_ASSUMEVALID)))
 					popup.AppendMenuIcon(IDGITLC_ASSUMEVALID, IDS_MENUASSUMEVALID);
 
-				if ((m_dwContextMenus & GITSLC_POPUNSETIGNORELOCALCHANGES) && (this->m_CurrentVersion.IsEmpty() || this->m_CurrentVersion == GIT_REV_ZERO) && (wcStatus & (CTGitPath::LOGACTIONS_SKIPWORKTREE | CTGitPath::LOGACTIONS_ASSUMEVALID)))
+				if ((m_dwContextMenus & GITSLC_POPUNSETIGNORELOCALCHANGES) && m_CurrentVersion.IsEmpty() && (wcStatus & (CTGitPath::LOGACTIONS_SKIPWORKTREE | CTGitPath::LOGACTIONS_ASSUMEVALID)))
 					popup.AppendMenuIcon(IDGITLC_UNSETIGNORELOCALCHANGES, IDS_STATUSLIST_UNSETIGNORELOCALCHANGES);
 
 				if (m_dwContextMenus & GITSLC_POPRESTORE && !filepath->IsDirectory())
@@ -1636,14 +1636,12 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						popup.AppendMenuIcon(IDGITLC_RESTOREPATH, IDS_MENURESTORE, IDI_RESTORE);
 				}
 
-				if ((m_dwContextMenus & GetContextMenuBit(IDGITLC_REVERTTOREV)) && ( !this->m_CurrentVersion.IsEmpty() )
-					&& this->m_CurrentVersion != GIT_REV_ZERO && !(wcStatus & CTGitPath::LOGACTIONS_DELETED))
+				if ((m_dwContextMenus & GetContextMenuBit(IDGITLC_REVERTTOREV)) && !m_CurrentVersion.IsEmpty() && !(wcStatus & CTGitPath::LOGACTIONS_DELETED))
 				{
 					popup.AppendMenuIcon(IDGITLC_REVERTTOREV, IDS_LOG_POPUP_REVERTTOREV, IDI_REVERT);
 				}
 
-				if ((m_dwContextMenus & GetContextMenuBit(IDGITLC_REVERTTOPARENT)) && ( !this->m_CurrentVersion.IsEmpty() )
-					&& this->m_CurrentVersion != GIT_REV_ZERO && !(wcStatus & CTGitPath::LOGACTIONS_ADDED))
+				if ((m_dwContextMenus & GetContextMenuBit(IDGITLC_REVERTTOPARENT)) && !m_CurrentVersion.IsEmpty() && !(wcStatus & CTGitPath::LOGACTIONS_ADDED))
 				{
 					popup.AppendMenuIcon(IDGITLC_REVERTTOPARENT, IDS_LOG_POPUP_REVERTTOPARENT, IDI_REVERT);
 				}
@@ -1657,7 +1655,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					popup.AppendMenuIcon(IDGITLC_LOGSUBMODULE, IDS_LOG_SUBMODULE, IDI_LOG);
 				if (m_dwContextMenus & GITSLC_POPSHOWLOGOLDNAME && (wcStatus & (CTGitPath::LOGACTIONS_REPLACED|CTGitPath::LOGACTIONS_COPY) && !filepath->GetGitOldPathString().IsEmpty()))
 					popup.AppendMenuIcon(IDGITLC_LOGOLDNAME, IDS_STATUSLIST_SHOWLOGOLDNAME, IDI_LOG);
-				if ((m_dwContextMenus & GITSLC_POPBLAME) && !filepath->IsDirectory() && !(wcStatus & CTGitPath::LOGACTIONS_DELETED) && !((wcStatus & CTGitPath::LOGACTIONS_ADDED) && (m_CurrentVersion.IsEmpty() || m_CurrentVersion == GIT_REV_ZERO)) && m_bHasWC)
+				if ((m_dwContextMenus & GITSLC_POPBLAME) && !filepath->IsDirectory() && !(wcStatus & CTGitPath::LOGACTIONS_DELETED) && !((wcStatus & CTGitPath::LOGACTIONS_ADDED) && m_CurrentVersion.IsEmpty()) && m_bHasWC)
 					popup.AppendMenuIcon(IDGITLC_BLAME, IDS_MENUBLAME, IDI_BLAME);
 			}
 
@@ -1838,7 +1836,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			}
 
 			m_hShellMenu = nullptr;
-			if (selectedCount > 0 && !(wcStatus & (CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MISSING)) && m_bHasWC && (m_CurrentVersion.IsEmpty() || m_CurrentVersion == GIT_REV_ZERO) && shellMenu.CreatePopupMenu())
+			if (selectedCount > 0 && !(wcStatus & (CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MISSING)) && m_bHasWC && m_CurrentVersion.IsEmpty() && shellMenu.CreatePopupMenu())
 			{
 				// insert the shell context menu
 				popup.AppendMenu(MF_SEPARATOR);
@@ -1923,7 +1921,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			case IDGITLC_PREPAREDIFF_COMPARE:
 				{
 					CTGitPath savedFile(m_sMarkForDiffFilename);
-					CGitDiff::Diff(GetParentHWND(), filepath, &savedFile, m_CurrentVersion, m_sMarkForDiffVersion, false, false, 0, bShift);
+					CGitDiff::Diff(GetParentHWND(), filepath, &savedFile, m_CurrentVersion.ToString(), m_sMarkForDiffVersion, false, false, 0, bShift);
 				}
 				break;
 
@@ -2031,10 +2029,10 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							break;
 
 						CString sCmd;
-						if (m_CurrentVersion.IsEmpty() || m_CurrentVersion == GIT_REV_ZERO)
+						if (m_CurrentVersion.IsEmpty())
 							sCmd.Format(L"/command:diff /path:\"%s\" /endrev:%s /path2:\"%s\" /startrev:%s /hwnd:%p", firstfilepath->GetWinPath(), firstfilepath->Exists() ? GIT_REV_ZERO : L"HEAD", secondfilepath->GetWinPath(), secondfilepath->Exists() ? GIT_REV_ZERO : L"HEAD", (void*)m_hWnd);
 						else
-							sCmd.Format(L"/command:diff /path:\"%s\" /startrev:%s /path2:\"%s\" /endrev:%s /hwnd:%p", firstfilepath->GetWinPath(), firstfilepath->m_Action & CTGitPath::LOGACTIONS_DELETED ? (LPCTSTR)(m_CurrentVersion + L"~1") : (LPCTSTR)m_CurrentVersion, secondfilepath->GetWinPath(), secondfilepath->m_Action & CTGitPath::LOGACTIONS_DELETED ? (LPCTSTR)(m_CurrentVersion + L"~1") : (LPCTSTR)m_CurrentVersion, (void*)m_hWnd);
+							sCmd.Format(L"/command:diff /path:\"%s\" /startrev:%s /path2:\"%s\" /endrev:%s /hwnd:%p", firstfilepath->GetWinPath(), firstfilepath->m_Action & CTGitPath::LOGACTIONS_DELETED ? (LPCTSTR)(m_CurrentVersion.ToString() + L"~1") : (LPCTSTR)m_CurrentVersion.ToString(), secondfilepath->GetWinPath(), secondfilepath->m_Action & CTGitPath::LOGACTIONS_DELETED ? (LPCTSTR)(m_CurrentVersion.ToString() + L"~1") : (LPCTSTR)m_CurrentVersion.ToString(), (void*)m_hWnd);
 						if (bShift)
 							sCmd += L" /alternative";
 						CAppUtils::RunTortoiseGitProc(sCmd);
@@ -2050,7 +2048,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					while (pos)
 					{
 						auto selectedFilepath = GetListEntry(GetNextSelectedItem(pos));
-						if (m_CurrentVersion.IsEmpty() || m_CurrentVersion == GIT_REV_ZERO)
+						if (m_CurrentVersion.IsEmpty())
 						{
 							CString fromwhere;
 							if (m_amend)
@@ -2060,14 +2058,14 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						else
 						{
 							if ((selectedFilepath->m_ParentNo & (PARENT_MASK | MERGE_MASK)) == 0)
-								CAppUtils::StartShowUnifiedDiff(m_hWnd, *selectedFilepath, m_CurrentVersion + L"~1", *selectedFilepath, m_CurrentVersion, bShift);
+								CAppUtils::StartShowUnifiedDiff(m_hWnd, *selectedFilepath, m_CurrentVersion.ToString() + L"~1", *selectedFilepath, m_CurrentVersion.ToString(), bShift);
 							else
 							{
 								CString str;
 								if (!(selectedFilepath->m_ParentNo & MERGE_MASK))
-									str.Format(L"%s^%d", (LPCTSTR)m_CurrentVersion, (selectedFilepath->m_ParentNo & PARENT_MASK) + 1);
+									str.Format(L"%s^%d", (LPCTSTR)m_CurrentVersion.ToString(), (selectedFilepath->m_ParentNo & PARENT_MASK) + 1);
 
-								CAppUtils::StartShowUnifiedDiff(m_hWnd, *selectedFilepath, str, *selectedFilepath, m_CurrentVersion, bShift, false, false, false, !!(selectedFilepath->m_ParentNo & MERGE_MASK));
+								CAppUtils::StartShowUnifiedDiff(m_hWnd, *selectedFilepath, str, *selectedFilepath, m_CurrentVersion.ToString(), bShift, false, false, false, !!(selectedFilepath->m_ParentNo & MERGE_MASK));
 							}
 						}
 					}
@@ -2119,7 +2117,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 			case IDGITLC_BLAME:
 				{
-					CAppUtils::LaunchTortoiseBlame(g_Git.CombinePath(filepath), m_CurrentVersion);
+					CAppUtils::LaunchTortoiseBlame(g_Git.CombinePath(filepath), m_CurrentVersion.ToString());
 				}
 				break;
 
@@ -2633,16 +2631,13 @@ void CGitStatusListCtrl::StartDiffWC(int fileindex)
 		return;
 
 	CAutoReadLock locker(m_guard);
-	if (m_CurrentVersion.IsEmpty())
-		m_CurrentVersion == GIT_REV_ZERO;
-
 	auto ptr = GetListEntry(fileindex);
 	if (!ptr)
 		return;
 	CTGitPath file1 = *ptr;
 	file1.m_Action = 0; // reset action, so that diff is not started as added/deleted file; see issue #1757
 
-	CGitDiff::Diff(GetParentHWND(), &file1, &file1, GIT_REV_ZERO, m_CurrentVersion, false, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
+	CGitDiff::Diff(GetParentHWND(), &file1, &file1, GIT_REV_ZERO, m_CurrentVersion.ToString(), false, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 }
 
 void CGitStatusListCtrl::StartDiff(int fileindex)
@@ -2661,7 +2656,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 	else
 		file2=file1;
 
-	if(this->m_CurrentVersion.IsEmpty() || m_CurrentVersion== GIT_REV_ZERO)
+	if (m_CurrentVersion.IsEmpty())
 	{
 		CString fromwhere;
 		if(m_amend && (file1.m_Action & CTGitPath::LOGACTIONS_ADDED) == 0)
@@ -2671,7 +2666,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 			GIT_REV_ZERO, true, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 		else if( file1.m_Action&CTGitPath::LOGACTIONS_ADDED )
 			CGitDiff::DiffNull(GetParentHWND(), GetListEntry(fileindex),
-			m_CurrentVersion + fromwhere, true, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
+			m_CurrentVersion.ToString() + fromwhere, true, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 		else if( file1.m_Action&CTGitPath::LOGACTIONS_DELETED )
 			CGitDiff::DiffNull(GetParentHWND(), GetListEntry(fileindex),
 			GitRev::GetHead() + fromwhere, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
@@ -2683,16 +2678,16 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 	else
 	{
 		CGitHash hash;
-		CString fromwhere = m_CurrentVersion + L"~1";
+		CString fromwhere = m_CurrentVersion.ToString() + L"~1";
 		if(m_amend)
-			fromwhere = m_CurrentVersion + L"~2";
+			fromwhere = m_CurrentVersion.ToString() + L"~2";
 		bool revfail = !!g_Git.GetHash(hash, fromwhere);
 		if (revfail || (file1.m_Action & file1.LOGACTIONS_ADDED))
-			CGitDiff::DiffNull(GetParentHWND(), &file1, m_CurrentVersion, true, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
+			CGitDiff::DiffNull(GetParentHWND(), &file1, m_CurrentVersion.ToString(), true, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 		else if (file1.m_Action & file1.LOGACTIONS_DELETED)
 		{
 			if (file1.m_ParentNo > 0)
-				fromwhere.Format(L"%s^%d", (LPCTSTR)m_CurrentVersion, file1.m_ParentNo + 1);
+				fromwhere.Format(L"%s^%d", (LPCTSTR)m_CurrentVersion.ToString(), file1.m_ParentNo + 1);
 
 			CGitDiff::DiffNull(GetParentHWND(), &file1, fromwhere, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 		}
@@ -2739,13 +2734,13 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 					}
 				}
 
-				if (g_Git.GetOneFile(m_CurrentVersion, file1, merge.GetWinPathString()))
+				if (g_Git.GetOneFile(m_CurrentVersion.ToString(), file1, merge.GetWinPathString()))
 					CMessageBox::Show(GetParentHWND(), IDS_STATUSLIST_FAILEDGETMERGEFILE, IDS_APPNAME, MB_OK | MB_ICONERROR);
 
 				if(parent1>=0)
 				{
 					CString str;
-					str.Format(L"%s^%d", (LPCTSTR)this->m_CurrentVersion, parent1 + 1);
+					str.Format(L"%s^%d", (LPCTSTR)m_CurrentVersion.ToString(), parent1 + 1);
 
 					if (g_Git.GetOneFile(str, file1, mine.GetWinPathString()))
 						CMessageBox::Show(GetParentHWND(), IDS_STATUSLIST_FAILEDGETMERGEFILE, IDS_APPNAME, MB_OK | MB_ICONERROR);
@@ -2754,7 +2749,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 				if(parent2>=0)
 				{
 					CString str;
-					str.Format(L"%s^%d", (LPCTSTR)this->m_CurrentVersion, parent2 + 1);
+					str.Format(L"%s^%d", (LPCTSTR)m_CurrentVersion.ToString(), parent2 + 1);
 
 					if (g_Git.GetOneFile(str, file1, theirs.GetWinPathString()))
 						CMessageBox::Show(GetParentHWND(), IDS_STATUSLIST_FAILEDGETMERGEFILE, IDS_APPNAME, MB_OK | MB_ICONERROR);
@@ -2763,8 +2758,8 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 				if(parent1>=0 && parent2>=0)
 				{
 					CString cmd, output;
-					cmd.Format(L"git.exe merge-base %s^%d %s^%d", (LPCTSTR)this->m_CurrentVersion, parent1 + 1,
-						(LPCTSTR)m_CurrentVersion, parent2 + 1);
+					cmd.Format(L"git.exe merge-base %s^%d %s^%d", (LPCTSTR)m_CurrentVersion.ToString(), parent1 + 1,
+						(LPCTSTR)m_CurrentVersion.ToString(), parent2 + 1);
 
 					if (!g_Git.Run(cmd, &output, nullptr, CP_UTF8))
 					{
@@ -2782,8 +2777,8 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 				else
 					str.Format(L"^%d", (file1.m_ParentNo & PARENT_MASK) + 1);
 				CGitDiff::Diff(GetParentHWND(), &file1,&file2,
-					m_CurrentVersion,
-					m_CurrentVersion + str, false, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
+					m_CurrentVersion.ToString(),
+					m_CurrentVersion.ToString() + str, false, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 			}
 		}
 	}
@@ -3577,7 +3572,7 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 				if (repository)
 				{
 					CString rev;
-					rev.Format(L"%s^%d", (LPCTSTR)m_CurrentVersion, i + 1);
+					rev.Format(L"%s^%d", (LPCTSTR)m_CurrentVersion.ToString(), i + 1);
 					CGitHash hash;
 					if (!CGit::GetHash(repository, hash, rev))
 						str += L": " + hash.ToString().Left(g_Git.GetShortHASHLength());
@@ -4040,7 +4035,7 @@ void CGitStatusListCtrl::FilesExport()
 
 		CPathUtils::MakeSureDirectoryPathExists(exportDir + L'\\' + fd->GetContainingDirectory().GetWinPathString());
 		CString filename = exportDir + L'\\' + fd->GetWinPathString();
-		if (m_CurrentVersion == GIT_REV_ZERO)
+		if (m_CurrentVersion.IsEmpty())
 		{
 			if (!CopyFile(g_Git.CombinePath(fd), filename, false))
 			{
@@ -4050,10 +4045,10 @@ void CGitStatusListCtrl::FilesExport()
 		}
 		else
 		{
-			if (g_Git.GetOneFile(m_CurrentVersion, *fd, filename))
+			if (g_Git.GetOneFile(m_CurrentVersion.ToString(), *fd, filename))
 			{
 				CString out;
-				out.FormatMessage(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)fd->GetGitPathString(), (LPCTSTR)m_CurrentVersion, (LPCTSTR)filename);
+				out.FormatMessage(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)fd->GetGitPathString(), (LPCTSTR)m_CurrentVersion.ToString(), (LPCTSTR)filename);
 				if (CMessageBox::Show(GetParentHWND(), g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), L"TortoiseGit", 2, IDI_WARNING, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
 					return;
 			}
@@ -4065,10 +4060,10 @@ void CGitStatusListCtrl::FileSaveAs(CTGitPath *path)
 {
 	CAutoReadLock locker(m_guard);
 	CString filename;
-	filename.Format(L"%s\\%s-%s%s", (LPCTSTR)g_Git.CombinePath(path->GetContainingDirectory()), (LPCTSTR)path->GetBaseFilename(), (LPCTSTR)m_CurrentVersion.Left(g_Git.GetShortHASHLength()), (LPCTSTR)path->GetFileExtension());
+	filename.Format(L"%s\\%s-%s%s", (LPCTSTR)g_Git.CombinePath(path->GetContainingDirectory()), (LPCTSTR)path->GetBaseFilename(), (LPCTSTR)m_CurrentVersion.ToString().Left(g_Git.GetShortHASHLength()), (LPCTSTR)path->GetFileExtension());
 	if (!CAppUtils::FileOpenSave(filename, nullptr, 0, 0, false, GetSafeHwnd()))
 		return;
-	if (m_CurrentVersion == GIT_REV_ZERO)
+	if (m_CurrentVersion.IsEmpty())
 	{
 		if (!CopyFile(g_Git.CombinePath(path), filename, false))
 		{
@@ -4078,10 +4073,10 @@ void CGitStatusListCtrl::FileSaveAs(CTGitPath *path)
 	}
 	else
 	{
-		if (g_Git.GetOneFile(m_CurrentVersion, *path, filename))
+		if (g_Git.GetOneFile(m_CurrentVersion.ToString(), *path, filename))
 		{
 			CString out;
-			out.FormatMessage(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)path->GetGitPathString(), (LPCTSTR)m_CurrentVersion, (LPCTSTR)filename);
+			out.FormatMessage(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)path->GetGitPathString(), (LPCTSTR)m_CurrentVersion.ToString(), (LPCTSTR)filename);
 			CMessageBox::Show(GetParentHWND(), g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), L"TortoiseGit", MB_OK);
 			return;
 		}
@@ -4093,7 +4088,7 @@ int CGitStatusListCtrl::RevertSelectedItemToVersion(bool parent)
 	CAutoReadLock locker(m_guard);
 	if(this->m_CurrentVersion.IsEmpty())
 		return 0;
-	if(this->m_CurrentVersion == GIT_REV_ZERO)
+	if (m_CurrentVersion.IsEmpty())
 		return 0;
 
 	POSITION pos = GetFirstSelectedItemPosition();
@@ -4108,7 +4103,7 @@ int CGitStatusListCtrl::RevertSelectedItemToVersion(bool parent)
 		{
 			int parentNo = fentry->m_ParentNo & PARENT_MASK;
 			CString ref;
-			ref.Format(L"%s^%d", (LPCTSTR)m_CurrentVersion, parentNo + 1);
+			ref.Format(L"%s^%d", (LPCTSTR)m_CurrentVersion.ToString(), parentNo + 1);
 			CGitHash hash;
 			if (g_Git.GetHash(hash, ref))
 			{
@@ -4154,15 +4149,15 @@ int CGitStatusListCtrl::RevertSelectedItemToVersion(bool parent)
 void CGitStatusListCtrl::OpenFile(CTGitPath*filepath,int mode)
 {
 	CString file;
-	if(this->m_CurrentVersion.IsEmpty() || m_CurrentVersion == GIT_REV_ZERO)
+	if (m_CurrentVersion.IsEmpty())
 		file = g_Git.CombinePath(filepath);
 	else
 	{
 		file = CTempFiles::Instance().GetTempFilePath(false, *filepath, m_CurrentVersion).GetWinPathString();
 		CString cmd,out;
-		if(g_Git.GetOneFile(m_CurrentVersion, *filepath, file))
+		if(g_Git.GetOneFile(m_CurrentVersion.ToString(), *filepath, file))
 		{
-			out.FormatMessage(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)filepath->GetGitPathString(), (LPCTSTR)m_CurrentVersion, (LPCTSTR)file);
+			out.FormatMessage(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)filepath->GetGitPathString(), (LPCTSTR)m_CurrentVersion.ToString(), (LPCTSTR)file);
 			CMessageBox::Show(GetParentHWND(), g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), L"TortoiseGit", MB_OK);
 			return;
 		}

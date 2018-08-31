@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2018 - TortoiseGit
 
@@ -76,7 +76,7 @@ int GitRevLoglist::SafeGetSimpleList(CGit* git)
 		if (!repo)
 			return -1;
 		CAutoCommit commit;
-		if (git_commit_lookup(commit.GetPointer(), repo, (const git_oid*)m_CommitHash.m_hash) < 0)
+		if (git_commit_lookup(commit.GetPointer(), repo, m_CommitHash) < 0)
 			return -1;
 
 		CAutoTree commitTree;
@@ -126,7 +126,7 @@ int GitRevLoglist::SafeGetSimpleList(CGit* git)
 
 	try
 	{
-		if (git_get_commit_from_hash(&commit, m_CommitHash.m_hash))
+		if (git_get_commit_from_hash(&commit, m_CommitHash))
 			return -1;
 	}
 	catch (char *)
@@ -198,7 +198,7 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 		if (!repo)
 			return -1;
 		CAutoCommit commit;
-		if (git_commit_lookup(commit.GetPointer(), repo, (const git_oid*)m_CommitHash.m_hash) < 0)
+		if (git_commit_lookup(commit.GetPointer(), repo, m_CommitHash) < 0)
 			return -1;
 
 		CAutoTree commitTree;
@@ -310,7 +310,7 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 
 	try
 	{
-		if (git_get_commit_from_hash(&commit, m_CommitHash.m_hash))
+		if (git_get_commit_from_hash(&commit, m_CommitHash))
 			return -1;
 	}
 	catch (char *)
@@ -330,7 +330,7 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 		try
 		{
 			if (isRoot)
-				git_root_diff(git->GetGitDiff(), m_CommitHash.m_hash, &file, &count, 1);
+				git_root_diff(git->GetGitDiff(), m_CommitHash, &file, &count, 1);
 			else
 				git_do_diff(git->GetGitDiff(), parent, commit.m_hash, &file, &count, 1);
 		}
@@ -420,7 +420,7 @@ int GitRevLoglist::GetRefLog(const CString& ref, std::vector<GitRevLoglist>& ref
 				continue;
 
 			GitRevLoglist rev;
-			rev.m_CommitHash = git_reflog_entry_id_new(entry)->id;
+			rev.m_CommitHash = git_reflog_entry_id_new(entry);
 			rev.m_Ref.Format(L"%s@{%zu}", (LPCTSTR)ref, i);
 			rev.GetCommitterDate() = CTime(git_reflog_entry_committer(entry)->when.time);
 			if (git_reflog_entry_message(entry) != nullptr)

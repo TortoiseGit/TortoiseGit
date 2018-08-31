@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2016 - TortoiseGit
+// Copyright (C) 2013-2016, 2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -96,8 +96,8 @@ RemoteProgressCommand::RefUpdateNotificationData::RefUpdateNotificationData(cons
 	: NotificationData()
 {
 	CString str = CUnicodeUtils::GetUnicode(refname);
-	m_NewHash = newOid->id;
-	m_OldHash = oldOid->id;
+	m_NewHash = newOid;
+	m_OldHash = oldOid;
 	sActionColumnText.LoadString(IDS_GITACTION_UPDATE_REF);
 	sPathColumnText.Format(L"%s\t %s -> %s (%s)", (LPCTSTR)str, (LPCTSTR)m_OldHash.ToString().Left(g_Git.GetShortHASHLength()), (LPCTSTR)m_NewHash.ToString().Left(g_Git.GetShortHASHLength()), (LPCTSTR)change);
 }

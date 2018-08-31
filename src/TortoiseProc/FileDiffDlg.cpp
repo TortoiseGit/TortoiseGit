@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2018 - TortoiseGit
 // Copyright (C) 2003-2008, 2018 - TortoiseSVN
@@ -745,7 +745,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 						}
 						else
 						{
-							if (g_Git.GetOneFile(m_rev2.m_CommitHash, *fd, filename))
+							if (g_Git.GetOneFile(m_rev2.m_CommitHash.ToString(), *fd, filename))
 							{
 								CString out;
 								out.FormatMessage(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)fd->GetGitPathString(), (LPCTSTR)m_rev2.m_CommitHash.ToString(), (LPCTSTR)filename);
@@ -1072,10 +1072,10 @@ void CFileDiffDlg::ClickRevButton(CMenuButton *button, GitRev *rev, CACEdit *edi
 		CRefLogDlg dlg;
 		if(dlg.DoModal() == IDOK)
 		{
-			if(FillRevFromString(rev,dlg.m_SelectedHash))
+			if (FillRevFromString(rev, dlg.m_SelectedHash.ToString()))
 				return;
 
-			edit->SetWindowText(dlg.m_SelectedHash);
+			edit->SetWindowText(dlg.m_SelectedHash.ToString());
 		}
 		else
 			return;

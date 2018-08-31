@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2017 - TortoiseGit
+// Copyright (C) 2009-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -112,7 +112,7 @@ void CRefLogDlg::OnBnClickedOk()
 			// all ok, pick up the revision
 			GitRev* pLogEntry = m_RefList.m_arShownList.SafeGetAt(selIndex);
 			// extract the hash
-			m_SelectedHash = pLogEntry->m_CommitHash;
+			m_SelectedHash = pLogEntry->m_CommitHash.ToString();
 		}
 	}
 

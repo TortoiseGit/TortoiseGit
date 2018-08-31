@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2018 - TortoiseGit
 // Copyright (C) 2005-2007 Marco Costalba
@@ -659,7 +659,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				{
 					if(pFirstEntry->m_CommitHash!=headhash)
 					{
-						if(CherryPickFrom(pFirstEntry->m_CommitHash.ToString(),headhash))
+						if (CherryPickFrom(pFirstEntry->m_CommitHash.ToString(), headhash.ToString()))
 						{
 							CString msg;
 							msg.Format(L"Error while cherry pick commits on top of combined commits. Aborting.\r\n\r\n");
@@ -889,7 +889,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			break;
 		case ID_PUSH:
 			{
-				CString guessAssociatedBranch = pSelLogEntry->m_CommitHash;
+				CString guessAssociatedBranch = pSelLogEntry->m_CommitHash.ToString();
 				const CString* branch = popmenu ? (const CString*)((CIconMenu*)popmenu)->GetMenuItemData(cmd) : nullptr;
 				if (branch && !CStringUtils::StartsWith(*branch, L"refs/remotes/"))
 					guessAssociatedBranch = *branch;

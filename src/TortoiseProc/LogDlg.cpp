@@ -221,7 +221,7 @@ enum JumpType
 
 LRESULT CLogDlg::OnResetWcRev(WPARAM, LPARAM)
 {
-	if (m_LogList.m_hasWC && (m_ChangedFileListCtrl.m_CurrentVersion.IsEmpty() || m_ChangedFileListCtrl.m_CurrentVersion == GIT_REV_ZERO))
+	if (m_LogList.m_hasWC && m_ChangedFileListCtrl.m_CurrentVersion.IsEmpty())
 		m_ChangedFileListCtrl.Clear();
 
 	return 0;
@@ -737,7 +737,7 @@ static int DescribeCommit(CGitHash& hash, CString& result)
 	if (!repo)
 		return -1;
 	CAutoObject commit;
-	if (git_object_lookup(commit.GetPointer(), repo, (const git_oid *)hash.m_hash, GIT_OBJ_COMMIT))
+	if (git_object_lookup(commit.GetPointer(), repo, hash, GIT_OBJ_COMMIT))
 		return -1;
 
 	CAutoDescribeResult describe;
@@ -977,7 +977,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			}
 
 			m_ChangedFileListCtrl.UpdateWithGitPathList(files);
-			m_ChangedFileListCtrl.m_CurrentVersion=pLogEntry->m_CommitHash;
+			m_ChangedFileListCtrl.m_CurrentVersion = pLogEntry->m_CommitHash.ToString();
 			if (pLogEntry->m_CommitHash.IsEmpty() && m_bShowUnversioned)
 			{
 				m_ChangedFileListCtrl.UpdateUnRevFileList(pLogEntry->GetUnRevFiles());
@@ -2595,7 +2595,7 @@ void CLogDlg::OnBnClickedJumpUp()
 				found = find_if((*refList).second, [](const auto& ref) { return CStringUtils::StartsWith(ref, L"refs/tags/"); }) != (*refList).second.cend();
 
 			if (found && jumpType == JumpType_TagFF)
-				found = g_Git.IsFastForward(hashValue, data->m_CommitHash);
+				found = g_Git.IsFastForward(hashValue.ToString(), data->m_CommitHash.ToString());
 		}
 		else if (jumpType == JumpType_Branch || jumpType == JumpType_BranchFF)
 		{
@@ -2604,7 +2604,7 @@ void CLogDlg::OnBnClickedJumpUp()
 				found = find_if((*refList).second, [](const auto& ref) { return CStringUtils::StartsWith(ref, L"refs/heads/") || CStringUtils::StartsWith(ref, L"refs/remotes/"); }) != (*refList).second.cend();
 
 			if (found && jumpType == JumpType_BranchFF)
-				found = g_Git.IsFastForward(hashValue, data->m_CommitHash);
+				found = g_Git.IsFastForward(hashValue.ToString(), data->m_CommitHash.ToString());
 		}
 
 		if (found)
@@ -2696,7 +2696,7 @@ void CLogDlg::OnBnClickedJumpDown()
 				found = find_if((*refList).second, [](const auto& ref) { return CStringUtils::StartsWith(ref, L"refs/tags/"); }) != (*refList).second.cend();
 
 			if (found && jumpType == JumpType_TagFF)
-				found = g_Git.IsFastForward(data->m_CommitHash, hashValue);
+				found = g_Git.IsFastForward(data->m_CommitHash.ToString(), hashValue.ToString());
 		}
 		else if (jumpType == JumpType_Branch || jumpType == JumpType_BranchFF)
 		{
@@ -2705,7 +2705,7 @@ void CLogDlg::OnBnClickedJumpDown()
 				found = find_if((*refList).second, [](const auto& ref) { return CStringUtils::StartsWith(ref, L"refs/heads/") || CStringUtils::StartsWith(ref, L"refs/remotes/"); }) != (*refList).second.cend();
 
 			if (found && jumpType == JumpType_BranchFF)
-				found = g_Git.IsFastForward(data->m_CommitHash, hashValue);
+				found = g_Git.IsFastForward(data->m_CommitHash.ToString(), hashValue.ToString());
 		}
 
 		if (found)

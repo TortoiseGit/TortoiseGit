@@ -136,7 +136,7 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 		item.m_ModifyTime = e->mtime.seconds;
 		item.m_Flags = e->flags;
 		item.m_FlagsExtended = e->flags_extended;
-		item.m_IndexHash = e->id.id;
+		item.m_IndexHash = e->id;
 		item.m_Size = e->file_size;
 		item.m_Mode = e->mode;
 		m_bHasConflicts |= GIT_IDXENTRY_STAGE(e);
@@ -214,7 +214,7 @@ int CGitIndexList::GetFileStatus(CAutoRepository& repository, const CString& git
 		if (isSymlink && S_ISLNK(entry.m_Mode))
 		{
 			CStringA linkDestination;
-			if (!CPathUtils::ReadLink(CombinePath(gitdir, entry.m_FileName), &linkDestination) && !git_odb_hash(&actual, (void*)(LPCSTR)linkDestination, linkDestination.GetLength(), GIT_OBJ_BLOB) && !git_oid_cmp(&actual, (const git_oid*)entry.m_IndexHash.m_hash))
+			if (!CPathUtils::ReadLink(CombinePath(gitdir, entry.m_FileName), &linkDestination) && !git_odb_hash(&actual, (void*)(LPCSTR)linkDestination, linkDestination.GetLength(), GIT_OBJ_BLOB) && !git_oid_cmp(&actual, entry.m_IndexHash))
 			{
 				entry.m_ModifyTime = time;
 				status.status = git_wc_status_normal;
@@ -222,7 +222,7 @@ int CGitIndexList::GetFileStatus(CAutoRepository& repository, const CString& git
 			else
 				status.status = git_wc_status_modified;
 		}
-		else if (!git_repository_hashfile(&actual, repository, fileA, GIT_OBJ_BLOB, nullptr) && !git_oid_cmp(&actual, (const git_oid*)entry.m_IndexHash.m_hash))
+		else if (!git_repository_hashfile(&actual, repository, fileA, GIT_OBJ_BLOB, nullptr) && !git_oid_cmp(&actual, entry.m_IndexHash))
 		{
 			entry.m_ModifyTime = time;
 			status.status = git_wc_status_normal;
@@ -585,7 +585,7 @@ int CGitHeadFileList::ReadTreeRecursive(git_repository& repo, const git_tree* tr
 		if (!isDir || isSubmodule)
 		{
 			CGitTreeItem item;
-			item.m_Hash = git_tree_entry_id(entry)->id;
+			item.m_Hash = git_tree_entry_id(entry);
 			CGit::StringAppend(&item.m_FileName, (BYTE*)(LPCSTR)base, CP_UTF8, base.GetLength());
 			CGit::StringAppend(&item.m_FileName, (BYTE*)git_tree_entry_name(entry), CP_UTF8);
 			if (isSubmodule)
@@ -620,7 +620,7 @@ int CGitHeadFileList::ReadTree(bool ignoreCase)
 	CAutoCommit commit;
 	CAutoTree tree;
 	bool ret = repository;
-	ret = ret && !git_commit_lookup(commit.GetPointer(), repository, (const git_oid*)m_Head.m_hash);
+	ret = ret && !git_commit_lookup(commit.GetPointer(), repository, m_Head);
 	ret = ret && !git_commit_tree(tree.GetPointer(), commit);
 	try
 	{

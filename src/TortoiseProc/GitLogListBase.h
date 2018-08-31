@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2018 - TortoiseGit
 
@@ -502,7 +502,7 @@ protected:
 		if (!entry)
 			return;
 
-		m_superProjectHash = entry->id.id;
+		m_superProjectHash = entry->id;
 	}
 	void ReloadHashMap()
 	{

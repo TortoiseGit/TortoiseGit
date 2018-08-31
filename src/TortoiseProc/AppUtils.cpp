@@ -1794,7 +1794,7 @@ bool CAppUtils::ConflictEdit(HWND hWnd, CTGitPath& path, bool bAlternativeTool /
 			subgit.m_CurrentDir = g_Git.CombinePath(merge);
 			CGitHash hash;
 			subgit.GetHash(hash, L"HEAD");
-			baseHash = hash;
+			baseHash = hash.ToString();
 		}
 
 		CGitDiff::ChangeType changeTypeMine = CGitDiff::Unknown;

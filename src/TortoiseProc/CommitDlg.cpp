@@ -768,7 +768,7 @@ void CCommitDlg::OnOK()
 			}
 
 			CAutoCommit commit;
-			if (!revHash.IsEmpty() && git_commit_lookup(commit.GetPointer(), repository, (const git_oid*)revHash.m_hash))
+			if (!revHash.IsEmpty() && git_commit_lookup(commit.GetPointer(), repository, revHash))
 			{
 				CMessageBox::Show(GetSafeHwnd(), CGit::GetLibGit2LastErr(L"Could not get last commit."), L"TortoiseGit", MB_OK | MB_ICONERROR);
 				break;
