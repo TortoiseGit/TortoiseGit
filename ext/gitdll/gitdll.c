@@ -40,6 +40,8 @@
 extern char g_last_error[];
 static const char* g_prefix;
 
+/* also see GitHash.h */
+static_assert(GIT_SHA1_RAWSZ == GIT_HASH_SIZE && GIT_MAX_RAWSZ == GIT_HASH_SIZE, "Required to be equal in gitdll.h");
 static_assert(sizeof(struct object_id) == sizeof(struct GIT_OBJECT_OID), "Required to be equal in gitdll.h");
 
 extern NORETURN void die_dll(const char* err, va_list params);

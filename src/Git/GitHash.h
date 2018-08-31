@@ -20,6 +20,10 @@
 #pragma once
 #define GIT_HASH_SIZE 20
 
+/* also see gitdll.c */
+static_assert(GIT_HASH_SIZE == GIT_OID_RAWSZ, "hash size needs to be the same as in libgit2");
+static_assert(sizeof(git_oid::id) == GIT_HASH_SIZE, "hash size needs to be the same as in libgit2");
+
 #define GIT_REV_ZERO_C "0000000000000000000000000000000000000000"
 #define GIT_REV_ZERO _T(GIT_REV_ZERO_C)
 
