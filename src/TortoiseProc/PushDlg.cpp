@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2018 - TortoiseGit
 
@@ -509,7 +509,7 @@ void CPushDlg::OnBnClickedButtonBrowseSourceBranch()
 			CRefLogDlg dlg;
 			if(dlg.DoModal() == IDOK)
 			{
-				m_BranchSource.SetWindowText(dlg.m_SelectedHash);
+				m_BranchSource.SetWindowText(dlg.m_SelectedHash.ToString());
 				OnCbnSelchangeBranchSource();
 			}
 		}

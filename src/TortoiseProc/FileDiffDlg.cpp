@@ -1072,10 +1072,10 @@ void CFileDiffDlg::ClickRevButton(CMenuButton *button, GitRev *rev, CACEdit *edi
 		CRefLogDlg dlg;
 		if(dlg.DoModal() == IDOK)
 		{
-			if(FillRevFromString(rev,dlg.m_SelectedHash))
+			if (FillRevFromString(rev, dlg.m_SelectedHash.ToString()))
 				return;
 
-			edit->SetWindowText(dlg.m_SelectedHash);
+			edit->SetWindowText(dlg.m_SelectedHash.ToString());
 		}
 		else
 			return;

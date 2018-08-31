@@ -221,7 +221,7 @@ enum JumpType
 
 LRESULT CLogDlg::OnResetWcRev(WPARAM, LPARAM)
 {
-	if (m_LogList.m_hasWC && (m_ChangedFileListCtrl.m_CurrentVersion.IsEmpty() || m_ChangedFileListCtrl.m_CurrentVersion == GIT_REV_ZERO))
+	if (m_LogList.m_hasWC && m_ChangedFileListCtrl.m_CurrentVersion.IsEmpty())
 		m_ChangedFileListCtrl.Clear();
 
 	return 0;

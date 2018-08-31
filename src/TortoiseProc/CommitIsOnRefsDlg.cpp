@@ -247,10 +247,10 @@ void CCommitIsOnRefsDlg::OnBnClickedSelRevBtn()
 		CRefLogDlg dlg;
 		if (dlg.DoModal() == IDOK)
 		{
-			if (FillRevFromString(dlg.m_SelectedHash))
+			if (FillRevFromString(dlg.m_SelectedHash.ToString()))
 				return;
 
-			m_cRevEdit.SetWindowText(dlg.m_SelectedHash);
+			m_cRevEdit.SetWindowText(dlg.m_SelectedHash.ToString());
 		}
 		else
 			return;
