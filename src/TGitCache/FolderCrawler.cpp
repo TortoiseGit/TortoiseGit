@@ -1,7 +1,7 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2008,2011,2014 - TortoiseSVN
-// Copyright (C) 2008-2014, 2016-2017 - TortoiseGit
+// Copyright (C) 2008-2014, 2016-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -88,7 +88,7 @@ void CFolderCrawler::RemoveDuplicate(std::deque<CTGitPath> &list,const CTGitPath
 void CFolderCrawler::AddDirectoryForUpdate(const CTGitPath& path)
 {
 	/* Index file changing*/
-	if( GitStatus::IsExistIndexLockFile((CString&)path.GetWinPathString()))
+	if (GitStatus::IsExistIndexLockFile(path.GetWinPathString()))
 		return;
 
 	if (!CGitStatusCache::Instance().IsPathGood(path))
@@ -112,7 +112,7 @@ void CFolderCrawler::AddDirectoryForUpdate(const CTGitPath& path)
 void CFolderCrawler::AddPathForUpdate(const CTGitPath& path)
 {
 	/* Index file changing*/
-	if( GitStatus::IsExistIndexLockFile((CString&)path.GetWinPathString()))
+	if (GitStatus::IsExistIndexLockFile(path.GetWinPathString()))
 		return;
 
 	{

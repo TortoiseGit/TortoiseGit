@@ -2739,7 +2739,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 					}
 				}
 
-				if(g_Git.GetOneFile(m_CurrentVersion, file1, (CString&)merge.GetWinPathString()))
+				if (g_Git.GetOneFile(m_CurrentVersion, file1, merge.GetWinPathString()))
 					CMessageBox::Show(GetParentHWND(), IDS_STATUSLIST_FAILEDGETMERGEFILE, IDS_APPNAME, MB_OK | MB_ICONERROR);
 
 				if(parent1>=0)
@@ -2747,7 +2747,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 					CString str;
 					str.Format(L"%s^%d", (LPCTSTR)this->m_CurrentVersion, parent1 + 1);
 
-					if(g_Git.GetOneFile(str, file1, (CString&)mine.GetWinPathString()))
+					if (g_Git.GetOneFile(str, file1, mine.GetWinPathString()))
 						CMessageBox::Show(GetParentHWND(), IDS_STATUSLIST_FAILEDGETMERGEFILE, IDS_APPNAME, MB_OK | MB_ICONERROR);
 				}
 
@@ -2756,7 +2756,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 					CString str;
 					str.Format(L"%s^%d", (LPCTSTR)this->m_CurrentVersion, parent2 + 1);
 
-					if(g_Git.GetOneFile(str, file1, (CString&)theirs.GetWinPathString()))
+					if (g_Git.GetOneFile(str, file1, theirs.GetWinPathString()))
 						CMessageBox::Show(GetParentHWND(), IDS_STATUSLIST_FAILEDGETMERGEFILE, IDS_APPNAME, MB_OK | MB_ICONERROR);
 				}
 
@@ -2768,7 +2768,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 
 					if (!g_Git.Run(cmd, &output, nullptr, CP_UTF8))
 					{
-						if (g_Git.GetOneFile(output.Left(2 * GIT_HASH_SIZE), file1, (CString&)base.GetWinPathString()))
+						if (g_Git.GetOneFile(output.Left(2 * GIT_HASH_SIZE), file1, base.GetWinPathString()))
 							CMessageBox::Show(GetParentHWND(), IDS_STATUSLIST_FAILEDGETBASEFILE, IDS_APPNAME, MB_OK | MB_ICONERROR);
 					}
 				}
