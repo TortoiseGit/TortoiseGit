@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -97,7 +97,7 @@ ULONGLONG CLogCache::GetOffset(const CGitHash& hash, SLogCacheIndexFile* pData)
 	if (!pData)
 		return 0;
 
-	SLogCacheIndexItem* p=reinterpret_cast<SLogCacheIndexItem*>(bsearch(hash.m_hash, pData->m_Item,
+	SLogCacheIndexItem* p = reinterpret_cast<SLogCacheIndexItem*>(bsearch(static_cast<const unsigned char*>(hash), pData->m_Item,
 			pData->m_Header.m_ItemCount,
 			sizeof(SLogCacheIndexItem),
 			Compare));

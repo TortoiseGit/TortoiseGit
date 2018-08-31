@@ -737,7 +737,7 @@ static int DescribeCommit(CGitHash& hash, CString& result)
 	if (!repo)
 		return -1;
 	CAutoObject commit;
-	if (git_object_lookup(commit.GetPointer(), repo, (const git_oid *)hash.m_hash, GIT_OBJ_COMMIT))
+	if (git_object_lookup(commit.GetPointer(), repo, hash, GIT_OBJ_COMMIT))
 		return -1;
 
 	CAutoDescribeResult describe;

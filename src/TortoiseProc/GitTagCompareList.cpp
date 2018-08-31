@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2017 - TortoiseGit
+// Copyright (C) 2015-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -155,9 +155,7 @@ int CGitTagCompareList::Fill(const CString& remote, CString& err)
 					CAutoObject gitObject;
 					if (git_revparse_single(gitObject.GetPointer(), repo, CUnicodeUtils::GetUTF8(tagname)))
 						return;
-					CGitHash tagHash;
-					git_oid_cpy((git_oid*)tagHash.m_hash, git_object_id(gitObject));
-					localTags.emplace_back(TGitRef{ tagname, tagHash });
+					localTags.emplace_back(TGitRef{ tagname, git_object_id(gitObject) });
 				}
 			}
 		});
@@ -233,14 +231,14 @@ void CGitTagCompareList::AddEntry(git_repository* repo, const CString& tag, cons
 	CAutoCommit oldCommit;
 	if (myHash)
 	{
-		if (!git_commit_lookup(oldCommit.GetPointer(), repo, (const git_oid*)&myHash->m_hash))
+		if (!git_commit_lookup(oldCommit.GetPointer(), repo, *myHash))
 			entry.myMessage = CGitRefCompareList::GetCommitMessage(oldCommit);
 	}
 
 	CAutoCommit newCommit;
 	if (theirHash)
 	{
-		if (!git_commit_lookup(newCommit.GetPointer(), repo, (const git_oid*)&theirHash->m_hash))
+		if (!git_commit_lookup(newCommit.GetPointer(), repo, *theirHash))
 			entry.theirMessage = CGitRefCompareList::GetCommitMessage(newCommit);
 	}
 

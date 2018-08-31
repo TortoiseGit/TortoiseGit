@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2017 - TortoiseGit
+// Copyright (C) 2013-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -104,14 +104,14 @@ int CGitRefCompareList::AddEntry(git_repository* repo, const CString& ref, const
 	CAutoCommit oldCommit;
 	if (oldHash)
 	{
-		if (!git_commit_lookup(oldCommit.GetPointer(), repo, (const git_oid *)&oldHash->m_hash))
+		if (!git_commit_lookup(oldCommit.GetPointer(), repo, *oldHash))
 			entry.oldMessage = GetCommitMessage(oldCommit);
 	}
 
 	CAutoCommit newCommit;
 	if (newHash)
 	{
-		if (!git_commit_lookup(newCommit.GetPointer(), repo, (const git_oid *)&newHash->m_hash))
+		if (!git_commit_lookup(newCommit.GetPointer(), repo, *newHash))
 			entry.newMessage = GetCommitMessage(newCommit);
 	}
 
@@ -125,7 +125,7 @@ int CGitRefCompareList::AddEntry(git_repository* repo, const CString& ref, const
 		else
 		{
 			size_t ahead = 0, behind = 0;
-			if (!git_graph_ahead_behind(&ahead, &behind, repo, (const git_oid *)&newHash->m_hash, (const git_oid *)&oldHash->m_hash))
+			if (!git_graph_ahead_behind(&ahead, &behind, repo, *newHash, *oldHash))
 			{
 				CString change;
 				if (ahead > 0 && behind == 0)

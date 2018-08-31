@@ -23,11 +23,15 @@
 #define GIT_REV_ZERO_C "0000000000000000000000000000000000000000"
 #define GIT_REV_ZERO _T(GIT_REV_ZERO_C)
 
+class CGitHash;
+template<>
+struct std::hash<CGitHash>;
+
 class CGitHash
 {
-public:
+private:
 	unsigned char m_hash[GIT_HASH_SIZE];
-
+public:
 	CGitHash()
 	{
 		memset(m_hash,0, GIT_HASH_SIZE);
@@ -36,15 +40,33 @@ public:
 	{
 		memcpy(m_hash,p,GIT_HASH_SIZE);
 	}
-	CGitHash & operator = (const CString &str)
+	CGitHash(const git_oid* oid)
+	{
+		git_oid_cpy((git_oid*)m_hash, oid);
+	}
+	CGitHash(const git_oid oid)
+	{
+		git_oid_cpy((git_oid*)m_hash, &oid);
+	}
+	CGitHash& operator = (const CString& str)
 	{
 		CGitHash hash(str);
 		*this = hash;
 		return *this;
 	}
-	CGitHash & operator = (const unsigned char *p)
+	CGitHash& operator = (const unsigned char *p)
 	{
 		memcpy(m_hash, p, GIT_HASH_SIZE);
+		return *this;
+	}
+	CGitHash& operator = (const git_oid* oid)
+	{
+		git_oid_cpy((git_oid*)m_hash, oid);
+		return *this;
+	}
+	CGitHash& operator = (const git_oid oid)
+	{
+		git_oid_cpy((git_oid*)m_hash, &oid);
 		return *this;
 	}
 	CGitHash(const CString &str)
@@ -123,6 +145,16 @@ public:
 		return str;
 	}
 
+	operator const git_oid*() const
+	{
+		return (const git_oid*)m_hash;
+	}
+
+	operator const unsigned char*() const
+	{
+		return m_hash;
+	}
+
 	bool operator == (const CGitHash &hash) const
 	{
 		return memcmp(m_hash,hash.m_hash,GIT_HASH_SIZE) == 0;
@@ -161,6 +193,8 @@ public:
 		}
 		return true;
 	}
+
+	friend struct std::hash<CGitHash>;
 };
 
 namespace std

@@ -1213,11 +1213,7 @@ int CGit::GetHash(git_repository * repo, CGitHash &hash, const CString& friendna
 	if (git_revparse_single(gitObject.GetPointer(), repo, CUnicodeUtils::GetUTF8(friendname)))
 		return -1;
 
-	const git_oid * oid = git_object_id(gitObject);
-	if (!oid)
-		return -1;
-
-	hash = CGitHash(oid->id);
+	hash = git_object_id(gitObject);
 
 	return 0;
 }
@@ -1666,7 +1662,7 @@ int CGit::GetRefsCommitIsOn(STRING_VECTOR& list, const CGitHash& hash, bool incl
 		auto checkDescendent = [&list, &hash, &repo](const git_oid* oid, const git_reference* ref) {
 			if (!oid)
 				return;
-			if (git_oid_equal(oid, (const git_oid*)hash.m_hash) || git_graph_descendant_of(repo, oid, (const git_oid*)hash.m_hash) == 1)
+			if (git_oid_equal(oid, hash) || git_graph_descendant_of(repo, oid, hash) == 1)
 			{
 				const char* name = git_reference_name(ref);
 				if (!name)
@@ -1848,9 +1844,7 @@ int CGit::GetRemoteTags(const CString& remote, REF_VECTOR& list)
 			CString shortname;
 			if (!GetShortName(ref, shortname, L"refs/tags/"))
 				continue;
-			CGitHash hash;
-			git_oid_cpy((git_oid*)hash.m_hash, &heads[i]->oid);
-			list.emplace_back(TGitRef{ shortname, hash });
+			list.emplace_back(TGitRef{ shortname, &heads[i]->oid });
 		}
 		std::sort(list.begin() + prevCount, list.end(), g_bSortTagsReversed ? LogicalCompareReversedPredicate : LogicalComparePredicate);
 		return 0;
@@ -1980,12 +1974,7 @@ int libgit2_addto_map_each_ref_fn(git_reference *ref, void *payload)
 		gitObject.Swap(derefedTag);
 	}
 
-	const git_oid * oid = git_object_id(gitObject);
-	if (!oid)
-		return 1;
-
-	CGitHash hash(oid->id);
-	(*payloadContent->map)[hash].push_back(str);
+	(*payloadContent->map)[git_object_id(gitObject)].push_back(str);
 
 	return 0;
 }
@@ -2466,10 +2455,10 @@ bool CGit::IsFastForward(const CString &from, const CString &to, CGitHash * comm
 			return false;
 
 		git_oid baseOid;
-		if (git_merge_base(&baseOid, repo, (const git_oid*)toHash.m_hash, (const git_oid*)fromHash.m_hash))
+		if (git_merge_base(&baseOid, repo, toHash, fromHash))
 			return false;
 
-		baseHash = baseOid.id;
+		baseHash = baseOid;
 
 		if (commonAncestor)
 			*commonAncestor = baseHash;
@@ -2501,7 +2490,7 @@ unsigned int CGit::Hash2int(const CGitHash &hash)
 	for (int i = 0; i < 4; ++i)
 	{
 		ret = ret << 8;
-		ret |= hash.m_hash[i];
+		ret |= static_cast<const unsigned char*>(hash)[i];
 	}
 	return ret;
 }
@@ -2544,7 +2533,7 @@ int CGit::GetOneFile(const CString &Refname, const CTGitPath &path, const CStrin
 			return -1;
 
 		CAutoCommit commit;
-		if (git_commit_lookup(commit.GetPointer(), repo, (const git_oid *)hash.m_hash))
+		if (git_commit_lookup(commit.GetPointer(), repo, hash))
 			return -1;
 
 		CAutoTree tree;
@@ -3087,7 +3076,7 @@ int CGit::GitRevert(int parent, const CGitHash &hash)
 			return -1;
 
 		CAutoCommit commit;
-		if (git_commit_lookup(commit.GetPointer(), repo, (const git_oid *)hash.m_hash))
+		if (git_commit_lookup(commit.GetPointer(), repo, hash))
 			return -1;
 
 		git_revert_options revert_opts = GIT_REVERT_OPTIONS_INIT;
@@ -3439,7 +3428,7 @@ int CGit::GetGitNotes(const CGitHash& hash, CString& notes)
 		return -1;
 
 	CAutoNote note;
-	int ret = git_note_read(note.GetPointer(), repo, nullptr, reinterpret_cast<const git_oid*>(hash.m_hash));
+	int ret = git_note_read(note.GetPointer(), repo, nullptr, hash);
 	if (ret == GIT_ENOTFOUND)
 	{
 		notes.Empty();
@@ -3462,7 +3451,7 @@ int CGit::SetGitNotes(const CGitHash& hash, const CString& notes)
 		return -1;
 
 	git_oid oid;
-	if (git_note_create(&oid, repo, nullptr, signature, signature, reinterpret_cast<const git_oid*>(hash.m_hash), CUnicodeUtils::GetUTF8(notes), 1) < 0)
+	if (git_note_create(&oid, repo, nullptr, signature, signature, hash, CUnicodeUtils::GetUTF8(notes), 1) < 0)
 		return -1;
 
 	return 0;

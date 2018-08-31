@@ -397,7 +397,7 @@ int CRepositoryBrowser::ReadTreeRecursive(git_repository& repo, const git_tree* 
 		CShadowFilesTree * pNextTree = &treeroot->m_ShadowTree[base];
 		pNextTree->m_sName = base;
 		pNextTree->m_pParent = treeroot;
-		pNextTree->m_hash = oid->id;
+		pNextTree->m_hash = oid;
 
 		if (mode == GIT_FILEMODE_COMMIT)
 			pNextTree->m_bSubmodule = true;
@@ -487,7 +487,7 @@ int CRepositoryBrowser::ReadTree(CShadowFilesTree* treeroot, const CString& root
 	}
 
 	CAutoCommit commit;
-	if (git_commit_lookup(commit.GetPointer(), repository, (git_oid *)hash.m_hash))
+	if (git_commit_lookup(commit.GetPointer(), repository, hash))
 	{
 		MessageBox(CGit::GetLibGit2LastErr(L"Could not lookup commit."), L"TortoiseGit", MB_ICONERROR);
 		return -1;
@@ -524,7 +524,7 @@ int CRepositoryBrowser::ReadTree(CShadowFilesTree* treeroot, const CString& root
 		tree.ConvertFrom(std::move(object));
 	}
 
-	treeroot->m_hash = git_tree_id(tree)->id;
+	treeroot->m_hash = git_tree_id(tree);
 	ReadTreeRecursive(*repository, tree, treeroot, recursive);
 
 	// try to resolve hash to a branch name
@@ -1258,7 +1258,7 @@ void CRepositoryBrowser::OpenFile(const CString path, eOpenType mode, bool isSub
 			subPath.AppendPathString(gitPath.GetWinPathString());
 			CAutoRepository repo(subPath.GetGitPathString());
 			CAutoCommit commit;
-			if (!repo || git_commit_lookup(commit.GetPointer(), repo, (const git_oid *)itemHash.m_hash))
+			if (!repo || git_commit_lookup(commit.GetPointer(), repo, itemHash))
 			{
 				CString out;
 				out.FormatMessage(IDS_REPOBROWSEASKSUBMODULEUPDATE, (LPCTSTR)itemHash.ToString(), (LPCTSTR)gitPath.GetGitPathString());

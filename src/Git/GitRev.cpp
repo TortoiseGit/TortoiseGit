@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2016, 2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -117,7 +117,7 @@ int GitRev::ParserFromCommit(const git_commit* commit)
 	if (encodingstr)
 		encode = CUnicodeUtils::GetCPCode(CUnicodeUtils::GetUnicode(encodingstr));
 
-	m_CommitHash = git_commit_id(commit)->id;
+	m_CommitHash = git_commit_id(commit);
 
 	const git_signature* author = git_commit_author(commit);
 	m_AuthorDate = author->when.time;
@@ -145,7 +145,7 @@ int GitRev::ParserFromCommit(const git_commit* commit)
 int GitRev::GetCommitFromHash(git_repository* repo, const CGitHash& hash)
 {
 	CAutoCommit commit;
-	if (git_commit_lookup(commit.GetPointer(), repo, (const git_oid*)hash.m_hash) < 0)
+	if (git_commit_lookup(commit.GetPointer(), repo, hash) < 0)
 	{
 		m_sErr = CGit::GetLibGit2LastErr();
 		return -1;
@@ -192,7 +192,7 @@ int GitRev::GetParentFromHash(const CGitHash& hash)
 	{
 		g_Git.CheckAndInitDll();
 
-		if (git_get_commit_from_hash(&commit, hash.m_hash))
+		if (git_get_commit_from_hash(&commit, hash))
 		{
 			m_sErr = L"git_get_commit_from_hash failed for " + hash.ToString();
 			return -1;
@@ -226,7 +226,7 @@ int GitRev::GetCommitFromHash_withoutLock(const CGitHash& hash)
 	GIT_COMMIT commit;
 	try
 	{
-		if (git_get_commit_from_hash(&commit, hash.m_hash))
+		if (git_get_commit_from_hash(&commit, hash))
 		{
 			m_sErr = L"git_get_commit_from_hash failed for " + hash.ToString();
 			return -1;
