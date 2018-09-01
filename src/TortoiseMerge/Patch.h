@@ -1,4 +1,4 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2006-2008, 2014 - TortoiseSVN
 // Copyright (C) 2012-2013 - Sven Strickroth <email@cs-ware.de>
@@ -99,4 +99,9 @@ protected:
 	 * stripped by 4 prefixes is interpreted as "dir/file.txt"
 	 */
 	int							m_nStrip;
+
+#ifdef GTEST_INCLUDE_GTEST_GTEST_H_
+public:
+	const CStdArrayV<Chunk*>& GetChunks(int index) const { return m_arFileDiffs.GetAt(index)->chunks; };
+#endif
 };
