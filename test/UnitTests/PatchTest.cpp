@@ -53,10 +53,10 @@ TEST(CPatch, Parse_Manual)
 	EXPECT_STREQ(L"", patch.GetRevision2(0));
 
 	// internals
-	auto chunks = patch.GetChunks(0);
-	ASSERT_EQ(2, chunks.GetCount());
+	auto& chunks = patch.GetChunks(0);
+	ASSERT_EQ((size_t)2, chunks.size());
 	{
-		auto chunk = chunks.GetAt(0);
+		auto chunk = chunks[0].get();
 		EXPECT_EQ(5, chunk->arLines.GetCount());
 		EXPECT_EQ(4, chunk->lAddLength);
 		EXPECT_EQ(4, chunk->lRemoveLength);
@@ -70,7 +70,7 @@ TEST(CPatch, Parse_Manual)
 		ASSERT_EQ((DWORD)PATCHSTATE_CONTEXT, chunk->arLinesStates.GetAt(4));
 	}
 	{
-		auto chunk = chunks.GetAt(1);
+		auto chunk = chunks[1].get();
 		EXPECT_EQ(8, chunk->arLines.GetCount());
 		EXPECT_EQ(7, chunk->lAddLength);
 		EXPECT_EQ(7, chunk->lRemoveLength);
@@ -150,9 +150,9 @@ TEST(CPatch, Parse_GitDiffPatch)
 	// internals
 	{
 		// deleted file
-		auto chunks = patch.GetChunks(0);
-		ASSERT_EQ(1, chunks.GetCount());
-		auto chunk = chunks.GetAt(0);
+		auto& chunks = patch.GetChunks(0);
+		ASSERT_EQ((size_t)1, chunks.size());
+		auto chunk = chunks[0].get();
 		EXPECT_EQ(30, chunk->arLines.GetCount());
 		EXPECT_EQ(0, chunk->lAddLength);
 		EXPECT_EQ(30, chunk->lRemoveLength);
@@ -163,9 +163,9 @@ TEST(CPatch, Parse_GitDiffPatch)
 			ASSERT_EQ((DWORD)PATCHSTATE_REMOVED, chunk->arLinesStates.GetAt(i));
 	}
 	{
-		auto chunks = patch.GetChunks(2);
-		ASSERT_EQ(3, chunks.GetCount());
-		auto chunk = chunks.GetAt(1);
+		auto& chunks = patch.GetChunks(2);
+		ASSERT_EQ((size_t)3, chunks.size());
+		auto chunk = chunks[1].get();
 		EXPECT_EQ(9, chunk->arLines.GetCount());
 		EXPECT_EQ(9, chunk->lAddLength);
 		EXPECT_EQ(7, chunk->lRemoveLength);
@@ -184,9 +184,9 @@ TEST(CPatch, Parse_GitDiffPatch)
 	}
 	{
 		// new file
-		auto chunks = patch.GetChunks(5);
-		ASSERT_EQ(1, chunks.GetCount());
-		auto chunk = chunks.GetAt(0);
+		auto& chunks = patch.GetChunks(5);
+		ASSERT_EQ((size_t)1, chunks.size());
+		auto chunk = chunks[0].get();
 		EXPECT_EQ(5, chunk->arLines.GetCount());
 		EXPECT_EQ(5, chunk->lAddLength);
 		EXPECT_EQ(0, chunk->lRemoveLength);
@@ -237,9 +237,9 @@ TEST(CPatch, Parse_SVNDiffPatch)
 	// internals
 	{
 		// new file
-		auto chunks = patch.GetChunks(0);
-		ASSERT_EQ(1, chunks.GetCount());
-		auto chunk = chunks.GetAt(0);
+		auto& chunks = patch.GetChunks(0);
+		ASSERT_EQ((size_t)1, chunks.size());
+		auto chunk = chunks[0].get();
 		EXPECT_EQ(5, chunk->arLines.GetCount());
 		EXPECT_EQ(5, chunk->lAddLength);
 		EXPECT_EQ(0, chunk->lRemoveLength);

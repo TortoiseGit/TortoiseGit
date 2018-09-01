@@ -46,17 +46,7 @@ CPatch::~CPatch(void)
 
 void CPatch::FreeMemory()
 {
-	for (int i=0; i<m_arFileDiffs.GetCount(); ++i)
-	{
-		Chunks * chunks = m_arFileDiffs.GetAt(i);
-		for (int j=0; j<chunks->chunks.GetCount(); ++j)
-		{
-			delete chunks->chunks.GetAt(j);
-		}
-		chunks->chunks.RemoveAll();
-		delete chunks;
-	}
-	m_arFileDiffs.RemoveAll();
+	m_arFileDiffs.clear();
 }
 
 BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
@@ -66,8 +56,8 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 
 	int state = 0;
 	int nIndex = 0;
-	Chunks* chunks = nullptr;
-	Chunk* chunk = nullptr;
+	std::unique_ptr<Chunks> chunks;
+	std::unique_ptr<Chunk> chunk;
 	int nAddLineCount = 0;
 	int nRemoveLineCount = 0;
 	int nContextLineCount = 0;
@@ -90,12 +80,10 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 					{
 						//this is a new file diff, so add the last one to
 						//our array.
-						if (chunks->chunks.GetCount() > 0)
-							m_arFileDiffs.Add(chunks);
-						else
-							delete chunks;
+						if (!chunks->chunks.empty())
+							m_arFileDiffs.emplace_back(std::move(chunks));
 					}
-					chunks = new Chunks();
+					chunks = std::make_unique<Chunks>();
 					state = 1;
 					break;
 				}
@@ -126,12 +114,10 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 						{
 							//this is a new file diff, so add the last one to
 							//our array.
-							if (chunks->chunks.GetCount() > 0)
-								m_arFileDiffs.Add(chunks);
-							else
-								delete chunks;
+							if (!chunks->chunks.empty())
+								m_arFileDiffs.emplace_back(std::move(chunks));
 						}
-						chunks = new Chunks();
+						chunks = std::make_unique<Chunks>();
 					}
 
 					sLine = sLine.Mid((int)wcslen(L"---"));	//remove the "---"
@@ -234,28 +220,15 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 					//chunk doesn't start with "@@"
 					//so there's garbage in between two file diffs
 					state = 0;
-					if (chunk)
-					{
-						delete chunk;
-						chunk = nullptr;
-						if (chunks)
-						{
-							for (int i = 0; i < chunks->chunks.GetCount(); ++i)
-							{
-								delete chunks->chunks.GetAt(i);
-							}
-							chunks->chunks.RemoveAll();
-							delete chunks;
-							chunks = nullptr;
-						}
-					}
+					chunk.reset();
+					chunks.reset();
 					break;		//skip the garbage
 				}
 
 				//@@ -xxx,xxx +xxx,xxx @@
 				sLine = sLine.Mid((int)wcslen(L"@@"));
 				sLine = sLine.Trim();
-				chunk = new Chunk();
+				chunk = std::make_unique<Chunk>();
 				CString sRemove = sLine.Left(sLine.Find(' '));
 				CString sAdd = sLine.Mid(sLine.Find(' '));
 				chunk->lRemoveStart = abs(_wtol(sRemove));
@@ -338,10 +311,8 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 				{
 					//chunk is finished
 					if (chunks)
-						chunks->chunks.Add(chunk);
-					else
-						delete chunk;
-					chunk = nullptr;
+						chunks->chunks.emplace_back(std::move(chunk));
+					chunk.reset();
 					nAddLineCount = 0;
 					nContextLineCount = 0;
 					nRemoveLineCount = 0;
@@ -359,43 +330,32 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 		goto errorcleanup;
 	}
 	if (chunks)
-		m_arFileDiffs.Add(chunks);
+		m_arFileDiffs.emplace_back(chunks.release());
 
-	for (int i = 0; i < m_arFileDiffs.GetCount(); ++i)
+	for (size_t i = 0; i < m_arFileDiffs.size(); ++i)
 	{
-		if (filenamesToPatch[m_arFileDiffs.GetAt(i)->sFilePath] > 1 && m_arFileDiffs.GetAt(i)->sFilePath != L"NUL")
+		if (filenamesToPatch[m_arFileDiffs[i]->sFilePath] > 1 && m_arFileDiffs[i]->sFilePath != L"NUL")
 		{
-			m_sErrorMessage.Format(IDS_ERR_PATCH_FILENAMENOTUNIQUE, (LPCTSTR)m_arFileDiffs.GetAt(i)->sFilePath);
+			m_sErrorMessage.Format(IDS_ERR_PATCH_FILENAMENOTUNIQUE, (LPCTSTR)m_arFileDiffs[i]->sFilePath);
 			FreeMemory();
 			return FALSE;
 		}
-		++filenamesToPatch[m_arFileDiffs.GetAt(i)->sFilePath];
-		if (m_arFileDiffs.GetAt(i)->sFilePath != m_arFileDiffs.GetAt(i)->sFilePath2)
+		++filenamesToPatch[m_arFileDiffs[i]->sFilePath];
+		if (m_arFileDiffs[i]->sFilePath != m_arFileDiffs[i]->sFilePath2)
 		{
-			if (filenamesToPatch[m_arFileDiffs.GetAt(i)->sFilePath2] > 1 && m_arFileDiffs.GetAt(i)->sFilePath2 != L"NUL")
+			if (filenamesToPatch[m_arFileDiffs[i]->sFilePath2] > 1 && m_arFileDiffs[i]->sFilePath2 != L"NUL")
 			{
-				m_sErrorMessage.Format(IDS_ERR_PATCH_FILENAMENOTUNIQUE, (LPCTSTR)m_arFileDiffs.GetAt(i)->sFilePath);
+				m_sErrorMessage.Format(IDS_ERR_PATCH_FILENAMENOTUNIQUE, (LPCTSTR)m_arFileDiffs[i]->sFilePath);
 				FreeMemory();
 				return FALSE;
 			}
-			++filenamesToPatch[m_arFileDiffs.GetAt(i)->sFilePath2];
+			++filenamesToPatch[m_arFileDiffs[i]->sFilePath2];
 		}
 	}
 
 	return TRUE;
 
 errorcleanup:
-	if (chunk)
-		delete chunk;
-	if (chunks)
-	{
-		for (int i = 0; i < chunks->chunks.GetCount(); ++i)
-		{
-			delete chunks->chunks.GetAt(i);
-		}
-		chunks->chunks.RemoveAll();
-		delete chunks;
-	}
 	FreeMemory();
 	return FALSE;
 }
@@ -421,52 +381,34 @@ BOOL CPatch::OpenUnifiedDiffFile(const CString& filename)
 
 CString CPatch::GetFilename(int nIndex)
 {
-	if (nIndex < 0)
+	if (nIndex < 0 || nIndex >= (int)m_arFileDiffs.size())
 		return L"";
-	if (nIndex < m_arFileDiffs.GetCount())
-	{
-		Chunks * c = m_arFileDiffs.GetAt(nIndex);
-		CString filepath = Strip(c->sFilePath);
-		return filepath;
-	}
-	return L"";
+
+	return Strip(m_arFileDiffs[nIndex]->sFilePath);
 }
 
 CString CPatch::GetRevision(int nIndex)
 {
-	if (nIndex < 0)
+	if (nIndex < 0 || nIndex >= (int)m_arFileDiffs.size())
 		return L"";
-	if (nIndex < m_arFileDiffs.GetCount())
-	{
-		Chunks * c = m_arFileDiffs.GetAt(nIndex);
-		return c->sRevision;
-	}
-	return L"";
+
+	return m_arFileDiffs[nIndex]->sRevision;
 }
 
 CString CPatch::GetFilename2(int nIndex)
 {
-	if (nIndex < 0)
+	if (nIndex < 0 || nIndex >= (int)m_arFileDiffs.size())
 		return L"";
-	if (nIndex < m_arFileDiffs.GetCount())
-	{
-		Chunks * c = m_arFileDiffs.GetAt(nIndex);
-		CString filepath = Strip(c->sFilePath2);
-		return filepath;
-	}
-	return L"";
+
+	return Strip(m_arFileDiffs[nIndex]->sFilePath2);
 }
 
 CString CPatch::GetRevision2(int nIndex)
 {
-	if (nIndex < 0)
+	if (nIndex < 0 || nIndex >= (int)m_arFileDiffs.size())
 		return L"";
-	if (nIndex < m_arFileDiffs.GetCount())
-	{
-		Chunks * c = m_arFileDiffs.GetAt(nIndex);
-		return c->sRevision2;
-	}
-	return L"";
+
+	return m_arFileDiffs[nIndex]->sRevision2;
 }
 
 int CPatch::PatchFile(const int strip, int nIndex, const CString& sPatchPath, const CString& sSavePath, const CString& sBaseFile, const bool force)
@@ -504,11 +446,11 @@ int CPatch::PatchFile(const int strip, int nIndex, const CString& sPatchPath, co
 	PatchLinesResult = PatchLines;  //.Copy(PatchLines);
 	PatchLines.CopySettings(&PatchLinesResult);
 
-	Chunks * chunks = m_arFileDiffs.GetAt(nIndex);
+	auto chunks = m_arFileDiffs[nIndex].get();
 
-	for (int i = 0; i < chunks->chunks.GetCount(); ++i)
+	for (size_t i = 0; i < chunks->chunks.size(); ++i)
 	{
-		Chunk * chunk = chunks->chunks.GetAt(i);
+		auto chunk = chunks->chunks[i].get();
 		LONG lRemoveLine = chunk->lRemoveStart;
 		LONG lAddLine = chunk->lAddStart;
 		for (int j = 0; j < chunk->arLines.GetCount(); ++j)
