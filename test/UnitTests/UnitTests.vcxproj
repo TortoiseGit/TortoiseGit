@@ -113,7 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\GitWCRev\status.cpp">
-      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4996</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
     </ClCompile>
     <ClCompile Include="..\..\src\Git\Git.cpp" />
     <ClCompile Include="..\..\src\Git\GitAdminDir.cpp" />
