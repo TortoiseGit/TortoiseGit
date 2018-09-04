@@ -113,7 +113,7 @@ https://tortoisegit.org/docs/tortoisegitmerge/tme-automation.html
 
 SshAskPass.exe
 ==============
-This program is for providing a guy for asking for credentials especially in
+This program is for providing a GUI for asking for credentials especially in
 git.exe and ssh.exe.
 
 Both, git.exe and ssh.exe (from OpenSSH) are command line tools. When executed
