@@ -59,12 +59,12 @@ void CPathUtils::ConvertToBackslash(LPTSTR dest, LPCTSTR src, size_t len)
 			*p = '\\';
 }
 
+#ifdef CSTRING_AVAILABLE
 void CPathUtils::ConvertToBackslash(CString& path)
 {
 	path.Replace(L'/', L'\\');
 }
 
-#ifdef CSTRING_AVAILABLE
 bool CPathUtils::Touch(const CString& path)
 {
 	CAutoFile hFile = CreateFile(path, GENERIC_WRITE, FILE_SHARE_DELETE, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
