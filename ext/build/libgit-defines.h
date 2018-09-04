@@ -36,3 +36,4 @@
 #define GAWK
 #define NO_POSIX_GOODIES
 #define PAGER_ENV "LESS=FRX LV=-c"
+#define INTERNAL_QSORT

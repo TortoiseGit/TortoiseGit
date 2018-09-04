@@ -30,6 +30,9 @@
     <Filter Include="git\refs">
       <UniqueIdentifier>{bb065187-02fc-455a-851f-1f7109cba5ec}</UniqueIdentifier>
     </Filter>
+    <Filter Include="git\negotiator">
+      <UniqueIdentifier>{d8cbb096-047f-4046-b6a0-5689b5847e89}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\tgit\compat\msvc.c">
@@ -215,9 +218,6 @@
     <ClCompile Include="..\tgit\environment.c">
       <Filter>git</Filter>
     </ClCompile>
-    <ClCompile Include="..\tgit\exec_cmd.c">
-      <Filter>git</Filter>
-    </ClCompile>
     <ClCompile Include="..\tgit\fsck.c">
       <Filter>git</Filter>
     </ClCompile>
@@ -338,9 +338,6 @@
     <ClCompile Include="..\tgit\remote.c">
       <Filter>git</Filter>
     </ClCompile>
-    <ClCompile Include="..\tgit\replace_object.c">
-      <Filter>git</Filter>
-    </ClCompile>
     <ClCompile Include="..\tgit\rerere.c">
       <Filter>git</Filter>
     </ClCompile>
@@ -366,12 +363,6 @@
       <Filter>git</Filter>
     </ClCompile>
     <ClCompile Include="..\tgit\sha1-lookup.c">
-      <Filter>git</Filter>
-    </ClCompile>
-    <ClCompile Include="..\tgit\sha1_file.c">
-      <Filter>git</Filter>
-    </ClCompile>
-    <ClCompile Include="..\tgit\sha1_name.c">
       <Filter>git</Filter>
     </ClCompile>
     <ClCompile Include="..\tgit\shallow.c">
@@ -450,9 +441,6 @@
       <Filter>git</Filter>
     </ClCompile>
     <ClCompile Include="..\tgit\wrapper.c">
-      <Filter>git</Filter>
-    </ClCompile>
-    <ClCompile Include="..\tgit\write_or_die.c">
       <Filter>git</Filter>
     </ClCompile>
     <ClCompile Include="..\tgit\ws.c">
@@ -866,9 +854,6 @@
     <ClCompile Include="..\tgit\dir-iterator.c">
       <Filter>git</Filter>
     </ClCompile>
-    <ClCompile Include="..\tgit\mru.c">
-      <Filter>git</Filter>
-    </ClCompile>
     <ClCompile Include="..\tgit\refs\iterator.c">
       <Filter>git\refs</Filter>
     </ClCompile>
@@ -907,6 +892,63 @@
     </ClCompile>
     <ClCompile Include="..\tgit\refs\packed-backend.c">
       <Filter>git\refs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\write-or-die.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\exec-cmd.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\replace-object.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\sha1-file.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\sha1-name.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\fsmonitor.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\chdir-notify.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\commit-graph.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\fetch-object.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\list-objects-filter.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\list-objects-filter-options.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\refspec.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\compat\win32\fscache.c">
+      <Filter>compat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\protocol.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\mem-pool.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\fetch-negotiator.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\negotiator\default.c">
+      <Filter>git\negotiator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\negotiator\skipping.c">
+      <Filter>git\negotiator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\rebase-interactive.c">
+      <Filter>git</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -971,9 +1013,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\tgit\dir.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\tgit\exec_cmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\tgit\fetch-pack.h">
@@ -1255,9 +1294,6 @@
     <ClInclude Include="..\tgit\list.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\tgit\mru.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="libgit-defines.h" />
     <ClInclude Include="..\tgit\apply.h">
       <Filter>Header Files</Filter>
@@ -1294,6 +1330,57 @@
     </ClInclude>
     <ClInclude Include="..\tgit\oidmap.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\exec-cmd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\replace-object.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\fsmonitor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\chdir-notify.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\refspec.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\list-objects-filter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\list-objects-filter-options.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\fetch-object.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\commit-graph.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\compat\win32\fscache.h">
+      <Filter>compat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\protocol.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\banned.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\mem-pool.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\fetch-negotiator.h">
+      <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\negotiator\default.h">
+      <Filter>git\negotiator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\negotiator\skipping.h">
+      <Filter>git\negotiator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\rebase-interactive.h">
+      <Filter>git</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

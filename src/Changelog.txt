@@ -1,6 +1,9 @@
 ﻿= Release 2.8.0 =
 Released: unreleased
 
+== Features ==
+ * Update libgit to 2.19.0 based on Git for Windows sources
+
 == Bug Fixes ==
  * Fixed issue #3250: GitWCRev: IsGitItem return true for item that had never been committed
  * Fixed issue #3251: GitWCRev.GetWCInfo COM object ignores file path (parameter 1)
