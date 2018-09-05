@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 // Copyright (C) 2004-2018 - TortoiseSVN
 // Copyright (C) 2012-2014 - Sven Strickroth <email@cs-ware.de>
 
@@ -2739,11 +2739,18 @@ void CMainFrame::OnUpdateEditCreateunifieddifffile(CCmdUI *pCmdUI)
 void CMainFrame::OnEditCreateunifieddifffile()
 {
 	CString origFile, modifiedFile;
+	CString origReflected, modifiedReflected;
 	// the original file is the one on the left
 	if (m_pwndLeftView)
+	{
 		origFile = m_pwndLeftView->m_sFullFilePath;
+		origReflected = m_pwndLeftView->m_sReflectedName;
+	}
 	if (m_pwndRightView)
+	{
 		modifiedFile = m_pwndRightView->m_sFullFilePath;
+		modifiedReflected = m_pwndRightView->m_sReflectedName;
+	}
 	if (origFile.IsEmpty() || modifiedFile.IsEmpty())
 		return;
 
@@ -2753,6 +2760,54 @@ void CMainFrame::OnEditCreateunifieddifffile()
 
 	CRegStdDWORD regContextLines(L"Software\\TortoiseGitMerge\\ContextLines", (DWORD)-1);
 	CAppUtils::CreateUnifiedDiff(origFile, modifiedFile, outputFile, regContextLines, true);
+	// from here a hacky solution exchanges the paths included in the patch, see issue #2541
+	if (origReflected.IsEmpty() || modifiedReflected.IsEmpty())
+		return;
+	CString projectDir1, projectDir2;
+	if (!GitAdminDir::HasAdminDir(origReflected, &projectDir1) || !GitAdminDir::HasAdminDir(modifiedReflected, &projectDir2) || projectDir1 != projectDir2)
+		return;
+	CStringA origReflectedA = CUnicodeUtils::GetUTF8(origReflected.Mid(projectDir1.GetLength() + 1));
+	CStringA modifiedReflectedA = CUnicodeUtils::GetUTF8(modifiedReflected.Mid(projectDir1.GetLength() + 1));
+	origReflectedA.Replace('\\', '/');
+	modifiedReflectedA.Replace('\\', '/');
+	try
+	{
+		CStdioFile file;
+		// w/o typeBinary for some files \r gets dropped
+		if (!file.Open(outputFile, CFile::typeBinary | CFile::modeReadWrite | CFile::shareExclusive))
+			return;
+
+		CStringA filecontent;
+		UINT filelength = (UINT)file.GetLength();
+		int bytesread = (int)file.Read(filecontent.GetBuffer(filelength), filelength);
+		filecontent.ReleaseBuffer(bytesread);
+
+		if (!CStringUtils::StartsWith(filecontent, "diff --git "))
+			return;
+		int lineend = filecontent.Find("\n");
+		if (lineend <= (int)strlen("diff --git "))
+			return;
+		CStringA newStart = "diff --git \"a/" + origReflectedA + "\" \"b/" + modifiedReflectedA + "\"\n";
+		if (!CStringUtils::StartsWith(filecontent.GetBuffer() + lineend, "\nindex "))
+			return;
+		int nextlineend = filecontent.Find("\n", lineend + 1);
+		if (nextlineend <= lineend)
+			return;
+		newStart += filecontent.Mid(lineend + 1, nextlineend - lineend);
+		lineend = filecontent.Find("\n--- ", nextlineend);
+		nextlineend = filecontent.Find("\n@@ ", lineend);
+		if (nextlineend <= lineend)
+			return;
+		newStart += "--- \"a/" + origReflectedA + "\"\n+++ \"b/" + modifiedReflectedA + "\"";
+		filecontent = newStart + filecontent.Mid(nextlineend);
+		file.SeekToBegin();
+		file.Write(filecontent, (UINT)filecontent.GetLength());
+		file.SetLength(file.GetPosition());
+		file.Close();
+	}
+	catch (CFileException* e)
+	{
+	}
 }
 
 void CMainFrame::OnUpdateViewLinediffbar(CCmdUI *pCmdUI)
