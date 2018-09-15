@@ -815,9 +815,10 @@ static int get_config(const char *key_, const char *value_, void *cb)
 		return 0;
 
 	if (value_)
-		strncpy(buf->buf,value_,buf->size);
+		strlcpy(buf->buf, value_, buf->size);
 	else
 	{
+		assert(buf->size >= 5);
 		buf->buf[0] = 't';
 		buf->buf[1] = 'r';
 		buf->buf[2] = 'u';
