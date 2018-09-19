@@ -324,6 +324,7 @@ Don't touch these lines:
 							<entry>
 								Opens the <link linkend="tgit-dug-merge">merge dialog</link>. The <option>/path</option> specifies the
 								target directory.
+								The <option>/abort</option> opens <link linkend="tgit-dug-reset">abort merge dialog</link>.
 							</entry>
 						</row>
 						<!--
