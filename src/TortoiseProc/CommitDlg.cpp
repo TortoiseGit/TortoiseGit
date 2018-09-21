@@ -189,6 +189,8 @@ int GetCommitTemplate(CString &msg)
 			}
 		}
 	}
+	else if (CStringUtils::StartsWith(tplFilename, L"~/"))
+		tplFilename = g_Git.GetHomeDirectory() + tplFilename.Mid(1);
 
 	tplFilename.Replace(L'/', L'\\');
 

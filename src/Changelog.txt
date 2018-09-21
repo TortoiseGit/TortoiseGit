@@ -7,6 +7,7 @@ Released: unreleased
    GitWCRev not honours the passed path and calculates the HasModifications/UnversionedFiles status according to the passed path
  * Fixed issue #3261: Review/Apply single patch does not work anymore if patch does not apply cleanly
  * Fixed issue #2541: Patches created from "Create patch file" in diff view/TortoiseGitMerge has invalid filepath
+ * CommitDlg: commit.template did not honor "~/"
 
 = Release 2.7.0 =
 Released: 2018-08-19
