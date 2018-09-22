@@ -2805,7 +2805,7 @@ void CMainFrame::OnEditCreateunifieddifffile()
 		file.SetLength(file.GetPosition());
 		file.Close();
 	}
-	catch (CFileException* e)
+	catch (CFileException*)
 	{
 	}
 }

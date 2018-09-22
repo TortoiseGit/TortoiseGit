@@ -79,7 +79,7 @@ TEST_P(GitWCRevStatusCBasicGitWithEmptyRepositoryFixture, EmptyRepo)
 	EXPECT_FALSE(GitStat.bHasSubmodule);
 	EXPECT_FALSE(GitStat.HasMods);
 	EXPECT_FALSE(GitStat.HasUnversioned);
-	EXPECT_EQ(0, GitStat.NumCommits);
+	EXPECT_EQ(0u, GitStat.NumCommits);
 	EXPECT_FALSE(GitStat.bHasSubmoduleMods);
 	EXPECT_FALSE(GitStat.bHasSubmoduleNewCommits);
 	EXPECT_FALSE(GitStat.bHasSubmoduleUnversioned);
@@ -101,7 +101,7 @@ TEST_P(GitWCRevStatusCBasicGitWithEmptyRepositoryFixture, EmptyRepoFile)
 	EXPECT_FALSE(GitStat.bHasSubmodule);
 	EXPECT_FALSE(GitStat.HasMods);
 	EXPECT_TRUE(GitStat.HasUnversioned);
-	EXPECT_EQ(0, GitStat.NumCommits);
+	EXPECT_EQ(0u, GitStat.NumCommits);
 	EXPECT_FALSE(GitStat.bHasSubmoduleMods);
 	EXPECT_FALSE(GitStat.bHasSubmoduleNewCommits);
 	EXPECT_FALSE(GitStat.bHasSubmoduleUnversioned);
@@ -117,7 +117,7 @@ TEST_P(GitWCRevStatusCBasicGitWithEmptyRepositoryFixture, EmptyRepoFile)
 	EXPECT_FALSE(GitStat2.bHasSubmodule);
 	EXPECT_FALSE(GitStat2.HasMods);
 	EXPECT_TRUE(GitStat2.HasUnversioned);
-	EXPECT_EQ(0, GitStat2.NumCommits);
+	EXPECT_EQ(0u, GitStat2.NumCommits);
 	EXPECT_FALSE(GitStat2.bHasSubmoduleMods);
 	EXPECT_FALSE(GitStat2.bHasSubmoduleNewCommits);
 	EXPECT_FALSE(GitStat2.bHasSubmoduleUnversioned);
@@ -148,7 +148,7 @@ TEST_P(GitWCRevStatusCBasicGitWithEmptyRepositoryFixture, EmptyRepoStagedFile)
 	EXPECT_FALSE(GitStat3.bHasSubmodule);
 	EXPECT_FALSE(GitStat3.HasMods);
 	EXPECT_TRUE(GitStat3.HasUnversioned);
-	EXPECT_EQ(0, GitStat3.NumCommits);
+	EXPECT_EQ(0u, GitStat3.NumCommits);
 	EXPECT_FALSE(GitStat3.bHasSubmoduleMods);
 	EXPECT_FALSE(GitStat3.bHasSubmoduleNewCommits);
 	EXPECT_FALSE(GitStat3.bHasSubmoduleUnversioned);
@@ -164,7 +164,7 @@ TEST_P(GitWCRevStatusCBasicGitWithEmptyRepositoryFixture, EmptyRepoStagedFile)
 	EXPECT_FALSE(GitStat4.bHasSubmodule);
 	EXPECT_FALSE(GitStat4.HasMods);
 	EXPECT_TRUE(GitStat4.HasUnversioned);
-	EXPECT_EQ(0, GitStat4.NumCommits);
+	EXPECT_EQ(0u, GitStat4.NumCommits);
 	EXPECT_FALSE(GitStat4.bHasSubmoduleMods);
 	EXPECT_FALSE(GitStat4.bHasSubmoduleNewCommits);
 	EXPECT_FALSE(GitStat4.bHasSubmoduleUnversioned);
@@ -185,7 +185,7 @@ TEST_P(GitWCRevStatusCBasicGitWithEmptyRepositoryFixture, EmptyRepoFolder)
 	EXPECT_FALSE(GitStat.bHasSubmodule);
 	EXPECT_FALSE(GitStat.HasMods);
 	EXPECT_FALSE(GitStat.HasUnversioned);
-	EXPECT_EQ(0, GitStat.NumCommits);
+	EXPECT_EQ(0u, GitStat.NumCommits);
 	EXPECT_FALSE(GitStat.bHasSubmoduleMods);
 	EXPECT_FALSE(GitStat.bHasSubmoduleNewCommits);
 	EXPECT_FALSE(GitStat.bHasSubmoduleUnversioned);
@@ -201,7 +201,7 @@ TEST_P(GitWCRevStatusCBasicGitWithEmptyRepositoryFixture, EmptyRepoFolder)
 	EXPECT_FALSE(GitStat2.bHasSubmodule);
 	EXPECT_FALSE(GitStat2.HasMods);
 	EXPECT_FALSE(GitStat2.HasUnversioned);
-	EXPECT_EQ(0, GitStat2.NumCommits);
+	EXPECT_EQ(0u, GitStat2.NumCommits);
 	EXPECT_FALSE(GitStat2.bHasSubmoduleMods);
 	EXPECT_FALSE(GitStat2.bHasSubmoduleNewCommits);
 	EXPECT_FALSE(GitStat2.bHasSubmoduleUnversioned);
@@ -224,7 +224,7 @@ TEST_P(GitWCRevStatusCBasicGitWithEmptyRepositoryFixture, EmptyRepoFolderFile)
 	EXPECT_FALSE(GitStat.bHasSubmodule);
 	EXPECT_FALSE(GitStat.HasMods);
 	EXPECT_TRUE(GitStat.HasUnversioned);
-	EXPECT_EQ(0, GitStat.NumCommits);
+	EXPECT_EQ(0u, GitStat.NumCommits);
 	EXPECT_FALSE(GitStat.bHasSubmoduleMods);
 	EXPECT_FALSE(GitStat.bHasSubmoduleNewCommits);
 	EXPECT_FALSE(GitStat.bHasSubmoduleUnversioned);
@@ -240,7 +240,7 @@ TEST_P(GitWCRevStatusCBasicGitWithEmptyRepositoryFixture, EmptyRepoFolderFile)
 	EXPECT_FALSE(GitStat2.bHasSubmodule);
 	EXPECT_FALSE(GitStat2.HasMods);
 	EXPECT_TRUE(GitStat2.HasUnversioned);
-	EXPECT_EQ(0, GitStat2.NumCommits);
+	EXPECT_EQ(0u, GitStat2.NumCommits);
 	EXPECT_FALSE(GitStat2.bHasSubmoduleMods);
 	EXPECT_FALSE(GitStat2.bHasSubmoduleNewCommits);
 	EXPECT_FALSE(GitStat2.bHasSubmoduleUnversioned);
@@ -256,7 +256,7 @@ TEST_P(GitWCRevStatusCBasicGitWithEmptyRepositoryFixture, EmptyRepoFolderFile)
 	EXPECT_FALSE(GitStat3.bHasSubmodule);
 	EXPECT_FALSE(GitStat3.HasMods);
 	EXPECT_TRUE(GitStat3.HasUnversioned);
-	EXPECT_EQ(0, GitStat3.NumCommits);
+	EXPECT_EQ(0u, GitStat3.NumCommits);
 	EXPECT_FALSE(GitStat3.bHasSubmoduleMods);
 	EXPECT_FALSE(GitStat3.bHasSubmoduleNewCommits);
 	EXPECT_FALSE(GitStat3.bHasSubmoduleUnversioned);
@@ -274,7 +274,7 @@ TEST_P(GitWCRevStatusCBasicGitWithEmptyRepositoryFixture, EmptyRepoFolderFile)
 	EXPECT_FALSE(GitStat4.bHasSubmodule);
 	EXPECT_FALSE(GitStat4.HasMods);
 	EXPECT_FALSE(GitStat4.HasUnversioned);
-	EXPECT_EQ(0, GitStat4.NumCommits);
+	EXPECT_EQ(0u, GitStat4.NumCommits);
 	EXPECT_FALSE(GitStat4.bHasSubmoduleMods);
 	EXPECT_FALSE(GitStat4.bHasSubmoduleNewCommits);
 	EXPECT_FALSE(GitStat4.bHasSubmoduleUnversioned);
@@ -293,7 +293,7 @@ TEST_P(GitWCRevStatusCBasicGitWithTestRepoFixture, Basic)
 	EXPECT_FALSE(GitStat.bHasSubmodule);
 	EXPECT_TRUE(GitStat.HasMods);
 	EXPECT_FALSE(GitStat.HasUnversioned);
-	EXPECT_EQ(12, GitStat.NumCommits);
+	EXPECT_EQ(12u, GitStat.NumCommits);
 	EXPECT_FALSE(GitStat.bHasSubmoduleMods);
 	EXPECT_FALSE(GitStat.bHasSubmoduleNewCommits);
 	EXPECT_FALSE(GitStat.bHasSubmoduleUnversioned);
@@ -314,7 +314,7 @@ TEST_P(GitWCRevStatusCBasicGitWithTestRepoFixture, Basic)
 	EXPECT_FALSE(GitStat2.bHasSubmodule);
 	EXPECT_FALSE(GitStat2.HasMods);
 	EXPECT_FALSE(GitStat2.HasUnversioned);
-	EXPECT_EQ(10, GitStat2.NumCommits);
+	EXPECT_EQ(10u, GitStat2.NumCommits);
 	EXPECT_FALSE(GitStat2.bHasSubmoduleMods);
 	EXPECT_FALSE(GitStat2.bHasSubmoduleNewCommits);
 	EXPECT_FALSE(GitStat2.bHasSubmoduleUnversioned);
@@ -333,7 +333,7 @@ TEST_P(GitWCRevStatusCBasicGitWithTestRepoFixture, Basic)
 	EXPECT_FALSE(GitStat3.bHasSubmodule);
 	EXPECT_FALSE(GitStat3.HasMods);
 	EXPECT_FALSE(GitStat3.HasUnversioned);
-	EXPECT_EQ(10, GitStat3.NumCommits);
+	EXPECT_EQ(10u, GitStat3.NumCommits);
 	EXPECT_FALSE(GitStat3.bHasSubmoduleMods);
 	EXPECT_FALSE(GitStat3.bHasSubmoduleNewCommits);
 	EXPECT_FALSE(GitStat3.bHasSubmoduleUnversioned);
@@ -350,7 +350,7 @@ TEST_P(GitWCRevStatusCBasicGitWithTestRepoFixture, Basic)
 	EXPECT_FALSE(GitStat4.bHasSubmodule);
 	EXPECT_TRUE(GitStat4.HasMods); // missing file: utf8-bom.txt
 	EXPECT_FALSE(GitStat4.HasUnversioned);
-	EXPECT_EQ(10, GitStat4.NumCommits);
+	EXPECT_EQ(10u, GitStat4.NumCommits);
 	EXPECT_FALSE(GitStat4.bHasSubmoduleMods);
 	EXPECT_FALSE(GitStat4.bHasSubmoduleNewCommits);
 	EXPECT_FALSE(GitStat4.bHasSubmoduleUnversioned);
@@ -368,7 +368,7 @@ TEST_P(GitWCRevStatusCBasicGitWithTestRepoFixture, Basic)
 	EXPECT_FALSE(GitStat5.bHasSubmodule);
 	EXPECT_FALSE(GitStat5.HasMods);
 	EXPECT_TRUE(GitStat5.HasUnversioned);
-	EXPECT_EQ(10, GitStat5.NumCommits);
+	EXPECT_EQ(10u, GitStat5.NumCommits);
 	EXPECT_FALSE(GitStat5.bHasSubmoduleMods);
 	EXPECT_FALSE(GitStat5.bHasSubmoduleNewCommits);
 	EXPECT_FALSE(GitStat5.bHasSubmoduleUnversioned);
@@ -386,7 +386,7 @@ TEST_P(GitWCRevStatusCBasicGitWithTestRepoFixture, Basic)
 	EXPECT_FALSE(GitStat6.bHasSubmodule);
 	EXPECT_FALSE(GitStat6.HasMods);
 	EXPECT_TRUE(GitStat6.HasUnversioned);
-	EXPECT_EQ(10, GitStat6.NumCommits);
+	EXPECT_EQ(10u, GitStat6.NumCommits);
 	EXPECT_FALSE(GitStat6.bHasSubmoduleMods);
 	EXPECT_FALSE(GitStat6.bHasSubmoduleNewCommits);
 	EXPECT_FALSE(GitStat6.bHasSubmoduleUnversioned);
@@ -412,7 +412,7 @@ TEST_P(GitWCRevStatusCBasicGitWithTestRepoFixture, GitWCRevignore)
 	EXPECT_FALSE(GitStat.bHasSubmodule);
 	EXPECT_FALSE(GitStat.HasMods);
 	EXPECT_TRUE(GitStat.HasUnversioned);
-	EXPECT_EQ(12, GitStat.NumCommits);
+	EXPECT_EQ(12u, GitStat.NumCommits);
 	EXPECT_FALSE(GitStat.bHasSubmoduleMods);
 	EXPECT_FALSE(GitStat.bHasSubmoduleNewCommits);
 	EXPECT_FALSE(GitStat.bHasSubmoduleUnversioned);
@@ -430,7 +430,7 @@ TEST_P(GitWCRevStatusCBasicGitWithTestRepoFixture, GitWCRevignore)
 	EXPECT_FALSE(GitStat2.bHasSubmodule);
 	EXPECT_FALSE(GitStat2.HasMods);
 	EXPECT_FALSE(GitStat2.HasUnversioned);
-	EXPECT_EQ(12, GitStat2.NumCommits);
+	EXPECT_EQ(12u, GitStat2.NumCommits);
 	EXPECT_FALSE(GitStat2.bHasSubmoduleMods);
 	EXPECT_FALSE(GitStat2.bHasSubmoduleNewCommits);
 	EXPECT_FALSE(GitStat2.bHasSubmoduleUnversioned);
@@ -450,7 +450,7 @@ TEST_P(GitWCRevStatusCBasicGitWithTestRepoFixture, GitWCRevignore)
 	EXPECT_FALSE(GitStat3.bHasSubmodule);
 	EXPECT_FALSE(GitStat3.HasMods);
 	EXPECT_FALSE(GitStat3.HasUnversioned);
-	EXPECT_EQ(12, GitStat3.NumCommits);
+	EXPECT_EQ(12u, GitStat3.NumCommits);
 	EXPECT_FALSE(GitStat3.bHasSubmoduleMods);
 	EXPECT_FALSE(GitStat3.bHasSubmoduleNewCommits);
 	EXPECT_FALSE(GitStat3.bHasSubmoduleUnversioned);
@@ -467,7 +467,7 @@ TEST_P(GitWCRevStatusCBasicGitWithTestRepoFixture, GitWCRevignore)
 	EXPECT_FALSE(GitStat4.bHasSubmodule);
 	EXPECT_TRUE(GitStat4.HasMods); // requesting a specific file which is also ignored, the unignoring has precedence!
 	EXPECT_FALSE(GitStat4.HasUnversioned);
-	EXPECT_EQ(12, GitStat4.NumCommits);
+	EXPECT_EQ(12u, GitStat4.NumCommits);
 	EXPECT_FALSE(GitStat4.bHasSubmoduleMods);
 	EXPECT_FALSE(GitStat4.bHasSubmoduleNewCommits);
 	EXPECT_FALSE(GitStat4.bHasSubmoduleUnversioned);
@@ -484,7 +484,7 @@ TEST_P(GitWCRevStatusCBasicGitWithTestRepoFixture, GitWCRevignore)
 	EXPECT_FALSE(GitStat5.bHasSubmodule);
 	EXPECT_FALSE(GitStat5.HasMods); // ignore changes in modified file
 	EXPECT_FALSE(GitStat5.HasUnversioned);
-	EXPECT_EQ(12, GitStat5.NumCommits);
+	EXPECT_EQ(12u, GitStat5.NumCommits);
 	EXPECT_FALSE(GitStat5.bHasSubmoduleMods);
 	EXPECT_FALSE(GitStat5.bHasSubmoduleNewCommits);
 	EXPECT_FALSE(GitStat5.bHasSubmoduleUnversioned);
@@ -526,7 +526,7 @@ TEST_P(GitWCRevStatusCBasicGitWithTestRepoFixture, PathNormalize)
 	EXPECT_FALSE(GitStat.bHasSubmodule);
 	EXPECT_FALSE(GitStat.HasMods);
 	EXPECT_FALSE(GitStat.HasUnversioned);
-	EXPECT_EQ(12, GitStat.NumCommits);
+	EXPECT_EQ(12u, GitStat.NumCommits);
 	EXPECT_FALSE(GitStat.bHasSubmoduleMods);
 	EXPECT_FALSE(GitStat.bHasSubmoduleNewCommits);
 	EXPECT_FALSE(GitStat.bHasSubmoduleUnversioned);

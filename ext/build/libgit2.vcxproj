@@ -201,7 +201,9 @@
     <ClCompile Include="..\libgit2\src\win32\precompiled.c">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\libgit2\src\win32\thread.c" />
+    <ClCompile Include="..\libgit2\src\win32\thread.c">
+      <DisableSpecificWarnings>4028</DisableSpecificWarnings>
+    </ClCompile>
     <ClCompile Include="..\libgit2\src\win32\utf-conv.c" />
     <ClCompile Include="..\libgit2\src\transports\git.c" />
     <ClCompile Include="..\libgit2\src\transports\local.c" />
@@ -220,7 +222,9 @@
     <ClCompile Include="..\libgit2\src\xdiff\xprepare.c" />
     <ClCompile Include="..\libgit2\src\xdiff\xutils.c" />
     <ClCompile Include="..\libgit2\src\hash\hash_win32.c" />
-    <ClCompile Include="..\libgit2\deps\regex\regex.c" />
+    <ClCompile Include="..\libgit2\deps\regex\regex.c">
+      <DisableSpecificWarnings>4311;4312</DisableSpecificWarnings>
+    </ClCompile>
     <ClCompile Include="..\libgit2\src\zstream.c" />
   </ItemGroup>
   <ItemGroup>
