@@ -2505,6 +2505,8 @@ int CGit::RefreshGitIndex()
 		CAutoLocker lock(g_Git.m_critGitDllSec);
 		try
 		{
+			g_Git.CheckAndInitDll();
+
 			int result = git_update_index();
 			git_exit_cleanup();
 			return result;

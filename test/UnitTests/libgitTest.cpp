@@ -181,8 +181,6 @@ TEST(libgit, RefreshIndex)
 	ASSERT_TRUE(oldEnv);
 	_wgetenv_s(&size, oldEnv, size, L"PATH");
 	_wputenv_s(L"PATH", g_Git.m_Environment.GetEnv(L"PATH"));
-	g_Git.CheckAndInitDll();
-
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(g_Git.m_CurrentDir + L"\\somefile.txt", L"some content"));
 
 	g_Git.RefreshGitIndex();
