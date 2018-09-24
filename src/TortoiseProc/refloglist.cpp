@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2009-2011, 2013, 2015-2018 TortoiseGit
 
@@ -78,7 +78,7 @@ void CRefLogList::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	// By default, clear text buffer.
 	lstrcpyn(pItem->pszText, L"", pItem->cchTextMax);
 
-	bool bOutOfRange = pItem->iItem >= ShownCountWithStopped();
+	bool bOutOfRange = pItem->iItem >= m_arShownList.size();
 
 	*pResult = 0;
 	if (m_bNoDispUpdates || bOutOfRange)

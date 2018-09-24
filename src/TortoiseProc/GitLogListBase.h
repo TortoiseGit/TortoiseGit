@@ -258,7 +258,6 @@ public:
 protected:
 	void MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct);
 
-	BOOL m_bStrictStopped;
 public:
 	BOOL m_bShowBugtraqColumn;
 protected:
@@ -439,7 +438,6 @@ public:
 	static const UINT	m_RebaseActionMessage;
 	static const UINT	LOGLIST_RESET_WCREV;
 
-	inline int ShownCountWithStopped() const { return (int)m_arShownList.size() + (m_bStrictStopped ? 1 : 0); }
 	void FetchLogAsync(void* data = nullptr);
 	CThreadSafePtrArray			m_arShownList;
 	void Refresh(BOOL IsCleanFilter=TRUE);
@@ -451,7 +449,6 @@ public:
 	bool				m_bFilterWithRegex;
 	bool				m_bFilterCaseSensitively;
 	CLogDataVector		m_logEntries;
-	void RemoveFilter();
 	void StartFilter();
 	bool ValidateRegexp(LPCTSTR regexp_str, std::wregex& pat, bool bMatchCase = false );
 	CString				m_sFilterText;
@@ -634,8 +631,6 @@ protected:
 	* Save column widths to the registry
 	*/
 	void SaveColumnWidths();	// save col widths to the registry
-
-	BOOL IsEntryInDateRange(int i);
 
 	int GetHeadIndex();
 

@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2007 - TortoiseSVN
 // Copyright (C) 2008-2017 - TortoiseGit
@@ -69,8 +69,6 @@ public:
 	void ClearAll();
 	int  ParserFromLog(CTGitPath* path = nullptr, DWORD count = 0, DWORD infomask = CGit::LOG_INFO_STAT | CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE, CString* range = nullptr);
 	int  Fill(std::unordered_set<CGitHash>& hashes);
-
-	int FetchFullInfo(int i);
 
 	Lanes m_Lns;
 	int	 m_FirstFreeLane;

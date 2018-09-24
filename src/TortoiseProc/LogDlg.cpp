@@ -2283,8 +2283,6 @@ LRESULT CLogDlg::OnClickedCancelFilter(WPARAM wParam, LPARAM /*lParam*/)
 	theApp.DoWaitCursor(1);
 	FillLogMessageCtrl(false);
 
-	m_LogList.RemoveFilter();
-
 	Refresh();
 
 	theApp.DoWaitCursor(-1);
@@ -3120,22 +3118,7 @@ void CLogDlg::OnEnChangeSearchedit()
 		FillLogMessageCtrl(false);
 
 		Refresh();
-		//m_LogList.StartFilter();
-#if 0
-		InterlockedExchange(&m_bNoDispUpdates, TRUE);
-		m_arShownList.RemoveAll();
-		for (DWORD i=0; i<m_logEntries.size(); ++i)
-		{
-			if (IsEntryInDateRange(i))
-				m_arShownList.Add(m_logEntries[i]);
-		}
-		InterlockedExchange(&m_bNoDispUpdates, FALSE);
-		m_LogList.DeleteAllItems();
-		m_LogList.SetItemCountEx(ShownCountWithStopped());
-		m_LogList.RedrawItems(0, ShownCountWithStopped());
-		m_LogList.SetRedraw(false);
-		m_LogList.SetRedraw(true);
-#endif
+
 		theApp.DoWaitCursor(-1);
 		GetDlgItem(IDC_SEARCHEDIT)->ShowWindow(SW_HIDE);
 		GetDlgItem(IDC_SEARCHEDIT)->ShowWindow(SW_SHOW);

@@ -45,7 +45,6 @@ CGitLogListBase::CGitLogListBase() : CHintCtrl<CResizableColumnsListCtrl<CListCt
 	,m_nSearchIndex(0)
 	,m_bNoDispUpdates(FALSE)
 	, m_bThreadRunning(FALSE)
-	, m_bStrictStopped(false)
 	, m_SelectedFilters(LOGFILTER_ALL)
 	, m_ShowFilter(FILTERSHOW_ALL)
 	, m_bShowWC(false)
@@ -1152,11 +1151,6 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 					}
 				}
 			}
-			if (m_arShownList.size() == pLVCD->nmcd.dwItemSpec)
-			{
-				if (m_bStrictStopped)
-					crText = GetSysColor(COLOR_GRAYTEXT);
-			}
 			// Store the color back in the NMLVCUSTOMDRAW struct.
 			pLVCD->clrText = crText;
 			return;
@@ -1164,11 +1158,6 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		break;
 	case CDDS_ITEMPREPAINT|CDDS_ITEM|CDDS_SUBITEM:
 		{
-			if (m_bStrictStopped && m_arShownList.size() == pLVCD->nmcd.dwItemSpec)
-			{
-				pLVCD->nmcd.uItemState &= ~(CDIS_SELECTED|CDIS_FOCUS);
-			}
-
 			if (pLVCD->iSubItem == LOGLIST_GRAPH && !HasFilterText() && (m_ShowFilter & FILTERSHOW_MERGEPOINTS))
 			{
 				if (m_arShownList.size() > pLVCD->nmcd.dwItemSpec && !this->m_IsRebaseReplaceGraph)
@@ -1582,7 +1571,7 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	// By default, clear text buffer.
 	lstrcpyn(pItem->pszText, L"", pItem->cchTextMax - 1);
 
-	bool bOutOfRange = pItem->iItem >= ShownCountWithStopped();
+	bool bOutOfRange = pItem->iItem >= m_arShownList.size();
 
 	*pResult = 0;
 	if (m_bNoDispUpdates || bOutOfRange)
@@ -1712,11 +1701,6 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 	if (selIndex < 0)
 		return; // nothing selected, nothing to do with a context menu
 
-	// if the user selected the info text telling about not all revisions shown due to
-	// the "stop on copy/rename" option, we also don't show the context menu
-	if (m_bStrictStopped && selIndex == (int)m_arShownList.size())
-		return;
-
 	// if the context menu is invoked through the keyboard, we have to use
 	// a calculated position on where to anchor the menu on
 	if ((point.x == -1) && (point.y == -1))
@@ -1748,51 +1732,6 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 	}
 
 	ASSERT(GetSelectedCount() == selectedCount);
-
-#if 0
-	GitRev revSelected = pSelLogEntry->Rev;
-	GitRev revPrevious = git_revnum_t(revSelected)-1;
-	if ((pSelLogEntry->pArChangedPaths)&&(pSelLogEntry->pArChangedPaths->GetCount() <= 2))
-	{
-		for (int i=0; i<pSelLogEntry->pArChangedPaths->GetCount(); ++i)
-		{
-			LogChangedPath * changedpath = (LogChangedPath *)pSelLogEntry->pArChangedPaths->SafeGetAt(i);
-			if (changedpath->lCopyFromRev)
-				revPrevious = changedpath->lCopyFromRev;
-		}
-	}
-	GitRev revSelected2;
-	if (pos)
-	{
-		PLOGENTRYDATA pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.SafeGetAt(GetNextSelectedItem(pos)));
-		revSelected2 = pLogEntry->Rev;
-	}
-	bool bAllFromTheSameAuthor = true;
-	CString firstAuthor;
-	CLogDataVector selEntries;
-	GitRev revLowest, revHighest;
-	GitRevRangeArray revisionRanges;
-	{
-		POSITION pos = GetFirstSelectedItemPosition();
-		PLOGENTRYDATA pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.SafeGetAt(GetNextSelectedItem(pos)));
-		revisionRanges.AddRevision(pLogEntry->Rev);
-		selEntries.push_back(pLogEntry);
-		firstAuthor = pLogEntry->sAuthor;
-		revLowest = pLogEntry->Rev;
-		revHighest = pLogEntry->Rev;
-		while (pos)
-		{
-			pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.SafeGetAt(GetNextSelectedItem(pos)));
-			revisionRanges.AddRevision(pLogEntry->Rev);
-			selEntries.push_back(pLogEntry);
-			if (firstAuthor.Compare(pLogEntry->sAuthor))
-				bAllFromTheSameAuthor = false;
-			revLowest = (git_revnum_t(pLogEntry->Rev) > git_revnum_t(revLowest) ? revLowest : pLogEntry->Rev);
-			revHighest = (git_revnum_t(pLogEntry->Rev) < git_revnum_t(revHighest) ? revHighest : pLogEntry->Rev);
-		}
-	}
-
-#endif
 
 	//entry is selected, now show the popup menu
 	CIconMenu popup;
@@ -3847,27 +3786,6 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 	} // for (DWORD i=0; i<m_logEntries.size(); ++i)
 }
 
-BOOL CGitLogListBase::IsEntryInDateRange(int /*i*/)
-{
-	/*
-	__time64_t time = m_logEntries.GetGitRevAt(i).GetAuthorDate().GetTime();
-
-	if(m_From == -1)
-		if(m_To == -1)
-			return true;
-		else
-			return time <= m_To;
-	else
-		if(m_To == -1)
-			return time >= m_From;
-		else
-			return ((time >= m_From)&&(time <= m_To));
-	*/
-	return TRUE; /* git dll will filter time range */
-
-//	return TRUE;
-}
-
 void CGitLogListBase::StartFilter()
 {
 	InterlockedExchange(&m_bNoDispUpdates, TRUE);
@@ -3876,40 +3794,9 @@ void CGitLogListBase::StartFilter()
 
 
 	DeleteAllItems();
-	SetItemCountEx(ShownCountWithStopped());
-	RedrawItems(0, ShownCountWithStopped());
+	SetItemCountEx(m_arShownList.size());
+	RedrawItems(0, m_arShownList.size());
 	Invalidate();
-}
-
-void CGitLogListBase::RemoveFilter()
-{
-	InterlockedExchange(&m_bNoDispUpdates, TRUE);
-
-	m_arShownList.SafeRemoveAll();
-
-	// reset the time filter too
-#if 0
-	m_timFrom = (__time64_t(m_tFrom));
-	m_timTo = (__time64_t(m_tTo));
-	m_DateFrom.SetTime(&m_timFrom);
-	m_DateTo.SetTime(&m_timTo);
-	m_DateFrom.SetRange(&m_timFrom, &m_timTo);
-	m_DateTo.SetRange(&m_timFrom, &m_timTo);
-#endif
-
-	for (DWORD i=0; i<m_logEntries.size(); ++i)
-	{
-		if(this->m_IsOldFirst)
-			m_arShownList.SafeAdd(&m_logEntries.GetGitRevAt(m_logEntries.size()-i-1));
-		else
-			m_arShownList.SafeAdd(&m_logEntries.GetGitRevAt(i));
-	}
-//	InterlockedExchange(&m_bNoDispUpdates, FALSE);
-	DeleteAllItems();
-	SetItemCountEx(ShownCountWithStopped());
-	RedrawItems(0, ShownCountWithStopped());
-
-	InterlockedExchange(&m_bNoDispUpdates, FALSE);
 }
 
 void CGitLogListBase::Clear()
