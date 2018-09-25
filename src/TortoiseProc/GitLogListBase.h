@@ -441,7 +441,6 @@ public:
 	void FetchLogAsync(void* data = nullptr);
 	CThreadSafePtrArray			m_arShownList;
 	void Refresh(BOOL IsCleanFilter=TRUE);
-	void RecalculateShownList(CThreadSafePtrArray * pShownlist);
 	void Clear();
 
 	DWORD				m_SelectedFilters;
@@ -449,7 +448,6 @@ public:
 	bool				m_bFilterWithRegex;
 	bool				m_bFilterCaseSensitively;
 	CLogDataVector		m_logEntries;
-	void StartFilter();
 	bool ValidateRegexp(LPCTSTR regexp_str, std::wregex& pat, bool bMatchCase = false );
 	CString				m_sFilterText;
 

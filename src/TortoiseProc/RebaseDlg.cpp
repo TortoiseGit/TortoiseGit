@@ -322,7 +322,10 @@ BOOL CRebaseDlg::OnInitDialog()
 		this->m_UpstreamCtrl.AddString(L"HEAD");
 		this->m_UpstreamCtrl.EnableWindow(FALSE);
 		CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, CString(MAKEINTRESOURCE(IDS_PROGS_TITLE_CHERRYPICK)));
-		this->m_CommitList.StartFilter();
+		// fill shown list
+		for (DWORD i = 0; i < m_CommitList.m_logEntries.size(); ++i)
+			m_CommitList.m_arShownList.SafeAdd(&m_CommitList.m_logEntries.GetGitRevAt(i));
+		m_CommitList.SetItemCountEx((int)m_CommitList.m_arShownList.size());
 	}
 	else
 	{
@@ -2550,10 +2553,8 @@ void CRebaseDlg::OnBnClickedButtonUp()
 		count = moveToTop ? count : (index - 1);
 		while (index > count)
 		{
-			CGitHash old = m_CommitList.m_logEntries[index - 1];
-			m_CommitList.m_logEntries[index - 1] = m_CommitList.m_logEntries[index];
-			m_CommitList.m_logEntries[index] = old;
-			m_CommitList.RecalculateShownList(&m_CommitList.m_arShownList);
+			std::swap(m_CommitList.m_logEntries[index], m_CommitList.m_logEntries[index - 1]);
+			std::swap(m_CommitList.m_arShownList[index], m_CommitList.m_arShownList[index - 1]);
 			m_CommitList.SetItemState(index - 1, LVIS_SELECTED, LVIS_SELECTED);
 			m_CommitList.SetItemState(index, 0, LVIS_SELECTED);
 			changed = true;
@@ -2596,10 +2597,8 @@ void CRebaseDlg::OnBnClickedButtonDown()
 		count = moveToBottom ? count : (index + 1);
 		while (index < count)
 		{
-			CGitHash old = m_CommitList.m_logEntries[index + 1];
-			m_CommitList.m_logEntries[index + 1] = m_CommitList.m_logEntries[index];
-			m_CommitList.m_logEntries[index] = old;
-			m_CommitList.RecalculateShownList(&m_CommitList.m_arShownList);
+			std::swap(m_CommitList.m_logEntries[index], m_CommitList.m_logEntries[index + 1]);
+			std::swap(m_CommitList.m_arShownList[index], m_CommitList.m_arShownList[index + 1]);
 			m_CommitList.SetItemState(index, 0, LVIS_SELECTED);
 			m_CommitList.SetItemState(index + 1, LVIS_SELECTED, LVIS_SELECTED);
 			changed = true;
@@ -2631,14 +2630,14 @@ LRESULT CRebaseDlg::OnCommitsReordered(WPARAM wParam, LPARAM /*lParam*/)
 	if (dest > first)
 	{
 		std::rotate(m_CommitList.m_logEntries.begin() + first, m_CommitList.m_logEntries.begin() + last, m_CommitList.m_logEntries.begin() + dest);
-		m_CommitList.RecalculateShownList(&m_CommitList.m_arShownList);
+		std::rotate(m_CommitList.m_arShownList.begin() + first, m_CommitList.m_arShownList.begin() + last, m_CommitList.m_arShownList.begin() + dest);
 		for (int i = first + dest - last; i < dest; ++i)
 			m_CommitList.SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
 	}
 	else
 	{
 		std::rotate(m_CommitList.m_logEntries.begin() + dest, m_CommitList.m_logEntries.begin() + first, m_CommitList.m_logEntries.begin() + last);
-		m_CommitList.RecalculateShownList(&m_CommitList.m_arShownList);
+		std::rotate(m_CommitList.m_arShownList.begin() + dest, m_CommitList.m_arShownList.begin() + first, m_CommitList.m_arShownList.begin() + last);
 		for (int i = dest; i < dest + (last - first); ++i)
 			m_CommitList.SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
 	}

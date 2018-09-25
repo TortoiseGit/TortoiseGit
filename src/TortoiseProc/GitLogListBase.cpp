@@ -3549,26 +3549,6 @@ CString CGitLogListBase::GetTagInfo(GitRev* pLogEntry)
 	return tagInfo;
 }
 
-void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
-{
-	pShownlist->SafeRemoveAll();
-	for (DWORD i=0; i<m_logEntries.size(); ++i)
-		pShownlist->SafeAdd(&m_logEntries.GetGitRevAt(i));
-}
-
-void CGitLogListBase::StartFilter()
-{
-	InterlockedExchange(&m_bNoDispUpdates, TRUE);
-	RecalculateShownList(&m_arShownList);
-	InterlockedExchange(&m_bNoDispUpdates, FALSE);
-
-
-	DeleteAllItems();
-	SetItemCountEx(m_arShownList.size());
-	RedrawItems(0, m_arShownList.size());
-	Invalidate();
-}
-
 void CGitLogListBase::Clear()
 {
 	m_arShownList.SafeRemoveAll();
