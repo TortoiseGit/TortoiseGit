@@ -1,6 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2018 - TortoiseGit
+// Copyright (C) 2010-2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -44,6 +45,63 @@ bool CLogDlgFilter::Match(const std::wstring& text) const
 	}
 
 	return true;
+}
+
+void CLogDlgFilter::GetMatchRanges(std::vector<CHARRANGE>& ranges, CString textUTF16, int offset) const
+{
+	// normalize to lower case
+	if (!m_bCaseSensitive && !textUTF16.IsEmpty())
+		textUTF16.MakeLower();
+
+	if (m_patterns.empty())
+	{
+		ATLASSERT(!m_sFilterText.empty());
+
+		auto toScan = (LPCTSTR)textUTF16;
+		auto toFind = m_sFilterText.c_str();
+		size_t toFindLength = m_sFilterText.size();
+		auto pFound = wcsstr(toScan, toFind);
+		while (pFound)
+		{
+			CHARRANGE range;
+			range.cpMin = (LONG)(pFound - toScan) + offset;
+			range.cpMax = (LONG)(range.cpMin + toFindLength);
+			ranges.push_back(range);
+			pFound = wcsstr(pFound + 1, toFind);
+		}
+	}
+	else
+	{
+		for (auto it = m_patterns.cbegin(); it != m_patterns.cend(); ++it)
+		{
+			const std::wcregex_iterator end;
+			for (std::wcregex_iterator it2((LPCTSTR)textUTF16, (LPCTSTR)textUTF16 + textUTF16.GetLength(), *it); it2 != end; ++it2)
+			{
+				ptrdiff_t matchposID = it2->position(0);
+				CHARRANGE range = { (LONG)(matchposID) + offset, (LONG)(matchposID + (*it2)[0].str().size()) + offset };
+				ranges.push_back(range);
+			}
+		}
+	}
+
+	if (ranges.empty())
+		return;
+
+	auto begin = ranges.begin();
+	auto end = ranges.end();
+
+	std::sort(begin, end, [](const CHARRANGE& lhs, const CHARRANGE& rhs) -> bool { return lhs.cpMin < rhs.cpMin; });
+
+	// once we are at it, merge adjacent and / or overlapping ranges
+	auto target = begin;
+	for (auto source = begin + 1; source != end; ++source)
+	{
+		if (target->cpMax < source->cpMin)
+			*(++target) = *source;
+		else
+			target->cpMax = max(target->cpMax, source->cpMax);
+	}
+	ranges.erase(++target, end);
 }
 
 // called to parse a (potentially incorrect) regex spec

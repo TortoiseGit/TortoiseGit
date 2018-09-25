@@ -1017,6 +1017,7 @@
 #define IDS_EXPORTFILE_TT               1500
 #define IDC_BRANCH_GROUP                1500
 #define IDC_COLOR_LINE8                 1500
+#define IDC_FILTERMATCHCOLOR            1500
 #define IDS_CHECKOUT_EXPORTDIR          1501
 #define IDC_URL_GROUP                   1501
 #define IDC_OPTION_GROUP                1502

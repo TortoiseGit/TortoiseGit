@@ -51,6 +51,9 @@ public:
 	/// apply filter
 	bool operator()(GitRevLoglist* pRev, CGitLogListBase* loglist) const;
 
+	/// returns a vector with all the ranges where a match was found.
+	void GetMatchRanges(std::vector<CHARRANGE>& ranges, CString text, int offset) const;
+
 	/// filter utiltiy method
 	bool Match(const std::wstring& text) const;
 
@@ -66,4 +69,6 @@ public:
 
 	/// called to parse a (potentially incorrect) regex spec
 	bool ValidateRegexp(const CString& regexp_str, std::vector<std::wregex>& patterns);
+
+	inline DWORD GetSelectedFilters() const { return m_dwAttributeSelector; }
 };

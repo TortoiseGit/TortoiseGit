@@ -150,6 +150,7 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_WM_SETCURSOR()
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LOGLIST, OnLvnItemchangedLoglist)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LOGMSG, OnLvnItemchangedLogmsg)
+	ON_NOTIFY(NM_CUSTOMDRAW, IDC_LOGMSG, OnNMCustomdrawChangedFileList)
 	ON_NOTIFY(EN_LINK, IDC_MSGVIEW, OnEnLinkMsgview)
 	ON_EN_VSCROLL(IDC_MSGVIEW, OnEnscrollMsgview)
 	ON_EN_HSCROLL(IDC_MSGVIEW, OnEnscrollMsgview)
@@ -757,6 +758,42 @@ static int DescribeCommit(CGitHash& hash, CString& result)
 	return 0;
 }
 
+namespace
+{
+bool IsAllWhitespace(const CString& text, long first, long last)
+{
+	for (; first < last; ++first)
+	{
+		wchar_t c = text[first];
+		if (c > L' ')
+			return false;
+
+		if (c != L' ' && c != L'\t' && c != L'\r' && c != L'\n')
+			return false;
+	}
+
+	return true;
+}
+
+void ReduceRanges(std::vector<CHARRANGE>& ranges, const CString& text)
+{
+	if (ranges.size() < 2)
+		return;
+
+	auto begin = ranges.begin();
+	auto end = ranges.end();
+
+	auto target = begin;
+	for (auto source = begin + 1; source != end; ++source)
+		if (IsAllWhitespace(text, target->cpMax, source->cpMin))
+			target->cpMax = source->cpMax;
+		else
+			*(++target) = *source;
+
+	ranges.erase(++target, end);
+}
+} // namespace
+
 void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 {
 	// we fill here the log message rich edit control,
@@ -819,7 +856,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			{
 				CString result;
 				if (!DescribeCommit(pLogEntry->m_CommitHash, result))
-					out_describe = L"Describe: " + result + L"\r\n";
+					out_describe = L"Describe: " + result + L"\n";
 			}
 
 			CString out_counter;
@@ -837,77 +874,82 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 				}
 			}
 
+			std::vector<CHARRANGE> hightlightRanges;
+			std::vector<CHARRANGE> boldRanges;
+			auto filter = m_LogList.m_LogFilter;
+
 			// set the log message text
-			pMsgView->SetWindowText(CString(MAKEINTRESOURCE(IDS_HASH)) + L": " + pLogEntry->m_CommitHash.ToString() + out_counter + L"\r\n" + out_describe + L"\r\n");
-			// turn bug ID's into links if the bugtraq: properties have been set
-			// and we can find a match of those in the log message
+			CString msg = CString(MAKEINTRESOURCE(IDS_HASH)) + L": ";
+			int offset = msg.GetLength();
+			msg += pLogEntry->m_CommitHash.ToString();
+			if ((m_SelectedFilters & LOGFILTER_REVS) && filter->IsFilterActive())
+				filter->GetMatchRanges(hightlightRanges, msg.Mid(offset), offset);
+			msg += out_counter + L"\n" + out_describe + L"\n";
 
-			pMsgView->SetSel(-1,-1);
-			CAppUtils::SetCharFormat(pMsgView, CFM_BOLD, CFE_BOLD);
+			if (m_bAsteriskLogPrefix)
+				msg += L"* ";
+			offset = msg.GetLength();
+			msg += pLogEntry->GetSubject();
+			msg.Remove(L'\r');
+			boldRanges.push_back({ offset, msg.GetLength() });
+			if ((m_SelectedFilters & (LOGFILTER_SUBJECT | LOGFILTER_MESSAGES)) && filter->IsFilterActive())
+				filter->GetMatchRanges(hightlightRanges, msg.Mid(offset), offset);
 
-			CString msg = m_bAsteriskLogPrefix ? L"* " : L"";
-			msg+=pLogEntry->GetSubject();
-			pMsgView->ReplaceSel(msg);
+			msg += L'\n';
+			offset = msg.GetLength();
+			msg += pLogEntry->GetBody();
+			msg.Remove(L'\r');
+			if ((m_SelectedFilters & LOGFILTER_MESSAGES) && filter->IsFilterActive())
+				filter->GetMatchRanges(hightlightRanges, msg.Mid(offset), offset);
 
-			pMsgView->SetSel(-1,-1);
-			CAppUtils::SetCharFormat(pMsgView, CFM_BOLD, 0);
-
-			HCURSOR old = GetCursor(); // hack to fix issue #2792
-
-			msg = L'\n';
-			msg+=pLogEntry->GetBody();
-			pMsgView->ReplaceSel(msg);
-
-			if(!pLogEntry->m_Notes.IsEmpty())
+			if (!pLogEntry->m_Notes.IsEmpty())
 			{
-				pMsgView->SetSel(-1, -1);
-				CAppUtils::SetCharFormat(pMsgView, CFM_BOLD, CFE_BOLD);
-				msg = L'\n';
+				msg += L'\n';
 				if (m_bAsteriskLogPrefix)
 					msg += L"* ";
+				offset = msg.GetLength();
 				msg += CString(MAKEINTRESOURCE(IDS_NOTES)) + L":\n";
-				pMsgView->ReplaceSel(msg);
-				pMsgView->SetSel(-1, -1);
-				CAppUtils::SetCharFormat(pMsgView, CFM_BOLD, 0);
-				pMsgView->ReplaceSel(pLogEntry->m_Notes);
+				boldRanges.push_back({ offset, msg.GetLength() });
+				msg += pLogEntry->m_Notes;
+				msg.Remove(L'\r');
+				if ((m_SelectedFilters & LOGFILTER_NOTES) && filter->IsFilterActive())
+					filter->GetMatchRanges(hightlightRanges, msg.Mid(offset), offset);
 			}
 
 			CString tagInfo = m_LogList.GetTagInfo(pLogEntry);
 			if (!tagInfo.IsEmpty())
 			{
-				pMsgView->SetSel(-1, -1);
-				CAppUtils::SetCharFormat(pMsgView, CFM_BOLD, CFE_BOLD);
-				msg = L'\n';
+				msg += L'\n';
 				if (m_bAsteriskLogPrefix)
 					msg += L"* ";
+				offset = msg.GetLength();
 				msg += CString(MAKEINTRESOURCE(IDS_PROC_LOG_TAGINFO)) + L":\n";
-				pMsgView->ReplaceSel(msg);
-				pMsgView->SetSel(-1, -1);
-				CAppUtils::SetCharFormat(pMsgView, CFM_BOLD, 0);
-				pMsgView->ReplaceSel(tagInfo);
+				boldRanges.push_back({ offset, msg.GetLength() });
+				msg += tagInfo;
+				msg.Remove(L'\r');
+				if ((m_SelectedFilters & LOGFILTER_ANNOTATEDTAG) && filter->IsFilterActive())
+					filter->GetMatchRanges(hightlightRanges, msg.Mid(offset), offset);
 			}
 
-			SetCursor(old);
+			pMsgView->SetWindowText(msg);
 
-			CString text;
-			pMsgView->GetWindowText(text);
-			// the rich edit control doesn't count the CR char!
-			// to be exact: CRLF is treated as one char.
-			text.Remove('\r');
+			CAppUtils::SetCharFormat(pMsgView, CFM_BOLD, CFE_BOLD, boldRanges);
+			if (!hightlightRanges.empty())
+			{
+				ReduceRanges(hightlightRanges, msg);
+				CAppUtils::SetCharFormat(pMsgView, CFM_COLOR, m_Colors.GetColor(CColors::FilterMatch), hightlightRanges);
+			}
 
-			int findHashStart = text.Find('\n');
+			// turn bug ID's into links if the bugtraq: properties have been set
+			// and we can find a match of those in the log message
+			int findHashStart = msg.Find(L'\n');
 			if (!out_describe.IsEmpty())
-				findHashStart = text.Find('\n', findHashStart + 1);
-			FindGitHash(text, findHashStart, pMsgView);
-			m_LogList.m_ProjectProperties.FindBugID(text, pMsgView);
-			CAppUtils::StyleURLs(text, pMsgView);
+				findHashStart = msg.Find(L'\n', findHashStart + 1);
+			FindGitHash(msg, findHashStart, pMsgView);
+			m_LogList.m_ProjectProperties.FindBugID(msg, pMsgView);
+			CAppUtils::StyleURLs(msg, pMsgView);
 			if (((DWORD)CRegStdDWORD(L"Software\\TortoiseGit\\StyleCommitMessages", TRUE)) == TRUE)
 				CAppUtils::FormatTextInRichEditControl(pMsgView);
-
-			CHARRANGE range;
-			range.cpMin = 0;
-			range.cpMax = 0;
-			pMsgView->SendMessage(EM_EXSETSEL, NULL, (LPARAM)&range);
 
 			if (!pLogEntry->m_IsDiffFiles)
 			{
@@ -3539,4 +3581,18 @@ void CLogDlg::OnExitClearFilter()
 		return;
 	}
 	SendMessage(WM_CLOSE);
+}
+
+void CLogDlg::OnNMCustomdrawChangedFileList(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	NMLVCUSTOMDRAW* pLVCD = reinterpret_cast<NMLVCUSTOMDRAW*>(pNMHDR);
+	if (pLVCD->nmcd.dwDrawStage != (CDDS_ITEMPREPAINT | CDDS_ITEM | CDDS_SUBITEM))
+		return;
+
+	if (pLVCD->iSubItem > 2)
+		return;
+
+	auto filter(m_LogList.m_LogFilter);
+	if ((m_SelectedFilters & LOGFILTER_PATHS) && (filter->IsFilterActive()))
+		*pResult = m_LogList.DrawListItemWithMatches(filter.get(), m_ChangedFileListCtrl, pLVCD);
 }

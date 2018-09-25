@@ -3,6 +3,7 @@ Released: unreleased
 
 == Features ==
  * Update libgit to 2.19.0 based on Git for Windows sources
+ * Fixed issue #2591: Enable accent coloring for search term matches in log messages
 
 == Bug Fixes ==
  * Fixed issue #3250: GitWCRev: IsGitItem return true for item that had never been committed

@@ -201,7 +201,7 @@ BEGIN_MESSAGE_MAP(CGitStatusListCtrl, CResizableColumnsListCtrl<CListCtrl>)
 	ON_WM_CONTEXTMENU()
 	ON_NOTIFY_REFLECT(NM_DBLCLK, OnNMDblclk)
 	ON_NOTIFY_REFLECT(LVN_GETINFOTIP, OnLvnGetInfoTip)
-	ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, OnNMCustomdraw)
+	ON_NOTIFY_REFLECT_EX(NM_CUSTOMDRAW, OnNMCustomdraw)
 	ON_NOTIFY_REFLECT(LVN_GETDISPINFO, OnLvnGetdispinfo)
 	ON_WM_SETCURSOR()
 	ON_WM_GETDLGCODE()
@@ -2952,7 +2952,7 @@ void CGitStatusListCtrl::OnLvnGetInfoTip(NMHDR *pNMHDR, LRESULT *pResult)
 		}
 }
 
-void CGitStatusListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
+BOOL CGitStatusListCtrl::OnNMCustomdraw(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	NMLVCUSTOMDRAW* pLVCD = reinterpret_cast<NMLVCUSTOMDRAW*>( pNMHDR );
 
@@ -2970,14 +2970,14 @@ void CGitStatusListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 	case CDDS_ITEMPREPAINT:
 		{
 			// This is the prepaint stage for an item. Here's where we set the
-			// item's text color. Our return value will tell Windows to draw the
-			// item itself, but it will use the new color we set here.
+			// item's text color.
 
-			// Tell Windows to paint the control itself.
-			*pResult = CDRF_DODEFAULT;
+			// Tell Windows we want a callback (be)for(e) painting the subitems.
+			*pResult = CDRF_NOTIFYSUBITEMDRAW;
+
 			CAutoReadWeakLock readLock(m_guard, 0);
 			if (!readLock.IsAcquired())
-				return;
+				return TRUE;
 
 			COLORREF crText = GetSysColor(COLOR_WINDOWTEXT);
 
@@ -2985,7 +2985,7 @@ void CGitStatusListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 			{
 				auto entry = GetListEntry((int)pLVCD->nmcd.dwItemSpec);
 				if (!entry)
-					return;
+					return TRUE;
 
 				// coloring
 				// ========
@@ -3016,7 +3016,12 @@ void CGitStatusListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 			}
 		}
 		break;
+
+		case CDDS_ITEMPREPAINT | CDDS_ITEM | CDDS_SUBITEM:
+			return FALSE; // allow parent to handle this
+			break;
 	}
+	return TRUE;
 }
 
 void CGitStatusListCtrl::OnLvnGetdispinfo(NMHDR* pNMHDR, LRESULT* pResult)
