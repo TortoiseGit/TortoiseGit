@@ -1571,7 +1571,7 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	// By default, clear text buffer.
 	lstrcpyn(pItem->pszText, L"", pItem->cchTextMax - 1);
 
-	bool bOutOfRange = pItem->iItem >= m_arShownList.size();
+	bool bOutOfRange = pItem->iItem >= (int)m_arShownList.size();
 
 	*pResult = 0;
 	if (m_bNoDispUpdates || bOutOfRange)
