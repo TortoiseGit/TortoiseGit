@@ -26,7 +26,32 @@ class CLogDlgFilter {
 private:
 	std::vector<std::wregex> m_patterns;
 
-	std::wstring m_sFilterText;
+	/// sub-string matching info
+	enum Prefix
+	{
+		and,
+		or,
+		and_not,
+	};
+
+	struct SCondition
+	{
+		/// sub-strings to find; normalized to lower case
+		std::wstring subString;
+
+		/// depending on the presense of a prefix, indicate
+		/// how the sub-string match / mismatch gets combined
+		/// with the current match result
+		Prefix prefix;
+
+		/// index within @ref subStringConditions of the
+		/// next condition with prefix==or. 0, if no such
+		/// condition follows.
+		size_t nextOrIndex;
+	};
+
+	/// list of sub-strings to find; normalized to lower case
+	std::vector<SCondition> subStringConditions;
 
 	/// negate pattern matching result
 	bool m_bNegate;
@@ -41,6 +66,9 @@ private:
 	/// temp / scratch objects to minimize the number memory
 	/// allocation operations
 	mutable std::wstring scratch;
+
+	// construction utility
+	void AddSubString(CString token, Prefix prefix);
 
 public:
 	/// construction
