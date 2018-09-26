@@ -1230,7 +1230,14 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 
 					HTHEME hTheme = nullptr;
 					if (IsAppThemed())
+					{
 						hTheme = OpenThemeData(m_hWnd, L"Explorer::ListView;ListView");
+
+						// make sure the column separator/border is not overpainted
+						int borderWidth = 0;
+						GetThemeMetric(hTheme, pLVCD->nmcd.hdc, LVP_LISTITEM, LISS_NORMAL, TMT_BORDERSIZE, &borderWidth);
+						InflateRect(&rect, -(2 * borderWidth), 0);
+					}
 
 					if (hTheme && IsThemeBackgroundPartiallyTransparent(hTheme, LVP_LISTDETAIL, txtState))
 						DrawThemeParentBackground(m_hWnd, pLVCD->nmcd.hdc, &rect);
