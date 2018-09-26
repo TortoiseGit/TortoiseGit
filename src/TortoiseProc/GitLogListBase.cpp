@@ -2703,7 +2703,7 @@ int CGitLogListBase::BeginFetchLog()
 
 	try
 	{
-		[] { git_init(); } ();
+		g_Git.CheckAndInitDll();
 	}
 	catch (char* msg)
 	{
