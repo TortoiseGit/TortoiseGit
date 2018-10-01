@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2016 - TortoiseGit
+// Copyright (C) 2011-2016, 2018 - TortoiseGit
 // Copyright (C) 2006 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
@@ -31,13 +31,10 @@ CFindDlg::CFindDlg(CWnd* pParent /*=nullptr*/)
 	, m_bTerminating(false)
 	, m_bFindNext(false)
 	, m_bMatchCase(FALSE)
-	, m_bLimitToDiffs(FALSE)
-	, m_bWholeWord(FALSE)
 	, m_bRegex(FALSE)
 	, m_bIsRef(false)
 	, m_FindMsg(0)
 	, m_regMatchCase(L"Software\\TortoiseGit\\LogDialog\\FindMatchCase", FALSE)
-	, m_regWholeWord(L"Software\\TortoiseGit\\LogDialog\\FindWholeWord", FALSE)
 	, m_regRegex(L"Software\\TortoiseGit\\LogDialog\\FindRegex", FALSE)
 	, m_pParent(pParent)
 {
@@ -51,7 +48,6 @@ void CFindDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	DDX_Check(pDX, IDC_MATCHCASE, m_bMatchCase);
-	DDX_Check(pDX, IDC_WHOLEWORD, m_bWholeWord);
 	DDX_Check(pDX, IDC_CHECK_REGEX, m_bRegex);
 	DDX_Control(pDX, IDC_FINDCOMBO, m_FindCombo);
 	DDX_Control(pDX, IDC_LIST_REF, m_ctrlRefList);
@@ -94,7 +90,6 @@ void CFindDlg::OnOK()
 	m_FindCombo.SaveHistory();
 
 	m_regMatchCase = m_bMatchCase;
-	m_regWholeWord = m_bWholeWord;
 	m_regRegex = m_bRegex;
 
 	if (m_FindCombo.GetString().IsEmpty())
@@ -117,7 +112,6 @@ BOOL CFindDlg::OnInitDialog()
 	m_FindMsg = RegisterWindowMessage(FINDMSGSTRING);
 
 	m_bMatchCase = (BOOL)(DWORD)m_regMatchCase;
-	m_bWholeWord = (BOOL)(DWORD)m_regWholeWord;
 	m_bRegex = (BOOL)(DWORD)m_regRegex;
 	UpdateData(FALSE);
 

@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2017 - TortoiseGit
+// Copyright (C) 2011-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -41,7 +41,6 @@ public:
 	bool IsTerminating() {return m_bTerminating;}
 	bool FindNext() {return m_bFindNext;}
 	bool MatchCase() {return !!m_bMatchCase;}
-	bool WholeWord() {return !!m_bWholeWord;}
 	bool Regex() {return !!m_bRegex;}
 	bool IsRef()	{return !!m_bIsRef;}
 	CString GetFindString() {return m_FindString;}
@@ -68,8 +67,6 @@ protected:
 	bool			m_bTerminating;
 	bool			m_bFindNext;
 	BOOL			m_bMatchCase;
-	BOOL			m_bLimitToDiffs;
-	BOOL			m_bWholeWord;
 	BOOL			m_bRegex;
 	bool			m_bIsRef;
 	CHistoryCombo	m_FindCombo;
@@ -77,7 +74,6 @@ protected:
 	CWnd			*m_pParent;
 	STRING_VECTOR	m_RefList;
 	CRegDWORD		m_regMatchCase;
-	CRegDWORD		m_regWholeWord;
 	CRegDWORD		m_regRegex;
 
 	void AddToList();
