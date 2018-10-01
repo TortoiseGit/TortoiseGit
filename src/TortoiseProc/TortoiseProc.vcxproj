@@ -135,6 +135,7 @@
     <ClCompile Include="FirstStartWizardUser.cpp" />
     <ClCompile Include="GitTagCompareList.cpp" />
     <ClCompile Include="GravatarPictureBox.cpp" />
+    <ClCompile Include="LogDlgFilter.cpp" />
     <ClCompile Include="MergeAbortDlg.cpp" />
     <ClCompile Include="GitRefCompareList.cpp" />
     <ClCompile Include="ProgressCommands\AddProgressCommand.cpp" />
@@ -424,6 +425,7 @@
     <ClInclude Include="FirstStartWizardUser.h" />
     <ClInclude Include="GitTagCompareList.h" />
     <ClInclude Include="GravatarPictureBox.h" />
+    <ClInclude Include="LogDlgFilter.h" />
     <ClInclude Include="MergeAbortDlg.h" />
     <ClInclude Include="GitRefCompareList.h" />
     <ClInclude Include="ProgressCommands\AddProgressCommand.h" />

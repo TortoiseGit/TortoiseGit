@@ -1,5 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2009, 2011, 2017-2018 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -50,6 +51,7 @@ private:
 	CMFCColorButton	m_cRemoteBranch;
 	CMFCColorButton	m_cLocalBranch;
 	CMFCColorButton	m_cTags;
+	CMFCColorButton	m_cFilterMatch;
 
 	CColors			m_Colors;
 };

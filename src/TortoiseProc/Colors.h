@@ -1,7 +1,7 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2007 - TortoiseSVN
-// Copyright (C) 2009-2013, 2016-2017 - TortoiseGit
+// Copyright (C) 2009-2013, 2016-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -60,6 +60,7 @@ public:
 		BisectBad,
 		BisectSkip,
 		OtherRef,
+		FilterMatch,
 		COLOR_END=-1
 	};
 

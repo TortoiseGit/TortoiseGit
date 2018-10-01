@@ -968,6 +968,9 @@
     <ClCompile Include="..\Utils\LoadIconEx.cpp">
       <Filter>Utils\General</Filter>
     </ClCompile>
+    <ClCompile Include="LogDlgFilter.cpp">
+      <Filter>Commands\Log</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1821,6 +1824,9 @@
     </ClInclude>
     <ClInclude Include="..\Utils\LoadIconEx.h">
       <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="LogDlgFilter.h">
+      <Filter>Commands\Log</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

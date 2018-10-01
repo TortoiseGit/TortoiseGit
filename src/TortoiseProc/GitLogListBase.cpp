@@ -45,7 +45,6 @@ CGitLogListBase::CGitLogListBase() : CHintCtrl<CResizableColumnsListCtrl<CListCt
 	,m_nSearchIndex(0)
 	,m_bNoDispUpdates(FALSE)
 	, m_bThreadRunning(FALSE)
-	, m_SelectedFilters(LOGFILTER_ALL)
 	, m_ShowFilter(FILTERSHOW_ALL)
 	, m_bShowWC(false)
 	, m_logEntries(&m_LogCache)
@@ -74,6 +73,7 @@ CGitLogListBase::CGitLogListBase() : CHintCtrl<CResizableColumnsListCtrl<CListCt
 	, m_nDropIndex(-1)
 	, m_nDropMarkerLast(-1)
 	, m_nDropMarkerLastHot(-1)
+	, m_LogFilter(std::make_shared<CLogDlgFilter>())
 {
 	// use the default GUI font, create a copy of it and
 	// change the copy to BOLD (leave the rest of the font
@@ -90,9 +90,6 @@ CGitLogListBase::CGitLogListBase() : CHintCtrl<CResizableColumnsListCtrl<CListCt
 	m_hAddedIcon = CCommonAppUtils::LoadIconEx(IDI_ACTIONADDED, cx, cy);
 	m_hDeletedIcon = CCommonAppUtils::LoadIconEx(IDI_ACTIONDELETED, cx, cy);
 	m_hFetchIcon = CCommonAppUtils::LoadIconEx(IDI_ACTIONFETCHING, cx, cy);
-
-	m_bFilterWithRegex = !!CRegDWORD(L"Software\\TortoiseGit\\UseRegexFilter", FALSE);
-	m_bFilterCaseSensitively = !!CRegDWORD(L"Software\\TortoiseGit\\FilterCaseSensitively", FALSE);
 
 	m_Filter.m_NumberOfLogsScale = (DWORD)CRegDWORD(L"Software\\TortoiseGit\\LogDialog\\NumberOfLogsScale", CFilterData::SHOW_NO_LIMIT);
 	if (m_Filter.m_NumberOfLogsScale == CFilterData::SHOW_LAST_SEL_DATE)
@@ -514,7 +511,7 @@ void DrawUpstream(HDC hdc, CRect rect, COLORREF color, int bold)
 	::DeleteObject(pen);
 }
 
-void CGitLogListBase::DrawTagBranchMessage(HDC hdc, CRect &rect, INT_PTR index, std::vector<REFLABEL> &refList)
+void CGitLogListBase::DrawTagBranchMessage(NMLVCUSTOMDRAW* pLVCD, CRect& rect, INT_PTR index, std::vector<REFLABEL>& refList)
 {
 	GitRevLoglist* data = m_arShownList.SafeGetAt(index);
 	CRect rt=rect;
@@ -525,7 +522,7 @@ void CGitLogListBase::DrawTagBranchMessage(HDC hdc, CRect &rect, INT_PTR index, 
 	GetItem(&rItem);
 
 	CDC W_Dc;
-	W_Dc.Attach(hdc);
+	W_Dc.Attach(pLVCD->nmcd.hdc);
 
 	HTHEME hTheme = nullptr;
 	if (IsAppThemed())
@@ -534,57 +531,66 @@ void CGitLogListBase::DrawTagBranchMessage(HDC hdc, CRect &rect, INT_PTR index, 
 	SIZE oneSpaceSize;
 	if (m_bTagsBranchesOnRightSide)
 	{
-		HFONT oldFont = (HFONT)SelectObject(hdc, (HFONT)GetStockObject(DEFAULT_GUI_FONT));
-		GetTextExtentPoint32(hdc, L" ", 1, &oneSpaceSize);
-		SelectObject(hdc, oldFont);
+		HFONT oldFont = (HFONT)SelectObject(pLVCD->nmcd.hdc, (HFONT)GetStockObject(DEFAULT_GUI_FONT));
+		GetTextExtentPoint32(pLVCD->nmcd.hdc, L" ", 1, &oneSpaceSize);
+		SelectObject(pLVCD->nmcd.hdc, oldFont);
 		rt.left += oneSpaceSize.cx * 2;
 	}
 	else
 	{
-		GetTextExtentPoint32(hdc, L" ", 1, &oneSpaceSize);
-		DrawTagBranch(hdc, W_Dc, hTheme, rect, rt, rItem, data, refList);
+		GetTextExtentPoint32(pLVCD->nmcd.hdc, L" ", 1, &oneSpaceSize);
+		DrawTagBranch(pLVCD->nmcd.hdc, W_Dc, hTheme, rect, rt, rItem, data, refList);
 		rt.left += oneSpaceSize.cx;
 	}
 
 	CString msg = MessageDisplayStr(data);
 	int action = data->GetRebaseAction();
 	bool skip = !!(action & (LOGACTIONS_REBASE_DONE | LOGACTIONS_REBASE_SKIP));
-	if (IsAppThemed())
+	std::vector<CHARRANGE> ranges;
+	auto filter = m_LogFilter;
+	if ((filter->GetSelectedFilters() & (LOGFILTER_SUBJECT | (m_bFullCommitMessageOnLogLine ? LOGFILTER_MESSAGES : 0))) && filter->IsFilterActive())
+		filter->GetMatchRanges(ranges, msg, 0);
+	if (hTheme)
 	{
 		int txtState = LISS_NORMAL;
 		if (rItem.state & LVIS_SELECTED)
 			txtState = LISS_SELECTED;
 
-		DTTOPTS opts = { 0 };
-		opts.dwSize = sizeof(opts);
-		opts.crText = skip ? RGB(128,128,128) : ::GetSysColor(COLOR_WINDOWTEXT);
-		opts.dwFlags = DTT_TEXTCOLOR;
-		DrawThemeTextEx(hTheme, hdc, LVP_LISTITEM, txtState, msg, -1, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS, &rt, &opts);
+		if (!ranges.empty())
+			DrawListItemWithMatchesRect(pLVCD, ranges, rt, msg, hTheme, txtState);
+		else
+		{
+			DTTOPTS opts = { 0 };
+			opts.dwSize = sizeof(opts);
+			opts.crText = skip ? RGB(128, 128, 128) : ::GetSysColor(COLOR_WINDOWTEXT);
+			opts.dwFlags = DTT_TEXTCOLOR;
+			DrawThemeTextEx(hTheme, pLVCD->nmcd.hdc, LVP_LISTITEM, txtState, msg, -1, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS, &rt, &opts);
+		}
 	}
 	else
 	{
-		if ((rItem.state & LVIS_SELECTED) && (::GetFocus() == m_hWnd))
-		{
-			COLORREF clrOld = ::SetTextColor(hdc, skip ? RGB(128,128,128) : ::GetSysColor(COLOR_HIGHLIGHTTEXT));
-			::DrawText(hdc,msg, msg.GetLength(), &rt, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS);
-			::SetTextColor(hdc, clrOld);
-		}
+		if ((rItem.state & LVIS_SELECTED) && ::GetFocus() == m_hWnd)
+			pLVCD->clrText = skip ? RGB(128, 128, 128) : ::GetSysColor(COLOR_HIGHLIGHTTEXT);
+		else
+			pLVCD->clrText = skip ? RGB(128, 128, 128) : ::GetSysColor(COLOR_WINDOWTEXT);
+		if (!ranges.empty())
+			DrawListItemWithMatchesRect(pLVCD, ranges, rt, msg);
 		else
 		{
-			COLORREF clrOld = ::SetTextColor(hdc, skip ? RGB(128,128,128) : ::GetSysColor(COLOR_WINDOWTEXT));
-			::DrawText(hdc, msg, msg.GetLength(), &rt, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS);
-			::SetTextColor(hdc, clrOld);
+			COLORREF clrOld = ::SetTextColor(pLVCD->nmcd.hdc, pLVCD->clrText);
+			::DrawText(pLVCD->nmcd.hdc, msg, msg.GetLength(), &rt, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS);
+			::SetTextColor(pLVCD->nmcd.hdc, clrOld);
 		}
 	}
 
 	if (m_bTagsBranchesOnRightSide)
 	{
 		SIZE size;
-		GetTextExtentPoint32(hdc, msg, msg.GetLength(), &size);
+		GetTextExtentPoint32(pLVCD->nmcd.hdc, msg, msg.GetLength(), &size);
 
 		rt.left += oneSpaceSize.cx + size.cx;
 
-		DrawTagBranch(hdc, W_Dc, hTheme, rect, rt, rItem, data, refList);
+		DrawTagBranch(pLVCD->nmcd.hdc, W_Dc, hTheme, rect, rt, rItem, data, refList);
 	}
 
 	if (hTheme)
@@ -1156,9 +1162,13 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 			return;
 		}
 		break;
-	case CDDS_ITEMPREPAINT|CDDS_ITEM|CDDS_SUBITEM:
+
+	case CDDS_ITEMPREPAINT | CDDS_ITEM | CDDS_SUBITEM:
+	{
+		switch (pLVCD->iSubItem)
 		{
-			if (pLVCD->iSubItem == LOGLIST_GRAPH && !HasFilterText() && (m_ShowFilter & FILTERSHOW_MERGEPOINTS))
+		case LOGLIST_GRAPH:
+			if ((m_ShowFilter & FILTERSHOW_MERGEPOINTS) && !m_LogFilter->IsFilterActive())
 			{
 				if (m_arShownList.size() > pLVCD->nmcd.dwItemSpec && !this->m_IsRebaseReplaceGraph)
 				{
@@ -1176,302 +1186,329 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 					return;
 				}
 			}
+			break;
 
-			if (pLVCD->iSubItem == LOGLIST_MESSAGE)
+		case LOGLIST_MESSAGE:
+			// If the top index of list is changed, the position map of reference label is outdated.
+			if (m_OldTopIndex != GetTopIndex())
 			{
-				// If the top index of list is changed, the position map of reference label is outdated.
-				if (m_OldTopIndex != GetTopIndex())
-				{
-					m_OldTopIndex = GetTopIndex();
-					m_RefLabelPosMap.clear();
-				}
-
-				if (m_arShownList.size() > pLVCD->nmcd.dwItemSpec)
-				{
-					GitRevLoglist* data = m_arShownList.SafeGetAt(pLVCD->nmcd.dwItemSpec);
-
-					if ((m_HashMap.find(data->m_CommitHash) != m_HashMap.cend() || (!m_superProjectHash.IsEmpty() && data->m_CommitHash == m_superProjectHash)) && !(data->GetRebaseAction() & LOGACTIONS_REBASE_DONE))
-					{
-						CRect rect;
-						GetSubItemRect((int)pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem, LVIR_BOUNDS, rect);
-
-						// BEGIN: extended redraw, HACK for issue #1618 and #2014
-						// not in FillBackGround method, because this only affected the message subitem
-						if (0 != pLVCD->iStateId) // don't know why, but this helps against loosing the focus rect
-							return;
-
-						int index = (int)pLVCD->nmcd.dwItemSpec;
-						int state = GetItemState(index, LVIS_SELECTED);
-						int txtState = LISS_NORMAL;
-						if (IsAppThemed() && GetHotItem() == (int)index)
-						{
-							if (state & LVIS_SELECTED)
-								txtState = LISS_HOTSELECTED;
-							else
-								txtState = LISS_HOT;
-						}
-						else if (state & LVIS_SELECTED)
-						{
-							if (::GetFocus() == m_hWnd)
-								txtState = LISS_SELECTED;
-							else
-								txtState = LISS_SELECTEDNOTFOCUS;
-						}
-
-						HTHEME hTheme = nullptr;
-						if (IsAppThemed())
-							hTheme = OpenThemeData(m_hWnd, L"Explorer::ListView;ListView");
-
-						if (hTheme && IsThemeBackgroundPartiallyTransparent(hTheme, LVP_LISTDETAIL, txtState))
-							DrawThemeParentBackground(m_hWnd, pLVCD->nmcd.hdc, &rect);
-						else
-						{
-							HBRUSH brush = ::CreateSolidBrush(pLVCD->clrTextBk);
-							::FillRect(pLVCD->nmcd.hdc, rect, brush);
-							::DeleteObject(brush);
-						}
-						if (hTheme && txtState != LISS_NORMAL)
-						{
-							CRect rt;
-							// get rect of whole line
-							GetItemRect(index, rt, LVIR_BOUNDS);
-							CRect rect2 = rect;
-
-							// calculate background for rect of whole line, but limit redrawing to SubItem rect
-							DrawThemeBackground(hTheme, pLVCD->nmcd.hdc, LVP_LISTITEM, txtState, rt, rect2);
-
-							CloseThemeData(hTheme);
-						}
-						// END: extended redraw
-
-						FillBackGround(pLVCD->nmcd.hdc, pLVCD->nmcd.dwItemSpec,rect);
-
-						std::vector<REFLABEL> refsToShow;
-						STRING_VECTOR remoteTrackingList;
-						const STRING_VECTOR& refList = m_HashMap[data->m_CommitHash];
-						for (unsigned int i = 0; i < refList.size(); ++i)
-						{
-							CString str = refList[i];
-
-							REFLABEL refLabel;
-							refLabel.color = RGB(255, 255, 255);
-							refLabel.singleRemote = false;
-							refLabel.hasTracking = false;
-							refLabel.sameName = false;
-							refLabel.name = CGit::GetShortName(str, &refLabel.refType);
-							refLabel.fullName = str;
-
-							switch (refLabel.refType)
-							{
-							case CGit::REF_TYPE::LOCAL_BRANCH:
-							{
-								if (!(m_ShowRefMask & LOGLIST_SHOWLOCALBRANCHES))
-									continue;
-								if (refLabel.name == m_CurrentBranch)
-									refLabel.color = m_Colors.GetColor(CColors::CurrentBranch);
-								else
-									refLabel.color = m_Colors.GetColor(CColors::LocalBranch);
-
-								std::pair<CString, CString> trackingEntry = m_TrackingMap[refLabel.name];
-								CString pullRemote = trackingEntry.first;
-								CString pullBranch = trackingEntry.second;
-								if (!pullRemote.IsEmpty() && !pullBranch.IsEmpty())
-								{
-									CString defaultUpstream;
-									defaultUpstream.Format(L"refs/remotes/%s/%s", (LPCTSTR)pullRemote, (LPCTSTR)pullBranch);
-									refLabel.hasTracking = true;
-									if (m_ShowRefMask & LOGLIST_SHOWREMOTEBRANCHES)
-									{
-										bool found = false;
-										for (size_t j = i + 1; j < refList.size(); ++j)
-										{
-											if (refList[j] == defaultUpstream)
-											{
-												found = true;
-												break;
-											}
-										}
-
-										if (found)
-										{
-											bool sameName = pullBranch == refLabel.name;
-											refsToShow.push_back(refLabel);
-											CGit::GetShortName(defaultUpstream, refLabel.name, L"refs/remotes/");
-											refLabel.color = m_Colors.GetColor(CColors::RemoteBranch);
-											if (m_bSymbolizeRefNames)
-											{
-												if (!m_SingleRemote.IsEmpty() && m_SingleRemote == pullRemote)
-												{
-													refLabel.simplifiedName = L'/';
-													if (sameName)
-														refLabel.simplifiedName += L'≡';
-													else
-														refLabel.simplifiedName += pullBranch;
-													refLabel.singleRemote = true;
-												}
-												else if (sameName)
-													refLabel.simplifiedName = pullRemote + L"/≡";
-												refLabel.sameName = sameName;
-											}
-											refLabel.fullName = defaultUpstream;
-											refsToShow.push_back(refLabel);
-											remoteTrackingList.push_back(defaultUpstream);
-											continue;
-										}
-									}
-								}
-								break;
-							}
-							case CGit::REF_TYPE::REMOTE_BRANCH:
-							{
-								if (!(m_ShowRefMask & LOGLIST_SHOWREMOTEBRANCHES))
-									continue;
-								bool found = false;
-								for (size_t j = 0; j < remoteTrackingList.size(); ++j)
-								{
-									if (remoteTrackingList[j] == str)
-									{
-										found = true;
-										break;
-									}
-								}
-								if (found)
-									continue;
-
-								refLabel.color = m_Colors.GetColor(CColors::RemoteBranch);
-								if (m_bSymbolizeRefNames)
-								{
-									if (!m_SingleRemote.IsEmpty() && CStringUtils::StartsWith(refLabel.name, m_SingleRemote + L"/"))
-									{
-										refLabel.simplifiedName = L'/' + refLabel.name.Mid(m_SingleRemote.GetLength() + 1);
-										refLabel.singleRemote = true;
-									}
-								}
-								break;
-							}
-							case CGit::REF_TYPE::ANNOTATED_TAG:
-							case CGit::REF_TYPE::TAG:
-								if (!(m_ShowRefMask & LOGLIST_SHOWTAGS))
-									continue;
-								refLabel.color = m_Colors.GetColor(CColors::Tag);
-								break;
-							case CGit::REF_TYPE::STASH:
-								if (!(m_ShowRefMask & LOGLIST_SHOWSTASH))
-									continue;
-								refLabel.color = m_Colors.GetColor(CColors::Stash);
-								break;
-							case CGit::REF_TYPE::BISECT_GOOD:
-							case CGit::REF_TYPE::BISECT_BAD:
-							case CGit::REF_TYPE::BISECT_SKIP:
-								if (!(m_ShowRefMask & LOGLIST_SHOWBISECT))
-									continue;
-								refLabel.color = (refLabel.refType == CGit::REF_TYPE::BISECT_GOOD) ? m_Colors.GetColor(CColors::BisectGood) : ((refLabel.refType == CGit::REF_TYPE::BISECT_SKIP) ? m_Colors.GetColor(CColors::BisectSkip) : m_Colors.GetColor(CColors::BisectBad));
-								break;
-							case CGit::REF_TYPE::NOTES:
-								if (!(m_ShowRefMask & LOGLIST_SHOWOTHERREFS))
-									continue;
-								refLabel.color = m_Colors.GetColor(CColors::NoteNode);
-								break;
-							default:
-								if (!(m_ShowRefMask & LOGLIST_SHOWOTHERREFS))
-									continue;
-								refLabel.color = m_Colors.GetColor(CColors::OtherRef);
-								break;
-							}
-							refsToShow.push_back(refLabel);
-						}
-						if (!m_superProjectHash.IsEmpty() && data->m_CommitHash == m_superProjectHash)
-						{
-							REFLABEL refLabel;
-							refLabel.color = RGB(246, 153, 253);
-							refLabel.singleRemote = false;
-							refLabel.hasTracking = false;
-							refLabel.sameName = false;
-							refLabel.name = L"super-project-pointer";
-							refLabel.fullName = "";
-							refsToShow.push_back(refLabel);
-						}
-
-						if (refsToShow.empty())
-						{
-							*pResult = CDRF_DODEFAULT;
-							return;
-						}
-
-						DrawTagBranchMessage(pLVCD->nmcd.hdc, rect, pLVCD->nmcd.dwItemSpec, refsToShow);
-
-						*pResult = CDRF_SKIPDEFAULT;
-						return;
-
-					}
-
-				}
+				m_OldTopIndex = GetTopIndex();
+				m_RefLabelPosMap.clear();
 			}
 
-			if (pLVCD->iSubItem == LOGLIST_ACTION)
+			if (m_arShownList.size() > pLVCD->nmcd.dwItemSpec)
 			{
-				if (m_IsIDReplaceAction || !m_ColumnManager.IsVisible(LOGLIST_ACTION))
+				GitRevLoglist* data = m_arShownList.SafeGetAt(pLVCD->nmcd.dwItemSpec);
+
+				if ((m_HashMap.find(data->m_CommitHash) != m_HashMap.cend() || (!m_superProjectHash.IsEmpty() && data->m_CommitHash == m_superProjectHash)) && !(data->GetRebaseAction() & LOGACTIONS_REBASE_DONE))
 				{
-					*pResult = CDRF_DODEFAULT;
-					return;
-				}
-				*pResult = CDRF_DODEFAULT;
+					CRect rect;
+					GetSubItemRect((int)pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem, LVIR_BOUNDS, rect);
 
-				if (m_arShownList.size() <= pLVCD->nmcd.dwItemSpec)
-					return;
+					// BEGIN: extended redraw, HACK for issue #1618 and #2014
+					// not in FillBackGround method, because this only affected the message subitem
+					if (0 != pLVCD->iStateId) // don't know why, but this helps against loosing the focus rect
+						return;
 
-				int		nIcons = 0;
-				int		iconwidth = ::GetSystemMetrics(SM_CXSMICON);
-				int		iconheight = ::GetSystemMetrics(SM_CYSMICON);
+					int index = (int)pLVCD->nmcd.dwItemSpec;
+					int state = GetItemState(index, LVIS_SELECTED);
+					int txtState = LISS_NORMAL;
+					if (IsAppThemed() && GetHotItem() == (int)index)
+					{
+						if (state & LVIS_SELECTED)
+							txtState = LISS_HOTSELECTED;
+						else
+							txtState = LISS_HOT;
+					}
+					else if (state & LVIS_SELECTED)
+					{
+						if (::GetFocus() == m_hWnd)
+							txtState = LISS_SELECTED;
+						else
+							txtState = LISS_SELECTEDNOTFOCUS;
+					}
 
-				GitRevLoglist* pLogEntry = m_arShownList.SafeGetAt(pLVCD->nmcd.dwItemSpec);
-				CRect rect;
-				GetSubItemRect((int)pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem, LVIR_BOUNDS, rect);
-				//TRACE(L"Action left %d right %d\r\n", rect.left, rect.right);
-				// Get the selected state of the
-				// item being drawn.
+					HTHEME hTheme = nullptr;
+					if (IsAppThemed())
+						hTheme = OpenThemeData(m_hWnd, L"Explorer::ListView;ListView");
 
-				CMemDC myDC(*CDC::FromHandle(pLVCD->nmcd.hdc), rect);
-				BitBlt(myDC.GetDC(), rect.left, rect.top, rect.Width(), rect.Height(), pLVCD->nmcd.hdc, rect.left, rect.top, SRCCOPY);
+					if (hTheme && IsThemeBackgroundPartiallyTransparent(hTheme, LVP_LISTDETAIL, txtState))
+						DrawThemeParentBackground(m_hWnd, pLVCD->nmcd.hdc, &rect);
+					else
+					{
+						HBRUSH brush = ::CreateSolidBrush(pLVCD->clrTextBk);
+						::FillRect(pLVCD->nmcd.hdc, rect, brush);
+						::DeleteObject(brush);
+					}
+					if (hTheme && txtState != LISS_NORMAL)
+					{
+						CRect rt;
+						// get rect of whole line
+						GetItemRect(index, rt, LVIR_BOUNDS);
+						CRect rect2 = rect;
 
-				// Fill the background if necessary
-				FillBackGround(myDC.GetDC(), pLVCD->nmcd.dwItemSpec, rect);
+						// calculate background for rect of whole line, but limit redrawing to SubItem rect
+						DrawThemeBackground(hTheme, pLVCD->nmcd.hdc, LVP_LISTITEM, txtState, rt, rect2);
 
-				// Draw the icon(s) into the compatible DC
-				int action = pLogEntry->GetAction(this);
-				auto iconItemBorder = CDPIAware::Instance().ScaleX(ICONITEMBORDER);
-				if (!pLogEntry->m_IsDiffFiles)
-				{
-					::DrawIconEx(myDC.GetDC(), rect.left + iconItemBorder, rect.top, m_hFetchIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
+						CloseThemeData(hTheme);
+					}
+					// END: extended redraw
+
+					FillBackGround(pLVCD->nmcd.hdc, pLVCD->nmcd.dwItemSpec, rect);
+
+					std::vector<REFLABEL> refsToShow;
+					STRING_VECTOR remoteTrackingList;
+					const STRING_VECTOR& refList = m_HashMap[data->m_CommitHash];
+					for (unsigned int i = 0; i < refList.size(); ++i)
+					{
+						CString str = refList[i];
+
+						REFLABEL refLabel;
+						refLabel.color = RGB(255, 255, 255);
+						refLabel.singleRemote = false;
+						refLabel.hasTracking = false;
+						refLabel.sameName = false;
+						refLabel.name = CGit::GetShortName(str, &refLabel.refType);
+						refLabel.fullName = str;
+
+						switch (refLabel.refType)
+						{
+						case CGit::REF_TYPE::LOCAL_BRANCH:
+						{
+							if (!(m_ShowRefMask & LOGLIST_SHOWLOCALBRANCHES))
+								continue;
+							if (refLabel.name == m_CurrentBranch)
+								refLabel.color = m_Colors.GetColor(CColors::CurrentBranch);
+							else
+								refLabel.color = m_Colors.GetColor(CColors::LocalBranch);
+
+							std::pair<CString, CString> trackingEntry = m_TrackingMap[refLabel.name];
+							CString pullRemote = trackingEntry.first;
+							CString pullBranch = trackingEntry.second;
+							if (!pullRemote.IsEmpty() && !pullBranch.IsEmpty())
+							{
+								CString defaultUpstream;
+								defaultUpstream.Format(L"refs/remotes/%s/%s", (LPCTSTR)pullRemote, (LPCTSTR)pullBranch);
+								refLabel.hasTracking = true;
+								if (m_ShowRefMask & LOGLIST_SHOWREMOTEBRANCHES)
+								{
+									bool found = false;
+									for (size_t j = i + 1; j < refList.size(); ++j)
+									{
+										if (refList[j] == defaultUpstream)
+										{
+											found = true;
+											break;
+										}
+									}
+
+									if (found)
+									{
+										bool sameName = pullBranch == refLabel.name;
+										refsToShow.push_back(refLabel);
+										CGit::GetShortName(defaultUpstream, refLabel.name, L"refs/remotes/");
+										refLabel.color = m_Colors.GetColor(CColors::RemoteBranch);
+										if (m_bSymbolizeRefNames)
+										{
+											if (!m_SingleRemote.IsEmpty() && m_SingleRemote == pullRemote)
+											{
+												refLabel.simplifiedName = L'/';
+												if (sameName)
+													refLabel.simplifiedName += L'≡';
+												else
+													refLabel.simplifiedName += pullBranch;
+												refLabel.singleRemote = true;
+											}
+											else if (sameName)
+												refLabel.simplifiedName = pullRemote + L"/≡";
+											refLabel.sameName = sameName;
+										}
+										refLabel.fullName = defaultUpstream;
+										refsToShow.push_back(refLabel);
+										remoteTrackingList.push_back(defaultUpstream);
+										continue;
+									}
+								}
+							}
+							break;
+						}
+						case CGit::REF_TYPE::REMOTE_BRANCH:
+						{
+							if (!(m_ShowRefMask & LOGLIST_SHOWREMOTEBRANCHES))
+								continue;
+							bool found = false;
+							for (size_t j = 0; j < remoteTrackingList.size(); ++j)
+							{
+								if (remoteTrackingList[j] == str)
+								{
+									found = true;
+									break;
+								}
+							}
+							if (found)
+								continue;
+
+							refLabel.color = m_Colors.GetColor(CColors::RemoteBranch);
+							if (m_bSymbolizeRefNames)
+							{
+								if (!m_SingleRemote.IsEmpty() && CStringUtils::StartsWith(refLabel.name, m_SingleRemote + L"/"))
+								{
+									refLabel.simplifiedName = L'/' + refLabel.name.Mid(m_SingleRemote.GetLength() + 1);
+									refLabel.singleRemote = true;
+								}
+							}
+							break;
+						}
+						case CGit::REF_TYPE::ANNOTATED_TAG: // fallthrough
+						case CGit::REF_TYPE::TAG:
+							if (!(m_ShowRefMask & LOGLIST_SHOWTAGS))
+								continue;
+							refLabel.color = m_Colors.GetColor(CColors::Tag);
+							break;
+
+						case CGit::REF_TYPE::STASH:
+							if (!(m_ShowRefMask & LOGLIST_SHOWSTASH))
+								continue;
+							refLabel.color = m_Colors.GetColor(CColors::Stash);
+							break;
+
+						case CGit::REF_TYPE::BISECT_GOOD: // fallthrough
+						case CGit::REF_TYPE::BISECT_BAD: // fallthrough
+						case CGit::REF_TYPE::BISECT_SKIP:
+							if (!(m_ShowRefMask & LOGLIST_SHOWBISECT))
+								continue;
+							refLabel.color = (refLabel.refType == CGit::REF_TYPE::BISECT_GOOD) ? m_Colors.GetColor(CColors::BisectGood) : ((refLabel.refType == CGit::REF_TYPE::BISECT_SKIP) ? m_Colors.GetColor(CColors::BisectSkip) : m_Colors.GetColor(CColors::BisectBad));
+							break;
+
+						case CGit::REF_TYPE::NOTES:
+							if (!(m_ShowRefMask & LOGLIST_SHOWOTHERREFS))
+								continue;
+							refLabel.color = m_Colors.GetColor(CColors::NoteNode);
+							break;
+
+						default:
+							if (!(m_ShowRefMask & LOGLIST_SHOWOTHERREFS))
+								continue;
+							refLabel.color = m_Colors.GetColor(CColors::OtherRef);
+							break;
+						}
+						refsToShow.push_back(refLabel);
+					}
+					if (!m_superProjectHash.IsEmpty() && data->m_CommitHash == m_superProjectHash)
+					{
+						REFLABEL refLabel;
+						refLabel.color = RGB(246, 153, 253);
+						refLabel.singleRemote = false;
+						refLabel.hasTracking = false;
+						refLabel.sameName = false;
+						refLabel.name = L"super-project-pointer";
+						refLabel.fullName = "";
+						refsToShow.push_back(refLabel);
+					}
+
+					if (refsToShow.empty())
+					{
+						*pResult = CDRF_DODEFAULT;
+						return;
+					}
+
+					DrawTagBranchMessage(pLVCD, rect, pLVCD->nmcd.dwItemSpec, refsToShow);
+
 					*pResult = CDRF_SKIPDEFAULT;
 					return;
 				}
+				else if (DrawListItemWithMatchesIfEnabled(m_LogFilter, LOGFILTER_SUBJECT | LOGFILTER_MESSAGES, pLVCD, pResult))
+					return;
+			}
+			break;
 
-				if (action & CTGitPath::LOGACTIONS_MODIFIED)
-					::DrawIconEx(myDC.GetDC(), rect.left + iconItemBorder, rect.top, m_hModifiedIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
-				++nIcons;
+		case LOGLIST_ACTION:
+		{
+			if (m_IsIDReplaceAction || !m_ColumnManager.IsVisible(LOGLIST_ACTION))
+			{
+				*pResult = CDRF_DODEFAULT;
+				return;
+			}
+			*pResult = CDRF_DODEFAULT;
 
-				if (action & (CTGitPath::LOGACTIONS_ADDED | CTGitPath::LOGACTIONS_COPY))
-					::DrawIconEx(myDC.GetDC(), rect.left + nIcons * iconwidth + iconItemBorder, rect.top, m_hAddedIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
-				++nIcons;
+			if (m_arShownList.size() <= pLVCD->nmcd.dwItemSpec)
+				return;
 
-				if (action & CTGitPath::LOGACTIONS_DELETED)
-					::DrawIconEx(myDC.GetDC(), rect.left + nIcons * iconwidth + iconItemBorder, rect.top, m_hDeletedIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
-				++nIcons;
+			int nIcons = 0;
+			int iconwidth = ::GetSystemMetrics(SM_CXSMICON);
+			int iconheight = ::GetSystemMetrics(SM_CYSMICON);
 
-				if (action & CTGitPath::LOGACTIONS_REPLACED)
-					::DrawIconEx(myDC.GetDC(), rect.left + nIcons * iconwidth + iconItemBorder, rect.top, m_hReplacedIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
-				++nIcons;
+			GitRevLoglist* pLogEntry = m_arShownList.SafeGetAt(pLVCD->nmcd.dwItemSpec);
+			CRect rect;
+			GetSubItemRect((int)pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem, LVIR_BOUNDS, rect);
+			//TRACE(L"Action left %d right %d\r\n", rect.left, rect.right);
+			// Get the selected state of the
+			// item being drawn.
 
-				if (action & CTGitPath::LOGACTIONS_UNMERGED)
-					::DrawIconEx(myDC.GetDC(), rect.left + nIcons * iconwidth + iconItemBorder, rect.top, m_hConflictedIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
-				++nIcons;
+			CMemDC myDC(*CDC::FromHandle(pLVCD->nmcd.hdc), rect);
+			BitBlt(myDC.GetDC(), rect.left, rect.top, rect.Width(), rect.Height(), pLVCD->nmcd.hdc, rect.left, rect.top, SRCCOPY);
 
+			// Fill the background if necessary
+			FillBackGround(myDC.GetDC(), pLVCD->nmcd.dwItemSpec, rect);
+
+			// Draw the icon(s) into the compatible DC
+			int action = pLogEntry->GetAction(this);
+			auto iconItemBorder = CDPIAware::Instance().ScaleX(ICONITEMBORDER);
+			if (!pLogEntry->m_IsDiffFiles)
+			{
+				::DrawIconEx(myDC.GetDC(), rect.left + iconItemBorder, rect.top, m_hFetchIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
 				*pResult = CDRF_SKIPDEFAULT;
 				return;
 			}
+
+			if (action & CTGitPath::LOGACTIONS_MODIFIED)
+				::DrawIconEx(myDC.GetDC(), rect.left + iconItemBorder, rect.top, m_hModifiedIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
+			++nIcons;
+
+			if (action & (CTGitPath::LOGACTIONS_ADDED | CTGitPath::LOGACTIONS_COPY))
+				::DrawIconEx(myDC.GetDC(), rect.left + nIcons * iconwidth + iconItemBorder, rect.top, m_hAddedIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
+			++nIcons;
+
+			if (action & CTGitPath::LOGACTIONS_DELETED)
+				::DrawIconEx(myDC.GetDC(), rect.left + nIcons * iconwidth + iconItemBorder, rect.top, m_hDeletedIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
+			++nIcons;
+
+			if (action & CTGitPath::LOGACTIONS_REPLACED)
+				::DrawIconEx(myDC.GetDC(), rect.left + nIcons * iconwidth + iconItemBorder, rect.top, m_hReplacedIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
+			++nIcons;
+
+			if (action & CTGitPath::LOGACTIONS_UNMERGED)
+				::DrawIconEx(myDC.GetDC(), rect.left + nIcons * iconwidth + iconItemBorder, rect.top, m_hConflictedIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
+			++nIcons;
+
+			*pResult = CDRF_SKIPDEFAULT;
+			return;
 		}
-		break;
+
+		case LOGLIST_HASH:
+			if (DrawListItemWithMatchesIfEnabled(m_LogFilter, LOGFILTER_REVS, pLVCD, pResult))
+				return;
+			break;
+
+		case LOGLIST_AUTHOR:
+		case LOGLIST_COMMIT_NAME:
+			if (DrawListItemWithMatchesIfEnabled(m_LogFilter, LOGFILTER_AUTHORS, pLVCD, pResult))
+				return;
+			break;
+
+		case LOGLIST_EMAIL:
+		case LOGLIST_COMMIT_EMAIL:
+			if (DrawListItemWithMatchesIfEnabled(m_LogFilter, LOGFILTER_EMAILS, pLVCD, pResult))
+				return;
+			break;
+
+		case LOGLIST_BUG:
+			if (DrawListItemWithMatchesIfEnabled(m_LogFilter, LOGFILTER_BUGID, pLVCD, pResult))
+				return;
+			break;
+		}
+	}
+	break;
 	}
 	*pResult = CDRF_DODEFAULT;
 }
@@ -2845,10 +2882,9 @@ UINT CGitLogListBase::LogThread()
 		return 1;
 	}
 
-	std::wregex pat;//(L"Remove", regex_constants::icase);
-	bool bRegex = false;
-	if (m_bFilterWithRegex)
-		bRegex = ValidateRegexp(m_sFilterText[0] == '!' ? m_sFilterText.Mid(1) : m_sFilterText, pat, false);
+	// create a copy we can safely work on in this thread
+	auto shared_filter(m_LogFilter);
+	auto& filter = *shared_filter;
 
 	TRACE(L"\n===Begin===\n");
 	//Update work copy item;
@@ -3000,12 +3036,7 @@ UINT CGitLogListBase::LogThread()
 			TRACE(L"\n");
 #endif
 
-			bool visible = true;
-			if (HasFilterText())
-			{
-				if(!IsMatchFilter(bRegex,pRev,pat))
-					visible = false;
-			}
+			bool visible = filter(pRev, this);
 			if (visible && !ShouldShowFilter(pRev, commitChildren))
 				visible = false;
 			this->m_critSec.Lock();
@@ -3125,10 +3156,8 @@ void CGitLogListBase::Refresh(BOOL IsCleanFilter)
 	{
 		m_logEntries.clear();
 
-		if(IsCleanFilter)
-		{
-			m_sFilterText.Empty();
-		}
+		if (IsCleanFilter)
+			m_LogFilter = std::make_shared<CLogDlgFilter>();
 
 		SafeTerminateAsyncDiffThread();
 		m_AsynDiffListLock.Lock();
@@ -3167,263 +3196,6 @@ void CGitLogListBase::StartLoadingThread()
 		InterlockedExchange(&m_bNoDispUpdates, FALSE);
 		CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 	}
-}
-
-bool CGitLogListBase::ValidateRegexp(LPCTSTR regexp_str, std::wregex& pat, bool bMatchCase /* = false */)
-{
-	try
-	{
-		std::regex_constants::syntax_option_type type = std::regex_constants::ECMAScript;
-		if (!bMatchCase)
-			type |= std::regex_constants::icase;
-		pat = std::wregex(regexp_str, type);
-		return true;
-	}
-	catch (std::exception&) {}
-	return false;
-}
-BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::wregex& pat)
-{
-	BOOL result = m_sFilterText[0] == '!' ? FALSE : TRUE;
-	std::regex_constants::match_flag_type flags = std::regex_constants::match_any;
-	CString sRev;
-
-	if ((bRegex)&&(m_bFilterWithRegex))
-	{
-		if (m_SelectedFilters & LOGFILTER_BUGID)
-		{
-			if(this->m_bShowBugtraqColumn)
-			{
-				CString sBugIds = m_ProjectProperties.FindBugID(pRev->GetSubjectBody());
-
-				ATLTRACE(L"bugID = \"%s\"\n", (LPCTSTR)sBugIds);
-				if (std::regex_search(std::wstring(sBugIds), pat, flags))
-					return result;
-			}
-		}
-
-		if ((m_SelectedFilters & LOGFILTER_SUBJECT) || (m_SelectedFilters & LOGFILTER_MESSAGES))
-		{
-			ATLTRACE(L"messge = \"%s\"\n", (LPCTSTR)pRev->GetSubject());
-			if (std::regex_search(std::wstring((LPCTSTR)pRev->GetSubject()), pat, flags))
-				return result;
-		}
-
-		if (m_SelectedFilters & LOGFILTER_MESSAGES)
-		{
-			ATLTRACE(L"messge = \"%s\"\n", (LPCTSTR)pRev->GetBody());
-			if (std::regex_search(std::wstring((LPCTSTR)pRev->GetBody()), pat, flags))
-				return result;
-		}
-
-		if (m_SelectedFilters & LOGFILTER_AUTHORS)
-		{
-			if (std::regex_search(std::wstring(pRev->GetAuthorName()), pat, flags))
-				return result;
-
-			if (std::regex_search(std::wstring(pRev->GetCommitterName()), pat, flags))
-				return result;
-		}
-
-		if (m_SelectedFilters & LOGFILTER_EMAILS)
-		{
-			if (std::regex_search(std::wstring(pRev->GetAuthorEmail()), pat, flags))
-				return result;
-
-			if (std::regex_search(std::wstring(pRev->GetCommitterEmail()), pat, flags))
-				return result;
-		}
-
-		if (m_SelectedFilters & LOGFILTER_REVS)
-		{
-			sRev = pRev->m_CommitHash.ToString();
-			if (std::regex_search(std::wstring((LPCTSTR)sRev), pat, flags))
-			{
-				return result;
-			}
-		}
-
-		if (m_SelectedFilters & LOGFILTER_NOTES)
-		{
-			if (std::regex_search(std::wstring(pRev->m_Notes), pat, flags))
-				return result;
-		}
-
-		if ((m_SelectedFilters & LOGFILTER_REFNAME) && m_HashMap.find(pRev->m_CommitHash) != m_HashMap.cend())
-		{
-			const STRING_VECTOR& refs = m_HashMap[pRev->m_CommitHash];
-			for (const auto& ref : refs)
-			{
-				if (std::regex_search(std::wstring(ref), pat, flags))
-					return result;
-			}
-		}
-
-		if (m_SelectedFilters & LOGFILTER_ANNOTATEDTAG)
-		{
-			if (std::regex_search(std::wstring(GetTagInfo(pRev)), pat, flags))
-				return result;
-		}
-
-		if (m_SelectedFilters & LOGFILTER_PATHS)
-		{
-			CTGitPathList* pathList = nullptr;
-			if( pRev->m_IsDiffFiles)
-				pathList = &pRev->GetFiles(this);
-			else
-			{
-				if(!pRev->m_IsSimpleListReady)
-					pRev->SafeGetSimpleList(&g_Git);
-			}
-
-			if(pathList)
-				for (INT_PTR cpPathIndex = 0; cpPathIndex < pathList->GetCount(); ++cpPathIndex)
-				{
-					if (std::regex_search(std::wstring((LPCTSTR)pathList->m_paths[cpPathIndex].GetGitOldPathString()), pat, flags))
-						return result;
-					if (std::regex_search(std::wstring((LPCTSTR)pathList->m_paths[cpPathIndex].GetGitPathString()), pat, flags))
-						return result;
-				}
-
-			for (size_t i = 0; i < pRev->m_SimpleFileList.size(); ++i)
-			{
-				if (std::regex_search(std::wstring((LPCTSTR)pRev->m_SimpleFileList[i]), pat, flags))
-					return result;
-			}
-		}
-	}
-	else
-	{
-		CString find = m_sFilterText;
-		if (!m_bFilterCaseSensitively)
-			find.MakeLower();
-		result = find[0] == '!' ? FALSE : TRUE;
-		if (!result)
-			find = find.Mid(1);
-
-		if (m_SelectedFilters & LOGFILTER_BUGID)
-		{
-			if(this->m_bShowBugtraqColumn)
-			{
-				CString sBugIds = m_ProjectProperties.FindBugID(pRev->GetSubjectBody());
-
-				if (!m_bFilterCaseSensitively)
-					sBugIds.MakeLower();
-				if ((sBugIds.Find(find) >= 0))
-					return result;
-			}
-		}
-
-		if ((m_SelectedFilters & LOGFILTER_SUBJECT) || (m_SelectedFilters & LOGFILTER_MESSAGES))
-		{
-			CString msg = pRev->GetSubject();
-
-			if (!m_bFilterCaseSensitively)
-				msg = msg.MakeLower();
-			if ((msg.Find(find) >= 0))
-				return result;
-		}
-
-		if (m_SelectedFilters & LOGFILTER_MESSAGES)
-		{
-			CString msg = pRev->GetBody();
-
-			if (!m_bFilterCaseSensitively)
-				msg = msg.MakeLower();
-			if ((msg.Find(find) >= 0))
-				return result;
-		}
-
-		if (m_SelectedFilters & LOGFILTER_AUTHORS)
-		{
-			CString msg = pRev->GetAuthorName();
-			if (!m_bFilterCaseSensitively)
-				msg = msg.MakeLower();
-			if ((msg.Find(find) >= 0))
-				return result;
-		}
-
-		if (m_SelectedFilters & LOGFILTER_EMAILS)
-		{
-			CString msg = pRev->GetAuthorEmail();
-			if (!m_bFilterCaseSensitively)
-				msg = msg.MakeLower();
-			if ((msg.Find(find) >= 0))
-				return result;
-		}
-
-		if (m_SelectedFilters & LOGFILTER_NOTES)
-		{
-			CString msg = pRev->m_Notes;
-			if (!m_bFilterCaseSensitively)
-				msg = msg.MakeLower();
-			if ((msg.Find(find) >= 0))
-				return result;
-		}
-
-		if (m_SelectedFilters & LOGFILTER_REVS)
-		{
-			sRev = pRev->m_CommitHash.ToString();
-			if ((sRev.Find(find) >= 0))
-				return result;
-		}
-
-		if (m_SelectedFilters & LOGFILTER_ANNOTATEDTAG)
-		{
-			CString msg = GetTagInfo(pRev);
-			if (!m_bFilterCaseSensitively)
-				msg = msg.MakeLower();
-			if ((msg.Find(find) >= 0))
-				return result;
-		}
-
-		if ((m_SelectedFilters & LOGFILTER_REFNAME) && m_HashMap.find(pRev->m_CommitHash) != m_HashMap.cend())
-		{
-			const STRING_VECTOR& refs = m_HashMap[pRev->m_CommitHash];
-			for (auto it = refs.cbegin(); it != refs.cend(); ++it)
-			{
-				if (it->Find(find) >= 0)
-					return result;
-			}
-		}
-
-		if (m_SelectedFilters & LOGFILTER_PATHS)
-		{
-			CTGitPathList* pathList = nullptr;
-			if( pRev->m_IsDiffFiles)
-				pathList = &pRev->GetFiles(this);
-			else
-			{
-				if(!pRev->m_IsSimpleListReady)
-					pRev->SafeGetSimpleList(&g_Git);
-			}
-			if(pathList)
-				for (INT_PTR cpPathIndex = 0; cpPathIndex < pathList->GetCount() ; ++cpPathIndex)
-				{
-					CTGitPath* cpath = &pathList->m_paths[cpPathIndex];
-					CString path = cpath->GetGitOldPathString();
-					if (!m_bFilterCaseSensitively)
-						path.MakeLower();
-					if ((path.Find(find)>=0))
-						return result;
-					path = cpath->GetGitPathString();
-					if (!m_bFilterCaseSensitively)
-						path.MakeLower();
-					if ((path.Find(find)>=0))
-						return result;
-				}
-
-			for (size_t i = 0; i < pRev->m_SimpleFileList.size(); ++i)
-			{
-				CString path = pRev->m_SimpleFileList[i];
-				if (!m_bFilterCaseSensitively)
-					path.MakeLower();
-				if ((path.Find(find)>=0))
-					return result;
-			}
-		}
-	} // else (from if (bRegex))
-	return !result;
 }
 
 static bool CStringStartsWith(const CString &str, const CString &prefix)
@@ -3741,15 +3513,7 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 	if (m_pFindDialog->FindNext() && !bFound)
 	{
 		//read data from dialog
-		CString findText = m_pFindDialog->GetFindString();
-		bool bMatchCase = (m_pFindDialog->MatchCase() == TRUE);
-
-		std::wregex pat;
-		bool bRegex = false;
-		if (m_pFindDialog->Regex())
-			bRegex = ValidateRegexp(findText, pat, bMatchCase);
-
-		std::regex_constants::match_flag_type flags = std::regex_constants::match_not_null;
+		CLogDlgFilter filter { m_pFindDialog->GetFindString(), m_pFindDialog->Regex(), LOGFILTER_ALL, m_pFindDialog->MatchCase() == TRUE };
 
 		for (i = m_nSearchIndex + 1; ; ++i)
 		{
@@ -3768,102 +3532,13 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 				}
 			}
 
-			GitRevLoglist* pLogEntry = m_arShownList.SafeGetAt(i);
-
-			CString str;
-			str+=pLogEntry->m_CommitHash.ToString();
-			str += L'\n';
-
-			auto refList = m_HashMap.find(pLogEntry->m_CommitHash);
-			if (refList != m_HashMap.cend())
+			if (filter(m_arShownList.SafeGetAt(i), this))
 			{
-				for (const auto& ref : (*refList).second)
-				{
-					str += ref;
-					str += L'\n';
-				}
+				bFound = true;
+				break;
 			}
-
-			str+=pLogEntry->GetAuthorEmail();
-			str += L'\n';
-			str+=pLogEntry->GetAuthorName();
-			str += L'\n';
-			str+=pLogEntry->GetBody();
-			str += L'\n';
-			str+=pLogEntry->GetCommitterEmail();
-			str += L'\n';
-			str+=pLogEntry->GetCommitterName();
-			str += L'\n';
-			str+=pLogEntry->GetSubject();
-			str += L'\n';
-			str+=pLogEntry->m_Notes;
-			str += L'\n';
-			str+=GetTagInfo(pLogEntry);
-			str += L'\n';
-
-
-			/*Because changed files list is loaded on demand when gui show,
-			  files will empty when files have not fetched.
-
-			  we can add it back by using one-way diff(with outnumber changed and rename detect.
-			  here just need changed filename list. one-way is much quicker.
-			*/
-			if(pLogEntry->m_IsFull)
-			{
-				for (int j = 0; j < pLogEntry->GetFiles(this).GetCount(); ++j)
-				{
-					str += pLogEntry->GetFiles(this)[j].GetWinPath();
-					str += L'\n';
-					str += pLogEntry->GetFiles(this)[j].GetGitOldPathString();
-					str += L'\n';
-				}
-			}
-			else
-			{
-				if(!pLogEntry->m_IsSimpleListReady)
-					pLogEntry->SafeGetSimpleList(&g_Git);
-
-				for (size_t j = 0; j < pLogEntry->m_SimpleFileList.size(); ++j)
-				{
-					str += pLogEntry->m_SimpleFileList[j];
-					str += L'\n';
-				}
-			}
-
-			if (bRegex)
-			{
-				if (std::regex_search(std::wstring(str), pat, flags))
-				{
-					bFound = true;
-					break;
-				}
-			}
-			else
-			{
-				if (bMatchCase)
-				{
-					if (str.Find(findText) >= 0)
-					{
-						bFound = true;
-						break;
-					}
-				}
-				else
-				{
-					CString msg = str;
-					msg = msg.MakeLower();
-					CString find = findText.MakeLower();
-					if (msg.Find(find) >= 0)
-					{
-						bFound = TRUE;
-						break;
-					}
-				}
-			}
-		} // for (i = this->m_nSearchIndex; i<m_arShownList.GetItemCount()&&!bFound; ++i)
-
+		}
 	} // if(m_pFindDialog->FindNext())
-	//UpdateLogInfoLabel();
 
 	if (bFound)
 	{
@@ -4276,4 +3951,285 @@ void CGitLogListBase::DrawDropInsertMarkerLine(int nIndex)
 ULONG CGitLogListBase::GetGestureStatus(CPoint /*ptTouch*/)
 {
 	return 0;
+}
+
+void CGitLogListBase::DrawListItemWithMatchesRect(NMLVCUSTOMDRAW* pLVCD, const std::vector<CHARRANGE>& ranges, CRect rect, const CString& text, HTHEME hTheme /*= nullptr*/, int txtState /*= 0*/)
+{
+	int drawPos = 0;
+	COLORREF textColor = pLVCD->clrText;
+	RECT rc = rect;
+	if (!hTheme)
+	{
+		::SetTextColor(pLVCD->nmcd.hdc, textColor);
+		SetBkMode(pLVCD->nmcd.hdc, TRANSPARENT);
+	}
+	DTTOPTS opts = { 0 };
+	opts.dwSize = sizeof(opts);
+	opts.crText = textColor;
+	opts.dwFlags = DTT_TEXTCOLOR;
+
+	for (auto it = ranges.cbegin(); it != ranges.cend(); ++it)
+	{
+		rc = rect;
+		if (it->cpMin - drawPos)
+		{
+			if (!hTheme)
+			{
+				DrawText(pLVCD->nmcd.hdc, text.Mid(drawPos), it->cpMin - drawPos, &rc, DT_SINGLELINE | DT_VCENTER | DT_NOPREFIX | DT_END_ELLIPSIS);
+				DrawText(pLVCD->nmcd.hdc, text.Mid(drawPos), it->cpMin - drawPos, &rc, DT_CALCRECT | DT_SINGLELINE | DT_VCENTER | DT_NOPREFIX | DT_END_ELLIPSIS);
+			}
+			else
+			{
+				DrawThemeTextEx(hTheme, pLVCD->nmcd.hdc, LVP_LISTITEM, txtState, text.Mid(drawPos), it->cpMin - drawPos, DT_SINGLELINE | DT_VCENTER | DT_NOPREFIX | DT_END_ELLIPSIS, &rc, &opts);
+				GetThemeTextExtent(hTheme, pLVCD->nmcd.hdc, LVP_LISTITEM, txtState, text.Mid(drawPos), it->cpMin - drawPos, DT_CALCRECT | DT_SINGLELINE | DT_VCENTER | DT_NOPREFIX | DT_END_ELLIPSIS, &rect, &rc);
+			}
+			rect.left = rc.right;
+		}
+		rc = rect;
+		drawPos = it->cpMin;
+		if (it->cpMax - drawPos)
+		{
+			if (!hTheme)
+			{
+				::SetTextColor(pLVCD->nmcd.hdc, m_Colors.GetColor(CColors::FilterMatch));
+				DrawText(pLVCD->nmcd.hdc, text.Mid(drawPos), it->cpMax - drawPos, &rc, DT_SINGLELINE | DT_VCENTER | DT_NOPREFIX | DT_END_ELLIPSIS);
+				DrawText(pLVCD->nmcd.hdc, text.Mid(drawPos), it->cpMax - drawPos, &rc, DT_CALCRECT | DT_SINGLELINE | DT_VCENTER | DT_NOPREFIX | DT_END_ELLIPSIS);
+				::SetTextColor(pLVCD->nmcd.hdc, textColor);
+			}
+			else
+			{
+				opts.crText = m_Colors.GetColor(CColors::FilterMatch);
+				DrawThemeTextEx(hTheme, pLVCD->nmcd.hdc, LVP_LISTITEM, txtState, text.Mid(drawPos), it->cpMax - drawPos, DT_SINGLELINE | DT_VCENTER | DT_NOPREFIX | DT_END_ELLIPSIS, &rc, &opts);
+				GetThemeTextExtent(hTheme, pLVCD->nmcd.hdc, LVP_LISTITEM, txtState, text.Mid(drawPos), it->cpMax - drawPos, DT_CALCRECT | DT_SINGLELINE | DT_VCENTER | DT_NOPREFIX | DT_END_ELLIPSIS, &rect, &rc);
+				opts.crText = textColor;
+			}
+			rect.left = rc.right;
+		}
+		rc = rect;
+		drawPos = it->cpMax;
+	}
+	if (!hTheme)
+		DrawText(pLVCD->nmcd.hdc, text.Mid(drawPos), -1, &rc, DT_SINGLELINE | DT_VCENTER | DT_NOPREFIX | DT_END_ELLIPSIS);
+	else
+		DrawThemeTextEx(hTheme, pLVCD->nmcd.hdc, LVP_LISTITEM, txtState, text.Mid(drawPos), -1, DT_SINGLELINE | DT_VCENTER | DT_NOPREFIX | DT_END_ELLIPSIS, &rc, &opts);
+}
+
+bool CGitLogListBase::DrawListItemWithMatchesIfEnabled(std::shared_ptr<CLogDlgFilter> filter, DWORD selectedFilter, NMLVCUSTOMDRAW* pLVCD, LRESULT* pResult)
+{
+	if ((filter->GetSelectedFilters() & selectedFilter) && filter->IsFilterActive())
+	{
+		*pResult = DrawListItemWithMatches(filter.get(), *this, pLVCD);
+		return true;
+	}
+	return false;
+}
+
+LRESULT CGitLogListBase::DrawListItemWithMatches(CLogDlgFilter* filter, CListCtrl& listCtrl, NMLVCUSTOMDRAW* pLVCD)
+{
+	CString text;
+	text = (LPCTSTR)listCtrl.GetItemText((int)pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem);
+	if (text.IsEmpty())
+		return CDRF_DODEFAULT;
+
+	std::vector<CHARRANGE> ranges;
+	filter->GetMatchRanges(ranges, text, 0);
+	if (ranges.empty())
+		return CDRF_DODEFAULT;
+
+	// even though we initialize the 'rect' here with nmcd.rc,
+	// we must not use it but use the rects from GetItemRect()
+	// and GetSubItemRect(). Because on XP, the nmcd.rc has
+	// bogus data in it.
+	CRect rect = pLVCD->nmcd.rc;
+
+	// find the margin where the text label starts
+	CRect labelRC, boundsRC, iconRC;
+	listCtrl.GetItemRect((int)pLVCD->nmcd.dwItemSpec, &labelRC, LVIR_LABEL);
+	listCtrl.GetItemRect((int)pLVCD->nmcd.dwItemSpec, &iconRC, LVIR_ICON);
+	listCtrl.GetItemRect((int)pLVCD->nmcd.dwItemSpec, &boundsRC, LVIR_BOUNDS);
+
+	int leftmargin = labelRC.left - boundsRC.left;
+	if (pLVCD->iSubItem)
+		leftmargin -= iconRC.Width();
+
+	if (pLVCD->iSubItem != 0)
+		listCtrl.GetSubItemRect((int)pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem, LVIR_BOUNDS, rect);
+
+	int borderWidth = 0;
+	HTHEME hTheme = nullptr;
+	if (IsAppThemed())
+	{
+		hTheme = OpenThemeData(m_hWnd, L"Explorer::ListView;ListView");
+		GetThemeMetric(hTheme, pLVCD->nmcd.hdc, LVP_LISTITEM, LISS_NORMAL, TMT_BORDERSIZE, &borderWidth);
+	}
+	else
+		borderWidth = GetSystemMetrics(SM_CXBORDER);
+
+	if (listCtrl.GetExtendedStyle() & LVS_EX_CHECKBOXES)
+	{
+		// I'm not very happy about this fixed margin here
+		// but I haven't found a way to ask the system what
+		// the margin really is.
+		// At least it works on XP/Vista/win7/win8, and even with
+		// increased font sizes
+		leftmargin = 4;
+	}
+
+	LVITEM item = { 0 };
+	item.iItem = (int)pLVCD->nmcd.dwItemSpec;
+	item.iSubItem = 0;
+	item.mask = LVIF_IMAGE | LVIF_STATE;
+	item.stateMask = (UINT)-1;
+	listCtrl.GetItem(&item);
+
+	// fill background
+	int txtState = LISS_NORMAL;
+	if (!hTheme)
+	{
+		HBRUSH brush = nullptr;
+		if (item.state & LVIS_SELECTED)
+		{
+			if (::GetFocus() == listCtrl.GetSafeHwnd())
+			{
+				brush = ::CreateSolidBrush(::GetSysColor(COLOR_HIGHLIGHT));
+				pLVCD->clrText = ::GetSysColor(COLOR_HIGHLIGHTTEXT);
+			}
+			else
+			{
+				brush = ::CreateSolidBrush(::GetSysColor(COLOR_BTNFACE));
+				pLVCD->clrText = ::GetSysColor(COLOR_WINDOWTEXT);
+			}
+		}
+		else
+			brush = ::CreateSolidBrush(::GetSysColor(COLOR_WINDOW));
+		CRect my;
+		listCtrl.GetSubItemRect((int)pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem, LVIR_LABEL, my);
+		::FillRect(pLVCD->nmcd.hdc, my, brush);
+		::DeleteObject(brush);
+	}
+	else
+	{
+		if (listCtrl.GetHotItem() == (int)pLVCD->nmcd.dwItemSpec)
+		{
+			if (item.state & LVIS_SELECTED)
+				txtState = LISS_HOTSELECTED;
+			else
+				txtState = LISS_HOT;
+		}
+		else if (item.state & LVIS_SELECTED)
+		{
+			if (::GetFocus() == listCtrl.GetSafeHwnd())
+				txtState = LISS_SELECTED;
+			else
+				txtState = LISS_SELECTEDNOTFOCUS;
+		}
+
+		if (IsThemeBackgroundPartiallyTransparent(hTheme, LVP_LISTDETAIL, txtState))
+			DrawThemeParentBackground(m_hWnd, pLVCD->nmcd.hdc, &rect);
+		else
+		{
+			HBRUSH brush = ::CreateSolidBrush(::GetSysColor(COLOR_WINDOW));
+			::FillRect(pLVCD->nmcd.hdc, rect, brush);
+			::DeleteObject(brush);
+		}
+		if (txtState != LISS_NORMAL)
+		{
+			CRect my;
+			listCtrl.GetSubItemRect((int)pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem, LVIR_LABEL, my);
+			if (pLVCD->iSubItem == 0)
+			{
+				// also fill the icon part of the line
+				my.top = 0;
+				my.left = 0;
+			}
+
+			// calculate background for rect of whole line, but limit redrawing to SubItem rect
+			DrawThemeBackground(hTheme, pLVCD->nmcd.hdc, LVP_LISTITEM, txtState, boundsRC, my);
+		}
+	}
+
+	// draw the icon for the first column
+	if (pLVCD->iSubItem == 0)
+	{
+		rect = boundsRC;
+		rect.right = rect.left + listCtrl.GetColumnWidth(0);
+		rect.left = iconRC.left;
+
+		if (item.iImage >= 0)
+		{
+			POINT pt;
+			pt.x = rect.left;
+			pt.y = rect.top;
+			CDC dc;
+			dc.Attach(pLVCD->nmcd.hdc);
+			int style = ILD_TRANSPARENT;
+			if (!hTheme)
+			{
+				auto whitebrush = ::CreateSolidBrush(::GetSysColor(COLOR_WINDOW));
+				::FillRect(dc, iconRC, whitebrush);
+				::DeleteObject(whitebrush);
+				if (item.state & LVIS_SELECTED)
+				{
+					if (::GetFocus() == listCtrl.GetSafeHwnd())
+						style = ILD_SELECTED;
+					else
+						style = ILD_FOCUS;
+				}
+			}
+			listCtrl.GetImageList(LVSIL_SMALL)->Draw(&dc, item.iImage, pt, style);
+			dc.Detach();
+			leftmargin -= iconRC.left;
+		}
+		else
+		{
+			RECT irc = boundsRC;
+			irc.left += borderWidth;
+			irc.right = iconRC.left;
+
+			int state = 0;
+			if (item.state & LVIS_SELECTED)
+			{
+				if (listCtrl.GetHotItem() == item.iItem)
+					state = CBS_CHECKEDHOT;
+				else
+					state = CBS_CHECKEDNORMAL;
+			}
+			else
+			{
+				if (listCtrl.GetHotItem() == item.iItem)
+					state = CBS_UNCHECKEDHOT;
+			}
+			if ((state) && (listCtrl.GetExtendedStyle() & LVS_EX_CHECKBOXES))
+			{
+				HTHEME hTheme2 = OpenThemeData(m_hWnd, L"BUTTON");
+				DrawThemeBackground(hTheme2, pLVCD->nmcd.hdc, BP_CHECKBOX, state, &irc, NULL);
+				CloseThemeData(hTheme2);
+			}
+		}
+	}
+	InflateRect(&rect, -(2 * borderWidth), 0);
+
+	rect.left += leftmargin;
+	RECT rc = rect;
+
+	// is the column left- or right-aligned? (we don't handle centered (yet))
+	LVCOLUMN Column;
+	Column.mask = LVCF_FMT;
+	listCtrl.GetColumn(pLVCD->iSubItem, &Column);
+	if (Column.fmt & LVCFMT_RIGHT)
+	{
+		DrawText(pLVCD->nmcd.hdc, text, -1, &rc, DT_CALCRECT | DT_SINGLELINE | DT_VCENTER | DT_NOPREFIX | DT_END_ELLIPSIS);
+		rect.left = rect.right - (rc.right - rc.left);
+		if (!hTheme)
+		{
+			rect.left += 2 * borderWidth;
+			rect.right += 2 * borderWidth;
+		}
+	}
+
+	DrawListItemWithMatchesRect(pLVCD, ranges, rect, text, hTheme, txtState);
+	if (hTheme)
+		CloseThemeData(hTheme);
+
+	return CDRF_SKIPDEFAULT;
 }
