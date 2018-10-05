@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2009-2018 - TortoiseGit
 
@@ -1230,7 +1230,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 	case eCmd_DiffWC:
 		{
 			CString sCmd;
-			sCmd.Format(L"/command:showcompare /path:\"%s\" /revision1:%s /revision2:%s", (LPCTSTR)g_Git.m_CurrentDir, (LPCTSTR)selectedLeafs[0]->GetRefName(), (LPCTSTR)GitRev::GetWorkingCopy());
+			sCmd.Format(L"/command:showcompare /path:\"%s\" /revision1:%s^{} /revision2:%s", (LPCTSTR)g_Git.m_CurrentDir, (LPCTSTR)selectedLeafs[0]->GetRefName(), (LPCTSTR)GitRev::GetWorkingCopy());
 			if (!!(GetAsyncKeyState(VK_SHIFT) & 0x8000))
 				sCmd += L" /alternative";
 
