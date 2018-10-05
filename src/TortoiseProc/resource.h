@@ -599,6 +599,7 @@
 #define IDS_PROC_EXPORT_3               1261
 #define IDC_SKIPPER                     1261
 #define IDC_SKIPPERLABEL                1262
+#define IDS_SELECT                      1262
 #define IDS_PROC_SETTINGS_TITLE         1264
 #define IDC_SHOWIGNORED                 1264
 #define IDC_AUTHORSCASESENSITIVE        1265

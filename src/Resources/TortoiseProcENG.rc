@@ -3545,6 +3545,7 @@ BEGIN
     IDS_PROC_EXPORT_1       "Select folder to export to.\nYou might need to create a new folder before performing this export."
     IDS_PROC_EXPORT_2       "Export unversioned files too"
     IDS_PROC_EXPORT_3       "Exporting..."
+    IDS_SELECT              "Select"
 END
 
 STRINGTABLE

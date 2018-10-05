@@ -167,6 +167,7 @@ CBrowseRefsDlg::CBrowseRefsDlg(CString cmdPath, CWnd* pParent /*=nullptr*/)
 	m_bPickOne(false),
 	m_bIncludeNestedRefs(TRUE),
 	m_bPickedRefSet(false)
+	, m_bWantPick(false)
 {
 	// get short/long datetime setting from registry
 	DWORD RegUseShortDateFormat = CRegDWORD(L"Software\\TortoiseGit\\LogDateFormat", TRUE);
@@ -909,7 +910,13 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 				fetchFromCmd.Format(IDS_PROC_BROWSEREFS_FETCHFROM, (LPCTSTR)remoteName);
 		}
 
+		if (m_bWantPick)
+		{
+			popupMenu.AppendMenuIcon(eCmd_Select, IDS_SELECT);
+			popupMenu.AppendMenu(MF_SEPARATOR);
+		}
 		popupMenu.AppendMenuIcon(eCmd_ViewLog, IDS_MENULOG, IDI_LOG);
+		popupMenu.SetDefaultItem(0, TRUE);
 		popupMenu.AppendMenuIcon(eCmd_RepoBrowser, IDS_LOG_BROWSEREPO, IDI_REPOBROWSE);
 		if(bShowReflogOption)
 			popupMenu.AppendMenuIcon(eCmd_ShowReflog, IDS_MENUREFLOG, IDI_LOG);
@@ -1091,6 +1098,9 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 	int selection = popupMenu.TrackPopupMenuEx(TPM_LEFTALIGN | TPM_RETURNCMD, point.x, point.y, this, nullptr);
 	switch ((eCmd)(selection & 0xFFFF))
 	{
+	case eCmd_Select:
+			EndDialog(IDOK);
+		break;
 	case eCmd_ViewLog:
 		{
 			CString sCmd;
@@ -1407,7 +1417,16 @@ void CBrowseRefsDlg::OnNMDblclkListRefLeafs(NMHDR * /*pNMHDR*/, LRESULT *pResult
 
 	if (!m_ListRefLeafs.GetFirstSelectedItemPosition())
 		return;
-	EndDialog(IDOK);
+
+	if (m_bWantPick)
+	{
+		EndDialog(IDOK);
+		return;
+	}
+
+	CString sCmd;
+	sCmd.Format(L"/command:log /path:\"%s\" /range:\"%s\"", (LPCTSTR)g_Git.m_CurrentDir, (LPCTSTR)g_Git.FixBranchName(GetSelectedRef(true, false)));
+	CAppUtils::RunTortoiseGitProc(sCmd);
 }
 
 CString CBrowseRefsDlg::PickRef(bool /*returnAsHash*/, CString initialRef, int pickRef_Kind, bool pickMultipleRefsOrRange)
@@ -1416,6 +1435,7 @@ CString CBrowseRefsDlg::PickRef(bool /*returnAsHash*/, CString initialRef, int p
 
 	if(initialRef.IsEmpty())
 		initialRef = L"HEAD";
+	dlg.m_bWantPick = true;
 	dlg.m_initialRef = initialRef;
 	dlg.m_pickRef_Kind = pickRef_Kind;
 	dlg.m_bPickOne = !pickMultipleRefsOrRange;

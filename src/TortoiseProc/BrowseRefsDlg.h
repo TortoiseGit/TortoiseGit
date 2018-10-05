@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2017 - TortoiseGit
+// Copyright (C) 2009-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -131,6 +131,7 @@ public:
 		eCmd_UpstreamSet,
 		eCmd_DiffWC,
 		eCmd_Copy,
+		eCmd_Select,
 	};
 
 	enum eCol
@@ -231,6 +232,7 @@ private:
 	CString m_initialRef;
 	int		m_pickRef_Kind;
 	CString m_pickedRef;
+	bool	m_bWantPick;
 	bool	m_bPickOne;
 	bool	m_bPickedRefSet;
 
