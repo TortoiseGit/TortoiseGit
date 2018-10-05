@@ -4063,7 +4063,8 @@ END
 STRINGTABLE
 BEGIN
     IDS_PROGRS_CONFLICTSOCCURRED_WARNING "Warning!"
-    IDS_PROGRS_CONFLICTSOCCURRED "One or more files are in a conflicted state."
+    IDS_PROGRS_CONFLICTSOCCURRED 
+                            "One or more files are in a conflicted state."
     IDS_PROGRS_DRYRUN       "Test Only"
     IDS_PROGRS_FINISHED     "Finished!"
 END
@@ -4325,7 +4326,8 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_FILEDIFF_CHANGEDLISTINTRO "Changed files between %1!s!, %2!s! and %3!s!, %4!s!"
+    IDS_FILEDIFF_CHANGEDLISTINTRO 
+                            "Changed files between %1!s!, %2!s! and %3!s!, %4!s!"
     IDS_FILEDIFF_CHANGEDLISTINTROROOT "Changed files between %1!s! and %2!s!"
 END
 
