@@ -2760,7 +2760,7 @@ int CGit::GetGitEncode(TCHAR* configkey)
 
 int CGit::GetShortHASHLength() const
 {
-	return 7;
+	return 8;
 }
 
 CString CGit::GetShortName(const CString& ref, REF_TYPE *out_type)
