@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2017 - TortoiseGit
+// Copyright (C) 2016-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -515,7 +515,7 @@ LRESULT CCommitIsOnRefsDlg::OnGettingRefsFinished(WPARAM, LPARAM)
 		return 0;
 	}
 
-	SetDlgItemText(IDC_STATIC_SUBJECT, m_gitrev.m_CommitHash.ToString().Left(8) + L": " + m_gitrev.GetSubject());
+	SetDlgItemText(IDC_STATIC_SUBJECT, m_gitrev.m_CommitHash.ToString().Left(g_Git.GetShortHASHLength()) + L": " + m_gitrev.GetSubject());
 	if (!m_gitrev.m_CommitHash.IsEmpty())
 		m_tooltips.AddTool(IDC_STATIC_SUBJECT, CLoglistUtils::FormatDateAndTime(m_gitrev.GetAuthorDate(), DATE_SHORTDATE) + L"  " + m_gitrev.GetAuthorName());
 

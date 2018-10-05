@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2011-2013, 2015-2016 - TortoiseGit
+// Copyright (C) 2009, 2011-2013, 2015-2016, 2018 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -59,7 +59,7 @@ CTGitPath CTempFiles::GetTempFilePath(bool bRemoveAtEnd, const CTGitPath& path /
 		do
 		{
 			if (!hash.IsEmpty())
-				possibletempfile.Format(L"%s%s-%s.%3.3x%s", temppath.get(), (LPCTSTR)path.GetBaseFilename(), (LPCTSTR)hash.ToString().Left(7), i, (LPCTSTR)path.GetFileExtension());
+				possibletempfile.Format(L"%s%s-%s.%3.3x%s", temppath.get(), (LPCTSTR)path.GetBaseFilename(), (LPCTSTR)hash.ToString().Left(g_Git.GetShortHASHLength()), i, (LPCTSTR)path.GetFileExtension());
 			else
 				possibletempfile.Format(L"%s%s.%3.3x%s", temppath.get(), (LPCTSTR)path.GetBaseFilename(), i, (LPCTSTR)path.GetFileExtension());
 			tempfile.SetFromWin(possibletempfile);

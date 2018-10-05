@@ -835,7 +835,7 @@ void CFileDiffDlg::SetURLLabels(int mask)
 {
 	if(mask &0x1)
 	{
-		SetDlgItemText(IDC_FIRSTURL, m_rev1.m_CommitHash.ToString().Left(8) + L": " + m_rev1.GetSubject());
+		SetDlgItemText(IDC_FIRSTURL, m_rev1.m_CommitHash.ToString().Left(g_Git.GetShortHASHLength()) + L": " + m_rev1.GetSubject());
 		if (!m_rev1.m_CommitHash.IsEmpty())
 			m_tooltips.AddTool(IDC_FIRSTURL,
 				CLoglistUtils::FormatDateAndTime(m_rev1.GetAuthorDate(), DATE_SHORTDATE) + L"  " + m_rev1.GetAuthorName());
@@ -843,7 +843,7 @@ void CFileDiffDlg::SetURLLabels(int mask)
 
 	if(mask &0x2)
 	{
-		SetDlgItemText(IDC_SECONDURL,m_rev2.m_CommitHash.ToString().Left(8) + L": " + m_rev2.GetSubject());
+		SetDlgItemText(IDC_SECONDURL, m_rev2.m_CommitHash.ToString().Left(g_Git.GetShortHASHLength()) + L": " + m_rev2.GetSubject());
 		if (!m_rev2.m_CommitHash.IsEmpty())
 			m_tooltips.AddTool(IDC_SECONDURL,
 				CLoglistUtils::FormatDateAndTime(m_rev2.GetAuthorDate(), DATE_SHORTDATE) + L"  " + m_rev2.GetAuthorName());
