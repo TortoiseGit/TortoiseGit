@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2016 - TortoiseGit
+// Copyright (C) 2011-2016, 2018 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -68,7 +68,7 @@ bool CHooks::Create()
 			if (strhooks[0] == L'!' && pos > 1)
 			{
 				cmd.bEnabled = false;
-				strhooks = strhooks.Mid(1);
+				strhooks = strhooks.Mid((int)wcslen(L"!"));
 				--pos;
 			}
 			key.path = CTGitPath(strhooks.Mid(0, pos));

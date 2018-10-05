@@ -527,7 +527,7 @@ void CPushDlg::OnBnClickedButtonBrowseDestBranch()
 	remoteBranchName = CBrowseRefsDlg::PickRef(false, remoteBranchName, gPickRef_Remote);
 	if(remoteBranchName.IsEmpty())
 		return; //Canceled
-	remoteBranchName = remoteBranchName.Mid(13);//Strip 'refs/remotes/'
+	remoteBranchName = remoteBranchName.Mid((int)wcslen(L"refs/remotes/")); //Strip 'refs/remotes/'
 	int slashPlace = remoteBranchName.Find('/');
 	remoteName = remoteBranchName.Left(slashPlace);
 	remoteBranchName = remoteBranchName.Mid(slashPlace + 1); //Strip remote name (for example 'origin/')

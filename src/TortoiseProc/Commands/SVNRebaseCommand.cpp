@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2009-2013, 2015-2018 - TortoiseGit
 
@@ -70,7 +70,7 @@ bool SVNRebaseCommand::Execute()
 			out=out.Mid(start);
 
 		if (CStringUtils::StartsWith(out, L":refs"))
-			out=out.Mid(6);
+			out = out.Mid((int)wcslen(L":refs") + 1);
 
 		start = 0;
 		out = out.Tokenize(L"\n", start);

@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2018 - TortoiseGit
 
@@ -173,9 +173,9 @@ void CGitSwitchDlg::SetDefaultName(BOOL isUpdateCreateBranch)
 
 	int start = -1;
 	if (CStringUtils::StartsWith(version, L"origin/"))
-		start = version.Find(L'/', 8);
+		start = version.Find(L'/', (int)wcslen(L"origin/") + 1);
 	else if (CStringUtils::StartsWith(version, L"remotes/"))
-		start = version.Find(L'/', 9);
+		start = version.Find(L'/', (int)wcslen(L"remotes/") + 1);
 
 	if (start >= 0)
 	{
@@ -191,7 +191,7 @@ void CGitSwitchDlg::SetDefaultName(BOOL isUpdateCreateBranch)
 	else
 	{
 		if (CStringUtils::StartsWith(m_VersionName, L"refs/heads/"))
-			version = m_VersionName.Mid(11);
+			version = m_VersionName.Mid((int)wcslen(L"refs/heads/"));
 		else
 			version = version.Left(g_Git.GetShortHASHLength());
 		m_NewBranch = L"Branch_" + version;

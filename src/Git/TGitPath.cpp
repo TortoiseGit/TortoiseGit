@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2018 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
@@ -930,7 +930,7 @@ bool CTGitPath::IsValidOnWindows() const
 	// the 'file://' URL is just a normal windows path:
 	if (CStringUtils::StartsWithI(sMatch, L"file:\\\\"))
 	{
-		sMatch = sMatch.Mid(7);
+		sMatch = sMatch.Mid((int)wcslen(L"file:\\\\"));
 		sMatch.TrimLeft(L'\\');
 		sPattern = L"^(\\\\\\\\\\?\\\\)?(([a-zA-Z]:|\\\\)\\\\)?(((\\.)|(\\.\\.)|([^\\\\/:\\*\\?\"\\|<> ](([^\\\\/:\\*\\?\"\\|<>\\. ])|([^\\\\/:\\*\\?\"\\|<>]*[^\\\\/:\\*\\?\"\\|<>\\. ]))?))\\\\)*[^\\\\/:\\*\\?\"\\|<> ](([^\\\\/:\\*\\?\"\\|<>\\. ])|([^\\\\/:\\*\\?\"\\|<>]*[^\\\\/:\\*\\?\"\\|<>\\. ]))?$";
 	}

@@ -42,9 +42,9 @@
 static int SplitRemoteBranchName(CString ref, CString &remote, CString &branch)
 {
 	if (CStringUtils::StartsWith(ref, L"refs/remotes/"))
-		ref = ref.Mid(13);
+		ref = ref.Mid((int)wcslen(L"refs/remotes/"));
 	else if (CStringUtils::StartsWith(ref, L"remotes/"))
-		ref = ref.Mid(8);
+		ref = ref.Mid((int)wcslen(L"remotes/"));
 
 	STRING_VECTOR list;
 	int result = g_Git.GetRemoteList(list);
@@ -402,9 +402,9 @@ CString CBrowseRefsDlg::GetSelectedRef(bool onlyIfLeaf, bool pickFirstSelIfMulti
 		{
 			CString ref = GetListEntry(index)->GetRefName();
 			if (CStringUtils::StartsWith(ref, L"refs/"))
-				ref = ref.Mid(5);
+				ref = ref.Mid((int)wcslen(L"refs/"));
 			if (CStringUtils::StartsWith(ref, L"heads/"))
-				ref = ref.Mid(6);
+				ref = ref.Mid((int)wcslen(L"heads/"));
 			refs += ref + L' ';
 		}
 		return refs.Trim();
@@ -531,7 +531,7 @@ CShadowTree& CBrowseRefsDlg::GetTreeNode(CString refName, CShadowTree* pTreePos,
 	if (!pTreePos)
 	{
 		if (CStringUtils::StartsWith(refName, L"refs/"))
-			refName=refName.Mid(5);
+			refName = refName.Mid((int)wcslen(L"refs/"));
 		pTreePos=&m_TreeRoot;
 	}
 	if(refName.IsEmpty())
@@ -591,7 +591,7 @@ void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNa
 		filter.MakeLower();
 		bool positive = filter[0] != '!';
 		if (!positive)
-			filter = filter.Mid(1);
+			filter = filter.Mid((int)wcslen(L"!"));
 		CString ref = refNamePrefix + pTree->m_csRefName;
 		if (!(pTree->m_csRefName.IsEmpty() || pTree->m_csRefName == L"refs" && !pTree->m_pParent) && IsMatchFilter(pTree, ref, filter, positive))
 		{
@@ -727,7 +727,7 @@ bool CBrowseRefsDlg::ConfirmDeleteRef(VectorPShadowTree& leafs)
 	{
 		if(leafs.size() == 1)
 		{
-			CString tagToDelete = leafs[0]->GetRefName().Mid(10);
+			CString tagToDelete = leafs[0]->GetRefName().Mid((int)wcslen(L"refs/tags/"));
 			csMessage.Format(IDS_PROC_DELETEBRANCHTAG, (LPCTSTR)tagToDelete);
 		}
 		else
@@ -759,7 +759,7 @@ bool CBrowseRefsDlg::DoDeleteRef(CString completeRefName)
 
 	if (bIsRemoteBranch)
 	{
-		CString branchToDelete = completeRefName.Mid(13);
+		CString branchToDelete = completeRefName.Mid((int)wcslen(L"refs/remotes/"));
 		CString remoteName, remoteBranchToDelete;
 		if (SplitRemoteBranchName(branchToDelete, remoteName, remoteBranchToDelete))
 			return false;
@@ -1506,7 +1506,7 @@ void CBrowseRefsDlg::OnLvnEndlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pResu
 		selectedTreeRef = pTree2->GetRefName();
 	}
 
-	CString origName = pTree->GetRefName().Mid(11);
+	CString origName = pTree->GetRefName().Mid((int)wcslen(L"refs/heads/"));
 
 	CString newName;
 	if (m_pListCtrlRoot)
@@ -1519,7 +1519,7 @@ void CBrowseRefsDlg::OnLvnEndlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pResu
 		return;
 	}
 
-	CString newNameTrunced = newName.Mid(11);
+	CString newNameTrunced = newName.Mid((int)wcslen(L"refs/heads/"));
 
 	CString errorMsg;
 	if (g_Git.Run(L"git.exe branch -m \"" + origName + L"\" \"" + newNameTrunced + L'"', &errorMsg, CP_UTF8) != 0)

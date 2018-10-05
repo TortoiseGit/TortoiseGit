@@ -1245,7 +1245,7 @@ LRESULT CFileDiffDlg::OnRefLoad(WPARAM /*wParam*/, LPARAM /*lParam*/)
 		CString str=m_Reflist[i];
 
 		if (CStringUtils::StartsWith(str, L"remotes/"))
-			str=str.Mid(8);
+			str = str.Mid((int)wcslen(L"remotes/"));
 
 		m_ctrRev1Edit.AddSearchString(str);
 		m_ctrRev2Edit.AddSearchString(str);

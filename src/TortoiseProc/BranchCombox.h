@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2017 - TortoiseGit
+// Copyright (C) 2009-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -99,7 +99,7 @@ protected:
 			if(remoteBranchName.IsEmpty())
 				return; //Canceled
 
-			remoteBranchName = remoteBranchName.Mid(13);//Strip 'refs/remotes/'
+			remoteBranchName = remoteBranchName.Mid((int)wcslen(L"refs/remotes/")); //Strip 'refs/remotes/'
 			int slashPlace = remoteBranchName.Find('/');
 			remoteName = remoteBranchName.Left(slashPlace);
 			remoteBranchName = remoteBranchName.Mid(slashPlace + 1); //Strip remote name (for example 'origin/')

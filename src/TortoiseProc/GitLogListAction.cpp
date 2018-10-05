@@ -764,7 +764,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				{
 					CString ref = m_arShownList.SafeGetAt(GetNextSelectedItem(pos2))->m_Ref;
 					if (CStringUtils::StartsWith(ref, L"refs/"))
-						ref = ref.Mid(5);
+						ref = ref.Mid((int)wcslen(L"refs/"));
 					int refpos = ref.ReverseFind(L'{');
 					if (refpos > 0 && ref.Mid(refpos - 1, 2) != L"@{")
 						ref = ref.Left(refpos) + L'@'+ ref.Mid(refpos);

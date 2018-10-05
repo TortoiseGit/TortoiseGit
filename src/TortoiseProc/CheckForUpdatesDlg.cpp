@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
 // Copyright (C) 2008-2018 - TortoiseGit
@@ -407,11 +407,11 @@ void CCheckForUpdatesDlg::FillDownloads(CVersioncheckParser& versioncheck)
 				sVer = sVer.Left(sVer.ReverseFind('.'));
 				CString sFileVer = CPathUtils::GetVersionFromFile(file);
 				sFileVer = sFileVer.Left(sFileVer.ReverseFind('.'));
-				CString sLoc = filename.Mid(12);
-				sLoc = sLoc.Left(sLoc.GetLength() - 4); // cut off ".dll"
+				CString sLoc = filename.Mid((int)wcslen(L"TortoiseProc"));
+				sLoc = sLoc.Left(sLoc.GetLength() - (int)wcslen(L".dll")); // cut off ".dll"
 				if (CStringUtils::StartsWith(sLoc, L"32") && (sLoc.GetLength() > 5))
 					continue;
-				DWORD loc = _wtoi(filename.Mid(12));
+				DWORD loc = _wtoi(filename.Mid((int)wcslen(L"TortoiseProc")));
 				installedLangs.push_back(loc);
 			}
 		}

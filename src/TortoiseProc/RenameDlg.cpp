@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2009, 2011-2013, 2015-2018 - TortoiseGit
 // Copyright (C) 2003-2011, 2013 - TortoiseSVN
@@ -166,7 +166,7 @@ void CRenameDlg::OnBnClickedButtonBrowseRef()
 		if (!PathRelativePathTo(CStrBuf(relPath, MAX_PATH), m_sBaseDir, FILE_ATTRIBUTE_DIRECTORY, path, FILE_ATTRIBUTE_DIRECTORY))
 			return;
 		if (CStringUtils::StartsWith(relPath, L".\\"))
-			relPath = relPath.Mid(2);
+			relPath = relPath.Mid((int)wcslen(L".\\"));
 		m_name = relPath;
 		UpdateData(FALSE);
 	}

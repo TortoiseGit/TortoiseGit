@@ -2094,7 +2094,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						{
 							if (*branchs[i] != currentBranch)
 							{
-								subbranchmenu.AppendMenuIcon(ID_SWITCHBRANCH+(i<<16), branchs[i]->Mid(11));
+								subbranchmenu.AppendMenuIcon(ID_SWITCHBRANCH + (i << 16), branchs[i]->Mid((int)wcslen(L"refs/heads/")));
 								subbranchmenu.SetMenuItemData(ID_SWITCHBRANCH+(i<<16), (ULONG_PTR) branchs[i]);
 							}
 						}

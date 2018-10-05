@@ -1,7 +1,6 @@
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// TortoiseGit - a Windows shell extension for easy version control
-
-// Copyright (C) 2009-2017 - TortoiseGit
+// Copyright (C) 2009-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -79,7 +78,7 @@ int GitRevRefBrowser::GetGitRevRefMap(MAP_REF_GITREVREFBROWSER& map, int mergefi
 		ref.m_AuthorDate = StrToInt(date);
 
 		if (CStringUtils::StartsWith(refName, L"refs/heads/"))
-			ref.m_Description = descriptions[refName.Mid(11)];
+			ref.m_Description = descriptions[refName.Mid((int)wcslen(L"refs/heads/"))];
 
 		map.emplace(refName, ref);
 	}

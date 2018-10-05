@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2018 - TortoiseGit
 
@@ -438,7 +438,7 @@ void CPullFetchDlg::OnBnClickedButtonBrowseRef()
 	if (!CStringUtils::StartsWith(selectedRef, L"refs/remotes/"))
 		return;
 
-	selectedRef = selectedRef.Mid(13);
+	selectedRef = selectedRef.Mid((int)wcslen(L"refs/remotes/"));
 	int ixSlash = selectedRef.Find('/');
 
 	CString remoteName   = selectedRef.Left(ixSlash);

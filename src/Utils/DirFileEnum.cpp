@@ -19,6 +19,7 @@
 #include "stdafx.h"
 #include "DirFileEnum.h"
 #include "SysInfo.h"
+#include "StringUtils.h"
 
 CSimpleFileFind::CSimpleFileFind(const CString &sPath, LPCTSTR pPattern)
 	: m_dError(ERROR_SUCCESS)
@@ -34,7 +35,7 @@ CSimpleFileFind::CSimpleFileFind(const CString &sPath, LPCTSTR pPattern)
 		if (ch != '\\' && (ch != ':' || len != 2))
 			m_sPathPrefix += "\\";
 	}
-	if ((len >= 248) && (m_sPathPrefix.Left(4).Compare(L"\\\\?\\")))
+	if (len >= 248 && (CStringUtils::StartsWith(m_sPathPrefix, L"\\\\?\\")))
 		m_hFindFile = ::FindFirstFileEx((LPCTSTR)(L"\\\\?\\" + m_sPathPrefix + pPattern), FindExInfoBasic, &m_FindFileData, FindExSearchNameMatch, nullptr, FIND_FIRST_EX_LARGE_FETCH);
 	else
 		m_hFindFile = ::FindFirstFileEx((LPCTSTR)(m_sPathPrefix + pPattern), FindExInfoBasic, &m_FindFileData, FindExSearchNameMatch, nullptr, FIND_FIRST_EX_LARGE_FETCH);

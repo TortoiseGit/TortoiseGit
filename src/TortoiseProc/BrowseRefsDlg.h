@@ -76,7 +76,7 @@ public:
 
 	CString			GetRefsHeadsName() const
 	{
-		return GetRefName().Mid(11); // len = 11 refs/heads/
+		return GetRefName().Mid((int)wcslen(L"refs/heads/"));
 	}
 
 	CShadowTree*	FindLeaf(CString partialRefName);

@@ -152,9 +152,9 @@ bool CAppUtils::StashApply(HWND hWnd, CString ref, bool showChanges /* true */)
 {
 	CString cmd = L"git.exe stash apply ";
 	if (CStringUtils::StartsWith(ref, L"refs/"))
-		ref = ref.Mid(5);
+		ref = ref.Mid((int)wcslen(L"refs/"));
 	if (CStringUtils::StartsWith(ref, L"stash{"))
-		ref = L"stash@" + ref.Mid(5);
+		ref = L"stash@" + ref.Mid((int)wcslen(L"stash"));
 	cmd += ref;
 
 	CSysProgressDlg sysProgressDlg;
@@ -1071,9 +1071,9 @@ bool CAppUtils::SetupDiffScripts(bool force, const CString& type)
 					CStringUtils::StartsWith(extline, L"' extensions: ")))
 				{
 					if (extline[0] == '/')
-						extline = extline.Mid(15);
+						extline = extline.Mid((int)wcslen(L"// extensions: "));
 					else
-						extline = extline.Mid(14);
+						extline = extline.Mid((int)wcslen(L"' extensions: "));
 					CString sToken;
 					int curPos = 0;
 					sToken = extline.Tokenize(L";", curPos);
@@ -1275,7 +1275,7 @@ bool CAppUtils::Switch(HWND hWnd, const CString& initialRefName)
 		// if refs/heads/ is not stripped, checkout will detach HEAD
 		// checkout prefers branches on name clashes (with tags)
 		if (CStringUtils::StartsWith(dlg.m_VersionName, L"refs/heads/") && dlg.m_bBranchOverride != TRUE)
-			dlg.m_VersionName = dlg.m_VersionName.Mid(11);
+			dlg.m_VersionName = dlg.m_VersionName.Mid((int)wcslen(L"refs/heads/"));
 
 		return PerformSwitch(hWnd, dlg.m_VersionName, dlg.m_bForce == TRUE, branch, dlg.m_bBranchOverride == TRUE, dlg.m_bTrack, dlg.m_bMerge == TRUE);
 	}

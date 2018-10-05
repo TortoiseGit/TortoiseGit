@@ -1735,7 +1735,7 @@ void CMainFrame::OnUpdateFileSave(CCmdUI *pCmdUI)
 		if (IsViewGood(m_pwndBottomView)&&(m_pwndBottomView->m_pViewData))
 			bEnable = TRUE;
 		else if ( (IsViewGood(m_pwndRightView)&&(m_pwndRightView->m_pViewData)) &&
-				  (m_pwndRightView->IsModified() || (m_Data.m_yourFile.GetWindowName().Right(9).Compare(L": patched") == 0)))
+				  (m_pwndRightView->IsModified() || (m_Data.m_yourFile.GetWindowName().Right((int)wcslen(L": patched")).Compare(L": patched") == 0)))
 			bEnable = TRUE;
 		else if (IsViewGood(m_pwndLeftView)
 				&& (m_pwndLeftView->m_pViewData)

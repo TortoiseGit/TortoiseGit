@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2009, 2011-2018 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
@@ -138,9 +138,9 @@ static bool GetFilesToCleanUp(CTGitPathList& delList, const CString& baseCmd, CG
 	CString token = cmdout.Tokenize(L"\n", pos);
 	while (!token.IsEmpty())
 	{
-		if (token.Mid(0, 13) == L"Would remove ")
+		if (CStringUtils::StartsWith(token, L"Would remove "))
 		{
-			CString tempPath = token.Mid(13).TrimRight();
+			CString tempPath = token.Mid((int)wcslen(L"Would remove ")).TrimRight();
 			if (quotepath)
 				tempPath = UnescapeQuotePath(tempPath.Trim(L'"'));
 			delList.AddPath(pGit->CombinePath(tempPath));

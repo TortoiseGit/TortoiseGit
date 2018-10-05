@@ -215,7 +215,7 @@ CLogDlgFilter::CLogDlgFilter(const CString& filter, bool filterWithRegex, DWORD 
 	if (filter.GetLength() && filter[0] == L'!')
 	{
 		m_bNegate = true;
-		filterText = filterText.Mid(1);
+		filterText = filterText.Mid((int)wcslen(L"!"));
 	}
 
 	bool useRegex = filterWithRegex && !filterText.IsEmpty();

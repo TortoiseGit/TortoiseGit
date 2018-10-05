@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -160,10 +160,10 @@ protected:
 		}
 
 		if (CStringUtils::StartsWith(refName, L"refs/"))
-			refName = refName.Mid(5);
+			refName = refName.Mid((int)wcslen(L"refs/"));
 		if (CStringUtils::StartsWith(refName, L"heads/"))
 		{
-			refName = refName.Mid(6);
+			refName = refName.Mid((int)wcslen(L"heads/"));
 			SetDefaultChoose(IDC_RADIO_BRANCH);
 			m_ChooseVersioinBranch.SetCurSel(
 				m_ChooseVersioinBranch.FindStringExact(-1, refName));
@@ -176,7 +176,7 @@ protected:
 		}
 		else if (CStringUtils::StartsWith(refName, L"tags/"))
 		{
-			refName = refName.Mid(5);
+			refName = refName.Mid((int)wcslen(L"refs/"));
 			refName.Replace(L"^{}", L"");
 			SetDefaultChoose(IDC_RADIO_TAGS);
 			m_ChooseVersioinTags.SetCurSel(

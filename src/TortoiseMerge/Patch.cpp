@@ -134,7 +134,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 						chunks = new Chunks();
 					}
 
-					sLine = sLine.Mid(3);	//remove the "---"
+					sLine = sLine.Mid((int)wcslen(L"---"));	//remove the "---"
 					sLine =sLine.Trim();
 					//at the end of the filepath there's a revision number...
 					int bracket = sLine.ReverseFind('(');
@@ -155,10 +155,10 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 					if (CStringUtils::StartsWith(chunks->sFilePath, L"\"") && CStringUtils::EndsWith(chunks->sFilePath, L'"'))
 						chunks->sFilePath=chunks->sFilePath.Mid(1, chunks->sFilePath.GetLength() - 2);
 					if (CStringUtils::StartsWith(chunks->sFilePath, L"a/"))
-						chunks->sFilePath=chunks->sFilePath.Mid(2);
+						chunks->sFilePath=chunks->sFilePath.Mid((int)wcslen(L"a/"));
 
 					if (CStringUtils::StartsWith(chunks->sFilePath, L"b/"))
-						chunks->sFilePath=chunks->sFilePath.Mid(2);
+						chunks->sFilePath=chunks->sFilePath.Mid((int)wcslen(L"b/"));
 
 
 					chunks->sFilePath.Replace(L'/', L'\\');
@@ -193,7 +193,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 					m_sErrorMessage.Format(IDS_ERR_PATCH_NOADDFILELINE, nIndex);
 					goto errorcleanup;
 				}
-				sLine = sLine.Mid(3);	//remove the "---"
+				sLine = sLine.Mid((int)wcslen(L"---"));	//remove the "---"
 				sLine =sLine.Trim();
 
 				//at the end of the filepath there's a revision number...
@@ -211,10 +211,10 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 				if (CStringUtils::StartsWith(chunks->sFilePath2, L"\"") && chunks->sFilePath2.ReverseFind(L'"') == chunks->sFilePath2.GetLength() - 1)
 					chunks->sFilePath2=chunks->sFilePath2.Mid(1, chunks->sFilePath2.GetLength() - 2);
 				if (CStringUtils::StartsWith(chunks->sFilePath2, L"a/"))
-					chunks->sFilePath2=chunks->sFilePath2.Mid(2);
+					chunks->sFilePath2=chunks->sFilePath2.Mid((int)wcslen(L"a/"));
 
 				if (CStringUtils::StartsWith(chunks->sFilePath2, L"b/"))
-					chunks->sFilePath2=chunks->sFilePath2.Mid(2);
+					chunks->sFilePath2=chunks->sFilePath2.Mid((int)wcslen(L"b/"));
 
 				chunks->sFilePath2.Replace(L'/', L'\\');
 				chunks->sFilePath2.Replace(L'/', L'\\');
@@ -253,7 +253,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 				}
 
 				//@@ -xxx,xxx +xxx,xxx @@
-				sLine = sLine.Mid(2);
+				sLine = sLine.Mid((int)wcslen(L"@@"));
 				sLine = sLine.Trim();
 				chunk = new Chunk();
 				CString sRemove = sLine.Left(sLine.Find(' '));
@@ -300,7 +300,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 					//but maybe in the future the patch algorithm can be
 					//extended to use those in case the file to patch has
 					//already changed and no base file is around...
-					chunk->arLines.Add(RemoveUnicodeBOM(sLine.Mid(1)));
+					chunk->arLines.Add(RemoveUnicodeBOM(sLine.Mid((int)wcslen(L" "))));
 					chunk->arLinesStates.Add(PATCHSTATE_CONTEXT);
 					chunk->arEOLs.push_back(ending);
 					++nContextLineCount;
@@ -314,7 +314,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 				else if (type == '-')
 				{
 					//a removed line
-					chunk->arLines.Add(RemoveUnicodeBOM(sLine.Mid(1)));
+					chunk->arLines.Add(RemoveUnicodeBOM(sLine.Mid((int)wcslen(L"-"))));
 					chunk->arLinesStates.Add(PATCHSTATE_REMOVED);
 					chunk->arEOLs.push_back(ending);
 					++nRemoveLineCount;
@@ -322,7 +322,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 				else if (type == '+')
 				{
 					//an added line
-					chunk->arLines.Add(RemoveUnicodeBOM(sLine.Mid(1)));
+					chunk->arLines.Add(RemoveUnicodeBOM(sLine.Mid((int)wcslen(L"+"))));
 					chunk->arLinesStates.Add(PATCHSTATE_ADDED);
 					chunk->arEOLs.push_back(ending);
 					++nAddLineCount;

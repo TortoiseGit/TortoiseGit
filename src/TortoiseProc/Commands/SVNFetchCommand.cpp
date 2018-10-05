@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2016, 2018 - TortoiseGit
 
@@ -35,7 +35,7 @@ bool SVNFetchCommand::Execute()
 			out=out.Mid(start);
 
 		if (CStringUtils::StartsWith(out, L":refs"))
-			out=out.Mid(6);
+			out = out.Mid((int)wcslen(L":refs") + 1);
 
 		start = 0;
 		out = out.Tokenize(L"\n", start);

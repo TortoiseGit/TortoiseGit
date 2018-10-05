@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2011-2014, 2016-2017 - TortoiseGit
 
@@ -130,7 +130,7 @@ void CRequestPullDlg::OnBnClickedOk()
 	}
 
 	if (CStringUtils::StartsWith(m_StartRevision, L"remotes/"))
-		m_StartRevision = m_StartRevision.Mid(8);
+		m_StartRevision = m_StartRevision.Mid((int)wcslen(L"remotes/"));
 
 	m_regSendMail = m_bSendMail;
 

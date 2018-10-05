@@ -288,22 +288,22 @@ BOOL CTortoiseProcApp::InitInstance()
 	{
 		CString url = parser.GetVal(L"urlhandler");
 		if (CStringUtils::StartsWith(url, L"tgit://clone/"))
-			url = url.Mid(13); // 21 = "tgit://clone/".GetLength()
+			url = url.Mid((int)wcslen(L"tgit://clone/"));
 		else if (CStringUtils::StartsWith(url, L"github-windows://openRepo/"))
 		{
-			url = url.Mid(26); // 26 = "github-windows://openRepo/".GetLength()
+			url = url.Mid((int)wcslen(L"github-windows://openRepo/"));
 			int questioMark = url.Find('?');
 			if (questioMark > 0)
 				url = url.Left(questioMark);
 		}
 		else if (CStringUtils::StartsWith(url, L"x-github-client://openRepo/")) {
-			url = url.Mid(27); // 27 = "x-github-client://openRepo/".GetLength()
+			url = url.Mid((int)wcslen(L"x-github-client://openRepo/"));
 			int questioMark = url.Find('?');
 			if (questioMark > 0)
 				url = url.Left(questioMark);
 		}
 		else if (CStringUtils::StartsWith(url, L"smartgit://cloneRepo/"))
-			url = url.Mid(21); // 21 = "smartgit://cloneRepo/".GetLength()
+			url = url.Mid((int)wcslen(L"smartgit://cloneRepo/"));
 		else
 		{
 			CMessageBox::Show(nullptr, IDS_ERR_INVALIDPATH, IDS_APPNAME, MB_ICONERROR);

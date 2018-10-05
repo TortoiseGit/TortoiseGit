@@ -876,9 +876,9 @@ CString CGit::GetFullRefName(const CString& shortRefName)
 CString CGit::StripRefName(CString refName)
 {
 	if (CStringUtils::StartsWith(refName, L"refs/heads/"))
-		refName = refName.Mid(11);
+		refName = refName.Mid((int)wcslen(L"refs/heads/"));
 	else if (CStringUtils::StartsWith(refName, L"refs/"))
-		refName = refName.Mid(5);
+		refName = refName.Mid((int)wcslen(L"refs/"));
 	return refName.TrimRight();
 }
 
@@ -1604,7 +1604,7 @@ int CGit::GetBranchList(STRING_VECTOR &list, int *current, BRANCH_TYPE type, boo
 			{
 				if (skipCurrent)
 					return;
-				branch = branch.Mid(2);
+				branch = branch.Mid((int)wcslen(L"* "));
 				cur = branch;
 
 				// check whether HEAD is detached
@@ -1738,7 +1738,7 @@ int CGit::GetRefsCommitIsOn(STRING_VECTOR& list, const CGitHash& hash, bool incl
 				CString branch = CUnicodeUtils::GetUnicode(lineA);
 				if (lineA[0] == '*')
 				{
-					branch = branch.Mid(2);
+					branch = branch.Mid((int)wcslen(L"* "));
 					CString currentHead;
 					if (branch[0] == L'(' && GetCurrentBranchFromFile(m_CurrentDir, currentHead) == 1)
 						return;
@@ -1857,7 +1857,7 @@ int CGit::GetRemoteTags(const CString& remote, REF_VECTOR& list)
 	{
 		CGitHash hash;
 		hash.ConvertFromStrA(lineA.Mid(0, GIT_HASH_SIZE * 2));
-		lineA = lineA.Mid(51); // sha1, tab + refs/tags/
+		lineA = lineA.Mid(GIT_HASH_SIZE * 2 + (int)wcslen(L"\trefs/tags/")); // sha1, tab + refs/tags/
 		if (!lineA.IsEmpty())
 			list.emplace_back(TGitRef{ CUnicodeUtils::GetUnicode(lineA), hash });
 	}, &gitLastErr))
@@ -2060,7 +2060,8 @@ int CGit::GetBranchDescriptions(MAP_STRING_STRING& map)
 	{
 		MAP_STRING_STRING* descriptions = (MAP_STRING_STRING*)data;
 		CString key = CUnicodeUtils::GetUnicode(entry->name);
-		key = key.Mid(7, key.GetLength() - 7 - 12); // 7: branch., 12: .description
+		// extract branch name from config key
+		key = key.Mid((int)wcslen(L"branch."), key.GetLength() - (int)wcslen(L"branch.") - (int)wcslen(L".description"));
 		descriptions->insert(std::make_pair(key, CUnicodeUtils::GetUnicode(entry->value)));
 		return 0;
 	}, &map);
