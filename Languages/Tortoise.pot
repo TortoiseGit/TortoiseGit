@@ -1243,7 +1243,7 @@ msgstr ""
 msgid "&Whole Project"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_FIND: Control id 1066, Dialog IDD_FIND: Control id 20085)
+#. Resource IDs: (Dialog IDD_FIND: Control id 1066)
 msgid "&Whole word"
 msgstr ""
 
