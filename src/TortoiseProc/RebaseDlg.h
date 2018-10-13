@@ -239,7 +239,7 @@ protected:
 	std::vector<CGitHash> m_currentCommits;
 
 	void AddBranchToolTips(CHistoryCombo *pBranch);
-	void AddLogString(CString str);
+	void AddLogString(const CString& str);
 	int StartRebase();
 	int CheckRebaseCondition();
 	void CheckRestoreStash();

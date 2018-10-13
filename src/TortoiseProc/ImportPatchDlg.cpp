@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2018 - TortoiseGit
 
@@ -637,7 +637,7 @@ void CImportPatchDlg::OnBnClickedCancel()
 	}
 }
 
-void CImportPatchDlg::AddLogString(CString str)
+void CImportPatchDlg::AddLogString(const CString& str)
 {
 	this->m_wndOutput.SendMessage(SCI_SETREADONLY, FALSE);
 	CStringA sTextA = m_wndOutput.StringForControl(str);//CUnicodeUtils::GetUTF8(str);

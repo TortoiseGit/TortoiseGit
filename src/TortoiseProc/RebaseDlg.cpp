@@ -1826,7 +1826,7 @@ void CRebaseDlg::UpdateCurrentStatus()
 		GetDlgItem(IDC_REBASE_CONTINUE)->SetFocus();
 }
 
-void CRebaseDlg::AddLogString(CString str)
+void CRebaseDlg::AddLogString(const CString& str)
 {
 	this->m_wndOutputRebase.SendMessage(SCI_SETREADONLY, FALSE);
 	CStringA sTextA = m_wndOutputRebase.StringForControl(str);//CUnicodeUtils::GetUTF8(str);
