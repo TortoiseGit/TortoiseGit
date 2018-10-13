@@ -639,6 +639,8 @@ val INDIC_FULLBOX=16
 val INDIC_TEXTFORE=17
 val INDIC_POINT=18
 val INDIC_POINTCHARACTER=19
+val INDIC_GRADIENT=20
+val INDIC_GRADIENTCENTRE=21
 val INDIC_IME=32
 val INDIC_IME_MAX=35
 val INDIC_MAX=35
@@ -859,6 +861,9 @@ get int GetColumn=2129(position pos,)
 
 # Count characters between two positions.
 fun int CountCharacters=2633(position start, position end)
+
+# Count code units between two positions.
+fun int CountCodeUnits=2715(position start, position end)
 
 # Show or hide the horizontal scroll bar.
 set void SetHScrollBar=2130(bool visible,)
@@ -1357,6 +1362,7 @@ enu WrapIndentMode=SC_WRAPINDENT_
 val SC_WRAPINDENT_FIXED=0
 val SC_WRAPINDENT_SAME=1
 val SC_WRAPINDENT_INDENT=2
+val SC_WRAPINDENT_DEEPINDENT=3
 
 # Sets how wrapped sublines are placed. Default is fixed.
 set void SetWrapIndentMode=2472(int wrapIndentMode,)
@@ -1955,6 +1961,11 @@ fun position PositionAfter=2418(position pos,)
 # Given a valid document position, return a position that differs in a number
 # of characters. Returned value is always between 0 and last position in document.
 fun position PositionRelative=2670(position pos, int relative)
+
+# Given a valid document position, return a position that differs in a number
+# of UTF-16 code units. Returned value is always between 0 and last position in document.
+# The result may point half way (2 bytes) inside a non-BMP character.
+fun position PositionRelativeCodeUnits=2716(position pos, int relative)
 
 # Copy a range of text to the clipboard. Positions are clipped into the document.
 fun void CopyRange=2419(position start, position end)
@@ -2929,6 +2940,8 @@ val SCLEX_JSON=120
 val SCLEX_EDIFACT=121
 val SCLEX_INDENT=122
 val SCLEX_MAXIMA=123
+val SCLEX_STATA=124
+val SCLEX_SAS=125
 
 # When a lexer specifies its language as SCLEX_AUTOMATIC it receives a
 # value assigned in sequence from SCLEX_AUTOMATIC+1.
@@ -3413,6 +3426,10 @@ val SCE_DIFF_POSITION=4
 val SCE_DIFF_DELETED=5
 val SCE_DIFF_ADDED=6
 val SCE_DIFF_CHANGED=7
+val SCE_DIFF_PATCH_ADD=8
+val SCE_DIFF_PATCH_DELETE=9
+val SCE_DIFF_REMOVED_PATCH_ADD=10
+val SCE_DIFF_REMOVED_PATCH_DELETE=11
 # Lexical states for SCLEX_CONF (Apache Configuration Files Lexer)
 lex Conf=SCLEX_CONF SCE_CONF_
 val SCE_CONF_DEFAULT=0
@@ -4846,6 +4863,38 @@ val SCE_EDI_SEP_RELEASE=5
 val SCE_EDI_UNA=6
 val SCE_EDI_UNH=7
 val SCE_EDI_BADSEGMENT=8
+# Lexical states for SCLEX_STATA
+lex STATA=SCLEX_STATA SCE_STATA_
+val SCE_STATA_DEFAULT=0
+val SCE_STATA_COMMENT=1
+val SCE_STATA_COMMENTLINE=2
+val SCE_STATA_COMMENTBLOCK=3
+val SCE_STATA_NUMBER=4
+val SCE_STATA_OPERATOR=5
+val SCE_STATA_IDENTIFIER=6
+val SCE_STATA_STRING=7
+val SCE_STATA_TYPE=8
+val SCE_STATA_WORD=9
+val SCE_STATA_GLOBAL_MACRO=10
+val SCE_STATA_MACRO=11
+# Lexical states for SCLEX_SAS
+lex SAS=SCLEX_SAS SCE_SAS_
+val SCE_SAS_DEFAULT=0
+val SCE_SAS_COMMENT=1
+val SCE_SAS_COMMENTLINE=2
+val SCE_SAS_COMMENTBLOCK=3
+val SCE_SAS_NUMBER=4
+val SCE_SAS_OPERATOR=5
+val SCE_SAS_IDENTIFIER=6
+val SCE_SAS_STRING=7
+val SCE_SAS_TYPE=8
+val SCE_SAS_WORD=9
+val SCE_SAS_GLOBAL_MACRO=10
+val SCE_SAS_MACRO=11
+val SCE_SAS_MACRO_KEYWORD=12
+val SCE_SAS_BLOCK_KEYWORD=13
+val SCE_SAS_MACRO_FUNCTION=14
+val SCE_SAS_STATEMENT=15
 
 # Events
 
@@ -4895,6 +4944,26 @@ get int GetBidirectional=2708(,)
 
 # Set bidirectional text display state.
 set void SetBidirectional=2709(int bidirectional,)
+
+enu LineCharacterIndexType=SC_LINECHARACTERINDEX_
+val SC_LINECHARACTERINDEX_NONE=0
+val SC_LINECHARACTERINDEX_UTF32=1
+val SC_LINECHARACTERINDEX_UTF16=2
+
+# Retrieve line character index state.
+get int GetLineCharacterIndex=2710(,)
+
+# Request line character index be created or its use count increased.
+fun void AllocateLineCharacterIndex=2711(int lineCharacterIndex,)
+
+# Decrease use count of line character index and remove if 0.
+fun void ReleaseLineCharacterIndex=2712(int lineCharacterIndex,)
+
+# Retrieve the document line containing a position measured in index units.
+fun int LineFromIndexPosition=2713(position pos, int lineCharacterIndex)
+
+# Retrieve the position measured in index units at the start of a document line.
+fun position IndexPositionFromLine=2714(int line, int lineCharacterIndex)
 
 cat Deprecated
 

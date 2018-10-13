@@ -8,6 +8,7 @@
 #include <cmath>
 
 #include <stdexcept>
+#include <string_view>
 #include <vector>
 #include <map>
 #include <algorithm>
@@ -47,8 +48,7 @@ void Indicator::Draw(Surface *surface, const PRectangle &rc, const PRectangle &r
 		surface->MoveTo(x, irc.top + y);
 		while (x < xLast) {
 			if ((x + 2) > xLast) {
-				if (xLast > x)
-					y = 1;
+				y = 1;
 				x = xLast;
 			} else {
 				x += 2;
@@ -137,6 +137,27 @@ void Indicator::Draw(Surface *surface, const PRectangle &rc, const PRectangle &r
 		rcBox.right = rc.right;
 		surface->AlphaRectangle(rcBox, (sacDraw.style == INDIC_ROUNDBOX) ? 1 : 0,
 			sacDraw.fore, fillAlpha, sacDraw.fore, outlineAlpha, 0);
+	} else if (sacDraw.style == INDIC_GRADIENT ||
+		sacDraw.style == INDIC_GRADIENTCENTRE) {
+		PRectangle rcBox = rc;
+		rcBox.top = rcLine.top + 1;
+		rcBox.bottom = rcLine.bottom;
+		const Surface::GradientOptions options = Surface::GradientOptions::topToBottom;
+		const ColourAlpha start(sacNormal.fore, fillAlpha);
+		const ColourAlpha end(sacNormal.fore, 0);
+		std::vector<ColourStop> stops;
+		switch (sacDraw.style) {
+		case INDIC_GRADIENT:
+			stops.push_back(ColourStop(0.0, start));
+			stops.push_back(ColourStop(1.0, end));
+			break;
+		case INDIC_GRADIENTCENTRE:
+			stops.push_back(ColourStop(0.0, end));
+			stops.push_back(ColourStop(0.5, start));
+			stops.push_back(ColourStop(1.0, end));
+			break;
+		}
+		surface->GradientRectangle(rcBox, stops, options);
 	} else if (sacDraw.style == INDIC_DOTBOX) {
 		PRectangle rcBox = PixelGridAlign(rc);
 		rcBox.top = rcLine.top + 1;
@@ -189,7 +210,7 @@ void Indicator::Draw(Surface *surface, const PRectangle &rc, const PRectangle &r
 				Point(ix + pixelHeight, iy + pixelHeight),	// Right
 				Point(ix, iy)								// Top
 			};
-			surface->Polygon(pts, 3, sacDraw.fore, sacDraw.fore);
+			surface->Polygon(pts, std::size(pts), sacDraw.fore, sacDraw.fore);
 		}
 	} else {	// Either INDIC_PLAIN or unknown
 		surface->MoveTo(irc.left, ymid);

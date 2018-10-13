@@ -6,6 +6,7 @@ Released: unreleased
  * Fixed issue #2591: Enable accent coloring for search term matches in log messages
  * LogDlg: Allow to use more complex search expressions, see documentation
  * Fixed issue #3279: Browse References -> lacks capability to double click an item (now opens log by default)
+ * Update Scintilla to 4.1.2
 
 == Bug Fixes ==
  * Fixed issue #3250: GitWCRev: IsGitItem return true for item that had never been committed
