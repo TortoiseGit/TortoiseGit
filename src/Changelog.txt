@@ -7,6 +7,7 @@ Released: unreleased
  * LogDlg: Allow to use more complex search expressions, see documentation
  * Fixed issue #3279: Browse References -> lacks capability to double click an item (now opens log by default)
  * Update Scintilla to 4.1.2
+ * Fixed issue #3277: Start of rebase process doesn't show log tab by default
 
 == Bug Fixes ==
  * Fixed issue #3250: GitWCRev: IsGitItem return true for item that had never been committed

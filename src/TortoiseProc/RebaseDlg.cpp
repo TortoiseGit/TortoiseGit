@@ -1115,6 +1115,8 @@ int CRebaseDlg::FinishRebase()
 	}
 	CString out,cmd;
 
+	m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
+
 	if (g_Git.IsLocalBranch(m_BranchCtrl.GetString()))
 	{
 		cmd.Format(L"git.exe checkout -f -B %s %s --", (LPCTSTR)m_BranchCtrl.GetString(), (LPCTSTR)head.ToString());
@@ -1260,6 +1262,7 @@ void CRebaseDlg::OnBnClickedContinue()
 		m_FileListCtrl.m_CurrentVersion.Empty();
 		m_ctrlTabCtrl.SetTabLabel(REBASE_TAB_CONFLICT, CString(MAKEINTRESOURCE(IDS_PROC_CONFLICTFILES)));
 		m_ctrlTabCtrl.AddTab(&m_wndOutputRebase, CString(MAKEINTRESOURCE(IDS_LOG)), 2);
+		m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
 	}
 
 	if( m_RebaseStage == REBASE_FINISH )
@@ -1298,6 +1301,8 @@ void CRebaseDlg::OnBnClickedContinue()
 
 		if (CAppUtils::MessageContainsConflictHints(GetSafeHwnd(), m_LogMessageCtrl.GetText()))
 			return;
+
+		m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
 
 		GitRevLoglist* curRev = m_CommitList.m_arShownList.SafeGetAt(m_CurrentRebaseIndex);
 		// ***************************************************
@@ -1423,7 +1428,6 @@ void CRebaseDlg::OnBnClickedContinue()
 			mgtReDelAfterCommit.Execute(cancel2);
 		}
 
-		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
 		if (curRev->GetRebaseAction() & CGitLogListBase::LOGACTIONS_REBASE_EDIT)
 		{
 			m_RebaseStage=REBASE_EDIT;
@@ -2405,6 +2409,7 @@ void CRebaseDlg::OnBnClickedAbort()
 	if (!m_bAbort && CMessageBox::Show(GetSafeHwnd(), IDS_PROC_REBASE_ABORT, IDS_APPNAME, MB_YESNO | MB_ICONQUESTION) != IDYES)
 		goto end;
 
+	m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
 	if(this->m_IsFastForward)
 	{
 		CString cmd;
