@@ -412,7 +412,7 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 	void DelCharBack(bool allowLineStartDeletion);
 	virtual void ClaimSelection() = 0;
 
-	static int ModifierFlags(bool shift, bool ctrl, bool alt, bool meta=false, bool super=false);
+	static int ModifierFlags(bool shift, bool ctrl, bool alt, bool meta=false, bool super=false) noexcept;
 	virtual void NotifyChange() = 0;
 	virtual void NotifyFocus(bool focus);
 	virtual void SetCtrlID(int identifier);
@@ -594,7 +594,6 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 	static sptr_t BytesResult(sptr_t lParam, const unsigned char *val, size_t len);
 
 public:
-	virtual void NotifyParent(SCNotification* scn) = 0;
 	// Public so the COM thunks can access it.
 	bool IsUnicodeMode() const;
 	// Public so scintilla_send_message can use it.
@@ -619,6 +618,7 @@ public:
 			surf->Init(ed->wMain.GetID());
 			surf->SetUnicodeMode(SC_CP_UTF8 == ed->CodePage());
 			surf->SetDBCSMode(ed->CodePage());
+			surf->SetBidiR2L(ed->BidirectionalR2L());
 		}
 	}
 	AutoSurface(SurfaceID sid, Editor *ed, int technology = -1) {
@@ -627,6 +627,7 @@ public:
 			surf->Init(sid, ed->wMain.GetID());
 			surf->SetUnicodeMode(SC_CP_UTF8 == ed->CodePage());
 			surf->SetDBCSMode(ed->CodePage());
+			surf->SetBidiR2L(ed->BidirectionalR2L());
 		}
 	}
 	// Deleted so AutoSurface objects can not be copied.

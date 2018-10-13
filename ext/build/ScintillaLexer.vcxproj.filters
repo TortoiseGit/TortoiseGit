@@ -472,6 +472,12 @@
     <ClCompile Include="..\scintilla\lexers\LexMaxima.cxx">
       <Filter>lexers</Filter>
     </ClCompile>
+    <ClCompile Include="..\scintilla\lexers\LexSAS.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scintilla\lexers\LexStata.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\scintilla\src\AutoComplete.h">

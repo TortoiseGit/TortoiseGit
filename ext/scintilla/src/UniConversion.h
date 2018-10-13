@@ -14,13 +14,15 @@ const int UTF8MaxBytes = 4;
 
 const int unicodeReplacementChar = 0xFFFD;
 
-size_t UTF8Length(const wchar_t *uptr, size_t tlen);
-void UTF8FromUTF16(const wchar_t *uptr, size_t tlen, char *putf, size_t len);
+size_t UTF8Length(std::wstring_view wsv);
+size_t UTF8PositionFromUTF16Position(std::string_view u8Text, size_t positionUTF16) noexcept;
+void UTF8FromUTF16(std::wstring_view wsv, char *putf, size_t len);
 void UTF8FromUTF32Character(int uch, char *putf);
-size_t UTF16Length(const char *s, size_t len);
-size_t UTF16FromUTF8(const char *s, size_t len, wchar_t *tbuf, size_t tlen);
-size_t UTF32FromUTF8(const char *s, size_t len, unsigned int *tbuf, size_t tlen);
+size_t UTF16Length(std::string_view sv);
+size_t UTF16FromUTF8(std::string_view sv, wchar_t *tbuf, size_t tlen);
+size_t UTF32FromUTF8(std::string_view sv, unsigned int *tbuf, size_t tlen);
 unsigned int UTF16FromUTF32Character(unsigned int val, wchar_t *tbuf) noexcept;
+bool UTF8IsValid(std::string_view sv) noexcept;
 std::string FixInvalidUTF8(const std::string &text);
 
 extern const unsigned char UTF8BytesOfLead[256];
@@ -38,16 +40,19 @@ inline int UnicodeFromUTF8(const unsigned char *us) noexcept {
 	}
 }
 
-inline bool UTF8IsTrailByte(unsigned char ch) noexcept {
+inline constexpr bool UTF8IsTrailByte(unsigned char ch) noexcept {
 	return (ch >= 0x80) && (ch < 0xc0);
 }
 
-inline bool UTF8IsAscii(int ch) noexcept {
+inline constexpr bool UTF8IsAscii(int ch) noexcept {
 	return ch < 0x80;
 }
 
 enum { UTF8MaskWidth=0x7, UTF8MaskInvalid=0x8 };
 int UTF8Classify(const unsigned char *us, size_t len) noexcept;
+inline int UTF8Classify(std::string_view sv) noexcept {
+	return UTF8Classify(reinterpret_cast<const unsigned char *>(sv.data()), sv.length());
+}
 
 // Similar to UTF8Classify but returns a length of 1 for invalid bytes
 // instead of setting the invalid flag
@@ -72,11 +77,11 @@ enum { SURROGATE_TRAIL_FIRST = 0xDC00 };
 enum { SURROGATE_TRAIL_LAST = 0xDFFF };
 enum { SUPPLEMENTAL_PLANE_FIRST = 0x10000 };
 
-inline unsigned int UTF16CharLength(wchar_t uch) noexcept {
+inline constexpr unsigned int UTF16CharLength(wchar_t uch) noexcept {
 	return ((uch >= SURROGATE_LEAD_FIRST) && (uch <= SURROGATE_LEAD_LAST)) ? 2 : 1;
 }
 
-inline unsigned int UTF16LengthFromUTF8ByteCount(unsigned int byteCount) noexcept {
+inline constexpr unsigned int UTF16LengthFromUTF8ByteCount(unsigned int byteCount) noexcept {
 	return (byteCount < 4) ? 1 : 2;
 }
 

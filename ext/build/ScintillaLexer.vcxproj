@@ -70,6 +70,8 @@
     <ClCompile Include="..\scintilla\lexers\LexProps.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexRegistry.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexRust.cxx" />
+    <ClCompile Include="..\scintilla\lexers\LexSAS.cxx" />
+    <ClCompile Include="..\scintilla\lexers\LexStata.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexSTTXT.cxx" />
     <ClCompile Include="..\scintilla\lexlib\CharacterCategory.cxx" />
     <ClCompile Include="..\scintilla\lexlib\DefaultLexer.cxx" />
