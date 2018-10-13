@@ -628,6 +628,8 @@ public:
 
 	bool						m_amend;			///< if true show the changes to the revision before the last commit
 
+	bool						m_bIncludedStaged;
+
 	CString						m_sUUID;			///< the UUID of the associated repository
 
 	CString						m_sDisplayedBranch; ///< When on LogDialog, what is the current displayed branch

@@ -18,6 +18,8 @@ Released: unreleased
  * CommitDlg: commit.template did not honor "~/"
  * Fixed issue #3281: TortoiseGitUDiff preferences page clips out text in Russian translation
  * Fixed issue #3284: BrowseRefsDlg: Cannot compare annotated tag to working tree (libgit2 returned the requested type does not match the type in ODB)
+ * Modified files, Revert, and Resolve dialogs did show all staged files regardless of selection
+   The Commit dialog still shows all staged files, this is by design and required for commit to work properly (e.g., that no files get lost in a merge commit).
 
 = Release 2.7.0 =
 Released: 2018-08-19

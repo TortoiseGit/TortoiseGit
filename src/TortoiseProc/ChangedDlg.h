@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008, 2011-2017 - TortoiseGit
+// Copyright (C) 2008, 2011-2018 - TortoiseGit
 // Copyright (C) 2003-2006,2008 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
@@ -55,6 +55,7 @@ protected:
 	afx_msg void			OnBnClickedShowignored();
 	afx_msg void			OnBnClickedShowlocalchangesignored();
 	afx_msg void			OnBnClickedWholeProject();
+	afx_msg void			OnBnClickedShowStaged();
 	afx_msg LRESULT			OnSVNStatusListCtrlNeedsRefresh(WPARAM, LPARAM);
 	afx_msg LRESULT			OnSVNStatusListCtrlItemCountChanged(WPARAM, LPARAM);
 
@@ -83,6 +84,7 @@ public:
 private:
 	CRegDWORD				m_regAddBeforeCommit;
 	CRegDWORD				m_regShowWholeProject;
+	CRegDWORD				m_regShowStaged;
 	CGitStatusListCtrl		m_FileListCtrl;
 	bool					m_bRemote;
 	BOOL					m_bShowUnversioned;
@@ -93,5 +95,6 @@ private:
 	bool					m_bCanceled;
 	BOOL					m_bShowIgnored;
 	BOOL					m_bWholeProject;
+	BOOL					m_bShowStaged;
 };
 

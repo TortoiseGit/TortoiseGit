@@ -273,6 +273,7 @@ CGitStatusListCtrl::CGitStatusListCtrl() : CResizableColumnsListCtrl<CListCtrl>(
 	, m_nLineDeleted(0)
 	, m_nBlockItemChangeHandler(0)
 	, m_uiFont(nullptr)
+	, m_bIncludedStaged(false)
 {
 	m_critSec.Init();
 	m_bNoAutoselectMissing = CRegDWORD(L"Software\\TortoiseGit\\AutoselectMissingFiles", FALSE) == TRUE;
@@ -3688,7 +3689,8 @@ int CGitStatusListCtrl::UpdateFileList(const CTGitPathList* list)
 	CAutoWriteLock locker(m_guard);
 	m_CurrentVersion = GIT_REV_ZERO;
 
-	g_Git.GetWorkingTreeChanges(m_StatusFileList, m_amend, list);
+	ATLASSERT(!(m_amend && !m_bIncludedStaged)); // just a safeguard that we always show all files if we want to amend (amending should only be the used from commitdlg)
+	g_Git.GetWorkingTreeChanges(m_StatusFileList, m_amend, list, m_bIncludedStaged);
 
 	BOOL bDeleteChecked = FALSE;
 	int deleteFromIndex = 0;

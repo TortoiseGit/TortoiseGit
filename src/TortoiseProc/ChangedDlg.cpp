@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2018 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
@@ -38,6 +38,7 @@ CChangedDlg::CChangedDlg(CWnd* pParent /*=nullptr*/)
 	, m_bShowLocalChangesIgnored(FALSE)
 	, m_bWholeProject(FALSE)
 	, m_bRemote(FALSE)
+	, m_bShowStaged(TRUE)
 {
 }
 
@@ -55,6 +56,7 @@ void CChangedDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_SHOWIGNORED, m_bShowIgnored);
 	DDX_Check(pDX, IDC_SHOWLOCALCHANGESIGNORED, m_bShowLocalChangesIgnored);
 	DDX_Check(pDX, IDC_WHOLE_PROJECT, m_bWholeProject);
+	DDX_Check(pDX, IDC_SHOWSTAGED, m_bShowStaged);
 }
 
 
@@ -70,6 +72,7 @@ BEGIN_MESSAGE_MAP(CChangedDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_BUTTON_UNIFIEDDIFF, &CChangedDlg::OnBnClickedButtonUnifieddiff)
 	ON_BN_CLICKED(IDC_SHOWLOCALCHANGESIGNORED, &CChangedDlg::OnBnClickedShowlocalchangesignored)
 	ON_BN_CLICKED(IDC_WHOLE_PROJECT, OnBnClickedWholeProject)
+	ON_BN_CLICKED(IDC_SHOWSTAGED, OnBnClickedShowStaged)
 END_MESSAGE_MAP()
 
 BOOL CChangedDlg::OnInitDialog()
@@ -83,6 +86,8 @@ BOOL CChangedDlg::OnInitDialog()
 	regPath.Replace(L':', L'_');
 	m_regShowWholeProject = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\ShowWholeProject\\" + regPath, FALSE);
 	m_bWholeProject = m_regShowWholeProject;
+	m_regShowStaged = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\ChangedFilesIncludeStaged", TRUE);
+	m_bShowStaged = m_regShowStaged;
 	SetDlgTitle();
 
 	if (m_pathList.GetCount() == 1 && m_pathList[0].GetWinPathString().IsEmpty())
@@ -103,6 +108,7 @@ BOOL CChangedDlg::OnInitDialog()
 	AdjustControlSize(IDC_SHOWLOCALCHANGESIGNORED);
 	AdjustControlSize(IDC_SHOWIGNORED);
 	AdjustControlSize(IDC_WHOLE_PROJECT);
+	AdjustControlSize(IDC_SHOWSTAGED);
 
 	AddAnchor(IDC_CHANGEDLIST, TOP_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_SUMMARYTEXT, BOTTOM_LEFT, BOTTOM_RIGHT);
@@ -111,6 +117,7 @@ BOOL CChangedDlg::OnInitDialog()
 	AddAnchor(IDC_SHOWLOCALCHANGESIGNORED, BOTTOM_LEFT);
 	AddAnchor(IDC_SHOWIGNORED, BOTTOM_LEFT);
 	AddAnchor(IDC_WHOLE_PROJECT, BOTTOM_LEFT);
+	AddAnchor(IDC_SHOWSTAGED, BOTTOM_LEFT);
 	AddAnchor(IDC_INFOLABEL, BOTTOM_RIGHT);
 	AddAnchor(IDC_BUTTON_STASH, BOTTOM_RIGHT);
 	AddAnchor(IDC_BUTTON_UNIFIEDDIFF, BOTTOM_RIGHT);
@@ -152,11 +159,13 @@ UINT CChangedDlg::ChangedStatusThread()
 	DialogEnableWindow(IDC_SHOWUNMODIFIED, FALSE);
 	DialogEnableWindow(IDC_SHOWIGNORED, FALSE);
 	DialogEnableWindow(IDC_SHOWLOCALCHANGESIGNORED, FALSE);
+	DialogEnableWindow(IDC_SHOWSTAGED, FALSE);
 
 	g_Git.RefreshGitIndex();
 
 	m_FileListCtrl.StoreScrollPos();
 	m_FileListCtrl.Clear();
+	m_FileListCtrl.m_bIncludedStaged = (m_bShowStaged == TRUE);
 	if (!m_FileListCtrl.GetStatus(m_bWholeProject ? nullptr : &m_pathList, m_bRemote, m_bShowIgnored != FALSE, m_bShowUnversioned != FALSE, m_bShowLocalChangesIgnored != FALSE))
 	{
 		if (!m_FileListCtrl.GetLastErrorMessage().IsEmpty())
@@ -181,6 +190,7 @@ UINT CChangedDlg::ChangedStatusThread()
 	//DialogEnableWindow(IDC_SHOWUNMODIFIED, bIsDirectory);
 	DialogEnableWindow(IDC_SHOWIGNORED, bIsDirectory);
 	DialogEnableWindow(IDC_SHOWLOCALCHANGESIGNORED, TRUE);
+	DialogEnableWindow(IDC_SHOWSTAGED, TRUE);
 	InterlockedExchange(&m_bBlock, FALSE);
 	// revert the remote flag back to the default
 	m_bRemote = !!(DWORD)CRegDWORD(L"Software\\TortoiseGit\\CheckRepo", FALSE);
@@ -448,5 +458,12 @@ void CChangedDlg::OnBnClickedWholeProject()
 {
 	UpdateData();
 	m_regShowWholeProject = m_bWholeProject;
+	OnBnClickedRefresh();
+}
+
+void CChangedDlg::OnBnClickedShowStaged()
+{
+	UpdateData();
+	m_regShowStaged = m_bShowStaged;
 	OnBnClickedRefresh();
 }

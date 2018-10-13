@@ -182,7 +182,7 @@ int CGitLogListBase::AsyncDiffThread()
 				pRev->m_ParentHash.clear();
 				pRev->m_ParentHash.push_back(m_HeadHash);
 				g_Git.RefreshGitIndex();
-				g_Git.GetWorkingTreeChanges(files);
+				g_Git.GetWorkingTreeChanges(files, false, nullptr, true); // filtering is done in LogDlg.cpp
 				auto& action = pRev->GetAction(this);
 				action = 0;
 				for (int j = 0; j < files.GetCount(); ++j)

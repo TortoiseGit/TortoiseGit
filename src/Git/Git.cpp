@@ -3188,7 +3188,7 @@ bool CGit::LoadTextFile(const CString &filename, CString &msg)
 	return true; // load no further files
 }
 
-int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, const CTGitPathList* filterlist)
+int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, const CTGitPathList* filterlist, bool includedStaged /* = false */)
 {
 	if (IsInitRepos())
 		return GetInitAddList(result);
@@ -3225,8 +3225,13 @@ int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, const CTGitPa
 		}
 
 		// also list staged files which will be in the commit
-		cmd.Format(L"git.exe diff-index --cached --raw %s --numstat -C%d%% -M%d%% -z --", (LPCTSTR)head, ms_iSimilarityIndexThreshold, ms_iSimilarityIndexThreshold);
-		Run(cmd, &cmdout);
+		if (includedStaged || !filterlist)
+			Run(L"git.exe diff-index --cached --raw " + head + L" --numstat -C -M -z --", &cmdout);
+		else
+		{
+			cmd.Format(L"git.exe diff-index --cached --raw %s --numstat -C -M -z -- \"%s\"", (LPCTSTR)head, (LPCTSTR)(*filterlist)[i].GetGitPathString());
+			Run(cmd, &cmdout);
+		}
 
 		if (!filterlist)
 			cmd.Format(L"git.exe diff-index --raw %s --numstat -C%d%% -M%d%% -z --", (LPCTSTR)head, ms_iSimilarityIndexThreshold, ms_iSimilarityIndexThreshold);

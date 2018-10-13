@@ -1319,6 +1319,7 @@ UINT CCommitDlg::StatusThread()
 	BOOL success;
 	CTGitPathList *pList;
 	m_ListCtrl.m_amend = (m_bCommitAmend==TRUE || m_bForceCommitAmend) && (m_bAmendDiffToLastCommit==FALSE);
+	m_ListCtrl.m_bIncludedStaged = true;
 	m_ListCtrl.m_bDoNotAutoselectSubmodules = (m_bDoNotAutoselectSubmodules == TRUE);
 
 	if(m_bWholeProject || m_bWholeProject2)

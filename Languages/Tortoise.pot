@@ -8170,6 +8170,10 @@ msgstr ""
 msgid "Show Whitespaces"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_CHANGEDFILES: Control id 1210)
+msgid "Show all &staged files"
+msgstr ""
+
 #. Resource IDs: (32813)
 msgid "Show an overview of the whole graph"
 msgstr ""
