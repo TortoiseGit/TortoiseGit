@@ -1113,24 +1113,23 @@ int CRebaseDlg::FinishRebase()
 		MessageBox(g_Git.GetGitLastErr(L"Could not get HEAD hash."), L"TortoiseGit", MB_ICONERROR);
 		return -1;
 	}
-	CString out,cmd;
 
 	m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
 
 	if (g_Git.IsLocalBranch(m_BranchCtrl.GetString()))
 	{
+		CString cmd;
 		cmd.Format(L"git.exe checkout -f -B %s %s --", (LPCTSTR)m_BranchCtrl.GetString(), (LPCTSTR)head.ToString());
 		AddLogString(cmd);
 		if (RunGitCmdRetryOrAbort(cmd))
 			return -1;
-		AddLogString(out);
 	}
 
+	CString cmd;
 	cmd.Format(L"git.exe reset --hard %s --", (LPCTSTR)head.ToString());
 	AddLogString(cmd);
 	if (RunGitCmdRetryOrAbort(cmd))
 		return -1;
-	AddLogString(out);
 
 	while (m_ctrlTabCtrl.GetTabsNum() > 1)
 		m_ctrlTabCtrl.RemoveTab(0);
