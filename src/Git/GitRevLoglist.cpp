@@ -126,7 +126,7 @@ int GitRevLoglist::SafeGetSimpleList(CGit* git)
 
 	try
 	{
-		if (git_get_commit_from_hash(&commit, m_CommitHash))
+		if (git_get_commit_from_hash(&commit, static_cast<const unsigned char*>(m_CommitHash)))
 			return -1;
 	}
 	catch (char *)
@@ -310,7 +310,7 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 
 	try
 	{
-		if (git_get_commit_from_hash(&commit, m_CommitHash))
+		if (git_get_commit_from_hash(&commit, static_cast<const unsigned char*>(m_CommitHash)))
 			return -1;
 	}
 	catch (char *)
@@ -330,7 +330,7 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 		try
 		{
 			if (isRoot)
-				git_root_diff(git->GetGitDiff(), m_CommitHash, &file, &count, 1);
+				git_root_diff(git->GetGitDiff(), static_cast<const unsigned char*>(m_CommitHash), &file, &count, 1);
 			else
 				git_do_diff(git->GetGitDiff(), parent, commit.m_hash, &file, &count, 1);
 		}

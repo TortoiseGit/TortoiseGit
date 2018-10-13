@@ -155,7 +155,7 @@ public:
 		return (const git_oid*)m_hash;
 	}
 
-	operator const unsigned char*() const
+	explicit operator const unsigned char*() const
 	{
 		return m_hash;
 	}

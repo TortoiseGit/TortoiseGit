@@ -220,7 +220,7 @@ int CLogDataVector::Fill(std::unordered_set<CGitHash>& hashes)
 		try
 		{
 			CAutoLocker lock(g_Git.m_critGitDllSec);
-			if (git_get_commit_from_hash(&commit, hash))
+			if (git_get_commit_from_hash(&commit, static_cast<const unsigned char*>(hash)))
 				return -1;
 		}
 		catch (char * msg)

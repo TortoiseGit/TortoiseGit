@@ -1915,7 +1915,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 			case IDGITLC_PREPAREDIFF:
 				m_sMarkForDiffFilename = filepath->GetGitPathString();
-				m_sMarkForDiffVersion = m_CurrentVersion;
+				m_sMarkForDiffVersion = m_CurrentVersion.ToString();
 				break;
 
 			case IDGITLC_PREPAREDIFF_COMPARE:
@@ -4119,7 +4119,7 @@ int CGitStatusListCtrl::RevertSelectedItemToVersion(bool parent)
 			version = hash.ToString();
 		}
 		else
-			version = m_CurrentVersion;
+			version = m_CurrentVersion.ToString();
 
 		CString filename = fentry->GetGitPathString();
 		if (!fentry->GetGitOldPathString().IsEmpty())

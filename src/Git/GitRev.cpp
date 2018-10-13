@@ -192,7 +192,7 @@ int GitRev::GetParentFromHash(const CGitHash& hash)
 	{
 		g_Git.CheckAndInitDll();
 
-		if (git_get_commit_from_hash(&commit, hash))
+		if (git_get_commit_from_hash(&commit, static_cast<const unsigned char*>(hash)))
 		{
 			m_sErr = L"git_get_commit_from_hash failed for " + hash.ToString();
 			return -1;
@@ -226,7 +226,7 @@ int GitRev::GetCommitFromHash_withoutLock(const CGitHash& hash)
 	GIT_COMMIT commit;
 	try
 	{
-		if (git_get_commit_from_hash(&commit, hash))
+		if (git_get_commit_from_hash(&commit, static_cast<const unsigned char*>(hash)))
 		{
 			m_sErr = L"git_get_commit_from_hash failed for " + hash.ToString();
 			return -1;
