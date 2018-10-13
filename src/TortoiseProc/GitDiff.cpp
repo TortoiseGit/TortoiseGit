@@ -88,17 +88,16 @@ int CGitDiff::SubmoduleDiffNull(HWND hWnd, const CTGitPath* pPath, const CString
 	return -1;
 }
 
-int CGitDiff::DiffNull(HWND hWnd, const CTGitPath* pPath, CString rev1, bool bIsAdd, int jumpToLine, bool bAlternative)
+int CGitDiff::DiffNull(HWND hWnd, const CTGitPath* pPath, const CString& rev1, bool bIsAdd, int jumpToLine, bool bAlternative)
 {
+	CGitHash rev1Hash;
 	if (rev1 != GIT_REV_ZERO)
 	{
-		CGitHash rev1Hash;
 		if (g_Git.GetHash(rev1Hash, rev1)) // make sure we have a HASH here, otherwise filenames might be invalid
 		{
 			MessageBox(hWnd, g_Git.GetGitLastErr(L"Could not get hash of \"" + rev1 + L"\"."), L"TortoiseGit", MB_ICONERROR);
 			return -1;
 		}
-		rev1 = rev1Hash.ToString();
 	}
 	CString file1;
 	CString nullfile;
@@ -109,18 +108,18 @@ int CGitDiff::DiffNull(HWND hWnd, const CTGitPath* pPath, CString rev1, bool bIs
 		int result;
 		// refresh if result = 1
 		CTGitPath path = *pPath;
-		while ((result = SubmoduleDiffNull(hWnd, &path, rev1)) == 1)
+		while ((result = SubmoduleDiffNull(hWnd, &path, rev1Hash.ToString())) == 1)
 			path.SetFromGit(pPath->GetGitPathString());
 		return result;
 	}
 
-	if(rev1 != GIT_REV_ZERO )
+	if (!rev1Hash.IsEmpty())
 	{
-		file1 = CTempFiles::Instance().GetTempFilePath(false, *pPath, rev1).GetWinPathString();
-		if (g_Git.GetOneFile(rev1, *pPath, file1))
+		file1 = CTempFiles::Instance().GetTempFilePath(false, *pPath, rev1Hash).GetWinPathString();
+		if (g_Git.GetOneFile(rev1Hash.ToString(), *pPath, file1))
 		{
 			CString out;
-			out.FormatMessage(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)pPath->GetGitPathString(), (LPCTSTR)rev1, (LPCTSTR)file1);
+			out.FormatMessage(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)pPath->GetGitPathString(), (LPCTSTR)rev1Hash.ToString(), (LPCTSTR)file1);
 			CMessageBox::Show(hWnd, g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), L"TortoiseGit", MB_OK);
 			return -1;
 		}
@@ -129,7 +128,7 @@ int CGitDiff::DiffNull(HWND hWnd, const CTGitPath* pPath, CString rev1, bool bIs
 	else
 		file1 = g_Git.CombinePath(pPath);
 
-	CString tempfile = CTempFiles::Instance().GetTempFilePath(false, *pPath, rev1).GetWinPathString();
+	CString tempfile = CTempFiles::Instance().GetTempFilePath(false, *pPath, rev1Hash).GetWinPathString();
 	::SetFileAttributes(tempfile, FILE_ATTRIBUTE_READONLY);
 
 	CAppUtils::DiffFlags flags;
@@ -137,16 +136,16 @@ int CGitDiff::DiffNull(HWND hWnd, const CTGitPath* pPath, CString rev1, bool bIs
 	if(bIsAdd)
 		CAppUtils::StartExtDiff(tempfile,file1,
 							pPath->GetGitPathString(),
-							pPath->GetGitPathString() + L':' + rev1.Left(g_Git.GetShortHASHLength()),
+							pPath->GetGitPathString() + L':' + rev1Hash.ToString().Left(g_Git.GetShortHASHLength()),
 							g_Git.CombinePath(pPath), g_Git.CombinePath(pPath),
-							GIT_REV_ZERO, rev1
+							GIT_REV_ZERO, rev1Hash.ToString()
 							, flags, jumpToLine);
 	else
 		CAppUtils::StartExtDiff(file1,tempfile,
-							pPath->GetGitPathString() + L':' + rev1.Left(g_Git.GetShortHASHLength()),
+							pPath->GetGitPathString() + L':' + rev1Hash.ToString().Left(g_Git.GetShortHASHLength()),
 							pPath->GetGitPathString(),
 							g_Git.CombinePath(pPath), g_Git.CombinePath(pPath),
-							rev1, GIT_REV_ZERO
+							rev1Hash.ToString(), GIT_REV_ZERO
 							, flags, jumpToLine);
 
 	return 0;
@@ -343,28 +342,26 @@ void CGitDiff::GetSubmoduleChangeType(CGit& subgit, const CGitHash& oldhash, con
 		changeType = Unknown;
 }
 
-int CGitDiff::Diff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* pPath2, CString rev1, CString rev2, bool /*blame*/, bool /*unified*/, int jumpToLine, bool bAlternativeTool, bool mustExist)
+int CGitDiff::Diff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* pPath2, const CString& rev1, const CString& rev2, bool /*blame*/, bool /*unified*/, int jumpToLine, bool bAlternativeTool, bool mustExist)
 {
 	// make sure we have HASHes here, otherwise filenames might be invalid
+	CGitHash rev1Hash;
+	CGitHash rev2Hash;
 	if (rev1 != GIT_REV_ZERO)
 	{
-		CGitHash rev1Hash;
 		if (g_Git.GetHash(rev1Hash, rev1))
 		{
 			MessageBox(hWnd, g_Git.GetGitLastErr(L"Could not get hash of \"" + rev1 + L"\"."), L"TortoiseGit", MB_ICONERROR);
 			return -1;
 		}
-		rev1 = rev1Hash.ToString();
 	}
 	if (rev2 != GIT_REV_ZERO)
 	{
-		CGitHash rev2Hash;
 		if (g_Git.GetHash(rev2Hash, rev2))
 		{
 			MessageBox(hWnd, g_Git.GetGitLastErr(L"Could not get hash of \"" + rev2 + L"\"."), L"TortoiseGit", MB_ICONERROR);
 			return -1;
 		}
-		rev2 = rev2Hash.ToString();
 	}
 
 	CString file1;
@@ -377,7 +374,7 @@ int CGitDiff::Diff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* pPath2, C
 		// refresh if result = 1
 		CTGitPath path = *pPath;
 		CTGitPath path2 = *pPath2;
-		while ((result = SubmoduleDiff(hWnd, &path, &path2, rev1, rev2)) == 1)
+		while ((result = SubmoduleDiff(hWnd, &path, &path2, rev1Hash.ToString(), rev2Hash.ToString())) == 1)
 		{
 			path.SetFromGit(pPath->GetGitPathString());
 			path2.SetFromGit(pPath2->GetGitPathString());
@@ -385,16 +382,16 @@ int CGitDiff::Diff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* pPath2, C
 		return result;
 	}
 
-	if(rev1 != GIT_REV_ZERO )
+	if (!rev1Hash.IsEmpty())
 	{
 		// use original file extension, an external diff tool might need it
-		file1 = CTempFiles::Instance().GetTempFilePath(false, *pPath, rev1).GetWinPathString();
-		title1 = pPath->GetGitPathString() + L": " + rev1.Left(g_Git.GetShortHASHLength());
-		auto ret = g_Git.GetOneFile(rev1, *pPath, file1);
+		file1 = CTempFiles::Instance().GetTempFilePath(false, *pPath, rev1Hash).GetWinPathString();
+		title1 = pPath->GetGitPathString() + L": " + rev1Hash.ToString().Left(g_Git.GetShortHASHLength());
+		auto ret = g_Git.GetOneFile(rev1Hash.ToString(), *pPath, file1);
 		if (ret && !(!mustExist && ret == GIT_ENOTFOUND))
 		{
 			CString out;
-			out.FormatMessage(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)pPath->GetGitPathString(), (LPCTSTR)rev1, (LPCTSTR)file1);
+			out.FormatMessage(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)pPath->GetGitPathString(), (LPCTSTR)rev1Hash.ToString(), (LPCTSTR)file1);
 			CMessageBox::Show(hWnd, g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), L"TortoiseGit", MB_OK);
 			return -1;
 		}
@@ -418,19 +415,19 @@ int CGitDiff::Diff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* pPath2, C
 
 	CString file2;
 	CString title2;
-	if(rev2 != GIT_REV_ZERO)
+	if (!rev2Hash.IsEmpty())
 	{
 		CTGitPath fileName = *pPath2;
 		if (pPath2->m_Action & CTGitPath::LOGACTIONS_REPLACED)
 			fileName = CTGitPath(pPath2->GetGitOldPathString());
 
-		file2 = CTempFiles::Instance().GetTempFilePath(false, fileName, rev2).GetWinPathString();
-		title2 = fileName.GetGitPathString() + L": " + rev2.Left(g_Git.GetShortHASHLength());
-		auto ret = g_Git.GetOneFile(rev2, fileName, file2);
+		file2 = CTempFiles::Instance().GetTempFilePath(false, fileName, rev2Hash).GetWinPathString();
+		title2 = fileName.GetGitPathString() + L": " + rev2Hash.ToString().Left(g_Git.GetShortHASHLength());
+		auto ret = g_Git.GetOneFile(rev2Hash.ToString(), fileName, file2);
 		if (ret && !(!mustExist && ret == GIT_ENOTFOUND))
 		{
 			CString out;
-			out.FormatMessage(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)pPath2->GetGitPathString(), (LPCTSTR)rev2, (LPCTSTR)file2);
+			out.FormatMessage(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)pPath2->GetGitPathString(), (LPCTSTR)rev2Hash.ToString(), (LPCTSTR)file2);
 			CMessageBox::Show(hWnd, g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), L"TortoiseGit", MB_OK);
 			return -1;
 		}
@@ -449,8 +446,8 @@ int CGitDiff::Diff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* pPath2, C
 							title1,
 							g_Git.CombinePath(pPath2),
 							g_Git.CombinePath(pPath),
-							rev2,
-							rev1,
+							rev2Hash.ToString(),
+							rev1Hash.ToString(),
 							flags, jumpToLine);
 
 	return 0;
