@@ -232,6 +232,8 @@ public:
 		IDGITLC_COPYCOL			,
 		IDGITLC_COPYFULL		,
 		IDGITLC_COPYFILENAMES	,
+		IDGITLC_ADD_EXE			,
+		IDGITLC_ADD_LINK		,
 // the IDSVNLC_MOVETOCS *must* be the last index, because it contains a dynamic submenu where
 // the submenu items get command ID's sequent to this number
 		IDGITLC_MOVETOCS		,

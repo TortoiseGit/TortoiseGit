@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2011-2016 - TortoiseGit
 
@@ -26,7 +26,12 @@ bool AddProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, int&
 {
 	list->SetWindowTitle(IDS_PROGRS_TITLE_ADD, g_Git.CombinePath(m_targetPathList.GetCommonRoot().GetUIPathString()), sWindowTitle);
 	list->SetBackgroundImage(IDI_ADD_BKG);
-	list->ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_ADD)));
+	if (m_bExecutable)
+		list->ReportCmd(CString(MAKEINTRESOURCE(IDS_STATUSLIST_CONTEXT_ADD_EXE)));
+	else if (m_bSymlink)
+		list->ReportCmd(CString(MAKEINTRESOURCE(IDS_STATUSLIST_CONTEXT_ADD_LINK)));
+	else
+		list->ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_ADD)));
 
 	m_itemCountTotal = m_targetPathList.GetCount();
 
@@ -59,6 +64,21 @@ bool AddProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, int&
 				list->ReportGitError();
 				return false;
 			}
+
+			if (!m_targetPathList[m_itemCount].IsDirectory() && (m_bExecutable || m_bSymlink))
+			{
+				auto entry = const_cast<git_index_entry*>(git_index_get_bypath(index, filePathA, 0));
+				if (m_bExecutable)
+					entry->mode = GIT_FILEMODE_BLOB_EXECUTABLE;
+				else if (m_bSymlink)
+					entry->mode = GIT_FILEMODE_LINK;
+				if (git_index_add(index, entry))
+				{
+					list->ReportGitError();
+					return false;
+				}
+			}
+
 			list->AddNotify(new CGitProgressList::WC_File_NotificationData(m_targetPathList[m_itemCount], CGitProgressList::WC_File_NotificationData::git_wc_notify_add));
 
 			if (list->IsCancelled() == TRUE)
@@ -79,25 +99,83 @@ bool AddProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, int&
 		CMassiveGitTask mgt(L"add -f");
 		if (!mgt.ExecuteWithNotify(&m_targetPathList, list->m_bCancelled, CGitProgressList::WC_File_NotificationData::git_wc_notify_add, list))
 			return false;
+		if (m_bExecutable)
+		{
+			if (!SetFileMode(GIT_FILEMODE_BLOB_EXECUTABLE))
+				return false;
+		}
+		else if (m_bSymlink)
+		{
+			if (!SetFileMode(GIT_FILEMODE_LINK))
+				return false;
+		}
 	}
 
 	CShellUpdater::Instance().AddPathsForUpdate(m_targetPathList);
 
-	if (!m_bShowCommitButtonAfterAdd)
-		return true;
-
-	m_PostCmdCallback = [](DWORD status, PostCmdList& postCmdList)
+	m_PostCmdCallback = [this](DWORD status, PostCmdList& postCmdList)
 	{
 		if (status)
 			return;
 
-		postCmdList.emplace_back(IDI_COMMIT, IDS_MENUCOMMIT, []
-		{
-			CString sCmd;
-			sCmd.Format(L"/command:commit /path:\"%s\"", (LPCTSTR)g_Git.m_CurrentDir);
-			CAppUtils::RunTortoiseGitProc(sCmd);
+		if (m_bShowCommitButtonAfterAdd)
+			postCmdList.emplace_back(IDI_COMMIT, IDS_MENUCOMMIT, []
+			{
+				CString sCmd;
+				sCmd.Format(L"/command:commit /path:\"%s\"", (LPCTSTR)g_Git.m_CurrentDir);
+				CAppUtils::RunTortoiseGitProc(sCmd);
+			});
+		postCmdList.emplace_back(IDI_ADD, IDS_STATUSLIST_CONTEXT_ADD_EXE, [this] {
+			SetFileMode(GIT_FILEMODE_BLOB_EXECUTABLE);
+		});
+		postCmdList.emplace_back(IDI_ADD, IDS_STATUSLIST_CONTEXT_ADD_LINK, [this] {
+			SetFileMode(GIT_FILEMODE_LINK);
 		});
 	};
+
+	return true;
+}
+
+bool AddProgressCommand::SetFileMode(uint32_t mode)
+{
+	CAutoRepository repo(g_Git.GetGitRepository());
+	if (!repo)
+	{
+		MessageBox(nullptr, g_Git.GetLibGit2LastErr(L"Could not open repository."), L"TortoiseGit", MB_ICONERROR);
+		return false;
+	}
+
+	CAutoIndex index;
+	if (git_repository_index(index.GetPointer(), repo))
+	{
+		MessageBox(nullptr, g_Git.GetLibGit2LastErr(L"Could not get index."), L"TortoiseGit", MB_ICONERROR);
+		return false;
+	}
+	if (git_index_read(index, true))
+	{
+		MessageBox(nullptr, g_Git.GetLibGit2LastErr(L"Could not read index."), L"TortoiseGit", MB_ICONERROR);
+		return false;
+	}
+
+	for (int i = 0; i < m_targetPathList.GetCount(); ++i)
+	{
+		if (m_targetPathList[i].IsDirectory())
+			continue;
+		CStringA filePathA = CUnicodeUtils::GetMulti(m_targetPathList[i].GetGitPathString(), CP_UTF8).TrimRight(L'/');
+		auto entry = const_cast<git_index_entry*>(git_index_get_bypath(index, filePathA, 0));
+		entry->mode = mode;
+		if (git_index_add(index, entry))
+		{
+			MessageBox(nullptr, g_Git.GetLibGit2LastErr(L"Could not update index."), L"TortoiseGit", MB_ICONERROR);
+			return false;
+		}
+	}
+
+	if (git_index_write(index))
+	{
+		MessageBox(nullptr, g_Git.GetLibGit2LastErr(L"Could not write index."), L"TortoiseGit", MB_ICONERROR);
+		return false;
+	}
 
 	return true;
 }

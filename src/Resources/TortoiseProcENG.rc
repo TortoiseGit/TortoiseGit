@@ -3783,6 +3783,8 @@ BEGIN
                             "It looks as if there is a conflict hint (a line like ""# Conflicts:"") in your commit message. This hint is automatically added by Git for cli users and there is no need to keep it.\n\nDo you want to ignore this warning and keep these lines or abort committing in order to edit the commit message?\n\nYou can automatically remove these lines by enabling ""Strip lines starting with ""#"" in commit messages"" in TortoiseGit settings."
     IDS_NEED_TO_RESOLVE_CONFLICTS_HINT 
                             "While merging, i.e. integrating changes of another (remote) branch into your local branch, a conflict in at least one file occurred. This means that you need to resolve this manually (i.e., you need to integrate your changes into a file which was also modified on another branch).\n\nAfter resolving all files, you need to perform a commit in order to complete the merge.\n\nIf you want to abort the merge, do a hard reset on HEAD or select abort merge on the context menu.\n\nSee help for more information."
+    IDS_STATUSLIST_CONTEXT_ADD_EXE "Add as Executable (+x)"
+    IDS_STATUSLIST_CONTEXT_ADD_LINK "Add as Symlink"
 END
 
 STRINGTABLE

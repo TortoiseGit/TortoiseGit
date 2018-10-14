@@ -1540,6 +1540,10 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				{
 					if (m_dwContextMenus & GITSLC_POPADD)
 						popup.AppendMenuIcon(IDGITLC_ADD, IDS_STATUSLIST_CONTEXT_ADD, IDI_ADD);
+					if (m_dwContextMenus & GITSLC_POPADD)
+						popup.AppendMenuIcon(IDGITLC_ADD_EXE, IDS_STATUSLIST_CONTEXT_ADD_EXE, IDI_ADD);
+					if (m_dwContextMenus & GITSLC_POPADD)
+						popup.AppendMenuIcon(IDGITLC_ADD_LINK, IDS_STATUSLIST_CONTEXT_ADD_LINK, IDI_ADD);
 					if (m_dwContextMenus & GITSLC_POPCOMMIT)
 						popup.AppendMenuIcon(IDGITLC_COMMIT, IDS_STATUSLIST_CONTEXT_COMMIT, IDI_COMMIT);
 				}
@@ -2087,6 +2091,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				break;
 
 			case IDGITLC_ADD:
+			case IDGITLC_ADD_EXE:
+			case IDGITLC_ADD_LINK:
 				{
 					CTGitPathList paths;
 					FillListOfSelectedItemPaths(paths, true);
@@ -2096,6 +2102,10 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					progDlg.SetCommand(&addCommand);
 					addCommand.SetShowCommitButtonAfterAdd((m_dwContextMenus & GITSLC_POPCOMMIT) != 0);
 					addCommand.SetPathList(paths);
+					if (cmd == IDGITLC_ADD_EXE)
+						addCommand.SetExecutable();
+					else if (cmd == IDGITLC_ADD_LINK)
+						addCommand.SetSymlink();
 					progDlg.SetItemCount(paths.GetCount());
 					progDlg.DoModal();
 
