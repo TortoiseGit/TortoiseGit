@@ -30,11 +30,13 @@
 
 #pragma warning(push)
 #pragma warning(disable: 4100) // unreferenced formal parameter
+#undef max
 #include <ogdf/layered/SugiyamaLayout.h>
 #include <ogdf/layered/OptimalRanking.h>
 #include <ogdf/layered/MedianHeuristic.h>
 #include <ogdf/layered/OptimalHierarchyLayout.h>
 #include <ogdf/layered/FastHierarchyLayout.h>
+#define max(a, b) (((a) > (b)) ? (a) : (b))
 #pragma warning(pop)
 
 typedef void CVisibleGraphNode;

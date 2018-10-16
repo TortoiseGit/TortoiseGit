@@ -39,11 +39,13 @@
 
 #pragma warning(push)
 #pragma warning(disable: 4100) // unreferenced formal parameter
+#undef max
 #include <ogdf/planarity/PlanarizationLayout.h>
 #include <ogdf/planarity/VariableEmbeddingInserter.h>
 #include <ogdf/planarity/FastPlanarSubgraph.h>
 #include <ogdf/orthogonal/OrthoLayout.h>
 #include <ogdf/planarity/EmbedderMinDepthMaxFaceLayers.h>
+#define max(a, b) (((a) > (b)) ? (a) : (b))
 #pragma warning(pop)
 
 #ifdef _DEBUG
@@ -137,8 +139,7 @@ CRevisionGraphWnd::CRevisionGraphWnd()
 	m_wszTip[0] = L'\0';
 
 	m_GraphAttr.init(this->m_Graph, ogdf::GraphAttributes::nodeGraphics | ogdf::GraphAttributes::edgeGraphics |
-		ogdf:: GraphAttributes::nodeLabel | ogdf::GraphAttributes::nodeColor |
-		ogdf::GraphAttributes::edgeColor | ogdf::GraphAttributes::edgeStyle |
+		ogdf::GraphAttributes::nodeLabel | ogdf::GraphAttributes::edgeStyle |
 		ogdf::GraphAttributes::nodeStyle | ogdf::GraphAttributes::nodeTemplate);
 
 	m_SugiyamLayout.setRanking(::new ogdf::OptimalRanking());
