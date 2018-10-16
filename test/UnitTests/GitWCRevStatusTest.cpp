@@ -502,7 +502,7 @@ TEST_P(GitWCRevStatusCBasicGitWithTestRepoFixture, GitWCRevignore)
 	EXPECT_FALSE(GitStat6.bHasSubmodule);
 	EXPECT_TRUE(GitStat6.HasMods);
 	EXPECT_FALSE(GitStat6.HasUnversioned);
-	EXPECT_EQ(12, GitStat6.NumCommits);
+	EXPECT_EQ(12u, GitStat6.NumCommits);
 	EXPECT_FALSE(GitStat6.bHasSubmoduleMods);
 	EXPECT_FALSE(GitStat6.bHasSubmoduleNewCommits);
 	EXPECT_FALSE(GitStat6.bHasSubmoduleUnversioned);
