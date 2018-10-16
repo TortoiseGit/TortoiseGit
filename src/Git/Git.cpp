@@ -2032,7 +2032,7 @@ int CGit::GuessRefForHash(CString& ref, const CGitHash& hash)
 	auto it = map.find(hash);
 	if (it == map.cend())
 	{
-		ref = hash.ToString();
+		ref = hash.ToString().Left(GetShortHASHLength());
 		return 0;
 	}
 
@@ -2047,7 +2047,7 @@ int CGit::GuessRefForHash(CString& ref, const CGitHash& hash)
 		return 0;
 	}
 
-	ref = hash.ToString();
+	ref = hash.ToString().Left(GetShortHASHLength());
 	return 0;
 }
 

@@ -1756,7 +1756,7 @@ void CAppUtils::GetConflictTitles(CString* baseText, CString& mineText, CString&
 		{
 			CString guessedRef;
 			if (!infotext.guessRef)
-				guessedRef = hash.ToString();
+				guessedRef = hash.ToString().Left(g_Git.GetShortHASHLength());
 			else
 				g_Git.GuessRefForHash(guessedRef, hash);
 			theirsText.FormatMessage(infotext.theirstext, infotext.headref, (LPCTSTR)guessedRef);

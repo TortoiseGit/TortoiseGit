@@ -3039,7 +3039,7 @@ TEST_P(CBasicGitWithTestRepoFixture, GuessRefForHash)
 
 	// stash
 	EXPECT_EQ(0, m_Git.GuessRefForHash(ref, CGitHash(L"18da7c332dcad0f37f9977d9176dce0b0c66f3eb")));
-	EXPECT_STREQ(L"18da7c332dcad0f37f9977d9176dce0b0c66f3eb", ref);
+	EXPECT_STREQ(CString(L"18da7c332dcad0f37f9977d9176dce0b0c66f3eb").Left(m_Git.GetShortHASHLength()), ref);
 
 	// tag only
 	EXPECT_EQ(0, m_Git.GuessRefForHash(ref, CGitHash(L"b9ef30183497cdad5c30b88d32dc1bed7951dfeb")));
@@ -3055,5 +3055,5 @@ TEST_P(CBasicGitWithTestRepoFixture, GuessRefForHash)
 
 	// no ref
 	EXPECT_EQ(0, m_Git.GuessRefForHash(ref, CGitHash(L"1ce788330fd3a306c8ad37654063ceee13a7f172")));
-	EXPECT_STREQ(L"1ce788330fd3a306c8ad37654063ceee13a7f172", ref);
+	EXPECT_STREQ(CString(L"1ce788330fd3a306c8ad37654063ceee13a7f172").Left(m_Git.GetShortHASHLength()), ref);
 }
