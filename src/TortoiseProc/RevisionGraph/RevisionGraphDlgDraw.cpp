@@ -42,7 +42,6 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 using namespace Gdiplus;
-using namespace ogdf;
 
 Color GetColorFromSysColor(int nIndex)
 {
@@ -333,7 +332,7 @@ RectF CRevisionGraphWnd::TransformRectToScreen (const CRect& rect, const CSize& 
 }
 
 
-RectF CRevisionGraphWnd::GetNodeRect (const node& node, const CSize& offset) const
+RectF CRevisionGraphWnd::GetNodeRect(const ogdf::node& node, const CSize& offset) const
 {
 	// get node and position
 
@@ -817,7 +816,7 @@ void CRevisionGraphWnd::DrawStripes (GraphicsDevice& graphics, const CSize& offs
 }
 #endif
 
-PointF CRevisionGraphWnd::cutPoint(node v,double lw,PointF ps, PointF pt)
+PointF CRevisionGraphWnd::cutPoint(ogdf::node v, double lw, PointF ps, PointF pt)
 {
 	double x = m_GraphAttr.x(v);
 	double y = m_GraphAttr.y(v);
@@ -882,11 +881,11 @@ void CRevisionGraphWnd::DrawConnections (GraphicsDevice& graphics, const CRect& 
 	Gdiplus::Pen pen(GetColorFromSysColor(COLOR_WINDOWTEXT), penwidth);
 
 	// iterate over all visible lines
-	edge e;
+	ogdf::edge e;
 	forall_edges(e, m_Graph)
 	{
 		// get connection and point position
-		const DPolyline &dpl = this->m_GraphAttr.bends(e);
+		const auto& dpl = this->m_GraphAttr.bends(e);
 
 		points.RemoveAll();
 		pts.RemoveAll();
@@ -897,8 +896,7 @@ void CRevisionGraphWnd::DrawConnections (GraphicsDevice& graphics, const CRect& 
 
 		points.Add(pt);
 
-		ListConstIterator<DPoint> it;
-		for(it = dpl.begin(); it.valid(); ++it)
+		for (auto it = dpl.begin(); it.valid(); ++it)
 		{
 			pt.X =  (REAL)(*it).m_x;
 			pt.Y =  (REAL)(*it).m_y;
@@ -995,13 +993,10 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 
 	DWORD revGraphUseLocalForCur = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\Graph\\RevGraphUseLocalForCur");
 
-	node v;
+	ogdf::node v;
 	forall_nodes(v,m_Graph)
 	{
 		// get node and position
-
-		String label=this->m_GraphAttr.labelNode(v);
-
 		RectF noderect (GetNodeRect (v, offset));
 
 		// draw the revision text

@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2011 - TortoiseSVN
 // Copyright (C) 2012-2018 - TortoiseGit
@@ -44,7 +44,6 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 using namespace Gdiplus;
-using namespace ogdf;
 
 void CRevisionGraphWnd::InitView()
 {
@@ -213,7 +212,7 @@ bool CRevisionGraphWnd::FetchRevisionData
 	ReloadHashMap();
 	this->m_Graph.clear();
 
-	CArray<node> nodes;
+	CArray<ogdf::node> nodes;
 	GraphicsDevice dev;
 	dev.pDC = this->GetDC();
 	dev.graphics = Graphics::FromHDC(dev.pDC->m_hDC);
@@ -223,8 +222,7 @@ bool CRevisionGraphWnd::FetchRevisionData
 
 	for (size_t i = 0; i < m_logEntries.size(); ++i)
 	{
-		node nd;
-		nd = this->m_Graph.newNode();
+		auto nd = m_Graph.newNode();
 		nodes.Add(nd);
 		m_GraphAttr.width(nd)=100;
 		m_GraphAttr.height(nd)=20;
@@ -242,8 +240,7 @@ bool CRevisionGraphWnd::FetchRevisionData
 			{
 				TRACE(L"Can't found parent node");
 				//new parent node as new node
-				node nd;
-				nd = this->m_Graph.newNode();
+				auto nd = this->m_Graph.newNode();
 				m_Graph.newEdge(nodes[i], nd);
 				m_logEntries.push_back(rev.m_ParentHash[j]);
 				m_logEntries.m_HashMap[rev.m_ParentHash[j]] = (int)m_logEntries.size() -1;
@@ -264,7 +261,7 @@ bool CRevisionGraphWnd::FetchRevisionData
 
 	m_SugiyamLayout.call(m_GraphAttr);
 
-	node v;
+	ogdf::node v;
 	double xmax = 0;
 	double ymax = 0;
 	forall_nodes(v,m_Graph)

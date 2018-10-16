@@ -39,11 +39,13 @@
 
 #pragma warning(push)
 #pragma warning(disable: 4100) // unreferenced formal parameter
+#undef max
 #include <ogdf/planarity/PlanarizationLayout.h>
 #include <ogdf/planarity/VariableEmbeddingInserter.h>
 #include <ogdf/planarity/FastPlanarSubgraph.h>
 #include <ogdf/orthogonal/OrthoLayout.h>
 #include <ogdf/planarity/EmbedderMinDepthMaxFaceLayers.h>
+#define max(a, b) (((a) > (b)) ? (a) : (b))
 #pragma warning(pop)
 
 #ifdef _DEBUG
@@ -53,7 +55,6 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 using namespace Gdiplus;
-using namespace ogdf;
 
 enum RevisionGraphContextMenuCommands
 {
@@ -138,8 +139,7 @@ CRevisionGraphWnd::CRevisionGraphWnd()
 	m_wszTip[0] = L'\0';
 
 	m_GraphAttr.init(this->m_Graph, ogdf::GraphAttributes::nodeGraphics | ogdf::GraphAttributes::edgeGraphics |
-		ogdf:: GraphAttributes::nodeLabel | ogdf::GraphAttributes::nodeColor |
-		ogdf::GraphAttributes::edgeColor | ogdf::GraphAttributes::edgeStyle |
+		ogdf::GraphAttributes::nodeLabel | ogdf::GraphAttributes::edgeStyle |
 		ogdf::GraphAttributes::nodeStyle | ogdf::GraphAttributes::nodeTemplate);
 
 	m_SugiyamLayout.setRanking(::new ogdf::OptimalRanking());
@@ -175,7 +175,7 @@ CRevisionGraphWnd::CRevisionGraphWnd()
 	this->m_Graph.newEdge(three, four);
 
 #endif
-	FastHierarchyLayout *pOHL = ::new FastHierarchyLayout;
+	auto pOHL = ::new ogdf::FastHierarchyLayout;
 	//It will auto delte when m_SugiyamLayout destroy
 
 	pOHL->layerDistance(30.0);
@@ -335,7 +335,7 @@ CPoint CRevisionGraphWnd::GetLogCoordinates (CPoint point) const
 				  , (int)((point.y + nVScrollPos) / m_fZoomFactor));
 }
 
-node CRevisionGraphWnd::GetHitNode (CPoint point, CSize /*border*/) const
+ogdf::node CRevisionGraphWnd::GetHitNode(CPoint point, CSize /*border*/) const
 {
 #if 0
 	// any nodes at all?
@@ -349,7 +349,7 @@ node CRevisionGraphWnd::GetHitNode (CPoint point, CSize /*border*/) const
 	return nodeList->GetAt (GetLogCoordinates (point), border);
 #endif
 
-	node v;
+	ogdf::node v;
 	forall_nodes(v,m_Graph)
 	{
 		 RectF noderect (GetNodeRect (v, CPoint(GetScrollPos(SB_HORZ),  GetScrollPos(SB_VERT))));
@@ -585,7 +585,7 @@ void CRevisionGraphWnd::OnLButtonDown(UINT nFlags, CPoint point)
 			return __super::OnLButtonDown(nFlags, point);
 		}
 #endif
-		node nodeIndex = GetHitNode (point);
+		auto nodeIndex = GetHitNode(point);
 		if (nodeIndex)
 		{
 			if (bControl)
@@ -732,7 +732,7 @@ INT_PTR CRevisionGraphWnd::OnToolHitTest(CPoint point, TOOLINFO* pTI) const
 	if (IsUpdateJobRunning())
 		return -1;
 
-	node nodeIndex = GetHitNode (point);
+	auto nodeIndex = GetHitNode(point);
 	if (m_tooltipIndex != nodeIndex)
 	{
 		// force tooltip to be updated
@@ -904,7 +904,7 @@ CString CRevisionGraphWnd::DisplayableText ( const CString& wholeText
 	return result;
 }
 
-CString CRevisionGraphWnd::TooltipText(node index)
+CString CRevisionGraphWnd::TooltipText(ogdf::node index)
 {
 	if(index)
 	{
@@ -1106,7 +1106,7 @@ void CRevisionGraphWnd::OnMouseHWheel(UINT nFlags, short zDelta, CPoint pt)
 	return __super::OnMouseHWheel(nFlags, zDelta, pt);
 }
 
-bool CRevisionGraphWnd::UpdateSelectedEntry (node clickedentry)
+bool CRevisionGraphWnd::UpdateSelectedEntry(ogdf::node clickedentry)
 {
 	if (!m_SelectedEntry1 && !clickedentry)
 		return false;
@@ -1418,7 +1418,7 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 	CPoint clientpoint = point;
 	this->ScreenToClient(&clientpoint);
 
-	node nodeIndex = GetHitNode (clientpoint);
+	auto nodeIndex = GetHitNode(clientpoint);
 
 	if ( !UpdateSelectedEntry (nodeIndex))
 		return;
