@@ -1797,6 +1797,26 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 		bool isStash = IsOnStash(FirstSelect);
 		GIT_REV_LIST parentHash;
 		GetParentHashes(pSelLogEntry, parentHash);
+		STRING_VECTOR parentInfo;
+		for (size_t i = 0; i < parentHash.size(); ++i)
+		{
+			CString str;
+			str.Format(IDS_PARENT, i + 1);
+			GitRev rev;
+			if (rev.GetCommit(parentHash[i].ToString()) == 0)
+			{
+				CString commitTitle = rev.GetSubject();
+				if (commitTitle.GetLength() > 20)
+				{
+					commitTitle.Truncate(20);
+					commitTitle += L"...";
+				}
+				str.AppendFormat(L": \"%s\" (%s)", (LPCTSTR)commitTitle, (LPCTSTR)parentHash[i].ToString().Left(g_Git.GetShortHASHLength()));
+			}
+			else
+				str.AppendFormat(L" (%s)", (LPCTSTR)parentHash[i].ToString().Left(g_Git.GetShortHASHLength()));
+			parentInfo.push_back(str);
+		}
 
 		if (m_ContextMenuMask & GetContextMenuBit(ID_REBASE_PICK) && !(pSelLogEntry->GetRebaseAction() & (LOGACTIONS_REBASE_CURRENT | LOGACTIONS_REBASE_DONE)))
 			popup.AppendMenuIcon(ID_REBASE_PICK, IDS_REBASE_PICK, IDI_PICK);
@@ -1850,11 +1870,9 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					{
 						blamemenu.CreatePopupMenu();
 						popup.AppendMenuIcon(ID_BLAMEPREVIOUS, IDS_LOG_POPUP_BLAMEPREVIOUS, IDI_BLAME, blamemenu.m_hMenu);
-						for (size_t i = 0; i < parentHash.size(); ++i)
+						for (size_t i = 0; i < parentInfo.size(); ++i)
 						{
-							CString str;
-							str.Format(IDS_PARENT, i + 1);
-							blamemenu.AppendMenuIcon(ID_BLAMEPREVIOUS +((i + 1) << 16), str);
+							blamemenu.AppendMenuIcon(ID_BLAMEPREVIOUS + ((i + 1) << 16), parentInfo[i]);
 						}
 						requiresSeparator = true;
 					}
@@ -1876,11 +1894,9 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						gnudiffmenu.AppendMenuIcon((UINT_PTR)(ID_GNUDIFF1 + (0xFFFE << 16)), CString(MAKEINTRESOURCE(IDS_ONLYMERGEDFILES)));
 						gnudiffmenu.AppendMenuIcon((UINT_PTR)(ID_GNUDIFF1 + (0xFFFD << 16)), CString(MAKEINTRESOURCE(IDS_DIFFWITHMERGE)));
 
-						for (size_t i = 0; i < parentHash.size(); ++i)
+						for (size_t i = 0; i < parentInfo.size(); ++i)
 						{
-							CString str;
-							str.Format(IDS_PARENT, i + 1);
-							gnudiffmenu.AppendMenuIcon(ID_GNUDIFF1+((i+1)<<16),str);
+							gnudiffmenu.AppendMenuIcon(ID_GNUDIFF1 + ((i + 1) << 16), parentInfo[i]);
 						}
 						requiresSeparator = true;
 					}
@@ -1899,11 +1915,9 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					{
 						diffmenu.CreatePopupMenu();
 						popup.AppendMenuIcon(ID_COMPAREWITHPREVIOUS, IDS_LOG_POPUP_COMPAREWITHPREVIOUS, IDI_DIFF, diffmenu.m_hMenu);
-						for (size_t i = 0; i < parentHash.size(); ++i)
+						for (size_t i = 0; i < parentInfo.size(); ++i)
 						{
-							CString str;
-							str.Format(IDS_PARENT, i + 1);
-							diffmenu.AppendMenuIcon(ID_COMPAREWITHPREVIOUS +((i+1)<<16),str);
+							diffmenu.AppendMenuIcon(ID_COMPAREWITHPREVIOUS + ((i + 1) << 16), parentInfo[i]);
 							if (i == 0 && CRegDWORD(L"Software\\TortoiseGit\\DiffByDoubleClickInLog", FALSE))
 							{
 								popup.SetDefaultItem(ID_COMPAREWITHPREVIOUS, FALSE);
@@ -2143,11 +2157,9 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						revertmenu.CreatePopupMenu();
 						popup.AppendMenuIcon(ID_REVERTREV, IDS_LOG_POPUP_REVERTREV, IDI_REVERT, revertmenu.m_hMenu);
 
-						for (size_t i = 0; i < parentHash.size(); ++i)
+						for (size_t i = 0; i < parentInfo.size(); ++i)
 						{
-							CString str2;
-							str2.Format(IDS_PARENT, i + 1);
-							revertmenu.AppendMenuIcon(ID_REVERTREV + ((i + 1) << 16), str2);
+							revertmenu.AppendMenuIcon(ID_REVERTREV + ((i + 1) << 16), parentInfo[i]);
 						}
 					}
 				}

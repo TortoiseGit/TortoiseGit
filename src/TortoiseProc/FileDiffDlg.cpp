@@ -530,6 +530,19 @@ UINT CFileDiffDlg::LoadRefThread()
 	return 0;
 }
 
+static CString GetCommitTitle(const GitRev& rev)
+{
+	CString str;
+	CString commitTitle = rev.GetSubject();
+	if (commitTitle.GetLength() > 20)
+	{
+		commitTitle.Truncate(20);
+		commitTitle += L"...";
+	}
+	str.AppendFormat(L"%s (%s)", (LPCTSTR)rev.m_CommitHash.ToString().Left(g_Git.GetShortHASHLength()), (LPCTSTR)commitTitle);
+	return str;
+}
+
 void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 {
 	if (!pWnd || pWnd != &m_cFileList)
@@ -562,12 +575,12 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		{
 			if (!m_rev1.m_CommitHash.IsEmpty())
 			{
-				menuText.Format(IDS_FILEDIFF_POPREVERTTOREV, (LPCTSTR)m_rev1.m_CommitHash.ToString().Left(g_Git.GetShortHASHLength()));
+				menuText.Format(IDS_FILEDIFF_POPREVERTTOREV, (LPCTSTR)GetCommitTitle(m_rev1));
 				popup.AppendMenuIcon(ID_REVERT1, menuText, IDI_REVERT);
 			}
 			if (!m_rev2.m_CommitHash.IsEmpty())
 			{
-				menuText.Format(IDS_FILEDIFF_POPREVERTTOREV, (LPCTSTR)m_rev2.m_CommitHash.ToString().Left(g_Git.GetShortHASHLength()));
+				menuText.Format(IDS_FILEDIFF_POPREVERTTOREV, (LPCTSTR)GetCommitTitle(m_rev2));
 				popup.AppendMenuIcon(ID_REVERT2, menuText, IDI_REVERT);
 			}
 			popup.AppendMenu(MF_SEPARATOR, NULL);

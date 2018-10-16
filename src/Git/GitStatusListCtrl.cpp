@@ -1648,7 +1648,25 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 				if ((m_dwContextMenus & GetContextMenuBit(IDGITLC_REVERTTOPARENT)) && !m_CurrentVersion.IsEmpty() && !(wcStatus & CTGitPath::LOGACTIONS_ADDED))
 				{
-					popup.AppendMenuIcon(IDGITLC_REVERTTOPARENT, IDS_LOG_POPUP_REVERTTOPARENT, IDI_REVERT);
+					CString str;
+					str.LoadString(IDS_LOG_POPUP_REVERTTOPARENT);
+					CString revStr;
+					revStr.Format(L"%s^%d", (LPCTSTR)m_CurrentVersion.ToString(), (filepath->m_ParentNo & PARENT_MASK) + 1);
+					GitRev rev;
+					CGitHash parentHash;
+					if (g_Git.GetHash(parentHash, revStr) == 0 && rev.GetCommit(parentHash.ToString()) == 0)
+					{
+						CString commitTitle = rev.GetSubject();
+						if (commitTitle.GetLength() > 20)
+						{
+							commitTitle.Truncate(20);
+							commitTitle += L"...";
+						}
+						str.AppendFormat(L": \"%s\" (%s)", (LPCTSTR)commitTitle, (LPCTSTR)parentHash.ToString().Left(g_Git.GetShortHASHLength()));
+					}
+					else
+						str.AppendFormat(L" (%s)", (LPCTSTR)parentHash.ToString().Left(g_Git.GetShortHASHLength()));
+					popup.AppendMenuIcon(IDGITLC_REVERTTOPARENT, str, IDI_REVERT);
 				}
 			}
 

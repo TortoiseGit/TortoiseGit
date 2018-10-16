@@ -1860,6 +1860,25 @@ int CRebaseDlg::IsCommitEmpty(const CGitHash& hash)
 	return tree == ptree;
 }
 
+static CString GetCommitTitle(const CGitHash& parentHash)
+{
+	CString str;
+	GitRev rev;
+	if (rev.GetCommit(parentHash.ToString()) == 0)
+	{
+		CString commitTitle = rev.GetSubject();
+		if (commitTitle.GetLength() > 20)
+		{
+			commitTitle.Truncate(20);
+			commitTitle += L"...";
+		}
+		str.AppendFormat(L"\n%s (%s)", (LPCTSTR)commitTitle, (LPCTSTR)parentHash.ToString().Left(g_Git.GetShortHASHLength()));
+	}
+	else
+		str.AppendFormat(L"\n(%s)", (LPCTSTR)parentHash.ToString().Left(g_Git.GetShortHASHLength()));
+	return str;
+}
+
 int CRebaseDlg::DoRebase()
 {
 	CString cmd,out;
@@ -1939,10 +1958,10 @@ int CRebaseDlg::DoRebase()
 		msg.FormatMessage(IDS_CHERRYPICK_MERGECOMMIT, (LPCTSTR)pRev->m_CommitHash.ToString(), (LPCTSTR)pRev->GetSubject());
 		CString parent1;
 		parent1.Format(IDS_PARENT, 1);
-		parent1.AppendFormat(L"\n(%s)", (LPCTSTR)pRev->m_ParentHash.at(0).ToString());
+		parent1 += GetCommitTitle(pRev->m_ParentHash.at(0));
 		CString parent2;
 		parent2.Format(IDS_PARENT, 2);
-		parent2.AppendFormat(L"\n(%s)", (LPCTSTR)pRev->m_ParentHash.at(1).ToString());
+		parent2 += GetCommitTitle(pRev->m_ParentHash.at(1));
 		CString cancel;
 		cancel.LoadString(IDS_MSGBOX_CANCEL);
 		auto ret = CMessageBox::Show(m_hWnd, msg, L"TortoiseGit", 3, IDI_QUESTION, parent1, parent2, cancel);
