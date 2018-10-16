@@ -28,3 +28,6 @@
 [submodule "ext/googletest"]
 	path = ext/googletest
 	url = https://github.com/google/googletest.git
+[submodule "ext/OGDF"]
+	path = ext/OGDF
+	url = https://github.com/ogdf/ogdf
