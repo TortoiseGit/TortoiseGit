@@ -73,6 +73,7 @@ enum RevisionGraphContextMenuCommands
 	ID_SWITCHTOHEAD,
 	ID_SWITCH,
 	ID_DELETE,
+	ID_SWITCHTOREV,
 	ID_COPYREFS = 0x400,
 	ID_EXPAND_ALL = 0x500,
 	ID_JOIN_ALL,
@@ -1433,6 +1434,7 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 
 	STRING_VECTOR branchNames;
 	STRING_VECTOR allRefNames;
+	STRING_VECTOR remoteBranchNames; 
 	if (m_SelectedEntry1 && (m_SelectedEntry2 == nullptr))
 	{
 		AppendMenu(popup, IDS_LOG_BROWSEREPO, ID_BROWSEREPO);
@@ -1453,6 +1455,17 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 			for (size_t i = 0; i < branchNames.size(); ++i)
 				AppendMenu(switchMenu, branchNames[i], ID_SWITCH + ((int)(i + 1) << 16), &branchNames[i]);
 			AppendMenu(popup, CString(MAKEINTRESOURCE(IDS_SWITCH_BRANCH)), ID_SWITCH, nullptr, &switchMenu);
+		}
+		else
+		{
+			CGit::REF_TYPE remoteRefType = CGit::REMOTE_BRANCH;
+			remoteBranchNames = GetFriendRefNames(m_SelectedEntry1, &currentBranch, &remoteRefType);
+			if (remoteBranchNames.size() >= 1)
+			{
+				CString temp;
+				temp.LoadString(IDS_SWITCH_TO_THIS);
+				AppendMenu(popup, temp, ID_SWITCHTOREV, &remoteBranchNames[0]);
+			}
 		}
 
 		AppendMenu(popup, IDS_COPY_REF_NAMES, ID_COPYREFS);
@@ -1537,6 +1550,17 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		}
 		break;
 	}
+	case ID_SWITCHTOREV:
+		{
+			MENUITEMINFO mii = { 0 };
+			mii.cbSize = sizeof(mii);
+			mii.fMask |= MIIM_DATA;
+			GetMenuItemInfo(popup, cmd, FALSE, &mii);
+			CString* rev = (CString*)mii.dwItemData;
+			CAppUtils::Switch(GetSafeHwnd(), *rev);
+			m_parent->UpdateFullHistory();
+		}
+		break;
 	case ID_COPYREFS:
 		DoCopyRefs();
 		break;

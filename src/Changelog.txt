@@ -9,6 +9,7 @@ Released: unreleased
  * Update Scintilla to 4.1.2
  * Fixed issue #3277: Start of rebase process doesn't show log tab by default
  * Fixed issue #3273: Show more information (beginning of commit subject) about commit parents in context menus
+ * Fixed issue #3272: Revision Graph does not show the option to checkout a remote branch
 
 == Bug Fixes ==
  * Fixed issue #3250: GitWCRev: IsGitItem return true for item that had never been committed
