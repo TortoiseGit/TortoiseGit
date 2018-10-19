@@ -48,7 +48,7 @@ public:
 	{
 		git_oid_cpy((git_oid*)m_hash, oid);
 	}
-	CGitHash(const git_oid oid)
+	CGitHash(const git_oid& oid)
 	{
 		git_oid_cpy((git_oid*)m_hash, &oid);
 	}
@@ -68,7 +68,7 @@ public:
 		git_oid_cpy((git_oid*)m_hash, oid);
 		return *this;
 	}
-	CGitHash& operator = (const git_oid oid)
+	CGitHash& operator = (const git_oid& oid)
 	{
 		git_oid_cpy((git_oid*)m_hash, &oid);
 		return *this;
