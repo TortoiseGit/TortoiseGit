@@ -104,12 +104,12 @@ static BOOL FindGitPath()
 	if (!size)
 		return FALSE;
 
-	TCHAR* env = (TCHAR*)alloca(size * sizeof(TCHAR));
+	auto env = std::make_unique<TCHAR[]>(size);
 	if (!env)
 		return FALSE;
-	_wgetenv_s(&size, env, size, L"PATH");
+	_wgetenv_s(&size, env.get(), size, L"PATH");
 
-	CString gitExeDirectory = FindFileOnPath(L"git.exe", env, true);
+	CString gitExeDirectory = FindFileOnPath(L"git.exe", env.get(), true);
 	if (!gitExeDirectory.IsEmpty())
 	{
 		CGit::ms_LastMsysGitDir = gitExeDirectory;
