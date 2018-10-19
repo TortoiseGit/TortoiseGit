@@ -700,7 +700,7 @@ void CTortoiseProcApp::CheckUpgrade()
 		oldmsysGitSetting.TrimRight(L'\\');
 		if (oldmsysGitSetting.GetLength() > 4 && CStringUtils::EndsWith(oldmsysGitSetting, L"\\cmd"))
 		{
-			CString newPath = oldmsysGitSetting.Mid(0, oldmsysGitSetting.GetLength() - 3) + L"bin";
+			CString newPath = oldmsysGitSetting.Left(oldmsysGitSetting.GetLength() - 3) + L"bin";
 			if (PathFileExists(newPath + L"\\git.exe"))
 			{
 				CRegString(REG_MSYSGIT_PATH) = newPath;

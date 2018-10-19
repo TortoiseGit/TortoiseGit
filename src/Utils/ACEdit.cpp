@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (c) 2003 by Andreas Kapust <info@akinstaller.de>; <http://www.codeproject.com/Articles/2607/AutoComplete-without-IAutoComplete>
 // Copyright (C) 2009, 2012-2013, 2015-2016, 2018 - TortoiseGit
@@ -235,7 +235,7 @@ bool CACEdit::HandleKey(UINT nChar, bool m_bFromChild)
 				if(m_iMode & _MODE_FILESYSTEM_)
 				{
 					if (CStringUtils::EndsWith(m_EditText, L'\\'))
-						m_EditText = m_EditText.Mid(0,m_EditText.GetLength()-1);
+						m_EditText = m_EditText.Left(m_EditText.GetLength() - 1);
 				}
 
 				if (nChar != VK_RETURN)

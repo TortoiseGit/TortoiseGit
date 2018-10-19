@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2013-2018 - TortoiseGit
 
@@ -207,7 +207,7 @@ CVersioncheckParser::LANGPACK_VECTOR CVersioncheckParser::GetTortoiseGitLanguage
 		pack.m_LangCode = langs.Mid(5);
 		pack.m_PackName = L"TortoiseGit Language Pack " + pack.m_LangCode;
 
-		pack.m_LocaleID = _tstoi(langs.Mid(0, 4));
+		pack.m_LocaleID = _tstoi(langs.Left(4));
 		TCHAR buf[MAX_PATH] = { 0 };
 		GetLocaleInfo(pack.m_LocaleID, LOCALE_SNATIVELANGNAME, buf, _countof(buf));
 		pack.m_LangName = buf;

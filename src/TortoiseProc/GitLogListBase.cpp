@@ -100,7 +100,7 @@ CGitLogListBase::CGitLogListBase() : CHintCtrl<CResizableColumnsListCtrl<CListCt
 		CString lastSelFromDate = CRegString(key);
 		if (lastSelFromDate.GetLength() == 10)
 		{
-			CTime time = CTime(_wtoi((LPCTSTR)lastSelFromDate.Mid(0, 4)), _wtoi((LPCTSTR)lastSelFromDate.Mid(5, 2)), _wtoi((LPCTSTR)lastSelFromDate.Mid(8, 2)), 0, 0, 0);
+			CTime time = CTime(_wtoi((LPCTSTR)lastSelFromDate.Left(4)), _wtoi((LPCTSTR)lastSelFromDate.Mid(5, 2)), _wtoi((LPCTSTR)lastSelFromDate.Mid(8, 2)), 0, 0, 0);
 			m_Filter.m_From = (DWORD)time.GetTime();
 		}
 	}

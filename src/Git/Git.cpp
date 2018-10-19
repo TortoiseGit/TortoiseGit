@@ -117,16 +117,16 @@ static BOOL FindGitPath()
 		if (CStringUtils::EndsWith(CGit::ms_LastMsysGitDir, L"\\mingw32\\bin") || CStringUtils::EndsWith(CGit::ms_LastMsysGitDir, L"\\mingw64\\bin"))
 		{
 			// prefer cmd directory as early Git for Windows 2.x releases only had this
-			CString installRoot = CGit::ms_LastMsysGitDir.Mid(0, CGit::ms_LastMsysGitDir.GetLength() - (int)wcslen(L"\\mingw64\\bin")) + L"\\cmd\\git.exe";
+			CString installRoot = CGit::ms_LastMsysGitDir.Left(CGit::ms_LastMsysGitDir.GetLength() - (int)wcslen(L"\\mingw64\\bin")) + L"\\cmd\\git.exe";
 			if (PathFileExists(installRoot))
-				CGit::ms_LastMsysGitDir = CGit::ms_LastMsysGitDir.Mid(0, CGit::ms_LastMsysGitDir.GetLength() - (int)wcslen(L"\\mingw64\\bin")) + L"\\cmd";
+				CGit::ms_LastMsysGitDir = CGit::ms_LastMsysGitDir.Left(CGit::ms_LastMsysGitDir.GetLength() - (int)wcslen(L"\\mingw64\\bin")) + L"\\cmd";
 		}
 		if (CStringUtils::EndsWith(CGit::ms_LastMsysGitDir, L"\\cmd"))
 		{
 			// often the msysgit\cmd folder is on the %PATH%, but
 			// that git.exe does not work, so try to guess the bin folder
-			if (PathFileExists(CGit::ms_LastMsysGitDir.Mid(0 ,CGit::ms_LastMsysGitDir.GetLength() - (int)wcslen(L"\\cmd")) + L"\\bin\\git.exe"))
-				CGit::ms_LastMsysGitDir = CGit::ms_LastMsysGitDir.Mid(0 ,CGit::ms_LastMsysGitDir.GetLength() - (int)wcslen(L"\\cmd")) + L"\\bin";
+			if (PathFileExists(CGit::ms_LastMsysGitDir.Left(CGit::ms_LastMsysGitDir.GetLength() - (int)wcslen(L"\\cmd")) + L"\\bin\\git.exe"))
+				CGit::ms_LastMsysGitDir = CGit::ms_LastMsysGitDir.Left(CGit::ms_LastMsysGitDir.GetLength() - (int)wcslen(L"\\cmd")) + L"\\bin";
 		}
 		return TRUE;
 	}
@@ -1855,7 +1855,7 @@ int CGit::GetRemoteTags(const CString& remote, REF_VECTOR& list)
 	if (Run(cmd, [&](CStringA lineA)
 	{
 		CGitHash hash;
-		hash.ConvertFromStrA(lineA.Mid(0, GIT_HASH_SIZE * 2));
+		hash.ConvertFromStrA(lineA.Left(GIT_HASH_SIZE * 2));
 		lineA = lineA.Mid(GIT_HASH_SIZE * 2 + (int)wcslen(L"\trefs/tags/")); // sha1, tab + refs/tags/
 		if (!lineA.IsEmpty())
 			list.emplace_back(TGitRef{ CUnicodeUtils::GetUnicode(lineA), hash });

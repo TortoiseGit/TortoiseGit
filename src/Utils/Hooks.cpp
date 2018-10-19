@@ -55,7 +55,7 @@ bool CHooks::Create()
 	while ((pos = strhooks.Find('\n')) >= 0)
 	{
 		// line 1
-		key.htype = GetHookType(strhooks.Mid(0, pos));
+		key.htype = GetHookType(strhooks.Left(pos));
 		if (pos+1 < strhooks.GetLength())
 			strhooks = strhooks.Mid(pos+1);
 		else
@@ -71,7 +71,7 @@ bool CHooks::Create()
 				strhooks = strhooks.Mid((int)wcslen(L"!"));
 				--pos;
 			}
-			key.path = CTGitPath(strhooks.Mid(0, pos));
+			key.path = CTGitPath(strhooks.Left(pos));
 			if (pos+1 < strhooks.GetLength())
 				strhooks = strhooks.Mid(pos+1);
 			else
@@ -79,7 +79,7 @@ bool CHooks::Create()
 			if ((pos = strhooks.Find('\n')) >= 0)
 			{
 				// line 3
-				cmd.commandline = strhooks.Mid(0, pos);
+				cmd.commandline = strhooks.Left(pos);
 				if (pos+1 < strhooks.GetLength())
 					strhooks = strhooks.Mid(pos+1);
 				else
@@ -87,7 +87,7 @@ bool CHooks::Create()
 				if ((pos = strhooks.Find('\n')) >= 0)
 				{
 					// line 4
-					cmd.bWait = (strhooks.Mid(0, pos).CompareNoCase(L"true") == 0);
+					cmd.bWait = (strhooks.Left(pos).CompareNoCase(L"true") == 0);
 					if (pos+1 < strhooks.GetLength())
 						strhooks = strhooks.Mid(pos+1);
 					else
@@ -95,7 +95,7 @@ bool CHooks::Create()
 					if ((pos = strhooks.Find('\n')) >= 0)
 					{
 						// line 5
-						cmd.bShow = (strhooks.Mid(0, pos).CompareNoCase(L"show") == 0);
+						cmd.bShow = (strhooks.Left(pos).CompareNoCase(L"show") == 0);
 						if (pos+1 < strhooks.GetLength())
 							strhooks = strhooks.Mid(pos+1);
 						else

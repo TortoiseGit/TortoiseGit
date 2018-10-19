@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2018 - TortoiseGit
 // Copyright (C) 2012 - TortoiseSVN
@@ -143,7 +143,7 @@ bool CloneCommand::Execute()
 			{
 				CString path = url.Mid(atSign);
 				path.Replace(L'\\', L'/');
-				url = url.Mid(0, atSign) + path;
+				url = url.Left(atSign) + path;
 			}
 			else
 				url.Replace( L'\\', L'/');

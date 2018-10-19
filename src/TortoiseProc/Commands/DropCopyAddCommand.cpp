@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2011, 2013-2016, 2018 - TortoiseGit
 // Copyright (C) 2007-2008,2010,2012 - TortoiseSVN
@@ -115,7 +115,7 @@ bool DropCopyAddCommand::Execute()
 							isRepo = false;
 						if (isRepo)
 						{
-							lastRepo = filepath.Mid(0, filepath.GetLength() - GitAdminDir::GetAdminDirName().GetLength());
+							lastRepo = filepath.Left(filepath.GetLength() - GitAdminDir::GetAdminDirName().GetLength());
 							CString msg;
 							if (!isDir)
 								msg.Format(IDS_PROC_COPY_SUBMODULE, (LPCTSTR)lastRepo);

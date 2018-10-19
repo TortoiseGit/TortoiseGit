@@ -72,7 +72,7 @@ bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, UINT idErrM
 			pos = sCommandLine.Find(' ', 1);
 			if (pos > 0)
 			{
-				file = sCommandLine.Mid(0, pos);
+				file = sCommandLine.Left(pos);
 				param = sCommandLine.Mid(pos + 1);
 			}
 			else
