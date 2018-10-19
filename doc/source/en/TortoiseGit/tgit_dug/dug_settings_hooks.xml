@@ -105,6 +105,19 @@
 		Use <literal>*</literal> for matching all working trees.
 	</para>
 	<para>
+		If the checkbox <guibutton>Run for this repository</guibutton> is checked then
+		the hook script is attached to the current repository and configured
+		automatically for every clone and checkout (the hook information is stored in
+		the file <filename>.tgitconfig</filename> in the repository root so that it will
+		be automatically shared with all other developers using TortoiseGit &gt;= 2.7.1;
+		for security reasons TortoiseGit asks the user before running a hook which
+		is configured and shared in the repository).
+		In this case, you can specify paths for the command line with the
+		replacement string <literal>%root%</literal> for the path to the
+		working tree folder. The hook script has to be inside the repository and
+		also be checked out of course (please also note the security implications below).
+	</para>
+	<para>
 		Next you must specify the command line to execute, starting with the path
 		to the hook script or executable.
 		This could be a batch file, an executable file or any other file which
@@ -245,6 +258,12 @@
 		Normally you will want to hide ugly DOS boxes when the script runs,
 		so <guilabel>Hide the script while running</guilabel> is checked by default.
 	</para>
+	<caution>
+		<para>
+			If you are executing a versioned file/script from the repository, please note that the file possibly
+			gets altered by third parties unnoticed (e.g. after pull or merge).
+		</para>
+	</caution>
 	<sect3 id="tgit-dug-settings-hooks-issuetracker">
 		<title>Issue Tracker Integration</title>
 		<?dbhh topicname="HIDD_SETTINGSBUGTRAQ"?>

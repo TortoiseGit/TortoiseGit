@@ -24,8 +24,45 @@
 #include "TempFile.h"
 #include "SmartHandle.h"
 #include "Git.h"
+#include "resource.h"
+#include <afxtaskdialog.h>
+#include <WinCrypt.h>
 
 CHooks* CHooks::m_pInstance;
+CTGitPath CHooks::m_RootPath;
+
+static CString CalcSHA256(const CString& text)
+{
+	HCRYPTPROV hProv = 0;
+	if (!CryptAcquireContext(&hProv, nullptr, nullptr, PROV_RSA_AES, CRYPT_VERIFYCONTEXT))
+		return L"";
+	SCOPE_EXIT{ CryptReleaseContext(hProv, 0); };
+
+	HCRYPTHASH hHash = 0;
+	if (!CryptCreateHash(hProv, CALG_SHA_256, 0, 0, &hHash))
+		return L"";
+	SCOPE_EXIT{ CryptDestroyHash(hHash); };
+
+	CStringA textA = CUnicodeUtils::GetUTF8(text);
+	if (!CryptHashData(hHash, (LPBYTE)(LPCSTR)textA, textA.GetLength(), 0))
+		return L"";
+
+	CString hash;
+	BYTE rgbHash[32];
+	DWORD cbHash = _countof(rgbHash);
+	if (!CryptGetHashParam(hHash, HP_HASHVAL, rgbHash, &cbHash, 0))
+		return L"";
+
+	for (DWORD i = 0; i < cbHash; i++)
+	{
+		BYTE hi = rgbHash[i] >> 4;
+		BYTE lo = rgbHash[i] & 0xf;
+		hash.AppendChar(hi + (hi > 9 ? 87 : 48));
+		hash.AppendChar(lo + (lo > 9 ? 87 : 48));
+	}
+
+	return hash;
+}
 
 CHooks::CHooks()
 {
@@ -41,75 +78,7 @@ bool CHooks::Create()
 		m_pInstance = new CHooks();
 	CRegString reghooks(L"Software\\TortoiseGit\\hooks");
 	CString strhooks = reghooks;
-	// now fill the map with all the hooks defined in the string
-	// the string consists of multiple lines, where one hook script is defined
-	// as four lines:
-	// line 1: the hook type
-	// line 2: path to working copy where to apply the hook script, if it starts with "!" this hook is disabled (this should provide backward and forward compatibility)
-	// line 3: command line to execute
-	// line 4: 'true' or 'false' for waiting for the script to finish
-	// line 5: 'show' or 'hide' on how to start the hook script
-	hookkey key;
-	int pos = 0;
-	hookcmd cmd;
-	while ((pos = strhooks.Find('\n')) >= 0)
-	{
-		// line 1
-		key.htype = GetHookType(strhooks.Left(pos));
-		if (pos+1 < strhooks.GetLength())
-			strhooks = strhooks.Mid(pos+1);
-		else
-			strhooks.Empty();
-		bool bComplete = false;
-		if ((pos = strhooks.Find('\n')) >= 0)
-		{
-			// line 2
-			cmd.bEnabled = true;
-			if (strhooks[0] == L'!' && pos > 1)
-			{
-				cmd.bEnabled = false;
-				strhooks = strhooks.Mid((int)wcslen(L"!"));
-				--pos;
-			}
-			key.path = CTGitPath(strhooks.Left(pos));
-			if (pos+1 < strhooks.GetLength())
-				strhooks = strhooks.Mid(pos+1);
-			else
-				strhooks.Empty();
-			if ((pos = strhooks.Find('\n')) >= 0)
-			{
-				// line 3
-				cmd.commandline = strhooks.Left(pos);
-				if (pos+1 < strhooks.GetLength())
-					strhooks = strhooks.Mid(pos+1);
-				else
-					strhooks.Empty();
-				if ((pos = strhooks.Find('\n')) >= 0)
-				{
-					// line 4
-					cmd.bWait = (strhooks.Left(pos).CompareNoCase(L"true") == 0);
-					if (pos+1 < strhooks.GetLength())
-						strhooks = strhooks.Mid(pos+1);
-					else
-						strhooks.Empty();
-					if ((pos = strhooks.Find('\n')) >= 0)
-					{
-						// line 5
-						cmd.bShow = (strhooks.Left(pos).CompareNoCase(L"show") == 0);
-						if (pos+1 < strhooks.GetLength())
-							strhooks = strhooks.Mid(pos+1);
-						else
-							strhooks.Empty();
-						bComplete = true;
-					}
-				}
-			}
-		}
-		if (bComplete)
-		{
-			m_pInstance->insert(std::pair<hookkey, hookcmd>(key, cmd));
-		}
-	}
+	ParseHookString(strhooks, false);
 	return true;
 }
 
@@ -128,6 +97,8 @@ bool CHooks::Save()
 	CString strhooks;
 	for (hookiterator it = begin(); it != end(); ++it)
 	{
+		if (it->second.bLocal)
+			continue;
 		strhooks += GetHookTypeString(it->first.htype);
 		strhooks += '\n';
 		if (!it->second.bEnabled)
@@ -145,6 +116,57 @@ bool CHooks::Save()
 	reghooks = strhooks;
 	if (reghooks.GetLastError())
 		return false;
+
+	if (g_Git.m_CurrentDir.IsEmpty() || GitAdminDir::IsBareRepo(g_Git.m_CurrentDir))
+		return true;
+
+	// load the .tgitconfig file
+	CAutoConfig gitconfig(true);
+	git_config_add_file_ondisk(gitconfig, CGit::GetGitPathStringA(g_Git.CombinePath(L".tgitconfig")), GIT_CONFIG_LEVEL_LOCAL, nullptr, FALSE); // this needs to have the second highest priority
+
+	// delete all existing local hooks
+	for (const auto& hook : { PROJECTPROPNAME_STARTCOMMITHOOK, PROJECTPROPNAME_PRECOMMITHOOK, PROJECTPROPNAME_POSTCOMMITHOOK, PROJECTPROPNAME_PREPUSHHOOK, PROJECTPROPNAME_POSTPUSHHOOK, PROJECTPROPNAME_PREREBASEHOOK })
+	{
+		CStringA hookA = CUnicodeUtils::GetUTF8(hook);
+		for (const auto& val : { "cmdline", "wait", "show" })
+		{
+			git_config_delete_entry(gitconfig, hookA + val);
+		}
+	}
+
+	// now save the local hooks to .tgitconfig
+	for (const auto& hook : CHooks::Instance())
+	{
+		if (!hook.second.bLocal)
+			continue;
+
+		CStringA sHookPropName;
+		switch (hook.first.htype)
+		{
+		case start_commit_hook:
+			sHookPropName = CUnicodeUtils::GetUTF8(PROJECTPROPNAME_STARTCOMMITHOOK);
+			break;
+		case pre_commit_hook:
+			sHookPropName = CUnicodeUtils::GetUTF8(PROJECTPROPNAME_PRECOMMITHOOK);
+			break;
+		case post_commit_hook:
+			sHookPropName = CUnicodeUtils::GetUTF8(PROJECTPROPNAME_POSTCOMMITHOOK);
+			break;
+		case pre_push_hook:
+			sHookPropName = CUnicodeUtils::GetUTF8(PROJECTPROPNAME_PREPUSHHOOK);
+			break;
+		case post_push_hook:
+			sHookPropName = CUnicodeUtils::GetUTF8(PROJECTPROPNAME_POSTPUSHHOOK);
+			break;
+		case pre_rebase_hook:
+			sHookPropName = CUnicodeUtils::GetUTF8(PROJECTPROPNAME_PREREBASEHOOK);
+			break;
+		}
+		git_config_set_string(gitconfig, sHookPropName + "cmdline", CUnicodeUtils::GetUTF8(hook.second.commandline));
+		git_config_set_bool(gitconfig, sHookPropName + "wait", hook.second.bWait);
+		git_config_set_bool(gitconfig, sHookPropName + "show", hook.second.bShow);
+	}
+
 	return true;
 }
 
@@ -153,7 +175,7 @@ bool CHooks::Remove(const hookkey &key)
 	return (erase(key) > 0);
 }
 
-void CHooks::Add(hooktype ht, const CTGitPath& Path, LPCTSTR szCmd, bool bWait, bool bShow, bool bEnabled)
+void CHooks::Add(hooktype ht, const CTGitPath& Path, LPCTSTR szCmd, bool bWait, bool bShow, bool bEnabled, bool bLocal)
 {
 	hookkey key;
 	key.htype = ht;
@@ -167,6 +189,7 @@ void CHooks::Add(hooktype ht, const CTGitPath& Path, LPCTSTR szCmd, bool bWait, 
 	cmd.bWait = bWait;
 	cmd.bShow = bShow;
 	cmd.bEnabled = bEnabled;
+	cmd.bLocal = bLocal;
 	insert(std::pair<hookkey, hookcmd>(key, cmd));
 }
 
@@ -219,6 +242,26 @@ hooktype CHooks::GetHookType(const CString& s)
 	return unknown_hook;
 }
 
+void CHooks::SetProjectProperties(const CTGitPath& Path, const ProjectProperties& pp)
+{
+	m_RootPath = Path;
+
+	CString sHookString;
+	if (!pp.sPreCommitHook.IsEmpty())
+		sHookString += GetHookTypeString(pre_commit_hook) + L"\n?\n" + pp.sPreCommitHook + L"\n";
+	if (!pp.sStartCommitHook.IsEmpty())
+		sHookString += GetHookTypeString(start_commit_hook) + L"\n?\n" + pp.sStartCommitHook + L"\n";
+	if (!pp.sPostCommitHook.IsEmpty())
+		sHookString += GetHookTypeString(post_commit_hook) + L"\n?\n" + pp.sPostCommitHook + L"\n";
+	if (!pp.sPrePushHook.IsEmpty())
+		sHookString += GetHookTypeString(pre_push_hook) + L"\n?\n" + pp.sPrePushHook + L"\n";
+	if (!pp.sPostPushHook.IsEmpty())
+		sHookString += GetHookTypeString(post_push_hook) + L"\n?\n" + pp.sPostPushHook + L"\n";
+	if (!pp.sPreRebaseHook.IsEmpty())
+		sHookString += GetHookTypeString(pre_rebase_hook) + L"\n?\n" + pp.sPreRebaseHook + L"\n";
+	ParseHookString(sHookString, true);
+}
+
 void CHooks::AddParam(CString& sCmd, const CString& param)
 {
 	sCmd += L" \"";
@@ -255,12 +298,19 @@ CTGitPath CHooks::AddMessageFileParam(CString& sCmd, const CString& message)
 	return tempPath;
 }
 
-bool CHooks::StartCommit(const CString& workingTree, const CTGitPathList& pathList, CString& message, DWORD& exitcode, CString& error)
+bool CHooks::StartCommit(HWND hWnd, const CString& workingTree, const CTGitPathList& pathList, CString& message, DWORD& exitcode, CString& error)
 {
 	auto it = FindItem(start_commit_hook, workingTree);
 	if (it == end())
 		return false;
+	if (!ApproveHook(hWnd, it))
+	{
+		exitcode = 1;
+		error.LoadString(IDS_ERR_HOOKNOTAPPROVED);
+		return false;
+	}
 	CString sCmd = it->second.commandline;
+	sCmd.Replace(L"%root%", m_RootPath.GetWinPathString());
 	AddPathParam(sCmd, pathList);
 	CTGitPath temppath = AddMessageFileParam(sCmd, message);
 	AddCWDParam(sCmd, workingTree);
@@ -272,12 +322,19 @@ bool CHooks::StartCommit(const CString& workingTree, const CTGitPathList& pathLi
 	return true;
 }
 
-bool CHooks::PreCommit(const CString& workingTree, const CTGitPathList& pathList, CString& message, DWORD& exitcode, CString& error)
+bool CHooks::PreCommit(HWND hWnd, const CString& workingTree, const CTGitPathList& pathList, CString& message, DWORD& exitcode, CString& error)
 {
 	auto it = FindItem(pre_commit_hook, workingTree);
 	if (it == end())
 		return false;
+	if (!ApproveHook(hWnd, it))
+	{
+		exitcode = 1;
+		error.LoadString(IDS_ERR_HOOKNOTAPPROVED);
+		return false;
+	}
 	CString sCmd = it->second.commandline;
+	sCmd.Replace(L"%root%", m_RootPath.GetWinPathString());
 	AddPathParam(sCmd, pathList);
 	CTGitPath temppath = AddMessageFileParam(sCmd, message);
 	AddCWDParam(sCmd, workingTree);
@@ -287,12 +344,19 @@ bool CHooks::PreCommit(const CString& workingTree, const CTGitPathList& pathList
 	return true;
 }
 
-bool CHooks::PostCommit(const CString& workingTree, bool amend, DWORD& exitcode, CString& error)
+bool CHooks::PostCommit(HWND hWnd, const CString& workingTree, bool amend, DWORD& exitcode, CString& error)
 {
 	auto it = FindItem(post_commit_hook, workingTree);
 	if (it == end())
 		return false;
+	if (!ApproveHook(hWnd, it))
+	{
+		exitcode = 1;
+		error.LoadString(IDS_ERR_HOOKNOTAPPROVED);
+		return false;
+	}
 	CString sCmd = it->second.commandline;
+	sCmd.Replace(L"%root%", m_RootPath.GetWinPathString());
 	AddCWDParam(sCmd, workingTree);
 	if (amend)
 		AddParam(sCmd, L"true");
@@ -302,36 +366,57 @@ bool CHooks::PostCommit(const CString& workingTree, bool amend, DWORD& exitcode,
 	return true;
 }
 
-bool CHooks::PrePush(const CString& workingTree, DWORD& exitcode, CString& error)
+bool CHooks::PrePush(HWND hWnd, const CString& workingTree, DWORD& exitcode, CString& error)
 {
 	auto it = FindItem(pre_push_hook, workingTree);
 	if (it == end())
 		return false;
+	if (!ApproveHook(hWnd, it))
+	{
+		exitcode = 1;
+		error.LoadString(IDS_ERR_HOOKNOTAPPROVED);
+		return false;
+	}
 	CString sCmd = it->second.commandline;
+	sCmd.Replace(L"%root%", m_RootPath.GetWinPathString());
 	AddErrorParam(sCmd, error);
 	AddCWDParam(sCmd, workingTree);
 	exitcode = RunScript(sCmd, workingTree, error, it->second.bWait, it->second.bShow);
 	return true;
 }
 
-bool CHooks::PostPush(const CString& workingTree, DWORD& exitcode, CString& error)
+bool CHooks::PostPush(HWND hWnd, const CString& workingTree, DWORD& exitcode, CString& error)
 {
 	auto it = FindItem(post_push_hook, workingTree);
 	if (it == end())
 		return false;
+	if (!ApproveHook(hWnd, it))
+	{
+		exitcode = 1;
+		error.LoadString(IDS_ERR_HOOKNOTAPPROVED);
+		return false;
+	}
 	CString sCmd = it->second.commandline;
+	sCmd.Replace(L"%root%", m_RootPath.GetWinPathString());
 	AddErrorParam(sCmd, error);
 	AddCWDParam(sCmd, workingTree);
 	exitcode = RunScript(sCmd, workingTree, error, it->second.bWait, it->second.bShow);
 	return true;
 }
 
-bool CHooks::PreRebase(const CString& workingTree, const CString& upstream, const CString& rebasedBranch, DWORD& exitcode, CString& error)
+bool CHooks::PreRebase(HWND hWnd, const CString& workingTree, const CString& upstream, const CString& rebasedBranch, DWORD& exitcode, CString& error)
 {
 	auto it = FindItem(pre_rebase_hook, workingTree);
 	if (it == end())
 		return false;
+	if (!ApproveHook(hWnd, it))
+	{
+		exitcode = 1;
+		error.LoadString(IDS_ERR_HOOKNOTAPPROVED);
+		return false;
+	}
 	CString sCmd = it->second.commandline;
+	sCmd.Replace(L"%root%", m_RootPath.GetWinPathString());
 	AddParam(sCmd, upstream);
 	AddParam(sCmd, rebasedBranch);
 	AddErrorParam(sCmd, error);
@@ -340,13 +425,13 @@ bool CHooks::PreRebase(const CString& workingTree, const CString& upstream, cons
 	return true;
 }
 
-bool CHooks::IsHookPresent(hooktype t, const CString& workingTree) const
+bool CHooks::IsHookPresent(hooktype t, const CString& workingTree)
 {
 	auto it = FindItem(t, workingTree);
 	return it != end();
 }
 
-const_hookiterator CHooks::FindItem(hooktype t, const CString& workingTree) const
+hookiterator CHooks::FindItem(hooktype t, const CString& workingTree)
 {
 	hookkey key;
 	CTGitPath path = workingTree;
@@ -368,7 +453,111 @@ const_hookiterator CHooks::FindItem(hooktype t, const CString& workingTree) cons
 		return it;
 	}
 
+	// try the root path
+	key.htype = t;
+	key.path = m_RootPath;
+	it = find(key);
+	if (it != end())
+		return it;
+
+	// look for a script with a path as '*'
+	key.htype = t;
+	key.path = CTGitPath(L"*");
+	it = find(key);
+	if (it != end())
+		return it;
+
 	return end();
+}
+
+void CHooks::ParseHookString(CString strhooks, bool bLocal)
+{
+	// now fill the map with all the hooks defined in the string
+	// the string consists of multiple lines, where one hook script is defined
+	// as four lines:
+	// line 1: the hook type
+	// line 2: path to working copy where to apply the hook script,
+	//         if it starts with "!" this hook is disabled (this should provide backward and forward compatibility)
+	//         if it starts with "?" this hook is for the current project folder
+	// line 3: command line to execute
+	// line 4: 'true' or 'false' for waiting for the script to finish
+	// line 5: 'show' or 'hide' on how to start the hook script
+	hookkey key;
+	int pos = 0;
+	hookcmd cmd;
+	cmd.bLocal = bLocal;
+	cmd.bApproved = !bLocal; // user configured scripts are pre-approved
+	cmd.bStored = false;
+	while ((pos = strhooks.Find(L'\n')) >= 0)
+	{
+		// line 1
+		key.htype = GetHookType(strhooks.Left(pos));
+		if (pos + 1 < strhooks.GetLength())
+			strhooks = strhooks.Mid(pos + 1);
+		else
+			strhooks.Empty();
+		bool bComplete = false;
+		if ((pos = strhooks.Find(L'\n')) >= 0)
+		{
+			// line 2
+			cmd.bEnabled = true;
+			if (strhooks[0] == L'!' && pos > 1)
+			{
+				cmd.bEnabled = false;
+				strhooks = strhooks.Mid((int)wcslen(L"!"));
+				--pos;
+			}
+			if (strhooks[0] == L'?' && pos > 0)
+				key.path = CTGitPath(m_RootPath);
+			else
+				key.path = CTGitPath(strhooks.Left(pos));
+			if (pos + 1 < strhooks.GetLength())
+				strhooks = strhooks.Mid(pos + 1);
+			else
+				strhooks.Empty();
+			if ((pos = strhooks.Find(L'\n')) >= 0)
+			{
+				// line 3
+				cmd.commandline = strhooks.Left(pos);
+				if (pos + 1 < strhooks.GetLength())
+					strhooks = strhooks.Mid(pos + 1);
+				else
+					strhooks.Empty();
+				if ((pos = strhooks.Find(L'\n')) >= 0)
+				{
+					// line 4
+					cmd.bWait = (strhooks.Left(pos).CompareNoCase(L"true") == 0);
+					if (pos + 1 < strhooks.GetLength())
+						strhooks = strhooks.Mid(pos + 1);
+					else
+						strhooks.Empty();
+					if ((pos = strhooks.Find(L'\n')) >= 0)
+					{
+						// line 5
+						cmd.bShow = (strhooks.Left(pos).CompareNoCase(L"show") == 0);
+						if (pos + 1 < strhooks.GetLength())
+							strhooks = strhooks.Mid(pos + 1);
+						else
+							strhooks.Empty();
+						if (cmd.bLocal)
+						{
+							CString temp;
+							temp.Format(L"%s|%d%s", m_RootPath.GetWinPath(), (int)key.htype, (LPCTSTR)cmd.commandline);
+
+							cmd.sRegKey = L"Software\\TortoiseGit\\approvedhooks\\" + CalcSHA256(temp);
+							CRegDWORD reg(cmd.sRegKey, 0);
+							cmd.bApproved = (DWORD(reg) != 0);
+							cmd.bStored = reg.exists();
+						}
+
+						bComplete = true;
+					}
+				}
+			}
+		}
+		if (bComplete)
+			m_pInstance->insert(std::pair<hookkey, hookcmd>(key, cmd));
+	}
 }
 
 DWORD CHooks::RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bWait, bool bShow)
@@ -477,3 +666,33 @@ DWORD CHooks::RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bW
 	return exitcode;
 }
 
+bool CHooks::ApproveHook(HWND hWnd, hookiterator it)
+{
+	if (it->second.bApproved || it->second.bStored)
+		return it->second.bApproved;
+
+	CString sQuestion;
+	sQuestion.Format(IDS_HOOKS_APPROVE_TASK1, (LPCWSTR)it->second.commandline);
+	bool bApproved = false;
+	bool bDoNotAskAgain = false;
+	CTaskDialog taskdlg(sQuestion, CString(MAKEINTRESOURCE(IDS_HOOKS_APPROVE_TASK2)), L"TortoiseGit", 0, TDF_USE_COMMAND_LINKS | TDF_ALLOW_DIALOG_CANCELLATION | TDF_POSITION_RELATIVE_TO_WINDOW | TDF_SIZE_TO_CONTENT);
+	taskdlg.AddCommandControl(1, CString(MAKEINTRESOURCE(IDS_HOOKS_APPROVE_TASK3)));
+	taskdlg.AddCommandControl(2, CString(MAKEINTRESOURCE(IDS_HOOKS_APPROVE_TASK4)));
+	taskdlg.SetCommonButtons(TDCBF_CANCEL_BUTTON);
+	taskdlg.SetVerificationCheckboxText(CString(MAKEINTRESOURCE(IDS_HOOKS_APPROVE_TASK5)));
+	taskdlg.SetVerificationCheckbox(false);
+	taskdlg.SetDefaultCommandControl(2);
+	taskdlg.SetMainIcon(TD_WARNING_ICON);
+	taskdlg.SetFooterText(CString(MAKEINTRESOURCE(IDS_HOOKS_APPROVE_SECURITYHINT)));
+	bApproved = taskdlg.DoModal(hWnd) == 1;
+	bDoNotAskAgain = !!taskdlg.GetVerificationCheckboxState();
+
+	if (bDoNotAskAgain)
+	{
+		CRegDWORD reg(it->second.sRegKey, 0);
+		reg = bApproved ? 1 : 0;
+		it->second.bStored = true;
+	}
+	it->second.bApproved = bApproved;
+	return bApproved;
+}

@@ -1,6 +1,6 @@
 /* This script is a local pre-commit hook script.
  * It's used to check whether the copyright year of modified files has been
- * bumped up to the current (2014) year.
+ * bumped up to the current (2018) year.
  *
  * Only *.cpp, *.h and *.idl files are checked
  *
@@ -14,13 +14,13 @@ var objArgs, num;
 
 objArgs = WScript.Arguments;
 num = objArgs.length;
-if (num !== 4)
+if (num !== 3)
 {
-    WScript.Echo("Usage: [CScript | WScript] checkyear.js path/to/pathsfile depth path/to/messagefile path/to/CWD");
+    WScript.Echo("Usage: [CScript | WScript] checkyear.js path/to/pathsfile path/to/messagefile path/to/CWD");
     WScript.Quit(1);
 }
 
-var re = /^\/\/ Copyright.+(2014)(.*)/;
+var re = /^\/\/ Copyright.+(2018)(.*)/;
 var basere = /^\/\/ Copyright(.*)/;
 var filere = /(\.cpp$)|(\.h$)|(\.idl$)/;
 var found = true;

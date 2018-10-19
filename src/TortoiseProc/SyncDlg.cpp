@@ -729,7 +729,8 @@ void CSyncDlg::OnBnClickedButtonPush()
 
 	CString error;
 	DWORD exitcode = 0xFFFFFFFF;
-	if (CHooks::Instance().PrePush(g_Git.m_CurrentDir, exitcode, error))
+	CHooks::Instance().SetProjectProperties(g_Git.m_CurrentDir, m_ProjectProperties);
+	if (CHooks::Instance().PrePush(GetSafeHwnd(), g_Git.m_CurrentDir, exitcode, error))
 	{
 		if (exitcode)
 		{
@@ -1080,6 +1081,7 @@ BOOL CSyncDlg::OnInitDialog()
 		m_tagCompareList.Init();
 		m_ctrlTabCtrl.InsertTab(&m_tagCompareList, CString(MAKEINTRESOURCE(IDS_PROC_SYNC_COMPARETAGS)), -1);
 	}
+	m_ProjectProperties.ReadProps();
 
 	AdjustControlSize(IDC_CHECK_PUTTY_KEY);
 	AdjustControlSize(IDC_CHECK_FORCE);
@@ -1609,7 +1611,8 @@ void CSyncDlg::RunPostAction()
 	{
 		DWORD exitcode = 0xFFFFFFFF;
 		CString error;
-		if (CHooks::Instance().PostPush(g_Git.m_CurrentDir, exitcode, error))
+		CHooks::Instance().SetProjectProperties(g_Git.m_CurrentDir, m_ProjectProperties);
+		if (CHooks::Instance().PostPush(GetSafeHwnd(), g_Git.m_CurrentDir, exitcode, error))
 		{
 			if (exitcode)
 			{

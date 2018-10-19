@@ -516,6 +516,10 @@ msgstr ""
 msgid "&Don't ask me again"
 msgstr ""
 
+#. Resource IDs: (IDS_HOOKS_APPROVE_TASK4)
+msgid "&Don't run\nDo not run the script"
+msgstr ""
+
 #. Resource IDs: (IDS_MSGBOX_DONOTSHOWAGAIN)
 msgid "&Don't show this message again"
 msgstr ""
@@ -1053,6 +1057,10 @@ msgstr ""
 
 #. Resource IDs: (IDS_LOG_POPUP_REVERTREVS)
 msgid "&Revert changes by these commits"
+msgstr ""
+
+#. Resource IDs: (IDS_HOOKS_APPROVE_TASK3)
+msgid "&Run\nRun the hook script"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROXY: Control id 65535)
@@ -1737,6 +1745,10 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_OPENDLG: Control id 1072)
 msgid "Apply unified diff"
+msgstr ""
+
+#. Resource IDs: (IDS_HOOKS_APPROVE_TASK2)
+msgid "Approve or reject client-side hook script"
 msgstr ""
 
 #. Resource IDs: (65535 - PopupMenu)
@@ -3567,6 +3579,10 @@ msgstr ""
 msgid "Do &not show me this warning again (if Ignore is selected)"
 msgstr ""
 
+#. Resource IDs: (IDS_HOOKS_APPROVE_TASK5)
+msgid "Do not ask again for this script"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 1407)
 msgid "Do not auto-select \"missing\" files (deleted, but unstaged)"
 msgstr ""
@@ -5247,6 +5263,10 @@ msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_GITCONFIG_INHERIT_TT)
 msgid "If this is enabled, no value is stored or overwritten at this config level."
+msgstr ""
+
+#. Resource IDs: (IDS_HOOKS_APPROVE_SECURITYHINT)
+msgid "If you are executing a versioned file from the repository, please note that the content possibly have been altered by third parties unnoticed (e.g. after pull or merge). Keep this in mind especially if you approve a repository hook permanently."
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_CREATEREPO: Control id 1654)
@@ -7628,6 +7648,10 @@ msgstr ""
 msgid "Right image"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_SETTINGSHOOKCONFIG: Control id 1848)
+msgid "Run for this repository"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETTINGSHOOKCONFIG: Control id 1335)
 msgid "Run when working tree path is under:"
 msgstr ""
@@ -8983,6 +9007,10 @@ msgstr ""
 msgid "The hook script returned an error:\n%s"
 msgstr ""
 
+#. Resource IDs: (IDS_ERR_HOOKNOTAPPROVED)
+msgid "The hook script was not approved to run!"
+msgstr ""
+
 #. Resource IDs: (IDS_INVALIDIMAGEINFO)
 msgid "The image can not be shown."
 msgstr ""
@@ -9208,6 +9236,11 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROC_NOCLEAN)
 msgid "This task requires a clean working tree."
+msgstr ""
+
+#. Resource IDs: (IDS_HOOKS_APPROVE_TASK1)
+#, c-format
+msgid "This working copy has a client-side hook script configured. Do you want this script to run?\nThe command line to run is:\n%ls"
 msgstr ""
 
 #. Resource IDs: (IDS_TREE_DIFF)

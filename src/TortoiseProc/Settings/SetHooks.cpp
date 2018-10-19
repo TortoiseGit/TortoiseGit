@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2017 - TortoiseGit
+// Copyright (C) 2016-2018 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -19,6 +19,7 @@
 //
 #include "stdafx.h"
 #include "TortoiseProc.h"
+#include "Git.h"
 #include "SetHooks.h"
 #include "SetHooksAdv.h"
 #include "Hooks.h"
@@ -78,6 +79,10 @@ BOOL CSetHooks::OnInitDialog()
 
 	SetWindowTheme(m_hWnd, L"Explorer", nullptr);
 
+	ProjectProperties pp;
+	pp.ReadProps();
+	CHooks::Instance().SetProjectProperties(g_Git.m_CurrentDir, pp);
+
 	RebuildHookList();
 
 	return TRUE;
@@ -94,7 +99,7 @@ void CSetHooks::RebuildHookList()
 		{
 			int pos = m_cHookList.InsertItem(m_cHookList.GetItemCount(), CHooks::Instance().GetHookTypeString(it->first.htype));
 			m_cHookList.SetCheck(pos, it->second.bEnabled);
-			m_cHookList.SetItemText(pos, 1, it->first.path.GetWinPathString());
+			m_cHookList.SetItemText(pos, 1, it->second.bLocal ? L"local" : it->first.path.GetWinPathString());
 			m_cHookList.SetItemText(pos, 2, it->second.commandline);
 			m_cHookList.SetItemText(pos, 3, (it->second.bWait ? L"true" : L"false"));
 			m_cHookList.SetItemText(pos, 4, (it->second.bShow ? L"show" : L"hide"));
@@ -141,11 +146,12 @@ void CSetHooks::OnBnClickedEditbutton()
 		dlg.cmd.commandline = m_cHookList.GetItemText(index, 2);
 		dlg.cmd.bWait = (m_cHookList.GetItemText(index, 3).Compare(L"true") == 0);
 		dlg.cmd.bShow = (m_cHookList.GetItemText(index, 4).Compare(L"show") == 0);
+		dlg.cmd.bLocal = m_cHookList.GetItemText(index, 1).Compare(L"local") == 0;
 		hookkey key = dlg.key;
 		if (dlg.DoModal() == IDOK)
 		{
 			CHooks::Instance().Remove(key);
-			CHooks::Instance().Add(dlg.key.htype, dlg.key.path, dlg.cmd.commandline, dlg.cmd.bWait, dlg.cmd.bShow, dlg.cmd.bEnabled);
+			CHooks::Instance().Add(dlg.key.htype, dlg.key.path, dlg.cmd.commandline, dlg.cmd.bWait, dlg.cmd.bShow, dlg.cmd.bEnabled, dlg.cmd.bLocal);
 			RebuildHookList();
 			SetModified();
 		}
@@ -157,7 +163,7 @@ void CSetHooks::OnBnClickedAddbutton()
 	CSetHooksAdv dlg;
 	if (dlg.DoModal() == IDOK)
 	{
-		CHooks::Instance().Add(dlg.key.htype, dlg.key.path, dlg.cmd.commandline, dlg.cmd.bWait, dlg.cmd.bShow, dlg.cmd.bEnabled);
+		CHooks::Instance().Add(dlg.key.htype, dlg.key.path, dlg.cmd.commandline, dlg.cmd.bWait, dlg.cmd.bShow, dlg.cmd.bEnabled, dlg.cmd.bLocal);
 		RebuildHookList();
 		SetModified();
 	}
@@ -192,6 +198,7 @@ BOOL CSetHooks::OnApply()
 {
 	UpdateData();
 	CHooks::Instance().Save();
+
 	SetModified(FALSE);
 	return ISettingsPropPage::OnApply();
 }
@@ -210,9 +217,10 @@ void CSetHooks::OnBnClickedHookcopybutton()
 		dlg.cmd.bWait = (m_cHookList.GetItemText(index, 3).Compare(L"true") == 0);
 		dlg.cmd.bShow = (m_cHookList.GetItemText(index, 4).Compare(L"show") == 0);
 		dlg.cmd.bEnabled = m_cHookList.GetCheck(index) == BST_CHECKED;
+		dlg.cmd.bLocal = m_cHookList.GetItemText(index, 1).Compare(L"local") == 0;
 		if (dlg.DoModal() == IDOK)
 		{
-			CHooks::Instance().Add(dlg.key.htype, dlg.key.path, dlg.cmd.commandline, dlg.cmd.bWait, dlg.cmd.bShow, dlg.cmd.bEnabled);
+			CHooks::Instance().Add(dlg.key.htype, dlg.key.path, dlg.cmd.commandline, dlg.cmd.bWait, dlg.cmd.bShow, dlg.cmd.bEnabled, dlg.cmd.bLocal);
 			RebuildHookList();
 			SetModified();
 		}

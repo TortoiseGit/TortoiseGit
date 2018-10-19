@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2010, 2013-2017 - TortoiseGit
+// Copyright (C) 2010, 2013-2018 - TortoiseGit
 // Copyright (C) 2003-2008,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -31,6 +31,7 @@ CSetHooksAdv::CSetHooksAdv(CWnd* pParent /*=nullptr*/)
 	, m_bEnabled(FALSE)
 	, m_bWait(FALSE)
 	, m_bHide(FALSE)
+	, m_bLocal(FALSE)
 {
 }
 
@@ -44,6 +45,7 @@ void CSetHooksAdv::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_HOOKPATH, m_sPath);
 	DDX_Text(pDX, IDC_HOOKCOMMANDLINE, m_sCommandLine);
 	DDX_Check(pDX, IDC_ENABLE, m_bEnabled);
+	DDX_Check(pDX, IDC_LOCALCHECK, m_bLocal);
 	DDX_Check(pDX, IDC_WAITCHECK, m_bWait);
 	DDX_Check(pDX, IDC_HIDECHECK, m_bHide);
 	DDX_Control(pDX, IDC_HOOKTYPECOMBO, m_cHookTypeCombo);
@@ -53,6 +55,7 @@ void CSetHooksAdv::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CSetHooksAdv, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_HOOKBROWSE, &CSetHooksAdv::OnBnClickedHookbrowse)
 	ON_BN_CLICKED(IDC_HOOKCOMMANDBROWSE, &CSetHooksAdv::OnBnClickedHookcommandbrowse)
+	ON_BN_CLICKED(IDC_LOCALCHECK, &CSetHooksAdv::OnBnClickedLocalcheck)
 END_MESSAGE_MAP()
 
 BOOL CSetHooksAdv::OnInitDialog()
@@ -62,6 +65,7 @@ BOOL CSetHooksAdv::OnInitDialog()
 	AdjustControlSize(IDC_ENABLE);
 	AdjustControlSize(IDC_WAITCHECK);
 	AdjustControlSize(IDC_HIDECHECK);
+	AdjustControlSize(IDC_LOCALCHECK);
 
 	// initialize the combo box with all the hook types we have
 	int index;
@@ -95,13 +99,17 @@ BOOL CSetHooksAdv::OnInitDialog()
 	m_sCommandLine = cmd.commandline;
 	m_bWait = cmd.bWait;
 	m_bHide = !cmd.bShow;
+	m_bLocal = cmd.bLocal;
 	m_bEnabled = cmd.bEnabled ? BST_CHECKED : BST_UNCHECKED;
+
 	UpdateData(FALSE);
+	OnBnClickedLocalcheck();
 
 	AddAnchor(IDC_ENABLE, TOP_LEFT);
 	AddAnchor(IDC_HOOKTYPELABEL, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_HOOKTYPECOMBO, TOP_RIGHT);
 	AddAnchor(IDC_HOOKWCPATHLABEL, TOP_LEFT, TOP_RIGHT);
+	AddAnchor(IDC_LOCALCHECK, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_HOOKPATH, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_HOOKBROWSE, TOP_RIGHT);
 	AddAnchor(IDC_HOOKCMLABEL, TOP_LEFT, TOP_RIGHT);
@@ -129,21 +137,25 @@ void CSetHooksAdv::OnOK()
 		cmd.bEnabled = m_bEnabled == BST_CHECKED;
 		cmd.bWait = !!m_bWait;
 		cmd.bShow = !m_bHide;
+		cmd.bLocal = !!m_bLocal;
 	}
 	if (key.htype == unknown_hook)
 	{
 		m_tooltips.ShowBalloon(IDC_HOOKTYPECOMBO, IDS_ERR_NOHOOKTYPESPECIFIED, IDS_ERR_ERROR, TTI_ERROR);
 		return;
 	}
-	if (key.path.IsEmpty())
+	if (!m_bLocal)
 	{
-		ShowEditBalloon(IDC_HOOKPATH, IDS_ERR_NOHOOKPATHSPECIFIED, IDS_ERR_ERROR, TTI_ERROR);
-		return;
-	}
-	if (key.path.GetWinPathString() != L"*" && (!PathIsDirectory(key.path.GetWinPathString()) || PathIsRelative(key.path.GetWinPathString())))
-	{
-		ShowEditBalloon(IDC_HOOKPATH, (LPCTSTR)CFormatMessageWrapper(ERROR_PATH_NOT_FOUND), CString(MAKEINTRESOURCE(IDS_ERR_ERROR)), TTI_ERROR);
-		return;
+		if (key.path.IsEmpty())
+		{
+			ShowEditBalloon(IDC_HOOKPATH, IDS_ERR_NOHOOKPATHSPECIFIED, IDS_ERR_ERROR, TTI_ERROR);
+			return;
+		}
+		if (key.path.GetWinPathString() != L"*" && (!PathIsDirectory(key.path.GetWinPathString()) || PathIsRelative(key.path.GetWinPathString())))
+		{
+			ShowEditBalloon(IDC_HOOKPATH, (LPCTSTR)CFormatMessageWrapper(ERROR_PATH_NOT_FOUND), CString(MAKEINTRESOURCE(IDS_ERR_ERROR)), TTI_ERROR);
+			return;
+		}
 	}
 	if (cmd.commandline.IsEmpty())
 	{
@@ -180,4 +192,11 @@ void CSetHooksAdv::OnBnClickedHookcommandbrowse()
 		m_sCommandLine = sCmdLine;
 		UpdateData(FALSE);
 	}
+}
+
+void CSetHooksAdv::OnBnClickedLocalcheck()
+{
+	UpdateData();
+	DialogEnableWindow(IDC_HOOKPATH, !m_bLocal);
+	DialogEnableWindow(IDC_HOOKBROWSE, !m_bLocal);
 }

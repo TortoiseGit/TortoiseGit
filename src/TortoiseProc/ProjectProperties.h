@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2011-2014, 2017 - TortoiseGit
+// Copyright (C) 2009, 2011-2014, 2018 - TortoiseGit
 // Copyright (C) 2003-2008,2011-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -41,6 +41,13 @@
 
 #define PROJECTPROPNAME_WEBVIEWER_REV		L"webviewer.revision"
 #define PROJECTPROPNAME_WEBVIEWER_PATHREV	L"webviewer.pathrevision"
+
+#define PROJECTPROPNAME_STARTCOMMITHOOK		L"hook.startcommit."
+#define PROJECTPROPNAME_PRECOMMITHOOK		L"hook.precommit."
+#define PROJECTPROPNAME_POSTCOMMITHOOK		L"hook.postcommit."
+#define PROJECTPROPNAME_PREPUSHHOOK			L"hook.prepush."
+#define PROJECTPROPNAME_POSTPUSHHOOK		L"hook.postpush."
+#define PROJECTPROPNAME_PREREBASEHOOK		L"hook.prerebase."
 
 /**
  * \ingroup TortoiseProc
@@ -195,11 +202,26 @@ public:
 	CString		sProviderUuid;
 	CString		sProviderUuid64;
 
+	/// multi line string containing the data for a start-commit-hook
+	CString		sStartCommitHook;
+	/// multi line string containing the data for a pre-commit-hook
+	CString		sPreCommitHook;
+	/// multi line string containing the data for a post-commit-hook
+	CString		sPostCommitHook;
+	/// multi line string containing the data for a pre-push-hook
+	CString		sPrePushHook;
+	/// multi line string containing the data for a post-push-hook
+	CString		sPostPushHook;
+	/// multi line string containing the data for a pre-rebase-hook
+	CString		sPreRebaseHook;
+
 private:
 	/**
 	 * Constructing regex objects is expensive. Therefore, cache them here.
 	 */
 	void AutoUpdateRegex();
+
+	void FetchHookString(CAutoConfig& gitconfig, const CString& sBase, CString& sHook);
 
 	bool regExNeedUpdate;
 	std::wregex regCheck;

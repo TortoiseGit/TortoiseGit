@@ -2708,7 +2708,10 @@ bool CAppUtils::DoPush(HWND hWnd, bool autoloadKey, bool pack, bool tags, bool a
 {
 	CString error;
 	DWORD exitcode = 0xFFFFFFFF;
-	if (CHooks::Instance().PrePush(g_Git.m_CurrentDir, exitcode, error))
+	ProjectProperties pp;
+	pp.ReadProps();
+	CHooks::Instance().SetProjectProperties(g_Git.m_CurrentDir, pp);
+	if (CHooks::Instance().PrePush(hWnd, g_Git.m_CurrentDir, exitcode, error))
 	{
 		if (exitcode)
 		{
@@ -2800,7 +2803,10 @@ bool CAppUtils::DoPush(HWND hWnd, bool autoloadKey, bool pack, bool tags, bool a
 		// need to execute hooks as those might be needed by post action commands
 		DWORD exitcode = 0xFFFFFFFF;
 		CString error;
-		if (CHooks::Instance().PostPush(g_Git.m_CurrentDir, exitcode, error))
+		ProjectProperties pp;
+		pp.ReadProps();
+		CHooks::Instance().SetProjectProperties(g_Git.m_CurrentDir, pp);
+		if (CHooks::Instance().PostPush(hWnd, g_Git.m_CurrentDir, exitcode, error))
 		{
 			if (exitcode)
 			{

@@ -601,6 +601,7 @@
 #define IDC_SKIPPER                     1261
 #define IDC_SKIPPERLABEL                1262
 #define IDS_SELECT                      1262
+#define IDS_HOOKS_APPROVE_SECURITYHINT  1263
 #define IDS_PROC_SETTINGS_TITLE         1264
 #define IDC_SHOWIGNORED                 1264
 #define IDC_AUTHORSCASESENSITIVE        1265
@@ -1604,6 +1605,7 @@
 #define IDC_ADVANCEDCONFIGURATION       1845
 #define IDC_FIRSTSTART_SSHHINT          1846
 #define IDC_CHECK_LFS                   1847
+#define IDC_LOCALCHECK                  1848
 #define IDS_LOG_FILTER_BY               1850
 #define IDS_LOG_FILTER_PATHS            1851
 #define IDS_LOG_FILTER_AUTHORS          1852
@@ -1898,6 +1900,12 @@
 #define IDS_HOOKTYPE_STARTCOMMIT        9100
 #define IDS_HOOKTYPE_PRECOMMIT          9101
 #define IDS_HOOKTYPE_POSTCOMMIT         9102
+#define IDS_HOOKS_APPROVE_TASK1         9110
+#define IDS_HOOKS_APPROVE_TASK2         9111
+#define IDS_HOOKS_APPROVE_TASK3         9112
+#define IDS_HOOKS_APPROVE_TASK4         9113
+#define IDS_HOOKS_APPROVE_TASK5         9114
+#define IDS_ERR_HOOKNOTAPPROVED         9115
 #define IDS_STATUSLIST_COLADD           9603
 #define IDS_STATUSLIST_COLDEL           9604
 #define IDS_B_T_NOTEMPTY                9619

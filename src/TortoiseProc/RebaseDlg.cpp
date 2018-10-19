@@ -981,7 +981,8 @@ int CRebaseDlg::CheckRebaseCondition()
 	{
 		CString error;
 		DWORD exitcode = 0xFFFFFFFF;
-		if (CHooks::Instance().PreRebase(g_Git.m_CurrentDir, m_UpstreamCtrl.GetString(), m_BranchCtrl.GetString(), exitcode, error))
+		CHooks::Instance().SetProjectProperties(g_Git.m_CurrentDir, m_ProjectProperties);
+		if (CHooks::Instance().PreRebase(GetSafeHwnd(), g_Git.m_CurrentDir, m_UpstreamCtrl.GetString(), m_BranchCtrl.GetString(), exitcode, error))
 		{
 			if (exitcode)
 			{

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2017 - TortoiseGit
+// Copyright (C) 2011-2018 - TortoiseGit
 // Copyright (C) 2006-2008, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -20,6 +20,7 @@
 #pragma once
 #include "registry.h"
 #include "TGitPath.h"
+#include "ProjectProperties.h"
 
 /**
  * \ingroup TortoiseProc
@@ -68,6 +69,10 @@ typedef struct hookcmd
 	bool			bWait;
 	bool			bShow;
 	bool			bEnabled;
+	bool			bLocal;
+	bool			bApproved; ///< user explicitly approved
+	bool			bStored; ///< use decision is stored in reg
+	CString			sRegKey;
 } hookcmd;
 
 typedef std::map<hookkey, hookcmd>::iterator hookiterator;
@@ -111,7 +116,7 @@ public:
 	 * Adds a new hook script. To make the change persistent, call Save().
 	 */
 	void				Add(hooktype ht, const CTGitPath& Path, LPCTSTR szCmd,
-							bool bWait, bool bShow, bool bEnabled);
+							bool bWait, bool bShow, bool bEnabled, bool bLocal);
 
 	/**
 	* Toggles the hook script identified by \c key. Returns whether the status has changed.
@@ -123,6 +128,9 @@ public:
 	static CString		GetHookTypeString(hooktype t);
 	/// returns the hooktype from a string representation of the same.
 	static hooktype		GetHookType(const CString& s);
+
+	/// Add hook script data from project properties
+	void				SetProjectProperties(const CTGitPath& Path, const ProjectProperties& pp);
 
 	/**
 	 * Executes the Start-Commit-Hook that first matches the path in
@@ -140,7 +148,7 @@ public:
 	 * \c message. If the script finishes successfully, contents of this file
 	 * is read back into \c message parameter.
 	 */
-	bool				StartCommit(const CString& workingTree, const CTGitPathList& pathList, CString& message,
+	bool				StartCommit(HWND hWnd, const CString& workingTree, const CTGitPathList& pathList, CString& message,
 									DWORD& exitcode, CString& error);
 	/**
 	 * Executes the Pre-Commit-Hook that first matches the path in
@@ -157,7 +165,7 @@ public:
 	 * If the script finishes successfully, contents of this file is read back
 	 * into \c message parameter.
 	 */
-	bool				PreCommit(const CString& workingTree, const CTGitPathList& pathList,
+	bool				PreCommit(HWND hWnd, const CString& workingTree, const CTGitPathList& pathList,
 									CString& message, DWORD& exitcode,
 									CString& error);
 	/**
@@ -166,14 +174,14 @@ public:
 	 * \param workingTree working tree root directory
 	 * \param amend commit was amend
 	 */
-	bool	PostCommit(const CString& workingTree, bool amend, DWORD& exitcode, CString& error);
+	bool	PostCommit(HWND hWnd, const CString& workingTree, bool amend, DWORD& exitcode, CString& error);
 
-	bool	PrePush(const CString& workingTree, DWORD& exitcode, CString& error);
-	bool	PostPush(const CString& workingTree, DWORD& exitcode, CString& error);
+	bool	PrePush(HWND hWnd, const CString& workingTree, DWORD& exitcode, CString& error);
+	bool	PostPush(HWND hWnd, const CString& workingTree, DWORD& exitcode, CString& error);
 
-	bool	PreRebase(const CString& workingTree, const CString& upstream, const CString& rebasedBranch, DWORD& exitcode, CString& error);
+	bool	PreRebase(HWND hWnd, const CString& workingTree, const CString& upstream, const CString& rebasedBranch, DWORD& exitcode, CString& error);
 
-	bool	IsHookPresent(hooktype t, const CString& workingTree) const;
+	bool	IsHookPresent(hooktype t, const CString& workingTree);
 
 private:
 	/**
@@ -189,6 +197,16 @@ private:
 	 * Find the hook script information for the hook type \c t which matches the
 	 * path in \c workingTree.
 	 */
-	const_hookiterator	FindItem(hooktype t, const CString& workingTree) const;
+	hookiterator	FindItem(hooktype t, const CString& workingTree);
+
+	static void ParseHookString(CString strhooks, bool bLocal);
+
+	/**
+	 * Checks whether the hook script has been validated already and
+	 * if not, asks the user to validate it.
+	 */
+	bool				ApproveHook(HWND hWnd, hookiterator it);
+
 	static CHooks *		m_pInstance;
+	static CTGitPath	m_RootPath;
 };
