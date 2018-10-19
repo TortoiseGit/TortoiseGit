@@ -5265,6 +5265,10 @@ msgstr ""
 msgid "If this is enabled, no value is stored or overwritten at this config level."
 msgstr ""
 
+#. Resource IDs: (IDS_HOOKS_APPROVE_SECURITYHINT)
+msgid "If you are executing a versioned file from the repository, please note that the content possibly have been altered by third parties unnoticed (e.g. after pull or merge). Keep this in mind especially if you approve a repository hook permanently."
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_CREATEREPO: Control id 1654)
 msgid "If you plan to work inside this folder, leave this unchecked. Typically a bare repo can only have changes 'pushed' to it. (By convention, a bare repo folder should have a name that ends with '.git')"
 msgstr ""

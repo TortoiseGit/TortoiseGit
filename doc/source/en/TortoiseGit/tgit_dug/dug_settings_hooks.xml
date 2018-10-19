@@ -115,7 +115,7 @@
 		In this case, you can specify paths for the command line with the
 		replacement string <literal>%root%</literal> for the path to the
 		working tree folder. The hook script has to be inside the repository and
-		also be checked out of course.
+		also be checked out of course (please also note the security implications below).
 	</para>
 	<para>
 		Next you must specify the command line to execute, starting with the path
@@ -258,6 +258,12 @@
 		Normally you will want to hide ugly DOS boxes when the script runs,
 		so <guilabel>Hide the script while running</guilabel> is checked by default.
 	</para>
+	<caution>
+		<para>
+			If you are executing a versioned file/script from the repository, please note that the file possibly
+			gets altered by third parties unnoticed (e.g. after pull or merge).
+		</para>
+	</caution>
 	<sect3 id="tgit-dug-settings-hooks-issuetracker">
 		<title>Issue Tracker Integration</title>
 		<?dbhh topicname="HIDD_SETTINGSBUGTRAQ"?>

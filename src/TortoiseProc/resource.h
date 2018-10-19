@@ -601,6 +601,7 @@
 #define IDC_SKIPPER                     1261
 #define IDC_SKIPPERLABEL                1262
 #define IDS_SELECT                      1262
+#define IDS_HOOKS_APPROVE_SECURITYHINT  1263
 #define IDS_PROC_SETTINGS_TITLE         1264
 #define IDC_SHOWIGNORED                 1264
 #define IDC_AUTHORSCASESENSITIVE        1265

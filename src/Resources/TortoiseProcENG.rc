@@ -3548,6 +3548,8 @@ BEGIN
     IDS_PROC_EXPORT_2       "Export unversioned files too"
     IDS_PROC_EXPORT_3       "Exporting..."
     IDS_SELECT              "Select"
+    IDS_HOOKS_APPROVE_SECURITYHINT 
+                            "If you are executing a versioned file from the repository, please note that the content possibly have been altered by third parties unnoticed (e.g. after pull or merge). Keep this in mind especially if you approve a repository hook permanently."
 END
 
 STRINGTABLE

@@ -683,6 +683,7 @@ bool CHooks::ApproveHook(HWND hWnd, hookiterator it)
 	taskdlg.SetVerificationCheckbox(false);
 	taskdlg.SetDefaultCommandControl(2);
 	taskdlg.SetMainIcon(TD_WARNING_ICON);
+	taskdlg.SetFooterText(CString(MAKEINTRESOURCE(IDS_HOOKS_APPROVE_SECURITYHINT)));
 	bApproved = taskdlg.DoModal(hWnd) == 1;
 	bDoNotAskAgain = !!taskdlg.GetVerificationCheckboxState();
 
