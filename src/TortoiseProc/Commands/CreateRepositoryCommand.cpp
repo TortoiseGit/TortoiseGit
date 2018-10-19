@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2018 - TortoiseGit
 
@@ -21,8 +21,9 @@
 #include "ShellUpdater.h"
 #include "MessageBox.h"
 #include "UnicodeUtils.h"
-
+#include "IconExtractor.h"
 #include "CreateRepoDlg.h"
+#include "SmartHandle.h"
 
 static bool CheckSpecialFolder(CString &folder)
 {
@@ -89,6 +90,24 @@ bool CreateRepositoryCommand::Execute()
 
 		if (!dlg.m_bBare)
 			CShellUpdater::Instance().AddPathForUpdate(orgCmdLinePath);
+		else if(!PathFileExists(folder + L"\\Desktop.ini"))
+		{
+			// create a desktop.ini file which sets our own icon for the repo folder
+			// we extract the icon to use from the resources and write it to disk
+			// so even those who don't have TGit installed can benefit from it.
+			CIconExtractor gitIconResource;
+			if (gitIconResource.ExtractIcon(nullptr, MAKEINTRESOURCE(IDI_GITFOLDER), folder + L"\\git.ico") == 0)
+			{
+				CAutoFile hFile = ::CreateFile(folder + L"\\Desktop.ini", GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_SYSTEM | FILE_ATTRIBUTE_HIDDEN, nullptr);
+				if (hFile)
+				{
+					DWORD dwWritten = 0;
+					CString sIni = L"[.ShellClassInfo]\nConfirmFileOp=0\nIconFile=git.ico\nIconIndex=0\nInfoTip=Git Repository\n";
+					WriteFile(hFile, (LPCTSTR)sIni, sIni.GetLength() * sizeof(TCHAR), &dwWritten, nullptr);
+				}
+				PathMakeSystemFolder(folder);
+			}
+		}
 		CString str;
 		str.Format(IDS_PROC_REPOCREATED, (LPCTSTR)folder);
 		CMessageBox::Show(GetExplorerHWND(), str, L"TortoiseGit", MB_OK | MB_ICONINFORMATION);

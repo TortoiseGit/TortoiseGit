@@ -97,6 +97,7 @@ IDI_TORTOISEUDIFF       ICON                    "..\\TortoiseUDiff\\TortoiseUDif
 IDI_LIBRARY_WIN10       ICON                    "library-win10.ico"
 IDI_RESET               ICON                    "reset.ico"
 IDI_NOTEPAD             ICON                    "notepad.ico"
+IDI_GITFOLDER           ICON                    "gitfolder.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //

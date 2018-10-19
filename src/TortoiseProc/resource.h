@@ -123,6 +123,7 @@
 #define IDI_ACTIONFETCHING              332
 #define IDD_SETTINGSPROGSALTERNATIVEEDITOR 333
 #define IDD_REQUESTPULL                 334
+#define IDI_GITFOLDER                   335
 #define IDB_BITMAP_REFTYPE              336
 #define IDI_IMPORTPATHCES_BKG           337
 #define IDD_SETTINGSOVERLAYHANDLERS     338

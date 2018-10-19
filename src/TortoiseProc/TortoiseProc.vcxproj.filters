@@ -971,6 +971,9 @@
     <ClCompile Include="LogDlgFilter.cpp">
       <Filter>Commands\Log</Filter>
     </ClCompile>
+    <ClCompile Include="..\Utils\IconExtractor.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1828,6 +1831,9 @@
     <ClInclude Include="LogDlgFilter.h">
       <Filter>Commands\Log</Filter>
     </ClInclude>
+    <ClInclude Include="..\Utils\IconExtractor.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resources\actionadded.ico">
@@ -2149,6 +2155,12 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\notepad.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="gitfolder.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\gitfolder.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

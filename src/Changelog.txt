@@ -11,6 +11,7 @@ Released: unreleased
  * Fixed issue #3273: Show more information (beginning of commit subject) about commit parents in context menus
  * Fixed issue #3272: Revision Graph does not show the option to checkout a remote branch
  * Added the option to store hook configurations within the repository (/.tgitconfig) in order to share it with other developers
+ * Fixed issue #3154: Decorate bare repository's folder with a Git icon
 
 == Bug Fixes ==
  * Fixed issue #3250: GitWCRev: IsGitItem return true for item that had never been committed

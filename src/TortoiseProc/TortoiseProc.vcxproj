@@ -74,6 +74,7 @@
     <ClCompile Include="..\Utils\Graphviz.cpp" />
     <ClCompile Include="..\Utils\Hooks.cpp" />
     <ClCompile Include="..\Utils\HwSMTP.cpp" />
+    <ClCompile Include="..\Utils\IconExtractor.cpp" />
     <ClCompile Include="..\Utils\JumpListHelpers.cpp" />
     <ClCompile Include="..\Utils\LangDll.cpp" />
     <ClCompile Include="..\Utils\LoadIconEx.cpp" />
@@ -350,6 +351,7 @@
     <ClInclude Include="..\Utils\Graphviz.h" />
     <ClInclude Include="..\Utils\Hooks.h" />
     <ClInclude Include="..\Utils\HwSMTP.h" />
+    <ClInclude Include="..\Utils\IconExtractor.h" />
     <ClInclude Include="..\Utils\IInputValidator.h" />
     <ClInclude Include="..\Utils\JumpListHelpers.h" />
     <ClInclude Include="..\Utils\LangDll.h" />
@@ -635,6 +637,7 @@
     <Image Include="..\Resources\general.ico" />
     <Image Include="..\Resources\gitconfig.ico" />
     <Image Include="..\Resources\gitcredential.ico" />
+    <Image Include="..\Resources\gitfolder.ico" />
     <Image Include="..\Resources\gitremote.ico" />
     <Image Include="..\Resources\graph-bar-stacked.ico" />
     <Image Include="..\Resources\graph-bar.ico" />
@@ -715,6 +718,7 @@
     <Image Include="..\Resources\warning-general.ico" />
     <Image Include="..\TortoiseUDiff\TortoiseUDiff.ico" />
     <Image Include="..\Resources\library-win10.ico" />
+    <Image Include="gitfolder.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\download.avi" />
