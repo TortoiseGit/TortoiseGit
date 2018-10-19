@@ -114,20 +114,19 @@ static BOOL FindGitPath()
 	{
 		CGit::ms_LastMsysGitDir = gitExeDirectory;
 		CGit::ms_LastMsysGitDir.TrimRight(L'\\');
-		if (CGit::ms_LastMsysGitDir.GetLength() > 12 && (CStringUtils::EndsWith(CGit::ms_LastMsysGitDir, L"\\mingw32\\bin") || CStringUtils::EndsWith(CGit::ms_LastMsysGitDir, L"\\mingw64\\bin")))
+		if (CStringUtils::EndsWith(CGit::ms_LastMsysGitDir, L"\\mingw32\\bin") || CStringUtils::EndsWith(CGit::ms_LastMsysGitDir, L"\\mingw64\\bin"))
 		{
 			// prefer cmd directory as early Git for Windows 2.x releases only had this
-			CString installRoot = CGit::ms_LastMsysGitDir.Mid(0, CGit::ms_LastMsysGitDir.GetLength() - 12) + L"\\cmd\\git.exe";
+			CString installRoot = CGit::ms_LastMsysGitDir.Mid(0, CGit::ms_LastMsysGitDir.GetLength() - (int)wcslen(L"\\mingw64\\bin")) + L"\\cmd\\git.exe";
 			if (PathFileExists(installRoot))
-				CGit::ms_LastMsysGitDir = CGit::ms_LastMsysGitDir.Mid(0, CGit::ms_LastMsysGitDir.GetLength() - 12) + L"\\cmd";
+				CGit::ms_LastMsysGitDir = CGit::ms_LastMsysGitDir.Mid(0, CGit::ms_LastMsysGitDir.GetLength() - (int)wcslen(L"\\mingw64\\bin")) + L"\\cmd";
 		}
-		if (CGit::ms_LastMsysGitDir.GetLength() > 4 && CStringUtils::EndsWith(CGit::ms_LastMsysGitDir, L"\\cmd"))
+		if (CStringUtils::EndsWith(CGit::ms_LastMsysGitDir, L"\\cmd"))
 		{
 			// often the msysgit\cmd folder is on the %PATH%, but
 			// that git.exe does not work, so try to guess the bin folder
-			CString binDir = CGit::ms_LastMsysGitDir.Mid(0, CGit::ms_LastMsysGitDir.GetLength() - 4) + L"\\bin\\git.exe";
-			if (PathFileExists(binDir))
-				CGit::ms_LastMsysGitDir = CGit::ms_LastMsysGitDir.Mid(0, CGit::ms_LastMsysGitDir.GetLength() - 4) + L"\\bin";
+			if (PathFileExists(CGit::ms_LastMsysGitDir.Mid(0 ,CGit::ms_LastMsysGitDir.GetLength() - (int)wcslen(L"\\cmd")) + L"\\bin\\git.exe"))
+				CGit::ms_LastMsysGitDir = CGit::ms_LastMsysGitDir.Mid(0 ,CGit::ms_LastMsysGitDir.GetLength() - (int)wcslen(L"\\cmd")) + L"\\bin";
 		}
 		return TRUE;
 	}
