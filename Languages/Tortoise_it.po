@@ -548,7 +548,7 @@ msgstr "&Differenze"
 
 #. Resource IDs: (IDS_MENUPREVDIFF)
 msgid "&Diff with previous version"
-msgstr "&Diiferenza con versione precedente"
+msgstr "&Differenza con versione precedente"
 
 #. Resource IDs: (Dialog IDD_CLONE: Control id 65535)
 msgid "&Directory:"
