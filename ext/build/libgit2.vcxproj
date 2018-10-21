@@ -86,7 +86,9 @@
     <ClCompile Include="..\libgit2\src\commit_list.c" />
     <ClCompile Include="..\libgit2\src\config.c" />
     <ClCompile Include="..\libgit2\src\config_cache.c" />
+    <ClCompile Include="..\libgit2\src\config_entries.c" />
     <ClCompile Include="..\libgit2\src\config_file.c" />
+    <ClCompile Include="..\libgit2\src\config_mem.c" />
     <ClCompile Include="..\libgit2\src\config_parse.c" />
     <ClCompile Include="..\libgit2\src\crlf.c" />
     <ClCompile Include="..\libgit2\src\date.c" />
@@ -266,6 +268,7 @@
     <ClInclude Include="..\libgit2\include\git2\sys\merge.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\odb_backend.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\openssl.h" />
+    <ClInclude Include="..\libgit2\include\git2\sys\path.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\refdb_backend.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\reflog.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\refs.h" />
@@ -299,7 +302,8 @@
     <ClInclude Include="..\libgit2\src\commit_list.h" />
     <ClInclude Include="..\libgit2\src\common.h" />
     <ClInclude Include="..\libgit2\src\config.h" />
-    <ClInclude Include="..\libgit2\src\config_file.h" />
+    <ClInclude Include="..\libgit2\src\config_backend.h" />
+    <ClInclude Include="..\libgit2\src\config_entries.h" />
     <ClInclude Include="..\libgit2\src\config_parse.h" />
     <ClInclude Include="..\libgit2\src\delta.h" />
     <ClInclude Include="..\libgit2\src\diff.h" />
