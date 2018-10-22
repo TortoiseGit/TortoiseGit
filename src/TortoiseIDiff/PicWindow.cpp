@@ -577,8 +577,7 @@ void CPicWindow::SetPic(const tstring& path, const tstring& title, bool bFirst)
 void CPicWindow::DrawViewTitle(HDC hDC, RECT * rect)
 {
     const auto header_height = CDPIAware::Instance().ScaleY(HEADER_HEIGHT);
-    HFONT hFont = nullptr;
-    hFont = CreateFont(-CDPIAware::Instance().PointsToPixelsY(pSecondPic ? 8 : 10), 0, 0, 0, FW_DONTCARE, false, false, false, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, L"MS Shell Dlg");
+    auto hFont = CreateFont(-CDPIAware::Instance().PointsToPixelsY(pSecondPic ? 8 : 10), 0, 0, 0, FW_DONTCARE, false, false, false, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, L"MS Shell Dlg");
     HFONT hFontOld = (HFONT)SelectObject(hDC, (HGDIOBJ)hFont);
 
     RECT textrect;

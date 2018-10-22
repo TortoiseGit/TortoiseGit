@@ -103,13 +103,11 @@ BOOL CDib::SetBitmap(const LPBITMAPINFO lpBitmapInfo, const LPVOID lpBits)
 	if (!lpBitmapInfo || !lpBits)
 		return FALSE;
 
-	HDC hDC = nullptr;
-
 	DWORD dwBitmapInfoSize = sizeof(BITMAPINFO);
 
 	memcpy(&m_BMinfo, lpBitmapInfo, dwBitmapInfoSize);
 
-	hDC = ::GetDC(nullptr);
+	auto hDC = ::GetDC(nullptr);
 	if (!hDC)
 	{
 		DeleteObject();
