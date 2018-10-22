@@ -1,3 +1,7 @@
+﻿// TortoiseGit - a Windows shell extension for easy version control
+
+// Copyright (C) 2008-2018 - TortoiseGit
+
 #define FILEVER				2,7,0,0
 #define PRODUCTVER			FILEVER
 #define STRFILEVER			"2.7.0.0"
