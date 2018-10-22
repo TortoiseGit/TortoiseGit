@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2017 - TortoiseGit
+// Copyright (C) 2015-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -57,7 +57,7 @@ static void CopyRecursively(const CString& source, const CString& dest)
 class CBasicGitFixture : public ::testing::TestWithParam<config>
 {
 protected:
-	virtual void SetUp()
+	virtual void SetUp() override
 	{
 		switch (GetParam())
 		{
@@ -92,7 +92,7 @@ protected:
 		SetCurrentDirectory(m_Git.m_CurrentDir);
 	}
 
-	virtual void TearDown()
+	virtual void TearDown() override
 	{
 		SetCurrentDirectory(CPathUtils::GetAppDirectory());
 	}
@@ -129,7 +129,7 @@ protected:
 		EXPECT_TRUE(CStringUtils::WriteStringToTextFile(configFile, text));
 	}
 
-	virtual void SetUp()
+	virtual void SetUp() override
 	{
 		CBasicGitFixture::SetUp();
 	}
@@ -144,7 +144,7 @@ class CBasicGitWithTestRepoFixture : public CBasicGitWithTestRepoCreatorFixture
 protected:
 	CBasicGitWithTestRepoFixture() : CBasicGitWithTestRepoCreatorFixture() {};
 	CBasicGitWithTestRepoFixture(const CString& arepo) : CBasicGitWithTestRepoCreatorFixture(arepo) {};
-	virtual void SetUp()
+	virtual void SetUp() override
 	{
 		CBasicGitWithTestRepoCreatorFixture::SetUp();
 		SetUpTestRepo(m_Dir.GetTempDir());
@@ -158,7 +158,7 @@ public:
 	CBasicGitWithTestRepoBareFixture(const CString& arepo) : CBasicGitWithTestRepoFixture(arepo) {};
 
 protected:
-	virtual void SetUp()
+	virtual void SetUp() override
 	{
 		prefix.Empty();
 		CBasicGitWithTestRepoFixture::SetUp();
@@ -187,7 +187,7 @@ public:
 class CBasicGitWithEmptyRepositoryFixture : public CBasicGitFixture
 {
 protected:
-	virtual void SetUp()
+	virtual void SetUp() override
 	{
 		CBasicGitFixture::SetUp();
 		CString output;
@@ -208,7 +208,7 @@ protected:
 class CBasicGitWithEmptyBareRepositoryFixture : public CBasicGitFixture
 {
 protected:
-	virtual void SetUp()
+	virtual void SetUp() override
 	{
 		CBasicGitFixture::SetUp();
 		CString output;

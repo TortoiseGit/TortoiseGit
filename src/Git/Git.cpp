@@ -489,7 +489,7 @@ class CGitCall_ByteVector : public CGitCall
 {
 public:
 	CGitCall_ByteVector(CString cmd,BYTE_VECTOR* pvector, BYTE_VECTOR* pvectorErr = nullptr) : CGitCall(cmd),m_pvector(pvector), m_pvectorErr(pvectorErr) {}
-	virtual bool OnOutputData(const BYTE* data, size_t size)
+	virtual bool OnOutputData(const BYTE* data, size_t size) override
 	{
 		if (!m_pvector || size == 0)
 			return false;
@@ -498,7 +498,7 @@ public:
 		memcpy(&*(m_pvector->begin()+oldsize),data,size);
 		return false;
 	}
-	virtual bool OnOutputErrData(const BYTE* data, size_t size)
+	virtual bool OnOutputErrData(const BYTE* data, size_t size) override
 	{
 		if (!m_pvectorErr || size == 0)
 			return false;
