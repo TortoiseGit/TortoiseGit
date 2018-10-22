@@ -1016,14 +1016,13 @@ int CGitIgnoreList::CheckIgnore(const CString &path, const CString &projectroot,
 	int pos = patha.ReverseFind('/');
 	const char * base = (pos >= 0) ? ((const char*)patha + pos + 1) : patha;
 
-	int ret = -1;
 
 	CAutoReadLock lock(m_SharedMutex);
 	while (!temp.IsEmpty())
 	{
 		temp += L"\\.gitignore";
 
-		if ((ret = CheckFileAgainstIgnoreList(temp, patha, base, type)) != -1)
+		if (int ret = CheckFileAgainstIgnoreList(temp, patha, base, type) != -1)
 			return ret;
 
 		temp.Truncate(temp.GetLength() - (int)wcslen(L"\\.gitignore"));
@@ -1033,7 +1032,7 @@ int CGitIgnoreList::CheckIgnore(const CString &path, const CString &projectroot,
 			CString adminDir = g_AdminDirMap.GetAdminDir(temp);
 			CString wcglobalgitignore = adminDir;
 			wcglobalgitignore += L"info\\exclude";
-			if ((ret = CheckFileAgainstIgnoreList(wcglobalgitignore, patha, base, type)) != -1)
+			if (int ret = CheckFileAgainstIgnoreList(wcglobalgitignore, patha, base, type) != -1)
 				return ret;
 
 			CString excludesFile = m_CoreExcludesfiles[adminDir];
