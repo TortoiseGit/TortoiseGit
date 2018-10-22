@@ -50,7 +50,7 @@ struct SubmodulePayload
 	STRING_VECTOR &list;
 	CString basePath;
 	STRING_VECTOR prefixList;
-	SubmodulePayload(STRING_VECTOR &alist, CString abasePath = L"", STRING_VECTOR aprefixList = STRING_VECTOR())
+	SubmodulePayload(STRING_VECTOR& alist, CString abasePath = L"", const STRING_VECTOR& aprefixList = STRING_VECTOR())
 		: list(alist)
 		, basePath(abasePath)
 		, prefixList(aprefixList)

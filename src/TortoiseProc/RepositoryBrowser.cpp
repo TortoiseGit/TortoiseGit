@@ -1238,7 +1238,7 @@ void CRepositoryBrowser::FileSaveAs(const CString path)
 	}
 }
 
-void CRepositoryBrowser::OpenFile(const CString path, eOpenType mode, bool isSubmodule, CGitHash itemHash)
+void CRepositoryBrowser::OpenFile(const CString path, eOpenType mode, bool isSubmodule, const CGitHash& itemHash)
 {
 	CTGitPath gitPath(path);
 
