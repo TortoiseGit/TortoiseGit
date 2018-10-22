@@ -86,7 +86,6 @@ public:
 	void MAPIFinalize();
 
 	static BOOL DetectMailClient(CString& sMailClientName);
-	CString GetEmailClientName();
 	BOOL Send();
 	CString GetLastErrorMsg(){ return m_sErrorMsg; }
 
@@ -103,7 +102,6 @@ protected:
 
 	BOOL						m_bReady;                     // MAPI is loaded
 	BOOL						m_bShowComposeDialog;
-	CString						m_sEmailClientName;
 
 	CString						m_sErrorMsg;
 };

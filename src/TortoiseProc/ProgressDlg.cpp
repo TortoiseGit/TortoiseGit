@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -635,12 +635,6 @@ void CProgressDlg::ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctr
 	}
 	else
 		oneline+=ch;
-}
-void CProgressDlg::RemoveLastLine(CString &str)
-{
-	int start = str.ReverseFind(L'\n');
-	if(start>0)
-		str=str.Left(start);
 }
 // CProgressDlg message handlers
 

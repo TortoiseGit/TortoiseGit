@@ -26,12 +26,7 @@
 #include "TempFile.h"
 #include "UnicodeUtils.h"
 #include "TGitPath.h"
-//#include "SVNInfo.h"
-//#include "SVNDiff.h"
 #include "RevGraphFilterDlg.h"
-//#include "RepositoryInfo.h"
-//#include "RevisionInRange.h"
-//#include "RemovePathsBySubString.h"
 #include "DPIAware.h"
 
 #ifdef _DEBUG
@@ -69,22 +64,12 @@ CRevisionGraphDlg::CRevisionGraphDlg(CWnd* pParent /*=nullptr*/)
 	GdiplusStartupInput input;
 	GdiplusStartup(&m_gdiPlusToken, &input, nullptr);
 
-	// restore option state
-
-//	DWORD dwOpts = CRegStdDWORD(L"Software\\TortoiseGit\\RevisionGraphOptions", 0x1ff199);
-//	m_Graph.m_state.GetOptions()->SetRegistryFlags (dwOpts, 0x407fbf);
-
 	m_szTip[0] = '\0';
 	m_wszTip[0] = L'\0';
 }
 
 CRevisionGraphDlg::~CRevisionGraphDlg()
 {
-	// save option state
-
-	CRegStdDWORD regOpts = CRegStdDWORD(L"Software\\TortoiseGit\\RevisionGraphOptions", 1);
-//	regOpts = m_Graph.m_state.GetOptions()->GetRegistryFlags();
-
 	// GDI+ cleanup
 
 	GdiplusShutdown (m_gdiPlusToken);
@@ -118,24 +103,6 @@ BEGIN_MESSAGE_MAP(CRevisionGraphDlg, CResizableStandAloneDialog)
 	ON_COMMAND(ID_VIEW_COMPAREREVISIONS, OnViewComparerevisions)
 	ON_COMMAND(ID_VIEW_UNIFIEDDIFF, OnViewUnifieddiff)
 	ON_COMMAND(ID_VIEW_UNIFIEDDIFFOFHEADREVISIONS, OnViewUnifieddiffofheadrevisions)
-
-#if 0
-	ON_COMMAND_EX(ID_VIEW_SHOWALLREVISIONS, OnToggleOption)
-	ON_COMMAND_EX(ID_VIEW_GROUPBRANCHES, OnToggleOption)
-	ON_COMMAND_EX(ID_VIEW_TOPDOWN, OnToggleOption)
-	ON_COMMAND_EX(ID_VIEW_TOPALIGNTREES, OnToggleOption)
-	ON_COMMAND_EX(ID_VIEW_SHOWHEAD, OnToggleOption)
-	ON_COMMAND_EX(ID_VIEW_EXACTCOPYSOURCE, OnToggleOption)
-	ON_COMMAND_EX(ID_VIEW_FOLDTAGS, OnToggleOption)
-	ON_COMMAND_EX(ID_VIEW_REDUCECROSSLINES, OnToggleOption)
-	ON_COMMAND_EX(ID_VIEW_REMOVEDELETEDONES, OnToggleOption)
-	ON_COMMAND_EX(ID_VIEW_SHOWWCREV, OnToggleReloadOption)
-	ON_COMMAND_EX(ID_VIEW_REMOVEUNCHANGEDBRANCHES, OnToggleOption)
-	ON_COMMAND_EX(ID_VIEW_REMOVETAGS, OnToggleOption)
-	ON_COMMAND_EX(ID_VIEW_SHOWWCMODIFICATION, OnToggleReloadOption)
-	ON_COMMAND_EX(ID_VIEW_SHOWDIFFPATHS, OnToggleOption)
-	ON_COMMAND_EX(ID_VIEW_SHOWTREESTRIPES, OnToggleRedrawOption)
-#endif
 	ON_WM_WINDOWPOSCHANGING()
 
 END_MESSAGE_MAP()
@@ -266,8 +233,6 @@ BOOL CRevisionGraphDlg::InitializeToolbar()
 
 	m_ToolBar.m_ZoomCombo.SetCurSel(1);
 
-	UpdateOptionAvailability();
-
 	return TRUE;
 }
 
@@ -295,25 +260,6 @@ BOOL CRevisionGraphDlg::OnInitDialog()
 	m_pTaskbarList.Release();
 	if (FAILED(m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList)))
 		m_pTaskbarList = nullptr;
-
-//	CSyncPointer<CAllRevisionGraphOptions>
-//		options (m_Graph.m_state.GetOptions());
-
-//	for (size_t i = 0; i < options->count(); ++i)
-//		if ((*options)[i]->CommandID() != 0)
-//			SetOption ((*options)[i]->CommandID());
-
-#if 0
-	CMenu * pMenu = GetMenu();
-	if (pMenu)
-	{
-		CRegDWORD reg(L"Software\\TortoiseGit\\ShowRevGraphOverview", FALSE);
-		m_Graph.SetShowOverview ((DWORD)reg != FALSE);
-		pMenu->CheckMenuItem(ID_VIEW_SHOWOVERVIEW, MF_BYCOMMAND | (DWORD(reg) ? MF_CHECKED : 0));
-		int tbstate = m_ToolBar.GetToolBarCtrl().GetState(ID_VIEW_SHOWOVERVIEW);
-		m_ToolBar.GetToolBarCtrl().SetState(ID_VIEW_SHOWOVERVIEW, tbstate | (DWORD(reg) ? TBSTATE_CHECKED : 0));
-	}
-#endif
 
 //	m_hAccel = LoadAccelerators(AfxGetResourceHandle(),MAKEINTRESOURCE(IDR_ACC_REVISIONGRAPH));
 
@@ -349,55 +295,6 @@ bool CRevisionGraphDlg::UpdateData()
 		//				   , MB_ICONERROR);
 		//}
 	}
-
-#if 0
-	if (m_bFetchLogs)
-	{
-		CProgressDlg progress;
-		progress.SetTitle(IDS_REVGRAPH_PROGTITLE);
-		progress.SetCancelMsg(IDS_REVGRAPH_PROGCANCEL);
-		progress.SetTime();
-		progress.SetProgress(0, 100);
-		if (m_pTaskbarList)
-		{
-			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
-			m_pTaskbarList->SetProgressValue(m_hWnd, 0, 100);
-		}
-
-		svn_revnum_t pegRev = m_Graph.m_pegRev.IsNumber()
-							? (svn_revnum_t)m_Graph.m_pegRev
-							: (svn_revnum_t)-1;
-
-		if (!m_Graph.FetchRevisionData (m_Graph.m_sPath, pegRev, &progress, m_pTaskbarList, m_hWnd))
-		{
-			// only show the error dialog if we're not in hidden mode
-			if (m_bVisible)
-			{
-				TSVNMessageBox( m_hWnd
-							  , m_Graph.m_state.GetLastErrorMessage()
-							  , L"TortoiseGit"
-							  , MB_ICONERROR);
-			}
-		}
-
-		progress.Stop();
-		if (m_pTaskbarList)
-		{
-			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
-		}
-
-		m_bFetchLogs = false;   // we've got the logs, no need to fetch them a second time
-	}
-
-	// standard plus user settings
-
-
-	if (m_Graph.AnalyzeRevisionData())
-	{
-		UpdateStatusBar();
-		UpdateOptionAvailability();
-	}
-#endif
 
 	CoUninitialize();
 	m_Graph.PostMessage (CRevisionGraphWnd::WM_WORKERTHREADDONE, 0, 0);
@@ -574,126 +471,9 @@ void CRevisionGraphDlg::OnViewUnifieddiffofheadrevisions()
 
 void CRevisionGraphDlg::UpdateFullHistory()
 {
-	m_Graph.SetDlgTitle (false);
 	m_bFetchLogs = true;
 	Invalidate();
 	StartWorkerThread();
-
-#if 0
-	m_Graph.SetDlgTitle (false);
-
-	SVN svn;
-	LogCache::CRepositoryInfo& cachedProperties
-		= svn.GetLogCachePool()->GetRepositoryInfo();
-	CString root = m_Graph.m_state.GetRepositoryRoot();
-	CString uuid = m_Graph.m_state.GetRepositoryUUID();
-
-	cachedProperties.ResetHeadRevision (uuid, root);
-
-	m_bFetchLogs = true;
-	StartWorkerThread();
-#endif
-}
-
-void CRevisionGraphDlg::SetOption (UINT /*controlID*/)
-{
-#if 0
-	CMenu * pMenu = GetMenu();
-	if (!pMenu)
-		return;
-
-	int tbstate = m_ToolBar.GetToolBarCtrl().GetState(controlID);
-	if (tbstate != -1)
-	{
-		if (m_Graph.m_state.GetOptions()->IsSelected (controlID))
-		{
-			pMenu->CheckMenuItem(controlID, MF_BYCOMMAND | MF_CHECKED);
-			m_ToolBar.GetToolBarCtrl().SetState(controlID, tbstate | TBSTATE_CHECKED);
-		}
-		else
-		{
-			pMenu->CheckMenuItem(controlID, MF_BYCOMMAND | MF_UNCHECKED);
-			m_ToolBar.GetToolBarCtrl().SetState(controlID, tbstate & (~TBSTATE_CHECKED));
-		}
-	}
-#endif
-}
-
-BOOL CRevisionGraphDlg::ToggleOption (UINT controlID)
-{
-	// check request for validity
-
-	if (m_Graph.IsUpdateJobRunning())
-	{
-		// restore previous state
-
-		int state = m_ToolBar.GetToolBarCtrl().GetState(controlID);
-		if (state & TBSTATE_CHECKED)
-			state &= ~TBSTATE_CHECKED;
-		else
-			state |= TBSTATE_CHECKED;
-		m_ToolBar.GetToolBarCtrl().SetState (controlID, state);
-
-		return FALSE;
-	}
-
-	CMenu * pMenu = GetMenu();
-	if (!pMenu)
-		return FALSE;
-
-	// actually toggle the option
-
-	int tbstate = m_ToolBar.GetToolBarCtrl().GetState(controlID);
-	UINT state = pMenu->GetMenuState(controlID, MF_BYCOMMAND);
-	if (state & MF_CHECKED)
-	{
-		pMenu->CheckMenuItem(controlID, MF_BYCOMMAND | MF_UNCHECKED);
-		m_ToolBar.GetToolBarCtrl().SetState(controlID, tbstate & (~TBSTATE_CHECKED));
-	}
-	else
-	{
-		pMenu->CheckMenuItem(controlID, MF_BYCOMMAND | MF_CHECKED);
-		m_ToolBar.GetToolBarCtrl().SetState(controlID, tbstate | TBSTATE_CHECKED);
-	}
-
-//	CSyncPointer<CAllRevisionGraphOptions>
-//		options (m_Graph.m_state.GetOptions());
-//	if (((state & MF_CHECKED) != 0) == options->IsSelected (controlID))
-//		options->ToggleSelection (controlID);
-
-	return TRUE;
-}
-
-BOOL CRevisionGraphDlg::OnToggleOption (UINT controlID)
-{
-	if (!ToggleOption (controlID))
-		return FALSE;
-
-	// re-process the data
-
-	StartWorkerThread();
-
-	return TRUE;
-}
-
-BOOL CRevisionGraphDlg::OnToggleReloadOption (UINT controlID)
-{
-#if 0
-	if (!m_Graph.m_state.GetFetchedWCState())
-		m_bFetchLogs = true;
-#endif
-	return OnToggleOption (controlID);
-}
-
-BOOL CRevisionGraphDlg::OnToggleRedrawOption (UINT controlID)
-{
-	if (!ToggleOption (controlID))
-		return FALSE;
-
-	m_Graph.BuildPreview();
-	Invalidate();
-
-	return TRUE;
 }
 
 void CRevisionGraphDlg::StartWorkerThread()
@@ -837,16 +617,6 @@ BOOL CRevisionGraphDlg::OnToolTipNotify(UINT /*id*/, NMHDR *pNMHDR, LRESULT *pRe
 
 void CRevisionGraphDlg::OnViewFilter()
 {
-/*	CSyncPointer<CAllRevisionGraphOptions>
-		options (m_Graph.m_state.GetOptions());
-
-	CRevisionInRange* revisionRange = options->GetOption<CRevisionInRange>();
-	svn_revnum_t head = m_Graph.m_state.GetHeadRevision();
-	svn_revnum_t lowerLimit = revisionRange->GetLowerLimit();
-	svn_revnum_t upperLimit = revisionRange->GetUpperLimit();
-
-	CRemovePathsBySubString* pathFilter = options->GetOption<CRemovePathsBySubString>();
-*/
 	CRevGraphFilterDlg dlg;
 
 	dlg.m_bCurrentBranch = this->m_Graph.m_bCurrentBranch;
@@ -909,38 +679,6 @@ void CRevisionGraphDlg::OnViewShowoverview()
 	reg = m_Graph.GetShowOverview();
 	m_Graph.Invalidate(FALSE);
 }
-
-void CRevisionGraphDlg::UpdateOptionAvailability (UINT id, bool available)
-{
-	CMenu * pMenu = GetMenu();
-	if (!pMenu)
-		return;
-
-	pMenu->EnableMenuItem (id, available ? MF_ENABLED : MF_GRAYED);
-
-	int tbstate = m_ToolBar.GetToolBarCtrl().GetState(id);
-	int newTbstate = available
-		? tbstate | TBSTATE_ENABLED
-		: tbstate & ~TBSTATE_ENABLED;
-
-	if (tbstate != newTbstate)
-		m_ToolBar.GetToolBarCtrl().SetState(id, newTbstate);
-}
-
-void CRevisionGraphDlg::UpdateOptionAvailability()
-{
-#if 0
-	bool multipleTrees = m_Graph.m_state.GetTreeCount() > 1;
-	bool isWCPath = !CTGitPath (m_Graph.m_sPath).IsUrl();
-
-	UpdateOptionAvailability (ID_VIEW_TOPALIGNTREES, multipleTrees);
-	UpdateOptionAvailability (ID_VIEW_SHOWTREESTRIPES, multipleTrees);
-	UpdateOptionAvailability (ID_VIEW_SHOWWCREV, isWCPath);
-	UpdateOptionAvailability (ID_VIEW_SHOWWCMODIFICATION, isWCPath);
-#endif
-}
-
-
 
 void CRevisionGraphDlg::OnWindowPosChanging(WINDOWPOS* lpwndpos)
 {

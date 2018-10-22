@@ -735,13 +735,6 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CDC& W_Dc, HTHEME hTheme, CRect& re
 	rt.right = rect.right;
 }
 
-static COLORREF blend(const COLORREF& col1, const COLORREF& col2, int amount = 128) {
-	// Returns ((256 - amount)*col1 + amount*col2) / 256;
-	return RGB(((256 - amount)*GetRValue(col1)   + amount*GetRValue(col2)  ) / 256,
-					((256 - amount)*GetGValue(col1) + amount*GetGValue(col2) ) / 256,
-					((256 - amount)*GetBValue(col1)  + amount*GetBValue(col2) ) / 256);
-}
-
 Gdiplus::Color GetGdiColor(COLORREF col)
 {
 	return Gdiplus::Color(GetRValue(col),GetGValue(col),GetBValue(col));
@@ -1043,8 +1036,6 @@ void CGitLogListBase::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
 	int lw = 3 * rect.Height() / 4; //laneWidth()
 
 	COLORREF activeColor = m_LineColors[activeLane % Lanes::COLORS_NUM];
-	//if (opt.state & QStyle::State_Selected)
-	//	activeColor = blend(activeColor, opt.palette.highlightedText().color(), 208);
 
 	for (unsigned int i = 0; i < laneNum && x2 < maxWidth; ++i)
 	{

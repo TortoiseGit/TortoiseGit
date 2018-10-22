@@ -1,7 +1,7 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005 - 2006,2010 - Will Dean, Stefan Kueng
-// Copyright (C) 2008-2014, 2016-2017 - TortoiseGit
+// Copyright (C) 2008-2014, 2016-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -80,32 +80,6 @@ public:
 volatile LONG		nThreadCount = 0;
 
 #define PACKVERSION(major,minor) MAKELONG(minor,major)
-
-void DebugOutputLastError()
-{
-	LPVOID lpMsgBuf;
-	if (!FormatMessage(
-		FORMAT_MESSAGE_ALLOCATE_BUFFER |
-		FORMAT_MESSAGE_FROM_SYSTEM |
-		FORMAT_MESSAGE_IGNORE_INSERTS,
-		nullptr,
-		GetLastError(),
-		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
-		(LPTSTR) &lpMsgBuf,
-		0,
-		nullptr))
-	{
-		return;
-	}
-
-	// Display the string.
-	OutputDebugStringA("TGitCache GetLastError(): ");
-	OutputDebugString((LPCTSTR)lpMsgBuf);
-	OutputDebugStringA("\n");
-
-	// Free the buffer.
-	LocalFree( lpMsgBuf );
-}
 
 void HandleCommandLine(LPSTR lpCmdLine)
 {

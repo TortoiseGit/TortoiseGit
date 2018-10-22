@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2012-2018 - TortoiseGit
 // Copyright (C) 2003-2017 - TortoiseSVN
@@ -41,7 +41,6 @@ ShellCache::ShellCache()
 	hidemenusforunversioneditems = CRegStdDWORD(L"Software\\TortoiseGit\\HideMenusForUnversionedItems", FALSE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	showunversionedoverlay = CRegStdDWORD(L"Software\\TortoiseGit\\ShowUnversionedOverlay", TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	showignoredoverlay = CRegStdDWORD(L"Software\\TortoiseGit\\ShowIgnoredOverlay", TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
-	getlocktop = CRegStdDWORD(L"Software\\TortoiseGit\\GetLockTop", TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	excludedasnormal = CRegStdDWORD(L"Software\\TortoiseGit\\ShowExcludedAsNormal", TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	drivetypeticker = 0;
 
@@ -148,7 +147,6 @@ bool ShellCache::RefreshIfNeeded()
 	menulayouthigh.read();
 	langid.read();
 	blockstatus.read();
-	getlocktop.read();
 	menumasklow_lm.read();
 	menumaskhigh_lm.read();
 	menumasklow_cu.read();
@@ -264,12 +262,6 @@ BOOL ShellCache::ShowIgnoredOverlay()
 {
 	RefreshIfNeeded();
 	return (showignoredoverlay);
-}
-
-BOOL ShellCache::IsGetLockTop()
-{
-	RefreshIfNeeded();
-	return (getlocktop);
 }
 
 BOOL ShellCache::ShowExcludedAsNormal()

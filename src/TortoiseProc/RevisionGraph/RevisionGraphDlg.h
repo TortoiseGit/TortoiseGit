@@ -1,7 +1,7 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2009, 2011 - TortoiseSVN
-// Copyright (C) 2012 - TortoiseGit
+// Copyright (C) 2012, 2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -63,7 +63,6 @@ public:
 	void			StartHidden() { m_bVisible = false; }
 	void			SetOutputFile(const CString& path) { m_outputPath = path; }
 	CString		 	GetOutputFile() const { return m_outputPath; }
-//	void			SetOptions(DWORD options) { m_Graph.m_state.GetOptions()->SetRegistryFlags(options, 0x407fbf); }
 
 protected:
 	bool			m_bFetchLogs;
@@ -98,24 +97,16 @@ protected:
 	afx_msg void	OnMenuexit();
 	afx_msg void	OnMenuhelp();
 	afx_msg void	OnChangeZoom();
-	afx_msg BOOL	OnToggleOption (UINT controlID);
-	afx_msg BOOL	OnToggleReloadOption (UINT controlID);
-	afx_msg BOOL	OnToggleRedrawOption (UINT controlID);
 	afx_msg BOOL	OnToolTipNotify (UINT id, NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void	OnWindowPosChanging(WINDOWPOS* lpwndpos);
 
 	DECLARE_MESSAGE_MAP()
-
-	BOOL			ToggleOption (UINT controlID);
-	void			SetOption (UINT controlID);
 
 	CRect			GetGraphRect();
 	void			UpdateStatusBar();
 
 private:
 	void			UpdateZoomBox();
-	void			UpdateOptionAvailability (UINT id, bool available);
-	void			UpdateOptionAvailability();
 
 	bool			UpdateData();
 

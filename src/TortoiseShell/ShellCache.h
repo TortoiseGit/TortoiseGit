@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2017 - TortoiseGit
+// Copyright (C) 2012-2018 - TortoiseGit
 // Copyright (C) 2003-2011, 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -77,7 +77,6 @@ public:
 	BOOL IsRecurseSubmodules();
 	BOOL ShowUnversionedOverlay();
 	BOOL ShowIgnoredOverlay();
-	BOOL IsGetLockTop();
 	BOOL ShowExcludedAsNormal();
 	BOOL HideMenusForUnversionedItems();
 
@@ -190,7 +189,6 @@ public:
 	CRegStdDWORD onlynonelevated;
 	CRegStdDWORD showrecursive;
 	CRegStdDWORD folderoverlay;
-	CRegStdDWORD getlocktop;
 	CRegStdDWORD driveremote;
 	CRegStdDWORD drivefixed;
 	CRegStdDWORD drivecdrom;

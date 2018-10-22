@@ -25,16 +25,6 @@
 #include "TempFile.h"
 #include "UnicodeUtils.h"
 #include "TGitPath.h"
-//#include "SVNInfo.h"
-//#include ".\revisiongraphwnd.h"
-//#include "CachedLogInfo.h"
-//#include "RevisionGraph/IRevisionGraphLayout.h"
-//#include "RevisionGraph/FullGraphBuilder.h"
-//#include "RevisionGraph/FullGraphFinalizer.h"
-//#include "RevisionGraph/VisibleGraphBuilder.h"
-//#include "RevisionGraph/StandardLayout.h"
-//#include "RevisionGraph/ShowWC.h"
-//#include "RevisionGraph/ShowWCModification.h"
 #include "DPIAware.h"
 
 #ifdef _DEBUG
@@ -278,47 +268,6 @@ bool CRevisionGraphWnd::FetchRevisionData
 	m_GraphRect.bottom = (LONG)ymax;
 	m_GraphRect.right = (LONG)xmax;
 
-	return true;
-}
-
-bool CRevisionGraphWnd::AnalyzeRevisionData()
-{
-#if 0
-	CSyncPointer<const CFullGraph> fullGraph (m_state.GetFullGraph());
-	if (fullGraph.get() != nullptr && (fullGraph->GetNodeCount() > 0))
-	{
-		// filter graph
-
-		CSyncPointer<CAllRevisionGraphOptions> options (m_state.GetOptions());
-		options->Prepare();
-
-		auto visibleGraph = std::make_unique<CVisibleGraph>();
-		CVisibleGraphBuilder builder ( *fullGraph
-									 , *visibleGraph
-									 , options->GetCopyFilterOptions());
-		builder.Run();
-		options->GetModificationOptions().Apply (visibleGraph.get());
-
-		index_t index = 0;
-		for (size_t i = 0, count = visibleGraph->GetRootCount(); i < count; ++i)
-			index = visibleGraph->GetRoot (i)->InitIndex (index);
-
-		// layout nodes
-
-		auto newLayout = std::make_unique<CStandardLayout>
-			( new CStandardLayout ( m_state.GetFullHistory()->GetCache()
-								, visibleGraph.get()
-								, m_state.GetFullHistory()->GetWCInfo()));
-		options->GetLayoutOptions().Apply (newLayout.get());
-		newLayout->Finalize();
-
-		// switch state
-
-		m_state.SetAnalysisResult (visibleGraph, newLayout);
-	}
-
-	return m_state.GetNodes().get() != nullptr;
-#endif
 	return true;
 }
 

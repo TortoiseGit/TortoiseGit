@@ -1208,20 +1208,6 @@ void CStatGraphDlg::OnCbnSelchangeGraphcombo()
 	RedrawGraph();
 }
 
-
-int CStatGraphDlg::GetUnitCount()
-{
-	if (m_nDays < 8)
-		return m_nDays;
-	if (m_nWeeks < 15)
-		return m_nWeeks;
-	if (m_nWeeks < 80)
-		return (m_nWeeks/4)+1;
-	if (m_nWeeks < 320)
-		return (m_nWeeks/13)+1; // quarters
-	return (m_nWeeks/52)+1;
-}
-
 int CStatGraphDlg::GetUnit(const CTime& time)
 {
 	if (m_nDays < 8)

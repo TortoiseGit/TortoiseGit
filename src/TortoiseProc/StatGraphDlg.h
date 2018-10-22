@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008, 2011-2013, 2015-2017 - TortoiseGit
+// Copyright (C) 2008, 2011-2013, 2015-2018 - TortoiseGit
 // Copyright (C) 2003-2011, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -196,7 +196,6 @@ protected:
 	/// Show Selected Static metric
 	void ShowSelectStat(Metrics  SelectedMetric, bool reloadSkiper = false);
 
-	int						GetUnitCount();
 	int						GetUnit(const CTime& time);
 	CStatGraphDlg::UnitType	GetUnitType();
 	CString					GetUnitString();

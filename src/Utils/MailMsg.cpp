@@ -204,11 +204,6 @@ void CMailMsg::MAPIFinalize()
 	::FreeLibrary(m_hMapi);
 }
 
-CString CMailMsg::GetEmailClientName()
-{
-	return m_sEmailClientName;
-}
-
 BOOL CMailMsg::Send()
 {
 	if (!m_lpMapiSendMail)
