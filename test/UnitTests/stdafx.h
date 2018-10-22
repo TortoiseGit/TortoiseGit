@@ -1,4 +1,4 @@
-// stdafx.h : include file for standard system include files,
+﻿// stdafx.h : include file for standard system include files,
 // or project specific include files that are used frequently,
 // but are changed infrequently
 
@@ -27,10 +27,7 @@
 
 #include <atlbase.h>
 
-#pragma warning(push)
-#pragma warning(disable: 4510 4610)
 #include "git2.h"
-#pragma warning(pop)
 #include "SmartLibgit2Ref.h"
 
 #include <string>
