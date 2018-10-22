@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2017 - TortoiseGit
+// Copyright (C) 2015-2018 - TortoiseGit
 // Copyright (C) 2003-2015, 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -493,7 +493,10 @@ bool CPicture::LoadPictureData(BYTE *pBuffer, int nSize)
 
 	void* pData = GlobalLock(hGlobalMem);
 	if (!pData)
+	{
+		GlobalFree(hGlobalMem);
 		return false;
+	}
 	memcpy(pData, pBuffer, nSize);
 	GlobalUnlock(hGlobalMem);
 

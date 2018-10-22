@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2017 - TortoiseGit
+// Copyright (C) 2016-2018 - TortoiseGit
 // Copyright (C) 2007-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -215,7 +215,10 @@ STDMETHODIMP GitDataObject::GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium)
 			return E_OUTOFMEMORY;
 		DWORD* effect = (DWORD*)GlobalLock(data);
 		if (!effect)
+		{
+			GlobalFree(data);
 			return E_OUTOFMEMORY;
+		}
 		(*effect) = DROPEFFECT_COPY;
 		GlobalUnlock(data);
 		pmedium->hGlobal = data;
