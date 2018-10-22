@@ -4121,8 +4121,6 @@ void CGitStatusListCtrl::FileSaveAs(CTGitPath *path)
 int CGitStatusListCtrl::RevertSelectedItemToVersion(bool parent)
 {
 	CAutoReadLock locker(m_guard);
-	if(this->m_CurrentVersion.IsEmpty())
-		return 0;
 	if (m_CurrentVersion.IsEmpty())
 		return 0;
 
