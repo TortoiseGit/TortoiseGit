@@ -61,8 +61,8 @@ public:
 		, ending(endingInit)
 		, hidestate(hideInit)
 		, marked(markedInit)
+		, sLine(sLineInit)
 	{
-		sLine=sLineInit;
 	}
 
 	CString			sLine;

@@ -134,10 +134,10 @@ protected:
 
 		SquashFirstMetaData(GitRev* rev)
 			: set(true)
+			, name(rev->GetAuthorName())
+			, email(rev->GetAuthorEmail())
+			, time(rev->GetAuthorDate())
 		{
-			name = rev->GetAuthorName();
-			email = rev->GetAuthorEmail();
-			time = rev->GetAuthorDate();
 		}
 
 		void UpdateDate(GitRev* rev)

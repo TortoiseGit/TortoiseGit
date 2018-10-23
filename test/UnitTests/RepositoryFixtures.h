@@ -106,9 +106,9 @@ class CBasicGitWithTestRepoCreatorFixture : public CBasicGitFixture
 {
 protected:
 	CBasicGitWithTestRepoCreatorFixture(const CString& arepo = L"git-repo1")
+	: prefix(L"\\.git")
+	, m_reponame(arepo)
 	{
-		prefix = L"\\.git";
-		m_reponame = arepo;
 	}
 
 	void SetUpTestRepo(CString path)

@@ -44,9 +44,9 @@ public:
 		int m_status;
 
 		Entry(CString filename, int status)
+		: m_filename(filename)
+		, m_status(status)
 		{
-			m_filename = filename;
-			m_status = status;
 		}
 	};
 
