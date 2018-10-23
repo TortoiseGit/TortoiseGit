@@ -2968,7 +2968,7 @@ BOOL CBaseView::OnToolTipNotify(UINT /*id*/, NMHDR *pNMHDR, LRESULT *pResult)
 	else
 	{
 		TOOLTIPTEXTW* pTTTW = (TOOLTIPTEXTW*)pNMHDR;
-		lstrcpyn(m_wszTip, strTipText, min(strTipText.GetLength() + 1, _countof(m_wszTip) - 1));
+		lstrcpyn(m_wszTip, strTipText, min(strTipText.GetLength() + 1, (int)_countof(m_wszTip) - 1));
 		pTTTW->lpszText = m_wszTip;
 	}
 
@@ -3057,7 +3057,7 @@ void CBaseView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		{
 			POINT ptCaretPos = GetCaretPosition();
 			ptCaretPos.y -= GetScreenLines();
-			ptCaretPos.y = max(ptCaretPos.y, 0);
+			ptCaretPos.y = max(ptCaretPos.y, 0l);
 			ptCaretPos.x = CalculateCharIndex(ptCaretPos.y, m_nCaretGoalPos);
 			SetCaretPosition(ptCaretPos);
 			OnCaretMove(MOVELEFT, bShift);
@@ -3611,7 +3611,7 @@ void CBaseView::UpdateCaret()
 		{
 			POINT pt = { ptCaretPos.x + 1, ptCaretPos.y };
 			POINT pt2 = TextToClient(pt);
-			int width = max(GetCharWidth(), pt2.x - pt1.x);
+			int width = max(GetCharWidth(), (int)(pt2.x - pt1.x));
 			CreateSolidCaret(width, GetLineHeight());
 		}
 		SetCaretPos(pt1);
@@ -3645,7 +3645,7 @@ POINT CBaseView::ConvertViewPosToScreen(const POINT& pt)
 {
 	POINT ptPos;
 	int nViewLineLenLeft = GetViewLineLength(pt.y);
-	ptPos.x = min(nViewLineLenLeft, pt.x);
+	ptPos.x = min((LONG)nViewLineLenLeft, pt.x);
 	ptPos.y = FindScreenLineForViewLine(pt.y);
 	if (GetViewLineForScreen(ptPos.y) != pt.y )
 	{
@@ -3791,7 +3791,7 @@ int CBaseView::CalcColFromPoint(int xpos, int lineIndex)
 POINT CBaseView::TextToClient(const POINT& point)
 {
 	POINT pt;
-	int nOffsetScreenLine = max(0, (point.y - m_nTopLine));
+	int nOffsetScreenLine = max(0, (int)(point.y - m_nTopLine));
 	pt.y = nOffsetScreenLine * GetLineHeight();
 	pt.x = CalculateActualOffset(point);
 

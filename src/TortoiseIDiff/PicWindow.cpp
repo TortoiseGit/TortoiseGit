@@ -438,7 +438,7 @@ LRESULT CALLBACK CPicWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, 
                     if (nCurrentFrame > picture.GetNumberOfFrames(0))
                         nCurrentFrame = 1;
                     long delay = picture.SetActiveFrame(nCurrentFrame);
-                    delay = max(100, delay);
+                    delay = max(100l, delay);
                     SetTimer(*this, ID_ANIMATIONTIMER, delay, nullptr);
                     InvalidateRect(*this, nullptr, FALSE);
                 }
@@ -623,7 +623,7 @@ void CPicWindow::DrawViewTitle(HDC hDC, RECT * rect)
         int nStringLength = stringsize.cx;
         int texttop = pSecondPic ? textrect.top + (header_height /2) - stringsize.cy : textrect.top + (header_height /2) - stringsize.cy/2;
         ExtTextOut(hDC,
-            max(textrect.left + ((textrect.right-textrect.left)-nStringLength)/2, 1),
+            max(textrect.left + ((textrect.right - textrect.left) - nStringLength) / 2, 1l),
             texttop,
             ETO_CLIPPED,
             &textrect,
@@ -634,7 +634,7 @@ void CPicWindow::DrawViewTitle(HDC hDC, RECT * rect)
         {
             realtitle = (pictitle2.empty() ? picpath2 : pictitle2);
             ExtTextOut(hDC,
-                max(textrect.left + ((textrect.right-textrect.left)-nStringLength)/2, 1),
+                max(textrect.left + ((textrect.right - textrect.left) - nStringLength) / 2, 1l),
                 texttop + stringsize.cy,
                 ETO_CLIPPED,
                 &textrect,
@@ -650,7 +650,7 @@ void CPicWindow::DrawViewTitle(HDC hDC, RECT * rect)
             int nStringLength = stringsize.cx;
 
             ExtTextOut(hDC,
-                max(textrect.left + ((textrect.right-textrect.left)-nStringLength)/2, 1),
+                max(textrect.left + ((textrect.right - textrect.left) - nStringLength) / 2, 1l),
                 textrect.top + header_height + (header_height /2) - stringsize.cy/2,
                 ETO_CLIPPED,
                 &textrect,
@@ -1364,7 +1364,7 @@ void CPicWindow::Paint(HWND hwnd)
                 int nStringLength = stringsize.cx;
 
                 ExtTextOut(memDC,
-                    max(rect.left + ((rect.right-rect.left)-nStringLength)/2, 1),
+                    max(rect.left + ((rect.right - rect.left) - nStringLength) / 2, 1l),
                     rect.top + ((rect.bottom-rect.top) - stringsize.cy)/2,
                     ETO_CLIPPED,
                     &rect,

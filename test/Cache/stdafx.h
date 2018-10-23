@@ -7,6 +7,11 @@
 
 #include "../../targetver.h"
 
+#define NOMINMAX
+#include <algorithm>
+using std::min;
+using std::max;
+
 #define _AFX_ALL_WARNINGS
 
 #include <afxwin.h>         // MFC core and standard components
@@ -35,7 +40,6 @@ using namespace ATL;
 #include <string>
 #include <vector>
 #include <map>
-#include <algorithm>
 #include <deque>
 #include <functional>
 

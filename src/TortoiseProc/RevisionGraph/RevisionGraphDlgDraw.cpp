@@ -290,9 +290,9 @@ void CRevisionGraphWnd::DrawMarker
 	if (num == 1)
 	{
 		// Roman number 1
-		REAL x = max(1, 10 * this->m_fZoomFactor);
-		REAL y1 = max(1, 25 * this->m_fZoomFactor);
-		REAL y2 = max(1, 5 * this->m_fZoomFactor);
+		REAL x = max(1.0f, 10 * this->m_fZoomFactor);
+		REAL y1 = max(1.0f, 25 * this->m_fZoomFactor);
+		REAL y2 = max(1.0f, 5 * this->m_fZoomFactor);
 		if(graphics.graphics)
 		{
 			graphics.graphics->DrawLine(&pen, noderect.X + x, noderect.Y - y1, noderect.X + x, noderect.Y - y2);
@@ -310,10 +310,10 @@ void CRevisionGraphWnd::DrawMarker
 	else if (num == 2)
 	{
 		// Roman number 2
-		REAL x1 = max(1, 5 * this->m_fZoomFactor);
-		REAL x2 = max(1, 15 * this->m_fZoomFactor);
-		REAL y1 = max(1, 25 * this->m_fZoomFactor);
-		REAL y2 = max(1, 5 * this->m_fZoomFactor);
+		REAL x1 = max(1.0f, 5 * this->m_fZoomFactor);
+		REAL x2 = max(1.0f, 15 * this->m_fZoomFactor);
+		REAL y1 = max(1.0f, 25 * this->m_fZoomFactor);
+		REAL y2 = max(1.0f, 5 * this->m_fZoomFactor);
 		if(graphics.graphics)
 		{
 			graphics.graphics->DrawLine(&pen, noderect.X + x1, noderect.Y - y1, noderect.X + x1, noderect.Y - y2);

@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2011-2017 - TortoiseGit
 // Copyright (C) 2003-2008, 2010-2012, 2014-2015 - TortoiseSVN
@@ -26,7 +26,6 @@
 #include "LangDll.h"
 #include "../version.h"
 #include "../Utils/CrashReport.h"
-#include <algorithm>
 #include <commctrl.h>
 #pragma comment(lib, "comctl32.lib")
 

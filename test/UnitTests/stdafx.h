@@ -7,6 +7,11 @@
 
 #include "../../src\targetver.h"
 
+#define NOMINMAX
+#include <algorithm>
+using std::min;
+using std::max;
+
 #include <afxwin.h>         // MFC core and standard components
 #include <afxext.h>         // MFC extensions
 #include <WinSock2.h>
@@ -35,7 +40,6 @@
 #include <map>
 #include <deque>
 #include <set>
-#include <algorithm>
 #include <functional>
 
 #define __WIN32__

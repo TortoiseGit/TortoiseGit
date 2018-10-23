@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008,2011 - TortoiseSVN
 
@@ -75,7 +75,7 @@ BOOL CHistoryDlg::OnInitDialog()
 		sEntry.Replace('\n', ' ');
 		m_List.AddString(sEntry);
 		itemExtent = pDC->GetTextExtent(sEntry);
-		horizExtent = max(horizExtent, itemExtent.cx+5);
+		horizExtent = max(horizExtent, (int)itemExtent.cx + 5);
 	}
 	m_List.SetHorizontalExtent(horizExtent);
 	ReleaseDC(pDC);

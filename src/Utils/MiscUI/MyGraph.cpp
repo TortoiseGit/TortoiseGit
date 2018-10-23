@@ -853,7 +853,7 @@ void MyGraph::DrawLegend(CDC& dc)
 	// Get the height of each label.
 	LOGFONT lf = { 0 };
 	VERIFY(fontLegend.GetLogFont(&lf));
-	int nLabelHeight = max(1, abs(lf.lfHeight));
+	int nLabelHeight = max(1l, abs(lf.lfHeight));
 
 	// Get number of legend entries
 	int nLegendEntries = max(1, GetMaxSeriesSize());
@@ -874,7 +874,7 @@ void MyGraph::DrawLegend(CDC& dc)
 		fontLegend.DeleteObject();
 		VERIFY(fontLegend.CreatePointFont(optimalPointFontHeight, L"Arial", &dc));
 		VERIFY(fontLegend.GetLogFont(&lf));
-		nLabelHeight = max(1, abs(lf.lfHeight));
+		nLabelHeight = max(1l, abs(lf.lfHeight));
 	}
 
 	// Calculate maximum number of authors that can be shown with the current label height

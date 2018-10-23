@@ -6,6 +6,11 @@
 
 #include "../targetver.h"
 
+#define NOMINMAX
+#include <algorithm>
+using std::max;
+using std::min;
+
 #define ISOLATION_AWARE_ENABLED 1
 
 #include <WinSock2.h>
@@ -28,7 +33,6 @@
 #include <set>
 #include <map>
 #include <vector>
-#include <algorithm>
 #include <functional>
 
 #define CSTRING_AVAILABLE

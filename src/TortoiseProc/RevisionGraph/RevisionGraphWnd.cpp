@@ -37,13 +37,11 @@
 
 #pragma warning(push)
 #pragma warning(disable: 4100) // unreferenced formal parameter
-#undef max
 #include <ogdf/planarity/PlanarizationLayout.h>
 #include <ogdf/planarity/VariableEmbeddingInserter.h>
 #include <ogdf/planarity/FastPlanarSubgraph.h>
 #include <ogdf/orthogonal/OrthoLayout.h>
 #include <ogdf/planarity/EmbedderMinDepthMaxFaceLayers.h>
-#define max(a, b) (((a) > (b)) ? (a) : (b))
 #pragma warning(pop)
 
 #ifdef _DEBUG
@@ -1533,12 +1531,12 @@ LRESULT CRevisionGraphWnd::OnWorkerThreadDone(WPARAM, LPARAM)
 		sinfo.cbSize = sizeof(SCROLLINFO);
 		if (GetScrollInfo(SB_HORZ, &sinfo))
 		{
-			sinfo.nPos = (int)min(max(sinfo.nMin, m_GraphAttr.x(m_HeadNode) - m_GraphAttr.width(m_HeadNode) / 2), sinfo.nMax);
+			sinfo.nPos = min(max(sinfo.nMin, (int)(m_GraphAttr.x(m_HeadNode) - m_GraphAttr.width(m_HeadNode) / 2)), sinfo.nMax);
 			SetScrollInfo(SB_HORZ, &sinfo);
 		}
 		if (GetScrollInfo(SB_VERT, &sinfo))
 		{
-			sinfo.nPos = (int)min(max(sinfo.nMin, m_GraphAttr.y(m_HeadNode) - m_GraphAttr.height(m_HeadNode) / 2), sinfo.nMax);
+			sinfo.nPos = min(max(sinfo.nMin, (int)(m_GraphAttr.y(m_HeadNode) - m_GraphAttr.height(m_HeadNode) / 2)), sinfo.nMax);
 			SetScrollInfo(SB_VERT, &sinfo);
 		}
 	}

@@ -68,8 +68,8 @@ void CRevisionGraphWnd::BuildPreview()
 
 	// make sure the preview window has a minimal size
 
-	m_previewWidth = (int)min (max (graphRect.Width() * m_previewZoom, 30), preViewSize.cx);
-	m_previewHeight = (int)min (max (graphRect.Height() * m_previewZoom, 30), preViewSize.cy);
+	m_previewWidth = min((LONG)max(graphRect.Width() * m_previewZoom, 30.0f), preViewSize.cx);
+	m_previewHeight = min((LONG)max(graphRect.Height() * m_previewZoom, 30.0f), preViewSize.cy);
 
 	CClientDC ddc(this);
 	CDC dc;
@@ -408,7 +408,7 @@ void CRevisionGraphWnd::DoZoom (float fZoomFactor, bool updateScrollbars)
 
 	m_nFontSize = max(1, int(DEFAULT_ZOOM_FONT * fZoomFactor));
 	if (m_nFontSize < SMALL_ZOOM_FONT_THRESHOLD)
-		m_nFontSize = min (SMALL_ZOOM_FONT_THRESHOLD, int(SMALL_ZOOM_FONT * fZoomFactor));
+		m_nFontSize = min((int)SMALL_ZOOM_FONT_THRESHOLD, int(SMALL_ZOOM_FONT * fZoomFactor));
 
 	for (int i = 0; i < MAXFONTS; ++i)
 	{

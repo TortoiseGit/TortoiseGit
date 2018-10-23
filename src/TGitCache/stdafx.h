@@ -1,4 +1,4 @@
-// stdafx.h : include file for standard system include files,
+﻿// stdafx.h : include file for standard system include files,
 // or project specific include files that are used frequently, but
 // are changed infrequently
 //
@@ -6,6 +6,11 @@
 #pragma once
 
 #include "../targetver.h"
+
+#define NOMINMAX
+#include <algorithm>
+using std::min;
+using std::max;
 
 #include <tchar.h>
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS	// some CString constructors will be explicit
@@ -31,7 +36,6 @@ using namespace ATL;
 #include <vector>
 #include <map>
 #include <set>
-#include <algorithm>
 #include <deque>
 #include <functional>
 

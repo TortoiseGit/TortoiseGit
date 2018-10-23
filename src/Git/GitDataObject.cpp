@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2016-2018 - TortoiseGit
 // Copyright (C) 2007-2014 - TortoiseSVN
@@ -167,7 +167,7 @@ STDMETHODIMP GitDataObject::GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium)
 			m_allPaths.push_back(m_gitPaths[i]);
 		}
 
-		size_t dataSize = sizeof(FILEGROUPDESCRIPTOR) + ((max(1, m_allPaths.size()) - 1) * sizeof(FILEDESCRIPTOR));
+		size_t dataSize = sizeof(FILEGROUPDESCRIPTOR) + ((max((size_t)1, m_allPaths.size()) - 1) * sizeof(FILEDESCRIPTOR));
 		HGLOBAL data = GlobalAlloc(GMEM_MOVEABLE | GMEM_SHARE | GMEM_ZEROINIT, dataSize);
 
 		FILEGROUPDESCRIPTOR* files = (FILEGROUPDESCRIPTOR*)GlobalLock(data);

@@ -142,7 +142,7 @@ void CStatGraphDlg::SetSkipper (bool reloadSkiper)
 	// the resolution limit of the screen will already not allow for displaying
 	// it in a reasonable way
 
-	int max_authors_count = max(1, (int)min(m_authorNames.size(), 250) );
+	int max_authors_count = max(1, (int)min(m_authorNames.size(), (size_t)250));
 	m_Skipper.SetRange (1, max_authors_count);
 	m_Skipper.SetPageSize(5);
 

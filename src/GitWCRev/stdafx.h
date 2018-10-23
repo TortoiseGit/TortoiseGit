@@ -1,10 +1,15 @@
-// stdafx.h : include file for standard system include files,
+﻿// stdafx.h : include file for standard system include files,
 // or project specific include files that are used frequently,
 // but are changed infrequently
 
 #pragma once
 
 #define _CRT_SECURE_NO_WARNINGS
+
+#define NOMINMAX
+#include <algorithm>
+using std::max;
+using std::min;
 
 #include "../targetver.h"
 
@@ -17,7 +22,6 @@
 #include <vector>
 #include <set>
 #include <tuple>
-#include <algorithm>
 #include <memory>
 
 #include <tchar.h>

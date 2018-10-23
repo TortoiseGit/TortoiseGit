@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013, 2016 - TortoiseGit
+// Copyright (C) 2013, 2016, 2018 - TortoiseGit
 // External Cache Copyright (C) 2007-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -295,7 +295,7 @@ void CPathWatcher::WorkerThread()
 							pnotify = (PFILE_NOTIFY_INFORMATION)((LPBYTE)pnotify + nOffset);
 							continue;
 						}
-						buf[min(bufferSize - 1, pdi->m_DirPath.GetLength() + (pnotify->FileNameLength/sizeof(WCHAR)))] = L'\0';
+						buf[min((decltype((pnotify->FileNameLength / sizeof(WCHAR)))) bufferSize - 1, pdi->m_DirPath.GetLength() + (pnotify->FileNameLength / sizeof(WCHAR)))] = L'\0';
 						pnotify = (PFILE_NOTIFY_INFORMATION)((LPBYTE)pnotify + nOffset);
 						CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": change notification: %s\n", buf);
 						{

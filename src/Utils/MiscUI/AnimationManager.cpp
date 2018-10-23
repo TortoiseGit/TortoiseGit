@@ -20,7 +20,6 @@
 
 #include "stdafx.h"
 #include "AnimationManager.h"
-#include <algorithm>
 
 /// Object to handle the timer callback.
 class CTimerEventHandler : public IUIAnimationTimerEventHandler

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012, 2014-2017 - TortoiseGit
+// Copyright (C) 2012, 2014-2018 - TortoiseGit
 // Copyright (C) 2003-2006, 2009, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -131,7 +131,7 @@ UINT CCacheDlg::TestThread()
 	CString sNumber;
 	std::random_device rd;
 	std::mt19937 mt(rd());
-	std::uniform_int_distribution<INT_PTR> dist(0, max(0, m_filelist.GetCount() - 1));
+	std::uniform_int_distribution<INT_PTR> dist(0, max((INT_PTR)0, m_filelist.GetCount() - 1));
 	std::uniform_int_distribution<INT_PTR> dist2(0, 9);
 	for (int i=0; i < 1; ++i)
 	{
@@ -419,7 +419,7 @@ UINT CCacheDlg::WatchTestThread()
 	CString sNumber;
 	std::random_device rd;
 	std::mt19937 mt(rd());
-	std::uniform_int_distribution<INT_PTR> dist(0, max(0, m_filelist.GetCount() - 1));
+	std::uniform_int_distribution<INT_PTR> dist(0, max((INT_PTR)0, m_filelist.GetCount() - 1));
 	filepath = m_filelist.GetAt(dist(mt));
 	GetStatusFromRemoteCache(CTGitPath(m_sRootPath), false);
 	for (int i=0; i < 10000; ++i)

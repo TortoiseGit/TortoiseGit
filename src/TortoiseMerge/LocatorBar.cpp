@@ -1,4 +1,4 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2006-2012, 2015 - TortoiseSVN
 
@@ -291,7 +291,7 @@ void CLocatorBar::PaintView(CDC& cacheDC, CBaseView* view, CDWordArray& indents,
 		if ((DiffStates)state != DIFFSTATE_NORMAL)
 		{
 			cacheDC.FillSolidRect(rect.left + (width*stripeIndex/3), height*linecount/m_nLines,
-						barwidth, max(height*identcount/m_nLines,1), color);
+						barwidth, max((int)(height * identcount / m_nLines), 1), (int)color);
 		}
 		linecount += identcount;
 	}
@@ -305,7 +305,7 @@ void CLocatorBar::PaintView(CDC& cacheDC, CBaseView* view, CDWordArray& indents,
 			if (view->m_arMarkedWordLines[i])
 			{
 				cacheDC.FillSolidRect(rect.left + (width*stripeIndex/3), (int)(height*i/m_nLines),
-					barwidth, max(height/m_nLines,2), color);
+					barwidth, max((int)(height / m_nLines), 2), (int)color);
 			}
 		}
 	}
@@ -319,7 +319,7 @@ void CLocatorBar::PaintView(CDC& cacheDC, CBaseView* view, CDWordArray& indents,
 			if (view->m_arFindStringLines[i])
 			{
 				cacheDC.FillSolidRect(rect.left + (width*stripeIndex/3), (int)(height*i/m_nLines),
-					barwidth, max(height/m_nLines,2), color);
+					barwidth, max((int)(height / m_nLines), 2), (int)color);
 			}
 		}
 	}

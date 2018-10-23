@@ -1,7 +1,7 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2017 Sven Strickroth <email@cs-ware.de>
-// Copyright (C) 2014-2017 TortoiseGit
+// Copyright (C) 2013-2018 Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2014-2018 TortoiseGit
 // Copyright (C) VLC project (http://videolan.org)
 // - pgp parsing code was copied from src/misc/update(_crypto)?.c
 // Copyright (C) The Internet Society (1998).  All Rights Reserved.
@@ -834,8 +834,8 @@ static int check_hash(HCRYPTHASH hHash, signature_packet_t *p_sig)
 */
 static int verify_signature_rsa(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, public_key_t& p_pkey, signature_packet_t& p_sig)
 {
-	int i_n_len = min(mpi_len(p_pkey.key.sig.rsa.n), sizeof(p_pkey.key.sig.rsa.n) - 2);
-	int i_s_len = min(mpi_len(p_sig.algo_specific.rsa.s), sizeof(p_sig.algo_specific.rsa.s) - 2);
+	int i_n_len = min(mpi_len(p_pkey.key.sig.rsa.n), (int)sizeof(p_pkey.key.sig.rsa.n) - 2);
+	int i_s_len = min(mpi_len(p_sig.algo_specific.rsa.s), (int)sizeof(p_sig.algo_specific.rsa.s) - 2);
 
 	if (i_s_len > i_n_len)
 		return -1;
@@ -879,12 +879,12 @@ static int verify_signature_dsa(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, public_
 	if (p_sig.digest_algo != DIGEST_ALGO_SHA1) // PROV_DSS only supports SHA1 signatures, see http://msdn.microsoft.com/en-us/library/windows/desktop/aa387434%28v=vs.85%29.aspx
 		return -1;
 
-	int i_p_len = min(mpi_len(p_pkey.key.sig.dsa.p), sizeof(p_pkey.key.sig.dsa.p) - 2);
-	int i_q_len = min(mpi_len(p_pkey.key.sig.dsa.q), sizeof(p_pkey.key.sig.dsa.q) - 2);
-	int i_g_len = min(mpi_len(p_pkey.key.sig.dsa.g), sizeof(p_pkey.key.sig.dsa.g) - 2);
-	int i_y_len = min(mpi_len(p_pkey.key.sig.dsa.y), sizeof(p_pkey.key.sig.dsa.y) - 2);
-	int i_r_len = min(mpi_len(p_sig.algo_specific.dsa.r), sizeof(p_sig.algo_specific.dsa.r) - 2);
-	int i_s_len = min(mpi_len(p_sig.algo_specific.dsa.s), sizeof(p_sig.algo_specific.dsa.s) - 2);
+	int i_p_len = min(mpi_len(p_pkey.key.sig.dsa.p), (int)sizeof(p_pkey.key.sig.dsa.p) - 2);
+	int i_q_len = min(mpi_len(p_pkey.key.sig.dsa.q), (int)sizeof(p_pkey.key.sig.dsa.q) - 2);
+	int i_g_len = min(mpi_len(p_pkey.key.sig.dsa.g), (int)sizeof(p_pkey.key.sig.dsa.g) - 2);
+	int i_y_len = min(mpi_len(p_pkey.key.sig.dsa.y), (int)sizeof(p_pkey.key.sig.dsa.y) - 2);
+	int i_r_len = min(mpi_len(p_sig.algo_specific.dsa.r), (int)sizeof(p_sig.algo_specific.dsa.r) - 2);
+	int i_s_len = min(mpi_len(p_sig.algo_specific.dsa.s), (int)sizeof(p_sig.algo_specific.dsa.s) - 2);
 
 	// CryptoAPI only supports 1024-bit DSA keys and SHA1 signatures
 	if (i_p_len > 128 || i_q_len > 20 && i_g_len > 128 || i_y_len > 128 || i_r_len > 20 || i_s_len > 20)

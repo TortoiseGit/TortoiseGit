@@ -139,8 +139,8 @@ CGitLogListBase::CGitLogListBase() : CHintCtrl<CResizableColumnsListCtrl<CListCt
 	m_bIncludeBoundaryCommits = !!CRegDWORD(L"Software\\TortoiseGit\\LogIncludeBoundaryCommits", FALSE);
 	m_bFullCommitMessageOnLogLine = !!CRegDWORD(L"Software\\TortoiseGit\\FullCommitMessageOnLogLine", FALSE);
 
-	m_LineWidth = max(1, CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\Graph\\LogLineWidth", 2));
-	m_NodeSize = max(1, CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\Graph\\LogNodeSize", 10));
+	m_LineWidth = max(1, (int)CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\Graph\\LogLineWidth", 2));
+	m_NodeSize = max(1, (int)CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\Graph\\LogNodeSize", 10));
 
 	if (CRegDWORD(L"Software\\TortoiseGit\\LogDialog\\UseMailmap", FALSE) == TRUE)
 		git_read_mailmap(&m_pMailmap);

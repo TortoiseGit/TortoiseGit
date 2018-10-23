@@ -1383,7 +1383,7 @@ void CFileDiffDlg::OnBnClickedLog()
 bool CFileDiffDlg::CheckMultipleDiffs()
 {
 	UINT selCount = m_cFileList.GetSelectedCount();
-	if (selCount > max(3, (DWORD)CRegDWORD(L"Software\\TortoiseGit\\NumDiffWarning", 10)))
+	if (selCount > max((DWORD)3, (DWORD)CRegDWORD(L"Software\\TortoiseGit\\NumDiffWarning", 10)))
 	{
 		CString message;
 		message.Format(IDS_STATUSLIST_WARN_MAXDIFF, selCount);

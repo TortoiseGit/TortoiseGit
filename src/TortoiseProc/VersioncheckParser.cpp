@@ -38,7 +38,7 @@ static CString GetConfigValue(const wchar_t* ptr)
 
 	CString value;
 	{
-		CStrBuf working(value, (int)min(wcslen(ptr), UINT16_MAX));
+		CStrBuf working(value, (int)min(wcslen(ptr), (size_t)UINT16_MAX));
 		wchar_t* fixed = working;
 		bool quoted = false;
 
