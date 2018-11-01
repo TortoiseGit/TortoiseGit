@@ -637,6 +637,9 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 
 			for (int i = 0; i < m_IgnoreFileList.GetCount(); ++i)
 				m_arStatusArray.push_back(&m_IgnoreFileList[i]);
+
+			for (int i = 0; i < m_LocalChangesIgnoredFileList.GetCount(); ++i)
+				m_arStatusArray.push_back(&m_LocalChangesIgnoredFileList[i]);
 		}
 		PrepareGroups();
 		m_arListArray.clear();
