@@ -35,6 +35,7 @@
 #include "builtin.h"
 #include "config.h"
 #include "mailmap.h"
+#include "tree.h"
 #pragma warning(pop)
 
 extern char g_last_error[];
@@ -736,8 +737,7 @@ int git_for_each_reflog_ent(const char *ref, each_reflog_ent_fn fn, void *cb_dat
 	return for_each_reflog_ent(ref,fn,cb_data);
 }
 
-static int update_some(const unsigned char* sha1, struct strbuf* base,
-		const char *pathname, unsigned mode, int stage, void *context)
+static int update_some(const struct object_id* sha1, struct strbuf* base, const char* pathname, unsigned mode, int stage, void* context)
 {
 	struct cache_entry *ce;
 	UNREFERENCED_PARAMETER(stage);
@@ -747,7 +747,7 @@ static int update_some(const unsigned char* sha1, struct strbuf* base,
 	if (S_ISDIR(mode))
 		return READ_TREE_RECURSIVE;
 
-	hashcpy(ce->oid.hash, sha1);
+	oidcpy(&ce->oid, sha1);
 	memcpy(ce->name, base->buf, base->len);
 	memcpy(ce->name + base->len, pathname, strlen(pathname));
 	ce->ce_flags = create_ce_flags((unsigned int)(strlen(pathname) + base->len));
