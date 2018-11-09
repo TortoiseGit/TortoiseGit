@@ -19,9 +19,9 @@
 [submodule "ext/editorconfig"]
 	path = ext/editorconfig
 	url = https://github.com/editorconfig/editorconfig-core-c.git
-[submodule "ext/pcre"]
-	path = ext/pcre
-	url = https://gitlab.com/tortoisegit/pcre.git
+[submodule "ext/pcre2"]
+	path = ext/pcre2
+	url = https://gitlab.com/tortoisegit/pcre2.git
 [submodule "ext/simpleini"]
 	path = ext/simpleini
 	url = https://github.com/brofield/simpleini.git

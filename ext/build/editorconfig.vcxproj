@@ -39,11 +39,11 @@
   <PropertyGroup Label="UserMacros" />
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>editorconfig;..\editorconfig\include;pcre;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>editorconfig;..\editorconfig\include;pcre2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsC</CompileAs>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <AdditionalOptions>/J %(AdditionalOptions)</AdditionalOptions>
-      <WarningLevel>Level2</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -65,8 +65,8 @@
     <ClInclude Include="..\editorconfig\src\lib\utarray.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="pcre.vcxproj">
-      <Project>{876c52ce-ef66-495d-820d-4d9c98e9f55c}</Project>
+    <ProjectReference Include="pcre2.vcxproj">
+      <Project>{e37f4ce6-d512-4d71-aa02-33422c92fce0}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
