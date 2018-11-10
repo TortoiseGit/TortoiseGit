@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 // Copyright (C) 2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -189,13 +189,7 @@ bool ColumnManager::IsVisible(int column) const
 
 int ColumnManager::GetInvisibleCount() const
 {
-	int invisibleCount = 0;
-	for (const auto& column : columns)
-	{
-		if (!column.visible)
-			invisibleCount++;
-	}
-	return invisibleCount;
+	return static_cast<int>(std::count_if(columns.cbegin(), columns.cend(), [](auto& column) { return !column.visible; }));
 }
 
 bool ColumnManager::IsRelevant(int column) const

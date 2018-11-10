@@ -129,16 +129,15 @@ static int RepoStatus(const TCHAR* path, std::string pathA, git_repository* repo
 	pathA.erase(pathA.begin(), pathA.begin() + min(workdir.length(), pathA.length())); // workdir always ends with a slash, however, wcA is not guaranteed to
 	LoadIgnorePatterns(workdir.c_str(), &GitStat);
 
-	std::vector<char*> pathspec;
+	std::vector<const char*> pathspec;
 	if (!pathA.empty())
 	{
-		pathspec.emplace_back(const_cast<char*>(pathA.c_str()));
+		pathspec.emplace_back(pathA.c_str());
 		git_status_options.pathspec.count = 1;
 	}
 	if (!GitStat.ignorepatterns.empty())
 	{
-		for (auto& i : GitStat.ignorepatterns)
-			pathspec.emplace_back(const_cast<char*>(i.c_str()));
+		std::transform(GitStat.ignorepatterns.cbegin(), GitStat.ignorepatterns.cend(), std::back_inserter(pathspec), [](auto& pattern) { return pattern.c_str(); });
 		git_status_options.pathspec.count += GitStat.ignorepatterns.size();
 		if (pathA.empty())
 		{
@@ -147,7 +146,7 @@ static int RepoStatus(const TCHAR* path, std::string pathA, git_repository* repo
 		}
 	}
 	if (git_status_options.pathspec.count > 0)
-		git_status_options.pathspec.strings = pathspec.data();
+		git_status_options.pathspec.strings = const_cast<char**>(pathspec.data());
 
 	CAutoStatusList status;
 	if (git_status_list_new(status.GetPointer(), repo, &git_status_options) < 0)

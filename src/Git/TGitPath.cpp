@@ -1354,7 +1354,7 @@ const CTGitPath& CTGitPathList::operator[](INT_PTR index) const
 bool CTGitPathList::AreAllPathsFiles() const
 {
 	// Look through the vector for any directories - if we find them, return false
-	return std::find_if(m_paths.cbegin(), m_paths.cend(), std::mem_fn(&CTGitPath::IsDirectory)) == m_paths.cend();
+	return std::none_of(m_paths.cbegin(), m_paths.cend(), std::mem_fn(&CTGitPath::IsDirectory));
 }
 
 #if defined(_MFC_VER)
@@ -1486,14 +1486,8 @@ CTGitPath CTGitPathList::GetCommonDirectory() const
 	}
 	// since we only checked strings, not paths,
 	// we have to make sure now that we really return a *path* here
-	for (const auto& path : m_paths)
-	{
-		if (!m_commonBaseDirectory.IsAncestorOf(path))
-		{
-			m_commonBaseDirectory = m_commonBaseDirectory.GetContainingDirectory();
-			break;
-		}
-	}
+	if (std::any_of(m_paths.cbegin(), m_paths.cend(), [&m_commonBaseDirectory = m_commonBaseDirectory](auto& path) { return !m_commonBaseDirectory.IsAncestorOf(path); }))
+		m_commonBaseDirectory = m_commonBaseDirectory.GetContainingDirectory();
 	return m_commonBaseDirectory;
 }
 

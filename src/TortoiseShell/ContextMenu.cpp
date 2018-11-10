@@ -886,11 +886,8 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmd
 			return S_OK;	// nothing selected - we don't have a menu to show
 		// check whether a selected entry is an UID - those are namespace extensions
 		// which we can't handle
-		for (const auto& file : files_)
-		{
-			if (CStringUtils::StartsWith(file.c_str(), L"::{"))
-				return S_OK;
-		}
+		if (std::any_of(files_.cbegin(), files_.cend(), [](auto& file) { return CStringUtils::StartsWith(file.c_str(), L"::{"); }))
+			return S_OK;
 	}
 	else
 	{

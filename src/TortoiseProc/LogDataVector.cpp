@@ -185,16 +185,10 @@ struct SortByParentDate
 	{
 		if (pLhs->m_CommitHash == pRhs->m_CommitHash)
 			return false;
-		for (const auto& hash : pLhs->m_ParentHash)
-		{
-			if (hash == pRhs->m_CommitHash)
-				return true;
-		}
-		for (const auto& hash : pRhs->m_ParentHash)
-		{
-			if (hash == pLhs->m_CommitHash)
-				return false;
-		}
+		if (std::any_of(pLhs->m_ParentHash.cbegin(), pLhs->m_ParentHash.cend(), [&pRhs](auto& hash) { return hash == pRhs->m_CommitHash; }))
+			return true;
+		if (std::any_of(pRhs->m_ParentHash.cbegin(), pRhs->m_ParentHash.cend(), [&pLhs](auto& hash) { return hash == pLhs->m_CommitHash; }))
+			return false;
 		return pLhs->GetCommitterDate()>pRhs->GetCommitterDate();
 	}
 };

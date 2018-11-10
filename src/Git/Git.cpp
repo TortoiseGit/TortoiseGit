@@ -1883,8 +1883,8 @@ int CGit::DeleteRemoteRefs(const CString& sRemote, const STRING_VECTOR& list)
 		callbacks.credentials = g_Git2CredCallback;
 		callbacks.certificate_check = g_Git2CheckCertificateCallback;
 		std::vector<CStringA> refspecs;
-		for (const auto& ref : list)
-			refspecs.push_back(CUnicodeUtils::GetUTF8(L":" + ref));
+		refspecs.reserve(list.size());
+		std::transform(list.cbegin(), list.cend(), std::back_inserter(refspecs), [](auto& ref) { return CUnicodeUtils::GetUTF8(L":" + ref); });
 
 		std::vector<char*> vc;
 		vc.reserve(refspecs.size());

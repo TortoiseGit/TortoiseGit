@@ -91,20 +91,13 @@ int GitPatch::Init(const CString& patchfile, const CString& targetpath, CSysProg
 	if ((m_nRejected > ((int)m_filePaths.size() / 3)) && !m_testPath.IsEmpty())
 	{
 		++m_nStrip;
-		bool found = false;
 		for (m_nStrip = 0; m_nStrip < STRIP_LIMIT; ++m_nStrip)
 		{
-			for (const auto& filepath : m_filePaths)
+			if (std::any_of(m_filePaths.cbegin(), m_filePaths.cend(), [this](auto& filepath) { return Strip(filepath.path).IsEmpty(); }))
 			{
-				if (Strip(filepath.path).IsEmpty())
-				{
-					found = true;
-					m_nStrip--;
-					break;
-				}
-			}
-			if (found)
+				--m_nStrip;
 				break;
+			}
 		}
 	}
 
@@ -203,16 +196,7 @@ bool GitPatch::PatchFile(int nIndex, CString &datapath)
 	pr.content = true;
 	pr.props = false;
 	// only add this entry if it hasn't been added already
-	bool bExists = false;
-	for (auto it = m_filePaths.crbegin(); it != m_filePaths.crend(); ++it)
-	{
-		if (it->path.Compare(pr.path) == 0)
-		{
-			bExists = true;
-			break;
-		}
-	}
-	if (!bExists)
+	if (std::none_of(m_filePaths.crbegin(), m_filePaths.crend(), [&pr](auto& filepath) { return filepath.path.Compare(pr.path) == 0; }))
 		m_filePaths.push_back(pr);
 	m_nRejected += pr.rejects;
 
@@ -248,18 +232,16 @@ bool GitPatch::PatchPath(const CString& path)
 
 int GitPatch::GetPatchResult(const CString& sPath, CString& sSavePath, CString& sRejectPath, CString &sBasePath) const
 {
-	for (const auto& filePath : m_filePaths)
+	auto it = std::find_if(m_filePaths.cbegin(), m_filePaths.cend(), [this, &sPath](auto& filePath) { return Strip(filePath.path).CompareNoCase(sPath) == 0; });
+	if (it != m_filePaths.cend())
 	{
-		if (Strip(filePath.path).CompareNoCase(sPath) == 0)
-		{
-			sSavePath = filePath.resultPath;
-			sBasePath = filePath.basePath;
-			if (filePath.rejects > 0)
-				sRejectPath = filePath.rejectsPath;
-			else
-				sRejectPath.Empty();
-			return filePath.rejects;
-		}
+		sSavePath = (*it).resultPath;
+		sBasePath = (*it).basePath;
+		if ((*it).rejects > 0)
+			sRejectPath = (*it).rejectsPath;
+		else
+			sRejectPath.Empty();
+		return (*it).rejects;
 	}
 	return -1;
 }
