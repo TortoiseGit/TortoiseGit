@@ -1036,6 +1036,19 @@ int CRebaseDlg::StartRebase()
 
 	if( !this->m_IsCherryPick )
 	{
+		if (g_Git.m_IsUseLibGit2)
+		{
+			CAutoRepository repo(g_Git.GetGitRepository());
+			CAutoReflog reflog;
+			git_reflog_read(reflog.GetPointer(), repo, "HEAD");
+			CAutoSignature signature;
+			if (git_signature_default(signature.GetPointer(), repo) < 0)
+				return -1;
+
+			git_reflog_append(reflog, m_OrigHEADHash, signature, "rebase: start (" + CUnicodeUtils::GetUTF8(m_OrigHEADBranch) + " on " + CUnicodeUtils::GetUTF8(m_OrigUpstreamHash.ToString()) + ")");
+			git_reflog_write(reflog);
+		}
+
 		cmd.Format(L"git.exe checkout -f %s --", (LPCTSTR)m_OrigUpstreamHash.ToString());
 		this->AddLogString(cmd);
 		if (RunGitCmdRetryOrAbort(cmd))
@@ -1131,6 +1144,17 @@ int CRebaseDlg::FinishRebase()
 	AddLogString(cmd);
 	if (RunGitCmdRetryOrAbort(cmd))
 		return -1;
+
+	if (g_Git.m_IsUseLibGit2)
+	{
+		CAutoRepository repo(g_Git.GetGitRepository());
+		CAutoReflog reflog;
+		git_reflog_read(reflog.GetPointer(), repo, "HEAD");
+		CAutoSignature signature;
+		git_signature_default(signature.GetPointer(), repo);
+		git_reflog_append(reflog, m_OrigHEADHash, signature, "rebase: finished");
+		git_reflog_write(reflog);
+	}
 
 	while (m_ctrlTabCtrl.GetTabsNum() > 1)
 		m_ctrlTabCtrl.RemoveTab(0);
@@ -2429,6 +2453,18 @@ void CRebaseDlg::OnBnClickedAbort()
 		goto end;
 
 	m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
+
+	if (g_Git.m_IsUseLibGit2 && !m_IsCherryPick)
+	{
+		CAutoRepository repo(g_Git.GetGitRepository());
+		CAutoReflog reflog;
+		git_reflog_read(reflog.GetPointer(), repo, "HEAD");
+		CAutoSignature signature;
+		git_signature_default(signature.GetPointer(), repo);
+		git_reflog_append(reflog, m_OrigHEADHash, signature, "rebase: begin aborting...");
+		git_reflog_write(reflog);
+	}
+
 	if(this->m_IsFastForward)
 	{
 		CString cmd;
@@ -2497,6 +2533,16 @@ void CRebaseDlg::OnBnClickedAbort()
 				goto end;
 			}
 		}
+	}
+	if (g_Git.m_IsUseLibGit2)
+	{
+		CAutoRepository repo(g_Git.GetGitRepository());
+		CAutoReflog reflog;
+		git_reflog_read(reflog.GetPointer(), repo, "HEAD");
+		CAutoSignature signature;
+		git_signature_default(signature.GetPointer(), repo);
+		git_reflog_append(reflog, m_OrigHEADHash, signature, "rebase: aborted");
+		git_reflog_write(reflog);
 	}
 	__super::OnCancel();
 end:
