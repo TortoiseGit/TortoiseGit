@@ -22,6 +22,7 @@
 #include "Git.h"
 #include "UnicodeUtils.h"
 #include "TempFile.h"
+#include <WinInet.h>
 
 struct num_compare
 {
