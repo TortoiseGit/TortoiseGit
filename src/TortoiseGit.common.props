@@ -55,7 +55,6 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <DebugInformationFormat Condition="'$(Platform)'=='Win32'">EditAndContinue</DebugInformationFormat>
       <DebugInformationFormat Condition="'$(Platform)'=='x64'">ProgramDatabase</DebugInformationFormat>
-      <MinimalRebuild>true</MinimalRebuild>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
