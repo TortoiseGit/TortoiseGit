@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2011, 2013-2018 - TortoiseGit
 
@@ -432,7 +432,13 @@ CString ProjectProperties::GetBugIDUrl(const CString& sBugID)
 	if (!sMessage.IsEmpty() || !sCheckRe.IsEmpty())
 	{
 		ret = sUrl;
-		ret.Replace(L"%BUGID%", sBugID);
+		CString parameter;
+		DWORD size = INTERNET_MAX_URL_LENGTH;
+		UrlEscape(sBugID, CStrBuf(parameter, size + 1), &size, URL_ESCAPE_SEGMENT_ONLY | URL_ESCAPE_PERCENT | URL_ESCAPE_AS_UTF8);
+		// UrlEscape does not escape + and =, starting with Win8 the URL_ESCAPE_ASCII_URI_COMPONENT flag could be used and the following two lines would not be necessary
+		parameter.Replace(L"+", L"%2B");
+		parameter.Replace(L"=", L"%3D");
+		ret.Replace(L"%BUGID%", parameter);
 	}
 	return ret;
 }

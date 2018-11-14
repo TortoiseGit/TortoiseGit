@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2016 - TortoiseGit
+// Copyright (C) 2015-2016, 2018 - TortoiseGit
 // Copyright (C) 2003-2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -59,4 +59,14 @@ TEST(ProjectPropertiesTest, ParseBugIDs)
 	ASSERT_STREQ(L"000815", sRet);
 	ASSERT_TRUE(props.HasBugID(L"test test [[000815]]] some stupid programming error fixed"));
 	ASSERT_FALSE(props.HasBugID(L"test test [000815]] some stupid programming error fixed"));
+}
+
+TEST(ProjectPropertiesTest, GetBugIDUrl)
+{
+	ProjectProperties props;
+	ASSERT_STREQ(L"", props.GetBugIDUrl(L"something"));
+
+	props.sCheckRe = L"don't care";
+	props.sUrl = L"http://tortoisesvn.tigris.org/issues/show_bug.cgi?id=%BUGID%&bla=%25#anchor";
+	ASSERT_STREQ(L"http://tortoisesvn.tigris.org/issues/show_bug.cgi?id=%C3%84bf%25def%23g%3Chi%20j%2Fkl%2Bmn%26o%3D,%3F&bla=%25#anchor", props.GetBugIDUrl(L"Äbf%def#g<hi j/kl+mn&o=,?"));
 }
