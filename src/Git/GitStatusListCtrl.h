@@ -695,8 +695,10 @@ private:
 	/// Returns the number of change lists the selection has
 	size_t GetNumberOfChangelistsInSelection();
 
-	/// Puts the item to the corresponding group
-	bool SetItemGroup(int item, int groupindex);
+	int GetChangeListIdForPath(const CTGitPath* pGitPath);
+
+	// Determines group and puts the item to the group
+	bool SetItemGroup(int item, const CTGitPath* pGitPath);
 
 	void CheckEntry(int index, int nListItems);
 	void UncheckEntry(int index, int nListItems);
@@ -748,7 +750,8 @@ private:
 	//FileEntryVector				m_arStatusArray;
 	std::vector<const CTGitPath*>	m_arStatusArray;
 	std::vector<size_t>			m_arListArray;
-	std::map<CString, int>	    m_changelists;
+	std::map<CString, int>		m_changelists; // maps changelist to group index
+	std::map<CString, CString>	m_pathToChangelist; // maps gitpath to changelist
 	bool						m_bHasIgnoreGroup;
 	CTGitPathList				m_StatusFileList;
 	CTGitPathList				m_UnRevFileList;
