@@ -145,6 +145,7 @@ BEGIN
     IDS_SAVEPATCH           "Save patch file"
     IDS_PIPETITLE           "diff from pipe"
     IDC_TORTOISEUDIFF       "TORTOISEGITUDIFF"
+    IDS_ERRORSAVE           "Failed to save file ""%s"":\n%s"
 END
 
 #endif    // Englisch (USA) resources

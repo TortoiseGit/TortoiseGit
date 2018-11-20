@@ -10,6 +10,7 @@
 #define IDS_SAVEPATCH                   107
 #define IDS_PIPETITLE                   108
 #define IDC_TORTOISEUDIFF               109
+#define IDS_ERRORSAVE                   110
 #define IDI_CANCELNORMAL                132
 #define IDD_FINDBAR                     144
 #define IDC_FINDNEXT                    1014

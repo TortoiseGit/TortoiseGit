@@ -4251,6 +4251,11 @@ msgstr ""
 msgid "Failed to save document."
 msgstr ""
 
+#. Resource IDs: (IDS_ERRORSAVE)
+#, c-format
+msgid "Failed to save file \"%s\":\n%s"
+msgstr ""
+
 #. Resource IDs: (IDS_SVNACTION_CHANGELISTFAILED)
 #, c-format
 msgid "Failed to set/remove changelist '%s'"

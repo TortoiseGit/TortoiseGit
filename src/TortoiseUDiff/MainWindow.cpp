@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2012-2018 - TortoiseGit
 // Copyright (C) 2003-2014 - TortoiseSVN
@@ -725,7 +725,14 @@ bool CMainWindow::SaveFile(LPCTSTR filename)
 	FILE* fp = nullptr;
 	_wfopen_s(&fp, filename, L"w+b");
 	if (!fp)
+	{
+		TCHAR fmt[1024] = { 0 };
+		LoadString(::hResource, IDS_ERRORSAVE, fmt, _countof(fmt));
+		TCHAR error[1024] = { 0 };
+		_snwprintf_s(error, _countof(error), fmt, filename, (LPCTSTR)CFormatMessageWrapper());
+		MessageBox(*this, error, L"TortoiseGitUDiff", MB_OK);
 		return false;
+	}
 
 	auto len = (int)SendEditor(SCI_GETTEXT, 0, 0);
 	auto data = std::make_unique<char[]>(len + 1);
