@@ -974,6 +974,9 @@
     <ClCompile Include="..\Utils\IconExtractor.cpp">
       <Filter>Utils\General</Filter>
     </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\EditWordBreak.cpp">
+      <Filter>Utils\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1833,6 +1836,9 @@
     </ClInclude>
     <ClInclude Include="..\Utils\IconExtractor.h">
       <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\EditWordBreak.h">
+      <Filter>Utils\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

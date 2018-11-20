@@ -471,6 +471,19 @@
 			</listitem>
 		</varlistentry>
 		<varlistentry>
+			<term condition="pot">UseCustomWordBreak</term>
+			<listitem>
+				<para>
+					The standard edit controls do not stop on forward slashes
+					like they're found in paths and urls. TortoiseGit uses
+					a custom word break procedure for the edit controls.
+					If you don't want that and use the default instead,
+					set this value to 0. If you only want the default
+					for edit controls in combo boxes, set this value to 1.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
 			<term condition="pot">UseLibgit2</term>
 			<listitem>
 				<para>

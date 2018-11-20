@@ -177,6 +177,9 @@
     <ClCompile Include="..\TortoiseProc\LogDlgFilter.cpp">
       <Filter>TortoiseGitProc</Filter>
     </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\EditWordBreak.cpp">
+      <Filter>Utils\MiscUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditGotoDlg.h">
@@ -349,6 +352,9 @@
     </ClInclude>
     <ClInclude Include="..\TortoiseProc\LogDlgFilter.h">
       <Filter>TortoiseGitProc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\EditWordBreak.h">
+      <Filter>Utils\MiscUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

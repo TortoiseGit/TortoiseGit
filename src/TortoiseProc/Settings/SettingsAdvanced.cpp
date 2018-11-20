@@ -178,6 +178,10 @@ CSettingsAdvanced::CSettingsAdvanced()
 	settings[i].type	= CSettingsAdvanced::SettingTypeNumber;
 	settings[i++].def.l	= 10 * 1024;
 
+    settings[i].sName	= L"UseCustomWordBreak";
+	settings[i].type	= CSettingsAdvanced::SettingTypeNumber;
+	settings[i++].def.l = 2;
+
 	settings[i].sName	= L"UseLibgit2";
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
 	settings[i++].def.b	= true;

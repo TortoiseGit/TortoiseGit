@@ -1,7 +1,7 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2015-2016 - TortoiseGit
-// Copyright (C) 2003-2015 - TortoiseSVN
+// Copyright (C) 2003-2015, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -23,7 +23,7 @@
 #include "TaskbarUUID.h"
 #include "Tooltip.h"
 #include "CommonDialogFunctions.h"
-
+#include "EditWordBreak.h"
 #pragma comment(lib, "htmlhelp.lib")
 
 #define DIALOG_BLOCKHORIZONTAL 1
@@ -57,6 +57,10 @@ protected:
 
 		EnableToolTips();
 		m_tooltips.Create(this);
+
+        auto CustomBreak = (DWORD)CRegDWORD(L"Software\\TortoiseGit\\UseCustomWordBreak", 2);
+		if (CustomBreak)
+			SetUrlWordBreakProcToChildWindows(GetSafeHwnd(), CustomBreak == 2);
 
 		return FALSE;
 	}
