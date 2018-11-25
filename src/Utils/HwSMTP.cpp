@@ -110,23 +110,18 @@ BOOL CHwSMTP::SendSpeedEmail
 		if(one.IsEmpty())
 			continue;
 
-		CString addr;
-		addr = GetServerAddress(one);
+		CString addr = GetServerAddress(one);
 		if(addr.IsEmpty())
 			continue;
 
 		Address[addr].push_back(one);
-
 	}
 
-	std::map<CString,std::vector<CString>>::iterator itr1  =  Address.begin();
-	for(  ;  itr1  !=  Address.end();  ++itr1 )
+	for (const auto& maildomain : Address)
 	{
 		PDNS_RECORD pDnsRecord;
-		PDNS_RECORD pNext;
-
 		DNS_STATUS status =
-		DnsQuery(itr1->first ,
+		DnsQuery(maildomain.first,
 						DNS_TYPE_MX,DNS_QUERY_STANDARD,
 						nullptr,		//Contains DNS server IP address.
 						&pDnsRecord,	//Resource record that contains the response.
@@ -141,15 +136,14 @@ BOOL CHwSMTP::SendSpeedEmail
 		SCOPE_EXIT { DnsRecordListFree(pDnsRecord, DnsFreeRecordList); };
 
 		CString to;
-		for (size_t i = 0; i < itr1->second.size(); ++i)
-		{
-			to+=itr1->second[i];
+		std::for_each(maildomain.second.cbegin(), maildomain.second.cend(), [&to](auto recipient) {
+			to += recipient;
 			to += L';';
-		}
+		});
 		if(to.IsEmpty())
 			continue;
 
-		pNext=pDnsRecord;
+		PDNS_RECORD pNext = pDnsRecord;
 		while(pNext)
 		{
 			if(pNext->wType == DNS_TYPE_MX)
