@@ -13,6 +13,7 @@ Released: unreleased
  * Added the option to store hook configurations within the repository (/.tgitconfig) in order to share it with other developers
  * Fixed issue #3154: Decorate bare repository's folder with a Git icon
  * Update apr to 1.6.5
+ * Updte libgit2
 
 == Bug Fixes ==
  * Fixed issue #3250: GitWCRev: IsGitItem return true for item that had never been committed

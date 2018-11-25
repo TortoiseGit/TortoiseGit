@@ -151,6 +151,7 @@
     <ClCompile Include="..\libgit2\src\pqueue.c" />
     <ClCompile Include="..\libgit2\src\proxy.c" />
     <ClCompile Include="..\libgit2\src\push.c" />
+    <ClCompile Include="..\libgit2\src\reader.c" />
     <ClCompile Include="..\libgit2\src\rebase.c" />
     <ClCompile Include="..\libgit2\src\refdb.c" />
     <ClCompile Include="..\libgit2\src\refdb_fs.c" />
@@ -235,6 +236,7 @@
     <ClInclude Include="..\..\src\libgit2\system-call.h" />
     <ClInclude Include="..\libgit2\deps\http-parser\http_parser.h" />
     <ClInclude Include="..\libgit2\include\git2\annotated_commit.h" />
+    <ClInclude Include="..\libgit2\include\git2\apply.h" />
     <ClInclude Include="..\libgit2\include\git2\blame.h" />
     <ClInclude Include="..\libgit2\include\git2\buffer.h" />
     <ClInclude Include="..\libgit2\include\git2\cherrypick.h" />
@@ -355,6 +357,7 @@
     <ClInclude Include="..\libgit2\src\pqueue.h" />
     <ClInclude Include="..\libgit2\src\proxy.h" />
     <ClInclude Include="..\libgit2\src\push.h" />
+    <ClInclude Include="..\libgit2\src\reader.h" />
     <ClInclude Include="..\libgit2\src\refdb.h" />
     <ClInclude Include="..\libgit2\src\refdb_fs.h" />
     <ClInclude Include="..\libgit2\src\reflog.h" />
