@@ -141,7 +141,6 @@ BOOL CHwSMTP::SendSpeedEmail
 		SCOPE_EXIT { DnsRecordListFree(pDnsRecord, DnsFreeRecordList); };
 
 		CString to;
-		to.Empty();
 		for (size_t i = 0; i < itr1->second.size(); ++i)
 		{
 			to+=itr1->second[i];
