@@ -138,6 +138,7 @@ BOOL CHwSMTP::SendSpeedEmail
 			ret = false;
 			continue;
 		}
+		SCOPE_EXIT { DnsRecordListFree(pDnsRecord, DnsFreeRecordList); };
 
 		CString to;
 		to.Empty();
@@ -161,9 +162,6 @@ BOOL CHwSMTP::SendSpeedEmail
 		}
 		if (!pNext)
 			ret = false;
-
-		if (pDnsRecord)
-			DnsRecordListFree(pDnsRecord,DnsFreeRecordList);
 	}
 
 	return ret;
