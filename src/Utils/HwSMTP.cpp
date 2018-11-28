@@ -56,7 +56,6 @@ CHwSMTP::CHwSMTP () :
 	m_csPartBoundary = L"NextPart_" + GetGUID();
 	m_csMIMEContentType.Format(L"multipart/mixed; boundary=%s", (LPCTSTR)m_csPartBoundary);
 	m_csNoMIMEText = L"This is a multi-part message in MIME format.";
-	//m_csCharSet = L"\r\n\tcharset=\"iso-8859-1\"\r\n";
 
 	hContext = nullptr;
 	hCreds = nullptr;
@@ -89,7 +88,6 @@ BOOL CHwSMTP::SendSpeedEmail
 			LPCTSTR	lpszAddrTo,
 			LPCTSTR	lpszSubject,
 			LPCTSTR	lpszBody,
-			LPCTSTR	lpszCharSet,
 			CStringArray *pStrAryAttach,
 			LPCTSTR	pStrAryCC,
 			LPCTSTR	pSend
@@ -148,7 +146,7 @@ BOOL CHwSMTP::SendSpeedEmail
 		{
 			if(pNext->wType == DNS_TYPE_MX)
 				if (SendEmail(pNext->Data.MX.pNameExchange, nullptr, nullptr, false,
-					lpszAddrFrom,to,lpszSubject,lpszBody,lpszCharSet,pStrAryAttach,pStrAryCC,
+					lpszAddrFrom, to, lpszSubject, lpszBody, pStrAryAttach, pStrAryCC,
 					25,pSend,lpszAddrTo))
 					break;
 			pNext=pNext->pNext;
@@ -690,7 +688,6 @@ BOOL CHwSMTP::SendEmail (
 		LPCTSTR lpszAddrTo,
 		LPCTSTR lpszSubject,
 		LPCTSTR lpszBody,
-		LPCTSTR lpszCharSet,						// ×Ö·û¼¯ÀàÐÍ£¬ÀýÈç£º·±ÌåÖÐÎÄÕâÀïÓ¦ÊäÈë"big5"£¬¼òÌåÖÐÎÄÊ±ÊäÈë"gb2312"
 		CStringArray* pStrAryAttach/*=nullptr*/,
 		LPCTSTR pStrAryCC/*=nullptr*/,
 		UINT nSmtpSrvPort,/*=25*/
@@ -730,9 +727,6 @@ BOOL CHwSMTP::SendEmail (
 
 	m_nSmtpSrvPort = nSmtpSrvPort;
 
-	if (lpszCharSet && lpszCharSet[0])
-		m_csCharSet.Format(L"\r\n\tcharset=\"%s\"\r\n", lpszCharSet);
-
 	if	(
 			m_csAddrFrom.GetLength() <= 0 || m_csAddrTo.GetLength() <= 0
 		)
@@ -746,7 +740,7 @@ BOOL CHwSMTP::SendEmail (
 		m_StrAryAttach.Append ( *pStrAryAttach );
 	}
 	if ( m_StrAryAttach.GetSize() < 1 )
-		m_csMIMEContentType.Format(L"text/plain; %s", (LPCTSTR)m_csCharSet);
+		m_csMIMEContentType.Format(L"text/plain");
 
 	// ´´½¨Socket
 	m_SendSock.Close();
@@ -1154,7 +1148,7 @@ BOOL CHwSMTP::SendBody()
 	{
 		csBody.AppendFormat(L"%s\r\n\r\n", (LPCTSTR)m_csNoMIMEText);
 		csBody.AppendFormat(L"--%s\r\n", (LPCTSTR)m_csPartBoundary);
-		csBody.AppendFormat(L"Content-Type: text/plain\r\n%sContent-Transfer-Encoding: UTF-8\r\n\r\n", (LPCTSTR)m_csCharSet);
+		csBody.AppendFormat(L"Content-Type: text/plain\r\nContent-Transfer-Encoding: UTF-8\r\n\r\n");
 	}
 
 	m_csBody.Replace(L"\n.\n", L"\n..\n");

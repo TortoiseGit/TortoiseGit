@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2016 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2016, 2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -120,7 +120,7 @@ int CSendMail::SendMail(const CString& FromName, const CString& FromMail, const 
 				recipients += L";" + CC;
 			CString username, password;
 			CWindowsCredentialsStore::GetCredential(L"TortoiseGit:SMTP-Credentials", username, password);
-			if (mail.SendEmail((CString)CRegString(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\Address", L""), username, password, (BOOL)CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\AuthenticationRequired", FALSE), sender, recipients, subject, body, nullptr, &attachments, CC, (DWORD)CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\Port", 25), sender, To, (DWORD)CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\Encryption", 0)) == TRUE)
+			if (mail.SendEmail((CString)CRegString(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\Address", L""), username, password, (BOOL)CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\AuthenticationRequired", FALSE), sender, recipients, subject, body, &attachments, CC, (DWORD)CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\Port", 25), sender, To, (DWORD)CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\Encryption", 0)) == TRUE)
 				return 0;
 			else
 			{
@@ -129,7 +129,7 @@ int CSendMail::SendMail(const CString& FromName, const CString& FromMail, const 
 				return -1;
 			}
 		}
-		else if (mail.SendSpeedEmail(sender, To, subject, body, nullptr, &attachments, CC, sender))
+		else if (mail.SendSpeedEmail(sender, To, subject, body, &attachments, CC, sender))
 			return 0;
 		else
 		{

@@ -74,7 +74,6 @@ public:
 		LPCTSTR lpszAddrTo,
 		LPCTSTR lpszSubject,
 		LPCTSTR lpszBody,
-		LPCTSTR lpszCharSet,						// 字符集类型，例如：繁体中文这里应输入"big5"，简体中文时输入"gb2312"
 		CStringArray* pStrAryAttach = nullptr,
 		LPCTSTR pStrAryCC = nullptr,
 		UINT nSmtpSrvPort=25,
@@ -88,7 +87,6 @@ public:
 			LPCTSTR lpszAddrTo,
 			LPCTSTR lpszSubject,
 			LPCTSTR lpszBody,
-			LPCTSTR lpszCharSet,						// 字符集类型，例如：繁体中文这里应输入"big5"，简体中文时输入"gb2312"
 			CStringArray* pStrAryAttach = nullptr,
 			LPCTSTR pStrAryCC = nullptr,
 			LPCTSTR pSend = nullptr
@@ -134,7 +132,6 @@ private:
 
 	BOOL m_bMustAuth;
 	UINT m_nSmtpSrvPort;
-	CString m_csCharSet;
 
 	CString m_csLastError;
 	BOOL SendOnAttach(LPCTSTR lpszFileName);
