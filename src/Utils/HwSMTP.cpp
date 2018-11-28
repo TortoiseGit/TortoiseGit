@@ -770,7 +770,7 @@ BOOL CHwSMTP::SendEmail (
 {
 	m_StrAryAttach.RemoveAll();
 
-	m_StrCC += GET_SAFE_STRING(pStrAryCC);
+	m_StrCC = GET_SAFE_STRING(pStrAryCC);
 
 	m_csSmtpSrvHost = GET_SAFE_STRING ( lpszSmtpSrvHost );
 	if ( m_csSmtpSrvHost.GetLength() <= 0 )
