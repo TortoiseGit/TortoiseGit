@@ -809,7 +809,7 @@ BOOL CHwSMTP::SendEmail (
 	{
 		m_StrAryAttach.Append ( *pStrAryAttach );
 	}
-	if ( m_StrAryAttach.GetSize() < 1 )
+	if (m_StrAryAttach.IsEmpty())
 		m_csMIMEContentType.Format(L"text/plain");
 
 	// ´´½¨Socket
@@ -1212,7 +1212,7 @@ BOOL CHwSMTP::SendBody()
 {
 	CString csBody;
 
-	if ( m_StrAryAttach.GetSize() > 0 )
+	if (!m_StrAryAttach.IsEmpty())
 	{
 		csBody.AppendFormat(L"%s\r\n\r\n", (LPCTSTR)m_csNoMIMEText);
 		csBody.AppendFormat(L"--%s\r\n", (LPCTSTR)m_csPartBoundary);
@@ -1230,10 +1230,11 @@ BOOL CHwSMTP::SendBody()
 
 BOOL CHwSMTP::SendAttach()
 {
-	int nCountAttach = (int)m_StrAryAttach.GetSize();
-	if ( nCountAttach < 1 ) return TRUE;
+	if (m_StrAryAttach.IsEmpty())
+		return TRUE;
 
-	for ( int i=0; i<nCountAttach; i++ )
+	int nCountAttach = (int)m_StrAryAttach.GetSize();
+	for (int i = 0; i < nCountAttach; ++i)
 	{
 		if ( !SendOnAttach ( m_StrAryAttach.GetAt(i) ) )
 			return FALSE;
