@@ -4,12 +4,14 @@
   Copyright (c) 2003, Michael Carruth
   All rights reserved.
 
-  Adjusted by Sven Strickroth <email@cs-ware.de>, 2011, 2015
+  Adjusted by Sven Strickroth <email@cs-ware.de>, 2011-2018
    * make it work with no attachments
    * added flag to show mail compose dialog
    * make it work with 32-64bit inconsistencies (http://msdn.microsoft.com/en-us/library/dd941355.aspx)
    * auto extract filenames of attachments
    * make work with multiple recipients (to|cc)
+   * fix non ascii chars in subject, text or attachment paths
+   * See Git history of the TortoiseGit project for more details
 
   Redistribution and use in source and binary forms, with or without modification,
   are permitted provided that the following conditions are met:
@@ -51,26 +53,18 @@
 #include "MailMsg.h"
 #include "UnicodeUtils.h"
 #include "StringUtils.h"
+#include <MAPI.h>
+#include "MapiUnicodeHelp.h"
 
 CMailMsg::CMailMsg()
 {
-	m_hMapi					= nullptr;
-	m_lpMapiSendMail		= nullptr;
-	m_bReady				= FALSE;
 	m_bShowComposeDialog	= FALSE;
 }
 
-CMailMsg::~CMailMsg()
-{
-	if (m_bReady)
-		MAPIFinalize();
-}
-
-
 void CMailMsg::SetFrom(const CString& sAddress, const CString& sName)
 {
-	m_from.email = CUnicodeUtils::GetUTF8(L"SMTP:" + sAddress);
-	m_from.name = CUnicodeUtils::GetUTF8(sName);
+	m_from.email = L"SMTP:" + sAddress;
+	m_from.name = sName;
 }
 
 static void addAdresses(std::vector<MailAddress>& recipients, const CString& sAddresses)
@@ -94,12 +88,12 @@ void CMailMsg::SetTo(const CString& sAddresses)
 
 void CMailMsg::SetSubject(const CString& sSubject)
 {
-	m_sSubject = CUnicodeUtils::GetUTF8(sSubject);
+	m_sSubject = sSubject;
 }
 
 void CMailMsg::SetMessage(const CString& sMessage)
 {
-	m_sMessage = CUnicodeUtils::GetUTF8(sMessage);
+	m_sMessage = sMessage;
 };
 
 void CMailMsg::SetShowComposeDialog(BOOL showComposeDialog)
@@ -126,7 +120,7 @@ void CMailMsg::AddAttachment(const CString& sAttachment, CString sTitle)
 			sTitle = sAttachment;
 		}
 	}
-	m_attachments[(LPCSTR)CUnicodeUtils::GetUTF8(sAttachment)] = CUnicodeUtils::GetUTF8(sTitle);
+	m_attachments[sAttachment] = sTitle;
 }
 
 BOOL CMailMsg::DetectMailClient(CString& sMailClientName)
@@ -178,53 +172,24 @@ BOOL CMailMsg::MAPIInitialize()
 		m_sErrorMsg = L"Detected E-mail client " + sMailClientName;
 	}
 
-	// Load MAPI.dll
-
-	m_hMapi = AtlLoadSystemLibraryUsingFullPath(L"mapi32.dll");
-	if (!m_hMapi)
-	{
-		m_sErrorMsg = L"Error loading mapi32.dll";
-		return FALSE;
-	}
-
-	m_lpMapiSendMail = (LPMAPISENDMAIL)::GetProcAddress(m_hMapi, "MAPISendMail");
-
-	m_bReady = !!m_lpMapiSendMail;
-
-	if(!m_bReady)
-	{
-		m_sErrorMsg = L"Not found required function entries in mapi32.dll";
-	}
-
-	return m_bReady;
-}
-
-void CMailMsg::MAPIFinalize()
-{
-	::FreeLibrary(m_hMapi);
+	return TRUE;
 }
 
 BOOL CMailMsg::Send()
 {
-	if (!m_lpMapiSendMail)
-		return FALSE;
-
-	if(!m_bReady && !MAPIInitialize())
-		return FALSE;
-
 	// set from
-	MapiRecipDesc originator = { 0 };
+	MapiRecipDescW originator = { 0 };
 	originator.ulRecipClass = MAPI_ORIG;
-	originator.lpszAddress = (LPSTR)m_from.email.c_str();
-	originator.lpszName = (LPSTR)m_from.name.c_str();
+	originator.lpszAddress = const_cast<LPWSTR>(static_cast<LPCWSTR>(m_from.email));
+	originator.lpszName = const_cast<LPWSTR>(static_cast<LPCWSTR>(m_from.name));
 
-	std::vector<MapiRecipDesc> recipients;
+	std::vector<MapiRecipDescW> recipients;
 	auto addRecipient = [&recipients](ULONG ulRecipClass, const MailAddress& recipient)
 	{
-		MapiRecipDesc repipDesc = { 0 };
+		MapiRecipDescW repipDesc = { 0 };
 		repipDesc.ulRecipClass = ulRecipClass;
-		repipDesc.lpszAddress = (LPSTR)recipient.email.c_str();
-		repipDesc.lpszName = (LPSTR)recipient.name.c_str();
+		repipDesc.lpszAddress = const_cast<LPWSTR>(static_cast<LPCWSTR>(recipient.email));
+		repipDesc.lpszName = const_cast<LPWSTR>(static_cast<LPCWSTR>(recipient.name));
 		recipients.emplace_back(repipDesc);
 	};
 	// add to recipients
@@ -233,26 +198,26 @@ BOOL CMailMsg::Send()
 	std::for_each(m_cc.cbegin(), m_cc.cend(), std::bind(addRecipient, MAPI_CC, std::placeholders::_1));
 
 	// add attachments
-	std::vector<MapiFileDesc> attachments;
+	std::vector<MapiFileDescW> attachments;
 	std::for_each(m_attachments.cbegin(), m_attachments.cend(), [&attachments](auto& attachment)
 	{
-		MapiFileDesc fileDesc = { 0 };
+		MapiFileDescW fileDesc = { 0 };
 		fileDesc.nPosition = 0xFFFFFFFF;
-		fileDesc.lpszPathName = (LPSTR)attachment.first.c_str();
-		fileDesc.lpszFileName = (LPSTR)attachment.second.c_str();
+		fileDesc.lpszPathName = const_cast<LPWSTR>(static_cast<LPCWSTR>(attachment.first));
+		fileDesc.lpszFileName = const_cast<LPWSTR>(static_cast<LPCWSTR>(attachment.second));
 		attachments.emplace_back(fileDesc);
 	});
 
-	MapiMessage message = { 0 };
-	message.lpszSubject						= (LPSTR)m_sSubject.c_str();
-	message.lpszNoteText					= (LPSTR)m_sMessage.c_str();
+	MapiMessageW message = { 0 };
+	message.lpszSubject						= const_cast<LPWSTR>(static_cast<LPCWSTR>(m_sSubject));
+	message.lpszNoteText					= const_cast<LPWSTR>(static_cast<LPCWSTR>(m_sMessage));
 	message.lpOriginator					= &originator;
 	message.nRecipCount						= (ULONG)recipients.size();
 	message.lpRecips						= recipients.data();
 	message.nFileCount						= (ULONG)attachments.size();
 	message.lpFiles							= attachments.data();
 
-	ULONG status = m_lpMapiSendMail(NULL, 0, &message, (m_bShowComposeDialog ? MAPI_DIALOG : 0) | MAPI_LOGON_UI, 0);
+	ULONG status = MAPISendMailHelper(NULL, 0, &message, (m_bShowComposeDialog ? MAPI_DIALOG : 0) | MAPI_LOGON_UI, 0);
 
 	if(status!=SUCCESS_SUCCESS)
 	{

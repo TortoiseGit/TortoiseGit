@@ -4,6 +4,14 @@
   Copyright (c) 2003, Michael Carruth
   All rights reserved.
 
+  Adjusted by Sven Strickroth <email@cs-ware.de>, 2011-2018
+   * added flag to show mail compose dialog
+   * make it work with 32-64bit inconsistencies (http://msdn.microsoft.com/en-us/library/dd941355.aspx)
+   * auto extract filenames of attachments
+   * make work with multiple recipients (to|cc)
+   * fix non ascii chars in subject, text and attachment paths
+   * See Git history of the TortoiseGit project for more details
+
   Redistribution and use in source and binary forms, with or without modification,
   are permitted provided that the following conditions are met:
 
@@ -43,21 +51,18 @@
 #ifndef _MAILMSG_H_
 #define _MAILMSG_H_
 
-#include "stdafx.h"
-#include <MAPI.h>
-
-typedef std::map<std::string, std::string> TStrStrMap;
+typedef std::map<CString, CString> TStrStrMap;
 
 typedef struct MailAddress
 {
-	std::string email;
-	std::string name;
+	CString email;
+	CString name;
 
 	MailAddress() {};
 
 	MailAddress(const CString& email, const CString& name)
-	: email((CStringA)email)
-	, name((CStringA)name)
+	: email(email)
+	, name(name)
 	{}
 } MailAddress;
 
@@ -71,7 +76,6 @@ class CMailMsg
 public:
 	// Construction/destruction
 	CMailMsg();
-	virtual ~CMailMsg();
 
 	// Operations
 	void SetTo(const CString& sAddress);
@@ -83,7 +87,6 @@ public:
 	void SetShowComposeDialog(BOOL showComposeDialog);
 
 	BOOL MAPIInitialize();
-	void MAPIFinalize();
 
 	static BOOL DetectMailClient(CString& sMailClientName);
 	BOOL Send();
@@ -94,13 +97,9 @@ protected:
 	std::vector<MailAddress>	m_to;                         // To receipients
 	TStrStrMap					m_attachments;                // Attachment <file,title>
 	std::vector<MailAddress>	m_cc;                         // CC receipients
-	std::string					m_sSubject;                   // EMail subject
-	std::string					m_sMessage;                   // EMail message
+	CString						m_sSubject;                   // EMail subject
+	CString						m_sMessage;                   // EMail message
 
-	HMODULE						m_hMapi;                      // Handle to MAPI32.DLL
-	LPMAPISENDMAIL				m_lpMapiSendMail;             // Mapi func pointer
-
-	BOOL						m_bReady;                     // MAPI is loaded
 	BOOL						m_bShowComposeDialog;
 
 	CString						m_sErrorMsg;
