@@ -1252,7 +1252,6 @@ BOOL CHwSMTP::SendOnAttach(LPCTSTR lpszFileName)
 	CString csShortFileName = CPathUtils::GetFileNameFromPath(lpszFileName);
 
 	csAttach.AppendFormat(L"--%s\r\n", (LPCTSTR)m_csPartBoundary);
-	csAttach.AppendFormat(L"--%s\r\n", (LPCTSTR)m_csPartBoundary);
 	csAttach.AppendFormat(L"Content-Type: application/octet-stream; file=%s\r\n", (LPCTSTR)csShortFileName);
 	csAttach.AppendFormat(L"Content-Transfer-Encoding: base64\r\n");
 	csAttach.AppendFormat(L"Content-Disposition: attachment; filename=%s\r\n\r\n", (LPCTSTR)csShortFileName);
