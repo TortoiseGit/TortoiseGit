@@ -1249,12 +1249,12 @@ BOOL CHwSMTP::SendOnAttach(LPCTSTR lpszFileName)
 {
 	ASSERT ( lpszFileName );
 	CString csAttach;
-	CString csShortFileName = CPathUtils::GetFileNameFromPath(lpszFileName);
+	CString csShortFileName = GetEncodedHeader(CPathUtils::GetFileNameFromPath(lpszFileName));
 
 	csAttach.AppendFormat(L"--%s\r\n", (LPCTSTR)m_csPartBoundary);
-	csAttach.AppendFormat(L"Content-Type: application/octet-stream; file=%s\r\n", (LPCTSTR)csShortFileName);
+	csAttach.AppendFormat(L"Content-Type: application/octet-stream; file=\"%s\"\r\n", (LPCTSTR)csShortFileName);
 	csAttach.AppendFormat(L"Content-Transfer-Encoding: base64\r\n");
-	csAttach.AppendFormat(L"Content-Disposition: attachment; filename=%s\r\n\r\n", (LPCTSTR)csShortFileName);
+	csAttach.AppendFormat(L"Content-Disposition: attachment; filename=\"%s\"\r\n\r\n", (LPCTSTR)csShortFileName);
 
 	auto dwFileSize = GetFileSize(lpszFileName);
 	if ( dwFileSize > 5*1024*1024 )
