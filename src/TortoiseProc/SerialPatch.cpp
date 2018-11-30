@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2016 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2016, 2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -24,81 +24,66 @@
 CSerialPatch::CSerialPatch()
 {}
 
-
 CSerialPatch::~CSerialPatch()
 {}
+
+#define FROMHEADER "From: "
+#define DATEHEADER "Date: "
+#define SUBJECTHEADER "Subject: "
 
 int CSerialPatch::Parse(const CString& pathfile, bool parseBody)
 {
 	m_PathFile = pathfile;
 
 	CFile PatchFile;
-
 	if (!PatchFile.Open(m_PathFile, CFile::modeRead))
 		return -1;
 
 	PatchFile.Read(CStrBufA(m_Body, (UINT)PatchFile.GetLength()), (UINT)PatchFile.GetLength());
 	PatchFile.Close();
 
-	try
+	int start = 0;
+	do
 	{
-		int start = 0;
-		CStringA one;
-		one = m_Body.Tokenize("\n", start);
-
-		if (start == -1)
-			return -1;
-		one = m_Body.Tokenize("\n", start);
-		if (one.GetLength()>6)
-			CGit::StringAppend(&m_Author, (BYTE*)(LPCSTR)one + 6, CP_UTF8, one.GetLength() - 6);
-		m_Author.TrimRight(L'\r');
-
-		if (start == -1)
-			return -1;
-		one = m_Body.Tokenize("\n", start);
-		if (one.GetLength()>6)
-			CGit::StringAppend(&m_Date, (BYTE*)(LPCSTR)one + 6, CP_UTF8, one.GetLength() - 6);
-		m_Date.TrimRight(L'\r');
-
-		if (start == -1)
-			return -1;
-		one = m_Body.Tokenize("\n", start);
-		if (one.GetLength()>9)
+		CStringA line = m_Body.Tokenize("\n", start);
+		if (CStringUtils::StartsWith(line, FROMHEADER))
 		{
-			CGit::StringAppend(&m_Subject, (BYTE*)(LPCSTR)one + 9, CP_UTF8, one.GetLength() - 9);
+			CGit::StringAppend(&m_Author, (BYTE*)(LPCSTR)line + (int)strlen(FROMHEADER), CP_UTF8, line.GetLength() - (int)strlen(FROMHEADER));
+			m_Author.TrimRight(L'\r');
+		}
+		else if (CStringUtils::StartsWith(line, DATEHEADER))
+		{
+			CGit::StringAppend(&m_Date, (BYTE*)(LPCSTR)line + (int)strlen(DATEHEADER), CP_UTF8, line.GetLength() - (int)strlen(DATEHEADER));
+			m_Date.TrimRight(L'\r');
+		}
+		else if (CStringUtils::StartsWith(line, SUBJECTHEADER))
+		{
+			CGit::StringAppend(&m_Subject, (BYTE*)(LPCSTR)line + (int)strlen(SUBJECTHEADER), CP_UTF8, line.GetLength() - (int)strlen(SUBJECTHEADER));
 			while (m_Body.GetLength() > start && m_Body.GetAt(start) == L' ')
 			{
-				one = m_Body.Tokenize("\n", start);
-				CGit::StringAppend(&m_Subject, (BYTE*)(LPCSTR)one, CP_UTF8, one.GetLength());
+				line = m_Body.Tokenize("\n", start);
+				CGit::StringAppend(&m_Subject, (BYTE*)(LPCSTR)line, CP_UTF8, line.GetLength());
 			}
 			m_Subject.TrimRight(L'\r');
 		}
 
-		if (!parseBody)
-			return 0;
-
-		while (start > 0)
+		if (start >= 1 && m_Body.Mid(start - 1, 2) == L"\n\n")
+			break;
+		if (start >= 4 && m_Body.Mid(start - 4, 4) == L"\r\n\r\n")
 		{
-			if (m_Body.Mid(start - 1, 2) == L"\n\n")
-				break;
-			if (m_Body.Mid(start - 4, 4) == L"\r\n\r\n")
-			{
-				--start;
-				break;
-			}
-			m_Body.Tokenize("\n", start);
+			--start;
+			break;
 		}
+	} while (start > 0);
 
-		if (start == -1)
-			return -1;
+	if (!parseBody)
+		return 0;
 
-		if (start + 1 < m_Body.GetLength())
-			CGit::StringAppend(&m_strBody, (BYTE*)(LPCSTR)m_Body + start + 1, CP_UTF8, m_Body.GetLength() - start - 1);
-	}
-	catch (CException *)
-	{
+	if (start == -1)
 		return -1;
-	}
+
+	if (start + 1 < m_Body.GetLength())
+		CGit::StringAppend(&m_strBody, (BYTE*)(LPCSTR)m_Body + start + 1, CP_UTF8, m_Body.GetLength() - start - 1);
 
 	return 0;
 }

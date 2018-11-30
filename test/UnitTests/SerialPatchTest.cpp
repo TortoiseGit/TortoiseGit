@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016 - TortoiseGit
+// Copyright (C) 2016, 2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -97,4 +97,24 @@ TEST(CSerialPatch, Parse)
 	ASSERT_STREQ(L"[PATCH] RefBrowse: Start new process for showing log", parser7.m_Subject);
 	ASSERT_STREQ(patch1, parser7.m_Body);
 	ASSERT_STREQ(CString(patch1body), parser7.m_strBody);
+
+	// different order and additional headers
+	CStringA patch4header = "From c445609da424a6e6229c469e01ce3df5ef099ddd Mon Sep 17 00:00:00 2001\nContent-Type: text/plain\nSubject: [PATCH 2/3] Remove dynamic linking using GetProcAddress() for APIs\nSomething: else\nDate: Sun, 27 Dec 2015 15:49:34 +0100\nFrom: Sven Strickroth <email@cs-ware.de>\n\n";
+	CStringA patch4body = patch1body;
+	CStringA patch4 = patch4header + patch4body;
+	ASSERT_TRUE(CStringUtils::WriteStringToTextFile(tmpfile, CString(patch4)));
+	CSerialPatch parser8;
+	ASSERT_EQ(0, parser8.Parse(tmpfile, false));
+	ASSERT_STREQ(L"Sven Strickroth <email@cs-ware.de>", parser8.m_Author);
+	ASSERT_STREQ(L"Sun, 27 Dec 2015 15:49:34 +0100", parser8.m_Date);
+	ASSERT_STREQ(L"[PATCH 2/3] Remove dynamic linking using GetProcAddress() for APIs", parser8.m_Subject);
+	ASSERT_STREQ(patch4, parser8.m_Body);
+	ASSERT_TRUE(parser8.m_strBody.IsEmpty());
+	CSerialPatch parser9;
+	ASSERT_EQ(0, parser9.Parse(tmpfile, true));
+	ASSERT_STREQ(L"Sven Strickroth <email@cs-ware.de>", parser9.m_Author);
+	ASSERT_STREQ(L"Sun, 27 Dec 2015 15:49:34 +0100", parser9.m_Date);
+	ASSERT_STREQ(L"[PATCH 2/3] Remove dynamic linking using GetProcAddress() for APIs", parser9.m_Subject);
+	ASSERT_STREQ(patch4, parser9.m_Body);
+	ASSERT_STREQ(CString(patch4body), parser9.m_strBody);
 }
