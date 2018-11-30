@@ -1083,11 +1083,11 @@ BOOL CHwSMTP::SendEmail()
 	return TRUE;
 }
 
-static CStringA EncodeBase64(const char* source, int len)
+static CStringA EncodeBase64(const char* source, int len, bool noWrap)
 {
 	int neededLength = Base64EncodeGetRequiredLength(len);
 	CStringA output;
-	if (Base64Encode((BYTE*)source, len, CStrBufA(output, neededLength), &neededLength, ATL_BASE64_FLAG_NOCRLF))
+	if (Base64Encode((BYTE*)source, len, CStrBufA(output, neededLength), &neededLength, noWrap ? ATL_BASE64_FLAG_NOCRLF : 0))
 		output.Truncate(neededLength);
 	return output;
 }
@@ -1095,7 +1095,7 @@ static CStringA EncodeBase64(const char* source, int len)
 static CStringA EncodeBase64(const CString& source)
 {
 	CStringA buf = CUnicodeUtils::GetUTF8(source);
-	return EncodeBase64(buf, buf.GetLength());
+	return EncodeBase64(buf, buf.GetLength(), true);
 }
 
 CString CHwSMTP::GetEncodedHeader(const CString& text)
@@ -1103,7 +1103,7 @@ CString CHwSMTP::GetEncodedHeader(const CString& text)
 	if (CStringUtils::IsPlainReadableASCII(text))
 		return text;
 
-	return L"=?UTF-8?B?" + CUnicodeUtils::GetUnicode(EncodeBase64(text)) + L"?=";
+	return L"=?UTF-8?B?" + CUnicodeUtils::GetUnicode(EncodeBase64(text), true) + L"?=";
 }
 
 BOOL CHwSMTP::auth()
@@ -1279,7 +1279,7 @@ BOOL CHwSMTP::SendOnAttach(LPCTSTR lpszFileName)
 			return FALSE;
 		}
 		UINT nFileLen = file.Read(pBuf.get(), dwFileSize);
-		filedata = EncodeBase64(pBuf.get(), nFileLen);
+		filedata = EncodeBase64(pBuf.get(), nFileLen, false);
 		filedata += L"\r\n\r\n";
 	}
 	catch (CFileException *e)
