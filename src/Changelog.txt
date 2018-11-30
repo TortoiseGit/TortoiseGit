@@ -28,6 +28,7 @@ Released: unreleased
    The Commit dialog still shows all staged files, this is by design and required for commit to work properly (e.g., that no files get lost in a merge commit).
  * Fixed issue #3264: Remove tag can leave an empty folder in refs/tags
  * Fixed issue #3297: Missing URI-encode of %BUGID%-part by call of issue tracker URL
+ * Fixed issue #3307: Abort Merge on a single file always results in a parameter error message
 
 = Release 2.7.0 =
 Released: 2018-08-19

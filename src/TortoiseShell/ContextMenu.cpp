@@ -1253,7 +1253,7 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				gitCmd += L" /onlymask";
 				break;
 			case ShellMenuMergeAbort:
-				AddPathCommand(gitCmd, L"merge", false);
+				AddPathCommand(gitCmd, L"merge", true);
 				gitCmd += L" /abort";
 				break;
 			case ShellMenuRevert:
