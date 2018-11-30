@@ -810,7 +810,7 @@ BOOL CHwSMTP::SendEmail (
 		m_StrAryAttach.Append ( *pStrAryAttach );
 	}
 	if (m_StrAryAttach.IsEmpty())
-		m_csMIMEContentType.Format(L"text/plain");
+		m_csMIMEContentType = L"text/plain\r\nContent-Transfer-Encoding: 8bit";
 
 	// ´´½¨Socket
 	m_SendSock.Close();
@@ -1216,7 +1216,7 @@ BOOL CHwSMTP::SendBody()
 	{
 		csBody.AppendFormat(L"%s\r\n\r\n", (LPCTSTR)m_csNoMIMEText);
 		csBody.AppendFormat(L"--%s\r\n", (LPCTSTR)m_csPartBoundary);
-		csBody.AppendFormat(L"Content-Type: text/plain\r\nContent-Transfer-Encoding: UTF-8\r\n\r\n");
+		csBody += L"Content-Type: text/plain\r\nContent-Transfer-Encoding: 8bit\r\n\r\n";
 	}
 
 	m_csBody.Replace(L"\n.\n", L"\n..\n");
