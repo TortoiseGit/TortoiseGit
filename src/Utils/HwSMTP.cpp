@@ -849,6 +849,8 @@ BOOL CHwSMTP::SendEmail (
 		m_iSecurityLevel = tls_established;
 	}
 
+	BOOL ret = FALSE;
+
 	SecBuffer ExtraData;
 	SECURITY_STATUS Status;
 
@@ -927,7 +929,7 @@ BOOL CHwSMTP::SendEmail (
 		m_bConnected = TRUE;
 	}
 
-	auto ret = SendEmail();
+	ret = SendEmail();
 
 cleanup:
 	if (m_iSecurityLevel >= ssl)
