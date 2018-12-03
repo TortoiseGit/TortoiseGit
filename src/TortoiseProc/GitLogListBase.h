@@ -583,7 +583,7 @@ protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	afx_msg LRESULT OnLoad(WPARAM wParam, LPARAM lParam);
-	void OnNMDblclkLoglist(NMHDR * /*pNMHDR*/, LRESULT *pResult);
+	virtual void OnNMDblclkLoglist(NMHDR * /*pNMHDR*/, LRESULT *pResult);
 	afx_msg void OnLvnOdfinditemLoglist(NMHDR *pNMHDR, LRESULT *pResult);
 	void PreSubclassWindow() override;
 	virtual BOOL PreTranslateMessage(MSG* pMsg) override;

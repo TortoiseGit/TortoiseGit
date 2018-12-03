@@ -20,6 +20,7 @@
 #include "resource.h"
 #include "refloglist.h"
 #include "LoglistUtils.h"
+#include "AppUtils.h"
 
 IMPLEMENT_DYNAMIC(CRefLogList, CGitLogList)
 
@@ -118,6 +119,25 @@ void CRefLogList::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	default:
 		ASSERT(false);
 	}
+}
+
+void CRefLogList::OnNMDblclkLoglist(NMHDR* /*pNMHDR*/, LRESULT* pResult)
+{
+	// a double click on an entry in the revision list has happened
+	*pResult = 0;
+
+	POSITION pos = GetFirstSelectedItemPosition();
+	int indexNext = GetNextSelectedItem(pos);
+	if (indexNext < 0)
+		return;
+
+	auto pSelLogEntry = m_arShownList.SafeGetAt(indexNext);
+	if (!pSelLogEntry)
+		return;
+
+	CString cmdline;
+	cmdline.Format(L"/command:log /path:\"%s\" /endrev:%s", (LPCTSTR)g_Git.CombinePath(m_Path), (LPCTSTR)pSelLogEntry->m_CommitHash.ToString());
+	CAppUtils::RunTortoiseGitProc(cmdline);
 }
 
 void CRefLogList::OnNMCustomdrawLoglist(NMHDR * /*pNMHDR*/, LRESULT *pResult)

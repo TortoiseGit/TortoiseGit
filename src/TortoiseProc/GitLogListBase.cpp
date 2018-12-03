@@ -1898,7 +1898,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					if (parentHash.size() == 1)
 					{
 						popup.AppendMenuIcon(ID_COMPAREWITHPREVIOUS, IDS_LOG_POPUP_COMPAREWITHPREVIOUS, IDI_DIFF);
-						if (CRegDWORD(L"Software\\TortoiseGit\\DiffByDoubleClickInLog", FALSE))
+						if (CRegDWORD(L"Software\\TortoiseGit\\DiffByDoubleClickInLog", FALSE) && m_ColumnRegKey != L"reflog")
 							popup.SetDefaultItem(ID_COMPAREWITHPREVIOUS, FALSE);
 						requiresSeparator = true;
 					}
@@ -1909,7 +1909,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						for (size_t i = 0; i < parentInfo.size(); ++i)
 						{
 							diffmenu.AppendMenuIcon(ID_COMPAREWITHPREVIOUS + ((i + 1) << 16), parentInfo[i]);
-							if (i == 0 && CRegDWORD(L"Software\\TortoiseGit\\DiffByDoubleClickInLog", FALSE))
+							if (i == 0 && CRegDWORD(L"Software\\TortoiseGit\\DiffByDoubleClickInLog", FALSE) && m_ColumnRegKey != L"reflog")
 							{
 								popup.SetDefaultItem(ID_COMPAREWITHPREVIOUS, FALSE);
 								diffmenu.SetDefaultItem((UINT)(ID_COMPAREWITHPREVIOUS + ((i + 1) << 16)), FALSE);
@@ -2038,7 +2038,11 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			if(!pSelLogEntry->m_CommitHash.IsEmpty())
 			{
 				if ((m_ContextMenuMask & GetContextMenuBit(ID_LOG)) && selectedCount == 1)
-						popup.AppendMenuIcon(ID_LOG, IDS_LOG_POPUP_LOG, IDI_LOG);
+				{
+					popup.AppendMenuIcon(ID_LOG, IDS_LOG_POPUP_LOG, IDI_LOG);
+					if (m_ColumnRegKey == L"reflog")
+						popup.SetDefaultItem(ID_LOG, FALSE);
+				}
 
 				if (m_ContextMenuMask&GetContextMenuBit(ID_REPOBROWSE))
 					popup.AppendMenuIcon(ID_REPOBROWSE, IDS_LOG_BROWSEREPO, IDI_REPOBROWSE);
