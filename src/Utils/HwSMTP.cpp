@@ -839,14 +839,16 @@ BOOL CHwSMTP::SendEmail (
 		return FALSE;
 	}
 
-	if (m_iSecurityLevel == want_tls) {
+	if (m_iSecurityLevel <= want_tls)
+	{
 		if (!GetResponse("220"))
 			return FALSE;
 		m_bConnected = TRUE;
 		Send(L"STARTTLS\r\n");
-		if (!GetResponse("220"))
+		if (GetResponse("220"))
+			m_iSecurityLevel = tls_established;
+		else if (m_iSecurityLevel == want_tls)
 			return FALSE;
-		m_iSecurityLevel = tls_established;
 	}
 
 	BOOL ret = FALSE;
