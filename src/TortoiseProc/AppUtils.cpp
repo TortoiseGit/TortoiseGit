@@ -142,6 +142,7 @@ bool CAppUtils::StashSave(HWND hWnd, const CString& msg, bool showPull, bool pul
 			if (showMerge)
 				postCmdList.emplace_back(IDI_MERGE, IDS_MENUMERGE, [&]{ CAppUtils::Merge(hWnd, &mergeRev, true); });
 			postCmdList.emplace_back(IDI_UNSHELVE, IDS_MENUSTASHPOP, [&hWnd] { CAppUtils::StashPop(hWnd); });
+			postCmdList.emplace_back(IDI_UNSHELVE, IDS_MENUSTASHAPPLY, [&hWnd] { CAppUtils::StashApply(hWnd, L""); });
 		};
 		return (progress.DoModal() == IDOK);
 	}
