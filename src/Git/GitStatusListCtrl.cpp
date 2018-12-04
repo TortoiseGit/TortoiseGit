@@ -47,6 +47,7 @@
 #include "SysInfo.h"
 #include "SysProgressDlg.h"
 #include "CreateChangelistDlg.h"
+#include "GitAdminDir.h"
 
 const UINT CGitStatusListCtrl::GITSLNM_ITEMCOUNTCHANGED
 					= ::RegisterWindowMessage(L"GITSLNM_ITEMCOUNTCHANGED");
@@ -410,6 +411,7 @@ BOOL CGitStatusListCtrl::GetStatus ( const CTGitPathList* pathList
 			if (!(*pathList)[i].IsDirectory())
 				m_setDirectFiles.insert((*pathList)[i].GetGitPathString());
 	}
+	LoadChangelists();
 
 #if 0
 	int refetchcounter = 0;
@@ -2515,15 +2517,20 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 #endif
 			case IDGITLC_CREATEIGNORECS:
 				MoveToChangelist(GITSLC_IGNORECHANGELIST);
+				SaveChangelists();
 				break;
 			case IDGITLC_REMOVEFROMCS:
 				RemoveFromChangelist();
+				SaveChangelists();
 				break;
 			case IDGITLC_CREATECS:
 			{
 				CCreateChangelistDlg dlg;
 				if (dlg.DoModal() == IDOK)
+				{
 					MoveToChangelist(dlg.m_sName);
+					SaveChangelists();
+				}
 			}
 				break;
 			default:
@@ -2548,6 +2555,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					if (!sChangelist.IsEmpty())
 					{
 						MoveToChangelist(sChangelist);
+						SaveChangelists();
 					}
 					SetRedraw(TRUE);
 				}
@@ -2576,14 +2584,12 @@ void CGitStatusListCtrl::MoveToChangelist(const CString& name)
 	POSITION pos = GetFirstSelectedItemPosition();
 	while (pos)
 	{
-		int index = GetNextSelectedItem(pos);
-		auto e = GetListEntry(index);
-		m_pathToChangelist.insert_or_assign(e->GetGitPathString(), name);
+		auto pGitPath = GetListEntry(GetNextSelectedItem(pos));
+		m_pathToChangelist.insert_or_assign(pGitPath->GetGitPathString(), name);
 	}
 
 	PrepareGroups();
 
-	auto it = m_changelists.find(name);
 	for (int i = 0; i < GetItemCount(); ++i)
 		SetItemGroup(i, GetListEntry(i));
 }
@@ -2595,9 +2601,8 @@ void CGitStatusListCtrl::RemoveFromChangelist()
 	POSITION pos = GetFirstSelectedItemPosition();
 	while (pos)
 	{
-		int index = GetNextSelectedItem(pos);
-		CTGitPath* GitPath = GetListEntry(index);
-		m_pathToChangelist.erase(GitPath->GetGitPathString());
+		auto pGitPath = GetListEntry(GetNextSelectedItem(pos));
+		m_pathToChangelist.erase(pGitPath->GetGitPathString());
 	}
 
 	PrepareGroups();
@@ -3983,6 +3988,7 @@ void CGitStatusListCtrl::Clear()
 	this->m_arListArray.clear();
 	this->m_arStatusArray.clear();
 	this->m_changelists.clear();
+	this->m_pathToChangelist.clear();
 }
 
 bool CGitStatusListCtrl::CheckMultipleDiffs()
@@ -4567,3 +4573,95 @@ ULONG CGitStatusListCtrl::GetGestureStatus(CPoint /*ptTouch*/)
 {
 	return 0;
 }
+
+#define CHANGELIST_FILE_NAME	L"tgitchangelist"
+
+void CGitStatusListCtrl::LoadChangelists()
+{
+	CString tgitChangelistPath;
+	if (!GitAdminDir::GetWorktreeAdminDirPath(g_Git.m_CurrentDir, tgitChangelistPath))
+	{
+		CMessageBox::Show(GetSafeHwnd(), IDS_ERR_CHANGELIST_LOAD, IDS_APPNAME, MB_ICONERROR);
+		return;
+	}
+
+	tgitChangelistPath += CHANGELIST_FILE_NAME;
+
+	if (!PathFileExists(tgitChangelistPath))
+		return;
+
+	try
+	{
+		CStdioFile file(tgitChangelistPath, CFile::typeText | CFile::modeRead | CFile::shareDenyWrite);
+		CString changelistName = GITSLC_IGNORECHANGELIST;
+		CString strLine;
+		while (file.ReadString(strLine))
+		{
+			strLine = strLine.Trim();
+			if (strLine.IsEmpty())
+				continue;
+
+			if ((strLine.Left(1) == L'<') && (strLine.Right(1) == L'>'))
+			{ //this is changelist name
+				changelistName = strLine.Mid(1, strLine.GetLength() - 2);
+				m_changelists.insert_or_assign(changelistName, 0);
+			}
+			else // this is git path
+				m_pathToChangelist.insert_or_assign(strLine, changelistName);
+		}
+		file.Close();
+	}
+	catch (CFileException* pE)
+	{
+		pE->Delete();
+		CMessageBox::Show(GetSafeHwnd(), IDS_ERR_CHANGELIST_LOAD, IDS_APPNAME, MB_ICONERROR);
+	}
+}
+
+void CGitStatusListCtrl::SaveChangelists()
+{
+	CString tgitChangelistPath;
+	if (!GitAdminDir::GetWorktreeAdminDirPath(g_Git.m_CurrentDir, tgitChangelistPath))
+	{
+		CMessageBox::Show(GetSafeHwnd(), IDS_ERR_CHANGELIST_SAVE, IDS_APPNAME, MB_ICONERROR);
+		return;
+	}
+
+	tgitChangelistPath += CHANGELIST_FILE_NAME;
+
+	std::map<CString, std::set<CString>> changelistToPath;
+	for (auto it = m_pathToChangelist.cbegin(); it != m_pathToChangelist.cend(); ++it)
+	{
+		auto itChangelist = changelistToPath.find(it->second);
+		if (itChangelist == changelistToPath.end())
+		{
+			std::set<CString> paths;
+			paths.insert(it->first);
+			changelistToPath.insert(std::make_pair(it->second, paths));
+		}
+		else
+			itChangelist->second.insert(it->first);
+	}
+
+	try
+	{
+		CStdioFile file(tgitChangelistPath, CFile::typeText | CFile::modeCreate | CFile::modeWrite | CFile::shareDenyWrite);
+		for (auto itChangelist = changelistToPath.cbegin(); itChangelist != changelistToPath.cend(); ++itChangelist)
+		{
+			if (itChangelist != changelistToPath.cbegin())
+				file.WriteString(L"\n");
+
+			file.WriteString(L"<" + itChangelist->first + L">\n");
+			for (auto itPath = itChangelist->second.cbegin(); itPath != itChangelist->second.cend(); ++itPath)
+				file.WriteString(*itPath + L"\n");
+		}
+
+		file.Close();
+	}
+	catch (CFileException* pE)
+	{
+		pE->Delete();
+		CMessageBox::Show(GetSafeHwnd(), IDS_ERR_CHANGELIST_SAVE, IDS_APPNAME, MB_ICONERROR);
+	}
+}
+

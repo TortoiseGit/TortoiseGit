@@ -697,6 +697,8 @@ private:
 	bool HasChangelistInSelection();
 	void MoveToChangelist(const CString& name);
 	void RemoveFromChangelist();
+	void LoadChangelists();
+	void SaveChangelists();
 	int GetChangeListIdForPath(const CTGitPath* pGitPath);
 
 	// Determines group and puts the item to the group
