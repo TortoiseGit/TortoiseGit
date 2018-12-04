@@ -599,7 +599,12 @@ BOOL CAppUtils::StartUnifiedDiffViewer(const CString& patchfile, const CString& 
 	else
 		viewer += L" \"" + patchfile + L'"';
 	if (viewer.Find(L"%title") >= 0)
-		viewer.Replace(L"%title", title);
+	{
+		if (viewer.Find(L"\"%title\"") >= 0)
+			viewer.Replace(L"%title", title);
+		else
+			viewer.Replace(L"%title", L'"' + title + L'"');
+	}
 
 	if(!LaunchApplication(viewer, IDS_ERR_DIFFVIEWSTART, !!bWait))
 		return FALSE;
