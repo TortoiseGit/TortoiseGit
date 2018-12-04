@@ -156,25 +156,26 @@ C:\Path-To\compare.exe /max /wait /title1:%bname /title2:%yname
 			uses the secondary diff tool.
 		</para>
 		<para>
-			A viewer program for unified-diff files (GNU diff or patch files).
-			No parameters are required.
-			The <guilabel>Default</guilabel> option is to check for
-			a file association for <filename>.diff</filename> files,
-			and then for <filename>.txt</filename> files.
-			If you don't have a viewer for <filename>.diff</filename>
-			files, you will most likely get NotePad.
+			Instead of TortoiseUDiff an external viewer program for unified-diff files (GNU diff or patch files) may be used.
+			Basically, there is no parameter required - the file name if the unified diff file to be opened will be appended automatically.
+			If you need to pass it as a different parameter the substitution <literal>%1</literal> can be used.
+			There also is the parameter substitution <literal>%title</literal> available for passing the title to be shown in the title bar (i.e., meta data of the diff).
 		</para>
 		<para>
-			The original Windows NotePad program does not behave
-			well on files which do not have standard CR-LF
-			line-endings. Since most unified diff files have pure
-			LF line-endings, they do not view well in NotePad.
-			However, you can use a free NotePad replacement
-			<ulink url="http://www.flos-freeware.ch/notepad2.html">
-				<citetitle>Notepad2</citetitle>
-			</ulink> (this is also shipped with TortoiseGit)
-			which not only displays the line-endings correctly,
-			but also colour codes the added and removed lines.
+			For example, with Notepad2 (shipped with TortoiseGit):
+<screen>
+Notepad2.exe /s "Diff Files" /t %title
+</screen>
+			or (equivalent)
+<screen>
+Notepad2.exe /s "Diff Files" /t %title %1
+</screen>
+			</para>
+		<para>
+			If you have configured an alternate unified diff tool, you can access
+			TortoiseGitUDiff <emphasis>and</emphasis> the third party tool
+			from the context menus. When you hold the <keycap>Shift</keycap>-key
+			while opening the context menu the secondary unified diff tool is started.
 		</para>
 	</sect3>
 	<sect3 id="tgit-dug-settings-Merge">
