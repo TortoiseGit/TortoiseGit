@@ -977,6 +977,9 @@
     <ClCompile Include="..\Utils\MiscUI\EditWordBreak.cpp">
       <Filter>Utils\UI</Filter>
     </ClCompile>
+    <ClCompile Include="CreateChangelistDlg.cpp">
+      <Filter>Utility Dialogs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1839,6 +1842,9 @@
     </ClInclude>
     <ClInclude Include="..\Utils\MiscUI\EditWordBreak.h">
       <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CreateChangelistDlg.h">
+      <Filter>Utility Dialogs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

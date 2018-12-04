@@ -46,6 +46,7 @@
 #include "BrowseFolder.h"
 #include "SysInfo.h"
 #include "SysProgressDlg.h"
+#include "CreateChangelistDlg.h"
 
 const UINT CGitStatusListCtrl::GITSLNM_ITEMCOUNTCHANGED
 					= ::RegisterWindowMessage(L"GITSLNM_ITEMCOUNTCHANGED");
@@ -1829,35 +1830,32 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					popup.InsertMenu((UINT)-1, MF_BYPOSITION | MF_POPUP, (UINT_PTR)clipSubMenu.m_hMenu, temp);
 				}
 
-#if 0
-				if ((m_dwContextMenus & SVNSLC_POPCHANGELISTS))
+				if ((m_dwContextMenus & GITSLC_POPCHANGELISTS)
 					&&(wcStatus != git_wc_status_unversioned)&&(wcStatus != git_wc_status_none))
 				{
 					popup.AppendMenu(MF_SEPARATOR);
 					// changelist commands
-					size_t numChangelists = GetNumberOfChangelistsInSelection();
-					if (numChangelists > 0)
-						popup.AppendMenuIcon(IDSVNLC_REMOVEFROMCS, IDS_STATUSLIST_CONTEXT_REMOVEFROMCS);
-					if ((!entry->IsFolder())&&(changelistSubMenu.CreateMenu()))
+					if (HasChangelistInSelection())
+						popup.AppendMenuIcon(IDGITLC_REMOVEFROMCS, IDS_STATUSLIST_CONTEXT_REMOVEFROMCS);
+					if (changelistSubMenu.CreateMenu())
 					{
 						CString temp;
 						temp.LoadString(IDS_STATUSLIST_CONTEXT_CREATECS);
-						changelistSubMenu.AppendMenu(MF_STRING | MF_ENABLED, IDSVNLC_CREATECS, temp);
+						changelistSubMenu.AppendMenu(MF_STRING | MF_ENABLED, IDGITLC_CREATECS, temp);
 
-						if (entry->changelist.Compare(SVNSLC_IGNORECHANGELIST))
 						{
 							changelistSubMenu.AppendMenu(MF_SEPARATOR);
-							changelistSubMenu.AppendMenu(MF_STRING | MF_ENABLED, IDSVNLC_CREATEIGNORECS, SVNSLC_IGNORECHANGELIST);
+							changelistSubMenu.AppendMenu(MF_STRING | MF_ENABLED, IDGITLC_CREATEIGNORECS, GITSLC_IGNORECHANGELIST);
 						}
 
 						if (!m_changelists.empty())
 						{
 							// find the changelist names
 							bool bNeedSeparator = true;
-							int cmdID = IDSVNLC_MOVETOCS;
-							for (auto it = m_changelists.cbegin(); it != m_changelists.cend(); ++it)
+							int cmdID = IDGITLC_MOVETOCS;
+							for (auto it = m_changelists.cbegin(); it != m_changelists.cend(); ++it, ++cmdID)
 							{
-								if ((entry->changelist.Compare(it->first))&&(it->first.Compare(SVNSLC_IGNORECHANGELIST)))
+								if (it->first.Compare(GITSLC_IGNORECHANGELIST))
 								{
 									if (bNeedSeparator)
 									{
@@ -1865,7 +1863,6 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 										bNeedSeparator = false;
 									}
 									changelistSubMenu.AppendMenu(MF_STRING | MF_ENABLED, cmdID, it->first);
-									cmdID++;
 								}
 							}
 						}
@@ -1873,7 +1870,6 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						popup.AppendMenu(MF_POPUP|MF_STRING, (UINT_PTR)changelistSubMenu.GetSafeHmenu(), temp);
 					}
 				}
-#endif
 			}
 
 			m_hShellMenu = nullptr;
@@ -2516,65 +2512,46 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					CAppUtils::LaunchApplication(commandline, nullptr, false);
 				}
 				break;
-			case IDSVNLC_CREATEIGNORECS:
-				CreateChangeList(SVNSLC_IGNORECHANGELIST);
+#endif
+			case IDGITLC_CREATEIGNORECS:
+				MoveToChangelist(GITSLC_IGNORECHANGELIST);
 				break;
-			case IDSVNLC_CREATECS:
-				{
-					CCreateChangelistDlg dlg;
-					if (dlg.DoModal() == IDOK)
-						CreateChangeList(dlg.m_sName);
-				}
+			case IDGITLC_REMOVEFROMCS:
+				RemoveFromChangelist();
+				break;
+			case IDGITLC_CREATECS:
+			{
+				CCreateChangelistDlg dlg;
+				if (dlg.DoModal() == IDOK)
+					MoveToChangelist(dlg.m_sName);
+			}
 				break;
 			default:
 				{
-					if (cmd < IDSVNLC_MOVETOCS)
+					if (cmd < IDGITLC_MOVETOCS)
 						break;
-					CTSVNPathList changelistItems;
-					FillListOfSelectedItemPaths(changelistItems);
 
 					// find the changelist name
 					CString sChangelist;
-					int cmdID = IDSVNLC_MOVETOCS;
+					int cmdID = IDGITLC_MOVETOCS;
+
 					SetRedraw(FALSE);
-					for (auto it = m_changelists.cbegin(); it != m_changelists.cend(); ++it)
+					for (auto it = m_changelists.cbegin(); it != m_changelists.cend(); ++it, ++cmdID)
 					{
-						if ((it->first.Compare(SVNSLC_IGNORECHANGELIST))&&(entry->changelist.Compare(it->first)))
+						if (cmd == cmdID)
 						{
-							if (cmd == cmdID)
-								sChangelist = it->first;
-							cmdID++;
+							sChangelist = it->first;
+							break;
 						}
 					}
+
 					if (!sChangelist.IsEmpty())
 					{
-						SVN git;
-						if (git.AddToChangeList(changelistItems, sChangelist, git_depth_empty))
-						{
-							// The changelists were moved, but we now need to run through the selected items again
-							// and update their changelist
-							POSITION pos = GetFirstSelectedItemPosition();
-							int index;
-							while ((index = GetNextSelectedItem(pos)) >= 0)
-							{
-								FileEntry * e = GetListEntry(index);
-								e->changelist = sChangelist;
-								if (!e->IsFolder())
-								{
-									if (m_changelists.find(e->changelist)!=m_changelists.end())
-										SetItemGroup(index, m_changelists[e->changelist]);
-									else
-										SetItemGroup(index, 0);
-								}
-							}
-						}
-						else
-							MessageBox(git.GetLastErrorMessage(), L"TortoiseGit", MB_ICONERROR);
+						MoveToChangelist(sChangelist);
 					}
 					SetRedraw(TRUE);
 				}
 				break;
-#endif
 
 			} // switch (cmd)
 			m_bWaitCursor = false;
@@ -2590,6 +2567,43 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			//}
 		} // if (popup.CreatePopupMenu())
 	} // if (selIndex >= 0)
+}
+
+void CGitStatusListCtrl::MoveToChangelist(const CString& name)
+{
+	CAutoReadLock locker(m_guard);
+
+	POSITION pos = GetFirstSelectedItemPosition();
+	while (pos)
+	{
+		int index = GetNextSelectedItem(pos);
+		auto e = GetListEntry(index);
+		m_pathToChangelist.insert_or_assign(e->GetGitPathString(), name);
+	}
+
+	PrepareGroups();
+
+	auto it = m_changelists.find(name);
+	for (int i = 0; i < GetItemCount(); ++i)
+		SetItemGroup(i, GetListEntry(i));
+}
+
+void CGitStatusListCtrl::RemoveFromChangelist()
+{
+	CAutoReadLock locker(m_guard);
+
+	POSITION pos = GetFirstSelectedItemPosition();
+	while (pos)
+	{
+		int index = GetNextSelectedItem(pos);
+		CTGitPath* GitPath = GetListEntry(index);
+		m_pathToChangelist.erase(GitPath->GetGitPathString());
+	}
+
+	PrepareGroups();
+
+	for (int i = 0; i < GetItemCount(); ++i)
+		SetItemGroup(i, GetListEntry(i));
 }
 
 void CGitStatusListCtrl::SetGitIndexFlagsForSelectedFiles(UINT message, BOOL assumevalid, BOOL skipworktree)
@@ -3600,22 +3614,20 @@ bool CGitStatusListCtrl::CopySelectedEntriesToClipboard(DWORD dwCols, int cmd)
 	return CStringUtils::WriteAsciiStringToClipboard(sClipboard);
 }
 
-size_t CGitStatusListCtrl::GetNumberOfChangelistsInSelection()
+bool CGitStatusListCtrl::HasChangelistInSelection()
 {
-#if 0
 	CAutoReadLock locker(m_guard);
 	std::set<CString> changelists;
 	POSITION pos = GetFirstSelectedItemPosition();
 	int index;
 	while ((index = GetNextSelectedItem(pos)) >= 0)
 	{
-		FileEntry * entry = GetListEntry(index);
-		if (!entry->changelist.IsEmpty())
-			changelists.insert(entry->changelist);
+		auto pGitPath = GetListEntry(index);
+		auto it = m_pathToChangelist.find(pGitPath->GetGitPathString());
+		if (it != m_pathToChangelist.cend())
+			return true;
 	}
-	return changelists.size();
-#endif
-	return 0;
+	return false;
 }
 
 bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
@@ -3730,6 +3742,11 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 	grp.iGroupId = groupindex;
 	grp.uAlign = LVGA_HEADER_LEFT;
 	InsertGroup(groupindex++, &grp);
+
+	// Refresh changelist to group index map
+	m_changelists.clear();
+	for (auto it = m_pathToChangelist.cbegin(); it != m_pathToChangelist.cend(); ++it)
+		m_changelists.insert_or_assign(it->second, 0);
 
 	for (auto it = m_changelists.begin(); it != m_changelists.end(); ++it)
 	{

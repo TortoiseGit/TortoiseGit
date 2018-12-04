@@ -692,9 +692,11 @@ private:
 	/// Returns the group number to which the group header belongs
 	/// If the point is not over a group header, -1 is returned
 	int GetGroupFromPoint(POINT * ppt);
-	/// Returns the number of change lists the selection has
-	size_t GetNumberOfChangelistsInSelection();
 
+	/// Returns the number of change lists the selection has
+	bool HasChangelistInSelection();
+	void MoveToChangelist(const CString& name);
+	void RemoveFromChangelist();
 	int GetChangeListIdForPath(const CTGitPath* pGitPath);
 
 	// Determines group and puts the item to the group
