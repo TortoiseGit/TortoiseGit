@@ -155,28 +155,36 @@ C:\Path-To\compare.exe /max /wait /title1:%bname /title2:%yname
 			</menuchoice>
 			uses the secondary diff tool.
 		</para>
-		<para>
-			Instead of TortoiseUDiff an external viewer program for unified-diff files (GNU diff or patch files) may be used.
-			Basically, there is no parameter required - the file name if the unified diff file to be opened will be appended automatically.
-			If you need to pass it as a different parameter the substitution <literal>%1</literal> can be used.
-			There also is the parameter substitution <literal>%title</literal> available for passing the title to be shown in the title bar (i.e., meta data of the diff).
-		</para>
-		<para>
-			For example, with Notepad2 (shipped with TortoiseGit):
+		<sect4 id="tgit-dug-settings-Diff-unified-diff-viewer">
+			<title>Unified-Diff/GNU Diff/Patch File Viewer</title>
+			<indexterm>
+				<primary>unified-diff viewer</primary>
+				<primary>GNU diff viewer</primary>
+				<primary>patch file viewer</primary>
+			</indexterm>
+			<para>
+				Instead of TortoiseUDiff an external viewer program for unified-diff files (GNU diff or patch files) may be used.
+				Basically, there is no parameter required - the file name if the unified diff file to be opened will be appended automatically.
+				If you need to pass it as a different parameter the substitution <literal>%1</literal> can be used.
+				There also is the parameter substitution <literal>%title</literal> available for passing the title to be shown in the title bar (i.e., meta data of the diff).
+			</para>
+			<para>
+				For example, with Notepad2 (shipped with TortoiseGit):
 <screen>
 Notepad2.exe /s "Diff Files" /t %title
 </screen>
-			or (equivalent)
+				or (equivalent)
 <screen>
 Notepad2.exe /s "Diff Files" /t %title %1
 </screen>
 			</para>
-		<para>
-			If you have configured an alternate unified diff tool, you can access
-			TortoiseGitUDiff <emphasis>and</emphasis> the third party tool
-			from the context menus. When you hold the <keycap>Shift</keycap>-key
-			while opening the context menu the secondary unified diff tool is started.
-		</para>
+			<para>
+				If you have configured an alternate unified diff tool, you can access
+				TortoiseGitUDiff <emphasis>and</emphasis> the third party tool
+				from the context menus. When you hold the <keycap>Shift</keycap>-key
+				while opening the context menu the secondary unified diff tool is started.
+			</para>
+		</sect4>
 	</sect3>
 	<sect3 id="tgit-dug-settings-Merge">
 		<title>Merge Tool</title>
