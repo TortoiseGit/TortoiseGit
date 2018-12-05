@@ -804,7 +804,7 @@
 						<File Id="F__GitWCRev" Name="GitWCRev.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\GitWCRev.exe" />
 						<File Id="F__GitWCRevCOM" Name="GitWCRevCOM.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\GitWCRevCOM.exe" />
 
-						<!-- set paths we use to find the executables -->
+						<!-- App Paths to support Start, Run -->
 						<RegistryKey Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\App Paths\GitWCRev.exe" />
 						<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\App Paths\GitWCRev.exe" Name="Path" Value="[INSTALLDIR]bin" Type="string" />
 						<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\App Paths\GitWCRev.exe" Value="[INSTALLDIR]bin\GitWCRev.exe" Type="string" />
@@ -843,7 +843,7 @@
 
 					<?if $(var.Platform) = "x64" ?>
 					<Component Id="C__TortoiseGitGitWCRev32" Guid="$(var.GuidTortoiseGitGitWCRev32)" Win64="no">
-						<!-- set paths we use to find the executables -->
+						<!-- App Paths to support Start, Run -->
 						<RegistryKey Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\App Paths\GitWCRev.exe" />
 						<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\App Paths\GitWCRev.exe" Name="Path" Value="[INSTALLDIR]bin" Type="string" />
 						<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\App Paths\GitWCRev.exe" Value="[INSTALLDIR]bin\GitWCRev.exe" Type="string" />
