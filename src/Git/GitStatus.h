@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -80,9 +80,6 @@ public:
 	static int GetDirStatus(const CString& gitdir, const CString& path, git_wc_status_kind* status, BOOL IsFull = false, BOOL IsRecursive = false, BOOL isIgnore = true);
 	static int EnumDirStatus(const CString& gitdir, const CString& path, git_wc_status_kind* dirstatus, FILL_STATUS_CALLBACK callback, void* pData);
 	static int GetFileList(const CString& path, std::vector<CGitFileName>& list, bool& isRepoRoot, bool ignoreCase);
-	static bool CheckAndUpdateIgnoreFiles(const CString& gitdir, const CString& subpaths, bool isDir);
-	/** Checks whether a file/directory is ignored - does not reload .ignore files */
-	static bool IsIgnored(const CString &gitdir, const CString &path, bool isDir);
 	static bool IsExistIndexLockFile(CString gitdir);
 	static bool ReleasePath(const CString &gitdir);
 	static bool ReleasePathsRecursively(const CString &rootpath);

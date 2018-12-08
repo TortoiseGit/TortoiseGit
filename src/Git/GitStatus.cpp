@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2018 - TortoiseGit
 
@@ -296,16 +296,6 @@ static bool IsDirectSubmodule(const CString& indexPath, int prefix)
 }
 
 #ifdef TGITCACHE
-bool GitStatus::CheckAndUpdateIgnoreFiles(const CString& gitdir, const CString& subpaths, bool isDir)
-{
-	return g_IgnoreList.CheckAndUpdateIgnoreFiles(gitdir, subpaths, isDir);
-}
-
-bool GitStatus::IsIgnored(const CString& gitdir, const CString& path, bool isDir)
-{
-	return g_IgnoreList.IsIgnore(path, gitdir, isDir);
-}
-
 int GitStatus::GetFileList(const CString& path, std::vector<CGitFileName>& list, bool& isRepoRoot, bool ignoreCase)
 {
 	WIN32_FIND_DATA data;
