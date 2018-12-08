@@ -809,7 +809,7 @@ int CGitIgnoreList::FetchIgnoreFile(const CString &gitdir, const CString &gitign
 	return 0;
 }
 
-bool CGitIgnoreList::CheckAndUpdateIgnoreFiles(const CString& gitdir, const CString& path, bool isDir)
+bool CGitIgnoreList::CheckAndUpdateIgnoreFiles(const CString& gitdir, const CString& path, bool isDir, std::set<CString>* lastChecked)
 {
 	CString temp(gitdir);
 	temp += L'\\';
@@ -827,6 +827,13 @@ bool CGitIgnoreList::CheckAndUpdateIgnoreFiles(const CString& gitdir, const CStr
 	bool updated = false;
 	while (!temp.IsEmpty())
 	{
+		if (lastChecked)
+		{
+			if (lastChecked->find(temp) != lastChecked->end())
+				return updated;
+			lastChecked->insert(temp);
+		}
+
 		temp += L"\\.gitignore";
 
 		if (CheckFileChanged(temp))

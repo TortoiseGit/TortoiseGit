@@ -16,6 +16,7 @@ Released: unreleased
  * Updte libgit2
  * Fixed issue #3304: Double click on stash list item does nothing, show log instead
  * Fixed issue #3305: Stash Changes/Save, then allow Stash Apply
+ * TGitCache: Speed up scanning of folders with lots of unversioned files
 
 == Bug Fixes ==
  * Fixed issue #3250: GitWCRev: IsGitItem return true for item that had never been committed

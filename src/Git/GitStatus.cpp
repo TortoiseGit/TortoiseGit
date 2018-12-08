@@ -358,6 +358,7 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 	size_t indexpos = SearchInSortVector(*indexptr, path, path.GetLength(), indexptr->IsIgnoreCase()); // match path prefix, (sub)folders end with slash
 	size_t treepos = SearchInSortVector(*treeptr, path, path.GetLength(), indexptr->IsIgnoreCase()); // match path prefix, (sub)folders end with slash
 
+	std::set<CString> localLastCheckCache;
 	std::vector<CGitFileName> filelist;
 	int folderignoredchecked = false;
 	bool isRepoRoot = false;
@@ -368,7 +369,7 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 	else if (indexpos == NPOS && treepos == NPOS)
 	{
 		// if folder does not contain any versioned items, it might be ignored
-		g_IgnoreList.CheckAndUpdateIgnoreFiles(gitdir, subpath, true);
+		g_IgnoreList.CheckAndUpdateIgnoreFiles(gitdir, subpath, true, &localLastCheckCache);
 		if (g_IgnoreList.IsIgnore(subpath, gitdir, true))
 			*dirstatus = git_wc_status_ignored;
 		folderignoredchecked = true;
@@ -402,7 +403,7 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 			{
 				status.status = git_wc_status_unversioned;
 
-				g_IgnoreList.CheckAndUpdateIgnoreFiles(gitdir, onepath, bIsDir);
+				g_IgnoreList.CheckAndUpdateIgnoreFiles(gitdir, onepath, bIsDir, &localLastCheckCache);
 				// whole folder might be ignored, check this once if we are not the root folder in order to speed up all following ignored files
 				if (!folderignoredchecked && *dirstatus != git_wc_status_normal)
 				{

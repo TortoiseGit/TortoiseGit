@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -327,7 +327,7 @@ public:
 
 	std::map<CString, CGitIgnoreItem> m_Map;
 
-	bool CheckAndUpdateIgnoreFiles(const CString& gitdir, const CString& path, bool isDir);
+	bool CheckAndUpdateIgnoreFiles(const CString& gitdir, const CString& path, bool isDir, std::set<CString>* lastChecked = nullptr);
 	bool IsIgnore(CString path, const CString& root, bool isDir);
 };
 
