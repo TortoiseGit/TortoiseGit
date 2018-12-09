@@ -214,7 +214,7 @@ static int GetFileStatus_int(const CString& gitdir, CGitRepoLists& repolists, co
 		}
 
 		g_IgnoreList.CheckAndUpdateIgnoreFiles(gitdir, path, false);
-		if (g_IgnoreList.IsIgnore(path, gitdir, false))
+		if (g_IgnoreList.IsIgnore(path, gitdir, false, g_AdminDirMap.GetAdminDir(gitdir)))
 			status.status = git_wc_status_ignored;
 
 		return 0;
@@ -359,6 +359,8 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 	size_t treepos = SearchInSortVector(*treeptr, path, path.GetLength(), indexptr->IsIgnoreCase()); // match path prefix, (sub)folders end with slash
 
 	std::set<CString> localLastCheckCache;
+	CString adminDir = g_AdminDirMap.GetAdminDir(gitdir);
+
 	std::vector<CGitFileName> filelist;
 	int folderignoredchecked = false;
 	bool isRepoRoot = false;
@@ -370,7 +372,7 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 	{
 		// if folder does not contain any versioned items, it might be ignored
 		g_IgnoreList.CheckAndUpdateIgnoreFiles(gitdir, subpath, true, &localLastCheckCache);
-		if (g_IgnoreList.IsIgnore(subpath, gitdir, true))
+		if (g_IgnoreList.IsIgnore(subpath, gitdir, true, adminDir))
 			*dirstatus = git_wc_status_ignored;
 		folderignoredchecked = true;
 	}
@@ -407,14 +409,14 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 				// whole folder might be ignored, check this once if we are not the root folder in order to speed up all following ignored files
 				if (!folderignoredchecked && *dirstatus != git_wc_status_normal)
 				{
-					if (g_IgnoreList.IsIgnore(subpath, gitdir, true))
+					if (g_IgnoreList.IsIgnore(subpath, gitdir, true, adminDir))
 					{
 						*dirstatus = git_wc_status_ignored;
 						status.status = git_wc_status_ignored;
 					}
 					folderignoredchecked = true;
 				}
-				if (status.status != git_wc_status_ignored && g_IgnoreList.IsIgnore(onepath, gitdir, bIsDir))
+				if (status.status != git_wc_status_ignored && g_IgnoreList.IsIgnore(onepath, gitdir, bIsDir, adminDir))
 					status.status = git_wc_status_ignored;
 			}
 			callback(CombinePath(gitdir, onepath), &status, bIsDir, fileentry.m_LastModified, pData);
@@ -608,7 +610,7 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 
 		// Check ignore
 		g_IgnoreList.CheckAndUpdateIgnoreFiles(gitdir, path, true);
-		if (g_IgnoreList.IsIgnore(path, gitdir, true))
+		if (g_IgnoreList.IsIgnore(path, gitdir, true, g_AdminDirMap.GetAdminDir(gitdir)))
 			*status = git_wc_status_ignored;
 		else
 			*status = git_wc_status_unversioned;

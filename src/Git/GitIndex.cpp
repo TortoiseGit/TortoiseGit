@@ -964,7 +964,7 @@ const CString CGitIgnoreList::GetWindowsHome()
 	static CString sWindowsHome(g_Git.GetHomeDirectory());
 	return sWindowsHome;
 }
-bool CGitIgnoreList::IsIgnore(CString str, const CString& projectroot, bool isDir)
+bool CGitIgnoreList::IsIgnore(CString str, const CString& projectroot, bool isDir, const CString& adminDir)
 {
 	str.Replace(L'\\', L'/');
 
@@ -972,7 +972,7 @@ bool CGitIgnoreList::IsIgnore(CString str, const CString& projectroot, bool isDi
 		str.Truncate(str.GetLength() - 1);
 
 	int ret;
-	ret = CheckIgnore(str, projectroot, isDir);
+	ret = CheckIgnore(str, projectroot, isDir, adminDir);
 	while (ret < 0)
 	{
 		int start = str.ReverseFind(L'/');
@@ -980,7 +980,7 @@ bool CGitIgnoreList::IsIgnore(CString str, const CString& projectroot, bool isDi
 			return (ret == 1);
 
 		str.Truncate(start);
-		ret = CheckIgnore(str, projectroot, TRUE);
+		ret = CheckIgnore(str, projectroot, TRUE, adminDir);
 	}
 
 	return (ret == 1);
@@ -992,7 +992,7 @@ int CGitIgnoreList::CheckFileAgainstIgnoreList(const CString &ignorefile, const 
 
 	return (m_Map[ignorefile].IsPathIgnored(patha, base, type));
 }
-int CGitIgnoreList::CheckIgnore(const CString &path, const CString &projectroot, bool isDir)
+int CGitIgnoreList::CheckIgnore(const CString &path, const CString &projectroot, bool isDir, const CString& adminDir)
 {
 	CString temp = CombinePath(projectroot, path);
 	temp.Replace(L'/', L'\\');
@@ -1037,7 +1037,6 @@ int CGitIgnoreList::CheckIgnore(const CString &path, const CString &projectroot,
 
 		if (CPathUtils::ArePathStringsEqual(temp, projectroot))
 		{
-			CString adminDir = g_AdminDirMap.GetAdminDir(temp);
 			CString wcglobalgitignore = adminDir;
 			wcglobalgitignore += L"info\\exclude";
 			if ((ret = CheckFileAgainstIgnoreList(wcglobalgitignore, patha, base, type)) != -1)
