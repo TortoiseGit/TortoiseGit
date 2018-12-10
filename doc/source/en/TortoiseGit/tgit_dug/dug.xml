@@ -64,9 +64,7 @@
 	<xi:include href="./dug_daemon.xml"/>
 	<xi:include href="./dug_browseref.xml"/>
 	<xi:include href="./dug_submodules.xml"/>
-	<!--
 	<xi:include href="./dug_changelist.xml"/>
-	-->
 	<xi:include href="./dug_log.xml"/>
 	<xi:include href="./dug_revgraph.xml"/>
 	<xi:include href="./dug_reflog.xml"/>

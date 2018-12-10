@@ -15,6 +15,14 @@
 		the changes do not overlap. If two different tasks affect the same file, there
 		is no way to separate the changes.
 	</para>
+	<tip>
+		<para>
+			There is a similar functionality in Git called stashing (<xref linkend="tgit-dug-stash"/>).
+		</para>
+		<para>
+			Generally you should consider to create a new branch as Git commits are just local, you're not messing with everybody's repository, but just your own.
+		</para>
+	</tip>
 	<para>
 		You can see changelists in several places, but the most important ones are
 		the commit dialog and the check-for-modifications dialog. Let's start
@@ -35,6 +43,7 @@
 		<guibutton>OK</guibutton>. The dialog will now change to show
 		groups of items.
 	</para>
+<!--
 	<para>
 		Once you have created a changelist you can drag and drop items into it,
 		either from another changelist, or from Windows Explorer. Dragging from
@@ -42,6 +51,7 @@
 		before the file is modified. You could do that from the check-for-modifications
 		dialog, but only by displaying all unmodified files.
 	</para>
+-->
 	<para>
 		<figure id="tgit-dug-commit-dia-changelist">
 			<title>Commit dialog with Changelists</title>
@@ -64,13 +74,13 @@
 	<para>
 		When you commit files belonging to a changelist then normally you would expect
 		that the changelist membership is no longer needed. So by default, files are
-		removed from changelists automatically on commit. If you wish to retain the
+		removed from changelists automatically on commit. <!--If you wish to retain the
 		file in its changelist, use the <guilabel>Keep changelists</guilabel>
-		checkbox at the bottom of the commit dialog.
+		checkbox at the bottom of the commit dialog.-->
 	</para>
 	<tip>
 		<para>
-			Changelists are purely a local client feature. Creating and removing
+			Changelists are purely a local TortoiseGit client feature. Creating and removing
 			changelists will not affect the repository, nor anyone else's working
 			copy. They are simply a convenient way for you to organise your files.
 		</para>

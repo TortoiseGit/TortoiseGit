@@ -7,6 +7,18 @@
 		<primary>stash</primary>
 	</indexterm>
 	<para>
+		Often, when you’ve been working on part of your project, things are in a messy state and you want to switch branches for a bit to work on something else.
+		The problem is, you don’t want to do a commit of half-done work just so you can get back to this point later. The answer to this issue is the git stash command.
+	</para>
+	<para>
+		Stashing takes the dirty state of your working directory — that is, your modified tracked files and staged changes — and saves it on a stack of unfinished changes that you can reapply at any time (even on a different branch).
+	</para>
+	<tip>
+		<para>
+			There is a similar function in TortoiseGit called changelists (<xref linkend="tgit-dug-changelists"/>) which can be used to structure commits.
+		</para>
+	</tip>
+	<para>
 		When you want to record the current state of the working directory and the index,
 		but want to go back to a clean working directory,
 		<action>right click</action> on a folder to pop up the context menu and then select

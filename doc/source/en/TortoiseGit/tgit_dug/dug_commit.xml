@@ -116,17 +116,14 @@
 			</para>
 		</important>
 	</sect2>
-	<!--
 	<sect2 id="tgit-dug-commit-changelists">
 		<title>Change Lists</title>
 		<para>
-			The commit dialog supports Git's changelist feature to help
+			The commit dialog supports changelist feature to help
 			with grouping related files together. Find out about this feature
 			in <xref linkend="tgit-dug-changelists"/>.
 		</para>
 	</sect2>
-	-->
-	<!--
 	<sect2 id="tgit-dug-commit-ignore">
 		<title>Excluding Items from the Commit List</title>
 		<para>
@@ -140,14 +137,17 @@
 			timestamp changed.
 		</para>
 		<para>
-			To help out in awkward cases like this, we have reserved a changelist
+			To help out in awkward cases like this, there is a Git flag for files
+			called <literal>skip-worktree</literal> - then files are treated as
+			unmodified and Git also refuses to merge those on merge/pull
+			(cf. <xref linkend="git-update-index(1)__skip_worktree_bit"/>).
+			As another way to takle cases like this, we have reserved a changelist
 			called <literal>ignore-on-commit</literal>. Any file added to this
 			changelist will automatically be unchecked in the commit dialog.
 			You can still commit changes, but you have to select it manually
 			in the commit dialog.
 		</para>
 	</sect2>
-	-->
 	<sect2 id="tgit-dug-commit-restore">
 		<title>Commit only parts of files</title>
 		<para>
