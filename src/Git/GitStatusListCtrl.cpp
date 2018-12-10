@@ -661,8 +661,17 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 			else if (!UseStoredCheckStatus)
 			{
 				bool autoSelectSubmodules = !(entry->IsDirectory() && m_bDoNotAutoselectSubmodules);
-				if (((entry->m_Action & dwCheck) && !(m_bNoAutoselectMissing && entry->m_Action & CTGitPath::LOGACTIONS_MISSING) || dwShow & GITSLC_SHOWDIRECTFILES && m_setDirectFiles.find(path) != m_setDirectFiles.end()) && autoSelectSubmodules)
-					entry->m_Checked = true;
+				if (((entry->m_Action & dwCheck) &&
+					!(m_bNoAutoselectMissing && entry->m_Action & CTGitPath::LOGACTIONS_MISSING) ||
+					dwShow & GITSLC_SHOWDIRECTFILES && m_setDirectFiles.find(path) != m_setDirectFiles.end()
+					) && autoSelectSubmodules)
+				{
+					auto it = m_pathToChangelist.find(path);
+					if ((it != m_pathToChangelist.end()) && (it->second.Compare(GITSLC_IGNORECHANGELIST) == 0))
+						entry->m_Checked = false; // is in ignore-on-commit
+					else 
+						entry->m_Checked = true;
+				}
 				else
 					entry->m_Checked = false;
 				m_mapFilenameToChecked[path] = entry->m_Checked;
