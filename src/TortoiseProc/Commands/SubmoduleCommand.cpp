@@ -63,13 +63,13 @@ bool SubmoduleAddCommand::Execute()
 
 		if (progress.m_GitStatus == 0)
 		{
-			if (dlg.m_bAutoloadPuttyKeyFile)
+			if (dlg.m_bAutoloadPuttyKeyFile && !dlg.m_strPuttyKeyFile.IsEmpty())
 			{
-				SetCurrentDirectory(g_Git.m_CurrentDir);
+				SCOPE_EXIT { SetCurrentDirectory(g_Git.m_CurrentDir); };
 				CGit subgit;
 				dlg.m_strPath.Replace(L'/', L'\\');
 				subgit.m_CurrentDir = PathIsRelative(dlg.m_strPath) ? g_Git.CombinePath(dlg.m_strPath) : dlg.m_strPath;
-
+				SetCurrentDirectory(subgit.m_CurrentDir);
 				if (subgit.SetConfigValue(L"remote.origin.puttykeyfile", dlg.m_strPuttyKeyFile, CONFIG_LOCAL))
 				{
 					CMessageBox::Show(GetExplorerHWND(), L"Fail set config remote.origin.puttykeyfile", L"TortoiseGit", MB_OK | MB_ICONERROR);
