@@ -739,6 +739,58 @@ bool CBrowseRefsDlg::ConfirmDeleteRef(VectorPShadowTree& leafs)
 
 bool CBrowseRefsDlg::DoDeleteRefs(VectorPShadowTree& leafs)
 {
+	bool allRemoteBranch = true;
+	std::map<CString, STRING_VECTOR> remoteBranches;
+	int prefixLength = (int)wcslen(L"refs/remotes/");
+	for (auto i = leafs.cbegin(); i != leafs.cend(); ++i)
+	{
+		CString completeRefName = (*i)->GetRefName();
+		if (CStringUtils::StartsWith(completeRefName, L"refs/remotes/"))
+		{
+			CString branchToDelete = completeRefName.Mid(prefixLength);
+			CString remoteName, remoteBranchToDelete;
+			if (!SplitRemoteBranchName(branchToDelete, remoteName, remoteBranchToDelete))
+				remoteBranches[remoteName].push_back(remoteBranchToDelete);
+		}
+		else
+		{
+			allRemoteBranch = false;
+			break;
+		}
+	}
+	if (allRemoteBranch)
+	{
+		// delete multiple remote branches in batch, so it is faster, fewer password prompt
+		for (auto &list : remoteBranches)
+		{
+			auto remoteName = list.first;
+			auto branches = list.second;
+			if (CAppUtils::IsSSHPutty())
+				CAppUtils::LaunchPAgent(this->GetSafeHwnd(), nullptr, &remoteName);
+
+			CSysProgressDlg sysProgressDlg;
+			sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
+			sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_DELETING_REMOTE_REFS)));
+			sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
+			sysProgressDlg.SetShowProgressBar(false);
+			sysProgressDlg.ShowModal(this, true);
+
+			STRING_VECTOR list;
+			for (auto &branch : branches)
+				list.push_back(L"refs/heads/" + branch);
+			if (g_Git.DeleteRemoteRefs(remoteName, list))
+			{
+				MessageBox(g_Git.GetGitLastErr(L"Could not delete remote ref.", CGit::GIT_CMD_PUSH), L"TortoiseGit", MB_OK | MB_ICONERROR);
+				sysProgressDlg.Stop();
+				BringWindowToTop();
+				return false;
+			}
+			sysProgressDlg.Stop();
+		}
+		BringWindowToTop();
+		return true;
+	}
+
 	for (auto i = leafs.cbegin(); i != leafs.cend(); ++i)
 		if(!DoDeleteRef((*i)->GetRefName()))
 			return false;
