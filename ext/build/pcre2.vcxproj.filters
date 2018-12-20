@@ -89,6 +89,9 @@
     <ClCompile Include="..\pcre2\src\pcre2_xclass.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\pcre2\src\pcre2_script_run.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pcre2\config.h">
