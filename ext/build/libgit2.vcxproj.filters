@@ -521,9 +521,6 @@
     <ClCompile Include="..\libgit2\src\trailer.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\libgit2\src\streams\curl.c">
-      <Filter>Source Files\streams</Filter>
-    </ClCompile>
     <ClCompile Include="..\libgit2\src\streams\mbedtls.c">
       <Filter>Source Files\streams</Filter>
     </ClCompile>
@@ -544,6 +541,9 @@
     </ClCompile>
     <ClCompile Include="..\libgit2\src\reader.c">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libgit2\src\streams\registry.c">
+      <Filter>Source Files\streams</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1192,9 +1192,6 @@
     <ClInclude Include="..\libgit2\src\transports\ssh.h">
       <Filter>Header Files\transports</Filter>
     </ClInclude>
-    <ClInclude Include="..\libgit2\src\streams\curl.h">
-      <Filter>Header Files\streams</Filter>
-    </ClInclude>
     <ClInclude Include="..\libgit2\src\streams\mbedtls.h">
       <Filter>Header Files\streams</Filter>
     </ClInclude>
@@ -1227,6 +1224,9 @@
     </ClInclude>
     <ClInclude Include="..\libgit2\include\git2\apply.h">
       <Filter>Public Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\streams\registry.h">
+      <Filter>Header Files\streams</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
