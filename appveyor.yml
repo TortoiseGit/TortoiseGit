@@ -26,5 +26,5 @@ test_script:
 - reg delete HKCU\Software\TortoiseGit /v CygwinHack /f
 - reg delete HKCU\Software\TortoiseGit /v MSysGit /f
 - msbuild "src\TortoiseGit.sln" /t:"GitWCRev" /t:"GitWCRevCom" /t:"TortoiseGitSetup\CustomActions" /t:"TortoiseGitSetup\RestartExplorer" /t:"ext\Crash-Server\CrashServerSDK\CrashHandler" /t:"ext\Crash-Server\CrashServerSDK\SendRpt" /m /verbosity:minimal /p:Configuration=Release /p:Platform=x64 /maxcpucount /p:PlatformToolset=v141 /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-- git submodule update --init -- ext/apr ext/apr-util ext/editorconfig ext/OGDF ext/pcre
+- git submodule update --init -- ext/apr ext/apr-util ext/editorconfig ext/OGDF ext/pcre2
 - msbuild "src\TortoiseGit.sln" /t:"TGitCache" /t:"TortoiseGitBlame" /t:"TortoiseGitIDiff" /t:"TortoiseGitMerge" /t:"TortoiseGitPlink" /t:"TortoiseGitProc" /t:"TortoiseGitStub" /t:"TortoiseGitUDiff" /t:"TortoiseShell" /t:"SshAskPass" /t:"tgittouch" /t:"GitWCRev" /t:"GitWCRevCom" /m /verbosity:minimal /p:Configuration=Debug /p:Platform=x64 /maxcpucount /p:PlatformToolset=v141 /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"

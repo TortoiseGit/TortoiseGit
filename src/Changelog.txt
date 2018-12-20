@@ -18,6 +18,7 @@ Released: unreleased
  * Fixed issue #3305: Stash Changes/Save, then allow Stash Apply
  * TGitCache: Speed up scanning of folders with lots of unversioned files
  * Rebase: Document start, abort and finish in reflog 
+ * Update editorconfig to 0.12.4
 
 == Bug Fixes ==
  * Fixed issue #3250: GitWCRev: IsGitItem return true for item that had never been committed
