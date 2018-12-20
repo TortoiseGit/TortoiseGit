@@ -33,6 +33,12 @@
     <Filter Include="git\negotiator">
       <UniqueIdentifier>{d8cbb096-047f-4046-b6a0-5689b5847e89}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\negotiator">
+      <UniqueIdentifier>{f1714638-afd7-4d61-89c1-e9077ee15b32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\refs">
+      <UniqueIdentifier>{dd37360c-ad1e-49a1-a0e3-a74a44752a8e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\tgit\compat\msvc.c">
@@ -1280,7 +1286,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\tgit\refs\refs-internal.h">
-      <Filter>git\refs</Filter>
+      <Filter>Header Files\refs</Filter>
     </ClInclude>
     <ClInclude Include="..\tgit\worktree.h">
       <Filter>Header Files</Filter>
@@ -1308,7 +1314,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\tgit\refs\ref-cache.h">
-      <Filter>git\refs</Filter>
+      <Filter>Header Files\refs</Filter>
     </ClInclude>
     <ClInclude Include="..\tgit\oidset.h">
       <Filter>Header Files</Filter>
@@ -1326,7 +1332,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\tgit\refs\packed-backend.h">
-      <Filter>git\refs</Filter>
+      <Filter>Header Files\refs</Filter>
     </ClInclude>
     <ClInclude Include="..\tgit\oidmap.h">
       <Filter>Header Files</Filter>
@@ -1365,22 +1371,22 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\tgit\banned.h">
-      <Filter>git</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\tgit\mem-pool.h">
-      <Filter>git</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\tgit\fetch-negotiator.h">
-      <Filter>git</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\tgit\negotiator\default.h">
-      <Filter>git\negotiator</Filter>
+      <Filter>Header Files\negotiator</Filter>
     </ClInclude>
     <ClInclude Include="..\tgit\negotiator\skipping.h">
-      <Filter>git\negotiator</Filter>
+      <Filter>Header Files\negotiator</Filter>
     </ClInclude>
     <ClInclude Include="..\tgit\rebase-interactive.h">
-      <Filter>git</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
