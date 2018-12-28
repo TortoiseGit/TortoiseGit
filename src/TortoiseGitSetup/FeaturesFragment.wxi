@@ -32,7 +32,6 @@
 		<ComponentRef Id="C__machineregistry" />
 
 		<ComponentRef Id="ProtocolTGit" />
-		<ComponentRef Id="PermanentProtocols" />
 
 		<ComponentRef Id="C__approveshellcomponents" />
 
