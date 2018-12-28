@@ -905,15 +905,24 @@
 
 					<Component Id="C__TortoiseUDiff" Guid="$(var.GuidTortoiseUDiff)" Win64="$(var.Win64YesNo)">
 						<File Id="F__TortoiseUDiff" Name="TortoiseGitUDiff.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitUDiff.exe" KeyPath="yes" />
+
+						<RegistryKey Root="HKLM" Key="Software\Classes\tortoisegit.diff.document" />
+						<RegistryValue Root="HKLM" Key="Software\Classes\tortoisegit.diff.document" Value="Diff File" Type="string" />
+						<RegistryKey Root="HKLM" Key="Software\Classes\tortoisegit.diff.document\shell" />
+						<RegistryKey Root="HKLM" Key="Software\Classes\tortoisegit.diff.document\shell\open" />
+						<RegistryKey Root="HKLM" Key="Software\Classes\tortoisegit.diff.document\shell\open\command" />
+						<RegistryValue Root="HKLM" Key="Software\Classes\tortoisegit.diff.document\shell\open\command" Value="[INSTALLDIR]bin\TortoiseGitUDiff.exe /patchfile:&quot;%1&quot;" Type="string" />
+						<RegistryKey Root="HKLM" Key="Software\Classes\tortoisegit.patch.document" />
+						<RegistryValue Root="HKLM" Key="Software\Classes\tortoisegit.patch.document" Value="Patch File" Type="string" />
+						<RegistryKey Root="HKLM" Key="Software\Classes\tortoisegit.patch.document\shell" />
+						<RegistryKey Root="HKLM" Key="Software\Classes\tortoisegit.patch.document\shell\open" />
+						<RegistryKey Root="HKLM" Key="Software\Classes\tortoisegit.patch.document\shell\open\command" />
+						<RegistryValue Root="HKLM" Key="Software\Classes\tortoisegit.patch.document\shell\open\command" Value="[INSTALLDIR]bin\TortoiseGitUDiff.exe /patchfile:&quot;%1&quot;" Type="string" />
 					</Component>
 
 					<Component Id="C__TortoiseUDiffAssoc" Guid="$(var.GuidTortoiseUDiffAssoc)" Win64="$(var.Win64YesNo)">
-						<RegistryKey Root="HKMU" Key="Software\Classes\.diff" />
-						<RegistryValue Root="HKMU" Key="Software\Classes\.diff" KeyPath="yes" Value="unified_diff_file" Type="string" />
-						<RegistryKey Root="HKMU" Key="Software\Classes\.patch" />
-						<RegistryValue Root="HKMU" Key="Software\Classes\.patch" Value="unified_diff_file" Type="string" />
-						<RegistryKey Root="HKMU" Key="Software\Classes\unified_diff_file\shell\open\command" />
-						<RegistryValue Root="HKMU" Key="Software\Classes\unified_diff_file\shell\open\command" Value="[INSTALLDIR]bin\TortoiseGitUDiff.exe /patchfile:&quot;%1&quot;" Type="string" />
+						<RegistryValue Root="HKMU" Key="Software\Classes\.patch" Value="tortoisegit.patch.document" Type="string" />
+						<RegistryValue Root="HKMU" Key="Software\Classes\.diff" KeyPath="yes" Value="tortoisegit.diff.document" Type="string" />
 					</Component>
 
 					<Component Id="C_LanguagePacks" Guid="$(var.GuidRemoveLanguagePacks)" Win64="$(var.Win64YesNo)" >
