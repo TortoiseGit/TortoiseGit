@@ -922,6 +922,11 @@
 
 						<RegistryValue Root="HKLM" Key="Software\TortoiseGit\Capabilities\FileAssociations" Name=".diff" Value="tortoisegit.diff.document" Type="string" />
 						<RegistryValue Root="HKLM" Key="Software\TortoiseGit\Capabilities\FileAssociations" Name=".patch" Value="tortoisegit.patch.document" Type="string" />
+
+						<RegistryKey Root="HKLM" Key="Software\Classes\.diff\OpenWithProgids" />
+						<RegistryValue Root="HKLM" Key="Software\Classes\.diff\OpenWithProgids" Name="tortoisegit.diff.document" Value="" Type="string" />
+						<RegistryKey Root="HKLM" Key="Software\Classes\.patch\OpenWithProgids" />
+						<RegistryValue Root="HKLM" Key="Software\Classes\.patch\OpenWithProgids" Name="tortoisegit.patch.document" Value="" Type="string" />
 					</Component>
 
 					<Component Id="C__TortoiseUDiffAssoc" Guid="$(var.GuidTortoiseUDiffAssoc)" Win64="$(var.Win64YesNo)">
