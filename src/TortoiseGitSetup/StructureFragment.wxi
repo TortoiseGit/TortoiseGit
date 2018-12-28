@@ -327,6 +327,7 @@
 
 					<RegistryValue Root="HKLM" Key="Software\RegisteredApplications" Name="TortoiseGit" Value="Software\TortoiseGit\Capabilities" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\TortoiseGit\Capabilities" />
+					<RegistryKey Root="HKLM" Key="Software\TortoiseGit\Capabilities\FileAssociations" />
 					<RegistryKey Root="HKLM" Key="Software\TortoiseGit\Capabilities\UrlAssociations" />
 					<RegistryValue Root="HKLM" Key="Software\TortoiseGit\Capabilities\UrlAssociations" Name="tgit" Value="TortoiseGitURL" Type="string" />
 					<RegistryValue Root="HKLM" Key="Software\TortoiseGit\Capabilities\UrlAssociations" Name="github-windows" Value="TortoiseGitURL" Type="string" />
@@ -918,6 +919,9 @@
 						<RegistryKey Root="HKLM" Key="Software\Classes\tortoisegit.patch.document\shell\open" />
 						<RegistryKey Root="HKLM" Key="Software\Classes\tortoisegit.patch.document\shell\open\command" />
 						<RegistryValue Root="HKLM" Key="Software\Classes\tortoisegit.patch.document\shell\open\command" Value="[INSTALLDIR]bin\TortoiseGitUDiff.exe /patchfile:&quot;%1&quot;" Type="string" />
+
+						<RegistryValue Root="HKLM" Key="Software\TortoiseGit\Capabilities\FileAssociations" Name=".diff" Value="tortoisegit.diff.document" Type="string" />
+						<RegistryValue Root="HKLM" Key="Software\TortoiseGit\Capabilities\FileAssociations" Name=".patch" Value="tortoisegit.patch.document" Type="string" />
 					</Component>
 
 					<Component Id="C__TortoiseUDiffAssoc" Guid="$(var.GuidTortoiseUDiffAssoc)" Win64="$(var.Win64YesNo)">
