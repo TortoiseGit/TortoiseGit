@@ -99,6 +99,7 @@ public:
 	bool					m_bShowCommand;	// whether to display the command in the log window (default true)
 	CString					m_LogFile;
 	bool					m_bBufferAll;	// Buffer All to improve speed when there are many file add at commit
+	int						m_iBufferAllImmediateLines; // When Buffer All is enabled, we might not get important oputput of git at the beginning, so, ignore buffer all for the first 10 lines...
 	GitProgressAutoClose	m_AutoClose;
 	CGit *					m_Git;
 

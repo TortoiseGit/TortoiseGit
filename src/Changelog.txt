@@ -35,6 +35,7 @@ Released: unreleased
  * Fixed issue #3264: Remove tag can leave an empty folder in refs/tags
  * Fixed issue #3297: Missing URI-encode of %BUGID%-part by call of issue tracker URL
  * Fixed issue #3307: Abort Merge on a single file always results in a parameter error message
+ * Fixed issue #3269: Git Command Progress window blank, hanging on commit (e.g., when auto gc is running)
 
 = Release 2.7.0 =
 Released: 2018-08-19
