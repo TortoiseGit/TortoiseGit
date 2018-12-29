@@ -162,9 +162,10 @@ bool ShellCache::RefreshIfNeeded()
 		drivetypecache[1] = DRIVE_REMOVABLE;
 	}
 	else
-	{ // reset floppy drive cache
-		drivetypecache[0] = -1;
-		drivetypecache[1] = -1;
+	{
+		// reset floppy drive cache
+		drivetypecache[0] = (UINT)-1;
+		drivetypecache[1] = (UINT)-1;
 	}
 
 	Locker lock(m_critSec);
