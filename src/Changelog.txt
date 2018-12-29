@@ -37,6 +37,7 @@ Released: unreleased
  * Fixed issue #3307: Abort Merge on a single file always results in a parameter error message
  * Fixed issue #3269: Git Command Progress window blank, hanging on commit (e.g., when auto gc is running)
  * Fixed issue #3039: Icon overlays don't update properly when committing after gc prune on the command line
+ * Fixed issue #3316: Misleading message box after pull with rebase, when branch is behind origin/branch, but origin/branch=remote/origin/master
 
 = Release 2.7.0 =
 Released: 2018-08-19
