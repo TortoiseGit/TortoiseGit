@@ -155,6 +155,18 @@ bool ShellCache::RefreshIfNeeded()
 	menuexthigh.read();
 	nocontextpaths.read();
 
+	if (DWORD(drivefloppy) == 0)
+	{
+		// A: and B: are floppy disks
+		drivetypecache[0] = DRIVE_REMOVABLE;
+		drivetypecache[1] = DRIVE_REMOVABLE;
+	}
+	else
+	{ // reset floppy drive cache
+		drivetypecache[0] = -1;
+		drivetypecache[1] = -1;
+	}
+
 	Locker lock(m_critSec);
 	pathFilter.Refresh();
 
