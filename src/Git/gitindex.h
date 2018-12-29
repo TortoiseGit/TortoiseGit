@@ -165,6 +165,7 @@ private:
 	CString		m_HeadFile;
 	CString		m_Gitdir;
 	CString		m_PackRefFile;
+	bool		m_bRefFromPackRefFile;
 
 	std::map<CString,CGitHash> m_PackRefMap;
 
@@ -175,6 +176,7 @@ public:
 	, m_LastModifyTimePackRef(0)
 	, m_LastFileSizeHead(-1)
 	, m_LastFileSizePackRef(-1)
+	, m_bRefFromPackRefFile(false)
 	{
 	}
 

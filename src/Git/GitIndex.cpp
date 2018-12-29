@@ -471,11 +471,11 @@ int CGitHeadFileList::ReadHeadHash(const CString& gitdir)
 		__int64 time;
 		if (CGit::GetFileModifyTime(m_HeadRefFile, &time, nullptr))
 		{
-			m_HeadRefFile.Empty();
 			if (GetPackRef(gitdir))
 				return -1;
 			if (m_PackRefMap.find(ref) != m_PackRefMap.end())
 			{
+				m_bRefFromPackRefFile = true;
 				m_Head = m_PackRefMap[ref];
 				return 0;
 			}
@@ -496,14 +496,13 @@ int CGitHeadFileList::ReadHeadHash(const CString& gitdir)
 
 		if (!href)
 		{
-			m_HeadRefFile.Empty();
-
 			if (GetPackRef(gitdir))
 				return -1;
 
 			if (m_PackRefMap.find(ref) == m_PackRefMap.end())
 				return -1;
 
+			m_bRefFromPackRefFile = true;
 			m_Head = m_PackRefMap[ref];
 			return 0;
 		}
@@ -545,14 +544,17 @@ bool CGitHeadFileList::CheckHeadUpdate()
 
 	if (!this->m_HeadRefFile.IsEmpty())
 	{
+		// we need to check for the HEAD ref file here, because the original ref might have come from packedrefs and now is a ref-file
 		if (CGit::GetFileModifyTime(m_HeadRefFile, &mtime))
-			return true;
+		{
+			if (!m_bRefFromPackRefFile)
+				return true;
 
-		if (mtime != this->m_LastModifyTimeRef)
+		} else if (mtime != this->m_LastModifyTimeRef)
 			return true;
 	}
 
-	if(!this->m_PackRefFile.IsEmpty())
+	if (m_bRefFromPackRefFile && !m_PackRefFile.IsEmpty())
 	{
 		size = -1;
 		if (CGit::GetFileModifyTime(m_PackRefFile, &mtime, nullptr, &size))
