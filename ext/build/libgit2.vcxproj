@@ -323,7 +323,6 @@
     <ClInclude Include="..\libgit2\src\fnmatch.h" />
     <ClInclude Include="..\libgit2\src\global.h" />
     <ClInclude Include="..\libgit2\src\hash.h" />
-    <ClInclude Include="..\libgit2\src\hash\hash_common_crypto.h" />
     <ClInclude Include="..\libgit2\src\idxmap.h" />
     <ClInclude Include="..\libgit2\src\ignore.h" />
     <ClInclude Include="..\libgit2\src\index.h" />
