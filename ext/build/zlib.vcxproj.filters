@@ -18,25 +18,10 @@
     <ClCompile Include="..\zlib\adler32.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\zlib\compress.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\zlib\crc32.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\zlib\deflate.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\zlib\gzclose.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\zlib\gzlib.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\zlib\gzread.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\zlib\gzwrite.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\zlib\infback.c">
@@ -54,9 +39,6 @@
     <ClCompile Include="..\zlib\trees.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\zlib\uncompr.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\zlib\zutil.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -66,9 +48,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\zlib\deflate.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\zlib\gzguts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\zlib\inffast.h">
@@ -100,8 +79,5 @@
     <ResourceCompile Include="..\zlib\win32\zlib1.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\zlib\win32\zlib.def" />
   </ItemGroup>
 </Project>
