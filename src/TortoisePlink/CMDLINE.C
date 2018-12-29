@@ -371,6 +371,18 @@ int cmdline_process_param(const char *p, char *value,
 	SAVEABLE(1);		       /* lower priority than -ssh,-telnet */
 	conf_set_int(conf, CONF_port, atoi(value));
     }
+    if (!strcmp(p, "-o")) {
+	RETURN(2);
+	UNAVAILABLE_IN(TOOLTYPE_NONNETWORK);
+	SAVEABLE(0);
+	if (stricmp(value, "SendEnv=GIT_PROTOCOL")) {
+		cmdline_error("Unrecognised suboption \"-o %s\"", value);
+		return -1;
+	}
+	const char *env = getenv("GIT_PROTOCOL");
+	if (env)
+		conf_set_str_str(conf, CONF_environmt, "GIT_PROTOCOL", env);
+    }
     if (!strcmp(p, "-pw")) {
 	RETURN(2);
 	UNAVAILABLE_IN(TOOLTYPE_NONNETWORK);
