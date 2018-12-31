@@ -117,7 +117,7 @@ void LoginDialog::CreateModule(void)
 
 bool LoginDialog::DoLoginDialog(char* password, int maxlen, const char* prompt)
 {
-   LoginDialog *pDlg = new LoginDialog(prompt);
+   auto pDlg = std::make_unique<LoginDialog>(prompt);
 
    pDlg->CreateModule();
 
@@ -125,8 +125,6 @@ bool LoginDialog::DoLoginDialog(char* password, int maxlen, const char* prompt)
 
    if (ret)
       strncpy_s(password, maxlen, pDlg->myPassword, sizeof(pDlg->myPassword));
-
-   delete pDlg;
 
    return ret;
 }
