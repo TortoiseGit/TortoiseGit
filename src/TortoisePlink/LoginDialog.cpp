@@ -147,28 +147,7 @@ void LoginDialog::PurgeValues()
    SendDlgItemMessage(_hdlg, IDC_LOGIN_PASSWORD, WM_SETTEXT, 0, (LPARAM)gargabe);
 }
 
-BOOL IsWinNT()
-{
-   OSVERSIONINFO vi;
-   vi.dwOSVersionInfoSize = sizeof(vi);
-   if (GetVersionEx(&vi))
-   {
-      if (vi.dwPlatformId == VER_PLATFORM_WIN32_NT)
-      {
-         return TRUE;
-      }
-   }
-   return FALSE;
-}
-
 HWND GetParentHwnd()
 {
-   if (IsWinNT())
-   {
-      return GetDesktopWindow();
-   }
-   else
-   {
-      return GetForegroundWindow();
-   }
+   return GetDesktopWindow();
 }
