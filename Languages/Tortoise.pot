@@ -2419,7 +2419,7 @@ msgid "Cherry Pick failed"
 msgstr ""
 
 #. Resource IDs: (IDS_CHERRYPICKFAILEDSKIP)
-msgid "Cherry-pick failed! Skip this commit?"
+msgid "Cherry-pick failed (please see log in the cherry pick/rebase dialog for details)! Skip this commit?"
 msgstr ""
 
 #. Resource IDs: (65535 - PopupMenu)

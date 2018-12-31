@@ -3695,7 +3695,8 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_CHERRYPICKFAILEDSKIP "Cherry-pick failed! Skip this commit?"
+    IDS_CHERRYPICKFAILEDSKIP 
+                            "Cherry-pick failed (please see log in the cherry pick/rebase dialog for details)! Skip this commit?"
     IDS_COPY_REF_NAMES      "Copy ref names"
     IDS_PROC_GITCONFIG_VIEWTGITCONFIG "View .tgitconfig"
     IDS_SMTP_MAPI           "MAPI"
