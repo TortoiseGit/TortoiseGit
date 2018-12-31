@@ -2145,7 +2145,28 @@ int CRebaseDlg::DoRebase()
 			}
 			if (!hasConflicts)
 			{
-				if (mode ==  CGitLogListBase::LOGACTIONS_REBASE_PICK)
+				if (out.Find(L"commit --allow-empty") > 0)
+				{
+					int choose = CMessageBox::ShowCheck(GetSafeHwnd(), IDS_CHERRYPICK_EMPTY, IDS_APPNAME, 1, IDI_QUESTION, IDS_COMMIT_COMMIT, IDS_SKIPBUTTON, IDS_MSGBOX_CANCEL, nullptr, 0);
+					if (choose != 1)
+					{
+						if (choose == 2 && !RunGitCmdRetryOrAbort(L"git.exe reset --hard"))
+						{
+							pRev->GetRebaseAction() |= CGitLogListBase::LOGACTIONS_REBASE_DONE;
+							m_CommitList.Invalidate();
+							return 0;
+						}
+
+						m_RebaseStage = REBASE_ERROR;
+						AddLogString(L"An unrecoverable error occurred.");
+						return -1;
+					}
+
+					cmd.Format(L"git.exe commit --allow-empty -C %s", (LPCTSTR)pRev->m_CommitHash.ToString());
+					out.Empty();
+					g_Git.Run(cmd, &out, CP_UTF8);
+				}
+				else if (mode == CGitLogListBase::LOGACTIONS_REBASE_PICK)
 				{
 					if (m_pTaskbarList)
 						m_pTaskbarList->SetProgressState(m_hWnd, TBPF_ERROR);
@@ -2173,68 +2194,67 @@ int CRebaseDlg::DoRebase()
 					AddLogString(L"An unrecoverable error occurred.");
 					return -1;
 				}
-				if (mode == CGitLogListBase::LOGACTIONS_REBASE_EDIT)
+				else if (mode == CGitLogListBase::LOGACTIONS_REBASE_EDIT)
 				{
 					this->m_RebaseStage = REBASE_EDIT ;
 					return -1; // Edit return -1 to stop rebase.
 				}
 				// Squash Case
-				if(CheckNextCommitIsSquash())
+				else if (CheckNextCommitIsSquash())
 				{   // no squash
 					// let user edit last commmit message
 					this->m_RebaseStage = REBASE_SQUASH_EDIT;
 					return -1;
 				}
 			}
-
-			if (m_pTaskbarList)
-				m_pTaskbarList->SetProgressState(m_hWnd, TBPF_ERROR);
-			if (mode == CGitLogListBase::LOGACTIONS_REBASE_SQUASH)
-				m_RebaseStage = REBASE_SQUASH_CONFLICT;
 			else
-				m_RebaseStage = REBASE_CONFLICT;
-			return -1;
-
-		}
-		else
-		{
-			AddLogString(out);
-			if (mode == CGitLogListBase::LOGACTIONS_REBASE_PICK)
 			{
-				if (nocommit.IsEmpty())
-				{
-					CGitHash head;
-					if (g_Git.GetHash(head, L"HEAD"))
-					{
-						MessageBox(g_Git.GetGitLastErr(L"Could not get HEAD hash."), L"TortoiseGit", MB_ICONERROR);
-						m_RebaseStage = REBASE_ERROR;
-						return -1;
-					}
-					m_rewrittenCommitsMap[pRev->m_CommitHash] = head;
-				}
+				if (m_pTaskbarList)
+					m_pTaskbarList->SetProgressState(m_hWnd, TBPF_ERROR);
+				if (mode == CGitLogListBase::LOGACTIONS_REBASE_SQUASH)
+					m_RebaseStage = REBASE_SQUASH_CONFLICT;
 				else
-					m_forRewrite.push_back(pRev->m_CommitHash);
-				pRev->GetRebaseAction() |= CGitLogListBase::LOGACTIONS_REBASE_DONE;
-				return 0;
-			}
-			if (mode == CGitLogListBase::LOGACTIONS_REBASE_EDIT)
-			{
-				this->m_RebaseStage = REBASE_EDIT ;
-				return -1; // Edit return -1 to stop rebase.
-			}
-
-			// Squash Case
-			if(CheckNextCommitIsSquash())
-			{   // no squash
-				// let user edit last commmit message
-				this->m_RebaseStage = REBASE_SQUASH_EDIT;
+					m_RebaseStage = REBASE_CONFLICT;
 				return -1;
 			}
-			else if (mode == CGitLogListBase::LOGACTIONS_REBASE_SQUASH)
+		}
+
+		AddLogString(out);
+		if (mode == CGitLogListBase::LOGACTIONS_REBASE_PICK)
+		{
+			if (nocommit.IsEmpty())
 			{
-				pRev->GetRebaseAction() |= CGitLogListBase::LOGACTIONS_REBASE_DONE;
-				m_forRewrite.push_back(pRev->m_CommitHash);
+				CGitHash head;
+				if (g_Git.GetHash(head, L"HEAD"))
+				{
+					MessageBox(g_Git.GetGitLastErr(L"Could not get HEAD hash."), L"TortoiseGit", MB_ICONERROR);
+					m_RebaseStage = REBASE_ERROR;
+					return -1;
+				}
+				m_rewrittenCommitsMap[pRev->m_CommitHash] = head;
 			}
+			else
+				m_forRewrite.push_back(pRev->m_CommitHash);
+			pRev->GetRebaseAction() |= CGitLogListBase::LOGACTIONS_REBASE_DONE;
+			return 0;
+		}
+		if (mode == CGitLogListBase::LOGACTIONS_REBASE_EDIT)
+		{
+			this->m_RebaseStage = REBASE_EDIT;
+			return -1; // Edit return -1 to stop rebase.
+		}
+
+		// Squash Case
+		if (CheckNextCommitIsSquash())
+		{ // no squash
+			// let user edit last commmit message
+			this->m_RebaseStage = REBASE_SQUASH_EDIT;
+			return -1;
+		}
+		else if (mode == CGitLogListBase::LOGACTIONS_REBASE_SQUASH)
+		{
+			pRev->GetRebaseAction() |= CGitLogListBase::LOGACTIONS_REBASE_DONE;
+			m_forRewrite.push_back(pRev->m_CommitHash);
 		}
 
 		return 0;
