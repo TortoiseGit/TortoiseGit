@@ -770,14 +770,14 @@ void CTortoiseProcApp::DoInitializeJumpList(const CString& appid)
 	CStringUtils::RemoveAccelerators(sTemp);
 
 	ATL::CComPtr<IShellLink> psl;
-	hr = CreateShellLink(L"/command:settings", (LPCTSTR)sTemp, 20, &psl);
+	hr = CreateShellLink(L"/command:settings", (LPCTSTR)sTemp, 18, &psl);
 	if (SUCCEEDED(hr)) {
 		poc->AddObject(psl);
 	}
 	sTemp = CString(MAKEINTRESOURCE(IDS_MENUHELP));
 	CStringUtils::RemoveAccelerators(sTemp);
 	psl.Release(); // Need to release the object before calling operator&()
-	hr = CreateShellLink(L"/command:help", (LPCTSTR)sTemp, 19, &psl);
+	hr = CreateShellLink(L"/command:help", (LPCTSTR)sTemp, 17, &psl);
 	if (SUCCEEDED(hr)) {
 		poc->AddObject(psl);
 	}
