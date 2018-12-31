@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013, 2015, 2016 - TortoiseGit
+// Copyright (C) 2013, 2015, 2016, 2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -29,20 +29,25 @@ IMPLEMENT_DYNAMIC(CUserPassword, CDialog)
 CUserPassword::CUserPassword(CWnd* pParent /*=nullptr*/)
 	: CDialog(CUserPassword::IDD, pParent)
 {
+	SecureZeroMemory(&m_password, sizeof(m_password));
+	SecureZeroMemory(&m_passwordA, sizeof(m_passwordA));
 }
 
 CUserPassword::~CUserPassword()
 {
+	SecureZeroMemory(&m_password, sizeof(m_password));
+	SecureZeroMemory(&m_passwordA, sizeof(m_passwordA));
 }
 
 void CUserPassword::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_USER_NAME, m_UserName);
-	DDX_Text(pDX, IDC_USER_PASSWORD, m_Password);
 }
 
 BEGIN_MESSAGE_MAP(CUserPassword, CDialog)
+	ON_BN_CLICKED(IDOK, &CUserPassword::OnBnClickedOk)
+	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 // CUserPassword message handlers
@@ -58,9 +63,33 @@ BOOL CUserPassword::OnInitDialog()
 		title += m_URL;
 		this->SetWindowText(title);
 	}
+	GetDlgItem(IDC_USER_PASSWORD)->SendMessage(EM_SETLIMITTEXT, MAX_LENGTH_PASSWORD - 1, 0);
 	if (GetDlgItem(IDC_USER_NAME)->GetWindowTextLength())
 		GetDlgItem(IDC_USER_PASSWORD)->SetFocus();
 	else
 		GetDlgItem(IDC_USER_NAME)->SetFocus();
 	return FALSE; // we set focus to the username/password textfield
+}
+
+void CUserPassword::OnBnClickedOk()
+{
+	GetDlgItem(IDC_USER_PASSWORD)->GetWindowText(m_password, _countof(m_password));
+
+	auto lengthIncTerminator = WideCharToMultiByte(CP_UTF8, 0, m_password, (int)wcslen(m_password), m_passwordA, sizeof(m_passwordA) - 1, nullptr, nullptr);
+	m_passwordA[lengthIncTerminator] = '\0';
+
+	CDialog::OnOK();
+}
+
+void CUserPassword::OnDestroy()
+{
+	// overwrite password textfield contents with garbage in order to wipe the cache
+	TCHAR gargabe[MAX_LENGTH_PASSWORD];
+	wmemset(gargabe, L'*', _countof(gargabe));
+	gargabe[_countof(gargabe) - 1] = L'\0';
+	GetDlgItem(IDC_USER_PASSWORD)->SetWindowText(gargabe);
+	gargabe[0] = L'\0';
+	GetDlgItem(IDC_USER_PASSWORD)->SetWindowText(gargabe);
+
+	__super::OnDestroy();
 }

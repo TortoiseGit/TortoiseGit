@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2013-2016 - TortoiseGit
+// Copyright (C) 2009, 2013-2016, 2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,6 +25,7 @@
 #include "SendMail.h"
 #include "MailMsg.h"
 #include "WindowsCredentialsStore.h"
+#include "UserPassword.h"
 
 // CSettingSMTP dialog
 
@@ -43,8 +44,6 @@ CSettingSMTP::CSettingSMTP()
 	m_Port = m_regPort;
 	m_dwSMTPEnrcyption = m_regEncryption;
 	m_bAuth = m_regAuthenticate;
-
-	CWindowsCredentialsStore::GetCredential(L"TortoiseGit:SMTP-Credentials", m_User, m_Password);
 }
 
 CSettingSMTP::~CSettingSMTP()
@@ -59,8 +58,6 @@ void CSettingSMTP::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_SMTP_AUTH, m_bAuth);
 	DDX_Text(pDX, IDC_SMTP_SERVER, m_Server);
 	DDX_Text(pDX, IDC_SMTP_PORT, m_Port);
-	DDX_Text(pDX, IDC_SMTP_USER, m_User);
-	DDX_Text(pDX, IDC_SMTP_PASSWORD, m_Password);
 }
 
 BEGIN_MESSAGE_MAP(CSettingSMTP, CPropertyPage)
@@ -71,8 +68,8 @@ BEGIN_MESSAGE_MAP(CSettingSMTP, CPropertyPage)
 	ON_EN_CHANGE(IDC_SMTP_SERVER, OnModified)
 	ON_EN_CHANGE(IDC_SMTP_PORT, OnModified)
 	ON_EN_CHANGE(IDC_SEND_ADDRESS, OnModified)
-	ON_EN_CHANGE(IDC_SMTP_USER, OnModified)
-	ON_EN_CHANGE(IDC_SMTP_PASSWORD, OnModified)
+	ON_BN_CLICKED(IDC_STORECREDENTIALS, OnBnClickedStoreCredentials)
+	ON_BN_CLICKED(IDC_CLEARCREDENTIALS, OnBnClickedClearCredentials)
 END_MESSAGE_MAP()
 
 BOOL CSettingSMTP::OnInitDialog()
@@ -110,7 +107,7 @@ BOOL CSettingSMTP::OnInitDialog()
 	this->UpdateData(FALSE);
 
 	OnModifiedDeliveryCombo();
-	OnBnClickedSmtpAuth();
+	UpdateCredentialsButtons();
 
 	return TRUE;
 }
@@ -130,15 +127,14 @@ void CSettingSMTP::OnModifiedDeliveryCombo()
 {
 	m_dwDeliveryType = (DWORD)m_SMTPDeliveryTypeCombo.GetItemData(m_SMTPDeliveryTypeCombo.GetCurSel());
 
-	GetDlgItem(IDC_SMTP_PASSWORD)->EnableWindow(m_dwDeliveryType >= 2 && m_bAuth);
 	GetDlgItem(IDC_SMTP_USER)->EnableWindow(m_dwDeliveryType >= 2 && m_bAuth);
+	GetDlgItem(IDC_STORECREDENTIALS)->EnableWindow(m_dwDeliveryType >= 2 && m_bAuth);
 	GetDlgItem(IDC_SMTP_AUTH)->EnableWindow(m_dwDeliveryType >= 2);
 	GetDlgItem(IDC_SMTPENCRYPTIONCOMBO)->EnableWindow(m_dwDeliveryType >= 2);
 	GetDlgItem(IDC_SMTP_PORT)->EnableWindow(m_dwDeliveryType >= 2);
 	GetDlgItem(IDC_SMTP_SERVER)->EnableWindow(m_dwDeliveryType >= 2);
 	GetDlgItem(IDC_STATIC_SMTPENCRYPTION)->EnableWindow(m_dwDeliveryType >= 2);
 	GetDlgItem(IDC_STATIC_SMTPLOGIN)->EnableWindow(m_dwDeliveryType >= 2 && m_bAuth);
-	GetDlgItem(IDC_STATIC_SMTPPASSWORD)->EnableWindow(m_dwDeliveryType >= 2 && m_bAuth);
 	GetDlgItem(IDC_STATIC_SMTPPORT)->EnableWindow(m_dwDeliveryType >= 2);
 	GetDlgItem(IDC_STATIC_SMTPSERVER)->EnableWindow(m_dwDeliveryType >= 2);
 
@@ -155,10 +151,6 @@ BOOL CSettingSMTP::OnApply()
 	m_regPort = m_Port;
 	m_regAuthenticate = m_bAuth;
 	m_regEncryption = m_dwSMTPEnrcyption;
-	if (m_User.IsEmpty() && m_Password.IsEmpty())
-		CWindowsCredentialsStore::DeleteCredential(L"TortoiseGit:SMTP-Credentials");
-	else
-		CWindowsCredentialsStore::SaveCredential(L"TortoiseGit:SMTP-Credentials", m_User, m_Password);
 
 	SetModified(FALSE);
 
@@ -170,8 +162,34 @@ void CSettingSMTP::OnBnClickedSmtpAuth()
 {
 	UpdateData();
 	GetDlgItem(IDC_SMTP_USER)->EnableWindow(m_bAuth);
-	GetDlgItem(IDC_SMTP_PASSWORD)->EnableWindow(m_bAuth);
 	GetDlgItem(IDC_STATIC_SMTPLOGIN)->EnableWindow(m_bAuth);
-	GetDlgItem(IDC_STATIC_SMTPPASSWORD)->EnableWindow(m_bAuth);
+	GetDlgItem(IDC_STORECREDENTIALS)->EnableWindow(m_bAuth);
 	SetModified();
+}
+
+void CSettingSMTP::OnBnClickedStoreCredentials()
+{
+	UpdateData();
+	CUserPassword dlg;
+	GetDlgItem(IDC_SMTP_USER)->GetWindowText(dlg.m_UserName);
+	if (dlg.DoModal() == IDOK)
+		CWindowsCredentialsStore::SaveCredential(L"TortoiseGit:SMTP-Credentials", dlg.m_UserName, dlg.m_password);
+
+	UpdateCredentialsButtons();
+	UpdateData(FALSE);
+}
+
+void CSettingSMTP::OnBnClickedClearCredentials()
+{
+	CWindowsCredentialsStore::DeleteCredential(L"TortoiseGit:SMTP-Credentials");
+	GetDlgItem(IDC_SMTP_USER)->SetWindowText(L"");
+	GetDlgItem(IDC_CLEARCREDENTIALS)->EnableWindow(FALSE);
+}
+
+void CSettingSMTP::UpdateCredentialsButtons()
+{
+	CCredentials credentials;
+	CWindowsCredentialsStore::GetCredential(L"TortoiseGit:SMTP-Credentials", credentials);
+	GetDlgItem(IDC_SMTP_USER)->SetWindowText(credentials.m_username);
+	GetDlgItem(IDC_CLEARCREDENTIALS)->EnableWindow(!credentials.m_username.IsEmpty());
 }

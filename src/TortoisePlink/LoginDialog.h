@@ -1,5 +1,6 @@
-// TortoiseCVS - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2018 - TortoiseGit
 // Copyright (C) 2000 - Francis Irving
 // <francis@flourish.org> - May 2000
 
@@ -21,6 +22,8 @@
 #define LOGIN_DIALOG_H
 
 #include <windows.h>
+
+#define MAX_LENGTH_PASSWORD 256
 
 #ifdef __cplusplus
 extern "C" {

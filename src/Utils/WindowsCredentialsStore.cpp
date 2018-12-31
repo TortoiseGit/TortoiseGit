@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016 - TortoiseGit
+// Copyright (C) 2016, 2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -23,25 +23,29 @@
 
 #pragma comment(lib, "Advapi32.lib")
 
-int CWindowsCredentialsStore::GetCredential(const CString& entryName, CString& username, CString& password)
+int CWindowsCredentialsStore::GetCredential(const CString& entryName, CCredentials& credentials)
 {
 	PCREDENTIAL cred = nullptr;
-	if (CredRead(entryName, 1, 0, &cred) != TRUE || !cred)
+	if (CredRead(entryName, CRED_TYPE_GENERIC, 0, &cred) != TRUE || !cred)
 		return -1;
 
-	username = cred->UserName;
-	password = CString((TCHAR*)cred->CredentialBlob, cred->CredentialBlobSize / sizeof(TCHAR));
+	credentials.m_username = cred->UserName;
+	wcsncpy_s(credentials.m_password, _countof(credentials.m_password), (TCHAR*)cred->CredentialBlob, cred->CredentialBlobSize / sizeof(TCHAR));
+	SecureZeroMemory(cred->CredentialBlob, cred->CredentialBlobSize);
+	CredFree(&cred);
 	return 0;
 }
 
-int CWindowsCredentialsStore::SaveCredential(const CString& entryName, const CString& username, const CString& password)
+int CWindowsCredentialsStore::SaveCredential(const CString& entryName, const CString& username, const TCHAR* password)
 {
+	ATLASSERT(password);
+
 	CREDENTIAL cred = { 0 };
 	cred.Type = CRED_TYPE_GENERIC;
 	cred.TargetName = const_cast<LPTSTR>(static_cast<LPCTSTR>(entryName));
 	cred.UserName = const_cast<LPTSTR>(static_cast<LPCTSTR>(username));
-	cred.CredentialBlob = (LPBYTE)static_cast<LPCTSTR>(password);
-	cred.CredentialBlobSize = password.GetLength() * sizeof(TCHAR);
+	cred.CredentialBlob = (LPBYTE)password;
+	cred.CredentialBlobSize = (int)wcslen(password) * sizeof(TCHAR);
 	cred.Persist = CRED_PERSIST_LOCAL_MACHINE;
 	return CredWrite(&cred, 0) == TRUE ? 0 : -1;
 }
@@ -49,4 +53,14 @@ int CWindowsCredentialsStore::SaveCredential(const CString& entryName, const CSt
 int CWindowsCredentialsStore::DeleteCredential(const CString& entryName)
 {
 	return CredDelete(entryName, CRED_TYPE_GENERIC, 0) == TRUE ? 0 : -1;
+}
+
+CCredentials::CCredentials()
+{
+	SecureZeroMemory(&m_password, sizeof(m_password));
+}
+
+CCredentials ::~CCredentials()
+{
+	SecureZeroMemory(&m_password, sizeof(m_password));
 }

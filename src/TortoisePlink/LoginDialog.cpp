@@ -1,5 +1,6 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2018 - TortoiseGit
 // Copyright (C) 2003, 2013, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -29,20 +30,20 @@ class LoginDialog
 {
 public:
    LoginDialog(const std::string& prompt);
+   ~LoginDialog();
 
-   static bool DoLoginDialog(std::string& password, const std::string& prompt);
+   static bool DoLoginDialog(char* password, int maxlen, const char* prompt);
 
 private:
    bool myOK;
    HWND _hdlg;
 
-   std::string  myPassword;
+   char myPassword[MAX_LENGTH_PASSWORD];
    std::string  myPrompt;
 
    void CreateModule(void);
    void RetrieveValues();
-
-   std::string GetPassword();
+   void PurgeValues();
 
    friend BOOL CALLBACK LoginDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 };
@@ -52,11 +53,7 @@ BOOL DoLoginDialog(char* password, int maxlen, const char* prompt)
 {
    g_hmodThisDll = GetModuleHandle(0);
    g_hwndMain = GetParentHwnd();
-   std::string passwordstr;
-   BOOL res = LoginDialog::DoLoginDialog(passwordstr, prompt);
-   if (res)
-      strncpy(password, passwordstr.c_str(), maxlen);
-   return res;
+   return LoginDialog::DoLoginDialog(password, maxlen, prompt);
 }
 
 
@@ -70,6 +67,7 @@ BOOL CALLBACK LoginDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
       // Set prompt text
       SendDlgItemMessage(hwndDlg, IDC_LOGIN_PROMPT, WM_SETTEXT,
                          pDlg->myPrompt.length(), (LPARAM) pDlg->myPrompt.c_str());
+      SendDlgItemMessage(hwndDlg, IDC_LOGIN_PASSWORD, EM_SETLIMITTEXT, MAX_LENGTH_PASSWORD - 1, 0);
       // Make sure edit control has the focus
       //SendDlgItemMessage(hwndDlg, IDC_LOGIN_PASSWORD, WM_SETFOCUS, 0, 0);
       if (GetDlgCtrlID((HWND) wParam) != IDC_LOGIN_PASSWORD)
@@ -83,6 +81,7 @@ BOOL CALLBACK LoginDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
    {
       LoginDialog* pDlg = (LoginDialog*) GetWindowLongPtr(hwndDlg, GWLP_USERDATA);
       pDlg->myOK = false;
+      pDlg->PurgeValues();
       EndDialog(hwndDlg, IDCANCEL);
       return 1;
    }
@@ -91,6 +90,7 @@ BOOL CALLBACK LoginDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
       LoginDialog* pDlg = (LoginDialog*) GetWindowLongPtr(hwndDlg, GWLP_USERDATA);
       pDlg->myOK = true;
       pDlg->RetrieveValues();
+      pDlg->PurgeValues();
       EndDialog(hwndDlg, IDOK);
       return 1;
    }
@@ -100,6 +100,12 @@ BOOL CALLBACK LoginDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
 LoginDialog::LoginDialog(const std::string& prompt)
 {
    myPrompt = prompt;
+   SecureZeroMemory(&myPassword, sizeof(myPassword));
+}
+
+LoginDialog::~LoginDialog()
+{
+   SecureZeroMemory(&myPassword, sizeof(myPassword));
 }
 
 void LoginDialog::CreateModule(void)
@@ -109,34 +115,37 @@ void LoginDialog::CreateModule(void)
 }
 
 
-bool LoginDialog::DoLoginDialog(std::string& password, const std::string& prompt)
+bool LoginDialog::DoLoginDialog(char* password, int maxlen, const char* prompt)
 {
    LoginDialog *pDlg = new LoginDialog(prompt);
 
    pDlg->CreateModule();
 
    bool ret = pDlg->myOK;
-   password = pDlg->myPassword;
+
+   if (ret)
+      strncpy_s(password, maxlen, pDlg->myPassword, sizeof(pDlg->myPassword));
 
    delete pDlg;
 
    return ret;
 }
 
-
-std::string LoginDialog::GetPassword()
-{
-   char szTxt[256];
-   SendDlgItemMessage(_hdlg, IDC_LOGIN_PASSWORD, WM_GETTEXT, sizeof(szTxt), (LPARAM)szTxt);
-   std::string strText = szTxt;
-   return strText;
-}
-
 void LoginDialog::RetrieveValues()
 {
-   myPassword = GetPassword();
+   SendDlgItemMessage(_hdlg, IDC_LOGIN_PASSWORD, WM_GETTEXT, sizeof(myPassword), (LPARAM)myPassword);
 }
 
+void LoginDialog::PurgeValues()
+{
+   // overwrite textfield contents with garbage in order to wipe the cache
+   char gargabe[MAX_LENGTH_PASSWORD];
+   memset(gargabe, L'*', sizeof(gargabe));
+   gargabe[sizeof(gargabe) - 1] = '\0';
+   SendDlgItemMessage(_hdlg, IDC_LOGIN_PASSWORD, WM_SETTEXT, 0, (LPARAM)gargabe);
+   gargabe[0] = '\0';
+   SendDlgItemMessage(_hdlg, IDC_LOGIN_PASSWORD, WM_SETTEXT, 0, (LPARAM)gargabe);
+}
 
 BOOL IsWinNT()
 {

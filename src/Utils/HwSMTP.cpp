@@ -124,6 +124,7 @@ CHwSMTP::CHwSMTP () :
 	m_bConnected ( FALSE ),
 	m_nSmtpSrvPort ( 25 ),
 	m_bMustAuth ( TRUE )
+	, m_credentials(nullptr)
 {
 	m_csPartBoundary = L"NextPart_" + GetGUID();
 	m_csMIMEContentType.Format(L"multipart/mixed; boundary=%s", (LPCTSTR)m_csPartBoundary);
@@ -217,7 +218,7 @@ BOOL CHwSMTP::SendSpeedEmail
 		while(pNext)
 		{
 			if(pNext->wType == DNS_TYPE_MX)
-				if (SendEmail(pNext->Data.MX.pNameExchange, nullptr, nullptr, false,
+				if (SendEmail(pNext->Data.MX.pNameExchange, nullptr, false,
 					lpszAddrFrom, to, lpszSubject, lpszBody, pStrAryAttach, pStrAryCC,
 					25,pSend,lpszAddrTo))
 					break;
@@ -753,8 +754,7 @@ static SECURITY_STATUS ReadDecrypt(CSocket * Socket, PCredHandle phCreds, CtxtHa
 
 BOOL CHwSMTP::SendEmail (
 		LPCTSTR lpszSmtpSrvHost,
-		LPCTSTR lpszUserName,
-		LPCTSTR lpszPasswd,
+		CCredentials* credentials,
 		BOOL bMustAuth,
 		LPCTSTR lpszAddrFrom,
 		LPCTSTR lpszAddrTo,
@@ -778,10 +778,9 @@ BOOL CHwSMTP::SendEmail (
 		m_csLastError = L"Parameter Error!";
 		return FALSE;
 	}
-	m_csUserName = GET_SAFE_STRING ( lpszUserName );
-	m_csPasswd = GET_SAFE_STRING ( lpszPasswd );
+	m_credentials = credentials;
 	m_bMustAuth = bMustAuth;
-	if ( m_bMustAuth && m_csUserName.GetLength() <= 0 )
+	if (m_bMustAuth && (!m_credentials || m_credentials->m_username.IsEmpty()))
 	{
 		m_csLastError = L"Parameter Error!";
 		return FALSE;
@@ -940,6 +939,7 @@ cleanup:
 			DisconnectFromServer(&m_SendSock, hCreds, hContext);
 		if (pbIoBuffer)
 		{
+			SecureZeroMemory(pbIoBuffer, cbIoBufferLength);
 			LocalFree(pbIoBuffer);
 			pbIoBuffer = nullptr;
 			cbIoBufferLength = 0;
@@ -1115,7 +1115,7 @@ BOOL CHwSMTP::auth()
 	if (!GetResponse("334"))
 		return FALSE;
 
-	if (!Send(EncodeBase64(m_csUserName) + "\r\n"))
+	if (!Send(EncodeBase64(m_credentials->m_username) + "\r\n"))
 		return FALSE;
 
 	if (!GetResponse("334"))
@@ -1124,7 +1124,30 @@ BOOL CHwSMTP::auth()
 		return FALSE;
 	}
 
-	if (!Send(EncodeBase64(m_csPasswd) + "\r\n"))
+	if (m_credentials->m_password[0] != L'\0')
+	{
+		auto len = (int)_tcslen(m_credentials->m_password);
+		auto size = len * 4 + 1;
+		auto buf = new char[size];
+		auto ret = WideCharToMultiByte(CP_UTF8, 0, m_credentials->m_password, len, buf, size - 1, nullptr, nullptr);
+		buf[ret] = '\0';
+
+		int neededLength = Base64EncodeGetRequiredLength(len);
+		auto bufBase64 = new char[neededLength + 1];
+		bufBase64[0] = '\0';
+		if (Base64Encode((BYTE*)buf, ret, bufBase64, &neededLength, ATL_BASE64_FLAG_NOCRLF))
+			bufBase64[neededLength] = '\0';
+
+		auto successful = SendBuffer(bufBase64, neededLength);
+
+		SecureZeroMemory(bufBase64, neededLength + 1);
+		delete[] bufBase64;
+		SecureZeroMemory(buf, size);
+		delete[] buf;
+		if (!successful)
+			return FALSE;
+	}
+	if (!Send("\r\n"))
 		return FALSE;
 
 	if (!GetResponse("235"))

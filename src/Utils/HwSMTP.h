@@ -46,6 +46,7 @@ Wins、网卡MAC地址等相关信息；还提供了SMTP协议解析类，该类
 #include <schannel.h>
 #include <security.h>
 #include <sspi.h>
+#include "WindowsCredentialsStore.h"
 
 #if !defined(AFX_HwSMTP_H__633A52B7_1CBE_41D7_BDA3_188D98D692AF__INCLUDED_)
 #define AFX_HwSMTP_H__633A52B7_1CBE_41D7_BDA3_188D98D692AF__INCLUDED_
@@ -67,8 +68,7 @@ public:
 	CString GetLastErrorText();
 	BOOL SendEmail (
 		LPCTSTR lpszSmtpSrvHost,
-		LPCTSTR lpszUserName,
-		LPCTSTR lpszPasswd,
+		CCredentials* credentials,
 		BOOL bMustAuth,
 		LPCTSTR lpszAddrFrom,
 		LPCTSTR lpszAddrTo,
@@ -112,8 +112,7 @@ private:
 	CSocket m_SendSock;
 	CStringArray m_StrAryAttach;
 	CString m_csSmtpSrvHost;
-	CString m_csUserName;
-	CString m_csPasswd;
+	CCredentials* m_credentials;
 	CString m_csAddrFrom;
 	CString m_csAddrTo;
 	CString m_csFromName;

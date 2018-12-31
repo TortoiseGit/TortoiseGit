@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016 - TortoiseGit
+// Copyright (C) 2016, 2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,23 +25,21 @@
 TEST(WindowsCredentialsStore, GetSetOverrideDelete)
 {
 	EXPECT_EQ(-1, CWindowsCredentialsStore::DeleteCredential(CREDENDIALSTORETESTENTRY));
-	CString username, password;
-	EXPECT_EQ(-1, CWindowsCredentialsStore::GetCredential(CREDENDIALSTORETESTENTRY, username, password));
-	username = L"someusername";
-	password = L"somepassword";
+	CCredentials credentials;
+	EXPECT_EQ(-1, CWindowsCredentialsStore::GetCredential(CREDENDIALSTORETESTENTRY, credentials));
+	CString username = L"someusername";
+	CString password = L"somepassword";
 	EXPECT_EQ(0, CWindowsCredentialsStore::SaveCredential(CREDENDIALSTORETESTENTRY, username, password));
-	username.Empty();
-	password.Empty();
-	EXPECT_EQ(0, CWindowsCredentialsStore::GetCredential(CREDENDIALSTORETESTENTRY, username, password));
-	EXPECT_STREQ(L"someusername", username);
-	EXPECT_STREQ(L"somepassword", password);
+	CCredentials credentials2;
+	EXPECT_EQ(0, CWindowsCredentialsStore::GetCredential(CREDENDIALSTORETESTENTRY, credentials2));
+	EXPECT_STREQ(L"someusername", credentials2.m_username);
+	EXPECT_STREQ(L"somepassword", credentials2.m_password);
 	username = L"some-other-username";
 	password = L"some-other-passwordä";
 	EXPECT_EQ(0, CWindowsCredentialsStore::SaveCredential(CREDENDIALSTORETESTENTRY, username, password));
-	username.Empty();
-	password.Empty();
-	EXPECT_EQ(0, CWindowsCredentialsStore::GetCredential(CREDENDIALSTORETESTENTRY, username, password));
-	EXPECT_STREQ(L"some-other-username", username);
-	EXPECT_STREQ(L"some-other-passwordä", password);
+	CCredentials credentials3;
+	EXPECT_EQ(0, CWindowsCredentialsStore::GetCredential(CREDENDIALSTORETESTENTRY, credentials3));
+	EXPECT_STREQ(L"some-other-username", credentials3.m_username);
+	EXPECT_STREQ(L"some-other-passwordä", credentials3.m_password);
 	EXPECT_EQ(0, CWindowsCredentialsStore::DeleteCredential(CREDENDIALSTORETESTENTRY));
 }

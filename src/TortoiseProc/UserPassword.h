@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013 - TortoiseGit
+// Copyright (C) 2013, 2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,6 +20,8 @@
 
 // CUserPassword dialog
 
+#define MAX_LENGTH_PASSWORD 256
+
 class CUserPassword : public CDialog
 {
 	DECLARE_DYNAMIC(CUserPassword)
@@ -37,7 +39,10 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CString m_UserName;
-	CString m_Password;
 	CString m_URL;
+	TCHAR m_password[MAX_LENGTH_PASSWORD];
+	char m_passwordA[4 * MAX_LENGTH_PASSWORD];
 	virtual BOOL OnInitDialog() override;
+	afx_msg void OnBnClickedOk();
+	afx_msg void OnDestroy();
 };

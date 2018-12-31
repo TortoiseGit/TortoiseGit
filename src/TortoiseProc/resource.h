@@ -1038,7 +1038,6 @@
 #define IDS_NEWHASH                     1509
 #define IDS_NEWMESSAGE                  1510
 #define IDC_SENDMAIL_SUBJECT            1510
-#define IDC_SMTP_PASSWORD               1510
 #define IDC_BUGTRAQ_LABEL               1510
 #define IDC_CHECK_SVN_BRANCH            1510
 #define IDS_SAME                        1511
@@ -1607,6 +1606,8 @@
 #define IDC_FIRSTSTART_SSHHINT          1846
 #define IDC_CHECK_LFS                   1847
 #define IDC_LOCALCHECK                  1848
+#define IDC_CLEARCREDENTIALS            1848
+#define IDC_STORECREDENTIALS            1849
 #define IDS_LOG_FILTER_BY               1850
 #define IDS_LOG_FILTER_PATHS            1851
 #define IDS_LOG_FILTER_AUTHORS          1852
@@ -2053,7 +2054,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        363
 #define _APS_NEXT_COMMAND_VALUE         32874
-#define _APS_NEXT_CONTROL_VALUE         1848
+#define _APS_NEXT_CONTROL_VALUE         1849
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

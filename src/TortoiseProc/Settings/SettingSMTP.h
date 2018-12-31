@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2013, 2016-2017 - TortoiseGit
+// Copyright (C) 2009, 2013, 2016-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,6 +18,7 @@
 //
 #pragma once
 #include "SettingsPropPage.h"
+#include "WindowsCredentialsStore.h"
 
 // CSettingSMTP dialog
 
@@ -38,6 +39,8 @@ public:
 	afx_msg void OnModified();
 	afx_msg void OnModifiedEncryptionCombo();
 	afx_msg void OnModifiedDeliveryCombo();
+	afx_msg void OnBnClickedStoreCredentials();
+	afx_msg void OnBnClickedClearCredentials();
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
@@ -48,6 +51,8 @@ protected:
 	CComboBox		m_SMTPEncryptionCombo;
 
 	afx_msg void OnBnClickedSmtpAuth();
+
+	void UpdateCredentialsButtons();
 
 private:
 	CRegDWORD		m_regDeliveryType;
@@ -62,6 +67,4 @@ private:
 	DWORD m_Port;
 	CString m_From;
 	BOOL m_bAuth;
-	CString m_User;
-	CString m_Password;
 };
