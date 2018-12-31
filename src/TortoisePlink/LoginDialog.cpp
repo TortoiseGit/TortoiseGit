@@ -26,126 +26,120 @@
 HINSTANCE g_hmodThisDll;
 HWND g_hwndMain;
 
-class LoginDialog
-{
+class LoginDialog {
 public:
-   LoginDialog(const std::string& prompt);
-   ~LoginDialog();
+	LoginDialog(const std::string& prompt);
+	~LoginDialog();
 
-   static bool DoLoginDialog(char* password, int maxlen, const char* prompt);
+	static bool DoLoginDialog(char* password, int maxlen, const char* prompt);
 
 private:
-   bool myOK;
-   HWND _hdlg;
+	bool myOK;
+	HWND _hdlg;
 
-   char myPassword[MAX_LENGTH_PASSWORD];
-   std::string  myPrompt;
+	char myPassword[MAX_LENGTH_PASSWORD];
+	std::string myPrompt;
 
-   void CreateModule(void);
-   void RetrieveValues();
-   void PurgeValues();
+	void CreateModule(void);
+	void RetrieveValues();
+	void PurgeValues();
 
-   friend BOOL CALLBACK LoginDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
+	friend BOOL CALLBACK LoginDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 };
-
 
 BOOL DoLoginDialog(char* password, int maxlen, const char* prompt)
 {
-   g_hmodThisDll = GetModuleHandle(0);
-   g_hwndMain = GetParentHwnd();
-   return LoginDialog::DoLoginDialog(password, maxlen, prompt);
+	g_hmodThisDll = GetModuleHandle(0);
+	g_hwndMain = GetParentHwnd();
+	return LoginDialog::DoLoginDialog(password, maxlen, prompt);
 }
-
 
 BOOL CALLBACK LoginDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-   if (uMsg == WM_INITDIALOG)
-   {
-      auto pDlg = reinterpret_cast<LoginDialog*>(lParam);
-      pDlg->_hdlg = hwndDlg;
-      SetWindowLongPtr(hwndDlg, GWLP_USERDATA, lParam);
-      // Set prompt text
-      SendDlgItemMessage(hwndDlg, IDC_LOGIN_PROMPT, WM_SETTEXT,
-                         pDlg->myPrompt.length(), (LPARAM) pDlg->myPrompt.c_str());
-      SendDlgItemMessage(hwndDlg, IDC_LOGIN_PASSWORD, EM_SETLIMITTEXT, MAX_LENGTH_PASSWORD - 1, 0);
-      // Make sure edit control has the focus
-      //SendDlgItemMessage(hwndDlg, IDC_LOGIN_PASSWORD, WM_SETFOCUS, 0, 0);
-      if (GetDlgCtrlID((HWND) wParam) != IDC_LOGIN_PASSWORD)
-      {
-         SetFocus(GetDlgItem(hwndDlg, IDC_LOGIN_PASSWORD));
-         return FALSE;
-      }
-      return TRUE;
-   }
-   else if (uMsg == WM_COMMAND && LOWORD(wParam) == IDCANCEL && HIWORD(wParam) == BN_CLICKED)
-   {
-      auto pDlg = reinterpret_cast<LoginDialog*>(GetWindowLongPtr(hwndDlg, GWLP_USERDATA));
-      pDlg->myOK = false;
-      pDlg->PurgeValues();
-      EndDialog(hwndDlg, IDCANCEL);
-      return 1;
-   }
-   else if (uMsg == WM_COMMAND && LOWORD(wParam) == IDOK && HIWORD(wParam) == BN_CLICKED)
-   {
-      auto pDlg = reinterpret_cast<LoginDialog*>(GetWindowLongPtr(hwndDlg, GWLP_USERDATA));
-      pDlg->myOK = true;
-      pDlg->RetrieveValues();
-      pDlg->PurgeValues();
-      EndDialog(hwndDlg, IDOK);
-      return 1;
-   }
-   return 0;
+	if (uMsg == WM_INITDIALOG)
+	{
+		auto pDlg = reinterpret_cast<LoginDialog*>(lParam);
+		pDlg->_hdlg = hwndDlg;
+		SetWindowLongPtr(hwndDlg, GWLP_USERDATA, lParam);
+		// Set prompt text
+		SendDlgItemMessage(hwndDlg, IDC_LOGIN_PROMPT, WM_SETTEXT, pDlg->myPrompt.length(), (LPARAM)pDlg->myPrompt.c_str());
+		SendDlgItemMessage(hwndDlg, IDC_LOGIN_PASSWORD, EM_SETLIMITTEXT, MAX_LENGTH_PASSWORD - 1, 0);
+		// Make sure edit control has the focus
+		//SendDlgItemMessage(hwndDlg, IDC_LOGIN_PASSWORD, WM_SETFOCUS, 0, 0);
+		if (GetDlgCtrlID((HWND)wParam) != IDC_LOGIN_PASSWORD)
+		{
+			SetFocus(GetDlgItem(hwndDlg, IDC_LOGIN_PASSWORD));
+			return FALSE;
+		}
+		return TRUE;
+	}
+	else if (uMsg == WM_COMMAND && LOWORD(wParam) == IDCANCEL && HIWORD(wParam) == BN_CLICKED)
+	{
+		auto pDlg = reinterpret_cast<LoginDialog*>(GetWindowLongPtr(hwndDlg, GWLP_USERDATA));
+		pDlg->myOK = false;
+		pDlg->PurgeValues();
+		EndDialog(hwndDlg, IDCANCEL);
+		return 1;
+	}
+	else if (uMsg == WM_COMMAND && LOWORD(wParam) == IDOK && HIWORD(wParam) == BN_CLICKED)
+	{
+		auto pDlg = reinterpret_cast<LoginDialog*>(GetWindowLongPtr(hwndDlg, GWLP_USERDATA));
+		pDlg->myOK = true;
+		pDlg->RetrieveValues();
+		pDlg->PurgeValues();
+		EndDialog(hwndDlg, IDOK);
+		return 1;
+	}
+	return 0;
 }
 
 LoginDialog::LoginDialog(const std::string& prompt)
 {
-   myPrompt = prompt;
-   SecureZeroMemory(&myPassword, sizeof(myPassword));
+	myPrompt = prompt;
+	SecureZeroMemory(&myPassword, sizeof(myPassword));
 }
 
 LoginDialog::~LoginDialog()
 {
-   SecureZeroMemory(&myPassword, sizeof(myPassword));
+	SecureZeroMemory(&myPassword, sizeof(myPassword));
 }
 
 void LoginDialog::CreateModule(void)
 {
-   DialogBoxParam(g_hmodThisDll, MAKEINTRESOURCE(IDD_LOGIN), g_hwndMain,
-                  (DLGPROC)(LoginDialogProc), (LPARAM)this);
+	DialogBoxParam(g_hmodThisDll, MAKEINTRESOURCE(IDD_LOGIN), g_hwndMain, (DLGPROC)(LoginDialogProc), (LPARAM)this);
 }
-
 
 bool LoginDialog::DoLoginDialog(char* password, int maxlen, const char* prompt)
 {
-   auto pDlg = std::make_unique<LoginDialog>(prompt);
+	auto pDlg = std::make_unique<LoginDialog>(prompt);
 
-   pDlg->CreateModule();
+	pDlg->CreateModule();
 
-   bool ret = pDlg->myOK;
+	bool ret = pDlg->myOK;
 
-   if (ret)
-      strncpy_s(password, maxlen, pDlg->myPassword, sizeof(pDlg->myPassword));
+	if (ret)
+		strncpy_s(password, maxlen, pDlg->myPassword, sizeof(pDlg->myPassword));
 
-   return ret;
+	return ret;
 }
 
 void LoginDialog::RetrieveValues()
 {
-   SendDlgItemMessage(_hdlg, IDC_LOGIN_PASSWORD, WM_GETTEXT, sizeof(myPassword), (LPARAM)myPassword);
+	SendDlgItemMessage(_hdlg, IDC_LOGIN_PASSWORD, WM_GETTEXT, sizeof(myPassword), (LPARAM)myPassword);
 }
 
 void LoginDialog::PurgeValues()
 {
-   // overwrite textfield contents with garbage in order to wipe the cache
-   char gargabe[MAX_LENGTH_PASSWORD];
-   memset(gargabe, L'*', sizeof(gargabe));
-   gargabe[sizeof(gargabe) - 1] = '\0';
-   SendDlgItemMessage(_hdlg, IDC_LOGIN_PASSWORD, WM_SETTEXT, 0, (LPARAM)gargabe);
-   gargabe[0] = '\0';
-   SendDlgItemMessage(_hdlg, IDC_LOGIN_PASSWORD, WM_SETTEXT, 0, (LPARAM)gargabe);
+	// overwrite textfield contents with garbage in order to wipe the cache
+	char gargabe[MAX_LENGTH_PASSWORD];
+	memset(gargabe, L'*', sizeof(gargabe));
+	gargabe[sizeof(gargabe) - 1] = '\0';
+	SendDlgItemMessage(_hdlg, IDC_LOGIN_PASSWORD, WM_SETTEXT, 0, (LPARAM)gargabe);
+	gargabe[0] = '\0';
+	SendDlgItemMessage(_hdlg, IDC_LOGIN_PASSWORD, WM_SETTEXT, 0, (LPARAM)gargabe);
 }
 
 HWND GetParentHwnd()
 {
-   return GetDesktopWindow();
+	return GetDesktopWindow();
 }

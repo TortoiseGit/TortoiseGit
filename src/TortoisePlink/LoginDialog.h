@@ -26,11 +26,12 @@
 #define MAX_LENGTH_PASSWORD 256
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
-BOOL DoLoginDialog(char* password, int maxlen, const char* prompt);
+	BOOL DoLoginDialog(char* password, int maxlen, const char* prompt);
 
-HWND GetParentHwnd();
+	HWND GetParentHwnd();
 
 #ifdef __cplusplus
 }
