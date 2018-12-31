@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2016, 2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -130,6 +130,7 @@ INT_PTR CALLBACK PasswdDlg(HWND hDlg, UINT message, WPARAM wParam, LPARAM /*lPar
 			::MoveWindow(hDlg,x,y,rect.right-rect.left,rect.bottom-rect.top,TRUE);
 			HWND title = ::GetDlgItem(hDlg, IDC_STATIC_TITLE);
 			::SetWindowText(title, g_Prompt);
+			SendMessage(::GetDlgItem(hDlg, IDC_PASSWORD), EM_SETLIMITTEXT, MAX_LOADSTRING - 1, 0);
 			if (!StrStrI(g_Prompt, L"pass"))
 				SendMessage(::GetDlgItem(hDlg, IDC_PASSWORD), EM_SETPASSWORDCHAR, 0, 0);
 			::FlashWindow(hDlg, TRUE);
