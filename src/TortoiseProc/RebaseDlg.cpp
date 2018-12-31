@@ -1402,11 +1402,8 @@ void CRebaseDlg::OnBnClickedContinue()
 		if(g_Git.Run(cmd,&out,CP_UTF8))
 		{
 			AddLogString(out);
-			if(!g_Git.CheckCleanWorkTree())
-			{
-				CMessageBox::Show(GetSafeHwnd(), out, L"TortoiseGit", MB_OK | MB_ICONERROR);
-				return;
-			}
+			CMessageBox::Show(GetSafeHwnd(), out, L"TortoiseGit", MB_OK | MB_ICONERROR);
+			return;
 		}
 
 		AddLogString(out);
@@ -1440,6 +1437,12 @@ void CRebaseDlg::OnBnClickedContinue()
 					CMessageBox::Show(GetSafeHwnd(), out, L"TortoiseGit", MB_OK | MB_ICONERROR);
 					return;
 				}
+				CString retry;
+				retry.LoadString(IDS_MSGBOX_RETRY);
+				CString ignore;
+				ignore.LoadString(IDS_MSGBOX_IGNORE);
+				if (CMessageBox::Show(GetSafeHwnd(), out, L"TortoiseGit", 1, IDI_ERROR, retry, ignore) == 1)
+					return;
 			}
 
 			AddLogString(out);
@@ -1579,6 +1582,12 @@ void CRebaseDlg::OnBnClickedContinue()
 				CMessageBox::Show(GetSafeHwnd(), out, L"TortoiseGit", MB_OK | MB_ICONERROR);
 				return;
 			}
+			CString retry;
+			retry.LoadString(IDS_MSGBOX_RETRY);
+			CString ignore;
+			ignore.LoadString(IDS_MSGBOX_IGNORE);
+			if (CMessageBox::Show(GetSafeHwnd(), out, L"TortoiseGit", 1, IDI_ERROR, retry, ignore) == 1)
+				return;
 		}
 
 		AddLogString(out);
