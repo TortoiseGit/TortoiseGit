@@ -28,6 +28,7 @@ IMPLEMENT_DYNAMIC(CUserPassword, CDialog)
 
 CUserPassword::CUserPassword(CWnd* pParent /*=nullptr*/)
 	: CDialog(CUserPassword::IDD, pParent)
+	, CommonDialogFunctions(this)
 {
 	SecureZeroMemory(&m_password, sizeof(m_password));
 	SecureZeroMemory(&m_passwordA, sizeof(m_passwordA));
@@ -73,6 +74,14 @@ BOOL CUserPassword::OnInitDialog()
 
 void CUserPassword::OnBnClickedOk()
 {
+	UpdateData();
+	if (m_UserName.IsEmpty())
+	{
+		GetDlgItem(IDC_USER_NAME)->SetFocus();
+		ShowEditBalloon(IDC_USER_NAME, IDS_ERR_MISSINGVALUE, IDS_ERR_ERROR, TTI_ERROR);
+		return;
+	}
+
 	GetDlgItem(IDC_USER_PASSWORD)->GetWindowText(m_password, _countof(m_password));
 
 	auto lengthIncTerminator = WideCharToMultiByte(CP_UTF8, 0, m_password, (int)wcslen(m_password), m_passwordA, sizeof(m_passwordA) - 1, nullptr, nullptr);

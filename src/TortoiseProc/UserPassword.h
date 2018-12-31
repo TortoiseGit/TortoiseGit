@@ -17,12 +17,13 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
+#include "CommonDialogFunctions.h"
 
 // CUserPassword dialog
 
 #define MAX_LENGTH_PASSWORD 256
 
-class CUserPassword : public CDialog
+class CUserPassword : public CDialog, protected CommonDialogFunctions<CDialog>
 {
 	DECLARE_DYNAMIC(CUserPassword)
 
