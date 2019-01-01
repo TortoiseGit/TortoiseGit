@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -61,6 +61,7 @@ CRebaseDlg::CRebaseDlg(CWnd* pParent /*=nullptr*/)
 	, m_IsFastForward(FALSE)
 	, m_iSquashdate((int)CRegDWORD(L"Software\\TortoiseGit\\SquashDate", 0))
 	, m_bAbort(FALSE)
+	, m_CurrentCommitEmpty(false)
 {
 }
 
@@ -1518,6 +1519,7 @@ void CRebaseDlg::OnBnClickedContinue()
 			isFirst = !m_bSplitCommit; // only select amend on second+ runs if not in split commit mode
 
 			m_SquashMessage.Empty();
+			m_CurrentCommitEmpty = dlg.m_bCommitMessageOnly;
 		} while (!g_Git.CheckCleanWorkTree() || (m_bSplitCommit && CMessageBox::Show(GetSafeHwnd(), IDS_REBASE_ADDANOTHERCOMMIT, IDS_APPNAME, MB_YESNO | MB_ICONQUESTION) == IDYES));
 
 		m_bSplitCommit = FALSE;
@@ -1560,20 +1562,14 @@ void CRebaseDlg::OnBnClickedContinue()
 			return;
 		}
 
-		CString out,cmd;
+		CString out, cmd, options;
+		if (m_CurrentCommitEmpty)
+			options = L"--allow-empty ";
 
 		if (m_RebaseStage == REBASE_SQUASH_EDIT)
-			cmd.Format(L"git.exe commit %s-F \"%s\"", (LPCTSTR)m_SquashFirstMetaData.GetAsParam(m_iSquashdate == 2), (LPCTSTR)tempfile);
+			cmd.Format(L"git.exe commit %s%s-F \"%s\"", (LPCTSTR)options, (LPCTSTR)m_SquashFirstMetaData.GetAsParam(m_iSquashdate == 2), (LPCTSTR)tempfile);
 		else
-		{
-			CString options;
-			int isEmpty = IsCommitEmpty(curRev->m_CommitHash);
-			if (isEmpty == 1)
-				options = L"--allow-empty ";
-			else if (isEmpty < 0)
-				return;
 			cmd.Format(L"git.exe commit --amend %s-F \"%s\"", (LPCTSTR)options, (LPCTSTR)tempfile);
-		}
 
 		if(g_Git.Run(cmd,&out,CP_UTF8))
 		{
@@ -1982,9 +1978,15 @@ int CRebaseDlg::DoRebase()
 
 	int isEmpty = IsCommitEmpty(pRev->m_CommitHash);
 	if (isEmpty == 1)
+	{
 		cherryPickedFrom += L"--allow-empty ";
+		if (mode != CGitLogListBase::LOGACTIONS_REBASE_SQUASH)
+			m_CurrentCommitEmpty = true;
+	}
 	else if (isEmpty < 0)
 		return -1;
+	else
+		m_CurrentCommitEmpty = false;
 
 	if (m_IsCherryPick && pRev->m_ParentHash.size() > 1)
 	{
@@ -2165,6 +2167,7 @@ int CRebaseDlg::DoRebase()
 					cmd.Format(L"git.exe commit --allow-empty -C %s", (LPCTSTR)pRev->m_CommitHash.ToString());
 					out.Empty();
 					g_Git.Run(cmd, &out, CP_UTF8);
+					m_CurrentCommitEmpty = true;
 				}
 				else if (mode == CGitLogListBase::LOGACTIONS_REBASE_PICK)
 				{
