@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016, 2018 - TortoiseGit
+// Copyright (C) 2016, 2018-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -32,7 +32,7 @@ int CWindowsCredentialsStore::GetCredential(const CString& entryName, CCredentia
 	credentials.m_username = cred->UserName;
 	wcsncpy_s(credentials.m_password, _countof(credentials.m_password), (TCHAR*)cred->CredentialBlob, cred->CredentialBlobSize / sizeof(TCHAR));
 	SecureZeroMemory(cred->CredentialBlob, cred->CredentialBlobSize);
-	CredFree(&cred);
+	CredFree(cred);
 	return 0;
 }
 
