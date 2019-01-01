@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016, 2018 - TortoiseGit
+// Copyright (C) 2016, 2018-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -40,4 +40,8 @@ public:
 	TCHAR m_password[256];
 
 	friend class CWindowsCredentialsStore;
+
+	CCredentials(CCredentials&) = delete;
+	CCredentials(CCredentials&& that) = default;
+	CCredentials& operator=(const CCredentials&) = delete;
 };
