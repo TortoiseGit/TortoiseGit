@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -2340,6 +2340,14 @@ BOOL CGit::CheckCleanWorkTree(bool stagedOk /* false */)
 
 	return TRUE;
 }
+
+BOOL CGit::IsResultingCommitBecomeEmpty(bool amend /* = false */)
+{
+	CString cmd;
+	cmd.Format(L"git.exe diff-index --cached --quiet HEAD%s --", amend ? L"~1" : L"");
+	return Run(cmd, nullptr, nullptr, CP_UTF8) == 0;
+}
+
 int CGit::Revert(const CString& commit, const CTGitPathList &list, CString& err)
 {
 	for (int i = 0; i < list.GetCount(); ++i)

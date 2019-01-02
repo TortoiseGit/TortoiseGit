@@ -8946,6 +8946,10 @@ msgstr ""
 msgid "The credential helper was changed.\nDo you want to save now or discard changes?"
 msgstr ""
 
+#. Resource IDs: (IDS_CHERRYPICK_EMPTY)
+msgid "The current commit will be empty (e.g., due to conflict resolution). Skip the commit or keep the message only commit?"
+msgstr ""
+
 #. Resource IDs: (IDS_ERROR_NOCLEAN_STASH)
 msgid "The current working tree is not clean.\nDo you want to stash the changes?"
 msgstr ""
