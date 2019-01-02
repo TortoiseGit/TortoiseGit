@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2016 - TortoiseGit
+// Copyright (C) 2015-2016, 2019 - TortoiseGit
 // Copyright (C) 2003-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -58,7 +58,7 @@ public:
 		{
 			CFont* font = pwndDlgItem->GetFont();
 			CFont* pOldFont = pDC->SelectObject(font);
-			if (pDC->DrawText(sControlText, -1, &controlrect, DT_WORDBREAK | DT_EDITCONTROL | DT_EXPANDTABS | DT_LEFT | DT_CALCRECT))
+			if (pDC->DrawText(sControlText, -1, &controlrect, DT_EDITCONTROL | DT_EXPANDTABS | DT_LEFT | DT_CALCRECT))
 			{
 				// now we have the rectangle the control really needs
 				if ((controlrectorig.right - controlrectorig.left) > (controlrect.right - controlrect.left))
