@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2016, 2018 - TortoiseGit
+// Copyright (C) 2011-2016, 2018-2019 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -303,11 +303,10 @@ bool CHooks::StartCommit(HWND hWnd, const CString& workingTree, const CTGitPathL
 	auto it = FindItem(start_commit_hook, workingTree);
 	if (it == end())
 		return false;
-	if (!ApproveHook(hWnd, it))
+	if (!ApproveHook(hWnd, it, exitcode))
 	{
-		exitcode = 1;
-		error.LoadString(IDS_ERR_HOOKNOTAPPROVED);
-		return false;
+		error.LoadString(IDS_USERCANCELLED);
+		return true;
 	}
 	CString sCmd = it->second.commandline;
 	sCmd.Replace(L"%root%", m_RootPath.GetWinPathString());
@@ -327,11 +326,10 @@ bool CHooks::PreCommit(HWND hWnd, const CString& workingTree, const CTGitPathLis
 	auto it = FindItem(pre_commit_hook, workingTree);
 	if (it == end())
 		return false;
-	if (!ApproveHook(hWnd, it))
+	if (!ApproveHook(hWnd, it, exitcode))
 	{
-		exitcode = 1;
-		error.LoadString(IDS_ERR_HOOKNOTAPPROVED);
-		return false;
+		error.LoadString(IDS_USERCANCELLED);
+		return true;
 	}
 	CString sCmd = it->second.commandline;
 	sCmd.Replace(L"%root%", m_RootPath.GetWinPathString());
@@ -349,11 +347,10 @@ bool CHooks::PostCommit(HWND hWnd, const CString& workingTree, bool amend, DWORD
 	auto it = FindItem(post_commit_hook, workingTree);
 	if (it == end())
 		return false;
-	if (!ApproveHook(hWnd, it))
+	if (!ApproveHook(hWnd, it, exitcode))
 	{
-		exitcode = 1;
-		error.LoadString(IDS_ERR_HOOKNOTAPPROVED);
-		return false;
+		error.LoadString(IDS_USERCANCELLED);
+		return true;
 	}
 	CString sCmd = it->second.commandline;
 	sCmd.Replace(L"%root%", m_RootPath.GetWinPathString());
@@ -371,11 +368,10 @@ bool CHooks::PrePush(HWND hWnd, const CString& workingTree, DWORD& exitcode, CSt
 	auto it = FindItem(pre_push_hook, workingTree);
 	if (it == end())
 		return false;
-	if (!ApproveHook(hWnd, it))
+	if (!ApproveHook(hWnd, it, exitcode))
 	{
-		exitcode = 1;
-		error.LoadString(IDS_ERR_HOOKNOTAPPROVED);
-		return false;
+		error.LoadString(IDS_USERCANCELLED);
+		return true;
 	}
 	CString sCmd = it->second.commandline;
 	sCmd.Replace(L"%root%", m_RootPath.GetWinPathString());
@@ -390,11 +386,10 @@ bool CHooks::PostPush(HWND hWnd, const CString& workingTree, DWORD& exitcode, CS
 	auto it = FindItem(post_push_hook, workingTree);
 	if (it == end())
 		return false;
-	if (!ApproveHook(hWnd, it))
+	if (!ApproveHook(hWnd, it, exitcode))
 	{
-		exitcode = 1;
-		error.LoadString(IDS_ERR_HOOKNOTAPPROVED);
-		return false;
+		error.LoadString(IDS_USERCANCELLED);
+		return true;
 	}
 	CString sCmd = it->second.commandline;
 	sCmd.Replace(L"%root%", m_RootPath.GetWinPathString());
@@ -409,11 +404,10 @@ bool CHooks::PreRebase(HWND hWnd, const CString& workingTree, const CString& ups
 	auto it = FindItem(pre_rebase_hook, workingTree);
 	if (it == end())
 		return false;
-	if (!ApproveHook(hWnd, it))
+	if (!ApproveHook(hWnd, it, exitcode))
 	{
-		exitcode = 1;
-		error.LoadString(IDS_ERR_HOOKNOTAPPROVED);
-		return false;
+		error.LoadString(IDS_USERCANCELLED);
+		return true;
 	}
 	CString sCmd = it->second.commandline;
 	sCmd.Replace(L"%root%", m_RootPath.GetWinPathString());
@@ -666,33 +660,38 @@ DWORD CHooks::RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bW
 	return exitcode;
 }
 
-bool CHooks::ApproveHook(HWND hWnd, hookiterator it)
+bool CHooks::ApproveHook(HWND hWnd, hookiterator it, DWORD& exitcode)
 {
 	if (it->second.bApproved || it->second.bStored)
 		return it->second.bApproved;
 
 	CString sQuestion;
 	sQuestion.Format(IDS_HOOKS_APPROVE_TASK1, (LPCWSTR)it->second.commandline);
-	bool bApproved = false;
-	bool bDoNotAskAgain = false;
 	CTaskDialog taskdlg(sQuestion, CString(MAKEINTRESOURCE(IDS_HOOKS_APPROVE_TASK2)), L"TortoiseGit", 0, TDF_USE_COMMAND_LINKS | TDF_ALLOW_DIALOG_CANCELLATION | TDF_POSITION_RELATIVE_TO_WINDOW | TDF_SIZE_TO_CONTENT);
-	taskdlg.AddCommandControl(1, CString(MAKEINTRESOURCE(IDS_HOOKS_APPROVE_TASK3)));
-	taskdlg.AddCommandControl(2, CString(MAKEINTRESOURCE(IDS_HOOKS_APPROVE_TASK4)));
+	taskdlg.AddCommandControl(101, CString(MAKEINTRESOURCE(IDS_HOOKS_APPROVE_TASK3)));
+	taskdlg.AddCommandControl(102, CString(MAKEINTRESOURCE(IDS_HOOKS_APPROVE_TASK4)));
 	taskdlg.SetCommonButtons(TDCBF_CANCEL_BUTTON);
 	taskdlg.SetVerificationCheckboxText(CString(MAKEINTRESOURCE(IDS_HOOKS_APPROVE_TASK5)));
 	taskdlg.SetVerificationCheckbox(false);
-	taskdlg.SetDefaultCommandControl(2);
+	taskdlg.SetDefaultCommandControl(102);
 	taskdlg.SetMainIcon(TD_WARNING_ICON);
 	taskdlg.SetFooterText(CString(MAKEINTRESOURCE(IDS_HOOKS_APPROVE_SECURITYHINT)));
-	bApproved = taskdlg.DoModal(hWnd) == 1;
-	bDoNotAskAgain = !!taskdlg.GetVerificationCheckboxState();
+	auto ret = taskdlg.DoModal(hWnd);
+	if (ret == IDCANCEL)
+	{
+		exitcode = 1;
+		return false;
+	}
+	bool bApproved = (ret == 101);
+	bool bDoNotAskAgain = !!taskdlg.GetVerificationCheckboxState();
 
 	if (bDoNotAskAgain)
 	{
 		CRegDWORD reg(it->second.sRegKey, 0);
 		reg = bApproved ? 1 : 0;
-		it->second.bStored = true;
 	}
+	it->second.bStored = true;
 	it->second.bApproved = bApproved;
+	exitcode = 0;
 	return bApproved;
 }
