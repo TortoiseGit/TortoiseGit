@@ -45,6 +45,7 @@
 #include "FormatMessageWrapper.h"
 #include "BrowseFolder.h"
 #include "SysInfo.h"
+#include "SysProgressDlg.h"
 
 const UINT CGitStatusListCtrl::GITSLNM_ITEMCOUNTCHANGED
 					= ::RegisterWindowMessage(L"GITSLNM_ITEMCOUNTCHANGED");
@@ -2201,19 +2202,65 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						else if (((!this->m_bIsRevertTheirMy) && cmd == IDGITLC_RESOLVEMINE) || ((this->m_bIsRevertTheirMy) && cmd == IDGITLC_RESOLVETHEIRS))
 							resolveWith = CAppUtils::RESOLVE_WITH_MINE;
 
+						CSysProgressDlg sysProgressDlg;
+						auto nListItems = GetSelectedCount();
+						if (nListItems >= 5)
+						{
+							CString tmp, mineTitle, theirsTitle;
+							CAppUtils::GetConflictTitles(nullptr, mineTitle, theirsTitle, m_bIsRevertTheirMy);
+							tmp.LoadString(IDS_PROGRS_TITLE_RESOLVE);
+							if (m_bIsRevertTheirMy)
+							{
+								if (cmd == IDGITLC_RESOLVEMINE)
+									tmp.Format(IDS_SVNPROGRESS_MENURESOLVEUSING, (LPCTSTR)theirsTitle);
+								else if (cmd == IDGITLC_RESOLVETHEIRS)
+									tmp.Format(IDS_SVNPROGRESS_MENURESOLVEUSING, (LPCTSTR)mineTitle);
+							}
+							else
+							{
+								if (cmd == IDGITLC_RESOLVETHEIRS)
+									tmp.Format(IDS_SVNPROGRESS_MENURESOLVEUSING, (LPCTSTR)theirsTitle);
+								else if (cmd == IDGITLC_RESOLVEMINE)
+									tmp.Format(IDS_SVNPROGRESS_MENURESOLVEUSING, (LPCTSTR)mineTitle);
+							}
+
+							sysProgressDlg.SetTitle(L"TortoiseGit");
+							sysProgressDlg.SetLine(1, tmp);
+							sysProgressDlg.SetTime(true);
+							sysProgressDlg.SetShowProgressBar(true);
+							sysProgressDlg.ShowModal(this, true);
+						}
+						auto currentTicks = GetTickCount64();
+
 						bool needsFullRefresh = false;
 						POSITION pos = GetFirstSelectedItemPosition();
+						decltype(nListItems) j = 0;
 						while (pos != 0)
 						{
-							int index;
-							index = GetNextSelectedItem(pos);
+							int index = GetNextSelectedItem(pos);
 							auto fentry = GetListEntry(index);
 							if (!fentry)
 								continue;
 
+							if (sysProgressDlg.IsVisible())
+							{
+								if (GetTickCount64() - currentTicks > 1000UL || j == nListItems - 1 || j == 0)
+								{
+									sysProgressDlg.SetLine(2, fentry->GetGitPathString(), true);
+									sysProgressDlg.SetProgress(j, nListItems);
+									AfxGetThread()->PumpMessage(); // process messages, in order to avoid freezing; do not call this too often: this takes time!
+									currentTicks = GetTickCount64();
+								}
+								++j;
+							}
+
 							if (CAppUtils::ResolveConflict(GetParentHWND(), *fentry, resolveWith) == 0 && fentry->m_Action & CTGitPath::LOGACTIONS_UNMERGED)
 								needsFullRefresh = true;
+
+							if (sysProgressDlg.HasUserCancelled())
+								break;
 						}
+						sysProgressDlg.Stop();
 						if (needsFullRefresh && CRegDWORD(L"Software\\TortoiseGit\\RefreshFileListAfterResolvingConflict", TRUE) == TRUE)
 						{
 							CWnd* pParent = GetLogicalParent();

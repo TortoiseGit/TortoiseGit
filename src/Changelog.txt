@@ -22,6 +22,7 @@ Released: unreleased
  * Fixed issue #3295: TortoiseGitPlink does not work with Git protocol ver. 2
  * Fixed issue #3290: Improve "Status/Check for modifications" documentation
  * Fixed issue #3228: Rebase: Add full support for empty commits (e.g., commits which become empty during conflict resolution)
+ * Fixed issue #3189: Show progress bar when resolving lots of conflicts
 
 == Bug Fixes ==
  * Fixed issue #3250: GitWCRev: IsGitItem return true for item that had never been committed
