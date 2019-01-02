@@ -396,7 +396,7 @@ msgstr ""
 msgid "&Clean up..."
 msgstr ""
 
-#. Resource IDs: (ID_EDIT_CLEAR - Menu)
+#. Resource IDs: (Dialog IDD_SETTINGSMTP: Control id 1848, ID_EDIT_CLEAR - Menu)
 msgid "&Clear"
 msgstr ""
 
@@ -1137,6 +1137,10 @@ msgstr ""
 
 #. Resource IDs: (ID_VIEW_STATUS_BAR - Menu)
 msgid "&Status Bar"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_SETTINGSMTP: Control id 1849)
+msgid "&Store credentials..."
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1525)
@@ -6677,7 +6681,7 @@ msgstr ""
 msgid "Password"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_SETTINGSMTP: Control id 1761, IDS_AUTH_PASSWORD)
+#. Resource IDs: (IDS_AUTH_PASSWORD)
 msgid "Password:"
 msgstr ""
 
