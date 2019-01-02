@@ -689,9 +689,9 @@ bool CHooks::ApproveHook(HWND hWnd, hookiterator it, DWORD& exitcode)
 	{
 		CRegDWORD reg(it->second.sRegKey, 0);
 		reg = bApproved ? 1 : 0;
+		it->second.bStored = true;
+		it->second.bApproved = bApproved;
 	}
-	it->second.bStored = true;
-	it->second.bApproved = bApproved;
 	exitcode = 0;
 	return bApproved;
 }
