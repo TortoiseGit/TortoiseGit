@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2018 - TortoiseGit
+// Copyright (C) 2012-2019 - TortoiseGit
 // Copyright (C) 2003-2008,2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -380,4 +380,8 @@ void CSetSavedDataPage::OnBnClickedStoreddecisionsclear()
 		CRegDWORD regkey(L"Software\\TortoiseGitMerge\\" + value);
 		regkey.removeValue();
 	}
+
+	// remove stored hook decisions
+	CRegistryKey reg(L"Software\\TortoiseGit\\approvedhooks");
+	reg.removeKey();
 }
