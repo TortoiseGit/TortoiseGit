@@ -1563,21 +1563,36 @@ void CRebaseDlg::OnBnClickedContinue()
 		}
 
 		CString out, cmd, options;
+		bool skipCurrent = false;
 		if (m_CurrentCommitEmpty)
 			options = L"--allow-empty ";
+		else if (g_Git.IsResultingCommitBecomeEmpty(m_RebaseStage != REBASE_SQUASH_EDIT) == TRUE)
+		{
+			int choose = CMessageBox::ShowCheck(GetSafeHwnd(), IDS_CHERRYPICK_EMPTY, IDS_APPNAME, 1, IDI_QUESTION, IDS_COMMIT_COMMIT, IDS_SKIPBUTTON, IDS_MSGBOX_CANCEL, nullptr, 0);
+			if (choose == 2)
+				skipCurrent = true;
+			else if (choose == 1)
+			{
+				options = L"--allow-empty ";
+				m_CurrentCommitEmpty = true;
+			}
+			else
+				return;
+		}
 
 		if (m_RebaseStage == REBASE_SQUASH_EDIT)
 			cmd.Format(L"git.exe commit %s%s-F \"%s\"", (LPCTSTR)options, (LPCTSTR)m_SquashFirstMetaData.GetAsParam(m_iSquashdate == 2), (LPCTSTR)tempfile);
 		else
 			cmd.Format(L"git.exe commit --amend %s-F \"%s\"", (LPCTSTR)options, (LPCTSTR)tempfile);
 
-		if(g_Git.Run(cmd,&out,CP_UTF8))
+		if (!skipCurrent && g_Git.Run(cmd, &out, CP_UTF8))
 		{
-			if(!g_Git.CheckCleanWorkTree())
+			if (!g_Git.CheckCleanWorkTree())
 			{
 				CMessageBox::Show(GetSafeHwnd(), out, L"TortoiseGit", MB_OK | MB_ICONERROR);
 				return;
 			}
+
 			CString retry;
 			retry.LoadString(IDS_MSGBOX_RETRY);
 			CString ignore;

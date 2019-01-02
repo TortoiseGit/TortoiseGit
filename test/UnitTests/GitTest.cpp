@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2018 - TortoiseGit
+// Copyright (C) 2015-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -3056,4 +3056,39 @@ TEST_P(CBasicGitWithTestRepoFixture, GuessRefForHash)
 	// no ref
 	EXPECT_EQ(0, m_Git.GuessRefForHash(ref, CGitHash(L"1ce788330fd3a306c8ad37654063ceee13a7f172")));
 	EXPECT_STREQ(CString(L"1ce788330fd3a306c8ad37654063ceee13a7f172").Left(m_Git.GetShortHASHLength()), ref);
+}
+
+TEST_P(CBasicGitWithTestRepoFixture, IsResultingCommitBecomeEmpty)
+{
+	// all files are missing, thus we resulting commit won't be empty
+	EXPECT_EQ(FALSE, m_Git.IsResultingCommitBecomeEmpty());
+	EXPECT_EQ(FALSE, m_Git.IsResultingCommitBecomeEmpty(true));
+
+	CString output;
+	EXPECT_EQ(0, m_Git.Run(L"git.exe reset --hard master", &output, CP_UTF8));
+	EXPECT_STRNE(L"", output);
+
+	// now we have no staged stuff
+	EXPECT_EQ(TRUE, m_Git.IsResultingCommitBecomeEmpty());
+	EXPECT_EQ(FALSE, m_Git.IsResultingCommitBecomeEmpty(true));
+
+	output.Empty();
+	EXPECT_EQ(0, m_Git.Run(L"git.exe commit --allow-empty -m \"Add test.txt\"", &output, CP_UTF8));
+	EXPECT_STRNE(L"", output);
+
+	// empty commit and no staged files
+	EXPECT_EQ(TRUE, m_Git.IsResultingCommitBecomeEmpty());
+	EXPECT_EQ(TRUE, m_Git.IsResultingCommitBecomeEmpty(true));
+
+	// create a file and stage it, thus, resulting commits won't be empty
+	CString testFile = m_Dir.GetTempDir() + L"\\test.txt";
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"this is testing file."));
+	EXPECT_EQ(TRUE, m_Git.IsResultingCommitBecomeEmpty());
+	EXPECT_EQ(TRUE, m_Git.IsResultingCommitBecomeEmpty(true));
+	output.Empty();
+	EXPECT_EQ(0, m_Git.Run(L"git.exe add test.txt", &output, CP_UTF8));
+	EXPECT_STREQ(L"", output);
+
+	EXPECT_EQ(FALSE, m_Git.IsResultingCommitBecomeEmpty());
+	EXPECT_EQ(FALSE, m_Git.IsResultingCommitBecomeEmpty(true));
 }
