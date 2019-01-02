@@ -2,7 +2,7 @@
  * It's used to check whether the copyright year of modified files has been
  * bumped up to the current (2019) year.
  *
- * Only *.cpp, *.h and *.idl files are checked
+ * Only *.c, *.cpp, *.h, *.idl and *.pot files are checked
  *
  * Set the local hook scripts like this (pre-commit hook):
  * WScript path/to/this/script/file.js
@@ -20,9 +20,9 @@ if (num !== 3)
     WScript.Quit(1);
 }
 
-var re = /^\/\/ Copyright.+(2019)(.*)/;
-var basere = /^\/\/ Copyright(.*)/;
-var filere = /(\.cpp$)|(\.h$)|(\.idl$)/;
+var re = /^(\/\/|#) Copyright.+(2019)(.*)/;
+var basere = /^(\/\/|#) Copyright(.*)/;
+var filere = /(\.c$)|(\.cpp$)|(\.h$)|(\.idl$)|(\.pot$)/;
 var found = true;
 var fs, a, rv, r;
 fs = new ActiveXObject("Scripting.FileSystemObject");
