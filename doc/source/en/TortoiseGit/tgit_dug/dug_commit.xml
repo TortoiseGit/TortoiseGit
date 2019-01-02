@@ -89,6 +89,9 @@
 			customizations are preserved, so you will see the same headings
 			next time.
 		</para>
+			The color code of the different items is described in <xref linkend="tgit-dug-wcstatus-2"/>.
+		<para>
+		</para>
 		<tip>
 			<title>Drag and Drop</title>
 			<para>
