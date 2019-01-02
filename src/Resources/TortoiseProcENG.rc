@@ -264,7 +264,6 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,260,147,10
     RTEXT           "View Patch>>",IDC_VIEW_PATCH,259,260,76,8
     CONTROL         "Show &Whole Project",IDC_WHOLE_PROJECT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,277,109,10
-    ICON            IDI_WARNING_GENERAL,IDC_EXTERNALWARNING,323,257,21,20,SS_NOTIFY | SS_REALSIZEIMAGE | NOT WS_VISIBLE | WS_DISABLED,WS_EX_TRANSPARENT
     CONTROL         "Keep changelists",IDC_KEEPLISTS,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_DISABLED | WS_TABSTOP,150,289,111,10
     CONTROL         "Message onl&y",IDC_COMMIT_MESSAGEONLY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,289,107,10
     PUSHBUTTON      "C&ommit",IDOK,171,285,69,14,WS_DISABLED
@@ -3951,7 +3950,6 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_COMMITDLG_EXTERNALS "There are changes or unversioned items inside one or more submodule.\nThose files are not listed for commit. You need to commit those files in submodule"
     IDS_COMMITDLG_STATISTICSFORMAT "%1!d! files selected, %2!d! files total"
     IDS_COMMITDLG_ONLYNUMBERS 
                             "Only numbers (optionally separated by commas)\nare allowed!"

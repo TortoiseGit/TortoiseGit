@@ -1,7 +1,7 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -115,7 +115,6 @@ protected:
 	afx_msg void OnBnClickedHistory();
 	afx_msg void OnBnClickedBugtraqbutton();
 	afx_msg void OnEnChangeLogmessage();
-	afx_msg void OnStnClickedExternalwarning();
 	afx_msg void OnFocusMessage();
 	afx_msg void OnFocusFileList();
 	afx_msg LRESULT OnGitStatusListCtrlItemCountChanged(WPARAM, LPARAM);

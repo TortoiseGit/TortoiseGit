@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -462,17 +462,6 @@ public:
 	bool CopySelectedEntriesToClipboard(DWORD dwCols, int cmd);
 
 	/**
-	 * If during the call to GetStatus() some Git:externals are found from different
-	 * repositories than the first one checked, then this method returns TRUE.
-	 */
-	BOOL HasExternalsFromDifferentRepos() const {return m_bHasExternalsFromDifferentRepos;}
-
-	/**
-	 * If during the call to GetStatus() some Git:externals are found then this method returns TRUE.
-	 */
-	BOOL HasExternals() const {return m_bHasExternals;}
-
-	/**
 	 * If unversioned files are found (but not necessarily shown) TRUE is returned.
 	 */
 	BOOL HasUnversionedItems() {return m_bHasUnversionedItems;}
@@ -753,8 +742,6 @@ private:
 	bool						m_bHasCheckboxes;
 	bool						m_bHasWC;
 	bool						m_bUnversionedLast;
-	bool						m_bHasExternalsFromDifferentRepos;
-	bool						m_bHasExternals;
 	BOOL						m_bHasUnversionedItems;
 	bool						m_bHasChangeLists;
 	//typedef std::vector<FileEntry*> FileEntryVector;

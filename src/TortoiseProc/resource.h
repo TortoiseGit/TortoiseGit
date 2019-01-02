@@ -44,7 +44,6 @@
 #define IDI_DIALOGS                     198
 #define IDD_DIFFFILES                   199
 #define IDD_RESOLVE                     207
-#define IDI_WARNING_GENERAL             210
 #define IDD_HISTORYDLG                  211
 #define IDD_SETTINGSCOLORS_2            212
 #define IDI_ACTIONADDED                 213
@@ -558,7 +557,6 @@
 #define IDS_PROGRS_TITLE_COPY           1235
 #define IDS_PROC_DOWNLOAD               1236
 #define IDS_ERR_MISSINGVALUE            1237
-#define IDC_EXTERNALWARNING             1238
 #define IDS_STATUSLIST_GROUP_NOTVERSIONEDFILES 1238
 #define IDS_STATUSLIST_GROUP_IGNOREDFILES 1239
 #define IDC_MERGEACTIVE                 1239
@@ -1667,7 +1665,6 @@
 #define IDS_STATPICFILEFILTER           2505
 #define IDS_TEXTFILEFILTER              2506
 #define IDS_CHECKUPDATE_SUMMARY         2600
-#define IDS_COMMITDLG_EXTERNALS         2700
 #define IDS_COMMITDLG_STATISTICSFORMAT  2701
 #define IDS_COMMITDLG_ONLYNUMBERS       2702
 #define IDS_COMMITDLG_NOISSUEWARNING    2703

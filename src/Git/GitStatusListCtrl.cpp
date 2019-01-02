@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 // Copyright (C) 2003-2008, 2013-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -232,7 +232,6 @@ CGitStatusListCtrl::CGitStatusListCtrl() : CResizableColumnsListCtrl<CListCtrl>(
 	, m_dwDefaultColumns(0)
 	, m_bAscending(false)
 	, m_nSortedColumn(-1)
-	, m_bHasExternalsFromDifferentRepos(false)
 	, m_amend(false)
 	, m_bDoNotAutoselectSubmodules(false)
 	, m_bNoAutoselectMissing(false)
@@ -240,7 +239,6 @@ CGitStatusListCtrl::CGitStatusListCtrl() : CResizableColumnsListCtrl<CListCtrl>(
 	, m_hwndLogicalParent(nullptr)
 	, m_bHasUnversionedItems(FALSE)
 	, m_nTargetCount(0)
-	, m_bHasExternals(false)
 	, m_bHasIgnoreGroup(false)
 	, m_nUnversioned(0)
 	, m_nNormal(0)
@@ -457,8 +455,6 @@ BOOL CGitStatusListCtrl::GetStatus ( const CTGitPathList* pathList
 	{
 		bRet = TRUE;
 		m_nTargetCount = 0;
-		m_bHasExternalsFromDifferentRepos = FALSE;
-		m_bHasExternals = FALSE;
 		m_bHasUnversionedItems = FALSE;
 		m_bHasChangeLists = false;
 		m_bShowIgnores = bShowIgnores;

@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2018 the TortoiseGit team
+# Copyright (C) 2008-2019 the TortoiseGit team
 #
 # This file is distributed under the same license as TortoiseGit
 #
@@ -9160,10 +9160,6 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_RESOLVESUBMODULECONFLICT: Control id 1681, IDS_VIEWTITLE_THEIRS)
 msgid "Theirs"
-msgstr ""
-
-#. Resource IDs: (IDS_COMMITDLG_EXTERNALS)
-msgid "There are changes or unversioned items inside one or more submodule.\nThose files are not listed for commit. You need to commit those files in submodule"
 msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_OVERLAYINFO)
