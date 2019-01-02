@@ -20,6 +20,7 @@ Released: unreleased
  * Rebase: Document start, abort and finish in reflog 
  * Update editorconfig to 0.12.4
  * Fixed issue #3295: TortoiseGitPlink does not work with Git protocol ver. 2
+ * Fixed issue #3290: Improve "Status/Check for modifications" documentation
 
 == Bug Fixes ==
  * Fixed issue #3250: GitWCRev: IsGitItem return true for item that had never been committed
