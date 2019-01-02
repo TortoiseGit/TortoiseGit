@@ -1394,13 +1394,40 @@ void CRebaseDlg::OnBnClickedContinue()
 			return;
 		}
 
+		CString allowempty;
+		bool skipCurrent = false;
+		if (!m_CurrentCommitEmpty)
+		{
+			if (g_Git.IsResultingCommitBecomeEmpty() == TRUE)
+			{
+				if (CheckNextCommitIsSquash() == 0)
+				{
+					allowempty = L"--allow-empty ";
+					m_CurrentCommitEmpty = false;
+				}
+				else
+				{
+					int choose = CMessageBox::ShowCheck(GetSafeHwnd(), IDS_CHERRYPICK_EMPTY, IDS_APPNAME, 1, IDI_QUESTION, IDS_COMMIT_COMMIT, IDS_SKIPBUTTON, IDS_MSGBOX_CANCEL, nullptr, 0);
+					if (choose == 2)
+						skipCurrent = true;
+					else if (choose == 1)
+					{
+						allowempty = L"--allow-empty ";
+						m_CurrentCommitEmpty = true;
+					}
+					else
+						return;
+				}
+			}
+		}
+
 		CString out;
 		CString cmd;
-		cmd.Format(L"git.exe commit --allow-empty-message -C %s", (LPCTSTR)curRev->m_CommitHash.ToString());
+		cmd.Format(L"git.exe commit %s--allow-empty-message -C %s", (LPCTSTR)allowempty, (LPCTSTR)curRev->m_CommitHash.ToString());
 
 		AddLogString(cmd);
 
-		if(g_Git.Run(cmd,&out,CP_UTF8))
+		if (!skipCurrent && g_Git.Run(cmd, &out, CP_UTF8))
 		{
 			AddLogString(out);
 			CMessageBox::Show(GetSafeHwnd(), out, L"TortoiseGit", MB_OK | MB_ICONERROR);
@@ -1411,7 +1438,7 @@ void CRebaseDlg::OnBnClickedContinue()
 
 		// update commit message if needed
 		CString str = m_LogMessageCtrl.GetText().Trim();
-		if (str != (curRev->GetSubject() + L'\n' + curRev->GetBody()).Trim())
+		if (!skipCurrent && str != (curRev->GetSubject() + L'\n' + curRev->GetBody()).Trim())
 		{
 			if (str.IsEmpty())
 			{
