@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -734,10 +734,15 @@ void CSyncDlg::OnBnClickedButtonPush()
 	{
 		if (exitcode)
 		{
-			CString temp;
-			temp.Format(IDS_ERR_HOOKFAILED, (LPCTSTR)error);
-			CMessageBox::Show(GetSafeHwnd(), temp, L"TortoiseGit", MB_OK | MB_ICONERROR);
-			return ;
+			CString sErrorMsg;
+			sErrorMsg.Format(IDS_HOOK_ERRORMSG, (LPCWSTR)error);
+			CTaskDialog taskdlg(sErrorMsg, CString(MAKEINTRESOURCE(IDS_HOOKFAILED_TASK2)), L"TortoiseGit", 0, TDF_ENABLE_HYPERLINKS | TDF_USE_COMMAND_LINKS | TDF_ALLOW_DIALOG_CANCELLATION | TDF_POSITION_RELATIVE_TO_WINDOW | TDF_SIZE_TO_CONTENT);
+			taskdlg.AddCommandControl(101, CString(MAKEINTRESOURCE(IDS_HOOKFAILED_TASK3)));
+			taskdlg.AddCommandControl(102, CString(MAKEINTRESOURCE(IDS_HOOKFAILED_TASK4)));
+			taskdlg.SetDefaultCommandControl(101);
+			taskdlg.SetMainIcon(TD_ERROR_ICON);
+			if (taskdlg.DoModal(GetSafeHwnd()) != 102)
+				return;
 		}
 	}
 

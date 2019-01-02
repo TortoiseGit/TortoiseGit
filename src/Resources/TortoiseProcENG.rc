@@ -4965,6 +4965,15 @@ BEGIN
     IDS_HOOKS_APPROVE_TASK4 "&Don't run\nDo not run the script"
     IDS_HOOKS_APPROVE_TASK5 "Do not ask again for this script"
     IDS_ERR_HOOKNOTAPPROVED "The hook script was not approved to run!"
+    IDS_HOOK_ERRORMSG       "The hook script returned an error:\n%ls"
+    IDS_HOOK_FORCEDPROCEED  "Proceed anyway"
+    IDS_HOOKFAILED_TASK2    "Hook script failed"
+    IDS_HOOKFAILED_TASK3    "&Abort\nYou can fix the reason the hook script failed first."
+END
+
+STRINGTABLE
+BEGIN
+    IDS_HOOKFAILED_TASK4    "&Proceed anyway\nIgnore the hook script and run the command anyway."
 END
 
 #endif    // English (U.S.) resources

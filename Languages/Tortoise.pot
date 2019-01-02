@@ -292,6 +292,10 @@ msgstr ""
 msgid "&Abort"
 msgstr ""
 
+#. Resource IDs: (IDS_HOOKFAILED_TASK3)
+msgid "&Abort\nYou can fix the reason the hook script failed first."
+msgstr ""
+
 #. Resource IDs: (ID_APP_ABOUT - Menu)
 msgid "&About TortoiseGitBlame..."
 msgstr ""
@@ -957,6 +961,10 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROCEEDBUTTON)
 msgid "&Proceed"
+msgstr ""
+
+#. Resource IDs: (IDS_HOOKFAILED_TASK4)
+msgid "&Proceed anyway\nIgnore the hook script and run the command anyway."
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_PULL)
@@ -4974,6 +4982,10 @@ msgstr ""
 msgid "Hook Type:"
 msgstr ""
 
+#. Resource IDs: (IDS_HOOKFAILED_TASK2)
+msgid "Hook script failed"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 1841)
 msgid "I don't use Git for Windows and need special workarounds"
 msgstr ""
@@ -6933,6 +6945,10 @@ msgstr ""
 
 #. Resource IDs: (Dialog AFX_IDD_PRINTDLG: Control id 65535)
 msgid "Printing"
+msgstr ""
+
+#. Resource IDs: (IDS_HOOK_FORCEDPROCEED)
+msgid "Proceed anyway"
 msgstr ""
 
 #. Resource IDs: (IDS_PROGS_TOOLCOL)
@@ -9021,6 +9037,11 @@ msgstr ""
 #. Resource IDs: (IDS_WARN_FOLDERNOTEXIST)
 #, c-format
 msgid "The folder \n%s\ndoes not exist.\nWould you like to create it first?"
+msgstr ""
+
+#. Resource IDs: (IDS_HOOK_ERRORMSG)
+#, c-format
+msgid "The hook script returned an error:\n%ls"
 msgstr ""
 
 #. Resource IDs: (IDS_ERR_HOOKFAILED)

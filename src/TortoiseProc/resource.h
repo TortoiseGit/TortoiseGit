@@ -1906,6 +1906,11 @@
 #define IDS_HOOKS_APPROVE_TASK4         9113
 #define IDS_HOOKS_APPROVE_TASK5         9114
 #define IDS_ERR_HOOKNOTAPPROVED         9115
+#define IDS_HOOK_ERRORMSG               9116
+#define IDS_HOOK_FORCEDPROCEED          9117
+#define IDS_HOOKFAILED_TASK2            9118
+#define IDS_HOOKFAILED_TASK3            9119
+#define IDS_HOOKFAILED_TASK4            9120
 #define IDS_STATUSLIST_COLADD           9603
 #define IDS_STATUSLIST_COLDEL           9604
 #define IDS_B_T_NOTEMPTY                9619

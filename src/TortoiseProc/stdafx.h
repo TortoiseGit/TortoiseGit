@@ -33,6 +33,7 @@ using std::min;
 #include <afxmt.h>
 #include <afxext.h>         // MFC extensions
 #include <afxcontrolbars.h>     // MFC support for ribbons and control bars
+#include <afxtaskdialog.h>
 
 #include <atlbase.h>
 

@@ -655,7 +655,8 @@ void CCommitDlg::OnOK()
 		return;
 
 	CHooks::Instance().SetProjectProperties(g_Git.m_CurrentDir, m_ProjectProperties);
-	if (CHooks::Instance().IsHookPresent(pre_commit_hook, g_Git.m_CurrentDir)) {
+	if (CHooks::Instance().IsHookPresent(pre_commit_hook, g_Git.m_CurrentDir))
+	{
 		DWORD exitcode = 0xFFFFFFFF;
 		CString error;
 		CTGitPathList list;
@@ -664,10 +665,15 @@ void CCommitDlg::OnOK()
 		{
 			if (exitcode)
 			{
-				CString temp;
-				temp.Format(IDS_ERR_HOOKFAILED, (LPCTSTR)error);
-				MessageBox(temp, L"TortoiseGit", MB_ICONERROR);
-				return;
+				CString sErrorMsg;
+				sErrorMsg.Format(IDS_HOOK_ERRORMSG, (LPCWSTR)error);
+				CTaskDialog taskdlg(sErrorMsg, CString(MAKEINTRESOURCE(IDS_HOOKFAILED_TASK2)), L"TortoiseGit", 0, TDF_ENABLE_HYPERLINKS | TDF_USE_COMMAND_LINKS | TDF_ALLOW_DIALOG_CANCELLATION | TDF_POSITION_RELATIVE_TO_WINDOW | TDF_SIZE_TO_CONTENT);
+				taskdlg.AddCommandControl(101, CString(MAKEINTRESOURCE(IDS_HOOKFAILED_TASK3)));
+				taskdlg.AddCommandControl(102, CString(MAKEINTRESOURCE(IDS_HOOKFAILED_TASK4)));
+				taskdlg.SetDefaultCommandControl(101);
+				taskdlg.SetMainIcon(TD_ERROR_ICON);
+				if (taskdlg.DoModal(GetSafeHwnd()) != 102)
+					return;
 			}
 		}
 	}
@@ -2886,10 +2892,16 @@ bool CCommitDlg::RunStartCommitHook()
 	{
 		if (exitcode)
 		{
-			CString temp;
-			temp.Format(IDS_ERR_HOOKFAILED, (LPCTSTR)error);
-			MessageBox(temp, L"TortoiseGit", MB_ICONERROR);
-			return false;
+			CString sErrorMsg;
+			sErrorMsg.Format(IDS_HOOK_ERRORMSG, (LPCWSTR)error);
+
+			CTaskDialog taskdlg(sErrorMsg, CString(MAKEINTRESOURCE(IDS_HOOKFAILED_TASK2)), L"TortoiseGit", 0, TDF_ENABLE_HYPERLINKS | TDF_USE_COMMAND_LINKS | TDF_ALLOW_DIALOG_CANCELLATION | TDF_POSITION_RELATIVE_TO_WINDOW | TDF_SIZE_TO_CONTENT);
+			taskdlg.AddCommandControl(101, CString(MAKEINTRESOURCE(IDS_HOOKFAILED_TASK3)));
+			taskdlg.AddCommandControl(102, CString(MAKEINTRESOURCE(IDS_HOOKFAILED_TASK4)));
+			taskdlg.SetDefaultCommandControl(101);
+			taskdlg.SetMainIcon(TD_ERROR_ICON);
+			if (taskdlg.DoModal(GetSafeHwnd()) != 102)
+				return false;
 		}
 	}
 	return true;
