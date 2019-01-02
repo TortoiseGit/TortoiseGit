@@ -2195,6 +2195,12 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				{
 					if (CMessageBox::Show(GetParentHWND(), IDS_PROC_RESOLVE, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO) == IDYES)
 					{
+						CAppUtils::resolve_with resolveWith = CAppUtils::RESOLVE_WITH_CURRENT;
+						if (((!this->m_bIsRevertTheirMy) && cmd == IDGITLC_RESOLVETHEIRS) || ((this->m_bIsRevertTheirMy) && cmd == IDGITLC_RESOLVEMINE))
+							resolveWith = CAppUtils::RESOLVE_WITH_THEIRS;
+						else if (((!this->m_bIsRevertTheirMy) && cmd == IDGITLC_RESOLVEMINE) || ((this->m_bIsRevertTheirMy) && cmd == IDGITLC_RESOLVETHEIRS))
+							resolveWith = CAppUtils::RESOLVE_WITH_MINE;
+
 						bool needsFullRefresh = false;
 						POSITION pos = GetFirstSelectedItemPosition();
 						while (pos != 0)
@@ -2205,11 +2211,6 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							if (!fentry)
 								continue;
 
-							CAppUtils::resolve_with resolveWith = CAppUtils::RESOLVE_WITH_CURRENT;
-							if (((!this->m_bIsRevertTheirMy) && cmd == IDGITLC_RESOLVETHEIRS) || ((this->m_bIsRevertTheirMy) && cmd == IDGITLC_RESOLVEMINE))
-								resolveWith = CAppUtils::RESOLVE_WITH_THEIRS;
-							else if (((!this->m_bIsRevertTheirMy) && cmd == IDGITLC_RESOLVEMINE) || ((this->m_bIsRevertTheirMy) && cmd == IDGITLC_RESOLVETHEIRS))
-								resolveWith = CAppUtils::RESOLVE_WITH_MINE;
 							if (CAppUtils::ResolveConflict(GetParentHWND(), *fentry, resolveWith) == 0 && fentry->m_Action & CTGitPath::LOGACTIONS_UNMERGED)
 								needsFullRefresh = true;
 						}
