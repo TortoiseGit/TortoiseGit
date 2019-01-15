@@ -146,7 +146,10 @@ and CC is your 2 letter country code (de for germany)
 
 You can find the four digit country code at
 https://msdn.microsoft.com/goglobal/bb964664.aspx
-under the column LCID dec.
+under the column LCID dec or on
+https://docs.microsoft.com/windows/desktop/intl/language-identifier-constants-and-strings
+unter the column "Language identifier". In both cases it has to be
+converted to decimal first (e.g., 0x0407 -> 1031 for de-DE).
 
 After successfully creating your dlls, copy them into
 "C:\Program Files\TortoiseGit\Languages".
