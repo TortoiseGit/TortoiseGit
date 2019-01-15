@@ -66,6 +66,7 @@
     <ClCompile Include="..\scintilla\lexers\LexLaTeX.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexMake.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexMaxima.cxx" />
+    <ClCompile Include="..\scintilla\lexers\LexNim.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexNull.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexProps.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexRegistry.cxx" />

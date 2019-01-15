@@ -167,6 +167,7 @@ LEXOBJS=\
 	$(DIR_O)\LexMPT.obj \
 	$(DIR_O)\LexMSSQL.obj \
 	$(DIR_O)\LexMySQL.obj \
+	$(DIR_O)\LexNim.obj \
 	$(DIR_O)\LexNimrod.obj \
 	$(DIR_O)\LexNsis.obj \
 	$(DIR_O)\LexNull.obj \
@@ -655,6 +656,8 @@ $(DIR_O)\LexMPT.obj: ..\lexers\LexMPT.cxx $(LEX_HEADERS)
 $(DIR_O)\LexMSSQL.obj: ..\lexers\LexMSSQL.cxx $(LEX_HEADERS)
 
 $(DIR_O)\LexMySQL.obj: ..\lexers\LexMySQL.cxx $(LEX_HEADERS)
+
+$(DIR_O)\LexNim.obj: ..\lexers\LexNim.cxx $(LEX_HEADERS)
 
 $(DIR_O)\LexNimrod.obj: ..\lexers\LexNimrod.cxx $(LEX_HEADERS)
 

@@ -5,8 +5,19 @@
 // members to initialize or the initialization is complex or has comments.
 useInitializationList
 
+// These may be interesting but its not clear without examining each instance closely
+// Would have to ensure that any_of/all_of has same early/late exits as current code and
+// produces same result on empty collections
+useStlAlgorithm
+
+// cppcheck 1.86 seems to be misunderstanding flow control in the large switch statement
+knownConditionTrueFalse:scintilla/src/Editor.cxx
+
 // Some non-explicit constructors are used for conversions or are private to lexers
 noExplicitConstructor
+
+// Document is checking for a change by called methods and cppcheck isn't considering escape
+knownConditionTrueFalse:scintilla/src/Document.cxx
 
 // ScintillaDocument is providing an API and there are no consumers of the API inside Scintilla
 unusedFunction:scintilla/qt/ScintillaEdit/ScintillaDocument.cpp
@@ -18,6 +29,7 @@ passedByValue
 // Suppress most lexer warnings since the lexers are maintained by others
 redundantCondition:scintilla/lexers/LexA68k.cxx
 useInitializationList:scintilla/lexers/LexAsm.cxx
+shadowVar:scintilla/lexers/LexAU3.cxx
 useInitializationList:scintilla/lexers/LexBasic.cxx
 uninitMemberVar:scintilla/lexers/LexBash.cxx
 variableScope:scintilla/lexers/LexBash.cxx
@@ -33,18 +45,23 @@ variableScope:scintilla/lexers/LexLaTeX.cxx
 copyCtorAndEqOperator:scintilla/lexers/LexLaTeX.cxx
 variableScope:scintilla/lexers/LexMetapost.cxx
 variableScope:scintilla/lexers/LexModula.cxx
+variableScope:scintilla/lexers/LexMSSQL.cxx
 variableScope:scintilla/lexers/LexNimrod.cxx
 variableScope:scintilla/lexers/LexNsis.cxx
 variableScope:scintilla/lexers/LexOpal.cxx
 variableScope:scintilla/lexers/LexPB.cxx
+shadowVar:scintilla/lexers/LexPowerPro.cxx
 variableScope:scintilla/lexers/LexProgress.cxx
+redundantAssignment:scintilla/lexers/LexRegistry.cxx
 variableScope:scintilla/lexers/LexRuby.cxx
 uninitMemberVar:scintilla/lexers/LexRuby.cxx
 variableScope:scintilla/lexers/LexSpecman.cxx
 clarifyCalculation:scintilla/lexers/LexTADS3.cxx
 invalidscanf:scintilla/lexers/LexTCMD.cxx
+knownConditionTrueFalse:scintilla/lexers/LexTCMD.cxx
 variableScope:scintilla/lexers/LexTeX.cxx
 knownConditionTrueFalse:scintilla/lexers/LexVerilog.cxx
+shadowVar:scintilla/lexers/LexVHDL.cxx
 variableScope:scintilla/lexers/LexVHDL.cxx
 unreadVariable:scintilla/lexers/LexVisualProlog.cxx
 
