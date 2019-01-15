@@ -22,6 +22,7 @@
 #include <algorithm>
 #include <iterator>
 #include <memory>
+#include <chrono>
 
 #include "Platform.h"
 
@@ -54,6 +55,7 @@
 #include "MarginView.h"
 #include "EditView.h"
 #include "Editor.h"
+#include "ElapsedPeriod.h"
 
 using namespace Scintilla;
 
@@ -89,7 +91,7 @@ static bool IsLastStep(const DocModification &mh) {
 }
 
 Timer::Timer() :
-		ticking(false), ticksToWait(0), tickerID(0) {}
+		ticking(false), ticksToWait(0), tickerID{} {}
 
 Idler::Idler() :
 		state(false), idlerID(0) {}
@@ -103,8 +105,7 @@ static inline bool IsAllSpacesOrTabs(const char *s, unsigned int len) {
 	return true;
 }
 
-Editor::Editor() {
-	view.editor = this;
+Editor::Editor() : durationWrapOneLine(0.00001, 0.000001, 0.0001) {
 	ctrlID = 0;
 
 	stylesValid = false;
@@ -182,6 +183,7 @@ Editor::Editor() {
 	needIdleStyling = false;
 
 	modEventMask = SC_MODEVENTMASKALL;
+	commandEvents = true;
 
 	pdoc->AddWatcher(this, 0);
 
@@ -771,6 +773,7 @@ void Editor::MultipleSelectAdd(AddNumber addNumber) {
 					selectedText.c_str(), searchFlags, &lengthFound);
 				if (pos >= 0) {
 					sel.AddSelection(SelectionRange(pos + lengthFound, pos));
+					ContainerNeedsUpdate(SC_UPDATE_SELECTION);
 					ScrollRange(sel.RangeMain());
 					Redraw();
 					if (addNumber == addOne)
@@ -1536,7 +1539,12 @@ bool Editor::WrapLines(WrapScope ws) {
 				return false;
 			}
 		} else if (ws == WrapScope::wsIdle) {
-			lineToWrapEnd = lineToWrap + LinesOnScreen() + 100;
+			// Try to keep time taken by wrapping reasonable so interaction remains smooth.
+			const double secondsAllowed = 0.01;
+			const Sci::Line linesInAllowedTime = std::clamp<Sci::Line>(
+				static_cast<Sci::Line>(secondsAllowed / durationWrapOneLine.Duration()),
+				LinesOnScreen() + 50, 0x10000);
+			lineToWrapEnd = lineToWrap + linesInAllowedTime;
 		}
 		const Sci::Line lineEndNeedWrap = std::min(wrapPending.end, pdoc->LinesTotal());
 		lineToWrapEnd = std::min(lineToWrapEnd, lineEndNeedWrap);
@@ -1555,6 +1563,8 @@ bool Editor::WrapLines(WrapScope ws) {
 			if (surface) {
 //Platform::DebugPrintf("Wraplines: scope=%0d need=%0d..%0d perform=%0d..%0d\n", ws, wrapPending.start, wrapPending.end, lineToWrap, lineToWrapEnd);
 
+				const Sci::Line linesBeingWrapped = lineToWrapEnd - lineToWrap;
+				ElapsedPeriod epWrapping;
 				while (lineToWrap < lineToWrapEnd) {
 					if (WrapOneLine(surface, lineToWrap)) {
 						wrapOccurred = true;
@@ -1562,6 +1572,7 @@ bool Editor::WrapLines(WrapScope ws) {
 					wrapPending.Wrapped(lineToWrap);
 					lineToWrap++;
 				}
+				durationWrapOneLine.AddSample(linesBeingWrapped, epWrapping.Duration());
 
 				goodTopLine = pcs->DisplayFromDoc(lineDocTop) + std::min(
 					subLineTop, static_cast<Sci::Line>(pcs->GetHeight(lineDocTop)-1));
@@ -2678,9 +2689,11 @@ void Editor::NotifyModified(Document *, DocModification mh, void *) {
 
 	// If client wants to see this modification
 	if (mh.modificationType & modEventMask) {
-		if ((mh.modificationType & (SC_MOD_CHANGESTYLE | SC_MOD_CHANGEINDICATOR)) == 0) {
-			// Real modification made to text of document.
-			NotifyChange();	// Send EN_CHANGE
+		if (commandEvents) {
+			if ((mh.modificationType & (SC_MOD_CHANGESTYLE | SC_MOD_CHANGEINDICATOR)) == 0) {
+				// Real modification made to text of document.
+				NotifyChange();	// Send EN_CHANGE
+			}
 		}
 
 		SCNotification scn = {};
@@ -4159,9 +4172,7 @@ std::string Editor::RangeText(Sci::Position start, Sci::Position end) const {
 	if (start < end) {
 		const Sci::Position len = end - start;
 		std::string ret(len, '\0');
-		for (int i = 0; i < len; i++) {
-			ret[i] = pdoc->CharAt(start + i);
-		}
+		pdoc->GetCharRange(ret.data(), start, len);
 		return ret;
 	}
 	return std::string();
@@ -5055,7 +5066,8 @@ Sci::Position Editor::PositionAfterMaxStyling(Sci::Position posMax, bool scrolli
 	// When scrolling, allow less time to ensure responsive
 	const double secondsAllowed = scrolling ? 0.005 : 0.02;
 
-	const Sci::Line linesToStyle = std::clamp(static_cast<int>(secondsAllowed / pdoc->durationStyleOneLine),
+	const Sci::Line linesToStyle = std::clamp(
+		static_cast<int>(secondsAllowed / pdoc->durationStyleOneLine.Duration()),
 		10, 0x10000);
 	const Sci::Line stylingMaxLine = std::min(
 		pdoc->SciLineFromPosition(pdoc->GetEndStyled()) + linesToStyle,
@@ -5767,7 +5779,7 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 			if (wParam == 0)
 				return 0;
 			char *ptr = CharPtrFromSPtr(lParam);
-			unsigned int iChar = 0;
+			size_t iChar = 0;
 			for (; iChar < wParam - 1; iChar++)
 				ptr[iChar] = pdoc->CharAt(iChar);
 			ptr[iChar] = '\0';
@@ -5901,7 +5913,7 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 				return selectedText.LengthWithTerminator();
 			} else {
 				char *ptr = CharPtrFromSPtr(lParam);
-				unsigned int iChar = 0;
+				size_t iChar = 0;
 				if (selectedText.Length()) {
 					for (; iChar < selectedText.LengthWithTerminator(); iChar++)
 						ptr[iChar] = selectedText.Data()[iChar];
@@ -7653,6 +7665,13 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 
 	case SCI_GETMODEVENTMASK:
 		return modEventMask;
+
+	case SCI_SETCOMMANDEVENTS:
+		commandEvents = static_cast<bool>(wParam);
+		return 0;
+
+	case SCI_GETCOMMANDEVENTS:
+		return commandEvents;
 
 	case SCI_CONVERTEOLS:
 		pdoc->ConvertLineEnds(static_cast<int>(wParam));

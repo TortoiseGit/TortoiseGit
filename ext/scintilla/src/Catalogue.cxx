@@ -33,7 +33,7 @@ const LexerModule *Catalogue::Find(int language) {
 			return lm;
 		}
 	}
-	return 0;
+	return nullptr;
 }
 
 const LexerModule *Catalogue::Find(const char *languageName) {
@@ -45,7 +45,7 @@ const LexerModule *Catalogue::Find(const char *languageName) {
 			}
 		}
 	}
-	return 0;
+	return nullptr;
 }
 
 void Catalogue::AddLexerModule(LexerModule *plm) {
@@ -142,6 +142,7 @@ int Scintilla_LinkLexers() {
 	LINK_LEXER(lmModula);
 	LINK_LEXER(lmMSSQL);
 	LINK_LEXER(lmMySQL);
+	LINK_LEXER(lmNim);
 	LINK_LEXER(lmNimrod);
 	LINK_LEXER(lmNncrontab);
 	LINK_LEXER(lmNsis);

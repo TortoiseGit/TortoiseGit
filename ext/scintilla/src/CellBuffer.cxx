@@ -138,7 +138,7 @@ class LineVector : public ILineVector {
 	LineStartIndex<POS> startsUTF16;
 	LineStartIndex<POS> startsUTF32;
 public:
-	LineVector() : starts(256), perLine(0) {
+	LineVector() : starts(256), perLine(nullptr) {
 		Init();
  	}
 	// Deleted so LineVector objects can not be copied.
@@ -650,7 +650,7 @@ bool CellBuffer::SetStyleFor(Sci::Position position, Sci::Position lengthStyle, 
 const char *CellBuffer::DeleteChars(Sci::Position position, Sci::Position deleteLength, bool &startSequence) {
 	// InsertString and DeleteChars are the bottleneck though which all changes occur
 	PLATFORM_ASSERT(deleteLength > 0);
-	const char *data = 0;
+	const char *data = nullptr;
 	if (!readOnly) {
 		if (collectingUndo) {
 			// Save into the undo/redo stack, but only the characters - not the formatting
@@ -900,6 +900,10 @@ CountWidths CountCharacterWidthsUTF8(std::string_view sv) noexcept {
 
 }
 
+bool CellBuffer::MaintainingLineCharacterIndex() const noexcept {
+	return plv->LineCharacterIndex() != SC_LINECHARACTERINDEX_NONE;
+}
+
 void CellBuffer::RecalculateIndexLineStarts(Sci::Line lineFirst, Sci::Line lineLast) {
 	std::string text;
 	Sci::Position posLineEnd = LineStart(lineFirst);
@@ -932,8 +936,10 @@ void CellBuffer::BasicInsertString(Sci::Position position, const char *s, Sci::P
 	// A simple insertion is one that inserts valid text on a single line at a character boundary
 	bool simpleInsertion = false;
 
+	const bool maintainingIndex = MaintainingLineCharacterIndex();
+
 	// Check for breaking apart a UTF-8 sequence and inserting invalid UTF-8
-	if (utf8Substance && (plv->LineCharacterIndex() != SC_LINECHARACTERINDEX_NONE)) {
+	if (utf8Substance && maintainingIndex) {
 		// Actually, don't need to check that whole insertion is valid just that there
 		// are no potential fragments at ends.
 		simpleInsertion = UTF8IsCharacterBoundary(position) &&
@@ -1011,11 +1017,13 @@ void CellBuffer::BasicInsertString(Sci::Position position, const char *s, Sci::P
 			chPrev = chAt;
 		}
 	}
-	if (simpleInsertion) {
-		const CountWidths cw = CountCharacterWidthsUTF8(std::string_view(s, insertLength));
-		plv->InsertCharacters(linePosition, cw);
-	} else {
-		RecalculateIndexLineStarts(linePosition, lineInsert - 1);
+	if (maintainingIndex) {
+		if (simpleInsertion) {
+			const CountWidths cw = CountCharacterWidthsUTF8(std::string_view(s, insertLength));
+			plv->InsertCharacters(linePosition, cw);
+		} else {
+			RecalculateIndexLineStarts(linePosition, lineInsert - 1);
+		}
 	}
 }
 
@@ -1043,7 +1051,7 @@ void CellBuffer::BasicDeleteChars(Sci::Position position, Sci::Position deleteLe
 
 		// Check for breaking apart a UTF-8 sequence
 		// Needs further checks that text is UTF-8 or that some other break apart is occurring
-		if (utf8Substance && (plv->LineCharacterIndex() != SC_LINECHARACTERINDEX_NONE)) {
+		if (utf8Substance && MaintainingLineCharacterIndex()) {
 			const Sci::Position posEnd = position + deleteLength;
 			const Sci::Line lineEndRemove = plv->LineFromPosition(posEnd);
 			const bool simpleDeletion =
@@ -1140,7 +1148,7 @@ void CellBuffer::EndUndoAction() {
 
 void CellBuffer::AddUndoAction(Sci::Position token, bool mayCoalesce) {
 	bool startSequence;
-	uh.AppendAction(containerAction, token, 0, 0, startSequence, mayCoalesce);
+	uh.AppendAction(containerAction, token, nullptr, 0, startSequence, mayCoalesce);
 }
 
 void CellBuffer::DeleteUndoHistory() {

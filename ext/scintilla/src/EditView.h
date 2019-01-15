@@ -77,7 +77,6 @@ public:
 	std::unique_ptr<Surface> pixmapLine;
 	std::unique_ptr<Surface> pixmapIndentGuide;
 	std::unique_ptr<Surface> pixmapIndentGuideHighlight;
-	void	*editor;
 
 	LineLayoutCache llc;
 	PositionCache posCache;
