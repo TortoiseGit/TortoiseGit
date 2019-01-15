@@ -39,7 +39,7 @@ Email questions, comments or suggestions to quynhnguyenhuu@gmail.com
 ///////////////////////////////////////////////////////
 // CReaderWriterLockNonReentrance implementation
 
-CReaderWriterLockNonReentrance::CReaderWriterLockNonReentrance()
+CReaderWriterLockNonReentrance::CReaderWriterLockNonReentrance() noexcept
 	: m_hSafeToReadEvent(NULL)
 	, m_hSafeToWriteEvent(NULL)
 	, m_iNumOfWriter(0)
@@ -61,7 +61,7 @@ CReaderWriterLockNonReentrance::~CReaderWriterLockNonReentrance()
 	DeleteCriticalSection(&m_cs);
 }
 
-bool CReaderWriterLockNonReentrance::_ReaderWait(DWORD dwTimeout) throw()
+bool CReaderWriterLockNonReentrance::_ReaderWait(DWORD dwTimeout) noexcept
 {
 	bool blCanRead;
 
@@ -140,7 +140,7 @@ bool CReaderWriterLockNonReentrance::_ReaderWait(DWORD dwTimeout) throw()
 	return blCanRead;
 }
 
-void CReaderWriterLockNonReentrance::_ReaderRelease()
+void CReaderWriterLockNonReentrance::_ReaderRelease() noexcept
 {
 	INT _iNumOfReaderEntered = --m_iNumOfReaderEntered;
 	_ASSERT(0 <= _iNumOfReaderEntered);
@@ -152,7 +152,7 @@ void CReaderWriterLockNonReentrance::_ReaderRelease()
 	}
 }
 
-bool CReaderWriterLockNonReentrance::_WriterWaitAndLeaveCSIfSuccess(DWORD dwTimeout)
+bool CReaderWriterLockNonReentrance::_WriterWaitAndLeaveCSIfSuccess(DWORD dwTimeout) noexcept
 {
 	//EnterCS();
 	_ASSERT(0 != dwTimeout);
@@ -196,7 +196,7 @@ bool CReaderWriterLockNonReentrance::_WriterWaitAndLeaveCSIfSuccess(DWORD dwTime
 	return blCanWrite;
 }
 
-bool CReaderWriterLockNonReentrance::_UpgradeToWriterLockAndLeaveCS(DWORD dwTimeout) throw()
+bool CReaderWriterLockNonReentrance::_UpgradeToWriterLockAndLeaveCS(DWORD dwTimeout) noexcept
 {
 	_ASSERT(m_iNumOfReaderEntered > 0);
 
@@ -237,7 +237,7 @@ bool CReaderWriterLockNonReentrance::_UpgradeToWriterLockAndLeaveCS(DWORD dwTime
 	return blCanWrite;
 }
 
-void CReaderWriterLockNonReentrance::_WriterRelease(bool blDowngrade)
+void CReaderWriterLockNonReentrance::_WriterRelease(bool blDowngrade) noexcept
 {
 	_ASSERT(0 == m_iNumOfReaderEntered);
 
@@ -272,7 +272,7 @@ void CReaderWriterLockNonReentrance::_WriterRelease(bool blDowngrade)
 	}
 }
 
-bool CReaderWriterLockNonReentrance::AcquireReaderLock(DWORD dwTimeout)
+bool CReaderWriterLockNonReentrance::AcquireReaderLock(DWORD dwTimeout) noexcept
 {
 	bool blCanRead;
 
@@ -292,14 +292,14 @@ bool CReaderWriterLockNonReentrance::AcquireReaderLock(DWORD dwTimeout)
 	return blCanRead;
 }
 
-void CReaderWriterLockNonReentrance::ReleaseReaderLock()
+void CReaderWriterLockNonReentrance::ReleaseReaderLock() noexcept
 {
 	EnterCS();
 	_ReaderRelease();
 	LeaveCS();
 }
 
-bool CReaderWriterLockNonReentrance::AcquireWriterLock(DWORD dwTimeout)
+bool CReaderWriterLockNonReentrance::AcquireWriterLock(DWORD dwTimeout) noexcept
 {
 	bool blCanWrite ;
 
@@ -326,21 +326,21 @@ bool CReaderWriterLockNonReentrance::AcquireWriterLock(DWORD dwTimeout)
 	return blCanWrite;
 }
 
-void CReaderWriterLockNonReentrance::ReleaseWriterLock()
+void CReaderWriterLockNonReentrance::ReleaseWriterLock() noexcept
 {
 	EnterCS();
 	_WriterRelease(FALSE);
 	LeaveCS();
 }
 
-void CReaderWriterLockNonReentrance::DowngradeFromWriterLock()
+void CReaderWriterLockNonReentrance::DowngradeFromWriterLock() noexcept
 {
 	EnterCS();
 	_WriterRelease(TRUE);
 	LeaveCS();
 }
 
-bool CReaderWriterLockNonReentrance::UpgradeToWriterLock(DWORD dwTimeout) throw()
+bool CReaderWriterLockNonReentrance::UpgradeToWriterLock(DWORD dwTimeout) noexcept
 {
 	EnterCS();
 	return _UpgradeToWriterLockAndLeaveCS(dwTimeout);
@@ -364,7 +364,7 @@ CReaderWriterLock::~CReaderWriterLock()
 {
 }
 
-bool CReaderWriterLock::AcquireReaderLock(DWORD dwTimeout)
+bool CReaderWriterLock::AcquireReaderLock(DWORD dwTimeout) noexcept
 {
 	const DWORD dwCurrentThreadId = GetCurrentThreadId();
 
@@ -409,7 +409,7 @@ bool CReaderWriterLock::AcquireReaderLock(DWORD dwTimeout)
 	return blCanRead;
 }
 
-void CReaderWriterLock::ReleaseReaderLock()
+void CReaderWriterLock::ReleaseReaderLock() noexcept
 {
 	const DWORD dwCurrentThreadId = GetCurrentThreadId();
 	m_impl.EnterCS();
@@ -426,7 +426,7 @@ void CReaderWriterLock::ReleaseReaderLock()
 	m_impl.LeaveCS();
 }
 
-bool CReaderWriterLock::AcquireWriterLock(DWORD dwTimeout)
+bool CReaderWriterLock::AcquireWriterLock(DWORD dwTimeout) noexcept
 {
 	const DWORD dwCurrentThreadId = GetCurrentThreadId();
 	bool blCanWrite;
@@ -501,7 +501,7 @@ bool CReaderWriterLock::AcquireWriterLock(DWORD dwTimeout)
 	return blCanWrite;
 }
 
-void CReaderWriterLock::ReleaseWriterLock()
+void CReaderWriterLock::ReleaseWriterLock() noexcept
 {
 	const DWORD dwCurrentThreadId = GetCurrentThreadId();
 	m_impl.EnterCS();
@@ -523,7 +523,7 @@ void CReaderWriterLock::ReleaseWriterLock()
 	m_impl.LeaveCS();
 }
 
-void CReaderWriterLock::ReleaseAllLocks()
+void CReaderWriterLock::ReleaseAllLocks() noexcept
 {
 	const DWORD dwCurrentThreadId = GetCurrentThreadId();
 
@@ -546,7 +546,7 @@ void CReaderWriterLock::ReleaseAllLocks()
 	m_impl.LeaveCS();
 }
 
-DWORD CReaderWriterLock::GetCurrentThreadStatus() const throw()
+DWORD CReaderWriterLock::GetCurrentThreadStatus() const noexcept
 {
 	DWORD dwThreadState;
 	const DWORD dwCurrentThreadId = GetCurrentThreadId();
@@ -569,7 +569,7 @@ DWORD CReaderWriterLock::GetCurrentThreadStatus() const throw()
 }
 
 void CReaderWriterLock::GetCurrentThreadStatus(DWORD* lpdwReaderLockCounter,
-	DWORD* lpdwWriterLockCounter) const
+	DWORD* lpdwWriterLockCounter) const noexcept
 {
 	const DWORD dwThreadState = GetCurrentThreadStatus();
 
