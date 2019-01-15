@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -716,7 +716,7 @@ int CTGitPath::GetAdminDirMask() const
 	if (HasStashDir(dotGitPath))
 		status |= ITEMIS_STASH;
 
-	if (PathFileExists(dotGitPath + L"svn"))
+	if (PathFileExists(dotGitPath + L"svn\\.metadata"))
 		status |= ITEMIS_GITSVN;
 
 	if (isWorktree)
@@ -846,7 +846,7 @@ bool CTGitPath::HasGitSVNDir() const
 	CString dotGitPath;
 	GitAdminDir::GetAdminDirPath(m_sProjectRoot, dotGitPath);
 
-	return !!PathFileExists(dotGitPath + L"svn");
+	return PathFileExists(dotGitPath + L"svn\\.metadata") == TRUE;
 }
 bool CTGitPath::IsBisectActive() const
 {
