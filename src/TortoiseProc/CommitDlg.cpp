@@ -1167,6 +1167,8 @@ void CCommitDlg::OnOK()
 					bCloseCommitDlg = false;
 				}
 			}
+			m_ListCtrl.PruneChangelists();
+			m_ListCtrl.SaveChangelists();
 		}
 
 		if (progress.m_GitStatus || m_PostCmd == GIT_POSTCOMMIT_CMD_RECOMMIT)

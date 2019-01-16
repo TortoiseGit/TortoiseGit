@@ -258,13 +258,11 @@
 			customizations are preserved, so you will see the same headings
 			next time.
 		</para>
-		<!--
 		<para>
 			If you are working on several unrelated tasks at once, you can also
 			group files together into changelists.
 			Read <xref linkend="tgit-dug-commit-changelists"/> for more information.
 		</para>
-		-->
 		<para>
 			At the bottom of the dialog you have several options to select which entries to show (such as ignored or untracked/unversioned files).
 			It is also possible to view all files which were marked as "Assume valid" or "Skip worktree" here (using <guilabel>Show ingore local changes flagged files</guilabel>).

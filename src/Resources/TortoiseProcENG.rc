@@ -4976,6 +4976,12 @@ BEGIN
     IDS_HOOKFAILED_TASK4    "&Proceed anyway\nIgnore the hook script and run the command anyway."
 END
 
+STRINGTABLE
+BEGIN
+    IDS_ERR_CHANGELIST_LOAD "Unable to load changelists"
+    IDS_ERR_CHANGELIST_SAVE "Unable to save changelists"
+END
+
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 

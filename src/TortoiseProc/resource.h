@@ -2050,6 +2050,8 @@
 #define ID_GO_FORWARD_SELECT            32872
 #define ID_SELECT_SEARCHFIELD           32873
 #define ID_EXITCLEARFILTER              32874
+#define IDS_ERR_CHANGELIST_LOAD         32900
+#define IDS_ERR_CHANGELIST_SAVE         32901
 
 // Next default values for new objects
 // 

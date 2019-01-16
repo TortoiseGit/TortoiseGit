@@ -24,6 +24,7 @@ Released: unreleased
  * Fixed issue #3228: Rebase: Add full support for empty commits (e.g., commits which become empty during conflict resolution)
  * Fixed issue #3189: Show progress bar when resolving lots of conflicts
  * Fixed issue #3318: More accurate git-svn detection
+ * Fixed issue #1770: Add support for changelists
 
 == Bug Fixes ==
  * Fixed issue #3250: GitWCRev: IsGitItem return true for item that had never been committed

@@ -692,11 +692,22 @@ private:
 	/// Returns the group number to which the group header belongs
 	/// If the point is not over a group header, -1 is returned
 	int GetGroupFromPoint(POINT * ppt);
-	/// Returns the number of change lists the selection has
-	size_t GetNumberOfChangelistsInSelection();
 
-	/// Puts the item to the corresponding group
-	bool SetItemGroup(int item, int groupindex);
+	/// Returns the number of change lists the selection has
+	bool HasChangelistInSelection();
+	void MoveToChangelist(const CString& name);
+	void RemoveFromChangelist();
+	void LoadChangelists();
+
+public:
+	void SaveChangelists();
+	void PruneChangelists();
+
+private:
+	int GetChangeListIdForPath(const CTGitPath* pGitPath);
+
+	// Determines group and puts the item to the group
+	bool SetItemGroup(int item, const CTGitPath* pGitPath);
 
 	void CheckEntry(int index, int nListItems);
 	void UncheckEntry(int index, int nListItems);
@@ -748,7 +759,8 @@ private:
 	//FileEntryVector				m_arStatusArray;
 	std::vector<const CTGitPath*>	m_arStatusArray;
 	std::vector<size_t>			m_arListArray;
-	std::map<CString, int>	    m_changelists;
+	std::map<CString, int>		m_changelists; // maps changelist to group index
+	std::map<CString, CString>	m_pathToChangelist; // maps gitpath to changelist
 	bool						m_bHasIgnoreGroup;
 	CTGitPathList				m_StatusFileList;
 	CTGitPathList				m_UnRevFileList;
