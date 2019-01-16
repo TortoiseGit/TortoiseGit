@@ -4674,3 +4674,37 @@ void CGitStatusListCtrl::SaveChangelists()
 	}
 }
 
+void CGitStatusListCtrl::PruneChangelists()
+{
+	CAutoReadLock locker(m_guard);
+	std::set<CString> unchecked;
+	int nListboxEntries = GetItemCount();
+	for (int nItem = 0; nItem < nListboxEntries; ++nItem)
+	{
+		auto pentry = GetListEntry(nItem);
+		if (!pentry || (pentry->m_Checked && m_restorepaths.find(pentry->GetWinPathString()) == m_restorepaths.end()))
+			continue;
+
+		unchecked.emplace(pentry->GetGitPathString());
+	}
+
+	auto it1 = unchecked.cbegin();
+	auto it2 = m_pathToChangelist.begin();
+
+	while (it1 != unchecked.cend() && it2 != m_pathToChangelist.end())
+	{
+		if (*it1 > it2->first)
+			it2 = m_pathToChangelist.erase(it2);
+		else if (it2->first > *it1)
+			++it1;
+		else
+		{
+			++it1;
+			++it2;
+		}
+	}
+	while (it2 != m_pathToChangelist.end())
+	{
+		it2 = m_pathToChangelist.erase(it2);
+	}
+}
