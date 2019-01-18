@@ -1,5 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2019 - TortoiseGit
 // Copyright (C) 2003-2006, 2008-2013, 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -215,11 +216,14 @@ void CSplitterControl::OnMouseMove(UINT nFlags, CPoint point)
 		m_bMouseOverControl = true;
 		auto transHot = Animator::Instance().CreateLinearTransition(0.3, 1.0);
 		auto storyBoard = Animator::Instance().CreateStoryBoard();
-		storyBoard->AddTransition(m_AnimVarHot, transHot);
-		Animator::Instance().RunStoryBoard(storyBoard, [this]()
+		if (storyBoard && transHot && m_AnimVarHot)
 		{
-			InvalidateRect(nullptr, false);
-		});
+			storyBoard->AddTransition(m_AnimVarHot, transHot);
+			Animator::Instance().RunStoryBoard(storyBoard, [this]()
+			{
+				InvalidateRect(nullptr, false);
+			});
+		}
 	}
 	CStatic::OnMouseMove(nFlags, point);
 }
@@ -230,11 +234,14 @@ LRESULT CSplitterControl::OnMouseLeave(WPARAM /*wParam*/, LPARAM /*lParam*/)
 	{
 		auto transHot = Animator::Instance().CreateLinearTransition(0.3, 0.0);
 		auto storyBoard = Animator::Instance().CreateStoryBoard();
-		storyBoard->AddTransition(m_AnimVarHot, transHot);
-		Animator::Instance().RunStoryBoard(storyBoard, [this]()
+		if (storyBoard && transHot && m_AnimVarHot)
 		{
-			InvalidateRect(nullptr, false);
-		});
+			storyBoard->AddTransition(m_AnimVarHot, transHot);
+			Animator::Instance().RunStoryBoard(storyBoard, [this]()
+			{
+				InvalidateRect(nullptr, false);
+			});
+		}
 	}
 	m_bMouseOverControl = false;
 	return 0;
