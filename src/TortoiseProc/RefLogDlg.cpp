@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2018 - TortoiseGit
+// Copyright (C) 2009-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -223,6 +223,8 @@ void CRefLogDlg::Refresh()
 
 void CRefLogDlg::OnFind()
 {
+	if (m_pFindDialog)
+		return;
 	m_nSearchLine = 0;
 	m_pFindDialog = new CFindReplaceDialog();
 	m_pFindDialog->Create(TRUE, L"", nullptr, FR_DOWN | FR_HIDEWHOLEWORD | FR_HIDEUPDOWN, this);
