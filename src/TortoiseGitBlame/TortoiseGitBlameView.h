@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2018 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2019 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -97,9 +97,6 @@ public:
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs) override;
 protected:
-	afx_msg BOOL OnPreparePrinting(CPrintInfo* pInfo);
-	afx_msg void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
-	afx_msg void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
 	virtual ULONG GetGestureStatus(CPoint ptTouch) override;
 
 // Implementation
@@ -121,7 +118,6 @@ protected:
 	afx_msg void OnEditGoto();
 	afx_msg void OnFindNext();
 	afx_msg void OnFindPrev();
-	afx_msg void OnFilePrintPreview();
 	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 	afx_msg int OnCreate(LPCREATESTRUCT lpcs);
 	afx_msg void OnSize(UINT nType, int cx, int cy);

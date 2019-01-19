@@ -1,6 +1,6 @@
 ﻿// TortoiseGitBlame - a Viewer for Git Blames
 
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // Copyright (C)2003 Don HO <donho@altern.org>
@@ -54,9 +54,6 @@ IMPLEMENT_DYNCREATE(CTortoiseGitBlameView, CView)
 
 BEGIN_MESSAGE_MAP(CTortoiseGitBlameView, CView)
 	// Standard printing commands
-	ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
-	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
-	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CTortoiseGitBlameView::OnFilePrintPreview)
 	ON_COMMAND(ID_EDIT_FIND,OnEditFind)
 	ON_COMMAND(ID_EDIT_GOTO,OnEditGoto)
 	ON_COMMAND(ID_EDIT_COPY, CopyToClipboard)
@@ -323,31 +320,6 @@ void CTortoiseGitBlameView::OnDraw(CDC* pDC)
 	myDC.GetDC().FillSolidRect(&rc, m_windowcolor);
 	DrawBlame(myDC.GetDC());
 	DrawLocatorBar(myDC.GetDC());
-}
-
-
-// CTortoiseGitBlameView printing
-
-
-void CTortoiseGitBlameView::OnFilePrintPreview()
-{
-	AFXPrintPreview(this);
-}
-
-BOOL CTortoiseGitBlameView::OnPreparePrinting(CPrintInfo* pInfo)
-{
-	// default preparation
-	return DoPreparePrinting(pInfo);
-}
-
-void CTortoiseGitBlameView::OnBeginPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
-{
-	// TODO: add extra initialization before printing
-}
-
-void CTortoiseGitBlameView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
-{
-	// TODO: add cleanup after printing
 }
 
 int CTortoiseGitBlameView::GetLineUnderCursor(CPoint point)
