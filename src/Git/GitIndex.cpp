@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -214,7 +214,7 @@ int CGitIndexList::GetFileStatus(CAutoRepository& repository, const CString& git
 		if (isSymlink && S_ISLNK(entry.m_Mode))
 		{
 			CStringA linkDestination;
-			if (!CPathUtils::ReadLink(CombinePath(gitdir, entry.m_FileName), &linkDestination) && !git_odb_hash(&actual, (void*)(LPCSTR)linkDestination, linkDestination.GetLength(), GIT_OBJ_BLOB) && !git_oid_cmp(&actual, entry.m_IndexHash))
+			if (!CPathUtils::ReadLink(CombinePath(gitdir, entry.m_FileName), &linkDestination) && !git_odb_hash(&actual, (void*)(LPCSTR)linkDestination, linkDestination.GetLength(), GIT_OBJECT_BLOB) && !git_oid_cmp(&actual, entry.m_IndexHash))
 			{
 				entry.m_ModifyTime = time;
 				status.status = git_wc_status_normal;
@@ -222,7 +222,7 @@ int CGitIndexList::GetFileStatus(CAutoRepository& repository, const CString& git
 			else
 				status.status = git_wc_status_modified;
 		}
-		else if (!git_repository_hashfile(&actual, repository, fileA, GIT_OBJ_BLOB, nullptr) && !git_oid_cmp(&actual, entry.m_IndexHash))
+		else if (!git_repository_hashfile(&actual, repository, fileA, GIT_OBJECT_BLOB, nullptr) && !git_oid_cmp(&actual, entry.m_IndexHash))
 		{
 			entry.m_ModifyTime = time;
 			status.status = git_wc_status_normal;

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2018 - TortoiseGit
+// Copyright (C) 2009-2019 - TortoiseGit
 // Copyright (C) 2003-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -508,7 +508,7 @@ int CRepositoryBrowser::ReadTree(CShadowFilesTree* treeroot, const CString& root
 			MessageBox(CGit::GetLibGit2LastErr(L"Could not lookup path."), L"TortoiseGit", MB_ICONERROR);
 			return -1;
 		}
-		if (git_tree_entry_type(treeEntry) != GIT_OBJ_TREE)
+		if (git_tree_entry_type(treeEntry) != GIT_OBJECT_TREE)
 		{
 			MessageBox(CGit::GetLibGit2LastErr(L"Could not lookup path."), L"TortoiseGit", MB_ICONERROR);
 			return -1;

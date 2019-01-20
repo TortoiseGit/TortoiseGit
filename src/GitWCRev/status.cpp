@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2017-2018 - TortoiseGit
+// Copyright (C) 2017-2019 - TortoiseGit
 // Copyright (C) 2003-2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -273,7 +273,7 @@ int GetStatus(const TCHAR* path, GitWCRev_t& GitStat)
 	GitStat.CurrentBranch = git_reference_shorthand(head);
 
 	CAutoObject object;
-	if (git_reference_peel(object.GetPointer(), head, GIT_OBJ_COMMIT) < 0)
+	if (git_reference_peel(object.GetPointer(), head, GIT_OBJECT_COMMIT) < 0)
 		return ERR_GIT_ERR;
 
 	const git_oid* oid = git_object_id(object);

@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2011-2016, 2018 - TortoiseGit
+// Copyright (C) 2009, 2011-2016, 2018-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -48,7 +48,7 @@ bool CatCommand::Execute()
 			return false;
 		}
 
-		if (git_object_type(obj) == GIT_OBJ_BLOB)
+		if (git_object_type(obj) == GIT_OBJECT_BLOB)
 		{
 			CAutoFILE file = _wfsopen(savepath, L"wb", SH_DENYRW);
 			if (file == nullptr)

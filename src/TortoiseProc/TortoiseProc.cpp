@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 // Copyright (C) 2003-2008, 2012-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -446,7 +446,7 @@ BOOL CTortoiseProcApp::InitInstance()
 				{
 					git_oid oid;
 					CStringA wcRootA(wcroot + CPathUtils::GetAppDirectory());
-					if (!git_odb_hash(&oid, wcRootA.MakeLower(), wcRootA.GetLength(), GIT_OBJ_BLOB))
+					if (!git_odb_hash(&oid, wcRootA.MakeLower(), wcRootA.GetLength(), GIT_OBJECT_BLOB))
 					{
 						CStringA hash;
 						git_oid_tostr(CStrBufA(hash, GIT_OID_HEXSZ, CStrBufA::SET_LENGTH), GIT_OID_HEXSZ + 1, &oid);

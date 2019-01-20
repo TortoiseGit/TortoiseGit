@@ -1702,7 +1702,7 @@ int CGit::GetRefsCommitIsOn(STRING_VECTOR& list, const CGitHash& hash, bool incl
 			else
 				continue;
 
-			if (git_reference_type(ref) == GIT_REF_SYMBOLIC)
+			if (git_reference_type(ref) == GIT_REFERENCE_SYMBOLIC)
 			{
 				CAutoReference peeledRef;
 				if (git_reference_resolve(peeledRef.GetPointer(), ref) < 0)
@@ -1962,13 +1962,13 @@ int libgit2_addto_map_each_ref_fn(git_reference *ref, void *payload)
 
 	CAutoObject gitObject;
 	if (git_revparse_single(gitObject.GetPointer(), payloadContent->repo, git_reference_name(ref)))
-		return (git_reference_is_remote(ref) && git_reference_type(ref) == GIT_REF_SYMBOLIC) ? 0 : 1; // don't bail out for symbolic remote references ("git.exe show-ref -d" also doesn't complain), cf. issue #2926
+		return (git_reference_is_remote(ref) && git_reference_type(ref) == GIT_REFERENCE_SYMBOLIC) ? 0 : 1; // don't bail out for symbolic remote references ("git.exe show-ref -d" also doesn't complain), cf. issue #2926
 
-	if (git_object_type(gitObject) == GIT_OBJ_TAG)
+	if (git_object_type(gitObject) == GIT_OBJECT_TAG)
 	{
 		str += L"^{}"; // deref tag
 		CAutoObject derefedTag;
-		if (git_object_peel(derefedTag.GetPointer(), gitObject, GIT_OBJ_ANY))
+		if (git_object_peel(derefedTag.GetPointer(), gitObject, GIT_OBJECT_ANY))
 			return 1;
 		gitObject.Swap(derefedTag);
 	}

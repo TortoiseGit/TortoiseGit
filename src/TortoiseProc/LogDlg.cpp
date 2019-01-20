@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2009, 2015 - TortoiseSVN
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -737,7 +737,7 @@ static int DescribeCommit(CGitHash& hash, CString& result)
 	if (!repo)
 		return -1;
 	CAutoObject commit;
-	if (git_object_lookup(commit.GetPointer(), repo, hash, GIT_OBJ_COMMIT))
+	if (git_object_lookup(commit.GetPointer(), repo, hash, GIT_OBJECT_COMMIT))
 		return -1;
 
 	CAutoDescribeResult describe;
