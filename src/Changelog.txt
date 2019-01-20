@@ -44,6 +44,7 @@ Released: unreleased
  * Fixed issue #3039: Icon overlays don't update properly when committing after gc prune on the command line
  * Fixed issue #3316: Misleading message box after pull with rebase, when branch is behind origin/branch, but origin/branch=remote/origin/master
  * Fixed issue #3288: Commit window: text is cut when Russian localisation
+ * Fixed issue #3317: merge-ods.vbs-script: Merged document in LibreOffice 6.1 deleted by the script
 
 = Release 2.7.0 =
 Released: 2018-08-19

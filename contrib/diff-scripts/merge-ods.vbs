@@ -41,6 +41,13 @@ End If
 objScript.GetFile(sMyDoc).Attributes = objScript.GetFile(sMyDoc).Attributes And Not 1
 objScript.GetFile(sTheirDoc).Attributes = objScript.GetFile(sTheirDoc).Attributes And Not 1
 
+'since i haven't found a way to tell OO a new "save" path after a document is opened,
+'the %mine and %merged paths need to be identical since it always saves to the %mine path
+if (sMergedDoc <> sMyDoc) Then
+    MsgBox "You need to safe the merged file as """ + sMergedDoc + """ after merging otherwise you might lose your changes.", vbInformation, "TortoiseGit OpenOffice merge helper"
+End If
+
+
 Set objScript = Nothing
 
 On Error Resume Next
