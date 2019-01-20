@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2017 - TortoiseGit
+// Copyright (C) 2016-2017, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -183,9 +183,10 @@ BOOL CFirstStartWizardAuthentication::OnInitDialog()
 	{
 		m_ctrlSimpleCredential.EnableWindow(FALSE);
 		m_availableHelpers.clear();
-		m_ctrlSimpleCredential.Clear();
+		m_ctrlSimpleCredential.ResetContent();
 		AddHelper(m_ctrlSimpleCredential, m_availableHelpers, MAKEINTRESOURCE(IDS_ADVANCED));
 		m_ctrlSimpleCredential.SetCurSel(0);
+		GetDlgItem(IDC_DONTSAVE)->EnableWindow(FALSE);
 	}
 
 	AdjustControlSize(IDC_DONTSAVE);
