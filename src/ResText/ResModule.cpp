@@ -724,7 +724,7 @@ const WORD* CResModule::ParseMenuResource(const WORD * res)
 			InsertResourceIDs(RT_MENU, 0, entry, id, L" - Menu");
 
 			TCHAR szTempBuf[1024] = { 0 };
-			swprintf(szTempBuf, L"#: MenuEntry; ID:%u", id);
+			swprintf_s(szTempBuf, L"#: MenuEntry; ID:%u", id);
 			MENUENTRY menu_entry;
 			menu_entry.wID = id;
 			menu_entry.reference = szTempBuf;
@@ -845,7 +845,7 @@ const WORD* CResModule::ParseMenuExResource(const WORD * res)
 
 			InsertResourceIDs(RT_MENU, 0, entry, menuId, L" - PopupMenuEx");
 			TCHAR szTempBuf[1024] = { 0 };
-			swprintf(szTempBuf, L"#: MenuExPopupEntry; ID:%lu", menuId);
+			swprintf_s(szTempBuf, L"#: MenuExPopupEntry; ID:%lu", menuId);
 			MENUENTRY menu_entry;
 			menu_entry.wID = (WORD)menuId;
 			menu_entry.reference = szTempBuf;
@@ -866,7 +866,7 @@ const WORD* CResModule::ParseMenuExResource(const WORD * res)
 			InsertResourceIDs(RT_MENU, 0, entry, menuId, L" - MenuEx");
 
 			TCHAR szTempBuf[1024] = { 0 };
-			swprintf(szTempBuf, L"#: MenuExEntry; ID:%lu", menuId);
+			swprintf_s(szTempBuf, L"#: MenuExEntry; ID:%lu", menuId);
 			MENUENTRY menu_entry;
 			menu_entry.wID = (WORD)menuId;
 			menu_entry.reference = szTempBuf;
@@ -1061,7 +1061,7 @@ BOOL CResModule::ExtractAccelerator(LPCTSTR lpszType)
 		{
 			wmenu = pME_iter->second.msgstr;
 		}
-		swprintf(szTempBuf, L"#. Accelerator Entry for Menu ID:%u; '%s'", wID, wmenu.c_str());
+		swprintf_s(szTempBuf, L"#. Accelerator Entry for Menu ID:%u; '%s'", wID, wmenu.c_str());
 		AKey_entry.automaticcomments.push_back(std::wstring(szTempBuf));
 
 		m_StringEntries[wstr] = AKey_entry;
