@@ -3690,23 +3690,23 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 			CAutoRepository repository(g_Git.GetGitRepository());
 			if (!repository)
 				MessageBox(CGit::GetLibGit2LastErr(L"Could not open repository."), L"TortoiseGit", MB_OK | MB_ICONERROR);
-			for (int i = 0; i <= max; ++i)
+			for (groupindex = 0; groupindex <= max; ++groupindex)
 			{
 				CString str;
-				str.Format(IDS_STATUSLIST_GROUP_DIFFWITHPARENT, i+1);
+				str.Format(IDS_STATUSLIST_GROUP_DIFFWITHPARENT, groupindex + 1);
 				if (repository)
 				{
 					CString rev;
-					rev.Format(L"%s^%d", (LPCTSTR)m_CurrentVersion.ToString(), i + 1);
+					rev.Format(L"%s^%d", (LPCTSTR)m_CurrentVersion.ToString(), groupindex + 1);
 					CGitHash hash;
 					if (!CGit::GetHash(repository, hash, rev))
 						str += L": " + hash.ToString().Left(g_Git.GetShortHASHLength());
 				}
 				grp.pszHeader = str.GetBuffer();
 				str.ReleaseBuffer();
-				grp.iGroupId = i;
+				grp.iGroupId = groupindex;
 				grp.uAlign = LVGA_HEADER_LEFT;
-				InsertGroup(i+1, &grp);
+				InsertGroup(groupindex, &grp);
 			}
 		}
 		else
