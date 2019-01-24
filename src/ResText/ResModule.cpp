@@ -1172,7 +1172,7 @@ BOOL CResModule::ReplaceAccelerator(LPCTSTR lpszType, WORD wLanguage)
 				continue;   // not a space - user must have made a mistake when translating
 			if (wtemp.compare(4, 1, L"+") == 0)
 			{
-				swscanf(wtemp.substr(5, 1).c_str(), L"%c", &xkey);
+				swscanf_s(wtemp.substr(5, 1).c_str(), L"%c", &xkey, 1);
 				lpaccelNew[i].fVirt = xfVirt;
 				lpaccelNew[i].key = (DWORD)xkey;
 			}
@@ -1268,7 +1268,7 @@ BOOL CResModule::ExtractDialog(LPCTSTR lpszType)
 		lpDlgItem = GetControlInfo((WORD *) lpDlgItem, &dlgItem, dlg.dialogEx, &bCode);
 
 		if (bCode == FALSE)
-			wcsncpy(szTitle, dlgItem.windowName, _countof(szTitle) - 1);
+			wcsncpy_s(szTitle, dlgItem.windowName, _countof(szTitle) - 1);
 
 		if (szTitle[0])
 		{
@@ -1994,10 +1994,11 @@ BOOL CResModule::ReplaceRibbon(LPCTSTR lpszType, WORD wLanguage)
 
 		if (entry.msgstr.size())
 		{
-			auto sbuf = std::make_unique<wchar_t[]>(entry.msgstr.size() + 10);
-			wcscpy(sbuf.get(), entry.msgstr.c_str());
+			size_t buflen = entry.msgstr.size() + 10;
+			auto sbuf = std::make_unique<wchar_t[]>(buflen);
+			wcscpy_s(sbuf.get(), buflen, entry.msgstr.c_str());
 			CUtils::StringCollapse(sbuf.get());
-			ReplaceWithRegex(sbuf.get());
+			ReplaceWithRegex(sbuf.get(), buflen);
 			std::wstring sreplace = L"<TEXT>";
 			sreplace += sbuf.get();
 			sreplace += L"</TEXT>";
@@ -2023,10 +2024,11 @@ BOOL CResModule::ReplaceRibbon(LPCTSTR lpszType, WORD wLanguage)
 
 		if (entry.msgstr.size())
 		{
-			auto sbuf = std::make_unique<wchar_t[]>(entry.msgstr.size() + 10);
-			wcscpy(sbuf.get(), entry.msgstr.c_str());
+			size_t buflen = entry.msgstr.size() + 10;
+			auto sbuf = std::make_unique<wchar_t[]>(buflen);
+			wcscpy_s(sbuf.get(), buflen, entry.msgstr.c_str());
 			CUtils::StringCollapse(sbuf.get());
-			ReplaceWithRegex(sbuf.get());
+			ReplaceWithRegex(sbuf.get(), buflen);
 			std::wstring sreplace = L"</ELEMENT_NAME><NAME>";
 			sreplace += sbuf.get();
 			sreplace += L"</NAME>";
@@ -2062,7 +2064,7 @@ DONE_ERROR:
 	MYERROR;
 }
 
-std::wstring CResModule::ReplaceWithRegex(WCHAR* pBuf)
+std::wstring CResModule::ReplaceWithRegex(WCHAR* pBuf, size_t bufferSize)
 {
 	for (const auto& t : m_StringEntries.m_regexes)
 	{
@@ -2070,7 +2072,7 @@ std::wstring CResModule::ReplaceWithRegex(WCHAR* pBuf)
 		{
 			std::wregex e(std::get<0>(t), std::regex_constants::icase);
 			auto replaced = std::regex_replace(pBuf, e, std::get<1>(t));
-			wcscpy(pBuf, replaced.c_str());
+			wcscpy_s(pBuf, bufferSize, replaced.c_str());
 		}
 		catch (std::exception&)
 		{

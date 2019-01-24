@@ -1,5 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2019 - TortoiseGit
 // Copyright (C) 2003-2007, 2011-2012, 2014-2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -106,7 +107,12 @@ private:
 	BOOL    ReplaceAccelerator(LPCTSTR lpszType, WORD wLanguage);
 	BOOL    ReplaceRibbon(LPCTSTR lpszType, WORD wLanguage);
 
-	std::wstring ReplaceWithRegex(WCHAR* pBuf);
+	template <size_t _Size>
+	inline std::wstring ReplaceWithRegex(WCHAR (&pBuf)[_Size])
+	{
+		return ReplaceWithRegex(pBuf, _Size);
+	}
+	std::wstring ReplaceWithRegex(WCHAR* pBuf, size_t bufferSize);
 	std::wstring ReplaceWithRegex(std::wstring& s);
 
 	const WORD* ParseMenuResource(const WORD * res);
