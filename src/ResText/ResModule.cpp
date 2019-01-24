@@ -1104,10 +1104,6 @@ BOOL CResModule::ReplaceAccelerator(LPCTSTR lpszType, WORD wLanguage)
 	// and change its flags and virtual-key code
 	// as appropriate.
 
-	BYTE xfVirt;
-	wchar_t xkey;
-	wchar_t buf[1024];
-	wchar_t buf2[1024];
 	for (i = 0; i < cAccelerators; i++)
 	{
 		if ((lpaccelNew[i].key < 0x30) ||
@@ -1115,8 +1111,10 @@ BOOL CResModule::ReplaceAccelerator(LPCTSTR lpszType, WORD wLanguage)
 			(lpaccelNew[i].key >= 0x3A && lpaccelNew[i].key <= 0x40))
 			continue;
 
-		SecureZeroMemory(buf, sizeof(buf));
-		SecureZeroMemory(buf2, sizeof(buf2));
+		BYTE xfVirt;
+		wchar_t xkey = { 0 };
+		wchar_t buf[1024] = { 0 };
+		wchar_t buf2[1024] = { 0 };
 
 		swprintf_s(buf, L"ID:%d:", lpaccelNew[i].cmd);
 
