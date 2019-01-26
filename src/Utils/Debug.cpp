@@ -1,5 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2019 - TortoiseGit
 // Copyright (C) 2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -29,7 +30,7 @@ void TRACE(LPCTSTR str, ...)
 	va_list ap;
 	va_start(ap, str);
 
-	_vstprintf_s(buf, 20*1024, str, ap);
+	_vstprintf_s(buf, str, ap);
 	OutputDebugString(buf);
 	va_end(ap);
 };

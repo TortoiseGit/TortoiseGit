@@ -1,5 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2019 - TortoiseGit
 // Copyright (C) 2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -75,7 +76,7 @@ size_t CRegHistory::Load(LPCTSTR lpszSection, LPCTSTR lpszKeyPrefix)
 	{
 		//keys are of form <lpszKeyPrefix><entrynumber>
 		TCHAR sKey[4096] = {0};
-		swprintf_s(sKey, 4096, L"%s\\%s%d", lpszSection, lpszKeyPrefix, n++);
+		swprintf_s(sKey, L"%s\\%s%d", lpszSection, lpszKeyPrefix, n++);
 		sText = CRegStdString(sKey);
 		if (!sText.empty())
 			m_arEntries.push_back(sText);
@@ -94,7 +95,7 @@ bool CRegHistory::Save() const
 	for (int n = 0; n < (int)m_arEntries.size(); ++n)
 	{
 		TCHAR sKey[4096] = {0};
-		swprintf_s(sKey, 4096, L"%s\\%s%d", m_sSection.c_str(), m_sKeyPrefix.c_str(), n);
+		swprintf_s(sKey, L"%s\\%s%d", m_sSection.c_str(), m_sKeyPrefix.c_str(), n);
 		CRegStdString regkey(sKey);
 		regkey = m_arEntries[n];
 	}
@@ -102,7 +103,7 @@ bool CRegHistory::Save() const
 	for (int n = nMax; ; ++n)
 	{
 		TCHAR sKey[4096] = {0};
-		swprintf_s(sKey, 4096, L"%s\\%s%d", m_sSection.c_str(), m_sKeyPrefix.c_str(), n);
+		swprintf_s(sKey, L"%s\\%s%d", m_sSection.c_str(), m_sKeyPrefix.c_str(), n);
 		CRegStdString regkey(sKey);
 		if (((tstring)regkey).empty())
 			break;

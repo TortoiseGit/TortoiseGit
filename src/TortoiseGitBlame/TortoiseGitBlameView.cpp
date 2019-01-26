@@ -841,7 +841,7 @@ void CTortoiseGitBlameView::CreateFont()
 	lf.lfHeight = -CDPIAware::Instance().PointsToPixelsY((DWORD)CRegStdDWORD(L"Software\\TortoiseGit\\BlameFontSize", 10));
 	lf.lfCharSet = DEFAULT_CHARSET;
 	CRegStdString fontname = CRegStdString(L"Software\\TortoiseGit\\BlameFontName", L"Consolas");
-	wcscpy_s(lf.lfFaceName, 32, ((std::wstring)fontname).c_str());
+	wcsncpy_s(lf.lfFaceName, ((std::wstring)fontname).c_str(), _TRUNCATE);
 	m_font.CreateFontIndirect(&lf);
 
 	lf.lfItalic = TRUE;

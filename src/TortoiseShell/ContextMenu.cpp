@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012, 2014-2016, 2018 - TortoiseSVN
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -523,16 +523,16 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 	{
 		//menu entry for the top context menu, so append an "Git " before
 		//the menu text to indicate where the entry comes from
-		wcscpy_s(menutextbuffer, 255, L"Git ");
+		wcscpy_s(menutextbuffer, L"Git ");
 		if (!g_ShellCache.HasShellMenuAccelerators())
 		{
 			// remove the accelerators
 			tstring temp = stringtablebuffer;
 			temp.erase(std::remove(temp.begin(), temp.end(), '&'), temp.end());
-			wcscpy_s(stringtablebuffer, 255, temp.c_str());
+			wcscpy_s(stringtablebuffer, temp.c_str());
 		}
 	}
-	wcscat_s(menutextbuffer, 255, stringtablebuffer);
+	wcscat_s(menutextbuffer, stringtablebuffer);
 
 	// insert branch name into "Git Commit..." entry, so it looks like "Git Commit "master"..."
 	// so we have an easy and fast way to check the current branch
@@ -547,11 +547,11 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 		if (path.GetAdminDirMask() & ITEMIS_SUBMODULE)
 		{
 			if (istop)
-				wcscpy_s(menutextbuffer, 255, L"Git ");
+				wcscpy_s(menutextbuffer, L"Git ");
 			else
 				menutextbuffer[0] = L'\0';
 			MAKESTRING(IDS_MENUCOMMITSUBMODULE);
-			wcscat_s(menutextbuffer, 255, stringtablebuffer);
+			wcscat_s(menutextbuffer, stringtablebuffer);
 		}
 
 		if (path.HasAdminDir(&sProjectRoot) && !CGit::GetCurrentBranchFromFile(sProjectRoot, sBranchName))
@@ -630,10 +630,10 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 	{
 		//menu entry for the top context menu, so append an "Git " before
 		//the menu text to indicate where the entry comes from
-		wcscpy_s(menutextbuffer, 255, L"Git ");
+		wcscpy_s(menutextbuffer, L"Git ");
 	}
 	LoadString(g_hResInst, stringid, verbsbuffer, _countof(verbsbuffer));
-	wcscat_s(menutextbuffer, 255, verbsbuffer);
+	wcscat_s(menutextbuffer, verbsbuffer);
 	auto verb = std::wstring(menutextbuffer);
 	if (verb.find('&') != -1)
 	{
@@ -1844,9 +1844,9 @@ LPCTSTR CShellExt::GetMenuTextFromResource(int id)
 				space = (layout & menuInfo[menuIndex].menuID) ? 0 : 6;
 				if (layout & menuInfo[menuIndex].menuID)
 				{
-					wcscpy_s(textbuf, 255, L"Git ");
-					wcscat_s(textbuf, 255, stringtablebuffer);
-					wcscpy_s(stringtablebuffer, 255, textbuf);
+					wcscpy_s(textbuf, L"Git ");
+					wcscat_s(textbuf, stringtablebuffer);
+					wcscpy_s(stringtablebuffer, textbuf);
 				}
 				break;
 			}

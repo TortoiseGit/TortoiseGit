@@ -684,7 +684,7 @@ void CAppUtils::CreateFontForLogs(CFont& fontToCreate)
 	logFont.lfClipPrecision		= CLIP_DEFAULT_PRECIS;
 	logFont.lfQuality			= DRAFT_QUALITY;
 	logFont.lfPitchAndFamily	= FF_DONTCARE | FIXED_PITCH;
-	wcscpy_s(logFont.lfFaceName, 32, (LPCTSTR)GetLogFontName());
+	wcsncpy_s(logFont.lfFaceName, (LPCTSTR)GetLogFontName(), _TRUNCATE);
 	VERIFY(fontToCreate.CreateFontIndirect(&logFont));
 }
 
@@ -1038,7 +1038,7 @@ bool CAppUtils::StartShowUnifiedDiff(HWND hWnd, const CTGitPath& url1, const CSt
 	{
 		sCmd += L" /hwnd:";
 		TCHAR buf[30];
-		swprintf_s(buf, 30, L"%p", (void*)hWnd);
+		swprintf_s(buf, L"%p", (void*)hWnd);
 		sCmd += buf;
 	}
 

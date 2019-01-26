@@ -3681,7 +3681,7 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 		//if(m_UnRevFileList.GetCount()>0)
 		if(max >0)
 		{
-			wcsncpy_s(groupname, 1024, (LPCTSTR)CString(MAKEINTRESOURCE(IDS_STATUSLIST_GROUP_MERGEDFILES)), 1023);
+			wcsncpy_s(groupname, (LPCTSTR)CString(MAKEINTRESOURCE(IDS_STATUSLIST_GROUP_MERGEDFILES)), _TRUNCATE);
 			grp.pszHeader = groupname;
 			grp.iGroupId = MERGE_MASK;
 			grp.uAlign = LVGA_HEADER_LEFT;
@@ -3711,14 +3711,14 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 		}
 		else
 		{
-			wcsncpy_s(groupname, 1024, (LPCTSTR)CString(MAKEINTRESOURCE(IDS_STATUSLIST_GROUP_MODIFIEDFILES)), 1023);
+			wcsncpy_s(groupname, (LPCTSTR)CString(MAKEINTRESOURCE(IDS_STATUSLIST_GROUP_MODIFIEDFILES)), _TRUNCATE);
 			grp.pszHeader = groupname;
 			grp.iGroupId = groupindex;
 			grp.uAlign = LVGA_HEADER_LEFT;
 			InsertGroup(groupindex++, &grp);
 
 			{
-				wcsncpy_s(groupname, 1024, (LPCTSTR)CString(MAKEINTRESOURCE(IDS_STATUSLIST_GROUP_NOTVERSIONEDFILES)), 1023);
+				wcsncpy_s(groupname, (LPCTSTR)CString(MAKEINTRESOURCE(IDS_STATUSLIST_GROUP_NOTVERSIONEDFILES)), _TRUNCATE);
 				grp.pszHeader = groupname;
 				grp.iGroupId = groupindex;
 				grp.uAlign = LVGA_HEADER_LEFT;
@@ -3727,7 +3727,7 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 
 			//if(m_IgnoreFileList.GetCount()>0)
 			{
-				wcsncpy_s(groupname, 1024, (LPCTSTR)CString(MAKEINTRESOURCE(IDS_STATUSLIST_GROUP_IGNOREDFILES)), 1023);
+				wcsncpy_s(groupname, (LPCTSTR)CString(MAKEINTRESOURCE(IDS_STATUSLIST_GROUP_IGNOREDFILES)), _TRUNCATE);
 				grp.pszHeader = groupname;
 				grp.iGroupId = groupindex;
 				grp.uAlign = LVGA_HEADER_LEFT;
@@ -3735,7 +3735,7 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 			}
 
 			{
-				wcsncpy_s(groupname, 1024, (LPCTSTR)CString(MAKEINTRESOURCE(IDS_STATUSLIST_GROUP_IGNORELOCALCHANGES)), 1023);
+				wcsncpy_s(groupname, (LPCTSTR)CString(MAKEINTRESOURCE(IDS_STATUSLIST_GROUP_IGNORELOCALCHANGES)), _TRUNCATE);
 				grp.pszHeader = groupname;
 				grp.iGroupId = groupindex;
 				grp.uAlign = LVGA_HEADER_LEFT;
@@ -3751,7 +3751,7 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 	grp.cbSize = sizeof(LVGROUP);
 	grp.mask = LVGF_ALIGN | LVGF_GROUPID | LVGF_HEADER;
 	CString sUnassignedName(MAKEINTRESOURCE(IDS_STATUSLIST_UNASSIGNED_CHANGESET));
-	wcsncpy_s(groupname, 1024, (LPCTSTR)sUnassignedName, 1023);
+	wcsncpy_s(groupname, (LPCTSTR)sUnassignedName, _TRUNCATE);
 	grp.pszHeader = groupname;
 	grp.iGroupId = groupindex;
 	grp.uAlign = LVGA_HEADER_LEFT;
@@ -3769,7 +3769,7 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 			LVGROUP grpchglst = { 0 };
 			grpchglst.cbSize = sizeof(LVGROUP);
 			grpchglst.mask = LVGF_ALIGN | LVGF_GROUPID | LVGF_HEADER;
-			wcsncpy_s(groupname, 1024, it->first, 1023);
+			wcsncpy_s(groupname, it->first, _TRUNCATE);
 			grpchglst.pszHeader = groupname;
 			grpchglst.iGroupId = groupindex;
 			grpchglst.uAlign = LVGA_HEADER_LEFT;
@@ -3787,7 +3787,7 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 		{
 			grp.cbSize = sizeof(LVGROUP);
 			grp.mask = LVGF_ALIGN | LVGF_GROUPID | LVGF_HEADER;
-			wcsncpy_s(groupname, 1024, GITSLC_IGNORECHANGELIST, 1023);
+			wcsncpy_s(groupname, GITSLC_IGNORECHANGELIST, _TRUNCATE);
 			grp.pszHeader = groupname;
 			grp.iGroupId = groupindex;
 			grp.uAlign = LVGA_HEADER_LEFT;
