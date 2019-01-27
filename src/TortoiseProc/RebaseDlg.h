@@ -239,7 +239,7 @@ protected:
 	std::unordered_map<CGitHash, GIT_REV_LIST> m_droppedCommitsMap;
 	std::vector<CGitHash> m_currentCommits;
 
-	void AddBranchToolTips(CHistoryCombo *pBranch);
+	void AddBranchToolTips(CHistoryCombo& pBranch);
 	void AddLogString(const CString& str);
 	int StartRebase();
 	int CheckRebaseCondition();

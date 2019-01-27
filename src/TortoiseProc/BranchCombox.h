@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2018 - TortoiseGit
+// Copyright (C) 2009-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -70,14 +70,14 @@ protected:
 		else
 			m_ctrlRemoteBranch.SetCurSel(-1);
 
-		this->AddBranchToolTips(&this->m_ctrlLocalBranch,this->m_pTooltip);
+		AddBranchToolTips(m_ctrlLocalBranch, m_pTooltip);
 
 		LocalBranchChange();
 	};
 	void  CbnSelchangeRemoteBranch()
 	{
 		if(this->m_RegKeyRemoteBranch.IsEmpty())
-			this->AddBranchToolTips(&this->m_ctrlRemoteBranch,this->m_pTooltip);
+			AddBranchToolTips(m_ctrlRemoteBranch, m_pTooltip);
 
 		RemoteBranchChange();
 	}
@@ -126,43 +126,38 @@ protected:
 	virtual void RemoteBranchChange(){};
 	virtual void SetRemote(CString remote){};
 
-	void AddBranchToolTips(CHistoryCombo *pBranch, CToolTips *tip)
+	void AddBranchToolTips(CHistoryCombo& pBranch, CToolTips* tip)
 	{
-		if(pBranch&&tip)
+		pBranch.DisableTooltip();
+
+		if (!tip)
+			return;
+
+		CString text = pBranch.GetString();
+		if (text.IsEmpty())
+			return;
+
+		GitRev rev;
+		if (rev.GetCommit(text))
 		{
-			CString text=pBranch->GetString();
-			CString tooltip;
-
-			if (text.IsEmpty())
-			{
-				pBranch->DisableTooltip();
-				return;
-			}
-
-			GitRev rev;
-			if (rev.GetCommit(text))
-			{
-				pBranch->DisableTooltip();
-				MessageBox(nullptr, rev.GetLastErr(), L"TortoiseGit", MB_ICONERROR);
-				return;
-			}
-
-			tooltip.Format(L"%s: %s\n%s: %s <%s>\n%s: %s\n%s:\n%s\n%s",
-				(LPCTSTR)CString(MAKEINTRESOURCE(IDS_LOG_REVISION)), // TODOTODO
-				(LPCTSTR)rev.m_CommitHash.ToString(),
-				(LPCTSTR)CString(MAKEINTRESOURCE(IDS_LOG_AUTHOR)),
-				(LPCTSTR)rev.GetAuthorName(),
-				(LPCTSTR)rev.GetAuthorEmail(),
-				(LPCTSTR)CString(MAKEINTRESOURCE(IDS_LOG_DATE)),
-				(LPCTSTR)CLoglistUtils::FormatDateAndTime(rev.GetAuthorDate(), DATE_LONGDATE),
-				(LPCTSTR)CString(MAKEINTRESOURCE(IDS_LOG_MESSAGE)),
-				(LPCTSTR)rev.GetSubject(),
-				(LPCTSTR)rev.GetBody());
-
-			pBranch->DisableTooltip();
-
-			tip->AddTool(pBranch->GetComboBoxCtrl(),tooltip);
+			MessageBox(nullptr, rev.GetLastErr(), L"TortoiseGit", MB_ICONERROR);
+			return;
 		}
+
+		CString tooltip;
+		tooltip.Format(L"%s: %s\n%s: %s <%s>\n%s: %s\n%s:\n%s\n%s",
+					   (LPCTSTR)CString(MAKEINTRESOURCE(IDS_LOG_REVISION)), // TODOTODO
+					   (LPCTSTR)rev.m_CommitHash.ToString(),
+					   (LPCTSTR)CString(MAKEINTRESOURCE(IDS_LOG_AUTHOR)),
+					   (LPCTSTR)rev.GetAuthorName(),
+					   (LPCTSTR)rev.GetAuthorEmail(),
+					   (LPCTSTR)CString(MAKEINTRESOURCE(IDS_LOG_DATE)),
+					   (LPCTSTR)CLoglistUtils::FormatDateAndTime(rev.GetAuthorDate(), DATE_LONGDATE),
+					   (LPCTSTR)CString(MAKEINTRESOURCE(IDS_LOG_MESSAGE)),
+					   (LPCTSTR)rev.GetSubject(),
+					   (LPCTSTR)rev.GetBody());
+
+		tip->AddTool(pBranch.GetComboBoxCtrl(), tooltip);
 	}
 
 	void LoadBranchInfo()
