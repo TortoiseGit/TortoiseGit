@@ -1380,11 +1380,11 @@ CString CGit::GetGitLastErr(const CString& msg, LIBGIT2_CMD cmd)
 
 CString CGit::GetLibGit2LastErr()
 {
-	const git_error *libgit2err = giterr_last();
+	const git_error *libgit2err = git_error_last();
 	if (libgit2err)
 	{
 		CString lastError = CUnicodeUtils::GetUnicode(CStringA(libgit2err->message));
-		giterr_clear();
+		git_error_clear();
 		return L"libgit2 returned: " + lastError;
 	}
 	else
@@ -2557,7 +2557,7 @@ int CGit::GetOneFile(const CString &Refname, const CTGitPath &path, const CStrin
 
 		if (git_tree_entry_filemode(entry) == GIT_FILEMODE_COMMIT)
 		{
-			giterr_set_str(GITERR_NONE, "The requested object is a submodule and not a file.");
+			git_error_set_str(GIT_ERROR_NONE, "The requested object is a submodule and not a file.");
 			return -1;
 		}
 
@@ -2568,7 +2568,7 @@ int CGit::GetOneFile(const CString &Refname, const CTGitPath &path, const CStrin
 		CAutoFILE file = _wfsopen(outputfile, L"wb", SH_DENYWR);
 		if (file == nullptr)
 		{
-			giterr_set_str(GITERR_NONE, "Could not create file.");
+			git_error_set_str(GIT_ERROR_NONE, "Could not create file.");
 			return -1;
 		}
 		CAutoBuf buf;
@@ -2576,7 +2576,7 @@ int CGit::GetOneFile(const CString &Refname, const CTGitPath &path, const CStrin
 			return -1;
 		if (fwrite(buf->ptr, sizeof(char), buf->size, file) != buf->size)
 		{
-			giterr_set_str(GITERR_OS, "Could not write to file.");
+			git_error_set_str(GIT_ERROR_OS, "Could not write to file.");
 			return -1;
 		}
 
@@ -2908,10 +2908,10 @@ static int resolve_to_tree(git_repository *repo, const char *identifier, git_tre
 	int err = 0;
 	switch (git_object_type(obj))
 	{
-	case GIT_OBJ_TREE:
+	case GIT_OBJECT_TREE:
 		*tree = (git_tree *)obj.Detach();
 		break;
-	case GIT_OBJ_COMMIT:
+	case GIT_OBJECT_COMMIT:
 		err = git_commit_tree(tree, (git_commit *)(git_object*)obj);
 		break;
 	default:

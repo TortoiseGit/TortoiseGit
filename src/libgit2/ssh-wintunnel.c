@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014, 2016-2018 TortoiseGit
+// Copyright (C) 2014, 2016-2019 TortoiseGit
 // Copyright (C) the libgit2 contributors. All rights reserved.
 //               - based on libgit2/src/transports/ssh.c
 
@@ -78,14 +78,14 @@ static int gen_proto(git_buf *request, const char *cmd, const char *url)
 
 done:
 	if (!repo) {
-		giterr_set(GITERR_NET, "Malformed git protocol URL");
+		git_error_set_str(GIT_ERROR_NET, "Malformed git protocol URL");
 		return -1;
 	}
 
 	git_buf_printf(request, "\"%s '%s'\"", cmd, repo);
 
 	if (git_buf_oom(request)) {
-		giterr_set_oom();
+		git_error_set_oom();
 		return -1;
 	}
 
@@ -128,9 +128,9 @@ static void ssh_stream_free(git_smart_subtransport_stream *stream)
 	if (s->commandHandle.errBuf) {
 		if (exitcode && exitcode != MAXDWORD) {
 			if (!git_buf_oom(s->commandHandle.errBuf) && git_buf_len(s->commandHandle.errBuf))
-				giterr_set(GITERR_SSH, "Command exited non-zero (%ld) and returned:\n%s", exitcode, s->commandHandle.errBuf->ptr);
+				git_error_set(GIT_ERROR_SSH, "Command exited non-zero (%ld) and returned:\n%s", exitcode, s->commandHandle.errBuf->ptr);
 			else
-				giterr_set(GITERR_SSH, "Command exited non-zero: %ld", exitcode);
+				git_error_set(GIT_ERROR_SSH, "Command exited non-zero: %ld", exitcode);
 		}
 		git_buf_dispose(s->commandHandle.errBuf);
 		git__free(s->commandHandle.errBuf);
@@ -155,14 +155,14 @@ static int ssh_stream_alloc(
 
 	s = git__calloc(sizeof(ssh_stream), 1);
 	if (!s) {
-		giterr_set_oom();
+		git_error_set_oom();
 		return -1;
 	}
 
 	errBuf = git__calloc(sizeof(git_buf), 1);
 	if (!errBuf) {
 		git__free(s);
-		giterr_set_oom();
+		git_error_set_oom();
 		return -1;
 	}
 
@@ -177,7 +177,7 @@ static int ssh_stream_alloc(
 	if (!s->url) {
 		git__free(errBuf);
 		git__free(s);
-		giterr_set_oom();
+		git_error_set_oom();
 		return -1;
 	}
 
@@ -203,7 +203,7 @@ static int git_ssh_extract_url_parts(
 		start = at + 1;
 		*username = git__substrdup(url, at - url);
 		if (!*username) {
-			giterr_set_oom();
+			git_error_set_oom();
 			return -1;
 		}
 	} else {
@@ -212,13 +212,13 @@ static int git_ssh_extract_url_parts(
 	}
 
 	if (colon == NULL || (colon < start)) {
-		giterr_set(GITERR_NET, "Malformed URL");
+		git_error_set_str(GIT_ERROR_NET, "Malformed URL");
 		return -1;
 	}
 
 	*host = git__substrdup(start, colon - start);
 	if (!*host) {
-		giterr_set_oom();
+		git_error_set_oom();
 		return -1;
 	}
 
@@ -276,7 +276,7 @@ static int extract_url_parts(
 	const char *_host, *_port, *_path, *_userinfo;
 
 	if (http_parser_parse_url(url, strlen(url), false, &u)) {
-		giterr_set(GITERR_NET, "Malformed URL '%s'", url);
+		git_error_set(GIT_ERROR_NET, "Malformed URL '%s'", url);
 		return GIT_EINVALIDSPEC;
 	}
 
@@ -287,23 +287,23 @@ static int extract_url_parts(
 
 	if (u.field_set & (1 << UF_HOST)) {
 		*host = git__substrdup(_host, u.field_data[UF_HOST].len);
-		GITERR_CHECK_ALLOC(*host);
+		GIT_ERROR_CHECK_ALLOC(*host);
 	}
 
 	if (u.field_set & (1 << UF_PORT)) {
 		*port = git__substrdup(_port, u.field_data[UF_PORT].len);
 	} else if (default_port) {
 		*port = git__strdup(default_port);
-		GITERR_CHECK_ALLOC(*port);
+		GIT_ERROR_CHECK_ALLOC(*port);
 	} else {
 		*port = NULL;
 	}
 
 	if (u.field_set & (1 << UF_PATH)) {
 		*path = git__substrdup(_path, u.field_data[UF_PATH].len);
-		GITERR_CHECK_ALLOC(*path);
+		GIT_ERROR_CHECK_ALLOC(*path);
 	} else {
-		giterr_set(GITERR_NET, "invalid url, missing path");
+		git_error_set(GIT_ERROR_NET, "invalid url, missing path");
 		return GIT_EINVALIDSPEC;
 	}
 
@@ -312,11 +312,11 @@ static int extract_url_parts(
 		if (colon) {
 			*username = unescape(git__substrdup(_userinfo, colon - _userinfo));
 			*password = unescape(git__substrdup(colon + 1, u.field_data[UF_USERINFO].len - (colon + 1 - _userinfo)));
-			GITERR_CHECK_ALLOC(*password);
+			GIT_ERROR_CHECK_ALLOC(*password);
 		} else {
 			*username = git__substrdup(_userinfo, u.field_data[UF_USERINFO].len);
 		}
-		GITERR_CHECK_ALLOC(*username);
+		GIT_ERROR_CHECK_ALLOC(*username);
 
 	}
 
@@ -341,7 +341,7 @@ static int _git_ssh_setup_tunnel(
 
 	*stream = NULL;
 	if (ssh_stream_alloc(t, url, gitCmd, stream) < 0) {
-		giterr_set_oom();
+		git_error_set_oom();
 		return -1;
 	}
 
@@ -363,7 +363,7 @@ static int _git_ssh_setup_tunnel(
 post_extract:
 	if (!ssh)
 	{
-		giterr_set(GITERR_SSH, "No GIT_SSH tool configured");
+		git_error_set(GIT_ERROR_SSH, "No GIT_SSH tool configured");
 		goto on_error;
 	}
 
@@ -384,12 +384,12 @@ post_extract:
 	if (gen_proto(&params, s->cmd, s->url))
 		goto on_error;
 	if (git_buf_oom(&params)) {
-		giterr_set_oom();
+		git_error_set_oom();
 		goto on_error;
 	}
 
 	if (git__utf8_to_16_alloc(&wideParams, params.ptr) < 0) {
-		giterr_set_oom();
+		git_error_set_oom();
 		goto on_error;
 	}
 	git_buf_dispose(&params);
@@ -397,7 +397,7 @@ post_extract:
 	length = wcslen(ssh) + wcslen(wideParams) + 3;
 	cmd = git__calloc(length, sizeof(wchar_t));
 	if (!cmd) {
-		giterr_set_oom();
+		git_error_set_oom();
 		goto on_error;
 	}
 
@@ -465,7 +465,7 @@ static int ssh_uploadpack(
 		return 0;
 	}
 
-	giterr_set(GITERR_NET, "Must call UPLOADPACK_LS before UPLOADPACK");
+	git_error_set(GIT_ERROR_NET, "Must call UPLOADPACK_LS before UPLOADPACK");
 	return -1;
 }
 
@@ -494,7 +494,7 @@ static int ssh_receivepack(
 		return 0;
 	}
 
-	giterr_set(GITERR_NET, "Must call RECEIVEPACK_LS before RECEIVEPACK");
+	git_error_set(GIT_ERROR_NET, "Must call RECEIVEPACK_LS before RECEIVEPACK");
 	return -1;
 }
 
@@ -554,7 +554,7 @@ int git_smart_subtransport_ssh_wintunnel(
 
 	t = git__calloc(sizeof(ssh_subtransport), 1);
 	if (!t) {
-		giterr_set_oom();
+		git_error_set_oom();
 		return -1;
 	}
 

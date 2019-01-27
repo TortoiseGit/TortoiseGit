@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2011, 2013-2018 - TortoiseGit
+// Copyright (C) 2003-2011, 2013-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -69,7 +69,7 @@ int ProjectProperties::ReadProps()
 	git_config_add_file_ondisk(gitconfig, CGit::GetGitPathStringA(g_Git.GetGitSystemConfig()), GIT_CONFIG_LEVEL_SYSTEM, repo, FALSE);
 	if (!g_Git.ms_bCygwinGit && !g_Git.ms_bMsys2Git)
 		git_config_add_file_ondisk(gitconfig, CGit::GetGitPathStringA(g_Git.GetGitProgramDataConfig()), GIT_CONFIG_LEVEL_PROGRAMDATA, repo, FALSE);
-	giterr_clear();
+	git_error_clear();
 
 	CString sPropVal;
 

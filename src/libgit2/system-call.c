@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014, 2016 TortoiseGit
+// Copyright (C) 2014, 2016, 2019 TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -34,7 +34,7 @@ static int command_read(HANDLE handle, char *buffer, size_t buf_size, size_t *by
 	*bytes_read = 0;
 
 	if (!ReadFile(handle, buffer, (DWORD)buf_size, (DWORD*)bytes_read, NULL)) {
-		giterr_set(GITERR_OS, "could not read data from external process");
+		git_error_set(GIT_ERROR_OS, "could not read data from external process");
 		return -1;
 	}
 
@@ -76,7 +76,7 @@ static HANDLE commmand_start_reading_thread(HANDLE *handle, git_buf *dest)
 	struct ASYNCREADINGTHREADARGS *threadArguments = git__calloc(1, sizeof(struct ASYNCREADINGTHREADARGS));
 	HANDLE thread;
 	if (!threadArguments) {
-		giterr_set_oom();
+		git_error_set_oom();
 		return NULL;
 	}
 
@@ -86,7 +86,7 @@ static HANDLE commmand_start_reading_thread(HANDLE *handle, git_buf *dest)
 	thread = CreateThread(NULL, 0, AsyncReadingThread, threadArguments, 0, NULL);
 	if (!thread) {
 		git__free(threadArguments);
-		giterr_set(GITERR_OS, "Could not create thread");
+		git_error_set(GIT_ERROR_OS, "Could not create thread");
 	}
 	return thread;
 }
@@ -143,17 +143,17 @@ int command_start(wchar_t *cmd, COMMAND_HANDLE *commandHandle, LPWSTR* pEnv, DWO
 	sa.lpSecurityDescriptor = NULL;
 	sa.bInheritHandle = TRUE;
 	if (!CreatePipe(&hReadOut, &hWriteOut, &sa, 0)) {
-		giterr_set(GITERR_OS, "Could not create pipe");
+		git_error_set_str(GIT_ERROR_OS, "Could not create pipe");
 		return -1;
 	}
 	if (!CreatePipe(&hReadIn, &hWriteIn, &sa, 0)) {
-		giterr_set(GITERR_OS, "Could not create pipe");
+		git_error_set_str(GIT_ERROR_OS, "Could not create pipe");
 		CloseHandle(hReadOut);
 		CloseHandle(hWriteOut);
 		return -1;
 	}
 	if (commandHandle->errBuf && !CreatePipe(&hReadError, &hWriteError, &sa, 0)) {
-		giterr_set(GITERR_OS, "Could not create pipe");
+		git_error_set_str(GIT_ERROR_OS, "Could not create pipe");
 		CloseHandle(hReadOut);
 		CloseHandle(hWriteOut);
 		CloseHandle(hReadIn);
@@ -167,7 +167,7 @@ int command_start(wchar_t *cmd, COMMAND_HANDLE *commandHandle, LPWSTR* pEnv, DWO
 
 	// Ensure the read/write handle to the pipe for STDOUT resp. STDIN are not inherited.
 	if (!SetHandleInformation(hReadOut, HANDLE_FLAG_INHERIT, 0) || !SetHandleInformation(hWriteIn, HANDLE_FLAG_INHERIT, 0) || (commandHandle->errBuf && !SetHandleInformation(hReadError, HANDLE_FLAG_INHERIT, 0))) {
-		giterr_set(GITERR_OS, "SetHandleInformation failed");
+		git_error_set_str(GIT_ERROR_OS, "SetHandleInformation failed");
 		CloseHandle(hReadOut);
 		CloseHandle(hWriteOut);
 		CloseHandle(hReadIn);
@@ -181,7 +181,7 @@ int command_start(wchar_t *cmd, COMMAND_HANDLE *commandHandle, LPWSTR* pEnv, DWO
 	si.dwFlags = STARTF_USESTDHANDLES | STARTF_USESHOWWINDOW;
 
 	if (!CreateProcessW(NULL, cmd, NULL, NULL, TRUE, CREATE_UNICODE_ENVIRONMENT | flags, pEnv ? *pEnv : NULL, NULL, &si, &pi)) {
-		giterr_set(GITERR_OS, "Could not start external tool");
+		git_error_set_str(GIT_ERROR_OS, "Could not start external tool");
 		CloseHandle(hReadOut);
 		CloseHandle(hWriteOut);
 		CloseHandle(hReadIn);
@@ -229,7 +229,7 @@ int command_write(COMMAND_HANDLE *commandHandle, const char *buffer, size_t len)
 
 	do {
 		if (!WriteFile(commandHandle->in, buffer + off, (DWORD)(len - off), &written, NULL)) {
-			giterr_set(GITERR_OS, "could not write data to external process");
+			git_error_set_str(GIT_ERROR_OS, "could not write data to external process");
 			return -1;
 		}
 

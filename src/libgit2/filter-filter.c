@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014, 2016-2018 TortoiseGit
+// Copyright (C) 2014, 2016-2019 TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -62,7 +62,7 @@ static int filter_check(
 	*payload = git__strdup(attr_values[0]);
 	if (!*payload)
 	{
-		giterr_set_oom();
+		git_error_set_oom();
 		return -1;
 	}
 
@@ -102,7 +102,7 @@ static int expandPerCentF(git_buf *buf, const char *replaceWith)
 			git_buf_put(&expanded, lastPercentage, idx - lastPercentage);
 		if (git_buf_oom(&expanded))
 		{
-			giterr_set_oom();
+			git_error_set_oom();
 			return -1;
 		}
 		git_buf_swap(buf, &expanded);
@@ -114,9 +114,9 @@ static int expandPerCentF(git_buf *buf, const char *replaceWith)
 static void setProcessError(DWORD exitCode, git_buf *errBuf)
 {
 	if (!git_buf_oom(errBuf) && git_buf_len(errBuf))
-		giterr_set(GITERR_FILTER, "External filter application exited non-zero (%ld) and reported:\n%s", exitCode, errBuf->ptr);
+		git_error_set(GIT_ERROR_FILTER, "External filter application exited non-zero (%ld) and reported:\n%s", exitCode, errBuf->ptr);
 	else
-		giterr_set(GITERR_FILTER, "External filter application exited non-zero: %ld", exitCode);
+		git_error_set(GIT_ERROR_FILTER, "External filter application exited non-zero: %ld", exitCode);
 }
 
 static int filter_apply(
@@ -145,7 +145,7 @@ static int filter_apply(
 
 	git_buf_join3(&configKey, '.', "filter", *payload, "required");
 	if (git_buf_oom(&configKey)) {
-		giterr_set_oom();
+		git_error_set_oom();
 		return -1;
 	}
 
@@ -161,7 +161,7 @@ static int filter_apply(
 		git_buf_puts(&configKey, ".clean");
 	}
 	if (git_buf_oom(&configKey)) {
-		giterr_set_oom();
+		git_error_set_oom();
 		return -1;
 	}
 
@@ -187,7 +187,7 @@ static int filter_apply(
 		git_buf_puts(&shParams, "\"");
 		if (git_buf_oom(&shParams)) {
 			git_buf_dispose(&cmd);
-			giterr_set_oom();
+			git_error_set_oom();
 			return -1;
 		}
 		git_buf_swap(&shParams, &cmd);
@@ -197,7 +197,7 @@ static int filter_apply(
 	if (git__utf8_to_16_alloc(&wide_cmd, cmd.ptr) < 0)
 	{
 		git_buf_dispose(&cmd);
-		giterr_set_oom();
+		git_error_set_oom();
 		return -1;
 	}
 	git_buf_dispose(&cmd);
@@ -208,7 +208,7 @@ static int filter_apply(
 		wchar_t *tmp = git__calloc(len, sizeof(wchar_t));
 		if (!tmp) {
 			git__free(wide_cmd);
-			giterr_set_oom();
+			git_error_set_oom();
 			return -1;
 		}
 		wcscat_s(tmp, len, ffs->shexepath);

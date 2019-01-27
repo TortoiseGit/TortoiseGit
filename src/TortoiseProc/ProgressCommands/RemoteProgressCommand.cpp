@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2016, 2018 - TortoiseGit
+// Copyright (C) 2013-2016, 2018-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -26,7 +26,7 @@ int RemoteProgressCommand::RemoteProgressCallback(const char* str, int len, void
 	((CGitProgressList::Payload*)data)->list->SetProgressLabelText(CUnicodeUtils::GetUnicode(CStringA(str, len)));
 	if (((CGitProgressList::Payload*)data)->list->m_bCancelled)
 	{
-		giterr_set_str(GITERR_NONE, "User cancelled.");
+		git_error_set_str(GIT_ERROR_NONE, "User cancelled.");
 		return GIT_EUSER;
 	}
 	return 0;
