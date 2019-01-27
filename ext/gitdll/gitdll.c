@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -894,7 +894,7 @@ int git_get_config(const char *key, char *buffer, int size)
 	home = get_windows_home_directory();
 	if (home)
 	{
-		char* global = xstrdup(mkpath("%s/.gitconfig", home));
+		char* global = mkpathdup("%s/.gitconfig", home);
 		if (global)
 		{
 			config_source.file = global;
@@ -903,7 +903,7 @@ int git_get_config(const char *key, char *buffer, int size)
 			if (buf.seen)
 				return !buf.seen;
 		}
-		char* globalxdg = xstrdup(mkpath("%s/.config/git/config", home));
+		char* globalxdg = mkpathdup("%s/.config/git/config", home);
 		if (globalxdg)
 		{
 			config_source.file = globalxdg;
@@ -1004,9 +1004,9 @@ int get_set_config(const char *key, const char *value, CONFIG_TYPE type)
 			if (home)
 			{
 				if (type == CONFIG_GLOBAL)
-					config_exclusive_filename = xstrdup(mkpath("%s/.gitconfig", home));
+					config_exclusive_filename = mkpathdup("%s/.gitconfig", home);
 				else
-					config_exclusive_filename = xstrdup(mkpath("%s/.config/git/config", home));
+					config_exclusive_filename = mkpathdup("%s/.config/git/config", home);
 			}
 		}
 		break;
