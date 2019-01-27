@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 // Copyright (C) 2005-2007 Marco Costalba
 
 // This program is free software; you can redistribute it and/or
@@ -3672,7 +3672,12 @@ BOOL CGitLogListBase::OnToolTipText(UINT /*id*/, NMHDR* pNMHDR, LRESULT* pResult
 		// we want multiline tooltips
 		::SendMessage(pNMHDR->hwndFrom, TTM_SETMAXTIPWIDTH, 0, SHRT_MAX);
 
-		wcscpy_s(m_wszTip, strTipText);
+		if (strTipText.GetLength() >= _countof(m_wszTip))
+		{
+			strTipText.Truncate(_countof(m_wszTip) - 1 - 3);
+			strTipText += L"...";
+		}
+		wcsncpy_s(m_wszTip, strTipText, _TRUNCATE);
 		// handle Unicode as well as non-Unicode requests
 		if (pNMHDR->code == TTN_NEEDTEXTA)
 		{

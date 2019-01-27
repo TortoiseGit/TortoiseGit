@@ -157,6 +157,12 @@ protected:
 					   (LPCTSTR)rev.GetSubject(),
 					   (LPCTSTR)rev.GetBody());
 
+		if (tooltip.GetLength() > 8000)
+		{
+			tooltip.Truncate(8000);
+			tooltip += L"...";
+		}
+
 		tip->AddTool(pBranch.GetComboBoxCtrl(), tooltip);
 	}
 
