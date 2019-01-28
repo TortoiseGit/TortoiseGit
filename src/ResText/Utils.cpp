@@ -1,5 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2019 - TortoiseGit
 // Copyright (C) 2003-2006, 2012-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -35,7 +36,7 @@ void CUtils::StringExtend(LPTSTR str)
 		cPos = wcschr(cPos, '\\');
 		if (cPos)
 		{
-			memmove(cPos+1, cPos, wcslen(cPos)*sizeof(TCHAR));
+			memmove(cPos + 1, cPos, (wcslen(cPos) + 1) * sizeof(TCHAR));
 			*cPos = '\\';
 			*(cPos+1) = '\\';
 			cPos++;
@@ -48,7 +49,7 @@ void CUtils::StringExtend(LPTSTR str)
 		cPos = wcschr(cPos, '\n');
 		if (cPos)
 		{
-			memmove(cPos+1, cPos, wcslen(cPos)*sizeof(TCHAR));
+			memmove(cPos + 1, cPos, (wcslen(cPos) + 1) * sizeof(TCHAR));
 			*cPos = '\\';
 			*(cPos+1) = 'n';
 		}
@@ -59,7 +60,7 @@ void CUtils::StringExtend(LPTSTR str)
 		cPos = wcschr(cPos, '\r');
 		if (cPos)
 		{
-			memmove(cPos+1, cPos, wcslen(cPos)*sizeof(TCHAR));
+			memmove(cPos + 1, cPos, (wcslen(cPos) + 1) * sizeof(TCHAR));
 			*cPos = '\\';
 			*(cPos+1) = 'r';
 		}
@@ -70,7 +71,7 @@ void CUtils::StringExtend(LPTSTR str)
 		cPos = wcschr(cPos, '\t');
 		if (cPos)
 		{
-			memmove(cPos+1, cPos, wcslen(cPos)*sizeof(TCHAR));
+			memmove(cPos + 1, cPos, (wcslen(cPos) + 1) * sizeof(TCHAR));
 			*cPos = '\\';
 			*(cPos+1) = 't';
 		}
@@ -81,7 +82,7 @@ void CUtils::StringExtend(LPTSTR str)
 		cPos = wcschr(cPos, '"');
 		if (cPos)
 		{
-			memmove(cPos+1, cPos, wcslen(cPos)*sizeof(TCHAR));
+			memmove(cPos + 1, cPos, (wcslen(cPos) + 1) * sizeof(TCHAR));
 			*cPos = '\\';
 			*(cPos+1) = '"';
 			cPos++;
