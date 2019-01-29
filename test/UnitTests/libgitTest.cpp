@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2018 - TortoiseGit
+// Copyright (C) 2016-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -176,11 +176,12 @@ TEST(libgit, RefreshIndex)
 	g_Git.CheckMsysGitDir();
 	size_t size;
 	_wgetenv_s(&size, nullptr, 0, L"PATH");
-	EXPECT_LT(0U, size);
-	TCHAR* oldEnv = (TCHAR*)alloca(size * sizeof(TCHAR));
+	ASSERT_LT(0U, size);
+	auto oldEnv = std::make_unique<wchar_t[]>(size);
 	ASSERT_TRUE(oldEnv);
-	_wgetenv_s(&size, oldEnv, size, L"PATH");
+	_wgetenv_s(&size, oldEnv.get(), size, L"PATH");
 	_wputenv_s(L"PATH", g_Git.m_Environment.GetEnv(L"PATH"));
+	SCOPE_EXIT { _wputenv_s(L"PATH", oldEnv.get()); };
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(g_Git.m_CurrentDir + L"\\somefile.txt", L"some content"));
 
 	g_Git.RefreshGitIndex();
@@ -249,8 +250,6 @@ TEST(libgit, RefreshIndex)
 	}
 
 	g_Git.RefreshGitIndex();
-
-	_wputenv_s(L"PATH", oldEnv);
 }
 
 TEST(libgit, IncludeIf)
