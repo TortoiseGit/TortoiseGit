@@ -296,3 +296,21 @@ TEST(libgit, IncludeIf)
 	EXPECT_STREQ(L"jop", g_Git.GetConfigValue(L"somethinga.thevalue"));
 	EXPECT_STREQ(L"", g_Git.GetConfigValue(L"somethingb.thevalue"));
 }
+
+TEST(libgit, StoreUninitializedRepositoryConfig)
+{
+	CAutoTempDir tempdir;
+	g_Git.m_CurrentDir = tempdir.GetTempDir();
+	g_Git.m_IsGitDllInited = false;
+	g_Git.m_CurrentDir = g_Git.m_CurrentDir;
+	g_Git.m_IsUseGitDLL = true;
+	g_Git.m_IsUseLibGit2 = false;
+	g_Git.m_IsUseLibGit2_mask = 0;
+	// libgit relies on CWD being set to working tree
+	SetCurrentDirectory(g_Git.m_CurrentDir);
+
+	// clear any leftovers in caches
+	EXPECT_THROW(g_Git.CheckAndInitDll(), const char*);
+
+	EXPECT_THROW(get_set_config("something", "else", CONFIG_LOCAL), const char*);
+}

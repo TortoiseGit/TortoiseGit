@@ -995,6 +995,8 @@ int get_set_config(const char *key, const char *value, CONFIG_TYPE type)
 	switch(type)
 	{
 	case CONFIG_LOCAL:
+		if (!the_repository || !the_repository->gitdir)
+			die("repository not correctly initialized.");
 		config_exclusive_filename  = git_pathdup("config");
 		break;
 	case CONFIG_GLOBAL:
