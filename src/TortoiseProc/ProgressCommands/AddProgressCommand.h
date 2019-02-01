@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014, 2016 - TortoiseGit
+// Copyright (C) 2014, 2016, 2018-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -37,6 +37,14 @@ public:
 	{}
 
 	void SetShowCommitButtonAfterAdd(bool b) { m_bShowCommitButtonAfterAdd = b; }
-	void SetExecutable(bool b = true) { m_bExecutable = b; }
-	void SetSymlink(bool b = true) { m_bSymlink = b; }
+	void SetExecutable(bool b = true)
+	{
+		m_bExecutable = b;
+		ATLASSERT(!(m_bExecutable && m_bSymlink));
+	}
+	void SetSymlink(bool b = true)
+	{
+		m_bSymlink = b;
+		ATLASSERT(!(m_bExecutable && m_bSymlink));
+	}
 };
