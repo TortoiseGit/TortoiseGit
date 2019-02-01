@@ -1569,11 +1569,14 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				if (wcStatus & (CTGitPath::LOGACTIONS_UNVER | CTGitPath::LOGACTIONS_IGNORE))
 				{
 					if (m_dwContextMenus & GITSLC_POPADD)
+					{
 						popup.AppendMenuIcon(IDGITLC_ADD, IDS_STATUSLIST_CONTEXT_ADD, IDI_ADD);
-					if (m_dwContextMenus & GITSLC_POPADD)
-						popup.AppendMenuIcon(IDGITLC_ADD_EXE, IDS_STATUSLIST_CONTEXT_ADD_EXE, IDI_ADD);
-					if (m_dwContextMenus & GITSLC_POPADD)
-						popup.AppendMenuIcon(IDGITLC_ADD_LINK, IDS_STATUSLIST_CONTEXT_ADD_LINK, IDI_ADD);
+						if (!filepath->IsDirectory())
+						{
+							popup.AppendMenuIcon(IDGITLC_ADD_EXE, IDS_STATUSLIST_CONTEXT_ADD_EXE, IDI_ADD);
+							popup.AppendMenuIcon(IDGITLC_ADD_LINK, IDS_STATUSLIST_CONTEXT_ADD_LINK, IDI_ADD);
+						}
+					}
 					if (m_dwContextMenus & GITSLC_POPCOMMIT)
 						popup.AppendMenuIcon(IDGITLC_COMMIT, IDS_STATUSLIST_CONTEXT_COMMIT, IDI_COMMIT);
 				}
