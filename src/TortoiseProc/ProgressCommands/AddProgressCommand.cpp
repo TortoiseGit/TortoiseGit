@@ -126,12 +126,15 @@ bool AddProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, int&
 				sCmd.Format(L"/command:commit /path:\"%s\"", (LPCTSTR)g_Git.m_CurrentDir);
 				CAppUtils::RunTortoiseGitProc(sCmd);
 			});
-		postCmdList.emplace_back(IDI_ADD, IDS_STATUSLIST_CONTEXT_ADD_EXE, [this] {
-			SetFileMode(GIT_FILEMODE_BLOB_EXECUTABLE);
-		});
-		postCmdList.emplace_back(IDI_ADD, IDS_STATUSLIST_CONTEXT_ADD_LINK, [this] {
-			SetFileMode(GIT_FILEMODE_LINK);
-		});
+		if (!(m_bExecutable || m_bSymlink))
+		{
+			postCmdList.emplace_back(IDI_ADD, IDS_STATUSLIST_CONTEXT_ADD_EXE, [this] {
+				SetFileMode(GIT_FILEMODE_BLOB_EXECUTABLE);
+			});
+			postCmdList.emplace_back(IDI_ADD, IDS_STATUSLIST_CONTEXT_ADD_LINK, [this] {
+				SetFileMode(GIT_FILEMODE_LINK);
+			});
+		}
 	};
 
 	return true;
