@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2009, 2015-2016, 2018 - TortoiseGit
+// Copyright (C) 2008-2009, 2015-2016, 2018-2019 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -19,11 +19,17 @@
 //
 #include "stdafx.h"
 #include "TagCommand.h"
-
+#include "MessageBox.h"
 #include "AppUtils.h"
 
 bool TagCommand::Execute()
 {
+	if (!GitAdminDir::IsWorkingTreeOrBareRepo(g_Git.m_CurrentDir))
+	{
+		CMessageBox::Show(GetExplorerHWND(), IDS_NOGITREPO, IDS_APPNAME, MB_ICONERROR);
+		return false;
+	}
+
 	CString base = parser.GetVal(L"rev");
 	CString *p=&base;
 	if(base.IsEmpty())

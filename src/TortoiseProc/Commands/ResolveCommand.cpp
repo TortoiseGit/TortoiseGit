@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2016, 2018 - TortoiseGit
+// Copyright (C) 2009-2016, 2018-2019 - TortoiseGit
 // Copyright (C) 2007-2008,2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -19,6 +19,7 @@
 //
 #include "stdafx.h"
 #include "ResolveCommand.h"
+#include "MessageBox.h"
 #include "AppUtils.h"
 #include "ResolveDlg.h"
 #include "GitProgressDlg.h"
@@ -26,6 +27,12 @@
 
 bool ResolveCommand::Execute()
 {
+	if (!GitAdminDir::HasAdminDir(g_Git.m_CurrentDir))
+	{
+		CMessageBox::Show(GetExplorerHWND(), IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
+		return false;
+	}
+
 	CResolveDlg dlg;
 	dlg.m_pathList = pathList;
 	INT_PTR ret = IDOK;

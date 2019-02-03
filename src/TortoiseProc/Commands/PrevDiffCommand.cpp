@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011, 2016, 2018 - TortoiseGit
+// Copyright (C) 2008-2011, 2016, 2018-2019 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -27,6 +27,12 @@
 
 bool PrevDiffCommand::Execute()
 {
+	if (!GitAdminDir::HasAdminDir(g_Git.m_CurrentDir))
+	{
+		CMessageBox::Show(GetExplorerHWND(), IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
+		return false;
+	}
+
 	bool bAlternativeTool = !!parser.HasKey(L"alternative");
 	bool bUnified = !!parser.HasKey(L"unified");
 	if (this->orgCmdLinePath.IsDirectory())

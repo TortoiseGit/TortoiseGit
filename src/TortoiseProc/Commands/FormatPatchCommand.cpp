@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2015-2016, 2018 - TortoiseGit
+// Copyright (C) 2009, 2015-2016, 2018-2019 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -19,7 +19,7 @@
 //
 #include "stdafx.h"
 #include "FormatPatchCommand.h"
-
+#include "MessageBox.h"
 #include "FormatPatchDlg.h"
 #include "Git.h"
 #include "ShellUpdater.h"
@@ -28,6 +28,12 @@
 
 bool FormatPatchCommand::Execute()
 {
+	if (!GitAdminDir::IsWorkingTreeOrBareRepo(g_Git.m_CurrentDir))
+	{
+		CMessageBox::Show(GetExplorerHWND(), IDS_NOGITREPO, IDS_APPNAME, MB_ICONERROR);
+		return false;
+	}
+
 	CFormatPatchDlg dlg;
 	CString startval = parser.GetVal(L"startrev");
 	CString endval = parser.GetVal(L"endrev");

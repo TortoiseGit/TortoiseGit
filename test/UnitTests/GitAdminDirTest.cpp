@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2017 - TortoiseGit
+// Copyright (C) 2015-2017, 2019 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -212,12 +212,40 @@ TEST(CGitAdminDir, HasAdminDir_ReferencedRepo)
 {
 	CAutoTempDir tmpDir;
 
+	CString barePath = tmpDir.GetTempDir() + L"\\bare.git";
+	ASSERT_TRUE(CreateDirectory(barePath, nullptr));
+	CAutoRepository repo;
+	ASSERT_TRUE(git_repository_init(repo.GetPointer(), CUnicodeUtils::GetUTF8(barePath), true) == 0);
+
+	CString wtPath = tmpDir.GetTempDir() + L"\\wt";
+	ASSERT_TRUE(CreateDirectory(wtPath, nullptr));
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(wtPath + L"\\.git", L"gitdir: ../bare.git"));
+
+	CString repoRoot;
+	EXPECT_TRUE(GitAdminDir::HasAdminDir(wtPath, &repoRoot));
+	EXPECT_STREQ(wtPath, repoRoot);
+}
+
+TEST(CGitAdminDir, HasAdminDir_InvalidRepo)
+{
+	CAutoTempDir tmpDir;
+
+	EXPECT_TRUE(CreateDirectory(tmpDir.GetTempDir() + L"\\.git", nullptr));
+
+	CString repoRoot;
+	EXPECT_FALSE(GitAdminDir::HasAdminDir(tmpDir.GetTempDir(), &repoRoot));
+}
+
+TEST(CGitAdminDir, HasAdminDir_InvalidRepoFile)
+{
+	CAutoTempDir tmpDir;
+
 	CString gitFile = tmpDir.GetTempDir() + L"\\.git";
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(gitFile, L"gitdir: dontcare"));
 
 	CString repoRoot;
-	EXPECT_TRUE(GitAdminDir::HasAdminDir(tmpDir.GetTempDir(), &repoRoot));
-	EXPECT_STREQ(tmpDir.GetTempDir(), repoRoot);
+	EXPECT_FALSE(GitAdminDir::HasAdminDir(tmpDir.GetTempDir(), &repoRoot));
 }
 
 TEST(CGitAdminDir, IsWorkingTreeOrBareRepo)
@@ -252,10 +280,36 @@ TEST(CGitAdminDir, IsWorkingTreeOrBareRepo_ReferencedRepo)
 {
 	CAutoTempDir tmpDir;
 
+	CString barePath = tmpDir.GetTempDir() + L"\\bare.git";
+	ASSERT_TRUE(CreateDirectory(barePath, nullptr));
+	CAutoRepository repo;
+	ASSERT_TRUE(git_repository_init(repo.GetPointer(), CUnicodeUtils::GetUTF8(barePath), true) == 0);
+
+	CString wtPath = tmpDir.GetTempDir() + L"\\wt";
+	ASSERT_TRUE(CreateDirectory(wtPath, nullptr));
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(wtPath + L"\\.git", L"gitdir: ../bare.git"));
+
+	EXPECT_TRUE(GitAdminDir::IsWorkingTreeOrBareRepo(wtPath));
+}
+
+TEST(CGitAdminDir, IsWorkingTreeOrBareRepo_InvalidRepo)
+{
+	CAutoTempDir tmpDir;
+
+	EXPECT_TRUE(CreateDirectory(tmpDir.GetTempDir() + L"\\.git", nullptr));
+
+	EXPECT_FALSE(GitAdminDir::IsWorkingTreeOrBareRepo(tmpDir.GetTempDir()));
+}
+
+TEST(CGitAdminDir, IsWorkingTreeOrBareRepo_InvalidRepoFile)
+{
+	CAutoTempDir tmpDir;
+
 	CString gitFile = tmpDir.GetTempDir() + L"\\.git";
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(gitFile, L"gitdir: dontcare"));
 
-	EXPECT_TRUE(GitAdminDir::IsWorkingTreeOrBareRepo(tmpDir.GetTempDir()));
+	EXPECT_FALSE(GitAdminDir::IsWorkingTreeOrBareRepo(tmpDir.GetTempDir()));
 }
 
 TEST(CGitAdminDir, ReadGitLink)

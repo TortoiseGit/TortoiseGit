@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2016, 2018 - TortoiseGit
+// Copyright (C) 2013-2016, 2018-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,6 +25,11 @@
 
 bool DaemonCommand::Execute()
 {
+	if (!GitAdminDir::IsWorkingTreeOrBareRepo(g_Git.m_CurrentDir))
+	{
+		CMessageBox::Show(GetExplorerHWND(), IDS_NOGITREPO, IDS_APPNAME, MB_ICONERROR);
+		return false;
+	}
 	if (CMessageBox::ShowCheck(GetExplorerHWND(), IDS_DAEMON_SECURITY_WARN, IDS_APPNAME, 2, IDI_EXCLAMATION, IDS_PROCEEDBUTTON, IDS_ABORTBUTTON, NULL, L"DaemonNoSecurityWarning", IDS_MSGBOX_DONOTSHOWAGAIN) == 2)
 	{
 		CMessageBox::RemoveRegistryKey(L"DaemonNoSecurityWarning"); // only store answer if it is "Proceed"

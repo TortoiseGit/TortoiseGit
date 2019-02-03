@@ -1,7 +1,7 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2007-2008 - TortoiseSVN
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -19,6 +19,7 @@
 //
 #include "stdafx.h"
 #include "DiffCommand.h"
+#include "MessageBox.h"
 #include "PathUtils.h"
 #include "AppUtils.h"
 #include "ChangedDlg.h"
@@ -28,6 +29,12 @@
 
 bool DiffCommand::Execute()
 {
+	if (!GitAdminDir::HasAdminDir(g_Git.m_CurrentDir))
+	{
+		CMessageBox::Show(GetExplorerHWND(), IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
+		return false;
+	}
+
 	bool bRet = false;
 	CString path2 = CPathUtils::GetLongPathname(parser.GetVal(L"path2"));
 	bool bAlternativeTool = !!parser.HasKey(L"alternative");
