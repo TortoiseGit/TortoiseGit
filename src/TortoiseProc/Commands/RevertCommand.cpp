@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014, 2018 - TortoiseGit
+// Copyright (C) 2008-2014, 2018-2019 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -19,13 +19,19 @@
 //
 #include "stdafx.h"
 #include "RevertCommand.h"
-
+#include "MessageBox.h"
 #include "RevertDlg.h"
 #include "GitProgressDlg.h"
 #include "ProgressCommands/RevertProgressCommand.h"
 
 bool RevertCommand::Execute()
 {
+	if (!GitAdminDir::HasAdminDir(g_Git.m_CurrentDir))
+	{
+		CMessageBox::Show(GetExplorerHWND(), IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
+		return false;
+	}
+
 	CRevertDlg dlg;
 	dlg.m_pathList = pathList;
 	if (dlg.DoModal() == IDOK)

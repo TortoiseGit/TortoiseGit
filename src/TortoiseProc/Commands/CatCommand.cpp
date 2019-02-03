@@ -27,6 +27,12 @@
 
 bool CatCommand::Execute()
 {
+	if (!GitAdminDir::IsWorkingTreeOrBareRepo(g_Git.m_CurrentDir))
+	{
+		CMessageBox::Show(GetExplorerHWND(), IDS_NOGITREPO, IDS_APPNAME, MB_ICONERROR);
+		return false;
+	}
+
 	CString savepath = CPathUtils::GetLongPathname(parser.GetVal(L"savepath"));
 	CString revision = parser.GetVal(L"revision");
 

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2011-2018 - TortoiseGit
+// Copyright (C) 2009, 2011-2019 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -288,6 +288,12 @@ static bool DoCleanUp(const CTGitPathList& pathList, int cleanType, bool bDir, b
 
 bool CleanupCommand::Execute()
 {
+	if (!GitAdminDir::HasAdminDir(g_Git.m_CurrentDir))
+	{
+		CMessageBox::Show(GetExplorerHWND(), IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
+		return false;
+	}
+
 	bool bRet = false;
 
 	CCleanTypeDlg dlg;

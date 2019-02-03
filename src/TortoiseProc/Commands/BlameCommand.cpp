@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2016 - TortoiseGit
+// Copyright (C) 2008-2013, 2016, 2019 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -19,12 +19,18 @@
 //
 #include "stdafx.h"
 #include "BlameCommand.h"
-
+#include "MessageBox.h"
 #include "AppUtils.h"
 
 
 bool BlameCommand::Execute()
 {
+	if (!GitAdminDir::HasAdminDir(g_Git.m_CurrentDir))
+	{
+		CMessageBox::Show(GetExplorerHWND(), IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
+		return false;
+	}
+
 	CString params;
 	if (parser.HasVal(L"line"))
 		params.Format(L"/line:%ld", parser.GetLongVal(L"line"));

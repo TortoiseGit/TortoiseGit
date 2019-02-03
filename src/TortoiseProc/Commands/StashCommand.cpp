@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012, 2014-2016, 2018 - TortoiseGit
+// Copyright (C) 2008-2012, 2014-2016, 2018-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,10 +18,17 @@
 //
 #include "stdafx.h"
 #include "StashCommand.h"
+#include "MessageBox.h"
 #include "AppUtils.h"
 
 bool StashSaveCommand::Execute()
 {
+	if (!GitAdminDir::HasAdminDir(g_Git.m_CurrentDir))
+	{
+		CMessageBox::Show(GetExplorerHWND(), IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
+		return false;
+	}
+
 	CString msg;
 	if (parser.HasKey(L"msg"))
 		msg = parser.GetVal(L"msg");
@@ -30,10 +37,22 @@ bool StashSaveCommand::Execute()
 
 bool StashApplyCommand::Execute()
 {
+	if (!GitAdminDir::HasAdminDir(g_Git.m_CurrentDir))
+	{
+		CMessageBox::Show(GetExplorerHWND(), IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
+		return false;
+	}
+
 	return CAppUtils::StashApply(GetExplorerHWND(), L"", true);
 }
 
 bool StashPopCommand::Execute()
 {
+	if (!GitAdminDir::HasAdminDir(g_Git.m_CurrentDir))
+	{
+		CMessageBox::Show(GetExplorerHWND(), IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
+		return false;
+	}
+
 	return !CAppUtils::StashPop(GetExplorerHWND());
 }

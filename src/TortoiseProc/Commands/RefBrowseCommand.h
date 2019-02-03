@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2018 - TortoiseGit
+// Copyright (C) 2009, 2018-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,12 +18,19 @@
 //
 #pragma once
 #include "Command.h"
+#include "MessageBox.h"
 #include "BrowseRefsDlg.h"
 
 class RefBrowseCommand : public Command
 {
 	virtual bool Execute() override
 	{
+		if (!GitAdminDir::IsWorkingTreeOrBareRepo(g_Git.m_CurrentDir))
+		{
+			CMessageBox::Show(GetExplorerHWND(), IDS_NOGITREPO, IDS_APPNAME, MB_ICONERROR);
+			return false;
+		}
+
 		CBrowseRefsDlg dlg(orgCmdLinePath.GetWinPath());
 		theApp.m_pMainWnd = &dlg;
 		dlg.DoModal();

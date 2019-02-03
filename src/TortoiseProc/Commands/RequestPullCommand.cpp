@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011, 2015-2016, 2018 - TortoiseGit
+// Copyright (C) 2011, 2015-2016, 2018-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -19,10 +19,17 @@
 //
 #include "stdafx.h"
 #include "RequestPullCommand.h"
+#include "MessageBox.h"
 #include "AppUtils.h"
 
 bool RequestPullCommand::Execute()
 {
+	if (!GitAdminDir::IsWorkingTreeOrBareRepo(g_Git.m_CurrentDir))
+	{
+		CMessageBox::Show(GetExplorerHWND(), IDS_NOGITREPO, IDS_APPNAME, MB_ICONERROR);
+		return false;
+	}
+
 	CString endrevision;
 	CString reposirotyurl;
 	if (parser.HasVal(L"endrev"))

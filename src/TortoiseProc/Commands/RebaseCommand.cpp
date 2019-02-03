@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2012, 2015-2016, 2018 - TortoiseGit
+// Copyright (C) 2009-2012, 2015-2016, 2018-2019 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -19,13 +19,18 @@
 //
 #include "stdafx.h"
 #include "RebaseCommand.h"
-
+#include "MessageBox.h"
 #include "RebaseDlg.h"
 #include "Git.h"
 #include "AppUtils.h"
 
 bool RebaseCommand::Execute()
 {
+	if (!GitAdminDir::HasAdminDir(g_Git.m_CurrentDir))
+	{
+		CMessageBox::Show(GetExplorerHWND(), IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
+		return false;
+	}
 	while(1)
 	{
 		CRebaseDlg dlg;
