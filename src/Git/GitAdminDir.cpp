@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2017, 2019 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -98,13 +98,28 @@ bool GitAdminDir::HasAdminDir(const CString& path, bool bDir, CString* ProjectTo
 	{
 		if (CGit::GitPathFileExists(sDirName + L"\\.git"))
 		{
-			if(ProjectTopDir)
-			{
-				*ProjectTopDir=sDirName;
-				// Make sure to add the trailing slash to root paths such as 'C:'
-				if (sDirName.GetLength() == 2 && sDirName[1] == L':')
-					(*ProjectTopDir) += L'\\';
-			}
+			// Make sure to add the trailing slash to root paths such as 'C:'
+			if (sDirName.GetLength() == 2 && sDirName[1] == L':')
+				sDirName += L'\\';
+
+			if (ProjectTopDir)
+				*ProjectTopDir = sDirName;
+
+/* This code is not necessary in TGitCache as there are further checks for valid repos, however,
+ * TODO: Optimize for usage in TGitCache
+ */
+#ifndef TGITCACHE
+			CString adminDir;
+			if (!GetAdminDirPath(sDirName, adminDir))
+				return false;
+
+			if (!PathFileExists(adminDir + L"\\HEAD") || !PathFileExists(adminDir + L"\\config"))
+				return false;
+
+			if (!PathFileExists(adminDir + L"\\objects\\") || !PathFileExists(adminDir + L"\\refs\\"))
+				return false;
+#endif
+
 			return true;
 		}
 		else if (IsBareRepo(sDirName))
