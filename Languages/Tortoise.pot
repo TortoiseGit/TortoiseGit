@@ -6263,6 +6263,10 @@ msgstr ""
 msgid "No thesaurus suggestions"
 msgstr ""
 
+#. Resource IDs: (IDS_NOGITREPO)
+msgid "No valid git repository found."
+msgstr ""
+
 #. Resource IDs: (IDS_NOWORKINGCOPY)
 msgid "No working directory found."
 msgstr ""
@@ -9508,6 +9512,10 @@ msgstr ""
 msgid "UTF-8"
 msgstr ""
 
+#. Resource IDs: (IDS_ERR_CHANGELIST_LOAD)
+msgid "Unable to load changelists"
+msgstr ""
+
 #. Resource IDs: (AFX_IDP_FAILED_MAPI_LOAD)
 msgid "Unable to load mail system support."
 msgstr ""
@@ -9527,6 +9535,10 @@ msgstr ""
 
 #. Resource IDs: (IDS_LOG_REVERTREV_ERROR)
 msgid "Unable to reconstruct working tree path!\nThis can happen if the file has been renamed.\nPlease start the log dialog on this specific file alone and then revert the changes\nfrom the top pane in the log dialog."
+msgstr ""
+
+#. Resource IDs: (IDS_ERR_CHANGELIST_SAVE)
+msgid "Unable to save changelists"
 msgstr ""
 
 #. Resource IDs: (AFX_IDP_SET_NOT_SUPPORTED)
@@ -10694,10 +10706,3 @@ msgstr ""
 msgid "|"
 msgstr ""
 
-#. Resource IDs: (IDS_ERR_CHANGELIST_LOAD)
-msgid "Unable to load changelists"
-msgstr ""
-
-#. Resource IDs: (IDS_ERR_CHANGELIST_SAVE)
-msgid "Unable to save changelists"
-msgstr ""
