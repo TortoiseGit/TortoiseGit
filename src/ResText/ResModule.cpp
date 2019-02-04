@@ -197,8 +197,6 @@ BOOL CResModule::ExtractResources(LPCTSTR lpszSrcLangDllPath, LPCTSTR lpszPoFile
 
 	FreeLibrary(m_hResDll);
 
-	AdjustCheckSum(sDestFile);
-
 	return TRUE;
 
 DONE_ERROR:
@@ -308,6 +306,8 @@ BOOL CResModule::CreateTranslatedResources(LPCTSTR lpszSrcLangDllPath, LPCTSTR l
 	bRes = TRUE;
 	if (!EndUpdateResource(m_hUpdateRes, !bRes))
 		MYERROR;
+
+	AdjustCheckSum(sDestFile);
 
 	FreeLibrary(m_hResDll);
 	return TRUE;
