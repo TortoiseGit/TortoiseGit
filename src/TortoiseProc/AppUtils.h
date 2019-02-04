@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -241,6 +241,8 @@ public:
 	static int ExploreTo(HWND hwnd, CString path);
 
 	static bool DeleteRef(CWnd* parent, const CString& ref);
+
+	static void SetupBareRepoIcon(const CString& path);
 
 	enum resolve_with {
 		RESOLVE_WITH_CURRENT,

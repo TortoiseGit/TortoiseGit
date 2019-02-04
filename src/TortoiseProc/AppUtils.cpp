@@ -68,6 +68,7 @@
 #include "GitDiff.h"
 #include "../TGitCache/CacheInterface.h"
 #include "DPIAware.h"
+#include "IconExtractor.h"
 
 static struct last_accepted_cert {
 	BYTE*		data;
@@ -3886,4 +3887,26 @@ bool CAppUtils::DeleteRef(CWnd* parent, const CString& ref)
 		return true;
 	}
 	return false;
+}
+
+void CAppUtils::SetupBareRepoIcon(const CString& path)
+{
+	if (PathFileExists(path + L"\\Desktop.ini"))
+		return;
+
+	// create a desktop.ini file which sets our own icon for the repo folder
+	// we extract the icon to use from the resources and write it to disk
+	// so even those who don't have TGit installed can benefit from it.
+	CIconExtractor gitIconResource;
+	if (gitIconResource.ExtractIcon(nullptr, MAKEINTRESOURCE(IDI_GITFOLDER), path + L"\\git.ico") == 0)
+	{
+		CAutoFile hFile = ::CreateFile(path + L"\\Desktop.ini", GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_SYSTEM | FILE_ATTRIBUTE_HIDDEN, nullptr);
+		if (hFile)
+		{
+			DWORD dwWritten = 0;
+			CString sIni = L"[.ShellClassInfo]\r\nConfirmFileOp=0\r\nIconFile=git.ico\r\nIconIndex=0\r\nInfoTip=Git Repository\r\n";
+			WriteFile(hFile, (LPCTSTR)sIni, sIni.GetLength() * sizeof(TCHAR), &dwWritten, nullptr);
+		}
+		PathMakeSystemFolder(path);
+	}
 }
