@@ -1877,5 +1877,7 @@ void CSyncDlg::StartWorkerThread()
 	{
 		InterlockedExchange(&m_bBlock, FALSE);
 		CMessageBox::Show(this->m_hWnd, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+		SwitchToInput();
+		EnableControlButton(true);
 	}
 }

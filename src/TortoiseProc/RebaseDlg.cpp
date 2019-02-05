@@ -2518,20 +2518,20 @@ void CRebaseDlg::OnBnClickedAbort()
 
 	SaveSplitterPos();
 
-	if(m_OrigUpstreamHash.IsEmpty())
+	if (m_RebaseStage == CHOOSE_BRANCH || m_RebaseStage== CHOOSE_COMMIT_PICK_MODE)
 	{
 		__super::OnCancel();
-		return;
+		goto end;
 	}
 
-	if(m_RebaseStage == CHOOSE_BRANCH || m_RebaseStage== CHOOSE_COMMIT_PICK_MODE)
+	if (m_OrigUpstreamHash.IsEmpty() || m_OrigHEADHash.IsEmpty())
 	{
 		__super::OnCancel();
 		goto end;
 	}
 
 	if (!m_bAbort && CMessageBox::Show(GetSafeHwnd(), IDS_PROC_REBASE_ABORT, IDS_APPNAME, MB_YESNO | MB_ICONQUESTION) != IDYES)
-		return;
+		goto end;
 
 	m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
 
