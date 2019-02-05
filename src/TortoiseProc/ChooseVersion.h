@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -243,12 +243,15 @@ protected:
 		m_pWin->GetDlgItem(IDOK)->EnableWindow(FALSE);
 
 		InterlockedExchange(&m_bLoadingThreadRunning, TRUE);
-
-		if ((m_pLoadingThread = AfxBeginThread(LoadingThreadEntry, this)) == nullptr)
+		if ((m_pLoadingThread = AfxBeginThread(LoadingThreadEntry, this, 0, CREATE_SUSPENDED)) == nullptr)
 		{
 			InterlockedExchange(&m_bLoadingThreadRunning, FALSE);
 			CMessageBox::Show(nullptr, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+			return;
 		}
+
+		m_pLoadingThread->m_bAutoDelete = FALSE;
+		m_pLoadingThread->ResumeThread();
 	}
 	void WaitForFinishLoading()
 	{
@@ -258,6 +261,7 @@ protected:
 			if(ret == WAIT_TIMEOUT)
 				::TerminateThread(m_pLoadingThread,0);
 		}
+		delete m_pLoadingThread;
 	}
 public:
 	CString m_VersionName;

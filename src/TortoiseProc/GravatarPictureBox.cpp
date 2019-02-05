@@ -93,7 +93,7 @@ void CGravatar::Init()
 		if (m_gravatarThread == nullptr)
 		{
 			m_gravatarExit = new bool(false);
-			m_gravatarThread = AfxBeginThread([](LPVOID lpVoid) -> UINT { reinterpret_cast<CGravatar*>(lpVoid)->GravatarThread(); return 0; }, this, THREAD_PRIORITY_BELOW_NORMAL);
+			m_gravatarThread = AfxBeginThread([](LPVOID lpVoid) -> UINT { reinterpret_cast<CGravatar*>(lpVoid)->GravatarThread(); return 0; }, this, THREAD_PRIORITY_BELOW_NORMAL, 0, CREATE_SUSPENDED);
 			if (m_gravatarThread == nullptr)
 			{
 				CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
@@ -101,6 +101,8 @@ void CGravatar::Init()
 				m_gravatarExit = nullptr;
 				return;
 			}
+			m_gravatarThread->m_bAutoDelete = FALSE;
+			m_gravatarThread->ResumeThread();
 		}
 	}
 }
@@ -317,6 +319,7 @@ void CGravatar::SafeTerminateGravatarThread()
 	{
 		::SetEvent(m_gravatarEvent);
 		::WaitForSingleObject(m_gravatarThread, 1000);
+		delete m_gravatarThread;
 		m_gravatarThread = nullptr;
 	}
 }
