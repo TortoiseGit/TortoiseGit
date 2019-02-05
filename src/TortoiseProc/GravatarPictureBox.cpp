@@ -322,6 +322,8 @@ void CGravatar::SafeTerminateGravatarThread()
 		delete m_gravatarThread;
 		m_gravatarThread = nullptr;
 	}
+	delete m_gravatarExit;
+	m_gravatarExit = nullptr;
 }
 
 void CGravatar::OnPaint()
