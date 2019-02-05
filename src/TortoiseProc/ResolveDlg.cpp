@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013, 2015-2018 - TortoiseGit
+// Copyright (C) 2009-2013, 2015-2019 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -84,11 +84,12 @@ BOOL CResolveDlg::OnInitDialog()
 
 	// first start a thread to obtain the file list with the status without
 	// blocking the dialog
+	InterlockedExchange(&m_bThreadRunning, TRUE);
 	if (!AfxBeginThread(ResolveThreadEntry, this))
 	{
+		InterlockedExchange(&m_bThreadRunning, FALSE);
 		CMessageBox::Show(this->m_hWnd, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 	}
-	InterlockedExchange(&m_bThreadRunning, TRUE);
 
 	return TRUE;
 }
@@ -170,10 +171,13 @@ BOOL CResolveDlg::PreTranslateMessage(MSG* pMsg)
 			{
 				if (!m_bThreadRunning)
 				{
+					InterlockedExchange(&m_bThreadRunning, TRUE);
+
 					if (!AfxBeginThread(ResolveThreadEntry, this))
+					{
+						InterlockedExchange(&m_bThreadRunning, FALSE);
 						CMessageBox::Show(this->m_hWnd, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
-					else
-						InterlockedExchange(&m_bThreadRunning, TRUE);
+					}
 				}
 			}
 			break;
@@ -185,8 +189,12 @@ BOOL CResolveDlg::PreTranslateMessage(MSG* pMsg)
 
 LRESULT CResolveDlg::OnSVNStatusListCtrlNeedsRefresh(WPARAM, LPARAM)
 {
+	InterlockedExchange(&m_bThreadRunning, TRUE);
 	if (!AfxBeginThread(ResolveThreadEntry, this))
+	{
+		InterlockedExchange(&m_bThreadRunning, FALSE);
 		CMessageBox::Show(this->m_hWnd, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+	}
 	return 0;
 }
 

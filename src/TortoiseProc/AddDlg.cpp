@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -92,10 +92,12 @@ BOOL CAddDlg::OnInitDialog()
 
 	//first start a thread to obtain the file list with the status without
 	//blocking the dialog
-	if (!AfxBeginThread(AddThreadEntry, this))
-		CMessageBox::Show(this->m_hWnd, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 	InterlockedExchange(&m_bThreadRunning, TRUE);
-
+	if (!AfxBeginThread(AddThreadEntry, this))
+	{
+		InterlockedExchange(&m_bThreadRunning, FALSE);
+		CMessageBox::Show(this->m_hWnd, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+	}
 	return TRUE;
 }
 
@@ -187,8 +189,12 @@ BOOL CAddDlg::PreTranslateMessage(MSG* pMsg)
 
 LRESULT CAddDlg::OnSVNStatusListCtrlNeedsRefresh(WPARAM, LPARAM)
 {
+	InterlockedExchange(&m_bThreadRunning, TRUE);
 	if (!AfxBeginThread(AddThreadEntry, this))
+	{
+		InterlockedExchange(&m_bThreadRunning, FALSE);
 		CMessageBox::Show(this->m_hWnd, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+	}
 	return 0;
 }
 
@@ -255,10 +261,12 @@ void CAddDlg::Refresh()
 {
 	if (!m_bThreadRunning)
 	{
+		InterlockedExchange(&m_bThreadRunning, TRUE);
 		if (!AfxBeginThread(AddThreadEntry, this))
+		{
+			InterlockedExchange(&m_bThreadRunning, FALSE);
 			CMessageBox::Show(this->m_hWnd, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
-		else
-			InterlockedExchange(&m_bThreadRunning, TRUE);
+		}
 	}
 }
 
