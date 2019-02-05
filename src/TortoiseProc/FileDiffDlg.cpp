@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 // Copyright (C) 2003-2008, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -949,7 +949,7 @@ BOOL CFileDiffDlg::PreTranslateMessage(MSG* pMsg)
 
 void CFileDiffDlg::OnCancel()
 {
-	if (m_bThreadRunning)
+	if (m_bThreadRunning || m_bLoadingRef)
 		return;
 	__super::OnCancel();
 }
