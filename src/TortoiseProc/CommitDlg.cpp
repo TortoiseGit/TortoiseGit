@@ -1581,7 +1581,6 @@ void CCommitDlg::StartStatusThread()
 		return;
 
 	delete m_pThread;
-	m_pThread = nullptr;
 
 	m_pThread = AfxBeginThread(StatusThreadEntry, this, THREAD_PRIORITY_NORMAL, 0, CREATE_SUSPENDED);
 	if (!m_pThread)
