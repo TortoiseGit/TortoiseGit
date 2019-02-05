@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -135,10 +135,7 @@ BOOL CChangedDlg::OnInitDialog()
 
 	// first start a thread to obtain the status without
 	// blocking the dialog
-	if (!AfxBeginThread(ChangedStatusThreadEntry, this))
-	{
-		CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
-	}
+	OnBnClickedRefresh();
 
 	return TRUE;
 }
@@ -272,10 +269,7 @@ void CChangedDlg::OnBnClickedShowunversioned()
 	else
 	{
 		if(m_bShowUnversioned)
-		{
-			if (!AfxBeginThread(ChangedStatusThreadEntry, this))
-				CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
-		}
+			OnBnClickedRefresh();
 	}
 	UpdateStatistics();
 }
@@ -296,10 +290,7 @@ void CChangedDlg::OnBnClickedShowignored()
 	if (m_FileListCtrl.m_FileLoaded & CGitStatusListCtrl::FILELIST_IGNORE)
 		m_FileListCtrl.Show(UpdateShowFlags());
 	else if (m_bShowIgnored)
-	{
-		if (!AfxBeginThread(ChangedStatusThreadEntry, this))
-			CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
-	}
+		OnBnClickedRefresh();
 	UpdateStatistics();
 }
 
@@ -310,17 +301,13 @@ void CChangedDlg::OnBnClickedShowlocalchangesignored()
 	if (m_FileListCtrl.m_FileLoaded & CGitStatusListCtrl::FILELIST_LOCALCHANGESIGNORED)
 		m_FileListCtrl.Show(UpdateShowFlags());
 	else if (m_bShowLocalChangesIgnored)
-	{
-		if (!AfxBeginThread(ChangedStatusThreadEntry, this))
-			CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
-	}
+		OnBnClickedRefresh();
 	UpdateStatistics();
 }
 
 LRESULT CChangedDlg::OnSVNStatusListCtrlNeedsRefresh(WPARAM, LPARAM)
 {
-	if (!AfxBeginThread(ChangedStatusThreadEntry, this))
-		CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+	OnBnClickedRefresh();
 	return 0;
 }
 
@@ -338,12 +325,8 @@ BOOL CChangedDlg::PreTranslateMessage(MSG* pMsg)
 		{
 		case VK_F5:
 			{
-				if (m_bBlock)
-					return CResizableStandAloneDialog::PreTranslateMessage(pMsg);
-				if (!AfxBeginThread(ChangedStatusThreadEntry, this))
-				{
-					CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
-				}
+			if (!m_bBlock)
+				OnBnClickedRefresh();
 			}
 			break;
 		}
