@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2017 - TortoiseGit
+// Copyright (C) 2013-2017, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -80,7 +80,7 @@ CGravatar::~CGravatar()
 {
 	SafeTerminateGravatarThread();
 	m_gravatarLock.Term();
-	if (m_gravatarEvent)
+	if (m_gravatarEvent != INVALID_HANDLE_VALUE)
 		CloseHandle(m_gravatarEvent);
 }
 
