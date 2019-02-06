@@ -370,17 +370,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 		m_CurrentCmd = GIT_COMMAND_PULL;
 		m_GitCmdList.push_back(cmd);
 
-		m_pThread = AfxBeginThread(ProgressThreadEntry, this, THREAD_PRIORITY_NORMAL,0,CREATE_SUSPENDED);
-		if (!m_pThread)
-		{
-		//		ReportError(CString(MAKEINTRESOURCE(IDS_ERR_THREADSTARTFAILED)));
-		}
-		else
-		{
-			m_pThread->m_bAutoDelete = TRUE;
-			m_pThread->ResumeThread();
-		}
-
+		StartWorkerThread();
 	}
 
 	///Fetch
@@ -433,16 +423,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 
 			m_GitCmdList.push_back(cmd);
 
-			m_pThread = AfxBeginThread(ProgressThreadEntry, this, THREAD_PRIORITY_NORMAL,0,CREATE_SUSPENDED);
-			if (!m_pThread)
-			{
-			//		ReportError(CString(MAKEINTRESOURCE(IDS_ERR_THREADSTARTFAILED)));
-			}
-			else
-			{
-				m_pThread->m_bAutoDelete = TRUE;
-				m_pThread->ResumeThread();
-			}
+			StartWorkerThread();
 		}
 	}
 
@@ -459,19 +440,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 		cmd = L"git.exe remote update";
 		m_GitCmdList.push_back(cmd);
 
-		InterlockedExchange(&m_bBlock, TRUE);
-
-		m_pThread = AfxBeginThread(ProgressThreadEntry, this, THREAD_PRIORITY_NORMAL,0,CREATE_SUSPENDED);
-		if (!m_pThread)
-		{
-		//		ReportError(CString(MAKEINTRESOURCE(IDS_ERR_THREADSTARTFAILED)));
-			InterlockedExchange(&m_bBlock, FALSE);
-		}
-		else
-		{
-			m_pThread->m_bAutoDelete = TRUE;
-			m_pThread->ResumeThread();
-		}
+		StartWorkerThread();
 	}
 
 	///Cleanup stale remote banches
@@ -481,19 +450,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 		cmd.Format(L"git.exe remote prune \"%s\"", (LPCTSTR)m_strURL);
 		m_GitCmdList.push_back(cmd);
 
-		InterlockedExchange(&m_bBlock, TRUE);
-
-		m_pThread = AfxBeginThread(ProgressThreadEntry, this, THREAD_PRIORITY_NORMAL,0,CREATE_SUSPENDED);
-		if (!m_pThread)
-		{
-		//		ReportError(CString(MAKEINTRESOURCE(IDS_ERR_THREADSTARTFAILED)));
-			InterlockedExchange(&m_bBlock, FALSE);
-		}
-		else
-		{
-			m_pThread->m_bAutoDelete = TRUE;
-			m_pThread->ResumeThread();
-		}
+		StartWorkerThread();
 	}
 }
 
@@ -779,16 +736,7 @@ void CSyncDlg::OnBnClickedButtonPush()
 		CAppUtils::LaunchPAgent(this->GetSafeHwnd(), nullptr, &m_strURL);
 	}
 
-	m_pThread = AfxBeginThread(ProgressThreadEntry, this, THREAD_PRIORITY_NORMAL,0,CREATE_SUSPENDED);
-	if (!m_pThread)
-	{
-//		ReportError(CString(MAKEINTRESOURCE(IDS_ERR_THREADSTARTFAILED)));
-	}
-	else
-	{
-		m_pThread->m_bAutoDelete = TRUE;
-		m_pThread->ResumeThread();
-	}
+	StartWorkerThread();
 }
 
 void CSyncDlg::OnBnClickedButtonApply()
@@ -1766,16 +1714,7 @@ void CSyncDlg::OnBnClickedButtonSubmodule()
 
 	m_CurrentCmd = GIT_COMMAND_SUBMODULE;
 
-	m_pThread = AfxBeginThread(ProgressThreadEntry, this, THREAD_PRIORITY_NORMAL,0,CREATE_SUSPENDED);
-	if (!m_pThread)
-	{
-//		ReportError(CString(MAKEINTRESOURCE(IDS_ERR_THREADSTARTFAILED)));
-	}
-	else
-	{
-		m_pThread->m_bAutoDelete = TRUE;
-		m_pThread->ResumeThread();
-	}
+	StartWorkerThread();
 }
 
 void CSyncDlg::OnBnClickedButtonStash()
@@ -1824,16 +1763,7 @@ void CSyncDlg::OnBnClickedButtonStash()
 	m_GitCmdList.push_back(cmd);
 	m_CurrentCmd = GIT_COMMAND_STASH;
 
-	m_pThread = AfxBeginThread(ProgressThreadEntry, this, THREAD_PRIORITY_NORMAL, 0, CREATE_SUSPENDED);
-	if (!m_pThread)
-	{
-		//ReportError(CString(MAKEINTRESOURCE(IDS_ERR_THREADSTARTFAILED)));
-	}
-	else
-	{
-		m_pThread->m_bAutoDelete = TRUE;
-		m_pThread->ResumeThread();
-	}
+	StartWorkerThread();
 }
 
 void CSyncDlg::OnTimer(UINT_PTR nIDEvent)
@@ -1936,4 +1866,19 @@ void CSyncDlg::OnEnLinkLog(NMHDR *pNMHDR, LRESULT *pResult)
 void CSyncDlg::OnEnscrollLog()
 {
 	m_tooltips.DelTool(&m_ctrlCmdOut, 1);
+}
+
+void CSyncDlg::StartWorkerThread()
+{
+	if (InterlockedExchange(&m_bBlock, TRUE))
+		return;
+
+	m_pThread = AfxBeginThread(ProgressThreadEntry, this, THREAD_PRIORITY_NORMAL);
+	if (!m_pThread)
+	{
+		InterlockedExchange(&m_bBlock, FALSE);
+		CMessageBox::Show(this->m_hWnd, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+		SwitchToInput();
+		EnableControlButton(true);
+	}
 }

@@ -58,6 +58,7 @@ CGitLogListBase::CGitLogListBase() : CHintCtrl<CResizableColumnsListCtrl<CListCt
 	, m_OldTopIndex(-1)
 	, m_AsyncThreadRunning(FALSE)
 	, m_AsyncThreadExit(FALSE)
+	, m_DiffingThread(nullptr)
 	, m_bIsCherryPick(false)
 	, m_pMailmap(nullptr)
 	, m_bShowBugtraqColumn(false)
@@ -3189,12 +3190,14 @@ void CGitLogListBase::StartAsyncDiffThread()
 		return;
 	if (InterlockedExchange(&m_AsyncThreadRunning, TRUE) != FALSE)
 		return;
-	m_DiffingThread = AfxBeginThread(AsyncThread, this, THREAD_PRIORITY_BELOW_NORMAL);
+	m_DiffingThread = AfxBeginThread(AsyncThread, this, THREAD_PRIORITY_BELOW_NORMAL, 0, CREATE_SUSPENDED);
 	if (!m_DiffingThread)
 	{
 		InterlockedExchange(&m_AsyncThreadRunning, FALSE);
 		CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 	}
+	m_DiffingThread->m_bAutoDelete = FALSE;
+	m_DiffingThread->ResumeThread();
 }
 
 void CGitLogListBase::StartLoadingThread()
@@ -3203,13 +3206,15 @@ void CGitLogListBase::StartLoadingThread()
 		return;
 	InterlockedExchange(&m_bNoDispUpdates, TRUE);
 	InterlockedExchange(&m_bExitThread, FALSE);
-	m_LoadingThread = AfxBeginThread(LogThreadEntry, this, THREAD_PRIORITY_LOWEST);
+	m_LoadingThread = AfxBeginThread(LogThreadEntry, this, THREAD_PRIORITY_LOWEST, 0, CREATE_SUSPENDED);
 	if (!m_LoadingThread)
 	{
 		InterlockedExchange(&m_bThreadRunning, FALSE);
 		InterlockedExchange(&m_bNoDispUpdates, FALSE);
 		CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 	}
+	m_LoadingThread->m_bAutoDelete = FALSE;
+	m_LoadingThread->ResumeThread();
 }
 
 static bool CStringStartsWith(const CString &str, const CString &prefix)

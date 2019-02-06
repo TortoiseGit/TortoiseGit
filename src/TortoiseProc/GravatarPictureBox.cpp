@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2017 - TortoiseGit
+// Copyright (C) 2013-2017, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -80,7 +80,7 @@ CGravatar::~CGravatar()
 {
 	SafeTerminateGravatarThread();
 	m_gravatarLock.Term();
-	if (m_gravatarEvent)
+	if (m_gravatarEvent != INVALID_HANDLE_VALUE)
 		CloseHandle(m_gravatarEvent);
 }
 
@@ -93,7 +93,7 @@ void CGravatar::Init()
 		if (m_gravatarThread == nullptr)
 		{
 			m_gravatarExit = new bool(false);
-			m_gravatarThread = AfxBeginThread([](LPVOID lpVoid) -> UINT { reinterpret_cast<CGravatar*>(lpVoid)->GravatarThread(); return 0; }, this, THREAD_PRIORITY_BELOW_NORMAL);
+			m_gravatarThread = AfxBeginThread([](LPVOID lpVoid) -> UINT { reinterpret_cast<CGravatar*>(lpVoid)->GravatarThread(); return 0; }, this, THREAD_PRIORITY_BELOW_NORMAL, 0, CREATE_SUSPENDED);
 			if (m_gravatarThread == nullptr)
 			{
 				CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
@@ -101,6 +101,8 @@ void CGravatar::Init()
 				m_gravatarExit = nullptr;
 				return;
 			}
+			m_gravatarThread->m_bAutoDelete = FALSE;
+			m_gravatarThread->ResumeThread();
 		}
 	}
 }
@@ -317,8 +319,11 @@ void CGravatar::SafeTerminateGravatarThread()
 	{
 		::SetEvent(m_gravatarEvent);
 		::WaitForSingleObject(m_gravatarThread, 1000);
+		delete m_gravatarThread;
 		m_gravatarThread = nullptr;
 	}
+	delete m_gravatarExit;
+	m_gravatarExit = nullptr;
 }
 
 void CGravatar::OnPaint()

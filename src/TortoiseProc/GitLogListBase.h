@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -531,6 +531,7 @@ public:
 				ret =::WaitForSingleObject(m_LoadingThread->m_hThread, 100);
 			if (ret == WAIT_TIMEOUT && m_bThreadRunning)
 				::TerminateThread(m_LoadingThread, 0);
+			delete m_LoadingThread;
 			m_LoadingThread = nullptr;
 		}
 	};
@@ -694,6 +695,7 @@ public:
 					AfxGetThread()->PumpMessage(); // process messages, so that GetTopIndex and so on in the thread work
 				ret = ::WaitForSingleObject(m_DiffingThread->m_hThread, 100);
 			}
+			delete m_DiffingThread;
 			m_DiffingThread = nullptr;
 			InterlockedExchange(&m_AsyncThreadExit, FALSE);
 		}
