@@ -13,7 +13,7 @@ Released: unreleased
  * Added the option to store hook configurations within the repository (/.tgitconfig) in order to share it with other developers
  * Fixed issue #3154: Decorate bare repository's folder with a Git icon
  * Update apr to 1.6.5
- * Update libgit2
+ * Update libgit2 to version 0.28
  * Fixed issue #3304: Double click on stash list item does nothing, show log instead
  * Fixed issue #3305: Stash Changes/Save, then allow Stash Apply
  * TGitCache: Speed up scanning of folders with lots of unversioned files
