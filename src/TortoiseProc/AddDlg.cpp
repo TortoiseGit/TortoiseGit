@@ -189,7 +189,8 @@ BOOL CAddDlg::PreTranslateMessage(MSG* pMsg)
 
 LRESULT CAddDlg::OnSVNStatusListCtrlNeedsRefresh(WPARAM, LPARAM)
 {
-	InterlockedExchange(&m_bThreadRunning, TRUE);
+	if (InterlockedExchange(&m_bThreadRunning, TRUE))
+		return 0;
 	if (!AfxBeginThread(AddThreadEntry, this))
 	{
 		InterlockedExchange(&m_bThreadRunning, FALSE);
@@ -259,14 +260,12 @@ LRESULT CAddDlg::OnFileDropped(WPARAM, LPARAM lParam)
 
 void CAddDlg::Refresh()
 {
-	if (!m_bThreadRunning)
+	if (InterlockedExchange(&m_bThreadRunning, TRUE))
+		return;
+	if (!AfxBeginThread(AddThreadEntry, this))
 	{
-		InterlockedExchange(&m_bThreadRunning, TRUE);
-		if (!AfxBeginThread(AddThreadEntry, this))
-		{
-			InterlockedExchange(&m_bThreadRunning, FALSE);
-			CMessageBox::Show(this->m_hWnd, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
-		}
+		InterlockedExchange(&m_bThreadRunning, FALSE);
+		CMessageBox::Show(this->m_hWnd, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 	}
 }
 

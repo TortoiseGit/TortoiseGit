@@ -1870,7 +1870,8 @@ void CSyncDlg::OnEnscrollLog()
 
 void CSyncDlg::StartWorkerThread()
 {
-	InterlockedExchange(&m_bBlock, TRUE);
+	if (InterlockedExchange(&m_bBlock, TRUE))
+		return;
 
 	m_pThread = AfxBeginThread(ProgressThreadEntry, this, THREAD_PRIORITY_NORMAL);
 	if (!m_pThread)

@@ -147,8 +147,6 @@ UINT CChangedDlg::ChangedStatusThreadEntry(LPVOID pVoid)
 
 UINT CChangedDlg::ChangedStatusThread()
 {
-	InterlockedExchange(&m_bBlock, TRUE);
-
 	m_bCanceled = false;
 	SetDlgItemText(IDOK, CString(MAKEINTRESOURCE(IDS_MSGBOX_CANCEL)));
 	DialogEnableWindow(IDC_REFRESH, FALSE);
@@ -324,10 +322,7 @@ BOOL CChangedDlg::PreTranslateMessage(MSG* pMsg)
 		switch (pMsg->wParam)
 		{
 		case VK_F5:
-			{
-			if (!m_bBlock)
-				OnBnClickedRefresh();
-			}
+			OnBnClickedRefresh();
 			break;
 		}
 	}
@@ -337,10 +332,13 @@ BOOL CChangedDlg::PreTranslateMessage(MSG* pMsg)
 
 void CChangedDlg::OnBnClickedRefresh()
 {
-	if (!m_bBlock)
+	if (InterlockedExchange(&m_bBlock, TRUE))
+		return;
+
+	if (!AfxBeginThread(ChangedStatusThreadEntry, this))
 	{
-		if (!AfxBeginThread(ChangedStatusThreadEntry, this))
-			CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+		InterlockedExchange(&m_bBlock, FALSE);
+		CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 	}
 }
 

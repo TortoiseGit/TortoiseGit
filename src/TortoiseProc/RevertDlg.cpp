@@ -93,7 +93,7 @@ BOOL CRevertDlg::OnInitDialog()
 	InterlockedExchange(&m_bThreadRunning, TRUE);
 	if (AfxBeginThread(RevertThreadEntry, this) == nullptr)
 	{
-		InterlockedExchange(&m_bThreadRunning, TFALSE);
+		InterlockedExchange(&m_bThreadRunning, FALSE);
 		CMessageBox::Show(this->m_hWnd, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 	}
 
@@ -224,12 +224,11 @@ BOOL CRevertDlg::PreTranslateMessage(MSG* pMsg)
 			break;
 		case VK_F5:
 			{
-				if (!m_bThreadRunning)
+				if (!InterlockedExchange(&m_bThreadRunning, TRUE))
 				{
-					InterlockedExchange(&m_bThreadRunning, TRUE);
 					if (AfxBeginThread(RevertThreadEntry, this) == nullptr)
 					{
-					InterlockedExchange(&m_bThreadRunning, FALSE);
+						InterlockedExchange(&m_bThreadRunning, FALSE);
 						CMessageBox::Show(this->m_hWnd, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 					}
 				}
@@ -243,7 +242,8 @@ BOOL CRevertDlg::PreTranslateMessage(MSG* pMsg)
 
 LRESULT CRevertDlg::OnSVNStatusListCtrlNeedsRefresh(WPARAM, LPARAM)
 {
-	InterlockedExchange(&m_bThreadRunning, TRUE);
+	if (InterlockedExchange(&m_bThreadRunning, TRUE))
+		return 0;
 	if (AfxBeginThread(RevertThreadEntry, this) == nullptr)
 	{
 		InterlockedExchange(&m_bThreadRunning, FALSE);

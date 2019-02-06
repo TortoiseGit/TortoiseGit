@@ -169,10 +169,8 @@ BOOL CResolveDlg::PreTranslateMessage(MSG* pMsg)
 			break;
 		case VK_F5:
 			{
-				if (!m_bThreadRunning)
+				if (!InterlockedExchange(&m_bThreadRunning, TRUE))
 				{
-					InterlockedExchange(&m_bThreadRunning, TRUE);
-
 					if (!AfxBeginThread(ResolveThreadEntry, this))
 					{
 						InterlockedExchange(&m_bThreadRunning, FALSE);
@@ -189,7 +187,8 @@ BOOL CResolveDlg::PreTranslateMessage(MSG* pMsg)
 
 LRESULT CResolveDlg::OnSVNStatusListCtrlNeedsRefresh(WPARAM, LPARAM)
 {
-	InterlockedExchange(&m_bThreadRunning, TRUE);
+	if (InterlockedExchange(&m_bThreadRunning, TRUE))
+		return 0;
 	if (!AfxBeginThread(ResolveThreadEntry, this))
 	{
 		InterlockedExchange(&m_bThreadRunning, FALSE);

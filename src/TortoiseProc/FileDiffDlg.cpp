@@ -1096,7 +1096,8 @@ void CFileDiffDlg::ClickRevButton(CMenuButton *button, GitRev *rev, CACEdit *edi
 
 	SetURLLabels();
 
-	InterlockedExchange(&m_bThreadRunning, TRUE);
+	if (InterlockedExchange(&m_bThreadRunning, TRUE))
+		return;
 	if (!AfxBeginThread(DiffThreadEntry, this))
 	{
 		InterlockedExchange(&m_bThreadRunning, FALSE);
@@ -1195,7 +1196,11 @@ void CFileDiffDlg::OnTimer(UINT_PTR nIDEvent)
 
 		if(mask == 0x3)
 		{
-			InterlockedExchange(&m_bThreadRunning, TRUE);
+			if (InterlockedExchange(&m_bThreadRunning, TRUE))
+			{
+				SetTimer(IDT_INPUT, 1000, nullptr);
+				return;
+			}
 			if (!AfxBeginThread(DiffThreadEntry, this))
 			{
 				InterlockedExchange(&m_bThreadRunning, FALSE);
