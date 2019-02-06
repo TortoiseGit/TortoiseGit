@@ -2521,10 +2521,12 @@ void CRebaseDlg::OnBnClickedAbort()
 	if(m_OrigUpstreamHash.IsEmpty())
 	{
 		__super::OnCancel();
+		return;
 	}
 
 	if(m_RebaseStage == CHOOSE_BRANCH || m_RebaseStage== CHOOSE_COMMIT_PICK_MODE)
 	{
+		__super::OnCancel();
 		goto end;
 	}
 
