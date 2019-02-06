@@ -2529,7 +2529,7 @@ void CRebaseDlg::OnBnClickedAbort()
 	}
 
 	if (!m_bAbort && CMessageBox::Show(GetSafeHwnd(), IDS_PROC_REBASE_ABORT, IDS_APPNAME, MB_YESNO | MB_ICONQUESTION) != IDYES)
-		goto end;
+		return;
 
 	m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
 
