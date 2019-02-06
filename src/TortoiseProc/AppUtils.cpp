@@ -1796,10 +1796,12 @@ bool CAppUtils::ConflictEdit(HWND hWnd, CTGitPath& path, bool bAlternativeTool /
 
 	if (!baseIsFile || !localIsFile || !remoteIsFile)
 	{
-		if (merge.HasAdminDir())
+		CTGitPath fullMergePath;
+		fullMergePath.SetFromWin(g_Git.CombinePath(merge));
+		if (fullMergePath.HasAdminDir())
 		{
 			CGit subgit;
-			subgit.m_CurrentDir = g_Git.CombinePath(merge);
+			subgit.m_CurrentDir = fullMergePath.GetWinPath();
 			CGitHash hash;
 			subgit.GetHash(hash, L"HEAD");
 			baseHash = hash.ToString();
@@ -1810,10 +1812,10 @@ bool CAppUtils::ConflictEdit(HWND hWnd, CTGitPath& path, bool bAlternativeTool /
 
 		bool baseOK = false, mineOK = false, theirsOK = false;
 		CString baseSubject, mineSubject, theirsSubject;
-		if (merge.HasAdminDir())
+		if (fullMergePath.HasAdminDir())
 		{
 			CGit subgit;
-			subgit.m_CurrentDir = g_Git.CombinePath(merge);
+			subgit.m_CurrentDir = fullMergePath.GetWinPath();
 			CGitDiff::GetSubmoduleChangeType(subgit, baseHash, localHash, baseOK, mineOK, changeTypeMine, baseSubject, mineSubject);
 			CGitDiff::GetSubmoduleChangeType(subgit, baseHash, remoteHash, baseOK, theirsOK, changeTypeTheirs, baseSubject, theirsSubject);
 		}
@@ -3686,10 +3688,12 @@ int CAppUtils::ResolveConflict(HWND hWnd, CTGitPath& path, resolve_with resolveW
 		{
 			if (!willBeFile)
 			{
-				if (!path.HasAdminDir()) // check if submodule is initialized
+				CTGitPath fullPath;
+				fullPath.SetFromWin(g_Git.CombinePath(path));
+				if (!fullPath.HasAdminDir()) // check if submodule is initialized
 				{
 					CString gitcmd, output;
-					if (!path.IsDirectory())
+					if (!fullPath.IsDirectory())
 					{
 						gitcmd.Format(L"git.exe checkout-index -f --stage=%d -- \"%s\"", stage, (LPCTSTR)path.GetGitPathString());
 						if (g_Git.Run(gitcmd, &output, CP_UTF8))
@@ -3708,7 +3712,7 @@ int CAppUtils::ResolveConflict(HWND hWnd, CTGitPath& path, resolve_with resolveW
 				}
 
 				CGit subgit;
-				subgit.m_CurrentDir = g_Git.CombinePath(path);
+				subgit.m_CurrentDir = fullPath.GetWinPath();
 				CGitHash submoduleHead;
 				if (subgit.GetHash(submoduleHead, L"HEAD"))
 				{
@@ -3718,7 +3722,7 @@ int CAppUtils::ResolveConflict(HWND hWnd, CTGitPath& path, resolve_with resolveW
 				if (submoduleHead.ToString() != hash)
 				{
 					CString origPath = g_Git.m_CurrentDir;
-					g_Git.m_CurrentDir = g_Git.CombinePath(path);
+					g_Git.m_CurrentDir = fullPath.GetWinPath();
 					SetCurrentDirectory(g_Git.m_CurrentDir);
 					if (!GitReset(hWnd, &hash))
 					{
