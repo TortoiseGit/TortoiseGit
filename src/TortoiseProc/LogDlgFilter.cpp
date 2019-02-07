@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2018 - TortoiseGit
+// Copyright (C) 2018-2019 - TortoiseGit
 // Copyright (C) 2010-2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -387,7 +387,7 @@ bool CLogDlgFilter::operator()(GitRevLoglist* pRev, CGitLogListBase* loglist) co
 		}
 	}
 
-	if (!m_bCaseSensitive)
+	if (!m_bCaseSensitive && !scratch.empty())
 		_wcslwr_s(&scratch.at(0), scratch.size() + 1); // make sure the \0 at the end is included
 
 	return Match(scratch) ^ m_bNegate;
