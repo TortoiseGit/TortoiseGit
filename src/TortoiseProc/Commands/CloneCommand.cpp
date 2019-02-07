@@ -174,7 +174,8 @@ bool CloneCommand::Execute()
 				return;
 			}
 
-			CAppUtils::SetupBareRepoIcon(dir);
+			if (dlg.m_bBare)
+				CAppUtils::SetupBareRepoIcon(dir);
 
 			// After cloning, change current directory to the cloned directory
 			g_Git.m_CurrentDir = dlg.m_Directory;
