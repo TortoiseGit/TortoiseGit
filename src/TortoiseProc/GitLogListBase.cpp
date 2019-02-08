@@ -3217,10 +3217,6 @@ void CGitLogListBase::StartLoadingThread()
 	m_LoadingThread->ResumeThread();
 }
 
-static bool CStringStartsWith(const CString &str, const CString &prefix)
-{
-	return str.Left(prefix.GetLength()) == prefix;
-}
 bool CGitLogListBase::ShouldShowFilter(GitRevLoglist* pRev, const std::unordered_map<CGitHash, std::unordered_set<CGitHash>>& commitChildren)
 {
 	if (m_ShowFilter & FILTERSHOW_ANYCOMMIT)
@@ -3233,27 +3229,27 @@ bool CGitLogListBase::ShouldShowFilter(GitRevLoglist* pRev, const std::unordered
 		for (size_t i = 0; i < refList.size(); ++i)
 		{
 			const CString &str = refList[i];
-			if (CStringStartsWith(str, L"refs/heads/"))
+			if (CStringUtils::StartsWith(str, L"refs/heads/"))
 			{
 				if (m_ShowRefMask & LOGLIST_SHOWLOCALBRANCHES)
 					return true;
 			}
-			else if (CStringStartsWith(str, L"refs/remotes/"))
+			else if (CStringUtils::StartsWith(str, L"refs/remotes/"))
 			{
 				if (m_ShowRefMask & LOGLIST_SHOWREMOTEBRANCHES)
 					return true;
 			}
-			else if (CStringStartsWith(str, L"refs/tags/"))
+			else if (CStringUtils::StartsWith(str, L"refs/tags/"))
 			{
 				if (m_ShowRefMask & LOGLIST_SHOWTAGS)
 					return true;
 			}
-			else if (CStringStartsWith(str, L"refs/stash"))
+			else if (CStringUtils::StartsWith(str, L"refs/stash"))
 			{
 				if (m_ShowRefMask & LOGLIST_SHOWSTASH)
 					return true;
 			}
-			else if (CStringStartsWith(str, L"refs/bisect/"))
+			else if (CStringUtils::StartsWith(str, L"refs/bisect/"))
 			{
 				if (m_ShowRefMask & LOGLIST_SHOWBISECT)
 					return true;

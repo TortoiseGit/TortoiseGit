@@ -4613,7 +4613,7 @@ void CGitStatusListCtrl::LoadChangelists()
 			if (strLine.IsEmpty())
 				continue;
 
-			if ((strLine.Left(1) == L'<') && (strLine.Right(1) == L'>'))
+			if (CStringUtils::StartsWith(strLine, L"<") && CStringUtils::EndsWith(strLine, L">"))
 			{ //this is changelist name
 				changelistName = strLine.Mid(1, strLine.GetLength() - 2);
 				m_changelists.insert_or_assign(changelistName, 0);
