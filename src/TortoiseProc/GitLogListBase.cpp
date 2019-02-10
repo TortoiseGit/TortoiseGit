@@ -3195,6 +3195,7 @@ void CGitLogListBase::StartAsyncDiffThread()
 	{
 		InterlockedExchange(&m_AsyncThreadRunning, FALSE);
 		CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+		return;
 	}
 	m_DiffingThread->m_bAutoDelete = FALSE;
 	m_DiffingThread->ResumeThread();
@@ -3212,6 +3213,7 @@ void CGitLogListBase::StartLoadingThread()
 		InterlockedExchange(&m_bThreadRunning, FALSE);
 		InterlockedExchange(&m_bNoDispUpdates, FALSE);
 		CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+		return;
 	}
 	m_LoadingThread->m_bAutoDelete = FALSE;
 	m_LoadingThread->ResumeThread();
