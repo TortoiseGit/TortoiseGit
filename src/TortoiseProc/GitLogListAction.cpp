@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 // Copyright (C) 2005-2007 Marco Costalba
 
 // This program is free software; you can redistribute it and/or
@@ -471,7 +471,10 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				{
 					for (const auto& ref : m_HashMap[pSelLogEntry->m_CommitHash])
 					{
-						sClipboard += ref;
+						if (CStringUtils::StartsWith(ref, L"refs/tags/"))
+							sClipboard += ref.Mid((int)wcslen(L"refs/tags/")).TrimRight(L"^{}");
+						else
+							sClipboard += ref;
 						sClipboard += L"\r\n";
 					}
 				}
