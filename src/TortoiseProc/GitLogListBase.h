@@ -37,6 +37,8 @@
 #include <unordered_set>
 #include "LogDlgFilter.h"
 
+typedef CComCritSecLock<CComCriticalSection> Locker;
+
 template < typename Cont, typename Pred>
 void for_each(Cont& c, Pred&& p)
 {
@@ -160,7 +162,6 @@ private:
 
 class CThreadSafePtrArray : public std::vector<GitRevLoglist*>
 {
-	typedef CComCritSecLock<CComCriticalSection> Locker;
 	CComCriticalSection *m_critSec;
 public:
 	CThreadSafePtrArray(CComCriticalSection* section) : m_critSec(section)
@@ -543,6 +544,7 @@ protected:
 public:
 	void SetRange(const CString& range)
 	{
+		Locker lock(m_critSec);
 		m_sRange = range;
 	}
 

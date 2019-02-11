@@ -2736,8 +2736,13 @@ int CGitLogListBase::BeginFetchLog()
 		this->m_LogCache.m_HashMap[m_wcRev.m_CommitHash]=m_wcRev;
 	}
 
-	if (m_sRange.IsEmpty())
-		m_sRange = L"HEAD";
+	CString range;
+	{
+		Locker lock(m_critSec);
+		range = m_sRange;
+	}
+	if (range.IsEmpty())
+		range = L"HEAD";
 
 	// follow does not work for directories
 	if (!path || path->IsDirectory())
@@ -2746,7 +2751,7 @@ int CGitLogListBase::BeginFetchLog()
 	if (mask & CGit::LOG_INFO_FOLLOW)
 		mask &= ~(CGit::LOG_INFO_ALL_BRANCH | CGit::LOG_INFO_BASIC_REFS | CGit::LOG_INFO_LOCAL_BRANCHES);
 
-	CString cmd = g_Git.GetLogCmd(m_sRange, path, mask, &m_Filter, CRegDWORD(L"Software\\TortoiseGit\\LogOrderBy", CGit::LOG_ORDER_TOPOORDER));
+	CString cmd = g_Git.GetLogCmd(range, path, mask, &m_Filter, CRegDWORD(L"Software\\TortoiseGit\\LogOrderBy", CGit::LOG_ORDER_TOPOORDER));
 
 	//this->m_logEntries.ParserFromLog();
 	if(IsInWorkingThread())
@@ -2769,7 +2774,7 @@ int CGitLogListBase::BeginFetchLog()
 		return -1;
 	}
 
-	if (!g_Git.CanParseRev(m_sRange))
+	if (!g_Git.CanParseRev(range))
 	{
 		if (!(mask & CGit::LOG_INFO_ALL_BRANCH) && !(mask & CGit::LOG_INFO_BASIC_REFS) && !(mask & CGit::LOG_INFO_LOCAL_BRANCHES))
 			return 0;
@@ -2927,7 +2932,12 @@ UINT CGitLogListBase::LogThread()
 	int ret = 0;
 
 	bool shouldWalk = true;
-	if (!g_Git.CanParseRev(m_sRange))
+	CString range;
+	{
+		Locker lock(m_critSec);
+		range = m_sRange;
+	}
+	if (!g_Git.CanParseRev(range))
 	{
 		// walk revisions if show all branches and there exists any ref
 		if (!(m_ShowMask & CGit::LOG_INFO_ALL_BRANCH) && !(m_ShowMask & CGit::LOG_INFO_BASIC_REFS) && !(m_ShowMask & CGit::LOG_INFO_LOCAL_BRANCHES))
