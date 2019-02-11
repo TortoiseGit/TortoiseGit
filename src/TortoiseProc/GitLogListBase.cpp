@@ -1257,18 +1257,23 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 
 					std::vector<REFLABEL> refsToShow;
 					STRING_VECTOR remoteTrackingList;
-					const STRING_VECTOR& refList = m_HashMap[data->m_CommitHash];
-					for (unsigned int i = 0; i < refList.size(); ++i)
+					std::vector<CString>::const_iterator refListIt;
+					std::vector<CString>::const_iterator refListItEnd;
+					auto commitRefsIt = m_HashMap.find(data->m_CommitHash);
+					if (commitRefsIt != m_HashMap.cend())
 					{
-						CString str = refList[i];
-
+						refListIt = (*commitRefsIt).second.cbegin();
+						refListItEnd = (*commitRefsIt).second.cend();
+					}
+					for (; refListIt != refListItEnd; ++refListIt)
+					{
 						REFLABEL refLabel;
 						refLabel.color = RGB(255, 255, 255);
 						refLabel.singleRemote = false;
 						refLabel.hasTracking = false;
 						refLabel.sameName = false;
-						refLabel.name = CGit::GetShortName(str, &refLabel.refType);
-						refLabel.fullName = str;
+						refLabel.name = CGit::GetShortName(*refListIt, &refLabel.refType);
+						refLabel.fullName = *refListIt;
 
 						switch (refLabel.refType)
 						{
@@ -1292,9 +1297,9 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 								if (m_ShowRefMask & LOGLIST_SHOWREMOTEBRANCHES)
 								{
 									bool found = false;
-									for (size_t j = i + 1; j < refList.size(); ++j)
+									for (auto it2 = refListIt + 1; it2 != refListItEnd; ++it2)
 									{
-										if (refList[j] == defaultUpstream)
+										if (*it2 == defaultUpstream)
 										{
 											found = true;
 											break;
@@ -1338,7 +1343,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 							bool found = false;
 							for (size_t j = 0; j < remoteTrackingList.size(); ++j)
 							{
-								if (remoteTrackingList[j] == str)
+								if (remoteTrackingList[j] == *refListIt)
 								{
 									found = true;
 									break;
@@ -2293,7 +2298,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			if ((m_ContextMenuMask & GetContextMenuBit(ID_PUSH)) && ((!isStash && m_HashMap.find(pSelLogEntry->m_CommitHash) != m_HashMap.cend()) || showExtendedMenu))
 			{
 				// show the push-option only if the log entry has an associated local branch
-				bool isLocal = find_if(m_HashMap[pSelLogEntry->m_CommitHash], [](const CString& ref) { return CStringUtils::StartsWith(ref, L"refs/heads/") || CStringUtils::StartsWith(ref, L"refs/tags/"); }) != m_HashMap[pSelLogEntry->m_CommitHash].cend();
+				bool isLocal = m_HashMap.find(pSelLogEntry->m_CommitHash) != m_HashMap.cend() && find_if(m_HashMap[pSelLogEntry->m_CommitHash], [](const CString& ref) { return CStringUtils::StartsWith(ref, L"refs/heads/") || CStringUtils::StartsWith(ref, L"refs/tags/"); }) != m_HashMap[pSelLogEntry->m_CommitHash].cend();
 				if (isLocal || showExtendedMenu)
 				{
 					CString str;
