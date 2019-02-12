@@ -294,7 +294,7 @@ CLogDlgFilter::CLogDlgFilter(const CString& filter, bool filterWithRegex, DWORD 
 	}
 }
 
-bool CLogDlgFilter::operator()(GitRevLoglist* pRev, CGitLogListBase* loglist) const
+bool CLogDlgFilter::operator()(GitRevLoglist* pRev, CGitLogListBase* loglist, const MAP_HASH_NAME& hashMapRefs) const
 {
 	if (m_patterns.empty() && subStringConditions.empty())
 		return !m_bNegate;
@@ -340,22 +340,25 @@ bool CLogDlgFilter::operator()(GitRevLoglist* pRev, CGitLogListBase* loglist) co
 		scratch += pRev->m_Notes;
 		scratch += L'\n';
 	}
-	if (m_dwAttributeSelector & LOGFILTER_REFNAME)
+	if (m_dwAttributeSelector & (LOGFILTER_REFNAME | LOGFILTER_ANNOTATEDTAG))
 	{
-		auto refList = loglist->m_HashMap.find(pRev->m_CommitHash);
-		if (refList != loglist->m_HashMap.cend())
+		auto refList = hashMapRefs.find(pRev->m_CommitHash);
+		if (refList != hashMapRefs.cend())
 		{
-			for (const auto& ref : (*refList).second)
+			if (m_dwAttributeSelector & LOGFILTER_REFNAME)
 			{
-				scratch += ref;
+				for (const auto& ref : (*refList).second)
+				{
+					scratch += ref;
+					scratch += L'\n';
+				}
+			}
+			if (m_dwAttributeSelector & LOGFILTER_ANNOTATEDTAG)
+			{
+				scratch += loglist->GetTagInfo((*refList).second);
 				scratch += L'\n';
 			}
 		}
-	}
-	if (m_dwAttributeSelector & LOGFILTER_ANNOTATEDTAG)
-	{
-		scratch += loglist->GetTagInfo(pRev);
-		scratch += L'\n';
 	}
 	if (m_dwAttributeSelector & LOGFILTER_PATHS)
 	{

@@ -2608,6 +2608,9 @@ void CLogDlg::OnBnClickedJumpUp()
 	}
 	m_LogList.SetSelectionMark(-1);
 
+	auto hashMapSharedPtr = m_LogList.m_HashMap;
+	auto hashMap = *hashMapSharedPtr.get();
+
 	for (int i = index - 1; i >= 0; i--)
 	{
 		bool found = false;
@@ -2630,8 +2633,8 @@ void CLogDlg::OnBnClickedJumpUp()
 		}
 		else if (jumpType == JumpType_Tag || jumpType == JumpType_TagFF)
 		{
-			auto refList = m_LogList.m_HashMap.find(data->m_CommitHash);
-			if (refList != m_LogList.m_HashMap.cend())
+			auto refList = hashMap.find(data->m_CommitHash);
+			if (refList != hashMap.cend())
 				found = find_if((*refList).second, [](const auto& ref) { return CStringUtils::StartsWith(ref, L"refs/tags/"); }) != (*refList).second.cend();
 
 			if (found && jumpType == JumpType_TagFF)
@@ -2639,8 +2642,8 @@ void CLogDlg::OnBnClickedJumpUp()
 		}
 		else if (jumpType == JumpType_Branch || jumpType == JumpType_BranchFF)
 		{
-			auto refList = m_LogList.m_HashMap.find(data->m_CommitHash);
-			if (refList != m_LogList.m_HashMap.cend())
+			auto refList = hashMap.find(data->m_CommitHash);
+			if (refList != hashMap.cend())
 				found = find_if((*refList).second, [](const auto& ref) { return CStringUtils::StartsWith(ref, L"refs/heads/") || CStringUtils::StartsWith(ref, L"refs/remotes/"); }) != (*refList).second.cend();
 
 			if (found && jumpType == JumpType_BranchFF)
@@ -2715,6 +2718,9 @@ void CLogDlg::OnBnClickedJumpDown()
 	}
 	m_LogList.SetSelectionMark(-1);
 
+	auto hashMapSharedPtr = m_LogList.m_HashMap;
+	auto hashMap = *hashMapSharedPtr.get();
+
 	for (int i = index + 1; i < m_LogList.GetItemCount(); ++i)
 	{
 		bool found = false;
@@ -2731,8 +2737,8 @@ void CLogDlg::OnBnClickedJumpDown()
 			found = data->m_CommitHash == hashValue;
 		else if (jumpType == JumpType_Tag || jumpType == JumpType_TagFF)
 		{
-			auto refList = m_LogList.m_HashMap.find(data->m_CommitHash);
-			if (refList != m_LogList.m_HashMap.cend())
+			auto refList = hashMap.find(data->m_CommitHash);
+			if (refList != hashMap.cend())
 				found = find_if((*refList).second, [](const auto& ref) { return CStringUtils::StartsWith(ref, L"refs/tags/"); }) != (*refList).second.cend();
 
 			if (found && jumpType == JumpType_TagFF)
@@ -2740,8 +2746,8 @@ void CLogDlg::OnBnClickedJumpDown()
 		}
 		else if (jumpType == JumpType_Branch || jumpType == JumpType_BranchFF)
 		{
-			auto refList = m_LogList.m_HashMap.find(data->m_CommitHash);
-			if (refList != m_LogList.m_HashMap.cend())
+			auto refList = hashMap.find(data->m_CommitHash);
+			if (refList != hashMap.cend())
 				found = find_if((*refList).second, [](const auto& ref) { return CStringUtils::StartsWith(ref, L"refs/heads/") || CStringUtils::StartsWith(ref, L"refs/remotes/"); }) != (*refList).second.cend();
 
 			if (found && jumpType == JumpType_BranchFF)

@@ -423,10 +423,11 @@ public:
 	int  FillGitLog(std::unordered_set<CGitHash>& hashes);
 protected:
 	CString MessageDisplayStr(GitRev* pLogEntry);
-	bool ShouldShowFilter(GitRevLoglist* pRev, const std::unordered_map<CGitHash, std::unordered_set<CGitHash>>& commitChildren);
+	bool ShouldShowFilter(GitRevLoglist* pRev, const std::unordered_map<CGitHash, std::unordered_set<CGitHash>>& commitChildren, MAP_HASH_NAME& hashMap);
 public:
 	void ShowGraphColumn(bool bShow);
-	CString	GetTagInfo(GitRev* pLogEntry);
+	CString	GetTagInfo(GitRev* pLogEntry) const;
+	CString GetTagInfo(const STRING_VECTOR& refs) const;
 
 	CFindDlg *m_pFindDialog;
 	static const UINT	m_FindDialogMessage;
@@ -464,7 +465,7 @@ public:
 	void				GetTimeRange(CTime &oldest,CTime &latest);
 protected:
 	virtual void GetParentHashes(GitRev* pRev, GIT_REV_LIST& parentHash);
-	virtual void ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMenu * menu)=0;
+	virtual void ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CMenu* menu, MAP_HASH_NAME& hashMap) = 0;
 	void UpdateSubmodulePointer()
 	{
 		m_superProjectHash.Empty();
@@ -499,10 +500,10 @@ protected:
 	void ReloadHashMap()
 	{
 		m_RefLabelPosMap.clear();
-		m_HashMap.clear();
-
-		if (g_Git.GetMapHashToFriendName(m_HashMap))
+		auto newHashMap = std::make_shared<MAP_HASH_NAME>();
+		if (g_Git.GetMapHashToFriendName(*newHashMap.get()))
 			MessageBox(g_Git.GetGitLastErr(L"Could not get all refs."), L"TortoiseGit", MB_ICONERROR);
+		m_HashMap = newHashMap;
 
 		m_CurrentBranch=g_Git.GetCurrentBranch();
 
@@ -555,7 +556,7 @@ protected:
 	volatile LONG		m_bExitThread;
 	CWinThread*			m_LoadingThread;
 public:
-	MAP_HASH_NAME		m_HashMap;
+	std::shared_ptr<MAP_HASH_NAME> m_HashMap;
 protected:
 	std::map<CString, std::pair<CString, CString>>	m_TrackingMap;
 
@@ -611,8 +612,8 @@ protected:
 	 * pShortname OUT: the short name of that reference label
 	 * pIndex     OUT: the index value of label of that entry
 	 */
-	bool IsMouseOnRefLabel(const GitRevLoglist* pLogEntry, const POINT& pt, CGit::REF_TYPE& type, CString* pShortname = nullptr, size_t* pIndex = nullptr);
-	bool IsMouseOnRefLabelFromPopupMenu(const GitRevLoglist* pLogEntry, const CPoint& pt, CGit::REF_TYPE& type, CString* pShortname = nullptr, size_t* pIndex = nullptr);
+	bool IsMouseOnRefLabel(const GitRevLoglist* pLogEntry, const POINT& pt, CGit::REF_TYPE& type, MAP_HASH_NAME& hashMap, CString* pShortname = nullptr, size_t* pIndex = nullptr);
+	bool IsMouseOnRefLabelFromPopupMenu(const GitRevLoglist* pLogEntry, const CPoint& pt, CGit::REF_TYPE& type, MAP_HASH_NAME& hashMap, CString* pShortname = nullptr, size_t* pIndex = nullptr);
 
 	void FillBackGround(HDC hdc, DWORD_PTR Index, CRect &rect);
 	void DrawTagBranchMessage(NMLVCUSTOMDRAW* pLVCD, CRect& rect, INT_PTR index, std::vector<REFLABEL>& refList);

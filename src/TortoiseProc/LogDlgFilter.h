@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2018 - TortoiseGit
+// Copyright (C) 2018-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -77,7 +77,7 @@ public:
 	CLogDlgFilter(const CString& filter, bool filterWithRegex, DWORD selectedFilter, bool caseSensitive);
 
 	/// apply filter
-	bool operator()(GitRevLoglist* pRev, CGitLogListBase* loglist) const;
+	bool operator()(GitRevLoglist* pRev, CGitLogListBase* loglist, const MAP_HASH_NAME& hashMapRefs) const;
 
 	/// returns a vector with all the ranges where a match was found.
 	void GetMatchRanges(std::vector<CHARRANGE>& ranges, CString text, int offset) const;
