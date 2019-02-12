@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2017, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -102,9 +102,9 @@ private:
 	CGitGuardedByteArray(const CGitGuardedByteArray&) = delete;
 	CGitGuardedByteArray& operator=(const CGitGuardedByteArray&) = delete;
 public:
-	CGitGuardedByteArray() { m_critSec.Init(); }
-	~CGitGuardedByteArray() { m_critSec.Term(); }
-	CComCriticalSection			m_critSec;
+	CGitGuardedByteArray() {}
+	~CGitGuardedByteArray() {}
+	CComAutoCriticalSection	m_critSec;
 };
 
 struct TGitRef

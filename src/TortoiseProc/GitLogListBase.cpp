@@ -81,7 +81,6 @@ CGitLogListBase::CGitLogListBase() : CHintCtrl<CResizableColumnsListCtrl<CListCt
 	// change the copy to BOLD (leave the rest of the font
 	// the same)
 
-	this->m_critSec.Init();
 	ResetWcRev(false);
 
 	int cx = GetSystemMetrics(SM_CXSMICON);
@@ -148,7 +147,6 @@ CGitLogListBase::CGitLogListBase() : CHintCtrl<CResizableColumnsListCtrl<CListCt
 		git_read_mailmap(&m_pMailmap);
 
 	m_AsyncDiffEvent = ::CreateEvent(nullptr, FALSE, TRUE, nullptr);
-	m_AsynDiffListLock.Init();
 	StartAsyncDiffThread();
 }
 

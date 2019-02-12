@@ -276,7 +276,6 @@ CGitStatusListCtrl::CGitStatusListCtrl() : CResizableColumnsListCtrl<CListCtrl>(
 	, m_uiFont(nullptr)
 	, m_bIncludedStaged(false)
 {
-	m_critSec.Init();
 	m_bNoAutoselectMissing = CRegDWORD(L"Software\\TortoiseGit\\AutoselectMissingFiles", FALSE) == TRUE;
 
 	NONCLIENTMETRICS metrics = { 0 };

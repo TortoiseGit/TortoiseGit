@@ -638,7 +638,7 @@ protected:
 	int GetHeadIndex();
 
 	std::vector<GitRevLoglist*> m_AsynDiffList;
-	CComCriticalSection m_AsynDiffListLock;
+	CComAutoCriticalSection m_AsynDiffListLock;
 	HANDLE	m_AsyncDiffEvent;
 	volatile LONG m_AsyncThreadExit;
 	CWinThread*			m_DiffingThread;
@@ -705,7 +705,7 @@ public:
 	};
 
 protected:
-	CComCriticalSection	m_critSec;
+	CComAutoCriticalSection	m_critSec;
 
 	HICON				m_hModifiedIcon;
 	HICON				m_hReplacedIcon;

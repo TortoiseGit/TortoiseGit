@@ -1,5 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2019 - TortoiseGit
 // Copyright (C) 2009 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -34,5 +35,5 @@ public:
 
 private:
 	std::set<CShellExt *>   m_exts;
-	CComCriticalSection     m_critSec;
+	CComAutoCriticalSection m_critSec;
 };

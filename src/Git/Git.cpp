@@ -227,8 +227,6 @@ CGit::CGit(void)
 	GetSortOptions();
 	this->m_bInitialized =false;
 	CheckMsysGitDir();
-	m_critGitDllSec.Init();
-	m_critSecThreadMap.Init();
 }
 
 CGit::~CGit(void)
@@ -244,8 +242,6 @@ CGit::~CGit(void)
 		m_GitSimpleListDiff=0;
 	}
 	git_libgit2_shutdown();
-	m_critSecThreadMap.Term();
-	m_critGitDllSec.Term();
 }
 
 bool CGit::IsBranchNameValid(const CString& branchname)

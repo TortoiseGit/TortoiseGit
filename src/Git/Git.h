@@ -130,7 +130,7 @@ public:
 #endif
 	bool m_IsGitDllInited;
 public:
-	CComCriticalSection			m_critGitDllSec;
+	CComAutoCriticalSection m_critGitDllSec;
 	bool	m_IsUseGitDLL;
 	bool	m_IsUseLibGit2;
 	DWORD	m_IsUseLibGit2_mask;
@@ -263,7 +263,7 @@ public:
 	int Run(CString cmd, const GitReceiverFunc& recv, CString* outputErr = nullptr);
 
 private:
-	CComCriticalSection			m_critSecThreadMap;
+	CComAutoCriticalSection	m_critSecThreadMap;
 	std::map<DWORD, HANDLE>	m_AsyncReadStdErrThreadMap;
 	static DWORD WINAPI AsyncReadStdErrThread(LPVOID lpParam);
 	typedef struct AsyncReadStdErrThreadArguments

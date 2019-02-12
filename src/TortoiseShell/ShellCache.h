@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2018 - TortoiseGit
+// Copyright (C) 2012-2019 - TortoiseGit
 // Copyright (C) 2003-2011, 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -225,7 +225,7 @@ public:
 	CRegStdString nocontextpaths;
 	tstring excludecontextstr;
 	std::vector<tstring> excontextvector;
-	CComCriticalSection m_critSec;
+	CComAutoCriticalSection m_critSec;
 	HANDLE m_registryChangeEvent;
 	HKEY m_hNotifyRegKey;
 	bool isElevated;

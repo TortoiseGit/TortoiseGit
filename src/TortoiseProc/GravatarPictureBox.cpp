@@ -73,13 +73,11 @@ CGravatar::CGravatar()
 	, m_gravatarExit(nullptr)
 	, m_bEnableGravatar(false)
 {
-	m_gravatarLock.Init();
 }
 
 CGravatar::~CGravatar()
 {
 	SafeTerminateGravatarThread();
-	m_gravatarLock.Term();
 	if (m_gravatarEvent != INVALID_HANDLE_VALUE)
 		CloseHandle(m_gravatarEvent);
 }

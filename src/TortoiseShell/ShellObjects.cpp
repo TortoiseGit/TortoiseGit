@@ -1,5 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2019 - TortoiseGit
 // Copyright (C) 2009, 2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -22,12 +23,10 @@
 
 ShellObjects::ShellObjects()
 {
-	m_critSec.Init();
 }
 
 ShellObjects::~ShellObjects()
 {
-	m_critSec.Term();
 }
 
 void ShellObjects::Insert(CShellExt * obj)

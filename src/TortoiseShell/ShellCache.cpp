@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2018 - TortoiseGit
+// Copyright (C) 2012-2019 - TortoiseGit
 // Copyright (C) 2003-2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -68,7 +68,6 @@ ShellCache::ShellCache()
 	}
 	drivetypepathcache[0] = L'\0';
 	nocontextpaths = CRegStdString(L"Software\\TortoiseGit\\NoContextPaths", L"", false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
-	m_critSec.Init();
 	// Use RegNotifyChangeKeyValue() to get a notification event whenever a registry value
 	// below HKCU\Software\TortoiseGit is changed. If a value has changed, re-read all
 	// the registry variables to ensure we use the latest ones

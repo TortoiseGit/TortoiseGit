@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -79,10 +79,7 @@ typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 class CGitIndexFileMap:public std::map<CString, SHARED_INDEX_PTR>
 {
 public:
-	CComCriticalSection			m_critIndexSec;
-
-	CGitIndexFileMap() { m_critIndexSec.Init(); }
-	~CGitIndexFileMap() { m_critIndexSec.Term(); }
+	CComAutoCriticalSection		m_critIndexSec;
 
 	SHARED_INDEX_PTR SafeGet(const CString& path)
 	{
@@ -193,10 +190,7 @@ class CGitHeadFileMap:public std::map<CString,SHARED_TREE_PTR>
 {
 public:
 
-	CComCriticalSection			m_critTreeSec;
-
-	CGitHeadFileMap() { m_critTreeSec.Init(); }
-	~CGitHeadFileMap() { m_critTreeSec.Term(); }
+	CComAutoCriticalSection		m_critTreeSec;
 
 	SHARED_TREE_PTR SafeGet(const CString& path)
 	{
@@ -452,12 +446,9 @@ size_t SearchInSortVector_int(const T& vector, LPCTSTR pstr, V compare)
 class CGitAdminDirMap:public std::map<CString, CString>
 {
 public:
-	CComCriticalSection			m_critIndexSec;
+	CComAutoCriticalSection		m_critIndexSec;
 	std::map<CString, CString>	m_reverseLookup;
 	std::map<CString, CString>	m_WorktreeAdminDirLookup;
-
-	CGitAdminDirMap() { m_critIndexSec.Init(); }
-	~CGitAdminDirMap() { m_critIndexSec.Term(); }
 
 	CString GetAdminDir(const CString &path)
 	{

@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2014, 2016-2017 - TortoiseGit
+// Copyright (C) 2009-2017, 2019 - TortoiseGit
 // Copyright (C) 2003-2014, 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -29,14 +29,12 @@ CRemoteCacheLink::CRemoteCacheLink(void)
 {
 	SecureZeroMemory(&m_Overlapped, sizeof(m_Overlapped));
 	m_lastTimeout = 0;
-	m_critSec.Init();
 }
 
 CRemoteCacheLink::~CRemoteCacheLink(void)
 {
 	ClosePipe();
 	CloseCommandPipe();
-	m_critSec.Term();
 }
 
 bool CRemoteCacheLink::InternalEnsurePipeOpen(CAutoFile& hPipe, const CString& pipeName, bool overlapped) const
