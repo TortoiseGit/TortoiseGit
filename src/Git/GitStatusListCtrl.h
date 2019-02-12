@@ -818,7 +818,6 @@ private:
 	volatile LONG				m_nBlockItemChangeHandler;
 	std::map<CString,bool>		m_mapFilenameToChecked; ///< Remember de-/selected items
 	std::set<CString>			m_setDirectFiles;
-	CComAutoCriticalSection		m_critSec;
 
 	friend class CGitStatusListCtrlDropTarget;
 public:
