@@ -4302,9 +4302,10 @@ BEGIN
     IDS_PROC_DELETEREF      """%s"" will be permanently deleted. It can NOT be recovered!\n\nDo you really want to continue?"
     IDS_DELETEBUTTON        "&Delete"
     IDS_PROC_DELETEREMOTEBRANCH 
-                            "The branch ""%s"" is a remote branch.\n\nDo you really want to delete it?"
-    IDS_PROC_DELETEREMOTEBRANCH_LOCALREMOTE "&Delete remote && local"
-    IDS_PROC_DELETEREMOTEBRANCH_LOCAL "Delete &local"
+                            "The branch ""%s"" is a remote-tracking branch which locally represents a remote branch.\n\nDo you really want to delete it?"
+    IDS_PROC_DELETEREMOTEBRANCH_LOCALREMOTE 
+                            "&Delete branch on remote && local remote-tracking branch"
+    IDS_PROC_DELETEREMOTEBRANCH_LOCAL "Delete &local remote-tracking branch"
     IDS_PROC_DELETEALLSTASH "Do you really want to delete ALL %d stash?"
     IDS_PROC_DELETEBRANCHTAG "Do you really want to delete ""%s""?"
 END

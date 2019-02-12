@@ -476,12 +476,12 @@ msgstr ""
 msgid "&Delete Filter"
 msgstr ""
 
-#. Resource IDs: (IDS_DELETE_BRANCHTAG)
-msgid "&Delete branch/tag"
+#. Resource IDs: (IDS_PROC_DELETEREMOTEBRANCH_LOCALREMOTE)
+msgid "&Delete branch on remote && local remote-tracking branch"
 msgstr ""
 
-#. Resource IDs: (IDS_PROC_DELETEREMOTEBRANCH_LOCALREMOTE)
-msgid "&Delete remote && local"
+#. Resource IDs: (IDS_DELETE_BRANCHTAG)
+msgid "&Delete branch/tag"
 msgstr ""
 
 #. Resource IDs: (65535 - PopupMenu)
@@ -3261,7 +3261,7 @@ msgid "Delete %d tags"
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_DELETEREMOTEBRANCH_LOCAL)
-msgid "Delete &local"
+msgid "Delete &local remote-tracking branch"
 msgstr ""
 
 #. Resource IDs: (IDS_REFLOG_DEL)
@@ -8946,7 +8946,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROC_DELETEREMOTEBRANCH)
 #, c-format
-msgid "The branch \"%s\" is a remote branch.\n\nDo you really want to delete it?"
+msgid "The branch \"%s\" is a remote-tracking branch which locally represents a remote branch.\n\nDo you really want to delete it?"
 msgstr ""
 
 #. Resource IDs: (IDS_ERR_PATCH_CHUNKMISMATCH)
