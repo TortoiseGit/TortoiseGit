@@ -1388,9 +1388,9 @@ TEST_P(CBasicGitWithTestRepoFixture, GetOneFile)
 		return;
 
 	CString cleanFilterFilename = m_Git.m_CurrentDir + L"\\clean_filter_openssl";
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(cleanFilterFilename, L"#!/bin/bash\nopenssl enc -base64 -aes-256-ecb -S FEEDDEADBEEF -k PASS_FIXED"));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(cleanFilterFilename, L"#!/bin/bash\nopenssl version | grep -q 1\\\\.0\nif [[ $? = 0 ]]; then\n\topenssl enc -base64 -aes-256-ecb -S FEEDDEADBEEF -k PASS_FIXED\n\techo 1.0>openssl10\nelse\n\topenssl enc -base64 -pbkdf2 -aes-256-ecb -S FEEDDEADBEEFFEED -k PASS_FIXED\nfi\n"));
 	CString smudgeFilterFilename = m_Git.m_CurrentDir + L"\\smudge_filter_openssl";
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(smudgeFilterFilename, L"#!/bin/bash\nopenssl enc -d -base64 -aes-256-ecb -k PASS_FIXED"));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(smudgeFilterFilename, L"#!/bin/bash\nopenssl version | grep -q 1\\\\.0\nif [[ $? = 0 ]]; then\n\topenssl enc -d -base64 -aes-256-ecb -k PASS_FIXED\nelse\n\topenssl enc -d -base64 -pbkdf2 -aes-256-ecb -k PASS_FIXED\nfi\n"));
 
 	CAutoRepository repo(m_Git.GetGitRepository());
 	ASSERT_TRUE(repo.IsValid());
@@ -1440,18 +1440,28 @@ TEST_P(CBasicGitWithTestRepoFixture, GetOneFile)
 
 	EXPECT_TRUE(::DeleteFile(attributesFile));
 
+	bool openssl10 = PathFileExists(L"openssl10");
+
 	fileContents.Empty();
 	tmpFile = GetTempFile();
 	EXPECT_EQ(0, m_Git.GetOneFile(L"HEAD", CTGitPath(L"1.enc"), tmpFile));
 	EXPECT_EQ(true, CStringUtils::ReadStringFromTextFile(tmpFile, fileContents));
-	EXPECT_STREQ(L"U2FsdGVkX1/+7d6tvu8AABwbE+Xy7U4l5boTKjIgUkYHONqmYHD+0e6k35MgtUGx\ns11nq1QuKeFCW5wFWNSj1WcHg2n4W59xfnB7RkSSIDQ=\n", fileContents);
+	EXPECT_TRUE(CStringUtils::StartsWith(fileContents, L"U2FsdGVkX1/+7d6tvu"));
+	if (openssl10)
+		EXPECT_STREQ(L"U2FsdGVkX1/+7d6tvu8AABwbE+Xy7U4l5boTKjIgUkYHONqmYHD+0e6k35MgtUGx\ns11nq1QuKeFCW5wFWNSj1WcHg2n4W59xfnB7RkSSIDQ=\n", fileContents);
+	else
+		EXPECT_STREQ(L"U2FsdGVkX1/+7d6tvu/+7UgE7iA1vUXeIPVzXx1ef6pAZjq/p481dZp1oCyRa/ur\r\nzgcQLgv/OrJfYMWXxWXQRp2uWGnntih9NrvOTlSN440=\r\n", fileContents);
 	::DeleteFile(tmpFile);
 
 	fileContents.Empty();
 	tmpFile = GetTempFile();
 	EXPECT_EQ(0, m_Git.GetOneFile(L"HEAD", CTGitPath(L"2.enc"), tmpFile));
 	EXPECT_EQ(true, CStringUtils::ReadStringFromTextFile(tmpFile, fileContents));
-	EXPECT_STREQ(L"U2FsdGVkX1/+7d6tvu8AAIDDx8qi/l0qzkSMsS2YLt8tYK1oWzj8+o78fXH0/tlO\nCRVrKqTvh9eUFklY8QFYfZfj01zBkFat+4zrW+1rV4Q=\n", fileContents);
+	EXPECT_TRUE(CStringUtils::StartsWith(fileContents, L"U2FsdGVkX1/+7d6tvu"));
+	if (openssl10)
+		EXPECT_STREQ(L"U2FsdGVkX1/+7d6tvu8AAIDDx8qi/l0qzkSMsS2YLt8tYK1oWzj8+o78fXH0/tlO\nCRVrKqTvh9eUFklY8QFYfZfj01zBkFat+4zrW+1rV4Q=\n", fileContents);
+	else
+		EXPECT_STREQ(L"U2FsdGVkX1/+7d6tvu/+7XAtdjFg6XFOvt0SWT9/LdWG8J1pLET464/4A3jusIMK\r\nuCP1hvKsnuGcQv3KtoJbRU3KAFarZIrNEC1mHofQPFs=\r\n", fileContents);
 	::DeleteFile(tmpFile);
 }
 
