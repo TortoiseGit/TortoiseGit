@@ -26,6 +26,7 @@ Released: unreleased
  * Fixed issue #3318: More accurate git-svn detection
  * Fixed issue #1770: Add support for changelists
  * Fixed issue #3327: Clarify remote and remote-tracking branch
+ * TGitCache: Significantly reduce disk access for requesting cached file statuses
 
 == Bug Fixes ==
  * Fixed issue #3250: GitWCRev: IsGitItem return true for item that had never been committed

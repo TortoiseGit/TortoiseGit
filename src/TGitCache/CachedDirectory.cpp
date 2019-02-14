@@ -1,7 +1,7 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2008 - TortoiseSVN
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -303,32 +303,12 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, cons
 
 CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bool bRecursive,  bool bFetch /* = true */)
 {
-	CString sProjectRoot;
-	bool bIsVersionedPath;
-
 	bool bRequestForSelf = false;
 	if(path.IsEquivalentToWithoutCase(m_directoryPath))
-	{
 		bRequestForSelf = true;
-		AutoLocker lock(m_critSec);
-		// HasAdminDir might modify m_directoryPath, so we need to do it synchronized
-		bIsVersionedPath = m_directoryPath.HasAdminDir(&sProjectRoot);
-	}
-	else
-		bIsVersionedPath = path.HasAdminDir(&sProjectRoot);
 
 	// In all most circumstances, we ask for the status of a member of this directory.
 	ATLASSERT(m_directoryPath.IsEquivalentToWithoutCase(path.GetContainingDirectory()) || bRequestForSelf);
-
-	//If is not version control path
-	if( !bIsVersionedPath)
-	{
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": %s is not underversion control\n", path.GetWinPath());
-		return CStatusCacheEntry();
-	}
-
-	// We've not got this item in the cache - let's add it
-	// We never bother asking SVN for the status of just one file, always for its containing directory
 
 	if (GitAdminDir::IsAdminDirPath(path.GetWinPathString()))
 	{
@@ -337,9 +317,34 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 		return CStatusCacheEntry();
 	}
 
-
-	if(bFetch)
+	if (bFetch)
 	{
+		CString sProjectRoot;
+		{
+			AutoLocker lock(m_critSec);
+			// HasAdminDir(..., true) might modify m_directoryPath, so we need to do it synchronized (also write access to m_childDirectories, ... requires it)
+			bool isVersioned = m_directoryPath.HasAdminDir(&sProjectRoot, true);
+			if (!isVersioned && (bRequestForSelf || !path.IsDirectory()))
+			{
+				// shortcut if path is not versioned
+				m_ownStatus = git_wc_status_none;
+				m_mostImportantFileStatus = git_wc_status_none;
+				for (auto it = m_childDirectories.cbegin(); it != m_childDirectories.cend(); ++it)
+					CGitStatusCache::Instance().AddFolderForCrawling(it->first);
+				m_childDirectories.clear();
+				m_entryCache.clear();
+				UpdateCurrentStatus();
+				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": %s is not underversion control\n", path.GetWinPath());
+				return CStatusCacheEntry();
+			}
+
+		}
+		if (!bRequestForSelf && path.IsDirectory() && !path.HasAdminDir(&sProjectRoot))
+		{
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": %s is not underversion control\n", path.GetWinPath());
+			return CStatusCacheEntry();
+		}
+
 		return GetStatusFromGit(path, sProjectRoot, bRequestForSelf);
 	}
 	else
@@ -630,7 +635,6 @@ void CCachedDirectory::RefreshStatus(bool bRecursive)
 	{
 		AutoLocker lock(m_critSec);
 		m_directoryPath.UpdateCase();
-		m_directoryPath.HasAdminDir(nullptr, true);
 	}
 
 	// Make sure that our own status is up-to-date
