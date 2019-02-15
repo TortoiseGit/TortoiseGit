@@ -315,7 +315,8 @@ void CGravatar::SafeTerminateGravatarThread()
 	if (m_gravatarThread)
 	{
 		::SetEvent(m_gravatarEvent);
-		::WaitForSingleObject(m_gravatarThread, 1000);
+		if (::WaitForSingleObject(m_gravatarThread->m_hThread, 1000) == WAIT_TIMEOUT)
+			::TerminateThread(m_gravatarThread, 0);
 		delete m_gravatarThread;
 		m_gravatarThread = nullptr;
 	}
