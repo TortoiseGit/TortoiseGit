@@ -1237,7 +1237,7 @@ bool CAppUtils::CreateBranchTag(HWND hWnd, bool isTag /*true*/, const CString* c
 					MessageBox(hWnd, L"Could not save tag message", L"TortoiseGit", MB_OK | MB_ICONERROR);
 					return FALSE;
 				}
-				cmd += L" -F " + tempfile;
+				cmd.AppendFormat(L" -F \"%s\"", (LPCTSTR)tempfile);
 			}
 		}
 		else
