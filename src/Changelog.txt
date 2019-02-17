@@ -49,6 +49,7 @@ Released: unreleased
  * Fixed issue #3317: merge-ods.vbs-script: Merged document in LibreOffice 6.1 deleted by the script
  * Fixed issue #3329: create tag with message results in fatal error if username contains space
  * Fixed issue #3330: Edit notes don't load correctly for stash commits and reflog dialog
+ * Fixed issue #3331: "Putty Key:" label is too narrow for localization
  * Improved stability in various unusual cases
 
 = Release 2.7.0 =
