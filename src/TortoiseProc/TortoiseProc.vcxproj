@@ -122,6 +122,7 @@
     <ClCompile Include="..\TGitCache\CacheInterface.cpp" />
     <ClCompile Include="AutoTextTestDlg.cpp" />
     <ClCompile Include="BugtraqRegexTestDlg.cpp" />
+    <ClCompile Include="BrowseRefsDlgFilter.cpp" />
     <ClCompile Include="CheckCertificateDlg.cpp" />
     <ClCompile Include="ColumnManager.cpp" />
     <ClCompile Include="Commands\CommitIsOnRefsCommand.cpp" />
@@ -412,6 +413,7 @@
     <ClInclude Include="AutoTextTestDlg.h" />
     <ClInclude Include="BstrSafeVector.h" />
     <ClInclude Include="BugtraqRegexTestDlg.h" />
+    <ClInclude Include="BrowseRefsDlgFilter.h" />
     <ClInclude Include="CheckCertificateDlg.h" />
     <ClInclude Include="ColumnManager.h" />
     <ClInclude Include="Commands\AutoTextTestCommand.h" />
