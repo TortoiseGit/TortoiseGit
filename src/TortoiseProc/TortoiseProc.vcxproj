@@ -128,6 +128,7 @@
     <ClCompile Include="Commands\DaemonCommand.cpp" />
     <ClCompile Include="CommitIsOnRefsDlg.cpp" />
     <ClCompile Include="CreateChangelistDlg.cpp" />
+    <ClCompile Include="FilterHelper.cpp" />
     <ClCompile Include="FindBar.cpp" />
     <ClCompile Include="FirstStartWizard.cpp" />
     <ClCompile Include="FirstStartWizardAuthentication.cpp" />
@@ -421,6 +422,7 @@
     <ClInclude Include="CommitIsOnRefsDlg.h" />
     <ClInclude Include="ConfigureGitExe.h" />
     <ClInclude Include="CreateChangelistDlg.h" />
+    <ClInclude Include="FilterHelper.h" />
     <ClInclude Include="FindBar.h" />
     <ClInclude Include="FirstStartWizard.h" />
     <ClInclude Include="FirstStartWizardAuthentication.h" />

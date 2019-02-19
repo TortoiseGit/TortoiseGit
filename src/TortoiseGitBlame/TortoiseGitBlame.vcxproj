@@ -59,6 +59,7 @@
     <ClCompile Include="..\Git\TGitPath.cpp" />
     <ClCompile Include="..\TortoiseProc\Colors.cpp" />
     <ClCompile Include="..\TortoiseProc\ColumnManager.cpp" />
+    <ClCompile Include="..\TortoiseProc\FilterHelper.cpp" />
     <ClCompile Include="..\TortoiseProc\GravatarPictureBox.cpp" />
     <ClCompile Include="..\TortoiseProc\LogDlgFilter.cpp" />
     <ClCompile Include="..\Utils\CmdLineParser.cpp" />
@@ -116,6 +117,7 @@
     <ClInclude Include="..\Git\TGitPath.h" />
     <ClInclude Include="..\Resources\LoglistCommonResource.h" />
     <ClInclude Include="..\TortoiseProc\ColumnManager.h" />
+    <ClInclude Include="..\TortoiseProc\FilterHelper.h" />
     <ClInclude Include="..\TortoiseProc\LogDlgFilter.h" />
     <ClInclude Include="..\Utils\CmdLineParser.h" />
     <ClInclude Include="..\Utils\DebugOutput.h" />
