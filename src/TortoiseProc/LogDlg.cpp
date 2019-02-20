@@ -471,8 +471,8 @@ BOOL CLogDlg::OnInitDialog()
 	ShowGravatar();
 	m_gravatar.Init();
 
-	m_cFilter.SetCancelBitmaps(IDI_CANCELNORMAL, IDI_CANCELPRESSED, 14, 14);
-	m_cFilter.SetInfoIcon(IDI_LOGFILTER, 19, 19);
+	m_cFileFilter.SetCancelBitmaps(IDI_CANCELNORMAL, IDI_CANCELPRESSED, 14, 14);
+	m_cFileFilter.SetInfoIcon(IDI_LOGFILTER, 19, 19);
 	temp.LoadString(IDS_FILEDIFF_FILTERCUE);
 	temp = L"   " + temp;
 	m_cFileFilter.SetCueBanner(temp);
