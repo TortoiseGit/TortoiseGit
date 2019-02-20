@@ -29,6 +29,11 @@ bool CLogDlgFileFilter::operator()(const CTGitPath& path) const
 	scratch.clear();
 
 	scratch += path.GetGitPathString();
+	if (!path.GetGitOldPathString().IsEmpty())
+	{
+		scratch += L'\n';
+		scratch += path.GetGitOldPathString();
+	}
 
 	return CalculateFinalResult(Match(scratch));
 }
