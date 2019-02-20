@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2017, 2019 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -89,7 +89,7 @@ protected:
 	void				DoDiff(int selIndex, bool blame);
 	void				SetURLLabels(int mask=0x3);
 	void				ClearURLabels(int mask);
-	void				Filter(CString sFilterText);
+	void				Filter(const CString& sFilterText);
 	void				CopySelectionToClipboard(BOOL isFull=FALSE);
 
 	void				ClickRevButton(CMenuButton *button,GitRev *rev, CACEdit *edit);

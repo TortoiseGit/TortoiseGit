@@ -37,6 +37,7 @@
 #include "GitStatusListCtrl.h"
 #include "FormatMessageWrapper.h"
 #include "GitDataObject.h"
+#include "LogDlgFileFilter.h"
 
 #define ID_COMPARE 1
 #define ID_BLAME 2
@@ -1210,17 +1211,14 @@ void CFileDiffDlg::OnTimer(UINT_PTR nIDEvent)
 	}
 }
 
-void CFileDiffDlg::Filter(CString sFilterText)
+void CFileDiffDlg::Filter(const CString& sFilterText)
 {
-	sFilterText.MakeLower();
+	CLogDlgFileFilter filter(sFilterText, 0, 0, true);
 
 	m_arFilteredList.clear();
-
 	for (int i=0;i<m_arFileList.GetCount();i++)
 	{
-		CString sPath = m_arFileList[i].GetGitPathString();
-		sPath.MakeLower();
-		if (sPath.Find(sFilterText) >= 0)
+		if (filter(m_arFileList[i]))
 			m_arFilteredList.push_back((CTGitPath*)&(m_arFileList[i]));
 	}
 	for (const auto path : m_arFilteredList)

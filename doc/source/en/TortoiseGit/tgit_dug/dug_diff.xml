@@ -287,7 +287,7 @@
 			to reduce the list to filenames containing specific text. Note that
 			a simple text search is used, so if you want to restrict the list
 			to C source files you should enter <filename>.c</filename> rather than
-			<filename>*.c</filename>.
+			<filename>*.c</filename>. The search syntax is similar to the one available in the Log dialog (cf. <xref linkend="tgit-dug-showlog-filter"/>).
 		</para>
 	</sect2>
 	<sect2 id="tgit-dug-submodulediff">
