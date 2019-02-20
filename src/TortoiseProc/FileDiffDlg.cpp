@@ -210,7 +210,7 @@ BOOL CFileDiffDlg::OnInitDialog()
 	m_SwitchButton.Invalidate();
 
 	m_cFilter.SetCancelBitmaps(IDI_CANCELNORMAL, IDI_CANCELPRESSED, 14, 14);
-	m_cFilter.SetInfoIcon(IDI_LOGFILTER, 19, 19);
+	m_cFilter.SetInfoIcon(IDI_FILTEREDIT, 19, 19);
 	temp.LoadString(IDS_FILEDIFF_FILTERCUE);
 	temp = L"   " + temp;
 	m_cFilter.SetCueBanner(temp);

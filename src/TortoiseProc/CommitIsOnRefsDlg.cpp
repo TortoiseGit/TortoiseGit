@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2018 - TortoiseGit
+// Copyright (C) 2016-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -129,7 +129,7 @@ BOOL CCommitIsOnRefsDlg::OnInitDialog()
 		m_cRefList.SetExtendedStyle(m_cRefList.GetExtendedStyle() | LVS_EX_FULLROWSELECT);
 
 	m_cFilter.SetCancelBitmaps(IDI_CANCELNORMAL, IDI_CANCELPRESSED, 14, 14);
-	m_cFilter.SetInfoIcon(IDI_LOGFILTER, 19, 19);
+	m_cFilter.SetInfoIcon(IDI_FILTEREDIT, 19, 19);
 
 	m_cRevEdit.Init();
 	m_cRevEdit.SetWindowText(m_Rev);
