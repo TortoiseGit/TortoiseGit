@@ -980,6 +980,15 @@
     <ClCompile Include="CreateChangelistDlg.cpp">
       <Filter>Utility Dialogs</Filter>
     </ClCompile>
+    <ClCompile Include="FilterHelper.cpp">
+      <Filter>Utility Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="BrowseRefsDlgFilter.cpp">
+      <Filter>Commands\RefBrowse</Filter>
+    </ClCompile>
+    <ClCompile Include="LogDlgFileFilter.cpp">
+      <Filter>Commands\Log</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1845,6 +1854,15 @@
     </ClInclude>
     <ClInclude Include="CreateChangelistDlg.h">
       <Filter>Utility Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="FilterHelper.h">
+      <Filter>Utility Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="BrowseRefsDlgFilter.h">
+      <Filter>Commands\RefBrowse</Filter>
+    </ClInclude>
+    <ClInclude Include="LogDlgFileFilter.h">
+      <Filter>Commands\Log</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

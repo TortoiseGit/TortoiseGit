@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2018 - TortoiseGit
+// Copyright (C) 2009-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -17,7 +17,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
-
+#include "resource.h"
 #include "StandAloneDlg.h"
 #include "FilterEdit.h"
 #include "ResizableColumnsListCtrl.h"
@@ -30,6 +30,8 @@ const int gPickRef_Tag		= 2;
 const int gPickRef_Remote	= 4;
 const int gPickRef_All		= gPickRef_Head | gPickRef_Tag | gPickRef_Remote;
 const int gPickRef_NoTag	= gPickRef_All & ~gPickRef_Tag;
+
+class CBrowseRefsDlgFilter;
 
 class CShadowTree
 {
@@ -164,7 +166,7 @@ protected:
 
 	void			FillListCtrlForTreeNode(HTREEITEM treeNode);
 
-	void			FillListCtrlForShadowTree(CShadowTree* pTree, CString refNamePrefix, bool isFirstLevel);
+	void			FillListCtrlForShadowTree(CShadowTree* pTree, CString refNamePrefix, bool isFirstLevel, const CBrowseRefsDlgFilter& filter);
 
 	bool			SelectRef(CString refName, bool bExactMatch);
 
@@ -196,7 +198,6 @@ private:
 	void			SetFilterCueText();
 	afx_msg LRESULT OnClickedInfoIcon(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnClickedCancelFilter(WPARAM wParam, LPARAM lParam);
-	bool			IsMatchFilter(const CShadowTree* pTree, const CString &ref, const CString &filter, bool positive);
 	CComboBox		m_cBranchFilter;
 
 	int				m_currSortCol;

@@ -16,24 +16,41 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
-#pragma once
-#include "FilterHelper.h"
-#include "GitRevLoglist.h"
+#include "stdafx.h"
+#include "BrowseRefsDlgFilter.h"
+#include "BrowseRefsDlg.h"
+#include "GitLogListBase.h"
 
-class CGitLogListBase;
+bool CBrowseRefsDlgFilter::operator()(const CShadowTree* pTree, const CString& ref) const
+{
+	if (!IsFilterActive())
+		return CalculateFinalResult(true);
 
-class CLogDlgFilter : public CFilterHelper {
-public:
-	/// construction
-	using CFilterHelper::CFilterHelper;
+	// we need to perform expensive string / pattern matching
+	scratch.clear();
 
-	/// apply filter
-	bool operator()(GitRevLoglist* pRev, CGitLogListBase* loglist, const MAP_HASH_NAME& hashMapRefs) const;
+	if (GetSelectedFilters() & LOGFILTER_REFNAME)
+	{
+		scratch += ref;
+		scratch += L'\n';
+	}
+	if (GetSelectedFilters() & LOGFILTER_SUBJECT)
+	{
+		scratch += pTree->m_csSubject;
+		scratch += L'\n';
+	}
 
-	/// assignment operator
-	using CFilterHelper::operator=;
+	if (GetSelectedFilters() & LOGFILTER_AUTHORS)
+	{
+		scratch += pTree->m_csAuthor;
+		scratch += L'\n';
+	}
 
-	/// compare filter specs
-	using CFilterHelper::operator==;
-	using CFilterHelper::operator!=;
-};
+	if (GetSelectedFilters() & LOGFILTER_REVS)
+	{
+		scratch += pTree->m_csRefHash;
+		scratch += L'\n';
+	}
+
+	return CalculateFinalResult(Match(scratch));
+}

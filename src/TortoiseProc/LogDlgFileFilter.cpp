@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2018-2019 - TortoiseGit
+// Copyright (C) 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -16,24 +16,24 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
-#pragma once
-#include "FilterHelper.h"
-#include "GitRevLoglist.h"
+#include "stdafx.h"
+#include "LogDlgFileFilter.h"
+#include "LogDlg.h"
 
-class CGitLogListBase;
+bool CLogDlgFileFilter::operator()(const CTGitPath& path) const
+{
+	if (!IsFilterActive())
+		return CalculateFinalResult(true);
 
-class CLogDlgFilter : public CFilterHelper {
-public:
-	/// construction
-	using CFilterHelper::CFilterHelper;
+	// we need to perform expensive string / pattern matching
+	scratch.clear();
 
-	/// apply filter
-	bool operator()(GitRevLoglist* pRev, CGitLogListBase* loglist, const MAP_HASH_NAME& hashMapRefs) const;
+	scratch += path.GetGitPathString();
+	if (!path.GetGitOldPathString().IsEmpty())
+	{
+		scratch += L'\n';
+		scratch += path.GetGitOldPathString();
+	}
 
-	/// assignment operator
-	using CFilterHelper::operator=;
-
-	/// compare filter specs
-	using CFilterHelper::operator==;
-	using CFilterHelper::operator!=;
-};
+	return CalculateFinalResult(Match(scratch));
+}

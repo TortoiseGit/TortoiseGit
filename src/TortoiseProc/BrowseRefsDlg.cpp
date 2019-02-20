@@ -38,6 +38,7 @@
 #include "LoglistUtils.h"
 #include "GitRevRefBrowser.h"
 #include "StringUtils.h"
+#include "BrowseRefsDlgFilter.h"
 
 static int SplitRemoteBranchName(CString ref, CString &remote, CString &branch)
 {
@@ -577,23 +578,22 @@ void CBrowseRefsDlg::FillListCtrlForTreeNode(HTREEITEM treeNode)
 	if (!pTree)
 		return;
 
-	FillListCtrlForShadowTree(pTree,L"",true);
+	CString filterText;
+	m_ctrlFilter.GetWindowText(filterText);
+
+	CBrowseRefsDlgFilter filter(filterText, false, m_SelectedFilters, false);
+
+	FillListCtrlForShadowTree(pTree, L"", true, filter);
 	m_ListRefLeafs.m_ColumnManager.SetVisible(eCol_Upstream, pTree->IsFrom(L"refs/heads"));
 	m_ListRefLeafs.AdjustColumnWidths();
 }
 
-void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNamePrefix, bool isFirstLevel)
+void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNamePrefix, bool isFirstLevel, const CBrowseRefsDlgFilter& filter)
 {
 	if(pTree->IsLeaf())
 	{
-		CString filter;
-		m_ctrlFilter.GetWindowText(filter);
-		filter.MakeLower();
-		bool positive = filter[0] != '!';
-		if (!positive)
-			filter = filter.Mid((int)wcslen(L"!"));
 		CString ref = refNamePrefix + pTree->m_csRefName;
-		if (!(pTree->m_csRefName.IsEmpty() || pTree->m_csRefName == L"refs" && !pTree->m_pParent) && IsMatchFilter(pTree, ref, filter, positive))
+		if (!(pTree->m_csRefName.IsEmpty() || pTree->m_csRefName == L"refs" && !pTree->m_pParent) && filter(pTree, ref))
 		{
 			int indexItem = m_ListRefLeafs.InsertItem(m_ListRefLeafs.GetItemCount(), L"");
 
@@ -620,7 +620,7 @@ void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNa
 			m_pListCtrlRoot = pTree;
 		for(CShadowTree::TShadowTreeMap::iterator itSubTree=pTree->m_ShadowTree.begin(); itSubTree!=pTree->m_ShadowTree.end(); ++itSubTree)
 		{
-			FillListCtrlForShadowTree(&itSubTree->second,csThisName,false);
+			FillListCtrlForShadowTree(&itSubTree->second, csThisName, false, filter);
 		}
 	}
 	if (isFirstLevel)
@@ -630,46 +630,6 @@ void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNa
 
 		SetSortArrow(&m_ListRefLeafs,m_currSortCol,!m_currSortDesc);
 	}
-}
-
-bool CBrowseRefsDlg::IsMatchFilter(const CShadowTree* pTree, const CString &ref, const CString &filter, bool positive)
-{
-	if (m_SelectedFilters & LOGFILTER_REFNAME)
-	{
-		CString msg = ref;
-		msg = msg.MakeLower();
-
-		if (msg.Find(filter) >= 0)
-			return positive;
-	}
-
-	if (m_SelectedFilters & LOGFILTER_SUBJECT)
-	{
-		CString msg = pTree->m_csSubject;
-		msg = msg.MakeLower();
-
-		if (msg.Find(filter) >= 0)
-			return positive;
-	}
-
-	if (m_SelectedFilters & LOGFILTER_AUTHORS)
-	{
-		CString msg = pTree->m_csAuthor;
-		msg = msg.MakeLower();
-
-		if (msg.Find(filter) >= 0)
-			return positive;
-	}
-
-	if (m_SelectedFilters & LOGFILTER_REVS)
-	{
-		CString msg = pTree->m_csRefHash;
-		msg = msg.MakeLower();
-
-		if (msg.Find(filter) >= 0)
-			return positive;
-	}
-	return !positive;
 }
 
 bool CBrowseRefsDlg::ConfirmDeleteRef(VectorPShadowTree& leafs)

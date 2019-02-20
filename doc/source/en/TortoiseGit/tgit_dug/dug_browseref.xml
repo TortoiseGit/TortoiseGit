@@ -32,6 +32,9 @@
 		Right panel shows all refs for a selected type (recursively if not disabled using <guibutton>Show nested refs</guibutton>) including the latest commit, description and (for local branches) their remote tracked branch.
 	</para>
 	<para>
+		At the top there is an edit bar which can be used to filter the displayed refs in the right panel. The search syntax is similar to the one available in the Log dialog (cf. <xref linkend="tgit-dug-showlog-filter"/>).
+	</para>
+	<para>
 		On both panels there is a powerful context menu which provides further options such as deleting/renaming refs, configuring the remote tracked branch (for local branches) and deleting tags for a remote (on the left panel when a remote is selected). If exactly two refs are selected it is possible to compare them or open the log for all commits which are on both branches (<guimenuitem>Show log of branch1...branch2</guimenuitem>) or just on one of the two (<guimenuitem>Show log of branch1..branch2</guimenuitem>).
 	</para>
 <!--

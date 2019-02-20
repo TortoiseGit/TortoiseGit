@@ -122,12 +122,14 @@
     <ClCompile Include="..\TGitCache\CacheInterface.cpp" />
     <ClCompile Include="AutoTextTestDlg.cpp" />
     <ClCompile Include="BugtraqRegexTestDlg.cpp" />
+    <ClCompile Include="BrowseRefsDlgFilter.cpp" />
     <ClCompile Include="CheckCertificateDlg.cpp" />
     <ClCompile Include="ColumnManager.cpp" />
     <ClCompile Include="Commands\CommitIsOnRefsCommand.cpp" />
     <ClCompile Include="Commands\DaemonCommand.cpp" />
     <ClCompile Include="CommitIsOnRefsDlg.cpp" />
     <ClCompile Include="CreateChangelistDlg.cpp" />
+    <ClCompile Include="FilterHelper.cpp" />
     <ClCompile Include="FindBar.cpp" />
     <ClCompile Include="FirstStartWizard.cpp" />
     <ClCompile Include="FirstStartWizardAuthentication.cpp" />
@@ -138,6 +140,7 @@
     <ClCompile Include="FirstStartWizardUser.cpp" />
     <ClCompile Include="GitTagCompareList.cpp" />
     <ClCompile Include="GravatarPictureBox.cpp" />
+    <ClCompile Include="LogDlgFileFilter.cpp" />
     <ClCompile Include="LogDlgFilter.cpp" />
     <ClCompile Include="MergeAbortDlg.cpp" />
     <ClCompile Include="GitRefCompareList.cpp" />
@@ -411,6 +414,7 @@
     <ClInclude Include="AutoTextTestDlg.h" />
     <ClInclude Include="BstrSafeVector.h" />
     <ClInclude Include="BugtraqRegexTestDlg.h" />
+    <ClInclude Include="BrowseRefsDlgFilter.h" />
     <ClInclude Include="CheckCertificateDlg.h" />
     <ClInclude Include="ColumnManager.h" />
     <ClInclude Include="Commands\AutoTextTestCommand.h" />
@@ -421,6 +425,7 @@
     <ClInclude Include="CommitIsOnRefsDlg.h" />
     <ClInclude Include="ConfigureGitExe.h" />
     <ClInclude Include="CreateChangelistDlg.h" />
+    <ClInclude Include="FilterHelper.h" />
     <ClInclude Include="FindBar.h" />
     <ClInclude Include="FirstStartWizard.h" />
     <ClInclude Include="FirstStartWizardAuthentication.h" />
@@ -431,6 +436,7 @@
     <ClInclude Include="FirstStartWizardUser.h" />
     <ClInclude Include="GitTagCompareList.h" />
     <ClInclude Include="GravatarPictureBox.h" />
+    <ClInclude Include="LogDlgFileFilter.h" />
     <ClInclude Include="LogDlgFilter.h" />
     <ClInclude Include="MergeAbortDlg.h" />
     <ClInclude Include="GitRefCompareList.h" />

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2018-2019 - TortoiseGit
+// Copyright (C) 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,17 +18,15 @@
 //
 #pragma once
 #include "FilterHelper.h"
-#include "GitRevLoglist.h"
+#include "TGitPath.h"
 
-class CGitLogListBase;
-
-class CLogDlgFilter : public CFilterHelper {
+class CLogDlgFileFilter : public CFilterHelper {
 public:
 	/// construction
 	using CFilterHelper::CFilterHelper;
 
 	/// apply filter
-	bool operator()(GitRevLoglist* pRev, CGitLogListBase* loglist, const MAP_HASH_NAME& hashMapRefs) const;
+	bool operator()(const CTGitPath& path) const;
 
 	/// assignment operator
 	using CFilterHelper::operator=;
