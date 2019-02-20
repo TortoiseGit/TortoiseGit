@@ -904,6 +904,7 @@ CString CGitStatusListCtrl::GetCellText(int listIndex, int column)
 	switch (column)
 	{
 	case 0: // relative path
+		// similar code in FileDiffDlg.cpp::GetFilename
 		if (!(entry->m_Action & (CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_COPY) && !entry->GetGitOldPathString().IsEmpty()))
 			return entry->GetGitPathString();
 

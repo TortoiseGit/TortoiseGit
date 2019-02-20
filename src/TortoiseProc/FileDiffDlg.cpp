@@ -387,6 +387,27 @@ LRESULT CFileDiffDlg::OnDiffFinished(WPARAM, LPARAM)
 	return 0;
 }
 
+static CString GetFilename(const CTGitPath* entry)
+{
+	// similar code in CGitStatusListCtrl::GetCellText
+	static CString from(MAKEINTRESOURCE(IDS_STATUSLIST_FROM));
+	static bool abbreviateRenamings(((DWORD)CRegDWORD(L"Software\\TortoiseGit\\AbbreviateRenamings", FALSE)) == TRUE);
+
+	if (!(entry->m_Action & (CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_COPY) && !entry->GetGitOldPathString().IsEmpty()))
+		return entry->GetGitPathString();
+
+	if (!abbreviateRenamings)
+	{
+		CString entryname = entry->GetGitPathString();
+		entryname += L' ';
+		// relative path
+		entryname.AppendFormat(from, (LPCTSTR)entry->GetGitOldPathString());
+		return entryname;
+	}
+
+	return entry->GetAbbreviatedRename();
+}
+
 int CFileDiffDlg::AddEntry(const CTGitPath * fd)
 {
 	int ret = -1;
@@ -400,7 +421,7 @@ int CFileDiffDlg::AddEntry(const CTGitPath * fd)
 		else
 			icon_idx = SYS_IMAGE_LIST().GetPathIconIndex(fd->GetGitPathString());
 
-		ret = m_cFileList.InsertItem(index, fd->GetGitPathString(), icon_idx);
+		ret = m_cFileList.InsertItem(index, GetFilename(fd), icon_idx);
 		m_cFileList.SetItemText(index, 1, fd->GetFileExtension());
 		m_cFileList.SetItemText(index, 2, fd->GetActionName());
 		m_cFileList.SetItemText(index, 3, fd->m_StatAdd);
