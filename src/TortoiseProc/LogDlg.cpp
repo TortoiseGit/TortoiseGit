@@ -32,6 +32,7 @@
 #include "LogOrdering.h"
 #include "ClipboardHelper.h"
 #include "DPIAware.h"
+#include "LogDlgFileFilter.h"
 
 #define MIN_CTRL_HEIGHT (CDPIAware::Instance().ScaleY(20))
 #define MIN_SPLITTER_HEIGHT (CDPIAware::Instance().ScaleY(10))
@@ -997,17 +998,15 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 					((CTGitPath&)files[i]).m_Action &= ~(CTGitPath::LOGACTIONS_HIDE | CTGitPath::LOGACTIONS_GRAY);
 			}
 
-			CString fileFilter;
-			m_cFileFilter.GetWindowText(fileFilter);
-			if (!fileFilter.IsEmpty())
+			CString fileFilterText;
+			m_cFileFilter.GetWindowText(fileFilterText);
+			if (!fileFilterText.IsEmpty())
 			{
-				fileFilter.MakeLower();
+				CLogDlgFileFilter fileFilter(fileFilterText, false, 0, false);
 				bool somethingHidden = false;
 				for (int i = 0; i < count; ++i)
 				{
-					CString sPath(files[i].GetGitPathString());
-					sPath.MakeLower();
-					if (sPath.Find(fileFilter) < 0)
+					if (!fileFilter(files[i]))
 					{
 						((CTGitPath&)files[i]).m_Action |= CTGitPath::LOGACTIONS_HIDE;
 						somethingHidden = true;
