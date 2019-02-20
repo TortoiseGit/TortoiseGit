@@ -620,11 +620,11 @@ protected:
 	void DrawTagBranch(HDC hdc, CDC& W_Dc, HTHEME hTheme, CRect& rect, CRect& rt, LVITEM& rItem, GitRevLoglist* data, std::vector<REFLABEL>& refList);
 	void DrawGraph(HDC,CRect &rect,INT_PTR index);
 	bool CGitLogListBase::DrawListItemWithMatchesIfEnabled(std::shared_ptr<CLogDlgFilter> filter, DWORD selectedFilter, NMLVCUSTOMDRAW* pLVCD, LRESULT* pResult);
-	void DrawListItemWithMatchesRect(NMLVCUSTOMDRAW* pLVCD, const std::vector<CHARRANGE>& ranges, CRect rect, const CString& text, HTHEME hTheme = nullptr, int txtState = 0);
+	static void DrawListItemWithMatchesRect(NMLVCUSTOMDRAW* pLVCD, const std::vector<CHARRANGE>& ranges, CRect rect, const CString& text, CColors& colors, HTHEME hTheme = nullptr, int txtState = 0);
 
 public:
-	// needs to be called from LogDlg.cpp
-	LRESULT DrawListItemWithMatches(CLogDlgFilter* filter, CListCtrl& listCtrl, NMLVCUSTOMDRAW* pLVCD);
+	// needs to be called from LogDlg.cpp and FileDiffDlg.cpp
+	static LRESULT DrawListItemWithMatches(CFilterHelper* filter, CListCtrl& listCtrl, NMLVCUSTOMDRAW* pLVCD, CColors& colors);
 
 protected:
 	void paintGraphLane(HDC hdc,int laneHeight, int type, int x1, int x2,

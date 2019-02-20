@@ -30,6 +30,8 @@
 #include "MenuButton.h"
 #include "ACEdit.h"
 #include "GestureEnabledControl.h"
+#include "LogDlgFileFilter.h"
+
 #define IDT_FILTER		101
 #define IDT_INPUT		102
 
@@ -134,6 +136,7 @@ private:
 	CMenuButton			m_cRev1Btn;
 	CMenuButton			m_cRev2Btn;
 	CFilterEdit			m_cFilter;
+	std::shared_ptr<CLogDlgFileFilter> m_filter;
 
 	CMenuButton			m_cDiffOptionsBtn;
 

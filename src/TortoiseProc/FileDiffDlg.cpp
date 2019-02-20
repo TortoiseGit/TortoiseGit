@@ -195,6 +195,7 @@ BOOL CFileDiffDlg::OnInitDialog()
 
 	m_tooltips.AddTool(IDC_SWITCHLEFTRIGHT, IDS_FILEDIFF_SWITCHLEFTRIGHT_TT);
 
+	SetWindowTheme(m_cFileList.GetSafeHwnd(), L"Explorer", nullptr);
 	m_cFileList.SetRedraw(false);
 	m_cFileList.DeleteAllItems();
 	DWORD exStyle = LVS_EX_DOUBLEBUFFER | LVS_EX_INFOTIP;
@@ -514,7 +515,7 @@ void CFileDiffDlg::OnNMCustomdrawFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 		// item itself, but it will use the new color we set here.
 
 		// Tell Windows to paint the control itself.
-		*pResult = CDRF_DODEFAULT;
+		*pResult = CDRF_NOTIFYSUBITEMDRAW;
 
 		COLORREF crText = GetSysColor(COLOR_WINDOWTEXT);
 
@@ -539,6 +540,15 @@ void CFileDiffDlg::OnNMCustomdrawFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 		}
 		// Store the color back in the NMLVCUSTOMDRAW struct.
 		pLVCD->clrText = crText;
+	}
+	else if (pLVCD->nmcd.dwDrawStage == (CDDS_ITEMPREPAINT | CDDS_ITEM | CDDS_SUBITEM))
+	{
+		if (pLVCD->iSubItem > 1) // only highlight search matches in filename and extension
+			return;
+
+		auto filter(m_filter);
+		if (filter->IsFilterActive())
+			*pResult = CGitLogListBase::DrawListItemWithMatches(filter.get(), m_cFileList, pLVCD, m_colors);
 	}
 }
 
@@ -1234,7 +1244,8 @@ void CFileDiffDlg::OnTimer(UINT_PTR nIDEvent)
 
 void CFileDiffDlg::Filter(const CString& sFilterText)
 {
-	CLogDlgFileFilter filter(sFilterText, 0, 0, true);
+	m_filter = std::make_shared<CLogDlgFileFilter>(sFilterText, 0, 0, true);
+	auto filter = *m_filter.get();
 
 	m_arFilteredList.clear();
 	for (int i=0;i<m_arFileList.GetCount();i++)

@@ -557,7 +557,7 @@ void CGitLogListBase::DrawTagBranchMessage(NMLVCUSTOMDRAW* pLVCD, CRect& rect, I
 			txtState = LISS_SELECTED;
 
 		if (!ranges.empty())
-			DrawListItemWithMatchesRect(pLVCD, ranges, rt, msg, hTheme, txtState);
+			DrawListItemWithMatchesRect(pLVCD, ranges, rt, msg, m_Colors, hTheme, txtState);
 		else
 		{
 			DTTOPTS opts = { 0 };
@@ -574,7 +574,7 @@ void CGitLogListBase::DrawTagBranchMessage(NMLVCUSTOMDRAW* pLVCD, CRect& rect, I
 		else
 			pLVCD->clrText = skip ? RGB(128, 128, 128) : ::GetSysColor(COLOR_WINDOWTEXT);
 		if (!ranges.empty())
-			DrawListItemWithMatchesRect(pLVCD, ranges, rt, msg);
+			DrawListItemWithMatchesRect(pLVCD, ranges, rt, msg, m_Colors);
 		else
 		{
 			COLORREF clrOld = ::SetTextColor(pLVCD->nmcd.hdc, pLVCD->clrText);
@@ -4011,7 +4011,7 @@ ULONG CGitLogListBase::GetGestureStatus(CPoint /*ptTouch*/)
 	return 0;
 }
 
-void CGitLogListBase::DrawListItemWithMatchesRect(NMLVCUSTOMDRAW* pLVCD, const std::vector<CHARRANGE>& ranges, CRect rect, const CString& text, HTHEME hTheme /*= nullptr*/, int txtState /*= 0*/)
+void CGitLogListBase::DrawListItemWithMatchesRect(NMLVCUSTOMDRAW* pLVCD, const std::vector<CHARRANGE>& ranges, CRect rect, const CString& text, CColors& colors, HTHEME hTheme /*= nullptr*/, int txtState /*= 0*/)
 {
 	int drawPos = 0;
 	COLORREF textColor = pLVCD->clrText;
@@ -4049,14 +4049,14 @@ void CGitLogListBase::DrawListItemWithMatchesRect(NMLVCUSTOMDRAW* pLVCD, const s
 		{
 			if (!hTheme)
 			{
-				::SetTextColor(pLVCD->nmcd.hdc, m_Colors.GetColor(CColors::FilterMatch));
+				::SetTextColor(pLVCD->nmcd.hdc, colors.GetColor(CColors::FilterMatch));
 				DrawText(pLVCD->nmcd.hdc, text.Mid(drawPos), it->cpMax - drawPos, &rc, DT_SINGLELINE | DT_VCENTER | DT_NOPREFIX | DT_END_ELLIPSIS);
 				DrawText(pLVCD->nmcd.hdc, text.Mid(drawPos), it->cpMax - drawPos, &rc, DT_CALCRECT | DT_SINGLELINE | DT_VCENTER | DT_NOPREFIX | DT_END_ELLIPSIS);
 				::SetTextColor(pLVCD->nmcd.hdc, textColor);
 			}
 			else
 			{
-				opts.crText = m_Colors.GetColor(CColors::FilterMatch);
+				opts.crText = colors.GetColor(CColors::FilterMatch);
 				DrawThemeTextEx(hTheme, pLVCD->nmcd.hdc, LVP_LISTITEM, txtState, text.Mid(drawPos), it->cpMax - drawPos, DT_SINGLELINE | DT_VCENTER | DT_NOPREFIX | DT_END_ELLIPSIS, &rc, &opts);
 				GetThemeTextExtent(hTheme, pLVCD->nmcd.hdc, LVP_LISTITEM, txtState, text.Mid(drawPos), it->cpMax - drawPos, DT_CALCRECT | DT_SINGLELINE | DT_VCENTER | DT_NOPREFIX | DT_END_ELLIPSIS, &rect, &rc);
 				opts.crText = textColor;
@@ -4076,13 +4076,13 @@ bool CGitLogListBase::DrawListItemWithMatchesIfEnabled(std::shared_ptr<CLogDlgFi
 {
 	if ((filter->GetSelectedFilters() & selectedFilter) && filter->IsFilterActive())
 	{
-		*pResult = DrawListItemWithMatches(filter.get(), *this, pLVCD);
+		*pResult = DrawListItemWithMatches(filter.get(), *this, pLVCD, m_Colors);
 		return true;
 	}
 	return false;
 }
 
-LRESULT CGitLogListBase::DrawListItemWithMatches(CLogDlgFilter* filter, CListCtrl& listCtrl, NMLVCUSTOMDRAW* pLVCD)
+LRESULT CGitLogListBase::DrawListItemWithMatches(CFilterHelper* filter, CListCtrl& listCtrl, NMLVCUSTOMDRAW* pLVCD, CColors& colors)
 {
 	CString text;
 	text = (LPCTSTR)listCtrl.GetItemText((int)pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem);
@@ -4117,7 +4117,7 @@ LRESULT CGitLogListBase::DrawListItemWithMatches(CLogDlgFilter* filter, CListCtr
 	HTHEME hTheme = nullptr;
 	if (IsAppThemed())
 	{
-		hTheme = OpenThemeData(m_hWnd, L"Explorer::ListView;ListView");
+		hTheme = OpenThemeData(listCtrl.m_hWnd, L"Explorer::ListView;ListView");
 		GetThemeMetric(hTheme, pLVCD->nmcd.hdc, LVP_LISTITEM, LISS_NORMAL, TMT_BORDERSIZE, &borderWidth);
 	}
 	else
@@ -4183,7 +4183,7 @@ LRESULT CGitLogListBase::DrawListItemWithMatches(CLogDlgFilter* filter, CListCtr
 		}
 
 		if (IsThemeBackgroundPartiallyTransparent(hTheme, LVP_LISTDETAIL, txtState))
-			DrawThemeParentBackground(m_hWnd, pLVCD->nmcd.hdc, &rect);
+			DrawThemeParentBackground(listCtrl.m_hWnd, pLVCD->nmcd.hdc, &rect);
 		else
 		{
 			HBRUSH brush = ::CreateSolidBrush(::GetSysColor(COLOR_WINDOW));
@@ -4259,7 +4259,7 @@ LRESULT CGitLogListBase::DrawListItemWithMatches(CLogDlgFilter* filter, CListCtr
 			}
 			if ((state) && (listCtrl.GetExtendedStyle() & LVS_EX_CHECKBOXES))
 			{
-				HTHEME hTheme2 = OpenThemeData(m_hWnd, L"BUTTON");
+				HTHEME hTheme2 = OpenThemeData(listCtrl.m_hWnd, L"BUTTON");
 				DrawThemeBackground(hTheme2, pLVCD->nmcd.hdc, BP_CHECKBOX, state, &irc, NULL);
 				CloseThemeData(hTheme2);
 			}
@@ -4285,7 +4285,7 @@ LRESULT CGitLogListBase::DrawListItemWithMatches(CLogDlgFilter* filter, CListCtr
 		}
 	}
 
-	DrawListItemWithMatchesRect(pLVCD, ranges, rect, text, hTheme, txtState);
+	DrawListItemWithMatchesRect(pLVCD, ranges, rect, text, colors, hTheme, txtState);
 	if (hTheme)
 		CloseThemeData(hTheme);
 

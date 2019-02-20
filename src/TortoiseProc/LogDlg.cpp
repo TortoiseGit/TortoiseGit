@@ -3599,5 +3599,5 @@ void CLogDlg::OnNMCustomdrawChangedFileList(NMHDR* pNMHDR, LRESULT* pResult)
 
 	auto filter(m_LogList.m_LogFilter);
 	if ((m_SelectedFilters & LOGFILTER_PATHS) && (filter->IsFilterActive()))
-		*pResult = m_LogList.DrawListItemWithMatches(filter.get(), m_ChangedFileListCtrl, pLVCD);
+		*pResult = CGitLogListBase::DrawListItemWithMatches(filter.get(), m_ChangedFileListCtrl, pLVCD, m_Colors);
 }
