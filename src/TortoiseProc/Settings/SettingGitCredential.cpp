@@ -572,32 +572,30 @@ int CSettingGitCredential::DeleteOtherKeys(int type)
 		}
 	}
 
-	int result = 0;
 	// workaround gitdll bug
 	// TODO: switch to libgit2
 	bool old = g_Git.m_IsUseGitDLL;
 	g_Git.m_IsUseGitDLL = false;
+	SCOPE_EXIT { g_Git.m_IsUseGitDLL = old; };
 	for (size_t i = 0; i < list.size(); ++i)
 	{
-		if (list[i] != match)
+		if (list[i] == match)
+			continue;
+
+		int pos = 0;
+		CString prefix = list[i].Tokenize(L"\n", pos);
+		CString key = list[i].Tokenize(L"\n", pos);
+		CONFIG_TYPE configLevel = (prefix == L"S" || prefix == L"P") ? CONFIG_SYSTEM : prefix == L"G" || prefix == L"X" ? CONFIG_GLOBAL : CONFIG_LOCAL;
+		if (g_Git.UnsetConfigValue(key, configLevel))
 		{
-			int pos = 0;
-			CString prefix = list[i].Tokenize(L"\n", pos);
-			CString key = list[i].Tokenize(L"\n", pos);
-			CONFIG_TYPE configLevel = (prefix == L"S" || prefix == L"P") ? CONFIG_SYSTEM : prefix == L"G" || prefix == L"X" ? CONFIG_GLOBAL : CONFIG_LOCAL;
-			if (g_Git.UnsetConfigValue(key, configLevel))
-			{
-				CString msg;
-				msg.FormatMessage(IDS_PROC_SAVECONFIGFAILED, (LPCTSTR)key, L"");
-				CMessageBox::Show(GetSafeHwnd(), msg, L"TortoiseGit", MB_OK | MB_ICONERROR);
-				result = 1;
-				break;
-			}
+			CString msg;
+			msg.FormatMessage(IDS_PROC_SAVECONFIGFAILED, (LPCTSTR)key, L"");
+			CMessageBox::Show(GetSafeHwnd(), msg, L"TortoiseGit", MB_OK | MB_ICONERROR);
+			return 1;
 		}
 	}
-	g_Git.m_IsUseGitDLL = old;
 
-	return result;
+	return 0;
 }
 
 bool CSettingGitCredential::SaveSimpleCredential(int type)
