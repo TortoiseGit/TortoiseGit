@@ -56,6 +56,7 @@ BEGIN_MESSAGE_MAP(CRefLogDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDOK, &CRefLogDlg::OnBnClickedOk)
 	ON_BN_CLICKED(IDC_REFLOG_BUTTONCLEARSTASH, &CRefLogDlg::OnBnClickedClearStash)
 	ON_CBN_SELCHANGE(IDC_COMBOBOXEX_REF,   &CRefLogDlg::OnCbnSelchangeRef)
+	ON_NOTIFY(LVN_ITEMCHANGED, IDC_REFLOG_LIST, OnLvnItemchangedRefLoglist)
 	ON_MESSAGE(MSG_REFLOG_CHANGED,OnRefLogChanged)
 	ON_REGISTERED_MESSAGE(m_FindDialogMessage, OnFindDialogMessage)
 	ON_BN_CLICKED(IDC_SEARCH, OnFind)
@@ -164,6 +165,10 @@ void CRefLogDlg::OnCbnSelchangeRef()
 
 	m_RefList.Invalidate();
 
+	// reset search start positions
+	m_RefList.m_nSearchIndex = 0;
+	m_nSearchLine = 0;
+
 	if (ref == L"refs/stash")
 	{
 		GetDlgItem(IDC_REFLOG_BUTTONCLEARSTASH)->ShowWindow(SW_SHOW);
@@ -184,6 +189,16 @@ BOOL CRefLogDlg::PreTranslateMessage(MSG* pMsg)
 		OnFind();
 
 	return CResizableStandAloneDialog::PreTranslateMessage(pMsg);
+}
+
+void CRefLogDlg::OnLvnItemchangedRefLoglist(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	auto pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+	*pResult = 0;
+	if (pNMLV->iItem < 0)
+		return;
+	m_RefList.m_nSearchIndex = pNMLV->iItem;
+	m_nSearchLine = pNMLV->iItem;
 }
 
 void CRefLogDlg::Refresh()
@@ -225,7 +240,6 @@ void CRefLogDlg::OnFind()
 {
 	if (m_pFindDialog)
 		return;
-	m_nSearchLine = 0;
 	m_pFindDialog = new CFindReplaceDialog();
 	m_pFindDialog->Create(TRUE, L"", nullptr, FR_DOWN | FR_HIDEWHOLEWORD | FR_HIDEUPDOWN, this);
 }
