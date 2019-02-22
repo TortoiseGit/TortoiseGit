@@ -1646,6 +1646,10 @@ msgstr ""
 msgid "All local branches"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 1850)
+msgid "All or some options are limited. In order to change all these settings, you need Administrator rights."
+msgstr ""
+
 #. Resource IDs: (IDS_ALLREFS)
 msgid "All refs"
 msgstr ""
@@ -6518,6 +6522,10 @@ msgstr ""
 
 #. Resource IDs: (AFX_IDS_OPENFILE, ID_FILE_OPEN - Menu)
 msgid "Open"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 1849)
+msgid "Open &settings"
 msgstr ""
 
 #. Resource IDs: (57601)

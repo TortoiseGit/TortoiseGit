@@ -1951,6 +1951,8 @@ STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Git::Credential"
 FONT 9, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
+    LTEXT           "All or some options are limited. In order to change all these settings, you need Administrator rights.",IDC_STATICELEVATIONNEEDED,169,126,124,43,SS_SUNKEN | NOT WS_VISIBLE
+    PUSHBUTTON      "Open &settings",IDC_OPENSETTINGSELEVATED,169,174,124,14,NOT WS_VISIBLE
     LTEXT           "Credential helper:",IDC_STATIC,7,7,58,8
     COMBOBOX        IDC_COMBO_SIMPLECREDENTIAL,97,7,196,12,CBS_DROPDOWNLIST | WS_TABSTOP
     LTEXT           "Helpers:",IDC_STATIC,7,24,76,8
@@ -3068,6 +3070,7 @@ BEGIN
         RIGHTMARGIN, 293
         VERTGUIDE, 97
         VERTGUIDE, 158
+        VERTGUIDE, 169
         TOPMARGIN, 7
         BOTTOMMARGIN, 210
     END

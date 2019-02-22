@@ -140,6 +140,7 @@ protected:
 	afx_msg void OnEnChangeEditUsername();
 	afx_msg void OnBnClickedCheckUsehttppath();
 	afx_msg void OnBnClickedButtonRemove();
+	afx_msg void OnBnClickedOpensettingselevated();
 
 	virtual BOOL OnInitDialog() override;
 	virtual BOOL OnApply() override;
@@ -149,6 +150,7 @@ protected:
 
 	void AddConfigType(int &index, CString text, bool add = true);
 	void AddSimpleCredential(int &index, CString text, bool add = true);
+	void FillSimpleList(bool addNone, bool systemWincred, bool systemGCM);
 	void LoadList();
 	CString Load(CString key);
 	void Save(CString key, CString value);
@@ -157,6 +159,7 @@ protected:
 	bool SaveSettings();
 
 	int			m_ChangedMask;
+	int			m_iSimpleStoredValue; // the SimpleCredential value initially read from config
 
 	CComboBox	m_ctrlSimpleCredential;
 	CListBox	m_ctrlUrlList;
