@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2018 - TortoiseGit
+// Copyright (C) 2013-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -192,6 +192,7 @@ void CSettingGitCredential::OnCbnSelchangeComboSimplecredential()
 {
 	EnableAdvancedOptions();
 	SetModified();
+	m_ChangedMask |= CREDENTIAL_SIMPLE;
 }
 
 void CSettingGitCredential::OnBnClickedButtonAdd()
@@ -229,7 +230,7 @@ void CSettingGitCredential::OnBnClickedButtonAdd()
 			m_ChangedMask &= ~CREDENTIAL_USEHTTPPATH;
 	}
 
-	OnApply();
+	SaveSettings();
 }
 
 void CSettingGitCredential::EnableAdvancedOptions()
@@ -261,12 +262,14 @@ void CSettingGitCredential::OnLbnSelchangeListUrl()
 {
 	CWaitCursor wait;
 
-	if (m_ChangedMask)
+	if (m_ChangedMask & CREDENTIAL_ADVANCED_MASK)
 	{
 		if (CMessageBox::Show(GetSafeHwnd(), IDS_GITCREDENTIAL_SAVEHELPER, IDS_APPNAME, 1, IDI_QUESTION, IDS_SAVEBUTTON, IDS_DISCARDBUTTON) == 1)
-			OnApply();
+			SaveSettings();
 	}
-	SetModified(FALSE);
+	m_ChangedMask &= ~CREDENTIAL_ADVANCED_MASK;
+	if (!m_ChangedMask)
+		SetModified(FALSE);
 
 	CString cmd, output;
 	int index = m_ctrlUrlList.GetCurSel();
@@ -291,8 +294,6 @@ void CSettingGitCredential::OnLbnSelchangeListUrl()
 	m_strUsername = Load(L"username");
 	m_bUseHttpPath = Load(L"useHttpPath") == L"true" ? TRUE : FALSE;
 
-	m_ChangedMask = 0;
-
 	GetDlgItem(IDC_BUTTON_ADD)->EnableWindow(TRUE);
 	GetDlgItem(IDC_BUTTON_REMOVE)->EnableWindow(TRUE);
 	this->UpdateData(FALSE);
@@ -316,7 +317,7 @@ void CSettingGitCredential::OnEnChangeEditHelper()
 	UpdateData();
 	if (!m_strHelper.IsEmpty())
 		SetModified();
-	else
+	else if (!m_ChangedMask)
 		SetModified(0);
 }
 
@@ -641,6 +642,17 @@ bool CSettingGitCredential::SaveSimpleCredential(int type)
 
 BOOL CSettingGitCredential::OnApply()
 {
+	if (!m_ChangedMask)
+		return ISettingsPropPage::OnApply();
+
+	if (SaveSettings())
+		return ISettingsPropPage::OnApply();
+	else
+		return FALSE;
+}
+
+bool CSettingGitCredential::SaveSettings()
+{
 	CWaitCursor wait;
 	UpdateData();
 
@@ -649,26 +661,27 @@ BOOL CSettingGitCredential::OnApply()
 	{
 		RunUAC();
 		EndDialog(0);
-		return FALSE;
+		return false;
 	}
 	if (type == SimpleCredentialType::SystemGCM && !CAppUtils::IsAdminLogin())
 	{
 		RunUAC();
 		EndDialog(0);
-		return FALSE;
+		return false;
 	}
 	if (type != SimpleCredentialType::Advanced)
 	{
 		if (!SaveSimpleCredential(type))
-			return FALSE;
+			return false;
 
 		int ret = DeleteOtherKeys(type);
 		if (ret < 0)
 			EndDialog(0);
 		if (ret)
-			return FALSE;
+			return false;
 		SetModified(FALSE);
-		return ISettingsPropPage::OnApply();
+		m_ChangedMask = 0;
+		return true;
 	}
 
 	int sel = m_ctrlConfigType.GetCurSel();
@@ -676,7 +689,7 @@ BOOL CSettingGitCredential::OnApply()
 	{
 		RunUAC();
 		EndDialog(0);
-		return FALSE;
+		return false;
 	}
 
 	if (m_ChangedMask & CREDENTIAL_URL)
@@ -685,7 +698,7 @@ BOOL CSettingGitCredential::OnApply()
 		if (m_strHelper.IsEmpty())
 		{
 			CMessageBox::Show(GetSafeHwnd(), IDS_GITCREDENTIAL_HELPEREMPTY, IDS_APPNAME, MB_OK | MB_ICONERROR);
-			return FALSE;
+			return false;
 		}
 		m_strUrl.Replace(L'\\', L'/');
 		m_strHelper.Replace(L'\\', L'/');
@@ -717,10 +730,11 @@ BOOL CSettingGitCredential::OnApply()
 	if (m_ChangedMask & CREDENTIAL_USEHTTPPATH)
 		Save(L"useHttpPath", m_bUseHttpPath ? L"true" : L"");
 
-	SetModified(FALSE);
+	m_ChangedMask &= ~CREDENTIAL_ADVANCED_MASK;
+	if (!m_ChangedMask)
+		SetModified(FALSE);
 
-	m_ChangedMask = 0;
-	return ISettingsPropPage::OnApply();
+	return true;
 }
 
 void CSettingGitCredential::OnBnClickedButtonRemove()
