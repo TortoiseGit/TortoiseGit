@@ -141,13 +141,13 @@ void CRefLogDlg::OnBnClickedClearStash()
 
 void CRefLogDlg::OnCbnSelchangeRef()
 {
-	CString ref=m_ChooseRef.GetString();
+	m_CurrentBranch = m_ChooseRef.GetString(); // remember selected branch
 	m_RefList.ClearText();
 
 	m_RefList.SetRedraw(false);
 
 	CString err;
-	if (GitRevLoglist::GetRefLog(ref, m_RefList.m_RevCache, err))
+	if (GitRevLoglist::GetRefLog(m_CurrentBranch, m_RefList.m_RevCache, err))
 		MessageBox(L"Error while loading reflog.\n" + err, L"TortoiseGit", MB_ICONERROR);
 
 	m_RefList.SetItemCountEx((int)m_RefList.m_RevCache.size());
@@ -169,7 +169,7 @@ void CRefLogDlg::OnCbnSelchangeRef()
 	m_RefList.m_nSearchIndex = 0;
 	m_nSearchLine = 0;
 
-	if (ref == L"refs/stash")
+	if (m_CurrentBranch == L"refs/stash")
 	{
 		GetDlgItem(IDC_REFLOG_BUTTONCLEARSTASH)->ShowWindow(SW_SHOW);
 		BOOL enabled = !m_RefList.m_arShownList.empty();
@@ -211,25 +211,20 @@ void CRefLogDlg::Refresh()
 	m_ChooseRef.SetList(list);
 
 	if (m_CurrentBranch.IsEmpty())
+		m_CurrentBranch = L"HEAD";
+
+	bool found = false;
+	for (int i = 0; i < (int)list.size(); ++i)
 	{
-		m_CurrentBranch.Format(L"refs/heads/%s", (LPCTSTR)g_Git.GetCurrentBranch());
-		m_ChooseRef.SetCurSel(0); /* Choose HEAD */
-	}
-	else
-	{
-		bool found = false;
-		for (int i = 0; i < (int)list.size(); ++i)
+		if (list[i] == m_CurrentBranch)
 		{
-			if(list[i] == m_CurrentBranch)
-			{
-				m_ChooseRef.SetCurSel(i);
-				found = true;
-				break;
-			}
+			m_ChooseRef.SetCurSel(i);
+			found = true;
+			break;
 		}
-		if (!found)
-			m_ChooseRef.SetCurSel(0);
 	}
+	if (!found)
+		m_ChooseRef.SetCurSel(0); /* Choose HEAD */
 
 	m_RefList.m_RevCache.clear();
 
