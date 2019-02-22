@@ -31,44 +31,23 @@
 
 namespace SimpleCredentialType
 {
-	static int Advanced;
-	static int None;
-	static int LocalWincred;
-	static int LocalWinstore;
-	static int LocalGCM;
-	static int GlobalWincred;
-	static int GlobalWinstore;
-	static int GlobalGCM;
-	static int SystemWincred;
-	static int SystemGCM;
-
-	static void Init()
-	{
-		Advanced = -1;
-		None = -1;
-		LocalWincred = -1;
-		LocalWinstore = -1;
-		LocalGCM = -1;
-		GlobalWincred = -1;
-		GlobalWinstore = -1;
-		GlobalGCM = -1;
-		SystemWincred = -1;
-		SystemGCM = -1;
-	}
+	static int Advanced = -1;
+	static int None = -1;
+	static int LocalWincred = -1;
+	static int LocalWinstore = -1;
+	static int LocalGCM = -1;
+	static int GlobalWincred = -1;
+	static int GlobalWinstore = -1;
+	static int GlobalGCM = -1;
+	static int SystemWincred = -1;
+	static int SystemGCM = -1;
 }
 
 namespace ConfigType
 {
-	static int Local;
-	static int Global;
-	static int System;
-
-	static void Init()
-	{
-		Local = -1;
-		Global = -1;
-		System = -1;
-	}
+	static int Local = -1;
+	static int Global = -1;
+	static int System = -1;
 }
 
 // CSettingGitCredential dialog
@@ -154,7 +133,6 @@ BOOL CSettingGitCredential::OnInitDialog()
 
 	m_ctrlUrlList.ResetContent();
 
-	ConfigType::Init();
 	AddConfigType(ConfigType::Local, CString(MAKEINTRESOURCE(IDS_SETTINGS_LOCAL)), hasLocal);
 	AddConfigType(ConfigType::Global, CString(MAKEINTRESOURCE(IDS_SETTINGS_GLOBAL)));
 	AddConfigType(ConfigType::System, CString(MAKEINTRESOURCE(IDS_SETTINGS_SYSTEM)));
@@ -167,7 +145,6 @@ BOOL CSettingGitCredential::OnInitDialog()
 	if (GCMExists())
 		((CComboBox*)GetDlgItem(IDC_COMBO_HELPER))->AddString(L"manager");
 
-	SimpleCredentialType::Init();
 	AddSimpleCredential(SimpleCredentialType::Advanced, CString(MAKEINTRESOURCE(IDS_ADVANCED)));
 	AddSimpleCredential(SimpleCredentialType::None, CString(MAKEINTRESOURCE(IDS_NONE)));
 	AddSimpleCredential(SimpleCredentialType::LocalWincred, CString(MAKEINTRESOURCE(IDS_LOCAL_WINCRED)), hasLocal && WincredExists());
