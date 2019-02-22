@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2018 - TortoiseGit
+// Copyright (C) 2013-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -31,44 +31,23 @@
 
 namespace SimpleCredentialType
 {
-	static int Advanced;
-	static int None;
-	static int LocalWincred;
-	static int LocalWinstore;
-	static int LocalGCM;
-	static int GlobalWincred;
-	static int GlobalWinstore;
-	static int GlobalGCM;
-	static int SystemWincred;
-	static int SystemGCM;
-
-	static void Init()
-	{
-		Advanced = -1;
-		None = -1;
-		LocalWincred = -1;
-		LocalWinstore = -1;
-		LocalGCM = -1;
-		GlobalWincred = -1;
-		GlobalWinstore = -1;
-		GlobalGCM = -1;
-		SystemWincred = -1;
-		SystemGCM = -1;
-	}
+	static int Advanced = -1;
+	static int None = -1;
+	static int LocalWincred = -1;
+	static int LocalWinstore = -1;
+	static int LocalGCM = -1;
+	static int GlobalWincred = -1;
+	static int GlobalWinstore = -1;
+	static int GlobalGCM = -1;
+	static int SystemWincred = -1;
+	static int SystemGCM = -1;
 }
 
 namespace ConfigType
 {
-	static int Local;
-	static int Global;
-	static int System;
-
-	static void Init()
-	{
-		Local = -1;
-		Global = -1;
-		System = -1;
-	}
+	static int Local = -1;
+	static int Global = -1;
+	static int System = -1;
 }
 
 // CSettingGitCredential dialog
@@ -110,14 +89,8 @@ BEGIN_MESSAGE_MAP(CSettingGitCredential, CPropertyPage)
 	ON_EN_CHANGE(IDC_EDIT_USERNAME, &CSettingGitCredential::OnEnChangeEditUsername)
 	ON_BN_CLICKED(IDC_CHECK_USEHTTPPATH, &CSettingGitCredential::OnBnClickedCheckUsehttppath)
 	ON_BN_CLICKED(IDC_BUTTON_REMOVE, &CSettingGitCredential::OnBnClickedButtonRemove)
+	ON_BN_CLICKED(IDC_OPENSETTINGSELEVATED, &CSettingGitCredential::OnBnClickedOpensettingselevated)
 END_MESSAGE_MAP()
-
-static bool RunUAC()
-{
-	CString sCmd;
-	sCmd.Format(L"/command:settings /page:gitcredential /path:\"%s\"", (LPCTSTR)g_Git.m_CurrentDir);
-	return CAppUtils::RunTortoiseGitProc(sCmd, true);
-}
 
 static CStringA RegexEscape(CStringA str)
 {
@@ -154,7 +127,6 @@ BOOL CSettingGitCredential::OnInitDialog()
 
 	m_ctrlUrlList.ResetContent();
 
-	ConfigType::Init();
 	AddConfigType(ConfigType::Local, CString(MAKEINTRESOURCE(IDS_SETTINGS_LOCAL)), hasLocal);
 	AddConfigType(ConfigType::Global, CString(MAKEINTRESOURCE(IDS_SETTINGS_GLOBAL)));
 	AddConfigType(ConfigType::System, CString(MAKEINTRESOURCE(IDS_SETTINGS_SYSTEM)));
@@ -167,19 +139,15 @@ BOOL CSettingGitCredential::OnInitDialog()
 	if (GCMExists())
 		((CComboBox*)GetDlgItem(IDC_COMBO_HELPER))->AddString(L"manager");
 
-	SimpleCredentialType::Init();
-	AddSimpleCredential(SimpleCredentialType::Advanced, CString(MAKEINTRESOURCE(IDS_ADVANCED)));
-	AddSimpleCredential(SimpleCredentialType::None, CString(MAKEINTRESOURCE(IDS_NONE)));
-	AddSimpleCredential(SimpleCredentialType::LocalWincred, CString(MAKEINTRESOURCE(IDS_LOCAL_WINCRED)), hasLocal && WincredExists());
-	AddSimpleCredential(SimpleCredentialType::LocalWinstore, CString(MAKEINTRESOURCE(IDS_LOCAL_WINSTORE)), hasLocal && WinstoreExists());
-	AddSimpleCredential(SimpleCredentialType::LocalGCM, CString(MAKEINTRESOURCE(IDS_LOCAL_GCM)), hasLocal && GCMExists());
-	AddSimpleCredential(SimpleCredentialType::GlobalWincred, CString(MAKEINTRESOURCE(IDS_GLOBAL_WINCRED)), WincredExists());
-	AddSimpleCredential(SimpleCredentialType::GlobalWinstore, CString(MAKEINTRESOURCE(IDS_GLOBAL_WINSTORE)), WinstoreExists());
-	AddSimpleCredential(SimpleCredentialType::GlobalGCM, CString(MAKEINTRESOURCE(IDS_GLOBAL_GCM)), GCMExists());
-	AddSimpleCredential(SimpleCredentialType::SystemWincred, CString(MAKEINTRESOURCE(IDS_SYSTEM_WINCRED)), WincredExists());
-	AddSimpleCredential(SimpleCredentialType::SystemGCM, CString(MAKEINTRESOURCE(IDS_SYSTEM_GCM)), GCMExists());
-
 	LoadList();
+	m_iSimpleStoredValue = m_ctrlSimpleCredential.GetCurSel();
+
+	if (!CAppUtils::IsAdminLogin())
+	{
+		reinterpret_cast<CButton*>(GetDlgItem(IDC_OPENSETTINGSELEVATED))->SetShield(TRUE);
+		GetDlgItem(IDC_OPENSETTINGSELEVATED)->ShowWindow(SW_SHOW);
+		GetDlgItem(IDC_STATICELEVATIONNEEDED)->ShowWindow(SW_SHOW);
+	}
 
 	EnableAdvancedOptions();
 
@@ -192,6 +160,7 @@ void CSettingGitCredential::OnCbnSelchangeComboSimplecredential()
 {
 	EnableAdvancedOptions();
 	SetModified();
+	m_ChangedMask |= CREDENTIAL_SIMPLE;
 }
 
 void CSettingGitCredential::OnBnClickedButtonAdd()
@@ -229,7 +198,7 @@ void CSettingGitCredential::OnBnClickedButtonAdd()
 			m_ChangedMask &= ~CREDENTIAL_USEHTTPPATH;
 	}
 
-	OnApply();
+	SaveSettings();
 }
 
 void CSettingGitCredential::EnableAdvancedOptions()
@@ -241,8 +210,10 @@ void CSettingGitCredential::EnableAdvancedOptions()
 	GetDlgItem(IDC_EDIT_USERNAME)->EnableWindow(enable);
 	GetDlgItem(IDC_COMBO_CONFIGTYPE)->EnableWindow(enable);
 	GetDlgItem(IDC_CHECK_USEHTTPPATH)->EnableWindow(enable);
-	GetDlgItem(IDC_BUTTON_ADD)->EnableWindow(enable);
-	GetDlgItem(IDC_BUTTON_REMOVE)->EnableWindow(enable);
+
+	bool canModifySystem = CAppUtils::IsAdminLogin() || (m_ctrlConfigType.GetCurSel() != ConfigType::System);
+	GetDlgItem(IDC_BUTTON_ADD)->EnableWindow(enable && canModifySystem);
+	GetDlgItem(IDC_BUTTON_REMOVE)->EnableWindow(enable && canModifySystem);
 }
 
 BOOL CSettingGitCredential::IsUrlExist(CString &text)
@@ -261,12 +232,14 @@ void CSettingGitCredential::OnLbnSelchangeListUrl()
 {
 	CWaitCursor wait;
 
-	if (m_ChangedMask)
+	if (m_ChangedMask & CREDENTIAL_ADVANCED_MASK)
 	{
 		if (CMessageBox::Show(GetSafeHwnd(), IDS_GITCREDENTIAL_SAVEHELPER, IDS_APPNAME, 1, IDI_QUESTION, IDS_SAVEBUTTON, IDS_DISCARDBUTTON) == 1)
-			OnApply();
+			SaveSettings();
 	}
-	SetModified(FALSE);
+	m_ChangedMask &= ~CREDENTIAL_ADVANCED_MASK;
+	if (!m_ChangedMask)
+		SetModified(FALSE);
 
 	CString cmd, output;
 	int index = m_ctrlUrlList.GetCurSel();
@@ -291,15 +264,22 @@ void CSettingGitCredential::OnLbnSelchangeListUrl()
 	m_strUsername = Load(L"username");
 	m_bUseHttpPath = Load(L"useHttpPath") == L"true" ? TRUE : FALSE;
 
-	m_ChangedMask = 0;
-
-	GetDlgItem(IDC_BUTTON_ADD)->EnableWindow(TRUE);
-	GetDlgItem(IDC_BUTTON_REMOVE)->EnableWindow(TRUE);
+	bool canModifySystem = CAppUtils::IsAdminLogin() || (m_ctrlConfigType.GetCurSel() != ConfigType::System);
+	GetDlgItem(IDC_BUTTON_ADD)->EnableWindow(canModifySystem ? TRUE : FALSE);
+	GetDlgItem(IDC_BUTTON_REMOVE)->EnableWindow(canModifySystem ? TRUE : FALSE);
 	this->UpdateData(FALSE);
 }
 
 void CSettingGitCredential::OnCbnSelchangeComboConfigType()
 {
+	if (!CAppUtils::IsAdminLogin())
+	{
+		int sel = m_ctrlConfigType.GetCurSel();
+		GetDlgItem(IDC_BUTTON_ADD)->EnableWindow(sel != ConfigType::System);
+		GetDlgItem(IDC_BUTTON_REMOVE)->EnableWindow(sel != ConfigType::System);
+		if (sel == ConfigType::System)
+			return;
+	}
 	SetModified();
 }
 
@@ -316,7 +296,7 @@ void CSettingGitCredential::OnEnChangeEditHelper()
 	UpdateData();
 	if (!m_strHelper.IsEmpty())
 		SetModified();
-	else
+	else if (!m_ChangedMask)
 		SetModified(0);
 }
 
@@ -344,6 +324,31 @@ void CSettingGitCredential::AddSimpleCredential(int &index, CString text, bool a
 		index = m_ctrlSimpleCredential.AddString(text);
 }
 
+void CSettingGitCredential::FillSimpleList(bool anySystem, bool systemWincred, bool systemGCM)
+{
+	ATLASSERT(SimpleCredentialType::Advanced == -1);
+
+	bool hasLocal = GitAdminDir::HasAdminDir(g_Git.m_CurrentDir);
+	bool isAdmin = CAppUtils::IsAdminLogin();
+
+	AddSimpleCredential(SimpleCredentialType::Advanced, CString(MAKEINTRESOURCE(IDS_ADVANCED)));
+	if (isAdmin || !anySystem)
+		AddSimpleCredential(SimpleCredentialType::None, CString(MAKEINTRESOURCE(IDS_NONE)));
+	if (isAdmin || !(systemWincred || systemGCM || anySystem))
+	{
+		AddSimpleCredential(SimpleCredentialType::LocalWincred, CString(MAKEINTRESOURCE(IDS_LOCAL_WINCRED)), hasLocal && WincredExists());
+		AddSimpleCredential(SimpleCredentialType::LocalWinstore, CString(MAKEINTRESOURCE(IDS_LOCAL_WINSTORE)), hasLocal && WinstoreExists());
+		AddSimpleCredential(SimpleCredentialType::LocalGCM, CString(MAKEINTRESOURCE(IDS_LOCAL_GCM)), hasLocal && GCMExists());
+		AddSimpleCredential(SimpleCredentialType::GlobalWincred, CString(MAKEINTRESOURCE(IDS_GLOBAL_WINCRED)), WincredExists());
+		AddSimpleCredential(SimpleCredentialType::GlobalWinstore, CString(MAKEINTRESOURCE(IDS_GLOBAL_WINSTORE)), WinstoreExists());
+		AddSimpleCredential(SimpleCredentialType::GlobalGCM, CString(MAKEINTRESOURCE(IDS_GLOBAL_GCM)), GCMExists());
+	}
+	if (isAdmin || systemWincred)
+		AddSimpleCredential(SimpleCredentialType::SystemWincred, CString(MAKEINTRESOURCE(IDS_SYSTEM_WINCRED)), WincredExists());
+	if (isAdmin || systemGCM)
+		AddSimpleCredential(SimpleCredentialType::SystemGCM, CString(MAKEINTRESOURCE(IDS_SYSTEM_GCM)), GCMExists());
+}
+
 void CSettingGitCredential::LoadList()
 {
 	CAutoConfig config(true);
@@ -368,11 +373,24 @@ void CSettingGitCredential::LoadList()
 
 	if (anyList.empty())
 	{
+		FillSimpleList(false, false, false);
 		m_ctrlSimpleCredential.SetCurSel(SimpleCredentialType::None);
 		return;
 	}
 	if (anyList.size() > 1)
 	{
+		bool hasSystemType = false;
+		for (size_t i = 0; i < anyList.size(); ++i)
+		{
+			int pos = 0;
+			CString prefix = anyList[i].Tokenize(L"\n", pos);
+			if (prefix == L"S" || prefix == L"P")
+			{
+				hasSystemType = true;
+				break;
+			}
+		}
+		FillSimpleList(hasSystemType, false, false);
 		m_ctrlSimpleCredential.SetCurSel(SimpleCredentialType::Advanced);
 		return;
 	}
@@ -383,6 +401,7 @@ void CSettingGitCredential::LoadList()
 	CString value = anyList[0].Tokenize(L"\n", pos);
 	if (key != L"credential.helper")
 	{
+		FillSimpleList(true, false, false);
 		m_ctrlSimpleCredential.SetCurSel(SimpleCredentialType::Advanced);
 		return;
 	}
@@ -430,16 +449,19 @@ void CSettingGitCredential::LoadList()
 	{
 		if (value == L"wincred")
 		{
+			FillSimpleList(true, true, false);
 			m_ctrlSimpleCredential.SetCurSel(SimpleCredentialType::SystemWincred);
 			return;
 		}
 		else if (value == L"manager")
 		{
+			FillSimpleList(true, false, true);
 			m_ctrlSimpleCredential.SetCurSel(SimpleCredentialType::SystemGCM);
 			return;
 		}
 	}
 
+	FillSimpleList((prefix == L"S" || prefix == L"P"), false, false);
 	m_ctrlSimpleCredential.SetCurSel(SimpleCredentialType::Advanced);
 }
 
@@ -542,39 +564,38 @@ int CSettingGitCredential::DeleteOtherKeys(int type)
 	{
 		int pos = 0;
 		CString prefix = list[i].Tokenize(L"\n", pos);
-		if ((prefix == L"S" || prefix == L"P") && !CAppUtils::IsAdminLogin())
+		if ((prefix == L"S" || prefix == L"P") && list[i] != match && !CAppUtils::IsAdminLogin())
 		{
-			RunUAC();
+			if (MessageBox(L"Cannot modify a system config without proper rights.\nDiscard changes?", L"TortoiseGit", MB_ICONERROR | MB_YESNO) == IDYES)
+				return 0;
 			return -1;
 		}
 	}
 
-	int result = 0;
 	// workaround gitdll bug
 	// TODO: switch to libgit2
 	bool old = g_Git.m_IsUseGitDLL;
 	g_Git.m_IsUseGitDLL = false;
+	SCOPE_EXIT { g_Git.m_IsUseGitDLL = old; };
 	for (size_t i = 0; i < list.size(); ++i)
 	{
-		if (list[i] != match)
+		if (list[i] == match)
+			continue;
+
+		int pos = 0;
+		CString prefix = list[i].Tokenize(L"\n", pos);
+		CString key = list[i].Tokenize(L"\n", pos);
+		CONFIG_TYPE configLevel = (prefix == L"S" || prefix == L"P") ? CONFIG_SYSTEM : prefix == L"G" || prefix == L"X" ? CONFIG_GLOBAL : CONFIG_LOCAL;
+		if (g_Git.UnsetConfigValue(key, configLevel))
 		{
-			int pos = 0;
-			CString prefix = list[i].Tokenize(L"\n", pos);
-			CString key = list[i].Tokenize(L"\n", pos);
-			CONFIG_TYPE configLevel = (prefix == L"S" || prefix == L"P") ? CONFIG_SYSTEM : prefix == L"G" || prefix == L"X" ? CONFIG_GLOBAL : CONFIG_LOCAL;
-			if (g_Git.UnsetConfigValue(key, configLevel))
-			{
-				CString msg;
-				msg.FormatMessage(IDS_PROC_SAVECONFIGFAILED, (LPCTSTR)key, L"");
-				CMessageBox::Show(GetSafeHwnd(), msg, L"TortoiseGit", MB_OK | MB_ICONERROR);
-				result = 1;
-				break;
-			}
+			CString msg;
+			msg.FormatMessage(IDS_PROC_SAVECONFIGFAILED, (LPCTSTR)key, L"");
+			CMessageBox::Show(GetSafeHwnd(), msg, L"TortoiseGit", MB_OK | MB_ICONERROR);
+			return 1;
 		}
 	}
-	g_Git.m_IsUseGitDLL = old;
 
-	return result;
+	return 0;
 }
 
 bool CSettingGitCredential::SaveSimpleCredential(int type)
@@ -641,42 +662,52 @@ bool CSettingGitCredential::SaveSimpleCredential(int type)
 
 BOOL CSettingGitCredential::OnApply()
 {
+	if (!m_ChangedMask)
+		return ISettingsPropPage::OnApply();
+
+	if (SaveSettings())
+		return ISettingsPropPage::OnApply();
+	else
+		return FALSE;
+}
+
+bool CSettingGitCredential::SaveSettings()
+{
 	CWaitCursor wait;
 	UpdateData();
 
 	int type = m_ctrlSimpleCredential.GetCurSel();
-	if (type == SimpleCredentialType::SystemWincred && !CAppUtils::IsAdminLogin())
+	if ((type == SimpleCredentialType::SystemWincred || type == SimpleCredentialType::SystemGCM) && !CAppUtils::IsAdminLogin())
 	{
-		RunUAC();
-		EndDialog(0);
-		return FALSE;
-	}
-	if (type == SimpleCredentialType::SystemGCM && !CAppUtils::IsAdminLogin())
-	{
-		RunUAC();
-		EndDialog(0);
-		return FALSE;
+		if (m_iSimpleStoredValue == type)
+		{
+			if (DeleteOtherKeys(type) > 0)
+				return false;
+			m_ChangedMask = 0;
+			return true;
+		}
+
+		if (MessageBox(L"Cannot modify a system config without proper rights.\nDiscard changes?", L"TortoiseGit", MB_ICONERROR | MB_YESNO) == IDYES)
+			return true;
+		return false;
 	}
 	if (type != SimpleCredentialType::Advanced)
 	{
 		if (!SaveSimpleCredential(type))
-			return FALSE;
+			return false;
 
-		int ret = DeleteOtherKeys(type);
-		if (ret < 0)
-			EndDialog(0);
-		if (ret)
-			return FALSE;
-		SetModified(FALSE);
-		return ISettingsPropPage::OnApply();
+		if (DeleteOtherKeys(type) > 0)
+			return false;
+		m_ChangedMask = 0;
+		return true;
 	}
 
 	int sel = m_ctrlConfigType.GetCurSel();
 	if (sel == ConfigType::System && !CAppUtils::IsAdminLogin())
 	{
-		RunUAC();
-		EndDialog(0);
-		return FALSE;
+		if (MessageBox(L"Cannot modify a system config without proper rights.\nDiscard changes?", L"TortoiseGit", MB_ICONERROR | MB_YESNO) == IDYES)
+			return true;
+		return false;
 	}
 
 	if (m_ChangedMask & CREDENTIAL_URL)
@@ -685,7 +716,7 @@ BOOL CSettingGitCredential::OnApply()
 		if (m_strHelper.IsEmpty())
 		{
 			CMessageBox::Show(GetSafeHwnd(), IDS_GITCREDENTIAL_HELPEREMPTY, IDS_APPNAME, MB_OK | MB_ICONERROR);
-			return FALSE;
+			return false;
 		}
 		m_strUrl.Replace(L'\\', L'/');
 		m_strHelper.Replace(L'\\', L'/');
@@ -717,10 +748,11 @@ BOOL CSettingGitCredential::OnApply()
 	if (m_ChangedMask & CREDENTIAL_USEHTTPPATH)
 		Save(L"useHttpPath", m_bUseHttpPath ? L"true" : L"");
 
-	SetModified(FALSE);
+	m_ChangedMask &= ~CREDENTIAL_ADVANCED_MASK;
+	if (!m_ChangedMask)
+		SetModified(FALSE);
 
-	m_ChangedMask = 0;
-	return ISettingsPropPage::OnApply();
+	return true;
 }
 
 void CSettingGitCredential::OnBnClickedButtonRemove()
@@ -761,8 +793,7 @@ void CSettingGitCredential::OnBnClickedButtonRemove()
 				{
 				if (!CAppUtils::IsAdminLogin())
 				{
-					RunUAC();
-					EndDialog(0);
+					MessageBox(L"Cannot modify a system config without proper rights.", L"TortoiseGit", MB_ICONERROR);
 					return;
 				}
 				configLevel = CONFIG_SYSTEM;
@@ -783,4 +814,11 @@ void CSettingGitCredential::OnBnClickedButtonRemove()
 			OnLbnSelchangeListUrl();
 		}
 	}
+}
+
+void CSettingGitCredential::OnBnClickedOpensettingselevated()
+{
+	CString sCmd;
+	sCmd.Format(L"/command:settings /page:gitcredential /path:\"%s\"", (LPCTSTR)g_Git.m_CurrentDir);
+	CAppUtils::RunTortoiseGitProc(sCmd, true);
 }

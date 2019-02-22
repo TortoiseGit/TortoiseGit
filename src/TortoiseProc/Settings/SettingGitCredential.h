@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2017 - TortoiseGit
+// Copyright (C) 2013-2017, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -29,10 +29,12 @@ class CSettingGitCredential : public ISettingsPropPage
 public:
 	enum
 	{
-		CREDENTIAL_URL			= 0x1,
-		CREDENTIAL_HELPER		= 0x2,
-		CREDENTIAL_USERNAME		= 0x4,
-		CREDENTIAL_USEHTTPPATH	= 0x8,
+		CREDENTIAL_URL			= 0x01,
+		CREDENTIAL_HELPER		= 0x02,
+		CREDENTIAL_USERNAME		= 0x04,
+		CREDENTIAL_USEHTTPPATH	= 0x08,
+		CREDENTIAL_ADVANCED_MASK= 0x0F,
+		CREDENTIAL_SIMPLE		= 0x10,
 	};
 	CSettingGitCredential();
 	virtual ~CSettingGitCredential();
@@ -138,6 +140,7 @@ protected:
 	afx_msg void OnEnChangeEditUsername();
 	afx_msg void OnBnClickedCheckUsehttppath();
 	afx_msg void OnBnClickedButtonRemove();
+	afx_msg void OnBnClickedOpensettingselevated();
 
 	virtual BOOL OnInitDialog() override;
 	virtual BOOL OnApply() override;
@@ -147,13 +150,16 @@ protected:
 
 	void AddConfigType(int &index, CString text, bool add = true);
 	void AddSimpleCredential(int &index, CString text, bool add = true);
+	void FillSimpleList(bool addNone, bool systemWincred, bool systemGCM);
 	void LoadList();
 	CString Load(CString key);
 	void Save(CString key, CString value);
 	int DeleteOtherKeys(int type);
 	bool SaveSimpleCredential(int type);
+	bool SaveSettings();
 
 	int			m_ChangedMask;
+	int			m_iSimpleStoredValue; // the SimpleCredential value initially read from config
 
 	CComboBox	m_ctrlSimpleCredential;
 	CListBox	m_ctrlUrlList;

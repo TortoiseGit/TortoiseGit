@@ -1608,7 +1608,9 @@
 #define IDC_LOCALCHECK                  1848
 #define IDC_CLEARCREDENTIALS            1848
 #define IDC_STORECREDENTIALS            1849
+#define IDC_OPENSETTINGSELEVATED        1849
 #define IDS_LOG_FILTER_BY               1850
+#define IDC_STATICELEVATIONNEEDED       1850
 #define IDS_LOG_FILTER_PATHS            1851
 #define IDS_LOG_FILTER_AUTHORS          1852
 #define IDS_LOG_FILTER_MESSAGES         1853
@@ -2060,7 +2062,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        363
 #define _APS_NEXT_COMMAND_VALUE         32874
-#define _APS_NEXT_CONTROL_VALUE         1849
+#define _APS_NEXT_CONTROL_VALUE         1851
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif
