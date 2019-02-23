@@ -1,7 +1,7 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012 - TortoiseSVN
-// Copyright (C) 2013-2017 - TortoiseGit
+// Copyright (C) 2013-2017, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -65,7 +65,15 @@ BOOL CHistoryCombo::PreTranslateMessage(MSG* pMsg)
 		int nVirtKey = (int) pMsg->wParam;
 
 		if (nVirtKey == VK_RETURN)
+		{
+			if (GetDroppedState())
+			{
+				// Don't directly pass return to parent if selecting an item in drop down list
+				ShowDropDown(FALSE);
+				return TRUE;
+			}
 			return OnReturnKeyPressed();
+		}
 		else if (nVirtKey == VK_DELETE && bShift && GetDroppedState() )
 		{
 			RemoveSelectedItem();
