@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2016-2019 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
@@ -123,7 +123,10 @@ void CSetHooks::OnBnClickedRemovebutton()
 		{
 			hookkey key;
 			key.htype = CHooks::GetHookType((LPCTSTR)m_cHookList.GetItemText(index, 0));
-			key.path = CTGitPath(m_cHookList.GetItemText(index, 1));
+			if (m_cHookList.GetItemText(index, 1).Compare(L"local") == 0)
+				key.path = g_Git.m_CurrentDir;
+			else
+				key.path = CTGitPath(m_cHookList.GetItemText(index, 1));
 			CHooks::Instance().Remove(key);
 			bNeedsRefresh = true;
 		}
@@ -153,9 +156,13 @@ void CSetHooks::OnBnClickedEditbutton()
 		dlg.cmd.bShow = (m_cHookList.GetItemText(index, 4).Compare(L"show") == 0);
 		dlg.cmd.bLocal = m_cHookList.GetItemText(index, 1).Compare(L"local") == 0;
 		hookkey key = dlg.key;
+		if (dlg.cmd.bLocal)
+			key.path = g_Git.m_CurrentDir;
 		if (dlg.DoModal() == IDOK)
 		{
 			CHooks::Instance().Remove(key);
+			if (dlg.cmd.bLocal)
+				dlg.key.path = g_Git.m_CurrentDir;
 			CHooks::Instance().Add(dlg.key.htype, dlg.key.path, dlg.cmd.commandline, dlg.cmd.bWait, dlg.cmd.bShow, dlg.cmd.bEnabled, dlg.cmd.bLocal);
 			RebuildHookList();
 			SetModified();
@@ -168,6 +175,8 @@ void CSetHooks::OnBnClickedAddbutton()
 	CSetHooksAdv dlg;
 	if (dlg.DoModal() == IDOK)
 	{
+		if (dlg.cmd.bLocal)
+			dlg.key.path = g_Git.m_CurrentDir;
 		CHooks::Instance().Add(dlg.key.htype, dlg.key.path, dlg.cmd.commandline, dlg.cmd.bWait, dlg.cmd.bShow, dlg.cmd.bEnabled, dlg.cmd.bLocal);
 		RebuildHookList();
 		SetModified();
@@ -188,7 +197,10 @@ void CSetHooks::OnLvnItemchangedHooklist(NMHDR* pNMHDR, LRESULT* pResult)
 
 	hookkey key;
 	key.htype = CHooks::GetHookType((LPCTSTR)m_cHookList.GetItemText(pNMLV->iItem, 0));
-	key.path = CTGitPath(m_cHookList.GetItemText(pNMLV->iItem, 1));
+	if (m_cHookList.GetItemText(pNMLV->iItem, 1).Compare(L"local") == 0)
+		key.path = g_Git.m_CurrentDir;
+	else
+		key.path = CTGitPath(m_cHookList.GetItemText(pNMLV->iItem, 1));
 	if (CHooks::Instance().SetEnabled(key, m_cHookList.GetCheck(pNMLV->iItem) == BST_CHECKED))
 		SetModified();
 }
@@ -225,6 +237,8 @@ void CSetHooks::OnBnClickedHookcopybutton()
 		dlg.cmd.bLocal = m_cHookList.GetItemText(index, 1).Compare(L"local") == 0;
 		if (dlg.DoModal() == IDOK)
 		{
+			if (dlg.cmd.bLocal)
+				dlg.key.path = g_Git.m_CurrentDir;
 			CHooks::Instance().Add(dlg.key.htype, dlg.key.path, dlg.cmd.commandline, dlg.cmd.bWait, dlg.cmd.bShow, dlg.cmd.bEnabled, dlg.cmd.bLocal);
 			RebuildHookList();
 			SetModified();
