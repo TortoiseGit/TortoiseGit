@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2010, 2013-2018 - TortoiseGit
+// Copyright (C) 2010, 2013-2019 - TortoiseGit
 // Copyright (C) 2003-2008,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -22,7 +22,8 @@
 #include "SetHooksAdv.h"
 #include "BrowseFolder.h"
 #include "AppUtils.h"
-
+#include "Git.h"
+#include "GitAdminDir.h"
 
 IMPLEMENT_DYNAMIC(CSetHooksAdv, CResizableStandAloneDialog)
 
@@ -104,6 +105,8 @@ BOOL CSetHooksAdv::OnInitDialog()
 
 	UpdateData(FALSE);
 	OnBnClickedLocalcheck();
+
+	DialogEnableWindow(IDC_LOCALCHECK, GitAdminDir::HasAdminDir(g_Git.m_CurrentDir));
 
 	AddAnchor(IDC_ENABLE, TOP_LEFT);
 	AddAnchor(IDC_HOOKTYPELABEL, TOP_LEFT, TOP_RIGHT);

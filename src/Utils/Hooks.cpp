@@ -135,7 +135,7 @@ bool CHooks::Save()
 	}
 
 	// now save the local hooks to .tgitconfig
-	for (const auto& hook : CHooks::Instance())
+	for (auto& hook : CHooks::Instance())
 	{
 		if (!hook.second.bLocal)
 			continue;
@@ -165,6 +165,20 @@ bool CHooks::Save()
 		git_config_set_string(gitconfig, sHookPropName + "cmdline", CUnicodeUtils::GetUTF8(hook.second.commandline));
 		git_config_set_bool(gitconfig, sHookPropName + "wait", hook.second.bWait);
 		git_config_set_bool(gitconfig, sHookPropName + "show", hook.second.bShow);
+
+		CRegDWORD reg(hook.second.sRegKey);
+		if (!hook.second.bEnabled)
+		{
+			reg = 0;
+			hook.second.bApproved = false;
+			hook.second.bStored = true;
+		}
+		else if (reg.exists() && reg == 0)
+		{
+			reg.removeValue();
+			hook.second.bApproved = false;
+			hook.second.bStored = false;
+		}
 	}
 
 	return true;
@@ -179,6 +193,7 @@ void CHooks::Add(hooktype ht, const CTGitPath& Path, LPCTSTR szCmd, bool bWait, 
 {
 	hookkey key;
 	key.htype = ht;
+	key.local = bLocal;
 	key.path = Path;
 	hookiterator it = find(key);
 	if (it!=end())
@@ -429,37 +444,40 @@ hookiterator CHooks::FindItem(hooktype t, const CString& workingTree)
 {
 	hookkey key;
 	CTGitPath path = workingTree;
+	bool local = false;
 	do
 	{
 		key.htype = t;
 		key.path = path;
+		key.local = local;
 		auto it = find(key);
-		if (it != end() && it->second.bEnabled)
+		if (it != end() && (it->second.bEnabled || it->second.bLocal))
 			return it;
+		if (!local)
+		{
+			local = true;
+			continue;
+		}
+		else
+			local = false;
 		path = path.GetContainingDirectory();
 	} while(!path.IsEmpty());
+
+	/* if this ever gets called with something different than the workingTree root,
+	 * recheck whether it is necessary to add a check for "key.path = m_RootPath"
+	 * (e.g., for sparse checkouts or other hook types).
+	 */
+	ATLASSERT(CTGitPath(workingTree).IsWCRoot());
+
 	// look for a script with a path as '*'
 	key.htype = t;
 	key.path = CTGitPath(L"*");
+	key.local = false;
 	auto it = find(key);
 	if (it != end() && it->second.bEnabled)
 	{
 		return it;
 	}
-
-	// try the root path
-	key.htype = t;
-	key.path = m_RootPath;
-	it = find(key);
-	if (it != end())
-		return it;
-
-	// look for a script with a path as '*'
-	key.htype = t;
-	key.path = CTGitPath(L"*");
-	it = find(key);
-	if (it != end())
-		return it;
 
 	return end();
 }
@@ -533,6 +551,7 @@ void CHooks::ParseHookString(CString strhooks, bool bLocal)
 							strhooks = strhooks.Mid(pos + 1);
 						else
 							strhooks.Empty();
+						key.local = cmd.bLocal;
 						if (cmd.bLocal)
 						{
 							CString temp;
@@ -542,6 +561,7 @@ void CHooks::ParseHookString(CString strhooks, bool bLocal)
 							CRegDWORD reg(cmd.sRegKey, 0);
 							cmd.bApproved = (DWORD(reg) != 0);
 							cmd.bStored = reg.exists();
+							cmd.bEnabled = cmd.bStored ? cmd.bApproved : true;
 						}
 
 						bComplete = true;
