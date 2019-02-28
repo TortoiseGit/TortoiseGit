@@ -3,8 +3,8 @@ Released: unreleased
 
 == Features ==
  * Update libgit to 2.19.0 based on Git for Windows sources
- * Fixed issue #2591: Enable accent coloring for search term matches in log messages
- * LogDlg: Allow to use more complex search expressions, see documentation
+ * Fixed issue #2591: Enable accent coloring for search term matches in log messages and FileDiffDlg
+ * LogDlg, FileDiffDlg, RefBrowserDlg: Allow to use more complex search expressions, see documentation
  * Fixed issue #3279: Browse References -> lacks capability to double click an item (now opens log by default)
  * Update Scintilla to 4.1.3
  * Fixed issue #3277: Start of rebase process doesn't show log tab by default
@@ -12,12 +12,18 @@ Released: unreleased
  * Fixed issue #3272: Revision Graph does not show the option to checkout a remote branch
  * Added the option to store hook configurations within the repository (/.tgitconfig) in order to share it with other developers
  * Fixed issue #3154: Decorate bare repository's folder with a Git icon
+ * Update OGDF library to latest stable version (used for Revision Graph)
+ * Make unified patch in temp folder read-only
  * Update apr to 1.6.5
  * Update libgit2 to version 0.28
  * Fixed issue #3304: Double click on stash list item does nothing, show log instead
  * Fixed issue #3305: Stash Changes/Save, then allow Stash Apply
+ * Support opportunistic TLS for SendMailDlg
+ * Improve documentation for alternative unified diff viewer configuration
  * TGitCache: Speed up scanning of folders with lots of unversioned files
+ * BrowseRefsDlg: Allow to delete multiple remote branches in batch
  * Rebase: Document start, abort and finish in reflog 
+ * Add TortoiseGitUDiff to Open With list
  * Update editorconfig to 0.12.4
  * Fixed issue #3295: TortoiseGitPlink does not work with Git protocol ver. 2
  * Fixed issue #3290: Improve "Status/Check for modifications" documentation
@@ -27,6 +33,7 @@ Released: unreleased
  * Fixed issue #1770: Add support for changelists
  * Fixed issue #3327: Clarify remote and remote-tracking branch
  * TGitCache: Significantly reduce disk access for requesting cached file statuses
+ * FileDiffDlg: Correctly show renames (also also allow to filter by them)
  * Fixed issue #3206: Update shipped Notepad2 to Notepad2e
 
 == Bug Fixes ==
@@ -36,6 +43,7 @@ Released: unreleased
  * Fixed issue #3261: Review/Apply single patch does not work anymore if patch does not apply cleanly
  * Fixed issue #2541: Patches created from "Create patch file" in diff view/TortoiseGitMerge has invalid filepath
  * CommitDlg: commit.template did not honor "~/"
+ * Fixed issue #3271: Document TortoiseGitProc.exe /command:merge /abort option
  * Fixed issue #3281: TortoiseGitUDiff preferences page clips out text in Russian translation
  * Fixed issue #3284: BrowseRefsDlg: Cannot compare annotated tag to working tree (libgit2 returned the requested type does not match the type in ODB)
  * Modified files, Revert, and Resolve dialogs did show all staged files regardless of selection
@@ -51,6 +59,9 @@ Released: unreleased
  * Fixed issue #3329: create tag with message results in fatal error if username contains space
  * Fixed issue #3330: Edit notes don't load correctly for stash commits and reflog dialog
  * Fixed issue #3331: "Putty Key:" label is too narrow for localization
+ * RefLog: Remember last selected branch on refresh
+ * Opening the credential helper settings page caused elevation logic to trigger
+ * Improved detection of valid git repositories
  * Improved stability in various unusual cases
 
 = Release 2.7.0 =
