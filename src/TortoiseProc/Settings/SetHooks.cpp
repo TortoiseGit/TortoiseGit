@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2018 - TortoiseGit
+// Copyright (C) 2016-2019 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -114,6 +114,7 @@ void CSetHooks::RebuildHookList()
 
 void CSetHooks::OnBnClickedRemovebutton()
 {
+	bool bNeedsRefresh = false;
 	// traversing from the end to the beginning so that the indices are not skipped
 	int index = m_cHookList.GetItemCount()-1;
 	while (index >= 0)
@@ -124,10 +125,14 @@ void CSetHooks::OnBnClickedRemovebutton()
 			key.htype = CHooks::GetHookType((LPCTSTR)m_cHookList.GetItemText(index, 0));
 			key.path = CTGitPath(m_cHookList.GetItemText(index, 1));
 			CHooks::Instance().Remove(key);
-			m_cHookList.DeleteItem(index);
-			SetModified();
+			bNeedsRefresh = true;
 		}
 		index--;
+	}
+	if (bNeedsRefresh)
+	{
+		RebuildHookList();
+		SetModified();
 	}
 }
 
