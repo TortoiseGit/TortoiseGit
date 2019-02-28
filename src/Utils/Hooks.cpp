@@ -135,7 +135,7 @@ bool CHooks::Save()
 	}
 
 	// now save the local hooks to .tgitconfig
-	for (const auto& hook : CHooks::Instance())
+	for (auto& hook : CHooks::Instance())
 	{
 		if (!hook.second.bLocal)
 			continue;
@@ -165,6 +165,20 @@ bool CHooks::Save()
 		git_config_set_string(gitconfig, sHookPropName + "cmdline", CUnicodeUtils::GetUTF8(hook.second.commandline));
 		git_config_set_bool(gitconfig, sHookPropName + "wait", hook.second.bWait);
 		git_config_set_bool(gitconfig, sHookPropName + "show", hook.second.bShow);
+
+		CRegDWORD reg(hook.second.sRegKey);
+		if (!hook.second.bEnabled)
+		{
+			reg = 0;
+			hook.second.bApproved = false;
+			hook.second.bStored = true;
+		}
+		else if (reg.exists() && reg == 0)
+		{
+			reg.removeValue();
+			hook.second.bApproved = false;
+			hook.second.bStored = false;
+		}
 	}
 
 	return true;
@@ -437,7 +451,7 @@ hookiterator CHooks::FindItem(hooktype t, const CString& workingTree)
 		key.path = path;
 		key.local = local;
 		auto it = find(key);
-		if (it != end() && it->second.bEnabled)
+		if (it != end() && (it->second.bEnabled || it->second.bLocal))
 			return it;
 		if (!local)
 		{
@@ -547,6 +561,7 @@ void CHooks::ParseHookString(CString strhooks, bool bLocal)
 							CRegDWORD reg(cmd.sRegKey, 0);
 							cmd.bApproved = (DWORD(reg) != 0);
 							cmd.bStored = reg.exists();
+							cmd.bEnabled = cmd.bStored ? cmd.bApproved : true;
 						}
 
 						bComplete = true;
