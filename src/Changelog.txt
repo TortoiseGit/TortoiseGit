@@ -1,5 +1,5 @@
 ﻿= Release 2.8.0 =
-Released: unreleased
+Released: 2019-02-28
 
 == Features ==
  * Update libgit to 2.19.0 based on Git for Windows sources
