@@ -873,7 +873,7 @@
 						<Shortcut Id="S__TortoiseProc" Directory="D_TortoisePrgMenu" Name="Help" Advertise="no" Target="[INSTALLDIR]bin\TortoiseGitProc.exe" Description="Documentation about TortoiseGit" Arguments="/command:help" Show="normal" />
 						<Shortcut Id="S__puttykeygen" Directory="D_TortoisePrgMenu" Name="PuTTYgen" Advertise="no" Target="[INSTALLDIR]bin\puttygen.exe" Description="PuTTY key generator" Show="normal" />
 						<Shortcut Id="S__pageant" Directory="D_TortoisePrgMenu" Name="Pageant" Advertise="no" Target="[INSTALLDIR]bin\pageant.exe" Description="PuTTY SSH authentication agent" Show="normal" />
-						<Shortcut Id="S__notepad2" Directory="D_TortoisePrgMenu" Name="Notepad2" Advertise="no" Target="[INSTALLDIR]bin\notepad2.exe" Description="A fast and light-weight Notepad-like text editor with syntax highlighting" Show="normal" />
+						<Shortcut Id="S__notepad2" Directory="D_TortoisePrgMenu" Name="Notepad2e" Advertise="no" Target="[INSTALLDIR]bin\notepad2.exe" Description="A fast and light-weight Notepad-like text editor with syntax highlighting" Show="normal" />
 					</Component>
 
 					<Component Id="C__TortoiseMerge" Guid="$(var.GuidTortoiseMerge)" Win64="$(var.Win64YesNo)">

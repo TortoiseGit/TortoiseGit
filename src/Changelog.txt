@@ -27,6 +27,7 @@ Released: unreleased
  * Fixed issue #1770: Add support for changelists
  * Fixed issue #3327: Clarify remote and remote-tracking branch
  * TGitCache: Significantly reduce disk access for requesting cached file statuses
+ * Fixed issue #3206: Update shipped Notepad2 to Notepad2e
 
 == Bug Fixes ==
  * Fixed issue #3250: GitWCRev: IsGitItem return true for item that had never been committed
