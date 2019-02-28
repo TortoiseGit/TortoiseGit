@@ -451,14 +451,14 @@ hookiterator CHooks::FindItem(hooktype t, const CString& workingTree)
 	key.htype = t;
 	key.path = m_RootPath;
 	it = find(key);
-	if (it != end())
+	if (it != end() && it->second.bEnabled)
 		return it;
 
 	// look for a script with a path as '*'
 	key.htype = t;
 	key.path = CTGitPath(L"*");
 	it = find(key);
-	if (it != end())
+	if (it != end() && it->second.bEnabled)
 		return it;
 
 	return end();
