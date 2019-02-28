@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2018 the TortoiseGit team
+# Copyright (C) 2008-2019 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
@@ -19,7 +19,7 @@
 # luebbe <luebbe.opensource@gmail.com>, 2011,2014
 # Nick Vrvilo <nick@vrvilo.com>, 2011
 # Sven Strickroth <sstrickroth@googlemail.com>, 2013,2018
-# Yue Lin Ho <yuelinho777@gmail.com>, 2014-2018
+# Yue Lin Ho <yuelinho777@gmail.com>, 2014-2019
 # 乙酸鋰 <ch3cooli@gmail.com>, 2012,2017
 # Yue Lin Ho <yuelinho777@gmail.com>, 2017
 # 乙酸鋰 <ch3cooli@gmail.com>, 2012-2013
@@ -28,8 +28,8 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2018-08-19 11:48+0000\n"
-"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
+"PO-Revision-Date: 2019-02-28 07:08+0000\n"
+"Last-Translator: Yue Lin Ho <yuelinho777@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/lznuaa/tortoisegit/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -167,7 +167,7 @@ msgstr "復原了 %1!d! 個檔案到 %2!s!。"
 #. Resource IDs: (IDS_COMMITDLG_STATISTICSFORMAT)
 #, c-format
 msgid "%1!d! files selected, %2!d! files total"
-msgstr "在 %2!d! 個檔案中選擇了 %1!d! 個檔案."
+msgstr "在 %2!d! 個檔案中選擇了 %1!d! 個檔案。"
 
 #. Resource IDs: (IDS_REPOBROWSE_INFOMULTI)
 #, c-format
@@ -183,7 +183,7 @@ msgstr "%1!d!分鐘前"
 #, c-format
 msgid ""
 "%1!d! most active author(s) with at least %2!d! commits each (%3!d! %%)"
-msgstr "前 %1!d! 名活躍作者 (至少有 %2!d!(%3!d!%%) 次送交數)"
+msgstr "前 %1!d! 名活躍作者（至少有 %2!d! 個提交數，約 %3!d!%%）"
 
 #. Resource IDs: (IDS_PROGRS_TIME)
 #, c-format
@@ -333,6 +333,12 @@ msgstr "三方合併(&3)"
 msgid "&Abort"
 msgstr "中止(&A)"
 
+#. Resource IDs: (IDS_HOOKFAILED_TASK3)
+msgid ""
+"&Abort\n"
+"You can fix the reason the hook script failed first."
+msgstr "中止(&A)\n試著先修正掛鉤指令檔會失敗的原因。 "
+
 #. Resource IDs: (ID_APP_ABOUT - Menu)
 msgid "&About TortoiseGitBlame..."
 msgstr "關於 TortoiseGitBlame (&A)..."
@@ -444,7 +450,8 @@ msgstr "取消(&C)"
 msgid "&Clean up..."
 msgstr "清理(&C)..."
 
-#. Resource IDs: (ID_EDIT_CLEAR - Menu)
+#. Resource IDs: (Dialog IDD_SETTINGSMTP: Control id 1848, ID_EDIT_CLEAR -
+#. Menu)
 msgid "&Clear"
 msgstr "清除(&C)"
 
@@ -481,6 +488,10 @@ msgstr "提交(&C)..."
 msgid "&Compare revisions"
 msgstr "比對版本差異(&C)"
 
+#. Resource IDs: (IDS_LOG_POPUP_COMPAREWITHPREVIOUS)
+msgid "&Compare with previous revision"
+msgstr "與前一個版本比對(&C)"
+
 #. Resource IDs: (IDS_WALKBEHAVIOUR_COMPRESSED)
 msgid "&Compressed Graph"
 msgstr "壓縮圖型(&C)"
@@ -512,7 +523,7 @@ msgid "&Default"
 msgstr "預設(&D)"
 
 #. Resource IDs: (Dialog IDD_DELETEREMOTETAG: Control id 1, IDS_DELETEBUTTON,
-#. IDS_MENUREMOVE)
+#. IDS_DELETE_BRANCHTAG_SHORT, IDS_MENUREMOVE)
 msgid "&Delete"
 msgstr "刪除(&D)"
 
@@ -525,8 +536,12 @@ msgid "&Delete Filter"
 msgstr "刪除篩選器(&D)"
 
 #. Resource IDs: (IDS_PROC_DELETEREMOTEBRANCH_LOCALREMOTE)
-msgid "&Delete remote && local"
-msgstr "刪除遠端及本地(&D)"
+msgid "&Delete branch on remote && local remote-tracking branch"
+msgstr "刪除「遠端分支」和「遠端追蹤分支」(&D)"
+
+#. Resource IDs: (IDS_DELETE_BRANCHTAG)
+msgid "&Delete branch/tag"
+msgstr "刪除「分支／標籤」(&D)"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "&Detect moved or copied lines"
@@ -563,6 +578,12 @@ msgstr "對其餘的作相同處理(&D)"
 #. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1032)
 msgid "&Don't ask me again"
 msgstr "不再詢問(&D)"
+
+#. Resource IDs: (IDS_HOOKS_APPROVE_TASK4)
+msgid ""
+"&Don't run\n"
+"Do not run the script"
+msgstr "不執行(&D)\n不執行指令檔"
 
 #. Resource IDs: (IDS_MSGBOX_DONOTSHOWAGAIN)
 msgid "&Don't show this message again"
@@ -703,6 +724,10 @@ msgstr "強制(&F)"
 msgid "&Force Rebase"
 msgstr "強制變基(rebase)(&F)"
 
+#. Resource IDs: (IDS_CREATE_PATCH)
+msgid "&Format Patch..."
+msgstr "建立電郵補綴...(&F)"
+
 #. Resource IDs: (Dialog IDD_CLONE: Control id 1608)
 msgid "&From:"
 msgstr "從(&F)："
@@ -819,7 +844,7 @@ msgstr "語系(&L)："
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1602)
 msgid "&Launch Rebase After Fetch"
-msgstr "下載後執行變基(&L)"
+msgstr "獲取後執行變基(&L)"
 
 #. Resource IDs: (Dialog IDD_FIND: Control id 1065)
 msgid "&Limit search to modified lines"
@@ -866,6 +891,11 @@ msgstr "比較行內差異的長度上限(&M)"
 #. IDD_SUBMODULE_UPDATE: Control id 1735, IDS_MERGEBUTTON)
 msgid "&Merge"
 msgstr "合併 (&M)"
+
+#. Resource IDs: (IDS_LOG_POPUP_MERGEREV)
+#, c-format
+msgid "&Merge to \"%s\"..."
+msgstr "合併至「%s」...(&M)"
 
 #. Resource IDs: (IDS_MERGE_UNRELATED)
 msgid "&Merge unrelated history"
@@ -1017,6 +1047,12 @@ msgstr "列印(&P)...\tCtrl+P"
 msgid "&Proceed"
 msgstr "繼續(&P)"
 
+#. Resource IDs: (IDS_HOOKFAILED_TASK4)
+msgid ""
+"&Proceed anyway\n"
+"Ignore the hook script and run the command anyway."
+msgstr "繼續處理(&P)\n忽略掛鉤指令檔並繼續執行命令。"
+
 #. Resource IDs: (IDS_PROC_SYNC_PULL)
 msgid "&Pull"
 msgstr "拉取(&P)"
@@ -1121,6 +1157,12 @@ msgstr "復原這個版本的變更(&R)"
 msgid "&Revert changes by these commits"
 msgstr "復原這些版本的變更(&R)"
 
+#. Resource IDs: (IDS_HOOKS_APPROVE_TASK3)
+msgid ""
+"&Run\n"
+"Run the hook script"
+msgstr "執行(&R)\n執行掛鉤指令檔"
+
 #. Resource IDs: (Dialog IDD_SETTINGSPROXY: Control id 65535)
 msgid "&SSH client:"
 msgstr "SSH 用戶端(&S)："
@@ -1200,9 +1242,17 @@ msgstr "收藏(&S)"
 msgid "&Status Bar"
 msgstr "狀態列(&S)"
 
+#. Resource IDs: (Dialog IDD_SETTINGSMTP: Control id 1849)
+msgid "&Store credentials..."
+msgstr "儲存憑證(&S)"
+
 #. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1525)
 msgid "&Switch to new branch"
 msgstr "切换到新分支(&S)"
+
+#. Resource IDs: (IDS_SWITCH_BRANCH)
+msgid "&Switch/Checkout to"
+msgstr "切換／取出至(&S)"
 
 #. Resource IDs: (Dialog IDD_SETOVERLAYICONS: Control id 1173)
 msgid "&Symbol View"
@@ -1315,8 +1365,7 @@ msgstr "提交缺少 Signed-Off-By 時發出警告(&W)"
 msgid "&Whole Project"
 msgstr "整個專案(&W)"
 
-#. Resource IDs: (Dialog IDD_FIND: Control id 1066, Dialog IDD_FIND: Control
-#. id 20085)
+#. Resource IDs: (Dialog IDD_FIND: Control id 1066)
 msgid "&Whole word"
 msgstr "符合全字(&W)"
 
@@ -1649,6 +1698,14 @@ msgstr "加入「&Signed-off-by」"
 msgid "Add another commit?"
 msgstr "加入另一個提交？"
 
+#. Resource IDs: (IDS_STATUSLIST_CONTEXT_ADD_EXE)
+msgid "Add as Executable (+x)"
+msgstr ""
+
+#. Resource IDs: (IDS_STATUSLIST_CONTEXT_ADD_LINK)
+msgid "Add as Symlink"
+msgstr ""
+
 #. Resource IDs: (IDS_DLGTITLE_ADD_DIFF_TOOL)
 msgid "Add extension specific diff program"
 msgstr "根據副檔名加入比較差異程式"
@@ -1746,6 +1803,12 @@ msgstr "所有基本參照"
 #. Resource IDs: (IDS_PROC_LOG_SELECT_LOCAL_BRANCHES)
 msgid "All local branches"
 msgstr "所有本地分支"
+
+#. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 1850)
+msgid ""
+"All or some options are limited. In order to change all these settings, you "
+"need Administrator rights."
+msgstr "有些選項(或全部)被限制了，它們需要管理者權限才能被更改設定值。"
 
 #. Resource IDs: (IDS_ALLREFS)
 msgid "All refs"
@@ -1886,6 +1949,10 @@ msgstr "從郵箱(mailbox)套用補綴序列"
 #. Resource IDs: (Dialog IDD_OPENDLG: Control id 1072)
 msgid "Apply unified diff"
 msgstr "套用統合式差異檔"
+
+#. Resource IDs: (IDS_HOOKS_APPROVE_TASK2)
+msgid "Approve or reject client-side hook script"
+msgstr "「允許／拒絕」客戶端的掛鉤指令檔"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Arabic"
@@ -2066,7 +2133,7 @@ msgstr "無合併、新增、刪除時自動關閉"
 msgid ""
 "Auto-complete suggests words (usually class or member names)\n"
 "from the files that you have changed as you type a log message."
-msgstr "在輸入日誌訊息時，自動從這次有修改的檔案內容中\n提示單字（通常是類別或成員的名稱）。"
+msgstr "在輸入日誌訊息時，自動從這次有修改的檔案內容中提示單字\n（通常是類別或成員的名稱）。"
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1505)
 msgid "AutoLoad Putty &Key"
@@ -2329,6 +2396,10 @@ msgstr "立即檢查(&H)"
 msgid "C&ommit"
 msgstr "提交(&O)"
 
+#. Resource IDs: (IDS_LOG_POPUP_COMMIT)
+msgid "C&ommit..."
+msgstr "提交(&O)..."
+
 #. Resource IDs: (IDS_LOG_POPUP_COPY)
 msgid "C&reate branch/tag from revision"
 msgstr "從版本建立「分支／標記」(&R)"
@@ -2588,7 +2659,7 @@ msgstr "勾選你希望出現在第一層選單的選單項目，而不是出現
 msgid ""
 "Check those menu entries you want to appear only in the extended context "
 "menu (SHIFT + right click)"
-msgstr "勾選你想移到「擴展」快顯功能表的項目（需按住 Shift 鍵 + 滑鼠右鍵才會顯示）"
+msgstr "勾選你想「隱藏」的快顯功能表項目（需按住 Shift 鍵 + 滑鼠右鍵才會顯示它們）"
 
 #. Resource IDs: (IDS_SETTINGS_RELATIVETIMES_TT)
 msgid "Check to show relative times in log messages"
@@ -2606,7 +2677,7 @@ msgstr "勾選："
 msgid ""
 "Checked items will be hidden in the context menu by default and will only be"
 " visible if the shift key is pressed while opening the context menu."
-msgstr "預設會在快顯功能表中隱藏這些被勾選的項目，除非同時按下 Shift 鍵才會在快顯功能表中顯示這些項目。"
+msgstr "預設將勾選的項目隱藏起來\n只有同時按下 Shift 鍵時才會顯示這些項目"
 
 #. Resource IDs: (IDS_PROGRS_CMD_CHECKOUT, IDS_PROGRS_TITLE_CHECKOUT)
 msgid "Checkout"
@@ -2616,6 +2687,14 @@ msgstr "取出"
 msgid "Checkout with merge"
 msgstr "取出並合併"
 
+#. Resource IDs: (IDS_CHERRY_PICK_VERSIONS)
+msgid "Cherr&y Pick selected commits..."
+msgstr "摘取選中的版本...(&Y)"
+
+#. Resource IDs: (IDS_CHERRY_PICK_VERSION)
+msgid "Cherr&y Pick this commit..."
+msgstr "摘取這個版本...(&Y)"
+
 #. Resource IDs: (IDS_PROGS_TITLE_CHERRYPICK)
 msgid "Cherry Pick"
 msgstr "摘取"
@@ -2624,17 +2703,11 @@ msgstr "摘取"
 msgid "Cherry Pick failed"
 msgstr "摘取失敗"
 
-#. Resource IDs: (IDS_CHERRY_PICK_VERSIONS)
-msgid "Cherry Pick selected commits..."
-msgstr "摘取選中的版本..."
-
-#. Resource IDs: (IDS_CHERRY_PICK_VERSION)
-msgid "Cherry Pick this commit..."
-msgstr "摘取這個版本"
-
 #. Resource IDs: (IDS_CHERRYPICKFAILEDSKIP)
-msgid "Cherry-pick failed! Skip this commit?"
-msgstr "摘取失敗！跳過這個版本？"
+msgid ""
+"Cherry-pick failed (please see log in the cherry pick/rebase dialog for "
+"details)! Skip this commit?"
+msgstr "摘取失敗（細節請詳見摘取／變基畫面中的日誌頁籤）！跳過這個版本？"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Chinese"
@@ -2827,13 +2900,13 @@ msgstr "依照時間上色(&C)"
 msgid "Colors"
 msgstr "色彩"
 
+#. Resource IDs: (IDS_COMBINE_TO_ONE)
+msgid "Com&bine to one commit"
+msgstr "合併成一個提交(&B)"
+
 #. Resource IDs: (Dialog IDD_SENDMAIL: Control id 1481)
 msgid "Combine One Mail"
 msgstr "合併成一份郵件"
-
-#. Resource IDs: (IDS_COMBINE_TO_ONE)
-msgid "Combine to one commit"
-msgstr "合併到一個提交"
 
 #. Resource IDs: (IDS_PROGRS_CMDINFO)
 msgid "Command"
@@ -2861,7 +2934,7 @@ msgstr "提交"
 #. Resource IDs: (IDS_REPOBROWSEASKSUBMODULEUPDATE)
 #, c-format
 msgid "Commit %1!s! not found in \"%2!s!\". Update submodule now?"
-msgstr "在「%2!s!」中被找不到提交「%1!s! 」。立即更新子模組？"
+msgstr "在「%2!s!」中被找不到提交「%1!s!」。立即更新子模組？"
 
 #. Resource IDs: (IDS_LOG_NOT_VISIBLE)
 #, c-format
@@ -2908,7 +2981,7 @@ msgstr "提交上層專案"
 msgid "Commit to:"
 msgstr "提交至："
 
-#. Resource IDs: (IDS_LOG_POPUP_COMMIT, IDS_STATUSLIST_CONTEXT_COMMIT)
+#. Resource IDs: (IDS_STATUSLIST_CONTEXT_COMMIT)
 msgid "Commit..."
 msgstr "提交..."
 
@@ -2943,20 +3016,20 @@ msgid ""
 "You might want to add these folders recursively by using the 'Add...' context menu item.\n"
 "\n"
 "Are you sure that you want to continue the commit?"
-msgstr "提交無版本控制的資料夾並不會自動加入底下的子項目！\n使用「加入...」快顯功能表選項可以加入底下全部子資料夾下的檔案。\n\n確定要進行提交嗎？"
+msgstr "提交尚未版本控制的資料夾並不會自動加入底下的子項目！\n使用「加入...」快顯功能表選項可以加入底下全部子資料夾下的檔案。\n\n確定要進行提交嗎？"
 
 #. Resource IDs: (Dialog IDD_CERTCHECK: Control id 65535)
 msgid "Common Name:"
 msgstr "憑證名稱："
 
+#. Resource IDs: (IDS_LOG_POPUP_COMPARECHANGESET)
+msgid "Comp&are change sets"
+msgstr "比對變更集(&A)"
+
 #. Resource IDs: (IDS_REVGRAPH_POPUP_COMPAREHEADS,
 #. ID_VIEW_COMPAREHEADREVISIONS - Menu)
 msgid "Compare &HEAD revisions"
 msgstr "比較 &HEAD 版本"
-
-#. Resource IDs: (IDS_LOG_POPUP_COMPARECHANGESET)
-msgid "Compare change sets"
-msgstr "比對變更集"
 
 #. Resource IDs: (IDS_PROC_BROWSEREFS_COMPAREREFS)
 msgid "Compare selected refs"
@@ -2983,7 +3056,7 @@ msgstr "與工作目錄比對(&W)"
 msgid "Compare with b&ase"
 msgstr "與基礎檔比對(&A)"
 
-#. Resource IDs: (IDS_BLAME_POPUP_COMPARE, IDS_LOG_POPUP_COMPAREWITHPREVIOUS)
+#. Resource IDs: (IDS_BLAME_POPUP_COMPARE)
 msgid "Compare with previous revision"
 msgstr "與前一個版本比對"
 
@@ -2997,7 +3070,7 @@ msgstr "比對所有空白字元\n比對空白字元"
 msgid ""
 "Compares the file with the last committed revision to show you the changes "
 "you made"
-msgstr "比對此檔案與上次送交的版本並列出你所做的變動"
+msgstr " 比對工作目錄的檔案與最新提交的版本，並顯示之間變更的內容。"
 
 #. Resource IDs: (IDS_SVNACTION_COMPLETED)
 msgid "Completed"
@@ -3037,7 +3110,7 @@ msgstr "設定 Bug 追蹤系統整合功能"
 msgid ""
 "Configure alternative editor. Preferably one which can handle *nix line "
 "endings."
-msgstr "設定用來比對不同版本檔案的工具程式，最好能處理 *nix 檔案。"
+msgstr "設定文字編輯器，最好能處理 *nix 換行符號。"
 
 #. Resource IDs: (IDS_FIRSTSTART_GITTITLE)
 msgid "Configure git.exe"
@@ -3352,6 +3425,10 @@ msgstr "建立媒體櫃(&L)"
 msgid "Create &New Branch"
 msgstr "建立新分支(&N)"
 
+#. Resource IDs: (IDS_CREATE_TAG_AT_THIS)
+msgid "Create &Tag at this version..."
+msgstr "在這版本建立標籤...(&T)"
+
 #. Resource IDs: (IDS_MENUTAG)
 msgid "Create &Tag..."
 msgstr "建立標籤(&T)..."
@@ -3364,13 +3441,13 @@ msgstr "建立補綴檔(&P)"
 msgid "Create .gitignore file"
 msgstr "建立 .gitignore 檔案"
 
+#. Resource IDs: (IDS_CREATE_BRANCH_AT_THIS)
+msgid "Create Br&anch at this version..."
+msgstr "在這版本建立分支...(&A)"
+
 #. Resource IDs: (IDS_PROGS_TITLE_CREATEBRANCH)
 msgid "Create Branch"
 msgstr "建立分支"
-
-#. Resource IDs: (IDS_CREATE_BRANCH_AT_THIS)
-msgid "Create Branch at this version..."
-msgstr "在這版本建立分支..."
 
 #. Resource IDs: (Dialog IDD_CREATECHANGELIST: Control id 243)
 msgid "Create Changelist"
@@ -3383,10 +3460,6 @@ msgstr "建立補綴序列..."
 #. Resource IDs: (IDS_PROGS_TITLE_CREATETAG)
 msgid "Create Tag"
 msgstr "建立標籤"
-
-#. Resource IDs: (IDS_CREATE_TAG_AT_THIS)
-msgid "Create Tag at this version..."
-msgstr "在這版本建立標籤..."
 
 #. Resource IDs: (57600)
 msgid ""
@@ -3541,8 +3614,7 @@ msgstr "日誌訊息預設限量："
 msgid "Default to UTF-8 encoding"
 msgstr "預設使用 UTF-8 編碼"
 
-#. Resource IDs: (Dialog IDD_RESOLVE_CONFLICT: Control id 4571,
-#. IDS_DELETE_BRANCHTAG_SHORT)
+#. Resource IDs: (Dialog IDD_RESOLVE_CONFLICT: Control id 4571)
 msgid "Delete"
 msgstr "刪除"
 
@@ -3562,8 +3634,8 @@ msgid "Delete %d tags"
 msgstr "刪除 %d 個標籤"
 
 #. Resource IDs: (IDS_PROC_DELETEREMOTEBRANCH_LOCAL)
-msgid "Delete &local"
-msgstr "刪除本地(&L)"
+msgid "Delete &local remote-tracking branch"
+msgstr "刪除本地端的遠端追蹤分支(&L)"
 
 #. Resource IDs: (IDS_REFLOG_DEL)
 msgid "Delete Ref..."
@@ -3598,10 +3670,6 @@ msgstr "依副檔名刪除並忽略多個項目(&E)"
 #. Resource IDs: (IDS_PROC_BROWSEREFS_DELETEBRANCH)
 msgid "Delete branch"
 msgstr "刪除分支"
-
-#. Resource IDs: (IDS_DELETE_BRANCHTAG)
-msgid "Delete branch/tag"
-msgstr "刪除「分支／標籤」"
 
 #. Resource IDs: (IDS_DELETE_LOCALTAG)
 msgid "Delete local tag"
@@ -3838,7 +3906,7 @@ msgstr "正在比較提交"
 
 #. Resource IDs: (IDS_MENUDESCPREVDIFF)
 msgid "Diffs the working tree file with the one before the last commit"
-msgstr "比較工作目錄檔案與前次送交版本的差異"
+msgstr "比較工作目錄的檔案與上上次提交版本，並顯示之間的差異內容。"
 
 #. Resource IDs: (IDS_MENUDESCDIFFTWO)
 msgid "Diffs two any commits"
@@ -3926,6 +3994,10 @@ msgstr "不再顯示該警告（如果選擇「繼續」）(&N)"
 #. Resource IDs: (IDS_PROC_NOTSHOWAGAINIGNORE)
 msgid "Do &not show me this warning again (if Ignore is selected)"
 msgstr "不再顯示該警告（如果選擇「忽略」）(&N)"
+
+#. Resource IDs: (IDS_HOOKS_APPROVE_TASK5)
+msgid "Do not ask again for this script"
+msgstr "針對這個指令檔不再提問這個問題"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 1407)
 msgid "Do not auto-select \"missing\" files (deleted, but unstaged)"
@@ -4136,7 +4208,7 @@ msgstr "丟棄最後一個收藏（stash）(&O)"
 
 #. Resource IDs: (Dialog IDD_CLEAN: Control id 1731)
 msgid "Dry run"
-msgstr "幹運行"
+msgstr "試運行"
 
 #. Resource IDs: (Dialog IDD_SYNC: Control id 1279)
 msgid "Dummy Button Form "
@@ -4163,6 +4235,10 @@ msgstr "除外路徑(&X)："
 msgid "E&xit"
 msgstr "離開(&X)"
 
+#. Resource IDs: (IDS_EXPORT_TO_THIS)
+msgid "E&xport this version..."
+msgstr "匯出這個版本...(&X)"
+
 #. Resource IDs: (IDS_MENUEXPORT)
 msgid "E&xport..."
 msgstr "匯出(&X)..."
@@ -4188,6 +4264,10 @@ msgstr "東歐"
 msgid "Edit"
 msgstr "編輯"
 
+#. Resource IDs: (IDS_EDIT_NOTES)
+msgid "Edit &Notes"
+msgstr "編輯備註(&N)"
+
 #. Resource IDs: (IDS_PROC_EDITGLOBALGITCONFIG)
 msgid "Edit &global .gitconfig"
 msgstr "編輯全域 .gitconfig (&G)"
@@ -4200,7 +4280,7 @@ msgstr "編輯本地 .git/config(&L)"
 msgid "Edit .tgitconfig"
 msgstr "編輯 .tgitconfig"
 
-#. Resource IDs: (IDS_EDIT_NOTES, IDS_PROGS_TITLE_EDITNOTES)
+#. Resource IDs: (IDS_PROGS_TITLE_EDITNOTES)
 msgid "Edit Notes"
 msgstr "編輯備註"
 
@@ -4513,13 +4593,9 @@ msgstr "匯出目錄："
 msgid "Export selection to..."
 msgstr "匯出選取範圍至..."
 
-#. Resource IDs: (IDS_EXPORT_TO_THIS)
-msgid "Export this version..."
-msgstr "匯出這個版本..."
-
 #. Resource IDs: (IDS_PROC_EXPORT_2)
 msgid "Export unversioned files too"
-msgstr "匯出無版本控制的檔案"
+msgstr "匯出尚未版本控制的檔案"
 
 #. Resource IDs: (IDS_SVNPROGRESS_EXPORTING)
 #, c-format
@@ -4631,6 +4707,13 @@ msgstr "無法完成伺服器作業."
 #. Resource IDs: (AFX_IDP_FAILED_TO_SAVE_DOC)
 msgid "Failed to save document."
 msgstr "儲存文件失敗."
+
+#. Resource IDs: (IDS_ERRORSAVE)
+#, c-format
+msgid ""
+"Failed to save file \"%s\":\n"
+"%s"
+msgstr ""
 
 #. Resource IDs: (IDS_SVNACTION_CHANGELISTFAILED)
 #, c-format
@@ -4826,6 +4909,10 @@ msgstr "檔案"
 msgid "Filter by"
 msgstr "目前篩選:"
 
+#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_2: Control id 65535)
+msgid "Filter match"
+msgstr ""
+
 #. Resource IDs: (IDS_FILEDIFF_FILTERCUE)
 msgid "Filter paths"
 msgstr "篩選路徑"
@@ -4990,10 +5077,6 @@ msgstr "前景色"
 #. Resource IDs: (Dialog IDD_FORMAT_PATCH: Control id 312)
 msgid "Format Patch"
 msgstr "建立補綴"
-
-#. Resource IDs: (IDS_CREATE_PATCH)
-msgid "Format Patch..."
-msgstr "建立電郵補綴..."
 
 #. Resource IDs: (IDS_FORWARDN)
 #, c-format
@@ -5415,7 +5498,7 @@ msgstr "小幫手："
 
 #. Resource IDs: (Dialog IDD_SETTINGSLOOKANDFEEL: Control id 1660)
 msgid "Hide Menus for unversioned paths"
-msgstr "隱藏未版本控制路徑的選單"
+msgstr "在尚未版本控制的資料夾上隱藏選單"
 
 #. Resource IDs: (IDS_PROC_COMMIT_HIDEPATCH)
 msgid "Hide Patch<<"
@@ -5477,6 +5560,10 @@ msgstr "掛鉤類型"
 #. Resource IDs: (Dialog IDD_SETTINGSHOOKCONFIG: Control id 1334)
 msgid "Hook Type:"
 msgstr "掛鉤類型："
+
+#. Resource IDs: (IDS_HOOKFAILED_TASK2)
+msgid "Hook script failed"
+msgstr "掛鉤指令檔執行失敗"
 
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 1841)
 msgid "I don't use Git for Windows and need special workarounds"
@@ -5748,7 +5835,7 @@ msgstr "圖示 (*.ico, *.jpg, *.png, *.bmp, *.gif)|*.ico;*.jpg;*.jpeg;*.png;*.bm
 
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 65535)
 msgid "Icons/Design/Code:\t\tLuebbe Onken"
-msgstr "圖示／設計／程式：\t\tLuebbe Onken"
+msgstr "圖示／設計／程式：\tLuebbe Onken"
 
 #. Resource IDs: (IDS_SUBMODULEDIFF_IDENTICAL)
 msgid "Identical"
@@ -5793,18 +5880,26 @@ msgstr "啟用時，工作目錄中設定為除外的資料夾\n仍然會顯示�
 msgid ""
 "If set, files inside unversioned folders can be shown in the status control.\n"
 "The status control is used for example in the commit dialog."
-msgstr "設定此選項時，位於無版本控制目錄下的檔案也會在狀態中顯示。\n例如在提交視窗中就會用到這個功能。"
+msgstr "設定此選項時，位於尚未版本控制目錄下的檔案也會在狀態中顯示。\n例如在提交視窗中就會用到這個功能。"
 
 #. Resource IDs: (IDS_SETTINGS_UNVERSIONEDASMODIFIED_TT)
 msgid ""
 "If set, then unversioned files will mark the status of the parent directory as modified\n"
 "i.e. they get the modified overlay icon."
-msgstr "設定此選項時，含有無版本控制的檔案會使上層的資料夾被標記為已修改\n也就是會顯示已修改的圖示。"
+msgstr "設定此選項時，含有尚未版本控制的檔案會使上層的資料夾被標記為已修改\n也就是會顯示已修改的圖示。"
 
 #. Resource IDs: (IDS_SETTINGS_GITCONFIG_INHERIT_TT)
 msgid ""
 "If this is enabled, no value is stored or overwritten at this config level."
-msgstr "如果勾選這個，在這個等級下的組態值將不會被「儲存／覆寫」。而是直接延用較低優先權等級的組態值。"
+msgstr "如果勾選這個，在這個等級下的組態值將不會被「儲存／覆寫」\n（直接延用較低優先權等級的組態值）。"
+
+#. Resource IDs: (IDS_HOOKS_APPROVE_SECURITYHINT)
+msgid ""
+"If you are executing a versioned file from the repository, please note that "
+"the content possibly have been altered by third parties unnoticed (e.g. "
+"after pull or merge). Keep this in mind especially if you approve a "
+"repository hook permanently."
+msgstr "千萬僅記在心！特別是你永久性地允許執行掛鉤指令檔！如果你執行一個版本庫中被版控的可執行檔案，它的內容有可能不小心被第三方修改了內容（例如透過「拉取」或「合併」之後），進而執行了非預期的內容。"
 
 #. Resource IDs: (Dialog IDD_CREATEREPO: Control id 1654)
 msgid ""
@@ -6277,7 +6372,7 @@ msgstr "列出說明主題\n說明主題"
 msgid ""
 "List a renamed file as \"long/path/{to => for}/file.txt\" instead of "
 "\"long/path/for/file.txt (from long/path/to/file.txt)\"."
-msgstr "顯示一重新命名檔案為「long/path/{to => for}/file.txt」而非 「long/path/for/file.txt (from long/path/to/file.txt)」。"
+msgstr "顯示「重新命名檔案」為易讀格式\n「long/path/{to => for}/file.txt」\n而非完整格式\n 「long/path/for/file.txt (from long/path/to/file.txt)」"
 
 #. Resource IDs: (Dialog IDD_OPEN: Control id 130)
 msgid "Load Images"
@@ -6322,7 +6417,7 @@ msgstr "本地提交 SHA-1"
 msgid ""
 "Local changes ignored (assumed valid/unchanged or skip worktree flagged "
 "files)"
-msgstr "忽略本地變更（含 assumed valid/unchanged 或 skip worktree 旗標的檔案）"
+msgstr "忽略本地變更（含被標記為 assumed valid/unchanged 或 skip worktree 的檔案）"
 
 #. Resource IDs: (IDS_TAGCOMPARE_LOCALMESSAGE)
 msgid "Local message"
@@ -6499,11 +6594,6 @@ msgid ""
 "switch to"
 msgstr "合併原先分支、工作目錄內容及切換至的分支"
 
-#. Resource IDs: (IDS_LOG_POPUP_MERGEREV, IDS_LOG_POPUP_MERGEREVS)
-#, c-format
-msgid "Merge to \"%s\"..."
-msgstr "合併至「%s」..."
-
 #. Resource IDs: (IDS_PATHACTIONS_MERGED, IDS_SVNACTION_MERGED,
 #. IDS_VIEWTITLE_MERGED)
 msgid "Merged"
@@ -6615,7 +6705,7 @@ msgstr "移動：%s 的新名稱"
 
 #. Resource IDs: (IDS_SETTINGS_USERECYCLEBIN_TT)
 msgid "Moves the modified files to the recycle bin first before reverting"
-msgstr "將修改過的檔案移至資源回收筒再進行復原"
+msgstr "將工作區已修改過的檔案先移到資源回收筒，再進行「復原」操作。"
 
 #. Resource IDs: (IDS_PROC_MOVINGPROG)
 #, c-format
@@ -6805,7 +6895,7 @@ msgstr "沒有變動的檔案或目錄，不需要 TortoiseGit 復原！"
 msgid ""
 "No files to show with the current setting.\n"
 "Check one or more settings below to see unversioned, ignored and/or unmodified files."
-msgstr "目前設定下沒有可顯示的檔案。\n勾選以下的設定以顯示無版本控制的、忽略的、或是無變更的檔案。"
+msgstr "目前設定下沒有可顯示的檔案。\n勾選以下的設定以顯示尚未版本控制的、忽略的、或是無變更的檔案。"
 
 #. Resource IDs: (IDS_COMMITDLG_NOTHINGTOCOMMIT)
 msgid ""
@@ -6818,7 +6908,7 @@ msgid ""
 "No files were changed or added since\n"
 "the last commit.\n"
 "Do you want to see the unversioned files?"
-msgstr "從上次提交以來沒有任何檔案\n變動或加入。\n要檢視未加入版本控制的檔案嗎？"
+msgstr "從上次提交以來沒有任何檔案\n變動或加入。\n要檢視尚未加入版本控制的檔案嗎？"
 
 #. Resource IDs: (33002)
 msgid "No filter"
@@ -6876,6 +6966,10 @@ msgstr "無狀態快取，僅目錄有圖示，檔案無圖示。"
 #. Resource IDs: (IDS_SPELLEDIT_NOTHESAURUS)
 msgid "No thesaurus suggestions"
 msgstr "沒有同義字建議"
+
+#. Resource IDs: (IDS_NOGITREPO)
+msgid "No valid git repository found."
+msgstr ""
 
 #. Resource IDs: (IDS_NOWORKINGCOPY)
 msgid "No working directory found."
@@ -6946,11 +7040,11 @@ msgstr "注意：這些設定值也會套用在補綴瀏覽視窗。"
 
 #. Resource IDs: (Dialog IDD_REVERT: Control id 1481)
 msgid "Note: the folder contains unversioned items"
-msgstr "注意：資料夾含有無版本控制的檔案。"
+msgstr "注意：資料夾含有尚未版本控制的檔案。"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAYHANDLERS: Control id 65535)
 msgid "Note: this affects all Tortoise clients, not just TortoiseGit!"
-msgstr "注意：這將影響到所有的 Tortoise 客户端，不僅僅是 TortoiseGit！"
+msgstr "注意：這將影響到所有的 Tortoise 客户端程式，不僅僅是 TortoiseGit！"
 
 #. Resource IDs: (IDS_NOTES)
 msgid "Notes"
@@ -6987,7 +7081,7 @@ msgstr "偵測「移動行」或「複製行」所需的字元數："
 
 #. Resource IDs: (IDS_SETTINGS_DESCRIBEABBREVIATEDSIZE_TT)
 msgid "Number of characters to show in the abbreviated hash part"
-msgstr "縮寫中雜湊值顯示的位數"
+msgstr "縮寫雜湊值顯示的位數"
 
 #. Resource IDs: (Dialog IDD_STATGRAPH: Control id 1160)
 msgid "Number of weeks:"
@@ -7169,6 +7263,10 @@ msgstr "只顯示未合併到 HEAD 的"
 #. Resource IDs: (AFX_IDS_OPENFILE, ID_FILE_OPEN - Menu)
 msgid "Open"
 msgstr "開啟"
+
+#. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 1849)
+msgid "Open &settings"
+msgstr ""
 
 #. Resource IDs: (57601)
 msgid ""
@@ -7359,7 +7457,7 @@ msgstr "父版本"
 msgid "Password"
 msgstr "密碼"
 
-#. Resource IDs: (Dialog IDD_SETTINGSMTP: Control id 1761, IDS_AUTH_PASSWORD)
+#. Resource IDs: (IDS_AUTH_PASSWORD)
 msgid "Password:"
 msgstr "密碼："
 
@@ -7638,6 +7736,10 @@ msgstr "印表檔案 (*.prn)|*.prn|全部檔案 (*.*)|*.*||"
 msgid "Printing"
 msgstr "列印中"
 
+#. Resource IDs: (IDS_HOOK_FORCEDPROCEED)
+msgid "Proceed anyway"
+msgstr ""
+
 #. Resource IDs: (IDS_PROGS_TOOLCOL)
 msgid "Program"
 msgstr "程式"
@@ -7785,6 +7887,11 @@ msgstr "R"
 msgid "R&AM drives"
 msgstr "虛擬磁碟(&A)"
 
+#. Resource IDs: (IDS_RESET_TO_THIS_FORMAT)
+#, c-format
+msgid "R&eset \"%s\" to this..."
+msgstr ""
+
 #. Resource IDs: (IDS_RESTORE_FROM_INDEX)
 msgid "R&estore this file from index"
 msgstr "從索引中還原此檔案"
@@ -7799,13 +7906,13 @@ msgstr "變基"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 1769)
 msgid "Randomize Sync Dialog startup position"
-msgstr "隨機化同步視窗啟動位置"
+msgstr "「同步(Sync)」視窗啟動位置隨機化"
 
 #. Resource IDs: (IDS_SYNCDIALOGRANDOMPOS_TT)
 msgid ""
 "Randomize the startup position of Sync Dialog. This prevents from pressing "
 "the Pull button of same dialog"
-msgstr "隨機化同步視窗的啟動位置。這可以防止按到相同對話框中的拉取按鈕。"
+msgstr "將「同步(Sync)」視窗的啟動位置隨機化，\n主要用來防止按到相同視窗中的拉取(Pull)按鈕。\n例如開啟二個不同版本庫的同步視窗，視窗 A 按了拉取按鈕後，切換到視窗 B 準備按拉取按鈕的同時，視窗 A 因為完成拉取動作而彈出來成為目前視窗，結果誤按了視窗 A 的拉取按鈕。"
 
 #. Resource IDs: (Dialog IDD_FORMAT_PATCH: Control id 1535)
 msgid "Range"
@@ -7853,8 +7960,8 @@ msgstr "變基"
 
 #. Resource IDs: (IDS_REBASE_THIS_FORMAT)
 #, c-format
-msgid "Rebase \"%s\" onto this..."
-msgstr "變基「%s」到這..."
+msgid "Rebase \"%s\" onto this...(&G)"
+msgstr ""
 
 #. Resource IDs: (IDS_MENUREBASE)
 msgid "Rebase..."
@@ -8235,11 +8342,6 @@ msgstr "重設"
 msgid "Reset Type"
 msgstr "重設類型"
 
-#. Resource IDs: (IDS_RESET_TO_THIS_FORMAT)
-#, c-format
-msgid "Reset \"%s\" to this..."
-msgstr "重設「%s」到這個版本..."
-
 #. Resource IDs: (Dialog IDD_RESET: Control id 1522)
 msgid "Reset active branch"
 msgstr "重設現在分支"
@@ -8432,6 +8534,10 @@ msgstr "右側檢視："
 #. Resource IDs: (Dialog IDD_OPEN: Control id 65535)
 msgid "Right image"
 msgstr "右側影像"
+
+#. Resource IDs: (Dialog IDD_SETTINGSHOOKCONFIG: Control id 1848)
+msgid "Run for this repository"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSHOOKCONFIG: Control id 1335)
 msgid "Run when working tree path is under:"
@@ -8825,7 +8931,7 @@ msgstr "請選擇掛鉤指令檔"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 1405)
 msgid "Select items automatically"
-msgstr "自動選擇項目"
+msgstr "自動勾選項目"
 
 #. Resource IDs: (IDS_SETTINGS_SELECTMERGE)
 msgid "Select merge application"
@@ -8993,7 +9099,7 @@ msgstr "顯示參照日誌(&R)"
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1073,
 #. IDS_PROC_LOG_SHOWUNVERSIONED)
 msgid "Show &Unversioned Files"
-msgstr "顯示未版本控制的檔案(&U)"
+msgstr "顯示尚未版本控制的檔案(&U)"
 
 #. Resource IDs: (Dialog IDD_CHANGEDFILES: Control id 1203, Dialog
 #. IDD_COMMITDLG: Control id 1203, Dialog IDD_LOGMESSAGE: Control id 1203)
@@ -9051,6 +9157,10 @@ msgstr "顯示概觀(&R)"
 msgid "Show Whitespaces"
 msgstr "顯示"
 
+#. Resource IDs: (Dialog IDD_CHANGEDFILES: Control id 1210)
+msgid "Show all &staged files"
+msgstr ""
+
 #. Resource IDs: (32813)
 msgid "Show an overview of the whole graph"
 msgstr "顯示鳥瞰圖"
@@ -9072,13 +9182,13 @@ msgid ""
 "Show branch revision number (git rev-list --count --first-parent) in log "
 "dialog and after a push to a remote branch; this is not guaranteed to be "
 "unique, please see help"
-msgstr "在日誌視窗顯示分支累加版本號碼 (git rev-list --count --first-parent)。注意: 這個號碼無法保證是唯一的。請參考說明文件。"
+msgstr "顯示分支的累加版本號碼 (git rev-list --count --first-parent)。\n顯示在日誌視窗的提交雜湊值後面，以及推送分支到遠端後的進度視窗中。\n注意: 這個號碼無法保證是唯一的，細節請參考說明文件。"
 
 #. Resource IDs: (IDS_LOG_POPUP_SHOWBRANCHES)
-msgid "Show branches this commit is on"
-msgstr "顯示這版本所屬的分支"
+msgid "Show branches this commit is &on"
+msgstr ""
 
-#. Resource IDs: (IDS_LOG_POPUP_GNUDIFF, IDS_LOG_POPUP_GNUDIFF_CH)
+#. Resource IDs: (IDS_LOG_POPUP_GNUDIFF)
 msgid "Show changes as &unified diff"
 msgstr "以統合式差異格式顯示變更(&W)"
 
@@ -9440,7 +9550,7 @@ msgstr "開始二分法模式"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAYHANDLERS: Control id 1542)
 msgid "Start registry editor"
-msgstr "啟動登錄檔編輯器"
+msgstr "直接修改登錄機碼"
 
 #. Resource IDs: (IDS_MENUDESCDAEMON)
 msgid "Starts a git server running git protocol"
@@ -9648,6 +9758,10 @@ msgstr "子模組"
 msgid "Success"
 msgstr "成功"
 
+#. Resource IDs: (IDS_SWITCH_TO_THIS)
+msgid "Sw&itch/Checkout to this..."
+msgstr ""
+
 #. Resource IDs: (IDS_PROGRS_TITLE_SWITCH)
 msgid "Switch"
 msgstr "切換"
@@ -9701,14 +9815,6 @@ msgstr "切換至上一個文件視窗"
 #. Resource IDs: (Dialog IDD_GITSWITCH: Control id 304)
 msgid "Switch/Checkout"
 msgstr "切換／取出"
-
-#. Resource IDs: (IDS_SWITCH_BRANCH)
-msgid "Switch/Checkout to"
-msgstr "切換／取出至"
-
-#. Resource IDs: (IDS_SWITCH_TO_THIS)
-msgid "Switch/Checkout to this..."
-msgstr "切換／取出到這個版本..."
 
 #. Resource IDs: (IDS_MENUDESCSWITCH)
 msgid "Switch/Checkout working tree to another branch/tag"
@@ -9842,10 +9948,10 @@ msgstr "給「最新(近)」選項用的設定值。\n值必需大於 0"
 #. Resource IDs: (IDS_PROC_DELETEREMOTEBRANCH)
 #, c-format
 msgid ""
-"The branch \"%s\" is a remote branch.\n"
+"The branch \"%s\" is a remote-tracking branch which locally represents a remote branch.\n"
 "\n"
 "Do you really want to delete it?"
-msgstr "分支「%s」是一個遠端分支\n\n確定要刪除？"
+msgstr ""
 
 #. Resource IDs: (IDS_ERR_PATCH_CHUNKMISMATCH)
 msgid "The chunk size did not match the number of added/removed lines!"
@@ -9878,6 +9984,12 @@ msgid ""
 "The credential helper was changed.\n"
 "Do you want to save now or discard changes?"
 msgstr "已切換到不同的憑證小幫手。\n要「儲存」或「放棄變更」？"
+
+#. Resource IDs: (IDS_CHERRYPICK_EMPTY)
+msgid ""
+"The current commit will be empty (e.g., due to conflict resolution). Skip "
+"the commit or keep the message only commit?"
+msgstr ""
 
 #. Resource IDs: (IDS_ERROR_NOCLEAN_STASH)
 msgid ""
@@ -9967,7 +10079,7 @@ msgstr "檔案\n%s\n不是有效的文字檔！"
 msgid ""
 "The folder %s\n"
 "contains unversioned and/or modified file(s). Do you want to remove it anyway?"
-msgstr "目錄 %s\n裡有未做版本控制以及可能有修改過的檔案。確定要刪除嗎？"
+msgstr "目錄 %s\n裡有尚未做版本控制以及可能有修改過的檔案。確定要刪除嗎？"
 
 #. Resource IDs: (IDS_WARN_FOLDERNOTEXIST)
 #, c-format
@@ -9978,12 +10090,23 @@ msgid ""
 "Would you like to create it first?"
 msgstr "資料夾 \n%s\n 不存在。\n是否要先建立？"
 
+#. Resource IDs: (IDS_HOOK_ERRORMSG)
+#, c-format
+msgid ""
+"The hook script returned an error:\n"
+"%ls"
+msgstr ""
+
 #. Resource IDs: (IDS_ERR_HOOKFAILED)
 #, c-format
 msgid ""
 "The hook script returned an error:\n"
 "%s"
 msgstr "掛鉤指令檔傳回錯誤：\n%s"
+
+#. Resource IDs: (IDS_ERR_HOOKNOTAPPROVED)
+msgid "The hook script was not approved to run!"
+msgstr ""
 
 #. Resource IDs: (IDS_INVALIDIMAGEINFO)
 msgid "The image can not be shown."
@@ -10179,18 +10302,12 @@ msgstr "遠端檔案："
 msgid "Theirs"
 msgstr "對方的"
 
-#. Resource IDs: (IDS_COMMITDLG_EXTERNALS)
-msgid ""
-"There are changes or unversioned items inside one or more submodule.\n"
-"Those files are not listed for commit. You need to commit those files in submodule"
-msgstr "子模組的目錄中包含有修改或是未納入版本控制的檔案。\n那些檔案不會列在提交列表中，你必須在子模組內提交那些檔案。"
-
 #. Resource IDs: (IDS_SETTINGS_OVERLAYINFO)
 #, c-format
 msgid ""
 "There are currently %d overlay handlers installed besides the ones Tortoise "
 "uses."
-msgstr "除了 Tortoise 以外，目前還有 %d 個圖示覆蓋。"
+msgstr "除了 Tortoise 以外，系統中還安裝了其它 %d 個圖示覆蓋。"
 
 #. Resource IDs: (IDS_SAVE_MORE)
 msgid ""
@@ -10317,6 +10434,14 @@ msgstr "遠端名稱與其他遠端的獲取 refspec 衝突，請用另一名稱
 msgid "This task requires a clean working tree."
 msgstr "這工作需要乾淨的工作目錄。"
 
+#. Resource IDs: (IDS_HOOKS_APPROVE_TASK1)
+#, c-format
+msgid ""
+"This working copy has a client-side hook script configured. Do you want this script to run?\n"
+"The command line to run is:\n"
+"%ls"
+msgstr ""
+
 #. Resource IDs: (IDS_TREE_DIFF)
 msgid "Three way diff"
 msgstr "三方比較差異"
@@ -10413,7 +10538,7 @@ msgstr "TortoiseGit 需要藉由一個 git 執行檔來執行實際的 git 操�
 #. Resource IDs: (IDS_SETTINGS_OVERLAYINFO2)
 #, c-format
 msgid "TortoiseGit will not show the following overlays: %s"
-msgstr "TortoiseGit 不會顯示以下的圖示覆蓋：%s"
+msgstr "TortoiseGit 可能不會顯示以下的圖示覆蓋：%s"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSDIFF: Control id 1096)
 msgid "TortoiseGit&UDiff"
@@ -10617,6 +10742,10 @@ msgstr "UTF-16 LE"
 msgid "UTF-8"
 msgstr "UTF-8"
 
+#. Resource IDs: (IDS_ERR_CHANGELIST_LOAD)
+msgid "Unable to load changelists"
+msgstr ""
+
 #. Resource IDs: (AFX_IDP_FAILED_MAPI_LOAD)
 msgid "Unable to load mail system support."
 msgstr "無法載入郵件系統功能."
@@ -10642,6 +10771,10 @@ msgid ""
 "from the top pane in the log dialog."
 msgstr "無法重建工作目錄路徑！\n如果檔案名稱有變動，可能造成這個問題。\n請對特定檔案查詢日誌，並從日誌視窗上方將變更\n復原。"
 
+#. Resource IDs: (IDS_ERR_CHANGELIST_SAVE)
+msgid "Unable to save changelists"
+msgstr ""
+
 #. Resource IDs: (AFX_IDP_SET_NOT_SUPPORTED)
 msgid "Unable to write read-only property."
 msgstr "無法寫入唯讀性質."
@@ -10659,7 +10792,7 @@ msgstr "取消勾選"
 msgid ""
 "Unchecked items will appear in the TortoiseGit submenu, checked items "
 "directly in the main context menu."
-msgstr "未被勾選的項目會顯示在 TortoiseGit 次選單中，而勾選的項目會直接顯示在快顯功能表中。"
+msgstr "勾選的項目會直接顯示在快顯功能表中\n未被勾選的項目會顯示在 TortoiseGit 子選單中"
 
 #. Resource IDs: (cmdUndo_LabelTitle_RESID)
 msgid "Undo"
@@ -10727,11 +10860,11 @@ msgstr "未命名"
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1703, Dialog
 #. IDD_SETTINGSOVERLAYHANDLERS: Control id 1462)
 msgid "Unversioned"
-msgstr "未有版本控制"
+msgstr "未版本控制"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1313)
 msgid "Unversioned files mark parent folder as modified"
-msgstr "含有無版本控制的檔案時，將上層資料夾標記為「已修改」"
+msgstr "含有尚未版本控制的檔案時，將上層資料夾標記為「已修改」"
 
 #. Resource IDs: (IDS_SVNPROGRESS_UNVERSION)
 #, c-format
@@ -11219,7 +11352,7 @@ msgstr "在套用補綴檔時，忽略空白字元的變更。"
 msgid ""
 "When closing a progress dialog with a running git process, ask for "
 "confirmation before killing it"
-msgstr "當想要關閉仍有執行中 git 程序的進度視窗時，需經確認後才能停止它。"
+msgstr "當進度視窗被關閉的同時，尚有 git 程序正在執行，則需要經過確認後才能關閉它。"
 
 #. Resource IDs: (IDS_SETTINGS_ENABLEDRAGCONTEXTMENU_TT)
 msgid ""
@@ -11231,13 +11364,13 @@ msgstr "啟用後，在拖曳「資料夾／檔案」時，將顯示 TortoiseGit
 msgid ""
 "When enabled, larger version numbers come first. It is because latest "
 "versions are usually more useful."
-msgstr "啟用後，較大的版本號在前面，因為新版通常比較有用。"
+msgstr "啟用後，較大的版本號會先列在前面，以方便查看最新版本。"
 
 #. Resource IDs: (IDS_SETTINGS_SELECTFILESONCOMMIT_TT)
 msgid ""
 "When enabled, the versioned items listed in the commit dialog are "
 "automatically selected"
-msgstr "啟用時，送交視窗中有版本控制的項目會自動被選取。"
+msgstr "啟用時，自動選取提交視窗中有版本控制的項目。"
 
 #. Resource IDs: (IDS_AM_3WAY_TT)
 msgid ""
@@ -11254,7 +11387,7 @@ msgstr "如果遠端名稱為空，當你鍵入 URL 時遠端名稱將被自動�
 
 #. Resource IDs: (IDS_SETTINGS_DESCRIBESTRATEGY_TT)
 msgid "Whether to reference only annotated tags, all tags or all refs"
-msgstr "搜尋參照的依據可以是 (1)只有含附註的標籤、(2)所有標籤、(3)所有參照"
+msgstr "搜尋參照的依據可以是\n(1)只有含附註的標籤\n(2)所有標籤\n(3)所有參照"
 
 #. Resource IDs: (IDS_NEED_TO_RESOLVE_CONFLICTS_HINT)
 msgid ""
@@ -11455,7 +11588,7 @@ msgstr "你選擇了一個資料夾\n只能匯出到 zip 檔"
 msgid ""
 "You selected an unversioned file.\n"
 "The file will be added to version control when you commit."
-msgstr "你選擇了無版本控制的檔案。\n提交時，它會被加入版本控制。"
+msgstr "你選擇了尚未版本控制的檔案。\n提交時，它會被加入版本控制。"
 
 #. Resource IDs: (IDS_COMMITDLG_HISTORYHINT_TT)
 msgid ""
@@ -11527,15 +11660,15 @@ msgstr "縮放到 100% (&1)"
 
 #. Resource IDs: (32804)
 msgid "Zoom to fit"
-msgstr "縮放至合適大小"
+msgstr "縮放至符合頁面"
 
 #. Resource IDs: (32809)
 msgid "Zoom to fit in height"
-msgstr "縮放至合適高度"
+msgstr "縮放至符合高度"
 
 #. Resource IDs: (32810)
 msgid "Zoom to fit in width"
-msgstr "縮放至合適闊度"
+msgstr "縮放至符合寬度"
 
 #. Resource IDs: (IDS_CHERRYPICK_MERGECOMMIT)
 #, c-format

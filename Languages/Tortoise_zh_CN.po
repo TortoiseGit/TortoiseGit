@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2018 the TortoiseGit team
+# Copyright (C) 2008-2019 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
@@ -24,7 +24,7 @@
 # RAMBOO <ramboooo@126.com>, 2013
 # RAMBOO <ramboooo@126.com>, 2013
 # Shengbin Meng <shengbinmeng@gmail.com>, 2013
-# shuyu liu <liushuyu011@gmail.com>, 2014,2016
+# liushuyu011 <liushuyu011@gmail.com>, 2014,2016
 # Sven Strickroth <sstrickroth@googlemail.com>, 2012-2013,2017-2018
 # szkingrose <1072258106@qq.com>, 2014
 # Verplusor, 2011
@@ -32,8 +32,9 @@
 # wwj402 <wwj402@gmail.com>, 2013
 # xiaobing chen <olivetchan@qq.com>, 2016
 # Xijian Yan, 2018
-# YF <yfdyh000@gmail.com>, 2013,2016
-# YF <yfdyh000@gmail.com>, 2013-2018
+# YFdyh000 <yfdyh000@gmail.com>, 2019
+# YFdyh000 <yfdyh000@gmail.com>, 2013,2016
+# YFdyh000 <yfdyh000@gmail.com>, 2013-2018
 # zhang chuan <zhangchuan.cn@gmail.com>, 2011
 # 乙酸鋰 <ch3cooli@gmail.com>, 2014
 msgid ""
@@ -41,7 +42,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2018-08-19 11:48+0000\n"
+"PO-Revision-Date: 2019-02-22 16:39+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/lznuaa/tortoisegit/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -346,6 +347,12 @@ msgstr "三路合并(&3)"
 msgid "&Abort"
 msgstr "中止(&A)"
 
+#. Resource IDs: (IDS_HOOKFAILED_TASK3)
+msgid ""
+"&Abort\n"
+"You can fix the reason the hook script failed first."
+msgstr "中止(&A)\n您可以先解决 Hook 脚本失败的原因。"
+
 #. Resource IDs: (ID_APP_ABOUT - Menu)
 msgid "&About TortoiseGitBlame..."
 msgstr "关于 TortoiseGitBlame(&A)..."
@@ -457,7 +464,8 @@ msgstr "取消(&C)"
 msgid "&Clean up..."
 msgstr "清理(&C)..."
 
-#. Resource IDs: (ID_EDIT_CLEAR - Menu)
+#. Resource IDs: (Dialog IDD_SETTINGSMTP: Control id 1848, ID_EDIT_CLEAR -
+#. Menu)
 msgid "&Clear"
 msgstr "清除(&C)"
 
@@ -494,6 +502,10 @@ msgstr "提交(&C)..."
 msgid "&Compare revisions"
 msgstr "比较版本差异(&C)"
 
+#. Resource IDs: (IDS_LOG_POPUP_COMPAREWITHPREVIOUS)
+msgid "&Compare with previous revision"
+msgstr "与以前的版本比较(&C)"
+
 #. Resource IDs: (IDS_WALKBEHAVIOUR_COMPRESSED)
 msgid "&Compressed Graph"
 msgstr "紧缩版本树(&C)"
@@ -525,7 +537,7 @@ msgid "&Default"
 msgstr "默认(&D)"
 
 #. Resource IDs: (Dialog IDD_DELETEREMOTETAG: Control id 1, IDS_DELETEBUTTON,
-#. IDS_MENUREMOVE)
+#. IDS_DELETE_BRANCHTAG_SHORT, IDS_MENUREMOVE)
 msgid "&Delete"
 msgstr "删除(&D)"
 
@@ -538,8 +550,12 @@ msgid "&Delete Filter"
 msgstr "删除过滤器(&D)"
 
 #. Resource IDs: (IDS_PROC_DELETEREMOTEBRANCH_LOCALREMOTE)
-msgid "&Delete remote && local"
-msgstr "删除远端和本地(&D)"
+msgid "&Delete branch on remote && local remote-tracking branch"
+msgstr "删除本地分支及跟踪的远端分支(&D)"
+
+#. Resource IDs: (IDS_DELETE_BRANCHTAG)
+msgid "&Delete branch/tag"
+msgstr "删除分支/标签(&D)"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "&Detect moved or copied lines"
@@ -576,6 +592,12 @@ msgstr "剩下的做同样操作(&D)"
 #. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1032)
 msgid "&Don't ask me again"
 msgstr "不再询问(&D)"
+
+#. Resource IDs: (IDS_HOOKS_APPROVE_TASK4)
+msgid ""
+"&Don't run\n"
+"Do not run the script"
+msgstr "不要运行(&D)\n不运行该脚本"
 
 #. Resource IDs: (IDS_MSGBOX_DONOTSHOWAGAIN)
 msgid "&Don't show this message again"
@@ -715,6 +737,10 @@ msgstr "强制(&F)"
 #. Resource IDs: (Dialog IDD_REBASE: Control id 1607)
 msgid "&Force Rebase"
 msgstr "强制变基(rebase)(&F)"
+
+#. Resource IDs: (IDS_CREATE_PATCH)
+msgid "&Format Patch..."
+msgstr "格式化补丁(&F)..."
 
 #. Resource IDs: (Dialog IDD_CLONE: Control id 1608)
 msgid "&From:"
@@ -880,6 +906,11 @@ msgstr "内嵌差异比较的最大行长度(&M)"
 msgid "&Merge"
 msgstr "合并(&M)"
 
+#. Resource IDs: (IDS_LOG_POPUP_MERGEREV)
+#, c-format
+msgid "&Merge to \"%s\"..."
+msgstr "合并到“%s”(&M)..."
+
 #. Resource IDs: (IDS_MERGE_UNRELATED)
 msgid "&Merge unrelated history"
 msgstr "合并非相关历史(&M)"
@@ -1030,6 +1061,12 @@ msgstr "打印(&P)...\tCtrl+P"
 msgid "&Proceed"
 msgstr "继续(&P)"
 
+#. Resource IDs: (IDS_HOOKFAILED_TASK4)
+msgid ""
+"&Proceed anyway\n"
+"Ignore the hook script and run the command anyway."
+msgstr "继续执行(&P)\n忽略 Hook 脚本并继续执行命令。"
+
 #. Resource IDs: (IDS_PROC_SYNC_PULL)
 msgid "&Pull"
 msgstr "拉取(&P)"
@@ -1134,6 +1171,12 @@ msgstr "还原此版本做出的变更(&R)"
 msgid "&Revert changes by these commits"
 msgstr "还原这些版本的变更(&R)"
 
+#. Resource IDs: (IDS_HOOKS_APPROVE_TASK3)
+msgid ""
+"&Run\n"
+"Run the hook script"
+msgstr "运行(&R)\n运行该 Hook 脚本"
+
 #. Resource IDs: (Dialog IDD_SETTINGSPROXY: Control id 65535)
 msgid "&SSH client:"
 msgstr "SSH 客户端(&S): "
@@ -1213,9 +1256,17 @@ msgstr "贮藏(Stash)(&S)"
 msgid "&Status Bar"
 msgstr "状态栏(&S)"
 
+#. Resource IDs: (Dialog IDD_SETTINGSMTP: Control id 1849)
+msgid "&Store credentials..."
+msgstr "存储证书(&S)..."
+
 #. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1525)
 msgid "&Switch to new branch"
 msgstr "切换到新分支(&S)"
+
+#. Resource IDs: (IDS_SWITCH_BRANCH)
+msgid "&Switch/Checkout to"
+msgstr "切换/检出到(&S)"
 
 #. Resource IDs: (Dialog IDD_SETOVERLAYICONS: Control id 1173)
 msgid "&Symbol View"
@@ -1328,8 +1379,7 @@ msgstr "在提交缺少 Signed-off-by 时给出警告(&W)"
 msgid "&Whole Project"
 msgstr "整个工程(&W)"
 
-#. Resource IDs: (Dialog IDD_FIND: Control id 1066, Dialog IDD_FIND: Control
-#. id 20085)
+#. Resource IDs: (Dialog IDD_FIND: Control id 1066)
 msgid "&Whole word"
 msgstr "全字匹配(&W)"
 
@@ -1662,6 +1712,14 @@ msgstr "添加“Signed-off-by”(&S)"
 msgid "Add another commit?"
 msgstr "再添加一个提交？"
 
+#. Resource IDs: (IDS_STATUSLIST_CONTEXT_ADD_EXE)
+msgid "Add as Executable (+x)"
+msgstr "添加可执行属性 (+x)"
+
+#. Resource IDs: (IDS_STATUSLIST_CONTEXT_ADD_LINK)
+msgid "Add as Symlink"
+msgstr "添加为符号链接"
+
 #. Resource IDs: (IDS_DLGTITLE_ADD_DIFF_TOOL)
 msgid "Add extension specific diff program"
 msgstr "根据扩展名指定差异比较程序"
@@ -1759,6 +1817,12 @@ msgstr "所有基本引用"
 #. Resource IDs: (IDS_PROC_LOG_SELECT_LOCAL_BRANCHES)
 msgid "All local branches"
 msgstr "所有本地分支"
+
+#. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 1850)
+msgid ""
+"All or some options are limited. In order to change all these settings, you "
+"need Administrator rights."
+msgstr ""
 
 #. Resource IDs: (IDS_ALLREFS)
 msgid "All refs"
@@ -1899,6 +1963,10 @@ msgstr "从邮箱应用补丁序列"
 #. Resource IDs: (Dialog IDD_OPENDLG: Control id 1072)
 msgid "Apply unified diff"
 msgstr "应用标准差异文件"
+
+#. Resource IDs: (IDS_HOOKS_APPROVE_TASK2)
+msgid "Approve or reject client-side hook script"
+msgstr "批准或拒绝客户端侧 Hook 脚本"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Arabic"
@@ -2342,6 +2410,10 @@ msgstr "立即检查(&H)"
 msgid "C&ommit"
 msgstr "提交(&O)"
 
+#. Resource IDs: (IDS_LOG_POPUP_COMMIT)
+msgid "C&ommit..."
+msgstr "提交(&O)..."
+
 #. Resource IDs: (IDS_LOG_POPUP_COPY)
 msgid "C&reate branch/tag from revision"
 msgstr "从版本创建分支/标签(&R)"
@@ -2629,6 +2701,14 @@ msgstr "检出"
 msgid "Checkout with merge"
 msgstr "检出合并"
 
+#. Resource IDs: (IDS_CHERRY_PICK_VERSIONS)
+msgid "Cherr&y Pick selected commits..."
+msgstr "摘取选定提交(&Y)..."
+
+#. Resource IDs: (IDS_CHERRY_PICK_VERSION)
+msgid "Cherr&y Pick this commit..."
+msgstr "摘取此提交(&Y)..."
+
 #. Resource IDs: (IDS_PROGS_TITLE_CHERRYPICK)
 msgid "Cherry Pick"
 msgstr "摘取"
@@ -2637,17 +2717,11 @@ msgstr "摘取"
 msgid "Cherry Pick failed"
 msgstr "摘取失败"
 
-#. Resource IDs: (IDS_CHERRY_PICK_VERSIONS)
-msgid "Cherry Pick selected commits..."
-msgstr "摘取选中的版本..."
-
-#. Resource IDs: (IDS_CHERRY_PICK_VERSION)
-msgid "Cherry Pick this commit..."
-msgstr "摘取此提交..."
-
 #. Resource IDs: (IDS_CHERRYPICKFAILEDSKIP)
-msgid "Cherry-pick failed! Skip this commit?"
-msgstr "摘取失败！跳过此提交？"
+msgid ""
+"Cherry-pick failed (please see log in the cherry pick/rebase dialog for "
+"details)! Skip this commit?"
+msgstr "摘取失败（参见摘取/变基对话框中的日志了解详情）！跳过此提交？"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Chinese"
@@ -2840,13 +2914,13 @@ msgstr "依据年龄标记颜色，连续的(&C)"
 msgid "Colors"
 msgstr "颜色"
 
+#. Resource IDs: (IDS_COMBINE_TO_ONE)
+msgid "Com&bine to one commit"
+msgstr "压扁成一个提交(&B)"
+
 #. Resource IDs: (Dialog IDD_SENDMAIL: Control id 1481)
 msgid "Combine One Mail"
 msgstr "合并成一个邮件"
-
-#. Resource IDs: (IDS_COMBINE_TO_ONE)
-msgid "Combine to one commit"
-msgstr "合并到一个提交"
 
 #. Resource IDs: (IDS_PROGRS_CMDINFO)
 msgid "Command"
@@ -2921,7 +2995,7 @@ msgstr "提交父工程"
 msgid "Commit to:"
 msgstr "提交至: "
 
-#. Resource IDs: (IDS_LOG_POPUP_COMMIT, IDS_STATUSLIST_CONTEXT_COMMIT)
+#. Resource IDs: (IDS_STATUSLIST_CONTEXT_COMMIT)
 msgid "Commit..."
 msgstr "提交..."
 
@@ -2962,14 +3036,14 @@ msgstr "提交未版本控制的文件夹不会递归添加它的子项目！\n�
 msgid "Common Name:"
 msgstr "通用名称："
 
+#. Resource IDs: (IDS_LOG_POPUP_COMPARECHANGESET)
+msgid "Comp&are change sets"
+msgstr "压扁变更集(&A)"
+
 #. Resource IDs: (IDS_REVGRAPH_POPUP_COMPAREHEADS,
 #. ID_VIEW_COMPAREHEADREVISIONS - Menu)
 msgid "Compare &HEAD revisions"
 msgstr "比较HEAD版本(&H)"
-
-#. Resource IDs: (IDS_LOG_POPUP_COMPARECHANGESET)
-msgid "Compare change sets"
-msgstr "比较变更集"
 
 #. Resource IDs: (IDS_PROC_BROWSEREFS_COMPAREREFS)
 msgid "Compare selected refs"
@@ -2996,7 +3070,7 @@ msgstr "与工作副本比较(&W)"
 msgid "Compare with b&ase"
 msgstr "与基础版本比较(&A)"
 
-#. Resource IDs: (IDS_BLAME_POPUP_COMPARE, IDS_LOG_POPUP_COMPAREWITHPREVIOUS)
+#. Resource IDs: (IDS_BLAME_POPUP_COMPARE)
 msgid "Compare with previous revision"
 msgstr "与上一版本比较差异"
 
@@ -3365,6 +3439,10 @@ msgstr "创建库(Library)(&L)"
 msgid "Create &New Branch"
 msgstr "创建新分支(&N)"
 
+#. Resource IDs: (IDS_CREATE_TAG_AT_THIS)
+msgid "Create &Tag at this version..."
+msgstr "在此版本上创建标签(&T)..."
+
 #. Resource IDs: (IDS_MENUTAG)
 msgid "Create &Tag..."
 msgstr "创建标签(&T)..."
@@ -3377,13 +3455,13 @@ msgstr "创建补丁文件(&P)"
 msgid "Create .gitignore file"
 msgstr "创建 .gitignore 文件"
 
+#. Resource IDs: (IDS_CREATE_BRANCH_AT_THIS)
+msgid "Create Br&anch at this version..."
+msgstr "在此版本上创建分支(&A)..."
+
 #. Resource IDs: (IDS_PROGS_TITLE_CREATEBRANCH)
 msgid "Create Branch"
 msgstr "创建分支"
-
-#. Resource IDs: (IDS_CREATE_BRANCH_AT_THIS)
-msgid "Create Branch at this version..."
-msgstr "在这个版本上创建分支..."
 
 #. Resource IDs: (Dialog IDD_CREATECHANGELIST: Control id 243)
 msgid "Create Changelist"
@@ -3396,10 +3474,6 @@ msgstr "创建补丁序列..."
 #. Resource IDs: (IDS_PROGS_TITLE_CREATETAG)
 msgid "Create Tag"
 msgstr "创建标签"
-
-#. Resource IDs: (IDS_CREATE_TAG_AT_THIS)
-msgid "Create Tag at this version..."
-msgstr "在这个版本上创建标签..."
 
 #. Resource IDs: (57600)
 msgid ""
@@ -3554,8 +3628,7 @@ msgstr "日志信息默认限量:"
 msgid "Default to UTF-8 encoding"
 msgstr "默认为UTF-8编码"
 
-#. Resource IDs: (Dialog IDD_RESOLVE_CONFLICT: Control id 4571,
-#. IDS_DELETE_BRANCHTAG_SHORT)
+#. Resource IDs: (Dialog IDD_RESOLVE_CONFLICT: Control id 4571)
 msgid "Delete"
 msgstr "删除"
 
@@ -3575,8 +3648,8 @@ msgid "Delete %d tags"
 msgstr "删除%d标签"
 
 #. Resource IDs: (IDS_PROC_DELETEREMOTEBRANCH_LOCAL)
-msgid "Delete &local"
-msgstr "删除本地(&L)"
+msgid "Delete &local remote-tracking branch"
+msgstr "删除本地的远程跟踪分支(&L)"
 
 #. Resource IDs: (IDS_REFLOG_DEL)
 msgid "Delete Ref..."
@@ -3611,10 +3684,6 @@ msgstr "根据扩展名删除和忽略多项(&E)"
 #. Resource IDs: (IDS_PROC_BROWSEREFS_DELETEBRANCH)
 msgid "Delete branch"
 msgstr "删除分支"
-
-#. Resource IDs: (IDS_DELETE_BRANCHTAG)
-msgid "Delete branch/tag"
-msgstr "删除分支/标签"
 
 #. Resource IDs: (IDS_DELETE_LOCALTAG)
 msgid "Delete local tag"
@@ -3868,7 +3937,7 @@ msgstr "禁用音效"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1536)
 msgid "Disable status cache for elevated processes"
-msgstr "禁用高权限进程的状态缓存"
+msgstr "对高权限进程禁用状态缓存"
 
 #. Resource IDs: (IDS_SETTINGS_RECURSIVE_TT)
 msgid ""
@@ -3939,6 +4008,10 @@ msgstr "不再显示这个警告(如果选择继续)(&N)"
 #. Resource IDs: (IDS_PROC_NOTSHOWAGAINIGNORE)
 msgid "Do &not show me this warning again (if Ignore is selected)"
 msgstr "不要再显示这个警告消息(如果选择忽略)(&N)"
+
+#. Resource IDs: (IDS_HOOKS_APPROVE_TASK5)
+msgid "Do not ask again for this script"
+msgstr "对此脚本不再询问"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 1407)
 msgid "Do not auto-select \"missing\" files (deleted, but unstaged)"
@@ -4176,6 +4249,10 @@ msgstr "排除路径(&X): "
 msgid "E&xit"
 msgstr "退出(&X)"
 
+#. Resource IDs: (IDS_EXPORT_TO_THIS)
+msgid "E&xport this version..."
+msgstr "导出此版本(&X)..."
+
 #. Resource IDs: (IDS_MENUEXPORT)
 msgid "E&xport..."
 msgstr "导出(&X)..."
@@ -4201,6 +4278,10 @@ msgstr "东欧"
 msgid "Edit"
 msgstr "编辑"
 
+#. Resource IDs: (IDS_EDIT_NOTES)
+msgid "Edit &Notes"
+msgstr "编辑注释(&N)"
+
 #. Resource IDs: (IDS_PROC_EDITGLOBALGITCONFIG)
 msgid "Edit &global .gitconfig"
 msgstr "编辑全局.gitconfig(&G)"
@@ -4213,7 +4294,7 @@ msgstr "编辑本地.git/config(&L)"
 msgid "Edit .tgitconfig"
 msgstr "编辑 .tgitconfig"
 
-#. Resource IDs: (IDS_EDIT_NOTES, IDS_PROGS_TITLE_EDITNOTES)
+#. Resource IDs: (IDS_PROGS_TITLE_EDITNOTES)
 msgid "Edit Notes"
 msgstr "编辑注释"
 
@@ -4526,10 +4607,6 @@ msgstr "导出目录: "
 msgid "Export selection to..."
 msgstr "导出选择项..."
 
-#. Resource IDs: (IDS_EXPORT_TO_THIS)
-msgid "Export this version..."
-msgstr "导出这个版本..."
-
 #. Resource IDs: (IDS_PROC_EXPORT_2)
 msgid "Export unversioned files too"
 msgstr "导出未受版本控制的文件"
@@ -4644,6 +4721,13 @@ msgstr "执行服务器操作失败。"
 #. Resource IDs: (AFX_IDP_FAILED_TO_SAVE_DOC)
 msgid "Failed to save document."
 msgstr "保存文档失败。"
+
+#. Resource IDs: (IDS_ERRORSAVE)
+#, c-format
+msgid ""
+"Failed to save file \"%s\":\n"
+"%s"
+msgstr "未能保存文件“%s”：\n%s"
 
 #. Resource IDs: (IDS_SVNACTION_CHANGELISTFAILED)
 #, c-format
@@ -4839,6 +4923,10 @@ msgstr "文件"
 msgid "Filter by"
 msgstr "可筛选"
 
+#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_2: Control id 65535)
+msgid "Filter match"
+msgstr "过滤器匹配"
+
 #. Resource IDs: (IDS_FILEDIFF_FILTERCUE)
 msgid "Filter paths"
 msgstr "路径过滤"
@@ -5003,10 +5091,6 @@ msgstr "前景色"
 #. Resource IDs: (Dialog IDD_FORMAT_PATCH: Control id 312)
 msgid "Format Patch"
 msgstr "创建补丁"
-
-#. Resource IDs: (IDS_CREATE_PATCH)
-msgid "Format Patch..."
-msgstr "创建邮件补丁..."
 
 #. Resource IDs: (IDS_FORWARDN)
 #, c-format
@@ -5491,6 +5575,10 @@ msgstr "Hook 类型"
 msgid "Hook Type:"
 msgstr "Hook 类型: "
 
+#. Resource IDs: (IDS_HOOKFAILED_TASK2)
+msgid "Hook script failed"
+msgstr "Hook 脚本失败"
+
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 1841)
 msgid "I don't use Git for Windows and need special workarounds"
 msgstr "我不使用 Git for Windows 并且需要特殊处理"
@@ -5818,6 +5906,14 @@ msgstr "如果选中该项，包含未受版本控制的文件的文件夹将标
 msgid ""
 "If this is enabled, no value is stored or overwritten at this config level."
 msgstr "如果此项被启用，此配置级别不会存储或覆盖任何值。"
+
+#. Resource IDs: (IDS_HOOKS_APPROVE_SECURITYHINT)
+msgid ""
+"If you are executing a versioned file from the repository, please note that "
+"the content possibly have been altered by third parties unnoticed (e.g. "
+"after pull or merge). Keep this in mind especially if you approve a "
+"repository hook permanently."
+msgstr "如果您正在执行该版本库的版本化文件，请注意内容也许已悄然被第三方修改（通过如拉取或合并）。保持警惕，尤其是您永久批准一个版本库 Hook 时。"
 
 #. Resource IDs: (Dialog IDD_CREATEREPO: Control id 1654)
 msgid ""
@@ -6512,11 +6608,6 @@ msgid ""
 "switch to"
 msgstr "合并原分支、工作副本内容，并将分支切换到"
 
-#. Resource IDs: (IDS_LOG_POPUP_MERGEREV, IDS_LOG_POPUP_MERGEREVS)
-#, c-format
-msgid "Merge to \"%s\"..."
-msgstr "合并到 \"%s\"..."
-
 #. Resource IDs: (IDS_PATHACTIONS_MERGED, IDS_SVNACTION_MERGED,
 #. IDS_VIEWTITLE_MERGED)
 msgid "Merged"
@@ -6890,6 +6981,10 @@ msgstr "无状态缓存。只有受版本控制的文件夹获得图标覆盖，
 msgid "No thesaurus suggestions"
 msgstr "没有建议辞典"
 
+#. Resource IDs: (IDS_NOGITREPO)
+msgid "No valid git repository found."
+msgstr "没找到有效的 git 版本库。"
+
 #. Resource IDs: (IDS_NOWORKINGCOPY)
 msgid "No working directory found."
 msgstr "没有找到工作目录。"
@@ -7183,6 +7278,10 @@ msgstr "仅未合并（至 HEAD）"
 msgid "Open"
 msgstr "打开"
 
+#. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 1849)
+msgid "Open &settings"
+msgstr ""
+
 #. Resource IDs: (57601)
 msgid ""
 "Open an existing document\n"
@@ -7372,7 +7471,7 @@ msgstr "父节点"
 msgid "Password"
 msgstr "密码"
 
-#. Resource IDs: (Dialog IDD_SETTINGSMTP: Control id 1761, IDS_AUTH_PASSWORD)
+#. Resource IDs: (IDS_AUTH_PASSWORD)
 msgid "Password:"
 msgstr "密码: "
 
@@ -7582,7 +7681,7 @@ msgstr "Pre-Push Hook"
 
 #. Resource IDs: (IDS_HOOKTYPE_PREREBASE)
 msgid "Pre-rebase hook"
-msgstr "变基前脚本"
+msgstr "Pre-rebase hook"
 
 #. Resource IDs: (IDS_PROC_COMMIT_PREPARECOMMIT)
 msgid "Preparing commit..."
@@ -7650,6 +7749,10 @@ msgstr "打印机文件 (*.prn)|*.prn|所有文件 (*.*)|*.*||"
 #. Resource IDs: (Dialog AFX_IDD_PRINTDLG: Control id 65535)
 msgid "Printing"
 msgstr "打印"
+
+#. Resource IDs: (IDS_HOOK_FORCEDPROCEED)
+msgid "Proceed anyway"
+msgstr "继续执行"
 
 #. Resource IDs: (IDS_PROGS_TOOLCOL)
 msgid "Program"
@@ -7798,6 +7901,11 @@ msgstr "R"
 msgid "R&AM drives"
 msgstr "内存虚拟磁盘(&A)"
 
+#. Resource IDs: (IDS_RESET_TO_THIS_FORMAT)
+#, c-format
+msgid "R&eset \"%s\" to this..."
+msgstr "重置“%s”到此版本(&E)..."
+
 #. Resource IDs: (IDS_RESTORE_FROM_INDEX)
 msgid "R&estore this file from index"
 msgstr "从索引中恢复这个文件(&E)"
@@ -7866,8 +7974,8 @@ msgstr "变基"
 
 #. Resource IDs: (IDS_REBASE_THIS_FORMAT)
 #, c-format
-msgid "Rebase \"%s\" onto this..."
-msgstr "变基 \"%s\" 到这..."
+msgid "Rebase \"%s\" onto this...(&G)"
+msgstr "变基“%s”到这里(&G)..."
 
 #. Resource IDs: (IDS_MENUREBASE)
 msgid "Rebase..."
@@ -8248,11 +8356,6 @@ msgstr "重置"
 msgid "Reset Type"
 msgstr "重置类型"
 
-#. Resource IDs: (IDS_RESET_TO_THIS_FORMAT)
-#, c-format
-msgid "Reset \"%s\" to this..."
-msgstr "重置 \"%s\" 到这个版本..."
-
 #. Resource IDs: (Dialog IDD_RESET: Control id 1522)
 msgid "Reset active branch"
 msgstr "重置当前分支"
@@ -8445,6 +8548,10 @@ msgstr "右侧视图:"
 #. Resource IDs: (Dialog IDD_OPEN: Control id 65535)
 msgid "Right image"
 msgstr "右侧图片"
+
+#. Resource IDs: (Dialog IDD_SETTINGSHOOKCONFIG: Control id 1848)
+msgid "Run for this repository"
+msgstr "对此版本库运行"
 
 #. Resource IDs: (Dialog IDD_SETTINGSHOOKCONFIG: Control id 1335)
 msgid "Run when working tree path is under:"
@@ -9064,6 +9171,10 @@ msgstr "显示预览(&R)"
 msgid "Show Whitespaces"
 msgstr "显示空白字符"
 
+#. Resource IDs: (Dialog IDD_CHANGEDFILES: Control id 1210)
+msgid "Show all &staged files"
+msgstr "显示所有暂存的文件(&S)"
+
 #. Resource IDs: (32813)
 msgid "Show an overview of the whole graph"
 msgstr "显示鸟瞰图"
@@ -9088,10 +9199,10 @@ msgid ""
 msgstr "在日志对话框和推送到远端分支后显示分支修订号 (git rev-list --count --first-parent)；这不保证唯一性，请参阅帮助"
 
 #. Resource IDs: (IDS_LOG_POPUP_SHOWBRANCHES)
-msgid "Show branches this commit is on"
-msgstr "显示所有包含此提交的分支"
+msgid "Show branches this commit is &on"
+msgstr "显示此提交所在的分支(&O)"
 
-#. Resource IDs: (IDS_LOG_POPUP_GNUDIFF, IDS_LOG_POPUP_GNUDIFF_CH)
+#. Resource IDs: (IDS_LOG_POPUP_GNUDIFF)
 msgid "Show changes as &unified diff"
 msgstr "以标准差异格式显示变更(&U)"
 
@@ -9134,7 +9245,7 @@ msgstr "显示和上次提交的差异"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1126)
 msgid "Show excluded folders as normal"
-msgstr "对排除的文件夹正常显示"
+msgstr "显示排除的文件夹为正常"
 
 #. Resource IDs: (IDS_DIFFWITHMERGE)
 msgid "Show extra changes after merge"
@@ -9661,6 +9772,10 @@ msgstr "子模块"
 msgid "Success"
 msgstr "成功"
 
+#. Resource IDs: (IDS_SWITCH_TO_THIS)
+msgid "Sw&itch/Checkout to this..."
+msgstr "切换/检出到这个版本(&I)..."
+
 #. Resource IDs: (IDS_PROGRS_TITLE_SWITCH)
 msgid "Switch"
 msgstr "切换"
@@ -9714,14 +9829,6 @@ msgstr "切换至上一个文件窗口"
 #. Resource IDs: (Dialog IDD_GITSWITCH: Control id 304)
 msgid "Switch/Checkout"
 msgstr "切换/检出"
-
-#. Resource IDs: (IDS_SWITCH_BRANCH)
-msgid "Switch/Checkout to"
-msgstr "切换/检出"
-
-#. Resource IDs: (IDS_SWITCH_TO_THIS)
-msgid "Switch/Checkout to this..."
-msgstr "切换/检出到这个..."
 
 #. Resource IDs: (IDS_MENUDESCSWITCH)
 msgid "Switch/Checkout working tree to another branch/tag"
@@ -9855,10 +9962,10 @@ msgstr "“最近 xx” 选项应该是数字值。\n应该 > 0"
 #. Resource IDs: (IDS_PROC_DELETEREMOTEBRANCH)
 #, c-format
 msgid ""
-"The branch \"%s\" is a remote branch.\n"
+"The branch \"%s\" is a remote-tracking branch which locally represents a remote branch.\n"
 "\n"
 "Do you really want to delete it?"
-msgstr "分支“%s”是一个远端分支。\n\n您确定要删除它吗？"
+msgstr "分支“%s”是一个本地的远端跟踪分支，在本地表示着一个远端分支。\n\n您确定要删除它吗？"
 
 #. Resource IDs: (IDS_ERR_PATCH_CHUNKMISMATCH)
 msgid "The chunk size did not match the number of added/removed lines!"
@@ -9891,6 +9998,12 @@ msgid ""
 "The credential helper was changed.\n"
 "Do you want to save now or discard changes?"
 msgstr "凭证助手已经更改。您要保存还是放弃更改？"
+
+#. Resource IDs: (IDS_CHERRYPICK_EMPTY)
+msgid ""
+"The current commit will be empty (e.g., due to conflict resolution). Skip "
+"the commit or keep the message only commit?"
+msgstr "当前提交将是空的（例如，由于解决冲突）。跳过此提交或者只保留提交消息？"
 
 #. Resource IDs: (IDS_ERROR_NOCLEAN_STASH)
 msgid ""
@@ -9991,12 +10104,23 @@ msgid ""
 "Would you like to create it first?"
 msgstr "文件夹\n%s\n不存在。\n是否要先创建？"
 
+#. Resource IDs: (IDS_HOOK_ERRORMSG)
+#, c-format
+msgid ""
+"The hook script returned an error:\n"
+"%ls"
+msgstr "Hook 脚本返回了一个错误：\n%ls"
+
 #. Resource IDs: (IDS_ERR_HOOKFAILED)
 #, c-format
 msgid ""
 "The hook script returned an error:\n"
 "%s"
 msgstr "Hook 脚本返回了一个错误:\n%s"
+
+#. Resource IDs: (IDS_ERR_HOOKNOTAPPROVED)
+msgid "The hook script was not approved to run!"
+msgstr "Hook 脚本尚未批准运行！"
 
 #. Resource IDs: (IDS_INVALIDIMAGEINFO)
 msgid "The image can not be shown."
@@ -10192,12 +10316,6 @@ msgstr "远端文件:"
 msgid "Theirs"
 msgstr "远端文件（theirs）"
 
-#. Resource IDs: (IDS_COMMITDLG_EXTERNALS)
-msgid ""
-"There are changes or unversioned items inside one or more submodule.\n"
-"Those files are not listed for commit. You need to commit those files in submodule"
-msgstr "子模块中包含的目录中有修改或未版本控制的对象。\n那些文件不会在提交列表中列出，您需要单独提交。"
-
 #. Resource IDs: (IDS_SETTINGS_OVERLAYINFO)
 #, c-format
 msgid ""
@@ -10329,6 +10447,14 @@ msgstr "远端名称和其他名称冲突\n请使用其他名称"
 #. Resource IDs: (IDS_PROC_NOCLEAN)
 msgid "This task requires a clean working tree."
 msgstr "这个操作要求一个干净的工作区"
+
+#. Resource IDs: (IDS_HOOKS_APPROVE_TASK1)
+#, c-format
+msgid ""
+"This working copy has a client-side hook script configured. Do you want this script to run?\n"
+"The command line to run is:\n"
+"%ls"
+msgstr "此工作副本配置了客户端侧的 Hook 脚本。您想运行该脚本吗？\n将运行的命令行：\n%ls"
 
 #. Resource IDs: (IDS_TREE_DIFF)
 msgid "Three way diff"
@@ -10630,6 +10756,10 @@ msgstr "UTF-16 LE"
 msgid "UTF-8"
 msgstr "UTF-8"
 
+#. Resource IDs: (IDS_ERR_CHANGELIST_LOAD)
+msgid "Unable to load changelists"
+msgstr "无法加载变更列表"
+
 #. Resource IDs: (AFX_IDP_FAILED_MAPI_LOAD)
 msgid "Unable to load mail system support."
 msgstr "无法加载邮件系统功能。"
@@ -10654,6 +10784,10 @@ msgid ""
 "Please start the log dialog on this specific file alone and then revert the changes\n"
 "from the top pane in the log dialog."
 msgstr "无法重构工作副本路径！\n文件被更名后可能发生这种情况。\n请在该文件上打开“日志”对话框并从对话框上部的\n面板中还原更名操作。"
+
+#. Resource IDs: (IDS_ERR_CHANGELIST_SAVE)
+msgid "Unable to save changelists"
+msgstr "无法保存变更列表"
 
 #. Resource IDs: (AFX_IDP_SET_NOT_SUPPORTED)
 msgid "Unable to write read-only property."
@@ -11056,7 +11190,7 @@ msgstr "用户名称: "
 
 #. Resource IDs: (IDS_SETTINGS_ONLYNONELEVATED_TT)
 msgid "Uses the status cache type 'none' for elevated processes"
-msgstr "为高权限进程使用 'none' 状态缓存类型"
+msgstr "对高权限（“已提升”）进程使用“none”类型的状态缓存"
 
 #. Resource IDs: (cmdPaste_Keytip_RESID)
 msgid "V"
