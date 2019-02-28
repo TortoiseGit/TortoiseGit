@@ -438,6 +438,13 @@ hookiterator CHooks::FindItem(hooktype t, const CString& workingTree)
 			return it;
 		path = path.GetContainingDirectory();
 	} while(!path.IsEmpty());
+
+	/* if this ever gets called with something different than the workingTree root,
+	 * recheck whether it is necessary to add a check for "key.path = m_RootPath"
+	 * (e.g., for sparse checkouts or other hook types).
+	 */
+	ATLASSERT(CTGitPath(workingTree).IsWCRoot());
+
 	// look for a script with a path as '*'
 	key.htype = t;
 	key.path = CTGitPath(L"*");
@@ -446,20 +453,6 @@ hookiterator CHooks::FindItem(hooktype t, const CString& workingTree)
 	{
 		return it;
 	}
-
-	// try the root path
-	key.htype = t;
-	key.path = m_RootPath;
-	it = find(key);
-	if (it != end() && it->second.bEnabled)
-		return it;
-
-	// look for a script with a path as '*'
-	key.htype = t;
-	key.path = CTGitPath(L"*");
-	it = find(key);
-	if (it != end() && it->second.bEnabled)
-		return it;
 
 	return end();
 }
