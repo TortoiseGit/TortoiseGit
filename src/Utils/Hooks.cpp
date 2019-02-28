@@ -179,6 +179,7 @@ void CHooks::Add(hooktype ht, const CTGitPath& Path, LPCTSTR szCmd, bool bWait, 
 {
 	hookkey key;
 	key.htype = ht;
+	key.local = bLocal;
 	key.path = Path;
 	hookiterator it = find(key);
 	if (it!=end())
@@ -429,13 +430,22 @@ hookiterator CHooks::FindItem(hooktype t, const CString& workingTree)
 {
 	hookkey key;
 	CTGitPath path = workingTree;
+	bool local = false;
 	do
 	{
 		key.htype = t;
 		key.path = path;
+		key.local = local;
 		auto it = find(key);
 		if (it != end() && it->second.bEnabled)
 			return it;
+		if (!local)
+		{
+			local = true;
+			continue;
+		}
+		else
+			local = false;
 		path = path.GetContainingDirectory();
 	} while(!path.IsEmpty());
 
@@ -448,6 +458,7 @@ hookiterator CHooks::FindItem(hooktype t, const CString& workingTree)
 	// look for a script with a path as '*'
 	key.htype = t;
 	key.path = CTGitPath(L"*");
+	key.local = false;
 	auto it = find(key);
 	if (it != end() && it->second.bEnabled)
 	{
@@ -526,6 +537,7 @@ void CHooks::ParseHookString(CString strhooks, bool bLocal)
 							strhooks = strhooks.Mid(pos + 1);
 						else
 							strhooks.Empty();
+						key.local = cmd.bLocal;
 						if (cmd.bLocal)
 						{
 							CString temp;

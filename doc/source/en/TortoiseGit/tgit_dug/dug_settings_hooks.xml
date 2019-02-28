@@ -116,6 +116,8 @@
 		replacement string <literal>%root%</literal> for the path to the
 		working tree folder. The hook script has to be inside the repository and
 		also be checked out of course (please also note the security implications below).
+		If a user locally configures a hook for the exact repository root folder, the client side
+		defined hook takes precedence.
 	</para>
 	<para>
 		Next you must specify the command line to execute, starting with the path

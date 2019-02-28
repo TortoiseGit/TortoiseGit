@@ -48,11 +48,17 @@ class hookkey
 public:
 	hooktype		htype;
 	CTGitPath		path;
+	bool			local;
 
 	bool operator < (const hookkey& hk) const
 	{
 		if (htype == hk.htype)
+		{
+			if (local != hk.local)
+				return local < hk.local;
+
 			return (path < hk.path);
+		}
 		else
 			return htype < hk.htype;
 	}

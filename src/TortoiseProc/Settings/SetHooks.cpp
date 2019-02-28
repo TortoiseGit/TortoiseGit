@@ -123,10 +123,10 @@ void CSetHooks::OnBnClickedRemovebutton()
 		{
 			hookkey key;
 			key.htype = CHooks::GetHookType((LPCTSTR)m_cHookList.GetItemText(index, 0));
-			if (m_cHookList.GetItemText(index, 1).Compare(L"local") == 0)
+			key.path = CTGitPath(m_cHookList.GetItemText(index, 1));
+			key.local = m_cHookList.GetItemText(index, 1).Compare(L"local") == 0;;
+			if (key.local)
 				key.path = g_Git.m_CurrentDir;
-			else
-				key.path = CTGitPath(m_cHookList.GetItemText(index, 1));
 			CHooks::Instance().Remove(key);
 			bNeedsRefresh = true;
 		}
@@ -156,7 +156,8 @@ void CSetHooks::OnBnClickedEditbutton()
 		dlg.cmd.bShow = (m_cHookList.GetItemText(index, 4).Compare(L"show") == 0);
 		dlg.cmd.bLocal = m_cHookList.GetItemText(index, 1).Compare(L"local") == 0;
 		hookkey key = dlg.key;
-		if (dlg.cmd.bLocal)
+		key.local = dlg.cmd.bLocal;
+		if (key.local)
 			key.path = g_Git.m_CurrentDir;
 		if (dlg.DoModal() == IDOK)
 		{
@@ -197,10 +198,10 @@ void CSetHooks::OnLvnItemchangedHooklist(NMHDR* pNMHDR, LRESULT* pResult)
 
 	hookkey key;
 	key.htype = CHooks::GetHookType((LPCTSTR)m_cHookList.GetItemText(pNMLV->iItem, 0));
-	if (m_cHookList.GetItemText(pNMLV->iItem, 1).Compare(L"local") == 0)
+	key.path = CTGitPath(m_cHookList.GetItemText(pNMLV->iItem, 1));
+	key.local = m_cHookList.GetItemText(pNMLV->iItem, 1).Compare(L"local") == 0;
+	if (key.local)
 		key.path = g_Git.m_CurrentDir;
-	else
-		key.path = CTGitPath(m_cHookList.GetItemText(pNMLV->iItem, 1));
 	if (CHooks::Instance().SetEnabled(key, m_cHookList.GetCheck(pNMLV->iItem) == BST_CHECKED))
 		SetModified();
 }
