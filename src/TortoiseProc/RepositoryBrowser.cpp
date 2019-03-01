@@ -480,9 +480,9 @@ int CRepositoryBrowser::ReadTree(CShadowFilesTree* treeroot, const CString& root
 	}
 
 	CGitHash hash;
-	if (CGit::GetHash(repository, hash, m_sRevision))
+	if (CGit::GetHash(repository, hash, m_sRevision + L"^{}")) // add ^{} in order to dereference signed tags
 	{
-		MessageBox(CGit::GetLibGit2LastErr(L"Could not get hash of " + m_sRevision + L'.'), L"TortoiseGit", MB_ICONERROR);
+		MessageBox(CGit::GetLibGit2LastErr(L"Could not get hash of \"" + m_sRevision + L"^{}\"."), L"TortoiseGit", MB_ICONERROR);
 		return -1;
 	}
 

@@ -2535,7 +2535,7 @@ int CGit::GetOneFile(const CString &Refname, const CTGitPath &path, const CStrin
 			return -1;
 
 		CGitHash hash;
-		if (GetHash(repo, hash, Refname))
+		if (GetHash(repo, hash, Refname + L"^{}")) // add ^{} in order to dereference signed tags
 			return -1;
 
 		CAutoCommit commit;
