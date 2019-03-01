@@ -476,13 +476,8 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 				{
 					for (const auto& ref : hashMap[pSelLogEntry->m_CommitHash])
 					{
-						if (CStringUtils::StartsWith(ref, L"refs/tags/"))
-						{
-							if (CStringUtils::EndsWith(ref, L"^{}"))
-								sClipboard += ref.Mid((int)wcslen(L"refs/tags/"), ref.GetLength() - (int)wcslen(L"refs/tags/") - (int)wcslen(L"^{}"));
-							else
-								sClipboard += ref.Mid((int)wcslen(L"refs/tags/"));
-						}
+						if (CStringUtils::StartsWith(ref, L"refs/tags/") && CStringUtils::EndsWith(ref, L"^{}"))
+							sClipboard += ref.Left(ref.GetLength() - (int)wcslen(L"^{}"));
 						else
 							sClipboard += ref;
 						sClipboard += L"\r\n";
