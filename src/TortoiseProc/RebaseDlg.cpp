@@ -782,7 +782,7 @@ void CRebaseDlg::AddBranchToolTips(CHistoryCombo& pBranch)
 		return;
 
 	GitRev rev;
-	if (rev.GetCommit(text + L"^{}"))
+	if (rev.GetCommit(text))
 	{
 		MessageBox(L"Failed to get commit.\n" + rev.GetLastErr(), L"TortoiseGit", MB_ICONERROR);
 		return;

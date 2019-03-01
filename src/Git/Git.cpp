@@ -2535,7 +2535,7 @@ int CGit::GetOneFile(const CString &Refname, const CTGitPath &path, const CStrin
 			return -1;
 
 		CGitHash hash;
-		if (GetHash(repo, hash, Refname))
+		if (GetHash(repo, hash, Refname + L"^{}")) // add ^{} in order to dereference signed tags
 			return -1;
 
 		CAutoCommit commit;
@@ -3118,7 +3118,7 @@ int CGit::DeleteRef(const CString& reference)
 
 		CStringA refA;
 		if (CStringUtils::EndsWith(reference, L"^{}"))
-			refA = CUnicodeUtils::GetUTF8(reference.Left(reference.GetLength() - 3));
+			refA = CUnicodeUtils::GetUTF8(reference.Left(reference.GetLength() - (int)wcslen(L"^{}")));
 		else
 			refA = CUnicodeUtils::GetUTF8(reference);
 

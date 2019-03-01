@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016, 2018 - TortoiseGit
+// Copyright (C) 2008-2016, 2018-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -164,7 +164,7 @@ int GitRev::GetCommit(git_repository* repo, const CString& refname)
 	}
 
 	CGitHash hash;
-	if (CGit::GetHash(repo, hash, refname))
+	if (CGit::GetHash(repo, hash, refname + L"^{}")) // add ^{} in order to dereference signed tags
 	{
 		m_sErr = CGit::GetLibGit2LastErr();
 		return -1;
@@ -279,8 +279,7 @@ int GitRev::GetCommit(const CString& refname)
 			m_sErr.Empty();
 			return 0;
 		}
-	CStringA rev;
-	rev= CUnicodeUtils::GetUTF8(g_Git.FixBranchName(refname));
+	CStringA rev = CUnicodeUtils::GetUTF8(g_Git.FixBranchName(refname + L"^{}")); // add ^{} in order to dereference signed tags
 	GIT_HASH sha;
 
 	try

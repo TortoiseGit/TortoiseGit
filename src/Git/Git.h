@@ -477,7 +477,7 @@ public:
 		{
 			shortname = ref.Right(ref.GetLength() - prefix.GetLength());
 			if (CStringUtils::EndsWith(shortname, L"^{}"))
-				shortname.Truncate(shortname.GetLength() - 3);
+				shortname.Truncate(shortname.GetLength() - (int)wcslen(L"^{}"));
 			return TRUE;
 		}
 		return FALSE;

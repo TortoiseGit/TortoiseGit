@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2018 - TortoiseGit
+// Copyright (C) 2015-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -151,7 +151,7 @@ int CGitTagCompareList::Fill(const CString& remote, CString& err)
 				localTags.emplace_back(TGitRef{ tagname, hash });
 				if (CStringUtils::EndsWith(tagname, L"^{}"))
 				{
-					tagname.Replace(L"^{}", L"");
+					tagname.Truncate(tagname.GetLength() - (int)wcslen(L"^{}"));
 					CAutoObject gitObject;
 					if (git_revparse_single(gitObject.GetPointer(), repo, CUnicodeUtils::GetUTF8(tagname)))
 						return;
@@ -382,7 +382,8 @@ void CGitTagCompareList::OnContextMenuList(CWnd * /*pWnd*/, CPoint point)
 		return;
 
 	CString tag = GetItemText(selIndex, colTag);
-	tag.Replace(L"^{}", L"");
+	if (CStringUtils::EndsWith(tag, L"^{}"))
+		tag.Truncate(tag.GetLength() - (int)wcslen(L"^{}"));
 	CString myHash = GetItemText(selIndex, colMyHash);
 	CString theirHash = GetItemText(selIndex, colTheirHash);
 	CIconMenu popup;

@@ -93,9 +93,9 @@ int CGitDiff::DiffNull(HWND hWnd, const CTGitPath* pPath, const CString& rev1, b
 	CGitHash rev1Hash;
 	if (rev1 != GIT_REV_ZERO)
 	{
-		if (g_Git.GetHash(rev1Hash, rev1)) // make sure we have a HASH here, otherwise filenames might be invalid
+		if (g_Git.GetHash(rev1Hash, rev1 + L"^{}")) // make sure we have a HASH here, otherwise filenames might be invalid, also add ^{} in order to dereference signed tags
 		{
-			MessageBox(hWnd, g_Git.GetGitLastErr(L"Could not get hash of \"" + rev1 + L"\"."), L"TortoiseGit", MB_ICONERROR);
+			MessageBox(hWnd, g_Git.GetGitLastErr(L"Could not get hash of \"" + rev1 + L"^{}\"."), L"TortoiseGit", MB_ICONERROR);
 			return -1;
 		}
 	}
@@ -349,17 +349,17 @@ int CGitDiff::Diff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* pPath2, c
 	CGitHash rev2Hash;
 	if (rev1 != GIT_REV_ZERO)
 	{
-		if (g_Git.GetHash(rev1Hash, rev1))
+		if (g_Git.GetHash(rev1Hash, rev1 + L"^{}")) // add ^{} in order to dereference signed tags
 		{
-			MessageBox(hWnd, g_Git.GetGitLastErr(L"Could not get hash of \"" + rev1 + L"\"."), L"TortoiseGit", MB_ICONERROR);
+			MessageBox(hWnd, g_Git.GetGitLastErr(L"Could not get hash of \"" + rev1 + L"^{}\"."), L"TortoiseGit", MB_ICONERROR);
 			return -1;
 		}
 	}
 	if (rev2 != GIT_REV_ZERO)
 	{
-		if (g_Git.GetHash(rev2Hash, rev2))
+		if (g_Git.GetHash(rev2Hash, rev2 + L"^{}")) // add ^{} in order to dereference signed tags
 		{
-			MessageBox(hWnd, g_Git.GetGitLastErr(L"Could not get hash of \"" + rev2 + L"\"."), L"TortoiseGit", MB_ICONERROR);
+			MessageBox(hWnd, g_Git.GetGitLastErr(L"Could not get hash of \"" + rev2 + L"^{}\"."), L"TortoiseGit", MB_ICONERROR);
 			return -1;
 		}
 	}

@@ -330,8 +330,8 @@ void CCommitIsOnRefsDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 			CFileDiffDlg dlg;
 			dlg.SetDiff(
 				nullptr,
-				selectedRefs[0] + L"^{}",
-				selectedRefs[1] + L"^{}");
+				selectedRefs[0],
+				selectedRefs[1]);
 			dlg.DoModal();
 		}
 		break;
