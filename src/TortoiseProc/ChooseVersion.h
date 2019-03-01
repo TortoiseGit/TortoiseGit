@@ -177,7 +177,8 @@ protected:
 		else if (CStringUtils::StartsWith(refName, L"tags/"))
 		{
 			refName = refName.Mid((int)wcslen(L"refs/"));
-			refName.Replace(L"^{}", L"");
+			if (CStringUtils::EndsWith(refName, L"^{}"))
+				refName.Truncate(refName.GetLength() - (int)wcslen(L"^{}"));
 			SetDefaultChoose(IDC_RADIO_TAGS);
 			m_ChooseVersioinTags.SetCurSel(
 				m_ChooseVersioinTags.FindStringExact(-1, refName));

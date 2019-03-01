@@ -463,7 +463,12 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 				if (selectedBranch)
 				{
 					if (CStringUtils::StartsWith(*selectedBranch, L"refs/tags/"))
-						sClipboard = selectedBranch->Mid((int)wcslen(L"refs/tags/")).TrimRight(L"^{}");
+					{
+						if (CStringUtils::EndsWith(*selectedBranch, L"^{}"))
+							sClipboard = selectedBranch->Mid((int)wcslen(L"refs/tags/"), selectedBranch->GetLength() - (int)wcslen(L"refs/tags/") - (int)wcslen(L"^{}"));
+						else
+							sClipboard = selectedBranch->Mid((int)wcslen(L"refs/tags/"));
+					}
 					else
 						sClipboard = CGit::StripRefName(*selectedBranch);
 				}
@@ -472,7 +477,12 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 					for (const auto& ref : hashMap[pSelLogEntry->m_CommitHash])
 					{
 						if (CStringUtils::StartsWith(ref, L"refs/tags/"))
-							sClipboard += ref.Mid((int)wcslen(L"refs/tags/")).TrimRight(L"^{}");
+						{
+							if (CStringUtils::EndsWith(ref, L"^{}"))
+								sClipboard += ref.Mid((int)wcslen(L"refs/tags/"), ref.GetLength() - (int)wcslen(L"refs/tags/") - (int)wcslen(L"^{}"));
+							else
+								sClipboard += ref.Mid((int)wcslen(L"refs/tags/"));
+						}
 						else
 							sClipboard += ref;
 						sClipboard += L"\r\n";
@@ -911,7 +921,8 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 						GetFirstEntryStartingWith(hashMap[pSelLogEntry->m_CommitHash], L"refs/tags/", guessAssociatedBranch);
 				}
 
-				guessAssociatedBranch.Replace(L"^{}", L"");
+				if (CStringUtils::EndsWith(guessAssociatedBranch, L"^{}"))
+					guessAssociatedBranch.Truncate(guessAssociatedBranch.GetLength() - (int)wcslen(L"^{}"));
 
 				if (CAppUtils::Push(GetParentHWND(), guessAssociatedBranch))
 					Refresh();

@@ -3118,7 +3118,7 @@ int CGit::DeleteRef(const CString& reference)
 
 		CStringA refA;
 		if (CStringUtils::EndsWith(reference, L"^{}"))
-			refA = CUnicodeUtils::GetUTF8(reference.Left(reference.GetLength() - 3));
+			refA = CUnicodeUtils::GetUTF8(reference.Left(reference.GetLength() - (int)wcslen(L"^{}")));
 		else
 			refA = CUnicodeUtils::GetUTF8(reference);
 
