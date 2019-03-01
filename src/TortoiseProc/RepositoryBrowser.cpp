@@ -893,10 +893,10 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 		break;
 	case eCmd_PrepareDiff:
 		m_sMarkForDiffFilename = selectedLeafs.at(0)->GetFullName();
-		if (g_Git.GetHash(m_sMarkForDiffVersion, m_sRevision))
+		if (g_Git.GetHash(m_sMarkForDiffVersion, m_sRevision + L"^{}")) // add ^{} in order to dereference signed tags
 		{
 			m_sMarkForDiffFilename.Empty();
-			MessageBox(g_Git.GetGitLastErr(L"Could not get SHA-1 for " + m_sRevision), L"TortoiseGit", MB_ICONERROR);
+			MessageBox(g_Git.GetGitLastErr(L"Could not get SHA-1 for \"" + m_sRevision + L"^{}\"."), L"TortoiseGit", MB_ICONERROR);
 		}
 		break;
 	case eCmd_PrepareDiff_Compare:
@@ -904,9 +904,9 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 			CTGitPath savedFile(m_sMarkForDiffFilename);
 			CTGitPath selectedFile(selectedLeafs.at(0)->GetFullName());
 			CGitHash currentHash;
-			if (g_Git.GetHash(currentHash, m_sRevision))
+			if (g_Git.GetHash(currentHash, m_sRevision + L"^{}")) // add ^{} in order to dereference signed tags
 			{
-				MessageBox(g_Git.GetGitLastErr(L"Could not get SHA-1 for " + m_sRevision), L"TortoiseGit", MB_ICONERROR);
+				MessageBox(g_Git.GetGitLastErr(L"Could not get SHA-1 for \"" + m_sRevision + L"^{}\"."), L"TortoiseGit", MB_ICONERROR);
 				return;
 			}
 			CGitDiff::Diff(GetSafeHwnd(), &selectedFile, &savedFile, currentHash.ToString(), m_sMarkForDiffVersion.ToString());
@@ -1219,9 +1219,9 @@ void CRepositoryBrowser::FileSaveAs(const CString path)
 	CTGitPath gitPath(path);
 
 	CGitHash hash;
-	if (g_Git.GetHash(hash, m_sRevision))
+	if (g_Git.GetHash(hash, m_sRevision + L"^{}")) // add ^{} in order to dereference signed tags
 	{
-		MessageBox(g_Git.GetGitLastErr(L"Could not get hash of " + m_sRevision + L'.'), L"TortoiseGit", MB_ICONERROR);
+		MessageBox(g_Git.GetGitLastErr(L"Could not get hash of \"" + m_sRevision + L"^{}\"."), L"TortoiseGit", MB_ICONERROR);
 		return;
 	}
 
@@ -1243,9 +1243,9 @@ void CRepositoryBrowser::OpenFile(const CString path, eOpenType mode, bool isSub
 	CTGitPath gitPath(path);
 
 	CGitHash hash;
-	if (g_Git.GetHash(hash, m_sRevision))
+	if (g_Git.GetHash(hash, m_sRevision + L"^{}")) // add ^{} in order to dereference signed tags
 	{
-		MessageBox(g_Git.GetGitLastErr(L"Could not get hash of " + m_sRevision + L'.'), L"TortoiseGit", MB_ICONERROR);
+		MessageBox(g_Git.GetGitLastErr(L"Could not get hash of \"" + m_sRevision + L"^{}\"."), L"TortoiseGit", MB_ICONERROR);
 		return;
 	}
 
@@ -1409,9 +1409,9 @@ void CRepositoryBrowser::OnTvnBegindragRepotree(NMHDR* pNMHDR, LRESULT* pResult)
 void CRepositoryBrowser::BeginDrag(const CWnd& window, CTGitPathList& files, const CString& root, POINT& point)
 {
 	CGitHash hash;
-	if (g_Git.GetHash(hash, m_sRevision))
+	if (g_Git.GetHash(hash, m_sRevision + L"^{}")) // add ^{} in order to dereference signed tags
 	{
-		MessageBox(g_Git.GetGitLastErr(L"Could not get hash of " + m_sRevision + L"."), L"TortoiseGit", MB_ICONERROR);
+		MessageBox(g_Git.GetGitLastErr(L"Could not get hash of \"" + m_sRevision + L"^{}\"."), L"TortoiseGit", MB_ICONERROR);
 		return;
 	}
 
