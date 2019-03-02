@@ -1010,7 +1010,6 @@
 #define IDS_B_CANNOTFORCECURRENT        1495
 #define IDC_REMOTE                      1496
 #define IDS_REPOBROWSEASKSUBMODULEUPDATE 1496
-#define IDC_PACK                        1497
 #define IDS_TRACKEDBRANCH               1497
 #define IDS_REBASE_AUTOSKIPPED          1498
 #define IDC_FORCE_WITH_LEASE            1498
