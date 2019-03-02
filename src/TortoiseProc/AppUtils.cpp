@@ -2714,7 +2714,7 @@ bool CAppUtils::Fetch(HWND hWnd, const CString& remoteName, bool allRemotes)
 	return false;
 }
 
-bool CAppUtils::DoPush(HWND hWnd, bool autoloadKey, bool pack, bool tags, bool allRemotes, bool allBranches, bool force, bool forceWithLease, const CString& localBranch, const CString& remote, const CString& remoteBranch, bool setUpstream, int recurseSubmodules)
+bool CAppUtils::DoPush(HWND hWnd, bool autoloadKey, bool tags, bool allRemotes, bool allBranches, bool force, bool forceWithLease, const CString& localBranch, const CString& remote, const CString& remoteBranch, bool setUpstream, int recurseSubmodules)
 {
 	CString error;
 	DWORD exitcode = 0xFFFFFFFF;
@@ -2745,8 +2745,6 @@ bool CAppUtils::DoPush(HWND hWnd, bool autoloadKey, bool pack, bool tags, bool a
 		iRecurseSubmodules = 2;
 
 	CString arg;
-	if (pack)
-		arg += L"--thin ";
 	if (tags && !allBranches)
 		arg += L"--tags ";
 	if (force)
@@ -2867,7 +2865,7 @@ bool CAppUtils::Push(HWND hWnd, const CString& selectLocalBranch)
 	dlg.m_BranchSourceName = selectLocalBranch;
 
 	if (dlg.DoModal() == IDOK)
-		return DoPush(hWnd, !!dlg.m_bAutoLoad, !!dlg.m_bPack, !!dlg.m_bTags, !!dlg.m_bPushAllRemotes, !!dlg.m_bPushAllBranches, !!dlg.m_bForce, !!dlg.m_bForceWithLease, dlg.m_BranchSourceName, dlg.m_URL, dlg.m_BranchRemoteName, !!dlg.m_bSetUpstream, dlg.m_RecurseSubmodules);
+		return DoPush(hWnd, !!dlg.m_bAutoLoad, !!dlg.m_bTags, !!dlg.m_bPushAllRemotes, !!dlg.m_bPushAllBranches, !!dlg.m_bForce, !!dlg.m_bForceWithLease, dlg.m_BranchSourceName, dlg.m_URL, dlg.m_BranchRemoteName, !!dlg.m_bSetUpstream, dlg.m_RecurseSubmodules);
 
 	return FALSE;
 }

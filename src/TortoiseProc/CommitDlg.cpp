@@ -559,7 +559,7 @@ static void DoPush(HWND hWnd)
 		return;
 	}
 
-	CAppUtils::DoPush(hWnd, CAppUtils::IsSSHPutty(), false, false, false, false, false, false, head, remote, remotebranch, false, 0);
+	CAppUtils::DoPush(hWnd, CAppUtils::IsSSHPutty(), false, false, false, false, false, head, remote, remotebranch, false, 0);
 }
 
 void CCommitDlg::OnOK()

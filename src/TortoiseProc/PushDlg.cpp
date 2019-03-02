@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -41,7 +41,6 @@ CPushDlg::CPushDlg(CWnd* pParent /*=nullptr*/)
 	, m_bPushAllBranches(FALSE)
 	, m_bForce(FALSE)
 	, m_bForceWithLease(FALSE)
-	, m_bPack(FALSE)
 	, m_bTags(FALSE)
 	, m_bPushAllRemotes(FALSE)
 	, m_bSetPushBranch(FALSE)
@@ -68,7 +67,6 @@ void CPushDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX,IDC_FORCE,this->m_bForce);
 	DDX_Check(pDX, IDC_FORCE_WITH_LEASE, m_bForceWithLease);
 	DDX_Check(pDX,IDC_PUSHALL,this->m_bPushAllBranches);
-	DDX_Check(pDX,IDC_PACK,this->m_bPack);
 	DDX_Check(pDX,IDC_TAGS,this->m_bTags);
 	DDX_Check(pDX,IDC_PUTTYKEY_AUTOLOAD,this->m_bAutoLoad);
 	DDX_Check(pDX, IDC_PROC_PUSH_SET_PUSHREMOTE, m_bSetPushRemote);
@@ -104,7 +102,6 @@ BOOL CPushDlg::OnInitDialog()
 	AdjustControlSize(IDC_PUSHALL);
 	AdjustControlSize(IDC_FORCE);
 	AdjustControlSize(IDC_FORCE_WITH_LEASE);
-	AdjustControlSize(IDC_PACK);
 	AdjustControlSize(IDC_TAGS);
 	AdjustControlSize(IDC_PUTTYKEY_AUTOLOAD);
 	AdjustControlSize(IDC_PROC_PUSH_SET_PUSHBRANCH);
@@ -136,7 +133,6 @@ BOOL CPushDlg::OnInitDialog()
 
 	AddAnchor(IDC_FORCE, TOP_LEFT);
 	AddAnchor(IDC_FORCE_WITH_LEASE, TOP_LEFT);
-	AddAnchor(IDC_PACK, TOP_LEFT);
 	AddAnchor(IDC_TAGS, TOP_LEFT);
 	AddAnchor(IDC_PUTTYKEY_AUTOLOAD,TOP_LEFT);
 	AddAnchor(IDC_PROC_PUSH_SET_PUSHBRANCH, TOP_LEFT);
@@ -172,9 +168,6 @@ BOOL CPushDlg::OnInitDialog()
 	m_RemoteURL.EnableWindow(FALSE);
 	CheckRadioButton(IDC_RD_REMOTE,IDC_RD_URL,IDC_RD_REMOTE);
 
-
-	m_regThinPack = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\Push\\" + WorkingDir + L"\\ThinPack", FALSE);
-	m_bPack = m_regThinPack;
 	this->m_regAutoLoad = CRegDWORD(L"Software\\TortoiseGit\\History\\PushDlgAutoLoad\\" + WorkingDir,
 									m_bAutoLoad);
 	m_bAutoLoad = this->m_regAutoLoad;
@@ -463,7 +456,6 @@ void CPushDlg::OnBnClickedOk()
 
 	m_regPushAllBranches = m_bPushAllBranches;
 	m_regPushAllRemotes = m_bPushAllRemotes;
-	m_regThinPack = m_bPack;
 	this->m_regAutoLoad = m_bAutoLoad ;
 	m_RecurseSubmodules = m_RecurseSubmodulesCombo.GetCurSel();
 	m_regRecurseSubmodules = m_RecurseSubmodules;

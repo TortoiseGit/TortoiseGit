@@ -210,7 +210,7 @@ public:
 	// rebase = 1: ask user what to do, rebase = 2: run autorebase
 	static bool RebaseAfterFetch(HWND hWnd, const CString& upstream = L"", int rebase = 0, bool preserveMerges = false);
 	static bool Fetch(HWND hWnd, const CString& remoteName = L"", bool allRemotes = false);
-	static bool DoPush(HWND hWnd, bool autoloadKey, bool pack, bool tags, bool allRemotes, bool allBranches, bool force, bool forceWithLease, const CString& localBranch, const CString& remote, const CString& remoteBranch, bool setUpstream, int recurseSubmodules);
+	static bool DoPush(HWND hWnd, bool autoloadKey, bool tags, bool allRemotes, bool allBranches, bool force, bool forceWithLease, const CString& localBranch, const CString& remote, const CString& remoteBranch, bool setUpstream, int recurseSubmodules);
 	static bool Push(HWND hWnd, const CString& selectLocalBranch = CString());
 	static bool RequestPull(HWND hWnd, const CString& endrevision = L"", const CString& repositoryUrl = L"");
 
