@@ -1244,7 +1244,7 @@ void CFileDiffDlg::OnTimer(UINT_PTR nIDEvent)
 
 void CFileDiffDlg::Filter(const CString& sFilterText)
 {
-	m_filter = std::make_shared<CLogDlgFileFilter>(sFilterText, 0, 0, true);
+	m_filter = std::make_shared<CLogDlgFileFilter>(sFilterText, 0, 0, false);
 	auto filter = *m_filter.get();
 
 	m_arFilteredList.clear();
