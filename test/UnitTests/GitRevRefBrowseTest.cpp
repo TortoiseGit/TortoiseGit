@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2018 - TortoiseGit
+// Copyright (C) 2015-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -61,8 +61,8 @@ static void GetGitRevRefMap()
 
 	rev = refMap[L"refs/tags/also-signed"];
 	EXPECT_STREQ(L"e89cb722e0f9b2eb763bb059dc099ee6c502a6d8", rev.m_CommitHash.ToString());
-	EXPECT_STREQ(L"", rev.GetAuthorName());
-	EXPECT_TRUE(rev.GetAuthorDate() == 0);
+	EXPECT_STREQ(L"Sven Strickroth", rev.GetAuthorName());
+	EXPECT_STREQ(L"2015-03-04 17:45:40", rev.GetAuthorDate().FormatGmt(L"%Y-%m-%d %H:%M:%S"));
 	EXPECT_STREQ(L"Also signed", rev.GetSubject());
 	EXPECT_STREQ(L"", rev.m_UpstreamRef);
 	EXPECT_STREQ(L"", rev.m_Description);
