@@ -67,6 +67,14 @@ static void GetGitRevRefMap()
 	EXPECT_STREQ(L"", rev.m_UpstreamRef);
 	EXPECT_STREQ(L"", rev.m_Description);
 
+	rev = refMap[L"refs/heads/subdir/branch"];
+	EXPECT_STREQ(L"31ff87c86e9f6d3853e438cb151043f30f09029a", rev.m_CommitHash.ToString());
+	EXPECT_STREQ(L"Sven Strickroth", rev.GetAuthorName());
+	EXPECT_STREQ(L"2015-03-16 12:52:29", rev.GetAuthorDate().FormatGmt(L"%Y-%m-%d %H:%M:%S")); // used here, because author and commit time differ
+	EXPECT_STREQ(L"Several actions", rev.GetSubject());
+	EXPECT_STREQ(L"", rev.m_UpstreamRef);
+	EXPECT_STREQ(L"multi\nline", rev.m_Description);
+
 	refMap.clear();
 	EXPECT_EQ(0, GitRevRefBrowser::GetGitRevRefMap(refMap, 0, err, [](const CString& refName) { return CStringUtils::StartsWith(refName, L"refs/heads/"); }));
 	EXPECT_STREQ(L"", err);
