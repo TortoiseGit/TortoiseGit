@@ -373,6 +373,12 @@ TEST(CGitAdminDir, ReadGitLink)
 
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(gitFile, L"gitdir: c:\\someotherrepo\\.git\\modules\\bla"));
 	EXPECT_STREQ(L"c:\\someotherrepo\\.git\\modules\\bla", GitAdminDir::ReadGitLink(L"C:\\somerepo", gitFile));
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(gitFile, L"gitdir: \u6280\u672F\u6587\u6863")); // cf. issue #2453
+	EXPECT_STREQ(L"C:\\somerepo\\\u6280\u672F\u6587\u6863", GitAdminDir::ReadGitLink(L"C:\\somerepo", gitFile));
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(gitFile, L"gitdir: \u6280\u672F\u6587\u6863\n")); // cf. issue #2453
+	EXPECT_STREQ(L"C:\\somerepo\\\u6280\u672F\u6587\u6863", GitAdminDir::ReadGitLink(L"C:\\somerepo", gitFile));
 }
 
 TEST(CGitAdminDir, GetSuperProjectRoot)
