@@ -216,16 +216,19 @@ CString GitAdminDir::ReadGitLink(const CString& topDir, const CString& dotGitPat
 	CString gitPath = CUnicodeUtils::GetUnicode(gitPathA);
 	// trim after converting to UTF-16, because CStringA trim does not work when having UTF-8 chars
 	gitPath = gitPath.Trim().Mid((int)wcslen(L"gitdir: "));
+	if (gitPath.IsEmpty())
+		return gitPath;
+
 	gitPath.Replace('/', '\\');
-	if (!gitPath.IsEmpty() && gitPath[0] == L'.')
+	if (gitPath[0] == L'\\' || gitPath.GetLength() >= 2 && gitPath[1] == L':')
 	{
-		gitPath = CPathUtils::BuildPathWithPathDelimiter(topDir) + gitPath;
-		CString adminDir;
-		PathCanonicalize(CStrBuf(adminDir, MAX_PATH), gitPath);
-		return adminDir;
+		CPathUtils::TrimTrailingPathDelimiter(gitPath);
+		return gitPath;
 	}
-	CPathUtils::TrimTrailingPathDelimiter(gitPath);
-	return gitPath;
+	gitPath = CPathUtils::BuildPathWithPathDelimiter(topDir) + gitPath;
+	CString adminDir;
+	PathCanonicalize(CStrBuf(adminDir, MAX_PATH), gitPath);
+	return adminDir;
 }
 
 bool GitAdminDir::IsAdminDirPath(const CString& path)

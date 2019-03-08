@@ -127,7 +127,7 @@ TEST(CGitAdminDir, GetAdminDirPath_ReferencedRepo)
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(gitFile, L"gitdir: dontcare\n"));
 
 	EXPECT_TRUE(GitAdminDir::GetAdminDirPath(tmpDir.GetTempDir(), adminDir));
-	EXPECT_STREQ(L"dontcare\\", adminDir);
+	EXPECT_STREQ(tmpDir.GetTempDir() + L"\\dontcare\\", adminDir);
 
 	ASSERT_TRUE(CreateDirectory(tmpDir.GetTempDir() + L"\\anotherdir", nullptr));
 	gitFile = tmpDir.GetTempDir() + L"\\anotherdir\\.git";
@@ -227,6 +227,22 @@ TEST(CGitAdminDir, HasAdminDir_ReferencedRepo)
 	EXPECT_STREQ(wtPath, repoRoot);
 }
 
+TEST(CGitAdminDir, HasAdminDir_ReferencedRepo2)
+{
+	CAutoTempDir tmpDir;
+
+	CAutoRepository repo;
+	ASSERT_TRUE(git_repository_init(repo.GetPointer(), CUnicodeUtils::GetUTF8(tmpDir.GetTempDir()), false) == 0);
+
+	EXPECT_TRUE(MoveFile(tmpDir.GetTempDir() + L"\\.git", tmpDir.GetTempDir() + L"\\_git"));
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(tmpDir.GetTempDir() + L"\\.git", L"gitdir: _git"));
+
+	CString repoRoot;
+	EXPECT_TRUE(GitAdminDir::HasAdminDir(tmpDir.GetTempDir(), &repoRoot));
+	EXPECT_STREQ(tmpDir.GetTempDir(), repoRoot);
+}
+
 TEST(CGitAdminDir, HasAdminDir_InvalidRepo)
 {
 	CAutoTempDir tmpDir;
@@ -293,6 +309,20 @@ TEST(CGitAdminDir, IsWorkingTreeOrBareRepo_ReferencedRepo)
 	EXPECT_TRUE(GitAdminDir::IsWorkingTreeOrBareRepo(wtPath));
 }
 
+TEST(CGitAdminDir, IsWorkingTreeOrBareRepo_ReferencedRepo2)
+{
+	CAutoTempDir tmpDir;
+
+	CAutoRepository repo;
+	ASSERT_TRUE(git_repository_init(repo.GetPointer(), CUnicodeUtils::GetUTF8(tmpDir.GetTempDir()), false) == 0);
+
+	EXPECT_TRUE(MoveFile(tmpDir.GetTempDir() + L"\\.git", tmpDir.GetTempDir() + L"\\_git"));
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(tmpDir.GetTempDir() + L"\\.git", L"gitdir: _git"));
+
+	EXPECT_TRUE(GitAdminDir::IsWorkingTreeOrBareRepo(tmpDir.GetTempDir()));
+}
+
 TEST(CGitAdminDir, IsWorkingTreeOrBareRepo_InvalidRepo)
 {
 	CAutoTempDir tmpDir;
@@ -327,7 +357,7 @@ TEST(CGitAdminDir, ReadGitLink)
 	EXPECT_STREQ(L"", GitAdminDir::ReadGitLink(L"C:\\somerepo", gitFile));
 
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(gitFile, L"gitdir: dontcare"));
-	EXPECT_STREQ(L"dontcare", GitAdminDir::ReadGitLink(L"C:\\somerepo", gitFile));
+	EXPECT_STREQ(L"C:\\somerepo\\dontcare", GitAdminDir::ReadGitLink(L"C:\\somerepo", gitFile));
 
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(gitFile, L"gitdir: ./dontcare"));
 	EXPECT_STREQ(L"C:\\somerepo\\dontcare", GitAdminDir::ReadGitLink(L"C:\\somerepo", gitFile));
@@ -340,6 +370,9 @@ TEST(CGitAdminDir, ReadGitLink)
 
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(gitFile, L"gitdir: ../.git/modules/dontcare"));
 	EXPECT_STREQ(L"C:\\.git\\modules\\dontcare", GitAdminDir::ReadGitLink(L"C:\\somerepo", gitFile));
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(gitFile, L"gitdir: c:\\someotherrepo\\.git\\modules\\bla"));
+	EXPECT_STREQ(L"c:\\someotherrepo\\.git\\modules\\bla", GitAdminDir::ReadGitLink(L"C:\\somerepo", gitFile));
 }
 
 TEST(CGitAdminDir, GetSuperProjectRoot)
