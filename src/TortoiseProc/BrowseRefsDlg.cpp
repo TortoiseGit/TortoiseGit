@@ -585,6 +585,7 @@ void CBrowseRefsDlg::FillListCtrlForTreeNode(HTREEITEM treeNode)
 
 	FillListCtrlForShadowTree(pTree, L"", true, filter);
 	m_ListRefLeafs.m_ColumnManager.SetVisible(eCol_Upstream, pTree->IsFrom(L"refs/heads"));
+	m_ListRefLeafs.m_ColumnManager.SetVisible(eCol_Description, pTree->IsFrom(L"refs/heads"));
 	m_ListRefLeafs.AdjustColumnWidths();
 }
 
