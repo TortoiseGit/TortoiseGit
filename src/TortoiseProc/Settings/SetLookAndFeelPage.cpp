@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2016 - TortoiseGit
+// Copyright (C) 2011-2016, 2019 - TortoiseGit
 // Copyright (C) 2003-2008, 2011, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -81,6 +81,11 @@ void SetMenuItemCheck(CListCtrl *list, unsigned __int64 mask, CButton *selectAll
 		selectAll->SetCheck(BST_INDETERMINATE);
 }
 
+inline static void SetMenuItemCheck(CListCtrl* list, ULARGE_INTEGER mask, CButton* selectAll)
+{
+	SetMenuItemCheck(list, mask.QuadPart, selectAll);
+}
+
 unsigned __int64 GetMenuListMask(CListCtrl* list, CButton* selectAll = nullptr)
 {
 	unsigned __int64 mask = 0;
@@ -142,8 +147,8 @@ CSetLookAndFeelPage::CSetLookAndFeelPage()
 	m_regTopmenu = cache.menulayoutlow;
 	m_regTopmenuhigh = cache.menulayouthigh;
 
-	m_topmenu = unsigned __int64(DWORD(m_regTopmenuhigh))<<32;
-	m_topmenu |= unsigned __int64(DWORD(m_regTopmenu));
+	m_topmenu.HighPart = m_regTopmenuhigh;
+	m_topmenu.LowPart = m_regTopmenu;
 
 	m_regHideMenus = CRegDWORD(L"Software\\TortoiseGit\\HideMenusForUnversionedItems", FALSE);
 	m_bHideMenus = m_regHideMenus;
@@ -233,8 +238,8 @@ BOOL CSetLookAndFeelPage::OnApply()
 {
 	UpdateData();
 
-	m_regTopmenu = m_topmenu & 0xFFFFFFFF;
-	m_regTopmenuhigh = (m_topmenu >> 32);
+	m_regTopmenu = m_topmenu.LowPart;
+	m_regTopmenuhigh = m_topmenu.HighPart;
 
 	m_regTopmenu.getErrorString();
 	m_sNoContextPaths.Remove('\r');
@@ -254,7 +259,7 @@ BOOL CSetLookAndFeelPage::OnApply()
 void CSetLookAndFeelPage::OnBnClickedRestoreDefaults()
 {
 	SetModified(TRUE);
-	m_topmenu = DEFAULTMENUTOPENTRIES;
+	m_topmenu.QuadPart = DEFAULTMENUTOPENTRIES;
 	m_bBlock = true;
 	SetMenuItemCheck(&m_cMenuList, m_topmenu, (CButton*)GetDlgItem(IDC_SELECTALL));
 	m_bBlock = false;
@@ -267,7 +272,7 @@ void CSetLookAndFeelPage::OnBnClickedSelectall()
 
 	SetModified(TRUE);
 	m_bBlock = true;
-	m_topmenu = ClickedSelectAll(&m_cMenuList, (CButton*)GetDlgItem(IDC_SELECTALL));
+	m_topmenu.QuadPart = ClickedSelectAll(&m_cMenuList, (CButton*)GetDlgItem(IDC_SELECTALL));
 	m_bBlock = false;
 }
 
@@ -277,7 +282,7 @@ void CSetLookAndFeelPage::OnLvnItemchangedMenulist(NMHDR * /*pNMHDR*/, LRESULT *
 		return;
 	SetModified(TRUE);
 	if (m_cMenuList.GetItemCount() > 0)
-		m_topmenu = GetMenuListMask(&m_cMenuList, (CButton*)GetDlgItem(IDC_SELECTALL));
+		m_topmenu.QuadPart = GetMenuListMask(&m_cMenuList, (CButton*)GetDlgItem(IDC_SELECTALL));
 	*pResult = 0;
 }
 
@@ -305,8 +310,8 @@ CSetExtMenu::CSetExtMenu()
 	m_regExtmenu = shell.menuextlow;
 	m_regExtmenuhigh = shell.menuexthigh;
 
-	m_extmenu = unsigned __int64(DWORD(m_regExtmenuhigh))<<32;
-	m_extmenu |= unsigned __int64(DWORD(m_regExtmenu));
+	m_extmenu.HighPart = m_regExtmenuhigh;
+	m_extmenu.LowPart = m_regExtmenu;
 }
 
 CSetExtMenu::~CSetExtMenu()
@@ -374,8 +379,8 @@ BOOL CSetExtMenu::OnApply()
 {
 	UpdateData();
 
-	m_regExtmenu = (DWORD)(m_extmenu & 0xFFFFFFFF);
-	m_regExtmenuhigh = (DWORD)(m_extmenu >> 32);
+	m_regExtmenu = m_extmenu.LowPart;
+	m_regExtmenuhigh = m_extmenu.HighPart;
 
 	SetModified(FALSE);
 	return ISettingsPropPage::OnApply();
@@ -384,7 +389,7 @@ BOOL CSetExtMenu::OnApply()
 void CSetExtMenu::OnBnClickedRestoreDefaults()
 {
 	SetModified(TRUE);
-	m_extmenu = DEFAULTMENUEXTENTRIES;
+	m_extmenu.QuadPart = DEFAULTMENUEXTENTRIES;
 	m_bBlock = true;
 	SetMenuItemCheck(&m_cMenuList, m_extmenu, (CButton*)GetDlgItem(IDC_SELECTALL));
 	m_bBlock = false;
@@ -397,7 +402,7 @@ void CSetExtMenu::OnBnClickedSelectall()
 
 	SetModified(TRUE);
 	m_bBlock = true;
-	m_extmenu = ClickedSelectAll(&m_cMenuList, (CButton*)GetDlgItem(IDC_SELECTALL));
+	m_extmenu.QuadPart = ClickedSelectAll(&m_cMenuList, (CButton*)GetDlgItem(IDC_SELECTALL));
 	m_bBlock = false;
 }
 
@@ -408,7 +413,7 @@ void CSetExtMenu::OnLvnItemchangedMenulist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 
 	SetModified(TRUE);
 	if (m_cMenuList.GetItemCount() > 0)
-		m_extmenu = GetMenuListMask(&m_cMenuList, (CButton*)GetDlgItem(IDC_SELECTALL));
+		m_extmenu.QuadPart = GetMenuListMask(&m_cMenuList, (CButton*)GetDlgItem(IDC_SELECTALL));
 	*pResult = 0;
 }
 
