@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2012 - TortoiseGit
+// Copyright (C) 2011-2012, 2019 - TortoiseGit
 // Copyright (C) 2003-2008, 2011, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -58,7 +58,7 @@ private:
 
 	CImageList			m_imgList;
 	CListCtrl			m_cMenuList;
-	unsigned __int64	m_topmenu;
+	ULARGE_INTEGER		m_topmenu;
 	bool				m_bBlock;
 	CRegDWORD			m_regHideMenus;
 	BOOL				m_bHideMenus;

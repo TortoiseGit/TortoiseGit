@@ -226,12 +226,12 @@ void CGravatar::GravatarThread()
 					CAutoFile hFile = CreateFile(tempFile, FILE_READ_ATTRIBUTES | FILE_WRITE_ATTRIBUTES, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 					FILETIME creationTime = {};
 					GetFileTime(hFile, &creationTime, nullptr, nullptr);
-					uint64_t delta = 7 * 24 * 60 * 60 * 10000000LL;
-					DWORD low = creationTime.dwLowDateTime;
-					creationTime.dwLowDateTime += delta & 0xffffffff;
-					creationTime.dwHighDateTime += delta >> 32;
-					if (creationTime.dwLowDateTime < low)
-						creationTime.dwHighDateTime++;
+					ULARGE_INTEGER sum;
+					sum.LowPart = creationTime.dwLowDateTime;
+					sum.HighPart = creationTime.dwHighDateTime;
+					sum.QuadPart += 7 * 24 * 60 * 60 * 10000000LL;
+					creationTime.dwLowDateTime = sum.LowPart;
+					creationTime.dwHighDateTime = sum.HighPart;
 					SetFileTime(hFile, &creationTime, nullptr, nullptr);
 					m_filename = tempFile;
 					m_email.Empty();

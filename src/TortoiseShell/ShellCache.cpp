@@ -188,17 +188,19 @@ DWORD ShellCache::BlockStatus()
 unsigned __int64 ShellCache::GetMenuLayout()
 {
 	RefreshIfNeeded();
-	unsigned __int64 temp = unsigned __int64(DWORD(menulayouthigh)) << 32;
-	temp |= unsigned __int64(DWORD(menulayoutlow));
-	return temp;
+	ULARGE_INTEGER temp;
+	temp.HighPart = menulayouthigh;
+	temp.LowPart = menulayoutlow;
+	return temp.QuadPart;
 }
 
 unsigned __int64 ShellCache::GetMenuExt()
 {
 	RefreshIfNeeded();
-	unsigned __int64 temp = unsigned __int64(DWORD(menuexthigh)) << 32;
-	temp |= unsigned __int64(DWORD(menuextlow));
-	return temp;
+	ULARGE_INTEGER temp;
+	temp.HighPart = menuexthigh;
+	temp.LowPart = menuextlow;
+	return temp.QuadPart;
 }
 
 unsigned __int64 ShellCache::GetMenuMask()
@@ -210,11 +212,11 @@ unsigned __int64 ShellCache::GetMenuMask()
 		menumasklow_lm.read();
 		menumaskhigh_lm.read();
 	}
-	DWORD low = (DWORD)menumasklow_lm | (DWORD)menumasklow_cu;
-	DWORD high = (DWORD)menumaskhigh_lm | (DWORD)menumaskhigh_cu;
-	unsigned __int64 temp = unsigned __int64(high) << 32;
-	temp |= unsigned __int64(low);
-	return temp;
+
+	ULARGE_INTEGER temp;
+	temp.LowPart = menumasklow_lm | menumasklow_cu;
+	temp.HighPart = menumaskhigh_lm | menumaskhigh_cu;
+	return temp.QuadPart;
 }
 
 bool ShellCache::IsProcessElevated()
