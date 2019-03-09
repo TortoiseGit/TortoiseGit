@@ -61,7 +61,7 @@ void InsertMenuItemToList(CListCtrl *list,CImageList *imagelist)
 	}
 }
 
-void SetMenuItemCheck(CListCtrl *list, unsigned __int64 mask, CButton *selectAll)
+static void SetMenuItemCheck(CListCtrl* list, unsigned __int64 mask, CButton* selectAll)
 {
 	bool allChecked = true;
 	for(int i=0;i<list->GetItemCount();i++)
@@ -86,7 +86,7 @@ inline static void SetMenuItemCheck(CListCtrl* list, ULARGE_INTEGER mask, CButto
 	SetMenuItemCheck(list, mask.QuadPart, selectAll);
 }
 
-unsigned __int64 GetMenuListMask(CListCtrl* list, CButton* selectAll = nullptr)
+static unsigned __int64 GetMenuListMask(CListCtrl* list, CButton* selectAll = nullptr)
 {
 	unsigned __int64 mask = 0;
 	bool allChecked = true;
@@ -114,7 +114,7 @@ unsigned __int64 GetMenuListMask(CListCtrl* list, CButton* selectAll = nullptr)
 }
 
 // Handles click on "select all" and returns the calculated mask
-unsigned __int64 ClickedSelectAll(CListCtrl *list, CButton *selectAll)
+static unsigned __int64 ClickedSelectAll(CListCtrl *list, CButton *selectAll)
 {
 	UINT state = (selectAll->GetState() & 0x0003);
 	if (state == BST_INDETERMINATE)
