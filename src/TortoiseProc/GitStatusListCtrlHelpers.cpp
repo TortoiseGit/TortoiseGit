@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008, 2014 - TortoiseSVN
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2017, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -61,10 +61,7 @@ bool CSorter::operator() (const CTGitPath* entry1 , const CTGitPath* entry2) con
 				__int64 writetime1 = entry1->GetLastWriteTime();
 				__int64 writetime2 = entry2->GetLastWriteTime();
 
-				FILETIME* filetime1 = (FILETIME*)(__int64*)&writetime1;
-				FILETIME* filetime2 = (FILETIME*)(__int64*)&writetime2;
-
-				result = CompareFileTime(filetime1, filetime2);
+				result = SGN(writetime1 - writetime2);
 			}
 			break;
 		}

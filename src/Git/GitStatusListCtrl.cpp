@@ -937,14 +937,9 @@ CString CGitStatusListCtrl::GetCellText(int listIndex, int column)
 	case 6: // GITSLC_COLMODIFICATIONDATE
 		if (!(entry->m_Action & CTGitPath::LOGACTIONS_DELETED) && m_ColumnManager.IsRelevant(GetColumnIndex(GITSLC_COLMODIFICATIONDATE)))
 		{
-			CString modificationDate;
 			__int64 filetime = entry->GetLastWriteTime();
 			if (filetime)
-			{
-				FILETIME* f = (FILETIME*)(__int64*)&filetime;
-				modificationDate = CLoglistUtils::FormatDateAndTime(CTime(CGit::filetime_to_time_t(f)), DATE_SHORTDATE, true, relativeTimes);
-			}
-			return modificationDate;
+				return CLoglistUtils::FormatDateAndTime(CTime(CGit::filetime_to_time_t(filetime)), DATE_SHORTDATE, true, relativeTimes);
 		}
 		return empty;
 
