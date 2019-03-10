@@ -406,7 +406,11 @@ public:
 	static int GetHash(git_repository * repo, CGitHash &hash, const CString& friendname, bool skipFastCheck = false);
 
 	int BuildOutputFormat(CString &format,bool IsFull=TRUE);
-	static void StringAppend(CString *str, const BYTE *p, int code = CP_UTF8, int length = -1);
+	static void StringAppend(CString* str, const char* p, int code = CP_UTF8, int length = -1);
+	inline static void StringAppend(CString* str, const BYTE* p, int code = CP_UTF8, int length = -1)
+	{
+		StringAppend(str, reinterpret_cast<const char*>(p), code, length);
+	}
 
 	BOOL CanParseRev(CString ref);
 	/**

@@ -134,9 +134,9 @@ TEST(CGit, RunLogFile_Error)
 
 TEST(CGit, StringAppend)
 {
-	CGit::StringAppend(nullptr, nullptr); // string may be null
+	CGit::StringAppend(nullptr, static_cast<BYTE*>(nullptr)); // string may be null
 	CString string = L"something";
-	CGit::StringAppend(&string, nullptr, CP_UTF8, 0);
+	CGit::StringAppend(&string, static_cast<BYTE*>(nullptr), CP_UTF8, 0);
 	EXPECT_STREQ(L"something", string);
 	const BYTE somebytes[1] = { 0 };
 	CGit::StringAppend(&string, somebytes, CP_UTF8, 0);

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2016, 2018 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2016, 2018-2019 - TortoiseGit
 // Copyright (C) 2011-2013 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
@@ -77,7 +77,7 @@ int CSendMailPatch::SendAsCombinedMail(const CTGitPathList &list, CGitProgressLi
 		{
 			try
 			{
-				CGit::StringAppend(&body, (BYTE*)(LPCSTR)patch.m_Body, CP_UTF8, patch.m_Body.GetLength());
+				CGit::StringAppend(&body, patch.m_Body, CP_UTF8, patch.m_Body.GetLength());
 			}
 			catch (CMemoryException *)
 			{

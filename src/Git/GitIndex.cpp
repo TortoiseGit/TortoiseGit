@@ -588,8 +588,8 @@ int CGitHeadFileList::ReadTreeRecursive(git_repository& repo, const git_tree* tr
 		{
 			CGitTreeItem item;
 			item.m_Hash = git_tree_entry_id(entry);
-			CGit::StringAppend(&item.m_FileName, (BYTE*)(LPCSTR)base, CP_UTF8, base.GetLength());
-			CGit::StringAppend(&item.m_FileName, (BYTE*)git_tree_entry_name(entry), CP_UTF8);
+			CGit::StringAppend(&item.m_FileName, base, CP_UTF8, base.GetLength());
+			CGit::StringAppend(&item.m_FileName, git_tree_entry_name(entry), CP_UTF8);
 			if (isSubmodule)
 				item.m_FileName += L'/';
 			push_back(item);
