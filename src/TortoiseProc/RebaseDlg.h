@@ -241,6 +241,7 @@ protected:
 
 	void AddBranchToolTips(CHistoryCombo& pBranch);
 	void AddLogString(const CString& str);
+	int WriteReflog(CGitHash hash, const char* message);
 	int StartRebase();
 	int CheckRebaseCondition();
 	void CheckRestoreStash();
