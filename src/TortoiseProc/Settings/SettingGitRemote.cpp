@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -250,9 +250,7 @@ void CSettingGitRemote::OnLbnSelchangeListRemote()
 	}
 	SetModified(FALSE);
 
-	CString cmd,output;
-	int index;
-	index = this->m_ctrlRemoteList.GetCurSel();
+	int index = this->m_ctrlRemoteList.GetCurSel();
 	if(index<0)
 	{
 		m_strUrl.Empty();
@@ -262,26 +260,23 @@ void CSettingGitRemote::OnLbnSelchangeListRemote()
 		this->UpdateData(FALSE);
 		return;
 	}
-	CString remote;
-	m_ctrlRemoteList.GetText(index,remote);
-	this->m_strRemote=remote;
+	m_ctrlRemoteList.GetText(index, m_strRemote);
 
-	cmd.Format(L"remote.%s.url", (LPCTSTR)remote);
-	m_strUrl.Empty();
+	CString cmd, output;
+	cmd.Format(L"remote.%s.url", (LPCTSTR)m_strRemote);
 	m_strUrl = g_Git.GetConfigValue(cmd);
 
-	cmd.Format(L"remote.%s.pushurl", (LPCTSTR)remote);
-	m_strPushUrl.Empty();
+	cmd.Format(L"remote.%s.pushurl", (LPCTSTR)m_strRemote);
 	m_strPushUrl = g_Git.GetConfigValue(cmd);
 
-	cmd.Format(L"remote.%s.puttykeyfile", (LPCTSTR)remote);
+	cmd.Format(L"remote.%s.puttykeyfile", (LPCTSTR)m_strRemote);
 
 	this->m_strPuttyKeyfile = g_Git.GetConfigValue(cmd);
 
 	m_ChangedMask=0;
 
 
-	cmd.Format(L"remote.%s.tagopt", (LPCTSTR)remote);
+	cmd.Format(L"remote.%s.tagopt", (LPCTSTR)m_strRemote);
 	CString tagopt = g_Git.GetConfigValue(cmd);
 	index = 0;
 	if (tagopt == "--no-tags")
@@ -291,8 +286,8 @@ void CSettingGitRemote::OnLbnSelchangeListRemote()
 	m_ctrlTagOpt.SetCurSel(index);
 
 	CString pushDefault = g_Git.GetConfigValue(L"remote.pushdefault");
-	m_bPushDefault = pushDefault == remote ? TRUE : FALSE;
-	cmd.Format(L"remote.%s.prune", (LPCTSTR)remote);
+	m_bPushDefault = pushDefault == m_strRemote ? TRUE : FALSE;
+	cmd.Format(L"remote.%s.prune", (LPCTSTR)m_strRemote);
 	CString prune = g_Git.GetConfigValue(cmd);
 	m_bPrune = prune == L"true" ? TRUE : prune == L"false" ? FALSE : 2;
 	CString pruneAll = g_Git.GetConfigValue(L"fetch.prune");
@@ -567,8 +562,7 @@ void CleanupSyncRemotes(const CString& remote)
 
 void CSettingGitRemote::OnBnClickedButtonRemove()
 {
-	int index;
-	index=m_ctrlRemoteList.GetCurSel();
+	int index = m_ctrlRemoteList.GetCurSel();
 	if(index>=0)
 	{
 		CString str;

@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2014, 2016 - TortoiseGit
+// Copyright (C) 2009-2014, 2016, 2019 - TortoiseGit
 // Copyright (C) 2003-2006, 2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -365,8 +365,6 @@ int LoadStringEx(HINSTANCE hInstance, UINT uID, LPTSTR lpBuffer, int nBufferMax,
 #ifndef UNICODE
 	BOOL defaultCharUsed;
 #endif
-	int ret;
-
 	if (!lpBuffer)
 		return 0;
 	lpBuffer[0] = L'\0';
@@ -399,13 +397,13 @@ int LoadStringEx(HINSTANCE hInstance, UINT uID, LPTSTR lpBuffer, int nBufferMax,
 	if (pImage->nLength == 0)
 		return 0;
 #ifdef UNICODE
-	ret = pImage->nLength;
+	int ret = pImage->nLength;
 	if (ret >= nBufferMax)
 		ret = nBufferMax - 1;
 	wcsncpy_s((wchar_t *)lpBuffer, nBufferMax, pImage->achString, ret);
 	lpBuffer[ret] = L'\0';
 #else
-	ret = WideCharToMultiByte(CP_ACP, 0, pImage->achString, pImage->nLength, (LPSTR)lpBuffer, nBufferMax-1, ".", &defaultCharUsed);
+	auto ret = WideCharToMultiByte(CP_ACP, 0, pImage->achString, pImage->nLength, (LPSTR)lpBuffer, nBufferMax-1, ".", &defaultCharUsed);
 	lpBuffer[ret] = L'\0';
 #endif
 	return ret;

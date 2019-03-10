@@ -1,7 +1,7 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (c) 2003 by Andreas Kapust <info@akinstaller.de>; <http://www.codeproject.com/Articles/2607/AutoComplete-without-IAutoComplete>
-// Copyright (C) 2009, 2012-2013, 2015-2016, 2018 - TortoiseGit
+// Copyright (C) 2009, 2012-2013, 2015-2016, 2018-2019 - TortoiseGit
 
 // Licensed under: The Code Project Open License (CPOL); <http://www.codeproject.com/info/cpol10.aspx>
 
@@ -143,7 +143,6 @@ void CACListWnd::OnPaint()
 	CRect rcWnd,m_rect, rc;
 	CDC MemDC, *pDC = nullptr;
 	CBitmap  m_bitmap, *m_pOldBitmap;
-	int i;
 
 	GetClientRect(rc);
 	rcWnd = m_rect = rc;
@@ -166,7 +165,7 @@ void CACListWnd::OnPaint()
 	MemDC.SelectObject(m_uiFont);
 	MemDC.SetBkMode(TRANSPARENT);
 
-	for(i = m_lTopIndex; i < m_lCount;i++)
+	for (int i = m_lTopIndex; i < m_lCount; ++i)
 	{
 		DrawItem(&MemDC,i,width);
 	}
@@ -190,7 +189,7 @@ void CACListWnd::OnPaint()
 	bottom = (rcWnd.bottom-GetSystemMetrics(SM_CXHSCROLL))-1;
 
 	//gripper
-	for( i = 0; i < 20 ;i++,a++)
+	for (int i = 0; i < 20 ; ++i, ++a)
 	{
 		if(a==1)
 			pDC->SelectObject(&m_Pen1);
@@ -902,7 +901,6 @@ int CACListWnd::CompareString(const void* p1, const void* p2)
 void CACListWnd::SortList(CStringArray& list)
 {
 	int m_Count = (int)list.GetSize();
-	int i;
 
 	if (m_Count > 1)
 	{
@@ -912,7 +910,7 @@ void CACListWnd::SortList(CStringArray& list)
 		LPCTSTR* ppSortArray = new LPCTSTR[m_Count+1];
 
 
-		for(i=0; i < m_Count; i++)
+		for (int i = 0; i < m_Count; ++i)
 		{
 			ppSortArray[i] = (LPCTSTR)m_Liste1.GetAt(i);
 		}
@@ -921,7 +919,7 @@ void CACListWnd::SortList(CStringArray& list)
 
 		qsort(ppSortArray, m_Count, sizeof(LPCTSTR), CompareString);
 
-		for(i=0; i < m_Count; i++)
+		for (int i = 0; i < m_Count; ++i)
 		{
 			list.Add((LPCTSTR) ppSortArray[i]);
 		}

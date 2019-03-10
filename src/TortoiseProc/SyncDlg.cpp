@@ -148,8 +148,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 {
 	bool bShift = (GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0;
 
-	int CurrentEntry;
-	CurrentEntry = (int)this->m_ctrlPull.GetCurrentEntry();
+	int CurrentEntry = (int)this->m_ctrlPull.GetCurrentEntry();
 	this->m_regPullButton = CurrentEntry;
 
 	if (bShift && CurrentEntry > 1)
@@ -909,8 +908,7 @@ BOOL CSyncDlg::OnInitDialog()
 	m_ctrlTabCtrl.SetResizeMode(CMFCTabCtrl::RESIZE_NO);
 
 	// -------------Create Command Log Ctrl ---------
-	DWORD dwStyle;
-	dwStyle= ES_MULTILINE | ES_READONLY | WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL | ES_AUTOVSCROLL |WS_VSCROLL  ;
+	DWORD dwStyle = ES_MULTILINE | ES_READONLY | WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL | ES_AUTOVSCROLL |WS_VSCROLL;
 
 	if( !m_ctrlCmdOut.Create(dwStyle,rectDummy,&m_ctrlTabCtrl,IDC_CMD_LOG))
 	{

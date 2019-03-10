@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2017 - TortoiseGit
+// Copyright (C) 2016-2017, 2019 - TortoiseGit
 // Copyright (C) 2003-2006, 2008, 2013-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -103,24 +103,22 @@ bool CLangDll::DoVersionStringsMatch(LPCTSTR sVer, LPCTSTR langDll) const
 		return false;
 
 	auto pBuffer = std::make_unique<BYTE[]>(dwBufferSize);
-
 	if (!pBuffer)
 		return false;
-
-	UINT        nInfoSize = 0, nFixedLength = 0;
-	LPSTR       lpVersion = nullptr;
-	VOID*       lpFixedPointer;
-	TRANSARRAY* lpTransArray;
-	TCHAR       strLangProductVersion[MAX_PATH] = { 0 };
 
 	if (!GetFileVersionInfo((LPTSTR)langDll, dwReserved, dwBufferSize, pBuffer.get()))
 		return false;
 
+	VOID* lpFixedPointer;
+	UINT nFixedLength = 0;
 	VerQueryValue(pBuffer.get(), L"\\VarFileInfo\\Translation", &lpFixedPointer, &nFixedLength);
-	lpTransArray = (TRANSARRAY*)lpFixedPointer;
+	auto lpTransArray = static_cast<TRANSARRAY*>(lpFixedPointer);
 
+	TCHAR strLangProductVersion[MAX_PATH] = { 0 };
 	swprintf_s(strLangProductVersion, L"\\StringFileInfo\\%04x%04x\\ProductVersion", lpTransArray[0].wLanguageID, lpTransArray[0].wCharacterSet);
 
+	LPSTR lpVersion = nullptr;
+	UINT nInfoSize = 0;
 	VerQueryValue(pBuffer.get(), (LPTSTR)strLangProductVersion, (LPVOID*)&lpVersion, &nInfoSize);
 	if (lpVersion && nInfoSize)
 		return (wcscmp(sVer, (LPCTSTR)lpVersion) == 0);

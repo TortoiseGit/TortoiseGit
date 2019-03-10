@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2013, 2015-2016 - TortoiseGit
+// Copyright (C) 2012-2013, 2015-2016, 2019 - TortoiseGit
 // Copyright (C) 2003-2008,2011,2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -169,11 +169,8 @@ bool CShellUpdater::RebuildIcons()
 	DWORD dwRegValueTemp;
 	DWORD dwSize;
 	DWORD_PTR dwResult;
-	LONG lRegResult;
 
-	lRegResult = RegOpenKeyEx(HKEY_CURRENT_USER, L"Control Panel\\Desktop\\WindowMetrics",
-		0, KEY_READ | KEY_WRITE, &hRegKey);
-	if (lRegResult != ERROR_SUCCESS)
+	if (RegOpenKeyEx(HKEY_CURRENT_USER, L"Control Panel\\Desktop\\WindowMetrics", 0, KEY_READ | KEY_WRITE, &hRegKey) != ERROR_SUCCESS)
 		return false;
 	SCOPE_EXIT { RegCloseKey(hRegKey); };
 
@@ -182,9 +179,7 @@ bool CShellUpdater::RebuildIcons()
 
 	// Read registry value
 	dwSize = BUFFER_SIZE;
-	lRegResult = RegQueryValueEx(hRegKey, sRegValueName, nullptr, nullptr,
-		(LPBYTE) buf, &dwSize);
-	if (lRegResult != ERROR_FILE_NOT_FOUND)
+	if (LONG lRegResult = RegQueryValueEx(hRegKey, sRegValueName, nullptr, nullptr, (LPBYTE)buf, &dwSize);lRegResult != ERROR_FILE_NOT_FOUND)
 	{
 		// If registry key doesn't exist create it using system current setting
 		int iDefaultIconSize = ::GetSystemMetrics(SM_CXICON);
@@ -200,9 +195,7 @@ bool CShellUpdater::RebuildIcons()
 	dwRegValueTemp = dwRegValue-1;
 
 	dwSize = _sntprintf_s(buf, BUFFER_SIZE, BUFFER_SIZE, L"%lu", dwRegValueTemp) + sizeof(TCHAR);
-	lRegResult = RegSetValueEx(hRegKey, sRegValueName, 0, REG_SZ,
-		(LPBYTE) buf, dwSize);
-	if (lRegResult != ERROR_SUCCESS)
+	if (RegSetValueEx(hRegKey, sRegValueName, 0, REG_SZ, (LPBYTE)buf, dwSize) != ERROR_SUCCESS)
 		return false;
 
 	// Update all windows
@@ -211,9 +204,7 @@ bool CShellUpdater::RebuildIcons()
 
 	// Reset registry value
 	dwSize = _sntprintf_s(buf, BUFFER_SIZE, BUFFER_SIZE, L"%lu", dwRegValue) + sizeof(TCHAR);
-	lRegResult = RegSetValueEx(hRegKey, sRegValueName, 0, REG_SZ,
-		(LPBYTE) buf, dwSize);
-	if (lRegResult != ERROR_SUCCESS)
+	if (RegSetValueEx(hRegKey, sRegValueName, 0, REG_SZ, (LPBYTE)buf, dwSize) != ERROR_SUCCESS)
 		return false;
 
 	// Update all windows

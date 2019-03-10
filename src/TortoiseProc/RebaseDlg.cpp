@@ -1850,8 +1850,6 @@ void CRebaseDlg::SetControlEnable()
 void CRebaseDlg::UpdateProgress()
 {
 	int index;
-	CRect rect;
-
 	if(m_CommitList.m_IsOldFirst)
 		index = m_CurrentRebaseIndex+1;
 	else
@@ -1889,6 +1887,7 @@ void CRebaseDlg::UpdateProgress()
 		prevRev = m_CommitList.m_arShownList.SafeGetAt(i);
 		if (prevRev->GetRebaseAction() & CGitLogListBase::LOGACTIONS_REBASE_CURRENT)
 		{
+			CRect rect;
 			prevRev->GetRebaseAction() &= ~CGitLogListBase::LOGACTIONS_REBASE_CURRENT;
 			m_CommitList.GetItemRect(i,&rect,LVIR_BOUNDS);
 			m_CommitList.InvalidateRect(rect);
@@ -1897,6 +1896,7 @@ void CRebaseDlg::UpdateProgress()
 
 	if(curRev)
 	{
+		CRect rect;
 		curRev->GetRebaseAction() |= CGitLogListBase::LOGACTIONS_REBASE_CURRENT;
 		m_CommitList.GetItemRect(m_CurrentRebaseIndex,&rect,LVIR_BOUNDS);
 		m_CommitList.InvalidateRect(rect);

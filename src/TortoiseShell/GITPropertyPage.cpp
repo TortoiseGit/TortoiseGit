@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -407,9 +407,7 @@ static git_commit* FindFileRecentCommit(git_repository* repository, const CStrin
 			return nullptr;
 
 		memset(&treewalkstruct.oid.id, 0, sizeof(treewalkstruct.oid.id));
-		int ret = git_tree_walk(tree, GIT_TREEWALK_PRE, TreewalkCB_FindFileRecentCommit, &treewalkstruct);
-
-		if (ret < 0 && ret != GIT_EUSER)
+		if (auto ret = git_tree_walk(tree, GIT_TREEWALK_PRE, TreewalkCB_FindFileRecentCommit, &treewalkstruct);  ret < 0 && ret != GIT_EUSER)
 			return nullptr;
 
 		// check if file not found
@@ -431,9 +429,7 @@ static git_commit* FindFileRecentCommit(git_repository* repository, const CStrin
 
 			TreewalkStruct treewalkstruct2 = { folder, file };
 			memset(&treewalkstruct2.oid.id, 0, sizeof(treewalkstruct2.oid.id));
-			ret = git_tree_walk(tree2, GIT_TREEWALK_PRE, TreewalkCB_FindFileRecentCommit, &treewalkstruct2);
-
-			if (ret < 0 && ret != GIT_EUSER)
+			if (auto ret = git_tree_walk(tree2, GIT_TREEWALK_PRE, TreewalkCB_FindFileRecentCommit, &treewalkstruct2); ret < 0 && ret != GIT_EUSER)
 				return nullptr;
 
 			if (!git_oid_cmp(&treewalkstruct.oid, &treewalkstruct2.oid))

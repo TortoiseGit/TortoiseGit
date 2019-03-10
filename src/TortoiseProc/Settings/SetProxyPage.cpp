@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2010-2017 - TortoiseGit
+// Copyright (C) 2010-2017, 2019 - TortoiseGit
 // Copyright (C) 2003-2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -148,8 +148,7 @@ BOOL CSetProxyPage::OnInitDialog()
 		}
 		else
 		{
-			int username;
-			username = proxy.Find(L':', start);
+			int username = proxy.Find(L':', start);
 			if(username<=0 || username >at)
 			{
 				StringUnescape(proxy.Mid(start, at - start), &m_username);

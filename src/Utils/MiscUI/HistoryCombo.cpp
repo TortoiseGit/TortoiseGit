@@ -488,8 +488,7 @@ void CHistoryCombo::SetMaxHistoryItems(int nMaxItems)
 CString CHistoryCombo::GetString() const
 {
 	CString str;
-	int sel;
-	sel = GetCurSel();
+	int sel = GetCurSel();
 	DWORD style=GetStyle();
 
 	if (sel == CB_ERR ||(m_bURLHistory)||(m_bPathHistory) || (!(style&CBS_SIMPLE)))

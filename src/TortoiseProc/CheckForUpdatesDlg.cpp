@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -455,8 +455,7 @@ void CCheckForUpdatesDlg::FillChangelog(CVersioncheckParser& versioncheck, bool 
 	sChangelogURL.FormatMessage(versioncheck.GetTortoiseGitChangelogURL(), TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, (LPCTSTR)m_updateDownloader->m_sWindowsPlatform, (LPCTSTR)m_updateDownloader->m_sWindowsVersion, (LPCTSTR)m_updateDownloader->m_sWindowsServicePack);
 
 	CString tempchangelogfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
-	DWORD err;
-	if ((err = m_updateDownloader->DownloadFile(sChangelogURL, tempchangelogfile, false)) != ERROR_SUCCESS)
+	if (DWORD err = m_updateDownloader->DownloadFile(sChangelogURL, tempchangelogfile, false); err != ERROR_SUCCESS)
 	{
 		CString msg = L"Could not load changelog.\r\nError: " + GetWinINetError(err) + L" (on " + sChangelogURL + L")";
 		::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, 0, reinterpret_cast<LPARAM>((LPCTSTR)msg));
@@ -465,7 +464,7 @@ void CCheckForUpdatesDlg::FillChangelog(CVersioncheckParser& versioncheck, bool 
 	if (official)
 	{
 		CString signatureTempfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
-		if ((err = m_updateDownloader->DownloadFile(sChangelogURL + SIGNATURE_FILE_ENDING, signatureTempfile, false)) != ERROR_SUCCESS || VerifyIntegrity(tempchangelogfile, signatureTempfile, m_updateDownloader))
+		if (DWORD err = m_updateDownloader->DownloadFile(sChangelogURL + SIGNATURE_FILE_ENDING, signatureTempfile, false); err != ERROR_SUCCESS || VerifyIntegrity(tempchangelogfile, signatureTempfile, m_updateDownloader))
 		{
 			CString error = L"Could not verify digital signature.";
 			if (err)

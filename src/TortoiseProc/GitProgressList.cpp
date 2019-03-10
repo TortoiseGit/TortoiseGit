@@ -751,8 +751,7 @@ int CGitProgressList::UpdateProgress(const git_transfer_progress* stat)
 	else
 		return 0;
 
-	int progress;
-	progress = stat->received_objects + stat->indexed_objects;
+	int progress = stat->received_objects + stat->indexed_objects;
 
 	if ((stat->total_objects > 1000) && m_pProgControl && (!m_pProgControl->IsWindowVisible()))
 		m_pProgControl->ShowWindow(SW_SHOW);

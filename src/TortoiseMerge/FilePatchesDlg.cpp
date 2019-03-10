@@ -1,7 +1,7 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2006, 2008, 2010-2012, 2015 - TortoiseSVN
-// Copyright (C) 2012, 2016-2017 - Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2012, 2016-2017, 2019 - Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -155,10 +155,7 @@ BOOL CFilePatchesDlg::Init(GitPatch * pPatch, CPatchFilesDlgCallBack * pCallBack
 		m_cFileList.InsertItem(i, sFile, SYS_IMAGE_LIST().GetPathIconIndex(sFileName));
 		SetStateText(i, state);
 	}
-	int mincol = 0;
-	int maxcol = m_cFileList.GetHeaderCtrl()->GetItemCount() - 1;
-	int col;
-	for (col = mincol; col <= maxcol; col++)
+	for (int col = 0, maxcol = m_cFileList.GetHeaderCtrl()->GetItemCount(); col < maxcol; ++col)
 	{
 		m_cFileList.SetColumnWidth(col,LVSCW_AUTOSIZE_USEHEADER);
 	}

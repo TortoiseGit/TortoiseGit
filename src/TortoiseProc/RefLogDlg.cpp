@@ -146,8 +146,7 @@ void CRefLogDlg::OnCbnSelchangeRef()
 
 	m_RefList.SetRedraw(false);
 
-	CString err;
-	if (GitRevLoglist::GetRefLog(m_CurrentBranch, m_RefList.m_RevCache, err))
+	if (CString err; GitRevLoglist::GetRefLog(m_CurrentBranch, m_RefList.m_RevCache, err))
 		MessageBox(L"Error while loading reflog.\n" + err, L"TortoiseGit", MB_ICONERROR);
 
 	m_RefList.SetItemCountEx((int)m_RefList.m_RevCache.size());

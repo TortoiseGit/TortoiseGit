@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2015 - TortoiseGit
+// Copyright (C) 2013-2015, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -70,12 +70,10 @@ bool CloneProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, in
 
 	cloneOpts.remote_cb = [](git_remote** out, git_repository* repo, const char* /*name*/, const char* url, void* payload) -> int
 	{
-		int error;
-
 		remote_cb_payload* data = (remote_cb_payload*)payload;
 
 		CAutoRemote origin;
-		if ((error = git_remote_create(origin.GetPointer(), repo, data->remoteName, url)) < 0)
+		if (auto error = git_remote_create(origin.GetPointer(), repo, data->remoteName, url); error < 0)
 			return error;
 
 		*out = origin.Detach();
