@@ -559,9 +559,9 @@ CString ColumnManager::GetColumnOrderString() const
 
 void ColumnManager::OnContextMenuHeader(CWnd* pWnd, CPoint point, bool isGroundEnable /* = false*/)
 {
-	CHeaderCtrl* pHeaderCtrl = (CHeaderCtrl*)pWnd;
 	if ((point.x == -1) && (point.y == -1))
 	{
+		auto pHeaderCtrl = static_cast<CHeaderCtrl*>(pWnd);
 		CRect rect;
 		pHeaderCtrl->GetItemRect(0, &rect);
 		pHeaderCtrl->ClientToScreen(&rect);

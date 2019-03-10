@@ -222,10 +222,7 @@ BOOL CSetLookAndFeelPage::OnInitDialog()
 	m_bBlock = false;
 
 	m_cMenuList.SetImageList(&m_imgList, LVSIL_SMALL);
-	int mincol = 0;
-	int maxcol = m_cMenuList.GetHeaderCtrl()->GetItemCount() - 1;
-	int col;
-	for (col = mincol; col <= maxcol; col++)
+	for (int col = 0, maxcol = m_cMenuList.GetHeaderCtrl()->GetItemCount(); col < maxcol; ++col)
 		m_cMenuList.SetColumnWidth(col,LVSCW_AUTOSIZE_USEHEADER);
 	m_cMenuList.SetRedraw(true);
 
@@ -363,10 +360,7 @@ BOOL CSetExtMenu::OnInitDialog()
 	m_bBlock = false;
 
 	m_cMenuList.SetImageList(&m_imgList, LVSIL_SMALL);
-	int mincol = 0;
-	int maxcol = m_cMenuList.GetHeaderCtrl()->GetItemCount() - 1;
-	int col;
-	for (col = mincol; col <= maxcol; col++)
+	for (int col = 0, maxcol = m_cMenuList.GetHeaderCtrl()->GetItemCount(); col < maxcol; ++col)
 		m_cMenuList.SetColumnWidth(col,LVSCW_AUTOSIZE_USEHEADER);
 	m_cMenuList.SetRedraw(true);
 

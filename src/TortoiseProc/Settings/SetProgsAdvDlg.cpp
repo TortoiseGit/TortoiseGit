@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016 - TortoiseGit
+// Copyright (C) 2016, 2019 - TortoiseGit
 // Copyright (C) 2003-2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -147,10 +147,7 @@ BOOL CSetProgsAdvDlg::OnInitDialog()
 	m_ToolListCtrl.InsertColumn(1, temp);
 
 	m_ToolListCtrl.SetRedraw(FALSE);
-	int mincol = 0;
-	int maxcol = m_ToolListCtrl.GetHeaderCtrl()->GetItemCount() - 1;
-	int col;
-	for (col = mincol; col <= maxcol; col++)
+	for (int col = 0, maxcol = maxcol = m_ToolListCtrl.GetHeaderCtrl()->GetItemCount(); col < maxcol; ++col)
 		m_ToolListCtrl.SetColumnWidth(col,LVSCW_AUTOSIZE_USEHEADER);
 	m_ToolListCtrl.SetRedraw(TRUE);
 

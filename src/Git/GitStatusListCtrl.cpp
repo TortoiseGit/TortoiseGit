@@ -2418,8 +2418,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						CString revertToCommit = L"HEAD";
 						if (m_amend)
 							revertToCommit = L"HEAD~1";
-						CString err;
-						if (g_Git.Revert(revertToCommit, targetList, err))
+						if (CString err; g_Git.Revert(revertToCommit, targetList, err))
 							MessageBox(L"Revert failed:\n" + err, L"TortoiseGit", MB_ICONERROR);
 						else
 						{
@@ -3830,16 +3829,14 @@ int CGitStatusListCtrl::UpdateFileList(const CTGitPathList* list)
 			}
 			if (deleteFromIndex == 1)
 			{
-				CString err;
-				if (g_Git.Run(L"git.exe checkout -- \"" + gitpatch->GetWinPathString() + L'"', &err, CP_UTF8))
+				if (CString err; g_Git.Run(L"git.exe checkout -- \"" + gitpatch->GetWinPathString() + L'"', &err, CP_UTF8))
 					MessageBox(L"Restoring from index failed:\n" + err, L"TortoiseGit", MB_ICONERROR);
 				else
 					needsRefresh = true;
 			}
 			else if (deleteFromIndex == 2)
 			{
-				CString err;
-				if (g_Git.Run(L"git.exe rm -f --cache -- \"" + gitpatch->GetWinPathString() + L'"', &err, CP_UTF8))
+				if (CString err; g_Git.Run(L"git.exe rm -f --cache -- \"" + gitpatch->GetWinPathString() + L'"', &err, CP_UTF8))
 					MessageBox(L"Removing from index failed:\n" + err, L"TortoiseGit", MB_ICONERROR);
 				else
 					needsRefresh = true;
@@ -3888,8 +3885,7 @@ int CGitStatusListCtrl::UpdateUnRevFileList(CTGitPathList &list)
 int CGitStatusListCtrl::UpdateUnRevFileList(const CTGitPathList* List)
 {
 	CAutoWriteLock locker(m_guard);
-	CString err;
-	if (m_UnRevFileList.FillUnRev(CTGitPath::LOGACTIONS_UNVER, List, &err))
+	if (CString err; m_UnRevFileList.FillUnRev(CTGitPath::LOGACTIONS_UNVER, List, &err))
 	{
 		MessageBox(L"Failed to get UnRev file list\n" + err, L"TortoiseGit", MB_OK | MB_ICONERROR);
 		return -1;
@@ -3925,8 +3921,7 @@ int CGitStatusListCtrl::UpdateUnRevFileList(const CTGitPathList* List)
 int CGitStatusListCtrl::UpdateIgnoreFileList(const CTGitPathList* List)
 {
 	CAutoWriteLock locker(m_guard);
-	CString err;
-	if (m_IgnoreFileList.FillUnRev(CTGitPath::LOGACTIONS_IGNORE, List, &err))
+	if (CString err; m_IgnoreFileList.FillUnRev(CTGitPath::LOGACTIONS_IGNORE, List, &err))
 	{
 		MessageBox(L"Failed to get Ignore file list\n" + err, L"TortoiseGit", MB_OK | MB_ICONERROR);
 		return -1;
@@ -4219,7 +4214,6 @@ int CGitStatusListCtrl::RevertSelectedItemToVersion(bool parent)
 
 	POSITION pos = GetFirstSelectedItemPosition();
 	int index;
-	CString cmd,out;
 	std::map<CString, int> versionMap;
 	while ((index = GetNextSelectedItem(pos)) >= 0)
 	{
@@ -4245,8 +4239,8 @@ int CGitStatusListCtrl::RevertSelectedItemToVersion(bool parent)
 		CString filename = fentry->GetGitPathString();
 		if (!fentry->GetGitOldPathString().IsEmpty())
 			filename = fentry->GetGitOldPathString();
+		CString cmd, out;
 		cmd.Format(L"git.exe checkout %s -- \"%s\"", (LPCTSTR)version, (LPCTSTR)filename);
-		out.Empty();
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
 			if (MessageBox(out, L"TortoiseGit", MB_ICONEXCLAMATION | MB_OKCANCEL) == IDCANCEL)
@@ -4256,7 +4250,7 @@ int CGitStatusListCtrl::RevertSelectedItemToVersion(bool parent)
 			versionMap[version]++;
 	}
 
-	out.Empty();
+	CString out;
 	for (auto it = versionMap.cbegin(); it != versionMap.cend(); ++it)
 	{
 		CString versionEntry;

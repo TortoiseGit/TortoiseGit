@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2014, 2016 - TortoiseGit
+// Copyright (C) 2009-2014, 2016, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -34,9 +34,8 @@ bool RevertProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, i
 	for (m_itemCount = 0; m_itemCount < m_targetPathList.GetCount(); ++m_itemCount)
 	{
 		CTGitPath path;
-		int action;
 		path.SetFromWin(g_Git.CombinePath(m_targetPathList[m_itemCount]));
-		action = m_targetPathList[m_itemCount].m_Action;
+		auto action = m_targetPathList[m_itemCount].m_Action;
 		/* rename file can't delete because it needs original file*/
 		if ((!(action & CTGitPath::LOGACTIONS_ADDED)) &&
 			(!(action & CTGitPath::LOGACTIONS_REPLACED)))
@@ -48,8 +47,7 @@ bool RevertProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, i
 	list->ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_REVERT)));
 	for (int i = 0; i < m_targetPathList.GetCount(); ++i)
 	{
-		CString err;
-		if (g_Git.Revert(L"HEAD", (CTGitPath&)m_targetPathList[i], err))
+		if (CString err; g_Git.Revert(L"HEAD", (CTGitPath&)m_targetPathList[i], err))
 		{
 			list->ReportError(L"Revert failed:\n" + err);
 			return false;

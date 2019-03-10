@@ -1,4 +1,4 @@
-/**************************************************************************
+﻿/**************************************************************************
    THIS CODE AND INFORMATION IS PROVIDED 'AS IS' WITHOUT WARRANTY OF
    ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO
    THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
@@ -336,8 +336,7 @@ STDMETHODIMP_(ULONG) CIDropSource::AddRef( void)
 
 STDMETHODIMP_(ULONG) CIDropSource::Release( void)
 {
-	long nTemp;
-	nTemp = --m_cRefCount;
+	long nTemp = --m_cRefCount;
 	ATLASSERT(nTemp >= 0);
 	if(nTemp==0)
 		delete this;
@@ -527,8 +526,7 @@ HRESULT STDMETHODCALLTYPE CIDropTarget::QueryInterface( /* [in] */ REFIID riid,
 
 ULONG STDMETHODCALLTYPE CIDropTarget::Release( void)
 {
-	long nTemp;
-	nTemp = --m_cRefCount;
+	long nTemp = --m_cRefCount;
 	ATLASSERT(nTemp >= 0);
 	if(nTemp==0)
 		delete this;

@@ -514,8 +514,7 @@ int CGit::Run(CString cmd,BYTE_VECTOR *vector, BYTE_VECTOR *vectorErr)
 int CGit::Run(CString cmd, CString* output, int code)
 {
 	CString err;
-	int ret;
-	ret = Run(cmd, output, &err, code);
+	int ret = Run(cmd, output, &err, code);
 
 	if (output && !err.IsEmpty())
 	{
@@ -1079,10 +1078,8 @@ CString CGit::GetLogCmd(CString range, const CTGitPath* path, int mask, CFilterD
 void GetTempPath(CString &path)
 {
 	TCHAR lpPathBuffer[BUFSIZE] = { 0 };
-	DWORD dwRetVal;
 	DWORD dwBufSize=BUFSIZE;
-	dwRetVal = GetTortoiseGitTempPath(dwBufSize,		// length of the buffer
-							lpPathBuffer);	// buffer for path
+	DWORD dwRetVal = GetTortoiseGitTempPath(dwBufSize, lpPathBuffer);
 	if (dwRetVal > dwBufSize || (dwRetVal == 0))
 		path.Empty();
 	path.Format(L"%s", lpPathBuffer);
@@ -1090,23 +1087,18 @@ void GetTempPath(CString &path)
 CString GetTempFile()
 {
 	TCHAR lpPathBuffer[BUFSIZE] = { 0 };
-	DWORD dwRetVal;
 	DWORD dwBufSize=BUFSIZE;
 	TCHAR szTempName[BUFSIZE] = { 0 };
-	UINT uRetVal;
 
-	dwRetVal = GetTortoiseGitTempPath(dwBufSize,		// length of the buffer
-							lpPathBuffer);	// buffer for path
+	auto dwRetVal = GetTortoiseGitTempPath(dwBufSize, lpPathBuffer);
 	if (dwRetVal > dwBufSize || (dwRetVal == 0))
 		return L"";
 
 	 // Create a temporary file.
-	uRetVal = GetTempFileName(lpPathBuffer,		// directory for tmp files
+	if (!GetTempFileName(lpPathBuffer,			// directory for tmp files
 								TEXT("Patch"),	// temp file name prefix
 								0,				// create unique name
-								szTempName);	// buffer for name
-
-	if (uRetVal == 0)
+								szTempName))	// buffer for name
 		return L"";
 
 	return CString(szTempName);
@@ -2547,8 +2539,7 @@ int CGit::GetOneFile(const CString &Refname, const CTGitPath &path, const CStrin
 			return -1;
 
 		CAutoTreeEntry entry;
-		int ret = git_tree_entry_bypath(entry.GetPointer(), tree, CUnicodeUtils::GetUTF8(path.GetGitPathString()));
-		if (ret)
+		if (auto ret = git_tree_entry_bypath(entry.GetPointer(), tree, CUnicodeUtils::GetUTF8(path.GetGitPathString())); ret)
 			return ret;
 
 		if (git_tree_entry_filemode(entry) == GIT_FILEMODE_COMMIT)

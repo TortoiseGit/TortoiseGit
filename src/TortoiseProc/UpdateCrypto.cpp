@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2018 Sven Strickroth <email@cs-ware.de>
-// Copyright (C) 2014-2018 TortoiseGit
+// Copyright (C) 2013-2019 Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2014-2019 TortoiseGit
 // Copyright (C) VLC project (http://videolan.org)
 // - pgp parsing code was copied from src/misc/update(_crypto)?.c
 // Copyright (C) The Internet Society (1998).  All Rights Reserved.
@@ -99,11 +99,10 @@ static size_t b64_decode_binary_to_buffer(uint8_t *p_dst, size_t i_dst, const ch
 static long crc_octets(uint8_t *octets, size_t len)
 {
 	long crc = CRC24_INIT;
-	int i;
 	while (len--)
 	{
 		crc ^= (*octets++) << 16;
-		for (i = 0; i < 8; i++)
+		for (int i = 0; i < 8; ++i)
 		{
 			crc <<= 1;
 			if (crc & 0x1000000)

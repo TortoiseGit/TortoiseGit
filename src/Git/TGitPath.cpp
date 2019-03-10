@@ -512,9 +512,8 @@ CString CTGitPath::GetFileExtension() const
 }
 CString CTGitPath::GetBaseFilename() const
 {
-	int dot;
 	CString filename=GetFilename();
-	dot = filename.ReverseFind(L'.');
+	int dot = filename.ReverseFind(L'.');
 	if(dot>0)
 		filename.Truncate(dot);
 	return filename;

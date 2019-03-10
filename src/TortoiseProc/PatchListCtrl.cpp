@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013, 2015-2016, 2018 - TortoiseGit
+// Copyright (C) 2009-2013, 2015-2016, 2018-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -81,9 +81,8 @@ void CPatchListCtrl::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 void CPatchListCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 {
 	int selected=this->GetSelectedCount();
-	int index=0;
 	POSITION pos=this->GetFirstSelectedItemPosition();
-	index=this->GetNextSelectedItem(pos);
+	auto index = this->GetNextSelectedItem(pos);
 
 	CIconMenu popup;
 	if (popup.CreatePopupMenu())

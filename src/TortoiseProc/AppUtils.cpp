@@ -2888,11 +2888,10 @@ bool CAppUtils::RequestPull(HWND hWnd, const CString& endrevision, const CString
 		sysProgressDlg.ShowModeless(hWnd, true);
 
 		CString tempFileName = GetTempFile();
-		CString err;
 		DeleteFile(tempFileName);
 		CreateDirectory(tempFileName, nullptr);
 		tempFileName += L"\\pullrequest.txt";
-		if (g_Git.RunLogFile(cmd, tempFileName, &err))
+		if (CString err; g_Git.RunLogFile(cmd, tempFileName, &err))
 		{
 			CString msg;
 			msg.LoadString(IDS_ERR_PULLREUQESTFAILED);

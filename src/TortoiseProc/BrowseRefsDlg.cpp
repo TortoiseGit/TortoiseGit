@@ -446,9 +446,8 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 	m_TreeRoot.m_hTree = m_RefTreeCtrl.InsertItem(L"refs");
 	m_RefTreeCtrl.SetItemData(m_TreeRoot.m_hTree,(DWORD_PTR)&m_TreeRoot);
 
-	CString err;
 	MAP_REF_GITREVREFBROWSER refMap;
-	if (GitRevRefBrowser::GetGitRevRefMap(refMap, m_cBranchFilter.GetCurSel(), err, [&](const CString& refName)
+	if (CString err; GitRevRefBrowser::GetGitRevRefMap(refMap, m_cBranchFilter.GetCurSel(), err, [&](const CString& refName)
 	{
 		//Use ref based on m_pickRef_Kind
 		if (CStringUtils::StartsWith(refName, L"refs/heads/") && !(m_pickRef_Kind & gPickRef_Head))
@@ -1536,8 +1535,7 @@ void CBrowseRefsDlg::OnLvnEndlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pResu
 
 	CString newNameTrunced = newName.Mid((int)wcslen(L"refs/heads/"));
 
-	CString errorMsg;
-	if (g_Git.Run(L"git.exe branch -m \"" + origName + L"\" \"" + newNameTrunced + L'"', &errorMsg, CP_UTF8) != 0)
+	if (CString errorMsg; g_Git.Run(L"git.exe branch -m \"" + origName + L"\" \"" + newNameTrunced + L'"', &errorMsg, CP_UTF8) != 0)
 	{
 		MessageBox(errorMsg, L"TortoiseGit", MB_OK | MB_ICONERROR);
 		return;
@@ -1588,13 +1586,12 @@ LRESULT CBrowseRefsDlg::OnClickedInfoIcon(WPARAM /*wParam*/, LPARAM lParam)
 		return 0;
 
 	RECT * rect = (LPRECT)lParam;
-	CPoint point;
-	CString temp;
-	point = CPoint(rect->left, rect->bottom);
+	CPoint point = CPoint(rect->left, rect->bottom);
 #define LOGMENUFLAGS(x) (MF_STRING | MF_ENABLED | ((m_SelectedFilters & x) ? MF_CHECKED : MF_UNCHECKED))
 	CMenu popup;
 	if (popup.CreatePopupMenu())
 	{
+		CString temp;
 		temp.LoadString(IDS_LOG_FILTER_REFNAME);
 		popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_REFNAME), LOGFILTER_REFNAME, temp);
 

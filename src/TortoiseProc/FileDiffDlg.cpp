@@ -235,10 +235,7 @@ BOOL CFileDiffDlg::OnInitDialog()
 	temp.LoadString(IDS_FILEDIFF_STATDEL);
 	m_cFileList.InsertColumn(4, temp);
 
-	int mincol = 0;
-	int maxcol = m_cFileList.GetHeaderCtrl()->GetItemCount() - 1;
-	int col;
-	for (col = mincol; col <= maxcol; col++)
+	for (int col = 0, maxcol = m_cFileList.GetHeaderCtrl()->GetItemCount(); col < maxcol; ++col)
 		m_cFileList.SetColumnWidth(col,LVSCW_AUTOSIZE_USEHEADER);
 
 	m_cFileList.SetRedraw(true);
@@ -371,10 +368,7 @@ LRESULT CFileDiffDlg::OnDiffFinished(WPARAM, LPARAM)
 		m_cFileList.SetItemState(0, LVIS_SELECTED, LVIS_SELECTED);
 	}
 
-	int mincol = 0;
-	int maxcol = m_cFileList.GetHeaderCtrl()->GetItemCount() - 1;
-	int col;
-	for (col = mincol; col <= maxcol; ++col)
+	for (int col = 0, maxcol = m_cFileList.GetHeaderCtrl()->GetItemCount(); col < maxcol; ++col)
 		m_cFileList.SetColumnWidth(col, LVSCW_AUTOSIZE_USEHEADER);
 
 	m_cFileList.ClearText();

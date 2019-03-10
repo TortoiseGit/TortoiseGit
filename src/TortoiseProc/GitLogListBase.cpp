@@ -188,8 +188,7 @@ int CGitLogListBase::AsyncDiffThread()
 				for (int j = 0; j < files.GetCount(); ++j)
 					action |= files[j].m_Action;
 
-				CString err;
-				if (pRev->GetUnRevFiles().FillUnRev(CTGitPath::LOGACTIONS_UNVER, nullptr, &err))
+				if (CString err; pRev->GetUnRevFiles().FillUnRev(CTGitPath::LOGACTIONS_UNVER, nullptr, &err))
 				{
 					MessageBox(L"Failed to get UnRev file list\n" + err, L"TortoiseGit", MB_OK | MB_ICONERROR);
 					InterlockedExchange(&m_AsyncThreadRunning, FALSE);
@@ -2252,11 +2251,10 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			{
 				if (m_ContextMenuMask&GetContextMenuBit(ID_COMBINE_COMMIT) && m_hasWC && !isMergeActive)
 				{
-					CString head;
-					int headindex;
-					headindex = this->GetHeadIndex();
+					int headindex = this->GetHeadIndex();
 					if(headindex>=0 && LastSelect >= headindex && FirstSelect >= headindex)
 					{
+						CString head;
 						head.Format(L"HEAD~%d", FirstSelect - headindex);
 						CGitHash hashFirst;
 						int ret = g_Git.GetHash(hashFirst, head);
@@ -2573,10 +2571,10 @@ void CGitLogListBase::DiffSelectedRevWithPrevious()
 	if (m_bThreadRunning)
 		return;
 
-	int FirstSelect=-1, LastSelect=-1;
 	POSITION pos = GetFirstSelectedItemPosition();
-	FirstSelect = GetNextSelectedItem(pos);
-	while(pos)
+	auto FirstSelect = GetNextSelectedItem(pos);
+	int LastSelect = -1;
+	while (pos)
 		LastSelect = GetNextSelectedItem(pos);
 
 	auto hashMap = m_HashMap;
@@ -2728,8 +2726,7 @@ int CGitLogListBase::BeginFetchLog()
 	else
 		path=&this->m_Path;
 
-	int mask;
-	mask = CGit::LOG_INFO_ONLY_HASH;
+	int mask = CGit::LOG_INFO_ONLY_HASH;
 	if (m_bIncludeBoundaryCommits)
 		mask |= CGit::LOG_INFO_BOUNDARY;
 //	if(this->m_bAllBranch)

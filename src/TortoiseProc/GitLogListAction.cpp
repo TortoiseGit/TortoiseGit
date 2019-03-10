@@ -412,13 +412,12 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 				auto pLastEntry = m_arShownList.SafeGetAt(LastSelect);
 				CString patch1 = GetTempFile();
 				CString patch2 = GetTempFile();
-				CString err;
-				if (g_Git.RunLogFile(L"git.exe format-patch --stdout " + pFirstEntry->m_CommitHash.ToString() + L"~1.." + pFirstEntry->m_CommitHash.ToString() + L"", patch1, &err))
+				if (CString err; g_Git.RunLogFile(L"git.exe format-patch --stdout " + pFirstEntry->m_CommitHash.ToString() + L"~1.." + pFirstEntry->m_CommitHash.ToString() + L"", patch1, &err))
 				{
 					MessageBox(L"Could not generate patch for commit " + pFirstEntry->m_CommitHash.ToString() + L".\n" + err, L"TortoiseGit", MB_ICONERROR);
 					break;
 				}
-				if (g_Git.RunLogFile(L"git.exe format-patch --stdout " + pLastEntry->m_CommitHash.ToString() + L"~1.." + pLastEntry->m_CommitHash.ToString() + L"", patch2, &err))
+				if (CString err; g_Git.RunLogFile(L"git.exe format-patch --stdout " + pLastEntry->m_CommitHash.ToString() + L"~1.." + pLastEntry->m_CommitHash.ToString() + L"", patch2, &err))
 				{
 					MessageBox(L"Could not generate patch for commit " + pLastEntry->m_CommitHash.ToString() + L".\n" + err, L"TortoiseGit", MB_ICONERROR);
 					break;
@@ -1213,10 +1212,9 @@ void CGitLogList::SetSelectedRebaseAction(int action)
 {
 	POSITION pos = GetFirstSelectedItemPosition();
 	if (!pos) return;
-	int index;
 	while(pos)
 	{
-		index = GetNextSelectedItem(pos);
+		auto index = GetNextSelectedItem(pos);
 		if (m_arShownList.SafeGetAt(index)->GetRebaseAction() & (LOGACTIONS_REBASE_CURRENT | LOGACTIONS_REBASE_DONE) || (index == GetItemCount() - 1 && action == LOGACTIONS_REBASE_SQUASH))
 			continue;
 		if (!m_bIsCherryPick && m_arShownList.SafeGetAt(index)->ParentsCount() > 1 && action == LOGACTIONS_REBASE_SQUASH)
@@ -1256,10 +1254,9 @@ void CGitLogList::SetUnselectedRebaseAction(int action)
 void CGitLogList::ShiftSelectedRebaseAction()
 {
 	POSITION pos = GetFirstSelectedItemPosition();
-	int index;
 	while(pos)
 	{
-		index = GetNextSelectedItem(pos);
+		auto index = GetNextSelectedItem(pos);
 		int* action = &(m_arShownList.SafeGetAt(index))->GetRebaseAction();
 		switch (*action)
 		{

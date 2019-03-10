@@ -135,11 +135,11 @@ bool RemoveCommand::Execute()
 	else
 		format = L"git.exe rm -r -f -- \"%s\"";
 
-	CString output;
-	CString cmd;
 	int nPath;
 	for (nPath = 0; nPath < pathList.GetCount(); ++nPath)
 	{
+		CString cmd;
+		CString output;
 		cmd.Format(format, (LPCTSTR)pathList[nPath].GetGitPathString());
 		if (g_Git.Run(cmd, &output, CP_UTF8))
 		{
@@ -148,6 +148,7 @@ bool RemoveCommand::Execute()
 		}
 	}
 
+	CString output;
 	output.Format(IDS_PROC_FILESREMOVED, nPath);
 
 	CShellUpdater::Instance().AddPathsForUpdate(pathList);

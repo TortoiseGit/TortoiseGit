@@ -452,8 +452,7 @@ void CGitTagCompareList::OnContextMenuList(CWnd * /*pWnd*/, CPoint point)
 
 			g_Git.DeleteRef(L"refs/tags/" + tag);
 
-			CString err;
-			if (Fill(m_remote, err))
+			if (CString err; Fill(m_remote, err))
 				MessageBox(err, L"TortoiseGit", MB_ICONERROR);
 			break;
 		}
@@ -495,8 +494,7 @@ void CGitTagCompareList::OnContextMenuList(CWnd * /*pWnd*/, CPoint point)
 			dlg.m_GitCmd.Format(L"git.exe push --force \"%s\" refs/tags/%s", (LPCTSTR)m_remote, (LPCTSTR)tag);
 			dlg.DoModal();
 
-			CString err;
-			if (Fill(m_remote, err))
+			if (CString err; Fill(m_remote, err))
 				MessageBox(err, L"TortoiseGit", MB_ICONERROR);
 
 			break;
@@ -507,8 +505,7 @@ void CGitTagCompareList::OnContextMenuList(CWnd * /*pWnd*/, CPoint point)
 			dlg.m_GitCmd.Format(L"git.exe fetch \"%s\" refs/tags/%s:refs/tags/%s", (LPCTSTR)m_remote, (LPCTSTR)tag, (LPCTSTR)tag);
 			dlg.DoModal();
 
-			CString err;
-			if (Fill(m_remote, err))
+			if (CString err; Fill(m_remote, err))
 				MessageBox(err, L"TortoiseGit", MB_ICONERROR);
 
 			break;

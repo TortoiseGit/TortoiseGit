@@ -502,8 +502,7 @@ void ShellCache::CPathFilter::AddEntry(const tstring& s, bool include)
 	if (!entry.path.empty() && (*entry.path.rbegin() == L'\\'))
 		entry.path.erase(entry.path.length() - 1);
 
-	auto ret = ExpandEnvironmentStrings(entry.path.c_str(), pathbuf, _countof(pathbuf));
-	if ((ret > 0) && (ret < _countof(pathbuf)))
+	if (auto ret = ExpandEnvironmentStrings(entry.path.c_str(), pathbuf, _countof(pathbuf)); ret > 0 && ret < _countof(pathbuf))
 		entry.path = pathbuf;
 
 	data.push_back(entry);
