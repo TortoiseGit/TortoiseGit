@@ -1011,6 +1011,35 @@ void CRebaseDlg::CheckRestoreStash()
 	m_bStashed = false;
 }
 
+int CRebaseDlg::WriteReflog(CGitHash hash, const char* message)
+{
+	CAutoRepository repo(g_Git.GetGitRepository());
+	CAutoReflog reflog;
+	if (git_reflog_read(reflog.GetPointer(), repo, "HEAD") < 0)
+	{
+		MessageBox(g_Git.GetGitLastErr(L"Could not read HEAD reflog"), L"TortoiseGit", MB_ICONERROR);
+		return -1;
+	}
+	CAutoSignature signature;
+	if (git_signature_default(signature.GetPointer(), repo) < 0)
+	{
+		MessageBox(g_Git.GetGitLastErr(L"Could not get signature"), L"TortoiseGit", MB_ICONERROR);
+		return -1;
+	}
+	if (git_reflog_append(reflog, hash, signature, message) < 0)
+	{
+		MessageBox(g_Git.GetGitLastErr(L"Could not append HEAD reflog"), L"TortoiseGit", MB_ICONERROR);
+		return -1;
+	}
+	if (git_reflog_write(reflog) < 0)
+	{
+		MessageBox(g_Git.GetGitLastErr(L"Could not write HEAD reflog"), L"TortoiseGit", MB_ICONERROR);
+		return -1;
+	}
+
+	return 0;
+}
+
 int CRebaseDlg::StartRebase()
 {
 	CString cmd,out;
@@ -1043,18 +1072,7 @@ int CRebaseDlg::StartRebase()
 	if( !this->m_IsCherryPick )
 	{
 		if (g_Git.m_IsUseLibGit2)
-		{
-			CAutoRepository repo(g_Git.GetGitRepository());
-			CAutoReflog reflog;
-			git_reflog_read(reflog.GetPointer(), repo, "HEAD");
-			CAutoSignature signature;
-			if (git_signature_default(signature.GetPointer(), repo) < 0)
-				return -1;
-
-			git_reflog_append(reflog, m_OrigHEADHash, signature, "rebase: start (" + CUnicodeUtils::GetUTF8(m_OrigHEADBranch) + " on " + CUnicodeUtils::GetUTF8(m_OrigUpstreamHash.ToString()) + ")");
-			git_reflog_write(reflog);
-		}
-
+			WriteReflog(m_OrigHEADHash, "rebase: start (" + CUnicodeUtils::GetUTF8(m_OrigHEADBranch) + " on " + CUnicodeUtils::GetUTF8(m_OrigUpstreamHash.ToString()) + ")");
 		cmd.Format(L"git.exe checkout -f %s --", (LPCTSTR)m_OrigUpstreamHash.ToString());
 		this->AddLogString(cmd);
 		if (RunGitCmdRetryOrAbort(cmd))
@@ -1152,15 +1170,7 @@ int CRebaseDlg::FinishRebase()
 		return -1;
 
 	if (g_Git.m_IsUseLibGit2)
-	{
-		CAutoRepository repo(g_Git.GetGitRepository());
-		CAutoReflog reflog;
-		git_reflog_read(reflog.GetPointer(), repo, "HEAD");
-		CAutoSignature signature;
-		git_signature_default(signature.GetPointer(), repo);
-		git_reflog_append(reflog, m_OrigHEADHash, signature, "rebase: finished");
-		git_reflog_write(reflog);
-	}
+		WriteReflog(head, "rebase: finished");
 
 	while (m_ctrlTabCtrl.GetTabsNum() > 1)
 		m_ctrlTabCtrl.RemoveTab(0);
@@ -2537,13 +2547,9 @@ void CRebaseDlg::OnBnClickedAbort()
 
 	if (g_Git.m_IsUseLibGit2 && !m_IsCherryPick)
 	{
-		CAutoRepository repo(g_Git.GetGitRepository());
-		CAutoReflog reflog;
-		git_reflog_read(reflog.GetPointer(), repo, "HEAD");
-		CAutoSignature signature;
-		git_signature_default(signature.GetPointer(), repo);
-		git_reflog_append(reflog, m_OrigHEADHash, signature, "rebase: begin aborting...");
-		git_reflog_write(reflog);
+		CGitHash head;
+		if (!g_Git.GetHash(head, L"HEAD"))
+			WriteReflog(head, "rebase: begin aborting...");
 	}
 
 	if(this->m_IsFastForward)
@@ -2616,15 +2622,7 @@ void CRebaseDlg::OnBnClickedAbort()
 		}
 	}
 	if (g_Git.m_IsUseLibGit2)
-	{
-		CAutoRepository repo(g_Git.GetGitRepository());
-		CAutoReflog reflog;
-		git_reflog_read(reflog.GetPointer(), repo, "HEAD");
-		CAutoSignature signature;
-		git_signature_default(signature.GetPointer(), repo);
-		git_reflog_append(reflog, m_OrigHEADHash, signature, "rebase: aborted");
-		git_reflog_write(reflog);
-	}
+		WriteReflog(m_OrigHEADHash, "rebase: aborted");
 	__super::OnCancel();
 end:
 	CleanUpRebaseActiveFolder();
