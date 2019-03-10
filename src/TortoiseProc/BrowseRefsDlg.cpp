@@ -587,6 +587,7 @@ void CBrowseRefsDlg::FillListCtrlForTreeNode(HTREEITEM treeNode)
 	m_ListRefLeafs.m_ColumnManager.SetVisible(eCol_Upstream, pTree->IsFrom(L"refs/heads"));
 	m_ListRefLeafs.m_ColumnManager.SetVisible(eCol_Description, pTree->IsFrom(L"refs/heads"));
 	m_ListRefLeafs.AdjustColumnWidths();
+	UpdateInfoLabel();
 }
 
 void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNamePrefix, bool isFirstLevel, const CBrowseRefsDlgFilter& filter)
@@ -1414,6 +1415,9 @@ void CBrowseRefsDlg::OnItemChangedListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMLISTVIEW pNMListView = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 	*pResult = 0;
+
+	if (!(pNMListView->uChanged & LVIF_STATE))
+		return;
 
 	auto item = GetListEntry(pNMListView->iItem);
 	if (item && pNMListView->uNewState == LVIS_SELECTED)
