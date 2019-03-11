@@ -5,13 +5,13 @@ Please also see https://tortoisegit.org/contribute/!
 	Submission:
 
 	- open an issue on https://tortoisegit.org/issues or go to an
-	  issue you want to fix. Then you have one of the following options:
+	  issue you want to fix. Then you have the following options:
 	  . attach a patch there
 	  . provide a link to a branch you want the maintainers to pull from
 	  . open a GitLab merge request and put the link into the issue
 	  . open a GitHub pull request and put the link into the issue
 
-	For exisiting issues it is recommended to start commenting on the issue
+	For existing issues it is recommended to start commenting on the issue
 	in order to discuss possible solutions before starting coding.
 
 	Commits:
@@ -54,7 +54,7 @@ Longer version:
 
 Unless your patch is really trivial, you should not be sending
 out a patch that was generated between your working tree and
-your commit head.  Instead, always make a commit with complete
+your commit head. Instead, always make a commit with complete
 commit message and generate a series of patches from your
 repository.
 
@@ -67,7 +67,7 @@ If your description starts to get too long, that's a sign that you
 probably need to split up your commit to finer grained pieces.
 That being said, patches which plainly describe the things that
 help reviewers check the patch, and future maintainers understand
-the code, are the most beautiful patches.  Descriptions that summarise
+the code, are the most beautiful patches. Descriptions that summarise
 the point in the subject well, and describe the motivation for the
 change, the approach taken by the change, and if relevant how this
 differs substantially from the prior version, are all good things
@@ -82,8 +82,8 @@ does not happen, run git diff --check on your changes before you commit.
 git based diff tools generate unidiff which is the preferred format.
 
 Please make sure your patch does not include any extra files
-which do not belong in a patch submission.  Make sure to review
-your patch after generating it, to ensure accuracy.  Before
+which do not belong in a patch submission. Make sure to review
+your patch after generating it, to ensure accuracy. Before
 sending out, please make sure it cleanly applies to the "master"
 branch head.
 
@@ -94,7 +94,7 @@ Push your changes to a public repository. Use a brief branch name
 describing your changes.
 
 Please make sure your pull request does not include any extra files
-which do not belong in a submission.  Make sure to review your patch
+which do not belong in a submission. Make sure to review your patch
 after generating it, to ensure accuracy.
 
 There is no need to generate a "formal" pull request. The URL and
@@ -107,12 +107,12 @@ branchname is necessary - or create a GitLab merge request
 
 To improve tracking of who did what, we've borrowed the
 "sign-off" procedure from the Linux kernel project on patches
-that are being emailed around.  Although TortoiseGit is a lot
+that are being emailed around. Although TortoiseGit is a lot
 smaller project it is a good discipline to follow it.
 
 The sign-off is a simple line at the end of the explanation for
 the patch, which certifies that you wrote it or otherwise have
-the right to pass it on as a open-source patch.  The rules are
+the right to pass it on as a open-source patch. The rules are
 pretty simple: if you can certify the below:
 
         Developer's Certificate of Origin 1.1
@@ -158,7 +158,7 @@ If you like, you can put extra tags at the end:
    the patch attempts to modify liked the patch.
 3. "Reviewed-by:", unlike the other tags, can only be offered by the
    reviewer and means that she is completely satisfied that the patch
-   is ready for application.  It is usually offered only after a
+   is ready for application. It is usually offered only after a
    detailed review.
 4. "Tested-by:" is used to indicate that the person applied the patch
    and found it to have the desired effect.
@@ -172,7 +172,7 @@ An ideal patch flow
 Here is an ideal patch flow for this project the current maintainer
 suggests to the contributors:
 
- (0) You come up with an itch.  You code it up.
+ (0) You come up with an itch. You code it up.
      For exisiting issues it is recommended to start commenting on the issue
      in order to discuss possible solutions before starting coding.
 
@@ -180,9 +180,9 @@ suggests to the contributors:
      your changes to another already reported issue. Attach the patches
      or provide a merge/pull request (URL branch) there.
 
- (2) You get comments and suggestions for improvements.  You may
+ (2) You get comments and suggestions for improvements. You may
      even get them in a "on top of your change" patch form.
 
- (3) Polish, refine, and re-send.  Go back to step (2).
+ (3) Polish, refine, and re-send. Go back to step (2).
 
  (4) The patch will be applied to master.
