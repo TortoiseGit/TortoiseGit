@@ -56,7 +56,7 @@ workflow.
 How to build
 ------------
 
-Building TortoiseGit normally is not necessary; however, it is easy. All necessary requirements and steps are described in the [build.txt](build.txt) file. Our short description in the [architecture.txt](architecture.txt) file might also be helpful.
+Building TortoiseGit is usually not necessary; however, it is easy. All necessary requirements and steps are described in the [build.txt](build.txt) file. Our short description in the [architecture.txt](architecture.txt) file might also be helpful.
 
 License
 =======
