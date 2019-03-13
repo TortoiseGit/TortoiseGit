@@ -134,7 +134,7 @@ protected:
 		m_psh.ppsp = ppsp0;
 	}
 
-	virtual CWnd* GetResizableWnd() const
+	virtual CWnd* GetResizableWnd() const override
 	{
 		// make the layout know its parent window
 		return CWnd::FromHandle(m_hWnd);
@@ -144,8 +144,8 @@ protected:
 // Generated message map functions
 protected:
 	void GetHeaderRect(LPRECT lpRect);
-	virtual BOOL CalcSizeExtra(HWND hWndChild, CSize sizeChild, CSize& sizeExtra);
-	virtual BOOL ArrangeLayoutCallback(LAYOUTINFO& layout) const;
+	virtual BOOL CalcSizeExtra(HWND hWndChild, CSize sizeChild, CSize& sizeExtra) override;
+	virtual BOOL ArrangeLayoutCallback(LAYOUTINFO& layout) const override;
 	//{{AFX_MSG(CResizableSheetEx)
 	afx_msg void OnGetMinMaxInfo(MINMAXINFO FAR* lpMMI);
 	afx_msg void OnSize(UINT nType, int cx, int cy);

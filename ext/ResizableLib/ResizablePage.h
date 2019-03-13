@@ -61,7 +61,7 @@ public:
 // callable from derived classes
 protected:
 
-	virtual CWnd* GetResizableWnd() const
+	virtual CWnd* GetResizableWnd() const override
 	{
 		// make the layout know its parent window
 		return CWnd::FromHandle(m_hWnd);

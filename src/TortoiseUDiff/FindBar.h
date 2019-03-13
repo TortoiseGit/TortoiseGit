@@ -33,7 +33,7 @@ public:
 
 	void					SetParent(HWND hParent) {m_hParent = hParent;}
 protected:
-	LRESULT CALLBACK		DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
+	LRESULT CALLBACK		DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam) override;
 	LRESULT					DoCommand(int id, int msg);
 
 	void					DoFind(bool bFindPrev);

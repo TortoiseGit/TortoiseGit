@@ -59,9 +59,9 @@ private:
 // called from base class
 protected:
 
-	virtual void GetTotalClientRect(LPRECT lpRect) const;
+	virtual void GetTotalClientRect(LPRECT lpRect) const override;
 
-	virtual CWnd* GetResizableWnd() const
+	virtual CWnd* GetResizableWnd() const override
 	{
 		// make the layout know its parent window
 		return CWnd::FromHandle(m_hWnd);

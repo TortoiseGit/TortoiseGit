@@ -51,7 +51,7 @@ protected:
 	BOOL SavePage(LPCTSTR pszName);
 
 	//! @brief Override to provide the parent window
-	virtual CWnd* GetResizableWnd() const = 0;
+	virtual CWnd* GetResizableWnd() const override = 0;
 
 public:
 	CResizableSheetState();

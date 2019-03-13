@@ -53,7 +53,7 @@ public:
 
 protected:
 	/// the message handler for this window
-	LRESULT CALLBACK    WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+	LRESULT CALLBACK    WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) override;
 	/// Handles all the WM_COMMAND window messages (e.g. menu commands)
 	LRESULT             DoCommand(int id);
 
