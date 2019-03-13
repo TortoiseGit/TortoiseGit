@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2015-2019 - TortoiseGit
-// Copyright (C) 2003-2008, 2010-2017 - TortoiseSVN
+// Copyright (C) 2003-2008, 2010-2017, 2019 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -2294,17 +2294,16 @@ size_t CResModule::ScanHeaderFile(const std::wstring & filepath)
 	// now try the same with the file treated as utf16
 	{
 		// open as a byte stream
-		std::wifstream wfin(fullpath, std::ios::binary);
+		std::ifstream wfin(fullpath, std::ios::binary);
 		// apply BOM-sensitive UTF-16 facet
-		wfin.imbue(std::locale(wfin.getloc(), new std::codecvt_utf16<wchar_t, 0x10ffff, std::consume_header>));
 		//std::wifstream wfin(fullpath);
-		std::wstring   wfile_line;
-		while (std::getline(wfin, wfile_line))
+		std::string file_line;
+		while (std::getline(wfin, file_line))
 		{
-			auto defpos = wfile_line.find(L"#define");
+			auto defpos = file_line.find("#define");
 			if (defpos != std::wstring::npos)
 			{
-				std::wstring text = wfile_line.substr(defpos + 7);
+				std::wstring text = CUnicodeUtils::StdGetUnicode(file_line.substr(defpos + 7));
 				trim(text);
 				auto spacepos = text.find(' ');
 				if (spacepos == std::wstring::npos)
