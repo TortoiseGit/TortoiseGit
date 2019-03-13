@@ -59,11 +59,11 @@ private:
 
     /// For now, update the internal @a scheduled flag only.
 
-    void OnSchedule (CJobScheduler* scheduler);
+    void OnSchedule (CJobScheduler* scheduler) override;
 
     /// For now, update the internal @a scheduled flag only.
 
-    void OnUnSchedule (CJobScheduler* scheduler);
+    void OnUnSchedule (CJobScheduler* scheduler) override;
 
 protected:
 

@@ -79,7 +79,7 @@ protected:
 	// section to use in app's profile
 	void EnableSaveRestore(LPCTSTR pszSection, BOOL bRectOnly = FALSE, BOOL bHorzResize = TRUE, BOOL bVertResize = TRUE);
 
-	virtual CWnd* GetResizableWnd() const
+	virtual CWnd* GetResizableWnd() const override
 	{
 		// make the layout know its parent window
 		return CWnd::FromHandle(m_hWnd);

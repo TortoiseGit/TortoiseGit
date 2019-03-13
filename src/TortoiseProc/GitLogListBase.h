@@ -633,7 +633,7 @@ protected:
 	/**
 	* Save column widths to the registry
 	*/
-	void SaveColumnWidths();	// save col widths to the registry
+	void SaveColumnWidths() override;	// save col widths to the registry
 
 	int GetHeadIndex();
 

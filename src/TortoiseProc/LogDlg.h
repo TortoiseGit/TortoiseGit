@@ -199,8 +199,8 @@ private:
 
 	CPatchViewDlg		m_patchViewdlg;
 	void FillPatchView(bool onlySetTimer = false);
-	CWnd * GetPatchViewParentWnd() { return this; }
-	void TogglePatchView();
+	CWnd* GetPatchViewParentWnd() override { return this; }
+	void TogglePatchView() override;
 	LRESULT OnFileListCtrlItemChanged(WPARAM /*wparam*/, LPARAM /*lparam*/);
 	afx_msg LRESULT	OnGitStatusListCtrlNeedsRefresh(WPARAM, LPARAM);
 	afx_msg void OnMoving(UINT fwSide, LPRECT pRect);

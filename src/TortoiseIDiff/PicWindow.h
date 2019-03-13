@@ -202,7 +202,7 @@ public:
     void                OnMouseWheel(short fwKeys, short zDelta);
 protected:
     /// the message handler for this window
-    LRESULT CALLBACK    WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+    LRESULT CALLBACK    WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) override;
     /// Draws the view title bar
     void                DrawViewTitle(HDC hDC, RECT * rect);
     /// Creates the image buttons
