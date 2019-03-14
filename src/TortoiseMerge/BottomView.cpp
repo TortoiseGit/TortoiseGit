@@ -1,5 +1,6 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
+// Copyright (C) 2019 - TortoiseGit
 // Copyright (C) 2006-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -60,7 +61,7 @@ void CBottomView::UseBlock(CBaseView * pwndView, int nFirstViewLine, int nLastVi
 	for (int viewLine = nFirstViewLine; viewLine <= nLastViewLine; viewLine++)
 	{
 		viewdata lineData = pwndView->GetViewData(viewLine);
-		if ((lineData.ending != EOL_NOENDING)||(viewLine < (GetViewCount()-1)))
+		if ((lineData.ending != EOL_NOENDING) || (viewLine < (GetViewCount() - 1) && lineData.state != DIFFSTATE_CONFLICTEMPTY))
 			lineData.ending = m_lineendings;
 		lineData.state = ResolveState(lineData.state);
 		SetViewData(viewLine, lineData);
@@ -113,7 +114,7 @@ void CBottomView::UseBothBlocks(CBaseView * pwndFirst, CBaseView * pwndLast)
 	for (int viewLine = nFirstViewLine; viewLine <= nLastViewLine; viewLine++)
 	{
 		viewdata lineData = pwndFirst->GetViewData(viewLine);
-		if ((lineData.ending != EOL_NOENDING)||(viewLine < (GetViewCount()-1)))
+		if ((lineData.ending != EOL_NOENDING) || (viewLine < (GetViewCount() - 1) && lineData.state != DIFFSTATE_CONFLICTEMPTY))
 			lineData.ending = m_lineendings;
 		lineData.state = ResolveState(lineData.state);
 		SetViewData(viewLine, lineData);
