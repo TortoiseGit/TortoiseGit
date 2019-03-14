@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2017, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -188,14 +188,16 @@ void CPatchViewDlg::OnFindNext()
 {
 	m_ctrlPatchView.Call(SCI_CHARRIGHT);
 	m_ctrlPatchView.Call(SCI_SEARCHANCHOR);
-	m_ctrlPatchView.Call(SCI_SEARCHNEXT, m_FindBar.IsMatchCase() ? SCFIND_MATCHCASE : 0, (LPARAM)(LPCSTR)CUnicodeUtils::GetUTF8(m_FindBar.GetFindText()));
+	if (m_ctrlPatchView.Call(SCI_SEARCHNEXT, m_FindBar.IsMatchCase() ? SCFIND_MATCHCASE : 0, (LPARAM)(LPCSTR)CUnicodeUtils::GetUTF8(m_FindBar.GetFindText())) == -1)
+		FlashWindowEx(FLASHW_ALL, 3, 100);
 	m_ctrlPatchView.Call(SCI_SCROLLCARET);
 }
 
 void CPatchViewDlg::OnFindPrev()
 {
 	m_ctrlPatchView.Call(SCI_SEARCHANCHOR);
-	m_ctrlPatchView.Call(SCI_SEARCHPREV, m_FindBar.IsMatchCase() ? SCFIND_MATCHCASE : 0, (LPARAM)(LPCSTR)CUnicodeUtils::GetUTF8(m_FindBar.GetFindText()));
+	if (m_ctrlPatchView.Call(SCI_SEARCHPREV, m_FindBar.IsMatchCase() ? SCFIND_MATCHCASE : 0, (LPARAM)(LPCSTR)CUnicodeUtils::GetUTF8(m_FindBar.GetFindText())) == -1)
+		FlashWindowEx(FLASHW_ALL, 3, 100);
 	m_ctrlPatchView.Call(SCI_SCROLLCARET);
 }
 
