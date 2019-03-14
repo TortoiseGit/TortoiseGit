@@ -2047,7 +2047,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 
 			if(!pSelLogEntry->m_CommitHash.IsEmpty())
 			{
-				if ((m_ContextMenuMask & GetContextMenuBit(ID_LOG)) && selectedCount == 1)
+				if (m_ContextMenuMask & GetContextMenuBit(ID_LOG))
 				{
 					popup.AppendMenuIcon(ID_LOG, IDS_LOG_POPUP_LOG, IDI_LOG);
 					if (m_ColumnRegKey == L"reflog")
