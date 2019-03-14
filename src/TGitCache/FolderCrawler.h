@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2007, 2009-2011, 2014 TortoiseSVN
 // Copyright (C) 2008-2012 - TortoiseGit
@@ -59,8 +59,6 @@ private:
 	UniqueQueue<CTGitPath> m_foldersToUpdate;
 	UniqueQueue<CTGitPath> m_pathsToUpdate;
 	UniqueQueue<CTGitPath> m_pathsToRelease;
-
-	void RemoveDuplicate(std::deque<CTGitPath> &list,const CTGitPath &path);
 
 	CAutoGeneralHandle m_hTerminationEvent;
 	CAutoGeneralHandle m_hWakeEvent;

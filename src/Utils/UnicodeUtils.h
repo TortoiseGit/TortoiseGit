@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2009-2013, 2016 - TortoiseGit
 // Copyright (C) 2003-2007 - TortoiseSVN
@@ -51,13 +51,5 @@ std::string WideToMultibyte(const std::wstring& wide);
 std::string WideToUTF8(const std::wstring& wide);
 std::wstring MultibyteToWide(const std::string& multibyte);
 std::wstring UTF8ToWide(const std::string& multibyte);
-
-#ifdef UNICODE
-	std::wstring UTF8ToString(const std::string& string);
-	std::string StringToUTF8(const std::wstring& string);
-#else
-	std::wstring UTF8ToString(const std::string& string);
-	std::string StringToUTF8(const std::wstring& string);
-#endif
 
 int LoadStringEx(HINSTANCE hInstance, UINT uID, LPTSTR lpBuffer, int nBufferMax, WORD wLanguage);

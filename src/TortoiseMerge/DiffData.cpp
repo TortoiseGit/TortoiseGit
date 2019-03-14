@@ -686,7 +686,6 @@ CDiffData::DoThreeWayDiff(const CString& sBaseFilename, const CString& sYourFile
 	m_arDiff3LinesYour.Reserve(lengthHint);
 	m_arDiff3LinesTheir.Reserve(lengthHint);
 
-	CRegDWORD contextLines = CRegDWORD(L"Software\\TortoiseGitMerge\\ContextLines", 3);
 	svn_diff_file_options_t * options = CreateDiffFileOptions(dwIgnoreWS, bIgnoreEOL, pool);
 
 	// convert CString filenames (UTF-16 or ANSI) to UTF-8

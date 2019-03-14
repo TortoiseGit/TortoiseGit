@@ -1,4 +1,4 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2006, 2011, 2016 - TortoiseSVN
 
@@ -71,50 +71,6 @@ BOOL CXSplitter::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 		return CWnd::OnSetCursor(pWnd, nHitTest, message);
 
 	return CSplitterWnd::OnSetCursor(pWnd, nHitTest, message);
-}
-
-BOOL CXSplitter::ReplaceView(int row, int col,CRuntimeClass * pViewClass,SIZE size)
-{
-	CCreateContext context;
-	BOOL bSetActive;
-
-	if ((GetPane(row, col)->IsKindOf(pViewClass)) != FALSE)
-		return FALSE;
-
-	// Get pointer to CDocument object so that it can be used in the creation
-	// process of the new view
-	CDocument * pDoc= ((CView *)GetPane(row,col))->GetDocument();
-	CView * pActiveView=GetParentFrame()->GetActiveView();
-	if (!pActiveView || pActiveView == GetPane(row, col))
-		bSetActive=TRUE;
-	else
-		bSetActive=FALSE;
-
-	// set flag so that document will not be deleted when view is destroyed
-	pDoc->m_bAutoDelete=FALSE;
-	// Delete existing view
-	((CView *) GetPane(row,col))->DestroyWindow();
-	// set flag back to default
-	pDoc->m_bAutoDelete=TRUE;
-
-	// Create new view
-	context.m_pNewViewClass=pViewClass;
-	context.m_pCurrentDoc=pDoc;
-	context.m_pNewDocTemplate = nullptr;
-	context.m_pLastView = nullptr;
-	context.m_pCurrentFrame = nullptr;
-
-	CreateView(row,col,pViewClass,size, &context);
-
-	CView * pNewView= (CView *)GetPane(row,col);
-
-	if (bSetActive != FALSE)
-		GetParentFrame()->SetActiveView(pNewView);
-
-	RecalcLayout();
-	GetPane(row,col)->SendMessage(WM_PAINT);
-
-	return TRUE;
 }
 
 void CXSplitter::HideRow(int nRowHide)

@@ -72,19 +72,6 @@ void CFolderCrawler::Initialise()
 	SetThreadPriority(m_hThread, THREAD_PRIORITY_BELOW_NORMAL);
 }
 
-void CFolderCrawler::RemoveDuplicate(std::deque<CTGitPath> &list,const CTGitPath &path)
-{
-	for (auto it = list.cbegin(); it != list.cend(); ++it)
-	{
-		if(*it == path)
-		{
-			list.erase(it);
-			it = list.cbegin(); /* search again*/
-			if (it == list.cend())
-				break;
-		}
-	}
-}
 void CFolderCrawler::AddDirectoryForUpdate(const CTGitPath& path)
 {
 	/* Index file changing*/

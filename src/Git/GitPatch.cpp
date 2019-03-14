@@ -45,7 +45,6 @@ GitPatch::~GitPatch()
 
 int GitPatch::Init(const CString& patchfile, const CString& targetpath, CSysProgressDlg *pPprogDlg)
 {
-	CTGitPath target = CTGitPath(targetpath);
 	if (patchfile.IsEmpty() || targetpath.IsEmpty())
 	{
 		m_errorStr.LoadString(IDS_ERR_PATCHPATHS);

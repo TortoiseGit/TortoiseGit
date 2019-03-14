@@ -165,38 +165,6 @@ void CRevisionGraphWnd::DrawRoundedRect (GraphicsDevice& graphics, const Color& 
 		graphics.pSVG->RoundedRectangle((int)rect.X, (int)rect.Y, (int)rect.Width, (int)rect.Height, penColor, penWidth, fillColor, (int)radius, mask);
 }
 
-void CRevisionGraphWnd::DrawOctangle (GraphicsDevice& graphics, const Color& penColor, int penWidth, const Pen* pen, const Color& fillColor, const Brush* brush, const RectF& rect)
-{
-	enum {POINT_COUNT = 8};
-
-	// show left & right edges of low boxes as "<===>"
-
-	float minCutAway = min (CORNER_SIZE * m_fZoomFactor, rect.Height / 2);
-
-	// larger boxes: remove 25% of the shorter side
-
-	float suggestedCutAway = min (rect.Height, rect.Width) / 4;
-
-	// use the more visible one of the former two
-
-	PointF points[POINT_COUNT];
-	CutawayPoints (rect, max (minCutAway, suggestedCutAway), points);
-
-	// now, draw it
-
-	if (graphics.graphics)
-	{
-		if (brush)
-			graphics.graphics->FillPolygon (brush, points, POINT_COUNT);
-		if (pen)
-			graphics.graphics->DrawPolygon (pen, points, POINT_COUNT);
-	}
-	else if (graphics.pSVG)
-	{
-		graphics.pSVG->Polygon(points, POINT_COUNT, penColor, penWidth, fillColor);
-	}
-}
-
 inline BYTE LimitedScaleColor (BYTE c1, BYTE c2, float factor)
 {
 	BYTE scaled = c2 + (BYTE)((c1-c2)*factor);
@@ -245,35 +213,6 @@ RectF CRevisionGraphWnd::GetNodeRect(const ogdf::node& node, const CSize& offset
 	// done
 
 	return noderect;
-}
-
-void CRevisionGraphWnd::DrawSquare
-	( GraphicsDevice& graphics
-	, const PointF& leftTop
-	, const Color& lightColor
-	, const Color& darkColor
-	, const Color& penColor)
-{
-	float squareSize = MARKER_SIZE * m_fZoomFactor;
-
-	PointF leftBottom (leftTop.X, leftTop.Y + squareSize);
-	RectF square (leftTop, SizeF (squareSize, squareSize));
-
-	if (graphics.graphics)
-	{
-		LinearGradientBrush lgBrush (leftTop, leftBottom, lightColor, darkColor);
-		graphics.graphics->FillRectangle (&lgBrush, square);
-		if (squareSize > 4.0f)
-		{
-			Pen pen (penColor);
-			graphics.graphics->DrawRectangle (&pen, square);
-		}
-	}
-	else if (graphics.pSVG)
-	{
-		graphics.pSVG->GradientRectangle((int)square.X, (int)square.Y, (int)square.Width, (int)square.Height,
-										lightColor, darkColor, penColor);
-	}
 }
 
 void CRevisionGraphWnd::DrawMarker

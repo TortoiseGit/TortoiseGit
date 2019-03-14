@@ -2320,7 +2320,6 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			case IDGITLC_IGNOREMASK:
 				{
 					CString common;
-					CString ext=filepath->GetFileExtension();
 					CTGitPathList ignorelist;
 					FillListOfSelectedItemPaths(ignorelist, true);
 

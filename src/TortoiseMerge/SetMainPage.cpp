@@ -250,12 +250,6 @@ void CSetMainPage::OnModifiedWithReload()
 	SetModified();
 }
 
-void CSetMainPage::OnBnClickedWhitespace()
-{
-	m_bReloadNeeded = TRUE;
-	SetModified();
-}
-
 BOOL CSetMainPage::DialogEnableWindow(UINT nID, BOOL bEnable)
 {
 	CWnd * pwndDlgItem = GetDlgItem(nID);

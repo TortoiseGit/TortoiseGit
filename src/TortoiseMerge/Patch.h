@@ -48,12 +48,6 @@ public:
 	CString		GetErrorMessage() const  {return m_sErrorMessage;}
 	CString		CheckPatchPath(const CString& path);
 
-	/**
-	 * Returns TRUE if stripping prefixes from the paths in the patch file
-	 * allows the patch file to being applied. The variable m_nStrip is then set appropriately.
-	 * Returns FALSE if stripping prefixes doesn't help. The variable m_nStrip is set to 0.
-	 */
-	BOOL		StripPrefixes(const CString& path);
 protected:
 	void		FreeMemory();
 	BOOL		HasExpandedKeyWords(const CString& line) const;

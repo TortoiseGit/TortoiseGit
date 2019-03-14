@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2013, 2017 - TortoiseGit
 
@@ -46,10 +46,6 @@ public:
 
 // Implementation
 	BOOL  m_bHiColorIcons;
-
-	virtual void PreLoadState() override;
-	virtual void LoadCustomState() override;
-	virtual void SaveCustomState() override;
 
 	CString m_Rev;
 	afx_msg void OnAppAbout();

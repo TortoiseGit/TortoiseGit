@@ -311,20 +311,6 @@ void CTortoiseGitBlameApp::OnFileSettings()
 	CCommonAppUtils::RunTortoiseGitProc(L" /command:settings /page:blame");
 }
 
-// CTortoiseGitBlameApp customization load/save methods
-
-void CTortoiseGitBlameApp::PreLoadState()
-{
-}
-
-void CTortoiseGitBlameApp::LoadCustomState()
-{
-}
-
-void CTortoiseGitBlameApp::SaveCustomState()
-{
-}
-
 // CTortoiseGitBlameApp message handlers
 
 int CTortoiseGitBlameApp::ExitInstance()

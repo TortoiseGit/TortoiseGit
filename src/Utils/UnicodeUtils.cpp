@@ -337,14 +337,6 @@ std::wstring UTF8ToWide(const std::string& multibyte)
 	delete[] wide;
 	return str;
 }
-#ifdef UNICODE
-std::wstring UTF8ToString(const std::string& string) {return UTF8ToWide(string);}
-std::string StringToUTF8(const std::wstring& string) {return WideToUTF8(string);}
-#else
-std::wstring UTF8ToString(const std::string& string) {return WideToMultibyte(UTF8ToWide(string));}
-std::string StringToUTF8(const std::wstring& string) {return WideToUTF8(MultibyteToWide(string));}
-#endif
-
 
 #pragma warning(push)
 #pragma warning(disable: 4200)
