@@ -735,8 +735,8 @@ bool CBrowseRefsDlg::DoDeleteRefs(VectorPShadowTree& leafs)
 			sysProgressDlg.ShowModal(this, true);
 
 			STRING_VECTOR list;
-			for (auto& branch : remotebranchlist.second)
-				list.push_back(L"refs/heads/" + branch);
+			list.reserve(remotebranchlist.second.size());
+			std::transform(remotebranchlist.second.cbegin(), remotebranchlist.second.cend(), std::back_inserter(list), [](auto& branch) { return L"refs/heads/" + branch; });
 			if (g_Git.DeleteRemoteRefs(remoteName, list))
 			{
 				MessageBox(g_Git.GetGitLastErr(L"Could not delete remote refs.", CGit::GIT_CMD_PUSH), L"TortoiseGit", MB_OK | MB_ICONERROR);
