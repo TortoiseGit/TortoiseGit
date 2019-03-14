@@ -450,11 +450,10 @@ BOOL ProjectProperties::CheckBugID(const CString& sID)
 	{
 		// check if the revision actually _is_ a number
 		// or a list of numbers separated by colons
-		TCHAR c = 0;
 		int len = sID.GetLength();
 		for (int i=0; i<len; ++i)
 		{
-			c = sID.GetAt(i);
+			TCHAR c = sID.GetAt(i);
 			if ((c < '0')&&(c != ',')&&(c != ' '))
 				return FALSE;
 			if (c > '9')

@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2006,2008,2010,2014 - TortoiseSVN
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -152,7 +152,6 @@ bool CGitStatusCache::SaveCache()
 		return false;
 
 #define WRITEVALUETOFILE(x) if (fwrite(&x, sizeof(x), 1, pFile)!=1) goto error;
-	unsigned int value = 0;
 	// save the cache to disk
 	// find a location to write the cache to
 	CString path = CPathUtils::GetLocalAppDataDirectory();
@@ -162,7 +161,7 @@ bool CGitStatusCache::SaveCache()
 		CAutoFILE pFile = _wfsopen(path, L"wb", SH_DENYRW);
 		if (pFile)
 		{
-			value = CACHEDISKVERSION;
+			unsigned int value = CACHEDISKVERSION;
 			WRITEVALUETOFILE(value);
 			value = (int)m_pInstance->m_directoryCache.size();
 			WRITEVALUETOFILE(value);

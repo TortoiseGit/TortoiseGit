@@ -3098,8 +3098,6 @@ BOOL CGitStatusListCtrl::OnNMCustomdraw(NMHDR* pNMHDR, LRESULT* pResult)
 			if (!readLock.IsAcquired())
 				return TRUE;
 
-			COLORREF crText = GetSysColor(COLOR_WINDOWTEXT);
-
 			if (m_arStatusArray.size() > (DWORD_PTR)pLVCD->nmcd.dwItemSpec)
 			{
 				auto entry = GetListEntry((int)pLVCD->nmcd.dwItemSpec);
@@ -3114,6 +3112,7 @@ BOOL CGitStatusListCtrl::OnNMCustomdraw(NMHDR* pNMHDR, LRESULT* pResult)
 				// brown  : missing, deleted, replaced
 				// green  : merged (or potential merges)
 				// red    : conflicts or sure conflicts
+				COLORREF crText;
 				if(entry->m_Action & CTGitPath::LOGACTIONS_GRAY)
 					crText = RGB(128,128,128);
 				else if(entry->m_Action & CTGitPath::LOGACTIONS_UNMERGED)

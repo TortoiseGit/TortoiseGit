@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012, 2014-2018 - TortoiseGit
+// Copyright (C) 2012, 2014-2019 - TortoiseGit
 // Copyright (C) 2003-2006, 2009, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -311,11 +311,9 @@ bool CCacheDlg::GetStatusFromRemoteCache(const CTGitPath& Path, bool bRecursive)
 		DWORD dwWait = WaitForSingleObject(m_hEvent, INFINITE);
 		if (dwWait == WAIT_OBJECT_0)
 		{
-			fSuccess = GetOverlappedResult(m_hPipe, &m_Overlapped, &nBytesRead, FALSE);
+			GetOverlappedResult(m_hPipe, &m_Overlapped, &nBytesRead, FALSE);
 			return TRUE;
 		}
-		else
-			fSuccess = FALSE;
 	}
 
 	ClosePipe();
