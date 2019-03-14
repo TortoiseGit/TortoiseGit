@@ -127,10 +127,7 @@ BOOL CMailMsg::DetectMailClient(CString& sMailClientName)
 {
 	CRegKey regKey;
 	TCHAR buf[1024] = L"";
-	ULONG buf_size = 0;
-	LONG lResult;
-
-	lResult = regKey.Open(HKEY_CURRENT_USER, L"SOFTWARE\\Clients\\Mail", KEY_READ);
+	LONG lResult = lResult = regKey.Open(HKEY_CURRENT_USER, L"SOFTWARE\\Clients\\Mail", KEY_READ);
 	if(lResult!=ERROR_SUCCESS)
 	{
 		lResult = regKey.Open(HKEY_LOCAL_MACHINE, L"SOFTWARE\\Clients\\Mail", KEY_READ);
@@ -138,7 +135,7 @@ BOOL CMailMsg::DetectMailClient(CString& sMailClientName)
 
 	if(lResult==ERROR_SUCCESS)
 	{
-		buf_size = 1023;
+		ULONG buf_size = 1023;
 #pragma warning(disable:4996)
 		LONG result = regKey.QueryValue(buf, L"", &buf_size);
 #pragma warning(default:4996)

@@ -260,7 +260,6 @@ BOOL CResModule::CreateTranslatedResources(LPCTSTR lpszSrcLangDllPath, LPCTSTR l
 	m_bTranslatedAcceleratorStrings = 0;
 	m_bDefaultAcceleratorStrings = 0;
 
-	BOOL bRes = FALSE;
 	count = 0;
 	do
 	{
@@ -276,34 +275,34 @@ BOOL CResModule::CreateTranslatedResources(LPCTSTR lpszSrcLangDllPath, LPCTSTR l
 
 	if (!m_bQuiet)
 		_ftprintf(stdout, L"Translating StringTable...");
-	bRes = EnumResourceNames(m_hResDll, RT_STRING, EnumResNameWriteCallback, (LONG_PTR)this);
+	EnumResourceNames(m_hResDll, RT_STRING, EnumResNameWriteCallback, (LONG_PTR)this);
 	if (!m_bQuiet)
 		_ftprintf(stdout, L"%4d translated, %4d not translated\n", m_bTranslatedStrings, m_bDefaultStrings);
 
 	if (!m_bQuiet)
 		_ftprintf(stdout, L"Translating Dialogs.......");
-	bRes = EnumResourceNames(m_hResDll, RT_DIALOG, EnumResNameWriteCallback, (LONG_PTR)this);
+	EnumResourceNames(m_hResDll, RT_DIALOG, EnumResNameWriteCallback, (LONG_PTR)this);
 	if (!m_bQuiet)
 		_ftprintf(stdout, L"%4d translated, %4d not translated\n", m_bTranslatedDialogStrings, m_bDefaultDialogStrings);
 
 	if (!m_bQuiet)
 		_ftprintf(stdout, L"Translating Menus.........");
-	bRes = EnumResourceNames(m_hResDll, RT_MENU, EnumResNameWriteCallback, (LONG_PTR)this);
+	EnumResourceNames(m_hResDll, RT_MENU, EnumResNameWriteCallback, (LONG_PTR)this);
 	if (!m_bQuiet)
 		_ftprintf(stdout, L"%4d translated, %4d not translated\n", m_bTranslatedMenuStrings, m_bDefaultMenuStrings);
 
 	if (!m_bQuiet)
 		_ftprintf(stdout, L"Translating Accelerators..");
-	bRes = EnumResourceNames(m_hResDll, RT_ACCELERATOR, EnumResNameWriteCallback, (LONG_PTR)this);
+	EnumResourceNames(m_hResDll, RT_ACCELERATOR, EnumResNameWriteCallback, (LONG_PTR)this);
 	if (!m_bQuiet)
 		_ftprintf(stdout, L"%4d translated, %4d not translated\n", m_bTranslatedAcceleratorStrings, m_bDefaultAcceleratorStrings);
 
 	if (!m_bQuiet)
 		_ftprintf(stdout, L"Translating Ribbons.......");
-	bRes = EnumResourceNames(m_hResDll, RT_RIBBON, EnumResNameWriteCallback, (LONG_PTR)this);
+	EnumResourceNames(m_hResDll, RT_RIBBON, EnumResNameWriteCallback, (LONG_PTR)this);
 	if (!m_bQuiet)
 		_ftprintf(stdout, L"%4d translated, %4d not translated\n", m_bTranslatedRibbonTexts, m_bDefaultRibbonTexts);
-	bRes = TRUE;
+	BOOL bRes = TRUE;
 	if (!EndUpdateResource(m_hUpdateRes, !bRes))
 		MYERROR;
 
