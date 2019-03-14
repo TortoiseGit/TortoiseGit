@@ -57,6 +57,7 @@ IMPLEMENT_DYNAMIC(CSettingGitCredential, ISettingsPropPage)
 CSettingGitCredential::CSettingGitCredential()
 	: ISettingsPropPage(CSettingGitCredential::IDD)
 	, m_bUseHttpPath(FALSE)
+	, m_iSimpleStoredValue(-2)
 {
 	m_ChangedMask = 0;
 }
