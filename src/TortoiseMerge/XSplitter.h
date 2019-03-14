@@ -1,4 +1,4 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2006, 2011 - TortoiseSVN
 
@@ -49,10 +49,6 @@ public:
 	 * \param bState TRUE to lock, FALSE to unlock
 	 */
 	void		LockBar(BOOL bState=TRUE) {m_bBarLocked=bState;}
-	/**
-	 * Replaces a view in the Splitter with another view.
-	 */
-	BOOL		ReplaceView(int row, int col,CRuntimeClass * pViewClass, SIZE size);
 	/**
 	 * Shows a splitter column which was previously hidden. Don't call
 	 * this method if the column is already visible! Check it first

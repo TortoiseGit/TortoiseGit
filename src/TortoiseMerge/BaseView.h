@@ -1,4 +1,4 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2003-2015 - TortoiseSVN
 
@@ -127,7 +127,6 @@ public: // methods
 	static void		UpdateLocator() { if (m_pwndLocator) m_pwndLocator->DocumentUpdated(); }
 	void			WrapChanged();
 
-	void			HighlightLines(int start, int end = -1);
 	void			HighlightViewLines(int start, int end = -1);
 	inline BOOL		IsHidden() const  {return m_bIsHidden;}
 	inline void		SetHidden(BOOL bHidden) {m_bIsHidden = bHidden;}
@@ -166,7 +165,6 @@ public: // methods
 	bool			IsLineRemoved(int nLineIndex);
 	bool			IsViewLineRemoved(int nViewLine);
 	bool			IsBlockWhitespaceOnly(int nLineIndex, bool& bIdentical, int& blockstart, int& blockend);
-	bool			IsViewLineConflicted(int nLineIndex);
 	bool			HasNextConflict();
 	bool			HasPrevConflict();
 	bool			HasNextDiff();
@@ -343,7 +341,6 @@ protected:  // methods
 	afx_msg void	OnEditFindnextStart();
 	afx_msg void	OnEditFindprevStart();
 	afx_msg void	OnEditGotoline();
-	afx_msg void	OnToggleReadonly();
 
 	DECLARE_MESSAGE_MAP()
 

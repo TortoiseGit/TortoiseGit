@@ -174,30 +174,6 @@ spreadMethod=\"pad\">\
 	objects.push_back(sObj);
 }
 
-void SVG::PolyBezier( const POINT * points, int numPoints, Gdiplus::Color stroke )
-{
-	if (numPoints == 0)
-		return;
-
-	CStringA pointstring;
-	CStringA sTemp;
-	sTemp.Format("M%d,%d ", points[0].x, points[0].y);
-	pointstring += sTemp;
-
-	for (int i = 1; i < numPoints; i += 3)
-	{
-		sTemp.Format("C%d,%d %d,%d %d,%d", points[i].x, points[i].y, points[i+1].x, points[i+1].y, points[i+2].x, points[i+2].y);
-		pointstring += sTemp;
-	}
-	pointstring.TrimRight();
-
-	CStringA sObj;
-	sObj.Format("<path d=\"%s\" style=\"stroke:#%06lx; fill:none;\"/>",
-		(LPCSTR)pointstring, GetColor(stroke));
-
-	objects.push_back(sObj);
-}
-
 void SVG::Ellipse( int x, int y, int width, int height, Gdiplus::Color stroke, int penWidth, Gdiplus::Color fill )
 {
 	int cx = x + width/2;

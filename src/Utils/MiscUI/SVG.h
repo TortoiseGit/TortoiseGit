@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2010, 2014 - TortoiseSVN
 
@@ -46,7 +46,6 @@ public:
 	void DrawPath(const Gdiplus::PointF * points, int numPoints, Gdiplus::Color stroke, int penWidth, Gdiplus::Color fill);
 	void Polyline(const Gdiplus::PointF * points, int numPoints, Gdiplus::Color stroke, int penWidth);
 	void GradientRectangle(int x, int y, int width, int height, Gdiplus::Color topColor, Gdiplus::Color bottomColor, Gdiplus::Color stroke);
-	void PolyBezier(const POINT * points, int numPoints, Gdiplus::Color stroke);
 	void Ellipse(int x, int y, int width, int height, Gdiplus::Color stroke, int penWidth, Gdiplus::Color fill);
 	void Text(int x, int y, LPCSTR font, int fontsize, bool italic, bool bold, Gdiplus::Color color, LPCSTR text, int al=SVG::left);
 private:

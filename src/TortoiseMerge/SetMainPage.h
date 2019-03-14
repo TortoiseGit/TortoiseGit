@@ -1,4 +1,4 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2013 - TortoiseGit
 // Copyright (C) 2006-2010, 2013-2014 - TortoiseSVN
@@ -52,7 +52,6 @@ protected:
 
 	afx_msg void OnModified();
 	afx_msg void OnModifiedWithReload();
-	afx_msg void OnBnClickedWhitespace();
 	afx_msg void OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct);
 
 	DECLARE_MESSAGE_MAP()

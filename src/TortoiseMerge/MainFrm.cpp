@@ -3576,9 +3576,8 @@ BOOL CMainFrame::OnShowPopupMenu(CMFCPopupMenu* pMenuPopup)
 	if (!pMenuPopup)
 		return TRUE;
 
-	int iIndex = -1;
 	if (!CMFCToolBar::IsCustomizeMode() &&
-		(iIndex = pMenuPopup->GetMenuBar()->CommandToIndex(ID_REGEXFILTER)) >= 0)
+		pMenuPopup->GetMenuBar()->CommandToIndex(ID_REGEXFILTER) >= 0)
 	{
 		BuildRegexSubitems(pMenuPopup);
 	}

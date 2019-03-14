@@ -355,11 +355,8 @@ private:
 		ROUND_BOTH = 0x3,
 	};
 	void			DrawRoundedRect (GraphicsDevice& graphics, const Color& penColor, int penWidth, const Pen* pen, const Color& fillColor, const Brush* brush, const RectF& rect, int mask=ROUND_BOTH);
-	void			DrawOctangle (GraphicsDevice& graphics, const Color& penColor, int penWidth, const Pen* pen, const Color& fillColor, const Brush* brush, const RectF& rect);
 	RectF			TransformRectToScreen (const CRect& rect, const CSize& offset) const;
 	RectF			GetNodeRect (const ogdf::node& v, const CSize& offset) const;
-	void			DrawSquare (GraphicsDevice& graphics, const PointF& leftTop,
-								const Color& lightColor, const Color& darkColor, const Color& penColor);
 	void			DrawMarker ( GraphicsDevice& graphics, const RectF& noderect
 							   , MarkerPosition position, int relPosition, const Color& penColor, int num);
 	void			DrawConnections (GraphicsDevice& graphics, const CRect& logRect, const CSize& offset);

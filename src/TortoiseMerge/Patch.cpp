@@ -663,32 +663,6 @@ int CPatch::CountDirMatches(const CString& path)
 	return matches;
 }
 
-BOOL CPatch::StripPrefixes(const CString& path)
-{
-	int nSlashesMax = 0;
-	for (int i = 0; i < GetNumberOfFiles(); ++i)
-	{
-		CString filename = GetFilename(i);
-		filename.Replace('/','\\');
-		int nSlashes = filename.Replace('\\','/');
-		nSlashesMax = max(nSlashesMax,nSlashes);
-	}
-
-	for (int nStrip = 1; nStrip < nSlashesMax; ++nStrip)
-	{
-		m_nStrip = nStrip;
-		if ( CountMatches(path) > GetNumberOfFiles()/3 )
-		{
-			// Use current m_nStrip
-			return TRUE;
-		}
-	}
-
-	// Stripping doesn't help so reset it again
-	m_nStrip = 0;
-	return FALSE;
-}
-
 CString	CPatch::Strip(const CString& filename) const
 {
 	CString s = filename;

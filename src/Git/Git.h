@@ -280,8 +280,6 @@ public:
 	int RunAsync(CString cmd, PROCESS_INFORMATION* pi, HANDLE* hRead, HANDLE* hErrReadOut, const CString* StdioFile = nullptr);
 	int RunLogFile(CString cmd, const CString &filename, CString *stdErr);
 
-	int GetGitEncode(TCHAR* configkey);
-
 	bool IsFastForward(const CString& from, const CString& to, CGitHash* commonAncestor = nullptr);
 	CString GetConfigValue(const CString& name, const CString& def = CString(), bool wantBool = false);
 	bool GetConfigValueBool(const CString& name, const bool def = false);
@@ -405,7 +403,6 @@ public:
 	int GetHash(CGitHash &hash, const CString& friendname);
 	static int GetHash(git_repository * repo, CGitHash &hash, const CString& friendname, bool skipFastCheck = false);
 
-	int BuildOutputFormat(CString &format,bool IsFull=TRUE);
 	static void StringAppend(CString* str, const char* p, int code = CP_UTF8, int length = -1);
 	inline static void StringAppend(CString* str, const BYTE* p, int code = CP_UTF8, int length = -1)
 	{

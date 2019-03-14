@@ -1587,14 +1587,6 @@ bool CBaseView::IsViewLineRemoved(int nViewLine)
 	return IsStateRemoved(state);
 }
 
-bool CBaseView::IsViewLineConflicted(int nLineIndex)
-{
-	if (m_pViewData == 0)
-		return false;
-	const DiffStates state = m_pViewData->GetState(nLineIndex);
-	return IsStateConflicted(state);
-}
-
 COLORREF CBaseView::InlineDiffColor(int nLineIndex)
 {
 	return IsLineRemoved(nLineIndex) ? m_InlineRemovedBk : m_InlineAddedBk;
@@ -2686,15 +2678,6 @@ void CBaseView::GoToFirstConflict()
 {
 	SetCaretToFirstViewLine();
 	SelectNextBlock(1, true, false);
-}
-
-void CBaseView::HighlightLines(int nStart, int nEnd /* = -1 */)
-{
-	ClearSelection();
-	SetupAllSelection(nStart, max(nStart, nEnd));
-
-	UpdateCaretPosition(SetupPoint(0, nStart));
-	Invalidate();
 }
 
 void CBaseView::HighlightViewLines(int nStart, int nEnd /* = -1 */)
@@ -5828,13 +5811,6 @@ void CBaseView::OnEditGotoline()
 				return;
 			}
 		}
-	}
-}
-
-void CBaseView::OnToggleReadonly()
-{
-	if (IsReadonlyChangable()) {
-		SetWritable(IsReadonly());
 	}
 }
 

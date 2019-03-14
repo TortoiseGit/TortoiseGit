@@ -933,44 +933,6 @@ int CGit::GetCurrentBranchFromFile(const CString &sProjectRoot, CString &sBranch
 	return 0;
 }
 
-int CGit::BuildOutputFormat(CString &format,bool IsFull)
-{
-	CString log;
-	log.Format(L"#<%c>%%x00", LOG_REV_ITEM_BEGIN);
-	format += log;
-	if(IsFull)
-	{
-		log.Format(L"#<%c>%%an%%x00", LOG_REV_AUTHOR_NAME);
-		format += log;
-		log.Format(L"#<%c>%%ae%%x00", LOG_REV_AUTHOR_EMAIL);
-		format += log;
-		log.Format(L"#<%c>%%ai%%x00", LOG_REV_AUTHOR_DATE);
-		format += log;
-		log.Format(L"#<%c>%%cn%%x00", LOG_REV_COMMIT_NAME);
-		format += log;
-		log.Format(L"#<%c>%%ce%%x00", LOG_REV_COMMIT_EMAIL);
-		format += log;
-		log.Format(L"#<%c>%%ci%%x00", LOG_REV_COMMIT_DATE);
-		format += log;
-		log.Format(L"#<%c>%%b%%x00", LOG_REV_COMMIT_BODY);
-		format += log;
-	}
-
-	log.Format(L"#<%c>%%m%%H%%x00", LOG_REV_COMMIT_HASH);
-	format += log;
-	log.Format(L"#<%c>%%P%%x00", LOG_REV_COMMIT_PARENT);
-	format += log;
-	log.Format(L"#<%c>%%s%%x00", LOG_REV_COMMIT_SUBJECT);
-	format += log;
-
-	if(IsFull)
-	{
-		log.Format(L"#<%c>%%x00", LOG_REV_COMMIT_FILE);
-		format += log;
-	}
-	return 0;
-}
-
 CString CGit::GetLogCmd(CString range, const CTGitPath* path, int mask, CFilterData* Filter, int logOrderBy)
 {
 	CString param;
@@ -1289,13 +1251,6 @@ int CGit::GetCommitDiffList(const CString &rev1, const CString &rev2, CTGitPathL
 		return -1;
 
 	return outputlist.ParserFromLog(out);
-}
-
-int addto_list_each_ref_fn(const char *refname, const unsigned char * /*sha1*/, int /*flags*/, void *cb_data)
-{
-	STRING_VECTOR *list = (STRING_VECTOR*)cb_data;
-	list->push_back(CUnicodeUtils::GetUnicode(refname));
-	return 0;
 }
 
 int CGit::GetTagList(STRING_VECTOR &list)
@@ -2741,16 +2696,6 @@ void CEnvironment::AddToPath(CString value)
 	path += value;
 
 	SetEnv(L"PATH", path);
-}
-
-int CGit::GetGitEncode(TCHAR* configkey)
-{
-	CString str=GetConfigValue(configkey);
-
-	if(str.IsEmpty())
-		return CP_UTF8;
-
-	return CUnicodeUtils::GetCPCode(str);
 }
 
 int CGit::GetShortHASHLength() const
