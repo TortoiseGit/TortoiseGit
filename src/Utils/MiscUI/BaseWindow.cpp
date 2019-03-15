@@ -71,7 +71,7 @@ LRESULT CALLBACK CWindow::stWinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, L
 	if (uMsg == WM_NCCREATE)
 	{
 		// get the pointer to the window from lpCreateParams which was set in CreateWindow
-		SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)((LPCREATESTRUCT(lParam))->lpCreateParams));
+		SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(reinterpret_cast<LPCREATESTRUCT>(lParam)->lpCreateParams));
 	}
 
 	// get the pointer to the window
@@ -133,12 +133,12 @@ bool CWindow::CreateEx(DWORD dwExStyles, DWORD dwStyles, HWND hParent /* = nullp
 {
 	// send the this pointer as the window creation parameter
 	if (!rect)
-		m_hwnd = CreateWindowEx(dwExStyles, classname ? classname : sClassName.c_str(), sWindowTitle.c_str(), dwStyles, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, hParent, nullptr, hResource, (void*)this);
+		m_hwnd = CreateWindowEx(dwExStyles, classname ? classname : sClassName.c_str(), sWindowTitle.c_str(), dwStyles, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, hParent, nullptr, hResource, static_cast<void*>(this));
 	else
 	{
 		m_hwnd = CreateWindowEx(dwExStyles, classname ? classname : sClassName.c_str(), sWindowTitle.c_str(), dwStyles, rect->left, rect->top,
 			rect->right - rect->left, rect->bottom - rect->top, hParent, nullptr, hResource,
-			(void *)this);
+			static_cast<void*>(this));
 	}
 	m_hParent = hParent;
 	return (m_hwnd != nullptr);

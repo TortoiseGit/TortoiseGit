@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2017 - TortoiseGit
+// Copyright (C) 2012-2017, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -71,8 +71,8 @@ END_MESSAGE_MAP()
 
 static int SubmoduleCallback(git_submodule *sm, const char * /*name*/, void *payload)
 {
-	STRING_VECTOR *list = *(STRING_VECTOR **)payload;
-	STRING_VECTOR *prefixList = *((STRING_VECTOR **)payload + 1);
+	auto list = *static_cast<STRING_VECTOR**>(payload);
+	auto prefixList = *(static_cast<STRING_VECTOR**>(payload) + 1);
 	CString path = CUnicodeUtils::GetUnicode(git_submodule_path(sm));
 	if (prefixList->empty())
 		list->push_back(path);
@@ -128,7 +128,7 @@ BOOL CSubmoduleUpdateDlg::OnInitDialog()
 	AddAnchor(IDOK, BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
-	AddAnchor((UINT)IDC_STATIC, TOP_LEFT);
+	AddAnchor(static_cast<UINT>(IDC_STATIC), TOP_LEFT);
 	AddAnchor(IDC_LIST_PATH, TOP_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_SELECTALL, BOTTOM_LEFT);
 	AddAnchor(IDC_WHOLE_PROJECT, BOTTOM_LEFT);
@@ -224,7 +224,7 @@ void CSubmoduleUpdateDlg::OnLbnSelchangeListPath()
 	GetDlgItem(IDOK)->EnableWindow(m_PathListBox.GetSelCount() > 0 ? TRUE : FALSE);
 	if (m_PathListBox.GetSelCount() == 0)
 		m_SelectAll.SetCheck(BST_UNCHECKED);
-	else if ((int)m_PathListBox.GetSelCount() < m_PathListBox.GetCount())
+	else if (m_PathListBox.GetSelCount() < m_PathListBox.GetCount())
 		m_SelectAll.SetCheck(BST_INDETERMINATE);
 	else
 		m_SelectAll.SetCheck(BST_CHECKED);
@@ -295,13 +295,13 @@ void CSubmoduleUpdateDlg::Refresh()
 	{
 		m_PathListBox.AddString(list[i]);
 		if (selected.size() == 0)
-			m_PathListBox.SetSel((int)i);
+			m_PathListBox.SetSel(static_cast<int>(i));
 		else
 		{
 			for (size_t j = 0; j < selected.size(); ++j)
 			{
 				if (selected[j] == list[i])
-					m_PathListBox.SetSel((int)i);
+					m_PathListBox.SetSel(static_cast<int>(i));
 			}
 		}
 	}

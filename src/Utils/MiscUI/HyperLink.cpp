@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2016 - TortoiseGit
+// Copyright (C) 2012-2016, 2019 - TortoiseGit
 // Copyright (C) 2003-2006,2008, 2011, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -87,7 +87,7 @@ void CHyperLink::PreSubclassWindow()
 		memcpy_s(&lf, sizeof(LOGFONT), &metrics.lfMessageFont, sizeof(LOGFONT));
 	}
 	m_StdFont.CreateFontIndirect(&lf);
-	lf.lfUnderline = (BYTE) TRUE;
+	lf.lfUnderline = TRUE;
 	m_UnderlineFont.CreateFontIndirect(&lf);
 
 	SetDefaultCursor(); // try loading a "hand" cursor
@@ -133,7 +133,7 @@ HBRUSH CHyperLink::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
 
 	// draw transparent
 	pDC->SetBkMode(TRANSPARENT);
-	return (HBRUSH)GetStockObject(NULL_BRUSH);
+	return static_cast<HBRUSH>(GetStockObject(NULL_BRUSH));
 }
 
 void CHyperLink::OnMouseMove(UINT nFlags, CPoint point)
@@ -262,7 +262,7 @@ void CHyperLink::SetDefaultCursor()
 #ifndef OCR_HAND
 #	define OCR_HAND 32649
 #endif
-		HCURSOR hHandCursor = (HCURSOR)::LoadImage(nullptr, MAKEINTRESOURCE(OCR_HAND), IMAGE_CURSOR, 0, 0, LR_DEFAULTSIZE | LR_SHARED);
+		auto hHandCursor = static_cast<HCURSOR>(::LoadImage(nullptr, MAKEINTRESOURCE(OCR_HAND), IMAGE_CURSOR, 0, 0, LR_DEFAULTSIZE | LR_SHARED));
 		if (hHandCursor)
 		{
 			m_hLinkCursor = hHandCursor;
@@ -275,7 +275,7 @@ void CHyperLink::SetDefaultCursor()
 		// This retrieves cursor #106 from winhlp32.exe, which is a hand pointer
 		CAutoLibrary hModule = LoadLibrary(strWndDir);
 		if (hModule) {
-			HCURSOR hHandCursor2 = (HCURSOR)::LoadImage(hModule, MAKEINTRESOURCE(106), IMAGE_CURSOR, 0, 0, LR_DEFAULTSIZE);
+			auto hHandCursor2 = static_cast<HCURSOR>(::LoadImage(hModule, MAKEINTRESOURCE(106), IMAGE_CURSOR, 0, 0, LR_DEFAULTSIZE));
 			if (hHandCursor2)
 				m_hLinkCursor = CopyCursor(hHandCursor2);
 		}

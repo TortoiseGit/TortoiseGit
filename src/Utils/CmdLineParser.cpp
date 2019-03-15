@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013, 2016-2017 - TortoiseGit
+// Copyright (C) 2013, 2016-2019 - TortoiseGit
 // Copyright (C) 2003-2006,2012 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
@@ -78,7 +78,7 @@ BOOL CCmdLineParser::Parse(LPCTSTR sCmdLine)
 		}
 		else
 		{
-			std::wstring Key(sArg, (int)(sVal - sArg));
+			std::wstring Key(sArg, static_cast<int>(sVal - sArg));
 			std::transform(Key.begin(), Key.end(), Key.begin(), ::towlower);
 
 			LPCTSTR sQuote(nullptr), sEndQuote(nullptr);
@@ -153,7 +153,7 @@ BOOL CCmdLineParser::Parse(LPCTSTR sCmdLine)
 				// end quote
 				if(!Key.empty())
 				{
-					std::wstring csVal(sQuote, (int)(sEndQuote - sQuote));
+					std::wstring csVal(sQuote, static_cast<int>(sEndQuote - sQuote));
 					m_valueMap.insert(CValsMap::value_type(Key, csVal));
 				}
 				sCurrent = _wcsinc(sEndQuote);

@@ -79,9 +79,9 @@ static int is_cygwin_msys2_hack_active()
 	DWORD dwSize = sizeof(dwValue);
 	if (RegOpenKeyExW(HKEY_CURRENT_USER, L"Software\\TortoiseGit", 0, KEY_ALL_ACCESS, &hKey) == ERROR_SUCCESS)
 	{
-		RegQueryValueExW(hKey, L"CygwinHack", nullptr, &dwType, (LPBYTE)&dwValue, &dwSize);
+		RegQueryValueExW(hKey, L"CygwinHack", nullptr, &dwType, reinterpret_cast<LPBYTE>(&dwValue), &dwSize);
 		if (dwValue != 1)
-			RegQueryValueExW(hKey, L"Msys2Hack", nullptr, &dwType, (LPBYTE)&dwValue, &dwSize);
+			RegQueryValueExW(hKey, L"Msys2Hack", nullptr, &dwType, reinterpret_cast<LPBYTE>(&dwValue), &dwSize);
 		RegCloseKey(hKey);
 	}
 	return dwValue == 1;
@@ -111,7 +111,7 @@ static std::wstring GetSystemGitConfig()
 	DWORD dwSize = _countof(path) - 1;
 	if (RegOpenKeyExW(HKEY_CURRENT_USER, L"Software\\TortoiseGit", 0, KEY_ALL_ACCESS, &hKey) == ERROR_SUCCESS)
 	{
-		RegQueryValueExW(hKey, L"SystemConfig", nullptr, &dwType, (LPBYTE)&path, &dwSize);
+		RegQueryValueExW(hKey, L"SystemConfig", nullptr, &dwType, reinterpret_cast<LPBYTE>(&path), &dwSize);
 		RegCloseKey(hKey);
 	}
 	return path;
@@ -277,7 +277,7 @@ int GetStatus(const TCHAR* path, GitWCRev_t& GitStat)
 		return ERR_GIT_ERR;
 
 	const git_oid* oid = git_object_id(object);
-	git_oid_cpy((git_oid*)GitStat.HeadHash, oid);
+	git_oid_cpy(reinterpret_cast<git_oid*>(GitStat.HeadHash), oid);
 	git_oid_tostr(GitStat.HeadHashReadable, sizeof(GitStat.HeadHashReadable), oid);
 
 	CAutoCommit commit;
@@ -297,7 +297,7 @@ int GetStatus(const TCHAR* path, GitWCRev_t& GitStat)
 	if (git_tag_foreach(repo, [](const char*, git_oid* tagoid, void* payload)
 	{
 		auto pl = reinterpret_cast<struct TagPayload*>(payload);
-		if (git_oid_cmp(tagoid, (git_oid*)pl->GitStat.HeadHash) == 0)
+		if (git_oid_cmp(tagoid, reinterpret_cast<git_oid*>(pl->GitStat.HeadHash)) == 0)
 		{
 			pl->GitStat.bIsTagged = TRUE;
 			return 0;
@@ -309,7 +309,7 @@ int GetStatus(const TCHAR* path, GitWCRev_t& GitStat)
 		CAutoObject tagObject;
 		if (git_tag_peel(tagObject.GetPointer(), tag))
 			return -1;
-		if (git_oid_cmp(git_object_id(tagObject), (git_oid*)pl->GitStat.HeadHash) == 0)
+		if (git_oid_cmp(git_object_id(tagObject), reinterpret_cast<git_oid*>(pl->GitStat.HeadHash)) == 0)
 			pl->GitStat.bIsTagged = TRUE;
 
 		return 0;

@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012, 2017 - TortoiseGit
+// Copyright (C) 2012, 2017, 2019 - TortoiseGit
 // Copyright (C) 2011, 2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -58,7 +58,7 @@ HBRUSH CRegexEdit::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
 		pDC->SetBkColor(GetSysColor(COLOR_3DFACE) - RGB(0,20,20));
 		if (!m_invalidBkgnd.GetSafeHandle())
 			m_invalidBkgnd.CreateSolidBrush(GetSysColor(COLOR_3DFACE) - RGB(0,20,20));
-		return (HBRUSH)m_invalidBkgnd.GetSafeHandle();
+		return static_cast<HBRUSH>(m_invalidBkgnd.GetSafeHandle());
 	}
 	else if (!oldState)
 		this->Invalidate();

@@ -1,4 +1,4 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2006, 2011-2014, 2016 - TortoiseSVN
 
@@ -57,9 +57,9 @@ void CFindDlg::Create(CWnd* pParent, int id /* = 0 */)
 		POINT pt = { 0 };
 		CString sRegPath;
 		sRegPath.Format(L"Software\\TortoiseGitMerge\\FindDlgPosX%d", id);
-		pt.x = (int)(DWORD)CRegDWORD(sRegPath, 0);
+		pt.x = static_cast<int>(CRegDWORD(sRegPath, 0));
 		sRegPath.Format(L"Software\\TortoiseGitMerge\\FindDlgPosY%d", id);
-		pt.y = (int)(DWORD)CRegDWORD(sRegPath, 0);
+		pt.y = static_cast<int>(CRegDWORD(sRegPath, 0));
 		pParent->ClientToScreen(&pt);
 		if (MonitorFromPoint(pt, MONITOR_DEFAULTTONULL))
 			SetWindowPos(nullptr, pt.x, pt.y, 0, 0, SWP_NOACTIVATE | SWP_NOREDRAW | SWP_NOSIZE);
@@ -139,9 +139,9 @@ BOOL CFindDlg::OnInitDialog()
 	CDialog::OnInitDialog();
 	m_FindMsg = RegisterWindowMessage(FINDMSGSTRING);
 
-	m_bMatchCase = (BOOL)(DWORD)m_regMatchCase;
-	m_bLimitToDiffs = (BOOL)(DWORD)m_regLimitToDiffs;
-	m_bWholeWord = (BOOL)(DWORD)m_regWholeWord;
+	m_bMatchCase = m_regMatchCase;
+	m_bLimitToDiffs = m_regLimitToDiffs;
+	m_bWholeWord = m_regWholeWord;
 	UpdateData(FALSE);
 
 	m_FindCombo.SetCaseSensitive(TRUE);

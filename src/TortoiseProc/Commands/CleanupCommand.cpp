@@ -34,7 +34,7 @@ static CString UnescapeQuotePath(CString s)
 	{
 		if (s[i] == '\\' && i + 3 < s.GetLength())
 		{
-			char c = (char)((s[i + 1] - '0') * 64 + (s[i + 2] - '0') * 8 + (s[i + 3] - '0'));
+			char c = static_cast<char>((s[i + 1] - '0') * 64 + (s[i + 2] - '0') * 8 + (s[i + 3] - '0'));
 			t += c;
 			i += 3;
 		}
@@ -123,7 +123,7 @@ static bool GetFilesToCleanUp(CTGitPathList& delList, const CString& baseCmd, CG
 	if (pGit->Run(cmd, &cmdout, &cmdouterr, CP_UTF8))
 	{
 		if (cmdouterr.IsEmpty())
-			cmdouterr.Format(IDS_GITEXEERROR_NOMESSAGE, (LPCTSTR)cmdout);
+			cmdouterr.Format(IDS_GITEXEERROR_NOMESSAGE, static_cast<LPCTSTR>(cmdout));
 		MessageBox(GetExplorerHWND(), cmdouterr, L"TortoiseGit", MB_ICONERROR);
 		return false;
 	}
@@ -140,7 +140,7 @@ static bool GetFilesToCleanUp(CTGitPathList& delList, const CString& baseCmd, CG
 	{
 		if (CStringUtils::StartsWith(token, L"Would remove "))
 		{
-			CString tempPath = token.Mid((int)wcslen(L"Would remove ")).TrimRight();
+			CString tempPath = token.Mid(static_cast<int>(wcslen(L"Would remove "))).TrimRight();
 			if (quotepath)
 				tempPath = UnescapeQuotePath(tempPath.Trim(L'"'));
 			delList.AddPath(pGit->CombinePath(tempPath));
@@ -253,7 +253,7 @@ static bool DoCleanUp(const CTGitPathList& pathList, int cleanType, bool bDir, b
 		sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_PROC_CLEANUP_INFO1)));
 		sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
 		sysProgressDlg.SetShowProgressBar(false);
-		sysProgressDlg.ShowModeless((HWND)nullptr, true);
+		sysProgressDlg.ShowModeless(static_cast<HWND>(nullptr), true);
 
 		bool quotepath = g_Git.GetConfigValueBool(L"core.quotepath");
 

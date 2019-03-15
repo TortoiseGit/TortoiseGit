@@ -60,7 +60,7 @@ BOOL CResolveDlg::OnInitDialog()
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	m_resolveListCtrl.Init(GITSLC_COLEXT, L"ResolveDlg", GITSLC_POPALL ^ (GITSLC_POPIGNORE | GITSLC_POPADD | GITSLC_POPCOMMIT | GITSLC_POPEXPORT | GITSLC_POPRESTORE | GITSLC_POPSAVEAS | GITSLC_POPPREPAREDIFF));
-	m_resolveListCtrl.SetConfirmButton((CButton*)GetDlgItem(IDOK));
+	m_resolveListCtrl.SetConfirmButton(static_cast<CButton*>(GetDlgItem(IDOK)));
 	m_resolveListCtrl.SetSelectButton(&m_SelectAll);
 	m_resolveListCtrl.SetCancelBool(&m_bCancelled);
 	m_resolveListCtrl.SetBackgroundImage(IDI_RESOLVE_BKG);
@@ -131,7 +131,7 @@ void CResolveDlg::OnBnClickedSelectall()
 
 UINT CResolveDlg::ResolveThreadEntry(LPVOID pVoid)
 {
-	return reinterpret_cast<CResolveDlg*>(pVoid)->ResolveThread();
+	return static_cast<CResolveDlg*>(pVoid)->ResolveThread();
 }
 UINT CResolveDlg::ResolveThread()
 {
@@ -212,7 +212,7 @@ LRESULT CResolveDlg::OnFileDropped(WPARAM, LPARAM lParam)
 	// but only if it isn't already running - otherwise we
 	// restart the timer.
 	CTGitPath path;
-	path.SetFromWin((LPCTSTR)lParam);
+	path.SetFromWin(reinterpret_cast<LPCTSTR>(lParam));
 
 	// check whether the dropped file belongs to the very same repository
 	CString projectDir;

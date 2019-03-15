@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2014 - TortoiseGit
+// Copyright (C) 2013-2014, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -28,9 +28,10 @@ protected:
 	static void CheckoutCallback(const char *path, size_t cur, size_t tot, void *payload)
 	{
 		CTGitPath tpath = CUnicodeUtils::GetUnicode(CStringA(path), CP_UTF8);
-		((CGitProgressList*)payload)->m_itemCountTotal = (int)tot;
-		((CGitProgressList*)payload)->m_itemCount = (int)cur;
-		((CGitProgressList*)payload)->AddNotify(new CGitProgressList::WC_File_NotificationData(tpath, CGitProgressList::WC_File_NotificationData::git_wc_notify_checkout));
+		auto list = static_cast<CGitProgressList*>(payload);
+		list->m_itemCountTotal = static_cast<int>(tot);
+		list->m_itemCount = static_cast<int>(cur);
+		list->AddNotify(new CGitProgressList::WC_File_NotificationData(tpath, CGitProgressList::WC_File_NotificationData::git_wc_notify_checkout));
 	}
 
 public:

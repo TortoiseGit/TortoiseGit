@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2006 - Stefan Kueng
-// Copyright (C) 2012-2016, 2018 - TortoiseGit
+// Copyright (C) 2012-2016, 2018-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -79,26 +79,26 @@ BOOL CRevGraphFilterDlg::OnInitDialog()
 
 		if (CStringUtils::StartsWith(str, L"refs/"))
 		{
-			m_ctrlFromRev.AddSearchString(list[i].Mid((int)wcslen(L"refs/")));
-			m_ctrlToRev.AddSearchString(list[i].Mid((int)wcslen(L"refs/")));
+			m_ctrlFromRev.AddSearchString(list[i].Mid(static_cast<int>(wcslen(L"refs/"))));
+			m_ctrlToRev.AddSearchString(list[i].Mid(static_cast<int>(wcslen(L"refs/"))));
 		}
 
 		if (CStringUtils::StartsWith(str, L"refs/heads/"))
 		{
-			m_ctrlFromRev.AddSearchString(list[i].Mid((int)wcslen(L"refs/heads/")));
-			m_ctrlToRev.AddSearchString(list[i].Mid((int)wcslen(L"refs/heads/")));
+			m_ctrlFromRev.AddSearchString(list[i].Mid(static_cast<int>(wcslen(L"refs/heads/"))));
+			m_ctrlToRev.AddSearchString(list[i].Mid(static_cast<int>(wcslen(L"refs/heads/"))));
 		}
 
 		if (CStringUtils::StartsWith(str, L"refs/remotes/"))
 		{
-			m_ctrlFromRev.AddSearchString(list[i].Mid((int)wcslen(L"refs/remotes/")));
-			m_ctrlToRev.AddSearchString(list[i].Mid((int)wcslen(L"refs/remotes/")));
+			m_ctrlFromRev.AddSearchString(list[i].Mid(static_cast<int>(wcslen(L"refs/remotes/"))));
+			m_ctrlToRev.AddSearchString(list[i].Mid(static_cast<int>(wcslen(L"refs/remotes/"))));
 		}
 
 		if (CStringUtils::StartsWith(str, L"refs/tags/"))
 		{
-			m_ctrlFromRev.AddSearchString(list[i].Mid((int)wcslen(L"refs/tags/")));
-			m_ctrlToRev.AddSearchString(list[i].Mid((int)wcslen(L"refs/tags/")));
+			m_ctrlFromRev.AddSearchString(list[i].Mid(static_cast<int>(wcslen(L"refs/tags/"))));
+			m_ctrlToRev.AddSearchString(list[i].Mid(static_cast<int>(wcslen(L"refs/tags/"))));
 		}
 	}
 

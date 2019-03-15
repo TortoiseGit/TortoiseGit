@@ -123,7 +123,7 @@ private:
 
 	static UINT			LoadRefThreadEntry(LPVOID pVoid)
 	{
-		return reinterpret_cast<CFileDiffDlg*>(pVoid)->LoadRefThread();
+		return static_cast<CFileDiffDlg*>(pVoid)->LoadRefThread();
 	};
 
 	UINT				LoadRefThread();

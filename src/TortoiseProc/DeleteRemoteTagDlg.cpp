@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2017 - TortoiseGit
+// Copyright (C) 2012-2017, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -56,7 +56,7 @@ BOOL CDeleteRemoteTagDlg::OnInitDialog()
 	CHorizontalResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
-	AdjustControlSize((UINT)IDC_STATIC);
+	AdjustControlSize(static_cast<UINT>(IDC_STATIC));
 
 	AddAnchor(IDC_EDIT_REMOTE, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_LIST_TAGS, TOP_LEFT, BOTTOM_RIGHT);
@@ -101,7 +101,7 @@ void CDeleteRemoteTagDlg::Refresh()
 	sysProgressDlg.Stop();
 	BringWindowToTop();
 
-	for (int i = 0; i < (int)tags.size(); ++i)
+	for (int i = 0; i < static_cast<int>(tags.size()); ++i)
 	{
 		if (CStringUtils::EndsWith(tags[i].name, L"^{}"))
 			continue;
@@ -143,7 +143,7 @@ void CDeleteRemoteTagDlg::OnBnClickedOk()
 	{
 		POSITION pos = m_ctrlTags.GetFirstSelectedItemPosition();
 		CString msg;
-		msg.Format(IDS_PROC_DELETEBRANCHTAG, (LPCTSTR)m_ctrlTags.GetItemText(m_ctrlTags.GetNextSelectedItem(pos), 0));
+		msg.Format(IDS_PROC_DELETEBRANCHTAG, static_cast<LPCTSTR>(m_ctrlTags.GetItemText(m_ctrlTags.GetNextSelectedItem(pos), 0)));
 		if (CMessageBox::Show(GetSafeHwnd(), msg, L"TortoiseGit", 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
 			return;
 	}
@@ -171,7 +171,7 @@ void CDeleteRemoteTagDlg::OnSelchangeTags(NMHDR* /*pNMHDR*/, LRESULT* /*pResult*
 	DialogEnableWindow(IDOK, m_ctrlTags.GetSelectedCount() > 0);
 	if (m_ctrlTags.GetSelectedCount() == 0)
 		m_SelectAll.SetCheck(BST_UNCHECKED);
-	else if ((int)m_ctrlTags.GetSelectedCount() < m_ctrlTags.GetItemCount())
+	else if (static_cast<int>(m_ctrlTags.GetSelectedCount()) < m_ctrlTags.GetItemCount())
 		m_SelectAll.SetCheck(BST_INDETERMINATE);
 	else
 		m_SelectAll.SetCheck(BST_CHECKED);

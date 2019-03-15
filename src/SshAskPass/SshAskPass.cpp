@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016, 2018 - TortoiseGit
+// Copyright (C) 2008-2016, 2018-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -80,7 +80,7 @@ int APIENTRY _tWinMain(HINSTANCE	/*hInstance*/,
 
 	if (DialogBox(hInst, MAKEINTRESOURCE(IDD_ASK_PASSWORD), nullptr, PasswdDlg) == IDOK)
 	{
-		auto len = (int)_tcslen(g_PassWord);
+		auto len = static_cast<int>(_tcslen(g_PassWord));
 		auto size = len * 4 + 1;
 		auto buf = new char[size];
 		auto ret = WideCharToMultiByte(CP_UTF8, 0, g_PassWord, len, buf, size - 1, nullptr, nullptr);
@@ -102,7 +102,7 @@ void MarkWindowAsUnpinnable(HWND hWnd)
 	HMODULE hShell = AtlLoadSystemLibraryUsingFullPath(L"Shell32.dll");
 
 	if (hShell) {
-		SHGPSFW pfnSHGPSFW = (SHGPSFW)::GetProcAddress(hShell, "SHGetPropertyStoreForWindow");
+		auto pfnSHGPSFW = reinterpret_cast<SHGPSFW>(::GetProcAddress(hShell, "SHGetPropertyStoreForWindow"));
 		if (pfnSHGPSFW) {
 			IPropertyStore *pps;
 			HRESULT hr = pfnSHGPSFW(hWnd, IID_PPV_ARGS(&pps));
@@ -143,7 +143,7 @@ INT_PTR CALLBACK PasswdDlg(HWND hDlg, UINT message, WPARAM wParam, LPARAM /*lPar
 				SendMessage(::GetDlgItem(hDlg, IDC_PASSWORD), EM_SETPASSWORDCHAR, 0, 0);
 			::FlashWindow(hDlg, TRUE);
 		}
-		return (INT_PTR)TRUE;
+		return TRUE;
 
 	case WM_COMMAND:
 
@@ -162,9 +162,9 @@ INT_PTR CALLBACK PasswdDlg(HWND hDlg, UINT message, WPARAM wParam, LPARAM /*lPar
 			::SetWindowText(password, gargabe);
 
 			EndDialog(hDlg, LOWORD(wParam));
-			return (INT_PTR)TRUE;
+			return TRUE;
 		}
 		break;
 	}
-	return (INT_PTR)FALSE;
+	return FALSE;
 }

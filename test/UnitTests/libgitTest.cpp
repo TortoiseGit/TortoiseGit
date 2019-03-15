@@ -50,14 +50,14 @@ TEST(libgit, Mailmap)
 	// libgit relies on CWD being set to working tree
 	SetCurrentDirectory(g_Git.m_CurrentDir);
 
-	GIT_MAILMAP mailmap = (void*)0x12345678;
+	GIT_MAILMAP mailmap = reinterpret_cast<void*>(0x12345678);
 	git_read_mailmap(&mailmap);
 	EXPECT_EQ(nullptr, mailmap);
 
 	CString mailmapFile = tempdir.GetTempDir() + L"\\.mailmap";
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(mailmapFile, L""));
 
-	mailmap = (void*)0x12345678;
+	mailmap = reinterpret_cast<void*>(0x12345678);
 	git_read_mailmap(&mailmap);
 	EXPECT_EQ(nullptr, mailmap);
 

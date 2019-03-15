@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2014, 2016-2018 - TortoiseGit
+// Copyright (C) 2013-2019 - TortoiseGit
 // Copyright (C) 2011-2012, 2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -40,7 +40,7 @@ void SetTaskIDPerUUID()
 	CAutoLibrary hShell = AtlLoadSystemLibraryUsingFullPath(L"shell32.dll");
 	if (hShell)
 	{
-		SetCurrentProcessExplicitAppUserModelIDFN *pfnSetCurrentProcessExplicitAppUserModelID = (SetCurrentProcessExplicitAppUserModelIDFN*)GetProcAddress(hShell, "SetCurrentProcessExplicitAppUserModelID");
+		auto pfnSetCurrentProcessExplicitAppUserModelID = reinterpret_cast<SetCurrentProcessExplicitAppUserModelIDFN*>(GetProcAddress(hShell, "SetCurrentProcessExplicitAppUserModelID"));
 		if (pfnSetCurrentProcessExplicitAppUserModelID)
 		{
 			std::wstring id = GetTaskIDPerUUID();
@@ -184,7 +184,7 @@ void SetUUIDOverlayIcon( HWND hWnd )
 		for (int i = 0; i < iconWidth * iconWidth; ++i)
 			XOR[i] = colors[foundUUIDIndex % 6];
 
-		icon = ::CreateIcon(nullptr, iconWidth, iconHeight, 1, 32, AND.get(), (BYTE*)XOR.get());
+		icon = ::CreateIcon(nullptr, iconWidth, iconHeight, 1, 32, AND.get(), reinterpret_cast<BYTE*>(XOR.get()));
 	}
 	pTaskbarInterface->SetOverlayIcon(hWnd, icon, uuid.c_str());
 	DestroyIcon(icon);

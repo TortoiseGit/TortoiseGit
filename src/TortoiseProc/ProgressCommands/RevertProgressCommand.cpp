@@ -47,7 +47,7 @@ bool RevertProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, i
 	list->ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_REVERT)));
 	for (int i = 0; i < m_targetPathList.GetCount(); ++i)
 	{
-		if (CString err; g_Git.Revert(L"HEAD", (CTGitPath&)m_targetPathList[i], err))
+		if (CString err; g_Git.Revert(L"HEAD", m_targetPathList[i], err))
 		{
 			list->ReportError(L"Revert failed:\n" + err);
 			return false;

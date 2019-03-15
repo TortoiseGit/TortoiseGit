@@ -1,4 +1,4 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2006, 2009-2010, 2014-2015, 2017-2018 - TortoiseSVN
 
@@ -30,7 +30,7 @@ int CALLBACK PropSheetProc(HWND /*hWndDlg*/, UINT uMsg, LPARAM lParam)
 		auto pResource = reinterpret_cast<LPDLGTEMPLATE>(lParam);
 		CDialogTemplate dlgTemplate(pResource);
 		dlgTemplate.SetFont(L"MS Shell Dlg 2", 9);
-		memmove((void*)lParam, dlgTemplate.m_hTemplate, dlgTemplate.m_dwTemplateSize);
+		memmove(reinterpret_cast<void*>(lParam), dlgTemplate.m_hTemplate, dlgTemplate.m_dwTemplateSize);
 	}
 	break;
 	}

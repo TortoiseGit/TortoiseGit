@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2017 - TortoiseGit
+// Copyright (C) 2014-2017, 2019 - TortoiseGit
 // Copyright (C) 2003-2006, 2008-2010, 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -31,11 +31,11 @@ CSysImageList::CSysImageList()
 	TCHAR windir[MAX_PATH] = {0};
 	GetWindowsDirectory(windir, _countof(windir));  // MAX_PATH ok.
 	hSystemImageList =
-		(HIMAGELIST)SHGetFileInfo(
+		reinterpret_cast<HIMAGELIST>(SHGetFileInfo(
 			windir,
 			0,
 			&ssfi, sizeof ssfi,
-			SHGFI_SYSICONINDEX | SHGFI_SMALLICON);
+			SHGFI_SYSICONINDEX | SHGFI_SMALLICON));
 
 	int cx, cy;
 	ImageList_GetIconSize(hSystemImageList, &cx, &cy);

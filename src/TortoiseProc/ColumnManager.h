@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016 - TortoiseGit
+// Copyright (C) 2016, 2019 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -118,7 +118,7 @@ public:
 	{
 		LPNMHEADER phdr = reinterpret_cast<LPNMHEADER>(pNMHDR);
 		*pResult = 0;
-		if ((phdr->iItem < 0) || (phdr->iItem >= (int)itemName.size()))
+		if (phdr->iItem < 0 || phdr->iItem >= static_cast<int>(itemName.size()))
 			return;
 
 		if (IsVisible(phdr->iItem))
@@ -130,7 +130,7 @@ public:
 	{
 		LPNMHEADER phdr = reinterpret_cast<LPNMHEADER>(pNMHDR);
 		*pResult = 0;
-		if ((phdr->iItem < 0) || (phdr->iItem >= (int)itemName.size()))
+		if (phdr->iItem < 0 || phdr->iItem >= static_cast<int>(itemName.size()))
 			return 0;
 
 		// visible columns may be modified
@@ -155,7 +155,7 @@ private:
 		UINT uCheckedFlags = MF_STRING | MF_ENABLED | MF_CHECKED;
 		UINT uUnCheckedFlags = MF_STRING | MF_ENABLED;
 
-		for (int i = 1; i < (int)itemName.size(); ++i)
+		for (int i = 1; i < static_cast<int>(itemName.size()); ++i)
 		{
 			if (IsRelevant(i))
 				pop->AppendMenu(IsVisible(i)

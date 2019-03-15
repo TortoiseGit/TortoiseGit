@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2017 - TortoiseGit
+// Copyright (C) 2013-2017, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -35,7 +35,7 @@ CUpdateDownloader::CUpdateDownloader(HWND hwnd, bool force, UINT msg, CEvent *ev
 		m_sWindowsServicePack.Format(L"SP%ld", inf.wServicePackMajor);
 
 	CString userAgent;
-	userAgent.Format(L"TortoiseGit %s; %s; Windows%s%s %s%s%s", _T(STRFILEVER), _T(TGIT_PLATFORM), m_sWindowsPlatform.IsEmpty() ? L"" : L" ", (LPCTSTR)m_sWindowsPlatform, (LPCTSTR)m_sWindowsVersion, m_sWindowsServicePack.IsEmpty() ? L"" : L" ", (LPCTSTR)m_sWindowsServicePack);
+	userAgent.Format(L"TortoiseGit %s; %s; Windows%s%s %s%s%s", _T(STRFILEVER), _T(TGIT_PLATFORM), m_sWindowsPlatform.IsEmpty() ? L"" : L" ", static_cast<LPCTSTR>(m_sWindowsPlatform), static_cast<LPCTSTR>(m_sWindowsVersion), m_sWindowsServicePack.IsEmpty() ? L"" : L" ", static_cast<LPCTSTR>(m_sWindowsServicePack));
 	hOpenHandle = InternetOpen(userAgent, INTERNET_OPEN_TYPE_PRECONFIG, nullptr, nullptr, 0);
 }
 
@@ -99,7 +99,7 @@ DWORD CUpdateDownloader::DownloadFile(const CString& url, const CString& dest, b
 	if (!hConnectHandle)
 	{
 		DWORD err = GetLastError();
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Download of %s failed on InternetConnect: %d\n", (LPCTSTR)url, err);
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Download of %s failed on InternetConnect: %d\n", static_cast<LPCTSTR>(url), err);
 		return err;
 	}
 	SCOPE_EXIT{ InternetCloseHandle(hConnectHandle); };
@@ -107,13 +107,13 @@ DWORD CUpdateDownloader::DownloadFile(const CString& url, const CString& dest, b
 	if (!hResourceHandle)
 	{
 		DWORD err = GetLastError();
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Download of %s failed on HttpOpenRequest: %d\n", (LPCTSTR)url, err);
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Download of %s failed on HttpOpenRequest: %d\n", static_cast<LPCTSTR>(url), err);
 		return err;
 	}
 	SCOPE_EXIT{ InternetCloseHandle(hResourceHandle); };
 
 	if (enableDecoding)
-		HttpAddRequestHeaders(hResourceHandle, L"Accept-Encoding: gzip, deflate\r\n", (DWORD)-1, HTTP_ADDREQ_FLAG_ADD);
+		HttpAddRequestHeaders(hResourceHandle, L"Accept-Encoding: gzip, deflate\r\n", DWORD(-1), HTTP_ADDREQ_FLAG_ADD);
 
 	{
 resend:
@@ -126,7 +126,7 @@ resend:
 		else if (!httpsendrequest)
 		{
 			DWORD err = GetLastError();
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Download of %s failed: %d, %d\n", (LPCTSTR)url, httpsendrequest, err);
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Download of %s failed: %d, %d\n", static_cast<LPCTSTR>(url), httpsendrequest, err);
 			return err;
 		}
 	}
@@ -134,19 +134,19 @@ resend:
 	DWORD contentLength = 0;
 	{
 		DWORD length = sizeof(contentLength);
-		HttpQueryInfo(hResourceHandle, HTTP_QUERY_CONTENT_LENGTH | HTTP_QUERY_FLAG_NUMBER, (LPVOID)&contentLength, &length, nullptr);
+		HttpQueryInfo(hResourceHandle, HTTP_QUERY_CONTENT_LENGTH | HTTP_QUERY_FLAG_NUMBER, &contentLength, &length, nullptr);
 	}
 	{
 		DWORD statusCode = 0;
 		DWORD length = sizeof(statusCode);
-		if (!HttpQueryInfo(hResourceHandle, HTTP_QUERY_STATUS_CODE | HTTP_QUERY_FLAG_NUMBER, (LPVOID)&statusCode, &length, nullptr) || statusCode != 200)
+		if (!HttpQueryInfo(hResourceHandle, HTTP_QUERY_STATUS_CODE | HTTP_QUERY_FLAG_NUMBER, &statusCode, &length, nullptr) || statusCode != 200)
 		{
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Download of %s returned %d\n", (LPCTSTR)url, statusCode);
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Download of %s returned %d\n", static_cast<LPCTSTR>(url), statusCode);
 			if (statusCode == 404)
 				return ERROR_FILE_NOT_FOUND;
 			else if (statusCode == 403)
 				return ERROR_ACCESS_DENIED;
-			return (DWORD)INET_E_DOWNLOAD_FAILURE;
+			return static_cast<DWORD>(INET_E_DOWNLOAD_FAILURE);
 		}
 	}
 
@@ -162,16 +162,16 @@ resend:
 		if (!InternetQueryDataAvailable(hResourceHandle, &size, 0, 0))
 		{
 			DWORD err = GetLastError();
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Download of %s failed on InternetQueryDataAvailable: %d\n", (LPCTSTR)url, err);
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Download of %s failed on InternetQueryDataAvailable: %d\n", static_cast<LPCTSTR>(url), err);
 			return err;
 		}
 
 		DWORD downloaded; // size of the downloaded data
 		auto buff = std::make_unique<char[]>(size + 1);
-		if (!InternetReadFile(hResourceHandle, (LPVOID)buff.get(), size, &downloaded))
+		if (!InternetReadFile(hResourceHandle, buff.get(), size, &downloaded))
 		{
 			DWORD err = GetLastError();
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Download of %s failed on InternetReadFile: %d\n", (LPCTSTR)url, err);
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Download of %s failed on InternetReadFile: %d\n", static_cast<LPCTSTR>(url), err);
 			return err;
 		}
 
@@ -203,15 +203,15 @@ resend:
 
 		if (::WaitForSingleObject(*m_eventStop, 0) == WAIT_OBJECT_0)
 		{
-			return (DWORD)E_ABORT; // canceled by the user
+			return static_cast<DWORD>(E_ABORT); // canceled by the user
 		}
 	}
 	while (true);
 
 	if (downloadedSum == 0)
 	{
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Download size of %s was zero.\n", (LPCTSTR)url);
-		return (DWORD)INET_E_DOWNLOAD_FAILURE;
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Download size of %s was zero.\n", static_cast<LPCTSTR>(url));
+		return static_cast<DWORD>(INET_E_DOWNLOAD_FAILURE);
 	}
 	return ERROR_SUCCESS;
 }

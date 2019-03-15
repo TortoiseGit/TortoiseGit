@@ -42,7 +42,7 @@ static CString CalcMD5(CString text)
 	SCOPE_EXIT { CryptDestroyHash(hHash); };
 
 	CStringA textA = CUnicodeUtils::GetUTF8(text);
-	if (!CryptHashData(hHash, (LPBYTE)(LPCSTR)textA, textA.GetLength(), 0))
+	if (!CryptHashData(hHash, reinterpret_cast<const BYTE*>(static_cast<LPCSTR>(textA)), textA.GetLength(), 0))
 		return L"";
 
 	CString hash;
@@ -255,7 +255,7 @@ int CGravatar::DownloadToFile(bool* gravatarExit, const HINTERNET hConnectHandle
 	SCOPE_EXIT { InternetCloseHandle(hResourceHandle); };
 resend:
 	if (*gravatarExit)
-		return (int)INET_E_DOWNLOAD_FAILURE;
+		return static_cast<int>(INET_E_DOWNLOAD_FAILURE);
 
 	BOOL httpsendrequest = HttpSendRequest(hResourceHandle, nullptr, 0, nullptr, 0);
 
@@ -264,17 +264,17 @@ resend:
 	if (dwError == ERROR_INTERNET_FORCE_RETRY)
 		goto resend;
 	else if (!httpsendrequest || *gravatarExit)
-		return (int)INET_E_DOWNLOAD_FAILURE;
+		return static_cast<int>(INET_E_DOWNLOAD_FAILURE);
 
 	DWORD statusCode = 0;
 	DWORD length = sizeof(statusCode);
-	if (!HttpQueryInfo(hResourceHandle, HTTP_QUERY_STATUS_CODE | HTTP_QUERY_FLAG_NUMBER, (LPVOID)&statusCode, &length, nullptr) || statusCode != 200)
+	if (!HttpQueryInfo(hResourceHandle, HTTP_QUERY_STATUS_CODE | HTTP_QUERY_FLAG_NUMBER, &statusCode, &length, nullptr) || statusCode != 200)
 	{
 		if (statusCode == 404)
 			return ERROR_FILE_NOT_FOUND;
 		else if (statusCode == 403)
 			return ERROR_ACCESS_DENIED;
-		return (int)INET_E_DOWNLOAD_FAILURE;
+		return static_cast<int>(INET_E_DOWNLOAD_FAILURE);
 	}
 
 	CFile destinationFile;
@@ -286,12 +286,12 @@ resend:
 	{
 		DWORD size; // size of the data available
 		if (!InternetQueryDataAvailable(hResourceHandle, &size, 0, 0))
-			return (int)INET_E_DOWNLOAD_FAILURE;
+			return static_cast<int>(INET_E_DOWNLOAD_FAILURE);
 
 		DWORD downloaded; // size of the downloaded data
 		auto buff = std::make_unique<TCHAR[]>(size + 1);
-		if (!InternetReadFile(hResourceHandle, (LPVOID)buff.get(), size, &downloaded))
-			return (int)INET_E_DOWNLOAD_FAILURE;
+		if (!InternetReadFile(hResourceHandle, buff.get(), size, &downloaded))
+			return static_cast<int>(INET_E_DOWNLOAD_FAILURE);
 
 		if (downloaded == 0)
 			break;
@@ -303,7 +303,7 @@ resend:
 	}
 	destinationFile.Close();
 	if (downloadedSum == 0)
-		return (int)INET_E_DOWNLOAD_FAILURE;
+		return static_cast<int>(INET_E_DOWNLOAD_FAILURE);
 
 	return 0;
 }

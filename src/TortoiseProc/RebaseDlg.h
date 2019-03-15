@@ -103,7 +103,7 @@ protected:
 	volatile LONG m_bThreadRunning;
 	volatile LONG m_bAbort;
 	int  RebaseThread();
-	static UINT RebaseThreadEntry(LPVOID pVoid) { return reinterpret_cast<CRebaseDlg*>(pVoid)->RebaseThread(); };
+	static UINT RebaseThreadEntry(LPVOID pVoid) { return static_cast<CRebaseDlg*>(pVoid)->RebaseThread(); };
 	BOOL IsEnd();
 
 	int IsCommitEmpty(const CGitHash& hash);
@@ -160,7 +160,7 @@ protected:
 			if (!set)
 				return CString();
 			CString temp;
-			temp.Format(L"%s <%s>", (LPCTSTR)name, (LPCTSTR)email);
+			temp.Format(L"%s <%s>", static_cast<LPCTSTR>(name), static_cast<LPCTSTR>(email));
 			return temp;
 		}
 
@@ -174,7 +174,7 @@ protected:
 				date = L"\"now\"";
 
 			CString temp;
-			temp.Format(L"--date=%s --author=\"%s\" ", (LPCTSTR)date, (LPCTSTR)GetAuthor());
+			temp.Format(L"--date=%s --author=\"%s\" ", static_cast<LPCTSTR>(date), static_cast<LPCTSTR>(GetAuthor()));
 			return temp;
 		}
 	} m_SquashFirstMetaData;

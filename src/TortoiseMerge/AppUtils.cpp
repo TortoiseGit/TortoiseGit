@@ -1,6 +1,6 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2010-2011,2014-2016 - TortoiseGit
+// Copyright (C) 2010-2011, 2014-2016, 2019 - TortoiseGit
 // Copyright (C) 2006-2010, 2012-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -46,7 +46,7 @@ BOOL CAppUtils::GetVersionedFile(CString sPath, CString sVersion, CString sSaveP
 		sSCMPath += L" /command:cat /path:\"%1\" /revision:%2 /savepath:\"%3\" /hwnd:%4";
 	}
 	CString sTemp;
-	sTemp.Format(L"%p", (void*)hWnd);
+	sTemp.Format(L"%p", static_cast<void*>(hWnd));
 	sSCMPath.Replace(L"%1", sPath);
 	sSCMPath.Replace(L"%2", sVersion);
 	sSCMPath.Replace(L"%3", sSavePath);
@@ -82,7 +82,7 @@ bool CAppUtils::CreateUnifiedDiff(const CString& orig, const CString& modified, 
 	if (contextsize >= 0)
 		diffContext.Format(L"--unified=%d", contextsize);
 	CString cmd, err;
-	cmd.Format(L"git.exe diff --no-index %s -- \"%s\" \"%s\"", (LPCTSTR)diffContext, (LPCTSTR)orig, (LPCTSTR)modified);
+	cmd.Format(L"git.exe diff --no-index %s -- \"%s\" \"%s\"", static_cast<LPCTSTR>(diffContext), static_cast<LPCTSTR>(orig), static_cast<LPCTSTR>(modified));
 
 	int result = g_Git.RunLogFile(cmd, output, &err);
 	if (result != 0 && result != 1 && bShowError)
@@ -115,7 +115,7 @@ COLORREF CAppUtils::IntenseColor(long scale, COLORREF col)
 {
 	// if the color is already dark (gray scale below 127),
 	// then lighten the color by 'scale', otherwise darken it
-	int Gray  = (((int)GetRValue(col)) + GetGValue(col) + GetBValue(col))/3;
+	int Gray = (static_cast<int>(GetRValue(col)) + GetGValue(col) + GetBValue(col)) / 3;
 	if (Gray > 127)
 	{
 		long red   = MulDiv(GetRValue(col),(255-scale),255);

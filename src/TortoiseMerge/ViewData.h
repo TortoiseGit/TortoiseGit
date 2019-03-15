@@ -1,4 +1,4 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2007-2011, 2013-2014 - TortoiseSVN
 
@@ -104,7 +104,7 @@ public:
 	EOL				GetLineEnding(int index) const {return m_data[index].ending;}
 	bool			GetMarked(int index) const {return m_data[index].marked;}
 
-	int				GetCount() const { return (int)m_data.size();}
+	int				GetCount() const { return static_cast<int>(m_data.size()); }
 
 	void			SetData(int index, const viewdata& data)
 	{

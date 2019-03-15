@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2016 - TortoiseGit
+// Copyright (C) 2009-2016, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -31,14 +31,14 @@ bool ResolveProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, 
 	for (m_itemCount = 0; m_itemCount < m_itemCountTotal; ++m_itemCount)
 	{
 		CString cmd, out, tempmergefile;
-		cmd.Format(L"git.exe add -f -- \"%s\"", (LPCTSTR)m_targetPathList[m_itemCount].GetGitPathString());
+		cmd.Format(L"git.exe add -f -- \"%s\"", static_cast<LPCTSTR>(m_targetPathList[m_itemCount].GetGitPathString()));
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
 			list->ReportError(out);
 			return false;
 		}
 
-		CAppUtils::RemoveTempMergeFile((CTGitPath &)m_targetPathList[m_itemCount]);
+		CAppUtils::RemoveTempMergeFile(m_targetPathList[m_itemCount]);
 
 		list->AddNotify(new CGitProgressList::WC_File_NotificationData(m_targetPathList[m_itemCount], CGitProgressList::WC_File_NotificationData::git_wc_notify_resolved));
 	}
@@ -53,7 +53,7 @@ bool ResolveProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, 
 		postCmdList.emplace_back(IDI_COMMIT, IDS_MENUCOMMIT, []
 		{
 			CString sCmd;
-			sCmd.Format(L"/command:commit /path:\"%s\"", (LPCTSTR)g_Git.m_CurrentDir);
+			sCmd.Format(L"/command:commit /path:\"%s\"", static_cast<LPCTSTR>(g_Git.m_CurrentDir));
 			CAppUtils::RunTortoiseGitProc(sCmd);
 		});
 	};

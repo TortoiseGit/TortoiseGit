@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2017, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -265,7 +265,7 @@ void CCloneDlg::OnBnClickedCloneBrowseUrl()
 	browseFolder.m_style = BIF_EDITBOX | BIF_NEWDIALOGSTYLE | BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
 	CString strCloneDirectory;
 
-	int sel = (int)this->m_BrowseUrl.GetCurrentEntry();
+	int sel = static_cast<int>(this->m_BrowseUrl.GetCurrentEntry());
 	this->m_regBrowseUrl = sel;
 
 	if( sel == 1 )
@@ -278,7 +278,7 @@ void CCloneDlg::OnBnClickedCloneBrowseUrl()
 			CMessageBox::Show(GetSafeHwnd(), IDS_PROC_CLONE_URLDIREMPTY, IDS_APPNAME, MB_ICONEXCLAMATION);
 			return;
 		}
-		if (CAppUtils::ExploreTo(GetSafeHwnd(), str) && (INT_PTR)ShellExecute(nullptr, L"open", str, nullptr, nullptr, SW_SHOW) <= 32)
+		if (CAppUtils::ExploreTo(GetSafeHwnd(), str) && reinterpret_cast<INT_PTR>(ShellExecute(nullptr, L"open", str, nullptr, nullptr, SW_SHOW)) <= 32)
 			MessageBox(CFormatMessageWrapper(), L"TortoiseGit", MB_ICONERROR);
 		return;
 	}

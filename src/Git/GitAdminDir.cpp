@@ -162,7 +162,7 @@ bool GitAdminDir::GetAdminDirPath(const CString& projectTopDir, CString& adminDi
 
 	int size = 65536;
 	CStringA commonDirA;
-	int length = (int)fread(commonDirA.GetBufferSetLength(size), sizeof(char), size, pFile);
+	int length = static_cast<int>(fread(commonDirA.GetBufferSetLength(size), sizeof(char), size, pFile));
 	commonDirA.ReleaseBuffer(length);
 	CString commonDir = CUnicodeUtils::GetUnicode(commonDirA);
 	commonDir.TrimRight(L"\r\n");
@@ -209,13 +209,13 @@ CString GitAdminDir::ReadGitLink(const CString& topDir, const CString& dotGitPat
 
 	int size = 65536;
 	auto buffer = std::make_unique<char[]>(size);
-	int length = (int)fread(buffer.get(), sizeof(char), size, pFile);
+	int length = static_cast<int>(fread(buffer.get(), sizeof(char), size, pFile));
 	CStringA gitPathA(buffer.get(), length);
 	if (length < 8 || !CStringUtils::StartsWith(gitPathA, "gitdir: "))
 		return L"";
 	CString gitPath = CUnicodeUtils::GetUnicode(gitPathA);
 	// trim after converting to UTF-16, because CStringA trim does not work when having UTF-8 chars
-	gitPath = gitPath.Trim().Mid((int)wcslen(L"gitdir: "));
+	gitPath = gitPath.Trim().Mid(static_cast<int>(wcslen(L"gitdir: ")));
 	if (gitPath.IsEmpty())
 		return gitPath;
 

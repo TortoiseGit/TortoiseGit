@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2010-2011, 2013, 2016 - TortoiseGit
+// Copyright (C) 2010-2011, 2013, 2016, 2019 - TortoiseGit
 // Copyright (C) 2008-2009, 2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -82,7 +82,7 @@ BOOL CIconMenu::AppendMenuIcon(UINT_PTR nIDNewItem, LPCTSTR lpszNewItem, UINT uI
 		info.hSubMenu = hsubmenu;
 	}
 
-	info.wID = (UINT)nIDNewItem;
+	info.wID = static_cast<UINT>(nIDNewItem);
 	info.dwTypeData = menutextbuffer;
 	if ((uIcon != 0) && bShowIcons)
 	{
@@ -92,13 +92,13 @@ BOOL CIconMenu::AppendMenuIcon(UINT_PTR nIDNewItem, LPCTSTR lpszNewItem, UINT uI
 		icons[nIDNewItem] = uIcon;
 	}
 
-	return InsertMenuItem((UINT)nIDNewItem, &info);
+	return InsertMenuItem(static_cast<UINT>(nIDNewItem), &info);
 }
 
 BOOL CIconMenu::AppendMenuIcon(UINT_PTR nIDNewItem, UINT_PTR nNewItem, UINT uIcon /* = 0 */, HMENU hsubmenu /* = nullptr */)
 {
 	CString temp;
-	temp.LoadString((UINT)nNewItem);
+	temp.LoadString(static_cast<UINT>(nNewItem));
 
 	return AppendMenuIcon(nIDNewItem, temp, uIcon, hsubmenu);
 }
@@ -142,10 +142,10 @@ BOOL CIconMenu::SetMenuItemData(UINT_PTR nIDNewItem, LONG_PTR data)
 {
 	MENUITEMINFO menuinfo ={0};
 	menuinfo.cbSize = sizeof(menuinfo);
-	GetMenuItemInfo((UINT)nIDNewItem, &menuinfo);
+	GetMenuItemInfo(static_cast<UINT>(nIDNewItem), &menuinfo);
 	menuinfo.dwItemData =data;
 	menuinfo.fMask |= MIIM_DATA;
-	return SetMenuItemInfo((UINT)nIDNewItem ,&menuinfo);
+	return SetMenuItemInfo(static_cast<UINT>(nIDNewItem), &menuinfo);
 }
 
 LONG_PTR CIconMenu::GetMenuItemData(UINT_PTR nIDNewItem)
@@ -153,7 +153,7 @@ LONG_PTR CIconMenu::GetMenuItemData(UINT_PTR nIDNewItem)
 	MENUITEMINFO menuinfo ={0};
 	menuinfo.fMask |= MIIM_DATA;
 	menuinfo.cbSize = sizeof(menuinfo);
-	GetMenuItemInfo((UINT)nIDNewItem, &menuinfo);
+	GetMenuItemInfo(static_cast<UINT>(nIDNewItem), &menuinfo);
 
 	return menuinfo.dwItemData;
 }

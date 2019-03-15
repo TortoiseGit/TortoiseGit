@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2007-2007 - TortoiseSVN
 
@@ -23,7 +23,7 @@
 // CHighResClock
 //
 //		high resolution clock for performance measurement.
-//		Depending on the hardware it will provide �sec
+//		Depending on the hardware it will provide µsec
 //		resolution and accuracy.
 //
 //		May not be available on all machines.
@@ -72,6 +72,6 @@ public:
 	{
 		LARGE_INTEGER frequency;
 		QueryPerformanceFrequency(&frequency);
-		return (DWORD)((taken.QuadPart * 1000000) / frequency.QuadPart);
+		return static_cast<DWORD>((taken.QuadPart * 1000000) / frequency.QuadPart);
 	}
 };

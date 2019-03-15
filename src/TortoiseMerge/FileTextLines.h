@@ -26,7 +26,7 @@
 template <typename T> class CStdArrayV
 {
 public:
-	int GetCount() const { return (int)m_vec.size(); }
+	int GetCount() const { return static_cast<int>(m_vec.size()); }
 	const T& GetAt(int index) const { return m_vec[index]; }
 	void RemoveAt(int index)	{ m_vec.erase(m_vec.begin()+index); }
 	void InsertAt(int index, const T& strVal)	{ m_vec.insert(m_vec.begin()+index, strVal); }
@@ -50,7 +50,7 @@ private:
 template <typename T> class CStdArrayD
 {
 public:
-	int GetCount() const { return (int)m_vec.size(); }
+	int GetCount() const { return static_cast<int>(m_vec.size()); }
 	const T& GetAt(int index) const { return m_vec[index]; }
 	void RemoveAt(int index)    { m_vec.erase(m_vec.begin()+index); }
 	void InsertAt(int index, const T& strVal)   { m_vec.insert(m_vec.begin()+index, strVal); }
@@ -197,7 +197,7 @@ public:
 	CBuffer & operator =(const CBuffer & Src) { Copy(Src); return *this; }
 	operator bool () const { return !IsEmpty(); }
 	template<typename T>
-	operator T () const { return  (T)m_pBuffer; }
+	operator T () const { return reinterpret_cast<T>(m_pBuffer); }
 
 	void Clear() { m_nUsed=0; }
 	void ExpandToAtLeast(int nNewSize);
@@ -228,7 +228,7 @@ public:
 	const CBuffer & GetBuffer() const {return m_oBuffer; }
 	void Write(const CString& s) { Write(Encode(s)); } ///< encode into buffer and write
 	void Write() { Write(m_oBuffer); } ///< write preencoded internal buffer
-	void Write(const CBuffer & buffer) { if (buffer.GetLength()) m_pFile->Write((void*)buffer, buffer.GetLength()); } ///< write preencoded buffer
+	void Write(const CBuffer & buffer) { if (buffer.GetLength()) m_pFile->Write(static_cast<void*>(buffer), buffer.GetLength()); } ///< write preencoded buffer
 
 protected:
 	CBuffer m_oBuffer;

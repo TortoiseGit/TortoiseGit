@@ -1,4 +1,4 @@
-/*
+﻿/*
 	Description: history graph computation
 
 	Author: Marco Costalba (C) 2005-2007
@@ -267,7 +267,8 @@ int Lanes::findType(int type, int pos) {
 int Lanes::add(int type, const CGitHash& next, int pos, bool& wasEmptyCross) {
 	wasEmptyCross = false;
 	// first check empty lanes starting from pos
-	if (pos < (int)typeVec.size()) {
+	if (pos < static_cast<int>(typeVec.size()))
+	{
 		int posEmpty = findType(EMPTY, pos);
 		int posCrossEmpty = findType(CROSS_EMPTY, pos);
 		// Use first "empty" position.
@@ -291,5 +292,5 @@ int Lanes::add(int type, const CGitHash& next, int pos, bool& wasEmptyCross) {
 	// if all lanes are occupied add a new lane
 	typeVec.push_back(type);
 	nextShaVec.push_back(next);
-	return (int)typeVec.size() - 1;
+	return static_cast<int>(typeVec.size()) - 1;
 }

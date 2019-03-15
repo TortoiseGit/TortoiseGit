@@ -249,13 +249,13 @@ void CPushDlg::Refresh()
 		MessageBox(g_Git.GetGitLastErr(L"Could not get list of local branches."), L"TortoiseGit", MB_ICONERROR);
 	if (CStringUtils::StartsWith(m_BranchSourceName, L"refs/heads/"))
 	{
-		m_BranchSourceName = m_BranchSourceName.Mid((int)wcslen(L"refs/heads/"));
+		m_BranchSourceName = m_BranchSourceName.Mid(static_cast<int>(wcslen(L"refs/heads/")));
 		m_BranchSource.SetCurSel(m_BranchSource.FindStringExact(-1, m_BranchSourceName));
 	}
 	else if (CStringUtils::StartsWith(m_BranchSourceName, L"refs/remotes/") || CStringUtils::StartsWith(m_BranchSourceName, L"remotes/"))
 	{
 		if (CStringUtils::StartsWith(m_BranchSourceName, L"refs/"))
-			m_BranchSourceName = m_BranchSourceName.Mid((int)wcslen(L"refs/"));
+			m_BranchSourceName = m_BranchSourceName.Mid(static_cast<int>(wcslen(L"refs/")));
 		m_BranchSource.SetCurSel(m_BranchSource.FindStringExact(-1, m_BranchSourceName));
 	}
 	else if (m_BranchSourceName.IsEmpty() && current == -1 && !g_Git.IsInitRepos())
@@ -436,7 +436,7 @@ void CPushDlg::OnBnClickedOk()
 				CString configName;
 				if (m_bSetPushBranch)
 				{
-					configName.Format(L"branch.%s.pushbranch", (LPCTSTR)m_BranchSourceName);
+					configName.Format(L"branch.%s.pushbranch", static_cast<LPCTSTR>(m_BranchSourceName));
 					if (!m_BranchRemoteName.IsEmpty())
 						g_Git.SetConfigValue(configName, m_BranchRemoteName);
 					else
@@ -444,7 +444,7 @@ void CPushDlg::OnBnClickedOk()
 				}
 				if (m_bSetPushRemote)
 				{
-					configName.Format(L"branch.%s.pushremote", (LPCTSTR)m_BranchSourceName);
+					configName.Format(L"branch.%s.pushremote", static_cast<LPCTSTR>(m_BranchSourceName));
 					if (!m_URL.IsEmpty())
 						g_Git.SetConfigValue(configName, m_URL);
 					else
@@ -519,7 +519,7 @@ void CPushDlg::OnBnClickedButtonBrowseDestBranch()
 	remoteBranchName = CBrowseRefsDlg::PickRef(false, remoteBranchName, gPickRef_Remote);
 	if(remoteBranchName.IsEmpty())
 		return; //Canceled
-	remoteBranchName = remoteBranchName.Mid((int)wcslen(L"refs/remotes/")); //Strip 'refs/remotes/'
+	remoteBranchName = remoteBranchName.Mid(static_cast<int>(wcslen(L"refs/remotes/"))); //Strip 'refs/remotes/'
 	int slashPlace = remoteBranchName.Find('/');
 	remoteName = remoteBranchName.Left(slashPlace);
 	remoteBranchName = remoteBranchName.Mid(slashPlace + 1); //Strip remote name (for example 'origin/')

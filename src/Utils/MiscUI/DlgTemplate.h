@@ -32,7 +32,7 @@ public:
 		usedBufferLength = sizeof(DLGTEMPLATE );
 		totalBufferLength = usedBufferLength;
 
-		dialogTemplate = (DLGTEMPLATE*)malloc(totalBufferLength);
+		dialogTemplate = static_cast<DLGTEMPLATE*>(malloc(totalBufferLength));
 
 		if (dialogTemplate)
 		{
@@ -209,9 +209,9 @@ protected:
 #ifndef _UNICODE
 		int length = MultiByteToWideChar(CP_ACP, 0, string, -1, nullptr, 0);
 #else
-		int length = (int)wcslen(string)+1;
+		int length = static_cast<int>(wcslen(string)) + 1;
 #endif
-		WCHAR* wideString = (WCHAR*)malloc(sizeof(WCHAR) * length);
+		auto wideString = static_cast<WCHAR*>(malloc(sizeof(WCHAR) * length));
 		if (wideString)
 		{
 #ifndef _UNICODE
@@ -228,7 +228,7 @@ protected:
 	{
 		EnsureSpace(dataLength);
 
-		memcpy((char*)dialogTemplate + usedBufferLength, data, dataLength);
+		memcpy(reinterpret_cast<char*>(dialogTemplate) + usedBufferLength, data, dataLength);
 		usedBufferLength += dataLength;
 	}
 
@@ -242,7 +242,7 @@ protected:
 			memcpy(newBuffer, dialogTemplate, usedBufferLength);
 
 			free(dialogTemplate);
-			dialogTemplate = (DLGTEMPLATE*)newBuffer;
+			dialogTemplate = static_cast<DLGTEMPLATE*>(newBuffer);
 		}
 	}
 

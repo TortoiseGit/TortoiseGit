@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2018 - TortoiseGit
+// Copyright (C) 2018-2019 - TortoiseGit
 // Copyright (C) 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -131,10 +131,10 @@ private:
 			auto hUser = ::GetModuleHandle(L"user32.dll");
 			if (hUser)
 			{
-				pfnGetDpiForWindow = (GetDpiForWindowFN*)GetProcAddress(hUser, "GetDpiForWindow");
-				pfnGetDpiForSystem = (GetDpiForSystemFN*)GetProcAddress(hUser, "GetDpiForSystem");
-				pfnGetSystemMetricsForDpi = (GetSystemMetricsForDpiFN*)GetProcAddress(hUser, "GetSystemMetricsForDpi");
-				pfnSystemParametersInfoForDpi = (SystemParametersInfoForDpiFN*)GetProcAddress(hUser, "SystemParametersInfoForDpi");
+				pfnGetDpiForWindow = reinterpret_cast<GetDpiForWindowFN*>(GetProcAddress(hUser, "GetDpiForWindow"));
+				pfnGetDpiForSystem = reinterpret_cast<GetDpiForSystemFN*>(GetProcAddress(hUser, "GetDpiForSystem"));
+				pfnGetSystemMetricsForDpi = reinterpret_cast<GetSystemMetricsForDpiFN*>(GetProcAddress(hUser, "GetSystemMetricsForDpi"));
+				pfnSystemParametersInfoForDpi = reinterpret_cast<SystemParametersInfoForDpiFN*>(GetProcAddress(hUser, "SystemParametersInfoForDpi"));
 			}
 
 			if (pfnGetDpiForSystem)

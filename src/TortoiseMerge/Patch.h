@@ -1,7 +1,7 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2006-2008, 2014 - TortoiseSVN
-// Copyright (C) 2012-2013, 2018 - Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2012-2013, 2018-2019 - Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -39,7 +39,7 @@ public:
 
 	BOOL		OpenUnifiedDiffFile(const CString& filename);
 	int			PatchFile(const int strip, const int nIndex, const CString& sPath, const CString& sSavePath = L"", const CString& sBaseFile = L"", const bool force = false);
-	int			GetNumberOfFiles() const { return (int)m_arFileDiffs.size(); }
+	int			GetNumberOfFiles() const { return static_cast<int>(m_arFileDiffs.size()); }
 	CString		GetFilename(int nIndex);
 	CString		GetRevision(int nIndex);
 	CString		GetFilename2(int nIndex);

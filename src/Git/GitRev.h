@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2017, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -112,7 +112,7 @@ public:
 	GIT_REV_LIST m_ParentHash;
 
 	virtual void Clear();
-	inline int ParentsCount(){ return (int)m_ParentHash.size(); }
+	inline int ParentsCount() {return static_cast<int>(m_ParentHash.size()); }
 
 	int ParserFromCommit(GIT_COMMIT *commit);
 	int ParserParentFromCommit(GIT_COMMIT *commit);

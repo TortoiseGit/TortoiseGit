@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2014, 2016 - TortoiseGit
+// Copyright (C) 2013-2016, 2018-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -26,9 +26,9 @@ void Graphviz::DrawNode(CString id, CString text, CString fontName, int fontSize
 	content.AppendChar(L'\t');
 	content.Append(id);
 
-	content.AppendFormat(L" [label=\"%s\"", (LPCTSTR)text);
+	content.AppendFormat(L" [label=\"%s\"", static_cast<LPCTSTR>(text));
 	if (m_defaultFontName != fontName)
-		content.AppendFormat(L", fontname=\"%s\"", (LPCTSTR)fontName);
+		content.AppendFormat(L", fontname=\"%s\"", static_cast<LPCTSTR>(fontName));
 
 	if (m_defaultFontSize != fontSize)
 		content.AppendFormat(L", fontsize=\"%d\"", fontSize);
@@ -49,7 +49,7 @@ void Graphviz::BeginDrawTableNode(CString id, CString fontName, int fontSize, in
 	bool hasAttr = false;
 	if (m_defaultFontName != fontName)
 	{
-		content.AppendFormat(L"fontname=\"%s\"", (LPCTSTR)fontName);
+		content.AppendFormat(L"fontname=\"%s\"", static_cast<LPCTSTR>(fontName));
 		hasAttr = true;
 	}
 
@@ -70,7 +70,7 @@ void Graphviz::BeginDrawTableNode(CString id, CString fontName, int fontSize, in
 
 void Graphviz::DrawTableNode(CString text, Gdiplus::Color backColor)
 {
-	content.AppendFormat(L"\t<tr><td port=\"f%d\" bgcolor=\"#%06X\">%s</td></tr>\r\n", m_tableNodeNum++, backColor.GetValue() & 0xffffff, (LPCTSTR)text);
+	content.AppendFormat(L"\t<tr><td port=\"f%d\" bgcolor=\"#%06X\">%s</td></tr>\r\n", m_tableNodeNum++, backColor.GetValue() & 0xffffff, static_cast<LPCTSTR>(text));
 }
 
 void Graphviz::EndDrawTableNode()
@@ -98,13 +98,13 @@ bool Graphviz::Save(const CString &path)
 	header.Format("digraph G {\r\n\tgraph [rankdir=BT];\r\n\tnode [style=\"filled, rounded\", shape=box, fontname=\"Courier New\", fontsize=9, height=0.26, penwidth=0];\r\n");
 	CStringA footer = "\r\n}";
 
-	if (!WriteFile(hFile, header, (DWORD)header.GetLength(), &dwWritten, nullptr))
+	if (!WriteFile(hFile, header, static_cast<DWORD>(header.GetLength()), &dwWritten, nullptr))
 		return false;
 
 	CStringA contentA = CUnicodeUtils::GetUTF8(content);
-	if (!WriteFile(hFile, contentA, (DWORD)contentA.GetLength(), &dwWritten, nullptr))
+	if (!WriteFile(hFile, contentA, static_cast<DWORD>(contentA.GetLength()), &dwWritten, nullptr))
 		return false;
-	if (!WriteFile(hFile, footer, (DWORD)footer.GetLength(), &dwWritten, nullptr))
+	if (!WriteFile(hFile, footer, static_cast<DWORD>(footer.GetLength()), &dwWritten, nullptr))
 		return false;
 
 	return true;

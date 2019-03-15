@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005 - 2006,2010 - Will Dean, Stefan Kueng
-// Copyright (C) 2008-2014, 2016-2018 - TortoiseGit
+// Copyright (C) 2008-2014, 2016-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -37,10 +37,10 @@
 #include "LoadIconEx.h"
 
 #ifndef GET_X_LPARAM
-#define GET_X_LPARAM(lp)                        ((int)(short)LOWORD(lp))
+#define GET_X_LPARAM(lp)                        static_cast<int>(static_cast<short>(LOWORD(lp)))
 #endif
 #ifndef GET_Y_LPARAM
-#define GET_Y_LPARAM(lp)                        ((int)(short)HIWORD(lp))
+#define GET_Y_LPARAM(lp)                        static_cast<int>(static_cast<short>(HIWORD(lp)))
 #endif
 
 
@@ -86,14 +86,14 @@ void HandleCommandLine(LPSTR lpCmdLine)
 	char *ptr = strstr(lpCmdLine, "/kill:");
 	if (ptr)
 	{
-		DWORD pid = (DWORD)atoi(ptr + strlen("/kill:"));
+		DWORD pid = static_cast<DWORD>(atoi(ptr + strlen("/kill:")));
 		HANDLE hProcess = ::OpenProcess(PROCESS_TERMINATE, FALSE, pid);
 		if (hProcess)
 		{
 			if (::WaitForSingleObject(hProcess, 5000) != WAIT_OBJECT_0)
 			{
 				CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Killing previous TGitCache PID %d\n", pid);
-				if (!::TerminateProcess(hProcess, (UINT)-1))
+				if (!::TerminateProcess(hProcess, static_cast<UINT>(-1)))
 					CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Kill previous TGitCache PID %d failed\n", pid);
 				::WaitForSingleObject(hProcess, 5000);
 			}
@@ -175,7 +175,7 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR lp
 	WNDCLASSEX wcex = { 0 };
 	wcex.cbSize = sizeof(WNDCLASSEX);
 	wcex.style			= CS_HREDRAW | CS_VREDRAW;
-	wcex.lpfnWndProc	= (WNDPROC)WndProc;
+	wcex.lpfnWndProc	= reinterpret_cast<WNDPROC>(WndProc);
 	wcex.hInstance		= hInstance;
 	wcex.lpszClassName	= szWindowClass;
 	RegisterClassEx(&wcex);
@@ -189,7 +189,7 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR lp
 		nullptr,           // no security attribute
 		0,                 // default stack size
 		PipeThread,
-		(LPVOID) &bRun,    // thread parameter
+		&bRun,             // thread parameter
 		0,                 // not suspended
 		&dwThreadId);      // returns thread ID
 
@@ -202,7 +202,7 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR lp
 		nullptr,           // no security attribute
 		0,                 // default stack size
 		CommandWaitThread,
-		(LPVOID) &bRun,    // thread parameter
+		&bRun,             // thread parameter
 		0,                 // not suspended
 		&dwThreadId);      // returns thread ID
 
@@ -265,9 +265,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				HMENU hMenu = CreatePopupMenu();
 				if(hMenu)
 				{
-					bool enabled = (DWORD)CRegStdDWORD(L"Software\\TortoiseGit\\CacheType", GetSystemMetrics(SM_REMOTESESSION) ? ShellCache::dll : ShellCache::exe) != ShellCache::none;
-					InsertMenu(hMenu, (UINT)-1, MF_BYPOSITION, TRAYPOP_ENABLE, enabled ? L"Disable Status Cache" : L"Enable Status Cache");
-					InsertMenu(hMenu, (UINT)-1, MF_BYPOSITION, TRAYPOP_EXIT, L"Exit");
+					bool enabled = static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\CacheType", GetSystemMetrics(SM_REMOTESESSION)) ? ShellCache::dll : ShellCache::exe) != ShellCache::none;
+					InsertMenu(hMenu, static_cast<UINT>(-1), MF_BYPOSITION, TRAYPOP_ENABLE, enabled ? L"Disable Status Cache" : L"Enable Status Cache");
+					InsertMenu(hMenu, static_cast<UINT>(-1), MF_BYPOSITION, TRAYPOP_EXIT, L"Exit");
 					SetForegroundWindow(hWnd);
 					TrackPopupMenu(hMenu, TPM_BOTTOMALIGN, pt.x, pt.y, 0, hWnd, nullptr);
 					DestroyMenu(hMenu);
@@ -291,15 +291,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			int line = 0;
 			SIZE fontsize = {0};
 			AutoLocker print(critSec);
-			GetTextExtentPoint32(hdc, szCurrentCrawledPath[0], (int)wcslen(szCurrentCrawledPath[0]), &fontsize);
+			GetTextExtentPoint32(hdc, szCurrentCrawledPath[0], static_cast<int>(wcslen(szCurrentCrawledPath[0])), &fontsize);
 			for (int i=nCurrentCrawledpathIndex; i<MAX_CRAWLEDPATHS; ++i)
 			{
-				TextOut(hdc, 0, line*fontsize.cy, szCurrentCrawledPath[i], (int)wcslen(szCurrentCrawledPath[i]));
+				TextOut(hdc, 0, line*fontsize.cy, szCurrentCrawledPath[i], static_cast<int>(wcslen(szCurrentCrawledPath[i])));
 				++line;
 			}
 			for (int i=0; i<nCurrentCrawledpathIndex; ++i)
 			{
-				TextOut(hdc, 0, line*fontsize.cy, szCurrentCrawledPath[i], (int)wcslen(szCurrentCrawledPath[i]));
+				TextOut(hdc, 0, line*fontsize.cy, szCurrentCrawledPath[i], static_cast<int>(wcslen(szCurrentCrawledPath[i])));
 				++line;
 			}
 
@@ -318,7 +318,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			case TRAYPOP_ENABLE:
 				{
 					CRegStdDWORD reg = CRegStdDWORD(L"Software\\TortoiseGit\\CacheType", GetSystemMetrics(SM_REMOTESESSION) ? ShellCache::dll : ShellCache::exe);
-					bool enabled = (DWORD)reg != ShellCache::none;
+					bool enabled = static_cast<DWORD>(reg) != ShellCache::none;
 					reg = enabled ? ShellCache::none : ShellCache::exe;
 					if (enabled)
 					{
@@ -363,7 +363,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 	case WM_DEVICECHANGE:
 		{
-			DEV_BROADCAST_HDR * phdr = (DEV_BROADCAST_HDR*)lParam;
+			auto phdr = reinterpret_cast<DEV_BROADCAST_HDR*>(lParam);
 			switch (wParam)
 			{
 			case DBT_CUSTOMEVENT:
@@ -371,7 +371,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					CTraceToOutputDebugString::Instance()(__FUNCTION__ ": WM_DEVICECHANGE with DBT_CUSTOMEVENT\n");
 					if (phdr->dbch_devicetype == DBT_DEVTYP_HANDLE)
 					{
-						DEV_BROADCAST_HANDLE * phandle = (DEV_BROADCAST_HANDLE*)lParam;
+						auto phandle = reinterpret_cast<DEV_BROADCAST_HANDLE*>(lParam);
 						if (IsEqualGUID(phandle->dbch_eventguid, GUID_IO_VOLUME_DISMOUNT))
 						{
 							CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Device to be dismounted\n");
@@ -393,13 +393,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				CTraceToOutputDebugString::Instance()(__FUNCTION__ ": WM_DEVICECHANGE with DBT_DEVICEREMOVEPENDING/DBT_DEVICEQUERYREMOVE/DBT_DEVICEREMOVECOMPLETE\n");
 				if (phdr->dbch_devicetype == DBT_DEVTYP_HANDLE)
 				{
-					DEV_BROADCAST_HANDLE * phandle = (DEV_BROADCAST_HANDLE*)lParam;
+					auto phandle = reinterpret_cast<DEV_BROADCAST_HANDLE*>(lParam);
 					CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
 					CGitStatusCache::Instance().CloseWatcherHandles(phandle->dbch_handle);
 				}
 				else if (phdr->dbch_devicetype == DBT_DEVTYP_VOLUME)
 				{
-					DEV_BROADCAST_VOLUME * pVolume = (DEV_BROADCAST_VOLUME*)lParam;
+					auto pVolume = reinterpret_cast<DEV_BROADCAST_VOLUME*>(lParam);
 					CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
 					for (BYTE i = 0; i < 26; ++i)
 					{
@@ -464,7 +464,7 @@ VOID GetAnswerToRequest(const TGITCacheRequest* pRequest, TGITCacheResponse* pRe
 DWORD WINAPI PipeThread(LPVOID lpvParam)
 {
 	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": PipeThread started\n");
-	bool* bThreadRun = (bool*)lpvParam;
+	auto bThreadRun = reinterpret_cast<bool*>(lpvParam);
 	// The main loop creates an instance of the named pipe and
 	// then waits for a client to connect to it. When the client
 	// connects, a thread is created to handle communications
@@ -505,7 +505,7 @@ DWORD WINAPI PipeThread(LPVOID lpvParam)
 				nullptr,           // no security attribute
 				0,                 // default stack size
 				InstanceThread,
-				(HANDLE) hPipe,    // thread parameter
+				hPipe,             // thread parameter
 				0,                 // not suspended
 				&dwThreadId);      // returns thread ID
 
@@ -537,7 +537,7 @@ DWORD WINAPI PipeThread(LPVOID lpvParam)
 DWORD WINAPI CommandWaitThread(LPVOID lpvParam)
 {
 	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": CommandWaitThread started\n");
-	bool* bThreadRun = (bool*)lpvParam;
+	auto bThreadRun = reinterpret_cast<bool*>(lpvParam);
 	// The main loop creates an instance of the named pipe and
 	// then waits for a client to connect to it. When the client
 	// connects, a thread is created to handle communications
@@ -578,7 +578,7 @@ DWORD WINAPI CommandWaitThread(LPVOID lpvParam)
 				nullptr,           // no security attribute
 				0,                 // default stack size
 				CommandThread,
-				(HANDLE) hPipe,    // thread parameter
+				hPipe,             // thread parameter
 				0,                 // not suspended
 				&dwThreadId);      // returns thread ID
 

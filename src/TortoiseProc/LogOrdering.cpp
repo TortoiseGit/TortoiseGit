@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2016 - TortoiseGit
+// Copyright (C) 2013-2016, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -62,7 +62,7 @@ BOOL CLogOrdering::OnInitDialog()
 void CLogOrdering::OnOK()
 {
 	if (m_cLogOrdering.GetCurSel() != CB_ERR)
-		CRegDWORD(L"Software\\TortoiseGit\\LogOrderBy") = (DWORD)m_cLogOrdering.GetItemData(m_cLogOrdering.GetCurSel());
+		CRegDWORD(L"Software\\TortoiseGit\\LogOrderBy") = static_cast<DWORD>(m_cLogOrdering.GetItemData(m_cLogOrdering.GetCurSel()));
 
 	__super::OnOK();
 }

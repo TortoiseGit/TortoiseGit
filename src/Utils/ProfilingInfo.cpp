@@ -114,7 +114,7 @@ CProfilingInfo::~CProfilingInfo(void)
 				std::string report = GetInstance()->GetReport();
 
 				CFile file (fileName.c_str(), CFile::modeCreate | CFile::modeWrite );
-				file.Write (report.c_str(), (UINT)report.size());
+				file.Write(report.c_str(), static_cast<UINT>(report.size()));
 			}
 			catch (...)
 			{

@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2012-2016 - TortoiseGit
+// Copyright (C) 2009, 2012-2016, 2019 - TortoiseGit
 // Copyright (C) 2008,2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -66,11 +66,11 @@ void CBugTraqAssociations::Load(LPCTSTR uuid /* = nullptr */, LPCTSTR params /* 
 		{
 			TCHAR szWorkingCopy[MAX_PATH] = {0};
 			DWORD cbWorkingCopy = sizeof(szWorkingCopy);
-			RegQueryValueEx(hk2, L"WorkingCopy", nullptr, nullptr, (LPBYTE)szWorkingCopy, &cbWorkingCopy);
+			RegQueryValueEx(hk2, L"WorkingCopy", nullptr, nullptr, reinterpret_cast<LPBYTE>(szWorkingCopy), &cbWorkingCopy);
 
 			TCHAR szClsid[MAX_PATH] = {0};
 			DWORD cbClsid = sizeof(szClsid);
-			RegQueryValueEx(hk2, L"Provider", nullptr, nullptr, (LPBYTE)szClsid, &cbClsid);
+			RegQueryValueEx(hk2, L"Provider", nullptr, nullptr, reinterpret_cast<LPBYTE>(szClsid), &cbClsid);
 
 			CLSID provider_clsid;
 			CLSIDFromString(szClsid, &provider_clsid);
@@ -78,12 +78,12 @@ void CBugTraqAssociations::Load(LPCTSTR uuid /* = nullptr */, LPCTSTR params /* 
 			DWORD cbParameters = 0;
 			RegQueryValueEx(hk2, L"Parameters", nullptr, nullptr, nullptr, &cbParameters);
 			auto szParameters = std::make_unique<TCHAR[]>(cbParameters + 1);
-			RegQueryValueEx(hk2, L"Parameters", nullptr, nullptr, (LPBYTE)szParameters.get(), &cbParameters);
+			RegQueryValueEx(hk2, L"Parameters", nullptr, nullptr, reinterpret_cast<LPBYTE>(szParameters.get()), &cbParameters);
 			szParameters[cbParameters] = 0;
 
 			DWORD enabled = TRUE;
 			DWORD size = sizeof(enabled);
-			RegQueryValueEx(hk2, L"Enabled", nullptr, nullptr, (BYTE*)&enabled, &size);
+			RegQueryValueEx(hk2, L"Enabled", nullptr, nullptr, reinterpret_cast<BYTE*>(&enabled), &size);
 
 			m_inner.push_back(new CBugTraqAssociation(szWorkingCopy, provider_clsid, LookupProviderName(provider_clsid), szParameters.get(), enabled != FALSE));
 
@@ -121,8 +121,8 @@ bool CBugTraqAssociations::FindProvider(const CString &path, CBugTraqAssociation
 	if (!providerUUID.IsEmpty())
 	{
 		CLSID provider_clsid;
-		CLSIDFromString((LPOLESTR)(LPCWSTR)providerUUID, &provider_clsid);
-		pProjectProvider = new CBugTraqAssociation(L"", provider_clsid, L"bugtraq:provider", (LPCWSTR)providerParams, true);
+		CLSIDFromString(static_cast<LPCOLESTR>(static_cast<LPCWSTR>(providerUUID)), &provider_clsid);
+		pProjectProvider = new CBugTraqAssociation(L"", provider_clsid, L"bugtraq:provider", static_cast<LPCWSTR>(providerParams), true);
 		if (pProjectProvider)
 		{
 			if (assoc)
@@ -162,7 +162,7 @@ CString CBugTraqAssociations::LookupProviderName(const CLSID &provider_clsid)
 		TCHAR szClassName[MAX_PATH] = {0};
 		DWORD cbClassName = sizeof(szClassName);
 
-		if (RegQueryValueEx(hk, nullptr, nullptr, nullptr, (LPBYTE)szClassName, &cbClassName) == ERROR_SUCCESS)
+		if (RegQueryValueEx(hk, nullptr, nullptr, nullptr, reinterpret_cast<LPBYTE>(szClassName), &cbClassName) == ERROR_SUCCESS)
 			provider_name = CString(szClassName);
 
 		RegCloseKey(hk);
@@ -175,7 +175,7 @@ LSTATUS RegSetValueFromCString(HKEY hKey, LPCTSTR lpValueName, CString str)
 {
 	LPCTSTR lpsz = str;
 	DWORD cb = (str.GetLength() + 1) * sizeof(TCHAR);
-	return RegSetValueEx(hKey, lpValueName, 0, REG_SZ, (const BYTE *)lpsz, cb);
+	return RegSetValueEx(hKey, lpValueName, 0, REG_SZ, reinterpret_cast<const BYTE*>(lpsz), cb);
 }
 
 void CBugTraqAssociations::Save() const
@@ -199,7 +199,7 @@ void CBugTraqAssociations::Save() const
 			RegSetValueFromCString(hk2, L"WorkingCopy", (*it)->GetPath().GetWinPath());
 			RegSetValueFromCString(hk2, L"Parameters", (*it)->GetParameters());
 			DWORD enabled = (*it)->IsEnabled() ? 1 : 0;
-			RegSetValueEx(hk2, L"Enabled", 0, REG_DWORD, (BYTE*)&enabled, sizeof(enabled));
+			RegSetValueEx(hk2, L"Enabled", 0, REG_DWORD, reinterpret_cast<BYTE*>(&enabled), sizeof(enabled));
 
 			RegCloseKey(hk2);
 		}
@@ -236,7 +236,7 @@ std::vector<CBugTraqProvider> CBugTraqAssociations::GetAvailableProviders()
 	ICatInformation* pCatInformation = nullptr;
 
 	HRESULT hr;
-	if (SUCCEEDED(hr = CoCreateInstance(CLSID_StdComponentCategoriesMgr, nullptr, CLSCTX_ALL, IID_ICatInformation, (void**)&pCatInformation)))
+	if (SUCCEEDED(hr = CoCreateInstance(CLSID_StdComponentCategoriesMgr, nullptr, CLSCTX_ALL, IID_ICatInformation, reinterpret_cast<void**>(&pCatInformation))))
 	{
 		IEnumGUID* pEnum = nullptr;
 		if (SUCCEEDED(hr = pCatInformation->EnumClassesOfCategories(1, &CATID_BugTraqProvider, 0, nullptr, &pEnum)))

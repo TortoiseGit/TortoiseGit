@@ -1,4 +1,4 @@
-/********************************************************************
+﻿/********************************************************************
 *
 * Copyright (c) 2002 Sven Wiegand <mail@sven-wiegand.de>
 *
@@ -42,7 +42,7 @@ namespace TreePropSheet
 			auto pResource = reinterpret_cast<LPDLGTEMPLATE>(lParam);
 			CDialogTemplate dlgTemplate(pResource);
 			dlgTemplate.SetFont(L"MS Shell Dlg 2", 9);
-			memmove((void*)lParam, dlgTemplate.m_hTemplate, dlgTemplate.m_dwTemplateSize);
+			memmove(reinterpret_cast<void*>(lParam), dlgTemplate.m_hTemplate, dlgTemplate.m_dwTemplateSize);
 		}
 		break;
 		}
@@ -419,7 +419,7 @@ HTREEITEM CTreePropSheet::CreatePageTreeItem(LPCTSTR lpszPath, HTREEITEM hParent
 	if (!hItem)
 	{
 		hItem = m_pwndPageTree->InsertItem(strTopMostItem, hParent);
-		m_pwndPageTree->SetItemData(hItem, (DWORD_PTR)-1);
+		m_pwndPageTree->SetItemData(hItem, DWORD_PTR(-1));
 		if (!strPath.IsEmpty() && m_bTreeImages && m_DefaultImages.GetSafeHandle())
 			// set folder image
 			m_pwndPageTree->SetItemImage(hItem, m_Images.GetImageCount()-2, m_Images.GetImageCount()-2);
@@ -493,7 +493,7 @@ BOOL CTreePropSheet::KillActiveCurrentPage()
 	pshn.hdr.hwndFrom = m_hWnd;
 	pshn.hdr.idFrom = GetDlgCtrlID();
 	pshn.lParam = 0;
-	if (::SendMessage(hCurrentPage, WM_NOTIFY, pshn.hdr.idFrom, (LPARAM)&pshn))
+	if (::SendMessage(hCurrentPage, WM_NOTIFY, pshn.hdr.idFrom, reinterpret_cast<LPARAM>(&pshn)))
 		// current page does not allow page change
 		return FALSE;
 
@@ -528,7 +528,7 @@ HTREEITEM CTreePropSheet::GetPageTreeItem(int nPage, HTREEITEM hRoot /* = TVI_RO
 	HTREEITEM	hItem = hRoot;
 	while (hItem)
 	{
-		if ((signed)m_pwndPageTree->GetItemData(hItem) == nPage)
+		if (static_cast<int>(m_pwndPageTree->GetItemData(hItem)) == nPage)
 			return hItem;
 		if (m_pwndPageTree->ItemHasChildren(hItem))
 		{
@@ -612,7 +612,7 @@ void CTreePropSheet::UpdateCaption()
 			ti.mask = TCIF_IMAGE;
 
 			HICON	hIcon = nullptr;
-			if (pTabCtrl->GetItem((int)m_pwndPageTree->GetItemData(hItem), &ti))
+			if (pTabCtrl->GetItem(static_cast<int>(m_pwndPageTree->GetItemData(hItem)), &ti))
 				hIcon = pImages->ExtractIcon(ti.iImage);
 
 			m_pFrame->SetCaption(strCaption, hIcon);
@@ -867,7 +867,7 @@ BOOL CTreePropSheet::OnInitDialog()
 
 	// MFC7-support here (Thanks to Rainer Wollgarten)
 	// YT: Cast tree control to CWnd and calls CWnd::CreateEx in all cases (VC 6 and7).
-	((CWnd*)m_pwndPageTree)->CreateEx(
+	static_cast<CWnd*>(m_pwndPageTree)->CreateEx(
 		WS_EX_CLIENTEDGE|WS_EX_NOPARENTNOTIFY|TVS_EX_DOUBLEBUFFER,
 		L"SysTreeView32", L"PageTree",
 		WS_TABSTOP|WS_CHILD|WS_VISIBLE|dwTreeStyle,
@@ -958,17 +958,17 @@ void CTreePropSheet::OnPageTreeSelChanging(NMHDR *pNotifyStruct, LRESULT *plResu
 		m_bPageTreeSelChangedActive = TRUE;
 
 	NMTREEVIEW	*pTvn = reinterpret_cast<NMTREEVIEW*>(pNotifyStruct);
-	int nPage = (int)m_pwndPageTree->GetItemData(pTvn->itemNew.hItem);
+	int nPage = static_cast<int>(m_pwndPageTree->GetItemData(pTvn->itemNew.hItem));
 	if (nPage < 0)
 	{
 		HTREEITEM nextItem = m_pwndPageTree->GetChildItem(pTvn->itemNew.hItem);
-		nPage = (int)m_pwndPageTree->GetItemData(nextItem);
+		nPage = static_cast<int>(m_pwndPageTree->GetItemData(nextItem));
 	}
 	BOOL				bResult;
-	if (nPage >= (int)m_pwndPageTree->GetCount())
+	if (nPage >= static_cast<int>(m_pwndPageTree->GetCount()))
 		bResult = KillActiveCurrentPage();
 	else
-		bResult = SetActivePage((int)nPage);
+		bResult = SetActivePage(nPage);
 
 	if (!bResult)
 		// prevent selection to change

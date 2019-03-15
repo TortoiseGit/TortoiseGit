@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (c) 2003 by Andreas Kapust <info@akinstaller.de>; <http://www.codeproject.com/Articles/2607/AutoComplete-without-IAutoComplete>
-// Copyright (C) 2009, 2012-2013, 2015-2016, 2018 - TortoiseGit
+// Copyright (C) 2009, 2012-2013, 2015-2016, 2018-2019 - TortoiseGit
 
 // Licensed under: The Code Project Open License (CPOL); <http://www.codeproject.com/info/cpol10.aspx>
 
@@ -90,7 +90,7 @@ void CACEdit::SetMode(int iMode)
 void CACEdit::Init()
 {
 	CString szClassName = AfxRegisterWndClass(CS_CLASSDC|CS_SAVEBITS|CS_HREDRAW|CS_VREDRAW,
-		0,(HBRUSH) (COLOR_WINDOW), 0);
+		0, reinterpret_cast<HBRUSH>(COLOR_WINDOW), 0);
 	CRect rcWnd,rcWnd1;
 	GetWindowRect(rcWnd);
 
@@ -113,7 +113,7 @@ void CACEdit::Init()
 		{
 			m_iType = _COMBOBOX_;
 
-			m_pEdit = (CEdit*)GetWindow(GW_CHILD);
+			m_pEdit = static_cast<CEdit*>(GetWindow(GW_CHILD));
 			VERIFY(m_pEdit);
 			::GetClassName(m_pEdit->GetSafeHwnd(), CStrBuf(m_ClassName, 32), 32);
 			VERIFY(m_ClassName.Compare(L"Edit") == 0);
@@ -254,8 +254,8 @@ bool CACEdit::HandleKey(UINT nChar, bool m_bFromChild)
 
 					if (m_iType == _EDIT_)
 					{
-						((CEdit*)this)->SetSel(pos, pos, true);
-						((CEdit*)this)->SetModify(true);
+						reinterpret_cast<CEdit*>(this)->SetSel(pos, pos, true);
+						reinterpret_cast<CEdit*>(this)->SetModify(true);
 					}
 				}
 
@@ -276,7 +276,7 @@ bool CACEdit::HandleKey(UINT nChar, bool m_bFromChild)
 				GetWindowText(m_EditText);
 
 				if(m_iType == _EDIT_)
-					pos2 = LOWORD(((CEdit*)this)->CharFromPos(GetCaretPos()));
+					pos2 = LOWORD(reinterpret_cast<CEdit*>(this)->CharFromPos(GetCaretPos()));
 
 				if(m_iType == _COMBOBOX_)
 					pos2 = m_pEdit->CharFromPos(m_pEdit->GetCaretPos());
@@ -312,8 +312,8 @@ bool CACEdit::HandleKey(UINT nChar, bool m_bFromChild)
 
 					if (m_iType == _EDIT_)
 					{
-						((CEdit*)this)->SetModify(true);
-						((CEdit*)this)->SetSel(left + len, left + len, false);
+						reinterpret_cast<CEdit*>(this)->SetModify(true);
+						reinterpret_cast<CEdit*>(this)->SetSel(left + len, left + len, false);
 					}
 
 					if (m_iType == _COMBOBOX_)
@@ -350,7 +350,7 @@ void CACEdit::OnChange()
 		if(!m_CursorMode)
 		{
 			if(m_iType == _EDIT_)
-				pos = LOWORD(((CEdit*)this)->CharFromPos(GetCaretPos()));
+				pos = LOWORD(reinterpret_cast<CEdit*>(this)->CharFromPos(GetCaretPos()));
 
 			if(m_iType == _COMBOBOX_)
 				pos = m_pEdit->CharFromPos(m_pEdit->GetCaretPos());
@@ -383,7 +383,7 @@ void CACEdit::OnChange()
 		if(!m_CursorMode)
 		{
 			if(m_iType == _EDIT_)
-				pos = LOWORD(((CEdit*)this)->CharFromPos(GetCaretPos()));
+				pos = LOWORD(reinterpret_cast<CEdit*>(this)->CharFromPos(GetCaretPos()));
 
 			if(m_iType == _COMBOBOX_)
 				pos = m_pEdit->CharFromPos(m_pEdit->GetCaretPos());
@@ -497,12 +497,12 @@ BOOL CACEdit::PreTranslateMessage(MSG* pMsg)
 			if(m_iType == _COMBOBOX_)
 			{
 				if(pMsg->wParam == VK_DOWN || pMsg->wParam == VK_UP)
-					if (HandleKey((UINT)pMsg->wParam, false))
+					if (HandleKey(static_cast<UINT>(pMsg->wParam), false))
 						return true;
 			}
 
 			if(pMsg->wParam == VK_ESCAPE || pMsg->wParam == VK_RETURN)
-				if (HandleKey((UINT)pMsg->wParam, false))
+				if (HandleKey(static_cast<UINT>(pMsg->wParam), false))
 					return true;
 		}
 	}
@@ -526,7 +526,7 @@ void CACEdit::ReadDirectory(CString m_Dir)
 	}
 
 	//ist hübscher
-	ch = (TCHAR)towupper(m_Dir.GetAt(0));
+	ch = static_cast<TCHAR>(towupper(m_Dir.GetAt(0)));
 	m_Dir.SetAt(0,ch);
 
 	CString m_Name,m_File,m_Dir1 = m_Dir;
@@ -603,7 +603,7 @@ int CACEdit::AddString( LPCTSTR lpszString )
 {
 	if(m_iType == _COMBOBOX_)
 	{
-		return ((CComboBox *)this)->AddString(lpszString);
+		return reinterpret_cast<CComboBox*>(this)->AddString(lpszString);
 	}
 	return CB_ERR;
 }
@@ -614,7 +614,7 @@ int CACEdit::SetDroppedWidth( UINT nWidth )
 {
 	if(m_iType == _COMBOBOX_)
 	{
-		return ((CComboBox *)this)->SetDroppedWidth(nWidth);
+		return reinterpret_cast<CComboBox*>(this)->SetDroppedWidth(nWidth);
 	}
 	return CB_ERR;
 }
@@ -625,7 +625,7 @@ int CACEdit::FindString( int nStartAfter, LPCTSTR lpszString )
 {
 	if(m_iType == _COMBOBOX_)
 	{
-		return ((CComboBox *)this)->FindString(nStartAfter,lpszString);
+		return reinterpret_cast<CComboBox*>(this)->FindString(nStartAfter, lpszString);
 	}
 	return CB_ERR;
 }
@@ -636,7 +636,7 @@ int CACEdit::SelectString( int nStartAfter, LPCTSTR lpszString )
 {
 	if(m_iType == _COMBOBOX_)
 	{
-		return ((CComboBox *)this)->SelectString(nStartAfter,lpszString);
+		return reinterpret_cast<CComboBox*>(this)->SelectString(nStartAfter, lpszString);
 	}
 	return CB_ERR;
 }
@@ -647,7 +647,7 @@ void CACEdit::ShowDropDown(BOOL bShowIt)
 {
 	if(m_iType == _COMBOBOX_)
 	{
-		((CComboBox *)this)->ShowDropDown(bShowIt);
+		reinterpret_cast<CComboBox*>(this)->ShowDropDown(bShowIt);
 	}
 }
 
@@ -657,7 +657,7 @@ void CACEdit::ResetContent()
 {
 	if(m_iType == _COMBOBOX_)
 	{
-		((CComboBox *)this)->ResetContent();
+		reinterpret_cast<CComboBox*>(this)->ResetContent();
 	}
 }
 
@@ -667,7 +667,7 @@ int CACEdit::GetCurSel()
 {
 	if(m_iType == _COMBOBOX_)
 	{
-		return ((CComboBox *)this)->GetCurSel();
+		reinterpret_cast<CComboBox*>(this)->GetCurSel();
 	}
 	return CB_ERR;
 }
@@ -678,7 +678,7 @@ int CACEdit::GetLBText( int nIndex, LPTSTR lpszText )
 {
 	if(m_iType == _COMBOBOX_)
 	{
-		return ((CComboBox *)this)->GetLBText(nIndex,lpszText);
+		reinterpret_cast<CComboBox*>(this)->GetLBText(nIndex, lpszText);
 	}
 	return CB_ERR;
 }
@@ -689,7 +689,7 @@ void CACEdit::GetLBText( int nIndex, CString& rString )
 {
 	if(m_iType == _COMBOBOX_)
 	{
-		((CComboBox *)this)->GetLBText(nIndex,rString);
+		reinterpret_cast<CComboBox*>(this)->GetLBText(nIndex, rString);
 	}
 }
 

@@ -23,8 +23,9 @@
 
 int RemoteProgressCommand::RemoteProgressCallback(const char* str, int len, void* data)
 {
-	((CGitProgressList::Payload*)data)->list->SetProgressLabelText(CUnicodeUtils::GetUnicode(CStringA(str, len)));
-	if (((CGitProgressList::Payload*)data)->list->m_bCancelled)
+	auto payload = static_cast<CGitProgressList::Payload*>(data);
+	payload->list->SetProgressLabelText(CUnicodeUtils::GetUnicode(CStringA(str, len)));
+	if (payload->list->m_bCancelled)
 	{
 		git_error_set_str(GIT_ERROR_NONE, "User cancelled.");
 		return GIT_EUSER;
@@ -41,7 +42,7 @@ int RemoteProgressCommand::RemoteCompletionCallback(git_remote_completion_type /
 
 int RemoteProgressCommand::RemoteUpdatetipsCallback(const char* refname, const git_oid* oldOid, const git_oid* newOid, void* data)
 {
-	auto ptr = (CGitProgressList::Payload*)data;
+	auto ptr = static_cast<CGitProgressList::Payload*>(data);
 	/*bool nonff = false;
 	if (!git_oid_iszero(oldOid) && !git_oid_iszero(newOid))
 	{
@@ -99,7 +100,7 @@ RemoteProgressCommand::RefUpdateNotificationData::RefUpdateNotificationData(cons
 	m_NewHash = newOid;
 	m_OldHash = oldOid;
 	sActionColumnText.LoadString(IDS_GITACTION_UPDATE_REF);
-	sPathColumnText.Format(L"%s\t %s -> %s (%s)", (LPCTSTR)str, (LPCTSTR)m_OldHash.ToString().Left(g_Git.GetShortHASHLength()), (LPCTSTR)m_NewHash.ToString().Left(g_Git.GetShortHASHLength()), (LPCTSTR)change);
+	sPathColumnText.Format(L"%s\t %s -> %s (%s)", static_cast<LPCTSTR>(str), static_cast<LPCTSTR>(m_OldHash.ToString().Left(g_Git.GetShortHASHLength())), static_cast<LPCTSTR>(m_NewHash.ToString().Left(g_Git.GetShortHASHLength())), static_cast<LPCTSTR>(change));
 }
 
 void RemoteProgressCommand::RefUpdateNotificationData::GetContextMenu(CIconMenu& popup, CGitProgressList::ContextMenuActionList& actions)

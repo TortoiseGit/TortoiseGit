@@ -1,7 +1,7 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -63,7 +63,7 @@ BOOL CExportDlg::OnInitDialog()
 	if (g_Git.m_CurrentDir == m_orgPath.GetWinPathString())
 	{
 		GetDlgItem(IDC_WHOLE_PROJECT)->EnableWindow(FALSE);
-		((CButton *)GetDlgItem(IDC_WHOLE_PROJECT))->SetCheck(TRUE);
+		static_cast<CButton*>(GetDlgItem(IDC_WHOLE_PROJECT))->SetCheck(TRUE);
 	}
 
 	InitChooseVersion();
@@ -128,7 +128,7 @@ void CExportDlg::OnOK()
 			return;
 		}
 		CString sMessage;
-		sMessage.Format(IDS_PROC_OVERWRITE_CONFIRM, (LPCTSTR)m_strFile);
+		sMessage.Format(IDS_PROC_OVERWRITE_CONFIRM, static_cast<LPCTSTR>(m_strFile));
 		if (CMessageBox::Show(GetSafeHwnd(), sMessage, L"TortoiseGit", MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2) != IDYES)
 			return ;
 	}

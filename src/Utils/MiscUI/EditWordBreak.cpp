@@ -177,7 +177,7 @@ BOOL CALLBACK EnumChildProc(HWND hChild, LPARAM lParam)
 			}
 			if (_wcsicmp(cbuf, L"ComboBoxEx32") == 0)
 			{
-				HWND hEdit = (HWND)SendMessage(hChild, CBEM_GETEDITCONTROL, 0, 0);
+				auto hEdit = reinterpret_cast<HWND>(SendMessage(hChild, CBEM_GETEDITCONTROL, 0, 0));
 				if (hEdit)
 				{
 					SendMessage(hEdit, EM_SETWORDBREAKPROC, 0, reinterpret_cast<LPARAM>(&UrlWordBreakProc));
@@ -194,6 +194,6 @@ int SetUrlWordBreakProcToChildWindows(HWND hParent, bool includeComboboxes)
 	ChildWndProcBaton baton;
 	baton.includeComboboxes = includeComboboxes;
 	baton.counter = 0;
-	EnumChildWindows(hParent, EnumChildProc, (LPARAM)&baton);
+	EnumChildWindows(hParent, EnumChildProc, reinterpret_cast<LPARAM>(&baton));
 	return baton.counter;
 }

@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012, 2015 - TortoiseSVN
-// Copyright (C) 2012-2018 - TortoiseGit
+// Copyright (C) 2012-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -123,7 +123,7 @@ CRevisionGraphWnd::CRevisionGraphWnd()
 		wndcls.hInstance		= hInst;
 		wndcls.hIcon			= nullptr;
 		wndcls.hCursor		  = AfxGetApp()->LoadStandardCursor(IDC_ARROW);
-		wndcls.hbrBackground	= (HBRUSH) (COLOR_WINDOW + 1);
+		wndcls.hbrBackground	= reinterpret_cast<HBRUSH>(COLOR_WINDOW + 1);
 		wndcls.lpszMenuName	 = nullptr;
 		wndcls.lpszClassName	= REVGRAPH_CLASSNAME;
 
@@ -290,7 +290,7 @@ void CRevisionGraphWnd::Init(CWnd * pParent, LPRECT rect)
 		wndcls.hInstance		= hInst;
 		wndcls.hIcon			= nullptr;
 		wndcls.hCursor		  = AfxGetApp()->LoadStandardCursor(IDC_ARROW);
-		wndcls.hbrBackground	= (HBRUSH) (COLOR_WINDOW + 1);
+		wndcls.hbrBackground	= reinterpret_cast<HBRUSH>(COLOR_WINDOW + 1);
 		wndcls.lpszMenuName	 = nullptr;
 		wndcls.lpszClassName	= REVGRAPH_CLASSNAME;
 
@@ -328,8 +328,8 @@ CPoint CRevisionGraphWnd::GetLogCoordinates (CPoint point) const
 	int nVScrollPos = GetScrollPos(SB_VERT);
 	int nHScrollPos = GetScrollPos(SB_HORZ);
 
-	return CPoint ( (int)((point.x + nHScrollPos) / m_fZoomFactor)
-				  , (int)((point.y + nVScrollPos) / m_fZoomFactor));
+	return CPoint(static_cast<int>((point.x + nHScrollPos) / m_fZoomFactor),
+					static_cast<int>((point.y + nVScrollPos) / m_fZoomFactor));
 }
 
 ogdf::node CRevisionGraphWnd::GetHitNode(CPoint point, CSize /*border*/) const
@@ -482,13 +482,13 @@ void CRevisionGraphWnd::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBa
 	case SB_PAGELEFT:	// Scroll one page left.
 		{
 			if (sinfo.nPos > sinfo.nMin)
-				sinfo.nPos = max(sinfo.nMin, sinfo.nPos - (int) sinfo.nPage);
+				sinfo.nPos = max(sinfo.nMin, sinfo.nPos - static_cast<int>(sinfo.nPage));
 		}
 		break;
 	case SB_PAGERIGHT:	  // Scroll one page right.
 		{
 			if (sinfo.nPos < sinfo.nMax)
-				sinfo.nPos = min(sinfo.nMax, sinfo.nPos + (int) sinfo.nPage);
+				sinfo.nPos = min(sinfo.nMax, sinfo.nPos + static_cast<int>(sinfo.nPage));
 		}
 		break;
 	case SB_THUMBPOSITION: // Scroll to absolute position. nPos is the position
@@ -531,13 +531,13 @@ void CRevisionGraphWnd::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBa
 	case SB_PAGELEFT:	// Scroll one page left.
 		{
 			if (sinfo.nPos > sinfo.nMin)
-				sinfo.nPos = max(sinfo.nMin, sinfo.nPos - (int) sinfo.nPage);
+				sinfo.nPos = max(sinfo.nMin, sinfo.nPos - static_cast<int>(sinfo.nPage));
 		}
 		break;
 	case SB_PAGERIGHT:	  // Scroll one page right.
 		{
 			if (sinfo.nPos < sinfo.nMax)
-				sinfo.nPos = min(sinfo.nMax, sinfo.nPos + (int) sinfo.nPage);
+				sinfo.nPos = min(sinfo.nMax, sinfo.nPos + static_cast<int>(sinfo.nPage));
 		}
 		break;
 	case SB_THUMBPOSITION: // Scroll to absolute position. nPos is the position
@@ -747,7 +747,7 @@ INT_PTR CRevisionGraphWnd::OnToolHitTest(CPoint point, TOOLINFO* pTI) const
 	pTI->hwnd = this->m_hWnd;
 	CWnd::GetClientRect(&pTI->rect);
 	pTI->uFlags  |= TTF_ALWAYSTIP | TTF_IDISHWND;
-	pTI->uId = (UINT_PTR)m_hWnd;
+	pTI->uId = reinterpret_cast<UINT_PTR>(m_hWnd);
 	pTI->lpszText = LPSTR_TEXTCALLBACK;
 
 	return 1;
@@ -755,7 +755,7 @@ INT_PTR CRevisionGraphWnd::OnToolHitTest(CPoint point, TOOLINFO* pTI) const
 
 BOOL CRevisionGraphWnd::OnToolTipNotify(UINT /*id*/, NMHDR *pNMHDR, LRESULT *pResult)
 {
-	if (pNMHDR->idFrom != (UINT_PTR)m_hWnd)
+	if (pNMHDR->idFrom != reinterpret_cast<UINT_PTR>(m_hWnd))
 		return FALSE;
 
 	POINT point;
@@ -776,14 +776,14 @@ BOOL CRevisionGraphWnd::OnToolTipNotify(UINT /*id*/, NMHDR *pNMHDR, LRESULT *pRe
 	// need to handle both ANSI and UNICODE versions of the message
 	if (pNMHDR->code == TTN_NEEDTEXTA)
 	{
-		TOOLTIPTEXTA* pTTTA = (TOOLTIPTEXTA*)pNMHDR;
+		auto pTTTA = reinterpret_cast<TOOLTIPTEXTA*>(pNMHDR);
 		::SendMessage(pNMHDR->hwndFrom, TTM_SETMAXTIPWIDTH, 0, tooltipSize.cx);
 		pTTTA->lpszText = m_szTip;
 		WideCharToMultiByte(CP_ACP, 0, strTipText, -1, m_szTip, strTipText.GetLength()+1, 0, 0);
 	}
 	else
 	{
-		TOOLTIPTEXTW* pTTTW = (TOOLTIPTEXTW*)pNMHDR;
+		auto pTTTW = reinterpret_cast<TOOLTIPTEXTW*>(pNMHDR);
 		::SendMessage(pNMHDR->hwndFrom, TTM_SETMAXTIPWIDTH, 0, tooltipSize.cx);
 		lstrcpyn(m_wszTip, strTipText, strTipText.GetLength()+1);
 		pTTTW->lpszText = m_wszTip;
@@ -993,8 +993,8 @@ void CRevisionGraphWnd::SaveGraphAs(CString sSavePath)
 			}
 			CRect rect;
 			rect = GetGraphRect();
-			rect.bottom = (LONG)(float(rect.Height()) * m_fZoomFactor);
-			rect.right = (LONG)(float(rect.Width()) * m_fZoomFactor);
+			rect.bottom = static_cast<long>(float(rect.Height()) * m_fZoomFactor);
+			rect.right = static_cast<long>(float(rect.Width()) * m_fZoomFactor);
 			BITMAPINFO bmi = { 0 };
 			HBITMAP hbm;
 			LPBYTE pBits;
@@ -1007,13 +1007,13 @@ void CRevisionGraphWnd::SaveGraphAs(CString sSavePath)
 			bmi.bmiHeader.biCompression = BI_RGB;
 
 			// Create the surface.
-			hbm = CreateDIBSection(ddc.m_hDC, &bmi, DIB_RGB_COLORS,(void**)&pBits, nullptr, 0);
+			hbm = CreateDIBSection(ddc.m_hDC, &bmi, DIB_RGB_COLORS, reinterpret_cast<void**>(&pBits), nullptr, 0);
 			if (!hbm)
 			{
 				CMessageBox::Show(m_hWnd, IDS_REVGRAPH_ERR_NOMEMORY, IDS_APPNAME, MB_ICONERROR);
 				return;
 			}
-			HBITMAP oldbm = (HBITMAP)dc.SelectObject(hbm);
+			HBITMAP oldbm = static_cast<HBITMAP>(dc.SelectObject(hbm));
 			// paint the whole graph
 			GraphicsDevice dev;
 			dev.pDC = &dc;
@@ -1047,7 +1047,7 @@ void CRevisionGraphWnd::SaveGraphAs(CString sSavePath)
 						bitmap.Save(tfile, &encoderClsid, nullptr);
 					}
 					else
-						sErrormessage.Format(IDS_REVGRAPH_ERR_NOENCODER, (LPCTSTR)CPathUtils::GetFileExtFromPath(sSavePath));
+						sErrormessage.Format(IDS_REVGRAPH_ERR_NOENCODER, static_cast<LPCTSTR>(CPathUtils::GetFileExtFromPath(sSavePath)));
 				}
 				else
 					sErrormessage.LoadString(IDS_REVGRAPH_ERR_NOBITMAP);
@@ -1167,7 +1167,7 @@ void CRevisionGraphWnd::AppendMenu(CMenu &popup, CString title, UINT command, CS
 	mii.fMask = MIIM_STRING | MIIM_ID | (extra ? MIIM_DATA : 0) | (submenu ? MIIM_SUBMENU : 0);
 	mii.wID = command;
 	mii.hSubMenu = submenu ? submenu->m_hMenu : nullptr;
-	mii.dwItemData = (ULONG_PTR)extra;
+	mii.dwItemData = reinterpret_cast<ULONG_PTR>(extra);
 	mii.dwTypeData = title.GetBuffer();
 	InsertMenuItem(popup, popup.GetMenuItemCount(), TRUE, &mii);
 	title.ReleaseBuffer();
@@ -1182,13 +1182,13 @@ void CRevisionGraphWnd::DoShowLog()
 
 	if(m_SelectedEntry2)
 		sCmd.Format(L"/command:log %s /startrev:%s /endrev:%s",
-			this->m_sPath.IsEmpty() ? L"" : (LPCTSTR)(L"/path:\"" + this->m_sPath + L'"'),
-			(LPCTSTR)this->m_logEntries[m_SelectedEntry1->index()].ToString(),
-			(LPCTSTR)this->m_logEntries[m_SelectedEntry2->index()].ToString());
+			this->m_sPath.IsEmpty() ? L"" : static_cast<LPCTSTR>(L"/path:\"" + this->m_sPath + L'"'),
+			static_cast<LPCTSTR>(this->m_logEntries[m_SelectedEntry1->index()].ToString()),
+			static_cast<LPCTSTR>(this->m_logEntries[m_SelectedEntry2->index()].ToString()));
 	else
 		sCmd.Format(L"/command:log %s /endrev:%s",
-			(LPCTSTR)this->m_sPath.IsEmpty() ? L"" : (L"/path:\"" + this->m_sPath + L'"'),
-			(LPCTSTR)this->m_logEntries[m_SelectedEntry1->index()].ToString());
+			static_cast<LPCTSTR>(this->m_sPath.IsEmpty() ? L"" : (L"/path:\"" + this->m_sPath + L'"')),
+			static_cast<LPCTSTR>(this->m_logEntries[m_SelectedEntry1->index()].ToString()));
 
 	CAppUtils::RunTortoiseGitProc(sCmd);
 }
@@ -1205,8 +1205,8 @@ void CRevisionGraphWnd::DoBrowseRepo()
 
 	CString sCmd;
 	sCmd.Format(L"/command:repobrowser %s /rev:%s",
-		this->m_sPath.IsEmpty() ? L"" : (LPCTSTR)(L"/path:\"" + this->m_sPath + L'"'),
-		(LPCTSTR)GetFriendRefName(m_SelectedEntry1));
+		this->m_sPath.IsEmpty() ? L"" : static_cast<LPCTSTR>(L"/path:\"" + this->m_sPath + L'"'),
+		static_cast<LPCTSTR>(GetFriendRefName(m_SelectedEntry1)));
 
 	CAppUtils::RunTortoiseGitProc(sCmd);
 }
@@ -1263,7 +1263,7 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		if (branchNames.size() == 1)
 		{
 			CString text;
-			text.Format(L"%s \"%s\"", (LPCTSTR)CString(MAKEINTRESOURCE(IDS_SWITCH_BRANCH)), (LPCTSTR)branchNames[0]);
+			text.Format(L"%s \"%s\"", static_cast<LPCTSTR>(CString(MAKEINTRESOURCE(IDS_SWITCH_BRANCH))), static_cast<LPCTSTR>(branchNames[0]));
 			AppendMenu(popup, text, ID_SWITCH, &branchNames[0]);
 		}
 		else if (branchNames.size() > 1)
@@ -1271,7 +1271,7 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 			CMenu switchMenu;
 			switchMenu.CreatePopupMenu();
 			for (size_t i = 0; i < branchNames.size(); ++i)
-				AppendMenu(switchMenu, branchNames[i], ID_SWITCH + ((int)(i + 1) << 16), &branchNames[i]);
+				AppendMenu(switchMenu, branchNames[i], ID_SWITCH + (static_cast<int>(i + 1) << 16), &branchNames[i]);
 			AppendMenu(popup, CString(MAKEINTRESOURCE(IDS_SWITCH_BRANCH)), ID_SWITCH, nullptr, &switchMenu);
 		}
 		else
@@ -1306,10 +1306,10 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 			for (size_t i = 0; i < allRefNames.size(); ++i)
 			{
 				submenu.AppendMenuIcon(ID_DELETE + (i << 16), allRefNames[i]);
-				submenu.SetMenuItemData(ID_DELETE + (i << 16), (ULONG_PTR)&allRefNames[i]);
+				submenu.SetMenuItemData(ID_DELETE + (i << 16), reinterpret_cast<ULONG_PTR>(&allRefNames[i]));
 			}
 			submenu.AppendMenuIcon(ID_DELETE + (allRefNames.size() << 16), IDS_ALL);
-			submenu.SetMenuItemData(ID_DELETE + (allRefNames.size() << 16), (ULONG_PTR)MAKEINTRESOURCE(IDS_ALL));
+			submenu.SetMenuItemData(ID_DELETE + (allRefNames.size() << 16), reinterpret_cast<ULONG_PTR>(MAKEINTRESOURCE(IDS_ALL)));
 
 			AppendMenu(popup, str, ID_DELETE, nullptr, &submenu);
 		}
@@ -1358,7 +1358,7 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		mii.cbSize = sizeof(mii);
 		mii.fMask |= MIIM_DATA;
 		GetMenuItemInfo(popup, cmd, FALSE, &mii);
-		CString *rev = (CString *)mii.dwItemData;
+		auto rev = reinterpret_cast<CString*>(mii.dwItemData);
 		if (rev)
 		{
 			DoSwitch(*rev);
@@ -1372,7 +1372,7 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 			mii.cbSize = sizeof(mii);
 			mii.fMask |= MIIM_DATA;
 			GetMenuItemInfo(popup, cmd, FALSE, &mii);
-			CString* rev = (CString*)mii.dwItemData;
+			auto rev = reinterpret_cast<CString*>(mii.dwItemData);
 			CAppUtils::Switch(GetSafeHwnd(), *rev);
 			m_parent->UpdateFullHistory();
 		}
@@ -1386,12 +1386,12 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		mii.cbSize = sizeof(mii);
 		mii.fMask |= MIIM_DATA;
 		GetMenuItemInfo(popup, cmd, FALSE, &mii);
-		CString *rev = (CString*)mii.dwItemData;
+		auto rev = reinterpret_cast<CString*>(mii.dwItemData);
 		if (!rev)
 			break;
 
 		CString shortname;
-		if (rev == (CString*)MAKEINTRESOURCE(IDS_ALL))
+		if (rev == reinterpret_cast<CString*>(MAKEINTRESOURCE(IDS_ALL)))
 		{
 			bool nothingDeleted = true;
 			for (const auto& ref : allRefNames)
@@ -1432,8 +1432,8 @@ void CRevisionGraphWnd::OnMouseMove(UINT nFlags, CPoint point)
 		if (m_bShowOverview && (m_OverviewRect.PtInRect(point))&&(nFlags & MK_LBUTTON))
 		{
 			// scrolling
-			int x = (int)((point.x-m_OverviewRect.left - (m_OverviewPosRect.Width()/2)) / m_previewZoom  * m_fZoomFactor);
-			int y = (int)((point.y - m_OverviewRect.top - (m_OverviewPosRect.Height()/2)) / m_previewZoom  * m_fZoomFactor);
+			int x = static_cast<int>((point.x - m_OverviewRect.left - (m_OverviewPosRect.Width() / 2)) / m_previewZoom  * m_fZoomFactor);
+			int y = static_cast<int>((point.y - m_OverviewRect.top - (m_OverviewPosRect.Height() / 2)) / m_previewZoom  * m_fZoomFactor);
 			x = max(0, x);
 			y = max(0, y);
 			SetScrollbars(y, x);
@@ -1531,12 +1531,12 @@ LRESULT CRevisionGraphWnd::OnWorkerThreadDone(WPARAM, LPARAM)
 		sinfo.cbSize = sizeof(SCROLLINFO);
 		if (GetScrollInfo(SB_HORZ, &sinfo))
 		{
-			sinfo.nPos = min(max(sinfo.nMin, (int)(m_GraphAttr.x(m_HeadNode) - m_GraphAttr.width(m_HeadNode) / 2)), sinfo.nMax);
+			sinfo.nPos = min(max(sinfo.nMin, static_cast<int>(m_GraphAttr.x(m_HeadNode) - m_GraphAttr.width(m_HeadNode) / 2)), sinfo.nMax);
 			SetScrollInfo(SB_HORZ, &sinfo);
 		}
 		if (GetScrollInfo(SB_VERT, &sinfo))
 		{
-			sinfo.nPos = min(max(sinfo.nMin, (int)(m_GraphAttr.y(m_HeadNode) - m_GraphAttr.height(m_HeadNode) / 2)), sinfo.nMax);
+			sinfo.nPos = min(max(sinfo.nMin, static_cast<int>(m_GraphAttr.y(m_HeadNode) - m_GraphAttr.height(m_HeadNode) / 2)), sinfo.nMax);
 			SetScrollInfo(SB_VERT, &sinfo);
 		}
 	}

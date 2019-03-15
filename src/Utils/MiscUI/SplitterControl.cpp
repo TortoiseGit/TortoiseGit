@@ -137,8 +137,8 @@ void CSplitterControl::OnPaint()
 		//// m_AnimVarHot changes from 0.0 (not hot) to 1.0 (hot)
 		//auto fraction = Animator::GetValue(m_AnimVarHot);
 
-		//int r1 = (int)GetRValue(c1); int g1 = (int)GetGValue(c1); int b1 = (int)GetBValue(c1);
-		//int r2 = (int)GetRValue(c2); int g2 = (int)GetGValue(c2); int b2 = (int)GetBValue(c2);
+		//int r1 = static_cast<int>(GetRValue(c1)); int g1 = static_cast<int>(GetGValue(c1)); int b1 = static_cast<int>(GetBValue(c1));
+		//int r2 = static_cast<int>(GetRValue(c2)); int g2 = static_cast<int>(GetGValue(c2)); int b2 = static_cast<int>(GetBValue(c2));
 		//auto clr = RGB((r2 - r1)*fraction + r1, (g2 - g1)*fraction + g1, (b2 - b1)*fraction + b1);
 
 		//CBrush brush;
@@ -196,7 +196,7 @@ void CSplitterControl::OnMouseMove(UINT nFlags, CPoint point)
 			nmsp.hdr.code = SPN_SIZED;
 			nmsp.delta = delta;
 
-			pOwner->SendMessage(WM_NOTIFY, nmsp.hdr.idFrom, (LPARAM)&nmsp);
+			pOwner->SendMessage(WM_NOTIFY, nmsp.hdr.idFrom, reinterpret_cast<LPARAM>(&nmsp));
 			if (m_nType == SPS_VERTICAL)
 				m_nSavePos = m_nX;
 			else

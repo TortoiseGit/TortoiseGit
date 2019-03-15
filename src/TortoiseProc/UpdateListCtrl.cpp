@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012, 2016, 2018 - TortoiseGit
+// Copyright (C) 2012, 2016, 2018-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -74,7 +74,7 @@ void CUpdateListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 			// Tell Windows to send draw notifications for each subitem.
 			*pResult = CDRF_NOTIFYSUBITEMDRAW;
 
-			CUpdateListCtrl::Entry *data = (CUpdateListCtrl::Entry *)this->GetItemData((int)pNMCD->nmcd.dwItemSpec);
+			auto data = reinterpret_cast<CUpdateListCtrl::Entry*>(this->GetItemData(static_cast<int>(pNMCD->nmcd.dwItemSpec)));
 			switch(data->m_status & STATUS_MASK)
 			{
 			case STATUS_SUCCESS:

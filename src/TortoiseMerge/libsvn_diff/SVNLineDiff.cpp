@@ -78,7 +78,7 @@ void SVNLineDiff::ParseLineChars(
 
 svn_error_t * SVNLineDiff::datasources_open(void *baton, apr_off_t *prefix_lines, apr_off_t * /*suffix_lines*/, const svn_diff_datasource_e *datasources, apr_size_t datasource_len)
 {
-	SVNLineDiff * linediff = (SVNLineDiff *)baton;
+	auto linediff = static_cast<SVNLineDiff*>(baton);
 	LineParser parser = linediff->m_bWordDiff ? ParseLineWords : ParseLineChars;
 	for (apr_size_t i = 0; i < datasource_len; i++)
 	{
@@ -128,7 +128,7 @@ void SVNLineDiff::NextTokenChars(
 svn_error_t * SVNLineDiff::next_token(
 	apr_uint32_t * hash, void ** token, void * baton, svn_diff_datasource_e datasource)
 {
-	SVNLineDiff * linediff = (SVNLineDiff *)baton;
+	auto linediff = static_cast<SVNLineDiff*>(baton);
 	*token = NULL;
 	switch (datasource)
 	{
@@ -150,11 +150,11 @@ svn_error_t * SVNLineDiff::next_token(
 
 svn_error_t * SVNLineDiff::compare_token(void * baton, void * token1, void * token2, int * compare)
 {
-	SVNLineDiff * linediff = (SVNLineDiff *)baton;
+	auto linediff = static_cast<SVNLineDiff*>(baton);
 	if (linediff->m_bWordDiff)
 	{
-		LPCTSTR s1 = (LPCTSTR)token1;
-		LPCTSTR s2 = (LPCTSTR)token2;
+		auto s1 = static_cast<LPCTSTR>(token1);
+		auto s2 = static_cast<LPCTSTR>(token2);
 		if (s1 && s2)
 		{
 			*compare = _tcscmp(s1, s2);

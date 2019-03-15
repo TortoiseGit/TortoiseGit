@@ -45,8 +45,8 @@ BOOL CALLBACK PageProc (HWND hwnd, UINT uMessage, WPARAM wParam, LPARAM lParam)
 
 	if (uMessage == WM_INITDIALOG)
 	{
-		sheetpage = (CGitPropertyPage*) ((LPPROPSHEETPAGE) lParam)->lParam;
-		SetWindowLongPtr (hwnd, GWLP_USERDATA, (LONG_PTR) sheetpage);
+		sheetpage = reinterpret_cast<CGitPropertyPage*>(reinterpret_cast<LPPROPSHEETPAGE>(lParam)->lParam);
+		SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(sheetpage));
 		sheetpage->SetHwnd(hwnd);
 	}
 	else
@@ -103,7 +103,7 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 		}
 	case WM_NOTIFY:
 		{
-			LPNMHDR point = (LPNMHDR)lParam;
+			auto point = reinterpret_cast<LPNMHDR>(lParam);
 			int code = point->code;
 			//
 			// Respond to notifications.
@@ -120,10 +120,10 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 					if (git_repository_index(index.GetPointer(), repository))
 						break;
 
-					BOOL assumeValid = (BOOL)SendMessage(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), BM_GETCHECK, 0, 0);
-					BOOL skipWorktree = (BOOL)SendMessage(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), BM_GETCHECK, 0, 0);
-					BOOL executable = (BOOL)SendMessage(GetDlgItem(m_hwnd, IDC_EXECUTABLE), BM_GETCHECK, 0, 0);
-					BOOL symlink = (BOOL)SendMessage(GetDlgItem(m_hwnd, IDC_SYMLINK), BM_GETCHECK, 0, 0);
+					auto assumeValid = static_cast<BOOL>(SendMessage(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), BM_GETCHECK, 0, 0));
+					auto skipWorktree = static_cast<BOOL>(SendMessage(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), BM_GETCHECK, 0, 0));
+					auto executable = static_cast<BOOL>(SendMessage(GetDlgItem(m_hwnd, IDC_EXECUTABLE), BM_GETCHECK, 0, 0));
+					auto symlink = static_cast<BOOL>(SendMessage(GetDlgItem(m_hwnd, IDC_SYMLINK), BM_GETCHECK, 0, 0));
 					if (m_fileStats.submodule != 0)
 						executable = symlink = BST_INDETERMINATE; // don't update executable or symlink state if we have at least one submodule
 
@@ -228,7 +228,7 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 
 	if (uMessage == m_UpdateLastCommit)
 	{
-		DisplayCommit((git_commit *)lParam, IDC_LAST_HASH, IDC_LAST_SUBJECT, IDC_LAST_AUTHOR, IDC_LAST_DATE);
+		DisplayCommit(reinterpret_cast<git_commit*>(lParam), IDC_LAST_HASH, IDC_LAST_SUBJECT, IDC_LAST_AUTHOR, IDC_LAST_DATE);
 		return TRUE;
 	}
 
@@ -265,8 +265,8 @@ void CGitPropertyPage::PageProcOnCommand(WPARAM wParam)
 	case IDC_SKIPWORKTREE:
 	case IDC_EXECUTABLE:
 	case IDC_SYMLINK:
-		BOOL executable = (BOOL)SendMessage(GetDlgItem(m_hwnd, IDC_EXECUTABLE), BM_GETCHECK, 0, 0);
-		BOOL symlink = (BOOL)SendMessage(GetDlgItem(m_hwnd, IDC_SYMLINK), BM_GETCHECK, 0, 0);
+		auto executable = static_cast<BOOL>(SendMessage(GetDlgItem(m_hwnd, IDC_EXECUTABLE), BM_GETCHECK, 0, 0));
+		auto symlink = static_cast<BOOL>(SendMessage(GetDlgItem(m_hwnd, IDC_SYMLINK), BM_GETCHECK, 0, 0));
 		if (executable == BST_CHECKED)
 		{
 			EnableWindow(GetDlgItem(m_hwnd, IDC_SYMLINK), FALSE);
@@ -282,7 +282,7 @@ void CGitPropertyPage::PageProcOnCommand(WPARAM wParam)
 		else
 			EnableWindow(GetDlgItem(m_hwnd, IDC_EXECUTABLE), TRUE);
 		m_bChanged = true;
-		SendMessage(GetParent(m_hwnd), PSM_CHANGED, (WPARAM)m_hwnd, 0);
+		SendMessage(GetParent(m_hwnd), PSM_CHANGED, reinterpret_cast<WPARAM>(m_hwnd), 0);
 		break;
 	}
 }
@@ -306,7 +306,7 @@ void CGitPropertyPage::Time64ToTimeString(__time64_t time, TCHAR * buf, size_t b
 
 	LCID locale = LOCALE_USER_DEFAULT;
 	if (!CRegDWORD(L"Software\\TortoiseGit\\UseSystemLocaleForDates", TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY))
-		locale = MAKELCID((WORD)CRegStdDWORD(L"Software\\TortoiseGit\\LanguageID", MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), false, HKEY_CURRENT_USER, KEY_WOW64_64KEY), SORT_DEFAULT);
+		locale = MAKELCID(static_cast<WORD>(CRegStdDWORD(L"Software\\TortoiseGit\\LanguageID", MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), false, HKEY_CURRENT_USER, KEY_WOW64_64KEY)), SORT_DEFAULT);
 
 	*buf = '\0';
 	if (time)
@@ -315,14 +315,14 @@ void CGitPropertyPage::Time64ToTimeString(__time64_t time, TCHAR * buf, size_t b
 		TCHAR datebuf[MAX_STRING_LENGTH] = { 0 };
 		_localtime64_s(&newtime, &time);
 
-		systime.wDay = (WORD)newtime.tm_mday;
-		systime.wDayOfWeek = (WORD)newtime.tm_wday;
-		systime.wHour = (WORD)newtime.tm_hour;
+		systime.wDay = static_cast<WORD>(newtime.tm_mday);
+		systime.wDayOfWeek = static_cast<WORD>(newtime.tm_wday);
+		systime.wHour = static_cast<WORD>(newtime.tm_hour);
 		systime.wMilliseconds = 0;
-		systime.wMinute = (WORD)newtime.tm_min;
-		systime.wMonth = (WORD)newtime.tm_mon+1;
-		systime.wSecond = (WORD)newtime.tm_sec;
-		systime.wYear = (WORD)newtime.tm_year+1900;
+		systime.wMinute = static_cast<WORD>(newtime.tm_min);
+		systime.wMonth = static_cast<WORD>(newtime.tm_mon) + 1;
+		systime.wSecond = static_cast<WORD>(newtime.tm_sec);
+		systime.wYear = static_cast<WORD>(newtime.tm_year) + 1900;
 		if (CRegStdDWORD(L"Software\\TortoiseGit\\LogDateFormat", 0, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY) == 1)
 			GetDateFormat(locale, DATE_SHORTDATE, &systime, nullptr, datebuf, MAX_STRING_LENGTH);
 		else
@@ -543,7 +543,7 @@ void CGitPropertyPage::InitWorkfileView()
 			git_reference_lookup(head.GetPointer(), repository, "HEAD");
 			branch = CUnicodeUtils::GetUnicode(git_reference_symbolic_target(head));
 			if (CStringUtils::StartsWith(branch, L"refs/heads/"))
-				branch = branch.Mid((int)wcslen(L"refs/heads/"));
+				branch = branch.Mid(static_cast<int>(wcslen(L"refs/heads/")));
 		}
 		else if (!git_repository_head(head.GetPointer(), repository))
 		{
@@ -554,13 +554,13 @@ void CGitPropertyPage::InitWorkfileView()
 			CAutoBuf upstreambranchname;
 			if (!git_branch_upstream_name(upstreambranchname, repository, branchFullChar))
 			{
-				remotebranch = CUnicodeUtils::GetUnicode(CStringA(upstreambranchname->ptr, (int)upstreambranchname->size));
-				remotebranch = remotebranch.Mid((int)wcslen(L"refs/remotes/"));
+				remotebranch = CUnicodeUtils::GetUnicode(CStringA(upstreambranchname->ptr, static_cast<int>(upstreambranchname->size)));
+				remotebranch = remotebranch.Mid(static_cast<int>(wcslen(L"refs/remotes/")));
 				int pos = remotebranch.Find(L'/');
 				if (pos > 0)
 				{
 					CString remoteName;
-					remoteName.Format(L"remote.%s.url", (LPCTSTR)remotebranch.Left(pos));
+					remoteName.Format(L"remote.%s.url", static_cast<LPCTSTR>(remotebranch.Left(pos)));
 					config.GetString(remoteName, remoteUrl);
 				}
 			}
@@ -633,7 +633,7 @@ void CGitPropertyPage::InitWorkfileView()
 	{
 		if (m_fileStats.assumevalid != 0 && m_fileStats.assumevalid != filenames.size())
 		{
-			SendMessage(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), BM_SETSTYLE, (DWORD)GetWindowLong(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), GWL_STYLE) & ~BS_AUTOCHECKBOX | BS_AUTO3STATE, 0);
+			SendMessage(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), BM_SETSTYLE, static_cast<DWORD>(GetWindowLong(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), GWL_STYLE)) & ~BS_AUTOCHECKBOX | BS_AUTO3STATE, 0);
 			SendMessage(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), BM_SETCHECK, BST_INDETERMINATE, 0);
 		}
 		else
@@ -641,7 +641,7 @@ void CGitPropertyPage::InitWorkfileView()
 
 		if (m_fileStats.skipworktree != 0 && m_fileStats.skipworktree != filenames.size())
 		{
-			SendMessage(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), BM_SETSTYLE, (DWORD)GetWindowLong(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), GWL_STYLE) & ~BS_AUTOCHECKBOX | BS_AUTO3STATE, 0);
+			SendMessage(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), BM_SETSTYLE, static_cast<DWORD>(GetWindowLong(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), GWL_STYLE)) & ~BS_AUTOCHECKBOX | BS_AUTO3STATE, 0);
 			SendMessage(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), BM_SETCHECK, BST_INDETERMINATE, 0);
 		}
 		else
@@ -649,7 +649,7 @@ void CGitPropertyPage::InitWorkfileView()
 
 		if (m_fileStats.executable != 0 && m_fileStats.executable != filenames.size())
 		{
-			SendMessage(GetDlgItem(m_hwnd, IDC_EXECUTABLE), BM_SETSTYLE, (DWORD)GetWindowLong(GetDlgItem(m_hwnd, IDC_EXECUTABLE), GWL_STYLE) & ~BS_AUTOCHECKBOX | BS_AUTO3STATE, 0);
+			SendMessage(GetDlgItem(m_hwnd, IDC_EXECUTABLE), BM_SETSTYLE, static_cast<DWORD>(GetWindowLong(GetDlgItem(m_hwnd, IDC_EXECUTABLE), GWL_STYLE)) & ~BS_AUTOCHECKBOX | BS_AUTO3STATE, 0);
 			SendMessage(GetDlgItem(m_hwnd, IDC_EXECUTABLE), BM_SETCHECK, BST_INDETERMINATE, 0);
 			EnableWindow(GetDlgItem(m_hwnd, IDC_SYMLINK), TRUE);
 		}
@@ -661,7 +661,7 @@ void CGitPropertyPage::InitWorkfileView()
 
 		if (m_fileStats.symlink != 0 && m_fileStats.symlink != filenames.size())
 		{
-			SendMessage(GetDlgItem(m_hwnd, IDC_SYMLINK), BM_SETSTYLE, (DWORD)GetWindowLong(GetDlgItem(m_hwnd, IDC_SYMLINK), GWL_STYLE) & ~BS_AUTOCHECKBOX | BS_AUTO3STATE, 0);
+			SendMessage(GetDlgItem(m_hwnd, IDC_SYMLINK), BM_SETSTYLE, static_cast<DWORD>(GetWindowLong(GetDlgItem(m_hwnd, IDC_SYMLINK), GWL_STYLE)) & ~BS_AUTOCHECKBOX | BS_AUTO3STATE, 0);
 			SendMessage(GetDlgItem(m_hwnd, IDC_SYMLINK), BM_SETCHECK, BST_INDETERMINATE, 0);
 			EnableWindow(GetDlgItem(m_hwnd, IDC_EXECUTABLE), TRUE);
 		}
@@ -728,8 +728,8 @@ STDMETHODIMP CShellExt::AddPages(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam
 			psp.pszTemplate = MAKEINTRESOURCE(IDD_PROPPAGE);
 			psp.pszIcon = MAKEINTRESOURCE(IDI_APPSMALL);
 			psp.pszTitle = L"Git Submodule";
-			psp.pfnDlgProc = (DLGPROC)PageProc;
-			psp.lParam = (LPARAM)sheetpage;
+			psp.pfnDlgProc = reinterpret_cast<DLGPROC>(PageProc);
+			psp.lParam = reinterpret_cast<LPARAM>(sheetpage);
 			psp.pfnCallback = PropPageCallbackProc;
 			psp.pcRefParent = (UINT*)&g_cRefThisDll;
 
@@ -764,8 +764,8 @@ STDMETHODIMP CShellExt::AddPages(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam
 	psp.pszTemplate = MAKEINTRESOURCE(IDD_PROPPAGE);
 	psp.pszIcon = MAKEINTRESOURCE(IDI_APPSMALL);
 	psp.pszTitle = L"Git";
-	psp.pfnDlgProc = (DLGPROC) PageProc;
-	psp.lParam = (LPARAM) sheetpage;
+	psp.pfnDlgProc = reinterpret_cast<DLGPROC>(PageProc);
+	psp.lParam = reinterpret_cast<LPARAM>(sheetpage);
 	psp.pfnCallback = PropPageCallbackProc;
 	psp.pcRefParent = (UINT*)&g_cRefThisDll;
 

@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2011 - Sven Strickroth <email@cs-ware.de>
 // Copyright (C) 2008-2012, 2015 - TortoiseSVN
@@ -32,19 +32,19 @@ BOOL CToolTips::OnTtnNeedText(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	if (pNMHDR->code == TTN_NEEDTEXTW)
 	{
-		LPNMTTDISPINFO lpnmtdi = (LPNMTTDISPINFO)pNMHDR;
+		auto lpnmtdi = reinterpret_cast<LPNMTTDISPINFO>(pNMHDR);
 		UINT_PTR nID = pNMHDR->idFrom;
 
 		if (lpnmtdi->uFlags & TTF_IDISHWND)
 		{
 			// idFrom is actually the HWND of the tool
-			nID = ::GetDlgCtrlID((HWND)nID);
+			nID = ::GetDlgCtrlID(reinterpret_cast<HWND>(nID));
 		}
 
-		auto iterFind = toolTextMap.find((unsigned int)nID);
+		auto iterFind = toolTextMap.find(static_cast<unsigned int>(nID));
 		if (iterFind != toolTextMap.end())
 		{
-			lpnmtdi->lpszText = (LPTSTR)(LPCTSTR)iterFind->second;
+			lpnmtdi->lpszText = const_cast<LPTSTR>(static_cast<LPCTSTR>(iterFind->second));
 			lpnmtdi->hinst = AfxGetResourceHandle();
 			*pResult = 0;
 			return TRUE;
@@ -69,12 +69,12 @@ BOOL CToolTips::AddTool(CWnd* pWnd, LPCTSTR lpszText /* = LPSTR_TEXTCALLBACK */,
 
 void CToolTips::AddTool(int nIdWnd, UINT nIdText, LPCRECT lpRectTool /* = nullptr */, UINT_PTR nIDTool /* = 0 */)
 {
-	AddTool(((CDialog*)m_pParentWnd)->GetDlgItem(nIdWnd), nIdText, lpRectTool, nIDTool);
+	AddTool(static_cast<CDialog*>(m_pParentWnd)->GetDlgItem(nIdWnd), nIdText, lpRectTool, nIDTool);
 }
 
 void CToolTips::AddTool(int nIdWnd, CString sBalloonTipText, LPCRECT lpRectTool /* = nullptr */, UINT_PTR nIDTool /* = 0 */)
 {
-	AddTool(((CDialog*)m_pParentWnd)->GetDlgItem(nIdWnd), sBalloonTipText, lpRectTool, nIDTool);
+	AddTool(static_cast<CDialog*>(m_pParentWnd)->GetDlgItem(nIdWnd), sBalloonTipText, lpRectTool, nIDTool);
 }
 
 void CToolTips::DelTool( CWnd* pWnd, UINT_PTR nIDTool /* = 0 */)
@@ -85,7 +85,7 @@ void CToolTips::DelTool( CWnd* pWnd, UINT_PTR nIDTool /* = 0 */)
 
 void CToolTips::DelTool( int nIdWnd, UINT_PTR nIDTool /* = 0 */)
 {
-	return DelTool(((CDialog*)m_pParentWnd)->GetDlgItem(nIdWnd), nIDTool);
+	return DelTool(static_cast<CDialog*>(m_pParentWnd)->GetDlgItem(nIdWnd), nIDTool);
 }
 
 BOOL CToolTips::ShowBalloon(CWnd *pWnd, UINT nIDText, UINT nIDTitle, UINT icon /* = 0 */)
@@ -112,8 +112,8 @@ BOOL CToolTips::ShowBalloon(CWnd *pWnd, UINT nIDText, UINT nIDTitle, UINT icon /
 	ti.uFlags = TTF_TRACK | TTF_IDISHWND | TTF_PARSELINKS;
 	ti.hwnd = pWnd->GetSafeHwnd();
 	ti.lpszText = sTemp.GetBuffer();
-	::SendMessage(hwndTT, TTM_ADDTOOL, 0, (LPARAM)&ti);
-	::SendMessage(hwndTT, TTM_SETTITLE, icon, (LPARAM)(LPCTSTR)CString(MAKEINTRESOURCE(nIDTitle)));
+	::SendMessage(hwndTT, TTM_ADDTOOL, 0, reinterpret_cast<LPARAM>(&ti));
+	::SendMessage(hwndTT, TTM_SETTITLE, icon, reinterpret_cast<LPARAM>(static_cast<LPCTSTR>(CString(MAKEINTRESOURCE(nIDTitle)))));
 	::SendMessage(hwndTT, TTM_SETMAXTIPWIDTH, 0, 800);
 
 	// Position the tooltip below the control
@@ -122,14 +122,14 @@ BOOL CToolTips::ShowBalloon(CWnd *pWnd, UINT nIDText, UINT nIDTitle, UINT icon /
 	::SendMessage(hwndTT, TTM_TRACKPOSITION, 0, MAKELONG(rc.left + 10, rc.bottom));
 
 	// Show the tooltip
-	::SendMessage(hwndTT, TTM_TRACKACTIVATE, TRUE, (LPARAM)&ti);
+	::SendMessage(hwndTT, TTM_TRACKACTIVATE, TRUE, reinterpret_cast<LPARAM>(&ti));
 
 	return TRUE;
 }
 
 void CToolTips::ShowBalloon(int nIdWnd, UINT nIdText, UINT nIDTitle, UINT icon /* = 0 */)
 {
-	ShowBalloon(((CDialog*)m_pParentWnd)->GetDlgItem(nIdWnd), nIdText, nIDTitle, icon);
+	ShowBalloon(static_cast<CDialog*>(m_pParentWnd)->GetDlgItem(nIdWnd), nIdText, nIDTitle, icon);
 }
 
 CString CToolTips::LoadTooltip( UINT nIDText )

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2018 - TortoiseGit
+// Copyright (C) 2018-2019 - TortoiseGit
 // Copyright (C) 2010-2012, 2014-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -40,11 +40,11 @@ DWORD CIconExtractor::ExtractIcon(HINSTANCE hResource, LPCTSTR id, LPCTSTR Targe
 		return GetLastError();
 
 	LPMEMICONDIR lpIcon = nullptr;
-	if ((lpIcon = (LPMEMICONDIR)LockResource(hGlobal)) == nullptr)
+	if ((lpIcon = static_cast<LPMEMICONDIR>(LockResource(hGlobal))) == nullptr)
 		return GetLastError();
 
 	LPICONRESOURCE lpIR = nullptr;
-	if ((lpIR = (LPICONRESOURCE)malloc(sizeof(ICONRESOURCE) + ((lpIcon->idCount - 1) * sizeof(ICONIMAGE)))) == nullptr)
+	if ((lpIR = static_cast<LPICONRESOURCE>(malloc(sizeof(ICONRESOURCE) + ((lpIcon->idCount - 1) * sizeof(ICONIMAGE))))) == nullptr)
 		return GetLastError();
 	SecureZeroMemory(lpIR, sizeof(ICONRESOURCE) + ((lpIcon->idCount - 1) * sizeof(ICONIMAGE)));
 
@@ -67,7 +67,7 @@ DWORD CIconExtractor::ExtractIcon(HINSTANCE hResource, LPCTSTR id, LPCTSTR Targe
 
 		// Store a copy of the resource locally
 		lpIR->IconImages[i].dwNumBytes = SizeofResource(hResource, hRsrc);
-		lpIR->IconImages[i].lpBits = (LPBYTE)malloc(lpIR->IconImages[i].dwNumBytes);
+		lpIR->IconImages[i].lpBits = static_cast<LPBYTE>(malloc(lpIR->IconImages[i].dwNumBytes));
 		if (!lpIR->IconImages[i].lpBits)
 			return GetLastError();
 
@@ -98,8 +98,8 @@ DWORD CIconExtractor::WriteIconToICOFile(LPICONRESOURCE lpIR, LPCTSTR szFileName
 		ICONDIRENTRY ide = { 0 };
 
 		// Convert internal format to ICONDIRENTRY
-		ide.bWidth = (BYTE)lpIR->IconImages[i].Width;
-		ide.bHeight = (BYTE)lpIR->IconImages[i].Height;
+		ide.bWidth = static_cast<BYTE>(lpIR->IconImages[i].Width);
+		ide.bHeight = static_cast<BYTE>(lpIR->IconImages[i].Height);
 		if (ide.bHeight == 0) // 256x256 icon, both width and height must be 0
 			ide.bWidth = 0;
 		ide.bReserved = 0;
@@ -178,7 +178,7 @@ DWORD CIconExtractor::WriteICOHeader(HANDLE hFile, UINT nNumEntries) const
 	if (dwBytesWritten != sizeof(WORD))
 		return GetLastError();
 	// Write Number of Entries
-	Output = (WORD)nNumEntries;
+	Output = static_cast<WORD>(nNumEntries);
 	if (!WriteFile(hFile, &Output, sizeof(WORD), &dwBytesWritten, nullptr))
 		return GetLastError();
 	// Did we write a WORD?
@@ -194,7 +194,7 @@ BOOL CIconExtractor::AdjustIconImagePointers(LPICONIMAGE lpImage)
 		return FALSE;
 
 	// BITMAPINFO is at beginning of bits
-	lpImage->lpbi = (LPBITMAPINFO)lpImage->lpBits;
+	lpImage->lpbi = reinterpret_cast<LPBITMAPINFO>(lpImage->lpBits);
 	// Width - simple enough
 	lpImage->Width = lpImage->lpbi->bmiHeader.biWidth;
 	// Icons are stored in funky format where height is doubled - account for it
@@ -202,16 +202,16 @@ BOOL CIconExtractor::AdjustIconImagePointers(LPICONIMAGE lpImage)
 	// How many colors?
 	lpImage->Colors = lpImage->lpbi->bmiHeader.biPlanes * lpImage->lpbi->bmiHeader.biBitCount;
 	// XOR bits follow the header and color table
-	lpImage->lpXOR = (PBYTE)FindDIBBits((LPSTR)lpImage->lpbi);
+	lpImage->lpXOR = reinterpret_cast<PBYTE>(FindDIBBits(reinterpret_cast<LPSTR>(lpImage->lpbi)));
 	// AND bits follow the XOR bits
-	lpImage->lpAND = lpImage->lpXOR + (lpImage->Height * BytesPerLine((LPBITMAPINFOHEADER)(lpImage->lpbi)));
+	lpImage->lpAND = lpImage->lpXOR + (lpImage->Height * BytesPerLine(reinterpret_cast<LPBITMAPINFOHEADER>(lpImage->lpbi)));
 
 	return TRUE;
 }
 
 LPSTR CIconExtractor::FindDIBBits(LPSTR lpbi)
 {
-	return (lpbi + *(LPDWORD)lpbi + PaletteSize(lpbi));
+	return (lpbi + *reinterpret_cast<LPDWORD>(lpbi) + PaletteSize(lpbi));
 }
 
 WORD CIconExtractor::PaletteSize(LPSTR lpbi)
@@ -226,12 +226,12 @@ DWORD CIconExtractor::BytesPerLine(LPBITMAPINFOHEADER lpBMIH) const
 
 WORD CIconExtractor::DIBNumColors(LPSTR lpbi) const
 {
-	DWORD dwClrUsed = ((LPBITMAPINFOHEADER)lpbi)->biClrUsed;
+	DWORD dwClrUsed = reinterpret_cast<LPBITMAPINFOHEADER>(lpbi)->biClrUsed;
 
 	if (dwClrUsed)
-		return (WORD)dwClrUsed;
+		return static_cast<WORD>(dwClrUsed);
 
-	WORD wBitCount = ((LPBITMAPINFOHEADER)lpbi)->biBitCount;
+	WORD wBitCount = reinterpret_cast<LPBITMAPINFOHEADER>(lpbi)->biBitCount;
 
 	switch (wBitCount)
 	{

@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2011, 2013, 2016 - TortoiseGit
+// Copyright (C) 2009, 2011, 2013, 2016, 2019 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -87,10 +87,10 @@ BOOL CSettingsColors3::OnInitDialog()
 		m_LogGraphNodeSize.AddString(text);
 	}
 	m_regLogGraphLineWidth = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\Graph\\LogLineWidth", 2);
-	text.Format(L"%d", (DWORD)m_regLogGraphLineWidth);
+	text.Format(L"%d", static_cast<DWORD>(m_regLogGraphLineWidth));
 	m_LogGraphLineWidth.SelectString(-1, text);
 	m_regLogGraphNodeSize = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\Graph\\LogNodeSize", 10);
-	text.Format(L"%d", (DWORD)m_regLogGraphNodeSize);
+	text.Format(L"%d", static_cast<DWORD>(m_regLogGraphNodeSize));
 	m_LogGraphNodeSize.SelectString(-1, text);
 
 	return TRUE;

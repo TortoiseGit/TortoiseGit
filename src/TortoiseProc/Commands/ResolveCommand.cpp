@@ -47,17 +47,17 @@ bool ResolveCommand::Execute()
 				for (int i = 0; i < dlg.m_pathList.GetCount(); ++i)
 				{
 					CString cmd, out;
-					cmd.Format(L"git.exe add -f -- \"%s\"", (LPCTSTR)dlg.m_pathList[i].GetGitPathString());
+					cmd.Format(L"git.exe add -f -- \"%s\"", static_cast<LPCTSTR>(dlg.m_pathList[i].GetGitPathString()));
 					if (g_Git.Run(cmd, &out, CP_UTF8))
 					{
 						MessageBox(GetExplorerHWND(), out, L"TortoiseGit", MB_OK | MB_ICONERROR);
 						return false;
 					}
 
-					CAppUtils::RemoveTempMergeFile((CTGitPath &)dlg.m_pathList[i]);
+					CAppUtils::RemoveTempMergeFile(dlg.m_pathList[i]);
 				}
 
-				HWND resolveMsgWnd = parser.HasVal(L"resolvemsghwnd") ? (HWND)parser.GetLongLongVal(L"resolvemsghwnd") : 0;
+				HWND resolveMsgWnd = parser.HasVal(L"resolvemsghwnd") ? reinterpret_cast<HWND>(parser.GetLongLongVal(L"resolvemsghwnd")) : 0;
 				if (resolveMsgWnd && CRegDWORD(L"Software\\TortoiseGit\\RefreshFileListAfterResolvingConflict", TRUE) == TRUE)
 				{
 					static UINT WM_REVERTMSG = RegisterWindowMessage(L"GITSLNM_NEEDSREFRESH");

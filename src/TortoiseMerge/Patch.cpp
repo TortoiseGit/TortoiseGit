@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2009-2013, 2015-2018 - TortoiseGit
+// Copyright (C) 2009-2013, 2015-2019 - TortoiseGit
 // Copyright (C) 2012-2013 - Sven Strickroth <email@cs-ware.de>
 // Copyright (C) 2004-2009,2011-2014 - TortoiseSVN
 
@@ -94,10 +94,10 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 				//index
 				if (CStringUtils::StartsWith(sLine, L"index "))
 				{
-					int dotstart = sLine.Find(L"..", (int)wcslen(L"index "));
+					int dotstart = sLine.Find(L"..", static_cast<int>(wcslen(L"index ")));
 					if (dotstart > 0 && chunks)
 					{
-						chunks->sRevision = sLine.Mid((int)wcslen(L"index "), dotstart - (int)wcslen(L"index "));
+						chunks->sRevision = sLine.Mid(static_cast<int>(wcslen(L"index ")), dotstart - static_cast<int>(wcslen(L"index ")));
 						int end = sLine.Find(L' ', dotstart + 2);
 						if (end > 0)
 							chunks->sRevision2 = sLine.Mid(dotstart + 2, end - (dotstart + 2));
@@ -120,7 +120,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 						chunks = std::make_unique<Chunks>();
 					}
 
-					sLine = sLine.Mid((int)wcslen(L"---"));	//remove the "---"
+					sLine = sLine.Mid(static_cast<int>(wcslen(L"---"))); //remove the "---"
 					sLine =sLine.Trim();
 					//at the end of the filepath there's a revision number...
 					int bracket = sLine.ReverseFind('(');
@@ -141,10 +141,10 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 					if (CStringUtils::StartsWith(chunks->sFilePath, L"\"") && CStringUtils::EndsWith(chunks->sFilePath, L'"'))
 						chunks->sFilePath=chunks->sFilePath.Mid(1, chunks->sFilePath.GetLength() - 2);
 					if (CStringUtils::StartsWith(chunks->sFilePath, L"a/"))
-						chunks->sFilePath=chunks->sFilePath.Mid((int)wcslen(L"a/"));
+						chunks->sFilePath=chunks->sFilePath.Mid(static_cast<int>(wcslen(L"a/")));
 
 					if (CStringUtils::StartsWith(chunks->sFilePath, L"b/"))
-						chunks->sFilePath=chunks->sFilePath.Mid((int)wcslen(L"b/"));
+						chunks->sFilePath=chunks->sFilePath.Mid(static_cast<int>(wcslen(L"b/")));
 
 
 					chunks->sFilePath.Replace(L'/', L'\\');
@@ -179,7 +179,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 					m_sErrorMessage.Format(IDS_ERR_PATCH_NOADDFILELINE, nIndex);
 					goto errorcleanup;
 				}
-				sLine = sLine.Mid((int)wcslen(L"---"));	//remove the "---"
+				sLine = sLine.Mid(static_cast<int>(wcslen(L"---"))); //remove the "---"
 				sLine =sLine.Trim();
 
 				//at the end of the filepath there's a revision number...
@@ -197,10 +197,10 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 				if (CStringUtils::StartsWith(chunks->sFilePath2, L"\"") && chunks->sFilePath2.ReverseFind(L'"') == chunks->sFilePath2.GetLength() - 1)
 					chunks->sFilePath2=chunks->sFilePath2.Mid(1, chunks->sFilePath2.GetLength() - 2);
 				if (CStringUtils::StartsWith(chunks->sFilePath2, L"a/"))
-					chunks->sFilePath2=chunks->sFilePath2.Mid((int)wcslen(L"a/"));
+					chunks->sFilePath2=chunks->sFilePath2.Mid(static_cast<int>(wcslen(L"a/")));
 
 				if (CStringUtils::StartsWith(chunks->sFilePath2, L"b/"))
-					chunks->sFilePath2=chunks->sFilePath2.Mid((int)wcslen(L"b/"));
+					chunks->sFilePath2=chunks->sFilePath2.Mid(static_cast<int>(wcslen(L"b/")));
 
 				chunks->sFilePath2.Replace(L'/', L'\\');
 				chunks->sFilePath2.Replace(L'/', L'\\');
@@ -226,7 +226,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 				}
 
 				//@@ -xxx,xxx +xxx,xxx @@
-				sLine = sLine.Mid((int)wcslen(L"@@"));
+				sLine = sLine.Mid(static_cast<int>(wcslen(L"@@")));
 				sLine = sLine.Trim();
 				chunk = std::make_unique<Chunk>();
 				CString sRemove = sLine.Left(sLine.Find(' '));
@@ -273,7 +273,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 					//but maybe in the future the patch algorithm can be
 					//extended to use those in case the file to patch has
 					//already changed and no base file is around...
-					chunk->arLines.Add(RemoveUnicodeBOM(sLine.Mid((int)wcslen(L" "))));
+					chunk->arLines.Add(RemoveUnicodeBOM(sLine.Mid(static_cast<int>(wcslen(L" ")))));
 					chunk->arLinesStates.Add(PATCHSTATE_CONTEXT);
 					chunk->arEOLs.push_back(ending);
 					++nContextLineCount;
@@ -287,7 +287,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 				else if (type == '-')
 				{
 					//a removed line
-					chunk->arLines.Add(RemoveUnicodeBOM(sLine.Mid((int)wcslen(L"-"))));
+					chunk->arLines.Add(RemoveUnicodeBOM(sLine.Mid(static_cast<int>(wcslen(L"-")))));
 					chunk->arLinesStates.Add(PATCHSTATE_REMOVED);
 					chunk->arEOLs.push_back(ending);
 					++nRemoveLineCount;
@@ -295,7 +295,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 				else if (type == '+')
 				{
 					//an added line
-					chunk->arLines.Add(RemoveUnicodeBOM(sLine.Mid((int)wcslen(L"+"))));
+					chunk->arLines.Add(RemoveUnicodeBOM(sLine.Mid(static_cast<int>(wcslen(L"+")))));
 					chunk->arLinesStates.Add(PATCHSTATE_ADDED);
 					chunk->arEOLs.push_back(ending);
 					++nAddLineCount;
@@ -336,7 +336,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 	{
 		if (filenamesToPatch[m_arFileDiffs[i]->sFilePath] > 1 && m_arFileDiffs[i]->sFilePath != L"NUL")
 		{
-			m_sErrorMessage.Format(IDS_ERR_PATCH_FILENAMENOTUNIQUE, (LPCTSTR)m_arFileDiffs[i]->sFilePath);
+			m_sErrorMessage.Format(IDS_ERR_PATCH_FILENAMENOTUNIQUE, static_cast<LPCTSTR>(m_arFileDiffs[i]->sFilePath));
 			FreeMemory();
 			return FALSE;
 		}
@@ -345,7 +345,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 		{
 			if (filenamesToPatch[m_arFileDiffs[i]->sFilePath2] > 1 && m_arFileDiffs[i]->sFilePath2 != L"NUL")
 			{
-				m_sErrorMessage.Format(IDS_ERR_PATCH_FILENAMENOTUNIQUE, (LPCTSTR)m_arFileDiffs[i]->sFilePath);
+				m_sErrorMessage.Format(IDS_ERR_PATCH_FILENAMENOTUNIQUE, static_cast<LPCTSTR>(m_arFileDiffs[i]->sFilePath));
 				FreeMemory();
 				return FALSE;
 			}
@@ -381,7 +381,7 @@ BOOL CPatch::OpenUnifiedDiffFile(const CString& filename)
 
 CString CPatch::GetFilename(int nIndex)
 {
-	if (nIndex < 0 || nIndex >= (int)m_arFileDiffs.size())
+	if (nIndex < 0 || nIndex >= static_cast<int>(m_arFileDiffs.size()))
 		return L"";
 
 	return Strip(m_arFileDiffs[nIndex]->sFilePath);
@@ -389,7 +389,7 @@ CString CPatch::GetFilename(int nIndex)
 
 CString CPatch::GetRevision(int nIndex)
 {
-	if (nIndex < 0 || nIndex >= (int)m_arFileDiffs.size())
+	if (nIndex < 0 || nIndex >= static_cast<int>(m_arFileDiffs.size()))
 		return L"";
 
 	return m_arFileDiffs[nIndex]->sRevision;
@@ -397,7 +397,7 @@ CString CPatch::GetRevision(int nIndex)
 
 CString CPatch::GetFilename2(int nIndex)
 {
-	if (nIndex < 0 || nIndex >= (int)m_arFileDiffs.size())
+	if (nIndex < 0 || nIndex >= static_cast<int>(m_arFileDiffs.size()))
 		return L"";
 
 	return Strip(m_arFileDiffs[nIndex]->sFilePath2);
@@ -405,7 +405,7 @@ CString CPatch::GetFilename2(int nIndex)
 
 CString CPatch::GetRevision2(int nIndex)
 {
-	if (nIndex < 0 || nIndex >= (int)m_arFileDiffs.size())
+	if (nIndex < 0 || nIndex >= static_cast<int>(m_arFileDiffs.size()))
 		return L"";
 
 	return m_arFileDiffs[nIndex]->sRevision2;
@@ -417,12 +417,12 @@ int CPatch::PatchFile(const int strip, int nIndex, const CString& sPatchPath, co
 	CString sPath = GetFullPath(sPatchPath, nIndex);
 	if (PathIsDirectory(sPath))
 	{
-		m_sErrorMessage.Format(IDS_ERR_PATCH_INVALIDPATCHFILE, (LPCTSTR)sPath);
+		m_sErrorMessage.Format(IDS_ERR_PATCH_INVALIDPATCHFILE, static_cast<LPCTSTR>(sPath));
 		return FALSE;
 	}
 	if (nIndex < 0)
 	{
-		m_sErrorMessage.Format(IDS_ERR_PATCH_FILENOTINPATCH, (LPCTSTR)sPath);
+		m_sErrorMessage.Format(IDS_ERR_PATCH_FILENOTINPATCH, static_cast<LPCTSTR>(sPath));
 		return FALSE;
 	}
 
@@ -465,26 +465,26 @@ int CPatch::PatchFile(const int strip, int nIndex, const CString& sPatchPath, co
 					sPatchLine = CUnicodeUtils::GetUnicode(CStringA(sPatchLine));
 				}
 			}
-			int nPatchState = (int)chunk->arLinesStates.GetAt(j);
+			int nPatchState = static_cast<int>(chunk->arLinesStates.GetAt(j));
 			switch (nPatchState)
 			{
 			case PATCHSTATE_REMOVED:
 				{
 					if ((lAddLine > PatchLines.GetCount())||(PatchLines.GetCount()==0))
 					{
-						m_sErrorMessage.FormatMessage(IDS_ERR_PATCH_DOESNOTMATCH, L"", (LPCTSTR)sPatchLine);
+						m_sErrorMessage.FormatMessage(IDS_ERR_PATCH_DOESNOTMATCH, L"", static_cast<LPCTSTR>(sPatchLine));
 						return FALSE;
 					}
 					if (lAddLine == 0)
 						lAddLine = 1;
 					if ((sPatchLine.Compare(PatchLines.GetAt(lAddLine-1))!=0)&&(!HasExpandedKeyWords(sPatchLine)))
 					{
-						m_sErrorMessage.FormatMessage(IDS_ERR_PATCH_DOESNOTMATCH, (LPCTSTR)sPatchLine, (LPCTSTR)PatchLines.GetAt(lAddLine-1));
+						m_sErrorMessage.FormatMessage(IDS_ERR_PATCH_DOESNOTMATCH, static_cast<LPCTSTR>(sPatchLine), static_cast<LPCTSTR>(PatchLines.GetAt(lAddLine-1)));
 						return FALSE;
 					}
 					if (lAddLine > PatchLines.GetCount())
 					{
-						m_sErrorMessage.FormatMessage(IDS_ERR_PATCH_DOESNOTMATCH, (LPCTSTR)sPatchLine, L"");
+						m_sErrorMessage.FormatMessage(IDS_ERR_PATCH_DOESNOTMATCH, static_cast<LPCTSTR>(sPatchLine), L"");
 						return FALSE;
 					}
 					PatchLines.RemoveAt(lAddLine-1);
@@ -499,7 +499,7 @@ int CPatch::PatchFile(const int strip, int nIndex, const CString& sPatchPath, co
 					int k = j;
 					for (; k < chunk->arLines.GetCount(); ++k)
 					{
-						if ((int)chunk->arLinesStates.GetAt(k) == PATCHSTATE_ADDED)
+						if (static_cast<int>(chunk->arLinesStates.GetAt(k)) == PATCHSTATE_ADDED)
 							continue;
 						if (PatchLines.GetCount() >= lAddLine && chunk->arLines.GetAt(k).Compare(PatchLines.GetAt(lAddLine - 1)) == 0)
 							insertOk = true;
@@ -516,7 +516,7 @@ int CPatch::PatchFile(const int strip, int nIndex, const CString& sPatchPath, co
 					{
 						if (k >= chunk->arLines.GetCount())
 							k = j;
-						m_sErrorMessage.FormatMessage(IDS_ERR_PATCH_DOESNOTMATCH, (LPCTSTR)PatchLines.GetAt(lAddLine - 1), (LPCTSTR)chunk->arLines.GetAt(k));
+						m_sErrorMessage.FormatMessage(IDS_ERR_PATCH_DOESNOTMATCH, static_cast<LPCTSTR>(PatchLines.GetAt(lAddLine) - 1), static_cast<LPCTSTR>(chunk->arLines.GetAt(k)));
 						return FALSE;
 					}
 				}
@@ -525,7 +525,7 @@ int CPatch::PatchFile(const int strip, int nIndex, const CString& sPatchPath, co
 				{
 					if (lAddLine > PatchLines.GetCount())
 					{
-						m_sErrorMessage.FormatMessage(IDS_ERR_PATCH_DOESNOTMATCH, L"", (LPCTSTR)sPatchLine);
+						m_sErrorMessage.FormatMessage(IDS_ERR_PATCH_DOESNOTMATCH, L"", static_cast<LPCTSTR>(sPatchLine));
 						return FALSE;
 					}
 					if (lAddLine == 0)
@@ -545,7 +545,7 @@ int CPatch::PatchFile(const int strip, int nIndex, const CString& sPatchPath, co
 							++lRemoveLine;
 						else
 						{
-							m_sErrorMessage.FormatMessage(IDS_ERR_PATCH_DOESNOTMATCH, (LPCTSTR)sPatchLine, (LPCTSTR)PatchLines.GetAt(lAddLine-1));
+							m_sErrorMessage.FormatMessage(IDS_ERR_PATCH_DOESNOTMATCH, static_cast<LPCTSTR>(sPatchLine), static_cast<LPCTSTR>(PatchLines.GetAt(lAddLine-1)));
 							return FALSE;
 						}
 					}

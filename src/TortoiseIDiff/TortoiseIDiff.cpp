@@ -1,6 +1,6 @@
-// TortoiseIDiff - an image diff viewer in TortoiseSVN and TortoiseGit
+﻿// TortoiseIDiff - an image diff viewer in TortoiseSVN and TortoiseGit
 
-// Copyright (C) 2015-2016 - TortoiseGit
+// Copyright (C) 2015-2016, 2019 - TortoiseGit
 // Copyright (C) 2006-2007, 2010-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -74,8 +74,8 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
     InitCommonControlsEx(&used);
 
     // load the cursors we need
-    curHand = (HCURSOR)LoadImage(hInst, MAKEINTRESOURCE(IDC_PANCUR), IMAGE_CURSOR, 0, 0, LR_DEFAULTSIZE);
-    curHandDown = (HCURSOR)LoadImage(hInst, MAKEINTRESOURCE(IDC_PANDOWNCUR), IMAGE_CURSOR, 0, 0, LR_DEFAULTSIZE);
+    curHand = static_cast<HCURSOR>(LoadImage(hInst, MAKEINTRESOURCE(IDC_PANCUR), IMAGE_CURSOR, 0, 0, LR_DEFAULTSIZE));
+    curHandDown = static_cast<HCURSOR>(LoadImage(hInst, MAKEINTRESOURCE(IDC_PANDOWNCUR), IMAGE_CURSOR, 0, 0, LR_DEFAULTSIZE));
 
     auto mainWindow = std::make_unique<CMainWindow>(hResource);
     mainWindow->SetRegistryPath(L"Software\\TortoiseGit\\TortoiseIDiffWindowPos");
@@ -114,9 +114,9 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
         mainWindow->SetSelectionImage(FileTypeTheirs, parser.GetVal(L"theirs"), parser.HasVal(L"theirstitle") ? parser.GetVal(L"theirstitle") : L"");
     if (parser.HasVal(L"result"))
         mainWindow->SetSelectionResult(parser.GetVal(L"result"));
-    mainWindow->resolveMsgWnd = parser.HasVal(L"resolvemsghwnd") ? (HWND)parser.GetLongLongVal(L"resolvemsghwnd") : 0;
-    mainWindow->resolveMsgWParam = parser.HasVal(L"resolvemsgwparam") ? (WPARAM)parser.GetLongLongVal(L"resolvemsgwparam") : 0;
-    mainWindow->resolveMsgLParam = parser.HasVal(L"resolvemsglparam") ? (LPARAM)parser.GetLongLongVal(L"resolvemsglparam") : 0;
+    mainWindow->resolveMsgWnd = parser.HasVal(L"resolvemsghwnd") ? reinterpret_cast<HWND>(parser.GetLongLongVal(L"resolvemsghwnd")) : 0;
+    mainWindow->resolveMsgWParam = parser.HasVal(L"resolvemsgwparam") ? static_cast<WPARAM>(parser.GetLongLongVal(L"resolvemsgwparam")) : 0;
+    mainWindow->resolveMsgLParam = parser.HasVal(L"resolvemsglparam") ? static_cast<LPARAM>(parser.GetLongLongVal(L"resolvemsglparam")) : 0;
     if (mainWindow->RegisterAndCreateWindow())
     {
         HACCEL hAccelTable = LoadAccelerators(hResource, MAKEINTRESOURCE(IDR_TORTOISEIDIFF));
@@ -154,7 +154,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
                 DispatchMessage(&msg);
             }
         }
-        return (int) msg.wParam;
+        return static_cast<int>(msg.wParam);
     }
     langDLL.Close();
     DestroyCursor(curHand);

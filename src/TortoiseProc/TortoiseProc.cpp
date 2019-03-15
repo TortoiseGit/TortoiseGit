@@ -122,7 +122,7 @@ BOOL CTortoiseProcApp::InitInstance()
 	langpath += "Languages";
 	do
 	{
-		langDll.Format(L"%sLanguages\\TortoiseProc%ld.dll", (LPCTSTR)CPathUtils::GetAppParentDirectory(), langId);
+		langDll.Format(L"%sLanguages\\TortoiseProc%ld.dll", static_cast<LPCTSTR>(CPathUtils::GetAppParentDirectory()), langId);
 
 		CString sVer = _T(STRPRODUCTVER);
 		CString sFileVer = CPathUtils::GetVersionFromFile(langDll);
@@ -131,7 +131,7 @@ BOOL CTortoiseProcApp::InitInstance()
 			HINSTANCE hInst = LoadLibrary(langDll);
 			if (hInst)
 			{
-				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Load Language DLL %s\n", (LPCTSTR)langDll);
+				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Load Language DLL %s\n", static_cast<LPCTSTR>(langDll));
 				AfxSetResourceHandle(hInst);
 				break;
 			}
@@ -226,7 +226,7 @@ BOOL CTortoiseProcApp::InitInstance()
 	hWndExplorer = nullptr;
 	CString sVal = parser.GetVal(L"hwnd");
 	if (!sVal.IsEmpty())
-		hWndExplorer = (HWND)_wcstoui64(sVal, nullptr, 16);
+		hWndExplorer = reinterpret_cast<HWND>(_wcstoui64(sVal, nullptr, 16));
 
 	while (GetParent(hWndExplorer))
 		hWndExplorer = GetParent(hWndExplorer);
@@ -288,29 +288,29 @@ BOOL CTortoiseProcApp::InitInstance()
 	{
 		CString url = parser.GetVal(L"urlhandler");
 		if (CStringUtils::StartsWith(url, L"tgit://clone/"))
-			url = url.Mid((int)wcslen(L"tgit://clone/"));
+			url = url.Mid(static_cast<int>(wcslen(L"tgit://clone/")));
 		else if (CStringUtils::StartsWith(url, L"github-windows://openRepo/"))
 		{
-			url = url.Mid((int)wcslen(L"github-windows://openRepo/"));
+			url = url.Mid(static_cast<int>(wcslen(L"github-windows://openRepo/")));
 			int questioMark = url.Find('?');
 			if (questioMark > 0)
 				url = url.Left(questioMark);
 		}
 		else if (CStringUtils::StartsWith(url, L"x-github-client://openRepo/")) {
-			url = url.Mid((int)wcslen(L"x-github-client://openRepo/"));
+			url = url.Mid(static_cast<int>(wcslen(L"x-github-client://openRepo/")));
 			int questioMark = url.Find('?');
 			if (questioMark > 0)
 				url = url.Left(questioMark);
 		}
 		else if (CStringUtils::StartsWith(url, L"smartgit://cloneRepo/"))
-			url = url.Mid((int)wcslen(L"smartgit://cloneRepo/"));
+			url = url.Mid(static_cast<int>(wcslen(L"smartgit://cloneRepo/")));
 		else
 		{
 			CMessageBox::Show(nullptr, IDS_ERR_INVALIDPATH, IDS_APPNAME, MB_ICONERROR);
 			return FALSE;
 		}
 		CString newCmd;
-		newCmd.Format(L"/command:clone /url:\"%s\" /hasurlhandler", (LPCTSTR)url);
+		newCmd.Format(L"/command:clone /url:\"%s\" /hasurlhandler", static_cast<LPCTSTR>(url));
 		parser = CCmdLineParser(newCmd);
 	}
 
@@ -526,7 +526,7 @@ BOOL CTortoiseProcApp::InitInstance()
 			CDirFileEnum finder(path.get());
 			FILETIME systime_;
 			::GetSystemTimeAsFileTime(&systime_);
-			__int64 systime = (((_int64)systime_.dwHighDateTime)<<32) | ((__int64)systime_.dwLowDateTime);
+			__int64 systime = static_cast<__int64>(systime_.dwHighDateTime) << 32 | systime_.dwLowDateTime;
 			bool isDir;
 			CString filepath;
 			while (finder.NextFile(filepath, &isDir))
@@ -538,7 +538,7 @@ BOOL CTortoiseProcApp::InitInstance()
 					if (::GetFileTime(hFile, &createtime_, nullptr, nullptr))
 					{
 						::CloseHandle(hFile);
-						__int64 createtime = (((_int64)createtime_.dwHighDateTime)<<32) | ((__int64)createtime_.dwLowDateTime);
+						__int64 createtime = static_cast<__int64>(createtime_.dwHighDateTime) << 32 | createtime_.dwLowDateTime;
 						if ((createtime + 864000000000) < systime)		//only delete files older than a day
 						{
 							::SetFileAttributes(filepath, FILE_ATTRIBUTE_NORMAL);
@@ -566,7 +566,7 @@ void CTortoiseProcApp::CheckUpgrade()
 {
 	CRegString regVersion = CRegString(L"Software\\TortoiseGit\\CurrentVersion");
 	CString sVersion = regVersion;
-	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Current TGit Version %s\n", (LPCTSTR)sVersion);
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Current TGit Version %s\n", static_cast<LPCTSTR>(sVersion));
 	if (sVersion.Compare(_T(STRPRODUCTVER))==0)
 		return;
 	// we're starting the first time with a new version!
@@ -644,7 +644,7 @@ void CTortoiseProcApp::CheckUpgrade()
 		for (const CString& setting : { L"SyncIn", L"SyncOut" })
 		{
 			CRegDWORD reg(L"Software\\TortoiseGit\\StatusColumns\\" + setting + L"loglistVersion", 0xff);
-			if ((DWORD)reg == 6)
+			if (reg == 6)
 				reg.removeValue();
 		}
 	}
@@ -656,7 +656,7 @@ void CTortoiseProcApp::CheckUpgrade()
 		for (const CString& setting : { L"log", L"Blame", L"Rebase", L"reflog", L"SyncIn", L"SyncOut" })
 		{
 			CRegDWORD reg(L"Software\\TortoiseGit\\StatusColumns\\" + setting + L"loglistVersion", 0xff);
-			if ((DWORD)reg == 5)
+			if (reg == 5)
 				reg = 6;
 		}
 	}
@@ -770,14 +770,14 @@ void CTortoiseProcApp::DoInitializeJumpList(const CString& appid)
 	CStringUtils::RemoveAccelerators(sTemp);
 
 	ATL::CComPtr<IShellLink> psl;
-	hr = CreateShellLink(L"/command:settings", (LPCTSTR)sTemp, 18, &psl);
+	hr = CreateShellLink(L"/command:settings", static_cast<LPCTSTR>(sTemp), 18, &psl);
 	if (SUCCEEDED(hr)) {
 		poc->AddObject(psl);
 	}
 	sTemp = CString(MAKEINTRESOURCE(IDS_MENUHELP));
 	CStringUtils::RemoveAccelerators(sTemp);
 	psl.Release(); // Need to release the object before calling operator&()
-	hr = CreateShellLink(L"/command:help", (LPCTSTR)sTemp, 17, &psl);
+	hr = CreateShellLink(L"/command:help", static_cast<LPCTSTR>(sTemp), 17, &psl);
 	if (SUCCEEDED(hr)) {
 		poc->AddObject(psl);
 	}
@@ -785,7 +785,7 @@ void CTortoiseProcApp::DoInitializeJumpList(const CString& appid)
 	ATL::CComPtr<IObjectArray> poa;
 	hr = poc.QueryInterface(&poa);
 	if (SUCCEEDED(hr)) {
-		pcdl->AppendCategory((LPCTSTR)CString(MAKEINTRESOURCE(IDS_PROC_TASKS)), poa);
+		pcdl->AppendCategory(static_cast<LPCTSTR>(CString(MAKEINTRESOURCE(IDS_PROC_TASKS))), poa);
 		pcdl->CommitList();
 	}
 }
@@ -814,12 +814,12 @@ void CTortoiseProcApp::CheckForNewerVersion()
 		{
 #if PREVIEW
 			// Check daily for new preview releases
-			CRegDWORD oldday = CRegDWORD(L"Software\\TortoiseGit\\CheckNewerDay", (DWORD)-1);
-			if (((DWORD)oldday) == -1)
+			CRegDWORD oldday = CRegDWORD(L"Software\\TortoiseGit\\CheckNewerDay", DWORD(-1));
+			if (oldday == -1)
 				oldday = ptm.tm_yday;
 			else
 			{
-				if ((DWORD)oldday != (DWORD)ptm.tm_yday)
+				if (static_cast<DWORD>(oldday) != static_cast<DWORD>(ptm.tm_yday))
 				{
 					oldday = ptm.tm_yday;
 #else
@@ -829,12 +829,12 @@ void CTortoiseProcApp::CheckForNewerVersion()
 			// that's not needed.
 			week = (ptm.tm_yday + CRegDWORD(L"Software\\TortoiseGit\\CheckNewerWeekDay", 0)) / 7;
 
-			CRegDWORD oldweek = CRegDWORD(L"Software\\TortoiseGit\\CheckNewerWeek", (DWORD)-1);
-			if (((DWORD)oldweek) == -1)
+			CRegDWORD oldweek = CRegDWORD(L"Software\\TortoiseGit\\CheckNewerWeek", DWORD(-1));
+			if (oldweek == -1)
 				oldweek = week;		// first start of TortoiseProc, no update check needed
 			else
 			{
-				if ((DWORD)week != oldweek)
+				if (static_cast<DWORD>(week) != oldweek)
 				{
 					oldweek = week;
 #endif

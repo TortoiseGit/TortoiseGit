@@ -75,7 +75,7 @@ BOOL CHistoryDlg::OnInitDialog()
 		sEntry.Replace('\n', ' ');
 		m_List.AddString(sEntry);
 		itemExtent = pDC->GetTextExtent(sEntry);
-		horizExtent = max(horizExtent, (int)itemExtent.cx + 5);
+		horizExtent = max(horizExtent, static_cast<int>(itemExtent.cx) + 5);
 	}
 	m_List.SetHorizontalExtent(horizExtent);
 	ReleaseDC(pDC);

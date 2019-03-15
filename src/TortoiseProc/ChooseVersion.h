@@ -36,7 +36,7 @@ private:
 	CWinThread*			m_pLoadingThread;
 	static UINT LoadingThreadEntry(LPVOID pVoid)
 	{
-		return reinterpret_cast<CChooseVersion*>(pVoid)->LoadingThread();
+		return static_cast<CChooseVersion*>(pVoid)->LoadingThread();
 	};
 	volatile LONG 		m_bLoadingThreadRunning;
 
@@ -160,10 +160,10 @@ protected:
 		}
 
 		if (CStringUtils::StartsWith(refName, L"refs/"))
-			refName = refName.Mid((int)wcslen(L"refs/"));
+			refName = refName.Mid(static_cast<int>(wcslen(L"refs/")));
 		if (CStringUtils::StartsWith(refName, L"heads/"))
 		{
-			refName = refName.Mid((int)wcslen(L"heads/"));
+			refName = refName.Mid(static_cast<int>(wcslen(L"heads/")));
 			SetDefaultChoose(IDC_RADIO_BRANCH);
 			m_ChooseVersioinBranch.SetCurSel(
 				m_ChooseVersioinBranch.FindStringExact(-1, refName));
@@ -176,9 +176,9 @@ protected:
 		}
 		else if (CStringUtils::StartsWith(refName, L"tags/"))
 		{
-			refName = refName.Mid((int)wcslen(L"refs/"));
+			refName = refName.Mid(static_cast<int>(wcslen(L"refs/")));
 			if (CStringUtils::EndsWith(refName, L"^{}"))
-				refName.Truncate(refName.GetLength() - (int)wcslen(L"^{}"));
+				refName.Truncate(refName.GetLength() - static_cast<int>(wcslen(L"^{}")));
 			SetDefaultChoose(IDC_RADIO_TAGS);
 			m_ChooseVersioinTags.SetCurSel(
 				m_ChooseVersioinTags.FindStringExact(-1, refName));

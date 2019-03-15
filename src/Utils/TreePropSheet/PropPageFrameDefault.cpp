@@ -1,4 +1,4 @@
-/********************************************************************
+﻿/********************************************************************
 *
 * Copyright (c) 2002 Sven Wiegand <mail@sven-wiegand.de>
 *
@@ -183,16 +183,16 @@ void CPropPageFrameDefault::DrawCaption(CDC *pDc, CRect rect, LPCTSTR lpszCaptio
 		sz.cx = rcImage.right - rcImage.left;
 		sz.cy = rcImage.bottom - rcImage.top;
 		hScale = vScale = max(1.0, rect.Height() / sz.cy * 0.7);
-		sz.cx = (LONG)(sz.cx * hScale + 0.5);
-		sz.cy = (LONG)(sz.cy * vScale + 0.5);
-		LONG xOffset = (LONG)(6 * hScale + 0.5);
+		sz.cx = static_cast<LONG>(sz.cx * hScale + 0.5);
+		sz.cy = static_cast<LONG>(sz.cy * vScale + 0.5);
+		LONG xOffset = static_cast<LONG>(6 * hScale + 0.5);
 		CPoint pt(xOffset, rect.CenterPoint().y - (sz.cy / 2));
 		m_Images.DrawEx(pDc, 0, pt, sz, CLR_DEFAULT, CLR_DEFAULT, ILD_TRANSPARENT | ILD_SCALE);
 		rect.left += sz.cx + xOffset;
 	}
 
 	// draw text
-	rect.left += (LONG)(2 * hScale + 0.5);
+	rect.left += static_cast<LONG>(2 * hScale + 0.5);
 
 	COLORREF	clrPrev = pDc->SetTextColor(GetSysColor(COLOR_CAPTIONTEXT));
 	int				nBkStyle = pDc->SetBkMode(TRANSPARENT);
@@ -222,18 +222,18 @@ void CPropPageFrameDefault::FillGradientRectH(CDC *pDc, const RECT &rect, COLORR
 	int	nGRange = GetGValue(clrRight)-GetGValue(clrLeft);
 	int	nBRange = GetBValue(clrRight)-GetBValue(clrLeft);
 
-	double	dRStep = (double)nRRange/(double)nSteps;
-	double	dGStep = (double)nGRange/(double)nSteps;
-	double	dBStep = (double)nBRange/(double)nSteps;
+	double	dRStep = static_cast<double>(nRRange) / static_cast<double>(nSteps);
+	double	dGStep = static_cast<double>(nGRange) / static_cast<double>(nSteps);
+	double	dBStep = static_cast<double>(nBRange) / static_cast<double>(nSteps);
 
-	double	dR = (double)GetRValue(clrLeft);
-	double	dG = (double)GetGValue(clrLeft);
-	double	dB = (double)GetBValue(clrLeft);
+	double	dR = static_cast<double>(GetRValue(clrLeft));
+	double	dG = static_cast<double>(GetGValue(clrLeft));
+	double	dB = static_cast<double>(GetBValue(clrLeft));
 
 	CPen* pPrevPen = nullptr;
 	for (int x = rect.left; x <= rect.right; ++x)
 	{
-		CPen	Pen(PS_SOLID, 1, RGB((BYTE)dR, (BYTE)dG, (BYTE)dB));
+		CPen Pen(PS_SOLID, 1, RGB(static_cast<BYTE>(dR), static_cast<BYTE>(dG), static_cast<BYTE>(dB)));
 		pPrevPen = pDc->SelectObject(&Pen);
 		pDc->MoveTo(x, rect.top);
 		pDc->LineTo(x, rect.bottom);

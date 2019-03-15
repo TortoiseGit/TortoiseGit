@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011, 2015-2017 - TortoiseGit
+// Copyright (C) 2011, 2015-2017, 2019 - TortoiseGit
 // Copyright (C) 2011,2015-2016 - Sven Strickroth <email@cs-ware.de>
 
 //based on:
@@ -62,7 +62,7 @@ bool CMenuButton::SetCurrentEntry(INT_PTR entry)
 	m_nDefault = entry + 1;
 	SetWindowText(m_sEntries[entry]);
 	if (m_bMarkDefault)
-		m_btnMenu.SetDefaultItem((UINT)m_nDefault, FALSE);
+		m_btnMenu.SetDefaultItem(static_cast<UINT>(m_nDefault), FALSE);
 
 	return true;
 }
@@ -149,7 +149,7 @@ BOOL CMenuButton::PreTranslateMessage(MSG* pMsg)
 		case VK_SPACE:
 			if (m_bMenuIsActive && !m_bRealMenuIsActive)
 			{
-				GetParent()->SendMessage(WM_COMMAND, MAKEWPARAM(GetDlgCtrlID(), BN_CLICKED), (LPARAM)m_hWnd);
+				GetParent()->SendMessage(WM_COMMAND, MAKEWPARAM(GetDlgCtrlID(), BN_CLICKED), reinterpret_cast<LPARAM>(m_hWnd));
 				return TRUE;
 			}
 		case VK_F4:
@@ -235,7 +235,7 @@ void CMenuButton::OnShowMenu()
 		//-------------------------------------------------------
 		if (pParent != NULL)
 		{
-			pParent->SendMessage(WM_COMMAND, MAKEWPARAM(GetDlgCtrlID(), BN_CLICKED), (LPARAM)m_hWnd);
+			pParent->SendMessage(WM_COMMAND, MAKEWPARAM(GetDlgCtrlID(), BN_CLICKED), reinterpret_cast<LPARAM>(m_hWnd));
 		}
 	}
 

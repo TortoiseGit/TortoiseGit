@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2017-2018 - TortoiseGit
+// Copyright (C) 2017-2019 - TortoiseGit
 // Copyright (C) 2007-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -216,7 +216,7 @@ HRESULT __stdcall GitWCRev::get_Date(/*[out, retval]*/VARIANT* date)
 	if (S_FALSE == result)
 		swprintf_s(destbuf, L"");
 
-	date->bstrVal = SysAllocStringLen(destbuf, (UINT)wcslen(destbuf));
+	date->bstrVal = SysAllocStringLen(destbuf, static_cast<UINT>(wcslen(destbuf)));
 	return result;
 }
 
@@ -234,7 +234,7 @@ HRESULT GitWCRev::Utf8StringToVariant(const char* string, VARIANT* result )
 	const size_t len = strlen(string);
 	auto buf = std::make_unique<WCHAR[]>(len * 4 + 1);
 	SecureZeroMemory(buf.get(), (len * 4 + 1) * sizeof(WCHAR));
-	MultiByteToWideChar(CP_UTF8, 0, string, -1, buf.get(), (int)len * 4);
+	MultiByteToWideChar(CP_UTF8, 0, string, -1, buf.get(), static_cast<int>(len) * 4);
 	result->bstrVal = SysAllocString(buf.get());
 	return S_OK;
 }
@@ -286,7 +286,7 @@ HRESULT __stdcall GitWCRev::get_IsSubmoduleUp2Date(/*[out, retval]*/VARIANT_BOOL
 
 HRESULT __stdcall GitWCRev::get_CommitCount(/*[out, retval]*/VARIANT* rev)
 {
-	return LongToVariant((LONG)GitStat.NumCommits, rev);
+	return LongToVariant(static_cast<LONG>(GitStat.NumCommits), rev);
 }
 
 HRESULT GitWCRev::BoolToVariantBool(BOOL value, VARIANT_BOOL* result)

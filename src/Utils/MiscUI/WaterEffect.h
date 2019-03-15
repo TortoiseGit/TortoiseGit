@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2006, 2008-2010, 2012 - TortoiseSVN
 
@@ -18,7 +18,7 @@
 //
 #pragma once
 
-#define random( min, max ) (( rand() % (int)((( max ) + 1 ) - ( min ))) + ( min ))
+#define random(min, max) ((rand() % static_cast<int>(((max) + 1) - (min))) + (min))
 
 /**
  * \ingroup Utils
@@ -38,7 +38,7 @@
  * \endcode
  * In a timer function / method you need to render the picture:
  * \code
- * m_waterEffect.Render((DWORD*)m_renderSrc.GetDIBits(), (DWORD*)m_renderDest.GetDIBits());
+ * m_waterEffect.Render(static_cast<DWORD*>(m_renderSrc.GetDIBits()), static_cast<DWORD*>(m_renderDest.GetDIBits()));
  * CClientDC dc(this);
  * CPoint ptOrigin(15,20);
  * m_renderDest.Draw(&dc,ptOrigin);

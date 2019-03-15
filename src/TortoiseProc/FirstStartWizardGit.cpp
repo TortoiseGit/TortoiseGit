@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2017 - TortoiseGit
+// Copyright (C) 2016-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -159,7 +159,7 @@ void CFirstStartWizardGit::OnTimer(UINT_PTR nIDEvent)
 
 BOOL CFirstStartWizardGit::OnSetActive()
 {
-	CFirstStartWizard* wiz = (CFirstStartWizard*)GetParent();
+	auto wiz = static_cast<CFirstStartWizard*>(GetParent());
 
 	wiz->SetWizardButtons(PSWIZB_NEXT | PSWIZB_BACK);
 

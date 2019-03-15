@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016 - TortoiseGit
+// Copyright (C) 2016, 2019 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -43,7 +43,7 @@ bool UnIgnoreCommand::Execute()
 			if (propname.CompareNoCase(L"svn:ignore") == 0)
 			{
 				//treat values as normal text even if they're not
-				value = (char *)props.GetItemValue(i).c_str();
+				value = props.GetItemValue(i).c_str();
 				break;
 			}
 		}
@@ -65,7 +65,7 @@ bool UnIgnoreCommand::Execute()
 			if (!props.Remove(L"svn:ignore"))
 			{
 				CString temp;
-				temp.Format(IDS_ERR_FAILEDUNIGNOREPROPERTY, (LPCTSTR)name);
+				temp.Format(IDS_ERR_FAILEDUNIGNOREPROPERTY, static_cast<LPCTSTR>(name));
 				CMessageBox::Show(hwndExplorer, temp, L"TortoiseGit", MB_ICONERROR);
 				err = TRUE;
 				break;
@@ -73,10 +73,10 @@ bool UnIgnoreCommand::Execute()
 		}
 		else
 		{
-			if (!props.Add(L"svn:ignore", (LPCSTR)value))
+			if (!props.Add(L"svn:ignore", static_cast<LPCSTR>(value)))
 			{
 				CString temp;
-				temp.Format(IDS_ERR_FAILEDUNIGNOREPROPERTY, (LPCTSTR)name);
+				temp.Format(IDS_ERR_FAILEDUNIGNOREPROPERTY, static_cast<LPCTSTR>(name));
 				CMessageBox::Show(hwndExplorer, temp, L"TortoiseGit", MB_ICONERROR);
 				err = TRUE;
 				break;
@@ -86,7 +86,7 @@ bool UnIgnoreCommand::Execute()
 	if (err == FALSE)
 	{
 		CString temp;
-		temp.Format(IDS_PROC_UNIGNORESUCCESS, (LPCTSTR)filelist);
+		temp.Format(IDS_PROC_UNIGNORESUCCESS, static_cast<LPCTSTR>(filelist));
 		CMessageBox::Show(hwndExplorer, temp, L"TortoiseGit", MB_ICONINFORMATION);
 		return true;
 	}

@@ -114,7 +114,7 @@ BOOL CSetProxyPage::OnInitDialog()
 		}
 	}
 	m_serveraddress = m_regServeraddress;
-	m_serverport = _wtoi((LPCTSTR)(CString)m_regServerport);
+	m_serverport = _wtoi(static_cast<LPCTSTR>(static_cast<CString>(m_regServerport)));
 	m_username = m_regUsername;
 	m_password = m_regPassword;
 

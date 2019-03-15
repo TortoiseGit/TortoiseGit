@@ -66,7 +66,7 @@ BOOL CAddDlg::OnInitDialog()
 	m_addListCtrl.Init(GITSLC_COLEXT, L"AddDlg", GITSLC_POPALL ^ (GITSLC_POPADD | GITSLC_POPCOMMIT | GITSLC_POPCHANGELISTS | GITSLC_POPPREPAREDIFF), true, true, GITSLC_COLEXT | GITSLC_COLMODIFICATIONDATE | GITSLC_COLSIZE); // adding and committing is useless in the add dialog
 	m_addListCtrl.SetIgnoreRemoveOnly();	// when ignoring, don't add the parent folder since we're in the add dialog
 	m_addListCtrl.SetSelectButton(&m_SelectAll);
-	m_addListCtrl.SetConfirmButton((CButton*)GetDlgItem(IDOK));
+	m_addListCtrl.SetConfirmButton(static_cast<CButton*>(GetDlgItem(IDOK)));
 	m_addListCtrl.SetEmptyString(IDS_ERR_NOTHINGTOADD);
 	m_addListCtrl.SetCancelBool(&m_bCancelled);
 	m_addListCtrl.SetBackgroundImage(IDI_ADD_BKG);
@@ -138,7 +138,7 @@ void CAddDlg::OnBnClickedSelectall()
 
 UINT CAddDlg::AddThreadEntry(LPVOID pVoid)
 {
-	return reinterpret_cast<CAddDlg*>(pVoid)->AddThread();
+	return static_cast<CAddDlg*>(pVoid)->AddThread();
 }
 
 UINT CAddDlg::AddThread()
@@ -214,7 +214,7 @@ LRESULT CAddDlg::OnFileDropped(WPARAM, LPARAM lParam)
 	// but only if it isn't already running - otherwise we
 	// restart the timer.
 	CTGitPath path;
-	path.SetFromWin((LPCTSTR)lParam);
+	path.SetFromWin(reinterpret_cast<LPCTSTR>(lParam));
 
 	// check whether the dropped file belongs to the very same repository
 	CString projectDir;

@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014, 2016-2017 - TortoiseGit
+// Copyright (C) 2008-2014, 2016-2017, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -129,13 +129,13 @@ BOOL CFormatPatchDlg::OnInitDialog()
 
 	STRING_VECTOR list;
 	g_Git.GetBranchList(list, nullptr, CGit::BRANCH_ALL_F);
-	m_cSince.SetMaxHistoryItems((int)list.size());
+	m_cSince.SetMaxHistoryItems(static_cast<int>(list.size()));
 	m_cSince.SetList(list);
 
 	if (!m_Since.IsEmpty())
 		m_cSince.SetWindowText(m_Since);
 	else
-		m_cSince.SetWindowText((CString)m_regSince);
+		m_cSince.SetWindowText(static_cast<CString>(m_regSince));
 
 	m_cFrom.LoadHistory(L"Software\\TortoiseGit\\History\\FormatPatchFromURLS", L"ver");
 	m_cFrom.SetCurSel(0);

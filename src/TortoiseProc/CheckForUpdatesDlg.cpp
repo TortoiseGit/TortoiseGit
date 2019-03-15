@@ -112,7 +112,7 @@ BOOL CCheckForUpdatesDlg::OnInitDialog()
 	rectWindow.bottom = rectOKButton.bottom + bottomDistance;
 	SetMinTrackSize(CSize(rectWindow.right - rectWindow.left, rectWindow.bottom - rectWindow.top));
 	MoveWindow(&rectWindow);
-	::MapWindowPoints(nullptr, GetSafeHwnd(), (LPPOINT)&rectOKButton, 2);
+	::MapWindowPoints(nullptr, GetSafeHwnd(), reinterpret_cast<LPPOINT>(&rectOKButton), 2);
 	GetDlgItem(IDOK)->MoveWindow(&rectOKButton);
 
 	temp.LoadString(IDS_STATUSLIST_COLFILE);
@@ -152,7 +152,7 @@ BOOL CCheckForUpdatesDlg::OnInitDialog()
 void CCheckForUpdatesDlg::OnDestroy()
 {
 	for (int i = 0; i < m_ctrlFiles.GetItemCount(); ++i)
-		delete (CUpdateListCtrl::Entry *)m_ctrlFiles.GetItemData(i);
+		delete reinterpret_cast<CUpdateListCtrl::Entry*>(m_ctrlFiles.GetItemData(i));
 
 	delete m_updateDownloader;
 
@@ -176,7 +176,7 @@ void CCheckForUpdatesDlg::OnCancel()
 
 UINT CCheckForUpdatesDlg::CheckThreadEntry(LPVOID pVoid)
 {
-	return reinterpret_cast<CCheckForUpdatesDlg*>(pVoid)->CheckThread();
+	return static_cast<CCheckForUpdatesDlg*>(pVoid)->CheckThread();
 }
 
 UINT CCheckForUpdatesDlg::CheckThread()
@@ -246,7 +246,7 @@ UINT CCheckForUpdatesDlg::CheckThread()
 		if (CRegDWORD(L"Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\GlobalUserOffline", 0))
 			errorText.LoadString(IDS_OFFLINEMODE); // offline mode enabled
 		else
-			errorText.FormatMessage(IDS_CHECKNEWER_NETERROR_FORMAT, (LPCTSTR)(GetWinINetError(ret) + L" URL: " + sCheckURL), ret);
+			errorText.FormatMessage(IDS_CHECKNEWER_NETERROR_FORMAT, static_cast<LPCTSTR>(GetWinINetError(ret) + L" URL: " + sCheckURL), ret);
 		SetDlgItemText(IDC_CHECKRESULT, errorText);
 		goto finish;
 	}
@@ -282,10 +282,10 @@ UINT CCheckForUpdatesDlg::CheckThread()
 		if (m_sNewVersionNumber != version.version_for_filename)
 		{
 			CString versionstr = m_sNewVersionNumber + L" (" + version.version_for_filename + L")";
-			temp.Format(IDS_CHECKNEWER_CURRENTVERSION, (LPCTSTR)versionstr);
+			temp.Format(IDS_CHECKNEWER_CURRENTVERSION, static_cast<LPCTSTR>(versionstr));
 		}
 		else
-			temp.Format(IDS_CHECKNEWER_CURRENTVERSION, (LPCTSTR)m_sNewVersionNumber);
+			temp.Format(IDS_CHECKNEWER_CURRENTVERSION, static_cast<LPCTSTR>(m_sNewVersionNumber));
 		SetDlgItemText(IDC_CURRENTVERSION, temp);
 
 		if (bNewer)
@@ -324,7 +324,7 @@ UINT CCheckForUpdatesDlg::CheckThread()
 			rectWindow.bottom = rectOKButton.bottom + bottomDistance;
 			SetMinTrackSize(CSize(rectWindow.right - rectWindow.left, rectWindow.bottom - rectWindow.top));
 			MoveWindow(&rectWindow);
-			::MapWindowPoints(nullptr, GetSafeHwnd(), (LPPOINT)&rectOKButton, 2);
+			::MapWindowPoints(nullptr, GetSafeHwnd(), reinterpret_cast<LPPOINT>(&rectOKButton), 2);
 			if (CRegDWORD(L"Software\\TortoiseGit\\VersionCheck", TRUE) != FALSE && !m_bForce && !m_bShowInfo)
 			{
 				GetDlgItem(IDC_DONOTASKAGAIN)->ShowWindow(SW_SHOW);
@@ -376,7 +376,7 @@ void CCheckForUpdatesDlg::FillDownloads(CVersioncheckParser& versioncheck)
 	else
 		m_ctrlFiles.InsertItem(0, L"TortoiseGit");
 	CString filenameMain = versioncheck.GetTortoiseGitMainfilename();
-	m_ctrlFiles.SetItemData(0, (DWORD_PTR)(new CUpdateListCtrl::Entry(filenameMain, CUpdateListCtrl::STATUS_NONE)));
+	m_ctrlFiles.SetItemData(0, reinterpret_cast<DWORD_PTR>(new CUpdateListCtrl::Entry(filenameMain, CUpdateListCtrl::STATUS_NONE)));
 	m_ctrlFiles.SetCheck(0 , TRUE);
 
 	if (isHotfix)
@@ -407,11 +407,11 @@ void CCheckForUpdatesDlg::FillDownloads(CVersioncheckParser& versioncheck)
 				sVer = sVer.Left(sVer.ReverseFind('.'));
 				CString sFileVer = CPathUtils::GetVersionFromFile(file);
 				sFileVer = sFileVer.Left(sFileVer.ReverseFind('.'));
-				CString sLoc = filename.Mid((int)wcslen(L"TortoiseProc"));
-				sLoc = sLoc.Left(sLoc.GetLength() - (int)wcslen(L".dll")); // cut off ".dll"
+				CString sLoc = filename.Mid(static_cast<int>(wcslen(L"TortoiseProc")));
+				sLoc = sLoc.Left(sLoc.GetLength() - static_cast<int>(wcslen(L".dll"))); // cut off ".dll"
 				if (CStringUtils::StartsWith(sLoc, L"32") && (sLoc.GetLength() > 5))
 					continue;
-				DWORD loc = _wtoi(filename.Mid((int)wcslen(L"TortoiseProc")));
+				DWORD loc = _wtoi(filename.Mid(static_cast<int>(wcslen(L"TortoiseProc"))));
 				installedLangs.push_back(loc);
 			}
 		}
@@ -431,7 +431,7 @@ void CCheckForUpdatesDlg::FillDownloads(CVersioncheckParser& versioncheck)
 	{
 		int pos = m_ctrlFiles.InsertItem(m_ctrlFiles.GetItemCount(), langs.languagepack.m_PackName);
 		m_ctrlFiles.SetItemText(pos, 1, langs.languagepack.m_LangName);
-		m_ctrlFiles.SetItemData(pos, (DWORD_PTR)(new CUpdateListCtrl::Entry(langs.languagepack.m_filename, CUpdateListCtrl::STATUS_NONE)));
+		m_ctrlFiles.SetItemData(pos, reinterpret_cast<DWORD_PTR>(new CUpdateListCtrl::Entry(langs.languagepack.m_filename, CUpdateListCtrl::STATUS_NONE)));
 
 		if (langs.m_Installed)
 			m_ctrlFiles.SetCheck(pos , TRUE);
@@ -452,13 +452,13 @@ void CCheckForUpdatesDlg::FillChangelog(CVersioncheckParser& versioncheck, bool 
 	m_cLogMessage.Init(pp);
 
 	CString sChangelogURL;
-	sChangelogURL.FormatMessage(versioncheck.GetTortoiseGitChangelogURL(), TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, (LPCTSTR)m_updateDownloader->m_sWindowsPlatform, (LPCTSTR)m_updateDownloader->m_sWindowsVersion, (LPCTSTR)m_updateDownloader->m_sWindowsServicePack);
+	sChangelogURL.FormatMessage(versioncheck.GetTortoiseGitChangelogURL(), TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, static_cast<LPCTSTR>(m_updateDownloader->m_sWindowsPlatform), static_cast<LPCTSTR>(m_updateDownloader->m_sWindowsVersion), static_cast<LPCTSTR>(m_updateDownloader->m_sWindowsServicePack));
 
 	CString tempchangelogfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
 	if (DWORD err = m_updateDownloader->DownloadFile(sChangelogURL, tempchangelogfile, false); err != ERROR_SUCCESS)
 	{
 		CString msg = L"Could not load changelog.\r\nError: " + GetWinINetError(err) + L" (on " + sChangelogURL + L")";
-		::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, 0, reinterpret_cast<LPARAM>((LPCTSTR)msg));
+		::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, 0, reinterpret_cast<LPARAM>(static_cast<LPCTSTR>(msg)));
 		return;
 	}
 	if (official)
@@ -469,7 +469,7 @@ void CCheckForUpdatesDlg::FillChangelog(CVersioncheckParser& versioncheck, bool 
 			CString error = L"Could not verify digital signature.";
 			if (err)
 				error += L"\r\nError: " + GetWinINetError(err) + L" (on " + sChangelogURL + SIGNATURE_FILE_ENDING + L")";
-			::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, 0, reinterpret_cast<LPARAM>((LPCTSTR)error));
+			::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, 0, reinterpret_cast<LPARAM>(static_cast<LPCTSTR>(error)));
 			DeleteUrlCacheEntry(sChangelogURL);
 			DeleteUrlCacheEntry(sChangelogURL + SIGNATURE_FILE_ENDING);
 			return;
@@ -480,14 +480,14 @@ void CCheckForUpdatesDlg::FillChangelog(CVersioncheckParser& versioncheck, bool 
 	CStdioFile file;
 	if (file.Open(tempchangelogfile, CFile::modeRead | CFile::typeBinary))
 	{
-		auto buf = std::make_unique<BYTE[]>((UINT)file.GetLength());
-		UINT read = file.Read(buf.get(), (UINT)file.GetLength());
+		auto buf = std::make_unique<BYTE[]>(static_cast<UINT>(file.GetLength()));
+		UINT read = file.Read(buf.get(), static_cast<UINT>(file.GetLength()));
 		bool skipBom = read >= 3 && buf[0] == 0xEF && buf[1] == 0xBB && buf[2] == 0xBF;
 		CGit::StringAppend(&temp, buf.get() + (skipBom ? 3 : 0), CP_UTF8, read - (skipBom ? 3 : 0));
 	}
 	else
 		temp = L"Could not open downloaded changelog file.";
-	::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, 0, reinterpret_cast<LPARAM>((LPCTSTR)temp));
+	::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, 0, reinterpret_cast<LPARAM>(static_cast<LPCTSTR>(temp)));
 }
 
 void CCheckForUpdatesDlg::OnTimer(UINT_PTR nIDEvent)
@@ -530,7 +530,7 @@ void CCheckForUpdatesDlg::OnBnClickedButtonUpdate()
 	if (!m_pDownloadThread && title == CString(MAKEINTRESOURCE(IDS_PROC_DOWNLOAD)))
 	{
 		bool isOneSelected = false;
-		for (int i = 0; i < (int)m_ctrlFiles.GetItemCount(); ++i)
+		for (int i = 0; i < m_ctrlFiles.GetItemCount(); ++i)
 		{
 			if (m_ctrlFiles.GetCheck(i))
 			{
@@ -564,9 +564,9 @@ void CCheckForUpdatesDlg::OnBnClickedButtonUpdate()
 		CString folder = GetDownloadsDirectory();
 		if (m_ctrlUpdate.GetCurrentEntry() == 0)
 		{
-			for (int i = 0; i < (int)m_ctrlFiles.GetItemCount(); ++i)
+			for (int i = 0; i < m_ctrlFiles.GetItemCount(); ++i)
 			{
-				CUpdateListCtrl::Entry *data = (CUpdateListCtrl::Entry *)m_ctrlFiles.GetItemData(i);
+				auto data = reinterpret_cast<CUpdateListCtrl::Entry*>(m_ctrlFiles.GetItemData(i));
 				if (m_ctrlFiles.GetCheck(i) == TRUE)
 					ShellExecute(GetSafeHwnd(), L"open", folder + data->m_filename, nullptr, nullptr, SW_SHOWNORMAL);
 			}
@@ -581,7 +581,7 @@ void CCheckForUpdatesDlg::OnBnClickedButtonUpdate()
 
 UINT CCheckForUpdatesDlg::DownloadThreadEntry(LPVOID pVoid)
 {
-	return reinterpret_cast<CCheckForUpdatesDlg*>(pVoid)->DownloadThread();
+	return static_cast<CCheckForUpdatesDlg*>(pVoid)->DownloadThread();
 }
 
 bool CCheckForUpdatesDlg::VerifyUpdateFile(const CString& filename, const CString& filenameSignature, const CString& reportingFilename)
@@ -600,14 +600,14 @@ bool CCheckForUpdatesDlg::VerifyUpdateFile(const CString& filename, const CStrin
 		sFileVer.Trim();
 		if (sFileVer.IsEmpty())
 		{
-			m_sErrors.AppendFormat(L"%s: Invalid filetype found (neither executable nor MSI).\r\n", (LPCTSTR)reportingFilename);
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": MsiGetSummaryInformation reported: %s\n", (LPCTSTR)CFormatMessageWrapper(ret));
+			m_sErrors.AppendFormat(L"%s: Invalid filetype found (neither executable nor MSI).\r\n", static_cast<LPCTSTR>(reportingFilename));
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": MsiGetSummaryInformation reported: %s\n", static_cast<LPCTSTR>(CFormatMessageWrapper(ret)));
 			return false;
 		}
 		else if (sFileVer == m_sNewVersionNumber)
 			return true;
 
-		m_sErrors.AppendFormat(L"%s: Version number of downloaded file doesn't match (expected: \"%s\", got: \"%s\").\r\n", (LPCTSTR)reportingFilename, (LPCTSTR)m_sNewVersionNumber, (LPCTSTR)sFileVer);
+		m_sErrors.AppendFormat(L"%s: Version number of downloaded file doesn't match (expected: \"%s\", got: \"%s\").\r\n", static_cast<LPCTSTR>(reportingFilename), static_cast<LPCTSTR>(m_sNewVersionNumber), static_cast<LPCTSTR>(sFileVer));
 		return false;
 	}
 	SCOPE_EXIT{ MsiCloseHandle(hSummary); };
@@ -618,20 +618,20 @@ bool CCheckForUpdatesDlg::VerifyUpdateFile(const CString& filename, const CStrin
 	int intValue;
 	if (MsiSummaryInfoGetProperty(hSummary, PID_SUBJECT, &uiDataType, &intValue, nullptr, CStrBuf(buffer, cchValue + 1), &cchValue))
 	{
-		m_sErrors.AppendFormat(L"%s: Error obtaining version of MSI file (%s).\r\n", (LPCTSTR)reportingFilename, (LPCTSTR)CFormatMessageWrapper(ret));
+		m_sErrors.AppendFormat(L"%s: Error obtaining version of MSI file (%s).\r\n", static_cast<LPCTSTR>(reportingFilename), static_cast<LPCTSTR>(CFormatMessageWrapper(ret)));
 		return false;
 	}
 
 	if (VT_LPSTR != uiDataType)
 	{
-		m_sErrors.AppendFormat(L"%s: Error obtaining version of MSI file (invalid data type returned).\r\n", (LPCTSTR)reportingFilename);
+		m_sErrors.AppendFormat(L"%s: Error obtaining version of MSI file (invalid data type returned).\r\n", static_cast<LPCTSTR>(reportingFilename));
 		return false;
 	}
 
 	CString sFileVer = buffer.Right(m_sNewVersionNumber.GetLength() + 1);
 	if (sFileVer != L"v" + m_sNewVersionNumber)
 	{
-		m_sErrors.AppendFormat(L"%s: Version number of downloaded file doesn't match (expected: \"v%s\", got: \"%s\").\r\n", (LPCTSTR)reportingFilename, (LPCTSTR)m_sNewVersionNumber, (LPCTSTR)sFileVer);
+		m_sErrors.AppendFormat(L"%s: Version number of downloaded file doesn't match (expected: \"v%s\", got: \"%s\").\r\n", static_cast<LPCTSTR>(reportingFilename), static_cast<LPCTSTR>(m_sNewVersionNumber), static_cast<LPCTSTR>(sFileVer));
 		return false;
 	}
 
@@ -691,12 +691,12 @@ bool CCheckForUpdatesDlg::Download(CString filename)
 			DeleteFile(destFilename + SIGNATURE_FILE_ENDING);
 			if (!MoveFile(tempfile, destFilename))
 			{
-				m_sErrors.AppendFormat(L"Could not move \"%s\" to \"%s\".\r\n", (LPCTSTR)tempfile, (LPCTSTR)destFilename);
+				m_sErrors.AppendFormat(L"Could not move \"%s\" to \"%s\".\r\n", static_cast<LPCTSTR>(tempfile), static_cast<LPCTSTR>(destFilename));
 				return false;
 			}
 			if (!MoveFile(signatureTempfile, destFilename + SIGNATURE_FILE_ENDING))
 			{
-				m_sErrors.AppendFormat(L"Could not move \"%s\" to \"%s\".\r\n", (LPCTSTR)signatureTempfile, (LPCTSTR)(destFilename + SIGNATURE_FILE_ENDING));
+				m_sErrors.AppendFormat(L"Could not move \"%s\" to \"%s\".\r\n", static_cast<LPCTSTR>(signatureTempfile), static_cast<LPCTSTR>(destFilename + SIGNATURE_FILE_ENDING));
 				return false;
 			}
 			return true;
@@ -712,12 +712,12 @@ UINT CCheckForUpdatesDlg::DownloadThread()
 	m_ctrlFiles.SetExtendedStyle(m_ctrlFiles.GetExtendedStyle() & ~LVS_EX_CHECKBOXES);
 	m_sErrors.Empty();
 	BOOL result = TRUE;
-	for (int i = 0; i < (int)m_ctrlFiles.GetItemCount(); ++i)
+	for (int i = 0; i < m_ctrlFiles.GetItemCount(); ++i)
 	{
 		m_ctrlFiles.EnsureVisible(i, FALSE);
 		CRect rect;
 		m_ctrlFiles.GetItemRect(i, &rect, LVIR_BOUNDS);
-		CUpdateListCtrl::Entry *data = (CUpdateListCtrl::Entry *)m_ctrlFiles.GetItemData(i);
+		auto data = reinterpret_cast<CUpdateListCtrl::Entry*>(m_ctrlFiles.GetItemData(i));
 		if (m_ctrlFiles.GetCheck(i) == TRUE)
 		{
 			data->m_status = CUpdateListCtrl::STATUS_DOWNLOADING;
@@ -845,7 +845,7 @@ CString CCheckForUpdatesDlg::GetWinINetError(DWORD err)
 		for (const CString& module : { L"wininet.dll", L"urlmon.dll" })
 		{
 			LPTSTR buffer;
-			FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_FROM_HMODULE, GetModuleHandle(module), err, 0, (LPTSTR)&buffer, 0, nullptr);
+			FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_FROM_HMODULE, GetModuleHandle(module), err, 0, reinterpret_cast<LPTSTR>(&buffer), 0, nullptr);
 			readableError = buffer;
 			LocalFree(buffer);
 			if (!readableError.IsEmpty())

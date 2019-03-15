@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2017, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -222,7 +222,7 @@ void CCreateBranchTagDlg::OnCbnSelchangeComboboxexBranch()
 
 void CCreateBranchTagDlg::OnEnChangeBranchTag()
 {
-	if (!((CButton *)GetDlgItem(IDC_RADIO_BRANCH))->GetCheck())
+	if (!static_cast<CButton*>(GetDlgItem(IDC_RADIO_BRANCH))->GetCheck())
 		return;
 
 	CString name;
@@ -230,7 +230,7 @@ void CCreateBranchTagDlg::OnEnChangeBranchTag()
 	name = L'/' + name;
 	CString remoteName = m_ChooseVersioinBranch.GetString();
 	if (CStringUtils::StartsWith(remoteName, L"remotes/") && remoteName.Right(name.GetLength()) != name)
-		((CButton *)GetDlgItem(IDC_CHECK_TRACK))->SetCheck(FALSE);
+		static_cast<CButton*>(GetDlgItem(IDC_CHECK_TRACK))->SetCheck(FALSE);
 }
 
 void CCreateBranchTagDlg::OnVersionChanged()

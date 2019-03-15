@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2007 - TortoiseSVN
-// Copyright (C) 2009-2013, 2016-2018 - TortoiseGit
+// Copyright (C) 2009-2013, 2016-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -68,7 +68,7 @@ COLORREF CColors::GetColor(Colors col, bool bDefault /*=true*/)
 	if (bDefault)
 		return m_ColorArray[col].RegKey.defaultValue();
 	else
-		return (COLORREF)(DWORD)m_ColorArray[col].RegKey;
+		return m_ColorArray[col].RegKey;
 }
 
 void CColors::SetColor(Colors col, COLORREF cr)
@@ -87,14 +87,14 @@ COLORREF CColors::MixColors(COLORREF baseColor, COLORREF newColor, unsigned char
 	short colRed;
 	short colGreen;
 	short colBlue;
-	colRed	 = (short)((float)( baseColor&0x000000FF)     -(float)( newColor&0x000000FF)     )*mixFactor/0xFF;//red
-	colGreen = (short)((float)((baseColor&0x0000FF00)>>8) -(float)((newColor&0x0000FF00)>>8 ))*mixFactor/0xFF;//green
-	colBlue  = (short)((float)((baseColor&0x00FF0000)>>16)-(float)((newColor&0x00FF0000)>>16))*mixFactor/0xFF;//blue
+	colRed   = static_cast<short>(static_cast<float>( baseColor & 0x000000FF)        - static_cast<float>( newColor & 0x000000FF)       ) * mixFactor / 0xFF; // red
+	colGreen = static_cast<short>(static_cast<float>((baseColor & 0x0000FF00) >>  8) - static_cast<float>((newColor & 0x0000FF00) >>  8)) * mixFactor / 0xFF; // green
+	colBlue  = static_cast<short>(static_cast<float>((baseColor & 0x00FF0000) >> 16) - static_cast<float>((newColor & 0x00FF0000) >> 16)) * mixFactor / 0xFF; // blue
 
 	colRed   = ( baseColor&0x000000FF)		-colRed;
 	colGreen = ((baseColor&0x0000FF00)>>8)	-colGreen;
 	colBlue  = ((baseColor&0x00FF0000)>>16) -colBlue;
-	baseColor=(int)colRed|((int)colGreen<<8)|((int)colBlue<<16);
+	baseColor = static_cast<int>(colRed) | (static_cast<int>(colGreen) << 8) | (static_cast<int>(colBlue) << 16);
 	return baseColor;
 }
 

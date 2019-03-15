@@ -1,7 +1,7 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2006-2008, 2012-2014, 2017 - TortoiseSVN
-// Copyright (C) 2016 - TortoiseGit
+// Copyright (C) 2016, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -73,16 +73,16 @@ void CSetColorPage::SaveData()
 	CDiffColors::GetInstance().SetColors(DIFFSTATE_THEIRSADDED, cBk, cFg);
 	CDiffColors::GetInstance().SetColors(DIFFSTATE_YOURSADDED, cBk, cFg);
 
-	if ((DWORD)m_regInlineAdded != (DWORD)m_cBkInlineAdded.GetColor())
+	if (m_regInlineAdded != m_cBkInlineAdded.GetColor())
 		m_bReloadNeeded = true;
 	m_regInlineAdded = GetColorFromButton(m_cBkInlineAdded);
-	if ((DWORD)m_regInlineRemoved != (DWORD)m_cBkInlineRemoved.GetColor())
+	if (m_regInlineRemoved != m_cBkInlineRemoved.GetColor())
 		m_bReloadNeeded = true;
 	m_regInlineRemoved = GetColorFromButton(m_cBkInlineRemoved);
-	if ((DWORD)m_regModifiedBackground != (DWORD)m_cBkModified.GetColor())
+	if (m_regModifiedBackground != m_cBkModified.GetColor())
 		m_bReloadNeeded = true;
 	m_regModifiedBackground = GetColorFromButton(m_cBkModified);
-	CDiffColors::GetInstance().SetColors(DIFFSTATE_EDITED, (DWORD)m_regModifiedBackground, cFg);
+	CDiffColors::GetInstance().SetColors(DIFFSTATE_EDITED, m_regModifiedBackground, cFg);
 
 	cFg = GetColorFromButton(m_cFgEmpty);
 	cBk = GetColorFromButton(m_cBkEmpty);
@@ -190,15 +190,15 @@ BOOL CSetColorPage::OnInitDialog()
 	m_cBkAdded.EnableAutomaticButton(sDefaultText, DIFFSTATE_ADDED_DEFAULT_BG);
 	m_cBkAdded.EnableOtherButton(sCustomText);
 
-	m_cBkInlineAdded.SetColor((DWORD)m_regInlineAdded);
+	m_cBkInlineAdded.SetColor(m_regInlineAdded);
 	m_cBkInlineAdded.EnableAutomaticButton(sDefaultText, INLINEADDED_COLOR);
 	m_cBkInlineAdded.EnableOtherButton(sCustomText);
 
-	m_cBkInlineRemoved.SetColor((DWORD)m_regInlineRemoved);
+	m_cBkInlineRemoved.SetColor(m_regInlineRemoved);
 	m_cBkInlineRemoved.EnableAutomaticButton(sDefaultText, INLINEREMOVED_COLOR);
 	m_cBkInlineRemoved.EnableOtherButton(sCustomText);
 
-	m_cBkModified.SetColor((DWORD)m_regModifiedBackground);
+	m_cBkModified.SetColor(m_regModifiedBackground);
 	m_cBkModified.EnableAutomaticButton(sDefaultText, MODIFIED_COLOR);
 	m_cBkModified.EnableOtherButton(sCustomText);
 
@@ -227,7 +227,7 @@ BOOL CSetColorPage::OnInitDialog()
 	m_cBkConflictResolved.EnableOtherButton(sCustomText);
 
 	CRegDWORD regWhitespaceColor(L"Software\\TortoiseGitMerge\\Colors\\Whitespace", GetSysColor(COLOR_3DSHADOW));
-	m_cFgWhitespaces.SetColor((COLORREF)(DWORD)regWhitespaceColor);
+	m_cFgWhitespaces.SetColor(regWhitespaceColor);
 	m_cFgWhitespaces.EnableAutomaticButton(sDefaultText, GetSysColor(COLOR_3DSHADOW));
 	m_cFgWhitespaces.EnableOtherButton(sCustomText);
 

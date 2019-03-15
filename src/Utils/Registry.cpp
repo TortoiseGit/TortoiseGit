@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013, 2016 - TortoiseGit
+// Copyright (C) 2011-2016, 2018-2019 - TortoiseGit
 // Copyright (C) 2003-2006,2008-2010, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -71,22 +71,22 @@ void CRegRect::InternalRead (HKEY hKey, CRect& value)
 {
 	DWORD size = 0;
 	DWORD type = 0;
-	LastError = RegQueryValueEx(hKey, m_key, nullptr, &type, nullptr, (LPDWORD)&size);
+	LastError = RegQueryValueEx(hKey, m_key, nullptr, &type, nullptr, &size);
 
 	if (LastError == ERROR_SUCCESS)
 	{
 		auto buffer = std::make_unique<char[]>(size);
-		if ((LastError = RegQueryValueEx(hKey, m_key, nullptr, &type, (BYTE*)buffer.get(), &size)) == ERROR_SUCCESS)
+		if ((LastError = RegQueryValueEx(hKey, m_key, nullptr, &type, reinterpret_cast<BYTE*>(buffer.get()), &size)) == ERROR_SUCCESS)
 		{
 			ASSERT(type==REG_BINARY);
-			value = CRect((LPRECT)buffer.get());
+			value = CRect(reinterpret_cast<LPRECT>(buffer.get()));
 		}
 	}
 }
 
 void CRegRect::InternalWrite (HKEY hKey, const CRect& value)
 {
-	LastError = RegSetValueEx(hKey, m_key, 0, REG_BINARY, (BYTE *)(LPCRECT)value, sizeof(value));
+	LastError = RegSetValueEx(hKey, m_key, 0, REG_BINARY, reinterpret_cast<const BYTE*>(static_cast<LPCRECT>(value)), sizeof(value));
 }
 
 #endif
@@ -109,22 +109,22 @@ void CRegPoint::InternalRead (HKEY hKey, CPoint& value)
 {
 	DWORD size = 0;
 	DWORD type = 0;
-	LastError = RegQueryValueEx(hKey, m_key, nullptr, &type, nullptr, (LPDWORD)&size);
+	LastError = RegQueryValueEx(hKey, m_key, nullptr, &type, nullptr, &size);
 
 	if (LastError == ERROR_SUCCESS)
 	{
 		auto buffer = std::make_unique<char[]>(size);
-		if ((LastError = RegQueryValueEx(hKey, m_key, nullptr, &type, (BYTE*)buffer.get(), &size)) == ERROR_SUCCESS)
+		if ((LastError = RegQueryValueEx(hKey, m_key, nullptr, &type, reinterpret_cast<BYTE*>(buffer.get()), &size)) == ERROR_SUCCESS)
 		{
 			ASSERT(type==REG_BINARY);
-			value = CPoint(*(POINT*)buffer.get());
+			value = CPoint(*reinterpret_cast<POINT*>(buffer.get()));
 		}
 	}
 }
 
 void CRegPoint::InternalWrite (HKEY hKey, const CPoint& value)
 {
-	LastError = RegSetValueEx(hKey, m_key, 0, REG_BINARY, (BYTE *)&value, sizeof(value));
+	LastError = RegSetValueEx(hKey, m_key, 0, REG_BINARY, reinterpret_cast<const BYTE*>(&value), sizeof(value));
 }
 #endif
 
@@ -158,7 +158,7 @@ DWORD CRegistryKey::createKey()
 DWORD CRegistryKey::removeKey()
 {
 	RegOpenKeyEx(m_base, m_path, 0, KEY_WRITE|m_sam, &m_hKey);
-	return SHDeleteKey(m_base, (LPCTSTR)m_path);
+	return SHDeleteKey(m_base, static_cast<LPCTSTR>(m_path));
 }
 
 bool CRegistryKey::getValues(CStringList& values)

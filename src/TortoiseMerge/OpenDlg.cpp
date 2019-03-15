@@ -1,6 +1,6 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2012 - TortoiseGit
+// Copyright (C) 2012, 2019 - TortoiseGit
 // Copyright (C) 2006-2010, 2012-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -75,10 +75,10 @@ BOOL COpenDlg::OnInitDialog()
 	CStandAloneDialog::OnInitDialog();
 
 	CRegDWORD lastRadioButton(L"Software\\TortoiseGitMerge\\OpenRadio", IDC_MERGERADIO);
-	if (((DWORD)lastRadioButton != IDC_MERGERADIO)&&((DWORD)lastRadioButton != IDC_APPLYRADIO))
+	if (static_cast<DWORD>(lastRadioButton) != IDC_MERGERADIO && static_cast<DWORD>(lastRadioButton) != IDC_APPLYRADIO)
 		lastRadioButton = IDC_MERGERADIO;
-	GroupRadio((DWORD)lastRadioButton);
-	CheckRadioButton(IDC_MERGERADIO, IDC_APPLYRADIO, (DWORD)lastRadioButton);
+	GroupRadio(static_cast<DWORD>(lastRadioButton));
+	CheckRadioButton(IDC_MERGERADIO, IDC_APPLYRADIO, static_cast<DWORD>(lastRadioButton));
 
 	// turn on auto completion for the edit controls
 	AutoCompleteOn(IDC_BASEFILEEDIT);
@@ -223,7 +223,7 @@ void COpenDlg::OnOK()
 		if (OpenClipboard())
 		{
 			HGLOBAL hglb = GetClipboardData(m_cFormat);
-			LPCSTR lpstr = (LPCSTR)GlobalLock(hglb);
+			auto lpstr = static_cast<LPCSTR>(GlobalLock(hglb));
 
 			DWORD len = GetTempPath(0, nullptr);
 			auto path = std::make_unique<TCHAR[]>(len + 1);
@@ -257,7 +257,7 @@ void COpenDlg::OnOK()
 	if (!sFile.IsEmpty())
 	{
 		CString sErr;
-		sErr.Format(IDS_ERR_PATCH_INVALIDPATCHFILE, (LPCTSTR)sFile);
+		sErr.Format(IDS_ERR_PATCH_INVALIDPATCHFILE, static_cast<LPCTSTR>(sFile));
 		MessageBox(sErr, nullptr, MB_ICONERROR);
 		return;
 	}

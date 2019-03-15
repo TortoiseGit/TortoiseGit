@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011, 2012, 2015-2017 - TortoiseGit
+// Copyright (C) 2011, 2012, 2015-2017, 2019 - TortoiseGit
 // Copyright (C) 2003-2008, 2012, 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -45,7 +45,7 @@ UINT __stdcall TerminateCache(MSIHANDLE /*hModule*/)
 	HWND hWnd = FindWindow(TGIT_CACHE_WINDOW_NAME, TGIT_CACHE_WINDOW_NAME);
 	if (hWnd)
 	{
-		PostMessage(hWnd, WM_CLOSE, (WPARAM)nullptr, (LPARAM)nullptr);
+		PostMessage(hWnd, WM_CLOSE, reinterpret_cast<WPARAM>(nullptr), reinterpret_cast<LPARAM>(nullptr));
 		for (int i=0; i<10; ++i)
 		{
 			Sleep(500);

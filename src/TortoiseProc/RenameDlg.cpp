@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2009, 2011-2013, 2015-2018 - TortoiseGit
+// Copyright (C) 2008-2009, 2011-2013, 2015-2019 - TortoiseGit
 // Copyright (C) 2003-2011, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -67,7 +67,7 @@ BOOL CRenameDlg::OnInitDialog()
 	if (!m_name.IsEmpty())
 	{
 		CString sTmp;
-		sTmp.Format(IDS_RENAME_INFO, (LPCWSTR)m_name);
+		sTmp.Format(IDS_RENAME_INFO, static_cast<LPCWSTR>(m_name));
 		SetDlgItemText(IDC_RENINFOLABEL, sTmp);
 	}
 
@@ -166,7 +166,7 @@ void CRenameDlg::OnBnClickedButtonBrowseRef()
 		if (!PathRelativePathTo(CStrBuf(relPath, MAX_PATH), m_sBaseDir, FILE_ATTRIBUTE_DIRECTORY, path, FILE_ATTRIBUTE_DIRECTORY))
 			return;
 		if (CStringUtils::StartsWith(relPath, L".\\"))
-			relPath = relPath.Mid((int)wcslen(L".\\"));
+			relPath = relPath.Mid(static_cast<int>(wcslen(L".\\")));
 		m_name = relPath;
 		UpdateData(FALSE);
 	}

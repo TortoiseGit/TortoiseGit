@@ -82,7 +82,7 @@ void CDib::Create32BitFromPicture (CPictureHolder* pPicture, int iWidth, int iHe
 
 	SetBitmap(&bi, pBits.data());
 
-	DWORD* pAr = (DWORD*)GetDIBits();
+	auto pAr = static_cast<DWORD*>(GetDIBits());
 
 	// Copy data into the 32 bit dib..
 	for(int i=0;i<iHeight;i++)

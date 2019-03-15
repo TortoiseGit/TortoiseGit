@@ -1,4 +1,4 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2010-2013 - TortoiseSVN
 
@@ -66,7 +66,7 @@ void IntSet::Remove(int val)
 
 int IntSet::Count() const
 {
-	return (int)m_set.size();
+	return static_cast<int>(m_set.size());
 }
 
 bool IntSet::IsPresent(int val) const
@@ -183,7 +183,7 @@ tsvn_svn_diff_t_extension * CDiffData::MovedBlocksDetect(svn_diff_t * diffYourBa
 		if(tempdiff->type != svn_diff__type_diff_modified)
 			continue;
 
-		baseLine = (LONG)tempdiff->original_start;
+		baseLine = static_cast<LONG>(tempdiff->original_start);
 		if (m_arBaseFile.GetCount() <= (baseLine+tempdiff->original_length))
 			return nullptr;
 		for(int i = 0; i < tempdiff->original_length; ++i, ++baseLine)
@@ -194,7 +194,7 @@ tsvn_svn_diff_t_extension * CDiffData::MovedBlocksDetect(svn_diff_t * diffYourBa
 			else
 				map.Add(baseLine, sCurrentBaseLine, 0);
 		}
-		yourLine = (LONG)tempdiff->modified_start;
+		yourLine = static_cast<LONG>(tempdiff->modified_start);
 		if (m_arYourFile.GetCount() <= (yourLine+tempdiff->modified_length))
 			return nullptr;
 		for(int i = 0; i < tempdiff->modified_length; ++i, ++yourLine)
@@ -217,7 +217,7 @@ tsvn_svn_diff_t_extension * CDiffData::MovedBlocksDetect(svn_diff_t * diffYourBa
 		EquivalencyGroup* pGroup = nullptr;
 
 		int i;
-		for(i = (int)tempdiff->original_start; (i - tempdiff->original_start)< tempdiff->original_length; ++i)
+		for(i = static_cast<int>(tempdiff->original_start); (i - tempdiff->original_start)< tempdiff->original_length; ++i)
 		{
 			EquivalencyGroup * group = ExtractGroup(map, m_arBaseFile.GetAt(i), dwIgnoreWS);
 			if(group->IsPerfectMatch())
@@ -278,7 +278,7 @@ tsvn_svn_diff_t_extension * CDiffData::MovedBlocksDetect(svn_diff_t * diffYourBa
 			tail = newTail;
 		}
 
-		int prefix = i1 - (int)tempdiff->original_start;
+		int prefix = i1 - static_cast<int>(tempdiff->original_start);
 		if(prefix)
 		{
 			// break tempdiff (current change) into two pieces
@@ -289,7 +289,7 @@ tsvn_svn_diff_t_extension * CDiffData::MovedBlocksDetect(svn_diff_t * diffYourBa
 			// leave the left side (tempdiff->original_length) on tempdiff
 			// so no right side on newob
 			// newob will be the moved part only, later after we split off any suffix from it
-			svn_diff_t * newob = (svn_diff_t *)apr_palloc(pool, sizeof(svn_diff_t));
+			svn_diff_t* newob = static_cast<svn_diff_t*>(apr_palloc(pool, sizeof(svn_diff_t)));
 			memset(newob, 0, sizeof(*newob));
 
 			tail->base = newob;
@@ -314,7 +314,7 @@ tsvn_svn_diff_t_extension * CDiffData::MovedBlocksDetect(svn_diff_t * diffYourBa
 		{
 			// break off any suffix from tempdiff
 			// newob will be the suffix, and will get all the right side
-			svn_diff_t * newob = (svn_diff_t *) apr_palloc(pool, sizeof (*newob));
+			svn_diff_t* newob = static_cast<svn_diff_t*>(apr_palloc(pool, sizeof(*newob)));
 			memset(newob, 0, sizeof(*newob));
 			newob->type = svn_diff__type_diff_modified;
 
@@ -342,7 +342,7 @@ tsvn_svn_diff_t_extension * CDiffData::MovedBlocksDetect(svn_diff_t * diffYourBa
 
 		EquivalencyGroup* pGroup = nullptr;
 		int j = 0;
-		for(j = (int)tempdiff->modified_start; (j - tempdiff->modified_start) < tempdiff->modified_length; ++j)
+		for(j = static_cast<int>(tempdiff->modified_start); (j - tempdiff->modified_start) < tempdiff->modified_length; ++j)
 		{
 			EquivalencyGroup * group = ExtractGroup(map, m_arYourFile.GetAt(j), dwIgnoreWS);
 			if(group->IsPerfectMatch())
@@ -427,7 +427,7 @@ tsvn_svn_diff_t_extension * CDiffData::MovedBlocksDetect(svn_diff_t * diffYourBa
 			// leave the left side (tempdiff->original_length) on tempdiff
 			// so no right side on newob
 			// newob will be the moved part only, later after we split off any suffix from it
-			svn_diff_t * newob = (svn_diff_t *) apr_palloc(pool, sizeof (*newob));
+			svn_diff_t* newob = static_cast<svn_diff_t*>(apr_palloc(pool, sizeof(*newob)));
 			memset(newob, 0, sizeof(*newob));
 			newob->type = svn_diff__type_diff_modified;
 
@@ -460,7 +460,7 @@ tsvn_svn_diff_t_extension * CDiffData::MovedBlocksDetect(svn_diff_t * diffYourBa
 		{
 			// break off any suffix from tempdiff
 			// newob will be the suffix, and will get all the left side
-			svn_diff_t * newob = (svn_diff_t *) apr_palloc(pool, sizeof (*newob));
+			svn_diff_t* newob = static_cast<svn_diff_t*>(apr_palloc(pool, sizeof(*newob)));
 			memset(newob, 0, sizeof(*newob));
 			tsvn_svn_diff_t_extension * eNewOb = CreateDiffExtension(newob, pool);
 

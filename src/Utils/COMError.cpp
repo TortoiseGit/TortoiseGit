@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2009 - TortoiseSVN
 
@@ -40,13 +40,13 @@ COMError::COMError(HRESULT hr)
 		if (ptrIErrorInfo)
 		{
 			// IErrorInfo Interface located
-			description = (WCHAR *)e.Description();
-			source = (WCHAR *)e.Source();
+			description = static_cast<WCHAR*>(e.Description());
+			source = static_cast<WCHAR*>(e.Source());
 			GUID tmpGuid = e.GUID();
 			RPC_WSTR guidStr = nullptr;
 			// must link in Rpcrt4.lib for UuidToString
 			UuidToString(&tmpGuid, &guidStr);
-			uuid = (WCHAR*)guidStr;
+			uuid = reinterpret_cast<WCHAR*>(guidStr);
 			RpcStringFree(&guidStr);
 
 			ptrIErrorInfo->Release();

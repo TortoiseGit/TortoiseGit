@@ -139,7 +139,7 @@ public:
 		GetClipBox(m_hDC, &m_rect);
 		m_hMyMemDC = ::CreateCompatibleDC(m_hDC);
 		m_hBitmap = CreateCompatibleBitmap(m_hDC, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top);
-		m_hOldBitmap = (HBITMAP)SelectObject(m_hMyMemDC, m_hBitmap);
+		m_hOldBitmap = static_cast<HBITMAP>(SelectObject(m_hMyMemDC, m_hBitmap));
 		SetWindowOrgEx(m_hMyMemDC, m_rect.left, m_rect.top, nullptr);
 	}
 

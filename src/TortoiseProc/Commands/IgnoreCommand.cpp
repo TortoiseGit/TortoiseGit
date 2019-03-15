@@ -54,7 +54,7 @@ bool IgnoreCommand::Execute()
 		int nPath;
 		for (nPath = 0; nPath < pathList.GetCount(); ++nPath)
 		{
-			cmd.Format(format, (LPCTSTR)pathList[nPath].GetGitPathString());
+			cmd.Format(format, static_cast<LPCTSTR>(pathList[nPath].GetGitPathString()));
 			if (g_Git.Run(cmd, &output, CP_UTF8))
 			{
 				if (MessageBox(GetExplorerHWND(), output, L"TortoiseGit", MB_ICONERROR | MB_OKCANCEL) == IDCANCEL)

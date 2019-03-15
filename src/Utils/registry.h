@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014, 2017 - TortoiseGit
+// Copyright (C) 2011-2019 - TortoiseGit
 // Copyright (C) 2003-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -84,7 +84,7 @@ public: //methods
 	virtual S getErrorString()
 	{
 		CFormatMessageWrapper errorMessage(LastError);
-		S result ((LPCTSTR)errorMessage);
+		S result (static_cast<LPCTSTR>(errorMessage));
 		return result;
 	}
 
@@ -177,7 +177,7 @@ protected:
 	 * String type specific operations.
 	 */
 
-	virtual LPCTSTR GetPlainString (const CString& s) const {return (LPCTSTR)s;}
+	virtual LPCTSTR GetPlainString (const CString& s) const { return static_cast<LPCTSTR>(s); }
 	virtual DWORD GetLength (const CString& s) const {return s.GetLength();}
 
 public: //methods
@@ -201,7 +201,7 @@ public: //methods
 		CString error = CRegBaseCommon<CString>::getErrorString();
 #if defined IDS_REG_ERROR
 		CString sTemp;
-		sTemp.FormatMessage(IDS_REG_ERROR, (LPCTSTR)m_key, (LPCTSTR)error);
+		sTemp.FormatMessage(IDS_REG_ERROR, static_cast<LPCTSTR>(m_key), static_cast<LPCTSTR>(error));
 		return sTemp;
 #else
 		return error;
@@ -298,7 +298,7 @@ private:
 	/**
 	 * \ref read() will be called, if \ref lastRead differs from the
 	 * current time stamp by more than this.
-	 * (ULONGLONG)(-1) -> no automatic refresh.
+	 * ULONGLONG(-1) -> no automatic refresh.
 	 */
 
 	ULONGLONG lookupInterval;
@@ -378,7 +378,7 @@ public:
 template<class T, class Base>
 void CRegTypedBase<T, Base>::HandleAutoRefresh()
 {
-	if (m_read && (lookupInterval != (DWORD)(-1)))
+	if (m_read && (lookupInterval != DWORD(-1)))
 	{
 		ULONGLONG currentTime = GetTickCount64();
 		if (   (currentTime < lastRead)
@@ -394,7 +394,7 @@ CRegTypedBase<T, Base>::CRegTypedBase (const T& def)
 	: m_value (def)
 	, m_defaultvalue (def)
 	, lastRead (0)
-	, lookupInterval((ULONGLONG)-1)
+	, lookupInterval(ULONGLONG(-1))
 {
 }
 
@@ -404,7 +404,7 @@ CRegTypedBase<T, Base>::CRegTypedBase (const typename Base::StringT& key, const 
 	, m_value (def)
 	, m_defaultvalue (def)
 	, lastRead (0)
-	, lookupInterval ((DWORD)-1)
+	, lookupInterval(DWORD(-1))
 {
 }
 
@@ -612,7 +612,7 @@ void CRegDWORDCommon<Base>::InternalRead (HKEY hKey, DWORD& value)
 {
 	DWORD size = sizeof(value);
 	DWORD type = 0;
-	if ((LastError = RegQueryValueEx(hKey, GetPlainString(m_key), nullptr, &type, (BYTE*)&value, &size)) == ERROR_SUCCESS)
+	if ((LastError = RegQueryValueEx(hKey, GetPlainString(m_key), nullptr, &type, reinterpret_cast<BYTE*>(&value), &size)) == ERROR_SUCCESS)
 	{
 		ASSERT(type==REG_DWORD);
 	}
@@ -621,7 +621,7 @@ void CRegDWORDCommon<Base>::InternalRead (HKEY hKey, DWORD& value)
 template<class Base>
 void CRegDWORDCommon<Base>::InternalWrite (HKEY hKey, const DWORD& value)
 {
-	LastError = RegSetValueEx (hKey, GetPlainString (m_key), 0, REG_DWORD,(const BYTE*) &value, sizeof(value));
+	LastError = RegSetValueEx(hKey, GetPlainString (m_key), 0, REG_DWORD, reinterpret_cast<const BYTE*>(&value), sizeof(value));
 }
 
 /**
@@ -649,8 +649,8 @@ void CRegDWORDCommon<Base>::InternalWrite (HKEY hKey, const DWORD& value)
  * to use the normal methods of the CString class, just typecast the CRegString to a CString
  * and do whatever you want with the string:
  * \code
- * ((CString)regvalue).GetLength();
- * ((CString)regvalue).Trim();
+ * static_cast<CString>(regvalue).GetLength();
+ * static_cast<CString>(regvalue).Trim();
  * \endcode
  * please be aware that in the second line the change in the string won't be written
  * to the registry! To force a write use the write() method. A write() is only needed
@@ -729,7 +729,7 @@ void CRegStringCommon<Base>::InternalRead (HKEY hKey, typename Base::StringT& va
 	if (LastError == ERROR_SUCCESS)
 	{
 		auto pStr = std::make_unique<TCHAR[]>(size);
-		if ((LastError = RegQueryValueEx(hKey, GetPlainString(m_key), nullptr, &type, (BYTE*)pStr.get(), &size)) == ERROR_SUCCESS)
+		if ((LastError = RegQueryValueEx(hKey, GetPlainString(m_key), nullptr, &type, reinterpret_cast<BYTE*>(pStr.get()), &size)) == ERROR_SUCCESS)
 		{
 			ASSERT(type==REG_SZ || type==REG_EXPAND_SZ);
 			value = StringT (pStr.get());
@@ -740,7 +740,7 @@ void CRegStringCommon<Base>::InternalRead (HKEY hKey, typename Base::StringT& va
 template<class Base>
 void CRegStringCommon<Base>::InternalWrite (HKEY hKey, const typename Base::StringT& value)
 {
-	LastError = RegSetValueEx(hKey, GetPlainString (m_key), 0, REG_SZ, (BYTE *)GetPlainString (value), (GetLength(value)+1)*sizeof (TCHAR));
+	LastError = RegSetValueEx(hKey, GetPlainString(m_key), 0, REG_SZ, reinterpret_cast<const BYTE*>(static_cast<LPCTSTR>(GetPlainString(value))), (GetLength(value) + 1) * sizeof (TCHAR));
 }
 
 /**
@@ -769,8 +769,8 @@ void CRegStringCommon<Base>::InternalWrite (HKEY hKey, const typename Base::Stri
  * to use the normal methods of the CRect class, just typecast the CRegRect to a CRect
  * and do whatever you want with the rect:
  * \code
- * ((CRect)regvalue).MoveToX(100);
- * ((CRect)regvalue).DeflateRect(10,10);
+ * static_cast<CRect>(regvalue).MoveToX(100);
+ * static_cast<CRect>(regvalue).DeflateRect(10, 10);
  * \endcode
  * please be aware that in the second line the change in the CRect won't be written
  * to the registry! To force a write use the write() method. A write() is only needed
@@ -816,14 +816,14 @@ public:
 	~CRegRect(void);
 
 	CRegRect& operator=(const CRect& rhs) {CRegTypedBase<CRect, CRegBase>::operator =(rhs); return *this;}
-	operator LPCRECT() { return (LPCRECT)(CRect)*this; }
-	operator LPRECT() { return (LPRECT)(CRect)*this; }
-	CRegRect& operator+=(POINT r) { return *this = (CRect)*this + r;}
-	CRegRect& operator+=(SIZE r) { return *this = (CRect)*this + r;}
-	CRegRect& operator+=(LPCRECT  r) { return *this = (CRect)*this + r;}
-	CRegRect& operator-=(POINT r) { return *this = (CRect)*this - r;}
-	CRegRect& operator-=(SIZE r) { return *this = (CRect)*this - r;}
-	CRegRect& operator-=(LPCRECT  r) { return *this = (CRect)*this - r;}
+	operator LPCRECT() { return static_cast<const CRect>(*this); }
+	operator LPRECT() { return static_cast<CRect>(*this); }
+	CRegRect& operator+=(POINT r) { return *this = static_cast<const CRect>(*this) + r; }
+	CRegRect& operator+=(SIZE r) { return *this = static_cast<const CRect>(*this) + r; }
+	CRegRect& operator+=(LPCRECT r) { return *this = static_cast<const CRect>(*this) + r; }
+	CRegRect& operator-=(POINT r) { return *this = static_cast<const CRect>(*this) - r; }
+	CRegRect& operator-=(SIZE r) { return *this = static_cast<const CRect>(*this) - r; }
+	CRegRect& operator-=(LPCRECT r) { return *this = static_cast<const CRect>(*this) - r; }
 
 	CRegRect& operator&=(const CRect& r) { return *this = r & *this;}
 	CRegRect& operator|=(const CRect& r) { return *this = r | *this;}
@@ -856,7 +856,7 @@ public:
  * to use the normal methods of the CPoint class, just typecast the CRegPoint to a CPoint
  * and do whatever you want with the point:
  * \code
- * ((CRect)regvalue).Offset(100,10);
+ * static_cast<CRect>(regvalue).Offset(100, 10);
  * \endcode
  * please be aware that in the above example the change in the CPoint won't be written
  * to the registry! To force a write use the write() method. A write() is only needed

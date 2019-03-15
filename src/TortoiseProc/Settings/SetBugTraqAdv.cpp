@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014, 2016-2017 - TortoiseGit
+// Copyright (C) 2014, 2016-2017, 2019 - TortoiseGit
 // Copyright (C) 2008,2010,2014-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -86,7 +86,7 @@ BOOL CSetBugTraqAdv::OnInitDialog()
 
 	for (int i = 0; i < m_cProviderCombo.GetCount(); ++i)
 	{
-		CBugTraqProvider *p = (CBugTraqProvider *)m_cProviderCombo.GetItemDataPtr(i);
+		auto p = reinterpret_cast<CBugTraqProvider*>(m_cProviderCombo.GetItemDataPtr(i));
 		if (p->clsid == m_provider_clsid)
 		{
 			m_cProviderCombo.SetCurSel(i);
@@ -118,7 +118,7 @@ BOOL CSetBugTraqAdv::OnInitDialog()
 void CSetBugTraqAdv::OnDestroy()
 {
 	for (int i = 0; i < m_cProviderCombo.GetCount(); ++i)
-		delete (CBugTraqProvider *)m_cProviderCombo.GetItemDataPtr(i);
+		delete static_cast<CBugTraqProvider*>(m_cProviderCombo.GetItemDataPtr(i));
 
 	CResizableStandAloneDialog::OnDestroy();
 }
@@ -129,7 +129,7 @@ void CSetBugTraqAdv::OnOK()
 
 	if (m_sPath.IsEmpty() || !PathIsDirectory(m_sPath) || PathIsRelative(m_sPath))
 	{
-		ShowEditBalloon(IDC_BUGTRAQPATH, (LPCTSTR)CFormatMessageWrapper(ERROR_PATH_NOT_FOUND), CString(MAKEINTRESOURCE(IDS_ERR_ERROR)), TTI_ERROR);
+		ShowEditBalloon(IDC_BUGTRAQPATH, static_cast<LPCTSTR>(CFormatMessageWrapper(ERROR_PATH_NOT_FOUND)), CString(MAKEINTRESOURCE(IDS_ERR_ERROR)), TTI_ERROR);
 		return;
 	}
 
@@ -138,7 +138,7 @@ void CSetBugTraqAdv::OnOK()
 	int index = m_cProviderCombo.GetCurSel();
 	if (index != CB_ERR)
 	{
-		CBugTraqProvider *provider = (CBugTraqProvider *)m_cProviderCombo.GetItemDataPtr(index);
+		auto provider = reinterpret_cast<CBugTraqProvider*>(m_cProviderCombo.GetItemDataPtr(index));
 		m_provider_clsid = provider->clsid;
 	}
 
@@ -189,7 +189,7 @@ void CSetBugTraqAdv::CheckHasOptions()
 	int index = m_cProviderCombo.GetCurSel();
 	if (index != CB_ERR)
 	{
-		CBugTraqProvider *provider = (CBugTraqProvider *)m_cProviderCombo.GetItemDataPtr(index);
+		auto provider = reinterpret_cast<CBugTraqProvider*>(m_cProviderCombo.GetItemDataPtr(index));
 		m_provider_clsid = provider->clsid;
 	}
 
@@ -224,7 +224,7 @@ void CSetBugTraqAdv::OnBnClickedOptions()
 	int index = m_cProviderCombo.GetCurSel();
 	if (index != CB_ERR)
 	{
-		CBugTraqProvider *provider = (CBugTraqProvider *)m_cProviderCombo.GetItemDataPtr(index);
+		auto provider = reinterpret_cast<CBugTraqProvider*>(m_cProviderCombo.GetItemDataPtr(index));
 		m_provider_clsid = provider->clsid;
 	}
 

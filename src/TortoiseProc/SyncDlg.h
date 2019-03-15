@@ -210,7 +210,7 @@ public:
 	int				m_seq;
 
 protected:
-	static UINT		ProgressThreadEntry(LPVOID pVoid) { return reinterpret_cast<CSyncDlg*>(pVoid)->ProgressThread(); };
+	static UINT		ProgressThreadEntry(LPVOID pVoid) { return static_cast<CSyncDlg*>(pVoid)->ProgressThread(); };
 	UINT			ProgressThread();
 
 	void			StartWorkerThread();

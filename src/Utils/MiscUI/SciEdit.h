@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2018 - TortoiseGit
+// Copyright (C) 2009-2019 - TortoiseGit
 // Copyright (C) 2003-2008, 2013, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -169,7 +169,7 @@ protected:
 	bool		FindStyleChars(const char* line, char styler, Sci_Position& start, Sci_Position& end);
 	void		AdvanceUTF8(const char * str, int& pos);
 	BOOL		IsMisspelled(const CString& sWord);
-	int			GetStyleAt(Sci_Position pos) { return (int)Call(SCI_GETSTYLEAT, pos) & 0x1f; }
+	int			GetStyleAt(Sci_Position pos) { return static_cast<int>(Call(SCI_GETSTYLEAT, pos)) & 0x1f; }
 	bool		IsUrlOrEmail(const CStringA& sText);
 	CStringA	GetWordForSpellChecker(const CString& sWord);
 	CString		GetWordFromSpellChecker(const CStringA& sWordA);

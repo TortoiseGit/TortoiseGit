@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -76,11 +76,9 @@ BOOL CGitProgressDlg::OnInitDialog()
 	CAutoLibrary hUser = AtlLoadSystemLibraryUsingFullPath(L"user32.dll");
 	if (hUser)
 	{
-		ChangeWindowMessageFilterExDFN *pfnChangeWindowMessageFilterEx = (ChangeWindowMessageFilterExDFN*)GetProcAddress(hUser, "ChangeWindowMessageFilterEx");
+		auto pfnChangeWindowMessageFilterEx = reinterpret_cast<ChangeWindowMessageFilterExDFN*>(GetProcAddress(hUser, "ChangeWindowMessageFilterEx"));
 		if (pfnChangeWindowMessageFilterEx)
-		{
 			pfnChangeWindowMessageFilterEx(m_hWnd, TaskBarButtonCreated, MSGFLT_ALLOW, &cfs);
-		}
 	}
 	m_ProgList.m_pTaskbarList.Release();
 	if (FAILED(m_ProgList.m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList)))
@@ -230,15 +228,15 @@ void CGitProgressDlg::OnEnSetfocusInfotext()
 
 LRESULT CGitProgressDlg::OnCtlColorStatic(WPARAM wParam, LPARAM lParam)
 {
-	HDC hDC = (HDC)wParam;
-	HWND hwndCtl = (HWND)lParam;
+	auto hDC = reinterpret_cast<HDC>(wParam);
+	auto hwndCtl = reinterpret_cast<HWND>(lParam);
 
 	if (::GetDlgCtrlID(hwndCtl) == IDC_TITLE_ANIMATE)
 	{
 		CDC *pDC = CDC::FromHandle(hDC);
 		pDC->SetBkColor(GetSysColor(COLOR_WINDOW));
 		pDC->SetBkMode(TRANSPARENT);
-		return (LRESULT)(HBRUSH)m_background_brush.GetSafeHandle();
+		return reinterpret_cast<LRESULT>(static_cast<HBRUSH>(m_background_brush.GetSafeHandle()));
 	}
 	return FALSE;
 }
@@ -250,7 +248,7 @@ HBRUSH CGitProgressDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	{
 		pDC->SetBkColor(GetSysColor(COLOR_WINDOW)); // add this
 		pDC->SetBkMode(TRANSPARENT);
-		return (HBRUSH)m_background_brush.GetSafeHandle();
+		return static_cast<HBRUSH>(m_background_brush.GetSafeHandle());
 	}
 	else
 		hbr = CResizableStandAloneDialog::OnCtlColor(pDC, pWnd, nCtlColor);
@@ -289,18 +287,18 @@ LRESULT	CGitProgressDlg::OnCmdEnd(WPARAM /*wParam*/, LPARAM /*lParam*/)
 
 		if (m_accellerators.size())
 		{
-			LPACCEL lpaccelNew = (LPACCEL)LocalAlloc(LPTR, m_accellerators.size() * sizeof(ACCEL));
+			auto lpaccelNew = static_cast<LPACCEL>(LocalAlloc(LPTR, m_accellerators.size() * sizeof(ACCEL)));
 			SCOPE_EXIT { LocalFree(lpaccelNew); };
 			i = 0;
 			for (auto& entry : m_accellerators)
 			{
-				lpaccelNew[i].cmd = (WORD)(WM_USER + 1 + entry.second.id);
+				lpaccelNew[i].cmd = static_cast<WORD>(WM_USER + 1 + entry.second.id);
 				lpaccelNew[i].fVirt = FVIRTKEY | FALT;
 				lpaccelNew[i].key = entry.first;
 				entry.second.wmid = lpaccelNew[i].cmd;
 				++i;
 			}
-			m_hAccel = CreateAcceleratorTable(lpaccelNew, (int)m_accellerators.size());
+			m_hAccel = CreateAcceleratorTable(lpaccelNew, static_cast<int>(m_accellerators.size()));
 		}
 		m_cMenuButton.ShowWindow(SW_SHOW);
 	}
@@ -311,7 +309,7 @@ LRESULT	CGitProgressDlg::OnCmdEnd(WPARAM /*wParam*/, LPARAM /*lParam*/)
 		SendMessage(DM_SETDEFID, IDOK);
 		GetDlgItem(IDOK)->SetFocus();
 		if (!m_ProgList.DidErrorsOccur() && (m_AutoClose == AUTOCLOSE_IF_NO_OPTIONS && m_PostCmdList.empty() || m_AutoClose == AUTOCLOSE_IF_NO_ERRORS))
-			PostMessage(WM_COMMAND, 1, (LPARAM)pWndOk->GetSafeHwnd());
+			PostMessage(WM_COMMAND, 1, reinterpret_cast<LPARAM>(pWndOk->GetSafeHwnd()));
 	}
 
 	return 0;

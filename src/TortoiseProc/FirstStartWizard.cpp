@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016, 2018 - TortoiseGit
+// Copyright (C) 2016, 2018-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -67,7 +67,7 @@ void CFirstStartWizard::OnSysCommand(UINT nID, LPARAM lParam)
 	{
 	case SC_CLOSE:
 		{
-			CFirstStartWizardBasePage* page = (CFirstStartWizardBasePage*)GetActivePage();
+			auto page = static_cast<CFirstStartWizardBasePage*>(GetActivePage());
 			if (page && !page->OkToCancel())
 				break;
 		}
@@ -80,7 +80,7 @@ void CFirstStartWizard::OnSysCommand(UINT nID, LPARAM lParam)
 
 void CFirstStartWizard::OnCancel()
 {
-	CFirstStartWizardBasePage* page = (CFirstStartWizardBasePage*)GetActivePage();
+	auto page = static_cast<CFirstStartWizardBasePage*>(GetActivePage());
 	if (!page || page->OkToCancel())
 		Default();
 }

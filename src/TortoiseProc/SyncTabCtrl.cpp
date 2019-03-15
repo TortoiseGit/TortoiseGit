@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016 - TortoiseGit
+// Copyright (C) 2016, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -39,10 +39,10 @@ END_MESSAGE_MAP()
 
 void CSyncTabCtrl::OnEnLinkLog(NMHDR *pNMHDR, LRESULT *pResult)
 {
-	((CSyncDlg*)GetParent())->OnEnLinkLog(pNMHDR, pResult);
+	static_cast<CSyncDlg*>(GetParent())->OnEnLinkLog(pNMHDR, pResult);
 }
 
 void CSyncTabCtrl::OnEnscrollLog()
 {
-	((CSyncDlg*)GetParent())->OnEnscrollLog();
+	static_cast<CSyncDlg*>(GetParent())->OnEnscrollLog();
 }

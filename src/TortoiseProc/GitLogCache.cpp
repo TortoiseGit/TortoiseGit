@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -185,7 +185,7 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 
 		if (!m_pCacheData)
 		{
-			m_pCacheData = (BYTE*)MapViewOfFile(m_DataFileMap,FILE_MAP_READ,0,0,0);
+			m_pCacheData = static_cast<BYTE*>(MapViewOfFile(m_DataFileMap, FILE_MAP_READ, 0, 0, 0));
 			if (!m_pCacheData)
 				break;
 		}
@@ -313,7 +313,7 @@ int CLogCache::LoadOneItem(GitRevLoglist& Rev,ULONGLONG offset)
 			oldfile = CString(fileheader->m_FileName + fileheader->m_FileNameSize, fileheader->m_OldFileNameSize);
 		CTGitPath path;
 		int isSubmodule = fileheader->m_IsSubmodule;
-		path.SetFromGit(file, oldfile.IsEmpty() ? nullptr : &oldfile, (int*)&isSubmodule);
+		path.SetFromGit(file, oldfile.IsEmpty() ? nullptr : &oldfile, static_cast<int*>(&isSubmodule));
 
 		path.m_ParentNo = fileheader ->m_ParentNo;
 		path.m_Stage = fileheader ->m_Stage;
@@ -458,7 +458,7 @@ int CLogCache::SaveCache()
 					LARGE_INTEGER start;
 					start.QuadPart = 0;
 					SetFilePointerEx(m_DataFile, start, &offset, FILE_CURRENT);
-					if (this->SaveOneItem((*i).second, (LONG)offset.QuadPart))
+					if (this->SaveOneItem((*i).second, static_cast<LONG>(offset.QuadPart)))
 					{
 						TRACE(L"Save one item error");
 						SetFilePointerEx(m_DataFile, offset, &offset, FILE_BEGIN);

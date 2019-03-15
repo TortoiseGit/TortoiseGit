@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013, 2015, 2016, 2018 - TortoiseGit
+// Copyright (C) 2013-2016, 2018-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -84,7 +84,7 @@ void CUserPassword::OnBnClickedOk()
 
 	GetDlgItem(IDC_USER_PASSWORD)->GetWindowText(m_password, _countof(m_password));
 
-	auto lengthIncTerminator = WideCharToMultiByte(CP_UTF8, 0, m_password, (int)wcslen(m_password), m_passwordA, sizeof(m_passwordA) - 1, nullptr, nullptr);
+	auto lengthIncTerminator = WideCharToMultiByte(CP_UTF8, 0, m_password, static_cast<int>(wcslen(m_password)), m_passwordA, sizeof(m_passwordA) - 1, nullptr, nullptr);
 	m_passwordA[lengthIncTerminator] = '\0';
 
 	CDialog::OnOK();

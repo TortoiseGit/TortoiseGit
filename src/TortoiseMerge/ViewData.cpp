@@ -1,4 +1,4 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2007,2009-2010, 2014 - TortoiseSVN
 
@@ -66,6 +66,6 @@ int CViewData::FindLineNumber(int number) const
 {
 	for(size_t i = 0; i < m_data.size(); ++i)
 		if (m_data[i].linenumber >= number)
-			return (int)i;
+			return static_cast<int>(i);
 	return -1;
 }

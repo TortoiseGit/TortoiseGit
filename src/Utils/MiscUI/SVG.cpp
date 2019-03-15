@@ -41,17 +41,17 @@ bool SVG::Save( const CString& path )
 	header.Format("<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"%d\" height=\"%d\" viewBox=\"0 0 %d %d\">\r\n", viewportWidth, viewportHeight, viewportWidth, viewportHeight);
 	CStringA footer = "\r\n</svg>";
 
-	if (!WriteFile(hFile, header, (DWORD)header.GetLength(), &dwWritten, nullptr))
+	if (!WriteFile(hFile, header, static_cast<DWORD>(header.GetLength()), &dwWritten, nullptr))
 		return false;
 
 	for (const auto& object : objects)
 	{
-		if (!WriteFile(hFile, object, (DWORD)object.GetLength(), &dwWritten, nullptr))
+		if (!WriteFile(hFile, object, static_cast<DWORD>(object.GetLength()), &dwWritten, nullptr))
 			return false;
-		if (!WriteFile(hFile, "\r\n", (DWORD)2, &dwWritten, nullptr))
+		if (!WriteFile(hFile, "\r\n", DWORD(2), &dwWritten, nullptr))
 			return false;
 	}
-	if (!WriteFile(hFile, footer, (DWORD)footer.GetLength(), &dwWritten, nullptr))
+	if (!WriteFile(hFile, footer, static_cast<DWORD>(footer.GetLength()), &dwWritten, nullptr))
 		return false;
 
 	return true;
@@ -106,14 +106,14 @@ void SVG::Polygon( const Gdiplus::PointF * points, int numPoints, Gdiplus::Color
 	CStringA sTemp;
 	for (int i = 0; i < numPoints; ++i)
 	{
-		sTemp.Format("%d,%d ", (int)points[i].X, (int)points[i].Y);
+		sTemp.Format("%d,%d ", static_cast<int>(points[i].X), static_cast<int>(points[i].Y));
 		pointstring += sTemp;
 	}
 	pointstring.TrimRight();
 
 	CStringA sObj;
 	sObj.Format("<polygon points=\"%s\" style=\"stroke:#%06lx; stroke-width:%d; fill:#%06lx;\"/>",
-		(LPCSTR)pointstring, GetColor(stroke), penWidth, GetColor(fill));
+		static_cast<LPCSTR>(pointstring), GetColor(stroke), penWidth, GetColor(fill));
 
 	objects.push_back(sObj);
 }
@@ -124,14 +124,14 @@ void SVG::DrawPath( const Gdiplus::PointF * points, int numPoints, Gdiplus::Colo
 	CStringA sTemp;
 	for (int i = 0; i < numPoints; ++i)
 	{
-		sTemp.Format("%c %d %d ", i==0? 'M':'L', (int)points[i].X, (int)points[i].Y);
+		sTemp.Format("%c %d %d ", i==0? 'M':'L', static_cast<int>(points[i].X), static_cast<int>(points[i].Y));
 		pointstring += sTemp;
 	}
 	pointstring.TrimRight();
 
 	CStringA sObj;
 	sObj.Format("<path d=\"%s\" style=\"stroke:#%06lx; stroke-width:%d; fill:#%06lx;\"/>",
-		(LPCSTR)pointstring, GetColor(stroke), penWidth, GetColor(fill));
+		static_cast<LPCSTR>(pointstring), GetColor(stroke), penWidth, GetColor(fill));
 
 	objects.push_back(sObj);
 }
@@ -142,14 +142,14 @@ void SVG::Polyline( const Gdiplus::PointF * points, int numPoints, Gdiplus::Colo
 	CStringA sTemp;
 	for (int i = 0; i < numPoints; ++i)
 	{
-		sTemp.Format("%d,%d ", (int)points[i].X, (int)points[i].Y);
+		sTemp.Format("%d,%d ", static_cast<int>(points[i].X), static_cast<int>(points[i].Y));
 		pointstring += sTemp;
 	}
 	pointstring.TrimRight();
 
 	CStringA sObj;
 	sObj.Format("<polyline points=\"%s\" style=\"stroke:#%06lx; stroke-width:%d; fill:none;\"/>",
-		(LPCSTR)pointstring, GetColor(stroke), penWidth);
+		static_cast<LPCSTR>(pointstring), GetColor(stroke), penWidth);
 
 	objects.push_back(sObj);
 }
@@ -169,7 +169,7 @@ spreadMethod=\"pad\">\
 </defs>\
 <rect x=\"%d\" y=\"%d\" height=\"%d\" width=\"%d\" style=\"stroke:#%06lx; fill::url(#linearGradient%d)\"/>\
 </g>",
-		(int)objects.size(), GetColor(topColor), GetColor(bottomColor), x, y, height, width, GetColor(stroke), (int)objects.size());
+		static_cast<int>(objects.size()), GetColor(topColor), GetColor(bottomColor), x, y, height, width, GetColor(stroke), static_cast<int>(objects.size()));
 
 	objects.push_back(sObj);
 }
@@ -207,5 +207,5 @@ fill:#%06lx;\">%s</text>",
 
 DWORD SVG::GetColor( Gdiplus::Color c ) const
 {
-	return ((DWORD)c.GetRed() << 16) | ((DWORD)c.GetGreen() << 8) | ((DWORD)c.GetBlue());
+	return (static_cast<DWORD>(c.GetRed()) << 16) | (static_cast<DWORD>(c.GetGreen()) << 8) | static_cast<DWORD>(c.GetBlue());
 }

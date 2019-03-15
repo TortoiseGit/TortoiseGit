@@ -229,7 +229,7 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 			{
 				git_diff_find_options diffopts = GIT_DIFF_FIND_OPTIONS_INIT;
 				diffopts.flags = GIT_DIFF_FIND_COPIES | GIT_DIFF_FIND_RENAMES;
-				diffopts.rename_threshold = diffopts.copy_threshold = (uint16_t)CGit::ms_iSimilarityIndexThreshold;
+				diffopts.rename_threshold = diffopts.copy_threshold = static_cast<uint16_t>(CGit::ms_iSimilarityIndexThreshold);
 				if (git_diff_find_similar(diff, &diffopts) < 0)
 					return-1;
 			}
@@ -365,7 +365,7 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 				CGit::StringAppend(&stroldname, oldname, CP_UTF8);
 				path.SetFromGit(strnewname, &stroldname, &isDir);
 			}
-			path.ParserAction((BYTE)status);
+			path.ParserAction(static_cast<BYTE>(status));
 			path.m_ParentNo = i;
 
 			m_Action |= path.m_Action;
@@ -421,7 +421,7 @@ int GitRevLoglist::GetRefLog(const CString& ref, std::vector<GitRevLoglist>& ref
 
 			GitRevLoglist rev;
 			rev.m_CommitHash = git_reflog_entry_id_new(entry);
-			rev.m_Ref.Format(L"%s@{%zu}", (LPCTSTR)ref, i);
+			rev.m_Ref.Format(L"%s@{%zu}", static_cast<LPCTSTR>(ref), i);
 			rev.GetCommitterDate() = CTime(git_reflog_entry_committer(entry)->when.time);
 			if (git_reflog_entry_message(entry) != nullptr)
 			{
@@ -446,9 +446,9 @@ int GitRevLoglist::GetRefLog(const CString& ref, std::vector<GitRevLoglist>& ref
 		// no error checking, because the only error which could occur is file not found
 		git_for_each_reflog_ent(CUnicodeUtils::GetUTF8(ref), [](struct GIT_OBJECT_OID* /*old_oid*/, struct GIT_OBJECT_OID* new_oid, const char* /*committer*/, unsigned long long time, int /*sz*/, const char* msg, void* data)
 		{
-			std::vector<GitRevLoglist>* vector = (std::vector<GitRevLoglist>*)data;
+			auto vector = static_cast<std::vector<GitRevLoglist>*>(data);
 			GitRevLoglist rev;
-			rev.m_CommitHash = (const unsigned char*)new_oid->hash;
+			rev.m_CommitHash = static_cast<const unsigned char*>(new_oid->hash);
 			rev.GetCommitterDate() = CTime(time);
 
 			CString one = CUnicodeUtils::GetUnicode(msg);
@@ -468,7 +468,7 @@ int GitRevLoglist::GetRefLog(const CString& ref, std::vector<GitRevLoglist>& ref
 		for (size_t i = tmp.size(), id = 0; i > 0; --i, ++id)
 		{
 			GitRevLoglist rev = tmp[i - 1];
-			rev.m_Ref.Format(L"%s@{%zu}", (LPCTSTR)ref, id);
+			rev.m_Ref.Format(L"%s@{%zu}", static_cast<LPCTSTR>(ref), id);
 			refloglist.push_back(rev);
 		}
 		return 0;
@@ -487,7 +487,7 @@ int GitRevLoglist::GetRefLog(const CString& ref, std::vector<GitRevLoglist>& ref
 		return 0;
 
 	CString cmd, out;
-	cmd.Format(L"git.exe reflog show --pretty=\"%%H %%gD: %%gs\" --date=raw %s", (LPCTSTR)ref);
+	cmd.Format(L"git.exe reflog show --pretty=\"%%H %%gD: %%gs\" --date=raw %s", static_cast<LPCTSTR>(ref));
 	if (g_Git.Run(cmd, &out, &error, CP_UTF8))
 		return -1;
 
@@ -503,7 +503,7 @@ int GitRevLoglist::GetRefLog(const CString& ref, std::vector<GitRevLoglist>& ref
 
 		GitRevLoglist rev;
 		rev.m_CommitHash = one.Left(refPos);
-		rev.m_Ref.Format(L"%s@{%d}", (LPCTSTR)ref, i++);
+		rev.m_Ref.Format(L"%s@{%d}", static_cast<LPCTSTR>(ref), i++);
 		int prefixPos = one.Find(prefix, refPos + 1);
 		if (prefixPos != refPos + 1)
 			continue;

@@ -1,4 +1,4 @@
-// IDataObjectImpl.h: interface for the CIDataObjectImpl class.
+﻿// IDataObjectImpl.h: interface for the CIDataObjectImpl class.
 /**************************************************************************
    THIS CODE AND INFORMATION IS PROVIDED 'AS IS' WITHOUT WARRANTY OF
    ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO
@@ -297,14 +297,14 @@ public:
 						nullptr,
 						CLSCTX_INPROC_SERVER,
 						IID_IDragSourceHelper2,
-						(void**)&pDragSourceHelper2)))
+						reinterpret_cast<void**>(&pDragSourceHelper2))))
 		{
 			pDragSourceHelper2 = nullptr;
 			if(FAILED(CoCreateInstance(CLSID_DragDropHelper,
 				nullptr,
 				CLSCTX_INPROC_SERVER,
 				IID_IDragSourceHelper,
-				(void**)&pDragSourceHelper)))
+				reinterpret_cast<void**>(&pDragSourceHelper))))
 				pDragSourceHelper = nullptr;
 		}
 	}

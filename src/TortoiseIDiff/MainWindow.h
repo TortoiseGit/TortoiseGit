@@ -1,4 +1,4 @@
-// TortoiseIDiff - an image diff viewer in TortoiseSVN
+﻿// TortoiseIDiff - an image diff viewer in TortoiseSVN
 
 // Copyright (C) 2015-2016 - TortoiseGit
 // Copyright (C) 2006-2007, 2009, 2011-2013, 2015 - TortoiseSVN
@@ -71,7 +71,7 @@ public:
         , resolveMsgLParam(0)
         , resolveMsgWParam(0)
     {
-        SetWindowTitle((LPCTSTR)ResString(hResource, IDS_APP_TITLE));
+        SetWindowTitle(static_cast<LPCTSTR>(ResString(hResource, IDS_APP_TITLE)));
     };
 
     /**

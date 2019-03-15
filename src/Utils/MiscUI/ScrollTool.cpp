@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2006,2009-2010, 2012 - TortoiseSVN
 
@@ -72,10 +72,10 @@ bool CScrollTool::Init(LPPOINT pos, bool bRightAligned /* = false */)
 		CPoint point;
 		::GetCursorPos(&point);
 
-		SendMessage(TTM_ADDTOOL, 0, (LPARAM) (LPTOOLINFO) &ti);
+		SendMessage(TTM_ADDTOOL, 0, reinterpret_cast<LPARAM>(&ti));
 
-		SendMessage(TTM_TRACKPOSITION, 0, (LPARAM)(DWORD) MAKELONG(point.x, point.y));
-		SendMessage(TTM_TRACKACTIVATE, true, (LPARAM)(LPTOOLINFO) &ti);
+		SendMessage(TTM_TRACKPOSITION, 0, static_cast<DWORD>(MAKELONG(point.x, point.y)));
+		SendMessage(TTM_TRACKACTIVATE, true, reinterpret_cast<LPARAM>(&ti));
 		SendMessage(TTM_TRACKPOSITION, 0, MAKELONG(pos->x, pos->y));
 		m_bRightAligned = bRightAligned;
 		m_bInitCalled = true;
@@ -101,7 +101,7 @@ void CScrollTool::SetText(LPPOINT pos, const TCHAR * fmt, ...)
 	}
 
 	ti.lpszText = s.GetBuffer();
-	SendMessage(TTM_UPDATETIPTEXT, 0, (LPARAM)(LPTOOLINFO) &ti);
+	SendMessage(TTM_UPDATETIPTEXT, 0, reinterpret_cast<LPARAM>(&ti));
 	SendMessage(TTM_TRACKPOSITION, 0, MAKELONG(pos->x-textsize.cx, pos->y));
 	s.ReleaseBuffer();
 }
@@ -110,7 +110,7 @@ void CScrollTool::Clear()
 {
 	if (m_bInitCalled)
 	{
-		SendMessage(TTM_DELTOOL, 0, (LPARAM)(LPTOOLINFO) &ti);
+		SendMessage(TTM_DELTOOL, 0, reinterpret_cast<LPARAM>(&ti));
 		DestroyWindow();
 	}
 	m_bInitCalled = false;
@@ -119,7 +119,7 @@ void CScrollTool::Clear()
 LONG CScrollTool::GetTextWidth(LPCTSTR szText)
 {
 	CDC *pDC = GetDC();
-	CSize textsize = pDC->GetTextExtent(szText, (int)wcslen(szText));
+	CSize textsize = pDC->GetTextExtent(szText, static_cast<int>(wcslen(szText)));
 	ReleaseDC(pDC);
 	return textsize.cx;
 }

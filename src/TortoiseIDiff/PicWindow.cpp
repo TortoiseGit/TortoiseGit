@@ -1,7 +1,7 @@
 ﻿// TortoiseGitIDiff - an image diff viewer in TortoiseSVN
 
 // Copyright (C) 2006-2013, 2018 - TortoiseSVN
-// Copyright (C) 2016, 2018 - TortoiseGit
+// Copyright (C) 2016, 2018-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -43,7 +43,7 @@ bool CPicWindow::RegisterAndCreateWindow(HWND hParent)
     wcx.hCursor = LoadCursor(nullptr, IDC_ARROW);
     wcx.lpszClassName = L"TortoiseGitIDiffPicWindow";
     wcx.hIcon = LoadIconEx(hResource, MAKEINTRESOURCE(IDI_TORTOISEIDIFF), GetSystemMetrics(SM_CXICON), GetSystemMetrics(SM_CYICON));
-    wcx.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);
+    wcx.hbrBackground = reinterpret_cast<HBRUSH>(COLOR_WINDOW + 1);
     wcx.lpszMenuName = MAKEINTRESOURCE(IDC_TORTOISEIDIFF);
     wcx.hIconSm = LoadIconEx(wcx.hInstance, MAKEINTRESOURCE(IDI_TORTOISEIDIFF));
     RegisterWindow(&wcx);
@@ -127,7 +127,7 @@ LRESULT CALLBACK CPicWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, 
             ti.rect.right = rect.right;
             ti.rect.bottom = rect.bottom;
 
-            SendMessage(hwndTT, TTM_ADDTOOL, 0, (LPARAM) (LPTOOLINFO) &ti);
+            SendMessage(hwndTT, TTM_ADDTOOL, 0, reinterpret_cast<LPARAM>(&ti));
             SendMessage(hwndTT, TTM_SETMAXTIPWIDTH, 0, 600);
             nHSecondScrollPos = 0;
             nVSecondScrollPos = 0;
@@ -148,7 +148,7 @@ LRESULT CALLBACK CPicWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, 
         SetupScrollBars();
         break;
     case WM_VSCROLL:
-        if ((pSecondPic)&&((HWND)lParam == m_AlphaSlider.GetWindow()))
+        if (pSecondPic && (reinterpret_cast<HWND>(lParam) == m_AlphaSlider.GetWindow()))
         {
             if (LOWORD(wParam) == TB_THUMBTRACK)
             {
@@ -246,7 +246,7 @@ LRESULT CALLBACK CPicWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, 
             mevt.dwHoverTime = HOVER_DEFAULT;
             mevt.hwndTrack = *this;
             ::TrackMouseEvent(&mevt);
-            POINT pt = {((int)(short)LOWORD(lParam)), ((int)(short)HIWORD(lParam))};
+            POINT pt = { static_cast<int>(static_cast<short>(LOWORD(lParam))), static_cast<int>(static_cast<short>(HIWORD(lParam))) };
             if (pt.y < CDPIAware::Instance().ScaleY(HEADER_HEIGHT))
             {
                 ClientToScreen(*this, &pt);
@@ -260,7 +260,7 @@ LRESULT CALLBACK CPicWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, 
                     ti.cbSize = sizeof(TOOLINFO);
                     ti.hwnd = *this;
                     ti.uId = 0;
-                    SendMessage(hwndTT, TTM_TRACKACTIVATE, TRUE, (LPARAM)&ti);
+                    SendMessage(hwndTT, TTM_TRACKACTIVATE, TRUE, reinterpret_cast<LPARAM>(&ti));
                 }
             }
             else
@@ -320,7 +320,7 @@ LRESULT CALLBACK CPicWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, 
         {
             // we show a hand cursor if the image can be dragged,
             // and a hand-down cursor if the image is currently dragged
-            if ((*this == (HWND)wParam)&&(LOWORD(lParam)==HTCLIENT))
+            if (*this == reinterpret_cast<HWND>(wParam) && LOWORD(lParam) == HTCLIENT)
             {
                 RECT rect;
                 GetClientRect(&rect);
@@ -347,7 +347,7 @@ LRESULT CALLBACK CPicWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, 
         break;
     case WM_DROPFILES:
         {
-            HDROP hDrop = (HDROP)wParam;
+            auto hDrop = reinterpret_cast<HDROP>(wParam);
             TCHAR szFileName[MAX_PATH] = {0};
             // we only use the first file dropped (if multiple files are dropped)
             if (DragQueryFile(hDrop, 0, szFileName, _countof(szFileName)))
@@ -422,7 +422,7 @@ LRESULT CALLBACK CPicWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, 
                 break;
             case SELECTBUTTON_ID:
                 {
-                    SendMessage(GetParent(m_hwnd), WM_COMMAND, MAKEWPARAM(SELECTBUTTON_ID, SELECTBUTTON_ID), (LPARAM)m_hwnd);
+                    SendMessage(GetParent(m_hwnd), WM_COMMAND, MAKEWPARAM(SELECTBUTTON_ID, SELECTBUTTON_ID), reinterpret_cast<LPARAM>(m_hwnd));
                 }
                 break;
             }
@@ -459,28 +459,28 @@ LRESULT CALLBACK CPicWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, 
         break;
     case WM_NOTIFY:
         {
-            LPNMHDR pNMHDR = (LPNMHDR)lParam;
+            auto pNMHDR = reinterpret_cast<LPNMHDR>(lParam);
             if (pNMHDR->code == TTN_GETDISPINFO)
             {
                 if (pNMHDR->hwndFrom == m_AlphaSlider.GetWindow())
                 {
-                    LPTOOLTIPTEXT lpttt = (LPTOOLTIPTEXT) lParam;
+                    auto lpttt = reinterpret_cast<LPTOOLTIPTEXT>(lParam);
                     lpttt->hinst = hResource;
                     TCHAR stringbuf[MAX_PATH] = {0};
-                    swprintf_s(stringbuf, L"%i%% alpha", (int)(SendMessage(m_AlphaSlider.GetWindow(),TBM_GETPOS, 0, 0) / 16.0f * 100.0f));
+                    swprintf_s(stringbuf, L"%i%% alpha", static_cast<int>(SendMessage(m_AlphaSlider.GetWindow(),TBM_GETPOS, 0, 0) / 16.0f * 100.0f));
                     wcscpy_s(lpttt->lpszText, 80, stringbuf);
                 }
-                else if (pNMHDR->idFrom == (UINT_PTR)hwndAlphaToggleBtn)
+                else if (pNMHDR->idFrom == reinterpret_cast<UINT_PTR>(hwndAlphaToggleBtn))
                 {
-                    swprintf_s(m_wszTip, (TCHAR const*)ResString(hResource, IDS_ALPHABUTTONTT), (int)(SendMessage(m_AlphaSlider.GetWindow(),TBM_GETPOS, 0, 0) / 16.0f * 100.0f));
+                    swprintf_s(m_wszTip, static_cast<const TCHAR*>(ResString(hResource, IDS_ALPHABUTTONTT)), static_cast<int>(SendMessage(m_AlphaSlider.GetWindow(),TBM_GETPOS, 0, 0) / 16.0f * 100.0f));
                     if (pNMHDR->code == TTN_NEEDTEXTW)
                     {
-                        NMTTDISPINFOW* pTTTW = (NMTTDISPINFOW*)pNMHDR;
+                        auto pTTTW = reinterpret_cast<NMTTDISPINFOW*>(pNMHDR);
                         pTTTW->lpszText = m_wszTip;
                     }
                     else
                     {
-                        NMTTDISPINFOA* pTTTA = (NMTTDISPINFOA*)pNMHDR;
+                        auto pTTTA = reinterpret_cast<NMTTDISPINFOA*>(pNMHDR);
                         pTTTA->lpszText = m_szTip;
                         ::WideCharToMultiByte(CP_ACP, 0, m_wszTip, -1, m_szTip, 8192, nullptr, nullptr);
                     }
@@ -490,12 +490,12 @@ LRESULT CALLBACK CPicWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, 
                     BuildInfoString(m_wszTip, _countof(m_wszTip), true);
                     if (pNMHDR->code == TTN_NEEDTEXTW)
                     {
-                        NMTTDISPINFOW* pTTTW = (NMTTDISPINFOW*)pNMHDR;
+                        auto pTTTW = reinterpret_cast<NMTTDISPINFOW*>(pNMHDR);
                         pTTTW->lpszText = m_wszTip;
                     }
                     else
                     {
-                        NMTTDISPINFOA* pTTTA = (NMTTDISPINFOA*)pNMHDR;
+                        auto pTTTA = reinterpret_cast<NMTTDISPINFOA*>(pNMHDR);
                         pTTTA->lpszText = m_szTip;
                         ::WideCharToMultiByte(CP_ACP, 0, m_wszTip, -1, m_szTip, 8192, nullptr, nullptr);
                     }
@@ -547,12 +547,12 @@ void CPicWindow::Animate(bool bStart)
 {
     if (bStart)
     {
-        SendMessage(hwndPlayBtn, BM_SETIMAGE, (WPARAM)IMAGE_ICON, (LPARAM)hStop);
+        SendMessage(hwndPlayBtn, BM_SETIMAGE, IMAGE_ICON, reinterpret_cast<LPARAM>(hStop));
         SetTimer(*this, ID_ANIMATIONTIMER, 0, nullptr);
     }
     else
     {
-        SendMessage(hwndPlayBtn, BM_SETIMAGE, (WPARAM)IMAGE_ICON, (LPARAM)hPlay);
+        SendMessage(hwndPlayBtn, BM_SETIMAGE, IMAGE_ICON, reinterpret_cast<LPARAM>(hPlay));
         KillTimer(*this, ID_ANIMATIONTIMER);
     }
 }
@@ -578,7 +578,7 @@ void CPicWindow::DrawViewTitle(HDC hDC, RECT * rect)
 {
     const auto header_height = CDPIAware::Instance().ScaleY(HEADER_HEIGHT);
     auto hFont = CreateFont(-CDPIAware::Instance().PointsToPixelsY(pSecondPic ? 8 : 10), 0, 0, 0, FW_DONTCARE, false, false, false, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, L"MS Shell Dlg");
-    HFONT hFontOld = (HFONT)SelectObject(hDC, (HGDIOBJ)hFont);
+    auto hFontOld = static_cast<HFONT>(SelectObject(hDC, hFont));
 
     RECT textrect;
     textrect.left = rect->left;
@@ -611,14 +611,14 @@ void CPicWindow::DrawViewTitle(HDC hDC, RECT * rect)
     {
         TCHAR buf[MAX_PATH] = {0};
         if (nFrames > 1)
-            swprintf_s(buf, (const TCHAR *)ResString(hResource, IDS_DIMENSIONSANDFRAMES), nCurrentFrame, nFrames);
+            swprintf_s(buf, static_cast<const TCHAR*>(ResString(hResource, IDS_DIMENSIONSANDFRAMES)), nCurrentFrame, nFrames);
         else
-            swprintf_s(buf, (const TCHAR *)ResString(hResource, IDS_DIMENSIONSANDFRAMES), nCurrentDimension, nDimensions);
+            swprintf_s(buf, static_cast<const TCHAR*>(ResString(hResource, IDS_DIMENSIONSANDFRAMES)), nCurrentDimension, nDimensions);
         imgnumstring = buf;
     }
 
     SIZE stringsize;
-    if (GetTextExtentPoint32(hDC, realtitle.c_str(), (int)realtitle.size(), &stringsize))
+    if (GetTextExtentPoint32(hDC, realtitle.c_str(), static_cast<int>(realtitle.size()), &stringsize))
     {
         int nStringLength = stringsize.cx;
         int texttop = pSecondPic ? textrect.top + (header_height /2) - stringsize.cy : textrect.top + (header_height /2) - stringsize.cy/2;
@@ -628,7 +628,7 @@ void CPicWindow::DrawViewTitle(HDC hDC, RECT * rect)
             ETO_CLIPPED,
             &textrect,
             realtitle.c_str(),
-            (UINT)realtitle.size(),
+            static_cast<UINT>(realtitle.size()),
             nullptr);
         if (pSecondPic)
         {
@@ -639,13 +639,13 @@ void CPicWindow::DrawViewTitle(HDC hDC, RECT * rect)
                 ETO_CLIPPED,
                 &textrect,
                 realtitle.c_str(),
-                (UINT)realtitle.size(),
+                static_cast<UINT>(realtitle.size()),
                 nullptr);
         }
     }
     if (HasMultipleImages())
     {
-        if (GetTextExtentPoint32(hDC, imgnumstring.c_str(), (int)imgnumstring.size(), &stringsize))
+        if (GetTextExtentPoint32(hDC, imgnumstring.c_str(), static_cast<int>(imgnumstring.size()), &stringsize))
         {
             int nStringLength = stringsize.cx;
 
@@ -655,11 +655,11 @@ void CPicWindow::DrawViewTitle(HDC hDC, RECT * rect)
                 ETO_CLIPPED,
                 &textrect,
                 imgnumstring.c_str(),
-                (UINT)imgnumstring.size(),
+                static_cast<UINT>(imgnumstring.size()),
                 nullptr);
         }
     }
-    SelectObject(hDC, (HGDIOBJ)hFontOld);
+    SelectObject(hDC, hFontOld);
     DeleteObject(hFont);
 }
 
@@ -1179,7 +1179,7 @@ void CPicWindow::ShowPicWithBorder(HDC hdc, const RECT &bounds, CPicture &pic, i
     border.bottom = picrect.bottom + bordersize;
 
     HPEN hPen = CreatePen(PS_SOLID, 1, GetSysColor(COLOR_3DDKSHADOW));
-    HPEN hOldPen = (HPEN)SelectObject(hdc, hPen);
+    HPEN hOldPen = static_cast<HPEN>(SelectObject(hdc, hPen));
     MoveToEx(hdc, border.left, border.top, nullptr);
     LineTo(hdc, border.left, border.bottom);
     LineTo(hdc, border.right, border.bottom);
@@ -1225,7 +1225,7 @@ void CPicWindow::Paint(HWND hwnd)
             {
                 HDC secondhdc = CreateCompatibleDC(hdc);
                 HBITMAP hBitmap = CreateCompatibleBitmap(hdc, rect.right - rect.left, rect.bottom - rect.top);
-                HBITMAP hOldBitmap = (HBITMAP)SelectObject(secondhdc, hBitmap);
+                HBITMAP hOldBitmap = static_cast<HBITMAP>(SelectObject(secondhdc, hBitmap));
                 SetWindowOrgEx(secondhdc, rect.left, rect.top, nullptr);
 
                 if ((pSecondPic)&&(m_blend != BLEND_ALPHA))
@@ -1244,7 +1244,7 @@ void CPicWindow::Paint(HWND hwnd)
                     blender.AlphaFormat = 0;
                     blender.BlendFlags = 0;
                     blender.BlendOp = AC_SRC_OVER;
-                    blender.SourceConstantAlpha = (BYTE)(blendAlpha*255);
+                    blender.SourceConstantAlpha = static_cast<BYTE>(blendAlpha * 255);
                     AlphaBlend(memDC,
                         rect.left,
                         rect.top,
@@ -1280,7 +1280,7 @@ void CPicWindow::Paint(HWND hwnd)
             {
                 // when dragging, show lines indicating the position of the other image
                 HPEN hPen = CreatePen(PS_SOLID, 1, GetSysColor(/*COLOR_ACTIVEBORDER*/COLOR_HIGHLIGHT));
-                HPEN hOldPen = (HPEN)SelectObject(memDC, hPen);
+                HPEN hOldPen = static_cast<HPEN>(SelectObject(memDC, hPen));
                 int xpos = rect.left - pTheOtherPic->nHScrollPos - 1;
                 MoveToEx(memDC, xpos, rect.top, nullptr);
                 LineTo(memDC, xpos, rect.bottom);
@@ -1321,7 +1321,7 @@ void CPicWindow::Paint(HWND hwnd)
                 metrics.cbSize = sizeof(NONCLIENTMETRICS);
                 SystemParametersInfo(SPI_GETNONCLIENTMETRICS, 0, &metrics, FALSE);
                 HFONT hFont = CreateFontIndirect(&metrics.lfStatusFont);
-                HFONT hFontOld = (HFONT)SelectObject(memDC, (HGDIOBJ)hFont);
+                HFONT hFontOld = static_cast<HFONT>(SelectObject(memDC, hFont));
                 // find out how big the rectangle for the text has to be
                 DrawText(memDC, infostring.get(), -1, &m_inforect, DT_EDITCONTROL | DT_EXPANDTABS | DT_LEFT | DT_VCENTER | DT_CALCRECT);
 
@@ -1340,7 +1340,7 @@ void CPicWindow::Paint(HWND hwnd)
 
                 SetTextColor(memDC, GetSysColor(COLOR_WINDOWTEXT));
                 DrawText(memDC, infostring.get(), -1, &m_inforect, DT_EDITCONTROL | DT_EXPANDTABS | DT_LEFT | DT_VCENTER);
-                SelectObject(memDC, (HGDIOBJ)hFontOld);
+                SelectObject(memDC, hFontOld);
                 DeleteObject(hFont);
             }
         }
@@ -1357,9 +1357,9 @@ void CPicWindow::Paint(HWND hwnd)
             metrics.cbSize = sizeof(NONCLIENTMETRICS);
             SystemParametersInfo(SPI_GETNONCLIENTMETRICS, 0, &metrics, FALSE);
             HFONT hFont = CreateFontIndirect(&metrics.lfStatusFont);
-            HFONT hFontOld = (HFONT)SelectObject(memDC, (HGDIOBJ)hFont);
+            HFONT hFontOld = static_cast<HFONT>(SelectObject(memDC, hFont));
 
-            if (GetTextExtentPoint32(memDC, str, (int)wcslen(str), &stringsize))
+            if (GetTextExtentPoint32(memDC, str, static_cast<int>(wcslen(str)), &stringsize))
             {
                 int nStringLength = stringsize.cx;
 
@@ -1369,10 +1369,10 @@ void CPicWindow::Paint(HWND hwnd)
                     ETO_CLIPPED,
                     &rect,
                     str,
-                    (UINT)wcslen(str),
+                    static_cast<UINT>(wcslen(str)),
                     nullptr);
             }
-            SelectObject(memDC, (HGDIOBJ)hFontOld);
+            SelectObject(memDC, hFontOld);
             DeleteObject(hFont);
         }
         DrawViewTitle(memDC, &fullrect);
@@ -1390,11 +1390,11 @@ bool CPicWindow::CreateButtons()
 
     hwndLeftBtn = CreateWindowEx(0,
                                 L"BUTTON",
-                                (LPCTSTR)nullptr,
+                                static_cast<LPCTSTR>(nullptr),
                                 WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | BS_ICON | BS_FLAT,
                                 0, 0, 0, 0,
-                                (HWND)*this,
-                                (HMENU)LEFTBUTTON_ID,
+                                *this,
+                                reinterpret_cast<HMENU>(LEFTBUTTON_ID),
                                 hResource,
                                 nullptr);
     if (hwndLeftBtn == INVALID_HANDLE_VALUE)
@@ -1402,61 +1402,61 @@ bool CPicWindow::CreateButtons()
     int iconWidth = GetSystemMetrics(SM_CXSMICON);
     int iconHeight = GetSystemMetrics(SM_CYSMICON);
     hLeft = LoadIconEx(hResource, MAKEINTRESOURCE(IDI_BACKWARD), iconWidth, iconHeight);
-    SendMessage(hwndLeftBtn, BM_SETIMAGE, (WPARAM)IMAGE_ICON, (LPARAM)hLeft);
+    SendMessage(hwndLeftBtn, BM_SETIMAGE, IMAGE_ICON, reinterpret_cast<LPARAM>(hLeft));
     hwndRightBtn = CreateWindowEx(0,
                                 L"BUTTON",
-                                (LPCTSTR)nullptr,
+                                static_cast<LPCTSTR>(nullptr),
                                 WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | BS_ICON | BS_FLAT,
                                 0, 0, 0, 0,
                                 *this,
-                                (HMENU)RIGHTBUTTON_ID,
+                                reinterpret_cast<HMENU>(RIGHTBUTTON_ID),
                                 hResource,
                                 nullptr);
     if (hwndRightBtn == INVALID_HANDLE_VALUE)
         return false;
     hRight = LoadIconEx(hResource, MAKEINTRESOURCE(IDI_FORWARD), iconWidth, iconHeight);
-    SendMessage(hwndRightBtn, BM_SETIMAGE, (WPARAM)IMAGE_ICON, (LPARAM)hRight);
+    SendMessage(hwndRightBtn, BM_SETIMAGE, IMAGE_ICON, reinterpret_cast<LPARAM>(hRight));
     hwndPlayBtn = CreateWindowEx(0,
                                 L"BUTTON",
-                                (LPCTSTR)nullptr,
+                                static_cast<LPCTSTR>(nullptr),
                                 WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | BS_ICON | BS_FLAT,
                                 0, 0, 0, 0,
                                 *this,
-                                (HMENU)PLAYBUTTON_ID,
+                                reinterpret_cast<HMENU>(PLAYBUTTON_ID),
                                 hResource,
                                 nullptr);
     if (hwndPlayBtn == INVALID_HANDLE_VALUE)
         return false;
     hPlay = LoadIconEx(hResource, MAKEINTRESOURCE(IDI_START), iconWidth, iconHeight);
     hStop = LoadIconEx(hResource, MAKEINTRESOURCE(IDI_STOP), iconWidth, iconHeight);
-    SendMessage(hwndPlayBtn, BM_SETIMAGE, (WPARAM)IMAGE_ICON, (LPARAM)hPlay);
+    SendMessage(hwndPlayBtn, BM_SETIMAGE, IMAGE_ICON, reinterpret_cast<LPARAM>(hPlay));
     hwndAlphaToggleBtn = CreateWindowEx(0,
                                 L"BUTTON",
-                                (LPCTSTR)nullptr,
+                                static_cast<LPCTSTR>(nullptr),
                                 WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | BS_ICON | BS_FLAT | BS_NOTIFY | BS_PUSHLIKE,
                                 0, 0, 0, 0,
-                                (HWND)*this,
-                                (HMENU)ALPHATOGGLEBUTTON_ID,
+                                *this,
+                                reinterpret_cast<HMENU>(ALPHATOGGLEBUTTON_ID),
                                 hResource,
                                 nullptr);
     if (hwndAlphaToggleBtn == INVALID_HANDLE_VALUE)
         return false;
     hAlphaToggle = LoadIconEx(hResource, MAKEINTRESOURCE(IDI_ALPHATOGGLE), iconWidth, iconHeight);
-    SendMessage(hwndAlphaToggleBtn, BM_SETIMAGE, (WPARAM)IMAGE_ICON, (LPARAM)hAlphaToggle);
+    SendMessage(hwndAlphaToggleBtn, BM_SETIMAGE, IMAGE_ICON, reinterpret_cast<LPARAM>(hAlphaToggle));
 
     TOOLINFO ti = {0};
     ti.cbSize = sizeof(TOOLINFO);
     ti.uFlags = TTF_IDISHWND|TTF_SUBCLASS;
     ti.hwnd = *this;
     ti.hinst = hResource;
-    ti.uId = (UINT_PTR)hwndAlphaToggleBtn;
+    ti.uId = reinterpret_cast<UINT_PTR>(hwndAlphaToggleBtn);
     ti.lpszText = LPSTR_TEXTCALLBACK;
     // ToolTip control will cover the whole window
     ti.rect.left = 0;
     ti.rect.top = 0;
     ti.rect.right = 0;
     ti.rect.bottom = 0;
-    SendMessage(hwndTT, TTM_ADDTOOL, 0, (LPARAM) (LPTOOLINFO) &ti);
+    SendMessage(hwndTT, TTM_ADDTOOL, 0, reinterpret_cast<LPARAM>(&ti));
     ResString sSelect(hResource, IDS_SELECT);
     hwndSelectBtn = CreateWindowEx(0,
                                    L"BUTTON",
@@ -1464,7 +1464,7 @@ bool CPicWindow::CreateButtons()
                                    WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
                                    0, 0, 0, 0,
                                    *this,
-                                   (HMENU)SELECTBUTTON_ID,
+                                   reinterpret_cast<HMENU>(SELECTBUTTON_ID),
                                    hResource,
                                    nullptr);
     if (hwndPlayBtn == INVALID_HANDLE_VALUE)
@@ -1518,17 +1518,17 @@ void CPicWindow::CreateTrackbar(HWND hwndParent)
         10, 10,                             // position
         200, 30,                            // size
         hwndParent,                         // parent window
-        (HMENU)TRACKBAR_ID,                 // control identifier
+        reinterpret_cast<HMENU>(TRACKBAR_ID),// control identifier
         hInst,                              // instance
         nullptr                             // no WM_CREATE parameter
         );
 
     SendMessage(hwndTrack, TBM_SETRANGE,
-        (WPARAM) TRUE,                  // redraw flag
-        (LPARAM) MAKELONG(0, 16));      // min. & max. positions
+        TRUE,                  // redraw flag
+        MAKELONG(0, 16));      // min. & max. positions
     SendMessage(hwndTrack, TBM_SETTIPSIDE,
-        (WPARAM) TBTS_TOP,
-        (LPARAM) 0);
+        TBTS_TOP,
+        0);
 
     m_AlphaSlider.ConvertTrackbarToNice(hwndTrack);
 }
@@ -1545,27 +1545,27 @@ void CPicWindow::BuildInfoString(TCHAR * buf, int size, bool bTooltip)
     if (pSecondPic && pTheOtherPic)
     {
         swprintf_s(buf, size,
-            (TCHAR const *)ResString(hResource, bTooltip ? IDS_DUALIMAGEINFOTT : IDS_DUALIMAGEINFO),
+            static_cast<const TCHAR*>(ResString(hResource, bTooltip ? IDS_DUALIMAGEINFOTT : IDS_DUALIMAGEINFO)),
             picture.GetFileSizeAsText().c_str(), picture.GetFileSizeAsText(false).c_str(),
             picture.m_Width, picture.m_Height,
             picture.GetHorizontalResolution(), picture.GetVerticalResolution(),
             picture.m_ColorDepth,
-            (UINT)GetZoom(),
+            static_cast<UINT>(GetZoom()),
             pSecondPic->GetFileSizeAsText().c_str(), pSecondPic->GetFileSizeAsText(false).c_str(),
             pSecondPic->m_Width, pSecondPic->m_Height,
             pSecondPic->GetHorizontalResolution(), pSecondPic->GetVerticalResolution(),
             pSecondPic->m_ColorDepth,
-            (UINT)pTheOtherPic->GetZoom());
+            static_cast<UINT>(pTheOtherPic->GetZoom()));
     }
     else
     {
         swprintf_s(buf, size,
-            (TCHAR const *)ResString(hResource, bTooltip ? IDS_IMAGEINFOTT : IDS_IMAGEINFO),
+            static_cast<const TCHAR*>(ResString(hResource, bTooltip ? IDS_IMAGEINFOTT : IDS_IMAGEINFO)),
             picture.GetFileSizeAsText().c_str(), picture.GetFileSizeAsText(false).c_str(),
             picture.m_Width, picture.m_Height,
             picture.GetHorizontalResolution(), picture.GetVerticalResolution(),
             picture.m_ColorDepth,
-            (UINT)GetZoom());
+            static_cast<UINT>(GetZoom()));
     }
 }
 

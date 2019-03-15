@@ -39,7 +39,7 @@ int CSerialPatch::Parse(const CString& pathfile, bool parseBody)
 	if (!PatchFile.Open(m_PathFile, CFile::modeRead))
 		return -1;
 
-	PatchFile.Read(CStrBufA(m_Body, (UINT)PatchFile.GetLength()), (UINT)PatchFile.GetLength());
+	PatchFile.Read(CStrBufA(m_Body, static_cast<UINT>(PatchFile.GetLength())), static_cast<UINT>(PatchFile.GetLength()));
 	PatchFile.Close();
 
 	int start = 0;
@@ -48,17 +48,17 @@ int CSerialPatch::Parse(const CString& pathfile, bool parseBody)
 		CStringA line = m_Body.Tokenize("\n", start);
 		if (CStringUtils::StartsWith(line, FROMHEADER))
 		{
-			CGit::StringAppend(&m_Author, static_cast<LPCSTR>(line) + (int)strlen(FROMHEADER), CP_UTF8, line.GetLength() - (int)strlen(FROMHEADER));
+			CGit::StringAppend(&m_Author, static_cast<LPCSTR>(line) + static_cast<int>(strlen(FROMHEADER)), CP_UTF8, line.GetLength() - static_cast<int>(strlen(FROMHEADER)));
 			m_Author.TrimRight(L'\r');
 		}
 		else if (CStringUtils::StartsWith(line, DATEHEADER))
 		{
-			CGit::StringAppend(&m_Date, static_cast<LPCSTR>(line) + (int)strlen(DATEHEADER), CP_UTF8, line.GetLength() - (int)strlen(DATEHEADER));
+			CGit::StringAppend(&m_Date, static_cast<LPCSTR>(line) + static_cast<int>(strlen(DATEHEADER)), CP_UTF8, line.GetLength() - static_cast<int>(strlen(DATEHEADER)));
 			m_Date.TrimRight(L'\r');
 		}
 		else if (CStringUtils::StartsWith(line, SUBJECTHEADER))
 		{
-			CGit::StringAppend(&m_Subject, static_cast<LPCSTR>(line) + (int)strlen(SUBJECTHEADER), CP_UTF8, line.GetLength() - (int)strlen(SUBJECTHEADER));
+			CGit::StringAppend(&m_Subject, static_cast<LPCSTR>(line) + static_cast<int>(strlen(SUBJECTHEADER)), CP_UTF8, line.GetLength() - static_cast<int>(strlen(SUBJECTHEADER)));
 			while (m_Body.GetLength() > start && (m_Body.GetAt(start) == L' ' || m_Body.GetAt(start) == L'\t'))
 			{
 				line = m_Body.Tokenize("\n", start);

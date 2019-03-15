@@ -1,4 +1,4 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2006-2007, 2010-2011, 2013,2015 - TortoiseSVN
 
@@ -159,11 +159,11 @@ bool CUndo::Undo(CBaseView * pLeft, CBaseView * pRight, CBaseView * pBottom)
 		if (m_viewstates.size() < m_originalstateLeft)
 		{
 			// Left can never get back to original state now
-			m_originalstateLeft = (size_t)-1;
+			m_originalstateLeft = static_cast<size_t>(-1);
 		}
 		if (pLeft)
 		{
-			bool bModified = (m_originalstateLeft==(size_t)-1);
+			bool bModified = (m_originalstateLeft == static_cast<size_t>(-1));
 			if (!bModified)
 			{
 				std::list<allviewstate>::iterator i = m_viewstates.begin();
@@ -183,11 +183,11 @@ bool CUndo::Undo(CBaseView * pLeft, CBaseView * pRight, CBaseView * pBottom)
 		if (m_viewstates.size() < m_originalstateRight)
 		{
 			// Right can never get back to original state now
-			m_originalstateRight = (size_t)-1;
+			m_originalstateRight = static_cast<size_t>(-1);
 		}
 		if (pRight)
 		{
-			bool bModified = (m_originalstateRight==(size_t)-1);
+			bool bModified = (m_originalstateRight == static_cast<size_t>(-1));
 			if (!bModified)
 			{
 				std::list<allviewstate>::iterator i = m_viewstates.begin();
@@ -201,11 +201,11 @@ bool CUndo::Undo(CBaseView * pLeft, CBaseView * pRight, CBaseView * pBottom)
 		if (m_viewstates.size() < m_originalstateBottom)
 		{
 			// Bottom can never get back to original state now
-			m_originalstateBottom = (size_t)-1;
+			m_originalstateBottom = static_cast<size_t>(-1);
 		}
 		if (pBottom)
 		{
-			bool bModified = (m_originalstateBottom==(size_t)-1);
+			bool bModified = (m_originalstateBottom == static_cast<size_t>(-1));
 			if (!bModified)
 			{
 				std::list<allviewstate>::iterator i = m_viewstates.begin();
@@ -299,11 +299,11 @@ bool CUndo::Redo(CBaseView * pLeft, CBaseView * pRight, CBaseView * pBottom)
 		if (m_redoviewstates.size() < m_originalstateLeft)
 		{
 			// Left can never get back to original state now
-			m_originalstateLeft = (size_t)-1;
+			m_originalstateLeft = static_cast<size_t>(-1);
 		}
 		if (pLeft)
 		{
-			bool bModified = (m_originalstateLeft == (size_t)-1);
+			bool bModified = (m_originalstateLeft == static_cast<size_t>(-1));
 			if (!bModified)
 			{
 				std::list<allviewstate>::iterator i = m_redoviewstates.begin();
@@ -323,11 +323,11 @@ bool CUndo::Redo(CBaseView * pLeft, CBaseView * pRight, CBaseView * pBottom)
 		if (m_redoviewstates.size() < m_originalstateRight)
 		{
 			// Right can never get back to original state now
-			m_originalstateRight = (size_t)-1;
+			m_originalstateRight = static_cast<size_t>(-1);
 		}
 		if (pRight)
 		{
-			bool bModified = (m_originalstateRight == (size_t)-1);
+			bool bModified = (m_originalstateRight == static_cast<size_t>(-1));
 			if (!bModified)
 			{
 				std::list<allviewstate>::iterator i = m_redoviewstates.begin();
@@ -341,11 +341,11 @@ bool CUndo::Redo(CBaseView * pLeft, CBaseView * pRight, CBaseView * pBottom)
 		if (m_redoviewstates.size() < m_originalstateBottom)
 		{
 			// Bottom can never get back to original state now
-			m_originalstateBottom = (size_t)-1;
+			m_originalstateBottom = static_cast<size_t>(-1);
 		}
 		if (pBottom)
 		{
-			bool bModified = (m_originalstateBottom == (size_t)-1);
+			bool bModified = (m_originalstateBottom == static_cast<size_t>(-1));
 			if (!bModified)
 			{
 				std::list<allviewstate>::iterator i = m_redoviewstates.begin();
@@ -413,7 +413,7 @@ viewstate CUndo::Do(const viewstate& state, CBaseView * pView, const POINT& pt)
 	for (std::map<int, DWORD>::const_iterator it = state.linestates.begin(); it != state.linestates.end(); ++it)
 	{
 		revstate.linestates[it->first] = viewData->GetState(it->first);
-		viewData->SetState(it->first, (DiffStates)it->second);
+		viewData->SetState(it->first, static_cast<DiffStates>(it->second));
 	}
 	for (std::map<int, EOL>::const_iterator it = state.linesEOL.begin(); it != state.linesEOL.end(); ++it)
 	{

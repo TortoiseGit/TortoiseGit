@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2018 - TortoiseGit
+// Copyright (C) 2018-2019 - TortoiseGit
 // Copyright (C) 2003, 2013, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -62,11 +62,11 @@ BOOL CALLBACK LoginDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
 		pDlg->_hdlg = hwndDlg;
 		SetWindowLongPtr(hwndDlg, GWLP_USERDATA, lParam);
 		// Set prompt text
-		SendDlgItemMessage(hwndDlg, IDC_LOGIN_PROMPT, WM_SETTEXT, pDlg->myPrompt.length(), (LPARAM)pDlg->myPrompt.c_str());
+		SendDlgItemMessage(hwndDlg, IDC_LOGIN_PROMPT, WM_SETTEXT, pDlg->myPrompt.length(), reinterpret_cast<LPARAM>(pDlg->myPrompt.c_str()));
 		SendDlgItemMessage(hwndDlg, IDC_LOGIN_PASSWORD, EM_SETLIMITTEXT, MAX_LENGTH_PASSWORD - 1, 0);
 		// Make sure edit control has the focus
 		//SendDlgItemMessage(hwndDlg, IDC_LOGIN_PASSWORD, WM_SETFOCUS, 0, 0);
-		if (GetDlgCtrlID((HWND)wParam) != IDC_LOGIN_PASSWORD)
+		if (GetDlgCtrlID(reinterpret_cast<HWND>(wParam)) != IDC_LOGIN_PASSWORD)
 		{
 			SetFocus(GetDlgItem(hwndDlg, IDC_LOGIN_PASSWORD));
 			return FALSE;
@@ -106,7 +106,7 @@ LoginDialog::~LoginDialog()
 
 void LoginDialog::CreateModule(void)
 {
-	DialogBoxParam(g_hmodThisDll, MAKEINTRESOURCE(IDD_LOGIN), g_hwndMain, (DLGPROC)(LoginDialogProc), (LPARAM)this);
+	DialogBoxParam(g_hmodThisDll, MAKEINTRESOURCE(IDD_LOGIN), g_hwndMain, (DLGPROC)(LoginDialogProc), reinterpret_cast<LPARAM>(this));
 }
 
 bool LoginDialog::DoLoginDialog(char* password, int maxlen, const char* prompt)
@@ -125,7 +125,7 @@ bool LoginDialog::DoLoginDialog(char* password, int maxlen, const char* prompt)
 
 void LoginDialog::RetrieveValues()
 {
-	SendDlgItemMessage(_hdlg, IDC_LOGIN_PASSWORD, WM_GETTEXT, sizeof(myPassword), (LPARAM)myPassword);
+	SendDlgItemMessage(_hdlg, IDC_LOGIN_PASSWORD, WM_GETTEXT, sizeof(myPassword), reinterpret_cast<LPARAM>(myPassword));
 }
 
 void LoginDialog::PurgeValues()
@@ -134,9 +134,9 @@ void LoginDialog::PurgeValues()
 	char gargabe[MAX_LENGTH_PASSWORD];
 	memset(gargabe, L'*', sizeof(gargabe));
 	gargabe[sizeof(gargabe) - 1] = '\0';
-	SendDlgItemMessage(_hdlg, IDC_LOGIN_PASSWORD, WM_SETTEXT, 0, (LPARAM)gargabe);
+	SendDlgItemMessage(_hdlg, IDC_LOGIN_PASSWORD, WM_SETTEXT, 0, reinterpret_cast<LPARAM>(gargabe));
 	gargabe[0] = '\0';
-	SendDlgItemMessage(_hdlg, IDC_LOGIN_PASSWORD, WM_SETTEXT, 0, (LPARAM)gargabe);
+	SendDlgItemMessage(_hdlg, IDC_LOGIN_PASSWORD, WM_SETTEXT, 0, reinterpret_cast<LPARAM>(gargabe));
 }
 
 HWND GetParentHwnd()

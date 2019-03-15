@@ -86,7 +86,7 @@ BOOL CSetHooksAdv::OnInitDialog()
 	// preselect the right hook type in the combobox
 	for (int i=0; i<m_cHookTypeCombo.GetCount(); ++i)
 	{
-		hooktype ht = (hooktype)m_cHookTypeCombo.GetItemData(i);
+		hooktype ht = static_cast<hooktype>(m_cHookTypeCombo.GetItemData(i));
 		if (ht == key.htype)
 		{
 			CString str;
@@ -134,7 +134,7 @@ void CSetHooksAdv::OnOK()
 	key.htype = unknown_hook;
 	if (cursel != CB_ERR)
 	{
-		key.htype = (hooktype)m_cHookTypeCombo.GetItemData(cursel);
+		key.htype = static_cast<hooktype>(m_cHookTypeCombo.GetItemData(cursel));
 		key.path = CTGitPath(m_sPath);
 		cmd.commandline = m_sCommandLine;
 		cmd.bEnabled = m_bEnabled == BST_CHECKED;
@@ -156,7 +156,7 @@ void CSetHooksAdv::OnOK()
 		}
 		if (key.path.GetWinPathString() != L"*" && (!PathIsDirectory(key.path.GetWinPathString()) || PathIsRelative(key.path.GetWinPathString())))
 		{
-			ShowEditBalloon(IDC_HOOKPATH, (LPCTSTR)CFormatMessageWrapper(ERROR_PATH_NOT_FOUND), CString(MAKEINTRESOURCE(IDS_ERR_ERROR)), TTI_ERROR);
+			ShowEditBalloon(IDC_HOOKPATH, static_cast<LPCTSTR>(CFormatMessageWrapper(ERROR_PATH_NOT_FOUND)), CString(MAKEINTRESOURCE(IDS_ERR_ERROR)), TTI_ERROR);
 			return;
 		}
 	}

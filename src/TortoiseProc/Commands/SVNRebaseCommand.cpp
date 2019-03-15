@@ -46,7 +46,7 @@ bool SVNRebaseCommand::Execute()
 			sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
 			sysProgressDlg.SetShowProgressBar(false);
 			sysProgressDlg.SetCancelMsg(IDS_PROGRS_INFOFAILED);
-			sysProgressDlg.ShowModeless((HWND)nullptr, true);
+			sysProgressDlg.ShowModeless(static_cast<HWND>(nullptr), true);
 
 			CString out;
 			if (g_Git.Run(L"git.exe stash", &out, CP_UTF8))
@@ -76,7 +76,7 @@ bool SVNRebaseCommand::Execute()
 			out=out.Mid(start);
 
 		if (CStringUtils::StartsWith(out, L":refs"))
-			out = out.Mid((int)wcslen(L":refs") + 1);
+			out = out.Mid(static_cast<int>(wcslen(L":refs")) + 1);
 
 		start = 0;
 		out = out.Tokenize(L"\n", start);
@@ -131,7 +131,7 @@ bool SVNRebaseCommand::Execute()
 	{
 		CProgressDlg progressReset;
 		CString cmd;
-		cmd.Format(L"git.exe reset --hard %s --", (LPCTSTR)out);
+		cmd.Format(L"git.exe reset --hard %s --", static_cast<LPCTSTR>(out));
 		progressReset.m_GitCmd = cmd;
 		progressReset.m_AutoClose = AUTOCLOSE_IF_NO_ERRORS;
 

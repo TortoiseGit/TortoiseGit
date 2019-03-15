@@ -66,14 +66,14 @@ bool FormatPatchCommand::Execute()
 			range.Format(L"-%d", dlg.m_Num);
 			break;
 		case IDC_RADIO_RANGE:
-			range.Format(L"%s..%s", (LPCTSTR)dlg.m_From, (LPCTSTR)dlg.m_To);
+			range.Format(L"%s..%s", static_cast<LPCTSTR>(dlg.m_From), static_cast<LPCTSTR>(dlg.m_To));
 			break;
 		}
 		dlg.m_Dir.Replace(L'\\', L'/');
 		cmd.Format(L"git.exe format-patch%s -o \"%s\" %s",
 			dlg.m_bNoPrefix ? L" --no-prefix" : L"",
-			(LPCTSTR)dlg.m_Dir,
-			(LPCTSTR)range
+			static_cast<LPCTSTR>(dlg.m_Dir),
+			static_cast<LPCTSTR>(range)
 			);
 
 		CProgressDlg progress;

@@ -1,7 +1,7 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2009-2018 - TortoiseGit
+// Copyright (C) 2009-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -98,8 +98,8 @@ BOOL CAboutDlg::OnInitDialog()
 	}
 
 	CString tortoisegitprocpath;
-	tortoisegitprocpath.Format(L"(%s)", (LPCTSTR)CPathUtils::GetAppDirectory().TrimRight(L'\\'));
-	temp.Format(IDS_ABOUTVERSION, TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, (LPCTSTR)tortoisegitprocpath, (LPCTSTR)out);
+	tortoisegitprocpath.Format(L"(%s)", static_cast<LPCTSTR>(CPathUtils::GetAppDirectory().TrimRight(L'\\')));
+	temp.Format(IDS_ABOUTVERSION, TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, static_cast<LPCTSTR>(tortoisegitprocpath), static_cast<LPCTSTR>(out));
 	SetDlgItemText(IDC_VERSIONABOUT, Lf2Crlf(temp));
 
 	this->SetWindowText(L"TortoiseGit");
@@ -128,7 +128,7 @@ void CAboutDlg::OnTimer(UINT_PTR nIDEvent)
 {
 	if (nIDEvent == ID_EFFECTTIMER)
 	{
-		m_waterEffect.Render((DWORD*)m_renderSrc.GetDIBits(), (DWORD*)m_renderDest.GetDIBits());
+		m_waterEffect.Render(static_cast<DWORD*>(m_renderSrc.GetDIBits()), static_cast<DWORD*>(m_renderDest.GetDIBits()));
 		CClientDC dc(this);
 		CPoint ptOrigin(CDPIAware::Instance().ScaleX(15), CDPIAware::Instance().ScaleY(20));
 		m_renderDest.Draw(&dc,ptOrigin);

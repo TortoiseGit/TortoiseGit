@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016 - TortoiseGit
+// Copyright (C) 2016, 2019 - TortoiseGit
 // Copyright (C) 2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -91,7 +91,7 @@ void CSetBugTraq::RebuildBugTraqList()
 		m_cBugTraqList.SetCheck(pos, (*it)->IsEnabled());
 		m_cBugTraqList.SetItemText(pos, 1, (*it)->GetProviderName());
 		m_cBugTraqList.SetItemText(pos, 2, (*it)->GetParameters());
-		m_cBugTraqList.SetItemData(pos, (DWORD_PTR)*it);
+		m_cBugTraqList.SetItemData(pos, reinterpret_cast<DWORD_PTR>(*it));
 	}
 
 	int maxcol = m_cBugTraqList.GetHeaderCtrl()->GetItemCount() - 1;

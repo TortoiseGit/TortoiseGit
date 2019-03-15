@@ -200,7 +200,7 @@ LRESULT CCommitIsOnRefsDlg::OnClickedCancelFilter(WPARAM /*wParam*/, LPARAM /*lP
 void CCommitIsOnRefsDlg::OnBnClickedShowLog()
 {
 	CString cmd;
-	cmd.Format(L"/command:log /rev:%s", (LPCTSTR)m_gitrev.m_CommitHash.ToString());
+	cmd.Format(L"/command:log /rev:%s", static_cast<LPCTSTR>(m_gitrev.m_CommitHash.ToString()));
 	CAppUtils::RunTortoiseGitProc(cmd);
 }
 
@@ -295,9 +295,9 @@ void CCommitIsOnRefsDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 			popup.AppendMenuIcon(eCmd_UnifiedDiff, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
 			popup.AppendMenu(MF_SEPARATOR, NULL);
 			CString menu;
-			menu.Format(IDS_SHOWLOG_OF, (LPCTSTR)GetTwoSelectedRefs(selectedRefs, m_sLastSelected, L".."));
+			menu.Format(IDS_SHOWLOG_OF, static_cast<LPCTSTR>(GetTwoSelectedRefs(selectedRefs, m_sLastSelected, L"..")));
 			popup.AppendMenuIcon(eCmd_ViewLogRange, menu, IDI_LOG);
-			menu.Format(IDS_SHOWLOG_OF, (LPCTSTR)GetTwoSelectedRefs(selectedRefs, m_sLastSelected, L"..."));
+			menu.Format(IDS_SHOWLOG_OF, static_cast<LPCTSTR>(GetTwoSelectedRefs(selectedRefs, m_sLastSelected, L"...")));
 			popup.AppendMenuIcon(eCmd_ViewLogRangeReachableFromOnlyOne, menu, IDI_LOG);
 			needSep = true;
 		}
@@ -349,14 +349,14 @@ void CCommitIsOnRefsDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		case eCmd_ViewLogRange:
 		{
 			CString sCmd;
-			sCmd.Format(L"/command:log /path:\"%s\" /range:\"%s\"", (LPCTSTR)g_Git.m_CurrentDir, (LPCTSTR)GetTwoSelectedRefs(selectedRefs, m_sLastSelected, L".."));
+			sCmd.Format(L"/command:log /path:\"%s\" /range:\"%s\"", static_cast<LPCTSTR>(g_Git.m_CurrentDir), static_cast<LPCTSTR>(GetTwoSelectedRefs(selectedRefs, m_sLastSelected, L"..")));
 			CAppUtils::RunTortoiseGitProc(sCmd);
 		}
 		break;
 		case eCmd_ViewLogRangeReachableFromOnlyOne:
 		{
 			CString sCmd;
-			sCmd.Format(L"/command:log /path:\"%s\" /range:\"%s\"", (LPCTSTR)g_Git.m_CurrentDir, (LPCTSTR)GetTwoSelectedRefs(selectedRefs, m_sLastSelected, L"..."));
+			sCmd.Format(L"/command:log /path:\"%s\" /range:\"%s\"", static_cast<LPCTSTR>(g_Git.m_CurrentDir), static_cast<LPCTSTR>(GetTwoSelectedRefs(selectedRefs, m_sLastSelected, L"...")));
 			CAppUtils::RunTortoiseGitProc(sCmd);
 		}
 		break;
@@ -369,7 +369,7 @@ void CCommitIsOnRefsDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		case eCmd_DiffWC:
 		{
 			CString sCmd;
-			sCmd.Format(L"/command:showcompare /path:\"%s\" /revision1:%s /revision2:%s", (LPCTSTR)g_Git.m_CurrentDir, (LPCTSTR)selectedRefs[0], (LPCTSTR)GitRev::GetWorkingCopy());
+			sCmd.Format(L"/command:showcompare /path:\"%s\" /revision1:%s /revision2:%s", static_cast<LPCTSTR>(g_Git.m_CurrentDir), static_cast<LPCTSTR>(selectedRefs[0]), static_cast<LPCTSTR>(GitRev::GetWorkingCopy()));
 			if (!!(GetAsyncKeyState(VK_SHIFT) & 0x8000))
 				sCmd += L" /alternative";
 
@@ -385,7 +385,7 @@ void CCommitIsOnRefsDlg::OnItemChangedListRefs(NMHDR* pNMHDR, LRESULT* pResult)
 	LPNMLISTVIEW pNMListView = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 	*pResult = 0;
 
-	if (pNMListView->iItem >= 0 && m_RefList.size() > (size_t)pNMListView->iItem && (pNMListView->uNewState & LVIS_SELECTED))
+	if (pNMListView->iItem >= 0 && m_RefList.size() > static_cast<size_t>(pNMListView->iItem) && (pNMListView->uNewState & LVIS_SELECTED))
 		m_sLastSelected = m_RefList[pNMListView->iItem];
 }
 
@@ -394,9 +394,9 @@ void CCommitIsOnRefsDlg::OnNMDblClickListRefs(NMHDR* pNMHDR, LRESULT* pResult)
 	*pResult = 0;
 
 	LPNMLISTVIEW pNMListView = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
-	if (m_bNonModalParentHWND && pNMListView->iItem >= 0 && m_RefList.size() > (size_t)pNMListView->iItem)
+	if (m_bNonModalParentHWND && pNMListView->iItem >= 0 && m_RefList.size() > static_cast<size_t>(pNMListView->iItem))
 	{
-		if (::SendMessage(m_bNonModalParentHWND, CGitLogListBase::m_ScrollToRef, (WPARAM)&m_RefList[pNMListView->iItem], 0) != 0)
+		if (::SendMessage(m_bNonModalParentHWND, CGitLogListBase::m_ScrollToRef, reinterpret_cast<WPARAM>(&m_RefList[pNMListView->iItem]), 0) != 0)
 			FlashWindowEx(FLASHW_ALL, 2, 100);
 	}
 }
@@ -441,7 +441,7 @@ void CCommitIsOnRefsDlg::StartGetRefsThread()
 
 UINT CCommitIsOnRefsDlg::GetRefsThreadEntry(LPVOID pVoid)
 {
-	return reinterpret_cast<CCommitIsOnRefsDlg*>(pVoid)->GetRefsThread();
+	return static_cast<CCommitIsOnRefsDlg*>(pVoid)->GetRefsThread();
 }
 
 UINT CCommitIsOnRefsDlg::GetRefsThread()
@@ -507,7 +507,7 @@ LRESULT CCommitIsOnRefsDlg::OnGettingRefsFinished(WPARAM, LPARAM)
 	if (!m_gitrev.GetLastErr().IsEmpty())
 	{
 		CString msg;
-		msg.Format(IDS_PROC_REFINVALID, (LPCTSTR)m_Rev);
+		msg.Format(IDS_PROC_REFINVALID, static_cast<LPCTSTR>(m_Rev));
 		m_cRefList.ShowText(msg + L'\n' + m_gitrev.GetLastErr());
 
 		InvalidateRect(nullptr);

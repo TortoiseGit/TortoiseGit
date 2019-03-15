@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2018 - TortoiseGit
+// Copyright (C) 2012-2019 - TortoiseGit
 // Copyright (C) 2003-2008, 2013-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -76,8 +76,8 @@ bool CPathUtils::Touch(const CString& path)
 	GetSystemTime(&st);					// Gets the current system time
 	SystemTimeToFileTime(&st, &ft);		// Converts the current system time to file time format
 	return SetFileTime(hFile,			// Sets last-write time of the file 
-		(LPFILETIME)nullptr,			// to the converted current system time 
-		(LPFILETIME)nullptr,
+		nullptr,						// to the converted current system time 
+		nullptr,
 		&ft) != FALSE;
 }
 
@@ -288,14 +288,14 @@ void CPathUtils::DropPathPrefixes(CString& path)
 
 	int skip = 0;
 	if (CStringUtils::StartsWith(path, dosdevices_prefix))
-		skip += (int)wcslen(dosdevices_prefix);
+		skip += static_cast<int>(wcslen(dosdevices_prefix));
 	else if (CStringUtils::StartsWith(path, nt_prefix))
-		skip += (int)wcslen(nt_prefix);
+		skip += static_cast<int>(wcslen(nt_prefix));
 
 	if (skip)
 	{
-		if (path.GetLength() - skip > (int)wcslen(unc_prefix) && CStringUtils::StartsWith(path.GetString() + skip, unc_prefix))
-			skip += (int)wcslen(unc_prefix);
+		if (path.GetLength() - skip > static_cast<int>(wcslen(unc_prefix)) && CStringUtils::StartsWith(path.GetString() + skip, unc_prefix))
+			skip += static_cast<int>(wcslen(unc_prefix));
 
 		path = path.Mid(skip);
 	}
@@ -313,7 +313,7 @@ CString CPathUtils::GetVersionFromFile(const CString & p_strFilename)
 
 	CString strReturn;
 	DWORD dwReserved = 0;
-	DWORD dwBufferSize = GetFileVersionInfoSize((LPTSTR)(LPCTSTR)p_strFilename,&dwReserved);
+	DWORD dwBufferSize = GetFileVersionInfoSize(static_cast<LPCTSTR>(p_strFilename), &dwReserved);
 
 	if (dwBufferSize > 0)
 	{
@@ -328,7 +328,7 @@ CString CPathUtils::GetVersionFromFile(const CString & p_strFilename)
 			TRANSARRAY* lpTransArray;
 			CString     strLangProductVersion;
 
-			GetFileVersionInfo((LPTSTR)(LPCTSTR)p_strFilename,
+			GetFileVersionInfo(static_cast<LPCTSTR>(p_strFilename),
 				dwReserved,
 				dwBufferSize,
 				pBuffer.get());
@@ -338,17 +338,17 @@ CString CPathUtils::GetVersionFromFile(const CString & p_strFilename)
 				L"\\VarFileInfo\\Translation",
 				&lpFixedPointer,
 				&nFixedLength);
-			lpTransArray = (TRANSARRAY*) lpFixedPointer;
+			lpTransArray = static_cast<TRANSARRAY*>(lpFixedPointer);
 
 			strLangProductVersion.Format(L"\\StringFileInfo\\%04x%04x\\ProductVersion",
 				lpTransArray[0].wLanguageID, lpTransArray[0].wCharacterSet);
 
 			VerQueryValue(pBuffer.get(),
-				(LPTSTR)(LPCTSTR)strLangProductVersion,
-				(LPVOID *)&lpVersion,
+				static_cast<LPCTSTR>(strLangProductVersion),
+				reinterpret_cast<LPVOID*>(&lpVersion),
 				&nInfoSize);
 			if (nInfoSize && lpVersion)
-				strReturn = (LPCTSTR)lpVersion;
+				strReturn = reinterpret_cast<LPCTSTR>(lpVersion);
 		}
 	}
 
@@ -371,7 +371,7 @@ CString CPathUtils::GetCopyrightForSelf()
 
 	CString strReturn;
 	DWORD dwReserved = 0;
-	DWORD dwBufferSize = GetFileVersionInfoSize((LPTSTR)(LPCTSTR)path, &dwReserved);
+	DWORD dwBufferSize = GetFileVersionInfoSize(static_cast<LPCTSTR>(path), &dwReserved);
 
 	if (dwBufferSize > 0)
 	{
@@ -379,7 +379,7 @@ CString CPathUtils::GetCopyrightForSelf()
 
 		if (pBuffer)
 		{
-			GetFileVersionInfo((LPTSTR)(LPCTSTR)path,
+			GetFileVersionInfo(static_cast<LPCTSTR>(path),
 				dwReserved,
 				dwBufferSize,
 				pBuffer.get());
@@ -394,16 +394,16 @@ CString CPathUtils::GetCopyrightForSelf()
 			TRANSARRAY* lpTransArray;
 			// Check the current language
 			VerQueryValue(pBuffer.get(), L"\\VarFileInfo\\Translation", &lpFixedPointer, &nFixedLength);
-			lpTransArray = (TRANSARRAY*)lpFixedPointer;
+			lpTransArray = static_cast<TRANSARRAY*>(lpFixedPointer);
 
 			CString strLangLegalCopyright;
 			strLangLegalCopyright.Format(L"\\StringFileInfo\\%04x%04x\\LegalCopyright", lpTransArray[0].wLanguageID, lpTransArray[0].wCharacterSet);
 
 			UINT nInfoSize = 0;
 			LPSTR lpVersion = nullptr;
-			VerQueryValue(pBuffer.get(), (LPTSTR)(LPCTSTR)strLangLegalCopyright, (LPVOID*)&lpVersion, &nInfoSize);
+			VerQueryValue(pBuffer.get(), static_cast<LPCTSTR>(strLangLegalCopyright), reinterpret_cast<LPVOID*>(&lpVersion), &nInfoSize);
 			if (nInfoSize && lpVersion)
-				strReturn = (LPCTSTR)lpVersion;
+				strReturn = lpVersion;
 		}
 	}
 
@@ -496,7 +496,7 @@ bool CPathUtils::ArePathStringsEqual(const CString& sP1, const CString& sP2)
 	// are more likely to occur at the far end of a string
 	LPCTSTR pP1Start = sP1;
 	LPCTSTR pP1 = pP1Start + (length - 1);
-	LPCTSTR pP2 = ((LPCTSTR)sP2) + (length - 1);
+	LPCTSTR pP2 = static_cast<LPCTSTR>(sP2) + (length - 1);
 	while (length-- > 0)
 	{
 		if (_totlower(*pP1--) != _totlower(*pP2--))
@@ -517,7 +517,7 @@ bool CPathUtils::ArePathStringsEqualWithCase(const CString& sP1, const CString& 
 	// are more likely to occur at the far end of a string
 	LPCTSTR pP1Start = sP1;
 	LPCTSTR pP1 = pP1Start + (length - 1);
-	LPCTSTR pP2 = ((LPCTSTR)sP2) + (length - 1);
+	LPCTSTR pP2 = static_cast<LPCTSTR>(sP2) + (length - 1);
 	while (length-- > 0)
 	{
 		if ((*pP1--) != (*pP2--))

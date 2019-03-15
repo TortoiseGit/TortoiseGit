@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2009, 2012-2016, 2018 - TortoiseSVN
 
@@ -166,7 +166,7 @@ void CLinkControl::ClearFocusRect()
 
 void CLinkControl::NotifyParent(UINT msg)
 {
-	::PostMessage(GetParent()->GetSafeHwnd(), msg, (WPARAM)GetSafeHwnd(), (LPARAM) 0);
+	::PostMessage(GetParent()->GetSafeHwnd(), msg, reinterpret_cast<WPARAM>(GetSafeHwnd()), 0);
 }
 
 UINT CLinkControl::OnGetDlgCode()
@@ -183,8 +183,8 @@ UINT CLinkControl::OnGetDlgCode()
 	dlgCode &= ~DLGC_STATIC;
 
 	if (pMsg->lParam &&
-		((MSG *)pMsg->lParam)->message == WM_KEYDOWN &&
-		((MSG *)pMsg->lParam)->wParam == VK_TAB)
+		reinterpret_cast<MSG*>(pMsg->lParam)->message == WM_KEYDOWN &&
+		reinterpret_cast<MSG*>(pMsg->lParam)->wParam == VK_TAB)
 	{
 		dlgCode &= ~DLGC_WANTMESSAGE;
 	}

@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2014, 2016 - TortoiseGit
+// Copyright (C) 2013-2014, 2016, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -53,13 +53,13 @@ bool ResetProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, in
 	checkout_options.progress_payload = &cbpayload;
 	checkout_options.progress_cb = [](const char*, size_t completed_steps, size_t total_steps, void* payload)
 	{
-		CGitProgressList::Payload* cbpayload = (CGitProgressList::Payload*)payload;
-		cbpayload->list->m_itemCountTotal = (int)total_steps;
-		cbpayload->list->m_itemCount = (int)completed_steps;
+		auto cbpayload = static_cast<CGitProgressList::Payload*>(payload);
+		cbpayload->list->m_itemCountTotal = static_cast<int>(total_steps);
+		cbpayload->list->m_itemCount = static_cast<int>(completed_steps);
 	};
 	checkout_options.notify_cb = [](git_checkout_notify_t, const char* pPath, const git_diff_file*, const git_diff_file*, const git_diff_file*, void* payload) -> int
 	{
-		CGitProgressList* list = (CGitProgressList*)payload;
+		auto list = static_cast<CGitProgressList*>(payload);
 		CString path(CUnicodeUtils::GetUnicode(pPath));
 		if (DWORD(CRegDWORD(L"Software\\TortoiseGit\\RevertWithRecycleBin", TRUE)))
 		{
@@ -74,7 +74,7 @@ bool ResetProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, in
 	};
 	checkout_options.notify_flags = GIT_CHECKOUT_NOTIFY_UPDATED;
 	checkout_options.notify_payload = list;
-	if (git_reset(repo, target, (git_reset_t)(m_resetType + 1), &checkout_options))
+	if (git_reset(repo, target, static_cast<git_reset_t>(m_resetType + 1), &checkout_options))
 		goto error;
 
 	// Not setting m_PostCmdCallback here, as clone is only called from AppUtils.cpp

@@ -111,11 +111,11 @@ BOOL CHyperLink::ConvertStaticToHyperlink(HWND hwndCtl, LPCTSTR strURL)
 	HWND hwndParent = GetParent(hwndCtl);
 	if (hwndParent)
 	{
-		WNDPROC pfnOrigProc = (WNDPROC) GetWindowLongPtr(hwndParent, GWLP_WNDPROC);
+		auto pfnOrigProc = reinterpret_cast<WNDPROC>(GetWindowLongPtr(hwndParent, GWLP_WNDPROC));
 		if (pfnOrigProc != _HyperlinkParentProc)
 		{
-			SetProp( hwndParent, PROP_ORIGINAL_PROC, (HANDLE)pfnOrigProc );
-			SetWindowLongPtr( hwndParent, GWLP_WNDPROC, (LONG_PTR)(WNDPROC) _HyperlinkParentProc );
+			SetProp(hwndParent, PROP_ORIGINAL_PROC, static_cast<HANDLE>(pfnOrigProc));
+			SetWindowLongPtr(hwndParent, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(static_cast<WNDPROC>(_HyperlinkParentProc)));
 		}
 	}
 
@@ -126,7 +126,7 @@ BOOL CHyperLink::ConvertStaticToHyperlink(HWND hwndCtl, LPCTSTR strURL)
 
 	// Create an updated font by adding an underline.
 
-	m_StdFont = (HFONT) SendMessage(hwndCtl, WM_GETFONT, 0, 0);
+	m_StdFont = reinterpret_cast<HFONT>(SendMessage(hwndCtl, WM_GETFONT, 0, 0));
 
 	if( g_counter++ == 0 )
 	{
@@ -135,9 +135,9 @@ BOOL CHyperLink::ConvertStaticToHyperlink(HWND hwndCtl, LPCTSTR strURL)
 
 	// Subclass the existing control.
 
-	m_pfnOrigCtlProc = (WNDPROC) GetWindowLongPtr(hwndCtl, GWLP_WNDPROC);
-	SetProp(hwndCtl, PROP_OBJECT_PTR, (HANDLE) this);
-	SetWindowLongPtr(hwndCtl, GWLP_WNDPROC, (LONG_PTR)(WNDPROC) _HyperlinkProc);
+	m_pfnOrigCtlProc = reinterpret_cast<WNDPROC>(GetWindowLongPtr(hwndCtl, GWLP_WNDPROC));
+	SetProp(hwndCtl, PROP_OBJECT_PTR, static_cast<HANDLE>(this));
+	SetWindowLongPtr(hwndCtl, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(static_cast<WNDPROC>(_HyperlinkParentProc)));
 
 	return TRUE;
 }
@@ -175,14 +175,14 @@ BOOL CHyperLink::setURL(LPCTSTR strURL)
 LRESULT CALLBACK CHyperLink::_HyperlinkParentProc(HWND hwnd, UINT message,
 												 WPARAM wParam, LPARAM lParam)
 {
-	WNDPROC pfnOrigProc = (WNDPROC) GetProp(hwnd, PROP_ORIGINAL_PROC);
+	auto pfnOrigProc = reinterpret_cast<WNDPROC>(GetProp(hwnd, PROP_ORIGINAL_PROC));
 
 	switch (message)
 	{
 	case WM_CTLCOLORSTATIC:
 		{
-			HDC hdc = (HDC) wParam;
-			HWND hwndCtl = (HWND) lParam;
+			auto hdc = reinterpret_cast<HDC>(wParam);
+			auto hwndCtl = reinterpret_cast<HWND>(lParam);
 			auto pHyperLink = reinterpret_cast<CHyperLink*>(GetProp(hwndCtl, PROP_OBJECT_PTR));
 
 			if(pHyperLink)
@@ -205,7 +205,7 @@ LRESULT CALLBACK CHyperLink::_HyperlinkParentProc(HWND hwnd, UINT message,
 		}
 	case WM_DESTROY:
 		{
-			SetWindowLongPtr(hwnd, GWLP_WNDPROC, (LONG_PTR) pfnOrigProc);
+			SetWindowLongPtr(hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(pfnOrigProc));
 			RemoveProp(hwnd, PROP_ORIGINAL_PROC);
 			break;
 		}
@@ -243,8 +243,8 @@ inline void CHyperLink::DrawFocusRect(HWND hwnd)
 
 		INFLATERECT(&rc,1,1);					 // add one pixel all around
 												 // convert to parent window client coords
-		::ScreenToClient(hwndParent, (LPPOINT)&rc);
-		::ScreenToClient(hwndParent, ((LPPOINT)&rc)+1);
+		::ScreenToClient(hwndParent, reinterpret_cast<LPPOINT>(&rc));
+		::ScreenToClient(hwndParent, reinterpret_cast<LPPOINT>(&rc) + 1);
 		HDC dcParent = GetDC(hwndParent);		 // parent window's DC
 		::DrawFocusRect(dcParent, &rc);			 // draw it!
 		ReleaseDC(hwndParent,dcParent);
@@ -288,8 +288,7 @@ LRESULT CALLBACK CHyperLink::_HyperlinkProc(HWND hwnd, UINT message,
 			else
 			{
 				pHyperLink->m_bOverControl = TRUE;
-				SendMessage(hwnd, WM_SETFONT,
-							(WPARAM)CHyperLink::g_UnderlineFont, FALSE);
+				SendMessage(hwnd, WM_SETFONT, reinterpret_cast<WPARAM>(CHyperLink::g_UnderlineFont), FALSE);
 				InvalidateRect(hwnd, nullptr, FALSE);
 				pHyperLink->OnSelect();
 				SetCapture(hwnd);
@@ -305,8 +304,7 @@ LRESULT CALLBACK CHyperLink::_HyperlinkProc(HWND hwnd, UINT message,
 		{
 			pHyperLink->m_bOverControl = FALSE;
 			pHyperLink->OnDeselect();
-			SendMessage(hwnd, WM_SETFONT,
-						(WPARAM)pHyperLink->m_StdFont, FALSE);
+			SendMessage(hwnd, WM_SETFONT, reinterpret_cast<WPARAM>(pHyperLink->m_StdFont), FALSE);
 			InvalidateRect(hwnd, nullptr, FALSE);
 			return 0;
 		}
@@ -339,9 +337,9 @@ LRESULT CALLBACK CHyperLink::_HyperlinkProc(HWND hwnd, UINT message,
 		}
 	case WM_DESTROY:
 		{
-			SetWindowLongPtr(hwnd, GWLP_WNDPROC, (LONG_PTR) pHyperLink->m_pfnOrigCtlProc);
+			SetWindowLongPtr(hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(pHyperLink->m_pfnOrigCtlProc));
 
-			SendMessage(hwnd, WM_SETFONT, (WPARAM) pHyperLink->m_StdFont, 0);
+			SendMessage(hwnd, WM_SETFONT, reinterpret_cast<WPARAM>(pHyperLink->m_StdFont), 0);
 
 			if( --CHyperLink::g_counter <= 0 )
 			{

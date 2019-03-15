@@ -88,11 +88,11 @@ public:
 		resize(oldsize+dataSize);
 		memcpy(&*(begin()+oldsize),data,dataSize);
 	}
-	static const size_t npos = (size_t)-1; // bad/missing length/position
+	static const size_t npos = static_cast<size_t>(-1); // bad/missing length/position
 	static_assert(MAXSIZE_T == npos, "NPOS must equal MAXSIZE_T");
 #pragma warning(push)
-#pragma warning(disable: 4310)
-	static_assert(-1 == (int)npos, "NPOS must equal -1");
+#pragma warning(disable: 4309)
+	static_assert(-1 == static_cast<int>(npos), "NPOS must equal -1");
 #pragma warning(pop)
 };
 

@@ -55,7 +55,7 @@ protected:
 		this->SetRemote(pullRemote);
 
 		CString defaultUpstream;
-		defaultUpstream.Format(L"remotes/%s/%s", (LPCTSTR)pullRemote, (LPCTSTR)pullBranch);
+		defaultUpstream.Format(L"remotes/%s/%s", static_cast<LPCTSTR>(pullRemote), static_cast<LPCTSTR>(pullBranch));
 		int found = m_ctrlRemoteBranch.FindStringExact(0, defaultUpstream);
 		if(found >= 0)
 			m_ctrlRemoteBranch.SetCurSel(found);
@@ -99,7 +99,7 @@ protected:
 			if(remoteBranchName.IsEmpty())
 				return; //Canceled
 
-			remoteBranchName = remoteBranchName.Mid((int)wcslen(L"refs/remotes/")); //Strip 'refs/remotes/'
+			remoteBranchName = remoteBranchName.Mid(static_cast<int>(wcslen(L"refs/remotes/"))); //Strip 'refs/remotes/'
 			int slashPlace = remoteBranchName.Find('/');
 			remoteName = remoteBranchName.Left(slashPlace);
 			remoteBranchName = remoteBranchName.Mid(slashPlace + 1); //Strip remote name (for example 'origin/')
@@ -146,16 +146,16 @@ protected:
 
 		CString tooltip;
 		tooltip.Format(L"%s: %s\n%s: %s <%s>\n%s: %s\n%s:\n%s\n%s",
-					   (LPCTSTR)CString(MAKEINTRESOURCE(IDS_LOG_REVISION)), // TODOTODO
-					   (LPCTSTR)rev.m_CommitHash.ToString(),
-					   (LPCTSTR)CString(MAKEINTRESOURCE(IDS_LOG_AUTHOR)),
-					   (LPCTSTR)rev.GetAuthorName(),
-					   (LPCTSTR)rev.GetAuthorEmail(),
-					   (LPCTSTR)CString(MAKEINTRESOURCE(IDS_LOG_DATE)),
-					   (LPCTSTR)CLoglistUtils::FormatDateAndTime(rev.GetAuthorDate(), DATE_LONGDATE),
-					   (LPCTSTR)CString(MAKEINTRESOURCE(IDS_LOG_MESSAGE)),
-					   (LPCTSTR)rev.GetSubject(),
-					   (LPCTSTR)rev.GetBody());
+						static_cast<LPCTSTR>(CString(MAKEINTRESOURCE(IDS_LOG_REVISION))),
+						static_cast<LPCTSTR>(rev.m_CommitHash.ToString()),
+						static_cast<LPCTSTR>(CString(MAKEINTRESOURCE(IDS_LOG_AUTHOR))),
+						static_cast<LPCTSTR>(rev.GetAuthorName()),
+						static_cast<LPCTSTR>(rev.GetAuthorEmail()),
+						static_cast<LPCTSTR>(CString(MAKEINTRESOURCE(IDS_LOG_DATE))),
+						static_cast<LPCTSTR>(CLoglistUtils::FormatDateAndTime(rev.GetAuthorDate(), DATE_LONGDATE)),
+						static_cast<LPCTSTR>(CString(MAKEINTRESOURCE(IDS_LOG_MESSAGE))),
+						static_cast<LPCTSTR>(rev.GetSubject()),
+						static_cast<LPCTSTR>(rev.GetBody()));
 
 		if (tooltip.GetLength() > 8000)
 		{

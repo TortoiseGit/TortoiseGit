@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2017 - TortoiseGit
+// Copyright (C) 2012-2017, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -230,7 +230,7 @@ void CSubmoduleDiffDlg::SetDiff(CString path, bool toIsWorkingCopy, CString from
 void CSubmoduleDiffDlg::ShowLog(CString hash)
 {
 	CString sCmd;
-	sCmd.Format(L"/command:log /path:\"%s\" /endrev:%s", (LPCTSTR)g_Git.CombinePath(m_sPath), (LPCTSTR)hash);
+	sCmd.Format(L"/command:log /path:\"%s\" /endrev:%s", static_cast<LPCTSTR>(g_Git.CombinePath(m_sPath)), static_cast<LPCTSTR>(hash));
 	CAppUtils::RunTortoiseGitProc(sCmd, false, false);
 }
 
@@ -247,7 +247,7 @@ void CSubmoduleDiffDlg::OnBnClickedLog2()
 void CSubmoduleDiffDlg::OnBnClickedShowDiff()
 {
 	CString sCmd;
-	sCmd.Format(L"/command:showcompare /path:\"%s\" /revision1:%s /revision2:%s", (LPCTSTR)g_Git.CombinePath(m_sPath), (LPCTSTR)m_sFromHash, ((m_bDirty && m_nChangeType == CGitDiff::Unknown) || m_ctrlShowDiffBtn.GetCurrentEntry() == 1) ? GIT_REV_ZERO : (LPCTSTR)m_sToHash);
+	sCmd.Format(L"/command:showcompare /path:\"%s\" /revision1:%s /revision2:%s", static_cast<LPCTSTR>(g_Git.CombinePath(m_sPath)), static_cast<LPCTSTR>(m_sFromHash), ((m_bDirty && m_nChangeType == CGitDiff::Unknown) || m_ctrlShowDiffBtn.GetCurrentEntry() == 1) ? GIT_REV_ZERO : static_cast<LPCTSTR>(m_sToHash));
 
 	if (!!(GetAsyncKeyState(VK_SHIFT) & 0x8000))
 		sCmd += L" /alternative";
@@ -258,6 +258,6 @@ void CSubmoduleDiffDlg::OnBnClickedShowDiff()
 void CSubmoduleDiffDlg::OnBnClickedButtonUpdate()
 {
 	CString sCmd;
-	sCmd.Format(L"/command:subupdate /bkpath:\"%s\" /selectedpath:\"%s\"", (LPCTSTR)g_Git.m_CurrentDir, (LPCTSTR)m_sPath);
+	sCmd.Format(L"/command:subupdate /bkpath:\"%s\" /selectedpath:\"%s\"", static_cast<LPCTSTR>(g_Git.m_CurrentDir), static_cast<LPCTSTR>(m_sPath));
 	CAppUtils::RunTortoiseGitProc(sCmd);
 }

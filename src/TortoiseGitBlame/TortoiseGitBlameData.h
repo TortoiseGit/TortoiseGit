@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2018 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -41,13 +41,13 @@ public:
 
 	BOOL IsValidLine(int line)
 	{
-		return line >= 0 && line < (int)m_Hash.size();
+		return line >= 0 && line < static_cast<int>(m_Hash.size());
 	}
 	int FindNextLine(CGitHash& commithash, int line, bool bUpOrDown=false);
 	// find first line with the given hash starting with given "line"
 	int FindFirstLine(CGitHash& commithash, int line)
 	{
-		int numberOfLines = (int)GetNumberOfLines();
+		int numberOfLines = static_cast<int>(GetNumberOfLines());
 		for (int i = (line >= 0 ? line : 0); i < numberOfLines; ++i)
 		{
 			if (m_Hash[i] == commithash)

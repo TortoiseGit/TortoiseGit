@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2016 - TortoiseGit
+// Copyright (C) 2011-2019 - TortoiseGit
 // Copyright (C) 2003-2011, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -139,11 +139,11 @@ bool CStringUtils::WriteAsciiStringToClipboard(const CStringA& sClipdata, LCID l
 	if (!hClipboardData)
 		return false;
 
-	char* pchData = (char*)GlobalLock(hClipboardData);
+	auto pchData = static_cast<char*>(GlobalLock(hClipboardData));
 	if (!pchData)
 		return false;
 
-	strcpy_s(pchData, sClipdata.GetLength() + 1, (LPCSTR)sClipdata);
+	strcpy_s(pchData, sClipdata.GetLength() + 1, static_cast<LPCSTR>(sClipdata));
 	GlobalUnlock(hClipboardData);
 	if (!SetClipboardData(CF_TEXT, hClipboardData))
 		return false;
@@ -152,7 +152,7 @@ bool CStringUtils::WriteAsciiStringToClipboard(const CStringA& sClipdata, LCID l
 	if (!hlocmem)
 		return false;
 
-	PLCID plcid = (PLCID)GlobalLock(hlocmem);
+	auto plcid = static_cast<PLCID>(GlobalLock(hlocmem));
 	if (plcid)
 	{
 		*plcid = lcid;
@@ -174,11 +174,11 @@ bool CStringUtils::WriteAsciiStringToClipboard(const CStringW& sClipdata, HWND h
 	if (!hClipboardData)
 		return false;
 
-	WCHAR* pchData = (WCHAR*)GlobalLock(hClipboardData);
+	auto pchData = static_cast<WCHAR*>(GlobalLock(hClipboardData));
 	if (!pchData)
 		return false;
 
-	wcscpy_s(pchData, sClipdata.GetLength() + 1, (LPCWSTR)sClipdata);
+	wcscpy_s(pchData, sClipdata.GetLength() + 1, static_cast<LPCWSTR>(sClipdata));
 	GlobalUnlock(hClipboardData);
 	if (!SetClipboardData(CF_UNICODETEXT, hClipboardData))
 		return false;
@@ -202,11 +202,11 @@ bool CStringUtils::WriteDiffToClipboard(const CStringA& sClipdata, HWND hOwningW
 	if (!hClipboardData)
 		return false;
 
-	char* pchData = (char*)GlobalLock(hClipboardData);
+	auto pchData = static_cast<char*>(GlobalLock(hClipboardData));
 	if (!pchData)
 		return false;
 
-	strcpy_s(pchData, sClipdata.GetLength()+1, (LPCSTR)sClipdata);
+	strcpy_s(pchData, sClipdata.GetLength() + 1, static_cast<LPCSTR>(sClipdata));
 	GlobalUnlock(hClipboardData);
 	if (!SetClipboardData(cFormat,hClipboardData))
 		return false;
@@ -218,11 +218,11 @@ bool CStringUtils::WriteDiffToClipboard(const CStringA& sClipdata, HWND hOwningW
 	if (!hClipboardDataW)
 		return false;
 
-	wchar_t* pchDataW = (wchar_t*)GlobalLock(hClipboardDataW);
+	auto pchDataW = static_cast<wchar_t*>(GlobalLock(hClipboardDataW));
 	if (!pchDataW)
 		return false;
 
-	wcscpy_s(pchDataW, sClipdataW.GetLength() + 1, (LPCWSTR)sClipdataW);
+	wcscpy_s(pchDataW, sClipdataW.GetLength() + 1, static_cast<LPCWSTR>(sClipdataW));
 	GlobalUnlock(hClipboardDataW);
 	if (!SetClipboardData(CF_UNICODETEXT, hClipboardDataW))
 		return false;
@@ -242,8 +242,8 @@ bool CStringUtils::ReadStringFromTextFile(const CString& path, CString& text)
 			return false;
 
 		CStringA filecontent;
-		UINT filelength = (UINT)file.GetLength();
-		int bytesread = (int)file.Read(filecontent.GetBuffer(filelength), filelength);
+		UINT filelength = static_cast<UINT>(file.GetLength());
+		int bytesread = static_cast<int>(file.Read(filecontent.GetBuffer(filelength), filelength));
 		filecontent.ReleaseBuffer(bytesread);
 		text = CUnicodeUtils::GetUnicode(filecontent);
 		file.Close();
@@ -551,8 +551,8 @@ void CStringUtils::ParseEmailAddress(CString mailaddress, CString& parsedAddress
 
 	mailaddress.ReleaseBuffer();
 	size_t el = wcscspn(at, L" \n\t\r\v\f>");
-	parsedAddress = mailaddress.Mid((int)(at - buf), (int)el);
-	mailaddress.Delete((int)(at - buf), (int)(el + (at[el] ? 1 : 0)));
+	parsedAddress = mailaddress.Mid(static_cast<int>(at - buf), static_cast<int>(el));
+	mailaddress.Delete(static_cast<int>(at - buf), static_cast<int>(el + (at[el] ? 1 : 0)));
 
 	/* The remainder is name.  It could be
 	 *
@@ -583,10 +583,10 @@ bool CStringUtils::StartsWith(const wchar_t* heystack, const CString& needle)
 bool CStringUtils::EndsWith(const CString& heystack, const wchar_t* needle)
 {
 	auto lenNeedle = wcslen(needle);
-	auto lenHeystack = (size_t)heystack.GetLength();
+	auto lenHeystack = static_cast<size_t>(heystack.GetLength());
 	if (lenNeedle > lenHeystack)
 		return false;
-	return wcsncmp((LPCTSTR)heystack + (lenHeystack - lenNeedle), needle, lenNeedle) == 0;
+	return wcsncmp(static_cast<LPCTSTR>(heystack) + (lenHeystack - lenNeedle), needle, lenNeedle) == 0;
 }
 
 bool CStringUtils::EndsWith(const CString& heystack, const wchar_t needle)
@@ -594,16 +594,16 @@ bool CStringUtils::EndsWith(const CString& heystack, const wchar_t needle)
 	auto lenHeystack = heystack.GetLength();
 	if (!lenHeystack)
 		return false;
-	return *((LPCTSTR)heystack + (lenHeystack - 1)) == needle;
+	return *(static_cast<LPCTSTR>(heystack) + (lenHeystack - 1)) == needle;
 }
 
 bool CStringUtils::EndsWithI(const CString& heystack, const wchar_t* needle)
 {
 	auto lenNeedle = wcslen(needle);
-	auto lenHeystack = (size_t)heystack.GetLength();
+	auto lenHeystack = static_cast<size_t>(heystack.GetLength());
 	if (lenNeedle > lenHeystack)
 		return false;
-	return _wcsnicmp((LPCTSTR)heystack + (lenHeystack - lenNeedle), needle, lenNeedle) == 0;
+	return _wcsnicmp(static_cast<LPCTSTR>(heystack) + (lenHeystack - lenNeedle), needle, lenNeedle) == 0;
 }
 
 bool CStringUtils::StartsWithI(const wchar_t* heystack, const CString& needle)
@@ -613,7 +613,7 @@ bool CStringUtils::StartsWithI(const wchar_t* heystack, const CString& needle)
 
 bool CStringUtils::WriteStringToTextFile(LPCTSTR path, LPCTSTR text, bool bUTF8 /* = true */)
 {
-	return WriteStringToTextFile((const std::wstring&)path, (const std::wstring&)text, bUTF8);
+	return WriteStringToTextFile(static_cast<const std::wstring&>(path), static_cast<const std::wstring&>(text), bUTF8);
 }
 
 #endif // #if defined(CSTRING_AVAILABLE) || defined(_MFC_VER)
@@ -638,14 +638,14 @@ bool CStringUtils::WriteStringToTextFile(const std::wstring& path, const std::ws
 	if (bUTF8)
 	{
 		std::string buf = CUnicodeUtils::StdGetUTF8(text);
-		if (!WriteFile(hFile, buf.c_str(), (DWORD)buf.length(), &dwWritten, nullptr))
+		if (!WriteFile(hFile, buf.c_str(), static_cast<DWORD>(buf.length()), &dwWritten, nullptr))
 		{
 			return false;
 		}
 	}
 	else
 	{
-		if (!WriteFile(hFile, text.c_str(), (DWORD)text.length(), &dwWritten, nullptr))
+		if (!WriteFile(hFile, text.c_str(), static_cast<DWORD>(text.length()), &dwWritten, nullptr))
 		{
 			return false;
 		}

@@ -50,7 +50,7 @@ bool SubmoduleAddCommand::Execute()
 
 		CString branch;
 		if(dlg.m_bBranch)
-			branch.Format(L" -b %s ", (LPCTSTR)dlg.m_strBranch);
+			branch.Format(L" -b %s ", static_cast<LPCTSTR>(dlg.m_strBranch));
 
 		CString force;
 		if (dlg.m_bForce)
@@ -60,8 +60,8 @@ bool SubmoduleAddCommand::Execute()
 		dlg.m_strRepos.Replace(L'\\', L'/');
 
 		cmd.Format(L"git.exe submodule add %s %s -- \"%s\" \"%s\"",
-						(LPCTSTR)branch, (LPCTSTR)force,
-						(LPCTSTR)dlg.m_strRepos, (LPCTSTR)dlg.m_strPath);
+						static_cast<LPCTSTR>(branch), static_cast<LPCTSTR>(force),
+						static_cast<LPCTSTR>(dlg.m_strRepos), static_cast<LPCTSTR>(dlg.m_strPath));
 
 		CProgressDlg progress;
 		progress.m_GitCmd=cmd;
@@ -121,7 +121,7 @@ bool SubmoduleUpdateCommand::Execute()
 	{
 		if (orgPathList[i].IsDirectory())
 		{
-			CString path = ((CTGitPath &)orgPathList[i]).GetSubPath(CTGitPath(super)).GetGitPathString();
+			CString path = const_cast<CTGitPath&>(orgPathList[i]).GetSubPath(CTGitPath(super)).GetGitPathString();
 			if (!path.IsEmpty())
 				pathFilterList.push_back(path);
 		}
@@ -162,7 +162,7 @@ bool SubmoduleUpdateCommand::Execute()
 	for (size_t i = 0; i < submoduleUpdateDlg.m_PathList.size(); ++i)
 	{
 		CString str;
-		str.Format(L"git.exe submodule update%s -- \"%s\"", (LPCTSTR)params, (LPCTSTR)submoduleUpdateDlg.m_PathList[i]);
+		str.Format(L"git.exe submodule update%s -- \"%s\"", static_cast<LPCTSTR>(params), static_cast<LPCTSTR>(submoduleUpdateDlg.m_PathList[i]));
 		progress.m_GitCmdList.push_back(str);
 	}
 
@@ -224,11 +224,11 @@ bool SubmoduleSyncCommand::Execute()
 	{
 		if(orgPathList[i].IsDirectory())
 		{
-			CString path = ((CTGitPath &)orgPathList[i]).GetSubPath(CTGitPath(super)).GetGitPathString();
+			CString path = const_cast<CTGitPath&>(orgPathList[i]).GetSubPath(CTGitPath(super)).GetGitPathString();
 			if (path.IsEmpty())
 				str = L"git.exe submodule sync";
 			else
-				str.Format(L"git.exe submodule sync -- \"%s\"", (LPCTSTR)path);
+				str.Format(L"git.exe submodule sync -- \"%s\"", static_cast<LPCTSTR>(path));
 			progress.m_GitCmdList.push_back(str);
 		}
 	}

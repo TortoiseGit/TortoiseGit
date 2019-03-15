@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2012-2013, 2015-2018 - TortoiseGit
+// Copyright (C) 2012-2013, 2015-2019 - TortoiseGit
 // Copyright (C) 2010-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -87,7 +87,7 @@ int GitPatch::Init(const CString& patchfile, const CString& targetpath, CSysProg
 
 	m_pProgDlg = nullptr;
 
-	if ((m_nRejected > ((int)m_filePaths.size() / 3)) && !m_testPath.IsEmpty())
+	if ((m_nRejected > (static_cast<int>(m_filePaths.size()) / 3)) && !m_testPath.IsEmpty())
 	{
 		++m_nStrip;
 		for (m_nStrip = 0; m_nStrip < STRIP_LIMIT; ++m_nStrip)
@@ -110,7 +110,7 @@ int GitPatch::Init(const CString& patchfile, const CString& targetpath, CSysProg
 		if (!ApplyPatches())
 			m_filePaths.clear();
 	}
-	return (int)m_filePaths.size();
+	return static_cast<int>(m_filePaths.size());
 }
 
 bool GitPatch::ApplyPatches()
@@ -136,7 +136,7 @@ bool GitPatch::PatchFile(int nIndex, CString &datapath)
 		pr.path = m_patch.GetFilename(nIndex);
 
 	if (m_pProgDlg)
-		m_pProgDlg->FormatPathLine(2, IDS_PATCH_PATHINGFILE, (LPCTSTR)pr.path);
+		m_pProgDlg->FormatPathLine(2, IDS_PATCH_PATHINGFILE, static_cast<LPCTSTR>(pr.path));
 
 	//first, do a "dry run" of patching against the file in place...
 	if (!m_patch.PatchFile(m_nStrip, nIndex, datapath, sTempFile))
@@ -153,20 +153,20 @@ bool GitPatch::PatchFile(int nIndex, CString &datapath)
 		{
 			if (sVersion.IsEmpty())
 			{
-				m_errorStr.Format(IDS_ERR_MAINFRAME_FILECONFLICTNOVERSION, (LPCTSTR)sFilePath);
+				m_errorStr.Format(IDS_ERR_MAINFRAME_FILECONFLICTNOVERSION, static_cast<LPCTSTR>(sFilePath));
 				return false; // cannot apply patch which does not apply cleanly w/o git information in patch file.
 			}
 			sBaseFile = CTempFiles::Instance().GetTempFilePathString();
 			if (!CAppUtils::GetVersionedFile(sFilePath, sVersion, sBaseFile, m_pProgDlg))
 			{
-				m_errorStr.FormatMessage(IDS_ERR_MAINFRAME_FILEVERSIONNOTFOUND, (LPCTSTR)sVersion, (LPCTSTR)sFilePath);
+				m_errorStr.FormatMessage(IDS_ERR_MAINFRAME_FILEVERSIONNOTFOUND, static_cast<LPCTSTR>(sVersion), static_cast<LPCTSTR>(sFilePath));
 
 				return false;
 			}
 		}
 
 		if (m_pProgDlg)
-			m_pProgDlg->FormatPathLine(2, IDS_PATCH_PATHINGFILE, (LPCTSTR)pr.path);
+			m_pProgDlg->FormatPathLine(2, IDS_PATCH_PATHINGFILE, static_cast<LPCTSTR>(pr.path));
 
 		int patchtry = m_patch.PatchFile(m_nStrip, nIndex, datapath, sTempFile, sBaseFile, true);
 
@@ -182,13 +182,13 @@ bool GitPatch::PatchFile(int nIndex, CString &datapath)
 			pr.rejectsPath = m_patch.GetErrorMessage();
 		}
 
-		TRACE(L"comparing %s and %s\nagainst the base file %s\n", (LPCTSTR)sTempFile, (LPCTSTR)sFilePath, (LPCTSTR)sBaseFile);
+		TRACE(L"comparing %s and %s\nagainst the base file %s\n", static_cast<LPCTSTR>(sTempFile), static_cast<LPCTSTR>(sFilePath), static_cast<LPCTSTR>(sBaseFile));
 	}
 	else
 	{
 		//"dry run" was successful, so save the patched file somewhere...
 		pr.rejects = 0;
-		TRACE(L"comparing %s\nwith the patched result %s\n", (LPCTSTR)sFilePath, (LPCTSTR)sTempFile);
+		TRACE(L"comparing %s\nwith the patched result %s\n", static_cast<LPCTSTR>(sFilePath), static_cast<LPCTSTR>(sTempFile));
 	}
 
 	pr.resultPath = sTempFile;
@@ -206,7 +206,7 @@ CString GitPatch::GetPatchRejects(int nIndex) const
 {
 	if (nIndex < 0)
 		return L"";
-	if (nIndex < (int)m_filePaths.size())
+	if (nIndex < static_cast<int>(m_filePaths.size()))
 		return m_filePaths[nIndex].rejectsPath;
 
 	return L"";
@@ -342,7 +342,7 @@ CString GitPatch::GetStrippedPath(int nIndex) const
 {
 	if (nIndex < 0)
 		return L"";
-	if (nIndex < (int)m_filePaths.size())
+	if (nIndex < static_cast<int>(m_filePaths.size()))
 	{
 		CString filepath = Strip(GetFilePath(nIndex));
 		return filepath;

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -173,9 +173,9 @@ void CGitSwitchDlg::SetDefaultName(BOOL isUpdateCreateBranch)
 
 	int start = -1;
 	if (CStringUtils::StartsWith(version, L"origin/"))
-		start = version.Find(L'/', (int)wcslen(L"origin/") + 1);
+		start = version.Find(L'/', static_cast<int>(wcslen(L"origin/")) + 1);
 	else if (CStringUtils::StartsWith(version, L"remotes/"))
-		start = version.Find(L'/', (int)wcslen(L"remotes/") + 1);
+		start = version.Find(L'/', static_cast<int>(wcslen(L"remotes/")) + 1);
 
 	if (start >= 0)
 	{
@@ -191,7 +191,7 @@ void CGitSwitchDlg::SetDefaultName(BOOL isUpdateCreateBranch)
 	else
 	{
 		if (CStringUtils::StartsWith(m_VersionName, L"refs/heads/"))
-			version = m_VersionName.Mid((int)wcslen(L"refs/heads/"));
+			version = m_VersionName.Mid(static_cast<int>(wcslen(L"refs/heads/")));
 		else
 			version = version.Left(g_Git.GetShortHASHLength());
 		m_NewBranch = L"Branch_" + version;
@@ -234,7 +234,7 @@ void CGitSwitchDlg::OnCbnEditchangeComboboxexVersion()
 
 void CGitSwitchDlg::OnEnChangeEditBranch()
 {
-	if (!((CButton *)GetDlgItem(IDC_RADIO_BRANCH))->GetCheck())
+	if (!static_cast<CButton*>(GetDlgItem(IDC_RADIO_BRANCH))->GetCheck())
 		return;
 
 	CString name;
@@ -242,7 +242,7 @@ void CGitSwitchDlg::OnEnChangeEditBranch()
 	name = L'/' + name;
 	CString remoteName = m_ChooseVersioinBranch.GetString();
 	if (CStringUtils::StartsWith(remoteName, L"remotes/") && remoteName.Right(name.GetLength()) != name)
-		((CButton *)GetDlgItem(IDC_CHECK_TRACK))->SetCheck(FALSE);
+		static_cast<CButton*>(GetDlgItem(IDC_CHECK_TRACK))->SetCheck(FALSE);
 }
 
 void CGitSwitchDlg::OnVersionChanged()

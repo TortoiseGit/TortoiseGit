@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 // Copyright (C) 2003-2011, 2014-2016, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -142,7 +142,7 @@ void CStatGraphDlg::SetSkipper (bool reloadSkiper)
 	// the resolution limit of the screen will already not allow for displaying
 	// it in a reasonable way
 
-	int max_authors_count = max(1, (int)min(m_authorNames.size(), (size_t)250));
+	int max_authors_count = max(1, static_cast<int>(min(m_authorNames.size(), size_t(250))));
 	m_Skipper.SetRange (1, max_authors_count);
 	m_Skipper.SetPageSize(5);
 
@@ -277,7 +277,7 @@ BOOL CStatGraphDlg::OnInitDialog()
 	int graphtype = lastStatsPage / 10;
 	for (int i = 0; i < m_cGraphType.GetCount(); i++)
 	{
-		if ((int)m_cGraphType.GetItemData(i) == graphtype)
+		if (static_cast<int>(m_cGraphType.GetItemData(i)) == graphtype)
 		{
 			m_cGraphType.SetCurSel(i);
 			break;
@@ -311,9 +311,9 @@ BOOL CStatGraphDlg::OnInitDialog()
 		default : return TRUE;
 	}
 
-	LCID m_locale = MAKELCID((DWORD)CRegStdDWORD(L"Software\\TortoiseGit\\LanguageID", MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)), SORT_DEFAULT);
+	LCID m_locale = MAKELCID(static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\LanguageID", MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT))), SORT_DEFAULT);
 
-	bool bUseSystemLocale = !!(DWORD)CRegStdDWORD(L"Software\\TortoiseGit\\UseSystemLocaleForDates", TRUE);
+	bool bUseSystemLocale = !!static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\UseSystemLocaleForDates", TRUE));
 	LCID locale = bUseSystemLocale ? MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), SORT_DEFAULT) : m_locale;
 
 	TCHAR langBuf[11] = { 0 };
@@ -389,12 +389,12 @@ void CStatGraphDlg::UpdateWeekCount()
 		return;
 
 	// Determine first and last date in dates array
-	__time64_t min_date = (__time64_t)m_parDates.GetAt(0);
+	__time64_t min_date = static_cast<__time64_t>(m_parDates.GetAt(0));
 	__time64_t max_date = min_date;
 	INT_PTR count = m_parDates.GetCount();
 	for (INT_PTR i=0; i<count; ++i)
 	{
-		__time64_t d = (__time64_t)m_parDates.GetAt(i);
+		__time64_t d = static_cast<__time64_t>(m_parDates.GetAt(i));
 		if (d < min_date)		min_date = d;
 		else if (d > max_date)	max_date = d;
 	}
@@ -408,8 +408,8 @@ void CStatGraphDlg::UpdateWeekCount()
 	// Get time difference between start and end date
 	double secs = _difftime64(max_date, m_minDate);
 
-	m_nWeeks =	(int)ceil(secs / (double) m_SecondsInWeek);
-	m_nDays =	(int)ceil(secs / (double) m_SecondsInDay);
+	m_nWeeks =	static_cast<int>(ceil(secs / static_cast<double>(m_SecondsInWeek)));
+	m_nDays =	static_cast<int>(ceil(secs / static_cast<double>(m_SecondsInDay)));
 }
 
 int CStatGraphDlg::GetCalendarWeek(const CTime& time)
@@ -476,7 +476,7 @@ int CStatGraphDlg::GetCalendarWeek(const CTime& time)
 					dDateFirstJanuary = CTime(iYear,1,1,0,0,0);
 					iDayOfWeek = (dDateFirstJanuary.GetDayOfWeek() +5 + iFirstDayOfWeek) % 7;
 					// Just count from 1/1
-					iWeekOfYear = (int)(((time-dDateFirstJanuary).GetDays() + iDayOfWeek) / 7) + 1;
+					iWeekOfYear = static_cast<int>(((time-dDateFirstJanuary).GetDays() + iDayOfWeek) / 7) + 1;
 				}
 			}
 			break;
@@ -487,7 +487,7 @@ int CStatGraphDlg::GetCalendarWeek(const CTime& time)
 				// If the 1.1 is the start of the week everything is ok
 				// else we need the next week is the correct result
 				iWeekOfYear =
-					(int)(((time-dDateFirstJanuary).GetDays() + iDayOfWeek) / 7) +
+					static_cast<int>(((time-dDateFirstJanuary).GetDays() + iDayOfWeek) / 7) +
 					(iDayOfWeek==0 ? 1:0);
 
 				// If we are in week 0 we are in the first not full week
@@ -502,7 +502,7 @@ int CStatGraphDlg::GetCalendarWeek(const CTime& time)
 					// and we correct this in the same we we done this before but
 					// the result is now 52 or 53 and not 0
 					iWeekOfYear =
-						(int)(((time-dDateFirstJanuary).GetDays()+iDayOfWeek) / 7) +
+						static_cast<int>(((time-dDateFirstJanuary).GetDays()+iDayOfWeek) / 7) +
 						(iDayOfWeek<=3 ? 1:0);
 				}
 			}
@@ -519,7 +519,7 @@ int CStatGraphDlg::GetCalendarWeek(const CTime& time)
 				// day is less <=3 Mo,Tu,We,Th. Otherwise 1.1 is in the last week of the
 				// previous year
 				iWeekOfYear =
-					(int)(((time-dDateFirstJanuary).GetDays()+iDayOfWeek) / 7) +
+					static_cast<int>(((time-dDateFirstJanuary).GetDays()+iDayOfWeek) / 7) +
 					(iDayOfWeek<=3 ? 1:0);
 
 				// special cases
@@ -535,7 +535,7 @@ int CStatGraphDlg::GetCalendarWeek(const CTime& time)
 					// and we correct this in the same we we done this before but the result
 					// is now 52 or 53 and not 0
 					iWeekOfYear =
-						(int)(((time-dDateFirstJanuary).GetDays()+iDayOfWeek) / 7) +
+						static_cast<int>(((time-dDateFirstJanuary).GetDays()+iDayOfWeek) / 7) +
 						(iDayOfWeek<=3 ? 1:0);
 				}
 				else if (iWeekOfYear==53)
@@ -625,9 +625,9 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff, BOOL keepFetchedData)
 			strAuthor.LoadString(IDS_STATGRAPH_EMPTYAUTHOR);
 		m_parAuthors.Add(strAuthor);
 		if (m_bUseCommitDates)
-			m_parDates.Add((DWORD)pLogEntry->GetCommitterDate().GetTime());
+			m_parDates.Add(static_cast<DWORD>(pLogEntry->GetCommitterDate().GetTime()));
 		else
-			m_parDates.Add((DWORD)pLogEntry->GetAuthorDate().GetTime());
+			m_parDates.Add(static_cast<DWORD>(pLogEntry->GetAuthorDate().GetTime()));
 
 		if (fetchdiff && (pLogEntry->m_ParentHash.size() <= 1))
 		{
@@ -664,7 +664,7 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff, BOOL keepFetchedData)
 
 		if (progress.IsVisible() && (GetTickCount64() - starttime > 100UL))
 		{
-			progress.FormatNonPathLine(2, L"%s: %s", (LPCTSTR)pLogEntry->m_CommitHash.ToString().Left(g_Git.GetShortHASHLength()), (LPCTSTR)pLogEntry->GetSubject());
+			progress.FormatNonPathLine(2, L"%s: %s", static_cast<LPCTSTR>(pLogEntry->m_CommitHash.ToString().Left(g_Git.GetShortHASHLength())), static_cast<LPCTSTR>(pLogEntry->GetSubject()));
 			progress.SetProgress64(i, m_ShowList.size());
 			starttime = GetTickCount64();
 		}
@@ -696,7 +696,7 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff, BOOL keepFetchedData)
 	m_LinesWOPerUnitAndAuthor.clear();
 
 	int interval = 0;
-	__time64_t d = (__time64_t)m_parDates.GetAt(0);
+	__time64_t d = static_cast<__time64_t>(m_parDates.GetAt(0));
 	int nLastUnit = GetUnit(d);
 	double AllContributionAuthor = 0;
 
@@ -706,7 +706,7 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff, BOOL keepFetchedData)
 	for (LONG i=0; i<m_nTotalCommits; ++i)
 	{
 		// Find the interval number
-		__time64_t commitDate = (__time64_t)m_parDates.GetAt(i);
+		__time64_t commitDate = static_cast<__time64_t>(m_parDates.GetAt(i));
 		int u = GetUnit(commitDate);
 		if (nLastUnit != u)
 			interval++;
@@ -732,7 +732,7 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff, BOOL keepFetchedData)
 		m_nTotalFileChanges += fileChanges;
 
 		//calculate Contribution Author
-		double contributionAuthor = CoeffContribution((int)m_nTotalCommits - i -1) * (fileChanges ? fileChanges : 1);
+		double contributionAuthor = CoeffContribution(static_cast<int>(m_nTotalCommits) - i -1) * (fileChanges ? fileChanges : 1);
 		AllContributionAuthor += contributionAuthor;
 		m_PercentageOfAuthorship[author] += contributionAuthor;
 
@@ -954,7 +954,7 @@ void CStatGraphDlg::ShowByDate(int stringx, int title, IntervalDataMap &data)
 	if (!others.empty())
 	{
 		sOthers.AppendFormat(L" (%Iu)", others.size());
-		othersName = (LPCWSTR)sOthers;
+		othersName = static_cast<LPCWSTR>(sOthers);
 		authorGraphMap[othersName] = m_graph.AppendGroup(sOthers);
 	}
 
@@ -1105,12 +1105,12 @@ void CStatGraphDlg::ShowStats()
 		nWeeks = 1;
 	// Adjust the labels with the unit type (week, month, ...)
 	CString labelText;
-	labelText.Format(IDS_STATGRAPH_NUMBEROFUNIT, (LPCTSTR)GetUnitString());
+	labelText.Format(IDS_STATGRAPH_NUMBEROFUNIT, static_cast<LPCTSTR>(GetUnitString()));
 	SetDlgItemText(IDC_NUMWEEK, labelText);
-	labelText.Format(IDS_STATGRAPH_COMMITSBYUNIT, (LPCTSTR)GetUnitString());
+	labelText.Format(IDS_STATGRAPH_COMMITSBYUNIT, static_cast<LPCTSTR>(GetUnitString()));
 	SetDlgItemText(IDC_COMMITSEACHWEEK, labelText);
-	labelText.Format(IDS_STATGRAPH_FILECHANGESBYUNIT, (LPCTSTR)GetUnitString());
-	SetDlgItemText(IDC_FILECHANGESEACHWEEK, (LPCTSTR)labelText);
+	labelText.Format(IDS_STATGRAPH_FILECHANGESBYUNIT, static_cast<LPCTSTR>(GetUnitString()));
+	SetDlgItemText(IDC_FILECHANGESEACHWEEK, static_cast<LPCTSTR>(labelText));
 	// We have now all data we want and we can fill in the labels...
 	CString number;
 	number.Format(L"%d", nWeeks);
@@ -1177,13 +1177,15 @@ void CStatGraphDlg::ShowStats()
 }
 
 int CStatGraphDlg::RollPercentageOfAuthorship(double it)
-{ return (int)it + (it - (int)it >= 0.5);}
+{
+	return static_cast<int>(it) + (it - static_cast<int>(it) >= 0.5);
+}
 
 void CStatGraphDlg::OnCbnSelchangeGraphcombo()
 {
 	UpdateData();
 
-	Metrics useMetric = (Metrics) m_cGraphType.GetItemData(m_cGraphType.GetCurSel());
+	Metrics useMetric = static_cast<Metrics>(m_cGraphType.GetItemData(m_cGraphType.GetCurSel()));
 	switch (useMetric )
 	{
 	case AllStat:
@@ -1329,14 +1331,14 @@ void CStatGraphDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 	if (nSBCode == TB_THUMBTRACK)
 		return CDialog::OnHScroll(nSBCode, nPos, pScrollBar);
 
-	ShowSelectStat((Metrics) m_cGraphType.GetItemData(m_cGraphType.GetCurSel()));
+	ShowSelectStat(static_cast<Metrics>(m_cGraphType.GetItemData(m_cGraphType.GetCurSel())));
 	CDialog::OnHScroll(nSBCode, nPos, pScrollBar);
 }
 
 void CStatGraphDlg::OnNeedText(NMHDR *pnmh, LRESULT * /*pResult*/)
 {
-	TOOLTIPTEXT* pttt = (TOOLTIPTEXT*) pnmh;
-	if (pttt->hdr.idFrom == (UINT_PTR) m_Skipper.GetSafeHwnd())
+	auto pttt = reinterpret_cast<TOOLTIPTEXT*>(pnmh);
+	if (pttt->hdr.idFrom == reinterpret_cast<UINT_PTR>(m_Skipper.GetSafeHwnd()))
 	{
 		size_t included_authors_count = m_Skipper.GetPos();
 		// if we only leave out one author, still include him with his name
@@ -1354,7 +1356,7 @@ void CStatGraphDlg::OnNeedText(NMHDR *pnmh, LRESULT * /*pResult*/)
 		CString string;
 		int percentage = int(min_commits*100.0/(m_nTotalCommits ? m_nTotalCommits : 1));
 		string.FormatMessage(IDS_STATGRAPH_AUTHORSLIDER_TT, m_Skipper.GetPos(), min_commits, percentage);
-		StringCchCopy(pttt->szText, _countof(pttt->szText), (LPCTSTR) string);
+		StringCchCopy(pttt->szText, _countof(pttt->szText), static_cast<LPCTSTR>(string));
 	}
 }
 
@@ -1389,7 +1391,7 @@ void CStatGraphDlg::ClearGraph()
 {
 	m_graph.Clear();
 	for (int j=0; j<m_graphDataArray.GetCount(); ++j)
-		delete ((MyGraphSeries *)m_graphDataArray.GetAt(j));
+		delete static_cast<MyGraphSeries*>(m_graphDataArray.GetAt(j));
 	m_graphDataArray.RemoveAll();
 }
 
@@ -1424,7 +1426,7 @@ void CStatGraphDlg::RedrawGraph()
 	}
 
 	UpdateData();
-	ShowSelectStat((Metrics) m_cGraphType.GetItemData(m_cGraphType.GetCurSel()), true);
+	ShowSelectStat(static_cast<Metrics>(m_cGraphType.GetItemData(m_cGraphType.GetCurSel())), true);
 }
 void CStatGraphDlg::OnBnClickedGraphbarbutton()
 {
@@ -1465,7 +1467,7 @@ void CStatGraphDlg::EnableDisableMenu()
 {
 	UINT nEnable = MF_BYCOMMAND;
 
-	Metrics SelectMetric = (Metrics) m_cGraphType.GetItemData(m_cGraphType.GetCurSel());
+	auto SelectMetric = static_cast<Metrics>(m_cGraphType.GetItemData(m_cGraphType.GetCurSel()));
 
 	nEnable |= (SelectMetric > TextStatStart && SelectMetric < TextStatEnd)
 		? (MF_DISABLED | MF_GRAYED) : MF_ENABLED;
@@ -1527,12 +1529,12 @@ void CStatGraphDlg::SaveGraph(CString sFilename)
 			CRect rect;
 			GetDlgItem(IDC_GRAPH)->GetClientRect(&rect);
 			HBITMAP hbm = ::CreateCompatibleBitmap(ddc.m_hDC, rect.Width(), rect.Height());
-			if (hbm==0)
+			if (!hbm)
 			{
 				ShowErrorMessage();
 				return;
 			}
-			HBITMAP oldbm = (HBITMAP)dc.SelectObject(hbm);
+			auto oldbm = static_cast<HBITMAP>(dc.SelectObject(hbm));
 			// paint the whole graph
 			RedrawGraph();
 			m_graph.DrawGraph(dc);
@@ -1570,7 +1572,7 @@ void CStatGraphDlg::SaveGraph(CString sFilename)
 							bitmap.Save(tfile, &encoderClsid, nullptr);
 						}
 						else
-							sErrormessage.Format(IDS_REVGRAPH_ERR_NOENCODER, (LPCTSTR)CPathUtils::GetFileExtFromPath(sFilename));
+							sErrormessage.Format(IDS_REVGRAPH_ERR_NOENCODER, static_cast<LPCTSTR>(CPathUtils::GetFileExtFromPath(sFilename)));
 					}
 					else
 						sErrormessage.LoadString(IDS_REVGRAPH_ERR_NOBITMAP);
@@ -1605,7 +1607,7 @@ int CStatGraphDlg::GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
 		return -1;  // Failure
 
 	auto pMem = std::make_unique<BYTE[]>(size);
-	auto pImageCodecInfo = (ImageCodecInfo*)(pMem.get());
+	auto pImageCodecInfo = reinterpret_cast<ImageCodecInfo*>(pMem.get());
 	if (!pImageCodecInfo)
 		return -1;  // Failure
 
@@ -1713,7 +1715,7 @@ void CStatGraphDlg::DrawOthers(const std::list<tstring> &others, MyGraphSeries *
 	CString sOthers(MAKEINTRESOURCE(IDS_STATGRAPH_OTHERGROUP));
 	sOthers.AppendFormat(L" (%Iu)", others.size());
 	int group = m_graph.AppendGroup(sOthers);
-	graphData->SetData(group, (int)nCommits);
+	graphData->SetData(group, static_cast<int>(nCommits));
 }
 
 

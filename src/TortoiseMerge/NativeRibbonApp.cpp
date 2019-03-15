@@ -1,4 +1,6 @@
-// Copyright (C) 2017 - TortoiseGit
+﻿// TortoiseGitMerge - a Diff/Patch program
+
+// Copyright (C) 2017, 2019 - TortoiseGit
 // Copyright (C) 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -36,19 +38,19 @@ STDMETHODIMP CNativeRibbonApp::QueryInterface(REFIID riid, void **ppvObject)
 	if (riid == IID_IUnknown)
 	{
 		AddRef();
-		*ppvObject = (IUICommandHandler*)this;
+		*ppvObject = static_cast<IUICommandHandler*>(this);
 		return S_OK;
 	}
 	else if (riid == __uuidof(IUIApplication))
 	{
 		AddRef();
-		*ppvObject = (IUIApplication*)this;
+		*ppvObject = static_cast<IUIApplication*>(this);
 		return S_OK;
 	}
 	else if (riid == __uuidof(IUICommandHandler))
 	{
 		AddRef();
-		*ppvObject = (IUICommandHandler*)this;
+		*ppvObject = static_cast<IUICommandHandler*>(this);
 		return S_OK;
 	}
 	else
@@ -262,7 +264,7 @@ STDMETHODIMP CNativeRibbonApp::UpdateProperty(UINT32 commandId, REFPROPERTYKEY k
 		}
 
 		// No selected item.
-		UIInitPropertyFromUInt32(UI_PKEY_SelectedItem, (UINT)-1, newValue);
+		UIInitPropertyFromUInt32(UI_PKEY_SelectedItem, static_cast<UINT>(-1), newValue);
 
 		return S_OK;
 	}
@@ -374,7 +376,7 @@ int CNativeRibbonApp::GetRibbonHeight()
 	{
 		UINT32 cy = 0;
 		pRibbon->GetHeight(&cy);
-		return (int)cy;
+		return static_cast<int>(cy);
 	}
 
 	return 0;
@@ -402,13 +404,13 @@ public:
 		if (riid == __uuidof(IUnknown))
 		{
 			AddRef();
-			*ppvObject = (IUnknown*)this;
+			*ppvObject = static_cast<IUnknown*>(this);
 			return S_OK;
 		}
 		else if (riid == __uuidof(IUISimplePropertySet))
 		{
 			AddRef();
-			*ppvObject = (IUISimplePropertySet*)this;
+			*ppvObject = static_cast<IUISimplePropertySet*>(this);
 			return S_OK;
 		}
 		return E_NOINTERFACE;
@@ -458,7 +460,7 @@ void CNativeRibbonApp::SetItems(UINT cmdId, const std::list<CNativeRibbonDynamic
 		CComPtr<IUIImage> image;
 		if (imageFactory && item.GetImageId() > 0)
 		{
-			HBITMAP hbm = (HBITMAP)LoadImage( AfxGetResourceHandle(), MAKEINTRESOURCE(item.GetImageId()), IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION);
+			HBITMAP hbm = static_cast<HBITMAP>(LoadImage( AfxGetResourceHandle(), MAKEINTRESOURCE(item.GetImageId()), IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION));
 			imageFactory->CreateImage(hbm, UI_OWNERSHIP_TRANSFER, &image);
 		}
 

@@ -240,7 +240,7 @@ public:
 	};
 	static_assert(IDGITLC_MOVETOCS < 64, "IDs must be <64 in order to be usable in a bitfield");
 	int GetColumnIndex(int colmask);
-	static inline unsigned __int64 GetContextMenuBit(int i){ return ((unsigned __int64 )0x1)<<i ;}
+	static inline unsigned __int64 GetContextMenuBit(int i) { return static_cast<unsigned __int64>(0x1) << i; }
 	/**
 	 * Sent to the parent window (using ::SendMessage) after a context menu
 	 * command has finished if the item count has changed.

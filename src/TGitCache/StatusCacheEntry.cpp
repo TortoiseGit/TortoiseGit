@@ -1,7 +1,7 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2006,2008,2014 - TortoiseSVN
-// Copyright (C) 2008-2014, 2016-2017 - TortoiseGit
+// Copyright (C) 2008-2014, 2016-2017, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,7 +25,7 @@
 
 #define CACHEVERION 8
 
-ULONGLONG cachetimeout = (ULONGLONG)CRegStdDWORD(L"Software\\TortoiseGit\\Cachetimeout", LONG_MAX);
+ULONGLONG cachetimeout = static_cast<ULONGLONG>(CRegStdDWORD(L"Software\\TortoiseGit\\Cachetimeout", LONG_MAX));
 
 CStatusCacheEntry::CStatusCacheEntry()
 	: m_bSet(false)
@@ -63,7 +63,7 @@ CStatusCacheEntry::CStatusCacheEntry(const git_wc_status2_t* pGitStatus, __int64
 bool CStatusCacheEntry::SaveToDisk(FILE* pFile) const
 {
 #define WRITEVALUETOFILE(x) if (fwrite(&x, sizeof(x), 1, pFile)!=1) return false;
-#define WRITESTRINGTOFILE(x) if (x.IsEmpty()) {value=0;WRITEVALUETOFILE(value);}else{value=x.GetLength();WRITEVALUETOFILE(value);if (fwrite((LPCSTR)x, sizeof(char), value, pFile)!=value) return false;}
+#define WRITESTRINGTOFILE(x) if (x.IsEmpty()) {value=0;WRITEVALUETOFILE(value);}else{value=x.GetLength();WRITEVALUETOFILE(value);if (fwrite(static_cast<LPCSTR>(x), sizeof(char), value, pFile)!=value) return false;}
 
 	unsigned int value = CACHEVERION;
 	WRITEVALUETOFILE(value); // 'version' of this save-format
@@ -143,7 +143,7 @@ bool CStatusCacheEntry::HasExpired(LONGLONG now) const
 void CStatusCacheEntry::BuildCacheResponse(TGITCacheResponse& response, DWORD& responseLength) const
 {
 	SecureZeroMemory(&response, sizeof(response));
-	response.m_status = (INT8)m_GitStatus.status;
+	response.m_status = static_cast<INT8>(m_GitStatus.status);
 	response.m_bAssumeValid = m_bAssumeValid;
 	response.m_bSkipWorktree = m_bSkipWorktree;
 	responseLength = sizeof(response);

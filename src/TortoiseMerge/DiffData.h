@@ -1,4 +1,4 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2006-2008, 2010-2014 - TortoiseSVN
 
@@ -30,7 +30,7 @@
 
 
 
-#define DIFF_EMPTYLINENUMBER						((DWORD)-1)
+#define DIFF_EMPTYLINENUMBER						(static_cast<DWORD>(-1))
 /**
  * \ingroup TortoiseMerge
  * Main class for handling diffs.

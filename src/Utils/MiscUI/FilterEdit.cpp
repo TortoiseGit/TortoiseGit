@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012, 2014, 2016-2018 - TortoiseGit
+// Copyright (C) 2012, 2014, 2016-2019 - TortoiseGit
 // Copyright (C) 2007, 2012-2014, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -239,7 +239,7 @@ void CFilterEdit::OnLButtonUp(UINT nFlags, CPoint point)
 		CWnd *pOwner = GetOwner();
 		if (pOwner)
 		{
-			pOwner->SendMessage(m_iCancelClickedMessageId, (WPARAM)GetSafeHwnd(), 0);
+			pOwner->SendMessage(m_iCancelClickedMessageId, reinterpret_cast<WPARAM>(GetSafeHwnd()), 0);
 		}
 		Validate();
 	}
@@ -250,7 +250,7 @@ void CFilterEdit::OnLButtonUp(UINT nFlags, CPoint point)
 		{
 			RECT rc = m_rcInfoArea;
 			ClientToScreen(&rc);
-			pOwner->SendMessage(m_iButtonClickedMessageId, (WPARAM)GetSafeHwnd(), (LPARAM)(LPRECT)&rc);
+			pOwner->SendMessage(m_iButtonClickedMessageId, reinterpret_cast<WPARAM>(GetSafeHwnd()), reinterpret_cast<LPARAM>(&rc));
 		}
 	}
 
@@ -417,7 +417,7 @@ LRESULT CFilterEdit::OnPaste(WPARAM, LPARAM)
 	if (OpenClipboard())
 	{
 		HANDLE hData = GetClipboardData (CF_TEXT);
-		CString toInsert((const char*)GlobalLock(hData));
+		CString toInsert(static_cast<const char*>(GlobalLock(hData)));
 		GlobalUnlock(hData);
 		CloseClipboard();
 
@@ -446,7 +446,7 @@ LRESULT CFilterEdit::OnPaste(WPARAM, LPARAM)
 		SetSel(from, from, FALSE);
 		SetModify(TRUE);
 
-		GetParent()->SendMessage(WM_COMMAND, MAKEWPARAM(GetDlgCtrlID(), EN_CHANGE), (LPARAM)GetSafeHwnd());
+		GetParent()->SendMessage(WM_COMMAND, MAKEWPARAM(GetDlgCtrlID(), EN_CHANGE), reinterpret_cast<LPARAM>(GetSafeHwnd()));
 	}
 	return 0;
 }

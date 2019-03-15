@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 // Copyright (C) 2007-2009 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -241,7 +241,7 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 			// We've found the command
 			command = commandInfo[nCommand].command;
 			// If this fires, you've let the enum get out of sync with the commandInfo array
-			ASSERT((int)command == nCommand);
+			ASSERT(static_cast<int>(command) == nCommand);
 			break;
 		}
 	}

@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013, 2016 - TortoiseGit
+// Copyright (C) 2013, 2016, 2019 - TortoiseGit
 // Copyright (C) 2012-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -38,7 +38,7 @@ __forceinline HMODULE get_my_module_handle(void)
 	{
 		return nullptr;
 	}
-	return (HMODULE)memory_basic_information.AllocationBase;
+	return static_cast<HMODULE>(memory_basic_information.AllocationBase);
 }
 
 /**
@@ -246,7 +246,7 @@ public:
 	//! \note If you called CrashHandler constructor and crshhndl.dll was missing you still may using this exception.
 	//!       It will be caught, ignored and execution will continue. \ref SendReport function also works safely
 	//!       when crshhndl.dll was missing.
-	static const DWORD ExceptionAssertionViolated = ((DWORD)0xCCE17000);
+	static const DWORD ExceptionAssertionViolated = 0xCCE17000;
 
 	//! Sends assertion violation report from this point and continue execution.
 	//! \sa ExceptionAssertionViolated

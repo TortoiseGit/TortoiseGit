@@ -1,6 +1,6 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2013-2017 - TortoiseGit
+// Copyright (C) 2013-2017, 2019 - TortoiseGit
 // Copyright (C) 2006-2014, 2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -114,7 +114,7 @@ BOOL CTortoiseMergeApp::InitInstance()
 	HINSTANCE hInst = nullptr;
 	do
 	{
-		langDll.Format(L"%sLanguages\\TortoiseMerge%ld.dll", (LPCTSTR)CPathUtils::GetAppParentDirectory(), langId);
+		langDll.Format(L"%sLanguages\\TortoiseMerge%ld.dll", static_cast<LPCTSTR>(CPathUtils::GetAppParentDirectory()), langId);
 
 		hInst = LoadLibrary(langDll);
 		CString sVer = _T(STRPRODUCTVER);
@@ -463,16 +463,16 @@ BOOL CTortoiseMergeApp::InitInstance()
 			}
 			if (!outfile.IsEmpty())
 			{
-				CRegStdDWORD regContextLines(L"Software\\TortoiseGitMerge\\ContextLines", (DWORD)-1);
+				CRegStdDWORD regContextLines(L"Software\\TortoiseGitMerge\\ContextLines", static_cast<DWORD>(-1));
 				CAppUtils::CreateUnifiedDiff(origFile, modifiedFile, outfile, regContextLines, false);
 				return FALSE;
 			}
 		}
 	}
 
-	pFrame->resolveMsgWnd    = parser.HasVal(L"resolvemsghwnd")   ? (HWND)parser.GetLongLongVal(L"resolvemsghwnd")     : 0;
-	pFrame->resolveMsgWParam = parser.HasVal(L"resolvemsgwparam") ? (WPARAM)parser.GetLongLongVal(L"resolvemsgwparam") : 0;
-	pFrame->resolveMsgLParam = parser.HasVal(L"resolvemsglparam") ? (LPARAM)parser.GetLongLongVal(L"resolvemsglparam") : 0;
+	pFrame->resolveMsgWnd    = parser.HasVal(L"resolvemsghwnd")   ? reinterpret_cast<HWND>(parser.GetLongLongVal(L"resolvemsghwnd")) : 0;
+	pFrame->resolveMsgWParam = parser.HasVal(L"resolvemsgwparam") ? static_cast<WPARAM>(parser.GetLongLongVal(L"resolvemsgwparam"))  : 0;
+	pFrame->resolveMsgLParam = parser.HasVal(L"resolvemsglparam") ? static_cast<LPARAM>(parser.GetLongLongVal(L"resolvemsglparam"))  : 0;
 
 	// The one and only window has been initialized, so show and update it
 	pFrame->ActivateFrame();
@@ -547,7 +547,7 @@ bool CTortoiseMergeApp::TrySavePatchFromClipboard(std::wstring& resultFile)
 		return false;
 
 	HGLOBAL hglb = GetClipboardData(cFormat);
-	LPCSTR lpstr = (LPCSTR)GlobalLock(hglb);
+	auto lpstr = static_cast<LPCSTR>(GlobalLock(hglb));
 
 	DWORD len = GetTempPath(0, nullptr);
 	auto path = std::make_unique<TCHAR[]>(len + 1);

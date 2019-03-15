@@ -51,7 +51,7 @@ bool RemoveCommand::Execute()
 		dlg.SetUUID(sUUID);
 		CString sHint;
 		if (pathList.GetCount() == 1)
-			sHint.Format(IDS_INPUT_REMOVEONE, (LPCTSTR)pathList[0].GetSVNPathString());
+			sHint.Format(IDS_INPUT_REMOVEONE, static_cast<LPCTSTR>(pathList)[0].GetSVNPathString());
 		else
 			sHint.Format(IDS_INPUT_REMOVEMORE, pathList.GetCount());
 		dlg.SetActionText(sHint);
@@ -70,7 +70,7 @@ bool RemoveCommand::Execute()
 	{
 		for (int nPath = 0; nPath < pathList.GetCount(); ++nPath)
 		{
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": remove file %s\n", (LPCTSTR)pathList[nPath].GetUIPathString());
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": remove file %s\n", static_cast<LPCTSTR>(pathList)[nPath].GetUIPathString());
 			// even though SVN::Remove takes a list of paths to delete at once
 			// we delete each item individually so we can prompt the user
 			// if something goes wrong or unversioned/modified items are
@@ -90,7 +90,7 @@ bool RemoveCommand::Execute()
 					if (pathList[nPath].IsDirectory())
 						msg.Format(IDS_PROC_REMOVEFORCEFOLDER, pathList[nPath].GetWinPath());
 					else
-						msg.Format(IDS_PROC_REMOVEFORCE, (LPCTSTR)svn.GetLastErrorMessage());
+						msg.Format(IDS_PROC_REMOVEFORCE, static_cast<LPCTSTR>(svn.GetLastErrorMessage()));
 					yes.LoadString(IDS_MSGBOX_YES);
 					no.LoadString(IDS_MSGBOX_NO);
 					yestoall.LoadString(IDS_PROC_YESTOALL);
@@ -126,7 +126,7 @@ bool RemoveCommand::Execute()
 	if (pathList.GetCount() > 1)
 		format.Format(keepLocal ? IDS_WARN_DELETE_MANY_FROM_INDEX : IDS_WARN_DELETE_MANY, pathList.GetCount());
 	else
-		format.Format(keepLocal ? IDS_WARN_DELETE_ONE_FROM_INDEX : IDS_WARN_REMOVE, (LPCTSTR)pathList[0].GetGitPathString());
+		format.Format(keepLocal ? IDS_WARN_DELETE_ONE_FROM_INDEX : IDS_WARN_REMOVE, static_cast<LPCTSTR>(pathList[0].GetGitPathString()));
 	if (CMessageBox::Show(GetExplorerHWND(), format, L"TortoiseGit", 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_REMOVEBUTTON)), CString(MAKEINTRESOURCE(IDS_MSGBOX_ABORT))) == 2)
 		return false;
 
@@ -140,7 +140,7 @@ bool RemoveCommand::Execute()
 	{
 		CString cmd;
 		CString output;
-		cmd.Format(format, (LPCTSTR)pathList[nPath].GetGitPathString());
+		cmd.Format(format, static_cast<LPCTSTR>(pathList[nPath].GetGitPathString()));
 		if (g_Git.Run(cmd, &output, CP_UTF8))
 		{
 			if (CMessageBox::Show(GetExplorerHWND(), output, L"TortoiseGit", 2, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)

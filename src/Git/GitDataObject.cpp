@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2018 - TortoiseGit
+// Copyright (C) 2016-2019 - TortoiseGit
 // Copyright (C) 2007-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -25,12 +25,12 @@
 #include "StringUtils.h"
 #include <strsafe.h>
 
-CLIPFORMAT CF_FILECONTENTS = (CLIPFORMAT)RegisterClipboardFormat(CFSTR_FILECONTENTS);
-CLIPFORMAT CF_FILEDESCRIPTOR = (CLIPFORMAT)RegisterClipboardFormat(CFSTR_FILEDESCRIPTOR);
-CLIPFORMAT CF_PREFERREDDROPEFFECT = (CLIPFORMAT)RegisterClipboardFormat(CFSTR_PREFERREDDROPEFFECT);
-CLIPFORMAT CF_INETURL = (CLIPFORMAT)RegisterClipboardFormat(CFSTR_INETURL);
-CLIPFORMAT CF_SHELLURL = (CLIPFORMAT)RegisterClipboardFormat(CFSTR_SHELLURL);
-CLIPFORMAT CF_FILE_ATTRIBUTES_ARRAY = (CLIPFORMAT)RegisterClipboardFormat(CFSTR_FILE_ATTRIBUTES_ARRAY);
+CLIPFORMAT CF_FILECONTENTS = static_cast<CLIPFORMAT>(RegisterClipboardFormat(CFSTR_FILECONTENTS));
+CLIPFORMAT CF_FILEDESCRIPTOR = static_cast<CLIPFORMAT>(RegisterClipboardFormat(CFSTR_FILEDESCRIPTOR));
+CLIPFORMAT CF_PREFERREDDROPEFFECT = static_cast<CLIPFORMAT>(RegisterClipboardFormat(CFSTR_PREFERREDDROPEFFECT));
+CLIPFORMAT CF_INETURL = static_cast<CLIPFORMAT>(RegisterClipboardFormat(CFSTR_INETURL));
+CLIPFORMAT CF_SHELLURL = static_cast<CLIPFORMAT>(RegisterClipboardFormat(CFSTR_SHELLURL));
+CLIPFORMAT CF_FILE_ATTRIBUTES_ARRAY = static_cast<CLIPFORMAT>(RegisterClipboardFormat(CFSTR_FILE_ATTRIBUTES_ARRAY));
 
 GitDataObject::GitDataObject(const CTGitPathList& gitpaths, const CGitHash& rev, int stripLength)
 	: m_gitPaths(gitpaths)
@@ -129,13 +129,13 @@ STDMETHODIMP GitDataObject::GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium)
 
 		if (m_revision.IsEmpty())
 		{
-			if ((pformatetcIn->lindex >= 0) && (pformatetcIn->lindex < (LONG)m_allPaths.size()))
+			if (pformatetcIn->lindex >= 0 && pformatetcIn->lindex < static_cast<LONG>(m_allPaths.size()))
 				filepath = g_Git.CombinePath(m_allPaths[pformatetcIn->lindex]);
 		}
 		else
 		{
 			filepath = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
-			if ((pformatetcIn->lindex >= 0) && (pformatetcIn->lindex < (LONG)m_allPaths.size()))
+			if (pformatetcIn->lindex >= 0 && pformatetcIn->lindex < static_cast<LONG>(m_allPaths.size()))
 			{
 				if (g_Git.GetOneFile(m_revision.ToString(), m_allPaths[pformatetcIn->lindex], filepath))
 				{
@@ -167,17 +167,17 @@ STDMETHODIMP GitDataObject::GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium)
 			m_allPaths.push_back(m_gitPaths[i]);
 		}
 
-		size_t dataSize = sizeof(FILEGROUPDESCRIPTOR) + ((max((size_t)1, m_allPaths.size()) - 1) * sizeof(FILEDESCRIPTOR));
+		size_t dataSize = sizeof(FILEGROUPDESCRIPTOR) + ((max(size_t(1), m_allPaths.size()) - 1) * sizeof(FILEDESCRIPTOR));
 		HGLOBAL data = GlobalAlloc(GMEM_MOVEABLE | GMEM_SHARE | GMEM_ZEROINIT, dataSize);
 
-		FILEGROUPDESCRIPTOR* files = (FILEGROUPDESCRIPTOR*)GlobalLock(data);
+		auto files = static_cast<FILEGROUPDESCRIPTOR*>(GlobalLock(data));
 		files->cItems = static_cast<UINT>(m_allPaths.size());
 		int index = 0;
 		for (auto it = m_allPaths.cbegin(); it != m_allPaths.cend(); ++it)
 		{
 			CString temp(m_iStripLength > 0 ? it->GetWinPathString().Mid(m_iStripLength + 1) : (m_iStripLength == 0 ? it->GetWinPathString() : it->GetUIFileOrDirectoryName()));
 			if (temp.GetLength() < MAX_PATH)
-				wcscpy_s(files->fgd[index].cFileName, (LPCTSTR)temp);
+				wcscpy_s(files->fgd[index].cFileName, static_cast<LPCTSTR>(temp));
 			else
 			{
 				files->cItems--;
@@ -213,7 +213,7 @@ STDMETHODIMP GitDataObject::GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium)
 		HGLOBAL data = GlobalAlloc(GMEM_MOVEABLE | GMEM_SHARE | GMEM_ZEROINIT, sizeof(DWORD));
 		if (!data)
 			return E_OUTOFMEMORY;
-		DWORD* effect = (DWORD*)GlobalLock(data);
+		auto effect = static_cast<DWORD*>(GlobalLock(data));
 		if (!effect)
 		{
 			GlobalFree(data);
@@ -244,8 +244,8 @@ STDMETHODIMP GitDataObject::GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium)
 		pmedium->hGlobal = GlobalAlloc(GHND, (texta.GetLength() + 1) * sizeof(char));
 		if (pmedium->hGlobal)
 		{
-			char* pMem = (char*)GlobalLock(pmedium->hGlobal);
-			strcpy_s(pMem, texta.GetLength() + 1, (LPCSTR)texta);
+			auto pMem = static_cast<char*>(GlobalLock(pmedium->hGlobal));
+			strcpy_s(pMem, texta.GetLength() + 1, static_cast<LPCSTR>(texta));
 			GlobalUnlock(pmedium->hGlobal);
 		}
 		pmedium->pUnkForRelease = nullptr;
@@ -272,8 +272,8 @@ STDMETHODIMP GitDataObject::GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium)
 		pmedium->hGlobal = GlobalAlloc(GHND, (text.GetLength() + 1) * sizeof(TCHAR));
 		if (pmedium->hGlobal)
 		{
-			TCHAR* pMem = (TCHAR*)GlobalLock(pmedium->hGlobal);
-			wcscpy_s(pMem, text.GetLength() + 1, (LPCTSTR)text);
+			auto pMem = static_cast<TCHAR*>(GlobalLock(pmedium->hGlobal));
+			wcscpy_s(pMem, text.GetLength() + 1, static_cast<LPCTSTR>(text));
 			GlobalUnlock(pmedium->hGlobal);
 		}
 		pmedium->pUnkForRelease = nullptr;
@@ -296,11 +296,11 @@ STDMETHODIMP GitDataObject::GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium)
 		auto pBuffer = std::make_unique<char[]>(nBufferSize);
 		SecureZeroMemory(pBuffer.get(), nBufferSize);
 
-		DROPFILES* df = (DROPFILES*)pBuffer.get();
+		auto df = reinterpret_cast<DROPFILES*>(pBuffer.get());
 		df->pFiles = sizeof(DROPFILES);
 		df->fWide = 1;
 
-		TCHAR* pFilenames = (TCHAR*)(pBuffer.get() + sizeof(DROPFILES));
+		auto pFilenames = reinterpret_cast<TCHAR*>(pBuffer.get() + sizeof(DROPFILES));
 		TCHAR* pCurrentFilename = pFilenames;
 
 		for (int i = 0; i < m_gitPaths.GetCount(); ++i)
@@ -308,7 +308,7 @@ STDMETHODIMP GitDataObject::GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium)
 			if (m_gitPaths[i].m_Action & (CTGitPath::LOGACTIONS_MISSING | CTGitPath::LOGACTIONS_DELETED) || m_gitPaths[i].IsDirectory())
 				continue;
 			CString str = g_Git.CombinePath(m_gitPaths[i]);
-			wcscpy_s(pCurrentFilename, str.GetLength() + 1, (LPCWSTR)str);
+			wcscpy_s(pCurrentFilename, str.GetLength() + 1, static_cast<LPCWSTR>(str));
 			pCurrentFilename += str.GetLength();
 			*pCurrentFilename = '\0'; // separator between file names
 			pCurrentFilename++;
@@ -333,7 +333,7 @@ STDMETHODIMP GitDataObject::GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium)
 		auto pBuffer = std::make_unique<char[]>(nBufferSize);
 		SecureZeroMemory(pBuffer.get(), nBufferSize);
 
-		FILE_ATTRIBUTES_ARRAY* cf = (FILE_ATTRIBUTES_ARRAY*)pBuffer.get();
+		auto cf = reinterpret_cast<FILE_ATTRIBUTES_ARRAY*>(pBuffer.get());
 		cf->cItems = m_gitPaths.GetCount();
 		cf->dwProductFileAttributes = DWORD_MAX;
 		cf->dwSumFileAttributes = 0;
@@ -528,19 +528,19 @@ void GitDataObject::CopyMedium(STGMEDIUM* pMedDest, STGMEDIUM* pMedSrc, FORMATET
 	switch (pMedSrc->tymed)
 	{
 	case TYMED_HGLOBAL:
-		pMedDest->hGlobal = (HGLOBAL)OleDuplicateData(pMedSrc->hGlobal, pFmtSrc->cfFormat, 0);
+		pMedDest->hGlobal = static_cast<HGLOBAL>(OleDuplicateData(pMedSrc->hGlobal, pFmtSrc->cfFormat, 0));
 		break;
 	case TYMED_GDI:
-		pMedDest->hBitmap = (HBITMAP)OleDuplicateData(pMedSrc->hBitmap, pFmtSrc->cfFormat, 0);
+		pMedDest->hBitmap = static_cast<HBITMAP>(OleDuplicateData(pMedSrc->hBitmap, pFmtSrc->cfFormat, 0));
 		break;
 	case TYMED_MFPICT:
-		pMedDest->hMetaFilePict = (HMETAFILEPICT)OleDuplicateData(pMedSrc->hMetaFilePict, pFmtSrc->cfFormat, 0);
+		pMedDest->hMetaFilePict = static_cast<HMETAFILEPICT>(OleDuplicateData(pMedSrc->hMetaFilePict, pFmtSrc->cfFormat, 0));
 		break;
 	case TYMED_ENHMF:
-		pMedDest->hEnhMetaFile = (HENHMETAFILE)OleDuplicateData(pMedSrc->hEnhMetaFile, pFmtSrc->cfFormat, 0);
+		pMedDest->hEnhMetaFile = static_cast<HENHMETAFILE>(OleDuplicateData(pMedSrc->hEnhMetaFile, pFmtSrc->cfFormat, 0));
 		break;
 	case TYMED_FILE:
-		pMedSrc->lpszFileName = (LPOLESTR)OleDuplicateData(pMedSrc->lpszFileName, pFmtSrc->cfFormat, 0);
+		pMedSrc->lpszFileName = static_cast<LPOLESTR>(OleDuplicateData(pMedSrc->lpszFileName, pFmtSrc->cfFormat, 0));
 		break;
 	case TYMED_ISTREAM:
 		pMedDest->pstm = pMedSrc->pstm;
@@ -611,7 +611,7 @@ HRESULT GitDataObject::SetDropDescription(DROPIMAGETYPE image, LPCTSTR format, L
 		return E_INVALIDARG;
 
 	FORMATETC fetc = { 0 };
-	fetc.cfFormat = (CLIPFORMAT)RegisterClipboardFormat(CFSTR_DROPDESCRIPTION);
+	fetc.cfFormat = static_cast<CLIPFORMAT>(RegisterClipboardFormat(CFSTR_DROPDESCRIPTION));
 	fetc.dwAspect = DVASPECT_CONTENT;
 	fetc.lindex = -1;
 	fetc.tymed = TYMED_HGLOBAL;
@@ -621,7 +621,7 @@ HRESULT GitDataObject::SetDropDescription(DROPIMAGETYPE image, LPCTSTR format, L
 	if (medium.hGlobal == 0)
 		return E_OUTOFMEMORY;
 
-	DROPDESCRIPTION* pDropDescription = (DROPDESCRIPTION*)GlobalLock(medium.hGlobal);
+	auto pDropDescription = static_cast<DROPDESCRIPTION*>(GlobalLock(medium.hGlobal));
 	if (!pDropDescription)
 		return E_FAIL;
 	StringCchCopy(pDropDescription->szInsert, _countof(pDropDescription->szInsert), insert);

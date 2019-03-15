@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2018 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2019 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -87,7 +87,7 @@ bool DropCopyCommand::Execute()
 			});
 			dlg.m_sBaseDir = fullDropPath.GetContainingDirectory().GetWinPathString();
 			dlg.m_name = fullDropPath.GetFileOrDirectoryName();
-			dlg.m_windowtitle.Format(IDS_PROC_NEWNAMECOPY, (LPCTSTR)sourcePath.GetUIFileOrDirectoryName());
+			dlg.m_windowtitle.Format(IDS_PROC_NEWNAMECOPY, static_cast<LPCTSTR>(sourcePath.GetUIFileOrDirectoryName()));
 			if (dlg.DoModal() != IDOK)
 				return FALSE;
 			// rebuild the progress dialog

@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2017 - TortoiseGit
+// Copyright (C) 2013-2017, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -83,11 +83,11 @@ BOOL CSetDialogs3::OnInitDialog()
 	AddTrueFalseToComboBox(m_cWarnNoSignedOffBy);
 
 	m_langCombo.AddString(L"");
-	m_langCombo.SetItemData(0, (DWORD_PTR)-2);
+	m_langCombo.SetItemData(0, DWORD_PTR(-2));
 	m_langCombo.AddString(L"(auto)"); // do not translate, the order matters!
 	m_langCombo.SetItemData(1, 0);
 	m_langCombo.AddString(L"(disable)"); // do not translate, the order matters!
-	m_langCombo.SetItemData(2, (DWORD_PTR)-1);
+	m_langCombo.SetItemData(2, DWORD_PTR(-1));
 	// fill the combo box with all available languages
 	g_langs.clear();
 	EnumSystemLocales(EnumLocalesProc, LCID_SUPPORTED);
@@ -104,7 +104,7 @@ static void SelectLanguage(CComboBox &combobox, LONG langueage)
 {
 	for (int i = 0; i < combobox.GetCount(); ++i)
 	{
-		if (combobox.GetItemData(i) == (DWORD)langueage)
+		if (combobox.GetItemData(i) == static_cast<DWORD>(langueage))
 		{
 			combobox.SetCurSel(i);
 			break;
@@ -189,8 +189,8 @@ BOOL CSetDialogs3::SafeDataImpl(CAutoConfig& config)
 	{
 		CString value;
 		char numBuf[20] = { 0 };
-		sprintf_s(numBuf, "%lu", (DWORD)m_langCombo.GetItemData(m_langCombo.GetCurSel()));
-		if (!Save(config, PROJECTPROPNAME_PROJECTLANGUAGE, (CString)numBuf))
+		sprintf_s(numBuf, "%lu", static_cast<DWORD>(m_langCombo.GetItemData(m_langCombo.GetCurSel())));
+		if (!Save(config, PROJECTPROPNAME_PROJECTLANGUAGE, static_cast<CString>(numBuf)))
 			return FALSE;
 	}
 

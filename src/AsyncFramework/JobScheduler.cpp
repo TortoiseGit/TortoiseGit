@@ -1,4 +1,4 @@
-/***************************************************************************
+﻿/***************************************************************************
  *   Copyright (C) 2009-2011 by Stefan Fuhrmann                            *
  *   stefanfuhrmann@alice-dsl.de                                           *
  *                                                                         *
@@ -282,7 +282,7 @@ CJobScheduler::TJob CJobScheduler::AssignJob (SThreadInfo* info)
                 break;
             }
 
-        return TJob ((IJob*)NULL, terminateThread);
+        return TJob(static_cast<IJob*>(nullptr), terminateThread);
     }
 
     // extract one job

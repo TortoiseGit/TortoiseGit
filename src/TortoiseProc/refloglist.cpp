@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2011, 2013, 2015-2018 TortoiseGit
+// Copyright (C) 2009-2011, 2013, 2015-2019 TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -79,7 +79,7 @@ void CRefLogList::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	// By default, clear text buffer.
 	lstrcpyn(pItem->pszText, L"", pItem->cchTextMax);
 
-	bool bOutOfRange = pItem->iItem >= (int)m_arShownList.size();
+	bool bOutOfRange = pItem->iItem >= static_cast<int>(m_arShownList.size());
 
 	*pResult = 0;
 	if (m_bNoDispUpdates || bOutOfRange)
@@ -105,15 +105,15 @@ void CRefLogList::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		break;
 	case REFLOG_ACTION:
 		if (pLogEntry)
-			lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->m_RefAction, pItem->cchTextMax - 1);
+			lstrcpyn(pItem->pszText, static_cast<LPCTSTR>(pLogEntry->m_RefAction), pItem->cchTextMax - 1);
 		break;
 	case REFLOG_MESSAGE:
 		if (pLogEntry)
-			lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->GetSubject().Trim(), pItem->cchTextMax - 1);
+			lstrcpyn(pItem->pszText, static_cast<LPCTSTR>(pLogEntry->GetSubject().Trim()), pItem->cchTextMax - 1);
 		break;
 	case REFLOG_DATE:
 		if (pLogEntry)
-			lstrcpyn(pItem->pszText, (LPCTSTR)CLoglistUtils::FormatDateAndTime(pLogEntry->GetCommitterDate(), m_DateFormat, true, m_bRelativeTimes), pItem->cchTextMax - 1);
+			lstrcpyn(pItem->pszText, static_cast<LPCTSTR>(CLoglistUtils::FormatDateAndTime(pLogEntry->GetCommitterDate(), m_DateFormat, true, m_bRelativeTimes)), pItem->cchTextMax - 1);
 		break;
 
 	default:
@@ -136,7 +136,7 @@ void CRefLogList::OnNMDblclkLoglist(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 		return;
 
 	CString cmdline;
-	cmdline.Format(L"/command:log /path:\"%s\" /endrev:%s", (LPCTSTR)g_Git.CombinePath(m_Path), (LPCTSTR)pSelLogEntry->m_CommitHash.ToString());
+	cmdline.Format(L"/command:log /path:\"%s\" /endrev:%s", static_cast<LPCTSTR>(g_Git.CombinePath(m_Path)), static_cast<LPCTSTR>(pSelLogEntry->m_CommitHash.ToString()));
 	CAppUtils::RunTortoiseGitProc(cmdline);
 }
 
