@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2013-2016, 2018 - TortoiseGit
+// Copyright (C) 2009, 2013-2016, 2018-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -90,7 +90,7 @@ BOOL CSettingSMTP::OnInitDialog()
 	idx = m_SMTPDeliveryTypeCombo.AddString(CString(MAKEINTRESOURCE(IDS_SMTP_CONFIGURED)));
 	m_SMTPDeliveryTypeCombo.SetItemData(idx, SEND_MAIL_SMTP_CONFIGURED);
 
-	if ((int)m_dwDeliveryType >= m_SMTPDeliveryTypeCombo.GetCount())
+	if (static_cast<int>(m_dwDeliveryType) >= m_SMTPDeliveryTypeCombo.GetCount())
 		m_dwDeliveryType = 0;
 
 	m_SMTPDeliveryTypeCombo.SetCurSel(m_dwDeliveryType);
@@ -99,7 +99,7 @@ BOOL CSettingSMTP::OnInitDialog()
 	m_SMTPEncryptionCombo.AddString(CString(MAKEINTRESOURCE(IDS_ENCRYPT_STARTTLS)));
 	m_SMTPEncryptionCombo.AddString(CString(MAKEINTRESOURCE(IDS_ENCRYPT_SSL)));
 
-	if ((int)m_dwSMTPEnrcyption >= m_SMTPEncryptionCombo.GetCount())
+	if (static_cast<int>(m_dwSMTPEnrcyption) >= m_SMTPEncryptionCombo.GetCount())
 		m_dwSMTPEnrcyption = 0;
 
 	m_SMTPEncryptionCombo.SetCurSel(m_dwSMTPEnrcyption);
@@ -125,7 +125,7 @@ void CSettingSMTP::OnModifiedEncryptionCombo()
 
 void CSettingSMTP::OnModifiedDeliveryCombo()
 {
-	m_dwDeliveryType = (DWORD)m_SMTPDeliveryTypeCombo.GetItemData(m_SMTPDeliveryTypeCombo.GetCurSel());
+	m_dwDeliveryType = static_cast<DWORD>(m_SMTPDeliveryTypeCombo.GetItemData(m_SMTPDeliveryTypeCombo.GetCurSel()));
 
 	GetDlgItem(IDC_SMTP_USER)->EnableWindow(m_dwDeliveryType >= 2 && m_bAuth);
 	GetDlgItem(IDC_STORECREDENTIALS)->EnableWindow(m_dwDeliveryType >= 2 && m_bAuth);

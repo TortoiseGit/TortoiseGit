@@ -63,7 +63,7 @@ bool DaemonCommand::Execute()
 
 		DWORD ipbufferlength = 46;
 		CString ip;
-		if (WSAAddressToString(ptr->ai_addr, (DWORD)ptr->ai_addrlen, nullptr, CStrBuf(ip, ipbufferlength), &ipbufferlength))
+		if (WSAAddressToString(ptr->ai_addr, static_cast<DWORD>(ptr->ai_addrlen), nullptr, CStrBuf(ip, ipbufferlength), &ipbufferlength))
 			continue;
 
 		if (ptr->ai_family == AF_INET6)
@@ -84,7 +84,7 @@ bool DaemonCommand::Execute()
 		basePath += L"\\.";
 
 	CString cmd;
-	cmd.Format(L"git.exe daemon --verbose --export-all --base-path=\"%s\"", (LPCTSTR)basePath);
+	cmd.Format(L"git.exe daemon --verbose --export-all --base-path=\"%s\"", static_cast<LPCTSTR>(basePath));
 	CProgressDlg progDlg;
 	theApp.m_pMainWnd = &progDlg;
 	progDlg.m_GitCmd = cmd;

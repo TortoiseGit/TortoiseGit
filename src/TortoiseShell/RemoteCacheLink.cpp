@@ -150,7 +150,7 @@ bool CRemoteCacheLink::GetStatusFromRemoteCache(const CTGitPath& Path, TGITCache
 		// in between, the explorer is rendered unusable!
 		// Failing to start the cache can have different reasons: missing exe,
 		// missing registry key, corrupt exe, ...
-		if (((LONGLONG)GetTickCount64() - m_lastTimeout) < 0)
+		if ((static_cast<LONGLONG>(GetTickCount64()) - m_lastTimeout) < 0)
 			return false;
 		// if we're in protected mode, don't try to start the cache: since we're
 		// here, we know we can't access it anyway and starting a new process will
@@ -162,16 +162,16 @@ bool CRemoteCacheLink::GetStatusFromRemoteCache(const CTGitPath& Path, TGITCache
 			return false;
 
 		// Wait for the cache to open
-		LONGLONG endTime = (LONGLONG)GetTickCount64() + 1000;
+		LONGLONG endTime = static_cast<LONGLONG>(GetTickCount64()) + 1000;
 		while(!EnsurePipeOpen())
 		{
-			if (((LONGLONG)GetTickCount64() - endTime) > 0)
+			if ((static_cast<LONGLONG>(GetTickCount64()) - endTime) > 0)
 			{
-				m_lastTimeout = (LONGLONG)GetTickCount64() + 10000;
+				m_lastTimeout = static_cast<LONGLONG>(GetTickCount64()) + 10000;
 				return false;
 			}
 		}
-		m_lastTimeout = (LONGLONG)GetTickCount64() + 10000;
+		m_lastTimeout = static_cast<LONGLONG>(GetTickCount64()) + 10000;
 	}
 
 	AutoLocker lock(m_critSec);
@@ -273,15 +273,14 @@ DWORD CRemoteCacheLink::GetProcessIntegrityLevel() const
 			DWORD dwError = GetLastError();
 			if (dwError == ERROR_INSUFFICIENT_BUFFER)
 			{
-				PTOKEN_MANDATORY_LABEL pTIL =
-					(PTOKEN_MANDATORY_LABEL)LocalAlloc(0, dwLengthNeeded);
+				auto pTIL = static_cast<PTOKEN_MANDATORY_LABEL>(LocalAlloc(0, dwLengthNeeded));
 				if (pTIL)
 				{
 					if (GetTokenInformation(hToken, TokenIntegrityLevel,
 						pTIL, dwLengthNeeded, &dwLengthNeeded))
 					{
 						dwIntegrityLevel = *GetSidSubAuthority(pTIL->Label.Sid,
-							(DWORD)(UCHAR)(*GetSidSubAuthorityCount(pTIL->Label.Sid)-1));
+							static_cast<DWORD>(*GetSidSubAuthorityCount(pTIL->Label.Sid) - 1));
 					}
 					LocalFree(pTIL);
 				}
@@ -295,7 +294,7 @@ DWORD CRemoteCacheLink::GetProcessIntegrityLevel() const
 bool CRemoteCacheLink::RunTGitCacheProcess()
 {
 	const CString sCachePath = GetTGitCachePath();
-	if (!CCreateProcessHelper::CreateProcessDetached(sCachePath, (LPTSTR)nullptr))
+	if (!CCreateProcessHelper::CreateProcessDetached(sCachePath, static_cast<LPTSTR>(nullptr)))
 	{
 		// It's not appropriate to do a message box here, because there may be hundreds of calls
 		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Failed to start cache\n");

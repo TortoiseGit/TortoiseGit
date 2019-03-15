@@ -32,8 +32,8 @@
 #include "resource.h"
 #include "LoadIconEx.h"
 
-#define GetPIDLFolder(pida) (LPCITEMIDLIST)(((LPBYTE)pida)+(pida)->aoffset[0])
-#define GetPIDLItem(pida, i) (LPCITEMIDLIST)(((LPBYTE)pida)+(pida)->aoffset[i+1])
+#define GetPIDLFolder(pida) reinterpret_cast<LPCITEMIDLIST>(reinterpret_cast<LPBYTE>(pida) + (pida)->aoffset[0])
+#define GetPIDLItem(pida, i) reinterpret_cast<LPCITEMIDLIST>(reinterpret_cast<LPBYTE>(pida) + (pida)->aoffset[i + 1])
 
 int g_shellidlist=RegisterClipboardFormat(CFSTR_SHELLIDLIST);
 
@@ -56,7 +56,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 	if (pDataObj)
 	{
 		STGMEDIUM medium;
-		FORMATETC fmte = {(CLIPFORMAT)g_shellidlist,
+		FORMATETC fmte = { static_cast<CLIPFORMAT>(g_shellidlist),
 			nullptr,
 			DVASPECT_CONTENT,
 			-1,
@@ -82,7 +82,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 				}
 
 
-				HDROP drop = (HDROP)GlobalLock(stg.hGlobal);
+				auto drop = static_cast<HDROP>(GlobalLock(stg.hGlobal));
 				if (!drop)
 				{
 					ReleaseStgMedium ( &stg );
@@ -90,7 +90,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 					return E_INVALIDARG;
 				}
 
-				int count = DragQueryFile(drop, (UINT)-1, nullptr, 0);
+				int count = DragQueryFile(drop, UINT(-1), nullptr, 0);
 				if (count == 1)
 					itemStates |= ITEMIS_ONLYONE;
 				for (int i = 0; i < count; i++)
@@ -140,7 +140,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 									SecureZeroMemory(&itemStatus, sizeof(itemStatus));
 									if (m_remoteCacheLink.GetStatusFromRemoteCache(tpath, &itemStatus, true))
 									{
-										fetchedstatus = status = (git_wc_status_kind)itemStatus.m_status;
+										fetchedstatus = status = static_cast<git_wc_status_kind>(itemStatus.m_status);
 										if (askedpath.IsDirectory())//if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
 										{
 											itemStates |= ITEMIS_FOLDER;
@@ -209,7 +209,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 			else
 			{
 				//Enumerate PIDLs which the user has selected
-				CIDA* cida = (CIDA*)GlobalLock(medium.hGlobal);
+				auto cida = static_cast<CIDA*>(GlobalLock(medium.hGlobal));
 				ItemIDList parent( GetPIDLFolder (cida));
 
 				int count = cida->cidl;
@@ -259,7 +259,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 										SecureZeroMemory(&itemStatus, sizeof(itemStatus));
 										if (m_remoteCacheLink.GetStatusFromRemoteCache(tpath, &itemStatus, true))
 										{
-											fetchedstatus = status = (git_wc_status_kind)itemStatus.m_status;
+											fetchedstatus = status = static_cast<git_wc_status_kind>(itemStatus.m_status);
 											if (strpath.IsDirectory())//if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
 											{
 												itemStates |= ITEMIS_FOLDER;
@@ -357,7 +357,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 			ReleaseStgMedium ( &medium );
 			if (medium.pUnkForRelease)
 			{
-				IUnknown* relInterface = (IUnknown*)medium.pUnkForRelease;
+				IUnknown* relInterface = medium.pUnkForRelease;
 				relInterface->Release();
 			}
 		}
@@ -396,7 +396,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 							TGITCacheResponse itemStatus;
 							SecureZeroMemory(&itemStatus, sizeof(itemStatus));
 							if (m_remoteCacheLink.GetStatusFromRemoteCache(tpath, &itemStatus, true))
-								status = (git_wc_status_kind)itemStatus.m_status;
+								status = static_cast<git_wc_status_kind>(itemStatus.m_status);
 						}
 					}
 					else
@@ -623,7 +623,7 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 		menuiteminfo.fMask |= MIIM_BITMAP;
 		menuiteminfo.hbmpItem = m_iconBitmapUtils.IconToBitmapPARGB32(g_hResInst, icon);
 	}
-	menuiteminfo.wID = (UINT)id;
+	menuiteminfo.wID = static_cast<UINT>(id);
 	InsertMenuItem(menu, pos, TRUE, &menuiteminfo);
 
 	if (istop)
@@ -686,7 +686,7 @@ bool CShellExt::WriteClipboardPathsToTempFile(std::wstring& tempfile)
 		GlobalUnlock(hglb);
 		CloseClipboard();
 	};
-	HDROP hDrop = (HDROP)GlobalLock(hglb);
+	auto hDrop = static_cast<HDROP>(GlobalLock(hglb));
 	if (!hDrop)
 		return false;
 	SCOPE_EXIT { GlobalUnlock(hDrop); };
@@ -697,7 +697,7 @@ bool CShellExt::WriteClipboardPathsToTempFile(std::wstring& tempfile)
 	{
 		DragQueryFile(hDrop, i, szFileName, _countof(szFileName));
 		std::wstring filename = szFileName;
-		::WriteFile (file, filename.c_str(), (DWORD)filename.size()*sizeof(TCHAR), &written, 0);
+		::WriteFile (file, filename.c_str(), static_cast<DWORD>(filename.size()) * sizeof(TCHAR), &written, 0);
 		::WriteFile(file, L"\n", 2, &written, 0);
 	}
 
@@ -732,13 +732,13 @@ std::wstring CShellExt::WriteFileListToTempFile()
 	DWORD written = 0;
 	if (files_.empty())
 	{
-		::WriteFile (file, folder_.c_str(), (DWORD)folder_.size()*sizeof(TCHAR), &written, 0);
+		::WriteFile (file, folder_.c_str(), static_cast<DWORD>(folder_.size()) * sizeof(TCHAR), &written, 0);
 		::WriteFile(file, L"\n", 2, &written, 0);
 	}
 
 	for (const auto& file_ : files_)
 	{
-		::WriteFile(file, file_.c_str(), (DWORD)file_.size() * sizeof(TCHAR), &written, 0);
+		::WriteFile(file, file_.c_str(), static_cast<DWORD>(file_.size()) * sizeof(TCHAR), &written, 0);
 		::WriteFile(file, L"\n", 2, &written, 0);
 	}
 	return retFilePath;
@@ -827,7 +827,7 @@ STDMETHODIMP CShellExt::QueryDropContext(UINT uFlags, UINT idCmdFirst, HMENU hMe
 
 	TweakMenu(hMenu);
 
-	return ResultFromScode(MAKE_SCODE(SEVERITY_SUCCESS, 0, (USHORT)(idCmd - idCmdFirst)));
+	return ResultFromScode(MAKE_SCODE(SEVERITY_SUCCESS, 0, static_cast<USHORT>(idCmd - idCmdFirst)));
 }
 
 STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmdFirst, UINT /*idCmdLast*/, UINT uFlags)
@@ -940,7 +940,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmd
 		miif.dwTypeData = menubuf;
 		miif.cch = _countof(menubuf);
 		GetMenuItemInfo(hMenu, i, TRUE, &miif);
-		if (miif.dwItemData == (ULONG_PTR)g_MenuIDString)
+		if (miif.dwItemData == reinterpret_cast<ULONG_PTR>(g_MenuIDString))
 			return S_OK;
 	}
 
@@ -1044,7 +1044,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmd
 		TweakMenu(hMenu);
 
 		//return number of menu items added
-		return ResultFromScode(MAKE_SCODE(SEVERITY_SUCCESS, 0, (USHORT)(idCmd - idCmdFirst)));
+		return ResultFromScode(MAKE_SCODE(SEVERITY_SUCCESS, 0, static_cast<USHORT>(idCmd - idCmdFirst)));
 	}
 
 	//add sub menu to main context menu
@@ -1069,7 +1069,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmd
 		uIcon = bShowIcons ? IDI_MENUFOLDER : 0;
 		myIDMap[idCmd - idCmdFirst] = ShellSubMenuFolder;
 		myIDMap[idCmd] = ShellSubMenuFolder;
-		menuiteminfo.dwItemData = (ULONG_PTR)g_MenuIDString;
+		menuiteminfo.dwItemData = reinterpret_cast<ULONG_PTR>(g_MenuIDString);
 	}
 	else if (!bShortcut && (files_.size()==1))
 	{
@@ -1110,7 +1110,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmd
 	TweakMenu(hMenu);
 
 	//return number of menu items added
-	return ResultFromScode(MAKE_SCODE(SEVERITY_SUCCESS, 0, (USHORT)(idCmd - idCmdFirst)));
+	return ResultFromScode(MAKE_SCODE(SEVERITY_SUCCESS, 0, static_cast<USHORT>(idCmd - idCmdFirst)));
 }
 
 void CShellExt::TweakMenu(HMENU hMenu)
@@ -1476,7 +1476,7 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 					if (cFormat && OpenClipboard(nullptr))
 					{
 						HGLOBAL hglb = GetClipboardData(cFormat);
-						LPCSTR lpstr = (LPCSTR)GlobalLock(hglb);
+						auto lpstr = static_cast<LPCSTR>(GlobalLock(hglb));
 
 						DWORD len = GetTortoiseGitTempPath(0, nullptr);
 						auto path = std::make_unique<TCHAR[]>(len + 1);
@@ -1549,7 +1549,7 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 							HGLOBAL hglb = GetClipboardData(cPrefDropFormat);
 							if (hglb)
 							{
-								DWORD* effect = (DWORD*) GlobalLock(hglb);
+								auto effect = static_cast<DWORD*>(GlobalLock(hglb));
 								if (*effect == DROPEFFECT_MOVE)
 									bCopy = false;
 								GlobalUnlock(hglb);
@@ -1607,7 +1607,7 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 			{
 				gitCmd += L" /hwnd:";
 				TCHAR buf[30] = { 0 };
-				swprintf_s(buf, L"%p", (void*)lpcmi->hwnd);
+				swprintf_s(buf, L"%p", static_cast<void*>(lpcmi->hwnd));
 				gitCmd += buf;
 				myIDMap.clear();
 				myVerbsIDMap.clear();
@@ -1638,7 +1638,7 @@ STDMETHODIMP CShellExt::GetCommandString(UINT_PTR idCmd, UINT uFlags, UINT FAR *
 	int menuIndex = 0;
 	while (menuInfo[menuIndex].command != ShellMenuLastEntry)
 	{
-		if (menuInfo[menuIndex].command == (GitCommands)id_it->second)
+		if (menuInfo[menuIndex].command == static_cast<GitCommands>(id_it->second))
 		{
 			MAKESTRING(menuInfo[menuIndex].menuDescID);
 			break;
@@ -1659,7 +1659,7 @@ STDMETHODIMP CShellExt::GetCommandString(UINT_PTR idCmd, UINT uFlags, UINT FAR *
 	case GCS_HELPTEXTW:
 		{
 			std::wstring help = desc;
-			lstrcpynW((LPWSTR)pszName, help.c_str(), cchMax - 1);
+			lstrcpynW(reinterpret_cast<LPWSTR>(pszName), help.c_str(), cchMax - 1);
 			hr = S_OK;
 			break;
 		}
@@ -1681,7 +1681,7 @@ STDMETHODIMP CShellExt::GetCommandString(UINT_PTR idCmd, UINT uFlags, UINT FAR *
 			{
 				std::wstring help = verb_id_it->second;
 				CTraceToOutputDebugString::Instance()(__FUNCTION__ ": verb : %ws\n", help.c_str());
-				lstrcpynW((LPWSTR)pszName, help.c_str(), cchMax - 1);
+				lstrcpynW(reinterpret_cast<LPWSTR>(pszName), help.c_str(), cchMax - 1);
 				hr = S_OK;
 			}
 		}
@@ -1710,7 +1710,7 @@ STDMETHODIMP CShellExt::HandleMenuMsg2(UINT uMsg, WPARAM wParam, LPARAM lParam, 
 	{
 	case WM_MEASUREITEM:
 		{
-			MEASUREITEMSTRUCT* lpmis = (MEASUREITEMSTRUCT*)lParam;
+			auto lpmis = reinterpret_cast<MEASUREITEMSTRUCT*>(lParam);
 			if (!lpmis)
 				break;
 			lpmis->itemWidth = 16;
@@ -1721,10 +1721,10 @@ STDMETHODIMP CShellExt::HandleMenuMsg2(UINT uMsg, WPARAM wParam, LPARAM lParam, 
 	case WM_DRAWITEM:
 		{
 			LPCTSTR resource;
-			DRAWITEMSTRUCT* lpdis = (DRAWITEMSTRUCT*)lParam;
+			auto lpdis = reinterpret_cast<DRAWITEMSTRUCT*>(lParam);
 			if (!lpdis || lpdis->CtlType != ODT_MENU)
 				return S_OK;		//not for a menu
-			resource = GetMenuTextFromResource((int)myIDMap[lpdis->itemID]);
+			resource = GetMenuTextFromResource(static_cast<int>(myIDMap[lpdis->itemID]));
 			if (!resource)
 				return S_OK;
 			int iconWidth = GetSystemMetrics(SM_CXSMICON);
@@ -1747,14 +1747,14 @@ STDMETHODIMP CShellExt::HandleMenuMsg2(UINT uMsg, WPARAM wParam, LPARAM lParam, 
 			if (HIWORD(wParam) != MF_POPUP)
 				return S_OK;
 			int nChar = LOWORD(wParam);
-			if (_istascii((wint_t)nChar) && _istupper((wint_t)nChar))
+			if (_istascii(static_cast<wint_t>(nChar)) && _istupper(static_cast<wint_t>(nChar)))
 				nChar = tolower(nChar);
 			// we have the char the user pressed, now search that char in all our
 			// menu items
 			std::vector<UINT_PTR> accmenus;
 			for (auto It = mySubMenuMap.cbegin(); It != mySubMenuMap.cend(); ++It)
 			{
-				LPCTSTR resource = GetMenuTextFromResource((int)mySubMenuMap[It->first]);
+				LPCTSTR resource = GetMenuTextFromResource(static_cast<int>(mySubMenuMap[It->first]));
 				if (!resource)
 					continue;
 				szItem = stringtablebuffer;
@@ -1763,7 +1763,7 @@ STDMETHODIMP CShellExt::HandleMenuMsg2(UINT uMsg, WPARAM wParam, LPARAM lParam, 
 					continue;
 				amp++;
 				int ampChar = LOWORD(*amp);
-				if (_istascii((wint_t)ampChar) && _istupper((wint_t)ampChar))
+				if (_istascii(static_cast<wint_t>(ampChar)) && _istupper(static_cast<wint_t>(ampChar)))
 					ampChar = tolower(ampChar);
 				if (ampChar == nChar)
 				{
@@ -1794,7 +1794,7 @@ STDMETHODIMP CShellExt::HandleMenuMsg2(UINT uMsg, WPARAM wParam, LPARAM lParam, 
 				mif.fMask = MIIM_STATE;
 				for (auto it = accmenus.cbegin(); it != accmenus.cend(); ++it)
 				{
-					GetMenuItemInfo((HMENU)lParam, (UINT)*it, TRUE, &mif);
+					GetMenuItemInfo(reinterpret_cast<HMENU>(lParam), static_cast<UINT>(*it), TRUE, &mif);
 					if (mif.fState == MFS_HILITE)
 					{
 						// this is the selected item, so select the next one
@@ -2106,7 +2106,7 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 		else
 			GetMenuTextFromResource(ShellMenuIgnoreSub);
 		menuiteminfo.dwTypeData = stringtablebuffer;
-		menuiteminfo.cch = (UINT)min(wcslen(menuiteminfo.dwTypeData), (size_t)UINT_MAX);
+		menuiteminfo.cch = static_cast<UINT>(min(wcslen(menuiteminfo.dwTypeData), static_cast<size_t>(UINT_MAX)));
 
 		InsertMenuItem((topmenu & MENUIGNORE) ? hMenu : subMenu, (topmenu & MENUIGNORE) ? indexMenu++ : indexSubMenu++, TRUE, &menuiteminfo);
 		if (itemStates & ITEMIS_IGNORED)

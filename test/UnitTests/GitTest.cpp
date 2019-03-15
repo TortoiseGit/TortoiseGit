@@ -56,7 +56,7 @@ TEST(CGit, RunGit_BashPipe)
 	CString pipefile = GetTempFile();
 	pipefile.Replace(L'\\', L'/');
 	CString pipecmd;
-	pipecmd.Format(L"cat < %s", (LPCTSTR)tmpfile);
+	pipecmd.Format(L"cat < %s", static_cast<LPCTSTR>(tmpfile));
 	ASSERT_TRUE(CStringUtils::WriteStringToTextFile(pipefile, pipecmd));
 	SCOPE_EXIT{ ::DeleteFile(pipefile); };
 	CString output;

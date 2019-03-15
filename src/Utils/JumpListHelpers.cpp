@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2009-2013 - TortoiseSVN
 
@@ -30,7 +30,7 @@ HRESULT SetAppID(LPCTSTR appID)
 	CAutoLibrary hShell = AtlLoadSystemLibraryUsingFullPath(L"shell32.dll");
 	if (hShell)
 	{
-		SetCurrentProcessExplicitAppUserModelIDFN *pfnSetCurrentProcessExplicitAppUserModelID = (SetCurrentProcessExplicitAppUserModelIDFN*)GetProcAddress(hShell, "SetCurrentProcessExplicitAppUserModelID");
+		auto pfnSetCurrentProcessExplicitAppUserModelID = reinterpret_cast<SetCurrentProcessExplicitAppUserModelIDFN*>(GetProcAddress(hShell, "SetCurrentProcessExplicitAppUserModelID"));
 		if (pfnSetCurrentProcessExplicitAppUserModelID)
 			hRes = pfnSetCurrentProcessExplicitAppUserModelID(appID);
 	}

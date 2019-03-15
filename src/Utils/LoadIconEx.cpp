@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2018 - TortoiseGit
+// Copyright (C) 2018-2019 - TortoiseGit
 // Copyright (C) 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -49,7 +49,7 @@ HICON LoadIconEx(HINSTANCE hInstance, LPCWSTR lpIconName, int iconWidth, int ico
 	if (FAILED(LoadIconWithScaleDown(hInstance, lpIconName, iconWidth, iconHeight, &hIcon)))
 	{
 		// fallback, just in case
-		hIcon = (HICON)LoadImage(hInstance, lpIconName, IMAGE_ICON, iconWidth, iconHeight, LR_DEFAULTCOLOR);
+		hIcon = static_cast<HICON>(LoadImage(hInstance, lpIconName, IMAGE_ICON, iconWidth, iconHeight, LR_DEFAULTCOLOR));
 	}
 	return hIcon;
 }

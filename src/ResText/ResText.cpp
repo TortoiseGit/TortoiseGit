@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2006, 2009-2012, 2014-2015 - TortoiseSVN
 
@@ -118,7 +118,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			++arg;
 			if (arg != arguments.end())
 			{
-				wLang = (WORD)_wtoi(arg->c_str());
+				wLang = static_cast<WORD>(_wtoi(arg->c_str()));
 			}
 			CResModule module;
 			module.SetQuiet(bQuiet);

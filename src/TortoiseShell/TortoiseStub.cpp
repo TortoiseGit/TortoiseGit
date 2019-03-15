@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2014, 2016-2017 - TortoiseGit
+// Copyright (C) 2012-2014, 2016-2019 - TortoiseGit
 // Copyright (C) 2007, 2009, 2013-2014, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@
 #include <tchar.h>
 #include "Debug.h"
 
-const HINSTANCE NIL = (HINSTANCE)((char*)(0)-1);
+const HINSTANCE NIL = reinterpret_cast<HINSTANCE>((static_cast<char*>(0)-1));
 
 static HINSTANCE hInst = nullptr;
 
@@ -55,14 +55,14 @@ static BOOL DebugActive(void)
 		Result = RegOpenKeyEx(HKEY_LOCAL_MACHINE, TGitRootKey, 0, KEY_READ, &hKey);
 		if (Result == ERROR_SUCCESS)
 		{
-			Result = RegQueryValueEx(hKey, DebugShellValue, nullptr, &Type, (BYTE*)&bDebug, &Len);
+			Result = RegQueryValueEx(hKey, DebugShellValue, nullptr, &Type, reinterpret_cast<BYTE*>(&bDebug), &Len);
 			if ((Result == ERROR_SUCCESS) && (Type == REG_DWORD) && (Len == sizeof(DWORD)) && bDebug)
 			{
 				TRACE(L"DebugActive() - debug active\n");
 				bDebugActive = TRUE;
 				Len = sizeof(wchar_t)*MAX_PATH;
 				Type = REG_SZ;
-				Result = RegQueryValueEx(hKey, DebugShellPathValue, nullptr, &Type, (BYTE*)DebugDllPath, &Len);
+				Result = RegQueryValueEx(hKey, DebugShellPathValue, nullptr, &Type, reinterpret_cast<BYTE*>(DebugDllPath), &Len);
 				if ((Result == ERROR_SUCCESS) && (Type == REG_SZ) && bDebug)
 					TRACE(L"DebugActive() - debug path set\n");
 			}
@@ -77,7 +77,7 @@ static BOOL DebugActive(void)
 		{
 			Len = sizeof(wchar_t)*MAX_PATH;
 			Type = REG_SZ;
-			Result = RegQueryValueEx(hKey, DebugShellPathValue, nullptr, &Type, (BYTE*)DebugDllPath, &Len);
+			Result = RegQueryValueEx(hKey, DebugShellPathValue, nullptr, &Type, reinterpret_cast<BYTE*>(DebugDllPath), &Len);
 			if ((Result == ERROR_SUCCESS) && (Type == REG_SZ) && bDebug)
 				TRACE(L"DebugActive() - debug path set\n");
 			RegCloseKey(hKey);
@@ -114,7 +114,7 @@ static BOOL WantRealVersion(void)
 	LONG Result = RegOpenKeyEx(HKEY_CURRENT_USER, TGitRootKey, 0, KEY_READ | KEY_WOW64_64KEY, &hKey);
 	if (Result == ERROR_SUCCESS)
 	{
-		Result = RegQueryValueEx(hKey, ExplorerOnlyValue, nullptr, &Type, (BYTE*)&bExplorerOnly, &Len);
+		Result = RegQueryValueEx(hKey, ExplorerOnlyValue, nullptr, &Type, reinterpret_cast<BYTE*>(&bExplorerOnly), &Len);
 		if ((Result == ERROR_SUCCESS) && (Type == REG_DWORD) && (Len == sizeof(DWORD)) && bExplorerOnly)
 		{
 			TRACE(L"WantRealVersion() - Explorer Only\n");
@@ -216,7 +216,7 @@ static void LoadRealLibrary(void)
 	TRACE(L"LoadRealLibrary() - Success\n");
 	pDllGetClassObject = nullptr;
 	pDllCanUnloadNow = nullptr;
-	pDllGetClassObject = (LPFNGETCLASSOBJECT)GetProcAddress(hTortoiseGit, GetClassObject);
+	pDllGetClassObject = reinterpret_cast<LPFNGETCLASSOBJECT>(GetProcAddress(hTortoiseGit, GetClassObject));
 	if (!pDllGetClassObject)
 	{
 		TRACE(L"LoadRealLibrary() - Fail\n");
@@ -224,7 +224,7 @@ static void LoadRealLibrary(void)
 		hTortoiseGit = NIL;
 		return;
 	}
-	pDllCanUnloadNow = (LPFNCANUNLOADNOW)GetProcAddress(hTortoiseGit, CanUnloadNow);
+	pDllCanUnloadNow = reinterpret_cast<LPFNCANUNLOADNOW>(GetProcAddress(hTortoiseGit, CanUnloadNow));
 	if (!pDllCanUnloadNow)
 	{
 		TRACE(L"LoadRealLibrary() - Fail\n");

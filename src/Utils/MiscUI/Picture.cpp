@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2018 - TortoiseGit
+// Copyright (C) 2015-2019 - TortoiseGit
 // Copyright (C) 2003-2015, 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -76,7 +76,7 @@ void CPicture::FreePictureData()
 	}
 	if (hIcons)
 	{
-		LPICONDIR lpIconDir = (LPICONDIR)lpIcons;
+		auto lpIconDir = reinterpret_cast<LPICONDIR>(lpIcons);
 		if (lpIconDir)
 		{
 			for (int i = 0; i < lpIconDir->idCount; ++i)
@@ -193,7 +193,7 @@ bool CPicture::Load(tstring sFilePathName)
 						// we are going to open same file second time so we have to close the file now
 						hFile.CloseHandle();
 
-						LPICONDIR lpIconDir = (LPICONDIR)lpIcons;
+						auto lpIconDir = reinterpret_cast<LPICONDIR>(lpIcons);
 						if ((lpIconDir->idCount) && ((lpIconDir->idCount * sizeof(ICONDIR)) <= fileinfo.nFileSizeLow))
 						{
 							try
@@ -202,18 +202,18 @@ bool CPicture::Load(tstring sFilePathName)
 								nCurrentIcon = 0;
 								hIcons = new HICON[lpIconDir->idCount];
 								// check that the pointers point to data that we just loaded
-								if (((BYTE*)lpIconDir->idEntries > (BYTE*)lpIconDir) &&
-									(((BYTE*)lpIconDir->idEntries) + (lpIconDir->idCount * sizeof(ICONDIRENTRY)) < ((BYTE*)lpIconDir) + fileinfo.nFileSizeLow))
+								if ((reinterpret_cast<BYTE*>(lpIconDir->idEntries) > reinterpret_cast<BYTE*>(lpIconDir)) &&
+									(reinterpret_cast<BYTE*>(lpIconDir->idEntries) + (lpIconDir->idCount * sizeof(ICONDIRENTRY)) < reinterpret_cast<BYTE*>(lpIconDir) + fileinfo.nFileSizeLow))
 								{
 									m_Width = lpIconDir->idEntries[0].bWidth == 0 ? 256 : lpIconDir->idEntries[0].bWidth;
 									m_Height = lpIconDir->idEntries[0].bHeight == 0 ? 256 : lpIconDir->idEntries[0].bHeight;
 									bResult = true;
 									for (int i = 0; i < lpIconDir->idCount; ++i)
 									{
-										hIcons[i] = (HICON)LoadImage(nullptr, sFilePathName.c_str(), IMAGE_ICON,
+										hIcons[i] = static_cast<HICON>(LoadImage(nullptr, sFilePathName.c_str(), IMAGE_ICON,
 																	 lpIconDir->idEntries[i].bWidth == 0 ? 256 : lpIconDir->idEntries[i].bWidth,
 																	 lpIconDir->idEntries[i].bHeight == 0 ? 256 : lpIconDir->idEntries[i].bHeight,
-																	 LR_LOADFROMFILE);
+																	 LR_LOADFROMFILE));
 										if (hIcons[i] == nullptr)
 										{
 											// if the icon couldn't be loaded, the data is most likely corrupt
@@ -270,7 +270,7 @@ bool CPicture::Load(tstring sFilePathName)
 									  nullptr,
 									  CLSCTX_INPROC_SERVER,
 									  IID_IWICImagingFactory,
-									  (LPVOID*)&pFactory);
+									  reinterpret_cast<LPVOID*>(&pFactory));
 
 		// Create a decoder from the file.
 		if (SUCCEEDED(hr))
@@ -320,7 +320,7 @@ bool CPicture::Load(tstring sFilePathName)
 
 									if (pBitmapBuffer != NULL)
 									{
-										WICRect rc = { 0, 0, (INT)uWidth, (INT)uHeight };
+										WICRect rc = { 0, 0, static_cast<int>(uWidth), static_cast<int>(uHeight) };
 										hr = piFormatConverter->CopyPixels(&rc, cbStride, cbStride * uHeight, pBitmapBuffer);
 										if (SUCCEEDED(hr))
 										{
@@ -382,20 +382,20 @@ bool CPicture::Load(tstring sFilePathName)
 		{
 			bool exportsValid = true;
 
-			//FreeImage_GetVersion = (FreeImage_GetVersion_t)s_GetProcAddressEx(hFreeImageLib, "_FreeImage_GetVersion@0", valid);
-			FreeImage_GetWidth = (FreeImage_GetWidth_t)s_GetProcAddressEx(hFreeImageLib, "_FreeImage_GetWidth@4", exportsValid);
-			FreeImage_GetHeight = (FreeImage_GetHeight_t)s_GetProcAddressEx(hFreeImageLib, "_FreeImage_GetHeight@4", exportsValid);
-			FreeImage_Unload = (FreeImage_Unload_t)s_GetProcAddressEx(hFreeImageLib, "_FreeImage_Unload@4", exportsValid);
-			FreeImage_ConvertToRawBits = (FreeImage_ConvertToRawBits_t)s_GetProcAddressEx(hFreeImageLib, "_FreeImage_ConvertToRawBits@32", exportsValid);
+			//FreeImage_GetVersion = reinterpret_cast<FreeImage_GetVersion_t>(s_GetProcAddressEx(hFreeImageLib, "_FreeImage_GetVersion@0", valid));
+			FreeImage_GetWidth = reinterpret_cast<FreeImage_GetWidth_t>(s_GetProcAddressEx(hFreeImageLib, "_FreeImage_GetWidth@4", exportsValid));
+			FreeImage_GetHeight = reinterpret_cast<FreeImage_GetHeight_t>(s_GetProcAddressEx(hFreeImageLib, "_FreeImage_GetHeight@4", exportsValid));
+			FreeImage_Unload = reinterpret_cast<FreeImage_Unload_t>(s_GetProcAddressEx(hFreeImageLib, "_FreeImage_Unload@4", exportsValid));
+			FreeImage_ConvertToRawBits = reinterpret_cast<FreeImage_ConvertToRawBits_t>(s_GetProcAddressEx(hFreeImageLib, "_FreeImage_ConvertToRawBits@32", exportsValid));
 
 #ifdef UNICODE
-			FreeImage_GetFileType = (FreeImage_GetFileType_t)s_GetProcAddressEx(hFreeImageLib, "_FreeImage_GetFileTypeU@8", exportsValid);
-			FreeImage_GetFIFFromFilename = (FreeImage_GetFIFFromFilename_t)s_GetProcAddressEx(hFreeImageLib, "_FreeImage_GetFIFFromFilenameU@4", exportsValid);
-			FreeImage_Load = (FreeImage_Load_t)s_GetProcAddressEx(hFreeImageLib, "_FreeImage_LoadU@12", exportsValid);
+			FreeImage_GetFileType = reinterpret_cast<FreeImage_GetFileType_t>(s_GetProcAddressEx(hFreeImageLib, "_FreeImage_GetFileTypeU@8", exportsValid));
+			FreeImage_GetFIFFromFilename = reinterpret_cast<FreeImage_GetFIFFromFilename_t>(s_GetProcAddressEx(hFreeImageLib, "_FreeImage_GetFIFFromFilenameU@4", exportsValid));
+			FreeImage_Load = reinterpret_cast<FreeImage_Load_t>(s_GetProcAddressEx(hFreeImageLib, "_FreeImage_LoadU@12", exportsValid));
 #else
-			FreeImage_GetFileType = (FreeImage_GetFileType_t)s_GetProcAddressEx(hFreeImageLib, "_FreeImage_GetFileType@8", exportsValid);
-			FreeImage_GetFIFFromFilename = (FreeImage_GetFIFFromFilename_t)s_GetProcAddressEx(hFreeImageLib, "_FreeImage_GetFIFFromFilename@4", exportsValid);
-			FreeImage_Load = (FreeImage_Load_t)s_GetProcAddressEx(hFreeImageLib, "_FreeImage_Load@12", exportsValid);
+			FreeImage_GetFileType = reinterpret_cast<FreeImage_GetFileType_t>(s_GetProcAddressEx(hFreeImageLib, "_FreeImage_GetFileType@8", exportsValid));
+			FreeImage_GetFIFFromFilename = reinterpret_cast<FreeImage_GetFIFFromFilename_t>(s_GetProcAddressEx(hFreeImageLib, "_FreeImage_GetFIFFromFilename@4", exportsValid));
+			FreeImage_Load = reinterpret_cast<FreeImage_Load_t>(s_GetProcAddressEx(hFreeImageLib, "_FreeImage_Load@12", exportsValid));
 #endif
 
 				//const char* version = FreeImage_GetVersion();
@@ -431,7 +431,7 @@ bool CPicture::Load(tstring sFilePathName)
 							BitmapData bitmapData;
 							if (pBitmap->LockBits(&rect, ImageLockModeWrite, PixelFormat32bppARGB, &bitmapData) == Ok)
 							{
-								FreeImage_ConvertToRawBits((BYTE*)bitmapData.Scan0, dib, bitmapData.Stride, 32, 0xff << RED_SHIFT, 0xff << GREEN_SHIFT, 0xff << BLUE_SHIFT, FALSE);
+								FreeImage_ConvertToRawBits(static_cast<BYTE*>(bitmapData.Scan0), dib, bitmapData.Stride, 32, 0xff << RED_SHIFT, 0xff << GREEN_SHIFT, 0xff << BLUE_SHIFT, FALSE);
 
 								pBitmap->UnlockBits(&bitmapData);
 
@@ -504,7 +504,7 @@ bool CPicture::LoadPictureData(BYTE *pBuffer, int nSize)
 
 	if ((CreateStreamOnHGlobal(hGlobalMem, true, &pStream) == S_OK) && (pStream))
 	{
-		HRESULT hr = OleLoadPicture(pStream, nSize, false, IID_IPicture, (LPVOID *)&m_IPicture);
+		HRESULT hr = OleLoadPicture(pStream, nSize, false, IID_IPicture, reinterpret_cast<LPVOID*>(&m_IPicture));
 		pStream->Release();
 		pStream = nullptr;
 
@@ -586,7 +586,7 @@ UINT CPicture::GetColorDepth() const
 {
 	if (bIsIcon && lpIcons)
 	{
-		LPICONDIR lpIconDir = (LPICONDIR)lpIcons;
+		auto lpIconDir = reinterpret_cast<LPICONDIR>(lpIcons);
 		return lpIconDir->idEntries[nCurrentIcon].wBitCount;
 	}
 
@@ -598,7 +598,7 @@ UINT CPicture::GetColorDepth() const
 								  nullptr,
 								  CLSCTX_INPROC_SERVER,
 								  IID_IWICImagingFactory,
-								  (LPVOID*)&pFactory);
+								  reinterpret_cast<LPVOID*>(&pFactory));
 
 	// Create a decoder from the file.
 	if (SUCCEEDED(hr))
@@ -627,7 +627,7 @@ UINT CPicture::GetColorDepth() const
 					if (SUCCEEDED(hr))
 					{
 						IWICPixelFormatInfo* piPixelFormatInfo = nullptr;
-						hr = piCompInfo->QueryInterface(IID_IWICPixelFormatInfo, (LPVOID *)&piPixelFormatInfo);
+						hr = piCompInfo->QueryInterface(IID_IWICPixelFormatInfo, reinterpret_cast<LPVOID*>(&piPixelFormatInfo));
 						if (SUCCEEDED(hr))
 						{
 							hr = piPixelFormatInfo->GetBitsPerPixel(&bpp);
@@ -686,7 +686,7 @@ UINT CPicture::GetNumberOfFrames(int dimension)
 	if (!pBitmap)
 		return 0;
 	UINT count = pBitmap->GetFrameDimensionsCount();
-	GUID* pDimensionIDs = (GUID*)malloc(sizeof(GUID)*count);
+	auto pDimensionIDs = static_cast<GUID*>(malloc(sizeof(GUID) * count));
 
 	pBitmap->GetFrameDimensionsList(pDimensionIDs, count);
 
@@ -700,7 +700,7 @@ UINT CPicture::GetNumberOfDimensions()
 {
 	if (bIsIcon && lpIcons)
 	{
-		LPICONDIR lpIconDir = (LPICONDIR)lpIcons;
+		auto lpIconDir = reinterpret_cast<LPICONDIR>(lpIcons);
 		return lpIconDir->idCount;
 	}
 	return pBitmap ? pBitmap->GetFrameDimensionsCount() : 0;
@@ -719,7 +719,7 @@ long CPicture::SetActiveFrame(UINT frame)
 		return 0;
 	UINT count = 0;
 	count = pBitmap->GetFrameDimensionsCount();
-	GUID* pDimensionIDs = (GUID*)malloc(sizeof(GUID)*count);
+	auto pDimensionIDs = static_cast<GUID*>(malloc(sizeof(GUID) * count));
 
 	pBitmap->GetFrameDimensionsList(pDimensionIDs, count);
 
@@ -740,7 +740,7 @@ long CPicture::SetActiveFrame(UINT frame)
 	int nSize = pBitmap->GetPropertyItemSize(PropertyTagFrameDelay);
 
 	// Allocate a buffer to receive the property item.
-	PropertyItem* pPropertyItem = (PropertyItem*)malloc(nSize);
+	auto pPropertyItem = static_cast<PropertyItem*>(malloc(nSize));
 
 	Status s = pBitmap->GetPropertyItem(PropertyTagFrameDelay, nSize, pPropertyItem);
 
@@ -750,7 +750,7 @@ long CPicture::SetActiveFrame(UINT frame)
 	long delay = 0;
 	if (s == Ok)
 	{
-		delay = ((long*)pPropertyItem->value)[prevframe] * 10;
+		delay = reinterpret_cast<long*>(pPropertyItem->value)[prevframe] * 10;
 	}
 	free(pPropertyItem);
 	m_Height = GetHeight();
@@ -762,7 +762,7 @@ UINT CPicture::GetHeight() const
 {
 	if ((bIsIcon) && (lpIcons))
 	{
-		LPICONDIR lpIconDir = (LPICONDIR)lpIcons;
+		auto lpIconDir = reinterpret_cast<LPICONDIR>(lpIcons);
 		return lpIconDir->idEntries[nCurrentIcon].bHeight == 0 ? 256 : lpIconDir->idEntries[nCurrentIcon].bHeight;
 	}
 	return pBitmap ? pBitmap->GetHeight() : 0;
@@ -772,7 +772,7 @@ UINT CPicture::GetWidth() const
 {
 	if ((bIsIcon) && (lpIcons))
 	{
-		LPICONDIR lpIconDir = (LPICONDIR)lpIcons;
+		auto lpIconDir = reinterpret_cast<LPICONDIR>(lpIcons);
 		return lpIconDir->idEntries[nCurrentIcon].bWidth == 0 ? 256 : lpIconDir->idEntries[nCurrentIcon].bWidth;
 	}
 	return pBitmap ? pBitmap->GetWidth() : 0;
@@ -782,7 +782,7 @@ PixelFormat CPicture::GetPixelFormat() const
 {
 	if ((bIsIcon) && (lpIcons))
 	{
-		LPICONDIR lpIconDir = (LPICONDIR)lpIcons;
+		auto lpIconDir = reinterpret_cast<LPICONDIR>(lpIcons);
 		if (lpIconDir->idEntries[nCurrentIcon].wPlanes == 1)
 		{
 			if (lpIconDir->idEntries[nCurrentIcon].wBitCount == 1)

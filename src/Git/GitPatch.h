@@ -1,6 +1,6 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2012 - TortoiseGit
+// Copyright (C) 2012, 2019 - TortoiseGit
 // Copyright (C) 2010-2012, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -69,7 +69,7 @@ public:
 	/**
 	 * returns the number of files that are affected by the patchfile.
 	 */
-	int						GetNumberOfFiles() const { return (int)m_filePaths.size(); }
+	int						GetNumberOfFiles() const { return static_cast<int>(m_filePaths.size()); }
 
 	/**
 	 * Returns the path of the affected file

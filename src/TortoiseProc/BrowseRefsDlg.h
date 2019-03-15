@@ -63,7 +63,7 @@ public:
 	bool			IsFrom(const wchar_t* from)const
 	{
 		CString name = GetRefName();
-		int len = (int)wcslen(from);
+		int len = static_cast<int>(wcslen(from));
 		if (from[len - 1] != '/' && wcsncmp(name, from, len) == 0)
 		{
 			if (len == name.GetLength())
@@ -78,7 +78,7 @@ public:
 
 	CString			GetRefsHeadsName() const
 	{
-		return GetRefName().Mid((int)wcslen(L"refs/heads/"));
+		return GetRefName().Mid(static_cast<int>(wcslen(L"refs/heads/")));
 	}
 
 	CShadowTree*	FindLeaf(CString partialRefName);

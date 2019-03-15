@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -110,11 +110,9 @@ BOOL CImportPatchDlg::OnInitDialog()
 	CAutoLibrary hUser = AtlLoadSystemLibraryUsingFullPath(L"user32.dll");
 	if (hUser)
 	{
-		ChangeWindowMessageFilterExDFN *pfnChangeWindowMessageFilterEx = (ChangeWindowMessageFilterExDFN*)GetProcAddress(hUser, "ChangeWindowMessageFilterEx");
+		auto pfnChangeWindowMessageFilterEx = reinterpret_cast<ChangeWindowMessageFilterExDFN*>(GetProcAddress(hUser, "ChangeWindowMessageFilterEx"));
 		if (pfnChangeWindowMessageFilterEx)
-		{
 			pfnChangeWindowMessageFilterEx(m_hWnd, TaskBarButtonCreated, MSGFLT_ALLOW, &cfs);
-		}
 	}
 	m_pTaskbarList.Release();
 	if (FAILED(m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList)))
@@ -463,7 +461,7 @@ UINT CImportPatchDlg::PatchThread()
 		else
 		{
 			CString sMessage;
-			sMessage.Format(IDS_PROC_SKIPPATCH, (LPCTSTR)m_cList.GetItemText(i, 0));
+			sMessage.Format(IDS_PROC_SKIPPATCH, static_cast<LPCTSTR>(m_cList.GetItemText(i, 0)));
 			AddLogString(sMessage);
 			m_cList.SetItemData(i, CPatchListCtrl::STATUS_APPLY_SKIP);
 		}
@@ -569,7 +567,7 @@ LRESULT CImportPatchDlg::DefWindowProc(UINT message, WPARAM wParam, LPARAM lPara
 	case WM_NOTIFY:
 		if (wParam == IDC_AM_SPLIT)
 		{
-			SPC_NMHDR* pHdr = (SPC_NMHDR*) lParam;
+			auto pHdr = reinterpret_cast<SPC_NMHDR*>(lParam);
 			DoSize(pHdr->delta);
 		}
 		break;
@@ -641,8 +639,8 @@ void CImportPatchDlg::AddLogString(const CString& str)
 {
 	this->m_wndOutput.SendMessage(SCI_SETREADONLY, FALSE);
 	CStringA sTextA = m_wndOutput.StringForControl(str);//CUnicodeUtils::GetUTF8(str);
-	this->m_wndOutput.SendMessage(SCI_REPLACESEL, 0, (LPARAM)(LPCSTR)sTextA);
-	this->m_wndOutput.SendMessage(SCI_REPLACESEL, 0, (LPARAM)(LPCSTR)"\n");
+	this->m_wndOutput.SendMessage(SCI_REPLACESEL, 0, reinterpret_cast<LPARAM>(static_cast<LPCSTR>(sTextA)));
+	this->m_wndOutput.SendMessage(SCI_REPLACESEL, 0, reinterpret_cast<LPARAM>("\n"));
 	this->m_wndOutput.SendMessage(SCI_SETREADONLY, TRUE);
 	//this->m_wndOutput.SendMessage(SCI_LINESCROLL,0,0x7FFFFFFF);
 }

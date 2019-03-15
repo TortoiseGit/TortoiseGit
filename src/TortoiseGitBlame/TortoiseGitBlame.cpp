@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2017, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -101,7 +101,7 @@ BOOL CTortoiseGitBlameApp::InitInstance()
 	HINSTANCE hInst = nullptr;
 	do
 	{
-		langDll.Format(L"%sLanguages\\TortoiseGitBlame%ld.dll", (LPCTSTR)CPathUtils::GetAppParentDirectory(), langId);
+		langDll.Format(L"%sLanguages\\TortoiseGitBlame%ld.dll", static_cast<LPCTSTR>(CPathUtils::GetAppParentDirectory()), langId);
 
 		hInst = LoadLibrary(langDll);
 		CString sVer = _T(STRPRODUCTVER);
@@ -294,7 +294,7 @@ BOOL CAboutDlg::OnInitDialog()
 	SetDlgItemText(IDC_VERSION, verbuf);
 
 	SetDlgItemText(IDC_COPYRIGHT, CPathUtils::GetCopyrightForSelf());
-	SetDlgItemText(IDC_STATIC_AUTHORS, L"Sven Strickroth <email@cs-ware.de> (Current Maintainer), Sup Yut Sum <ch3cooli@gmail.com>, Frank Li <lznuaa@gmail.com> and Martin Strau� <MStrauss@MuellerBBM-vas.de>");
+	SetDlgItemText(IDC_STATIC_AUTHORS, L"Sven Strickroth <email@cs-ware.de> (Current Maintainer), Sup Yut Sum <ch3cooli@gmail.com>, Frank Li <lznuaa@gmail.com> and Martin Strauß <MStrauss@MuellerBBM-vas.de>");
 
 	return FALSE;
 }

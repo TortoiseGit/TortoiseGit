@@ -212,10 +212,10 @@ public:
 
 	void ConvertFrom(CAutoObject&& h)
 	{
-		if (m_Ref != (git_tree*)(git_object*)h)
+		if (m_Ref != reinterpret_cast<git_tree*>(static_cast<git_object*>(h)))
 		{
 			Free();
-			m_Ref = (git_tree*)h.Detach();
+			m_Ref = reinterpret_cast<git_tree*>(h.Detach());
 		}
 	}
 
@@ -259,7 +259,7 @@ public:
 			return ret;
 		}
 
-		value = CUnicodeUtils::GetUnicode((CStringA)buf->ptr);
+		value = CUnicodeUtils::GetUnicode(CStringA(buf->ptr));
 
 		return 0;
 	}

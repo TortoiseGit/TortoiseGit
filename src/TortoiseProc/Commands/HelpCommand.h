@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2007-2008 - TortoiseSVN
 
@@ -32,7 +32,7 @@ public:
 	 */
 	virtual bool			Execute() override
 	{
-		return ((INT_PTR)ShellExecute(GetExplorerHWND(), L"open", theApp.m_pszHelpFilePath, nullptr, nullptr, SW_SHOWNORMAL) > 32);
+		return (reinterpret_cast<INT_PTR>(ShellExecute(GetExplorerHWND(), L"open", theApp.m_pszHelpFilePath, nullptr, nullptr, SW_SHOWNORMAL)) > 32);
 	}
 };
 

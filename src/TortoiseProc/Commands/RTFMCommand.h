@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014, 2018 - TortoiseGit
+// Copyright (C) 2014, 2018-2019 - TortoiseGit
 // Copyright (C) 2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -39,7 +39,7 @@ public:
 		// If the user tries to start TortoiseProc from the link in the programs start menu
 		// show an explanation about what TSVN is (shell extension) and open up an explorer window
 		if (CMessageBox::Show(GetExplorerHWND(), IDS_PROC_RTFM, IDS_APPNAME, 1, IDI_INFORMATION, IDS_OKBUTTON, IDS_MENUHELP) == 2)
-			return ((INT_PTR)ShellExecute(GetExplorerHWND(), L"open", theApp.m_pszHelpFilePath, nullptr, nullptr, SW_SHOWNORMAL) > 32);
+			return (reinterpret_cast<INT_PTR>(ShellExecute(GetExplorerHWND(), L"open", theApp.m_pszHelpFilePath, nullptr, nullptr, SW_SHOWNORMAL)) > 32);
 		TCHAR path[MAX_PATH] = {0};
 		SHGetFolderPath(GetExplorerHWND(), CSIDL_PERSONAL, nullptr, SHGFP_TYPE_CURRENT, path);
 		CAppUtils::ExploreTo(GetExplorerHWND(), path);

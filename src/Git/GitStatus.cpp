@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -60,8 +60,7 @@ int GitStatus::GetAllStatus(const CTGitPath& path, bool bIsRecursive, git_wc_sta
 			sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/);
 	}
 
-	bool isfull = ((DWORD)CRegStdDWORD(L"Software\\TortoiseGit\\CacheType",
-				GetSystemMetrics(SM_REMOTESESSION) ? ShellCache::dll : ShellCache::exe) == ShellCache::dllFull);
+	bool isfull = (static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\CacheType", GetSystemMetrics(SM_REMOTESESSION)) ? ShellCache::dll : ShellCache::exe) == ShellCache::dllFull);
 
 	if(isDir)
 	{
@@ -116,8 +115,7 @@ void GitStatus::GetStatus(const CTGitPath& path, bool /*update*/ /* = false */, 
 	if ( !path.HasAdminDir(&sProjectRoot) )
 		return;
 
-	bool isfull = ((DWORD)CRegStdDWORD(L"Software\\TortoiseGit\\CacheType",
-				GetSystemMetrics(SM_REMOTESESSION) ? ShellCache::dll : ShellCache::exe) == ShellCache::dllFull);
+	bool isfull = (static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\CacheType", GetSystemMetrics(SM_REMOTESESSION)) ? ShellCache::dll : ShellCache::exe) == ShellCache::dllFull);
 
 	int err = 0;
 
@@ -242,7 +240,7 @@ static int GetFileStatus_int(const CString& gitdir, CGitRepoLists& repolists, co
 		if (start == NPOS)
 		{
 			status.status = git_wc_status_added;
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": File miss in head tree %s", (LPCTSTR)path);
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": File miss in head tree %s", static_cast<LPCTSTR>(path));
 			return 0;
 		}
 
@@ -316,7 +314,7 @@ int GitStatus::GetFileList(const CString& path, std::vector<CGitFileName>& list,
 		if (wcscmp(data.cFileName, L"..") == 0)
 			continue;
 
-		CGitFileName filename(data.cFileName, ((__int64)data.nFileSizeHigh << 32) + data.nFileSizeLow, ((__int64)data.ftLastWriteTime.dwHighDateTime << 32) + data.ftLastWriteTime.dwLowDateTime);
+		CGitFileName filename(data.cFileName, static_cast<__int64>(data.nFileSizeHigh) << 32 | data.nFileSizeLow, static_cast<__int64>(data.ftLastWriteTime.dwHighDateTime) << 32 | data.ftLastWriteTime.dwLowDateTime);
 		if ((data.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT) && !CPathUtils::ReadLink(CombinePath(path, filename.m_FileName)))
 			filename.m_bSymlink = true;
 		else if (data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)

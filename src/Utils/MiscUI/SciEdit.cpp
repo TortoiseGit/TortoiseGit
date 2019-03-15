@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2018 - TortoiseGit
+// Copyright (C) 2009-2019 - TortoiseGit
 // Copyright (C) 2003-2008, 2012-2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -119,12 +119,12 @@ static std::unique_ptr<UINT[]> Icon2Image(HICON hIcon)
 	LPBYTE alphaPixels = pixelsIconRGB + size;
 	HDC hDC = CreateCompatibleDC(nullptr);
 	SCOPE_EXIT { DeleteDC(hDC); };
-	HBITMAP hBmpOld = (HBITMAP)SelectObject(hDC, (HGDIOBJ)iconInfo.hbmColor);
-	if (!GetDIBits(hDC, iconInfo.hbmColor, 0, height, (LPVOID)pixelsIconRGB, &infoheader, DIB_RGB_COLORS))
+	HBITMAP hBmpOld = static_cast<HBITMAP>(SelectObject(hDC, iconInfo.hbmColor));
+	if (!GetDIBits(hDC, iconInfo.hbmColor, 0, height, static_cast<LPVOID>(pixelsIconRGB), &infoheader, DIB_RGB_COLORS))
 		return nullptr;
 
 	SelectObject(hDC, hBmpOld);
-	if (!GetDIBits(hDC, iconInfo.hbmMask, 0,height, (LPVOID)alphaPixels, &infoheader, DIB_RGB_COLORS))
+	if (!GetDIBits(hDC, iconInfo.hbmMask, 0, height, static_cast<LPVOID>(alphaPixels), &infoheader, DIB_RGB_COLORS))
 		return nullptr;
 
 	auto imagePixels = std::make_unique<UINT[]>(height * width);
@@ -138,7 +138,7 @@ static std::unique_ptr<UINT[]> Icon2Image(HICON hIcon)
 		{
 			int currentDestPos = linePosDest + x;
 			int currentSrcPos = linePosSrc + x * 3;
-			imagePixels[currentDestPos] = (((UINT)(
+			imagePixels[currentDestPos] = ((static_cast<UINT>(
 				(
 					((pixelsIconRGB[currentSrcPos + 2]  /*Red*/)
 					| (pixelsIconRGB[currentSrcPos + 1] << 8 /*Green*/))
@@ -173,7 +173,7 @@ void CSciEdit::Init(LONG lLanguage)
 	Call(SCI_AUTOCSETIGNORECASE, 1);
 	Call(SCI_SETLEXER, SCLEX_CONTAINER);
 	Call(SCI_SETCODEPAGE, SC_CP_UTF8);
-	Call(SCI_AUTOCSETFILLUPS, 0, (LPARAM)"\t([");
+	Call(SCI_AUTOCSETFILLUPS, 0, reinterpret_cast<LPARAM>("\t(["));
 	Call(SCI_AUTOCSETMAXWIDTH, 0);
 	//Set the default windows colors for edit controls
 	SetColors(false);
@@ -187,16 +187,16 @@ void CSciEdit::Init(LONG lLanguage)
 		if (i == '\r' || i == '\n')
 			continue;
 		else if (i < 0x20 || i == ' ')
-			sWhiteSpace += (char)i;
+			sWhiteSpace += static_cast<char>(i);
 		else if (isalnum(i) || i == '\'' || i == '_' || i == '-')
-			sWordChars += (char)i;
+			sWordChars += static_cast<char>(i);
 	}
-	Call(SCI_SETWORDCHARS, 0, (LPARAM)(LPCSTR)sWordChars);
-	Call(SCI_SETWHITESPACECHARS, 0, (LPARAM)(LPCSTR)sWhiteSpace);
-	m_bDoStyle = ((DWORD)CRegStdDWORD(L"Software\\TortoiseGit\\StyleCommitMessages", TRUE)) == TRUE;
-	m_nAutoCompleteMinChars = (int)(DWORD)CRegStdDWORD(L"Software\\TortoiseGit\\AutoCompleteMinChars", 3);
+	Call(SCI_SETWORDCHARS, 0, reinterpret_cast<LPARAM>(static_cast<LPCSTR>(sWordChars)));
+	Call(SCI_SETWHITESPACECHARS, 0, reinterpret_cast<LPARAM>(static_cast<LPCSTR>(sWhiteSpace)));
+	m_bDoStyle = static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\StyleCommitMessages", TRUE)) == TRUE;
+	m_nAutoCompleteMinChars = static_cast<int>(CRegStdDWORD(L"Software\\TortoiseGit\\AutoCompleteMinChars", 3));
 	// look for dictionary files and use them if found
-	if ((lLanguage >= 0) && (((DWORD)CRegStdDWORD(L"Software\\TortoiseGit\\Spellchecker", TRUE)) == TRUE))
+	if (lLanguage >= 0 && static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\Spellchecker", TRUE)) == TRUE)
 	{
 		if (!lLanguage || (lLanguage && !LoadDictionaries(lLanguage)))
 		{
@@ -268,7 +268,7 @@ void CSciEdit::SetIcon(const std::map<int, UINT> &icons)
 		auto hIcon = LoadIconEx(AfxGetInstanceHandle(), MAKEINTRESOURCE(icon.second), iconWidth, iconHeight);
 		auto bytes = Icon2Image(hIcon);
 		DestroyIcon(hIcon);
-		Call(SCI_REGISTERRGBAIMAGE, icon.first, (LPARAM)bytes.get());
+		Call(SCI_REGISTERRGBAIMAGE, icon.first, reinterpret_cast<LPARAM>(bytes.get()));
 	}
 }
 
@@ -336,14 +336,14 @@ LRESULT CSciEdit::Call(UINT message, WPARAM wParam, LPARAM lParam)
 {
 	ASSERT(::IsWindow(m_hWnd)); //Window must be valid
 	ASSERT(m_DirectFunction); //Direct function must be valid
-	return ((SciFnDirect) m_DirectFunction)(m_DirectPointer, message, wParam, lParam);
+	return reinterpret_cast<SciFnDirect>(m_DirectFunction)(m_DirectPointer, message, wParam, lParam);
 }
 
 CString CSciEdit::StringFromControl(const CStringA& text)
 {
 	CString sText;
 #ifdef UNICODE
-	int codepage = (int)Call(SCI_GETCODEPAGE);
+	int codepage = static_cast<int>(Call(SCI_GETCODEPAGE));
 	int reslen = MultiByteToWideChar(codepage, 0, text, text.GetLength(), 0, 0);
 	MultiByteToWideChar(codepage, 0, text, text.GetLength(), sText.GetBuffer(reslen+1), reslen+1);
 	sText.ReleaseBuffer(reslen);
@@ -357,7 +357,7 @@ CStringA CSciEdit::StringForControl(const CString& text)
 {
 	CStringA sTextA;
 #ifdef UNICODE
-	int codepage = (int)SendMessage(SCI_GETCODEPAGE);
+	int codepage = static_cast<int>(SendMessage(SCI_GETCODEPAGE));
 	int reslen = WideCharToMultiByte(codepage, 0, text, text.GetLength(), 0, 0, 0, 0);
 	WideCharToMultiByte(codepage, 0, text, text.GetLength(), sTextA.GetBuffer(reslen), reslen, 0, 0);
 	sTextA.ReleaseBuffer(reslen);
@@ -371,7 +371,7 @@ CStringA CSciEdit::StringForControl(const CString& text)
 void CSciEdit::SetText(const CString& sText)
 {
 	CStringA sTextA = StringForControl(sText);
-	Call(SCI_SETTEXT, 0, (LPARAM)(LPCSTR)sTextA);
+	Call(SCI_SETTEXT, 0, reinterpret_cast<LPARAM>(static_cast<LPCSTR>(sTextA)));
 
 	if (Call(SCI_GETSCROLLWIDTHTRACKING) != 0)
 		Call(SCI_SETSCROLLWIDTH, 1);
@@ -388,31 +388,31 @@ void CSciEdit::SetText(const CString& sText)
 void CSciEdit::InsertText(const CString& sText, bool bNewLine)
 {
 	CStringA sTextA = StringForControl(sText);
-	Call(SCI_REPLACESEL, 0, (LPARAM)(LPCSTR)sTextA);
+	Call(SCI_REPLACESEL, 0, reinterpret_cast<LPARAM>(static_cast<LPCSTR>(sTextA)));
 	if (bNewLine)
-		Call(SCI_REPLACESEL, 0, (LPARAM)(LPCSTR)"\n");
+		Call(SCI_REPLACESEL, 0, reinterpret_cast<LPARAM>("\n"));
 }
 
 CString CSciEdit::GetText()
 {
-	auto len = (int)Call(SCI_GETTEXT, 0, 0);
+	auto len = static_cast<int>(Call(SCI_GETTEXT, 0, 0));
 	CStringA sTextA;
-	Call(SCI_GETTEXT, (WPARAM)(len + 1), (LPARAM)(LPCSTR)CStrBufA(sTextA, len + 1));
+	Call(SCI_GETTEXT, len + 1, reinterpret_cast<LPARAM>(static_cast<LPCSTR>(CStrBufA(sTextA, len + 1))));
 	return StringFromControl(sTextA);
 }
 
 CString CSciEdit::GetWordUnderCursor(bool bSelectWord, bool allchars)
 {
 	Sci_TextRange textrange;
-	auto pos = (Sci_Position)Call(SCI_GETCURRENTPOS);
-	textrange.chrg.cpMin = (int)Call(SCI_WORDSTARTPOSITION, pos, TRUE);
+	auto pos = static_cast<Sci_Position>(Call(SCI_GETCURRENTPOS));
+	textrange.chrg.cpMin = static_cast<int>(Call(SCI_WORDSTARTPOSITION, pos, TRUE));
 	if ((pos == textrange.chrg.cpMin)||(textrange.chrg.cpMin < 0))
 		return CString();
-	textrange.chrg.cpMax = (int)Call(SCI_WORDENDPOSITION, textrange.chrg.cpMin, TRUE);
+	textrange.chrg.cpMax = static_cast<int>(Call(SCI_WORDENDPOSITION, textrange.chrg.cpMin, TRUE));
 
 	auto textbuffer = std::make_unique<char[]>(textrange.chrg.cpMax - textrange.chrg.cpMin + 1);
 	textrange.lpstrText = textbuffer.get();
-	Call(SCI_GETTEXTRANGE, 0, (LPARAM)&textrange);
+	Call(SCI_GETTEXTRANGE, 0, reinterpret_cast<LPARAM>(&textrange));
 	CString sRet = StringFromControl(textbuffer.get());
 	if (m_bDoStyle && !allchars)
 	{
@@ -441,29 +441,29 @@ CString CSciEdit::GetWordUnderCursor(bool bSelectWord, bool allchars)
 
 void CSciEdit::SetFont(CString sFontName, int iFontSizeInPoints)
 {
-	Call(SCI_STYLESETFONT, STYLE_DEFAULT, (LPARAM)(LPCSTR)CUnicodeUtils::GetUTF8(sFontName).GetBuffer());
+	Call(SCI_STYLESETFONT, STYLE_DEFAULT, reinterpret_cast<LPARAM>(CUnicodeUtils::GetUTF8(sFontName).GetBuffer()));
 	Call(SCI_STYLESETSIZE, STYLE_DEFAULT, iFontSizeInPoints);
 	Call(SCI_STYLECLEARALL);
 
-	LPARAM color = (LPARAM)GetSysColor(COLOR_HOTLIGHT);
+	LPARAM color = GetSysColor(COLOR_HOTLIGHT);
 	// set the styles for the bug ID strings
-	Call(SCI_STYLESETBOLD, STYLE_ISSUEBOLD, (LPARAM)TRUE);
+	Call(SCI_STYLESETBOLD, STYLE_ISSUEBOLD, TRUE);
 	Call(SCI_STYLESETFORE, STYLE_ISSUEBOLD, color);
-	Call(SCI_STYLESETBOLD, STYLE_ISSUEBOLDITALIC, (LPARAM)TRUE);
-	Call(SCI_STYLESETITALIC, STYLE_ISSUEBOLDITALIC, (LPARAM)TRUE);
+	Call(SCI_STYLESETBOLD, STYLE_ISSUEBOLDITALIC, TRUE);
+	Call(SCI_STYLESETITALIC, STYLE_ISSUEBOLDITALIC, TRUE);
 	Call(SCI_STYLESETFORE, STYLE_ISSUEBOLDITALIC, color);
-	Call(SCI_STYLESETHOTSPOT, STYLE_ISSUEBOLDITALIC, (LPARAM)TRUE);
+	Call(SCI_STYLESETHOTSPOT, STYLE_ISSUEBOLDITALIC, TRUE);
 
 	// set the formatted text styles
-	Call(SCI_STYLESETBOLD, STYLE_BOLD, (LPARAM)TRUE);
-	Call(SCI_STYLESETITALIC, STYLE_ITALIC, (LPARAM)TRUE);
-	Call(SCI_STYLESETUNDERLINE, STYLE_UNDERLINED, (LPARAM)TRUE);
+	Call(SCI_STYLESETBOLD, STYLE_BOLD, TRUE);
+	Call(SCI_STYLESETITALIC, STYLE_ITALIC, TRUE);
+	Call(SCI_STYLESETUNDERLINE, STYLE_UNDERLINED, TRUE);
 
 	// set the style for URLs
 	Call(SCI_STYLESETFORE, STYLE_URL, color);
-	Call(SCI_STYLESETHOTSPOT, STYLE_URL, (LPARAM)TRUE);
+	Call(SCI_STYLESETHOTSPOT, STYLE_URL, TRUE);
 
-	Call(SCI_SETHOTSPOTACTIVEUNDERLINE, (LPARAM)TRUE);
+	Call(SCI_SETHOTSPOTACTIVEUNDERLINE, TRUE);
 }
 
 void CSciEdit::SetAutoCompletionList(std::map<CString, int>&& list, TCHAR separator, TCHAR typeSeparator)
@@ -549,14 +549,14 @@ void CSciEdit::CheckSpelling(Sci_Position startpos, Sci_Position endpos)
 	textrange.chrg.cpMax = textrange.chrg.cpMin;
 	auto lastpos = endpos;
 	if (lastpos < 0)
-		lastpos = (int)Call(SCI_GETLENGTH) - textrange.chrg.cpMin;
+		lastpos = static_cast<int>(Call(SCI_GETLENGTH)) - textrange.chrg.cpMin;
 	Call(SCI_SETINDICATORCURRENT, INDIC_MISSPELLED);
 	while (textrange.chrg.cpMax < lastpos)
 	{
-		textrange.chrg.cpMin = (int)Call(SCI_WORDSTARTPOSITION, textrange.chrg.cpMax+1, TRUE);
+		textrange.chrg.cpMin = static_cast<int>(Call(SCI_WORDSTARTPOSITION, textrange.chrg.cpMax + 1, TRUE));
 		if (textrange.chrg.cpMin < textrange.chrg.cpMax)
 			break;
-		textrange.chrg.cpMax = (int)Call(SCI_WORDENDPOSITION, textrange.chrg.cpMin, TRUE);
+		textrange.chrg.cpMax = static_cast<int>(Call(SCI_WORDENDPOSITION, textrange.chrg.cpMin, TRUE));
 		if (textrange.chrg.cpMin == textrange.chrg.cpMax)
 		{
 			textrange.chrg.cpMax++;
@@ -571,13 +571,13 @@ void CSciEdit::CheckSpelling(Sci_Position startpos, Sci_Position endpos)
 		SecureZeroMemory(textbuffer.get(), textrange.chrg.cpMax - textrange.chrg.cpMin + 2);
 		textrange.lpstrText = textbuffer.get();
 		textrange.chrg.cpMax++;
-		Call(SCI_GETTEXTRANGE, 0, (LPARAM)&textrange);
-		auto len = (int)strlen(textrange.lpstrText);
+		Call(SCI_GETTEXTRANGE, 0, reinterpret_cast<LPARAM>(&textrange));
+		auto len = static_cast<int>(strlen(textrange.lpstrText));
 		if (len == 0)
 		{
 			textrange.chrg.cpMax--;
-			Call(SCI_GETTEXTRANGE, 0, (LPARAM)&textrange);
-			len = (int)strlen(textrange.lpstrText);
+			Call(SCI_GETTEXTRANGE, 0, reinterpret_cast<LPARAM>(&textrange));
+			len = static_cast<int>(strlen(textrange.lpstrText));
 			textrange.chrg.cpMax++;
 			len++;
 		}
@@ -588,11 +588,11 @@ void CSciEdit::CheckSpelling(Sci_Position startpos, Sci_Position endpos)
 			// whether the combined string is present in auto list.
 			Sci_TextRange twoWords;
 			twoWords.chrg.cpMin = textrange.chrg.cpMin;
-			twoWords.chrg.cpMax = (int)Call(SCI_WORDENDPOSITION, textrange.chrg.cpMax + 1, TRUE);
+			twoWords.chrg.cpMax = static_cast<int>(Call(SCI_WORDENDPOSITION, textrange.chrg.cpMax + 1, TRUE));
 			auto twoWordsBuffer = std::make_unique<char[]>(twoWords.chrg.cpMax - twoWords.chrg.cpMin + 1);
 			twoWords.lpstrText = twoWordsBuffer.get();
 			SecureZeroMemory(twoWords.lpstrText, twoWords.chrg.cpMax - twoWords.chrg.cpMin + 1);
-			Call(SCI_GETTEXTRANGE, 0, (LPARAM)&twoWords);
+			Call(SCI_GETTEXTRANGE, 0, reinterpret_cast<LPARAM>(&twoWords));
 			CString sWord = StringFromControl(twoWords.lpstrText);
 			if (m_autolist.find(sWord) != m_autolist.end())
 			{
@@ -638,17 +638,17 @@ void CSciEdit::SuggestSpellingAlternatives()
 		CString suggestions;
 		for (int i=0; i < ns; i++)
 		{
-			suggestions.AppendFormat(L"%s%c%d%c", (LPCTSTR)GetWordFromSpellChecker(wlst[i]), m_typeSeparator, AUTOCOMPLETE_SPELLING, m_separator);
+			suggestions.AppendFormat(L"%s%c%d%c", static_cast<LPCTSTR>(GetWordFromSpellChecker(wlst[i])), m_typeSeparator, AUTOCOMPLETE_SPELLING, m_separator);
 			free(wlst[i]);
 		}
 		free(wlst);
 		suggestions.TrimRight(m_separator);
 		if (suggestions.IsEmpty())
 			return;
-		Call(SCI_AUTOCSETSEPARATOR, (WPARAM)CStringA(m_separator).GetAt(0));
-		Call(SCI_AUTOCSETTYPESEPARATOR, (WPARAM)m_typeSeparator);
+		Call(SCI_AUTOCSETSEPARATOR, CStringA(m_separator).GetAt(0));
+		Call(SCI_AUTOCSETTYPESEPARATOR, m_typeSeparator);
 		Call(SCI_AUTOCSETDROPRESTOFWORD, 1);
-		Call(SCI_AUTOCSHOW, 0, (LPARAM)(LPCSTR)StringForControl(suggestions));
+		Call(SCI_AUTOCSHOW, 0, reinterpret_cast<LPARAM>(static_cast<LPCSTR>(StringForControl(suggestions))));
 		return;
 	}
 	free(wlst);
@@ -658,8 +658,8 @@ void CSciEdit::DoAutoCompletion(Sci_Position nMinPrefixLength)
 {
 	if (m_autolist.empty())
 		return;
-	auto pos = (int)(Sci_Position)Call(SCI_GETCURRENTPOS);
-	if (pos != (int)Call(SCI_WORDENDPOSITION, pos, TRUE))
+	auto pos = static_cast<int>(static_cast<Sci_Position>(Call(SCI_GETCURRENTPOS)));
+	if (pos != static_cast<int>(Call(SCI_WORDENDPOSITION, pos, TRUE)))
 		return;	// don't auto complete if we're not at the end of a word
 	CString word = GetWordUnderCursor();
 	if (word.GetLength() < nMinPrefixLength)
@@ -722,7 +722,7 @@ void CSciEdit::DoAutoCompletion(Sci_Position nMinPrefixLength)
 		}
 
 		for (const auto& w : wordset)
-			sAutoCompleteList.AppendFormat(L"%s%c%d%c", (LPCTSTR)w.first, m_typeSeparator, w.second, m_separator);
+			sAutoCompleteList.AppendFormat(L"%s%c%d%c", static_cast<LPCTSTR>(w.first), m_typeSeparator, w.second, m_separator);
 
 		sAutoCompleteList.TrimRight(m_separator);
 
@@ -743,10 +743,10 @@ void CSciEdit::DoAutoCompletion(Sci_Position nMinPrefixLength)
 		}
 	}
 
-	Call(SCI_AUTOCSETSEPARATOR, (WPARAM)CStringA(m_separator).GetAt(0));
-	Call(SCI_AUTOCSETTYPESEPARATOR, (WPARAM)m_typeSeparator);
+	Call(SCI_AUTOCSETSEPARATOR, CStringA(m_separator).GetAt(0));
+	Call(SCI_AUTOCSETTYPESEPARATOR, (m_typeSeparator));
 	auto sForControl = StringForControl(sAutoCompleteList);
-	Call(SCI_AUTOCSHOW, StringForControl(word).GetLength(), (LPARAM)(LPCSTR)sForControl);
+	Call(SCI_AUTOCSHOW, StringForControl(word).GetLength(), reinterpret_cast<LPARAM>(static_cast<LPCSTR>(sForControl)));
 }
 
 BOOL CSciEdit::OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pLResult)
@@ -754,8 +754,8 @@ BOOL CSciEdit::OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT
 	if (message != WM_NOTIFY)
 		return CWnd::OnChildNotify(message, wParam, lParam, pLResult);
 
-	LPNMHDR lpnmhdr = (LPNMHDR) lParam;
-	SCNotification * lpSCN = (SCNotification *)lParam;
+	auto lpnmhdr = reinterpret_cast<LPNMHDR>(lParam);
+	auto lpSCN = reinterpret_cast<SCNotification*>(lParam);
 
 	if(lpnmhdr->hwndFrom==m_hWnd)
 	{
@@ -786,11 +786,11 @@ BOOL CSciEdit::OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT
 			}
 		case SCN_STYLENEEDED:
 		{
-			auto startpos = (Sci_Position)Call(SCI_GETENDSTYLED);
-			auto endpos = ((SCNotification*)lpnmhdr)->position;
+			auto startpos = static_cast<Sci_Position>(Call(SCI_GETENDSTYLED));
+			auto endpos = reinterpret_cast<SCNotification*>(lpnmhdr)->position;
 
-			auto startwordpos = (int)Call(SCI_WORDSTARTPOSITION, startpos, true);
-			auto endwordpos = (int)Call(SCI_WORDENDPOSITION, endpos, true);
+			auto startwordpos = static_cast<int>(Call(SCI_WORDSTARTPOSITION, startpos, true));
+			auto endwordpos = static_cast<int>(Call(SCI_WORDENDPOSITION, endpos, true));
 
 			MarkEnteredBugID(startwordpos, endwordpos);
 			if (m_bDoStyle)
@@ -808,10 +808,10 @@ BOOL CSciEdit::OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT
 		{
 			if (!m_blockModifiedHandler && (lpSCN->modificationType & (SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT)))
 			{
-				auto firstline = (int)Call(SCI_GETFIRSTVISIBLELINE);
-				auto lastline = firstline + (int)Call(SCI_LINESONSCREEN);
-				auto firstpos = (Sci_Position)Call(SCI_POSITIONFROMLINE, firstline);
-				auto lastpos = (Sci_Position)Call(SCI_GETLINEENDPOSITION, lastline);
+				auto firstline = static_cast<int>(Call(SCI_GETFIRSTVISIBLELINE));
+				auto lastline = firstline + static_cast<int>(Call(SCI_LINESONSCREEN));
+				auto firstpos = static_cast<Sci_Position>(Call(SCI_POSITIONFROMLINE, firstline));
+				auto lastpos = static_cast<Sci_Position>(Call(SCI_GETLINEENDPOSITION, lastline));
 				auto pos1 = lpSCN->position;
 				auto pos2 = pos1 + lpSCN->length;
 				// always use the bigger range
@@ -838,7 +838,7 @@ BOOL CSciEdit::OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT
 				++textrange.chrg.cpMax;
 				auto textbuffer = std::make_unique<char[]>(textrange.chrg.cpMax - textrange.chrg.cpMin + 1);
 				textrange.lpstrText = textbuffer.get();
-				Call(SCI_GETTEXTRANGE, 0, (LPARAM)&textrange);
+				Call(SCI_GETTEXTRANGE, 0, reinterpret_cast<LPARAM>(&textrange));
 				CString url;
 				if (style == STYLE_URL)
 				{
@@ -858,7 +858,7 @@ BOOL CSciEdit::OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT
 					else
 					{
 						CStringA sTextA = StringForControl(url);
-						Call(SCI_CALLTIPSHOW, lpSCN->position + 3, (LPARAM)(LPCSTR)sTextA);
+						Call(SCI_CALLTIPSHOW, lpSCN->position + 3, reinterpret_cast<LPARAM>(static_cast<LPCSTR>(sTextA)));
 					}
 				}
 			}
@@ -930,10 +930,10 @@ BOOL CSciEdit::PreTranslateMessage(MSG* pMsg)
 
 void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 {
-	auto anchor = (Sci_Position)Call(SCI_GETANCHOR);
-	auto currentpos = (Sci_Position)Call(SCI_GETCURRENTPOS);
-	auto selstart = (int)(Sci_Position)Call(SCI_GETSELECTIONSTART);
-	auto selend = (int)(Sci_Position)Call(SCI_GETSELECTIONEND);
+	auto anchor = static_cast<Sci_Position>(Call(SCI_GETANCHOR));
+	auto currentpos = static_cast<Sci_Position>(Call(SCI_GETCURRENTPOS));
+	auto selstart = static_cast<int>(static_cast<Sci_Position>(Call(SCI_GETSELECTIONSTART)));
+	auto selend = static_cast<int>(static_cast<Sci_Position>(Call(SCI_GETSELECTIONEND)));
 	Sci_Position pointpos = 0;
 	if ((point.x == -1) && (point.y == -1))
 	{
@@ -941,7 +941,7 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		GetClientRect(&rect);
 		ClientToScreen(&rect);
 		point = rect.CenterPoint();
-		pointpos = (Sci_Position)Call(SCI_GETCURRENTPOS);
+		pointpos = static_cast<Sci_Position>(Call(SCI_GETCURRENTPOS));
 	}
 	else
 	{
@@ -949,7 +949,7 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		// right-clicked.
 		CPoint clientpoint = point;
 		ScreenToClient(&clientpoint);
-		pointpos = (Sci_Position)Call(SCI_POSITIONFROMPOINT, clientpoint.x, clientpoint.y);
+		pointpos = static_cast<Sci_Position>(Call(SCI_POSITIONFROMPOINT, clientpoint.x, clientpoint.y));
 	}
 	CString sMenuItemText;
 	CMenu popup;
@@ -995,7 +995,7 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 				{
 					bSpellAdded = true;
 					CString sug = GetWordFromSpellChecker(wlst[i]);
-					popup.InsertMenu((UINT)-1, 0, nCorrections++, sug);
+					popup.InsertMenu(static_cast<UINT>(-1), 0, nCorrections++, sug);
 					free(wlst[i]);
 				}
 				free(wlst);
@@ -1012,7 +1012,7 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		if ((sWord.GetLength()<PDICT_MAX_WORD_LENGTH)&&((pChecker)&&(m_autolist.find(sWord) == m_autolist.end())&&(!pChecker->spell(worda)))&&
 			(!_istdigit(sWord.GetAt(0)))&&(!m_personalDict.FindWord(sWord)) && !bIsReadOnly)
 		{
-			sMenuItemText.Format(IDS_SCIEDIT_ADDWORD, (LPCTSTR)sWord);
+			sMenuItemText.Format(IDS_SCIEDIT_ADDWORD, static_cast<LPCTSTR>(sWord));
 			popup.AppendMenu(uEnabledMenu, SCI_ADDWORD, sMenuItemText);
 			// another separator
 			popup.AppendMenu(MF_SEPARATOR);
@@ -1081,9 +1081,9 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 						for (int j=0; j < pm->count; j++)
 						{
 							CString sug = CString(pm->psyns[j]);
-							submenu->InsertMenu((UINT)-1, 0, nCorrections + nCustoms + (nThesaurs++), sug);
+							submenu->InsertMenu(UINT(-1), 0, nCorrections + nCustoms + (nThesaurs++), sug);
 						}
-						thesaurs.InsertMenu((UINT)-1, MF_POPUP, (UINT_PTR)(submenu->m_hMenu), CString(pm->defn));
+						thesaurs.InsertMenu(UINT(-1), MF_POPUP, reinterpret_cast<UINT_PTR>(submenu->m_hMenu), CString(pm->defn));
 						pm++;
 					}
 				}
@@ -1091,9 +1091,9 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 				{
 #ifdef IDS_SPELLEDIT_THESAURUS
 					sMenuItemText.LoadString(IDS_SPELLEDIT_THESAURUS);
-					popup.InsertMenu((UINT)-1, MF_POPUP, (UINT_PTR)thesaurs.m_hMenu, sMenuItemText);
+					popup.InsertMenu(UINT(-1), MF_POPUP, reinterpret_cast<UINT_PTR>(thesaurs.m_hMenu), sMenuItemText);
 #else
-					popup.InsertMenu((UINT)-1, MF_POPUP, (UINT_PTR)thesaurs.m_hMenu, L"Thesaurus");
+					popup.InsertMenu(UINT(-1), MF_POPUP, reinterpret_cast<UINT_PTR>(thesaurs.m_hMenu), L"Thesaurus");
 #endif
 					nThesaurs = nCustoms;
 				}
@@ -1129,11 +1129,11 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 			break;
 		case SCI_ADDWORD:
 			m_personalDict.AddWord(sWord);
-			CheckSpelling((Sci_Position)Call(SCI_POSITIONFROMLINE, (int)Call(SCI_GETFIRSTVISIBLELINE)), (Sci_Position)Call(SCI_POSITIONFROMLINE, (int)Call(SCI_GETFIRSTVISIBLELINE) + (int)Call(SCI_LINESONSCREEN)));
+			CheckSpelling(static_cast<Sci_Position>(Call(SCI_POSITIONFROMLINE, static_cast<int>(Call(SCI_GETFIRSTVISIBLELINE)))), static_cast<Sci_Position>(Call(SCI_POSITIONFROMLINE, static_cast<int>(Call(SCI_GETFIRSTVISIBLELINE)) + static_cast<int>(Call(SCI_LINESONSCREEN)))));
 			break;
 		case SCI_LINESSPLIT:
 			{
-				auto marker = (int)(Call(SCI_GETEDGECOLUMN) * (int)Call(SCI_TEXTWIDTH, 0, (LPARAM)" "));
+				auto marker = static_cast<int>(Call(SCI_GETEDGECOLUMN) * static_cast<int>(Call(SCI_TEXTWIDTH, 0, reinterpret_cast<LPARAM>(" "))));
 				if (marker)
 				{
 					m_blockModifiedHandler = true;
@@ -1153,7 +1153,7 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 				CString temp;
 				popup.GetMenuString(cmd, temp, 0);
 				// setting the cursor clears the selection
-				Call(SCI_REPLACESEL, 0, (LPARAM)(LPCSTR)StringForControl(temp));
+				Call(SCI_REPLACESEL, 0, reinterpret_cast<LPARAM>(static_cast<LPCSTR>(StringForControl(temp))));
 			}
 			else if (cmd < (nCorrections+nCustoms))
 			{
@@ -1172,14 +1172,14 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 				GetWordUnderCursor(true);
 				CString temp;
 				thesaurs.GetMenuString(cmd, temp, 0);
-				Call(SCI_REPLACESEL, 0, (LPARAM)(LPCSTR)StringForControl(temp));
+				Call(SCI_REPLACESEL, 0, reinterpret_cast<LPARAM>(static_cast<LPCSTR>(StringForControl(temp))));
 			}
 #endif
 		}
 #ifdef THESAURUS
 		for (INT_PTR index = 0; index < menuArray.GetCount(); ++index)
 		{
-			CMenu * pMenu = (CMenu*)menuArray[index];
+			auto pMenu = static_cast<CMenu*>(menuArray[index]);
 			delete pMenu;
 		}
 #endif
@@ -1195,14 +1195,14 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 bool CSciEdit::StyleEnteredText(Sci_Position startstylepos, Sci_Position endstylepos)
 {
 	bool bStyled = false;
-	const auto line = (int)Call(SCI_LINEFROMPOSITION, startstylepos);
-	const auto line_number_end = (int)Call(SCI_LINEFROMPOSITION, endstylepos);
+	const auto line = static_cast<int>(Call(SCI_LINEFROMPOSITION, startstylepos));
+	const auto line_number_end = static_cast<int>(Call(SCI_LINEFROMPOSITION, endstylepos));
 	for (auto line_number = line; line_number <= line_number_end; ++line_number)
 	{
-		auto offset = (Sci_Position)Call(SCI_POSITIONFROMLINE, line_number);
-		auto line_len = (int)Call(SCI_LINELENGTH, line_number);
+		auto offset = static_cast<Sci_Position>(Call(SCI_POSITIONFROMLINE, line_number));
+		auto line_len = static_cast<int>(Call(SCI_LINELENGTH, line_number));
 		auto linebuffer = std::make_unique<char[]>(line_len + 1);
-		Call(SCI_GETLINE, line_number, (LPARAM)linebuffer.get());
+		Call(SCI_GETLINE, line_number, reinterpret_cast<LPARAM>(linebuffer.get()));
 		linebuffer[line_len] = '\0';
 		Sci_Position start = 0;
 		Sci_Position end = 0;
@@ -1237,7 +1237,7 @@ bool CSciEdit::StyleEnteredText(Sci_Position startstylepos, Sci_Position endstyl
 
 bool CSciEdit::WrapLines(Sci_Position startpos, Sci_Position endpos)
 {
-	auto markerX = (Sci_Position)(Call(SCI_GETEDGECOLUMN) * (int)Call(SCI_TEXTWIDTH, 0, (LPARAM)" "));
+	auto markerX = static_cast<Sci_Position>(Call(SCI_GETEDGECOLUMN) * static_cast<int>(Call(SCI_TEXTWIDTH, 0, reinterpret_cast<LPARAM>(" "))));
 	if (markerX)
 	{
 		Call(SCI_SETTARGETSTART, startpos);
@@ -1328,8 +1328,8 @@ BOOL CSciEdit::MarkEnteredBugID(Sci_Position startstylepos, Sci_Position endstyl
 	if (m_sCommand.IsEmpty())
 		return FALSE;
 	// get the text between the start and end position we have to style
-	const auto line_number = (int)Call(SCI_LINEFROMPOSITION, startstylepos);
-	auto start_pos = (Sci_Position)Call(SCI_POSITIONFROMLINE, (WPARAM)line_number);
+	const auto line_number = static_cast<int>(Call(SCI_LINEFROMPOSITION, startstylepos));
+	auto start_pos = static_cast<Sci_Position>(Call(SCI_POSITIONFROMLINE, line_number));
 	auto end_pos = endstylepos;
 
 	if (start_pos == end_pos)
@@ -1346,7 +1346,7 @@ BOOL CSciEdit::MarkEnteredBugID(Sci_Position startstylepos, Sci_Position endstyl
 	textrange.lpstrText = textbuffer.get();
 	textrange.chrg.cpMin = static_cast<Sci_PositionCR>(start_pos);
 	textrange.chrg.cpMax = static_cast<Sci_PositionCR>(end_pos);
-	Call(SCI_GETTEXTRANGE, 0, (LPARAM)&textrange);
+	Call(SCI_GETTEXTRANGE, 0, reinterpret_cast<LPARAM>(&textrange));
 	CStringA msg = CStringA(textbuffer.get());
 
 	Call(SCI_STARTSTYLING, start_pos, STYLE_MASK);
@@ -1386,13 +1386,13 @@ BOOL CSciEdit::MarkEnteredBugID(Sci_Position startstylepos, Sci_Position endstyl
 					// bold and recursive style for the bug ID itself
 					if ((*it2)[0].str().size())
 						Call(SCI_SETSTYLING, (*it2)[0].str().size(), STYLE_ISSUEBOLDITALIC);
-					matchedpos = (LONG)(it2->position(0) + (*it2)[0].str().size());
+					matchedpos = static_cast<LONG>(it2->position(0) + (*it2)[0].str().size());
 				}
-				if ((matchedpos)&&(matchedpos < (LONG)matchedString.size()))
+				if (matchedpos&& matchedpos < static_cast<LONG>(matchedString.size()))
 				{
 					Call(SCI_SETSTYLING, matchedString.size() - matchedpos, STYLE_ISSUEBOLD);
 				}
-				pos = (LONG)(it->position(0) + matchedString.size());
+				pos = static_cast<LONG>(it->position(0) + matchedString.size());
 			}
 			// bold style for the rest of the string which isn't matched
 			if (s.size()-pos)
@@ -1409,7 +1409,7 @@ BOOL CSciEdit::MarkEnteredBugID(Sci_Position startstylepos, Sci_Position endstyl
 				// clear the styles up to the match position
 				if (it->position(0) - pos >= 0)
 					Call(SCI_SETSTYLING, it->position(0) - pos, STYLE_DEFAULT);
-				pos = (LONG)it->position(0);
+				pos = static_cast<LONG>(it->position(0));
 
 				const std::smatch match = *it;
 				// we define group 1 as the whole issue text and
@@ -1420,7 +1420,7 @@ BOOL CSciEdit::MarkEnteredBugID(Sci_Position startstylepos, Sci_Position endstyl
 					if (match[1].first - s.cbegin() - pos >= 0)
 						Call(SCI_SETSTYLING, match[1].first - s.cbegin() - pos, STYLE_ISSUEBOLD);
 					Call(SCI_SETSTYLING, std::string(match[1]).size(), STYLE_ISSUEBOLDITALIC);
-					pos = (LONG)(match[1].second - s.cbegin());
+					pos = static_cast<LONG>(match[1].second - s.cbegin());
 				}
 			}
 		}
@@ -1442,8 +1442,8 @@ bool CSciEdit::IsValidURLChar(unsigned char ch)
 //similar code in AppUtils.cpp
 void CSciEdit::StyleURLs(Sci_Position startstylepos, Sci_Position endstylepos)
 {
-	const auto line_number = (int)Call(SCI_LINEFROMPOSITION, startstylepos);
-	startstylepos = (Sci_Position)Call(SCI_POSITIONFROMLINE, (WPARAM)line_number);
+	const auto line_number = static_cast<int>(Call(SCI_LINEFROMPOSITION, startstylepos));
+	startstylepos = static_cast<Sci_Position>(Call(SCI_POSITIONFROMLINE, line_number));
 
 	auto len = endstylepos - startstylepos + 1;
 	auto textbuffer = std::make_unique<char[]>(len + 1);
@@ -1451,7 +1451,7 @@ void CSciEdit::StyleURLs(Sci_Position startstylepos, Sci_Position endstylepos)
 	textrange.lpstrText = textbuffer.get();
 	textrange.chrg.cpMin = static_cast<Sci_PositionCR>(startstylepos);
 	textrange.chrg.cpMax = static_cast<Sci_PositionCR>(endstylepos);
-	Call(SCI_GETTEXTRANGE, 0, (LPARAM)&textrange);
+	Call(SCI_GETTEXTRANGE, 0, reinterpret_cast<LPARAM>(&textrange));
 	// we're dealing with utf8 encoded text here, which means one glyph is
 	// not necessarily one byte/wchar_t
 	// that's why we use CStringA to still get a correct char index
@@ -1578,8 +1578,8 @@ bool CSciEdit::IsUTF8(LPVOID pBuffer, size_t cb)
 {
 	if (cb < 2)
 		return true;
-	UINT16 * pVal = (UINT16 *)pBuffer;
-	UINT8 * pVal2 = (UINT8 *)(pVal+1);
+	auto pVal = static_cast<UINT16*>(pBuffer);
+	auto pVal2 = reinterpret_cast<UINT8*>(pVal + 1);
 	// scan the whole buffer for a 0x0000 sequence
 	// if found, we assume a binary file
 	for (size_t i=0; i<(cb-2); i=i+2)
@@ -1587,7 +1587,7 @@ bool CSciEdit::IsUTF8(LPVOID pBuffer, size_t cb)
 		if (0x0000 == *pVal++)
 			return false;
 	}
-	pVal = (UINT16 *)pBuffer;
+	pVal = static_cast<UINT16*>(pBuffer);
 	if (*pVal == 0xFEFF)
 		return false;
 	if (cb < 3)
@@ -1598,14 +1598,14 @@ bool CSciEdit::IsUTF8(LPVOID pBuffer, size_t cb)
 			return true;
 	}
 	// check for illegal UTF8 chars
-	pVal2 = (UINT8 *)pBuffer;
+	pVal2 = static_cast<UINT8*>(pBuffer);
 	for (size_t i=0; i<cb; ++i)
 	{
 		if ((*pVal2 == 0xC0)||(*pVal2 == 0xC1)||(*pVal2 >= 0xF5))
 			return false;
 		pVal2++;
 	}
-	pVal2 = (UINT8 *)pBuffer;
+	pVal2 = static_cast<UINT8*>(pBuffer);
 	bool bUTF8 = false;
 	for (size_t i=0; i<(cb-3); ++i)
 	{
@@ -1665,7 +1665,7 @@ void CSciEdit::SetUDiffStyle()
 	Call(SCI_SETTABWIDTH, CRegStdDWORD(L"Software\\TortoiseGit\\UDiffTabSize", 4));
 
 	Call(SCI_SETREADONLY, TRUE);
-	//LRESULT pix = Call(SCI_TEXTWIDTH, STYLE_LINENUMBER, (LPARAM)"_99999");
+	//LRESULT pix = Call(SCI_TEXTWIDTH, STYLE_LINENUMBER, reinterpret_cast<LPARAM>("_99999"));
 	//Call(SCI_SETMARGINWIDTHN, 0, pix);
 	//Call(SCI_SETMARGINWIDTHN, 1);
 	//Call(SCI_SETMARGINWIDTHN, 2);
@@ -1719,7 +1719,7 @@ void CSciEdit::SetUDiffStyle()
 		CRegStdDWORD(L"Software\\TortoiseGit\\UDiffBackRemovedColor", UDIFF_COLORBACKREMOVED));
 
 	Call(SCI_SETLEXER, SCLEX_DIFF);
-	Call(SCI_SETKEYWORDS, 0, (LPARAM)"revision");
+	Call(SCI_SETKEYWORDS, 0, reinterpret_cast<LPARAM>("revision"));
 	Call(SCI_COLOURISE, 0, -1);
 }
 
@@ -1743,7 +1743,7 @@ int CSciEdit::LoadFromFile(CString &filename)
 
 void CSciEdit::RestyleBugIDs()
 {
-	auto endstylepos = (int)Call(SCI_GETLENGTH);
+	auto endstylepos = static_cast<int>(Call(SCI_GETLENGTH));
 	// clear all styles
 	Call(SCI_STARTSTYLING, 0, STYLE_MASK);
 	Call(SCI_SETSTYLING, endstylepos, STYLE_DEFAULT);

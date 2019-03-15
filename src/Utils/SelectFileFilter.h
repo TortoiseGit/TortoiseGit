@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2010-2012, 2014 - TortoiseSVN
 
@@ -28,7 +28,7 @@ public:
 
 	operator const TCHAR*() { return buffer.get(); }
 	void Load(UINT stringId);
-	UINT GetCount() const { return (UINT)filternames.size(); }
+	UINT GetCount() const { return static_cast<UINT>(filternames.size()); }
 	operator const COMDLG_FILTERSPEC*() { return filterspec.get(); }
 
 private:

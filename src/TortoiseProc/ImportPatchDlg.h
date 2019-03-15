@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012, 2015-2018 - TortoiseGit
+// Copyright (C) 2008-2012, 2015-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -53,7 +53,7 @@ protected:
 
 	static UINT ThreadEntry(LPVOID pVoid)
 	{
-		return reinterpret_cast<CImportPatchDlg*>(pVoid)->PatchThread();
+		return static_cast<CImportPatchDlg*>(pVoid)->PatchThread();
 	}
 
 	UINT PatchThread();

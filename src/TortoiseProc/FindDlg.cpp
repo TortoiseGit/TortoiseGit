@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2016, 2018 - TortoiseGit
+// Copyright (C) 2011-2016, 2018-2019 - TortoiseGit
 // Copyright (C) 2006 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
@@ -111,8 +111,8 @@ BOOL CFindDlg::OnInitDialog()
 	__super::OnInitDialog();
 	m_FindMsg = RegisterWindowMessage(FINDMSGSTRING);
 
-	m_bMatchCase = (BOOL)(DWORD)m_regMatchCase;
-	m_bRegex = (BOOL)(DWORD)m_regRegex;
+	m_bMatchCase = m_regMatchCase;
+	m_bRegex = m_regRegex;
 	UpdateData(FALSE);
 
 	m_FindCombo.SetCaseSensitive(TRUE);

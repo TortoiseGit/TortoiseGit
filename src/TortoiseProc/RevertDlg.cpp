@@ -66,7 +66,7 @@ BOOL CRevertDlg::OnInitDialog()
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	m_RevertList.Init(GITSLC_COLEXT | GITSLC_COLSTATUS | GITSLC_COLADD| GITSLC_COLDEL, L"RevertDlg");
-	m_RevertList.SetConfirmButton((CButton*)GetDlgItem(IDOK));
+	m_RevertList.SetConfirmButton(static_cast<CButton*>(GetDlgItem(IDOK)));
 	m_RevertList.SetSelectButton(&m_SelectAll);
 	m_RevertList.SetCancelBool(&m_bCancelled);
 	m_RevertList.SetBackgroundImage(IDI_REVERT_BKG);
@@ -102,7 +102,7 @@ BOOL CRevertDlg::OnInitDialog()
 
 UINT CRevertDlg::RevertThreadEntry(LPVOID pVoid)
 {
-	return reinterpret_cast<CRevertDlg*>(pVoid)->RevertThread();
+	return static_cast<CRevertDlg*>(pVoid)->RevertThread();
 }
 
 UINT CRevertDlg::RevertThread()
@@ -267,7 +267,7 @@ LRESULT CRevertDlg::OnFileDropped(WPARAM, LPARAM lParam)
 	// but only if it isn't already running - otherwise we
 	// restart the timer.
 	CTGitPath path;
-	path.SetFromWin((LPCTSTR)lParam);
+	path.SetFromWin(reinterpret_cast<LPCTSTR>(lParam));
 
 	// check whether the dropped file belongs to the very same repository
 	CString projectDir;

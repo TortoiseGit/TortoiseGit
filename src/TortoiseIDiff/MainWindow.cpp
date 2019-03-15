@@ -1,6 +1,6 @@
 ﻿// TortoiseGitIDiff - an image diff viewer in TortoiseSVN
 
-// Copyright (C) 2015-2018 - TortoiseGit
+// Copyright (C) 2015-2019 - TortoiseGit
 // Copyright (C) 2006-2013, 2015, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -53,7 +53,7 @@ bool CMainWindow::RegisterAndCreateWindow()
     ResString clsname(hResource, IDS_APP_TITLE);
     wcx.lpszClassName = clsname;
     wcx.hIcon = LoadIconEx(hResource, MAKEINTRESOURCE(IDI_TORTOISEIDIFF), GetSystemMetrics(SM_CXICON), GetSystemMetrics(SM_CYICON));
-    wcx.hbrBackground = (HBRUSH)(COLOR_3DFACE+1);
+    wcx.hbrBackground = reinterpret_cast<HBRUSH>(COLOR_3DFACE + 1);
     if (selectionPaths.empty())
         wcx.lpszMenuName = MAKEINTRESOURCE(IDC_TORTOISEIDIFF);
     else
@@ -233,7 +233,7 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
         break;
     case WM_GETMINMAXINFO:
         {
-            MINMAXINFO * mmi = (MINMAXINFO*)lParam;
+            auto mmi = reinterpret_cast<MINMAXINFO*>(lParam);
             mmi->ptMinTrackSize.x = WINDOW_MINWIDTH;
             mmi->ptMinTrackSize.y = WINDOW_MINHEIGHT;
             return 0;
@@ -277,7 +277,7 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
         break;
     case WM_SETCURSOR:
         {
-            if ((HWND)wParam == *this)
+            if (reinterpret_cast<HWND>(wParam) == *this)
             {
                 RECT rect;
                 POINT pt;
@@ -380,12 +380,10 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
         break;
     case WM_NOTIFY:
         {
-            LPNMHDR pNMHDR = (LPNMHDR)lParam;
+            auto pNMHDR = reinterpret_cast<LPNMHDR>(lParam);
             if (pNMHDR->code == TTN_GETDISPINFO)
             {
-                LPTOOLTIPTEXT lpttt;
-
-                lpttt = (LPTOOLTIPTEXT) lParam;
+                auto lpttt = reinterpret_cast<LPTOOLTIPTEXT>(lParam);
                 lpttt->hinst = hResource;
 
                 // Specify the resource identifier of the descriptive
@@ -396,7 +394,7 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
                 mii.fMask = MIIM_TYPE;
                 mii.dwTypeData = stringbuf;
                 mii.cch = _countof(stringbuf);
-                GetMenuItemInfo(GetMenu(*this), (UINT)lpttt->hdr.idFrom, FALSE, &mii);
+                GetMenuItemInfo(GetMenu(*this), static_cast<UINT>(lpttt->hdr.idFrom), FALSE, &mii);
                 wcscpy_s(lpttt->lpszText, 80, stringbuf);
             }
         }
@@ -459,7 +457,7 @@ LRESULT CMainWindow::DoCommand(int id, LPARAM lParam)
             tbi.cbSize = sizeof(TBBUTTONINFO);
             tbi.dwMask = TBIF_STATE;
             tbi.fsState = bShowInfo ? TBSTATE_CHECKED | TBSTATE_ENABLED : TBSTATE_ENABLED;
-            SendMessage(hwndTB, TB_SETBUTTONINFO, ID_VIEW_IMAGEINFO, (LPARAM)&tbi);
+            SendMessage(hwndTB, TB_SETBUTTONINFO, ID_VIEW_IMAGEINFO, reinterpret_cast<LPARAM>(&tbi));
         }
         break;
     case ID_VIEW_OVERLAPIMAGES:
@@ -480,20 +478,20 @@ LRESULT CMainWindow::DoCommand(int id, LPARAM lParam)
             tbi.cbSize = sizeof(TBBUTTONINFO);
             tbi.dwMask = TBIF_STATE;
             tbi.fsState = bOverlap ? TBSTATE_CHECKED | TBSTATE_ENABLED : TBSTATE_ENABLED;
-            SendMessage(hwndTB, TB_SETBUTTONINFO, ID_VIEW_OVERLAPIMAGES, (LPARAM)&tbi);
+            SendMessage(hwndTB, TB_SETBUTTONINFO, ID_VIEW_OVERLAPIMAGES, reinterpret_cast<LPARAM>(&tbi));
 
             tbi.fsState = ((m_BlendType == CPicWindow::BLEND_ALPHA) && bOverlap) ? TBSTATE_CHECKED : 0;
             if (bOverlap)
                 tbi.fsState |= TBSTATE_ENABLED;
             else
                 tbi.fsState = 0;
-            SendMessage(hwndTB, TB_SETBUTTONINFO, ID_VIEW_BLENDALPHA, (LPARAM)&tbi);
+            SendMessage(hwndTB, TB_SETBUTTONINFO, ID_VIEW_BLENDALPHA, reinterpret_cast<LPARAM>(&tbi));
 
             if (bOverlap)
                 tbi.fsState = 0;
             else
                 tbi.fsState = bVertical ? TBSTATE_ENABLED | TBSTATE_CHECKED : TBSTATE_ENABLED;
-            SendMessage(hwndTB, TB_SETBUTTONINFO, ID_VIEW_ARRANGEVERTICAL, (LPARAM)&tbi);
+            SendMessage(hwndTB, TB_SETBUTTONINFO, ID_VIEW_ARRANGEVERTICAL, reinterpret_cast<LPARAM>(&tbi));
 
             if (bOverlap)
             {
@@ -504,7 +502,7 @@ LRESULT CMainWindow::DoCommand(int id, LPARAM lParam)
             }
             else
                 tbi.fsState = bLinkedPositions ? TBSTATE_ENABLED | TBSTATE_CHECKED : TBSTATE_ENABLED;
-            SendMessage(hwndTB, TB_SETBUTTONINFO, ID_VIEW_LINKIMAGESTOGETHER, (LPARAM)&tbi);
+            SendMessage(hwndTB, TB_SETBUTTONINFO, ID_VIEW_LINKIMAGESTOGETHER, reinterpret_cast<LPARAM>(&tbi));
 
             ShowWindow(picWindow2, bOverlap ? SW_HIDE : SW_SHOW);
 
@@ -551,7 +549,7 @@ LRESULT CMainWindow::DoCommand(int id, LPARAM lParam)
             tbi.cbSize = sizeof(TBBUTTONINFO);
             tbi.dwMask = TBIF_STATE;
             tbi.fsState = ((m_BlendType == CPicWindow::BLEND_ALPHA) && bOverlap) ? TBSTATE_CHECKED | TBSTATE_ENABLED : TBSTATE_ENABLED;
-            SendMessage(hwndTB, TB_SETBUTTONINFO, ID_VIEW_BLENDALPHA, (LPARAM)&tbi);
+            SendMessage(hwndTB, TB_SETBUTTONINFO, ID_VIEW_BLENDALPHA, reinterpret_cast<LPARAM>(&tbi));
             picWindow1.SetBlendAlpha(m_BlendType, picWindow1.GetBlendAlpha());
             PositionChildren();
         }
@@ -593,7 +591,7 @@ LRESULT CMainWindow::DoCommand(int id, LPARAM lParam)
             tbi.cbSize = sizeof(TBBUTTONINFO);
             tbi.dwMask = TBIF_STATE;
             tbi.fsState = bFitWidths ? TBSTATE_CHECKED | TBSTATE_ENABLED : TBSTATE_ENABLED;
-            SendMessage(hwndTB, TB_SETBUTTONINFO, ID_VIEW_FITIMAGEWIDTHS, (LPARAM)&tbi);
+            SendMessage(hwndTB, TB_SETBUTTONINFO, ID_VIEW_FITIMAGEWIDTHS, reinterpret_cast<LPARAM>(&tbi));
         }
         break;
     case ID_VIEW_FITIMAGEHEIGHTS:
@@ -613,7 +611,7 @@ LRESULT CMainWindow::DoCommand(int id, LPARAM lParam)
             tbi.cbSize = sizeof(TBBUTTONINFO);
             tbi.dwMask = TBIF_STATE;
             tbi.fsState = bFitHeights ? TBSTATE_CHECKED | TBSTATE_ENABLED : TBSTATE_ENABLED;
-            SendMessage(hwndTB, TB_SETBUTTONINFO, ID_VIEW_FITIMAGEHEIGHTS, (LPARAM)&tbi);
+            SendMessage(hwndTB, TB_SETBUTTONINFO, ID_VIEW_FITIMAGEHEIGHTS, reinterpret_cast<LPARAM>(&tbi));
         }
         break;
     case ID_VIEW_LINKIMAGESTOGETHER:
@@ -633,7 +631,7 @@ LRESULT CMainWindow::DoCommand(int id, LPARAM lParam)
             tbi.cbSize = sizeof(TBBUTTONINFO);
             tbi.dwMask = TBIF_STATE;
             tbi.fsState = bLinkedPositions ? TBSTATE_CHECKED | TBSTATE_ENABLED : TBSTATE_ENABLED;
-            SendMessage(hwndTB, TB_SETBUTTONINFO, ID_VIEW_LINKIMAGESTOGETHER, (LPARAM)&tbi);
+            SendMessage(hwndTB, TB_SETBUTTONINFO, ID_VIEW_LINKIMAGESTOGETHER, reinterpret_cast<LPARAM>(&tbi));
         }
         break;
     case ID_VIEW_ALPHA0:
@@ -728,7 +726,7 @@ LRESULT CMainWindow::DoCommand(int id, LPARAM lParam)
             tbi.cbSize = sizeof(TBBUTTONINFO);
             tbi.dwMask = TBIF_STATE;
             tbi.fsState = bVertical ? TBSTATE_CHECKED | TBSTATE_ENABLED : TBSTATE_ENABLED;
-            SendMessage(hwndTB, TB_SETBUTTONINFO, ID_VIEW_ARRANGEVERTICAL, (LPARAM)&tbi);
+            SendMessage(hwndTB, TB_SETBUTTONINFO, ID_VIEW_ARRANGEVERTICAL, reinterpret_cast<LPARAM>(&tbi));
 
             PositionChildren(&rect);
         }
@@ -741,7 +739,7 @@ LRESULT CMainWindow::DoCommand(int id, LPARAM lParam)
         break;
     case SELECTBUTTON_ID:
         {
-            HWND hSource = (HWND)lParam;
+            auto hSource = reinterpret_cast<HWND>(lParam);
             FileType resolveWith;
             if (picWindow1 == hSource)
                 resolveWith = FileTypeMine;
@@ -774,7 +772,7 @@ LRESULT CMainWindow::DoCommand(int id, LPARAM lParam)
                 break;
             }
 
-            CStringA subpath = CUnicodeUtils::GetUTF8(selectionResult.c_str()).Mid((int)strlen(git_repository_workdir(repository)));
+            CStringA subpath = CUnicodeUtils::GetUTF8(selectionResult.c_str()).Mid(static_cast<int>(strlen(git_repository_workdir(repository))));
 
             CAutoIndex index;
             if (git_repository_index(index.GetPointer(), repository) || (git_index_get_bypath(index, subpath, 1) == nullptr && git_index_get_bypath(index, subpath, 2) == nullptr))
@@ -784,14 +782,14 @@ LRESULT CMainWindow::DoCommand(int id, LPARAM lParam)
             }
 
             CString sTemp;
-            sTemp.Format(ResString(hResource, IDS_MARKASRESOLVED), (LPCTSTR)CPathUtils::GetFileNameFromPath(selectionResult.c_str()));
+            sTemp.Format(ResString(hResource, IDS_MARKASRESOLVED), static_cast<LPCTSTR>(CPathUtils::GetFileNameFromPath(selectionResult.c_str())));
             if (MessageBox(m_hwnd, sTemp, L"TortoiseGitMerge", MB_YESNO | MB_ICONQUESTION) != IDYES)
                 break;
 
             CString cmd;
-            cmd.Format(L"\"%sTortoiseGitProc.exe\" /command:resolve /path:\"%s\" /closeonend:1 /noquestion /skipcheck /silent", (LPCTSTR)CPathUtils::GetAppDirectory(), selectionResult.c_str());
+            cmd.Format(L"\"%sTortoiseGitProc.exe\" /command:resolve /path:\"%s\" /closeonend:1 /noquestion /skipcheck /silent", static_cast<LPCTSTR>(CPathUtils::GetAppDirectory()), selectionResult.c_str());
             if (resolveMsgWnd)
-                cmd.AppendFormat(L" /resolvemsghwnd:%I64d /resolvemsgwparam:%I64d /resolvemsglparam:%I64d", (__int64)resolveMsgWnd, (__int64)resolveMsgWParam, (__int64)resolveMsgLParam);
+                cmd.AppendFormat(L" /resolvemsghwnd:%I64d /resolvemsgwparam:%I64d /resolvemsglparam:%I64d", reinterpret_cast<__int64>(resolveMsgWnd), static_cast<__int64>(resolveMsgWParam), static_cast<__int64>(resolveMsgLParam));
 
             STARTUPINFO startup = { 0 };
             PROCESS_INFORMATION process = { 0 };
@@ -839,7 +837,7 @@ void CMainWindow::DrawXorBar(HDC hdc, int x1, int y1, int width, int height)
     hbr = CreatePatternBrush(hbm);
 
     SetBrushOrgEx(hdc, x1, y1, 0);
-    hbrushOld = (HBRUSH)SelectObject(hdc, hbr);
+    hbrushOld = static_cast<HBRUSH>(SelectObject(hdc, hbr));
 
     PatBlt(hdc, x1, y1, width, height, PATINVERT);
 
@@ -856,8 +854,8 @@ LRESULT CMainWindow::Splitter_OnLButtonDown(HWND hwnd, UINT /*iMsg*/, WPARAM /*w
     RECT rect;
     RECT clientrect;
 
-    pt.x = (short)LOWORD(lParam);  // horizontal position of cursor
-    pt.y = (short)HIWORD(lParam);
+    pt.x = static_cast<short>(LOWORD(lParam));  // horizontal position of cursor
+    pt.y = static_cast<short>(HIWORD(lParam));
 
     GetClientRect(hwnd, &clientrect);
     GetWindowRect(hwnd, &rect);
@@ -930,8 +928,8 @@ LRESULT CMainWindow::Splitter_OnLButtonUp(HWND hwnd, UINT /*iMsg*/, WPARAM /*wPa
     RECT clientrect;
 
     POINT pt;
-    pt.x = (short)LOWORD(lParam);  // horizontal position of cursor
-    pt.y = (short)HIWORD(lParam);
+    pt.x = static_cast<short>(LOWORD(lParam)); // horizontal position of cursor
+    pt.y = static_cast<short>(HIWORD(lParam));
 
     if (bDragMode == FALSE)
         return 0;
@@ -1046,8 +1044,8 @@ LRESULT CMainWindow::Splitter_OnMouseMove(HWND hwnd, UINT /*iMsg*/, WPARAM wPara
     const auto bordersm = CDPIAware::Instance().ScaleX(2);
     const auto borderl = CDPIAware::Instance().ScaleY(4);
 
-    pt.x = (short)LOWORD(lParam);  // horizontal position of cursor
-    pt.y = (short)HIWORD(lParam);
+    pt.x = static_cast<short>(LOWORD(lParam));  // horizontal position of cursor
+    pt.y = static_cast<short>(HIWORD(lParam));
 
     GetClientRect(hwnd, &clientrect);
     GetWindowRect(hwnd, &rect);
@@ -1099,7 +1097,7 @@ LRESULT CMainWindow::Splitter_OnMouseMove(HWND hwnd, UINT /*iMsg*/, WPARAM wPara
 
 bool CMainWindow::OpenDialog()
 {
-    return (DialogBox(hResource, MAKEINTRESOURCE(IDD_OPEN), *this, (DLGPROC)OpenDlgProc)==IDOK);
+    return (DialogBox(hResource, MAKEINTRESOURCE(IDD_OPEN), *this, reinterpret_cast<DLGPROC>(OpenDlgProc)) == IDOK);
 }
 
 BOOL CALLBACK CMainWindow::OpenDlgProc(HWND hwndDlg, UINT message, WPARAM wParam, LPARAM /*lParam*/)
@@ -1197,17 +1195,17 @@ bool CMainWindow::CreateToolbar()
 
     hwndTB = CreateWindowEx(TBSTYLE_EX_DOUBLEBUFFER,
                             TOOLBARCLASSNAME,
-                            (LPCTSTR)nullptr,
+                            static_cast<LPCTSTR>(nullptr),
                             WS_CHILD | WS_BORDER | WS_VISIBLE | TBSTYLE_FLAT | TBSTYLE_TOOLTIPS,
                             0, 0, 0, 0,
                             *this,
-                            (HMENU)IDC_TORTOISEIDIFF,
+                            reinterpret_cast<HMENU>(IDC_TORTOISEIDIFF),
                             hResource,
                             nullptr);
     if (hwndTB == INVALID_HANDLE_VALUE)
         return false;
 
-    SendMessage(hwndTB, TB_BUTTONSTRUCTSIZE, (WPARAM) sizeof(TBBUTTON), 0);
+    SendMessage(hwndTB, TB_BUTTONSTRUCTSIZE, sizeof(TBBUTTON), 0);
 
     TBBUTTON tbb[14];
     // create an imagelist containing the icons for the toolbar
@@ -1330,8 +1328,8 @@ bool CMainWindow::CreateToolbar()
     tbb[index].dwData = 0;
     tbb[index++].iString = 0;
 
-    SendMessage(hwndTB, TB_SETIMAGELIST, 0, (LPARAM)hToolbarImgList);
-    SendMessage(hwndTB, TB_ADDBUTTONS, (WPARAM)index, (LPARAM) (LPTBBUTTON) &tbb);
+    SendMessage(hwndTB, TB_SETIMAGELIST, 0, reinterpret_cast<LPARAM>(hToolbarImgList));
+    SendMessage(hwndTB, TB_ADDBUTTONS, index, reinterpret_cast<LPARAM>(&tbb));
     SendMessage(hwndTB, TB_AUTOSIZE, 0, 0);
     ShowWindow(hwndTB, SW_SHOW);
     return true;

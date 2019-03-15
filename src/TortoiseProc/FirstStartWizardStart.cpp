@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016 - TortoiseGit
+// Copyright (C) 2016, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -70,7 +70,7 @@ BOOL CFirstStartWizardStart::OnInitDialog()
 
 BOOL CFirstStartWizardStart::OnSetActive()
 {
-	CFirstStartWizard* wiz = (CFirstStartWizard*)GetParent();
+	auto wiz = static_cast<CFirstStartWizard*>(GetParent());
 
 	wiz->SetWizardButtons(PSWIZB_BACK | PSWIZB_NEXT);
 
@@ -81,7 +81,7 @@ BOOL CFirstStartWizardStart::OnSetActive()
 
 LRESULT CFirstStartWizardStart::OnDialogDisplayed(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
-	CFirstStartWizard* wiz = (CFirstStartWizard*)GetParent();
+	auto wiz = static_cast<CFirstStartWizard*>(GetParent());
 
 	wiz->GetDlgItem(ID_WIZNEXT)->SetFocus();
 

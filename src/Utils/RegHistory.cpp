@@ -63,7 +63,7 @@ void CRegHistory::RemoveEntry(int pos)
 size_t CRegHistory::Load(LPCTSTR lpszSection, LPCTSTR lpszKeyPrefix)
 {
 	if (!lpszSection || !lpszKeyPrefix || *lpszSection == '\0')
-		return (size_t)(-1);
+		return size_t(-1);
 
 	m_arEntries.clear();
 
@@ -91,8 +91,8 @@ bool CRegHistory::Save() const
 		return false;
 
 	// save history to registry
-	int nMax = min((int)m_arEntries.size(), m_nMaxHistoryItems + 1);
-	for (int n = 0; n < (int)m_arEntries.size(); ++n)
+	int nMax = static_cast<int>(min(m_arEntries.size(), static_cast<size_t>(m_nMaxHistoryItems) + 1));
+	for (int n = 0; n < static_cast<int>(m_arEntries.size()); ++n)
 	{
 		TCHAR sKey[4096] = {0};
 		swprintf_s(sKey, L"%s\\%s%d", m_sSection.c_str(), m_sKeyPrefix.c_str(), n);
@@ -105,7 +105,7 @@ bool CRegHistory::Save() const
 		TCHAR sKey[4096] = {0};
 		swprintf_s(sKey, L"%s\\%s%d", m_sSection.c_str(), m_sKeyPrefix.c_str(), n);
 		CRegStdString regkey(sKey);
-		if (((tstring)regkey).empty())
+		if (static_cast<tstring>(regkey).empty())
 			break;
 		regkey.removeValue(); // remove entry
 	}

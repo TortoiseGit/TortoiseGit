@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -79,7 +79,7 @@ void CSetDialogs::DoDataExchange(CDataExchange* pDX)
 {
 	ISettingsPropPage::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_FONTSIZES, m_cFontSizes);
-	m_dwFontSize = (DWORD)m_cFontSizes.GetItemData(m_cFontSizes.GetCurSel());
+	m_dwFontSize = static_cast<DWORD>(m_cFontSizes.GetItemData(m_cFontSizes.GetCurSel()));
 	if ((m_dwFontSize==0)||(m_dwFontSize == -1))
 	{
 		CString t;
@@ -218,7 +218,7 @@ BOOL CSetDialogs::OnInitDialog()
 	m_cDefaultLogsScale.AddString(temp);
 	temp.Format(IDS_LAST_N_WEEKS, L"N");
 	m_cDefaultLogsScale.AddString(temp);
-	m_cDefaultLogsScale.SetCurSel((DWORD)m_regDefaultLogsScale);
+	m_cDefaultLogsScale.SetCurSel(static_cast<DWORD>(m_regDefaultLogsScale));
 
 	switch (m_regDefaultLogsScale)
 	{
@@ -231,7 +231,7 @@ BOOL CSetDialogs::OnInitDialog()
 	case CFilterData::SHOW_LAST_N_YEARS:
 	case CFilterData::SHOW_LAST_N_MONTHS:
 	case CFilterData::SHOW_LAST_N_WEEKS:
-		m_sDefaultLogs.Format(L"%ld", (DWORD)m_regDefaultLogs);
+		m_sDefaultLogs.Format(L"%ld", static_cast<DWORD>(m_regDefaultLogs));
 		break;
 	}
 
@@ -259,7 +259,7 @@ BOOL CSetDialogs::OnInitDialog()
 
 	m_cFontNames.Setup(DEVICE_FONTTYPE|RASTER_FONTTYPE|TRUETYPE_FONTTYPE, 1, FIXED_PITCH);
 	m_cFontNames.SelectFont(m_sFontName);
-	m_cFontNames.SendMessage(CB_SETITEMHEIGHT, (WPARAM)-1, m_cFontSizes.GetItemHeight(-1));
+	m_cFontNames.SendMessage(CB_SETITEMHEIGHT, WPARAM(-1), m_cFontSizes.GetItemHeight(-1));
 
 	m_cGravatarUrl.AddString(L"http://www.gravatar.com/avatar/%HASH%");
 	m_cGravatarUrl.AddString(L"http://www.gravatar.com/avatar/%HASH%?d=mm");
@@ -286,8 +286,8 @@ void CSetDialogs::OnCbnSelchangeDefaultlogscale()
 {
 	UpdateData();
 	int sel = m_cDefaultLogsScale.GetCurSel();
-	if (sel > 1 && (m_sDefaultLogs.IsEmpty() || _wtol((LPCTSTR)m_sDefaultLogs) == 0))
-		m_sDefaultLogs.Format(L"%ld", (DWORD)m_regDefaultLogs);
+	if (sel > 1 && (m_sDefaultLogs.IsEmpty() || _wtol(static_cast<LPCTSTR>(m_sDefaultLogs)) == 0))
+		m_sDefaultLogs.Format(L"%ld", static_cast<DWORD>(m_regDefaultLogs));
 	else if (sel <= 1)
 		m_sDefaultLogs.Empty();
 	m_DefaultNumberOfCtl.EnableWindow(sel > 1);
@@ -311,7 +311,7 @@ BOOL CSetDialogs::OnApply()
 	int sel = m_cDefaultLogsScale.GetCurSel();
 	Store(sel > 0 ? sel : 0, m_regDefaultLogsScale);
 
-	int val = _wtol((LPCTSTR)m_sDefaultLogs);
+	int val = _wtol(static_cast<LPCTSTR>(m_sDefaultLogs));
 	if (sel > 1 && val > 0)
 		Store(val, m_regDefaultLogs);
 

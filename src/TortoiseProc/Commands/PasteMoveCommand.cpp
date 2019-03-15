@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008, 2012-2013, 2015-2018 - TortoiseGit
+// Copyright (C) 2008, 2012-2013, 2015-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -57,7 +57,7 @@ bool PasteMoveCommand::Execute()
 			progress.Stop();
 			CRenameDlg dlg;
 			dlg.m_name = name;
-			dlg.m_windowtitle.Format(IDS_PROC_NEWNAMEMOVE, (LPCTSTR)name);
+			dlg.m_windowtitle.Format(IDS_PROC_NEWNAMEMOVE, static_cast<LPCTSTR>(name));
 			if (dlg.DoModal() != IDOK)
 				return FALSE;
 			destPath.SetFromWin(sDroppath + L'\\' + dlg.m_name);
@@ -75,7 +75,7 @@ bool PasteMoveCommand::Execute()
 			if (g_Git.Run(cmd, &output, CP_UTF8))
 			//if (!Git.Add(CTGitorgPathList(destPath), &props, Git_depth_infinity, true, false, true))
 			{
-				TRACE(L"%s\n", (LPCTSTR)output);
+				TRACE(L"%s\n", static_cast<LPCTSTR>(output));
 				CMessageBox::Show(GetExplorerHWND(), output, L"TortoiseGit", MB_ICONERROR);
 				return FALSE;		//get out of here
 			}
@@ -84,7 +84,7 @@ bool PasteMoveCommand::Execute()
 		else
 		{
 			CString cmd,output;
-			cmd.Format(L"git.exe mv \"%s\" \"%s\"", (LPCTSTR)orgPathList[nPath].GetGitPathString(), (LPCTSTR)destPath.GetGitPathString());
+			cmd.Format(L"git.exe mv \"%s\" \"%s\"", static_cast<LPCTSTR>(orgPathList[nPath].GetGitPathString()), static_cast<LPCTSTR>(destPath.GetGitPathString()));
 			if (g_Git.Run(cmd, &output, CP_UTF8))
 			//if (!Git.Move(CTGitorgPathList(orgPathList[nPath]), destPath, FALSE))
 			{
@@ -110,7 +110,7 @@ bool PasteMoveCommand::Execute()
 				else
 #endif
 				{
-					TRACE(L"%s\n", (LPCTSTR)output);
+					TRACE(L"%s\n", static_cast<LPCTSTR>(output));
 					CMessageBox::Show(GetExplorerHWND(), output, L"TortoiseGit", MB_ICONERROR);
 					return FALSE;		//get out of here
 				}

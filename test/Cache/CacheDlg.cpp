@@ -99,7 +99,7 @@ void CCacheDlg::OnPaint()
 //  the minimized window.
 HCURSOR CCacheDlg::OnQueryDragIcon()
 {
-	return static_cast<HCURSOR>(m_hIcon);
+	return m_hIcon;
 }
 
 void CCacheDlg::OnBnClickedOk()
@@ -109,7 +109,7 @@ void CCacheDlg::OnBnClickedOk()
 }
 UINT CCacheDlg::TestThreadEntry(LPVOID pVoid)
 {
-	return ((CCacheDlg*)pVoid)->TestThread();
+	return static_cast<CCacheDlg*>(pVoid)->TestThread();
 }
 
 //this is the thread function which calls the subversion function
@@ -131,7 +131,7 @@ UINT CCacheDlg::TestThread()
 	CString sNumber;
 	std::random_device rd;
 	std::mt19937 mt(rd());
-	std::uniform_int_distribution<INT_PTR> dist(0, max((INT_PTR)0, m_filelist.GetCount() - 1));
+	std::uniform_int_distribution<INT_PTR> dist(0, max(INT_PTR(0), m_filelist.GetCount() - 1));
 	std::uniform_int_distribution<INT_PTR> dist2(0, 9);
 	for (int i=0; i < 1; ++i)
 	{
@@ -154,7 +154,7 @@ UINT CCacheDlg::TestThread()
 	ULONGLONG endticks = GetTickCount64();
 
 	CString sEndText;
-	sEndText.Format(L"%s  - %I64u ms", (LPCTSTR)sEnd, endticks - startticks);
+	sEndText.Format(L"%s  - %I64u ms", static_cast<LPCTSTR>(sEnd), endticks - startticks);
 
 	GetDlgItem(IDC_ENDTIME)->SetWindowText(sEndText);
 
@@ -396,7 +396,7 @@ void CCacheDlg::OnBnClickedWatchtestbutton()
 
 UINT CCacheDlg::WatchTestThreadEntry(LPVOID pVoid)
 {
-	return ((CCacheDlg*)pVoid)->WatchTestThread();
+	return static_cast<CCacheDlg*>(pVoid)->WatchTestThread();
 }
 
 //this is the thread function which calls the subversion function
@@ -417,7 +417,7 @@ UINT CCacheDlg::WatchTestThread()
 	CString sNumber;
 	std::random_device rd;
 	std::mt19937 mt(rd());
-	std::uniform_int_distribution<INT_PTR> dist(0, max((INT_PTR)0, m_filelist.GetCount() - 1));
+	std::uniform_int_distribution<INT_PTR> dist(0, max(INT_PTR(0), m_filelist.GetCount() - 1));
 	filepath = m_filelist.GetAt(dist(mt));
 	GetStatusFromRemoteCache(CTGitPath(m_sRootPath), false);
 	for (int i=0; i < 10000; ++i)
@@ -458,7 +458,7 @@ UINT CCacheDlg::WatchTestThread()
 	ULONGLONG endticks = GetTickCount64();
 
 	CString sEndText;
-	sEndText.Format(L"%s  - %I64u ms", (LPCTSTR)sEnd, endticks - startticks);
+	sEndText.Format(L"%s  - %I64u ms", static_cast<LPCTSTR>(sEnd), endticks - startticks);
 
 	GetDlgItem(IDC_ENDTIME)->SetWindowText(sEndText);
 
@@ -478,7 +478,7 @@ void CCacheDlg::TouchFile(const CString& path)
 	GetSystemTime(&st);              // gets current time
 	SystemTimeToFileTime(&st, &ft);  // converts to file time format
 	SetFileTime(hFile,           // sets last-write time for file
-		(LPFILETIME) NULL, (LPFILETIME) NULL, &ft);
+		nullptr, nullptr, &ft);
 
 	CloseHandle(hFile);
 }

@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 // Copyright (C) 2004-2018 - TortoiseSVN
 // Copyright (C) 2012-2014 - Sven Strickroth <email@cs-ware.de>
 
@@ -218,10 +218,10 @@ CMainFrame::CMainFrame()
 	, m_regIgnoreComments(L"Software\\TortoiseGitMerge\\IgnoreComments", FALSE)
 	, m_regexIndex(-1)
 {
-	m_bOneWay = (0 != ((DWORD)m_regOneWay));
-	m_bCollapsed = !!(DWORD)m_regCollapsed;
-	m_bViewMovedBlocks = !!(DWORD)m_regViewModedBlocks;
-	m_bWrapLines = !!(DWORD)m_regWrapLines;
+	m_bOneWay = (0 != (static_cast<DWORD>(m_regOneWay)));
+	m_bCollapsed = !!static_cast<DWORD>(m_regCollapsed);
+	m_bViewMovedBlocks = !!static_cast<DWORD>(m_regViewModedBlocks);
+	m_bWrapLines = !!static_cast<DWORD>(m_regWrapLines);
 	m_bInlineDiff = !!m_regInlineDiff;
 	m_bUseRibbons = !!m_regUseRibbons;
 }
@@ -511,10 +511,10 @@ BOOL CMainFrame::PatchFile(CString sFilePath, bool /*bContentMods*/, bool bPropM
 	{
 		m_Data.m_baseFile.SetFileName(sTempFile);
 		CString temp;
-		temp.Format(L"%s %s", (LPCTSTR)CPathUtils::GetFileNameFromPath(sFilePath), (LPCTSTR)m_Data.m_sPatchPatched);
+		temp.Format(L"%s %s", static_cast<LPCTSTR>(CPathUtils::GetFileNameFromPath(sFilePath)), static_cast<LPCTSTR>(m_Data.m_sPatchPatched));
 		m_Data.m_baseFile.SetDescriptiveName(temp);
 		m_Data.m_yourFile.SetFileName(sFilePath);
-		temp.Format(L"%s %s", (LPCTSTR)CPathUtils::GetFileNameFromPath(sFilePath), (LPCTSTR)m_Data.m_sPatchOriginal);
+		temp.Format(L"%s %s", static_cast<LPCTSTR>(CPathUtils::GetFileNameFromPath(sFilePath)), static_cast<LPCTSTR>(m_Data.m_sPatchOriginal));
 		m_Data.m_yourFile.SetDescriptiveName(temp);
 		m_Data.m_theirFile.SetOutOfUse();
 		m_Data.m_mergedFile.SetOutOfUse();
@@ -531,13 +531,13 @@ BOOL CMainFrame::PatchFile(CString sFilePath, bool /*bContentMods*/, bool bPropM
 			m_Data.m_baseFile.SetFileName(sBasePath);
 		}
 		CString sDescription;
-		sDescription.Format(L"%s %s", (LPCTSTR)CPathUtils::GetFileNameFromPath(sBasePath), (LPCTSTR)m_Data.m_sPatchOriginal);
+		sDescription.Format(L"%s %s", static_cast<LPCTSTR>(CPathUtils::GetFileNameFromPath(sBasePath)), static_cast<LPCTSTR>(m_Data.m_sPatchOriginal));
 		m_Data.m_baseFile.SetDescriptiveName(sDescription);
 		if (sBasePath == sFilePath)
 		{
 			m_Data.m_yourFile.SetFileName(sTempFile);
 			CString temp;
-			temp.Format(L"%s %s", (LPCTSTR)CPathUtils::GetFileNameFromPath(sBasePath), (LPCTSTR)m_Data.m_sPatchPatched);
+			temp.Format(L"%s %s", static_cast<LPCTSTR>(CPathUtils::GetFileNameFromPath(sBasePath)), static_cast<LPCTSTR>(m_Data.m_sPatchPatched));
 			m_Data.m_yourFile.SetDescriptiveName(temp);
 			m_Data.m_theirFile.SetOutOfUse();
 		}
@@ -548,20 +548,20 @@ BOOL CMainFrame::PatchFile(CString sFilePath, bool /*bContentMods*/, bool bPropM
 				m_Data.m_yourFile.SetFileName(CTempFiles::Instance().GetTempFilePathString());
 				m_Data.m_yourFile.CreateEmptyFile();
 				CString temp;
-				temp.Format(L"%s %s", (LPCTSTR)CPathUtils::GetFileNameFromPath(sFilePath), (LPCTSTR)CString(MAKEINTRESOURCE(IDS_NOTFOUNDVIEWTITLEINDICATOR)));
+				temp.Format(L"%s %s", static_cast<LPCTSTR>(CPathUtils::GetFileNameFromPath(sFilePath)), static_cast<LPCTSTR>(CString(MAKEINTRESOURCE(IDS_NOTFOUNDVIEWTITLEINDICATOR))));
 				m_Data.m_yourFile.SetDescriptiveName(temp);
 			}
 			else
 				m_Data.m_yourFile.SetFileName(sFilePath);
 			m_Data.m_theirFile.SetFileName(sTempFile);
 			CString temp;
-			temp.Format(L"%s %s", (LPCTSTR)CPathUtils::GetFileNameFromPath(sFilePath), (LPCTSTR)m_Data.m_sPatchPatched);
+			temp.Format(L"%s %s", static_cast<LPCTSTR>(CPathUtils::GetFileNameFromPath(sFilePath)), static_cast<LPCTSTR>(m_Data.m_sPatchPatched));
 			m_Data.m_theirFile.SetDescriptiveName(temp);
 		}
 		m_Data.m_mergedFile.SetFileName(sFilePath);
 		m_Data.m_bPatchRequired = bPropMods;
 	}
-	TRACE(L"comparing %s\nwith the patched result %s\n", (LPCTSTR)sFilePath, (LPCTSTR)sTempFile);
+	TRACE(L"comparing %s\nwith the patched result %s\n", static_cast<LPCTSTR>(sFilePath), static_cast<LPCTSTR>(sTempFile));
 
 	LoadViews();
 	if (!sRejectedFile.IsEmpty())
@@ -569,7 +569,7 @@ BOOL CMainFrame::PatchFile(CString sFilePath, bool /*bContentMods*/, bool bPropM
 #if 0 // TGIT TODO
 		// start TortoiseUDiff with the rejected hunks
 		CString sTitle;
-		sTitle.Format(IDS_TITLE_REJECTEDHUNKS, (LPCTSTR)CPathUtils::GetFileNameFromPath(sFilePath));
+		sTitle.Format(IDS_TITLE_REJECTEDHUNKS, static_cast<LPCTSTR>(CPathUtils::GetFileNameFromPath(sFilePath)));
 		CAppUtils::StartUnifiedDiffViewer(sRejectedFile, sTitle);
 #endif
 	}
@@ -593,7 +593,7 @@ BOOL CMainFrame::DiffFiles(CString sURL1, CString sRev1, CString sURL2, CString 
 
 	CString sTemp;
 	CSysProgressDlg progDlg;
-	sTemp.Format(IDS_GETVERSIONOFFILE, (LPCTSTR)sRev1);
+	sTemp.Format(IDS_GETVERSIONOFFILE, static_cast<LPCTSTR>(sRev1));
 	progDlg.SetLine(1, sTemp, true);
 	progDlg.SetLine(2, sURL1, true);
 	sTemp.LoadString(IDS_GETVERSIONOFFILETITLE);
@@ -606,11 +606,11 @@ BOOL CMainFrame::DiffFiles(CString sURL1, CString sRev1, CString sURL2, CString 
 	{
 		progDlg.Stop();
 		CString sErrMsg;
-		sErrMsg.FormatMessage(IDS_ERR_MAINFRAME_FILEVERSIONNOTFOUND, (LPCTSTR)sRev1, (LPCTSTR)sURL1);
+		sErrMsg.FormatMessage(IDS_ERR_MAINFRAME_FILEVERSIONNOTFOUND, static_cast<LPCTSTR>(sRev1), static_cast<LPCTSTR>(sURL1));
 		MessageBox(sErrMsg, nullptr, MB_ICONERROR);
 		return FALSE;
 	}
-	sTemp.Format(IDS_GETVERSIONOFFILE, (LPCTSTR)sRev2);
+	sTemp.Format(IDS_GETVERSIONOFFILE, static_cast<LPCTSTR>(sRev2));
 	progDlg.SetLine(1, sTemp, true);
 	progDlg.SetLine(2, sURL2, true);
 	progDlg.SetProgress(50, 100);
@@ -618,17 +618,17 @@ BOOL CMainFrame::DiffFiles(CString sURL1, CString sRev1, CString sURL2, CString 
 	{
 		progDlg.Stop();
 		CString sErrMsg;
-		sErrMsg.FormatMessage(IDS_ERR_MAINFRAME_FILEVERSIONNOTFOUND, (LPCTSTR)sRev2, (LPCTSTR)sURL2);
+		sErrMsg.FormatMessage(IDS_ERR_MAINFRAME_FILEVERSIONNOTFOUND, static_cast<LPCTSTR>(sRev2), static_cast<LPCTSTR>(sURL2));
 		MessageBox(sErrMsg, nullptr, MB_ICONERROR);
 		return FALSE;
 	}
 	progDlg.SetProgress(100,100);
 	progDlg.Stop();
 	CString temp;
-	temp.Format(L"%s Revision %s", (LPCTSTR)CPathUtils::GetFileNameFromPath(sURL1), (LPCTSTR)sRev1);
+	temp.Format(L"%s Revision %s", static_cast<LPCTSTR>(CPathUtils::GetFileNameFromPath(sURL1)), static_cast<LPCTSTR>(sRev1));
 	m_Data.m_baseFile.SetFileName(tempfile1);
 	m_Data.m_baseFile.SetDescriptiveName(temp);
-	temp.Format(L"%s Revision %s", (LPCTSTR)CPathUtils::GetFileNameFromPath(sURL2), (LPCTSTR)sRev2);
+	temp.Format(L"%s Revision %s", static_cast<LPCTSTR>(CPathUtils::GetFileNameFromPath(sURL2)), static_cast<LPCTSTR>(sRev2));
 	m_Data.m_yourFile.SetFileName(tempfile2);
 	m_Data.m_yourFile.SetDescriptiveName(temp);
 
@@ -655,8 +655,8 @@ void CMainFrame::OnFileOpen(bool fillyours)
 	}
 	m_dlgFilePatches.ShowWindow(SW_HIDE);
 	m_dlgFilePatches.Init(nullptr, nullptr, CString(), nullptr);
-	TRACE(L"got the files:\n   %s\n   %s\n   %s\n   %s\n   %s\n", (LPCTSTR)dlg.m_sBaseFile, (LPCTSTR)dlg.m_sTheirFile, (LPCTSTR)dlg.m_sYourFile,
-		(LPCTSTR)dlg.m_sUnifiedDiffFile, (LPCTSTR)dlg.m_sPatchDirectory);
+	TRACE(L"got the files:\n   %s\n   %s\n   %s\n   %s\n   %s\n", static_cast<LPCTSTR>(dlg.m_sBaseFile), static_cast<LPCTSTR>(dlg.m_sTheirFile), static_cast<LPCTSTR>(dlg.m_sYourFile),
+		static_cast<LPCTSTR>(dlg.m_sUnifiedDiffFile), static_cast<LPCTSTR>(dlg.m_sPatchDirectory));
 	m_Data.m_baseFile.SetFileName(dlg.m_sBaseFile);
 	m_Data.m_theirFile.SetFileName(dlg.m_sTheirFile);
 	m_Data.m_yourFile.SetFileName(dlg.m_sYourFile);
@@ -782,7 +782,7 @@ bool CMainFrame::LoadViews(int line)
 			if (betterpatchpath.CompareNoCase(m_Data.m_sPatchPath)!=0)
 			{
 				CString msg;
-				msg.FormatMessage(IDS_WARNBETTERPATCHPATHFOUND, (LPCTSTR)m_Data.m_sPatchPath, (LPCTSTR)betterpatchpath);
+				msg.FormatMessage(IDS_WARNBETTERPATCHPATHFOUND, static_cast<LPCTSTR>(m_Data.m_sPatchPath), static_cast<LPCTSTR>(betterpatchpath));
 				CTaskDialog taskdlg(msg,
 									CString(MAKEINTRESOURCE(IDS_WARNBETTERPATCHPATHFOUND_TASK2)),
 									L"TortoiseGitMerge",
@@ -1030,8 +1030,8 @@ bool CMainFrame::LoadViews(int line)
 	{
 		CRegDWORD regFirstDiff = CRegDWORD(L"Software\\TortoiseGitMerge\\FirstDiffOnLoad", TRUE);
 		CRegDWORD regFirstConflict = CRegDWORD(L"Software\\TortoiseGitMerge\\FirstConflictOnLoad", TRUE);
-		bool bGoFirstDiff = (0 != (DWORD)regFirstDiff);
-		bool bGoFirstConflict = (0 != (DWORD)regFirstConflict);
+		bool bGoFirstDiff = (0 != static_cast<DWORD>(regFirstDiff));
+		bool bGoFirstConflict = (0 != static_cast<DWORD>(regFirstConflict));
 		if (bGoFirstConflict && (CheckResolved()>=0))
 		{
 			pwndActiveView->GoToFirstConflict();
@@ -1159,8 +1159,8 @@ void CMainFrame::OnUpdateViewWhitespaces(CCmdUI *pCmdUI)
 
 void CMainFrame::OnViewCollapsed()
 {
-	m_regCollapsed = !(DWORD)m_regCollapsed;
-	m_bCollapsed = !!(DWORD)m_regCollapsed;
+	m_regCollapsed = !static_cast<DWORD>(m_regCollapsed);
+	m_bCollapsed = !!static_cast<DWORD>(m_regCollapsed);
 
 	OnViewTextFoldUnfold();
 	m_wndLocatorBar.Invalidate();
@@ -1173,7 +1173,7 @@ void CMainFrame::OnUpdateViewCollapsed(CCmdUI *pCmdUI)
 
 void CMainFrame::OnViewWraplonglines()
 {
-	m_bWrapLines = !(DWORD)m_regWrapLines;
+	m_bWrapLines = !static_cast<DWORD>(m_regWrapLines);
 	m_regWrapLines = m_bWrapLines;
 
 	if (m_pwndLeftView)   m_pwndLeftView  ->WrapChanged();
@@ -1436,14 +1436,14 @@ void CMainFrame::OnFileSave()
 				TDF_ENABLE_HYPERLINKS | TDF_USE_COMMAND_LINKS | TDF_ALLOW_DIALOG_CANCELLATION | TDF_POSITION_RELATIVE_TO_WINDOW);
 			CString sTaskTemp;
 			if (m_pwndLeftView->m_pWorkingFile->InUse() && !m_pwndLeftView->m_pWorkingFile->IsReadonly())
-				sTaskTemp.Format(IDS_ASKFORSAVE_SAVELEFT, (LPCTSTR)m_pwndLeftView->m_pWorkingFile->GetFilename());
+				sTaskTemp.Format(IDS_ASKFORSAVE_SAVELEFT, static_cast<LPCTSTR>(m_pwndLeftView->m_pWorkingFile->GetFilename()));
 			else
 				sTaskTemp = CString(MAKEINTRESOURCE(IDS_ASKFORSAVE_SAVELEFTAS));
 			taskdlg.AddCommandControl(201, sTaskTemp, bLeftIsModified);// left
 			if (bLeftIsModified)
 				taskdlg.SetDefaultCommandControl(201);
 			if (m_pwndRightView->m_pWorkingFile->InUse() && !m_pwndRightView->m_pWorkingFile->IsReadonly())
-				sTaskTemp.Format(IDS_ASKFORSAVE_SAVERIGHT, (LPCTSTR)m_pwndRightView->m_pWorkingFile->GetFilename());
+				sTaskTemp.Format(IDS_ASKFORSAVE_SAVERIGHT, static_cast<LPCTSTR>(m_pwndRightView->m_pWorkingFile->GetFilename()));
 			else
 				sTaskTemp = CString(MAKEINTRESOURCE(IDS_ASKFORSAVE_SAVERIGHTAS));
 			taskdlg.AddCommandControl(202, sTaskTemp, bRightIsModified); // right
@@ -1454,7 +1454,7 @@ void CMainFrame::OnFileSave()
 				taskdlg.SetDefaultCommandControl(203);
 			taskdlg.SetCommonButtons(TDCBF_CANCEL_BUTTON);
 			taskdlg.SetMainIcon(TD_WARNING_ICON);
-			UINT ret = (UINT)taskdlg.DoModal(m_hWnd);
+			UINT ret = static_cast<UINT>(taskdlg.DoModal(m_hWnd));
 			switch (ret)
 			{
 			case 201: // left
@@ -1524,7 +1524,7 @@ bool CMainFrame::FileSave(bool bCheckResolved /*=true*/)
 		taskdlg.SetCommonButtons(TDCBF_CANCEL_BUTTON);
 		taskdlg.SetDefaultCommandControl(10);
 		taskdlg.SetMainIcon(TD_WARNING_ICON);
-		UINT ret = (UINT)taskdlg.DoModal(m_hWnd);
+		UINT ret = static_cast<UINT>(taskdlg.DoModal(m_hWnd));
 		if (ret == 10)
 			m_pwndRightView->LeaveOnlyMarkedBlocks();
 		else if (ret == 11)
@@ -1549,7 +1549,7 @@ bool CMainFrame::FileSave(bool bCheckResolved /*=true*/)
 	if (bCheckResolved && HasConflictsWontKeep())
 		return false;
 
-	if (((DWORD)CRegDWORD(L"Software\\TortoiseGitMerge\\Backup")) != 0)
+	if ((static_cast<DWORD>(CRegDWORD(L"Software\\TortoiseGitMerge\\Backup"))) != 0)
 	{
 		MoveFileEx(m_Data.m_mergedFile.GetFilename(), m_Data.m_mergedFile.GetFilename() + L".bak", MOVEFILE_COPY_ALLOWED | MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH);
 	}
@@ -1563,7 +1563,7 @@ bool CMainFrame::FileSave(bool bCheckResolved /*=true*/)
 		// file was saved with 0 lines!
 		// ask the user if the file should be deleted
 		CString msg;
-		msg.Format(IDS_DELETEWHENEMPTY, (LPCTSTR)CPathUtils::GetFileNameFromPath(m_Data.m_mergedFile.GetFilename()));
+		msg.Format(IDS_DELETEWHENEMPTY, static_cast<LPCTSTR>(CPathUtils::GetFileNameFromPath(m_Data.m_mergedFile.GetFilename())));
 		CTaskDialog taskdlg(msg,
 							CString(MAKEINTRESOURCE(IDS_DELETEWHENEMPTY_TASK2)),
 							CString(MAKEINTRESOURCE(IDS_APPNAME)),
@@ -1621,7 +1621,7 @@ bool CMainFrame::FileSave(bool bCheckResolved /*=true*/)
 			if (hasConflictInIndex)
 			{
 				CString msg;
-				msg.Format(IDS_MARKASRESOLVED, (LPCTSTR)CPathUtils::GetFileNameFromPath(m_Data.m_mergedFile.GetFilename()));
+				msg.Format(IDS_MARKASRESOLVED, static_cast<LPCTSTR>(CPathUtils::GetFileNameFromPath(m_Data.m_mergedFile.GetFilename())));
 				CTaskDialog taskdlg(msg,
 					CString(MAKEINTRESOURCE(IDS_MARKASRESOLVED_TASK2)),
 					CString(MAKEINTRESOURCE(IDS_APPNAME)),
@@ -1685,7 +1685,7 @@ void CMainFrame::OnFileSaveAs()
 	}
 	taskdlg.SetCommonButtons(TDCBF_CANCEL_BUTTON);
 	taskdlg.SetMainIcon(bHaveConflict ? TD_WARNING_ICON : TD_INFORMATION_ICON);
-	int nCommand = (int)taskdlg.DoModal(m_hWnd);
+	int nCommand = static_cast<int>(taskdlg.DoModal(m_hWnd));
 	CString sFileName;
 	switch (nCommand)
 	{
@@ -1735,7 +1735,7 @@ void CMainFrame::OnUpdateFileSave(CCmdUI *pCmdUI)
 		if (IsViewGood(m_pwndBottomView)&&(m_pwndBottomView->m_pViewData))
 			bEnable = TRUE;
 		else if ( (IsViewGood(m_pwndRightView)&&(m_pwndRightView->m_pViewData)) &&
-				  (m_pwndRightView->IsModified() || (m_Data.m_yourFile.GetWindowName().Right((int)wcslen(L": patched")).Compare(L": patched") == 0)))
+				  (m_pwndRightView->IsModified() || (m_Data.m_yourFile.GetWindowName().Right(static_cast<int>(wcslen(L": patched"))).Compare(L": patched") == 0)))
 			bEnable = TRUE;
 		else if (IsViewGood(m_pwndLeftView)
 				&& (m_pwndLeftView->m_pViewData)
@@ -2102,7 +2102,7 @@ BOOL CMainFrame::MarkAsResolved()
 	if (resolveMsgWnd)
 	{
 		CString s;
-		s.Format(L" /resolvemsghwnd:%I64d /resolvemsgwparam:%I64d /resolvemsglparam:%I64d", (__int64)resolveMsgWnd, (__int64)resolveMsgWParam, (__int64)resolveMsgLParam);
+		s.Format(L" /resolvemsghwnd:%I64d /resolvemsgwparam:%I64d /resolvemsglparam:%I64d", reinterpret_cast<__int64>(resolveMsgWnd), static_cast<__int64>(resolveMsgWParam), static_cast<__int64>(resolveMsgLParam));
 		cmd += s;
 	}
 	if(!CAppUtils::RunTortoiseGitProc(cmd))
@@ -2411,7 +2411,7 @@ int CMainFrame::CheckForReload()
 	taskdlg.SetCommonButtons(TDCBF_CANCEL_BUTTON);
 	taskdlg.SetDefaultCommandControl(IDYES);
 	taskdlg.SetMainIcon(TD_WARNING_ICON);
-	UINT ret = (UINT)taskdlg.DoModal(m_hWnd);
+	UINT ret = static_cast<UINT>(taskdlg.DoModal(m_hWnd));
 	if (ret == IDYES)
 	{
 		CDiffColors::GetInstance().LoadRegistry();
@@ -2513,7 +2513,7 @@ int CMainFrame::CheckForSave(ECheckForSaveReason eReason)
 								TDF_ENABLE_HYPERLINKS | TDF_USE_COMMAND_LINKS | TDF_ALLOW_DIALOG_CANCELLATION | TDF_POSITION_RELATIVE_TO_WINDOW);
 			CString sTaskTemp;
 			if (m_pwndLeftView->m_pWorkingFile->InUse() && !m_pwndLeftView->m_pWorkingFile->IsReadonly())
-				sTaskTemp.Format(IDS_ASKFORSAVE_SAVELEFT, (LPCTSTR)m_pwndLeftView->m_pWorkingFile->GetFilename());
+				sTaskTemp.Format(IDS_ASKFORSAVE_SAVELEFT, static_cast<LPCTSTR>(m_pwndLeftView->m_pWorkingFile->GetFilename()));
 			else
 				sTaskTemp = CString(MAKEINTRESOURCE(IDS_ASKFORSAVE_SAVELEFTAS));
 			taskdlg.AddCommandControl(201, sTaskTemp); // left
@@ -2521,7 +2521,7 @@ int CMainFrame::CheckForSave(ECheckForSaveReason eReason)
 			if (HasUnsavedEdits(m_pwndRightView))
 			{
 				if (m_pwndRightView->m_pWorkingFile->InUse() && !m_pwndRightView->m_pWorkingFile->IsReadonly())
-					sTaskTemp.Format(IDS_ASKFORSAVE_SAVERIGHT, (LPCTSTR)m_pwndRightView->m_pWorkingFile->GetFilename());
+					sTaskTemp.Format(IDS_ASKFORSAVE_SAVERIGHT, static_cast<LPCTSTR>(m_pwndRightView->m_pWorkingFile->GetFilename()));
 				else
 					sTaskTemp = CString(MAKEINTRESOURCE(IDS_ASKFORSAVE_SAVERIGHTAS));
 				taskdlg.AddCommandControl(202, sTaskTemp); // right
@@ -2532,7 +2532,7 @@ int CMainFrame::CheckForSave(ECheckForSaveReason eReason)
 			taskdlg.AddCommandControl(IDCANCEL, sCancelAction); // cancel
 			taskdlg.SetCommonButtons(TDCBF_CANCEL_BUTTON);
 			taskdlg.SetMainIcon(TD_WARNING_ICON);
-			UINT ret = (UINT)taskdlg.DoModal(m_hWnd);
+			UINT ret = static_cast<UINT>(taskdlg.DoModal(m_hWnd));
 			switch (ret)
 			{
 			case 201: // left
@@ -2567,7 +2567,7 @@ int CMainFrame::CheckForSave(ECheckForSaveReason eReason)
 								TDF_ENABLE_HYPERLINKS | TDF_USE_COMMAND_LINKS | TDF_ALLOW_DIALOG_CANCELLATION | TDF_POSITION_RELATIVE_TO_WINDOW);
 			CString sTask3;
 			if (m_Data.m_mergedFile.InUse())
-				sTask3.Format(IDS_ASKFORSAVE_TASK3, (LPCTSTR)m_Data.m_mergedFile.GetFilename());
+				sTask3.Format(IDS_ASKFORSAVE_TASK3, static_cast<LPCTSTR>(m_Data.m_mergedFile.GetFilename()));
 			else
 				sTask3.LoadString(IDS_ASKFORSAVE_TASK6);
 			taskdlg.AddCommandControl(IDYES, sTask3);
@@ -2576,7 +2576,7 @@ int CMainFrame::CheckForSave(ECheckForSaveReason eReason)
 			taskdlg.SetCommonButtons(TDCBF_CANCEL_BUTTON);
 			taskdlg.SetDefaultCommandControl(IDYES);
 			taskdlg.SetMainIcon(TD_WARNING_ICON);
-			if ((UINT)taskdlg.DoModal(m_hWnd) == IDYES)
+			if (static_cast<UINT>(taskdlg.DoModal(m_hWnd)) == IDYES)
 			{
 				if (m_pwndLeftView->SaveFile()<0)
 					return IDCANCEL;
@@ -2604,7 +2604,7 @@ int CMainFrame::CheckForSave(ECheckForSaveReason eReason)
 							TDF_ENABLE_HYPERLINKS | TDF_USE_COMMAND_LINKS | TDF_ALLOW_DIALOG_CANCELLATION | TDF_POSITION_RELATIVE_TO_WINDOW);
 		CString sTask3;
 		if (m_Data.m_mergedFile.InUse())
-			sTask3.Format(IDS_ASKFORSAVE_TASK3, (LPCTSTR)m_Data.m_mergedFile.GetFilename());
+			sTask3.Format(IDS_ASKFORSAVE_TASK3, static_cast<LPCTSTR>(m_Data.m_mergedFile.GetFilename()));
 		else
 			sTask3.LoadString(IDS_ASKFORSAVE_TASK6);
 		taskdlg.AddCommandControl(IDYES, sTask3);
@@ -2613,7 +2613,7 @@ int CMainFrame::CheckForSave(ECheckForSaveReason eReason)
 		taskdlg.SetCommonButtons(TDCBF_CANCEL_BUTTON);
 		taskdlg.SetDefaultCommandControl(IDYES);
 		taskdlg.SetMainIcon(TD_WARNING_ICON);
-		ret = (UINT)taskdlg.DoModal(m_hWnd);
+		ret = static_cast<UINT>(taskdlg.DoModal(m_hWnd));
 
 		if (ret == IDYES)
 		{
@@ -2758,7 +2758,7 @@ void CMainFrame::OnEditCreateunifieddifffile()
 	if(!TryGetFileName(outputFile))
 		return;
 
-	CRegStdDWORD regContextLines(L"Software\\TortoiseGitMerge\\ContextLines", (DWORD)-1);
+	CRegStdDWORD regContextLines(L"Software\\TortoiseGitMerge\\ContextLines", static_cast<DWORD>(-1));
 	CAppUtils::CreateUnifiedDiff(origFile, modifiedFile, outputFile, regContextLines, true);
 	// from here a hacky solution exchanges the paths included in the patch, see issue #2541
 	if (origReflected.IsEmpty() || modifiedReflected.IsEmpty())
@@ -2778,14 +2778,14 @@ void CMainFrame::OnEditCreateunifieddifffile()
 			return;
 
 		CStringA filecontent;
-		UINT filelength = (UINT)file.GetLength();
-		int bytesread = (int)file.Read(filecontent.GetBuffer(filelength), filelength);
+		UINT filelength = static_cast<UINT>(file.GetLength());
+		int bytesread = static_cast<int>(file.Read(filecontent.GetBuffer(filelength), filelength));
 		filecontent.ReleaseBuffer(bytesread);
 
 		if (!CStringUtils::StartsWith(filecontent, "diff --git "))
 			return;
 		int lineend = filecontent.Find("\n");
-		if (lineend <= (int)strlen("diff --git "))
+		if (lineend <= static_cast<int>(strlen("diff --git ")))
 			return;
 		CStringA newStart = "diff --git \"a/" + origReflectedA + "\" \"b/" + modifiedReflectedA + "\"\n";
 		if (!CStringUtils::StartsWith(filecontent.GetBuffer() + lineend, "\nindex "))
@@ -2801,7 +2801,7 @@ void CMainFrame::OnEditCreateunifieddifffile()
 		newStart += "--- \"a/" + origReflectedA + "\"\n+++ \"b/" + modifiedReflectedA + "\"";
 		filecontent = newStart + filecontent.Mid(nextlineend);
 		file.SeekToBegin();
-		file.Write(filecontent, (UINT)filecontent.GetLength());
+		file.Write(filecontent, static_cast<UINT>(filecontent.GetLength()));
 		file.SetLength(file.GetPosition());
 		file.Close();
 	}
@@ -2895,7 +2895,7 @@ void CMainFrame::OnUpdateViewIgnoreallwhitespacechanges(CCmdUI *pCmdUI)
 
 void CMainFrame::OnViewMovedBlocks()
 {
-	m_bViewMovedBlocks = !(DWORD)m_regViewModedBlocks;
+	m_bViewMovedBlocks = !static_cast<DWORD>(m_regViewModedBlocks);
 	m_regViewModedBlocks = m_bViewMovedBlocks;
 	LoadViews(-1);
 }
@@ -3018,7 +3018,7 @@ void CMainFrame::LoadIgnoreCommentData()
 			HGLOBAL hResourceLoaded = LoadResource(nullptr, hRes);
 			if (hResourceLoaded)
 			{
-				char * lpResLock = (char *) LockResource(hResourceLoaded);
+				auto lpResLock = static_cast<char*>(LockResource(hResourceLoaded));
 				DWORD dwSizeRes = SizeofResource(nullptr, hRes);
 				if (lpResLock)
 				{
@@ -3129,7 +3129,7 @@ void CMainFrame::OnRegexfilter(UINT cmd)
 	}
 	else
 	{
-		if (cmd == (UINT)m_regexIndex && !m_bUseRibbons)
+		if (cmd == static_cast<UINT>(m_regexIndex) && !m_bUseRibbons)
 		{
 			if (CheckForSave(CHFSR_OPTIONS)==IDCANCEL)
 				return;
@@ -3137,7 +3137,7 @@ void CMainFrame::OnRegexfilter(UINT cmd)
 			m_regexIndex = -1;
 			LoadViews(-1);
 		}
-		else if (cmd != (UINT)m_regexIndex)
+		else if (cmd != static_cast<UINT>(m_regexIndex))
 		{
 			CSimpleIni::TNamesDepend sections;
 			m_regexIni.GetAllSections(sections);
@@ -3145,7 +3145,7 @@ void CMainFrame::OnRegexfilter(UINT cmd)
 			m_regexIndex = -1;
 			for (const auto& section : sections)
 			{
-				if (cmd == (UINT)index)
+				if (cmd == static_cast<UINT>(index))
 				{
 					if (CheckForSave(CHFSR_OPTIONS)==IDCANCEL)
 						break;
@@ -3181,7 +3181,7 @@ void CMainFrame::OnRegexfilter(UINT cmd)
 void CMainFrame::OnUpdateViewRegexFilter( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable();
-	pCmdUI->SetCheck(pCmdUI->m_nID == (UINT)m_regexIndex);
+	pCmdUI->SetCheck(pCmdUI->m_nID == static_cast<UINT>(m_regexIndex));
 }
 
 void CMainFrame::BuildRegexSubitems(CMFCPopupMenu* pMenuPopup)
@@ -3196,7 +3196,7 @@ void CMainFrame::BuildRegexSubitems(CMFCPopupMenu* pMenuPopup)
 			HGLOBAL hResourceLoaded = LoadResource(nullptr, hRes);
 			if (hResourceLoaded)
 			{
-				char * lpResLock = (char *)LockResource(hResourceLoaded);
+				auto lpResLock = static_cast<char*>(LockResource(hResourceLoaded));
 				DWORD dwSizeRes = SizeofResource(nullptr, hRes);
 				if (lpResLock)
 				{
@@ -3240,7 +3240,7 @@ void CMainFrame::BuildRegexSubitems(CMFCPopupMenu* pMenuPopup)
 			int cmdIndex = 2;
 			for (const auto& section : sections)
 			{
-				pMenuPopup->InsertItem(CMFCToolBarMenuButton(ID_REGEXFILTER + cmdIndex, nullptr, -1, (LPCWSTR)section.pItem), iIndex + cmdIndex);
+				pMenuPopup->InsertItem(CMFCToolBarMenuButton(ID_REGEXFILTER + cmdIndex, nullptr, -1, section.pItem), iIndex + cmdIndex);
 				cmdIndex++;
 			}
 		}
@@ -3424,17 +3424,17 @@ void CMainFrame::OnEOLBottom( UINT cmd )
 
 void CMainFrame::OnTabModeLeft( UINT cmd )
 {
-	OnTabMode(m_pwndLeftView, (int)cmd - ID_INDICATOR_LEFTTABMODESTART);
+	OnTabMode(m_pwndLeftView, static_cast<int>(cmd) - ID_INDICATOR_LEFTTABMODESTART);
 }
 
 void CMainFrame::OnTabModeRight( UINT cmd )
 {
-	OnTabMode(m_pwndRightView, (int)cmd - ID_INDICATOR_RIGHTTABMODESTART);
+	OnTabMode(m_pwndRightView, static_cast<int>(cmd) - ID_INDICATOR_RIGHTTABMODESTART);
 }
 
 void CMainFrame::OnTabModeBottom( UINT cmd )
 {
-	OnTabMode(m_pwndBottomView, (int)cmd - ID_INDICATOR_BOTTOMTABMODESTART);
+	OnTabMode(m_pwndBottomView, static_cast<int>(cmd) - ID_INDICATOR_BOTTOMTABMODESTART);
 }
 
 void CMainFrame::OnTabMode(CBaseView *view, int cmd)
@@ -3544,7 +3544,7 @@ void CMainFrame::OnUpdateTabMode(CBaseView *view, CCmdUI *pCmdUI, int startid)
 {
 	if (view)
 	{
-		int cmd = (int)pCmdUI->m_nID - startid;
+		int cmd = static_cast<int>(pCmdUI->m_nID) - startid;
 		if (cmd == TABMODE_NONE)
 			pCmdUI->SetCheck((view->GetTabMode() & TABMODE_USESPACES) == TABMODE_NONE);
 		else if (cmd == TABMODE_USESPACES)
@@ -3591,7 +3591,7 @@ LRESULT CMainFrame::OnIdleUpdateCmdUI(WPARAM wParam, LPARAM lParam)
 
 	if (m_pRibbonApp)
 	{
-		BOOL bDisableIfNoHandler = (BOOL)wParam;
+		auto bDisableIfNoHandler = static_cast<BOOL>(wParam);
 		m_pRibbonApp->UpdateCmdUI(bDisableIfNoHandler);
 	}
 	return 0;

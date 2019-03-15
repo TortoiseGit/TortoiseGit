@@ -1,7 +1,7 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2006,2008-2010 - TortoiseSVN
-// Copyright (C) 2008-2013, 2016-2017 - TortoiseGit
+// Copyright (C) 2008-2013, 2016-2017, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -75,7 +75,7 @@ struct TGITCacheResponse
 	bool m_bAssumeValid;
 	bool m_bSkipWorktree;
 };
-static_assert((UINT8)git_wc_status_unknown == git_wc_status_unknown, "type git_wc_status_kind fits into UINT8");
+static_assert(static_cast<UINT8>(git_wc_status_unknown) == git_wc_status_unknown, "type git_wc_status_kind fits into UINT8");
 static_assert(sizeof(TGITCacheResponse) == 3 && offsetof(TGITCacheResponse, m_status) == 0 && offsetof(TGITCacheResponse, m_bAssumeValid) == 1 && offsetof(TGITCacheResponse, m_bSkipWorktree) == 2, "Cross platform compatibility");
 
 /**

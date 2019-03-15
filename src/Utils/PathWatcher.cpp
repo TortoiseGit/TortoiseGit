@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013, 2016, 2019 - TortoiseGit
+// Copyright (C) 2013, 2016, 2018-2019 - TortoiseGit
 // External Cache Copyright (C) 2007-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -49,7 +49,7 @@ CPathWatcher::CPathWatcher(void)
 	}
 
 	unsigned int threadId = 0;
-	m_hThread = (HANDLE)_beginthreadex(nullptr, 0, ThreadEntry, this, 0, &threadId);
+	m_hThread = reinterpret_cast<HANDLE>(_beginthreadex(nullptr, 0, ThreadEntry, this, 0, &threadId));
 }
 
 CPathWatcher::~CPathWatcher(void)
@@ -234,7 +234,7 @@ void CPathWatcher::WorkerThread()
 					}
 
 					CDirWatchInfo * pDirInfo = new CDirWatchInfo(hDir.Detach(), watchedPaths[i]); // the new CDirWatchInfo object owns the handle now
-					m_hCompPort = CreateIoCompletionPort(pDirInfo->m_hDir, m_hCompPort, (ULONG_PTR)pDirInfo, 0);
+					m_hCompPort = CreateIoCompletionPort(pDirInfo->m_hDir, m_hCompPort, reinterpret_cast<ULONG_PTR>(pDirInfo), 0);
 					if (!m_hCompPort)
 					{
 						AutoLocker lock(m_critSec);
@@ -280,8 +280,8 @@ void CPathWatcher::WorkerThread()
 					{
 						goto continuewatching;
 					}
-					PFILE_NOTIFY_INFORMATION pnotify = (PFILE_NOTIFY_INFORMATION)pdi->m_Buffer;
-					if ((ULONG_PTR)pnotify - (ULONG_PTR)pdi->m_Buffer > bufferSize)
+					auto pnotify = reinterpret_cast<PFILE_NOTIFY_INFORMATION>(pdi->m_Buffer);
+					if (reinterpret_cast<ULONG_PTR>(pnotify) - reinterpret_cast<ULONG_PTR>(pdi->m_Buffer) > bufferSize)
 						goto continuewatching;
 					DWORD nOffset = pnotify->NextEntryOffset;
 					do
@@ -292,11 +292,11 @@ void CPathWatcher::WorkerThread()
 						errno_t err = wcsncat_s(buf + pdi->m_DirPath.GetLength(), bufferSize - pdi->m_DirPath.GetLength(), pnotify->FileName, min(bufferSize - pdi->m_DirPath.GetLength(), int(pnotify->FileNameLength / sizeof(TCHAR))));
 						if (err == STRUNCATE)
 						{
-							pnotify = (PFILE_NOTIFY_INFORMATION)((LPBYTE)pnotify + nOffset);
+							pnotify = reinterpret_cast<PFILE_NOTIFY_INFORMATION>(reinterpret_cast<LPBYTE>(pnotify) + nOffset);
 							continue;
 						}
 						buf[min((decltype((pnotify->FileNameLength / sizeof(WCHAR)))) bufferSize - 1, pdi->m_DirPath.GetLength() + (pnotify->FileNameLength / sizeof(WCHAR)))] = L'\0';
-						pnotify = (PFILE_NOTIFY_INFORMATION)((LPBYTE)pnotify + nOffset);
+						pnotify = reinterpret_cast<PFILE_NOTIFY_INFORMATION>(reinterpret_cast<LPBYTE>(pnotify) + nOffset);
 						CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": change notification: %s\n", buf);
 						{
 							AutoLocker lock(m_critSec);
@@ -305,7 +305,7 @@ void CPathWatcher::WorkerThread()
 							else
 								m_bLimitReached = true;
 						}
-						if ((ULONG_PTR)pnotify - (ULONG_PTR)pdi->m_Buffer > bufferSize)
+						if (reinterpret_cast<ULONG_PTR>(pnotify) - reinterpret_cast<ULONG_PTR>(pdi->m_Buffer) > bufferSize)
 							break;
 					} while (nOffset);
 continuewatching:

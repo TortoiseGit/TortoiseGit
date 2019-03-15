@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012, 2014, 2016-2017 - TortoiseGit
+// Copyright (C) 2008-2012, 2014, 2016-2017, 2019 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -103,30 +103,30 @@ CString CLoglistUtils::ToRelativeTimeString(COleDateTime time,COleDateTime Relat
 
 	//years
 	if(fabs(ts.GetTotalDays()) >= 3 * 365)
-		return ExpandRelativeTime((int)ts.GetTotalDays()/365, IDS_YEAR_AGO, IDS_YEARS_AGO);
+		return ExpandRelativeTime(static_cast<int>(ts.GetTotalDays()) / 365, IDS_YEAR_AGO, IDS_YEARS_AGO);
 
 	//Months
 	if(fabs(ts.GetTotalDays()) >= 60)
-		return ExpandRelativeTime((int)ts.GetTotalDays()/30, IDS_MONTH_AGO, IDS_MONTHS_AGO);
+		return ExpandRelativeTime(static_cast<int>(ts.GetTotalDays()) / 30, IDS_MONTH_AGO, IDS_MONTHS_AGO);
 
 	//Weeks
 	if(fabs(ts.GetTotalDays()) >= 14)
-		return ExpandRelativeTime((int)ts.GetTotalDays()/7, IDS_WEEK_AGO, IDS_WEEKS_AGO);
+		return ExpandRelativeTime(static_cast<int>(ts.GetTotalDays()) / 7, IDS_WEEK_AGO, IDS_WEEKS_AGO);
 
 	//Days
 	if(fabs(ts.GetTotalDays()) >= 2)
-		return ExpandRelativeTime((int)ts.GetTotalDays(), IDS_DAY_AGO, IDS_DAYS_AGO);
+		return ExpandRelativeTime(static_cast<int>(ts.GetTotalDays()), IDS_DAY_AGO, IDS_DAYS_AGO);
 
 	//hours
 	if(fabs(ts.GetTotalHours()) >= 2)
-		return ExpandRelativeTime((int)ts.GetTotalHours(), IDS_HOUR_AGO, IDS_HOURS_AGO);
+		return ExpandRelativeTime(static_cast<int>(ts.GetTotalHours()), IDS_HOUR_AGO, IDS_HOURS_AGO);
 
 	//minutes
 	if(fabs(ts.GetTotalMinutes()) >= 2)
-		return ExpandRelativeTime((int)ts.GetTotalMinutes(), IDS_MINUTE_AGO, IDS_MINUTES_AGO);
+		return ExpandRelativeTime(static_cast<int>(ts.GetTotalMinutes()), IDS_MINUTE_AGO, IDS_MINUTES_AGO);
 
 	//seconds
-	return ExpandRelativeTime((int)ts.GetTotalSeconds(), IDS_SECOND_AGO, IDS_SECONDS_AGO);
+	return ExpandRelativeTime(static_cast<int>(ts.GetTotalSeconds()), IDS_SECOND_AGO, IDS_SECONDS_AGO);
 }
 
 /**

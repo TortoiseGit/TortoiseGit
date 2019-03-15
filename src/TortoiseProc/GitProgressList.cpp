@@ -136,7 +136,7 @@ svn_wc_conflict_choice_t CGitProgressList::ConflictResolveCallback(const svn_wc_
 		// we're in a worker thread here. That means we must not show a dialog from the thread
 		// but let the UI thread do it.
 		// To do that, we send a message to the UI thread and let it show the conflict resolver dialog.
-		LRESULT dlgResult = ::SendMessage(GetSafeHwnd(), WM_SHOWCONFLICTRESOLVER, 0, (LPARAM)description);
+		LRESULT dlgResult = ::SendMessage(GetSafeHwnd(), WM_SHOWCONFLICTRESOLVER, 0, reinterpret_cast<LPARAM>(description));
 		mergedfile = m_mergedfile;
 		return (svn_wc_conflict_choice_t)dlgResult;
 	}
@@ -335,7 +335,7 @@ void CGitProgressList::ResizeColumns()
 		for (int col = 0; col <= maxcol; ++col)
 		{
 			// find the longest width of all items
-			int count = min((int)m_arData.size(), GetItemCount());
+			int count = min(static_cast<int>(m_arData.size()), GetItemCount());
 			HDITEM hdi = {0};
 			hdi.mask = HDI_TEXT;
 			hdi.pszText = textbuf;
@@ -385,7 +385,7 @@ void CGitProgressList::ReportUserCanceled()
 void CGitProgressList::ReportError(const CString& sError)
 {
 	if (CRegDWORD(L"Software\\TortoiseGit\\NoSounds", FALSE) == FALSE)
-		PlaySound((LPCTSTR)SND_ALIAS_SYSTEMEXCLAMATION, nullptr, SND_ALIAS_ID | SND_ASYNC);
+		PlaySound(reinterpret_cast<LPCTSTR>(SND_ALIAS_SYSTEMEXCLAMATION), nullptr, SND_ALIAS_ID | SND_ASYNC);
 	ReportString(sError, CString(MAKEINTRESOURCE(IDS_ERR_ERROR)), m_Colors.GetColor(CColors::Conflict));
 	m_bErrorsOccurred = true;
 }
@@ -393,14 +393,14 @@ void CGitProgressList::ReportError(const CString& sError)
 void CGitProgressList::ReportWarning(const CString& sWarning)
 {
 	if (CRegDWORD(L"Software\\TortoiseGit\\NoSounds", FALSE) == FALSE)
-		PlaySound((LPCTSTR)SND_ALIAS_SYSTEMDEFAULT, nullptr, SND_ALIAS_ID | SND_ASYNC);
+		PlaySound(reinterpret_cast<LPCTSTR>(SND_ALIAS_SYSTEMDEFAULT), nullptr, SND_ALIAS_ID | SND_ASYNC);
 	ReportString(sWarning, CString(MAKEINTRESOURCE(IDS_WARN_WARNING)), m_Colors.GetColor(CColors::Conflict));
 }
 
 void CGitProgressList::ReportNotification(const CString& sNotification)
 {
 	if (CRegDWORD(L"Software\\TortoiseGit\\NoSounds", FALSE) == FALSE)
-		PlaySound((LPCTSTR)SND_ALIAS_SYSTEMDEFAULT, nullptr, SND_ALIAS_ID | SND_ASYNC);
+		PlaySound(reinterpret_cast<LPCTSTR>(SND_ALIAS_SYSTEMDEFAULT), nullptr, SND_ALIAS_ID | SND_ASYNC);
 	ReportString(sNotification, CString(MAKEINTRESOURCE(IDS_WARN_NOTE)));
 }
 
@@ -441,7 +441,7 @@ void CGitProgressList::ReportString(CString sMessage, const CString& sMsgKind, C
 
 UINT CGitProgressList::ProgressThreadEntry(LPVOID pVoid)
 {
-	return reinterpret_cast<CGitProgressList*>(pVoid)->ProgressThread();
+	return static_cast<CGitProgressList*>(pVoid)->ProgressThread();
 }
 
 UINT CGitProgressList::ProgressThread()
@@ -453,7 +453,7 @@ UINT CGitProgressList::ProgressThread()
 	bool bSuccess = false;
 
 	if(m_pPostWnd)
-		m_pPostWnd->PostMessage(WM_PROG_CMD_START, (WPARAM)m_Command);
+		m_pPostWnd->PostMessage(WM_PROG_CMD_START, reinterpret_cast<WPARAM>(m_Command));
 
 	if(m_pProgressLabelCtrl)
 	{
@@ -518,8 +518,8 @@ UINT CGitProgressList::ProgressThread()
 	CString sFinalInfo;
 	if (!m_sTotalBytesTransferred.IsEmpty())
 	{
-		temp.FormatMessage(IDS_PROGRS_TIME, (DWORD)(time / 1000) / 60, (DWORD)(time / 1000) % 60);
-		sFinalInfo.FormatMessage(IDS_PROGRS_FINALINFO, (LPCTSTR)m_sTotalBytesTransferred, (LPCTSTR)temp);
+		temp.FormatMessage(IDS_PROGRS_TIME, static_cast<DWORD>(time / 1000) / 60, static_cast<DWORD>(time / 1000) % 60);
+		sFinalInfo.FormatMessage(IDS_PROGRS_FINALINFO, static_cast<LPCTSTR>(m_sTotalBytesTransferred), static_cast<LPCTSTR>(temp));
 		if (m_pProgressLabelCtrl)
 			m_pProgressLabelCtrl->SetWindowText(sFinalInfo);
 	}
@@ -539,7 +539,7 @@ UINT CGitProgressList::ProgressThread()
 			str.LoadString(IDS_SUCCESS);
 		else
 			str.LoadString(IDS_FAIL);
-		log.Format(L"%s (%lu ms @ %s)", (LPCTSTR)str, time, (LPCTSTR)CLoglistUtils::FormatDateAndTime(CTime::GetCurrentTime(), DATE_SHORTDATE, true, false));
+		log.Format(L"%s (%lu ms @ %s)", static_cast<LPCTSTR>(str), time, static_cast<LPCTSTR>(CLoglistUtils::FormatDateAndTime(CTime::GetCurrentTime(), DATE_SHORTDATE, true, false)));
 
 		// there's no "finished: xxx" line at the end. We add one here to make
 		// sure the user sees that the command is actually finished.
@@ -557,7 +557,7 @@ UINT CGitProgressList::ProgressThread()
 		for (size_t i = 0; i < m_arData.size(); ++i)
 		{
 			NotificationData * data = m_arData[i];
-			temp.Format(L"%-20s : %s", (LPCTSTR)data->sActionColumnText, (LPCTSTR)data->sPathColumnText);
+			temp.Format(L"%-20s : %s", static_cast<LPCTSTR>(data->sActionColumnText), static_cast<LPCTSTR>(data->sPathColumnText));
 			logfile.AddLine(temp);
 		}
 		if (!sFinalInfo.IsEmpty())
@@ -569,7 +569,7 @@ UINT CGitProgressList::ProgressThread()
 	InterlockedExchange(&m_bThreadRunning, FALSE);
 
 	if (m_pPostWnd)
-		m_pPostWnd->PostMessage(WM_PROG_CMD_FINISH, (WPARAM)m_Command, 0L);
+		m_pPostWnd->PostMessage(WM_PROG_CMD_FINISH, reinterpret_cast<WPARAM>(m_Command), 0L);
 
 	//Don't do anything here which might cause messages to be sent to the window
 	//The window thread is probably now blocked in OnOK if we've done an auto close
@@ -584,7 +584,7 @@ void CGitProgressList::OnLvnGetdispinfoSvnprogress(NMHDR *pNMHDR, LRESULT *pResu
 	{
 		if (pDispInfo->item.mask & LVIF_TEXT)
 		{
-			if (pDispInfo->item.iItem < (int)m_arData.size())
+			if (pDispInfo->item.iItem < static_cast<int>(m_arData.size()))
 			{
 				const NotificationData * data = m_arData[pDispInfo->item.iItem];
 				switch (pDispInfo->item.iSubItem)
@@ -772,11 +772,11 @@ int CGitProgressList::UpdateProgress(const git_transfer_progress* stat)
 
 	CString progText;
 	if (stat->received_bytes < 1024)
-		m_sTotalBytesTransferred.Format(IDS_SVN_PROGRESS_TOTALBYTESTRANSFERRED, (int64_t)stat->received_bytes);
+		m_sTotalBytesTransferred.Format(IDS_SVN_PROGRESS_TOTALBYTESTRANSFERRED, static_cast<int64_t>(stat->received_bytes));
 	else if (stat->received_bytes < 1200000)
-		m_sTotalBytesTransferred.Format(IDS_SVN_PROGRESS_TOTALTRANSFERRED, (int64_t)stat->received_bytes / 1024);
+		m_sTotalBytesTransferred.Format(IDS_SVN_PROGRESS_TOTALTRANSFERRED, static_cast<int64_t>(stat->received_bytes) / 1024);
 	else
-		m_sTotalBytesTransferred.Format(IDS_SVN_PROGRESS_TOTALMBTRANSFERRED, (double)((double)stat->received_bytes / 1048576.0));
+		m_sTotalBytesTransferred.Format(IDS_SVN_PROGRESS_TOTALMBTRANSFERRED, static_cast<double>(stat->received_bytes) / 1048576.0);
 
 	CString str;
 	if(speed < 1024)
@@ -786,7 +786,7 @@ int CGitProgressList::UpdateProgress(const git_transfer_progress* stat)
 	else
 		str.Format(L"%.2f MiB/s", speed / 1048576.0);
 
-	progText.FormatMessage(IDS_SVN_PROGRESS_TOTALANDSPEED, (LPCTSTR)m_sTotalBytesTransferred, (LPCTSTR)str);
+	progText.FormatMessage(IDS_SVN_PROGRESS_TOTALANDSPEED, static_cast<LPCTSTR>(m_sTotalBytesTransferred), static_cast<LPCTSTR>(str));
 	if (m_pProgressLabelCtrl)
 		m_pProgressLabelCtrl->SetWindowText(progText);
 
@@ -801,7 +801,7 @@ void CGitProgressList::OnTimer(UINT_PTR nIDEvent)
 	{
 		CString progText;
 		CString progSpeed = L"0 B/s";
-		progText.FormatMessage(IDS_SVN_PROGRESS_TOTALANDSPEED, (LPCTSTR)m_sTotalBytesTransferred, (LPCTSTR)progSpeed);
+		progText.FormatMessage(IDS_SVN_PROGRESS_TOTALANDSPEED, static_cast<LPCTSTR>(m_sTotalBytesTransferred), static_cast<LPCTSTR>(progSpeed));
 		if (m_pProgressLabelCtrl)
 			m_pProgressLabelCtrl->SetWindowText(progText);
 
@@ -923,7 +923,7 @@ void CGitProgressList::OnContextMenu(CWnd* pWnd, CPoint point)
 
 	int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this);
 
-	if (cmd <= 0 || (size_t)cmd > actions.size())
+	if (cmd <= 0 || static_cast<size_t>(cmd) > actions.size())
 		return;
 
 	theApp.DoWaitCursor(1);
@@ -1056,7 +1056,7 @@ BOOL CGitProgressList::PreTranslateMessage(MSG* pMsg)
 							CString sAction = GetItemText(nItem, 0);
 							CString sPath = GetItemText(nItem, 1);
 							CString sMime = GetItemText(nItem, 2);
-							sClipdata.AppendFormat(L"%s: %s  %s\r\n", (LPCTSTR)sAction, (LPCTSTR)sPath, (LPCTSTR)sMime);
+							sClipdata.AppendFormat(L"%s: %s  %s\r\n", static_cast<LPCTSTR>(sAction), static_cast<LPCTSTR>(sPath), static_cast<LPCTSTR>(sMime));
 						}
 						CStringUtils::WriteAsciiStringToClipboard(sClipdata);
 					}

@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2016, 2018 - TortoiseGit
+// Copyright (C) 2012-2016, 2018-2019 - TortoiseGit
 // Copyright (C) 2003-2008,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -88,14 +88,14 @@ UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, int
 #endif
 	if (lpRegistry && *lpRegistry && RegOpenKeyEx(HKEY_CURRENT_USER, path, 0, KEY_EXECUTE, &hKey)==ERROR_SUCCESS)
 	{
-		int size = sizeof(dwRetVal);
+		DWORD size = sizeof(dwRetVal);
 		DWORD type;
-		if (RegQueryValueEx(hKey, lpRegistry, nullptr, &type, (BYTE*)&dwRetVal,(LPDWORD)&size) == ERROR_SUCCESS)
+		if (RegQueryValueEx(hKey, lpRegistry, nullptr, &type, reinterpret_cast<BYTE*>(&dwRetVal), &size) == ERROR_SUCCESS)
 		{
 			ASSERT(type==REG_DWORD);
 			RegCloseKey(hKey);
 			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Using stored value %ld for \"%s\"\n", dwRetVal, lpMessage);
-			return (UINT)dwRetVal;			//return with the last saved value
+			return static_cast<UINT>(dwRetVal); //return with the last saved value
 		}
 		else
 		{
@@ -125,7 +125,7 @@ UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, int
 		}
 		else
 			taskdlg.SetVerificationCheckboxText(lpCheckMessage);
-		int result = (int)taskdlg.DoModal(GetMainHWND(hWnd)) - BTN_OFFSET;
+		int result = static_cast<int>(taskdlg.DoModal(GetMainHWND(hWnd))) - BTN_OFFSET;
 		if (bChecked)
 			*bChecked = taskdlg.GetVerificationCheckboxState();
 		if (lpRegistry && *lpRegistry && taskdlg.GetVerificationCheckboxState())
@@ -178,7 +178,7 @@ UINT CMessageBox::Show(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, int nDef
 			taskdlg.AddCommandControl(BTN_OFFSET + 3, lpButton3);
 		taskdlg.SetDefaultCommandControl(BTN_OFFSET + nDef);
 		taskdlg.SetMainIcon(icon);
-		return (UINT)taskdlg.DoModal(GetMainHWND(hWnd)) - BTN_OFFSET;
+		return static_cast<UINT>(taskdlg.DoModal(GetMainHWND(hWnd))) - BTN_OFFSET;
 	}
 	CMessageBox box;
 	box.m_sButton1 = lpButton1;
@@ -235,14 +235,14 @@ UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, UIN
 #endif
 	if (lpRegistry && *lpRegistry && RegOpenKeyEx(HKEY_CURRENT_USER, path, 0, KEY_EXECUTE, &hKey)==ERROR_SUCCESS)
 	{
-		int size = sizeof(dwRetVal);
+		DWORD size = sizeof(dwRetVal);
 		DWORD type;
-		if (RegQueryValueEx(hKey, lpRegistry, nullptr, &type, (BYTE*)&dwRetVal,(LPDWORD)&size) == ERROR_SUCCESS)
+		if (RegQueryValueEx(hKey, lpRegistry, nullptr, &type, reinterpret_cast<BYTE*>(&dwRetVal), &size) == ERROR_SUCCESS)
 		{
 			ASSERT(type==REG_DWORD);
 			RegCloseKey(hKey);
 			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Using stored value %ld for \"%s\"\n", dwRetVal, lpMessage);
-			return (UINT)dwRetVal;			//return with the last saved value
+			return static_cast<UINT>(dwRetVal); // return with the last saved value
 		}
 		else
 		{
@@ -333,7 +333,7 @@ UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, UIN
 		}
 		else
 			taskdlg.SetVerificationCheckboxText(lpCheckMessage);
-		int result = (int)taskdlg.DoModal(GetMainHWND(hWnd));
+		int result = static_cast<int>(taskdlg.DoModal(GetMainHWND(hWnd)));
 		if (bChecked)
 			*bChecked = taskdlg.GetVerificationCheckboxState();
 		if (lpRegistry && *lpRegistry && taskdlg.GetVerificationCheckboxState())
@@ -659,7 +659,7 @@ UINT CMessageBox::GoModal(CWnd * pWnd, const CString& title, const CString& msg,
 	m_sMessage = msg;
 	InitModalIndirect(dialogTemplate, pWnd);
 
-	return (UINT)DoModal();
+	return static_cast<UINT>(DoModal());
 }
 
 void CMessageBox::SetRegistryValue(const CString& sValue, DWORD value)
@@ -680,7 +680,7 @@ void CMessageBox::SetRegistryValue(const CString& sValue, DWORD value)
 	{
 		return;
 	}
-	RegSetValueEx(hKey, sValue, 0, REG_DWORD,(const BYTE*) &value, sizeof(value));
+	RegSetValueEx(hKey, sValue, 0, REG_DWORD, reinterpret_cast<const BYTE*>(&value), sizeof(value));
 	RegCloseKey(hKey);
 }
 
@@ -817,8 +817,8 @@ CSize CMessageBox::GetIconSize(HICON hIcon)
 		//get icon dimensions
 		if (::GetIconInfo(hIcon, &ii))
 		{
-			sz.cx = (DWORD)(ii.xHotspot * 2);
-			sz.cy = (DWORD)(ii.yHotspot * 2);
+			sz.cx = static_cast<DWORD>(ii.xHotspot * 2);
+			sz.cy = static_cast<DWORD>(ii.yHotspot * 2);
 			//release icon mask bitmaps
 			if(ii.hbmMask)
 				::DeleteObject(ii.hbmMask);
@@ -966,9 +966,9 @@ void CMessageBox::OnButton2()
 		HWND hHelp = nullptr;
 		if (hInstHtmlHelp)
 		{
-			(FARPROC&)pHtmlHelp = GetProcAddress(hInstHtmlHelp, "HtmlHelpW");
+			reinterpret_cast<FARPROC&>(pHtmlHelp) = GetProcAddress(hInstHtmlHelp, "HtmlHelpW");
 			if (pHtmlHelp)
-				hHelp = pHtmlHelp(m_hWnd, (LPCTSTR)m_sHelpPath, HH_DISPLAY_TOPIC, NULL);
+				hHelp = pHtmlHelp(m_hWnd, static_cast<LPCTSTR>(m_sHelpPath), HH_DISPLAY_TOPIC, NULL);
 		}
 		if (!hHelp)
 			::MessageBox(m_hWnd, L"could not show help file", L"Help", MB_ICONERROR);
@@ -996,9 +996,9 @@ void CMessageBox::OnButton3()
 		HWND hHelp = nullptr;
 		if (hInstHtmlHelp)
 		{
-			(FARPROC&)pHtmlHelp = GetProcAddress(hInstHtmlHelp, "HtmlHelpW");
+			reinterpret_cast<FARPROC&>(pHtmlHelp) = GetProcAddress(hInstHtmlHelp, "HtmlHelpW");
 			if (pHtmlHelp)
-				hHelp = pHtmlHelp(m_hWnd, (LPCTSTR)m_sHelpPath, HH_DISPLAY_TOPIC, NULL);
+				hHelp = pHtmlHelp(m_hWnd, static_cast<LPCTSTR>(m_sHelpPath), HH_DISPLAY_TOPIC, NULL);
 		}
 		if (!hHelp)
 			::MessageBox(m_hWnd, L"could not show help file", L"Help", MB_ICONERROR);
@@ -1148,9 +1148,9 @@ BOOL CMessageBox::PreTranslateMessage(MSG* pMsg)
 						EmptyClipboard();
 						CStringA sClipboard = CStringA(m_sMessage);
 						HGLOBAL hClipboardData = CClipboardHelper::GlobalAlloc(sClipboard.GetLength()+1);
-						char * pchData = (char*)GlobalLock(hClipboardData);
+						auto pchData = static_cast<char*>(GlobalLock(hClipboardData));
 						if (pchData)
-							strcpy_s(pchData, sClipboard.GetLength()+1, (LPCSTR)sClipboard);
+							strcpy_s(pchData, sClipboard.GetLength() + 1, static_cast<LPCSTR>(sClipboard));
 						GlobalUnlock(hClipboardData);
 						SetClipboardData(CF_TEXT,hClipboardData);
 					}

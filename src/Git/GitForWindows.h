@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2016, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -54,7 +54,7 @@ static bool FindGitForWindows(CString& sMsysGitPath)
 			sMsysGitPath += L"\\cmd";
 		else
 		{
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Git for Windows installation found, but git.exe not exists in %s\n", (LPCTSTR)sMsysGitPath);
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Git for Windows installation found, but git.exe not exists in %s\n", static_cast<LPCTSTR>(sMsysGitPath));
 			sMsysGitPath.Empty();
 		}
 	}

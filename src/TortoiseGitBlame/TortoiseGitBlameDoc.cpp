@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2017, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -72,7 +72,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName)
 	if (m_bFirstStartup)
 	{
 		m_Rev = parser.GetVal(L"rev");
-		m_lLine = (int)parser.GetLongVal(L"line");
+		m_lLine = static_cast<int>(parser.GetLongVal(L"line"));
 		m_bFirstStartup = false;
 	}
 	else
@@ -115,7 +115,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 	if (!GitAdminDir::HasAdminDir(m_CurrentFileName, &topdir))
 	{
 		CString temp;
-		temp.Format(IDS_CANNOTBLAMENOGIT, (LPCTSTR)m_CurrentFileName);
+		temp.Format(IDS_CANNOTBLAMENOGIT, static_cast<LPCTSTR>(m_CurrentFileName));
 		MessageBox(nullptr, temp, L"TortoiseGitBlame", MB_OK | MB_ICONERROR);
 		return FALSE;
 	}
@@ -182,7 +182,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 		if (onlyFirstParent)
 		{
 			CString tmpfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
-			cmd.Format(L"git rev-list --first-parent %s", (LPCTSTR)Rev);
+			cmd.Format(L"git rev-list --first-parent %s", static_cast<LPCTSTR>(Rev));
 			CString err;
 			CAutoFILE file = _wfsopen(tmpfile, L"wb", SH_DENYWR);
 			if (!file)
@@ -202,19 +202,19 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 				MessageBox(nullptr, CString(MAKEINTRESOURCE(IDS_BLAMEERROR)) + L"\n\n" + err, L"TortoiseGitBlame", MB_OK | MB_ICONERROR);
 				return FALSE;
 			}
-			option.AppendFormat(L" -S \"%s\"", (LPCTSTR)tmpfile);
+			option.AppendFormat(L" -S \"%s\"", static_cast<LPCTSTR>(tmpfile));
 		}
 
-		cmd.Format(L"git.exe blame -p %s %s -- \"%s\"", (LPCTSTR)option, (LPCTSTR)Rev, (LPCTSTR)path.GetGitPathString());
+		cmd.Format(L"git.exe blame -p %s %s -- \"%s\"", static_cast<LPCTSTR>(option), static_cast<LPCTSTR>(Rev), static_cast<LPCTSTR>(path.GetGitPathString()));
 		m_BlameData.clear();
 		BYTE_VECTOR err;
 		if(g_Git.Run(cmd, &m_BlameData, &err))
 		{
 			CString str;
 			if (!m_BlameData.empty())
-				CGit::StringAppend(&str, m_BlameData.data(), CP_UTF8, (int)m_BlameData.size());
+				CGit::StringAppend(&str, m_BlameData.data(), CP_UTF8, static_cast<int>(m_BlameData.size()));
 			if (!err.empty())
-				CGit::StringAppend(&str, err.data(), CP_UTF8, (int)err.size());
+				CGit::StringAppend(&str, err.data(), CP_UTF8, static_cast<int>(err.size()));
 			MessageBox(nullptr, CString(MAKEINTRESOURCE(IDS_BLAMEERROR)) + L"\n\n" + str, L"TortoiseGitBlame", MB_OK | MB_ICONERROR);
 
 			return FALSE;
@@ -223,12 +223,12 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 #ifdef USE_TEMPFILENAME
 		m_TempFileName = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
 
-		cmd.Format(L"git.exe cat-file blob %s:\"%s\"", (LPCTSTR)Rev, (LPCTSTR)path.GetGitPathString());
+		cmd.Format(L"git.exe cat-file blob %s:\"%s\"", static_cast<LPCTSTR>(Rev), static_cast<LPCTSTR>(path.GetGitPathString()));
 
 		if(g_Git.RunLogFile(cmd, m_TempFileName))
 		{
 			CString str;
-			str.Format(IDS_CHECKOUTFAILED, (LPCTSTR)path.GetGitPathString());
+			str.Format(IDS_CHECKOUTFAILED, static_cast<LPCTSTR>(path.GetGitPathString()));
 			MessageBox(nullptr, CString(MAKEINTRESOURCE(IDS_BLAMEERROR)) + L"\n\n" + str, L"TortoiseGitBlame", MB_OK | MB_ICONERROR);
 			return FALSE;
 		}

@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014-2016 - TortoiseGit
+// Copyright (C) 2014-2016, 2019 - TortoiseGit
 // Copyright (C) 2014, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -71,7 +71,7 @@ void CSettingsUDiff::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BACKREMOVEDCOLOR, m_cBackRemovedColor);
 
 	DDX_Control(pDX, IDC_FONTSIZES, m_cFontSizes);
-	m_dwFontSize = (DWORD)m_cFontSizes.GetItemData(m_cFontSizes.GetCurSel());
+	m_dwFontSize = static_cast<DWORD>(m_cFontSizes.GetItemData(m_cFontSizes.GetCurSel()));
 	if ((m_dwFontSize == 0) || (m_dwFontSize == -1))
 	{
 		CString t;
@@ -110,19 +110,19 @@ BOOL CSettingsUDiff::OnInitDialog()
 
 	ISettingsPropPage::OnInitDialog();
 
-	m_cForeCommandColor.SetColor((DWORD)m_regForeCommandColor);
-	m_cForePositionColor.SetColor((DWORD)m_regForePositionColor);
-	m_cForeHeaderColor.SetColor((DWORD)m_regForeHeaderColor);
-	m_cForeCommentColor.SetColor((DWORD)m_regForeCommentColor);
-	m_cForeAddedColor.SetColor((DWORD)m_regForeAddedColor);
-	m_cForeRemovedColor.SetColor((DWORD)m_regForeRemovedColor);
+	m_cForeCommandColor.SetColor(m_regForeCommandColor);
+	m_cForePositionColor.SetColor(m_regForePositionColor);
+	m_cForeHeaderColor.SetColor(m_regForeHeaderColor);
+	m_cForeCommentColor.SetColor(m_regForeCommentColor);
+	m_cForeAddedColor.SetColor(m_regForeAddedColor);
+	m_cForeRemovedColor.SetColor(m_regForeRemovedColor);
 
-	m_cBackCommandColor.SetColor((DWORD)m_regBackCommandColor);
-	m_cBackPositionColor.SetColor((DWORD)m_regBackPositionColor);
-	m_cBackHeaderColor.SetColor((DWORD)m_regBackHeaderColor);
-	m_cBackCommentColor.SetColor((DWORD)m_regBackCommentColor);
-	m_cBackAddedColor.SetColor((DWORD)m_regBackAddedColor);
-	m_cBackRemovedColor.SetColor((DWORD)m_regBackRemovedColor);
+	m_cBackCommandColor.SetColor(m_regBackCommandColor);
+	m_cBackPositionColor.SetColor(m_regBackPositionColor);
+	m_cBackHeaderColor.SetColor(m_regBackHeaderColor);
+	m_cBackCommentColor.SetColor(m_regBackCommentColor);
+	m_cBackAddedColor.SetColor(m_regBackAddedColor);
+	m_cBackRemovedColor.SetColor(m_regBackRemovedColor);
 
 	CString sDefaultText, sCustomText;
 	sDefaultText.LoadString(IDS_COLOURPICKER_DEFAULTTEXT);
@@ -180,7 +180,7 @@ BOOL CSettingsUDiff::OnInitDialog()
 	}
 	m_cFontNames.Setup(DEVICE_FONTTYPE | RASTER_FONTTYPE | TRUETYPE_FONTTYPE, 1, FIXED_PITCH);
 	m_cFontNames.SelectFont(m_sFontName);
-	m_cFontNames.SendMessage(CB_SETITEMHEIGHT, (WPARAM)-1, m_cFontSizes.GetItemHeight(-1));
+	m_cFontNames.SendMessage(CB_SETITEMHEIGHT, static_cast<WPARAM>(-1), m_cFontSizes.GetItemHeight(-1));
 
 	UpdateData(FALSE);
 	return TRUE;
@@ -232,7 +232,7 @@ BOOL CSettingsUDiff::OnApply()
 	Store((m_cBackAddedColor.GetColor() == -1 ? m_cBackAddedColor.GetAutomaticColor() : m_cBackAddedColor.GetColor()), m_regBackAddedColor);
 	Store((m_cBackRemovedColor.GetColor() == -1 ? m_cBackRemovedColor.GetAutomaticColor() : m_cBackRemovedColor.GetColor()), m_regBackRemovedColor);
 
-	Store((LPCTSTR)m_sFontName, m_regFontName);
+	Store(static_cast<LPCTSTR>(m_sFontName), m_regFontName);
 	Store(m_dwFontSize, m_regFontSize);
 	Store(m_dwTabSize, m_regTabSize);
 

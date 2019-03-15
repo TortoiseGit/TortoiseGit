@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008, 2010 - TortoiseSVN
 
@@ -31,7 +31,7 @@ HRESULT TextOutFL(HDC hdc, int x, int y, LPCWSTR psz, int cch)
 	if (FAILED(hr))
 		return hr;
 
-	HFONT hfOrig = (HFONT)GetCurrentObject(hdc, OBJ_FONT);
+	HFONT hfOrig = static_cast<HFONT>(GetCurrentObject(hdc, OBJ_FONT));
 	POINT ptOrig;
 	DWORD dwAlignOrig = GetTextAlign(hdc);
 	if (!(dwAlignOrig & TA_UPDATECP))
@@ -60,9 +60,9 @@ HRESULT TextOutFL(HDC hdc, int x, int y, LPCWSTR psz, int cch)
 				{
 					break;
 				}
-				SelectObject(hdc, (HGDIOBJ)(HFONT)hfLinked);
+				SelectObject(hdc, hfLinked);
 				TextOut(hdc, 0, 0, psz, cchActual);
-				SelectObject(hdc, (HGDIOBJ)(HFONT)hfOrig);
+				SelectObject(hdc, hfOrig);
 				pfl->ReleaseFont(hfLinked);
 			}
 			psz += cchActual;

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016 - TortoiseGit
+// Copyright (C) 2016, 2019 - TortoiseGit
 // Copyright (C) 2009-2012, 2014, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -74,7 +74,7 @@ HBITMAP IconBitmapUtils::IconToBitmap(HINSTANCE hInst, UINT uIcon)
 		return nullptr;
 
 	// Select it into the compatible DC
-	HBITMAP old_dst_bmp = (HBITMAP)::SelectObject(dst_hdc, bmp);
+	auto old_dst_bmp = static_cast<HBITMAP>(::SelectObject(dst_hdc, bmp));
 	if (!old_dst_bmp)
 		return nullptr;
 
@@ -133,7 +133,7 @@ HBITMAP IconBitmapUtils::IconToBitmapPARGB32(HICON hIcon, int width, int height)
 	if (FAILED(Create32BitHBITMAP(hdcDest, &sizIcon, nullptr, &hBmp)))
 		return nullptr;
 
-	HBITMAP hbmpOld = (HBITMAP)SelectObject(hdcDest, hBmp);
+	auto hbmpOld = static_cast<HBITMAP>(SelectObject(hdcDest, hBmp));
 	if (!hbmpOld)
 		return hBmp;
 

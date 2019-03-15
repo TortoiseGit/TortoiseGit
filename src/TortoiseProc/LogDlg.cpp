@@ -75,7 +75,7 @@ CLogDlg::CLogDlg(CWnd* pParent /*=nullptr*/)
 	str.Replace(L':', L'_');
 
 	m_regbAllBranch = CRegDWORD(L"Software\\TortoiseGit\\LogDialog\\AllBranch\\" + str, FALSE);
-	m_AllBranchType = (AllBranchType)(DWORD)m_regbAllBranch;
+	m_AllBranchType = static_cast<AllBranchType>(static_cast<DWORD>(m_regbAllBranch));
 	switch (m_AllBranchType)
 	{
 	case AllBranchType::None:
@@ -112,7 +112,7 @@ CLogDlg::CLogDlg(CWnd* pParent /*=nullptr*/)
 
 CLogDlg::~CLogDlg()
 {
-	m_regbAllBranch = (DWORD)m_AllBranchType;
+	m_regbAllBranch = static_cast<DWORD>(m_AllBranchType);
 	m_regbShowTags = m_bShowTags;
 	m_regbShowLocalBranches = m_bShowLocalBranches;
 	m_regbShowRemoteBranches = m_bShowRemoteBranches;
@@ -276,7 +276,7 @@ void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString
 
 void CLogDlg::SetFilter(const CString& findstr, LONG findtype, bool findregex)
 {
-	m_LogList.m_LogFilter = std::make_shared<CLogDlgFilter>(findstr, m_bFilterWithRegex, (DWORD)findtype, m_bFilterCaseSensitively);
+	m_LogList.m_LogFilter = std::make_shared<CLogDlgFilter>(findstr, m_bFilterWithRegex, static_cast<DWORD>(findtype), m_bFilterCaseSensitively);
 	m_sFilterText = findstr;
 	m_bFilterWithRegex = findregex;
 }
@@ -296,11 +296,9 @@ BOOL CLogDlg::OnInitDialog()
 	CAutoLibrary hUser = AtlLoadSystemLibraryUsingFullPath(L"user32.dll");
 	if (hUser)
 	{
-		ChangeWindowMessageFilterExDFN *pfnChangeWindowMessageFilterEx = (ChangeWindowMessageFilterExDFN*)GetProcAddress(hUser, "ChangeWindowMessageFilterEx");
+		auto pfnChangeWindowMessageFilterEx = reinterpret_cast<ChangeWindowMessageFilterExDFN*>(GetProcAddress(hUser, "ChangeWindowMessageFilterEx"));
 		if (pfnChangeWindowMessageFilterEx)
-		{
 			pfnChangeWindowMessageFilterEx(m_hWnd, TaskBarButtonCreated, MSGFLT_ALLOW, &cfs);
-		}
 	}
 	m_pTaskbarList.Release();
 	if (FAILED(m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList)))
@@ -408,7 +406,7 @@ BOOL CLogDlg::OnInitDialog()
 	ScreenToClient(&rcLogList);
 	m_ChangedFileListCtrl.GetWindowRect(&rcChgMsg);
 	ScreenToClient(&rcChgMsg);
-	if (yPos1 && ((LONG)yPos1 < rcDlg.bottom - CDPIAware::Instance().ScaleY(185)))
+	if (yPos1 && (static_cast<LONG>(yPos1) < rcDlg.bottom - CDPIAware::Instance().ScaleY(185)))
 	{
 		RECT rectSplitter;
 		m_wndSplitter1.GetWindowRect(&rectSplitter);
@@ -421,7 +419,7 @@ BOOL CLogDlg::OnInitDialog()
 			DoSizeV1(delta);
 		}
 	}
-	if (yPos2 && ((LONG)yPos2 < rcDlg.bottom - CDPIAware::Instance().ScaleY(153)))
+	if (yPos2 && (static_cast<LONG>(yPos2) < rcDlg.bottom - CDPIAware::Instance().ScaleY(153)))
 	{
 		RECT rectSplitter;
 		m_wndSplitter2.GetWindowRect(&rectSplitter);
@@ -456,7 +454,7 @@ BOOL CLogDlg::OnInitDialog()
 	// first start a thread to obtain the log messages without
 	// blocking the dialog
 	//m_tTo = 0;
-	//m_tFrom = (DWORD)-1;
+	//m_tFrom = static_cast<DWORD>(-1);
 
 	// scroll to user selected or current revision
 	if (m_hightlightRevision.IsEmpty() || g_Git.GetHash(m_LogList.m_lastSelectedHash, m_hightlightRevision))
@@ -480,13 +478,13 @@ BOOL CLogDlg::OnInitDialog()
 
 	GetDlgItem(IDC_LOGLIST)->SetFocus();
 
-	m_History.SetMaxHistoryItems((LONG)CRegDWORD(L"Software\\TortoiseGit\\MaxRefHistoryItems", 5));
+	m_History.SetMaxHistoryItems(CRegDWORD(L"Software\\TortoiseGit\\MaxRefHistoryItems", 5));
 	CString reg;
-	reg.Format(L"Software\\TortoiseGit\\History\\log-refs\\%s", (LPCTSTR)g_Git.m_CurrentDir);
+	reg.Format(L"Software\\TortoiseGit\\History\\log-refs\\%s", static_cast<LPCTSTR>(g_Git.m_CurrentDir));
 	reg.Replace(L':', L'_');
 	m_History.Load(reg, L"ref");
 
-	reg.Format(L"Software\\TortoiseGit\\History\\LogDlg_Limits\\%s\\FromDate", (LPCTSTR)g_Git.m_CurrentDir);
+	reg.Format(L"Software\\TortoiseGit\\History\\LogDlg_Limits\\%s\\FromDate", static_cast<LPCTSTR>(g_Git.m_CurrentDir));
 	reg.Replace(L':', L'_');
 	m_regLastSelectedFromDate = CRegString(reg);
 
@@ -533,7 +531,7 @@ void CLogDlg::OnPaint()
 
 LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 {
-	int cur=(int)wParam;
+	int cur = static_cast<int>(wParam);
 
 	if( cur == GITLOG_START )
 	{
@@ -745,7 +743,7 @@ static int DescribeCommit(CGitHash& hash, CString& result)
 	git_describe_options describe_options = GIT_DESCRIBE_OPTIONS_INIT;
 	describe_options.describe_strategy = CRegDWORD(L"Software\\TortoiseGit\\DescribeStrategy", GIT_DESCRIBE_DEFAULT);
 	describe_options.only_follow_first_parent = CRegDWORD(L"Software\\TortoiseGit\\DescribeOnlyFollowFirstParent", 0);
-	if (git_describe_commit(describe.GetPointer(), (git_object *)commit, &describe_options))
+	if (git_describe_commit(describe.GetPointer(), static_cast<git_object*>(commit), &describe_options))
 		return -1;
 
 	CAutoBuf describe_buf;
@@ -801,7 +799,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 	// and also populate the changed files list control
 	// according to the selected revision(s).
 
-	CRichEditCtrl * pMsgView = (CRichEditCtrl*)GetDlgItem(IDC_MSGVIEW);
+	auto pMsgView = static_cast<CRichEditCtrl*>(GetDlgItem(IDC_MSGVIEW));
 	// empty the log message view
 	pMsgView->SetWindowText(L" ");
 	FillPatchView(true);
@@ -949,7 +947,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			FindGitHash(msg, findHashStart, pMsgView);
 			m_LogList.m_ProjectProperties.FindBugID(msg, pMsgView);
 			CAppUtils::StyleURLs(msg, pMsgView);
-			if (((DWORD)CRegStdDWORD(L"Software\\TortoiseGit\\StyleCommitMessages", TRUE)) == TRUE)
+			if (static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\StyleCommitMessages", TRUE)) == TRUE)
 				CAppUtils::FormatTextInRichEditControl(pMsgView);
 
 			if (!pLogEntry->m_IsDiffFiles)
@@ -974,16 +972,16 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 				bool somethingHidden = false;
 				for (int i = 0; i < count; ++i)
 				{
-					((CTGitPath&)files[i]).m_Action &= ~(CTGitPath::LOGACTIONS_HIDE | CTGitPath::LOGACTIONS_GRAY);
+					const_cast<CTGitPath&>(files[i]).m_Action &= ~(CTGitPath::LOGACTIONS_HIDE | CTGitPath::LOGACTIONS_GRAY);
 
 					bool bothAreDirectory = m_path.IsDirectory() && files[i].IsDirectory() && files[i].GetGitPathString().GetLength() == matchPathLen - 1; // submodules don't end with slash, but we must also not match a submodule in a fodler with an equal prefix
 					if ((bothAreDirectory && wcsncmp(files[i].GetGitPathString(), matchpath, matchPathLen - 1) || !bothAreDirectory && wcsncmp(files[i].GetGitPathString(), matchpath, matchPathLen)) && ((files[i].m_Action & (CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_COPY)) == 0 || (bothAreDirectory && wcsncmp(files[i].GetGitOldPathString(), matchpath, matchPathLen - 1) || !bothAreDirectory && wcsncmp(files[i].GetGitOldPathString(), matchpath, matchPathLen))))
 					{
 						somethingHidden = true;
 						if (m_iHidePaths == 1)
-							((CTGitPath&)files[i]).m_Action |= CTGitPath::LOGACTIONS_HIDE;
+							const_cast<CTGitPath&>(files[i]).m_Action |= CTGitPath::LOGACTIONS_HIDE;
 						else if (m_iHidePaths == 2)
-							((CTGitPath&)files[i]).m_Action |= CTGitPath::LOGACTIONS_GRAY;
+							const_cast<CTGitPath&>(files[i]).m_Action |= CTGitPath::LOGACTIONS_GRAY;
 					}
 				}
 				if (somethingHidden)
@@ -995,7 +993,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			{
 				pLogEntry->GetAction(&m_LogList) &= ~CTGitPath::LOGACTIONS_HIDE;
 				for (int i = 0 ; i < count; ++i)
-					((CTGitPath&)files[i]).m_Action &= ~(CTGitPath::LOGACTIONS_HIDE | CTGitPath::LOGACTIONS_GRAY);
+					const_cast<CTGitPath&>(files[i]).m_Action &= ~(CTGitPath::LOGACTIONS_HIDE | CTGitPath::LOGACTIONS_GRAY);
 			}
 
 			CString fileFilterText;
@@ -1008,7 +1006,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 				{
 					if (!fileFilter(files[i]))
 					{
-						((CTGitPath&)files[i]).m_Action |= CTGitPath::LOGACTIONS_HIDE;
+						const_cast<CTGitPath&>(files[i]).m_Action |= CTGitPath::LOGACTIONS_HIDE;
 						somethingHidden = true;
 					}
 				}
@@ -1107,9 +1105,9 @@ void CLogDlg::FillPatchView(bool onlySetTimer)
 			{
 				CString cmd;
 				if (pLogEntry->m_CommitHash.IsEmpty())
-					cmd.Format(L"git.exe diff HEAD -- \"%s\"", (LPCTSTR)p->GetGitPathString());
+					cmd.Format(L"git.exe diff HEAD -- \"%s\"", static_cast<LPCTSTR>(p->GetGitPathString()));
 				else
-					cmd.Format(L"git.exe diff %s^%d..%s -- \"%s\"", (LPCTSTR)pLogEntry->m_CommitHash.ToString(), p->m_ParentNo + 1, (LPCTSTR)pLogEntry->m_CommitHash.ToString(), (LPCTSTR)p->GetGitPathString());
+					cmd.Format(L"git.exe diff %s^%d..%s -- \"%s\"", static_cast<LPCTSTR>(pLogEntry->m_CommitHash.ToString()), p->m_ParentNo + 1, static_cast<LPCTSTR>(pLogEntry->m_CommitHash.ToString()), static_cast<LPCTSTR>(p->GetGitPathString()));
 				g_Git.Run(cmd, &out, CP_UTF8);
 			}
 		}
@@ -1131,7 +1129,7 @@ void CLogDlg::TogglePatchView()
 		this->GetWindowRect(&rect);
 
 		m_patchViewdlg.ShowWindow(SW_SHOW);
-		m_patchViewdlg.SetWindowPos(nullptr, rect.right, rect.top, (DWORD)CRegStdDWORD(L"Software\\TortoiseGit\\TortoiseProc\\PatchDlgWidth", rect.Width()), rect.Height(), SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOZORDER);
+		m_patchViewdlg.SetWindowPos(nullptr, rect.right, rect.top, static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\TortoiseProc\\PatchDlgWidth", rect.Width())), rect.Height(), SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOZORDER);
 
 		FillPatchView();
 	}
@@ -1225,7 +1223,7 @@ void CLogDlg::GoBackForward(bool select, bool bForward)
 	if (bForward ? m_LogList.m_selectionHistory.GoForward(gotoHash) : m_LogList.m_selectionHistory.GoBack(gotoHash))
 	{
 		int i;
-		for (i = 0; i < (int)m_LogList.m_arShownList.size(); ++i)
+		for (i = 0; i < static_cast<int>(m_LogList.m_arShownList.size()); ++i)
 		{
 			GitRev* rev = m_LogList.m_arShownList.SafeGetAt(i);
 			if (!rev) continue;
@@ -1254,15 +1252,15 @@ void CLogDlg::GoBackForward(bool select, bool bForward)
 				return;
 			}
 		}
-		if (i == (int)m_LogList.m_arShownList.size())
+		if (i == static_cast<int>(m_LogList.m_arShownList.size()))
 		{
 			CString msg;
-			msg.Format(IDS_LOG_NOT_VISIBLE, (LPCTSTR)gotoHash.ToString());
+			msg.Format(IDS_LOG_NOT_VISIBLE, static_cast<LPCTSTR>(gotoHash.ToString()));
 			MessageBox(msg, L"TortoiseGit", MB_OK | MB_ICONINFORMATION);
 			return;
 		}
 	}
-	PlaySound((LPCTSTR)SND_ALIAS_SYSTEMASTERISK, nullptr, SND_ASYNC | SND_ALIAS_ID);
+	PlaySound(reinterpret_cast<LPCTSTR>(SND_ALIAS_SYSTEMASTERISK), nullptr, SND_ASYNC | SND_ALIAS_ID);
 }
 
 void CLogDlg::OnBnClickedRefresh()
@@ -1274,7 +1272,7 @@ void CLogDlg::Refresh (bool clearfilter /*autoGoOnline*/)
 {
 	if (m_bSelect)
 		DialogEnableWindow(IDOK, FALSE);
-	m_LogList.m_LogFilter = std::make_shared<CLogDlgFilter>(m_sFilterText, m_bFilterWithRegex, (DWORD)m_SelectedFilters, m_bFilterCaseSensitively);
+	m_LogList.m_LogFilter = std::make_shared<CLogDlgFilter>(m_sFilterText, m_bFilterWithRegex, static_cast<DWORD>(m_SelectedFilters), m_bFilterCaseSensitively);
 	m_LogList.Refresh(clearfilter);
 	if (clearfilter)
 		m_sFilterText.Empty();
@@ -1395,7 +1393,7 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		CString head = L"HEAD";
 		CString curBranch = g_Git.GetCurrentBranch();
 		if (!curBranch.IsEmpty())
-			head.AppendFormat(L" -> \"%s\"", (LPCTSTR)curBranch);
+			head.AppendFormat(L" -> \"%s\"", static_cast<LPCTSTR>(curBranch));
 		popup.AppendMenuIcon(++cnt, head);
 		CGitHash fetchHead;
 		g_Git.GetHash(fetchHead, g_Git.FixBranchName(L"FETCH_HEAD"));
@@ -1483,7 +1481,7 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 
 		popup.AppendMenuIcon(++cnt, IDS_NO_LIMIT);
 
-		DWORD scale = (DWORD)CRegDWORD(L"Software\\TortoiseGit\\LogDialog\\NumberOfLogsScale", CFilterData::SHOW_NO_LIMIT);
+		DWORD scale = CRegDWORD(L"Software\\TortoiseGit\\LogDialog\\NumberOfLogsScale", CFilterData::SHOW_NO_LIMIT);
 		CString strScale;
 		switch (scale)
 		{
@@ -1506,7 +1504,7 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 			CString number;
 			number.Format(L"%ld", m_LogList.m_Filter.m_NumberOfLogs);
 			CString item;
-			item.Format(strScale, (LPCTSTR)number);
+			item.Format(strScale, static_cast<LPCTSTR>(number));
 			popup.AppendMenuIcon(++cnt, item);
 		}
 
@@ -1553,7 +1551,7 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		if (popup.CreatePopupMenu())
 		{
 			long start = -1, end = -1;
-			auto pEdit = (CRichEditCtrl *)GetDlgItem(IDC_MSGVIEW);
+			auto pEdit = static_cast<CRichEditCtrl*>(GetDlgItem(IDC_MSGVIEW));
 			pEdit->GetSel(start, end);
 			// add the 'default' entries
 			popup.AppendMenuIcon(WM_COPY, IDS_SCIEDIT_COPY, IDI_COPYCLIP);
@@ -1689,7 +1687,7 @@ void CLogDlg::OnOK()
 									lowerRev = pData->lCopyFromRev;
 									m_pNotifyWindow->SendMessage(WM_REVSELECTED, m_wParam & (MERGE_REVSELECTSTART), lowerRev);
 									m_pNotifyWindow->SendMessage(WM_REVSELECTED, m_wParam & (MERGE_REVSELECTEND), higherRev);
-									m_pNotifyWindow->SendMessage(WM_REVLIST, m_selectedRevs.GetCount(), (LPARAM)&m_selectedRevs);
+									m_pNotifyWindow->SendMessage(WM_REVLIST, m_selectedRevs.GetCount(), reinterpret_cast<LPARAM>(&m_selectedRevs));
 									bSentMessage = TRUE;
 								}
 							}
@@ -1701,9 +1699,9 @@ void CLogDlg::OnOK()
 			{
 				m_pNotifyWindow->SendMessage(WM_REVSELECTED, m_wParam & (MERGE_REVSELECTSTART | MERGE_REVSELECTMINUSONE), lowerRev);
 				m_pNotifyWindow->SendMessage(WM_REVSELECTED, m_wParam & (MERGE_REVSELECTEND | MERGE_REVSELECTMINUSONE), higherRev);
-				m_pNotifyWindow->SendMessage(WM_REVLIST, m_selectedRevs.GetCount(), (LPARAM)&m_selectedRevs);
+				m_pNotifyWindow->SendMessage(WM_REVLIST, m_selectedRevs.GetCount(), reinterpret_cast<LPARAM>(&m_selectedRevs));
 				if (m_selectedRevsOneRange.GetCount())
-					m_pNotifyWindow->SendMessage(WM_REVLISTONERANGE, 0, (LPARAM)&m_selectedRevsOneRange);
+					m_pNotifyWindow->SendMessage(WM_REVLISTONERANGE, 0, reinterpret_cast<LPARAM>(&m_selectedRevsOneRange));
 			}
 		}
 	}
@@ -1726,7 +1724,7 @@ void CLogDlg::OnPasteGitHash()
 	if (!hClipboardData)
 		return;
 
-	char* pStr = (char*)GlobalLock(hClipboardData);
+	auto pStr = static_cast<char*>(GlobalLock(hClipboardData));
 	CString str(pStr);
 	GlobalUnlock(hClipboardData);
 	if (str.IsEmpty())
@@ -1745,7 +1743,7 @@ void CLogDlg::JumpToGitHash(CString hash)
 	CGitHash prefixHash(hash);
 	// start searching downwards, because it's unlikely that a hash is a forward reference
 	int currentPos = m_LogList.GetSelectionMark();
-	int cnt = (int)m_LogList.m_arShownList.size();
+	int cnt = static_cast<int>(m_LogList.m_arShownList.size());
 	if (!cnt || currentPos < 0)
 		return;
 	for (int i = currentPos + 1; i != currentPos; ++i)
@@ -1885,7 +1883,7 @@ void CLogDlg::OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		m_LogList.m_lastSelectedHash = pLogEntry->m_CommitHash;
 		if (pNMLV->iSubItem != 0)
 			return;
-		if (pNMLV->iItem == (int)m_LogList.m_arShownList.size())
+		if (pNMLV->iItem == static_cast<int>(m_LogList.m_arShownList.size()))
 		{
 			// remove the selected state
 			if (pNMLV->uChanged & LVIF_STATE)
@@ -1969,10 +1967,10 @@ void CLogDlg::OnEnLinkMsgview(NMHDR *pNMHDR, LRESULT *pResult)
 				{
 					RECT rc;
 					POINTL pt;
-					pMsgView->SendMessage(EM_POSFROMCHAR, (WPARAM)&pt, pEnLink->chrg.cpMin);
+					pMsgView->SendMessage(EM_POSFROMCHAR, reinterpret_cast<WPARAM>(&pt), pEnLink->chrg.cpMin);
 					rc.left = pt.x;
 					rc.top = pt.y;
-					pMsgView->SendMessage(EM_POSFROMCHAR, (WPARAM)&pt, pEnLink->chrg.cpMax);
+					pMsgView->SendMessage(EM_POSFROMCHAR, reinterpret_cast<WPARAM>(&pt), pEnLink->chrg.cpMax);
 					rc.right = pt.x;
 					rc.bottom = pt.y + 12;
 					if ((prevRect.left != rc.left) || (prevRect.top != rc.top))
@@ -2163,12 +2161,12 @@ LRESULT CLogDlg::DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_NOTIFY:
 		if (wParam == IDC_SPLITTERTOP)
 		{
-			SPC_NMHDR* pHdr = (SPC_NMHDR*) lParam;
+			auto pHdr = reinterpret_cast<SPC_NMHDR*>(lParam);
 			DoSizeV1(pHdr->delta);
 		}
 		else if (wParam == IDC_SPLITTERBOTTOM)
 		{
-			SPC_NMHDR* pHdr = (SPC_NMHDR*) lParam;
+			auto pHdr = reinterpret_cast<SPC_NMHDR*>(lParam);
 			DoSizeV2(pHdr->delta);
 		}
 		break;
@@ -2201,14 +2199,14 @@ void CLogDlg::OnEnscrollMsgview()
 
 LRESULT CLogDlg::OnClickedInfoIcon(WPARAM wParam, LPARAM lParam)
 {
-	if ((HWND)wParam == m_cFileFilter.GetSafeHwnd())
+	if (reinterpret_cast<HWND>(wParam) == m_cFileFilter.GetSafeHwnd())
 		return 0;
 
 	// FIXME: x64 version would get this function called with unexpected parameters.
 	if (!lParam)
 		return 0;
 
-	RECT * rect = (LPRECT)lParam;
+	auto rect = reinterpret_cast<LPRECT>(lParam);
 	CPoint point;
 	CString temp;
 	point = CPoint(rect->left, rect->bottom);
@@ -2309,7 +2307,7 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM wParam, LPARAM lParam)
 
 LRESULT CLogDlg::OnClickedCancelFilter(WPARAM wParam, LPARAM /*lParam*/)
 {
-	if ((HWND)wParam == m_cFileFilter.GetSafeHwnd())
+	if (reinterpret_cast<HWND>(wParam) == m_cFileFilter.GetSafeHwnd())
 	{
 		KillTimer(FILEFILTER_TIMER);
 
@@ -2508,7 +2506,7 @@ void CLogDlg::OnDtnDatetimechangeDateto(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 		CTime time(_time.GetYear(), _time.GetMonth(), _time.GetDay(), 23, 59, 59);
 		if (time.GetTime() != m_LogList.m_Filter.m_To)
 		{
-			m_LogList.m_Filter.m_To = (DWORD)time.GetTime();
+			m_LogList.m_Filter.m_To = static_cast<DWORD>(time.GetTime());
 			SetTimer(LOGFTIME_TIMER, 10, nullptr);
 		}
 	}
@@ -2538,10 +2536,10 @@ void CLogDlg::OnDtnDatetimechangeDatefrom(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 		CTime time(_time.GetYear(), _time.GetMonth(), _time.GetDay(), 0, 0, 0);
 		if (time.GetTime() != m_LogList.m_Filter.m_From)
 		{
-			m_LogList.m_Filter.m_From = (DWORD)time.GetTime();
+			m_LogList.m_Filter.m_From = static_cast<DWORD>(time.GetTime());
 			m_LogList.m_Filter.m_NumberOfLogsScale = CFilterData::SHOW_LAST_SEL_DATE;
 
-			if (CFilterData::SHOW_LAST_SEL_DATE == (DWORD)CRegDWORD(L"Software\\TortoiseGit\\LogDialog\\NumberOfLogsScale", CFilterData::SHOW_NO_LIMIT))
+			if (CFilterData::SHOW_LAST_SEL_DATE == static_cast<DWORD>(CRegDWORD(L"Software\\TortoiseGit\\LogDialog\\NumberOfLogsScale", CFilterData::SHOW_NO_LIMIT)))
 				m_regLastSelectedFromDate = time.Format(L"%Y-%m-%d");
 
 			SetTimer(LOGFTIME_TIMER, 10, nullptr);
@@ -2564,7 +2562,7 @@ void CLogDlg::OnBnClickedJumpUp()
 {
 	int sel = m_JumpType.GetCurSel();
 	if (sel < 0) return;
-	JumpType jumpType = (JumpType)sel;
+	JumpType jumpType = static_cast<JumpType>(sel);
 
 	if (jumpType == JumpType_History)
 	{
@@ -2899,7 +2897,7 @@ void CLogDlg::UpdateLogInfoLabel()
 	CGitHash rev2 ;
 	long selectedrevs = 0;
 	long selectedfiles = 0;
-	int count = (int)m_LogList.m_arShownList.size();
+	int count = static_cast<int>(m_LogList.m_arShownList.size());
 	int start = 0;
 	if (count >= 1)
 	{
@@ -2925,7 +2923,7 @@ void CLogDlg::UpdateLogInfoLabel()
 	CString sTemp;
 	sTemp.FormatMessage(IDS_PROC_LOG_STATS,
 		count - start,
-		(LPCTSTR)rev2.ToString().Left(g_Git.GetShortHASHLength()), (LPCTSTR)rev1.ToString().Left(g_Git.GetShortHASHLength()), selectedrevs, selectedfiles);
+		static_cast<LPCTSTR>(rev2.ToString().Left(g_Git.GetShortHASHLength())), static_cast<LPCTSTR>(rev1.ToString().Left(g_Git.GetShortHASHLength())), selectedrevs, selectedfiles);
 
 	if(selectedrevs == 1)
 	{
@@ -3100,7 +3098,7 @@ CString CLogDlg::GetAbsoluteUrlFromRelativeUrl(const CString& url)
 		CString url1 = m_sRepositoryRoot + url.Mid(1);
 		TCHAR buf[INTERNET_MAX_URL_LENGTH] = { 0 };
 		DWORD len = url.GetLength();
-		if (UrlCanonicalize((LPCTSTR)url1, buf, &len, 0) == S_OK)
+		if (UrlCanonicalize(static_cast<LPCTSTR>(url1), buf, &len, 0) == S_OK)
 			return CString(buf, len);
 		return url1;
 	}
@@ -3116,7 +3114,7 @@ CString CLogDlg::GetAbsoluteUrlFromRelativeUrl(const CString& url)
 			CString url1 = sHost + url;
 			TCHAR buf[INTERNET_MAX_URL_LENGTH] = { 0 };
 			DWORD len = url.GetLength();
-			if (UrlCanonicalize((LPCTSTR)url, buf, &len, 0) == S_OK)
+			if (UrlCanonicalize(static_cast<LPCTSTR>(url), buf, &len, 0) == S_OK)
 				return CString(buf, len);
 			return url1;
 		}
@@ -3200,7 +3198,7 @@ void CLogDlg::OnBnClickedAllBranch()
 	}
 
 	// need to save value here, so that log dialogs started from now on also have AllBranch activated
-	m_regbAllBranch = (DWORD)m_AllBranchType;
+	m_regbAllBranch = static_cast<DWORD>(m_AllBranchType);
 
 	UpdateData(FALSE);
 
@@ -3433,7 +3431,7 @@ void CLogDlg::OnBnClickedView()
 			AppendMenuChecked(showLabelsMenu, IDS_VIEW_SHOWLOCALBRANCHLABELS, VIEW_SHOWLOCALBRANCHES, m_bShowLocalBranches);
 			AppendMenuChecked(showLabelsMenu, IDS_VIEW_SHOWREMOTEBRANCHLABELS, VIEW_SHOWREMOTEBRANCHES, m_bShowRemoteBranches);
 			AppendMenuChecked(showLabelsMenu, IDS_VIEW_SHOWROTHERLABELS, VIEW_SHOWOTHERREFS, m_bShowOtherRefs);
-			popup.AppendMenu(MF_STRING | MF_POPUP, (UINT_PTR)showLabelsMenu.m_hMenu, (CString)MAKEINTRESOURCE(IDS_VIEW_LABELS));
+			popup.AppendMenu(MF_STRING | MF_POPUP, reinterpret_cast<UINT_PTR>(showLabelsMenu.m_hMenu), static_cast<CString>(MAKEINTRESOURCE(IDS_VIEW_LABELS)));
 		}
 		popup.AppendMenu(MF_SEPARATOR, NULL);
 		AppendMenuChecked(popup, IDS_VIEW_SHOWGRAVATAR, VIEW_SHOWGRAVATAR, m_bShowGravatar);

@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2006,2008,2010,2014 - TortoiseSVN
 // Copyright (C) 2008-2019 - TortoiseGit
@@ -163,7 +163,7 @@ bool CGitStatusCache::SaveCache()
 		{
 			unsigned int value = CACHEDISKVERSION;
 			WRITEVALUETOFILE(value);
-			value = (int)m_pInstance->m_directoryCache.size();
+			value = static_cast<int>(m_pInstance->m_directoryCache.size());
 			WRITEVALUETOFILE(value);
 			for (auto I = m_pInstance->m_directoryCache.cbegin(); I != m_pInstance->m_directoryCache.cend(); ++I)
 			{
@@ -178,7 +178,7 @@ bool CGitStatusCache::SaveCache()
 				WRITEVALUETOFILE(value);
 				if (value)
 				{
-					if (fwrite((LPCTSTR)key, sizeof(TCHAR), value, pFile)!=value)
+					if (fwrite(static_cast<LPCTSTR>(key), sizeof(TCHAR), value, pFile)!=value)
 						goto error;
 					if (!I->second->SaveToDisk(pFile))
 						goto error;
@@ -186,7 +186,7 @@ bool CGitStatusCache::SaveCache()
 			}
 		}
 	}
-	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": cache saved to disk at %s\n", (LPCTSTR)path);
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": cache saved to disk at %s\n", static_cast<LPCTSTR>(path));
 	return true;
 error:
 	Destroy();
@@ -492,7 +492,7 @@ CStatusCacheEntry CGitStatusCache::GetStatusForPath(const CTGitPath& path, DWORD
 	bool bRecursive = !!(flags & TGITCACHE_FLAGS_RECUSIVE_STATUS);
 
 	// Check a very short-lived 'mini-cache' of the last thing we were asked for.
-	LONGLONG now = (LONGLONG)GetTickCount64();
+	LONGLONG now = static_cast<LONGLONG>(GetTickCount64());
 	if(now-m_mostRecentExpiresAt < 0)
 	{
 		if (path.IsEquivalentTo(m_mostRecentPath))

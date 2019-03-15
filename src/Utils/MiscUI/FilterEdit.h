@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2016-2017 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
@@ -42,7 +42,7 @@ public:
  * \code
  * LRESULT CFilterEditTestDlg::OnFilterContext(WPARAM wParam, LPARAM lParam)
  * {
- *   RECT * rect = (LPRECT)lParam;
+ *   auto rect = reinterpret_cast<LPRECT>(lParam);
  *   POINT point;
  *   point.x = rect->left;
  *   point.y = rect->bottom;

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014-2016 - TortoiseGit
+// Copyright (C) 2014-2016, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -62,12 +62,12 @@ static CString getCertificateHash(HCRYPTPROV hCryptProv, ALG_ID algId, BYTE* cer
 		return readable;
 	SCOPE_EXIT { CryptDestroyHash(hHash); };
 
-	if (!CryptHashData(hHash, certificate, (DWORD)len, 0))
+	if (!CryptHashData(hHash, certificate, static_cast<DWORD>(len), 0))
 		return readable;
 
 	DWORD hashLen;
 	DWORD hashLenLen = sizeof(DWORD);
-	if (!CryptGetHashParam(hHash, HP_HASHSIZE, (BYTE *)&hashLen, &hashLenLen, 0))
+	if (!CryptGetHashParam(hHash, HP_HASHSIZE, reinterpret_cast<BYTE*>(&hashLen), &hashLenLen, 0))
 		return readable;
 
 	auto pHash = std::make_unique<BYTE[]>(hashLen);
@@ -94,13 +94,13 @@ BOOL CCheckCertificateDlg::OnInitDialog()
 			CryptReleaseContext(hCryptProv, 0);
 	};
 
-	m_sSHA1 = getCertificateHash(hCryptProv, CALG_SHA1, (BYTE*)cert->data, cert->len);
-	m_sSHA256 = getCertificateHash(hCryptProv, CALG_SHA_256, (BYTE*)cert->data, cert->len);
+	m_sSHA1 = getCertificateHash(hCryptProv, CALG_SHA1, reinterpret_cast<BYTE*>(cert->data), cert->len);
+	m_sSHA256 = getCertificateHash(hCryptProv, CALG_SHA_256, reinterpret_cast<BYTE*>(cert->data), cert->len);
 	if (m_sSHA256.GetLength() > 57)
 		m_sSHA256 = m_sSHA256.Left(57) + L"\r\n" + m_sSHA256.Mid(57);
 
 	CString error;
-	error.Format(IDS_ERR_SSL_VALIDATE, (LPCTSTR)m_sHostname);
+	error.Format(IDS_ERR_SSL_VALIDATE, static_cast<LPCTSTR>(m_sHostname));
 	SetDlgItemText(IDC_ERRORDESC, error);
 
 	UpdateData(FALSE);
@@ -117,7 +117,7 @@ void CCheckCertificateDlg::OnBnClickedOpencert()
 	try
 	{
 		CFile file(tempFile.GetWinPathString(), CFile::modeReadWrite);
-		file.Write(cert->data, (UINT)cert->len);
+		file.Write(cert->data, static_cast<UINT>(cert->len));
 		file.Close();
 	}
 	catch (CFileException* e)

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2017-2018 - TortoiseGit
+// Copyright (C) 2017-2019 - TortoiseGit
 // Copyright (C) 2003-2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -166,7 +166,7 @@ bool InsertRevision(char* def, char* pBuf, size_t& index, size_t& filelength, si
 		while (*pEnd != '$')
 		{
 			++pEnd;
-			if (pEnd - pBuf >= (__int64)filelength)
+			if (pEnd - pBuf >= static_cast<__int64>(filelength))
 				return false; // No terminator - malformed so give up.
 		}
 		if ((pEnd - pStart) > 1024)
@@ -212,7 +212,7 @@ bool InsertRevisionW(wchar_t* def, wchar_t* pBuf, size_t& index, size_t& filelen
 		while (*pEnd != '$')
 		{
 			++pEnd;
-			if (((__int64)(pEnd - pBuf)) * ((__int64)sizeof(wchar_t)) >= (__int64)filelength)
+			if (static_cast<__int64>(pEnd - pBuf) * static_cast<__int64>(sizeof(wchar_t)) >= static_cast<__int64>(filelength))
 				return false; // No terminator - malformed so give up.
 		}
 		if ((pEnd - pStart) > 1024)
@@ -259,7 +259,7 @@ bool InsertNumber(char* def, char* pBuf, size_t& index, size_t& filelength, size
 		while (*pEnd != '$')
 		{
 			++pEnd;
-			if (pEnd - pBuf >= (__int64)filelength)
+			if (pEnd - pBuf >= static_cast<__int64>(filelength))
 				return false; // No terminator - malformed so give up.
 		}
 		if ((pEnd - pStart) > 1024)
@@ -323,7 +323,7 @@ bool InsertNumberW(wchar_t* def, wchar_t* pBuf, size_t& index, size_t& filelengt
 		while (*pEnd != '$')
 		{
 			++pEnd;
-			if (((__int64)(pEnd - pBuf)) * ((__int64)sizeof(wchar_t)) >= (__int64)filelength)
+			if (static_cast<__int64>(pEnd - pBuf) * static_cast<__int64>(sizeof(wchar_t)) >= static_cast<__int64>(filelength))
 				return false; // No terminator - malformed so give up.
 		}
 		if ((pEnd - pStart) > 1024)
@@ -416,7 +416,7 @@ bool InsertDate(char* def, char* pBuf, size_t& index, size_t& filelength, size_t
 		while (*pEnd != '$')
 		{
 			++pEnd;
-			if (pEnd - pBuf >= (__int64)filelength)
+			if (pEnd - pBuf >= static_cast<__int64>(filelength))
 				return false; // No terminator - malformed so give up.
 		}
 		if ((pEnd - pStart) > 1024)
@@ -494,7 +494,7 @@ bool InsertDateW(wchar_t* def, wchar_t* pBuf, size_t& index, size_t& filelength,
 		while (*pEnd != '$')
 		{
 			++pEnd;
-			if (((__int64)(pEnd - pBuf))*((__int64)sizeof(wchar_t)) >= (__int64)filelength)
+			if (static_cast<__int64>(pEnd - pBuf) * static_cast<__int64>(sizeof(wchar_t)) >= static_cast<__int64>(filelength))
 				return false; // No terminator - malformed so give up.
 		}
 		if ((pEnd - pStart) > 1024)
@@ -551,7 +551,7 @@ int InsertBoolean(char* def, char* pBuf, size_t& index, size_t& filelength, BOOL
 	while (*pEnd != '$')
 	{
 		++pEnd;
-		if (pEnd - pBuf >= (__int64)filelength)
+		if (pEnd - pBuf >= static_cast<__int64>(filelength))
 			return false; // No terminator - malformed so give up.
 	}
 
@@ -601,7 +601,7 @@ bool InsertBooleanW(wchar_t* def, wchar_t* pBuf, size_t& index, size_t& fileleng
 	while (*pEnd != L'$')
 	{
 		++pEnd;
-		if (pEnd - pBuf >= (__int64)filelength)
+		if (pEnd - pBuf >= static_cast<__int64>(filelength))
 			return false; // No terminator - malformed so give up.
 	}
 
@@ -876,7 +876,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			_tprintf(L"Could not allocate enough memory!\n");
 			return ERR_ALLOC;
 		}
-		if (!ReadFile(hFile, pBuf.get(), (DWORD)filelength, &readlength, nullptr))
+		if (!ReadFile(hFile, pBuf.get(), static_cast<DWORD>(filelength), &readlength, nullptr))
 		{
 			_tprintf(L"Could not read the file '%s'\n", src);
 			return ERR_READ;
@@ -936,131 +936,131 @@ int _tmain(int argc, _TCHAR* argv[])
 	size_t index = 0;
 	while (InsertRevision(VERDEF, pBuf.get(), index, filelength, maxlength, &GitStat));
 	index = 0;
-	while (InsertRevisionW(TEXT(VERDEF), (wchar_t*)pBuf.get(), index, filelength, maxlength, &GitStat));
+	while (InsertRevisionW(TEXT(VERDEF), reinterpret_cast<wchar_t*>(pBuf.get()), index, filelength, maxlength, &GitStat));
 
 	index = 0;
 	while (InsertRevision(VERDEFSHORT, pBuf.get(), index, filelength, maxlength, &GitStat));
 	index = 0;
-	while (InsertRevisionW(TEXT(VERDEFSHORT), (wchar_t*)pBuf.get(), index, filelength, maxlength, &GitStat));
+	while (InsertRevisionW(TEXT(VERDEFSHORT), reinterpret_cast<wchar_t*>(pBuf.get()), index, filelength, maxlength, &GitStat));
 
 	index = 0;
 	while (InsertDate(DATEDEF, pBuf.get(), index, filelength, maxlength, GitStat.HeadTime));
 	index = 0;
-	while (InsertDateW(TEXT(DATEDEF), (wchar_t*)pBuf.get(), index, filelength, maxlength, GitStat.HeadTime));
+	while (InsertDateW(TEXT(DATEDEF), reinterpret_cast<wchar_t*>(pBuf.get()), index, filelength, maxlength, GitStat.HeadTime));
 
 	index = 0;
 	while (InsertDate(DATEDEFUTC, pBuf.get(), index, filelength, maxlength, GitStat.HeadTime));
 	index = 0;
-	while (InsertDateW(TEXT(DATEDEFUTC), (wchar_t*)pBuf.get(), index, filelength, maxlength, GitStat.HeadTime));
+	while (InsertDateW(TEXT(DATEDEFUTC), reinterpret_cast<wchar_t*>(pBuf.get()), index, filelength, maxlength, GitStat.HeadTime));
 
 	index = 0;
 	while (InsertDate(DATEWFMTDEF, pBuf.get(), index, filelength, maxlength, GitStat.HeadTime));
 	index = 0;
-	while (InsertDateW(TEXT(DATEWFMTDEF), (wchar_t*)pBuf.get(), index, filelength, maxlength, GitStat.HeadTime));
+	while (InsertDateW(TEXT(DATEWFMTDEF), reinterpret_cast<wchar_t*>(pBuf.get()), index, filelength, maxlength, GitStat.HeadTime));
 	index = 0;
 	while (InsertDate(DATEWFMTDEFUTC, pBuf.get(), index, filelength, maxlength, GitStat.HeadTime));
 	index = 0;
-	while (InsertDateW(TEXT(DATEWFMTDEFUTC), (wchar_t*)pBuf.get(), index, filelength, maxlength, GitStat.HeadTime));
+	while (InsertDateW(TEXT(DATEWFMTDEFUTC), reinterpret_cast<wchar_t*>(pBuf.get()), index, filelength, maxlength, GitStat.HeadTime));
 
 	index = 0;
 	while (InsertDate(NOWDEF, pBuf.get(), index, filelength, maxlength, USE_TIME_NOW));
 	index = 0;
-	while (InsertDateW(TEXT(NOWDEF), (wchar_t*)pBuf.get(), index, filelength, maxlength, USE_TIME_NOW));
+	while (InsertDateW(TEXT(NOWDEF), reinterpret_cast<wchar_t*>(pBuf.get()), index, filelength, maxlength, USE_TIME_NOW));
 
 	index = 0;
 	while (InsertDate(NOWDEFUTC, pBuf.get(), index, filelength, maxlength, USE_TIME_NOW));
 	index = 0;
-	while (InsertDateW(TEXT(NOWDEFUTC), (wchar_t*)pBuf.get(), index, filelength, maxlength, USE_TIME_NOW));
+	while (InsertDateW(TEXT(NOWDEFUTC), reinterpret_cast<wchar_t*>(pBuf.get()), index, filelength, maxlength, USE_TIME_NOW));
 
 	index = 0;
 	while (InsertDate(NOWWFMTDEF, pBuf.get(), index, filelength, maxlength, USE_TIME_NOW));
 	index = 0;
-	while (InsertDateW(TEXT(NOWWFMTDEF), (wchar_t*)pBuf.get(), index, filelength, maxlength, USE_TIME_NOW));
+	while (InsertDateW(TEXT(NOWWFMTDEF), reinterpret_cast<wchar_t*>(pBuf.get()), index, filelength, maxlength, USE_TIME_NOW));
 
 	index = 0;
 	while (InsertDate(NOWWFMTDEFUTC, pBuf.get(), index, filelength, maxlength, USE_TIME_NOW));
 	index = 0;
-	while (InsertDateW(TEXT(NOWWFMTDEFUTC), (wchar_t*)pBuf.get(), index, filelength, maxlength, USE_TIME_NOW));
+	while (InsertDateW(TEXT(NOWWFMTDEFUTC), reinterpret_cast<wchar_t*>(pBuf.get()), index, filelength, maxlength, USE_TIME_NOW));
 
 	index = 0;
 	while (InsertBoolean(MODDEF, pBuf.get(), index, filelength, GitStat.HasMods || GitStat.bHasSubmoduleNewCommits));
 	index = 0;
-	while (InsertBooleanW(TEXT(MODDEF), (wchar_t*)pBuf.get(), index, filelength, GitStat.HasMods || GitStat.bHasSubmoduleNewCommits));
+	while (InsertBooleanW(TEXT(MODDEF), reinterpret_cast<wchar_t*>(pBuf.get()), index, filelength, GitStat.HasMods || GitStat.bHasSubmoduleNewCommits));
 
 	index = 0;
 	while (InsertBoolean(UNVERDEF, pBuf.get(), index, filelength, GitStat.HasUnversioned));
 	index = 0;
-	while (InsertBooleanW(TEXT(UNVERDEF), (wchar_t*)pBuf.get(), index, filelength, GitStat.HasUnversioned));
+	while (InsertBooleanW(TEXT(UNVERDEF), reinterpret_cast<wchar_t*>(pBuf.get()), index, filelength, GitStat.HasUnversioned));
 
 	index = 0;
 	while (InsertBoolean(ISTAGGED, pBuf.get(), index, filelength, GitStat.bIsTagged));
 	index = 0;
-	while (InsertBooleanW(TEXT(ISTAGGED), (wchar_t*)pBuf.get(), index, filelength, GitStat.bIsTagged));
+	while (InsertBooleanW(TEXT(ISTAGGED), reinterpret_cast<wchar_t*>(pBuf.get()), index, filelength, GitStat.bIsTagged));
 
 	index = 0;
 	while (InsertBoolean(ISINGIT, pBuf.get(), index, filelength, GitStat.bIsGitItem));
 	index = 0;
-	while (InsertBooleanW(TEXT(ISINGIT), (wchar_t*)pBuf.get(), index, filelength, GitStat.bIsGitItem));
+	while (InsertBooleanW(TEXT(ISINGIT), reinterpret_cast<wchar_t*>(pBuf.get()), index, filelength, GitStat.bIsGitItem));
 
 	index = 0;
 	while (InsertBoolean(SUBDEF, pBuf.get(), index, filelength, GitStat.bHasSubmodule));
 	index = 0;
-	while (InsertBooleanW(TEXT(SUBDEF), (wchar_t*)pBuf.get(), index, filelength, GitStat.bHasSubmodule));
+	while (InsertBooleanW(TEXT(SUBDEF), reinterpret_cast<wchar_t*>(pBuf.get()), index, filelength, GitStat.bHasSubmodule));
 
 	index = 0;
 	while (InsertBoolean(SUBUP2DATEDEF, pBuf.get(), index, filelength, !GitStat.bHasSubmoduleNewCommits));
 	index = 0;
-	while (InsertBooleanW(TEXT(SUBUP2DATEDEF), (wchar_t*)pBuf.get(), index, filelength, !GitStat.bHasSubmoduleNewCommits));
+	while (InsertBooleanW(TEXT(SUBUP2DATEDEF), reinterpret_cast<wchar_t*>(pBuf.get()), index, filelength, !GitStat.bHasSubmoduleNewCommits));
 
 	index = 0;
 	while (InsertBoolean(MODINSUBDEF, pBuf.get(), index, filelength, GitStat.bHasSubmoduleMods));
 	index = 0;
-	while (InsertBooleanW(TEXT(MODINSUBDEF), (wchar_t*)pBuf.get(), index, filelength, GitStat.bHasSubmoduleMods));
+	while (InsertBooleanW(TEXT(MODINSUBDEF), reinterpret_cast<wchar_t*>(pBuf.get()), index, filelength, GitStat.bHasSubmoduleMods));
 
 	index = 0;
 	while (InsertBoolean(UNVERINSUBDEF, pBuf.get(), index, filelength, GitStat.bHasSubmoduleUnversioned));
 	index = 0;
-	while (InsertBooleanW(TEXT(UNVERINSUBDEF), (wchar_t*)pBuf.get(), index, filelength, GitStat.bHasSubmoduleUnversioned));
+	while (InsertBooleanW(TEXT(UNVERINSUBDEF), reinterpret_cast<wchar_t*>(pBuf.get()), index, filelength, GitStat.bHasSubmoduleUnversioned));
 
 	index = 0;
 	while (InsertBoolean(UNVERFULLDEF, pBuf.get(), index, filelength, GitStat.HasUnversioned || GitStat.bHasSubmoduleUnversioned));
 	index = 0;
-	while (InsertBooleanW(TEXT(UNVERFULLDEF), (wchar_t*)pBuf.get(), index, filelength, GitStat.HasUnversioned || GitStat.bHasSubmoduleUnversioned));
+	while (InsertBooleanW(TEXT(UNVERFULLDEF), reinterpret_cast<wchar_t*>(pBuf.get()), index, filelength, GitStat.HasUnversioned || GitStat.bHasSubmoduleUnversioned));
 
 	index = 0;
 	while (InsertBoolean(MODFULLDEF, pBuf.get(), index, filelength, GitStat.HasMods || GitStat.bHasSubmoduleMods || GitStat.bHasSubmoduleUnversioned));
 	index = 0;
-	while (InsertBooleanW(TEXT(MODFULLDEF), (wchar_t*)pBuf.get(), index, filelength, GitStat.HasMods || GitStat.bHasSubmoduleMods || GitStat.bHasSubmoduleUnversioned));
+	while (InsertBooleanW(TEXT(MODFULLDEF), reinterpret_cast<wchar_t*>(pBuf.get()), index, filelength, GitStat.HasMods || GitStat.bHasSubmoduleMods || GitStat.bHasSubmoduleUnversioned));
 
 	index = 0;
 	while (InsertBoolean(MODSFILEDEF, pBuf.get(), index, filelength, GitStat.HasMods));
 	index = 0;
-	while (InsertBooleanW(TEXT(MODSFILEDEF), (wchar_t*)pBuf.get(), index, filelength, GitStat.HasMods));
+	while (InsertBooleanW(TEXT(MODSFILEDEF), reinterpret_cast<wchar_t*>(pBuf.get()), index, filelength, GitStat.HasMods));
 
 	index = 0;
 	while (InsertNumber(VALDEF, pBuf.get(), index, filelength, maxlength, GitStat.NumCommits));
 	index = 0;
-	while (InsertNumberW(TEXT(VALDEF), (wchar_t*)pBuf.get(), index, filelength, maxlength, GitStat.NumCommits));
+	while (InsertNumberW(TEXT(VALDEF), reinterpret_cast<wchar_t*>(pBuf.get()), index, filelength, maxlength, GitStat.NumCommits));
 
 	index = 0;
 	while (InsertNumber(VALDEFAND, pBuf.get(), index, filelength, maxlength, GitStat.NumCommits));
 	index = 0;
-	while (InsertNumberW(TEXT(VALDEFAND), (wchar_t*)pBuf.get(), index, filelength, maxlength, GitStat.NumCommits));
+	while (InsertNumberW(TEXT(VALDEFAND), reinterpret_cast<wchar_t*>(pBuf.get()), index, filelength, maxlength, GitStat.NumCommits));
 
 	index = 0;
 	while (InsertNumber(VALDEFOFFSET1, pBuf.get(), index, filelength, maxlength, GitStat.NumCommits));
 	index = 0;
-	while (InsertNumberW(TEXT(VALDEFOFFSET1), (wchar_t*)pBuf.get(), index, filelength, maxlength, GitStat.NumCommits));
+	while (InsertNumberW(TEXT(VALDEFOFFSET1), reinterpret_cast<wchar_t*>(pBuf.get()), index, filelength, maxlength, GitStat.NumCommits));
 
 	index = 0;
 	while (InsertNumber(VALDEFOFFSET2, pBuf.get(), index, filelength, maxlength, GitStat.NumCommits));
 	index = 0;
-	while (InsertNumberW(TEXT(VALDEFOFFSET2), (wchar_t*)pBuf.get(), index, filelength, maxlength, GitStat.NumCommits));
+	while (InsertNumberW(TEXT(VALDEFOFFSET2), reinterpret_cast<wchar_t*>(pBuf.get()), index, filelength, maxlength, GitStat.NumCommits));
 
 	index = 0;
 	while (InsertText(BRANCHDEF, pBuf.get(), index, filelength, maxlength, GitStat.CurrentBranch));
 	index = 0;
-	while (InsertTextW(TEXT(BRANCHDEF), (wchar_t*)pBuf.get(), index, filelength, maxlength, GitStat.CurrentBranch));
+	while (InsertTextW(TEXT(BRANCHDEF), reinterpret_cast<wchar_t*>(pBuf.get()), index, filelength, maxlength, GitStat.CurrentBranch));
 
 	CAutoFile hFile = CreateFile(dst, GENERIC_WRITE | GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_ALWAYS, 0, 0);
 	if (!hFile)
@@ -1075,7 +1075,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	{
 		DWORD readlengthExisting = 0;
 		auto pBufExisting = std::make_unique<char[]>(filelength);
-		if (!ReadFile(hFile, pBufExisting.get(), (DWORD)filelengthExisting, &readlengthExisting, nullptr))
+		if (!ReadFile(hFile, pBufExisting.get(), static_cast<DWORD>(filelengthExisting), &readlengthExisting, nullptr))
 		{
 			_tprintf(L"Could not read the file '%s'\n", dst);
 			return ERR_READ;
@@ -1094,7 +1094,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	{
 		SetFilePointer(hFile, 0, nullptr, FILE_BEGIN);
 
-		WriteFile(hFile, pBuf.get(), (DWORD)filelength, &readlength, nullptr);
+		WriteFile(hFile, pBuf.get(), static_cast<DWORD>(filelength), &readlength, nullptr);
 		if (readlength != filelength)
 		{
 			_tprintf(L"Could not write the file '%s' to the end!\n", dst);

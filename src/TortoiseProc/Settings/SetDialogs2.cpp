@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016 - TortoiseGit
+// Copyright (C) 2008-2016, 2019 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -45,31 +45,31 @@ CSetDialogs2::CSetDialogs2()
 	m_regAutoCloseGitProgress = CRegDWORD(L"Software\\TortoiseGit\\AutoCloseGitProgress");
 	m_regUseRecycleBin = CRegDWORD(L"Software\\TortoiseGit\\RevertWithRecycleBin", TRUE);
 	m_regConfirmKillProcess = CRegDWORD(L"Software\\TortoiseGit\\ConfirmKillProcess", FALSE);
-	m_bConfirmKillProcess = (BOOL)m_regConfirmKillProcess;
+	m_bConfirmKillProcess = m_regConfirmKillProcess;
 	m_regSyncDialogRandomPos = CRegDWORD(L"Software\\TortoiseGit\\SyncDialogRandomPos", FALSE);
-	m_bSyncDialogRandomPos = (BOOL)m_regSyncDialogRandomPos;
+	m_bSyncDialogRandomPos = m_regSyncDialogRandomPos;
 	m_regRefCompareHideUnchanged = CRegDWORD(L"Software\\TortoiseGit\\RefCompareHideUnchanged", FALSE);
-	m_bRefCompareHideUnchanged = (BOOL)m_regRefCompareHideUnchanged;
+	m_bRefCompareHideUnchanged = m_regRefCompareHideUnchanged;
 	m_regSortTagsReversed = CRegDWORD(L"Software\\TortoiseGit\\SortTagsReversed", FALSE);
-	m_bSortTagsReversed = (BOOL)(DWORD)m_regSortTagsReversed;
+	m_bSortTagsReversed = m_regSortTagsReversed;
 	m_regAutocompletion = CRegDWORD(L"Software\\TortoiseGit\\Autocompletion", TRUE);
-	m_bAutocompletion = (DWORD)m_regAutocompletion;
+	m_bAutocompletion = m_regAutocompletion;
 	m_regAutocompletionTimeout = CRegDWORD(L"Software\\TortoiseGit\\AutocompleteParseTimeout", 5);
-	m_dwAutocompletionTimeout = (DWORD)m_regAutocompletionTimeout;
+	m_dwAutocompletionTimeout = m_regAutocompletionTimeout;
 	m_regMaxHistory = CRegDWORD(L"Software\\TortoiseGit\\MaxHistoryItems", 25);
-	m_dwMaxHistory = (DWORD)m_regMaxHistory;
+	m_dwMaxHistory = m_regMaxHistory;
 	m_regAutoSelect = CRegDWORD(L"Software\\TortoiseGit\\SelectFilesForCommit", TRUE);
-	m_bAutoSelect = (BOOL)(DWORD)m_regAutoSelect;
+	m_bAutoSelect = m_regAutoSelect;
 	m_regStripCommentedLines = CRegDWORD(L"Software\\TortoiseGit\\StripCommentedLines", FALSE);
-	m_bStripCommentedLines = (BOOL)(DWORD)m_regStripCommentedLines;
+	m_bStripCommentedLines = m_regStripCommentedLines;
 	m_regShowGitexeTimings = CRegDWORD(L"Software\\TortoiseGit\\ShowGitexeTimings", TRUE);
-	m_bShowGitexeTimings = (BOOL)(DWORD)m_regShowGitexeTimings;
+	m_bShowGitexeTimings = m_regShowGitexeTimings;
 	m_regNoSounds = CRegDWORD(L"Software\\TortoiseGit\\NoSounds", FALSE);
-	m_bNoSounds = (BOOL)(DWORD)m_regNoSounds;
+	m_bNoSounds = m_regNoSounds;
 	m_regBranchesIncludeFetchHead = CRegDWORD(L"Software\\TortoiseGit\\BranchesIncludeFetchHead", TRUE);
-	m_bBranchesIncludeFetchHead = (BOOL)(DWORD)m_regBranchesIncludeFetchHead;
+	m_bBranchesIncludeFetchHead = m_regBranchesIncludeFetchHead;
 	m_regNoAutoselectMissing = CRegDWORD(L"Software\\TortoiseGit\\AutoselectMissingFiles", FALSE);
-	m_bNoAutoselectMissing = (BOOL)(DWORD)m_regNoAutoselectMissing;
+	m_bNoAutoselectMissing = m_regNoAutoselectMissing;
 }
 
 CSetDialogs2::~CSetDialogs2()
@@ -178,7 +178,7 @@ BOOL CSetDialogs2::OnApply()
 {
 	UpdateData();
 
-	Store((DWORD)m_dwAutoCloseGitProgress, m_regAutoCloseGitProgress);
+	Store(static_cast<DWORD>(m_dwAutoCloseGitProgress), m_regAutoCloseGitProgress);
 	Store(m_bUseRecycleBin, m_regUseRecycleBin);
 	Store(m_bConfirmKillProcess, m_regConfirmKillProcess);
 	Store(m_bSyncDialogRandomPos, m_regSyncDialogRandomPos);

@@ -66,7 +66,7 @@ void RunTortoiseGitProcWithCurrentRev(const CString& command, const GitRev* pRev
 {
 	ASSERT(pRev);
 	CString  procCmd;
-	procCmd.Format(L"/command:%s /path:\"%s\" /rev:%s", (LPCTSTR)command, (LPCTSTR)path, (LPCTSTR)pRev->m_CommitHash.ToString());
+	procCmd.Format(L"/command:%s /path:\"%s\" /rev:%s", static_cast<LPCTSTR>(command), static_cast<LPCTSTR>(path), static_cast<LPCTSTR>(pRev->m_CommitHash.ToString()));
 	CCommonAppUtils::RunTortoiseGitProc(procCmd);
 }
 
@@ -76,7 +76,7 @@ void CGitBlameLogList::ContextMenuAction(int cmd, int /*FirstSelect*/, int /*Las
 	int indexNext = GetNextSelectedItem(pos);
 	if (indexNext < 0)
 		return;
-	CTortoiseGitBlameView *pView = DYNAMIC_DOWNCAST(CTortoiseGitBlameView,((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView());
+	auto pView = DYNAMIC_DOWNCAST(CTortoiseGitBlameView, static_cast<CMainFrame*>(::AfxGetApp()->GetMainWnd())->GetActiveView());
 
 	GitRevLoglist* pRev = &this->m_logEntries.GetGitRevAt(indexNext);
 
@@ -151,12 +151,12 @@ void CGitBlameLogList::ContextMenuAction(int cmd, int /*FirstSelect*/, int /*Las
 		case ID_LOG:
 			{
 				CString procCmd;
-				procCmd.Format(L"/command:log /path:\"%s\" /endrev:%s /rev:%s", (LPCTSTR)((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName(), (LPCTSTR)pRev->m_CommitHash.ToString(), (LPCTSTR)pRev->m_CommitHash.ToString());
+				procCmd.Format(L"/command:log /path:\"%s\" /endrev:%s /rev:%s", static_cast<LPCTSTR>(static_cast<CMainFrame*>(::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName()), static_cast<LPCTSTR>(pRev->m_CommitHash.ToString()), static_cast<LPCTSTR>(pRev->m_CommitHash.ToString()));
 				CCommonAppUtils::RunTortoiseGitProc(procCmd);
 			}
 			break;
 		case ID_REPOBROWSE:
-			RunTortoiseGitProcWithCurrentRev(L"repobrowser", pRev, ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName());
+			RunTortoiseGitProcWithCurrentRev(L"repobrowser", pRev, static_cast<CMainFrame*>(::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName());
 			break;
 		case ID_SHOWBRANCHES:
 			RunTortoiseGitProcWithCurrentRev(L"commitisonrefs", pRev);
@@ -169,7 +169,7 @@ void CGitBlameLogList::ContextMenuAction(int cmd, int /*FirstSelect*/, int /*Las
 
 void CGitBlameLogList::GetPaths(const CGitHash& hash, std::vector<CTGitPath>& paths)
 {
-	CTortoiseGitBlameView *pView = DYNAMIC_DOWNCAST(CTortoiseGitBlameView,((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView());
+	auto pView = DYNAMIC_DOWNCAST(CTortoiseGitBlameView, static_cast<CMainFrame*>(::AfxGetApp()->GetMainWnd())->GetActiveView());
 	if (pView)
 	{
 		{
@@ -221,7 +221,7 @@ void CGitBlameLogList::GetParentNumbers(GitRevLoglist* pRev, const std::vector<C
 						if (action & (CTGitPath::LOGACTIONS_MODIFIED | CTGitPath::LOGACTIONS_REPLACED))
 						{
 							int parentNo = file.m_ParentNo & PARENT_MASK;
-							if (parentNo >= 0 && (size_t)parentNo < pRev->m_ParentHash.size())
+							if (parentNo >= 0 && static_cast<size_t>(parentNo) < pRev->m_ParentHash.size())
 								parentNos.insert(parentNo);
 						}
 					}
@@ -275,7 +275,7 @@ void CGitBlameLogList::GetParentHash(GitRevLoglist* pRev, int index, CGitHash& p
 						// ignore (action & CTGitPath::LOGACTIONS_DELETED), should never happen as the file must exist
 						if (action & (CTGitPath::LOGACTIONS_MODIFIED | CTGitPath::LOGACTIONS_REPLACED))
 						{
-							if (parentNo == (file.m_ParentNo & PARENT_MASK) && (size_t)parentNo < pRev->m_ParentHash.size())
+							if (parentNo == (file.m_ParentNo & PARENT_MASK) && static_cast<size_t>(parentNo) < pRev->m_ParentHash.size())
 								parentFilenames.push_back( (action & CTGitPath::LOGACTIONS_REPLACED) ? file.GetGitOldPathString() : file.GetGitPathString());
 						}
 					}

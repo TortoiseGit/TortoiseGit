@@ -46,7 +46,7 @@ bool LogCommand::Execute()
 	if (revstart == GIT_REV_ZERO)
 		revstart.Empty();
 	if (!revstart.IsEmpty())
-		range.Format(L"%s..", (LPCTSTR)g_Git.FixBranchName(revstart));
+		range.Format(L"%s..", static_cast<LPCTSTR>(g_Git.FixBranchName(revstart)));
 
 	CString revend = parser.GetVal(L"endrev");
 	if (revend.IsEmpty())
@@ -103,7 +103,7 @@ bool LogCommand::Execute()
 		CString sText;
 		if (!dlg.GetSelectedHash().empty())
 			sText = dlg.GetSelectedHash().at(0).ToString();
-		CStringUtils::WriteStringToTextFile(parser.GetVal(L"outfile"), (LPCTSTR)sText, true);
+		CStringUtils::WriteStringToTextFile(parser.GetVal(L"outfile"), static_cast<LPCTSTR>(sText), true);
 	}
 	return true;
 }

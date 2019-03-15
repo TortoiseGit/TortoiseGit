@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2011 - TortoiseSVN
-// Copyright (C) 2012-2018 - TortoiseGit
+// Copyright (C) 2012-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -68,8 +68,8 @@ void CRevisionGraphWnd::BuildPreview()
 
 	// make sure the preview window has a minimal size
 
-	m_previewWidth = min((LONG)max(graphRect.Width() * m_previewZoom, 30.0f), preViewSize.cx);
-	m_previewHeight = min((LONG)max(graphRect.Height() * m_previewZoom, 30.0f), preViewSize.cy);
+	m_previewWidth = min(static_cast<LONG>(max(graphRect.Width() * m_previewZoom, 30.0f)), preViewSize.cx);
+	m_previewHeight = min(static_cast<LONG>(max(graphRect.Height() * m_previewZoom, 30.0f)), preViewSize.cy);
 
 	CClientDC ddc(this);
 	CDC dc;
@@ -77,7 +77,7 @@ void CRevisionGraphWnd::BuildPreview()
 		return;
 
 	m_Preview.CreateCompatibleBitmap(&ddc, m_previewWidth, m_previewHeight);
-	HBITMAP oldbm = (HBITMAP)dc.SelectObject (m_Preview);
+	HBITMAP oldbm = static_cast<HBITMAP>(dc.SelectObject (m_Preview));
 
 	// paint the whole graph
 	DoZoom (m_previewZoom, false);
@@ -160,7 +160,7 @@ int CRevisionGraphWnd::GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
 	if(size == 0)
 		return -1;  // Failure
 
-	ImageCodecInfo* pImageCodecInfo = (ImageCodecInfo*)(malloc(size));
+	auto pImageCodecInfo = reinterpret_cast<ImageCodecInfo*>(malloc(size));
 	if (!pImageCodecInfo)
 		return -1;  // Failure
 
@@ -191,7 +191,7 @@ bool CRevisionGraphWnd::FetchRevisionData
 	this->m_logEntries.ClearAll();
 	CString range;
 	if (!m_ToRev.IsEmpty() && !m_FromRev.IsEmpty())
-		range.Format(L"%s..%s", (LPCTSTR)g_Git.FixBranchName(m_FromRev), (LPCTSTR)g_Git.FixBranchName(m_ToRev));
+		range.Format(L"%s..%s", static_cast<LPCTSTR>(g_Git.FixBranchName(m_FromRev)), static_cast<LPCTSTR>(g_Git.FixBranchName(m_ToRev)));
 	else if (!m_ToRev.IsEmpty())
 		range = m_ToRev;
 	else if (!m_FromRev.IsEmpty())
@@ -233,7 +233,7 @@ bool CRevisionGraphWnd::FetchRevisionData
 				auto nd = this->m_Graph.newNode();
 				m_Graph.newEdge(nodes[i], nd);
 				m_logEntries.push_back(rev.m_ParentHash[j]);
-				m_logEntries.m_HashMap[rev.m_ParentHash[j]] = (int)m_logEntries.size() -1;
+				m_logEntries.m_HashMap[rev.m_ParentHash[j]] = static_cast<int>(m_logEntries.size()) - 1;
 				nodes.Add(nd);
 				SetNodeRect(dev, &nd, rev.m_ParentHash[j], 0);
 
@@ -265,8 +265,8 @@ bool CRevisionGraphWnd::FetchRevisionData
 	}
 
 	this->m_GraphRect.top=m_GraphRect.left=0;
-	m_GraphRect.bottom = (LONG)ymax;
-	m_GraphRect.right = (LONG)xmax;
+	m_GraphRect.bottom = static_cast<LONG>(ymax);
+	m_GraphRect.right = static_cast<LONG>(xmax);
 
 	return true;
 }
@@ -380,9 +380,9 @@ void CRevisionGraphWnd::CompareRevs(const CString& revTo)
 	CString sCmd;
 
 	sCmd.Format(L"/command:showcompare %s /revision1:%s /revision2:%s",
-			this->m_sPath.IsEmpty() ? L"" : (LPCTSTR)(L"/path:\"" + this->m_sPath + L'"'),
-			(LPCTSTR)GetFriendRefName(m_SelectedEntry1),
-			!revTo.IsEmpty() ? (LPCTSTR)revTo : (LPCTSTR)GetFriendRefName(m_SelectedEntry2));
+			this->m_sPath.IsEmpty() ? L"" : static_cast<LPCTSTR>(L"/path:\"" + this->m_sPath + L'"'),
+			static_cast<LPCTSTR>(GetFriendRefName(m_SelectedEntry1)),
+			!revTo.IsEmpty() ? static_cast<LPCTSTR>(revTo) : static_cast<LPCTSTR>(GetFriendRefName(m_SelectedEntry2)));
 
 	if (alternativeTool)
 		sCmd += L" /alternative";
@@ -408,7 +408,7 @@ void CRevisionGraphWnd::DoZoom (float fZoomFactor, bool updateScrollbars)
 
 	m_nFontSize = max(1, int(DEFAULT_ZOOM_FONT * fZoomFactor));
 	if (m_nFontSize < SMALL_ZOOM_FONT_THRESHOLD)
-		m_nFontSize = min((int)SMALL_ZOOM_FONT_THRESHOLD, int(SMALL_ZOOM_FONT * fZoomFactor));
+		m_nFontSize = min(static_cast<int>(SMALL_ZOOM_FONT_THRESHOLD), int(SMALL_ZOOM_FONT * fZoomFactor));
 
 	for (int i = 0; i < MAXFONTS; ++i)
 	{

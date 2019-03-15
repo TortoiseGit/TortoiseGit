@@ -66,7 +66,7 @@ static void SetMenuItemCheck(CListCtrl* list, unsigned __int64 mask, CButton* se
 	bool allChecked = true;
 	for(int i=0;i<list->GetItemCount();i++)
 	{
-		int data = (int)list->GetItemData(i);
+		int data = static_cast<int>(list->GetItemData(i));
 
 		list->SetCheck(i,(menuInfo[data].menuID & mask) == menuInfo[data].menuID);
 		if (!((menuInfo[data].menuID & mask) == menuInfo[data].menuID))
@@ -95,7 +95,7 @@ static unsigned __int64 GetMenuListMask(CListCtrl* list, CButton* selectAll = nu
 	{
 		if(list->GetCheck(i))
 		{
-			int data = (int)list->GetItemData(i);
+			int data = static_cast<int>(list->GetItemData(i));
 			mask |= menuInfo[data].menuID ;
 		}
 		else
@@ -217,7 +217,7 @@ BOOL CSetLookAndFeelPage::OnInitDialog()
 	m_bBlock = true;
 
 	InsertMenuItemToList(&m_cMenuList,&m_imgList);
-	SetMenuItemCheck(&m_cMenuList, m_topmenu, (CButton*)GetDlgItem(IDC_SELECTALL));
+	SetMenuItemCheck(&m_cMenuList, m_topmenu, static_cast<CButton*>(GetDlgItem(IDC_SELECTALL)));
 
 	m_bBlock = false;
 
@@ -258,7 +258,7 @@ void CSetLookAndFeelPage::OnBnClickedRestoreDefaults()
 	SetModified(TRUE);
 	m_topmenu.QuadPart = DEFAULTMENUTOPENTRIES;
 	m_bBlock = true;
-	SetMenuItemCheck(&m_cMenuList, m_topmenu, (CButton*)GetDlgItem(IDC_SELECTALL));
+	SetMenuItemCheck(&m_cMenuList, m_topmenu, static_cast<CButton*>(GetDlgItem(IDC_SELECTALL)));
 	m_bBlock = false;
 }
 
@@ -269,7 +269,7 @@ void CSetLookAndFeelPage::OnBnClickedSelectall()
 
 	SetModified(TRUE);
 	m_bBlock = true;
-	m_topmenu.QuadPart = ClickedSelectAll(&m_cMenuList, (CButton*)GetDlgItem(IDC_SELECTALL));
+	m_topmenu.QuadPart = ClickedSelectAll(&m_cMenuList, static_cast<CButton*>(GetDlgItem(IDC_SELECTALL)));
 	m_bBlock = false;
 }
 
@@ -279,7 +279,7 @@ void CSetLookAndFeelPage::OnLvnItemchangedMenulist(NMHDR * /*pNMHDR*/, LRESULT *
 		return;
 	SetModified(TRUE);
 	if (m_cMenuList.GetItemCount() > 0)
-		m_topmenu.QuadPart = GetMenuListMask(&m_cMenuList, (CButton*)GetDlgItem(IDC_SELECTALL));
+		m_topmenu.QuadPart = GetMenuListMask(&m_cMenuList, static_cast<CButton*>(GetDlgItem(IDC_SELECTALL)));
 	*pResult = 0;
 }
 
@@ -355,7 +355,7 @@ BOOL CSetExtMenu::OnInitDialog()
 	m_bBlock = true;
 
 	InsertMenuItemToList(&m_cMenuList,&m_imgList);
-	SetMenuItemCheck(&m_cMenuList, m_extmenu, (CButton*)GetDlgItem(IDC_SELECTALL));
+	SetMenuItemCheck(&m_cMenuList, m_extmenu, static_cast<CButton*>(GetDlgItem(IDC_SELECTALL)));
 
 	m_bBlock = false;
 
@@ -385,7 +385,7 @@ void CSetExtMenu::OnBnClickedRestoreDefaults()
 	SetModified(TRUE);
 	m_extmenu.QuadPart = DEFAULTMENUEXTENTRIES;
 	m_bBlock = true;
-	SetMenuItemCheck(&m_cMenuList, m_extmenu, (CButton*)GetDlgItem(IDC_SELECTALL));
+	SetMenuItemCheck(&m_cMenuList, m_extmenu, static_cast<CButton*>(GetDlgItem(IDC_SELECTALL)));
 	m_bBlock = false;
 }
 
@@ -396,7 +396,7 @@ void CSetExtMenu::OnBnClickedSelectall()
 
 	SetModified(TRUE);
 	m_bBlock = true;
-	m_extmenu.QuadPart = ClickedSelectAll(&m_cMenuList, (CButton*)GetDlgItem(IDC_SELECTALL));
+	m_extmenu.QuadPart = ClickedSelectAll(&m_cMenuList, static_cast<CButton*>(GetDlgItem(IDC_SELECTALL)));
 	m_bBlock = false;
 }
 
@@ -407,7 +407,7 @@ void CSetExtMenu::OnLvnItemchangedMenulist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 
 	SetModified(TRUE);
 	if (m_cMenuList.GetItemCount() > 0)
-		m_extmenu.QuadPart = GetMenuListMask(&m_cMenuList, (CButton*)GetDlgItem(IDC_SELECTALL));
+		m_extmenu.QuadPart = GetMenuListMask(&m_cMenuList, static_cast<CButton*>(GetDlgItem(IDC_SELECTALL)));
 	*pResult = 0;
 }
 

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2011, 2013-2019 - TortoiseGit
+// Copyright (C) 2003-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -282,7 +282,7 @@ std::vector<CHARRANGE> ProjectProperties::FindBugIDPositions(const CString& msg)
 					{
 						ATLTRACE(L"matched id : %s\n", (*it2)[0].str().c_str());
 						ptrdiff_t matchposID = it2->position(0);
-						CHARRANGE range = {(LONG)(matchpos+matchposID), (LONG)(matchpos+matchposID+(*it2)[0].str().size())};
+						CHARRANGE range = { static_cast<LONG>(matchpos + matchposID), static_cast<LONG>(matchpos+matchposID + (*it2)[0].str().size()) };
 						result.push_back(range);
 					}
 				}
@@ -304,7 +304,7 @@ std::vector<CHARRANGE> ProjectProperties::FindBugIDPositions(const CString& msg)
 					if (match.size() >= 2)
 					{
 						ATLTRACE(L"matched id : %s\n", std::wstring(match[1]).c_str());
-						CHARRANGE range = {(LONG)(match[1].first - s.cbegin()), (LONG)(match[1].second - s.cbegin())};
+						CHARRANGE range = { static_cast<LONG>(match[1].first - s.cbegin()), static_cast<LONG>(match[1].second - s.cbegin()) };
 						result.push_back(range);
 					}
 				}
@@ -367,13 +367,13 @@ std::vector<CHARRANGE> ProjectProperties::FindBugIDPositions(const CString& msg)
 		while (sBugIDPart.Find(',')>=0)
 		{
 			offset2 = offset1 + sBugIDPart.Find(',');
-			CHARRANGE range = {(LONG)offset1, (LONG)offset2};
+			CHARRANGE range = { static_cast<LONG>(offset1), static_cast<LONG>(offset2) };
 			result.push_back(range);
 			sBugIDPart = sBugIDPart.Mid(sBugIDPart.Find(',')+1);
 			offset1 = offset2 + 1;
 		}
 		offset2 = offset1 + sBugIDPart.GetLength();
-		CHARRANGE range = {(LONG)offset1, (LONG)offset2};
+		CHARRANGE range = { static_cast<LONG>(offset1), static_cast<LONG>(offset2) };
 		result.push_back(range);
 	}
 
@@ -470,7 +470,7 @@ BOOL ProjectProperties::HasBugID(const CString& sMsg)
 		try
 		{
 			AutoUpdateRegex();
-			return std::regex_search((LPCTSTR)sMsg, regCheck);
+			return std::regex_search(static_cast<LPCTSTR>(sMsg), regCheck);
 		}
 		catch (std::exception&) {}
 	}

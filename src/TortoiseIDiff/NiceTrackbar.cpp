@@ -1,4 +1,4 @@
-// TortoiseIDiff - an image diff viewer in TortoiseSVN
+﻿// TortoiseIDiff - an image diff viewer in TortoiseSVN
 
 // Copyright (C) 2006-2008, 2011 - TortoiseSVN
 
@@ -75,7 +75,7 @@ LRESULT CALLBACK CNiceTrackbar::NiceTrackbarProc(HWND hwnd, UINT message, WPARAM
         }
         break;
     case WM_DESTROY:
-        SetWindowLongPtr (hwnd, GWLP_WNDPROC, (LONG_PTR)self->m_OrigProc);
+        SetWindowLongPtr(hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(self->m_OrigProc));
         break;
     }
     return CallWindowProc (self->m_OrigProc, hwnd, message, wParam, lParam);
@@ -87,34 +87,34 @@ void CNiceTrackbar::ConvertTrackbarToNice( HWND window )
     m_Window = window;
 
     // setup this pointer
-    SetWindowLongPtr( window, GWLP_USERDATA, (LONG_PTR)this );
+    SetWindowLongPtr(window, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
 
     // subclass it
-    m_OrigProc = (WNDPROC)SetWindowLongPtr( window, GWLP_WNDPROC, (LONG_PTR)NiceTrackbarProc );
+    m_OrigProc = reinterpret_cast<WNDPROC>(SetWindowLongPtr(window, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(NiceTrackbarProc)));
 }
 
 
 bool CNiceTrackbar::SetThumb (LPARAM lparamPoint)
 {
     POINT point = { GET_X_LPARAM(lparamPoint), GET_Y_LPARAM(lparamPoint) };
-    const int nMin = (int)SendMessage(m_Window, TBM_GETRANGEMIN, 0, 0l);
-    const int nMax = (int)SendMessage(m_Window, TBM_GETRANGEMAX, 0, 0l);
+    const int nMin = static_cast<int>(SendMessage(m_Window, TBM_GETRANGEMIN, 0, 0l));
+    const int nMax = static_cast<int>(SendMessage(m_Window, TBM_GETRANGEMAX, 0, 0l));
     RECT rc;
-    SendMessage(m_Window, TBM_GETCHANNELRECT, 0, (LPARAM)&rc);
+    SendMessage(m_Window, TBM_GETCHANNELRECT, 0, reinterpret_cast<LPARAM>(&rc));
     double ratio;
     if (GetWindowLong(m_Window, GWL_STYLE) & TBS_VERT)
     {
         // note: for vertical trackbar, it still returns the rectangle as if it was horizontal
-        ratio = (double)(point.y - rc.left)/(rc.right - rc.left);
+        ratio = static_cast<double>(point.y - rc.left)/(rc.right - rc.left);
     }
     else
     {
-        ratio = (double)(point.x - rc.left)/(rc.right - rc.left);
+        ratio = static_cast<double>(point.x - rc.left)/(rc.right - rc.left);
     }
 
-    int nNewPos = (int)(nMin + (nMax-nMin)*ratio + 0.5); // round the result to go to the nearest tick mark
+    int nNewPos = static_cast<int>(nMin + (nMax-nMin) * ratio + 0.5); // round the result to go to the nearest tick mark
 
-    const bool changed = (nNewPos != (int)SendMessage(m_Window, TBM_GETPOS, 0, 0));
+    const bool changed = (nNewPos != static_cast<int>(SendMessage(m_Window, TBM_GETPOS, 0, 0)));
     if (changed)
     {
         SendMessage(m_Window, TBM_SETPOS, TRUE, nNewPos);
@@ -126,9 +126,10 @@ bool CNiceTrackbar::SetThumb (LPARAM lparamPoint)
 void CNiceTrackbar::PostMessageToParent (int tbCode) const
 {
     HWND parent = GetParent(m_Window);
-    if (parent) {
-        int pos = (int)SendMessage(m_Window, TBM_GETPOS, 0, 0);
+    if (parent)
+    {
+        int pos = static_cast<int>(SendMessage(m_Window, TBM_GETPOS, 0, 0));
         bool vert = (GetWindowLong(m_Window, GWL_STYLE) & TBS_VERT) != 0;
-        PostMessage( parent, vert ? WM_VSCROLL : WM_HSCROLL, (WPARAM)((pos << 16) | tbCode), (LPARAM)m_Window );
+        PostMessage( parent, vert ? WM_VSCROLL : WM_HSCROLL, ((pos << 16) | tbCode), reinterpret_cast<LPARAM>(m_Window) );
     }
 }

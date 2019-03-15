@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013, 2015-2018 - TortoiseGit
+// Copyright (C) 2009-2013, 2015-2019 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -41,7 +41,7 @@ bool ImportPatchCommand::Execute()
 		if (!CTGitPath(droppath).HasAdminDir(&g_Git.m_CurrentDir))
 		{
 			CString err;
-			err.Format(IDS_ERR_NOT_REPOSITORY, (LPCTSTR)g_Git.m_CurrentDir);
+			err.Format(IDS_ERR_NOT_REPOSITORY, static_cast<LPCTSTR>(g_Git.m_CurrentDir));
 			MessageBox(GetExplorerHWND(), err, L"TortoiseGit", MB_OK | MB_ICONERROR);
 			return FALSE;
 		}
@@ -58,7 +58,7 @@ bool ImportPatchCommand::Execute()
 		if(!path.HasAdminDir())
 		{
 			CString err;
-			err.Format(IDS_ERR_NOT_REPOSITORY, (LPCTSTR)str);
+			err.Format(IDS_ERR_NOT_REPOSITORY, static_cast<LPCTSTR>(str));
 			MessageBox(GetExplorerHWND(), err, L"TortoiseGit", MB_OK | MB_ICONERROR);
 			return FALSE;
 		}

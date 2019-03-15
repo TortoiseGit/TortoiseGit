@@ -54,7 +54,7 @@ BOOL CCachedDirectory::SaveToDisk(FILE * pFile)
 
 	unsigned int value = GIT_CACHE_VERSION;
 	WRITEVALUETOFILE(value);	// 'version' of this save-format
-	value = (int)m_entryCache.size();
+	value = static_cast<int>(m_entryCache.size());
 	WRITEVALUETOFILE(value);	// size of the cache map
 	// now iterate through the maps and save every entry.
 	for (const auto& entry : m_entryCache)
@@ -64,13 +64,13 @@ BOOL CCachedDirectory::SaveToDisk(FILE * pFile)
 		WRITEVALUETOFILE(value);
 		if (value)
 		{
-			if (fwrite((LPCTSTR)key, sizeof(TCHAR), value, pFile)!=value)
+			if (fwrite(static_cast<LPCTSTR>(key), sizeof(TCHAR), value, pFile)!=value)
 				return false;
 			if (!entry.second.SaveToDisk(pFile))
 				return false;
 		}
 	}
-	value = (int)m_childDirectories.size();
+	value = static_cast<int>(m_childDirectories.size());
 	WRITEVALUETOFILE(value);
 	for (const auto& entry : m_childDirectories)
 	{
@@ -79,7 +79,7 @@ BOOL CCachedDirectory::SaveToDisk(FILE * pFile)
 		WRITEVALUETOFILE(value);
 		if (value)
 		{
-			if (fwrite((LPCTSTR)path, sizeof(TCHAR), value, pFile)!=value)
+			if (fwrite(static_cast<LPCTSTR>(path), sizeof(TCHAR), value, pFile)!=value)
 				return false;
 			git_wc_status_kind status = entry.second;
 			WRITEVALUETOFILE(status);
@@ -241,7 +241,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromCache(const CTGitPath& path, bo
 		if(itMap != m_entryCache.end())
 		{
 			// We've hit the cache - check for timeout
-			if (!itMap->second.HasExpired((LONGLONG)GetTickCount64()))
+			if (!itMap->second.HasExpired(static_cast<LONGLONG>(GetTickCount64())))
 			{
 				if (itMap->second.GetEffectiveStatus() == git_wc_status_ignored || itMap->second.GetEffectiveStatus() == git_wc_status_unversioned || itMap->second.DoesFileTimeMatch(path.GetLastWriteTime()))
 				{

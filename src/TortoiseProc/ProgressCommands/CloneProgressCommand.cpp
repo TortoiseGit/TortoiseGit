@@ -70,7 +70,7 @@ bool CloneProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, in
 
 	cloneOpts.remote_cb = [](git_remote** out, git_repository* repo, const char* /*name*/, const char* url, void* payload) -> int
 	{
-		remote_cb_payload* data = (remote_cb_payload*)payload;
+		auto data = static_cast<remote_cb_payload*>(payload);
 
 		CAutoRemote origin;
 		if (auto error = git_remote_create(origin.GetPointer(), repo, data->remoteName, url); error < 0)

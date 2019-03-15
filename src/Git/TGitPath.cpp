@@ -362,7 +362,7 @@ void CTGitPath::UpdateAttributes() const
 		if (m_bIsDirectory)
 			m_fileSize = 0;
 		else
-			m_fileSize = ((INT64)( (DWORD)(attribs.nFileSizeLow) ) | ( (INT64)( (DWORD)(attribs.nFileSizeHigh) )<<32 ));
+			m_fileSize = static_cast<__int64>(attribs.nFileSizeHigh) << 32 | attribs.nFileSizeLow;
 		m_bIsReadOnly = !!(attribs.dwFileAttributes & FILE_ATTRIBUTE_READONLY);
 		m_bExists = true;
 	}
@@ -754,7 +754,7 @@ bool CTGitPath::IsRegisteredSubmoduleOfParentProject(CString* parentProjectRoot 
 	relativePath.Replace(L'\\', L'/');
 	relativePath.Trim(L'/');
 	CStringA submodulePath = CUnicodeUtils::GetUTF8(relativePath);
-	if (git_config_foreach_match(config, "submodule\\..*\\.path", [](const git_config_entry *entry, void *data) { return entry->value == *(CStringA *)data ? GIT_EUSER : 0; }, &submodulePath) == GIT_EUSER)
+	if (git_config_foreach_match(config, "submodule\\..*\\.path", [](const git_config_entry* entry, void* data) { return entry->value == *static_cast<CStringA*>(data) ? GIT_EUSER : 0; }, &submodulePath) == GIT_EUSER)
 		return true;
 	return false;
 }
@@ -929,7 +929,7 @@ bool CTGitPath::IsValidOnWindows() const
 	// the 'file://' URL is just a normal windows path:
 	if (CStringUtils::StartsWithI(sMatch, L"file:\\\\"))
 	{
-		sMatch = sMatch.Mid((int)wcslen(L"file:\\\\"));
+		sMatch = sMatch.Mid(static_cast<int>(wcslen(L"file:\\\\")));
 		sMatch.TrimLeft(L'\\');
 		sPattern = L"^(\\\\\\\\\\?\\\\)?(([a-zA-Z]:|\\\\)\\\\)?(((\\.)|(\\.\\.)|([^\\\\/:\\*\\?\"\\|<> ](([^\\\\/:\\*\\?\"\\|<>\\. ])|([^\\\\/:\\*\\?\"\\|<>]*[^\\\\/:\\*\\?\"\\|<>\\. ]))?))\\\\)*[^\\\\/:\\*\\?\"\\|<> ](([^\\\\/:\\*\\?\"\\|<>\\. ])|([^\\\\/:\\*\\?\"\\|<>]*[^\\\\/:\\*\\?\"\\|<>\\. ]))?$";
 	}
@@ -941,7 +941,7 @@ bool CTGitPath::IsValidOnWindows() const
 		std::wregex rx(sPattern, std::regex_constants::icase | std::regex_constants::ECMAScript);
 		std::wsmatch match;
 
-		std::wstring rmatch = std::wstring((LPCTSTR)sMatch);
+		std::wstring rmatch = std::wstring(static_cast<LPCTSTR>(sMatch));
 		if (std::regex_match(rmatch, match, rx))
 		{
 			if (std::wstring(match[0]).compare(sMatch)==0)
@@ -1057,7 +1057,7 @@ int CTGitPathList::FillUnRev(unsigned int action, const CTGitPathList* list, CSt
 		{
 			ATLASSERT(!(*list)[i].GetWinPathString().IsEmpty());
 			cmd.Format(L"git.exe ls-files --exclude-standard --full-name --others -z%s -- \"%s\"",
-					(LPCTSTR)ignored,
+					static_cast<LPCTSTR>(ignored),
 					(*list)[i].GetWinPath());
 		}
 
@@ -1066,7 +1066,7 @@ int CTGitPathList::FillUnRev(unsigned int action, const CTGitPathList* list, CSt
 		if (g_Git.Run(cmd, &out, &errb))
 		{
 			if (err != nullptr)
-				CGit::StringAppend(err, errb.data(), CP_UTF8, (int)errb.size());
+				CGit::StringAppend(err, errb.data(), CP_UTF8, static_cast<int>(errb.size()));
 			return -1;
 		}
 
@@ -1175,8 +1175,8 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 			size_t file1 = BYTE_VECTOR::npos, file2 = BYTE_VECTOR::npos;
 			if (end != BYTE_VECTOR::npos && end > 7)
 			{
-				modeold = strtol((const char*)&log[pos + 1], nullptr, 8);
-				modenew = strtol((const char*)&log[pos + 7], nullptr, 8);
+				modeold = strtol(reinterpret_cast<const char*>(&log[pos + 1]), nullptr, 8);
+				modenew = strtol(reinterpret_cast<const char*>(&log[pos + 7]), nullptr, 8);
 				actionstart=log.find(' ',end-6);
 				pos=actionstart;
 			}
@@ -1260,7 +1260,7 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 			size_t tabstart = log.find('\t', pos);
 			if (tabstart != BYTE_VECTOR::npos)
 			{
-				int modenew = strtol((const char*)&log[pos + 2], nullptr, 8);
+				int modenew = strtol(reinterpret_cast<const char*>(&log[pos + 2]), nullptr, 8);
 				isSubmodule = (modenew & S_IFDIR) == S_IFDIR;
 				log[tabstart]=0;
 				CGit::StringAppend(&StatAdd, &log[pos], CP_UTF8);
@@ -1331,7 +1331,7 @@ void CTGitPathList::AddPath(const CTGitPath& newPath)
 }
 int CTGitPathList::GetCount() const
 {
-	return (int)m_paths.size();
+	return static_cast<int>(m_paths.size());
 }
 bool CTGitPathList::IsEmpty() const
 {
@@ -1346,7 +1346,7 @@ void CTGitPathList::Clear()
 
 const CTGitPath& CTGitPathList::operator[](INT_PTR index) const
 {
-	ATLASSERT(index >= 0 && index < (INT_PTR)m_paths.size());
+	ATLASSERT(index >= 0 && index < static_cast<INT_PTR>(m_paths.size()));
 	return m_paths[index];
 }
 
@@ -1554,7 +1554,7 @@ void CTGitPathList::DeleteAllFiles(bool bTrash, bool bFilesOnly, bool bShowError
 		return;
 	sPaths += '\0';
 	sPaths += '\0';
-	DeleteViaShell((LPCTSTR)sPaths, bTrash, bShowErrorUI);
+	DeleteViaShell(static_cast<LPCTSTR>(sPaths), bTrash, bShowErrorUI);
 	Clear();
 }
 
@@ -1644,7 +1644,7 @@ const CTGitPath* CTGitPathList::LookForGitPath(const CString& path)
 	for (i = 0; i < this->GetCount(); ++i)
 	{
 		if (CPathUtils::ArePathStringsEqualWithCase((*this)[i].GetGitPathString(), path))
-			return (CTGitPath*)&(*this)[i];
+			return const_cast<CTGitPath*>(&(*this)[i]);
 	}
 	return nullptr;
 }
@@ -1705,17 +1705,17 @@ CString CTGitPath::GetAbbreviatedRename() const
 			prefix_length = i + 1;
 	}
 
-	LPCTSTR oldName = (LPCTSTR)m_sOldFwdslashPath + m_sOldFwdslashPath.GetLength();
-	LPCTSTR newName = (LPCTSTR)m_sFwdslashPath + m_sFwdslashPath.GetLength();
+	LPCTSTR oldName = static_cast<LPCTSTR>(m_sOldFwdslashPath) + m_sOldFwdslashPath.GetLength();
+	LPCTSTR newName = static_cast<LPCTSTR>(m_sFwdslashPath) + m_sFwdslashPath.GetLength();
 
 	int suffix_length = 0;
 	int prefix_adjust_for_slash = (prefix_length ? 1 : 0);
-	while ((LPCTSTR)m_sOldFwdslashPath + prefix_length - prefix_adjust_for_slash <= oldName &&
-		   (LPCTSTR)m_sFwdslashPath + prefix_length - prefix_adjust_for_slash <= newName &&
+	while (static_cast<LPCTSTR>(m_sOldFwdslashPath) + prefix_length - prefix_adjust_for_slash <= oldName &&
+		   static_cast<LPCTSTR>(m_sFwdslashPath) + prefix_length - prefix_adjust_for_slash <= newName &&
 		   *oldName == *newName)
 	{
 		if (*oldName == L'/')
-			suffix_length = m_sOldFwdslashPath.GetLength() - (int)(oldName - (LPCTSTR)m_sOldFwdslashPath);
+			suffix_length = m_sOldFwdslashPath.GetLength() - static_cast<int>(oldName - static_cast<LPCTSTR>(m_sOldFwdslashPath));
 		--oldName;
 		--newName;
 	}

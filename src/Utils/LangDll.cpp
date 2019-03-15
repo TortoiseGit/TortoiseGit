@@ -97,7 +97,7 @@ bool CLangDll::DoVersionStringsMatch(LPCTSTR sVer, LPCTSTR langDll) const
 	};
 
 	DWORD dwReserved = 0;
-	DWORD dwBufferSize = GetFileVersionInfoSize((LPTSTR)langDll,&dwReserved);
+	DWORD dwBufferSize = GetFileVersionInfoSize(langDll, &dwReserved);
 
 	if (dwBufferSize == 0)
 		return false;
@@ -106,7 +106,7 @@ bool CLangDll::DoVersionStringsMatch(LPCTSTR sVer, LPCTSTR langDll) const
 	if (!pBuffer)
 		return false;
 
-	if (!GetFileVersionInfo((LPTSTR)langDll, dwReserved, dwBufferSize, pBuffer.get()))
+	if (!GetFileVersionInfo(langDll, dwReserved, dwBufferSize, pBuffer.get()))
 		return false;
 
 	VOID* lpFixedPointer;
@@ -119,9 +119,9 @@ bool CLangDll::DoVersionStringsMatch(LPCTSTR sVer, LPCTSTR langDll) const
 
 	LPSTR lpVersion = nullptr;
 	UINT nInfoSize = 0;
-	VerQueryValue(pBuffer.get(), (LPTSTR)strLangProductVersion, (LPVOID*)&lpVersion, &nInfoSize);
+	VerQueryValue(pBuffer.get(), strLangProductVersion, reinterpret_cast<LPVOID*>(&lpVersion), &nInfoSize);
 	if (lpVersion && nInfoSize)
-		return (wcscmp(sVer, (LPCTSTR)lpVersion) == 0);
+		return (wcscmp(sVer, reinterpret_cast<LPCTSTR>(lpVersion)) == 0);
 
 	return false;
 }

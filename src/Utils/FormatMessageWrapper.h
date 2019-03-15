@@ -52,7 +52,7 @@ inline void CFormatMessageWrapper::obtainMessage(DWORD errorCode)
 							nullptr,
 							errorCode,
 							MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
-							(LPTSTR) &buffer,
+							reinterpret_cast<LPTSTR>(&buffer),
 							0,
 							nullptr
 							);

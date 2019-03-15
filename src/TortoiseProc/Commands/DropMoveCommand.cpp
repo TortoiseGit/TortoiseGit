@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2011-2018 - TortoiseGit
+// Copyright (C) 2009, 2011-2019 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -99,7 +99,7 @@ bool DropMoveCommand::Execute()
 			});
 			dlg.m_sBaseDir = g_Git.CombinePath(destPath);
 			dlg.m_name = name;
-			dlg.m_windowtitle.Format(IDS_PROC_NEWNAMEMOVE, (LPCTSTR)name);
+			dlg.m_windowtitle.Format(IDS_PROC_NEWNAMEMOVE, static_cast<LPCTSTR>(name));
 			if (dlg.DoModal() != IDOK)
 				return FALSE;
 
@@ -116,7 +116,7 @@ bool DropMoveCommand::Execute()
 		}
 		CString cmd,out;
 
-		cmd.Format(L"git.exe mv -- \"%s\" \"%s\"", (LPCTSTR)pathList[nPath].GetGitPathString(), (LPCTSTR)destPath.GetGitPathString());
+		cmd.Format(L"git.exe mv -- \"%s\" \"%s\"", static_cast<LPCTSTR>(pathList[nPath].GetGitPathString()), static_cast<LPCTSTR>(destPath.GetGitPathString()));
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
 			if (CMessageBox::Show(GetExplorerHWND(), out, L"TortoiseGit", 2, IDI_EXCLAMATION, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 1)

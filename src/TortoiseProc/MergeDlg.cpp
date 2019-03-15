@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2017, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -134,23 +134,23 @@ BOOL CMergeDlg::OnInitDialog()
 	if (m_bSquash)
 		m_cLogMessage.SetAStyle(STYLE_DEFAULT, ::GetSysColor(COLOR_GRAYTEXT), ::GetSysColor(COLOR_BTNFACE));
 
-	m_History.SetMaxHistoryItems((LONG)CRegDWORD(L"Software\\TortoiseGit\\MaxHistoryItems", 25));
+	m_History.SetMaxHistoryItems(CRegDWORD(L"Software\\TortoiseGit\\MaxHistoryItems", 25));
 	ReloadHistoryEntries();
 
-	((CComboBox*)GetDlgItem(IDC_COMBO_MERGESTRATEGY))->AddString(L"resolve");
-	((CComboBox*)GetDlgItem(IDC_COMBO_MERGESTRATEGY))->AddString(L"recursive");
-	((CComboBox*)GetDlgItem(IDC_COMBO_MERGESTRATEGY))->AddString(L"ours");
-	((CComboBox*)GetDlgItem(IDC_COMBO_MERGESTRATEGY))->AddString(L"subtree");
-	((CComboBox*)GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(L"ours");
-	((CComboBox*)GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(L"theirs");
-	((CComboBox*)GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(L"patience");
-	((CComboBox*)GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(L"ignore-space-change");
-	((CComboBox*)GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(L"ignore-all-space");
-	((CComboBox*)GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(L"ignore-space-at-eol");
-	((CComboBox*)GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(L"renormalize");
-	((CComboBox*)GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(L"no-renormalize");
-	((CComboBox*)GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(L"rename-threshold");
-	((CComboBox*)GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(L"subtree");
+	static_cast<CComboBox*>(GetDlgItem(IDC_COMBO_MERGESTRATEGY))->AddString(L"resolve");
+	static_cast<CComboBox*>(GetDlgItem(IDC_COMBO_MERGESTRATEGY))->AddString(L"recursive");
+	static_cast<CComboBox*>(GetDlgItem(IDC_COMBO_MERGESTRATEGY))->AddString(L"ours");
+	static_cast<CComboBox*>(GetDlgItem(IDC_COMBO_MERGESTRATEGY))->AddString(L"subtree");
+	static_cast<CComboBox*>(GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(L"ours");
+	static_cast<CComboBox*>(GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(L"theirs");
+	static_cast<CComboBox*>(GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(L"patience");
+	static_cast<CComboBox*>(GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(L"ignore-space-change");
+	static_cast<CComboBox*>(GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(L"ignore-all-space");
+	static_cast<CComboBox*>(GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(L"ignore-space-at-eol");
+	static_cast<CComboBox*>(GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(L"renormalize");
+	static_cast<CComboBox*>(GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(L"no-renormalize");
+	static_cast<CComboBox*>(GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(L"rename-threshold");
+	static_cast<CComboBox*>(GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(L"subtree");
 
 	EnableSaveRestore(L"MergeDlg");
 	GetDlgItem(IDOK)->SetFocus();

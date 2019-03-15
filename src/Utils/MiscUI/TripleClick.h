@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2011-2012 - TortoiseSVN
 
@@ -62,13 +62,13 @@ public:
 				switch (pMsg->message)
 				{
 				case WM_LBUTTONDOWN:
-					OnLButtonTrippleClick((UINT)pMsg->wParam, pt);
+					OnLButtonTrippleClick(static_cast<UINT>(pMsg->wParam), pt);
 					break;
 				case WM_MBUTTONDOWN:
-					OnMButtonTrippleClick((UINT)pMsg->wParam, pt);
+					OnMButtonTrippleClick(static_cast<UINT>(pMsg->wParam), pt);
 					break;
 				case WM_RBUTTONDOWN:
-					OnRButtonTrippleClick((UINT)pMsg->wParam, pt);
+					OnRButtonTrippleClick(static_cast<UINT>(pMsg->wParam), pt);
 					break;
 				}
 				return TRUE;

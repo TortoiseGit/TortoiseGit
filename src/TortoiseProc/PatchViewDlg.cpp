@@ -188,7 +188,7 @@ void CPatchViewDlg::OnFindNext()
 {
 	m_ctrlPatchView.Call(SCI_CHARRIGHT);
 	m_ctrlPatchView.Call(SCI_SEARCHANCHOR);
-	if (m_ctrlPatchView.Call(SCI_SEARCHNEXT, m_FindBar.IsMatchCase() ? SCFIND_MATCHCASE : 0, (LPARAM)(LPCSTR)CUnicodeUtils::GetUTF8(m_FindBar.GetFindText())) == -1)
+	if (m_ctrlPatchView.Call(SCI_SEARCHNEXT, m_FindBar.IsMatchCase() ? SCFIND_MATCHCASE : 0, reinterpret_cast<LPARAM>(static_cast<LPCSTR>(CUnicodeUtils::GetUTF8(m_FindBar.GetFindText())))) == -1)
 		FlashWindowEx(FLASHW_ALL, 3, 100);
 	m_ctrlPatchView.Call(SCI_SCROLLCARET);
 }
@@ -196,7 +196,7 @@ void CPatchViewDlg::OnFindNext()
 void CPatchViewDlg::OnFindPrev()
 {
 	m_ctrlPatchView.Call(SCI_SEARCHANCHOR);
-	if (m_ctrlPatchView.Call(SCI_SEARCHPREV, m_FindBar.IsMatchCase() ? SCFIND_MATCHCASE : 0, (LPARAM)(LPCSTR)CUnicodeUtils::GetUTF8(m_FindBar.GetFindText())) == -1)
+	if (m_ctrlPatchView.Call(SCI_SEARCHPREV, m_FindBar.IsMatchCase() ? SCFIND_MATCHCASE : 0, reinterpret_cast<LPARAM>(static_cast<LPCSTR>(CUnicodeUtils::GetUTF8(m_FindBar.GetFindText())))) == -1)
 		FlashWindowEx(FLASHW_ALL, 3, 100);
 	m_ctrlPatchView.Call(SCI_SCROLLCARET);
 }

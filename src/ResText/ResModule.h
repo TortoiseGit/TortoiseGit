@@ -22,9 +22,9 @@
 #include <map>
 #include "POFile.h"
 
-#define GET_WORD(ptr)        (*(WORD  *)(ptr))
-#define GET_DWORD(ptr)       (*(DWORD *)(ptr))
-#define ALIGN_DWORD(type, p) ((type)(((DWORD)p + 3) & ~3))
+#define GET_WORD(ptr)        (*reinterpret_cast<const WORD*>(ptr))
+#define GET_DWORD(ptr)       (*reinterpret_cast<const DWORD*>(ptr))
+#define ALIGN_DWORD(type, p) reinterpret_cast<type>(reinterpret_cast<DWORD>((p) + 3) & ~3)
 
 #define MAX_STRING_LENGTH   (32*1024)
 

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 // Copyright (C) 2003-2008,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -61,7 +61,7 @@ bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, UINT idErrM
 				if (idErrMessageFormat != 0)
 				{
 					CString temp;
-					temp.Format(idErrMessageFormat, (LPCTSTR)CFormatMessageWrapper());
+					temp.Format(idErrMessageFormat, static_cast<LPCTSTR>(CFormatMessageWrapper()));
 					MessageBox(nullptr, temp, L"TortoiseGit", MB_OK | MB_ICONINFORMATION);
 				}
 				return false;
@@ -87,7 +87,7 @@ bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, UINT idErrM
 			if (idErrMessageFormat != 0)
 			{
 				CString temp;
-				temp.Format(idErrMessageFormat, (LPCTSTR)CFormatMessageWrapper());
+				temp.Format(idErrMessageFormat, static_cast<LPCTSTR>(CFormatMessageWrapper()));
 				MessageBox(nullptr, temp, L"TortoiseGit", MB_OK | MB_ICONINFORMATION);
 			}
 			return false;
@@ -114,7 +114,7 @@ bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, UINT idErrM
 		if (idErrMessageFormat)
 		{
 			CString temp;
-			temp.Format(idErrMessageFormat, (LPCTSTR)CFormatMessageWrapper());
+			temp.Format(idErrMessageFormat, static_cast<LPCTSTR>(CFormatMessageWrapper()));
 			MessageBox(nullptr, temp, L"TortoiseGit", MB_OK | MB_ICONINFORMATION);
 		}
 		return false;
@@ -135,9 +135,9 @@ bool CCommonAppUtils::RunTortoiseGitProc(const CString& sCommandLine, bool uac, 
 {
 	CString pathToExecutable = CPathUtils::GetAppDirectory() + L"TortoiseGitProc.exe";
 	CString sCmd;
-	sCmd.Format(L"\"%s\" %s", (LPCTSTR)pathToExecutable, (LPCTSTR)sCommandLine);
+	sCmd.Format(L"\"%s\" %s", static_cast<LPCTSTR>(pathToExecutable), static_cast<LPCTSTR>(sCommandLine));
 	if (AfxGetMainWnd()->GetSafeHwnd() && (sCommandLine.Find(L"/hwnd:") < 0))
-		sCmd.AppendFormat(L" /hwnd:%p", (void*)AfxGetMainWnd()->GetSafeHwnd());
+		sCmd.AppendFormat(L" /hwnd:%p", static_cast<void*>(AfxGetMainWnd()->GetSafeHwnd()));
 	if (!g_sGroupingUUID.IsEmpty() && includeGroupingUUID)
 	{
 		sCmd += L" /groupuuid:\"";
@@ -172,7 +172,7 @@ bool CCommonAppUtils::SetListCtrlBackgroundImage(HWND hListCtrl, UINT nID)
 
 bool CCommonAppUtils::SetListCtrlBackgroundImage(HWND hListCtrl, UINT nID, int width, int height)
 {
-	if ((((DWORD)CRegStdDWORD(L"Software\\TortoiseGit\\ShowListBackgroundImage", TRUE)) == FALSE))
+	if (static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\ShowListBackgroundImage", TRUE)) == FALSE)
 		return false;
 	ListView_SetTextBkColor(hListCtrl, CLR_NONE);
 	COLORREF bkColor = ListView_GetBkColor(hListCtrl);
@@ -207,7 +207,7 @@ bool CCommonAppUtils::SetListCtrlBackgroundImage(HWND hListCtrl, UINT nID, int w
 		return false;
 
 	// Select it into the compatible DC
-	HBITMAP old_dst_bmp = (HBITMAP)::SelectObject(dst_hdc, bmp);
+	auto old_dst_bmp = static_cast<HBITMAP>(::SelectObject(dst_hdc, bmp));
 	// Fill the background of the compatible DC with the given color
 	::SetBkColor(dst_hdc, bkColor);
 	::ExtTextOut(dst_hdc, 0, 0, ETO_OPAQUE, &rect, nullptr, 0, nullptr);
@@ -336,8 +336,8 @@ void CCommonAppUtils::SetCharFormat(CWnd* window, DWORD mask , DWORD effects, co
 
 	for (const auto& range : positions)
 	{
-		window->SendMessage(EM_EXSETSEL, NULL, (LPARAM)&range);
-		window->SendMessage(EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM)&format);
+		window->SendMessage(EM_EXSETSEL, 0, reinterpret_cast<LPARAM>(&range));
+		window->SendMessage(EM_SETCHARFORMAT, SCF_SELECTION, reinterpret_cast<LPARAM>(&format));
 	}
 }
 
@@ -347,5 +347,5 @@ void CCommonAppUtils::SetCharFormat(CWnd* window, DWORD mask, DWORD effects )
 	format.cbSize = sizeof(CHARFORMAT2);
 	format.dwMask = mask;
 	format.dwEffects = effects;
-	window->SendMessage(EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM)&format);
+	window->SendMessage(EM_SETCHARFORMAT, SCF_SELECTION, reinterpret_cast<LPARAM>(&format));
 }

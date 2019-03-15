@@ -52,7 +52,7 @@ public:
 		RECT controlrect;
 		RECT controlrectorig;
 		pwndDlgItem->GetWindowRect(&controlrect);
-		::MapWindowPoints(nullptr, m_ctrl->GetSafeHwnd(), (LPPOINT)&controlrect, 2);
+		::MapWindowPoints(nullptr, m_ctrl->GetSafeHwnd(), reinterpret_cast<LPPOINT>(&controlrect), 2);
 		controlrectorig = controlrect;
 		if (pDC)
 		{
@@ -98,7 +98,7 @@ public:
 		RECT controlrect;
 		RECT controlrectorig;
 		pwndDlgItem->GetWindowRect(&controlrect);
-		::MapWindowPoints(nullptr, m_ctrl->GetSafeHwnd(), (LPPOINT)&controlrect, 2);
+		::MapWindowPoints(nullptr, m_ctrl->GetSafeHwnd(), reinterpret_cast<LPPOINT>(&controlrect), 2);
 		controlrect.right += 200;   // in case the control needs to be bigger than it currently is (e.g., due to translations)
 		controlrectorig = controlrect;
 
@@ -141,6 +141,6 @@ public:
 		bt.pszText = text;
 		bt.pszTitle = title;
 		bt.ttiIcon = nIcon;
-		m_ctrl->SendDlgItemMessage(nIdControl, EM_SHOWBALLOONTIP, 0, (LPARAM)&bt);
+		m_ctrl->SendDlgItemMessage(nIdControl, EM_SHOWBALLOONTIP, 0, reinterpret_cast<LPARAM>(&bt));
 	}
 };

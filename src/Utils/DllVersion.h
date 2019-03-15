@@ -30,7 +30,7 @@ inline HRESULT GetDllVersion(
 	ATLENSURE(pDllVersionInfo);
 
 	// We must get this function explicitly because some DLLs don't implement it.
-	DLLGETVERSIONPROC pfnDllGetVersion = (DLLGETVERSIONPROC)::GetProcAddress(hInstDLL, "DllGetVersion");
+	auto pfnDllGetVersion = static_cast<DLLGETVERSIONPROC>(::GetProcAddress(hInstDLL, "DllGetVersion"));
 
 	if (!pfnDllGetVersion)
 		return E_NOTIMPL;

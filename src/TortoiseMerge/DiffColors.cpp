@@ -1,4 +1,4 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2007-2008, 2010, 2013, 2017 - TortoiseSVN
 
@@ -86,8 +86,8 @@ void CDiffColors::GetColors(DiffStates state, COLORREF &crBkgnd, COLORREF &crTex
 {
 	if ((state < DIFFSTATE_END)&&(state >= 0))
 	{
-		crBkgnd = (COLORREF)(DWORD)m_regBackgroundColors[(int)state];
-		crText = (COLORREF)(DWORD)m_regForegroundColors[(int)state];
+		crBkgnd = static_cast<DWORD>(m_regBackgroundColors[static_cast<int>(state)]);
+		crText = static_cast<DWORD>(m_regForegroundColors[static_cast<int>(state)]);
 	}
 	else
 	{
@@ -100,8 +100,8 @@ void CDiffColors::SetColors(DiffStates state, const COLORREF &crBkgnd, const COL
 {
 	if ((state < DIFFSTATE_END)&&(state >= 0))
 	{
-		m_regBackgroundColors[(int)state] = crBkgnd;
-		m_regForegroundColors[(int)state] = crText;
+		m_regBackgroundColors[static_cast<int>(state)] = crBkgnd;
+		m_regForegroundColors[static_cast<int>(state)] = crText;
 	}
 }
 

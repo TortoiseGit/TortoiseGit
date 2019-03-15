@@ -123,7 +123,7 @@ void CShellUpdater::UpdateShell()
 	for (int nPath = 0; nPath < m_pathsForUpdating.GetCount(); ++nPath)
 	{
 		path.SetFromWin(g_Git.CombinePath(m_pathsForUpdating[nPath]));
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Cache Item Update for %s (%I64u)\n", (LPCTSTR)path.GetWinPathString(), GetTickCount64());
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Cache Item Update for %s (%I64u)\n", static_cast<LPCTSTR>(path.GetWinPathString()), GetTickCount64());
 		if (!path.IsDirectory())
 		{
 			// send notifications to the shell for changed files - folders are updated by the cache itself.
@@ -179,7 +179,7 @@ bool CShellUpdater::RebuildIcons()
 
 	// Read registry value
 	dwSize = BUFFER_SIZE;
-	if (LONG lRegResult = RegQueryValueEx(hRegKey, sRegValueName, nullptr, nullptr, (LPBYTE)buf, &dwSize);lRegResult != ERROR_FILE_NOT_FOUND)
+	if (LONG lRegResult = RegQueryValueEx(hRegKey, sRegValueName, nullptr, nullptr, reinterpret_cast<LPBYTE>(buf), &dwSize); lRegResult != ERROR_FILE_NOT_FOUND)
 	{
 		// If registry key doesn't exist create it using system current setting
 		int iDefaultIconSize = ::GetSystemMetrics(SM_CXICON);
@@ -195,7 +195,7 @@ bool CShellUpdater::RebuildIcons()
 	dwRegValueTemp = dwRegValue-1;
 
 	dwSize = _sntprintf_s(buf, BUFFER_SIZE, BUFFER_SIZE, L"%lu", dwRegValueTemp) + sizeof(TCHAR);
-	if (RegSetValueEx(hRegKey, sRegValueName, 0, REG_SZ, (LPBYTE)buf, dwSize) != ERROR_SUCCESS)
+	if (RegSetValueEx(hRegKey, sRegValueName, 0, REG_SZ, reinterpret_cast<LPBYTE>(buf), dwSize) != ERROR_SUCCESS)
 		return false;
 
 	// Update all windows
@@ -204,7 +204,7 @@ bool CShellUpdater::RebuildIcons()
 
 	// Reset registry value
 	dwSize = _sntprintf_s(buf, BUFFER_SIZE, BUFFER_SIZE, L"%lu", dwRegValue) + sizeof(TCHAR);
-	if (RegSetValueEx(hRegKey, sRegValueName, 0, REG_SZ, (LPBYTE)buf, dwSize) != ERROR_SUCCESS)
+	if (RegSetValueEx(hRegKey, sRegValueName, 0, REG_SZ, reinterpret_cast<LPBYTE>(buf), dwSize) != ERROR_SUCCESS)
 		return false;
 
 	// Update all windows

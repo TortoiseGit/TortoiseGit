@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2016, 2018 - TortoiseGit
+// Copyright (C) 2015-2016, 2018-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -45,7 +45,7 @@ BOOL CFindBar::OnInitDialog()
 	CDialog::OnInitDialog();
 
 	m_hIcon = LoadIconEx(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_CANCELNORMAL));
-	GetDlgItem(IDC_FINDEXIT)->SendMessage(BM_SETIMAGE, IMAGE_ICON, (LPARAM)m_hIcon);
+	GetDlgItem(IDC_FINDEXIT)->SendMessage(BM_SETIMAGE, IMAGE_ICON, reinterpret_cast<LPARAM>(m_hIcon));
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 }

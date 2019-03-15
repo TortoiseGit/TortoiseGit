@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2016, 2018 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2016, 2018-2019 - TortoiseGit
 // Copyright (C) 2011-2013 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
@@ -273,7 +273,7 @@ void CPropertiesWnd::UpdateProperties(GitRevLoglist* pRev)
 			if (it != hashMap.end())
 				parentsubject = it->second.GetSubject();
 
-			str.Format(L"%u - %s\n%s", i, (LPCTSTR)pRev->m_ParentHash[i].ToString(), (LPCTSTR)parentsubject);
+			str.Format(L"%u - %s\n%s", i, static_cast<LPCTSTR>(pRev->m_ParentHash[i].ToString()), static_cast<LPCTSTR>(parentsubject));
 
 			auto pProperty = new CMFCPropertyGridProperty(pRev->m_ParentHash[i].ToString().Left(g_Git.GetShortHASHLength()), parentsubject, str);
 			pProperty->AllowEdit(FALSE);

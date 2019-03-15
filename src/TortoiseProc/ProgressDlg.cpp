@@ -39,7 +39,7 @@
 
 IMPLEMENT_DYNAMIC(CProgressDlg, CResizableStandAloneDialog)
 
-const int CProgressDlg::s_iProgressLinesLimit = max(50, (int)CRegDWORD(L"Software\\TortoiseGit\\ProgressDlgLinesLimit", 50000));
+const int CProgressDlg::s_iProgressLinesLimit = max(50, static_cast<int>(CRegDWORD(L"Software\\TortoiseGit\\ProgressDlgLinesLimit", 50000)));
 
 CProgressDlg::CProgressDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CProgressDlg::IDD, pParent)
@@ -53,7 +53,7 @@ CProgressDlg::CProgressDlg(CWnd* pParent /*=nullptr*/)
 	, m_pThread(nullptr)
 	, m_bBufferAll(false)
 	, m_iBufferAllImmediateLines(0)
-	, m_GitStatus((DWORD)-1)
+	, m_GitStatus(DWORD(-1))
 {
 	int autoClose = CRegDWORD(L"Software\\TortoiseGit\\AutoCloseGitProgress", 0);
 	CCmdLineParser parser(AfxGetApp()->m_lpCmdLine);
@@ -114,7 +114,7 @@ BOOL CProgressDlg::OnInitDialog()
 	CAutoLibrary hUser = AtlLoadSystemLibraryUsingFullPath(L"user32.dll");
 	if (hUser)
 	{
-		ChangeWindowMessageFilterExDFN* pfnChangeWindowMessageFilterEx = (ChangeWindowMessageFilterExDFN*)GetProcAddress(hUser, "ChangeWindowMessageFilterEx");
+		auto pfnChangeWindowMessageFilterEx = reinterpret_cast<ChangeWindowMessageFilterExDFN*>(GetProcAddress(hUser, "ChangeWindowMessageFilterEx"));
 		if (pfnChangeWindowMessageFilterEx)
 			pfnChangeWindowMessageFilterEx(m_hWnd, TaskBarButtonCreated, MSGFLT_ALLOW, &cfs);
 	}
@@ -188,13 +188,13 @@ redo:
 			goto redo;
 		}
 		else
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Message %d-%d could not be sent (error %d; %s)\n", wParam, lParam, GetLastError(), (LPCTSTR)CFormatMessageWrapper());
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Message %d-%d could not be sent (error %d; %s)\n", wParam, lParam, GetLastError(), static_cast<LPCTSTR>(CFormatMessageWrapper()));
 	}
 }
 
 UINT CProgressDlg::ProgressThreadEntry(LPVOID pVoid)
 {
-	return reinterpret_cast<CProgressDlg*>(pVoid)->ProgressThread();
+	return static_cast<CProgressDlg*>(pVoid)->ProgressThread();
 }
 
 //static function, Share with SyncDialog
@@ -297,19 +297,19 @@ UINT CProgressDlg::RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR&
 				EnsurePostMessage(pWnd, MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_RUN, 0);
 		}
 
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": waiting for process to finish (%s), aborted: %d\n", (LPCTSTR)cmdlist[i], *bAbort);
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": waiting for process to finish (%s), aborted: %d\n", static_cast<LPCTSTR>(cmdlist[i]), *bAbort);
 
 		WaitForSingleObject(pi.hProcess, INFINITE);
 
 		DWORD status = 0;
 		if (!GetExitCodeProcess(pi.hProcess, &status) || *bAbort)
 		{
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": process %s finished, status code could not be fetched, (error %d; %s), aborted: %d\n", (LPCTSTR)cmdlist[i], GetLastError(), (LPCTSTR)CFormatMessageWrapper(), *bAbort);
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": process %s finished, status code could not be fetched, (error %d; %s), aborted: %d\n", static_cast<LPCTSTR>(cmdlist[i]), GetLastError(), static_cast<LPCTSTR>(CFormatMessageWrapper()), *bAbort);
 
 			EnsurePostMessage(pWnd, MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_FAILED, status);
 			return TGIT_GIT_ERROR_GET_EXIT_CODE;
 		}
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": process %s finished with code %d\n", (LPCTSTR)cmdlist[i], status);
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": process %s finished with code %d\n", static_cast<LPCTSTR>(cmdlist[i]), status);
 		ret |= status;
 	}
 
@@ -358,7 +358,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam, LPARAM lParam)
 		{
 			m_Databuf.m_critSec.Lock();
 			m_Databuf.push_back(0);
-			m_Log.SetWindowText(Convert2UnionCode((char*)m_Databuf.data()));
+			m_Log.SetWindowText(Convert2UnionCode(reinterpret_cast<char*>(m_Databuf.data())));
 			m_Databuf.m_critSec.Unlock();
 		}
 		m_BufStart = 0;
@@ -371,9 +371,9 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam, LPARAM lParam)
 		m_Progress.SetPos(100);
 		this->DialogEnableWindow(IDOK, TRUE);
 
-		m_GitStatus = (DWORD)lParam;
+		m_GitStatus = static_cast<DWORD>(lParam);
 		if (m_GitCmd.IsEmpty() && m_GitCmdList.empty())
-			m_GitStatus = (DWORD)-1;
+			m_GitStatus = DWORD(-1);
 
 		// detect crashes of perl when performing git svn actions
 		if (m_GitStatus == 0 && m_GitCmd.Find(L" svn ") > 1)
@@ -381,7 +381,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam, LPARAM lParam)
 			CString log;
 			m_Log.GetWindowText(log);
 			if (log.GetLength() > 18 && log.Mid(log.GetLength() - 18) == L"perl.exe.stackdump")
-				m_GitStatus = (DWORD)-1;
+				m_GitStatus = DWORD(-1);
 		}
 
 		if (m_PostExecCallback)
@@ -412,13 +412,13 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam, LPARAM lParam)
 			log.Format(IDS_PROC_PROGRESS_GITUNCLEANEXIT, m_GitStatus);
 			CString err;
 			if (CRegDWORD(L"Software\\TortoiseGit\\ShowGitexeTimings", TRUE))
-				err.Format(L"\r\n\r\n%s (%I64u ms @ %s)\r\n", (LPCTSTR)log, tickSpent, (LPCTSTR)strEndTime);
+				err.Format(L"\r\n\r\n%s (%I64u ms @ %s)\r\n", static_cast<LPCTSTR>(log), tickSpent, static_cast<LPCTSTR>(strEndTime));
 			else
-				err.Format(L"\r\n\r\n%s\r\n", (LPCTSTR)log);
+				err.Format(L"\r\n\r\n%s\r\n", static_cast<LPCTSTR>(log));
 			if (!m_GitCmd.IsEmpty() || !m_GitCmdList.empty())
 				InsertColorText(this->m_Log, err, RGB(255, 0, 0));
 			if (CRegDWORD(L"Software\\TortoiseGit\\NoSounds", FALSE) == FALSE)
-				PlaySound((LPCTSTR)SND_ALIAS_SYSTEMEXCLAMATION, nullptr, SND_ALIAS_ID | SND_ASYNC);
+				PlaySound(reinterpret_cast<LPCTSTR>(SND_ALIAS_SYSTEMEXCLAMATION), nullptr, SND_ALIAS_ID | SND_ASYNC);
 		}
 		else {
 			if (m_pTaskbarList)
@@ -427,9 +427,9 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam, LPARAM lParam)
 			temp.LoadString(IDS_SUCCESS);
 			CString log;
 			if (CRegDWORD(L"Software\\TortoiseGit\\ShowGitexeTimings", TRUE))
-				log.Format(L"\r\n%s (%I64u ms @ %s)\r\n", (LPCTSTR)temp, tickSpent, (LPCTSTR)strEndTime);
+				log.Format(L"\r\n%s (%I64u ms @ %s)\r\n", static_cast<LPCTSTR>(temp), tickSpent, static_cast<LPCTSTR>(strEndTime));
 			else
-				log.Format(L"\r\n%s\r\n", (LPCTSTR)temp);
+				log.Format(L"\r\n%s\r\n", static_cast<LPCTSTR>(temp));
 			InsertColorText(this->m_Log, log, RGB(0, 0, 255));
 			this->DialogEnableWindow(IDCANCEL, FALSE);
 		}
@@ -461,18 +461,18 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam, LPARAM lParam)
 
 					if (m_accellerators.size())
 					{
-						LPACCEL lpaccelNew = (LPACCEL)LocalAlloc(LPTR, m_accellerators.size() * sizeof(ACCEL));
+						auto lpaccelNew = static_cast<LPACCEL>(LocalAlloc(LPTR, m_accellerators.size() * sizeof(ACCEL)));
 						SCOPE_EXIT { LocalFree(lpaccelNew); };
 						i = 0;
 						for (auto& entry : m_accellerators)
 						{
-							lpaccelNew[i].cmd = (WORD)(WM_USER + 1 + entry.second.id);
+							lpaccelNew[i].cmd = static_cast<WORD>(WM_USER + 1 + entry.second.id);
 							lpaccelNew[i].fVirt = FVIRTKEY | FALT;
 							lpaccelNew[i].key = entry.first;
 							entry.second.wmid = lpaccelNew[i].cmd;
 							++i;
 						}
-						m_hAccel = CreateAcceleratorTable(lpaccelNew, (int)m_accellerators.size());
+						m_hAccel = CreateAcceleratorTable(lpaccelNew, static_cast<int>(m_accellerators.size()));
 					}
 					GetDlgItem(IDC_PROGRESS_BUTTON1)->ShowWindow(SW_SHOW);
 				}
@@ -482,7 +482,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam, LPARAM lParam)
 		if (wParam == MSG_PROGRESSDLG_END && m_GitStatus == 0)
 		{
 			if (m_AutoClose == AUTOCLOSE_IF_NO_OPTIONS && m_PostCmdList.empty() || m_AutoClose == AUTOCLOSE_IF_NO_ERRORS)
-				PostMessage(WM_COMMAND, 1, (LPARAM)GetDlgItem(IDOK)->m_hWnd);
+				PostMessage(WM_COMMAND, 1, reinterpret_cast<LPARAM>(GetDlgItem(IDOK)->m_hWnd));
 		}
 	}
 
@@ -517,7 +517,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam, LPARAM lParam)
 
 		}
 		else
-			ParserCmdOutput((char)lParam);
+			ParserCmdOutput(static_cast<char>(lParam));
 	}
 	return 0;
 }
@@ -657,7 +657,7 @@ void CProgressDlg::WriteLog() const
 		while (*psz_string)
 		{
 			size_t i_len = wcscspn(psz_string, L"\r\n");
-			logfile.AddLine(CString(psz_string, (int)i_len));
+			logfile.AddLine(CString(psz_string, static_cast<int>(i_len)));
 			psz_string += i_len;
 			if (*psz_string == '\r')
 			{
@@ -784,7 +784,7 @@ CString CCommitProgressDlg::Convert2UnionCode(char* buff, int size)
 {
 	int start = 0;
 	if (size == -1)
-		size = (int)strlen(buff);
+		size = static_cast<int>(strlen(buff));
 
 	for (int i = 0; i < size; ++i)
 	{
@@ -839,14 +839,14 @@ BOOL CProgressDlg::PreTranslateMessage(MSG* pMsg)
 	}
 	else if (pMsg->message == WM_CONTEXTMENU || pMsg->message == WM_RBUTTONDOWN)
 	{
-		CWnd* pWnd = (CWnd*)GetDlgItem(IDC_LOG);
+		auto pWnd = static_cast<CWnd*>(GetDlgItem(IDC_LOG));
 		if (pWnd == GetFocus())
 		{
 			CIconMenu popup;
 			if (popup.CreatePopupMenu())
 			{
 				long start = -1, end = -1;
-				auto pEdit = (CRichEditCtrl*)GetDlgItem(IDC_LOG);
+				auto pEdit = static_cast<CRichEditCtrl*>(GetDlgItem(IDC_LOG));
 				pEdit->GetSel(start, end);
 				popup.AppendMenuIcon(WM_COPY, IDS_SCIEDIT_COPY, IDI_COPYCLIP);
 				if (start >= end)
@@ -930,10 +930,10 @@ void CProgressDlg::OnEnLinkLog(NMHDR* pNMHDR, LRESULT* pResult)
 				{
 					RECT rc;
 					POINTL pt;
-					pMsgView->SendMessage(EM_POSFROMCHAR, (WPARAM)&pt, pEnLink->chrg.cpMin);
+					pMsgView->SendMessage(EM_POSFROMCHAR, reinterpret_cast<WPARAM>(&pt), pEnLink->chrg.cpMin);
 					rc.left = pt.x;
 					rc.top = pt.y;
-					pMsgView->SendMessage(EM_POSFROMCHAR, (WPARAM)&pt, pEnLink->chrg.cpMax);
+					pMsgView->SendMessage(EM_POSFROMCHAR, reinterpret_cast<WPARAM>(&pt), pEnLink->chrg.cpMax);
 					rc.right = pt.x;
 					rc.bottom = pt.y + 12;
 					if ((prevRect.left != rc.left) || (prevRect.top != rc.top))

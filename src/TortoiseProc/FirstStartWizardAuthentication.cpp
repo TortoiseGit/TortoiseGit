@@ -217,7 +217,7 @@ BOOL CFirstStartWizardAuthentication::OnInitDialog()
 
 BOOL CFirstStartWizardAuthentication::OnSetActive()
 {
-	CFirstStartWizard* wiz = (CFirstStartWizard*)GetParent();
+	auto wiz = static_cast<CFirstStartWizard*>(GetParent());
 
 	wiz->SetWizardButtons(PSWIZB_FINISH | PSWIZB_BACK);
 

@@ -57,7 +57,7 @@ BOOL CFilePatchesDlg::SetFileStatusAsPatched(CString sPath)
 	{
 		if (sPath.CompareNoCase(GetFullPath(i))==0)
 		{
-			m_arFileStates.SetAt(i, (DWORD)FPDLG_FILESTATE_PATCHED);
+			m_arFileStates.SetAt(i, static_cast<DWORD>(FPDLG_FILESTATE_PATCHED));
 			SetStateText(i, FPDLG_FILESTATE_PATCHED);
 			Invalidate();
 			return TRUE;
@@ -85,7 +85,7 @@ BOOL CFilePatchesDlg::OnInitDialog()
 	HideGrip();
 #endif
 
-	HFONT hFont = (HFONT)m_cFileList.SendMessage(WM_GETFONT);
+	auto hFont = reinterpret_cast<HFONT>(m_cFileList.SendMessage(WM_GETFONT));
 	LOGFONT lf = {0};
 	GetObject(hFont, sizeof(LOGFONT), &lf);
 	lf.lfWeight = FW_BOLD;
@@ -216,7 +216,7 @@ void CFilePatchesDlg::OnLvnGetInfoTipFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 		if (m_arFileStates.GetAt(pGetInfoTip->iItem) == 0)
 			temp = GetFullPath(pGetInfoTip->iItem);
 		else
-			temp.Format(IDS_PATCH_ITEMTT, (LPCTSTR)GetFullPath(pGetInfoTip->iItem));
+			temp.Format(IDS_PATCH_ITEMTT, static_cast<LPCTSTR>(GetFullPath(pGetInfoTip->iItem)));
 		wcsncpy_s(pGetInfoTip->pszText, pGetInfoTip->cchTextMax, temp, pGetInfoTip->cchTextMax - 1);
 	}
 	else
@@ -279,7 +279,7 @@ void CFilePatchesDlg::OnNMCustomdrawFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 
 		COLORREF crText = ::GetSysColor(COLOR_WINDOWTEXT);
 
-		if (m_arFileStates.GetCount() > (INT_PTR)pLVCD->nmcd.dwItemSpec)
+		if (m_arFileStates.GetCount() > static_cast<INT_PTR>(pLVCD->nmcd.dwItemSpec))
 		{
 			if (m_arFileStates.GetAt(pLVCD->nmcd.dwItemSpec) == FPDLG_FILESTATE_CONFLICT)
 			{
@@ -299,7 +299,7 @@ void CFilePatchesDlg::OnNMCustomdrawFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 			}
 			// Store the color back in the NMLVCUSTOMDRAW struct.
 			pLVCD->clrText = crText;
-			if (m_ShownIndex == (int)pLVCD->nmcd.dwItemSpec)
+			if (m_ShownIndex == static_cast<int>(pLVCD->nmcd.dwItemSpec))
 			{
 				SelectObject(pLVCD->nmcd.hdc, m_boldFont);
 				// We changed the font, so we're returning CDRF_NEWFONT. This

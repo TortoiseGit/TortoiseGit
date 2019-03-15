@@ -209,9 +209,9 @@ BOOL CMailMsg::Send()
 	message.lpszSubject						= const_cast<LPWSTR>(static_cast<LPCWSTR>(m_sSubject));
 	message.lpszNoteText					= const_cast<LPWSTR>(static_cast<LPCWSTR>(m_sMessage));
 	message.lpOriginator					= &originator;
-	message.nRecipCount						= (ULONG)recipients.size();
+	message.nRecipCount						= static_cast<ULONG>(recipients.size());
 	message.lpRecips						= recipients.data();
-	message.nFileCount						= (ULONG)attachments.size();
+	message.nFileCount						= static_cast<ULONG>(attachments.size());
 	message.lpFiles							= attachments.data();
 
 	ULONG status = MAPISendMailHelper(NULL, 0, &message, (m_bShowComposeDialog ? MAPI_DIALOG : 0) | MAPI_LOGON_UI, 0);

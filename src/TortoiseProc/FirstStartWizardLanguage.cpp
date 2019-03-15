@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2018 - TortoiseGit
+// Copyright (C) 2016-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -48,7 +48,7 @@ void CFirstStartWizardLanguage::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LANGUAGECOMBO, m_LanguageCombo);
 	DDX_Control(pDX, IDC_LINK, m_link);
 	if (m_LanguageCombo.GetCurSel() >= 0)
-		m_dwLanguage = (DWORD)m_LanguageCombo.GetItemData(m_LanguageCombo.GetCurSel());
+		m_dwLanguage = static_cast<DWORD>(m_LanguageCombo.GetItemData(m_LanguageCombo.GetCurSel()));
 }
 
 BEGIN_MESSAGE_MAP(CFirstStartWizardLanguage, CFirstStartWizardBasePage)
@@ -87,7 +87,7 @@ BOOL CFirstStartWizardLanguage::OnInitDialog()
 
 BOOL CFirstStartWizardLanguage::OnSetActive()
 {
-	CFirstStartWizard* wiz = (CFirstStartWizard*)GetParent();
+	auto wiz = static_cast<CFirstStartWizard*>(GetParent());
 
 	wiz->SetWizardButtons(PSWIZB_NEXT);
 
@@ -158,11 +158,11 @@ void CFirstStartWizardLanguage::OnBnClickedRefresh()
 			sFileVer = sFileVer.Left(sFileVer.ReverseFind('.'));
 			if (sFileVer.Compare(sVer) != 0)
 				continue;
-			CString sLoc = filename.Mid((int)wcslen(L"TortoiseProc"));
-			sLoc = sLoc.Left(sLoc.GetLength() - (int)wcslen(L".dll")); // cut off ".dll"
+			CString sLoc = filename.Mid(static_cast<int>(wcslen(L"TortoiseProc")));
+			sLoc = sLoc.Left(sLoc.GetLength() - static_cast<int>(wcslen(L".dll"))); // cut off ".dll"
 			if (CStringUtils::StartsWith(sLoc, L"32") && (sLoc.GetLength() > 5))
 				continue;
-			DWORD loc = _wtoi(filename.Mid((int)wcslen(L"TortoiseProc")));
+			DWORD loc = _wtoi(filename.Mid(static_cast<int>(wcslen(L"TortoiseProc"))));
 			GetLocaleInfo(loc, LOCALE_SNATIVELANGNAME, buf, _countof(buf));
 			CString sLang = buf;
 			GetLocaleInfo(loc, LOCALE_SNATIVECTRYNAME, buf, _countof(buf));

@@ -44,7 +44,7 @@ static CString CalcSHA256(const CString& text)
 	SCOPE_EXIT{ CryptDestroyHash(hHash); };
 
 	CStringA textA = CUnicodeUtils::GetUTF8(text);
-	if (!CryptHashData(hHash, (LPBYTE)(LPCSTR)textA, textA.GetLength(), 0))
+	if (!CryptHashData(hHash, reinterpret_cast<const BYTE*>(static_cast<LPCSTR>(textA)), textA.GetLength(), 0))
 		return L"";
 
 	CString hash;
@@ -300,7 +300,7 @@ void CHooks::AddErrorParam(CString& sCmd, const CString& error)
 {
 	CTGitPath tempPath;
 	tempPath = CTempFiles::Instance().GetTempFilePath(true);
-	CStringUtils::WriteStringToTextFile(tempPath.GetWinPath(), (LPCTSTR)error);
+	CStringUtils::WriteStringToTextFile(tempPath.GetWinPath(), error);
 	AddParam(sCmd, tempPath.GetWinPathString());
 }
 
@@ -308,7 +308,7 @@ CTGitPath CHooks::AddMessageFileParam(CString& sCmd, const CString& message)
 {
 	CTGitPath tempPath;
 	tempPath = CTempFiles::Instance().GetTempFilePath(true);
-	CStringUtils::WriteStringToTextFile(tempPath.GetWinPath(), (LPCTSTR)message);
+	CStringUtils::WriteStringToTextFile(tempPath.GetWinPath(), message);
 	AddParam(sCmd, tempPath.GetWinPathString());
 	return tempPath;
 }
@@ -516,7 +516,7 @@ void CHooks::ParseHookString(CString strhooks, bool bLocal)
 			if (strhooks[0] == L'!' && pos > 1)
 			{
 				cmd.bEnabled = false;
-				strhooks = strhooks.Mid((int)wcslen(L"!"));
+				strhooks = strhooks.Mid(static_cast<int>(wcslen(L"!")));
 				--pos;
 			}
 			if (strhooks[0] == L'?' && pos > 0)
@@ -555,7 +555,7 @@ void CHooks::ParseHookString(CString strhooks, bool bLocal)
 						if (cmd.bLocal)
 						{
 							CString temp;
-							temp.Format(L"%s|%d%s", m_RootPath.GetWinPath(), (int)key.htype, (LPCTSTR)cmd.commandline);
+							temp.Format(L"%s|%d%s", m_RootPath.GetWinPath(), static_cast<int>(key.htype), static_cast<LPCTSTR>(cmd.commandline));
 
 							cmd.sRegKey = L"Software\\TortoiseGit\\approvedhooks\\" + CalcSHA256(temp);
 							CRegDWORD reg(cmd.sRegKey, 0);
@@ -603,7 +603,7 @@ DWORD CHooks::RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bW
 	if (!hErr)
 	{
 		error = CFormatMessageWrapper();
-		return (DWORD)-1;
+		return DWORD(-1);
 	}
 
 	hRedir = CreateFile(szErr, GENERIC_READ, FILE_SHARE_WRITE, nullptr, OPEN_EXISTING, 0, nullptr);
@@ -611,7 +611,7 @@ DWORD CHooks::RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bW
 	if (!hRedir)
 	{
 		error = CFormatMessageWrapper();
-		return (DWORD)-1;
+		return DWORD(-1);
 	}
 
 	GetTempFileName(szTempPath, L"git", 0, szOutput);
@@ -620,7 +620,7 @@ DWORD CHooks::RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bW
 	if (!hOut)
 	{
 		error = CFormatMessageWrapper();
-		return (DWORD)-1;
+		return DWORD(-1);
 	}
 
 	// setup startup info, set std out/err handles
@@ -639,7 +639,7 @@ DWORD CHooks::RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bW
 		error = CFormatMessageWrapper(err);
 		SetLastError(err);
 		cmd.ReleaseBuffer();
-		return (DWORD)-1;
+		return DWORD(-1);
 	}
 	cmd.ReleaseBuffer();
 
@@ -689,7 +689,7 @@ bool CHooks::ApproveHook(HWND hWnd, hookiterator it, DWORD& exitcode)
 	}
 
 	CString sQuestion;
-	sQuestion.Format(IDS_HOOKS_APPROVE_TASK1, (LPCWSTR)it->second.commandline);
+	sQuestion.Format(IDS_HOOKS_APPROVE_TASK1, static_cast<LPCWSTR>(it->second.commandline));
 	CTaskDialog taskdlg(sQuestion, CString(MAKEINTRESOURCE(IDS_HOOKS_APPROVE_TASK2)), L"TortoiseGit", 0, TDF_USE_COMMAND_LINKS | TDF_ALLOW_DIALOG_CANCELLATION | TDF_POSITION_RELATIVE_TO_WINDOW | TDF_SIZE_TO_CONTENT);
 	taskdlg.AddCommandControl(101, CString(MAKEINTRESOURCE(IDS_HOOKS_APPROVE_TASK3)));
 	taskdlg.AddCommandControl(102, CString(MAKEINTRESOURCE(IDS_HOOKS_APPROVE_TASK4)));

@@ -1,6 +1,6 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2013-2014 - TortoiseGit
+// Copyright (C) 2013-2014, 2019 - TortoiseGit
 // Copyright (C) 2006-2010, 2012-2014, 2016, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -64,7 +64,7 @@ CSetMainPage::CSetMainPage()
 	m_regAutoAdd = CRegDWORD(L"Software\\TortoiseGitMerge\\AutoAdd", TRUE);
 	m_regMaxInline = CRegDWORD(L"Software\\TortoiseGitMerge\\InlineDiffMaxLineLength", 3000);
 	m_regUseRibbons = CRegDWORD(L"Software\\TortoiseGitMerge\\UseRibbons", TRUE);
-	m_regContextLines = CRegDWORD(L"Software\\TortoiseGitMerge\\ContextLines", (DWORD)-1);
+	m_regContextLines = CRegDWORD(L"Software\\TortoiseGitMerge\\ContextLines", static_cast<DWORD>(-1));
 
 	m_bBackup = m_regBackup;
 	m_bFirstDiffOnLoad = m_regFirstDiffOnLoad;
@@ -104,7 +104,7 @@ void CSetMainPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_IGNORELF, m_bIgnoreEOL);
 	DDX_Check(pDX, IDC_ONEPANE, m_bOnePane);
 	DDX_Control(pDX, IDC_FONTSIZES, m_cFontSizes);
-	m_dwFontSize = (DWORD)m_cFontSizes.GetItemData(m_cFontSizes.GetCurSel());
+	m_dwFontSize = static_cast<DWORD>(m_cFontSizes.GetItemData(m_cFontSizes.GetCurSel()));
 	if ((m_dwFontSize==0)||(m_dwFontSize == -1))
 	{
 		CString t;
@@ -205,7 +205,7 @@ BOOL CSetMainPage::OnInitDialog()
 	m_cFontNames.Setup(DEVICE_FONTTYPE|RASTER_FONTTYPE|TRUETYPE_FONTTYPE, 1, FIXED_PITCH);
 	m_cFontNames.SelectFont(m_sFontName);
 
-	m_cFontNames.SendMessage(CB_SETITEMHEIGHT, (WPARAM)-1, m_cFontSizes.GetItemHeight(-1));
+	m_cFontNames.SendMessage(CB_SETITEMHEIGHT, static_cast<WPARAM>(-1), m_cFontSizes.GetItemHeight(-1));
 
 	UpdateData(FALSE);
 	return TRUE;  // return TRUE unless you set the focus to a control

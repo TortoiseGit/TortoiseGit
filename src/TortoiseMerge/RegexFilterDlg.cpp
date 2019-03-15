@@ -1,4 +1,4 @@
-// TortoiseMerge - a Diff/Patch program
+﻿// TortoiseMerge - a Diff/Patch program
 
 // Copyright (C) 2013-2014, 2016 - TortoiseSVN
 
@@ -90,5 +90,5 @@ void CRegexFilterDlg::ShowEditBalloon(UINT nIdControl, UINT nIdText, UINT nIdTit
 	bt.pszText = text;
 	bt.pszTitle = title;
 	bt.ttiIcon = nIcon;
-	SendDlgItemMessage(nIdControl, EM_SHOWBALLOONTIP, 0, (LPARAM)&bt);
+	SendDlgItemMessage(nIdControl, EM_SHOWBALLOONTIP, 0, reinterpret_cast<LPARAM>(&bt));
 }

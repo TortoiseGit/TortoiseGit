@@ -1,7 +1,7 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2011, 2015 - TortoiseSVN
-// Copyright (C) 2015-2016 - TortoiseGit
+// Copyright (C) 2015-2016, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -196,7 +196,7 @@ void CompilerTests()
 {
 	// compiler tests
 	{
-		HANDLE h = (HANDLE)1;
+		HANDLE h = reinterpret_cast<HANDLE>(1);
 		CAutoFile hFile = h;                    // C2280
 		CAutoFile hFile2 = std::move(h);        // OK
 		// OK, uses move semantics

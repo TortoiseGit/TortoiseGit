@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014-2018 TortoiseGit
+// Copyright (C) 2014-2019 TortoiseGit
 
 // with code of PullFetchDlg.cpp
 
@@ -132,10 +132,10 @@ void CBisectStartDlg::OnBnClickedOk()
 	m_FirstBadRevision = m_cFirstBadRevision.GetString().Trim();
 
 	if (CStringUtils::StartsWith(m_FirstBadRevision, L"remotes/"))
-		m_FirstBadRevision = m_FirstBadRevision.Mid((int)wcslen(L"remotes/"));
+		m_FirstBadRevision = m_FirstBadRevision.Mid(static_cast<int>(wcslen(L"remotes/")));
 
 	if (CStringUtils::StartsWith(m_FirstBadRevision, L"remotes/"))
-		m_FirstBadRevision = m_FirstBadRevision.Mid((int)wcslen(L"remotes/"));
+		m_FirstBadRevision = m_FirstBadRevision.Mid(static_cast<int>(wcslen(L"remotes/")));
 
 	CHorizontalResizableStandAloneDialog::OnOK();
 }

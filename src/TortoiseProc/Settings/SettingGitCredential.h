@@ -44,7 +44,7 @@ public:
 
 	static int GetCredentialDefaultUrlCallback(const git_config_entry *entry, void *payload)
 	{
-		((STRING_VECTOR*)payload)->push_back(ConfigLevelToKey(entry->level));
+		static_cast<STRING_VECTOR*>(payload)->push_back(ConfigLevelToKey(entry->level));
 		return 0;
 	}
 
@@ -55,15 +55,15 @@ public:
 		int pos2 = name.ReverseFind(L'.');
 		CString url = name.Mid(pos1 + 1, pos2 - pos1 - 1);
 		CString display;
-		display.Format(L"%s:%s", (LPCTSTR)ConfigLevelToKey(entry->level), (LPCTSTR)url);
-		((STRING_VECTOR*)payload)->push_back(display);
+		display.Format(L"%s:%s", static_cast<LPCTSTR>(ConfigLevelToKey(entry->level)), static_cast<LPCTSTR>(url));
+		static_cast<STRING_VECTOR*>(payload)->push_back(display);
 		return 0;
 	}
 
 	static int GetCredentialEntryCallback(const git_config_entry *entry, void *payload)
 	{
 		CString name = CUnicodeUtils::GetUnicode(entry->name);
-		((STRING_VECTOR*)payload)->push_back(name);
+		static_cast<STRING_VECTOR*>(payload)->push_back(name);
 		return 0;
 	}
 
@@ -72,8 +72,8 @@ public:
 		CString name = CUnicodeUtils::GetUnicode(entry->name);
 		CString value = CUnicodeUtils::GetUnicode(entry->value);
 		CString text;
-		text.Format(L"%s\n%s\n%s", (LPCTSTR)ConfigLevelToKey(entry->level), (LPCTSTR)name, (LPCTSTR)value);
-		((STRING_VECTOR*)payload)->push_back(text);
+		text.Format(L"%s\n%s\n%s", static_cast<LPCTSTR>(ConfigLevelToKey(entry->level)), static_cast<LPCTSTR>(name), static_cast<LPCTSTR>(value));
+		static_cast<STRING_VECTOR*>(payload)->push_back(text);
 		return 0;
 	}
 

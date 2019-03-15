@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016 - TortoiseGit
+// Copyright (C) 2016, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,7 +27,7 @@
 static CString GetPath(LONG languageID)
 {
 	CString path;
-	path.Format(L"%s%ld.dic", (LPCTSTR)CPathUtils::GetAppDataDirectory(), languageID);
+	path.Format(L"%s%ld.dic", static_cast<LPCTSTR>(CPathUtils::GetAppDataDirectory()), languageID);
 	return path;
 }
 

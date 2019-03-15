@@ -1,6 +1,6 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2018 - TortoiseGit
+// Copyright (C) 2018-2019 - TortoiseGit
 // Copyright (C) 2006, 2009, 2015, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -66,10 +66,10 @@ private:
 			CDialogTemplate dlgTemplate(pResource);
 			dlgTemplate.SetFont(L"MS Shell Dlg 2", 9);
 			HGLOBAL hNew = GlobalAlloc(GPTR, dlgTemplate.m_dwTemplateSize);
-			ppsp->pResource = (DLGTEMPLATE*)GlobalLock(hNew);
-			Checked::memcpy_s((void*)ppsp->pResource, dlgTemplate.m_dwTemplateSize, dlgTemplate.m_hTemplate, dlgTemplate.m_dwTemplateSize);
+			ppsp->pResource = static_cast<DLGTEMPLATE*>(GlobalLock(hNew));
+			Checked::memcpy_s(const_cast<void*>(static_cast<const void*>(ppsp->pResource)), dlgTemplate.m_dwTemplateSize, dlgTemplate.m_hTemplate, dlgTemplate.m_dwTemplateSize);
 			GlobalUnlock(hNew);
-			(BYTE*&)ppsp += ppsp->dwSize;
+			reinterpret_cast<BYTE*&>(ppsp) += ppsp->dwSize;
 		}
 		// free existing PROPSHEETPAGE array and assign the new one
 		free((void*)m_psh.ppsp);

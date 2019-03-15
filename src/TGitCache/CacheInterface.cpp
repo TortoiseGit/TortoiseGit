@@ -1,7 +1,7 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2007,2009-2012 - TortoiseSVN
-// Copyright (C) 2008-2013, 2016 - TortoiseGit
+// Copyright (C) 2008-2013, 2016, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -50,7 +50,7 @@ CString GetCacheID()
 		{
 			auto data = std::make_unique<BYTE[]>(len);
 			GetTokenInformation(token, TokenStatistics, data.get(), len, &len);
-			LUID uid = ((PTOKEN_STATISTICS)data.get())->AuthenticationId;
+			LUID uid = reinterpret_cast<PTOKEN_STATISTICS>(data.get())->AuthenticationId;
 			t.Format(L"-%08x%08x", uid.HighPart, uid.LowPart);
 		}
 	}

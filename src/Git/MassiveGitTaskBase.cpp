@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2016 - TortoiseGit
+// Copyright (C) 2011-2016, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -86,7 +86,7 @@ bool CMassiveGitTaskBase::ExecuteCommands(volatile BOOL& cancel)
 			}
 
 			CString cmd, out;
-			cmd.Format(L"git.exe %s %s%s", (LPCTSTR)m_sParams, m_bIsPath ? L"--" : L"", (LPCTSTR)add);
+			cmd.Format(L"git.exe %s %s%s", static_cast<LPCTSTR>(m_sParams), m_bIsPath ? L"--" : L"", static_cast<LPCTSTR>(add));
 			int exitCode = g_Git.Run(cmd, &out, CP_UTF8);
 			if (exitCode && !m_bIgnoreErrors)
 			{
@@ -122,7 +122,7 @@ void CMassiveGitTaskBase::ReportError(const CString& out, int /*exitCode*/)
 
 int CMassiveGitTaskBase::GetListCount() const
 {
-	return m_bIsPath ? m_pathList.GetCount() : (int)m_itemList.size();
+	return m_bIsPath ? m_pathList.GetCount() : static_cast<int>(m_itemList.size());
 }
 
 bool CMassiveGitTaskBase::IsListEmpty() const

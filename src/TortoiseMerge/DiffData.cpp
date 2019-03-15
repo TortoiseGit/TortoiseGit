@@ -1,4 +1,4 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2006-2017 - TortoiseSVN
 
@@ -62,7 +62,7 @@ void CDiffData::SetMovedBlocks(bool bViewMovedBlocks/* = true*/)
 
 int CDiffData::GetLineCount() const
 {
-	int count = (int)m_arBaseFile.GetCount();
+	int count = m_arBaseFile.GetCount();
 	if (count < m_arTheirFile.GetCount())
 		count = m_arTheirFile.GetCount();
 	if (count < m_arYourFile.GetCount())
@@ -105,7 +105,7 @@ bool CDiffData::HandleSvnError(svn_error_t * svnerr)
 		sMsg += CStringA(svnerr->message);
 	}
 	CString readableMsg = CUnicodeUtils::GetUnicode(sMsg);
-	m_sError.Format(IDS_ERR_DIFF_DIFF, (LPCTSTR)readableMsg);
+	m_sError.Format(IDS_ERR_DIFF_DIFF, static_cast<LPCTSTR>(readableMsg));
 	svn_error_clear(svnerr);
 	return false;
 }
@@ -204,9 +204,9 @@ BOOL CDiffData::Load()
 	CRegDWORD regIgnoreCase = CRegDWORD(L"Software\\TortoiseGitMerge\\CaseInsensitive", FALSE);
 	CRegDWORD regIgnoreComments = CRegDWORD(L"Software\\TortoiseGitMerge\\IgnoreComments", FALSE);
 	DWORD dwIgnoreWS = regIgnoreWS;
-	bool bIgnoreEOL = ((DWORD)regIgnoreEOL)!=0;
-	BOOL bIgnoreCase = ((DWORD)regIgnoreCase)!=0;
-	bool bIgnoreComments = ((DWORD)regIgnoreComments)!=0;
+	bool bIgnoreEOL = static_cast<DWORD>(regIgnoreEOL) != 0;
+	BOOL bIgnoreCase = static_cast<DWORD>(regIgnoreCase) != 0;
+	bool bIgnoreComments = static_cast<DWORD>(regIgnoreComments) != 0;
 
 	// The Subversion diff API only can ignore whitespaces and eol styles.
 	// It also can only handle one-byte charsets.
@@ -486,8 +486,8 @@ CDiffData::DoTwoWayDiff(const CString& sBaseFilename, const CString& sYourFilena
 						if ((sCurrentBaseLine.GetLength() < maxstringlengthforwhitespacecheck) &&
 							(sCurrentYourLine.GetLength() < maxstringlengthforwhitespacecheck))
 						{
-							auto pLine1 = (LPCWSTR)sCurrentBaseLine;
-							auto pLine2 = (LPCWSTR)sCurrentYourLine;
+							auto pLine1 = static_cast<LPCWSTR>(sCurrentBaseLine);
+							auto pLine2 = static_cast<LPCWSTR>(sCurrentYourLine);
 							auto pS1 = s1.get();
 							while (*pLine1)
 							{
@@ -639,12 +639,12 @@ CDiffData::DoTwoWayDiff(const CString& sBaseFilename, const CString& sYourFilena
 		if(movedBlocks->moved_to != -1)
 		{
 			// set states in a block original:length -> moved_to:length
-			TieMovedBlocks((int)tempdiff->original_start, movedBlocks->moved_to, tempdiff->original_length);
+			TieMovedBlocks(static_cast<int>(tempdiff->original_start), movedBlocks->moved_to, tempdiff->original_length);
 		}
 		if(movedBlocks->moved_from != -1)
 		{
 			// set states in a block modified:length -> moved_from:length
-			TieMovedBlocks(movedBlocks->moved_from, (int)tempdiff->modified_start, tempdiff->modified_length);
+			TieMovedBlocks(movedBlocks->moved_from, static_cast<int>(tempdiff->modified_start), tempdiff->modified_length);
 		}
 		movedBlocks = movedBlocks->next;
 	}
@@ -1045,7 +1045,7 @@ void CDiffData::HideUnchangedSections(CViewData * data1, CViewData * data2, CVie
 				{
 					// go back and show the last 'contextLines' lines to "SHOWN"
 					int lineback = i - 1;
-					int stopline = lineback - (int)(DWORD)contextLines;
+					int stopline = lineback - static_cast<int>(contextLines);
 					while ((lineback >= 0)&&(lineback > stopline))
 					{
 						data1->SetLineHideState(lineback, HIDESTATE_SHOWN);
@@ -1060,7 +1060,7 @@ void CDiffData::HideUnchangedSections(CViewData * data1, CViewData * data2, CVie
 				{
 					// go forward and show the next 'contextLines' lines to "SHOWN"
 					int lineforward = i + 1;
-					int stopline = lineforward + (int)(DWORD)contextLines;
+					int stopline = lineforward + static_cast<int>(contextLines);
 					while ((lineforward < data1->GetCount())&&(lineforward < stopline))
 					{
 						data1->SetLineHideState(lineforward, HIDESTATE_SHOWN);

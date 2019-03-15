@@ -113,7 +113,7 @@ void ColumnManager::ReadSettings(DWORD defaultColumns, DWORD hideColumns, const 
 	registryPrefix = L"Software\\TortoiseGit\\StatusColumns\\" + containerName;
 
 	// we accept settings of current version only
-	bool valid = (DWORD)CRegDWORD(registryPrefix + L"Version", 0xff) == GITSLC_COL_VERSION;
+	bool valid = static_cast<DWORD>(CRegDWORD(registryPrefix + L"Version", 0xff)) == GITSLC_COL_VERSION;
 	if (valid)
 	{
 		// read (possibly different) column selection
@@ -210,7 +210,7 @@ int ColumnManager::SetNames(UINT* buffer, int size)
 
 void ColumnManager::SetRightAlign(int column) const
 {
-	assert((size_t)column < columns.size());
+	assert(static_cast<size_t>(column) < columns.size());
 
 	LVCOLUMN col = { 0 };
 	col.mask = LVCF_FMT;
@@ -355,7 +355,7 @@ void ColumnManager::RemoveUnusedProps()
 	{
 		int index = columns[i].index;
 
-		if (itemProps.find(GetName((int)i)) != itemProps.end() || columns[i].visible)
+		if (itemProps.find(GetName(static_cast<int>(i))) != itemProps.end() || columns[i].visible)
 			validIndices[index] = index;
 	}
 
@@ -419,7 +419,7 @@ void ColumnManager::ParseWidths(const CString& widths)
 	for (int i = 0, count = widths.GetLength() / 8; i < count; ++i)
 	{
 		long width = wcstol(widths.Mid(i * 8, 8), nullptr, 16);
-		if (i < (int)itemName.size())
+		if (i < static_cast<int>(itemName.size()))
 		{
 			// a standard column
 			if (width != MAXLONG)
@@ -455,7 +455,7 @@ void ColumnManager::ParseColumnOrder(const CString& widths)
 	for (int i = 0, count = widths.GetLength() / 2; i < count; ++i)
 	{
 		int index = wcstol(widths.Mid(i * 2, 2), nullptr, 16);
-		if ((index < (int)itemName.size()))
+		if ((index < static_cast<int>(itemName.size())))
 		{
 			alreadyPlaced.insert(index);
 			columnOrder.push_back(index);
@@ -463,7 +463,7 @@ void ColumnManager::ParseColumnOrder(const CString& widths)
 	}
 
 	// place the remaining colums behind it
-	for (int i = 0; i < (int)itemName.size(); ++i)
+	for (int i = 0; i < static_cast<int>(itemName.size()); ++i)
 		if (alreadyPlaced.find(i) == alreadyPlaced.end())
 			columnOrder.push_back(i);
 }
@@ -593,7 +593,7 @@ void ColumnManager::OnContextMenuHeader(CWnd* pWnd, CPoint point, bool isGroundE
 		// find relevant ones and sort 'em
 
 		std::map<CString, int> sortedProps;
-		for (int i = (int)itemName.size(); i < columnCount; ++i)
+		for (int i = static_cast<int>(itemName.size()); i < columnCount; ++i)
 			if (IsRelevant(i))
 				sortedProps[GetName(i)] = i;
 

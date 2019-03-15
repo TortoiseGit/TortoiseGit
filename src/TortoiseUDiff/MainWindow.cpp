@@ -61,7 +61,7 @@ bool CMainWindow::RegisterAndCreateWindow()
 	ResString clsname(hResource, IDS_APP_TITLE);
 	wcx.lpszClassName = clsname;
 	wcx.hIcon = LoadIconEx(hResource, MAKEINTRESOURCE(IDI_TORTOISEUDIFF), GetSystemMetrics(SM_CXICON), GetSystemMetrics(SM_CYICON));
-	wcx.hbrBackground = (HBRUSH)(COLOR_3DFACE+1);
+	wcx.hbrBackground = reinterpret_cast<HBRUSH>(COLOR_3DFACE + 1);
 	wcx.lpszMenuName = MAKEINTRESOURCE(IDC_TORTOISEUDIFF);
 	wcx.hIconSm = LoadIconEx(wcx.hInstance, MAKEINTRESOURCE(IDI_TORTOISEUDIFF));
 	if (RegisterWindow(&wcx))
@@ -134,7 +134,7 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
 		break;
 	case WM_GETMINMAXINFO:
 		{
-			MINMAXINFO * mmi = (MINMAXINFO*)lParam;
+			auto mmi = reinterpret_cast<MINMAXINFO*>(lParam);
 			mmi->ptMinTrackSize.x = 100;
 			mmi->ptMinTrackSize.y = 100;
 			return 0;
@@ -157,8 +157,8 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
 			SendEditor(SCI_CHARRIGHT);
 			SendEditor(SCI_SEARCHANCHOR);
 			m_bMatchCase = !!wParam;
-			m_findtext = (LPCTSTR)lParam;
-			if (SendEditor(SCI_SEARCHNEXT, m_bMatchCase ? SCFIND_MATCHCASE : 0, (LPARAM)CUnicodeUtils::StdGetUTF8(m_findtext).c_str()) == -1)
+			m_findtext = reinterpret_cast<LPCTSTR>(lParam);
+			if (SendEditor(SCI_SEARCHNEXT, m_bMatchCase ? SCFIND_MATCHCASE : 0, reinterpret_cast<LPARAM>(CUnicodeUtils::StdGetUTF8(m_findtext).c_str())) == -1)
 			{
 				FLASHWINFO fwi;
 				fwi.cbSize = sizeof(FLASHWINFO);
@@ -175,8 +175,8 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
 		{
 			SendEditor(SCI_SEARCHANCHOR);
 			m_bMatchCase = !!wParam;
-			m_findtext = (LPCTSTR)lParam;
-			if (SendEditor(SCI_SEARCHPREV, m_bMatchCase ? SCFIND_MATCHCASE : 0, (LPARAM)CUnicodeUtils::StdGetUTF8(m_findtext).c_str()) == -1)
+			m_findtext = reinterpret_cast<LPCTSTR>(lParam);
+			if (SendEditor(SCI_SEARCHPREV, m_bMatchCase ? SCFIND_MATCHCASE : 0, reinterpret_cast<LPARAM>(CUnicodeUtils::StdGetUTF8(m_findtext).c_str())) == -1)
 			{
 				FLASHWINFO fwi;
 				fwi.cbSize = sizeof(FLASHWINFO);
@@ -252,7 +252,7 @@ LRESULT CMainWindow::DoCommand(int id)
 	case IDM_FINDNEXT:
 		SendEditor(SCI_CHARRIGHT);
 		SendEditor(SCI_SEARCHANCHOR);
-		if (SendEditor(SCI_SEARCHNEXT, m_bMatchCase ? SCFIND_MATCHCASE : 0, (LPARAM)CUnicodeUtils::StdGetUTF8(m_findtext).c_str()) == -1)
+		if (SendEditor(SCI_SEARCHNEXT, m_bMatchCase ? SCFIND_MATCHCASE : 0, reinterpret_cast<LPARAM>(CUnicodeUtils::StdGetUTF8(m_findtext).c_str())) == -1)
 		{
 			FLASHWINFO fwi;
 			fwi.cbSize = sizeof(FLASHWINFO);
@@ -266,7 +266,7 @@ LRESULT CMainWindow::DoCommand(int id)
 		break;
 	case IDM_FINDPREV:
 		SendEditor(SCI_SEARCHANCHOR);
-		if (SendEditor(SCI_SEARCHPREV, m_bMatchCase ? SCFIND_MATCHCASE : 0, (LPARAM)CUnicodeUtils::StdGetUTF8(m_findtext).c_str()) == -1)
+		if (SendEditor(SCI_SEARCHPREV, m_bMatchCase ? SCFIND_MATCHCASE : 0, reinterpret_cast<LPARAM>(CUnicodeUtils::StdGetUTF8(m_findtext).c_str())) == -1)
 		{
 			FLASHWINFO fwi;
 			fwi.cbSize = sizeof(FLASHWINFO);
@@ -328,10 +328,10 @@ LRESULT CMainWindow::DoCommand(int id)
 			CRegStdDWORD m_regMargRight  = CRegStdDWORD(L"Software\\TortoiseGit\\UDiffpagesetupmarginright", defaultMargin);
 			CRegStdDWORD m_regMargBottom = CRegStdDWORD(L"Software\\TortoiseGit\\UDiffpagesetupmarginbottom", defaultMargin);
 
-			pdlg.rtMargin.left   = (long)(DWORD)m_regMargLeft;
-			pdlg.rtMargin.top    = (long)(DWORD)m_regMargTop;
-			pdlg.rtMargin.right  = (long)(DWORD)m_regMargRight;
-			pdlg.rtMargin.bottom = (long)(DWORD)m_regMargBottom;
+			pdlg.rtMargin.left   = static_cast<long>(m_regMargLeft);
+			pdlg.rtMargin.top    = static_cast<long>(m_regMargTop);
+			pdlg.rtMargin.right  = static_cast<long>(m_regMargRight);
+			pdlg.rtMargin.bottom = static_cast<long>(m_regMargBottom);
 
 			if (!PageSetupDlg(&pdlg))
 				return false;
@@ -356,8 +356,8 @@ LRESULT CMainWindow::DoCommand(int id)
 			pdlg.nStartPage = START_PAGE_GENERAL;
 
 			// See if a range has been selected
-			auto startPos = (Sci_Position)SendEditor(SCI_GETSELECTIONSTART);
-			auto endPos = (Sci_Position)SendEditor(SCI_GETSELECTIONEND);
+			auto startPos = static_cast<Sci_Position>(SendEditor(SCI_GETSELECTIONSTART));
+			auto endPos = static_cast<Sci_Position>(SendEditor(SCI_GETSELECTIONEND));
 
 			if (startPos == endPos)
 				pdlg.Flags |= PD_NOSELECTION;
@@ -369,16 +369,16 @@ LRESULT CMainWindow::DoCommand(int id)
 				return 0;
 
 			// reset all indicators
-			auto endpos = (int)SendEditor(SCI_GETLENGTH);
+			auto endpos = static_cast<int>(SendEditor(SCI_GETLENGTH));
 			for (int i = INDIC_CONTAINER; i <= INDIC_MAX; ++i)
 			{
 				SendEditor(SCI_SETINDICATORCURRENT, i);
 				SendEditor(SCI_INDICATORCLEARRANGE, 0, endpos);
 			}
 			// store and reset UI settings
-			auto viewws = (int)SendEditor(SCI_GETVIEWWS);
+			auto viewws = static_cast<int>(SendEditor(SCI_GETVIEWWS));
 			SendEditor(SCI_SETVIEWWS, 0);
-			auto edgemode = (int)SendEditor(SCI_GETEDGEMODE);
+			auto edgemode = static_cast<int>(SendEditor(SCI_GETEDGEMODE));
 			SendEditor(SCI_SETEDGEMODE, EDGE_NONE);
 			SendEditor(SCI_SETWRAPVISUALFLAGS, SC_WRAPVISUALFLAG_END);
 
@@ -422,10 +422,10 @@ LRESULT CMainWindow::DoCommand(int id)
 			CRegStdDWORD m_regMargRight  = CRegStdDWORD(L"Software\\TortoiseGit\\UDiffpagesetupmarginright", defaultMargin);
 			CRegStdDWORD m_regMargBottom = CRegStdDWORD(L"Software\\TortoiseGit\\UDiffpagesetupmarginbottom", defaultMargin);
 
-			pagesetupMargin.left   = (long)(DWORD)m_regMargLeft;
-			pagesetupMargin.top    = (long)(DWORD)m_regMargTop;
-			pagesetupMargin.right  = (long)(DWORD)m_regMargRight;
-			pagesetupMargin.bottom = (long)(DWORD)m_regMargBottom;
+			pagesetupMargin.left   = static_cast<long>(m_regMargLeft);
+			pagesetupMargin.top    = static_cast<long>(m_regMargTop);
+			pagesetupMargin.right  = static_cast<long>(m_regMargRight);
+			pagesetupMargin.bottom = static_cast<long>(m_regMargBottom);
 
 			if (pagesetupMargin.left != 0 || pagesetupMargin.right != 0 ||
 				pagesetupMargin.top != 0 || pagesetupMargin.bottom != 0)
@@ -470,11 +470,11 @@ LRESULT CMainWindow::DoCommand(int id)
 			// area of the page.
 
 			// Convert device coordinates into logical coordinates
-			DPtoLP(hdc, (LPPOINT) &rectMargins, 2);
-			DPtoLP(hdc, (LPPOINT)&rectPhysMargins, 2);
+			DPtoLP(hdc, reinterpret_cast<LPPOINT>(&rectMargins), 2);
+			DPtoLP(hdc, reinterpret_cast<LPPOINT>(&rectPhysMargins), 2);
 
 			// Convert page size to logical units and we're done!
-			DPtoLP(hdc, (LPPOINT) &ptPage, 1);
+			DPtoLP(hdc, reinterpret_cast<LPPOINT>(&ptPage), 1);
 
 
 			DOCINFO di = {sizeof(DOCINFO), 0, 0, 0, 0};
@@ -488,7 +488,7 @@ LRESULT CMainWindow::DoCommand(int id)
 				return 0;
 			}
 
-			size_t lengthDoc = (int)SendEditor(SCI_GETLENGTH);
+			size_t lengthDoc = static_cast<int>(SendEditor(SCI_GETLENGTH));
 			size_t lengthDocMax = lengthDoc;
 			size_t lengthPrinted = 0;
 
@@ -528,8 +528,8 @@ LRESULT CMainWindow::DoCommand(int id)
 			{
 				::StartPage(hdc);
 
-				frPrint.chrg.cpMin = (long)lengthPrinted;
-				frPrint.chrg.cpMax = (long)lengthDoc;
+				frPrint.chrg.cpMin = static_cast<long>(lengthPrinted);
+				frPrint.chrg.cpMax = static_cast<long>(lengthDoc);
 
 				lengthPrinted = SendEditor(SCI_FORMATRANGE, true, reinterpret_cast<LPARAM>(&frPrint));
 
@@ -587,7 +587,7 @@ LRESULT CMainWindow::SendEditor(UINT Msg, WPARAM wParam, LPARAM lParam)
 {
 	if (m_directFunction)
 	{
-		return ((SciFnDirect) m_directFunction)(m_directPointer, Msg, wParam, lParam);
+		return reinterpret_cast<SciFnDirect>(m_directFunction)(m_directPointer, Msg, wParam, lParam);
 	}
 	return ::SendMessage(m_hWndEdit, Msg, wParam, lParam);
 }
@@ -623,7 +623,7 @@ bool CMainWindow::Initialize()
 		CUnicodeUtils::StdGetUTF8(CRegStdString(L"Software\\TortoiseGit\\UDiffFontName", L"Consolas")).c_str());
 	SendEditor(SCI_SETTABWIDTH, CRegStdDWORD(L"Software\\TortoiseGit\\UDiffTabSize", 4));
 	SendEditor(SCI_SETREADONLY, TRUE);
-	LRESULT pix = SendEditor(SCI_TEXTWIDTH, STYLE_LINENUMBER, (LPARAM)"_99999");
+	LRESULT pix = SendEditor(SCI_TEXTWIDTH, STYLE_LINENUMBER, reinterpret_cast<LPARAM>("_99999"));
 	SendEditor(SCI_SETMARGINWIDTHN, 0, pix);
 	SendEditor(SCI_SETMARGINWIDTHN, 1);
 	SendEditor(SCI_SETMARGINWIDTHN, 2);
@@ -751,7 +751,7 @@ void CMainWindow::SetupColors(bool recolorize)
 				CRegStdDWORD(L"Software\\TortoiseGit\\UDiffBackRemovedColor", UDIFF_COLORBACKREMOVED));
 
 	SendEditor(SCI_SETLEXER, SCLEX_DIFF);
-	SendEditor(SCI_SETKEYWORDS, 0, (LPARAM)"revision");
+	SendEditor(SCI_SETKEYWORDS, 0, reinterpret_cast<LPARAM>("revision"));
 
 	if (recolorize)
 		SendEditor(SCI_COLOURISE, 0, -1);
@@ -766,12 +766,12 @@ bool CMainWindow::SaveFile(LPCTSTR filename)
 		TCHAR fmt[1024] = { 0 };
 		LoadString(::hResource, IDS_ERRORSAVE, fmt, _countof(fmt));
 		TCHAR error[1024] = { 0 };
-		_snwprintf_s(error, _countof(error), fmt, filename, (LPCTSTR)CFormatMessageWrapper());
+		_snwprintf_s(error, _countof(error), fmt, filename, static_cast<LPCTSTR>(CFormatMessageWrapper()));
 		MessageBox(*this, error, L"TortoiseGitUDiff", MB_OK);
 		return false;
 	}
 
-	auto len = (int)SendEditor(SCI_GETTEXT, 0, 0);
+	auto len = static_cast<int>(SendEditor(SCI_GETTEXT, 0, 0));
 	auto data = std::make_unique<char[]>(len + 1);
 	SendEditor(SCI_GETTEXT, len, reinterpret_cast<LPARAM>(static_cast<char *>(data.get())));
 	fwrite(data.get(), sizeof(char), len-1, fp);
@@ -804,8 +804,8 @@ bool CMainWindow::IsUTF8(LPVOID pBuffer, size_t cb)
 {
 	if (cb < 2)
 		return true;
-	UINT16 * pVal16 = (UINT16 *)pBuffer;
-	UINT8 * pVal8 = (UINT8 *)(pVal16+1);
+	auto pVal16 = static_cast<UINT16*>(pBuffer);
+	auto pVal8 = reinterpret_cast<UINT8*>(pVal16 + 1);
 	// scan the whole buffer for a 0x0000 sequence
 	// if found, we assume a binary file
 	for (size_t i=0; i<(cb-2); i=i+2)
@@ -813,7 +813,7 @@ bool CMainWindow::IsUTF8(LPVOID pBuffer, size_t cb)
 		if (0x0000 == *pVal16++)
 			return false;
 	}
-	pVal16 = (UINT16 *)pBuffer;
+	pVal16 = static_cast<UINT16*>(pBuffer);
 	if (*pVal16 == 0xFEFF)
 		return false;
 	if (cb < 3)
@@ -824,14 +824,14 @@ bool CMainWindow::IsUTF8(LPVOID pBuffer, size_t cb)
 			return true;
 	}
 	// check for illegal UTF8 chars
-	pVal8 = (UINT8 *)pBuffer;
+	pVal8 = static_cast<UINT8*>(pBuffer);
 	for (size_t i=0; i<cb; ++i)
 	{
 		if ((*pVal8 == 0xC0)||(*pVal8 == 0xC1)||(*pVal8 >= 0xF5))
 			return false;
 		pVal8++;
 	}
-	pVal8 = (UINT8 *)pBuffer;
+	pVal8 = static_cast<UINT8*>(pBuffer);
 	bool bUTF8 = false;
 	for (size_t i=0; i<(cb-3); ++i)
 	{

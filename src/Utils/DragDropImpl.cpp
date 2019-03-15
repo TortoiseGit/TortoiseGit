@@ -41,9 +41,9 @@ STDMETHODIMP CIDataObject::QueryInterface(/* [in] */ REFIID riid,
 		return E_POINTER;
 	*ppvObject = nullptr;
 	if (IsEqualIID(IID_IUnknown, riid) || IsEqualIID(IID_IDataObject, riid))
-		*ppvObject=static_cast<IDataObject*>(this);
+		*ppvObject = static_cast<IDataObject*>(this);
 	/*else if(riid == IID_IAsyncOperation)
-		*ppvObject=(IAsyncOperation*)this;*/
+		*ppvObject = static_cast<IAsyncOperation*>(this);*/
 	else
 		return E_NOINTERFACE;
 	AddRef();
@@ -188,19 +188,19 @@ void CIDataObject::CopyMedium(STGMEDIUM* pMedDest, STGMEDIUM* pMedSrc, FORMATETC
 	switch(pMedSrc->tymed)
 	{
 		case TYMED_HGLOBAL:
-			pMedDest->hGlobal = (HGLOBAL)OleDuplicateData(pMedSrc->hGlobal,pFmtSrc->cfFormat, NULL);
+			pMedDest->hGlobal = static_cast<HGLOBAL>(OleDuplicateData(pMedSrc->hGlobal, pFmtSrc->cfFormat, 0));
 			break;
 		case TYMED_GDI:
-			pMedDest->hBitmap = (HBITMAP)OleDuplicateData(pMedSrc->hBitmap,pFmtSrc->cfFormat, NULL);
+			pMedDest->hBitmap = static_cast<HBITMAP>(OleDuplicateData(pMedSrc->hBitmap,pFmtSrc->cfFormat, 0));
 			break;
 		case TYMED_MFPICT:
-			pMedDest->hMetaFilePict = (HMETAFILEPICT)OleDuplicateData(pMedSrc->hMetaFilePict,pFmtSrc->cfFormat, NULL);
+			pMedDest->hMetaFilePict = static_cast<HMETAFILEPICT>(OleDuplicateData(pMedSrc->hMetaFilePict, pFmtSrc->cfFormat, 0));
 			break;
 		case TYMED_ENHMF:
-			pMedDest->hEnhMetaFile = (HENHMETAFILE)OleDuplicateData(pMedSrc->hEnhMetaFile,pFmtSrc->cfFormat, NULL);
+			pMedDest->hEnhMetaFile = static_cast<HENHMETAFILE>(OleDuplicateData(pMedSrc->hEnhMetaFile, pFmtSrc->cfFormat, 0));
 			break;
 		case TYMED_FILE:
-			pMedSrc->lpszFileName = (LPOLESTR)OleDuplicateData(pMedSrc->lpszFileName,pFmtSrc->cfFormat, NULL);
+			pMedSrc->lpszFileName = static_cast<LPOLESTR>(OleDuplicateData(pMedSrc->lpszFileName, pFmtSrc->cfFormat, 0));
 			break;
 		case TYMED_ISTREAM:
 			pMedDest->pstm = pMedSrc->pstm;
@@ -275,7 +275,7 @@ HRESULT CIDataObject::SetDropDescription(DROPIMAGETYPE image, LPCTSTR format, LP
 		return E_INVALIDARG;
 
 	FORMATETC fetc = {0};
-	fetc.cfFormat = (CLIPFORMAT)RegisterClipboardFormat(CFSTR_DROPDESCRIPTION);
+	fetc.cfFormat = static_cast<CLIPFORMAT>(RegisterClipboardFormat(CFSTR_DROPDESCRIPTION));
 	fetc.dwAspect = DVASPECT_CONTENT;
 	fetc.lindex = -1;
 	fetc.tymed = TYMED_HGLOBAL;
@@ -285,7 +285,7 @@ HRESULT CIDataObject::SetDropDescription(DROPIMAGETYPE image, LPCTSTR format, LP
 	if (!medium.hGlobal)
 		return E_OUTOFMEMORY;
 
-	DROPDESCRIPTION* pDropDescription = (DROPDESCRIPTION*)GlobalLock(medium.hGlobal);
+	auto pDropDescription = static_cast<DROPDESCRIPTION*>(GlobalLock(medium.hGlobal));
 	if (pDropDescription == nullptr)
 		return E_OUTOFMEMORY;
 	StringCchCopy(pDropDescription->szInsert, _countof(pDropDescription->szInsert), insert);
@@ -364,7 +364,7 @@ STDMETHODIMP CIDropSource::GiveFeedback(
 	if (m_pIDataObj)
 	{
 		FORMATETC fetc = {0};
-		fetc.cfFormat = (CLIPFORMAT)RegisterClipboardFormat(L"DragWindow");
+		fetc.cfFormat = static_cast<CLIPFORMAT>(RegisterClipboardFormat(L"DragWindow"));
 		fetc.dwAspect = DVASPECT_CONTENT;
 		fetc.lindex = -1;
 		fetc.tymed = TYMED_HGLOBAL;
@@ -373,10 +373,10 @@ STDMETHODIMP CIDropSource::GiveFeedback(
 			STGMEDIUM medium;
 			if (m_pIDataObj->GetData(&fetc, &medium) == S_OK)
 			{
-				HWND hWndDragWindow = *((HWND*) GlobalLock(medium.hGlobal));
+				auto hWndDragWindow = *static_cast<HWND*>(GlobalLock(medium.hGlobal));
 				GlobalUnlock(medium.hGlobal);
 #define WM_INVALIDATEDRAGIMAGE (WM_USER + 3)
-				SendMessage(hWndDragWindow, WM_INVALIDATEDRAGIMAGE, NULL, NULL);
+				SendMessage(hWndDragWindow, WM_INVALIDATEDRAGIMAGE, 0, 0);
 				ReleaseStgMedium(&medium);
 			}
 		}
@@ -496,7 +496,7 @@ CIDropTarget::CIDropTarget(HWND hTargetWnd):
 	m_pSupportedFrmt(nullptr),
 	m_pIDataObject(nullptr)
 {
-	if (FAILED(CoCreateInstance(CLSID_DragDropHelper, nullptr, CLSCTX_INPROC_SERVER, IID_IDropTargetHelper, (LPVOID*)&m_pDropTargetHelper)))
+	if (FAILED(CoCreateInstance(CLSID_DragDropHelper, nullptr, CLSCTX_INPROC_SERVER, IID_IDropTargetHelper, reinterpret_cast<LPVOID*>(&m_pDropTargetHelper))))
 		m_pDropTargetHelper = nullptr;
 }
 
@@ -589,7 +589,7 @@ HRESULT STDMETHODCALLTYPE CIDropTarget::DragEnter(
 	m_pIDataObject = pDataObj;
 
 	if(m_pDropTargetHelper)
-		m_pDropTargetHelper->DragEnter(m_hTargetWnd, pDataObj, (LPPOINT)&pt, *pdwEffect);
+		m_pDropTargetHelper->DragEnter(m_hTargetWnd, pDataObj, reinterpret_cast<LPPOINT>(&pt), *pdwEffect);
 
 	m_pSupportedFrmt = nullptr;
 	for(int i =0; i<m_formatetc.GetSize(); ++i)
@@ -614,7 +614,7 @@ HRESULT STDMETHODCALLTYPE CIDropTarget::DragOver(
 	if (!pdwEffect)
 		return E_POINTER;
 	if(m_pDropTargetHelper)
-		m_pDropTargetHelper->DragOver((LPPOINT)&pt, *pdwEffect);
+		m_pDropTargetHelper->DragOver(reinterpret_cast<LPPOINT>(&pt), *pdwEffect);
 	QueryDrop(grfKeyState, pdwEffect);
 	return S_OK;
 }
@@ -642,7 +642,7 @@ HRESULT STDMETHODCALLTYPE CIDropTarget::Drop(
 		return E_POINTER;
 
 	if(m_pDropTargetHelper)
-		m_pDropTargetHelper->Drop(pDataObj, (LPPOINT)&pt, *pdwEffect);
+		m_pDropTargetHelper->Drop(pDataObj, reinterpret_cast<LPPOINT>(&pt), *pdwEffect);
 
 	if(QueryDrop(grfKeyState, pdwEffect))
 	{
@@ -670,7 +670,7 @@ HRESULT CIDropTarget::SetDropDescription(DROPIMAGETYPE image, LPCTSTR format, LP
 	HRESULT hr = E_OUTOFMEMORY;
 
 	FORMATETC fetc = {0};
-	fetc.cfFormat = (CLIPFORMAT)RegisterClipboardFormat(CFSTR_DROPDESCRIPTION);
+	fetc.cfFormat = static_cast<CLIPFORMAT>(RegisterClipboardFormat(CFSTR_DROPDESCRIPTION));
 	fetc.dwAspect = DVASPECT_CONTENT;
 	fetc.lindex = -1;
 	fetc.tymed = TYMED_HGLOBAL;
@@ -680,7 +680,7 @@ HRESULT CIDropTarget::SetDropDescription(DROPIMAGETYPE image, LPCTSTR format, LP
 	medium.hGlobal = GlobalAlloc(GHND, sizeof(DROPDESCRIPTION));
 	if(medium.hGlobal)
 	{
-		DROPDESCRIPTION* pDropDescription = (DROPDESCRIPTION*)GlobalLock(medium.hGlobal);
+		auto pDropDescription = static_cast<DROPDESCRIPTION*>(GlobalLock(medium.hGlobal));
 		if (pDropDescription == nullptr)
 			return hr;
 

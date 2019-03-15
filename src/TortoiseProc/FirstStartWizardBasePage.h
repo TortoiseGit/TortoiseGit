@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2017 - TortoiseGit
+// Copyright (C) 2016-2017, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -31,11 +31,11 @@ public:
 		, CommonDialogFunctions(this)
 		{}
 	explicit CFirstStartWizardBasePage(UINT nIDTemplate, UINT nIDCaption = 0)
-		: CPropertyPageEx(nIDTemplate, nIDCaption, (UINT)0)
+		: CPropertyPageEx(nIDTemplate, nIDCaption, static_cast<UINT>(0))
 		, CommonDialogFunctions(this)
 		{}
 	explicit CFirstStartWizardBasePage(LPCTSTR lpszTemplateName, UINT nIDCaption = 0)
-		: CPropertyPageEx(lpszTemplateName, nIDCaption, (UINT)0)
+		: CPropertyPageEx(lpszTemplateName, nIDCaption, static_cast<UINT>(0))
 		, CommonDialogFunctions(this)
 		{}
 

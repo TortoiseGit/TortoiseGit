@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2018 - TortoiseGit
+// Copyright (C) 2013-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -38,7 +38,7 @@ static CString GetConfigValue(const wchar_t* ptr)
 
 	CString value;
 	{
-		CStrBuf working(value, (int)min(wcslen(ptr), (size_t)UINT16_MAX));
+		CStrBuf working(value, static_cast<int>(min(wcslen(ptr), static_cast<size_t>(UINT16_MAX))));
 		wchar_t* fixed = working;
 		bool quoted = false;
 
@@ -153,7 +153,7 @@ CString CVersioncheckParser::GetTortoiseGitBaseURL()
 {
 	CString baseurl = GetStringValue(L"tortoisegit", L"baseurl");
 	if (baseurl.IsEmpty())
-		baseurl.Format(L"http://updater.download.tortoisegit.org/tgit/%s/", (LPCTSTR)m_version.version_for_filename);
+		baseurl.Format(L"http://updater.download.tortoisegit.org/tgit/%s/", static_cast<LPCTSTR>(m_version.version_for_filename));
 	return baseurl;
 }
 
@@ -177,7 +177,7 @@ CString CVersioncheckParser::GetTortoiseGitMainfilename()
 	if (mainfilenametemplate.IsEmpty())
 		mainfilenametemplate = L"TortoiseGit-%1!s!-%2!s!bit.msi";
 	CString mainfilename;
-	mainfilename.FormatMessage(mainfilenametemplate, (LPCTSTR)m_version.version_for_filename, (LPCTSTR)x86x64());
+	mainfilename.FormatMessage(mainfilenametemplate, static_cast<LPCTSTR>(m_version.version_for_filename), static_cast<LPCTSTR>(x86x64()));
 	return mainfilename;
 }
 
@@ -219,7 +219,7 @@ CVersioncheckParser::LANGPACK_VECTOR CVersioncheckParser::GetTortoiseGitLanguage
 			pack.m_LangName += L')';
 		}
 
-		pack.m_filename.FormatMessage(languagepackfilenametemplate, (LPCTSTR)m_version.version_for_filename, (LPCTSTR)x86x64(), (LPCTSTR)pack.m_LangCode, pack.m_LocaleID);
+		pack.m_filename.FormatMessage(languagepackfilenametemplate, static_cast<LPCTSTR>(m_version.version_for_filename), static_cast<LPCTSTR>(x86x64()), static_cast<LPCTSTR>(pack.m_LangCode), pack.m_LocaleID);
 
 		vec.push_back(pack);
 	}

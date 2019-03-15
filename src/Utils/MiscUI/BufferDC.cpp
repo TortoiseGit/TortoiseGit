@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "BufferDC.h"
 
 IMPLEMENT_DYNAMIC(CBufferDC, CPaintDC)
@@ -20,7 +20,7 @@ CBufferDC::CBufferDC(CWnd* pWnd) : CPaintDC(pWnd)
 					m_ClientRect.right  - m_ClientRect.left,
 					m_ClientRect.bottom - m_ClientRect.top);
 
-		m_hOldBitmap = (HBITMAP)::SelectObject(m_hMemoryDC, m_hPaintBitmap);
+		m_hOldBitmap = static_cast<HBITMAP>(::SelectObject(m_hMemoryDC, m_hPaintBitmap));
 
 		CPaintDC::m_hDC       = m_hMemoryDC;
 		CPaintDC::m_hAttribDC = m_hMemoryDC;
@@ -85,7 +85,7 @@ UINT CBufferDC::SetBoundsRect( LPCRECT lpRectBounds, UINT flags )
 
 		HDC tmpDC  = ::CreateCompatibleDC(m_hOutputDC);
 
-		HBITMAP oldBmp = (HBITMAP)::SelectObject(tmpDC, bmp);
+		auto oldBmp = static_cast<HBITMAP>(::SelectObject(tmpDC, bmp));
 
 		::BitBlt(
 			tmpDC,
@@ -99,7 +99,7 @@ UINT CBufferDC::SetBoundsRect( LPCRECT lpRectBounds, UINT flags )
 		::SelectObject(tmpDC, oldBmp);
 		::DeleteDC(tmpDC);
 
-		HBITMAP old = (HBITMAP)::SelectObject(m_hMemoryDC, bmp);
+		auto old = static_cast<HBITMAP>(::SelectObject(m_hMemoryDC, bmp));
 
 		if (old && old != m_hPaintBitmap)
 		{

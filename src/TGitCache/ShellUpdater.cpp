@@ -1,7 +1,7 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2008 - TortoiseSVN
-// Copyright (C) 2008-2011,2013,2015-2017 - TortoiseGit
+// Copyright (C) 2008-2011, 2013, 2015-2017, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -62,7 +62,7 @@ void CShellUpdater::Initialise()
 
 	InterlockedExchange(&m_bRunning, TRUE);
 	unsigned int threadId;
-	m_hThread = (HANDLE)_beginthreadex(nullptr, 0, ThreadEntry, this, 0, &threadId);
+	m_hThread = reinterpret_cast<HANDLE>(_beginthreadex(nullptr, 0, ThreadEntry, this, 0, &threadId));
 	SetThreadPriority(m_hThread, THREAD_PRIORITY_LOWEST);
 }
 
@@ -143,7 +143,7 @@ void CShellUpdater::WorkerThread()
 				admindir += L'\\';
 				admindir += GitAdminDir::GetAdminDirName();
 				if(::PathFileExists(admindir))
-					SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, (LPCTSTR)admindir, nullptr);
+					SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, static_cast<LPCTSTR>(admindir), nullptr);
 
 				SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, workingPath.GetWinPath(), nullptr);
 				// Sending an UPDATEDIR notification somehow overwrites/deletes the UPDATEITEM message. And without

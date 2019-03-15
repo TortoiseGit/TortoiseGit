@@ -59,7 +59,7 @@ END_MESSAGE_MAP()
 
 void CLocatorBar::DocumentUpdated()
 {
-	m_pMainFrm = (CMainFrame *)this->GetParentFrame();
+	m_pMainFrm = static_cast<CMainFrame*>(this->GetParentFrame());
 	if (!m_pMainFrm)
 		return;
 
@@ -287,11 +287,11 @@ void CLocatorBar::PaintView(CDC& cacheDC, CBaseView* view, CDWordArray& indents,
 		COLORREF color, color2;
 		const long identcount = indents.GetAt(i);
 		const DWORD state = states.GetAt(i);
-		CDiffColors::GetInstance().GetColors((DiffStates)state, color, color2);
-		if ((DiffStates)state != DIFFSTATE_NORMAL)
+		CDiffColors::GetInstance().GetColors(static_cast<DiffStates>(state), color, color2);
+		if (static_cast<DiffStates>(state) != DIFFSTATE_NORMAL)
 		{
 			cacheDC.FillSolidRect(rect.left + (width*stripeIndex/3), height*linecount/m_nLines,
-						barwidth, max((int)(height * identcount / m_nLines), 1), (int)color);
+						barwidth, max(static_cast<int>(height * identcount / m_nLines), 1), static_cast<int>(color));
 		}
 		linecount += identcount;
 	}
@@ -304,8 +304,8 @@ void CLocatorBar::PaintView(CDC& cacheDC, CBaseView* view, CDWordArray& indents,
 		{
 			if (view->m_arMarkedWordLines[i])
 			{
-				cacheDC.FillSolidRect(rect.left + (width*stripeIndex/3), (int)(height*i/m_nLines),
-					barwidth, max((int)(height / m_nLines), 2), (int)color);
+				cacheDC.FillSolidRect(rect.left + (width * stripeIndex / 3), static_cast<int>(height * i / m_nLines),
+					barwidth, max(static_cast<int>(height / m_nLines), 2), static_cast<int>(color));
 			}
 		}
 	}
@@ -318,8 +318,8 @@ void CLocatorBar::PaintView(CDC& cacheDC, CBaseView* view, CDWordArray& indents,
 		{
 			if (view->m_arFindStringLines[i])
 			{
-				cacheDC.FillSolidRect(rect.left + (width*stripeIndex/3), (int)(height*i/m_nLines),
-					barwidth, max((int)(height / m_nLines), 2), (int)color);
+				cacheDC.FillSolidRect(rect.left + (width*stripeIndex/3), static_cast<int>(height * i / m_nLines),
+					barwidth, max(static_cast<int>(height / m_nLines), 2), static_cast<int>(color));
 			}
 		}
 	}

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2016 - TortoiseGit
+// Copyright (C) 2015-2016, 2019 - TortoiseGit
 // Copyright (C) 2003-2015, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -58,7 +58,7 @@ protected:
 		EnableToolTips();
 		m_tooltips.Create(this);
 
-        auto CustomBreak = (DWORD)CRegDWORD(L"Software\\TortoiseGit\\UseCustomWordBreak", 2);
+		auto CustomBreak = static_cast<DWORD>(CRegDWORD(L"Software\\TortoiseGit\\UseCustomWordBreak", 2));
 		if (CustomBreak)
 			SetUrlWordBreakProcToChildWindows(GetSafeHwnd(), CustomBreak == 2);
 
@@ -70,7 +70,7 @@ protected:
 		m_tooltips.RelayEvent(pMsg, this);
 		if (pMsg->message == WM_KEYDOWN)
 		{
-			int nVirtKey = (int) pMsg->wParam;
+			int nVirtKey = static_cast<int>(pMsg->wParam);
 
 			if (nVirtKey == 'A' && (GetKeyState(VK_CONTROL) & 0x8000 ) )
 			{

@@ -65,7 +65,7 @@ bool CatCommand::Execute()
 			}
 
 			CAutoBuf buf;
-			if (git_blob_filtered_content(buf, (git_blob *)(git_object *)obj, CUnicodeUtils::GetUTF8(cmdLinePath.GetGitPathString()), 0))
+			if (git_blob_filtered_content(buf, reinterpret_cast<git_blob*>(static_cast<git_object*>(obj)), CUnicodeUtils::GetUTF8(cmdLinePath.GetGitPathString()), 0))
 			{
 				::DeleteFile(savepath);
 				MessageBox(GetExplorerHWND(), g_Git.GetLibGit2LastErr(L"Could not get filtered content."), L"TortoiseGit", MB_ICONERROR);
@@ -90,7 +90,7 @@ bool CatCommand::Execute()
 	}
 
 	CString cmd, output, err;
-	cmd.Format(L"git.exe cat-file -t %s", (LPCTSTR)revision);
+	cmd.Format(L"git.exe cat-file -t %s", static_cast<LPCTSTR>(revision));
 
 	if (g_Git.Run(cmd, &output, &err, CP_UTF8))
 	{
@@ -100,9 +100,9 @@ bool CatCommand::Execute()
 	}
 
 	if (CStringUtils::StartsWith(output, L"blob"))
-		cmd.Format(L"git.exe cat-file -p %s", (LPCTSTR)revision);
+		cmd.Format(L"git.exe cat-file -p %s", static_cast<LPCTSTR>(revision));
 	else
-		cmd.Format(L"git.exe show %s -- \"%s\"", (LPCTSTR)revision, (LPCTSTR)this->cmdLinePath.GetWinPathString());
+		cmd.Format(L"git.exe show %s -- \"%s\"", static_cast<LPCTSTR>(revision), static_cast<LPCTSTR>(this->cmdLinePath.GetWinPathString()));
 
 	if (g_Git.RunLogFile(cmd, savepath, &err))
 	{

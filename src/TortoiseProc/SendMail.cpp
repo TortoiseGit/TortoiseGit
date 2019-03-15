@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2016, 2018 - TortoiseGit
+// Copyright (C) 2008-2016, 2018-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -110,7 +110,7 @@ int CSendMail::SendMail(const CString& FromName, const CString& FromMail, const 
 	else
 	{
 		CString sender;
-		sender.Format(L"%s <%s>", (LPCTSTR)CHwSMTP::GetEncodedHeader(FromName), (LPCTSTR)FromMail);
+		sender.Format(L"%s <%s>", static_cast<LPCTSTR>(CHwSMTP::GetEncodedHeader(FromName)), static_cast<LPCTSTR>(FromMail));
 
 		CHwSMTP mail;
 		if (CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\DeliveryType", SEND_MAIL_SMTP_CONFIGURED) == SEND_MAIL_SMTP_CONFIGURED)
@@ -120,7 +120,7 @@ int CSendMail::SendMail(const CString& FromName, const CString& FromMail, const 
 				recipients += L";" + CC;
 			CCredentials credentials;
 			CWindowsCredentialsStore::GetCredential(L"TortoiseGit:SMTP-Credentials", credentials);
-			if (mail.SendEmail((CString)CRegString(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\Address", L""), &credentials, (BOOL)CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\AuthenticationRequired", FALSE), sender, recipients, subject, body, &attachments, CC, (DWORD)CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\Port", 25), sender, To, (DWORD)CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\Encryption", 0)) == TRUE)
+			if (mail.SendEmail(static_cast<CString>(CRegString(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\Address", L"")), &credentials, static_cast<BOOL>(CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\AuthenticationRequired", FALSE)), sender, recipients, subject, body, &attachments, CC, static_cast<DWORD>(CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\Port", 25)), sender, To, static_cast<DWORD>(CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\Encryption", 0))) == TRUE)
 				return 0;
 			else
 			{
@@ -161,7 +161,7 @@ int CSendMailCombineable::Send(const CTGitPathList& list, CGitProgressList* inst
 		for (int i = 0; i < list.GetCount(); ++i)
 		{
 			instance->SetItemProgress(i);
-			if (SendAsSingleMail((CTGitPath&)list[i], instance))
+			if (SendAsSingleMail(list[i], instance))
 				return -1;
 		}
 		instance->SetItemProgress(list.GetCount() + 1);

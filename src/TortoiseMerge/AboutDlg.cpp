@@ -1,4 +1,4 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2006-2007, 2009-2010, 2013 - TortoiseSVN
 
@@ -62,7 +62,7 @@ BOOL CAboutDlg::OnInitDialog()
 	SetDlgItemText(IDC_VERSIONBOX, boxtitle);
 	const svn_version_t * diffver = svn_diff_version();
 	temp.Format(IDS_ABOUTVERSION, TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, _T(TGIT_PLATFORM), _T(TGIT_VERDATE),
-		diffver->major, diffver->minor, diffver->patch, (LPCTSTR)CString(diffver->tag),
+		diffver->major, diffver->minor, diffver->patch, static_cast<LPCTSTR>(CString(diffver->tag)),
 		APR_MAJOR_VERSION, APR_MINOR_VERSION, APR_PATCH_VERSION,
 		APU_MAJOR_VERSION, APU_MINOR_VERSION, APU_PATCH_VERSION);
 	SetDlgItemText(IDC_VERSIONABOUT, temp);
@@ -88,7 +88,7 @@ void CAboutDlg::OnTimer(UINT_PTR nIDEvent)
 {
 	if (nIDEvent == ID_EFFECTTIMER)
 	{
-		m_waterEffect.Render((DWORD*)m_renderSrc.GetDIBits(), (DWORD*)m_renderDest.GetDIBits());
+		m_waterEffect.Render(static_cast<DWORD*>(m_renderSrc.GetDIBits()), static_cast<DWORD*>(m_renderDest.GetDIBits()));
 		CClientDC dc(this);
 		CPoint ptOrigin(15,20);
 		m_renderDest.Draw(&dc,ptOrigin);

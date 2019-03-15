@@ -252,7 +252,7 @@ BOOL CSettingsAdvanced::OnInitDialog()
 		case SettingTypeNumber:
 			{
 				CRegDWORD s(L"Software\\TortoiseGit\\" + settings[i].sName, settings[i].def.l);
-				temp.Format(L"%ld", (DWORD)s);
+				temp.Format(L"%ld", static_cast<DWORD>(s));
 				m_ListCtrl.SetItemText(i, 0, temp);
 			}
 			break;

@@ -1,7 +1,7 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2007-2008, 2018 - TortoiseSVN
-// Copyright (C) 2011-2017 - TortoiseGit
+// Copyright (C) 2011-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -64,7 +64,7 @@ void CSettingsTBlame::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_NEWLINESCOLOR, m_cNewLinesColor);
 	DDX_Control(pDX, IDC_OLDLINESCOLOR, m_cOldLinesColor);
 	DDX_Control(pDX, IDC_FONTSIZES, m_cFontSizes);
-	m_dwFontSize = (DWORD)m_cFontSizes.GetItemData(m_cFontSizes.GetCurSel());
+	m_dwFontSize = static_cast<DWORD>(m_cFontSizes.GetItemData(m_cFontSizes.GetCurSel()));
 	if ((m_dwFontSize==0)||(m_dwFontSize == -1))
 	{
 		CString t;
@@ -74,7 +74,7 @@ void CSettingsTBlame::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_FONTNAMES, m_cFontNames);
 	DDX_Text(pDX, IDC_TABSIZE, m_dwTabSize);
 	DDX_Control(pDX, IDC_DETECT_MOVED_OR_COPIED_LINES, m_cDetectMovedOrCopiedLines);
-	m_dwDetectMovedOrCopiedLines = (DWORD)m_cDetectMovedOrCopiedLines.GetItemData(m_cDetectMovedOrCopiedLines.GetCurSel());
+	m_dwDetectMovedOrCopiedLines = static_cast<DWORD>(m_cDetectMovedOrCopiedLines.GetItemData(m_cDetectMovedOrCopiedLines.GetCurSel()));
 	if (m_dwDetectMovedOrCopiedLines == -1){
 		m_dwDetectMovedOrCopiedLines = BLAME_DETECT_MOVED_OR_COPIED_LINES_DISABLED;
 	}
@@ -118,8 +118,8 @@ BOOL CSettingsTBlame::OnInitDialog()
 	AdjustControlSize(IDC_BLAME_ONLYFIRSTPARENT);
 	AdjustControlSize(IDC_FOLLOWRENAMES);
 
-	m_cNewLinesColor.SetColor((DWORD)m_regNewLinesColor);
-	m_cOldLinesColor.SetColor((DWORD)m_regOldLinesColor);
+	m_cNewLinesColor.SetColor(m_regNewLinesColor);
+	m_cOldLinesColor.SetColor(m_regOldLinesColor);
 
 	CString sDefaultText, sCustomText;
 	sDefaultText.LoadString(IDS_COLOURPICKER_DEFAULTTEXT);
@@ -163,7 +163,7 @@ BOOL CSettingsTBlame::OnInitDialog()
 	}
 	m_cFontNames.Setup(DEVICE_FONTTYPE|RASTER_FONTTYPE|TRUETYPE_FONTTYPE, 1, FIXED_PITCH);
 	m_cFontNames.SelectFont(m_sFontName);
-	m_cFontNames.SendMessage(CB_SETITEMHEIGHT, (WPARAM)-1, m_cFontSizes.GetItemHeight(-1));
+	m_cFontNames.SendMessage(CB_SETITEMHEIGHT, static_cast<WPARAM>(-1), m_cFontSizes.GetItemHeight(-1));
 
 	CString sDetectMovedOrCopiedLinesDisabled;
 	CString sDetectMovedOrCopiedLinesWithinFile;
@@ -224,7 +224,7 @@ BOOL CSettingsTBlame::OnApply()
 
 	Store((m_cNewLinesColor.GetColor() == -1 ? m_cNewLinesColor.GetAutomaticColor() : m_cNewLinesColor.GetColor()), m_regNewLinesColor);
 	Store((m_cOldLinesColor.GetColor() == -1 ? m_cOldLinesColor.GetAutomaticColor() : m_cOldLinesColor.GetColor()), m_regOldLinesColor);
-	Store((LPCTSTR)m_sFontName, m_regFontName);
+	Store(static_cast<LPCTSTR>(m_sFontName), m_regFontName);
 	Store(m_dwFontSize, m_regFontSize);
 	Store(m_dwTabSize, m_regTabSize);
 	Store(m_dwDetectMovedOrCopiedLines, m_regDetectMovedOrCopiedLines);

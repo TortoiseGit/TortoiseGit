@@ -24,7 +24,7 @@
 #ifndef GET_SAFE_STRING
 #define GET_SAFE_STRING(str) ((str) ? (str) : L"")
 #endif
-#define HANDLE_IS_VALID(h) ((HANDLE)(h) != NULL && (HANDLE)(h) != INVALID_HANDLE_VALUE)
+#define HANDLE_IS_VALID(h) (reinterpret_cast<HANDLE>(h) != NULL && reinterpret_cast<HANDLE>(h) != INVALID_HANDLE_VALUE)
 
 DWORD dwProtocol = SP_PROT_TLS1; // SP_PROT_TLS1; // SP_PROT_PCT1; SP_PROT_SSL2; SP_PROT_SSL3; 0=default
 ALG_ID aiKeyExch = 0; // = default; CALG_DH_EPHEM; CALG_RSA_KEYX;
@@ -77,7 +77,7 @@ static int GetFileSize(LPCTSTR lpFileName)
 		ASSERT(FALSE);
 	}
 
-	return (int)fileStatus.m_size;
+	return static_cast<int>(fileStatus.m_size);
 }
 
 static CString FormatBytes(double fBytesNum, BOOL bShowUnit = TRUE , int nFlag = 0)
@@ -113,7 +113,7 @@ static CString GetGUID()
 		RPC_WSTR guidStr;
 		if (UuidToString(&guid, &guidStr) == RPC_S_OK)
 		{
-			sGuid = (LPTSTR)guidStr;
+			sGuid = reinterpret_cast<LPTSTR>(guidStr);
 			RpcStringFree(&guidStr);
 		}
 	}
@@ -127,7 +127,7 @@ CHwSMTP::CHwSMTP () :
 	, m_credentials(nullptr)
 {
 	m_csPartBoundary = L"NextPart_" + GetGUID();
-	m_csMIMEContentType.Format(L"multipart/mixed; boundary=%s", (LPCTSTR)m_csPartBoundary);
+	m_csMIMEContentType.Format(L"multipart/mixed; boundary=%s", static_cast<LPCTSTR>(m_csPartBoundary));
 	m_csNoMIMEText = L"This is a multi-part message in MIME format.";
 
 	hContext = nullptr;
@@ -525,7 +525,7 @@ static DWORD EncryptSend(CSocket * Socket, CtxtHandle * phContext, PBYTE pbIoBuf
 	PBYTE pbMessage;
 
 	pbMessage = pbIoBuffer + Sizes.cbHeader; // Offset by "header size"
-	cbMessage = (DWORD)strlen((char *)pbMessage);
+	cbMessage = static_cast<DWORD>(strlen(reinterpret_cast<char*>(pbMessage)));
 
 	// Encrypt the HTTP request.
 	Buffers[0].pvBuffer     = pbIoBuffer;                 // Pointer to buffer 1
@@ -604,7 +604,7 @@ static LONG DisconnectFromServer(CSocket * Socket, PCredHandle phCreds, CtxtHand
 		goto cleanup;
 	}
 
-	pbMessage = (PBYTE)OutBuffers[0].pvBuffer;
+	pbMessage = static_cast<PBYTE>(OutBuffers[0].pvBuffer);
 	cbMessage = OutBuffers[0].cbBuffer;
 
 	// Send the close notify message to the server.
@@ -715,7 +715,7 @@ static SECURITY_STATUS ReadDecrypt(CSocket * Socket, PCredHandle phCreds, CtxtHa
 			length = pDataBuffer->cbBuffer;
 			if (length) // check if last two chars are CR LF
 			{
-				buff = (PBYTE)pDataBuffer->pvBuffer;
+				buff = static_cast<PBYTE>(pDataBuffer->pvBuffer);
 				if (buff[length-2] == 13 && buff[length-1] == 10) // Found CRLF
 				{
 					buff[length] = 0;
@@ -834,7 +834,7 @@ BOOL CHwSMTP::SendEmail (
 
 	if ( !m_SendSock.Connect ( m_csSmtpSrvHost, m_nSmtpSrvPort ) )
 	{
-		m_csLastError.Format(L"Connect to [%s] failed", (LPCTSTR)m_csSmtpSrvHost);
+		m_csLastError.Format(L"Connect to [%s] failed", static_cast<LPCTSTR>(m_csSmtpSrvHost));
 		return FALSE;
 	}
 
@@ -885,7 +885,7 @@ BOOL CHwSMTP::SendEmail (
 
 		PCCERT_CONTEXT pRemoteCertContext = nullptr;
 		// Authenticate server's credentials. Get server's certificate.
-		Status = g_pSSPI->QueryContextAttributes(hContext, SECPKG_ATTR_REMOTE_CERT_CONTEXT, (PVOID)&pRemoteCertContext);
+		Status = g_pSSPI->QueryContextAttributes(hContext, SECPKG_ATTR_REMOTE_CERT_CONTEXT, static_cast<PVOID>(&pRemoteCertContext));
 		if (Status)
 		{
 			m_csLastError = CFormatMessageWrapper(Status);
@@ -896,7 +896,7 @@ BOOL CHwSMTP::SendEmail (
 		cert.parent.cert_type = GIT_CERT_X509;
 		cert.data = pRemoteCertContext->pbCertEncoded;
 		cert.len = pRemoteCertContext->cbCertEncoded;
-		if (CAppUtils::Git2CertificateCheck((git_cert*)&cert, 0, CUnicodeUtils::GetUTF8(m_csSmtpSrvHost), nullptr))
+		if (CAppUtils::Git2CertificateCheck(reinterpret_cast<git_cert*>(&cert), 0, CUnicodeUtils::GetUTF8(m_csSmtpSrvHost), nullptr))
 		{
 			CertFreeCertificateContext(pRemoteCertContext);
 			m_csLastError = L"Invalid certificate.";
@@ -914,7 +914,7 @@ BOOL CHwSMTP::SendEmail (
 
 		// Create a buffer.
 		cbIoBufferLength = Sizes.cbHeader + Sizes.cbMaximumMessage + Sizes.cbTrailer;
-		pbIoBuffer = (PBYTE)LocalAlloc(LMEM_FIXED, cbIoBufferLength);
+		pbIoBuffer = static_cast<PBYTE>(LocalAlloc(LMEM_FIXED, cbIoBufferLength));
 		if (pbIoBuffer == nullptr)
 		{
 			m_csLastError = L"Could not allocate memory";
@@ -990,7 +990,7 @@ BOOL CHwSMTP::GetResponse(LPCSTR lpszVerifyCode)
 	memcpy ( szStatusCode, szRecvBuf, 3 );
 	if (strcmp(szStatusCode, lpszVerifyCode) != 0)
 	{
-		m_csLastError.Format(L"Received invalid response: %s", (LPCTSTR)CUnicodeUtils::GetUnicode(szRecvBuf));
+		m_csLastError.Format(L"Received invalid response: %s", static_cast<LPCTSTR>(CUnicodeUtils::GetUnicode(szRecvBuf)));
 		return FALSE;
 	}
 
@@ -999,7 +999,7 @@ BOOL CHwSMTP::GetResponse(LPCSTR lpszVerifyCode)
 BOOL CHwSMTP::SendBuffer(const char* buff, int size)
 {
 	if(size<0)
-		size=(int)strlen(buff);
+		size = static_cast<int>(strlen(buff));
 	if ( !m_bConnected )
 	{
 		m_csLastError = L"Didn't connect";
@@ -1011,7 +1011,7 @@ BOOL CHwSMTP::SendBuffer(const char* buff, int size)
 		int sent = 0;
 		while (size - sent > 0)
 		{
-			int toSend = min(size - sent, (int)Sizes.cbMaximumMessage);
+			int toSend = min(size - sent, static_cast<int>(Sizes.cbMaximumMessage));
 			SecureZeroMemory(pbIoBuffer + Sizes.cbHeader, Sizes.cbMaximumMessage);
 			memcpy(pbIoBuffer + Sizes.cbHeader, buff + sent, toSend);
 			DWORD cbData = EncryptSend(&m_SendSock, hContext, pbIoBuffer, Sizes);
@@ -1036,7 +1036,7 @@ BOOL CHwSMTP::Send(const CString &str )
 
 BOOL CHwSMTP::Send(const CStringA &str)
 {
-	//TRACE(L"Send: %s\r\n", (LPCTSTR)CUnicodeUtils::GetUnicode(str));
+	//TRACE(L"Send: %s\r\n", static_cast<LPCTSTR>(CUnicodeUtils::GetUnicode(str)));
 	return SendBuffer(str, str.GetLength());
 }
 
@@ -1050,7 +1050,7 @@ BOOL CHwSMTP::SendEmail()
 		hostname += ".local";
 
 	CStringA str;
-	str.Format("HELO %s\r\n", (LPCSTR)hostname);
+	str.Format("HELO %s\r\n", static_cast<LPCSTR>(hostname));
 	if (!Send(str))
 		return FALSE;
 	if (!GetResponse("250"))
@@ -1089,7 +1089,7 @@ static CStringA EncodeBase64(const char* source, int len, bool noWrap)
 {
 	int neededLength = Base64EncodeGetRequiredLength(len);
 	CStringA output;
-	if (Base64Encode((BYTE*)source, len, CStrBufA(output, neededLength), &neededLength, noWrap ? ATL_BASE64_FLAG_NOCRLF : 0))
+	if (Base64Encode(reinterpret_cast<const BYTE*>(source), len, CStrBufA(output, neededLength), &neededLength, noWrap ? ATL_BASE64_FLAG_NOCRLF : 0))
 		output.Truncate(neededLength);
 	return output;
 }
@@ -1126,7 +1126,7 @@ BOOL CHwSMTP::auth()
 
 	if (m_credentials->m_password[0] != L'\0')
 	{
-		auto len = (int)_tcslen(m_credentials->m_password);
+		auto len = static_cast<int>(_tcslen(m_credentials->m_password));
 		auto size = len * 4 + 1;
 		auto buf = new char[size];
 		auto ret = WideCharToMultiByte(CP_UTF8, 0, m_credentials->m_password, len, buf, size - 1, nullptr, nullptr);
@@ -1135,7 +1135,7 @@ BOOL CHwSMTP::auth()
 		int neededLength = Base64EncodeGetRequiredLength(len);
 		auto bufBase64 = new char[neededLength + 1];
 		bufBase64[0] = '\0';
-		if (Base64Encode((BYTE*)buf, ret, bufBase64, &neededLength, ATL_BASE64_FLAG_NOCRLF))
+		if (Base64Encode(reinterpret_cast<const BYTE*>(buf), ret, bufBase64, &neededLength, ATL_BASE64_FLAG_NOCRLF))
 			bufBase64[neededLength] = '\0';
 
 		auto successful = SendBuffer(bufBase64, neededLength);
@@ -1165,7 +1165,7 @@ BOOL CHwSMTP::SendHead()
 	CString addr;
 	CStringUtils::ParseEmailAddress(m_csAddrFrom, addr);
 
-	str.Format(L"MAIL From: <%s>\r\n", (LPCTSTR)addr);
+	str.Format(L"MAIL From: <%s>\r\n", static_cast<LPCTSTR>(addr));
 	if (!Send(str))
 		return FALSE;
 
@@ -1181,7 +1181,7 @@ BOOL CHwSMTP::SendHead()
 
 		CStringUtils::ParseEmailAddress(one, addr);
 
-		str.Format(L"RCPT TO: <%s>\r\n", (LPCTSTR)addr);
+		str.Format(L"RCPT TO: <%s>\r\n", static_cast<LPCTSTR>(addr));
 		if (!Send(str))
 			return FALSE;
 		if (!GetResponse("250"))
@@ -1204,22 +1204,22 @@ BOOL CHwSMTP::SendSubject(const CString &hostname)
 	if ( tNow > 1 )
 		csSubject += FormatDateTime(tNow);
 	csSubject += L"\r\n";
-	csSubject.AppendFormat(L"From: %s\r\n", (LPCTSTR)m_csAddrFrom);
+	csSubject.AppendFormat(L"From: %s\r\n", static_cast<LPCTSTR>(m_csAddrFrom));
 
 	if (!m_StrCC.IsEmpty())
-		csSubject.AppendFormat(L"CC: %s\r\n", (LPCTSTR)m_StrCC);
+		csSubject.AppendFormat(L"CC: %s\r\n", static_cast<LPCTSTR>(m_StrCC));
 
 	if(m_csSender.IsEmpty())
 		m_csSender =  this->m_csAddrFrom;
 
-	csSubject.AppendFormat(L"Sender: %s\r\n", (LPCTSTR)m_csSender);
+	csSubject.AppendFormat(L"Sender: %s\r\n", static_cast<LPCTSTR>(m_csSender));
 
 	if(this->m_csToList.IsEmpty())
 		m_csToList = m_csReceiverName;
 
-	csSubject.AppendFormat(L"To: %s\r\n", (LPCTSTR)m_csToList);
+	csSubject.AppendFormat(L"To: %s\r\n", static_cast<LPCTSTR>(m_csToList));
 
-	csSubject.AppendFormat(L"Subject: %s\r\n", (LPCTSTR)GetEncodedHeader(m_csSubject));
+	csSubject.AppendFormat(L"Subject: %s\r\n", static_cast<LPCTSTR>(GetEncodedHeader(m_csSubject)));
 
 	CString m_ListID(GetGUID());
 	if (m_ListID.IsEmpty())
@@ -1227,8 +1227,8 @@ BOOL CHwSMTP::SendSubject(const CString &hostname)
 		m_csLastError = L"Could not generate Message-ID";
 		return FALSE;
 	}
-	csSubject.AppendFormat(L"Message-ID: <%s@%s>\r\n", (LPCTSTR)m_ListID, (LPCTSTR)hostname);
-	csSubject.AppendFormat(L"X-Mailer: TortoiseGit\r\nMIME-Version: 1.0\r\nContent-Type: %s\r\n\r\n", (LPCTSTR)m_csMIMEContentType);
+	csSubject.AppendFormat(L"Message-ID: <%s@%s>\r\n", static_cast<LPCTSTR>(m_ListID), static_cast<LPCTSTR>(hostname));
+	csSubject.AppendFormat(L"X-Mailer: TortoiseGit\r\nMIME-Version: 1.0\r\nContent-Type: %s\r\n\r\n", static_cast<LPCTSTR>(m_csMIMEContentType));
 
 	return Send(csSubject);
 }
@@ -1239,8 +1239,8 @@ BOOL CHwSMTP::SendBody()
 
 	if (!m_StrAryAttach.IsEmpty())
 	{
-		csBody.AppendFormat(L"%s\r\n\r\n", (LPCTSTR)m_csNoMIMEText);
-		csBody.AppendFormat(L"--%s\r\n", (LPCTSTR)m_csPartBoundary);
+		csBody.AppendFormat(L"%s\r\n\r\n", static_cast<LPCTSTR>(m_csNoMIMEText));
+		csBody.AppendFormat(L"--%s\r\n", static_cast<LPCTSTR>(m_csPartBoundary));
 		csBody += L"Content-Type: text/plain\r\nContent-Transfer-Encoding: 8bit\r\n\r\n";
 	}
 
@@ -1258,7 +1258,7 @@ BOOL CHwSMTP::SendAttach()
 	if (m_StrAryAttach.IsEmpty())
 		return TRUE;
 
-	int nCountAttach = (int)m_StrAryAttach.GetSize();
+	int nCountAttach = static_cast<int>(m_StrAryAttach.GetSize());
 	for (int i = 0; i < nCountAttach; ++i)
 	{
 		if ( !SendOnAttach ( m_StrAryAttach.GetAt(i) ) )
@@ -1276,15 +1276,15 @@ BOOL CHwSMTP::SendOnAttach(LPCTSTR lpszFileName)
 	CString csAttach;
 	CString csShortFileName = GetEncodedHeader(CPathUtils::GetFileNameFromPath(lpszFileName));
 
-	csAttach.AppendFormat(L"--%s\r\n", (LPCTSTR)m_csPartBoundary);
-	csAttach.AppendFormat(L"Content-Type: application/octet-stream; file=\"%s\"\r\n", (LPCTSTR)csShortFileName);
+	csAttach.AppendFormat(L"--%s\r\n", static_cast<LPCTSTR>(m_csPartBoundary));
+	csAttach.AppendFormat(L"Content-Type: application/octet-stream; file=\"%s\"\r\n", static_cast<LPCTSTR>(csShortFileName));
 	csAttach.AppendFormat(L"Content-Transfer-Encoding: base64\r\n");
-	csAttach.AppendFormat(L"Content-Disposition: attachment; filename=\"%s\"\r\n\r\n", (LPCTSTR)csShortFileName);
+	csAttach.AppendFormat(L"Content-Disposition: attachment; filename=\"%s\"\r\n\r\n", static_cast<LPCTSTR>(csShortFileName));
 
 	auto dwFileSize = GetFileSize(lpszFileName);
 	if ( dwFileSize > 5*1024*1024 )
 	{
-		m_csLastError.Format(L"File [%s] too big. File size is : %s", lpszFileName, (LPCTSTR)FormatBytes(dwFileSize));
+		m_csLastError.Format(L"File [%s] too big. File size is : %s", lpszFileName, static_cast<LPCTSTR>(FormatBytes(dwFileSize)));
 		return FALSE;
 	}
 	auto pBuf = std::make_unique<char[]>(dwFileSize + 1);

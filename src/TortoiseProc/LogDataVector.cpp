@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013, 2015-2018 - TortoiseGit
+// Copyright (C) 2009-2019 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -168,7 +168,7 @@ int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, 
 
 		this->push_back(pRev->m_CommitHash);
 
-		m_HashMap[pRev->m_CommitHash] = (int)size() - 1;
+		m_HashMap[pRev->m_CommitHash] = static_cast<int>(size()) - 1;
 	}
 
 	{
@@ -238,7 +238,7 @@ int CLogDataVector::Fill(std::unordered_set<CGitHash>& hashes)
 	for (const auto& pRev : revs)
 	{
 		this->push_back(pRev->m_CommitHash);
-		m_HashMap[pRev->m_CommitHash] = (int)size() - 1;
+		m_HashMap[pRev->m_CommitHash] = static_cast<int>(size()) - 1;
 	}
 
 	return 0;
@@ -262,7 +262,7 @@ void CLogDataVector::setLane(CGitHash& sha)
 //	const ShaString& ss = toPersistentSha(sha, ba);
 //	const ShaVect& shaVec(fh->revOrder);
 
-	for (int cnt = (int)size(); i < cnt; ++i) {
+	for (int cnt = static_cast<int>(size()); i < cnt; ++i) {
 		GitRevLoglist* r = &this->GetGitRevAt(i);
 		CGitHash curSha=r->m_CommitHash;
 
@@ -312,7 +312,7 @@ void CLogDataVector::updateLanes(GitRevLoglist& c, Lanes& lns, CGitHash& sha)
 		lns.changeActiveLane(sha); // uses previous isBoundary state
 
 	lns.setBoundary(c.IsBoundary() == TRUE, isInitial); // update must be here
-	TRACE(L"%s %d", (LPCTSTR)c.m_CommitHash.ToString(), c.IsBoundary());
+	TRACE(L"%s %d", static_cast<LPCTSTR>(c.m_CommitHash.ToString()), c.IsBoundary());
 
 	if (isFork)
 		lns.setFork(sha);

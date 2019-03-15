@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -46,11 +46,11 @@ public:
 	}
 	CGitHash(const git_oid* oid)
 	{
-		git_oid_cpy((git_oid*)m_hash, oid);
+		git_oid_cpy(reinterpret_cast<git_oid*>(m_hash), oid);
 	}
 	CGitHash(const git_oid& oid)
 	{
-		git_oid_cpy((git_oid*)m_hash, &oid);
+		git_oid_cpy(reinterpret_cast<git_oid*>(m_hash), &oid);
 	}
 	CGitHash& operator = (const CString& str)
 	{
@@ -65,12 +65,12 @@ public:
 	}
 	CGitHash& operator = (const git_oid* oid)
 	{
-		git_oid_cpy((git_oid*)m_hash, oid);
+		git_oid_cpy(reinterpret_cast<git_oid*>(m_hash), oid);
 		return *this;
 	}
 	CGitHash& operator = (const git_oid& oid)
 	{
-		git_oid_cpy((git_oid*)m_hash, &oid);
+		git_oid_cpy(reinterpret_cast<git_oid*>(m_hash), &oid);
 		return *this;
 	}
 	CGitHash(const CString &str)
@@ -152,7 +152,7 @@ public:
 
 	operator const git_oid*() const
 	{
-		return (const git_oid*)m_hash;
+		return reinterpret_cast<const git_oid*>(m_hash);
 	}
 
 	explicit operator const unsigned char*() const
@@ -209,7 +209,7 @@ namespace std
 	{
 		std::size_t operator()(const CGitHash& k) const
 		{
-			return *(size_t*)k.m_hash;
+			return reinterpret_cast<const size_t&>(k.m_hash);
 		}
 	};
 }

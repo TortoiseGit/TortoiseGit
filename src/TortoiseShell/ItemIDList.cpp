@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016 - TortoiseGit
+// Copyright (C) 2016, 2019 - TortoiseGit
 // Copyright (C) 2003-2006, 2009, 2011-2013, 2015-2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -30,7 +30,7 @@ ItemIDList::ItemIDList(PCUITEMID_CHILD item, PCUIDLIST_RELATIVE parent)
 }
 
 ItemIDList::ItemIDList(PCIDLIST_ABSOLUTE item)
-	: item_((PCUITEMID_CHILD)item)
+	: item_(static_cast<PCUITEMID_CHILD>(item))
 	, parent_(0)
 	, count_(-1)
 {
@@ -51,9 +51,9 @@ int ItemIDList::size() const
 			while (ptr && ptr->cb != 0)
 			{
 				++count_;
-				LPBYTE byte = (LPBYTE) ptr;
+				LPCBYTE byte = reinterpret_cast<LPCBYTE>(ptr);
 				byte += ptr->cb;
-				ptr = (LPCSHITEMID) byte;
+				ptr = reinterpret_cast<LPCSHITEMID>(byte);
 			}
 		}
 	}
@@ -75,9 +75,9 @@ LPCSHITEMID ItemIDList::get(int index) const
 			break;
 
 		++count;
-		LPBYTE byte = (LPBYTE) ptr;
+		LPCBYTE byte = reinterpret_cast<LPCBYTE>(ptr);
 		byte += ptr->cb;
-		ptr = (LPCSHITEMID) byte;
+		ptr = reinterpret_cast<LPCSHITEMID>(byte);
 	}
 	return ptr;
 }
@@ -90,7 +90,7 @@ tstring ItemIDList::toString(bool resolveLibraries /*= true*/)
 
 	if (FAILED(::SHGetDesktopFolder(&shellFolder)))
 		return ret;
-	if (!parent_ || FAILED(shellFolder->BindToObject(parent_, 0, IID_IShellFolder, (void**)&parentFolder)))
+	if (!parent_ || FAILED(shellFolder->BindToObject(parent_, 0, IID_IShellFolder, reinterpret_cast<void**>(&parentFolder))))
 		parentFolder = shellFolder;
 
 	STRRET name;

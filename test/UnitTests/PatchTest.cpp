@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2018 - TortoiseGit
+// Copyright (C) 2018-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -54,7 +54,7 @@ TEST(CPatch, Parse_Manual)
 
 	// internals
 	auto& chunks = patch.GetChunks(0);
-	ASSERT_EQ((size_t)2, chunks.size());
+	ASSERT_EQ(size_t(2), chunks.size());
 	{
 		auto chunk = chunks[0].get();
 		EXPECT_EQ(5, chunk->arLines.GetCount());
@@ -63,11 +63,11 @@ TEST(CPatch, Parse_Manual)
 		EXPECT_EQ(1, chunk->lAddStart);
 		EXPECT_EQ(1, chunk->lRemoveStart);
 		ASSERT_EQ(5, chunk->arLinesStates.GetCount());
-		ASSERT_EQ((DWORD)PATCHSTATE_REMOVED, chunk->arLinesStates.GetAt(0));
-		ASSERT_EQ((DWORD)PATCHSTATE_ADDED, chunk->arLinesStates.GetAt(1));
-		ASSERT_EQ((DWORD)PATCHSTATE_CONTEXT, chunk->arLinesStates.GetAt(2));
-		ASSERT_EQ((DWORD)PATCHSTATE_CONTEXT, chunk->arLinesStates.GetAt(3));
-		ASSERT_EQ((DWORD)PATCHSTATE_CONTEXT, chunk->arLinesStates.GetAt(4));
+		ASSERT_EQ(static_cast<DWORD>(PATCHSTATE_REMOVED), chunk->arLinesStates.GetAt(0));
+		ASSERT_EQ(static_cast<DWORD>(PATCHSTATE_ADDED), chunk->arLinesStates.GetAt(1));
+		ASSERT_EQ(static_cast<DWORD>(PATCHSTATE_CONTEXT), chunk->arLinesStates.GetAt(2));
+		ASSERT_EQ(static_cast<DWORD>(PATCHSTATE_CONTEXT), chunk->arLinesStates.GetAt(3));
+		ASSERT_EQ(static_cast<DWORD>(PATCHSTATE_CONTEXT), chunk->arLinesStates.GetAt(4));
 	}
 	{
 		auto chunk = chunks[1].get();
@@ -77,14 +77,14 @@ TEST(CPatch, Parse_Manual)
 		EXPECT_EQ(155, chunk->lAddStart);
 		EXPECT_EQ(155, chunk->lRemoveStart);
 		ASSERT_EQ(8, chunk->arLinesStates.GetCount());
-		ASSERT_EQ((DWORD)PATCHSTATE_CONTEXT, chunk->arLinesStates.GetAt(0));
-		ASSERT_EQ((DWORD)PATCHSTATE_CONTEXT, chunk->arLinesStates.GetAt(1));
-		ASSERT_EQ((DWORD)PATCHSTATE_CONTEXT, chunk->arLinesStates.GetAt(2));
-		ASSERT_EQ((DWORD)PATCHSTATE_REMOVED, chunk->arLinesStates.GetAt(3));
-		ASSERT_EQ((DWORD)PATCHSTATE_ADDED, chunk->arLinesStates.GetAt(4));
-		ASSERT_EQ((DWORD)PATCHSTATE_CONTEXT, chunk->arLinesStates.GetAt(5));
-		ASSERT_EQ((DWORD)PATCHSTATE_CONTEXT, chunk->arLinesStates.GetAt(6));
-		ASSERT_EQ((DWORD)PATCHSTATE_CONTEXT, chunk->arLinesStates.GetAt(7));
+		ASSERT_EQ(static_cast<DWORD>(PATCHSTATE_CONTEXT), chunk->arLinesStates.GetAt(0));
+		ASSERT_EQ(static_cast<DWORD>(PATCHSTATE_CONTEXT), chunk->arLinesStates.GetAt(1));
+		ASSERT_EQ(static_cast<DWORD>(PATCHSTATE_CONTEXT), chunk->arLinesStates.GetAt(2));
+		ASSERT_EQ(static_cast<DWORD>(PATCHSTATE_REMOVED), chunk->arLinesStates.GetAt(3));
+		ASSERT_EQ(static_cast<DWORD>(PATCHSTATE_ADDED), chunk->arLinesStates.GetAt(4));
+		ASSERT_EQ(static_cast<DWORD>(PATCHSTATE_CONTEXT), chunk->arLinesStates.GetAt(5));
+		ASSERT_EQ(static_cast<DWORD>(PATCHSTATE_CONTEXT), chunk->arLinesStates.GetAt(6));
+		ASSERT_EQ(static_cast<DWORD>(PATCHSTATE_CONTEXT), chunk->arLinesStates.GetAt(7));
 	}
 }
 
@@ -151,7 +151,7 @@ TEST(CPatch, Parse_GitDiffPatch)
 	{
 		// deleted file
 		auto& chunks = patch.GetChunks(0);
-		ASSERT_EQ((size_t)1, chunks.size());
+		ASSERT_EQ(size_t(1), chunks.size());
 		auto chunk = chunks[0].get();
 		EXPECT_EQ(30, chunk->arLines.GetCount());
 		EXPECT_EQ(0, chunk->lAddLength);
@@ -160,11 +160,11 @@ TEST(CPatch, Parse_GitDiffPatch)
 		EXPECT_EQ(1, chunk->lRemoveStart);
 		ASSERT_EQ(30, chunk->arLinesStates.GetCount());
 		for (int i = 0; i < 30; ++i)
-			ASSERT_EQ((DWORD)PATCHSTATE_REMOVED, chunk->arLinesStates.GetAt(i));
+			ASSERT_EQ(static_cast<DWORD>(PATCHSTATE_REMOVED), chunk->arLinesStates.GetAt(i));
 	}
 	{
 		auto& chunks = patch.GetChunks(2);
-		ASSERT_EQ((size_t)3, chunks.size());
+		ASSERT_EQ(size_t(3), chunks.size());
 		auto chunk = chunks[1].get();
 		EXPECT_EQ(9, chunk->arLines.GetCount());
 		EXPECT_EQ(9, chunk->lAddLength);
@@ -172,20 +172,20 @@ TEST(CPatch, Parse_GitDiffPatch)
 		EXPECT_EQ(402, chunk->lAddStart);
 		EXPECT_EQ(400, chunk->lRemoveStart);
 		ASSERT_EQ(9, chunk->arLinesStates.GetCount());
-		ASSERT_EQ((DWORD)PATCHSTATE_CONTEXT, chunk->arLinesStates.GetAt(0));
-		ASSERT_EQ((DWORD)PATCHSTATE_CONTEXT, chunk->arLinesStates.GetAt(1));
-		ASSERT_EQ((DWORD)PATCHSTATE_CONTEXT, chunk->arLinesStates.GetAt(2));
-		ASSERT_EQ((DWORD)PATCHSTATE_ADDED, chunk->arLinesStates.GetAt(3));
-		ASSERT_EQ((DWORD)PATCHSTATE_CONTEXT, chunk->arLinesStates.GetAt(4));
-		ASSERT_EQ((DWORD)PATCHSTATE_ADDED, chunk->arLinesStates.GetAt(5));
-		ASSERT_EQ((DWORD)PATCHSTATE_CONTEXT, chunk->arLinesStates.GetAt(6));
-		ASSERT_EQ((DWORD)PATCHSTATE_CONTEXT, chunk->arLinesStates.GetAt(7));
-		ASSERT_EQ((DWORD)PATCHSTATE_CONTEXT, chunk->arLinesStates.GetAt(8));
+		ASSERT_EQ(static_cast<DWORD>(PATCHSTATE_CONTEXT), chunk->arLinesStates.GetAt(0));
+		ASSERT_EQ(static_cast<DWORD>(PATCHSTATE_CONTEXT), chunk->arLinesStates.GetAt(1));
+		ASSERT_EQ(static_cast<DWORD>(PATCHSTATE_CONTEXT), chunk->arLinesStates.GetAt(2));
+		ASSERT_EQ(static_cast<DWORD>(PATCHSTATE_ADDED), chunk->arLinesStates.GetAt(3));
+		ASSERT_EQ(static_cast<DWORD>(PATCHSTATE_CONTEXT), chunk->arLinesStates.GetAt(4));
+		ASSERT_EQ(static_cast<DWORD>(PATCHSTATE_ADDED), chunk->arLinesStates.GetAt(5));
+		ASSERT_EQ(static_cast<DWORD>(PATCHSTATE_CONTEXT), chunk->arLinesStates.GetAt(6));
+		ASSERT_EQ(static_cast<DWORD>(PATCHSTATE_CONTEXT), chunk->arLinesStates.GetAt(7));
+		ASSERT_EQ(static_cast<DWORD>(PATCHSTATE_CONTEXT), chunk->arLinesStates.GetAt(8));
 	}
 	{
 		// new file
 		auto& chunks = patch.GetChunks(5);
-		ASSERT_EQ((size_t)1, chunks.size());
+		ASSERT_EQ(size_t(1), chunks.size());
 		auto chunk = chunks[0].get();
 		EXPECT_EQ(5, chunk->arLines.GetCount());
 		EXPECT_EQ(5, chunk->lAddLength);
@@ -193,11 +193,11 @@ TEST(CPatch, Parse_GitDiffPatch)
 		EXPECT_EQ(1, chunk->lAddStart);
 		EXPECT_EQ(0, chunk->lRemoveStart);
 		ASSERT_EQ(5, chunk->arLinesStates.GetCount());
-		ASSERT_EQ((DWORD)PATCHSTATE_ADDED, chunk->arLinesStates.GetAt(0));
-		ASSERT_EQ((DWORD)PATCHSTATE_ADDED, chunk->arLinesStates.GetAt(1));
-		ASSERT_EQ((DWORD)PATCHSTATE_ADDED, chunk->arLinesStates.GetAt(2));
-		ASSERT_EQ((DWORD)PATCHSTATE_ADDED, chunk->arLinesStates.GetAt(3));
-		ASSERT_EQ((DWORD)PATCHSTATE_ADDED, chunk->arLinesStates.GetAt(4));
+		ASSERT_EQ(static_cast<DWORD>(PATCHSTATE_ADDED), chunk->arLinesStates.GetAt(0));
+		ASSERT_EQ(static_cast<DWORD>(PATCHSTATE_ADDED), chunk->arLinesStates.GetAt(1));
+		ASSERT_EQ(static_cast<DWORD>(PATCHSTATE_ADDED), chunk->arLinesStates.GetAt(2));
+		ASSERT_EQ(static_cast<DWORD>(PATCHSTATE_ADDED), chunk->arLinesStates.GetAt(3));
+		ASSERT_EQ(static_cast<DWORD>(PATCHSTATE_ADDED), chunk->arLinesStates.GetAt(4));
 	}
 }
 
@@ -238,7 +238,7 @@ TEST(CPatch, Parse_SVNDiffPatch)
 	{
 		// new file
 		auto& chunks = patch.GetChunks(0);
-		ASSERT_EQ((size_t)1, chunks.size());
+		ASSERT_EQ(size_t(1), chunks.size());
 		auto chunk = chunks[0].get();
 		EXPECT_EQ(5, chunk->arLines.GetCount());
 		EXPECT_EQ(5, chunk->lAddLength);
@@ -246,11 +246,11 @@ TEST(CPatch, Parse_SVNDiffPatch)
 		EXPECT_EQ(1, chunk->lAddStart);
 		EXPECT_EQ(0, chunk->lRemoveStart);
 		ASSERT_EQ(5, chunk->arLinesStates.GetCount());
-		ASSERT_EQ((DWORD)PATCHSTATE_ADDED, chunk->arLinesStates.GetAt(0));
-		ASSERT_EQ((DWORD)PATCHSTATE_ADDED, chunk->arLinesStates.GetAt(1));
-		ASSERT_EQ((DWORD)PATCHSTATE_ADDED, chunk->arLinesStates.GetAt(2));
-		ASSERT_EQ((DWORD)PATCHSTATE_ADDED, chunk->arLinesStates.GetAt(3));
-		ASSERT_EQ((DWORD)PATCHSTATE_ADDED, chunk->arLinesStates.GetAt(4));
+		ASSERT_EQ(static_cast<DWORD>(PATCHSTATE_ADDED), chunk->arLinesStates.GetAt(0));
+		ASSERT_EQ(static_cast<DWORD>(PATCHSTATE_ADDED), chunk->arLinesStates.GetAt(1));
+		ASSERT_EQ(static_cast<DWORD>(PATCHSTATE_ADDED), chunk->arLinesStates.GetAt(2));
+		ASSERT_EQ(static_cast<DWORD>(PATCHSTATE_ADDED), chunk->arLinesStates.GetAt(3));
+		ASSERT_EQ(static_cast<DWORD>(PATCHSTATE_ADDED), chunk->arLinesStates.GetAt(4));
 	}
 }
 

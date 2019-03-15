@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2018 - TortoiseGit
+// Copyright (C) 2011-2019 - TortoiseGit
 // Copyright (C) 2003-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -97,26 +97,23 @@ void LoadLangDll()
 				WORD wCharacterSet;
 			};
 
-			DWORD dwReserved,dwBufferSize;
-			dwBufferSize = GetFileVersionInfoSize((LPTSTR)langDll,&dwReserved);
+			DWORD dwReserved;
+			DWORD dwBufferSize = GetFileVersionInfoSize(langDll, &dwReserved);
 
 			if (dwBufferSize > 0)
 			{
-				LPVOID pBuffer = (void*) malloc(dwBufferSize);
+				auto pBuffer = malloc(dwBufferSize);
 
 				if (pBuffer)
 				{
-					UINT        nInfoSize = 0;
-					UINT        nFixedLength = 0;
-					LPSTR       lpVersion = nullptr;
-					VOID*       lpFixedPointer;
-
-					if (GetFileVersionInfo((LPTSTR)langDll,
+					if (GetFileVersionInfo(langDll,
 						dwReserved,
 						dwBufferSize,
 						pBuffer))
 					{
 						// Query the current language
+						UINT nFixedLength = 0;
+						VOID* lpFixedPointer;
 						if (VerQueryValue(	pBuffer,
 							L"\\VarFileInfo\\Translation",
 							&lpFixedPointer,
@@ -128,8 +125,10 @@ void LoadLangDll()
 							swprintf_s(strLangProductVersion, L"\\StringFileInfo\\%04x%04x\\ProductVersion",
 								lpTransArray[0].wLanguageID, lpTransArray[0].wCharacterSet);
 
-							if (VerQueryValue(pBuffer, (LPTSTR)strLangProductVersion, (LPVOID*)&lpVersion, &nInfoSize))
-								versionmatch = (wcscmp((LPCTSTR)lpVersion, _T(STRPRODUCTVER)) == 0);
+							UINT nInfoSize = 0;
+							LPSTR lpVersion = nullptr;
+							if (VerQueryValue(pBuffer, strLangProductVersion, reinterpret_cast<LPVOID*>(&lpVersion), &nInfoSize))
+								versionmatch = (wcscmp(reinterpret_cast<LPCTSTR>(lpVersion), _T(STRPRODUCTVER)) == 0);
 
 						}
 					}

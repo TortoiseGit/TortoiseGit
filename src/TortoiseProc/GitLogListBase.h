@@ -409,7 +409,7 @@ public:
 		LOGACTIONS_REBASE_MODE_MASK	= 0x07C00000,
 	};
 	static_assert(ID_COMPARETWOCOMMITCHANGES < 64 && ID_COPYCLIPBOARDFULL <= 64, "IDs must be <64 in order to be usable in a bitfield");
-	static inline unsigned __int64 GetContextMenuBit(int i){ return ((unsigned __int64 )0x1)<<i ;}
+	static inline unsigned __int64 GetContextMenuBit(int i) { return unsigned __int64(0x1) << i; }
 	static CString GetRebaseActionName(int action);
 	void InsertGitColumn();
 	void CopySelectionToClipBoard(int toCopy = ID_COPYCLIPBOARDFULL);
