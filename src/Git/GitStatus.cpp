@@ -427,7 +427,7 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 		else if (pos != NPOS && posintree == NPOS) /* Check if file added */
 		{
 			status.status = git_wc_status_added;
-			if ((*indexptr)[pos].m_Flags & GIT_IDXENTRY_STAGEMASK)
+			if ((*indexptr)[pos].m_Flags & GIT_INDEX_ENTRY_STAGEMASK)
 				status.status = git_wc_status_conflicted;
 			callback(CombinePath(gitdir, onepath), &status, bIsDir, fileentry.m_LastModified, pData);
 		}
@@ -441,7 +441,7 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 			else
 			{
 				auto& indexentry = (*indexptr)[pos];
-				if (indexentry.m_Flags & GIT_IDXENTRY_STAGEMASK)
+				if (indexentry.m_Flags & GIT_INDEX_ENTRY_STAGEMASK)
 				{
 					status.status = git_wc_status_conflicted;
 					callback(CombinePath(gitdir, onepath), &status, false, fileentry.m_LastModified, pData);
@@ -483,7 +483,7 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 				if (SearchInSortVector(filelist, filename, isDir ? length : -1, indexptr->IsIgnoreCase()) == NPOS) // do full match for filenames and only prefix-match ending with "/" for folders
 				{
 					git_wc_status2_t status = { (!isDir || IsDirectSubmodule(entry.m_FileName, commonPrefixLength)) ? git_wc_status_deleted : git_wc_status_modified, false, false }; // only report deleted submodules and files as deletedy
-					if ((entry.m_FlagsExtended & GIT_IDXENTRY_SKIP_WORKTREE) != 0)
+					if ((entry.m_FlagsExtended & GIT_INDEX_ENTRY_SKIP_WORKTREE) != 0)
 					{
 						status.skipWorktree = true;
 						status.status = git_wc_status_normal;
@@ -627,7 +627,7 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 	// Check Conflict;
 	for (auto it = sharedRepoLists.pIndex->cbegin() + start, itlast = sharedRepoLists.pIndex->cbegin() + end; sharedRepoLists.pIndex->m_bHasConflicts && it <= itlast; ++it)
 	{
-		if (((*it).m_Flags & GIT_IDXENTRY_STAGEMASK) != 0)
+		if (((*it).m_Flags & GIT_INDEX_ENTRY_STAGEMASK) != 0)
 		{
 			*status = git_wc_status_conflicted;
 			// When status == git_wc_status_conflicted, we don't need to check each file status

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2018 - TortoiseGit
+// Copyright (C) 2015-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -175,7 +175,7 @@ TEST_P(GitIndexCBasicGitWithTestRepoFixture, ReadIndex)
 	EXPECT_STREQ(L"1.txt", indexList[0].m_FileName);
 	EXPECT_EQ(0, indexList[0].m_Size);
 	EXPECT_EQ(16389, indexList[0].m_Flags);
-	EXPECT_EQ(GIT_IDXENTRY_INTENT_TO_ADD, indexList[0].m_FlagsExtended);
+	EXPECT_EQ(GIT_INDEX_ENTRY_INTENT_TO_ADD, indexList[0].m_FlagsExtended);
 	EXPECT_STREQ(L"e69de29bb2d1d6434b8b29ae775ad8c2e48c5391", indexList[0].m_IndexHash.ToString());
 }
 

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2018 - TortoiseGit
+// Copyright (C) 2015-2019 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -1120,13 +1120,13 @@ static void setFlagOnFileInIndex(CAutoIndex& gitindex, const CString& filename, 
 	git_index_entry *e = const_cast<git_index_entry *>(git_index_get_byindex(gitindex, idx));
 	ASSERT_TRUE(e);
 	if (assumevalid == BST_UNCHECKED)
-		e->flags &= ~GIT_IDXENTRY_VALID;
+		e->flags &= ~GIT_INDEX_ENTRY_VALID;
 	else if (assumevalid == BST_CHECKED)
-		e->flags |= GIT_IDXENTRY_VALID;
+		e->flags |= GIT_INDEX_ENTRY_VALID;
 	if (skipworktree == BST_UNCHECKED)
-		e->flags_extended &= ~GIT_IDXENTRY_SKIP_WORKTREE;
+		e->flags_extended &= ~GIT_INDEX_ENTRY_SKIP_WORKTREE;
 	else if (skipworktree == BST_CHECKED)
-		e->flags_extended |= GIT_IDXENTRY_SKIP_WORKTREE;
+		e->flags_extended |= GIT_INDEX_ENTRY_SKIP_WORKTREE;
 	EXPECT_TRUE(git_index_add(gitindex, e) == 0);
 }
 
@@ -1170,21 +1170,21 @@ TEST(CTGitPath, FillBasedOnIndexFlags)
 	EXPECT_EQ(0, testList.GetCount());
 
 	testList.Clear();
-	EXPECT_TRUE(testList.FillBasedOnIndexFlags(GIT_IDXENTRY_VALID, 0) == 0);
+	EXPECT_TRUE(testList.FillBasedOnIndexFlags(GIT_INDEX_ENTRY_VALID, 0) == 0);
 	EXPECT_EQ(3, testList.GetCount());
 	EXPECT_STREQ(L"a/assume-unchanged", testList[0].GetGitPathString());
 	EXPECT_STREQ(L"assume-unchanged", testList[1].GetGitPathString());
 	EXPECT_STREQ(L"b/assume-unchanged", testList[2].GetGitPathString());
 
 	testList.Clear();
-	EXPECT_TRUE(testList.FillBasedOnIndexFlags(0, GIT_IDXENTRY_SKIP_WORKTREE) == 0);
+	EXPECT_TRUE(testList.FillBasedOnIndexFlags(0, GIT_INDEX_ENTRY_SKIP_WORKTREE) == 0);
 	EXPECT_EQ(3, testList.GetCount());
 	EXPECT_STREQ(L"a/skip-worktree", testList[0].GetGitPathString());
 	EXPECT_STREQ(L"b/skip-worktree", testList[1].GetGitPathString());
 	EXPECT_STREQ(L"skip-worktree", testList[2].GetGitPathString());
 
 	testList.Clear();
-	EXPECT_TRUE(testList.FillBasedOnIndexFlags(GIT_IDXENTRY_VALID, GIT_IDXENTRY_SKIP_WORKTREE) == 0);
+	EXPECT_TRUE(testList.FillBasedOnIndexFlags(GIT_INDEX_ENTRY_VALID, GIT_INDEX_ENTRY_SKIP_WORKTREE) == 0);
 	EXPECT_EQ(6, testList.GetCount());
 	EXPECT_STREQ(L"a/assume-unchanged", testList[0].GetGitPathString());
 	EXPECT_STREQ(L"a/skip-worktree", testList[1].GetGitPathString());
@@ -1198,7 +1198,7 @@ TEST(CTGitPath, FillBasedOnIndexFlags)
 	selectList.AddPath(CTGitPath(L"assume-unchanged"));
 	selectList.AddPath(CTGitPath(L"skip-worktree"));
 	selectList.AddPath(CTGitPath(L"a/skip-worktree"));
-	EXPECT_TRUE(testList.FillBasedOnIndexFlags(GIT_IDXENTRY_VALID, GIT_IDXENTRY_SKIP_WORKTREE, &selectList) == 0);
+	EXPECT_TRUE(testList.FillBasedOnIndexFlags(GIT_INDEX_ENTRY_VALID, GIT_INDEX_ENTRY_SKIP_WORKTREE, &selectList) == 0);
 	EXPECT_EQ(3, testList.GetCount());
 	EXPECT_STREQ(L"a/skip-worktree", testList[0].GetGitPathString());
 	EXPECT_STREQ(L"assume-unchanged", testList[1].GetGitPathString());
@@ -1206,14 +1206,14 @@ TEST(CTGitPath, FillBasedOnIndexFlags)
 
 	selectList.Clear();
 	selectList.AddPath(CTGitPath(L"a"));
-	EXPECT_TRUE(testList.FillBasedOnIndexFlags(GIT_IDXENTRY_VALID, GIT_IDXENTRY_SKIP_WORKTREE, &selectList) == 0);
+	EXPECT_TRUE(testList.FillBasedOnIndexFlags(GIT_INDEX_ENTRY_VALID, GIT_INDEX_ENTRY_SKIP_WORKTREE, &selectList) == 0);
 	EXPECT_EQ(2, testList.GetCount());
 	EXPECT_STREQ(L"a/assume-unchanged", testList[0].GetGitPathString());
 	EXPECT_STREQ(L"a/skip-worktree", testList[1].GetGitPathString());
 
 	selectList.Clear();
 	selectList.AddPath(CTGitPath(L"a"));
-	EXPECT_TRUE(testList.FillBasedOnIndexFlags(GIT_IDXENTRY_VALID, 0, &selectList) == 0);
+	EXPECT_TRUE(testList.FillBasedOnIndexFlags(GIT_INDEX_ENTRY_VALID, 0, &selectList) == 0);
 	EXPECT_EQ(1, testList.GetCount());
 	EXPECT_STREQ(L"a/assume-unchanged", testList[0].GetGitPathString());
 }

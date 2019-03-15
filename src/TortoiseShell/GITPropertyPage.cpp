@@ -141,33 +141,33 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 
 							if (assumeValid == BST_CHECKED)
 							{
-								if (!(e->flags & GIT_IDXENTRY_VALID))
+								if (!(e->flags & GIT_INDEX_ENTRY_VALID))
 								{
-									e->flags |= GIT_IDXENTRY_VALID;
+									e->flags |= GIT_INDEX_ENTRY_VALID;
 									changed = true;
 								}
 							}
 							else if (assumeValid != BST_INDETERMINATE)
 							{
-								if (e->flags & GIT_IDXENTRY_VALID)
+								if (e->flags & GIT_INDEX_ENTRY_VALID)
 								{
-									e->flags &= ~GIT_IDXENTRY_VALID;
+									e->flags &= ~GIT_INDEX_ENTRY_VALID;
 									changed = true;
 								}
 							}
 							if (skipWorktree == BST_CHECKED)
 							{
-								if (!(e->flags_extended & GIT_IDXENTRY_SKIP_WORKTREE))
+								if (!(e->flags_extended & GIT_INDEX_ENTRY_SKIP_WORKTREE))
 								{
-									e->flags_extended |= GIT_IDXENTRY_SKIP_WORKTREE;
+									e->flags_extended |= GIT_INDEX_ENTRY_SKIP_WORKTREE;
 									changed = true;
 								}
 							}
 							else if (skipWorktree != BST_INDETERMINATE)
 							{
-								if (e->flags_extended & GIT_IDXENTRY_SKIP_WORKTREE)
+								if (e->flags_extended & GIT_INDEX_ENTRY_SKIP_WORKTREE)
 								{
-									e->flags_extended &= ~GIT_IDXENTRY_SKIP_WORKTREE;
+									e->flags_extended &= ~GIT_INDEX_ENTRY_SKIP_WORKTREE;
 									changed = true;
 								}
 							}
@@ -606,10 +606,10 @@ void CGitPropertyPage::InitWorkfileView()
 			{
 				const git_index_entry *e = git_index_get_byindex(index, idx);
 
-				if (e->flags & GIT_IDXENTRY_VALID)
+				if (e->flags & GIT_INDEX_ENTRY_VALID)
 					++m_fileStats.assumevalid;
 
-				if (e->flags_extended & GIT_IDXENTRY_SKIP_WORKTREE)
+				if (e->flags_extended & GIT_INDEX_ENTRY_SKIP_WORKTREE)
 					++m_fileStats.skipworktree;
 
 				if (e->mode & 0111)

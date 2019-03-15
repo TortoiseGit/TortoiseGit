@@ -2650,13 +2650,13 @@ void CGitStatusListCtrl::SetGitIndexFlagsForSelectedFiles(UINT message, BOOL ass
 		{
 			git_index_entry *e = const_cast<git_index_entry *>(git_index_get_byindex(gitindex, idx)); // HACK
 			if (assumevalid == BST_UNCHECKED)
-				e->flags &= ~GIT_IDXENTRY_VALID;
+				e->flags &= ~GIT_INDEX_ENTRY_VALID;
 			else if (assumevalid == BST_CHECKED)
-				e->flags |= GIT_IDXENTRY_VALID;
+				e->flags |= GIT_INDEX_ENTRY_VALID;
 			if (skipworktree == BST_UNCHECKED)
-				e->flags_extended &= ~GIT_IDXENTRY_SKIP_WORKTREE;
+				e->flags_extended &= ~GIT_INDEX_ENTRY_SKIP_WORKTREE;
 			else if (skipworktree == BST_CHECKED)
-				e->flags_extended |= GIT_IDXENTRY_SKIP_WORKTREE;
+				e->flags_extended |= GIT_INDEX_ENTRY_SKIP_WORKTREE;
 			git_index_add(gitindex, e);
 		}
 		else
@@ -3937,7 +3937,7 @@ int CGitStatusListCtrl::UpdateIgnoreFileList(const CTGitPathList* List)
 int CGitStatusListCtrl::UpdateLocalChangesIgnoredFileList(const CTGitPathList* list)
 {
 	CAutoWriteLock locker(m_guard);
-	m_LocalChangesIgnoredFileList.FillBasedOnIndexFlags(GIT_IDXENTRY_VALID, GIT_IDXENTRY_SKIP_WORKTREE, list);
+	m_LocalChangesIgnoredFileList.FillBasedOnIndexFlags(GIT_INDEX_ENTRY_VALID, GIT_INDEX_ENTRY_SKIP_WORKTREE, list);
 	for (int i = 0; i < m_LocalChangesIgnoredFileList.GetCount(); ++i)
 	{
 		auto gitpatch = const_cast<CTGitPath*>(&m_LocalChangesIgnoredFileList[i]);

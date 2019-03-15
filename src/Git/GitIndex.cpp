@@ -56,7 +56,7 @@ CGitIndexList::CGitIndexList()
 : m_bHasConflicts(FALSE)
 , m_LastModifyTime(0)
 , m_LastFileSize(-1)
-, m_iIndexCaps(GIT_INDEXCAP_IGNORE_CASE | GIT_INDEXCAP_NO_SYMLINKS)
+, m_iIndexCaps(GIT_INDEX_CAPABILITY_IGNORE_CASE | GIT_INDEX_CAPABILITY_NO_SYMLINKS)
 {
 	m_iMaxCheckSize = static_cast<__int64>(CRegDWORD(L"Software\\TortoiseGit\\TGitCacheCheckContentMaxSize", 10 * 1024)) * 1024; // stored in KiB
 }
@@ -112,7 +112,7 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	m_bHasConflicts = FALSE;
 	m_iIndexCaps = git_index_caps(index);
 	if (CRegDWORD(L"Software\\TortoiseGit\\OverlaysCaseSensitive", TRUE) != FALSE)
-		m_iIndexCaps &= ~GIT_INDEXCAP_IGNORE_CASE;
+		m_iIndexCaps &= ~GIT_INDEX_CAPABILITY_IGNORE_CASE;
 
 	size_t ecount = git_index_entrycount(index);
 	try
@@ -139,7 +139,7 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 		item.m_IndexHash = e->id;
 		item.m_Size = e->file_size;
 		item.m_Mode = e->mode;
-		m_bHasConflicts |= GIT_IDXENTRY_STAGE(e);
+		m_bHasConflicts |= GIT_INDEX_ENTRY_STAGE(e);
 	}
 
 	DoSortFilenametSortVector(*this, IsIgnoreCase());
@@ -175,19 +175,19 @@ int CGitIndexList::GetFileStatus(CAutoRepository& repository, const CString& git
 	ATLASSERT(!status.assumeValid && !status.skipWorktree);
 
 	// skip-worktree has higher priority than assume-valid
-	if (entry.m_FlagsExtended & GIT_IDXENTRY_SKIP_WORKTREE)
+	if (entry.m_FlagsExtended & GIT_INDEX_ENTRY_SKIP_WORKTREE)
 	{
 		status.status = git_wc_status_normal;
 		status.skipWorktree = true;
 	}
-	else if (entry.m_Flags & GIT_IDXENTRY_VALID)
+	else if (entry.m_Flags & GIT_INDEX_ENTRY_VALID)
 	{
 		status.status = git_wc_status_normal;
 		status.assumeValid = true;
 	}
 	else if (filesize == -1)
 		status.status = git_wc_status_deleted;
-	else if ((isSymlink && !S_ISLNK(entry.m_Mode)) || ((m_iIndexCaps & GIT_INDEXCAP_NO_SYMLINKS) != GIT_INDEXCAP_NO_SYMLINKS && isSymlink != S_ISLNK(entry.m_Mode)))
+	else if ((isSymlink && !S_ISLNK(entry.m_Mode)) || ((m_iIndexCaps & GIT_INDEX_CAPABILITY_NO_SYMLINKS) != GIT_INDEX_CAPABILITY_NO_SYMLINKS && isSymlink != S_ISLNK(entry.m_Mode)))
 		status.status = git_wc_status_modified;
 	else if (!isSymlink && filesize != entry.m_Size)
 		status.status = git_wc_status_modified;
@@ -233,9 +233,9 @@ int CGitIndexList::GetFileStatus(CAutoRepository& repository, const CString& git
 	else
 		status.status = git_wc_status_modified;
 
-	if (entry.m_Flags & GIT_IDXENTRY_STAGEMASK)
+	if (entry.m_Flags & GIT_INDEX_ENTRY_STAGEMASK)
 		status.status = git_wc_status_conflicted;
-	else if (entry.m_FlagsExtended & GIT_IDXENTRY_INTENT_TO_ADD)
+	else if (entry.m_FlagsExtended & GIT_INDEX_ENTRY_INTENT_TO_ADD)
 		status.status = git_wc_status_added;
 
 	return 0;
@@ -258,7 +258,7 @@ int CGitIndexList::GetFileStatus(const CString& gitdir, const CString& path, git
 	if (result)
 		filesize = -1;
 
-	if (!isDir || (isSymlink && (m_iIndexCaps & GIT_INDEXCAP_NO_SYMLINKS) != GIT_INDEXCAP_NO_SYMLINKS))
+	if (!isDir || (isSymlink && (m_iIndexCaps & GIT_INDEX_CAPABILITY_NO_SYMLINKS) != GIT_INDEX_CAPABILITY_NO_SYMLINKS))
 		return GetFileStatus(gitdir, path, status, time, filesize, isSymlink, pHash);
 
 	if (CStringUtils::EndsWith(path, L'/'))
@@ -284,7 +284,7 @@ int CGitIndexList::GetFileStatus(const CString& gitdir, const CString& path, git
 	}
 
 	// we get here for symlinks which are handled as files inside the git index
-	if ((m_iIndexCaps & GIT_INDEXCAP_NO_SYMLINKS) != GIT_INDEXCAP_NO_SYMLINKS)
+	if ((m_iIndexCaps & GIT_INDEX_CAPABILITY_NO_SYMLINKS) != GIT_INDEX_CAPABILITY_NO_SYMLINKS)
 		return GetFileStatus(gitdir, path, status, time, filesize, isSymlink, pHash);
 
 	// we should never get here
