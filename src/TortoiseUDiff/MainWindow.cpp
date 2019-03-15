@@ -250,6 +250,7 @@ LRESULT CMainWindow::DoCommand(int id)
 		}
 		break;
 	case IDM_FINDNEXT:
+		SendEditor(SCI_CHARRIGHT);
 		SendEditor(SCI_SEARCHANCHOR);
 		if (SendEditor(SCI_SEARCHNEXT, m_bMatchCase ? SCFIND_MATCHCASE : 0, (LPARAM)CUnicodeUtils::StdGetUTF8(m_findtext).c_str()) == -1)
 		{
