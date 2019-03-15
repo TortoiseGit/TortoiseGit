@@ -1130,9 +1130,9 @@ int CTGitPathList::FillBasedOnIndexFlags(unsigned short flag, unsigned short fla
 
 			//SetFromGit will clear all status
 			path.SetFromGit(one, (e->mode & S_IFDIR) == S_IFDIR);
-			if (e->flags_extended & GIT_IDXENTRY_SKIP_WORKTREE)
+			if (e->flags_extended & GIT_INDEX_ENTRY_SKIP_WORKTREE)
 				path.m_Action = CTGitPath::LOGACTIONS_SKIPWORKTREE;
-			else if (e->flags & GIT_IDXENTRY_VALID)
+			else if (e->flags & GIT_INDEX_ENTRY_VALID)
 				path.m_Action = CTGitPath::LOGACTIONS_ASSUMEVALID;
 			AddPath(path);
 		}

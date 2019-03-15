@@ -55,7 +55,7 @@ public:
 	__time64_t  m_LastModifyTime;
 	__int64		m_LastFileSize;
 	BOOL		m_bHasConflicts;
-	inline bool	IsIgnoreCase() { return m_iIndexCaps & GIT_INDEXCAP_IGNORE_CASE; }
+	inline bool	IsIgnoreCase() { return m_iIndexCaps & GIT_INDEX_CAPABILITY_IGNORE_CASE; }
 
 	CGitIndexList();
 	~CGitIndexList();

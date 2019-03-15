@@ -1225,6 +1225,9 @@
     <ClInclude Include="..\libgit2\src\streams\registry.h">
       <Filter>Header Files\streams</Filter>
     </ClInclude>
+    <ClInclude Include="..\libgit2\include\git2\deprecated.h">
+      <Filter>Public Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\libgit2\src\win32\git2.rc">
