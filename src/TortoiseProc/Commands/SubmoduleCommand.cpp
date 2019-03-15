@@ -121,7 +121,7 @@ bool SubmoduleUpdateCommand::Execute()
 	{
 		if (orgPathList[i].IsDirectory())
 		{
-			CString path = const_cast<CTGitPath&>(orgPathList[i]).GetSubPath(CTGitPath(super)).GetGitPathString();
+			CString path = orgPathList[i].GetSubPath(CTGitPath(super)).GetGitPathString();
 			if (!path.IsEmpty())
 				pathFilterList.push_back(path);
 		}
@@ -224,7 +224,7 @@ bool SubmoduleSyncCommand::Execute()
 	{
 		if(orgPathList[i].IsDirectory())
 		{
-			CString path = const_cast<CTGitPath&>(orgPathList[i]).GetSubPath(CTGitPath(super)).GetGitPathString();
+			CString path = orgPathList[i].GetSubPath(CTGitPath(super)).GetGitPathString();
 			if (path.IsEmpty())
 				str = L"git.exe submodule sync";
 			else
