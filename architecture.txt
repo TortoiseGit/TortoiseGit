@@ -14,6 +14,8 @@ are of interest here (the project names are in parentheses bebind):
 * TortoiseGitMerge.exe (TortoiseGitMerge)
 * TortoiseGitPlink.exe (TortoiseGitPlink)
 * SshAskPass.exe (SshAskPass)
+* GitWCRev.exe (GitWCRev)
+* GitWCRevCOM.exe (GitWCRevCOM)
 * tgittouch.exe (tgittouch)
 
 TortoiseGit(32).dll and TortoiseGitStub(32).dll
@@ -123,6 +125,21 @@ a helper utility (using the environment variables SSH_ASKPASS and GIT_ASKPASS).
 
 All SshAskPass.exe does is, it displays the command line parameters in the GUI
 and passes the entered values to STDOUT (where it is read by the calling tool).
+
+GitWCRev.exe
+==============
+This program is for reading the status of a Git working tree or specific files
+inside a working tree, and performing keyword substitution in a template file.
+
+This is a console command line program.
+
+cf. https://tortoisegit.org/docs/tortoisegit/tgit-gitwcrev.html
+
+GitWCRevCOM.exe
+==============
+This program is the COM interface of GitWCRev.
+
+cf. https://tortoisegit.org/docs/tortoisegit/tgit-gitwcrev-com-interface.html
 
 tgittouch.exe
 =============
