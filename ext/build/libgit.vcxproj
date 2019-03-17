@@ -47,16 +47,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\tgit\apply.c" />
-    <ClCompile Include="..\tgit\builtin\am.c" />
-    <ClCompile Include="..\tgit\builtin\check-mailmap.c" />
-    <ClCompile Include="..\tgit\builtin\get-tar-commit-id.c" />
-    <ClCompile Include="..\tgit\builtin\interpret-trailers.c" />
-    <ClCompile Include="..\tgit\builtin\pull.c" />
-    <ClCompile Include="..\tgit\builtin\repack.c" />
-    <ClCompile Include="..\tgit\builtin\verify-commit.c" />
-    <ClCompile Include="..\tgit\builtin\worktree.c">
-      <ObjectFileName>$(IntDir)BuildIn%(Filename).obj</ObjectFileName>
-    </ClCompile>
     <ClCompile Include="..\tgit\chdir-notify.c" />
     <ClCompile Include="..\tgit\commit-graph.c" />
     <ClCompile Include="..\tgit\compat\msvc.c" />
@@ -263,138 +253,8 @@
     <ClCompile Include="..\tgit\xdiff\xpatience.c" />
     <ClCompile Include="..\tgit\xdiff\xprepare.c" />
     <ClCompile Include="..\tgit\xdiff\xutils.c" />
-    <ClCompile Include="..\tgit\builtin\add.c" />
-    <ClCompile Include="..\tgit\builtin\annotate.c" />
-    <ClCompile Include="..\tgit\builtin\apply.c">
-      <ObjectFileName>$(IntDir)BuildIn%(Filename).obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="..\tgit\builtin\archive.c">
-      <ObjectFileName>$(IntDir)BuildIn%(Filename).obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="..\tgit\builtin\bisect--helper.c" />
-    <ClCompile Include="..\tgit\builtin\blame.c" />
-    <ClCompile Include="..\tgit\builtin\branch.c">
-      <ObjectFileName>$(IntDir)BuildIn%(Filename).obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="..\tgit\builtin\bundle.c">
-      <ObjectFileName>$(IntDir)BuildIn%(Filename).obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="..\tgit\builtin\cat-file.c" />
-    <ClCompile Include="..\tgit\builtin\check-attr.c" />
-    <ClCompile Include="..\tgit\builtin\check-ref-format.c" />
-    <ClCompile Include="..\tgit\builtin\checkout-index.c" />
-    <ClCompile Include="..\tgit\builtin\checkout.c" />
-    <ClCompile Include="..\tgit\builtin\clean.c" />
-    <ClCompile Include="..\tgit\builtin\clone.c" />
-    <ClCompile Include="..\tgit\builtin\commit-tree.c" />
-    <ClCompile Include="..\tgit\builtin\commit.c">
-      <ObjectFileName>$(IntDir)BuildIn%(Filename).obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="..\tgit\builtin\config.c">
-      <ObjectFileName>$(IntDir)BuildIn%(Filename).obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="..\tgit\builtin\count-objects.c" />
-    <ClCompile Include="..\tgit\builtin\describe.c" />
-    <ClCompile Include="..\tgit\builtin\diff-files.c" />
-    <ClCompile Include="..\tgit\builtin\diff-index.c" />
-    <ClCompile Include="..\tgit\builtin\diff-tree.c" />
-    <ClCompile Include="..\tgit\builtin\diff.c">
-      <ObjectFileName>$(IntDir)BuildIn%(Filename).obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="..\tgit\builtin\fast-export.c" />
-    <ClCompile Include="..\tgit\builtin\fetch-pack.c">
-      <ObjectFileName>$(IntDir)BuildIn%(Filename).obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="..\tgit\builtin\fetch.c" />
-    <ClCompile Include="..\tgit\builtin\fmt-merge-msg.c" />
-    <ClCompile Include="..\tgit\builtin\for-each-ref.c" />
-    <ClCompile Include="..\tgit\builtin\fsck.c">
-      <ObjectFileName>$(IntDir)BuildIn%(Filename).obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="..\tgit\builtin\gc.c" />
-    <ClCompile Include="..\tgit\builtin\grep.c">
-      <ObjectFileName>$(IntDir)BuildIn%(Filename).obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="..\tgit\builtin\hash-object.c" />
-    <ClCompile Include="..\tgit\builtin\help.c">
-      <ObjectFileName>$(IntDir)BuildIn%(Filename).obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="..\tgit\builtin\index-pack.c" />
-    <ClCompile Include="..\tgit\builtin\init-db.c" />
     <ClCompile Include="..\tgit\builtin\log.c" />
-    <ClCompile Include="..\tgit\builtin\ls-files.c" />
-    <ClCompile Include="..\tgit\builtin\ls-remote.c" />
-    <ClCompile Include="..\tgit\builtin\ls-tree.c" />
-    <ClCompile Include="..\tgit\builtin\mailinfo.c" />
-    <ClCompile Include="..\tgit\builtin\mailsplit.c" />
-    <ClCompile Include="..\tgit\builtin\merge-base.c" />
-    <ClCompile Include="..\tgit\builtin\merge-file.c">
-      <ObjectFileName>$(IntDir)BuildIn%(Filename).obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="..\tgit\builtin\merge-index.c" />
-    <ClCompile Include="..\tgit\builtin\merge-ours.c" />
-    <ClCompile Include="..\tgit\builtin\merge-recursive.c">
-      <ObjectFileName>$(IntDir)BuildIn%(Filename).obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="..\tgit\builtin\merge-tree.c" />
-    <ClCompile Include="..\tgit\builtin\merge.c">
-      <ObjectFileName>$(IntDir)BuildIn%(Filename).obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="..\tgit\builtin\mktag.c" />
-    <ClCompile Include="..\tgit\builtin\mktree.c" />
-    <ClCompile Include="..\tgit\builtin\mv.c" />
-    <ClCompile Include="..\tgit\builtin\name-rev.c" />
-    <ClCompile Include="..\tgit\builtin\notes.c">
-      <ObjectFileName>$(IntDir)BuildIn%(Filename).obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="..\tgit\builtin\pack-objects.c">
-      <ObjectFileName>$(IntDir)BuildIn%(Filename).obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="..\tgit\builtin\pack-redundant.c" />
-    <ClCompile Include="..\tgit\builtin\pack-refs.c">
-      <ObjectFileName>$(IntDir)BuildIn%(Filename).obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="..\tgit\builtin\patch-id.c" />
-    <ClCompile Include="..\tgit\builtin\prune-packed.c" />
-    <ClCompile Include="..\tgit\builtin\prune.c" />
-    <ClCompile Include="..\tgit\builtin\push.c" />
-    <ClCompile Include="..\tgit\builtin\read-tree.c" />
-    <ClCompile Include="..\tgit\builtin\receive-pack.c" />
-    <ClCompile Include="..\tgit\builtin\reflog.c" />
-    <ClCompile Include="..\tgit\builtin\remote-ext.c" />
-    <ClCompile Include="..\tgit\builtin\remote-fd.c" />
-    <ClCompile Include="..\tgit\builtin\remote.c">
-      <ObjectFileName>$(IntDir)BuildIn%(Filename).obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="..\tgit\builtin\replace.c" />
-    <ClCompile Include="..\tgit\builtin\rerere.c">
-      <ObjectFileName>$(IntDir)BuildIn%(Filename).obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="..\tgit\builtin\reset.c" />
-    <ClCompile Include="..\tgit\builtin\rev-list.c" />
-    <ClCompile Include="..\tgit\builtin\rev-parse.c" />
-    <ClCompile Include="..\tgit\builtin\revert.c" />
-    <ClCompile Include="..\tgit\builtin\rm.c" />
-    <ClCompile Include="..\tgit\builtin\send-pack.c">
-      <ObjectFileName>$(IntDir)BuildIn%(Filename).obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="..\tgit\builtin\show-branch.c" />
-    <ClCompile Include="..\tgit\builtin\show-ref.c" />
-    <ClCompile Include="..\tgit\builtin\stripspace.c" />
-    <ClCompile Include="..\tgit\builtin\symbolic-ref.c" />
-    <ClCompile Include="..\tgit\builtin\tag.c">
-      <ObjectFileName>$(IntDir)BuildIn%(Filename).obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="..\tgit\builtin\unpack-file.c" />
-    <ClCompile Include="..\tgit\builtin\unpack-objects.c" />
     <ClCompile Include="..\tgit\builtin\update-index.c" />
-    <ClCompile Include="..\tgit\builtin\update-ref.c" />
-    <ClCompile Include="..\tgit\builtin\update-server-info.c" />
-    <ClCompile Include="..\tgit\builtin\upload-archive.c" />
-    <ClCompile Include="..\tgit\builtin\var.c" />
-    <ClCompile Include="..\tgit\builtin\verify-pack.c" />
-    <ClCompile Include="..\tgit\builtin\verify-tag.c" />
-    <ClCompile Include="..\tgit\builtin\write-tree.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\tgit\apply.h" />
