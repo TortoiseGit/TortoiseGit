@@ -34,6 +34,7 @@
   <Import Project="$(SolutionDir)TortoiseGit.common.props" />
   <Import Project="$(SolutionDir)TortoiseGit.common-dll.props" />
   <Import Project="$(SolutionDir)TortoiseGit.common-langs.props" />
+  <Import Project="$(SolutionDir)TortoiseGit.uicc.props" />
   <PropertyGroup Label="UserMacros" />
   <ItemDefinitionGroup>
     <ResourceCompile>
