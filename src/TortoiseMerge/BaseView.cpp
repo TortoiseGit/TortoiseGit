@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2003-2018 - TortoiseSVN
+// Copyright (C) 2003-2019 - TortoiseSVN
 // Copyright (C) 2011-2012, 2017-2019 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
@@ -2652,16 +2652,19 @@ void CBaseView::RefreshViews()
 	if (m_pwndLeft)
 	{
 		m_pwndLeft->UpdateStatusBar();
+		m_pwndLeft->UpdateCaret();
 		m_pwndLeft->Invalidate();
 	}
 	if (m_pwndRight)
 	{
 		m_pwndRight->UpdateStatusBar();
+		m_pwndRight->UpdateCaret();
 		m_pwndRight->Invalidate();
 	}
 	if (m_pwndBottom)
 	{
 		m_pwndBottom->UpdateStatusBar();
+		m_pwndBottom->UpdateCaret();
 		m_pwndBottom->Invalidate();
 	}
 	if (m_pwndLocator)
