@@ -120,8 +120,10 @@ BOOL CSetMainPage::OnInitDialog()
 			DWORD loc = _wtoi(filename.Mid(static_cast<int>(wcslen(L"TortoiseProc"))));
 			if (loc == 0)
 				continue;
+			buf[0] = 0;
 			GetLocaleInfo(loc, LOCALE_SNATIVELANGNAME, buf, _countof(buf));
 			CString sLang = buf;
+			buf[0] = 0;
 			GetLocaleInfo(loc, LOCALE_SNATIVECTRYNAME, buf, _countof(buf));
 			if (buf[0])
 			{
