@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -118,6 +118,8 @@ BOOL CSetMainPage::OnInitDialog()
 			if (CStringUtils::StartsWith(sLoc, L"32") && (sLoc.GetLength() > 5))
 				continue;
 			DWORD loc = _wtoi(filename.Mid(static_cast<int>(wcslen(L"TortoiseProc"))));
+			if (loc == 0)
+				continue;
 			GetLocaleInfo(loc, LOCALE_SNATIVELANGNAME, buf, _countof(buf));
 			CString sLang = buf;
 			GetLocaleInfo(loc, LOCALE_SNATIVECTRYNAME, buf, _countof(buf));
