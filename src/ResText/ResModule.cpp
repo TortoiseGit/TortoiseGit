@@ -46,7 +46,7 @@
 static const WORD * AlignWORD(const WORD * pWord)
 {
 	const WORD * res = pWord;
-	res += ((reinterpret_cast<UINT_PTR>(pWord + 3) & ~3) - reinterpret_cast<UINT_PTR>(pWord)) / sizeof(WORD);
+	res += (((reinterpret_cast<UINT_PTR>(pWord) + 3) & ~3) - reinterpret_cast<UINT_PTR>(pWord)) / sizeof(WORD);
 	return res;
 }
 
