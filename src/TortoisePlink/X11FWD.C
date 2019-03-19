@@ -9,13 +9,21 @@
 
 #include "putty.h"
 #include "ssh.h"
+#include "sshchan.h"
 #include "tree234.h"
 
-#define GET_16BIT(endian, cp) \
-  (endian=='B' ? GET_16BIT_MSB_FIRST(cp) : GET_16BIT_LSB_FIRST(cp))
+static inline uint16_t GET_16BIT_X11(char endian, const void *p)
+{
+    return endian == 'B' ? GET_16BIT_MSB_FIRST(p) : GET_16BIT_LSB_FIRST(p);
+}
 
-#define PUT_16BIT(endian, cp, val) \
-  (endian=='B' ? PUT_16BIT_MSB_FIRST(cp, val) : PUT_16BIT_LSB_FIRST(cp, val))
+static inline void PUT_16BIT_X11(char endian, void *p, uint16_t value)
+{
+    if (endian == 'B')
+        PUT_16BIT_MSB_FIRST(p, value);
+    else
+        PUT_16BIT_LSB_FIRST(p, value);
+}
 
 const char *const x11_authnames[] = {
     "", "MIT-MAGIC-COOKIE-1", "XDM-AUTHORIZATION-1"
@@ -26,23 +34,24 @@ struct XDMSeen {
     unsigned char clientid[6];
 };
 
-struct X11Connection {
-    const struct plug_function_table *fn;
-    /* the above variable absolutely *must* be the first in this structure */
+typedef struct X11Connection {
     unsigned char firstpkt[12];	       /* first X data packet */
     tree234 *authtree;
     struct X11Display *disp;
     char *auth_protocol;
     unsigned char *auth_data;
     int data_read, auth_plen, auth_psize, auth_dlen, auth_dsize;
-    int verified;
-    int throttled, throttle_override;
-    int no_data_sent_to_x_client;
+    bool verified;
+    bool input_wanted;
+    bool no_data_sent_to_x_client;
     char *peer_addr;
     int peer_port;
-    struct ssh_channel *c;        /* channel structure held by ssh.c */
-    Socket s;
-};
+    SshChannel *c;               /* channel structure held by SSH backend */
+    Socket *s;
+
+    Plug plug;
+    Channel chan;
+} X11Connection;
 
 static int xdmseen_cmp(void *a, void *b)
 {
@@ -51,22 +60,6 @@ static int xdmseen_cmp(void *a, void *b)
 	   sa->time < sb->time ? -1 :
            memcmp(sa->clientid, sb->clientid, sizeof(sa->clientid));
 }
-
-/* Do-nothing "plug" implementation, used by x11_setup_display() when it
- * creates a trial connection (and then immediately closes it).
- * XXX: bit out of place here, could in principle live in a platform-
- *      independent network.c or something */
-static void dummy_plug_log(Plug p, int type, SockAddr addr, int port,
-			   const char *error_msg, int error_code) { }
-static void dummy_plug_closing
-     (Plug p, const char *error_msg, int error_code, int calling_back) { }
-static void dummy_plug_receive(Plug p, int urgent, char *data, int len) { }
-static void dummy_plug_sent(Plug p, int bufsize) { }
-static int dummy_plug_accepting(Plug p, accept_fn_t constructor, accept_ctx_t ctx) { return 1; }
-static const struct plug_function_table dummy_plug = {
-    dummy_plug_log, dummy_plug_closing, dummy_plug_receive,
-    dummy_plug_sent, dummy_plug_accepting
-};
 
 struct X11FakeAuth *x11_invent_fake_auth(tree234 *authtree, int authtype)
 {
@@ -107,8 +100,7 @@ struct X11FakeAuth *x11_invent_fake_auth(tree234 *authtree, int authtype)
         auth->xa1_firstblock = NULL;
 
         while (1) {
-            for (i = 0; i < auth->datalen; i++)
-                auth->data[i] = random_byte();
+            random_read(auth->data, auth->datalen);
             if (add234(authtree, auth) == auth)
                 break;
         }
@@ -125,8 +117,10 @@ struct X11FakeAuth *x11_invent_fake_auth(tree234 *authtree, int authtype)
         memset(auth->xa1_firstblock, 0, 8);
 
         while (1) {
-            for (i = 0; i < auth->datalen; i++)
-                auth->data[i] = (i == 8 ? 0 : random_byte());
+            random_read(auth->data, 15);
+            auth->data[15] = auth->data[8];
+            auth->data[8] = 0;
+
             memcpy(auth->xa1_firstblock, auth->data, 8);
             des_encrypt_xdmauth(auth->data + 9, auth->xa1_firstblock, 8);
             if (add234(authtree, auth) == auth)
@@ -142,7 +136,8 @@ struct X11FakeAuth *x11_invent_fake_auth(tree234 *authtree, int authtype)
 		auth->data[i]);
 
     auth->disp = NULL;
-    auth->share_cs = auth->share_chan = NULL;
+    auth->share_cs = NULL;
+    auth->share_chan = NULL;
 
     return auth;
 }
@@ -188,10 +183,13 @@ int x11_authcmp(void *av, void *bv)
     }
 }
 
-struct X11Display *x11_setup_display(const char *display, Conf *conf)
+struct X11Display *x11_setup_display(const char *display, Conf *conf,
+                                     char **error_msg)
 {
     struct X11Display *disp = snew(struct X11Display);
     char *localcopy;
+
+    *error_msg = NULL;
 
     if (!display || !*display) {
 	localcopy = platform_get_x_display();
@@ -219,7 +217,7 @@ struct X11Display *x11_setup_display(const char *display, Conf *conf)
      */
     if (localcopy[0] == '/') {
 	disp->unixsocketpath = localcopy;
-	disp->unixdomain = TRUE;
+	disp->unixdomain = true;
 	disp->hostname = NULL;
 	disp->displaynum = -1;
 	disp->screennum = 0;
@@ -230,9 +228,12 @@ struct X11Display *x11_setup_display(const char *display, Conf *conf)
 
 	colon = host_strrchr(localcopy, ':');
 	if (!colon) {
+            *error_msg = dupprintf("display name '%s' has no ':number'"
+                                   " suffix", localcopy);
+
 	    sfree(disp);
 	    sfree(localcopy);
-	    return NULL;	       /* FIXME: report a specific error? */
+	    return NULL;
 	}
 
 	*colon++ = '\0';
@@ -265,7 +266,7 @@ struct X11Display *x11_setup_display(const char *display, Conf *conf)
 	else if (!*hostname || !strcmp(hostname, "unix"))
 	    disp->unixdomain = platform_uses_x11_unix_by_default;
 	else
-	    disp->unixdomain = FALSE;
+	    disp->unixdomain = false;
 
 	if (!disp->hostname && !disp->unixdomain)
 	    disp->hostname = dupstr("localhost");
@@ -288,11 +289,14 @@ struct X11Display *x11_setup_display(const char *display, Conf *conf)
                                  NULL, NULL);
     
 	if ((err = sk_addr_error(disp->addr)) != NULL) {
+            *error_msg = dupprintf("unable to resolve host name '%s' in "
+                                   "display name", disp->hostname);
+
 	    sk_addr_free(disp->addr);
 	    sfree(disp->hostname);
 	    sfree(disp->unixsocketpath);
 	    sfree(disp);
-	    return NULL;	       /* FIXME: report an error */
+	    return NULL;
 	}
     }
 
@@ -301,13 +305,13 @@ struct X11Display *x11_setup_display(const char *display, Conf *conf)
      * display (as the standard X connection libraries do).
      */
     if (!disp->unixdomain && sk_address_is_local(disp->addr)) {
-	SockAddr ux = platform_get_x11_unix_address(NULL, disp->displaynum);
+	SockAddr *ux = platform_get_x11_unix_address(NULL, disp->displaynum);
 	const char *err = sk_addr_error(ux);
 	if (!err) {
 	    /* Create trial connection to see if there is a useful Unix-domain
 	     * socket */
-	    const struct plug_function_table *dummy = &dummy_plug;
-	    Socket s = sk_new(sk_addr_dup(ux), 0, 0, 0, 0, 0, (Plug)&dummy);
+	    Socket *s = sk_new(sk_addr_dup(ux), 0, false, false,
+                               false, false, nullplug);
 	    err = sk_socket_error(s);
 	    sk_close(s);
 	}
@@ -315,7 +319,7 @@ struct X11Display *x11_setup_display(const char *display, Conf *conf)
 	    sk_addr_free(ux);
 	} else {
 	    sk_addr_free(disp->addr);
-	    disp->unixdomain = TRUE;
+	    disp->unixdomain = true;
 	    disp->addr = ux;
 	    /* Fill in the rest in a moment */
 	}
@@ -446,15 +450,45 @@ static const char *x11_verify(unsigned long peer_ip, int peer_port,
     return NULL;
 }
 
+ptrlen BinarySource_get_string_xauth(BinarySource *src)
+{
+    size_t len = get_uint16(src);
+    return get_data(src, len);
+}
+#define get_string_xauth(src) \
+    BinarySource_get_string_xauth(BinarySource_UPCAST(src))
+
+void BinarySink_put_stringpl_xauth(BinarySink *bs, ptrlen pl)
+{
+    assert((pl.len >> 16) == 0);
+    put_uint16(bs, pl.len);
+    put_datapl(bs, pl);
+}
+#define put_stringpl_xauth(bs, ptrlen) \
+    BinarySink_put_stringpl_xauth(BinarySink_UPCAST(bs),ptrlen)
+
 void x11_get_auth_from_authfile(struct X11Display *disp,
 				const char *authfilename)
 {
     FILE *authfp;
-    char *buf, *ptr, *str[4];
-    int len[4];
+    char *buf;
+    int size;
+    BinarySource src[1];
     int family, protocol;
-    int ideal_match = FALSE;
+    ptrlen addr, protoname, data;
+    char *displaynum_string;
+    int displaynum;
+    bool ideal_match = false;
     char *ourhostname;
+
+    /* A maximally sized (wildly implausible) .Xauthority record
+     * consists of a 16-bit integer to start with, then four strings,
+     * each of which has a 16-bit length field followed by that many
+     * bytes of data (i.e. up to 0xFFFF bytes). */
+    const size_t MAX_RECORD_SIZE = 2 + 4 * (2+0xFFFF);
+
+    /* We'll want a buffer of twice that size (see below). */
+    const size_t BUF_SIZE = 2 * MAX_RECORD_SIZE;
 
     /*
      * Normally we should look for precisely the details specified in
@@ -477,7 +511,7 @@ void x11_get_auth_from_authfile(struct X11Display *disp,
      * that is; so if we can't find a Unix-domain-socket entry we'll
      * fall back to an IP-based entry if we can find one.
      */
-    int localhost = !disp->unixdomain && sk_address_is_local(disp->addr);
+    bool localhost = !disp->unixdomain && sk_address_is_local(disp->addr);
 
     authfp = fopen(authfilename, "rb");
     if (!authfp)
@@ -485,29 +519,41 @@ void x11_get_auth_from_authfile(struct X11Display *disp,
 
     ourhostname = get_hostname();
 
-    /* Records in .Xauthority contain four strings of up to 64K each */
-    buf = snewn(65537 * 4, char);
+    /*
+     * Allocate enough space to hold two maximally sized records, so
+     * that a full record can start anywhere in the first half. That
+     * way we avoid the accidentally-quadratic algorithm that would
+     * arise if we moved everything to the front of the buffer after
+     * consuming each record; instead, we only move everything to the
+     * front after our current position gets past the half-way mark.
+     * Before then, there's no need to move anyway; so this guarantees
+     * linear time, in that every byte written into this buffer moves
+     * at most once (because every move is from the second half of the
+     * buffer to the first half).
+     */
+    buf = snewn(BUF_SIZE, char);
+    size = fread(buf, 1, BUF_SIZE, authfp);
+    BinarySource_BARE_INIT(src, buf, size);
 
     while (!ideal_match) {
-	int c, i, j, match = FALSE;
-	
-#define GET do { c = fgetc(authfp); if (c == EOF) goto done; c = (unsigned char)c; } while (0)
-	/* Expect a big-endian 2-byte number giving address family */
-	GET; family = c;
-	GET; family = (family << 8) | c;
-	/* Then expect four strings, each composed of a big-endian 2-byte
-	 * length field followed by that many bytes of data */
-	ptr = buf;
-	for (i = 0; i < 4; i++) {
-	    GET; len[i] = c;
-	    GET; len[i] = (len[i] << 8) | c;
-	    str[i] = ptr;
-	    for (j = 0; j < len[i]; j++) {
-		GET; *ptr++ = c;
-	    }
-	    *ptr++ = '\0';
-	}
-#undef GET
+        bool match = false;
+
+        if (src->pos >= MAX_RECORD_SIZE) {
+            size -= src->pos;
+            memcpy(buf, buf + src->pos, size);
+            size += fread(buf + size, 1, BUF_SIZE - size, authfp);
+            BinarySource_BARE_INIT(src, buf, size);
+        }
+
+        family = get_uint16(src);
+        addr = get_string_xauth(src);
+        displaynum_string = mkstr(get_string_xauth(src));
+        displaynum = displaynum_string[0] ? atoi(displaynum_string) : -1;
+        sfree(displaynum_string);
+        protoname = get_string_xauth(src);
+        data = get_string_xauth(src);
+        if (get_err(src))
+            break;
 
 	/*
 	 * Now we have a full X authority record in memory. See
@@ -521,7 +567,7 @@ void x11_get_auth_from_authfile(struct X11Display *disp,
 	 *    connect to the display. 0 means IPv4; 6 means IPv6;
 	 *    256 means Unix-domain sockets.
 	 * 
-	 *  - str[0] is the network address itself. For IPv4 and
+	 *  - 'addr' is the network address itself. For IPv4 and
 	 *    IPv6, this is a string of binary data of the
 	 *    appropriate length (respectively 4 and 16 bytes)
 	 *    representing the address in big-endian format, e.g.
@@ -532,24 +578,23 @@ void x11_get_auth_from_authfile(struct X11Display *disp,
 	 *    authority entries for Unix-domain displays on
 	 *    several machines without them clashing).
 	 * 
-	 *  - str[1] is the display number. I've no idea why
-	 *    .Xauthority stores this as a string when it has a
-	 *    perfectly good integer format, but there we go.
+	 *  - 'displaynum' is the display number. An empty display
+	 *    number is a wildcard for any display number.
 	 * 
-	 *  - str[2] is the authorisation method, encoded as its
-	 *    canonical string name (i.e. "MIT-MAGIC-COOKIE-1",
-	 *    "XDM-AUTHORIZATION-1" or something we don't
-	 *    recognise).
+	 *  - 'protoname' is the authorisation protocol, encoded as
+	 *    its canonical string name (i.e. "MIT-MAGIC-COOKIE-1",
+	 *    "XDM-AUTHORIZATION-1" or something we don't recognise).
 	 * 
-	 *  - str[3] is the actual authorisation data, stored in
+	 *  - 'data' is the actual authorisation data, stored in
 	 *    binary form.
 	 */
 
-	if (disp->displaynum < 0 || disp->displaynum != atoi(str[1]))
+	if (disp->displaynum < 0 ||
+	    (displaynum >= 0 && disp->displaynum != displaynum))
 	    continue;		       /* not the one */
 
 	for (protocol = 1; protocol < lenof(x11_authnames); protocol++)
-	    if (!strcmp(str[2], x11_authnames[protocol]))
+	    if (ptrlen_eq_string(protoname, x11_authnames[protocol]))
 		break;
 	if (protocol == lenof(x11_authnames))
 	    continue;  /* don't recognise this protocol, look for another */
@@ -560,8 +605,8 @@ void x11_get_auth_from_authfile(struct X11Display *disp,
 		sk_addrtype(disp->addr) == ADDRTYPE_IPV4) {
 		char buf[4];
 		sk_addrcopy(disp->addr, buf);
-		if (len[0] == 4 && !memcmp(str[0], buf, 4)) {
-		    match = TRUE;
+		if (addr.len == 4 && !memcmp(addr.ptr, buf, 4)) {
+		    match = true;
 		    /* If this is a "localhost" entry, note it down
 		     * but carry on looking for a Unix-domain entry. */
 		    ideal_match = !localhost;
@@ -573,18 +618,20 @@ void x11_get_auth_from_authfile(struct X11Display *disp,
 		sk_addrtype(disp->addr) == ADDRTYPE_IPV6) {
 		char buf[16];
 		sk_addrcopy(disp->addr, buf);
-		if (len[0] == 16 && !memcmp(str[0], buf, 16)) {
-		    match = TRUE;
+		if (addr.len == 16 && !memcmp(addr.ptr, buf, 16)) {
+		    match = true;
 		    ideal_match = !localhost;
 		}
 	    }
 	    break;
 	  case 256: /* Unix-domain / localhost */
 	    if ((disp->unixdomain || localhost)
-	       	&& ourhostname && !strcmp(ourhostname, str[0]))
+                && ourhostname && ptrlen_eq_string(addr, ourhostname)) {
 		/* A matching Unix-domain socket is always the best
 		 * match. */
-		match = ideal_match = TRUE;
+		match = true;
+                ideal_match = true;
+            }
 	    break;
 	}
 
@@ -592,20 +639,52 @@ void x11_get_auth_from_authfile(struct X11Display *disp,
 	    /* Current best guess -- may be overridden if !ideal_match */
 	    disp->localauthproto = protocol;
 	    sfree(disp->localauthdata); /* free previous guess, if any */
-	    disp->localauthdata = snewn(len[3], unsigned char);
-	    memcpy(disp->localauthdata, str[3], len[3]);
-	    disp->localauthdatalen = len[3];
+	    disp->localauthdata = snewn(data.len, unsigned char);
+	    memcpy(disp->localauthdata, data.ptr, data.len);
+	    disp->localauthdatalen = data.len;
 	}
     }
 
-    done:
     fclose(authfp);
-    smemclr(buf, 65537 * 4);
+    smemclr(buf, 2 * MAX_RECORD_SIZE);
     sfree(buf);
     sfree(ourhostname);
 }
 
-static void x11_log(Plug p, int type, SockAddr addr, int port,
+void x11_format_auth_for_authfile(
+    BinarySink *bs, SockAddr *addr, int display_no,
+    ptrlen authproto, ptrlen authdata)
+{
+    if (sk_address_is_special_local(addr)) {
+        char *ourhostname = get_hostname();
+        put_uint16(bs, 256); /* indicates Unix-domain socket */
+        put_stringpl_xauth(bs, ptrlen_from_asciz(ourhostname));
+        sfree(ourhostname);
+    } else if (sk_addrtype(addr) == ADDRTYPE_IPV4) {
+        char ipv4buf[4];
+        sk_addrcopy(addr, ipv4buf);
+        put_uint16(bs, 0); /* indicates IPv4 */
+        put_stringpl_xauth(bs, make_ptrlen(ipv4buf, 4));
+    } else if (sk_addrtype(addr) == ADDRTYPE_IPV6) {
+        char ipv6buf[16];
+        sk_addrcopy(addr, ipv6buf);
+        put_uint16(bs, 6); /* indicates IPv6 */
+        put_stringpl_xauth(bs, make_ptrlen(ipv6buf, 16));
+    } else {
+        unreachable("Bad address type in x11_format_auth_for_authfile");
+    }
+
+    {
+        char *numberbuf = dupprintf("%d", display_no);
+        put_stringpl_xauth(bs, ptrlen_from_asciz(numberbuf));
+        sfree(numberbuf);
+    }
+
+    put_stringpl_xauth(bs, authproto);
+    put_stringpl_xauth(bs, authdata);
+}
+
+static void x11_log(Plug *p, int type, SockAddr *addr, int port,
 		    const char *error_msg, int error_code)
 {
     /* We have no interface to the logging module here, so we drop these. */
@@ -614,10 +693,11 @@ static void x11_log(Plug p, int type, SockAddr addr, int port,
 static void x11_send_init_error(struct X11Connection *conn,
                                 const char *err_message);
 
-static void x11_closing(Plug plug, const char *error_msg, int error_code,
-			int calling_back)
+static void x11_closing(Plug *plug, const char *error_msg, int error_code,
+			bool calling_back)
 {
-    struct X11Connection *xconn = (struct X11Connection *) plug;
+    struct X11Connection *xconn = container_of(
+        plug, struct X11Connection, plug);
 
     if (error_msg) {
         /*
@@ -635,7 +715,7 @@ static void x11_closing(Plug plug, const char *error_msg, int error_code,
          * Whether we did that or not, now we slam the connection
          * shut.
          */
-        sshfwd_unclean_close(xconn->c, error_msg);
+        sshfwd_initiate_close(xconn->c, error_msg);
     } else {
         /*
          * Ordinary EOF received on socket. Send an EOF on the SSH
@@ -646,20 +726,19 @@ static void x11_closing(Plug plug, const char *error_msg, int error_code,
     }
 }
 
-static void x11_receive(Plug plug, int urgent, char *data, int len)
+static void x11_receive(Plug *plug, int urgent, const char *data, size_t len)
 {
-    struct X11Connection *xconn = (struct X11Connection *) plug;
+    struct X11Connection *xconn = container_of(
+        plug, struct X11Connection, plug);
 
-    if (sshfwd_write(xconn->c, data, len) > 0) {
-	xconn->throttled = 1;
-        xconn->no_data_sent_to_x_client = FALSE;
-	sk_set_frozen(xconn->s, 1);
-    }
+    xconn->no_data_sent_to_x_client = false;
+    sshfwd_write(xconn->c, data, len);
 }
 
-static void x11_sent(Plug plug, int bufsize)
+static void x11_sent(Plug *plug, size_t bufsize)
 {
-    struct X11Connection *xconn = (struct X11Connection *) plug;
+    struct X11Connection *xconn = container_of(
+        plug, struct X11Connection, plug);
 
     sshfwd_unthrottle(xconn->c, bufsize);
 }
@@ -682,34 +761,70 @@ int x11_get_screen_number(char *display)
     return atoi(display + n + 1);
 }
 
+static const PlugVtable X11Connection_plugvt = {
+    x11_log,
+    x11_closing,
+    x11_receive,
+    x11_sent,
+    NULL
+};
+
+static void x11_chan_free(Channel *chan);
+static size_t x11_send(
+    Channel *chan, bool is_stderr, const void *vdata, size_t len);
+static void x11_send_eof(Channel *chan);
+static void x11_set_input_wanted(Channel *chan, bool wanted);
+static char *x11_log_close_msg(Channel *chan);
+
+static const struct ChannelVtable X11Connection_channelvt = {
+    x11_chan_free,
+    chan_remotely_opened_confirmation,
+    chan_remotely_opened_failure,
+    x11_send,
+    x11_send_eof,
+    x11_set_input_wanted,
+    x11_log_close_msg,
+    chan_default_want_close,
+    chan_no_exit_status,
+    chan_no_exit_signal,
+    chan_no_exit_signal_numeric,
+    chan_no_run_shell,
+    chan_no_run_command,
+    chan_no_run_subsystem,
+    chan_no_enable_x11_forwarding,
+    chan_no_enable_agent_forwarding,
+    chan_no_allocate_pty,
+    chan_no_set_env,
+    chan_no_send_break,
+    chan_no_send_signal,
+    chan_no_change_window_size,
+    chan_no_request_response,
+};
+
 /*
  * Called to set up the X11Connection structure, though this does not
  * yet connect to an actual server.
  */
-struct X11Connection *x11_init(tree234 *authtree, void *c,
-                               const char *peeraddr, int peerport)
+Channel *x11_new_channel(tree234 *authtree, SshChannel *c,
+                         const char *peeraddr, int peerport,
+                         bool connection_sharing_possible)
 {
-    static const struct plug_function_table fn_table = {
-	x11_log,
-	x11_closing,
-	x11_receive,
-	x11_sent,
-	NULL
-    };
-
     struct X11Connection *xconn;
 
     /*
      * Open socket.
      */
     xconn = snew(struct X11Connection);
-    xconn->fn = &fn_table;
+    xconn->plug.vt = &X11Connection_plugvt;
+    xconn->chan.vt = &X11Connection_channelvt;
+    xconn->chan.initial_fixed_window_size =
+        (connection_sharing_possible ? 128 : 0);
     xconn->auth_protocol = NULL;
     xconn->authtree = authtree;
-    xconn->verified = 0;
+    xconn->verified = false;
     xconn->data_read = 0;
-    xconn->throttled = xconn->throttle_override = 0;
-    xconn->no_data_sent_to_x_client = TRUE;
+    xconn->input_wanted = true;
+    xconn->no_data_sent_to_x_client = true;
     xconn->c = c;
 
     /*
@@ -729,13 +844,13 @@ struct X11Connection *x11_init(tree234 *authtree, void *c,
     xconn->peer_addr = peeraddr ? dupstr(peeraddr) : NULL;
     xconn->peer_port = peerport;
 
-    return xconn;
+    return &xconn->chan;
 }
 
-void x11_close(struct X11Connection *xconn)
+static void x11_chan_free(Channel *chan)
 {
-    if (!xconn)
-	return;
+    assert(chan->vt == &X11Connection_channelvt);
+    X11Connection *xconn = container_of(chan, X11Connection, chan);
 
     if (xconn->auth_protocol) {
 	sfree(xconn->auth_protocol);
@@ -749,24 +864,14 @@ void x11_close(struct X11Connection *xconn)
     sfree(xconn);
 }
 
-void x11_unthrottle(struct X11Connection *xconn)
+static void x11_set_input_wanted(Channel *chan, bool wanted)
 {
-    if (!xconn)
-	return;
+    assert(chan->vt == &X11Connection_channelvt);
+    X11Connection *xconn = container_of(chan, X11Connection, chan);
 
-    xconn->throttled = 0;
+    xconn->input_wanted = wanted;
     if (xconn->s)
-        sk_set_frozen(xconn->s, xconn->throttled || xconn->throttle_override);
-}
-
-void x11_override_throttle(struct X11Connection *xconn, int enable)
-{
-    if (!xconn)
-	return;
-
-    xconn->throttle_override = enable;
-    if (xconn->s)
-        sk_set_frozen(xconn->s, xconn->throttled || xconn->throttle_override);
+        sk_set_frozen(xconn->s, !xconn->input_wanted);
 }
 
 static void x11_send_init_error(struct X11Connection *xconn,
@@ -784,17 +889,17 @@ static void x11_send_init_error(struct X11Connection *xconn,
     reply[0] = 0;	       /* failure */
     reply[1] = msglen;	       /* length of reason string */
     memcpy(reply + 2, xconn->firstpkt + 2, 4);	/* major/minor proto vsn */
-    PUT_16BIT(xconn->firstpkt[0], reply + 6, msgsize >> 2);/* data len */
+    PUT_16BIT_X11(xconn->firstpkt[0], reply + 6, msgsize >> 2);/* data len */
     memset(reply + 8, 0, msgsize);
     memcpy(reply + 8, full_message, msglen);
-    sshfwd_write(xconn->c, (char *)reply, 8 + msgsize);
+    sshfwd_write(xconn->c, reply, 8 + msgsize);
     sshfwd_write_eof(xconn->c);
-    xconn->no_data_sent_to_x_client = FALSE;
+    xconn->no_data_sent_to_x_client = false;
     sfree(reply);
     sfree(full_message);
 }
 
-static int x11_parse_ip(const char *addr_string, unsigned long *ip)
+static bool x11_parse_ip(const char *addr_string, unsigned long *ip)
 {
 
     /*
@@ -805,19 +910,21 @@ static int x11_parse_ip(const char *addr_string, unsigned long *ip)
     if (addr_string &&
         4 == sscanf(addr_string, "%d.%d.%d.%d", i+0, i+1, i+2, i+3)) {
         *ip = (i[0] << 24) | (i[1] << 16) | (i[2] << 8) | i[3];
-        return TRUE;
+        return true;
     } else {
-        return FALSE;
+        return false;
     }
 }
 
 /*
  * Called to send data down the raw connection.
  */
-int x11_send(struct X11Connection *xconn, char *data, int len)
+static size_t x11_send(
+    Channel *chan, bool is_stderr, const void *vdata, size_t len)
 {
-    if (!xconn)
-	return 0;
+    assert(chan->vt == &X11Connection_channelvt);
+    X11Connection *xconn = container_of(chan, X11Connection, chan);
+    const char *data = (const char *)vdata;
 
     /*
      * Read the first packet.
@@ -832,8 +939,9 @@ int x11_send(struct X11Connection *xconn, char *data, int len)
      * strings, do so now.
      */
     if (!xconn->auth_protocol) {
-	xconn->auth_plen = GET_16BIT(xconn->firstpkt[0], xconn->firstpkt + 6);
-	xconn->auth_dlen = GET_16BIT(xconn->firstpkt[0], xconn->firstpkt + 8);
+        char endian = xconn->firstpkt[0];
+	xconn->auth_plen = GET_16BIT_X11(endian, xconn->firstpkt + 6);
+	xconn->auth_dlen = GET_16BIT_X11(endian, xconn->firstpkt + 8);
 	xconn->auth_psize = (xconn->auth_plen + 3) & ~3;
 	xconn->auth_dsize = (xconn->auth_dlen + 3) & ~3;
 	/* Leave room for a terminating zero, to make our lives easier. */
@@ -869,9 +977,10 @@ int x11_send(struct X11Connection *xconn, char *data, int len)
         int socketdatalen;
         char new_peer_addr[32];
         int new_peer_port;
+        char endian = xconn->firstpkt[0];
 
-        protomajor = GET_16BIT(xconn->firstpkt[0], xconn->firstpkt + 2);
-        protominor = GET_16BIT(xconn->firstpkt[0], xconn->firstpkt + 4);
+        protomajor = GET_16BIT_X11(endian, xconn->firstpkt + 2);
+        protominor = GET_16BIT_X11(endian, xconn->firstpkt + 4);
 
         assert(!xconn->s);
 
@@ -895,7 +1004,8 @@ int x11_send(struct X11Connection *xconn, char *data, int len)
         /*
          * If this auth points to a connection-sharing downstream
          * rather than an X display we know how to connect to
-         * directly, pass it off to the sharing module now.
+         * directly, pass it off to the sharing module now. (This will
+         * have the side effect of freeing xconn.)
          */
         if (auth_matched->share_cs) {
             sshfwd_x11_sharing_handover(xconn->c, auth_matched->share_cs,
@@ -910,11 +1020,12 @@ int x11_send(struct X11Connection *xconn, char *data, int len)
          * Now we know we're going to accept the connection, and what
          * X display to connect to. Actually connect to it.
          */
-        sshfwd_x11_is_local(xconn->c);
+        xconn->chan.initial_fixed_window_size = 0;
+        sshfwd_window_override_removed(xconn->c);
         xconn->disp = auth_matched->disp;
         xconn->s = new_connection(sk_addr_dup(xconn->disp->addr),
                                   xconn->disp->realhost, xconn->disp->port, 
-                                  0, 1, 0, 0, (Plug) xconn,
+                                  false, true, false, false, &xconn->plug,
                                   sshfwd_get_conf(xconn->c));
         if ((err = sk_socket_error(xconn->s)) != NULL) {
             char *err_message = dupprintf("unable to connect to"
@@ -955,7 +1066,7 @@ int x11_send(struct X11Connection *xconn, char *data, int len)
         /*
          * Now we're done.
          */
-	xconn->verified = 1;
+	xconn->verified = true;
     }
 
     /*
@@ -965,8 +1076,11 @@ int x11_send(struct X11Connection *xconn, char *data, int len)
     return sk_write(xconn->s, data, len);
 }
 
-void x11_send_eof(struct X11Connection *xconn)
+static void x11_send_eof(Channel *chan)
 {
+    assert(chan->vt == &X11Connection_channelvt);
+    X11Connection *xconn = container_of(chan, X11Connection, chan);
+
     if (xconn->s) {
         sk_write_eof(xconn->s);
     } else {
@@ -981,34 +1095,39 @@ void x11_send_eof(struct X11Connection *xconn)
     }
 }
 
+static char *x11_log_close_msg(Channel *chan)
+{
+    return dupstr("Forwarded X11 connection terminated");
+}
+
 /*
  * Utility functions used by connection sharing to convert textual
  * representations of an X11 auth protocol name + hex cookie into our
  * usual integer protocol id and binary auth data.
  */
-int x11_identify_auth_proto(const char *protoname)
+int x11_identify_auth_proto(ptrlen protoname)
 {
     int protocol;
 
     for (protocol = 1; protocol < lenof(x11_authnames); protocol++)
-        if (!strcmp(protoname, x11_authnames[protocol]))
+        if (ptrlen_eq_string(protoname, x11_authnames[protocol]))
             return protocol;
     return -1;
 }
 
-void *x11_dehexify(const char *hex, int *outlen)
+void *x11_dehexify(ptrlen hexpl, int *outlen)
 {
     int len, i;
     unsigned char *ret;
 
-    len = strlen(hex) / 2;
+    len = hexpl.len / 2;
     ret = snewn(len, unsigned char);
 
     for (i = 0; i < len; i++) {
         char bytestr[3];
         unsigned val = 0;
-        bytestr[0] = hex[2*i];
-        bytestr[1] = hex[2*i+1];
+        bytestr[0] = ((const char *)hexpl.ptr)[2*i];
+        bytestr[1] = ((const char *)hexpl.ptr)[2*i+1];
         bytestr[2] = '\0';
         sscanf(bytestr, "%x", &val);
         ret[i] = val;
@@ -1057,8 +1176,7 @@ void *x11_make_greeting(int endian, int protomajor, int protominor,
         t = time(NULL);
         PUT_32BIT_MSB_FIRST(realauthdata+14, t);
 
-        des_encrypt_xdmauth((const unsigned char *)auth_data + 9,
-                            realauthdata, authdatalen);
+        des_encrypt_xdmauth((char *)auth_data + 9, realauthdata, authdatalen);
     } else {
         authdata = realauthdata;
         authdatalen = 0;
@@ -1070,10 +1188,10 @@ void *x11_make_greeting(int endian, int protomajor, int protominor,
     greeting = snewn(greeting_len, unsigned char);
     memset(greeting, 0, greeting_len);
     greeting[0] = endian;
-    PUT_16BIT(endian, greeting+2, protomajor);
-    PUT_16BIT(endian, greeting+4, protominor);
-    PUT_16BIT(endian, greeting+6, authnamelen);
-    PUT_16BIT(endian, greeting+8, authdatalen);
+    PUT_16BIT_X11(endian, greeting+2, protomajor);
+    PUT_16BIT_X11(endian, greeting+4, protominor);
+    PUT_16BIT_X11(endian, greeting+6, authnamelen);
+    PUT_16BIT_X11(endian, greeting+8, authdatalen);
     memcpy(greeting+12, authname, authnamelen);
     memcpy(greeting+12+authnamelen_pad, authdata, authdatalen);
 

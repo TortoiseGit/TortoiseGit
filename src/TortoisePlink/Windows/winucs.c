@@ -440,7 +440,7 @@ static void link_font(WCHAR * line_tbl, WCHAR * font_tbl, WCHAR attr);
 void init_ucs(Conf *conf, struct unicode_data *ucsdata)
 {
     int i, j;
-    int used_dtf = 0;
+    bool used_dtf = false;
     int vtmode;
 
     /* Decide on the Line and Font codepages */
@@ -449,13 +449,13 @@ void init_ucs(Conf *conf, struct unicode_data *ucsdata)
 
     if (ucsdata->font_codepage <= 0) { 
 	ucsdata->font_codepage=0; 
-	ucsdata->dbcs_screenfont=0; 
+	ucsdata->dbcs_screenfont=false;
     }
 
     vtmode = conf_get_int(conf, CONF_vtmode);
     if (vtmode == VT_OEMONLY) {
 	ucsdata->font_codepage = 437;
-	ucsdata->dbcs_screenfont = 0;
+	ucsdata->dbcs_screenfont = false;
 	if (ucsdata->line_codepage <= 0)
 	    ucsdata->line_codepage = GetACP();
     } else if (ucsdata->line_codepage <= 0)
@@ -493,7 +493,7 @@ void init_ucs(Conf *conf, struct unicode_data *ucsdata)
 	 vtmode == VT_POORMAN || ucsdata->font_codepage==0)) {
 
 	/* For DBCS and POOR fonts force direct to font */
-	used_dtf = 1;
+	used_dtf = true;
 	for (i = 0; i < 32; i++)
 	    ucsdata->unitab_line[i] = (WCHAR) i;
 	for (i = 32; i < 256; i++)
@@ -504,15 +504,14 @@ void init_ucs(Conf *conf, struct unicode_data *ucsdata)
     }
 
 #if 0
-    debug(
-	  ("Line cp%d, Font cp%d%s\n", ucsdata->line_codepage,
-	   ucsdata->font_codepage, ucsdata->dbcs_screenfont ? " DBCS" : ""));
+    debug("Line cp%d, Font cp%d%s\n", ucsdata->line_codepage,
+          ucsdata->font_codepage, ucsdata->dbcs_screenfont ? " DBCS" : "");
 
     for (i = 0; i < 256; i += 16) {
 	for (j = 0; j < 16; j++) {
-	    debug(("%04x%s", ucsdata->unitab_line[i + j], j == 15 ? "" : ","));
+	    debug("%04x%s", ucsdata->unitab_line[i + j], j == 15 ? "" : ",");
 	}
-	debug(("\n"));
+	debug("\n");
     }
 #endif
 
@@ -1157,7 +1156,7 @@ void get_unitab(int codepage, wchar_t * unitab, int ftype)
 }
 
 int wc_to_mb(int codepage, int flags, const wchar_t *wcstr, int wclen,
-	     char *mbstr, int mblen, const char *defchr, int *defused,
+	     char *mbstr, int mblen, const char *defchr,
 	     struct unicode_data *ucsdata)
 {
     char *p;
@@ -1180,7 +1179,6 @@ int wc_to_mb(int codepage, int flags, const wchar_t *wcstr, int wclen,
 		int j;
 		for (j = 0; defchr[j]; j++)
 		    *p++ = defchr[j];
-		if (defused) *defused = 1;
 	    }
 #if 1
 	    else
@@ -1189,9 +1187,11 @@ int wc_to_mb(int codepage, int flags, const wchar_t *wcstr, int wclen,
 	    assert(p - mbstr < mblen);
 	}
 	return p - mbstr;
-    } else
+    } else {
+        int defused;
 	return WideCharToMultiByte(codepage, flags, wcstr, wclen,
-				   mbstr, mblen, defchr, defused);
+				   mbstr, mblen, defchr, &defused);
+    }
 }
 
 int mb_to_wc(int codepage, int flags, const char *mbstr, int mblen,
@@ -1200,7 +1200,7 @@ int mb_to_wc(int codepage, int flags, const char *mbstr, int mblen,
     return MultiByteToWideChar(codepage, flags, mbstr, mblen, wcstr, wclen);
 }
 
-int is_dbcs_leadbyte(int codepage, char byte)
+bool is_dbcs_leadbyte(int codepage, char byte)
 {
     return IsDBCSLeadByteEx(codepage, byte);
 }

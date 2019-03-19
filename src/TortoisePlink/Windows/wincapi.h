@@ -13,6 +13,6 @@
 DECL_WINDOWS_FUNCTION(WINCAPI_GLOBAL, BOOL, CryptProtectMemory,
 		      (LPVOID,DWORD,DWORD));
 
-int got_crypt(void);
+bool got_crypt(void);
 
 #endif

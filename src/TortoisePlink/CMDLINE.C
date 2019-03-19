@@ -35,7 +35,7 @@ struct cmdline_saved_param {
 };
 struct cmdline_saved_param_set {
     struct cmdline_saved_param *params;
-    int nsaved, savesize;
+    size_t nsaved, savesize;
 };
 
 /*
@@ -46,11 +46,7 @@ static struct cmdline_saved_param_set saves[NPRIORITIES];
 
 static void cmdline_save_param(const char *p, const char *value, int pri)
 {
-    if (saves[pri].nsaved >= saves[pri].savesize) {
-	saves[pri].savesize = saves[pri].nsaved + 32;
-	saves[pri].params = sresize(saves[pri].params, saves[pri].savesize,
-				    struct cmdline_saved_param);
-    }
+    sgrowarray(saves[pri].params, saves[pri].savesize, saves[pri].nsaved);
     saves[pri].params[saves[pri].nsaved].p = dupstr(p);
     saves[pri].params[saves[pri].nsaved].value = dupstr(value);
     saves[pri].nsaved++;
@@ -81,20 +77,20 @@ void cmdline_cleanup(void)
 } while (0)
 
 /*
- * Similar interface to get_userpass_input(), except that here a -1
- * return means that we aren't capable of processing the prompt and
+ * Similar interface to seat_get_userpass_input(), except that here a
+ * -1 return means that we aren't capable of processing the prompt and
  * someone else should do it.
  */
-int cmdline_get_passwd_input(prompts_t *p, const unsigned char *in, int inlen)
+int cmdline_get_passwd_input(prompts_t *p)
 {
-    static int tried_once = 0;
+    static bool tried_once = false;
 
     /*
      * We only handle prompts which don't echo (which we assume to be
      * passwords), and (currently) we only cope with a password prompt
      * that comes in a prompt-set on its own.
      */
-    if (!cmdline_password || in || p->n_prompts != 1 || p->prompts[0]->echo) {
+    if (!cmdline_password || p->n_prompts != 1 || p->prompts[0]->echo) {
 	return -1;
     }
 
@@ -109,7 +105,7 @@ int cmdline_get_passwd_input(prompts_t *p, const unsigned char *in, int inlen)
     smemclr(cmdline_password, strlen(cmdline_password));
     sfree(cmdline_password);
     cmdline_password = NULL;
-    tried_once = 1;
+    tried_once = true;
     return 1;
 }
 
@@ -121,17 +117,17 @@ int cmdline_get_passwd_input(prompts_t *p, const unsigned char *in, int inlen)
  * transfer tools (psftp, pscp) can't do a great deal with protocol
  * selections (ever tried running scp over telnet?) or with port
  * forwarding (even if it wasn't a hideously bad idea, they don't
- * have the select() infrastructure to make them work).
+ * have the select/poll infrastructure to make them work).
  */
 int cmdline_tooltype = 0;
 
-static int cmdline_check_unavailable(int flag, const char *p)
+static bool cmdline_check_unavailable(int flag, const char *p)
 {
     if (cmdline_tooltype & flag) {
 	cmdline_error("option \"%s\" not available in this tool", p);
-	return 1;
+	return true;
     }
-    return 0;
+    return false;
 }
 
 #define UNAVAILABLE_IN(flag) do { \
@@ -159,17 +155,250 @@ static int cmdline_check_unavailable(int flag, const char *p)
     if (need_save < 0) return x; \
 } while (0)
 
+static bool seen_hostname_argument = false;
+static bool seen_port_argument = false;
+
 int cmdline_process_param(const char *p, char *value,
                           int need_save, Conf *conf)
 {
     int ret = 0;
+
+    if (p[0] != '-') {
+        if (need_save < 0)
+            return 0;
+
+        /*
+         * Common handling for the tools whose initial command-line
+         * arguments specify a hostname to connect to, i.e. PuTTY and
+         * Plink. Doesn't count the file transfer tools, because their
+         * hostname specification appears as part of a more
+         * complicated scheme.
+         */
+
+        if ((cmdline_tooltype & TOOLTYPE_HOST_ARG) &&
+            !seen_hostname_argument &&
+            (!(cmdline_tooltype & TOOLTYPE_HOST_ARG_FROM_LAUNCHABLE_LOAD) ||
+             !loaded_session || !conf_launchable(conf))) {
+            /*
+             * Treat this argument as a host name, if we have not yet
+             * seen a host name argument or -load.
+             *
+             * Exception, in some tools (Plink): if we have seen -load
+             * but it didn't create a launchable session, then we
+             * still accept a hostname argument following that -load.
+             * This allows you to make saved sessions that configure
+             * lots of other stuff (colour schemes, terminal settings
+             * etc) and then say 'putty -load sessionname hostname'.
+             *
+             * Also, we carefully _don't_ test conf for launchability
+             * if we haven't been explicitly told to load a session
+             * (otherwise saving a host name into Default Settings
+             * would cause 'putty' on its own to immediately launch
+             * the default session and never be able to do anything
+             * else).
+             */
+            if (!strncmp(p, "telnet:", 7)) {
+                /*
+                 * If the argument starts with "telnet:", set the
+                 * protocol to Telnet and process the string as a
+                 * Telnet URL.
+                 */
+
+                /*
+                 * Skip the "telnet:" or "telnet://" prefix.
+                 */
+                p += 7;
+                if (p[0] == '/' && p[1] == '/')
+                    p += 2;
+                conf_set_int(conf, CONF_protocol, PROT_TELNET);
+
+                /*
+                 * The next thing we expect is a host name.
+                 */
+                {
+                    const char *host = p;
+                    char *buf;
+
+                    p += host_strcspn(p, ":/");
+                    buf = dupprintf("%.*s", (int)(p - host), host);
+                    conf_set_str(conf, CONF_host, buf);
+                    sfree(buf);
+                    seen_hostname_argument = true;
+                }
+
+                /*
+                 * If the host name is followed by a colon, then
+                 * expect a port number after it.
+                 */
+                if (*p == ':') {
+                    p++;
+
+                    conf_set_int(conf, CONF_port, atoi(p));
+                    /*
+                     * Set the flag that will stop us from treating
+                     * the next argument as a separate port; this one
+                     * counts as explicitly provided.
+                     */
+                    seen_port_argument = true;
+                } else {
+                    conf_set_int(conf, CONF_port, -1);
+                }
+            } else {
+                char *user = NULL, *hostname = NULL;
+                const char *hostname_after_user;
+                int port_override = -1;
+                size_t len;
+
+                /*
+                 * Otherwise, treat it as a bare host name.
+                 */
+
+                if (cmdline_tooltype & TOOLTYPE_HOST_ARG_PROTOCOL_PREFIX) {
+                    /*
+                     * Here Plink checks for a comma-separated
+                     * protocol prefix, e.g. 'ssh,hostname' or
+                     * 'ssh,user@hostname'.
+                     *
+                     * I'm not entirely sure why; this behaviour dates
+                     * from 2000 and isn't explained. But I _think_ it
+                     * has to do with CVS transport or similar use
+                     * cases, in which the end user invokes the SSH
+                     * client indirectly, via some means that only
+                     * lets them pass a single string argument, and it
+                     * was occasionally useful to shoehorn the choice
+                     * of protocol into that argument.
+                     */
+                    const char *comma = strchr(p, ',');
+                    if (comma) {
+                        char *prefix = dupprintf("%.*s", (int)(comma - p), p);
+                        const struct BackendVtable *vt =
+                            backend_vt_from_name(prefix);
+
+                        if (vt) {
+                            default_protocol = vt->protocol;
+                            conf_set_int(conf, CONF_protocol,
+                                         default_protocol);
+                            port_override = vt->default_port;
+                        } else {
+                            cmdline_error("unrecognised protocol prefix '%s'",
+                                          prefix);
+                        }
+
+                        sfree(prefix);
+                        p = comma + 1;
+                    }
+                }
+
+                hostname_after_user = p;
+                if (cmdline_tooltype & TOOLTYPE_HOST_ARG_CAN_BE_SESSION) {
+                    /*
+                     * If the hostname argument can also be a saved
+                     * session (see below), then here we also check
+                     * for a user@ prefix, which will override the
+                     * username from the saved session.
+                     *
+                     * (If the hostname argument _isn't_ a saved
+                     * session, we don't do this.)
+                     */
+                    const char *at = strrchr(p, '@');
+                    if (at) {
+                        user = dupprintf("%.*s", (int)(at - p), p);
+                        hostname_after_user = at + 1;
+                    }
+                }
+
+                /*
+                 * Write the whole hostname argument (minus only that
+                 * optional protocol prefix) into the existing Conf,
+                 * for tools that don't treat it as a saved session
+                 * and as a fallback for those that do.
+                 */
+                hostname = dupstr(p + strspn(p, " \t"));
+                len = strlen(hostname);
+                while (len > 0 && (hostname[len-1] == ' ' ||
+                                   hostname[len-1] == '\t'))
+                    hostname[--len] = '\0';
+                seen_hostname_argument = true;
+                conf_set_str(conf, CONF_host, hostname);
+
+                if ((cmdline_tooltype & TOOLTYPE_HOST_ARG_CAN_BE_SESSION) &&
+                    !loaded_session) {
+                    /*
+                     * For some tools, we equivocate between a
+		     * hostname argument and an argument naming a
+		     * saved session. Here we attempt to load a
+		     * session with the specified name, and if that
+		     * session exists and is launchable, we overwrite
+		     * the entire Conf with it.
+                     *
+                     * We skip this check if a -load option has
+                     * already happened, so that
+                     *
+                     *   plink -load non-launchable-session hostname
+                     *
+                     * will treat 'hostname' as a hostname _even_ if a
+                     * saved session called 'hostname' exists. (This
+                     * doesn't lose any functionality someone could
+                     * have needed, because if 'hostname' did cause a
+                     * session to be loaded, then it would overwrite
+                     * everything from the previously loaded session.
+                     * So if that was the behaviour someone wanted,
+                     * then they could get it by leaving off the
+                     * -load completely.)
+		     */
+                    Conf *conf2 = conf_new();
+                    if (do_defaults(hostname_after_user, conf2) &&
+                        conf_launchable(conf2)) {
+                        conf_copy_into(conf, conf2);
+                        loaded_session = true;
+                        /* And override the username if one was given. */
+                        if (user)
+                            conf_set_str(conf, CONF_username, user);
+                    }
+                    conf_free(conf2);
+                }
+
+                sfree(hostname);
+                sfree(user);
+
+                if (port_override >= 0)
+                    conf_set_int(conf, CONF_port, port_override);
+            }
+
+            return 1;
+        } else if ((cmdline_tooltype & TOOLTYPE_PORT_ARG) &&
+                   !seen_port_argument) {
+            /*
+             * If we've already got a host name from the command line
+             * (either as a hostname argument or a qualifying -load),
+             * but not a port number, then treat the next argument as
+             * a port number.
+             *
+             * We handle this by calling ourself recursively to
+             * pretend we received a -P argument, so that it will be
+             * deferred until it's a good moment to run it.
+             */
+            char *dup = dupstr(p);     /* 'value' is not a const char * */
+            int retd = cmdline_process_param("-P", dup, 1, conf);
+            sfree(dup);
+            assert(retd == 2);
+            seen_port_argument = true;
+            return 1;
+        } else {
+            /*
+             * Refuse to recognise this argument, and give it back to
+             * the tool's own command-line processing.
+             */
+            return 0;
+        }
+    }
 
     if (!strcmp(p, "-load")) {
 	RETURN(2);
 	/* This parameter must be processed immediately rather than being
 	 * saved. */
 	do_defaults(value, conf);
-	loaded_session = TRUE;
+	loaded_session = true;
 	cmdline_session_name = dupstr(value);
 	return 2;
     }
@@ -330,10 +559,7 @@ int cmdline_process_param(const char *p, char *value,
     }
     if (!strcmp(p, "-m")) {
 	const char *filename;
-        char *command;
-	int cmdlen, cmdsize;
 	FILE *fp;
-	int c, d;
 
 	RETURN(2);
 	UNAVAILABLE_IN(TOOLTYPE_FILETRANSFER | TOOLTYPE_NONNETWORK);
@@ -341,29 +567,24 @@ int cmdline_process_param(const char *p, char *value,
 
 	filename = value;
 
-	cmdlen = cmdsize = 0;
-	command = NULL;
 	fp = fopen(filename, "r");
 	if (!fp) {
 	    cmdline_error("unable to open command file \"%s\"", filename);
 	    return ret;
 	}
-	do {
-	    c = fgetc(fp);
-	    d = c;
-	    if (c == EOF)
-		d = 0;
-	    if (cmdlen >= cmdsize) {
-		cmdsize = cmdlen + 512;
-		command = sresize(command, cmdsize, char);
-	    }
-	    command[cmdlen++] = d;
-	} while (c != EOF);
+        strbuf *command = strbuf_new();
+        char readbuf[4096];
+	while (1) {
+            size_t nread = fread(readbuf, 1, sizeof(readbuf), fp);
+            if (nread == 0)
+                break;
+            put_data(command, readbuf, nread);
+	}
 	fclose(fp);
-	conf_set_str(conf, CONF_remote_cmd, command);
+	conf_set_str(conf, CONF_remote_cmd, command->s);
 	conf_set_str(conf, CONF_remote_cmd2, "");
-	conf_set_int(conf, CONF_nopty, TRUE);   /* command => no terminal */
-	sfree(command);
+	conf_set_bool(conf, CONF_nopty, true);   /* command => no terminal */
+	strbuf_free(command);
     }
     if ((!strcmp(p, "-P"))||(!strcmp(p, "-p"))) {
 	RETURN(2);
@@ -406,67 +627,78 @@ int cmdline_process_param(const char *p, char *value,
 	RETURN(1);
 	UNAVAILABLE_IN(TOOLTYPE_NONNETWORK);
 	SAVEABLE(0);
-	conf_set_int(conf, CONF_tryagent, TRUE);
+	conf_set_bool(conf, CONF_tryagent, true);
     }
     if (!strcmp(p, "-noagent") || !strcmp(p, "-nopagent") ||
 	!strcmp(p, "-nopageant")) {
 	RETURN(1);
 	UNAVAILABLE_IN(TOOLTYPE_NONNETWORK);
 	SAVEABLE(0);
-	conf_set_int(conf, CONF_tryagent, FALSE);
+	conf_set_bool(conf, CONF_tryagent, false);
     }
-
+    if (!strcmp(p, "-share")) {
+	RETURN(1);
+	UNAVAILABLE_IN(TOOLTYPE_NONNETWORK);
+	SAVEABLE(0);
+	conf_set_bool(conf, CONF_ssh_connection_sharing, true);
+    }
+    if (!strcmp(p, "-noshare")) {
+	RETURN(1);
+	UNAVAILABLE_IN(TOOLTYPE_NONNETWORK);
+	SAVEABLE(0);
+	conf_set_bool(conf, CONF_ssh_connection_sharing, false);
+    }
     if (!strcmp(p, "-A")) {
 	RETURN(1);
 	UNAVAILABLE_IN(TOOLTYPE_FILETRANSFER | TOOLTYPE_NONNETWORK);
 	SAVEABLE(0);
-	conf_set_int(conf, CONF_agentfwd, 1);
+	conf_set_bool(conf, CONF_agentfwd, true);
     }
     if (!strcmp(p, "-a")) {
 	RETURN(1);
 	UNAVAILABLE_IN(TOOLTYPE_FILETRANSFER | TOOLTYPE_NONNETWORK);
 	SAVEABLE(0);
-	conf_set_int(conf, CONF_agentfwd, 0);
+	conf_set_bool(conf, CONF_agentfwd, false);
     }
 
     if (!strcmp(p, "-X")) {
 	RETURN(1);
 	UNAVAILABLE_IN(TOOLTYPE_FILETRANSFER | TOOLTYPE_NONNETWORK);
 	SAVEABLE(0);
-	conf_set_int(conf, CONF_x11_forward, 1);
+	conf_set_bool(conf, CONF_x11_forward, true);
     }
     if (!strcmp(p, "-x")) {
 	RETURN(1);
 	UNAVAILABLE_IN(TOOLTYPE_FILETRANSFER | TOOLTYPE_NONNETWORK);
 	SAVEABLE(0);
-	conf_set_int(conf, CONF_x11_forward, 0);
+	conf_set_bool(conf, CONF_x11_forward, false);
     }
 
     if (!strcmp(p, "-t")) {
 	RETURN(1);
 	UNAVAILABLE_IN(TOOLTYPE_FILETRANSFER | TOOLTYPE_NONNETWORK);
 	SAVEABLE(1);	/* lower priority than -m */
-	conf_set_int(conf, CONF_nopty, 0);
+	conf_set_bool(conf, CONF_nopty, false);
     }
     if (!strcmp(p, "-T")) {
 	RETURN(1);
 	UNAVAILABLE_IN(TOOLTYPE_FILETRANSFER | TOOLTYPE_NONNETWORK);
 	SAVEABLE(1);
-	conf_set_int(conf, CONF_nopty, 1);
+	conf_set_bool(conf, CONF_nopty, true);
     }
 
     if (!strcmp(p, "-N")) {
 	RETURN(1);
 	UNAVAILABLE_IN(TOOLTYPE_FILETRANSFER | TOOLTYPE_NONNETWORK);
 	SAVEABLE(0);
-	conf_set_int(conf, CONF_ssh_no_shell, 1);
+	conf_set_bool(conf, CONF_ssh_no_shell, true);
     }
 
     if (!strcmp(p, "-C")) {
 	RETURN(1);
 	UNAVAILABLE_IN(TOOLTYPE_NONNETWORK);
 	SAVEABLE(0);
-	conf_set_int(conf, CONF_compression, 1);
+	conf_set_bool(conf, CONF_compression, true);
     }
 
     if (!strcmp(p, "-1")) {
@@ -629,7 +861,7 @@ int cmdline_process_param(const char *p, char *value,
         !strcmp(p, "-restrictacl")) {
 	RETURN(1);
         restrict_process_acl();
-        restricted_acl = TRUE;
+        restricted_acl = true;
     }
 #endif
 
@@ -648,4 +880,36 @@ void cmdline_run_saved(Conf *conf)
         }
         saves[pri].nsaved = 0;
     }
+}
+
+bool cmdline_host_ok(Conf *conf)
+{
+    /*
+     * Return true if the command-line arguments we've processed in
+     * TOOLTYPE_HOST_ARG mode are sufficient to justify launching a
+     * session.
+     */
+    assert(cmdline_tooltype & TOOLTYPE_HOST_ARG);
+
+    /*
+     * Of course, if we _can't_ launch a session, the answer is
+     * clearly no.
+     */
+    if (!conf_launchable(conf))
+        return false;
+
+    /*
+     * But also, if we haven't seen either a -load option or a
+     * hostname argument, i.e. the only saved settings we've loaded
+     * are Default Settings plus any non-hostname-based stuff from the
+     * command line, then the answer is still no, _even_ if this Conf
+     * is launchable. Otherwise, if you saved your favourite hostname
+     * into Default Settings, then just running 'putty' without
+     * arguments would connect to it without ever offering you the
+     * option to connect to something else or change the setting.
+     */
+    if (!seen_hostname_argument && !loaded_session)
+        return false;
+
+    return true;
 }

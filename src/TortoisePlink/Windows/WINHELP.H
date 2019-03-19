@@ -2,7 +2,8 @@
  * winhelp.h - define Windows Help context names.
  * Each definition has the form "winhelp-topic:halibut-topic", where:
  *  - "winhelp-topic" matches up with the \cfg{winhelp-topic} directives
- *    in the Halibut source, and is used for WinHelp;
+ *    in the Halibut source, and was used for WinHelp (FIXME: this isn't
+ *    used any more);
  *  - "halibut-topic" matches up with the Halibut keywords in the source,
  *    and is used for HTML Help.
  */
@@ -23,6 +24,7 @@
 #define WINHELP_CTX_logging_filename "logging.filename:config-logfilename"
 #define WINHELP_CTX_logging_exists "logging.exists:config-logfileexists"
 #define WINHELP_CTX_logging_flush "logging.flush:config-logflush"
+#define WINHELP_CTX_logging_header "logging.header:config-logheader"
 #define WINHELP_CTX_logging_ssh_omit_password "logging.ssh.omitpassword:config-logssh"
 #define WINHELP_CTX_logging_ssh_omit_data "logging.ssh.omitdata:config-logssh"
 #define WINHELP_CTX_keyboard_backspace "keyboard.backspace:config-backspace"
@@ -104,6 +106,7 @@
 #define WINHELP_CTX_ssh_share "ssh.sharing:config-ssh-sharing"
 #define WINHELP_CTX_ssh_kexlist "ssh.kex.order:config-ssh-kex-order"
 #define WINHELP_CTX_ssh_hklist "ssh.hostkey.order:config-ssh-hostkey-order"
+#define WINHELP_CTX_ssh_gssapi_kex_delegation "ssh.kex.gssapi.delegation:config-ssh-kex-gssapi-delegation"
 #define WINHELP_CTX_ssh_kex_repeat "ssh.kex.repeat:config-ssh-kex-rekey"
 #define WINHELP_CTX_ssh_kex_manual_hostkeys "ssh.kex.manualhostkeys:config-ssh-kex-manual-hostkeys"
 #define WINHELP_CTX_ssh_auth_bypass "ssh.auth.bypass:config-ssh-noauth"
@@ -120,11 +123,15 @@
 #define WINHELP_CTX_selection_buttons "selection.buttons:config-mouse"
 #define WINHELP_CTX_selection_shiftdrag "selection.shiftdrag:config-mouseshift"
 #define WINHELP_CTX_selection_rect "selection.rect:config-rectselect"
-#define WINHELP_CTX_selection_charclasses "selection.charclasses:config-charclasses"
 #define WINHELP_CTX_selection_linedraw "selection.linedraw:config-linedrawpaste"
-#define WINHELP_CTX_selection_rtf "selection.rtf:config-rtfpaste"
+#define WINHELP_CTX_selection_autocopy "selection.autocopy:config-selection-autocopy"
+#define WINHELP_CTX_selection_clipactions "selection.clipactions:config-selection-clipactions"
+#define WINHELP_CTX_selection_pastectrl "selection.pastectrl:config-paste-ctrl-char"
+#define WINHELP_CTX_copy_charclasses "copy.charclasses:config-charclasses"
+#define WINHELP_CTX_copy_rtf "copy.rtf:config-rtfcopy"
 #define WINHELP_CTX_colours_ansi "colours.ansi:config-ansicolour"
 #define WINHELP_CTX_colours_xterm256 "colours.xterm256:config-xtermcolour"
+#define WINHELP_CTX_colours_truecolour "colours.truecolour:config-truecolour"
 #define WINHELP_CTX_colours_bold "colours.bold:config-boldcolour"
 #define WINHELP_CTX_colours_system "colours.system:config-syscolour"
 #define WINHELP_CTX_colours_logpal "colours.logpal:config-logpalette"
@@ -133,6 +140,7 @@
 #define WINHELP_CTX_translation_cjk_ambig_wide "translation.cjkambigwide:config-cjk-ambig-wide"
 #define WINHELP_CTX_translation_cyrillic "translation.cyrillic:config-cyr"
 #define WINHELP_CTX_translation_linedraw "translation.linedraw:config-linedraw"
+#define WINHELP_CTX_translation_utf8linedraw "translation.utf8linedraw:config-utf8linedraw"
 #define WINHELP_CTX_ssh_tunnels_x11 "ssh.tunnels.x11:config-ssh-x11"
 #define WINHELP_CTX_ssh_tunnels_x11auth "ssh.tunnels.x11auth:config-ssh-x11auth"
 #define WINHELP_CTX_ssh_tunnels_xauthority "ssh.tunnels.xauthority:config-ssh-xauthority"
