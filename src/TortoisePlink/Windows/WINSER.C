@@ -10,16 +10,19 @@
 
 #define SERIAL_MAX_BACKLOG 4096
 
-typedef struct serial_backend_data {
+typedef struct Serial Serial;
+struct Serial {
     HANDLE port;
     struct handle *out, *in;
-    void *frontend;
+    Seat *seat;
+    LogContext *logctx;
     int bufsize;
     long clearbreak_time;
-    int break_in_progress;
-} *Serial;
+    bool break_in_progress;
+    Backend backend;
+};
 
-static void serial_terminate(Serial serial)
+static void serial_terminate(Serial *serial)
 {
     if (serial->out) {
 	handle_free(serial->out);
@@ -37,10 +40,11 @@ static void serial_terminate(Serial serial)
     }
 }
 
-static int serial_gotdata(struct handle *h, void *data, int len)
+static size_t serial_gotdata(
+    struct handle *h, const void *data, size_t len, int err)
 {
-    Serial serial = (Serial)handle_get_privdata(h);
-    if (len <= 0) {
+    Serial *serial = (Serial *)handle_get_privdata(h);
+    if (err || len == 0) {
 	const char *error_msg;
 
 	/*
@@ -50,44 +54,44 @@ static int serial_gotdata(struct handle *h, void *data, int len)
 	 * pipes or some other non-serial device, in which case EOF
 	 * may become meaningful here.
 	 */
-	if (len == 0)
+        if (!err)
 	    error_msg = "End of file reading from serial device";
 	else
 	    error_msg = "Error reading from serial device";
 
 	serial_terminate(serial);
 
-	notify_remote_exit(serial->frontend);
+	seat_notify_remote_exit(serial->seat);
 
-	logevent(serial->frontend, error_msg);
+        logevent(serial->logctx, error_msg);
 
-	connection_fatal(serial->frontend, "%s", error_msg);
+	seat_connection_fatal(serial->seat, "%s", error_msg);
 
-	return 0;		       /* placate optimiser */
+	return 0;
     } else {
-	return from_backend(serial->frontend, 0, data, len);
+	return seat_stdout(serial->seat, data, len);
     }
 }
 
-static void serial_sentdata(struct handle *h, int new_backlog)
+static void serial_sentdata(struct handle *h, size_t new_backlog, int err)
 {
-    Serial serial = (Serial)handle_get_privdata(h);
-    if (new_backlog < 0) {
+    Serial *serial = (Serial *)handle_get_privdata(h);
+    if (err) {
 	const char *error_msg = "Error writing to serial device";
 
 	serial_terminate(serial);
 
-	notify_remote_exit(serial->frontend);
+	seat_notify_remote_exit(serial->seat);
 
-	logevent(serial->frontend, error_msg);
+        logevent(serial->logctx, error_msg);
 
-	connection_fatal(serial->frontend, "%s", error_msg);
+	seat_connection_fatal(serial->seat, "%s", error_msg);
     } else {
 	serial->bufsize = new_backlog;
     }
 }
 
-static const char *serial_configure(Serial serial, HANDLE serport, Conf *conf)
+static const char *serial_configure(Serial *serial, HANDLE serport, Conf *conf)
 {
     DCB dcb;
     COMMTIMEOUTS timeouts;
@@ -99,37 +103,32 @@ static const char *serial_configure(Serial serial, HANDLE serport, Conf *conf)
      * device instead of a serial port.
      */
     if (GetCommState(serport, &dcb)) {
-	char *msg;
 	const char *str;
 
 	/*
 	 * Boilerplate.
 	 */
-	dcb.fBinary = TRUE;
+	dcb.fBinary = true;
 	dcb.fDtrControl = DTR_CONTROL_ENABLE;
-	dcb.fDsrSensitivity = FALSE;
-	dcb.fTXContinueOnXoff = FALSE;
-	dcb.fOutX = FALSE;
-	dcb.fInX = FALSE;
-	dcb.fErrorChar = FALSE;
-	dcb.fNull = FALSE;
+	dcb.fDsrSensitivity = false;
+	dcb.fTXContinueOnXoff = false;
+	dcb.fOutX = false;
+	dcb.fInX = false;
+	dcb.fErrorChar = false;
+	dcb.fNull = false;
 	dcb.fRtsControl = RTS_CONTROL_ENABLE;
-	dcb.fAbortOnError = FALSE;
-	dcb.fOutxCtsFlow = FALSE;
-	dcb.fOutxDsrFlow = FALSE;
+	dcb.fAbortOnError = false;
+	dcb.fOutxCtsFlow = false;
+	dcb.fOutxDsrFlow = false;
 
 	/*
 	 * Configurable parameters.
 	 */
 	dcb.BaudRate = conf_get_int(conf, CONF_serspeed);
-	msg = dupprintf("Configuring baud rate %lu", dcb.BaudRate);
-	logevent(serial->frontend, msg);
-	sfree(msg);
+        logeventf(serial->logctx, "Configuring baud rate %lu", dcb.BaudRate);
 
 	dcb.ByteSize = conf_get_int(conf, CONF_serdatabits);
-	msg = dupprintf("Configuring %u data bits", dcb.ByteSize);
-	logevent(serial->frontend, msg);
-	sfree(msg);
+        logeventf(serial->logctx, "Configuring %u data bits", dcb.ByteSize);
 
 	switch (conf_get_int(conf, CONF_serstopbits)) {
 	  case 2: dcb.StopBits = ONESTOPBIT; str = "1"; break;
@@ -137,9 +136,7 @@ static const char *serial_configure(Serial serial, HANDLE serport, Conf *conf)
 	  case 4: dcb.StopBits = TWOSTOPBITS; str = "2"; break;
 	  default: return "Invalid number of stop bits (need 1, 1.5 or 2)";
 	}
-	msg = dupprintf("Configuring %s data bits", str);
-	logevent(serial->frontend, msg);
-	sfree(msg);
+        logeventf(serial->logctx, "Configuring %s data bits", str);
 
 	switch (conf_get_int(conf, CONF_serparity)) {
 	  case SER_PAR_NONE: dcb.Parity = NOPARITY; str = "no"; break;
@@ -148,32 +145,28 @@ static const char *serial_configure(Serial serial, HANDLE serport, Conf *conf)
 	  case SER_PAR_MARK: dcb.Parity = MARKPARITY; str = "mark"; break;
 	  case SER_PAR_SPACE: dcb.Parity = SPACEPARITY; str = "space"; break;
 	}
-	msg = dupprintf("Configuring %s parity", str);
-	logevent(serial->frontend, msg);
-	sfree(msg);
+        logeventf(serial->logctx, "Configuring %s parity", str);
 
 	switch (conf_get_int(conf, CONF_serflow)) {
 	  case SER_FLOW_NONE:
 	    str = "no";
 	    break;
 	  case SER_FLOW_XONXOFF:
-	    dcb.fOutX = dcb.fInX = TRUE;
+	    dcb.fOutX = dcb.fInX = true;
 	    str = "XON/XOFF";
 	    break;
 	  case SER_FLOW_RTSCTS:
 	    dcb.fRtsControl = RTS_CONTROL_HANDSHAKE;
-	    dcb.fOutxCtsFlow = TRUE;
+	    dcb.fOutxCtsFlow = true;
 	    str = "RTS/CTS";
 	    break;
 	  case SER_FLOW_DSRDTR:
 	    dcb.fDtrControl = DTR_CONTROL_HANDSHAKE;
-	    dcb.fOutxDsrFlow = TRUE;
+	    dcb.fOutxDsrFlow = true;
 	    str = "DSR/DTR";
 	    break;
 	}
-	msg = dupprintf("Configuring %s flow control", str);
-	logevent(serial->frontend, msg);
-	sfree(msg);
+        logeventf(serial->logctx, "Configuring %s flow control", str);
 
 	if (!SetCommState(serport, &dcb))
 	    return "Unable to configure serial port";
@@ -198,30 +191,32 @@ static const char *serial_configure(Serial serial, HANDLE serport, Conf *conf)
  * Also places the canonical host name into `realhost'. It must be
  * freed by the caller.
  */
-static const char *serial_init(void *frontend_handle, void **backend_handle,
-			       Conf *conf, const char *host, int port,
-			       char **realhost, int nodelay, int keepalive)
+static const char *serial_init(Seat *seat, Backend **backend_handle,
+                               LogContext *logctx, Conf *conf,
+                               const char *host, int port,
+			       char **realhost, bool nodelay, bool keepalive)
 {
-    Serial serial;
+    Serial *serial;
     HANDLE serport;
     const char *err;
     char *serline;
 
-    serial = snew(struct serial_backend_data);
+    /* No local authentication phase in this protocol */
+    seat_set_trust_status(seat, false);
+
+    serial = snew(Serial);
     serial->port = INVALID_HANDLE_VALUE;
     serial->out = serial->in = NULL;
     serial->bufsize = 0;
-    serial->break_in_progress = FALSE;
-    *backend_handle = serial;
+    serial->break_in_progress = false;
+    serial->backend.vt = &serial_backend;
+    *backend_handle = &serial->backend;
 
-    serial->frontend = frontend_handle;
+    serial->seat = seat;
+    serial->logctx = logctx;
 
     serline = conf_get_str(conf, CONF_serline);
-    {
-	char *msg = dupprintf("Opening serial device %s", serline);
-	logevent(serial->frontend, msg);
-        sfree(msg);
-    }
+    logeventf(serial->logctx, "Opening serial device %s", serline);
 
     {
 	/*
@@ -274,38 +269,38 @@ static const char *serial_init(void *frontend_handle, void **backend_handle,
     /*
      * Specials are always available.
      */
-    update_specials_menu(serial->frontend);
+    seat_update_specials_menu(serial->seat);
 
     return NULL;
 }
 
-static void serial_free(void *handle)
+static void serial_free(Backend *be)
 {
-    Serial serial = (Serial) handle;
+    Serial *serial = container_of(be, Serial, backend);
 
     serial_terminate(serial);
     expire_timer_context(serial);
     sfree(serial);
 }
 
-static void serial_reconfig(void *handle, Conf *conf)
+static void serial_reconfig(Backend *be, Conf *conf)
 {
-    Serial serial = (Serial) handle;
-    const char *err;
+    Serial *serial = container_of(be, Serial, backend);
 
-    err = serial_configure(serial, serial->port, conf);
+    serial_configure(serial, serial->port, conf);
 
     /*
-     * FIXME: what should we do if err returns something?
+     * FIXME: what should we do if that call returned a non-NULL error
+     * message?
      */
 }
 
 /*
  * Called to send data down the serial connection.
  */
-static int serial_send(void *handle, const char *buf, int len)
+static size_t serial_send(Backend *be, const char *buf, size_t len)
 {
-    Serial serial = (Serial) handle;
+    Serial *serial = container_of(be, Serial, backend);
 
     if (serial->out == NULL)
 	return 0;
@@ -317,16 +312,16 @@ static int serial_send(void *handle, const char *buf, int len)
 /*
  * Called to query the current sendability status.
  */
-static int serial_sendbuffer(void *handle)
+static size_t serial_sendbuffer(Backend *be)
 {
-    Serial serial = (Serial) handle;
+    Serial *serial = container_of(be, Serial, backend);
     return serial->bufsize;
 }
 
 /*
  * Called to set the size of the window
  */
-static void serial_size(void *handle, int width, int height)
+static void serial_size(Backend *be, int width, int height)
 {
     /* Do nothing! */
     return;
@@ -334,24 +329,24 @@ static void serial_size(void *handle, int width, int height)
 
 static void serbreak_timer(void *ctx, unsigned long now)
 {
-    Serial serial = (Serial)ctx;
+    Serial *serial = (Serial *)ctx;
 
     if (now == serial->clearbreak_time && serial->port) {
 	ClearCommBreak(serial->port);
-	serial->break_in_progress = FALSE;
-	logevent(serial->frontend, "Finished serial break");
+	serial->break_in_progress = false;
+        logevent(serial->logctx, "Finished serial break");
     }
 }
 
 /*
  * Send serial special codes.
  */
-static void serial_special(void *handle, Telnet_Special code)
+static void serial_special(Backend *be, SessionSpecialCode code, int arg)
 {
-    Serial serial = (Serial) handle;
+    Serial *serial = container_of(be, Serial, backend);
 
-    if (serial->port && code == TS_BRK) {
-	logevent(serial->frontend, "Starting serial break at user request");
+    if (serial->port && code == SS_BRK) {
+        logevent(serial->logctx, "Starting serial break at user request");
 	SetCommBreak(serial->port);
 	/*
 	 * To send a serial break on Windows, we call SetCommBreak
@@ -365,7 +360,7 @@ static void serial_special(void *handle, Telnet_Special code)
 	 */
 	serial->clearbreak_time =
 	    schedule_timer(TICKSPERSEC * 2 / 5, serbreak_timer, serial);
-	serial->break_in_progress = TRUE;
+	serial->break_in_progress = true;
     }
 
     return;
@@ -375,53 +370,48 @@ static void serial_special(void *handle, Telnet_Special code)
  * Return a list of the special codes that make sense in this
  * protocol.
  */
-static const struct telnet_special *serial_get_specials(void *handle)
+static const SessionSpecial *serial_get_specials(Backend *be)
 {
-    static const struct telnet_special specials[] = {
-	{"Break", TS_BRK},
-	{NULL, TS_EXITMENU}
+    static const SessionSpecial specials[] = {
+	{"Break", SS_BRK},
+	{NULL, SS_EXITMENU}
     };
     return specials;
 }
 
-static int serial_connected(void *handle)
+static bool serial_connected(Backend *be)
 {
-    return 1;			       /* always connected */
+    return true;                       /* always connected */
 }
 
-static int serial_sendok(void *handle)
+static bool serial_sendok(Backend *be)
 {
-    return 1;
+    return true;
 }
 
-static void serial_unthrottle(void *handle, int backlog)
+static void serial_unthrottle(Backend *be, size_t backlog)
 {
-    Serial serial = (Serial) handle;
+    Serial *serial = container_of(be, Serial, backend);
     if (serial->in)
 	handle_unthrottle(serial->in, backlog);
 }
 
-static int serial_ldisc(void *handle, int option)
+static bool serial_ldisc(Backend *be, int option)
 {
     /*
      * Local editing and local echo are off by default.
      */
-    return 0;
+    return false;
 }
 
-static void serial_provide_ldisc(void *handle, void *ldisc)
+static void serial_provide_ldisc(Backend *be, Ldisc *ldisc)
 {
     /* This is a stub. */
 }
 
-static void serial_provide_logctx(void *handle, void *logctx)
+static int serial_exitcode(Backend *be)
 {
-    /* This is a stub. */
-}
-
-static int serial_exitcode(void *handle)
-{
-    Serial serial = (Serial) handle;
+    Serial *serial = container_of(be, Serial, backend);
     if (serial->port != INVALID_HANDLE_VALUE)
         return -1;                     /* still connected */
     else
@@ -432,12 +422,12 @@ static int serial_exitcode(void *handle)
 /*
  * cfg_info for Serial does nothing at all.
  */
-static int serial_cfg_info(void *handle)
+static int serial_cfg_info(Backend *be)
 {
     return 0;
 }
 
-Backend serial_backend = {
+const struct BackendVtable serial_backend = {
     serial_init,
     serial_free,
     serial_reconfig,
@@ -451,7 +441,6 @@ Backend serial_backend = {
     serial_sendok,
     serial_ldisc,
     serial_provide_ldisc,
-    serial_provide_logctx,
     serial_unthrottle,
     serial_cfg_info,
     NULL /* test_for_upstream */,

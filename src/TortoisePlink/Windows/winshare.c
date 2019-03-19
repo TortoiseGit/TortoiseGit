@@ -7,7 +7,6 @@
 
 #if !defined NO_SECURITY
 
-#define DEFINE_PLUG_METHOD_MACROS
 #include "tree234.h"
 #include "putty.h"
 #include "network.h"
@@ -48,8 +47,6 @@ static char *obfuscate_name(const char *realname)
      */
     char *cryptdata;
     int cryptlen;
-    SHA256_State sha;
-    unsigned char lenbuf[4];
     unsigned char digest[32];
     char retbuf[65];
     int i;
@@ -89,11 +86,11 @@ static char *obfuscate_name(const char *realname)
      * We don't want to give away the length of the hostname either,
      * so having got it back out of CryptProtectMemory we now hash it.
      */
-    SHA256_Init(&sha);
-    PUT_32BIT_MSB_FIRST(lenbuf, cryptlen);
-    SHA256_Bytes(&sha, lenbuf, 4);
-    SHA256_Bytes(&sha, cryptdata, cryptlen);
-    SHA256_Final(&sha, digest);
+    {
+        ssh_hash *h = ssh_hash_new(&ssh_sha256);
+        put_string(h, cryptdata, cryptlen);
+        ssh_hash_final(h, digest);
+    }
 
     sfree(cryptdata);
 
@@ -119,17 +116,14 @@ static char *make_name(const char *prefix, const char *name)
     return retname;
 }
 
-Socket new_named_pipe_client(const char *pipename, Plug plug);
-Socket new_named_pipe_listener(const char *pipename, Plug plug);
-
 int platform_ssh_share(const char *pi_name, Conf *conf,
-                       Plug downplug, Plug upplug, Socket *sock,
+                       Plug *downplug, Plug *upplug, Socket **sock,
                        char **logtext, char **ds_err, char **us_err,
-                       int can_upstream, int can_downstream)
+                       bool can_upstream, bool can_downstream)
 {
     char *name, *mutexname, *pipename;
     HANDLE mutex;
-    Socket retsock;
+    Socket *retsock;
     PSECURITY_DESCRIPTOR psd;
     PACL acl;
 
@@ -165,9 +159,9 @@ int platform_ssh_share(const char *pi_name, Conf *conf,
         memset(&sa, 0, sizeof(sa));
         sa.nLength = sizeof(sa);
         sa.lpSecurityDescriptor = psd;
-        sa.bInheritHandle = FALSE;
+        sa.bInheritHandle = false;
 
-        mutex = CreateMutex(&sa, FALSE, mutexname);
+        mutex = CreateMutex(&sa, false, mutexname);
 
         if (!mutex) {
             *logtext = dupprintf("CreateMutex(\"%s\") failed: %s",

@@ -15,6 +15,10 @@
 
 #define WM_AGENT_CALLBACK (WM_APP + 4)
 
+#include <commctrl.h>
+#pragma comment(lib, "comctl32.lib")
+#pragma comment(linker, "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
+
 struct agent_callback {
     void (*callback)(void *, void *, int);
     void *callback_ctx;
@@ -22,106 +26,36 @@ struct agent_callback {
     int len;
 };
 
-void fatalbox(const char *p, ...)
+void cmdline_error(const char *fmt, ...)
 {
 	va_list ap;
 	char *stuff, morestuff[100];
-
-	va_start(ap, p);
-	stuff = dupvprintf(p, ap);
-	va_end(ap);
-	sprintf(morestuff, "%.70s Fatal Error", appname);
-	MessageBox(GetParentHwnd(), stuff, morestuff, MB_ICONERROR | MB_OK);
-	sfree(stuff);
-    if (logctx) {
-        log_free(logctx);
-        logctx = NULL;
-    }
-	cleanup_exit(1);
-}
-void modalfatalbox(const char *p, ...)
-{
-	va_list ap;
-	char *stuff, morestuff[100];
-
-	va_start(ap, p);
-	stuff = dupvprintf(p, ap);
-	va_end(ap);
-	sprintf(morestuff, "%.70s Fatal Error", appname);
-	MessageBox(GetParentHwnd(), stuff, morestuff,
-		MB_SYSTEMMODAL | MB_ICONERROR | MB_OK);
-	sfree(stuff);
-    if (logctx) {
-        log_free(logctx);
-        logctx = NULL;
-    }
-    cleanup_exit(1);
-}
-void nonfatal(const char *p, ...)
-{
-    va_list ap;
-    char *stuff, morestuff[100];
-
-    va_start(ap, p);
-    stuff = dupvprintf(p, ap);
-    va_end(ap);
-    sprintf(morestuff, "%.70s Fatal Error", appname);
-    MessageBox(GetParentHwnd(), stuff, morestuff,
-        MB_SYSTEMMODAL | MB_ICONERROR | MB_OK);
-    sfree(stuff);
-    if (logctx)
-    {
-        log_free(logctx);
-        logctx = NULL;
-    }
-}
-void connection_fatal(void *frontend, const char *p, ...)
-{
-    va_list ap;
-	char *stuff, morestuff[100];
-
-	va_start(ap, p);
-	stuff = dupvprintf(p, ap);
-	va_end(ap);
-	sprintf(morestuff, "%.70s Fatal Error", appname);
-	MessageBox(GetParentHwnd(), stuff, morestuff,
-		MB_SYSTEMMODAL | MB_ICONERROR | MB_OK);
-	sfree(stuff);
-    if (logctx) {
-        log_free(logctx);
-        logctx = NULL;
-    }
-	cleanup_exit(1);
-}
-void cmdline_error(const char *p, ...)
-{
-	va_list ap;
-	char *stuff, morestuff[100];
-
-	va_start(ap, p);
-	stuff = dupvprintf(p, ap);
+	va_start(ap, fmt);
+	stuff = dupvprintf(fmt, ap);
 	va_end(ap);
 	sprintf(morestuff, "%.70s Command Line Error", appname);
 	MessageBox(GetParentHwnd(), stuff, morestuff, MB_ICONERROR | MB_OK);
 	sfree(stuff);
-    exit(1);
+	exit(1);
 }
 
 HANDLE inhandle, outhandle, errhandle;
 struct handle *stdin_handle, *stdout_handle, *stderr_handle;
+handle_sink stdout_hs, stderr_hs;
+StripCtrlChars *stdout_scc, *stderr_scc;
+BinarySink *stdout_bs, *stderr_bs;
 DWORD orig_console_mode;
 
 WSAEVENT netevent;
 
-static Backend *back;
-static void *backhandle;
-static Conf *conf;
+static Backend *backend;
+Conf *conf;
 
-int term_ldisc(Terminal *term, int mode)
+bool term_ldisc(Terminal *term, int mode)
 {
-    return FALSE;
+    return false;
 }
-void frontend_echoedit_update(void *frontend, int echo, int edit)
+static void plink_echoedit_update(Seat *seat, bool echo, bool edit)
 {
     /* Update stdin read mode to reflect changes in line discipline. */
     DWORD mode;
@@ -138,44 +72,51 @@ void frontend_echoedit_update(void *frontend, int echo, int edit)
     SetConsoleMode(inhandle, mode);
 }
 
-char *get_ttymode(void *frontend, const char *mode) { return NULL; }
-
-int from_backend(void *frontend_handle, int is_stderr,
-		 const char *data, int len)
+static size_t plink_output(
+    Seat *seat, bool is_stderr, const void *data, size_t len)
 {
-    if (is_stderr) {
-	handle_write(stderr_handle, data, len);
-    } else {
-	handle_write(stdout_handle, data, len);
-    }
+    BinarySink *bs = is_stderr ? stderr_bs : stdout_bs;
+    put_data(bs, data, len);
 
     return handle_backlog(stdout_handle) + handle_backlog(stderr_handle);
 }
 
-int from_backend_untrusted(void *frontend_handle, const char *data, int len)
-{
-    /*
-     * No "untrusted" output should get here (the way the code is
-     * currently, it's all diverted by FLAG_STDERR).
-     */
-    assert(!"Unexpected call to from_backend_untrusted()");
-    return 0; /* not reached */
-}
-
-int from_backend_eof(void *frontend_handle)
+static bool plink_eof(Seat *seat)
 {
     handle_write_eof(stdout_handle);
-    return FALSE;   /* do not respond to incoming EOF with outgoing */
+    return false;   /* do not respond to incoming EOF with outgoing */
 }
 
-int get_userpass_input(prompts_t *p, const unsigned char *in, int inlen)
+static int plink_get_userpass_input(Seat *seat, prompts_t *p, bufchain *input)
 {
     int ret;
-    ret = cmdline_get_passwd_input(p, in, inlen);
+    ret = cmdline_get_passwd_input(p);
     if (ret == -1)
-	ret = console_get_userpass_input(p, in, inlen);
+	ret = console_get_userpass_input(p);
     return ret;
 }
+
+static const SeatVtable plink_seat_vt = {
+    plink_output,
+    plink_eof,
+    plink_get_userpass_input,
+    nullseat_notify_remote_exit,
+    console_connection_fatal,
+    nullseat_update_specials_menu,
+    nullseat_get_ttymode,
+    nullseat_set_busy_status,
+    console_verify_ssh_host_key,
+    console_confirm_weak_crypto_primitive,
+    console_confirm_weak_cached_hostkey,
+    nullseat_is_never_utf8,
+    plink_echoedit_update,
+    nullseat_get_x_display,
+    nullseat_get_windowid,
+    nullseat_get_window_pixel_size,
+    console_stripctrl_new,
+    console_set_trust_status,
+};
+static Seat plink_seat[1] = {{ &plink_seat_vt }};
 
 static DWORD main_thread_id;
 
@@ -195,8 +136,8 @@ void agent_schedule_callback(void (*callback)(void *, void *, int),
  */
 static void usage(void)
 {
-	char buf[10000];
-	int j = 0;
+    char buf[10000];
+    int j = 0;
     j += sprintf(buf+j, "TortoiseGitPlink: command-line connection utility (based on PuTTY Plink)\n");
     j += sprintf(buf+j, "%s\n", ver);
     j += sprintf(buf+j, "Usage: tortoisegitplink [options] [user@]host [command]\n");
@@ -232,8 +173,16 @@ static void usage(void)
     j += sprintf(buf+j, "  -i key    private key file for user authentication\n");
     j += sprintf(buf+j, "  -noagent  disable use of Pageant\n");
     j += sprintf(buf+j, "  -agent    enable use of Pageant\n");
+    j += sprintf(buf+j, "  -noshare  disable use of connection sharing\n");
+    j += sprintf(buf+j, "  -share    enable use of connection sharing\n");
     j += sprintf(buf+j, "  -hostkey aa:bb:cc:...\n");
     j += sprintf(buf+j, "            manually specify a host key (may be repeated)\n");
+    j += sprintf(buf+j, "  -sanitise-stderr, -sanitise-stdout,\n");
+    j += sprintf(buf+j, "  -no-sanitise-stderr, -no-sanitise-stdout\n");
+    j += sprintf(buf+j, "            do/don't strip control chars from standard\n");
+    j += sprintf(buf+j, "            output/error\n");
+    j += sprintf(buf+j, "  -no-antispoof   omit anti-spoofing prompt after\n");
+    j += sprintf(buf+j, "            authentication\n");
     j += sprintf(buf+j, "  -m file   read remote command(s) from file\n");
     j += sprintf(buf+j, "  -s        remote command is an SSH subsystem (SSH-2 only)\n");
     j += sprintf(buf+j, "  -N        don't start a shell/command (SSH-2 only)\n");
@@ -244,8 +193,8 @@ static void usage(void)
     j += sprintf(buf+j, "            log protocol details to a file\n");
     j += sprintf(buf+j, "  -shareexists\n");
     j += sprintf(buf+j, "            test whether a connection-sharing upstream exists\n");
-	MessageBox(NULL, buf, "TortoiseGitPlink", MB_ICONINFORMATION);
-	exit(1);
+    MessageBox(NULL, buf, "TortoiseGitPlink", MB_ICONINFORMATION);
+    exit(1);
 }
 
 static void version(void)
@@ -258,7 +207,7 @@ static void version(void)
     exit(0);
 }
 
-char *do_select(SOCKET skt, int startup)
+char *do_select(SOCKET skt, bool startup)
 {
     int events;
     if (startup) {
@@ -278,14 +227,11 @@ char *do_select(SOCKET skt, int startup)
     return NULL;
 }
 
-int stdin_gotdata(struct handle *h, void *data, int len)
+size_t stdin_gotdata(struct handle *h, const void *data, size_t len, int err)
 {
-    if (len < 0) {
-	/*
-	 * Special case: report read error.
-	 */
+    if (err) {
 	char buf[4096];
-	FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, NULL, -len, 0,
+	FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, NULL, err, 0,
 		      buf, lenof(buf), NULL);
 	buf[lenof(buf)-1] = '\0';
 	if (buf[strlen(buf)-1] == '\n')
@@ -293,26 +239,24 @@ int stdin_gotdata(struct handle *h, void *data, int len)
 	fprintf(stderr, "Unable to read from standard input: %s\n", buf);
 	cleanup_exit(0);
     }
-    noise_ultralight(len);
-    if (back->connected(backhandle)) {
+
+    noise_ultralight(NOISE_SOURCE_IOLEN, len);
+    if (backend_connected(backend)) {
 	if (len > 0) {
-	    return back->send(backhandle, data, len);
+            return backend_send(backend, data, len);
 	} else {
-	    back->special(backhandle, TS_EOF);
+            backend_special(backend, SS_EOF, 0);
 	    return 0;
 	}
     } else
 	return 0;
 }
 
-void stdouterr_sent(struct handle *h, int new_backlog)
+void stdouterr_sent(struct handle *h, size_t new_backlog, int err)
 {
-    if (new_backlog < 0) {
-	/*
-	 * Special case: report write error.
-	 */
+    if (err) {
 	char buf[4096];
-	FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, NULL, -new_backlog, 0,
+	FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, NULL, err, 0,
 		      buf, lenof(buf), NULL);
 	buf[lenof(buf)-1] = '\0';
 	if (buf[strlen(buf)-1] == '\n')
@@ -321,30 +265,32 @@ void stdouterr_sent(struct handle *h, int new_backlog)
 		(h == stdout_handle ? "output" : "error"), buf);
 	cleanup_exit(0);
     }
-    if (back->connected(backhandle)) {
-	back->unthrottle(backhandle, (handle_backlog(stdout_handle) +
-				      handle_backlog(stderr_handle)));
+
+    if (backend_connected(backend)) {
+        backend_unthrottle(backend, (handle_backlog(stdout_handle) +
+                                     handle_backlog(stderr_handle)));
     }
 }
 
-const int share_can_be_downstream = TRUE;
-const int share_can_be_upstream = TRUE;
+const bool share_can_be_downstream = true;
+const bool share_can_be_upstream = true;
 
 int main(int argc, char **argv)
 {
-    int sending;
-    int portnumber = -1;
+    bool sending;
     SOCKET *sklist;
-    int skcount, sksize;
+    size_t skcount, sksize;
     int exitcode;
-    int errors;
-    int got_host = FALSE;
-    int use_subsystem = 0;
-    int just_test_share_exists = FALSE;
+    bool errors;
+    bool use_subsystem = false;
+    bool just_test_share_exists = false;
+    enum TriState sanitise_stdout = AUTO, sanitise_stderr = AUTO;
     unsigned long now, next, then;
+    const struct BackendVtable *vt;
 
     dll_hijacking_protection();
 
+    InitCommonControls();
     sklist = NULL;
     skcount = sksize = 0;
     /*
@@ -354,234 +300,95 @@ int main(int argc, char **argv)
     default_protocol = PROT_SSH;
     default_port = 22;
 
-    flags = FLAG_STDERR;
+    flags = 0;
+    cmdline_tooltype |=
+        (TOOLTYPE_HOST_ARG |
+         TOOLTYPE_HOST_ARG_CAN_BE_SESSION |
+         TOOLTYPE_HOST_ARG_PROTOCOL_PREFIX |
+         TOOLTYPE_HOST_ARG_FROM_LAUNCHABLE_LOAD);
+
     /*
      * Process the command line.
      */
     conf = conf_new();
     do_defaults(NULL, conf);
-    loaded_session = FALSE;
-    errors = 0;
+    loaded_session = false;
+    errors = false;
     conf_set_int(conf, CONF_protocol, default_protocol);
     conf_set_int(conf, CONF_port, default_port);
-    conf_set_int(conf, CONF_agentfwd, 0);
-    conf_set_int(conf, CONF_x11_forward, 0);
+    conf_set_bool(conf, CONF_agentfwd, FALSE);
+    conf_set_bool(conf, CONF_x11_forward, FALSE);
     while (--argc) {
 	char *p = *++argv;
-	if (*p == '-') {
-	    int ret = cmdline_process_param(p, (argc > 1 ? argv[1] : NULL),
-					    1, conf);
-	    if (ret == -2) {
-		fprintf(stderr,
-			"tortoisegitplink: option \"%s\" requires an argument\n", p);
-		errors = 1;
-	    } else if (ret == 2) {
-		--argc, ++argv;
-	    } else if (ret == 1) {
-		continue;
-	    } else if (!strcmp(p, "-batch")) {
-			// ignore and do not print an error message
-	    } else if (!strcmp(p, "-s")) {
-		/* Save status to write to conf later. */
-		use_subsystem = 1;
-	    } else if (!strcmp(p, "-V") || !strcmp(p, "--version")) {
-                version();
-	    } else if (!strcmp(p, "--help")) {
-                usage();
-            } else if (!strcmp(p, "-pgpfp")) {
-                pgp_fingerprints();
-                exit(1);
-	    } else if (!strcmp(p, "-shareexists")) {
-                just_test_share_exists = TRUE;
-	    } else {
-		fprintf(stderr, "tortoisegitplink: unknown option \"%s\"\n", p);
-		errors = 1;
-	    }
-	} else if (*p) {
-	    if (!conf_launchable(conf) || !(got_host || loaded_session)) {
-		char *q = p;
-		/*
-		 * If the hostname starts with "telnet:", set the
-		 * protocol to Telnet and process the string as a
-		 * Telnet URL.
-		 */
-		if (!strncmp(q, "telnet:", 7)) {
-		    char c;
+        int ret = cmdline_process_param(p, (argc > 1 ? argv[1] : NULL),
+                                        1, conf);
+        if (ret == -2) {
+            fprintf(stderr,
+                    "TortoiseGitPlink: option \"%s\" requires an argument\n", p);
+            errors = true;
+        } else if (ret == 2) {
+            --argc, ++argv;
+        } else if (ret == 1) {
+            continue;
+        } else if (!strcmp(p, "-batch")) {
+            // ignore and do not print an error message
+        } else if (!strcmp(p, "-s")) {
+            /* Save status to write to conf later. */
+            use_subsystem = true;
+        } else if (!strcmp(p, "-V") || !strcmp(p, "--version")) {
+            version();
+        } else if (!strcmp(p, "--help")) {
+            usage();
+        } else if (!strcmp(p, "-pgpfp")) {
+            pgp_fingerprints();
+            exit(1);
+        } else if (!strcmp(p, "-shareexists")) {
+            just_test_share_exists = true;
+        } else if (!strcmp(p, "-sanitise-stdout") ||
+                   !strcmp(p, "-sanitize-stdout")) {
+            sanitise_stdout = FORCE_ON;
+        } else if (!strcmp(p, "-no-sanitise-stdout") ||
+                   !strcmp(p, "-no-sanitize-stdout")) {
+            sanitise_stdout = FORCE_OFF;
+        } else if (!strcmp(p, "-sanitise-stderr") ||
+                   !strcmp(p, "-sanitize-stderr")) {
+            sanitise_stderr = FORCE_ON;
+        } else if (!strcmp(p, "-no-sanitise-stderr") ||
+                   !strcmp(p, "-no-sanitize-stderr")) {
+            sanitise_stderr = FORCE_OFF;
+        } else if (!strcmp(p, "-no-antispoof")) {
+            console_antispoof_prompt = false;
+	} else if (*p != '-') {
+            strbuf *cmdbuf = strbuf_new();
 
-		    q += 7;
-		    if (q[0] == '/' && q[1] == '/')
-			q += 2;
-		    conf_set_int(conf, CONF_protocol, PROT_TELNET);
-		    p = q;
-                    p += host_strcspn(p, ":/");
-		    c = *p;
-		    if (*p)
-			*p++ = '\0';
-		    if (c == ':')
-			conf_set_int(conf, CONF_port, atoi(p));
-		    else
-			conf_set_int(conf, CONF_port, -1);
-		    conf_set_str(conf, CONF_host, q);
-		    got_host = TRUE;
-		} else {
-		    char *r, *user, *host;
-		    /*
-		     * Before we process the [user@]host string, we
-		     * first check for the presence of a protocol
-		     * prefix (a protocol name followed by ",").
-		     */
-		    r = strchr(p, ',');
-		    if (r) {
-			const Backend *b;
-			*r = '\0';
-			b = backend_from_name(p);
-			if (b) {
-			    default_protocol = b->protocol;
-			    conf_set_int(conf, CONF_protocol,
-					 default_protocol);
-			    portnumber = b->default_port;
-			}
-			p = r + 1;
-		    }
+            while (argc > 0) {
+                if (cmdbuf->len > 0)
+                    put_byte(cmdbuf, ' '); /* add space separator */
+                put_datapl(cmdbuf, ptrlen_from_asciz(p));
+                if (--argc > 0)
+                    p = *++argv;
+            }
 
-		    /*
-		     * A nonzero length string followed by an @ is treated
-		     * as a username. (We discount an _initial_ @.) The
-		     * rest of the string (or the whole string if no @)
-		     * is treated as a session name and/or hostname.
-		     */
-		    r = strrchr(p, '@');
-		    if (r == p)
-			p++, r = NULL; /* discount initial @ */
-		    if (r) {
-			*r++ = '\0';
-			user = p, host = r;
-		    } else {
-			user = NULL, host = p;
-		    }
+            conf_set_str(conf, CONF_remote_cmd, cmdbuf->s);
+            conf_set_str(conf, CONF_remote_cmd2, "");
+            conf_set_bool(conf, CONF_nopty, true);  /* command => no tty */
 
-		    /*
-		     * Now attempt to load a saved session with the
-		     * same name as the hostname.
-		     */
-		    {
-			Conf *conf2 = conf_new();
-			do_defaults(host, conf2);
-			if (loaded_session || !conf_launchable(conf2)) {
-			    /* No settings for this host; use defaults */
-			    /* (or session was already loaded with -load) */
-			    conf_set_str(conf, CONF_host, host);
-			    conf_set_int(conf, CONF_port, default_port);
-			    got_host = TRUE;
-			} else {
-			    conf_copy_into(conf, conf2);
-			    loaded_session = TRUE;
-			}
-			conf_free(conf2);
-		    }
-
-		    if (user) {
-			/* Patch in specified username. */
-			conf_set_str(conf, CONF_username, user);
-		    }
-
-		}
-	    } else {
-		char *command;
-		int cmdlen, cmdsize;
-		cmdlen = cmdsize = 0;
-		command = NULL;
-
-		while (argc) {
-		    while (*p) {
-			if (cmdlen >= cmdsize) {
-			    cmdsize = cmdlen + 512;
-			    command = sresize(command, cmdsize, char);
-			}
-			command[cmdlen++]=*p++;
-		    }
-		    if (cmdlen >= cmdsize) {
-			cmdsize = cmdlen + 512;
-			command = sresize(command, cmdsize, char);
-		    }
-		    command[cmdlen++]=' '; /* always add trailing space */
-		    if (--argc) p = *++argv;
-		}
-		if (cmdlen) command[--cmdlen]='\0';
-				       /* change trailing blank to NUL */
-		conf_set_str(conf, CONF_remote_cmd, command);
-		conf_set_str(conf, CONF_remote_cmd2, "");
-		conf_set_int(conf, CONF_nopty, TRUE);  /* command => no tty */
-
-		break;		       /* done with cmdline */
-	    }
-	}
+            strbuf_free(cmdbuf);
+            break;		       /* done with cmdline */
+        } else {
+            fprintf(stderr, "TortoiseGitPlink: unknown option \"%s\"\n", p);
+            errors = true;
+        }
     }
 
     if (errors)
 	return 1;
 
-    if (!conf_launchable(conf) || !(got_host || loaded_session)) {
+    if (!cmdline_host_ok(conf)) {
 	usage();
     }
 
-    /*
-     * Muck about with the hostname in various ways.
-     */
-    {
-	char *hostbuf = dupstr(conf_get_str(conf, CONF_host));
-	char *host = hostbuf;
-	char *p, *q;
-
-	/*
-	 * Trim leading whitespace.
-	 */
-	host += strspn(host, " \t");
-
-	/*
-	 * See if host is of the form user@host, and separate out
-	 * the username if so.
-	 */
-	if (host[0] != '\0') {
-	    char *atsign = strrchr(host, '@');
-	    if (atsign) {
-		*atsign = '\0';
-		conf_set_str(conf, CONF_username, host);
-		host = atsign + 1;
-	    }
-	}
-
-        /*
-         * Trim a colon suffix off the hostname if it's there. In
-         * order to protect unbracketed IPv6 address literals
-         * against this treatment, we do not do this if there's
-         * _more_ than one colon.
-         */
-        {
-            char *c = host_strchr(host, ':');
- 
-            if (c) {
-                char *d = host_strchr(c+1, ':');
-                if (!d)
-                    *c = '\0';
-            }
-        }
-
-	/*
-	 * Remove any remaining whitespace.
-	 */
-	p = hostbuf;
-	q = host;
-	while (*q) {
-	    if (*q != ' ' && *q != '\t')
-		*p++ = *q;
-	    q++;
-	}
-	*p = '\0';
-
-	conf_set_str(conf, CONF_host, hostbuf);
-	sfree(hostbuf);
-    }
+    prepare_session(conf);
 
     /*
      * Perform command-line overrides on session configuration.
@@ -592,7 +399,7 @@ int main(int argc, char **argv)
      * Apply subsystem status.
      */
     if (use_subsystem)
-        conf_set_int(conf, CONF_ssh_subsys, TRUE);
+        conf_set_bool(conf, CONF_ssh_subsys, true);
 
     if (!*conf_get_str(conf, CONF_remote_cmd) &&
 	!*conf_get_str(conf, CONF_remote_cmd2) &&
@@ -603,22 +410,16 @@ int main(int argc, char **argv)
      * Select protocol. This is farmed out into a table in a
      * separate file to enable an ssh-free variant.
      */
-    back = backend_from_proto(conf_get_int(conf, CONF_protocol));
-    if (back == NULL) {
+    vt = backend_vt_from_proto(conf_get_int(conf, CONF_protocol));
+    if (vt == NULL) {
 	fprintf(stderr,
 		"Internal fault: Unsupported protocol found\n");
 	return 1;
     }
 
-    /*
-     * Select port.
-     */
-    if (portnumber != -1)
-	conf_set_int(conf, CONF_port, portnumber);
-
     sk_init();
     if (p_WSAEventSelect == NULL) {
-    fprintf(stderr, "TortoiseGitPlink requires WinSock 2\n");
+	fprintf(stderr, "TortoiseGitPlink requires WinSock 2\n");
 	return 1;
     }
 
@@ -628,53 +429,51 @@ int main(int argc, char **argv)
      * the "simple" flag.
      */
     if (conf_get_int(conf, CONF_protocol) == PROT_SSH &&
-	!conf_get_int(conf, CONF_x11_forward) &&
-	!conf_get_int(conf, CONF_agentfwd) &&
+	!conf_get_bool(conf, CONF_x11_forward) &&
+	!conf_get_bool(conf, CONF_agentfwd) &&
 	!conf_get_str_nthstrkey(conf, CONF_portfwd, 0))
-	conf_set_int(conf, CONF_ssh_simple, TRUE);
+	conf_set_bool(conf, CONF_ssh_simple, true);
 
-    logctx = log_init(NULL, conf);
-    console_provide_logctx(logctx);
+    logctx = log_init(default_logpolicy, conf);
 
     if (just_test_share_exists) {
-        if (!back->test_for_upstream) {
+        if (!vt->test_for_upstream) {
             fprintf(stderr, "Connection sharing not supported for connection "
-                    "type '%s'\n", back->name);
+                    "type '%s'\n", vt->name);
             return 1;
         }
-        if (back->test_for_upstream(conf_get_str(conf, CONF_host),
-                                    conf_get_int(conf, CONF_port), conf))
+        if (vt->test_for_upstream(conf_get_str(conf, CONF_host),
+                                  conf_get_int(conf, CONF_port), conf))
             return 0;
         else
             return 1;
     }
 
     if (restricted_acl) {
-	logevent(NULL, "Running with restricted process ACL");
+        lp_eventlog(default_logpolicy, "Running with restricted process ACL");
     }
 
     /*
      * Start up the connection.
      */
-    netevent = CreateEvent(NULL, FALSE, FALSE, NULL);
+    netevent = CreateEvent(NULL, false, false, NULL);
     {
 	const char *error;
 	char *realhost;
 	/* nodelay is only useful if stdin is a character device (console) */
-	int nodelay = conf_get_int(conf, CONF_tcp_nodelay) &&
+	bool nodelay = conf_get_bool(conf, CONF_tcp_nodelay) &&
 	    (GetFileType(GetStdHandle(STD_INPUT_HANDLE)) == FILE_TYPE_CHAR);
 
-	error = back->init(NULL, &backhandle, conf,
-			   conf_get_str(conf, CONF_host),
-			   conf_get_int(conf, CONF_port),
-			   &realhost, nodelay,
-			   conf_get_int(conf, CONF_tcp_keepalives));
+        error = backend_init(vt, plink_seat, &backend, logctx, conf,
+                             conf_get_str(conf, CONF_host),
+                             conf_get_int(conf, CONF_port),
+                             &realhost, nodelay,
+                             conf_get_bool(conf, CONF_tcp_keepalives));
 	if (error) {
 	    fprintf(stderr, "Unable to open connection:\n%s", error);
 	    return 1;
-    }
-    back->provide_logctx(backhandle, logctx);
-    sfree(realhost);
+	}
+	sfree(realhost);
     }
 
     inhandle = GetStdHandle(STD_INPUT_HANDLE);
@@ -696,10 +495,41 @@ int main(int argc, char **argv)
      */
     stdout_handle = handle_output_new(outhandle, stdouterr_sent, NULL, 0);
     stderr_handle = handle_output_new(errhandle, stdouterr_sent, NULL, 0);
+    handle_sink_init(&stdout_hs, stdout_handle);
+    handle_sink_init(&stderr_hs, stderr_handle);
+    stdout_bs = BinarySink_UPCAST(&stdout_hs);
+    stderr_bs = BinarySink_UPCAST(&stderr_hs);
+
+    /*
+     * Decide whether to sanitise control sequences out of standard
+     * output and standard error.
+     *
+     * If we weren't given a command-line override, we do this if (a)
+     * the fd in question is pointing at a console, and (b) we aren't
+     * trying to allocate a terminal as part of the session.
+     *
+     * (Rationale: the risk of control sequences is that they cause
+     * confusion when sent to a local console, so if there isn't one,
+     * no problem. Also, if we allocate a remote terminal, then we
+     * sent a terminal type, i.e. we told it what kind of escape
+     * sequences we _like_, i.e. we were expecting to receive some.)
+     */
+    if (sanitise_stdout == FORCE_ON ||
+        (sanitise_stdout == AUTO && is_console_handle(outhandle) &&
+         conf_get_bool(conf, CONF_nopty))) {
+        stdout_scc = stripctrl_new(stdout_bs, true, L'\0');
+        stdout_bs = BinarySink_UPCAST(stdout_scc);
+    }
+    if (sanitise_stderr == FORCE_ON ||
+        (sanitise_stderr == AUTO && is_console_handle(errhandle) &&
+         conf_get_bool(conf, CONF_nopty))) {
+        stderr_scc = stripctrl_new(stderr_bs, true, L'\0');
+        stderr_bs = BinarySink_UPCAST(stderr_scc);
+    }
 
     main_thread_id = GetCurrentThreadId();
 
-    sending = FALSE;
+    sending = false;
 
     now = GETTICKCOUNT();
 
@@ -709,10 +539,10 @@ int main(int argc, char **argv)
 	int n;
 	DWORD ticks;
 
-	if (!sending && back->sendok(backhandle)) {
+        if (!sending && backend_sendok(backend)) {
 	    stdin_handle = handle_input_new(inhandle, stdin_gotdata, NULL,
 					    0);
-	    sending = TRUE;
+	    sending = true;
 	}
 
         if (toplevel_callback_pending()) {
@@ -734,14 +564,13 @@ int main(int argc, char **argv)
 	handles = handle_get_events(&nhandles);
 	handles = sresize(handles, nhandles+1, HANDLE);
 	handles[nhandles] = netevent;
-	n = MsgWaitForMultipleObjects(nhandles+1, handles, FALSE, ticks,
+	n = MsgWaitForMultipleObjects(nhandles+1, handles, false, ticks,
 				      QS_POSTMESSAGE);
 	if ((unsigned)(n - WAIT_OBJECT_0) < (unsigned)nhandles) {
 	    handle_got_event(handles[n - WAIT_OBJECT_0]);
 	} else if (n == WAIT_OBJECT_0 + nhandles) {
 	    WSANETWORKEVENTS things;
 	    SOCKET socket;
-	    extern SOCKET first_socket(int *), next_socket(int *);
 	    int i, socketstate;
 
 	    /*
@@ -757,10 +586,7 @@ int main(int argc, char **argv)
 		 socket = next_socket(&socketstate)) i++;
 
 	    /* Expand the buffer if necessary. */
-	    if (i > sksize) {
-		sksize = i + 16;
-		sklist = sresize(sklist, sksize, SOCKET);
-	    }
+            sgrowarray(sklist, sksize, i);
 
 	    /* Retrieve the sockets into sklist. */
 	    skcount = 0;
@@ -786,8 +612,7 @@ int main(int argc, char **argv)
                     };
                     int e;
 
-		    noise_ultralight(socket);
-		    noise_ultralight(things.lNetworkEvents);
+		    noise_ultralight(NOISE_SOURCE_IOID, socket);
 
                     for (e = 0; e < lenof(eventtypes); e++)
                         if (things.lNetworkEvents & eventtypes[e].mask) {
@@ -820,13 +645,13 @@ int main(int argc, char **argv)
 	sfree(handles);
 
 	if (sending)
-	    handle_unthrottle(stdin_handle, back->sendbuffer(backhandle));
+            handle_unthrottle(stdin_handle, backend_sendbuffer(backend));
 
-	if (!back->connected(backhandle) &&
+        if (!backend_connected(backend) &&
 	    handle_backlog(stdout_handle) + handle_backlog(stderr_handle) == 0)
 	    break;		       /* we closed the connection */
     }
-    exitcode = back->exitcode(backhandle);
+    exitcode = backend_exitcode(backend);
     if (exitcode < 0) {
 	fprintf(stderr, "Remote process exit code unavailable\n");
 	exitcode = 1;		       /* this is an error condition */

@@ -4,14 +4,11 @@
 
 #include "misc.h"
 #include "ssh.h"
+#include "mpint.h"
 
 int dsa_generate(struct dss_key *key, int bits, progfn_t pfn,
 		 void *pfnparam)
 {
-    Bignum qm1, power, g, h, tmp;
-    unsigned pfirst, qfirst;
-    int progress;
-
     /*
      * Set up the phase limits for the progress report. We do this
      * by passing minus the phase number.
@@ -57,30 +54,19 @@ int dsa_generate(struct dss_key *key, int bits, progfn_t pfn,
     pfn(pfnparam, PROGFN_PHASE_EXTENT, 3, 0x2000);
     pfn(pfnparam, PROGFN_EXP_PHASE, 3, -32768);
 
-    /*
-     * In phase four we are finding an element x between 1 and q-1
-     * (exclusive), by inventing 160 random bits and hoping they
-     * come out to a plausible number; so assuming q is uniformly
-     * distributed between 2^159 and 2^160, the chance of any given
-     * attempt succeeding is somewhere between 0.5 and 1. Lacking
-     * the energy to arrange to be able to specify this probability
-     * _after_ generating q, we'll just set it to 0.75.
-     */
-    pfn(pfnparam, PROGFN_PHASE_EXTENT, 4, 0x2000);
-    pfn(pfnparam, PROGFN_EXP_PHASE, 4, -49152);
-
     pfn(pfnparam, PROGFN_READY, 0, 0);
 
-    invent_firstbits(&pfirst, &qfirst);
+    unsigned pfirst, qfirst;
+    invent_firstbits(&pfirst, &qfirst, 0);
     /*
      * Generate q: a prime of length 160.
      */
-    key->q = primegen(160, 2, 2, NULL, 1, pfn, pfnparam, qfirst);
+    mp_int *q = primegen(160, 2, 2, NULL, 1, pfn, pfnparam, qfirst);
     /*
      * Now generate p: a prime of length `bits', such that p-1 is
      * divisible by q.
      */
-    key->p = primegen(bits-160, 2, 2, key->q, 2, pfn, pfnparam, pfirst);
+    mp_int *p = primegen(bits-160, 2, 2, q, 2, pfn, pfnparam, pfirst);
 
     /*
      * Next we need g. Raise 2 to the power (p-1)/q modulo p, and
@@ -88,58 +74,40 @@ int dsa_generate(struct dss_key *key, int bits, progfn_t pfn,
      * soon as we hit a non-unit (and non-zero!) one, that'll do
      * for g.
      */
-    power = bigdiv(key->p, key->q);    /* this is floor(p/q) == (p-1)/q */
-    h = bignum_from_long(1);
-    progress = 0;
+    mp_int *power = mp_div(p, q); /* this is floor(p/q) == (p-1)/q */
+    mp_int *h = mp_from_integer(1);
+    int progress = 0;
+    mp_int *g;
     while (1) {
 	pfn(pfnparam, PROGFN_PROGRESS, 3, ++progress);
-	g = modpow(h, power, key->p);
-	if (bignum_cmp(g, One) > 0)
+	g = mp_modpow(h, power, p);
+	if (mp_hs_integer(g, 2))
 	    break;		       /* got one */
-	tmp = h;
-	h = bignum_add_long(h, 1);
-	freebn(tmp);
+        mp_free(g);
+        mp_add_integer_into(h, h, 1);
     }
-    key->g = g;
-    freebn(h);
+    mp_free(h);
+    mp_free(power);
 
     /*
      * Now we're nearly done. All we need now is our private key x,
      * which should be a number between 1 and q-1 exclusive, and
      * our public key y = g^x mod p.
      */
-    qm1 = copybn(key->q);
-    decbn(qm1);
-    progress = 0;
-    while (1) {
-	int i, v, byte, bitsleft;
-	Bignum x;
+    mp_int *two = mp_from_integer(2);
+    mp_int *qm1 = mp_copy(q);
+    mp_sub_integer_into(qm1, qm1, 1);
+    mp_int *x = mp_random_in_range(two, qm1);
+    mp_free(two);
+    mp_free(qm1);
 
-	pfn(pfnparam, PROGFN_PROGRESS, 4, ++progress);
-	x = bn_power_2(159);
-	byte = 0;
-	bitsleft = 0;
+    key->sshk.vt = &ssh_dss;
 
-	for (i = 0; i < 160; i++) {
-	    if (bitsleft <= 0)
-		bitsleft = 8, byte = random_byte();
-	    v = byte & 1;
-	    byte >>= 1;
-	    bitsleft--;
-	    bignum_set_bit(x, i, v);
-	}
-
-	if (bignum_cmp(x, One) <= 0 || bignum_cmp(x, qm1) >= 0) {
-	    freebn(x);
-	    continue;
-	} else {
-	    key->x = x;
-	    break;
-	}
-    }
-    freebn(qm1);
-
-    key->y = modpow(key->g, key->x, key->p);
+    key->p = p;
+    key->q = q;
+    key->g = g;
+    key->x = x;
+    key->y = mp_modpow(key->g, key->x, key->p);
 
     return 1;
 }

@@ -9,14 +9,14 @@
 #define WINCAPI_GLOBAL
 #include "wincapi.h"
 
-int got_crypt(void)
+bool got_crypt(void)
 {
-    static int attempted = FALSE;
-    static int successful;
+    static bool attempted = false;
+    static bool successful;
     static HMODULE crypt;
 
     if (!attempted) {
-        attempted = TRUE;
+        attempted = true;
         crypt = load_system32_dll("crypt32.dll");
         successful = crypt &&
 #ifdef COVERITY
