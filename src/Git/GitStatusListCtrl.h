@@ -411,7 +411,7 @@ public:
 	 * \param bHasCheckboxes TRUE if the control should show check boxes on the left of each file entry.
 	 * \param bHasWC TRUE if the reporisty is not a bare repository (hides wc related items on the contextmenu)
 	 */
-	void Init(DWORD dwColumns, const CString& sColumnInfoContainer, unsigned __int64 dwContextMenus = ((GITSLC_POPALL ^ GITSLC_POPCOMMIT) ^ GITSLC_POPRESTORE), bool bHasCheckboxes = true, bool bHasWC = true, DWORD allowedColumns = 0xffffffff);
+	void Init(DWORD dwColumns, const CString& sColumnInfoContainer, unsigned __int64 dwContextMenus, bool bHasCheckboxes = true, bool bHasWC = true, DWORD allowedColumns = 0xffffffff);
 	/**
 	 * Sets a background image for the list control.
 	 * The image is shown in the right bottom corner.

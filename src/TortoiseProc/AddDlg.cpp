@@ -63,7 +63,7 @@ BOOL CAddDlg::OnInitDialog()
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	// initialize the svn status list control
-	m_addListCtrl.Init(GITSLC_COLEXT, L"AddDlg", GITSLC_POPALL ^ (GITSLC_POPADD | GITSLC_POPCOMMIT | GITSLC_POPCHANGELISTS | GITSLC_POPPREPAREDIFF), true, true, GITSLC_COLEXT | GITSLC_COLMODIFICATIONDATE | GITSLC_COLSIZE); // adding and committing is useless in the add dialog
+	m_addListCtrl.Init(GITSLC_COLEXT, L"AddDlg", GITSLC_POPALL ^ (GITSLC_POPADD | GITSLC_POPCOMMIT | GITSLC_POPCHANGELISTS | GITSLC_POPPREPAREDIFF | GITSLC_POPCHANGELISTS), true, true, GITSLC_COLEXT | GITSLC_COLMODIFICATIONDATE | GITSLC_COLSIZE); // adding and committing is useless in the add dialog
 	m_addListCtrl.SetIgnoreRemoveOnly();	// when ignoring, don't add the parent folder since we're in the add dialog
 	m_addListCtrl.SetSelectButton(&m_SelectAll);
 	m_addListCtrl.SetConfirmButton(static_cast<CButton*>(GetDlgItem(IDOK)));

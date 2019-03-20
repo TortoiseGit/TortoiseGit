@@ -65,7 +65,7 @@ BOOL CRevertDlg::OnInitDialog()
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
-	m_RevertList.Init(GITSLC_COLEXT | GITSLC_COLSTATUS | GITSLC_COLADD| GITSLC_COLDEL, L"RevertDlg");
+	m_RevertList.Init(GITSLC_COLEXT | GITSLC_COLSTATUS | GITSLC_COLADD | GITSLC_COLDEL, L"RevertDlg", (GITSLC_POPALL ^ (GITSLC_POPCOMMIT | GITSLC_POPRESTORE | GITSLC_POPCHANGELISTS)));
 	m_RevertList.SetConfirmButton(static_cast<CButton*>(GetDlgItem(IDOK)));
 	m_RevertList.SetSelectButton(&m_SelectAll);
 	m_RevertList.SetCancelBool(&m_bCancelled);
