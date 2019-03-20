@@ -2589,7 +2589,10 @@ void CGitStatusListCtrl::MoveToChangelist(const CString& name)
 	POSITION pos = GetFirstSelectedItemPosition();
 	while (pos)
 	{
-		auto pGitPath = GetListEntry(GetNextSelectedItem(pos));
+		int index = GetNextSelectedItem(pos);
+		auto pGitPath = GetListEntry(index);
+		if (name.Compare(GITSLC_IGNORECHANGELIST) == 0)
+			SetEntryCheck(pGitPath, index, false);
 		m_pathToChangelist.insert_or_assign(pGitPath->GetGitPathString(), name);
 	}
 
