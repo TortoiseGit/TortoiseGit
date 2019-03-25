@@ -120,6 +120,8 @@ void CExportDlg::OnOK()
 		return;
 	}
 
+	if (!CStringUtils::EndsWithI(m_strFile, L".zip"))
+		m_strFile += L".zip";
 	if(::PathFileExists(m_strFile))
 	{
 		if(::PathIsDirectory(m_strFile))

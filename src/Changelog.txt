@@ -1,6 +1,9 @@
 ﻿= Release 2.9.0 =
 Released: unreleased
 
+== Features ==
+ * Fixed issue #3355: Adding file name extension in the Export dialog
+
 == Bug Fixes ==
  * Implement generic fix for "libgit2 returned the requested type does not match the type in ODB"
  * Fixed issue #3342: Windows Explorer context menu: TortoiseGit doesn't recognize local Git working copy if "gitdir-redirection" is used within same folder
