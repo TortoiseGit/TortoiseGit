@@ -798,17 +798,13 @@ LRESULT CCheckForUpdatesDlg::OnFillChangelog(WPARAM, LPARAM lParam)
 
 CString CCheckForUpdatesDlg::GetDownloadsDirectory()
 {
-	CString folder;
-
-	PWSTR wcharPtr = nullptr;
-	if (SUCCEEDED(SHGetKnownFolderPath(FOLDERID_Downloads, KF_FLAG_CREATE, nullptr, &wcharPtr)))
+	if (CComHeapPtr<WCHAR> wcharPtr; SUCCEEDED(SHGetKnownFolderPath(FOLDERID_Downloads, KF_FLAG_CREATE, nullptr, &wcharPtr)))
 	{
-		folder = wcharPtr;
-		CoTaskMemFree(wcharPtr);
+		CString folder = wcharPtr;
 		return folder.TrimRight(L'\\') + L'\\';
 	}
 
-	return folder;
+	return {};
 }
 
 LRESULT CCheckForUpdatesDlg::OnDisplayStatus(WPARAM, LPARAM lParam)

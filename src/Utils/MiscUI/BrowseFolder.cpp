@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016 - TortoiseGit
+// Copyright (C) 2016, 2019 - TortoiseGit
 // Copyright (C) 2003-2014, 2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -152,12 +152,8 @@ CBrowseFolder::retVal CBrowseFolder::Show(HWND parent, CString& path, const CStr
 	if (FAILED(pfd->GetResult(&psiResult)))
 		return CANCEL;
 
-	PWSTR pszPath = nullptr;
-	if (SUCCEEDED(psiResult->GetDisplayName(SIGDN_FILESYSPATH, &pszPath)))
-	{
+	if (CComHeapPtr<WCHAR> pszPath; SUCCEEDED(psiResult->GetDisplayName(SIGDN_FILESYSPATH, &pszPath)))
 		path = pszPath;
-		CoTaskMemFree(pszPath);
-	}
 
 	CComPtr<IFileDialogCustomize> pfdCustomize;
 	if (SUCCEEDED(pfd.QueryInterface(&pfdCustomize)))

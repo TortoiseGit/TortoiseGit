@@ -307,7 +307,7 @@ bool CCommonAppUtils::FileOpenSave(CString& path, int* filterindex, UINT title, 
 	if (!SUCCEEDED(pfd->GetResult(&psiResult)))
 		return false;
 
-	PWSTR pszPath = nullptr;
+	CComHeapPtr<WCHAR> pszPath;
 	if (!SUCCEEDED(psiResult->GetDisplayName(SIGDN_FILESYSPATH, &pszPath)))
 		return false;
 

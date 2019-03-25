@@ -1,5 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2011, 2014-2016, 2019 - TortoiseGit
 // Copyright (C) 2010, 2012, 2014-2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -214,11 +215,10 @@ void CSetOverlayHandlers::UpdateInfoLabel()
 
 void CSetOverlayHandlers::OnBnClickedRegedt()
 {
-	PWSTR pszPath = nullptr;
+	CComHeapPtr<WCHAR> pszPath;
 	if (SHGetKnownFolderPath(FOLDERID_Windows, KF_FLAG_CREATE, nullptr, &pszPath) == S_OK)
 	{
 		CString path = pszPath;
-		CoTaskMemFree(pszPath);
 		path += L"\\regedit.exe";
 
 		// regedit stores the key it showed last in
