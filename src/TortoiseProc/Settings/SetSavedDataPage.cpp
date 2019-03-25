@@ -115,12 +115,9 @@ BOOL CSetSavedDataPage::OnInitDialog()
 	CString sFile;
 	bool bIsDir = false;
 
-	PWSTR pszPath = nullptr;
-	if (SHGetKnownFolderPath(FOLDERID_RoamingAppData, KF_FLAG_CREATE, nullptr, &pszPath) == S_OK)
+	if (CComHeapPtr<WCHAR> pszPath; SHGetKnownFolderPath(FOLDERID_RoamingAppData, KF_FLAG_CREATE, nullptr, &pszPath) == S_OK)
 	{
 		CString path = pszPath;
-		CoTaskMemFree(pszPath);
-
 		path += L"\\Subversion\\auth\\";
 
 		CString sSimple = path + L"svn.simple";
@@ -236,11 +233,9 @@ void CSetSavedDataPage::OnBnClickedAuthhistclear()
 {
 	CRegStdString auth = CRegStdString(L"Software\\TortoiseGit\\Auth\\");
 	auth.removeKey();
-	PWSTR pszPath = nullptr;
-	if (SHGetKnownFolderPath(FOLDERID_RoamingAppData, KF_FLAG_CREATE, nullptr, &pszPath) == S_OK)
+	if (CComHeapPtr<WCHAR> pszPath; SHGetKnownFolderPath(FOLDERID_RoamingAppData, KF_FLAG_CREATE, nullptr, &pszPath) == S_OK)
 	{
 		CString path = pszPath;
-		CoTaskMemFree(pszPath);
 		path += L"\\Subversion\\auth\\";
 		DeleteViaShell(path, IDS_SETTINGS_DELFILE);
 	}

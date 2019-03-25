@@ -231,14 +231,11 @@ void CLSIDtochar(const CLSID& clsid, TCHAR* szCLSID, int length)
 {
 	assert(length >= CLSID_STRING_SIZE);
 	// Get CLSID
-	LPOLESTR wszCLSID = nullptr;
+	CComHeapPtr<OLECHAR> wszCLSID;
 	StringFromCLSID(clsid, &wszCLSID);
 
 	// Covert from wide characters to non-wide.
 	wcscpy_s(szCLSID, length, wszCLSID);
-
-	// Free memory.
-	CoTaskMemFree(wszCLSID);
 }
 
 //

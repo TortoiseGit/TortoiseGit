@@ -371,13 +371,10 @@ BOOL CTortoiseMergeApp::InitInstance()
 					pfd->Unadvise(dwCookie);
 				if (SUCCEEDED(hr))
 				{
-					PWSTR pszPath = nullptr;
+					CComHeapPtr<WCHAR> pszPath;
 					hr = psiResult->GetDisplayName(SIGDN_FILESYSPATH, &pszPath);
 					if (SUCCEEDED(hr))
-					{
 						pFrame->m_Data.m_sDiffFile = pszPath;
-						CoTaskMemFree(pszPath);
-					}
 				}
 				else
 				{

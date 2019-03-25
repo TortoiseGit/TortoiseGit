@@ -193,12 +193,11 @@ CString CPathUtils::GetAppParentDirectory(HMODULE hMod /* = nullptr */)
 
 CString CPathUtils::GetAppDataDirectory()
 {
-	PWSTR pszPath = nullptr;
+	CComHeapPtr<WCHAR> pszPath;
 	if (SHGetKnownFolderPath(FOLDERID_RoamingAppData, KF_FLAG_CREATE, nullptr, &pszPath) != S_OK)
 		return CString();
 
 	CString path = pszPath;
-	CoTaskMemFree(pszPath);
 	path += L"\\TortoiseGit";
 	if (!PathIsDirectory(path))
 		CreateDirectory(path, nullptr);
@@ -209,11 +208,10 @@ CString CPathUtils::GetAppDataDirectory()
 
 CString CPathUtils::GetLocalAppDataDirectory()
 {
-	PWSTR pszPath = nullptr;
+	CComHeapPtr<WCHAR> pszPath;
 	if (SHGetKnownFolderPath(FOLDERID_LocalAppData, KF_FLAG_CREATE, nullptr, &pszPath) != S_OK)
 		return CString();
 	CString path = pszPath;
-	CoTaskMemFree(pszPath);
 	path += L"\\TortoiseGit";
 	if (!PathIsDirectory(path))
 		CreateDirectory(path, nullptr);
@@ -224,24 +222,20 @@ CString CPathUtils::GetLocalAppDataDirectory()
 
 CString CPathUtils::GetDocumentsDirectory()
 {
-	PWSTR pszPath = nullptr;
+	CComHeapPtr<WCHAR> pszPath;
 	if (SHGetKnownFolderPath(FOLDERID_Documents, KF_FLAG_CREATE, nullptr, &pszPath) != S_OK)
 		return CString();
 
-	CString path = pszPath;
-	CoTaskMemFree(pszPath);
-	return path;
+	return CString(pszPath);
 }
 
 CString CPathUtils::GetProgramsDirectory()
 {
-	PWSTR pszPath = nullptr;
+	CComHeapPtr<WCHAR> pszPath;
 	if (SHGetKnownFolderPath(FOLDERID_ProgramFiles, KF_FLAG_CREATE, nullptr, &pszPath) != S_OK)
 		return CString();
 
-	CString path = pszPath;
-	CoTaskMemFree(pszPath);
-	return path;
+	return CString(pszPath);
 }
 
 int CPathUtils::ReadLink(LPCTSTR filename, CStringA* pTargetA)
