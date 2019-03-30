@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2007, 2012-2016 - TortoiseSVN
+// Copyright (C) 2006-2007, 2012-2016, 2019 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -171,6 +171,7 @@ private:
 
 	static void		StripWhiteSpace(CString& sLine, DWORD dwIgnoreWhitespaces, bool blame);
 	bool			StripComments(CString& sLine, bool bInBlockComment);
+	bool			IsInsideString(const CString& sLine, int pos);
 	void			LineRegex(CString& sLine, const std::wregex& rx, const std::wstring& replacement) const;
 
 
