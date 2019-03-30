@@ -588,5 +588,5 @@ CString CGitStatusCache::GetSpecialFolder(REFKNOWNFOLDERID rfid)
 	if (SHGetKnownFolderPath(rfid, KF_FLAG_CREATE, nullptr, &pszPath) != S_OK)
 		return CString();
 
-	return pszPath;
+	return CString(pszPath);
 }
