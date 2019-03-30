@@ -1,7 +1,7 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2016, 2019 - TortoiseGit
-// Copyright (C) 2007-2016 - TortoiseSVN
+// Copyright (C) 2007-2016, 2019 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -652,7 +652,7 @@ bool CFileTextLines::StripComments( CString& sLine, bool bInBlockComment )
 		if (bInBlockComment)
 		{
 			int endpos = sLine.Find(m_sCommentBlockEnd);
-			if (endpos >= 0)
+			if (endpos >= 0 && endpos > startpos)
 			{
 				sLine = sLine.Left(startpos) + sLine.Mid(endpos+m_sCommentBlockEnd.GetLength());
 				bInBlockComment = false;
