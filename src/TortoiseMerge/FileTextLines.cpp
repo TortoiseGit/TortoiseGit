@@ -643,6 +643,25 @@ const wchar_t * CFileTextLines::GetEncodingName(UnicodeType eEncoding)
 	return L"";
 }
 
+bool CFileTextLines::IsInsideString(const CString& sLine, int pos)
+{
+	int scount = 0;
+	int ccount = 0;
+	auto spos = sLine.Find('"');
+	while (spos >= 0 && spos < pos)
+	{
+		++scount;
+		spos = sLine.Find('"', spos + 1);
+	}
+	auto cpos = sLine.Find('\'');
+	while (cpos >= 0 && cpos < pos)
+	{
+		++ccount;
+		cpos = sLine.Find('"', cpos + 1);
+	}
+	return (scount % 2 != 0 || ccount % 2 != 0);
+}
+
 bool CFileTextLines::StripComments( CString& sLine, bool bInBlockComment )
 {
 	int startpos = 0;
@@ -652,10 +671,13 @@ bool CFileTextLines::StripComments( CString& sLine, bool bInBlockComment )
 		if (bInBlockComment)
 		{
 			int endpos = sLine.Find(m_sCommentBlockEnd);
-			if (endpos >= 0 && endpos > startpos)
+			if (IsInsideString(sLine, endpos))
+				endpos = -1;
+			if (endpos >= 0 && (endpos > startpos || endpos == 0))
 			{
-				sLine = sLine.Left(startpos) + sLine.Mid(endpos+m_sCommentBlockEnd.GetLength());
+				sLine = sLine.Left(startpos) + sLine.Mid(endpos + m_sCommentBlockEnd.GetLength());
 				bInBlockComment = false;
+				startpos = endpos;
 			}
 			else
 			{
@@ -665,31 +687,16 @@ bool CFileTextLines::StripComments( CString& sLine, bool bInBlockComment )
 		}
 		if (!bInBlockComment)
 		{
-			startpos = m_sCommentBlockStart.IsEmpty() ? -1 : sLine.Find(m_sCommentBlockStart);
+			startpos = m_sCommentBlockStart.IsEmpty() ? -1 : sLine.Find(m_sCommentBlockStart, startpos);
 			int startpos2 = m_sCommentLine.IsEmpty() ? -1 : sLine.Find(m_sCommentLine);
-			if ( ((startpos2 < startpos) && (startpos2 >= 0)) ||
-				 ((startpos2 >= 0) && (startpos < 0)) )
+			if ((startpos2 < startpos && startpos2 >= 0) || (startpos2 >= 0 && startpos < 0))
 			{
 				// line comment
 				// look if there's a string marker (" or ') before that
 				// note: this check is not fully correct. For example, it
 				// does not account for escaped chars or even multiline strings.
 				// but it has to be fast, so this has to do...
-				int scount = 0;
-				int ccount = 0;
-				auto spos = sLine.Find('"');
-				while ((spos >= 0) && (spos < startpos2))
-				{
-					++scount;
-					spos = sLine.Find('"', spos + 1);
-				}
-				auto cpos = sLine.Find('\'');
-				while ((cpos >= 0) && (cpos < startpos2))
-				{
-					++ccount;
-					cpos = sLine.Find('"', cpos + 1);
-				}
-				if ((scount % 2 == 0) && (ccount % 2 == 0))
+				if (!IsInsideString(sLine, startpos2))
 				{
 					// line comment, erase the rest of the line
 					sLine = sLine.Left(startpos2);
@@ -702,7 +709,10 @@ bool CFileTextLines::StripComments( CString& sLine, bool bInBlockComment )
 			else if (startpos >= 0)
 			{
 				// starting block comment
-				bInBlockComment = true;
+				if (!IsInsideString(sLine, startpos))
+					bInBlockComment = true;
+				else
+					++startpos;
 			}
 		}
 	} while (startpos >= 0);
