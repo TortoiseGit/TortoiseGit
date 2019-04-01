@@ -41,6 +41,7 @@ CSetDialogs2::CSetDialogs2()
 	, m_bNoSounds(FALSE)
 	, m_bBranchesIncludeFetchHead(TRUE)
 	, m_bNoAutoselectMissing(FALSE)
+	, m_bPersistentChangelists(FALSE)
 {
 	m_regAutoCloseGitProgress = CRegDWORD(L"Software\\TortoiseGit\\AutoCloseGitProgress");
 	m_regUseRecycleBin = CRegDWORD(L"Software\\TortoiseGit\\RevertWithRecycleBin", TRUE);
@@ -70,6 +71,8 @@ CSetDialogs2::CSetDialogs2()
 	m_bBranchesIncludeFetchHead = m_regBranchesIncludeFetchHead;
 	m_regNoAutoselectMissing = CRegDWORD(L"Software\\TortoiseGit\\AutoselectMissingFiles", FALSE);
 	m_bNoAutoselectMissing = m_regNoAutoselectMissing;
+	m_regPersistentChangelists = CRegDWORD(L"Software\\TortoiseGit\\PersistentChangelists", FALSE);
+	m_bPersistentChangelists = m_regPersistentChangelists;
 }
 
 CSetDialogs2::~CSetDialogs2()
@@ -96,6 +99,7 @@ void CSetDialogs2::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_NOSOUNDS, m_bNoSounds);
 	DDX_Check(pDX, IDC_BRANCHESINCLUDEFETCHHEAD, m_bBranchesIncludeFetchHead);
 	DDX_Check(pDX, IDC_NOAUTOSELECTMISSING, m_bNoAutoselectMissing);
+	DDX_Check(pDX, IDC_PERSISTENTCHANGELISTS, m_bPersistentChangelists);
 }
 
 BEGIN_MESSAGE_MAP(CSetDialogs2, ISettingsPropPage)
@@ -114,6 +118,7 @@ BEGIN_MESSAGE_MAP(CSetDialogs2, ISettingsPropPage)
 	ON_BN_CLICKED(IDC_NOSOUNDS, OnChange)
 	ON_BN_CLICKED(IDC_BRANCHESINCLUDEFETCHHEAD, OnChange)
 	ON_BN_CLICKED(IDC_NOAUTOSELECTMISSING, OnChange)
+	ON_BN_CLICKED(IDC_PERSISTENTCHANGELISTS, OnChange)
 END_MESSAGE_MAP()
 
 // CSetDialogs2 message handlers
@@ -133,6 +138,7 @@ BOOL CSetDialogs2::OnInitDialog()
 	AdjustControlSize(IDC_NOSOUNDS);
 	AdjustControlSize(IDC_BRANCHESINCLUDEFETCHHEAD);
 	AdjustControlSize(IDC_NOAUTOSELECTMISSING);
+	AdjustControlSize(IDC_PERSISTENTCHANGELISTS);
 
 	EnableToolTips();
 
@@ -194,6 +200,7 @@ BOOL CSetDialogs2::OnApply()
 	Store(m_bNoSounds, m_regNoSounds);
 	Store(m_bBranchesIncludeFetchHead, m_regBranchesIncludeFetchHead);
 	Store(m_bNoAutoselectMissing, m_regNoAutoselectMissing);
+	Store(m_bPersistentChangelists, m_regPersistentChangelists);
 
 	SetModified(FALSE);
 	return ISettingsPropPage::OnApply();

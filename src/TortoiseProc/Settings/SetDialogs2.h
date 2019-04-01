@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2011-2015 - TortoiseGit
 // Copyright (C) 2003-2008, 2013 - TortoiseSVN
@@ -80,4 +80,6 @@ private:
 	BOOL			m_bBranchesIncludeFetchHead;
 	CRegDWORD		m_regNoAutoselectMissing;
 	BOOL			m_bNoAutoselectMissing;
+	CRegDWORD		m_regPersistentChangelists;
+	BOOL			m_bPersistentChangelists;
 };
