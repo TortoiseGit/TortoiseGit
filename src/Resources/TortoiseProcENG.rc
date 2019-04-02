@@ -743,7 +743,7 @@ BEGIN
     CONTROL         "Disable sounds",IDC_NOSOUNDS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,115,270,10
     CONTROL         "Include FETCH_HEAD in branch selection boxes",IDC_BRANCHESINCLUDEFETCHHEAD,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,129,270,10
-    GROUPBOX        "Commit",IDC_COMMITGROUP,7,145,287,114
+    GROUPBOX        "Commit",IDC_COMMITGROUP,7,145,287,128
     CONTROL         "&Use auto-completion of file paths and keywords",IDC_AUTOCOMPLETION,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,159,271,10
     LTEXT           "&Timeout in seconds to stop the auto-completion parsing",IDC_AUTOCOMPLETIONTIMEOUTLABEL,14,173,231,8,SS_NOTIFY
@@ -756,7 +756,9 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,215,270,10
     CONTROL         "Strip lines starting with ""#"" in commit message",IDC_STRIPCOMMENTEDLINES,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,229,270,10
-    LTEXT           "Further options for the commit dialog are on Dialogs 3 page.",IDC_STATIC,14,243,270,9
+    CONTROL         "Persistent changelists",IDC_PERSISTENTCHANGELISTS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,243,270,10
+    LTEXT           "Further options for the commit dialog are on Dialogs 3 page.",IDC_STATIC,14,257,270,9
 END
 
 IDD_RESOLVE DIALOGEX 0, 0, 289, 154
