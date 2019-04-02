@@ -147,7 +147,6 @@ protected:
 
 public:
 	CString				m_sLogMessage;
-	BOOL				m_bKeepChangeList;
 	BOOL				m_bDoNotAutoselectSubmodules;
 	bool				m_bForceCommitAmend;
 	BOOL				m_bCommitAmend;
@@ -187,7 +186,6 @@ private:
 	volatile LONG		m_bThreadRunning;
 	volatile LONG		m_bRunThread;
 	CRegDWORD			m_regAddBeforeCommit;
-	CRegDWORD			m_regKeepChangelists;
 	CRegDWORD			m_regDoNotAutoselectSubmodules;
 	CRegDWORD			m_regShowWholeProject;
 	ProjectProperties	m_ProjectProperties;

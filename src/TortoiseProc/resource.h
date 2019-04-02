@@ -1,4 +1,4 @@
-//{{NO_DEPENDENCIES}}
+﻿//{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
 // Used by d:\TortoiseGit\src\Resources\TortoiseProcENG.rc
 //
@@ -376,7 +376,6 @@
 #define IDC_ICONSETCOMBO                1124
 #define IDS_PROC_GITCONFIG_SAVEREMOTE   1124
 #define IDS_SAVEBUTTON                  1125
-#define IDC_KEEPLISTS                   1126
 #define IDC_SHOWEXCLUDEDASNORMAL        1126
 #define IDC_SORTBYCOMMITCOUNT           1126
 #define IDS_DISCARDBUTTON               1126
