@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
+MinimumVisualStudioVersion = 15.0.26228.4
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TGit", "TGit", "{2CB340C3-B2ED-46F4-981E-847747E0A3BF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TortoiseGitSetup", "TortoiseGitSetup", "{97449875-7B08-41B1-AF99-1EBE64AD7939}"
