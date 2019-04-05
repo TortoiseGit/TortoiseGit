@@ -8,6 +8,7 @@ Released: unreleased
  * Implement generic fix for "libgit2 returned the requested type does not match the type in ODB"
  * Fixed issue #3342: Windows Explorer context menu: TortoiseGit doesn't recognize local Git working copy if "gitdir-redirection" is used within same folder
  * Fixed issue #3349: View patch missing color
+ * Fixed issue #3365: Ignore items by extension handles files/directories with no extension poorly
 
 = Release 2.8.0 =
 Released: 2019-02-28

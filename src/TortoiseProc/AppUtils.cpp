@@ -1505,7 +1505,11 @@ bool CAppUtils::IgnoreFile(HWND hWnd, const CTGitPathList& path,bool IsMask)
 					ignorePattern += L'/';
 				}
 				if (IsMask)
+				{
+					if (path[i].GetFileExtension().IsEmpty())
+						continue;
 					ignorePattern += L'*' + path[i].GetFileExtension();
+				}
 				else
 					ignorePattern += path[i].GetFileOrDirectoryName();
 
