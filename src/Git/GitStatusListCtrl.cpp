@@ -1793,8 +1793,11 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 								else
 									ignorepath.Format(IDS_MENUIGNOREMULTIPLE, ignorelist.GetCount());
 								ignoreSubMenu.AppendMenu(MF_STRING | MF_ENABLED, IDGITLC_IGNORE, ignorepath);
-								ignorepath = L'*' + sExt;
-								ignoreSubMenu.AppendMenu(MF_STRING | MF_ENABLED, IDGITLC_IGNOREMASK, ignorepath);
+								if (!sExt.IsEmpty())
+								{
+									ignorepath = L'*' + sExt;
+									ignoreSubMenu.AppendMenu(MF_STRING | MF_ENABLED, IDGITLC_IGNOREMASK, ignorepath);
+								}
 								if (ignorelist.GetCount() == 1 && !ignorelist[0].GetContainingDirectory().GetGitPathString().IsEmpty())
 									ignoreSubMenu.AppendMenu(MF_STRING | MF_ENABLED, IDGITLC_IGNOREFOLDER, ignorelist[0].GetContainingDirectory().GetGitPathString());
 								CString temp;
@@ -1810,8 +1813,11 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							else
 								temp.Format(IDS_MENUIGNOREMULTIPLE, ignorelist.GetCount());
 							popup.AppendMenuIcon(IDGITLC_IGNORE, temp, IDI_IGNORE);
-							temp.Format(IDS_MENUIGNOREMULTIPLEMASK, ignorelist.GetCount());
-							popup.AppendMenuIcon(IDGITLC_IGNOREMASK, temp, IDI_IGNORE);
+							if (!sExt.IsEmpty())
+							{
+								temp.Format(IDS_MENUIGNOREMULTIPLEMASK, ignorelist.GetCount());
+								popup.AppendMenuIcon(IDGITLC_IGNOREMASK, temp, IDI_IGNORE);
+							}
 						}
 					}
 				}
