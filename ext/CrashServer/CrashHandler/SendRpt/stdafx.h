@@ -30,3 +30,4 @@
 #include <vector>
 #include <list>
 #include <exception>
+#include <stdexcept>
