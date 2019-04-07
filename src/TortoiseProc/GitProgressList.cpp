@@ -729,7 +729,7 @@ void CGitProgressList::AddNotify(NotificationData* data, CColors::Colors color)
 		m_pAnimate->ShowWindow(SW_HIDE);
 }
 
-int CGitProgressList::UpdateProgress(const git_transfer_progress* stat)
+int CGitProgressList::UpdateProgress(const git_indexer_progress* stat)
 {
 	static ULONGLONG start = 0;
 	auto dt = GetTickCount64() - start;

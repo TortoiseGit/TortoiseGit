@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2014 - TortoiseGit
+// Copyright (C) 2013-2014, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,7 +27,7 @@ protected:
 	CString m_remote;
 
 	static int RemoteProgressCallback(const char* str, int len, void* data);
-	static int RemoteCompletionCallback(git_remote_completion_type type, void* data);
+	static int RemoteCompletionCallback(git_remote_completion_t type, void* data);
 	static int RemoteUpdatetipsCallback(const char* refname, const git_oid* oldOid, const git_oid* newOid, void* data);
 
 	class RefUpdateNotificationData : public CGitProgressList::NotificationData

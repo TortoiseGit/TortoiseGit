@@ -60,6 +60,12 @@
     <Filter Include="Source Files\streams">
       <UniqueIdentifier>{d9fbd958-e3c7-48f0-b768-aacf2db2ed45}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\allocators">
+      <UniqueIdentifier>{a5571f70-b61b-43ea-9d28-ffec02ac10f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\allocators">
+      <UniqueIdentifier>{65700788-1a9c-4b29-af01-c7820f8b61b8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\libgit2\src\attr.c">
@@ -527,9 +533,6 @@
     <ClCompile Include="..\libgit2\src\mailmap.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\libgit2\src\stdalloc.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\libgit2\src\alloc.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -544,6 +547,9 @@
     </ClCompile>
     <ClCompile Include="..\libgit2\src\streams\registry.c">
       <Filter>Source Files\streams</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libgit2\src\allocators\stdalloc.c">
+      <Filter>Source Files\allocators</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -764,9 +770,6 @@
       <Filter>Public Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\libgit2\include\git2\indexer.h">
-      <Filter>Public Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libgit2\include\git2\inttypes.h">
       <Filter>Public Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\libgit2\include\git2\net.h">
@@ -1162,9 +1165,6 @@
     <ClInclude Include="..\libgit2\src\varint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\libgit2\include\git2\sys\time.h">
-      <Filter>Public Header Files\sys</Filter>
-    </ClInclude>
     <ClInclude Include="..\libgit2\include\git2\worktree.h">
       <Filter>Public Header Files</Filter>
     </ClInclude>
@@ -1201,9 +1201,6 @@
     <ClInclude Include="..\libgit2\src\mailmap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\libgit2\src\stdalloc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\libgit2\src\alloc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1227,6 +1224,9 @@
     </ClInclude>
     <ClInclude Include="..\libgit2\include\git2\deprecated.h">
       <Filter>Public Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\allocators\stdalloc.h">
+      <Filter>Header Files\allocators</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

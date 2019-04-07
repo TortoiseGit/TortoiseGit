@@ -33,7 +33,7 @@ int RemoteProgressCommand::RemoteProgressCallback(const char* str, int len, void
 	return 0;
 }
 
-int RemoteProgressCommand::RemoteCompletionCallback(git_remote_completion_type /*type*/, void* /*data*/)
+int RemoteProgressCommand::RemoteCompletionCallback(git_remote_completion_t /*type*/, void* /*data*/)
 {
 	// this method is unused by libgit2 so far
 	// TODO: "m_pAnimate->Stop();" and "m_pAnimate->ShowWindow(SW_HIDE);", cleanup possible in GitProgressList::Notify
