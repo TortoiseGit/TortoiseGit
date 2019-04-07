@@ -25,7 +25,7 @@ protected:
 	git_remote_autotag_option_t	m_AutoTag;
 	git_fetch_prune_t m_Prune;
 
-	static int FetchCallback(const git_transfer_progress *stats, void *payload)
+	static int FetchCallback(const git_indexer_progress *stats, void *payload)
 	{
 		return static_cast<CGitProgressList::Payload*>(payload)->list->UpdateProgress(stats);
 	}

@@ -23,7 +23,7 @@
 
 class CTGitPath;
 struct git_cred;
-struct git_transfer_progress;
+struct git_indexer_progress;
 class CIgnoreFile;
 class ProjectProperties;
 

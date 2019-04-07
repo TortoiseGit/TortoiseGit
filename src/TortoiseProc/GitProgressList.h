@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -38,7 +38,7 @@ typedef enum
 } ProgressOptions;
 
 // CGitProgressList
-struct git_transfer_progress;
+//struct git_indexer_progress;
 #define WM_SHOWCONFLICTRESOLVER (WM_APP + 100)
 #define WM_PROG_CMD_FINISH		(WM_APP + 200)
 #define WM_PROG_CMD_START		(WM_APP + 201)
@@ -135,7 +135,7 @@ public:
 	};
 
 	void AddNotify(NotificationData* data, CColors::Colors color = CColors::COLOR_END);
-	int UpdateProgress(const git_transfer_progress* stat);
+	int UpdateProgress(const git_indexer_progress* stat);
 
 	void SetProgressLabelText(const CString& str);
 
