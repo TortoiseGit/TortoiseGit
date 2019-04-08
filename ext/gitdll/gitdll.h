@@ -39,15 +39,6 @@
 #define GITDLL_API EXTERN __declspec(dllimport)
 #endif
 
-#if 0
-// This class is exported from the gitdll.dll
-class GITDLL_API Cgitdll {
-public:
-	Cgitdll(void);
-	// TODO: add your methods here.
-};
-#endif
-
 #define GIT_HASH_SIZE 20
 
 typedef unsigned char GIT_HASH[GIT_HASH_SIZE];
