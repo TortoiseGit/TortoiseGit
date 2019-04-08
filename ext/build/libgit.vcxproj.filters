@@ -42,6 +42,12 @@
     <Filter Include="sha1dc">
       <UniqueIdentifier>{66050555-b011-4e34-b9a2-93e9383cf04a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="compat\win32">
+      <UniqueIdentifier>{60f53d6a-bddd-4967-ada3-e44d95dbb58f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sha256">
+      <UniqueIdentifier>{2a3e5c63-a7e7-4465-a6cb-f1cafb521bf0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\tgit\compat\msvc.c">
@@ -677,6 +683,45 @@
     <ClCompile Include="..\tgit\sha1dc_git.c">
       <Filter>git</Filter>
     </ClCompile>
+    <ClCompile Include="..\tgit\commit-reach.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\compat\fileno.c">
+      <Filter>compat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\compat\win32\path-utils.c">
+      <Filter>compat\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\compat\win32\pthread.c">
+      <Filter>compat\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\compat\win32\syslog.c">
+      <Filter>compat\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\delta-islands.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\interdiff.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\midx.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\gettext.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\range-diff.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\thread-utils.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\linear-assignment.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\sha256\block\sha256.c">
+      <Filter>sha256</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\tgit\compat\msvc.h">
@@ -1117,6 +1162,54 @@
     </ClInclude>
     <ClInclude Include="..\tgit\sha1dc_git.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\compat\win32\alloca.h">
+      <Filter>compat\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\compat\win32\dirent.h">
+      <Filter>compat\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\compat\win32\exit-process.h">
+      <Filter>compat\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\compat\win32\lazyload.h">
+      <Filter>compat\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\compat\win32\ntifs.h">
+      <Filter>compat\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\compat\win32\path-utils.h">
+      <Filter>compat\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\compat\win32\pthread.h">
+      <Filter>compat\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\compat\win32\syslog.h">
+      <Filter>compat\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\commit-reach.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\gettext.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\midx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\range-diff.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\linear-assignment.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\interdiff.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\delta-islands.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\sha256\block\sha256.h">
+      <Filter>sha256</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

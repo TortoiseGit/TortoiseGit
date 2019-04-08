@@ -42,7 +42,7 @@ extern char g_last_error[];
 static const char* g_prefix;
 
 /* also see GitHash.h */
-static_assert(GIT_SHA1_RAWSZ == GIT_HASH_SIZE && GIT_MAX_RAWSZ == GIT_HASH_SIZE, "Required to be equal in gitdll.h");
+static_assert(GIT_SHA1_RAWSZ <= LIBGIT_GIT_HASH_SIZE && GIT_SHA256_RAWSZ <= LIBGIT_GIT_HASH_SIZE && GIT_MAX_RAWSZ == LIBGIT_GIT_HASH_SIZE, "Required to be equal in gitdll.h");
 static_assert(sizeof(struct object_id) == sizeof(struct GIT_OBJECT_OID), "Required to be equal in gitdll.h");
 
 extern NORETURN void die_dll(const char* err, va_list params);
@@ -92,6 +92,7 @@ int git_init(void)
 	_setmode(_fileno(stderr), _O_BINARY);
 
 	cleanup_chdir_notify();
+	fscache_flush();
 	reset_git_env();
 	// set HOME if not set already
 	gitsetenv("HOME", get_windows_home_directory(), 0);
@@ -100,6 +101,10 @@ int git_init(void)
 	g_prefix = setup_git_directory();
 	git_config(git_default_config, NULL);
 	invalidate_ref_cache();
+
+	/* add a safeguard until we have full support in TortoiseGit */
+	if (the_repository && the_repository->hash_algo && strcmp(the_repository->hash_algo->name, "sha1") != 0)
+		die("Only SHA1 is supported right now.");
 
 	return 0;
 }
@@ -146,7 +151,7 @@ int git_parse_commit(GIT_COMMIT *commit)
 
 	p= (struct commit *)commit->m_pGitCommit;
 
-	memcpy(commit->m_hash, p->object.oid.hash, GIT_HASH_SIZE);
+	memcpy(commit->m_hash, p->object.oid.hash, GIT_SHA1_RAWSZ);
 
 	commit->m_Encode = NULL;
 	commit->m_EncodeSize = 0;
@@ -260,7 +265,7 @@ int git_get_commit_next_parent(GIT_COMMIT_LIST *list, GIT_HASH hash)
 		return -1;
 
 	if(hash)
-		memcpy(hash, l->item->object.oid.hash, GIT_HASH_SIZE);
+		memcpy(hash, l->item->object.oid.hash, GIT_SHA1_RAWSZ);
 
 	*list = (GIT_COMMIT_LIST *)l->next;
 	return 0;
@@ -688,7 +693,7 @@ int git_check_excluded_1(const char *pathname,
 							EXCLUDE_LIST el, int ignorecase)
 {
 	ignore_case = ignorecase;
-	return is_excluded_from_list(pathname, pathlen, basename, dtype, el, &the_index);
+	return is_excluded_from_list(pathname, pathlen, basename, dtype, el, NULL);
 }
 
 int git_get_notes(const GIT_HASH hash, char** p_note)
@@ -720,7 +725,7 @@ int git_update_index(void)
 	ret = cmd_update_index(argc, argv, NULL);
 	free(argv);
 
-	discard_cache();
+	discard_index(the_repository->index);
 	free_all_pack();
 
 	return ret;
@@ -783,7 +788,7 @@ int git_checkout_file(const char* ref, const char* path, char* outputpath)
 	matchbuf[0] = NULL;
 	parse_pathspec(&pathspec, PATHSPEC_ALL_MAGIC, PATHSPEC_PREFER_CWD, path, matchbuf);
 	pathspec.items[0].nowildcard_len = pathspec.items[0].len;
-	ret = read_tree_recursive(root, "", 0, 0, &pathspec, update_some, ce);
+	ret = read_tree_recursive(the_repository, root, "", 0, 0, &pathspec, update_some, ce);
 	clear_pathspec(&pathspec);
 
 	if(ret)
