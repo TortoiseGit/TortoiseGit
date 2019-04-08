@@ -39,12 +39,12 @@
     <Filter Include="Header Files\refs">
       <UniqueIdentifier>{dd37360c-ad1e-49a1-a0e3-a74a44752a8e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="sha1dc">
+      <UniqueIdentifier>{66050555-b011-4e34-b9a2-93e9383cf04a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\tgit\compat\msvc.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\tgit\block-sha1\sha1.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\tgit\compat\basename.c">
@@ -668,6 +668,15 @@
     <ClCompile Include="..\tgit\rebase-interactive.c">
       <Filter>git</Filter>
     </ClCompile>
+    <ClCompile Include="..\tgit\sha1dc\ubc_check.c">
+      <Filter>sha1dc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\sha1dc\sha1.c">
+      <Filter>sha1dc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\sha1dc_git.c">
+      <Filter>git</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\tgit\compat\msvc.h">
@@ -1098,6 +1107,15 @@
       <Filter>Header Files\negotiator</Filter>
     </ClInclude>
     <ClInclude Include="..\tgit\rebase-interactive.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\sha1dc\ubc_check.h">
+      <Filter>sha1dc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\sha1dc\sha1.h">
+      <Filter>sha1dc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\sha1dc_git.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
