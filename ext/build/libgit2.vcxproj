@@ -46,7 +46,7 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalIncludeDirectories>..\zlib;..\libgit2\src;..\libgit2\include;..\libgit2\deps\regex;..\libgit2\deps\http-parser;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>LIBGIT2_NO_FEATURES_H;HAVE_QSORT_S;GIT_HTTPS;GIT_WINHTTP;GIT_USE_NSEC;GIT_THREADS;GIT_SHA1_WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>LIBGIT2_NO_FEATURES_H;HAVE_QSORT_S;GIT_HTTPS;GIT_WINHTTP;GIT_USE_NSEC;GIT_THREADS;GIT_SHA1_COLLISIONDETECT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Platform)'=='Win32'">GIT_ARCH_32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Platform)'=='x64'">GIT_ARCH_64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
@@ -115,6 +115,8 @@
     <ClCompile Include="..\libgit2\src\graph.c" />
     <ClCompile Include="..\libgit2\src\hash.c" />
     <ClCompile Include="..\libgit2\src\hashsig.c" />
+    <ClCompile Include="..\libgit2\src\hash\sha1dc\sha1.c" />
+    <ClCompile Include="..\libgit2\src\hash\sha1dc\ubc_check.c" />
     <ClCompile Include="..\libgit2\src\ident.c" />
     <ClCompile Include="..\libgit2\src\idxmap.c" />
     <ClCompile Include="..\libgit2\src\ignore.c" />
@@ -224,7 +226,6 @@
     <ClCompile Include="..\libgit2\src\xdiff\xpatience.c" />
     <ClCompile Include="..\libgit2\src\xdiff\xprepare.c" />
     <ClCompile Include="..\libgit2\src\xdiff\xutils.c" />
-    <ClCompile Include="..\libgit2\src\hash\hash_win32.c" />
     <ClCompile Include="..\libgit2\deps\regex\regex.c">
       <DisableSpecificWarnings>4311;4312</DisableSpecificWarnings>
     </ClCompile>
@@ -324,6 +325,9 @@
     <ClInclude Include="..\libgit2\src\fnmatch.h" />
     <ClInclude Include="..\libgit2\src\global.h" />
     <ClInclude Include="..\libgit2\src\hash.h" />
+    <ClInclude Include="..\libgit2\src\hash\hash_collisiondetect.h" />
+    <ClInclude Include="..\libgit2\src\hash\sha1dc\sha1.h" />
+    <ClInclude Include="..\libgit2\src\hash\sha1dc\ubc_check.h" />
     <ClInclude Include="..\libgit2\src\idxmap.h" />
     <ClInclude Include="..\libgit2\src\ignore.h" />
     <ClInclude Include="..\libgit2\src\index.h" />
@@ -418,7 +422,6 @@
     <ClInclude Include="..\libgit2\src\win32\posix.h" />
     <ClInclude Include="..\libgit2\src\win32\precompiled.h" />
     <ClInclude Include="..\libgit2\src\win32\utf-conv.h" />
-    <ClInclude Include="..\libgit2\src\hash\hash_win32.h" />
     <ClInclude Include="..\libgit2\src\transports\smart.h" />
     <ClInclude Include="..\libgit2\include\git2\attr.h" />
     <ClInclude Include="..\libgit2\include\git2\blob.h" />

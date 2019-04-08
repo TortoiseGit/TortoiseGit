@@ -50,7 +50,6 @@
     <ClCompile Include="..\tgit\chdir-notify.c" />
     <ClCompile Include="..\tgit\commit-graph.c" />
     <ClCompile Include="..\tgit\compat\msvc.c" />
-    <ClCompile Include="..\tgit\block-sha1\sha1.c" />
     <ClCompile Include="..\tgit\compat\basename.c" />
     <ClCompile Include="..\tgit\compat\qsort_s.c" />
     <ClCompile Include="..\tgit\compat\win32\dirent.c" />
@@ -205,6 +204,7 @@
     <ClCompile Include="..\tgit\sha1-file.c" />
     <ClCompile Include="..\tgit\sha1-lookup.c" />
     <ClCompile Include="..\tgit\sha1-name.c" />
+    <ClCompile Include="..\tgit\sha1dc_git.c" />
     <ClCompile Include="..\tgit\shallow.c" />
     <ClCompile Include="..\tgit\builtin\shortlog.c" />
     <ClCompile Include="..\tgit\sideband.c" />
@@ -255,6 +255,8 @@
     <ClCompile Include="..\tgit\xdiff\xutils.c" />
     <ClCompile Include="..\tgit\builtin\log.c" />
     <ClCompile Include="..\tgit\builtin\update-index.c" />
+    <ClCompile Include="..\tgit\sha1dc\sha1.c" />
+    <ClCompile Include="..\tgit\sha1dc\ubc_check.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\tgit\apply.h" />
@@ -358,6 +360,7 @@
     <ClInclude Include="..\tgit\sequencer.h" />
     <ClInclude Include="..\tgit\sha1-array.h" />
     <ClInclude Include="..\tgit\sha1-lookup.h" />
+    <ClInclude Include="..\tgit\sha1dc_git.h" />
     <ClInclude Include="..\tgit\shortlog.h" />
     <ClInclude Include="..\tgit\sideband.h" />
     <ClInclude Include="..\tgit\sigchain.h" />
@@ -400,6 +403,8 @@
     <ClInclude Include="..\tgit\xdiff\xprepare.h" />
     <ClInclude Include="..\tgit\xdiff\xtypes.h" />
     <ClInclude Include="..\tgit\xdiff\xutils.h" />
+    <ClInclude Include="..\tgit\sha1dc\sha1.h" />
+    <ClInclude Include="..\tgit\sha1dc\ubc_check.h" />
     <ClInclude Include="libgit-defines.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
