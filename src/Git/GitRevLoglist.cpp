@@ -196,14 +196,23 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 	{
 		CAutoRepository repo(git->GetGitRepository());
 		if (!repo)
+		{
+			m_sErr = CGit::GetLibGit2LastErr();
 			return -1;
+		}
 		CAutoCommit commit;
 		if (git_commit_lookup(commit.GetPointer(), repo, m_CommitHash) < 0)
+		{
+			m_sErr = CGit::GetLibGit2LastErr();
 			return -1;
+		}
 
 		CAutoTree commitTree;
 		if (git_commit_tree(commitTree.GetPointer(), commit) < 0)
+		{
+			m_sErr = CGit::GetLibGit2LastErr();
 			return -1;
+		}
 
 		bool isRoot = git_commit_parentcount(commit) == 0;
 		for (unsigned int parentId = 0; isRoot || parentId < git_commit_parentcount(commit); ++parentId)
@@ -213,16 +222,25 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 			{
 				CAutoCommit parentCommit;
 				if (git_commit_parent(parentCommit.GetPointer(), commit, parentId) < 0)
+				{
+					m_sErr = CGit::GetLibGit2LastErr();
 					return -1;
+				}
 
 				if (git_commit_tree(parentTree.GetPointer(), parentCommit) < 0)
+				{
+					m_sErr = CGit::GetLibGit2LastErr();
 					return -1;
+				}
 			}
 			isRoot = false;
 
 			CAutoDiff diff;
 			if (git_diff_tree_to_tree(diff.GetPointer(), repo, parentTree, commitTree, nullptr) < 0)
+			{
+				m_sErr = CGit::GetLibGit2LastErr();
 				return -1;
+			}
 
 			// cf. CGit::GetGitDiff()
 			if (CGit::ms_iSimilarityIndexThreshold > 0)
@@ -231,7 +249,10 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 				diffopts.flags = GIT_DIFF_FIND_COPIES | GIT_DIFF_FIND_RENAMES;
 				diffopts.rename_threshold = diffopts.copy_threshold = static_cast<uint16_t>(CGit::ms_iSimilarityIndexThreshold);
 				if (git_diff_find_similar(diff, &diffopts) < 0)
-					return-1;
+				{
+					m_sErr = CGit::GetLibGit2LastErr();
+					return -1;
+				}
 			}
 
 			const git_diff_delta* lastDelta = nullptr;
@@ -241,7 +262,10 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 			{
 				CAutoPatch patch;
 				if (git_patch_from_diff(patch.GetPointer(), diff, i) < 0)
+				{
+					m_sErr = CGit::GetLibGit2LastErr();
 					return -1;
+				}
 
 				const git_diff_delta* delta = git_patch_get_delta(patch);
 
@@ -288,7 +312,10 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 				{
 					size_t adds, dels;
 					if (git_patch_line_stats(nullptr, &adds, &dels, patch) < 0)
+					{
+						m_sErr = CGit::GetLibGit2LastErr();
 						return -1;
+					}
 					path.m_StatAdd.Format(L"%zu", adds);
 					path.m_StatDel.Format(L"%zu", dels);
 				}
@@ -311,10 +338,14 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 	try
 	{
 		if (git_get_commit_from_hash(&commit, static_cast<const unsigned char*>(m_CommitHash)))
+		{
+			m_sErr = L"git_get_commit_from_hash failed for " + m_CommitHash.ToString();
 			return -1;
+		}
 	}
-	catch (char *)
+	catch (const char* msg)
 	{
+		m_sErr = L"Could not get commit \"" + m_CommitHash.ToString() + L"\".\nlibgit reports:\n" + CString(msg);
 		return -1;
 	}
 
@@ -334,8 +365,9 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 			else
 				git_do_diff(git->GetGitDiff(), parent, commit.m_hash, &file, &count, 1);
 		}
-		catch (char*)
+		catch (const char* msg)
 		{
+			m_sErr = L"Could do diff for \"" + m_CommitHash.ToString() + L"\".\nlibgit reports:\n" + CString(msg);
 			git_free_commit(&commit);
 			return -1;
 		}
