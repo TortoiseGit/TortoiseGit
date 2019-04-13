@@ -19,6 +19,16 @@
 //
 #pragma once
 
+template <typename type>
+struct CDefaultHandleNull
+{
+	static constexpr type DefaultHandle = nullptr;
+};
+
+struct CDefaultHandleInvalid
+{
+	static constexpr HANDLE DefaultHandle = INVALID_HANDLE_VALUE;
+};
 
 /**
  * \ingroup Utils
@@ -26,12 +36,12 @@
  */
 template <typename HandleType,
 	template <class> class CloseFunction,
-	HandleType NULL_VALUE = nullptr>
+	typename NullType = CDefaultHandleNull<HandleType>>
 class CSmartHandle
 {
 public:
 	CSmartHandle()
-		: m_Handle(NULL_VALUE)
+		: m_Handle(NullType::DefaultHandle)
 	{
 	}
 
@@ -70,7 +80,7 @@ public:
 	HandleType Detach()
 	{
 		HandleType p = m_Handle;
-		m_Handle = NULL_VALUE;
+		m_Handle = NullType::DefaultHandle;
 
 		return p;
 	}
@@ -92,7 +102,7 @@ public:
 
 	bool IsValid() const
 	{
-		return m_Handle != NULL_VALUE;
+		return m_Handle != NullType::DefaultHandle;
 	}
 
 
@@ -110,10 +120,10 @@ private:
 protected:
 	bool CleanUp()
 	{
-		if ( m_Handle != NULL_VALUE )
+		if (m_Handle != NullType::DefaultHandle)
 		{
 			const bool b = CloseFunction<HandleType>::Close(m_Handle);
-			m_Handle = NULL_VALUE;
+			m_Handle = NullType::DefaultHandle;
 			return b;
 		}
 		return false;
@@ -187,8 +197,8 @@ typedef CSmartHandle<HANDLE,	CCloseHandle>											CAutoGeneralHandle;
 typedef CSmartHandle<HKEY,		CCloseRegKey>											CAutoRegKey;
 typedef CSmartHandle<PVOID,		CCloseViewOfFile>										CAutoViewOfFile;
 typedef CSmartHandle<HMODULE,	CCloseLibrary>											CAutoLibrary;
-typedef CSmartHandle<HANDLE,	CCloseHandle, INVALID_HANDLE_VALUE>						CAutoFile;
-typedef CSmartHandle<HANDLE,	CCloseFindFile, INVALID_HANDLE_VALUE>					CAutoFindFile;
+typedef CSmartHandle<HANDLE,	CCloseHandle, CDefaultHandleInvalid>					CAutoFile;
+typedef CSmartHandle<HANDLE,	CCloseFindFile, CDefaultHandleInvalid>					CAutoFindFile;
 typedef CSmartHandle<FILE*,		CCloseFILE>												CAutoFILE;
 
 /*
