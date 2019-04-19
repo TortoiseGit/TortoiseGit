@@ -3,6 +3,7 @@ Released: unreleased
 
 == Features ==
  * Fixed issue #3355: Adding file name extension in the Export dialog
+ * Update Scintilla to 4.1.5
 
 == Bug Fixes ==
  * Implement generic fix for "libgit2 returned the requested type does not match the type in ODB"
