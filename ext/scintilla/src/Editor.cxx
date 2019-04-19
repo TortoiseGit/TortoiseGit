@@ -110,6 +110,7 @@ static constexpr bool IsAllSpacesOrTabs(const char *s, unsigned int len) noexcep
 }
 
 Editor::Editor() : durationWrapOneLine(0.00001, 0.000001, 0.0001) {
+	view.editor = this;
 	ctrlID = 0;
 
 	stylesValid = false;
