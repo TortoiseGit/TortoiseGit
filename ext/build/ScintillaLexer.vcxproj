@@ -54,6 +54,7 @@
   <ItemGroup>
     <ClCompile Include="..\scintilla\lexers\LexBatch.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexBibTeX.cxx" />
+    <ClCompile Include="..\scintilla\lexers\LexCIL.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexDiff.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexDMAP.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexDMIS.cxx" />
@@ -103,6 +104,7 @@
     <ClCompile Include="..\scintilla\src\Selection.cxx" />
     <ClCompile Include="..\scintilla\src\Style.cxx" />
     <ClCompile Include="..\scintilla\src\UniConversion.cxx" />
+    <ClCompile Include="..\scintilla\src\UniqueString.cxx" />
     <ClCompile Include="..\scintilla\src\ViewStyle.cxx" />
     <ClCompile Include="..\scintilla\src\XPM.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexA68k.cxx" />
