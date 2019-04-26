@@ -478,7 +478,7 @@ bool CAppUtils::StartExtDiff(
 	const CString& file1,  const CString& file2,
 	const CString& sName1, const CString& sName2,
 	const CString& originalFile1, const CString& originalFile2,
-	const CString& hash1, const CString& hash2,
+	const CGitHash& hash1, const CGitHash& hash2,
 	const DiffFlags& flags, int jumpToLine)
 {
 	CString viewer;
@@ -541,8 +541,8 @@ bool CAppUtils::StartExtDiff(
 	viewer.Replace(L"%bpath", L'"' + originalFile1 + L'"');
 	viewer.Replace(L"%ypath", L'"' + originalFile2 + L'"');
 
-	viewer.Replace(L"%brev", L'"' + hash1 + L'"');
-	viewer.Replace(L"%yrev", L'"' + hash2 + L'"');
+	viewer.Replace(L"%brev", L'"' + hash1.ToString() + L'"');
+	viewer.Replace(L"%yrev", L'"' + hash2.ToString() + L'"');
 
 	viewer.Replace(L"%wtroot", L'"' + g_Git.m_CurrentDir + L'"');
 
@@ -1686,7 +1686,7 @@ CString CAppUtils::GetMergeTempFile(const CString& type, const CTGitPath &merge)
 	return g_Git.CombinePath(merge.GetWinPathString() + L'.' + type + merge.GetFileExtension());;
 }
 
-static bool ParseHashesFromLsFile(const BYTE_VECTOR& out, CString& hash1, bool& isFile1, CString& hash2, bool& isFile2, CString& hash3, bool& isFile3)
+static bool ParseHashesFromLsFile(const BYTE_VECTOR& out, CGitHash& hash1, bool& isFile1, CGitHash& hash2, bool& isFile2, CGitHash& hash3, bool& isFile3)
 {
 	size_t pos = 0;
 	CString one;
@@ -1793,7 +1793,7 @@ bool CAppUtils::ConflictEdit(HWND hWnd, CTGitPath& path, bool bAlternativeTool /
 	CString baseTitle, mineTitle, theirsTitle;
 	GetConflictTitles(&baseTitle, mineTitle, theirsTitle, isRebase);
 
-	CString baseHash, realBaseHash(GIT_REV_ZERO), localHash(GIT_REV_ZERO), remoteHash(GIT_REV_ZERO);
+	CGitHash baseHash, realBaseHash, localHash, remoteHash;
 	bool baseIsFile = true, localIsFile = true, remoteIsFile = true;
 	if (ParseHashesFromLsFile(vector, realBaseHash, baseIsFile, localHash, localIsFile, remoteHash, remoteIsFile))
 		baseHash = realBaseHash;
@@ -1806,9 +1806,7 @@ bool CAppUtils::ConflictEdit(HWND hWnd, CTGitPath& path, bool bAlternativeTool /
 		{
 			CGit subgit;
 			subgit.m_CurrentDir = fullMergePath.GetWinPath();
-			CGitHash hash;
-			subgit.GetHash(hash, L"HEAD");
-			baseHash = hash.ToString();
+			subgit.GetHash(baseHash, L"HEAD");
 		}
 
 		CGitDiff::ChangeType changeTypeMine = CGitDiff::Unknown;
@@ -1823,7 +1821,7 @@ bool CAppUtils::ConflictEdit(HWND hWnd, CTGitPath& path, bool bAlternativeTool /
 			CGitDiff::GetSubmoduleChangeType(subgit, baseHash, localHash, baseOK, mineOK, changeTypeMine, baseSubject, mineSubject);
 			CGitDiff::GetSubmoduleChangeType(subgit, baseHash, remoteHash, baseOK, theirsOK, changeTypeTheirs, baseSubject, theirsSubject);
 		}
-		else if (baseHash == GIT_REV_ZERO && localHash == GIT_REV_ZERO && remoteHash != GIT_REV_ZERO) // merge conflict with no submodule, but submodule in merged revision (not initialized)
+		else if (baseHash.IsEmpty() && localHash.IsEmpty() && !remoteHash.IsEmpty()) // merge conflict with no submodule, but submodule in merged revision (not initialized)
 		{
 			changeTypeMine = CGitDiff::Identical;
 			changeTypeTheirs = CGitDiff::NewSubmodule;
@@ -1831,7 +1829,7 @@ bool CAppUtils::ConflictEdit(HWND hWnd, CTGitPath& path, bool bAlternativeTool /
 			mineSubject = baseSubject;
 			theirsSubject.LoadString(IDS_CONFLICT_SUBMODULENOTINITIALIZED);
 		}
-		else if (baseHash.IsEmpty() && localHash != GIT_REV_ZERO && remoteHash == GIT_REV_ZERO) // merge conflict with no submodule initialized, but submodule exists in base and folder with no submodule is merged
+		else if (baseHash.IsEmpty() && !localHash.IsEmpty() && remoteHash.IsEmpty()) // merge conflict with no submodule initialized, but submodule exists in base and folder with no submodule is merged
 		{
 			baseHash = localHash;
 			baseSubject.LoadString(IDS_CONFLICT_SUBMODULENOTINITIALIZED);
@@ -1840,7 +1838,7 @@ bool CAppUtils::ConflictEdit(HWND hWnd, CTGitPath& path, bool bAlternativeTool /
 			changeTypeMine = CGitDiff::Identical;
 			changeTypeTheirs = CGitDiff::DeleteSubmodule;
 		}
-		else if (baseHash != GIT_REV_ZERO && localHash != GIT_REV_ZERO && remoteHash != GIT_REV_ZERO) // base has submodule, mine has submodule and theirs also, but not initialized
+		else if (!baseHash.IsEmpty() && !localHash.IsEmpty() && !remoteHash.IsEmpty()) // base has submodule, mine has submodule and theirs also, but not initialized
 		{
 			baseSubject.LoadString(IDS_CONFLICT_SUBMODULENOTINITIALIZED);
 			mineSubject = baseSubject;
@@ -1848,7 +1846,7 @@ bool CAppUtils::ConflictEdit(HWND hWnd, CTGitPath& path, bool bAlternativeTool /
 			if (baseHash == localHash)
 				changeTypeMine = CGitDiff::Identical;
 		}
-		else if (baseHash == GIT_REV_ZERO && localHash != GIT_REV_ZERO && remoteHash != GIT_REV_ZERO)
+		else if (baseHash.IsEmpty() && !localHash.IsEmpty() && !remoteHash.IsEmpty())
 		{
 			baseOK = true;
 			mineSubject = baseSubject;
@@ -1867,10 +1865,10 @@ bool CAppUtils::ConflictEdit(HWND hWnd, CTGitPath& path, bool bAlternativeTool /
 			else
 				mineSubject.LoadString(IDS_CONFLICT_SUBMODULENOTINITIALIZED);
 		}
-		else if (baseHash != GIT_REV_ZERO && (localHash == GIT_REV_ZERO || remoteHash == GIT_REV_ZERO))
+		else if (!baseHash.IsEmpty() && (localHash.IsEmpty() || remoteHash.IsEmpty()))
 		{
 			baseSubject.LoadString(IDS_CONFLICT_SUBMODULENOTINITIALIZED);
-			if (localHash == GIT_REV_ZERO)
+			if (localHash.IsEmpty())
 			{
 				mineSubject.LoadString(IDS_CONFLICT_SUBMODULENOTINITIALIZED);
 				changeTypeMine = CGitDiff::DeleteSubmodule;
@@ -1881,7 +1879,7 @@ bool CAppUtils::ConflictEdit(HWND hWnd, CTGitPath& path, bool bAlternativeTool /
 				if (localHash == baseHash)
 					changeTypeMine = CGitDiff::Identical;
 			}
-			if (remoteHash == GIT_REV_ZERO)
+			if (remoteHash.IsEmpty())
 			{
 				theirsSubject.LoadString(IDS_CONFLICT_SUBMODULENOTINITIALIZED);
 				changeTypeTheirs = CGitDiff::DeleteSubmodule;
@@ -3647,7 +3645,7 @@ int CAppUtils::ResolveConflict(HWND hWnd, CTGitPath& path, resolve_with resolveW
 	}
 
 	bool baseIsFile = true, localIsFile = true, remoteIsFile = true;
-	CString baseHash, localHash, remoteHash;
+	CGitHash baseHash, localHash, remoteHash;
 	ParseHashesFromLsFile(vector, baseHash, baseIsFile, localHash, localIsFile, remoteHash, remoteIsFile);
 
 	CBlockCacheForPath block(g_Git.m_CurrentDir);
@@ -3686,7 +3684,7 @@ int CAppUtils::ResolveConflict(HWND hWnd, CTGitPath& path, resolve_with resolveW
 
 	if (resolveWith == RESOLVE_WITH_THEIRS || resolveWith == RESOLVE_WITH_MINE)
 	{
-		auto resolve = [&b_local, &b_remote, &hWnd](const CTGitPath& path, int stage, bool willBeFile, const CString& hash) -> int
+		auto resolve = [&b_local, &b_remote, &hWnd](const CTGitPath& path, int stage, bool willBeFile, const CGitHash& hash) -> int
 		{
 			if (!willBeFile)
 			{
@@ -3704,7 +3702,7 @@ int CAppUtils::ResolveConflict(HWND hWnd, CTGitPath& path, resolve_with resolveW
 							return -1;
 						}
 					}
-					gitcmd.Format(L"git.exe update-index --replace --cacheinfo 0160000,%s,\"%s\"", static_cast<LPCTSTR>(hash), static_cast<LPCTSTR>(path.GetGitPathString()));
+					gitcmd.Format(L"git.exe update-index --replace --cacheinfo 0160000,%s,\"%s\"", static_cast<LPCTSTR>(hash.ToString()), static_cast<LPCTSTR>(path.GetGitPathString()));
 					if (g_Git.Run(gitcmd, &output, CP_UTF8))
 					{
 						MessageBox(hWnd, output, L"TortoiseGit", MB_ICONERROR);
@@ -3726,7 +3724,7 @@ int CAppUtils::ResolveConflict(HWND hWnd, CTGitPath& path, resolve_with resolveW
 					CString origPath = g_Git.m_CurrentDir;
 					g_Git.m_CurrentDir = fullPath.GetWinPath();
 					SetCurrentDirectory(g_Git.m_CurrentDir);
-					if (!GitReset(hWnd, hash))
+					if (!GitReset(hWnd, hash.ToString()))
 					{
 						g_Git.m_CurrentDir = origPath;
 						SetCurrentDirectory(g_Git.m_CurrentDir);

@@ -475,7 +475,7 @@ void CSyncDlg::ShowInCommits(const CString& friendname)
 		m_ctrlTabCtrl.ShowTab(IDC_IN_CHANGELIST - 1, true);
 		m_ctrlTabCtrl.ShowTab(IDC_IN_LOGLIST - 1, true);
 
-		AddDiffFileList(&m_InChangeFileList, &m_arInChangeList, newHash.ToString(), m_oldHash.ToString());
+		AddDiffFileList(&m_InChangeFileList, &m_arInChangeList, newHash, m_oldHash);
 
 		CString range;
 		range.Format(L"%s..%s", static_cast<LPCTSTR>(m_oldHash.ToString()), static_cast<LPCTSTR>(newHash.ToString()));
@@ -794,7 +794,7 @@ void CSyncDlg::OnBnClickedButtonApply()
 
 			CString range;
 			range.Format(L"%s..%s", static_cast<LPCTSTR>(m_oldHash.ToString()), static_cast<LPCTSTR>(newhash.ToString()));
-			this->AddDiffFileList(&m_InChangeFileList, &m_arInChangeList, newhash.ToString(), oldhash.ToString());
+			this->AddDiffFileList(&m_InChangeFileList, &m_arInChangeList, newhash, oldhash);
 			m_InLogList.FillGitLog(nullptr, &range, CGit::LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE);
 
 			this->FetchOutList(true);
@@ -1333,10 +1333,10 @@ void CSyncDlg::FetchOutList(bool force)
 				this->m_ctrlStatus.SetWindowText(str);
 
 				if (isFastForward)
-					AddDiffFileList(&m_OutChangeFileList, &m_arOutChangeList, localbranch, remotebranch);
+					AddDiffFileList(&m_OutChangeFileList, &m_arOutChangeList, localBranchHash, remotebranchHash);
 				else
 				{
-					AddDiffFileList(&m_OutChangeFileList, &m_arOutChangeList, localbranch, base.ToString());
+					AddDiffFileList(&m_OutChangeFileList, &m_arOutChangeList, localBranchHash, base);
 				}
 
 				this->m_ctrlTabCtrl.ShowTab(m_OutChangeFileList.GetDlgCtrlID()-1,TRUE);

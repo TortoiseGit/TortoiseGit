@@ -423,7 +423,7 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 					break;
 				}
 				CAppUtils::DiffFlags flags;
-				CAppUtils::StartExtDiff(patch1, patch2, pFirstEntry->m_CommitHash.ToString(), pLastEntry->m_CommitHash.ToString(), pFirstEntry->m_CommitHash.ToString() + L".patch", pLastEntry->m_CommitHash.ToString() + L".patch", pFirstEntry->m_CommitHash.ToString(), pLastEntry->m_CommitHash.ToString(), flags);
+				CAppUtils::StartExtDiff(patch1, patch2, pFirstEntry->m_CommitHash.ToString(), pLastEntry->m_CommitHash.ToString(), pFirstEntry->m_CommitHash.ToString() + L".patch", pLastEntry->m_CommitHash.ToString() + L".patch", pFirstEntry->m_CommitHash, pLastEntry->m_CommitHash, flags);
 			}
 			break;
 		case ID_LOG_VIEWRANGE:

@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012, 2014, 2017 - TortoiseGit
+// Copyright (C) 2012, 2014, 2017, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -31,7 +31,7 @@ public:
 
 	enum { IDD = IDD_RESOLVESUBMODULECONFLICT };
 
-	void SetDiff(const CString& path, bool revertTheirMy, const CString& baseTitle, const CString& mineTitle, const CString& theirsTitle, const CString& baseHash, const CString& baseSubject, bool baseOK, const CString& mineHash, const CString& mineSubject, bool mineOK, CGitDiff::ChangeType mineChangeType, const CString& theirsHash, const CString& theirsSubject, bool theirsOK, CGitDiff::ChangeType theirsChangeType);
+	void SetDiff(const CString& path, bool revertTheirMy, const CString& baseTitle, const CString& mineTitle, const CString& theirsTitle, const CGitHash& baseHash, const CString& baseSubject, bool baseOK, const CGitHash& mineHash, const CString& mineSubject, bool mineOK, CGitDiff::ChangeType mineChangeType, const CGitHash& theirsHash, const CString& theirsSubject, bool theirsOK, CGitDiff::ChangeType theirsChangeType);
 
 	bool m_bResolved;
 
@@ -56,13 +56,13 @@ protected:
 	CString m_sBaseTitle;
 	CString m_sMineTitle;
 	CString m_sTheirsTitle;
-	CString	m_sBaseHash;
+	CGitHash m_sBaseHash;
 	CString	m_sBaseSubject;
 	bool	m_bBaseOK;
-	CString	m_sMineHash;
+	CGitHash m_sMineHash;
 	CString	m_sMineSubject;
 	bool	m_bMineOK;
-	CString	m_sTheirsHash;
+	CGitHash m_sTheirsHash;
 	CString	m_sTheirsSubject;
 	bool	m_bTheirsOK;
 	CGitDiff::ChangeType m_nChangeTypeMine;

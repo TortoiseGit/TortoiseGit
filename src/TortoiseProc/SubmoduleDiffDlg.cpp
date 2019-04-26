@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2012-2017, 2019 - TortoiseGit
 
@@ -42,11 +42,14 @@ CSubmoduleDiffDlg::~CSubmoduleDiffDlg()
 void CSubmoduleDiffDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CHorizontalResizableStandAloneDialog::DoDataExchange(pDX);
-	DDX_Text(pDX, IDC_FROMHASH, m_sFromHash);
 	DDX_Text(pDX, IDC_FROMSUBJECT, m_sFromSubject);
-	DDX_Text(pDX, IDC_TOHASH, m_sToHash);
 	DDX_Text(pDX, IDC_TOSUBJECT, m_sToSubject);
 	DDX_Control(pDX, IDC_SHOW_DIFF, m_ctrlShowDiffBtn);
+	GetDlgItem(IDC_FROMHASH)->SetWindowText(m_sFromHash.ToString());
+	if (m_bDirty)
+		GetDlgItem(IDC_TOHASH)->SetWindowText(m_sToHash.ToString() + L"-dirty");
+	else
+		GetDlgItem(IDC_TOHASH)->SetWindowText(m_sToHash.ToString());
 }
 
 BEGIN_MESSAGE_MAP(CSubmoduleDiffDlg, CHorizontalResizableStandAloneDialog)
@@ -102,8 +105,6 @@ BOOL CSubmoduleDiffDlg::OnInitDialog()
 	GetDlgItem(IDC_SUBMODULEDIFFTITLE)->SetWindowText(title);
 
 	UpdateData(FALSE);
-	if (m_bDirty)
-		GetDlgItem(IDC_TOHASH)->SetWindowText(m_sToHash + L"-dirty");
 
 	CString changeTypeTable[] =
 	{
@@ -211,7 +212,7 @@ BOOL CSubmoduleDiffDlg::PreTranslateMessage(MSG* pMsg)
 	return CResizableStandAloneDialog::PreTranslateMessage(pMsg);
 }
 
-void CSubmoduleDiffDlg::SetDiff(CString path, bool toIsWorkingCopy, CString fromHash, CString fromSubject, bool fromOK, CString toHash, CString toSubject, bool toOK, bool dirty, CGitDiff::ChangeType changeType)
+void CSubmoduleDiffDlg::SetDiff(CString path, bool toIsWorkingCopy, const CGitHash& fromHash, CString fromSubject, bool fromOK, const CGitHash& toHash, CString toSubject, bool toOK, bool dirty, CGitDiff::ChangeType changeType)
 {
 	m_bToIsWorkingCopy = toIsWorkingCopy;
 
@@ -236,18 +237,18 @@ void CSubmoduleDiffDlg::ShowLog(CString hash)
 
 void CSubmoduleDiffDlg::OnBnClickedLog()
 {
-	ShowLog(m_sFromHash);
+	ShowLog(m_sFromHash.ToString());
 }
 
 void CSubmoduleDiffDlg::OnBnClickedLog2()
 {
-	ShowLog(m_sToHash);
+	ShowLog(m_sToHash.ToString());
 }
 
 void CSubmoduleDiffDlg::OnBnClickedShowDiff()
 {
 	CString sCmd;
-	sCmd.Format(L"/command:showcompare /path:\"%s\" /revision1:%s /revision2:%s", static_cast<LPCTSTR>(g_Git.CombinePath(m_sPath)), static_cast<LPCTSTR>(m_sFromHash), ((m_bDirty && m_nChangeType == CGitDiff::Unknown) || m_ctrlShowDiffBtn.GetCurrentEntry() == 1) ? GIT_REV_ZERO : static_cast<LPCTSTR>(m_sToHash));
+	sCmd.Format(L"/command:showcompare /path:\"%s\" /revision1:%s /revision2:%s", static_cast<LPCTSTR>(g_Git.CombinePath(m_sPath)), static_cast<LPCTSTR>(m_sFromHash.ToString()), ((m_bDirty && m_nChangeType == CGitDiff::Unknown) || m_ctrlShowDiffBtn.GetCurrentEntry() == 1) ? GIT_REV_ZERO : static_cast<LPCTSTR>(m_sToHash.ToString()));
 
 	if (!!(GetAsyncKeyState(VK_SHIFT) & 0x8000))
 		sCmd += L" /alternative";

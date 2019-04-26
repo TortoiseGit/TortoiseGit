@@ -44,11 +44,11 @@ public:
 
 	// Use two path to handle rename cases
 	static int Diff(HWND hWnd, const CTGitPath* pPath1, const CTGitPath* pPath2, const CString& rev1, const CString& rev2, bool blame = false, bool unified = false, int jumpToLine = 0, bool bAlternativeTool = false, bool mustExist = true);
-	static int SubmoduleDiff(HWND hWnd, const CTGitPath* pPath1, const CTGitPath* pPath2, const CString& rev1, const CString& rev2, bool blame = false, bool unified = false);
+	static int SubmoduleDiff(HWND hWnd, const CTGitPath* pPath1, const CTGitPath* pPath2, const CGitHash& rev1, const CGitHash& rev2, bool blame = false, bool unified = false);
 	static int DiffNull(HWND hWnd, const CTGitPath* pPath, const CString& rev1, bool bIsAdd = true, int jumpToLine = 0, bool bAlternative = false);
 	static int DiffCommit(HWND hWnd, const CTGitPath& path, const GitRev* r1, const GitRev* r2, bool bAlternative = false);
 	static int DiffCommit(HWND hWnd, const CTGitPath& path1, const CTGitPath& path2, const GitRev* r1, const GitRev* r2, bool bAlternative = false);
 	static int DiffCommit(HWND hWnd, const CTGitPath& path, const CString& r1, const CString& r2, bool bAlternative = false);
 	static int DiffCommit(HWND hWnd, const CTGitPath& path1, const CTGitPath& path2, const CString& r1, const CString& r2, bool bAlternative = false);
-	static int SubmoduleDiffNull(HWND hWnd, const CTGitPath* pPath1, const CString& rev1);
+	static int SubmoduleDiffNull(HWND hWnd, const CTGitPath* pPath1, const CGitHash& hash);
 };
