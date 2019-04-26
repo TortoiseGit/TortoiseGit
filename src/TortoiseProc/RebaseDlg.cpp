@@ -2838,7 +2838,7 @@ void CRebaseDlg::FillLogMessageCtrl()
 		int selIndex = m_CommitList.GetNextSelectedItem(pos);
 		GitRevLoglist* pLogEntry = m_CommitList.m_arShownList.SafeGetAt(selIndex);
 		m_FileListCtrl.UpdateWithGitPathList(pLogEntry->GetFiles(&m_CommitList));
-		m_FileListCtrl.m_CurrentVersion = pLogEntry->m_CommitHash.ToString();
+		m_FileListCtrl.m_CurrentVersion = pLogEntry->m_CommitHash;
 		m_FileListCtrl.Show(GITSLC_SHOWVERSIONED);
 		m_LogMessageCtrl.Call(SCI_SETREADONLY, FALSE);
 		m_LogMessageCtrl.SetText(pLogEntry->GetSubject() + L'\n' + pLogEntry->GetBody());

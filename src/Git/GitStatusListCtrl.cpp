@@ -3813,7 +3813,7 @@ void CGitStatusListCtrl::NotifyCheck()
 int CGitStatusListCtrl::UpdateFileList(const CTGitPathList* list)
 {
 	CAutoWriteLock locker(m_guard);
-	m_CurrentVersion = GIT_REV_ZERO;
+	m_CurrentVersion.Empty();
 
 	ATLASSERT(!(m_amend && !m_bIncludedStaged)); // just a safeguard that we always show all files if we want to amend (amending should only be the used from commitdlg)
 	g_Git.GetWorkingTreeChanges(m_StatusFileList, m_amend, list, m_bIncludedStaged);

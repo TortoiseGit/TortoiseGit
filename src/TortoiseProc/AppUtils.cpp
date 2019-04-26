@@ -3721,7 +3721,7 @@ int CAppUtils::ResolveConflict(HWND hWnd, CTGitPath& path, resolve_with resolveW
 					MessageBox(hWnd, subgit.GetGitLastErr(L"Could not get HEAD hash of submodule, this should not happen!"), L"TortoiseGit", MB_ICONERROR);
 					return -1;
 				}
-				if (submoduleHead.ToString() != hash)
+				if (submoduleHead != hash)
 				{
 					CString origPath = g_Git.m_CurrentDir;
 					g_Git.m_CurrentDir = fullPath.GetWinPath();
