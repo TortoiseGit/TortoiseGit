@@ -2440,7 +2440,7 @@ unsigned int CGit::Hash2int(const CGitHash &hash)
 	for (int i = 0; i < 4; ++i)
 	{
 		ret = ret << 8;
-		ret |= static_cast<const unsigned char*>(hash)[i];
+		ret |= hash.ToRaw()[i];
 	}
 	return ret;
 }

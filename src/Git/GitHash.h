@@ -163,7 +163,7 @@ public:
 		return reinterpret_cast<const git_oid*>(m_hash);
 	}
 
-	explicit operator const unsigned char*() const
+	const unsigned char* ToRaw() const
 	{
 		return m_hash;
 	}
