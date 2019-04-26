@@ -544,8 +544,7 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 			break;
 		case ID_RESET:
 			{
-				CString str = pSelLogEntry->m_CommitHash.ToString();
-				if (CAppUtils::GitReset(GetParentHWND(), &str))
+				if (CAppUtils::GitReset(GetParentHWND(), pSelLogEntry->m_CommitHash.ToString()))
 				{
 					ResetWcRev(true);
 					ReloadHashMap();

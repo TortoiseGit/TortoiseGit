@@ -1191,14 +1191,14 @@ bool CAppUtils::UpdateBranchDescription(const CString& branch, CString descripti
 	return true;
 }
 
-bool CAppUtils::CreateBranchTag(HWND hWnd, bool isTag /*true*/, const CString* commitHash /*nullptr*/, bool switchNewBranch /*false*/, LPCTSTR name /*nullptr*/)
+bool CAppUtils::CreateBranchTag(HWND hWnd, bool isTag /*true*/, const CString* ref /*nullptr*/, bool switchNewBranch /*false*/, LPCTSTR name /*nullptr*/)
 {
 	CCreateBranchTagDlg dlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
 	dlg.m_bIsTag = isTag;
 	dlg.m_bSwitch = switchNewBranch;
 
-	if (commitHash)
-		dlg.m_initialRefName = *commitHash;
+	if (ref)
+		dlg.m_initialRefName = *ref;
 
 	if (name)
 		dlg.m_BranchTagName = name;
@@ -1648,12 +1648,12 @@ static bool Reset(HWND hWnd, const CString& resetTo, int resetType)
 	return ret == IDOK;
 }
 
-bool CAppUtils::GitReset(HWND hWnd, const CString* CommitHash, int type)
+bool CAppUtils::GitReset(HWND hWnd, const CString& ref, int type)
 {
 	CResetDlg dlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
 	dlg.m_ResetType=type;
-	dlg.m_ResetToVersion=*CommitHash;
-	dlg.m_initialRefName = *CommitHash;
+	dlg.m_ResetToVersion = ref;
+	dlg.m_initialRefName = ref;
 	if (dlg.DoModal() == IDOK)
 		return Reset(hWnd, dlg.m_ResetToVersion, dlg.m_ResetType);
 
@@ -2625,7 +2625,7 @@ static bool DoFetch(HWND hWnd, const CString& url, const bool fetchAllRemotes, c
 			CString defaultUpstream;
 			if (!pullRemote.IsEmpty() && !pullBranch.IsEmpty())
 				defaultUpstream.Format(L"remotes/%s/%s", static_cast<LPCTSTR>(pullRemote), static_cast<LPCTSTR>(pullBranch));
-			CAppUtils::GitReset(hWnd, &defaultUpstream, 2);
+			CAppUtils::GitReset(hWnd, defaultUpstream, 2);
 		});
 
 		postCmdList.emplace_back(IDI_UPDATE, IDS_MENUFETCH, [&hWnd]{ CAppUtils::Fetch(hWnd); });
@@ -3726,7 +3726,7 @@ int CAppUtils::ResolveConflict(HWND hWnd, CTGitPath& path, resolve_with resolveW
 					CString origPath = g_Git.m_CurrentDir;
 					g_Git.m_CurrentDir = fullPath.GetWinPath();
 					SetCurrentDirectory(g_Git.m_CurrentDir);
-					if (!GitReset(hWnd, &hash))
+					if (!GitReset(hWnd, hash))
 					{
 						g_Git.m_CurrentDir = origPath;
 						SetCurrentDirectory(g_Git.m_CurrentDir);

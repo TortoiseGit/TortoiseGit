@@ -166,12 +166,12 @@ public:
 
 	static bool Export(HWND hWnd, const CString* BashHash = nullptr, const CTGitPath* orgPath = nullptr);
 	static bool UpdateBranchDescription(const CString& branch, CString description);
-	static bool CreateBranchTag(HWND hWnd, bool isTag = true, const CString* commitHash = nullptr, bool switchNewBranch = false, LPCTSTR name = nullptr);
+	static bool CreateBranchTag(HWND hWnd, bool isTag = true, const CString* ref = nullptr, bool switchNewBranch = false, LPCTSTR name = nullptr);
 	static bool Switch(HWND hWnd, const CString& initialRefName = CString());
 	static bool PerformSwitch(HWND hWnd, const CString& ref, bool bForce = false, const CString& sNewBranch = CString(), bool bBranchOverride = false, BOOL bTrack = 2, bool bMerge = false);
 
 	static bool IgnoreFile(HWND hWnd, const CTGitPathList& filelist, bool IsMask);
-	static bool GitReset(HWND hWnd, const CString* CommitHash, int type = 1);
+	static bool GitReset(HWND hWnd, const CString& ref, int type = 1);
 	static bool ConflictEdit(HWND hWnd, CTGitPath& file, bool bAlternativeTool = false, bool revertTheirMy = false, HWND resolveMsgHwnd = nullptr);
 	static void GetConflictTitles(CString* baseText, CString& mineText, CString& theirsText, bool rebaseActive);
 
