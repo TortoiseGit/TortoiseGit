@@ -90,7 +90,7 @@ public:
 		const CString& file1, const CString& file2,
 		const CString& sName1, const CString& sName2,
 		const CString& originalFile1, const CString& originalFile2,
-		const CString& hash1, const CString& hash2, const DiffFlags& flags, int jumpToLine = 0);
+		const CGitHash& hash1, const CGitHash& hash2, const DiffFlags& flags, int jumpToLine = 0);
 
 	/**
 	 * Launches the standard text viewer/editor application which is associated

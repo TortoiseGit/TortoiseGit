@@ -2132,7 +2132,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					while (pos)
 					{
 						auto entry = GetListEntry(GetNextSelectedItem(pos));
-						CAppUtils::StartShowUnifiedDiff(m_hWnd, *entry, m_Rev2, *entry, m_Rev1, bShift);
+						CAppUtils::StartShowUnifiedDiff(m_hWnd, *entry, m_Rev2.ToString(), *entry, m_Rev1.ToString(), bShift);
 					}
 				}
 				break;
@@ -2745,11 +2745,11 @@ void CGitStatusListCtrl::StartDiffTwo(int fileindex)
 	CTGitPath file1 = *ptr;
 
 	if (file1.m_Action & CTGitPath::LOGACTIONS_ADDED)
-		CGitDiff::DiffNull(GetParentHWND(), &file1, m_Rev1, true, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
+		CGitDiff::DiffNull(GetParentHWND(), &file1, m_Rev1.ToString(), true, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 	else if (file1.m_Action & CTGitPath::LOGACTIONS_DELETED)
-		CGitDiff::DiffNull(GetParentHWND(), &file1, m_Rev2, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
+		CGitDiff::DiffNull(GetParentHWND(), &file1, m_Rev2.ToString(), false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 	else
-		CGitDiff::Diff(GetParentHWND(), &file1, &file1, m_Rev1, m_Rev2, false, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
+		CGitDiff::Diff(GetParentHWND(), &file1, &file1, m_Rev1.ToString(), m_Rev2.ToString(), false, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 }
 
 void CGitStatusListCtrl::StartDiffWC(int fileindex)

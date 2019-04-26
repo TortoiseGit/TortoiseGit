@@ -124,7 +124,7 @@ bool DiffCommand::Execute()
 		{
 			bRet = CAppUtils::StartExtDiff(
 				path2, orgCmdLinePath.GetWinPathString(), CString(), CString(),
-				CString(), CString(), GIT_REV_ZERO, GIT_REV_ZERO,
+				CString(), CString(), CGitHash(), CGitHash(),
 				CAppUtils::DiffFlags().AlternativeTool(bAlternativeTool), parser.GetLongVal(L"line"));
 		}
 	}
