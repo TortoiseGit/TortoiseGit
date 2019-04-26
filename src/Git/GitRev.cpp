@@ -55,7 +55,7 @@ int GitRev::ParserParentFromCommit(GIT_COMMIT *commit)
 
 	git_get_commit_first_parent(commit,&list);
 	while(git_get_commit_next_parent(&list,parent)==0)
-		m_ParentHash.emplace_back(parent);
+		m_ParentHash.emplace_back(CGitHash::FromRaw(parent));
 	return 0;
 }
 
@@ -70,7 +70,7 @@ int GitRev::ParserFromCommit(GIT_COMMIT *commit)
 		encode = CUnicodeUtils::GetCPCode(str);
 	}
 
-	this->m_CommitHash = commit->m_hash;
+	this->m_CommitHash = CGitHash::FromRaw(commit->m_hash);
 
 	this->m_AuthorDate = commit->m_Author.Date;
 
@@ -296,6 +296,6 @@ int GitRev::GetCommit(const CString& refname)
 		return -1;
 	}
 
-	CGitHash hash(sha);
+	CGitHash hash = CGitHash::FromRaw(sha);
 	return GetCommitFromHash_withoutLock(hash);
 }

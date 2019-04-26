@@ -407,7 +407,7 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 		}
 
 		if (!ref.IsEmpty())
-			m_PackRefMap[ref] = hash;
+			m_PackRefMap[ref] = CGitHash::FromHexStrTry(hash);
 
 		while (buff[i] == '\n')
 		{
@@ -511,7 +511,7 @@ int CGitHeadFileList::ReadHeadHash(const CString& gitdir)
 		if (size != 2 * GIT_HASH_SIZE)
 			return -1;
 
-		m_Head.ConvertFromStrA(reinterpret_cast<const char*>(buffer));
+		m_Head = CGitHash::FromHexStr(reinterpret_cast<const char*>(buffer));
 
 		m_LastModifyTimeRef = time;
 
@@ -524,7 +524,7 @@ int CGitHeadFileList::ReadHeadHash(const CString& gitdir)
 
 	m_HeadRefFile.Empty();
 
-	m_Head.ConvertFromStrA(reinterpret_cast<const char*>(buffer));
+	m_Head = CGitHash::FromHexStr(reinterpret_cast<const char*>(buffer));
 
 	return 0;
 }

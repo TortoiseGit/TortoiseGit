@@ -124,7 +124,7 @@ void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & Ha
 					expectHash = false;
 					if (lineEnd - lineBegin > 2 * GIT_HASH_SIZE)
 					{
-						hash.ConvertFromStrA(reinterpret_cast<char*>(&data[lineBegin]));
+						hash = CGitHash::FromHexStr(reinterpret_cast<char*>(&data[lineBegin]));
 
 						size_t hashEnd = lineBegin + 2 * GIT_HASH_SIZE;
 						size_t originalLineNumberBegin = hashEnd + 1;

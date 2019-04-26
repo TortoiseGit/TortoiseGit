@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015, 2017-2018 - TortoiseGit
+// Copyright (C) 2015, 2017-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -55,13 +55,13 @@ TEST(CLogCache, GetCacheData)
 {
 	CLogCache logCache;
 	EXPECT_EQ(0U, logCache.m_HashMap.size());
-	CGitHash hash1(L"4c5c93d2a0b368bc4570d5ec02ab03b9c4334d44");
+	CGitHash hash1= CGitHash::FromHexStr(L"4c5c93d2a0b368bc4570d5ec02ab03b9c4334d44");
 	GitRevLoglist* pRev = logCache.GetCacheData(hash1);
 	ASSERT_TRUE(pRev);
 	EXPECT_EQ(hash1, pRev->m_CommitHash);
 	EXPECT_EQ(1U, logCache.m_HashMap.size());
 
-	CGitHash hash2(L"dead91b4aedeaddeaddead2a56d3c473c705dead");
+	CGitHash hash2= CGitHash::FromHexStr(L"dead91b4aedeaddeaddead2a56d3c473c705dead");
 	pRev = logCache.GetCacheData(hash2);
 	ASSERT_TRUE(pRev);
 	EXPECT_EQ(hash2, pRev->m_CommitHash);
@@ -71,20 +71,20 @@ TEST(CLogCache, GetCacheData)
 TEST(CLogCache, ClearAllParent)
 {
 	CLogCache logCache;
-	CGitHash hash1(L"4c5c93d2a0b368bc4570d5ec02ab03b9c4334d44");
+	CGitHash hash1 = CGitHash::FromHexStr(L"4c5c93d2a0b368bc4570d5ec02ab03b9c4334d44");
 	GitRevLoglist* pRev = logCache.GetCacheData(hash1);
 	ASSERT_TRUE(pRev);
-	pRev->m_ParentHash.push_back(CGitHash(L"0000000000000000000000000000000000000000"));
+	pRev->m_ParentHash.push_back(CGitHash::FromHexStr(L"0000000000000000000000000000000000000000"));
 	EXPECT_EQ(1U, pRev->m_ParentHash.size());
 	pRev->m_Lanes.push_back(1);
 	pRev->m_Lanes.push_back(2);
 	pRev->m_Lanes.push_back(3);
 	EXPECT_EQ(3U, pRev->m_Lanes.size());
-	CGitHash hash2(L"dead91b4aedeaddeaddead2a56d3c473c705dead");
+	CGitHash hash2 = CGitHash::FromHexStr(L"dead91b4aedeaddeaddead2a56d3c473c705dead");
 	pRev = logCache.GetCacheData(hash2);
 	ASSERT_TRUE(pRev);
-	pRev->m_ParentHash.push_back(CGitHash(L"1111111111111111111111111111111111111111"));
-	pRev->m_ParentHash.push_back(CGitHash(L"1111111111111111111111111111111111111112"));
+	pRev->m_ParentHash.push_back(CGitHash::FromHexStr(L"1111111111111111111111111111111111111111"));
+	pRev->m_ParentHash.push_back(CGitHash::FromHexStr(L"1111111111111111111111111111111111111112"));
 	EXPECT_EQ(2U, pRev->m_ParentHash.size());
 	pRev->m_Lanes.push_back(4);
 	EXPECT_EQ(1U, pRev->m_Lanes.size());
@@ -104,20 +104,20 @@ TEST(CLogCache, ClearAllParent)
 TEST(CLogCache, ClearAllLanes)
 {
 	CLogCache logCache;
-	CGitHash hash1(L"4c5c93d2a0b368bc4570d5ec02ab03b9c4334d44");
+	CGitHash hash1 = CGitHash::FromHexStr(L"4c5c93d2a0b368bc4570d5ec02ab03b9c4334d44");
 	GitRevLoglist* pRev = logCache.GetCacheData(hash1);
 	ASSERT_TRUE(pRev);
-	pRev->m_ParentHash.push_back(CGitHash(L"0000000000000000000000000000000000000000"));
+	pRev->m_ParentHash.push_back(CGitHash::FromHexStr(L"0000000000000000000000000000000000000000"));
 	EXPECT_EQ(1U, pRev->m_ParentHash.size());
 	pRev->m_Lanes.push_back(1);
 	pRev->m_Lanes.push_back(2);
 	pRev->m_Lanes.push_back(3);
 	EXPECT_EQ(3U, pRev->m_Lanes.size());
-	CGitHash hash2(L"dead91b4aedeaddeaddead2a56d3c473c705dead");
+	CGitHash hash2 = CGitHash::FromHexStr(L"dead91b4aedeaddeaddead2a56d3c473c705dead");
 	pRev = logCache.GetCacheData(hash2);
 	ASSERT_TRUE(pRev);
-	pRev->m_ParentHash.push_back(CGitHash(L"1111111111111111111111111111111111111111"));
-	pRev->m_ParentHash.push_back(CGitHash(L"1111111111111111111111111111111111111112"));
+	pRev->m_ParentHash.push_back(CGitHash::FromHexStr(L"1111111111111111111111111111111111111111"));
+	pRev->m_ParentHash.push_back(CGitHash::FromHexStr(L"1111111111111111111111111111111111111112"));
 	EXPECT_EQ(2U, pRev->m_ParentHash.size());
 	pRev->m_Lanes.push_back(4);
 	EXPECT_EQ(1U, pRev->m_Lanes.size());
@@ -265,8 +265,8 @@ static void ParserFromLogTests()
 	EXPECT_STREQ(L"4517b91ee8f7497d40cf93d112f12196a7cec995", logDataVector.GetGitRevAt(12).m_CommitHash.ToString());
 	EXPECT_STREQ(L"10385764a4d42d7428bbeb245015f8f338fc1e40", logDataVector.GetGitRevAt(15).m_CommitHash.ToString());
 	EXPECT_STREQ(L"844309789a13614b52d5e7cbfe6350dd73d1dc72", logDataVector.GetGitRevAt(22).m_CommitHash.ToString());
-	EXPECT_TRUE(logDataVector.m_HashMap.find(CGitHash(L"c5b89de0335fd674e2e421ac4543098cb2f22cde")) == logDataVector.m_HashMap.end());
-	EXPECT_TRUE(logCache.m_HashMap.find(CGitHash(L"c5b89de0335fd674e2e421ac4543098cb2f22cde")) == logCache.m_HashMap.end());
+	EXPECT_TRUE(logDataVector.m_HashMap.find(CGitHash::FromHexStr(L"c5b89de0335fd674e2e421ac4543098cb2f22cde")) == logDataVector.m_HashMap.end());
+	EXPECT_TRUE(logCache.m_HashMap.find(CGitHash::FromHexStr(L"c5b89de0335fd674e2e421ac4543098cb2f22cde")) == logCache.m_HashMap.end());
 	output.Empty();
 	EXPECT_EQ(0, g_Git.Run(L"git.exe branch -D forconflict", &output, CP_UTF8)); // ref in packed-refs
 	EXPECT_STRNE(L"", output);
@@ -281,8 +281,8 @@ static void ParserFromLogTests()
 	EXPECT_STREQ(L"4517b91ee8f7497d40cf93d112f12196a7cec995", logDataVector.GetGitRevAt(12).m_CommitHash.ToString());
 	EXPECT_STREQ(L"b9ef30183497cdad5c30b88d32dc1bed7951dfeb", logDataVector.GetGitRevAt(15).m_CommitHash.ToString());
 	EXPECT_STREQ(L"844309789a13614b52d5e7cbfe6350dd73d1dc72", logDataVector.GetGitRevAt(21).m_CommitHash.ToString());
-	EXPECT_TRUE(logDataVector.m_HashMap.find(CGitHash(L"10385764a4d42d7428bbeb245015f8f338fc1e40")) == logDataVector.m_HashMap.end());
-	EXPECT_TRUE(logCache.m_HashMap.find(CGitHash(L"10385764a4d42d7428bbeb245015f8f338fc1e40")) == logCache.m_HashMap.end());
+	EXPECT_TRUE(logDataVector.m_HashMap.find(CGitHash::FromHexStr(L"10385764a4d42d7428bbeb245015f8f338fc1e40")) == logDataVector.m_HashMap.end());
+	EXPECT_TRUE(logCache.m_HashMap.find(CGitHash::FromHexStr(L"10385764a4d42d7428bbeb245015f8f338fc1e40")) == logCache.m_HashMap.end());
 }
 
 TEST_P(CLogDataVectorCBasicGitWithTestRepoFixture, ParserFromLog)
@@ -329,7 +329,7 @@ static void FillTests()
 	EXPECT_EQ(0U, logDataVector.size());
 	EXPECT_EQ(0U, logCache.m_HashMap.size());
 
-	hashes.insert(CGitHash(L"35c91b4ae2f77f4f21a7aba56d3c473c705d89e6"));
+	hashes.insert(CGitHash::FromHexStr(L"35c91b4ae2f77f4f21a7aba56d3c473c705d89e6"));
 	logCache.m_HashMap.clear();
 	logDataVector.ClearAll();
 	EXPECT_EQ(0, logDataVector.Fill(hashes));
@@ -337,14 +337,14 @@ static void FillTests()
 	EXPECT_TRUE(logDataVector.GetGitRevAt(0).m_CommitHash.ToString() == L"35c91b4ae2f77f4f21a7aba56d3c473c705d89e6");
 	EXPECT_EQ(1U, logCache.m_HashMap.size());
 
-	hashes.insert(CGitHash(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6"));
+	hashes.insert(CGitHash::FromHexStr(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6"));
 	logCache.m_HashMap.clear();
 	logDataVector.ClearAll();
 	EXPECT_EQ(0, logDataVector.Fill(hashes));
 	EXPECT_EQ(2U, logDataVector.size());
 	EXPECT_EQ(2U, logCache.m_HashMap.size());
 
-	hashes.insert(CGitHash(L"dead91b4aedeaddeaddead2a56d3c473c705dead")); // non-existent commit
+	hashes.insert(CGitHash::FromHexStr(L"dead91b4aedeaddeaddead2a56d3c473c705dead")); // non-existent commit
 	logCache.m_HashMap.clear();
 	logDataVector.ClearAll();
 	EXPECT_EQ(-1, logDataVector.Fill(hashes));

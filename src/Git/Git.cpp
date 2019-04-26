@@ -1143,7 +1143,7 @@ int CGit::GetHash(git_repository * repo, CGitHash &hash, const CString& friendna
 	// no need to parse a ref if it's already a 40-byte hash
 	if (!skipFastCheck && CGitHash::IsValidSHA1(friendname))
 	{
-		hash = CGitHash(friendname);
+		hash = CGitHash::FromHexStr(friendname);
 		return 0;
 	}
 
@@ -1171,7 +1171,7 @@ int CGit::GetHash(CGitHash &hash, const CString& friendname)
 	// no need to parse a ref if it's already a 40-byte hash
 	if (CGitHash::IsValidSHA1(friendname))
 	{
-		hash = CGitHash(friendname);
+		hash = CGitHash::FromHexStr(friendname);
 		return 0;
 	}
 
@@ -1192,7 +1192,7 @@ int CGit::GetHash(CGitHash &hash, const CString& friendname)
 		cmd.Format(L"git.exe rev-parse %s", static_cast<LPCTSTR>(branch));
 		gitLastErr.Empty();
 		int ret = Run(cmd, &gitLastErr, nullptr, CP_UTF8);
-		hash = CGitHash(gitLastErr.Trim());
+		hash = CGitHash::FromHexStrTry(gitLastErr.Trim());
 		if (ret == 0)
 			gitLastErr.Empty();
 		else if (friendname == L"HEAD") // special check for unborn branch
@@ -1796,8 +1796,7 @@ int CGit::GetRemoteTags(const CString& remote, REF_VECTOR& list)
 	gitLastErr = cmd + L'\n';
 	if (Run(cmd, [&](CStringA lineA)
 	{
-		CGitHash hash;
-		hash.ConvertFromStrA(lineA.Left(GIT_HASH_SIZE * 2));
+		CGitHash hash = CGitHash::FromHexStr(lineA.Left(GIT_HASH_SIZE * 2));
 		lineA = lineA.Mid(GIT_HASH_SIZE * 2 + static_cast<int>(wcslen(L"\trefs/tags/"))); // sha1, tab + refs/tags/
 		if (!lineA.IsEmpty())
 			list.emplace_back(TGitRef{ CUnicodeUtils::GetUnicode(lineA), hash });
@@ -1954,8 +1953,7 @@ int CGit::GetMapHashToFriendName(MAP_HASH_NAME &map)
 		if (start <= 0)
 			return;
 
-		CGitHash hash;
-		hash.ConvertFromStrA(lineA);
+		CGitHash hash = CGitHash::FromHexStr(lineA);
 		map[hash].push_back(CUnicodeUtils::GetUnicode(lineA.Mid(start + 1)));
 	});
 
@@ -2424,7 +2422,7 @@ bool CGit::IsFastForward(const CString &from, const CString &to, CGitHash * comm
 	gitLastErr.Empty();
 	if (Run(cmd, &base, &gitLastErr, CP_UTF8))
 		return false;
-	basehash = base.Trim();
+	basehash = CGitHash::FromHexStrTry(base.Trim());
 
 	GetHash(hash, from);
 
