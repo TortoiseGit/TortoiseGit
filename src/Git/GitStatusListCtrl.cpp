@@ -1690,10 +1690,10 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							commitTitle.Truncate(20);
 							commitTitle += L"...";
 						}
-						str.AppendFormat(L": \"%s\" (%s)", static_cast<LPCTSTR>(commitTitle), static_cast<LPCTSTR>(parentHash.ToString().Left(g_Git.GetShortHASHLength())));
+						str.AppendFormat(L": \"%s\" (%s)", static_cast<LPCTSTR>(commitTitle), static_cast<LPCTSTR>(parentHash.ToString(g_Git.GetShortHASHLength())));
 					}
 					else
-						str.AppendFormat(L" (%s)", static_cast<LPCTSTR>(parentHash.ToString().Left(g_Git.GetShortHASHLength())));
+						str.AppendFormat(L" (%s)", static_cast<LPCTSTR>(parentHash.ToString(g_Git.GetShortHASHLength())));
 					popup.AppendMenuIcon(IDGITLC_REVERTTOPARENT, str, IDI_REVERT);
 				}
 			}
@@ -3704,7 +3704,7 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 					rev.Format(L"%s^%d", static_cast<LPCTSTR>(m_CurrentVersion.ToString()), groupindex + 1);
 					CGitHash hash;
 					if (!CGit::GetHash(repository, hash, rev))
-						str += L": " + hash.ToString().Left(g_Git.GetShortHASHLength());
+						str += L": " + hash.ToString(g_Git.GetShortHASHLength());
 				}
 				grp.pszHeader = str.GetBuffer();
 				str.ReleaseBuffer();
@@ -4190,7 +4190,7 @@ void CGitStatusListCtrl::FileSaveAs(CTGitPath *path)
 {
 	CAutoReadLock locker(m_guard);
 	CString filename;
-	filename.Format(L"%s\\%s-%s%s", static_cast<LPCTSTR>(g_Git.CombinePath(path->GetContainingDirectory())), static_cast<LPCTSTR>(path->GetBaseFilename()), static_cast<LPCTSTR>(m_CurrentVersion.ToString().Left(g_Git.GetShortHASHLength())), static_cast<LPCTSTR>(path->GetFileExtension()));
+	filename.Format(L"%s\\%s-%s%s", static_cast<LPCTSTR>(g_Git.CombinePath(path->GetContainingDirectory())), static_cast<LPCTSTR>(path->GetBaseFilename()), static_cast<LPCTSTR>(m_CurrentVersion.ToString(g_Git.GetShortHASHLength())), static_cast<LPCTSTR>(path->GetFileExtension()));
 	if (!CAppUtils::FileOpenSave(filename, nullptr, 0, 0, false, GetSafeHwnd()))
 		return;
 	if (m_CurrentVersion.IsEmpty())

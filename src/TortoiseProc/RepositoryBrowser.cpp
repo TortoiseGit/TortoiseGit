@@ -802,7 +802,7 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 			else
 			{
 				PathCompactPathEx(CStrBuf(diffWith, 2 * GIT_HASH_SIZE), m_sMarkForDiffFilename, 2 * GIT_HASH_SIZE, 0);
-				diffWith += L':' + m_sMarkForDiffVersion.ToString().Left(g_Git.GetShortHASHLength());
+				diffWith += L':' + m_sMarkForDiffVersion.ToString(g_Git.GetShortHASHLength());
 			}
 			CString menuEntry;
 			menuEntry.Format(IDS_MENUDIFFNOW, static_cast<LPCTSTR>(diffWith));
@@ -1226,7 +1226,7 @@ void CRepositoryBrowser::FileSaveAs(const CString path)
 	}
 
 	CString filename;
-	filename.Format(L"%s\\%s-%s%s", static_cast<LPCTSTR>(g_Git.CombinePath(gitPath.GetContainingDirectory())), static_cast<LPCTSTR>(gitPath.GetBaseFilename()), static_cast<LPCTSTR>(hash.ToString().Left(g_Git.GetShortHASHLength())), static_cast<LPCTSTR>(gitPath.GetFileExtension()));
+	filename.Format(L"%s\\%s-%s%s", static_cast<LPCTSTR>(g_Git.CombinePath(gitPath.GetContainingDirectory())), static_cast<LPCTSTR>(gitPath.GetBaseFilename()), static_cast<LPCTSTR>(hash.ToString(g_Git.GetShortHASHLength())), static_cast<LPCTSTR>(gitPath.GetFileExtension()));
 	if (!CAppUtils::FileOpenSave(filename, nullptr, 0, 0, false, GetSafeHwnd()))
 		return;
 

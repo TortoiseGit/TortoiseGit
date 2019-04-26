@@ -97,9 +97,9 @@ int CGitRefCompareList::AddEntry(git_repository* repo, const CString& ref, const
 	entry.fullName = ref;
 	entry.shortName = CGit::GetShortName(ref, &entry.refType);
 	if (oldHash)
-		entry.oldHash = oldHash->ToString().Left(g_Git.GetShortHASHLength());
+		entry.oldHash = oldHash->ToString(g_Git.GetShortHASHLength());
 	if (newHash)
-		entry.newHash = newHash->ToString().Left(g_Git.GetShortHASHLength());
+		entry.newHash = newHash->ToString(g_Git.GetShortHASHLength());
 
 	CAutoCommit oldCommit;
 	if (oldHash)

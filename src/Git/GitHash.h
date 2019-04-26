@@ -150,6 +150,14 @@ public:
 		return str;
 	}
 
+	CString ToString(int len) const
+	{
+		ASSERT(len >= 0 && len <= GIT_HASH_SIZE * 2);
+		CString str { ToString() };
+		str.Truncate(len);
+		return str;
+	}
+
 	operator const git_oid*() const
 	{
 		return reinterpret_cast<const git_oid*>(m_hash);

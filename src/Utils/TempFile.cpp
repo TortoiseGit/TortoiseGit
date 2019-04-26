@@ -59,7 +59,7 @@ CTGitPath CTempFiles::GetTempFilePath(bool bRemoveAtEnd, const CTGitPath& path /
 		do
 		{
 			if (!hash.IsEmpty())
-				possibletempfile.Format(L"%s%s-%s.%3.3x%s", temppath.get(), static_cast<LPCTSTR>(path.GetBaseFilename()), static_cast<LPCTSTR>(hash.ToString().Left(g_Git.GetShortHASHLength())), i, static_cast<LPCTSTR>(path.GetFileExtension()));
+				possibletempfile.Format(L"%s%s-%s.%3.3x%s", temppath.get(), static_cast<LPCTSTR>(path.GetBaseFilename()), static_cast<LPCTSTR>(hash.ToString(g_Git.GetShortHASHLength())), i, static_cast<LPCTSTR>(path.GetFileExtension()));
 			else
 				possibletempfile.Format(L"%s%s.%3.3x%s", temppath.get(), static_cast<LPCTSTR>(path.GetBaseFilename()), i, static_cast<LPCTSTR>(path.GetFileExtension()));
 			tempfile.SetFromWin(possibletempfile);
