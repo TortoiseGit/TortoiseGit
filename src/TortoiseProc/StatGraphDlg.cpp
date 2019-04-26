@@ -664,7 +664,7 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff, BOOL keepFetchedData)
 
 		if (progress.IsVisible() && (GetTickCount64() - starttime > 100UL))
 		{
-			progress.FormatNonPathLine(2, L"%s: %s", static_cast<LPCTSTR>(pLogEntry->m_CommitHash.ToString().Left(g_Git.GetShortHASHLength())), static_cast<LPCTSTR>(pLogEntry->GetSubject()));
+			progress.FormatNonPathLine(2, L"%s: %s", static_cast<LPCTSTR>(pLogEntry->m_CommitHash.ToString(g_Git.GetShortHASHLength())), static_cast<LPCTSTR>(pLogEntry->GetSubject()));
 			progress.SetProgress64(i, m_ShowList.size());
 			starttime = GetTickCount64();
 		}

@@ -1812,10 +1812,10 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					commitTitle.Truncate(20);
 					commitTitle += L"...";
 				}
-				str.AppendFormat(L": \"%s\" (%s)", static_cast<LPCTSTR>(commitTitle), static_cast<LPCTSTR>(parentHash[i].ToString().Left(g_Git.GetShortHASHLength())));
+				str.AppendFormat(L": \"%s\" (%s)", static_cast<LPCTSTR>(commitTitle), static_cast<LPCTSTR>(parentHash[i].ToString(g_Git.GetShortHASHLength())));
 			}
 			else
-				str.AppendFormat(L" (%s)", static_cast<LPCTSTR>(parentHash[i].ToString().Left(g_Git.GetShortHASHLength())));
+				str.AppendFormat(L" (%s)", static_cast<LPCTSTR>(parentHash[i].ToString(g_Git.GetShortHASHLength())));
 			parentInfo.push_back(str);
 		}
 
@@ -2207,9 +2207,9 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 
 				if (!pSelLogEntry->m_CommitHash.IsEmpty())
 				{
-					CString firstSelHash = pSelLogEntry->m_CommitHash.ToString().Left(g_Git.GetShortHASHLength());
+					CString firstSelHash = pSelLogEntry->m_CommitHash.ToString(g_Git.GetShortHASHLength());
 					GitRevLoglist* pLastEntry = m_arShownList.SafeGetAt(LastSelect);
-					CString lastSelHash = pLastEntry->m_CommitHash.ToString().Left(g_Git.GetShortHASHLength());
+					CString lastSelHash = pLastEntry->m_CommitHash.ToString(g_Git.GetShortHASHLength());
 					CString menu;
 					menu.Format(IDS_SHOWLOG_OF, static_cast<LPCTSTR>(lastSelHash + L".." + firstSelHash));
 					popup.AppendMenuIcon(ID_LOG_VIEWRANGE, menu, IDI_LOG);

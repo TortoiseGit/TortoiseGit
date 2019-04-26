@@ -908,7 +908,7 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 			rc.right = rc.left + m_blamewidth;
 			if (oldHash != hash)
 			{
-				CString shortHashStr = hash.ToString().Left(g_Git.GetShortHASHLength());
+				CString shortHashStr = hash.ToString(g_Git.GetShortHASHLength());
 				::ExtTextOut(hDC, CDPIAware::Instance().ScaleX(LOCATOR_WIDTH), Y, ETO_CLIPPED, &rc, shortHashStr, shortHashStr.GetLength(), 0);
 			}
 			int Left = m_revwidth;

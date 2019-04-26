@@ -136,13 +136,13 @@ int CGitDiff::DiffNull(HWND hWnd, const CTGitPath* pPath, const CString& rev1, b
 	if(bIsAdd)
 		CAppUtils::StartExtDiff(tempfile,file1,
 							pPath->GetGitPathString(),
-							pPath->GetGitPathString() + L':' + rev1Hash.ToString().Left(g_Git.GetShortHASHLength()),
+							pPath->GetGitPathString() + L':' + rev1Hash.ToString(g_Git.GetShortHASHLength()),
 							g_Git.CombinePath(pPath), g_Git.CombinePath(pPath),
 							CGitHash(), rev1Hash
 							, flags, jumpToLine);
 	else
 		CAppUtils::StartExtDiff(file1,tempfile,
-							pPath->GetGitPathString() + L':' + rev1Hash.ToString().Left(g_Git.GetShortHASHLength()),
+							pPath->GetGitPathString() + L':' + rev1Hash.ToString(g_Git.GetShortHASHLength()),
 							pPath->GetGitPathString(),
 							g_Git.CombinePath(pPath), g_Git.CombinePath(pPath),
 							rev1Hash, CGitHash()
@@ -386,7 +386,7 @@ int CGitDiff::Diff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* pPath2, c
 	{
 		// use original file extension, an external diff tool might need it
 		file1 = CTempFiles::Instance().GetTempFilePath(false, *pPath, rev1Hash).GetWinPathString();
-		title1 = pPath->GetGitPathString() + L": " + rev1Hash.ToString().Left(g_Git.GetShortHASHLength());
+		title1 = pPath->GetGitPathString() + L": " + rev1Hash.ToString(g_Git.GetShortHASHLength());
 		auto ret = g_Git.GetOneFile(rev1Hash.ToString(), *pPath, file1);
 		if (ret && !(!mustExist && ret == GIT_ENOTFOUND))
 		{
@@ -422,7 +422,7 @@ int CGitDiff::Diff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* pPath2, c
 			fileName = CTGitPath(pPath2->GetGitOldPathString());
 
 		file2 = CTempFiles::Instance().GetTempFilePath(false, fileName, rev2Hash).GetWinPathString();
-		title2 = fileName.GetGitPathString() + L": " + rev2Hash.ToString().Left(g_Git.GetShortHASHLength());
+		title2 = fileName.GetGitPathString() + L": " + rev2Hash.ToString(g_Git.GetShortHASHLength());
 		auto ret = g_Git.GetOneFile(rev2Hash.ToString(), fileName, file2);
 		if (ret && !(!mustExist && ret == GIT_ENOTFOUND))
 		{

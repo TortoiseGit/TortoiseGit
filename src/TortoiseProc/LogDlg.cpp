@@ -2923,7 +2923,7 @@ void CLogDlg::UpdateLogInfoLabel()
 	CString sTemp;
 	sTemp.FormatMessage(IDS_PROC_LOG_STATS,
 		count - start,
-		static_cast<LPCTSTR>(rev2.ToString().Left(g_Git.GetShortHASHLength())), static_cast<LPCTSTR>(rev1.ToString().Left(g_Git.GetShortHASHLength())), selectedrevs, selectedfiles);
+		static_cast<LPCTSTR>(rev2.ToString(g_Git.GetShortHASHLength())), static_cast<LPCTSTR>(rev1.ToString(g_Git.GetShortHASHLength())), selectedrevs, selectedfiles);
 
 	if(selectedrevs == 1)
 	{

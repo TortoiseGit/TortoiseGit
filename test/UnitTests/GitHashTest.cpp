@@ -80,6 +80,22 @@ TEST(CGitHash, Initial)
 	EXPECT_TRUE(hash8.IsEmpty());
 }
 
+TEST(CGitHash, ToString)
+{
+	CGitHash hash(L"0123456789abcdef0123456789abcdef01234567");
+
+	EXPECT_STREQ(L"0123456789abcdef0123456789abcdef01234567", hash.ToString());
+
+	EXPECT_STREQ(L"", hash.ToString(0));
+	EXPECT_STREQ(L"0", hash.ToString(1));
+	EXPECT_STREQ(L"01", hash.ToString(2));
+	EXPECT_STREQ(L"01234", hash.ToString(5));
+	EXPECT_STREQ(L"0123456", hash.ToString(7));
+	EXPECT_STREQ(L"0123456789", hash.ToString(10));
+	EXPECT_STREQ(L"0123456789abcdef0123", hash.ToString(20));
+	EXPECT_STREQ(L"0123456789abcdef0123456789abcdef01234567", hash.ToString(40));
+}
+
 TEST(CGitHash, IsSHA1Valid)
 {
 	EXPECT_TRUE(CGitHash::IsValidSHA1(GIT_REV_ZERO));

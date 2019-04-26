@@ -1957,10 +1957,10 @@ static CString GetCommitTitle(const CGitHash& parentHash)
 			commitTitle.Truncate(20);
 			commitTitle += L"...";
 		}
-		str.AppendFormat(L"\n%s (%s)", static_cast<LPCTSTR>(commitTitle), static_cast<LPCTSTR>(parentHash.ToString().Left(g_Git.GetShortHASHLength())));
+		str.AppendFormat(L"\n%s (%s)", static_cast<LPCTSTR>(commitTitle), static_cast<LPCTSTR>(parentHash.ToString(g_Git.GetShortHASHLength())));
 	}
 	else
-		str.AppendFormat(L"\n(%s)", static_cast<LPCTSTR>(parentHash.ToString().Left(g_Git.GetShortHASHLength())));
+		str.AppendFormat(L"\n(%s)", static_cast<LPCTSTR>(parentHash.ToString(g_Git.GetShortHASHLength())));
 	return str;
 }
 

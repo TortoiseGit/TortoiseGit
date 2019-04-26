@@ -309,10 +309,10 @@ void CGitTagCompareList::Show()
 		InsertItem(index, entry.name);
 		SetItemText(index, colDiff, entry.diffstate);
 		if (!entry.myHash.IsEmpty())
-			SetItemText(index, colMyHash, entry.myHash.ToString().Left(g_Git.GetShortHASHLength()));
+			SetItemText(index, colMyHash, entry.myHash.ToString(g_Git.GetShortHASHLength()));
 		SetItemText(index, colMyMessage, entry.myMessage);
 		if (!entry.theirHash.IsEmpty())
-			SetItemText(index, colTheirHash, entry.theirHash.ToString().Left(g_Git.GetShortHASHLength()));
+			SetItemText(index, colTheirHash, entry.theirHash.ToString(g_Git.GetShortHASHLength()));
 		SetItemText(index, colTheirMessage, entry.theirMessage);
 		++index;
 	}
