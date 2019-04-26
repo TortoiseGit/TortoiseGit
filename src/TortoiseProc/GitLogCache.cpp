@@ -97,7 +97,7 @@ ULONGLONG CLogCache::GetOffset(const CGitHash& hash, SLogCacheIndexFile* pData)
 	if (!pData)
 		return 0;
 
-	SLogCacheIndexItem* p = reinterpret_cast<SLogCacheIndexItem*>(bsearch(static_cast<const unsigned char*>(hash), pData->m_Item,
+	SLogCacheIndexItem* p = reinterpret_cast<SLogCacheIndexItem*>(bsearch(hash.ToRaw(), pData->m_Item,
 			pData->m_Header.m_ItemCount,
 			sizeof(SLogCacheIndexItem),
 			Compare));
