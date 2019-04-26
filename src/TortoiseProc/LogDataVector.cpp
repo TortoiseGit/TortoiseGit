@@ -135,7 +135,7 @@ int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, 
 			continue;
 		}
 
-		CGitHash hash(commit.m_hash);
+		CGitHash hash = CGitHash::FromRaw(commit.m_hash);
 
 		GitRevLoglist* pRev = this->m_pLogCache->GetCacheData(hash);
 

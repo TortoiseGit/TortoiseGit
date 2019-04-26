@@ -480,7 +480,7 @@ int GitRevLoglist::GetRefLog(const CString& ref, std::vector<GitRevLoglist>& ref
 		{
 			auto vector = static_cast<std::vector<GitRevLoglist>*>(data);
 			GitRevLoglist rev;
-			rev.m_CommitHash = static_cast<const unsigned char*>(new_oid->hash);
+			rev.m_CommitHash = CGitHash::FromRaw(new_oid->hash);
 			rev.GetCommitterDate() = CTime(time);
 
 			CString one = CUnicodeUtils::GetUnicode(msg);
@@ -534,7 +534,7 @@ int GitRevLoglist::GetRefLog(const CString& ref, std::vector<GitRevLoglist>& ref
 			continue;
 
 		GitRevLoglist rev;
-		rev.m_CommitHash = one.Left(refPos);
+		rev.m_CommitHash = CGitHash::FromHexStrTry(one.Left(refPos));
 		rev.m_Ref.Format(L"%s@{%d}", static_cast<LPCTSTR>(ref), i++);
 		int prefixPos = one.Find(prefix, refPos + 1);
 		if (prefixPos != refPos + 1)

@@ -1709,17 +1709,17 @@ static bool ParseHashesFromLsFile(const BYTE_VECTOR& out, CGitHash& hash1, bool&
 		int stage = _wtol(part);
 		if (stage == 1)
 		{
-			hash1 = hash;
+			hash1 = CGitHash::FromHexStrTry(hash);
 			isFile1 = _wtol(mode) != 160000;
 		}
 		else if (stage == 2)
 		{
-			hash2 = hash;
+			hash2 = CGitHash::FromHexStrTry(hash);
 			isFile2 = _wtol(mode) != 160000;
 		}
 		else if (stage == 3)
 		{
-			hash3 = hash;
+			hash3 = CGitHash::FromHexStrTry(hash);
 			isFile3 = _wtol(mode) != 160000;
 			return true;
 		}
@@ -2008,16 +2008,16 @@ bool CAppUtils::ConflictEdit(HWND hWnd, CTGitPath& path, bool bAlternativeTool /
 		{
 			DescribeConflictFile(b_local, b_base, dlg.m_LocalStatus);
 			DescribeConflictFile(b_remote, b_base, dlg.m_RemoteStatus);
-			dlg.m_LocalHash = mineTitle;
-			dlg.m_RemoteHash = theirsTitle;
+			dlg.m_LocalHash = CGitHash::FromHexStrTry(mineTitle);
+			dlg.m_RemoteHash = CGitHash::FromHexStrTry(theirsTitle);
 			dlg.m_bDiffMine = b_local;
 		}
 		else
 		{
 			DescribeConflictFile(b_local, b_base, dlg.m_RemoteStatus);
 			DescribeConflictFile(b_remote, b_base, dlg.m_LocalStatus);
-			dlg.m_LocalHash = theirsTitle;
-			dlg.m_RemoteHash = mineTitle;
+			dlg.m_LocalHash = CGitHash::FromHexStrTry(theirsTitle);
+			dlg.m_RemoteHash = CGitHash::FromHexStrTry(mineTitle);
 			dlg.m_bDiffMine = !b_local;
 		}
 		dlg.m_bShowModifiedButton = b_base;

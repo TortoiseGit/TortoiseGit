@@ -982,29 +982,29 @@ static void GetBranchesTagsRefs(CGit& m_Git, config testConfig)
 	else
 		ASSERT_EQ(11U, map.size());
 
-	ASSERT_EQ(1U, map[CGitHash(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6")].size());
-	EXPECT_STREQ(L"refs/heads/master", map[CGitHash(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6")][0]);
-	ASSERT_EQ(1U, map[CGitHash(L"4c5c93d2a0b368bc4570d5ec02ab03b9c4334d44")].size());
-	EXPECT_STREQ(L"refs/heads/signed-commit", map[CGitHash(L"4c5c93d2a0b368bc4570d5ec02ab03b9c4334d44")][0]);
-	ASSERT_EQ(1U, map[CGitHash(L"31ff87c86e9f6d3853e438cb151043f30f09029a")].size());
-	EXPECT_STREQ(L"refs/heads/subdir/branch", map[CGitHash(L"31ff87c86e9f6d3853e438cb151043f30f09029a")][0]);
-	ASSERT_EQ(1U, map[CGitHash(L"5e702e1712aa6f8cd8e0328a87be006f3a923710")].size());
-	EXPECT_STREQ(L"refs/notes/commits", map[CGitHash(L"5e702e1712aa6f8cd8e0328a87be006f3a923710")][0]);
-	ASSERT_EQ(1U, map[CGitHash(L"18da7c332dcad0f37f9977d9176dce0b0c66f3eb")].size());
-	EXPECT_STREQ(L"refs/stash", map[CGitHash(L"18da7c332dcad0f37f9977d9176dce0b0c66f3eb")][0]);
-	ASSERT_EQ(1U, map[CGitHash(L"c5b89de0335fd674e2e421ac4543098cb2f22cde")].size());
-	EXPECT_STREQ(L"refs/heads/simple-conflict", map[CGitHash(L"c5b89de0335fd674e2e421ac4543098cb2f22cde")][0]);
-	ASSERT_EQ(1U, map[CGitHash(L"10385764a4d42d7428bbeb245015f8f338fc1e40")].size());
-	EXPECT_STREQ(L"refs/heads/forconflict", map[CGitHash(L"10385764a4d42d7428bbeb245015f8f338fc1e40")][0]);
-	ASSERT_EQ(2U, map[CGitHash(L"49ecdfff36bfe2b9b499b33e5034f427e2fa54dd")].size());
-	EXPECT_STREQ(L"refs/heads/master2", map[CGitHash(L"49ecdfff36bfe2b9b499b33e5034f427e2fa54dd")][0]);
-	EXPECT_STREQ(L"refs/tags/also-signed^{}", map[CGitHash(L"49ecdfff36bfe2b9b499b33e5034f427e2fa54dd")][1]);
-	ASSERT_EQ(1U, map[CGitHash(L"b9ef30183497cdad5c30b88d32dc1bed7951dfeb")].size());//
-	EXPECT_STREQ(L"refs/tags/normal-tag", map[CGitHash(L"b9ef30183497cdad5c30b88d32dc1bed7951dfeb")][0]);
-	ASSERT_EQ(1U, map[CGitHash(L"a9d53b535cb49640a6099860ac4999f5a0857b91")].size());
-	EXPECT_STREQ(L"refs/remotes/origin/master", map[CGitHash(L"a9d53b535cb49640a6099860ac4999f5a0857b91")][0]);
-	ASSERT_EQ(1U, map[CGitHash(L"313a41bc88a527289c87d7531802ab484715974f")].size());
-	EXPECT_STREQ(L"refs/tags/all-files-signed^{}", map[CGitHash(L"313a41bc88a527289c87d7531802ab484715974f")][0]);
+	ASSERT_EQ(1U, map[CGitHash::FromHexStr(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6")].size());
+	EXPECT_STREQ(L"refs/heads/master", map[CGitHash::FromHexStr(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6")][0]);
+	ASSERT_EQ(1U, map[CGitHash::FromHexStr(L"4c5c93d2a0b368bc4570d5ec02ab03b9c4334d44")].size());
+	EXPECT_STREQ(L"refs/heads/signed-commit", map[CGitHash::FromHexStr(L"4c5c93d2a0b368bc4570d5ec02ab03b9c4334d44")][0]);
+	ASSERT_EQ(1U, map[CGitHash::FromHexStr(L"31ff87c86e9f6d3853e438cb151043f30f09029a")].size());
+	EXPECT_STREQ(L"refs/heads/subdir/branch", map[CGitHash::FromHexStr(L"31ff87c86e9f6d3853e438cb151043f30f09029a")][0]);
+	ASSERT_EQ(1U, map[CGitHash::FromHexStr(L"5e702e1712aa6f8cd8e0328a87be006f3a923710")].size());
+	EXPECT_STREQ(L"refs/notes/commits", map[CGitHash::FromHexStr(L"5e702e1712aa6f8cd8e0328a87be006f3a923710")][0]);
+	ASSERT_EQ(1U, map[CGitHash::FromHexStr(L"18da7c332dcad0f37f9977d9176dce0b0c66f3eb")].size());
+	EXPECT_STREQ(L"refs/stash", map[CGitHash::FromHexStr(L"18da7c332dcad0f37f9977d9176dce0b0c66f3eb")][0]);
+	ASSERT_EQ(1U, map[CGitHash::FromHexStr(L"c5b89de0335fd674e2e421ac4543098cb2f22cde")].size());
+	EXPECT_STREQ(L"refs/heads/simple-conflict", map[CGitHash::FromHexStr(L"c5b89de0335fd674e2e421ac4543098cb2f22cde")][0]);
+	ASSERT_EQ(1U, map[CGitHash::FromHexStr(L"10385764a4d42d7428bbeb245015f8f338fc1e40")].size());
+	EXPECT_STREQ(L"refs/heads/forconflict", map[CGitHash::FromHexStr(L"10385764a4d42d7428bbeb245015f8f338fc1e40")][0]);
+	ASSERT_EQ(2U, map[CGitHash::FromHexStr(L"49ecdfff36bfe2b9b499b33e5034f427e2fa54dd")].size());
+	EXPECT_STREQ(L"refs/heads/master2", map[CGitHash::FromHexStr(L"49ecdfff36bfe2b9b499b33e5034f427e2fa54dd")][0]);
+	EXPECT_STREQ(L"refs/tags/also-signed^{}", map[CGitHash::FromHexStr(L"49ecdfff36bfe2b9b499b33e5034f427e2fa54dd")][1]);
+	ASSERT_EQ(1U, map[CGitHash::FromHexStr(L"b9ef30183497cdad5c30b88d32dc1bed7951dfeb")].size());//
+	EXPECT_STREQ(L"refs/tags/normal-tag", map[CGitHash::FromHexStr(L"b9ef30183497cdad5c30b88d32dc1bed7951dfeb")][0]);
+	ASSERT_EQ(1U, map[CGitHash::FromHexStr(L"a9d53b535cb49640a6099860ac4999f5a0857b91")].size());
+	EXPECT_STREQ(L"refs/remotes/origin/master", map[CGitHash::FromHexStr(L"a9d53b535cb49640a6099860ac4999f5a0857b91")][0]);
+	ASSERT_EQ(1U, map[CGitHash::FromHexStr(L"313a41bc88a527289c87d7531802ab484715974f")].size());
+	EXPECT_STREQ(L"refs/tags/all-files-signed^{}", map[CGitHash::FromHexStr(L"313a41bc88a527289c87d7531802ab484715974f")][0]);
 
 	STRING_VECTOR remotes;
 	EXPECT_EQ(0, m_Git.GetRemoteList(remotes));
@@ -2916,52 +2916,52 @@ TEST_P(CBasicGitWithTestRepoFixture, GetBisectTerms)
 TEST_P(CBasicGitWithTestRepoFixture, GetRefsCommitIsOn)
 {
 	STRING_VECTOR list;
-	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6"), false, false));
+	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash::FromHexStr(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6"), false, false));
 	EXPECT_TRUE(list.empty());
 
 	list.clear();
-	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6"), true, true));
+	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash::FromHexStr(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6"), true, true));
 	ASSERT_EQ(1U, list.size());
 	EXPECT_STREQ(L"refs/heads/master", list[0]);
 
 	list.clear();
-	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash(L"1fc3c9688e27596d8717b54f2939dc951568f6cb"), true, true));
+	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash::FromHexStr(L"1fc3c9688e27596d8717b54f2939dc951568f6cb"), true, true));
 	ASSERT_EQ(1U, list.size());
 	EXPECT_STREQ(L"refs/heads/master", list[0]);
 
 	list.clear();
-	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash(L"1fc3c9688e27596d8717b54f2939dc951568f6cb"), false, true));
+	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash::FromHexStr(L"1fc3c9688e27596d8717b54f2939dc951568f6cb"), false, true));
 	ASSERT_EQ(1U, list.size());
 	EXPECT_STREQ(L"refs/heads/master", list[0]);
 
 	list.clear();
-	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash(L"1fc3c9688e27596d8717b54f2939dc951568f6cb"), true, true, CGit::BRANCH_REMOTE));
+	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash::FromHexStr(L"1fc3c9688e27596d8717b54f2939dc951568f6cb"), true, true, CGit::BRANCH_REMOTE));
 	EXPECT_TRUE(list.empty());
 
 	list.clear();
-	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash(L"1fc3c9688e27596d8717b54f2939dc951568f6cb"), false, true, CGit::BRANCH_ALL));
+	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash::FromHexStr(L"1fc3c9688e27596d8717b54f2939dc951568f6cb"), false, true, CGit::BRANCH_ALL));
 	ASSERT_EQ(1U, list.size());
 	EXPECT_STREQ(L"refs/heads/master", list[0]);
 
 	list.clear();
-	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash(L"1fc3c9688e27596d8717b54f2939dc951568f6cb"), true, false));
+	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash::FromHexStr(L"1fc3c9688e27596d8717b54f2939dc951568f6cb"), true, false));
 	EXPECT_TRUE(list.empty());
 
 	list.clear();
-	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash(L"b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), true, false));
+	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash::FromHexStr(L"b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), true, false));
 	ASSERT_EQ(2U, list.size());
 	EXPECT_STREQ(L"refs/tags/also-signed", list[0]);
 	EXPECT_STREQ(L"refs/tags/normal-tag", list[1]);
 
 	list.clear();
-	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash(L"35c91b4ae2f77f4f21a7aba56d3c473c705d89e6"), true, true));
+	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash::FromHexStr(L"35c91b4ae2f77f4f21a7aba56d3c473c705d89e6"), true, true));
 	ASSERT_EQ(3U, list.size());
 	EXPECT_STREQ(L"refs/heads/master", list[0]);
 	EXPECT_STREQ(L"refs/heads/master2", list[1]);
 	EXPECT_STREQ(L"refs/tags/also-signed", list[2]);
 
 	list.clear();
-	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash(L"313a41bc88a527289c87d7531802ab484715974f"), false, true));
+	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash::FromHexStr(L"313a41bc88a527289c87d7531802ab484715974f"), false, true));
 	ASSERT_EQ(6U, list.size());
 	EXPECT_STREQ(L"refs/heads/forconflict", list[0]);
 	EXPECT_STREQ(L"refs/heads/master", list[1]);
@@ -2971,12 +2971,12 @@ TEST_P(CBasicGitWithTestRepoFixture, GetRefsCommitIsOn)
 	EXPECT_STREQ(L"refs/heads/subdir/branch", list[5]);
 
 	list.clear();
-	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash(L"313a41bc88a527289c87d7531802ab484715974f"), false, true, CGit::BRANCH_REMOTE));
+	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash::FromHexStr(L"313a41bc88a527289c87d7531802ab484715974f"), false, true, CGit::BRANCH_REMOTE));
 	ASSERT_EQ(1U, list.size());
 	EXPECT_STREQ(L"refs/remotes/origin/master", list[0]);
 
 	list.clear();
-	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash(L"313a41bc88a527289c87d7531802ab484715974f"), false, true, CGit::BRANCH_LOCAL));
+	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash::FromHexStr(L"313a41bc88a527289c87d7531802ab484715974f"), false, true, CGit::BRANCH_LOCAL));
 	ASSERT_EQ(6U, list.size());
 	EXPECT_STREQ(L"refs/heads/forconflict", list[0]);
 	EXPECT_STREQ(L"refs/heads/master", list[1]);
@@ -2986,7 +2986,7 @@ TEST_P(CBasicGitWithTestRepoFixture, GetRefsCommitIsOn)
 	EXPECT_STREQ(L"refs/heads/subdir/branch", list[5]);
 
 	list.clear();
-	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash(L"313a41bc88a527289c87d7531802ab484715974f"), false, true, CGit::BRANCH_ALL));
+	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash::FromHexStr(L"313a41bc88a527289c87d7531802ab484715974f"), false, true, CGit::BRANCH_ALL));
 	ASSERT_EQ(7U, list.size());
 	EXPECT_STREQ(L"refs/heads/forconflict", list[0]);
 	EXPECT_STREQ(L"refs/remotes/origin/master", list[6]);
@@ -2997,7 +2997,7 @@ TEST_P(CBasicGitWithTestRepoFixture, GetRefsCommitIsOn)
 	adminDir += L"refs\\remotes\\origin\\HEAD";
 	ASSERT_TRUE(CStringUtils::WriteStringToTextFile(adminDir, L"ref: refs/remotes/origin/master"));
 	list.clear();
-	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash(L"313a41bc88a527289c87d7531802ab484715974f"), false, true, CGit::BRANCH_ALL));
+	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash::FromHexStr(L"313a41bc88a527289c87d7531802ab484715974f"), false, true, CGit::BRANCH_ALL));
 	ASSERT_EQ(8U, list.size());
 	EXPECT_STREQ(L"refs/heads/forconflict", list[0]);
 	EXPECT_STREQ(L"refs/remotes/origin/HEAD", list[6]);
@@ -3019,10 +3019,10 @@ static void GetGitNotes(CGit& m_Git, config testConfig)
 		return;
 
 	CString notes;
-	EXPECT_EQ(0, m_Git.GetGitNotes(CGitHash(L"1fc3c9688e27596d8717b54f2939dc951568f6cb"), notes));
+	EXPECT_EQ(0, m_Git.GetGitNotes(CGitHash::FromHexStr(L"1fc3c9688e27596d8717b54f2939dc951568f6cb"), notes));
 	EXPECT_STREQ(L"A note here!\n", notes);
 
-	EXPECT_EQ(0, m_Git.GetGitNotes(CGitHash(L"1ce788330fd3a306c8ad37654063ceee13a7f172"), notes));
+	EXPECT_EQ(0, m_Git.GetGitNotes(CGitHash::FromHexStr(L"1ce788330fd3a306c8ad37654063ceee13a7f172"), notes));
 	EXPECT_STREQ(L"", notes);
 }
 
@@ -3040,31 +3040,31 @@ TEST_P(CBasicGitWithTestRepoFixture, GuessRefForHash)
 {
 	CString ref;
 	// HEAD
-	EXPECT_EQ(0, m_Git.GuessRefForHash(ref, CGitHash(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6")));
+	EXPECT_EQ(0, m_Git.GuessRefForHash(ref, CGitHash::FromHexStr(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6")));
 	EXPECT_STREQ(L"master", ref);
 
 	// local branch
-	EXPECT_EQ(0, m_Git.GuessRefForHash(ref, CGitHash(L"10385764a4d42d7428bbeb245015f8f338fc1e40")));
+	EXPECT_EQ(0, m_Git.GuessRefForHash(ref, CGitHash::FromHexStr(L"10385764a4d42d7428bbeb245015f8f338fc1e40")));
 	EXPECT_STREQ(L"forconflict", ref);
 
 	// stash
-	EXPECT_EQ(0, m_Git.GuessRefForHash(ref, CGitHash(L"18da7c332dcad0f37f9977d9176dce0b0c66f3eb")));
+	EXPECT_EQ(0, m_Git.GuessRefForHash(ref, CGitHash::FromHexStr(L"18da7c332dcad0f37f9977d9176dce0b0c66f3eb")));
 	EXPECT_STREQ(CString(L"18da7c332dcad0f37f9977d9176dce0b0c66f3eb").Left(m_Git.GetShortHASHLength()), ref);
 
 	// tag only
-	EXPECT_EQ(0, m_Git.GuessRefForHash(ref, CGitHash(L"b9ef30183497cdad5c30b88d32dc1bed7951dfeb")));
+	EXPECT_EQ(0, m_Git.GuessRefForHash(ref, CGitHash::FromHexStr(L"b9ef30183497cdad5c30b88d32dc1bed7951dfeb")));
 	EXPECT_STREQ(L"normal-tag", ref);
 
 	// local branch & tag
-	EXPECT_EQ(0, m_Git.GuessRefForHash(ref, CGitHash(L"49ecdfff36bfe2b9b499b33e5034f427e2fa54dd")));
+	EXPECT_EQ(0, m_Git.GuessRefForHash(ref, CGitHash::FromHexStr(L"49ecdfff36bfe2b9b499b33e5034f427e2fa54dd")));
 	EXPECT_STREQ(L"master2", ref);
 
 	// remote branch
-	EXPECT_EQ(0, m_Git.GuessRefForHash(ref, CGitHash(L"a9d53b535cb49640a6099860ac4999f5a0857b91")));
+	EXPECT_EQ(0, m_Git.GuessRefForHash(ref, CGitHash::FromHexStr(L"a9d53b535cb49640a6099860ac4999f5a0857b91")));
 	EXPECT_STREQ(L"origin/master", ref);
 
 	// no ref
-	EXPECT_EQ(0, m_Git.GuessRefForHash(ref, CGitHash(L"1ce788330fd3a306c8ad37654063ceee13a7f172")));
+	EXPECT_EQ(0, m_Git.GuessRefForHash(ref, CGitHash::FromHexStr(L"1ce788330fd3a306c8ad37654063ceee13a7f172")));
 	EXPECT_STREQ(CString(L"1ce788330fd3a306c8ad37654063ceee13a7f172").Left(m_Git.GetShortHASHLength()), ref);
 }
 

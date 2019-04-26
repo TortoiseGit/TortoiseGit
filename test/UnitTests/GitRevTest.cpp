@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2017 - TortoiseGit
+// Copyright (C) 2015-2017, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -94,7 +94,7 @@ static void GetRevParsingTests()
 	EXPECT_STRNE(L"", rev.GetLastErr());
 	EXPECT_TRUE(rev.m_CommitHash.IsEmpty());
 	rev.Clear();
-	CGitHash hash(L"aa5b97f89cea6863222823c8289ce392d06d1691");
+	CGitHash hash(CGitHash::FromHexStr(L"aa5b97f89cea6863222823c8289ce392d06d1691"));
 	EXPECT_EQ(0, rev.GetCommitFromHash(hash));
 	EXPECT_EQ(hash, rev.m_CommitHash);
 	EXPECT_STREQ(L"Another dummy with ümlaut", rev.GetAuthorName());
