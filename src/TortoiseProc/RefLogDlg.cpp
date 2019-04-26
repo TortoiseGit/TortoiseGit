@@ -113,7 +113,7 @@ void CRefLogDlg::OnBnClickedOk()
 			// all ok, pick up the revision
 			GitRev* pLogEntry = m_RefList.m_arShownList.SafeGetAt(selIndex);
 			// extract the hash
-			m_SelectedHash = pLogEntry->m_CommitHash.ToString();
+			m_SelectedHash = pLogEntry->m_CommitHash;
 		}
 	}
 
