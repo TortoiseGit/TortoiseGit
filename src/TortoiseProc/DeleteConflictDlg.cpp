@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2009-2019 - TortoiseGit
 
@@ -47,8 +47,8 @@ void CDeleteConflictDlg::DoDataExchange(CDataExchange* pDX)
 
 	DDX_Text(pDX, IDC_LOCAL_STATUS, m_LocalStatus);
 	DDX_Text(pDX, IDC_REMOTE_STATUS, m_RemoteStatus);
-	DDX_Text(pDX, IDC_FROMHASH, m_LocalHash);
-	DDX_Text(pDX, IDC_TOHASH, m_RemoteHash);
+	GetDlgItem(IDC_FROMHASH)->SetWindowText(m_LocalHash.ToString());
+	GetDlgItem(IDC_TOHASH)->SetWindowText(m_RemoteHash.ToString());
 }
 
 
@@ -96,12 +96,12 @@ BOOL CDeleteConflictDlg::OnInitDialog()
 
 void CDeleteConflictDlg::OnBnClickedLog()
 {
-	ShowLog(m_LocalHash);
+	ShowLog(m_LocalHash.ToString());
 }
 
 void CDeleteConflictDlg::OnBnClickedLog2()
 {
-	ShowLog(m_RemoteHash);
+	ShowLog(m_RemoteHash.ToString());
 }
 
 void CDeleteConflictDlg::OnBnClickedDelete()
@@ -131,7 +131,7 @@ void CDeleteConflictDlg::OnBnClickedShowdiff()
 	flags.bAlternativeTool = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
 	CAppUtils::StartExtDiff(m_FileBaseVersion.GetWinPathString(), g_Git.CombinePath(m_File),
 		base,
-		m_bDiffMine ? m_LocalHash : m_RemoteHash,
+		m_bDiffMine ? m_LocalHash.ToString() : m_RemoteHash.ToString(),
 		m_FileBaseVersion.GetWinPathString(),
 		g_Git.CombinePath(m_File),
 		m_bDiffMine ? m_LocalHash : m_RemoteHash,

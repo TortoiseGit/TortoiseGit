@@ -469,7 +469,7 @@ void CGitPropertyPage::DisplayCommit(const git_commit* commit, UINT hashLabel, U
 	int start = 0;
 	message = message.Tokenize(L"\n", start);
 
-	SetDlgItemText(m_hwnd, hashLabel, CGitHash(git_commit_id(commit)->id).ToString());
+	SetDlgItemText(m_hwnd, hashLabel, CGitHash(git_commit_id(commit)).ToString());
 	SetDlgItemText(m_hwnd, subjectLabel, message);
 	SetDlgItemText(m_hwnd, authorLabel, authorName);
 

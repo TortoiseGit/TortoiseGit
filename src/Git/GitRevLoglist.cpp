@@ -126,7 +126,7 @@ int GitRevLoglist::SafeGetSimpleList(CGit* git)
 
 	try
 	{
-		if (git_get_commit_from_hash(&commit, static_cast<const unsigned char*>(m_CommitHash)))
+		if (git_get_commit_from_hash(&commit, m_CommitHash.ToRaw()))
 			return -1;
 	}
 	catch (char *)
@@ -337,7 +337,7 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 
 	try
 	{
-		if (git_get_commit_from_hash(&commit, static_cast<const unsigned char*>(m_CommitHash)))
+		if (git_get_commit_from_hash(&commit, m_CommitHash.ToRaw()))
 		{
 			m_sErr = L"git_get_commit_from_hash failed for " + m_CommitHash.ToString();
 			return -1;
@@ -361,7 +361,7 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 		try
 		{
 			if (isRoot)
-				git_root_diff(git->GetGitDiff(), static_cast<const unsigned char*>(m_CommitHash), &file, &count, 1);
+				git_root_diff(git->GetGitDiff(), m_CommitHash.ToRaw(), &file, &count, 1);
 			else
 				git_do_diff(git->GetGitDiff(), parent, commit.m_hash, &file, &count, 1);
 		}
@@ -480,7 +480,7 @@ int GitRevLoglist::GetRefLog(const CString& ref, std::vector<GitRevLoglist>& ref
 		{
 			auto vector = static_cast<std::vector<GitRevLoglist>*>(data);
 			GitRevLoglist rev;
-			rev.m_CommitHash = static_cast<const unsigned char*>(new_oid->hash);
+			rev.m_CommitHash = CGitHash::FromRaw(new_oid->hash);
 			rev.GetCommitterDate() = CTime(time);
 
 			CString one = CUnicodeUtils::GetUnicode(msg);
@@ -534,7 +534,7 @@ int GitRevLoglist::GetRefLog(const CString& ref, std::vector<GitRevLoglist>& ref
 			continue;
 
 		GitRevLoglist rev;
-		rev.m_CommitHash = one.Left(refPos);
+		rev.m_CommitHash = CGitHash::FromHexStrTry(one.Left(refPos));
 		rev.m_Ref.Format(L"%s@{%d}", static_cast<LPCTSTR>(ref), i++);
 		int prefixPos = one.Find(prefix, refPos + 1);
 		if (prefixPos != refPos + 1)

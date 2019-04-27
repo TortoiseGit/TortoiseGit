@@ -55,7 +55,7 @@ int GitRev::ParserParentFromCommit(GIT_COMMIT *commit)
 
 	git_get_commit_first_parent(commit,&list);
 	while(git_get_commit_next_parent(&list,parent)==0)
-		m_ParentHash.emplace_back(parent);
+		m_ParentHash.emplace_back(CGitHash::FromRaw(parent));
 	return 0;
 }
 
@@ -70,7 +70,7 @@ int GitRev::ParserFromCommit(GIT_COMMIT *commit)
 		encode = CUnicodeUtils::GetCPCode(str);
 	}
 
-	this->m_CommitHash = commit->m_hash;
+	this->m_CommitHash = CGitHash::FromRaw(commit->m_hash);
 
 	this->m_AuthorDate = commit->m_Author.Date;
 
@@ -102,7 +102,7 @@ int GitRev::ParserParentFromCommit(const git_commit* commit)
 	m_ParentHash.clear();
 	unsigned int parentCount = git_commit_parentcount(commit);
 	for (unsigned int i = 0; i < parentCount; ++i)
-		m_ParentHash.emplace_back(git_commit_parent_id(commit, i)->id);
+		m_ParentHash.emplace_back(git_commit_parent_id(commit, i));
 
 	return 0;
 }
@@ -192,7 +192,7 @@ int GitRev::GetParentFromHash(const CGitHash& hash)
 	{
 		g_Git.CheckAndInitDll();
 
-		if (git_get_commit_from_hash(&commit, static_cast<const unsigned char*>(hash)))
+		if (git_get_commit_from_hash(&commit, hash.ToRaw()))
 		{
 			m_sErr = L"git_get_commit_from_hash failed for " + hash.ToString();
 			return -1;
@@ -226,7 +226,7 @@ int GitRev::GetCommitFromHash_withoutLock(const CGitHash& hash)
 	GIT_COMMIT commit;
 	try
 	{
-		if (git_get_commit_from_hash(&commit, static_cast<const unsigned char*>(hash)))
+		if (git_get_commit_from_hash(&commit, hash.ToRaw()))
 		{
 			m_sErr = L"git_get_commit_from_hash failed for " + hash.ToString();
 			return -1;
@@ -296,6 +296,6 @@ int GitRev::GetCommit(const CString& refname)
 		return -1;
 	}
 
-	CGitHash hash(sha);
+	CGitHash hash = CGitHash::FromRaw(sha);
 	return GetCommitFromHash_withoutLock(hash);
 }

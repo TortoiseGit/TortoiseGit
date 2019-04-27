@@ -274,8 +274,8 @@ public:
 
 	HWND GetParentHWND();
 
-	CString m_Rev1;
-	CString m_Rev2;
+	CGitHash m_Rev1;
+	CGitHash m_Rev2;
 
 	/**
 	 * \ingroup TortoiseProc

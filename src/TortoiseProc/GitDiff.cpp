@@ -28,14 +28,14 @@
 #include "SubmoduleDiffDlg.h"
 #include "TempFile.h"
 
-int CGitDiff::SubmoduleDiffNull(HWND hWnd, const CTGitPath* pPath, const CString& rev1)
+int CGitDiff::SubmoduleDiffNull(HWND hWnd, const CTGitPath* pPath, const CGitHash& hash)
 {
 	CString newsub;
-	CString newhash;
+	CGitHash newhash;
 
 	CString cmd;
-	if (rev1 != GIT_REV_ZERO)
-		cmd.Format(L"git.exe ls-tree \"%s\" -- \"%s\"", static_cast<LPCTSTR>(rev1), static_cast<LPCTSTR>(pPath->GetGitPathString()));
+	if (!hash.IsEmpty())
+		cmd.Format(L"git.exe ls-tree \"%s\" -- \"%s\"", static_cast<LPCTSTR>(hash.ToString()), static_cast<LPCTSTR>(pPath->GetGitPathString()));
 	else
 		cmd.Format(L"git.exe ls-files -s -- \"%s\"", static_cast<LPCTSTR>(pPath->GetGitPathString()));
 
@@ -49,20 +49,20 @@ int CGitDiff::SubmoduleDiffNull(HWND hWnd, const CTGitPath* pPath, const CString
 	int start = output.Find(L' ');
 	if(start>0)
 	{
-		if (rev1 != GIT_REV_ZERO) // in ls-files the hash is in the second column; in ls-tree it's in the third one
+		if (!hash.IsEmpty()) // in ls-files the hash is in the second column; in ls-tree it's in the third one
 			start = output.Find(L' ', start + 1);
 		if(start>0)
-			newhash=output.Mid(start + 1, GIT_HASH_SIZE * 2);
+			newhash = CGitHash::FromHexStrTry(output.Mid(start + 1, GIT_HASH_SIZE * 2));
 
 		CGit subgit;
 		subgit.m_CurrentDir = g_Git.CombinePath(pPath);
 		int encode=CAppUtils::GetLogOutputEncode(&subgit);
 
-		cmd.Format(L"git.exe log -n1 --pretty=format:\"%%s\" %s --", static_cast<LPCTSTR>(newhash));
+		cmd.Format(L"git.exe log -n1 --pretty=format:\"%%s\" %s --", static_cast<LPCTSTR>(newhash.ToString()));
 		bool toOK = !subgit.Run(cmd,&newsub,encode);
 
 		bool dirty = false;
-		if (rev1 == GIT_REV_ZERO && !(pPath->m_Action & CTGitPath::LOGACTIONS_DELETED))
+		if (hash.IsEmpty() && !(pPath->m_Action & CTGitPath::LOGACTIONS_DELETED))
 		{
 			CString dirtyList;
 			subgit.Run(L"git.exe status --porcelain", &dirtyList, encode);
@@ -71,9 +71,9 @@ int CGitDiff::SubmoduleDiffNull(HWND hWnd, const CTGitPath* pPath, const CString
 
 		CSubmoduleDiffDlg submoduleDiffDlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
 		if (pPath->m_Action & CTGitPath::LOGACTIONS_DELETED)
-			submoduleDiffDlg.SetDiff(pPath->GetWinPath(), false, newhash, newsub, toOK, GIT_REV_ZERO, L"", false, dirty, DeleteSubmodule);
+			submoduleDiffDlg.SetDiff(pPath->GetWinPath(), false, newhash, newsub, toOK, CGitHash(), L"", false, dirty, DeleteSubmodule);
 		else
-			submoduleDiffDlg.SetDiff(pPath->GetWinPath(), false, GIT_REV_ZERO, L"", true, newhash, newsub, toOK, dirty, NewSubmodule);
+			submoduleDiffDlg.SetDiff(pPath->GetWinPath(), false, CGitHash(), L"", true, newhash, newsub, toOK, dirty, NewSubmodule);
 		submoduleDiffDlg.DoModal();
 		if (submoduleDiffDlg.IsRefresh())
 			return 1;
@@ -81,7 +81,7 @@ int CGitDiff::SubmoduleDiffNull(HWND hWnd, const CTGitPath* pPath, const CString
 		return 0;
 	}
 
-	if (rev1 != GIT_REV_ZERO)
+	if (!hash.IsEmpty())
 		CMessageBox::Show(hWnd, L"ls-tree output format error", L"TortoiseGit", MB_OK | MB_ICONERROR);
 	else
 		CMessageBox::Show(hWnd, L"ls-files output format error", L"TortoiseGit", MB_OK | MB_ICONERROR);
@@ -108,7 +108,7 @@ int CGitDiff::DiffNull(HWND hWnd, const CTGitPath* pPath, const CString& rev1, b
 		int result;
 		// refresh if result = 1
 		CTGitPath path = *pPath;
-		while ((result = SubmoduleDiffNull(hWnd, &path, rev1Hash.ToString())) == 1)
+		while ((result = SubmoduleDiffNull(hWnd, &path, rev1Hash)) == 1)
 			path.SetFromGit(pPath->GetGitPathString());
 		return result;
 	}
@@ -136,43 +136,40 @@ int CGitDiff::DiffNull(HWND hWnd, const CTGitPath* pPath, const CString& rev1, b
 	if(bIsAdd)
 		CAppUtils::StartExtDiff(tempfile,file1,
 							pPath->GetGitPathString(),
-							pPath->GetGitPathString() + L':' + rev1Hash.ToString().Left(g_Git.GetShortHASHLength()),
+							pPath->GetGitPathString() + L':' + rev1Hash.ToString(g_Git.GetShortHASHLength()),
 							g_Git.CombinePath(pPath), g_Git.CombinePath(pPath),
-							GIT_REV_ZERO, rev1Hash.ToString()
+							CGitHash(), rev1Hash
 							, flags, jumpToLine);
 	else
 		CAppUtils::StartExtDiff(file1,tempfile,
-							pPath->GetGitPathString() + L':' + rev1Hash.ToString().Left(g_Git.GetShortHASHLength()),
+							pPath->GetGitPathString() + L':' + rev1Hash.ToString(g_Git.GetShortHASHLength()),
 							pPath->GetGitPathString(),
 							g_Git.CombinePath(pPath), g_Git.CombinePath(pPath),
-							rev1Hash.ToString(), GIT_REV_ZERO
+							rev1Hash, CGitHash()
 							, flags, jumpToLine);
 
 	return 0;
 }
 
-int CGitDiff::SubmoduleDiff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* /*pPath2*/, const CString& rev1, const CString& rev2, bool /*blame*/, bool /*unified*/)
+int CGitDiff::SubmoduleDiff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* /*pPath2*/, const CGitHash& rev1, const CGitHash& rev2, bool /*blame*/, bool /*unified*/)
 {
-	CString oldhash;
-	CString newhash;
+	CGitHash oldhash;
+	CGitHash newhash;
 	bool dirty = false;
 	CString cmd;
 	bool isWorkingCopy = false;
-	if( rev2 == GIT_REV_ZERO || rev1 == GIT_REV_ZERO )
+	if (rev2.IsEmpty() || rev1.IsEmpty())
 	{
-		oldhash = GIT_REV_ZERO;
-		newhash = GIT_REV_ZERO;
-
-		CString rev;
-		if( rev2 != GIT_REV_ZERO )
+		CGitHash rev;
+		if (!rev2.IsEmpty())
 			rev = rev2;
-		if( rev1 != GIT_REV_ZERO )
+		if (!rev1.IsEmpty())
 			rev = rev1;
 
 		isWorkingCopy = true;
 
 		cmd.Format(L"git.exe diff --submodule=short %s -- \"%s\"",
-		static_cast<LPCTSTR>(rev), static_cast<LPCTSTR>(pPath->GetGitPathString()));
+		static_cast<LPCTSTR>(rev.ToString()), static_cast<LPCTSTR>(pPath->GetGitPathString()));
 
 		CString output, err;
 		if (g_Git.Run(cmd, &output, &err, CP_UTF8))
@@ -214,7 +211,7 @@ int CGitDiff::SubmoduleDiff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* 
 			CMessageBox::Show(hWnd, L"Subproject Diff Format error", L"TortoiseGit", MB_OK | MB_ICONERROR);
 			return -1;
 		}
-		oldhash = output.Mid(oldstart + static_cast<int>(wcslen(L"-Subproject commit")) + 1, GIT_HASH_SIZE * 2);
+		oldhash = CGitHash::FromHexStrTry(output.Mid(oldstart + static_cast<int>(wcslen(L"-Subproject commit")) + 1, GIT_HASH_SIZE * 2));
 		start = 0;
 		int newstart = output.Find(L"+Subproject commit",start);
 		if (newstart < 0)
@@ -222,13 +219,13 @@ int CGitDiff::SubmoduleDiff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* 
 			CMessageBox::Show(hWnd, L"Subproject Diff Format error", L"TortoiseGit", MB_OK | MB_ICONERROR);
 			return -1;
 		}
-		newhash = output.Mid(newstart + static_cast<int>(wcslen(L"+Subproject commit")) + 1, GIT_HASH_SIZE * 2);
+		newhash = CGitHash::FromHexStrTry(output.Mid(newstart + static_cast<int>(wcslen(L"+Subproject commit")) + 1, GIT_HASH_SIZE * 2));
 		dirty = output.Mid(newstart + static_cast<int>(wcslen(L"+Subproject commit")) + GIT_HASH_SIZE * 2 + 1) == L"-dirty\n";
 	}
 	else
 	{
 		cmd.Format(L"git.exe diff-tree -r -z %s %s -- \"%s\"",
-		static_cast<LPCTSTR>(rev2), static_cast<LPCTSTR>(rev1), static_cast<LPCTSTR>(pPath->GetGitPathString()));
+		static_cast<LPCTSTR>(rev2.ToString()), static_cast<LPCTSTR>(rev1.ToString()), static_cast<LPCTSTR>(pPath->GetGitPathString()));
 
 		BYTE_VECTOR bytes, errBytes;
 		if(g_Git.Run(cmd, &bytes, &errBytes))
@@ -244,9 +241,12 @@ int CGitDiff::SubmoduleDiff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* 
 			CMessageBox::Show(hWnd, L"git diff-tree gives invalid output", L"TortoiseGit", MB_OK | MB_ICONERROR);
 			return -1;
 		}
-		CGit::StringAppend(&oldhash, &bytes[15], CP_UTF8, 2 * GIT_HASH_SIZE);
-		CGit::StringAppend(&newhash, &bytes[15 + 2 * GIT_HASH_SIZE + 1], CP_UTF8, 2 * GIT_HASH_SIZE);
-
+		CString temp;
+		CGit::StringAppend(&temp, &bytes[15], CP_UTF8, 2 * GIT_HASH_SIZE);
+		oldhash = CGitHash::FromHexStrTry(temp);
+		CGit::StringAppend(&temp, &bytes[15 + 2 * GIT_HASH_SIZE + 1], CP_UTF8, 2 * GIT_HASH_SIZE);
+		temp.Empty();
+		newhash = CGitHash::FromHexStrTry(temp);
 	}
 
 	CString oldsub;
@@ -374,7 +374,7 @@ int CGitDiff::Diff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* pPath2, c
 		// refresh if result = 1
 		CTGitPath path = *pPath;
 		CTGitPath path2 = *pPath2;
-		while ((result = SubmoduleDiff(hWnd, &path, &path2, rev1Hash.ToString(), rev2Hash.ToString())) == 1)
+		while ((result = SubmoduleDiff(hWnd, &path, &path2, rev1Hash, rev2Hash)) == 1)
 		{
 			path.SetFromGit(pPath->GetGitPathString());
 			path2.SetFromGit(pPath2->GetGitPathString());
@@ -386,7 +386,7 @@ int CGitDiff::Diff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* pPath2, c
 	{
 		// use original file extension, an external diff tool might need it
 		file1 = CTempFiles::Instance().GetTempFilePath(false, *pPath, rev1Hash).GetWinPathString();
-		title1 = pPath->GetGitPathString() + L": " + rev1Hash.ToString().Left(g_Git.GetShortHASHLength());
+		title1 = pPath->GetGitPathString() + L": " + rev1Hash.ToString(g_Git.GetShortHASHLength());
 		auto ret = g_Git.GetOneFile(rev1Hash.ToString(), *pPath, file1);
 		if (ret && !(!mustExist && ret == GIT_ENOTFOUND))
 		{
@@ -422,7 +422,7 @@ int CGitDiff::Diff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* pPath2, c
 			fileName = CTGitPath(pPath2->GetGitOldPathString());
 
 		file2 = CTempFiles::Instance().GetTempFilePath(false, fileName, rev2Hash).GetWinPathString();
-		title2 = fileName.GetGitPathString() + L": " + rev2Hash.ToString().Left(g_Git.GetShortHASHLength());
+		title2 = fileName.GetGitPathString() + L": " + rev2Hash.ToString(g_Git.GetShortHASHLength());
 		auto ret = g_Git.GetOneFile(rev2Hash.ToString(), fileName, file2);
 		if (ret && !(!mustExist && ret == GIT_ENOTFOUND))
 		{
@@ -446,8 +446,8 @@ int CGitDiff::Diff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* pPath2, c
 							title1,
 							g_Git.CombinePath(pPath2),
 							g_Git.CombinePath(pPath),
-							rev2Hash.ToString(),
-							rev1Hash.ToString(),
+							rev2Hash,
+							rev1Hash,
 							flags, jumpToLine);
 
 	return 0;

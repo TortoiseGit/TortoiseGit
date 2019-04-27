@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2011, 2015 - TortoiseSVN
-// Copyright (C) 2012-2013, 2015-2018 - TortoiseGit
+// Copyright (C) 2012-2013, 2015-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -371,8 +371,8 @@ void CRevisionGraphWnd::DrawConnections (GraphicsDevice& graphics, const CRect& 
 			graphics.pSVG->Polyline(points.GetData(), static_cast<int>(points.GetCount()), Color(0, 0, 0), static_cast<int>(penwidth));
 		else if (graphics.pGraphviz)
 		{
-			CString hash1 = L'g' + m_logEntries[e->target()->index()].ToString().Left(g_Git.GetShortHASHLength());
-			CString hash2 = L'g' + m_logEntries[e->source()->index()].ToString().Left(g_Git.GetShortHASHLength());
+			CString hash1 = L'g' + m_logEntries[e->target()->index()].ToString(g_Git.GetShortHASHLength());
+			CString hash2 = L'g' + m_logEntries[e->source()->index()].ToString(g_Git.GetShortHASHLength());
 			graphics.pGraphviz->DrawEdge(hash1, hash2);
 		}
 
@@ -460,7 +460,7 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 
 			if(graphics.graphics)
 			{
-				graphics.graphics->DrawString(hash.ToString().Left(g_Git.GetShortHASHLength()),-1,
+				graphics.graphics->DrawString(hash.ToString(g_Git.GetShortHASHLength()), -1,
 					&font,
 					Gdiplus::PointF(noderect.X + this->GetLeftRightMargin()*this->m_fZoomFactor,noderect.Y+this->GetTopBottomMargin()*m_fZoomFactor),
 					&blackbrush);
@@ -470,18 +470,18 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 				graphics.pSVG->Text(static_cast<int>(noderect.X + this->GetLeftRightMargin() * this->m_fZoomFactor),
 											static_cast<int>(noderect.Y + this->GetTopBottomMargin() * m_fZoomFactor + m_nFontSize),
 											CUnicodeUtils::GetUTF8(fontname), m_nFontSize, false, false, static_cast<ARGB>(Color::Black),
-											CUnicodeUtils::GetUTF8(hash.ToString().Left(g_Git.GetShortHASHLength())));
+											CUnicodeUtils::GetUTF8(hash.ToString(g_Git.GetShortHASHLength())));
 			}
 			if (graphics.pGraphviz)
 			{
-				CString shortHash = hash.ToString().Left(g_Git.GetShortHASHLength());
+				CString shortHash = hash.ToString(g_Git.GetShortHASHLength());
 				graphics.pGraphviz->DrawNode(L'g' + shortHash, shortHash, fontname, m_nFontSize, background, brightColor, static_cast<int>(noderect.Height));
 			}
 		}else
 		{
 			if (graphics.pGraphviz)
 			{
-				CString id = L'g' + hash.ToString().Left(g_Git.GetShortHASHLength());
+				CString id = L'g' + hash.ToString(g_Git.GetShortHASHLength());
 				graphics.pGraphviz->BeginDrawTableNode(id, fontname, m_nFontSize, static_cast<int>(noderect.Height));
 			}
 
@@ -669,7 +669,7 @@ void CRevisionGraphWnd::SetNodeRect(GraphicsDevice& graphics, ogdf::node *pnode,
 	{
 		if(this->m_HashMap.find(rev) == m_HashMap.end())
 		{
-			CString shorthash = rev.ToString().Left(g_Git.GetShortHASHLength());
+			CString shorthash = rev.ToString(g_Git.GetShortHASHLength());
 			RectF rect;
 			if(graphics.graphics)
 			{

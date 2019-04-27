@@ -1015,7 +1015,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			}
 
 			m_ChangedFileListCtrl.UpdateWithGitPathList(files);
-			m_ChangedFileListCtrl.m_CurrentVersion = pLogEntry->m_CommitHash.ToString();
+			m_ChangedFileListCtrl.m_CurrentVersion = pLogEntry->m_CommitHash;
 			if (pLogEntry->m_CommitHash.IsEmpty() && m_bShowUnversioned)
 			{
 				m_ChangedFileListCtrl.UpdateUnRevFileList(pLogEntry->GetUnRevFiles());
@@ -1740,7 +1740,7 @@ void CLogDlg::JumpToGitHash(CString hash)
 	int prefixLen = hash.GetLength();
 	while (hash.GetLength() < 2 * GIT_HASH_SIZE)
 		hash += L'0';
-	CGitHash prefixHash(hash);
+	CGitHash prefixHash = CGitHash::FromHexStrTry(hash);
 	// start searching downwards, because it's unlikely that a hash is a forward reference
 	int currentPos = m_LogList.GetSelectionMark();
 	int cnt = static_cast<int>(m_LogList.m_arShownList.size());
@@ -2923,7 +2923,7 @@ void CLogDlg::UpdateLogInfoLabel()
 	CString sTemp;
 	sTemp.FormatMessage(IDS_PROC_LOG_STATS,
 		count - start,
-		static_cast<LPCTSTR>(rev2.ToString().Left(g_Git.GetShortHASHLength())), static_cast<LPCTSTR>(rev1.ToString().Left(g_Git.GetShortHASHLength())), selectedrevs, selectedfiles);
+		static_cast<LPCTSTR>(rev2.ToString(g_Git.GetShortHASHLength())), static_cast<LPCTSTR>(rev1.ToString(g_Git.GetShortHASHLength())), selectedrevs, selectedfiles);
 
 	if(selectedrevs == 1)
 	{

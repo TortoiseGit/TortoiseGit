@@ -185,15 +185,14 @@ protected:
 	}
 
 	void AddDiffFileList(CGitStatusListCtrl *pCtrlList, CTGitPathList *pGitList,
-							CString rev1, CString rev2)
+							CGitHash& rev1, CGitHash& rev2)
 	{
-		g_Git.GetCommitDiffList(rev1,rev2,*pGitList);
-		pCtrlList->m_Rev1=rev1;
-		pCtrlList->m_Rev2=rev2;
+		g_Git.GetCommitDiffList(rev1.ToString(), rev2.ToString(), *pGitList);
+		pCtrlList->m_Rev1 = rev1;
+		pCtrlList->m_Rev2 = rev2;
 		pCtrlList->SetEmptyString(CString(MAKEINTRESOURCE(IDS_COMPAREREV_NODIFF)));
 		pCtrlList->UpdateWithGitPathList(*pGitList);
 		pCtrlList->Show(GITSLC_SHOWALL);
-		return;
 	}
 
 	void ShowInCommits(const CString& friendname);

@@ -636,8 +636,7 @@ void CRebaseDlg::FetchLogList()
 		mergecmd.Format(L"git merge-base --all %s %s", static_cast<LPCTSTR>(head.ToString()), static_cast<LPCTSTR>(upstreamHash.ToString()));
 		g_Git.Run(mergecmd, [&](const CStringA& line)
 		{
-			CGitHash hash;
-			hash.ConvertFromStrA(line);
+			CGitHash hash = CGitHash::FromHexStr(line);
 			if (hash.IsEmpty())
 				return;
 			m_rewrittenCommitsMap[hash] = upstreamHash;
@@ -675,7 +674,7 @@ void CRebaseDlg::FetchLogList()
 				return;
 			CString hash = CUnicodeUtils::GetUnicode(line.Mid(1));
 			hash.Trim();
-			nonCherryPicked.emplace_back(hash);
+			nonCherryPicked.emplace_back(CGitHash::FromHexStrTry(hash));
 		});
 		for (size_t i = m_CommitList.m_arShownList.size(); i-- > 0;)
 		{
@@ -739,7 +738,7 @@ void CRebaseDlg::FetchLogList()
 				return; // Don't skip (only skip commits starting with a '-')
 			CString hash = CUnicodeUtils::GetUnicode(line.Mid(1));
 			hash.Trim();
-			auto itIx = revIxMap.find(CGitHash(hash));
+			auto itIx = revIxMap.find(CGitHash::FromHexStrTry(hash));
 			if (itIx == revIxMap.end())
 				return; // Not found?? Should not occur...
 
@@ -1957,10 +1956,10 @@ static CString GetCommitTitle(const CGitHash& parentHash)
 			commitTitle.Truncate(20);
 			commitTitle += L"...";
 		}
-		str.AppendFormat(L"\n%s (%s)", static_cast<LPCTSTR>(commitTitle), static_cast<LPCTSTR>(parentHash.ToString().Left(g_Git.GetShortHASHLength())));
+		str.AppendFormat(L"\n%s (%s)", static_cast<LPCTSTR>(commitTitle), static_cast<LPCTSTR>(parentHash.ToString(g_Git.GetShortHASHLength())));
 	}
 	else
-		str.AppendFormat(L"\n(%s)", static_cast<LPCTSTR>(parentHash.ToString().Left(g_Git.GetShortHASHLength())));
+		str.AppendFormat(L"\n(%s)", static_cast<LPCTSTR>(parentHash.ToString(g_Git.GetShortHASHLength())));
 	return str;
 }
 
@@ -2838,7 +2837,7 @@ void CRebaseDlg::FillLogMessageCtrl()
 		int selIndex = m_CommitList.GetNextSelectedItem(pos);
 		GitRevLoglist* pLogEntry = m_CommitList.m_arShownList.SafeGetAt(selIndex);
 		m_FileListCtrl.UpdateWithGitPathList(pLogEntry->GetFiles(&m_CommitList));
-		m_FileListCtrl.m_CurrentVersion = pLogEntry->m_CommitHash.ToString();
+		m_FileListCtrl.m_CurrentVersion = pLogEntry->m_CommitHash;
 		m_FileListCtrl.Show(GITSLC_SHOWVERSIONED);
 		m_LogMessageCtrl.Call(SCI_SETREADONLY, FALSE);
 		m_LogMessageCtrl.SetText(pLogEntry->GetSubject() + L'\n' + pLogEntry->GetBody());

@@ -40,10 +40,6 @@ public:
 	{
 		memset(m_hash,0, GIT_HASH_SIZE);
 	}
-	CGitHash(const unsigned char* p)
-	{
-		memcpy(m_hash,p,GIT_HASH_SIZE);
-	}
 	CGitHash(const git_oid* oid)
 	{
 		git_oid_cpy(reinterpret_cast<git_oid*>(m_hash), oid);
@@ -51,17 +47,6 @@ public:
 	CGitHash(const git_oid& oid)
 	{
 		git_oid_cpy(reinterpret_cast<git_oid*>(m_hash), &oid);
-	}
-	CGitHash& operator = (const CString& str)
-	{
-		CGitHash hash(str);
-		*this = hash;
-		return *this;
-	}
-	CGitHash& operator = (const unsigned char *p)
-	{
-		memcpy(m_hash, p, GIT_HASH_SIZE);
-		return *this;
 	}
 	CGitHash& operator = (const git_oid* oid)
 	{
@@ -73,17 +58,18 @@ public:
 		git_oid_cpy(reinterpret_cast<git_oid*>(m_hash), &oid);
 		return *this;
 	}
-	CGitHash(const CString &str)
+
+	static CGitHash FromHexStrTry(const CString& str)
 	{
 		if (!IsValidSHA1(str))
-		{
-#ifdef ASSERT
-			//ASSERT(FALSE); // TODO problematic
-#endif
-			memset(m_hash, 0, GIT_HASH_SIZE);
-			return;
-		}
+			return CGitHash();
 
+		return FromHexStr(str);
+	}
+
+	static CGitHash FromHexStr(const CString& str)
+	{
+		CGitHash hash;
 		for (int i = 0; i < GIT_HASH_SIZE; ++i)
 		{
 			unsigned char a;
@@ -99,14 +85,22 @@ public:
 					a |= ((ch - L'A') & 0xF) + 10 ;
 				else if (ch >=L'a' && ch <= L'f')
 					a |= ((ch - L'a') & 0xF) + 10;
-
 			}
-			m_hash[i]=a;
+			hash.m_hash[i] = a;
 		}
+		return hash;
 	}
 
-	void ConvertFromStrA(const char *str)
+	static CGitHash FromRaw(const unsigned char* raw)
 	{
+		CGitHash hash;
+		memcpy(hash.m_hash, raw, GIT_HASH_SIZE);
+		return hash;
+	}
+
+	static CGitHash FromHexStr(const char* str)
+	{
+		CGitHash hash;
 		for (int i = 0; i < GIT_HASH_SIZE; ++i)
 		{
 			unsigned char a;
@@ -124,9 +118,11 @@ public:
 					a |= ((ch - 'a') & 0xF) + 10;
 
 			}
-			m_hash[i]=a;
+			hash.m_hash[i] = a;
 		}
+		return hash;
 	}
+
 	void Empty()
 	{
 		memset(m_hash,0, GIT_HASH_SIZE);
@@ -150,12 +146,20 @@ public:
 		return str;
 	}
 
+	CString ToString(int len) const
+	{
+		ASSERT(len >= 0 && len <= GIT_HASH_SIZE * 2);
+		CString str { ToString() };
+		str.Truncate(len);
+		return str;
+	}
+
 	operator const git_oid*() const
 	{
 		return reinterpret_cast<const git_oid*>(m_hash);
 	}
 
-	explicit operator const unsigned char*() const
+	const unsigned char* ToRaw() const
 	{
 		return m_hash;
 	}

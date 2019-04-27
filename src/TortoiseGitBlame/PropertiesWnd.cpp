@@ -275,7 +275,7 @@ void CPropertiesWnd::UpdateProperties(GitRevLoglist* pRev)
 
 			str.Format(L"%u - %s\n%s", i, static_cast<LPCTSTR>(pRev->m_ParentHash[i].ToString()), static_cast<LPCTSTR>(parentsubject));
 
-			auto pProperty = new CMFCPropertyGridProperty(pRev->m_ParentHash[i].ToString().Left(g_Git.GetShortHASHLength()), parentsubject, str);
+			auto pProperty = new CMFCPropertyGridProperty(pRev->m_ParentHash[i].ToString(g_Git.GetShortHASHLength()), parentsubject, str);
 			pProperty->AllowEdit(FALSE);
 			m_ParentGroup->AddSubItem(pProperty);
 		}

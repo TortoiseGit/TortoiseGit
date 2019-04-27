@@ -1690,10 +1690,10 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							commitTitle.Truncate(20);
 							commitTitle += L"...";
 						}
-						str.AppendFormat(L": \"%s\" (%s)", static_cast<LPCTSTR>(commitTitle), static_cast<LPCTSTR>(parentHash.ToString().Left(g_Git.GetShortHASHLength())));
+						str.AppendFormat(L": \"%s\" (%s)", static_cast<LPCTSTR>(commitTitle), static_cast<LPCTSTR>(parentHash.ToString(g_Git.GetShortHASHLength())));
 					}
 					else
-						str.AppendFormat(L" (%s)", static_cast<LPCTSTR>(parentHash.ToString().Left(g_Git.GetShortHASHLength())));
+						str.AppendFormat(L" (%s)", static_cast<LPCTSTR>(parentHash.ToString(g_Git.GetShortHASHLength())));
 					popup.AppendMenuIcon(IDGITLC_REVERTTOPARENT, str, IDI_REVERT);
 				}
 			}
@@ -2132,7 +2132,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					while (pos)
 					{
 						auto entry = GetListEntry(GetNextSelectedItem(pos));
-						CAppUtils::StartShowUnifiedDiff(m_hWnd, *entry, m_Rev2, *entry, m_Rev1, bShift);
+						CAppUtils::StartShowUnifiedDiff(m_hWnd, *entry, m_Rev2.ToString(), *entry, m_Rev1.ToString(), bShift);
 					}
 				}
 				break;
@@ -2745,11 +2745,11 @@ void CGitStatusListCtrl::StartDiffTwo(int fileindex)
 	CTGitPath file1 = *ptr;
 
 	if (file1.m_Action & CTGitPath::LOGACTIONS_ADDED)
-		CGitDiff::DiffNull(GetParentHWND(), &file1, m_Rev1, true, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
+		CGitDiff::DiffNull(GetParentHWND(), &file1, m_Rev1.ToString(), true, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 	else if (file1.m_Action & CTGitPath::LOGACTIONS_DELETED)
-		CGitDiff::DiffNull(GetParentHWND(), &file1, m_Rev2, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
+		CGitDiff::DiffNull(GetParentHWND(), &file1, m_Rev2.ToString(), false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 	else
-		CGitDiff::Diff(GetParentHWND(), &file1, &file1, m_Rev1, m_Rev2, false, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
+		CGitDiff::Diff(GetParentHWND(), &file1, &file1, m_Rev1.ToString(), m_Rev2.ToString(), false, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 }
 
 void CGitStatusListCtrl::StartDiffWC(int fileindex)
@@ -3704,7 +3704,7 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 					rev.Format(L"%s^%d", static_cast<LPCTSTR>(m_CurrentVersion.ToString()), groupindex + 1);
 					CGitHash hash;
 					if (!CGit::GetHash(repository, hash, rev))
-						str += L": " + hash.ToString().Left(g_Git.GetShortHASHLength());
+						str += L": " + hash.ToString(g_Git.GetShortHASHLength());
 				}
 				grp.pszHeader = str.GetBuffer();
 				str.ReleaseBuffer();
@@ -3813,7 +3813,7 @@ void CGitStatusListCtrl::NotifyCheck()
 int CGitStatusListCtrl::UpdateFileList(const CTGitPathList* list)
 {
 	CAutoWriteLock locker(m_guard);
-	m_CurrentVersion = GIT_REV_ZERO;
+	m_CurrentVersion.Empty();
 
 	ATLASSERT(!(m_amend && !m_bIncludedStaged)); // just a safeguard that we always show all files if we want to amend (amending should only be the used from commitdlg)
 	g_Git.GetWorkingTreeChanges(m_StatusFileList, m_amend, list, m_bIncludedStaged);
@@ -4190,7 +4190,7 @@ void CGitStatusListCtrl::FileSaveAs(CTGitPath *path)
 {
 	CAutoReadLock locker(m_guard);
 	CString filename;
-	filename.Format(L"%s\\%s-%s%s", static_cast<LPCTSTR>(g_Git.CombinePath(path->GetContainingDirectory())), static_cast<LPCTSTR>(path->GetBaseFilename()), static_cast<LPCTSTR>(m_CurrentVersion.ToString().Left(g_Git.GetShortHASHLength())), static_cast<LPCTSTR>(path->GetFileExtension()));
+	filename.Format(L"%s\\%s-%s%s", static_cast<LPCTSTR>(g_Git.CombinePath(path->GetContainingDirectory())), static_cast<LPCTSTR>(path->GetBaseFilename()), static_cast<LPCTSTR>(m_CurrentVersion.ToString(g_Git.GetShortHASHLength())), static_cast<LPCTSTR>(path->GetFileExtension()));
 	if (!CAppUtils::FileOpenSave(filename, nullptr, 0, 0, false, GetSafeHwnd()))
 		return;
 	if (m_CurrentVersion.IsEmpty())

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2018 - TortoiseGit
+// Copyright (C) 2015-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -75,7 +75,7 @@ static void SafeFetchFullInfo(CGit* cGit)
 	EXPECT_EQ(TRUE, rev.m_IsDiffFiles);
 	EXPECT_EQ(FALSE, rev.m_IsCommitParsed);
 	rev.Clear();
-	rev.m_CommitHash = L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6";
+	rev.m_CommitHash = CGitHash::FromHexStr(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6");
 	rev.m_IsDiffFiles = TRUE;
 	EXPECT_EQ(1, rev.CheckAndDiff());
 	EXPECT_EQ(FALSE, rev.m_IsSimpleListReady);
@@ -108,7 +108,7 @@ static void SafeFetchFullInfo(CGit* cGit)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
 	EXPECT_FALSE(list[0].IsDirectory());
 	rev.Clear();
-	rev.m_CommitHash = L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6";
+	rev.m_CommitHash = CGitHash::FromHexStr(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6");
 	rev.m_IsUpdateing = TRUE; // do nothing
 	EXPECT_EQ(0, rev.SafeFetchFullInfo(cGit));
 	EXPECT_STREQ(L"", rev.GetAuthorName());
@@ -120,7 +120,7 @@ static void SafeFetchFullInfo(CGit* cGit)
 	EXPECT_EQ(0U, rev.GetAction(nullptr));
 	EXPECT_EQ(0, rev.GetFiles(nullptr).GetCount());
 	rev.Clear();
-	rev.m_CommitHash = L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6";
+	rev.m_CommitHash = CGitHash::FromHexStr(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6");
 	EXPECT_EQ(0, rev.SafeFetchFullInfo(cGit));
 	EXPECT_STREQ(L"", rev.GetAuthorName());
 	EXPECT_EQ(FALSE, rev.m_IsSimpleListReady);
@@ -139,7 +139,7 @@ static void SafeFetchFullInfo(CGit* cGit)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
 	rev.Clear();
 	EXPECT_EQ(0, rev.GetFiles(nullptr).GetCount());
-	rev.m_CommitHash = L"dead91b4aedeaddeaddead2a56d3c473c705dead"; // non-existent commit
+	rev.m_CommitHash = CGitHash::FromHexStr(L"dead91b4aedeaddeaddead2a56d3c473c705dead"); // non-existent commit
 	EXPECT_EQ(-1, rev.SafeFetchFullInfo(cGit));
 	EXPECT_EQ(FALSE, rev.m_IsSimpleListReady);
 	EXPECT_EQ(TRUE, rev.m_IsUpdateing);
@@ -147,7 +147,7 @@ static void SafeFetchFullInfo(CGit* cGit)
 	EXPECT_EQ(FALSE, rev.m_IsDiffFiles);
 	EXPECT_EQ(FALSE, rev.m_IsCommitParsed);
 	rev.Clear();
-	rev.m_CommitHash = L"35c91b4ae2f77f4f21a7aba56d3c473c705d89e6";
+	rev.m_CommitHash = CGitHash::FromHexStr(L"35c91b4ae2f77f4f21a7aba56d3c473c705d89e6");
 	EXPECT_EQ(0, rev.SafeFetchFullInfo(cGit));
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, rev.GetAction(nullptr));
 	ASSERT_EQ(4, rev.GetFiles(nullptr).GetCount());
@@ -177,7 +177,7 @@ static void SafeFetchFullInfo(CGit* cGit)
 	EXPECT_EQ(0, list[3].m_ParentNo);
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[3].m_Action);
 	rev.Clear();
-	rev.m_CommitHash = L"8d1ebbcc7eeb63af10ff8bcf7712afb9fcc90b8a"; // merge commit
+	rev.m_CommitHash = CGitHash::FromHexStr(L"8d1ebbcc7eeb63af10ff8bcf7712afb9fcc90b8a"); // merge commit
 	EXPECT_EQ(0, rev.SafeFetchFullInfo(cGit));
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, rev.GetAction(nullptr));
 	ASSERT_EQ(1, rev.GetFiles(nullptr).GetCount());
@@ -190,7 +190,7 @@ static void SafeFetchFullInfo(CGit* cGit)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, list[0].m_Action);
 	EXPECT_FALSE(list[0].IsDirectory());
 	rev.Clear();
-	rev.m_CommitHash = L"18da7c332dcad0f37f9977d9176dce0b0c66f3eb"; // stash commit
+	rev.m_CommitHash = CGitHash::FromHexStr(L"18da7c332dcad0f37f9977d9176dce0b0c66f3eb"); // stash commit
 	EXPECT_EQ(0, rev.SafeFetchFullInfo(cGit));
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, rev.GetAction(nullptr));
 	ASSERT_EQ(2, rev.GetFiles(nullptr).GetCount());
@@ -210,14 +210,14 @@ static void SafeFetchFullInfo(CGit* cGit)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[1].m_Action);
 	EXPECT_FALSE(list[1].IsDirectory());
 	rev.Clear();
-	rev.m_CommitHash = L"844309789a13614b52d5e7cbfe6350dd73d1dc72"; // root commit
+	rev.m_CommitHash = CGitHash::FromHexStr(L"844309789a13614b52d5e7cbfe6350dd73d1dc72"); // root commit
 	EXPECT_EQ(0, rev.SafeFetchFullInfo(cGit));
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, rev.GetAction(nullptr));
 	ASSERT_EQ(1, rev.GetFiles(nullptr).GetCount());
 	EXPECT_STREQ(L"ansi.txt", rev.GetFiles(nullptr)[0].GetGitPathString());
 	EXPECT_STREQ(L"", rev.GetFiles(nullptr)[0].GetGitOldPathString());
 	rev.Clear();
-	rev.m_CommitHash = L"4c5c93d2a0b368bc4570d5ec02ab03b9c4334d44"; // signed commit with renamed file last
+	rev.m_CommitHash = CGitHash::FromHexStr(L"4c5c93d2a0b368bc4570d5ec02ab03b9c4334d44"); // signed commit with renamed file last
 	EXPECT_EQ(0, rev.SafeFetchFullInfo(cGit));
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED | CTGitPath::LOGACTIONS_MODIFIED | CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_DELETED, rev.GetAction(nullptr));
 	ASSERT_EQ(4, rev.GetFiles(nullptr).GetCount());
@@ -251,7 +251,7 @@ static void SafeFetchFullInfo(CGit* cGit)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, list[3].m_Action);
 	EXPECT_FALSE(list[3].IsDirectory());
 	rev.Clear();
-	rev.m_CommitHash = L"31ff87c86e9f6d3853e438cb151043f30f09029a"; // commit with renamed file first
+	rev.m_CommitHash = CGitHash::FromHexStr(L"31ff87c86e9f6d3853e438cb151043f30f09029a"); // commit with renamed file first
 	EXPECT_EQ(0, rev.SafeFetchFullInfo(cGit));
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED | CTGitPath::LOGACTIONS_MODIFIED | CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_DELETED, rev.GetAction(nullptr));
 	ASSERT_EQ(4, rev.GetFiles(nullptr).GetCount());
@@ -301,7 +301,7 @@ static void SafeFetchFullInfo_Submodule(CGit* cGit, config testConfig)
 	CTGitPathList list;
 	GitRevLoglist rev;
 	// for "easy" tests see SafeFetchFullInfo
-	rev.m_CommitHash = L"900539cd24776a94d1b642358ccfdb9d897c8254"; // added submodule
+	rev.m_CommitHash = CGitHash::FromHexStr(L"900539cd24776a94d1b642358ccfdb9d897c8254"); // added submodule
 	EXPECT_EQ(0, rev.SafeFetchFullInfo(cGit));
 	EXPECT_EQ(TRUE, rev.m_IsFull);
 	EXPECT_EQ(FALSE, rev.m_IsDiffFiles);
@@ -317,7 +317,7 @@ static void SafeFetchFullInfo_Submodule(CGit* cGit, config testConfig)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, list[0].m_Action);
 	EXPECT_TRUE(list[0].IsDirectory());
 	rev.Clear();
-	rev.m_CommitHash = L"c8d17f57c7b511aff4aa2fbfae158902281cad8e"; // modified submodule
+	rev.m_CommitHash = CGitHash::FromHexStr(L"c8d17f57c7b511aff4aa2fbfae158902281cad8e"); // modified submodule
 	EXPECT_EQ(0, rev.SafeFetchFullInfo(cGit));
 	EXPECT_EQ(TRUE, rev.m_IsFull);
 	EXPECT_EQ(FALSE, rev.m_IsDiffFiles);
@@ -333,7 +333,7 @@ static void SafeFetchFullInfo_Submodule(CGit* cGit, config testConfig)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
 	EXPECT_TRUE(list[0].IsDirectory());
 	rev.Clear();
-	rev.m_CommitHash = L"4ed8d1f9ce9aedc6ad044d9051cb584a8bc294ac"; // deleted submodule
+	rev.m_CommitHash = CGitHash::FromHexStr(L"4ed8d1f9ce9aedc6ad044d9051cb584a8bc294ac"); // deleted submodule
 	EXPECT_EQ(0, rev.SafeFetchFullInfo(cGit));
 	EXPECT_EQ(TRUE, rev.m_IsFull);
 	EXPECT_EQ(FALSE, rev.m_IsDiffFiles);
@@ -349,7 +349,7 @@ static void SafeFetchFullInfo_Submodule(CGit* cGit, config testConfig)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, list[0].m_Action);
 	EXPECT_TRUE(list[0].IsDirectory());
 	rev.Clear();
-	rev.m_CommitHash = L"2e63f1a55bc3dce074897200b226009f575fbcae"; // submodule to file
+	rev.m_CommitHash = CGitHash::FromHexStr(L"2e63f1a55bc3dce074897200b226009f575fbcae"); // submodule to file
 	EXPECT_EQ(0, rev.SafeFetchFullInfo(cGit));
 	EXPECT_EQ(TRUE, rev.m_IsFull);
 	EXPECT_EQ(FALSE, rev.m_IsDiffFiles);
@@ -373,7 +373,7 @@ static void SafeFetchFullInfo_Submodule(CGit* cGit, config testConfig)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
 	EXPECT_FALSE(list[0].IsDirectory());
 	rev.Clear();
-	rev.m_CommitHash = L"07ac6e5916c03747f7485195deb7ec9100d1c2ef"; // file to submodule
+	rev.m_CommitHash = CGitHash::FromHexStr(L"07ac6e5916c03747f7485195deb7ec9100d1c2ef"); // file to submodule
 	EXPECT_EQ(0, rev.SafeFetchFullInfo(cGit));
 	EXPECT_EQ(TRUE, rev.m_IsFull);
 	EXPECT_EQ(FALSE, rev.m_IsDiffFiles);
@@ -397,7 +397,7 @@ static void SafeFetchFullInfo_Submodule(CGit* cGit, config testConfig)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
 	EXPECT_FALSE(list[0].IsDirectory());
 	rev.Clear();
-	rev.m_CommitHash = L"2d2017245cf3d016c64e5ad4eb6b0f1bccd1cf7f"; // merge use third
+	rev.m_CommitHash = CGitHash::FromHexStr(L"2d2017245cf3d016c64e5ad4eb6b0f1bccd1cf7f"); // merge use third
 	EXPECT_EQ(0, rev.SafeFetchFullInfo(cGit));
 	EXPECT_EQ(TRUE, rev.m_IsFull);
 	EXPECT_EQ(FALSE, rev.m_IsDiffFiles);
@@ -443,7 +443,7 @@ static void SafeGetSimpleList(CGit* cGit)
 	EXPECT_EQ(FALSE, rev.m_IsCommitParsed);
 	EXPECT_TRUE(rev.m_SimpleFileList.empty());
 	rev.Clear();
-	rev.m_CommitHash = L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6";
+	rev.m_CommitHash = CGitHash::FromHexStr(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6");
 	rev.m_IsUpdateing = TRUE; // do nothing
 	EXPECT_EQ(0, rev.SafeGetSimpleList(cGit));
 	EXPECT_STREQ(L"", rev.GetAuthorName());
@@ -454,7 +454,7 @@ static void SafeGetSimpleList(CGit* cGit)
 	EXPECT_EQ(FALSE, rev.m_IsCommitParsed);
 	EXPECT_TRUE(rev.m_SimpleFileList.empty());
 	rev.Clear();
-	rev.m_CommitHash = L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6";
+	rev.m_CommitHash = CGitHash::FromHexStr(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6");
 	EXPECT_EQ(0, rev.SafeGetSimpleList(cGit));
 	EXPECT_STREQ(L"", rev.GetAuthorName());
 	EXPECT_EQ(TRUE, rev.m_IsSimpleListReady);
@@ -465,7 +465,7 @@ static void SafeGetSimpleList(CGit* cGit)
 	ASSERT_EQ(1U, rev.m_SimpleFileList.size());
 	EXPECT_STREQ(L"ascii.txt", rev.m_SimpleFileList[0]);
 	rev.Clear();
-	rev.m_CommitHash = L"dead91b4aedeaddeaddead2a56d3c473c705dead"; // non-existent commit
+	rev.m_CommitHash = CGitHash::FromHexStr(L"dead91b4aedeaddeaddead2a56d3c473c705dead"); // non-existent commit
 	EXPECT_EQ(-1, rev.SafeGetSimpleList(cGit));
 	EXPECT_EQ(FALSE, rev.m_IsSimpleListReady);
 	EXPECT_EQ(TRUE, rev.m_IsUpdateing);
@@ -474,7 +474,7 @@ static void SafeGetSimpleList(CGit* cGit)
 	EXPECT_EQ(FALSE, rev.m_IsCommitParsed);
 	EXPECT_TRUE(rev.m_SimpleFileList.empty());
 	rev.Clear();
-	rev.m_CommitHash = L"35c91b4ae2f77f4f21a7aba56d3c473c705d89e6";
+	rev.m_CommitHash = CGitHash::FromHexStr(L"35c91b4ae2f77f4f21a7aba56d3c473c705d89e6");
 	EXPECT_EQ(0, rev.SafeGetSimpleList(cGit));
 	EXPECT_EQ(TRUE, rev.m_IsSimpleListReady);
 	ASSERT_EQ(4U, rev.m_SimpleFileList.size());
@@ -483,22 +483,22 @@ static void SafeGetSimpleList(CGit* cGit)
 	EXPECT_STREQ(L"copy/utf8-bom.txt", rev.m_SimpleFileList[2]);
 	EXPECT_STREQ(L"copy/utf8-nobom.txt", rev.m_SimpleFileList[3]);
 	rev.Clear();
-	rev.m_CommitHash = L"8d1ebbcc7eeb63af10ff8bcf7712afb9fcc90b8a"; // merge commit
+	rev.m_CommitHash = CGitHash::FromHexStr(L"8d1ebbcc7eeb63af10ff8bcf7712afb9fcc90b8a"); // merge commit
 	EXPECT_EQ(0, rev.SafeGetSimpleList(cGit));
 	ASSERT_EQ(1U, rev.m_SimpleFileList.size());
 	EXPECT_STREQ(L"newfiles3.txt", rev.m_SimpleFileList[0]);
 	rev.Clear();
-	rev.m_CommitHash = L"18da7c332dcad0f37f9977d9176dce0b0c66f3eb"; // stash commit
+	rev.m_CommitHash = CGitHash::FromHexStr(L"18da7c332dcad0f37f9977d9176dce0b0c66f3eb"); // stash commit
 	EXPECT_EQ(0, rev.SafeGetSimpleList(cGit));
 	ASSERT_EQ(1U, rev.m_SimpleFileList.size());
 	EXPECT_STREQ(L"newfiles.txt", rev.m_SimpleFileList[0]);
 	rev.Clear();
-	rev.m_CommitHash = L"844309789a13614b52d5e7cbfe6350dd73d1dc72"; // root commit
+	rev.m_CommitHash = CGitHash::FromHexStr(L"844309789a13614b52d5e7cbfe6350dd73d1dc72"); // root commit
 	EXPECT_EQ(0, rev.SafeGetSimpleList(cGit));
 	ASSERT_EQ(1U, rev.m_SimpleFileList.size());
 	EXPECT_STREQ(L"ansi.txt", rev.m_SimpleFileList[0]);
 	rev.Clear();
-	rev.m_CommitHash = L"4c5c93d2a0b368bc4570d5ec02ab03b9c4334d44";
+	rev.m_CommitHash = CGitHash::FromHexStr(L"4c5c93d2a0b368bc4570d5ec02ab03b9c4334d44");
 	EXPECT_EQ(0, rev.SafeGetSimpleList(cGit));
 	ASSERT_EQ(5U, rev.m_SimpleFileList.size());
 	EXPECT_STREQ(L"ansi.txt", rev.m_SimpleFileList[0]); // has same hash as was-ansi.txt?!
@@ -522,32 +522,32 @@ static void SafeGetSimpleList_Submodule(CGit* cGit)
 {
 	GitRevLoglist rev;
 	// for "easy" tests see SafeGetSimpleList
-	rev.m_CommitHash = L"900539cd24776a94d1b642358ccfdb9d897c8254"; // added submodule
+	rev.m_CommitHash = CGitHash::FromHexStr(L"900539cd24776a94d1b642358ccfdb9d897c8254"); // added submodule
 	EXPECT_EQ(0, rev.SafeGetSimpleList(cGit));
 	ASSERT_EQ(1U, rev.m_SimpleFileList.size());
 	EXPECT_STREQ(L"something", rev.m_SimpleFileList[0]);
 	rev.Clear();
-	rev.m_CommitHash = L"c8d17f57c7b511aff4aa2fbfae158902281cad8e"; // modified submodule
+	rev.m_CommitHash = CGitHash::FromHexStr(L"c8d17f57c7b511aff4aa2fbfae158902281cad8e"); // modified submodule
 	EXPECT_EQ(0, rev.SafeGetSimpleList(cGit));
 	ASSERT_EQ(1U, rev.m_SimpleFileList.size());
 	EXPECT_STREQ(L"something", rev.m_SimpleFileList[0]);
 	rev.Clear();
-	rev.m_CommitHash = L"4ed8d1f9ce9aedc6ad044d9051cb584a8bc294ac"; // deleted submodule
+	rev.m_CommitHash = CGitHash::FromHexStr(L"4ed8d1f9ce9aedc6ad044d9051cb584a8bc294ac"); // deleted submodule
 	EXPECT_EQ(0, rev.SafeGetSimpleList(cGit));
 	ASSERT_EQ(1U, rev.m_SimpleFileList.size());
 	EXPECT_STREQ(L"something", rev.m_SimpleFileList[0]);
 	rev.Clear();
-	rev.m_CommitHash = L"2e63f1a55bc3dce074897200b226009f575fbcae"; // submodule to file
+	rev.m_CommitHash = CGitHash::FromHexStr(L"2e63f1a55bc3dce074897200b226009f575fbcae"); // submodule to file
 	EXPECT_EQ(0, rev.SafeGetSimpleList(cGit));
 	ASSERT_EQ(1U, rev.m_SimpleFileList.size());
 	EXPECT_STREQ(L"something", rev.m_SimpleFileList[0]);
 	rev.Clear();
-	rev.m_CommitHash = L"07ac6e5916c03747f7485195deb7ec9100d1c2ef"; // file to submodule
+	rev.m_CommitHash = CGitHash::FromHexStr(L"07ac6e5916c03747f7485195deb7ec9100d1c2ef"); // file to submodule
 	EXPECT_EQ(0, rev.SafeGetSimpleList(cGit));
 	ASSERT_EQ(1U, rev.m_SimpleFileList.size());
 	EXPECT_STREQ(L"something", rev.m_SimpleFileList[0]);
 	rev.Clear();
-	rev.m_CommitHash = L"2d2017245cf3d016c64e5ad4eb6b0f1bccd1cf7f"; // merge use third
+	rev.m_CommitHash = CGitHash::FromHexStr(L"2d2017245cf3d016c64e5ad4eb6b0f1bccd1cf7f"); // merge use third
 	EXPECT_EQ(0, rev.SafeGetSimpleList(cGit));
 	ASSERT_EQ(1U, rev.m_SimpleFileList.size());
 	EXPECT_STREQ(L"something", rev.m_SimpleFileList[0]);
