@@ -1,0 +1,48 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'windows-2019'
+
+steps:
+- checkout: self
+  submodules: recursive
+
+- script: >
+    reg add HKCU\Software\TortoiseGit /v MSysGit /t REG_SZ /f /d "C:\Program Files\Git\bin"
+
+- task: VSBuild@1
+  inputs:
+    solution: src/TortoiseGit.sln
+    platform: x64
+    configuration: Debug
+    msBuildArgs: /t:test\UnitTests
+
+- task: VSBuild@1
+  inputs:
+    solution: src/TortoiseGit.sln
+    platform: Win32
+    configuration: Debug
+    msBuildArgs: /t:test\UnitTests
+
+- task: CmdLine@1
+  inputs:
+    filename: bin\Debug64\bin\tests.exe
+
+- task: CmdLine@1
+  inputs:
+    filename: bin\Debug\bin\tests.exe
+
+- task: VSBuild@1
+  inputs:
+    solution: src/TortoiseGit.sln
+    platform: x64
+    configuration: Release
+    msBuildArgs: /t:GitWCRev /t:GitWCRevCom /t:TortoiseGitSetup\CustomActions /t:TortoiseGitSetup\RestartExplorer /t:ext\Crash-Server\CrashServerSDK\CrashHandler /t:ext\Crash-Server\CrashServerSDK\SendRpt
+
+- task: VSBuild@1
+  inputs:
+    solution: src/TortoiseGit.sln
+    platform: x64
+    configuration: Debug
+    msBuildArgs: /t:TGitCache /t:TortoiseGitBlame /t:TortoiseGitIDiff /t:TortoiseGitMerge /t:TortoiseGitPlink /t:TortoiseGitProc /t:TortoiseGitStub /t:TortoiseGitUDiff /t:TortoiseShell /t:SshAskPass /t:tgittouch /t:GitWCRev /t:GitWCRevCom
