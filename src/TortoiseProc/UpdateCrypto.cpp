@@ -33,6 +33,12 @@
 #define packet_type(c) ((c & 0x3c) >> 2)      /* 0x3C = 00111100 */
 #define packet_header_len(c) ((c & 0x03) + 1) /* number of bytes in a packet header */
 
+#ifdef TGIT_UPDATECRYPTO_DSA
+#ifndef TGIT_UPDATECRYPTO_SHA1
+#error TGIT_UPDATECRYPTO_SHA1 required for DSA
+#endif
+#endif
+
 static inline int scalar_number(const uint8_t *p, int header_len)
 {
 	ASSERT(header_len == 1 || header_len == 2 || header_len == 4);
@@ -116,8 +122,10 @@ static ALG_ID map_digestalgo(uint8_t digest_algo)
 {
 	switch (digest_algo)
 	{
+#ifdef TGIT_UPDATECRYPTO_SHA1
 	case DIGEST_ALGO_SHA1:
 		return CALG_SHA1;
+#endif
 	case DIGEST_ALGO_SHA256:
 		return CALG_SHA_256;
 	case DIGEST_ALGO_SHA384:
@@ -133,8 +141,10 @@ static DWORD map_algo(uint8_t digest_algo)
 {
 	switch (digest_algo)
 	{
+#ifdef TGIT_UPDATECRYPTO_DSA
 	case PUBLIC_KEY_ALGO_DSA:
 		return PROV_DSS;
+#endif
 	case PUBLIC_KEY_ALGO_RSA:
 		return PROV_RSA_AES; // needed for SHA2, see http://msdn.microsoft.com/en-us/library/windows/desktop/aa387447%28v=vs.85%29.aspx
 	default:
@@ -322,15 +332,20 @@ static int parse_signature_packet(signature_packet_t *p_sig, const uint8_t *p_bu
 	p_buf--; /* rewind to the version byte */
 	p_buf += i_read;
 
-	if (p_sig->public_key_algo == PUBLIC_KEY_ALGO_DSA)
+	switch (p_sig->public_key_algo)
 	{
+#ifdef TGIT_UPDATECRYPTO_DSA
+	case PUBLIC_KEY_ALGO_DSA:
 		READ_MPI(p_sig->algo_specific.dsa.r, 160);
 		READ_MPI(p_sig->algo_specific.dsa.s, 160);
-	}
-	else if (p_sig->public_key_algo == PUBLIC_KEY_ALGO_RSA)
+		break;
+#endif
+	case PUBLIC_KEY_ALGO_RSA:
 		READ_MPI(p_sig->algo_specific.rsa.s, 4096);
-	else
+		break;
+	default:
 		goto error;
+	}
 
 	if (i_read != i_packet_len)
 		goto error;
@@ -430,22 +445,25 @@ static int parse_public_key_packet(public_key_packet_t *p_key, const uint8_t *p_
 	memcpy(p_key->timestamp, p_buf, 4); p_buf += 4; i_read += 4;
 
 	p_key->algo = *p_buf++; i_read++;
-	if (p_key->algo == PUBLIC_KEY_ALGO_DSA)
+	switch (p_key->algo)
 	{
+#ifdef TGIT_UPDATECRYPTO_DSA
+	case PUBLIC_KEY_ALGO_DSA:
 		if (i_packet_len > 418) // we only support 1024-bit DSA keys and SHA1 signatures, see verify_signature_dsa
 			return -1;
 		READ_MPI(p_key->sig.dsa.p, 1024);
 		READ_MPI(p_key->sig.dsa.q, 160);
 		READ_MPI(p_key->sig.dsa.g, 1024);
 		READ_MPI(p_key->sig.dsa.y, 1024);
-	}
-	else if (p_key->algo == PUBLIC_KEY_ALGO_RSA)
-	{
-			READ_MPI(p_key->sig.rsa.n, 4096);
-			READ_MPI(p_key->sig.rsa.e, 4096);
-	}
-	else
+		break;
+#endif
+	case PUBLIC_KEY_ALGO_RSA:
+		READ_MPI(p_key->sig.rsa.n, 4096);
+		READ_MPI(p_key->sig.rsa.e, 4096);
+		break;
+	default:
 		return -1;
+	}
 
 	if (i_read == i_packet_len)
 		return 0;
@@ -680,27 +698,32 @@ static int hash_from_public_key(HCRYPTHASH hHash, public_key_t* p_pkey)
 		return -1;
 
 	DWORD i_size = 0;
+#ifdef TGIT_UPDATECRYPTO_DSA
 	unsigned int i_p_len = 0, i_g_len = 0, i_q_len = 0, i_y_len = 0;
+#endif
 	unsigned int i_n_len = 0, i_e_len = 0;
 
-	if (p_pkey->key.algo == PUBLIC_KEY_ALGO_DSA)
+	switch (p_pkey->key.algo)
 	{
+#ifdef TGIT_UPDATECRYPTO_DSA
+	case PUBLIC_KEY_ALGO_DSA:
 		i_p_len = mpi_len(p_pkey->key.sig.dsa.p);
 		i_g_len = mpi_len(p_pkey->key.sig.dsa.g);
 		i_q_len = mpi_len(p_pkey->key.sig.dsa.q);
 		i_y_len = mpi_len(p_pkey->key.sig.dsa.y);
 
 		i_size = 6 + 2 * 4 + i_p_len + i_g_len + i_q_len + i_y_len;
-	}
-	else if (p_pkey->key.algo == PUBLIC_KEY_ALGO_RSA)
-	{
+		break;
+#endif
+	case PUBLIC_KEY_ALGO_RSA:
 		i_n_len = mpi_len(p_pkey->key.sig.rsa.n);
 		i_e_len = mpi_len(p_pkey->key.sig.rsa.e);
 
 		i_size = 6 + 2 * 2 + i_n_len + i_e_len;
-	}
-	else
+		break;
+	default:
 		return -1;
+	}
 
 	CryptHashChar(hHash, 0x99);
 
@@ -711,17 +734,20 @@ static int hash_from_public_key(HCRYPTHASH hHash, public_key_t* p_pkey)
 	CryptHashData(hHash, p_pkey->key.timestamp, 4, 0);
 	CryptHashChar(hHash, p_pkey->key.algo);
 
-	if (p_pkey->key.algo == PUBLIC_KEY_ALGO_DSA)
+	switch (p_pkey->key.algo)
 	{
+#ifdef TGIT_UPDATECRYPTO_DSA
+	case PUBLIC_KEY_ALGO_DSA:
 		CryptHashData(hHash, reinterpret_cast<uint8_t*>(&p_pkey->key.sig.dsa.p), 2 + i_p_len, 0);
 		CryptHashData(hHash, reinterpret_cast<uint8_t*>(&p_pkey->key.sig.dsa.q), 2 + i_q_len, 0);
 		CryptHashData(hHash, reinterpret_cast<uint8_t*>(&p_pkey->key.sig.dsa.g), 2 + i_g_len, 0);
 		CryptHashData(hHash, reinterpret_cast<uint8_t*>(&p_pkey->key.sig.dsa.y), 2 + i_y_len, 0);
-	}
-	else if (p_pkey->key.algo == PUBLIC_KEY_ALGO_RSA)
-	{
+		break;
+#endif
+	case PUBLIC_KEY_ALGO_RSA:
 		CryptHashData(hHash, reinterpret_cast<uint8_t*>(&p_pkey->key.sig.rsa.n), 2 + i_n_len, 0);
 		CryptHashData(hHash, reinterpret_cast<uint8_t*>(&p_pkey->key.sig.rsa.e), 2 + i_e_len, 0);
+		break;
 	}
 
 	CryptHashChar(hHash, 0xb4);
@@ -870,6 +896,7 @@ static int verify_signature_rsa(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, public_
 	return 0;
 }
 
+#ifdef TGIT_UPDATECRYPTO_DSA
 /*
 * Verify an OpenPGP signature made with some DSA public key
 */
@@ -922,18 +949,24 @@ static int verify_signature_dsa(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, public_
 
 	return 0;
 }
+#endif
 
 /*
 * Verify an OpenPGP signature made with some public key
 */
 int verify_signature(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, public_key_t& p_key, signature_packet_t& sign)
 {
-	if (sign.public_key_algo == PUBLIC_KEY_ALGO_DSA)
+	switch (sign.public_key_algo)
+	{
+#ifdef TGIT_UPDATECRYPTO_DSA
+	case PUBLIC_KEY_ALGO_DSA:
 		return verify_signature_dsa(hCryptProv, hHash, p_key, sign);
-	else if (sign.public_key_algo == PUBLIC_KEY_ALGO_RSA)
+#endif
+	case PUBLIC_KEY_ALGO_RSA:
 		return verify_signature_rsa(hCryptProv, hHash, p_key, sign);
-	else
+	default:
 		return -1;
+	}
 }
 
 #ifndef GTEST_INCLUDE_GTEST_GTEST_H_
