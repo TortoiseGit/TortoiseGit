@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2014 Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2013-2014, 2019 Sven Strickroth <email@cs-ware.de>
 // Copyright (C) VLC project (http://videolan.org)
 
 // This program is free software; you can redistribute it and/or
@@ -67,12 +67,14 @@ struct public_key_packet_t
 	uint8_t algo;         /* we only use DSA or RSA */
 	/* the multi precision integers, with their 2 bytes length header */
 	union {
+#ifdef TGIT_UPDATECRYPTO_DSA
 		struct {
 			uint8_t p[2 + 128];
 			uint8_t q[2 + 20];
 			uint8_t g[2 + 128];
 			uint8_t y[2 + 128];
 		} dsa;
+#endif
 		struct {
 			uint8_t n[2 + 4096 / 8];
 			uint8_t e[2 + 4096 / 8];
@@ -112,10 +114,12 @@ struct signature_packet_t
  * public-key-algorithm dependent.
  */
 	union {
+#ifdef TGIT_UPDATECRYPTO_DSA
 		struct {
 			uint8_t r[2 + 20];
 			uint8_t s[2 + 20];
 		} dsa;
+#endif
 		struct {
 			uint8_t s[2 + 4096 / 8];
 		} rsa;
@@ -137,6 +141,7 @@ struct public_key_t
 
 typedef struct public_key_t public_key_t;
 
+#ifdef TGIT_UPDATECRYPTO_DSA
 typedef struct _DSAKEY
 {
   BLOBHEADER blobheader;
@@ -146,6 +151,7 @@ typedef struct _DSAKEY
   BYTE g[128]; // the generator parameter
   BYTE y[128]; // (G^X) mod P
 } DSAKEY;
+#endif
 
 typedef struct _RSAKEY
 {

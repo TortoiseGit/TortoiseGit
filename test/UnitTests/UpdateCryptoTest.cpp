@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2016 - TortoiseGit
+// Copyright (C) 2015-2016, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -41,6 +41,18 @@ TEST(UpdateCrypto, SimpleVerify)
 
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"Text\n"));
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFileSignature, signature));
+	EXPECT_EQ(-1, VerifyIntegrity(testFile, testFileSignature, nullptr));
+}
+
+TEST(UpdateCrypto, DisableOldCrypto)
+{
+	CAutoTempDir tempdir;
+	CString testFile = tempdir.GetTempDir() + L"\\.test.txt";
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"Text"));
+
+	CString signatureSHA1 = L"-----BEGIN PGP SIGNATURE-----\n\niQIzBAEBAgAdFiEEdKIa4wGzylvYBy9e9/F7P53ZU54FAlzN3/wACgkQ9/F7P53Z\nU57Z+w//d0JbWPOD9RWf+MkXmug9ftfL2JIZrQbOsnV5zMoVBz5yELCdfUCyD2FZ\np8RvyGzyjvEJfvKxfJpnk1dzc18QYceCIO3fB3lJXmGzmK1s7TRm14DuU17kSVeq\nVvYCOdPod1qEezgLwVltnh9NoCdtbWI4un3YMmG4/+vJ1QVgFp1txlYInDx13EaP\nbbtIa+LGCtTxSWMZI+AsdUIPY/Bh3KKBwaFUApFczNhz23J2t0DgvLmUIbuzOeeO\nHKq5V9Cbf5QQdS+8HQ08Isrv6/8aQrM1WLabgMPhRm4s0Yeq7TJEULzeU+r/jc7T\nju9xsrnAcMb1PGHh2pnQ0LuXnjvPAS2XvVLzTwF1B9ZUCCF11jqpB/Dg1nG26OYH\n1g+oCfgwbapVhuAEkEqScfT0B+/HOyTp6ghqgTN0K0mShDG+lXXRi6UGY9qdC01Z\n633HjljIAm9FKLHQW+OnWeK9eJh5A3/7k/M8UAF+5teux2k18vSklI4WSokcOCt/\nq+Zk6T/a+nUKzCGNGIjFPcdhvpgDxaGxECT3yw6Lv/RJTx/AAT6weWsLpKrGzOHd\nnhpOQUZ10og4K0FZrTL1LRx8+LWsMIKcDyxzNynDw7KfIX+OpkkywgSM49WMpajh\nCs6nVcKeijRkjhfxeQmnIU094bZ8dAt+tIm82BvUjB6bDeEkTg4=\n=Y+Xk\n-----END PGP SIGNATURE-----";
+	CString testFileSignature = testFile + L".rsa.asc";
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFileSignature, signatureSHA1));
 	EXPECT_EQ(-1, VerifyIntegrity(testFile, testFileSignature, nullptr));
 }
 
