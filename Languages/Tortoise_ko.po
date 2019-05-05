@@ -6066,7 +6066,7 @@ msgid "In Commits"
 msgstr "In Commits"
 
 #. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1649)
-msgid "In order to abort a merge progess a reset (to HEAD) is needed."
+msgid "In order to abort a merge progress a reset (to HEAD) is needed."
 msgstr "병합을 되돌리기 위해 되돌릴 방법을 고르세요."
 
 #. Resource IDs: (IDS_FIRSTSTART_LANGUAGEHINT2)

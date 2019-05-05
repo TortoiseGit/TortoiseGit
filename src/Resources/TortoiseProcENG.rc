@@ -1984,7 +1984,7 @@ BEGIN
     DEFPUSHBUTTON   "OK",IDOK,125,103,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,184,103,50,14
     PUSHBUTTON      "Help",IDHELP,242,103,50,14
-    LTEXT           "In order to abort a merge progess a reset (to HEAD) is needed.",IDC_STATIC_REMINDER,7,7,285,10
+    LTEXT           "In order to abort a merge progress a reset (to HEAD) is needed.",IDC_STATIC_REMINDER,7,7,285,10
 END
 
 IDD_SETTINGSDIALOGS3 DIALOGEX 0, 0, 301, 231

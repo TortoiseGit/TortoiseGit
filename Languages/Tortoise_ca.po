@@ -6055,7 +6055,7 @@ msgid "In Commits"
 msgstr "Entregues rebudes"
 
 #. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1649)
-msgid "In order to abort a merge progess a reset (to HEAD) is needed."
+msgid "In order to abort a merge progress a reset (to HEAD) is needed."
 msgstr "Per tal d'interrompre una fusió en curs és necessari reinicialitzar (reset to HEAD)"
 
 #. Resource IDs: (IDS_FIRSTSTART_LANGUAGEHINT2)

@@ -6069,7 +6069,7 @@ msgid "In Commits"
 msgstr "En Consignas"
 
 #. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1649)
-msgid "In order to abort a merge progess a reset (to HEAD) is needed."
+msgid "In order to abort a merge progress a reset (to HEAD) is needed."
 msgstr "Para abortar una combinación (merge) en curso es necesario un restablecimiento (reset, hasta HEAD (última consignación))."
 
 #. Resource IDs: (IDS_FIRSTSTART_LANGUAGEHINT2)
