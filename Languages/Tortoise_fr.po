@@ -6096,7 +6096,7 @@ msgid "In Commits"
 msgstr "Dans les livraisons"
 
 #. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1649)
-msgid "In order to abort a merge progess a reset (to HEAD) is needed."
+msgid "In order to abort a merge progress a reset (to HEAD) is needed."
 msgstr "Afin d’abandonner une opération de fusion, une remise a zéro (vers HEAD) est nécessaire."
 
 #. Resource IDs: (IDS_FIRSTSTART_LANGUAGEHINT2)

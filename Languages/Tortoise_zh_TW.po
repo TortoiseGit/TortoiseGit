@@ -6063,7 +6063,7 @@ msgid "In Commits"
 msgstr "輸入的提交"
 
 #. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1649)
-msgid "In order to abort a merge progess a reset (to HEAD) is needed."
+msgid "In order to abort a merge progress a reset (to HEAD) is needed."
 msgstr "為了中止合併程序，需要重設（至 HEAD）。"
 
 #. Resource IDs: (IDS_FIRSTSTART_LANGUAGEHINT2)
