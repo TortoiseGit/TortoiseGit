@@ -304,7 +304,7 @@ BOOL CTortoiseProcApp::InitInstance()
 		}
 		else if (CStringUtils::StartsWith(url, L"smartgit://cloneRepo/"))
 			url = url.Mid(static_cast<int>(wcslen(L"smartgit://cloneRepo/")));
-		else
+		else if (!CStringUtils::StartsWith(url, L"git://"))
 		{
 			CMessageBox::Show(nullptr, IDS_ERR_INVALIDPATH, IDS_APPNAME, MB_ICONERROR);
 			return FALSE;
