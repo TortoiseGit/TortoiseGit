@@ -94,6 +94,10 @@ CSettingsAdvanced::CSettingsAdvanced()
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
 	settings[i++].def.b	= false;
 
+	settings[i].sName	= L"LogIncludeWorkingTreeChanges";
+	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
+	settings[i++].def.b	= true;
+
 	settings[i].sName	= L"LogShowSuperProjectSubmodulePointer";
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
 	settings[i++].def.b	= true;
@@ -178,7 +182,7 @@ CSettingsAdvanced::CSettingsAdvanced()
 	settings[i].type	= CSettingsAdvanced::SettingTypeNumber;
 	settings[i++].def.l	= 10 * 1024;
 
-    settings[i].sName	= L"UseCustomWordBreak";
+	settings[i].sName	= L"UseCustomWordBreak";
 	settings[i].type	= CSettingsAdvanced::SettingTypeNumber;
 	settings[i++].def.l = 2;
 
