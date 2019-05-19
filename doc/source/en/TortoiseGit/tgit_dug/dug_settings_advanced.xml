@@ -250,6 +250,15 @@
 			</listitem>
 		</varlistentry>
 		<varlistentry>
+			<term condition="pot">LogIncludeWorkingTreeChanges</term>
+			<listitem>
+				<para>
+					This options controls whether the log dialog includes an entry for "Working Tree Changes". When using network drives (e.g., Samba), the log dialog might hang for big project because of large of files when calculating the working tree changes. Therefore, the possible expensive calculation can be disabled.
+					The default is <literal>true</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
 			<term condition="pot">LogShowSuperProjectSubmodulePointer</term>
 			<listitem>
 				<para>
