@@ -6,6 +6,7 @@ Released: unreleased
  * Update Scintilla to 4.1.5
  * Update libgit to 2.21.0 based on Git for Windows sources
  * Update PuTTY binaries to 0.71
+ * Allow to disable "Working Tree Changes" in log dialog (using advanced settings)
 
 == Bug Fixes ==
  * Implement generic fix for "libgit2 returned the requested type does not match the type in ODB"

@@ -94,6 +94,10 @@ CSettingsAdvanced::CSettingsAdvanced()
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
 	settings[i++].def.b	= false;
 
+	settings[i].sName	= L"LogIncludeWorkingTreeChanges";
+	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
+	settings[i++].def.b	= true;
+
 	settings[i].sName	= L"LogShowSuperProjectSubmodulePointer";
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
 	settings[i++].def.b	= true;

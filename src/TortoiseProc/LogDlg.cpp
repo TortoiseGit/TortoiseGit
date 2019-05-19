@@ -323,7 +323,7 @@ BOOL CLogDlg::OnInitDialog()
 
 	m_LogList.m_Path=m_path;
 	m_LogList.m_hasWC = !GitAdminDir::IsBareRepo(g_Git.m_CurrentDir);
-	m_LogList.m_bShowWC = m_LogList.m_hasWC && m_bShowWC;
+	m_LogList.m_bShowWC = !!CRegDWORD(L"Software\\TortoiseGit\\LogIncludeWorkingTreeChanges", TRUE) && m_LogList.m_hasWC && m_bShowWC;
 	m_LogList.InsertGitColumn();
 
 	if (m_bWholeProject)
