@@ -152,38 +152,6 @@ static DWORD map_algo(uint8_t digest_algo)
 	}
 }
 
-static size_t parse_signature_v3_packet(signature_packet_t *p_sig, const uint8_t *p_buf, size_t i_sig_len)
-{
-	size_t i_read = 1; /* we already read the version byte */
-
-	if (i_sig_len < 19) /* signature is at least 19 bytes + the 2 MPIs */
-		return 0;
-
-	p_sig->specific.v3.hashed_data_len = *p_buf++; i_read++;
-	if (p_sig->specific.v3.hashed_data_len != 5)
-		return 0;
-
-	p_sig->type = *p_buf++; i_read++;
-
-	memcpy(p_sig->specific.v3.timestamp, p_buf, 4);
-	p_buf += 4; i_read += 4;
-
-	memcpy(p_sig->issuer_longid, p_buf, 8);
-	p_buf += 8; i_read += 8;
-
-	p_sig->public_key_algo = *p_buf++; i_read++;
-
-	p_sig->digest_algo = *p_buf++; i_read++;
-
-	p_sig->hash_verification[0] = *p_buf++; i_read++;
-	p_sig->hash_verification[1] = *p_buf++; i_read++;
-
-	if (i_read != 19)
-		return 0;
-
-	return i_read;
-}
-
 /*
  * fill a signature_packet_v4_t from signature packet data
  * verify that it was used with a DSA or RSA public key
@@ -295,9 +263,6 @@ static int parse_signature_packet(signature_packet_t *p_sig, const uint8_t *p_bu
 	size_t i_read;
 	switch (p_sig->version)
 	{
-		case 3:
-			i_read = parse_signature_v3_packet(p_sig, p_buf, i_packet_len);
-			break;
 		case 4:
 			p_sig->specific.v4.hashed_data = nullptr;
 			p_sig->specific.v4.unhashed_data = nullptr;
@@ -652,12 +617,7 @@ static void CryptHashChar(HCRYPTHASH hHash, const int c)
 /* final part of the hash */
 static int hash_finish(HCRYPTHASH hHash, signature_packet_t *p_sig)
 {
-	if (p_sig->version == 3)
-	{
-		CryptHashChar(hHash, p_sig->type);
-		CryptHashData(hHash, reinterpret_cast<unsigned char*>(&p_sig->specific.v3.timestamp), 4, 0);
-	}
-	else if (p_sig->version == 4)
+	if (p_sig->version == 4)
 	{
 		CryptHashChar(hHash, p_sig->version);
 		CryptHashChar(hHash, p_sig->type);

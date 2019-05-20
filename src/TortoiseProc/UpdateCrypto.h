@@ -103,11 +103,6 @@ struct signature_packet_t
 			uint8_t unhashed_data_len[2];   /* scalar number */
 			uint8_t *unhashed_data;         /* unhashed_data_len bytes */
 		} v4;
-		struct
-		{
-			uint8_t hashed_data_len;    /* MUST be 5 */
-			uint8_t timestamp[4];       /* 4 bytes scalar number */
-		} v3;
 	} specific;
 
 /* The part below is made of consecutive MPIs, their number and size being
