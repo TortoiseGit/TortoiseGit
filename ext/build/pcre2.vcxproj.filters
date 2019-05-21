@@ -92,6 +92,9 @@
     <ClCompile Include="..\pcre2\src\pcre2_script_run.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\pcre2\src\pcre2posix.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pcre2\config.h">
@@ -107,6 +110,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="pcre2\pcre2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pcre2\src\pcre2posix.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
