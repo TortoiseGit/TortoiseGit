@@ -45,8 +45,8 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\zlib;..\libgit2\src;..\libgit2\include;..\libgit2\deps\regex;..\libgit2\deps\http-parser;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>LIBGIT2_NO_FEATURES_H;HAVE_QSORT_S;GIT_HTTPS;GIT_WINHTTP;GIT_USE_NSEC;GIT_THREADS;GIT_SHA1_COLLISIONDETECT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\pcre2\src;..\zlib;..\libgit2\src;..\libgit2\include;..\libgit2\deps\regex;..\libgit2\deps\http-parser;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>LIBGIT2_NO_FEATURES_H;HAVE_QSORT_S;GIT_HTTPS;GIT_WINHTTP;GIT_USE_NSEC;GIT_THREADS;GIT_SHA1_COLLISIONDETECT;GIT_REGEX_PCRE2;PCRE2_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Platform)'=='Win32'">GIT_ARCH_32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Platform)'=='x64'">GIT_ARCH_64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
@@ -226,9 +226,6 @@
     <ClCompile Include="..\libgit2\src\xdiff\xpatience.c" />
     <ClCompile Include="..\libgit2\src\xdiff\xprepare.c" />
     <ClCompile Include="..\libgit2\src\xdiff\xutils.c" />
-    <ClCompile Include="..\libgit2\deps\regex\regex.c">
-      <DisableSpecificWarnings>4311;4312</DisableSpecificWarnings>
-    </ClCompile>
     <ClCompile Include="..\libgit2\src\zstream.c" />
   </ItemGroup>
   <ItemGroup>
@@ -317,6 +314,7 @@
     <ClInclude Include="..\libgit2\src\diff_parse.h" />
     <ClInclude Include="..\libgit2\src\diff_tform.h" />
     <ClInclude Include="..\libgit2\src\diff_xdiff.h" />
+    <ClInclude Include="..\libgit2\src\errors.h" />
     <ClInclude Include="..\libgit2\src\fetch.h" />
     <ClInclude Include="..\libgit2\src\fetchhead.h" />
     <ClInclude Include="..\libgit2\src\filebuf.h" />
@@ -358,6 +356,7 @@
     <ClInclude Include="..\libgit2\src\pathspec.h" />
     <ClInclude Include="..\libgit2\src\pool.h" />
     <ClInclude Include="..\libgit2\src\posix.h" />
+    <ClInclude Include="..\libgit2\src\posix_regex.h" />
     <ClInclude Include="..\libgit2\src\pqueue.h" />
     <ClInclude Include="..\libgit2\src\proxy.h" />
     <ClInclude Include="..\libgit2\src\push.h" />
@@ -408,6 +407,7 @@
     <ClInclude Include="..\libgit2\src\win32\thread.h" />
     <ClInclude Include="..\libgit2\src\win32\version.h" />
     <ClInclude Include="..\libgit2\src\win32\w32_buffer.h" />
+    <ClInclude Include="..\libgit2\src\win32\w32_common.h" />
     <ClInclude Include="..\libgit2\src\win32\w32_util.h" />
     <ClInclude Include="..\libgit2\src\win32\win32-compat.h" />
     <ClInclude Include="..\libgit2\src\worktree.h" />
@@ -456,14 +456,15 @@
     <ClInclude Include="..\libgit2\include\git2\tree.h" />
     <ClInclude Include="..\libgit2\include\git2\types.h" />
     <ClInclude Include="..\libgit2\include\git2\version.h" />
-    <ClInclude Include="..\libgit2\deps\regex\config.h" />
-    <ClInclude Include="..\libgit2\deps\regex\regex.h" />
     <ClInclude Include="..\libgit2\src\zstream.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\libgit2\src\win32\git2.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="pcre2.vcxproj">
+      <Project>{e37f4ce6-d512-4d71-aa02-33422c92fce0}</Project>
+    </ProjectReference>
     <ProjectReference Include="zlib.vcxproj">
       <Project>{5c6b6a95-2053-4593-9617-c4f176736d5a}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>

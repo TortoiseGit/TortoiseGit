@@ -33,9 +33,6 @@
     <Filter Include="deps">
       <UniqueIdentifier>{cbf536ec-3a80-4f49-ac19-fc89222aedff}</UniqueIdentifier>
     </Filter>
-    <Filter Include="deps\regex">
-      <UniqueIdentifier>{3befca28-4256-4931-8c11-42ab4d7a69bc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{8bb17cdc-27bb-407c-8bf8-7b5a7ce718f7}</UniqueIdentifier>
     </Filter>
@@ -331,9 +328,6 @@
     </ClCompile>
     <ClCompile Include="..\libgit2\src\xdiff\xutils.c">
       <Filter>Source Files\xdiff</Filter>
-    </ClCompile>
-    <ClCompile Include="..\libgit2\deps\regex\regex.c">
-      <Filter>deps\regex</Filter>
     </ClCompile>
     <ClCompile Include="..\libgit2\src\transports\cred.c">
       <Filter>Source Files\transports</Filter>
@@ -838,12 +832,6 @@
     <ClInclude Include="..\libgit2\include\git2\version.h">
       <Filter>Public Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\libgit2\deps\regex\config.h">
-      <Filter>deps\regex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libgit2\deps\regex\regex.h">
-      <Filter>deps\regex</Filter>
-    </ClInclude>
     <ClInclude Include="..\libgit2\include\git2\cred_helpers.h">
       <Filter>Public Header Files</Filter>
     </ClInclude>
@@ -1242,6 +1230,15 @@
     </ClInclude>
     <ClInclude Include="..\libgit2\src\hash\sha1dc\ubc_check.h">
       <Filter>Header Files\hash\sha1dc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\errors.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\posix_regex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\win32\w32_common.h">
+      <Filter>Header Files\win32</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

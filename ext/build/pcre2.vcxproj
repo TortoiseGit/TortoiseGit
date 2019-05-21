@@ -47,6 +47,7 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\pcre2\src\pcre2posix.c" />
     <ClCompile Include="..\pcre2\src\pcre2_auto_possess.c" />
     <ClCompile Include="..\pcre2\src\pcre2_compile.c" />
     <ClCompile Include="..\pcre2\src\pcre2_config.c" />
@@ -76,6 +77,7 @@
     <ClCompile Include="pcre2\pcre2_chartables.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\pcre2\src\pcre2posix.h" />
     <ClInclude Include="..\pcre2\src\pcre2_internal.h" />
     <ClInclude Include="..\pcre2\src\pcre2_intmodedep.h" />
     <ClInclude Include="..\pcre2\src\pcre2_ucp.h" />
