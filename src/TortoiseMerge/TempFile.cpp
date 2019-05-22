@@ -1,5 +1,6 @@
 ﻿// TortoiseGitMerge - a Windows shell extension for easy version control
 
+// Copyright (C) 2019 - TortoiseGit
 // Copyright (C) 2003-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -75,7 +76,11 @@ CTGitPath CTempFiles::ConstructTempPath(const CTGitPath& path)
 			} while (   (filename.GetLength() > 4)
 					 && (tempfile.GetWinPathString().GetLength() >= MAX_PATH));
 			i++;
-		} while (PathFileExists(tempfile.GetWinPath()));
+			// now create the temp file in a thread safe way, so that subsequent calls to GetTempFile() return different filenames.
+			CAutoFile hFile = CreateFile(tempfile.GetWinPath(), GENERIC_READ, FILE_SHARE_READ, nullptr, CREATE_NEW, FILE_ATTRIBUTE_TEMPORARY, nullptr);
+			if (hFile || GetLastError() != ERROR_FILE_EXISTS)
+				break;
+		} while (true);
 	}
 
 	// caller has to actually grab the file path
