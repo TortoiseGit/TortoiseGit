@@ -22,12 +22,18 @@
 template <typename type>
 struct CDefaultHandleNull
 {
-	static constexpr type DefaultHandle = nullptr;
+	static constexpr type DefaultHandle()
+	{
+		return nullptr;
+	}
 };
 
 struct CDefaultHandleInvalid
 {
-	static constexpr HANDLE DefaultHandle = INVALID_HANDLE_VALUE;
+	static constexpr HANDLE DefaultHandle()
+	{
+		return INVALID_HANDLE_VALUE;
+	}
 };
 
 /**
@@ -41,7 +47,7 @@ class CSmartHandle
 {
 public:
 	CSmartHandle()
-		: m_Handle(NullType::DefaultHandle)
+		: m_Handle(NullType::DefaultHandle())
 	{
 	}
 
@@ -80,7 +86,7 @@ public:
 	HandleType Detach()
 	{
 		HandleType p = m_Handle;
-		m_Handle = NullType::DefaultHandle;
+		m_Handle = NullType::DefaultHandle();
 
 		return p;
 	}
@@ -102,7 +108,7 @@ public:
 
 	bool IsValid() const
 	{
-		return m_Handle != NullType::DefaultHandle;
+		return m_Handle != NullType::DefaultHandle();
 	}
 
 
@@ -120,10 +126,10 @@ private:
 protected:
 	bool CleanUp()
 	{
-		if (m_Handle != NullType::DefaultHandle)
+		if (m_Handle != NullType::DefaultHandle())
 		{
 			const bool b = CloseFunction<HandleType>::Close(m_Handle);
-			m_Handle = NullType::DefaultHandle;
+			m_Handle = NullType::DefaultHandle();
 			return b;
 		}
 		return false;
