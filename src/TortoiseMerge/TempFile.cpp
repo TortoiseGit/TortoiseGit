@@ -72,7 +72,7 @@ CTGitPath CTempFiles::ConstructTempPath(const CTGitPath& path)
 			{
 				possibletempfile.Format(L"%s%s.tsm%3.3x.tmp%s", temppath.get(), static_cast<LPCTSTR>(filename), i, static_cast<LPCTSTR>(path.GetFileExtension()));
 				tempfile.SetFromWin(possibletempfile);
-				filename = filename.Left(filename.GetLength()-1);
+				filename.Truncate(std::max(0, filename.GetLength() - 1));
 			} while (   (filename.GetLength() > 4)
 					 && (tempfile.GetWinPathString().GetLength() >= MAX_PATH));
 			i++;
