@@ -75,7 +75,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 
 	HMODULE hSciLexerDll = ::LoadLibrary(L"SciLexer_tgit.dll");
 	if (!hSciLexerDll)
-		return FALSE;
+		return -1;
 
 	CMainWindow mainWindow(hResource);
 	mainWindow.SetRegistryPath(L"Software\\TortoiseGit\\UDiffViewerWindowPos");
@@ -99,7 +99,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	if (!mainWindow.RegisterAndCreateWindow())
 	{
 		FreeLibrary(hSciLexerDll);
-		return 0;
+		return -1;
 	}
 
 	bool bLoadedSuccessfully = false;
@@ -126,7 +126,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	if (!bLoadedSuccessfully)
 	{
 		FreeLibrary(hSciLexerDll);
-		return 0;
+		return 1;
 	}
 
 	::ShowWindow(mainWindow.GetHWNDEdit(), SW_SHOW);
