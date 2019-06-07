@@ -1387,11 +1387,11 @@ bool CTGitPathList::LoadFromFile(const CTGitPath& filename)
 	return true;
 }
 
-bool CTGitPathList::WriteToFile(const CString& sFilename, bool bANSI /* = false */) const
+bool CTGitPathList::WriteToFile(const CString& sFilename, bool bUTF8 /* = false */) const
 {
 	try
 	{
-		if (bANSI)
+		if (bUTF8)
 		{
 			CStdioFile file(sFilename, CFile::typeText | CFile::modeReadWrite | CFile::modeCreate);
 			for (const auto& path : m_paths)

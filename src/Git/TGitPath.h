@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2019 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
@@ -354,7 +354,7 @@ public:
 public:
 	void AddPath(const CTGitPath& newPath);
 	bool LoadFromFile(const CTGitPath& filename);
-	bool WriteToFile(const CString& sFilename, bool bANSI = false) const;
+	bool WriteToFile(const CString& sFilename, bool bUTF8 = false) const;
 	const CTGitPath* LookForGitPath(const CString& path);
 	int	ParserFromLog(BYTE_VECTOR &log, bool parseDeletes = false);
 	int ParserFromLsFile(BYTE_VECTOR &out,bool staged=true);
