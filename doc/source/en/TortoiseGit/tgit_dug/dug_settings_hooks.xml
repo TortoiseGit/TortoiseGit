@@ -198,7 +198,7 @@
 				<listitem>
 					<para>
 						A path to a temporary file which contains all the
-						paths for which the operation was started.
+						paths for which the operation was started in UTF-8 encoding.
 						Each path is on a separate line in the temp file.
 					</para>
 				</listitem>
