@@ -619,6 +619,11 @@ CString CGit::GetUserName(void)
 	CString envname = env.GetEnv(L"GIT_AUTHOR_NAME");
 	if (!envname.IsEmpty())
 		return envname;
+
+	if (ms_LastMsysGitVersion >= ConvertVersionToInt(2, 22, 0))
+		if (auto authorname = GetConfigValue(L"author.name"); !authorname.IsEmpty())
+			return authorname;
+
 	return GetConfigValue(L"user.name");
 }
 CString CGit::GetUserEmail(void)
@@ -628,6 +633,40 @@ CString CGit::GetUserEmail(void)
 	CString envmail = env.GetEnv(L"GIT_AUTHOR_EMAIL");
 	if (!envmail.IsEmpty())
 		return envmail;
+
+	if (ms_LastMsysGitVersion >= ConvertVersionToInt(2, 22, 0))
+		if (auto authormail = GetConfigValue(L"author.email"); !authormail.IsEmpty())
+			return authormail;
+
+	return GetConfigValue(L"user.email");
+}
+
+CString CGit::GetCommitterName(void)
+{
+	CEnvironment env;
+	env.CopyProcessEnvironment();
+	CString envname = env.GetEnv(L"GIT_COMMITTER_NAME");
+	if (!envname.IsEmpty())
+		return envname;
+
+	if (ms_LastMsysGitVersion >= ConvertVersionToInt(2, 22, 0))
+		if (auto committername = GetConfigValue(L"committer.name"); !committername.IsEmpty())
+			return committername;
+
+	return GetConfigValue(L"user.name");
+}
+
+CString CGit::GetCommitterEmail(void)
+{
+	CEnvironment env;
+	env.CopyProcessEnvironment();
+	CString envmail = env.GetEnv(L"GIT_AUTHOR_EMAIL");
+	if (!envmail.IsEmpty())
+		return envmail;
+
+	if (ms_LastMsysGitVersion >= ConvertVersionToInt(2, 22, 0))
+		if (auto committermail = GetConfigValue(L"committer.email"); !committermail.IsEmpty())
+			return committermail;
 
 	return GetConfigValue(L"user.email");
 }

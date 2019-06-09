@@ -2966,7 +2966,7 @@ void CAppUtils::RemoveTrailSlash(CString &path)
 
 bool CAppUtils::CheckUserData(HWND hWnd)
 {
-	while(g_Git.GetUserName().IsEmpty() || g_Git.GetUserEmail().IsEmpty())
+	while (g_Git.GetUserName().IsEmpty() || g_Git.GetUserEmail().IsEmpty() || g_Git.GetCommitterName().IsEmpty() || g_Git.GetCommitterEmail().IsEmpty())
 	{
 		if (CMessageBox::Show(hWnd, IDS_PROC_NOUSERDATA, IDS_APPNAME, MB_YESNO | MB_ICONERROR) == IDYES)
 		{

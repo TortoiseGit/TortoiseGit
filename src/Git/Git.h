@@ -290,6 +290,8 @@ public:
 
 	CString GetUserName(void);
 	CString GetUserEmail(void);
+	CString GetCommitterName(void);
+	CString GetCommitterEmail(void);
 	CString GetCurrentBranch(bool fallback = false);
 	void GetRemoteTrackedBranch(const CString& localBranch, CString& remote, CString& branch);
 	void GetRemoteTrackedBranchForHEAD(CString& remote, CString& branch);
