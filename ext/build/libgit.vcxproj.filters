@@ -48,6 +48,12 @@
     <Filter Include="sha256">
       <UniqueIdentifier>{2a3e5c63-a7e7-4465-a6cb-f1cafb521bf0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="git\trace2">
+      <UniqueIdentifier>{0e88c343-cb7f-465d-a701-d80b0c2f1de0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\trace2">
+      <UniqueIdentifier>{4727a21e-5f8a-4b52-8c00-a66505628d2b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\tgit\compat\msvc.c">
@@ -722,6 +728,45 @@
     <ClCompile Include="..\tgit\sha256\block\sha256.c">
       <Filter>sha256</Filter>
     </ClCompile>
+    <ClCompile Include="..\tgit\trace2.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\trace2\tr2_cfg.c">
+      <Filter>git\trace2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\trace2\tr2_cmd_name.c">
+      <Filter>git\trace2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\trace2\tr2_sid.c">
+      <Filter>git\trace2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\trace2\tr2_sysenv.c">
+      <Filter>git\trace2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\trace2\tr2_tbuf.c">
+      <Filter>git\trace2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\trace2\tr2_tgt_event.c">
+      <Filter>git\trace2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\trace2\tr2_tgt_normal.c">
+      <Filter>git\trace2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\trace2\tr2_tgt_perf.c">
+      <Filter>git\trace2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\trace2\tr2_tls.c">
+      <Filter>git\trace2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\trace2\tr2_dst.c">
+      <Filter>git\trace2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\json-writer.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\compat\win32\trace2_win32_process_info.c">
+      <Filter>compat\win32</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\tgit\compat\msvc.h">
@@ -1210,6 +1255,36 @@
     </ClInclude>
     <ClInclude Include="..\tgit\sha256\block\sha256.h">
       <Filter>sha256</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\trace2\tr2_cfg.h">
+      <Filter>Header Files\trace2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\trace2\tr2_cmd_name.h">
+      <Filter>Header Files\trace2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\trace2\tr2_dst.h">
+      <Filter>Header Files\trace2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\trace2\tr2_sid.h">
+      <Filter>Header Files\trace2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\trace2\tr2_sysenv.h">
+      <Filter>Header Files\trace2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\trace2\tr2_tbuf.h">
+      <Filter>Header Files\trace2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\trace2\tr2_tgt.h">
+      <Filter>Header Files\trace2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\trace2\tr2_tls.h">
+      <Filter>Header Files\trace2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\trace2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\json-writer.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

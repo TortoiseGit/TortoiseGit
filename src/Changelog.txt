@@ -4,7 +4,7 @@ Released: unreleased
 == Features ==
  * Fixed issue #3355: Adding file name extension in the Export dialog
  * Update Scintilla to 4.1.6
- * Update libgit to 2.21.0 based on Git for Windows sources
+ * Update libgit to 2.22.0 based on Git for Windows sources
  * Update PuTTY binaries to 0.71
  * Allow to disable "Working Tree Changes" in log dialog (using advanced settings)
 

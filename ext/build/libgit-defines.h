@@ -37,4 +37,5 @@
 #define NO_POSIX_GOODIES
 #define PAGER_ENV "LESS=FRX LV=-c"
 #define INTERNAL_QSORT
+#define NO_UNIX_SOCKETS
 #define SHA1_DC

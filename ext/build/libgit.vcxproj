@@ -94,6 +94,7 @@
     <ClCompile Include="..\tgit\compat\win32\path-utils.c" />
     <ClCompile Include="..\tgit\compat\win32\pthread.c" />
     <ClCompile Include="..\tgit\compat\win32\syslog.c" />
+    <ClCompile Include="..\tgit\compat\win32\trace2_win32_process_info.c" />
     <ClCompile Include="..\tgit\compat\winansi.c" />
     <ClCompile Include="..\tgit\config.c" />
     <ClCompile Include="..\tgit\connect.c" />
@@ -138,6 +139,7 @@
     <ClCompile Include="..\tgit\hex.c" />
     <ClCompile Include="..\tgit\ident.c" />
     <ClCompile Include="..\tgit\interdiff.c" />
+    <ClCompile Include="..\tgit\json-writer.c" />
     <ClCompile Include="..\tgit\kwset.c" />
     <ClCompile Include="..\tgit\levenshtein.c" />
     <ClCompile Include="..\tgit\line-log.c" />
@@ -233,6 +235,17 @@
     <ClCompile Include="..\tgit\thread-utils.c" />
     <ClCompile Include="..\tgit\tmp-objdir.c" />
     <ClCompile Include="..\tgit\trace.c" />
+    <ClCompile Include="..\tgit\trace2.c" />
+    <ClCompile Include="..\tgit\trace2\tr2_cfg.c" />
+    <ClCompile Include="..\tgit\trace2\tr2_cmd_name.c" />
+    <ClCompile Include="..\tgit\trace2\tr2_dst.c" />
+    <ClCompile Include="..\tgit\trace2\tr2_sid.c" />
+    <ClCompile Include="..\tgit\trace2\tr2_sysenv.c" />
+    <ClCompile Include="..\tgit\trace2\tr2_tbuf.c" />
+    <ClCompile Include="..\tgit\trace2\tr2_tgt_event.c" />
+    <ClCompile Include="..\tgit\trace2\tr2_tgt_normal.c" />
+    <ClCompile Include="..\tgit\trace2\tr2_tgt_perf.c" />
+    <ClCompile Include="..\tgit\trace2\tr2_tls.c" />
     <ClCompile Include="..\tgit\trailer.c" />
     <ClCompile Include="..\tgit\transport-helper.c" />
     <ClCompile Include="..\tgit\transport.c" />
@@ -330,6 +343,7 @@
     <ClInclude Include="..\tgit\help.h" />
     <ClInclude Include="..\tgit\interdiff.h" />
     <ClInclude Include="..\tgit\iterator.h" />
+    <ClInclude Include="..\tgit\json-writer.h" />
     <ClInclude Include="..\tgit\kwset.h" />
     <ClInclude Include="..\tgit\levenshtein.h" />
     <ClInclude Include="..\tgit\line-log.h" />
@@ -403,6 +417,15 @@
     <ClInclude Include="..\tgit\tempfile.h" />
     <ClInclude Include="..\tgit\thread-utils.h" />
     <ClInclude Include="..\tgit\tmp-objdir.h" />
+    <ClInclude Include="..\tgit\trace2.h" />
+    <ClInclude Include="..\tgit\trace2\tr2_cfg.h" />
+    <ClInclude Include="..\tgit\trace2\tr2_cmd_name.h" />
+    <ClInclude Include="..\tgit\trace2\tr2_dst.h" />
+    <ClInclude Include="..\tgit\trace2\tr2_sid.h" />
+    <ClInclude Include="..\tgit\trace2\tr2_sysenv.h" />
+    <ClInclude Include="..\tgit\trace2\tr2_tbuf.h" />
+    <ClInclude Include="..\tgit\trace2\tr2_tgt.h" />
+    <ClInclude Include="..\tgit\trace2\tr2_tls.h" />
     <ClInclude Include="..\tgit\trailer.h" />
     <ClInclude Include="..\tgit\transport.h" />
     <ClInclude Include="..\tgit\tree-walk.h" />
