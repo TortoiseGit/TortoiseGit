@@ -20,7 +20,7 @@ index 549818ded..88459b280 100644
   * CHARRANGE, TEXTRANGE, FINDTEXTEX, FORMATRANGE, and NMHDR structs.
   * So older code that treats Scintilla as a RichEdit will work. */
 diff --git a/ext/scintilla/src/EditView.cxx b/ext/scintilla/src/EditView.cxx
-index 0a608280a..ea61d4db8 100644
+index dcb843f8a..d8b4744cb 100644
 --- a/ext/scintilla/src/EditView.cxx
 +++ b/ext/scintilla/src/EditView.cxx
 @@ -56,6 +56,7 @@
@@ -39,10 +39,10 @@ index 0a608280a..ea61d4db8 100644
  }
  
  EditView::~EditView() {
-@@ -2016,7 +2018,15 @@ void EditView::DrawLine(Surface *surface, const EditModel &model, const ViewStyl
+@@ -2018,7 +2020,15 @@ void EditView::DrawLine(Surface *surface, const EditModel &model, const ViewStyl
  	}
  
- 	// See if something overrides the line background color.
+ 	// See if something overrides the line background colour.
 -	const ColourOptional background = vsDraw.Background(model.pdoc->GetMark(line), model.caret.active, ll->containsCaret);
 +	ColourOptional background = vsDraw.Background(model.pdoc->GetMark(line), model.caret.active, ll->containsCaret);
 +	SCNotification scn = { 0 };
@@ -69,7 +69,7 @@ index d681a0409..7ee07df5a 100644
  	LineLayoutCache llc;
  	PositionCache posCache;
 diff --git a/ext/scintilla/src/Editor.cxx b/ext/scintilla/src/Editor.cxx
-index 8aa67e564..486d5e4f3 100644
+index 204b6a219..f8c1ac75b 100644
 --- a/ext/scintilla/src/Editor.cxx
 +++ b/ext/scintilla/src/Editor.cxx
 @@ -110,6 +110,7 @@ static constexpr bool IsAllSpacesOrTabs(const char *s, unsigned int len) noexcep
@@ -94,7 +94,7 @@ index dbd0183e7..3686e6cfe 100644
  	bool IsUnicodeMode() const noexcept;
  	// Public so scintilla_send_message can use it.
 diff --git a/ext/scintilla/win32/ScintillaWin.cxx b/ext/scintilla/win32/ScintillaWin.cxx
-index b878f6421..2a674310e 100644
+index 0b66c7a58..9e75bc58a 100644
 --- a/ext/scintilla/win32/ScintillaWin.cxx
 +++ b/ext/scintilla/win32/ScintillaWin.cxx
 @@ -367,6 +367,7 @@ class ScintillaWin :

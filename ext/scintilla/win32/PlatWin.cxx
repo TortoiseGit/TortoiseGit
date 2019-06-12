@@ -98,7 +98,7 @@ bool LoadD2D() {
 				// A single threaded factory as Scintilla always draw on the GUI thread
 				fnD2DCF(D2D1_FACTORY_TYPE_SINGLE_THREADED,
 					__uuidof(ID2D1Factory),
-					0,
+					nullptr,
 					reinterpret_cast<IUnknown**>(&pD2DFactory));
 			}
 		}
@@ -423,7 +423,6 @@ class SurfaceGDI : public Surface {
 	HPEN penOld{};
 	HBRUSH brush{};
 	HBRUSH brushOld{};
-	HFONT font{};
 	HFONT fontOld{};
 	HBITMAP bitmap{};
 	HBITMAP bitmapOld{};
@@ -433,8 +432,8 @@ class SurfaceGDI : public Surface {
 
 	int codePage = 0;
 
-	void BrushColor(ColourDesired back);
-	void SetFont(Font &font_);
+	void BrushColour(ColourDesired back) noexcept;
+	void SetFont(const Font &font_) noexcept;
 	void Clear() noexcept;
 
 public:
@@ -517,7 +516,6 @@ void SurfaceGDI::Clear() noexcept {
 		::SelectObject(hdc, fontOld);
 		fontOld = 0;
 	}
-	font = 0;
 	if (bitmapOld) {
 		::SelectObject(hdc, bitmapOld);
 		::DeleteObject(bitmap);
@@ -575,7 +573,7 @@ void SurfaceGDI::PenColour(ColourDesired fore) {
 	penOld = SelectPen(hdc, pen);
 }
 
-void SurfaceGDI::BrushColor(ColourDesired back) {
+void SurfaceGDI::BrushColour(ColourDesired back) noexcept {
 	if (brush) {
 		::SelectObject(hdc, brushOld);
 		::DeleteObject(brush);
@@ -587,16 +585,14 @@ void SurfaceGDI::BrushColor(ColourDesired back) {
 	brush = ::CreateSolidBrush(colourNearest.AsInteger());
 	brushOld = SelectBrush(hdc, brush);
 }
-void SurfaceGDI::SetFont(Font &font_) {
-	if (font_.GetID() != font) {
-		const FormatAndMetrics *pfm = FamFromFontID(font_.GetID());
-		PLATFORM_ASSERT(pfm->technology == SCWIN_TECH_GDI);
-		if (fontOld) {
-			SelectFont(hdc, pfm->hfont);
-		} else {
-			fontOld = SelectFont(hdc, pfm->hfont);
-		}
-		font = pfm->hfont;
+
+void SurfaceGDI::SetFont(const Font &font_) noexcept {
+	const FormatAndMetrics *pfm = FamFromFontID(font_.GetID());
+	PLATFORM_ASSERT(pfm->technology == SCWIN_TECH_GDI);
+	if (fontOld) {
+		SelectFont(hdc, pfm->hfont);
+	} else {
+		fontOld = SelectFont(hdc, pfm->hfont);
 	}
 }
 
@@ -609,7 +605,7 @@ int SurfaceGDI::DeviceHeightFont(int points) {
 }
 
 void SurfaceGDI::MoveTo(int x_, int y_) {
-	::MoveToEx(hdc, x_, y_, 0);
+	::MoveToEx(hdc, x_, y_, nullptr);
 }
 
 void SurfaceGDI::LineTo(int x_, int y_) {
@@ -618,7 +614,7 @@ void SurfaceGDI::LineTo(int x_, int y_) {
 
 void SurfaceGDI::Polygon(Point *pts, size_t npts, ColourDesired fore, ColourDesired back) {
 	PenColour(fore);
-	BrushColor(back);
+	BrushColour(back);
 	std::vector<POINT> outline;
 	for (size_t i=0; i<npts; i++) {
 		POINT pt = {static_cast<LONG>(pts[i].x), static_cast<LONG>(pts[i].y)};
@@ -629,7 +625,7 @@ void SurfaceGDI::Polygon(Point *pts, size_t npts, ColourDesired fore, ColourDesi
 
 void SurfaceGDI::RectangleDraw(PRectangle rc, ColourDesired fore, ColourDesired back) {
 	PenColour(fore);
-	BrushColor(back);
+	BrushColour(back);
 	const RECT rcw = RectFromPRectangle(rc);
 	::Rectangle(hdc, rcw.left, rcw.top, rcw.right, rcw.bottom);
 }
@@ -655,7 +651,7 @@ void SurfaceGDI::FillRectangle(PRectangle rc, Surface &surfacePattern) {
 
 void SurfaceGDI::RoundedRectangle(PRectangle rc, ColourDesired fore, ColourDesired back) {
 	PenColour(fore);
-	BrushColor(back);
+	BrushColour(back);
 	const RECT rcw = RectFromPRectangle(rc);
 	::RoundRect(hdc,
 		rcw.left + 1, rcw.top,
@@ -745,7 +741,7 @@ void SurfaceGDI::AlphaRectangle(PRectangle rc, int cornerSize, ColourDesired fil
 		}
 		::DeleteDC(hMemDC);
 	} else {
-		BrushColor(outline);
+		BrushColour(outline);
 		FrameRect(hdc, &rcw, brush);
 	}
 }
@@ -802,7 +798,7 @@ void SurfaceGDI::DrawRGBAImage(PRectangle rc, int width, int height, const unsig
 
 void SurfaceGDI::Ellipse(PRectangle rc, ColourDesired fore, ColourDesired back) {
 	PenColour(fore);
-	BrushColor(back);
+	BrushColour(back);
 	const RECT rcw = RectFromPRectangle(rc);
 	::Ellipse(hdc, rcw.left, rcw.top, rcw.right, rcw.bottom);
 }
@@ -960,7 +956,6 @@ void SurfaceGDI::SetClip(PRectangle rc) {
 void SurfaceGDI::FlushCachedState() {
 	pen = 0;
 	brush = 0;
-	font = 0;
 }
 
 void SurfaceGDI::SetUnicodeMode(bool unicodeMode_) {
@@ -1002,7 +997,7 @@ class SurfaceD2D : public Surface {
 	float dpiScaleY;
 
 	void Clear() noexcept;
-	void SetFont(Font &font_);
+	void SetFont(const Font &font_);
 
 public:
 	SurfaceD2D() noexcept;
@@ -1186,7 +1181,7 @@ void SurfaceD2D::D2DPenColour(ColourDesired fore, int alpha) {
 	}
 }
 
-void SurfaceD2D::SetFont(Font &font_) {
+void SurfaceD2D::SetFont(const Font &font_) {
 	const FormatAndMetrics *pfm = FamFromFontID(font_.GetID());
 	PLATFORM_ASSERT(pfm->technology == SCWIN_TECH_DIRECTWRITE);
 	pTextFormat = pfm->pTextFormat;
@@ -1492,7 +1487,7 @@ void SurfaceD2D::Copy(PRectangle rc, Point from, Surface &surfaceSource) {
 			D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR, rcSource);
 		hr = pRenderTarget->Flush();
 		if (FAILED(hr)) {
-			Platform::DebugPrintf("Failed Flush 0x%x\n", hr);
+			Platform::DebugPrintf("Failed Flush 0x%lx\n", hr);
 		}
 		pBitmap->Release();
 	}
@@ -2217,7 +2212,7 @@ void Window::Show(bool show) {
 }
 
 void Window::InvalidateAll() {
-	::InvalidateRect(HwndFromWindowID(wid), NULL, FALSE);
+	::InvalidateRect(HwndFromWindowID(wid), nullptr, FALSE);
 }
 
 void Window::InvalidateRectangle(PRectangle rc) {
@@ -2800,7 +2795,7 @@ POINT ListBoxX::MaxTrackSize() const {
 void ListBoxX::SetRedraw(bool on) {
 	::SendMessage(lb, WM_SETREDRAW, on, 0);
 	if (on)
-		::InvalidateRect(lb, NULL, TRUE);
+		::InvalidateRect(lb, nullptr, TRUE);
 }
 
 void ListBoxX::ResizeToCursor() {
@@ -3199,22 +3194,17 @@ LRESULT PASCAL ListBoxX::StaticWndProc(
 namespace {
 
 bool ListBoxX_Register() noexcept {
-	WNDCLASSEX wndclassc;
+	WNDCLASSEX wndclassc {};
 	wndclassc.cbSize = sizeof(wndclassc);
 	// We need CS_HREDRAW and CS_VREDRAW because of the ellipsis that might be drawn for
 	// truncated items in the list and the appearance/disappearance of the vertical scroll bar.
 	// The list repaint is double-buffered to avoid the flicker this would otherwise cause.
 	wndclassc.style = CS_GLOBALCLASS | CS_HREDRAW | CS_VREDRAW;
-	wndclassc.cbClsExtra = 0;
 	wndclassc.cbWndExtra = sizeof(ListBoxX *);
 	wndclassc.hInstance = hinstPlatformRes;
-	wndclassc.hIcon = NULL;
-	wndclassc.hbrBackground = NULL;
-	wndclassc.lpszMenuName = NULL;
 	wndclassc.lpfnWndProc = ListBoxX::StaticWndProc;
 	wndclassc.hCursor = ::LoadCursor(NULL, IDC_ARROW);
 	wndclassc.lpszClassName = ListBoxX_ClassName;
-	wndclassc.hIconSm = 0;
 
 	return ::RegisterClassEx(&wndclassc) != 0;
 }
