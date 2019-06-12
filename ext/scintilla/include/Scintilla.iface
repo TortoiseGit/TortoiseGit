@@ -2484,7 +2484,7 @@ set void SetVirtualSpaceOptions=2596(int virtualSpaceOptions,)
 # Return options for virtual space behaviour.
 get int GetVirtualSpaceOptions=2597(,)
 
-# On GTK+, allow selecting the modifier key to use for mouse-based
+# On GTK, allow selecting the modifier key to use for mouse-based
 # rectangular selection. Often the window manager requires Alt+Mouse Drag
 # for moving windows.
 # Valid values are SCMOD_CTRL(default), SCMOD_ALT, or SCMOD_SUPER.
@@ -2969,6 +2969,7 @@ val SCLEX_STATA=124
 val SCLEX_SAS=125
 val SCLEX_NIM=126
 val SCLEX_CIL=127
+val SCLEX_X12=128
 
 # When a lexer specifies its language as SCLEX_AUTOMATIC it receives a
 # value assigned in sequence from SCLEX_AUTOMATIC+1.
@@ -4954,6 +4955,17 @@ val SCE_CIL_LABEL=7
 val SCE_CIL_OPERATOR=8
 val SCE_CIL_IDENTIFIER=9
 val SCE_CIL_STRINGEOL=10
+# Lexical states for SCLEX_X12
+lex X12=SCLEX_X12 SCE_X12_
+val SCE_X12_DEFAULT=0
+val SCE_X12_BAD=1
+val SCE_X12_ENVELOPE=2
+val SCE_X12_FUNCTIONGROUP=3
+val SCE_X12_TRANSACTIONSET=4
+val SCE_X12_SEGMENTHEADER=5
+val SCE_X12_SEGMENTEND=6
+val SCE_X12_SEP_ELEMENT=7
+val SCE_X12_SEP_SUBELEMENT=8
 
 # Events
 
@@ -4962,7 +4974,7 @@ evt void CharAdded=2001(int ch)
 evt void SavePointReached=2002(void)
 evt void SavePointLeft=2003(void)
 evt void ModifyAttemptRO=2004(void)
-# GTK+ Specific to work around focus and accelerator problems:
+# GTK Specific to work around focus and accelerator problems:
 evt void Key=2005(int ch, int modifiers)
 evt void DoubleClick=2006(int modifiers, int position, int line)
 evt void UpdateUI=2007(int updated)

@@ -75,6 +75,7 @@
     <ClCompile Include="..\scintilla\lexers\LexSAS.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexStata.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexSTTXT.cxx" />
+    <ClCompile Include="..\scintilla\lexers\LexX12.cxx" />
     <ClCompile Include="..\scintilla\lexlib\CharacterCategory.cxx" />
     <ClCompile Include="..\scintilla\lexlib\DefaultLexer.cxx" />
     <ClCompile Include="..\scintilla\src\AutoComplete.cxx" />

@@ -110,7 +110,6 @@ static constexpr bool IsAllSpacesOrTabs(const char *s, unsigned int len) noexcep
 }
 
 Editor::Editor() : durationWrapOneLine(0.00001, 0.000001, 0.0001) {
-	view.editor = this;
 	ctrlID = 0;
 
 	stylesValid = false;
@@ -5797,11 +5796,10 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 			if (wParam == 0)
 				return 0;
 			char *ptr = CharPtrFromSPtr(lParam);
-			size_t iChar = 0;
-			for (; iChar < wParam - 1; iChar++)
-				ptr[iChar] = pdoc->CharAt(iChar);
-			ptr[iChar] = '\0';
-			return iChar;
+			const Sci_Position len = std::min<Sci_Position>(wParam - 1, pdoc->Length());
+			pdoc->GetCharRange(ptr, 0, len);
+			ptr[len] = '\0';
+			return len;
 		}
 
 	case SCI_SETTEXT: {
@@ -5889,15 +5887,14 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 				pdoc->LineStart(static_cast<Sci::Line>(wParam));
 			const Sci::Position lineEnd =
 				pdoc->LineStart(static_cast<Sci::Line>(wParam + 1));
+			// not NUL terminated
+			const Sci::Position len = lineEnd - lineStart;
 			if (lParam == 0) {
-				return lineEnd - lineStart;
+				return len;
 			}
 			char *ptr = CharPtrFromSPtr(lParam);
-			Sci::Position iPlace = 0;
-			for (Sci::Position iChar = lineStart; iChar < lineEnd; iChar++) {
-				ptr[iPlace++] = pdoc->CharAt(iChar);
-			}
-			return iPlace;
+			pdoc->GetCharRange(ptr, lineStart, len);
+			return len;
 		}
 
 	case SCI_GETLINECOUNT:
@@ -5931,10 +5928,10 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 				return selectedText.LengthWithTerminator();
 			} else {
 				char *ptr = CharPtrFromSPtr(lParam);
-				size_t iChar = 0;
-				if (selectedText.Length()) {
-					for (; iChar < selectedText.LengthWithTerminator(); iChar++)
-						ptr[iChar] = selectedText.Data()[iChar];
+				size_t iChar = selectedText.Length();
+				if (iChar) {
+					memcpy(ptr, selectedText.Data(), iChar);
+					ptr[iChar++] = '\0';
 				} else {
 					ptr[0] = '\0';
 				}
@@ -6363,8 +6360,8 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 			if (lParam == 0)
 				return 0;
 			Sci_TextRange *tr = static_cast<Sci_TextRange *>(PtrFromSPtr(lParam));
-			int iPlace = 0;
-			for (long iChar = tr->chrg.cpMin; iChar < tr->chrg.cpMax; iChar++) {
+			Sci::Position iPlace = 0;
+			for (Sci::Position iChar = tr->chrg.cpMin; iChar < tr->chrg.cpMax; iChar++) {
 				tr->lpstrText[iPlace++] = pdoc->CharAt(iChar);
 				tr->lpstrText[iPlace++] = pdoc->StyleAt(iChar);
 			}
@@ -6441,11 +6438,9 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 			}
 			PLATFORM_ASSERT(wParam > 0);
 			char *ptr = CharPtrFromSPtr(lParam);
-			unsigned int iPlace = 0;
-			for (Sci::Position iChar = lineStart; iChar < lineEnd && iPlace < wParam - 1; iChar++) {
-				ptr[iPlace++] = pdoc->CharAt(iChar);
-			}
-			ptr[iPlace] = '\0';
+			const Sci::Position len = std::min<uptr_t>(lineEnd - lineStart, wParam - 1);
+			pdoc->GetCharRange(ptr, lineStart, len);
+			ptr[len] = '\0';
 			return sel.MainCaret() - lineStart;
 		}
 
