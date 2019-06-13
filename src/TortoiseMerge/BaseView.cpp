@@ -2594,38 +2594,35 @@ void CBaseView::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 	int nViewBlockStart = -1;
 	int nViewBlockEnd = -1;
 	GetViewSelection(nViewBlockStart, nViewBlockEnd);
-	if ((point.x >= 0) && (point.y >= 0))
+	int nLine = GetLineFromPoint(point)-1;
+	if ((nLine >= 0) && (nLine < m_Screen2View.size()))
 	{
-		int nLine = GetLineFromPoint(point)-1;
-		if ((nLine >= 0) && (nLine < m_Screen2View.size()))
+		int nViewLine = GetViewLineForScreen(nLine);
+		if (((nViewLine < nViewBlockStart) || (nViewBlockEnd < nViewLine)))
 		{
-			int nViewLine = GetViewLineForScreen(nLine);
-			if (((nViewLine < nViewBlockStart) || (nViewBlockEnd < nViewLine)))
+			ClearSelection(); // Clear text-copy selection
+
+			nViewBlockStart = nViewLine;
+			nViewBlockEnd = nViewLine;
+			DiffStates state = m_pViewData->GetState(nViewLine);
+			while (nViewBlockStart > 0)
 			{
-				ClearSelection(); // Clear text-copy selection
-
-				nViewBlockStart = nViewLine;
-				nViewBlockEnd = nViewLine;
-				DiffStates state = m_pViewData->GetState(nViewLine);
-				while (nViewBlockStart > 0)
-				{
-					const DiffStates lineState = m_pViewData->GetState(nViewBlockStart-1);
-					if (!LinesInOneChange(-1, state, lineState))
-						break;
-					nViewBlockStart--;
-				}
-
-				while (nViewBlockEnd < (m_pViewData->GetCount()-1))
-				{
-					const DiffStates lineState = m_pViewData->GetState(nViewBlockEnd+1);
-					if (!LinesInOneChange(1, state, lineState))
-						break;
-					nViewBlockEnd++;
-				}
-
-				SetupAllViewSelection(nViewBlockStart, nViewBlockEnd);
-				UpdateCaretPosition(SetupPoint(0, nViewLine));
+				const DiffStates lineState = m_pViewData->GetState(nViewBlockStart-1);
+				if (!LinesInOneChange(-1, state, lineState))
+					break;
+				nViewBlockStart--;
 			}
+
+			while (nViewBlockEnd < (m_pViewData->GetCount()-1))
+			{
+				const DiffStates lineState = m_pViewData->GetState(nViewBlockEnd+1);
+				if (!LinesInOneChange(1, state, lineState))
+					break;
+				nViewBlockEnd++;
+			}
+
+			SetupAllViewSelection(nViewBlockStart, nViewBlockEnd);
+			UpdateCaretPosition(SetupPoint(0, nViewLine));
 		}
 	}
 
