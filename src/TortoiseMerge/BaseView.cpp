@@ -2594,7 +2594,7 @@ void CBaseView::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 	int nViewBlockStart = -1;
 	int nViewBlockEnd = -1;
 	GetViewSelection(nViewBlockStart, nViewBlockEnd);
-	if ((point.x >= 0) && (point.y >= 0))
+	if ((point.x != -1) && (point.y != -1))
 	{
 		int nLine = GetLineFromPoint(point)-1;
 		if ((nLine >= 0) && (nLine < m_Screen2View.size()))
