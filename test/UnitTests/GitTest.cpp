@@ -1446,22 +1446,24 @@ TEST_P(CBasicGitWithTestRepoFixture, GetOneFile)
 	tmpFile = GetTempFile();
 	EXPECT_EQ(0, m_Git.GetOneFile(L"HEAD", CTGitPath(L"1.enc"), tmpFile));
 	EXPECT_EQ(true, CStringUtils::ReadStringFromTextFile(tmpFile, fileContents));
+	fileContents.Replace(L"\r\n", L"\n");
 	EXPECT_TRUE(CStringUtils::StartsWith(fileContents, L"U2FsdGVkX1/+7d6tvu"));
 	if (openssl10)
 		EXPECT_STREQ(L"U2FsdGVkX1/+7d6tvu8AABwbE+Xy7U4l5boTKjIgUkYHONqmYHD+0e6k35MgtUGx\ns11nq1QuKeFCW5wFWNSj1WcHg2n4W59xfnB7RkSSIDQ=\n", fileContents);
 	else
-		EXPECT_STREQ(L"U2FsdGVkX1/+7d6tvu/+7UgE7iA1vUXeIPVzXx1ef6pAZjq/p481dZp1oCyRa/ur\r\nzgcQLgv/OrJfYMWXxWXQRp2uWGnntih9NrvOTlSN440=\r\n", fileContents);
+		EXPECT_STREQ(L"U2FsdGVkX1/+7d6tvu/+7UgE7iA1vUXeIPVzXx1ef6pAZjq/p481dZp1oCyRa/ur\nzgcQLgv/OrJfYMWXxWXQRp2uWGnntih9NrvOTlSN440=\n", fileContents);
 	::DeleteFile(tmpFile);
 
 	fileContents.Empty();
 	tmpFile = GetTempFile();
 	EXPECT_EQ(0, m_Git.GetOneFile(L"HEAD", CTGitPath(L"2.enc"), tmpFile));
 	EXPECT_EQ(true, CStringUtils::ReadStringFromTextFile(tmpFile, fileContents));
+	fileContents.Replace(L"\r\n", L"\n");
 	EXPECT_TRUE(CStringUtils::StartsWith(fileContents, L"U2FsdGVkX1/+7d6tvu"));
 	if (openssl10)
 		EXPECT_STREQ(L"U2FsdGVkX1/+7d6tvu8AAIDDx8qi/l0qzkSMsS2YLt8tYK1oWzj8+o78fXH0/tlO\nCRVrKqTvh9eUFklY8QFYfZfj01zBkFat+4zrW+1rV4Q=\n", fileContents);
 	else
-		EXPECT_STREQ(L"U2FsdGVkX1/+7d6tvu/+7XAtdjFg6XFOvt0SWT9/LdWG8J1pLET464/4A3jusIMK\r\nuCP1hvKsnuGcQv3KtoJbRU3KAFarZIrNEC1mHofQPFs=\r\n", fileContents);
+		EXPECT_STREQ(L"U2FsdGVkX1/+7d6tvu/+7XAtdjFg6XFOvt0SWT9/LdWG8J1pLET464/4A3jusIMK\nuCP1hvKsnuGcQv3KtoJbRU3KAFarZIrNEC1mHofQPFs=\n", fileContents);
 	::DeleteFile(tmpFile);
 }
 
