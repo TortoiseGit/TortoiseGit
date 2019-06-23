@@ -1,6 +1,6 @@
 ﻿// TortoiseGitIDiff - an image diff viewer in TortoiseSVN
 
-// Copyright (C) 2006-2013, 2018 - TortoiseSVN
+// Copyright (C) 2006-2013, 2018-2019 - TortoiseSVN
 // Copyright (C) 2016, 2018-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
@@ -1073,9 +1073,12 @@ void CPicWindow::FitImageInWindow()
         else
         {
             // image is bigger than the window
-            int xscale = (rect.right - rect.left - border) * 100 / picture.m_Width;
-            int yscale = (rect.bottom - rect.top - border) * 100 / picture.m_Height;
-            Zoom = min(yscale, xscale);
+            if (picture.m_Width > 0 && picture.m_Height > 0)
+            {
+                int xscale = (rect.right - rect.left - border) * 100 / picture.m_Width;
+                int yscale = (rect.bottom - rect.top - border) * 100 / picture.m_Height;
+                Zoom = min(yscale, xscale);
+            }
         }
         if (pSecondPic)
         {
