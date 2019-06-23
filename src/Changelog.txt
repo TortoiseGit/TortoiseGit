@@ -9,6 +9,7 @@ Released: unreleased
  * Fixed issue #3342: Windows Explorer context menu: TortoiseGit doesn't recognize local Git working copy if "gitdir-redirection" is used within same folder
  * Fixed issue #3349: View patch missing color
  * Fixed issue #3365: Ignore items by extension handles files/directories with no extension poorly
+ * Fixed issue #3393: TortoiseGitIDiff crashes with a very small window size
 
 = Release 2.8.0 =
 Released: 2019-02-28
