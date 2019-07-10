@@ -244,8 +244,8 @@ int CGitDiff::SubmoduleDiff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* 
 		CString temp;
 		CGit::StringAppend(&temp, &bytes[15], CP_UTF8, 2 * GIT_HASH_SIZE);
 		oldhash = CGitHash::FromHexStrTry(temp);
-		CGit::StringAppend(&temp, &bytes[15 + 2 * GIT_HASH_SIZE + 1], CP_UTF8, 2 * GIT_HASH_SIZE);
 		temp.Empty();
+		CGit::StringAppend(&temp, &bytes[15 + 2 * GIT_HASH_SIZE + 1], CP_UTF8, 2 * GIT_HASH_SIZE);
 		newhash = CGitHash::FromHexStrTry(temp);
 	}
 
