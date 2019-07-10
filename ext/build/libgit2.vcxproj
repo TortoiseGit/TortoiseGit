@@ -110,13 +110,13 @@
     <ClCompile Include="..\libgit2\src\filebuf.c" />
     <ClCompile Include="..\libgit2\src\fileops.c" />
     <ClCompile Include="..\libgit2\src\filter.c" />
-    <ClCompile Include="..\libgit2\src\fnmatch.c" />
     <ClCompile Include="..\libgit2\src\global.c" />
     <ClCompile Include="..\libgit2\src\graph.c" />
     <ClCompile Include="..\libgit2\src\hash.c" />
     <ClCompile Include="..\libgit2\src\hashsig.c" />
-    <ClCompile Include="..\libgit2\src\hash\sha1dc\sha1.c" />
-    <ClCompile Include="..\libgit2\src\hash\sha1dc\ubc_check.c" />
+    <ClCompile Include="..\libgit2\src\hash\sha1\collisiondetect.c" />
+    <ClCompile Include="..\libgit2\src\hash\sha1\sha1dc\sha1.c" />
+    <ClCompile Include="..\libgit2\src\hash\sha1\sha1dc\ubc_check.c" />
     <ClCompile Include="..\libgit2\src\ident.c" />
     <ClCompile Include="..\libgit2\src\idxmap.c" />
     <ClCompile Include="..\libgit2\src\ignore.c" />
@@ -129,6 +129,7 @@
     <ClCompile Include="..\libgit2\src\merge_file.c" />
     <ClCompile Include="..\libgit2\src\message.c" />
     <ClCompile Include="..\libgit2\src\mwindow.c" />
+    <ClCompile Include="..\libgit2\src\net.c" />
     <ClCompile Include="..\libgit2\src\netops.c" />
     <ClCompile Include="..\libgit2\src\notes.c" />
     <ClCompile Include="..\libgit2\src\object.c" />
@@ -197,6 +198,7 @@
     <ClCompile Include="..\libgit2\src\util.c" />
     <ClCompile Include="..\libgit2\src\varint.c" />
     <ClCompile Include="..\libgit2\src\vector.c" />
+    <ClCompile Include="..\libgit2\src\wildmatch.c" />
     <ClCompile Include="..\libgit2\src\win32\dir.c" />
     <ClCompile Include="..\libgit2\src\win32\error.c" />
     <ClCompile Include="..\libgit2\src\win32\findfile.c" />
@@ -320,12 +322,12 @@
     <ClInclude Include="..\libgit2\src\filebuf.h" />
     <ClInclude Include="..\libgit2\src\fileops.h" />
     <ClInclude Include="..\libgit2\src\filter.h" />
-    <ClInclude Include="..\libgit2\src\fnmatch.h" />
     <ClInclude Include="..\libgit2\src\global.h" />
     <ClInclude Include="..\libgit2\src\hash.h" />
-    <ClInclude Include="..\libgit2\src\hash\hash_collisiondetect.h" />
-    <ClInclude Include="..\libgit2\src\hash\sha1dc\sha1.h" />
-    <ClInclude Include="..\libgit2\src\hash\sha1dc\ubc_check.h" />
+    <ClInclude Include="..\libgit2\src\hash\sha1.h" />
+    <ClInclude Include="..\libgit2\src\hash\sha1\collisiondetect.h" />
+    <ClInclude Include="..\libgit2\src\hash\sha1\sha1dc\sha1.h" />
+    <ClInclude Include="..\libgit2\src\hash\sha1\sha1dc\ubc_check.h" />
     <ClInclude Include="..\libgit2\src\idxmap.h" />
     <ClInclude Include="..\libgit2\src\ignore.h" />
     <ClInclude Include="..\libgit2\src\index.h" />
@@ -338,6 +340,7 @@
     <ClInclude Include="..\libgit2\src\merge_driver.h" />
     <ClInclude Include="..\libgit2\src\message.h" />
     <ClInclude Include="..\libgit2\src\mwindow.h" />
+    <ClInclude Include="..\libgit2\src\net.h" />
     <ClInclude Include="..\libgit2\src\netops.h" />
     <ClInclude Include="..\libgit2\src\notes.h" />
     <ClInclude Include="..\libgit2\src\object.h" />
@@ -397,6 +400,7 @@
     <ClInclude Include="..\libgit2\src\util.h" />
     <ClInclude Include="..\libgit2\src\varint.h" />
     <ClInclude Include="..\libgit2\src\vector.h" />
+    <ClInclude Include="..\libgit2\src\wildmatch.h" />
     <ClInclude Include="..\libgit2\src\win32\dir.h" />
     <ClInclude Include="..\libgit2\src\win32\error.h" />
     <ClInclude Include="..\libgit2\src\win32\findfile.h" />

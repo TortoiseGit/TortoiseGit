@@ -53,7 +53,7 @@ int RemoteProgressCommand::RemoteUpdatetipsCallback(const char* refname, const g
 	}*/
 
 	CString change;
-	if (!git_oid_iszero(oldOid) && !git_oid_iszero(newOid))
+	if (!git_oid_is_zero(oldOid) && !git_oid_is_zero(newOid))
 	{
 		if (git_oid_equal(oldOid, newOid))
 			change.LoadString(IDS_SAME);
@@ -84,9 +84,9 @@ int RemoteProgressCommand::RemoteUpdatetipsCallback(const char* refname, const g
 			}
 		}
 	}
-	else if (!git_oid_iszero(oldOid))
+	else if (!git_oid_is_zero(oldOid))
 		change.LoadString(IDS_DELETED);
-	else if (!git_oid_iszero(newOid))
+	else if (!git_oid_is_zero(newOid))
 		change.LoadString(IDS_NEW);
 
 	ptr->list->AddNotify(new RefUpdateNotificationData(refname, oldOid, newOid, change));

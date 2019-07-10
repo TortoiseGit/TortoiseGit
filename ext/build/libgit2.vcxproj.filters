@@ -15,7 +15,7 @@
       <UniqueIdentifier>{518b1f3c-b83c-48a3-b067-4dcba632612a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\hash">
-      <UniqueIdentifier>{5e0aabed-8416-4869-bc2b-20eb7be36b62}</UniqueIdentifier>
+      <UniqueIdentifier>{c321129e-6cb2-4f5d-9cea-b2a6a2af59f8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
@@ -25,7 +25,7 @@
       <UniqueIdentifier>{e9213879-1f8b-4859-aa92-39b3037b4b51}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\hash">
-      <UniqueIdentifier>{d6890dcc-c3d2-456c-97cc-e17e48c8731e}</UniqueIdentifier>
+      <UniqueIdentifier>{6a49d7c5-accd-4461-979c-3761bd6bed0b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Public Header Files">
       <UniqueIdentifier>{2485d8a7-2fdd-4544-b836-e2dc1088bcde}</UniqueIdentifier>
@@ -63,11 +63,17 @@
     <Filter Include="Source Files\allocators">
       <UniqueIdentifier>{65700788-1a9c-4b29-af01-c7820f8b61b8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\hash\sha1dc">
-      <UniqueIdentifier>{b106aa47-93d7-485e-8f96-0036fd84bcfe}</UniqueIdentifier>
+    <Filter Include="Source Files\hash\sha1">
+      <UniqueIdentifier>{35f6028a-db0d-423c-b5aa-9dd5c6ec07c1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\hash\sha1dc">
-      <UniqueIdentifier>{c036d598-a188-4acd-87bd-3debef8ff37b}</UniqueIdentifier>
+    <Filter Include="Source Files\hash\sha1\sha1dc">
+      <UniqueIdentifier>{9266b665-e298-4ab5-9166-75b52ecc3a55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\hash\sha1">
+      <UniqueIdentifier>{a5f41999-c548-4f6b-89e8-7989b99a7660}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\hash\sha1\sha1dc">
+      <UniqueIdentifier>{c5b368f1-8542-4d52-98dc-622ec3cdfa61}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -141,9 +147,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\libgit2\src\filter.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\libgit2\src\fnmatch.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\libgit2\src\global.c">
@@ -548,11 +551,20 @@
     <ClCompile Include="..\libgit2\src\allocators\stdalloc.c">
       <Filter>Source Files\allocators</Filter>
     </ClCompile>
-    <ClCompile Include="..\libgit2\src\hash\sha1dc\sha1.c">
-      <Filter>Source Files\hash\sha1dc</Filter>
+    <ClCompile Include="..\libgit2\src\wildmatch.c">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\libgit2\src\hash\sha1dc\ubc_check.c">
-      <Filter>Source Files\hash\sha1dc</Filter>
+    <ClCompile Include="..\libgit2\src\net.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libgit2\src\hash\sha1\collisiondetect.c">
+      <Filter>Source Files\hash\sha1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libgit2\src\hash\sha1\sha1dc\sha1.c">
+      <Filter>Source Files\hash\sha1\sha1dc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libgit2\src\hash\sha1\sha1dc\ubc_check.c">
+      <Filter>Source Files\hash\sha1\sha1dc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -608,9 +620,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\libgit2\src\filter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libgit2\src\fnmatch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\libgit2\src\global.h">
@@ -1222,15 +1231,6 @@
     <ClInclude Include="..\libgit2\src\allocators\stdalloc.h">
       <Filter>Header Files\allocators</Filter>
     </ClInclude>
-    <ClInclude Include="..\libgit2\src\hash\hash_collisiondetect.h">
-      <Filter>Header Files\hash</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libgit2\src\hash\sha1dc\sha1.h">
-      <Filter>Header Files\hash\sha1dc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libgit2\src\hash\sha1dc\ubc_check.h">
-      <Filter>Header Files\hash\sha1dc</Filter>
-    </ClInclude>
     <ClInclude Include="..\libgit2\src\errors.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1239,6 +1239,24 @@
     </ClInclude>
     <ClInclude Include="..\libgit2\src\win32\w32_common.h">
       <Filter>Header Files\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\wildmatch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\net.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\hash\sha1\sha1dc\ubc_check.h">
+      <Filter>Header Files\hash\sha1\sha1dc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\hash\sha1\sha1dc\sha1.h">
+      <Filter>Header Files\hash\sha1\sha1dc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\hash\sha1\collisiondetect.h">
+      <Filter>Header Files\hash\sha1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\hash\sha1.h">
+      <Filter>Header Files\hash</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

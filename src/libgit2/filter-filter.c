@@ -50,13 +50,13 @@ static int filter_check(
 	if (!attr_values)
 		return GIT_PASSTHROUGH;
 
-	if (GIT_ATTR_UNSPECIFIED(attr_values[0]))
+	if (GIT_ATTR_IS_UNSPECIFIED(attr_values[0]))
 		return GIT_PASSTHROUGH;
 
-	if (GIT_ATTR_FALSE(attr_values[0]))
+	if (GIT_ATTR_IS_FALSE(attr_values[0]))
 		return GIT_PASSTHROUGH;
 
-	if (GIT_ATTR_TRUE(attr_values[0]))
+	if (GIT_ATTR_IS_TRUE(attr_values[0]))
 		return GIT_PASSTHROUGH;
 
 	*payload = git__strdup(attr_values[0]);
