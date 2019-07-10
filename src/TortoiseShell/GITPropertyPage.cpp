@@ -411,7 +411,7 @@ static git_commit* FindFileRecentCommit(git_repository* repository, const CStrin
 			return nullptr;
 
 		// check if file not found
-		if (git_oid_iszero(&treewalkstruct.oid))
+		if (git_oid_is_zero(&treewalkstruct.oid))
 			return nullptr;
 
 		bool diff = true;
