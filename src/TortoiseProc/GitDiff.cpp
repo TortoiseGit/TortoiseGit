@@ -55,6 +55,7 @@ int CGitDiff::SubmoduleDiffNull(HWND hWnd, const CTGitPath* pPath, const CGitHas
 			newhash = CGitHash::FromHexStrTry(output.Mid(start + 1, GIT_HASH_SIZE * 2));
 
 		CGit subgit;
+		subgit.m_IsUseGitDLL = false;
 		subgit.m_CurrentDir = g_Git.CombinePath(pPath);
 		int encode=CAppUtils::GetLogOutputEncode(&subgit);
 
@@ -254,6 +255,7 @@ int CGitDiff::SubmoduleDiff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* 
 	bool oldOK = false, newOK = false;
 
 	CGit subgit;
+	subgit.m_IsUseGitDLL = false;
 	subgit.m_CurrentDir = g_Git.CombinePath(pPath);
 	ChangeType changeType = Unknown;
 
