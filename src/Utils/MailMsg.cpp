@@ -4,7 +4,7 @@
   Copyright (c) 2003, Michael Carruth
   All rights reserved.
 
-  Adjusted by Sven Strickroth <email@cs-ware.de>, 2011-2018
+  Adjusted by Sven Strickroth <email@cs-ware.de>, 2011-2019
    * make it work with no attachments
    * added flag to show mail compose dialog
    * make it work with 32-64bit inconsistencies (http://msdn.microsoft.com/en-us/library/dd941355.aspx)
@@ -127,7 +127,7 @@ BOOL CMailMsg::DetectMailClient(CString& sMailClientName)
 {
 	CRegKey regKey;
 	TCHAR buf[1024] = L"";
-	LONG lResult = lResult = regKey.Open(HKEY_CURRENT_USER, L"SOFTWARE\\Clients\\Mail", KEY_READ);
+	LONG lResult = regKey.Open(HKEY_CURRENT_USER, L"SOFTWARE\\Clients\\Mail", KEY_READ);
 	if(lResult!=ERROR_SUCCESS)
 	{
 		lResult = regKey.Open(HKEY_LOCAL_MACHINE, L"SOFTWARE\\Clients\\Mail", KEY_READ);
