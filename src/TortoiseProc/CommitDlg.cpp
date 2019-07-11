@@ -691,6 +691,7 @@ void CCommitDlg::OnOK()
 		if (entry->m_Action & CTGitPath::LOGACTIONS_UNVER)
 		{
 			CGit subgit;
+			subgit.m_IsUseGitDLL = false;
 			subgit.m_CurrentDir = g_Git.CombinePath(entry);
 			CString subcmdout;
 			subgit.Run(L"git.exe status --porcelain", &subcmdout, CP_UTF8);

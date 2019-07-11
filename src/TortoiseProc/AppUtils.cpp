@@ -1164,6 +1164,7 @@ bool CAppUtils::Export(HWND hWnd, const CString* BashHash, const CTGitPath* orgP
 		};
 
 		CGit git;
+		git.m_IsUseGitDLL = false;
 		if (!dlg.m_bWholeProject && !dlg.m_orgPath.IsEmpty() && PathIsDirectory(dlg.m_orgPath.GetWinPathString()))
 		{
 			git.m_CurrentDir = dlg.m_orgPath.GetWinPathString();
@@ -1805,6 +1806,7 @@ bool CAppUtils::ConflictEdit(HWND hWnd, CTGitPath& path, bool bAlternativeTool /
 		if (fullMergePath.HasAdminDir())
 		{
 			CGit subgit;
+			subgit.m_IsUseGitDLL = false;
 			subgit.m_CurrentDir = fullMergePath.GetWinPath();
 			subgit.GetHash(baseHash, L"HEAD");
 		}
@@ -1817,6 +1819,7 @@ bool CAppUtils::ConflictEdit(HWND hWnd, CTGitPath& path, bool bAlternativeTool /
 		if (fullMergePath.HasAdminDir())
 		{
 			CGit subgit;
+			subgit.m_IsUseGitDLL = false;
 			subgit.m_CurrentDir = fullMergePath.GetWinPath();
 			CGitDiff::GetSubmoduleChangeType(subgit, baseHash, localHash, baseOK, mineOK, changeTypeMine, baseSubject, mineSubject);
 			CGitDiff::GetSubmoduleChangeType(subgit, baseHash, remoteHash, baseOK, theirsOK, changeTypeTheirs, baseSubject, theirsSubject);
@@ -3712,6 +3715,7 @@ int CAppUtils::ResolveConflict(HWND hWnd, CTGitPath& path, resolve_with resolveW
 				}
 
 				CGit subgit;
+				subgit.m_IsUseGitDLL = false;
 				subgit.m_CurrentDir = fullPath.GetWinPath();
 				CGitHash submoduleHead;
 				if (subgit.GetHash(submoduleHead, L"HEAD"))
