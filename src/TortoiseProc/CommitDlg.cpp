@@ -213,6 +213,9 @@ BOOL CCommitDlg::OnInitDialog()
 		CGit::LoadTextFile(dotGitPath + L"SQUASH_MSG", m_sLogMessage);
 		CGit::LoadTextFile(dotGitPath + L"MERGE_MSG", m_sLogMessage);
 	}
+
+	m_ProjectProperties.ReadProps();
+
 	if (!RunStartCommitHook())
 	{
 		EndDialog(IDCANCEL);
@@ -266,7 +269,6 @@ BOOL CCommitDlg::OnInitDialog()
 	m_ListCtrl.SetBackgroundImage(IDI_COMMIT_BKG);
 
 	//this->DialogEnableWindow(IDC_COMMIT_AMEND,FALSE);
-	m_ProjectProperties.ReadProps();
 
 	m_cLogMessage.Init(m_ProjectProperties);
 	m_cLogMessage.SetFont(CAppUtils::GetLogFontName(), CAppUtils::GetLogFontSize());
