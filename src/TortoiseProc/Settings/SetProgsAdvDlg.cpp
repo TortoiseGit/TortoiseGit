@@ -147,7 +147,7 @@ BOOL CSetProgsAdvDlg::OnInitDialog()
 	m_ToolListCtrl.InsertColumn(1, temp);
 
 	m_ToolListCtrl.SetRedraw(FALSE);
-	for (int col = 0, maxcol = maxcol = m_ToolListCtrl.GetHeaderCtrl()->GetItemCount(); col < maxcol; ++col)
+	for (int col = 0, maxcol = m_ToolListCtrl.GetHeaderCtrl()->GetItemCount(); col < maxcol; ++col)
 		m_ToolListCtrl.SetColumnWidth(col,LVSCW_AUTOSIZE_USEHEADER);
 	m_ToolListCtrl.SetRedraw(TRUE);
 
