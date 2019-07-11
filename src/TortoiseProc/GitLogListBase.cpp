@@ -3092,7 +3092,7 @@ UINT CGitLogListBase::LogThread()
 			if (t2 - t1 > 500UL || (m_logEntries.size() - oldsize > 100))
 			{
 				//update UI
-				int percent = static_cast<int>(m_logEntries.size() * 100 / total + GITLOG_START + 1);
+				int percent = static_cast<int>(m_logEntries.size() * 100 / (total + 1));
 				if(percent > 99)
 					percent =99;
 				if(percent < GITLOG_START)
