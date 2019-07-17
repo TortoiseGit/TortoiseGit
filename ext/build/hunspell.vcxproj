@@ -50,7 +50,6 @@
     <ClCompile Include="..\hunspell\src\hunspell\affentry.cxx" />
     <ClCompile Include="..\hunspell\src\hunspell\affixmgr.cxx" />
     <ClCompile Include="..\hunspell\src\hunspell\csutil.cxx" />
-    <ClCompile Include="..\hunspell\src\hunspell\dictmgr.cxx" />
     <ClCompile Include="..\hunspell\src\hunspell\filemgr.cxx" />
     <ClCompile Include="..\hunspell\src\hunspell\hashmgr.cxx" />
     <ClCompile Include="..\hunspell\src\hunspell\hunspell.cxx" />
@@ -66,7 +65,6 @@
     <ClInclude Include="..\hunspell\src\hunspell\atypes.hxx" />
     <ClInclude Include="..\hunspell\src\hunspell\baseaffix.hxx" />
     <ClInclude Include="..\hunspell\src\hunspell\csutil.hxx" />
-    <ClInclude Include="..\hunspell\src\hunspell\dictmgr.hxx" />
     <ClInclude Include="..\hunspell\src\hunspell\filemgr.hxx" />
     <ClInclude Include="..\hunspell\src\hunspell\hashmgr.hxx" />
     <ClInclude Include="..\hunspell\src\hunspell\htypes.hxx" />

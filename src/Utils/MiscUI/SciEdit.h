@@ -21,9 +21,7 @@
 #include "../SmartHandle.h"
 #include "scintilla.h"
 #include "SciLexer.h"
-#undef near
 #include "hunspell.hxx"
-#define near
 #include "mythes.hxx"
 #include "ProjectProperties.h"
 #include "PersonalDictionary.h"
@@ -173,8 +171,8 @@ protected:
 	BOOL		IsMisspelled(const CString& sWord);
 	int			GetStyleAt(Sci_Position pos) { return static_cast<int>(Call(SCI_GETSTYLEAT, pos)) & 0x1f; }
 	bool		IsUrlOrEmail(const CStringA& sText);
-	CStringA	GetWordForSpellChecker(const CString& sWord);
-	CString		GetWordFromSpellChecker(const CStringA& sWordA);
+	std::string GetWordForSpellChecker(const CString& sWord);
+	CString		GetWordFromSpellChecker(const std::string& sWordA);
 
 	virtual afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/);
