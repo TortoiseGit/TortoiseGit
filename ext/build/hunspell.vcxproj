@@ -54,7 +54,6 @@
     <ClCompile Include="..\hunspell\src\hunspell\hashmgr.cxx" />
     <ClCompile Include="..\hunspell\src\hunspell\hunspell.cxx" />
     <ClCompile Include="..\hunspell\src\hunspell\hunzip.cxx" />
-    <ClCompile Include="hunspell\mythes.cxx" />
     <ClCompile Include="..\hunspell\src\hunspell\phonet.cxx" />
     <ClCompile Include="..\hunspell\src\hunspell\replist.cxx" />
     <ClCompile Include="..\hunspell\src\hunspell\suggestmgr.cxx" />
@@ -72,7 +71,6 @@
     <ClInclude Include="..\hunspell\src\hunspell\hunspell.hxx" />
     <ClInclude Include="..\hunspell\src\hunspell\hunzip.hxx" />
     <ClInclude Include="..\hunspell\src\hunspell\langnum.hxx" />
-    <ClInclude Include="hunspell\mythes.hxx" />
     <ClInclude Include="..\hunspell\src\hunspell\phonet.hxx" />
     <ClInclude Include="..\hunspell\src\hunspell\replist.hxx" />
     <ClInclude Include="..\hunspell\src\hunspell\suggestmgr.hxx" />
