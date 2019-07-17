@@ -32,9 +32,6 @@
     <ClCompile Include="..\hunspell\src\hunspell\hunzip.cxx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="hunspell\mythes.cxx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\hunspell\src\hunspell\phonet.cxx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -80,9 +77,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\hunspell\src\hunspell\langnum.hxx">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="hunspell\mythes.hxx">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\hunspell\src\hunspell\w_char.hxx">

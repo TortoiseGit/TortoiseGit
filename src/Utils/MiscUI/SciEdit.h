@@ -22,7 +22,6 @@
 #include "scintilla.h"
 #include "SciLexer.h"
 #include "hunspell.hxx"
-#include "mythes.hxx"
 #include "ProjectProperties.h"
 #include "PersonalDictionary.h"
 #include <regex>
@@ -139,7 +138,6 @@ private:
 	LRESULT		m_DirectFunction;
 	LRESULT		m_DirectPointer;
 	std::unique_ptr<Hunspell>	pChecker;
-	std::unique_ptr<MyThes>		pThesaur;
 	UINT		m_spellcodepage;
 	std::map<CString, int> m_autolist;
 	TCHAR		m_separator;
