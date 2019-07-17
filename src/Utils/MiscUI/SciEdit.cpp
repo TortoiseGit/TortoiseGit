@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2019 - TortoiseGit
-// Copyright (C) 2003-2008, 2012-2018 - TortoiseSVN
+// Copyright (C) 2009-2020 - TortoiseGit
+// Copyright (C) 2003-2008, 2012-2019 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -73,6 +73,8 @@ IMPLEMENT_DYNAMIC(CSciEdit, CWnd)
 CSciEdit::CSciEdit(void) : m_DirectFunction(NULL)
 	, m_DirectPointer(NULL)
 	, m_spellcodepage(0)
+	, m_spellCheckerFactory(nullptr)
+	, m_SpellChecker(nullptr)
 	, m_separator(0)
 	, m_typeSeparator(1)
 	, m_bDoStyle(false)
@@ -198,21 +200,75 @@ void CSciEdit::Init(LONG lLanguage)
 	// look for dictionary files and use them if found
 	if (lLanguage >= 0 && static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\Spellchecker", TRUE)) == TRUE)
 	{
-		if (!lLanguage || (lLanguage && !LoadDictionaries(lLanguage)))
+		long langId = GetUserDefaultLCID();
+		long origLangId = langId;
+		if (lLanguage > 0)
 		{
-			long langId = GetUserDefaultLCID();
+			// if a specific language is requested, then use that
+			langId = lLanguage;
+			origLangId = lLanguage;
+		}
+
+		// first try the Win8 spell checker
+		BOOL supported = FALSE;
+		HRESULT hr = CoCreateInstance(__uuidof(SpellCheckerFactory), nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&m_spellCheckerFactory));
+		bool bFallbackUsed = false;
+		if (SUCCEEDED(hr) && static_cast<DWORD>(CRegDWORD(L"Software\\TortoiseGit\\Win8SpellChecker", FALSE)) == TRUE)
+		{
+			wchar_t localename[LOCALE_NAME_MAX_LENGTH] = { 0 };
 			do
 			{
-				LoadDictionaries(langId);
+				LCIDToLocaleName(langId, localename, _countof(localename), 0);
+				supported = FALSE;
+				hr = m_spellCheckerFactory->IsSupported(localename, &supported);
+				if (supported)
+				{
+					hr = m_spellCheckerFactory->CreateSpellChecker(localename, &m_SpellChecker);
+					if (SUCCEEDED(hr))
+					{
+						m_personalDict.Init(langId);
+						break;
+					}
+				}
 				DWORD lid = SUBLANGID(langId);
-				lid--;
+				--lid;
 				if (lid > 0)
 					langId = MAKELANGID(PRIMARYLANGID(langId), lid);
 				else if (langId == 1033)
 					langId = 0;
 				else
+				{
 					langId = 1033;
-			} while (langId && !pChecker);
+					bFallbackUsed = true;
+				}
+			} while (langId && (!supported || FAILED(hr)));
+		}
+		if (FAILED(hr) || !supported || bFallbackUsed)
+		{
+			if (bFallbackUsed)
+				langId = origLangId;
+			if ((lLanguage == 0) || (lLanguage && !LoadDictionaries(lLanguage)))
+			{
+				do
+				{
+					LoadDictionaries(langId);
+					DWORD lid = SUBLANGID(langId);
+					--lid;
+					if (lid > 0)
+						langId = MAKELANGID(PRIMARYLANGID(langId), lid);
+					else if (langId == 1033)
+						langId = 0;
+					else
+					{
+						if (bFallbackUsed && supported)
+							langId = 0;
+						else
+							langId = 1033;
+					}
+				} while (langId && !pChecker);
+			}
+			if (bFallbackUsed && pChecker)
+				m_SpellChecker = nullptr;
 		}
 	}
 
@@ -464,6 +520,36 @@ void CSciEdit::SetAutoCompletionList(std::map<CString, int>&& list, TCHAR separa
 	m_typeSeparator = typeSeparator;
 }
 
+// Helper for CSciEdit::IsMisspelled()
+// Returns TRUE if sWord has spelling errors.
+BOOL CSciEdit::CheckWordSpelling(const CString& sWord)
+{
+	if (m_SpellChecker)
+	{
+		IEnumSpellingErrorPtr enumSpellingError = nullptr;
+		if (SUCCEEDED(m_SpellChecker->Check(sWord, &enumSpellingError)))
+		{
+			ISpellingErrorPtr spellingError = nullptr;
+			if (enumSpellingError->Next(&spellingError) == S_OK)
+			{
+				CORRECTIVE_ACTION action = CORRECTIVE_ACTION_NONE;
+				spellingError->get_CorrectiveAction(&action);
+				if (action != CORRECTIVE_ACTION_NONE)
+					return TRUE;
+			}
+		}
+	}
+	else if (pChecker)
+	{
+		// convert the string from the control to the encoding of the spell checker module.
+		auto sWordA = GetWordForSpellChecker(sWord);
+		if (!pChecker->spell(sWordA))
+			return TRUE;
+	}
+
+	return FALSE;
+}
+
 BOOL CSciEdit::IsMisspelled(const CString& sWord)
 {
 	// words starting with a digit are treated as correctly spelled
@@ -482,7 +568,7 @@ BOOL CSciEdit::IsMisspelled(const CString& sWord)
 	auto sWordA = GetWordForSpellChecker(sWord);
 
 	// now we actually check the spelling...
-	BOOL misspelled = !pChecker->spell(sWordA);
+	BOOL misspelled = CheckWordSpelling(sWord);
 	if (misspelled)
 	{
 		// the word is marked as misspelled, we now check whether the word
@@ -507,8 +593,8 @@ BOOL CSciEdit::IsMisspelled(const CString& sWord)
 						misspelled = TRUE;
 					break;
 				}
-				sWordA = GetWordForSpellChecker(sWord.Mid(wordstart, wordend - wordstart));
-				if (sWordA.size() > 2 && !pChecker->spell(sWordA))
+				CString token(sWord.Mid(wordstart, wordend - wordstart));
+				if (token.GetLength() > 2 && CheckWordSpelling(token))
 				{
 					misspelled = TRUE;
 					break;
@@ -526,7 +612,7 @@ BOOL CSciEdit::IsMisspelled(const CString& sWord)
 
 void CSciEdit::CheckSpelling(Sci_Position startpos, Sci_Position endpos)
 {
-	if (!pChecker)
+	if (!pChecker && !m_SpellChecker)
 		return;
 
 	Sci_TextRange textrange;
@@ -610,27 +696,44 @@ void CSciEdit::CheckSpelling(Sci_Position startpos, Sci_Position endpos)
 
 void CSciEdit::SuggestSpellingAlternatives()
 {
-	if (!pChecker)
+	if (!pChecker && !m_SpellChecker)
 		return;
 	CString word = GetWordUnderCursor(true);
 	Call(SCI_SETCURRENTPOS, Call(SCI_WORDSTARTPOSITION, Call(SCI_GETCURRENTPOS), TRUE));
 	if (word.IsEmpty())
 		return;
-	auto wlst = pChecker->suggest(GetWordForSpellChecker(word));
-	if (!wlst.empty())
+
+	CString suggestions;
+	if (m_SpellChecker)
 	{
-		CString suggestions;
-		for (const auto& alternative : wlst)
-			suggestions.AppendFormat(L"%s%c%d%c", static_cast<LPCTSTR>(GetWordFromSpellChecker(alternative)), m_typeSeparator, AUTOCOMPLETE_SPELLING, m_separator);
-		suggestions.TrimRight(m_separator);
-		if (suggestions.IsEmpty())
-			return;
-		Call(SCI_AUTOCSETSEPARATOR, CStringA(m_separator).GetAt(0));
-		Call(SCI_AUTOCSETTYPESEPARATOR, m_typeSeparator);
-		Call(SCI_AUTOCSETDROPRESTOFWORD, 1);
-		Call(SCI_AUTOCSHOW, 0, reinterpret_cast<LPARAM>(static_cast<LPCSTR>(StringForControl(suggestions))));
-		return;
+		IEnumStringPtr enumSpellingSuggestions = nullptr;
+		if (SUCCEEDED(m_SpellChecker->Suggest(word, &enumSpellingSuggestions)))
+		{
+			LPOLESTR string = nullptr;
+			while (enumSpellingSuggestions->Next(1, &string, nullptr) == S_OK)
+			{
+				suggestions.AppendFormat(L"%s%c%d%c", (LPCWSTR)CString(string), m_typeSeparator, AUTOCOMPLETE_SPELLING, m_separator);
+				CoTaskMemFree(string);
+			}
+		}
 	}
+	else if (pChecker)
+	{
+		auto wlst = pChecker->suggest(GetWordForSpellChecker(word));
+		if (!wlst.empty())
+		{
+			for (const auto& alternative : wlst)
+				suggestions.AppendFormat(L"%s%c%d%c", static_cast<LPCTSTR>(GetWordFromSpellChecker(alternative)), m_typeSeparator, AUTOCOMPLETE_SPELLING, m_separator);
+		}
+	}
+
+	suggestions.TrimRight(m_separator);
+	if (suggestions.IsEmpty())
+		return;
+	Call(SCI_AUTOCSETSEPARATOR, CStringA(m_separator).GetAt(0));
+	Call(SCI_AUTOCSETTYPESEPARATOR, m_typeSeparator);
+	Call(SCI_AUTOCSETDROPRESTOFWORD, 1);
+	Call(SCI_AUTOCSHOW, 0, reinterpret_cast<LPARAM>(static_cast<LPCSTR>(StringForControl(suggestions))));
 }
 
 void CSciEdit::DoAutoCompletion(Sci_Position nMinPrefixLength)
@@ -961,26 +1064,43 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 
 		int nCorrections = 1;
 		// check if the word under the cursor is spelled wrong
-		if (pChecker && !worda.empty() && !bIsReadOnly)
+		if (!bIsReadOnly && (pChecker || m_SpellChecker) && !worda.empty())
 		{
-			// get the spell suggestions
-			auto wlst = pChecker->suggest(worda);
-			if (!wlst.empty())
+			if (m_SpellChecker)
 			{
-				// add the suggestions to the context menu
-				for (const auto& alternative : wlst)
+				IEnumStringPtr enumSpellingSuggestions = nullptr;
+				if (SUCCEEDED(m_SpellChecker->Suggest(sWord, &enumSpellingSuggestions)))
 				{
-					CString sug = GetWordFromSpellChecker(alternative);
-					popup.InsertMenu(static_cast<UINT>(-1), 0, nCorrections++, sug);
+					LPOLESTR string = nullptr;
+					while (enumSpellingSuggestions->Next(1, &string, nullptr) == S_OK)
+					{
+						popup.InsertMenu((UINT)-1, 0, nCorrections++, string);
+						CoTaskMemFree(string);
+					}
+					popup.AppendMenu(MF_SEPARATOR);
 				}
-				popup.AppendMenu(MF_SEPARATOR);
+			}
+			else if (pChecker)
+			{
+				// get the spell suggestions
+				auto wlst = pChecker->suggest(worda);
+				if (!wlst.empty())
+				{
+					// add the suggestions to the context menu
+					for (const auto& alternative : wlst)
+					{
+						CString sug = GetWordFromSpellChecker(alternative);
+						popup.InsertMenu(static_cast<UINT>(-1), 0, nCorrections++, sug);
+					}
+					popup.AppendMenu(MF_SEPARATOR);
+				}
 			}
 		}
 
 		// also allow the user to add the word to the custom dictionary so
 		// it won't show up as misspelled anymore
-		if ((sWord.GetLength()<PDICT_MAX_WORD_LENGTH)&&((pChecker)&&(m_autolist.find(sWord) == m_autolist.end())&&(!pChecker->spell(worda)))&&
-			(!_istdigit(sWord.GetAt(0)))&&(!m_personalDict.FindWord(sWord)) && !bIsReadOnly)
+		if (!bIsReadOnly && (sWord.GetLength() < PDICT_MAX_WORD_LENGTH) && (m_autolist.find(sWord) == m_autolist.end() && IsMisspelled(sWord)) &&
+			(!_istdigit(sWord.GetAt(0))) && (!m_personalDict.FindWord(sWord)))
 		{
 			sMenuItemText.Format(IDS_SCIEDIT_ADDWORD, static_cast<LPCTSTR>(sWord));
 			popup.AppendMenu(uEnabledMenu, SCI_ADDWORD, sMenuItemText);

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2019 - TortoiseGit
+// Copyright (C) 2009-2020 - TortoiseGit
 // Copyright (C) 2003-2008, 2013, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -25,10 +25,16 @@
 #include "PersonalDictionary.h"
 #include <regex>
 #include "LruCache.h"
+#include <spellcheck.h>
 // the following should be last
 #pragma include_alias("hunvisapi.h", "../../ext/build/hunspell/hunvisapi.h")
 #pragma include_alias("config.h", "../../ext/build/hunspell/config.h")
 #include "../../ext/hunspell/src/hunspell/hunspell.hxx"
+
+_COM_SMARTPTR_TYPEDEF(ISpellCheckerFactory, __uuidof(ISpellCheckerFactory));
+_COM_SMARTPTR_TYPEDEF(ISpellChecker, __uuidof(ISpellChecker));
+_COM_SMARTPTR_TYPEDEF(IEnumSpellingError, __uuidof(IEnumSpellingError));
+_COM_SMARTPTR_TYPEDEF(ISpellingError, __uuidof(ISpellingError));
 
 #define AUTOCOMPLETE_SPELLING		0
 #define AUTOCOMPLETE_FILENAME		1
@@ -163,6 +169,8 @@ protected:
 	void		SuggestSpellingAlternatives(void);
 	void		DoAutoCompletion(Sci_Position nMinPrefixLength);
 	BOOL		LoadDictionaries(LONG lLanguageID);
+	ISpellCheckerFactoryPtr m_spellCheckerFactory;
+	ISpellCheckerPtr m_SpellChecker;
 	BOOL		MarkEnteredBugID(Sci_Position startstylepos, Sci_Position endstylepos);
 	bool		StyleEnteredText(Sci_Position startstylepos, Sci_Position endstylepos);
 	void		StyleURLs(Sci_Position startstylepos, Sci_Position endstylepos);
@@ -170,6 +178,7 @@ protected:
 	bool		FindStyleChars(const char* line, char styler, Sci_Position& start, Sci_Position& end);
 	void		AdvanceUTF8(const char * str, int& pos);
 	BOOL		IsMisspelled(const CString& sWord);
+	BOOL		CheckWordSpelling(const CString& sWord);
 	int			GetStyleAt(Sci_Position pos) { return static_cast<int>(Call(SCI_GETSTYLEAT, pos)) & 0x1f; }
 	bool		IsUrlOrEmail(const CStringA& sText);
 	std::string GetWordForSpellChecker(const CString& sWord);

@@ -318,7 +318,7 @@
 				TortoiseGit includes a spell checker which allows you to check your
 				commit log messages. This is especially useful if the project language
 				is not your native language.
-				The spell checker uses the same dictionary files as
+				By default the spell checker uses the same dictionary files as
 				<ulink url="http://libreoffice.org">
 					<citetitle>LibreOffice</citetitle>
 				</ulink>,
@@ -329,17 +329,19 @@
 				<ulink url="http://mozilla.org">
 					<citetitle>Mozilla</citetitle>
 				</ulink>.
+				TortoiseGit can also use the spell checker shipped with Windows 8+. However, this needs to be enabled manually in advanced settings (key "Win8SpellChecker") at the moment.
 			</para>
 			<para>
-				The installer automatically adds the US English dictionary.
+				The installer by default automatically adds the US English dictionary.
 				If you want other languages, the easiest option is simply to
 				install one of TortoiseGit's language packs (see <xref linkend="tgit-intro-install-lang"/>). This will install
 				the appropriate dictionary files as well as the TortoiseGit local
 				user interface.
 				After the installation finishes, the translation will be available.
+				When using the Windows spell checker, you need to install the dictionary in Windows first.
 			</para>
 			<para>
-				Or you can install the dictionaries yourself. If you have OpenOffice or
+				Or you can install the dictionaries yourself. If you have OpenOffice, LibreOffice or
 				Mozilla installed, you can copy those dictionaries, which are located
 				in the installation folders for those applications.
 				Otherwise, you need to download the required dictionary files from
@@ -404,10 +406,11 @@
 					<listitem>
 						<para>
 						If none of the above works, then the default language
-						is English, which is included with the standard installation.
+						is English, which is included by default with the standard installation.
 						</para>
 					</listitem>
 				</orderedlist>
+				When using the Windows spell checker, this is tried first. If no Windows dictionary, based on these fallback-rules, could be found then the "old" spell checker is used as a fallback.
 			</para>
 		</sect2>
 	</sect1>

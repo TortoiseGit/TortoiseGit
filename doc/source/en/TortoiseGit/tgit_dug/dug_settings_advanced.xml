@@ -520,6 +520,14 @@
 					The default in all stable releases is <literal>false</literal>.
 				</para>
 			</listitem>
+		<varlistentry>
+			<term condition="pot">Win8SpellChecker</term>
+			<listitem>
+				<para>
+					Set this to <literal>true</literal> to make TortoiseGit use the Windows 8+ spell checker (cf. <xref linkend="tgit-intro-instalsl-spell"/>).
+					The default is <literal>false</literal>.
+				</para>
+			</listitem>
 		</varlistentry>
 	</variablelist>
 </sect2>

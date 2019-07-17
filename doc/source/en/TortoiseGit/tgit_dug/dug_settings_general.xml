@@ -602,8 +602,10 @@
 				<term>Language</term>
 				<listitem>
 					<para>
-						TortoiseGit can use spell checker modules which are also
-						used by OpenOffice and Mozilla. If you have those installed
+						TortoiseGit by default uses the spell checker modules which are also
+						used by OpenOffice, LibreOffice and Mozilla.
+						Optionally, the Windows 8+ spell checker can also be used (needs to be enabled manually at the moment).
+						If you have those installed or use the Windows spell checker
 						this property will determine which spell checker to use, i.e.
 						in which language the log messages for your project should
 						be written.

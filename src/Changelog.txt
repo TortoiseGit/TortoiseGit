@@ -15,6 +15,7 @@ Released: unreleased
  * FileDiffDlg: Add patch dialog
  * Improved UDiff search
  * PullFetchDlg: Allow to select remote references (using ls-remote)
+ * Add optional support for the Windows 8+ spell checker (needs to be enabled in Advanced Settings using the key "Win8SpellChecker" at the moment; if enabled it will be tried first, cf. manual)
 
 == Bug Fixes ==
  * Fixed issue #3449: Crash when indenting short lines (pressing tab key)
