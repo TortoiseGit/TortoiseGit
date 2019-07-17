@@ -20,9 +20,6 @@
     <ClCompile Include="..\hunspell\src\hunspell\csutil.cxx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\hunspell\src\hunspell\dictmgr.cxx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\hunspell\src\hunspell\filemgr.cxx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -62,9 +59,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\hunspell\src\hunspell\csutil.hxx">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\hunspell\src\hunspell\dictmgr.hxx">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\hunspell\src\hunspell\filemgr.hxx">
