@@ -21,7 +21,9 @@
 #include "../SmartHandle.h"
 #include "scintilla.h"
 #include "SciLexer.h"
+#undef near
 #include "hunspell.hxx"
+#define near
 #include "mythes.hxx"
 #include "ProjectProperties.h"
 #include "PersonalDictionary.h"
