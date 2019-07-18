@@ -6263,10 +6263,6 @@ msgstr ""
 msgid "No status cache. Only versioned folders get an overlay, files don't get an overlay"
 msgstr ""
 
-#. Resource IDs: (IDS_SPELLEDIT_NOTHESAURUS)
-msgid "No thesaurus suggestions"
-msgstr ""
-
 #. Resource IDs: (IDS_NOGITREPO)
 msgid "No valid git repository found."
 msgstr ""
@@ -9219,10 +9215,6 @@ msgstr ""
 
 #. Resource IDs: (IDS_ERR_NOTHINGTOADD)
 msgid "There is nothing to add.\nAll the files and folders are either under version control,\nhave been ignored or the global ignore configuration setting."
-msgstr ""
-
-#. Resource IDs: (IDS_SPELLEDIT_THESAURUS)
-msgid "Thesaurus"
 msgstr ""
 
 #. Resource IDs: (AFX_IDS_AUTOSAVE_RECOVERY_ASK_2)

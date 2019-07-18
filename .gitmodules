@@ -31,3 +31,6 @@
 [submodule "ext/OGDF"]
 	path = ext/OGDF
 	url = https://github.com/ogdf/ogdf
+[submodule "ext/hunspell"]
+	path = ext/hunspell
+	url = https://github.com/hunspell/hunspell.git

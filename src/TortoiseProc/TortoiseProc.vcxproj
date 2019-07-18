@@ -40,8 +40,8 @@
   <PropertyGroup Label="UserMacros" />
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(ProjectDir);..\Resources;$InputDir;..\..\ext\ResizableLib;..\Git;..\Utils;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\MiscUI;..\TortoiseShell;..\..\ext\gitdll;..\..\ext\libgit2\include;..\..\ext\zlib;..\..\ext\OGDF\include;..\..\ext\build\ogdf;..\AsyncFramework;..\TortoiseMerge;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>HUNSPELL_STATIC;THESAURUS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir);..\Resources;$InputDir;..\..\ext\ResizableLib;..\Git;..\Utils;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\MiscUI;..\TortoiseShell;..\..\ext\gitdll;..\..\ext\libgit2\include;..\..\ext\zlib;..\..\ext\OGDF\include;..\..\ext\build\ogdf;..\AsyncFramework;..\TortoiseMerge;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>HUNSPELL_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling>SyncCThrow</ExceptionHandling>
     </ClCompile>
     <ResourceCompile>
@@ -752,7 +752,7 @@
       <Project>{4f0a55de-dafd-4a0b-a03d-2c14cb77e08f}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\..\ext\hunspell\hunspell.vcxproj">
+    <ProjectReference Include="..\..\ext\build\hunspell.vcxproj">
       <Project>{12e5b4ae-d7ef-4a57-a22d-6f9f9d8ce1fb}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
