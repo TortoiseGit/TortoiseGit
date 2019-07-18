@@ -21,11 +21,14 @@
 #include "../SmartHandle.h"
 #include "scintilla.h"
 #include "SciLexer.h"
-#include "hunspell.hxx"
 #include "ProjectProperties.h"
 #include "PersonalDictionary.h"
 #include <regex>
 #include "LruCache.h"
+// the following should be last
+#pragma include_alias("hunvisapi.h", "../../ext/build/hunspell/hunvisapi.h")
+#pragma include_alias("config.h", "../../ext/build/hunspell/config.h")
+#include "../../ext/hunspell/src/hunspell/hunspell.hxx"
 
 #define AUTOCOMPLETE_SPELLING		0
 #define AUTOCOMPLETE_FILENAME		1
