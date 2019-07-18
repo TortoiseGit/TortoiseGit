@@ -466,9 +466,6 @@ void CSciEdit::SetAutoCompletionList(std::map<CString, int>&& list, TCHAR separa
 
 BOOL CSciEdit::IsMisspelled(const CString& sWord)
 {
-	// convert the string from the control to the encoding of the spell checker module.
-	auto sWordA = GetWordForSpellChecker(sWord);
-
 	// words starting with a digit are treated as correctly spelled
 	if (_istdigit(sWord.GetAt(0)))
 		return FALSE;
@@ -480,6 +477,9 @@ BOOL CSciEdit::IsMisspelled(const CString& sWord)
 	const BOOL *cacheResult = m_SpellingCache.try_get(std::wstring(sWord, sWord.GetLength()));
 	if (cacheResult)
 		return *cacheResult;
+
+	// convert the string from the control to the encoding of the spell checker module.
+	auto sWordA = GetWordForSpellChecker(sWord);
 
 	// now we actually check the spelling...
 	BOOL misspelled = !pChecker->spell(sWordA);
@@ -960,7 +960,6 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		auto worda = GetWordForSpellChecker(sWord);
 
 		int nCorrections = 1;
-		bool bSpellAdded = false;
 		// check if the word under the cursor is spelled wrong
 		if (pChecker && !worda.empty() && !bIsReadOnly)
 		{
@@ -971,15 +970,12 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 				// add the suggestions to the context menu
 				for (const auto& alternative : wlst)
 				{
-					bSpellAdded = true;
 					CString sug = GetWordFromSpellChecker(alternative);
 					popup.InsertMenu(static_cast<UINT>(-1), 0, nCorrections++, sug);
 				}
+				popup.AppendMenu(MF_SEPARATOR);
 			}
 		}
-		// only add a separator if spelling correction suggestions were added
-		if (bSpellAdded)
-			popup.AppendMenu(MF_SEPARATOR);
 
 		// also allow the user to add the word to the custom dictionary so
 		// it won't show up as misspelled anymore
