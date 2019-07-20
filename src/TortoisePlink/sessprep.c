@@ -63,7 +63,7 @@ void prepare_session(Conf *conf)
      * _more_ than one (un-IPv6-bracketed) colon.
      */
     p = host_strchr(host, ':');
-    if (p && p != host_strrchr(host, ':')) {
+    if (p && p == host_strrchr(host, ':')) {
         *p = '\0';
     }
 
