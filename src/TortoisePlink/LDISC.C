@@ -15,12 +15,10 @@
 
 #define ECHOING (ldisc->localecho == FORCE_ON || \
                  (ldisc->localecho == AUTO && \
-                      (backend_ldisc_option_state(ldisc->backend, LD_ECHO) || \
-			   term_ldisc(ldisc->term, LD_ECHO))))
+                      (backend_ldisc_option_state(ldisc->backend, LD_ECHO))))
 #define EDITING (ldisc->localedit == FORCE_ON || \
                  (ldisc->localedit == AUTO && \
-                      (backend_ldisc_option_state(ldisc->backend, LD_EDIT) || \
-			   term_ldisc(ldisc->term, LD_EDIT))))
+                      (backend_ldisc_option_state(ldisc->backend, LD_EDIT))))
 
 static void c_write(Ldisc *ldisc, const void *buf, int len)
 {

@@ -71,15 +71,26 @@ int rsa_generate(RSAKey *key, int bits, progfn_t pfn,
      * but it doesn't cost much to make sure.)
      */
     invent_firstbits(&pfirst, &qfirst, 2);
-    mp_int *p = primegen(bits / 2, RSA_EXPONENT, 1, NULL,
-                            1, pfn, pfnparam, pfirst);
-    mp_int *q = primegen(bits - bits / 2, RSA_EXPONENT, 1, NULL,
-                            2, pfn, pfnparam, qfirst);
+    int qbits = bits / 2;
+    int pbits = bits - qbits;
+    assert(pbits >= qbits);
+    mp_int *p = primegen(pbits, RSA_EXPONENT, 1, NULL,
+                         1, pfn, pfnparam, pfirst);
+    mp_int *q = primegen(qbits, RSA_EXPONENT, 1, NULL,
+                         2, pfn, pfnparam, qfirst);
 
     /*
      * Ensure p > q, by swapping them if not.
+     *
+     * We only need to do this if the two primes were generated with
+     * the same number of bits (i.e. if the requested key size is
+     * even) - otherwise it's already guaranteed!
      */
-    mp_cond_swap(p, q, mp_cmp_hs(q, p));
+    if (pbits == qbits) {
+        mp_cond_swap(p, q, mp_cmp_hs(q, p));
+    } else {
+        assert(mp_cmp_hs(p, q));
+    }
 
     /*
      * Now we have p, q and e. All we need to do now is work out

@@ -51,10 +51,6 @@ WSAEVENT netevent;
 static Backend *backend;
 Conf *conf;
 
-bool term_ldisc(Terminal *term, int mode)
-{
-    return false;
-}
 static void plink_echoedit_update(Seat *seat, bool echo, bool edit)
 {
     /* Update stdin read mode to reflect changes in line discipline. */
