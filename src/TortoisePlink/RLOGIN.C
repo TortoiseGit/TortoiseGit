@@ -221,6 +221,8 @@ static const char *rlogin_init(Seat *seat, Backend **backend_handle,
      * anything else until the local prompt mechanism returns.
      */
     if ((ruser = get_remote_username(conf)) != NULL) {
+        /* Next terminal output will come from server */
+        seat_set_trust_status(rlogin->seat, false);
         rlogin_startup(rlogin, ruser);
         sfree(ruser);
     } else {
@@ -233,6 +235,8 @@ static const char *rlogin_init(Seat *seat, Backend **backend_handle,
         add_prompt(rlogin->prompt, dupstr("rlogin username: "), true); 
         ret = seat_get_userpass_input(rlogin->seat, rlogin->prompt, NULL);
         if (ret >= 0) {
+            /* Next terminal output will come from server */
+            seat_set_trust_status(rlogin->seat, false);
             rlogin_startup(rlogin, rlogin->prompt->prompts[0]->result);
         }
     }
@@ -280,6 +284,8 @@ static size_t rlogin_send(Backend *be, const char *buf, size_t len)
          */
         int ret = seat_get_userpass_input(rlogin->seat, rlogin->prompt, &bc);
         if (ret >= 0) {
+            /* Next terminal output will come from server */
+            seat_set_trust_status(rlogin->seat, false);
             rlogin_startup(rlogin, rlogin->prompt->prompts[0]->result);
             /* that nulls out rlogin->prompt, so then we'll start sending
              * data down the wire in the obvious way */

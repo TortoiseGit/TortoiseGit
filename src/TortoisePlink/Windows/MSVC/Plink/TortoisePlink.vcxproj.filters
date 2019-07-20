@@ -461,6 +461,9 @@
     <ClInclude Include="..\..\TortoisePlinkRes.h">
       <Filter>Header Files\windows</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\sshserver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\PUTTY.ICO">

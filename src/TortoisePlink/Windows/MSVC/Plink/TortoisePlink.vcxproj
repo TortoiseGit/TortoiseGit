@@ -193,6 +193,7 @@
     <ClInclude Include="..\..\..\sshgssc.h" />
     <ClInclude Include="..\..\..\ssh.h" />
     <ClInclude Include="..\..\..\sshppl.h" />
+    <ClInclude Include="..\..\..\sshserver.h" />
     <ClInclude Include="..\..\..\sshsignals.h" />
     <ClInclude Include="..\..\..\sshttymodes.h" />
     <ClInclude Include="..\..\..\storage.h" />
