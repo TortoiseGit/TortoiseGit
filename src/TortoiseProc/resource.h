@@ -1415,6 +1415,7 @@
 #define IDC_TOHASH                      1679
 #define IDS_COMMITDLG_NOTEDITEDTEMPLATE 1679
 #define IDC_TOSUBJECT                   1680
+#define IDS_PROGS_LFS_FORCEUNLOCK       1680
 #define IDC_CHECK_NEWBRANCH             1681
 #define IDC_TOGROUP2                    1681
 #define IDC_CHECK_CHERRYPICKED_FROM     1682
@@ -2077,6 +2078,12 @@
 #define ID_VIEW_ARROW_POINT_TO_MERGES   32876
 #define IDS_ERR_CHANGELIST_LOAD         32900
 #define IDS_ERR_CHANGELIST_SAVE         32901
+#define IDS_PROGRS_TITLE_LFS_LOCK       32920
+#define IDS_PROGRS_TITLE_LFS_UNLOCK     32921
+#define IDS_PROGRS_CMD_LFS_LOCK         32922
+#define IDS_PROGRS_CMD_LFS_UNLOCK       32923
+#define IDI_LOCK_BKG                    32924
+#define IDI_UNLOCK_BKG                  32925
 
 // Next default values for new objects
 // 

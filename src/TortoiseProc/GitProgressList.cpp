@@ -27,6 +27,7 @@
 #include "LogFile.h"
 #include "LoglistUtils.h"
 #include "Theme.h"
+#include "TempFile.h"
 
 BOOL	CGitProgressList::m_bAscending = FALSE;
 int		CGitProgressList::m_nSortedColumn = -1;
@@ -1116,6 +1117,12 @@ CGitProgressList::WC_File_NotificationData::WC_File_NotificationData(const CTGit
 	case git_wc_notify_checkout:
 		sActionColumnText.LoadString(IDS_PROGRS_CMD_CHECKOUT);
 		break;
+	case git_wc_notify_lfs_lock:
+		sActionColumnText.LoadString(IDS_PROGRS_CMD_LFS_LOCK);
+		break;
+	case git_wc_notify_lfs_unlock:
+		sActionColumnText.LoadString(IDS_PROGRS_CMD_LFS_UNLOCK);
+		break;
 	default:
 		break;
 	}
@@ -1141,7 +1148,9 @@ void CGitProgressList::WC_File_NotificationData::GetContextMenu(CIconMenu& popup
 	if ((action == git_wc_notify_add) ||
 		(action == git_wc_notify_revert) ||
 		(action == git_wc_notify_resolved) ||
-		(action == git_wc_notify_checkout))
+		(action == git_wc_notify_checkout) ||
+		(action == git_wc_notify_lfs_lock) ||
+		(action == git_wc_notify_lfs_unlock))
 	{
 		actions.push_back([&]()
 		{
@@ -1163,6 +1172,32 @@ void CGitProgressList::WC_File_NotificationData::GetContextMenu(CIconMenu& popup
 
 		actions.push_back([&]{ CAppUtils::ExploreTo(nullptr, g_Git.CombinePath(path)); });
 		popup.AppendMenuIcon(actions.size(), IDS_STATUSLIST_CONTEXT_EXPLORE, IDI_EXPLORER);
+
+		if ((action == git_wc_notify_lfs_lock) ||
+			(action == git_wc_notify_lfs_unlock))
+		{
+			popup.AppendMenu(MF_SEPARATOR, NULL);
+
+			CTGitPathList pathList(path);
+
+			actions.push_back([&] {
+				CString tempfilename = CTempFiles::Instance().GetTempFilePath(false).GetWinPathString();
+				VERIFY(pathList.WriteToFile(tempfilename));
+				CString sCmd;
+				sCmd.Format(L"/command:lfslock /pathfile:\"%s\" /deletepathfile", static_cast<LPCTSTR>(tempfilename));
+				CAppUtils::RunTortoiseGitProc(sCmd);
+			});
+			popup.AppendMenuIcon(actions.size(), IDS_PROGRS_CMD_LFS_LOCK, IDI_LFSLOCK);
+
+			actions.push_back([&] {
+				CString tempfilename = CTempFiles::Instance().GetTempFilePath(false).GetWinPathString();
+				VERIFY(pathList.WriteToFile(tempfilename));
+				CString sCmd;
+				sCmd.Format(L"/command:lfsunlock /pathfile:\"%s\" /deletepathfile", static_cast<LPCTSTR>(tempfilename));
+				CAppUtils::RunTortoiseGitProc(sCmd);
+			});
+			popup.AppendMenuIcon(actions.size(), IDS_PROGRS_CMD_LFS_UNLOCK, IDI_LFSUNLOCK);
+		}
 	}
 }
 

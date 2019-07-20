@@ -98,6 +98,8 @@ IDI_LIBRARY_WIN10       ICON                    "library-win10.ico"
 IDI_RESET               ICON                    "reset.ico"
 IDI_NOTEPAD             ICON                    "notepad.ico"
 IDI_GITFOLDER           ICON                    "gitfolder.ico"
+IDI_LOCK_BKG            ICON                    "LockBackground.ico"
+IDI_UNLOCK_BKG          ICON                    "UnlockBackground.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -3375,6 +3377,14 @@ END
 
 STRINGTABLE
 BEGIN
+    IDS_PROGRS_TITLE_LFS_LOCK "LFS Lock"
+    IDS_PROGRS_TITLE_LFS_UNLOCK "LFS Unlock"
+    IDS_PROGRS_CMD_LFS_LOCK "Lock"
+    IDS_PROGRS_CMD_LFS_UNLOCK "Unlock"
+END
+
+STRINGTABLE
+BEGIN
     IDS_GITACTION_UPDATE_REF "Update Ref"
     IDS_REV_COUNTER         "Branch RevNo"
 END
@@ -5033,6 +5043,11 @@ STRINGTABLE
 BEGIN
     IDS_ERR_CHANGELIST_LOAD "Unable to load changelists"
     IDS_ERR_CHANGELIST_SAVE "Unable to save changelists"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_PROGS_LFS_FORCEUNLOCK "Force unlock"
 END
 
 #endif    // English (U.S.) resources

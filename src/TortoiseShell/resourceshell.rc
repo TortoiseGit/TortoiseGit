@@ -82,6 +82,9 @@ IDI_BISECT_RESET        ICON                    "..\\Resources\\menubisectreset.
 IDI_SHELVE              ICON                    "..\\Resources\\menushelve.ico"
 IDI_UNSHELVE            ICON                    "..\\Resources\\menuunshelve.ico"
 IDI_SHOWBRANCHES        ICON                    "..\\Resources\\showbranches.ico"
+IDI_LFS                 ICON                    "..\\Resources\\menulfs.ico"
+IDI_LFSLOCK             ICON                    "..\\Resources\\menulock.ico"
+IDI_LFSUNLOCK           ICON                    "..\\Resources\\menuunlock.ico"
 #endif    // Neutral resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -330,6 +333,16 @@ BEGIN
     IDS_MENUBISECTRESET     "Bisect reset"
     IDS_MENUBISECTSKIP      "Bisect skip"
     IDS_MENUDESCBISECTSKIP  "Skip current revision in bisecting process"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_MENULFS              "LFS"
+    IDS_MENUDESCLFS          "Large file storage"
+    IDS_MENULFSLOCK          "Lock"
+    IDS_MENUDESCLFSLOCK      "Locks a file using LFS"
+    IDS_MENULFSUNLOCK        "Unlock"
+    IDS_MENUDESCLFSUNLOCK    "Unlocks a file using LFS"
 END
 
 STRINGTABLE
