@@ -143,10 +143,10 @@
     <ClCompile Include="..\libgit2\src\filebuf.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\libgit2\src\fileops.c">
+    <ClCompile Include="..\libgit2\src\filter.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\libgit2\src\filter.c">
+    <ClCompile Include="..\libgit2\src\futils.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\libgit2\src\global.c">
