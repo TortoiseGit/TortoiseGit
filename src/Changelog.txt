@@ -15,6 +15,7 @@ Released: unreleased
  * Fixed issue #3349: View patch missing color
  * Fixed issue #3365: Ignore items by extension handles files/directories with no extension poorly
  * Fixed issue #3393: TortoiseGitIDiff crashes with a very small window size
+ * Fixed issue #3397: Create Repository make a useless symlink on Windows 10
 
 = Release 2.8.0 =
 Released: 2019-02-28

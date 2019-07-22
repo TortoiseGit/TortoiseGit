@@ -23,7 +23,7 @@
 #include "git2/sys/filter.h"
 
 #include "common.h"
-#include "fileops.h"
+#include "futils.h"
 #include "hash.h"
 #include "filter.h"
 #include "buf_text.h"
