@@ -59,7 +59,7 @@ extern void git_atexit_dispatch(void);
 extern void git_atexit_clear(void);
 extern void invalidate_ref_cache(void);
 extern void cmd_log_init(int argc, const char** argv, const char* prefix, struct rev_info* rev, struct setup_revision_opt* opt);
-extern int estimate_commit_count(struct rev_info* rev, struct commit_list* list);
+extern int estimate_commit_count(struct commit_list* list);
 extern int log_tree_commit(struct rev_info*, struct commit*);
 extern int write_entry(struct cache_entry* ce, char* path, const struct checkout* state, int to_tempfile);
 extern void diff_flush_stat(struct diff_filepair* p, struct diff_options* o, struct diffstat_t* diffstat);
@@ -422,7 +422,7 @@ int git_get_log_estimate_commit_count(GIT_LOG handle)
 	struct rev_info *p_Rev;
 	p_Rev=(struct rev_info *)handle;
 
-	return estimate_commit_count(p_Rev, p_Rev->commits);
+	return estimate_commit_count(p_Rev->commits);
 }
 
 int git_get_log_nextcommit(GIT_LOG handle, GIT_COMMIT *commit, int follow)
