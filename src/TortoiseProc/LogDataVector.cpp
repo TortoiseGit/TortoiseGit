@@ -168,7 +168,7 @@ int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, 
 
 		this->push_back(pRev->m_CommitHash);
 
-		m_HashMap[pRev->m_CommitHash] = static_cast<int>(size()) - 1;
+		m_HashMap[pRev->m_CommitHash] = size() - 1;
 	}
 
 	{
@@ -238,7 +238,7 @@ int CLogDataVector::Fill(std::unordered_set<CGitHash>& hashes)
 	for (const auto& pRev : revs)
 	{
 		this->push_back(pRev->m_CommitHash);
-		m_HashMap[pRev->m_CommitHash] = static_cast<int>(size()) - 1;
+		m_HashMap[pRev->m_CommitHash] = size() - 1;
 	}
 
 	return 0;

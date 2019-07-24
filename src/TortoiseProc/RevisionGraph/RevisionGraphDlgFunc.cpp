@@ -233,7 +233,7 @@ bool CRevisionGraphWnd::FetchRevisionData
 				auto nd = this->m_Graph.newNode();
 				m_Graph.newEdge(nodes[i], nd);
 				m_logEntries.push_back(rev.m_ParentHash[j]);
-				m_logEntries.m_HashMap[rev.m_ParentHash[j]] = static_cast<int>(m_logEntries.size()) - 1;
+				m_logEntries.m_HashMap[rev.m_ParentHash[j]] = m_logEntries.size() - 1;
 				nodes.Add(nd);
 				SetNodeRect(dev, &nd, rev.m_ParentHash[j], 0);
 
