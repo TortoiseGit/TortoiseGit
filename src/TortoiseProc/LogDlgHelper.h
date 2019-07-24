@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2007 - TortoiseSVN
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -31,7 +31,7 @@ class CLogDlg;
  * Instances of CStoreSelection save the selection of the CLogDlg. When the instance
  * is deleted the destructor restores the selection.
  */
-typedef std::unordered_map<CGitHash, int> MAP_HASH_REV;
+typedef std::unordered_map<CGitHash, size_t> MAP_HASH_REV;
 
 /**
  * \ingroup TortoiseProc
