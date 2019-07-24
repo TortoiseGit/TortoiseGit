@@ -3245,6 +3245,7 @@ BEGIN
         MENUITEM "&Filter",                     ID_VIEW_FILTER
         MENUITEM SEPARATOR
         MENUITEM "Show Ove&rview",              ID_VIEW_SHOWOVERVIEW
+        MENUITEM "Show branchings and &merges", ID_VIEW_SHOWBRANCHINGSANDMERGES
     END
     POPUP "&Git"
     BEGIN

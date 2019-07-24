@@ -107,6 +107,7 @@ CRevisionGraphWnd::CRevisionGraphWnd()
 	, m_logEntries(&m_LogCache)
 	, m_bCurrentBranch(false)
 	, m_bLocalBranches(FALSE)
+	, m_bShowBranchingsMerges(false)
 {
 	WNDCLASS wndcls;
 	HINSTANCE hInst = AfxGetInstanceHandle();

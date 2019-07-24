@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2011 - TortoiseSVN
-// Copyright (C) 2012-2018 - TortoiseGit
+// Copyright (C) 2012-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -147,6 +147,8 @@ public:
 	BOOL		m_bLocalBranches;
 	CString		m_FromRev;
 	CString		m_ToRev;
+
+	bool		m_bShowBranchingsMerges;
 
 	void ReloadHashMap()
 	{
