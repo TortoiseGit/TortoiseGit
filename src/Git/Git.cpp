@@ -1029,6 +1029,9 @@ CString CGit::GetLogCmd(CString range, const CTGitPath* path, int mask, CFilterD
 	if(mask& CGit::LOG_INFO_SIMPILFY_BY_DECORATION)
 		param += L" --simplify-by-decoration";
 
+	if (mask & CGit::LOG_INFO_SPARSE)
+		param += L" --sparse";
+
 	if (Filter)
 	{
 		if (Filter->m_NumberOfLogsScale >= CFilterData::SHOW_LAST_N_YEARS)
