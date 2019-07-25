@@ -108,9 +108,6 @@ CRevisionGraphWnd::CRevisionGraphWnd()
 	, m_bCurrentBranch(false)
 	, m_bLocalBranches(FALSE)
 {
-	memset(&m_lfBaseFont, 0, sizeof(LOGFONT));
-	std::fill_n(m_apFonts, MAXFONTS, nullptr);
-
 	WNDCLASS wndcls;
 	HINSTANCE hInst = AfxGetInstanceHandle();
 #define REVGRAPH_CLASSNAME L"Revgraph_windowclass"
@@ -237,15 +234,6 @@ CRevisionGraphWnd::CRevisionGraphWnd()
 
 CRevisionGraphWnd::~CRevisionGraphWnd()
 {
-	for (int i = 0; i < MAXFONTS; ++i)
-	{
-		if (m_apFonts[i])
-		{
-			m_apFonts[i]->DeleteObject();
-			delete m_apFonts[i];
-		}
-		m_apFonts[i] = nullptr;
-	}
 	delete m_pDlgTip;
 	m_Graph.clear();
 }
@@ -305,16 +293,6 @@ void CRevisionGraphWnd::Init(CWnd * pParent, LPRECT rect)
 		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Unable to add tooltip!\n");
 	}
 	EnableToolTips();
-
-	memset(&m_lfBaseFont, 0, sizeof(m_lfBaseFont));
-	m_lfBaseFont.lfHeight = 0;
-	m_lfBaseFont.lfWeight = FW_NORMAL;
-	m_lfBaseFont.lfItalic = FALSE;
-	m_lfBaseFont.lfCharSet = DEFAULT_CHARSET;
-	m_lfBaseFont.lfOutPrecision = OUT_DEFAULT_PRECIS;
-	m_lfBaseFont.lfClipPrecision = CLIP_DEFAULT_PRECIS;
-	m_lfBaseFont.lfQuality = DEFAULT_QUALITY;
-	m_lfBaseFont.lfPitchAndFamily = DEFAULT_PITCH;
 
 	m_ullTicks = GetTickCount64();
 

@@ -53,33 +53,6 @@ Color GetColorFromSysColor(int nIndex)
 /************************************************************************/
 /* Graphing functions													*/
 /************************************************************************/
-CFont* CRevisionGraphWnd::GetFont(BOOL bItalic /*= FALSE*/, BOOL bBold /*= FALSE*/)
-{
-	int nIndex = 0;
-	if (bBold)
-		nIndex |= 1;
-	if (bItalic)
-		nIndex |= 2;
-	if (!m_apFonts[nIndex])
-	{
-		m_apFonts[nIndex] = new CFont;
-		m_lfBaseFont.lfWeight = bBold ? FW_BOLD : FW_NORMAL;
-		m_lfBaseFont.lfItalic = static_cast<BYTE>(bItalic);
-		m_lfBaseFont.lfStrikeOut = FALSE;
-		m_lfBaseFont.lfHeight = -CDPIAware::Instance().PointsToPixelsY(m_nFontSize);
-		// use the empty font name, so GDI takes the first font which matches
-		// the specs. Maybe this will help render chinese/japanese chars correctly.
-		wcsncpy_s(m_lfBaseFont.lfFaceName, L"MS Shell Dlg 2", _countof(m_lfBaseFont.lfFaceName) - 1);
-		if (!m_apFonts[nIndex]->CreateFontIndirect(&m_lfBaseFont))
-		{
-			delete m_apFonts[nIndex];
-			m_apFonts[nIndex] = nullptr;
-			return CWnd::GetFont();
-		}
-	}
-	return m_apFonts[nIndex];
-}
-
 BOOL CRevisionGraphWnd::OnEraseBkgnd(CDC* /*pDC*/)
 {
 	return TRUE;
