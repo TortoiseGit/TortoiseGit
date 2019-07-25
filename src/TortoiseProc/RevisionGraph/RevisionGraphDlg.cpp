@@ -261,6 +261,16 @@ BOOL CRevisionGraphDlg::OnInitDialog()
 	if (FAILED(m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList)))
 		m_pTaskbarList = nullptr;
 
+	CMenu* pMenu = GetMenu();
+	if (pMenu)
+	{
+		CRegDWORD reg = CRegDWORD(L"Software\\TortoiseGit\\ShowRevGraphOverview", FALSE);
+		m_Graph.SetShowOverview((DWORD)reg != FALSE);
+		pMenu->CheckMenuItem(ID_VIEW_SHOWOVERVIEW, MF_BYCOMMAND | (DWORD(reg) ? MF_CHECKED : 0));
+		int tbstate = m_ToolBar.GetToolBarCtrl().GetState(ID_VIEW_SHOWOVERVIEW);
+		m_ToolBar.GetToolBarCtrl().SetState(ID_VIEW_SHOWOVERVIEW, tbstate | (DWORD(reg) ? TBSTATE_CHECKED : 0));
+	}
+
 //	m_hAccel = LoadAccelerators(AfxGetResourceHandle(),MAKEINTRESOURCE(IDR_ACC_REVISIONGRAPH));
 
 
