@@ -410,16 +410,6 @@ void CRevisionGraphWnd::DoZoom (float fZoomFactor, bool updateScrollbars)
 	if (m_nFontSize < SMALL_ZOOM_FONT_THRESHOLD)
 		m_nFontSize = min(static_cast<int>(SMALL_ZOOM_FONT_THRESHOLD), int(SMALL_ZOOM_FONT * fZoomFactor));
 
-	for (int i = 0; i < MAXFONTS; ++i)
-	{
-		if (m_apFonts[i])
-		{
-			m_apFonts[i]->DeleteObject();
-			delete m_apFonts[i];
-		}
-		m_apFonts[i] = nullptr;
-	}
-
 	if (updateScrollbars)
 	{
 		SCROLLINFO si1 = {sizeof(SCROLLINFO), SIF_ALL};

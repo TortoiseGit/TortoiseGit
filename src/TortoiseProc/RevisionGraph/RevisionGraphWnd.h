@@ -198,8 +198,6 @@ protected:
 	ogdf::node		m_HeadNode;
 	ogdf::node		m_SelectedEntry1;
 	ogdf::node		m_SelectedEntry2;
-	LOGFONT			m_lfBaseFont;
-	CFont *			m_apFonts[MAXFONTS];
 	int				m_nFontSize;
 	CToolTipCtrl *	m_pDlgTip;
 	char			m_szTip[MAX_TT_LENGTH+1];
@@ -333,7 +331,6 @@ private:
 
 	void			SetScrollbar (int bar, int newPos, int clientMax, int graphMax);
 	void			SetScrollbars (int nVert = -1, int nHorz = -1);
-	CFont*			GetFont(BOOL bItalic = FALSE, BOOL bBold = FALSE);
 
 	CSize			UsableTooltipRect();
 	CString			DisplayableText (const CString& wholeText, const CSize& tooltipSize);
