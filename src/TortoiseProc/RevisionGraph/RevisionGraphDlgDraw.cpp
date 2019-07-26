@@ -634,52 +634,41 @@ void CRevisionGraphWnd::DrawGraph(GraphicsDevice& graphics, const CRect& rect, i
 	delete memDC;
 }
 
+void CRevisionGraphWnd::MeasureTextLength(GraphicsDevice& graphics, Gdiplus::Font& font, const CString& text, double& xmax, double& ymax)
+{
+	RectF rect;
+	graphics.graphics->MeasureString(text, text.GetLength(), &font, Gdiplus::PointF(0, 0), &rect);
+	if (rect.Width > xmax)
+		xmax = rect.Width;
+	if (rect.Height > ymax)
+		ymax = rect.Height;
+}
+
 void CRevisionGraphWnd::SetNodeRect(GraphicsDevice& graphics, ogdf::node *pnode, CGitHash rev, int mode )
 {
 	//multi - line mode. One RefName is one new line
-	CString fontname = CAppUtils::GetLogFontName();
 	if(mode == 0)
 	{
-		if(this->m_HashMap.find(rev) == m_HashMap.end())
+		CString fontname = CAppUtils::GetLogFontName();
+		Gdiplus::Font font(fontname, static_cast<REAL>(m_nFontSize), FontStyleRegular);
+		double xmax = 0;
+		double ymax = 0;
+		int lines = 1;
+		if (auto it = m_HashMap.find(rev); it == m_HashMap.end())
 		{
-			CString shorthash = rev.ToString(g_Git.GetShortHASHLength());
-			RectF rect;
-			if(graphics.graphics)
+			if (graphics.graphics)
 			{
-				//GetTextExtentPoint32(graphics.pDC->m_hDC, shorthash.GetBuffer(), shorthash.GetLength(), &size);
-				Gdiplus::Font font(fontname, static_cast<REAL>(m_nFontSize), FontStyleRegular);
-				graphics.graphics->MeasureString(shorthash, shorthash.GetLength(),
-										&font,
-										Gdiplus::PointF(0,0), &rect);
+				CString shorthash = rev.ToString(g_Git.GetShortHASHLength());
+				MeasureTextLength(graphics, font, shorthash, xmax, ymax);
 			}
-			m_GraphAttr.width(*pnode) = this->GetLeftRightMargin()*2 + rect.Width;
-			m_GraphAttr.height(*pnode) = this->GetTopBottomMargin()*2 + rect.Height;
 		}
 		else
 		{
-			double xmax=0;
-			double ymax=0;
-			int lines =0;
-			for (size_t i = 0; i < m_HashMap[rev].size(); ++i)
-			{
-				RectF rect;
-				CString shortref = m_HashMap[rev][i];
-				shortref = CGit::GetShortName(shortref, nullptr);
-				if(graphics.pDC)
-				{
-					Gdiplus::Font font(fontname, static_cast<REAL>(m_nFontSize), FontStyleRegular);
-					graphics.graphics->MeasureString(shortref, shortref.GetLength(),
-										&font,
-										Gdiplus::PointF(0,0), &rect);
-					if(rect.Width > xmax)
-						xmax = rect.Width;
-					if(rect.Height > ymax)
-						ymax = rect.Height;
-				}
-				++lines;
-			}
-			m_GraphAttr.width(*pnode) = this->GetLeftRightMargin()*2 + xmax;
-			m_GraphAttr.height(*pnode) = (this->GetTopBottomMargin()*2 + ymax) * lines;
+			lines = (*it).second.size();
+			if (graphics.graphics)
+				std::for_each((*it).second.cbegin(), (*it).second.cend(), [&](const auto& refName) { MeasureTextLength(graphics, font, CGit::GetShortName(refName, nullptr), xmax, ymax); });
 		}
+		m_GraphAttr.width(*pnode) = GetLeftRightMargin() * 2 + xmax;
+		m_GraphAttr.height(*pnode) = (GetTopBottomMargin() * 2 + ymax) * lines;
 	}
 }

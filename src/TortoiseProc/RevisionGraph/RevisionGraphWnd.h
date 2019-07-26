@@ -364,4 +364,5 @@ private:
 
 	int				GetEncoderClsid(const WCHAR* format, CLSID* pClsid);
 	void	SetNodeRect(GraphicsDevice& graphics, ogdf::node *pnode, CGitHash rev, int mode = 0);
+	void	MeasureTextLength(GraphicsDevice& graphics, Gdiplus::Font& font, const CString& text, double& xmax, double& ymax);
 };
