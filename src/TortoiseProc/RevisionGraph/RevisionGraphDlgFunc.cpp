@@ -259,25 +259,30 @@ bool CRevisionGraphWnd::FetchRevisionData
 	dev.graphics = Graphics::FromHDC(dev.pDC->m_hDC);
 	dev.graphics->SetPageUnit (UnitPixel);
 
+	Gdiplus::Font font(CAppUtils::GetLogFontName(), static_cast<REAL>(m_nFontSize), FontStyleRegular);
+	Rect commitString;
+	MeasureTextLength(dev, font, CString(L'8', g_Git.GetShortHASHLength()), commitString.Width, commitString.Height);
+
 	m_HeadNode = nullptr;
 
-	for (size_t i = 0; i < m_logEntries.size(); ++i)
+	for (const auto& hash : m_logEntries)
 	{
 		auto nd = m_Graph.newNode();
 		nodes.Add(nd);
 		m_GraphAttr.width(nd)=100;
 		m_GraphAttr.height(nd)=20;
-		SetNodeRect(dev, &nd, m_logEntries[i], 0);
-		if (m_logEntries[i] == m_HeadHash)
+		SetNodeRect(dev, font, commitString, &nd, hash);
+		if (hash == m_HeadHash)
 			m_HeadNode = nd;
 	}
 
 	for (size_t i = 0; i < m_logEntries.size(); ++i)
 	{
-		GitRev rev=m_logEntries.GetGitRevAt(i);
+		const GitRev& rev = m_logEntries.GetGitRevAt(i);
 		for (size_t j = 0; j < rev.m_ParentHash.size(); ++j)
 		{
-			if(m_logEntries.m_HashMap.find(rev.m_ParentHash[j]) == m_logEntries.m_HashMap.end())
+			auto parentId = m_logEntries.m_HashMap.find(rev.m_ParentHash[j]);
+			if (parentId == m_logEntries.m_HashMap.end())
 			{
 				TRACE(L"Can't found parent node");
 				//new parent node as new node
@@ -286,12 +291,12 @@ bool CRevisionGraphWnd::FetchRevisionData
 				m_logEntries.push_back(rev.m_ParentHash[j]);
 				m_logEntries.m_HashMap[rev.m_ParentHash[j]] = m_logEntries.size() - 1;
 				nodes.Add(nd);
-				SetNodeRect(dev, &nd, rev.m_ParentHash[j], 0);
+				SetNodeRect(dev, font, commitString, &nd, rev.m_ParentHash[j]);
 
 			}else
 			{
 				TRACE(L"edge %d - %d\n",i, m_logEntries.m_HashMap[rev.m_ParentHash[j]]);
-				m_Graph.newEdge(nodes[i], nodes[m_logEntries.m_HashMap[rev.m_ParentHash[j]]]);
+				m_Graph.newEdge(nodes[i], nodes[parentId->second]);
 			}
 		}
 	}

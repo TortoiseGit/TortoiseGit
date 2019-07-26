@@ -363,6 +363,6 @@ private:
 	void			DrawGraph(GraphicsDevice& graphics, const CRect& rect, int nVScrollPos, int nHScrollPos, bool bDirectDraw);
 
 	int				GetEncoderClsid(const WCHAR* format, CLSID* pClsid);
-	void	SetNodeRect(GraphicsDevice& graphics, ogdf::node *pnode, CGitHash rev, int mode = 0);
-	void	MeasureTextLength(GraphicsDevice& graphics, Gdiplus::Font& font, const CString& text, double& xmax, double& ymax);
+	void	SetNodeRect(GraphicsDevice& graphics, Gdiplus::Font& font, const Rect& commitString, ogdf::node* pnode, const CGitHash& rev);
+	void	MeasureTextLength(GraphicsDevice& graphics, Gdiplus::Font& font, const CString& text, int& xmax, int& ymax);
 };
