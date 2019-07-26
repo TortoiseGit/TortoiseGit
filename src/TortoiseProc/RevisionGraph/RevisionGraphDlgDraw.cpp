@@ -634,41 +634,27 @@ void CRevisionGraphWnd::DrawGraph(GraphicsDevice& graphics, const CRect& rect, i
 	delete memDC;
 }
 
-void CRevisionGraphWnd::MeasureTextLength(GraphicsDevice& graphics, Gdiplus::Font& font, const CString& text, double& xmax, double& ymax)
+void CRevisionGraphWnd::MeasureTextLength(GraphicsDevice& graphics, Gdiplus::Font& font, const CString& text, int& xmax, int& ymax)
 {
 	RectF rect;
 	graphics.graphics->MeasureString(text, text.GetLength(), &font, Gdiplus::PointF(0, 0), &rect);
 	if (rect.Width > xmax)
-		xmax = rect.Width;
+		xmax = static_cast<int>(rect.Width);
 	if (rect.Height > ymax)
-		ymax = rect.Height;
+		ymax = static_cast<int>(rect.Height);
 }
 
-void CRevisionGraphWnd::SetNodeRect(GraphicsDevice& graphics, ogdf::node *pnode, CGitHash rev, int mode )
+void CRevisionGraphWnd::SetNodeRect(GraphicsDevice& graphics, Gdiplus::Font& font, const Rect& commitString, ogdf::node* pnode, const CGitHash& rev)
 {
-	//multi - line mode. One RefName is one new line
-	if(mode == 0)
+	int xmax = commitString.Width;
+	int ymax = commitString.Height;
+	int lines = 1;
+	if (auto it = m_HashMap.find(rev); it != m_HashMap.end())
 	{
-		CString fontname = CAppUtils::GetLogFontName();
-		Gdiplus::Font font(fontname, static_cast<REAL>(m_nFontSize), FontStyleRegular);
-		double xmax = 0;
-		double ymax = 0;
-		int lines = 1;
-		if (auto it = m_HashMap.find(rev); it == m_HashMap.end())
-		{
-			if (graphics.graphics)
-			{
-				CString shorthash = rev.ToString(g_Git.GetShortHASHLength());
-				MeasureTextLength(graphics, font, shorthash, xmax, ymax);
-			}
-		}
-		else
-		{
-			lines = (*it).second.size();
-			if (graphics.graphics)
-				std::for_each((*it).second.cbegin(), (*it).second.cend(), [&](const auto& refName) { MeasureTextLength(graphics, font, CGit::GetShortName(refName, nullptr), xmax, ymax); });
-		}
-		m_GraphAttr.width(*pnode) = GetLeftRightMargin() * 2 + xmax;
-		m_GraphAttr.height(*pnode) = (GetTopBottomMargin() * 2 + ymax) * lines;
+		lines = static_cast<int>((*it).second.size());
+		if (graphics.graphics)
+			std::for_each((*it).second.cbegin(), (*it).second.cend(), [&](const auto& refName) { MeasureTextLength(graphics, font, CGit::GetShortName(refName, nullptr), xmax, ymax); });
 	}
+	m_GraphAttr.width(*pnode) = GetLeftRightMargin() * 2 + xmax;
+	m_GraphAttr.height(*pnode) = (GetTopBottomMargin() * 2 + ymax) * lines;
 }
