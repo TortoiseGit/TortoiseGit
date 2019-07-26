@@ -104,7 +104,7 @@ BEGIN_MESSAGE_MAP(CRevisionGraphDlg, CResizableStandAloneDialog)
 	ON_COMMAND(ID_VIEW_UNIFIEDDIFF, OnViewUnifieddiff)
 	ON_COMMAND(ID_VIEW_UNIFIEDDIFFOFHEADREVISIONS, OnViewUnifieddiffofheadrevisions)
 	ON_WM_WINDOWPOSCHANGING()
-
+	ON_COMMAND(ID_VIEW_SHOWBRANCHINGSANDMERGES, OnViewShowBranchingsMerges)
 END_MESSAGE_MAP()
 
 BOOL CRevisionGraphDlg::InitializeToolbar()
@@ -270,6 +270,14 @@ BOOL CRevisionGraphDlg::OnInitDialog()
 		int tbstate = m_ToolBar.GetToolBarCtrl().GetState(ID_VIEW_SHOWOVERVIEW);
 		m_ToolBar.GetToolBarCtrl().SetState(ID_VIEW_SHOWOVERVIEW, tbstate | (DWORD(reg) ? TBSTATE_CHECKED : 0));
 	}
+	if (pMenu)
+	{
+		CRegDWORD reg(L"Software\\TortoiseGit\\ShowRevGraphBranchesMerges", FALSE);
+		m_Graph.m_bShowBranchingsMerges = (DWORD)reg != FALSE;
+		pMenu->CheckMenuItem(ID_VIEW_SHOWBRANCHINGSANDMERGES, MF_BYCOMMAND | (DWORD(reg) ? MF_CHECKED : 0));
+		int tbstate = m_ToolBar.GetToolBarCtrl().GetState(ID_VIEW_SHOWBRANCHINGSANDMERGES);
+		m_ToolBar.GetToolBarCtrl().SetState(ID_VIEW_SHOWBRANCHINGSANDMERGES, tbstate | (DWORD(reg) ? TBSTATE_CHECKED : 0));
+	}
 
 //	m_hAccel = LoadAccelerators(AfxGetResourceHandle(),MAKEINTRESOURCE(IDR_ACC_REVISIONGRAPH));
 
@@ -385,6 +393,32 @@ BOOL CRevisionGraphDlg::PreTranslateMessage(MSG* pMsg)
 		return TranslateAccelerator(m_hWnd,m_hAccel,pMsg);
 	}
 	return __super::PreTranslateMessage(pMsg);
+}
+
+void CRevisionGraphDlg::OnViewShowBranchingsMerges()
+{
+	CMenu* pMenu = GetMenu();
+	if (!pMenu)
+		return;
+	int tbstate = m_ToolBar.GetToolBarCtrl().GetState(ID_VIEW_SHOWBRANCHINGSANDMERGES);
+	UINT state = pMenu->GetMenuState(ID_VIEW_SHOWBRANCHINGSANDMERGES, MF_BYCOMMAND);
+	if (state & MF_CHECKED)
+	{
+		pMenu->CheckMenuItem(ID_VIEW_SHOWBRANCHINGSANDMERGES, MF_BYCOMMAND | MF_UNCHECKED);
+		m_ToolBar.GetToolBarCtrl().SetState(ID_VIEW_SHOWBRANCHINGSANDMERGES, tbstate & (~TBSTATE_CHECKED));
+		m_Graph.m_bShowBranchingsMerges = false;
+	}
+	else
+	{
+		pMenu->CheckMenuItem(ID_VIEW_SHOWBRANCHINGSANDMERGES, MF_BYCOMMAND | MF_CHECKED);
+		m_ToolBar.GetToolBarCtrl().SetState(ID_VIEW_SHOWBRANCHINGSANDMERGES, tbstate | TBSTATE_CHECKED);
+		m_Graph.m_bShowBranchingsMerges = true;
+	}
+
+	CRegDWORD reg(L"Software\\TortoiseGit\\ShowRevGraphBranchesMerges", FALSE);
+	reg = m_Graph.m_bShowBranchingsMerges;
+
+	UpdateFullHistory();
 }
 
 void CRevisionGraphDlg::DoZoom (float zoom)

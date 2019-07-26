@@ -8,6 +8,9 @@ Released: unreleased
  * Update PuTTY binaries to 0.71
  * Allow to disable "Working Tree Changes" in log dialog (using advanced settings)
  * Update Hunspell to 1.7.0
+ * Fixed issue #3363: Add option to show unlabeled most recent common ancestor between all branches in Revision Graph
+   In the View menu you can now toggle the display of branchings and mergings.
+   (This also fixes issue #2110: The Revision Graph is invalid if first commit does not contains the files)
 
 == Bug Fixes ==
  * Implement generic fix for "libgit2 returned the requested type does not match the type in ODB"

@@ -196,37 +196,93 @@ bool CRevisionGraphWnd::FetchRevisionData
 		range = m_ToRev;
 	else if (!m_FromRev.IsEmpty())
 		range = m_FromRev;
-	DWORD infomask = CGit::LOG_INFO_SIMPILFY_BY_DECORATION | (m_bCurrentBranch ? 0 : m_bLocalBranches ? CGit::LOG_INFO_LOCAL_BRANCHES : CGit::LOG_INFO_ALL_BRANCH);
+	DWORD infomask = CGit::LOG_INFO_SIMPILFY_BY_DECORATION | (m_bCurrentBranch ? 0 : m_bLocalBranches ? CGit::LOG_INFO_LOCAL_BRANCHES : CGit::LOG_INFO_ALL_BRANCH) | (m_bShowBranchingsMerges ? CGit::LOG_ORDER_TOPOORDER | CGit::LOG_INFO_SPARSE : 0);
 	m_logEntries.ParserFromLog(nullptr, 0, infomask, &range);
 
 	ReloadHashMap();
 	this->m_Graph.clear();
 
+	// build child graph
+	if (m_bShowBranchingsMerges)
+	{
+		std::unordered_map<CGitHash, std::vector<CGitHash>> childMap;
+		for (size_t i = 0; i < m_logEntries.size(); ++i)
+		{
+			const GitRev& rev = m_logEntries.GetGitRevAt(i);
+			std::for_each(rev.m_ParentHash.cbegin(), rev.m_ParentHash.cend(), [&](const auto& parent) { childMap[parent].push_back(m_logEntries[i]); });
+		}
+
+		// rewrite history
+		std::unordered_set<CGitHash> skipList;
+		for (size_t i = 0; i < m_logEntries.size(); ++i)
+		{
+			auto& rev = m_logEntries.GetGitRevAt(i);
+
+			// keep labeled commits
+			if (m_HashMap.find(rev.m_CommitHash) != m_HashMap.cend())
+				continue;
+
+			if (rev.m_ParentHash.size() != 1)
+				continue;
+
+			auto childIt = childMap.find(rev.m_CommitHash);
+			if (childIt == childMap.cend() || childIt->second.size() != 1)
+				continue;
+
+			auto& childRev = m_logEntries.GetGitRevAt(m_logEntries.m_HashMap.find(childIt->second[0])->second);
+			if (childRev.m_ParentHash.size() != 1)
+				continue;
+
+			// it's ok to erase this commit
+			skipList.insert(rev.m_CommitHash);
+
+			childRev.m_ParentHash[0] = rev.m_ParentHash[0];
+
+			auto& parentChildren = childMap[rev.m_ParentHash[0]];
+			if (auto it = std::find(parentChildren.begin(), parentChildren.end(), rev.m_CommitHash); it != parentChildren.end())
+				*it = childIt->second[0];
+
+			childMap.erase(childIt);
+		}
+
+		// cleanup lists
+		m_logEntries.erase(std::remove_if(m_logEntries.begin(), m_logEntries.end(), [&skipList](const auto& hash) { return skipList.find(hash) != skipList.cend(); }), m_logEntries.end());
+		m_logEntries.m_HashMap.clear();
+		for (size_t i = 0; i < m_logEntries.size(); ++i)
+			m_logEntries.m_HashMap[m_logEntries[i]] = i;
+	}
+
+	// build revision graph
 	CArray<ogdf::node> nodes;
 	GraphicsDevice dev;
 	dev.pDC = this->GetDC();
 	dev.graphics = Graphics::FromHDC(dev.pDC->m_hDC);
 	dev.graphics->SetPageUnit (UnitPixel);
 
+	Gdiplus::Font font(CAppUtils::GetLogFontName(), static_cast<REAL>(m_nFontSize), FontStyleRegular);
+	Rect commitString;
+	MeasureTextLength(dev, font, CString(L'8', g_Git.GetShortHASHLength()), commitString.Width, commitString.Height);
+
 	m_HeadNode = nullptr;
 
-	for (size_t i = 0; i < m_logEntries.size(); ++i)
+	for (const auto& hash : m_logEntries)
 	{
 		auto nd = m_Graph.newNode();
 		nodes.Add(nd);
 		m_GraphAttr.width(nd)=100;
 		m_GraphAttr.height(nd)=20;
-		SetNodeRect(dev, &nd, m_logEntries[i], 0);
-		if (m_logEntries[i] == m_HeadHash)
+		SetNodeRect(dev, font, commitString, &nd, hash);
+		if (hash == m_HeadHash)
 			m_HeadNode = nd;
 	}
 
 	for (size_t i = 0; i < m_logEntries.size(); ++i)
 	{
-		GitRev rev=m_logEntries.GetGitRevAt(i);
+		const GitRev& rev = m_logEntries.GetGitRevAt(i);
 		for (size_t j = 0; j < rev.m_ParentHash.size(); ++j)
 		{
-			if(m_logEntries.m_HashMap.find(rev.m_ParentHash[j]) == m_logEntries.m_HashMap.end())
+			auto parentId = m_logEntries.m_HashMap.find(rev.m_ParentHash[j]);
+			if (parentId == m_logEntries.m_HashMap.end())
 			{
 				TRACE(L"Can't found parent node");
 				//new parent node as new node
@@ -235,12 +291,12 @@ bool CRevisionGraphWnd::FetchRevisionData
 				m_logEntries.push_back(rev.m_ParentHash[j]);
 				m_logEntries.m_HashMap[rev.m_ParentHash[j]] = m_logEntries.size() - 1;
 				nodes.Add(nd);
-				SetNodeRect(dev, &nd, rev.m_ParentHash[j], 0);
+				SetNodeRect(dev, font, commitString, &nd, rev.m_ParentHash[j]);
 
 			}else
 			{
 				TRACE(L"edge %d - %d\n",i, m_logEntries.m_HashMap[rev.m_ParentHash[j]]);
-				m_Graph.newEdge(nodes[i], nodes[m_logEntries.m_HashMap[rev.m_ParentHash[j]]]);
+				m_Graph.newEdge(nodes[i], nodes[parentId->second]);
 			}
 		}
 	}
