@@ -543,6 +543,8 @@ void CCloneDlg::OnEnUpdateEditSvnFrom()         ///[REVMIN][:REVMAX]
   ctrl->GetSel(sC,eC);
   sC-=1;
   eC-=1;
+  CString balTtl(_T(""));
+  CString balTxt(_T("{0..9}*[:{0..9}*]"));
 
   int p=txt.Find(_T(':'));
   if(p<0                                        ///REVMIN
@@ -552,6 +554,7 @@ void CCloneDlg::OnEnUpdateEditSvnFrom()         ///[REVMIN][:REVMAX]
          }
       ctrl->SetWindowText(SVNFromLast);
       ctrl->SetSel(sC,eC);
+      ctrl->ShowBalloonTip(balTtl,balTxt,TTI_ERROR);
       return;
      }
   //A: [:REVMAX]
@@ -566,12 +569,14 @@ void CCloneDlg::OnEnUpdateEditSvnFrom()         ///[REVMIN][:REVMAX]
     && !isNumber(l)
     ){ctrl->SetWindowText(SVNFromLast);
       ctrl->SetSel(sC,eC);
+      ctrl->ShowBalloonTip(balTtl,balTxt,TTI_ERROR);
       return;
      }
   if(  !r.IsEmpty()
     && !isNumber(r)
     ){ctrl->SetWindowText(SVNFromLast);
       ctrl->SetSel(sC,eC);
+      ctrl->ShowBalloonTip(balTtl,balTxt,TTI_ERROR);
       return;
      }
 
