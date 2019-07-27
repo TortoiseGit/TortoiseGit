@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2017 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -82,9 +82,10 @@ public:
 	CString	m_strSVNTags;
 	CString	m_strSVNBranchs;
 	CString	m_strUserName;
-
-	int		m_nSVNFrom;
-
+	CString m_strSVNFrom;
+private:
+	CString SVNFromLast;
+	bool    OnChangeDisabled=false;
 protected:
 	CMenuButton	m_BrowseUrl;
 	CRegDWORD	m_regBrowseUrl;
@@ -108,4 +109,13 @@ protected:
 	afx_msg void OnBnClickedCheckSvnFrom();
 	afx_msg void OnBnClickedCheckDepth();
 	afx_msg void OnBnClickedCheckUsername();
+	afx_msg void OnEnSetFocusEditSvnFrom();
+	afx_msg void OnEnUpdateEditSvnFrom();
+	afx_msg void OnEnKillFocusEditSvnFrom();
+
+private:
+	template<class CTRL>
+	CTRL* get(int idCtrl) {if(!idCtrl) return NULL;
+	                       else        return (CTRL*)GetDlgItem(idCtrl);
+	                      }
 };
