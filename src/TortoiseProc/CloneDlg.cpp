@@ -200,6 +200,8 @@ BOOL CCloneDlg::OnInitDialog()
 	this->GetDlgItem(IDC_PUTTYKEYFILE)->EnableWindow(m_bAutoloadPuttyKeyFile);
 	this->GetDlgItem(IDC_PUTTYKEYFILE_BROWSE)->EnableWindow(m_bAutoloadPuttyKeyFile);
 
+  get<CEdit>(IDC_EDIT_SVN_FROM)->SetCueBanner(_T("[RMIN][:RMAX]"));
+
 	EnableSaveRestore(L"CloneDlg");
 
 	OnBnClickedCheckSvn();
