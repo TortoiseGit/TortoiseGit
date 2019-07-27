@@ -181,7 +181,7 @@ int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, 
 
 struct SortByParentDate
 {
-	bool operator()(GitRevLoglist* pLhs, GitRevLoglist* pRhs)
+	bool operator()(GitRevLoglist* pLhs, GitRevLoglist* pRhs) const
 	{
 		if (pLhs->m_CommitHash == pRhs->m_CommitHash)
 			return false;
