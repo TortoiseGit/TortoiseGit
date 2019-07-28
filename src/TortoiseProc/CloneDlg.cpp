@@ -591,6 +591,7 @@ void CCloneDlg::OnEnKillFocusEditSvnFrom()
 { OnChangeDisabled=true;
   CEdit*  ctrl =get<CEdit>(IDC_EDIT_SVN_FROM);
   CString txt;  ctrl->GetWindowText(txt);
+  const DWORD selectLineEnd = (DWORD)-1;
 
   int p=txt.Find(_T(':'));
   if(p<0
@@ -602,14 +603,14 @@ void CCloneDlg::OnEnKillFocusEditSvnFrom()
   if(l.IsEmpty()
     )l=_T("0");
   if(!r.IsEmpty()
-    ){long nl=_tstof(l);
-      long nr=_tstof(r);
+    ){long nl=_tstol(l);
+      long nr=_tstol(r);
       if(r<l
         ){l.Format(_T("%d"),nr);
           r.Format(_T("%d"),nl);
           ctrl->SetWindowText(l+_T(":")+r);
           ctrl->SetFocus();
-          ctrl->SetSel(-1);
+		  ctrl->SetSel(selectLineEnd);
           return;
          }
      }
