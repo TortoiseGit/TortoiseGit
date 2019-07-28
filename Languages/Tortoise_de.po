@@ -7472,7 +7472,7 @@ msgstr "&Letzte Log-Meldung einfügen"
 
 #. Resource IDs: (IDS_COMMITDLG_POPUP_LOGHISTORY)
 msgid "Paste r&ecent message..."
-msgstr "Let&zte Log-Meldung einfügen..."
+msgstr "Gespeicherte Log-Meldung auswählen ..."
 
 #. Resource IDs: (IDS_MENUDESCCLIPPASTE)
 msgid ""
