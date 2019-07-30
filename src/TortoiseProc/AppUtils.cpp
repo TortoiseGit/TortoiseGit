@@ -709,8 +709,8 @@ bool CAppUtils::LaunchPAgent(HWND hWnd, const CString* keyfile, const CString* p
 	if(key.IsEmpty())
 		return false;
 
-	CString proc=CPathUtils::GetAppDirectory();
-	proc += L"pageant.exe \"";
+	CString proc = L'"' + CPathUtils::GetAppDirectory();
+	proc += L"pageant.exe\" \"";
 	proc += key;
 	proc += L'"';
 
