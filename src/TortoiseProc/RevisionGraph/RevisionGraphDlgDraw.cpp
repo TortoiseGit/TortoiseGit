@@ -412,10 +412,9 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 		RectF noderect (GetNodeRect (v, offset));
 
 		// draw the revision text
-		CGitHash hash = this->m_logEntries[v->index()];
-		double hight = noderect.Height / (!m_HashMap[hash].empty() ? m_HashMap[hash].size() : 1);
+		const CGitHash& hash = m_logEntries[v->index()];
 
-		if (m_HashMap.find(hash) == m_HashMap.end() || m_HashMap[hash].empty())
+		if (const auto refsIt = m_HashMap.find(hash); refsIt == m_HashMap.end())
 		{
 			Color background;
 			background.SetFromCOLORREF (GetSysColor(COLOR_WINDOW));
@@ -446,27 +445,27 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 			}
 		}else
 		{
+			double height = noderect.Height / refsIt->second.size();
+
 			if (graphics.pGraphviz)
 			{
 				CString id = L'g' + hash.ToString(g_Git.GetShortHASHLength());
 				graphics.pGraphviz->BeginDrawTableNode(id, fontname, m_nFontSize, static_cast<int>(noderect.Height));
 			}
 
-			for (size_t i = 0; i < m_HashMap[hash].size(); ++i)
+			for (size_t i = 0; i < refsIt->second.size(); ++i)
 			{
-				CString shortname;
-				CString str = m_HashMap[hash][i];
 				RectF rect;
 
 				rect.X = static_cast<REAL>(noderect.X);
-				rect.Y = static_cast<REAL>(noderect.Y + hight * i);
+				rect.Y = static_cast<REAL>(noderect.Y + height * i);
 				rect.Width = static_cast<REAL>(noderect.Width);
-				rect.Height = static_cast<REAL>(hight);
+				rect.Height = static_cast<REAL>(height);
 
 				COLORREF colRef = m_Colors.GetColor(CColors::OtherRef);
 
 				CGit::REF_TYPE refType;
-				shortname = CGit::GetShortName(str, &refType);
+				CString shortname = CGit::GetShortName(refsIt->second[i], &refType);
 				switch (refType)
 				{
 				case CGit::REF_TYPE::LOCAL_BRANCH:
@@ -505,7 +504,7 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 
 				int mask =0;
 				mask |= (i==0)? ROUND_UP:0;
-				mask |= (i== m_HashMap[hash].size()-1)? ROUND_DOWN:0;
+				mask |= (i == refsIt->second.size() - 1) ? ROUND_DOWN : 0;
 				this->DrawRoundedRect(graphics, color,1,&pen, color,&brush, rect,mask);
 
 				if (graphics.graphics)
@@ -516,7 +515,7 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 					graphics.graphics->DrawString(shortname, shortname.GetLength(),
 						&font,
 						Gdiplus::PointF(static_cast<REAL>(noderect.X + this->GetLeftRightMargin() * m_fZoomFactor),
-										static_cast<REAL>(noderect.Y + this->GetTopBottomMargin() * m_fZoomFactor + hight * i)),
+										static_cast<REAL>(noderect.Y + this->GetTopBottomMargin() * m_fZoomFactor + height * i)),
 						&blackbrush);
 
 					//graphics.graphics->DrawString(shortname.GetBuffer(), shortname.GetLength(), ::new Gdiplus::Font(graphics.pDC->m_hDC), PointF(noderect.X, noderect.Y + hight * i), nullptr, nullptr);
@@ -524,7 +523,7 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 				}
 				else if (graphics.pSVG)
 					graphics.pSVG->Text(static_cast<int>(noderect.X + this->GetLeftRightMargin() * m_fZoomFactor),
-										static_cast<int>(noderect.Y + this->GetTopBottomMargin() * m_fZoomFactor + hight * i + m_nFontSize),
+										static_cast<int>(noderect.Y + this->GetTopBottomMargin() * m_fZoomFactor + height * i + m_nFontSize),
 										CUnicodeUtils::GetUTF8(fontname), m_nFontSize,
 										false, false, static_cast<ARGB>(Color::Black), CUnicodeUtils::GetUTF8(shortname));
 				else if (graphics.pGraphviz)
