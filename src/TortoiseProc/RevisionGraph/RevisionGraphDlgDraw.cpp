@@ -442,6 +442,40 @@ static AllColorsAndBrushes SetupColorsAndBrushes(CColors& colors)
 	};
 }
 
+void CRevisionGraphWnd::DrawNode(GraphicsDevice& graphics, AllColorsAndBrushes& colorsAndBrushes, ColorsAndBrushes* colors, const Gdiplus::Font& font, const CString& fontname, double height, RectF noderect, const CString& shortname, size_t line, size_t lines)
+{
+	RectF rect;
+	rect.X = noderect.X;
+	rect.Y = static_cast<REAL>(noderect.Y + height * line);
+	rect.Width = noderect.Width;
+	rect.Height = static_cast<REAL>(height);
+
+	int mask = (line == 0) ? ROUND_UP : 0;
+	mask |= (line == lines - 1) ? ROUND_DOWN : 0;
+	DrawRoundedRect(graphics, colors->background, 1, &colors->pen, colors->brightColor, &colors->brush, rect, mask);
+
+	if (graphics.graphics)
+	{
+		graphics.graphics->DrawString(shortname, shortname.GetLength(),
+									  &font,
+									  Gdiplus::PointF(static_cast<REAL>(noderect.X + this->GetLeftRightMargin() * m_fZoomFactor),
+													  static_cast<REAL>(noderect.Y + this->GetTopBottomMargin() * m_fZoomFactor + height * line)),
+									  &colorsAndBrushes.blackbrush);
+	}
+	else if (graphics.pSVG)
+		graphics.pSVG->Text(static_cast<int>(noderect.X + this->GetLeftRightMargin() * m_fZoomFactor),
+							static_cast<int>(noderect.Y + this->GetTopBottomMargin() * m_fZoomFactor + height * line + m_nFontSize),
+							CUnicodeUtils::GetUTF8(fontname), m_nFontSize,
+							false, false, static_cast<ARGB>(Color::Black), CUnicodeUtils::GetUTF8(shortname));
+	else if (graphics.pGraphviz)
+	{
+		if (lines == 1)
+			graphics.pGraphviz->DrawNode(L'g' + shortname, shortname, fontname, m_nFontSize, colorsAndBrushes.Commits.background, colorsAndBrushes.Commits.brightColor, static_cast<int>(noderect.Height));
+		else
+			graphics.pGraphviz->DrawTableNode(shortname, colors->brightColor);
+	}
+}
+
 void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logRect*/, const CSize& offset)
 {
 	if (m_nFontSize <= 0)
@@ -466,52 +500,32 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 		// draw the revision text
 		const CGitHash& hash = m_logEntries[v->index()];
 
-		if (const auto refsIt = m_HashMap.find(hash); refsIt == m_HashMap.end())
-		{
-			DrawRoundedRect(graphics, colorsAndBrushes.Commits.background, 1, &colorsAndBrushes.Commits.pen, colorsAndBrushes.Commits.brightColor, &colorsAndBrushes.Commits.brush, noderect);
+		auto refsIt = m_HashMap.find(hash);
+		bool hasRefs = refsIt != m_HashMap.end();
 
-			if(graphics.graphics)
-			{
-				graphics.graphics->DrawString(hash.ToString(g_Git.GetShortHASHLength()), -1,
-					&font,
-					Gdiplus::PointF(noderect.X + this->GetLeftRightMargin()*this->m_fZoomFactor,noderect.Y+this->GetTopBottomMargin()*m_fZoomFactor),
-					&colorsAndBrushes.blackbrush);
-			}
-			if(graphics.pSVG)
-			{
-				graphics.pSVG->Text(static_cast<int>(noderect.X + this->GetLeftRightMargin() * this->m_fZoomFactor),
-											static_cast<int>(noderect.Y + this->GetTopBottomMargin() * m_fZoomFactor + m_nFontSize),
-											CUnicodeUtils::GetUTF8(fontname), m_nFontSize, false, false, static_cast<ARGB>(Color::Black),
-											CUnicodeUtils::GetUTF8(hash.ToString(g_Git.GetShortHASHLength())));
-			}
-			if (graphics.pGraphviz)
-			{
-				CString shortHash = hash.ToString(g_Git.GetShortHASHLength());
-				graphics.pGraphviz->DrawNode(L'g' + shortHash, shortHash, fontname, m_nFontSize, colorsAndBrushes.Commits.background, colorsAndBrushes.Commits.brightColor, static_cast<int>(noderect.Height));
-			}
-		}else
-		{
-			double height = noderect.Height / refsIt->second.size();
+		size_t lines = (hasRefs ? refsIt->second.size() : 1);
+		double height = noderect.Height / lines;
+		size_t line = 0;
 
+		if (!hasRefs)
+		{
+			CString shortHash = hash.ToString(g_Git.GetShortHASHLength());
+			DrawNode(graphics, colorsAndBrushes, &colorsAndBrushes.Commits, font, fontname, height, noderect, shortHash, line, lines);
+		}
+		else
+		{
 			if (graphics.pGraphviz)
 			{
 				CString id = L'g' + hash.ToString(g_Git.GetShortHASHLength());
 				graphics.pGraphviz->BeginDrawTableNode(id, fontname, m_nFontSize, static_cast<int>(noderect.Height));
 			}
 
-			for (size_t i = 0; i < refsIt->second.size(); ++i)
+			for (const auto& ref : refsIt->second)
 			{
-				RectF rect;
-
-				rect.X = static_cast<REAL>(noderect.X);
-				rect.Y = static_cast<REAL>(noderect.Y + height * i);
-				rect.Width = static_cast<REAL>(noderect.Width);
-				rect.Height = static_cast<REAL>(height);
-
 				auto colors = &colorsAndBrushes.Other;
 
 				CGit::REF_TYPE refType;
-				CString shortname = CGit::GetShortName(refsIt->second[i], &refType);
+				CString shortname = CGit::GetShortName(ref, &refType);
 				switch (refType)
 				{
 				case CGit::REF_TYPE::LOCAL_BRANCH:
@@ -544,27 +558,9 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 					break;
 				}
 
-				int mask =0;
-				mask |= (i==0)? ROUND_UP:0;
-				mask |= (i== m_HashMap[hash].size()-1)? ROUND_DOWN:0;
-				DrawRoundedRect(graphics, colors->background, 1, &colors->pen, colors->brightColor, &colors->brush, rect, mask);
+				DrawNode(graphics, colorsAndBrushes, colors, font, fontname, height, noderect, shortname, line, lines);
 
-				if (graphics.graphics)
-				{
-					graphics.graphics->DrawString(shortname, shortname.GetLength(),
-						&font,
-						Gdiplus::PointF(static_cast<REAL>(noderect.X + this->GetLeftRightMargin() * m_fZoomFactor),
-										static_cast<REAL>(noderect.Y + this->GetTopBottomMargin() * m_fZoomFactor + height * i)),
-										&colorsAndBrushes.blackbrush);
-
-				}
-				else if (graphics.pSVG)
-					graphics.pSVG->Text(static_cast<int>(noderect.X + this->GetLeftRightMargin() * m_fZoomFactor),
-										static_cast<int>(noderect.Y + this->GetTopBottomMargin() * m_fZoomFactor + height * i + m_nFontSize),
-										CUnicodeUtils::GetUTF8(fontname), m_nFontSize,
-										false, false, static_cast<ARGB>(Color::Black), CUnicodeUtils::GetUTF8(shortname));
-				else if (graphics.pGraphviz)
-					graphics.pGraphviz->DrawTableNode(shortname, colors->brightColor);
+				++line;
 			}
 
 			if (graphics.pGraphviz)
