@@ -108,6 +108,7 @@ CRevisionGraphWnd::CRevisionGraphWnd()
 	, m_bCurrentBranch(false)
 	, m_bLocalBranches(FALSE)
 	, m_bShowBranchingsMerges(false)
+	, m_bShowAllTags(true)
 {
 	WNDCLASS wndcls;
 	HINSTANCE hInst = AfxGetInstanceHandle();

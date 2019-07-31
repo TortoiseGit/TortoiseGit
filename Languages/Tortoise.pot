@@ -8243,6 +8243,10 @@ msgstr ""
 msgid "Show all &staged files"
 msgstr ""
 
+#. Resource IDs: (ID_VIEW_SHOWALLTAGS - Menu)
+msgid "Show all tags"
+msgstr ""
+
 #. Resource IDs: (32813)
 msgid "Show an overview of the whole graph"
 msgstr ""

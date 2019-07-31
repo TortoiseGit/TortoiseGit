@@ -152,6 +152,7 @@ public:
 	CString		m_ToRev;
 
 	bool		m_bShowBranchingsMerges;
+	bool		m_bShowAllTags;
 
 	void ReloadHashMap()
 	{

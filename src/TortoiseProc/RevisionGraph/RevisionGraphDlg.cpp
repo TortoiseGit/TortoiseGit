@@ -105,6 +105,7 @@ BEGIN_MESSAGE_MAP(CRevisionGraphDlg, CResizableStandAloneDialog)
 	ON_COMMAND(ID_VIEW_UNIFIEDDIFFOFHEADREVISIONS, OnViewUnifieddiffofheadrevisions)
 	ON_WM_WINDOWPOSCHANGING()
 	ON_COMMAND(ID_VIEW_SHOWBRANCHINGSANDMERGES, OnViewShowBranchingsMerges)
+	ON_COMMAND(ID_VIEW_SHOWALLTAGS, OnViewShowAllTags)
 END_MESSAGE_MAP()
 
 BOOL CRevisionGraphDlg::InitializeToolbar()
@@ -261,8 +262,9 @@ BOOL CRevisionGraphDlg::OnInitDialog()
 	if (FAILED(m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList)))
 		m_pTaskbarList = nullptr;
 
-	m_Graph.SetShowOverview(InitialSetMenu(L"ShowRevGraphOverview", ID_VIEW_SHOWOVERVIEW));
-	m_Graph.m_bShowBranchingsMerges = InitialSetMenu(L"ShowRevGraphBranchesMerges", ID_VIEW_SHOWBRANCHINGSANDMERGES);
+	m_Graph.SetShowOverview(InitialSetMenu(L"ShowRevGraphOverview", false, ID_VIEW_SHOWOVERVIEW));
+	m_Graph.m_bShowBranchingsMerges = InitialSetMenu(L"ShowRevGraphBranchesMerges", false, ID_VIEW_SHOWBRANCHINGSANDMERGES);
+	m_Graph.m_bShowAllTags = InitialSetMenu(L"ShowRevGraphAllTags", true, ID_VIEW_SHOWALLTAGS);
 
 //	m_hAccel = LoadAccelerators(AfxGetResourceHandle(),MAKEINTRESOURCE(IDR_ACC_REVISIONGRAPH));
 
@@ -283,9 +285,9 @@ BOOL CRevisionGraphDlg::OnInitDialog()
 	return TRUE;  // return TRUE unless you set the focus to a control
 }
 
-bool CRevisionGraphDlg::InitialSetMenu(const CString& settingName, int nId)
+bool CRevisionGraphDlg::InitialSetMenu(const CString& settingName, bool defaultValue, int nId)
 {
-	CRegDWORD reg = CRegDWORD(L"Software\\TortoiseGit\\" + settingName, FALSE);
+	CRegDWORD reg = CRegDWORD(L"Software\\TortoiseGit\\" + settingName, defaultValue ? TRUE : FALSE);
 	CMenu* pMenu = GetMenu();
 	if (!pMenu)
 		return static_cast<DWORD>(reg) != FALSE;
@@ -422,6 +424,13 @@ BOOL CRevisionGraphDlg::PreTranslateMessage(MSG* pMsg)
 void CRevisionGraphDlg::OnViewShowBranchingsMerges()
 {
 	m_Graph.m_bShowBranchingsMerges = ToggleSetMenu(L"ShowRevGraphBranchesMerges", ID_VIEW_SHOWBRANCHINGSANDMERGES);
+
+	UpdateFullHistory();
+}
+
+void CRevisionGraphDlg::OnViewShowAllTags()
+{
+	m_Graph.m_bShowAllTags = ToggleSetMenu(L"ShowRevGraphAllTags", ID_VIEW_SHOWALLTAGS);
 
 	UpdateFullHistory();
 }

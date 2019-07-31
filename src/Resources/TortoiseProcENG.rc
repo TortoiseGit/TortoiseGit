@@ -3246,6 +3246,7 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "Show Ove&rview",              ID_VIEW_SHOWOVERVIEW
         MENUITEM "Show branchings and &merges", ID_VIEW_SHOWBRANCHINGSANDMERGES
+        MENUITEM "Show all tags",               ID_VIEW_SHOWALLTAGS
     END
     POPUP "&Git"
     BEGIN

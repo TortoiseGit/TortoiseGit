@@ -207,7 +207,7 @@ bool CRevisionGraphWnd::FetchRevisionData
 		m_superProjectHash = g_Git.GetSubmodulePointer();
 
 	// build child graph
-	if (m_bShowBranchingsMerges)
+	if (!m_bShowAllTags || m_bShowBranchingsMerges)
 	{
 		std::unordered_map<CGitHash, std::vector<CGitHash>> childMap;
 		for (size_t i = 0; i < m_logEntries.size(); ++i)
@@ -223,8 +223,27 @@ bool CRevisionGraphWnd::FetchRevisionData
 			auto& rev = m_logEntries.GetGitRevAt(i);
 
 			// keep labeled commits
-			if (m_HashMap.find(rev.m_CommitHash) != m_HashMap.cend() || rev.m_CommitHash == m_superProjectHash)
-				continue;
+			if (auto foundNames = m_HashMap.find(rev.m_CommitHash); foundNames != m_HashMap.cend() || rev.m_CommitHash == m_superProjectHash)
+			{
+				// by default any label is enough to keep this commit visible
+				if (m_bShowAllTags || rev.m_CommitHash == m_superProjectHash)
+					continue;
+
+				// if hiding tags, check if there are any branch names for this commit
+				bool haveNonTagNames = false;
+				for (auto name : foundNames->second)
+				{
+					CGit::REF_TYPE refType;
+					CGit::GetShortName(name, &refType);
+					if (refType != CGit::REF_TYPE::ANNOTATED_TAG && refType != CGit::REF_TYPE::TAG)
+					{
+						haveNonTagNames = true;
+						break;
+					}
+				}
+				if (haveNonTagNames)
+					continue;
+			}
 
 			if (rev.m_ParentHash.size() != 1)
 				continue;

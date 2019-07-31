@@ -74,7 +74,7 @@ protected:
 	HACCEL			m_hAccel;
 
 	BOOL			InitializeToolbar();
-	bool			InitialSetMenu(const CString& settingName, int nId);
+	bool			InitialSetMenu(const CString& settingName, bool defaultValue, int nId);
 	bool			ToggleSetMenu(const CString& settingName, int nId);
 
 	virtual void	DoDataExchange(CDataExchange* pDX) override;		// DDX/DDV support
@@ -95,6 +95,7 @@ protected:
 	afx_msg void	OnViewUnifieddiff();
 	afx_msg void	OnViewUnifieddiffofheadrevisions();
 	afx_msg void	OnViewShowBranchingsMerges();
+	afx_msg void	OnViewShowAllTags();
 	afx_msg void	OnViewShowoverview();
 	afx_msg void	OnFileSavegraphas();
 	afx_msg void	OnMenuexit();
