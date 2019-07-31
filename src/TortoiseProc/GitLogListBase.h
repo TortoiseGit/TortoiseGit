@@ -471,31 +471,7 @@ protected:
 		m_superProjectHash.Empty();
 		if (CRegDWORD(L"Software\\TortoiseGit\\LogShowSuperProjectSubmodulePointer", TRUE) != TRUE)
 			return;
-		if (GitAdminDir::IsBareRepo(g_Git.m_CurrentDir))
-			return;
-		CString superprojectRoot;
-		GitAdminDir::HasAdminDir(g_Git.m_CurrentDir, false, &superprojectRoot);
-		if (superprojectRoot.IsEmpty())
-			return;
-
-		CAutoRepository repo(superprojectRoot);
-		if (!repo)
-			return;
-		CAutoIndex index;
-		if (git_repository_index(index.GetPointer(), repo))
-			return;
-
-		CString submodulePath;
-		if (superprojectRoot[superprojectRoot.GetLength() - 1] == L'\\')
-			submodulePath = g_Git.m_CurrentDir.Right(g_Git.m_CurrentDir.GetLength() - superprojectRoot.GetLength());
-		else
-			submodulePath = g_Git.m_CurrentDir.Right(g_Git.m_CurrentDir.GetLength() - superprojectRoot.GetLength() - 1);
-		submodulePath.Replace(L'\\', L'/');
-		const git_index_entry* entry = git_index_get_bypath(index, CUnicodeUtils::GetUTF8(submodulePath), 0);
-		if (!entry)
-			return;
-
-		m_superProjectHash = entry->id;
+		m_superProjectHash = g_Git.GetSubmodulePointer();
 	}
 	void ReloadHashMap()
 	{

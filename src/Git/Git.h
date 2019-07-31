@@ -426,6 +426,8 @@ public:
 	void GetBisectTerms(CString* good, CString* bad);
 	int GetRefList(STRING_VECTOR &list);
 
+	CGitHash GetSubmodulePointer();
+
 	int RefreshGitIndex();
 	int GetOneFile(const CString &Refname, const CTGitPath &path, const CString &outputfile);
 
