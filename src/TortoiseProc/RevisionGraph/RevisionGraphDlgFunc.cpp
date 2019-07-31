@@ -385,40 +385,31 @@ CString	CRevisionGraphWnd::GetFriendRefName(ogdf::node v)
 {
 	if (!v)
 		return CString();
-	CGitHash hash = this->m_logEntries[v->index()];
-	if(this->m_HashMap.find(hash) == m_HashMap.end())
-		return hash.ToString();
-	else if (m_HashMap[hash].empty())
-		return hash.ToString();
-	else if(this->m_HashMap[hash][0].IsEmpty())
+	const CGitHash& hash = this->m_logEntries[v->index()];
+	if (const auto refsIt = m_HashMap.find(hash); refsIt == m_HashMap.end())
 		return hash.ToString();
 	else
-		return m_HashMap[hash][0];
+		return refsIt->second[0];
 }
 
 STRING_VECTOR CRevisionGraphWnd::GetFriendRefNames(ogdf::node v, const CString* exclude, CGit::REF_TYPE* onlyRefType)
 {
 	if (!v)
 		return STRING_VECTOR();
-	CGitHash hash = m_logEntries[v->index()];
-	if (m_HashMap.find(hash) == m_HashMap.end())
-		return STRING_VECTOR();
-	else if (m_HashMap[hash].empty())
-		return STRING_VECTOR();
-	else if (m_HashMap[hash][0].IsEmpty())
+	const CGitHash& hash = m_logEntries[v->index()];
+	if (const auto refsIt = m_HashMap.find(hash); refsIt == m_HashMap.end())
 		return STRING_VECTOR();
 	else
 	{
-		STRING_VECTOR &all = m_HashMap[hash];
 		STRING_VECTOR list;
-		for (size_t i = 0; i < all.size(); ++i)
+		for (const auto& ref: refsIt->second)
 		{
 			CGit::REF_TYPE refType;
-			CString shortName = CGit::GetShortName(all[i], &refType);
+			CString shortName = CGit::GetShortName(ref, &refType);
 			if (exclude && *exclude == shortName)
 				continue;
 			if (!onlyRefType)
-				list.push_back(all[i]);
+				list.push_back(ref);
 			else if (*onlyRefType == refType)
 				list.push_back(shortName);
 		}
