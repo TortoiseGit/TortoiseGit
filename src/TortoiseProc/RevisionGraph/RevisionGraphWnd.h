@@ -109,6 +109,8 @@ enum NodeShape
 // forward declarations
 
 class CRevisionGraphDlg;
+struct AllColorsAndBrushes;
+struct ColorsAndBrushes;
 
 // simplify usage of classes from other namespaces
 
@@ -141,7 +143,8 @@ public:
 	CLogDataVector		m_logEntries;
 	MAP_HASH_NAME		m_HashMap;
 	CString				m_CurrentBranch;
-	CGitHash				m_HeadHash;
+	CGitHash			m_HeadHash;
+	CGitHash			m_superProjectHash;
 
 	BOOL		m_bCurrentBranch;
 	BOOL		m_bLocalBranches;
@@ -361,6 +364,7 @@ private:
 	void			DrawConnections (GraphicsDevice& graphics, const CRect& logRect, const CSize& offset);
 	void			DrawTexts (GraphicsDevice& graphics, const CRect& logRect, const CSize& offset);
 	void			DrawGraph(GraphicsDevice& graphics, const CRect& rect, int nVScrollPos, int nHScrollPos, bool bDirectDraw);
+	void DrawNode(GraphicsDevice& graphics, AllColorsAndBrushes& colorsAndBrushes, ColorsAndBrushes* colors, const Gdiplus::Font& font, const CString& fontname, double height, RectF noderect, const CString& shortname, size_t line, size_t lines);
 
 	int				GetEncoderClsid(const WCHAR* format, CLSID* pClsid);
 	void	SetNodeRect(GraphicsDevice& graphics, Gdiplus::Font& font, const Rect& commitString, ogdf::node* pnode, const CGitHash& rev);

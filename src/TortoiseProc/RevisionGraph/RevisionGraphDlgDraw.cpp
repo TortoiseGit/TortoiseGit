@@ -387,9 +387,99 @@ void CRevisionGraphWnd::DrawConnections (GraphicsDevice& graphics, const CRect& 
 	}
 }
 
+typedef struct ColorsAndBrushes
+{
+	Gdiplus::Color background;
+	Gdiplus::Color brightColor;
+	Gdiplus::Pen pen;
+	Gdiplus::SolidBrush brush;
+} ColorsAndBrushes;
+
+typedef struct AllColorsAndBrushes
+{
+	SolidBrush blackbrush;
+	ColorsAndBrushes Commits;
+	ColorsAndBrushes CurrentBranch;
+	ColorsAndBrushes LocalBranch;
+	ColorsAndBrushes RemoteBranch;
+	ColorsAndBrushes Tag;
+	ColorsAndBrushes Stash;
+	ColorsAndBrushes BisectGood;
+	ColorsAndBrushes BisectBad;
+	ColorsAndBrushes BisectSkip;
+	ColorsAndBrushes Notes;
+	ColorsAndBrushes SuperProjectPointer;
+	ColorsAndBrushes Other;
+} AllColorsAndBrushes;
+
+inline static Gdiplus::Color GetColorRefColor(COLORREF colRef)
+{
+	return { GetRValue(colRef), GetGValue(colRef), GetBValue(colRef) };
+}
+
+#define COLORLINE(colRef) { GetColorRefColor(colRef), GetColorRefColor(colRef), { GetColorRefColor(colRef) }, { GetColorRefColor(colRef) } }
+
+static AllColorsAndBrushes SetupColorsAndBrushes(CColors& colors)
+{
+	DWORD revGraphUseLocalForCur = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\Graph\\RevGraphUseLocalForCur");
+
+	Color background;
+	background.SetFromCOLORREF(GetSysColor(COLOR_WINDOW));
+	Color brightColor = LimitedScaleColor(background, RGB(255, 0, 0), 0.9f);
+
+	return {
+		{ static_cast<ARGB>(Color::Black) },
+		{ background, brightColor, { background, 1.0F }, { brightColor } },
+		COLORLINE(colors.GetColor(revGraphUseLocalForCur ? colors.LocalBranch : colors.CurrentBranch)),
+		COLORLINE(colors.GetColor(colors.LocalBranch)),
+		COLORLINE(colors.GetColor(colors.RemoteBranch)),
+		COLORLINE(colors.GetColor(colors.Tag)),
+		COLORLINE(colors.GetColor(colors.Stash)),
+		COLORLINE(colors.GetColor(colors.BisectGood)),
+		COLORLINE(colors.GetColor(colors.BisectBad)),
+		COLORLINE(colors.GetColor(colors.BisectBad)),
+		COLORLINE(colors.GetColor(colors.NoteNode)),
+		COLORLINE(RGB(246, 153, 253)),
+		COLORLINE(colors.GetColor(colors.OtherRef)),
+	};
+}
+
+void CRevisionGraphWnd::DrawNode(GraphicsDevice& graphics, AllColorsAndBrushes& colorsAndBrushes, ColorsAndBrushes* colors, const Gdiplus::Font& font, const CString& fontname, double height, RectF noderect, const CString& shortname, size_t line, size_t lines)
+{
+	RectF rect;
+	rect.X = noderect.X;
+	rect.Y = static_cast<REAL>(noderect.Y + height * line);
+	rect.Width = noderect.Width;
+	rect.Height = static_cast<REAL>(height);
+
+	int mask = (line == 0) ? ROUND_UP : 0;
+	mask |= (line == lines - 1) ? ROUND_DOWN : 0;
+	DrawRoundedRect(graphics, colors->background, 1, &colors->pen, colors->brightColor, &colors->brush, rect, mask);
+
+	if (graphics.graphics)
+	{
+		graphics.graphics->DrawString(shortname, shortname.GetLength(),
+									  &font,
+									  Gdiplus::PointF(static_cast<REAL>(noderect.X + this->GetLeftRightMargin() * m_fZoomFactor),
+													  static_cast<REAL>(noderect.Y + this->GetTopBottomMargin() * m_fZoomFactor + height * line)),
+									  &colorsAndBrushes.blackbrush);
+	}
+	else if (graphics.pSVG)
+		graphics.pSVG->Text(static_cast<int>(noderect.X + this->GetLeftRightMargin() * m_fZoomFactor),
+							static_cast<int>(noderect.Y + this->GetTopBottomMargin() * m_fZoomFactor + height * line + m_nFontSize),
+							CUnicodeUtils::GetUTF8(fontname), m_nFontSize,
+							false, false, static_cast<ARGB>(Color::Black), CUnicodeUtils::GetUTF8(shortname));
+	else if (graphics.pGraphviz)
+	{
+		if (lines == 1)
+			graphics.pGraphviz->DrawNode(L'g' + shortname, shortname, fontname, m_nFontSize, colorsAndBrushes.Commits.background, colorsAndBrushes.Commits.brightColor, static_cast<int>(noderect.Height));
+		else
+			graphics.pGraphviz->DrawTableNode(shortname, colors->brightColor);
+	}
+}
+
 void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logRect*/, const CSize& offset)
 {
-	//COLORREF standardTextColor = GetSysColor(COLOR_WINDOWTEXT);
 	if (m_nFontSize <= 0)
 		return;
 
@@ -401,9 +491,7 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 	CString fontname = CAppUtils::GetLogFontName();
 
 	Gdiplus::Font font(fontname, static_cast<REAL>(m_nFontSize), FontStyleRegular);
-	SolidBrush blackbrush(static_cast<ARGB>(Color::Black));
-
-	DWORD revGraphUseLocalForCur = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\Graph\\RevGraphUseLocalForCur");
+	auto colorsAndBrushes = SetupColorsAndBrushes(m_Colors);
 
 	ogdf::node v;
 	forall_nodes(v,m_Graph)
@@ -414,125 +502,81 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 		// draw the revision text
 		const CGitHash& hash = m_logEntries[v->index()];
 
-		if (const auto refsIt = m_HashMap.find(hash); refsIt == m_HashMap.end())
+		auto refsIt = m_HashMap.find(hash);
+		bool hasRefs = refsIt != m_HashMap.end();
+
+		size_t lines = (hasRefs ? refsIt->second.size() : 1);
+		if (hash == m_superProjectHash)
+			++lines;
+		double height = noderect.Height / lines;
+		size_t line = 0;
+
+		if (lines >= 1 && graphics.pGraphviz)
 		{
-			Color background;
-			background.SetFromCOLORREF (GetSysColor(COLOR_WINDOW));
-			Gdiplus::Pen pen(background,1.0F);
-			Color brightColor = LimitedScaleColor (background, RGB(255,0,0), 0.9f);
-			Gdiplus::SolidBrush brush(brightColor);
+			CString id = L'g' + hash.ToString(g_Git.GetShortHASHLength());
+			graphics.pGraphviz->BeginDrawTableNode(id, fontname, m_nFontSize, static_cast<int>(noderect.Height));
+		}
 
-			DrawRoundedRect(graphics, background,1, &pen, brightColor, &brush, noderect);
-
-			if(graphics.graphics)
-			{
-				graphics.graphics->DrawString(hash.ToString(g_Git.GetShortHASHLength()), -1,
-					&font,
-					Gdiplus::PointF(noderect.X + this->GetLeftRightMargin()*this->m_fZoomFactor,noderect.Y+this->GetTopBottomMargin()*m_fZoomFactor),
-					&blackbrush);
-			}
-			if(graphics.pSVG)
-			{
-				graphics.pSVG->Text(static_cast<int>(noderect.X + this->GetLeftRightMargin() * this->m_fZoomFactor),
-											static_cast<int>(noderect.Y + this->GetTopBottomMargin() * m_fZoomFactor + m_nFontSize),
-											CUnicodeUtils::GetUTF8(fontname), m_nFontSize, false, false, static_cast<ARGB>(Color::Black),
-											CUnicodeUtils::GetUTF8(hash.ToString(g_Git.GetShortHASHLength())));
-			}
-			if (graphics.pGraphviz)
-			{
-				CString shortHash = hash.ToString(g_Git.GetShortHASHLength());
-				graphics.pGraphviz->DrawNode(L'g' + shortHash, shortHash, fontname, m_nFontSize, background, brightColor, static_cast<int>(noderect.Height));
-			}
-		}else
+		if (hash == m_superProjectHash)
 		{
-			double height = noderect.Height / refsIt->second.size();
+			DrawNode(graphics, colorsAndBrushes, &colorsAndBrushes.SuperProjectPointer, font, fontname, height, noderect, L"super-project-pointer", line, lines);
+			++line;
+		}
 
-			if (graphics.pGraphviz)
+		if (!hasRefs)
+		{
+			CString shortHash = hash.ToString(g_Git.GetShortHASHLength());
+			DrawNode(graphics, colorsAndBrushes, &colorsAndBrushes.Commits, font, fontname, height, noderect, shortHash, line, lines);
+		}
+		else
+		{
+			for (const auto& ref : refsIt->second)
 			{
-				CString id = L'g' + hash.ToString(g_Git.GetShortHASHLength());
-				graphics.pGraphviz->BeginDrawTableNode(id, fontname, m_nFontSize, static_cast<int>(noderect.Height));
-			}
-
-			for (size_t i = 0; i < refsIt->second.size(); ++i)
-			{
-				RectF rect;
-
-				rect.X = static_cast<REAL>(noderect.X);
-				rect.Y = static_cast<REAL>(noderect.Y + height * i);
-				rect.Width = static_cast<REAL>(noderect.Width);
-				rect.Height = static_cast<REAL>(height);
-
-				COLORREF colRef = m_Colors.GetColor(CColors::OtherRef);
+				auto colors = &colorsAndBrushes.Other;
 
 				CGit::REF_TYPE refType;
-				CString shortname = CGit::GetShortName(refsIt->second[i], &refType);
+				CString shortname = CGit::GetShortName(ref, &refType);
 				switch (refType)
 				{
 				case CGit::REF_TYPE::LOCAL_BRANCH:
-					if (!revGraphUseLocalForCur && shortname == m_CurrentBranch)
-						colRef = m_Colors.GetColor(CColors::CurrentBranch);
+					if (shortname == m_CurrentBranch)
+						colors = &colorsAndBrushes.CurrentBranch;
 					else
-						colRef = m_Colors.GetColor(CColors::LocalBranch);
+						colors = &colorsAndBrushes.LocalBranch;
 					break;
 				case CGit::REF_TYPE::REMOTE_BRANCH:
-					colRef = m_Colors.GetColor(CColors::RemoteBranch);
+					colors = &colorsAndBrushes.RemoteBranch;
 					break;
 				case CGit::REF_TYPE::ANNOTATED_TAG:
 				case CGit::REF_TYPE::TAG:
-					colRef = m_Colors.GetColor(CColors::Tag);
+					colors = &colorsAndBrushes.Tag;
 					break;
 				case CGit::REF_TYPE::STASH:
-					colRef = m_Colors.GetColor(CColors::Stash);
+					colors = &colorsAndBrushes.Stash;
 					break;
 				case CGit::REF_TYPE::BISECT_GOOD:
-					colRef = m_Colors.GetColor(CColors::BisectGood);
+					colors = &colorsAndBrushes.BisectGood;
 					break;
 				case CGit::REF_TYPE::BISECT_BAD:
-					colRef = m_Colors.GetColor(CColors::BisectBad);
+					colors = &colorsAndBrushes.BisectBad;
 					break;
 				case CGit::REF_TYPE::BISECT_SKIP:
-					colRef = m_Colors.GetColor(CColors::BisectSkip);
+					colors = &colorsAndBrushes.BisectSkip;
 					break;
 				case CGit::REF_TYPE::NOTES:
-					colRef = m_Colors.GetColor(CColors::NoteNode);
+					colors = &colorsAndBrushes.Notes;
 					break;
 				}
 
-				Gdiplus::Color color(GetRValue(colRef), GetGValue(colRef), GetBValue(colRef));
-				Gdiplus::Pen pen(color);
-				Gdiplus::SolidBrush brush(color);
+				DrawNode(graphics, colorsAndBrushes, colors, font, fontname, height, noderect, shortname, line, lines);
 
-				int mask =0;
-				mask |= (i==0)? ROUND_UP:0;
-				mask |= (i == refsIt->second.size() - 1) ? ROUND_DOWN : 0;
-				this->DrawRoundedRect(graphics, color,1,&pen, color,&brush, rect,mask);
-
-				if (graphics.graphics)
-				{
-					//graphics.graphics->FillRectangle(&SolidBrush(Gdiplus::Color(GetRValue(colRef), GetGValue(colRef), GetBValue(colRef))),
-					//		rect);
-
-					graphics.graphics->DrawString(shortname, shortname.GetLength(),
-						&font,
-						Gdiplus::PointF(static_cast<REAL>(noderect.X + this->GetLeftRightMargin() * m_fZoomFactor),
-										static_cast<REAL>(noderect.Y + this->GetTopBottomMargin() * m_fZoomFactor + height * i)),
-						&blackbrush);
-
-					//graphics.graphics->DrawString(shortname.GetBuffer(), shortname.GetLength(), ::new Gdiplus::Font(graphics.pDC->m_hDC), PointF(noderect.X, noderect.Y + hight * i), nullptr, nullptr);
-
-				}
-				else if (graphics.pSVG)
-					graphics.pSVG->Text(static_cast<int>(noderect.X + this->GetLeftRightMargin() * m_fZoomFactor),
-										static_cast<int>(noderect.Y + this->GetTopBottomMargin() * m_fZoomFactor + height * i + m_nFontSize),
-										CUnicodeUtils::GetUTF8(fontname), m_nFontSize,
-										false, false, static_cast<ARGB>(Color::Black), CUnicodeUtils::GetUTF8(shortname));
-				else if (graphics.pGraphviz)
-					graphics.pGraphviz->DrawTableNode(shortname, color);
+				++line;
 			}
-
-			if (graphics.pGraphviz)
-				graphics.pGraphviz->EndDrawTableNode();
 		}
+
+		if (lines >= 1 && graphics.pGraphviz)
+			graphics.pGraphviz->EndDrawTableNode();
+
 		if ((m_SelectedEntry1 == v))
 			DrawMarker(graphics, noderect, mpLeft, 0, GetColorFromSysColor(COLOR_HIGHLIGHT), 1);
 
@@ -647,6 +691,12 @@ void CRevisionGraphWnd::SetNodeRect(GraphicsDevice& graphics, Gdiplus::Font& fon
 		lines = static_cast<int>((*it).second.size());
 		if (graphics.graphics)
 			std::for_each((*it).second.cbegin(), (*it).second.cend(), [&](const auto& refName) { MeasureTextLength(graphics, font, CGit::GetShortName(refName, nullptr), xmax, ymax); });
+	}
+	if (rev == m_superProjectHash)
+	{
+		if (graphics.graphics)
+			MeasureTextLength(graphics, font, L"super-project-pointer", xmax, ymax);
+		++lines;
 	}
 	m_GraphAttr.width(*pnode) = GetLeftRightMargin() * 2 + xmax;
 	m_GraphAttr.height(*pnode) = (GetTopBottomMargin() * 2 + ymax) * lines;
