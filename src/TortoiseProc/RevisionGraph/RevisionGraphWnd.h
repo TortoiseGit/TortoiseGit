@@ -143,7 +143,8 @@ public:
 	CLogDataVector		m_logEntries;
 	MAP_HASH_NAME		m_HashMap;
 	CString				m_CurrentBranch;
-	CGitHash				m_HeadHash;
+	CGitHash			m_HeadHash;
+	CGitHash			m_superProjectHash;
 
 	BOOL		m_bCurrentBranch;
 	BOOL		m_bLocalBranches;

@@ -408,6 +408,7 @@ typedef struct AllColorsAndBrushes
 	ColorsAndBrushes BisectBad;
 	ColorsAndBrushes BisectSkip;
 	ColorsAndBrushes Notes;
+	ColorsAndBrushes SuperProjectPointer;
 	ColorsAndBrushes Other;
 } AllColorsAndBrushes;
 
@@ -438,6 +439,7 @@ static AllColorsAndBrushes SetupColorsAndBrushes(CColors& colors)
 		COLORLINE(colors.GetColor(colors.BisectBad)),
 		COLORLINE(colors.GetColor(colors.BisectBad)),
 		COLORLINE(colors.GetColor(colors.NoteNode)),
+		COLORLINE(RGB(246, 153, 253)),
 		COLORLINE(colors.GetColor(colors.OtherRef)),
 	};
 }
@@ -504,8 +506,22 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 		bool hasRefs = refsIt != m_HashMap.end();
 
 		size_t lines = (hasRefs ? refsIt->second.size() : 1);
+		if (hash == m_superProjectHash)
+			++lines;
 		double height = noderect.Height / lines;
 		size_t line = 0;
+
+		if (lines >= 1 && graphics.pGraphviz)
+		{
+			CString id = L'g' + hash.ToString(g_Git.GetShortHASHLength());
+			graphics.pGraphviz->BeginDrawTableNode(id, fontname, m_nFontSize, static_cast<int>(noderect.Height));
+		}
+
+		if (hash == m_superProjectHash)
+		{
+			DrawNode(graphics, colorsAndBrushes, &colorsAndBrushes.SuperProjectPointer, font, fontname, height, noderect, L"super-project-pointer", line, lines);
+			++line;
+		}
 
 		if (!hasRefs)
 		{
@@ -514,12 +530,6 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 		}
 		else
 		{
-			if (graphics.pGraphviz)
-			{
-				CString id = L'g' + hash.ToString(g_Git.GetShortHASHLength());
-				graphics.pGraphviz->BeginDrawTableNode(id, fontname, m_nFontSize, static_cast<int>(noderect.Height));
-			}
-
 			for (const auto& ref : refsIt->second)
 			{
 				auto colors = &colorsAndBrushes.Other;
@@ -562,10 +572,11 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 
 				++line;
 			}
-
-			if (graphics.pGraphviz)
-				graphics.pGraphviz->EndDrawTableNode();
 		}
+
+		if (lines >= 1 && graphics.pGraphviz)
+			graphics.pGraphviz->EndDrawTableNode();
+
 		if ((m_SelectedEntry1 == v))
 			DrawMarker(graphics, noderect, mpLeft, 0, GetColorFromSysColor(COLOR_HIGHLIGHT), 1);
 
@@ -680,6 +691,12 @@ void CRevisionGraphWnd::SetNodeRect(GraphicsDevice& graphics, Gdiplus::Font& fon
 		lines = static_cast<int>((*it).second.size());
 		if (graphics.graphics)
 			std::for_each((*it).second.cbegin(), (*it).second.cend(), [&](const auto& refName) { MeasureTextLength(graphics, font, CGit::GetShortName(refName, nullptr), xmax, ymax); });
+	}
+	if (rev == m_superProjectHash)
+	{
+		if (graphics.graphics)
+			MeasureTextLength(graphics, font, L"super-project-pointer", xmax, ymax);
+		++lines;
 	}
 	m_GraphAttr.width(*pnode) = GetLeftRightMargin() * 2 + xmax;
 	m_GraphAttr.height(*pnode) = (GetTopBottomMargin() * 2 + ymax) * lines;

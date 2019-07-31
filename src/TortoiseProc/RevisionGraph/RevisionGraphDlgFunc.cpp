@@ -202,6 +202,10 @@ bool CRevisionGraphWnd::FetchRevisionData
 	ReloadHashMap();
 	this->m_Graph.clear();
 
+	m_superProjectHash.Empty();
+	if (CRegDWORD(L"Software\\TortoiseGit\\LogShowSuperProjectSubmodulePointer", TRUE) != FALSE)
+		m_superProjectHash = g_Git.GetSubmodulePointer();
+
 	// build child graph
 	if (m_bShowBranchingsMerges)
 	{
@@ -219,7 +223,7 @@ bool CRevisionGraphWnd::FetchRevisionData
 			auto& rev = m_logEntries.GetGitRevAt(i);
 
 			// keep labeled commits
-			if (m_HashMap.find(rev.m_CommitHash) != m_HashMap.cend())
+			if (m_HashMap.find(rev.m_CommitHash) != m_HashMap.cend() || rev.m_CommitHash == m_superProjectHash)
 				continue;
 
 			if (rev.m_ParentHash.size() != 1)
