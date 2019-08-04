@@ -2397,6 +2397,14 @@ bool DoPull(HWND hWnd, const CString& url, bool bAutoLoad, BOOL bFetchTags, bool
 
 			postCmdList.emplace_back(IDI_PULL, IDS_MENUPULL, [&hWnd]{ CAppUtils::Pull(hWnd); });
 			postCmdList.emplace_back(IDI_SHELVE, IDS_MENUSTASHSAVE, [&hWnd]{ CAppUtils::StashSave(hWnd, L"", true); });
+			postCmdList.emplace_back(IDI_RESET, IDS_PROC_RESET, [&hWnd] {
+				CString pullRemote, pullBranch;
+				g_Git.GetRemoteTrackedBranchForHEAD(pullRemote, pullBranch);
+				CString defaultUpstream;
+				if (!pullRemote.IsEmpty() && !pullBranch.IsEmpty())
+					defaultUpstream.Format(L"remotes/%s/%s", static_cast<LPCTSTR>(pullRemote), static_cast<LPCTSTR>(pullBranch));
+				CAppUtils::GitReset(hWnd, defaultUpstream, 2);
+			});
 			return;
 		}
 
