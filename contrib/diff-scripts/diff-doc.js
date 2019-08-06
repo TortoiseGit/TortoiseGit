@@ -2,7 +2,7 @@
 //
 // TortoiseSVN Diff script for Word Doc files
 //
-// Copyright (C) 2004-2008, 2011, 2013 the TortoiseSVN team
+// Copyright (C) 2004-2008, 2011, 2013, 2019 the TortoiseSVN team
 // This file is distributed under the same license as TortoiseSVN
 //
 // Last commit by:
@@ -65,6 +65,8 @@ if (!objScript.FileExists(sNewDoc))
 try
 {
     word = WScript.CreateObject("Word.Application");
+    // disable macros
+    word.AutomationSecurity = 3; //msoAutomationSecurityForceDisable
 
     if (parseInt(word.Version, 10) >= vOffice2013)
     {
