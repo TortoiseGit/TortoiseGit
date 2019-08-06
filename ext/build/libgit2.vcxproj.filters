@@ -566,6 +566,9 @@
     <ClCompile Include="..\libgit2\src\hash\sha1\sha1dc\ubc_check.c">
       <Filter>Source Files\hash\sha1\sha1dc</Filter>
     </ClCompile>
+    <ClCompile Include="..\libgit2\src\config_snapshot.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libgit2\src\attr.h">

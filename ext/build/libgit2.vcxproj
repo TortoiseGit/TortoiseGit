@@ -91,6 +91,7 @@
     <ClCompile Include="..\libgit2\src\config_file.c" />
     <ClCompile Include="..\libgit2\src\config_mem.c" />
     <ClCompile Include="..\libgit2\src\config_parse.c" />
+    <ClCompile Include="..\libgit2\src\config_snapshot.c" />
     <ClCompile Include="..\libgit2\src\crlf.c" />
     <ClCompile Include="..\libgit2\src\date.c" />
     <ClCompile Include="..\libgit2\src\delta.c" />
