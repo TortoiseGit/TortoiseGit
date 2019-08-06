@@ -2,7 +2,7 @@
 //
 // TortoiseSVN Diff script for Excel files
 //
-// Copyright (C) 2004-2008, 2012-2015 the TortoiseSVN team
+// Copyright (C) 2004-2008, 2012-2015, 2019 the TortoiseSVN team
 // This file is distributed under the same license as TortoiseSVN
 //
 // Last commit by:
@@ -86,6 +86,10 @@ catch (e)
 {
     Abort("You must have Excel installed to perform this operation.", "Excel Instantiation Failed");
 }
+
+// disable all macros
+objExcelApp.AutomationSecurity = 3; //msoAutomationSecurityForceDisable
+
 var fExcelVersion = parseInt(objExcelApp.Version, 10);
 
 // Open base Excel book

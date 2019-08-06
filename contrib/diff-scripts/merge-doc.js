@@ -2,7 +2,7 @@
 //
 // TortoiseSVN Merge script for Word Doc files
 //
-// Copyright (C) 2004-2008, 2011 the TortoiseSVN team
+// Copyright (C) 2004-2008, 2011, 2019 the TortoiseSVN team
 // This file is distributed under the same license as TortoiseSVN
 //
 // Last commit by:
@@ -64,6 +64,8 @@ objScript = null;
 try
 {
     word = WScript.CreateObject("Word.Application");
+    // disable macros
+    word.AutomationSecurity = 3; //msoAutomationSecurityForceDisable
 }
 catch (e)
 {
