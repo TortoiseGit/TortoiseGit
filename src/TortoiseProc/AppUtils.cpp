@@ -1149,7 +1149,7 @@ bool CAppUtils::Export(HWND hWnd, const CString* BashHash, const CTGitPath* orgP
 	if (dlg.DoModal() == IDOK)
 	{
 		CString cmd;
-		cmd.Format(L"git.exe archive --output=\"%s\" --format=zip --verbose %s --",
+		cmd.Format(L"git.exe archive --output=\"%s\" --verbose %s --",
 					static_cast<LPCTSTR>(dlg.m_strFile), static_cast<LPCTSTR>(g_Git.FixBranchName(dlg.m_VersionName)));
 
 		CProgressDlg pro(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));

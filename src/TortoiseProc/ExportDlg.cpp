@@ -120,7 +120,7 @@ void CExportDlg::OnOK()
 		return;
 	}
 
-	if (!CStringUtils::EndsWithI(m_strFile, L".zip"))
+	if (!*::PathFindExtension(m_strFile))	// no extension
 		m_strFile += L".zip";
 	if(::PathFileExists(m_strFile))
 	{
