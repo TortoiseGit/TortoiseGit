@@ -96,6 +96,16 @@
 		or <guimenuitem>Revert</guimenuitem>.
 	</para>
 	<para>
+		<figure id="tgit-dug-addfinish-1">
+			<title>Add finished</title>
+			<graphic fileref="../images/AddFinish.png"/>
+		</figure>
+		After adding the files, you may commit by clicking the shortcut menu button.
+		Additionally, there are options to mark the newly added files as executable / symlink.
+		Remember to mark executable bit for files such as Unix shell script.
+		This is to facilitate sharing repository with Linux / MacOS environment.
+	</para>
+	<para>
 		You can find more information at <xref linkend="git-add(1)"/>
 	</para>
 </sect1>
