@@ -304,7 +304,7 @@ void CSettingGitConfig::OnBnClickedEditsystemgitconfig()
 	}
 	// use alternative editor because of LineEndings
 	CAppUtils::LaunchAlternativeEditor(filename, true);
-	if (!g_Git.ms_bCygwinGit && !g_Git.ms_bMsys2Git && PathFileExists(g_Git.GetGitProgramDataConfig()))
+	if (!g_Git.ms_bCygwinGit && !g_Git.ms_bMsys2Git && !g_Git.GetGitProgramDataConfig().IsEmpty() && PathFileExists(g_Git.GetGitProgramDataConfig()))
 		CAppUtils::LaunchAlternativeEditor(g_Git.GetGitProgramDataConfig(), true);
 }
 
@@ -318,6 +318,6 @@ void CSettingGitConfig::OnBnClickedViewsystemgitconfig()
 	}
 	// use alternative editor because of LineEndings
 	CAppUtils::LaunchAlternativeEditor(filename);
-	if (!g_Git.ms_bCygwinGit && !g_Git.ms_bMsys2Git && PathFileExists(g_Git.GetGitProgramDataConfig()))
+	if (!g_Git.ms_bCygwinGit && !g_Git.ms_bMsys2Git && !g_Git.GetGitProgramDataConfig().IsEmpty() && PathFileExists(g_Git.GetGitProgramDataConfig()))
 		CAppUtils::LaunchAlternativeEditor(g_Git.GetGitProgramDataConfig());
 }

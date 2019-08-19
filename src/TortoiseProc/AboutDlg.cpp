@@ -92,7 +92,7 @@ BOOL CAboutDlg::OnInitDialog()
 			out += L"; with msys2 hack";
 		else if (CGit::ms_bCygwinGit)
 			out += L"; with cygwin hack";
-		else
+		else if (!g_Git.GetGitProgramDataConfig().IsEmpty())
 			out += L"; " + g_Git.GetGitProgramDataConfig();
 		out += L')';
 	}

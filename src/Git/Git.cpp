@@ -2181,7 +2181,7 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": ms_LastMsysGitDir = %s\n", static_cast<LPCTSTR>(CGit::ms_LastMsysGitDir));
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": ms_MsysGitRootDir = %s\n", static_cast<LPCTSTR>(CGit::ms_MsysGitRootDir));
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": System config = %s\n", static_cast<LPCTSTR>(g_Git.GetGitSystemConfig()));
-	if (!ms_bCygwinGit && !ms_bMsys2Git)
+	if (!ms_bCygwinGit && !ms_bMsys2Git && !g_Git.GetGitProgramDataConfig().IsEmpty())
 	{
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": ProgramData config = %s\n", static_cast<LPCTSTR>(g_Git.GetGitProgramDataConfig()));
 		SetLibGit2SearchPath(GIT_CONFIG_LEVEL_PROGRAMDATA, CTGitPath(g_Git.GetGitProgramDataConfig()).GetContainingDirectory().GetWinPathString());
