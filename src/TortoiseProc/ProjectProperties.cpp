@@ -67,7 +67,7 @@ int ProjectProperties::ReadProps()
 	git_config_add_file_ondisk(gitconfig, CGit::GetGitPathStringA(g_Git.GetGitGlobalConfig()), GIT_CONFIG_LEVEL_GLOBAL, repo, FALSE);
 	git_config_add_file_ondisk(gitconfig,CGit::GetGitPathStringA(g_Git.GetGitGlobalXDGConfig()), GIT_CONFIG_LEVEL_XDG, repo, FALSE);
 	git_config_add_file_ondisk(gitconfig, CGit::GetGitPathStringA(g_Git.GetGitSystemConfig()), GIT_CONFIG_LEVEL_SYSTEM, repo, FALSE);
-	if (!g_Git.ms_bCygwinGit && !g_Git.ms_bMsys2Git)
+	if (!g_Git.ms_bCygwinGit && !g_Git.ms_bMsys2Git && !g_Git.GetGitProgramDataConfig().IsEmpty())
 		git_config_add_file_ondisk(gitconfig, CGit::GetGitPathStringA(g_Git.GetGitProgramDataConfig()), GIT_CONFIG_LEVEL_PROGRAMDATA, repo, FALSE);
 	git_error_clear();
 

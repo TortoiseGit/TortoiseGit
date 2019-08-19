@@ -105,7 +105,7 @@ BOOL CFirstStartWizardUser::OnInitDialog()
 		if (git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitGlobalXDGConfig()), GIT_CONFIG_LEVEL_XDG, nullptr, FALSE))
 			MessageBox(g_Git.GetLibGit2LastErr(), L"TortoiseGit", MB_ICONEXCLAMATION);
 	}
-	if (!g_Git.ms_bCygwinGit && !g_Git.ms_bMsys2Git)
+	if (!g_Git.ms_bCygwinGit && !g_Git.ms_bMsys2Git && !g_Git.GetGitProgramDataConfig().IsEmpty())
 	{
 		if (git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitProgramDataConfig()), GIT_CONFIG_LEVEL_PROGRAMDATA, nullptr, FALSE))
 			MessageBox(g_Git.GetLibGit2LastErr(), L"TortoiseGit", MB_ICONEXCLAMATION);
