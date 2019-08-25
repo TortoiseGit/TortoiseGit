@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2016 - TortoiseGit
+// Copyright (C) 2012-2017, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,6 +22,8 @@
 #include "StandAloneDlg.h"
 #include "registry.h"
 #include "HistoryCombo.h"
+#include "ResizableColumnsListCtrl.h"
+#include "GestureEnabledControl.h"
 
 class CSubmoduleUpdateDlg : public CResizableStandAloneDialog
 {
@@ -33,6 +35,13 @@ public:
 
 // Dialog Data
 	enum { IDD = IDD_SUBMODULE_UPDATE };
+
+	enum eCol
+	{
+		eCol_Path,
+		eCol_Status,
+		eCol_Version,
+	};
 
 	static bool s_bSortLogical;
 
@@ -70,7 +79,7 @@ protected:
 	CRegDWORD		m_regRebase;
 	CRegDWORD		m_regRemote;
 	CRegDWORD		m_regShowWholeProject;
-	CListBox	m_PathListBox;
+	CGestureEnabledControlTmpl<CResizableColumnsListCtrl<CListCtrl>> m_PathListBox;
 	CRegString		m_regPath;
 	CButton			m_SelectAll;
 	BOOL			m_bWholeProject;
