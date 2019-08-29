@@ -263,8 +263,8 @@ effect to your index in a row.</simpara>
 <listitem>
 <simpara>
         Use the given merge strategy.  Should only be used once.
-        See the MERGE STRATEGIES section in <xref linkend="git-merge(1)" />
-        for details.
+        See <xref linkend="git-merge(1)__merge_strategies" /> under the 
+		<xref linkend="git-merge(1)" /> section, for details.
 </simpara>
 </listitem>
 </varlistentry>
