@@ -5391,8 +5391,8 @@ notes.mergeStrategy
 <simpara>
         Which merge strategy to choose by default when resolving notes
         conflicts.  Must be one of <emphasis>manual</emphasis>, <emphasis>ours</emphasis>, <emphasis>theirs</emphasis>, <emphasis>union</emphasis>, or
-        <emphasis>cat_sort_uniq</emphasis>.  Defaults to <emphasis>manual</emphasis>.  See "NOTES MERGE STRATEGIES"
-        section of <xref linkend="git-notes(1)" /> for more information on each strategy.
+        <emphasis>cat_sort_uniq</emphasis>.  Defaults to <emphasis>manual</emphasis>.  See <xref linkend="git-notes(1)__notes_merge_strategies" />
+        section for more information on each strategy.
 </simpara>
 </listitem>
 </varlistentry>
@@ -5404,8 +5404,8 @@ notes.&lt;name&gt;.mergeStrategy
 <simpara>
         Which merge strategy to choose when doing a notes merge into
         refs/notes/&lt;name&gt;.  This overrides the more general
-        "notes.mergeStrategy".  See the "NOTES MERGE STRATEGIES" section in
-        <xref linkend="git-notes(1)" /> for more information on the available strategies.
+        "notes.mergeStrategy".  See the <xref linkend="git-notes(1)__notes_merge_strategies" /> section 
+        for more information on the available strategies.
 </simpara>
 </listitem>
 </varlistentry>
