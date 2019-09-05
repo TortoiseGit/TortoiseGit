@@ -2161,10 +2161,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					while ((index = GetNextSelectedItem(pos)) >= 0)
 						m_mapFilenameToChecked.erase(GetListEntry(index)->GetGitPathString());
 
-					if (GetLogicalParent() && GetLogicalParent()->GetSafeHwnd())
-						GetLogicalParent()->SendMessage(GITSLNM_NEEDSREFRESH);
-
-					SetRedraw(TRUE);
+					RefreshParent();
 				}
 				break;
 
@@ -2291,10 +2288,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						sysProgressDlg.Stop();
 						if (needsFullRefresh && CRegDWORD(L"Software\\TortoiseGit\\RefreshFileListAfterResolvingConflict", TRUE) == TRUE)
 						{
-							CWnd* pParent = GetLogicalParent();
-							if (pParent && pParent->GetSafeHwnd())
-								pParent->SendMessage(GITSLNM_NEEDSREFRESH);
-							SetRedraw(TRUE);
+							RefreshParent();
 							break;
 						}
 						StoreScrollPos();
@@ -2313,12 +2307,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						break;
 
 					SetRedraw(FALSE);
-					CWnd* pParent = GetLogicalParent();
-					if (pParent && pParent->GetSafeHwnd())
-					{
-						pParent->SendMessage(GITSLNM_NEEDSREFRESH);
-					}
-					SetRedraw(TRUE);
+					RefreshParent();
 				}
 				break;
 
@@ -2332,13 +2321,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						break;
 
 					SetRedraw(FALSE);
-					CWnd* pParent = GetLogicalParent();
-					if (pParent && pParent->GetSafeHwnd())
-					{
-						pParent->SendMessage(GITSLNM_NEEDSREFRESH);
-					}
-
-					SetRedraw(TRUE);
+					RefreshParent();
 				}
 				break;
 
@@ -2351,11 +2334,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						break;
 
 					SetRedraw(FALSE);
-					CWnd *pParent = GetLogicalParent();
-					if (pParent && pParent->GetSafeHwnd())
-						pParent->SendMessage(GITSLNM_NEEDSREFRESH);
-
-					SetRedraw(TRUE);
+					RefreshParent();
 				}
 				break;
 			case IDGITLC_COMMIT:
@@ -2677,10 +2656,7 @@ void CGitStatusListCtrl::SetGitIndexFlagsForSelectedFiles(UINT message, BOOL ass
 		return;
 	}
 
-	if (nullptr != GetLogicalParent() && nullptr != GetLogicalParent()->GetSafeHwnd())
-		GetLogicalParent()->SendMessage(GITSLNM_NEEDSREFRESH);
-
-	SetRedraw(TRUE);
+	RefreshParent();
 }
 
 void CGitStatusListCtrl::OnContextMenu(CWnd* pWnd, CPoint point)
@@ -4407,10 +4383,7 @@ void CGitStatusListCtrl::DeleteSelectedFiles()
 
 		if (needWriteIndex)
 		{
-			CWnd* pParent = GetLogicalParent();
-			if (pParent && pParent->GetSafeHwnd())
-				pParent->SendMessage(GITSLNM_NEEDSREFRESH);
-			SetRedraw(TRUE);
+			RefreshParent();
 			return;
 		}
 
@@ -4769,3 +4742,12 @@ void CGitStatusListCtrl::PruneChangelists(const CTGitPathList* root)
 			++it2;
 	}
 }
+
+void CGitStatusListCtrl::RefreshParent()
+{
+	auto pParent = GetLogicalParent();
+	if (pParent && pParent->GetSafeHwnd())
+		pParent->SendMessage(GITSLNM_NEEDSREFRESH);
+	SetRedraw(TRUE);
+}
+

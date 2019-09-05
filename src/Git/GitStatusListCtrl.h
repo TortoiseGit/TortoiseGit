@@ -700,6 +700,8 @@ private:
 	void RemoveFromChangelist();
 	void LoadChangelists();
 
+	void RefreshParent();
+
 public:
 	void SaveChangelists();
 	void PruneChangelists(const CTGitPathList* root);
