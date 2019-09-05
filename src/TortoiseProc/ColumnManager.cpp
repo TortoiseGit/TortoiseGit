@@ -297,6 +297,9 @@ void ColumnManager::SetVisible(int column, bool visible)
 		ApplyColumnOrder();
 
 		control->Invalidate(FALSE);
+
+		if (onVisibilityChanged)
+			onVisibilityChanged(column, visible);
 	}
 }
 
@@ -640,4 +643,9 @@ void ColumnManager::OnContextMenuHeader(CWnd* pWnd, CPoint point, bool isGroundE
 				ResetColumns(m_dwDefaultColumns);
 		}
 	}
+}
+
+void ColumnManager::SetOnVisibilityChanged(std::function<void(int, bool)> onVisibilityChangedFct)
+{
+	onVisibilityChanged = onVisibilityChangedFct;
 }

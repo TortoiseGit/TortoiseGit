@@ -282,6 +282,12 @@ CGitStatusListCtrl::CGitStatusListCtrl() : CResizableColumnsListCtrl<CListCtrl>(
 	metrics.cbSize = sizeof(NONCLIENTMETRICS);
 	SystemParametersInfo(SPI_GETNONCLIENTMETRICS, 0, &metrics, FALSE);
 	m_uiFont.CreateFontIndirect(&metrics.lfMessageFont);
+
+	m_ColumnManager.SetOnVisibilityChanged(
+		[this](int column, bool visible)
+		{
+			OnColumnVisibilityChanged(column, visible);
+		});
 }
 
 CGitStatusListCtrl::~CGitStatusListCtrl()
@@ -4934,6 +4940,12 @@ void CGitStatusListCtrl::PruneChangelists(const CTGitPathList* root)
 		else
 			++it2;
 	}
+}
+
+void CGitStatusListCtrl::OnColumnVisibilityChanged(int column, bool visible)
+{
+	if (visible && m_ColumnManager.GetName(column) == IDS_STATUSLIST_COLLFSLOCK)
+		RefreshParent();
 }
 
 void CGitStatusListCtrl::RefreshParent()

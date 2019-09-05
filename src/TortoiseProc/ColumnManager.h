@@ -148,6 +148,7 @@ public:
 		return 1;
 	}
 	void OnContextMenuHeader(CWnd* pWnd, CPoint point, bool isGroundEnable = false);
+	void SetOnVisibilityChanged(std::function<void(int, bool)> onVisibilityChanged);
 
 private:
 	void AddMenuItem(CMenu* pop)
@@ -200,6 +201,8 @@ private:
 		bool relevant;      ///< set to @a visible, if no *shown* item has that property
 		bool adjusted;
 	};
+
+	std::function<void(int, bool)> onVisibilityChanged;
 
 	std::vector<ColumnInfo> columns;
 

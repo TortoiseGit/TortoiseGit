@@ -709,6 +709,7 @@ private:
 	void RemoveFromChangelist();
 	void LoadChangelists();
 
+	void OnColumnVisibilityChanged(int column, bool visible);
 	void RefreshParent();
 
 public:
