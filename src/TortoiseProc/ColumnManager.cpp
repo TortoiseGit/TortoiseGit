@@ -248,6 +248,16 @@ CString ColumnManager::GetName(int column) const
 	return CString();
 }
 
+int ColumnManager::GetColumnByName(int nameId) const
+{
+	for (size_t item = 0; item < itemName.size(); ++item)
+	{
+		if (itemName[item] == nameId)
+			return (int)item;
+	}
+	return -1;
+}
+
 int ColumnManager::GetWidth(int column, bool useDefaults) const
 {
 	size_t index = static_cast<size_t>(column);

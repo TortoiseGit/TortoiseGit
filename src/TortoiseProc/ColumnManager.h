@@ -53,6 +53,7 @@ public:
 	int GetInvisibleCount() const;
 	bool IsRelevant(int column) const;
 	CString GetName(int column) const;
+	int GetColumnByName(int nameId) const;
 	int SetNames(UINT* buff, int size);
 	int GetWidth(int column, bool useDefaults = false) const;
 	int GetVisibleWidth(int column, bool useDefaults) const;

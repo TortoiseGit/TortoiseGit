@@ -461,7 +461,7 @@ public:
 	 */
 	void Show(unsigned int dwShow, unsigned int dwCheck = 0, bool bShowFolders = true,BOOL updateStatusList=FALSE, bool UseStoredCheckStatus=false);
 
-	void AppendLFSLocks();
+	void AppendLFSLocks(bool onlyExisting);
 
 	/**
 	 * Copies the selected entries in the control to the clipboard. The entries
@@ -851,7 +851,7 @@ public:
 	int UpdateFileList(int mask, bool once = true, const CTGitPathList* list = nullptr);
 	int InsertUnRevListFromPreCalculatedList(const CTGitPathList& list);
 	int UpdateUnRevFileList(const CTGitPathList* list = nullptr);
-	int UpdateLockedFileList();
+	int UpdateLFSLockedFileList(bool onlyExisting);
 	int UpdateIgnoreFileList(const CTGitPathList* list = nullptr);
 	int UpdateLocalChangesIgnoredFileList(const CTGitPathList* list = nullptr);
 
