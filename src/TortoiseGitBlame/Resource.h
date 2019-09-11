@@ -47,6 +47,7 @@
 #define IDS_GIT_LOG_TAB                 25307
 #define ID_VIEW_NEXT                    25308
 #define ID_VIEW_PREV                    25309
+#define ID_VIEW_SHOWLOGID               25310
 #define ID_EDIT_ENCODING                32771
 #define ID_EDIT_ENCODE                  32772
 #define ID_ENCODE_AUTO                  32774

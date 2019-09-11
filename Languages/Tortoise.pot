@@ -8347,6 +8347,10 @@ msgstr ""
 msgid "Show log &before rename/copy"
 msgstr ""
 
+#. Resource IDs: (ID_VIEW_SHOWLOGID - Menu)
+msgid "Show log ID"
+msgstr ""
+
 #. Resource IDs: (IDS_SHOWLOG_OF)
 #, c-format
 msgid "Show log of %s"

@@ -131,6 +131,8 @@ protected:
 	afx_msg LRESULT OnFindDialogMessage(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnViewNext();
 	afx_msg void OnViewPrev();
+	afx_msg void OnViewToggleLogID();
+	afx_msg void OnUpdateViewToggleLogID(CCmdUI* pCmdUI);
 	afx_msg void OnViewToggleAuthor();
 	afx_msg void OnUpdateViewToggleAuthor(CCmdUI *pCmdUI);
 	afx_msg void OnViewToggleDate();
@@ -195,6 +197,7 @@ public:
 	BOOL bIgnoreSpaces;
 	BOOL bIgnoreAllSpaces;
 
+	BOOL m_bShowLogID;
 	BOOL m_bShowAuthor;
 	BOOL m_bShowDate;
 	BOOL m_bShowFilename;
@@ -246,12 +249,15 @@ protected:
 	CFont					m_italicfont;
 	LONG					m_blamewidth;
 	LONG					m_revwidth;
+	LONG					m_logidwidth;
 	LONG					m_datewidth;
 	LONG					m_authorwidth;
 	LONG					m_filenameWidth;
 	LONG					m_originalLineNumberWidth;
 	LONG					m_linewidth;
 	int						m_SelectedLine; ///< zero-based
+
+	CString m_sLogIDFormat;
 
 	COLORREF				m_mouserevcolor;
 	COLORREF				m_mouseauthorcolor;
