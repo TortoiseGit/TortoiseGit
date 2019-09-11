@@ -62,6 +62,8 @@ BEGIN_MESSAGE_MAP(CTortoiseGitBlameView, CView)
 	ON_COMMAND(ID_VIEW_PREV,OnViewPrev)
 	ON_COMMAND(ID_FIND_NEXT, OnFindNext)
 	ON_COMMAND(ID_FIND_PREV, OnFindPrev)
+	ON_COMMAND(ID_VIEW_SHOWLOGID, OnViewToggleLogID)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_SHOWLOGID, OnUpdateViewToggleLogID)
 	ON_COMMAND(ID_VIEW_SHOWAUTHOR, OnViewToggleAuthor)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_SHOWAUTHOR, OnUpdateViewToggleAuthor)
 	ON_COMMAND(ID_VIEW_SHOWDATE, OnViewToggleDate)
@@ -129,6 +131,7 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 	, wLocator(nullptr)
 	, m_blamewidth(0)
 	, m_revwidth(0)
+	, m_logidwidth(0)
 	, m_datewidth(0)
 	, m_authorwidth(0)
 	, m_filenameWidth(0)
@@ -155,6 +158,7 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 	m_colorage = !!theApp.GetInt(L"ColorAge", !highContrastModeEnabled);
 	m_bLexer = !!theApp.GetInt(L"EnableLexer", !highContrastModeEnabled);
 
+	m_bShowLogID = (theApp.GetInt(L"ShowLogID", 0) == 1);
 	m_bShowAuthor = (theApp.GetInt(L"ShowAuthor", 1) == 1);
 	m_bShowDate = (theApp.GetInt(L"ShowDate", 0) == 1);
 	m_bShowFilename = (theApp.GetInt(L"ShowFilename", 0) == 1);
@@ -766,6 +770,14 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 	m_revwidth = width.cx + CDPIAware::Instance().ScaleX(BLAMESPACE);
 	blamewidth += m_revwidth;
 
+	if (m_bShowLogID)
+	{
+		auto length = static_cast<int>(std::ceil(std::log10(GetLogList()->GetItemCount()))) + 1;
+		m_sLogIDFormat.Format(L"%%%dd", length);
+		::GetTextExtentPoint32(hDC, CString(L'8', length), length, &width);
+		m_logidwidth = width.cx + CDPIAware::Instance().ScaleX(BLAMESPACE);
+		blamewidth += m_logidwidth;
+	}
 	if (m_bShowDate)
 	{
 		SIZE maxwidth = {0};
@@ -913,6 +925,17 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 			}
 			int Left = m_revwidth;
 
+			if (m_bShowLogID)
+			{
+				rc.right = rc.left + Left + m_logidwidth;
+				if (oldHash != hash)
+				{
+					CString str;
+					str.Format(m_sLogIDFormat, GetLogList()->GetItemCount() - m_lineToLogIndex[i]);
+					::ExtTextOut(hDC, Left, Y, ETO_CLIPPED, &rc, str, str.GetLength(), 0);
+				}
+				Left += m_logidwidth;
+			}
 			if (m_bShowAuthor)
 			{
 				rc.right = rc.left + Left + m_authorwidth;
@@ -1861,6 +1884,24 @@ void CTortoiseGitBlameView::OnViewPrev()
 	int line = m_data.FindNextLine(this->m_SelectedHash, static_cast<int>(SendEditor(SCI_GETFIRSTVISIBLELINE)), true);
 	if(line >= 0)
 		SendEditor(SCI_LINESCROLL, 0, line - startline - 2);
+}
+
+void CTortoiseGitBlameView::OnViewToggleLogID()
+{
+	m_bShowLogID = !m_bShowLogID;
+
+	theApp.WriteInt(L"ShowLogID", m_bShowLogID);
+
+	CRect rect;
+	this->GetClientRect(&rect);
+	rect.left = GetBlameWidth();
+
+	m_TextView.MoveWindow(&rect);
+}
+
+void CTortoiseGitBlameView::OnUpdateViewToggleLogID(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(m_bShowLogID);
 }
 
 void CTortoiseGitBlameView::OnViewToggleAuthor()
