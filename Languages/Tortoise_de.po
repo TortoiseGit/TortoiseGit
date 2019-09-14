@@ -7373,7 +7373,7 @@ msgstr "Überschreiben"
 
 #. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1521)
 msgid "Overwrite working tree changes (&force)"
-msgstr "Überschreibe Arbetisbaum-Änderungen (&force)"
+msgstr "Überschreibe Arbeitsbaum-Änderungen (&force)"
 
 #. Resource IDs: (ID_FILE_PAGESETUP - Menu)
 msgid "P&age setup..."
