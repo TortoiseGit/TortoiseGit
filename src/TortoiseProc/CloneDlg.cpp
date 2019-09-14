@@ -1,4 +1,4 @@
-﻿// TortoiseGit - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2017, 2019 - TortoiseGit
 
@@ -28,6 +28,22 @@
 #include "AppUtils.h"
 // CCloneDlg dialog
 
+namespace
+{
+
+	bool IsNumber(const CString& txt)
+	{
+		int i=0;
+	 	for (	i=0
+	      ;	(i<txt.GetLength())
+	      && isdigit(txt[i])
+	      ;++i)/*NOP*/;
+		return i==txt.GetLength();
+	}
+
+};
+
+
 IMPLEMENT_DYNCREATE(CCloneDlg, CHorizontalResizableStandAloneDialog)
 
 CCloneDlg::CCloneDlg(CWnd* pParent /*=nullptr*/)
@@ -50,7 +66,6 @@ CCloneDlg::CCloneDlg(CWnd* pParent /*=nullptr*/)
 , m_nDepth(1)
 , m_bDepth(BST_UNCHECKED)
 , m_bSaving(false)
-, m_nSVNFrom(0)
 , m_bUseLFS(FALSE)
 , m_regBrowseUrl(L"Software\\TortoiseGit\\TortoiseProc\\CloneBrowse", 0)
 , m_regCloneDir(L"Software\\TortoiseGit\\TortoiseProc\\CloneDir")
@@ -83,7 +98,7 @@ void CCloneDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_SVN_TRUNK, m_strSVNTrunk);
 	DDX_Text(pDX, IDC_EDIT_SVN_TAG, m_strSVNTags);
 	DDX_Text(pDX, IDC_EDIT_SVN_BRANCH, m_strSVNBranchs);
-	DDX_Text(pDX, IDC_EDIT_SVN_FROM, this->m_nSVNFrom);
+  DDX_Text(pDX, IDC_EDIT_SVN_FROM, this->m_strSVNFrom);
 	DDX_Text(pDX, IDC_EDIT_USERNAME,m_strUserName);
 
 	DDX_Check(pDX, IDC_CHECK_DEPTH, m_bDepth);
@@ -212,6 +227,9 @@ BEGIN_MESSAGE_MAP(CCloneDlg, CHorizontalResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_CHECK_RECURSIVE, &CCloneDlg::OnBnClickedCheckRecursive)
 	ON_BN_CLICKED(IDC_CHECK_NOCHECKOUT, &CCloneDlg::OnBnClickedCheckRecursive)
 	ON_BN_CLICKED(IDC_CHECK_USERNAME, &CCloneDlg::OnBnClickedCheckUsername)
+	ON_EN_SETFOCUS(IDC_EDIT_SVN_FROM, &CCloneDlg::OnEnSetFocusEditSvnFrom)
+	ON_EN_UPDATE(IDC_EDIT_SVN_FROM, &CCloneDlg::OnEnUpdateEditSvnFrom)
+	ON_EN_KILLFOCUS(IDC_EDIT_SVN_FROM, &CCloneDlg::OnEnKillFocusEditSvnFrom)
 END_MESSAGE_MAP()
 
 // CCloneDlg message handlers
@@ -511,4 +529,99 @@ void CCloneDlg::OnBnClickedCheckUsername()
 	UpdateData(TRUE);
 	this->GetDlgItem(IDC_CHECK_USERNAME)->EnableWindow(this->m_bSVN);
 	this->GetDlgItem(IDC_EDIT_USERNAME)->EnableWindow(this->m_bSVNUserName && this->m_bSVN);
+}
+
+void CCloneDlg::OnEnUpdateEditSvnFrom()				// [REVMIN][:REVMAX]; examples: 723:999; :445; 123
+{
+	if (m_bOnChangeDisabled)		return;
+
+	CEdit*  ctrl = Get<CEdit>(IDC_EDIT_SVN_FROM);
+	CString txt;   ctrl->GetWindowText(txt);
+
+	int sC = 0;
+	int eC = 0;
+	ctrl->GetSel(sC,eC);
+	sC -= 1;
+	eC -= 1;
+
+	int p = txt.Find(_T(':'));
+	if (p<0)										// REVMIN
+	{
+		if(IsNumber(txt))
+		{
+			m_strSVNFromLast=txt;
+	        return;
+		}
+	    ctrl->SetWindowText(m_strSVNFromLast);
+	    ctrl->SetSel(sC,eC);
+	    return;
+	   }
+	//Assertion: [:REVMAX]
+
+	if(txt.IsEmpty())
+	{
+		m_strSVNFromLast=txt;
+	    return;
+	}
+
+	CString l = txt.Left(p);
+	CString r = txt.Mid(p+1);
+	if (  !l.IsEmpty()
+	   && !IsNumber(l))
+	{
+		ctrl->SetWindowText(m_strSVNFromLast);
+		ctrl->SetSel(sC,eC);
+		return;
+	}
+	if (  !r.IsEmpty()
+	   && !IsNumber(r))
+	{
+		ctrl->SetWindowText(m_strSVNFromLast);
+		ctrl->SetSel(sC,eC);
+		return;
+	}
+
+	m_strSVNFromLast=txt;
+}
+
+void CCloneDlg::OnEnSetFocusEditSvnFrom()
+{
+	m_bOnChangeDisabled=false;
+}
+
+void CCloneDlg::OnEnKillFocusEditSvnFrom()
+{
+	m_bOnChangeDisabled = true;
+	CEdit*  ctrl = Get<CEdit>(IDC_EDIT_SVN_FROM);
+	CString txt; ctrl->GetWindowText(txt);
+	const DWORD selectLineEnd = (DWORD)-1;
+
+	int p = txt.Find(_T(':'));
+	if (p<0)
+	{
+		ctrl->SetWindowText(txt+_T("0:HEAD"));
+		return;
+	}
+	CString l = txt.Left(p);
+	CString r = txt.Mid(p+1);
+	if (l.IsEmpty())
+		l=_T("0");
+	if (!r.IsEmpty())
+	{
+		long nl = _tstol(l);
+		long nr = _tstol(r);
+		if (r<l)
+		{
+			l.Format(_T("%d"),nr);
+			r.Format(_T("%d"),nl);
+			ctrl->SetWindowText(l+_T(":")+r);
+			ctrl->SetFocus();
+			ctrl->SetSel(selectLineEnd);
+			return;
+		}
+	}
+	if (r.IsEmpty())
+		r =_T("HEAD");
+
+	ctrl->SetWindowText(l+_T(":")+r);
 }

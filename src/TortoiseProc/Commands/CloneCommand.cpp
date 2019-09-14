@@ -1,4 +1,4 @@
-﻿// TortoiseGit - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2019 - TortoiseGit
 // Copyright (C) 2012 - TortoiseSVN
@@ -234,7 +234,7 @@ bool CloneCommand::Execute()
 				cmd += L" -t " + dlg.m_strSVNTags;
 
 			if(dlg.m_bSVNFrom)
-				cmd.AppendFormat(L" -r %d:HEAD", dlg.m_nSVNFrom);
+				cmd.AppendFormat(L" -r %s", static_cast<LPCTSTR>(dlg.m_strSVNFrom));
 
 			if(dlg.m_bSVNUserName)
 			{
