@@ -231,9 +231,9 @@ UINT CProgressDlg::RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR&
 		{
 			CStringA str;
 			if (gitList.empty() || gitList.size() == 1 && gitList[0]->m_CurrentDir == git->m_CurrentDir)
-				str = CUnicodeUtils::GetMulti(cmdlist[i].Trim() + L"\r\n\r\n", CP_UTF8);
+				str = CUnicodeUtils::GetMulti((i > 0 ? L"\r\n" : L"") + cmdlist[i].Trim() + L"\r\n", CP_UTF8);
 			else
-				str = CUnicodeUtils::GetMulti((i > 0 ? L"\r\n" : L"") + gitList[i]->m_CurrentDir + L"\r\n" + cmdlist[i].Trim() + L"\r\n\r\n", CP_UTF8);
+				str = CUnicodeUtils::GetMulti((i > 0 ? L"\r\n" : L"") + gitList[i]->m_CurrentDir + L"\r\n" + cmdlist[i].Trim() + L"\r\n", CP_UTF8);
 			for (int j = 0; j < str.GetLength(); ++j)
 			{
 				if (pdata)
