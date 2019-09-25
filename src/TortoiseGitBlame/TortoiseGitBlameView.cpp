@@ -759,20 +759,20 @@ void CTortoiseGitBlameView::CopyToClipboard()
 
 LONG CTortoiseGitBlameView::GetBlameWidth()
 {
-	LONG blamewidth = 0;
+	LONG blamewidth = CDPIAware::Instance().ScaleX(LOCATOR_WIDTH) + CDPIAware::Instance().ScaleX(BLAMESPACE);
 	SIZE width;
 	CreateFont();
 	HDC hDC = this->GetDC()->m_hDC;
 	HFONT oldfont = static_cast<HFONT>(::SelectObject(hDC, m_font.GetSafeHandle()));
 
-	CString shortHash('f', g_Git.GetShortHASHLength() + 1);
-	::GetTextExtentPoint32(hDC, shortHash, g_Git.GetShortHASHLength() + 1, &width);
+	CString shortHash('f', g_Git.GetShortHASHLength());
+	::GetTextExtentPoint32(hDC, shortHash, g_Git.GetShortHASHLength(), &width);
 	m_revwidth = width.cx + CDPIAware::Instance().ScaleX(BLAMESPACE);
 	blamewidth += m_revwidth;
 
 	if (m_bShowLogID)
 	{
-		auto length = static_cast<int>(std::ceil(std::log10(GetLogList()->GetItemCount()))) + 1;
+		auto length = static_cast<int>(std::ceil(std::log10(GetLogList()->GetItemCount())));
 		m_sLogIDFormat.Format(L"%%%dd", length);
 		::GetTextExtentPoint32(hDC, CString(L'8', length), length, &width);
 		m_logidwidth = width.cx + CDPIAware::Instance().ScaleX(BLAMESPACE);
@@ -875,7 +875,6 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 	int Y = 0;
 	TCHAR buf[MAX_PATH] = {0};
 	std::fill_n(buf, _countof(buf) - 1, L' ');
-	RECT rc;
 	CGitHash oldHash;
 	CString oldFile;
 
@@ -914,56 +913,52 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 		CString file = m_data.GetFilename(i);
 		if (oldHash != hash || (m_bShowFilename && oldFile != file) || m_bShowOriginalLineNumber)
 		{
+			RECT rc;
 			rc.top = static_cast<LONG>(Y);
-			rc.left = CDPIAware::Instance().ScaleX(LOCATOR_WIDTH);
+			rc.left = CDPIAware::Instance().ScaleX(LOCATOR_WIDTH) + CDPIAware::Instance().ScaleX(BLAMESPACE);
 			rc.bottom = static_cast<LONG>(Y + height);
-			rc.right = rc.left + m_blamewidth;
+			rc.right = m_blamewidth;
 			if (oldHash != hash)
 			{
 				CString shortHashStr = hash.ToString(g_Git.GetShortHASHLength());
-				::ExtTextOut(hDC, CDPIAware::Instance().ScaleX(LOCATOR_WIDTH), Y, ETO_CLIPPED, &rc, shortHashStr, shortHashStr.GetLength(), 0);
+				::ExtTextOut(hDC, rc.left, rc.top, ETO_CLIPPED, &rc, shortHashStr, shortHashStr.GetLength(), 0);
 			}
-			int Left = m_revwidth;
+			rc.left += m_revwidth;
 
 			if (m_bShowLogID)
 			{
-				rc.right = rc.left + Left + m_logidwidth;
 				if (oldHash != hash)
 				{
 					CString str;
 					str.Format(m_sLogIDFormat, GetLogList()->GetItemCount() - m_lineToLogIndex[i]);
-					::ExtTextOut(hDC, Left, Y, ETO_CLIPPED, &rc, str, str.GetLength(), 0);
+					::ExtTextOut(hDC, rc.left, rc.top, ETO_CLIPPED, &rc, str, str.GetLength(), 0);
 				}
-				Left += m_logidwidth;
+				rc.left += m_logidwidth;
 			}
 			if (m_bShowAuthor)
 			{
-				rc.right = rc.left + Left + m_authorwidth;
 				if (oldHash != hash)
-					::ExtTextOut(hDC, Left, Y, ETO_CLIPPED, &rc, m_data.GetAuthor(i), m_data.GetAuthor(i).GetLength(), 0);
-				Left += m_authorwidth;
+					::ExtTextOut(hDC, rc.left, rc.top, ETO_CLIPPED, &rc, m_data.GetAuthor(i), m_data.GetAuthor(i).GetLength(), 0);
+				rc.left += m_authorwidth;
 			}
 			if (m_bShowDate)
 			{
-				rc.right = rc.left + Left + m_datewidth;
 				if (oldHash != hash)
-					::ExtTextOut(hDC, Left, Y, ETO_CLIPPED, &rc, m_data.GetDate(i), m_data.GetDate(i).GetLength(), 0);
-				Left += m_datewidth;
+					::ExtTextOut(hDC, rc.left, rc.top, ETO_CLIPPED, &rc, m_data.GetDate(i), m_data.GetDate(i).GetLength(), 0);
+				rc.left += m_datewidth;
 			}
 			if (m_bShowFilename)
 			{
-				rc.right = rc.left + Left + m_filenameWidth;
 				if (oldFile != file)
-					::ExtTextOut(hDC, Left, Y, ETO_CLIPPED, &rc, m_data.GetFilename(i), m_data.GetFilename(i).GetLength(), 0);
-				Left += m_filenameWidth;
+					::ExtTextOut(hDC, rc.left, rc.top, ETO_CLIPPED, &rc, m_data.GetFilename(i), m_data.GetFilename(i).GetLength(), 0);
+				rc.left += m_filenameWidth;
 			}
 			if (m_bShowOriginalLineNumber)
 			{
-				rc.right = rc.left + Left + m_originalLineNumberWidth;
 				CString str;
 				str.Format(L"%5d", m_data.GetOriginalLineNumber(i));
-				::ExtTextOut(hDC, Left, Y, ETO_CLIPPED, &rc, str, str.GetLength(), 0);
-				Left += m_originalLineNumberWidth;
+				::ExtTextOut(hDC, rc.left, rc.top, ETO_CLIPPED, &rc, str, str.GetLength(), 0);
+				rc.left += m_originalLineNumberWidth;
 			}
 			oldHash = hash;
 			oldFile = file;
