@@ -258,7 +258,7 @@ BEGIN
         END
         MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
         MENUITEM SEPARATOR
-        MENUITEM "Show log ID",                 ID_VIEW_SHOWLOGID
+        MENUITEM "Show log ID instead of SHA-1", ID_VIEW_SHOWLOGID
         MENUITEM "Show author",                 ID_VIEW_SHOWAUTHOR
         MENUITEM "Show date",                   ID_VIEW_SHOWDATE
         MENUITEM "Show file name",              ID_VIEW_SHOWFILENAME

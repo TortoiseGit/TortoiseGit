@@ -8348,7 +8348,7 @@ msgid "Show log &before rename/copy"
 msgstr ""
 
 #. Resource IDs: (ID_VIEW_SHOWLOGID - Menu)
-msgid "Show log ID"
+msgid "Show log ID instead of SHA-1"
 msgstr ""
 
 #. Resource IDs: (IDS_SHOWLOG_OF)

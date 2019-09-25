@@ -12,7 +12,7 @@ Released: unreleased
    In the View menu you can now toggle the display of branchings and mergings.
    (This also fixes issue #2110: The Revision Graph is invalid if first commit does not contains the files)
  * Fixed issue #3379: Super-project-pointer should show in revision graph of submodule
- * Fixed issue #3421: Option to show Log IDs in TortoiseGitBlame
+ * Fixed issue #3421: Option to show Log IDs instead of SHA-1 in TortoiseGitBlame
 
 == Bug Fixes ==
  * Implement generic fix for "libgit2 returned the requested type does not match the type in ODB"

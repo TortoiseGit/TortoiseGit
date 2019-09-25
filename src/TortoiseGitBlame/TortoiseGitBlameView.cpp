@@ -765,12 +765,14 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 	HDC hDC = this->GetDC()->m_hDC;
 	HFONT oldfont = static_cast<HFONT>(::SelectObject(hDC, m_font.GetSafeHandle()));
 
-	CString shortHash('f', g_Git.GetShortHASHLength());
-	::GetTextExtentPoint32(hDC, shortHash, g_Git.GetShortHASHLength(), &width);
-	m_revwidth = width.cx + CDPIAware::Instance().ScaleX(BLAMESPACE);
-	blamewidth += m_revwidth;
-
-	if (m_bShowLogID)
+	if (!m_bShowLogID)
+	{
+		CString shortHash('f', g_Git.GetShortHASHLength());
+		::GetTextExtentPoint32(hDC, shortHash, g_Git.GetShortHASHLength(), &width);
+		m_revwidth = width.cx + CDPIAware::Instance().ScaleX(BLAMESPACE);
+		blamewidth += m_revwidth;
+	}
+	else
 	{
 		auto length = static_cast<int>(std::ceil(std::log10(GetLogList()->GetItemCount())));
 		m_sLogIDFormat.Format(L"%%%dd", length);
@@ -918,14 +920,17 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 			rc.left = CDPIAware::Instance().ScaleX(LOCATOR_WIDTH) + CDPIAware::Instance().ScaleX(BLAMESPACE);
 			rc.bottom = static_cast<LONG>(Y + height);
 			rc.right = m_blamewidth;
-			if (oldHash != hash)
-			{
-				CString shortHashStr = hash.ToString(g_Git.GetShortHASHLength());
-				::ExtTextOut(hDC, rc.left, rc.top, ETO_CLIPPED, &rc, shortHashStr, shortHashStr.GetLength(), 0);
-			}
-			rc.left += m_revwidth;
 
-			if (m_bShowLogID)
+			if (!m_bShowLogID)
+			{
+				if (oldHash != hash)
+				{
+					CString shortHashStr = hash.ToString(g_Git.GetShortHASHLength());
+					::ExtTextOut(hDC, rc.left, rc.top, ETO_CLIPPED, &rc, shortHashStr, shortHashStr.GetLength(), 0);
+				}
+				rc.left += m_revwidth;
+			}
+			else
 			{
 				if (oldHash != hash)
 				{
