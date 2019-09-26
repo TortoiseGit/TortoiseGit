@@ -1081,9 +1081,6 @@
     <ClInclude Include="..\libgit2\include\git2\sys\transport.h">
       <Filter>Public Header Files\sys</Filter>
     </ClInclude>
-    <ClInclude Include="..\libgit2\src\transports\cred.h">
-      <Filter>Header Files\transports</Filter>
-    </ClInclude>
     <ClInclude Include="..\libgit2\src\oidarray.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1260,6 +1257,12 @@
     </ClInclude>
     <ClInclude Include="..\libgit2\src\hash\sha1.h">
       <Filter>Header Files\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\include\git2\cert.h">
+      <Filter>Public Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\include\git2\cred.h">
+      <Filter>Public Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

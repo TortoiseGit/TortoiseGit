@@ -65,7 +65,9 @@ bool CatCommand::Execute()
 			}
 
 			CAutoBuf buf;
-			if (git_blob_filtered_content(buf, reinterpret_cast<git_blob*>(static_cast<git_object*>(obj)), CUnicodeUtils::GetUTF8(cmdLinePath.GetGitPathString()), 0))
+			git_blob_filter_options opts = GIT_BLOB_FILTER_OPTIONS_INIT;
+			opts.flags &= ~static_cast<uint32_t>(GIT_BLOB_FILTER_CHECK_FOR_BINARY);
+			if (git_blob_filter(buf, reinterpret_cast<git_blob*>(static_cast<git_object*>(obj)), CUnicodeUtils::GetUTF8(cmdLinePath.GetGitPathString()), &opts))
 			{
 				::DeleteFile(savepath);
 				MessageBox(GetExplorerHWND(), g_Git.GetLibGit2LastErr(L"Could not get filtered content."), L"TortoiseGit", MB_ICONERROR);

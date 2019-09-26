@@ -2553,7 +2553,9 @@ int CGit::GetOneFile(const CString &Refname, const CTGitPath &path, const CStrin
 			return -1;
 		}
 		CAutoBuf buf;
-		if (git_blob_filtered_content(buf, blob, CUnicodeUtils::GetUTF8(path.GetGitPathString()), 0))
+		git_blob_filter_options opts = GIT_BLOB_FILTER_OPTIONS_INIT;
+		opts.flags &= ~static_cast<uint32_t>(GIT_BLOB_FILTER_CHECK_FOR_BINARY);
+		if (git_blob_filter(buf, blob, CUnicodeUtils::GetUTF8(path.GetGitPathString()), &opts))
 			return -1;
 		if (fwrite(buf->ptr, sizeof(char), buf->size, file) != buf->size)
 		{

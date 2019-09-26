@@ -240,7 +240,9 @@
     <ClInclude Include="..\libgit2\include\git2\apply.h" />
     <ClInclude Include="..\libgit2\include\git2\blame.h" />
     <ClInclude Include="..\libgit2\include\git2\buffer.h" />
+    <ClInclude Include="..\libgit2\include\git2\cert.h" />
     <ClInclude Include="..\libgit2\include\git2\cherrypick.h" />
+    <ClInclude Include="..\libgit2\include\git2\cred.h" />
     <ClInclude Include="..\libgit2\include\git2\cred_helpers.h" />
     <ClInclude Include="..\libgit2\include\git2\deprecated.h" />
     <ClInclude Include="..\libgit2\include\git2\describe.h" />
@@ -393,7 +395,6 @@
     <ClInclude Include="..\libgit2\src\transaction.h" />
     <ClInclude Include="..\libgit2\src\transports\auth.h" />
     <ClInclude Include="..\libgit2\src\transports\auth_negotiate.h" />
-    <ClInclude Include="..\libgit2\src\transports\cred.h" />
     <ClInclude Include="..\libgit2\src\transports\http.h" />
     <ClInclude Include="..\libgit2\src\transports\ssh.h" />
     <ClInclude Include="..\libgit2\src\tree-cache.h" />
