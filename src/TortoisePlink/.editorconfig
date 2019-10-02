@@ -1,6 +1,7 @@
 ; Check http://editorconfig.org/ for more informations
 
 [*.{c,C,h,H,rc}]
+charset                  = ascii
 end_of_line              = crlf
 trim_trailing_whitespace = true
 insert_final_newline     = true
@@ -11,5 +12,5 @@ indent_size              = 4
 end_of_line              = crlf
 trim_trailing_whitespace = true
 insert_final_newline     = true
-indent_style             = space
-indent_size              = 3
+indent_style             = tab
+indent_size              = 4
