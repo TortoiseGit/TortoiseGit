@@ -295,9 +295,9 @@ static int console_askappend(LogPolicy *lp, Filename *filename,
 	"You can overwrite it with a new session log,\n"
 	"append your session log to the end of it,\n"
 	"or disable session logging for this session.\n"
-	"Enter \"y\" to wipe the file, \"n\" to append to it,\n"
-	"or just press Return to disable logging.\n"
-	"Wipe the log file? (y/n, Return cancels logging) ";
+	"Hit Yes to wipe the file, hit No to append to it,\n"
+	"or just press Cancel to disable logging.\n"
+	"Wipe the log file?";
 
     static const char msgtemplate_batch[] =
 	"The session log file \"%.*s\" already exists.\n"
