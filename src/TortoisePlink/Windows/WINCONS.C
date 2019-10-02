@@ -179,7 +179,7 @@ int console_verify_ssh_host_key(
 	else
 		return 0;
     }
-	return 1;
+	return 0;
 }
 
 int console_confirm_weak_crypto_primitive(
