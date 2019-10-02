@@ -3,7 +3,7 @@
  *
  * The way this works is: a back end can choose to open any number
  * of sockets - including zero, which might be necessary in some.
- * It can register a bunch of callbacks (most notably for when 
+ * It can register a bunch of callbacks (most notably for when
  * data is received) for each socket, and it can call the networking
  * abstraction to send data without having to worry about blocking.
  * The stuff behind the abstraction takes care of selects and
@@ -31,7 +31,6 @@ struct SocketVtable {
     size_t (*write) (Socket *s, const void *data, size_t len);
     size_t (*write_oob) (Socket *s, const void *data, size_t len);
     void (*write_eof) (Socket *s);
-    void (*flush) (Socket *s);
     void (*set_frozen) (Socket *s, bool is_frozen);
     /* ignored by tcp, but vital for ssl */
     const char *(*socket_error) (Socket *s);
@@ -47,18 +46,18 @@ struct Plug {
 
 struct PlugVtable {
     void (*log)(Plug *p, int type, SockAddr *addr, int port,
-		const char *error_msg, int error_code);
+                const char *error_msg, int error_code);
     /*
      * Passes the client progress reports on the process of setting
      * up the connection.
-     * 
-     * 	- type==0 means we are about to try to connect to address
-     * 	  `addr' (error_msg and error_code are ignored)
-     * 	- type==1 means we have failed to connect to address `addr'
-     * 	  (error_msg and error_code are supplied). This is not a
-     * 	  fatal error - we may well have other candidate addresses
-     * 	  to fall back to. When it _is_ fatal, the closing()
-     * 	  function will be called.
+     *
+     *  - type==0 means we are about to try to connect to address
+     *    `addr' (error_msg and error_code are ignored)
+     *  - type==1 means we have failed to connect to address `addr'
+     *    (error_msg and error_code are supplied). This is not a
+     *    fatal error - we may well have other candidate addresses
+     *    to fall back to. When it _is_ fatal, the closing()
+     *    function will be called.
      *  - type==2 means that error_msg contains a line of generic
      *    logging information about setting up the connection. This
      *    will typically be a wodge of standard-error output from a
@@ -74,10 +73,10 @@ struct PlugVtable {
     /*
      *  - urgent==0. `data' points to `len' bytes of perfectly
      *    ordinary data.
-     * 
+     *
      *  - urgent==1. `data' points to `len' bytes of data,
      *    which were read from before an Urgent pointer.
-     * 
+     *
      *  - urgent==2. `data' points to `len' bytes of data,
      *    the first of which was the one at the Urgent mark.
      */
@@ -108,8 +107,6 @@ Socket *new_listener(const char *srcaddr, int port, Plug *plug,
 SockAddr *name_lookup(const char *host, int port, char **canonicalname,
                       Conf *conf, int addressfamily, LogContext *logctx,
                       const char *lookup_reason_for_logging);
-bool proxy_for_destination (SockAddr *addr, const char *hostname, int port,
-                            Conf *conf);
 
 /* platform-dependent callback from new_connection() */
 /* (same caveat about addr as new_connection()) */
@@ -120,8 +117,8 @@ Socket *platform_new_connection(SockAddr *addr, const char *hostname,
 
 /* socket functions */
 
-void sk_init(void);		       /* called once at program startup */
-void sk_cleanup(void);		       /* called just before program exit */
+void sk_init(void);                    /* called once at program startup */
+void sk_cleanup(void);                 /* called just before program exit */
 
 SockAddr *sk_namelookup(const char *host, char **canonicalname, int address_family);
 SockAddr *sk_nonamelookup(const char *host);
@@ -158,8 +155,6 @@ static inline size_t sk_write_oob(Socket *s, const void *data, size_t len)
 { return s->vt->write_oob(s, data, len); }
 static inline void sk_write_eof(Socket *s)
 { s->vt->write_eof(s); }
-static inline void sk_flush(Socket *s)
-{ s->vt->flush(s); }
 
 static inline void plug_log(
     Plug *p, int type, SockAddr *addr, int port, const char *msg, int code)
@@ -188,13 +183,13 @@ static inline const char *sk_socket_error(Socket *s)
  * which all READABLE notifications are ignored, so that data is
  * not accepted from the peer until the socket is unfrozen. This
  * exists for two purposes:
- * 
+ *
  *  - Port forwarding: when a local listening port receives a
  *    connection, we do not want to receive data from the new
  *    socket until we have somewhere to send it. Hence, we freeze
  *    the socket until its associated SSH channel is ready; then we
  *    unfreeze it and pending data is delivered.
- * 
+ *
  *  - Socket buffering: if an SSH channel (or the whole connection)
  *    backs up or presents a zero window, we must freeze the
  *    associated local socket in order to avoid unbounded buffer

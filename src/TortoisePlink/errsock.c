@@ -21,7 +21,7 @@ static Plug *sk_error_plug(Socket *s, Plug *p)
     ErrorSocket *es = container_of(s, ErrorSocket, sock);
     Plug *ret = es->plug;
     if (p)
-	es->plug = p;
+        es->plug = p;
     return ret;
 }
 
@@ -50,7 +50,6 @@ static const SocketVtable ErrorSocket_sockvt = {
     NULL /* write */,
     NULL /* write_oob */,
     NULL /* write_eof */,
-    NULL /* flush */,
     NULL /* set_frozen */,
     sk_error_socket_error,
     sk_error_peer_info,
