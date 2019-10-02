@@ -122,7 +122,7 @@ int console_verify_ssh_host_key(
 	"If you want to carry on connecting but without updating\n"
 	"the cache, hit No.\n"
 	"If you want to abandon the connection completely, hit\n"
-	"Cancel. Hitting Cancel is the ONLY guaranteed safe\n" "choice.\n";
+	"Cancel. Hitting Cancel is the ONLY guaranteed safe choice.\n";
 
     static const char abandoned[] = "Connection abandoned.\n";
 
@@ -231,8 +231,6 @@ int console_confirm_weak_cached_hostkey(
 	"Connection abandoned.\n";
     static const char abandoned[] = "Connection abandoned.\n";
 
-    char line[32];
-
     int mbret;
     char *message, *title;
     static const char mbtitle[] = "%s Security Alert";
@@ -303,7 +301,6 @@ static int console_askappend(LogPolicy *lp, Filename *filename,
 	"The session log file \"%.*s\" already exists.\n"
 	"Logging will not be enabled.\n";
 
-    char line[32];
     int mbret;
     char *message, *title;
     static const char mbtitle[] = "%s Session log";
