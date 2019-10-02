@@ -738,7 +738,7 @@ bool set_explicit_app_user_model_id(void)
     {
         if (p_SetCurrentProcessExplicitAppUserModelID(L"SimonTatham.PuTTY") == S_OK)
         {
-	  return true;
+          return true;
         }
         return false;
     }

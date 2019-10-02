@@ -51,11 +51,11 @@ static size_t handle_gotdata(
     HandleSocket *hs = (HandleSocket *)handle_get_privdata(h);
 
     if (err) {
-	plug_closing(hs->plug, "Read error from handle", 0, 0);
-	return 0;
+        plug_closing(hs->plug, "Read error from handle", 0, 0);
+        return 0;
     } else if (len == 0) {
-	plug_closing(hs->plug, NULL, 0, 0);
-	return 0;
+        plug_closing(hs->plug, NULL, 0, 0);
+        return 0;
     } else {
         assert(hs->frozen != FROZEN && hs->frozen != THAWING);
         if (hs->frozen == FREEZING) {
@@ -75,7 +75,7 @@ static size_t handle_gotdata(
             return INT_MAX;
         } else {
             plug_receive(hs->plug, 0, data, len);
-	    return 0;
+            return 0;
         }
     }
 }
@@ -108,7 +108,7 @@ static Plug *sk_handle_plug(Socket *s, Plug *p)
     HandleSocket *hs = container_of(s, HandleSocket, sock);
     Plug *ret = hs->plug;
     if (p)
-	hs->plug = p;
+        hs->plug = p;
     return ret;
 }
 
@@ -154,12 +154,6 @@ static void sk_handle_write_eof(Socket *s)
     HandleSocket *hs = container_of(s, HandleSocket, sock);
 
     handle_write_eof(hs->send_h);
-}
-
-static void sk_handle_flush(Socket *s)
-{
-    /* HandleSocket *hs = container_of(s, HandleSocket, sock); */
-    /* do nothing */
 }
 
 static void handle_socket_unfreeze(void *hsv)
@@ -315,7 +309,6 @@ static const SocketVtable HandleSocket_sockvt = {
     sk_handle_write,
     sk_handle_write_oob,
     sk_handle_write_eof,
-    sk_handle_flush,
     sk_handle_set_frozen,
     sk_handle_socket_error,
     sk_handle_peer_info,

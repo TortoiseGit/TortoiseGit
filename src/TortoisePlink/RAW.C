@@ -34,7 +34,7 @@ static void c_write(Raw *raw, const void *buf, size_t len)
 }
 
 static void raw_log(Plug *plug, int type, SockAddr *addr, int port,
-		    const char *error_msg, int error_code)
+                    const char *error_msg, int error_code)
 {
     Raw *raw = container_of(plug, Raw, plug);
     backend_socket_log(raw->seat, raw->logctx, type, addr, port,
@@ -57,7 +57,7 @@ static void raw_check_close(Raw *raw)
 }
 
 static void raw_closing(Plug *plug, const char *error_msg, int error_code,
-			bool calling_back)
+                        bool calling_back)
 {
     Raw *raw = container_of(plug, Raw, plug);
 
@@ -113,7 +113,7 @@ static const PlugVtable Raw_plugvt = {
 
 /*
  * Called to set up the raw connection.
- * 
+ *
  * Returns an error message, or NULL on success.
  *
  * Also places the canonical host name into `realhost'. It must be
@@ -121,7 +121,7 @@ static const PlugVtable Raw_plugvt = {
  */
 static const char *raw_init(Seat *seat, Backend **backend_handle,
                             LogContext *logctx, Conf *conf,
-			    const char *host, int port, char **realhost,
+                            const char *host, int port, char **realhost,
                             bool nodelay, bool keepalive)
 {
     SockAddr *addr;
@@ -154,12 +154,12 @@ static const char *raw_init(Seat *seat, Backend **backend_handle,
     addr = name_lookup(host, port, realhost, conf, addressfamily,
                        raw->logctx, "main connection");
     if ((err = sk_addr_error(addr)) != NULL) {
-	sk_addr_free(addr);
-	return err;
+        sk_addr_free(addr);
+        return err;
     }
 
     if (port < 0)
-	port = 23;		       /* default telnet port */
+        port = 23;                     /* default telnet port */
 
     /*
      * Open socket.
@@ -167,18 +167,18 @@ static const char *raw_init(Seat *seat, Backend **backend_handle,
     raw->s = new_connection(addr, *realhost, port, false, true, nodelay,
                             keepalive, &raw->plug, conf);
     if ((err = sk_socket_error(raw->s)) != NULL)
-	return err;
+        return err;
 
     loghost = conf_get_str(conf, CONF_loghost);
     if (*loghost) {
-	char *colon;
+        char *colon;
 
-	sfree(*realhost);
-	*realhost = dupstr(loghost);
+        sfree(*realhost);
+        *realhost = dupstr(loghost);
 
-	colon = host_strrchr(*realhost, ':');
-	if (colon)
-	    *colon++ = '\0';
+        colon = host_strrchr(*realhost, ':');
+        if (colon)
+            *colon++ = '\0';
     }
 
     return NULL;
@@ -189,7 +189,7 @@ static void raw_free(Backend *be)
     Raw *raw = container_of(be, Raw, backend);
 
     if (raw->s)
-	sk_close(raw->s);
+        sk_close(raw->s);
     conf_free(raw->conf);
     sfree(raw);
 }
@@ -209,7 +209,7 @@ static size_t raw_send(Backend *be, const char *buf, size_t len)
     Raw *raw = container_of(be, Raw, backend);
 
     if (raw->s == NULL)
-	return 0;
+        return 0;
 
     raw->bufsize = sk_write(raw->s, buf, len);
 
@@ -278,7 +278,7 @@ static void raw_unthrottle(Backend *be, size_t backlog)
 static bool raw_ldisc(Backend *be, int option)
 {
     if (option == LD_EDIT || option == LD_ECHO)
-	return true;
+        return true;
     return false;
 }
 

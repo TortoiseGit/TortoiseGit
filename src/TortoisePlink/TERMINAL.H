@@ -40,11 +40,11 @@ struct termchar {
      * The cc_next field is used to link multiple termchars
      * together into a list, so as to fit more than one character
      * into a character cell (Unicode combining characters).
-     * 
+     *
      * cc_next is a relative offset into the current array of
      * termchars. I.e. to advance to the next character in a list,
      * one does `tc += tc->next'.
-     * 
+     *
      * Zero means end of list.
      */
     int cc_next;
@@ -52,11 +52,11 @@ struct termchar {
 
 struct termline {
     unsigned short lattr;
-    int cols;			       /* number of real columns on the line */
-    int size;			       /* number of allocated termchars
-					* (cc-lists may make this > cols) */
+    int cols;                          /* number of real columns on the line */
+    int size;                          /* number of allocated termchars
+                                        * (cc-lists may make this > cols) */
     bool temporary;                    /* true if decompressed from scrollback */
-    int cc_free;		       /* offset to first cc in free list */
+    int cc_free;                       /* offset to first cc in free list */
     struct termchar *chars;
     bool trusted;
 };
@@ -65,7 +65,7 @@ struct bidi_cache_entry {
     int width;
     bool trusted;
     struct termchar *chars;
-    int *forward, *backward;	       /* the permutations of line positions */
+    int *forward, *backward;           /* the permutations of line positions */
 };
 
 struct term_utf8_decode {
@@ -78,17 +78,17 @@ struct terminal_tag {
 
     int compatibility_level;
 
-    tree234 *scrollback;	       /* lines scrolled off top of screen */
-    tree234 *screen;		       /* lines on primary screen */
-    tree234 *alt_screen;	       /* lines on alternate screen */
-    int disptop;		       /* distance scrolled back (0 or -ve) */
-    int tempsblines;		       /* number of lines of .scrollback that
-					  can be retrieved onto the terminal
-					  ("temporary scrollback") */
+    tree234 *scrollback;               /* lines scrolled off top of screen */
+    tree234 *screen;                   /* lines on primary screen */
+    tree234 *alt_screen;               /* lines on alternate screen */
+    int disptop;                       /* distance scrolled back (0 or -ve) */
+    int tempsblines;                   /* number of lines of .scrollback that
+                                          can be retrieved onto the terminal
+                                          ("temporary scrollback") */
 
-    termline **disptext;	       /* buffer of text on real screen */
-    int dispcursx, dispcursy;	       /* location of cursor on real screen */
-    int curstype;		       /* type of cursor on real screen */
+    termline **disptext;               /* buffer of text on real screen */
+    int dispcursx, dispcursy;          /* location of cursor on real screen */
+    int curstype;                      /* type of cursor on real screen */
 
 #define VBELL_TIMEOUT (TICKSPERSEC/10) /* visual bell lasts 1/10 sec */
 
@@ -104,16 +104,16 @@ struct terminal_tag {
     truecolour curr_truecolour, save_truecolour;
     termchar basic_erase_char, erase_char;
 
-    bufchain inbuf;		       /* terminal input buffer */
+    bufchain inbuf;                    /* terminal input buffer */
 
-    pos curs;			       /* cursor */
-    pos savecurs;		       /* saved cursor position */
-    int marg_t, marg_b;		       /* scroll margins */
+    pos curs;                          /* cursor */
+    pos savecurs;                      /* saved cursor position */
+    int marg_t, marg_b;                /* scroll margins */
     bool dec_om;                       /* DEC origin mode flag */
     bool wrap, wrapnext;               /* wrap flags */
     bool insert;                       /* insert-mode flag */
-    int cset;			       /* 0 or 1: which char set */
-    int save_cset, save_csattr;	       /* saved with cursor position */
+    int cset;                          /* 0 or 1: which char set */
+    int save_cset, save_csattr;        /* saved with cursor position */
     bool save_utf, save_wnext;         /* saved with cursor position */
     bool rvideo;                       /* global reverse video flag */
     unsigned long rvbell_startpoint;   /* for ESC[?5hESC[?5l vbell */
@@ -123,13 +123,13 @@ struct terminal_tag {
     bool cblinker;                     /* When blinking is the cursor on ? */
     bool tblinker;                     /* When the blinking text is on */
     bool blink_is_real;                /* Actually blink blinking text */
-    int sco_acs, save_sco_acs;	       /* CSI 10,11,12m -> OEM charset */
+    int sco_acs, save_sco_acs;         /* CSI 10,11,12m -> OEM charset */
     bool vt52_bold;                    /* Force bold on non-bold colours */
     bool utf;                          /* Are we in toggleable UTF-8 mode? */
     term_utf8_decode utf8;             /* If so, here's our decoding state */
     bool printing, only_printing;      /* Are we doing ANSI printing? */
-    int print_state;		       /* state of print-end-sequence scan */
-    bufchain printer_buf;	       /* buffered data for printer */
+    int print_state;                   /* state of print-end-sequence scan */
+    bufchain printer_buf;              /* buffered data for printer */
     printer_job *print_job;
 
     /* ESC 7 saved state for the alternate screen */
@@ -150,10 +150,10 @@ struct terminal_tag {
     bool seen_disp_event;
     bool big_cursor;
 
-    int xterm_mouse;		       /* send mouse messages to host */
+    int xterm_mouse;                   /* send mouse messages to host */
     bool xterm_extended_mouse;
     bool urxvt_extended_mouse;
-    int mouse_is_down;		       /* used while tracking mouse buttons */
+    int mouse_is_down;                 /* used while tracking mouse buttons */
 
     bool bracketed_paste, bracketed_paste_active;
 
@@ -171,14 +171,14 @@ struct terminal_tag {
     int alt_which;
     int alt_sblines; /* # of lines on alternate screen that should be used for scrollback. */
 
-#define ARGS_MAX 32		       /* max # of esc sequence arguments */
-#define ARG_DEFAULT 0		       /* if an arg isn't specified */
+#define ARGS_MAX 32                    /* max # of esc sequence arguments */
+#define ARG_DEFAULT 0                  /* if an arg isn't specified */
 #define def(a,d) ( (a) == ARG_DEFAULT ? (d) : (a) )
     unsigned esc_args[ARGS_MAX];
     int esc_nargs;
     int esc_query;
-#define ANSI(x,y)	((x)+((y)*256))
-#define ANSI_QUE(x)	ANSI(x,1)
+#define ANSI(x,y)       ((x)+((y)*256))
+#define ANSI_QUE(x)     ANSI(x,1)
 
 #define OSC_STR_MAX 2048
     int osc_strlen;
@@ -190,31 +190,31 @@ struct terminal_tag {
     unsigned char *tabs;
 
     enum {
-	TOPLEVEL,
-	SEEN_ESC,
-	SEEN_CSI,
-	SEEN_OSC,
-	SEEN_OSC_W,
+        TOPLEVEL,
+        SEEN_ESC,
+        SEEN_CSI,
+        SEEN_OSC,
+        SEEN_OSC_W,
 
-	DO_CTRLS,
+        DO_CTRLS,
 
-	SEEN_OSC_P,
-	OSC_STRING, OSC_MAYBE_ST,
-	VT52_ESC,
-	VT52_Y1,
-	VT52_Y2,
-	VT52_FG,
-	VT52_BG
+        SEEN_OSC_P,
+        OSC_STRING, OSC_MAYBE_ST,
+        VT52_ESC,
+        VT52_Y1,
+        VT52_Y2,
+        VT52_FG,
+        VT52_BG
     } termstate;
 
     enum {
-	NO_SELECTION, ABOUT_TO, DRAGGING, SELECTED
+        NO_SELECTION, ABOUT_TO, DRAGGING, SELECTED
     } selstate;
     enum {
-	LEXICOGRAPHIC, RECTANGULAR
+        LEXICOGRAPHIC, RECTANGULAR
     } seltype;
     enum {
-	SM_CHAR, SM_WORD, SM_LINE
+        SM_CHAR, SM_WORD, SM_LINE
     } selmode;
     pos selstart, selend, selanchor;
 
@@ -384,5 +384,95 @@ static inline int term_char_width(Terminal *term, unsigned int c)
  * technical usage".
  */
 #define CC_LIMIT 32
+
+/* ----------------------------------------------------------------------
+ * Helper functions for dealing with the small 'pos' structure.
+ */
+
+static inline bool poslt(pos p1, pos p2)
+{
+    if (p1.y != p2.y)
+        return p1.y < p2.y;
+    return p1.x < p2.x;
+}
+
+static inline bool posle(pos p1, pos p2)
+{
+    if (p1.y != p2.y)
+        return p1.y < p2.y;
+    return p1.x <= p2.x;
+}
+
+static inline bool poseq(pos p1, pos p2)
+{
+    return p1.y == p2.y && p1.x == p2.x;
+}
+
+static inline int posdiff_fn(pos p1, pos p2, int cols)
+{
+    return (p1.y - p2.y) * (cols+1) + (p1.x - p2.x);
+}
+
+/* Convenience wrapper on posdiff_fn which uses the 'Terminal *term'
+ * that more or less every function in terminal.c will have in scope.
+ * For safety's sake I include a TYPECHECK that ensures it really is a
+ * structure pointer of the right type. */
+#define GET_TERM_COLS TYPECHECK(term == (Terminal *)0, term->cols)
+#define posdiff(p1,p2) posdiff_fn(p1, p2, GET_TERM_COLS)
+
+/* Product-order comparisons for rectangular block selection. */
+
+static inline bool posPle(pos p1, pos p2)
+{
+    return p1.y <= p2.y && p1.x <= p2.x;
+}
+
+static inline bool posPle_left(pos p1, pos p2)
+{
+    /*
+     * This function is used for checking whether a given character
+     * cell of the terminal ought to be highlighted as part of the
+     * selection, by comparing with term->selend. term->selend stores
+     * the location one space to the right of the last highlighted
+     * character. So we want to highlight the characters that are
+     * less-or-equal (in the product order) to the character just left
+     * of p2.
+     *
+     * (Setting up term->selend that way was the easiest way to get
+     * rectangular selection working at all, in a code base that had
+     * done lexicographic selection the way I happened to have done
+     * it.)
+     */
+    return p1.y <= p2.y && p1.x < p2.x;
+}
+
+static inline bool incpos_fn(pos *p, int cols)
+{
+    if (p->x == cols) {
+        p->x = 0;
+        p->y++;
+        return true;
+    }
+    p->x++;
+    return false;
+}
+
+static inline bool decpos_fn(pos *p, int cols)
+{
+    if (p->x == 0) {
+        p->x = cols;
+        p->y--;
+        return true;
+    }
+    p->x--;
+    return false;
+}
+
+/* Convenience wrappers on incpos and decpos which use term->cols
+ * (similarly to posdiff above), and also (for mild convenience and
+ * mostly historical inertia) let you leave off the & at every call
+ * site. */
+#define incpos(p) incpos_fn(&(p), GET_TERM_COLS)
+#define decpos(p) decpos_fn(&(p), GET_TERM_COLS)
 
 #endif

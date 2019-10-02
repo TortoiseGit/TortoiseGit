@@ -30,6 +30,9 @@ void cleanup_exit(int code)
     exit(code);
 }
 
+/*
+ * Various error message and/or fatal exit functions.
+ */
 void modalfatalbox(const char *fmt, ...)
 {
     va_list ap;
@@ -38,8 +41,7 @@ void modalfatalbox(const char *fmt, ...)
     stuff = dupvprintf(fmt, ap);
     va_end(ap);
     sprintf(morestuff, "%.70s Fatal Error", appname);
-    MessageBox(GetParentHwnd(), stuff, morestuff,
-        MB_SYSTEMMODAL | MB_ICONERROR | MB_OK);
+    MessageBox(GetParentHwnd(), stuff, morestuff, MB_SYSTEMMODAL | MB_ICONERROR | MB_OK);
     sfree(stuff);
     cleanup_exit(1);
 }
@@ -52,8 +54,7 @@ void nonfatal(const char *fmt, ...)
     stuff = dupvprintf(fmt, ap);
     va_end(ap);
     sprintf(morestuff, "%.70s Error", appname);
-    MessageBox(GetParentHwnd(), stuff, morestuff,
-        MB_SYSTEMMODAL | MB_ICONERROR | MB_OK);
+    MessageBox(GetParentHwnd(), stuff, morestuff, MB_SYSTEMMODAL | MB_ICONERROR | MB_OK);
     sfree(stuff);
 }
 
@@ -61,8 +62,7 @@ void console_connection_fatal(Seat *seat, const char *msg)
 {
     char morestuff[100];
     sprintf(morestuff, "%.70s Fatal Error", appname);
-    MessageBox(GetParentHwnd(), msg, morestuff,
-        MB_SYSTEMMODAL | MB_ICONERROR | MB_OK);
+    MessageBox(GetParentHwnd(), msg, morestuff, MB_SYSTEMMODAL | MB_ICONERROR | MB_OK);
     cleanup_exit(1);
 }
 
@@ -78,108 +78,99 @@ int console_verify_ssh_host_key(
     int ret;
 
     static const char absentmsg_batch[] =
-	"The server's host key is not cached in the registry. You\n"
-	"have no guarantee that the server is the computer you\n"
-	"think it is.\n"
-	"The server's %s key fingerprint is:\n"
-	"%s\n"
-	"Connection abandoned.\n";
+        "The server's host key is not cached in the registry. You\n"
+        "have no guarantee that the server is the computer you\n"
+        "think it is.\n"
+        "The server's %s key fingerprint is:\n"
+        "%s\n"
+        "Connection abandoned.\n";
     static const char absentmsg[] =
-	"The server's host key is not cached in the registry. You\n"
-	"have no guarantee that the server is the computer you\n"
-	"think it is.\n"
-	"The server's %s key fingerprint is:\n"
-	"%s\n"
-	"If you trust this host, hit Yes to add the key to\n"
-	"PuTTY's cache and carry on connecting.\n"
-	"If you want to carry on connecting just once, without\n"
-	"adding the key to the cache, hit No.\n"
-	"If you do not trust this host, hit Cancel to abandon the\n"
-	"connection.\n";
+        "The server's host key is not cached in the registry. You\n"
+        "have no guarantee that the server is the computer you\n"
+        "think it is.\n"
+        "The server's %s key fingerprint is:\n"
+        "%s\n"
+        "If you trust this host, hit Yes to add the key to\n"
+        "PuTTY's cache and carry on connecting.\n"
+        "If you want to carry on connecting just once, without\n"
+        "adding the key to the cache, hit No.\n"
+        "If you do not trust this host, hit Cancel to abandon the\n"
+        "connection.\n";
 
     static const char wrongmsg_batch[] =
-	"WARNING - POTENTIAL SECURITY BREACH!\n"
-	"The server's host key does not match the one PuTTY has\n"
-	"cached in the registry. This means that either the\n"
-	"server administrator has changed the host key, or you\n"
-	"have actually connected to another computer pretending\n"
-	"to be the server.\n"
-	"The new %s key fingerprint is:\n"
-	"%s\n"
-	"Connection abandoned.\n";
+        "WARNING - POTENTIAL SECURITY BREACH!\n"
+        "The server's host key does not match the one PuTTY has\n"
+        "cached in the registry. This means that either the\n"
+        "server administrator has changed the host key, or you\n"
+        "have actually connected to another computer pretending\n"
+        "to be the server.\n"
+        "The new %s key fingerprint is:\n"
+        "%s\n"
+        "Connection abandoned.\n";
     static const char wrongmsg[] =
-	"WARNING - POTENTIAL SECURITY BREACH!\n"
-	"\n"
-	"The server's host key does not match the one PuTTY has\n"
-	"cached in the registry. This means that either the\n"
-	"server administrator has changed the host key, or you\n"
-	"have actually connected to another computer pretending\n"
-	"to be the server.\n"
-	"The new %s key fingerprint is:\n"
-	"%s\n"
-	"If you were expecting this change and trust the new key,\n"
-	"hit Yes to update PuTTY's cache and continue connecting.\n"
-	"If you want to carry on connecting but without updating\n"
-	"the cache, hit No.\n"
-	"If you want to abandon the connection completely, hit\n"
-	"Cancel. Hitting Cancel is the ONLY guaranteed safe choice.\n";
+        "WARNING - POTENTIAL SECURITY BREACH!\n"
+        "\n"
+        "The server's host key does not match the one PuTTY has\n"
+        "cached in the registry. This means that either the\n"
+        "server administrator has changed the host key, or you\n"
+        "have actually connected to another computer pretending\n"
+        "to be the server.\n"
+        "The new %s key fingerprint is:\n"
+        "%s\n"
+        "If you were expecting this change and trust the new key,\n"
+        "hit Yes to update PuTTY's cache and continue connecting.\n"
+        "If you want to carry on connecting but without updating\n"
+        "the cache, hit No.\n"
+        "If you want to abandon the connection completely, hit\n"
+        "Cancel. Hitting Cancel is the ONLY guaranteed safe choice.\n";
 
     static const char abandoned[] = "Connection abandoned.\n";
 
-	static const char mbtitle[] = "%s Security Alert";
+    static const char mbtitle[] = "%s Security Alert";
 
     /*
      * Verify the key against the registry.
      */
     ret = verify_host_key(host, port, keytype, keystr);
 
-    if (ret == 0)		       /* success - key matched OK */
-	return 1;
+    if (ret == 0)                      /* success - key matched OK */
+        return 1;
 
-    if (ret == 2) {		       /* key was different */
-	int mbret;
-	char *message, *title;
-
-	message = dupprintf(wrongmsg, keytype, fingerprint);
-	title = dupprintf(mbtitle, appname);
-
-	mbret = MessageBox(GetParentHwnd(), message, title, MB_ICONWARNING | MB_YESNOCANCEL | MB_DEFBUTTON3);
-	sfree(message);
-	sfree(title);
-	if (mbret == IDYES) {
-		store_host_key(host, port, keytype, keystr);
-		return 1;
-	}
-	else if (mbret == IDNO) 
-	{
-		return 1;
-	}
-	else
-		return 0;
-	}
-
-    if (ret == 1) {		       /* key was absent */
-	int mbret;
-	char *message, *title;
-	message = dupprintf(absentmsg, keytype, fingerprint);
-	title = dupprintf(mbtitle, appname);
-	mbret = MessageBox(GetParentHwnd(), message, title,
-		MB_ICONWARNING | MB_ICONWARNING | MB_YESNOCANCEL | MB_DEFBUTTON3);
-	sfree(message);
-	sfree(title);
-	if (mbret == IDYES)
-	{
-		store_host_key(host, port, keytype, keystr);
-		return 1;
-	}
-	else if (mbret == IDNO)
-	{
-		return 1;
-	}
-	else
-		return 0;
+    if (ret == 2) {                    /* key was different */
+        int mbret;
+        char *message, *title;
+        message = dupprintf(wrongmsg, keytype, fingerprint);
+        title = dupprintf(mbtitle, appname);
+        mbret = MessageBox(GetParentHwnd(), message, title, MB_ICONWARNING | MB_YESNOCANCEL | MB_DEFBUTTON3);
+        sfree(message);
+        sfree(title);
+        if (mbret == IDYES) {
+            store_host_key(host, port, keytype, keystr);
+            return 1;
+        } else if (mbret == IDNO) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
-	return 0;
+    if (ret == 1) {                    /* key was absent */
+        int mbret;
+        char *message, *title;
+        message = dupprintf(absentmsg, keytype, fingerprint);
+        title = dupprintf(mbtitle, appname);
+        mbret = MessageBox(GetParentHwnd(), message, title, MB_ICONWARNING | MB_ICONWARNING | MB_YESNOCANCEL | MB_DEFBUTTON3);
+        sfree(message);
+        sfree(title);
+        if (mbret == IDYES) {
+            store_host_key(host, port, keytype, keystr);
+            return 1;
+        } else if (mbret == IDNO) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+    return 0;
 }
 
 int console_confirm_weak_crypto_primitive(
@@ -187,25 +178,30 @@ int console_confirm_weak_crypto_primitive(
     void (*callback)(void *ctx, int result), void *ctx)
 {
     static const char msg[] =
-	"The first %s supported by the server is\n"
-	"%s, which is below the configured warning threshold.\n"
-	"Continue with connection? (y/n) ";
+        "The first %s supported by the server is\n"
+        "%s, which is below the configured warning threshold.\n"
+        "Continue with connection? (y/n) ";
+    static const char msg_batch[] =
+        "The first %s supported by the server is\n"
+        "%s, which is below the configured warning threshold.\n"
+        "Connection abandoned.\n";
+    static const char abandoned[] = "Connection abandoned.\n";
 
-	static const char mbtitle[] = "%s Security Alert";
+    int mbret;
+    char *message, *title;
+    static const char mbtitle[] = "%s Security Alert";
 
-	int mbret;
-	char *message, *title;
+    message = dupprintf(msg, algtype, algname);
+    title = dupprintf(mbtitle, appname);
 
-	message = dupprintf(msg, algtype, algname);
-	title = dupprintf(mbtitle, appname);
-
-	mbret = MessageBox(GetParentHwnd(), message, title, MB_ICONWARNING | MB_YESNO | MB_DEFBUTTON2);
-	sfree(message);
-	sfree(title);
-	if (mbret == IDYES)
-		return 1;
-	else
-		return 0;
+    mbret = MessageBox(GetParentHwnd(), message, title, MB_ICONWARNING | MB_YESNO | MB_DEFBUTTON2);
+    sfree(message);
+    sfree(title);
+    if (mbret == IDYES) {
+        return 1;
+    } else {
+        return 0;
+    }
 }
 
 int console_confirm_weak_cached_hostkey(
@@ -216,19 +212,19 @@ int console_confirm_weak_cached_hostkey(
     DWORD savemode, i;
 
     static const char msg[] =
-	"The first host key type we have stored for this server\n"
-	"is %s, which is below the configured warning threshold.\n"
-	"The server also provides the following types of host key\n"
+        "The first host key type we have stored for this server\n"
+        "is %s, which is below the configured warning threshold.\n"
+        "The server also provides the following types of host key\n"
         "above the threshold, which we do not have stored:\n"
         "%s\n"
-	"Continue with connection? (y/n) ";
+        "Continue with connection? (y/n) ";
     static const char msg_batch[] =
-	"The first host key type we have stored for this server\n"
-	"is %s, which is below the configured warning threshold.\n"
-	"The server also provides the following types of host key\n"
+        "The first host key type we have stored for this server\n"
+        "is %s, which is below the configured warning threshold.\n"
+        "The server also provides the following types of host key\n"
         "above the threshold, which we do not have stored:\n"
         "%s\n"
-	"Connection abandoned.\n";
+        "Connection abandoned.\n";
     static const char abandoned[] = "Connection abandoned.\n";
 
     int mbret;
@@ -243,9 +239,9 @@ int console_confirm_weak_cached_hostkey(
     sfree(title);
 
     if (mbret == IDYES) {
-	return 1;
+        return 1;
     } else {
-	return 0;
+        return 0;
     }
 }
 
@@ -289,17 +285,17 @@ static int console_askappend(LogPolicy *lp, Filename *filename,
     DWORD savemode, i;
 
     static const char msgtemplate[] =
-	"The session log file \"%.*s\" already exists.\n"
-	"You can overwrite it with a new session log,\n"
-	"append your session log to the end of it,\n"
-	"or disable session logging for this session.\n"
-	"Hit Yes to wipe the file, hit No to append to it,\n"
-	"or just press Cancel to disable logging.\n"
-	"Wipe the log file?";
+        "The session log file \"%.*s\" already exists.\n"
+        "You can overwrite it with a new session log,\n"
+        "append your session log to the end of it,\n"
+        "or disable session logging for this session.\n"
+        "Hit Yes to wipe the file, hit No to append to it,\n"
+        "or just press Cancel to disable logging.\n"
+        "Wipe the log file?";
 
     static const char msgtemplate_batch[] =
-	"The session log file \"%.*s\" already exists.\n"
-	"Logging will not be enabled.\n";
+        "The session log file \"%.*s\" already exists.\n"
+        "Logging will not be enabled.\n";
 
     int mbret;
     char *message, *title;
@@ -313,16 +309,16 @@ static int console_askappend(LogPolicy *lp, Filename *filename,
     sfree(title);
 
     if (mbret == IDYES)
-	return 2;
+        return 2;
     else if (mbret == IDNO)
-	return 1;
+        return 1;
     else
-	return 0;
+        return 0;
 }
 
 /*
  * Warn about the obsolescent key file format.
- * 
+ *
  * Uniquely among these functions, this one does _not_ expect a
  * frontend handle. This means that if PuTTY is ported to a
  * platform which requires frontend handles, this function will be
@@ -333,15 +329,15 @@ static int console_askappend(LogPolicy *lp, Filename *filename,
 void old_keyfile_warning(void)
 {
     static const char message[] =
-	"You are loading an SSH-2 private key which has an\n"
-	"old version of the file format. This means your key\n"
-	"file is not fully tamperproof. Future versions of\n"
-	"PuTTY may stop supporting this private key format,\n"
-	"so we recommend you convert your key to the new\n"
-	"format.\n"
-	"\n"
-	"Once the key is loaded into PuTTYgen, you can perform\n"
-	"this conversion simply by saving it again.\n";
+        "You are loading an SSH-2 private key which has an\n"
+        "old version of the file format. This means your key\n"
+        "file is not fully tamperproof. Future versions of\n"
+        "PuTTY may stop supporting this private key format,\n"
+        "so we recommend you convert your key to the new\n"
+        "format.\n"
+        "\n"
+        "Once the key is loaded into PuTTYgen, you can perform\n"
+        "this conversion simply by saving it again.\n";
 
     fputs(message, stderr);
 }
@@ -352,16 +348,16 @@ void old_keyfile_warning(void)
 void pgp_fingerprints(void)
 {
     fputs("These are the fingerprints of the PuTTY PGP Master Keys. They can\n"
-	  "be used to establish a trust path from this executable to another\n"
-	  "one. See the manual for more information.\n"
-	  "(Note: these fingerprints have nothing to do with SSH!)\n"
-	  "\n"
-	  "PuTTY Master Key as of " PGP_MASTER_KEY_YEAR
+          "be used to establish a trust path from this executable to another\n"
+          "one. See the manual for more information.\n"
+          "(Note: these fingerprints have nothing to do with SSH!)\n"
+          "\n"
+          "PuTTY Master Key as of " PGP_MASTER_KEY_YEAR
           " (" PGP_MASTER_KEY_DETAILS "):\n"
-	  "  " PGP_MASTER_KEY_FP "\n\n"
-	  "Previous Master Key (" PGP_PREV_MASTER_KEY_YEAR
+          "  " PGP_MASTER_KEY_FP "\n\n"
+          "Previous Master Key (" PGP_PREV_MASTER_KEY_YEAR
           ", " PGP_PREV_MASTER_KEY_DETAILS "):\n"
-	  "  " PGP_PREV_MASTER_KEY_FP "\n", stdout);
+          "  " PGP_PREV_MASTER_KEY_FP "\n", stdout);
 }
 
 static void console_logging_error(LogPolicy *lp, const char *string)
@@ -400,18 +396,18 @@ int console_get_userpass_input(prompts_t *p)
      * Zero all the results, in case we abort half-way through.
      */
     {
-	int i;
-	for (i = 0; i < (int)p->n_prompts; i++)
+        int i;
+        for (i = 0; i < (int)p->n_prompts; i++)
             prompt_set_result(p->prompts[i], "");
     }
 
     if (console_batch_mode)
-	return 0;
+        return 0;
 
     for (curr_prompt = 0; curr_prompt < p->n_prompts; curr_prompt++) {
-	prompt_t *pr = p->prompts[curr_prompt];
-	if (!DoLoginDialog(pr->result, pr->resultsize-1, pr->prompt))
-	return 0;
+        prompt_t *pr = p->prompts[curr_prompt];
+        if (!DoLoginDialog(pr->result, pr->resultsize-1, pr->prompt))
+            return 0;
     }
 
     return 1; /* success */

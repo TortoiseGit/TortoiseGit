@@ -38,7 +38,7 @@ static void c_write(Rlogin *rlogin, const void *buf, size_t len)
 }
 
 static void rlogin_log(Plug *plug, int type, SockAddr *addr, int port,
-		       const char *error_msg, int error_code)
+                       const char *error_msg, int error_code)
 {
     Rlogin *rlogin = container_of(plug, Rlogin, plug);
     backend_socket_log(rlogin->seat, rlogin->logctx, type, addr, port,
@@ -47,7 +47,7 @@ static void rlogin_log(Plug *plug, int type, SockAddr *addr, int port,
 }
 
 static void rlogin_closing(Plug *plug, const char *error_msg, int error_code,
-			   bool calling_back)
+                           bool calling_back)
 {
     Rlogin *rlogin = container_of(plug, Rlogin, plug);
 
@@ -62,13 +62,13 @@ static void rlogin_closing(Plug *plug, const char *error_msg, int error_code,
         rlogin->s = NULL;
         if (error_msg)
             rlogin->closed_on_socket_error = true;
-	seat_notify_remote_exit(rlogin->seat);
+        seat_notify_remote_exit(rlogin->seat);
     }
     if (error_msg) {
-	/* A socket error has occurred. */
+        /* A socket error has occurred. */
         logevent(rlogin->logctx, error_msg);
         seat_connection_fatal(rlogin->seat, "%s", error_msg);
-    }				       /* Otherwise, the remote side closed the connection normally. */
+    }                                  /* Otherwise, the remote side closed the connection normally. */
 }
 
 static void rlogin_receive(
@@ -78,35 +78,35 @@ static void rlogin_receive(
     if (len == 0)
         return;
     if (urgent == 2) {
-	char c;
+        char c;
 
-	c = *data++;
-	len--;
-	if (c == '\x80') {
-	    rlogin->cansize = true;
+        c = *data++;
+        len--;
+        if (c == '\x80') {
+            rlogin->cansize = true;
             backend_size(&rlogin->backend,
                          rlogin->term_width, rlogin->term_height);
         }
-	/*
-	 * We should flush everything (aka Telnet SYNCH) if we see
-	 * 0x02, and we should turn off and on _local_ flow control
-	 * on 0x10 and 0x20 respectively. I'm not convinced it's
-	 * worth it...
-	 */
+        /*
+         * We should flush everything (aka Telnet SYNCH) if we see
+         * 0x02, and we should turn off and on _local_ flow control
+         * on 0x10 and 0x20 respectively. I'm not convinced it's
+         * worth it...
+         */
     } else {
-	/*
-	 * Main rlogin protocol. This is really simple: the first
-	 * byte is expected to be NULL and is ignored, and the rest
-	 * is printed.
-	 */
-	if (rlogin->firstbyte) {
-	    if (data[0] == '\0') {
-		data++;
-		len--;
-	    }
-	    rlogin->firstbyte = false;
-	}
-	if (len > 0)
+        /*
+         * Main rlogin protocol. This is really simple: the first
+         * byte is expected to be NULL and is ignored, and the rest
+         * is printed.
+         */
+        if (rlogin->firstbyte) {
+            if (data[0] == '\0') {
+                data++;
+                len--;
+            }
+            rlogin->firstbyte = false;
+        }
+        if (len > 0)
             c_write(rlogin, data, len);
     }
 }
@@ -147,7 +147,7 @@ static const PlugVtable Rlogin_plugvt = {
 
 /*
  * Called to set up the rlogin connection.
- * 
+ *
  * Returns an error message, or NULL on success.
  *
  * Also places the canonical host name into `realhost'. It must be
@@ -155,8 +155,8 @@ static const PlugVtable Rlogin_plugvt = {
  */
 static const char *rlogin_init(Seat *seat, Backend **backend_handle,
                                LogContext *logctx, Conf *conf,
-			       const char *host, int port, char **realhost,
-			       bool nodelay, bool keepalive)
+                               const char *host, int port, char **realhost,
+                               bool nodelay, bool keepalive)
 {
     SockAddr *addr;
     const char *err;
@@ -187,31 +187,31 @@ static const char *rlogin_init(Seat *seat, Backend **backend_handle,
     addr = name_lookup(host, port, realhost, conf, addressfamily,
                        rlogin->logctx, "rlogin connection");
     if ((err = sk_addr_error(addr)) != NULL) {
-	sk_addr_free(addr);
-	return err;
+        sk_addr_free(addr);
+        return err;
     }
 
     if (port < 0)
-	port = 513;		       /* default rlogin port */
+        port = 513;                    /* default rlogin port */
 
     /*
      * Open socket.
      */
     rlogin->s = new_connection(addr, *realhost, port, true, false,
-			       nodelay, keepalive, &rlogin->plug, conf);
+                               nodelay, keepalive, &rlogin->plug, conf);
     if ((err = sk_socket_error(rlogin->s)) != NULL)
-	return err;
+        return err;
 
     loghost = conf_get_str(conf, CONF_loghost);
     if (*loghost) {
-	char *colon;
+        char *colon;
 
-	sfree(*realhost);
-	*realhost = dupstr(loghost);
+        sfree(*realhost);
+        *realhost = dupstr(loghost);
 
-	colon = host_strrchr(*realhost, ':');
-	if (colon)
-	    *colon++ = '\0';
+        colon = host_strrchr(*realhost, ':');
+        if (colon)
+            *colon++ = '\0';
     }
 
     /*
@@ -232,7 +232,7 @@ static const char *rlogin_init(Seat *seat, Backend **backend_handle,
         rlogin->prompt->to_server = true;
         rlogin->prompt->from_server = false;
         rlogin->prompt->name = dupstr("Rlogin login name");
-        add_prompt(rlogin->prompt, dupstr("rlogin username: "), true); 
+        add_prompt(rlogin->prompt, dupstr("rlogin username: "), true);
         ret = seat_get_userpass_input(rlogin->seat, rlogin->prompt, NULL);
         if (ret >= 0) {
             /* Next terminal output will come from server */
@@ -251,7 +251,7 @@ static void rlogin_free(Backend *be)
     if (rlogin->prompt)
         free_prompts(rlogin->prompt);
     if (rlogin->s)
-	sk_close(rlogin->s);
+        sk_close(rlogin->s);
     conf_free(rlogin->conf);
     sfree(rlogin);
 }
@@ -272,7 +272,7 @@ static size_t rlogin_send(Backend *be, const char *buf, size_t len)
     bufchain bc;
 
     if (rlogin->s == NULL)
-	return 0;
+        return 0;
 
     bufchain_init(&bc);
     bufchain_add(&bc, buf, len);
@@ -326,7 +326,7 @@ static void rlogin_size(Backend *be, int width, int height)
     rlogin->term_height = height;
 
     if (rlogin->s == NULL || !rlogin->cansize)
-	return;
+        return;
 
     b[6] = rlogin->term_width >> 8;
     b[7] = rlogin->term_width & 0xFF;

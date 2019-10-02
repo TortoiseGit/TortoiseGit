@@ -38,7 +38,7 @@ static Plug *sk_namedpipeserver_plug(Socket *s, Plug *p)
     NamedPipeServerSocket *ps = container_of(s, NamedPipeServerSocket, sock);
     Plug *ret = ps->plug;
     if (p)
-	ps->plug = p;
+        ps->plug = p;
     return ret;
 }
 
@@ -192,7 +192,7 @@ static void named_pipe_connect_callback(void *vps)
 
 /*
  * This socket type is only used for listening, so it should never
- * be asked to write or flush or set_frozen.
+ * be asked to write or set_frozen.
  */
 static const SocketVtable NamedPipeServerSocket_sockvt = {
     sk_namedpipeserver_plug,
@@ -200,7 +200,6 @@ static const SocketVtable NamedPipeServerSocket_sockvt = {
     NULL /* write */,
     NULL /* write_oob */,
     NULL /* write_eof */,
-    NULL /* flush */,
     NULL /* set_frozen */,
     sk_namedpipeserver_socket_error,
     sk_namedpipeserver_peer_info,
