@@ -199,7 +199,7 @@ int console_confirm_weak_crypto_primitive(
 	message = dupprintf(msg, algtype, algname);
 	title = dupprintf(mbtitle, appname);
 
-	mbret = MessageBox(GetParentHwnd(), message, title, MB_ICONWARNING|MB_YESNO);
+	mbret = MessageBox(GetParentHwnd(), message, title, MB_ICONWARNING | MB_YESNO | MB_DEFBUTTON2);
 	sfree(message);
 	sfree(title);
 	if (mbret == IDYES)
