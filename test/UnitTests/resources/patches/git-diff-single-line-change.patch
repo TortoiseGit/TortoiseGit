@@ -1,0 +1,7 @@
+diff --git a/gradle.properties b/gradle.properties
+index 3d04df0..c335456 100644
+--- a/gradle.properties
++++ b/gradle.properties
+@@ -1 +1 @@
+-version=1.0.0.0
++version=1.0.0.1

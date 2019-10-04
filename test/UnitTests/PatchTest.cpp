@@ -254,3 +254,34 @@ TEST(CPatch, Parse_SVNDiffPatch)
 	}
 }
 
+TEST(CPatch, Parse_GitDiffPatch_SingleLineChange)
+{
+	// cf. issue #3420, file-with-crlf-ko
+	CString resourceDir;
+	ASSERT_TRUE(GetResourcesDir(resourceDir));
+
+	CPatch patch;
+	EXPECT_TRUE(patch.OpenUnifiedDiffFile(resourceDir + L"\\patches\\git-diff-single-line-change.patch"));
+	ASSERT_STREQ(L"", patch.GetErrorMessage());
+	ASSERT_EQ(1, patch.GetNumberOfFiles());
+
+	EXPECT_STREQ(L"gradle.properties", patch.GetFilename(0));
+	EXPECT_STREQ(L"gradle.properties", patch.GetFilename2(0));
+	EXPECT_STREQ(L"3d04df0", patch.GetRevision(0));
+	EXPECT_STREQ(L"c335456", patch.GetRevision2(0));
+
+	// internals
+	{
+		auto& chunks = patch.GetChunks(0);
+		ASSERT_EQ(size_t(1), chunks.size());
+		auto chunk = chunks[0].get();
+		EXPECT_EQ(2, chunk->arLines.GetCount());
+		EXPECT_EQ(1, chunk->lAddLength);
+		EXPECT_EQ(1, chunk->lRemoveLength);
+		EXPECT_EQ(1, chunk->lAddStart);
+		EXPECT_EQ(0, chunk->lRemoveStart);
+		ASSERT_EQ(2, chunk->arLinesStates.GetCount());
+		ASSERT_EQ(static_cast<DWORD>(PATCHSTATE_REMOVED), chunk->arLinesStates.GetAt(0));
+		ASSERT_EQ(static_cast<DWORD>(PATCHSTATE_ADDED), chunk->arLinesStates.GetAt(1));
+	}
+}

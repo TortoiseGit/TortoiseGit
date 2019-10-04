@@ -240,7 +240,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 				else
 				{
 					chunk->lRemoveStart = 0;
-					chunk->lRemoveLength = (_wtol(sRemove));
+					chunk->lRemoveLength = abs(_wtol(sRemove));
 				}
 				chunk->lAddStart = _wtol(sAdd);
 				if (sAdd.Find(',')>=0)
