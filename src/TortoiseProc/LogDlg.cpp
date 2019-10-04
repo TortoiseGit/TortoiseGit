@@ -1127,9 +1127,28 @@ void CLogDlg::TogglePatchView()
 		m_patchViewdlg.m_ctrlPatchView.Call(SCI_SETSCROLLWIDTHTRACKING, TRUE);
 		CRect rect;
 		this->GetWindowRect(&rect);
+		rect.left = rect.right;
+		rect.right = rect.left + static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\TortoiseProc\\PatchDlgWidth", rect.Width()));
 
 		m_patchViewdlg.ShowWindow(SW_SHOW);
-		m_patchViewdlg.SetWindowPos(nullptr, rect.right, rect.top, static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\TortoiseProc\\PatchDlgWidth", rect.Width())), rect.Height(), SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOZORDER);
+
+		WINDOWPLACEMENT wp;
+		GetWindowPlacement(&wp);
+		if (wp.showCmd != SW_MAXIMIZE)
+			m_patchViewdlg.SetWindowPos(nullptr, rect.left, rect.top, rect.Width(), rect.Height(), SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOZORDER);
+		else if (auto monitor = MonitorFromRect(rect, MONITOR_DEFAULTTONULL); !monitor)
+		{
+			CRect pos;
+			m_patchViewdlg.GetWindowRect(&pos);
+			m_patchViewdlg.SetWindowPos(nullptr, 0, 0, static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\TortoiseProc\\PatchDlgWidth", pos.Width())), pos.Height(), SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOZORDER | SWP_NOMOVE);
+		}
+		else
+		{
+			MONITORINFO monitorinfo;
+			monitorinfo.cbSize = sizeof(MONITORINFO);
+			GetMonitorInfo(monitor, &monitorinfo);
+			m_patchViewdlg.SetWindowPos(nullptr, monitorinfo.rcWork.left, monitorinfo.rcWork.top, min(rect.Width(), static_cast<int>(monitorinfo.rcWork.right - monitorinfo.rcWork.left)), min(rect.Height(), static_cast<int>(monitorinfo.rcWork.bottom - monitorinfo.rcWork.top)), SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOZORDER);
+		}
 
 		FillPatchView();
 	}

@@ -23,6 +23,7 @@ Released: unreleased
  * Fixed issue #3397: Create Repository make a useless symlink on Windows 10
  * Fixed issue #3413: Putty Agent (pageant) unable to start when file "C:\Program" exists
  * Fixed issue #3429: Optimize progress output with multiple git commands
+ * Fixed issue #3434: Commit dialog's "View Patch>>" shows nothing when dialog's right border is on the screen's right border
 
 = Release 2.8.0 =
 Released: 2019-02-28
