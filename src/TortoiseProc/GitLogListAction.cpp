@@ -57,6 +57,9 @@ int CGitLogList::RevertSelectedCommits(int parent)
 	CSysProgressDlg progress;
 	int ret = -1;
 
+	if (CMessageBox::Show(GetParentHWND(), IDS_REVERTCOMMITS, IDS_APPNAME, MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2) == IDNO)
+		return -1;
+
 #if 0
 	if(!g_Git.CheckCleanWorkTree())
 		CMessageBox::Show(nullptr, IDS_PROC_NOCLEAN, IDS_APPNAME, MB_OK);

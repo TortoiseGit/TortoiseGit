@@ -7593,6 +7593,10 @@ msgstr ""
 msgid "Revert commit %s"
 msgstr ""
 
+#. Resource IDs: (IDS_REVERTCOMMITS)
+msgid "Revert the selected commit(s)?"
+msgstr ""
+
 #. Resource IDs: (IDS_LOG_POPUP_REVERTTOPARENT)
 msgid "Revert to parent revision"
 msgstr ""

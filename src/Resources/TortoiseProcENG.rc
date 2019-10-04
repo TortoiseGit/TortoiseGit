@@ -3795,6 +3795,7 @@ BEGIN
     IDS_STATUSLIST_CONTEXT_ADD_LINK "Add as Symlink"
     IDS_CHERRYPICK_EMPTY    "The current commit will be empty (e.g., due to conflict resolution). Skip the commit or keep the message only commit?"
     IDS_NOGITREPO           "No valid git repository found."
+    IDS_REVERTCOMMITS       "Revert the selected commit(s)?"
 END
 
 STRINGTABLE
