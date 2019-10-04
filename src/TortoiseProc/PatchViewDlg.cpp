@@ -70,6 +70,10 @@ BOOL CPatchViewDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
+	auto hIcon = LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_PATCH));
+	SetIcon(hIcon, TRUE);
+	SetIcon(hIcon, FALSE);
+
 	m_ctrlPatchView.Init(-1);
 
 	m_ctrlPatchView.SetUDiffStyle();
