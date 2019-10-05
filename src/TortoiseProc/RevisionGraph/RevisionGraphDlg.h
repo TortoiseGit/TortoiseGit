@@ -74,6 +74,8 @@ protected:
 	HACCEL			m_hAccel;
 
 	BOOL			InitializeToolbar();
+	bool			InitialSetMenu(const CString& settingName, int nId);
+	bool			ToggleSetMenu(const CString& settingName, int nId);
 
 	virtual void	DoDataExchange(CDataExchange* pDX) override;		// DDX/DDV support
 	virtual BOOL	OnInitDialog() override;

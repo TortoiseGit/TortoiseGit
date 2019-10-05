@@ -261,23 +261,8 @@ BOOL CRevisionGraphDlg::OnInitDialog()
 	if (FAILED(m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList)))
 		m_pTaskbarList = nullptr;
 
-	CMenu* pMenu = GetMenu();
-	if (pMenu)
-	{
-		CRegDWORD reg = CRegDWORD(L"Software\\TortoiseGit\\ShowRevGraphOverview", FALSE);
-		m_Graph.SetShowOverview((DWORD)reg != FALSE);
-		pMenu->CheckMenuItem(ID_VIEW_SHOWOVERVIEW, MF_BYCOMMAND | (DWORD(reg) ? MF_CHECKED : 0));
-		int tbstate = m_ToolBar.GetToolBarCtrl().GetState(ID_VIEW_SHOWOVERVIEW);
-		m_ToolBar.GetToolBarCtrl().SetState(ID_VIEW_SHOWOVERVIEW, tbstate | (DWORD(reg) ? TBSTATE_CHECKED : 0));
-	}
-	if (pMenu)
-	{
-		CRegDWORD reg(L"Software\\TortoiseGit\\ShowRevGraphBranchesMerges", FALSE);
-		m_Graph.m_bShowBranchingsMerges = (DWORD)reg != FALSE;
-		pMenu->CheckMenuItem(ID_VIEW_SHOWBRANCHINGSANDMERGES, MF_BYCOMMAND | (DWORD(reg) ? MF_CHECKED : 0));
-		int tbstate = m_ToolBar.GetToolBarCtrl().GetState(ID_VIEW_SHOWBRANCHINGSANDMERGES);
-		m_ToolBar.GetToolBarCtrl().SetState(ID_VIEW_SHOWBRANCHINGSANDMERGES, tbstate | (DWORD(reg) ? TBSTATE_CHECKED : 0));
-	}
+	m_Graph.SetShowOverview(InitialSetMenu(L"ShowRevGraphOverview", ID_VIEW_SHOWOVERVIEW));
+	m_Graph.m_bShowBranchingsMerges = InitialSetMenu(L"ShowRevGraphBranchesMerges", ID_VIEW_SHOWBRANCHINGSANDMERGES);
 
 //	m_hAccel = LoadAccelerators(AfxGetResourceHandle(),MAKEINTRESOURCE(IDR_ACC_REVISIONGRAPH));
 
@@ -296,6 +281,45 @@ BOOL CRevisionGraphDlg::OnInitDialog()
 //		CenterWindow(CWnd::FromHandle(GetExplorerHWND()));
 
 	return TRUE;  // return TRUE unless you set the focus to a control
+}
+
+bool CRevisionGraphDlg::InitialSetMenu(const CString& settingName, int nId)
+{
+	CRegDWORD reg = CRegDWORD(L"Software\\TortoiseGit\\" + settingName, FALSE);
+	CMenu* pMenu = GetMenu();
+	if (!pMenu)
+		return static_cast<DWORD>(reg) != FALSE;
+	pMenu->CheckMenuItem(nId, MF_BYCOMMAND | (DWORD(reg) ? MF_CHECKED : 0));
+	int tbstate = m_ToolBar.GetToolBarCtrl().GetState(nId);
+	m_ToolBar.GetToolBarCtrl().SetState(nId, tbstate | (DWORD(reg) ? TBSTATE_CHECKED : 0));
+	return static_cast<DWORD>(reg) != FALSE;
+}
+
+bool CRevisionGraphDlg::ToggleSetMenu(const CString& settingName, int nId)
+{
+	CMenu* pMenu = GetMenu();
+	if (!pMenu)
+		return false;
+	int tbstate = m_ToolBar.GetToolBarCtrl().GetState(nId);
+	UINT state = pMenu->GetMenuState(nId, MF_BYCOMMAND);
+	bool ret = false;
+	if (state & MF_CHECKED)
+	{
+		pMenu->CheckMenuItem(nId, MF_BYCOMMAND | MF_UNCHECKED);
+		m_ToolBar.GetToolBarCtrl().SetState(nId, tbstate & (~TBSTATE_CHECKED));
+		ret = false;
+	}
+	else
+	{
+		pMenu->CheckMenuItem(nId, MF_BYCOMMAND | MF_CHECKED);
+		m_ToolBar.GetToolBarCtrl().SetState(nId, tbstate | TBSTATE_CHECKED);
+		ret = true;
+	}
+
+	CRegDWORD reg = CRegDWORD(L"Software\\TortoiseGit\\" + settingName, FALSE);
+	reg = ret;
+
+	return ret;
 }
 
 bool CRevisionGraphDlg::UpdateData()
@@ -397,26 +421,7 @@ BOOL CRevisionGraphDlg::PreTranslateMessage(MSG* pMsg)
 
 void CRevisionGraphDlg::OnViewShowBranchingsMerges()
 {
-	CMenu* pMenu = GetMenu();
-	if (!pMenu)
-		return;
-	int tbstate = m_ToolBar.GetToolBarCtrl().GetState(ID_VIEW_SHOWBRANCHINGSANDMERGES);
-	UINT state = pMenu->GetMenuState(ID_VIEW_SHOWBRANCHINGSANDMERGES, MF_BYCOMMAND);
-	if (state & MF_CHECKED)
-	{
-		pMenu->CheckMenuItem(ID_VIEW_SHOWBRANCHINGSANDMERGES, MF_BYCOMMAND | MF_UNCHECKED);
-		m_ToolBar.GetToolBarCtrl().SetState(ID_VIEW_SHOWBRANCHINGSANDMERGES, tbstate & (~TBSTATE_CHECKED));
-		m_Graph.m_bShowBranchingsMerges = false;
-	}
-	else
-	{
-		pMenu->CheckMenuItem(ID_VIEW_SHOWBRANCHINGSANDMERGES, MF_BYCOMMAND | MF_CHECKED);
-		m_ToolBar.GetToolBarCtrl().SetState(ID_VIEW_SHOWBRANCHINGSANDMERGES, tbstate | TBSTATE_CHECKED);
-		m_Graph.m_bShowBranchingsMerges = true;
-	}
-
-	CRegDWORD reg(L"Software\\TortoiseGit\\ShowRevGraphBranchesMerges", FALSE);
-	reg = m_Graph.m_bShowBranchingsMerges;
+	m_Graph.m_bShowBranchingsMerges = ToggleSetMenu(L"ShowRevGraphBranchesMerges", ID_VIEW_SHOWBRANCHINGSANDMERGES);
 
 	UpdateFullHistory();
 }
@@ -701,26 +706,8 @@ void CRevisionGraphDlg::OnViewFilter()
 
 void CRevisionGraphDlg::OnViewShowoverview()
 {
-	CMenu * pMenu = GetMenu();
-	if (!pMenu)
-		return;
-	int tbstate = m_ToolBar.GetToolBarCtrl().GetState(ID_VIEW_SHOWOVERVIEW);
-	UINT state = pMenu->GetMenuState(ID_VIEW_SHOWOVERVIEW, MF_BYCOMMAND);
-	if (state & MF_CHECKED)
-	{
-		pMenu->CheckMenuItem(ID_VIEW_SHOWOVERVIEW, MF_BYCOMMAND | MF_UNCHECKED);
-		m_ToolBar.GetToolBarCtrl().SetState(ID_VIEW_SHOWOVERVIEW, tbstate & (~TBSTATE_CHECKED));
-		m_Graph.SetShowOverview (false);
-	}
-	else
-	{
-		pMenu->CheckMenuItem(ID_VIEW_SHOWOVERVIEW, MF_BYCOMMAND | MF_CHECKED);
-		m_ToolBar.GetToolBarCtrl().SetState(ID_VIEW_SHOWOVERVIEW, tbstate | TBSTATE_CHECKED);
-		m_Graph.SetShowOverview (true);
-	}
+	m_Graph.SetShowOverview(ToggleSetMenu(L"ShowRevGraphOverview", ID_VIEW_SHOWOVERVIEW));
 
-	CRegDWORD reg(L"Software\\TortoiseGit\\ShowRevGraphOverview", FALSE);
-	reg = m_Graph.GetShowOverview();
 	m_Graph.Invalidate(FALSE);
 }
 
