@@ -1124,30 +1124,7 @@ void CLogDlg::TogglePatchView()
 		if (g_Git.GetConfigValueBool(L"tgit.logshowpatch") == FALSE)
 			g_Git.SetConfigValue(L"tgit.logshowpatch", L"true");
 		m_patchViewdlg.Create(IDD_PATCH_VIEW, this);
-		CRect rect;
-		this->GetWindowRect(&rect);
-		rect.left = rect.right;
-		rect.right = rect.left + static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\TortoiseProc\\PatchDlgWidth", rect.Width()));
-
-		m_patchViewdlg.ShowWindow(SW_SHOW);
-
-		WINDOWPLACEMENT wp;
-		GetWindowPlacement(&wp);
-		if (wp.showCmd != SW_MAXIMIZE)
-			m_patchViewdlg.SetWindowPos(nullptr, rect.left, rect.top, rect.Width(), rect.Height(), SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOZORDER);
-		else if (auto monitor = MonitorFromRect(rect, MONITOR_DEFAULTTONULL); !monitor)
-		{
-			CRect pos;
-			m_patchViewdlg.GetWindowRect(&pos);
-			m_patchViewdlg.SetWindowPos(nullptr, 0, 0, static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\TortoiseProc\\PatchDlgWidth", pos.Width())), pos.Height(), SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOZORDER | SWP_NOMOVE);
-		}
-		else
-		{
-			MONITORINFO monitorinfo;
-			monitorinfo.cbSize = sizeof(MONITORINFO);
-			GetMonitorInfo(monitor, &monitorinfo);
-			m_patchViewdlg.SetWindowPos(nullptr, monitorinfo.rcWork.left, monitorinfo.rcWork.top, min(rect.Width(), static_cast<int>(monitorinfo.rcWork.right - monitorinfo.rcWork.left)), min(rect.Height(), static_cast<int>(monitorinfo.rcWork.bottom - monitorinfo.rcWork.top)), SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOZORDER);
-		}
+		m_patchViewdlg.ShowAndAlignToParent();
 
 		FillPatchView();
 	}

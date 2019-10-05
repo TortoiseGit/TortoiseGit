@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011, 2014-2017 - TortoiseGit
+// Copyright (C) 2008-2011, 2014-2017, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -38,6 +38,7 @@ public:
 	IHasPatchView	*m_ParentDlg;
 	void SetText(const CString& text);
 	void ClearView();
+	void ShowAndAlignToParent();
 
 // Dialog Data
 	enum { IDD = IDD_PATCH_VIEW };
