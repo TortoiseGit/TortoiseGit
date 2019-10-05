@@ -78,6 +78,9 @@ BOOL CPatchViewDlg::OnInitDialog()
 
 	m_ctrlPatchView.SetUDiffStyle();
 
+	m_ctrlPatchView.Call(SCI_SETSCROLLWIDTH, 1);
+	m_ctrlPatchView.Call(SCI_SETSCROLLWIDTHTRACKING, TRUE);
+
 	m_ctrlPatchView.RegisterContextMenuHandler(this);
 
 	m_hAccel = LoadAccelerators(AfxGetResourceHandle(), MAKEINTRESOURCE(IDR_ACC_PATCHVIEW));
@@ -98,7 +101,6 @@ void CPatchViewDlg::SetText(const CString& text)
 		m_ctrlPatchView.Call(SCI_GOTOPOS, 0);
 		CRect rect;
 		m_ctrlPatchView.GetClientRect(rect);
-		m_ctrlPatchView.Call(SCI_SETSCROLLWIDTH, rect.Width() - 4);
 	}
 }
 
@@ -127,10 +129,6 @@ void CPatchViewDlg::OnSize(UINT nType, int cx, int cy)
 			::SetWindowPos(m_ctrlPatchView.GetSafeHwnd(), HWND_TOP, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top, SWP_SHOWWINDOW);
 			m_FindBar.ShowWindow(SW_HIDE);
 		}
-
-		CRect rect2;
-		m_ctrlPatchView.GetClientRect(rect2);
-		m_ctrlPatchView.Call(SCI_SETSCROLLWIDTH, rect2.Width() - 4);
 	}
 }
 

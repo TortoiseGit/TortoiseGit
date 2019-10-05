@@ -1124,7 +1124,6 @@ void CLogDlg::TogglePatchView()
 		if (g_Git.GetConfigValueBool(L"tgit.logshowpatch") == FALSE)
 			g_Git.SetConfigValue(L"tgit.logshowpatch", L"true");
 		m_patchViewdlg.Create(IDD_PATCH_VIEW, this);
-		m_patchViewdlg.m_ctrlPatchView.Call(SCI_SETSCROLLWIDTHTRACKING, TRUE);
 		CRect rect;
 		this->GetWindowRect(&rect);
 		rect.left = rect.right;

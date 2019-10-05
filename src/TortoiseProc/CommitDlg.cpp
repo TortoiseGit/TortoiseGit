@@ -2670,7 +2670,6 @@ void CCommitDlg::OnStnClickedViewPatch()
 		if (viewPatchEnabled == FALSE)
 			g_Git.SetConfigValue(L"tgit.commitshowpatch", L"true");
 		m_patchViewdlg.Create(IDD_PATCH_VIEW,this);
-		m_patchViewdlg.m_ctrlPatchView.Call(SCI_SETSCROLLWIDTHTRACKING, TRUE);
 		CRect rect;
 		this->GetWindowRect(&rect);
 		rect.left = rect.right;
