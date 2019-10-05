@@ -3174,6 +3174,15 @@ void CBaseView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		m_bInsertMode = !m_bInsertMode;
 		UpdateCaret();
 		break;
+	case 'M':
+		if (bControl && m_pwndRight)
+		{
+			int nFirstViewLine = 0;
+			int nLastViewLine = 0;
+			if (GetViewSelection(nFirstViewLine, nLastViewLine))
+				m_pwndRight->MarkBlock(!m_pwndRight->GetViewMarked(nFirstViewLine));
+		}
+		break;
 	}
 	CView::OnKeyDown(nChar, nRepCnt, nFlags);
 }
