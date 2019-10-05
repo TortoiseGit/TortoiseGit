@@ -1533,11 +1533,19 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 	int encoding = m_data.UpdateEncoding(Encode);
 
 	auto numberOfLines = static_cast<int>(m_data.GetNumberOfLines());
+	int longestLine = 0;
+	int longestLineLen = 0;
 	if (numberOfLines > 0)
 	{
 		CStringA text;
 		for (int i = 0; i < numberOfLines; ++i)
 		{
+			auto lineLen = m_data.GetUtf8Line(i).GetLength();
+			if (longestLineLen < lineLen)
+			{
+				longestLineLen = lineLen;
+				longestLine = i;
+			}
 			text += m_data.GetUtf8Line(i);
 			text += '\n';
 		}
@@ -1600,6 +1608,11 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 	SendEditor(EM_EMPTYUNDOBUFFER);
 	SendEditor(SCI_SETSAVEPOINT);
 	SendEditor(SCI_GOTOPOS, 0);
+	// set max scroll width, based on textwidth of longest line (heuristic, only works for monospace font)
+	if (longestLine > 0)
+		SendEditor(SCI_SETSCROLLWIDTH, static_cast<int>(SendEditor(SCI_TEXTWIDTH, STYLE_DEFAULT, reinterpret_cast<LPARAM>(static_cast<const char*>(m_data.GetUtf8Line(longestLine))))));
+	else
+		SendEditor(SCI_SETSCROLLWIDTH, 1);
 	SendEditor(SCI_SETSCROLLWIDTHTRACKING, TRUE);
 	SendEditor(SCI_SETREADONLY, TRUE);
 
