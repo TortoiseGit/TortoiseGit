@@ -1,11 +1,16 @@
 ﻿= Release 2.9.0 =
 Released: unreleased
 
+== Changes ==
+ * Support for Thesaurus was dropped
+ * Thin-Pack option was dropped from fetch/pull dialog (enabled by default in Git)
+
 == Features ==
  * Fixed issue #3355: Adding file name extension in the Export dialog
  * Update Scintilla to 4.2.0
  * Update libgit to 2.22.0 based on Git for Windows sources
- * Update PuTTY binaries to 0.71
+ * Update TortoiseGitPLink to PuTTY PLink 0.73 (security fix, cf. https://www.chiark.greenend.org.uk/~sgtatham/putty/changes.html)
+ * Update PuTTY binaries to 0.72
  * Allow to disable "Working Tree Changes" in log dialog (using advanced settings)
  * Update Hunspell to 1.7.0
  * Fixed issue #3363: Add option to show unlabeled most recent common ancestor between all branches in Revision Graph
@@ -14,6 +19,8 @@ Released: unreleased
  * Fixed issue #3379: Super-project-pointer should show in revision graph of submodule
  * Fixed issue #3421: Option to show Log IDs instead of SHA-1 in TortoiseGitBlame
  * Fixed issue #3343: Provide a confirm dialog instead of executing the revert operation directly
+ * Ref Browse: Show date and author of annotated tag as well
+ * Show whitespaces in patch views
 
 == Bug Fixes ==
  * Implement generic fix for "libgit2 returned the requested type does not match the type in ODB"
@@ -27,6 +34,11 @@ Released: unreleased
  * Fixed issue #3434: Commit dialog's "View Patch>>" shows nothing when dialog's right border is on the screen's right border
  * Fix potential crashes in TortoiseGitBlame when .mailmap support was enabled
  * Fix potential crash when log is still calculating diffs and rebase dialog loads
+ * Prevent possible crash after rebase when writing to reflog fails
+ * Ref Browse: Speed up display when having thousands of refs
+ * TortoiseGitMerge: When ignoring comments in TMerge, ignore comment block markers inside strings
+ * Fix start commit hook not working for repository hooks
+ * Fix potential crashes when log is still loading and submodule diff is requested
 
 = Release 2.8.0 =
 Released: 2019-02-28
