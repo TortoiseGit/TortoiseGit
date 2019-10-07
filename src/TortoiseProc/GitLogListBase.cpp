@@ -143,9 +143,6 @@ CGitLogListBase::CGitLogListBase() : CHintCtrl<CResizableColumnsListCtrl<CListCt
 	m_LineWidth = max(1, static_cast<int>(CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\Graph\\LogLineWidth", 2)));
 	m_NodeSize = max(1, static_cast<int>(CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\Graph\\LogNodeSize", 10)));
 
-	if (CRegDWORD(L"Software\\TortoiseGit\\LogDialog\\UseMailmap", FALSE) == TRUE)
-		git_read_mailmap(&m_pMailmap);
-
 	m_AsyncDiffEvent = ::CreateEvent(nullptr, FALSE, TRUE, nullptr);
 	StartAsyncDiffThread();
 }
@@ -2648,6 +2645,11 @@ int CGitLogListBase::FillGitLog(CTGitPath *path, CString *range, int info)
 {
 	ClearText();
 
+	git_free_mailmap(m_pMailmap);
+	m_pMailmap = nullptr;
+	if (CRegDWORD(L"Software\\TortoiseGit\\LogDialog\\UseMailmap", FALSE) == TRUE)
+		git_read_mailmap(&m_pMailmap);
+
 	this->m_arShownList.SafeRemoveAll();
 
 	this->m_logEntries.ClearAll();
@@ -2680,6 +2682,11 @@ int CGitLogListBase::FillGitLog(CTGitPath *path, CString *range, int info)
 int CGitLogListBase::FillGitLog(std::unordered_set<CGitHash>& hashes)
 {
 	ClearText();
+
+	git_free_mailmap(m_pMailmap);
+	m_pMailmap = nullptr;
+	if (CRegDWORD(L"Software\\TortoiseGit\\LogDialog\\UseMailmap", FALSE) == TRUE)
+		git_read_mailmap(&m_pMailmap);
 
 	m_arShownList.SafeRemoveAll();
 
@@ -2791,6 +2798,11 @@ int CGitLogListBase::BeginFetchLog()
 
 		cmd = g_Git.GetLogCmd(list[0], path, mask, &m_Filter, CRegDWORD(L"Software\\TortoiseGit\\LogOrderBy", CGit::LOG_ORDER_TOPOORDER));
 	}
+
+	git_free_mailmap(m_pMailmap);
+	m_pMailmap = nullptr;
+	if (CRegDWORD(L"Software\\TortoiseGit\\LogDialog\\UseMailmap", FALSE) == TRUE)
+		git_read_mailmap(&m_pMailmap);
 
 	g_Git.m_critGitDllSec.Lock();
 	try {
@@ -3177,12 +3189,6 @@ void CGitLogListBase::Refresh(BOOL IsCleanFilter)
 	ResetWcRev();
 
 	ShowGraphColumn((m_ShowMask & CGit::LOG_INFO_FOLLOW) ? false : true);
-
-	if (m_pMailmap)
-	{
-		git_free_mailmap(m_pMailmap);
-		git_read_mailmap(&m_pMailmap);
-	}
 
 	//Update branch and Tag info
 	ReloadHashMap();
