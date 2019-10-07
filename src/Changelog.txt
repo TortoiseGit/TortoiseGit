@@ -26,6 +26,7 @@ Released: unreleased
  * Fixed issue #3429: Optimize progress output with multiple git commands
  * Fixed issue #3434: Commit dialog's "View Patch>>" shows nothing when dialog's right border is on the screen's right border
  * Fix potential crashes in TortoiseGitBlame when .mailmap support was enabled
+ * Fix potential crash when log is still calculating diffs and rebase dialog loads
 
 = Release 2.8.0 =
 Released: 2019-02-28

@@ -711,10 +711,13 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 					dlg.m_CommitList.m_logEntries.GetGitRevAt(dlg.m_CommitList.m_logEntries.size() - 1).GetRebaseAction() |= LOGACTIONS_REBASE_PICK;
 				}
 
+				SafeTerminateAsyncDiffThread();
 				if(dlg.DoModal() == IDOK)
 				{
 					Refresh();
 				}
+				else
+					StartAsyncDiffThread();
 			}
 			break;
 		case ID_REBASE_TO_VERSION:
@@ -739,10 +742,13 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 					}
 				}
 
+				SafeTerminateAsyncDiffThread();
 				if(dlg.DoModal() == IDOK)
 				{
 					Refresh();
 				}
+				else
+					StartAsyncDiffThread();
 			}
 
 			break;
