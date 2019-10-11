@@ -229,8 +229,8 @@ protected:
 	bool			m_showHoverGlyphs;	// if true, show the glyphs we currently hover over
 										// (will be activated only after some delay)
 
-	CString		GetFriendRefName(ogdf::node);
-	STRING_VECTOR	GetFriendRefNames(ogdf::node, const CString* exclude = nullptr, CGit::REF_TYPE* onlyRefType = nullptr);
+	CString		GetFriendRefName(ogdf::node) const;
+	STRING_VECTOR	GetFriendRefNames(ogdf::node, const CString* exclude = nullptr, CGit::REF_TYPE* onlyRefType = nullptr) const;
 
 	ogdf::Graph	m_Graph;
 	ogdf::GraphAttributes m_GraphAttr;
@@ -238,8 +238,8 @@ protected:
 
 	CRect	m_GraphRect;
 
-	int	 GetLeftRightMargin() {return 20;};
-	int	 GetTopBottomMargin() {return 5;};
+	int GetLeftRightMargin() const { return 20; };
+	int GetTopBottomMargin() const { return 5; };
 	virtual void	DoDataExchange(CDataExchange* pDX) override;	// DDX/DDV support
 	afx_msg void	OnPaint();
 	virtual ULONG	GetGestureStatus(CPoint ptTouch) override;
@@ -345,29 +345,29 @@ private:
 	CPoint			GetLogCoordinates (CPoint point) const;
 	ogdf::node		GetHitNode (CPoint point, CSize border = CSize (0, 0)) const;
 	DWORD			GetHoverGlyphs (CPoint point) const;
-	PointF			cutPoint(ogdf::node v,double lw,PointF ps, PointF pt);
+	PointF			cutPoint(ogdf::node v, double lw, const PointF& ps, const PointF& pt) const;
 
 	void			ClearVisibleGlyphs (const CRect& rect);
 
 	typedef PointF TCutRectangle[8];
-	void			CutawayPoints (const RectF& rect, float cutLen, TCutRectangle& result);
+	void			CutawayPoints (const RectF& rect, float cutLen, TCutRectangle& result) const;
 	enum
 	{
 		ROUND_UP = 0x1,
 		ROUND_DOWN = 0x2,
 		ROUND_BOTH = 0x3,
 	};
-	void			DrawRoundedRect (GraphicsDevice& graphics, const Color& penColor, int penWidth, const Pen* pen, const Color& fillColor, const Brush* brush, const RectF& rect, int mask=ROUND_BOTH);
+	void			DrawRoundedRect (GraphicsDevice& graphics, const Color& penColor, int penWidth, const Pen* pen, const Color& fillColor, const Brush* brush, const RectF& rect, int mask=ROUND_BOTH) const;
 	RectF			TransformRectToScreen (const CRect& rect, const CSize& offset) const;
 	RectF			GetNodeRect (const ogdf::node& v, const CSize& offset) const;
 	void			DrawMarker ( GraphicsDevice& graphics, const RectF& noderect
-							   , MarkerPosition position, int relPosition, const Color& penColor, int num);
-	void			DrawConnections (GraphicsDevice& graphics, const CRect& logRect, const CSize& offset);
+							   , MarkerPosition position, int relPosition, const Color& penColor, int num) const;
+	void			DrawConnections (GraphicsDevice& graphics, const CRect& logRect, const CSize& offset) const;
 	void			DrawTexts (GraphicsDevice& graphics, const CRect& logRect, const CSize& offset);
 	void			DrawGraph(GraphicsDevice& graphics, const CRect& rect, int nVScrollPos, int nHScrollPos, bool bDirectDraw);
-	void DrawNode(GraphicsDevice& graphics, AllColorsAndBrushes& colorsAndBrushes, ColorsAndBrushes* colors, const Gdiplus::Font& font, const CString& fontname, double height, RectF noderect, const CString& shortname, size_t line, size_t lines);
+	void DrawNode(GraphicsDevice& graphics, AllColorsAndBrushes& colorsAndBrushes, ColorsAndBrushes* colors, const Gdiplus::Font& font, const CString& fontname, double height, const RectF& noderect, const CString& shortname, size_t line, size_t lines) const;
 
 	int				GetEncoderClsid(const WCHAR* format, CLSID* pClsid);
 	void	SetNodeRect(GraphicsDevice& graphics, Gdiplus::Font& font, const Rect& commitString, ogdf::node* pnode, const CGitHash& rev);
-	void	MeasureTextLength(GraphicsDevice& graphics, Gdiplus::Font& font, const CString& text, int& xmax, int& ymax);
+	void	MeasureTextLength(GraphicsDevice& graphics, Gdiplus::Font& font, const CString& text, int& xmax, int& ymax) const;
 };

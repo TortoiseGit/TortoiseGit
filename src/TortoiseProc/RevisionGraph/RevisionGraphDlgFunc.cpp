@@ -404,7 +404,7 @@ void CRevisionGraphWnd::GetSelected
 }
 #endif
 
-CString	CRevisionGraphWnd::GetFriendRefName(ogdf::node v)
+CString	CRevisionGraphWnd::GetFriendRefName(ogdf::node v) const
 {
 	if (!v)
 		return CString();
@@ -415,7 +415,7 @@ CString	CRevisionGraphWnd::GetFriendRefName(ogdf::node v)
 		return refsIt->second[0];
 }
 
-STRING_VECTOR CRevisionGraphWnd::GetFriendRefNames(ogdf::node v, const CString* exclude, CGit::REF_TYPE* onlyRefType)
+STRING_VECTOR CRevisionGraphWnd::GetFriendRefNames(ogdf::node v, const CString* exclude, CGit::REF_TYPE* onlyRefType) const
 {
 	if (!v)
 		return STRING_VECTOR();

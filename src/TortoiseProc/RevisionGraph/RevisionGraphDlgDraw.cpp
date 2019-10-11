@@ -79,7 +79,7 @@ void CRevisionGraphWnd::OnPaint()
 	DrawGraph(dev, rect, GetScrollPos(SB_VERT), GetScrollPos(SB_HORZ), false);
 }
 
-void CRevisionGraphWnd::CutawayPoints (const RectF& rect, float cutLen, TCutRectangle& result)
+void CRevisionGraphWnd::CutawayPoints(const RectF& rect, float cutLen, TCutRectangle& result) const
 {
 	result[0] = PointF (rect.X, rect.Y + cutLen);
 	result[1] = PointF (rect.X + cutLen, rect.Y);
@@ -91,7 +91,7 @@ void CRevisionGraphWnd::CutawayPoints (const RectF& rect, float cutLen, TCutRect
 	result[7] = PointF (rect.X, rect.GetBottom() - cutLen);
 }
 
-void CRevisionGraphWnd::DrawRoundedRect (GraphicsDevice& graphics, const Color& penColor, int penWidth, const Pen* pen, const Color& fillColor, const Brush* brush, const RectF& rect, int mask)
+void CRevisionGraphWnd::DrawRoundedRect(GraphicsDevice& graphics, const Color& penColor, int penWidth, const Pen* pen, const Color& fillColor, const Brush* brush, const RectF& rect, int mask) const
 {
 	enum {POINT_COUNT = 8};
 
@@ -188,7 +188,7 @@ void CRevisionGraphWnd::DrawMarker
 	, MarkerPosition /*position*/
 	, int /*relPosition*/
 	, const Color& penColor
-	, int num)
+	, int num) const
 {
 	REAL width = 4*this->m_fZoomFactor<1? 1: 4*this->m_fZoomFactor;
 	Pen pen(penColor,width);
@@ -228,7 +228,7 @@ void CRevisionGraphWnd::DrawMarker
 	}
 }
 
-PointF CRevisionGraphWnd::cutPoint(ogdf::node v, double lw, PointF ps, PointF pt)
+PointF CRevisionGraphWnd::cutPoint(ogdf::node v, double lw, const PointF& ps, const PointF& pt) const
 {
 	double x = m_GraphAttr.x(v);
 	double y = m_GraphAttr.y(v);
@@ -281,7 +281,7 @@ PointF CRevisionGraphWnd::cutPoint(ogdf::node v, double lw, PointF ps, PointF pt
 	return pt;
 }
 
-void CRevisionGraphWnd::DrawConnections (GraphicsDevice& graphics, const CRect& /*logRect*/, const CSize& offset)
+void CRevisionGraphWnd::DrawConnections(GraphicsDevice& graphics, const CRect& /*logRect*/, const CSize& offset) const
 {
 	CArray<PointF> points;
 	CArray<CPoint> pts;
@@ -444,7 +444,7 @@ static AllColorsAndBrushes SetupColorsAndBrushes(CColors& colors)
 	};
 }
 
-void CRevisionGraphWnd::DrawNode(GraphicsDevice& graphics, AllColorsAndBrushes& colorsAndBrushes, ColorsAndBrushes* colors, const Gdiplus::Font& font, const CString& fontname, double height, RectF noderect, const CString& shortname, size_t line, size_t lines)
+void CRevisionGraphWnd::DrawNode(GraphicsDevice& graphics, AllColorsAndBrushes& colorsAndBrushes, ColorsAndBrushes* colors, const Gdiplus::Font& font, const CString& fontname, double height, const RectF& noderect, const CString& shortname, size_t line, size_t lines) const
 {
 	RectF rect;
 	rect.X = noderect.X;
@@ -671,7 +671,7 @@ void CRevisionGraphWnd::DrawGraph(GraphicsDevice& graphics, const CRect& rect, i
 	delete memDC;
 }
 
-void CRevisionGraphWnd::MeasureTextLength(GraphicsDevice& graphics, Gdiplus::Font& font, const CString& text, int& xmax, int& ymax)
+void CRevisionGraphWnd::MeasureTextLength(GraphicsDevice& graphics, Gdiplus::Font& font, const CString& text, int& xmax, int& ymax) const
 {
 	RectF rect;
 	graphics.graphics->MeasureString(text, text.GetLength(), &font, Gdiplus::PointF(0, 0), &rect);
