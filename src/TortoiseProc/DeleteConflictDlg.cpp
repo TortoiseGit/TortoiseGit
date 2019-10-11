@@ -127,8 +127,6 @@ void CDeleteConflictDlg::OnBnClickedShowdiff()
 {
 	CString base;
 	base.LoadString(IDS_PROC_DIFF_BASE);
-	CAppUtils::DiffFlags flags;
-	flags.bAlternativeTool = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
 	CAppUtils::StartExtDiff(m_FileBaseVersion.GetWinPathString(), g_Git.CombinePath(m_File),
 		base,
 		m_bDiffMine ? m_LocalHash.ToString() : m_RemoteHash.ToString(),
@@ -136,5 +134,5 @@ void CDeleteConflictDlg::OnBnClickedShowdiff()
 		g_Git.CombinePath(m_File),
 		m_bDiffMine ? m_LocalHash : m_RemoteHash,
 		m_bDiffMine ? m_RemoteHash : m_LocalHash,
-		flags);
+		CAppUtils::DiffFlags().AlternativeTool(!!(GetAsyncKeyState(VK_SHIFT) & 0x8000)));
 }
