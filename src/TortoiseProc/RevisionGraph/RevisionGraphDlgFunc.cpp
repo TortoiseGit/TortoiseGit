@@ -366,44 +366,6 @@ void CRevisionGraphWnd::SetShowOverview (bool value)
 	if (m_bShowOverview)
 		BuildPreview();
 }
-#if 0
-void CRevisionGraphWnd::GetSelected
-	( const CVisibleGraphNode* node
-	, bool head
-	, CTGitPath& path
-	, GitRev& rev
-	, GitRev& peg)
-{
-	CString repoRoot = m_state.GetRepositoryRoot();
-
-	// get path and revision
-
-	path.SetFromSVN (repoRoot + CUnicodeUtils::GetUnicode (node->GetPath().GetPath().c_str()));
-	rev = head ? GitRev::REV_HEAD : node->GetRevision();
-
-	// handle 'modified WC' node
-
-	if (node->GetClassification().Is (CNodeClassification::IS_MODIFIED_WC))
-	{
-		path.SetFromUnknown (m_sPath);
-		rev = GitRev::REV_WC;
-
-		// don't set peg, if we aren't the first node
-		// (i.e. would not be valid for node1)
-
-		if (node == m_SelectedEntry1)
-			peg = GitRev::REV_WC;
-	}
-	else
-	{
-		// set head, if still necessary
-
-		if (head && !peg.IsValid())
-			peg = node->GetRevision();
-	}
-}
-#endif
-
 CString	CRevisionGraphWnd::GetFriendRefName(ogdf::node v) const
 {
 	if (!v)
