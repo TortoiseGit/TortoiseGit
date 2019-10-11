@@ -1462,15 +1462,13 @@ BOOL CRevisionGraphWnd::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 		if (GetCursorPos(&pt))
 		{
 			ScreenToClient(&pt);
-			if (m_OverviewPosRect.PtInRect(pt))
+			if (m_OverviewPosRect.PtInRect(pt) || m_bIsCanvasMove)
 			{
 				resourceHandle = AfxGetResourceHandle();
 				cursorID = (GetKeyState(VK_LBUTTON) & 0x8000)
 						 ? MAKEINTRESOURCE(IDC_PANCURDOWN)
 						 : MAKEINTRESOURCE(IDC_PANCUR);
 			}
-			if (m_bIsCanvasMove)
-				cursorID = IDC_HAND;
 		}
 	}
 
