@@ -292,8 +292,6 @@ bool CRevisionGraphWnd::FetchRevisionData
 	{
 		auto nd = m_Graph.newNode();
 		nodes.Add(nd);
-		m_GraphAttr.width(nd)=100;
-		m_GraphAttr.height(nd)=20;
 		SetNodeRect(dev, font, commitString, &nd, hash);
 		if (hash == m_HeadHash)
 			m_HeadNode = nd;
