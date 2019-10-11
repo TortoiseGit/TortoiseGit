@@ -363,20 +363,20 @@ void CRevisionGraphWnd::DrawConnections(GraphicsDevice& graphics, const CRect& /
 		GraphicsPath path;
 
 		PointF arrows[5];
-		arrows[0].X =  points[0].X;
-		arrows[0].Y =  points[0].Y;
+		arrows[0].X =  points[1].X;
+		arrows[0].Y =  points[1].Y;
 
-		arrows[1].X =  points[0].X + static_cast<REAL>(p1_x);
-		arrows[1].Y =  points[0].Y + static_cast<REAL>(p1_y);
+		arrows[1].X =  points[1].X - static_cast<REAL>(p1_x);
+		arrows[1].Y =  points[1].Y - static_cast<REAL>(p1_y);
 
-		arrows[2].X =  points[0].X + static_cast<REAL>(dx * 3 / 5);
-		arrows[2].Y =  points[0].Y + static_cast<REAL>(dy * 3 / 5);
+		arrows[2].X =  points[1].X - static_cast<REAL>(dx * 3 / 5);
+		arrows[2].Y =  points[1].Y - static_cast<REAL>(dy * 3 / 5);
 
-		arrows[3].X =  points[0].X + static_cast<REAL>(p2_x);
-		arrows[3].Y =  points[0].Y + static_cast<REAL>(p2_y);
+		arrows[3].X =  points[1].X - static_cast<REAL>(p2_x);
+		arrows[3].Y =  points[1].Y - static_cast<REAL>(p2_y);
 
-		arrows[4].X =  points[0].X;
-		arrows[4].Y =  points[0].Y;
+		arrows[4].X =  points[1].X;
+		arrows[4].Y =  points[1].Y;
 
 		path.AddLines(arrows, 5);
 		path.SetFillMode(FillModeAlternate);
