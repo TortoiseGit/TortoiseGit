@@ -367,8 +367,14 @@ void CPullFetchDlg::OnBnClickedRd()
 			int argSeparator = clippath.Find(' ');
 			if (argSeparator > 1 && clippath.GetLength() > argSeparator + 2)
 			{
-				m_Other.SetWindowText(clippath.Left(argSeparator));
-				m_RemoteBranch.SetWindowText(clippath.Mid(argSeparator + 1));
+				CString url = clippath.Left(argSeparator);
+				if (url.GetLength() > 2 && url[0] == L'"' && url[url.GetLength() - 1] == L'"')
+					url = url.Mid(1, url.GetLength() - 2);
+				m_Other.SetWindowText(url);
+				CString branch = clippath.Mid(argSeparator + 1);
+				if (branch.GetLength() > 2 && branch[0] == L'"' && branch[branch.GetLength() - 1] == L'"')
+					branch = branch.Mid(1, branch.GetLength() - 2);
+				m_RemoteBranch.SetWindowText(branch);
 			}
 			else
 				m_Other.SetWindowText(clippath);
