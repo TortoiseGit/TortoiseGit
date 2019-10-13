@@ -132,7 +132,7 @@ int CGitDiff::DiffNull(HWND hWnd, const CTGitPath* pPath, const CString& rev1, b
 	CString tempfile = CTempFiles::Instance().GetTempFilePath(false, *pPath, rev1Hash).GetWinPathString();
 	::SetFileAttributes(tempfile, FILE_ATTRIBUTE_READONLY);
 
-	auto flags = CAppUtils::DiffFlags().AlternativeTool();
+	auto flags = CAppUtils::DiffFlags().AlternativeTool(bAlternative);
 	if(bIsAdd)
 		CAppUtils::StartExtDiff(tempfile,file1,
 							pPath->GetGitPathString(),
@@ -447,7 +447,7 @@ int CGitDiff::Diff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* pPath2, c
 							g_Git.CombinePath(pPath),
 							rev2Hash,
 							rev1Hash,
-							CAppUtils::DiffFlags().AlternativeTool(), jumpToLine);
+							CAppUtils::DiffFlags().AlternativeTool(bAlternativeTool), jumpToLine);
 
 	return 0;
 }
