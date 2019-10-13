@@ -180,6 +180,8 @@ public:
 	bool			GetShowOverview() const;
 	void			SetShowOverview (bool value);
 
+	void			ScrollTo(int i, bool select);
+
 	void			CompareRevs(const CString& revTo);
 	void			UnifiedDiffRevs(bool bHead);
 

@@ -28,6 +28,8 @@
 #include "TGitPath.h"
 #include "RevGraphFilterDlg.h"
 #include "DPIAware.h"
+#include "LogDlgFilter.h"
+#include "GitLogList.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -36,6 +38,8 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 using namespace Gdiplus;
+
+const UINT CRevisionGraphDlg::m_FindDialogMessage = RegisterWindowMessage(FINDMSGSTRING);
 
 struct CToolBarData
 {
@@ -58,6 +62,8 @@ CRevisionGraphDlg::CRevisionGraphDlg(CWnd* pParent /*=nullptr*/)
 	, m_bFetchLogs(true)
 	, m_fZoomFactor(DEFAULT_ZOOM)
 	, m_bVisible(true)
+	, m_pFindDialog(nullptr)
+	, m_nSearchIndex(0)
 {
 	// GDI+ initialization
 
@@ -106,6 +112,8 @@ BEGIN_MESSAGE_MAP(CRevisionGraphDlg, CResizableStandAloneDialog)
 	ON_WM_WINDOWPOSCHANGING()
 	ON_COMMAND(ID_VIEW_SHOWBRANCHINGSANDMERGES, OnViewShowBranchingsMerges)
 	ON_COMMAND(ID_VIEW_SHOWALLTAGS, OnViewShowAllTags)
+	ON_COMMAND(ID_FIND, OnFind)
+	ON_REGISTERED_MESSAGE(m_FindDialogMessage, OnFindDialogMessage)
 END_MESSAGE_MAP()
 
 BOOL CRevisionGraphDlg::InitializeToolbar()
@@ -409,6 +417,10 @@ BOOL CRevisionGraphDlg::PreTranslateMessage(MSG* pMsg)
 		case VK_F5:
 			UpdateFullHistory();
 			break;
+		case 'F':
+			if (GetKeyState(VK_CONTROL) < 0)
+				OnFind();
+			return TRUE;
 		}
 	}
 	if ((m_hAccel)&&(pMsg->message >= WM_KEYFIRST && pMsg->message <= WM_KEYLAST))
@@ -494,6 +506,101 @@ void CRevisionGraphDlg::OnViewZoomAll()
 	float vertfact = (windowRect.Height() - 4.0f)/(4.0f + graphRect.Height());
 
 	DoZoom (min (MAX_ZOOM, min(horzfact, vertfact)));
+}
+
+void CRevisionGraphDlg::OnFind()
+{
+	if (!m_pFindDialog)
+	{
+		m_pFindDialog = new CFindDlg(this);
+		m_pFindDialog->Create(this);
+	}
+}
+
+LRESULT CRevisionGraphDlg::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*/)
+{
+	ASSERT(m_pFindDialog);
+	bool bFound = false;
+	int i = 0;
+
+	if (m_pFindDialog->IsTerminating())
+	{
+		// invalidate the handle identifying the dialog box.
+		m_pFindDialog = nullptr;
+		return 0;
+	}
+
+	bool bShift = (GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0;
+	int cnt = static_cast<int>(m_Graph.m_logEntries.size());
+	if (m_pFindDialog->IsRef())
+	{
+		CString str;
+		str = m_pFindDialog->GetFindString();
+
+		CGitHash hash;
+
+		if (!str.IsEmpty())
+		{
+			if (g_Git.GetHash(hash, str + L"^{}")) // add ^{} in order to get the correct SHA-1 (especially for signed tags)
+				MessageBox(g_Git.GetGitLastErr(L"Could not get hash of ref \"" + str + L"^{}\"."), L"TortoiseGit", MB_ICONERROR);
+		}
+
+		if (!hash.IsEmpty())
+		{
+			for (i = 0; i < cnt; ++i)
+			{
+				if (m_Graph.m_logEntries.at(i) == hash)
+				{
+					bFound = true;
+					break;
+				}
+			}
+		}
+		if (!bFound)
+		{
+			m_pFindDialog->FlashWindowEx(FLASHW_ALL, 2, 100);
+			return 0;
+		}
+	}
+
+	if (m_pFindDialog->FindNext() && !bFound)
+	{
+		//read data from dialog
+		CLogDlgFilter filter{ m_pFindDialog->GetFindString(), m_pFindDialog->Regex(), LOGFILTER_SUBJECT | LOGFILTER_MESSAGES | LOGFILTER_AUTHORS | LOGFILTER_EMAILS | LOGFILTER_REVS | LOGFILTER_REFNAME, m_pFindDialog->MatchCase() == TRUE };
+
+		for (i = m_nSearchIndex + 1;; ++i)
+		{
+			if (i >= cnt)
+			{
+				i = 0;
+				m_pFindDialog->FlashWindowEx(FLASHW_ALL, 2, 100);
+			}
+			if (m_nSearchIndex >= 0)
+			{
+				if (i == m_nSearchIndex)
+				{
+					::MessageBeep(0xFFFFFFFF);
+					m_pFindDialog->FlashWindowEx(FLASHW_ALL, 3, 100);
+					break;
+				}
+			}
+
+			if (filter(m_Graph.m_LogCache.GetCacheData(m_Graph.m_logEntries.at(i)), nullptr, m_Graph.m_HashMap))
+			{
+				bFound = true;
+				break;
+			}
+		}
+	} // if(m_pFindDialog->FindNext())
+
+	if (bFound)
+	{
+		m_nSearchIndex = i;
+		m_Graph.ScrollTo(i, !bShift);
+		Invalidate(FALSE);
+	}
+
+	return 0;
 }
 
 void CRevisionGraphDlg::OnMenuexit()

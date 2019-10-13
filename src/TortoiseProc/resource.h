@@ -1863,6 +1863,7 @@
 #define IDD_REVGRAPHFILTER              4584
 #define IDC_FROMREV                     4585
 #define IDD_USER_PASSWD                 4585
+#define ID_FIND                         4586
 #define IDC_TOREV                       4587
 #define IDD_SETTINGSCREDENTIAL          4591
 #define IDD_MERGEABORT                  4592

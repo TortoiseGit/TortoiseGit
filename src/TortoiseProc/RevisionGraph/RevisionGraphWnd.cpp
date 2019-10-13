@@ -1534,3 +1534,38 @@ ULONG CRevisionGraphWnd::GetGestureStatus(CPoint /*ptTouch*/)
 {
 	return 0;
 }
+
+void CRevisionGraphWnd::ScrollTo(int i, bool select)
+{
+	bool found = false;
+	ogdf::node v;
+	forall_nodes(v, m_Graph)
+	{
+		if (v->index() == i)
+		{
+			found = true;
+			break;
+		}
+	}
+	if (!found)
+		return;
+
+	SCROLLINFO sinfo = { 0 };
+	sinfo.cbSize = sizeof(SCROLLINFO);
+	if (GetScrollInfo(SB_HORZ, &sinfo))
+	{
+		sinfo.nPos = min(max(sinfo.nMin, static_cast<int>(m_GraphAttr.x(v) - m_GraphAttr.width(v) / 2)), sinfo.nMax);
+		SetScrollInfo(SB_HORZ, &sinfo);
+	}
+	if (GetScrollInfo(SB_VERT, &sinfo))
+	{
+		sinfo.nPos = min(max(sinfo.nMin, static_cast<int>(m_GraphAttr.y(v) - m_GraphAttr.height(v) / 2 - max(1.0f, 25 * m_fZoomFactor))), sinfo.nMax);
+		SetScrollInfo(SB_VERT, &sinfo);
+	}
+
+	if (!select)
+		return;
+
+	m_SelectedEntry1 = v;
+	m_SelectedEntry2 = nullptr;
+}

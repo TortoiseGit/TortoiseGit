@@ -24,6 +24,7 @@
 #include "Colors.h"
 #include "RevisionGraphWnd.h"
 #include "StandAloneDlg.h"
+#include "FindDlg.h"
 
 /**
  * \ingroup TortoiseProc
@@ -103,6 +104,12 @@ protected:
 	afx_msg void	OnChangeZoom();
 	afx_msg BOOL	OnToolTipNotify (UINT id, NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void	OnWindowPosChanging(WINDOWPOS* lpwndpos);
+
+	CFindDlg* m_pFindDialog;
+	static const UINT m_FindDialogMessage;
+	afx_msg void OnFind();
+	afx_msg LRESULT OnFindDialogMessage(WPARAM wParam, LPARAM lParam);
+	int m_nSearchIndex;
 
 	DECLARE_MESSAGE_MAP()
 

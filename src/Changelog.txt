@@ -22,6 +22,7 @@ Released: unreleased
  * Ref Browse: Show date and author of annotated tag as well
  * Show whitespaces in patch views
  * Fixed issue #3414: Allow users to not display all tags on revision graph
+ * Add find functionality to revision graph
 
 == Bug Fixes ==
  * Implement generic fix for "libgit2 returned the requested type does not match the type in ODB"
