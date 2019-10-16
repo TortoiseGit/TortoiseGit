@@ -2,6 +2,7 @@
 <Include>
 	<DirectoryRef Id="INSTALLDIR">
 		<Component Id="C__win7library" Guid="*" Win64="$(var.Win64YesNo)">
+			<Condition>VersionNT = 601</Condition>
 			<!-- Folders -->
 			<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)" Name="CanonicalName" Value="GitWCs" Type="string" KeyPath="yes"/>
 			<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)" Name="class" Value="GitWCs" Type="string" />
