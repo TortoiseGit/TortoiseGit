@@ -63,12 +63,6 @@
 	<?define GuidInfoFiles="78ACAFC6-6F62-4A58-85DC-E4FE52AEA41E"?>
 	<?define GuidProgramMenuFolder="B776F75C-B019-44B1-957A-3F58D3A225CF"?>
 
-	<?define GuidShellRegistry="9E011A3C-F5D1-47AB-8BE2-443C2FFF9499"?>
-	<?define GuidShellRegistry32="B948CE9A-585F-48EE-96C5-A1667E98077B"?>
-	<?define GuidMachineRegistry="E61BA450-C3DF-4EA5-98D4-240E4B05C9C4"?>
-	<?define GuidMachineRegistry32="ACDC3F06-4976-4A77-A676-378B076F96BE"?>
-	<?define GuidApproveShellComponents="E7E43AE0-DB46-4AF9-95EA-2EF7AD3F2119"?>
-	<?define GuidApproveShellComponents32="56A11ACF-3DE2-40F8-A6A8-4CC334E19571"?>
 
 	<?define GuidTGit="CA01E04E-4D42-4C1E-B615-0D09D12380D4"?>
 	<?define GuidGitLibs="61EC5A0E-0B76-4E47-90A9-E0CF2E893444"?>
@@ -93,20 +87,11 @@
 	<?define GuidTortoiseIDiff="75D19614-B4D4-4661-A7EB-683CEE849CF3"?>
 	<?define GuidTortoiseIDiffShortcuts="7312EFB9-4775-4B9C-8FE8-4E9F8C1D5586"?>
 	<?define GuidTortoiseUDiff="F41B3D1B-E500-457E-876E-86A0186BE7B5"?>
-	<?define GuidTortoiseUDiffAssoc="1A2972B9-F6B2-4DD5-B656-30638ACCF205"?>
-	<?define GuidProtocolTGit="59646B9D-5524-4236-83E4-2A2D88175ED4"?>
-	<?define GuidProtocolGit="0AD2B787-A9B3-4AD7-99A5-EC6DFF0EB2B7"?>
-	<?define GuidProtocolGithub="78544CC9-8E07-4968-BD03-2D3260301784"?>
-	<?define GuidProtocolXGithubClient="91b67a41-96ad-410c-a64b-ca15d4abcbf2"?>
-	<?define GuidProtocolSmartgit="294096FE-7AD3-445C-8F7C-77B048315FB9"?>
-	<?define GuidPlainSettingsShortcuts="D78CE764-1770-4D38-9229-F5068D8738FD"?>
 	<?define GuidPlatformSettingsShortcuts="256F134F-87F1-418F-BA9A-AFA92270D42D"?>
 	<?define GuidTortoiseGitGitWCRev="FBB5B46E-3F8D-4128-B851-C8C781C2DD03"?>
-	<?define GuidTortoiseGitGitWCRev32="9549BE69-E931-4001-AF29-C815B2030584"?>
 
 	<?define GuidDictionaryENGB="03B4BF1F-7CBB-4F14-BE09-5DAA6F38B976"?>
 	<?define GuidDictionaryENUS="5E7DDA35-1078-40C1-8428-14808AF7DB96"?>
-	<?define GuidRemoveLanguagePacks="829F637B-F9E9-4724-B363-F104D54C5C5C"?>
 
 	<?define GuidDiffScripts="A4FB4DC3-489C-4144-A286-C2693356E04A"?>
 
@@ -127,10 +112,8 @@
 	<?define GuidIconsIllustration="425B6B1B-8758-428F-8E6C-FEAEC14FE8BC"?>
 	<?define GuidIconsProfessional="A0F52E05-9F31-42F7-98FA-B570C51F9868"?>
 	<?define GuidIconsRibbon="B497A8F2-6ABD-44C9-AC88-7960D69E10A3"?>
-	<?define RegSSHPLINK="112230AA-AB13-4667-AD78-DC8EBEA2ED26"?>
 	<?define RegSSHOpen="0E21B3B2-FA54-411B-9AF3-BB275F169A27"?>
 
-	<?define GuidWin7Library="D31C1CAE-BBD9-45E2-A487-80653A49C752"?>
 	<?define GuidFolderTypeGit="{DC9E616B-7611-461C-9D37-730FDD4CE278}"?>
 	<?define GuidLibraryTypeGit="{D44311F9-08E5-4BB8-96E3-E3E4F2A1BDD0}"?>
 	<?define GuidLibraryFolderGit="{D75C7F5F-5AD0-4059-9274-E8A69E0819CC}"?>
@@ -154,9 +137,6 @@
 	<?define GuidInfoFiles="424219CC-2F91-49AD-B0EF-DB6A61575C99"?>
 	<?define GuidProgramMenuFolder="29B86BBB-C17C-4CC9-947D-766D5A89D4F9"?>
 
-	<?define GuidShellRegistry="EED2630A-E3DA-4046-B642-6296C23DEC2A"?>
-	<?define GuidMachineRegistry="27FA9458-F68B-4A26-A36B-D452FD9EABBA"?>
-	<?define GuidApproveShellComponents="E3B982F9-7B17-457F-A72F-2F47E9DB1719"?>
 
 	<?define GuidTGit="F62E9AD5-EAC7-4EB9-825E-A8EF5CBA6730"?>
 	<?define GuidGitLibs="45615857-0FA0-43C1-9595-4C72A03AD1AC"?>
@@ -179,19 +159,11 @@
 	<?define GuidTortoiseIDiff="742E7CF3-0255-4100-B241-E753BF92F9F0"?>
 	<?define GuidTortoiseIDiffShortcuts="85832CAF-32F7-48EF-8E18-A4271C1DB5ED"?>
 	<?define GuidTortoiseUDiff="E41DAF84-C1F5-4E43-9DC8-B5CB84A649D6"?>
-	<?define GuidTortoiseUDiffAssoc="6CF22556-FE5B-4640-A184-D60C5B6AEBE7"?>
-	<?define GuidProtocolTGit="83AEB17F-36A5-4FE1-90DA-57904A085A98"?>
-	<?define GuidProtocolGit="508DD925-273C-4170-9D81-55222E2E36AB"?>
-	<?define GuidProtocolGithub="02D10663-4B9B-4164-B6DA-6EC8BC222A92"?>
-	<?define GuidProtocolXGithubClient="4d1fa7d4-a012-4317-8a0e-685bab6a474b"?>
-	<?define GuidProtocolSmartgit="C114A9E4-2427-4435-B3BE-11EDC9C39B8C"?>
-	<?define GuidPlainSettingsShortcuts="49263747-C09E-4FFE-A0A4-8E8966CBD807"?>
 	<?define GuidPlatformSettingsShortcuts="F1B92E39-6F75-4ED4-9099-CB5DC7A91831"?>
 	<?define GuidTortoiseGitGitWCRev="FBB5B46E-3F8D-4128-B851-C8C781C2DD03"?>
 
 	<?define GuidDictionaryENGB="7218599E-4140-429F-855A-D82B59ED34F9"?>
 	<?define GuidDictionaryENUS="B3FD2F77-B14C-448F-8D82-4B21F16711D6"?>
-	<?define GuidRemoveLanguagePacks="5B4D96EE-E7B9-46C8-BB36-B38E6EB83478"?>
 
 	<?define GuidDiffScripts="FAF533BB-06AC-4FF1-97D6-4D71E6D8F6C6"?>
 
@@ -212,10 +184,8 @@
 	<?define GuidIconsIllustration="2530A014-367B-42D8-9CF3-65344B216C4A"?>
 	<?define GuidIconsProfessional="ACE5D5E8-CED1-4CCB-8858-B72601769105"?>
 	<?define GuidIconsRibbon="757B98D0-EA17-4A9A-BB05-E1F5F01CC2B5"?>
-	<?define RegSSHPLINK="112230AA-AB13-4667-AD78-DC8EBEA2ED26"?>
 	<?define RegSSHOpen="0E21B3B2-FA54-411B-9AF3-BB275F169A27"?>
 
-	<?define GuidWin7Library="DA5F03FD-13B5-42E9-9350-D06C2808EB99"?>
 	<?define GuidFolderTypeGit="{B118C031-A977-4A67-9344-47F057388105}"?>
 	<?define GuidLibraryTypeGit="{2944F3BB-D880-41D6-A271-721B184684F7}"?>
 	<?define GuidLibraryFolderGit="{37608D23-CCD9-474C-9DFE-E72A83C8666D}"?>
