@@ -84,6 +84,7 @@
 		<?include FeaturesFragment.wxi?>
 		<?include StructureFragment.wxi?>
 		<?include UIFragment.wxi?>
+		<?include Win7LibraryAndExplorerToolbarActions.wxi?>
 
 		<!--
 		<FragmentRef Id="StructureFragment" />

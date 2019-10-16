@@ -59,5 +59,6 @@
 		<Content Include="StructureFragment.wxi" />
 		<Content Include="UIFragment.wxi" />
 		<Content Include="VersionNumberInclude.wxi" />
+		<Content Include="Win7LibraryAndExplorerToolbarActions.wxi" />
 	</ItemGroup>
 </Project>
