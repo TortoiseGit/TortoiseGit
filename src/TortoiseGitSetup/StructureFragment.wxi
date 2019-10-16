@@ -238,31 +238,35 @@
 				<?endif ?>
 
 				<Component Id="C__approveshellcomponents" Guid="*" Win64="$(var.Win64YesNo)">
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidConflict)}" Value="TortoiseGit" KeyPath="yes" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidModified)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidDropHandler)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidDeleted)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidNormal)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidUncontrolled)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidReadonly)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidLocked)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidAdded)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidIgnored)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidUnversioned)}" Value="TortoiseGit" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved">
+						<RegistryValue Name="{$(var.GuidConflict)}" Value="TortoiseGit - Conflict" KeyPath="yes" Type="string" />
+						<RegistryValue Name="{$(var.GuidModified)}" Value="TortoiseGit - Modified" Type="string" />
+						<RegistryValue Name="{$(var.GuidDropHandler)}" Value="TortoiseGit - DropHandler" Type="string" />
+						<RegistryValue Name="{$(var.GuidDeleted)}" Value="TortoiseGit - Deleted" Type="string" />
+						<RegistryValue Name="{$(var.GuidNormal)}" Value="TortoiseGit - Normal" Type="string" />
+						<RegistryValue Name="{$(var.GuidUncontrolled)}" Value="TortoiseGit - Uncontrolled" Type="string" />
+						<RegistryValue Name="{$(var.GuidReadonly)}" Value="TortoiseGit - ReadOnly" Type="string" />
+						<RegistryValue Name="{$(var.GuidLocked)}" Value="TortoiseGit - Locked" Type="string" />
+						<RegistryValue Name="{$(var.GuidAdded)}" Value="TortoiseGit - Added" Type="string" />
+						<RegistryValue Name="{$(var.GuidIgnored)}" Value="TortoiseGit - Ignored" Type="string" />
+						<RegistryValue Name="{$(var.GuidUnversioned)}" Value="TortoiseGit - Unversioned" Type="string" />
+					</RegistryKey>
 				</Component>
 				<?if $(var.Platform) = "x64" ?>
 				<Component Id="C__approveshellcomponents32" Guid="*" Win64="no">
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidConflict)}" Value="TortoiseGit" KeyPath="yes" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidModified)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidDropHandler)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidDeleted)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidNormal)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidUncontrolled)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidReadonly)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidLocked)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidAdded)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidIgnored)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidUnversioned)}" Value="TortoiseGit" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved">
+						<RegistryValue Name="{$(var.GuidConflict)}" Value="TortoiseGit - Conflict" KeyPath="yes" Type="string" />
+						<RegistryValue Name="{$(var.GuidModified)}" Value="TortoiseGit - Modified" Type="string" />
+						<RegistryValue Name="{$(var.GuidDropHandler)}" Value="TortoiseGit - DropHandler" Type="string" />
+						<RegistryValue Name="{$(var.GuidDeleted)}" Value="TortoiseGit - Deleted" Type="string" />
+						<RegistryValue Name="{$(var.GuidNormal)}" Value="TortoiseGit - Normal" Type="string" />
+						<RegistryValue Name="{$(var.GuidUncontrolled)}" Value="TortoiseGit - Uncontrolled" Type="string" />
+						<RegistryValue Name="{$(var.GuidReadonly)}" Value="TortoiseGit - ReadOnly" Type="string" />
+						<RegistryValue Name="{$(var.GuidLocked)}" Value="TortoiseGit - Locked" Type="string" />
+						<RegistryValue Name="{$(var.GuidAdded)}" Value="TortoiseGit - Added" Type="string" />
+						<RegistryValue Name="{$(var.GuidIgnored)}" Value="TortoiseGit - Ignored" Type="string" />
+						<RegistryValue Name="{$(var.GuidUnversioned)}" Value="TortoiseGit - Unversioned" Type="string" />
+					</RegistryKey>
 				</Component>
 				<?endif ?>
 
