@@ -20,12 +20,12 @@
 			<Directory Id="INSTALLDIR" Name="TortoiseGit">
 
 				<?if $(var.Platform) = "x86" ?>
-				<Merge Id='Ovlays' Language='0' SourceFile='..\..\ext\TortoiseOverlays\TortoiseOverlays-1.1.4.26626-win32.msm' DiskId='1'/>
+				<Merge Id="Ovlays" Language="0" SourceFile="..\..\ext\TortoiseOverlays\TortoiseOverlays-1.1.4.26626-win32.msm" DiskId="1" />
 				<?endif ?>
 
 				<?if $(var.Platform) = "x64" ?>
-				<Merge Id='Ovlays' Language='0' SourceFile='..\..\ext\TortoiseOverlays\TortoiseOverlays-1.1.4.26626-x64.msm' DiskId='1'/>
-				<Merge Id='Ovlays32' Language='0' SourceFile='..\..\ext\TortoiseOverlays\TortoiseOverlays-1.1.4.26626-win32.msm' DiskId='1'/>
+				<Merge Id="Ovlays" Language="0" SourceFile="..\..\ext\TortoiseOverlays\TortoiseOverlays-1.1.4.26626-x64.msm" DiskId="1" />
+				<Merge Id="Ovlays32" Language="0" SourceFile="..\..\ext\TortoiseOverlays\TortoiseOverlays-1.1.4.26626-win32.msm" DiskId="1" />
 				<?endif ?>
 
 				<Component Id="C__infofiles" Guid="$(var.GuidInfoFiles)" Win64="$(var.Win64YesNo)">
@@ -197,15 +197,15 @@
 
 				<Component Id="C_SSHCLIENT_PLINK" Guid="*" Win64="$(var.Win64YesNo)" Permanent="yes">
 					<Condition>(OLDSSH = "") and (SSHTOOL="Plink")</Condition>
-					<RegistryValue Root="HKCU" Key="Software\[Manufacturer]" Name="SSH" Value="[INSTALLDIR]bin\TortoiseGitPlink.exe" Type="string" KeyPath="yes"/>
+					<RegistryValue Root="HKCU" Key="Software\[Manufacturer]" Name="SSH" Value="[INSTALLDIR]bin\TortoiseGitPlink.exe" Type="string" KeyPath="yes" />
 				</Component>
 				<Component Id="C_SSHCLIENT_OPENSSH" Guid="$(var.RegSSHOpen)" Win64="$(var.Win64YesNo)" Permanent="yes">
 					<Condition>(OLDSSH = "") and (SSHTOOL="OpenSSH")</Condition>
-					<RegistryValue Root="HKCU" Key="Software\[Manufacturer]" Name="SSH" Value="ssh.exe" Type="string" KeyPath="yes"/>
+					<RegistryValue Root="HKCU" Key="Software\[Manufacturer]" Name="SSH" Value="ssh.exe" Type="string" KeyPath="yes" />
 				</Component>
 
 				<Component Id="C__machineregistry" Guid="*" Win64="$(var.Win64YesNo)">
-					<RegistryValue Root="HKLM" Key="Software\[Manufacturer]" Name="ProcPath" Value="[INSTALLDIR]bin\TortoiseGitProc.exe" Type="string" KeyPath="yes"/>
+					<RegistryValue Root="HKLM" Key="Software\[Manufacturer]" Name="ProcPath" Value="[INSTALLDIR]bin\TortoiseGitProc.exe" Type="string" KeyPath="yes" />
 					<RegistryValue Root="HKLM" Key="Software\[Manufacturer]" Name="CachePath" Value="[INSTALLDIR]bin\TGitCache.exe" Type="string" />
 					<RegistryValue Root="HKLM" Key="Software\[Manufacturer]" Name="TMergePath" Value="[INSTALLDIR]bin\TortoiseGitMerge.exe" Type="string" />
 					<RegistryValue Root="HKLM" Key="Software\[Manufacturer]" Name="Directory" Value="[INSTALLDIR]" Type="string" />
@@ -226,13 +226,13 @@
 					<RegistryValue Root="HKLM" Key="Software\TortoiseGit\Capabilities\UrlAssociations" Name="git" Value="TortoiseGitURL" Type="string" />
 					<RegistryValue Root="HKLM" Key="Software\TortoiseGit\Capabilities\UrlAssociations" Name="x-github-client" Value="TortoiseGitURL" Type="string" />
 					<RegistryValue Root="HKCR" Key="TortoiseGitURL" Value="URL: TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="TortoiseGitURL" Name="FriendlyTypeName" Value="URL: TortoiseGit" Type="string"/>
-					<RegistryValue Root="HKCR" Key="TortoiseGitURL" Name="URL Protocol" Value="" Type="string"/>
+					<RegistryValue Root="HKCR" Key="TortoiseGitURL" Name="FriendlyTypeName" Value="URL: TortoiseGit" Type="string" />
+					<RegistryValue Root="HKCR" Key="TortoiseGitURL" Name="URL Protocol" Value="" Type="string" />
 					<RegistryValue Root="HKCR" Key="TortoiseGitURL\DefaultIcon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,0" Type="string" />
 					<RegistryValue Root="HKCR" Key="TortoiseGitURL\shell\open\command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /urlhandler:&quot;%1&quot;" Type="string" />
 					<RegistryValue Root="HKCR" Key="TortoiseGitURL.git" Value="URL: TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="TortoiseGitURL.git" Name="FriendlyTypeName" Value="URL: TortoiseGit" Type="string"/>
-					<RegistryValue Root="HKCR" Key="TortoiseGitURL.git" Name="URL Protocol" Value="" Type="string"/>
+					<RegistryValue Root="HKCR" Key="TortoiseGitURL.git" Name="FriendlyTypeName" Value="URL: TortoiseGit" Type="string" />
+					<RegistryValue Root="HKCR" Key="TortoiseGitURL.git" Name="URL Protocol" Value="" Type="string" />
 					<RegistryValue Root="HKCR" Key="TortoiseGitURL.git\DefaultIcon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,0" Type="string" />
 					<RegistryValue Root="HKCR" Key="TortoiseGitURL.git\shell\open\command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:clone /url:&quot;%1&quot;" Type="string" />
 				</Component>
@@ -309,7 +309,7 @@
 						<File Id="F__libgit232" Name="libgit232_tgit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\libgit232_tgit.dll" />
 						<?endif ?>
 						<?if $(var.Platform) = "x64" ?>
-						<File Id="F__gitdll" Name="gitdll.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\gitdll.dll" KeyPath="yes"/>
+						<File Id="F__gitdll" Name="gitdll.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\gitdll.dll" KeyPath="yes" />
 						<File Id="F__zlib" Name="zlib1_tgit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\zlib1_tgit.dll" />
 						<File Id="F__libgit2" Name="libgit2_tgit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\libgit2_tgit.dll" />
 						<?endif ?>
@@ -324,37 +324,37 @@
 
 					<Component Id="ProtocolTGit" Guid="*" Win64="$(var.Win64YesNo)">
 						<RegistryValue Root="HKCR" Key="tgit" Value="URL: TGit Protocol" Type="string" />
-						<RegistryValue Root="HKCR" Key="tgit" Name="URL Protocol" Value="" Type="string"/>
+						<RegistryValue Root="HKCR" Key="tgit" Name="URL Protocol" Value="" Type="string" />
 						<RegistryValue Root="HKCR" Key="tgit\DefaultIcon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,0" Type="string" />
-						<RegistryValue Root="HKCR" Key="tgit\shell\open\command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /urlhandler:&quot;%1&quot;" Type="string" KeyPath="yes"/>
+						<RegistryValue Root="HKCR" Key="tgit\shell\open\command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /urlhandler:&quot;%1&quot;" Type="string" KeyPath="yes" />
 					</Component>
 					<Component Id="ProtocolGit" Guid="*" Win64="$(var.Win64YesNo)">
 						<RegistryValue Root="HKCR" Key="git" Value="URL: Git Protocol" Type="string" />
-						<RegistryValue Root="HKCR" Key="git" Name="URL Protocol" Value="" Type="string"/>
+						<RegistryValue Root="HKCR" Key="git" Name="URL Protocol" Value="" Type="string" />
 						<RegistryValue Root="HKCR" Key="git\DefaultIcon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,0" Type="string" />
-						<RegistryValue Root="HKCR" Key="git\shell\open\command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:clone /url:&quot;%1&quot;" Type="string" KeyPath="yes"/>
+						<RegistryValue Root="HKCR" Key="git\shell\open\command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:clone /url:&quot;%1&quot;" Type="string" KeyPath="yes" />
 					</Component>
 					<Component Id="ProtocolGithub" Guid="*" Win64="$(var.Win64YesNo)">
 						<RegistryValue Root="HKCR" Key="github-windows" Value="URL: Github-Windows Protocol" Type="string" />
-						<RegistryValue Root="HKCR" Key="github-windows" Name="URL Protocol" Value="" Type="string"/>
+						<RegistryValue Root="HKCR" Key="github-windows" Name="URL Protocol" Value="" Type="string" />
 						<RegistryValue Root="HKCR" Key="github-windows\DefaultIcon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,0" Type="string" />
-						<RegistryValue Root="HKCR" Key="github-windows\shell\open\command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /urlhandler:&quot;%1&quot;" Type="string" KeyPath="yes"/>
+						<RegistryValue Root="HKCR" Key="github-windows\shell\open\command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /urlhandler:&quot;%1&quot;" Type="string" KeyPath="yes" />
 					</Component>
 					<Component Id="ProtocolXGithubClient" Guid="*" Win64="$(var.Win64YesNo)">
 						<RegistryValue Root="HKCR" Key="x-github-client" Value="URL: X-Github-Client Protocol" Type="string" />
-						<RegistryValue Root="HKCR" Key="x-github-client" Name="URL Protocol" Value="" Type="string"/>
+						<RegistryValue Root="HKCR" Key="x-github-client" Name="URL Protocol" Value="" Type="string" />
 						<RegistryValue Root="HKCR" Key="x-github-client\DefaultIcon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,0" Type="string" />
-						<RegistryValue Root="HKCR" Key="x-github-client\shell\open\command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /urlhandler:&quot;%1&quot;" Type="string" KeyPath="yes"/>
+						<RegistryValue Root="HKCR" Key="x-github-client\shell\open\command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /urlhandler:&quot;%1&quot;" Type="string" KeyPath="yes" />
 					</Component>
 					<Component Id="ProtocolSmartgit" Guid="*" Win64="$(var.Win64YesNo)">
 						<RegistryValue Root="HKCR" Key="smartgit" Value="URL: Smartgit Protocol" Type="string" />
-						<RegistryValue Root="HKCR" Key="smartgit" Name="URL Protocol" Value="" Type="string"/>
+						<RegistryValue Root="HKCR" Key="smartgit" Name="URL Protocol" Value="" Type="string" />
 						<RegistryValue Root="HKCR" Key="smartgit\DefaultIcon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,0" Type="string" />
-						<RegistryValue Root="HKCR" Key="smartgit\shell\open\command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /urlhandler:&quot;%1&quot;" Type="string" KeyPath="yes"/>
+						<RegistryValue Root="HKCR" Key="smartgit\shell\open\command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /urlhandler:&quot;%1&quot;" Type="string" KeyPath="yes" />
 					</Component>
 
 					<Component Id="C__TortoiseGitTools" Guid="$(var.GuidTortoiseGitTools)" Win64="$(var.Win64YesNo)">
-						<File Id="F__TortoisePlinkold" Name="TortoisePlink.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitPlink.exe" KeyPath="yes"/>
+						<File Id="F__TortoisePlinkold" Name="TortoisePlink.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitPlink.exe" KeyPath="yes" />
 						<File Id="F__TortoisePlink" Name="TortoiseGitPlink.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitPlink.exe" />
 						<File Id="F__PuttyGen" Name="puttygen.exe" DiskId="1" Source="..\..\ext\putty\puttygen.exe" />
 						<File Id="F__pageant" Name="pageant.exe" DiskId="1" Source="..\..\ext\putty\pageant.exe" />
@@ -406,7 +406,7 @@
 					<?endif ?>
 
 					<Component Id="C__TGitCache" Guid="$(var.GuidTortoiseGitCache)" Win64="$(var.Win64YesNo)">
-						<File Id="F__TGitCache" Name="TGitCache.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TGitCache.exe" KeyPath="yes"/>
+						<File Id="F__TGitCache" Name="TGitCache.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TGitCache.exe" KeyPath="yes" />
 					</Component>
 
 					<Component Id="C__TortoiseProc" Guid="$(var.GuidTortoiseProc)" Win64="$(var.Win64YesNo)">
@@ -419,17 +419,17 @@
 					<Component Id="C__TortoiseShell" Guid="$(var.GuidTortoiseShell)" Win64="$(var.Win64YesNo)">
 						<?if $(var.Platform) = "x86" ?>
 						<File Id="F__TortoiseGitStub32" Name="TortoiseGitStub32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\TortoiseGitStub32.dll" />
-						<File Id="F__TortoiseShell32" Name="TortoiseGit32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\TortoiseGit32.dll" KeyPath="yes"/>
+						<File Id="F__TortoiseShell32" Name="TortoiseGit32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\TortoiseGit32.dll" KeyPath="yes" />
 						<?endif ?>
 						<?if $(var.Platform) = "x64" ?>
 						<File Id="F__TortoiseGitStub" Name="TortoiseGitStub.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitStub.dll" />
-						<File Id="F__TortoiseShell" Name="TortoiseGit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGit.dll" KeyPath="yes"/>
+						<File Id="F__TortoiseShell" Name="TortoiseGit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGit.dll" KeyPath="yes" />
 						<?endif ?>
 					</Component>
 					<?if $(var.Platform) = "x64" ?>
 					<Component Id="C__TortoiseShell32" Guid="$(var.GuidTortoiseShell32)" Win64="$(var.Win64YesNo)">
 						<File Id="F__TortoiseGitStub32" Name="TortoiseGitStub32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\TortoiseGitStub32.dll" />
-						<File Id="F__TortoiseShell32" Name="TortoiseGit32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\TortoiseGit32.dll" KeyPath="yes"/>
+						<File Id="F__TortoiseShell32" Name="TortoiseGit32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\TortoiseGit32.dll" KeyPath="yes" />
 					</Component>
 					<?endif ?>
 
@@ -488,15 +488,15 @@
 						<RegistryValue Root="HKCR" Key=".diff" KeyPath="yes" Value="tortoisegit.diff.document" Type="string" />
 					</Component>
 
-					<Component Id="C_LanguagePacks" Guid="*" Win64="$(var.Win64YesNo)" >
+					<Component Id="C_LanguagePacks" Guid="*" Win64="$(var.Win64YesNo)">
 						<!--	When a language pack is installed, it copies files into the [INSTALLDIR]Languages folder.
 								We could add here RemoveFile-Elements for each and every one of the possible
 								language packs, but using the WiX utility RemoveFolderEx is in this case the better option.
 								To use RemoveFolderEx, we have to use a property with the path of the language folder, so
 								to get such a property we save that path to a registry key and read that key into the property.
 								-->
-						<RegistryValue Root="HKLM" Key="Software\[Manufacturer]" Name="LanguageFolderPath" Type="string" Value="[INSTALLDIR]Languages" KeyPath="yes"/>
-						<RemoveFolderEx Id='CleanupApplicationFolder' On="uninstall" Property="LANGUAGEFOLDER" xmlns="http://schemas.microsoft.com/wix/UtilExtension" />
+						<RegistryValue Root="HKLM" Key="Software\[Manufacturer]" Name="LanguageFolderPath" Type="string" Value="[INSTALLDIR]Languages" KeyPath="yes" />
+						<RemoveFolderEx Id="CleanupApplicationFolder" On="uninstall" Property="LANGUAGEFOLDER" xmlns="http://schemas.microsoft.com/wix/UtilExtension" />
 					</Component>
 
 					<Component Id="C__PlainSettingsShortcuts" Guid="*" Win64="$(var.Win64YesNo)">
@@ -579,14 +579,14 @@
 				<Directory Id="D__Languages" Name="Languages">
 					<?if $(var.DictionaryENGB) = 1 ?>
 					<Component Id="C__DictionaryENGB" Guid="$(var.GuidDictionaryENGB)" Win64="$(var.Win64YesNo)">
-						<File Id="F__ENGBSPELLAFF" Name="en_GB.aff" Source="..\..\..\ext\spell\en\en_GB.aff" DiskId="1" KeyPath="yes"/>
+						<File Id="F__ENGBSPELLAFF" Name="en_GB.aff" Source="..\..\..\ext\spell\en\en_GB.aff" DiskId="1" KeyPath="yes" />
 						<File Id="F__ENGBSPELLDIC" Name="en_GB.dic" Source="..\..\..\ext\spell\en\en_GB.dic" DiskId="1" />
 					</Component>
 					<?endif ?>
 
 					<?if $(var.DictionaryENUS) = 1 ?>
 					<Component Id="C__DictionaryENUS" Guid="$(var.GuidDictionaryENUS)" Win64="$(var.Win64YesNo)">
-						<File Id="F__ENSPELLAFF" Name="en_US.aff" Source="..\..\ext\spell\en\en_US.aff" DiskId="1" KeyPath="yes"/>
+						<File Id="F__ENSPELLAFF" Name="en_US.aff" Source="..\..\ext\spell\en\en_US.aff" DiskId="1" KeyPath="yes" />
 						<File Id="F__ENSPELLDIC" Name="en_US.dic" Source="..\..\ext\spell\en\en_US.dic" DiskId="1" />
 					</Component>
 					<?endif ?>
@@ -594,7 +594,7 @@
 
 				<Directory Id="D__DiffScripts" Name="Diff-Scripts">
 					<Component Id="C__DiffScripts" Guid="$(var.GuidDiffScripts)" Win64="$(var.Win64YesNo)">
-						<File Id="F__diffxls" Name="diff-xls.js" Source="..\..\contrib\diff-scripts\diff-xls.js" DiskId="1" KeyPath="yes"/>
+						<File Id="F__diffxls" Name="diff-xls.js" Source="..\..\contrib\diff-scripts\diff-xls.js" DiskId="1" KeyPath="yes" />
 						<File Id="F__diffppt" Name="diff-ppt.js" Source="..\..\contrib\diff-scripts\diff-ppt.js" DiskId="1" />
 						<File Id="F__diffdoc" Name="diff-doc.js" Source="..\..\contrib\diff-scripts\diff-doc.js" DiskId="1" />
 						<File Id="F__mergedoc" Name="merge-doc.js" Source="..\..\contrib\diff-scripts\merge-doc.js" DiskId="1" />
@@ -610,10 +610,10 @@
 					<Directory Id="D_TortoisePrgMenu" Name="TortoiseGit" />
 				</Directory>
 
-				<Directory Id='$(var.cf)' Name='Common'>
-					<Directory Id='TortoioseOverlays' Name='TortoiseOverlays'>
+				<Directory Id="$(var.cf)" Name="Common">
+					<Directory Id="TortoioseOverlays" Name="TortoiseOverlays">
 						<Directory Id="D__icons" Name="icons">
-							<Directory Id="D__iconscvsclassic" Name="CVSClassic" >
+							<Directory Id="D__iconscvsclassic" Name="CVSClassic">
 								<Component Id="C__iconscvsclassic" Guid="$(var.GuidIconsCVSClassic)" Win64="$(var.Win64YesNo)">
 									<File Id="F__CVSClassicConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\ConflictIcon.ico" KeyPath="yes" />
 									<File Id="F__CVSClassicInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\NormalIcon.ico" />
@@ -627,7 +627,7 @@
 								</Component>
 							</Directory>
 
-							<Directory Id="D__iconsmodern" Name="Modern" >
+							<Directory Id="D__iconsmodern" Name="Modern">
 								<Component Id="C__iconsmodern" Guid="$(var.GuidIconsModern)" Win64="$(var.Win64YesNo)">
 									<File Id="F__ModernConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\ConflictIcon.ico" KeyPath="yes" />
 									<File Id="F__ModernInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\NormalIcon.ico" />
@@ -641,7 +641,7 @@
 								</Component>
 							</Directory>
 
-							<Directory Id="D__iconssubclipse" Name="Subclipse" >
+							<Directory Id="D__iconssubclipse" Name="Subclipse">
 								<Component Id="C__iconsmarkphippard" Guid="$(var.GuidIconsMarkPhippard)" Win64="$(var.Win64YesNo)">
 									<File Id="F__SubclipseConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\ConflictIcon.ico" KeyPath="yes" />
 									<File Id="F__SubclipseInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\NormalIcon.ico" />
@@ -655,7 +655,7 @@
 								</Component>
 							</Directory>
 
-							<Directory Id="D__iconsstraight" Name="Straight" >
+							<Directory Id="D__iconsstraight" Name="Straight">
 								<Component Id="C__iconsstraight" Guid="$(var.GuidIconsStraight)" Win64="$(var.Win64YesNo)">
 									<File Id="F__StraightConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\ConflictIcon.ico" KeyPath="yes" />
 									<File Id="F__StraightInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\NormalIcon.ico" />
@@ -669,7 +669,7 @@
 								</Component>
 							</Directory>
 
-							<Directory Id="D__iconsfunction" Name="Function" >
+							<Directory Id="D__iconsfunction" Name="Function">
 								<Component Id="C__iconsfunction" Guid="$(var.GuidIconsFunction)" Win64="$(var.Win64YesNo)">
 									<File Id="F__FunctionConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Function\ConflictIcon.ico" KeyPath="yes" />
 									<File Id="F__FunctionInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Function\NormalIcon.ico" />
@@ -683,7 +683,7 @@
 								</Component>
 							</Directory>
 
-							<Directory Id="D__iconsdechenesxp" Name="DechenesXP" >
+							<Directory Id="D__iconsdechenesxp" Name="DechenesXP">
 								<Component Id="C__iconsdechenesxp" Guid="$(var.GuidIconsDechenesXP)" Win64="$(var.Win64YesNo)">
 									<File Id="F__DechenesXPConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesXP\ConflictIcon.ico" KeyPath="yes" />
 									<File Id="F__DechenesXPInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesXP\NormalIcon.ico" />
@@ -697,7 +697,7 @@
 								</Component>
 							</Directory>
 
-							<Directory Id="D__iconsdechenesvista" Name="DechenesVista" >
+							<Directory Id="D__iconsdechenesvista" Name="DechenesVista">
 								<Component Id="C__iconsdechenesvista" Guid="$(var.GuidIconsDechenesVista)" Win64="$(var.Win64YesNo)">
 									<File Id="F__DechenesVistaConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesVista\ConflictIcon.ico" KeyPath="yes" />
 									<File Id="F__DechenesVistaInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesVista\NormalIcon.ico" />
@@ -711,7 +711,7 @@
 								</Component>
 							</Directory>
 
-							<Directory Id="D__iconsblip" Name="Blip" >
+							<Directory Id="D__iconsblip" Name="Blip">
 								<Component Id="C__iconsblip" Guid="$(var.GuidIconsBlip)" Win64="$(var.Win64YesNo)">
 									<File Id="F__BlipConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip\ConflictIcon.ico" KeyPath="yes" />
 									<File Id="F__BlipInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip\NormalIcon.ico" />
@@ -725,7 +725,7 @@
 								</Component>
 							</Directory>
 
-							<Directory Id="D__iconsblipclean" Name="BlipClean" >
+							<Directory Id="D__iconsblipclean" Name="BlipClean">
 								<Component Id="C__iconsblipclean" Guid="$(var.GuidIconsBlipClean)" Win64="$(var.Win64YesNo)">
 									<File Id="F__BlipCleanConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip Clean\ConflictIcon.ico" KeyPath="yes" />
 									<File Id="F__BlipCleanInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip Clean\NormalIcon.ico" />
@@ -739,7 +739,7 @@
 								</Component>
 							</Directory>
 
-							<Directory Id="D__iconsmufwin7" Name="MufWin7" >
+							<Directory Id="D__iconsmufwin7" Name="MufWin7">
 								<Component Id="C__iconsmufwin7" Guid="$(var.GuidIconsMufWin7)" Win64="$(var.Win64YesNo)">
 									<File Id="F__MufWin7ConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\MufWin7\ConflictIcon.ico" KeyPath="yes" />
 									<File Id="F__MufWin7InSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\MufWin7\NormalIcon.ico" />
@@ -753,7 +753,7 @@
 								</Component>
 							</Directory>
 
-							<Directory Id="D__iconswin10" Name="Win10" >
+							<Directory Id="D__iconswin10" Name="Win10">
 								<Component Id="C__iconswin10" Guid="$(var.GuidIconsWin10)" Win64="$(var.Win64YesNo)">
 									<File Id="F__Win10ConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Win10\ConflictIcon.ico" KeyPath="yes" />
 									<File Id="F__Win10InSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Win10\NormalIcon.ico" />
@@ -767,7 +767,7 @@
 								</Component>
 							</Directory>
 
-							<Directory Id="D__iconsflat" Name="Flat" >
+							<Directory Id="D__iconsflat" Name="Flat">
 								<Component Id="C__iconsflat" Guid="$(var.GuidIconsFlat)" Win64="$(var.Win64YesNo)">
 									<File Id="F__FlatConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Flat\ConflictIcon.ico" KeyPath="yes" />
 									<File Id="F__FlatInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Flat\NormalIcon.ico" />
@@ -781,7 +781,7 @@
 								</Component>
 							</Directory>
 
-							<Directory Id="D__iconsillustration" Name="Illustration" >
+							<Directory Id="D__iconsillustration" Name="Illustration">
 								<Component Id="C__iconsillustration" Guid="$(var.GuidIconsIllustration)" Win64="$(var.Win64YesNo)">
 									<File Id="F__IllustrationConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Illustration\ConflictIcon.ico" KeyPath="yes" />
 									<File Id="F__IllustrationInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Illustration\NormalIcon.ico" />
@@ -795,7 +795,7 @@
 								</Component>
 							</Directory>
 
-							<Directory Id="D__iconsprofessional" Name="Professional" >
+							<Directory Id="D__iconsprofessional" Name="Professional">
 								<Component Id="C__iconsprofessional" Guid="$(var.GuidIconsProfessional)" Win64="$(var.Win64YesNo)">
 									<File Id="F__ProfessionalConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Professional\ConflictIcon.ico" KeyPath="yes" />
 									<File Id="F__ProfessionalInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Professional\NormalIcon.ico" />
@@ -809,7 +809,7 @@
 								</Component>
 							</Directory>
 
-							<Directory Id="D__iconsribbon" Name="Ribbon" >
+							<Directory Id="D__iconsribbon" Name="Ribbon">
 								<Component Id="C__iconsribbon" Guid="$(var.GuidIconsRibbon)" Win64="$(var.Win64YesNo)">
 									<File Id="F__RibbonConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Ribbon\ConflictIcon.ico" KeyPath="yes" />
 									<File Id="F__RibbonInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Ribbon\NormalIcon.ico" />
@@ -829,7 +829,3 @@
 		</Directory>
 	</Directory>
 </Include>
-<!--
-	</Fragment>
-</Wix>
--->
