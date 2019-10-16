@@ -42,156 +42,156 @@
 
 				<Component Id="C__shellregistry" Guid="$(var.GuidShellRegistry)" Win64="$(var.Win64YesNo)">
 					<?if $(var.Platform) = "x86" ?>
-					<RegistryValue Root="HKLM" Key="Software\Classes\Drive\shellex\ContextMenuHandlers\TortoiseGit" KeyPath="yes" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\Drive\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\Directory\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\Directory\shellex\DragDropHandlers\TortoiseGit" Value="{$(var.GuidDropHandler)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\Directory\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\Directory\Background\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\Folder\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\LibraryLocation\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\LibraryFolder\background\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\Folder\shellex\DragDropHandlers\TortoiseGit" Value="{$(var.GuidDropHandler)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidAdded)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidAdded)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidAdded)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidLocked)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidLocked)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidLocked)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidNormal)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidNormal)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidNormal)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidModified)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidModified)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidModified)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidConflict)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidConflict)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidConflict)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\lnkfile\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\InternetShortcut\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\*\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\*\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\Directory\shellex\CopyHookHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="Drive\shellex\ContextMenuHandlers\TortoiseGit" KeyPath="yes" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="Drive\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="Directory\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="Directory\shellex\DragDropHandlers\TortoiseGit" Value="{$(var.GuidDropHandler)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="Directory\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="Directory\Background\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="Folder\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="LibraryLocation\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="LibraryFolder\background\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="Folder\shellex\DragDropHandlers\TortoiseGit" Value="{$(var.GuidDropHandler)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidAdded)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidAdded)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidAdded)}" Value="TortoiseGit" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidLocked)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidLocked)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidLocked)}" Value="TortoiseGit" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDeleted)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDeleted)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDeleted)}" Value="TortoiseGit" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidNormal)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidNormal)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidNormal)}" Value="TortoiseGit" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidReadonly)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidReadonly)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidReadonly)}" Value="TortoiseGit" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUncontrolled)}" Value="TortoiseGit" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidModified)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidModified)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidModified)}" Value="TortoiseGit" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDropHandler)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDropHandler)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDropHandler)}" Value="TortoiseGit" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidConflict)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidConflict)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidConflict)}" Value="TortoiseGit" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidIgnored)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidIgnored)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidIgnored)}" Value="TortoiseGit" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUnversioned)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUnversioned)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUnversioned)}" Value="TortoiseGit" Type="string" />
+					<RegistryValue Root="HKCR" Key="lnkfile\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="InternetShortcut\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="*\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="*\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="Directory\shellex\CopyHookHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
 					<?endif ?>
 					<?if $(var.Platform) = "x64" ?>
-					<RegistryValue Root="HKLM" Key="Software\Classes\Drive\shellex\ContextMenuHandlers\TortoiseGit" KeyPath="yes" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\Drive\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\Directory\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\Directory\shellex\DragDropHandlers\TortoiseGit" Value="{$(var.GuidDropHandler)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\Directory\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\Directory\Background\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\Folder\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\LibraryLocation\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\LibraryFolder\background\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\Folder\shellex\DragDropHandlers\TortoiseGit" Value="{$(var.GuidDropHandler)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidAdded)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidAdded)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidAdded)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidLocked)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidLocked)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidLocked)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidNormal)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidNormal)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidNormal)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidModified)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidModified)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidModified)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidConflict)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidConflict)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidConflict)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\lnkfile\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\InternetShortcut\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\*\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\*\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\Directory\shellex\CopyHookHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="Drive\shellex\ContextMenuHandlers\TortoiseGit" KeyPath="yes" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="Drive\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="Directory\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="Directory\shellex\DragDropHandlers\TortoiseGit" Value="{$(var.GuidDropHandler)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="Directory\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="Directory\Background\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="Folder\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="LibraryLocation\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="LibraryFolder\background\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="Folder\shellex\DragDropHandlers\TortoiseGit" Value="{$(var.GuidDropHandler)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidAdded)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidAdded)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidAdded)}" Value="TortoiseGit" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidLocked)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidLocked)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidLocked)}" Value="TortoiseGit" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDeleted)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDeleted)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDeleted)}" Value="TortoiseGit" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidNormal)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidNormal)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidNormal)}" Value="TortoiseGit" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidReadonly)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidReadonly)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidReadonly)}" Value="TortoiseGit" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUncontrolled)}" Value="TortoiseGit" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidModified)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidModified)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidModified)}" Value="TortoiseGit" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDropHandler)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDropHandler)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDropHandler)}" Value="TortoiseGit" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidConflict)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidConflict)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidConflict)}" Value="TortoiseGit" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidIgnored)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidIgnored)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidIgnored)}" Value="TortoiseGit" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUnversioned)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUnversioned)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUnversioned)}" Value="TortoiseGit" Type="string" />
+					<RegistryValue Root="HKCR" Key="lnkfile\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="InternetShortcut\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="*\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="*\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="Directory\shellex\CopyHookHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
 					<?endif ?>
 				</Component>
 				<?if $(var.Platform) = "x64" ?>
 				<Component Id="C__shellregistry32" Guid="$(var.GuidShellRegistry32)" Win64="no">
-					<RegistryValue Root="HKLM" Key="Software\Classes\Drive\shellex\ContextMenuHandlers\TortoiseGit" KeyPath="yes" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\Drive\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\Directory\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\Directory\shellex\DragDropHandlers\TortoiseGit" Value="{$(var.GuidDropHandler)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\Directory\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\Directory\Background\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\Folder\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\LibraryLocation\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\LibraryFolder\background\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\Folder\shellex\DragDropHandlers\TortoiseGit" Value="{$(var.GuidDropHandler)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidAdded)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidAdded)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidAdded)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidLocked)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidLocked)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidLocked)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidNormal)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidNormal)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidNormal)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidModified)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidModified)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidModified)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidConflict)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidConflict)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidConflict)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\lnkfile\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\InternetShortcut\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\*\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\*\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\Directory\shellex\CopyHookHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="Drive\shellex\ContextMenuHandlers\TortoiseGit" KeyPath="yes" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="Drive\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="Directory\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="Directory\shellex\DragDropHandlers\TortoiseGit" Value="{$(var.GuidDropHandler)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="Directory\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="Directory\Background\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="Folder\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="LibraryLocation\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="LibraryFolder\background\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="Folder\shellex\DragDropHandlers\TortoiseGit" Value="{$(var.GuidDropHandler)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidAdded)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidAdded)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidAdded)}" Value="TortoiseGit" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidLocked)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidLocked)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidLocked)}" Value="TortoiseGit" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDeleted)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDeleted)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDeleted)}" Value="TortoiseGit" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidNormal)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidNormal)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidNormal)}" Value="TortoiseGit" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidReadonly)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidReadonly)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidReadonly)}" Value="TortoiseGit" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUncontrolled)}" Value="TortoiseGit" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidModified)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidModified)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidModified)}" Value="TortoiseGit" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDropHandler)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDropHandler)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDropHandler)}" Value="TortoiseGit" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidConflict)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidConflict)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidConflict)}" Value="TortoiseGit" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidIgnored)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidIgnored)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidIgnored)}" Value="TortoiseGit" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUnversioned)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUnversioned)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUnversioned)}" Value="TortoiseGit" Type="string" />
+					<RegistryValue Root="HKCR" Key="lnkfile\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="InternetShortcut\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="*\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="*\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="Directory\shellex\CopyHookHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
 				</Component>
 				<?endif ?>
 
@@ -225,16 +225,16 @@
 					<RegistryValue Root="HKLM" Key="Software\TortoiseGit\Capabilities\UrlAssociations" Name="smartgit" Value="TortoiseGitURL" Type="string" />
 					<RegistryValue Root="HKLM" Key="Software\TortoiseGit\Capabilities\UrlAssociations" Name="git" Value="TortoiseGitURL" Type="string" />
 					<RegistryValue Root="HKLM" Key="Software\TortoiseGit\Capabilities\UrlAssociations" Name="x-github-client" Value="TortoiseGitURL" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\TortoiseGitURL" Value="URL: TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\TortoiseGitURL" Name="FriendlyTypeName" Value="URL: TortoiseGit" Type="string"/>
-					<RegistryValue Root="HKLM" Key="Software\Classes\TortoiseGitURL" Name="URL Protocol" Value="" Type="string"/>
-					<RegistryValue Root="HKLM" Key="Software\Classes\TortoiseGitURL\DefaultIcon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,0" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\TortoiseGitURL\shell\open\command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /urlhandler:&quot;%1&quot;" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\TortoiseGitURL.git" Value="URL: TortoiseGit" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\TortoiseGitURL.git" Name="FriendlyTypeName" Value="URL: TortoiseGit" Type="string"/>
-					<RegistryValue Root="HKLM" Key="Software\Classes\TortoiseGitURL.git" Name="URL Protocol" Value="" Type="string"/>
-					<RegistryValue Root="HKLM" Key="Software\Classes\TortoiseGitURL.git\DefaultIcon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,0" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Classes\TortoiseGitURL.git\shell\open\command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:clone /url:&quot;%1&quot;" Type="string" />
+					<RegistryValue Root="HKCR" Key="TortoiseGitURL" Value="URL: TortoiseGit" Type="string" />
+					<RegistryValue Root="HKCR" Key="TortoiseGitURL" Name="FriendlyTypeName" Value="URL: TortoiseGit" Type="string"/>
+					<RegistryValue Root="HKCR" Key="TortoiseGitURL" Name="URL Protocol" Value="" Type="string"/>
+					<RegistryValue Root="HKCR" Key="TortoiseGitURL\DefaultIcon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,0" Type="string" />
+					<RegistryValue Root="HKCR" Key="TortoiseGitURL\shell\open\command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /urlhandler:&quot;%1&quot;" Type="string" />
+					<RegistryValue Root="HKCR" Key="TortoiseGitURL.git" Value="URL: TortoiseGit" Type="string" />
+					<RegistryValue Root="HKCR" Key="TortoiseGitURL.git" Name="FriendlyTypeName" Value="URL: TortoiseGit" Type="string"/>
+					<RegistryValue Root="HKCR" Key="TortoiseGitURL.git" Name="URL Protocol" Value="" Type="string"/>
+					<RegistryValue Root="HKCR" Key="TortoiseGitURL.git\DefaultIcon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,0" Type="string" />
+					<RegistryValue Root="HKCR" Key="TortoiseGitURL.git\shell\open\command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:clone /url:&quot;%1&quot;" Type="string" />
 				</Component>
 				<?if $(var.Platform) = "x64" ?>
 				<Component Id="C__machineregistry32" Guid="$(var.GuidMachineRegistry32)" Win64="no">
@@ -553,34 +553,34 @@
 					<?endif ?>
 
 					<Component Id="ProtocolTGit" Guid="$(var.GuidProtocolTGit)" Win64="$(var.Win64YesNo)">
-						<RegistryValue Root="HKLM" Key="Software\Classes\tgit" Value="URL: TGit Protocol" Type="string" />
-						<RegistryValue Root="HKLM" Key="Software\Classes\tgit" Name="URL Protocol" Value="" Type="string"/>
-						<RegistryValue Root="HKLM" Key="Software\Classes\tgit\DefaultIcon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,0" Type="string" />
-						<RegistryValue Root="HKLM" Key="Software\Classes\tgit\shell\open\command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /urlhandler:&quot;%1&quot;" Type="string" KeyPath="yes"/>
+						<RegistryValue Root="HKCR" Key="tgit" Value="URL: TGit Protocol" Type="string" />
+						<RegistryValue Root="HKCR" Key="tgit" Name="URL Protocol" Value="" Type="string"/>
+						<RegistryValue Root="HKCR" Key="tgit\DefaultIcon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,0" Type="string" />
+						<RegistryValue Root="HKCR" Key="tgit\shell\open\command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /urlhandler:&quot;%1&quot;" Type="string" KeyPath="yes"/>
 					</Component>
 					<Component Id="ProtocolGit" Guid="$(var.GuidProtocolGit)" Win64="$(var.Win64YesNo)">
-						<RegistryValue Root="HKLM" Key="Software\Classes\git" Value="URL: Git Protocol" Type="string" />
-						<RegistryValue Root="HKLM" Key="Software\Classes\git" Name="URL Protocol" Value="" Type="string"/>
-						<RegistryValue Root="HKLM" Key="Software\Classes\git\DefaultIcon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,0" Type="string" />
-						<RegistryValue Root="HKLM" Key="Software\Classes\git\shell\open\command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:clone /url:&quot;%1&quot;" Type="string" KeyPath="yes"/>
+						<RegistryValue Root="HKCR" Key="git" Value="URL: Git Protocol" Type="string" />
+						<RegistryValue Root="HKCR" Key="git" Name="URL Protocol" Value="" Type="string"/>
+						<RegistryValue Root="HKCR" Key="git\DefaultIcon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,0" Type="string" />
+						<RegistryValue Root="HKCR" Key="git\shell\open\command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:clone /url:&quot;%1&quot;" Type="string" KeyPath="yes"/>
 					</Component>
 					<Component Id="ProtocolGithub" Guid="$(var.GuidProtocolGithub)" Win64="$(var.Win64YesNo)">
-						<RegistryValue Root="HKLM" Key="Software\Classes\github-windows" Value="URL: Github-Windows Protocol" Type="string" />
-						<RegistryValue Root="HKLM" Key="Software\Classes\github-windows" Name="URL Protocol" Value="" Type="string"/>
-						<RegistryValue Root="HKLM" Key="Software\Classes\github-windows\DefaultIcon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,0" Type="string" />
-						<RegistryValue Root="HKLM" Key="Software\Classes\github-windows\shell\open\command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /urlhandler:&quot;%1&quot;" Type="string" KeyPath="yes"/>
+						<RegistryValue Root="HKCR" Key="github-windows" Value="URL: Github-Windows Protocol" Type="string" />
+						<RegistryValue Root="HKCR" Key="github-windows" Name="URL Protocol" Value="" Type="string"/>
+						<RegistryValue Root="HKCR" Key="github-windows\DefaultIcon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,0" Type="string" />
+						<RegistryValue Root="HKCR" Key="github-windows\shell\open\command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /urlhandler:&quot;%1&quot;" Type="string" KeyPath="yes"/>
 					</Component>
 					<Component Id="ProtocolXGithubClient" Guid="$(var.GuidProtocolXGithubClient)" Win64="$(var.Win64YesNo)">
-						<RegistryValue Root="HKLM" Key="Software\Classes\x-github-client" Value="URL: X-Github-Client Protocol" Type="string" />
-						<RegistryValue Root="HKLM" Key="Software\Classes\x-github-client" Name="URL Protocol" Value="" Type="string"/>
-						<RegistryValue Root="HKLM" Key="Software\Classes\x-github-client\DefaultIcon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,0" Type="string" />
-						<RegistryValue Root="HKLM" Key="Software\Classes\x-github-client\shell\open\command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /urlhandler:&quot;%1&quot;" Type="string" KeyPath="yes"/>
+						<RegistryValue Root="HKCR" Key="x-github-client" Value="URL: X-Github-Client Protocol" Type="string" />
+						<RegistryValue Root="HKCR" Key="x-github-client" Name="URL Protocol" Value="" Type="string"/>
+						<RegistryValue Root="HKCR" Key="x-github-client\DefaultIcon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,0" Type="string" />
+						<RegistryValue Root="HKCR" Key="x-github-client\shell\open\command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /urlhandler:&quot;%1&quot;" Type="string" KeyPath="yes"/>
 					</Component>
 					<Component Id="ProtocolSmartgit" Guid="$(var.GuidProtocolSmartgit)" Win64="$(var.Win64YesNo)">
-						<RegistryValue Root="HKLM" Key="Software\Classes\smartgit" Value="URL: Smartgit Protocol" Type="string" />
-						<RegistryValue Root="HKLM" Key="Software\Classes\smartgit" Name="URL Protocol" Value="" Type="string"/>
-						<RegistryValue Root="HKLM" Key="Software\Classes\smartgit\DefaultIcon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,0" Type="string" />
-						<RegistryValue Root="HKLM" Key="Software\Classes\smartgit\shell\open\command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /urlhandler:&quot;%1&quot;" Type="string" KeyPath="yes"/>
+						<RegistryValue Root="HKCR" Key="smartgit" Value="URL: Smartgit Protocol" Type="string" />
+						<RegistryValue Root="HKCR" Key="smartgit" Name="URL Protocol" Value="" Type="string"/>
+						<RegistryValue Root="HKCR" Key="smartgit\DefaultIcon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,0" Type="string" />
+						<RegistryValue Root="HKCR" Key="smartgit\shell\open\command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /urlhandler:&quot;%1&quot;" Type="string" KeyPath="yes"/>
 					</Component>
 
 					<Component Id="C__TortoiseGitTools" Guid="$(var.GuidTortoiseGitTools)" Win64="$(var.Win64YesNo)">
@@ -606,25 +606,25 @@
 						<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\App Paths\GitWCRev.exe" Value="[INSTALLDIR]bin\GitWCRev.exe" Type="string" />
 
 						<!-- register the GitWCRev COM-Object -->
-						<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidGitWCRev)}\LocalServer32" Value="[INSTALLDIR]bin\GitWCRevCOM.exe /automation" Type="string" />
-						<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidGitWCRev)}\ProgID" Value="GitWCRev.object.1" Type="string" />
-						<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidGitWCRev)}\VersionIndependentProgID" Value="GitWCRev.object" Type="string" />
-						<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidGitWCRev)}\TypeLib" Value="{$(var.GuidGitWCRevTypeLib)}" Type="string" />
-						<RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidGitWCRev)}" Value="GitWCRev Server Object" Type="string" />
-						<RegistryValue Root="HKLM" Key="Software\Classes\GitWCRev.object" Value="GitWCRev Server Object" Type="string" />
-						<RegistryValue Root="HKLM" Key="Software\Classes\GitWCRev.object\CLSID" Value="{$(var.GuidGitWCRev)}" Type="string" />
-						<RegistryValue Root="HKLM" Key="Software\Classes\GitWCRev.object\CurVer" Value="GitWCRev.object.1" Type="string" />
-						<RegistryValue Root="HKLM" Key="Software\Classes\GitWCRev.object.1" Value="GitWCRev Server Object" Type="string" />
-						<RegistryValue Root="HKLM" Key="Software\Classes\GitWCRev.object.1\CLSID" Value="{$(var.GuidGitWCRev)}" Type="string" />
-						<RegistryValue Root="HKLM" Key="Software\Classes\TypeLib\{$(var.GuidGitWCRevTypeLib)}\1.0" Value="GitWCRev Type Library" Type="string" />
-						<RegistryValue Root="HKLM" Key="Software\Classes\TypeLib\{$(var.GuidGitWCRevTypeLib)}\1.0\0\win32" Value="[INSTALLDIR]bin\GitWCRevCOM.exe" Type="string" />
-						<RegistryValue Root="HKLM" Key="Software\Classes\TypeLib\{$(var.GuidGitWCRevTypeLib)}\1.0\FLAGS" Value="0" Type="string" />
-						<RegistryValue Root="HKLM" Key="Software\Classes\TypeLib\{$(var.GuidGitWCRevTypeLib)}\1.0\HELPDIR" Value="[INSTALLDIR]" Type="string" />
-						<RegistryValue Root="HKLM" Key="Software\Classes\Interface\{$(var.GuidGitWCRevInterface)}" Value="IGitWCRev" Type="string" />
-						<RegistryValue Root="HKLM" Key="Software\Classes\Interface\{$(var.GuidGitWCRevInterface)}\ProxyStubClsid" Value="{00020424-0000-0000-C000-000000000046}" Type="string" />
-						<RegistryValue Root="HKLM" Key="Software\Classes\Interface\{$(var.GuidGitWCRevInterface)}\ProxyStubClsid32" Value="{00020424-0000-0000-C000-000000000046}" Type="string" />
-						<RegistryValue Root="HKLM" Key="Software\Classes\Interface\{$(var.GuidGitWCRevInterface)}\TypeLib" Value="{$(var.GuidGitWCRevTypeLib)}" Type="string" />
-						<RegistryValue Root="HKLM" Key="Software\Classes\Interface\{$(var.GuidGitWCRevInterface)}\TypeLib" Name="Version" Value="1.0" Type="string" />
+						<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidGitWCRev)}\LocalServer32" Value="[INSTALLDIR]bin\GitWCRevCOM.exe /automation" Type="string" />
+						<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidGitWCRev)}\ProgID" Value="GitWCRev.object.1" Type="string" />
+						<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidGitWCRev)}\VersionIndependentProgID" Value="GitWCRev.object" Type="string" />
+						<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidGitWCRev)}\TypeLib" Value="{$(var.GuidGitWCRevTypeLib)}" Type="string" />
+						<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidGitWCRev)}" Value="GitWCRev Server Object" Type="string" />
+						<RegistryValue Root="HKCR" Key="GitWCRev.object" Value="GitWCRev Server Object" Type="string" />
+						<RegistryValue Root="HKCR" Key="GitWCRev.object\CLSID" Value="{$(var.GuidGitWCRev)}" Type="string" />
+						<RegistryValue Root="HKCR" Key="GitWCRev.object\CurVer" Value="GitWCRev.object.1" Type="string" />
+						<RegistryValue Root="HKCR" Key="GitWCRev.object.1" Value="GitWCRev Server Object" Type="string" />
+						<RegistryValue Root="HKCR" Key="GitWCRev.object.1\CLSID" Value="{$(var.GuidGitWCRev)}" Type="string" />
+						<RegistryValue Root="HKCR" Key="TypeLib\{$(var.GuidGitWCRevTypeLib)}\1.0" Value="GitWCRev Type Library" Type="string" />
+						<RegistryValue Root="HKCR" Key="TypeLib\{$(var.GuidGitWCRevTypeLib)}\1.0\0\win32" Value="[INSTALLDIR]bin\GitWCRevCOM.exe" Type="string" />
+						<RegistryValue Root="HKCR" Key="TypeLib\{$(var.GuidGitWCRevTypeLib)}\1.0\FLAGS" Value="0" Type="string" />
+						<RegistryValue Root="HKCR" Key="TypeLib\{$(var.GuidGitWCRevTypeLib)}\1.0\HELPDIR" Value="[INSTALLDIR]" Type="string" />
+						<RegistryValue Root="HKCR" Key="Interface\{$(var.GuidGitWCRevInterface)}" Value="IGitWCRev" Type="string" />
+						<RegistryValue Root="HKCR" Key="Interface\{$(var.GuidGitWCRevInterface)}\ProxyStubClsid" Value="{00020424-0000-0000-C000-000000000046}" Type="string" />
+						<RegistryValue Root="HKCR" Key="Interface\{$(var.GuidGitWCRevInterface)}\ProxyStubClsid32" Value="{00020424-0000-0000-C000-000000000046}" Type="string" />
+						<RegistryValue Root="HKCR" Key="Interface\{$(var.GuidGitWCRevInterface)}\TypeLib" Value="{$(var.GuidGitWCRevTypeLib)}" Type="string" />
+						<RegistryValue Root="HKCR" Key="Interface\{$(var.GuidGitWCRevInterface)}\TypeLib" Name="Version" Value="1.0" Type="string" />
 					</Component>
 
 					<?if $(var.Platform) = "x64" ?>
@@ -702,20 +702,20 @@
 
 					<Component Id="C__TortoiseUDiff" Guid="$(var.GuidTortoiseUDiff)" Win64="$(var.Win64YesNo)">
 						<File Id="F__TortoiseUDiff" Name="TortoiseGitUDiff.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitUDiff.exe" KeyPath="yes" />
-						<RegistryValue Root="HKLM" Key="Software\Classes\tortoisegit.diff.document" Value="Diff File" Type="string" />
-						<RegistryValue Root="HKLM" Key="Software\Classes\tortoisegit.diff.document\shell\open\command" Value="[INSTALLDIR]bin\TortoiseGitUDiff.exe /patchfile:&quot;%1&quot;" Type="string" />
-						<RegistryValue Root="HKLM" Key="Software\Classes\tortoisegit.patch.document" Value="Patch File" Type="string" />
-						<RegistryValue Root="HKLM" Key="Software\Classes\tortoisegit.patch.document\shell\open\command" Value="[INSTALLDIR]bin\TortoiseGitUDiff.exe /patchfile:&quot;%1&quot;" Type="string" />
+						<RegistryValue Root="HKCR" Key="tortoisegit.diff.document" Value="Diff File" Type="string" />
+						<RegistryValue Root="HKCR" Key="tortoisegit.diff.document\shell\open\command" Value="[INSTALLDIR]bin\TortoiseGitUDiff.exe /patchfile:&quot;%1&quot;" Type="string" />
+						<RegistryValue Root="HKCR" Key="tortoisegit.patch.document" Value="Patch File" Type="string" />
+						<RegistryValue Root="HKCR" Key="tortoisegit.patch.document\shell\open\command" Value="[INSTALLDIR]bin\TortoiseGitUDiff.exe /patchfile:&quot;%1&quot;" Type="string" />
 
 						<RegistryValue Root="HKLM" Key="Software\TortoiseGit\Capabilities\FileAssociations" Name=".diff" Value="tortoisegit.diff.document" Type="string" />
 						<RegistryValue Root="HKLM" Key="Software\TortoiseGit\Capabilities\FileAssociations" Name=".patch" Value="tortoisegit.patch.document" Type="string" />
-						<RegistryValue Root="HKLM" Key="Software\Classes\.diff\OpenWithProgids" Name="tortoisegit.diff.document" Value="" Type="string" />
-						<RegistryValue Root="HKLM" Key="Software\Classes\.patch\OpenWithProgids" Name="tortoisegit.patch.document" Value="" Type="string" />
+						<RegistryValue Root="HKCR" Key=".diff\OpenWithProgids" Name="tortoisegit.diff.document" Value="" Type="string" />
+						<RegistryValue Root="HKCR" Key=".patch\OpenWithProgids" Name="tortoisegit.patch.document" Value="" Type="string" />
 					</Component>
 
 					<Component Id="C__TortoiseUDiffAssoc" Guid="$(var.GuidTortoiseUDiffAssoc)" Win64="$(var.Win64YesNo)">
-						<RegistryValue Root="HKLM" Key="Software\Classes\.patch" Value="tortoisegit.patch.document" Type="string" />
-						<RegistryValue Root="HKLM" Key="Software\Classes\.diff" KeyPath="yes" Value="tortoisegit.diff.document" Type="string" />
+						<RegistryValue Root="HKCR" Key=".patch" Value="tortoisegit.patch.document" Type="string" />
+						<RegistryValue Root="HKCR" Key=".diff" KeyPath="yes" Value="tortoisegit.diff.document" Type="string" />
 					</Component>
 
 					<Component Id="C_LanguagePacks" Guid="$(var.GuidRemoveLanguagePacks)" Win64="$(var.Win64YesNo)" >
