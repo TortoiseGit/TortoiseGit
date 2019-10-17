@@ -11,6 +11,7 @@
 	<?define PackageDescription="Windows Shell Integration For Git Source Control, v$(var.VersionNumberUserVisible)" ?>
 	<?define PackageManufacturer="TortoiseGit team" ?>
 	<?define TortoiseGitOrg="https://tortoisegit.org/"?>
+	<?define ApplicationDescription="TortoiseGit is a Windows Shell Interface to Git and provides overlay icons showing the file status, a powerful context menu for Git and much more!"?>
 
 	<!-- Platform specifics ........................................................... -->
 
