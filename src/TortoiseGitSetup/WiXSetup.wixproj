@@ -57,6 +57,7 @@
 		<Content Include="FeaturesFragment.wxi" />
 		<Content Include="Includes.wxi" />
 		<Content Include="StructureFragment.wxi" />
+		<Content Include="TortoiseUDiff.wxi" />
 		<Content Include="UIFragment.wxi" />
 		<Content Include="VersionNumberInclude.wxi" />
 		<Content Include="Win7LibraryAndExplorerToolbarActions.wxi" />

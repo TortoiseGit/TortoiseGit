@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Include>
+	<DirectoryRef Id="D__Bin">
+		<Component Id="C__TortoiseUDiff" Guid="$(var.GuidTortoiseUDiff)" Win64="$(var.Win64YesNo)">
+			<File Id="F__TortoiseUDiff" Name="TortoiseGitUDiff.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitUDiff.exe" KeyPath="yes" />
+			<RegistryValue Root="HKCR" Key="tortoisegit.diff.document" Value="Diff File" Type="string" />
+			<RegistryValue Root="HKCR" Key="tortoisegit.diff.document\shell\open\command" Value="[INSTALLDIR]bin\TortoiseGitUDiff.exe /patchfile:&quot;%1&quot;" Type="string" />
+			<RegistryValue Root="HKCR" Key="tortoisegit.patch.document" Value="Patch File" Type="string" />
+			<RegistryValue Root="HKCR" Key="tortoisegit.patch.document\shell\open\command" Value="[INSTALLDIR]bin\TortoiseGitUDiff.exe /patchfile:&quot;%1&quot;" Type="string" />
+
+			<RegistryValue Root="HKLM" Key="Software\TortoiseGit\Capabilities\FileAssociations" Name=".diff" Value="tortoisegit.diff.document" Type="string" />
+			<RegistryValue Root="HKLM" Key="Software\TortoiseGit\Capabilities\FileAssociations" Name=".patch" Value="tortoisegit.patch.document" Type="string" />
+			<RegistryValue Root="HKCR" Key=".diff\OpenWithProgids" Name="tortoisegit.diff.document" Value="" Type="string" />
+			<RegistryValue Root="HKCR" Key=".patch\OpenWithProgids" Name="tortoisegit.patch.document" Value="" Type="string" />
+		</Component>
+
+		<Component Id="C__TortoiseUDiffAssoc" Guid="*" Win64="$(var.Win64YesNo)">
+			<RegistryValue Root="HKCR" Key=".patch" Value="tortoisegit.patch.document" Type="string" />
+			<RegistryValue Root="HKCR" Key=".diff" KeyPath="yes" Value="tortoisegit.diff.document" Type="string" />
+		</Component>
+	</DirectoryRef>
+</Include>
