@@ -20,6 +20,7 @@
 		<ComponentRef Id="C__TortoiseIDiffShortcuts" />
 
 		<ComponentRef Id="C__TortoiseUDiff" />
+		<ComponentRef Id="C__TortoiseUDiffMetaData" />
 
 		<ComponentRef Id="C__TortoiseGitGitWCRev" />
 		<?if $(var.Platform) = "x64" ?>
