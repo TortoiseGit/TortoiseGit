@@ -3799,6 +3799,7 @@ BEGIN
     IDS_CHERRYPICK_EMPTY    "The current commit will be empty (e.g., due to conflict resolution). Skip the commit or keep the message only commit?"
     IDS_NOGITREPO           "No valid git repository found."
     IDS_REVERTCOMMITS       "Revert the selected commit(s)?"
+    IDS_COMMON_ANCHESTOR    "Use common anchestor (A...B diff)"
 END
 
 STRINGTABLE

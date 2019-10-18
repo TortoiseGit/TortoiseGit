@@ -9759,6 +9759,10 @@ msgstr ""
 msgid "Use committer names"
 msgstr ""
 
+#. Resource IDs: (IDS_COMMON_ANCHESTOR)
+msgid "Use common anchestor (A...B diff)"
+msgstr ""
+
 #. Resource IDs: (IDS_SMTP_CONFIGURED)
 msgid "Use configured server"
 msgstr ""
