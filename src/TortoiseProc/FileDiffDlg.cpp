@@ -1404,9 +1404,9 @@ void CFileDiffDlg::OnBnClickedDiffoption()
 
 void CFileDiffDlg::OnBnClickedLog()
 {
-	CLogDlg dlg;
-	dlg.SetRange(m_rev1.m_CommitHash.ToString() + L".." + m_rev2.m_CommitHash.ToString());
-	dlg.DoModal();
+	CString cmd;
+	cmd.Format(L"/command:log /range:%s..%s", static_cast<LPCTSTR>(m_rev1.m_CommitHash.ToString()), static_cast<LPCTSTR>(m_rev2.m_CommitHash.ToString()));
+	CAppUtils::RunTortoiseGitProc(cmd);
 }
 
 bool CFileDiffDlg::CheckMultipleDiffs()
