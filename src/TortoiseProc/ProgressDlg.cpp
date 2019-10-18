@@ -367,10 +367,6 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam, LPARAM lParam)
 		m_Databuf.m_critSec.Unlock();
 
 		m_bDone = true;
-		if (m_Animate.IsPlaying() && !m_GitStatus)
-			m_Animate.Play(INT_MAX, INT_MAX, 1);
-		else
-			m_Animate.Stop();
 		m_Progress.SetPos(100);
 		this->DialogEnableWindow(IDOK, TRUE);
 
@@ -404,6 +400,12 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam, LPARAM lParam)
 			text.Remove('\r');
 			CAppUtils::StyleURLs(text, &m_Log);
 		}
+
+		if (m_Animate.IsPlaying() && !m_GitStatus)
+			m_Animate.Play(INT_MAX, INT_MAX, 1);
+		else
+			m_Animate.Stop();
+
 		if (this->m_GitStatus)
 		{
 			m_Progress.SetState(PBST_ERROR);
