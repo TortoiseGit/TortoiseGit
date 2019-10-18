@@ -367,7 +367,10 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam, LPARAM lParam)
 		m_Databuf.m_critSec.Unlock();
 
 		m_bDone = true;
-		m_Animate.Stop();
+		if (m_Animate.IsPlaying() && !m_GitStatus)
+			m_Animate.Play(INT_MAX, INT_MAX, 1);
+		else
+			m_Animate.Stop();
 		m_Progress.SetPos(100);
 		this->DialogEnableWindow(IDOK, TRUE);
 
