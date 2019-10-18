@@ -406,6 +406,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam, LPARAM lParam)
 		}
 		if (this->m_GitStatus)
 		{
+			m_Progress.SetState(PBST_ERROR);
 			if (m_pTaskbarList)
 			{
 				m_pTaskbarList->SetProgressState(m_hWnd, TBPF_ERROR);
