@@ -9759,8 +9759,8 @@ msgstr ""
 msgid "Use committer names"
 msgstr ""
 
-#. Resource IDs: (IDS_COMMON_ANCHESTOR)
-msgid "Use common anchestor (A...B diff)"
+#. Resource IDs: (IDS_COMMON_ANCESTOR)
+msgid "Use common ancestor (A...B diff)"
 msgstr ""
 
 #. Resource IDs: (IDS_SMTP_CONFIGURED)

@@ -67,7 +67,7 @@ CFileDiffDlg::CFileDiffDlg(CWnd* pParent /*=nullptr*/)
 	, m_bIgnoreSpaceChange(false)
 	, m_bIgnoreAllSpace(false)
 	, m_bIgnoreBlankLines(false)
-	, m_bCommonAnchestorDiff(false)
+	, m_bCommonAncestorDiff(false)
 	, m_bIsBare(false)
 	, m_bLoadingRef(FALSE)
 {
@@ -337,11 +337,11 @@ UINT CFileDiffDlg::DiffThread()
 	if( m_rev1.m_CommitHash.IsEmpty() || m_rev2.m_CommitHash.IsEmpty())
 		g_Git.RefreshGitIndex();
 
-	if (m_bCommonAnchestorDiff && !(m_rev1.m_CommitHash.IsEmpty() || m_rev2.m_CommitHash.IsEmpty()))
+	if (m_bCommonAncestorDiff && !(m_rev1.m_CommitHash.IsEmpty() || m_rev2.m_CommitHash.IsEmpty()))
 	{
-		CGitHash commonAnchestor;
-		g_Git.IsFastForward(m_rev1.m_CommitHash.ToString(), m_rev2.m_CommitHash.ToString(), &commonAnchestor);
-		g_Git.GetCommitDiffList(m_rev2.m_CommitHash.ToString(), commonAnchestor.ToString(), m_arFileList, m_bIgnoreSpaceAtEol, m_bIgnoreSpaceChange, m_bIgnoreAllSpace, m_bIgnoreBlankLines);
+		CGitHash commonAncestor;
+		g_Git.IsFastForward(m_rev1.m_CommitHash.ToString(), m_rev2.m_CommitHash.ToString(), &commonAncestor);
+		g_Git.GetCommitDiffList(m_rev2.m_CommitHash.ToString(), commonAncestor.ToString(), m_arFileList, m_bIgnoreSpaceAtEol, m_bIgnoreSpaceChange, m_bIgnoreAllSpace, m_bIgnoreBlankLines);
 	}
 	else
 		g_Git.GetCommitDiffList(m_rev2.m_CommitHash.ToString(), m_rev1.m_CommitHash.ToString(), m_arFileList, m_bIgnoreSpaceAtEol, m_bIgnoreSpaceChange, m_bIgnoreAllSpace, m_bIgnoreBlankLines);
@@ -1368,7 +1368,7 @@ static void AppendMenuChecked(CMenu &menu, UINT nTextID, UINT_PTR nItemID, BOOL 
 #define DIFFOPTION_IGNORESPACECHANGE	2
 #define DIFFOPTION_IGNOREALLSPACE		3
 #define DIFFOPTION_IGNORBLANKLINES		4
-#define DIFFOPTION_COMMONANCHESTOR		5
+#define DIFFOPTION_COMMONANCESTOR		5
 
 void CFileDiffDlg::OnBnClickedDiffoption()
 {
@@ -1381,7 +1381,7 @@ void CFileDiffDlg::OnBnClickedDiffoption()
 		AppendMenuChecked(popup, IDS_DIFFOPTION_IGNOREALLSPACE, DIFFOPTION_IGNOREALLSPACE, m_bIgnoreAllSpace);
 		AppendMenuChecked(popup, IDS_DIFFOPTION_IGNORBLANKLINES, DIFFOPTION_IGNORBLANKLINES, m_bIgnoreBlankLines);
 		popup.AppendMenu(MF_SEPARATOR);
-		AppendMenuChecked(popup, IDS_COMMON_ANCHESTOR, DIFFOPTION_COMMONANCHESTOR, m_bCommonAnchestorDiff);
+		AppendMenuChecked(popup, IDS_COMMON_ANCESTOR, DIFFOPTION_COMMONANCESTOR, m_bCommonAncestorDiff);
 
 		m_tooltips.Pop();
 		RECT rect;
@@ -1405,15 +1405,15 @@ void CFileDiffDlg::OnBnClickedDiffoption()
 			m_bIgnoreBlankLines = !m_bIgnoreBlankLines;
 			OnTimer(IDT_INPUT);
 			break;
-		case DIFFOPTION_COMMONANCHESTOR:
-			m_bCommonAnchestorDiff = !m_bCommonAnchestorDiff;
+		case DIFFOPTION_COMMONANCESTOR:
+			m_bCommonAncestorDiff = !m_bCommonAncestorDiff;
 			OnTimer(IDT_INPUT);
 			break;
 		default:
 			break;
 		}
 		UpdateData(FALSE);
-		m_cDiffOptionsBtn.SetCheck((m_bIgnoreSpaceAtEol || m_bIgnoreSpaceChange || m_bIgnoreAllSpace || m_bIgnoreBlankLines || m_bCommonAnchestorDiff) ? BST_CHECKED : BST_UNCHECKED);
+		m_cDiffOptionsBtn.SetCheck((m_bIgnoreSpaceAtEol || m_bIgnoreSpaceChange || m_bIgnoreAllSpace || m_bIgnoreBlankLines || m_bCommonAncestorDiff) ? BST_CHECKED : BST_UNCHECKED);
 	}
 }
 

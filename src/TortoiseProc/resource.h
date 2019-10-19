@@ -1388,7 +1388,7 @@
 #define IDS_CHERRYPICK_EMPTY            1665
 #define IDS_NOGITREPO                   1666
 #define IDS_REVERTCOMMITS               1667
-#define IDS_COMMON_ANCHESTOR            1668
+#define IDS_COMMON_ANCESTOR             1668
 #define IDC_NOAUTOSELECTSUBMODULES      1669
 #define IDC_COMMIT_DATEPICKER           1670
 #define IDC_COMMIT_TIMEPICKER           1671

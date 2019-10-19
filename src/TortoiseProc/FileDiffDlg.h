@@ -174,7 +174,7 @@ private:
 	bool				m_bIgnoreSpaceChange;
 	bool				m_bIgnoreAllSpace;
 	bool				m_bIgnoreBlankLines;
-	bool				m_bCommonAnchestorDiff;
+	bool				m_bCommonAncestorDiff;
 
 public:
 	CString				m_strRev1;
