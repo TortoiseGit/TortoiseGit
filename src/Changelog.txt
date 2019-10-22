@@ -23,7 +23,7 @@ Released: unreleased
  * Show whitespaces in patch views
  * Fixed issue #3414: Allow users to not display all tags on revision graph
  * Add find functionality to revision graph
- * Fixed issue #4324: FileDiffDlg: Provide a way to view the diff for a pull request branch (in diff options)
+ * Fixed issue #3427: FileDiffDlg: Provide a way to view the diff for a pull request branch (in diff options)
  * Fixed issue #3440: (GUI) Animation should stop when finished, not halt
 
 == Bug Fixes ==
@@ -39,7 +39,7 @@ Released: unreleased
  * Fix potential crashes in TortoiseGitBlame when .mailmap support was enabled
  * Fix potential crash when log is still calculating diffs and rebase dialog loads
  * Prevent possible crash after rebase when writing to reflog fails
- * Ref Browse: Speed up display when having thousands of refs
+ * Fixed issue #3426: Ref Browse: Speed up display when having thousands of refs
  * TortoiseGitMerge: When ignoring comments in TMerge, ignore comment block markers inside strings
  * Fix start commit hook not working for repository hooks
  * Fix potential crashes when log is still loading and submodule diff is requested
