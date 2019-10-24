@@ -222,6 +222,21 @@ int GetStatusUnCleanPath(const TCHAR* wcPath, GitWCRev_t& GitStat)
 
 int GetStatus(const TCHAR* path, GitWCRev_t& GitStat)
 {
+	// Configure libgit2 search paths
+	std::wstring systemConfig = GetSystemGitConfig();
+	if (!systemConfig.empty())
+		git_libgit2_opts(GIT_OPT_SET_SEARCH_PATH, GIT_CONFIG_LEVEL_SYSTEM, CUnicodeUtils::StdGetUTF8(systemConfig).c_str());
+	else
+		git_libgit2_opts(GIT_OPT_SET_SEARCH_PATH, GIT_CONFIG_LEVEL_SYSTEM, "");
+	std::string home(CUnicodeUtils::StdGetUTF8(GetHomePath()));
+	git_libgit2_opts(GIT_OPT_SET_SEARCH_PATH, GIT_CONFIG_LEVEL_GLOBAL, (home + "\\.gitconfig").c_str());
+	git_libgit2_opts(GIT_OPT_SET_SEARCH_PATH, GIT_CONFIG_LEVEL_XDG, (home + "\\.config\\git\\config").c_str());
+	std::wstring programDataConfig = GetProgramDataConfig();
+	if (!programDataConfig.empty())
+		git_libgit2_opts(GIT_OPT_SET_SEARCH_PATH, GIT_CONFIG_LEVEL_PROGRAMDATA, CUnicodeUtils::StdGetUTF8(programDataConfig).c_str());
+	else
+		git_libgit2_opts(GIT_OPT_SET_SEARCH_PATH, GIT_CONFIG_LEVEL_PROGRAMDATA, "");
+
 	std::string pathA = CUnicodeUtils::StdGetUTF8(path);
 	CAutoBuf dotgitdir;
 	if (git_repository_discover(dotgitdir, pathA.c_str(), 0, nullptr) < 0)
@@ -233,20 +248,6 @@ int GetStatus(const TCHAR* path, GitWCRev_t& GitStat)
 
 	if (git_repository_is_bare(repo))
 		return ERR_NOWC;
-
-	CAutoConfig config(true);
-	std::string gitdir(dotgitdir->ptr, dotgitdir->size);
-	git_config_add_file_ondisk(config, (gitdir + "config").c_str(), GIT_CONFIG_LEVEL_LOCAL, repo, FALSE);
-	std::string home(CUnicodeUtils::StdGetUTF8(GetHomePath()));
-	git_config_add_file_ondisk(config, (home + "\\.gitconfig").c_str(), GIT_CONFIG_LEVEL_GLOBAL, repo, FALSE);
-	git_config_add_file_ondisk(config, (home + "\\.config\\git\\config").c_str(), GIT_CONFIG_LEVEL_XDG, repo, FALSE);
-	std::wstring systemConfig = GetSystemGitConfig();
-	if (!systemConfig.empty())
-		git_config_add_file_ondisk(config, CUnicodeUtils::StdGetUTF8(systemConfig).c_str(), GIT_CONFIG_LEVEL_SYSTEM, repo, FALSE);
-	std::wstring programDataConfig = GetProgramDataConfig();
-	if (!programDataConfig.empty())
-		git_config_add_file_ondisk(config, CUnicodeUtils::StdGetUTF8(programDataConfig).c_str(), GIT_CONFIG_LEVEL_PROGRAMDATA, repo, FALSE);
-	git_repository_set_config(repo, config);
 
 	if (git_repository_head_unborn(repo))
 	{
