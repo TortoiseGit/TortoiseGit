@@ -30,6 +30,7 @@ IMPLEMENT_DYNAMIC(CFirstStartWizardGit, CFirstStartWizardBasePage)
 #define CHECK_NEWGIT_TIMER	100
 
 CFirstStartWizardGit::CFirstStartWizardGit() : CFirstStartWizardBasePage(CFirstStartWizardGit::IDD)
+	, m_dwMsysGitVersion(CRegDWORD(L"Software\\TortoiseGit\\git_cached_version", 0))
 {
 	m_psp.dwFlags |= PSP_DEFAULT | PSP_USEHEADERTITLE;
 	m_psp.pszHeaderTitle = MAKEINTRESOURCE(IDS_FIRSTSTART_GITTITLE);
@@ -74,13 +75,14 @@ LRESULT CFirstStartWizardGit::OnWizardNext()
 
 	SetGitHacks();
 
+	bool needsRestart = false;
 	if (m_sMsysGitPath.Compare(CString(m_regMsysGitPath)) || m_sMsysGitExtranPath.Compare(CString(m_regMsysGitExtranPath)) || CGit::ms_bCygwinGit != (m_regCygwinHack == TRUE) || CGit::ms_bMsys2Git != (m_regMsys2Hack == TRUE))
 	{
 		StoreSetting(GetSafeHwnd(), m_sMsysGitPath, m_regMsysGitPath);
 		StoreSetting(GetSafeHwnd(), m_sMsysGitExtranPath, m_regMsysGitExtranPath);
 		StoreSetting(GetSafeHwnd(), CGit::ms_bCygwinGit, m_regCygwinHack);
 		StoreSetting(GetSafeHwnd(), CGit::ms_bMsys2Git, m_regMsys2Hack);
-		SendCacheCommand(TGITCACHECOMMAND_END);
+		needsRestart = true;
 	}
 
 	// only complete if the msysgit directory is ok
@@ -89,6 +91,18 @@ LRESULT CFirstStartWizardGit::OnWizardNext()
 	{
 		if (needWorkarounds)
 			ShowWorkarounds(true);
+		return -1;
+	}
+
+	if (needsRestart || g_Git.ms_LastMsysGitVersion != static_cast<int>(m_dwMsysGitVersion))
+	{
+		if (HWND hWnd = ::FindWindow(TGIT_CACHE_WINDOW_NAME, TGIT_CACHE_WINDOW_NAME); hWnd)
+			::PostMessage(hWnd, WM_CLOSE, reinterpret_cast<WPARAM>(nullptr), reinterpret_cast<LPARAM>(nullptr));
+
+		CAppUtils::RunTortoiseGitProc(L"/command:firststart /page:3", false, false);
+
+		EndDialog(0);
+
 		return -1;
 	}
 

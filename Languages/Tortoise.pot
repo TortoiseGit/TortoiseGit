@@ -6827,6 +6827,10 @@ msgstr ""
 msgid "Please enter a path where to apply the hook script to. Use \"*\" for all paths."
 msgstr ""
 
+#. Resource IDs: (IDS_GITCHANGED_NEEDRESTART)
+msgid "Please restart TortoiseGit for the changes of git.exe to take effect."
+msgstr ""
+
 #. Resource IDs: (IDS_FIRSTSTART_HINT3)
 msgid "Please see the <a id=\"manual\">manual</a> for general hints. E.g. in most dialogs there are some shared shortcuts such as F5 for refresh or CTRL+F for search and oftentimes there are powerful context menus."
 msgstr ""

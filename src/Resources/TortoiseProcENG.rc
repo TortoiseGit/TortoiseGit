@@ -3801,6 +3801,8 @@ BEGIN
     IDS_NOGITREPO           "No valid git repository found."
     IDS_REVERTCOMMITS       "Revert the selected commit(s)?"
     IDS_COMMON_ANCESTOR     "Use common ancestor (A...B diff)"
+    IDS_GITCHANGED_NEEDRESTART 
+                            "Please restart TortoiseGit for the changes of git.exe to take effect."
 END
 
 STRINGTABLE

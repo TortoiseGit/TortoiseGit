@@ -95,6 +95,10 @@ static std::wstring GetProgramDataConfig()
 	if (is_cygwin_msys2_hack_active())
 		return {};
 
+	// Git >= 2.24 doesn't use ProgramData any more
+	if (CRegStdDWORD(L"Software\\TortoiseGit\\git_cached_version", 0) >= (2 << 24 | 24 << 16))
+		return {};
+
 	if (SHGetFolderPathW(nullptr, CSIDL_COMMON_APPDATA, nullptr, SHGFP_TYPE_CURRENT, wbuffer) != S_OK || wcslen(wbuffer) >= MAX_PATH - wcslen(L"\\Git\\config"))
 		return{};
 

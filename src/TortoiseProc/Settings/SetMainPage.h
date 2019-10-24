@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011, 2013, 2016 - TortoiseGit
+// Copyright (C) 2008-2011, 2013, 2016, 2019 - TortoiseGit
 // Copyright (C) 2003-2008, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -59,6 +59,7 @@ protected:
 private:
 	CString			m_sMsysGitPath;
 	CString			m_sMsysGitExtranPath;
+	DWORD			m_dwMsysGitVersion;
 	CComboBox		m_LanguageCombo;
 	CRegDWORD		m_regLanguage;
 	DWORD			m_dwLanguage;

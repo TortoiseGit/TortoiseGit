@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2019 - TortoiseGit
 
@@ -217,7 +217,9 @@ protected:
 			return false;
 		}
 
+		// force recalculation of Git version
 		CGit::ms_LastMsysGitVersion = 0;
+		CRegDWORD(L"Software\\TortoiseGit\\git_file_time").removeValue();
 		if (!CheckGitVersion(hwnd))
 			return false;
 		return true;
