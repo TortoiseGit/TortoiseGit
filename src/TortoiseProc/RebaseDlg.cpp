@@ -2914,7 +2914,7 @@ void CRebaseDlg::OnBnClickedButtonOnto()
 	m_Onto = CBrowseRefsDlg::PickRef(false, m_Onto);
 	if (!m_Onto.IsEmpty())
 	{
-		// make sure that the user did not select upstream, selected branch or HEAD
+		// make sure that the user did not select upstream or the selected branch
 		CGitHash hash;
 		if (g_Git.GetHash(hash, m_Onto))
 		{
@@ -2923,7 +2923,7 @@ void CRebaseDlg::OnBnClickedButtonOnto()
 			static_cast<CButton*>(GetDlgItem(IDC_BUTTON_ONTO))->SetCheck(m_Onto.IsEmpty() ? BST_UNCHECKED : BST_CHECKED);
 			return;
 		}
-		if (GetCompareHash(L"HEAD", hash) || GetCompareHash(m_UpstreamCtrl.GetString(), hash) || GetCompareHash(m_BranchCtrl.GetString(), hash))
+		if (GetCompareHash(m_UpstreamCtrl.GetString(), hash) || GetCompareHash(m_BranchCtrl.GetString(), hash))
 			m_Onto.Empty();
 	}
 	if (m_Onto.IsEmpty())
