@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 	<?include Includes.wxi?>
 	<Product UpgradeCode="$(var.UpgradeGuid)" Name="$(var.ProductName) $(var.VersionNumberUserVisible) $(var.PlatformUserVisible)" Id="*" Version="$(var.VersionNumberInternal)" Manufacturer="TortoiseGit" Language="1033" Codepage="1252">
@@ -15,6 +15,7 @@
 		</Upgrade>
 
 		<MajorUpgrade AllowDowngrades="yes" Schedule="afterInstallValidate" />
+		<Property Id="REINSTALLMODE" Value="amus" />
 		<Media Id="1" Cabinet="TGIT.cab" EmbedCab="yes" CompressionLevel="high" />
 
 		<Icon Id="TGITIcon" SourceFile="..\Resources\Tortoise.ico" />
