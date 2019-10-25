@@ -31,7 +31,6 @@ IMPLEMENT_DYNAMIC(CSettingGitConfig, ISettingsPropPage)
 
 CSettingGitConfig::CSettingGitConfig()
 	: ISettingsPropPage(CSettingGitConfig::IDD)
-	, m_bAutoCrlf(FALSE)
 	, m_bNeedSave(false)
 	, m_bQuotePath(TRUE)
 	, m_bInheritUserName(FALSE)
@@ -50,11 +49,11 @@ void CSettingGitConfig::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_GIT_USERNAME, m_UserName);
 	DDX_Text(pDX, IDC_GIT_USEREMAIL, m_UserEmail);
 	DDX_Text(pDX, IDC_GIT_USERESINGNINGKEY, m_UserSigningKey);
-	DDX_Check(pDX, IDC_CHECK_AUTOCRLF, m_bAutoCrlf);
 	DDX_Check(pDX, IDC_CHECK_QUOTEPATH, m_bQuotePath);
 	DDX_Check(pDX, IDC_CHECK_INHERIT_NAME, m_bInheritUserName);
 	DDX_Check(pDX, IDC_CHECK_INHERIT_EMAIL, m_bInheritEmail);
 	DDX_Check(pDX, IDC_CHECK_INHERIT_KEYID, m_bInheritSigningKey);
+	DDX_Control(pDX, IDC_COMBO_AUTOCRLF, m_cAutoCrLf);
 	DDX_Control(pDX, IDC_COMBO_SAFECRLF, m_cSafeCrLf);
 	GITSETTINGS_DDX
 }
@@ -63,7 +62,7 @@ BEGIN_MESSAGE_MAP(CSettingGitConfig, CPropertyPage)
 	ON_EN_CHANGE(IDC_GIT_USERNAME, &CSettingGitConfig::OnChange)
 	ON_EN_CHANGE(IDC_GIT_USEREMAIL, &CSettingGitConfig::OnChange)
 	ON_EN_CHANGE(IDC_GIT_USERESINGNINGKEY, &CSettingGitConfig::OnChange)
-	ON_BN_CLICKED(IDC_CHECK_AUTOCRLF, &CSettingGitConfig::OnChange)
+	ON_CBN_SELCHANGE(IDC_COMBO_AUTOCRLF, &CSettingGitConfig::OnChange)
 	ON_BN_CLICKED(IDC_CHECK_QUOTEPATH, &CSettingGitConfig::OnChange)
 	ON_CBN_SELCHANGE(IDC_COMBO_SAFECRLF, &CSettingGitConfig::OnChange)
 	ON_BN_CLICKED(IDC_CHECK_INHERIT_NAME, &CSettingGitConfig::OnChange)
@@ -82,12 +81,16 @@ BOOL CSettingGitConfig::OnInitDialog()
 {
 	ISettingsPropPage::OnInitDialog();
 
+	m_cAutoCrLf.AddString(L"");
+	m_cAutoCrLf.AddString(L"false");
+	m_cAutoCrLf.AddString(L"true");
+	m_cAutoCrLf.AddString(L"input");
+
 	m_cSafeCrLf.AddString(L"");
 	m_cSafeCrLf.AddString(L"false");
 	m_cSafeCrLf.AddString(L"true");
 	m_cSafeCrLf.AddString(L"warn");
 
-	AdjustControlSize(IDC_CHECK_AUTOCRLF);
 	AdjustControlSize(IDC_CHECK_QUOTEPATH);
 	AdjustControlSize(IDC_CHECK_INHERIT_NAME);
 	AdjustControlSize(IDC_CHECK_INHERIT_EMAIL);
@@ -159,8 +162,21 @@ void CSettingGitConfig::LoadDataImpl(CAutoConfig& config)
 		m_bInheritEmail = (config.GetString(L"user.email", m_UserEmail) == GIT_ENOTFOUND);
 	}
 
-	if (git_config_get_bool(&m_bAutoCrlf, config, "core.autocrlf") == GIT_ENOTFOUND)
-		m_bAutoCrlf = BST_INDETERMINATE;
+	BOOL bAutoCrLf = FALSE;
+	if (git_config_get_bool(&bAutoCrLf, config, "core.autocrlf") == GIT_ENOTFOUND)
+		m_cAutoCrLf.SetCurSel(0);
+	else if (bAutoCrLf)
+		m_cAutoCrLf.SetCurSel(2);
+	else
+	{
+		CString sAutoCrLf;
+		config.GetString(L"core.autocrlf", sAutoCrLf);
+		sAutoCrLf = sAutoCrLf.MakeLower().Trim();
+		if (sAutoCrLf == L"input")
+			m_cAutoCrLf.SetCurSel(3);
+		else
+			m_cAutoCrLf.SetCurSel(1);
+	}
 
 	if (git_config_get_bool(&m_bQuotePath, config, "core.quotepath") == GIT_ENOTFOUND)
 	{
@@ -196,7 +212,7 @@ void CSettingGitConfig::EnDisableControls()
 	GetDlgItem(IDC_GIT_USERNAME)->SendMessage(EM_SETREADONLY, m_iConfigSource == CFG_SRC_EFFECTIVE, 0);
 	GetDlgItem(IDC_GIT_USEREMAIL)->SendMessage(EM_SETREADONLY, m_iConfigSource == CFG_SRC_EFFECTIVE, 0);
 	GetDlgItem(IDC_GIT_USERESINGNINGKEY)->SendMessage(EM_SETREADONLY, m_iConfigSource == CFG_SRC_EFFECTIVE, 0);
-	GetDlgItem(IDC_CHECK_AUTOCRLF)->EnableWindow(m_iConfigSource != CFG_SRC_EFFECTIVE);
+	GetDlgItem(IDC_COMBO_AUTOCRLF)->EnableWindow(m_iConfigSource != CFG_SRC_EFFECTIVE);
 	GetDlgItem(IDC_CHECK_QUOTEPATH)->EnableWindow(m_iConfigSource != CFG_SRC_EFFECTIVE);
 	GetDlgItem(IDC_COMBO_SAFECRLF)->EnableWindow(m_iConfigSource != CFG_SRC_EFFECTIVE);
 	GetDlgItem(IDC_COMBO_SETTINGS_SAFETO)->EnableWindow(m_iConfigSource != CFG_SRC_EFFECTIVE);
@@ -232,8 +248,12 @@ BOOL CSettingGitConfig::SafeDataImpl(CAutoConfig& config)
 	if (!Save(config, L"core.quotepath", m_bQuotePath ? L"true" : L"false", m_bQuotePath == BST_INDETERMINATE))
 		return FALSE;
 
-	if (!Save(config, L"core.autocrlf", m_bAutoCrlf ? L"true" : L"false", m_bAutoCrlf == BST_INDETERMINATE))
-		return FALSE;
+	{
+		CString autocrlf;
+		m_cAutoCrLf.GetWindowText(autocrlf);
+		if (!Save(config, L"core.autocrlf", autocrlf, autocrlf.IsEmpty()))
+			return FALSE;
+	}
 
 	{
 		CString safecrlf;
