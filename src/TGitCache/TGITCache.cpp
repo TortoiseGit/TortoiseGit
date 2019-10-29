@@ -639,6 +639,7 @@ DWORD WINAPI InstanceThread(LPVOID lpvParam)
 		}
 
 		DWORD responseLength;
+		request.path[_countof(request.path) - 1] = L'\0';
 		GetAnswerToRequest(&request, &response, &responseLength);
 
 		// Write the reply to the pipe.
@@ -697,6 +698,7 @@ DWORD WINAPI CommandThread(LPVOID lpvParam)
 			return 1;
 		}
 
+		command.path[_countof(command.path) - 1] = L'\0';
 		switch (command.command)
 		{
 			case TGITCACHECOMMAND_END:
