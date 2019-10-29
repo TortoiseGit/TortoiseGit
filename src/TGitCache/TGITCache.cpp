@@ -265,7 +265,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				HMENU hMenu = CreatePopupMenu();
 				if(hMenu)
 				{
-					bool enabled = static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\CacheType", GetSystemMetrics(SM_REMOTESESSION)) ? ShellCache::dll : ShellCache::exe) != ShellCache::none;
+					bool enabled = static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\CacheType", GetSystemMetrics(SM_REMOTESESSION) ? ShellCache::dll : ShellCache::exe)) != ShellCache::none;
 					InsertMenu(hMenu, static_cast<UINT>(-1), MF_BYPOSITION, TRAYPOP_ENABLE, enabled ? L"Disable Status Cache" : L"Enable Status Cache");
 					InsertMenu(hMenu, static_cast<UINT>(-1), MF_BYPOSITION, TRAYPOP_EXIT, L"Exit");
 					SetForegroundWindow(hWnd);
