@@ -167,6 +167,11 @@ bool AddProgressCommand::SetFileMode(uint32_t mode)
 			continue;
 		CStringA filePathA = CUnicodeUtils::GetMulti(m_targetPathList[i].GetGitPathString(), CP_UTF8).TrimRight(L'/');
 		auto entry = const_cast<git_index_entry*>(git_index_get_bypath(index, filePathA, 0));
+		if (!entry)
+		{
+			MessageBox(nullptr, g_Git.GetLibGit2LastErr(L"Could not update file mode."), L"TortoiseGit", MB_ICONERROR);
+			return false;
+		}
 		entry->mode = mode;
 		if (git_index_add(index, entry))
 		{
