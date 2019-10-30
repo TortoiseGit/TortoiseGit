@@ -20,6 +20,7 @@
 		<ComponentRef Id="C__TortoiseIDiffShortcuts" />
 
 		<ComponentRef Id="C__TortoiseUDiff" />
+		<ComponentRef Id="C__TortoiseUDiffMetaData" />
 
 		<ComponentRef Id="C__TortoiseGitGitWCRev" />
 		<?if $(var.Platform) = "x64" ?>
@@ -31,7 +32,9 @@
 		<ComponentRef Id="C__shellregistry" />
 		<ComponentRef Id="C__machineregistry" />
 
-		<ComponentRef Id="ProtocolTGit" />
+		<ComponentRef Id="C__ProtocolSupport" />
+		<ComponentRef Id="C__PermanentProtocols" />
+		<ComponentRef Id="C__ProtocolsWin7" />
 
 		<ComponentRef Id="C__approveshellcomponents" />
 
@@ -89,21 +92,6 @@
 
 		<Feature Id="UDiffAssoc" Level="1" Title="Register diff/patch files" Description="Associate .diff and .patch files with TortoiseUDiff" TypicalDefault="install" Absent="allow" AllowAdvertise="no">
 			<ComponentRef Id="C__TortoiseUDiffAssoc" />
-		</Feature>
-
-		<Feature Id="ProtocolAssoc" Level="1" Title="Register link handlers" Description="Select which protocol-links to associate with TortoiseGit clone command" TypicalDefault="install" Absent="allow" Display="expand" AllowAdvertise="no">
-			<Feature Id="ProtocolAssocGit" Level="1" Title="Register git://-link handler" Description="Associate git://-links with TortoiseGit clone command" TypicalDefault="install" Absent="allow" AllowAdvertise="no">
-				<ComponentRef Id="ProtocolGit"/>
-			</Feature>
-			<Feature Id="ProtocolAssocGithub" Level="4" Title="Register github-windows://-link handler" Description="Associate github-windows://-links with TortoiseGit clone command" TypicalDefault="install" Absent="allow" AllowAdvertise="no">
-				<ComponentRef Id="ProtocolGithub"/>
-			</Feature>
-			<Feature Id="ProtocolAssocSmartgit" Level="4" Title="Register smartgit://-link handler" Description="Associate smartgit://-links with TortoiseGit clone command" TypicalDefault="install" Absent="allow" AllowAdvertise="no">
-				<ComponentRef Id="ProtocolSmartgit"/>
-			</Feature>
-			<Feature Id="ProtocolAssocXGithubClient" Level="4" Title="Register x-github-client://-link handler" Description="Associate x-github-client://-links with TortoiseGit clone command" TypicalDefault="install" Absent="allow" AllowAdvertise="no">
-				<ComponentRef Id="ProtocolXGithubClient"/>
-			</Feature>
 		</Feature>
 
 		<?if $(var.DictionaryENGB) = 1 ?>

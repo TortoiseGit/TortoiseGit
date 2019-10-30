@@ -25,6 +25,7 @@ Released: unreleased
  * Add find functionality to revision graph
  * Fixed issue #3427: FileDiffDlg: Provide a way to view the diff for a pull request branch (in diff options)
  * Fixed issue #3440: (GUI) Animation should stop when finished, not halt
+ * Fixed issue #3395: TortoiseGit now uses the Windows "Default Application" framework for managing file associations and protocol handlers
 
 == Bug Fixes ==
  * Implement generic fix for "libgit2 returned the requested type does not match the type in ODB"

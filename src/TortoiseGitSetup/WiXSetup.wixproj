@@ -29,7 +29,7 @@
 		</SuppressSpecificWarnings>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
-			<DefineConstants>Debug;IncludeCrashReportDll=0;DictionaryENGB=1;DictionaryENUS=1;VisualStudioVersion=$(VisualStudioVersion);</DefineConstants>
+		<DefineConstants>Debug;IncludeCrashReportDll=0;DictionaryENGB=1;DictionaryENUS=1;VisualStudioVersion=$(VisualStudioVersion);</DefineConstants>
 		<WixVariables>
 		</WixVariables>
 		<SuppressSpecificWarnings>
@@ -44,7 +44,11 @@
 		<OutputPath>..\..\bin\setup\x64\</OutputPath>
 		<IntermediateOutputPath>..\..\obj\TortoiseGitSetup\$(Configuration)64\</IntermediateOutputPath>
 	</PropertyGroup>
-	<Import Project="$(WixTargetsPath)" />
+	<Import Project="$(WixTargetsPath)" Condition=" '$(WixTargetsPath)' != '' " />
+	<Import Project="$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets" Condition=" '$(WixTargetsPath)' == '' AND Exists('$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets') " />
+	<Target Name="EnsureWixToolsetInstalled" Condition=" '$(WixTargetsImported)' != 'true' ">
+		<Error Text="The WiX Toolset v3.11 (or newer) build tools must be installed to build this project. To download the WiX Toolset, see https://wixtoolset.org/releases/" />
+	</Target>
 	<ItemGroup>
 		<Compile Include="TortoiseGIT.wxs" />
 		<Compile Include="WixUI_Simplest.wxs" />
@@ -53,7 +57,10 @@
 		<Content Include="FeaturesFragment.wxi" />
 		<Content Include="Includes.wxi" />
 		<Content Include="StructureFragment.wxi" />
+		<Content Include="TortoiseUDiff.wxi" />
 		<Content Include="UIFragment.wxi" />
 		<Content Include="VersionNumberInclude.wxi" />
+		<Content Include="Win7LibraryAndExplorerToolbarActions.wxi" />
+		<Content Include="ProtocolSupport.wxi" />
 	</ItemGroup>
 </Project>

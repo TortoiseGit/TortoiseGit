@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Include>
+	<DirectoryRef Id="D__Bin">
+		<Component Id="C__TortoiseUDiff" Guid="$(var.GuidTortoiseUDiff)" Win64="$(var.Win64YesNo)">
+			<File Id="F__TortoiseUDiff" Name="TortoiseGitUDiff.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitUDiff.exe" KeyPath="yes" />
+
+			<!-- App registration, see https://docs.microsoft.com/en-us/windows/desktop/shell/app-registration -->
+			<RegistryKey Root="HKCR" Key="Applications\TortoiseGitUDiff.exe">
+				<RegistryValue Name="FriendlyAppName" Value="TortoiseGitUDiff" Type="string" />
+			</RegistryKey>
+
+			<!-- App registration, see https://docs.microsoft.com/en-us/windows/desktop/shell/app-registration -->
+			<RegistryKey Root="HKLM" Key="SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\TortoiseGitUDiff.exe">
+				<RegistryValue Value="&quot;[INSTALLDIR]bin\TortoiseGitUDiff.exe&quot;" Type="string" />
+				<RegistryValue Name="Path" Value="[INSTALLDIR]bin;" Type="string" />
+			</RegistryKey>
+
+			<!-- .diff progId -->
+			<?define DiffProgId="tortoisegit.diff.document" ?>
+			<RegistryKey Root="HKCR" Key="$(var.DiffProgId)">
+				<RegistryValue Value="Diff File" Type="string" />
+				<RegistryValue Key="DefaultIcon" Value="&quot;[INSTALLDIR]bin\TortoiseGitUDiff.exe&quot;" Type="string" />
+				<RegistryValue Key="shell\open\command" Value="&quot;[INSTALLDIR]bin\TortoiseGitUDiff.exe&quot; /patchfile:&quot;%1&quot;" Type="string" />
+			</RegistryKey>
+
+			<!-- .patch progId -->
+			<?define PatchProgId="tortoisegit.patch.document" ?>
+			<RegistryKey Root="HKCR" Key="$(var.PatchProgId)">
+				<RegistryValue Value="Patch File" Type="string" />
+				<RegistryValue Key="DefaultIcon" Value="&quot;[INSTALLDIR]bin\TortoiseGitUDiff.exe&quot;" Type="string" />
+				<RegistryValue Key="shell\open\command" Value="&quot;[INSTALLDIR]bin\TortoiseGitUDiff.exe&quot; /patchfile:&quot;%1&quot;" Type="string" />
+			</RegistryKey>
+
+			<!-- Register for Default Apps -->
+			<?define TortoiseGitUDiffCapabiliesRegPath="Software\TortoiseGit\UDiff\Capabilities" ?>
+			<RegistryValue Root="HKLM" Key="Software\RegisteredApplications" Name="TortoiseGitUDiff" Value="$(var.TortoiseGitUDiffCapabiliesRegPath)" Type="string" />
+			<RegistryKey Root="HKLM" Key="$(var.TortoiseGitUDiffCapabiliesRegPath)">
+				<RegistryValue Name="ApplicationName" Value="TortoiseGitUDiff" Type="string" />
+				<RegistryValue Name="ApplicationDescription" Value="TortoiseGitUDiff, the Patch viewer of TortoiseGit." Type="string" />
+				<RegistryKey Key="FileAssociations">
+					<RegistryValue Name=".diff" Value="$(var.DiffProgId)" Type="string" />
+					<RegistryValue Name=".patch" Value="$(var.PatchProgId)" Type="string" />
+				</RegistryKey>
+			</RegistryKey>
+
+			<!-- Register for "Open With" -->
+			<RegistryValue Root="HKCR" Key=".patch\OpenWithProgids" Name="$(var.PatchProgId)" Value="" Type="string" />
+			<RegistryValue Root="HKCR" Key=".diff\OpenWithProgids" Name="$(var.DiffProgId)" Value="" Type="string" />
+		</Component>
+
+		<Component Id="C__TortoiseUDiffAssoc" Guid="*" Win64="$(var.Win64YesNo)">
+			<RegistryValue Root="HKCR" Key=".patch" Value="$(var.PatchProgId)" Type="string" />
+			<RegistryValue Root="HKCR" Key=".diff" Value="$(var.DiffProgId)" Type="string" />
+		</Component>
+
+		<Component Id="C__TortoiseUDiffMetaData" Guid="*" Win64="$(var.Win64YesNo)" NeverOverwrite="yes">
+			<RegistryValue Root="HKCR" Key=".patch" Name="Content Type" Value="text/plain" Type="string" />
+			<RegistryValue Root="HKCR" Key=".patch" Name="PerceivedType" Value="text" Type="string" />
+
+			<RegistryValue Root="HKCR" Key=".diff" Name="Content Type" Value="text/plain" Type="string" />
+			<RegistryValue Root="HKCR" Key=".diff" Name="PerceivedType" Value="text" Type="string" />
+		</Component>
+	</DirectoryRef>
+</Include>

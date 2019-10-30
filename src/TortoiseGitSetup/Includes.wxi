@@ -11,6 +11,7 @@
 	<?define PackageDescription="Windows Shell Integration For Git Source Control, v$(var.VersionNumberUserVisible)" ?>
 	<?define PackageManufacturer="TortoiseGit team" ?>
 	<?define TortoiseGitOrg="https://tortoisegit.org/"?>
+	<?define ApplicationDescription="TortoiseGit is a Windows Shell Interface to Git and provides overlay icons showing the file status, a powerful context menu for Git and much more!"?>
 
 	<!-- Platform specifics ........................................................... -->
 
@@ -41,6 +42,8 @@
 	<?define UpgradeGuid="DA0E5440-E13D-4852-AE01-15CD0264D489" ?>
 	<?endif?>
 
+	<!-- Class Identifiers -->
+	<!-- see https://gitlab.com/tortoisegit/tortoisegit/blob/master/src/TortoiseShell/Guids.h -->
 	<?define GuidUncontrolled="10A0FDD2-B0C0-4CD4-A7AE-E594CE3B91C8"?>
 	<?define GuidDropHandler="6A4800FA-13B4-4CB4-9A37-97E7FAEDA731"?>
 	<?define GuidAdded="A38915E4-A460-4143-8D6B-0B45564C6A00"?>
@@ -53,33 +56,22 @@
 	<?define GuidIgnored="1B94B098-57C6-4C39-9DC5-8EB00E423D3E"?>
 	<?define GuidUnversioned="18BF1135-6EA2-405F-A71E-16EEE7F71F8B"?>
 
-	<?define GuidGitWCRev="9642A3D3-7425-49F6-8F75-6A001F716AED"?>
-	<?define GuidGitWCRevTypeLib="F2E334DC-2799-4961-9FCC-C324CB5FD205"?>
-	<?define GuidGitWCRevInterface="41886E22-73C4-49E8-8831-37F79CED16FE"?>
+	<?define GuidGitWCRev="9642A3D3-7425-49F6-8F75-6A001F716AED"?> <!-- see https://gitlab.com/tortoisegit/tortoisegit/blob/master/src/GitWCRev/GitWCRevCOM.idl#L85 -->
+	<?define GuidGitWCRevTypeLib="F2E334DC-2799-4961-9FCC-C324CB5FD205"?> <!-- see https://gitlab.com/tortoisegit/tortoisegit/blob/master/src/GitWCRev/GitWCRevCOM.idl#L23 -->
+	<?define GuidGitWCRevInterface="41886E22-73C4-49E8-8831-37F79CED16FE"?> <!-- see https://gitlab.com/tortoisegit/tortoisegit/blob/master/src/GitWCRev/GitWCRevCOM.idl#L32 -->
 
 	<!-- Target specific component GUIDs ............................................. -->
 
 	<?if $(var.Platform) = "x64" ?>
+	<!-- Installer component GUIDs (these can be changed safely, unless code checks if a feature is enabled by checking the registry for them) -->
 	<?define GuidInfoFiles="78ACAFC6-6F62-4A58-85DC-E4FE52AEA41E"?>
 	<?define GuidProgramMenuFolder="B776F75C-B019-44B1-957A-3F58D3A225CF"?>
-
-	<?define GuidShellRegistry="9E011A3C-F5D1-47AB-8BE2-443C2FFF9499"?>
-	<?define GuidShellRegistry32="B948CE9A-585F-48EE-96C5-A1667E98077B"?>
-	<?define GuidMachineRegistry="E61BA450-C3DF-4EA5-98D4-240E4B05C9C4"?>
-	<?define GuidMachineRegistry32="ACDC3F06-4976-4A77-A676-378B076F96BE"?>
-	<?define GuidApproveShellComponents="E7E43AE0-DB46-4AF9-95EA-2EF7AD3F2119"?>
-	<?define GuidApproveShellComponents32="56A11ACF-3DE2-40F8-A6A8-4CC334E19571"?>
-
-	<?define GuidTGit="CA01E04E-4D42-4C1E-B615-0D09D12380D4"?>
 	<?define GuidGitLibs="61EC5A0E-0B76-4E47-90A9-E0CF2E893444"?>
 	<?define GuidGitLibs32="69FBADA2-E356-45E6-BF22-D544057EB07E"?>
 	<?define GuidCrashRpt="69B216BC-60D2-4675-A4E5-1ECFB26A4AED"?>
-
 	<?define GuidUCRT="832ECBD6-EF93-42F2-ACCF-A40FEA2FB1FB"?>
 	<?define GuidCRTMFC="343ED373-E84F-4844-BB88-9709D81F2E45"?>
-
 	<?define GuidHelpEN="7AB0A6AA-1283-4A2A-B989-D8117ACB9FC4"?>
-
 	<?define GuidTortoiseProc="2F61414B-4884-497F-A066-0D0C86A4872A"?>
 	<?define GuidTortoiseShell="562E0360-282A-4AAC-917D-5C77EDF1B6FB"?>
 	<?define GuidTortoiseShell32="572EBB6E-09C5-4199-B3B7-173ED1FFC531"?>
@@ -93,23 +85,11 @@
 	<?define GuidTortoiseIDiff="75D19614-B4D4-4661-A7EB-683CEE849CF3"?>
 	<?define GuidTortoiseIDiffShortcuts="7312EFB9-4775-4B9C-8FE8-4E9F8C1D5586"?>
 	<?define GuidTortoiseUDiff="F41B3D1B-E500-457E-876E-86A0186BE7B5"?>
-	<?define GuidTortoiseUDiffAssoc="1A2972B9-F6B2-4DD5-B656-30638ACCF205"?>
-	<?define GuidProtocolTGit="59646B9D-5524-4236-83E4-2A2D88175ED4"?>
-	<?define GuidProtocolGit="0AD2B787-A9B3-4AD7-99A5-EC6DFF0EB2B7"?>
-	<?define GuidProtocolGithub="78544CC9-8E07-4968-BD03-2D3260301784"?>
-	<?define GuidProtocolXGithubClient="91b67a41-96ad-410c-a64b-ca15d4abcbf2"?>
-	<?define GuidProtocolSmartgit="294096FE-7AD3-445C-8F7C-77B048315FB9"?>
-	<?define GuidPlainSettingsShortcuts="D78CE764-1770-4D38-9229-F5068D8738FD"?>
 	<?define GuidPlatformSettingsShortcuts="256F134F-87F1-418F-BA9A-AFA92270D42D"?>
 	<?define GuidTortoiseGitGitWCRev="FBB5B46E-3F8D-4128-B851-C8C781C2DD03"?>
-	<?define GuidTortoiseGitGitWCRev32="9549BE69-E931-4001-AF29-C815B2030584"?>
-
 	<?define GuidDictionaryENGB="03B4BF1F-7CBB-4F14-BE09-5DAA6F38B976"?>
 	<?define GuidDictionaryENUS="5E7DDA35-1078-40C1-8428-14808AF7DB96"?>
-	<?define GuidRemoveLanguagePacks="829F637B-F9E9-4724-B363-F104D54C5C5C"?>
-
 	<?define GuidDiffScripts="A4FB4DC3-489C-4144-A286-C2693356E04A"?>
-
 	<?define GuidIconsClassic="1123191B-D931-49AE-A6D0-551CC82B8E83"?>
 	<?define GuidIconsCVSClassic="5D337941-A1FA-46A4-9B23-B6EDB133D97C"?>
 	<?define GuidIconsModern="4C840CEE-A967-4784-AF1C-617757D60DBB"?>
@@ -127,10 +107,10 @@
 	<?define GuidIconsIllustration="425B6B1B-8758-428F-8E6C-FEAEC14FE8BC"?>
 	<?define GuidIconsProfessional="A0F52E05-9F31-42F7-98FA-B570C51F9868"?>
 	<?define GuidIconsRibbon="B497A8F2-6ABD-44C9-AC88-7960D69E10A3"?>
-	<?define RegSSHPLINK="112230AA-AB13-4667-AD78-DC8EBEA2ED26"?>
 	<?define RegSSHOpen="0E21B3B2-FA54-411B-9AF3-BB275F169A27"?>
+	<?define GuidTouch="049D92F9-F0FD-4540-A250-0DF9A7BB86B0"?>
 
-	<?define GuidWin7Library="D31C1CAE-BBD9-45E2-A487-80653A49C752"?>
+	<!-- Used in C__win7library -->
 	<?define GuidFolderTypeGit="{DC9E616B-7611-461C-9D37-730FDD4CE278}"?>
 	<?define GuidLibraryTypeGit="{D44311F9-08E5-4BB8-96E3-E3E4F2A1BDD0}"?>
 	<?define GuidLibraryFolderGit="{D75C7F5F-5AD0-4059-9274-E8A69E0819CC}"?>
@@ -148,25 +128,16 @@
 	<?define GuidFolderTypeCmd4="{FEB5544C-AC53-4D75-9242-B2B2A875687A}"?>
 	<?define GuidFolderTypeCmd5="{1751A73B-8AD8-4905-B1FD-DC3A98C4FBF1}"?>
 
-	<?define GuidTouch="{049D92F9-F0FD-4540-A250-0DF9A7BB86B0}"?>
 	<?else?>
 
+	<!-- Installer component GUIDs (these can be changed safely, unless code checks if a feature is enabled by checking the registry for them) -->
 	<?define GuidInfoFiles="424219CC-2F91-49AD-B0EF-DB6A61575C99"?>
 	<?define GuidProgramMenuFolder="29B86BBB-C17C-4CC9-947D-766D5A89D4F9"?>
-
-	<?define GuidShellRegistry="EED2630A-E3DA-4046-B642-6296C23DEC2A"?>
-	<?define GuidMachineRegistry="27FA9458-F68B-4A26-A36B-D452FD9EABBA"?>
-	<?define GuidApproveShellComponents="E3B982F9-7B17-457F-A72F-2F47E9DB1719"?>
-
-	<?define GuidTGit="F62E9AD5-EAC7-4EB9-825E-A8EF5CBA6730"?>
 	<?define GuidGitLibs="45615857-0FA0-43C1-9595-4C72A03AD1AC"?>
 	<?define GuidCrashRpt="2B7AD90B-41D9-4A10-834F-1CDD6E366AC7"?>
-
 	<?define GuidUCRT="710A4A9A-7C0A-4EC0-9000-4FE880BC92E2"?>
 	<?define GuidCRTMFC="4DDDB464-3077-4D19-A302-4A67B62143FE"?>
-
 	<?define GuidHelpEN="2355B04E-2D12-48C9-8034-372EEB6910D5"?>
-
 	<?define GuidTortoiseProc="7BFB3206-4CD3-4C91-A8E3-6FA64C6C4CB9"?>
 	<?define GuidTortoiseGitTools="041528E1-2216-44D2-B960-E93719EDC78B"?>
 	<?define GuidTortoiseGitCache="528E15B0-9F9E-4498-8614-2E4368208CB1"?>
@@ -179,22 +150,11 @@
 	<?define GuidTortoiseIDiff="742E7CF3-0255-4100-B241-E753BF92F9F0"?>
 	<?define GuidTortoiseIDiffShortcuts="85832CAF-32F7-48EF-8E18-A4271C1DB5ED"?>
 	<?define GuidTortoiseUDiff="E41DAF84-C1F5-4E43-9DC8-B5CB84A649D6"?>
-	<?define GuidTortoiseUDiffAssoc="6CF22556-FE5B-4640-A184-D60C5B6AEBE7"?>
-	<?define GuidProtocolTGit="83AEB17F-36A5-4FE1-90DA-57904A085A98"?>
-	<?define GuidProtocolGit="508DD925-273C-4170-9D81-55222E2E36AB"?>
-	<?define GuidProtocolGithub="02D10663-4B9B-4164-B6DA-6EC8BC222A92"?>
-	<?define GuidProtocolXGithubClient="4d1fa7d4-a012-4317-8a0e-685bab6a474b"?>
-	<?define GuidProtocolSmartgit="C114A9E4-2427-4435-B3BE-11EDC9C39B8C"?>
-	<?define GuidPlainSettingsShortcuts="49263747-C09E-4FFE-A0A4-8E8966CBD807"?>
 	<?define GuidPlatformSettingsShortcuts="F1B92E39-6F75-4ED4-9099-CB5DC7A91831"?>
 	<?define GuidTortoiseGitGitWCRev="FBB5B46E-3F8D-4128-B851-C8C781C2DD03"?>
-
 	<?define GuidDictionaryENGB="7218599E-4140-429F-855A-D82B59ED34F9"?>
 	<?define GuidDictionaryENUS="B3FD2F77-B14C-448F-8D82-4B21F16711D6"?>
-	<?define GuidRemoveLanguagePacks="5B4D96EE-E7B9-46C8-BB36-B38E6EB83478"?>
-
 	<?define GuidDiffScripts="FAF533BB-06AC-4FF1-97D6-4D71E6D8F6C6"?>
-
 	<?define GuidIconsClassic="DB0D8F52-36BF-404A-A60B-717BB1E134B8"?>
 	<?define GuidIconsCVSClassic="A4A54A67-C538-4E5F-AA63-47EA4208AAA6"?>
 	<?define GuidIconsModern="7C20C016-9152-4CC1-9E55-7A8D507290B0"?>
@@ -212,10 +172,10 @@
 	<?define GuidIconsIllustration="2530A014-367B-42D8-9CF3-65344B216C4A"?>
 	<?define GuidIconsProfessional="ACE5D5E8-CED1-4CCB-8858-B72601769105"?>
 	<?define GuidIconsRibbon="757B98D0-EA17-4A9A-BB05-E1F5F01CC2B5"?>
-	<?define RegSSHPLINK="112230AA-AB13-4667-AD78-DC8EBEA2ED26"?>
 	<?define RegSSHOpen="0E21B3B2-FA54-411B-9AF3-BB275F169A27"?>
+	<?define GuidTouch="ABC9CE77-824F-40B4-AA07-6706E94AEFDD"?>
 
-	<?define GuidWin7Library="DA5F03FD-13B5-42E9-9350-D06C2808EB99"?>
+	<!-- Used in C__win7library -->
 	<?define GuidFolderTypeGit="{B118C031-A977-4A67-9344-47F057388105}"?>
 	<?define GuidLibraryTypeGit="{2944F3BB-D880-41D6-A271-721B184684F7}"?>
 	<?define GuidLibraryFolderGit="{37608D23-CCD9-474C-9DFE-E72A83C8666D}"?>
@@ -232,7 +192,5 @@
 	<?define GuidFolderTypeCmd3="{65E9EE9F-A9D3-4EAC-82AD-448379A7E4BB}"?>
 	<?define GuidFolderTypeCmd4="{BB7C278C-989A-49AE-9C43-B43ABA4C6D86}"?>
 	<?define GuidFolderTypeCmd5="{FFB2B3FB-66E3-49F0-B713-4A1B0ECE2CBB}"?>
-
-	<?define GuidTouch="{ABC9CE77-824F-40B4-AA07-6706E94AEFDD}"?>
 	<?endif?>
 </Include>
