@@ -52,6 +52,7 @@ void CLogDataVector::ClearAll()
 int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, CString* range)
 {
 	ATLASSERT(m_pLogCache);
+	ATLASSERT(!(infomask & CGit::LOG_INFO_FULL_DIFF));
 	// only enable --follow on files
 	if ((!path || path->IsDirectory()) && (infomask & CGit::LOG_INFO_FOLLOW))
 		infomask = infomask ^ CGit::LOG_INFO_FOLLOW;
@@ -154,17 +155,6 @@ int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, 
 		pRev->ParserFromCommit(&commit);
 		pRev->ParserParentFromCommit(&commit);
 		git_free_commit(&commit);
-		// Must call free commit before SafeFetchFullInfo, commit parent is rewrite by log.
-		// file list will wrong if parent rewrite.
-
-		if (!pRev->m_IsFull && (infomask & CGit::LOG_INFO_FULL_DIFF))
-		{
-			if (pRev->SafeFetchFullInfo(&g_Git))
-			{
-				MessageBox(nullptr, pRev->GetLastErr(), L"TortoiseGit", MB_ICONERROR);
-				return -1;
-			}
-		}
 
 		this->push_back(pRev->m_CommitHash);
 

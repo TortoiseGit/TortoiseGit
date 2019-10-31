@@ -242,14 +242,6 @@ static void ParserFromLogTests()
 	EXPECT_STREQ(L"a9d53b535cb49640a6099860ac4999f5a0857b91", logDataVector.GetGitRevAt(1).m_CommitHash.ToString());
 	EXPECT_STREQ(L"ff1fbef1a54a9849afd4a5e94d2ca4d80d5b96c2", logDataVector.GetGitRevAt(2).m_CommitHash.ToString());
 
-	logCache.m_HashMap.clear();
-	logDataVector.ClearAll();
-	EXPECT_EQ(0, logDataVector.ParserFromLog(&path, 0, CGit::LOG_INFO_FULL_DIFF, &range));
-	ASSERT_EQ(1U, logDataVector.size());
-	EXPECT_EQ(1U, logDataVector.m_HashMap.size());
-	EXPECT_EQ(1U, logCache.m_HashMap.size());
-	EXPECT_STREQ(L"560deea87853158b22d0c0fd73f60a458d47838a", logDataVector.GetGitRevAt(0).m_CommitHash.ToString());
-
 	// check whether libgit ref_cache is correctly invalidated
 	CString output;
 	EXPECT_EQ(0, g_Git.Run(L"git.exe branch -D simple-conflict", &output, CP_UTF8)); // normal ref in refs/heads
