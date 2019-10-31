@@ -1,5 +1,5 @@
 ﻿= Release 2.9.0 =
-Released: unreleased
+Released: 2019-10-31
 
 == Changes ==
  * Support for Thesaurus was dropped
