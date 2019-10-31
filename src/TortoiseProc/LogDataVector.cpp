@@ -74,7 +74,7 @@ int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, 
 
 	try
 	{
-		[] { git_init(); } ();
+		g_Git.ForceReInitDll();
 	}
 	catch (const char* msg)
 	{
@@ -198,7 +198,7 @@ int CLogDataVector::Fill(std::unordered_set<CGitHash>& hashes)
 	ATLASSERT(m_pLogCache);
 	try
 	{
-		[] { git_init(); } ();
+		g_Git.ForceReInitDll();
 	}
 	catch (const char* msg)
 	{

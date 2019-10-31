@@ -162,6 +162,12 @@ public:
 		else
 			return PathFileExists(path);
 	}
+
+	inline void ForceReInitDll()
+	{
+		m_IsGitDllInited = false;
+		CheckAndInitDll();
+	}
 	void CheckAndInitDll()
 	{
 		if(!m_IsGitDllInited)
