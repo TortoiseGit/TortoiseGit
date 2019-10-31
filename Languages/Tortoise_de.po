@@ -13,8 +13,9 @@
 # Lübbe Onken <l.onken@rac.de>, 2011-2012, 2013
 # Lübbe Onken <l.onken@rac.de>, 2011-2012, 2013-2014, 2015-2016, 2017
 # Lübbe Onken <l.onken@rac.de>, 2011-2012, 2013-2016, 2017
-# luebbe <luebbe.opensource@gmail.com>, 2012
-# luebbe <luebbe.opensource@gmail.com>, 2012,2018
+# Lübbe Onken <luebbe.opensource@gmail.com>, 2012
+# Lübbe Onken <luebbe.opensource@gmail.com>, 2012,2018
+# Obareo, 2019
 # peu <peu@rekoba.de>, 2013
 # Stefan Kueng <tortoisesvn@gmail.com>, 2014
 # Sven Strickroth <sstrickroth@googlemail.com>, 2012-2019
@@ -25,7 +26,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2019-02-28 18:55+0000\n"
+"PO-Revision-Date: 2019-10-30 23:47+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: German (http://www.transifex.com/lznuaa/tortoisegit/language/de/)\n"
 "MIME-Version: 1.0\n"
@@ -2106,9 +2107,9 @@ msgstr "Auto CrLf Konvertierung"
 msgid "Auto Crlf:"
 msgstr "Auto Crlf:"
 
-#. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 1631)
-msgid "Auto&Crlf"
-msgstr "Auto&Crlf"
+#. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 65535)
+msgid "Auto&CrLf:"
+msgstr "Auto&CrLf:"
 
 #. Resource IDs: (IDS_PROGRS_CLOSE_NOCONFLICTS)
 msgid "Auto-close if no conflicts"
@@ -5604,7 +5605,7 @@ msgstr "ID:32774:V C +O"
 
 #. Accelerator Entry for Menu ID:32774; 'Show Whitespaces'
 msgid "ID:32774:V C +T"
-msgstr "ID:32774:V C +L"
+msgstr "ID:32774:V C +T"
 
 #. Accelerator Entry for Menu ID:32775; 'Switch between single and double pane
 #. view'
@@ -6960,10 +6961,6 @@ msgid ""
 "overlay"
 msgstr "Kein Statuspuffer. Nur versionierte Ordner erhalten ein überlagertes Symbol, Dateien nicht."
 
-#. Resource IDs: (IDS_SPELLEDIT_NOTHESAURUS)
-msgid "No thesaurus suggestions"
-msgstr "Keine Thesaurusvorschläge"
-
 #. Resource IDs: (IDS_NOGITREPO)
 msgid "No valid git repository found."
 msgstr "Kein valides Git Repository gefunden."
@@ -7373,7 +7370,7 @@ msgstr "Überschreiben"
 
 #. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1521)
 msgid "Overwrite working tree changes (&force)"
-msgstr "Überschreibe Arbetisbaum-Änderungen (&force)"
+msgstr "Überschreibe Arbeitsbaum-Änderungen (&force)"
 
 #. Resource IDs: (ID_FILE_PAGESETUP - Menu)
 msgid "P&age setup..."
@@ -7472,7 +7469,7 @@ msgstr "&Letzte Log-Meldung einfügen"
 
 #. Resource IDs: (IDS_COMMITDLG_POPUP_LOGHISTORY)
 msgid "Paste r&ecent message..."
-msgstr "Let&zte Log-Meldung einfügen..."
+msgstr "Ge&speicherte Log-Meldung auswählen..."
 
 #. Resource IDs: (IDS_MENUDESCCLIPPASTE)
 msgid ""
@@ -7593,6 +7590,10 @@ msgid ""
 "Please enter a path where to apply the hook script to. Use \"*\" for all "
 "paths."
 msgstr "Bitte geben Sie einen Pfad an auf den das Skript angewendet wird. Benutzen Sie \"*\" für alle Pfade."
+
+#. Resource IDs: (IDS_GITCHANGED_NEEDRESTART)
+msgid "Please restart TortoiseGit for the changes of git.exe to take effect."
+msgstr "Sie müssen TortoiseGit neu starten, damit die Änderungen von git.exe wirksam werden."
 
 #. Resource IDs: (IDS_FIRSTSTART_HINT3)
 msgid ""
@@ -7941,7 +7942,7 @@ msgstr "&Rückgängig..."
 
 #. Resource IDs: (Dialog IDD_SETTINGSMAIN: Control id 1684)
 msgid "Re-run &First Start Wizard"
-msgstr "%Erststart-Assistent erneut aufrufen"
+msgstr "&Erststart-Assistent erneut aufrufen"
 
 #. Resource IDs: (IDS_FETCH_REACHABLE)
 msgid "Reachable"
@@ -8427,6 +8428,10 @@ msgstr "Eintragung Rückgängig machen"
 #, c-format
 msgid "Revert commit %s"
 msgstr "Eintragung %s Rückgängig machen"
+
+#. Resource IDs: (IDS_REVERTCOMMITS)
+msgid "Revert the selected commit(s)?"
+msgstr "Änderungen der markierten Eintragung(en) &Rückgängig machen?"
 
 #. Resource IDs: (IDS_LOG_POPUP_REVERTTOPARENT)
 msgid "Revert to parent revision"
@@ -9158,6 +9163,10 @@ msgstr "Leerzeichen anzeigen"
 msgid "Show all &staged files"
 msgstr "Zeige alle &eingetragenen Dateien"
 
+#. Resource IDs: (ID_VIEW_SHOWALLTAGS - Menu)
+msgid "Show all tags"
+msgstr "Zeige alle Markierungen"
+
 #. Resource IDs: (32813)
 msgid "Show an overview of the whole graph"
 msgstr "Gesamtübersicht anzeigen"
@@ -9184,6 +9193,10 @@ msgstr "Zeigt die Zweig-Revisionsnummer (git rev-list --count --first-parent) im
 #. Resource IDs: (IDS_LOG_POPUP_SHOWBRANCHES)
 msgid "Show branches this commit is &on"
 msgstr "Zeige &Referenzen auf denen diese Revision liegt"
+
+#. Resource IDs: (ID_VIEW_SHOWBRANCHINGSANDMERGES - Menu)
+msgid "Show branchings and &merges"
+msgstr "Verzweigungen und Zusammenführungen anzeigen."
 
 #. Resource IDs: (IDS_LOG_POPUP_GNUDIFF)
 msgid "Show changes as &unified diff"
@@ -9272,6 +9285,10 @@ msgstr "Zeige Log"
 #. Resource IDs: (IDS_STATUSLIST_SHOWLOGOLDNAME)
 msgid "Show log &before rename/copy"
 msgstr "Zeige Log &vor Umbenennung/Kopieren"
+
+#. Resource IDs: (ID_VIEW_SHOWLOGID - Menu)
+msgid "Show log ID instead of SHA-1"
+msgstr "Zeige Protokoll-ID statt des SHA-1"
 
 #. Resource IDs: (IDS_SHOWLOG_OF)
 #, c-format
@@ -10338,10 +10355,6 @@ msgid ""
 "have been ignored or the global ignore configuration setting."
 msgstr "Es gibt nichts hinzuzufügen.\nAlle Dateien und Ordner befinden sich entweder bereits unter Versionskontrolle oder sie werden ignoriert."
 
-#. Resource IDs: (IDS_SPELLEDIT_THESAURUS)
-msgid "Thesaurus"
-msgstr "Thesaurus"
-
 #. Resource IDs: (AFX_IDS_AUTOSAVE_RECOVERY_ASK_2)
 msgid ""
 "These are more recently saved than the currently open documents and contain "
@@ -10936,10 +10949,6 @@ msgstr "Beachte HTTP Pfadkomponente"
 msgid "Use Ribbons"
 msgstr "Benutze Ribbons"
 
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1497)
-msgid "Use Thin &Pack (For slow network connections)"
-msgstr "Benutze Thin-&Pack (für langsame Netzwerkverbindungen)"
-
 #. Resource IDs: (Dialog IDD_OPENDLG: Control id 1064)
 msgid "Use Unified Diff from &clipboard"
 msgstr "Standard Diff aus der &Zwischenablage nehmen"
@@ -10995,6 +11004,10 @@ msgstr "Benutze Eintragedatum"
 #. Resource IDs: (Dialog IDD_STATGRAPH: Control id 1127)
 msgid "Use committer names"
 msgstr "Benutze Eintragernamen"
+
+#. Resource IDs: (IDS_COMMON_ANCESTOR)
+msgid "Use common ancestor (A...B diff)"
+msgstr "Benutze gemeinsamen Vorfahren (A...B Vergleich)"
 
 #. Resource IDs: (IDS_SMTP_CONFIGURED)
 msgid "Use configured server"
@@ -11607,8 +11620,10 @@ msgid "Z"
 msgstr "Z"
 
 #. Resource IDs: (IDS_ARCHIVEFILEFILTER)
-msgid "ZIP archive (*.zip)|*.zip|All Files (*.*)|*.*||"
-msgstr "ZIP-Archiv (*.zip)|*.zip|Alle Dateien (*.*)|*.*||"
+msgid ""
+"ZIP archive (*.zip)|*.zip|TAR archive (*.tar)|*.tar|TAR GZIP archive "
+"(*.tar.gz)|*.tar.gz|All Files (*.*)|*.*||"
+msgstr "ZIP Archiv (*.zip)|*.zip|TAR Archiv (*.tar)|*.tar|TAR GZIP Archiv (*.tar.gz)|*.tar.gz|Alle Dateien (*.*)|*.*||"
 
 #. Resource IDs: (Dialog IDD_EXPORT: Control id 1074)
 msgid "Zip File"

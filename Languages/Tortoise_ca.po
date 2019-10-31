@@ -11,8 +11,8 @@
 # Joan Monguillot <jmonguillot@gmail.com>, 2013
 # Joan Monguillot <jmonguillot@gmail.com>, 2013,2016-2018
 # el_libre como el chaval <el.libre@gmail.com>, 2011
-# luebbe <luebbe.opensource@gmail.com>, 2013
-# luebbe <luebbe.opensource@gmail.com>, 2013
+# Lübbe Onken <luebbe.opensource@gmail.com>, 2013
+# Lübbe Onken <luebbe.opensource@gmail.com>, 2013
 # Sven Strickroth <sstrickroth@googlemail.com>, 2013,2015
 # TempEmail.net <abanibi@tempemail.net>, 2013
 msgid ""
@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2019-02-22 16:39+0000\n"
+"PO-Revision-Date: 2019-10-25 06:45+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Catalan (http://www.transifex.com/lznuaa/tortoisegit/language/ca/)\n"
 "MIME-Version: 1.0\n"
@@ -2101,9 +2101,9 @@ msgstr "Auto convertir CrLf"
 msgid "Auto Crlf:"
 msgstr "Auto Crlf:"
 
-#. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 1631)
-msgid "Auto&Crlf"
-msgstr "Auto&Crlf"
+#. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 65535)
+msgid "Auto&CrLf:"
+msgstr ""
 
 #. Resource IDs: (IDS_PROGRS_CLOSE_NOCONFLICTS)
 msgid "Auto-close if no conflicts"
@@ -6056,7 +6056,7 @@ msgstr "Entregues rebudes"
 
 #. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1649)
 msgid "In order to abort a merge progress a reset (to HEAD) is needed."
-msgstr "Per tal d'interrompre una fusió en curs és necessari reinicialitzar (reset to HEAD)"
+msgstr ""
 
 #. Resource IDs: (IDS_FIRSTSTART_LANGUAGEHINT2)
 msgid ""
@@ -6955,10 +6955,6 @@ msgid ""
 "overlay"
 msgstr "No hi ha cache d'estat. Només les carpetes versionades mostren una icona sobreposada, els fitxers no."
 
-#. Resource IDs: (IDS_SPELLEDIT_NOTHESAURUS)
-msgid "No thesaurus suggestions"
-msgstr "No hi ha cap suggerència del diccionari"
-
 #. Resource IDs: (IDS_NOGITREPO)
 msgid "No valid git repository found."
 msgstr ""
@@ -7588,6 +7584,10 @@ msgid ""
 "Please enter a path where to apply the hook script to. Use \"*\" for all "
 "paths."
 msgstr "Introduïu un camí on aplicar l'script d'interconnexió. Useu \"*\" per a tots els camins."
+
+#. Resource IDs: (IDS_GITCHANGED_NEEDRESTART)
+msgid "Please restart TortoiseGit for the changes of git.exe to take effect."
+msgstr ""
 
 #. Resource IDs: (IDS_FIRSTSTART_HINT3)
 msgid ""
@@ -8423,6 +8423,10 @@ msgstr "Restitueix entrega"
 msgid "Revert commit %s"
 msgstr "Restitueix entrega %s"
 
+#. Resource IDs: (IDS_REVERTCOMMITS)
+msgid "Revert the selected commit(s)?"
+msgstr ""
+
 #. Resource IDs: (IDS_LOG_POPUP_REVERTTOPARENT)
 msgid "Revert to parent revision"
 msgstr "Restitueix a la revisió pare"
@@ -9153,6 +9157,10 @@ msgstr "Mostra espais en blanc"
 msgid "Show all &staged files"
 msgstr ""
 
+#. Resource IDs: (ID_VIEW_SHOWALLTAGS - Menu)
+msgid "Show all tags"
+msgstr ""
+
 #. Resource IDs: (32813)
 msgid "Show an overview of the whole graph"
 msgstr "Mostra una visió general del gràfic complert"
@@ -9178,6 +9186,10 @@ msgstr "Mostra el número de revisió de la branca (git rev-list --count --first
 
 #. Resource IDs: (IDS_LOG_POPUP_SHOWBRANCHES)
 msgid "Show branches this commit is &on"
+msgstr ""
+
+#. Resource IDs: (ID_VIEW_SHOWBRANCHINGSANDMERGES - Menu)
+msgid "Show branchings and &merges"
 msgstr ""
 
 #. Resource IDs: (IDS_LOG_POPUP_GNUDIFF)
@@ -9267,6 +9279,10 @@ msgstr "Mostra el registre"
 #. Resource IDs: (IDS_STATUSLIST_SHOWLOGOLDNAME)
 msgid "Show log &before rename/copy"
 msgstr "Mostra el registre abans de canviar el nom/copiar"
+
+#. Resource IDs: (ID_VIEW_SHOWLOGID - Menu)
+msgid "Show log ID instead of SHA-1"
+msgstr ""
 
 #. Resource IDs: (IDS_SHOWLOG_OF)
 #, c-format
@@ -10333,10 +10349,6 @@ msgid ""
 "have been ignored or the global ignore configuration setting."
 msgstr "No hi ha res per afegir.\nTots els fitxers i carpetes estan sota control de versions, \no bé són ignorats, o bé la configuració és ignorar globalment."
 
-#. Resource IDs: (IDS_SPELLEDIT_THESAURUS)
-msgid "Thesaurus"
-msgstr "Diccionari"
-
 #. Resource IDs: (AFX_IDS_AUTOSAVE_RECOVERY_ASK_2)
 msgid ""
 "These are more recently saved than the currently open documents and contain "
@@ -10931,10 +10943,6 @@ msgstr "Utilitza component de ruta HTTP"
 msgid "Use Ribbons"
 msgstr "Utilitza cintes"
 
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1497)
-msgid "Use Thin &Pack (For slow network connections)"
-msgstr "Utilitza empaquetatge lleuger (per a connexions lentes)"
-
 #. Resource IDs: (Dialog IDD_OPENDLG: Control id 1064)
 msgid "Use Unified Diff from &clipboard"
 msgstr "Utilitza Diff Unificat des del p&ortapapers"
@@ -10990,6 +10998,10 @@ msgstr "Utilitza les dates d'entrega"
 #. Resource IDs: (Dialog IDD_STATGRAPH: Control id 1127)
 msgid "Use committer names"
 msgstr "Utilitza els noms dels entregadors"
+
+#. Resource IDs: (IDS_COMMON_ANCESTOR)
+msgid "Use common ancestor (A...B diff)"
+msgstr ""
 
 #. Resource IDs: (IDS_SMTP_CONFIGURED)
 msgid "Use configured server"
@@ -11602,8 +11614,10 @@ msgid "Z"
 msgstr "Z"
 
 #. Resource IDs: (IDS_ARCHIVEFILEFILTER)
-msgid "ZIP archive (*.zip)|*.zip|All Files (*.*)|*.*||"
-msgstr "Arxiu ZIP (*.zip)|*.zip|Tots els fitxers (*.*)|*.*||"
+msgid ""
+"ZIP archive (*.zip)|*.zip|TAR archive (*.tar)|*.tar|TAR GZIP archive "
+"(*.tar.gz)|*.tar.gz|All Files (*.*)|*.*||"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_EXPORT: Control id 1074)
 msgid "Zip File"

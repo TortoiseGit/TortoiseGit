@@ -14,8 +14,8 @@
 # Kim KiHyeon <kmkh12@paran.com>, 2011
 # kim minhyouk <apollo8900@naver.com>, 2015
 # kmshts, 2012
-# luebbe <luebbe.opensource@gmail.com>, 2011
-# luebbe <luebbe.opensource@gmail.com>, 2011
+# Lübbe Onken <luebbe.opensource@gmail.com>, 2011
+# Lübbe Onken <luebbe.opensource@gmail.com>, 2011
 # Mandy Cho <chohy@yahoo.com>, 2013
 # Gyusun Yeom <omniavinco@gmail.com>, 2012
 # 이피시소리 <pcsori@gmail.com>, 2014
@@ -31,7 +31,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2019-02-22 16:39+0000\n"
+"PO-Revision-Date: 2019-10-25 06:45+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Korean (http://www.transifex.com/lznuaa/tortoisegit/language/ko/)\n"
 "MIME-Version: 1.0\n"
@@ -2112,9 +2112,9 @@ msgstr "자동 CR/LF 변환"
 msgid "Auto Crlf:"
 msgstr "Auto Crlf:"
 
-#. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 1631)
-msgid "Auto&Crlf"
-msgstr "Auto&Crlf"
+#. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 65535)
+msgid "Auto&CrLf:"
+msgstr ""
 
 #. Resource IDs: (IDS_PROGRS_CLOSE_NOCONFLICTS)
 msgid "Auto-close if no conflicts"
@@ -6067,7 +6067,7 @@ msgstr "In Commits"
 
 #. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1649)
 msgid "In order to abort a merge progress a reset (to HEAD) is needed."
-msgstr "병합을 되돌리기 위해 되돌릴 방법을 고르세요."
+msgstr ""
 
 #. Resource IDs: (IDS_FIRSTSTART_LANGUAGEHINT2)
 msgid ""
@@ -6966,10 +6966,6 @@ msgid ""
 "overlay"
 msgstr "상태 캐시를 사용하지 않으며, 버전관리 대상인 폴더만 아이콘 오버레이가 표시됩니다."
 
-#. Resource IDs: (IDS_SPELLEDIT_NOTHESAURUS)
-msgid "No thesaurus suggestions"
-msgstr "유의어 추천을 하지 않습니다."
-
 #. Resource IDs: (IDS_NOGITREPO)
 msgid "No valid git repository found."
 msgstr ""
@@ -7598,6 +7594,10 @@ msgstr "실행할 훅 스크립트를 넣으세요"
 msgid ""
 "Please enter a path where to apply the hook script to. Use \"*\" for all "
 "paths."
+msgstr ""
+
+#. Resource IDs: (IDS_GITCHANGED_NEEDRESTART)
+msgid "Please restart TortoiseGit for the changes of git.exe to take effect."
 msgstr ""
 
 #. Resource IDs: (IDS_FIRSTSTART_HINT3)
@@ -8434,6 +8434,10 @@ msgstr "Revert commit"
 msgid "Revert commit %s"
 msgstr "Revert commit %s"
 
+#. Resource IDs: (IDS_REVERTCOMMITS)
+msgid "Revert the selected commit(s)?"
+msgstr ""
+
 #. Resource IDs: (IDS_LOG_POPUP_REVERTTOPARENT)
 msgid "Revert to parent revision"
 msgstr "Revert to parent revision"
@@ -9164,6 +9168,10 @@ msgstr "공백 보기"
 msgid "Show all &staged files"
 msgstr ""
 
+#. Resource IDs: (ID_VIEW_SHOWALLTAGS - Menu)
+msgid "Show all tags"
+msgstr ""
+
 #. Resource IDs: (32813)
 msgid "Show an overview of the whole graph"
 msgstr "그래프 전체에 대한 개관을 보여줌"
@@ -9189,6 +9197,10 @@ msgstr ""
 
 #. Resource IDs: (IDS_LOG_POPUP_SHOWBRANCHES)
 msgid "Show branches this commit is &on"
+msgstr ""
+
+#. Resource IDs: (ID_VIEW_SHOWBRANCHINGSANDMERGES - Menu)
+msgid "Show branchings and &merges"
 msgstr ""
 
 #. Resource IDs: (IDS_LOG_POPUP_GNUDIFF)
@@ -9278,6 +9290,10 @@ msgstr "로그 보기"
 #. Resource IDs: (IDS_STATUSLIST_SHOWLOGOLDNAME)
 msgid "Show log &before rename/copy"
 msgstr "Show log &before rename/copy"
+
+#. Resource IDs: (ID_VIEW_SHOWLOGID - Menu)
+msgid "Show log ID instead of SHA-1"
+msgstr ""
 
 #. Resource IDs: (IDS_SHOWLOG_OF)
 #, c-format
@@ -10344,10 +10360,6 @@ msgid ""
 "have been ignored or the global ignore configuration setting."
 msgstr ""
 
-#. Resource IDs: (IDS_SPELLEDIT_THESAURUS)
-msgid "Thesaurus"
-msgstr "색인"
-
 #. Resource IDs: (AFX_IDS_AUTOSAVE_RECOVERY_ASK_2)
 msgid ""
 "These are more recently saved than the currently open documents and contain "
@@ -10942,10 +10954,6 @@ msgstr "Use HTTP path component"
 msgid "Use Ribbons"
 msgstr "리본 사용"
 
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1497)
-msgid "Use Thin &Pack (For slow network connections)"
-msgstr "최소한의 데이터만 전달(느린 네트워크 용도) (&P)"
-
 #. Resource IDs: (Dialog IDD_OPENDLG: Control id 1064)
 msgid "Use Unified Diff from &clipboard"
 msgstr "클립보드로부터 Unified diff를 사용(&C)"
@@ -11000,6 +11008,10 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_STATGRAPH: Control id 1127)
 msgid "Use committer names"
+msgstr ""
+
+#. Resource IDs: (IDS_COMMON_ANCESTOR)
+msgid "Use common ancestor (A...B diff)"
 msgstr ""
 
 #. Resource IDs: (IDS_SMTP_CONFIGURED)
@@ -11613,7 +11625,9 @@ msgid "Z"
 msgstr ""
 
 #. Resource IDs: (IDS_ARCHIVEFILEFILTER)
-msgid "ZIP archive (*.zip)|*.zip|All Files (*.*)|*.*||"
+msgid ""
+"ZIP archive (*.zip)|*.zip|TAR archive (*.tar)|*.tar|TAR GZIP archive "
+"(*.tar.gz)|*.tar.gz|All Files (*.*)|*.*||"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_EXPORT: Control id 1074)

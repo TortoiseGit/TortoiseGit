@@ -18,7 +18,7 @@
 # Leandro Hermes Neto <leandro@leandrohermes.net>, 2015
 # lengli <allengli@yahoo.com.br>, 2014
 # lucas medeiros <freitasmlucas@hotmail.com>, 2018
-# luebbe <luebbe.opensource@gmail.com>, 2011-2012
+# Lübbe Onken <luebbe.opensource@gmail.com>, 2011-2012
 # MDK3 <hanaure@gmail.com>, 2016
 # MDK3 <hanaure@gmail.com>, 2016
 # Mairieli Wessel <mairieliw@alunos.utfpr.edu.br>, 2016
@@ -37,9 +37,9 @@
 # Samuel Facchinello (samuelfac) <samuelfac@gmail.com>, 2017
 # Samuel Facchinello (samuelfac) <samuelfac@gmail.com>, 2017
 # Sven Strickroth <sstrickroth@googlemail.com>, 2012-2015
-# Thiago Corbari Feldhaus (Ninja Apps) <thiagofcf@gmail.com>, 2016,2018
-# Thiago Corbari Feldhaus (Ninja Apps) <thiagofcf@gmail.com>, 2016
-# Thiago Corbari Feldhaus (Ninja Apps) <thiagofcf@gmail.com>, 2016
+# Thiago Feldhaus <thiagofcf@gmail.com>, 2016,2018
+# Thiago Feldhaus <thiagofcf@gmail.com>, 2016
+# Thiago Feldhaus <thiagofcf@gmail.com>, 2016,2019
 # Tiago G. Sala, 2018
 # Tiago G. Sala, 2018
 # Victor Westmann <victor.westmann@gmail.com>, 2012,2015
@@ -48,7 +48,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2019-02-22 16:39+0000\n"
+"PO-Revision-Date: 2019-10-25 06:45+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/lznuaa/tortoisegit/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -357,7 +357,7 @@ msgstr "&Abortar"
 msgid ""
 "&Abort\n"
 "You can fix the reason the hook script failed first."
-msgstr ""
+msgstr "&Abortar\nVocê pode corrigir o motivo pelo qual o script falhou primeiro."
 
 #. Resource IDs: (ID_APP_ABOUT - Menu)
 msgid "&About TortoiseGitBlame..."
@@ -557,7 +557,7 @@ msgstr "&Excluir Filtro"
 
 #. Resource IDs: (IDS_PROC_DELETEREMOTEBRANCH_LOCALREMOTE)
 msgid "&Delete branch on remote && local remote-tracking branch"
-msgstr ""
+msgstr "&Deletar branch no remoto && local remote-tracking branch"
 
 #. Resource IDs: (IDS_DELETE_BRANCHTAG)
 msgid "&Delete branch/tag"
@@ -1071,7 +1071,7 @@ msgstr "&Prosseguir"
 msgid ""
 "&Proceed anyway\n"
 "Ignore the hook script and run the command anyway."
-msgstr ""
+msgstr "&Prosseguir mesmo assim\nIgnorar o script e executar o comando mesmo assim."
 
 #. Resource IDs: (IDS_PROC_SYNC_PULL)
 msgid "&Pull"
@@ -1264,7 +1264,7 @@ msgstr "Barra de &Status"
 
 #. Resource IDs: (Dialog IDD_SETTINGSMTP: Control id 1849)
 msgid "&Store credentials..."
-msgstr ""
+msgstr "Armazenar credenciai&s..."
 
 #. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1525)
 msgid "&Switch to new branch"
@@ -1828,7 +1828,7 @@ msgstr "Todas as ramificações locais"
 msgid ""
 "All or some options are limited. In order to change all these settings, you "
 "need Administrator rights."
-msgstr ""
+msgstr "Todas ou algumas opções são limitadas. Para alterar estas configurações, Você precisa de permissões do Administrador."
 
 #. Resource IDs: (IDS_ALLREFS)
 msgid "All refs"
@@ -2129,9 +2129,9 @@ msgstr "Converter automaticamente CrLf"
 msgid "Auto Crlf:"
 msgstr "Auto Crlf:"
 
-#. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 1631)
-msgid "Auto&Crlf"
-msgstr "Auto&Crlf"
+#. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 65535)
+msgid "Auto&CrLf:"
+msgstr ""
 
 #. Resource IDs: (IDS_PROGRS_CLOSE_NOCONFLICTS)
 msgid "Auto-close if no conflicts"
@@ -2727,7 +2727,7 @@ msgstr "Escolha Seletiva falhou"
 msgid ""
 "Cherry-pick failed (please see log in the cherry pick/rebase dialog for "
 "details)! Skip this commit?"
-msgstr ""
+msgstr "Cherry-pick falhou (por favor, veja o log na caixa de diálogo no cherry pick/rebase para mais detalhes)! Pular este commit?"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Chinese"
@@ -3655,7 +3655,7 @@ msgstr "Excluir %d etiquetas"
 
 #. Resource IDs: (IDS_PROC_DELETEREMOTEBRANCH_LOCAL)
 msgid "Delete &local remote-tracking branch"
-msgstr ""
+msgstr "Deletar &local remote-tracking branch"
 
 #. Resource IDs: (IDS_REFLOG_DEL)
 msgid "Delete Ref..."
@@ -5583,7 +5583,7 @@ msgstr "Tipo de Gancho:"
 
 #. Resource IDs: (IDS_HOOKFAILED_TASK2)
 msgid "Hook script failed"
-msgstr ""
+msgstr "Script falhou"
 
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 1841)
 msgid "I don't use Git for Windows and need special workarounds"
@@ -6084,7 +6084,7 @@ msgstr "Em Submissões"
 
 #. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1649)
 msgid "In order to abort a merge progress a reset (to HEAD) is needed."
-msgstr "Para cancelar o processo de mesclagem, uma restauração (para o HEAD) é necessária."
+msgstr ""
 
 #. Resource IDs: (IDS_FIRSTSTART_LANGUAGEHINT2)
 msgid ""
@@ -6983,13 +6983,9 @@ msgid ""
 "overlay"
 msgstr "Sem status de cache. Apenas as pastas com controle de versão são sobrepostas, os arquivos não são"
 
-#. Resource IDs: (IDS_SPELLEDIT_NOTHESAURUS)
-msgid "No thesaurus suggestions"
-msgstr "Não há sugestões de sinônimos"
-
 #. Resource IDs: (IDS_NOGITREPO)
 msgid "No valid git repository found."
-msgstr ""
+msgstr "Nenhum repositório git válido foi encontrado."
 
 #. Resource IDs: (IDS_NOWORKINGCOPY)
 msgid "No working directory found."
@@ -7286,7 +7282,7 @@ msgstr "Abrir"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 1849)
 msgid "Open &settings"
-msgstr ""
+msgstr "Abrir configuraçõe&s"
 
 #. Resource IDs: (57601)
 msgid ""
@@ -7617,6 +7613,10 @@ msgid ""
 "paths."
 msgstr "Por favor, entre o caminho onde aplicar os scripts de gancho. Use \"*\" para todos os caminhos."
 
+#. Resource IDs: (IDS_GITCHANGED_NEEDRESTART)
+msgid "Please restart TortoiseGit for the changes of git.exe to take effect."
+msgstr ""
+
 #. Resource IDs: (IDS_FIRSTSTART_HINT3)
 msgid ""
 "Please see the <a id=\"manual\">manual</a> for general hints. E.g. in most "
@@ -7758,7 +7758,7 @@ msgstr "Imprimindo"
 
 #. Resource IDs: (IDS_HOOK_FORCEDPROCEED)
 msgid "Proceed anyway"
-msgstr ""
+msgstr "Prosseguir mesmo assim"
 
 #. Resource IDs: (IDS_PROGS_TOOLCOL)
 msgid "Program"
@@ -8450,6 +8450,10 @@ msgstr "Reverter submissão"
 #, c-format
 msgid "Revert commit %s"
 msgstr "Reverter submissão %s"
+
+#. Resource IDs: (IDS_REVERTCOMMITS)
+msgid "Revert the selected commit(s)?"
+msgstr ""
 
 #. Resource IDs: (IDS_LOG_POPUP_REVERTTOPARENT)
 msgid "Revert to parent revision"
@@ -9181,6 +9185,10 @@ msgstr "Exibir Espaços Em Branco"
 msgid "Show all &staged files"
 msgstr "Mostrar todos os arquivos &selecionados"
 
+#. Resource IDs: (ID_VIEW_SHOWALLTAGS - Menu)
+msgid "Show all tags"
+msgstr ""
+
 #. Resource IDs: (32813)
 msgid "Show an overview of the whole graph"
 msgstr "Exibir resumo do gráfico inteiro"
@@ -9207,6 +9215,10 @@ msgstr "Exibir número de revisão do ramo (git rev-list --count --first-parent)
 #. Resource IDs: (IDS_LOG_POPUP_SHOWBRANCHES)
 msgid "Show branches this commit is &on"
 msgstr "Exibir ramos em que esta submissã&o está"
+
+#. Resource IDs: (ID_VIEW_SHOWBRANCHINGSANDMERGES - Menu)
+msgid "Show branchings and &merges"
+msgstr ""
 
 #. Resource IDs: (IDS_LOG_POPUP_GNUDIFF)
 msgid "Show changes as &unified diff"
@@ -9295,6 +9307,10 @@ msgstr "Exibir histórico"
 #. Resource IDs: (IDS_STATUSLIST_SHOWLOGOLDNAME)
 msgid "Show log &before rename/copy"
 msgstr "Exibir histórico &antes de renomear/copiar"
+
+#. Resource IDs: (ID_VIEW_SHOWLOGID - Menu)
+msgid "Show log ID instead of SHA-1"
+msgstr ""
 
 #. Resource IDs: (IDS_SHOWLOG_OF)
 #, c-format
@@ -9971,7 +9987,7 @@ msgid ""
 "The branch \"%s\" is a remote-tracking branch which locally represents a remote branch.\n"
 "\n"
 "Do you really want to delete it?"
-msgstr ""
+msgstr "O branch \"%s\" é um remote-tracking branch ao qual localmente representa um branch remoto.\n\nVocê realmente quer deletar ele?"
 
 #. Resource IDs: (IDS_ERR_PATCH_CHUNKMISMATCH)
 msgid "The chunk size did not match the number of added/removed lines!"
@@ -10009,7 +10025,7 @@ msgstr "O auxiliar de credenciais foi alterado.\nVocê deseja salvar agora ou de
 msgid ""
 "The current commit will be empty (e.g., due to conflict resolution). Skip "
 "the commit or keep the message only commit?"
-msgstr ""
+msgstr "O commit atual ficará vazio (e.x., conflito na resolução de problemas). Pular o commit ou deixar a mensagem no commit?"
 
 #. Resource IDs: (IDS_ERROR_NOCLEAN_STASH)
 msgid ""
@@ -10115,7 +10131,7 @@ msgstr "A pasta \n%s\nnão existe.\nGostaria de criá-la antes?"
 msgid ""
 "The hook script returned an error:\n"
 "%ls"
-msgstr ""
+msgstr "O script retornou um erro:\n%ls"
 
 #. Resource IDs: (IDS_ERR_HOOKFAILED)
 #, c-format
@@ -10360,10 +10376,6 @@ msgid ""
 "All the files and folders are either under version control,\n"
 "have been ignored or the global ignore configuration setting."
 msgstr "Não há o que adicionar.\nTodos os arquivos e pastas já estão sob controle de versão,\nforam ignorados pela propriedade ignore ou pela configuração ignore global."
-
-#. Resource IDs: (IDS_SPELLEDIT_THESAURUS)
-msgid "Thesaurus"
-msgstr "Sinônimos"
 
 #. Resource IDs: (AFX_IDS_AUTOSAVE_RECOVERY_ASK_2)
 msgid ""
@@ -10764,7 +10776,7 @@ msgstr "UTF-8"
 
 #. Resource IDs: (IDS_ERR_CHANGELIST_LOAD)
 msgid "Unable to load changelists"
-msgstr ""
+msgstr "Não foi possível carregar a lista de alterações"
 
 #. Resource IDs: (AFX_IDP_FAILED_MAPI_LOAD)
 msgid "Unable to load mail system support."
@@ -10793,7 +10805,7 @@ msgstr "Impossível reconstruir caminho da cópia de trabalho!\nIsso pode aconte
 
 #. Resource IDs: (IDS_ERR_CHANGELIST_SAVE)
 msgid "Unable to save changelists"
-msgstr ""
+msgstr "Não foi possível salvar a lista de alterações"
 
 #. Resource IDs: (AFX_IDP_SET_NOT_SUPPORTED)
 msgid "Unable to write read-only property."
@@ -10959,10 +10971,6 @@ msgstr "Usar componente de caminho HTTP"
 msgid "Use Ribbons"
 msgstr "Usar Ribbons"
 
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1497)
-msgid "Use Thin &Pack (For slow network connections)"
-msgstr "Usar &Pacote Fino (Para conexões lentas)"
-
 #. Resource IDs: (Dialog IDD_OPENDLG: Control id 1064)
 msgid "Use Unified Diff from &clipboard"
 msgstr "Usar Comparação Unificada a partir da área de transferência"
@@ -11018,6 +11026,10 @@ msgstr "Usar datas de submissões"
 #. Resource IDs: (Dialog IDD_STATGRAPH: Control id 1127)
 msgid "Use committer names"
 msgstr "Usar nomes de submetedores"
+
+#. Resource IDs: (IDS_COMMON_ANCESTOR)
+msgid "Use common ancestor (A...B diff)"
+msgstr ""
 
 #. Resource IDs: (IDS_SMTP_CONFIGURED)
 msgid "Use configured server"
@@ -11630,8 +11642,10 @@ msgid "Z"
 msgstr "Z"
 
 #. Resource IDs: (IDS_ARCHIVEFILEFILTER)
-msgid "ZIP archive (*.zip)|*.zip|All Files (*.*)|*.*||"
-msgstr "Arquivo ZIP (*.zip)|*.zip|Todos os arquivos (*.*)|*.*||"
+msgid ""
+"ZIP archive (*.zip)|*.zip|TAR archive (*.tar)|*.tar|TAR GZIP archive "
+"(*.tar.gz)|*.tar.gz|All Files (*.*)|*.*||"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_EXPORT: Control id 1074)
 msgid "Zip File"

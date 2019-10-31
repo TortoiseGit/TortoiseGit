@@ -5,6 +5,7 @@
 # 
 # Translators:
 # Hydriz Scholz <hydriz@jorked.com>, 2013
+# Austin Chang <changhaohang@gmail.com>, 2019
 # BinotaLIU <binota@binota.org>, 2013
 # Cecil Sheng <zcecil@csie.org>, 2011,2013
 # 乙酸鋰 <ch3cooli@gmail.com>, 2012
@@ -16,11 +17,11 @@
 # Jack Chang, 2017
 # Jack Chang, 2017
 # Jin Yang <smile86541@gmail.com>, 2017
-# luebbe <luebbe.opensource@gmail.com>, 2011,2014
+# Lübbe Onken <luebbe.opensource@gmail.com>, 2011,2014
 # Nick Vrvilo <nick@vrvilo.com>, 2011
 # Sven Strickroth <sstrickroth@googlemail.com>, 2013,2018
 # Yue Lin Ho <yuelinho777@gmail.com>, 2014-2019
-# 乙酸鋰 <ch3cooli@gmail.com>, 2012,2017
+# 乙酸鋰 <ch3cooli@gmail.com>, 2012,2017,2019
 # Yue Lin Ho <yuelinho777@gmail.com>, 2017
 # 乙酸鋰 <ch3cooli@gmail.com>, 2012-2013
 msgid ""
@@ -28,7 +29,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2019-02-28 07:08+0000\n"
+"PO-Revision-Date: 2019-10-30 08:42+0000\n"
 "Last-Translator: Yue Lin Ho <yuelinho777@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/lznuaa/tortoisegit/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -1244,7 +1245,7 @@ msgstr "狀態列(&S)"
 
 #. Resource IDs: (Dialog IDD_SETTINGSMTP: Control id 1849)
 msgid "&Store credentials..."
-msgstr "儲存憑證(&S)"
+msgstr "儲存憑證...(&S)"
 
 #. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1525)
 msgid "&Switch to new branch"
@@ -1700,11 +1701,11 @@ msgstr "加入另一個提交？"
 
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_ADD_EXE)
 msgid "Add as Executable (+x)"
-msgstr ""
+msgstr "加入為可執行 (+x)"
 
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_ADD_LINK)
 msgid "Add as Symlink"
-msgstr ""
+msgstr "加入為符號連結"
 
 #. Resource IDs: (IDS_DLGTITLE_ADD_DIFF_TOOL)
 msgid "Add extension specific diff program"
@@ -1808,7 +1809,7 @@ msgstr "所有本地分支"
 msgid ""
 "All or some options are limited. In order to change all these settings, you "
 "need Administrator rights."
-msgstr "有些選項(或全部)被限制了，它們需要管理者權限才能被更改設定值。"
+msgstr "有些選項(或全部)被限制更改了，更改它們需要管理者權限。"
 
 #. Resource IDs: (IDS_ALLREFS)
 msgid "All refs"
@@ -1952,7 +1953,7 @@ msgstr "套用統合式差異檔"
 
 #. Resource IDs: (IDS_HOOKS_APPROVE_TASK2)
 msgid "Approve or reject client-side hook script"
-msgstr "「允許／拒絕」客戶端的掛鉤指令檔"
+msgstr "「允許／拒絕」用戶端的掛鉤指令檔"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Arabic"
@@ -2109,9 +2110,9 @@ msgstr "自動轉換 DOS\\UNIX 換行符號"
 msgid "Auto Crlf:"
 msgstr "自動轉換換行符號："
 
-#. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 1631)
-msgid "Auto&Crlf"
-msgstr "Auto&Crlf"
+#. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 65535)
+msgid "Auto&CrLf:"
+msgstr "Auto&CrLf:"
 
 #. Resource IDs: (IDS_PROGRS_CLOSE_NOCONFLICTS)
 msgid "Auto-close if no conflicts"
@@ -3070,7 +3071,7 @@ msgstr "比對所有空白字元\n比對空白字元"
 msgid ""
 "Compares the file with the last committed revision to show you the changes "
 "you made"
-msgstr " 比對工作目錄的檔案與最新提交的版本，並顯示之間變更的內容。"
+msgstr "比對工作目錄的檔案與最新提交的版本，以顯示你目前修改的內容。"
 
 #. Resource IDs: (IDS_SVNACTION_COMPLETED)
 msgid "Completed"
@@ -4713,7 +4714,7 @@ msgstr "儲存文件失敗."
 msgid ""
 "Failed to save file \"%s\":\n"
 "%s"
-msgstr ""
+msgstr "無法儲存檔案 \"%s\":\n%s"
 
 #. Resource IDs: (IDS_SVNACTION_CHANGELISTFAILED)
 #, c-format
@@ -4911,7 +4912,7 @@ msgstr "目前篩選:"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_2: Control id 65535)
 msgid "Filter match"
-msgstr ""
+msgstr "篩選器符合"
 
 #. Resource IDs: (IDS_FILEDIFF_FILTERCUE)
 msgid "Filter paths"
@@ -6963,13 +6964,9 @@ msgid ""
 "overlay"
 msgstr "無狀態快取，僅目錄有圖示，檔案無圖示。"
 
-#. Resource IDs: (IDS_SPELLEDIT_NOTHESAURUS)
-msgid "No thesaurus suggestions"
-msgstr "沒有同義字建議"
-
 #. Resource IDs: (IDS_NOGITREPO)
 msgid "No valid git repository found."
-msgstr ""
+msgstr "找不到有效的 Git 版本庫。"
 
 #. Resource IDs: (IDS_NOWORKINGCOPY)
 msgid "No working directory found."
@@ -7044,7 +7041,7 @@ msgstr "注意：資料夾含有尚未版本控制的檔案。"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAYHANDLERS: Control id 65535)
 msgid "Note: this affects all Tortoise clients, not just TortoiseGit!"
-msgstr "注意：這將影響到所有的 Tortoise 客户端程式，不僅僅是 TortoiseGit！"
+msgstr "注意：這將影響到所有的 Tortoise 用户端程式，不僅僅是 TortoiseGit！"
 
 #. Resource IDs: (IDS_NOTES)
 msgid "Notes"
@@ -7266,7 +7263,7 @@ msgstr "開啟"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 1849)
 msgid "Open &settings"
-msgstr ""
+msgstr "開啟設定(&S) "
 
 #. Resource IDs: (57601)
 msgid ""
@@ -7597,6 +7594,10 @@ msgid ""
 "paths."
 msgstr "請輸入要套用這個掛鉤指令檔的路徑。可以使用「*」來表示所有的路徑。"
 
+#. Resource IDs: (IDS_GITCHANGED_NEEDRESTART)
+msgid "Please restart TortoiseGit for the changes of git.exe to take effect."
+msgstr "git.exe 已變更路徑或更新版本，請重開 TortoiseGit 才能讓 git.exe 的變更生效。"
+
 #. Resource IDs: (IDS_FIRSTSTART_HINT3)
 msgid ""
 "Please see the <a id=\"manual\">manual</a> for general hints. E.g. in most "
@@ -7738,7 +7739,7 @@ msgstr "列印中"
 
 #. Resource IDs: (IDS_HOOK_FORCEDPROCEED)
 msgid "Proceed anyway"
-msgstr ""
+msgstr "繼續處理"
 
 #. Resource IDs: (IDS_PROGS_TOOLCOL)
 msgid "Program"
@@ -7890,7 +7891,7 @@ msgstr "虛擬磁碟(&A)"
 #. Resource IDs: (IDS_RESET_TO_THIS_FORMAT)
 #, c-format
 msgid "R&eset \"%s\" to this..."
-msgstr ""
+msgstr "重設「%s」到這個版本...(&E)"
 
 #. Resource IDs: (IDS_RESTORE_FROM_INDEX)
 msgid "R&estore this file from index"
@@ -7961,7 +7962,7 @@ msgstr "變基"
 #. Resource IDs: (IDS_REBASE_THIS_FORMAT)
 #, c-format
 msgid "Rebase \"%s\" onto this...(&G)"
-msgstr ""
+msgstr "變基「%s」到這...(&G)"
 
 #. Resource IDs: (IDS_MENUREBASE)
 msgid "Rebase..."
@@ -8431,6 +8432,10 @@ msgstr "復原版本"
 msgid "Revert commit %s"
 msgstr "復原版本 %s"
 
+#. Resource IDs: (IDS_REVERTCOMMITS)
+msgid "Revert the selected commit(s)?"
+msgstr "復原這些被選取的版本？"
+
 #. Resource IDs: (IDS_LOG_POPUP_REVERTTOPARENT)
 msgid "Revert to parent revision"
 msgstr "還原到父版本"
@@ -8537,7 +8542,7 @@ msgstr "右側影像"
 
 #. Resource IDs: (Dialog IDD_SETTINGSHOOKCONFIG: Control id 1848)
 msgid "Run for this repository"
-msgstr ""
+msgstr "為此版本庫執行"
 
 #. Resource IDs: (Dialog IDD_SETTINGSHOOKCONFIG: Control id 1335)
 msgid "Run when working tree path is under:"
@@ -9159,7 +9164,11 @@ msgstr "顯示"
 
 #. Resource IDs: (Dialog IDD_CHANGEDFILES: Control id 1210)
 msgid "Show all &staged files"
-msgstr ""
+msgstr "顥示所有預存檔案(&S)"
+
+#. Resource IDs: (ID_VIEW_SHOWALLTAGS - Menu)
+msgid "Show all tags"
+msgstr "顯示所有標籤"
 
 #. Resource IDs: (32813)
 msgid "Show an overview of the whole graph"
@@ -9186,7 +9195,11 @@ msgstr "顯示分支的累加版本號碼 (git rev-list --count --first-parent)�
 
 #. Resource IDs: (IDS_LOG_POPUP_SHOWBRANCHES)
 msgid "Show branches this commit is &on"
-msgstr ""
+msgstr "顯示這提交在哪些分支上(&O)"
+
+#. Resource IDs: (ID_VIEW_SHOWBRANCHINGSANDMERGES - Menu)
+msgid "Show branchings and &merges"
+msgstr "顯示分叉點和合併點 (&M)"
 
 #. Resource IDs: (IDS_LOG_POPUP_GNUDIFF)
 msgid "Show changes as &unified diff"
@@ -9275,6 +9288,10 @@ msgstr "顯示日誌"
 #. Resource IDs: (IDS_STATUSLIST_SHOWLOGOLDNAME)
 msgid "Show log &before rename/copy"
 msgstr "顯示「重新命名／複製」前的日誌"
+
+#. Resource IDs: (ID_VIEW_SHOWLOGID - Menu)
+msgid "Show log ID instead of SHA-1"
+msgstr "顯示 Log ID 而不是 SHA-1"
 
 #. Resource IDs: (IDS_SHOWLOG_OF)
 #, c-format
@@ -9760,7 +9777,7 @@ msgstr "成功"
 
 #. Resource IDs: (IDS_SWITCH_TO_THIS)
 msgid "Sw&itch/Checkout to this..."
-msgstr ""
+msgstr "切換／取出到這個版本...(&I)"
 
 #. Resource IDs: (IDS_PROGRS_TITLE_SWITCH)
 msgid "Switch"
@@ -9951,7 +9968,7 @@ msgid ""
 "The branch \"%s\" is a remote-tracking branch which locally represents a remote branch.\n"
 "\n"
 "Do you really want to delete it?"
-msgstr ""
+msgstr "「%s」是遠端追蹤分支，是本地端用來代表遠端上的同名分支。你可以只刪除它，或者刪除它們二個。\n\n你真的想要刪除它（們）？"
 
 #. Resource IDs: (IDS_ERR_PATCH_CHUNKMISMATCH)
 msgid "The chunk size did not match the number of added/removed lines!"
@@ -9989,7 +10006,7 @@ msgstr "已切換到不同的憑證小幫手。\n要「儲存」或「放棄變�
 msgid ""
 "The current commit will be empty (e.g., due to conflict resolution). Skip "
 "the commit or keep the message only commit?"
-msgstr ""
+msgstr "目前的提交內容會是空的（例如解完衝突後所造成的）。略過或者保留只有訊息內容的空提交？"
 
 #. Resource IDs: (IDS_ERROR_NOCLEAN_STASH)
 msgid ""
@@ -10095,7 +10112,7 @@ msgstr "資料夾 \n%s\n 不存在。\n是否要先建立？"
 msgid ""
 "The hook script returned an error:\n"
 "%ls"
-msgstr ""
+msgstr "掛鉤指令檔回傳錯誤：\n%ls"
 
 #. Resource IDs: (IDS_ERR_HOOKFAILED)
 #, c-format
@@ -10106,7 +10123,7 @@ msgstr "掛鉤指令檔傳回錯誤：\n%s"
 
 #. Resource IDs: (IDS_ERR_HOOKNOTAPPROVED)
 msgid "The hook script was not approved to run!"
-msgstr ""
+msgstr "不允許執行該掛鉤指令檔！"
 
 #. Resource IDs: (IDS_INVALIDIMAGEINFO)
 msgid "The image can not be shown."
@@ -10341,10 +10358,6 @@ msgid ""
 "have been ignored or the global ignore configuration setting."
 msgstr "没有可加入的項目。\n所有檔案要不是已經進行了版本控制、\n不然就是被忽略或者被全域忽略設定設為忽略。"
 
-#. Resource IDs: (IDS_SPELLEDIT_THESAURUS)
-msgid "Thesaurus"
-msgstr "同義字"
-
 #. Resource IDs: (AFX_IDS_AUTOSAVE_RECOVERY_ASK_2)
 msgid ""
 "These are more recently saved than the currently open documents and contain "
@@ -10440,7 +10453,7 @@ msgid ""
 "This working copy has a client-side hook script configured. Do you want this script to run?\n"
 "The command line to run is:\n"
 "%ls"
-msgstr ""
+msgstr "工作目錄設置了用戶端掛鉤指令檔。你想要執行該指令檔嗎?\n即將被執行的命令列指令是：\n%ls"
 
 #. Resource IDs: (IDS_TREE_DIFF)
 msgid "Three way diff"
@@ -10628,7 +10641,7 @@ msgid ""
 " agent for caching the password (done automatically if a PuTTY key is "
 "configured for a remote). For advanced tips & tricks see our <a "
 "id=\"manual\">manual</a> and <a id=\"sshfaq\">FAQ</a>."
-msgstr "建議使用 TortoiseGitPlink 做為你的 SSH 客戶端程式。如果你還沒有「金鑰對(key pair)」，你應該產生一組，並將私鑰存放在安全的地方以備後用，然後在伺服端設定好你的公鑰；使用 PuTTY 認證代理程式（Pageant）幫你快取密碼（如果你已經為遠端設定好 PuTTY 金鑰，這就會自動完成）。請查閱我們的<a id=\"manual\">手冊</a>和 <a id=\"sshfaq\">FAQ</a> 以取得更多進階的提示和技巧。"
+msgstr "建議使用 TortoiseGitPlink 做為你的 SSH 用戶端程式。如果你還沒有「金鑰對(key pair)」，你應該產生一組，並將私鑰存放在安全的地方以備後用，然後在伺服端設定好你的公鑰；使用 PuTTY 認證代理程式（Pageant）幫你快取密碼（如果你已經為遠端設定好 PuTTY 金鑰，這就會自動完成）。請查閱我們的<a id=\"manual\">手冊</a>和 <a id=\"sshfaq\">FAQ</a> 以取得更多進階的提示和技巧。"
 
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 357, IDS_APP_TITLE)
 msgid "TortoiseGitUDiff"
@@ -10744,7 +10757,7 @@ msgstr "UTF-8"
 
 #. Resource IDs: (IDS_ERR_CHANGELIST_LOAD)
 msgid "Unable to load changelists"
-msgstr ""
+msgstr "無法載入 changelists"
 
 #. Resource IDs: (AFX_IDP_FAILED_MAPI_LOAD)
 msgid "Unable to load mail system support."
@@ -10773,7 +10786,7 @@ msgstr "無法重建工作目錄路徑！\n如果檔案名稱有變動，可能�
 
 #. Resource IDs: (IDS_ERR_CHANGELIST_SAVE)
 msgid "Unable to save changelists"
-msgstr ""
+msgstr "無法儲存 changelists"
 
 #. Resource IDs: (AFX_IDP_SET_NOT_SUPPORTED)
 msgid "Unable to write read-only property."
@@ -10939,10 +10952,6 @@ msgstr "使用 HTTP 路徑部分"
 msgid "Use Ribbons"
 msgstr "使用 Ribbon 介面"
 
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1497)
-msgid "Use Thin &Pack (For slow network connections)"
-msgstr "使用小包(為慢速網路連接)(&P)"
-
 #. Resource IDs: (Dialog IDD_OPENDLG: Control id 1064)
 msgid "Use Unified Diff from &clipboard"
 msgstr "使用剪貼簿中的統合式差異檔(&C)"
@@ -10998,6 +11007,10 @@ msgstr "使用提交日期"
 #. Resource IDs: (Dialog IDD_STATGRAPH: Control id 1127)
 msgid "Use committer names"
 msgstr "使用提交者名稱"
+
+#. Resource IDs: (IDS_COMMON_ANCESTOR)
+msgid "Use common ancestor (A...B diff)"
+msgstr "使用共同祖先 (A...B diff)"
 
 #. Resource IDs: (IDS_SMTP_CONFIGURED)
 msgid "Use configured server"
@@ -11610,8 +11623,10 @@ msgid "Z"
 msgstr "Z"
 
 #. Resource IDs: (IDS_ARCHIVEFILEFILTER)
-msgid "ZIP archive (*.zip)|*.zip|All Files (*.*)|*.*||"
-msgstr "ZIP 壓縮檔 (*.zip)|*.zip|所有檔案 (*.*)|*.*||"
+msgid ""
+"ZIP archive (*.zip)|*.zip|TAR archive (*.tar)|*.tar|TAR GZIP archive "
+"(*.tar.gz)|*.tar.gz|All Files (*.*)|*.*||"
+msgstr "ZIP 壓縮檔 (*.zip)|*.zip|TAR 壓縮檔 (*.tar)|*.tar|TAR GZIP 壓縮檔 (*.tar.gz)|*.tar.gz|所有檔案 (*.*)|*.*||"
 
 #. Resource IDs: (Dialog IDD_EXPORT: Control id 1074)
 msgid "Zip File"

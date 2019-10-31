@@ -13,8 +13,9 @@
 # Garfield Yao <field977@gmail.com>, 2011
 # Gones <liejie050911@163.com>, 2013
 # Gong Gong <gongong83@gmail.com>, 2013
+# shuyu liu <liushuyu011@gmail.com>, 2014,2016
 # loveyu <yuht@qq.com>, 2012
-# luebbe <luebbe.opensource@gmail.com>, 2011,2013
+# Lübbe Onken <luebbe.opensource@gmail.com>, 2011,2013
 # lznuaa <lznuaa@gmail.com>, 2013-2014,2017
 # lznuaa <lznuaa@gmail.com>, 2012-2013
 # lznuaa <lznuaa@gmail.com>, 2012-2013
@@ -24,25 +25,25 @@
 # RAMBOO <ramboooo@126.com>, 2013
 # RAMBOO <ramboooo@126.com>, 2013
 # Shengbin Meng <shengbinmeng@gmail.com>, 2013
-# liushuyu011 <liushuyu011@gmail.com>, 2014,2016
-# Sven Strickroth <sstrickroth@googlemail.com>, 2012-2013,2017-2018
+# shuyu liu <liushuyu011@gmail.com>, 2014,2016
+# Sven Strickroth <sstrickroth@googlemail.com>, 2012-2013,2017-2019
 # szkingrose <1072258106@qq.com>, 2014
 # Verplusor, 2011
 # weicong <weicong@live.cn>, 2013
 # wwj402 <wwj402@gmail.com>, 2013
 # xiaobing chen <olivetchan@qq.com>, 2016
 # Xijian Yan, 2018
-# YFdyh000 <yfdyh000@gmail.com>, 2019
+# YFdyh000 <yfdyh000@gmail.com>, 2013,2016,2019
 # YFdyh000 <yfdyh000@gmail.com>, 2013,2016
 # YFdyh000 <yfdyh000@gmail.com>, 2013-2018
 # zhang chuan <zhangchuan.cn@gmail.com>, 2011
-# 乙酸鋰 <ch3cooli@gmail.com>, 2014
+# 乙酸鋰 <ch3cooli@gmail.com>, 2014,2019
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2019-02-22 16:39+0000\n"
+"PO-Revision-Date: 2019-10-25 06:45+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/lznuaa/tortoisegit/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -1822,7 +1823,7 @@ msgstr "所有本地分支"
 msgid ""
 "All or some options are limited. In order to change all these settings, you "
 "need Administrator rights."
-msgstr ""
+msgstr "部分或全部选项有所限制，更改需要管理员权限。"
 
 #. Resource IDs: (IDS_ALLREFS)
 msgid "All refs"
@@ -2123,9 +2124,9 @@ msgstr "自动CrLf换行符转换"
 msgid "Auto Crlf:"
 msgstr "自动CrLf转换:"
 
-#. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 1631)
-msgid "Auto&Crlf"
-msgstr "自动换行符转化(&C)"
+#. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 65535)
+msgid "Auto&CrLf:"
+msgstr ""
 
 #. Resource IDs: (IDS_PROGRS_CLOSE_NOCONFLICTS)
 msgid "Auto-close if no conflicts"
@@ -5233,7 +5234,7 @@ msgstr "常规设置::右键菜单"
 
 #. Resource IDs: (Dialog IDD_SETTINGSEXTMENU: Control id 4573)
 msgid "General::Context Menu 2"
-msgstr "常规::右键菜单二"
+msgstr "常规设置::右键菜单二"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 196)
 msgid "General::Dialogs 1"
@@ -6078,7 +6079,7 @@ msgstr "在提交中"
 
 #. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1649)
 msgid "In order to abort a merge progress a reset (to HEAD) is needed."
-msgstr "为了中止合并过程，需要进行一次重置操作。"
+msgstr "为中止当前的合并，需要重置 HEAD。"
 
 #. Resource IDs: (IDS_FIRSTSTART_LANGUAGEHINT2)
 msgid ""
@@ -6977,10 +6978,6 @@ msgid ""
 "overlay"
 msgstr "无状态缓存。只有受版本控制的文件夹获得图标覆盖，文件不会获得图标覆盖"
 
-#. Resource IDs: (IDS_SPELLEDIT_NOTHESAURUS)
-msgid "No thesaurus suggestions"
-msgstr "没有建议辞典"
-
 #. Resource IDs: (IDS_NOGITREPO)
 msgid "No valid git repository found."
 msgstr "没找到有效的 git 版本库。"
@@ -7280,7 +7277,7 @@ msgstr "打开"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 1849)
 msgid "Open &settings"
-msgstr ""
+msgstr "打开设置"
 
 #. Resource IDs: (57601)
 msgid ""
@@ -7610,6 +7607,10 @@ msgid ""
 "Please enter a path where to apply the hook script to. Use \"*\" for all "
 "paths."
 msgstr "请输入 Hook 脚本要应用的路径。使用 \"*\" 表示所有路径。"
+
+#. Resource IDs: (IDS_GITCHANGED_NEEDRESTART)
+msgid "Please restart TortoiseGit for the changes of git.exe to take effect."
+msgstr ""
 
 #. Resource IDs: (IDS_FIRSTSTART_HINT3)
 msgid ""
@@ -8445,6 +8446,10 @@ msgstr "还原提交"
 msgid "Revert commit %s"
 msgstr "还原提交 %s"
 
+#. Resource IDs: (IDS_REVERTCOMMITS)
+msgid "Revert the selected commit(s)?"
+msgstr "还原选中的提交？"
+
 #. Resource IDs: (IDS_LOG_POPUP_REVERTTOPARENT)
 msgid "Revert to parent revision"
 msgstr "还原到父版本"
@@ -9175,6 +9180,10 @@ msgstr "显示空白字符"
 msgid "Show all &staged files"
 msgstr "显示所有暂存的文件(&S)"
 
+#. Resource IDs: (ID_VIEW_SHOWALLTAGS - Menu)
+msgid "Show all tags"
+msgstr ""
+
 #. Resource IDs: (32813)
 msgid "Show an overview of the whole graph"
 msgstr "显示鸟瞰图"
@@ -9201,6 +9210,10 @@ msgstr "在日志对话框和推送到远端分支后显示分支修订号 (git 
 #. Resource IDs: (IDS_LOG_POPUP_SHOWBRANCHES)
 msgid "Show branches this commit is &on"
 msgstr "显示此提交所在的分支(&O)"
+
+#. Resource IDs: (ID_VIEW_SHOWBRANCHINGSANDMERGES - Menu)
+msgid "Show branchings and &merges"
+msgstr "显示分支与合并 (&M)"
 
 #. Resource IDs: (IDS_LOG_POPUP_GNUDIFF)
 msgid "Show changes as &unified diff"
@@ -9289,6 +9302,10 @@ msgstr "显示日志"
 #. Resource IDs: (IDS_STATUSLIST_SHOWLOGOLDNAME)
 msgid "Show log &before rename/copy"
 msgstr "显示重命名或复制前日志(&B)"
+
+#. Resource IDs: (ID_VIEW_SHOWLOGID - Menu)
+msgid "Show log ID instead of SHA-1"
+msgstr "显示记录 ID 而非 SHA-1"
 
 #. Resource IDs: (IDS_SHOWLOG_OF)
 #, c-format
@@ -10355,10 +10372,6 @@ msgid ""
 "have been ignored or the global ignore configuration setting."
 msgstr "没有待添加的内容。\n所有文件和文件夹已在在版本库中或是被全局配置文件忽略。"
 
-#. Resource IDs: (IDS_SPELLEDIT_THESAURUS)
-msgid "Thesaurus"
-msgstr "知识库"
-
 #. Resource IDs: (AFX_IDS_AUTOSAVE_RECOVERY_ASK_2)
 msgid ""
 "These are more recently saved than the currently open documents and contain "
@@ -10953,10 +10966,6 @@ msgstr "使用HTTP路径组件"
 msgid "Use Ribbons"
 msgstr "使用 Ribbon 风格"
 
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1497)
-msgid "Use Thin &Pack (For slow network connections)"
-msgstr "使用小包(针对慢速网络连接)(&P)"
-
 #. Resource IDs: (Dialog IDD_OPENDLG: Control id 1064)
 msgid "Use Unified Diff from &clipboard"
 msgstr "使用剪贴板上的标准差异(&C)"
@@ -11012,6 +11021,10 @@ msgstr "使用提交日期"
 #. Resource IDs: (Dialog IDD_STATGRAPH: Control id 1127)
 msgid "Use committer names"
 msgstr "使用提交者名称"
+
+#. Resource IDs: (IDS_COMMON_ANCESTOR)
+msgid "Use common ancestor (A...B diff)"
+msgstr ""
 
 #. Resource IDs: (IDS_SMTP_CONFIGURED)
 msgid "Use configured server"
@@ -11624,8 +11637,10 @@ msgid "Z"
 msgstr "Z"
 
 #. Resource IDs: (IDS_ARCHIVEFILEFILTER)
-msgid "ZIP archive (*.zip)|*.zip|All Files (*.*)|*.*||"
-msgstr "ZIP 压缩文件 (*.zip)|*.zip|所有文件 (*.*)|*.*||"
+msgid ""
+"ZIP archive (*.zip)|*.zip|TAR archive (*.tar)|*.tar|TAR GZIP archive "
+"(*.tar.gz)|*.tar.gz|All Files (*.*)|*.*||"
+msgstr "ZIP 压缩文件 (*.zip)|*.zip|TAR 归档 (*.tar)|*.tar|TAR GZIP 归档 (*.tar.gz)|*.tar.gz|所有文件 (*.*)|*.*||"
 
 #. Resource IDs: (Dialog IDD_EXPORT: Control id 1074)
 msgid "Zip File"

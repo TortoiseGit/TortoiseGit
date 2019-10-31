@@ -9,10 +9,10 @@
 # Jarosław Pękala <jaroslaw.pekala@gmail.com>, 2013
 # jotpeg <janekpg@gazeta.pl>, 2013
 # kkotowicz <kkotowicz@gmail.com>, 2011
-# lukaszkoziara <koziara.lukasz@gmail.com>, 2017
+# lukaszkoziara <koziara.lukasz@gmail.com>, 2017,2019
 # Kuba Niewiarowski <jakub@niewiarowski.it>, 2018
-# luebbe <luebbe.opensource@gmail.com>, 2011
-# luebbe <luebbe.opensource@gmail.com>, 2011
+# Lübbe Onken <luebbe.opensource@gmail.com>, 2011
+# Lübbe Onken <luebbe.opensource@gmail.com>, 2011
 # lukaszkoziara <koziara.lukasz@gmail.com>, 2017
 # Michał Lipok <michal@lipok.pl>, 2015
 # mkrawiecki <michal.krawiecki@erlkoenig.pl>, 2011
@@ -28,7 +28,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2019-02-22 16:39+0000\n"
+"PO-Revision-Date: 2019-10-25 06:45+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Polish (http://www.transifex.com/lznuaa/tortoisegit/language/pl/)\n"
 "MIME-Version: 1.0\n"
@@ -2109,9 +2109,9 @@ msgstr "Automatyczna konwersja CrLf"
 msgid "Auto Crlf:"
 msgstr "Auto Crlf:"
 
-#. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 1631)
-msgid "Auto&Crlf"
-msgstr "Auto&Crlf"
+#. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 65535)
+msgid "Auto&CrLf:"
+msgstr ""
 
 #. Resource IDs: (IDS_PROGRS_CLOSE_NOCONFLICTS)
 msgid "Auto-close if no conflicts"
@@ -6963,10 +6963,6 @@ msgid ""
 "overlay"
 msgstr "Brak pamięci podręcznej statusu. Ikony nakładkowe będą wyświetlane tylko dla folderów"
 
-#. Resource IDs: (IDS_SPELLEDIT_NOTHESAURUS)
-msgid "No thesaurus suggestions"
-msgstr "Brak sugestii z tezaurusa"
-
 #. Resource IDs: (IDS_NOGITREPO)
 msgid "No valid git repository found."
 msgstr ""
@@ -7595,6 +7591,10 @@ msgstr "Proszę wprowadzić skrypt przechwytujący do wykonania."
 msgid ""
 "Please enter a path where to apply the hook script to. Use \"*\" for all "
 "paths."
+msgstr ""
+
+#. Resource IDs: (IDS_GITCHANGED_NEEDRESTART)
+msgid "Please restart TortoiseGit for the changes of git.exe to take effect."
 msgstr ""
 
 #. Resource IDs: (IDS_FIRSTSTART_HINT3)
@@ -8431,6 +8431,10 @@ msgstr "Cofnij zatwierdzenie"
 msgid "Revert commit %s"
 msgstr "Cofnij zatwierdzenie %s"
 
+#. Resource IDs: (IDS_REVERTCOMMITS)
+msgid "Revert the selected commit(s)?"
+msgstr ""
+
 #. Resource IDs: (IDS_LOG_POPUP_REVERTTOPARENT)
 msgid "Revert to parent revision"
 msgstr ""
@@ -9161,6 +9165,10 @@ msgstr "Pokaż białe znaki"
 msgid "Show all &staged files"
 msgstr ""
 
+#. Resource IDs: (ID_VIEW_SHOWALLTAGS - Menu)
+msgid "Show all tags"
+msgstr ""
+
 #. Resource IDs: (32813)
 msgid "Show an overview of the whole graph"
 msgstr "Pokaż przegląd całego wykresu"
@@ -9186,6 +9194,10 @@ msgstr ""
 
 #. Resource IDs: (IDS_LOG_POPUP_SHOWBRANCHES)
 msgid "Show branches this commit is &on"
+msgstr ""
+
+#. Resource IDs: (ID_VIEW_SHOWBRANCHINGSANDMERGES - Menu)
+msgid "Show branchings and &merges"
 msgstr ""
 
 #. Resource IDs: (IDS_LOG_POPUP_GNUDIFF)
@@ -9275,6 +9287,10 @@ msgstr "Pokaż log"
 #. Resource IDs: (IDS_STATUSLIST_SHOWLOGOLDNAME)
 msgid "Show log &before rename/copy"
 msgstr "Pokaż log &przed zmianą nazwy/kopiowaniem"
+
+#. Resource IDs: (ID_VIEW_SHOWLOGID - Menu)
+msgid "Show log ID instead of SHA-1"
+msgstr ""
 
 #. Resource IDs: (IDS_SHOWLOG_OF)
 #, c-format
@@ -10341,10 +10357,6 @@ msgid ""
 "have been ignored or the global ignore configuration setting."
 msgstr ""
 
-#. Resource IDs: (IDS_SPELLEDIT_THESAURUS)
-msgid "Thesaurus"
-msgstr "Słownik"
-
 #. Resource IDs: (AFX_IDS_AUTOSAVE_RECOVERY_ASK_2)
 msgid ""
 "These are more recently saved than the currently open documents and contain "
@@ -10939,10 +10951,6 @@ msgstr "Użyj składnika ścieżki HTTP"
 msgid "Use Ribbons"
 msgstr "Użyj wstążki"
 
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1497)
-msgid "Use Thin &Pack (For slow network connections)"
-msgstr "Użyj uproszczonego pakietu (dla wolnych połączeń sieciowych)"
-
 #. Resource IDs: (Dialog IDD_OPENDLG: Control id 1064)
 msgid "Use Unified Diff from &clipboard"
 msgstr "Użyj pliku różnicowego ze &schowka"
@@ -10997,6 +11005,10 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_STATGRAPH: Control id 1127)
 msgid "Use committer names"
+msgstr ""
+
+#. Resource IDs: (IDS_COMMON_ANCESTOR)
+msgid "Use common ancestor (A...B diff)"
 msgstr ""
 
 #. Resource IDs: (IDS_SMTP_CONFIGURED)
@@ -11610,7 +11622,9 @@ msgid "Z"
 msgstr ""
 
 #. Resource IDs: (IDS_ARCHIVEFILEFILTER)
-msgid "ZIP archive (*.zip)|*.zip|All Files (*.*)|*.*||"
+msgid ""
+"ZIP archive (*.zip)|*.zip|TAR archive (*.tar)|*.tar|TAR GZIP archive "
+"(*.tar.gz)|*.tar.gz|All Files (*.*)|*.*||"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_EXPORT: Control id 1074)
@@ -11751,7 +11765,7 @@ msgstr "autor"
 #. Resource IDs: (IDS_STATGRAPH_COMMITSBYAUTHORMOREX)
 #, c-format
 msgid "author (>= 0.5%)"
-msgstr ""
+msgstr "autor (>= 0,5%)"
 
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 65535)
 msgid "based on TortoiseSVN (https://tortoisesvn.net/)"

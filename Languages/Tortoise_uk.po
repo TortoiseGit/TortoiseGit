@@ -27,7 +27,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2019-02-22 16:39+0000\n"
+"PO-Revision-Date: 2019-10-25 06:45+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Ukrainian (http://www.transifex.com/lznuaa/tortoisegit/language/uk/)\n"
 "MIME-Version: 1.0\n"
@@ -2108,9 +2108,9 @@ msgstr "Конвертувати CrLf автоматично"
 msgid "Auto Crlf:"
 msgstr "Auto Crlf:"
 
-#. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 1631)
-msgid "Auto&Crlf"
-msgstr "Auto&Crlf"
+#. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 65535)
+msgid "Auto&CrLf:"
+msgstr ""
 
 #. Resource IDs: (IDS_PROGRS_CLOSE_NOCONFLICTS)
 msgid "Auto-close if no conflicts"
@@ -6962,10 +6962,6 @@ msgid ""
 "overlay"
 msgstr "Немає кеша стану. Тільки версійні каталоги отримують перекриття, а файли не отримують."
 
-#. Resource IDs: (IDS_SPELLEDIT_NOTHESAURUS)
-msgid "No thesaurus suggestions"
-msgstr "Тезаурус припущень не має"
-
 #. Resource IDs: (IDS_NOGITREPO)
 msgid "No valid git repository found."
 msgstr ""
@@ -7594,6 +7590,10 @@ msgstr "Введіть скрипт зачіпки, який потрібно в
 msgid ""
 "Please enter a path where to apply the hook script to. Use \"*\" for all "
 "paths."
+msgstr ""
+
+#. Resource IDs: (IDS_GITCHANGED_NEEDRESTART)
+msgid "Please restart TortoiseGit for the changes of git.exe to take effect."
 msgstr ""
 
 #. Resource IDs: (IDS_FIRSTSTART_HINT3)
@@ -8430,6 +8430,10 @@ msgstr ""
 msgid "Revert commit %s"
 msgstr ""
 
+#. Resource IDs: (IDS_REVERTCOMMITS)
+msgid "Revert the selected commit(s)?"
+msgstr ""
+
 #. Resource IDs: (IDS_LOG_POPUP_REVERTTOPARENT)
 msgid "Revert to parent revision"
 msgstr ""
@@ -9160,6 +9164,10 @@ msgstr "Показати не друковані"
 msgid "Show all &staged files"
 msgstr ""
 
+#. Resource IDs: (ID_VIEW_SHOWALLTAGS - Menu)
+msgid "Show all tags"
+msgstr ""
+
 #. Resource IDs: (32813)
 msgid "Show an overview of the whole graph"
 msgstr "Показати огляд цілого графа"
@@ -9185,6 +9193,10 @@ msgstr "Показувати номер ревізії гілки (git rev-list 
 
 #. Resource IDs: (IDS_LOG_POPUP_SHOWBRANCHES)
 msgid "Show branches this commit is &on"
+msgstr ""
+
+#. Resource IDs: (ID_VIEW_SHOWBRANCHINGSANDMERGES - Menu)
+msgid "Show branchings and &merges"
 msgstr ""
 
 #. Resource IDs: (IDS_LOG_POPUP_GNUDIFF)
@@ -9273,6 +9285,10 @@ msgstr "Показати лог"
 
 #. Resource IDs: (IDS_STATUSLIST_SHOWLOGOLDNAME)
 msgid "Show log &before rename/copy"
+msgstr ""
+
+#. Resource IDs: (ID_VIEW_SHOWLOGID - Menu)
+msgid "Show log ID instead of SHA-1"
 msgstr ""
 
 #. Resource IDs: (IDS_SHOWLOG_OF)
@@ -10340,10 +10356,6 @@ msgid ""
 "have been ignored or the global ignore configuration setting."
 msgstr "Нічого додавати.\nУсі файли та теки під версіонним управлінням,\nігноровані або ігноровані глобальними налаштуваннями."
 
-#. Resource IDs: (IDS_SPELLEDIT_THESAURUS)
-msgid "Thesaurus"
-msgstr "Тезаурус"
-
 #. Resource IDs: (AFX_IDS_AUTOSAVE_RECOVERY_ASK_2)
 msgid ""
 "These are more recently saved than the currently open documents and contain "
@@ -10938,10 +10950,6 @@ msgstr ""
 msgid "Use Ribbons"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1497)
-msgid "Use Thin &Pack (For slow network connections)"
-msgstr ""
-
 #. Resource IDs: (Dialog IDD_OPENDLG: Control id 1064)
 msgid "Use Unified Diff from &clipboard"
 msgstr "Використати Об'єднані відмінності з &буфера обмігу"
@@ -10996,6 +11004,10 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_STATGRAPH: Control id 1127)
 msgid "Use committer names"
+msgstr ""
+
+#. Resource IDs: (IDS_COMMON_ANCESTOR)
+msgid "Use common ancestor (A...B diff)"
 msgstr ""
 
 #. Resource IDs: (IDS_SMTP_CONFIGURED)
@@ -11609,7 +11621,9 @@ msgid "Z"
 msgstr ""
 
 #. Resource IDs: (IDS_ARCHIVEFILEFILTER)
-msgid "ZIP archive (*.zip)|*.zip|All Files (*.*)|*.*||"
+msgid ""
+"ZIP archive (*.zip)|*.zip|TAR archive (*.tar)|*.tar|TAR GZIP archive "
+"(*.tar.gz)|*.tar.gz|All Files (*.*)|*.*||"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_EXPORT: Control id 1074)

@@ -47,7 +47,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2019-02-22 16:39+0000\n"
+"PO-Revision-Date: 2019-10-25 06:45+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/lznuaa/tortoisegit/language/ru/)\n"
 "MIME-Version: 1.0\n"
@@ -1263,7 +1263,7 @@ msgstr "&Строка статуса"
 
 #. Resource IDs: (Dialog IDD_SETTINGSMTP: Control id 1849)
 msgid "&Store credentials..."
-msgstr ""
+msgstr "&Сохранить идентификационные данные..."
 
 #. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1525)
 msgid "&Switch to new branch"
@@ -1719,11 +1719,11 @@ msgstr "Добавить ещё один коммит?"
 
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_ADD_EXE)
 msgid "Add as Executable (+x)"
-msgstr ""
+msgstr "Добавить как исполняемый (+x)"
 
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_ADD_LINK)
 msgid "Add as Symlink"
-msgstr ""
+msgstr "Добавить как символьную ссылку"
 
 #. Resource IDs: (IDS_DLGTITLE_ADD_DIFF_TOOL)
 msgid "Add extension specific diff program"
@@ -1827,7 +1827,7 @@ msgstr "Все локальные ветви"
 msgid ""
 "All or some options are limited. In order to change all these settings, you "
 "need Administrator rights."
-msgstr ""
+msgstr "Все или некоторые настройки ограничены. Для того, чтобы изменить все эти настройки, вам нужны права администратора."
 
 #. Resource IDs: (IDS_ALLREFS)
 msgid "All refs"
@@ -1971,7 +1971,7 @@ msgstr "Применение объединённых различий"
 
 #. Resource IDs: (IDS_HOOKS_APPROVE_TASK2)
 msgid "Approve or reject client-side hook script"
-msgstr ""
+msgstr "Подтвердить или отклонить скрипт хука на клиентской стороне"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Arabic"
@@ -2128,9 +2128,9 @@ msgstr "Автоматическое преобразование заверше
 msgid "Auto Crlf:"
 msgstr "Авто Crlf:"
 
-#. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 1631)
-msgid "Auto&Crlf"
-msgstr "Авто&Crlf"
+#. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 65535)
+msgid "Auto&CrLf:"
+msgstr ""
 
 #. Resource IDs: (IDS_PROGRS_CLOSE_NOCONFLICTS)
 msgid "Auto-close if no conflicts"
@@ -2708,11 +2708,11 @@ msgstr "Извлечение со слиянием"
 
 #. Resource IDs: (IDS_CHERRY_PICK_VERSIONS)
 msgid "Cherr&y Pick selected commits..."
-msgstr ""
+msgstr "Выделить выбранные коммиты через Cherr&y Pick..."
 
 #. Resource IDs: (IDS_CHERRY_PICK_VERSION)
 msgid "Cherr&y Pick this commit..."
-msgstr ""
+msgstr "Выделить этот коммит через Cherr&y Pick..."
 
 #. Resource IDs: (IDS_PROGS_TITLE_CHERRYPICK)
 msgid "Cherry Pick"
@@ -2726,7 +2726,7 @@ msgstr "Пересмотр не удался"
 msgid ""
 "Cherry-pick failed (please see log in the cherry pick/rebase dialog for "
 "details)! Skip this commit?"
-msgstr ""
+msgstr "Выделение через Cherry-pick не удалось (пожалуйста, смотрите подробности в журнале диалога  cherry pick/rebase)! Пропустить этот коммит?"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Chinese"
@@ -3462,7 +3462,7 @@ msgstr "Создать файл .gitignore"
 
 #. Resource IDs: (IDS_CREATE_BRANCH_AT_THIS)
 msgid "Create Br&anch at this version..."
-msgstr ""
+msgstr "Создать в&етку на этой версии..."
 
 #. Resource IDs: (IDS_PROGS_TITLE_CREATEBRANCH)
 msgid "Create Branch"
@@ -3654,7 +3654,7 @@ msgstr "Удалить %d метки"
 
 #. Resource IDs: (IDS_PROC_DELETEREMOTEBRANCH_LOCAL)
 msgid "Delete &local remote-tracking branch"
-msgstr ""
+msgstr "Удалить &локальную ветку внешнего хранилища"
 
 #. Resource IDs: (IDS_REFLOG_DEL)
 msgid "Delete Ref..."
@@ -4016,7 +4016,7 @@ msgstr "&Не показывать это предупреждение снов�
 
 #. Resource IDs: (IDS_HOOKS_APPROVE_TASK5)
 msgid "Do not ask again for this script"
-msgstr ""
+msgstr "Не спрашивать больше об этом сценарии."
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 1407)
 msgid "Do not auto-select \"missing\" files (deleted, but unstaged)"
@@ -4256,7 +4256,7 @@ msgstr "В&ыход"
 
 #. Resource IDs: (IDS_EXPORT_TO_THIS)
 msgid "E&xport this version..."
-msgstr ""
+msgstr "Э&кспорт этой версии..."
 
 #. Resource IDs: (IDS_MENUEXPORT)
 msgid "E&xport..."
@@ -4285,7 +4285,7 @@ msgstr "Поправить"
 
 #. Resource IDs: (IDS_EDIT_NOTES)
 msgid "Edit &Notes"
-msgstr ""
+msgstr "Править &Заметки"
 
 #. Resource IDs: (IDS_PROC_EDITGLOBALGITCONFIG)
 msgid "Edit &global .gitconfig"
@@ -4732,7 +4732,7 @@ msgstr "Не удалось сохранить документ."
 msgid ""
 "Failed to save file \"%s\":\n"
 "%s"
-msgstr ""
+msgstr "Не удалось сохранить файл \"%s\":\n%s"
 
 #. Resource IDs: (IDS_SVNACTION_CHANGELISTFAILED)
 #, c-format
@@ -4930,7 +4930,7 @@ msgstr "Фильтр по"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_2: Control id 65535)
 msgid "Filter match"
-msgstr ""
+msgstr "Совпадение фильтра"
 
 #. Resource IDs: (IDS_FILEDIFF_FILTERCUE)
 msgid "Filter paths"
@@ -5582,7 +5582,7 @@ msgstr "Тип Хука:"
 
 #. Resource IDs: (IDS_HOOKFAILED_TASK2)
 msgid "Hook script failed"
-msgstr ""
+msgstr "Сценарий ловушки потерпел неудачу"
 
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 1841)
 msgid "I don't use Git for Windows and need special workarounds"
@@ -5918,7 +5918,7 @@ msgid ""
 "the content possibly have been altered by third parties unnoticed (e.g. "
 "after pull or merge). Keep this in mind especially if you approve a "
 "repository hook permanently."
-msgstr ""
+msgstr "Если вы исполняете версированный файл из хранилища, то обратите внимание на то, что содержимое возможно было незаметно заменено третьей стороной (например, после получения или слияния). Держите это в уме, особенно, если вы навсегда подтвердили хук хранилища."
 
 #. Resource IDs: (Dialog IDD_CREATEREPO: Control id 1654)
 msgid ""
@@ -6982,13 +6982,9 @@ msgid ""
 "overlay"
 msgstr "Без кэширования статуса. Пометки будут только на версированных папках, файлы - без пометок"
 
-#. Resource IDs: (IDS_SPELLEDIT_NOTHESAURUS)
-msgid "No thesaurus suggestions"
-msgstr "Нет предложений из словаря"
-
 #. Resource IDs: (IDS_NOGITREPO)
 msgid "No valid git repository found."
-msgstr ""
+msgstr "Не найдено корректного git-репозитария."
 
 #. Resource IDs: (IDS_NOWORKINGCOPY)
 msgid "No working directory found."
@@ -7285,7 +7281,7 @@ msgstr "Открыть"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 1849)
 msgid "Open &settings"
-msgstr ""
+msgstr "Открыть &настройки"
 
 #. Resource IDs: (57601)
 msgid ""
@@ -7616,6 +7612,10 @@ msgid ""
 "paths."
 msgstr "Пожалуйста, введите путь для применения хук скрипта. Используйте \"*\" для всех путей."
 
+#. Resource IDs: (IDS_GITCHANGED_NEEDRESTART)
+msgid "Please restart TortoiseGit for the changes of git.exe to take effect."
+msgstr ""
+
 #. Resource IDs: (IDS_FIRSTSTART_HINT3)
 msgid ""
 "Please see the <a id=\"manual\">manual</a> for general hints. E.g. in most "
@@ -7757,7 +7757,7 @@ msgstr "Идёт печать"
 
 #. Resource IDs: (IDS_HOOK_FORCEDPROCEED)
 msgid "Proceed anyway"
-msgstr ""
+msgstr "Обработать в любом случае"
 
 #. Resource IDs: (IDS_PROGS_TOOLCOL)
 msgid "Program"
@@ -7909,7 +7909,7 @@ msgstr "RAM &диски"
 #. Resource IDs: (IDS_RESET_TO_THIS_FORMAT)
 #, c-format
 msgid "R&eset \"%s\" to this..."
-msgstr ""
+msgstr "С&бросить \"%s\" до этого..."
 
 #. Resource IDs: (IDS_RESTORE_FROM_INDEX)
 msgid "R&estore this file from index"
@@ -7980,7 +7980,7 @@ msgstr "Перебазировать"
 #. Resource IDs: (IDS_REBASE_THIS_FORMAT)
 #, c-format
 msgid "Rebase \"%s\" onto this...(&G)"
-msgstr ""
+msgstr "Перебазировать \"%s\" на эту...(&G)"
 
 #. Resource IDs: (IDS_MENUREBASE)
 msgid "Rebase..."
@@ -8450,6 +8450,10 @@ msgstr "Откатить фиксацию"
 msgid "Revert commit %s"
 msgstr "Откатить фиксацию %s"
 
+#. Resource IDs: (IDS_REVERTCOMMITS)
+msgid "Revert the selected commit(s)?"
+msgstr ""
+
 #. Resource IDs: (IDS_LOG_POPUP_REVERTTOPARENT)
 msgid "Revert to parent revision"
 msgstr "Откатить к родительской ревизии"
@@ -8556,7 +8560,7 @@ msgstr "Правое изображение"
 
 #. Resource IDs: (Dialog IDD_SETTINGSHOOKCONFIG: Control id 1848)
 msgid "Run for this repository"
-msgstr ""
+msgstr "Запустить для этого хранилища"
 
 #. Resource IDs: (Dialog IDD_SETTINGSHOOKCONFIG: Control id 1335)
 msgid "Run when working tree path is under:"
@@ -9178,6 +9182,10 @@ msgstr "Показать непечатаемые знаки"
 
 #. Resource IDs: (Dialog IDD_CHANGEDFILES: Control id 1210)
 msgid "Show all &staged files"
+msgstr "Показать все из&менённые файлы"
+
+#. Resource IDs: (ID_VIEW_SHOWALLTAGS - Menu)
+msgid "Show all tags"
 msgstr ""
 
 #. Resource IDs: (32813)
@@ -9205,7 +9213,11 @@ msgstr "Показывать номер ревизии ветви (git rev-list 
 
 #. Resource IDs: (IDS_LOG_POPUP_SHOWBRANCHES)
 msgid "Show branches this commit is &on"
-msgstr ""
+msgstr "Показать ветки, &в которые этот коммит входит"
+
+#. Resource IDs: (ID_VIEW_SHOWBRANCHINGSANDMERGES - Menu)
+msgid "Show branchings and &merges"
+msgstr "Показать ветвления и &слияния"
 
 #. Resource IDs: (IDS_LOG_POPUP_GNUDIFF)
 msgid "Show changes as &unified diff"
@@ -9294,6 +9306,10 @@ msgstr "Показать журнал"
 #. Resource IDs: (IDS_STATUSLIST_SHOWLOGOLDNAME)
 msgid "Show log &before rename/copy"
 msgstr "Показать журнал &до переименования"
+
+#. Resource IDs: (ID_VIEW_SHOWLOGID - Menu)
+msgid "Show log ID instead of SHA-1"
+msgstr "Показать ID журнала вместо SHA-1"
 
 #. Resource IDs: (IDS_SHOWLOG_OF)
 #, c-format
@@ -9779,7 +9795,7 @@ msgstr "Успешно"
 
 #. Resource IDs: (IDS_SWITCH_TO_THIS)
 msgid "Sw&itch/Checkout to this..."
-msgstr ""
+msgstr "Пере&ключение на.../Извлечение этой..."
 
 #. Resource IDs: (IDS_PROGRS_TITLE_SWITCH)
 msgid "Switch"
@@ -9970,7 +9986,7 @@ msgid ""
 "The branch \"%s\" is a remote-tracking branch which locally represents a remote branch.\n"
 "\n"
 "Do you really want to delete it?"
-msgstr ""
+msgstr "Ветка \"%s\" является веткой внешнего хранилища, которая локально представляет внешнюю ветку.\n\nВы действительно хотите удалить её?"
 
 #. Resource IDs: (IDS_ERR_PATCH_CHUNKMISMATCH)
 msgid "The chunk size did not match the number of added/removed lines!"
@@ -10008,7 +10024,7 @@ msgstr "Удостоверяющий центр был изменён.\nСохр
 msgid ""
 "The current commit will be empty (e.g., due to conflict resolution). Skip "
 "the commit or keep the message only commit?"
-msgstr ""
+msgstr "Текущий коммит будет пустым (например из-за разрешения конфликтов). Пропустить этот коммит или оставить только сообщение коммита?"
 
 #. Resource IDs: (IDS_ERROR_NOCLEAN_STASH)
 msgid ""
@@ -10114,7 +10130,7 @@ msgstr "Папка\n%s\nне существует.\nЖелаете ли вы с�
 msgid ""
 "The hook script returned an error:\n"
 "%ls"
-msgstr ""
+msgstr "Сценарий ловушки вернул ошибку:\n%ls"
 
 #. Resource IDs: (IDS_ERR_HOOKFAILED)
 #, c-format
@@ -10125,7 +10141,7 @@ msgstr "Хук скрипт вернул ошибку:\n%s"
 
 #. Resource IDs: (IDS_ERR_HOOKNOTAPPROVED)
 msgid "The hook script was not approved to run!"
-msgstr ""
+msgstr "Сценарий ловушки не одобрен к запуску!"
 
 #. Resource IDs: (IDS_INVALIDIMAGEINFO)
 msgid "The image can not be shown."
@@ -10360,10 +10376,6 @@ msgid ""
 "have been ignored or the global ignore configuration setting."
 msgstr "Не найдено ничего, что можно добавить. Все файлы и папки либо уже под управлением версиями, либо проигнорированы, либо игнорируются в соответствии с глобальной настройкой игнорирования файлов."
 
-#. Resource IDs: (IDS_SPELLEDIT_THESAURUS)
-msgid "Thesaurus"
-msgstr "Словарь"
-
 #. Resource IDs: (AFX_IDS_AUTOSAVE_RECOVERY_ASK_2)
 msgid ""
 "These are more recently saved than the currently open documents and contain "
@@ -10459,7 +10471,7 @@ msgid ""
 "This working copy has a client-side hook script configured. Do you want this script to run?\n"
 "The command line to run is:\n"
 "%ls"
-msgstr ""
+msgstr "Эта рабочая копия имеет настроенный сценарий ловушки на клиентской стороне. Вы хотите запустить этот сценарий?\nКомандная строка для запуска:\n%ls"
 
 #. Resource IDs: (IDS_TREE_DIFF)
 msgid "Three way diff"
@@ -10763,7 +10775,7 @@ msgstr "UTF-8"
 
 #. Resource IDs: (IDS_ERR_CHANGELIST_LOAD)
 msgid "Unable to load changelists"
-msgstr ""
+msgstr "Невозможно загрузить списки изменений"
 
 #. Resource IDs: (AFX_IDP_FAILED_MAPI_LOAD)
 msgid "Unable to load mail system support."
@@ -10792,7 +10804,7 @@ msgstr "Невозможно воссоздать путь в рабочей к�
 
 #. Resource IDs: (IDS_ERR_CHANGELIST_SAVE)
 msgid "Unable to save changelists"
-msgstr ""
+msgstr "Невозможно сохранить списки изменений"
 
 #. Resource IDs: (AFX_IDP_SET_NOT_SUPPORTED)
 msgid "Unable to write read-only property."
@@ -10958,10 +10970,6 @@ msgstr "Использовать компонент пути HTTP"
 msgid "Use Ribbons"
 msgstr "Использовать ленточный интерфейс"
 
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1497)
-msgid "Use Thin &Pack (For slow network connections)"
-msgstr "Использовать тонкие пакеты (для медленного соединения с сетью)"
-
 #. Resource IDs: (Dialog IDD_OPENDLG: Control id 1064)
 msgid "Use Unified Diff from &clipboard"
 msgstr "Использовать объединённые &различия из буфера обмена"
@@ -11017,6 +11025,10 @@ msgstr "Использовать даты коммита"
 #. Resource IDs: (Dialog IDD_STATGRAPH: Control id 1127)
 msgid "Use committer names"
 msgstr "Использовать имена коммитеров"
+
+#. Resource IDs: (IDS_COMMON_ANCESTOR)
+msgid "Use common ancestor (A...B diff)"
+msgstr ""
 
 #. Resource IDs: (IDS_SMTP_CONFIGURED)
 msgid "Use configured server"
@@ -11629,8 +11641,10 @@ msgid "Z"
 msgstr "Z"
 
 #. Resource IDs: (IDS_ARCHIVEFILEFILTER)
-msgid "ZIP archive (*.zip)|*.zip|All Files (*.*)|*.*||"
-msgstr "архив ZIP (*.zip)|*.zip|Все файлы (*.*)|*.*||"
+msgid ""
+"ZIP archive (*.zip)|*.zip|TAR archive (*.tar)|*.tar|TAR GZIP archive "
+"(*.tar.gz)|*.tar.gz|All Files (*.*)|*.*||"
+msgstr "ZIP-архив (*.zip)|*.zip|TAR-архив (*.tar)|*.tar|TAR GZIP-архив (*.tar.gz)|*.tar.gz|Все Файлы (*.*)|*.*||"
 
 #. Resource IDs: (Dialog IDD_EXPORT: Control id 1074)
 msgid "Zip File"
