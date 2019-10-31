@@ -70,6 +70,12 @@
 		</para>
 	</tip>
 	<tip>
+		<title>Reverting to an old version of a file</title>
+		<para>
+			If you want to revert a file to an older version open the Log Dialog (cf. <xref linkend="tgit-dug-showlog"/>) on the file (or the folder if the file was deleted). Then select the specific commit you want to revert to. Now you have two options: 1) Select the specific file entry in the file list in the bottom and select <guilabel>Revert to this revision</guilabel> resp. <guilabel>Revert to parent revision</guilabel> in the context menu of the file entry. 2) Select <guilabel>Browse Repository</guilabel> (cf. <xref linkend="tgit-dug-repobrowser"/>) in the context menu of the revision. Then navigate to the file and either select <guilabel>Save revision to...</guilabel> or drag the file to the location where you want to use it.
+		</para>
+	</tip>
+	<tip>
 		<title>Revert is Slow</title>
 		<para>
 			When you revert changes you may find that the operation takes a lot
