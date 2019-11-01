@@ -27,6 +27,7 @@
 #include <sys/stat.h>
 #include "SmartHandle.h"
 #include "git2/sys/repository.h"
+#include <stdexcept>
 
 CGitAdminDirMap g_AdminDirMap;
 
@@ -123,6 +124,12 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	{
 		config.Free();
 		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Could not resize index-vector: %s\n", ex.what());
+		return -1;
+	}
+	catch (const std::length_error& ex)
+	{
+		config.Free();
+		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Could not resize index-vector, length_error: %s\n", ex.what());
 		return -1;
 	}
 	for (size_t i = 0; i < ecount; ++i)
@@ -631,6 +638,11 @@ int CGitHeadFileList::ReadTree(bool ignoreCase)
 	catch (const std::bad_alloc& ex)
 	{
 		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Catched exception inside ReadTreeRecursive: %s\n", ex.what());
+		return -1;
+	}
+	catch (const std::length_error& ex)
+	{
+		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Catched exception inside ReadTreeRecursive, length_error: %s\n", ex.what());
 		return -1;
 	}
 	if (!ret)
