@@ -72,6 +72,7 @@ BEGIN_MESSAGE_MAP(CSettingGitConfig, CPropertyPage)
 	ON_BN_CLICKED(IDC_EDITGLOBALXDGGITCONFIG, &CSettingGitConfig::OnBnClickedEditglobalxdggitconfig)
 	ON_BN_CLICKED(IDC_EDITLOCALGITCONFIG, &CSettingGitConfig::OnBnClickedEditlocalgitconfig)
 	ON_BN_CLICKED(IDC_EDITTGITCONFIG, &CSettingGitConfig::OnBnClickedEdittgitconfig)
+	ON_BN_CLICKED(IDC_VIEWEFFECTIVEGITCONFIG, &CSettingGitConfig::OnBnClickedVieweffectivegitconfig)
 	ON_BN_CLICKED(IDC_EDITSYSTEMGITCONFIG, &CSettingGitConfig::OnBnClickedEditsystemgitconfig)
 	ON_BN_CLICKED(IDC_VIEWSYSTEMGITCONFIG, &CSettingGitConfig::OnBnClickedViewsystemgitconfig)
 	GITSETTINGS_RADIO_EVENT
@@ -312,6 +313,21 @@ void CSettingGitConfig::OnBnClickedEdittgitconfig()
 	{
 		CAppUtils::LaunchAlternativeEditor(g_Git.m_CurrentDir + L"\\.tgitconfig");
 	}
+}
+
+void CSettingGitConfig::OnBnClickedVieweffectivegitconfig()
+{
+	CString err;
+	CString tempfile = ::GetTempFile();
+
+	CString cmd = L"git config -l";
+	if (g_Git.RunLogFile(cmd, tempfile, &err))
+	{
+		CMessageBox::Show(GetSafeHwnd(), L"Could not get effective git config:\n" + err, L"TortoiseGit", MB_OK);
+		return;
+	}
+	::SetFileAttributes(tempfile, FILE_ATTRIBUTE_READONLY);
+	CAppUtils::LaunchAlternativeEditor(tempfile);
 }
 
 void CSettingGitConfig::OnBnClickedEditsystemgitconfig()

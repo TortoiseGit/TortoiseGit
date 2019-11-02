@@ -54,6 +54,7 @@ protected:
 	afx_msg void OnBnClickedEditglobalxdggitconfig();
 	afx_msg void OnBnClickedEditlocalgitconfig();
 	afx_msg void OnBnClickedEdittgitconfig();
+	afx_msg void OnBnClickedVieweffectivegitconfig();
 	GITSETTINGS_RADIO_EVENT_HANDLE;
 
 	bool	m_bNeedSave;

@@ -1255,6 +1255,10 @@ msgstr ""
 msgid "&View"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 1851)
+msgid "&View effective config"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 65535)
 msgid "&Warn on missing Signed-Off-By on commit"
 msgstr ""
