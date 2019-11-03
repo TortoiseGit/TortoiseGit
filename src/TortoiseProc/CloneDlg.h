@@ -82,8 +82,11 @@ public:
 	CString	m_strSVNTags;
 	CString	m_strSVNBranchs;
 	CString	m_strUserName;
+	CString m_strSVNFrom;
 
-	int		m_nSVNFrom;
+private:
+	CString m_strSVNFromLast;
+	bool    m_bOnChangeDisabled=false;
 
 protected:
 	CMenuButton	m_BrowseUrl;
@@ -108,4 +111,17 @@ protected:
 	afx_msg void OnBnClickedCheckSvnFrom();
 	afx_msg void OnBnClickedCheckDepth();
 	afx_msg void OnBnClickedCheckUsername();
+	afx_msg void OnEnSetFocusEditSvnFrom();
+	afx_msg void OnEnUpdateEditSvnFrom();
+	afx_msg void OnEnKillFocusEditSvnFrom();
+
+private:
+	template<class CTRL>
+	CTRL* Get(int idCtrl)
+	{
+		if (!idCtrl)
+			return NULL;
+		else
+			return (CTRL*)GetDlgItem(idCtrl);
+	}
 };
