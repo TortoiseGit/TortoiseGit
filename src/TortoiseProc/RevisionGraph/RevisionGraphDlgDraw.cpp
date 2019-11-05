@@ -364,14 +364,14 @@ void CRevisionGraphWnd::DrawConnections(GraphicsDevice& graphics, const CRect& /
 		GraphicsPath path;
 
 		PointF arrows[5];
-		arrows[0].X = points[idx0].X;
-		arrows[0].Y = points[idx0].Y;
+		arrows[0].X = points[idx0].X + dir * static_cast<REAL>(dx * 3 / 5);
+		arrows[0].Y = points[idx0].Y + dir * static_cast<REAL>(dy * 3 / 5);
 
 		arrows[1].X = points[idx0].X + dir * static_cast<REAL>(p1_x);
 		arrows[1].Y = points[idx0].Y + dir * static_cast<REAL>(p1_y);
 
-		arrows[2].X = points[idx0].X + dir * static_cast<REAL>(dx * 3 / 5);
-		arrows[2].Y = points[idx0].Y + dir * static_cast<REAL>(dy * 3 / 5);
+		arrows[2].X = points[idx0].X;
+		arrows[2].Y = points[idx0].Y;
 
 		arrows[3].X = points[idx0].X + dir * static_cast<REAL>(p2_x);
 		arrows[3].Y = points[idx0].Y + dir * static_cast<REAL>(p2_y);
