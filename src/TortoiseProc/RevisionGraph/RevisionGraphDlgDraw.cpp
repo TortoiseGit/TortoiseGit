@@ -344,8 +344,11 @@ void CRevisionGraphWnd::DrawConnections(GraphicsDevice& graphics, const CRect& /
 		}
 
 		//draw arrow
-		double dx = points[1].X - points[0].X;
-		double dy = points[1].Y - points[0].Y;
+		int idx0 = points.GetCount() - 1;
+		int idx1 = points.GetCount() - 2;
+		int dir = -1;
+		double dx = (points[idx1].X - points[idx0].X) * dir;
+		double dy = (points[idx1].Y - points[idx0].Y) * dir;
 
 		double len = sqrt(dx*dx + dy*dy);
 		dx = m_ArrowSize * m_fZoomFactor *dx /len;
@@ -358,25 +361,23 @@ void CRevisionGraphWnd::DrawConnections(GraphicsDevice& graphics, const CRect& /
 		p2_x = dx * m_ArrowCos + dy * m_ArrowSin;
 		p2_y = -dx * m_ArrowSin + dy * m_ArrowCos;
 
-		//graphics.graphics->DrawLine(&pen, points[0].X,points[0].Y, points[0].X +p1_x,points[0].Y+p1_y);
-		//graphics.graphics->DrawLine(&pen, points[0].X,points[0].Y, points[0].X +p2_x,points[0].Y+p2_y);
 		GraphicsPath path;
 
 		PointF arrows[5];
-		arrows[0].X =  points[1].X;
-		arrows[0].Y =  points[1].Y;
+		arrows[0].X = points[idx0].X;
+		arrows[0].Y = points[idx0].Y;
 
-		arrows[1].X =  points[1].X - static_cast<REAL>(p1_x);
-		arrows[1].Y =  points[1].Y - static_cast<REAL>(p1_y);
+		arrows[1].X = points[idx0].X + dir * static_cast<REAL>(p1_x);
+		arrows[1].Y = points[idx0].Y + dir * static_cast<REAL>(p1_y);
 
-		arrows[2].X =  points[1].X - static_cast<REAL>(dx * 3 / 5);
-		arrows[2].Y =  points[1].Y - static_cast<REAL>(dy * 3 / 5);
+		arrows[2].X = points[idx0].X + dir * static_cast<REAL>(dx * 3 / 5);
+		arrows[2].Y = points[idx0].Y + dir * static_cast<REAL>(dy * 3 / 5);
 
-		arrows[3].X =  points[1].X - static_cast<REAL>(p2_x);
-		arrows[3].Y =  points[1].Y - static_cast<REAL>(p2_y);
+		arrows[3].X = points[idx0].X + dir * static_cast<REAL>(p2_x);
+		arrows[3].Y = points[idx0].Y + dir * static_cast<REAL>(p2_y);
 
-		arrows[4].X =  points[1].X;
-		arrows[4].Y =  points[1].Y;
+		arrows[4].X = arrows[0].X;
+		arrows[4].Y = arrows[0].Y;
 
 		path.AddLines(arrows, 5);
 		path.SetFillMode(FillModeAlternate);
