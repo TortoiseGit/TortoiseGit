@@ -153,6 +153,7 @@ public:
 
 	bool		m_bShowBranchingsMerges;
 	bool		m_bShowAllTags;
+	bool		m_bArrowPointToMerges;
 
 	void ReloadHashMap()
 	{

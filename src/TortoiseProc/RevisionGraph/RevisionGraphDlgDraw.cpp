@@ -347,6 +347,13 @@ void CRevisionGraphWnd::DrawConnections(GraphicsDevice& graphics, const CRect& /
 		int idx0 = points.GetCount() - 1;
 		int idx1 = points.GetCount() - 2;
 		int dir = -1;
+		if (m_bArrowPointToMerges)
+		{
+			idx0 = 0;
+			idx1 = 1;
+			dir = 1;
+		}
+
 		double dx = (points[idx1].X - points[idx0].X) * dir;
 		double dy = (points[idx1].Y - points[idx0].Y) * dir;
 

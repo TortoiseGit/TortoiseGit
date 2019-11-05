@@ -109,6 +109,7 @@ CRevisionGraphWnd::CRevisionGraphWnd()
 	, m_bLocalBranches(FALSE)
 	, m_bShowBranchingsMerges(false)
 	, m_bShowAllTags(true)
+	, m_bArrowPointToMerges(false)
 {
 	WNDCLASS wndcls;
 	HINSTANCE hInst = AfxGetInstanceHandle();

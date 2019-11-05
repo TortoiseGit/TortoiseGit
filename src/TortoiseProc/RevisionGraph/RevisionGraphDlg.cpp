@@ -112,6 +112,7 @@ BEGIN_MESSAGE_MAP(CRevisionGraphDlg, CResizableStandAloneDialog)
 	ON_WM_WINDOWPOSCHANGING()
 	ON_COMMAND(ID_VIEW_SHOWBRANCHINGSANDMERGES, OnViewShowBranchingsMerges)
 	ON_COMMAND(ID_VIEW_SHOWALLTAGS, OnViewShowAllTags)
+	ON_COMMAND(ID_VIEW_ARROW_POINT_TO_MERGES, OnViewArrowPointToMerges)
 	ON_COMMAND(ID_FIND, OnFind)
 	ON_REGISTERED_MESSAGE(m_FindDialogMessage, OnFindDialogMessage)
 END_MESSAGE_MAP()
@@ -273,6 +274,7 @@ BOOL CRevisionGraphDlg::OnInitDialog()
 	m_Graph.SetShowOverview(InitialSetMenu(L"ShowRevGraphOverview", false, ID_VIEW_SHOWOVERVIEW));
 	m_Graph.m_bShowBranchingsMerges = InitialSetMenu(L"ShowRevGraphBranchesMerges", false, ID_VIEW_SHOWBRANCHINGSANDMERGES);
 	m_Graph.m_bShowAllTags = InitialSetMenu(L"ShowRevGraphAllTags", true, ID_VIEW_SHOWALLTAGS);
+	m_Graph.m_bArrowPointToMerges = InitialSetMenu(L"ArrowPointToMerges", false, ID_VIEW_ARROW_POINT_TO_MERGES);
 
 //	m_hAccel = LoadAccelerators(AfxGetResourceHandle(),MAKEINTRESOURCE(IDR_ACC_REVISIONGRAPH));
 
@@ -444,6 +446,12 @@ void CRevisionGraphDlg::OnViewShowAllTags()
 {
 	m_Graph.m_bShowAllTags = ToggleSetMenu(L"ShowRevGraphAllTags", ID_VIEW_SHOWALLTAGS);
 
+	UpdateFullHistory();
+}
+
+void CRevisionGraphDlg::OnViewArrowPointToMerges()
+{
+	m_Graph.m_bArrowPointToMerges = ToggleSetMenu(L"ArrowPointToMerges", ID_VIEW_ARROW_POINT_TO_MERGES);
 	UpdateFullHistory();
 }
 
