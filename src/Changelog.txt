@@ -4,6 +4,7 @@ Released: unreleased
 == Bug Fixes ==
  * Fixed issue #3449: Crash when indenting short lines (pressing tab key)
  * Fixed issue #3463: Check For Updates dialog - misaligned buttons
+ * Fixed issue #3442: Commit & Push after amending a commit always results in a failed push
 
 == Features ==
  * Fixed issue #3448: Revision Graph: Make direction of arrows configurable

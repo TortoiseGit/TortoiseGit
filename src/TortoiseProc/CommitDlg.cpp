@@ -548,14 +548,14 @@ static bool UpdateIndex(CMassiveGitTask &mgt, CSysProgressDlg &sysProgressDlg, i
 	return mgt.Execute(cancel);
 }
 
-static void DoPush(HWND hWnd)
+static void DoPush(HWND hWnd, bool usePushDlg)
 {
 	CString head;
 	if (g_Git.GetCurrentBranchFromFile(g_Git.m_CurrentDir, head))
 		return;
 	CString remote, remotebranch;
 	g_Git.GetRemotePushBranch(head, remote, remotebranch);
-	if (remote.IsEmpty() || remotebranch.IsEmpty())
+	if (usePushDlg || remote.IsEmpty() || remotebranch.IsEmpty())
 	{
 		CAppUtils::Push(hWnd);
 		return;
@@ -1243,7 +1243,7 @@ void CCommitDlg::OnOK()
 	if (bCloseCommitDlg)
 	{
 		if (m_ctrlOkButton.GetCurrentEntry() == 2)
-			DoPush(GetSafeHwnd());
+			DoPush(GetSafeHwnd(), !!m_bCommitAmend);
 		CResizableStandAloneDialog::OnOK();
 	}
 	else if (m_PostCmd == GIT_POSTCOMMIT_CMD_RECOMMIT)
