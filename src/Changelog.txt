@@ -1,4 +1,10 @@
-﻿= Release 2.9.0 =
+﻿= Release 2.10.0 =
+Released: unreleased
+
+== Bug Fixes ==
+ * Fixed issue #3449: Crash when indenting short lines (pressing tab key)
+
+= Release 2.9.0 =
 Released: 2019-10-31
 
 == Changes ==
