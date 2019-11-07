@@ -1603,6 +1603,15 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					if (!m_CurrentVersion.IsEmpty())
 					{
 						popup.AppendMenuIcon(IDGITLC_COMPAREWC, IDS_LOG_POPUP_COMPARE, IDI_DIFF);
+
+						CGitHash parentHash;
+						CString title;
+						if (GetParentCommitInfo(m_CurrentVersion, filepath->m_ParentNo & PARENT_MASK, parentHash, title))
+						{
+							CString str;
+							str.LoadString(IDS_LOG_POPUP_COMPARE_PARENT_WC);
+							popup.AppendMenuIcon(IDGITLC_COMPAREPARENTWC, str + L": " + title, IDI_DIFF);
+						}
 						bEntryAdded = true;
 					}
 				}
@@ -1676,25 +1685,14 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 				if ((m_dwContextMenus & GetContextMenuBit(IDGITLC_REVERTTOPARENT)) && !m_CurrentVersion.IsEmpty() && !(wcStatus & CTGitPath::LOGACTIONS_ADDED))
 				{
-					CString str;
-					str.LoadString(IDS_LOG_POPUP_REVERTTOPARENT);
-					CString revStr;
-					revStr.Format(L"%s^%d", static_cast<LPCTSTR>(m_CurrentVersion.ToString()), (filepath->m_ParentNo & PARENT_MASK) + 1);
-					GitRev rev;
 					CGitHash parentHash;
-					if (g_Git.GetHash(parentHash, revStr) == 0 && rev.GetCommit(parentHash.ToString()) == 0)
+					CString title;
+					if (GetParentCommitInfo(m_CurrentVersion, filepath->m_ParentNo & PARENT_MASK, parentHash, title))
 					{
-						CString commitTitle = rev.GetSubject();
-						if (commitTitle.GetLength() > 20)
-						{
-							commitTitle.Truncate(20);
-							commitTitle += L"...";
-						}
-						str.AppendFormat(L": \"%s\" (%s)", static_cast<LPCTSTR>(commitTitle), static_cast<LPCTSTR>(parentHash.ToString(g_Git.GetShortHASHLength())));
+						CString str;
+						str.LoadString(IDS_LOG_POPUP_REVERTTOPARENT);
+						popup.AppendMenuIcon(IDGITLC_REVERTTOPARENT, str + L": " + title, IDI_REVERT);
 					}
-					else
-						str.AppendFormat(L" (%s)", static_cast<LPCTSTR>(parentHash.ToString(g_Git.GetShortHASHLength())));
-					popup.AppendMenuIcon(IDGITLC_REVERTTOPARENT, str, IDI_REVERT);
 				}
 			}
 
@@ -2028,14 +2026,15 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 			// Compare current version and work copy.
 			case IDGITLC_COMPAREWC:
-				{
+			case IDGITLC_COMPAREPARENTWC:
+			{
 					if (!CheckMultipleDiffs())
 						break;
 					POSITION pos = GetFirstSelectedItemPosition();
 					while ( pos )
 					{
 						int index = GetNextSelectedItem(pos);
-						StartDiffWC(index);
+						StartDiffWC(index, cmd == IDGITLC_COMPAREPARENTWC);
 					}
 				}
 				break;
@@ -2752,7 +2751,7 @@ void CGitStatusListCtrl::StartDiffTwo(int fileindex)
 		CGitDiff::Diff(GetParentHWND(), &file1, &file1, m_Rev1.ToString(), m_Rev2.ToString(), false, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 }
 
-void CGitStatusListCtrl::StartDiffWC(int fileindex)
+void CGitStatusListCtrl::StartDiffWC(int fileindex, bool parent)
 {
 	if(fileindex<0)
 		return;
@@ -2764,7 +2763,22 @@ void CGitStatusListCtrl::StartDiffWC(int fileindex)
 	CTGitPath file1 = *ptr;
 	file1.m_Action = 0; // reset action, so that diff is not started as added/deleted file; see issue #1757
 
-	CGitDiff::Diff(GetParentHWND(), &file1, &file1, GIT_REV_ZERO, m_CurrentVersion.ToString(), false, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
+	CString version;
+	if (parent)
+	{
+		CGitHash parentHash;
+		CString title;
+		if (!GetParentCommitInfo(m_CurrentVersion, file1.m_ParentNo & PARENT_MASK, parentHash, title))
+		{
+			MessageBox(g_Git.GetGitLastErr(L"Could not get parent hash for \"" + m_CurrentVersion.ToString() + L"\"."), L"TortoiseGit", MB_ICONERROR);
+			return;
+		}
+		version = parentHash.ToString();
+	}
+	else
+		version = m_CurrentVersion.ToString();
+
+	CGitDiff::Diff(GetParentHWND(), &file1, &file1, GIT_REV_ZERO, version, false, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 }
 
 void CGitStatusListCtrl::StartDiff(int fileindex)
@@ -4213,6 +4227,34 @@ void CGitStatusListCtrl::FileSaveAs(CTGitPath *path)
 	}
 }
 
+bool CGitStatusListCtrl::GetParentCommitInfo(const CGitHash& hash, const int parentNo, CGitHash& parentHash, CString& title)
+{
+	if (hash.IsEmpty())
+		return false;
+
+	CString revStr;
+	revStr.Format(L"%s^%d", static_cast<LPCTSTR>(hash.ToString()), parentNo + 1);
+
+	if (g_Git.GetHash(parentHash, revStr) != 0)
+		return false;
+
+	GitRev rev;
+	if (rev.GetCommit(parentHash.ToString()) == 0)
+	{
+		CString commitTitle = rev.GetSubject();
+		if (commitTitle.GetLength() > 23) // 20 + length("...")
+		{
+			commitTitle.Truncate(20);
+			commitTitle += L"...";
+		}
+		title.Format(L"\"%s\" (%s)", static_cast<LPCTSTR>(commitTitle), static_cast<LPCTSTR>(parentHash.ToString(g_Git.GetShortHASHLength())));
+	}
+	else
+		title.Format(L"(%s)", static_cast<LPCTSTR>(parentHash.ToString(g_Git.GetShortHASHLength())));
+
+	return true;
+}
+
 int CGitStatusListCtrl::RevertSelectedItemToVersion(bool parent)
 {
 	CAutoReadLock locker(m_guard);
@@ -4228,17 +4270,15 @@ int CGitStatusListCtrl::RevertSelectedItemToVersion(bool parent)
 		CString version;
 		if (parent)
 		{
-			int parentNo = fentry->m_ParentNo & PARENT_MASK;
-			CString ref;
-			ref.Format(L"%s^%d", static_cast<LPCTSTR>(m_CurrentVersion.ToString()), parentNo + 1);
-			CGitHash hash;
-			if (g_Git.GetHash(hash, ref))
+			CGitHash parentHash;
+			CString title;
+			if (!GetParentCommitInfo(m_CurrentVersion, fentry->m_ParentNo & PARENT_MASK, parentHash, title))
 			{
-				MessageBox(g_Git.GetGitLastErr(L"Could not get hash of ref \"" + ref + L"\"."), L"TortoiseGit", MB_ICONERROR);
+				MessageBox(g_Git.GetGitLastErr(L"Could not get parent hash for \"" + m_CurrentVersion.ToString() + L"\"."), L"TortoiseGit", MB_ICONERROR);
 				continue;
 			}
 
-			version = hash.ToString();
+			version = parentHash.ToString();
 		}
 		else
 			version = m_CurrentVersion.ToString();

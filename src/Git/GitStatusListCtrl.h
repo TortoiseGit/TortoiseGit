@@ -208,6 +208,7 @@ public:
 		IDGITLC_UNCHECKGROUP	,
 		/** Compare current version and working tree */
 		IDGITLC_COMPAREWC		,
+		IDGITLC_COMPAREPARENTWC ,
 		IDGITLC_BLAME			,
 		IDGITLC_SAVEAS			,
 		IDGITLC_REVERTTOREV		,
@@ -649,7 +650,7 @@ private:
 	void RemoveListEntry(int index);	///< removes an entry from the listcontrol and both arrays
 	void BuildStatistics();	///< build the statistics and correct the case of files/folders
 	void StartDiff(int fileindex);	///< start the external diff program
-	void StartDiffWC(int fileindex);	///< start the external diff program
+	void StartDiffWC(int fileindex, bool parent = false);	///< start the external diff program
 	void StartDiffTwo(int fileindex);
 
 	void SetGitIndexFlagsForSelectedFiles(UINT message, BOOL assumevalid, BOOL skipworktree);
@@ -745,6 +746,7 @@ private:
 	void FilesExport();
 	void FileSaveAs(CTGitPath *path);
 	int RevertSelectedItemToVersion(bool parent = false);
+	bool GetParentCommitInfo(const CGitHash& hash, const int parentNo, CGitHash& parentHash, CString& title);
 
 private:
 	bool *						m_pbCanceled;

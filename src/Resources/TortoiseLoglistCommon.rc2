@@ -28,6 +28,7 @@ BEGIN
     IDS_LOG_ID              "ID"
     IDS_LOG_HASH            "SHA-1"
     IDS_LOG_POPUP_COMPARE   "Compare with &working tree"
+    IDS_LOG_POPUP_COMPARE_PARENT_WC   "Compare parent with working tree"
     IDS_LOG_POPUP_SAVE      "Save revision &to..."
     IDS_LOG_POPUP_COMPARETWO "&Compare revisions"
     IDS_LOG_POPUP_UPDATE    "&Update item to revision"
