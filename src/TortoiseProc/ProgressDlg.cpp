@@ -402,7 +402,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam, LPARAM lParam)
 		}
 
 		if (m_Animate.IsPlaying() && !m_GitStatus)
-			m_Animate.Play(INT_MAX, INT_MAX, 1);
+			m_Animate.Play(28, 29, 1); // IDR_DOWNLOAD Frame No. Range 0 ~ 29 (Memo: -1 does not work for last frame, but 32767(WORD_MAX/2) does.)
 		else
 			m_Animate.Stop();
 
