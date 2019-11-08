@@ -76,6 +76,9 @@ int CGitLogList::RevertSelectedCommits(int parent)
 
 	POSITION pos = GetFirstSelectedItemPosition();
 	int i=0;
+	CString mergeMsg;
+	CString dotGitPath;
+	GitAdminDir::GetWorktreeAdminDirPath(g_Git.m_CurrentDir, dotGitPath);
 	while(pos)
 	{
 		int index = GetNextSelectedItem(pos);
@@ -103,11 +106,18 @@ int CGitLogList::RevertSelectedCommits(int parent)
 				return ret;
 		}
 		else
-			ret =0;
+		{
+			if (!mergeMsg.IsEmpty())
+				mergeMsg += "\r\n";
+			CGit::LoadTextFile(dotGitPath + L"MERGE_MSG", mergeMsg);
+			ret = 0;
+		}
 
 		if (progress.HasUserCancelled())
 			break;
 	}
+	if (!mergeMsg.IsEmpty())
+		CStringUtils::WriteStringToTextFile(dotGitPath + L"MERGE_MSG", mergeMsg);
 	return ret;
 }
 int CGitLogList::CherryPickFrom(CString from, CString to)
