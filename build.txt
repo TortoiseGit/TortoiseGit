@@ -53,8 +53,8 @@ Alternatively, you can download submodules when cloning the main project with si
     git clone --recursive https://gitlab.com/tortoisegit/tortoisegit.git
 
 
-After that you need to apply TortoiseGit specific patches to the external libgit2 repository.
-The patches are located in /ext/ and need to be applied to /ext/libgit2, e.g. using
+After that you might need to apply TortoiseGit specific patches to the external libgit2 repository.
+The patches, if any, are located in /ext/ and need to be applied to /ext/libgit2, e.g. using
 
     cd ext/libgit2
     for %%G in (..\libgit2-*.patch) do ( type %%G | git am --3way )
