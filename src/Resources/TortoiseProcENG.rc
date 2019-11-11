@@ -3251,6 +3251,7 @@ BEGIN
         MENUITEM "Show Ove&rview",              ID_VIEW_SHOWOVERVIEW
         MENUITEM "Show branchings and &merges", ID_VIEW_SHOWBRANCHINGSANDMERGES
         MENUITEM "Show all tags",               ID_VIEW_SHOWALLTAGS
+        MENUITEM "Arrows point towards merges", ID_VIEW_ARROW_POINT_TO_MERGES
     END
     POPUP "&Git"
     BEGIN

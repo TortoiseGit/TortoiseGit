@@ -4,6 +4,9 @@ Released: unreleased
 == Bug Fixes ==
  * Fixed issue #3449: Crash when indenting short lines (pressing tab key)
 
+== Features ==
+ * Fixed issue #3448: Revision Graph: Make direction of arrows configurable
+
 = Release 2.9.0 =
 Released: 2019-10-31
 
