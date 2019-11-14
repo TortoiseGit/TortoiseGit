@@ -3,6 +3,7 @@ Released: unreleased
 
 == Bug Fixes ==
  * Fixed issue #3449: Crash when indenting short lines (pressing tab key)
+ * Fixed issue #3463: Check For Updates dialog - misaligned buttons
 
 == Features ==
  * Fixed issue #3448: Revision Graph: Make direction of arrows configurable

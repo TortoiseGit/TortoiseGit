@@ -327,6 +327,12 @@ UINT CCheckForUpdatesDlg::CheckThread()
 			::MapWindowPoints(nullptr, GetSafeHwnd(), reinterpret_cast<LPPOINT>(&rectOKButton), 2);
 			if (CRegDWORD(L"Software\\TortoiseGit\\VersionCheck", TRUE) != FALSE && !m_bForce && !m_bShowInfo)
 			{
+				RECT rectDoNotAskAgainButton;
+				GetDlgItem(IDC_DONOTASKAGAIN)->GetWindowRect(&rectDoNotAskAgainButton);
+				::MapWindowPoints(nullptr, GetSafeHwnd(), reinterpret_cast<LPPOINT>(&rectDoNotAskAgainButton), 2);
+				rectDoNotAskAgainButton.top = rectOKButton.top;
+				rectDoNotAskAgainButton.bottom = rectOKButton.bottom;
+				GetDlgItem(IDC_DONOTASKAGAIN)->MoveWindow(&rectDoNotAskAgainButton);
 				GetDlgItem(IDC_DONOTASKAGAIN)->ShowWindow(SW_SHOW);
 				rectOKButton.left += 60;
 				temp.LoadString(IDS_REMINDMELATER);
