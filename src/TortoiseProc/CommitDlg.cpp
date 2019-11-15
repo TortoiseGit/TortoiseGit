@@ -84,7 +84,6 @@ void CCommitDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_SHOWUNVERSIONED, m_bShowUnversioned);
 	DDX_Check(pDX, IDC_COMMIT_SETDATETIME, m_bSetCommitDateTime);
 	DDX_Check(pDX, IDC_CHECK_NEWBRANCH, m_bCreateNewBranch);
-	DDX_Text(pDX, IDC_BUGID, m_sBugID);
 	DDX_Text(pDX, IDC_COMMIT_AUTHORDATA, m_sAuthor);
 	DDX_Check(pDX, IDC_WHOLE_PROJECT, m_bWholeProject);
 	DDX_Control(pDX, IDC_SPLITTER, m_wndSplitter);
@@ -1578,6 +1577,7 @@ void CCommitDlg::OnCancel()
 
 void CCommitDlg::UpdateLogMsgByBugId(bool compareExistingBugID)
 {
+	GetDlgItemText(IDC_BUGID, m_sBugID);
 	m_sBugID.Trim();
 	if (m_sBugID.IsEmpty())
 		return;
