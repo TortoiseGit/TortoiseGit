@@ -128,6 +128,7 @@ private:
 	void SetDlgTitle();
 	CString GetSignedOffByLine();
 	CString m_sTitle;
+	void UpdateLogMsgByBugId(bool comapreExistingBugID);
 
 // Dialog Data
 	enum { IDD = IDD_COMMITDLG };

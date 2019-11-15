@@ -788,20 +788,7 @@ void CCommitDlg::OnOK()
 	if (bAddSuccess && m_bWarnDetachedHead && CheckHeadDetach())
 		bAddSuccess = false;
 
-	m_sBugID.Trim();
-	CString sExistingBugID = m_ProjectProperties.FindBugID(m_sLogMessage);
-	sExistingBugID.Trim();
-	if (!m_sBugID.IsEmpty() && m_sBugID.Compare(sExistingBugID))
-	{
-		m_sBugID.Replace(L", ", L",");
-		m_sBugID.Replace(L" ,", L",");
-		CString sBugID = m_ProjectProperties.sMessage;
-		sBugID.Replace(L"%BUGID%", m_sBugID);
-		if (m_ProjectProperties.bAppend)
-			m_sLogMessage += L'\n' + sBugID + L'\n';
-		else
-			m_sLogMessage = sBugID + L'\n' + m_sLogMessage;
-	}
+	UpdateLogMsgByBugId(true);
 
 	// now let the bugtraq plugin check the commit message
 	CComPtr<IBugTraqProvider2> pProvider2;
@@ -1542,19 +1529,8 @@ void CCommitDlg::SetDlgTitle()
 void CCommitDlg::OnCancel()
 {
 	UpdateData();
-	m_sBugID.Trim();
 	m_sLogMessage = m_cLogMessage.GetText();
-	if (!m_sBugID.IsEmpty())
-	{
-		m_sBugID.Replace(L", ", L",");
-		m_sBugID.Replace(L" ,", L",");
-		CString sBugID = m_ProjectProperties.sMessage;
-		sBugID.Replace(L"%BUGID%", m_sBugID);
-		if (m_ProjectProperties.bAppend)
-			m_sLogMessage += L'\n' + sBugID + L'\n';
-		else
-			m_sLogMessage = sBugID + L'\n' + m_sLogMessage;
-	}
+	UpdateLogMsgByBugId(false);
 
 	bool hasChangedMessage;
 	if (m_bCommitAmend)
@@ -1598,6 +1574,29 @@ void CCommitDlg::OnCancel()
 	}
 	SaveSplitterPos();
 	CResizableStandAloneDialog::OnCancel();
+}
+
+void CCommitDlg::UpdateLogMsgByBugId(bool compareExistingBugID)
+{
+	m_sBugID.Trim();
+	if (m_sBugID.IsEmpty())
+		return;
+	if (compareExistingBugID)
+	{
+		CString sExistingBugID = m_ProjectProperties.FindBugID(m_sLogMessage);
+		sExistingBugID.Trim();
+		if (!m_sBugID.Compare(sExistingBugID)) // not match
+			return;
+	}
+
+	m_sBugID.Replace(L", ", L",");
+	m_sBugID.Replace(L" ,", L",");
+	CString sBugID = m_ProjectProperties.sMessage;
+	sBugID.Replace(L"%BUGID%", m_sBugID);
+	if (m_ProjectProperties.bAppend)
+		m_sLogMessage += L'\n' + sBugID + L'\n';
+	else
+		m_sLogMessage = sBugID + L'\n' + m_sLogMessage;
 }
 
 BOOL CCommitDlg::PreTranslateMessage(MSG* pMsg)
