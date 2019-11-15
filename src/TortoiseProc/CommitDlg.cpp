@@ -103,7 +103,6 @@ void CCommitDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_SHOWUNVERSIONED, m_bShowUnversioned);
 	DDX_Check(pDX, IDC_COMMIT_SETDATETIME, m_bSetCommitDateTime);
 	DDX_Check(pDX, IDC_CHECK_NEWBRANCH, m_bCreateNewBranch);
-	DDX_Text(pDX, IDC_NEWBRANCH, m_sCreateNewBranch);
 	DDX_Text(pDX, IDC_BUGID, m_sBugID);
 	DDX_Text(pDX, IDC_COMMIT_AUTHORDATA, m_sAuthor);
 	DDX_Check(pDX, IDC_WHOLE_PROJECT, m_bWholeProject);
@@ -597,14 +596,16 @@ void CCommitDlg::OnOK()
 		return;
 	}
 
+	CString newBranch;
 	if (m_bCreateNewBranch)
 	{
-		if (!g_Git.IsBranchNameValid(m_sCreateNewBranch))
+		GetDlgItemText(IDC_NEWBRANCH, newBranch);
+		if (!g_Git.IsBranchNameValid(newBranch))
 		{
 			ShowEditBalloon(IDC_NEWBRANCH, IDS_B_T_NOTEMPTY, IDS_ERR_ERROR, TTI_ERROR);
 			return;
 		}
-		if (g_Git.BranchTagExists(m_sCreateNewBranch))
+		if (g_Git.BranchTagExists(newBranch))
 		{
 			// branch already exists
 			CString msg;
@@ -613,7 +614,7 @@ void CCommitDlg::OnOK()
 			ShowEditBalloon(IDC_NEWBRANCH, msg, CString(MAKEINTRESOURCE(IDS_WARN_WARNING)));
 			return;
 		}
-		if (g_Git.BranchTagExists(m_sCreateNewBranch, false))
+		if (g_Git.BranchTagExists(newBranch, false))
 		{
 			// tag with the same name exists -> shortref is ambiguous
 			if (CMessageBox::Show(m_hWnd, IDS_B_SAMETAGNAMEEXISTS, IDS_APPNAME, 2, IDI_EXCLAMATION, IDS_CONTINUEBUTTON, IDS_ABORTBUTTON) == 2)
@@ -969,12 +970,12 @@ void CCommitDlg::OnOK()
 
 	if (bAddSuccess && m_bCreateNewBranch)
 	{
-		if (g_Git.Run(L"git.exe branch " + m_sCreateNewBranch, &out, CP_UTF8))
+		if (g_Git.Run(L"git.exe branch " + newBranch, &out, CP_UTF8))
 		{
 			MessageBox(L"Creating new branch failed:\n" + out, L"TortoiseGit", MB_OK | MB_ICONERROR);
 			bAddSuccess = false;
 		}
-		if (g_Git.Run(L"git.exe checkout " + m_sCreateNewBranch + L" --", &out, CP_UTF8))
+		if (g_Git.Run(L"git.exe checkout " + newBranch + L" --", &out, CP_UTF8))
 		{
 			MessageBox(L"Switching to new branch failed:\n" + out, L"TortoiseGit", MB_OK | MB_ICONERROR);
 			bAddSuccess = false;

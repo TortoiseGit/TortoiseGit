@@ -7,6 +7,7 @@ Released: unreleased
  * Fixed issue #3442: Commit & Push after amending a commit always results in a failed push
  * Fixed issue #3451: Turtle progress bar in process, but task is finish
  * Fixed issue #3450: Commit message after "Revert changes by these commits" suggests a single commit is reverted
+ * Fixed issue #3461: Performing refresh on Commit window loses new branch name
 
 == Features ==
  * Fixed issue #3448: Revision Graph: Make direction of arrows configurable
