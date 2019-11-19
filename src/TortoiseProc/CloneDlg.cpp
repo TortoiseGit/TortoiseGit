@@ -133,6 +133,13 @@ BOOL CCloneDlg::OnInitDialog()
 	tt.LoadString(IDS_CLONE_DEPTH_TT);
 	m_tooltips.AddTool(IDC_EDIT_DEPTH,tt);
 	m_tooltips.AddTool(IDC_CHECK_DEPTH,tt);
+	m_tooltips.AddTool(IDC_CHECK_RECURSIVE, IDS_CLONE_RECURSIVE_TT);
+	m_tooltips.AddTool(IDC_CHECK_BARE, IDS_CLONE_BARE_REPO_TT);
+	m_tooltips.AddTool(IDC_CHECK_NOCHECKOUT, IDS_CLONE_NO_CHECKOUT_TT);
+	m_tooltips.AddTool(IDC_CHECK_BRANCH, IDS_CLONE_BRANCH_TT);
+	m_tooltips.AddTool(IDC_EDIT_BRANCH, IDS_CLONE_BRANCH_TT);
+	m_tooltips.AddTool(IDC_CHECK_ORIGIN, IDS_CLONE_ORIGIN_NAME_TT);
+	m_tooltips.AddTool(IDC_EDIT_ORIGIN, IDS_CLONE_ORIGIN_NAME_TT);
 	m_tooltips.AddTool(IDC_CHECK_LFS, IDS_PROC_USELFS_TT);
 
 	this->AddOthersToAnchor();

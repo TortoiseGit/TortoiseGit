@@ -1392,11 +1392,16 @@
 #define IDC_NOAUTOSELECTSUBMODULES      1669
 #define IDS_GITCHANGED_NEEDRESTART      1669
 #define IDC_COMMIT_DATEPICKER           1670
+#define IDS_CLONE_BARE_REPO_TT          1670
 #define IDC_COMMIT_TIMEPICKER           1671
 #define IDC_COMBOBOXEX_GOOD             1671
+#define IDS_CLONE_NO_CHECKOUT_TT        1671
 #define IDC_BUTTON_GOOD                 1672
+#define IDS_CLONE_RECURSIVE_TT          1672
 #define IDC_GROUP_STASHMESSAGE          1673
+#define IDS_CLONE_BRANCH_TT             1673
 #define IDC_STASHMESSAGE                1674
+#define IDS_CLONE_ORIGIN_NAME_TT        1674
 #define IDC_FOLLOWRENAMES               1675
 #define IDC_TOGROUP                     1676
 #define IDC_IGNORE_WHITESPACE           1676
