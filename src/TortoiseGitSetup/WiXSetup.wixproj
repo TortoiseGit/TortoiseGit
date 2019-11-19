@@ -17,6 +17,11 @@
 		<DefineConstants Condition="'$(Configuration)'=='Release'">IncludeCrashReportDll=1;$(DefineConstants)</DefineConstants>
 		<DefineConstants Condition="'$(Configuration)'=='Debug'">Debug;IncludeCrashReportDll=0;$(DefineConstants)</DefineConstants>
 	</PropertyGroup>
+	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.common.props" />
+	<PropertyGroup>
+		<!-- for shipping CRT/MFC library -->
+		<DefineConstants>VCInstallDir=$(VCInstallDir);VCToolsRedistVersion=$(VCToolsRedistVersion);PlatformToolsetVersion=$(PlatformToolsetVersion);$(DefineConstants)</DefineConstants>
+	</PropertyGroup>
 	<PropertyGroup>
 		<OutputPath Condition="'$(Configuration)'=='Release'">..\..\bin\setup\$(Platform)\</OutputPath>
 		<OutputPath Condition="'$(Configuration)'=='Debug'">..\..\bin\setup\debug-$(Platform)\</OutputPath>
