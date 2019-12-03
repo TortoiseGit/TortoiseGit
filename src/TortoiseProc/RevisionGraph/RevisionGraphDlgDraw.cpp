@@ -344,8 +344,8 @@ void CRevisionGraphWnd::DrawConnections(GraphicsDevice& graphics, const CRect& /
 		}
 
 		//draw arrow
-		int idx0 = points.GetCount() - 1;
-		int idx1 = points.GetCount() - 2;
+		auto idx0 = points.GetCount() - 1;
+		auto idx1 = points.GetCount() - 2;
 		int dir = -1;
 		if (m_bArrowPointToMerges)
 		{
