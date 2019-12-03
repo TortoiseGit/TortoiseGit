@@ -73,7 +73,11 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 #endif
 	ATLASSERT(empty());
 
-	CAutoRepository repository(dgitdir);
+	CString repodir = dgitdir;
+	if (dgitdir.GetLength() == 2 && dgitdir[1] == L':')
+		repodir += L'\\'; // libgit2 requires a drive root to end with a (back)slash
+
+	CAutoRepository repository(repodir);
 	if (!repository)
 	{
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Could not open git repository in %s: %s\n", static_cast<LPCTSTR>(dgitdir), static_cast<LPCTSTR>(CGit::GetLibGit2LastErr()));
@@ -208,7 +212,11 @@ int CGitIndexList::GetFileStatus(CAutoRepository& repository, const CString& git
 		 */
 		if (!repository)
 		{
-			if (repository.Open(gitdir))
+			CString repodir = gitdir;
+			if (gitdir.GetLength() == 2 && gitdir[1] == L':')
+				repodir += L'\\'; // libgit2 requires a drive root to end with a (back)slash
+
+			if (repository.Open(repodir))
 			{
 				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Could not open git repository in %s for checking file: %s\n", static_cast<LPCTSTR>(gitdir), static_cast<LPCTSTR>(CGit::GetLibGit2LastErr()));
 				return -1;
