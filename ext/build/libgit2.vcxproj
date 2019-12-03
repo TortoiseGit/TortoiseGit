@@ -45,7 +45,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\pcre2\src;..\zlib;..\libgit2\src;..\libgit2\include;..\libgit2\deps\regex;..\libgit2\deps\http-parser;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\build\pcre2;..\zlib;..\libgit2\src;..\libgit2\include;..\libgit2\deps\http-parser;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>LIBGIT2_NO_FEATURES_H;HAVE_QSORT_S;GIT_HTTPS;GIT_WINHTTP;GIT_USE_NSEC;GIT_THREADS;GIT_SHA1_COLLISIONDETECT;GIT_REGEX_PCRE2;PCRE2_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Platform)'=='Win32'">GIT_ARCH_32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Platform)'=='x64'">GIT_ARCH_64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -163,6 +163,7 @@
     <ClCompile Include="..\libgit2\src\reflog.c" />
     <ClCompile Include="..\libgit2\src\refs.c" />
     <ClCompile Include="..\libgit2\src\refspec.c" />
+    <ClCompile Include="..\libgit2\src\regexp.c" />
     <ClCompile Include="..\libgit2\src\remote.c" />
     <ClCompile Include="..\libgit2\src\repository.c" />
     <ClCompile Include="..\libgit2\src\reset.c" />
@@ -362,7 +363,6 @@
     <ClInclude Include="..\libgit2\src\pathspec.h" />
     <ClInclude Include="..\libgit2\src\pool.h" />
     <ClInclude Include="..\libgit2\src\posix.h" />
-    <ClInclude Include="..\libgit2\src\posix_regex.h" />
     <ClInclude Include="..\libgit2\src\pqueue.h" />
     <ClInclude Include="..\libgit2\src\proxy.h" />
     <ClInclude Include="..\libgit2\src\push.h" />
@@ -372,6 +372,7 @@
     <ClInclude Include="..\libgit2\src\reflog.h" />
     <ClInclude Include="..\libgit2\src\refs.h" />
     <ClInclude Include="..\libgit2\src\refspec.h" />
+    <ClInclude Include="..\libgit2\src\regexp.h" />
     <ClInclude Include="..\libgit2\src\remote.h" />
     <ClInclude Include="..\libgit2\src\repo_template.h" />
     <ClInclude Include="..\libgit2\src\repository.h" />

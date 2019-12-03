@@ -569,6 +569,9 @@
     <ClCompile Include="..\libgit2\src\config_snapshot.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\libgit2\src\regexp.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libgit2\src\attr.h">
@@ -1234,9 +1237,6 @@
     <ClInclude Include="..\libgit2\src\errors.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\libgit2\src\posix_regex.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\libgit2\src\win32\w32_common.h">
       <Filter>Header Files\win32</Filter>
     </ClInclude>
@@ -1263,6 +1263,9 @@
     </ClInclude>
     <ClInclude Include="..\libgit2\include\git2\cred.h">
       <Filter>Public Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\regexp.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
