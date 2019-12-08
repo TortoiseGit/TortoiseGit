@@ -353,11 +353,28 @@ void CPushDlg::OnBnClickedRd()
 	}
 	if( GetCheckedRadioButton(IDC_RD_REMOTE,IDC_RD_URL) == IDC_RD_URL)
 	{
-		CString clippath = CAppUtils::GetClipboardLink();
+		CString clippath = CAppUtils::GetClipboardLink(L"git pull", 1);
+		if (clippath.IsEmpty())
+			clippath = CAppUtils::GetClipboardLink(L"git fetch", 1);
 		if (clippath.IsEmpty())
 			m_RemoteURL.SetCurSel(0);
 		else
-			m_RemoteURL.SetWindowText(clippath);
+		{
+			int argSeparator = clippath.Find(' ');
+			if (argSeparator > 1 && clippath.GetLength() > argSeparator + 2)
+			{
+				CString url = clippath.Left(argSeparator);
+				if (url.GetLength() > 2 && url[0] == L'"' && url[url.GetLength() - 1] == L'"')
+					url = url.Mid(1, url.GetLength() - 2);
+				m_RemoteURL.SetWindowText(url);
+				CString branch = clippath.Mid(argSeparator + 1);
+				if (branch.GetLength() > 2 && branch[0] == L'"' && branch[branch.GetLength() - 1] == L'"')
+					branch = branch.Mid(1, branch.GetLength() - 2);
+				m_BranchRemote.SetWindowText(branch);
+			}
+			else
+				m_RemoteURL.SetWindowText(clippath);
+		}
 		m_Remote.EnableWindow(FALSE);
 		GetDlgItem(IDC_REMOTE_MANAGE)->EnableWindow(FALSE);
 		m_RemoteURL.EnableWindow(TRUE);
