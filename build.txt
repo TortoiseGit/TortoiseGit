@@ -25,7 +25,7 @@ First, you need to install the compiler package:
    * Visual C++-ATL-support
    * Windows 8.1 SDK and UCRT SDK
    * MFC and ATL support (x86 and x64)
-   * Windows 10 SDK (for building the ribbon interface for TortoiseGitMerge)
+   * Windows 10 SDK (for building the MSI installer and the ribbon interface for TortoiseGitMerge)
    * optional: NuGet packet manager (requirement for GoogleTestAdapter, see below)
    * optional: GoogleTestAdapter (if you want to run the tests from within VS or use the package described below)
 
