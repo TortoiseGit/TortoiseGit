@@ -107,6 +107,12 @@ int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, 
 		return -1;
 	}
 
+	if (CGitMailmap::ShouldLoadMailmap())
+		GitRevLoglist::s_Mailmap = std::make_shared<CGitMailmap>();
+	else if (GitRevLoglist::s_Mailmap)
+		GitRevLoglist::s_Mailmap = nullptr;
+	auto mailmap = GitRevLoglist::s_Mailmap;
+
 	int ret = 0;
 	while (ret == 0)
 	{
@@ -153,6 +159,8 @@ int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, 
 		}
 
 		pRev->ParserFromCommit(&commit);
+		if (mailmap)
+			pRev->ApplyMailmap(*mailmap);
 		pRev->ParserParentFromCommit(&commit);
 		git_free_commit(&commit);
 
@@ -196,8 +204,13 @@ int CLogDataVector::Fill(std::unordered_set<CGitHash>& hashes)
 		return -1;
 	}
 
-	std::set<GitRevLoglist*, SortByParentDate> revs;
+	if (CGitMailmap::ShouldLoadMailmap())
+		GitRevLoglist::s_Mailmap = std::make_shared<CGitMailmap>();
+	else if (GitRevLoglist::s_Mailmap)
+		GitRevLoglist::s_Mailmap = nullptr;
+	auto mailmap = GitRevLoglist::s_Mailmap;
 
+	std::set<GitRevLoglist*, SortByParentDate> revs;
 	for (const auto& hash : hashes)
 	{
 		GIT_COMMIT commit;
@@ -219,6 +232,8 @@ int CLogDataVector::Fill(std::unordered_set<CGitHash>& hashes)
 		// as such git notes are not needed to be loaded
 
 		pRev->ParserFromCommit(&commit);
+		if (mailmap)
+			pRev->ApplyMailmap(*mailmap);
 		pRev->ParserParentFromCommit(&commit);
 		git_free_commit(&commit);
 

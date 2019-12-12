@@ -141,10 +141,7 @@ void CFileDiffDlg::SetDiff(const CTGitPath* path, const CString &baseRev1, const
 		m_rev1.GetSubject().LoadString(IDS_WORKING_TREE);
 	}
 	else
-	{
-		if (m_rev1.GetCommit(baseRev1))
-			MessageBox(m_rev1.GetLastErr(), L"TortoiseGit", MB_ICONERROR);
-	}
+		FillRevFromString(&m_rev1, baseRev1);
 
 	if(hash2 == GIT_REV_ZERO)
 	{
@@ -152,10 +149,7 @@ void CFileDiffDlg::SetDiff(const CTGitPath* path, const CString &baseRev1, const
 		m_rev2.GetSubject().LoadString(IDS_WORKING_TREE);
 	}
 	else
-	{
-		if (m_rev2.GetCommit(hash2))
-			MessageBox(m_rev2.GetLastErr(), L"TortoiseGit", MB_ICONERROR);
-	}
+		FillRevFromString(&m_rev2, hash2);
 }
 
 void CFileDiffDlg::SetDiff(const CTGitPath* path, const GitRev &baseRev1)
@@ -262,6 +256,7 @@ BOOL CFileDiffDlg::OnInitDialog()
 			msg.Format(IDS_PROC_REFINVALID, static_cast<LPCTSTR>(m_strRev1));
 			m_cFileList.ShowText(msg + L'\n' + m_rev1.GetLastErr());
 		}
+		m_rev1.ApplyMailmap();
 
 		this->m_ctrRev1Edit.SetWindowText(m_strRev1);
 	}
@@ -276,6 +271,7 @@ BOOL CFileDiffDlg::OnInitDialog()
 			msg.Format(IDS_PROC_REFINVALID, static_cast<LPCTSTR>(m_strRev2));
 			m_cFileList.ShowText(msg + L'\n' + m_rev1.GetLastErr());
 		}
+		m_rev2.ApplyMailmap();
 
 		this->m_ctrRev2Edit.SetWindowText(m_strRev2);
 	}
@@ -1171,6 +1167,7 @@ void CFileDiffDlg::OnTimer(UINT_PTR nIDEvent)
 		this->m_ctrRev1Edit.GetWindowText(str);
 		if (!gitrev.GetCommit(str))
 		{
+			gitrev.ApplyMailmap();
 			m_rev1 = gitrev;
 			mask |= 0x1;
 		}
@@ -1185,6 +1182,7 @@ void CFileDiffDlg::OnTimer(UINT_PTR nIDEvent)
 
 		if (!gitrev.GetCommit(str))
 		{
+			gitrev.ApplyMailmap();
 			m_rev2 = gitrev;
 			mask |= 0x2;
 		}

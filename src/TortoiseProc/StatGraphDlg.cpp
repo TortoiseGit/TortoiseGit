@@ -600,8 +600,6 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff, BOOL keepFetchedData)
 	else
 		std::sort(m_ShowList.begin(), m_ShowList.end(), [](GitRevLoglist* pLhs, GitRevLoglist* pRhs) { return pLhs->GetAuthorDate() > pRhs->GetAuthorDate(); });
 
-	GIT_MAILMAP mailmap = nullptr;
-	git_read_mailmap(&mailmap);
 	for (size_t i = 0; i < m_ShowList.size(); ++i)
 	{
 		auto pLogEntry = m_ShowList[i];
@@ -609,18 +607,6 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff, BOOL keepFetchedData)
 		inc = dec = incnewfile = decdeletedfile = files= 0;
 
 		CString strAuthor = m_bUseCommitterNames ? pLogEntry->GetCommitterName() : pLogEntry->GetAuthorName();
-		if (mailmap)
-		{
-			CStringA email2A = CUnicodeUtils::GetUTF8(m_bUseCommitterNames ? pLogEntry->GetCommitterEmail() : pLogEntry->GetAuthorEmail());
-			struct payload_struct { GitRev* rev; const char *authorName; BOOL useCommitterNames; };
-			payload_struct payload = { pLogEntry, nullptr, m_bUseCommitterNames };
-			const char* author1 = nullptr;
-			git_lookup_mailmap(mailmap, nullptr, &author1, email2A, &payload,
-				[](void* payload) -> const char* { return reinterpret_cast<payload_struct*>(payload)->authorName = _strdup(CUnicodeUtils::GetUTF8(reinterpret_cast<payload_struct*>(payload)->useCommitterNames ? reinterpret_cast<payload_struct*>(payload)->rev->GetCommitterName() : reinterpret_cast<payload_struct*>(payload)->rev->GetAuthorName())); });
-			free((void *)payload.authorName);
-			if (author1)
-				strAuthor = CUnicodeUtils::GetUnicode(author1);
-		}
 		if (strAuthor.IsEmpty())
 			strAuthor.LoadString(IDS_STATGRAPH_EMPTYAUTHOR);
 		m_parAuthors.Add(strAuthor);
@@ -647,10 +633,7 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff, BOOL keepFetchedData)
 				}
 
 				if (progress.HasUserCancelled())
-				{
-					git_free_mailmap(mailmap);
 					return -1;
-				}
 			}
 		}
 		if (!keepFetchedData)
@@ -670,7 +653,6 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff, BOOL keepFetchedData)
 		}
 
 	}
-	git_free_mailmap(mailmap);
 
 	if (fetchdiff)
 	{

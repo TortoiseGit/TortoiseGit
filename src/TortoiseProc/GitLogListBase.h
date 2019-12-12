@@ -721,8 +721,6 @@ protected:
 	std::map<CString, CRect> m_RefLabelPosMap; // ref name vs. label position
 	int					m_OldTopIndex;
 
-	GIT_MAILMAP			m_pMailmap;
-
 	bool				m_bDragndropEnabled;
 	BOOL				m_bDragging;
 	int					m_nDropIndex;

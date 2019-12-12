@@ -99,6 +99,9 @@
     <ClCompile Include="..\Utils\LoadIconEx.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\Git\GitMailmap.cpp">
+      <Filter>Git</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CachedDirectory.h">
@@ -195,6 +198,9 @@
       <Filter>Git</Filter>
     </ClInclude>
     <ClInclude Include="..\Git\gittype.h">
+      <Filter>Git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Git\GitMailmap.h">
       <Filter>Git</Filter>
     </ClInclude>
   </ItemGroup>

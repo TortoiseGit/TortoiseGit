@@ -183,6 +183,9 @@
     <ClCompile Include="..\TortoiseProc\FilterHelper.cpp">
       <Filter>TortoiseGitProc</Filter>
     </ClCompile>
+    <ClCompile Include="..\Git\GitMailmap.cpp">
+      <Filter>Git</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditGotoDlg.h">
@@ -361,6 +364,9 @@
     </ClInclude>
     <ClInclude Include="..\TortoiseProc\FilterHelper.h">
       <Filter>TortoiseGitProc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Git\GitMailmap.h">
+      <Filter>Git</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

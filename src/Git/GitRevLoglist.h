@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -55,6 +55,8 @@ public:
 
 	// Show version tree Graphic
 	std::vector<int> m_Lanes;
+
+	static std::shared_ptr<CGitMailmap> s_Mailmap;
 
 	volatile LONG m_IsFull;
 	volatile LONG m_IsUpdateing;
@@ -114,6 +116,9 @@ protected:
 		if (!m_IsCommitParsed && m_GitCommit.m_pGitCommit)
 		{
 			ParserFromCommit(&m_GitCommit);
+			auto mailmap = s_Mailmap;
+			if (mailmap)
+				ApplyMailmap(*mailmap);
 			InterlockedExchange(&m_IsCommitParsed, TRUE);
 			git_free_commit(&m_GitCommit);
 			if (m_IsDiffFiles)

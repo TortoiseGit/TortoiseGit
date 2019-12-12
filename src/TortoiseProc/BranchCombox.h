@@ -143,6 +143,7 @@ protected:
 			MessageBox(nullptr, rev.GetLastErr(), L"TortoiseGit", MB_ICONERROR);
 			return;
 		}
+		rev.ApplyMailmap();
 
 		CString tooltip;
 		tooltip.Format(L"%s: %s\n%s: %s <%s>\n%s: %s\n%s:\n%s\n%s",

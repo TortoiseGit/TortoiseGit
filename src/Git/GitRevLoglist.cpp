@@ -26,6 +26,8 @@
 
 typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 
+std::shared_ptr<CGitMailmap> GitRevLoglist::s_Mailmap = nullptr;
+
 GitRevLoglist::GitRevLoglist(void) : GitRev()
 , m_Action(0)
 , m_RebaseAction(0)

@@ -784,6 +784,7 @@ void CRebaseDlg::AddBranchToolTips(CHistoryCombo& pBranch)
 		MessageBox(L"Failed to get commit.\n" + rev.GetLastErr(), L"TortoiseGit", MB_ICONERROR);
 		return;
 	}
+	rev.ApplyMailmap();
 
 	CString tooltip;
 	tooltip.Format(L"%s: %s\n%s: %s <%s>\n%s: %s\n%s:\n%s\n%s",
