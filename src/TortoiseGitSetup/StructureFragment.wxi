@@ -497,8 +497,14 @@
 						<File Id="F__msvcp140" Name="msvcp140.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\msvcp140.dll" />
 						<File Id="F__msvcp140_1" Name="msvcp140_1.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\msvcp140_1.dll" />
 						<File Id="F__msvcp140_2" Name="msvcp140_2.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\msvcp140_2.dll" />
+						<?if $(var.PlatformToolsetVersion) >= 142 ?>
+						<File Id="F__msvcp140_codecvt_ids" Name="msvcp140_codecvt_ids.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\msvcp140_codecvt_ids.dll" />
+						<?endif ?>
 						<File Id="F__vccorlib140" Name="vccorlib140.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\vccorlib140.dll" />
 						<File Id="F__vcruntime140" Name="vcruntime140.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\vcruntime140.dll" />
+						<?if $(var.Platform) = "x64" and $(var.PlatformToolsetVersion) >= 142 ?>
+						<File Id="F__vcruntime140_1" Name="vcruntime140_1.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\vcruntime140_1.dll" />
+						<?endif ?>
 						<File Id="F__vcamp140" Name="vcamp140.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CXXAMP\vcamp140.dll" />
 						<File Id="F__vcomp140" Name="vcomp140.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).OPENMP\vcomp140.dll" />
 						<File Id="F__mfc140u" Name="mfc140u.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).MFC\mfc140u.dll" />

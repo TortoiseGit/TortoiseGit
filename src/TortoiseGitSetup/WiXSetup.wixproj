@@ -38,6 +38,16 @@
 	</PropertyGroup>
 	<Import Project="$(WixTargetsPath)" Condition=" '$(WixTargetsPath)' != '' " />
 	<Import Project="$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets" Condition=" '$(WixTargetsPath)' == '' AND Exists('$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets') " />
+	<PropertyGroup>
+		<BuildDependsOn>
+			CheckVCRedistVersion;
+			$(BuildDependsOn);
+		</BuildDependsOn>
+	</PropertyGroup>
+	<Target Name="CheckVCRedistVersion">
+		<Warning Text="CRT/MFC RedistFiles: $(VCToolsRedistVersion) is newer than the last known version. Check '$(VCInstallDir)Redist\MSVC\$(VCToolsRedistVersion)\$(PackagePlatforms)' for new files." Condition="$(VCToolsRedistVersion.Substring(0, 5)) >= 14.25" />
+		<Warning Text="UCRT RedistFiles: $(Win10SDKVer) is newer than the last known version. Check '$(WindowsSdkDir_10)Redist\$(Win10SDKVer)\ucrt\DLLs\$(PackagePlatforms)\' for new files." Condition="$(Win10SDKVer.Substring(5)) > 18362" />
+	</Target>
 	<Target Name="EnsureWixToolsetInstalled" Condition=" '$(WixTargetsImported)' != 'true' ">
 		<Error Text="The WiX Toolset v3.11 (or newer) build tools must be installed to build this project. To download the WiX Toolset, see https://wixtoolset.org/releases/" />
 	</Target>
