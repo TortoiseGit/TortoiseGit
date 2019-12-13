@@ -12,37 +12,16 @@
 		<CompilerAdditionalOptions>-ext WixUtilExtension</CompilerAdditionalOptions>
 		<LinkerAdditionalOptions>-ext WixUtilExtension</LinkerAdditionalOptions>
 	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-		<OutputPath>..\..\bin\setup\</OutputPath>
-		<IntermediateOutputPath>..\..\obj\TortoiseGitSetup\$(Configuration)\</IntermediateOutputPath>
-		<DefineConstants>Debug;IncludeCrashReportDll=0;DictionaryENGB=1;DictionaryENUS=1;VisualStudioVersion=$(VisualStudioVersion);</DefineConstants>
-		<WixVariables>
-		</WixVariables>
-		<SuppressSpecificWarnings>
-		</SuppressSpecificWarnings>
+	<PropertyGroup>
+		<DefineConstants>DictionaryENGB=1;DictionaryENUS=1</DefineConstants>
+		<DefineConstants Condition="'$(Configuration)'=='Release'">IncludeCrashReportDll=1;$(DefineConstants)</DefineConstants>
+		<DefineConstants Condition="'$(Configuration)'=='Debug'">Debug;IncludeCrashReportDll=0;$(DefineConstants)</DefineConstants>
 	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-		<OutputPath>..\..\bin\setup\x86\</OutputPath>
-		<IntermediateOutputPath>..\..\obj\TortoiseGitSetup\$(Configuration)\</IntermediateOutputPath>
-		<DefineConstants>IncludeCrashReportDll=1;DictionaryENGB=1;DictionaryENUS=1;VisualStudioVersion=$(VisualStudioVersion);</DefineConstants>
-		<SuppressSpecificWarnings>
-		</SuppressSpecificWarnings>
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
-		<DefineConstants>Debug;IncludeCrashReportDll=0;DictionaryENGB=1;DictionaryENUS=1;VisualStudioVersion=$(VisualStudioVersion);</DefineConstants>
-		<WixVariables>
-		</WixVariables>
-		<SuppressSpecificWarnings>
-		</SuppressSpecificWarnings>
-		<OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
-		<IntermediateOutputPath>..\..\obj\TortoiseGitSetup\$(Configuration)64\</IntermediateOutputPath>
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
-		<DefineConstants>IncludeCrashReportDll=1;DictionaryENGB=1;DictionaryENUS=1;VisualStudioVersion=$(VisualStudioVersion);</DefineConstants>
-		<SuppressSpecificWarnings>
-		</SuppressSpecificWarnings>
-		<OutputPath>..\..\bin\setup\x64\</OutputPath>
-		<IntermediateOutputPath>..\..\obj\TortoiseGitSetup\$(Configuration)64\</IntermediateOutputPath>
+	<PropertyGroup>
+		<OutputPath Condition="'$(Configuration)'=='Release'">..\..\bin\setup\$(Platform)\</OutputPath>
+		<OutputPath Condition="'$(Configuration)'=='Debug'">..\..\bin\setup\debug-$(Platform)\</OutputPath>
+		<IntermediateOutputPath Condition="'$(Platform)'=='x86'">..\..\obj\TortoiseGitSetup\$(Configuration)\</IntermediateOutputPath>
+		<IntermediateOutputPath Condition="'$(Platform)'=='x64'">..\..\obj\TortoiseGitSetup\$(Configuration)64\</IntermediateOutputPath>
 	</PropertyGroup>
 	<Import Project="$(WixTargetsPath)" Condition=" '$(WixTargetsPath)' != '' " />
 	<Import Project="$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets" Condition=" '$(WixTargetsPath)' == '' AND Exists('$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets') " />
