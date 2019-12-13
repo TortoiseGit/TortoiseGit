@@ -266,14 +266,30 @@ void classifyAttribHTML(Sci_PositionU start, Sci_PositionU end, const WordList &
 	styler.ColourTo(end, chAttr);
 }
 
+// https://html.spec.whatwg.org/multipage/custom-elements.html#custom-elements-core-concepts
+bool isHTMLCustomElement(const std::string &tag) {
+	// check valid HTML custom element name: starts with an ASCII lower alpha and contains hyphen.
+	// IsUpperOrLowerCase() is used for `html.tags.case.sensitive=1`.
+	if (tag.length() < 2 || !IsUpperOrLowerCase(tag[0])) {
+		return false;
+	}
+	if (tag.find('-') == std::string::npos) {
+		return false;
+	}
+	return true;
+}
+
 int classifyTagHTML(Sci_PositionU start, Sci_PositionU end,
                            const WordList &keywords, Accessor &styler, bool &tagDontFold,
                     bool caseSensitive, bool isXml, bool allowScripts,
                     const std::set<std::string> &nonFoldingTags) {
 	std::string tag;
-	// Copy after the '<'
+	// Copy after the '<' and stop before ' '
 	for (Sci_PositionU cPos = start; cPos <= end; cPos++) {
 		const char ch = styler[cPos];
+		if (IsASpace(ch)) {
+			break;
+		}
 		if ((ch != '<') && (ch != '/')) {
 			tag.push_back(caseSensitive ? ch : MakeLowerCase(ch));
 		}
@@ -288,8 +304,12 @@ int classifyTagHTML(Sci_PositionU start, Sci_PositionU end,
 		chAttr = SCE_H_SGML_DEFAULT;
 	} else if (!keywords || keywords.InList(tag.c_str())) {
 		chAttr = SCE_H_TAG;
+	} else if (!isXml && isHTMLCustomElement(tag)) {
+		chAttr = SCE_H_TAG;
 	}
-	styler.ColourTo(end, chAttr);
+	if (chAttr != SCE_H_TAGUNKNOWN) {
+		styler.ColourTo(end, chAttr);
+	}
 	if (chAttr == SCE_H_TAG) {
 		if (allowScripts && (tag == "script")) {
 			// check to see if this is a self-closing tag by sniffing ahead
@@ -562,6 +582,7 @@ struct OptionsHTML {
 	bool foldCompact = true;
 	bool foldComment = false;
 	bool foldHeredoc = false;
+	bool foldXmlAtTagOpen = false;
 	OptionsHTML() noexcept {
 	}
 };
@@ -624,6 +645,10 @@ struct OptionSetHTML : public OptionSet<OptionsHTML> {
 
 		DefineProperty("fold.hypertext.heredoc", &OptionsHTML::foldHeredoc,
 			"Allow folding for heredocs in scripts embedded in HTML. "
+			"The default is off.");
+
+		DefineProperty("fold.xml.at.tag.open", &OptionsHTML::foldXmlAtTagOpen,
+			"Enable folding for XML at the start of open tag. "
 			"The default is off.");
 
 		DefineWordListSets(isPHPScript_ ? phpscriptWordListDesc : htmlWordListDesc);
@@ -821,6 +846,7 @@ const char *tagsThatDoNotFold[] = {
 };
 
 }
+
 class LexerHTML : public DefaultLexer {
 	bool isXml;
 	bool isPHPScript;
@@ -991,6 +1017,7 @@ void SCI_METHOD LexerHTML::Lex(Sci_PositionU startPos, Sci_Position length, int 
 	const bool foldCompact = options.foldCompact;
 	const bool foldComment = fold && options.foldComment;
 	const bool foldHeredoc = fold && options.foldHeredoc;
+	const bool foldXmlAtTagOpen = isXml && fold && options.foldXmlAtTagOpen;
 	const bool caseSensitive = options.caseSensitive;
 	const bool allowScripts = options.allowScripts;
 	const bool isMako = options.isMako;
@@ -1206,6 +1233,9 @@ void SCI_METHOD LexerHTML::Lex(Sci_PositionU startPos, Sci_Position length, int 
 				i += 2;
 				visibleChars += 2;
 				tagClosing = true;
+				if (foldXmlAtTagOpen) {
+					levelCurrent--;
+				}
 				continue;
 			}
 		}
@@ -1531,6 +1561,12 @@ void SCI_METHOD LexerHTML::Lex(Sci_PositionU startPos, Sci_Position length, int 
 				// in HTML, fold on tag open and unfold on tag close
 				tagOpened = true;
 				tagClosing = (chNext == '/');
+				if (foldXmlAtTagOpen && !(chNext == '/' || chNext == '?' || chNext == '!' || chNext == '-' || chNext == '%')) {
+					levelCurrent++;
+				}
+				if (foldXmlAtTagOpen && chNext == '/') {
+					levelCurrent--;
+				}
 				styler.ColourTo(i - 1, StateToPrint);
 				if (chNext != '!')
 					state = SCE_H_TAGUNKNOWN;
@@ -1727,7 +1763,7 @@ void SCI_METHOD LexerHTML::Lex(Sci_PositionU startPos, Sci_Position length, int 
 						state = SCE_H_DEFAULT;
 					}
 					tagOpened = false;
-					if (!tagDontFold) {
+					if (!(foldXmlAtTagOpen || tagDontFold)) {
 						if (tagClosing) {
 							levelCurrent--;
 						} else {
@@ -1746,6 +1782,9 @@ void SCI_METHOD LexerHTML::Lex(Sci_PositionU startPos, Sci_Position length, int 
 					ch = chNext;
 					state = SCE_H_DEFAULT;
 					tagOpened = false;
+					if (foldXmlAtTagOpen) {
+						levelCurrent--;
+					}
 				} else {
 					if (eClass != SCE_H_TAGUNKNOWN) {
 						if (eClass == SCE_H_SGML_DEFAULT) {
@@ -1775,7 +1814,7 @@ void SCI_METHOD LexerHTML::Lex(Sci_PositionU startPos, Sci_Position length, int 
 						state = SCE_H_DEFAULT;
 					}
 					tagOpened = false;
-					if (!tagDontFold) {
+					if (!(foldXmlAtTagOpen || tagDontFold)) {
 						if (tagClosing) {
 							levelCurrent--;
 						} else {
@@ -1801,7 +1840,7 @@ void SCI_METHOD LexerHTML::Lex(Sci_PositionU startPos, Sci_Position length, int 
 					state = SCE_H_DEFAULT;
 				}
 				tagOpened = false;
-				if (!tagDontFold) {
+				if (!(foldXmlAtTagOpen || tagDontFold)) {
 					if (tagClosing) {
 						levelCurrent--;
 					} else {
@@ -1825,6 +1864,9 @@ void SCI_METHOD LexerHTML::Lex(Sci_PositionU startPos, Sci_Position length, int 
 				ch = chNext;
 				state = SCE_H_DEFAULT;
 				tagOpened = false;
+				if (foldXmlAtTagOpen) {
+					levelCurrent--;
+				}
 			} else if (ch == '?' && chNext == '>') {
 				styler.ColourTo(i - 1, StateToPrint);
 				styler.ColourTo(i + 1, SCE_H_XMLEND);
