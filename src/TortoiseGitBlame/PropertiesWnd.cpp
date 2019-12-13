@@ -251,7 +251,7 @@ void CPropertiesWnd::UpdateProperties(GitRevLoglist* pRev)
 		m_AuthorDate->SetValue(authorDate);
 		m_AuthorEmail->SetValue(pRev->GetAuthorEmail());
 
-		m_CommitterName->SetValue(pRev->GetAuthorName());
+		m_CommitterName->SetValue(pRev->GetCommitterName());
 		m_CommitterEmail->SetValue(pRev->GetCommitterEmail());
 		CString committerDate = pRev->GetCommitterDate().Format(L"%Y-%m-%d %H:%M");
 		m_CommitterDate->SetValue(committerDate);
