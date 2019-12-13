@@ -121,6 +121,7 @@ int Scintilla_LinkLexers() {
 	LINK_LEXER(lmGAP);
 	LINK_LEXER(lmGui4Cli);
 	LINK_LEXER(lmHaskell);
+	LINK_LEXER(lmHollywood);
 	LINK_LEXER(lmHTML);
 	LINK_LEXER(lmIHex);
 	LINK_LEXER(lmIndent);

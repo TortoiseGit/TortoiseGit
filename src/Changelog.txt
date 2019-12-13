@@ -13,6 +13,7 @@ Released: unreleased
 == Features ==
  * Fixed issue #3448: Revision Graph: Make direction of arrows configurable
  * Fixed issue #3263: Compare parent revision with working tree
+ * Update Scintilla to 4.2.3
 
 = Release 2.9.0 =
 Released: 2019-10-31

@@ -62,6 +62,7 @@
     <ClCompile Include="..\scintilla\lexers\LexEDIFACT.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexErrorList.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexHex.cxx" />
+    <ClCompile Include="..\scintilla\lexers\LexHollywood.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexIndent.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexJSON.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexKVIrc.cxx" />
