@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2003-2015 - TortoiseSVN
+// Copyright (C) 2003-2015, 2019 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -217,6 +217,7 @@ public: // methods
 	static bool		IsViewGood(const CBaseView* view ) { return (view != 0) && view->IsWindowVisible(); }
 	static CBaseView * GetFirstGoodView();
 
+	int				GetLargestSpaceStreak(const CString& line);
 	int				GetIndentCharsForLine(int x, int y);
 	void			AddIndentationForSelectedBlock();
 	void			RemoveIndentationForSelectedBlock();
