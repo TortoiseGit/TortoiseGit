@@ -52,7 +52,7 @@
 		</Feature>
 
 		<?if $(var.Platform) = "x64" ?>
-		<Feature Id="F_TSHELL32" Level="1" Title="32-bit TortoiseGit Shell-Extension" Description="The TortoiseGit Shell-Extension for 32-bit applications. This feature requires the Visual C++ 2015 runtime for x86 which might needs to be installed manually." TypicalDefault="install" Absent="allow" AllowAdvertise="no">
+		<Feature Id="F_TSHELL32" Level="1" Title="32-bit TortoiseGit Shell-Extension" Description="The TortoiseGit Shell-Extension for 32-bit applications. This feature requires the Visual C++ 2019 runtime for x86 which might need to be installed manually." TypicalDefault="install" Absent="allow" AllowAdvertise="no">
 			<ComponentRef Id="C__gitlibs32" />
 			<ComponentRef Id="C__TortoiseShell32" />
 			<ComponentRef Id="C__shellregistry32" />

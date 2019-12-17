@@ -3,10 +3,4 @@
   <PropertyGroup>
     <PlatformToolset Condition="'$(PlatformToolset)' == '' and '$(VisualStudioVersion)' == '16.0'">v142</PlatformToolset>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(VisualStudioVersion)' == '15.0'">
-    <PlatformToolset Condition="'$(PlatformToolset)' == ''">v141</PlatformToolset>
-    <TGIT_Win10SDKVer>$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v10.0@ProductVersion)</TGIT_Win10SDKVer>
-    <TGIT_Win10SDKVer Condition="'$(Win10SDKVer)' == ''">$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Microsoft SDKs\Windows\v10.0@ProductVersion)</TGIT_Win10SDKVer>
-    <WindowsTargetPlatformVersion Condition="'$(TGIT_Win10SDKVer)' != ''">$(TGIT_Win10SDKVer).0</WindowsTargetPlatformVersion>
-  </PropertyGroup>
 </Project>

@@ -1,8 +1,7 @@
 version: '{branch}.{build}'
 skip_tags: true
 image:
-  - Visual Studio 2017
-  - Visual Studio 2019
+- Visual Studio 2019
 init:
 - git version
 build_script:
