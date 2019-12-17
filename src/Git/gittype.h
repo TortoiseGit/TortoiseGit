@@ -90,12 +90,7 @@ public:
 	}
 	static const size_t npos = static_cast<size_t>(-1); // bad/missing length/position
 	static_assert(MAXSIZE_T == npos, "NPOS must equal MAXSIZE_T");
-#pragma warning(push)
-#if _MSC_VER < 1920
-#pragma warning(disable: 4309) // 'static_cast': truncation of constant value
-#endif
 	static_assert(-1 == static_cast<int>(npos), "NPOS must equal -1");
-#pragma warning(pop)
 };
 
 class CGitGuardedByteArray : public CGitByteArray

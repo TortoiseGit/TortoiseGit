@@ -16,7 +16,7 @@ Requirements
 
 First, you need to install the compiler package:
 
-*  You need at least Visual Studio 2017 for
+*  You need at least Visual Studio 2019 for
    building the full TortoiseGit package.
    The TortoiseGit teams uses VS2022 Community Edition which is free for open-source
    projects (https://www.visualstudio.com/downloads/).
