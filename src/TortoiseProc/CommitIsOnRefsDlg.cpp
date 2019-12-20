@@ -481,9 +481,7 @@ BOOL CCommitIsOnRefsDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 
 LRESULT CCommitIsOnRefsDlg::OnGettingRefsFinished(WPARAM, LPARAM)
 {
-	DialogEnableWindow(IDC_LOG, TRUE);
 	DialogEnableWindow(IDC_SELREF, TRUE);
-	DialogEnableWindow(IDC_FILTER, TRUE);
 
 	if (m_Rev.IsEmpty())
 	{
@@ -504,6 +502,8 @@ LRESULT CCommitIsOnRefsDlg::OnGettingRefsFinished(WPARAM, LPARAM)
 		return 0;
 	}
 
+	DialogEnableWindow(IDC_LOG, TRUE);
+	DialogEnableWindow(IDC_FILTER, TRUE);
 	SetDlgItemText(IDC_STATIC_SUBJECT, m_gitrev.m_CommitHash.ToString(g_Git.GetShortHASHLength()) + L": " + m_gitrev.GetSubject());
 	if (!m_gitrev.m_CommitHash.IsEmpty())
 		m_tooltips.AddTool(IDC_STATIC_SUBJECT, CLoglistUtils::FormatDateAndTime(m_gitrev.GetAuthorDate(), DATE_SHORTDATE) + L"  " + m_gitrev.GetAuthorName());
