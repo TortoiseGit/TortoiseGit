@@ -174,6 +174,13 @@ void CACEdit::RemoveSearchAll()
 
 /*********************************************************************/
 
+void CACEdit::SetWindowText(LPCTSTR text)
+{
+	__super::SetWindowText(text);
+	if (m_Liste.GetSafeHwnd())
+		m_Liste.ShowWindow(SW_HIDE);
+}
+
 void CACEdit::OnKillfocus()
 {
 	if(m_Liste.GetSafeHwnd()) // fix Vers 1.1
