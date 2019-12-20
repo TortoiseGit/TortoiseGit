@@ -214,9 +214,6 @@ void CCommitIsOnRefsDlg::OnBnClickedSelRevBtn()
 			if (str.IsEmpty())
 				return;
 
-			if (FillRevFromString(str))
-				return;
-
 			m_cRevEdit.SetWindowText(str);
 		}
 	}
@@ -233,9 +230,6 @@ void CCommitIsOnRefsDlg::OnBnClickedSelRevBtn()
 			if (dlg.GetSelectedHash().empty())
 				return;
 
-			if (FillRevFromString(dlg.GetSelectedHash().at(0).ToString()))
-				return;
-
 			m_cRevEdit.SetWindowText(dlg.GetSelectedHash().at(0).ToString());
 		}
 		else
@@ -246,18 +240,13 @@ void CCommitIsOnRefsDlg::OnBnClickedSelRevBtn()
 	{
 		CRefLogDlg dlg;
 		if (dlg.DoModal() == IDOK)
-		{
-			if (FillRevFromString(dlg.m_SelectedHash.ToString()))
-				return;
-
 			m_cRevEdit.SetWindowText(dlg.m_SelectedHash.ToString());
-		}
 		else
 			return;
 	}
 
+	m_cRevEdit.SetFocus();
 	StartGetRefsThread();
-	KillTimer(IDT_INPUT);
 }
 
 LRESULT CCommitIsOnRefsDlg::OnEnChangeCommit(WPARAM, LPARAM)

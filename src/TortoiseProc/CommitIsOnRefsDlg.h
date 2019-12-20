@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2017 - TortoiseGit
+// Copyright (C) 2016-2017, 2019 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -81,17 +81,7 @@ protected:
 	static CString GetTwoSelectedRefs(const STRING_VECTOR& selectedRefs, const CString& lastSelected, const CString& separator);
 	void AddToList();
 	void CopySelectionToClipboard();
-	int FillRevFromString(const CString& str)
-	{
-		GitRev gitrev;
-		if (gitrev.GetCommit(str))
-		{
-			MessageBox(gitrev.GetLastErr(), L"TortoiseGit", MB_ICONERROR);
-			return -1;
-		}
-		m_gitrev = gitrev;
-		return 0;
-	}
+
 	GitRev m_gitrev;
 
 public:
