@@ -120,8 +120,7 @@ void CFileDiffDlg::SetDiff(const CTGitPath* path, const GitRev& baseRev1, const 
 {
 	if (path)
 	{
-		m_path1 = *path;
-		m_path2 = *path;
+		m_path = *path;
 		m_sFilter = path->GetGitPathString();
 	}
 	m_rev1 = baseRev1;
@@ -132,8 +131,7 @@ void CFileDiffDlg::SetDiff(const CTGitPath* path, const CString &baseRev1, const
 {
 	if (path)
 	{
-		m_path1 = *path;
-		m_path2 = *path;
+		m_path = *path;
 		m_sFilter = path->GetGitPathString();
 	}
 
@@ -168,8 +166,7 @@ void CFileDiffDlg::SetDiff(const CTGitPath* path, const GitRev &baseRev1)
 {
 	if (path)
 	{
-		m_path1 = *path;
-		m_path2 = *path;
+		m_path = *path;
 		m_sFilter = path->GetGitPathString();
 	}
 	m_rev1 = baseRev1;
@@ -187,8 +184,8 @@ BOOL CFileDiffDlg::OnInitDialog()
 	CString sWindowTitle;
 	GetWindowText(sWindowTitle);
 	CString pathText = g_Git.m_CurrentDir;
-	if (!m_path1.IsEmpty())
-		pathText = g_Git.CombinePath(m_path1);
+	if (!m_path.IsEmpty())
+		pathText = g_Git.CombinePath(m_path);
 	CAppUtils::SetWindowTitle(m_hWnd, pathText, sWindowTitle);
 
 	this->m_ctrRev1Edit.Init();
@@ -490,7 +487,7 @@ void CFileDiffDlg::OnLvnGetInfoTipFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 	if (pGetInfoTip->iItem >= static_cast<int>(m_arFilteredList.size()))
 		return;
 
-	CString path = m_path1.GetGitPathString() + L'/' + m_arFilteredList[pGetInfoTip->iItem]->GetGitPathString();
+	CString path = m_path.GetGitPathString() + L'/' + m_arFilteredList[pGetInfoTip->iItem]->GetGitPathString();
 	if (pGetInfoTip->cchTextMax > path.GetLength())
 			wcsncpy_s(pGetInfoTip->pszText, pGetInfoTip->cchTextMax, path, pGetInfoTip->cchTextMax - 1);
 
@@ -732,10 +729,10 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 					{
 						CStdioFile file(savePath.GetWinPathString(), CFile::typeBinary | CFile::modeReadWrite | CFile::modeCreate);
 						CString temp;
-						if (m_path1.IsEmpty() && m_path2.IsEmpty())
+						if (m_path.IsEmpty())
 							temp.FormatMessage(IDS_FILEDIFF_CHANGEDLISTINTROROOT, static_cast<LPCTSTR>(m_rev1.m_CommitHash.ToString()), static_cast<LPCTSTR>(m_rev2.m_CommitHash.ToString()));
 						else
-							temp.FormatMessage(IDS_FILEDIFF_CHANGEDLISTINTRO, static_cast<LPCTSTR>(m_path1.GetGitPathString()), static_cast<LPCTSTR>(m_rev1.m_CommitHash.ToString()), static_cast<LPCTSTR>(m_path2.GetGitPathString()), static_cast<LPCTSTR>(m_rev2.m_CommitHash.ToString()));
+							temp.FormatMessage(IDS_FILEDIFF_CHANGEDLISTINTRO, static_cast<LPCTSTR>(m_path.GetGitPathString()), static_cast<LPCTSTR>(m_rev1.m_CommitHash.ToString()), static_cast<LPCTSTR>(m_path.GetGitPathString()), static_cast<LPCTSTR>(m_rev2.m_CommitHash.ToString()));
 						file.WriteString(temp + L"\r\n");
 						POSITION pos = m_cFileList.GetFirstSelectedItemPosition();
 						while (pos)
@@ -860,9 +857,6 @@ void CFileDiffDlg::OnBnClickedSwitchleftright()
 #endif
 
 	m_cFileList.SetRedraw(true);
-	CTGitPath path = m_path1;
-	m_path1 = m_path2;
-	m_path2 = path;
 	GitRev rev = m_rev1;
 	m_rev1 = m_rev2;
 	m_rev2 = rev;

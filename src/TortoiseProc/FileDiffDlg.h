@@ -152,9 +152,8 @@ private:
 	int					m_nIconFolder;
 
 	bool				m_bIsBare;
-	CTGitPath			m_path1;
+	CTGitPath			m_path;
 	GitRev				m_rev1;
-	CTGitPath			m_path2;
 	GitRev				m_rev2;
 
 	volatile LONG		m_bThreadRunning;
