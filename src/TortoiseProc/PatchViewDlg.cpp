@@ -146,6 +146,23 @@ void CPatchViewDlg::OnMoving(UINT fwSide, LPRECT pRect)
 	CDialog::OnMoving(fwSide, pRect);
 }
 
+void CPatchViewDlg::ParentOnMoving(HWND parentHWND, LPRECT pRect)
+{
+	if (!::IsWindow(m_hWnd))
+		return;
+
+	if (!::IsWindow(parentHWND))
+		return;
+
+	RECT patchrect;
+	GetWindowRect(&patchrect);
+
+	RECT parentRect;
+	::GetWindowRect(parentHWND, &parentRect);
+	if (patchrect.left == parentRect.right)
+		SetWindowPos(nullptr, patchrect.left - (parentRect.left - pRect->left), patchrect.top - (parentRect.top - pRect->top), 0, 0, SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOSIZE | SWP_NOZORDER);
+}
+
 void CPatchViewDlg::ShowAndAlignToParent()
 {
 	CRect rect;

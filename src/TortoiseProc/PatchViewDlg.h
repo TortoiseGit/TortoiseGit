@@ -39,6 +39,7 @@ public:
 	void SetText(const CString& text);
 	void ClearView();
 	void ShowAndAlignToParent();
+	void ParentOnMoving(HWND parentHWND, LPRECT pRect);
 
 // Dialog Data
 	enum { IDD = IDD_PATCH_VIEW };

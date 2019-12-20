@@ -2692,21 +2692,7 @@ void CCommitDlg::OnMoving(UINT fwSide, LPRECT pRect)
 {
 	__super::OnMoving(fwSide, pRect);
 
-	if (::IsWindow(m_patchViewdlg.m_hWnd))
-	{
-		RECT patchrect;
-		m_patchViewdlg.GetWindowRect(&patchrect);
-		if (::IsWindow(m_hWnd))
-		{
-			RECT thisrect;
-			GetWindowRect(&thisrect);
-			if (patchrect.left == thisrect.right)
-			{
-				m_patchViewdlg.SetWindowPos(nullptr, patchrect.left - (thisrect.left - pRect->left), patchrect.top - (thisrect.top - pRect->top),
-					0, 0, SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOSIZE | SWP_NOZORDER);
-			}
-		}
-	}
+	m_patchViewdlg.ParentOnMoving(m_hWnd, pRect);
 }
 
 void CCommitDlg::OnSizing(UINT fwSide, LPRECT pRect)
