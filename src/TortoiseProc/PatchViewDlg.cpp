@@ -25,6 +25,8 @@
 #include "CommonAppUtils.h"
 #include "StringUtils.h"
 
+#pragma comment(lib, "Dwmapi.lib")
+
 // CPatchViewDlg dialog
 
 IMPLEMENT_DYNAMIC(CPatchViewDlg, CDialog)
@@ -109,6 +111,15 @@ void CPatchViewDlg::ClearView()
 	SetText(CString());
 }
 
+static int GetBorderAjustment(HWND parentHWND, const RECT& parentRect)
+{
+	CRect recta{ 0, 0, 0, 0 };
+	if (SUCCEEDED(::DwmGetWindowAttribute(parentHWND, DWMWA_EXTENDED_FRAME_BOUNDS, &recta, sizeof(recta))))
+		return 2 * (recta.left - parentRect.left) + 1;
+
+	return 0;
+}
+
 void CPatchViewDlg::OnSize(UINT nType, int cx, int cy)
 {
 	CDialog::OnSize(nType, cx, cy);
@@ -137,10 +148,12 @@ void CPatchViewDlg::OnMoving(UINT fwSide, LPRECT pRect)
 #define STICKYSIZE 5
 	RECT parentRect;
 	m_ParentDlg->GetPatchViewParentWnd()->GetWindowRect(&parentRect);
-	if (abs(parentRect.right - pRect->left) < STICKYSIZE)
+
+	int adjust = GetBorderAjustment(m_ParentDlg->GetPatchViewParentWnd()->GetSafeHwnd(), parentRect);
+	if (abs(parentRect.right - pRect->left - adjust) < STICKYSIZE)
 	{
 		int width = pRect->right - pRect->left;
-		pRect->left = parentRect.right;
+		pRect->left = parentRect.right - adjust;
 		pRect->right = pRect->left + width;
 	}
 	CDialog::OnMoving(fwSide, pRect);
@@ -159,7 +172,9 @@ void CPatchViewDlg::ParentOnMoving(HWND parentHWND, LPRECT pRect)
 
 	RECT parentRect;
 	::GetWindowRect(parentHWND, &parentRect);
-	if (patchrect.left == parentRect.right)
+
+	int adjust = GetBorderAjustment(parentHWND, parentRect);
+	if (patchrect.left == parentRect.right - adjust)
 		SetWindowPos(nullptr, patchrect.left - (parentRect.left - pRect->left), patchrect.top - (parentRect.top - pRect->top), 0, 0, SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOSIZE | SWP_NOZORDER);
 }
 
@@ -167,7 +182,8 @@ void CPatchViewDlg::ShowAndAlignToParent()
 {
 	CRect rect;
 	m_ParentDlg->GetPatchViewParentWnd()->GetWindowRect(&rect);
-	rect.left = rect.right;
+	int adjust = GetBorderAjustment(m_ParentDlg->GetPatchViewParentWnd()->GetSafeHwnd(), rect);
+	rect.left = rect.right - adjust;
 	rect.right = rect.left + static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\TortoiseProc\\PatchDlgWidth", rect.Width()));
 
 	WINDOWPLACEMENT wp;
