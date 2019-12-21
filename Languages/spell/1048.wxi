@@ -1,4 +1,0 @@
-﻿<Include>
-	<File Id='SPELLROAFF' Name='ro_RO.aff' DiskId='1' Source='..\ext\spell\ro\ro_RO.aff' Vital='no'></File>
-	<File Id='SPELLRODIC' Name='ro_RO.dic' DiskId='1' Source='..\ext\spell\ro\ro_RO.dic' Vital='no'></File>
-</Include>

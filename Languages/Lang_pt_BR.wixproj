@@ -14,7 +14,7 @@
 	<PropertyGroup>
 		<ProjectGuid>{b9c725a7-9727-48b2-86e5-f905f6c2b9e6}</ProjectGuid>
 		<OutputName>TortoiseGit-LanguagePack-pt_BR</OutputName>
-		<DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;COUNTRYID=1046;LANGNATIVE=Portuguese (Brazil);SPELL=1;</DefineConstants>
+		<DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;COUNTRYID=1046;LANGNATIVE=Portuguese (Brazil);</DefineConstants>
 		<Cultures>pt-BR</Cultures>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -38,9 +38,6 @@
 	<ItemGroup>
 		<Compile Include="LanguagePack.wxs" />
 		<Compile Include="WixUI_LanguagePacks.wxs" />
-	</ItemGroup>
-	<ItemGroup>
-		<Content Include="spell\1046.wxi" />
 	</ItemGroup>
 	<Import Project="$(WixTargetsPath)" />
 </Project>

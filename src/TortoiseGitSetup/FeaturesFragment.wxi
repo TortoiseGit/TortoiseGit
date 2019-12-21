@@ -93,17 +93,6 @@
 			<ComponentRef Id="C__TortoiseUDiffAssoc" />
 		</Feature>
 
-		<?if $(var.DictionaryENGB) = 1 ?>
-		<Feature Id="DictionaryENGB" Level="1" Title="English (GB) dictionary" Description="English (GB) spell checker dictionary" TypicalDefault="install" Absent="allow" AllowAdvertise="no">
-			<ComponentRef Id="C__DictionaryENGB" />
-		</Feature>
-		<?endif ?>
-		<?if $(var.DictionaryENUS) = 1 ?>
-		<Feature Id="DictionaryENUS" Level="1" Title="English (US) dictionary" Description="English (US) spell checker dictionary" TypicalDefault="install" Absent="allow" AllowAdvertise="no">
-			<ComponentRef Id="C__DictionaryENUS" />
-		</Feature>
-		<?endif ?>
-
 		<Feature Id="SSHPlink" Level="1" Title="SSH Plink" Description="SSH Plink" TypicalDefault="install" Display="hidden" InstallDefault="followParent">
 			<ComponentRef Id="C_SSHCLIENT_PLINK" />
 		</Feature>

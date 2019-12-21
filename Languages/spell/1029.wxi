@@ -1,4 +1,0 @@
-﻿<Include>
-	<File Id='SPELLCSCZAFF' Name='cs_CZ.aff' DiskId='1' Source='..\ext\spell\cs_CZ\cs_CZ.aff' Vital='no'></File>
-	<File Id='SPELLCSCZDIC' Name='cs_CZ.dic' DiskId='1' Source='..\ext\spell\cs_CZ\cs_CZ.dic' Vital='no'></File>
-</Include>

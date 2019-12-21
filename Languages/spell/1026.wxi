@@ -1,4 +1,0 @@
-﻿<Include>
-	<File Id='SPELLBGBGAFF' Name='bg_BG.aff' DiskId='1' Source='..\ext\spell\bg_BG\bg_BG.aff' Vital='no'></File>
-	<File Id='SPELLBGBGDIC' Name='bg_BG.dic' DiskId='1' Source='..\ext\spell\bg_BG\bg_BG.dic' Vital='no'></File>
-</Include>

@@ -14,7 +14,7 @@
 	<PropertyGroup>
 		<ProjectGuid>{568c0f10-4558-4291-8698-cb9aef819b04}</ProjectGuid>
 		<OutputName>TortoiseGit-LanguagePack-ru</OutputName>
-		<DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;COUNTRYID=1049;LANGNATIVE=Russian;SPELL=1;</DefineConstants>
+		<DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;COUNTRYID=1049;LANGNATIVE=Russian;</DefineConstants>
 		<Cultures>ru-RU</Cultures>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -38,9 +38,6 @@
 	<ItemGroup>
 		<Compile Include="LanguagePack.wxs" />
 		<Compile Include="WixUI_LanguagePacks.wxs" />
-	</ItemGroup>
-	<ItemGroup>
-		<Content Include="spell\1049.wxi" />
 	</ItemGroup>
 	<Import Project="$(WixTargetsPath)" />
 </Project>

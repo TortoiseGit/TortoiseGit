@@ -1,6 +1,0 @@
-﻿<Include>
-	<File Id='SPELLSVFIAFF' Name='sv_FI.aff' DiskId='1' Source='..\ext\spell\sv_SE\sv_FI.aff' Vital='no'></File>
-	<File Id='SPELLSVFIDIC' Name='sv_FI.dic' DiskId='1' Source='..\ext\spell\sv_SE\sv_FI.dic' Vital='no'></File>
-	<File Id='SPELLSVSEAFF' Name='sv_SE.aff' DiskId='1' Source='..\ext\spell\sv_SE\sv_SE.aff' Vital='no'></File>
-	<File Id='SPELLSVSEDIC' Name='sv_SE.dic' DiskId='1' Source='..\ext\spell\sv_SE\sv_SE.dic' Vital='no'></File>
-</Include>

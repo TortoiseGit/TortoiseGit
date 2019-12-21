@@ -1,4 +1,0 @@
-﻿<Include>
-	<File Id='SPELLUKUAAFF' Name='uk_UA.aff' DiskId='1' Source='..\ext\spell\uk_UA\uk_UA.aff' Vital='no'></File>
-	<File Id='SPELLUKUADIC' Name='uk_UA.dic' DiskId='1' Source='..\ext\spell\uk_UA\uk_UA.dic' Vital='no'></File>
-</Include>

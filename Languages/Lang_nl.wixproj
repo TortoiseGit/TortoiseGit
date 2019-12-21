@@ -14,7 +14,7 @@
 	<PropertyGroup>
 		<ProjectGuid>{c3774955-ade4-4cf0-92a2-71383c29cece}</ProjectGuid>
 		<OutputName>TortoiseGit-LanguagePack-nl</OutputName>
-		<DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;COUNTRYID=1043;LANGNATIVE=Dutch;SPELL=1;</DefineConstants>
+		<DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;COUNTRYID=1043;LANGNATIVE=Dutch;</DefineConstants>
 		<Cultures>nl-NL</Cultures>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -38,9 +38,6 @@
 	<ItemGroup>
 		<Compile Include="LanguagePack.wxs" />
 		<Compile Include="WixUI_LanguagePacks.wxs" />
-	</ItemGroup>
-	<ItemGroup>
-		<Content Include="spell\1043.wxi" />
 	</ItemGroup>
 	<Import Project="$(WixTargetsPath)" />
 </Project>

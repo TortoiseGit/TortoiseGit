@@ -1,4 +1,0 @@
-﻿<Include>
-	<File Id='SPELLTRTRAFF' Name='tr_TR.aff' DiskId='1' Source='..\ext\spell\tr_TR\tr_TR.aff' Vital='no'></File>
-	<File Id='SPELLTRTRDIC' Name='tr_TR.dic' DiskId='1' Source='..\ext\spell\tr_TR\tr_TR.dic' Vital='no'></File>
-</Include>

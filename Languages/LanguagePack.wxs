@@ -53,9 +53,6 @@
 							<?if $(var.TMergeHelpFile) = "$COUNTRYCODE$" ?>
 								<File Id='HELPMERG' Name='TortoiseMerge_$COUNTRYCODE$.chm' DiskId='1' Source='..\doc\output\TortoiseMerge_$COUNTRYCODE$.chm' Vital='no'></File>
 							<?endif?>
-							<?ifdef var.SPELL ?>
-								<?include spell/$(var.COUNTRYID).wxi?>
-							<?endif?>
 							<File Id='PROCDLL' Name='TortoiseProc$(var.COUNTRYID).dll' DiskId='1' Source='..\bin\$(var.ReleasePath)\Languages\TortoiseProc$(var.COUNTRYID).dll' Vital='yes'></File>
 							<File Id='MERGDLL' Name='TortoiseMerge$(var.COUNTRYID).dll' DiskId='1' Source='..\bin\$(var.ReleasePath)\Languages\TortoiseMerge$(var.COUNTRYID).dll' Vital='yes'></File>
 							<File Id='BLAMDLL' Name='TortoiseGitBlame$(var.COUNTRYID).dll' DiskId='1' Source='..\bin\$(var.ReleasePath)\Languages\TortoiseGitBlame$(var.COUNTRYID).dll' Vital='yes'></File>

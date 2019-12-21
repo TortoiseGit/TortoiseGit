@@ -315,68 +315,12 @@
 				<primary>dictionary</primary>
 			</indexterm>
 			<para>
-				TortoiseGit includes a spell checker which allows you to check your
+				TortoiseGit uses the Windows spell checker to check your
 				commit log messages. This is especially useful if the project language
 				is not your native language.
-				By default the spell checker uses the same dictionary files as
-				<ulink url="http://libreoffice.org">
-					<citetitle>LibreOffice</citetitle>
-				</ulink>,
-				<ulink url="http://openoffice.org">
-					<citetitle>OpenOffice</citetitle>
-				</ulink>
-				and
-				<ulink url="http://mozilla.org">
-					<citetitle>Mozilla</citetitle>
-				</ulink>.
-				TortoiseGit can also use the spell checker shipped with Windows 8+. However, this needs to be enabled manually in advanced settings (key "Win8SpellChecker") at the moment.
 			</para>
 			<para>
-				The installer by default automatically adds the US English dictionary.
-				If you want other languages, the easiest option is simply to
-				install one of TortoiseGit's language packs (see <xref linkend="tgit-intro-install-lang"/>). This will install
-				the appropriate dictionary files as well as the TortoiseGit local
-				user interface.
-				After the installation finishes, the translation will be available.
-				When using the Windows spell checker, you need to install the dictionary in Windows first.
-			</para>
-			<para>
-				Or you can install the dictionaries yourself. If you have OpenOffice, LibreOffice or
-				Mozilla installed, you can copy those dictionaries, which are located
-				in the installation folders for those applications.
-				Otherwise, you need to download the required dictionary files from
-				<ulink url="http://cgit.freedesktop.org/libreoffice/dictionaries/">
-					<citetitle>http://cgit.freedesktop.org/libreoffice/dictionaries/</citetitle>
-				</ulink>
-				or
-				<ulink url="http://wiki.services.openoffice.org/wiki/Dictionaries">
-					<citetitle>http://wiki.services.openoffice.org/wiki/Dictionaries</citetitle>
-				</ulink>
-			</para>
-			<para>
-				Once you have got the dictionary files, you
-				probably need to rename them so that the filenames only have
-				the locale chars in it.
-				Example:
-				<itemizedlist>
-					<listitem>
-						<para>
-							<filename>en_US.aff</filename>
-						</para>
-					</listitem>
-					<listitem>
-						<para>
-							<filename>en_US.dic</filename>
-						</para>
-					</listitem>
-				</itemizedlist>
-				Then just copy them into the <filename>%APPDATA%\TortoiseGit\dic</filename> folder. If that folder isn't
-				there, you have to create it first.
-				TortoiseGit will also search the <filename>Languages</filename> sub-folder of
-				the TortoiseGit installation folder (normally this will be <filename>C:\Program Files\TortoiseGit\Languages</filename>);
-				this is the place where the language packs put their files.
-				However, the %APPDATA%-folder doesn't require administrator privileges and, thus, has higher priority.
-				The next time you start TortoiseGit, the spell checker will be available.
+				TortoiseGit relies on the installed spell checker dictionaries/languages of Windows.
 			</para>
 			<para>
 				If you install multiple dictionaries, TortoiseGit uses these rules
@@ -406,11 +350,11 @@
 					<listitem>
 						<para>
 						If none of the above works, then the default language
-						is English, which is included by default with the standard installation.
+						is English and tried to be loaded. If this fails, then
+						no spell checker is activated at all.
 						</para>
 					</listitem>
 				</orderedlist>
-				When using the Windows spell checker, this is tried first. If no Windows dictionary, based on these fallback-rules, could be found then the "old" spell checker is used as a fallback.
 			</para>
 		</sect2>
 	</sect1>

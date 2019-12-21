@@ -475,22 +475,6 @@
 					</Component>
 				</Directory>
 
-				<Directory Id="D__Languages" Name="Languages">
-					<?if $(var.DictionaryENGB) = 1 ?>
-					<Component Id="C__DictionaryENGB" Guid="$(var.GuidDictionaryENGB)" Win64="$(var.Win64YesNo)">
-						<File Id="F__ENGBSPELLAFF" Name="en_GB.aff" Source="..\..\..\ext\spell\en\en_GB.aff" DiskId="1" KeyPath="yes" />
-						<File Id="F__ENGBSPELLDIC" Name="en_GB.dic" Source="..\..\..\ext\spell\en\en_GB.dic" DiskId="1" />
-					</Component>
-					<?endif ?>
-
-					<?if $(var.DictionaryENUS) = 1 ?>
-					<Component Id="C__DictionaryENUS" Guid="$(var.GuidDictionaryENUS)" Win64="$(var.Win64YesNo)">
-						<File Id="F__ENSPELLAFF" Name="en_US.aff" Source="..\..\ext\spell\en\en_US.aff" DiskId="1" KeyPath="yes" />
-						<File Id="F__ENSPELLDIC" Name="en_US.dic" Source="..\..\ext\spell\en\en_US.dic" DiskId="1" />
-					</Component>
-					<?endif ?>
-				</Directory>
-
 				<Directory Id="D__DiffScripts" Name="Diff-Scripts">
 					<Component Id="C__DiffScripts" Guid="$(var.GuidDiffScripts)" Win64="$(var.Win64YesNo)">
 						<File Id="F__diffxls" Name="diff-xls.js" Source="..\..\contrib\diff-scripts\diff-xls.js" DiskId="1" KeyPath="yes" />

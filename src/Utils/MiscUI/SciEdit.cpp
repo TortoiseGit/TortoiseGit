@@ -201,19 +201,16 @@ void CSciEdit::Init(LONG lLanguage)
 	if (lLanguage >= 0 && static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\Spellchecker", TRUE)) == TRUE)
 	{
 		long langId = GetUserDefaultLCID();
-		long origLangId = langId;
 		if (lLanguage > 0)
 		{
 			// if a specific language is requested, then use that
 			langId = lLanguage;
-			origLangId = lLanguage;
 		}
 
 		// first try the Win8 spell checker
 		BOOL supported = FALSE;
 		HRESULT hr = CoCreateInstance(__uuidof(SpellCheckerFactory), nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&m_spellCheckerFactory));
-		bool bFallbackUsed = false;
-		if (SUCCEEDED(hr) && static_cast<DWORD>(CRegDWORD(L"Software\\TortoiseGit\\Win8SpellChecker", FALSE)) == TRUE)
+		if (SUCCEEDED(hr))
 		{
 			wchar_t localename[LOCALE_NAME_MAX_LENGTH] = { 0 };
 			do
@@ -237,38 +234,9 @@ void CSciEdit::Init(LONG lLanguage)
 				else if (langId == 1033)
 					langId = 0;
 				else
-				{
 					langId = 1033;
-					bFallbackUsed = true;
-				}
 			} while (langId && (!supported || FAILED(hr)));
 		}
-		if (FAILED(hr) || !supported || bFallbackUsed)
-		{
-			if (bFallbackUsed)
-				langId = origLangId;
-			if ((lLanguage == 0) || (lLanguage && !LoadDictionaries(lLanguage)))
-			{
-				do
-				{
-					LoadDictionaries(langId);
-					DWORD lid = SUBLANGID(langId);
-					--lid;
-					if (lid > 0)
-						langId = MAKELANGID(PRIMARYLANGID(langId), lid);
-					else if (langId == 1033)
-						langId = 0;
-					else
-					{
-						if (bFallbackUsed && supported)
-							langId = 0;
-						else
-							langId = 1033;
-					}
-				} while (langId && !pChecker);
-			}
-			if (bFallbackUsed && pChecker)
-				m_SpellChecker = nullptr;
 		}
 	}
 
@@ -326,51 +294,6 @@ void CSciEdit::SetIcon(const std::map<int, UINT> &icons)
 		DestroyIcon(hIcon);
 		Call(SCI_REGISTERRGBAIMAGE, icon.first, reinterpret_cast<LPARAM>(bytes.get()));
 	}
-}
-
-BOOL CSciEdit::LoadDictionaries(LONG lLanguageID)
-{
-	// Setup the spell checker
-	TCHAR buf[6] = { 0 };
-	CString sFolderUp = CPathUtils::GetAppParentDirectory();
-	CString sFolderAppData = CPathUtils::GetAppDataDirectory();
-	CString sFile;
-
-	GetLocaleInfo(MAKELCID(lLanguageID, SORT_DEFAULT), LOCALE_SISO639LANGNAME, buf, _countof(buf));
-	sFile = buf;
-	if (lLanguageID == 2074)
-		sFile += L"-Latn";
-	sFile += L'_';
-	GetLocaleInfo(MAKELCID(lLanguageID, SORT_DEFAULT), LOCALE_SISO3166CTRYNAME, buf, _countof(buf));
-	sFile += buf;
-	if (!pChecker)
-	{
-		if ((PathFileExists(sFolderAppData + L"dic\\" + sFile + L".aff")) &&
-			(PathFileExists(sFolderAppData + L"dic\\" + sFile + L".dic")))
-		{
-			pChecker = std::make_unique<Hunspell>(CStringA(sFolderAppData + L"dic\\" + sFile + L".aff"), CStringA(sFolderAppData + L"dic\\" + sFile + L".dic"));
-		}
-		else if ((PathFileExists(sFolderUp + L"Languages\\" + sFile + L".aff")) &&
-			(PathFileExists(sFolderUp + L"Languages\\" + sFile + L".dic")))
-		{
-			pChecker = std::make_unique<Hunspell>(CStringA(sFolderUp + L"Languages\\" + sFile + L".aff"), CStringA(sFolderUp + L"Languages\\" + sFile + L".dic"));
-		}
-		if (pChecker)
-		{
-			const char* encoding = pChecker->get_dic_encoding();
-			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": %s\n", encoding);
-			m_spellcodepage = 0;
-			for (int i = 0; i < _countof(enc2locale); ++i)
-			{
-				if (strcmp(encoding, enc2locale[i].def_enc) == 0)
-					m_spellcodepage = atoi(enc2locale[i].cp);
-			}
-			m_personalDict.Init(lLanguageID);
-		}
-	}
-	if (pChecker)
-		return TRUE;
-	return FALSE;
 }
 
 LRESULT CSciEdit::Call(UINT message, WPARAM wParam, LPARAM lParam)
@@ -524,28 +447,21 @@ void CSciEdit::SetAutoCompletionList(std::map<CString, int>&& list, TCHAR separa
 // Returns TRUE if sWord has spelling errors.
 BOOL CSciEdit::CheckWordSpelling(const CString& sWord)
 {
-	if (m_SpellChecker)
-	{
-		IEnumSpellingErrorPtr enumSpellingError = nullptr;
-		if (SUCCEEDED(m_SpellChecker->Check(sWord, &enumSpellingError)))
-		{
-			ISpellingErrorPtr spellingError = nullptr;
-			if (enumSpellingError->Next(&spellingError) == S_OK)
-			{
-				CORRECTIVE_ACTION action = CORRECTIVE_ACTION_NONE;
-				spellingError->get_CorrectiveAction(&action);
-				if (action != CORRECTIVE_ACTION_NONE)
-					return TRUE;
-			}
-		}
-	}
-	else if (pChecker)
-	{
-		// convert the string from the control to the encoding of the spell checker module.
-		auto sWordA = GetWordForSpellChecker(sWord);
-		if (!pChecker->spell(sWordA))
-			return TRUE;
-	}
+	if (!m_SpellChecker)
+		return FALSE;
+
+	IEnumSpellingErrorPtr enumSpellingError = nullptr;
+	if (!SUCCEEDED(m_SpellChecker->Check(sWord, &enumSpellingError)))
+		return FALSE;
+
+	ISpellingErrorPtr spellingError = nullptr;
+	if (enumSpellingError->Next(&spellingError) != S_OK)
+		return FALSE;
+
+	CORRECTIVE_ACTION action = CORRECTIVE_ACTION_NONE;
+	spellingError->get_CorrectiveAction(&action);
+	if (action != CORRECTIVE_ACTION_NONE)
+		return TRUE;
 
 	return FALSE;
 }
@@ -612,7 +528,7 @@ BOOL CSciEdit::IsMisspelled(const CString& sWord)
 
 void CSciEdit::CheckSpelling(Sci_Position startpos, Sci_Position endpos)
 {
-	if (!pChecker && !m_SpellChecker)
+	if (!m_SpellChecker)
 		return;
 
 	Sci_TextRange textrange;
@@ -696,7 +612,7 @@ void CSciEdit::CheckSpelling(Sci_Position startpos, Sci_Position endpos)
 
 void CSciEdit::SuggestSpellingAlternatives()
 {
-	if (!pChecker && !m_SpellChecker)
+	if (!m_SpellChecker)
 		return;
 	CString word = GetWordUnderCursor(true);
 	Call(SCI_SETCURRENTPOS, Call(SCI_WORDSTARTPOSITION, Call(SCI_GETCURRENTPOS), TRUE));
@@ -704,27 +620,15 @@ void CSciEdit::SuggestSpellingAlternatives()
 		return;
 
 	CString suggestions;
-	if (m_SpellChecker)
+	IEnumStringPtr enumSpellingSuggestions = nullptr;
+	if (!SUCCEEDED(m_SpellChecker->Suggest(word, &enumSpellingSuggestions)))
+		return;
+
+	LPOLESTR string = nullptr;
+	while (enumSpellingSuggestions->Next(1, &string, nullptr) == S_OK)
 	{
-		IEnumStringPtr enumSpellingSuggestions = nullptr;
-		if (SUCCEEDED(m_SpellChecker->Suggest(word, &enumSpellingSuggestions)))
-		{
-			LPOLESTR string = nullptr;
-			while (enumSpellingSuggestions->Next(1, &string, nullptr) == S_OK)
-			{
-				suggestions.AppendFormat(L"%s%c%d%c", (LPCWSTR)CString(string), m_typeSeparator, AUTOCOMPLETE_SPELLING, m_separator);
-				CoTaskMemFree(string);
-			}
-		}
-	}
-	else if (pChecker)
-	{
-		auto wlst = pChecker->suggest(GetWordForSpellChecker(word));
-		if (!wlst.empty())
-		{
-			for (const auto& alternative : wlst)
-				suggestions.AppendFormat(L"%s%c%d%c", static_cast<LPCTSTR>(GetWordFromSpellChecker(alternative)), m_typeSeparator, AUTOCOMPLETE_SPELLING, m_separator);
-		}
+		suggestions.AppendFormat(L"%s%c%d%c", (LPCWSTR)CString(string), m_typeSeparator, AUTOCOMPLETE_SPELLING, m_separator);
+		CoTaskMemFree(string);
 	}
 
 	suggestions.TrimRight(m_separator);
@@ -1064,36 +968,18 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 
 		int nCorrections = 1;
 		// check if the word under the cursor is spelled wrong
-		if (!bIsReadOnly && (pChecker || m_SpellChecker) && !worda.empty())
+		if (!bIsReadOnly && m_SpellChecker && !worda.empty())
 		{
-			if (m_SpellChecker)
+			IEnumStringPtr enumSpellingSuggestions = nullptr;
+			if (SUCCEEDED(m_SpellChecker->Suggest(sWord, &enumSpellingSuggestions)))
 			{
-				IEnumStringPtr enumSpellingSuggestions = nullptr;
-				if (SUCCEEDED(m_SpellChecker->Suggest(sWord, &enumSpellingSuggestions)))
+				LPOLESTR string = nullptr;
+				while (enumSpellingSuggestions->Next(1, &string, nullptr) == S_OK)
 				{
-					LPOLESTR string = nullptr;
-					while (enumSpellingSuggestions->Next(1, &string, nullptr) == S_OK)
-					{
-						popup.InsertMenu((UINT)-1, 0, nCorrections++, string);
-						CoTaskMemFree(string);
-					}
-					popup.AppendMenu(MF_SEPARATOR);
+					popup.InsertMenu((UINT)-1, 0, nCorrections++, string);
+					CoTaskMemFree(string);
 				}
-			}
-			else if (pChecker)
-			{
-				// get the spell suggestions
-				auto wlst = pChecker->suggest(worda);
-				if (!wlst.empty())
-				{
-					// add the suggestions to the context menu
-					for (const auto& alternative : wlst)
-					{
-						CString sug = GetWordFromSpellChecker(alternative);
-						popup.InsertMenu(static_cast<UINT>(-1), 0, nCorrections++, sug);
-					}
-					popup.AppendMenu(MF_SEPARATOR);
-				}
+				popup.AppendMenu(MF_SEPARATOR);
 			}
 		}
 

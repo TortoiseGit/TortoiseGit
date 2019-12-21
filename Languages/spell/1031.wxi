@@ -1,8 +1,0 @@
-﻿<Include>
-	<File Id='SPELLDEDEAFF' Name='de_DE.aff' DiskId='1' Source='..\ext\spell\de\de_DE_frami.aff' Vital='no'></File>
-	<File Id='SPELLDEDEDIC' Name='de_DE.dic' DiskId='1' Source='..\ext\spell\de\de_DE_frami.dic' Vital='no'></File>
-	<File Id='SPELLDEATAFF' Name='de_AT.aff' DiskId='1' Source='..\ext\spell\de\de_AT_frami.aff' Vital='no'></File>
-	<File Id='SPELLDEATDIC' Name='de_AT.dic' DiskId='1' Source='..\ext\spell\de\de_AT_frami.dic' Vital='no'></File>
-	<File Id='SPELLDECHAFF' Name='de_CH.aff' DiskId='1' Source='..\ext\spell\de\de_CH_frami.aff' Vital='no'></File>
-	<File Id='SPELLDECHDIC' Name='de_CH.dic' DiskId='1' Source='..\ext\spell\de\de_CH_frami.dic' Vital='no'></File>
-</Include>

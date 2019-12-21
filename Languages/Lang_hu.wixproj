@@ -14,7 +14,7 @@
 	<PropertyGroup>
 		<ProjectGuid>{5da76789-4b2a-45d1-8e3a-81253245c71e}</ProjectGuid>
 		<OutputName>TortoiseGit-LanguagePack-hu</OutputName>
-		<DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;COUNTRYID=1038;LANGNATIVE=Hungarian;SPELL=1;</DefineConstants>
+		<DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;COUNTRYID=1038;LANGNATIVE=Hungarian;</DefineConstants>
 		<Cultures>hu-HU</Cultures>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -38,9 +38,6 @@
 	<ItemGroup>
 		<Compile Include="LanguagePack.wxs" />
 		<Compile Include="WixUI_LanguagePacks.wxs" />
-	</ItemGroup>
-	<ItemGroup>
-		<Content Include="spell\1038.wxi" />
 	</ItemGroup>
 	<Import Project="$(WixTargetsPath)" />
 </Project>

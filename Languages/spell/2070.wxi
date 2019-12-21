@@ -1,4 +1,0 @@
-﻿<Include>
-	<File Id='SPELLPTPTAFF' Name='pt_PT.aff' DiskId='1' Source='..\ext\spell\pt_PT\pt_PT.aff' Vital='no'></File>
-	<File Id='SPELLPTPTDIC' Name='pt_PT.dic' DiskId='1' Source='..\ext\spell\pt_PT\pt_PT.dic' Vital='no'></File>
-</Include>

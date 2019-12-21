@@ -13,7 +13,7 @@
 		<LinkerAdditionalOptions>-ext WixUtilExtension</LinkerAdditionalOptions>
 	</PropertyGroup>
 	<PropertyGroup>
-		<DefineConstants>DictionaryENGB=1;DictionaryENUS=1</DefineConstants>
+		<DefineConstants></DefineConstants>
 		<DefineConstants Condition="'$(Configuration)'=='Release'">IncludeCrashReportDll=1;$(DefineConstants)</DefineConstants>
 		<DefineConstants Condition="'$(Configuration)'=='Debug'">Debug;IncludeCrashReportDll=0;$(DefineConstants)</DefineConstants>
 	</PropertyGroup>

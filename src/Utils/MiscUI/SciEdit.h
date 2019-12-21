@@ -26,10 +26,6 @@
 #include <regex>
 #include "LruCache.h"
 #include <spellcheck.h>
-// the following should be last
-#pragma include_alias("hunvisapi.h", "../../ext/build/hunspell/hunvisapi.h")
-#pragma include_alias("config.h", "../../ext/build/hunspell/config.h")
-#include "../../ext/hunspell/src/hunspell/hunspell.hxx"
 
 _COM_SMARTPTR_TYPEDEF(ISpellCheckerFactory, __uuidof(ISpellCheckerFactory));
 _COM_SMARTPTR_TYPEDEF(ISpellChecker, __uuidof(ISpellChecker));
@@ -146,7 +142,6 @@ private:
 	CAutoLibrary	m_hModule;
 	LRESULT		m_DirectFunction;
 	LRESULT		m_DirectPointer;
-	std::unique_ptr<Hunspell>	pChecker;
 	UINT		m_spellcodepage;
 	std::map<CString, int> m_autolist;
 	TCHAR		m_separator;
@@ -168,7 +163,6 @@ protected:
 	void		CheckSpelling(Sci_Position startpos, Sci_Position endpos);
 	void		SuggestSpellingAlternatives(void);
 	void		DoAutoCompletion(Sci_Position nMinPrefixLength);
-	BOOL		LoadDictionaries(LONG lLanguageID);
 	ISpellCheckerFactoryPtr m_spellCheckerFactory;
 	ISpellCheckerPtr m_SpellChecker;
 	BOOL		MarkEnteredBugID(Sci_Position startstylepos, Sci_Position endstylepos);

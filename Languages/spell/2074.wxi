@@ -1,4 +1,0 @@
-﻿<Include>
-	<File Id='SPELLSRLTNCSAFF' Name='sr-Latn_CS.aff' DiskId='1' Source='..\ext\spell\sr\sr-Latn.aff' Vital='no'></File>
-	<File Id='SPELLSRLTNCSDIC' Name='sr-Latn_CS.dic' DiskId='1' Source='..\ext\spell\sr\sr-Latn.dic' Vital='no'></File>
-</Include>
