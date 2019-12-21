@@ -23,7 +23,6 @@
 #include "UnicodeUtils.h"
 #include "TempFile.h"
 #include <WinInet.h>
-#include "SysInfo.h"
 
 struct num_compare
 {
@@ -428,24 +427,7 @@ void ProjectProperties::ReplaceBugIDPlaceholder(CString& url, const CString& sBu
 {
 	CString parameter;
 	DWORD size = INTERNET_MAX_URL_LENGTH;
-	if (SysInfo::Instance().IsWin8OrLater())
-		UrlEscape(sBugID, CStrBuf(parameter, size + 1), &size, URL_ESCAPE_SEGMENT_ONLY | URL_ESCAPE_PERCENT | URL_ESCAPE_AS_UTF8 | URL_ESCAPE_ASCII_URI_COMPONENT);
-	else
-	{
-		UrlEscape(sBugID, CStrBuf(parameter, size + 1), &size, URL_ESCAPE_SEGMENT_ONLY | URL_ESCAPE_PERCENT | URL_ESCAPE_AS_UTF8);
-		parameter.Replace(L"!", L"%21");
-		parameter.Replace(L"$", L"%24");
-		parameter.Replace(L"'", L"%27");
-		parameter.Replace(L"(", L"%28");
-		parameter.Replace(L")", L"%29");
-		parameter.Replace(L"*", L"%2A");
-		parameter.Replace(L"+", L"%2B");
-		parameter.Replace(L",", L"%2C");
-		parameter.Replace(L":", L"%3A");
-		parameter.Replace(L";", L"%3B");
-		parameter.Replace(L"=", L"%3D");
-		parameter.Replace(L"@", L"%40");
-	}
+	UrlEscape(sBugID, CStrBuf(parameter, size + 1), &size, URL_ESCAPE_SEGMENT_ONLY | URL_ESCAPE_PERCENT | URL_ESCAPE_AS_UTF8 | URL_ESCAPE_ASCII_URI_COMPONENT);
 	url.Replace(L"%BUGID%", parameter);
 }
 

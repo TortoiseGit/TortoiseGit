@@ -246,10 +246,10 @@
 		<sect2>
 			<title>System requirements</title>
 			<para>
-				TortoiseGit runs on Windows 7 or higher.
-				Windows 98, Windows ME, Windows NT4, Windows 2000, Windows XP and Windows Vista are no longer supported.
+				TortoiseGit runs on Windows 8.1 or higher.
+				Windows 98, Windows ME, Windows NT4, Windows 2000, Windows XP, Windows Vista, Windows 7 and Windows 8 are no longer supported.
 				If you are running such an old system, you can still use older, however unsupported, releases of TortoiseGit.
-				Those can be found on the <ulink url="https://download.tortoisegit.org/">download server</ulink> (TortoiseGit 1.7 dropped support for Windows 2000; TortoiseGit 1.9 dropped support for Windows XP, TortoiseGit 2.5 dropped support for Windows Vista).
+				Those can be found on the <ulink url="https://download.tortoisegit.org/">download server</ulink> (TortoiseGit 1.7 dropped support for Windows 2000; TortoiseGit 1.9 dropped support for Windows XP, TortoiseGit 2.5 dropped support for Windows Vista, TortoiseGit X dropped support for Windows 7 and Windows 8).
 			</para>
 			<para>
 				If you encounter any problems during or after installing

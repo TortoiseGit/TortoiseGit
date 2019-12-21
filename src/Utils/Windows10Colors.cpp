@@ -64,8 +64,6 @@ Win10Colors::Win10Colors()
 	if (!modules_loaded)
 	{
 		modules_loaded = true;
-		if (!SysInfo::Instance().IsWin8OrLater())
-			return;
 		winrt = LoadLibraryW(L"api-ms-win-core-winrt-l1-1-0.dll");
 		if (winrt)
 			pRoActivateInstance = reinterpret_cast<pfnRoActivateInstance>(GetProcAddress(winrt, "RoActivateInstance"));

@@ -57,6 +57,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>Winmm.lib;gdiplus.lib;shfolder.lib;comctl32.lib;ws2_32.lib;shlwapi.lib;wininet.lib;UxTheme.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <DelayLoadDLLs>windowsapp.dll</DelayLoadDLLs>
     </Link>
     <Manifest>
       <EnableDpiAwareness>true</EnableDpiAwareness>
