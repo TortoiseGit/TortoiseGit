@@ -29,7 +29,7 @@
 		<Property Id="FIRSTSTARTWIZARD" Secure="yes">1</Property>
 		<Property Id="ALLUSERS" Secure="yes">1</Property>
 
-		<Condition Message="[ProductName] requires Windows 7 or later."><![CDATA[(VersionNT >= 601)]]></Condition>
+		<Condition Message="[ProductName] requires Windows 8.1 or later."><![CDATA[(VersionNT >= 603)]]></Condition>
 
 		<?if $(var.Platform) = "x86" ?>
 		<Condition Message="You are attempting to run the 32-bit installer on a 64-bit version of Windows. Please install the 64-bit version of TortoiseGit instead.">NOT Msix64</Condition>
@@ -98,7 +98,6 @@
 		<?include FeaturesFragment.wxi?>
 		<?include StructureFragment.wxi?>
 		<?include UIFragment.wxi?>
-		<?include Win7LibraryAndExplorerToolbarActions.wxi?>
 		<?include ProtocolSupport.wxi?>
 		<?include TortoiseUDiff.wxi?>
 

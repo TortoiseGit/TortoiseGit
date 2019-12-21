@@ -168,7 +168,7 @@
 			<term condition="pot">GroupTaskbarIconsPerRepo</term>
 			<listitem>
 				<para>
-					This option determines how the Win7 taskbar icons of the various
+					This option determines how the Windows taskbar icons of the various
 					TortoiseGit dialogs and windows are grouped together.
 				</para>
 				<para>
@@ -184,7 +184,7 @@
 								<literal>C:\A</literal>, and a check-for-modifications
 								dialog and a log dialog for working tree <literal>C:\B</literal>,
 								then there are two application icon groups shown
-								in the Win7 taskbar, one group for each working tree.
+								in the Windows taskbar, one group for each working tree.
 								But TortoiseGitMerge windows are not grouped together
 								with TortoiseGit dialogs.
 								<figure id="tgit-dug-settings-registry-task1-1">
@@ -240,7 +240,7 @@
 				</para>
 				<para>
 					If this option is set to <literal>true</literal>, then every
-					icon on the Win7 taskbar shows a small colored rectangle overlay,
+					icon on the Windows taskbar shows a small colored rectangle overlay,
 					indicating the working tree the dialogs/windows are used for.
 					<figure id="tgit-dug-settings-registry-overlay-1">
 						<title>Taskbar grouping with repository color overlays</title>
