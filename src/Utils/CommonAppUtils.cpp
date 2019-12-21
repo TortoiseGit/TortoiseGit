@@ -29,7 +29,6 @@
 #include "LoadIconEx.h"
 #include "IconBitmapUtils.h"
 #include "CreateProcessHelper.h"
-#include "SysInfo.h"
 
 extern CString sOrigCWD;
 extern CString g_sGroupingUUID;
@@ -449,7 +448,7 @@ bool CCommonAppUtils::StartHtmlHelp(DWORD_PTR id, CString page /* = L"index.html
 	{
 		// We have to find the default browser, ourselves, because ShellExecute cannot handle anchors on local HTML files
 		DWORD dwszBuffPathLen = MAX_PATH;
-		if (CString application; SUCCEEDED(::AssocQueryStringW(SysInfo::Instance().IsWin8OrLater() ? ASSOCF_IS_PROTOCOL : 0, ASSOCSTR_COMMAND, L"http", L"open", CStrBuf(application, dwszBuffPathLen), &dwszBuffPathLen)))
+		if (CString application; SUCCEEDED(::AssocQueryStringW(ASSOCF_IS_PROTOCOL, ASSOCSTR_COMMAND, L"http", L"open", CStrBuf(application, dwszBuffPathLen), &dwszBuffPathLen)))
 		{
 			if (application.Find(L"%1") < 0)
 				application += L" %1";
