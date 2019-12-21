@@ -169,6 +169,7 @@ void CGitSwitchDlg::SetDefaultName(BOOL isUpdateCreateBranch)
 	this->UpdateData(TRUE);
 	this->UpdateRevsionName();
 
+	int radio = GetCheckedRadioButton(IDC_RADIO_BRANCH, IDC_RADIO_VERSION);
 	CString version = m_VersionName;
 
 	int start = -1;
@@ -192,7 +193,7 @@ void CGitSwitchDlg::SetDefaultName(BOOL isUpdateCreateBranch)
 	{
 		if (CStringUtils::StartsWith(m_VersionName, L"refs/heads/"))
 			version = m_VersionName.Mid(static_cast<int>(wcslen(L"refs/heads/")));
-		else
+		else if (radio == IDC_RADIO_VERSION)
 			version = version.Left(g_Git.GetShortHASHLength());
 		m_NewBranch = L"Branch_" + version;
 		this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(FALSE);
@@ -203,7 +204,6 @@ void CGitSwitchDlg::SetDefaultName(BOOL isUpdateCreateBranch)
 		this->m_bTrack=FALSE;
 	}
 
-	int radio=GetCheckedRadioButton(IDC_RADIO_BRANCH,IDC_RADIO_VERSION);
 	if(radio==IDC_RADIO_TAGS || radio==IDC_RADIO_VERSION)
 	{
 		if(isUpdateCreateBranch)
