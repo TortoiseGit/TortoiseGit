@@ -160,6 +160,7 @@ TEST(libgit, RefreshIndex)
 	ASSERT_TRUE(config.IsValid());
 	CStringA path = CUnicodeUtils::GetUTF8(g_Git.m_CurrentDir);
 	path.Replace('\\', '/');
+	EXPECT_EQ(0, git_config_set_string(config, "core.autocrlf", "false")); // newer Git complains for adding 1.enc with a safecrlf warning, especially an issue on AppVeyor where AutoCrLf=input is set
 	EXPECT_EQ(0, git_config_set_string(config, "filter.openssl.clean", path + "/clean_filter_openssl"));
 	EXPECT_EQ(0, git_config_set_string(config, "filter.openssl.smudge", path + "/smudge_filter_openssl"));
 	EXPECT_EQ(0, git_config_set_bool(config, "filter.openssl.required", 1));
