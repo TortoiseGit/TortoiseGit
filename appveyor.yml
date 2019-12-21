@@ -12,8 +12,8 @@ build_script:
 - git config --unset --global user.email
 - git config --unset --global user.name
 - cd ..\..
-- msbuild "src\TortoiseGit.sln" /t:"test\UnitTests" /m /verbosity:minimal /p:Configuration=Debug /p:PlatformToolset=v141 /p:Platform=x64 /maxcpucount /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-- msbuild "src\TortoiseGit.sln" /t:"test\UnitTests" /m /verbosity:minimal /p:Configuration=Debug /p:PlatformToolset=v141 /p:Platform=Win32 /maxcpucount /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+- msbuild "src\TortoiseGit.sln" /t:"test\UnitTests" /m /verbosity:minimal /p:Configuration=Debug /p:Platform=x64 /maxcpucount /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+- msbuild "src\TortoiseGit.sln" /t:"test\UnitTests" /m /verbosity:minimal /p:Configuration=Debug /p:Platform=Win32 /maxcpucount /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 test_script:
 - bin\Debug\bin\tests.exe
 - bin\Debug64\bin\tests.exe
@@ -25,6 +25,6 @@ test_script:
 - bin\Debug64\bin\tests.exe
 - reg delete HKCU\Software\TortoiseGit /v CygwinHack /f
 - reg delete HKCU\Software\TortoiseGit /v MSysGit /f
-- msbuild "src\TortoiseGit.sln" /t:"GitWCRev" /t:"GitWCRevCom" /t:"TortoiseGitSetup\CustomActions" /t:"TortoiseGitSetup\RestartExplorer" /t:"ext\Crash-Server\CrashServerSDK\CrashHandler" /t:"ext\Crash-Server\CrashServerSDK\SendRpt" /m /verbosity:minimal /p:Configuration=Release /p:Platform=x64 /maxcpucount /p:PlatformToolset=v141 /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+- msbuild "src\TortoiseGit.sln" /t:"GitWCRev" /t:"GitWCRevCom" /t:"TortoiseGitSetup\CustomActions" /t:"TortoiseGitSetup\RestartExplorer" /t:"ext\Crash-Server\CrashServerSDK\CrashHandler" /t:"ext\Crash-Server\CrashServerSDK\SendRpt" /m /verbosity:minimal /p:Configuration=Release /p:Platform=x64 /maxcpucount /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 - git submodule update --init -- ext/apr ext/apr-util ext/editorconfig ext/OGDF ext/hunspell
-- msbuild "src\TortoiseGit.sln" /t:"TGitCache" /t:"TortoiseGitBlame" /t:"TortoiseGitIDiff" /t:"TortoiseGitMerge" /t:"TortoiseGitPlink" /t:"TortoiseGitProc" /t:"TortoiseGitStub" /t:"TortoiseGitUDiff" /t:"TortoiseShell" /t:"SshAskPass" /t:"tgittouch" /t:"GitWCRev" /t:"GitWCRevCom" /m /verbosity:minimal /p:Configuration=Debug /p:Platform=x64 /maxcpucount /p:PlatformToolset=v141 /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+- msbuild "src\TortoiseGit.sln" /t:"TGitCache" /t:"TortoiseGitBlame" /t:"TortoiseGitIDiff" /t:"TortoiseGitMerge" /t:"TortoiseGitPlink" /t:"TortoiseGitProc" /t:"TortoiseGitStub" /t:"TortoiseGitUDiff" /t:"TortoiseShell" /t:"SshAskPass" /t:"tgittouch" /t:"GitWCRev" /t:"GitWCRevCom" /m /verbosity:minimal /p:Configuration=Debug /p:Platform=x64 /maxcpucount /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
