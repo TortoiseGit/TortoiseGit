@@ -1257,13 +1257,16 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		}
 		else
 		{
-			CGit::REF_TYPE remoteRefType = CGit::REMOTE_BRANCH;
-			remoteBranchNames = GetFriendRefNames(m_SelectedEntry1, &currentBranch, &remoteRefType);
-			if (remoteBranchNames.size() >= 1)
+			for (auto refType : { CGit::REMOTE_BRANCH, CGit::TAG, CGit::ANNOTATED_TAG })
 			{
-				CString temp;
-				temp.LoadString(IDS_SWITCH_TO_THIS);
-				AppendMenu(popup, temp, ID_SWITCHTOREV, &remoteBranchNames[0]);
+				remoteBranchNames = GetFriendRefNames(m_SelectedEntry1, &currentBranch, &refType);
+				if (remoteBranchNames.size() >= 1)
+				{
+					CString temp;
+					temp.LoadString(IDS_SWITCH_TO_THIS);
+					AppendMenu(popup, temp, ID_SWITCHTOREV, &remoteBranchNames[0]);
+					break;
+				}
 			}
 		}
 
