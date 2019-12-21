@@ -35,6 +35,8 @@
 using namespace winrt::Windows::Foundation;
 using namespace winrt::Windows::Management::Deployment;
 
+#pragma comment(lib, "windowsapp.lib")
+
 extern MenuInfo menuInfo[];
 
 void InsertMenuItemToList(CListCtrl *list,CImageList *imagelist)

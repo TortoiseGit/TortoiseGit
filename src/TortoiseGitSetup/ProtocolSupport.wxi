@@ -59,23 +59,5 @@
 			<RegistryValue Root="HKCR" Key="git" Value="URL: Git Protocol" Type="string" />
 			<RegistryValue Root="HKCR" Key="git" Name="URL Protocol" Value="" Type="string" />
 		</Component>
-
-		<!-- Windows 7 only -->
-		<!-- This could be replaced with a call to IApplicationAssociationRegistration::SetAppAsDefault (not available Win8.1+) -->
-		<!-- References:
-					https://cs.chromium.org/chromium/src/chrome/installer/util/shell_util.cc
-					https://cs.chromium.org/chromium/src/chrome/browser/shell_integration.cc
-					https://cs.chromium.org/chromium/src/chrome/browser/shell_integration_win.cc
-					Installers from that era dont bother asking, but we could add NeverOverwrite="yes"
-				-->
-		<Component Id="C__ProtocolsWin7" Guid="*" Win64="$(var.Win64YesNo)" NeverOverwrite="no">
-			<Condition>VersionNT = 601</Condition>
-			<RegistryValue Root="HKCR" Key="tgit\shell\open\command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /urlhandler:&quot;%1&quot;" Type="string" />
-			<RegistryValue Root="HKCR" Key="github-windows\shell\open\command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /urlhandler:&quot;%1&quot;" Type="string" />
-			<RegistryValue Root="HKCR" Key="x-github-client\shell\open\command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /urlhandler:&quot;%1&quot;" Type="string" />
-			<RegistryValue Root="HKCR" Key="smartgit\shell\open\command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /urlhandler:&quot;%1&quot;" Type="string" />
-			<RegistryValue Root="HKCR" Key="git\shell\open\command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /urlhandler:&quot;%1&quot;" Type="string" />
-		</Component>
-		<!-- End of Windows 7 only -->
 	</DirectoryRef>
 </Include>

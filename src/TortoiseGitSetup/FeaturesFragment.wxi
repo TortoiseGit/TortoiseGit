@@ -34,13 +34,8 @@
 
 		<ComponentRef Id="C__ProtocolSupport" />
 		<ComponentRef Id="C__PermanentProtocols" />
-		<ComponentRef Id="C__ProtocolsWin7" />
 
 		<ComponentRef Id="C__approveshellcomponents" />
-
-		<?if $(var.Platform) != "ARM64" ?>
-		<ComponentRef Id="C__win7library" />
-		<?endif ?>
 
 		<ComponentRef Id="C__ProgramMenuFolder" />
 		<ComponentRef Id="C__DiffScripts" />
