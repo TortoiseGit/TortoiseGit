@@ -1257,9 +1257,9 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		}
 		else
 		{
-			for (auto refType : { CGit::REMOTE_BRANCH, CGit::TAG, CGit::ANNOTATED_TAG })
+			for (auto arefType : { CGit::REMOTE_BRANCH, CGit::TAG, CGit::ANNOTATED_TAG })
 			{
-				remoteBranchNames = GetFriendRefNames(m_SelectedEntry1, &currentBranch, &refType);
+				remoteBranchNames = GetFriendRefNames(m_SelectedEntry1, &currentBranch, &arefType);
 				if (remoteBranchNames.size() >= 1)
 				{
 					CString temp;
