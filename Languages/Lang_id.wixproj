@@ -14,7 +14,7 @@
 	<PropertyGroup>
 		<ProjectGuid>{925c4e4c-d427-4051-86ae-a5b1149aacb3}</ProjectGuid>
 		<OutputName>TortoiseGit-LanguagePack-id</OutputName>
-		<DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;COUNTRYID=1057;LANGNATIVE=Indonesian;</DefineConstants>
+		<DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;COUNTRYID=1057;LANGNATIVE=Indonesian;SPELL=1;</DefineConstants>
 		<Cultures>en-US</Cultures>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
