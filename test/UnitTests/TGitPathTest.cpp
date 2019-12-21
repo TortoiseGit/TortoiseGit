@@ -1677,6 +1677,10 @@ private:
 
 TEST(CTGitPath, SetDirectory_DiskAccess)
 {
+#if _MSC_VER == 1924
+	// there is a compiler bug in MSVC, see <https://developercommunity.visualstudio.com/content/problem/847490/msvc-codegen-error-vector-reverse-iterator-x64-c17.html> and <https://github.com/google/googletest/pull/2635>
+	GTEST_SKIP();
+#else
 	MockCTGitPath path;
 	path.SetFromGit(L"bla");
 	EXPECT_CALL(path, UpdateAttributes()).Times(1);
@@ -1735,6 +1739,7 @@ TEST(CTGitPath, SetDirectory_DiskAccess)
 	EXPECT_TRUE(pathDir3.IsDirectory());
 	pathDir3.UnsetDirectoryStatus();
 	EXPECT_FALSE(pathDir3.IsDirectory());
+#endif
 }
 
 TEST(CTGitPath, AreAllPathsFiles)
