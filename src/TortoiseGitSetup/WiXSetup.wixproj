@@ -72,7 +72,6 @@
 		<Content Include="TortoiseUDiff.wxi" />
 		<Content Include="UIFragment.wxi" />
 		<Content Include="VersionNumberInclude.wxi" />
-		<Content Include="Win7LibraryAndExplorerToolbarActions.wxi" />
 		<Content Include="ProtocolSupport.wxi" />
 		<Content Include="HTMLHelpfiles.wxi" />
 	</ItemGroup>

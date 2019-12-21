@@ -1,5 +1,9 @@
 ﻿= Release 2.18.0 =
 
+This version drops support for all Windows version < 8.1.
+
+Git for Windows is going to stop providing a build for 32-bit Windows, TortoiseGit will also follow with one of the next releases-
+
 == Features ==
  * Fixed issue #3826: Help links don't open in a sensible browser
 
