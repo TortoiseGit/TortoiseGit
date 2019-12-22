@@ -45,6 +45,9 @@
     <ClCompile>
       <AdditionalIncludeDirectories>$(ProjectDir);..\Utils;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <Manifest>
+      <EnableDpiAwareness>true</EnableDpiAwareness>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Utils\UnicodeUtils.cpp" />

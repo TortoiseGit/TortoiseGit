@@ -9,6 +9,7 @@ Released: unreleased
  * Fixed issue #3450: Commit message after "Revert changes by these commits" suggests a single commit is reverted
  * Fixed issue #3461: Performing refresh on Commit window loses new branch name
  * Fixed issue #3446: No TortoiseGit Icon Overlays / Symbols in Drive Root Dir
+ * Mark SSHAskPass and TortoiseGitPlink as DPIAware
 
 == Features ==
  * Fixed issue #3448: Revision Graph: Make direction of arrows configurable
