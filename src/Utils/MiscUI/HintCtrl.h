@@ -1,5 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2016, 2019 - TortoiseGit
 // Copyright (C) 2011, 2013, 2015, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -60,7 +61,7 @@ public:
 	DECLARE_MESSAGE_MAP()
 
 protected:
-	afx_msg void CHintCtrl::OnPaint()
+	afx_msg void OnPaint()
 	{
 		LRESULT defres = Default();
 		if (!m_sText.IsEmpty())

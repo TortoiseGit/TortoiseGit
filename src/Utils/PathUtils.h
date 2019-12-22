@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2018 - TortoiseGit
+// Copyright (C) 2016-2019 - TortoiseGit
 // Copyright (C) 2003-2008, 2013-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -143,7 +143,7 @@ public:
 	 * \param path to expand
 	 * \return fully qualified path name
 	 */
-	static CString CPathUtils::ExpandFileName(const CString& path);
+	static CString ExpandFileName(const CString& path);
 
 	/**
 	 * This method will make a path comparable to another path.
@@ -156,7 +156,7 @@ public:
 	 * \param path to normalize
 	 * \return normalized path
 	 */
-	static CString CPathUtils::NormalizePath(const CString& path);
+	static CString NormalizePath(const CString& path);
 
 	/**
 	 * Compares two paths and returns true if they are logically the same path.
@@ -165,7 +165,7 @@ public:
 	 * \param path2 to compare
 	 * \return true if they are the same path
 	 */
-	static bool CPathUtils::IsSamePath(const CString& path1, const CString& path2);
+	static bool IsSamePath(const CString& path1, const CString& path2);
 
 	/**
 	 * Checks if two path strings are equal. No conversion of slashes is done!
