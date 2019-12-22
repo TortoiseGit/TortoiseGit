@@ -1,6 +1,13 @@
 ﻿= Release 2.10.0 =
 Released: unreleased
 
+== Features ==
+ * Fixed issue #3448: Revision Graph: Make direction of arrows configurable
+ * Fixed issue #3263: Compare parent revision with working tree
+ * Update Scintilla to 4.2.3
+ * Fixed issue #3481: Add Switch/Checkout to Tags and Refs in Revision Graph
+ * TGitCache: Cache libgit2 config (reduce disk access)
+
 == Bug Fixes ==
  * Fixed issue #3449: Crash when indenting short lines (pressing tab key)
  * Fixed issue #3463: Check For Updates dialog - misaligned buttons
@@ -10,12 +17,8 @@ Released: unreleased
  * Fixed issue #3461: Performing refresh on Commit window loses new branch name
  * Fixed issue #3446: No TortoiseGit Icon Overlays / Symbols in Drive Root Dir
  * Mark SSHAskPass and TortoiseGitPlink as DPIAware
-
-== Features ==
- * Fixed issue #3448: Revision Graph: Make direction of arrows configurable
- * Fixed issue #3263: Compare parent revision with working tree
- * Update Scintilla to 4.2.3
- * Fixed issue #3481: Add Switch/Checkout to Tags and Refs in Revision Graph
+ * PatchViewDlg: Fix Windows 10 border issue
+ * Allow Refbrowser and Reflog to be minimized
 
 = Release 2.9.0 =
 Released: 2019-10-31
