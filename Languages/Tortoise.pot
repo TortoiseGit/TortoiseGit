@@ -2736,6 +2736,10 @@ msgstr ""
 msgid "Compare &HEAD revisions"
 msgstr ""
 
+#. Resource IDs: (IDS_LOG_POPUP_COMPARE_PARENT_WC)
+msgid "Compare parent with working tree"
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_BROWSEREFS_COMPAREREFS)
 msgid "Compare selected refs"
 msgstr ""
