@@ -18,11 +18,13 @@
 #pragma once
 
 #include "resource.h"       // main symbols
-
+#pragma warning(push)
+#pragma warning(disable: 4265) // 'class' : class has virtual functions, but destructor is not virtual
 #include <atlhost.h>
 #include "atlapp.h"
 #include "atlctrls.h"
 #include "atlctrlx.h"
+#pragma warning(pop)
 #include "Translator.h"
 
 

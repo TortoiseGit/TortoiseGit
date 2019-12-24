@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2016-2017 - TortoiseGit
 // Copyright (C) 2007-2008, 2010, 2012-2014 - TortoiseSVN
@@ -48,7 +48,7 @@ public:
 	 * \param rev      the revision
 	 */
 	GitDataObject(const CTGitPathList& gitpaths, const CGitHash& rev, int stripLength = -1);
-	~GitDataObject();
+	virtual ~GitDataObject();
 
 	//IUnknown
 	virtual HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, void** ppvObject) override;
@@ -101,6 +101,7 @@ class CGitEnumFormatEtc : public IEnumFORMATETC
 public:
 	CGitEnumFormatEtc(const std::vector<FORMATETC*>& vec, bool localonly, bool containsExistingFiles);
 	CGitEnumFormatEtc(const std::vector<FORMATETC>& vec, bool localonly, bool containsExistingFiles);
+	virtual ~CGitEnumFormatEtc(){};
 	//IUnknown members
 	STDMETHOD(QueryInterface)(REFIID, void**) override;
 	STDMETHOD_(ULONG, AddRef)(void) override;

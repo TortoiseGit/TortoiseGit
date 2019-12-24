@@ -20,6 +20,13 @@
       <PreprocessorDefinitions Condition="'$(Platform)'=='x64'">_WIN64;WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level4</WarningLevel>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <SDLCheck>true</SDLCheck>
+<!--<AdditionalOptions>/w45035 /w44906 /w44464 /w44350 /w44265 /w44255 /w44191 %(AdditionalOptions)</AdditionalOptions>-->
+<!--<AdditionalOptions>/w45035 /w44906 /w44350 /w44265 /w44255 %(AdditionalOptions)</AdditionalOptions>-->
+<!--<AdditionalOptions>/w15035 /w14906 /w14350 /w14265 /w14255 %(AdditionalOptions)</AdditionalOptions>-->
+<!--<AdditionalOptions>/w15035 /w14906 /w14350 /w14265 %(AdditionalOptions)</AdditionalOptions>-->
+      <AdditionalOptions>/w15035 /w14906 /w14350 /w14265 %(AdditionalOptions)</AdditionalOptions>
+      <!--<WarningLevel>EnableAllWarnings</WarningLevel>-->
     </ClCompile>
     <Lib>
       <TargetMachine Condition="'$(Platform)'=='Win32'">MachineX86</TargetMachine>

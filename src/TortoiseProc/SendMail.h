@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2012-2013, 2015 - TortoiseGit
 
@@ -42,7 +42,7 @@ protected:
 
 public:
 	CSendMail(const CString& To, const CString& CC, bool m_bAttachment);
-	~CSendMail(void);
+	virtual ~CSendMail(void);
 	virtual int Send(const CTGitPathList& list, CGitProgressList* instance) = 0;
 };
 

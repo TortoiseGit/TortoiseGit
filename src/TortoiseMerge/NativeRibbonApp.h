@@ -1,4 +1,4 @@
-// Copyright (C) 2017 - TortoiseSVN
+﻿// Copyright (C) 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -39,7 +39,7 @@ class CNativeRibbonApp : public IUIApplication, public IUICommandHandler
 {
 public:
 	CNativeRibbonApp(CFrameWnd* pFrame, IUIFramework* pFramework);
-	~CNativeRibbonApp();
+	virtual ~CNativeRibbonApp();
 
 	void SetSettingsFileName(const CString& file)
 	{

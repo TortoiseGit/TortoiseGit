@@ -94,6 +94,8 @@ protected:
 			RegisterWindow(wcx);
 	};
 
+	virtual ~CWindow(){};
+
 	// the real message handler
 	virtual LRESULT CALLBACK WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) = 0;
 

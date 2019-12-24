@@ -49,6 +49,7 @@ if errorlevel 1 type apu.hw &gt;..\apr-util\include\apu.hw
       <PreprocessorDefinitions>APR_DECLARE_STATIC;APU_DECLARE_STATIC;APU_USE_SDBM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level2</WarningLevel>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <SDLCheck>false</SDLCheck>
     </ClCompile>
     <Lib>
       <AdditionalDependencies>rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>

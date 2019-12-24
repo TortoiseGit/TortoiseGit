@@ -48,7 +48,7 @@ if errorlevel 1 type apr_escape_test_char.h &gt;..\apr\include\apr_escape_test_c
       <PreprocessorDefinitions>APR_DECLARE_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level2</WarningLevel>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <DisableSpecificWarnings>4098</DisableSpecificWarnings>
+      <SDLCheck>false</SDLCheck>
     </ClCompile>
     <Lib>
       <AdditionalDependencies>rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>

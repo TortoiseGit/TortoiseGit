@@ -76,7 +76,7 @@ public:
     {
     }
 
-    ~UI()
+    virtual ~UI()
     {
         CloseProgressWindow(true);
     }

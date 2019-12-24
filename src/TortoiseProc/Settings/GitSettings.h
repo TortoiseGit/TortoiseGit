@@ -36,6 +36,7 @@ public:
 	, m_bHonorProjectConfig(false)
 	{
 	}
+	virtual ~CGitSettings() {};
 
 protected:
 	CComboBox m_cSaveTo;

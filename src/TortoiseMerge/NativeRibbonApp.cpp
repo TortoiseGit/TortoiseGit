@@ -158,6 +158,7 @@ public:
 	{
 		m_nID = commandId;
 	}
+	virtual ~CRibbonCmdUI(){};
 
 	virtual void Enable(BOOL bOn)
 	{
@@ -398,6 +399,8 @@ public:
 		, m_Image(image)
 	{
 	}
+
+	virtual ~UIDynamicCommandItem(){};
 
 	STDMETHOD(QueryInterface)(REFIID riid, void** ppvObject)
 	{

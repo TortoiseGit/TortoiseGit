@@ -91,6 +91,8 @@ namespace doctor_dump
             ErrorResponseType,
         };
 
+        virtual ~Response() {};
+
         virtual ResponseType GetResponseType() const = 0;
 
         static std::unique_ptr<Response> CreateResponse(const ns1__Response& response, Log& log);

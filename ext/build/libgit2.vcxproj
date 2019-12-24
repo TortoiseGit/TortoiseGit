@@ -53,6 +53,7 @@
       <CompileAs>CompileAsC</CompileAs>
       <ForcedIncludeFiles>precompiled.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <WarningLevel>Level2</WarningLevel>
+      <SDLCheck>false</SDLCheck>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>LIBGIT2_FILENAME=\"$(TargetName)\";%(PreprocessorDefinitions)</PreprocessorDefinitions>

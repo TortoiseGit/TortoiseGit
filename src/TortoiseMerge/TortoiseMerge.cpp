@@ -48,7 +48,7 @@ class PatchOpenDlgEventHandler : public CFileDlgEventHandler
 {
 public:
 	PatchOpenDlgEventHandler() {}
-	~PatchOpenDlgEventHandler() {}
+	virtual ~PatchOpenDlgEventHandler() {}
 
 	virtual STDMETHODIMP OnButtonClicked(IFileDialogCustomize* pfdc, DWORD dwIDCtl)
 	{

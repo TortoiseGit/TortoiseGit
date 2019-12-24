@@ -83,7 +83,7 @@ public:
 			sortedpaths.insert(static_cast<LPCTSTR>(g_Git.CombinePath(pathlist[i].GetWinPath())));
 	}
 
-	~CIShellFolderHook() { m_iSF->Release(); }
+	virtual ~CIShellFolderHook() { m_iSF->Release(); }
 
 	// IUnknown methods --------
 	virtual HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, __RPC__deref_out void** ppvObject) override { return m_iSF->QueryInterface(riid, ppvObject); }

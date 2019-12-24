@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2017-2018 - TortoiseGit
 // Copyright (C) 2007-2008, 2010-2011, 2013 - TortoiseSVN
@@ -32,7 +32,7 @@ class GitWCRev : public IGitWCRev
 	// Construction
 public:
 	GitWCRev();
-	~GitWCRev();
+	virtual ~GitWCRev();
 
 	// IUnknown implementation
 	virtual HRESULT __stdcall QueryInterface(const IID& iid, void** ppv) override;
@@ -110,5 +110,5 @@ public:
 	virtual HRESULT __stdcall LockServer(BOOL bLock) override;
 
 	CFactory() {}
-	~CFactory() {}
+	virtual ~CFactory() {}
 };

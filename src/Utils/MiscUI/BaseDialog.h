@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2016 - TortoiseGit
 // Copyright (C) 2003-2007, 2010, 2012-2014 - TortoiseSVN
@@ -34,6 +34,8 @@ public:
 	HWND	Create(HINSTANCE hInstance, int resID, HWND hWndParent);
 
 	virtual LRESULT CALLBACK DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam) = 0;
+
+	virtual ~CDialog(){};
 
 	operator HWND() const {return m_hwnd;}
 protected:

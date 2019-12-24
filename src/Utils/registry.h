@@ -63,6 +63,8 @@ public: //methods
 	 */
 	CRegBaseCommon(const S& key, bool force, HKEY base = HKEY_CURRENT_USER, REGSAM sam = 0);
 
+	virtual ~CRegBaseCommon(){};
+
 	/**
 	 * Removes the whole registry key including all values. So if you set the registry
 	 * entry to be HKCU\Software\Company\Product\key\value there will only be
@@ -813,7 +815,6 @@ public:
 	 * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
 	 */
 	CRegRect(const CString& key, const CRect& def = CRect(), bool force = false, HKEY base = HKEY_CURRENT_USER, REGSAM sam = 0);
-	~CRegRect(void);
 
 	CRegRect& operator=(const CRect& rhs) {CRegTypedBase<CRect, CRegBase>::operator =(rhs); return *this;}
 	operator LPCRECT() { return static_cast<const CRect>(*this); }
@@ -899,7 +900,6 @@ public:
 	 * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
 	 */
 	CRegPoint(const CString& key, const CPoint& def = CPoint(), bool force = false, HKEY base = HKEY_CURRENT_USER, REGSAM sam = 0);
-	~CRegPoint(void);
 
 	CRegPoint& operator=(const CPoint& rhs) {CRegTypedBase<CPoint, CRegBase>::operator =(rhs); return *this;}
 	CRegPoint& operator+=(CPoint p) { return *this = p + *this; }

@@ -34,6 +34,9 @@ public:
 		, m_pTooltip(nullptr)
 	{
 	}
+
+	virtual ~CBranchCombox() {};
+
 protected:
 	CHistoryCombo m_ctrlLocalBranch;
 	CHistoryCombo m_ctrlRemoteBranch;

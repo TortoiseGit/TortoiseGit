@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2007 - TortoiseSVN
 
@@ -29,7 +29,7 @@ class CFindBar : public CDialog
 {
 public:
 	CFindBar();
-	~CFindBar(void);
+	virtual ~CFindBar(void);
 
 	void					SetParent(HWND hParent) {m_hParent = hParent;}
 protected:

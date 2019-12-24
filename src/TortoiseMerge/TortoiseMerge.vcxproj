@@ -295,6 +295,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PreprocessorDefinitions>WIN32;WINNT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <DisableSpecificWarnings>4703</DisableSpecificWarnings>
     </ClCompile>
     <ClCompile Include="libsvn_diff\utf_validate.c">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>

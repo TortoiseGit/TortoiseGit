@@ -35,6 +35,7 @@ public:
 		: m_DisableCheckbox2WhenCheckbox1IsChecked(false)
 	{
 	}
+	virtual ~BrowseFolderDlgEventHandler(){};
 
 	bool m_DisableCheckbox2WhenCheckbox1IsChecked;
 

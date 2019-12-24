@@ -30,6 +30,8 @@ public:
 	{
 	}
 
+	virtual ~CTimerEventHandler(){};
+
 	/// Adds a new callback function for a specific StoryBoard
 	void AddCallback(IUIAnimationStoryboard* ptr, std::function<void()> func)
 	{
@@ -124,7 +126,7 @@ public:
 	{
 	}
 
-	~NotificationAnimationEventHandler()
+	virtual ~NotificationAnimationEventHandler()
 	{
 		if (timerEventHandler)
 			timerEventHandler->Release();

@@ -25,7 +25,7 @@ public:
 		refCount = 0;
 	}
 
-	~CDragSourceNotify(void)
+	virtual ~CDragSourceNotify(void)
 	{
 	}
 
@@ -85,6 +85,7 @@ class CEnumFormatEtc : public IEnumFORMATETC
    public:
 	 CEnumFormatEtc(const CSimpleArray<FORMATETC>& ArrFE);
 	 CEnumFormatEtc(const CSimpleArray<FORMATETC*>& ArrFE);
+	 virtual ~CEnumFormatEtc(){};
 	 //IUnknown members
 	 STDMETHOD(QueryInterface)(REFIID, void FAR* FAR*) override;
 	 STDMETHOD_(ULONG, AddRef)(void) override;
@@ -115,7 +116,7 @@ public:
 		pDragSourceNotify = new CDragSourceNotify();
 		pDragSourceNotify->AddRef();
 	}
-	~CIDropSource()
+	virtual ~CIDropSource()
 	{
 		if (m_pIDataObj)
 		{
@@ -152,7 +153,7 @@ class CIDataObject : public IDataObject//,public IAsyncOperation
 	CSimpleArray<STGMEDIUM*> m_StgMedium;
 public:
 	CIDataObject(CIDropSource* pDropSource);
-	~CIDataObject();
+	virtual ~CIDataObject();
 	void CopyMedium(STGMEDIUM* pMedDest, STGMEDIUM* pMedSrc, FORMATETC* pFmtSrc);
 	//IUnknown
 	virtual HRESULT STDMETHODCALLTYPE QueryInterface(

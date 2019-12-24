@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2010 - TortoiseSVN
 
@@ -31,7 +31,7 @@ class CFileDlgEventHandler : public CComObjectRootEx<CComSingleThreadModel>,
 {
 public:
 	CFileDlgEventHandler();
-	~CFileDlgEventHandler();
+	virtual ~CFileDlgEventHandler();
 
 	BEGIN_COM_MAP(CFileDlgEventHandler)
 		COM_INTERFACE_ENTRY(IFileDialogEvents)
