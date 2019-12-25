@@ -98,6 +98,21 @@ bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, const Launc
 			if (flags.bWaitForStartup)
 				WaitForInputIdle(shellinfo.hProcess, 10000);
 
+			if (flags.bWaitForExit)
+			{
+				DWORD count = 1;
+				HANDLE handles[2];
+				handles[0] = shellinfo.hProcess;
+				if (flags.hWaitHandle)
+				{
+					count = 2;
+					handles[1] = flags.hWaitHandle;
+				}
+				WaitForMultipleObjects(count, handles, FALSE, INFINITE);
+				if (flags.hWaitHandle)
+					CloseHandle(flags.hWaitHandle);
+			}
+
 			CloseHandle(shellinfo.hProcess);
 		}
 
@@ -124,6 +139,21 @@ bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, const Launc
 
 	if (flags.bWaitForStartup)
 		WaitForInputIdle(process.hProcess, 10000);
+
+	if (flags.bWaitForExit)
+	{
+		DWORD count = 1;
+		HANDLE handles[2];
+		handles[0] = process.hProcess;
+		if (flags.hWaitHandle)
+		{
+			count = 2;
+			handles[1] = flags.hWaitHandle;
+		}
+		WaitForMultipleObjects(count, handles, FALSE, INFINITE);
+		if (flags.hWaitHandle)
+			CloseHandle(flags.hWaitHandle);
+	}
 
 	CloseHandle(process.hThread);
 	CloseHandle(process.hProcess);
