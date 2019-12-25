@@ -29,8 +29,29 @@
 		You can click <guibutton>Browse</guibutton> to browse directory.
 	</para>
 	<para>
-		<guilabel>Directory:</guilabel>Input your local directory, which you will clone <emphasis>to</emphasis>.
+		<guilabel>Directory:</guilabel> Input your local directory, which you will clone <emphasis>to</emphasis>.
 		You can click <guibutton>Browse</guibutton> to browse directory.
+	</para>
+	<para>
+		<guilabel>Depth:</guilabel> Create a shallow clone with a limited history cut at the specified number of commits.
+	</para>
+	<para>
+		<guilabel>Recursive:</guilabel> Submodules are initialized and cloned using their default settings.
+	</para>
+	<para>
+		<guilabel>Clone into Bare Repo:</guilabel> Clone into a bare Git repository without a working tree.
+	</para>
+	<para>
+		<guilabel>No Checkout:</guilabel> No checkout of HEAD is performed after cloning is completed. This will result in an empty working tree.
+	</para>
+	<para>
+		<guilabel>Branch:</guilabel> Instead of pointing the newly created HEAD to the cloned repository’s HEAD, point to the specified branch instead.
+	</para>
+	<para>
+		<guilabel>Origin Name:</guilabel> Instead of using the remote name "origin" (default) to keep track of the upstream repository, use the specified name.
+	</para>
+	<para>
+		<guilabel>LFS:</guilabel> Use Git LFS (Large File Storage) - this option is only available if Git LFS is installed.
 	</para>
 	<para>
 		If you check the <guilabel>Load Putty Key</guilabel> checkbox, clone will auto load putty key file with Pageant.
