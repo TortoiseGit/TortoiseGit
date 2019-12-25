@@ -228,7 +228,7 @@ BOOL CFirstStartWizardAuthentication::OnSetActive()
 
 void CFirstStartWizardAuthentication::OnBnClickedGenerateputtykey()
 {
-	CCommonAppUtils::LaunchApplication(CPathUtils::GetAppDirectory() + L"puttygen.exe", 0, false);
+	CAppUtils::LaunchApplication(CPathUtils::GetAppDirectory() + L"puttygen.exe", CAppUtils::LaunchApplicationFlags());
 }
 
 void CFirstStartWizardAuthentication::OnBnClickedAdvancedconfiguration()

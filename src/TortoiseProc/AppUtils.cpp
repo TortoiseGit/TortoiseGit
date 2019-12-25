@@ -406,7 +406,7 @@ BOOL CAppUtils::StartExtMerge(bool bAlternative,
 	if ((bReadOnly)&&(bInternal))
 		com += L" /readonly";
 
-	if(!LaunchApplication(com, IDS_ERR_EXTMERGESTART, false))
+	if (!LaunchApplication(com, CAppUtils::LaunchApplicationFlags().UseSpecificErrorMessage(IDS_ERR_EXTMERGESTART)))
 	{
 		return FALSE;
 	}
@@ -436,7 +436,7 @@ BOOL CAppUtils::StartExtPatch(const CTGitPath& patchfile, const CTGitPath& dir, 
 		viewer += g_sGroupingUUID;
 		viewer += L'"';
 	}
-	if(!LaunchApplication(viewer, IDS_ERR_DIFFVIEWSTART, !!bWait))
+	if (!LaunchApplication(viewer, CAppUtils::LaunchApplicationFlags().WaitForStartup(!!bWait).UseSpecificErrorMessage(IDS_ERR_DIFFVIEWSTART)))
 		return FALSE;
 	return TRUE;
 }
@@ -555,7 +555,7 @@ bool CAppUtils::StartExtDiff(
 	if (jumpToLine > 0)
 		viewer.AppendFormat(L" /line:%d", jumpToLine);
 
-	return LaunchApplication(viewer, IDS_ERR_EXTDIFFSTART, flags.bWait);
+	return LaunchApplication(viewer, CAppUtils::LaunchApplicationFlags().WaitForStartup(flags.bWait).UseSpecificErrorMessage(IDS_ERR_EXTDIFFSTART));
 }
 
 BOOL CAppUtils::StartUnifiedDiffViewer(const CString& patchfile, const CString& title, BOOL bWait, bool bAlternativeTool)
@@ -610,7 +610,7 @@ BOOL CAppUtils::StartUnifiedDiffViewer(const CString& patchfile, const CString& 
 			viewer.Replace(L"%title", L'"' + title + L'"');
 	}
 
-	if(!LaunchApplication(viewer, IDS_ERR_DIFFVIEWSTART, !!bWait))
+	if (!LaunchApplication(viewer, CAppUtils::LaunchApplicationFlags().WaitForStartup(!!bWait).UseSpecificErrorMessage(IDS_ERR_DIFFVIEWSTART)))
 		return FALSE;
 	return TRUE;
 }
@@ -643,7 +643,7 @@ BOOL CAppUtils::StartTextViewer(CString file)
 		viewer += L' ';
 		viewer += file;
 
-	if(!LaunchApplication(viewer, IDS_ERR_TEXTVIEWSTART, false))
+	if (!LaunchApplication(viewer, CAppUtils::LaunchApplicationFlags().UseSpecificErrorMessage(IDS_ERR_TEXTVIEWSTART)))
 		return FALSE;
 	return TRUE;
 }
@@ -728,8 +728,7 @@ bool CAppUtils::LaunchPAgent(HWND hWnd, const CString* keyfile, const CString* p
 	proc += L'"';
 
 	CString appDir = CPathUtils::GetAppDirectory();
-	bool b = LaunchApplication(proc, IDS_ERR_PAGEANT, true, &appDir);
-	if(!b)
+	if(bool b = LaunchApplication(proc, CAppUtils::LaunchApplicationFlags().WaitForStartup().UseSpecificErrorMessage(IDS_ERR_PAGEANT).UseCWD(&appDir)); !b)
 		return b;
 
 	int i=0;
@@ -756,7 +755,7 @@ bool CAppUtils::LaunchAlternativeEditor(const CString& filename, bool uac)
 	CString sCmd;
 	sCmd.Format(L"\"%s\" \"%s\"", static_cast<LPCTSTR>(editTool), static_cast<LPCTSTR>(filename));
 
-	LaunchApplication(sCmd, 0, false, nullptr, uac);
+	LaunchApplication(sCmd, CAppUtils::LaunchApplicationFlags().UAC(uac));
 	return true;
 }
 
@@ -793,7 +792,7 @@ bool CAppUtils::LaunchTortoiseBlame(const CString& sBlameFile, const CString& Re
 	}
 	viewer += L' ' + sParams;
 
-	return LaunchApplication(viewer, IDS_ERR_TGITBLAME, false);
+	return LaunchApplication(viewer, CAppUtils::LaunchApplicationFlags().UseSpecificErrorMessage(IDS_ERR_TGITBLAME));
 }
 
 bool CAppUtils::FormatTextInRichEditControl(CWnd * pWnd)
