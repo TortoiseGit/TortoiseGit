@@ -17,6 +17,19 @@
 		<DefineConstants Condition="'$(Configuration)'=='Release'">IncludeCrashReportDll=1;$(DefineConstants)</DefineConstants>
 		<DefineConstants Condition="'$(Configuration)'=='Debug'">Debug;IncludeCrashReportDll=0;$(DefineConstants)</DefineConstants>
 	</PropertyGroup>
+	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.common.props" />
+	<PropertyGroup>
+		<!-- for shipping CRT/MFC library -->
+		<DefineConstants>VCInstallDir=$(VCInstallDir);VCToolsRedistVersion=$(VCToolsRedistVersion);PlatformToolsetVersion=$(PlatformToolsetVersion);$(DefineConstants)</DefineConstants>
+	</PropertyGroup>
+	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.WindowsSDK.props" />
+	<PropertyGroup>
+		<!-- for shipping UCRT library -->
+		<DefineConstants>WindowsSdkDir_10=$(WindowsSdkDir_10);$(DefineConstants)</DefineConstants>
+		<Win10SDKVer Condition="'$(Win10SDKVer)' == ''">$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v10.0@ProductVersion)</Win10SDKVer>
+		<Win10SDKVer Condition="'$(Win10SDKVer)' == ''">$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Microsoft SDKs\Windows\v10.0@ProductVersion)</Win10SDKVer>
+		<DefineConstants Condition="'$(Win10SDKVer)' != ''">Win10SDKVer=$(Win10SDKVer).0;$(DefineConstants)</DefineConstants>
+	</PropertyGroup>
 	<PropertyGroup>
 		<OutputPath Condition="'$(Configuration)'=='Release'">..\..\bin\setup\$(Platform)\</OutputPath>
 		<OutputPath Condition="'$(Configuration)'=='Debug'">..\..\bin\setup\debug-$(Platform)\</OutputPath>
@@ -25,6 +38,16 @@
 	</PropertyGroup>
 	<Import Project="$(WixTargetsPath)" Condition=" '$(WixTargetsPath)' != '' " />
 	<Import Project="$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets" Condition=" '$(WixTargetsPath)' == '' AND Exists('$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets') " />
+	<PropertyGroup>
+		<BuildDependsOn>
+			CheckVCRedistVersion;
+			$(BuildDependsOn);
+		</BuildDependsOn>
+	</PropertyGroup>
+	<Target Name="CheckVCRedistVersion">
+		<Warning Text="CRT/MFC RedistFiles: $(VCToolsRedistVersion) is newer than the last known version. Check '$(VCInstallDir)Redist\MSVC\$(VCToolsRedistVersion)\$(PackagePlatforms)' for new files." Condition="$(VCToolsRedistVersion.Substring(0, 5)) >= 14.25" />
+		<Warning Text="UCRT RedistFiles: $(Win10SDKVer) is newer than the last known version. Check '$(WindowsSdkDir_10)Redist\$(Win10SDKVer)\ucrt\DLLs\$(PackagePlatforms)\' for new files." Condition="$(Win10SDKVer.Substring(5)) > 18362" />
+	</Target>
 	<Target Name="EnsureWixToolsetInstalled" Condition=" '$(WixTargetsImported)' != 'true' ">
 		<Error Text="The WiX Toolset v3.11 (or newer) build tools must be installed to build this project. To download the WiX Toolset, see https://wixtoolset.org/releases/" />
 	</Target>
