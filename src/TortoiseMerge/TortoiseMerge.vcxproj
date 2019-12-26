@@ -37,7 +37,6 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   <Import Project="$(SolutionDir)TortoiseGit.common.props" />
-  <Import Project="$(SolutionDir)TortoiseGit.uicc.props" />
   <PropertyGroup Label="UserMacros" />
   <ItemDefinitionGroup>
     <ClCompile>
@@ -447,7 +446,7 @@
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\Resources\TortoiseGitMergeRibbon.xml">
-      <Command>"$(TGIT_UICC_PATH)" "%(FullPath)" "$(IntDir)TortoiseGitMergeRibbon.bml" /header:"$(IntDir)TortoiseGitMergeRibbon.h" /res:"$(IntDir)TortoiseGitMergeRibbon.rc" /name:TortoiseGitMergeRibbon</Command>
+      <Command>uicc.exe "%(FullPath)" "$(IntDir)TortoiseGitMergeRibbon.bml" /header:"$(IntDir)TortoiseGitMergeRibbon.h" /res:"$(IntDir)TortoiseGitMergeRibbon.rc" /name:TortoiseGitMergeRibbon</Command>
       <Outputs>$(IntDir)TortoiseGitMergeRibbon.bml;$(IntDir)TortoiseGitMergeRibbon.rc;$(IntDir)TortoiseGitMergeRibbon.h;%(Outputs)</Outputs>
       <SubType>Designer</SubType>
     </CustomBuild>

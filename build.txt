@@ -22,10 +22,9 @@ First, you need to install the compiler package:
    projects (https://www.visualstudio.com/downloads/).
    Make sure you select the workload "Desktop development with C++" and the following components:
    * VC++ 2017 v141 toolset (x86,x64) (checked by default)
-   * Visual C++-ATL-support
-   * Windows 8.1 SDK and UCRT SDK
-   * MFC and ATL support (x86 and x64)
-   * Windows 10 SDK (for building the MSI installer and the ribbon interface for TortoiseGitMerge)
+   * Visual C++ ATL-support (x86 and x64)
+   * Visual C++ MFC support (x86 and x64)
+   * Windows 10 SDK
    * optional: NuGet packet manager (requirement for GoogleTestAdapter, see below)
    * optional: GoogleTestAdapter (if you want to run the tests from within VS or use the package described below)
 

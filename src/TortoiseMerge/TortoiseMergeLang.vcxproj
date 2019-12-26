@@ -34,7 +34,6 @@
   <Import Project="$(SolutionDir)TortoiseGit.common.props" />
   <Import Project="$(SolutionDir)TortoiseGit.common-dll.props" />
   <Import Project="$(SolutionDir)TortoiseGit.common-langs.props" />
-  <Import Project="$(SolutionDir)TortoiseGit.uicc.props" />
   <PropertyGroup Label="UserMacros" />
   <ItemDefinitionGroup>
     <ResourceCompile>
@@ -49,7 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\Resources\TortoiseGitMergeRibbon.xml">
-      <Command>"$(TGIT_UICC_PATH)" "%(FullPath)" "$(IntDir)TortoiseGitMergeRibbon.bml" /header:"$(IntDir)TortoiseGitMergeRibbon.h" /res:"$(IntDir)TortoiseGitMergeRibbon.rc" /name:TortoiseGitMergeRibbon</Command>
+      <Command>uicc.exe "%(FullPath)" "$(IntDir)TortoiseGitMergeRibbon.bml" /header:"$(IntDir)TortoiseGitMergeRibbon.h" /res:"$(IntDir)TortoiseGitMergeRibbon.rc" /name:TortoiseGitMergeRibbon</Command>
       <Outputs>$(IntDir)TortoiseGitMergeRibbon.bml;$(IntDir)TortoiseGitMergeRibbon.rc;$(IntDir)TortoiseGitMergeRibbon.h;%(Outputs)</Outputs>
     </CustomBuild>
   </ItemGroup>
