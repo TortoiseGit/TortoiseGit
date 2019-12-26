@@ -27,6 +27,7 @@
 #include "SelectFileFilter.h"
 #include "DPIAware.h"
 #include "LoadIconEx.h"
+#include "SmartHandle.h"
 
 extern CString sOrigCWD;
 extern CString g_sGroupingUUID;
@@ -93,16 +94,17 @@ bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, const Launc
 			return false;
 		}
 
-		if (shellinfo.hProcess)
+		CAutoGeneralHandle piProcess(std::move(shellinfo.hProcess));
+		if (piProcess)
 		{
 			if (flags.bWaitForStartup)
-				WaitForInputIdle(shellinfo.hProcess, 10000);
+				WaitForInputIdle(piProcess, 10000);
 
 			if (flags.bWaitForExit)
 			{
 				DWORD count = 1;
 				HANDLE handles[2];
-				handles[0] = shellinfo.hProcess;
+				handles[0] = piProcess;
 				if (flags.hWaitHandle)
 				{
 					count = 2;
@@ -112,8 +114,6 @@ bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, const Launc
 				if (flags.hWaitHandle)
 					CloseHandle(flags.hWaitHandle);
 			}
-
-			CloseHandle(shellinfo.hProcess);
 		}
 
 		return true;
@@ -135,16 +135,19 @@ bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, const Launc
 		return false;
 	}
 
+	CAutoGeneralHandle piThread(std::move(process.hThread));
+	CAutoGeneralHandle piProcess(std::move(process.hProcess));
+
 	AllowSetForegroundWindow(process.dwProcessId);
 
 	if (flags.bWaitForStartup)
-		WaitForInputIdle(process.hProcess, 10000);
+		WaitForInputIdle(piProcess, 10000);
 
 	if (flags.bWaitForExit)
 	{
 		DWORD count = 1;
 		HANDLE handles[2];
-		handles[0] = process.hProcess;
+		handles[0] = piProcess;
 		if (flags.hWaitHandle)
 		{
 			count = 2;
@@ -154,9 +157,6 @@ bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, const Launc
 		if (flags.hWaitHandle)
 			CloseHandle(flags.hWaitHandle);
 	}
-
-	CloseHandle(process.hThread);
-	CloseHandle(process.hProcess);
 
 	return true;
 }
