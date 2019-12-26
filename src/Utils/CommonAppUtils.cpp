@@ -113,6 +113,12 @@ bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, const Launc
 				WaitForMultipleObjects(count, handles, FALSE, INFINITE);
 				if (flags.hWaitHandle)
 					CloseHandle(flags.hWaitHandle);
+
+				if (flags.pdwExitCode)
+				{
+					if (!GetExitCodeProcess(piProcess, flags.pdwExitCode))
+						return false;
+				}
 			}
 		}
 
@@ -156,6 +162,12 @@ bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, const Launc
 		WaitForMultipleObjects(count, handles, FALSE, INFINITE);
 		if (flags.hWaitHandle)
 			CloseHandle(flags.hWaitHandle);
+
+		if (flags.pdwExitCode)
+		{
+			if (!GetExitCodeProcess(piProcess, flags.pdwExitCode))
+				return false;
+		}
 	}
 
 	return true;

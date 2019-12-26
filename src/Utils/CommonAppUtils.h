@@ -35,6 +35,7 @@ private:
 		bool bUAC = false;
 		CString* psCWD = nullptr;
 		UINT uiIDErrMessageFormat = 0;
+		DWORD* pdwExitCode = nullptr;
 
 		friend class CCommonAppUtils;
 
@@ -50,11 +51,12 @@ public:
 			bWaitForStartup = b;
 			return *this;
 		}
-		LaunchApplicationFlags& WaitForExit(bool b = true, HANDLE h = nullptr)
+		LaunchApplicationFlags& WaitForExit(bool b = true, HANDLE h = nullptr, DWORD* pExitCode = nullptr)
 		{
 			ASSERT(!h || b);
 			bWaitForExit = b;
 			hWaitHandle = h;
+			pdwExitCode = pExitCode;
 			return *this;
 		}
 		LaunchApplicationFlags& UAC(bool b = true)
