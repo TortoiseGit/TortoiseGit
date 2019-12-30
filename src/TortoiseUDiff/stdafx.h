@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "../targetver.h"
+#include <SDKDDKVer.h>
 
 #define NOMINMAX
 #include <algorithm>
