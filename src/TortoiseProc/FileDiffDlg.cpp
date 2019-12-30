@@ -135,8 +135,6 @@ void CFileDiffDlg::SetDiff(const CTGitPath* path, const CString &baseRev1, const
 		m_sFilter = path->GetGitPathString();
 	}
 
-	BYTE_VECTOR logout;
-
 	if (baseRev1 == GIT_REV_ZERO)
 	{
 		m_rev1.m_CommitHash.Empty();
@@ -147,8 +145,6 @@ void CFileDiffDlg::SetDiff(const CTGitPath* path, const CString &baseRev1, const
 		if (m_rev1.GetCommit(baseRev1))
 			MessageBox(m_rev1.GetLastErr(), L"TortoiseGit", MB_ICONERROR);
 	}
-
-	logout.clear();
 
 	if(hash2 == GIT_REV_ZERO)
 	{
@@ -172,8 +168,6 @@ void CFileDiffDlg::SetDiff(const CTGitPath* path, const GitRev &baseRev1)
 	m_rev1 = baseRev1;
 	m_rev2.m_CommitHash.Empty();
 	m_rev2.GetSubject().LoadString(IDS_PROC_PREVIOUSVERSION);
-
-	//this->GetDlgItem()->EnableWindow(FALSE);
 }
 
 BOOL CFileDiffDlg::OnInitDialog()
@@ -836,25 +830,6 @@ void CFileDiffDlg::OnBnClickedSwitchleftright()
 {
 	if (m_bThreadRunning)
 		return;
-
-#if 0
-	CString sFilterString;
-	m_cFilter.GetWindowText(sFilterString);
-
-	m_cFileList.SetRedraw(false);
-	m_cFileList.DeleteAllItems();
-	for (int i = 0; i < static_cast<int>(m_arFileList.GetCount()); ++i)
-	{
-		CTGitPath fd = m_arFileList[i];
-		if (fd.m_Action == CTGitPath::LOGACTIONS_ADDED)
-			fd.m_Action = CTGitPath::LOGACTIONS_DELETED;
-		else if (fd.m_Action == CTGitPath::LOGACTIONS_DELETED)
-			fd.m_Action = CTGitPath::LOGACTIONS_ADDED;
-		std::swap(fd.m_StatAdd, fd.m_StatDel);
-		(CTGitPath&)m_arFileList[i] = fd;
-	}
-	Filter(sFilterString);
-#endif
 
 	m_cFileList.SetRedraw(true);
 	GitRev rev = m_rev1;
