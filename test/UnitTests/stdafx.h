@@ -5,7 +5,7 @@
 #pragma once
 #define XMESSAGEBOX_APPREGPATH "Software\\TortoiseGit\\"
 
-#include "../../src\targetver.h"
+#include <SDKDDKVer.h>
 
 #define NOMINMAX
 #include <algorithm>

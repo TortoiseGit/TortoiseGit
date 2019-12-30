@@ -11,7 +11,7 @@
 using std::max;
 using std::min;
 
-#include "../targetver.h"
+#include <SDKDDKVer.h>
 
 #define WIN32_LEAN_AND_MEAN     // Exclude rarely-used stuff from Windows headers
 #include <windows.h>

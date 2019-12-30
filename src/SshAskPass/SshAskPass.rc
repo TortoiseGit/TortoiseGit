@@ -8,7 +8,7 @@
 // Generated from the TEXTINCLUDE 2 resource.
 //
 #ifndef APSTUDIO_INVOKED
-#include "../targetver.h"
+#include <SDKDDKVer.h>
 #endif
 #define APSTUDIO_HIDDEN_SYMBOLS
 #include <windows.h>
@@ -83,7 +83,7 @@ END
 2 TEXTINCLUDE 
 BEGIN
     "#ifndef APSTUDIO_INVOKED\r\n"
-    "#include ""../targetver.h""\r\n"
+    "#include <SDKDDKVer.h>\r\n"
     "#endif\r\n"
     "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
     "#include <windows.h>\r\n"

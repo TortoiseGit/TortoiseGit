@@ -13,7 +13,7 @@
 #define VC_EXTRALEAN            // Exclude rarely-used stuff from Windows headers
 #endif
 
-#include "../targetver.h"
+#include <SDKDDKVer.h>
 
 #define NOMINMAX
 #include <algorithm>

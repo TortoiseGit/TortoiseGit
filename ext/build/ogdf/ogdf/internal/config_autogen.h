@@ -1,1 +1,1 @@
-#include "../../../src/targetver.h"
+#include <SDKDDKVer.h>
