@@ -60,7 +60,6 @@
     <ClInclude Include="gitdll.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="gitdll.rc" />
