@@ -897,6 +897,11 @@ CString CRevisionGraphWnd::TooltipText(ogdf::node index)
 		str += L"\n\n" + rev->GetSubject();
 		str += L'\n';
 		str += rev->GetBody();
+		if (str.GetLength() > 8000)
+		{
+			str.Truncate(8000);
+			str += L"...";
+		}
 		return str;
 	}else
 		return CString();

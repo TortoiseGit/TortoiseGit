@@ -1785,7 +1785,13 @@ void CTortoiseGitBlameView::OnMouseHover(UINT /*nFlags*/, CPoint point)
 																	static_cast<LPCTSTR>(m_sAuthor), static_cast<LPCTSTR>(pRev->GetAuthorName()), static_cast<LPCTSTR>(pRev->GetAuthorEmail()),
 																	static_cast<LPCTSTR>(m_sDate), static_cast<LPCTSTR>(CLoglistUtils::FormatDateAndTime(pRev->GetAuthorDate(), m_DateFormat, true, m_bRelativeTimes)),
 																	static_cast<LPCTSTR>(m_sMessage), static_cast<LPCTSTR>(pRev->GetSubject()),
-																	iline <= maxLine ? static_cast<LPCTSTR>(body) : (body.Left(pos) + L"\n...................."));
+																	iline <= maxLine ? static_cast<LPCTSTR>(body) : (body.Left(pos) + L"\n..."));
+
+			if (str.GetLength() > 8000)
+			{
+				str.Truncate(8000);
+				str += L"...";
+			}
 
 			m_ToolTip.Pop();
 			m_ToolTip.AddTool(this, str);
