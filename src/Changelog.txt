@@ -8,6 +8,7 @@ Released: unreleased
  * Fixed issue #3481: Add Switch/Checkout to Tags and Refs in Revision Graph
  * TGitCache: Cache libgit2 config (reduce disk access)
  * The Setting "Use .mailmap" is now honored everywhere in TortoiseGit (e.g., TotoiseGitBlame, GitWCRev)
+ * Enable Mailmap by default (Git 2.23 also enabled it by default)
 
 == Bug Fixes ==
  * Fixed issue #3449: Crash when indenting short lines (pressing tab key)

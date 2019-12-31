@@ -68,7 +68,7 @@ CSetDialogs::CSetDialogs()
 	m_regDescribeAlwaysLong = CRegDWORD(L"Software\\TortoiseGit\\DescribeAlwaysLong", FALSE);
 	m_regDescribeOnlyFollowFirstParent = CRegDWORD(L"Software\\TortoiseGit\\DescribeOnlyFollowFirstParent", FALSE);
 	m_regFullCommitMessageOnLogLine = CRegDWORD(L"Software\\TortoiseGit\\FullCommitMessageOnLogLine", FALSE);
-	m_regMailmapOnLog = CRegDWORD(L"Software\\TortoiseGit\\LogDialog\\UseMailmap", FALSE);
+	m_regMailmapOnLog = CRegDWORD(L"Software\\TortoiseGit\\LogDialog\\UseMailmap", TRUE);
 }
 
 CSetDialogs::~CSetDialogs()

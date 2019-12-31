@@ -33,7 +33,7 @@ CGitMailmap::~CGitMailmap()
 
 bool CGitMailmap::ShouldLoadMailmap()
 {
-	return CRegDWORD(L"Software\\TortoiseGit\\LogDialog\\UseMailmap", FALSE) == TRUE;
+	return CRegDWORD(L"Software\\TortoiseGit\\LogDialog\\UseMailmap", TRUE) == TRUE;
 }
 
 void CGitMailmap::Translate(CString& name, CString& email) const

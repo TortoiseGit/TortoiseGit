@@ -291,7 +291,7 @@ int GetStatus(const TCHAR* path, GitWCRev_t& GitStat)
 
 	const git_signature* sig = git_commit_author(commit);
 	GitStat.HeadTime = sig->when.time;
-	if (CRegStdDWORD(L"Software\\TortoiseGit\\LogDialog\\UseMailmap", FALSE) == TRUE)
+	if (CRegStdDWORD(L"Software\\TortoiseGit\\LogDialog\\UseMailmap", TRUE) == TRUE)
 	{
 		CAutoMailmap mailmap;
 		if (git_mailmap_from_repository(mailmap.GetPointer(), repo))
