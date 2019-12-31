@@ -188,6 +188,15 @@
     <ClInclude Include="..\Utils\LoadIconEx.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\Git\GitHash.h">
+      <Filter>Git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Git\GitRev.h">
+      <Filter>Git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Git\gittype.h">
+      <Filter>Git</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="TGitCache.rc">

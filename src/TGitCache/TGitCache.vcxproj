@@ -78,6 +78,9 @@
   <ItemGroup>
     <ClInclude Include="..\Git\Git.h" />
     <ClInclude Include="..\Git\GitForWindows.h" />
+    <ClInclude Include="..\Git\GitHash.h" />
+    <ClInclude Include="..\Git\GitRev.h" />
+    <ClInclude Include="..\Git\gittype.h" />
     <ClInclude Include="..\Git\MassiveGitTaskBase.h" />
     <ClInclude Include="..\Utils\CreateProcessHelper.h" />
     <ClInclude Include="..\Utils\DebugOutput.h" />

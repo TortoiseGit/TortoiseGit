@@ -584,6 +584,12 @@
     <ClInclude Include="..\Utils\MiscUI\EditWordBreak.h">
       <Filter>Utils\MiscUI</Filter>
     </ClInclude>
+    <ClInclude Include="..\Git\GitHash.h">
+      <Filter>Git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Git\GitRev.h">
+      <Filter>Git</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\lineadded.ico">

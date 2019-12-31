@@ -235,6 +235,9 @@
     <ClInclude Include="..\Utils\LoadIconEx.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\Git\GitRev.h">
+      <Filter>Git</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resources\checkout.ico">
