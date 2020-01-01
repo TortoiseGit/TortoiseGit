@@ -289,9 +289,9 @@ C:\Path-To\kdiff3.exe %base %mine %theirs -o %merged
 C:\Path-To\compare.exe /max /wait /3 /title1:%tname /title2:%bname
     /title3:%yname %theirs %base %mine %merged /a2
 </screen>
-			or with WinMerge (2.8 or later):
+			or with WinMerge (2.12 or later):
 <screen>
-C:\Path-To\WinMerge.exe %merged
+C:\Path-To\WinMergeU.exe /e /ub /fr /wl /wm /dl %bname /dm %tname /dr %yname  %base %theirs %mine /o %merged /ar
 </screen>
 		</para>
 	</sect3>
