@@ -20,7 +20,7 @@ if (num !== 3)
     WScript.Quit(1);
 }
 
-var re = /^(\/\/|#) Copyright.+(2019)(.*)/;
+var re = /^(\/\/|#) Copyright.+(2020)(.*)/;
 var basere = /^(\/\/|#) Copyright(.*)/;
 var filere = /(\.c$)|(\.cpp$)|(\.h$)|(\.idl$)|(\.pot$)/;
 var found = true;

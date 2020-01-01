@@ -34,7 +34,7 @@ BEGIN
             VALUE "CompanyName", "https://tortoisegit.org/"
             VALUE "FileDescription", "libgit (based on git version " GIT_VERSION ") implementation for TortoiseGit"
             VALUE "FileVersion", STRFILEVER
-            VALUE "LegalCopyright", "Copyright (C) 2008-2019 - TortoiseGit, Copyright (C) 2005-2019 - Git developers"
+            VALUE "LegalCopyright", "Copyright (C) 2008-2020 - TortoiseGit, Copyright (C) 2005-2020 - Git developers"
 #ifdef _WIN64
             VALUE "OriginalFilename", "gitdll.dll"
             VALUE "InternalName", "gitdll"
