@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2019 - TortoiseGit
+// Copyright (C) 2013-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -33,7 +33,7 @@ CGitMailmap::~CGitMailmap()
 
 bool CGitMailmap::ShouldLoadMailmap()
 {
-	return CRegDWORD(L"Software\\TortoiseGit\\LogDialog\\UseMailmap", TRUE) == TRUE;
+	return CRegDWORD(L"Software\\TortoiseGit\\UseMailmap", TRUE) == TRUE;
 }
 
 void CGitMailmap::Translate(CString& name, CString& email) const

@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2018 - TortoiseGit
+// Copyright (C) 2011-2020 - TortoiseGit
 // Copyright (C) 2003-2008, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -101,6 +101,4 @@ private:
 	CRegDWORD			m_regDescribeOnlyFollowFirstParent;
 	BOOL				m_bFullCommitMessageOnLogLine;
 	CRegDWORD			m_regFullCommitMessageOnLogLine;
-	BOOL				m_bMailmapOnLog;
-	CRegDWORD			m_regMailmapOnLog;
 };

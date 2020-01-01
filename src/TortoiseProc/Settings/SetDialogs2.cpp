@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016, 2019 - TortoiseGit
+// Copyright (C) 2008-2016, 2019-2020 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -41,6 +41,7 @@ CSetDialogs2::CSetDialogs2()
 	, m_bNoSounds(FALSE)
 	, m_bBranchesIncludeFetchHead(TRUE)
 	, m_bNoAutoselectMissing(FALSE)
+	, m_bMailmap(FALSE)
 {
 	m_regAutoCloseGitProgress = CRegDWORD(L"Software\\TortoiseGit\\AutoCloseGitProgress");
 	m_regUseRecycleBin = CRegDWORD(L"Software\\TortoiseGit\\RevertWithRecycleBin", TRUE);
@@ -70,6 +71,7 @@ CSetDialogs2::CSetDialogs2()
 	m_bBranchesIncludeFetchHead = m_regBranchesIncludeFetchHead;
 	m_regNoAutoselectMissing = CRegDWORD(L"Software\\TortoiseGit\\AutoselectMissingFiles", FALSE);
 	m_bNoAutoselectMissing = m_regNoAutoselectMissing;
+	m_regMailmap = CRegDWORD(L"Software\\TortoiseGit\\UseMailmap", TRUE);
 }
 
 CSetDialogs2::~CSetDialogs2()
@@ -96,6 +98,7 @@ void CSetDialogs2::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_NOSOUNDS, m_bNoSounds);
 	DDX_Check(pDX, IDC_BRANCHESINCLUDEFETCHHEAD, m_bBranchesIncludeFetchHead);
 	DDX_Check(pDX, IDC_NOAUTOSELECTMISSING, m_bNoAutoselectMissing);
+	DDX_Check(pDX, IDC_USEMAILMAP, m_bMailmap);
 }
 
 BEGIN_MESSAGE_MAP(CSetDialogs2, ISettingsPropPage)
@@ -114,6 +117,7 @@ BEGIN_MESSAGE_MAP(CSetDialogs2, ISettingsPropPage)
 	ON_BN_CLICKED(IDC_NOSOUNDS, OnChange)
 	ON_BN_CLICKED(IDC_BRANCHESINCLUDEFETCHHEAD, OnChange)
 	ON_BN_CLICKED(IDC_NOAUTOSELECTMISSING, OnChange)
+	ON_BN_CLICKED(IDC_USEMAILMAP, OnChange)
 END_MESSAGE_MAP()
 
 // CSetDialogs2 message handlers
@@ -133,6 +137,7 @@ BOOL CSetDialogs2::OnInitDialog()
 	AdjustControlSize(IDC_NOSOUNDS);
 	AdjustControlSize(IDC_BRANCHESINCLUDEFETCHHEAD);
 	AdjustControlSize(IDC_NOAUTOSELECTMISSING);
+	AdjustControlSize(IDC_USEMAILMAP);
 
 	EnableToolTips();
 
@@ -145,6 +150,7 @@ BOOL CSetDialogs2::OnInitDialog()
 
 	m_dwAutoCloseGitProgress = m_regAutoCloseGitProgress;
 	m_bUseRecycleBin = m_regUseRecycleBin;
+	m_bMailmap = m_regMailmap;
 
 	for (int i = 0; i < m_cAutoCloseGitProgress.GetCount(); ++i)
 		if (m_cAutoCloseGitProgress.GetItemData(i) == m_dwAutoCloseGitProgress)
@@ -184,6 +190,7 @@ BOOL CSetDialogs2::OnApply()
 	Store(m_bSyncDialogRandomPos, m_regSyncDialogRandomPos);
 	Store(m_bRefCompareHideUnchanged, m_regRefCompareHideUnchanged);
 	Store(m_bSortTagsReversed, m_regSortTagsReversed);
+	Store(m_bMailmap, m_regMailmap);
 
 	Store(m_bAutocompletion, m_regAutocompletion);
 	Store(m_dwAutocompletionTimeout, m_regAutocompletionTimeout);
