@@ -406,9 +406,36 @@ BOOL CAppUtils::StartExtMerge(bool bAlternative,
 	if ((bReadOnly)&&(bInternal))
 		com += L" /readonly";
 
-	if(!LaunchApplication(com, IDS_ERR_EXTMERGESTART, false))
-	{
+	DWORD blocktrust = CRegDWORD(L"Software\\TortoiseGit\\MergeBlockTrustBehavior");
+	bool bWaitForExit = !bInternal && blocktrust >= 1;
+	DWORD exitCode = DWORD_MAX;
+	if (!LaunchApplication(com, CAppUtils::LaunchApplicationFlags().UseSpecificErrorMessage(IDS_ERR_EXTMERGESTART).WaitForExit(bWaitForExit, nullptr, &exitCode)))
 		return FALSE;
+
+	if (!bWaitForExit)
+		return TRUE;
+
+	RemoveTempMergeFile(mergedfile, false);
+
+	CString str;
+	str.Format(IDS_MERGESUCCESSFUL, static_cast<LPCTSTR>(mergedfile.GetGitPathString()));
+	if ((blocktrust == 2 && exitCode == 0) || (blocktrust == 1 && CMessageBox::Show(GetExplorerHWND(), str, L"TortoiseGit", 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_RESOLVEDBUTTON)), CString(MAKEINTRESOURCE(IDS_MSGBOX_NO))) == 1))
+	{
+		CString cmd, out;
+		cmd.Format(L"git.exe add -f -- \"%s\"", static_cast<LPCTSTR>(mergedfile.GetGitPathString()));
+		if (g_Git.Run(cmd, &out, CP_UTF8))
+		{
+			MessageBox(GetExplorerHWND(), out, L"TortoiseGit", MB_OK | MB_ICONERROR);
+			return FALSE;
+		}
+	}
+	else
+		return TRUE;
+
+	if (resolveMsgHwnd && CRegDWORD(L"Software\\TortoiseGit\\RefreshFileListAfterResolvingConflict", TRUE) == TRUE)
+	{
+		static UINT WM_REVERTMSG = RegisterWindowMessage(L"GITSLNM_NEEDSREFRESH");
+		::PostMessage(resolveMsgHwnd, WM_REVERTMSG, NULL, NULL);
 	}
 
 	return TRUE;
@@ -436,7 +463,7 @@ BOOL CAppUtils::StartExtPatch(const CTGitPath& patchfile, const CTGitPath& dir, 
 		viewer += g_sGroupingUUID;
 		viewer += L'"';
 	}
-	if(!LaunchApplication(viewer, IDS_ERR_DIFFVIEWSTART, !!bWait))
+	if (!LaunchApplication(viewer, CAppUtils::LaunchApplicationFlags().WaitForStartup(!!bWait).UseSpecificErrorMessage(IDS_ERR_DIFFVIEWSTART)))
 		return FALSE;
 	return TRUE;
 }
@@ -555,7 +582,7 @@ bool CAppUtils::StartExtDiff(
 	if (jumpToLine > 0)
 		viewer.AppendFormat(L" /line:%d", jumpToLine);
 
-	return LaunchApplication(viewer, IDS_ERR_EXTDIFFSTART, flags.bWait);
+	return LaunchApplication(viewer, CAppUtils::LaunchApplicationFlags().WaitForStartup(flags.bWait).UseSpecificErrorMessage(IDS_ERR_EXTDIFFSTART));
 }
 
 BOOL CAppUtils::StartUnifiedDiffViewer(const CString& patchfile, const CString& title, BOOL bWait, bool bAlternativeTool)
@@ -610,7 +637,7 @@ BOOL CAppUtils::StartUnifiedDiffViewer(const CString& patchfile, const CString& 
 			viewer.Replace(L"%title", L'"' + title + L'"');
 	}
 
-	if(!LaunchApplication(viewer, IDS_ERR_DIFFVIEWSTART, !!bWait))
+	if (!LaunchApplication(viewer, CAppUtils::LaunchApplicationFlags().WaitForStartup(!!bWait).UseSpecificErrorMessage(IDS_ERR_DIFFVIEWSTART)))
 		return FALSE;
 	return TRUE;
 }
@@ -643,7 +670,7 @@ BOOL CAppUtils::StartTextViewer(CString file)
 		viewer += L' ';
 		viewer += file;
 
-	if(!LaunchApplication(viewer, IDS_ERR_TEXTVIEWSTART, false))
+	if (!LaunchApplication(viewer, CAppUtils::LaunchApplicationFlags().UseSpecificErrorMessage(IDS_ERR_TEXTVIEWSTART)))
 		return FALSE;
 	return TRUE;
 }
@@ -728,8 +755,7 @@ bool CAppUtils::LaunchPAgent(HWND hWnd, const CString* keyfile, const CString* p
 	proc += L'"';
 
 	CString appDir = CPathUtils::GetAppDirectory();
-	bool b = LaunchApplication(proc, IDS_ERR_PAGEANT, true, &appDir);
-	if(!b)
+	if(bool b = LaunchApplication(proc, CAppUtils::LaunchApplicationFlags().WaitForStartup().UseSpecificErrorMessage(IDS_ERR_PAGEANT).UseCWD(&appDir)); !b)
 		return b;
 
 	int i=0;
@@ -756,7 +782,7 @@ bool CAppUtils::LaunchAlternativeEditor(const CString& filename, bool uac)
 	CString sCmd;
 	sCmd.Format(L"\"%s\" \"%s\"", static_cast<LPCTSTR>(editTool), static_cast<LPCTSTR>(filename));
 
-	LaunchApplication(sCmd, 0, false, nullptr, uac);
+	LaunchApplication(sCmd, CAppUtils::LaunchApplicationFlags().UAC(uac));
 	return true;
 }
 
@@ -793,7 +819,7 @@ bool CAppUtils::LaunchTortoiseBlame(const CString& sBlameFile, const CString& Re
 	}
 	viewer += L' ' + sParams;
 
-	return LaunchApplication(viewer, IDS_ERR_TGITBLAME, false);
+	return LaunchApplication(viewer, CAppUtils::LaunchApplicationFlags().UseSpecificErrorMessage(IDS_ERR_TGITBLAME));
 }
 
 bool CAppUtils::FormatTextInRichEditControl(CWnd * pWnd)
@@ -1679,15 +1705,19 @@ void CAppUtils::DescribeConflictFile(bool mode, bool base,CString &descript)
 	descript.LoadString(IDS_PROC_CREATED);
 }
 
-void CAppUtils::RemoveTempMergeFile(const CTGitPath& path)
+void CAppUtils::RemoveTempMergeFile(const CTGitPath& path, bool pathIsRelative /* = true */)
 {
-	::DeleteFile(CAppUtils::GetMergeTempFile(L"LOCAL", path));
-	::DeleteFile(CAppUtils::GetMergeTempFile(L"REMOTE", path));
-	::DeleteFile(CAppUtils::GetMergeTempFile(L"BASE", path));
+	::DeleteFile(GetMergeTempFile(L"LOCAL", path, pathIsRelative));
+	::DeleteFile(GetMergeTempFile(L"REMOTE", path, pathIsRelative));
+	::DeleteFile(GetMergeTempFile(L"BASE", path, pathIsRelative));
 }
-CString CAppUtils::GetMergeTempFile(const CString& type, const CTGitPath &merge)
+
+CString CAppUtils::GetMergeTempFile(const CString& type, const CTGitPath& merge, bool returnAbsolutePath /* = true */)
 {
-	return g_Git.CombinePath(merge.GetWinPathString() + L'.' + type + merge.GetFileExtension());;
+	auto path = merge.GetWinPathString() + L'.' + type + merge.GetFileExtension();
+	if (returnAbsolutePath)
+		return g_Git.CombinePath(path);
+	return path;
 }
 
 static bool ParseHashesFromLsFile(const BYTE_VECTOR& out, CGitHash& hash1, bool& isFile1, CGitHash& hash2, bool& isFile2, CGitHash& hash3, bool& isFile3)

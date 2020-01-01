@@ -1241,7 +1241,7 @@ void CMainFrame::DiffTwo(const CWorkingFile& file1, const CWorkingFile& file2)
 	if (!file2.GetWindowName().IsEmpty())
 		sCmd += L" /yourname:\"" + file2.GetWindowName() + L"\"";
 
-	CAppUtils::LaunchApplication(sCmd, 0, false);
+	CAppUtils::LaunchApplication(sCmd, CAppUtils::LaunchApplicationFlags());
 }
 
 void CMainFrame::ShowDiffBar(bool bShow)

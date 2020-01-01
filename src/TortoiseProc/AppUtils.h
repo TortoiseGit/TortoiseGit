@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -175,7 +175,7 @@ public:
 	static bool ConflictEdit(HWND hWnd, CTGitPath& file, bool bAlternativeTool = false, bool revertTheirMy = false, HWND resolveMsgHwnd = nullptr);
 	static void GetConflictTitles(CString* baseText, CString& mineText, CString& theirsText, bool rebaseActive);
 
-	static CString GetMergeTempFile(const CString& str, const CTGitPath& merge);
+	static CString GetMergeTempFile(const CString& str, const CTGitPath& merge, bool returnAbsolutePath = true);
 	static bool	StashSave(HWND hWnd, const CString& msg = CString(), bool showPull = false, bool pullShowPush = false, bool showMerge = false, const CString& mergeRev = CString());
 	static bool StashApply(HWND hWnd, CString ref, bool showChanges = true);
 	/** Execute "stash pop"
@@ -225,7 +225,7 @@ public:
 	static BOOL SVNDCommit(HWND hWnd);
 	static BOOL Merge(HWND hWnd, const CString* commit = nullptr, bool showStashPop = false);
 	static BOOL MergeAbort(HWND hWnd);
-	static void RemoveTempMergeFile(const CTGitPath& path);
+	static void RemoveTempMergeFile(const CTGitPath& path, bool pathIsRelative = true);
 	static void EditNote(HWND hWnd, GitRevLoglist* rev, ProjectProperties* projectProperties);
 	static int GetMsysgitVersion(HWND hWnd);
 	static bool IsGitVersionNewerOrEqual(HWND hWnd, unsigned __int8 major, unsigned __int8 minor, unsigned __int8 patchlevel = 0, unsigned __int8 build = 0);

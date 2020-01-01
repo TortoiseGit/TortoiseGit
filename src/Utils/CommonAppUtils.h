@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2018 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2019 - TortoiseGit
 // Copyright (C) 2003-2008,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -26,11 +26,55 @@
 class CCommonAppUtils
 {
 public:
+	struct LaunchApplicationFlags
+	{
+private:
+		bool bWaitForStartup = false;
+		bool bWaitForExit = false;
+		HANDLE hWaitHandle = nullptr;
+		bool bUAC = false;
+		CString* psCWD = nullptr;
+		UINT uiIDErrMessageFormat = 0;
+		DWORD* pdwExitCode = nullptr;
+
+		friend class CCommonAppUtils;
+
+public:
+		LaunchApplicationFlags() {}
+		LaunchApplicationFlags& UseSpecificErrorMessage(UINT idErrMessageFormat)
+		{
+			uiIDErrMessageFormat = idErrMessageFormat;
+			return *this;
+		}
+		LaunchApplicationFlags& WaitForStartup(bool b = true)
+		{
+			bWaitForStartup = b;
+			return *this;
+		}
+		LaunchApplicationFlags& WaitForExit(bool b = true, HANDLE h = nullptr, DWORD* pExitCode = nullptr)
+		{
+			ASSERT(!h || b);
+			bWaitForExit = b;
+			hWaitHandle = h;
+			pdwExitCode = pExitCode;
+			return *this;
+		}
+		LaunchApplicationFlags& UAC(bool b = true)
+		{
+			bUAC = b;
+			return *this;
+		}
+		LaunchApplicationFlags& UseCWD(CString* pCwd)
+		{
+			psCWD = pCwd;
+			return *this;
+		}
+	};
 
 	/**
 	* Launch an external application (usually the diff viewer)
 	*/
-	static bool LaunchApplication(const CString& sCommandLine, UINT idErrMessageFormat, bool bWaitForStartup, CString* cwd = nullptr, bool uac = false);
+	static bool LaunchApplication(const CString& sCommandLine, const LaunchApplicationFlags& flags);
 
 	static bool RunTortoiseGitProc(const CString& sCommandLine, bool uac = false, bool includeGroupingUUID = true);
 

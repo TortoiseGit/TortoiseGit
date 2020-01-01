@@ -27,17 +27,18 @@
 #include "SelectFileFilter.h"
 #include "DPIAware.h"
 #include "LoadIconEx.h"
+#include "SmartHandle.h"
 
 extern CString sOrigCWD;
 extern CString g_sGroupingUUID;
 
-bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, UINT idErrMessageFormat, bool bWaitForStartup, CString *cwd, bool uac)
+bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, const LaunchApplicationFlags& flags)
 {
 	CString theCWD = sOrigCWD;
-	if (cwd)
-		theCWD = *cwd;
+	if (flags.psCWD)
+		theCWD = *flags.psCWD;
 
-	if (uac)
+	if (flags.bUAC)
 	{
 		CString file, param;
 		SHELLEXECUTEINFO shellinfo = { 0 };
@@ -58,10 +59,10 @@ bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, UINT idErrM
 			}
 			else
 			{
-				if (idErrMessageFormat != 0)
+				if (flags.uiIDErrMessageFormat != 0)
 				{
 					CString temp;
-					temp.Format(idErrMessageFormat, static_cast<LPCTSTR>(CFormatMessageWrapper()));
+					temp.Format(flags.uiIDErrMessageFormat, static_cast<LPCTSTR>(CFormatMessageWrapper()));
 					MessageBox(nullptr, temp, L"TortoiseGit", MB_OK | MB_ICONINFORMATION);
 				}
 				return false;
@@ -84,21 +85,41 @@ bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, UINT idErrM
 
 		if (!ShellExecuteEx(&shellinfo))
 		{
-			if (idErrMessageFormat != 0)
+			if (flags.uiIDErrMessageFormat != 0)
 			{
 				CString temp;
-				temp.Format(idErrMessageFormat, static_cast<LPCTSTR>(CFormatMessageWrapper()));
+				temp.Format(flags.uiIDErrMessageFormat, static_cast<LPCTSTR>(CFormatMessageWrapper()));
 				MessageBox(nullptr, temp, L"TortoiseGit", MB_OK | MB_ICONINFORMATION);
 			}
 			return false;
 		}
 
-		if (shellinfo.hProcess)
+		CAutoGeneralHandle piProcess(std::move(shellinfo.hProcess));
+		if (piProcess)
 		{
-			if (bWaitForStartup)
-				WaitForInputIdle(shellinfo.hProcess, 10000);
+			if (flags.bWaitForStartup)
+				WaitForInputIdle(piProcess, 10000);
 
-			CloseHandle(shellinfo.hProcess);
+			if (flags.bWaitForExit)
+			{
+				DWORD count = 1;
+				HANDLE handles[2];
+				handles[0] = piProcess;
+				if (flags.hWaitHandle)
+				{
+					count = 2;
+					handles[1] = flags.hWaitHandle;
+				}
+				WaitForMultipleObjects(count, handles, FALSE, INFINITE);
+				if (flags.hWaitHandle)
+					CloseHandle(flags.hWaitHandle);
+
+				if (flags.pdwExitCode)
+				{
+					if (!GetExitCodeProcess(piProcess, flags.pdwExitCode))
+						return false;
+				}
+			}
 		}
 
 		return true;
@@ -111,22 +132,43 @@ bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, UINT idErrM
 	CString cleanCommandLine(sCommandLine);
 	if (CreateProcess(nullptr, cleanCommandLine.GetBuffer(), nullptr, nullptr, FALSE, CREATE_UNICODE_ENVIRONMENT, nullptr, theCWD, &startup, &process) == 0)
 	{
-		if (idErrMessageFormat)
+		if (flags.uiIDErrMessageFormat)
 		{
 			CString temp;
-			temp.Format(idErrMessageFormat, static_cast<LPCTSTR>(CFormatMessageWrapper()));
+			temp.Format(flags.uiIDErrMessageFormat, static_cast<LPCTSTR>(CFormatMessageWrapper()));
 			MessageBox(nullptr, temp, L"TortoiseGit", MB_OK | MB_ICONINFORMATION);
 		}
 		return false;
 	}
 
+	CAutoGeneralHandle piThread(std::move(process.hThread));
+	CAutoGeneralHandle piProcess(std::move(process.hProcess));
+
 	AllowSetForegroundWindow(process.dwProcessId);
 
-	if (bWaitForStartup)
-		WaitForInputIdle(process.hProcess, 10000);
+	if (flags.bWaitForStartup)
+		WaitForInputIdle(piProcess, 10000);
 
-	CloseHandle(process.hThread);
-	CloseHandle(process.hProcess);
+	if (flags.bWaitForExit)
+	{
+		DWORD count = 1;
+		HANDLE handles[2];
+		handles[0] = piProcess;
+		if (flags.hWaitHandle)
+		{
+			count = 2;
+			handles[1] = flags.hWaitHandle;
+		}
+		WaitForMultipleObjects(count, handles, FALSE, INFINITE);
+		if (flags.hWaitHandle)
+			CloseHandle(flags.hWaitHandle);
+
+		if (flags.pdwExitCode)
+		{
+			if (!GetExitCodeProcess(piProcess, flags.pdwExitCode))
+				return false;
+		}
+	}
 
 	return true;
 }
@@ -145,7 +187,7 @@ bool CCommonAppUtils::RunTortoiseGitProc(const CString& sCommandLine, bool uac, 
 		sCmd += L'"';
 	}
 
-	return LaunchApplication(sCmd, NULL, false, nullptr, uac);
+	return LaunchApplication(sCmd, LaunchApplicationFlags().UAC(uac));
 }
 
 bool CCommonAppUtils::IsAdminLogin()

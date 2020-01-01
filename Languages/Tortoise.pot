@@ -2066,6 +2066,10 @@ msgstr ""
 msgid "Blend alpha"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_SETTINGSPROGSMERGE: Control id 1852)
+msgid "Block TortoiseGit while executing the external merge tool"
+msgstr ""
+
 #. Resource IDs: (cmdGroupBlocks_LabelTitle_RESID)
 msgid "Blocks"
 msgstr ""
@@ -9516,6 +9520,10 @@ msgstr ""
 msgid "Trim right"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_SETTINGSPROGSMERGE: Control id 1853)
+msgid "Trust the exitcode of the external mege tool for auto resolving"
+msgstr ""
+
 #. Resource IDs: (IDS_SVNERR_CLEANUPORFRESHCHECKOUT)
 msgid "Try a 'Cleanup'. If that doesn't work you need to do a fresh checkout."
 msgstr ""
@@ -10076,6 +10084,11 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROGRS_CONFLICTSOCCURRED_WARNING)
 msgid "Warning!"
+msgstr ""
+
+#. Resource IDs: (IDS_MERGESUCCESSFUL)
+#, c-format
+msgid "Was the merge of\n%s\nsuccessful?"
 msgstr ""
 
 #. Resource IDs: (IDS_FIRSTSTART_HINT4)
