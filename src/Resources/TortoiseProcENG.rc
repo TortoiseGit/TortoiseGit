@@ -656,8 +656,12 @@ BEGIN
     CONTROL         "&External",IDC_EXTMERGE_ON,"Button",BS_AUTORADIOBUTTON,89,23,76,10
     EDITTEXT        IDC_EXTMERGE,7,41,263,14,ES_AUTOHSCROLL | WS_GROUP
     PUSHBUTTON      "...",IDC_EXTMERGEBROWSE,279,41,14,14
-    LTEXT           "Click on ""Advanced"" to specify alternate merge programs based on file extension",IDC_STATIC,7,70,160,33
-    PUSHBUTTON      "&Advanced...",IDC_EXTMERGEADVANCED,206,73,87,14
+    CONTROL         "Block TortoiseGit while executing the external merge tool",IDC_MERGEBLOCK,
+                    "Button",BS_AUTOCHECKBOX | BS_TOP | BS_MULTILINE | WS_TABSTOP,7,61,286,22
+    CONTROL         "Trust the exitcode of the external mege tool for auto resolving",IDC_TRUSTEXITCODE,
+                    "Button",BS_AUTOCHECKBOX | BS_TOP | BS_MULTILINE | WS_TABSTOP,7,85,286,22
+    LTEXT           "Click on ""Advanced"" to specify alternate merge programs based on file extension",IDC_STATIC,7,108,160,33
+    PUSHBUTTON      "&Advanced...",IDC_EXTMERGEADVANCED,206,111,87,14
 END
 
 IDD_SETTINGSLOOKANDFEEL DIALOGEX 0, 0, 301, 238
@@ -3812,6 +3816,7 @@ BEGIN
     IDS_CLONE_BRANCH_TT     "Instead of pointing the newly created HEAD to the branch pointed to by the cloned repository’s HEAD, point to specific branch instead."
     IDS_CLONE_ORIGIN_NAME_TT 
                             "Instead of using the remote name ""origin"" to keep track of the upstream repository, use the specific name."
+    IDS_MERGESUCCESSFUL     "Was the merge of\n%s\nsuccessful?"
 END
 
 STRINGTABLE

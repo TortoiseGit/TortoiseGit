@@ -1,5 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2016-2020 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -49,6 +50,9 @@ public:
 	afx_msg void OnBnClickedExtmergebrowse();
 	afx_msg void OnBnClickedExtmergeadvanced();
 	afx_msg void OnEnChangeExtmerge();
+	afx_msg void OnBnClickedMergeblock();
+	afx_msg void OnBnClickedTrustexitcode();
+
 private:
 	bool IsExternal(const CString& path) const { return !path.IsEmpty() && path.Left(1) != L"#"; }
 	void CheckProgComment();
@@ -57,6 +61,9 @@ private:
 	CRegString		m_regMergePath;
 	int             m_iExtMerge;
 	CSetProgsAdvDlg m_dlgAdvMerge;
+	int				m_iBlockWhileMerging;
+	int				m_iTrustExitcode;
+	CRegDWORD		m_regBlockTrustMerge;
 
 	CFileDropEdit	m_cMergeEdit;
 };

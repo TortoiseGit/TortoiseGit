@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2011, 2013-2016 - TortoiseGit
+// Copyright (C) 2009, 2011, 2013-2016, 2019-2020 - TortoiseGit
 // Copyright (C) 2003-2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -28,6 +28,9 @@ CSettingsProgsMerge::CSettingsProgsMerge()
 	: ISettingsPropPage(CSettingsProgsMerge::IDD)
 	, m_iExtMerge(0)
 	, m_dlgAdvMerge(L"Merge")
+	, m_iBlockWhileMerging(BST_UNCHECKED)
+	, m_iTrustExitcode(BST_UNCHECKED)
+	, m_regBlockTrustMerge(L"Software\\TortoiseGit\\MergeBlockTrustBehavior")
 {
 	m_regMergePath = CRegString(L"Software\\TortoiseGit\\Merge");
 }
@@ -45,6 +48,11 @@ void CSettingsProgsMerge::DoDataExchange(CDataExchange* pDX)
 	GetDlgItem(IDC_EXTMERGE)->EnableWindow(m_iExtMerge == 1);
 	GetDlgItem(IDC_EXTMERGEBROWSE)->EnableWindow(m_iExtMerge == 1);
 	DDX_Control(pDX, IDC_EXTMERGE, m_cMergeEdit);
+
+	DDX_Check(pDX, IDC_MERGEBLOCK, m_iBlockWhileMerging);
+	DDX_Check(pDX, IDC_TRUSTEXITCODE, m_iTrustExitcode);
+	GetDlgItem(IDC_MERGEBLOCK)->EnableWindow(m_iExtMerge == 1);
+	GetDlgItem(IDC_TRUSTEXITCODE)->EnableWindow(m_iExtMerge == 1 && m_iBlockWhileMerging == BST_CHECKED);
 }
 
 
@@ -54,6 +62,8 @@ BEGIN_MESSAGE_MAP(CSettingsProgsMerge, ISettingsPropPage)
 	ON_BN_CLICKED(IDC_EXTMERGEBROWSE, OnBnClickedExtmergebrowse)
 	ON_BN_CLICKED(IDC_EXTMERGEADVANCED, OnBnClickedExtmergeadvanced)
 	ON_EN_CHANGE(IDC_EXTMERGE, OnEnChangeExtmerge)
+	ON_BN_CLICKED(IDC_MERGEBLOCK, &CSettingsProgsMerge::OnBnClickedMergeblock)
+	ON_BN_CLICKED(IDC_TRUSTEXITCODE, &CSettingsProgsMerge::OnBnClickedTrustexitcode)
 END_MESSAGE_MAP()
 
 
@@ -72,6 +82,9 @@ BOOL CSettingsProgsMerge::OnInitDialog()
 
 	m_tooltips.AddTool(IDC_EXTMERGE, IDS_SETTINGS_EXTMERGE_TT);
 
+	m_iBlockWhileMerging = (m_regBlockTrustMerge >= 1) ? BST_CHECKED : BST_UNCHECKED;
+	m_iTrustExitcode = (m_regBlockTrustMerge == 2) ? BST_CHECKED : BST_UNCHECKED;
+
 	UpdateData(FALSE);
 	return TRUE;
 }
@@ -83,6 +96,13 @@ BOOL CSettingsProgsMerge::OnApply()
 		m_sMergePath = L'#' + m_sMergePath;
 
 	m_regMergePath = m_sMergePath;
+
+	if (m_iTrustExitcode)
+		m_regBlockTrustMerge = 2;
+	else if (m_iBlockWhileMerging)
+		m_regBlockTrustMerge = 1;
+	else if (m_regBlockTrustMerge.exists())
+		m_regBlockTrustMerge = 0;
 
 	m_dlgAdvMerge.SaveData();
 	SetModified(FALSE);
@@ -141,4 +161,21 @@ void CSettingsProgsMerge::CheckProgComment()
 	else if (m_iExtMerge == 1)
 		m_sMergePath.TrimLeft(L'#');
 	UpdateData(FALSE);
+}
+
+void CSettingsProgsMerge::OnBnClickedMergeblock()
+{
+	UpdateData();
+	SetModified();
+	if (m_iBlockWhileMerging == BST_UNCHECKED)
+	{
+		m_iTrustExitcode = BST_UNCHECKED;
+		UpdateData(FALSE);
+	}
+}
+
+void CSettingsProgsMerge::OnBnClickedTrustexitcode()
+{
+	UpdateData();
+	SetModified();
 }

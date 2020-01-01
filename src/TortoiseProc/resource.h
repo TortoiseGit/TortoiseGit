@@ -1403,6 +1403,7 @@
 #define IDC_STASHMESSAGE                1674
 #define IDS_CLONE_ORIGIN_NAME_TT        1674
 #define IDC_FOLLOWRENAMES               1675
+#define IDS_MERGESUCCESSFUL             1675
 #define IDC_TOGROUP                     1676
 #define IDC_IGNORE_WHITESPACE           1676
 #define IDC_FROMHASH                    1677
@@ -1621,7 +1622,9 @@
 #define IDS_LOG_FILTER_PATHS            1851
 #define IDC_VIEWEFFECTIVEGITCONFIG      1851
 #define IDS_LOG_FILTER_AUTHORS          1852
+#define IDC_MERGEBLOCK                  1852
 #define IDS_LOG_FILTER_MESSAGES         1853
+#define IDC_TRUSTEXITCODE               1853
 #define IDS_LOG_FILTER_REVS             1854
 #define IDS_LOG_FILTER_REGEX            1855
 #define IDS_LOG_FILTER_BUGIDS           1856
@@ -2074,7 +2077,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        363
 #define _APS_NEXT_COMMAND_VALUE         32875
-#define _APS_NEXT_CONTROL_VALUE         1852
+#define _APS_NEXT_CONTROL_VALUE         1853
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif
