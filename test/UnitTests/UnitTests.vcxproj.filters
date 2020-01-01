@@ -173,6 +173,9 @@
     <ClInclude Include="..\..\src\TortoiseMerge\Patch.h">
       <Filter>TortoiseGitMerge</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\Git\GitMailmap.h">
+      <Filter>Git</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -369,6 +372,9 @@
     </ClCompile>
     <ClCompile Include="TempFileTest.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Git\GitMailmap.cpp">
+      <Filter>Git</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

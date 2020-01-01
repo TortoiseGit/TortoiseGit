@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2017-2019 - TortoiseGit
+// Copyright (C) 2017-2020 - TortoiseGit
 // Copyright (C) 2003-2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -290,9 +290,23 @@ int GetStatus(const TCHAR* path, GitWCRev_t& GitStat)
 		return ERR_GIT_ERR;
 
 	const git_signature* sig = git_commit_author(commit);
-	GitStat.HeadAuthor = sig->name;
-	GitStat.HeadEmail = sig->email;
 	GitStat.HeadTime = sig->when.time;
+	if (CRegStdDWORD(L"Software\\TortoiseGit\\UseMailmap", TRUE) == TRUE)
+	{
+		CAutoMailmap mailmap;
+		if (git_mailmap_from_repository(mailmap.GetPointer(), repo))
+			return ERR_GIT_ERR;
+		CAutoSignature resolvedSignature;
+		if (git_mailmap_resolve_signature(resolvedSignature.GetPointer(), mailmap, sig))
+			return ERR_GIT_ERR;
+		GitStat.HeadAuthor = (*resolvedSignature).name;
+		GitStat.HeadEmail = (*resolvedSignature).email;
+	}
+	else
+	{
+		GitStat.HeadAuthor = sig->name;
+		GitStat.HeadEmail = sig->email;
+	}
 
 #pragma warning(push)
 #pragma warning(disable: 4510 4512 4610)

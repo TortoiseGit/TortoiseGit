@@ -110,6 +110,7 @@ protected:
 			MessageBox(gitrev.GetLastErr(), L"TortoiseGit", MB_ICONERROR);
 			return -1;
 		}
+		gitrev.ApplyMailmap();
 		*rev=gitrev;
 		return 0;
 	}

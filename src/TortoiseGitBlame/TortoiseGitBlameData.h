@@ -117,11 +117,11 @@ public:
 
 	GitRevLoglist* GetRev(int line, CGitHashMap& hashToRev)
 	{
-		return GetRevForHash(hashToRev, GetHash(line));
+		return GetRevForHash(hashToRev, GetHash(line), GitRevLoglist::s_Mailmap.get());
 	}
 
 private:
-	static GitRevLoglist* GetRevForHash(CGitHashMap& HashToRev, const CGitHash& hash, CString* err = nullptr);
+	static GitRevLoglist* GetRevForHash(CGitHashMap& HashToRev, const CGitHash& hash, const CGitMailmap* mailmap, CString* err = nullptr);
 	static CString UnquoteFilename(CStringA& s);
 
 	std::vector<CGitHash>		m_Hash;

@@ -34,6 +34,7 @@
 #include "CommonAppUtils.h"
 #include "BlameDetectMovedOrCopiedLines.h"
 #include "TempFile.h"
+#include "GitMailmap.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -234,6 +235,11 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 		}
 #endif
 		m_GitPath = path;
+
+		if (CGitMailmap::ShouldLoadMailmap())
+			GitRevLoglist::s_Mailmap = std::make_shared<CGitMailmap>();
+		else if (GitRevLoglist::s_Mailmap)
+			GitRevLoglist::s_Mailmap = nullptr;
 
 		CTortoiseGitBlameView *pView=DYNAMIC_DOWNCAST(CTortoiseGitBlameView,GetMainFrame()->GetActiveView());
 		if (!pView)

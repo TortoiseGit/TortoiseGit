@@ -55,6 +55,7 @@
     <ClCompile Include="..\Git\Git.cpp" />
     <ClCompile Include="..\Git\GitAdminDir.cpp" />
     <ClCompile Include="..\Git\GitDataObject.cpp" />
+    <ClCompile Include="..\Git\GitMailmap.cpp" />
     <ClCompile Include="..\Git\GitRev.cpp" />
     <ClCompile Include="..\Git\GitRevLoglist.cpp" />
     <ClCompile Include="..\Git\GitRevRefBrowser.cpp" />
@@ -332,6 +333,7 @@
     <ClInclude Include="..\Git\GitDataObject.h" />
     <ClInclude Include="..\Git\GitForWindows.h" />
     <ClInclude Include="..\Git\GitHash.h" />
+    <ClInclude Include="..\Git\GitMailmap.h" />
     <ClInclude Include="..\Git\GitRev.h" />
     <ClInclude Include="..\Git\GitRevLoglist.h" />
     <ClInclude Include="..\Git\GitRevRefBrowser.h" />

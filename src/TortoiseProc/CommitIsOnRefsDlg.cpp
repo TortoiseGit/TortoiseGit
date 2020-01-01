@@ -452,6 +452,7 @@ UINT CCommitIsOnRefsDlg::GetRefsThread()
 		InterlockedExchange(&m_bThreadRunning, FALSE);
 		return 0;
 	}
+	m_gitrev.ApplyMailmap();
 
 	if (g_Git.GetRefsCommitIsOn(m_RefList, m_gitrev.m_CommitHash, true, true, CGit::BRANCH_ALL))
 	{

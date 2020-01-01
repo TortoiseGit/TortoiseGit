@@ -68,6 +68,7 @@
     <ClInclude Include="..\..\src\Git\GitForWindows.h" />
     <ClInclude Include="..\..\src\Git\GitHash.h" />
     <ClInclude Include="..\..\src\Git\gitindex.h" />
+    <ClInclude Include="..\..\src\Git\GitMailmap.h" />
     <ClInclude Include="..\..\src\Git\GitRev.h" />
     <ClInclude Include="..\..\src\Git\GitRevLoglist.h" />
     <ClInclude Include="..\..\src\Git\GitRevRefBrowser.h" />
@@ -118,6 +119,7 @@
     <ClCompile Include="..\..\src\Git\Git.cpp" />
     <ClCompile Include="..\..\src\Git\GitAdminDir.cpp" />
     <ClCompile Include="..\..\src\Git\GitIndex.cpp" />
+    <ClCompile Include="..\..\src\Git\GitMailmap.cpp" />
     <ClCompile Include="..\..\src\Git\GitRev.cpp" />
     <ClCompile Include="..\..\src\Git\GitRevLoglist.cpp" />
     <ClCompile Include="..\..\src\Git\GitRevRefBrowser.cpp" />
