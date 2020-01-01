@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 // Copyright (C) 2003-2011, 2013-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -285,6 +285,7 @@ BOOL CAppUtils::StartExtMerge(bool bAlternative,
 			(ext == L".dib") || (ext == L".emf")  ||
 			(ext == L".cur"))
 		{
+			bInternal = true;
 			com = CPathUtils::GetAppDirectory() + L"TortoiseGitIDiff.exe";
 			com = L'"' + com + L'"';
 			com = com + L" /base:%base /theirs:%theirs /mine:%mine /result:%merged";
