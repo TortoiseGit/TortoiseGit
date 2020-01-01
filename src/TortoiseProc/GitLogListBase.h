@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -412,7 +412,7 @@ public:
 	static inline unsigned __int64 GetContextMenuBit(int i) { return unsigned __int64(0x1) << i; }
 	static CString GetRebaseActionName(int action);
 	void InsertGitColumn();
-	void CopySelectionToClipBoard(int toCopy = ID_COPYCLIPBOARDFULL);
+	virtual void CopySelectionToClipBoard(int toCopy = ID_COPYCLIPBOARDFULL);
 	void DiffSelectedRevWithPrevious();
 	bool IsSelectionContinuous();
 protected:

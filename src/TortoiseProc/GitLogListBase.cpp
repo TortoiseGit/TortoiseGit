@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 // Copyright (C) 2005-2007 Marco Costalba
 
 // This program is free software; you can redistribute it and/or
@@ -2347,7 +2347,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 		CIconMenu clipSubMenu;
 		if (!clipSubMenu.CreatePopupMenu())
 			return;
-		if (m_ContextMenuMask & GetContextMenuBit(ID_COPYCLIPBOARD))
+		if (m_ContextMenuMask & GetContextMenuBit(ID_COPYCLIPBOARD) && m_ColumnRegKey != L"reflog")
 		{
 			clipSubMenu.AppendMenuIcon(ID_COPYCLIPBOARDFULL, IDS_LOG_POPUP_CLIPBOARD_FULL, IDI_COPYCLIP);
 			clipSubMenu.AppendMenuIcon(ID_COPYCLIPBOARDFULLNOPATHS, IDS_LOG_POPUP_CLIPBOARD_FULLNOPATHS, IDI_COPYCLIP);
@@ -2365,6 +2365,16 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				if (IsMouseOnRefLabelFromPopupMenu(pSelLogEntry, point, type, hashMap, nullptr, &index))
 					clipSubMenu.SetMenuItemData(ID_COPYCLIPBOARDBRANCHTAG, reinterpret_cast<LONG_PTR>(&hashMap[pSelLogEntry->m_CommitHash][index]));
 			}
+
+			CString temp;
+			temp.LoadString(IDS_LOG_POPUP_COPYTOCLIPBOARD);
+			popup.InsertMenu(static_cast<UINT>(-1), MF_BYPOSITION | MF_POPUP, reinterpret_cast<UINT_PTR>(clipSubMenu.m_hMenu), temp);
+		}
+		else if (m_ContextMenuMask & GetContextMenuBit(ID_COPYCLIPBOARD) && m_ColumnRegKey == L"reflog")
+		{
+			clipSubMenu.AppendMenuIcon(ID_COPYCLIPBOARDFULL, IDS_LOG_POPUP_CLIPBOARD_FULL, IDI_COPYCLIP);
+			clipSubMenu.AppendMenuIcon(ID_COPYCLIPBOARDHASH, IDS_LOG_HASH, IDI_COPYCLIP);
+			clipSubMenu.AppendMenuIcon(ID_COPYCLIPBOARDMESSAGES, IDS_LOG_POPUP_CLIPBOARD_MSGS, IDI_COPYCLIP);
 
 			CString temp;
 			temp.LoadString(IDS_LOG_POPUP_COPYTOCLIPBOARD);

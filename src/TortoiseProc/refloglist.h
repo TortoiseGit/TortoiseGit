@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2011, 2015-2017 - TortoiseGit
+// Copyright (C) 2009-2011, 2015-2017, 2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -43,4 +43,6 @@ protected:
 	virtual void OnLvnGetdispinfoLoglist(NMHDR* pNMHDR, LRESULT* pResult) override;
 	virtual void OnNMCustomdrawLoglist(NMHDR* pNMHDR, LRESULT* pResult) override;
 	virtual BOOL OnToolTipText(UINT id, NMHDR* pNMHDR, LRESULT* pResult) override;
+
+	void CopySelectionToClipBoard(int toCopy = ID_COPYCLIPBOARDFULL) override;
 };

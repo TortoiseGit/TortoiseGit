@@ -23,6 +23,7 @@ Released: unreleased
  * Mark SSHAskPass and TortoiseGitPlink as DPIAware
  * PatchViewDlg: Fix Windows 10 border issue
  * Allow Refbrowser and Reflog to be minimized
+ * Fixed issue #3480: Copy options in RefLog are misleading
 
 = Release 2.9.0 =
 Released: 2019-10-31
