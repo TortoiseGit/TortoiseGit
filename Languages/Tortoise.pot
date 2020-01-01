@@ -7060,7 +7060,7 @@ msgid "Pull (fetch and merge) commits from a remote branch."
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_PULLWRONGBRANCH)
-msgid "Pull requires the selected local branch to be the current branch."
+msgid "Pull requires the selected local branch to be the current branch.\nDo you want to switch to the selected branch?"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 302)
@@ -8868,6 +8868,11 @@ msgstr ""
 msgid "Switch the contents of the left and right view\nSwitch left and right view"
 msgstr ""
 
+#. Resource IDs: (IDS_PROC_SYNC_SWITCHTO)
+#, c-format
+msgid "Switch to \"%s\""
+msgstr ""
+
 #. Resource IDs: (AFX_IDS_SCNEXTWINDOW)
 msgid "Switch to the next document window"
 msgstr ""
@@ -9739,7 +9744,7 @@ msgstr ""
 msgid "Use 'theirs' text block then 'mine'"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1911)
+#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 1911)
 msgid "Use .mailmap"
 msgstr ""
 

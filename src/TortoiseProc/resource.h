@@ -1406,6 +1406,7 @@
 #define IDS_MERGESUCCESSFUL             1675
 #define IDC_TOGROUP                     1676
 #define IDC_IGNORE_WHITESPACE           1676
+#define IDS_PROC_SYNC_SWITCHTO          1676
 #define IDC_FROMHASH                    1677
 #define IDC_BLAME_ONLYFIRSTPARENT       1677
 #define IDC_FROMSUBJECT                 1678

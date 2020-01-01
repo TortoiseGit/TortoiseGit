@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -180,10 +180,21 @@ void CSyncDlg::OnBnClickedButtonPull()
 			MessageBox(g_Git.GetGitLastErr(L"Could not get hash of \"" + m_strLocalBranch + L"\"."), L"TortoiseGit", MB_ICONERROR);
 			return;
 		}
-		if (localBranchHash != m_oldHash)
+		if (localBranchHash != m_oldHash || m_strLocalBranch != g_Git.GetCurrentBranch())
 		{
-			CMessageBox::Show(GetSafeHwnd(), IDS_PROC_SYNC_PULLWRONGBRANCH, IDS_APPNAME, MB_OK | MB_ICONERROR);
-			return;
+			CString tmp;
+			tmp.Format(IDS_PROC_SYNC_SWITCHTO, static_cast<LPCTSTR>(m_strLocalBranch));
+			if (CMessageBox::Show(GetSafeHwnd(), CString(MAKEINTRESOURCE(IDS_PROC_SYNC_PULLWRONGBRANCH)), L"TortoiseGit", 2, IDI_QUESTION, tmp, CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
+				return;
+
+			CString cmd;
+			cmd.Format(L"git.exe checkout %s --", static_cast<LPCTSTR>(m_strLocalBranch));
+
+			CProgressDlg progress(this);
+			progress.m_AutoClose = AUTOCLOSE_IF_NO_ERRORS;
+			progress.m_GitCmd = cmd;
+			if (progress.DoModal() != IDOK || progress.m_GitStatus != 0)
+				return;
 		}
 	}
 

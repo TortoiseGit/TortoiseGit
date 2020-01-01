@@ -3817,6 +3817,7 @@ BEGIN
     IDS_CLONE_ORIGIN_NAME_TT 
                             "Instead of using the remote name ""origin"" to keep track of the upstream repository, use the specific name."
     IDS_MERGESUCCESSFUL     "Was the merge of\n%s\nsuccessful?"
+    IDS_PROC_SYNC_SWITCHTO  "Switch to ""%s"""
 END
 
 STRINGTABLE
@@ -4657,7 +4658,7 @@ BEGIN
     IDS_PROC_FASTFORWARD    "Fast Forward"
     IDS_PROC_EVERYTHINGUPDATED "Everything updated."
     IDS_PROC_SYNC_PULLWRONGBRANCH 
-                            "Pull requires the selected local branch to be the current branch."
+                            "Pull requires the selected local branch to be the current branch.\nDo you want to switch to the selected branch?"
     IDS_PROC_SYNC_REFRESHING "Refreshing..."
     IDS_PROC_SYNC_COMMITSAHEAD "%1!d! commits ahead ""%2!s!"""
     IDS_PROC_SYNC_WAINTINPUT "Waiting for input"
