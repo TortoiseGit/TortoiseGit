@@ -292,6 +292,8 @@ BOOL CAppUtils::StartExtMerge(bool bAlternative,
 			com = com + L" /basetitle:%bname /theirstitle:%tname /minetitle:%yname";
 			if (resolveMsgHwnd)
 				com.AppendFormat(L" /resolvemsghwnd:%I64d", reinterpret_cast<__int64>(resolveMsgHwnd));
+			if (bDeleteBaseTheirsMineOnClose)
+				com += L" /deletebasetheirsmineonclose";
 		}
 		else
 		{
