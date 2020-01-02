@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2019 - TortoiseGit
+// Copyright (C) 2012-2019-2020 - TortoiseGit
 // Copyright (C) 2003-2008,2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -79,24 +79,24 @@ BOOL CSetSavedDataPage::OnInitDialog()
 			regloghistwc.getValues(loghistlistwc);
 			nLogHistMsg += loghistlistwc.GetCount();
 		}
-		else
+	}
+
+	{
+		// repoURLs
+		CStringList urlhistlistmain;
+		CStringList urlhistlistmainvalues;
+		CRegistryKey regurlhistlist(L"Software\\TortoiseGit\\History\\repoURLS");
+		regurlhistlist.getSubKeys(urlhistlistmain);
+		regurlhistlist.getValues(urlhistlistmainvalues);
+		nUrlHistItems += urlhistlistmainvalues.GetCount();
+		for (POSITION urlpos = urlhistlistmain.GetHeadPosition(); urlpos;)
 		{
-			// repoURLs
-			CStringList urlhistlistmain;
-			CStringList urlhistlistmainvalues;
-			CRegistryKey regurlhistlist(L"Software\\TortoiseGit\\History\\repoURLS");
-			regurlhistlist.getSubKeys(urlhistlistmain);
-			regurlhistlist.getValues(urlhistlistmainvalues);
-			nUrlHistItems += urlhistlistmainvalues.GetCount();
-			for (POSITION urlpos = urlhistlistmain.GetHeadPosition(); urlpos; )
-			{
-				CString sWCUID = urlhistlistmain.GetNext(urlpos);
-				nUrlHistWC++;
-				CStringList urlhistlistwc;
-				CRegistryKey regurlhistlistwc(L"Software\\TortoiseGit\\History\\repoURLS\\"+sWCUID);
-				regurlhistlistwc.getValues(urlhistlistwc);
-				nUrlHistItems += urlhistlistwc.GetCount();
-			}
+			CString sWCUID = urlhistlistmain.GetNext(urlpos);
+			nUrlHistWC++;
+			CStringList urlhistlistwc;
+			CRegistryKey regurlhistlistwc(L"Software\\TortoiseGit\\History\\repoURLS\\" + sWCUID);
+			regurlhistlistwc.getValues(urlhistlistwc);
+			nUrlHistItems += urlhistlistwc.GetCount();
 		}
 	}
 
