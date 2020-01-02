@@ -3818,6 +3818,7 @@ BEGIN
                             "Instead of using the remote name ""origin"" to keep track of the upstream repository, use the specific name."
     IDS_MERGESUCCESSFUL     "Was the merge of\n%s\nsuccessful?"
     IDS_PROC_SYNC_SWITCHTO  "Switch to ""%s"""
+    IDS_CONFIGUREDEFAULT    "Configure default"
 END
 
 STRINGTABLE

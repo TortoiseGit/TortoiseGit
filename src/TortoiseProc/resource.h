@@ -1409,6 +1409,7 @@
 #define IDS_PROC_SYNC_SWITCHTO          1676
 #define IDC_FROMHASH                    1677
 #define IDC_BLAME_ONLYFIRSTPARENT       1677
+#define IDS_CONFIGUREDEFAULT            1677
 #define IDC_FROMSUBJECT                 1678
 #define IDC_TOHASH                      1679
 #define IDC_TOSUBJECT                   1680

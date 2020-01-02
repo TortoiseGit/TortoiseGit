@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2009, 2015 - TortoiseSVN
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -1490,6 +1490,9 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 			popup.AppendMenuIcon(++cnt, item);
 		}
 
+		popup.AppendMenu(MF_SEPARATOR);
+		popup.AppendMenuIcon(++cnt, IDS_CONFIGUREDEFAULT);
+
 		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this);
 		if (cmd <= 0)
 			return;
@@ -1498,6 +1501,11 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 			m_LogList.m_Filter.m_NumberOfLogsScale = CFilterData::SHOW_NO_LIMIT;
 			// reset last selected date
 			m_regLastSelectedFromDate.removeValue();
+		}
+		else if (cmd == cnt) // last entry, must be before cmd >= 2
+		{
+			CAppUtils::RunTortoiseGitProc(L"/command:settings /page:dialog");
+			return;
 		}
 		else if (cmd == 2)
 			m_LogList.m_Filter.m_NumberOfLogsScale = scale;

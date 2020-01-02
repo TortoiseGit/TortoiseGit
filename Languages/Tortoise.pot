@@ -2816,6 +2816,10 @@ msgstr ""
 msgid "Configure alternative editor. Preferably one which can handle *nix line endings."
 msgstr ""
 
+#. Resource IDs: (IDS_CONFIGUREDEFAULT)
+msgid "Configure default"
+msgstr ""
+
 #. Resource IDs: (IDS_FIRSTSTART_GITTITLE)
 msgid "Configure git.exe"
 msgstr ""
