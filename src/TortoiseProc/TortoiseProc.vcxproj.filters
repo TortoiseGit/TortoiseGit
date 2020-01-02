@@ -722,9 +722,6 @@
     <ClCompile Include="..\Utils\JumpListHelpers.cpp">
       <Filter>Utils\General</Filter>
     </ClCompile>
-    <ClCompile Include="..\Utils\LangDll.cpp">
-      <Filter>Utils\General</Filter>
-    </ClCompile>
     <ClCompile Include="..\Utils\MailMsg.cpp">
       <Filter>Utils\General</Filter>
     </ClCompile>
@@ -1541,9 +1538,6 @@
       <Filter>Utils\General</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\JumpListHelpers.h">
-      <Filter>Utils\General</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Utils\LangDll.h">
       <Filter>Utils\General</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\Libraries.h">

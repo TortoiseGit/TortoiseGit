@@ -77,7 +77,6 @@
     <ClCompile Include="..\Utils\HwSMTP.cpp" />
     <ClCompile Include="..\Utils\IconExtractor.cpp" />
     <ClCompile Include="..\Utils\JumpListHelpers.cpp" />
-    <ClCompile Include="..\Utils\LangDll.cpp" />
     <ClCompile Include="..\Utils\LoadIconEx.cpp" />
     <ClCompile Include="..\Utils\MailMsg.cpp" />
     <ClCompile Include="..\Utils\MiscUI\AnimationManager.cpp" />
@@ -361,7 +360,6 @@
     <ClInclude Include="..\Utils\IconExtractor.h" />
     <ClInclude Include="..\Utils\IInputValidator.h" />
     <ClInclude Include="..\Utils\JumpListHelpers.h" />
-    <ClInclude Include="..\Utils\LangDll.h" />
     <ClInclude Include="..\Utils\Libraries.h" />
     <ClInclude Include="..\Utils\LoadIconEx.h" />
     <ClInclude Include="..\Utils\LruCache.h" />
