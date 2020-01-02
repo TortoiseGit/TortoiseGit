@@ -30,6 +30,9 @@ using std::min;
 #define COMMITMONITOR_FINDEXIT			(WM_APP+3)
 #define COMMITMONITOR_FINDRESET			(WM_APP+4)
 
+#include "SmartHandle.h"
+#include "scope_exit_noexcept.h"
+
 #ifdef _WIN64
 #   define APP_X64_STRING "x64"
 #else

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2017, 2019 - TortoiseGit
+// Copyright (C) 2016-2017, 2019-2020 - TortoiseGit
 // Copyright (C) 2003-2006, 2008, 2013-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -32,6 +32,7 @@ CLangDll::CLangDll()
 
 CLangDll::~CLangDll()
 {
+	Close();
 }
 
 HINSTANCE CLangDll::Init(LPCTSTR appname, unsigned long langID)

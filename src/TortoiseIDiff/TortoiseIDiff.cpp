@@ -44,6 +44,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
     CRegStdDWORD loc = CRegStdDWORD(L"Software\\TortoiseGit\\LanguageID", 1033);
     long langId = loc;
     CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
+    SCOPE_EXIT { CoUninitialize(); };
 
     CLangDll langDLL;
     hResource = langDLL.Init(L"TortoiseIDiff", langId);
@@ -51,6 +52,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
         hResource = hInstance;
 
     git_libgit2_init();
+    SCOPE_EXIT { git_libgit2_shutdown(); };
 
     CCmdLineParser parser(lpCmdLine);
 
@@ -165,10 +167,5 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
         }
         return static_cast<int>(msg.wParam);
     }
-    langDLL.Close();
-    DestroyCursor(curHand);
-    DestroyCursor(curHandDown);
-    CoUninitialize();
-    git_libgit2_shutdown();
     return 1;
 }

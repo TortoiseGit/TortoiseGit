@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2019 - TortoiseGit
+// Copyright (C) 2011-2020 - TortoiseGit
 // Copyright (C) 2003-2008, 2010-2012, 2014-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -51,6 +51,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 #endif
 
 	CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
+	SCOPE_EXIT { CoUninitialize(); };
 
 	CLangDll langDLL;
 	hResource = langDLL.Init(L"TortoiseGitUDiff", langId);
@@ -72,8 +73,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	};
 	InitCommonControlsEx(&used);
 
-
-	HMODULE hSciLexerDll = ::LoadLibrary(L"SciLexer_tgit.dll");
+	CAutoLibrary hSciLexerDll = ::LoadLibrary(L"SciLexer_tgit.dll");
 	if (!hSciLexerDll)
 		return -1;
 
@@ -97,10 +97,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	}
 
 	if (!mainWindow.RegisterAndCreateWindow())
-	{
-		FreeLibrary(hSciLexerDll);
 		return -1;
-	}
 
 	bool bLoadedSuccessfully = false;
 	if ((lpCmdLine[0] == L'\0') || (parser.HasKey(L"p")))
@@ -124,10 +121,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	}
 
 	if (!bLoadedSuccessfully)
-	{
-		FreeLibrary(hSciLexerDll);
 		return 1;
-	}
 
 	::ShowWindow(mainWindow.GetHWNDEdit(), SW_SHOW);
 	::SetFocus(mainWindow.GetHWNDEdit());
@@ -144,6 +138,5 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 		}
 	}
 
-	FreeLibrary(hSciLexerDll);
 	return static_cast<int>(msg.wParam);
 }
