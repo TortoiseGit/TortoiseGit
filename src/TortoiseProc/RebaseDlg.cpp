@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -158,8 +158,8 @@ void CRebaseDlg::AddRebaseAnchor()
 	AddAnchor(IDC_REBASE_STATIC_UPSTREAM, TOP_CENTER);
 	AddAnchor(IDC_REBASE_STATIC_BRANCH,TOP_LEFT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
-	AddAnchor(IDC_REBASE_CHECK_FORCE, TOP_CENTER, TOP_RIGHT);
-	AddAnchor(IDC_REBASE_CHECK_PRESERVEMERGES, TOP_LEFT, TOP_CENTER);
+	AddAnchor(IDC_REBASE_CHECK_FORCE, TOP_CENTER);
+	AddAnchor(IDC_REBASE_CHECK_PRESERVEMERGES, TOP_LEFT);
 	AddAnchor(IDC_CHECK_CHERRYPICKED_FROM, TOP_RIGHT);
 	AddAnchor(IDC_REBASE_SPLIT_COMMIT, BOTTOM_RIGHT);
 	AddAnchor(IDC_REBASE_POST_BUTTON,BOTTOM_LEFT);

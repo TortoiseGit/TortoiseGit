@@ -26,6 +26,7 @@ Released: unreleased
  * Allow Refbrowser and Reflog to be minimized
  * Fixed issue #3480: Copy options in RefLog are misleading
  * Fixed issue #3497: Settings/Saved Data/URL-History/Del doesn't remove PUSH URLs:
+ * Fixed issue #3466: Rebase checkboxes might disappear when resizing
 
 = Release 2.9.0 =
 Released: 2019-10-31
