@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016, 2018-2019 - TortoiseGit
+// Copyright (C) 2016, 2018-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -53,6 +53,24 @@ int CWindowsCredentialsStore::SaveCredential(const CString& entryName, const CSt
 int CWindowsCredentialsStore::DeleteCredential(const CString& entryName)
 {
 	return CredDelete(entryName, CRED_TYPE_GENERIC, 0) == TRUE ? 0 : -1;
+}
+
+int CWindowsCredentialsStore::ListCredentials(const CString& startsWith, CStringList& result)
+{
+	ATLASSERT(!startsWith.IsEmpty());
+	DWORD dwCount = 0;
+	PCREDENTIAL* pCreds = nullptr;
+	if (CredEnumerate(startsWith, 0, &dwCount, &pCreds) != TRUE)
+		return -1;
+
+	for (DWORD dwIndex = 0; dwIndex < dwCount; ++dwIndex)
+	{
+		auto pCredential = pCreds[dwIndex];
+		result.AddTail(pCredential->TargetName);
+	}
+
+	CredFree(pCreds);
+	return 0;
 }
 
 CCredentials::CCredentials()

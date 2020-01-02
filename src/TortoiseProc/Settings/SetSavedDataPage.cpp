@@ -27,6 +27,7 @@
 #include "MessageBox.h"
 #include "StringUtils.h"
 #include "Git.h"
+#include "WindowsCredentialsStore.h"
 
 IMPLEMENT_DYNAMIC(CSetSavedDataPage, ISettingsPropPage)
 
@@ -138,6 +139,9 @@ BOOL CSetSavedDataPage::OnInitDialog()
 		while (userenum.NextFile(sFile, &bIsDir))
 			nUsername++;
 	}
+	CStringList credStore;
+	CWindowsCredentialsStore::ListCredentials(L"git:*", credStore);
+	nSimple += static_cast<int>(credStore.GetCount());
 
 	CDirFileEnum logenum(CPathUtils::GetAppDataDirectory() + L"logcache");
 	while (logenum.NextFile(sFile, &bIsDir))
@@ -246,6 +250,12 @@ void CSetSavedDataPage::OnBnClickedAuthhistclear()
 		CString path = pszPath;
 		path += L"\\Subversion\\auth\\";
 		DeleteViaShell(path, IDS_SETTINGS_DELFILE);
+	}
+	CStringList credStore;
+	CWindowsCredentialsStore::ListCredentials(L"git:*", credStore);
+	for (POSITION pos = credStore.GetHeadPosition(); pos;)
+	{
+		CWindowsCredentialsStore::DeleteCredential(credStore.GetNext(pos));
 	}
 	m_btnAuthHistClear.EnableWindow(FALSE);
 	m_tooltips.DelTool(GetDlgItem(IDC_AUTHHISTCLEAR));

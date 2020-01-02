@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016, 2018 - TortoiseGit
+// Copyright (C) 2016, 2018, 2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,11 +25,17 @@
 TEST(WindowsCredentialsStore, GetSetOverrideDelete)
 {
 	EXPECT_EQ(-1, CWindowsCredentialsStore::DeleteCredential(CREDENDIALSTORETESTENTRY));
+	CStringList creds;
+	EXPECT_EQ(-1, CWindowsCredentialsStore::ListCredentials(CREDENDIALSTORETESTENTRY, creds));
+	EXPECT_TRUE(creds.IsEmpty());
 	CCredentials credentials;
 	EXPECT_EQ(-1, CWindowsCredentialsStore::GetCredential(CREDENDIALSTORETESTENTRY, credentials));
 	CString username = L"someusername";
 	CString password = L"somepassword";
 	EXPECT_EQ(0, CWindowsCredentialsStore::SaveCredential(CREDENDIALSTORETESTENTRY, username, password));
+	EXPECT_EQ(0, CWindowsCredentialsStore::ListCredentials(CREDENDIALSTORETESTENTRY, creds));
+	ASSERT_EQ(1, creds.GetCount());
+	EXPECT_STREQ(CREDENDIALSTORETESTENTRY, creds.GetHead());
 	CCredentials credentials2;
 	EXPECT_EQ(0, CWindowsCredentialsStore::GetCredential(CREDENDIALSTORETESTENTRY, credentials2));
 	EXPECT_STREQ(L"someusername", credentials2.m_username);
