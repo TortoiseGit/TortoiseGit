@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2019 - TortoiseGit
+// Copyright (C) 2012-2019-2020 - TortoiseGit
 // Copyright (C) 2003-2008,2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -27,6 +27,7 @@
 #include "MessageBox.h"
 #include "StringUtils.h"
 #include "Git.h"
+#include "WindowsCredentialsStore.h"
 
 IMPLEMENT_DYNAMIC(CSetSavedDataPage, ISettingsPropPage)
 
@@ -55,6 +56,23 @@ void CSetSavedDataPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_ACTIONLOGCLEAR, m_btnActionLogClear);
 }
 
+static void RecursivelyCount(const CString& base, const CString& key, std::set<CString>& wcs, INT_PTR& historyNums)
+{
+	CRegistryKey regurlhistlist(L"Software\\TortoiseGit\\History\\" + base + key);
+	CStringList values;
+	regurlhistlist.getValues(values);
+	historyNums += values.GetCount();
+	if (!key.IsEmpty() && !values.IsEmpty())
+		wcs.insert(key);
+	CStringList subkeys;
+	regurlhistlist.getSubKeys(subkeys);
+	for (POSITION subkeypos = subkeys.GetHeadPosition(); subkeypos;)
+	{
+		CString repo = key + L'\\' + subkeys.GetNext(subkeypos);
+		RecursivelyCount(base, repo, wcs, historyNums);
+	}
+}
+
 BOOL CSetSavedDataPage::OnInitDialog()
 {
 	ISettingsPropPage::OnInitDialog();
@@ -79,26 +97,14 @@ BOOL CSetSavedDataPage::OnInitDialog()
 			regloghistwc.getValues(loghistlistwc);
 			nLogHistMsg += loghistlistwc.GetCount();
 		}
-		else
-		{
-			// repoURLs
-			CStringList urlhistlistmain;
-			CStringList urlhistlistmainvalues;
-			CRegistryKey regurlhistlist(L"Software\\TortoiseGit\\History\\repoURLS");
-			regurlhistlist.getSubKeys(urlhistlistmain);
-			regurlhistlist.getValues(urlhistlistmainvalues);
-			nUrlHistItems += urlhistlistmainvalues.GetCount();
-			for (POSITION urlpos = urlhistlistmain.GetHeadPosition(); urlpos; )
-			{
-				CString sWCUID = urlhistlistmain.GetNext(urlpos);
-				nUrlHistWC++;
-				CStringList urlhistlistwc;
-				CRegistryKey regurlhistlistwc(L"Software\\TortoiseGit\\History\\repoURLS\\"+sWCUID);
-				regurlhistlistwc.getValues(urlhistlistwc);
-				nUrlHistItems += urlhistlistwc.GetCount();
-			}
-		}
 	}
+
+	std::set<CString> wcs;
+	for (CString key : { L"repoURLS", L"FormatPatchURLS", L"PullURLS", L"PushURLS", L"SubModuleRepoURLS", L"SyncURL" })
+	{
+		RecursivelyCount(key, L"", wcs, nUrlHistItems);
+	}
+	nUrlHistWC = static_cast<int>(wcs.size());
 
 	// find out how many dialog sizes / positions we've stored
 	INT_PTR nResizableDialogs = 0;
@@ -133,6 +139,9 @@ BOOL CSetSavedDataPage::OnInitDialog()
 		while (userenum.NextFile(sFile, &bIsDir))
 			nUsername++;
 	}
+	CStringList credStore;
+	CWindowsCredentialsStore::ListCredentials(L"git:*", credStore);
+	nSimple += static_cast<int>(credStore.GetCount());
 
 	CDirFileEnum logenum(CPathUtils::GetAppDataDirectory() + L"logcache");
 	while (logenum.NextFile(sFile, &bIsDir))
@@ -193,8 +202,11 @@ END_MESSAGE_MAP()
 
 void CSetSavedDataPage::OnBnClickedUrlhistclear()
 {
-	CRegistryKey reg(L"Software\\TortoiseGit\\History\\repoURLS");
-	reg.removeKey();
+	for (CString key : { L"repoURLS", L"FormatPatchURLS", L"PullURLS", L"PushURLS", L"SubModuleRepoURLS", L"SyncURL" })
+	{
+		CRegistryKey reg(L"Software\\TortoiseGit\\History\\" + key);
+		reg.removeKey();
+	}
 	m_btnUrlHistClear.EnableWindow(FALSE);
 	m_tooltips.DelTool(GetDlgItem(IDC_URLHISTCLEAR));
 	m_tooltips.DelTool(GetDlgItem(IDC_URLHISTORY));
@@ -238,6 +250,12 @@ void CSetSavedDataPage::OnBnClickedAuthhistclear()
 		CString path = pszPath;
 		path += L"\\Subversion\\auth\\";
 		DeleteViaShell(path, IDS_SETTINGS_DELFILE);
+	}
+	CStringList credStore;
+	CWindowsCredentialsStore::ListCredentials(L"git:*", credStore);
+	for (POSITION pos = credStore.GetHeadPosition(); pos;)
+	{
+		CWindowsCredentialsStore::DeleteCredential(credStore.GetNext(pos));
 	}
 	m_btnAuthHistClear.EnableWindow(FALSE);
 	m_tooltips.DelTool(GetDlgItem(IDC_AUTHHISTCLEAR));
