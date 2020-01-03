@@ -69,14 +69,14 @@ bool SVNFetchCommand::Execute()
 		if (upstreamOldHash == upstreamNewHash)
 			return;
 
-		postCmdList.emplace_back(IDI_DIFF, L"Fetched Diff", [&]
+		postCmdList.emplace_back(IDI_DIFF, IDS_PROC_PULL_DIFFS, [&]
 		{
 			CString sCmd;
 			sCmd.Format(L"/command:showcompare /path:\"%s\" /revision1:%s /revision2:%s", static_cast<LPCTSTR>(g_Git.m_CurrentDir), static_cast<LPCTSTR>(upstreamOldHash.ToString()), static_cast<LPCTSTR>(upstreamNewHash.ToString()));
 			CAppUtils::RunTortoiseGitProc(sCmd);
 		});
 
-		postCmdList.emplace_back(IDI_LOG, L"Fetched Log", [&]
+		postCmdList.emplace_back(IDI_LOG, IDS_PROC_PULL_LOG, [&]
 		{
 			CString sCmd;
 			sCmd.Format(L"/command:log /path:\"%s\" /range:%s", static_cast<LPCTSTR>(g_Git.m_CurrentDir), static_cast<LPCTSTR>(upstreamOldHash.ToString() + L".." + upstreamNewHash.ToString()));
