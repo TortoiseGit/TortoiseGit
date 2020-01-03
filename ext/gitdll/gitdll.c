@@ -283,10 +283,7 @@ int git_free_commit(GIT_COMMIT *commit)
 	if (p->maybe_tree)
 		free_tree_buffer(p->maybe_tree);
 
-#pragma warning(push)
-#pragma warning(disable: 4090)
-	free(commit->buffer);
-#pragma warning(pop)
+	free((void*)commit->buffer);
 
 	p->object.parsed = 0;
 	p->parents = 0;
