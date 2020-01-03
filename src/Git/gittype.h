@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -91,7 +91,9 @@ public:
 	static const size_t npos = static_cast<size_t>(-1); // bad/missing length/position
 	static_assert(MAXSIZE_T == npos, "NPOS must equal MAXSIZE_T");
 #pragma warning(push)
-#pragma warning(disable: 4309)
+#if _MSC_VER < 1920
+#pragma warning(disable: 4309) // 'static_cast': truncation of constant value
+#endif
 	static_assert(-1 == static_cast<int>(npos), "NPOS must equal -1");
 #pragma warning(pop)
 };

@@ -308,10 +308,7 @@ int GetStatus(const TCHAR* path, GitWCRev_t& GitStat)
 		GitStat.HeadEmail = sig->email;
 	}
 
-#pragma warning(push)
-#pragma warning(disable: 4510 4512 4610)
 	struct TagPayload { git_repository* repo; GitWCRev_t& GitStat; } tagpayload = { repo, GitStat };
-#pragma warning(pop)
 
 	if (git_tag_foreach(repo, [](const char*, git_oid* tagoid, void* payload)
 	{

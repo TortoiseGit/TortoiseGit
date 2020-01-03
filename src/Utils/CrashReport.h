@@ -22,10 +22,7 @@
 #include <time.h>
 #include <string>
 #include <tchar.h>
-#pragma warning(push)
-#pragma warning(disable: 4091)
 #include <DbgHelp.h>
-#pragma warning(pop)
 
 // dummy define, needed only when we use crashrpt instead of this.
 #define CR_AF_MAKE_FILE_COPY 0

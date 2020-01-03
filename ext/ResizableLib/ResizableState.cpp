@@ -44,7 +44,7 @@ CResizableState::~CResizableState()
 }
 
 // static intializer must be called before user code
-#pragma warning(disable:4073)
+#pragma warning(suppress: 4073)
 #pragma init_seg(lib)
 CString CResizableState::m_sDefaultStorePath(_T("ResizableState"));
 

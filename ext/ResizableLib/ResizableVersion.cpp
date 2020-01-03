@@ -24,7 +24,7 @@
 // Static initializer object (with macros to hide in ClassView)
 
 // static intializer must be called before user code
-#pragma warning(disable:4073)
+#pragma warning(suppress: 4073)
 #pragma init_seg(lib)
 
 #ifdef _UNDEFINED_

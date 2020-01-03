@@ -4,7 +4,7 @@
   Copyright (c) 2003, Michael Carruth
   All rights reserved.
 
-  Adjusted by Sven Strickroth <email@cs-ware.de>, 2011-2019
+  Adjusted by Sven Strickroth <email@cs-ware.de>, 2011-2020
    * make it work with no attachments
    * added flag to show mail compose dialog
    * make it work with 32-64bit inconsistencies (http://msdn.microsoft.com/en-us/library/dd941355.aspx)
@@ -135,10 +135,8 @@ BOOL CMailMsg::DetectMailClient(CString& sMailClientName)
 
 	if(lResult==ERROR_SUCCESS)
 	{
-		ULONG buf_size = 1023;
-#pragma warning(disable:4996)
-		LONG result = regKey.QueryValue(buf, L"", &buf_size);
-#pragma warning(default:4996)
+		ULONG buf_size = _countof(buf) - 1;
+		LONG result = regKey.QueryStringValue(L"", buf, &buf_size);
 		if(result==ERROR_SUCCESS)
 		{
 			sMailClientName = buf;
