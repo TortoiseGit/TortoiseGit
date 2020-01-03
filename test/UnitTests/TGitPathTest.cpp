@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2019 - TortoiseGit
+// Copyright (C) 2015-2020 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -30,7 +30,7 @@ TEST(CTGitPath, GetDirectoryTest)
 	// Bit tricky, this test, because we need to know something about the file
 	// layout on the machine which is running the test
 	TCHAR winDir[MAX_PATH + 1] = { 0 };
-	GetWindowsDirectory(winDir, _countof(winDir));
+	ASSERT_NE(0u, GetWindowsDirectory(winDir, _countof(winDir)));
 	CString sWinDir(winDir);
 
 	CTGitPath testPath;
@@ -1115,7 +1115,7 @@ TEST(CTGitPath, ParserFromLog_DiffTree_Submodule)
 
 static void setFlagOnFileInIndex(CAutoIndex& gitindex, const CString& filename, bool assumevalid, bool skipworktree)
 {
-	size_t idx;
+	size_t idx = SIZE_T_MAX;
 	EXPECT_TRUE(git_index_find(&idx, gitindex, CUnicodeUtils::GetUTF8(filename)) == 0);
 	git_index_entry *e = const_cast<git_index_entry *>(git_index_get_byindex(gitindex, idx));
 	ASSERT_TRUE(e);
@@ -1692,7 +1692,7 @@ TEST(CTGitPath, SetDirectory_DiskAccess)
 	EXPECT_FALSE(path.Exists());
 
 	TCHAR winDir[MAX_PATH + 1] = { 0 };
-	GetWindowsDirectory(winDir, _countof(winDir));
+	ASSERT_NE(0u, GetWindowsDirectory(winDir, _countof(winDir)));
 	MockCTGitPath pathWin;
 	pathWin.SetFromGit(winDir);
 	EXPECT_CALL(pathWin, UpdateAttributes()).Times(1);
