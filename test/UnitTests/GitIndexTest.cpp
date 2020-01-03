@@ -72,7 +72,7 @@ protected:
 		EXPECT_EQ(0, m_Git.Run(L"git.exe checkout -f master", &output, nullptr, CP_UTF8));
 		EXPECT_STRNE(L"", output);
 
-		if (CGit::ms_bCygwinGit)
+		if (CGit::ms_bCygwinGit || CGit::ms_bMsys2Git)
 			return;
 
 		// ====Source of the Sub-Module====
@@ -900,7 +900,7 @@ TEST_P(CBasicGitWithMultiLinkedTestWithSubmoduleRepoFixture, AdminDirMap) // Sub
 	workDir = g_AdminDirMap.GetWorkingCopy(CPathUtils::BuildPathWithPathDelimiter(m_MainWorkTreePath) + L".git");
 	EXPECT_TRUE(CPathUtils::IsSamePath(m_MainWorkTreePath, workDir));
 
-	if (CGit::ms_bCygwinGit)
+	if (CGit::ms_bCygwinGit || CGit::ms_bMsys2Git)
 		return;
 
 	// Test if the linked repository admin directory can be found (**WITHOUT** trailing path delimiter)

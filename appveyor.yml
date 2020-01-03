@@ -73,6 +73,13 @@ for:
     - bin\Debug\bin\tests.exe
     - reg delete HKCU\Software\TortoiseGit /v CygwinHack /f
     - reg delete HKCU\Software\TortoiseGit /v MSysGit /f
+    - reg add HKCU\Software\TortoiseGit /v Msys2Hack /t REG_DWORD /f /d 1
+    - reg add HKCU\Software\TortoiseGit /v MSysGit /t REG_SZ /f /d "c:\msys64\usr\bin"
+    - c:\msys64\usr\bin\git version
+    - set PATH="c:\msys64\usr\bin";%PATH%
+    - bin\Debug\bin\tests.exe
+    - reg delete HKCU\Software\TortoiseGit /v Msys2Hack /f
+    - reg delete HKCU\Software\TortoiseGit /v MSysGit /f
   -
     matrix:
       only:
@@ -88,6 +95,13 @@ for:
     - c:\cygwin\bin\git version
     - bin\Debug64\bin\tests.exe
     - reg delete HKCU\Software\TortoiseGit /v CygwinHack /f
+    - reg delete HKCU\Software\TortoiseGit /v MSysGit /f
+    - reg add HKCU\Software\TortoiseGit /v Msys2Hack /t REG_DWORD /f /d 1
+    - reg add HKCU\Software\TortoiseGit /v MSysGit /t REG_SZ /f /d "c:\msys64\usr\bin"
+    - c:\msys64\usr\bin\git version
+    - set PATH="c:\msys64\usr\bin";%PATH%
+    - bin\Debug64\bin\tests.exe
+    - reg delete HKCU\Software\TortoiseGit /v Msys2Hack /f
     - reg delete HKCU\Software\TortoiseGit /v MSysGit /f
   -
     matrix:

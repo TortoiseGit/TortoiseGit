@@ -1169,8 +1169,8 @@ TEST_P(CBasicGitWithTestRepoFixture, GetBranchList_detachedhead)
 	EXPECT_STREQ(L"simple-conflict", branches[4]);
 	EXPECT_STREQ(L"subdir/branch", branches[5]);
 
-	// cygwin fails here
-	if (CGit::ms_bCygwinGit)
+	// cygwin and msys git fail here
+	if (CGit::ms_bCygwinGit || CGit::ms_bMsys2Git)
 		return;
 
 	output.Empty();
@@ -2779,7 +2779,7 @@ TEST_P(CBasicGitWithSubmoduleRepositoryFixture, GetWorkingTreeChanges_Submodules
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, nullptr));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_STREQ(L"something", list[0].GetGitPathString());
-	if (m_Git.ms_bCygwinGit)
+	if (m_Git.ms_bCygwinGit || m_Git.ms_bMsys2Git)
 	{
 		EXPECT_TRUE(output.Find(L"error: failed to create path") > 0);
 		EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED, list[0].m_Action);
