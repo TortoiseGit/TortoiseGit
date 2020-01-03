@@ -2983,7 +2983,10 @@ void CRebaseDlg::OnBnClickedButtonAdd()
 	// allow multi-select
 	dlg.SingleSelection(false);
 	if (dlg.DoModal() != IDOK || dlg.GetSelectedHash().empty())
+	{
+		BringWindowToTop(); /* cf. issue #3493 */
 		return;
+	}
 
 	auto selectedHashes = dlg.GetSelectedHash();
 	for (auto it = selectedHashes.crbegin(); it != selectedHashes.crend(); ++it)

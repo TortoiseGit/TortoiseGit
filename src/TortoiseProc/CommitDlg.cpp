@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2014 - TortoiseSVN
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -2067,6 +2067,7 @@ bool CCommitDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
 		dlg.ShowWorkingTreeChanges(false);
 		if (dlg.DoModal() == IDOK && !dlg.GetSelectedHash().empty())
 			pSciEdit->InsertText(dlg.GetSelectedHash().at(0).ToString());
+		BringWindowToTop(); /* cf. issue #3493 */
 		return true;
 	}
 
@@ -2090,6 +2091,7 @@ bool CCommitDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
 			CString message = rev.GetSubject() + L"\r\n" + rev.GetBody();
 			pSciEdit->InsertText(message);
 		}
+		BringWindowToTop(); /* cf. issue #3493 */
 		return true;
 	}
 

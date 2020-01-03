@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014, 2016-2017, 2019 - TortoiseGit
+// Copyright (C) 2008-2014, 2016-2017, 2019-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -193,6 +193,7 @@ void CFormatPatchDlg::OnBnClickedButtonFrom()
 		CheckRadioButton(IDC_RADIO_SINCE, IDC_RADIO_RANGE, IDC_RADIO_RANGE);
 		OnBnClickedRadio();
 	}
+	BringWindowToTop(); /* cf. issue #3493 */
 }
 
 void CFormatPatchDlg::OnBnClickedButtonTo()
@@ -211,6 +212,7 @@ void CFormatPatchDlg::OnBnClickedButtonTo()
 		CheckRadioButton(IDC_RADIO_SINCE, IDC_RADIO_RANGE, IDC_RADIO_RANGE);
 		OnBnClickedRadio();
 	}
+	BringWindowToTop(); /* cf. issue #3493 */
 }
 
 void CFormatPatchDlg::OnBnClickedOk()

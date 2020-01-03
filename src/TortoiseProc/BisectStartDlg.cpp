@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014-2019 TortoiseGit
+// Copyright (C) 2014-2020 TortoiseGit
 
 // with code of PullFetchDlg.cpp
 
@@ -157,6 +157,7 @@ void CBisectStartDlg::OnBnClickedButtonGood()
 		m_cLastGoodRevision.SetWindowText(dlg.GetSelectedHash().at(0).ToString());
 		OnChangedRevision();
 	}
+	BringWindowToTop(); /* cf. issue #3493 */
 }
 
 void CBisectStartDlg::OnBnClickedButtonBad()
@@ -176,4 +177,5 @@ void CBisectStartDlg::OnBnClickedButtonBad()
 		m_cFirstBadRevision.SetWindowText(dlg.GetSelectedHash().at(0).ToString());
 		OnChangedRevision();
 	}
+	BringWindowToTop(); /* cf. issue #3493 */
 }
