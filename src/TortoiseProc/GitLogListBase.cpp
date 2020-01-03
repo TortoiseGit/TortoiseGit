@@ -38,13 +38,14 @@ const UINT CGitLogListBase::m_ScrollToRef = RegisterWindowMessage(L"TORTOISEGIT_
 const UINT CGitLogListBase::m_RebaseActionMessage = RegisterWindowMessage(L"TORTOISEGIT_LOG_REBASEACTION");
 const UINT CGitLogListBase::LOGLIST_RESET_WCREV = RegisterWindowMessage(L"TORTOISEGIT_LOG_RESET_WCREV");
 
+long volatile CGitLogListBase::s_bThreadRunning = FALSE;
+
 IMPLEMENT_DYNAMIC(CGitLogListBase, CHintCtrl<CResizableColumnsListCtrl<CListCtrl>>)
 
 CGitLogListBase::CGitLogListBase() : CHintCtrl<CResizableColumnsListCtrl<CListCtrl>>()
 	,m_regMaxBugIDColWidth(L"Software\\TortoiseGit\\MaxBugIDColWidth", 200)
 	,m_nSearchIndex(0)
 	,m_bNoDispUpdates(FALSE)
-	, m_bThreadRunning(FALSE)
 	, m_ShowFilter(FILTERSHOW_ALL)
 	, m_bShowWC(false)
 	, m_logEntries(&m_LogCache)
@@ -2541,7 +2542,7 @@ void CGitLogListBase::CopySelectionToClipBoard(int toCopy)
 
 void CGitLogListBase::DiffSelectedRevWithPrevious()
 {
-	if (m_bThreadRunning)
+	if (s_bThreadRunning)
 		return;
 
 	POSITION pos = GetFirstSelectedItemPosition();
@@ -2877,7 +2878,7 @@ UINT CGitLogListBase::LogThread()
 
 	if(BeginFetchLog())
 	{
-		InterlockedExchange(&m_bThreadRunning, FALSE);
+		InterlockedExchange(&s_bThreadRunning, FALSE);
 		InterlockedExchange(&m_bNoDispUpdates, FALSE);
 
 		return 1;
@@ -2935,7 +2936,7 @@ UINT CGitLogListBase::LogThread()
 		{
 			MessageBox(L"Opening log failed.", L"TortoiseGit", MB_ICONERROR);
 			g_Git.m_critGitDllSec.Unlock();
-			InterlockedExchange(&m_bThreadRunning, FALSE);
+			InterlockedExchange(&s_bThreadRunning, FALSE);
 			InterlockedExchange(&m_bNoDispUpdates, FALSE);
 			return 1;
 		}
@@ -3098,7 +3099,7 @@ UINT CGitLogListBase::LogThread()
 
 	if (m_bExitThread)
 	{
-		InterlockedExchange(&m_bThreadRunning, FALSE);
+		InterlockedExchange(&s_bThreadRunning, FALSE);
 		return 0;
 	}
 
@@ -3111,7 +3112,7 @@ UINT CGitLogListBase::LogThread()
 	if (this->m_hWnd)
 		::PostMessage(this->GetParent()->m_hWnd,MSG_LOAD_PERCENTAGE, GITLOG_END, 0);
 
-	InterlockedExchange(&m_bThreadRunning, FALSE);
+	InterlockedExchange(&s_bThreadRunning, FALSE);
 
 	return 0;
 }
@@ -3160,7 +3161,7 @@ void CGitLogListBase::Refresh(BOOL IsCleanFilter)
 	if (m_pFindDialog)
 		m_pFindDialog->RefreshList();
 	//Assume Thread have exited
-	//if(!m_bThreadRunning)
+	//if(!s_bThreadRunning)
 	{
 		m_logEntries.clear();
 
@@ -3196,14 +3197,14 @@ void CGitLogListBase::StartAsyncDiffThread()
 
 void CGitLogListBase::StartLoadingThread()
 {
-	if (InterlockedExchange(&m_bThreadRunning, TRUE) != FALSE)
+	if (InterlockedExchange(&s_bThreadRunning, TRUE) != FALSE)
 		return;
 	InterlockedExchange(&m_bNoDispUpdates, TRUE);
 	InterlockedExchange(&m_bExitThread, FALSE);
 	m_LoadingThread = AfxBeginThread(LogThreadEntry, this, THREAD_PRIORITY_LOWEST, 0, CREATE_SUSPENDED);
 	if (!m_LoadingThread)
 	{
-		InterlockedExchange(&m_bThreadRunning, FALSE);
+		InterlockedExchange(&s_bThreadRunning, FALSE);
 		InterlockedExchange(&m_bNoDispUpdates, FALSE);
 		CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 		return;

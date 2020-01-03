@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 // Copyright (C) 2005-2007 Marco Costalba
 
 // This program is free software; you can redistribute it and/or
@@ -703,7 +703,7 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 
 		case ID_CHERRY_PICK:
 			{
-				if (m_bThreadRunning)
+				if (s_bThreadRunning)
 				{
 					CMessageBox::Show(GetParentHWND(), IDS_PROC_LOG_ONLYONCE, IDS_APPNAME, MB_ICONEXCLAMATION);
 					break;
@@ -731,7 +731,7 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 			break;
 		case ID_REBASE_TO_VERSION:
 			{
-				if (m_bThreadRunning)
+				if (s_bThreadRunning)
 				{
 					CMessageBox::Show(GetParentHWND(), IDS_PROC_LOG_ONLYONCE, IDS_APPNAME, MB_ICONEXCLAMATION);
 					break;

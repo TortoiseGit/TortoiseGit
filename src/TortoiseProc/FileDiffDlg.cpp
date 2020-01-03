@@ -1061,6 +1061,11 @@ void CFileDiffDlg::ClickRevButton(CMenuButton *button, GitRev *rev, CACEdit *edi
 	if(entry == 1) /*Log*/
 	{
 		CLogDlg dlg;
+		if (dlg.IsThreadRunning())
+		{
+			CMessageBox::Show(GetSafeHwnd(), IDS_PROC_LOG_ONLYONCE, IDS_APPNAME, MB_ICONEXCLAMATION);
+			return;
+		}
 		CString revision;
 		edit->GetWindowText(revision);
 		dlg.SetParams(CTGitPath(), CTGitPath(), revision, revision, 0);

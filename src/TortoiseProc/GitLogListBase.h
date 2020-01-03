@@ -273,7 +273,7 @@ public:
 protected:
 	GitRevLoglist		m_wcRev;
 public:
-	volatile LONG 		m_bThreadRunning;
+	static volatile LONG s_bThreadRunning;
 protected:
 	CLogCache			m_LogCache;
 
@@ -505,9 +505,9 @@ public:
 		if (m_LoadingThread && InterlockedExchange(&m_bExitThread, TRUE) == FALSE)
 		{
 			DWORD ret = WAIT_TIMEOUT;
-			for (int i = 0; i < 200 && m_bThreadRunning; ++i)
+			for (int i = 0; i < 200 && s_bThreadRunning; ++i)
 				ret =::WaitForSingleObject(m_LoadingThread->m_hThread, 100);
-			if (ret == WAIT_TIMEOUT && m_bThreadRunning)
+			if (ret == WAIT_TIMEOUT && s_bThreadRunning)
 				::TerminateThread(m_LoadingThread, 0);
 			delete m_LoadingThread;
 			m_LoadingThread = nullptr;

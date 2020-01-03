@@ -37,6 +37,7 @@
 #include "GitDataObject.h"
 #include "TempFile.h"
 #include "DPIAware.h"
+#include "MessageBox.h"
 
 #define OVERLAY_EXTERNAL	1
 #define OVERLAY_EXECUTABLE	2
@@ -956,6 +957,11 @@ void CRepositoryBrowser::OnBnClickedButtonRevision()
 {
 		// use the git log to allow selection of a version
 		CLogDlg dlg;
+		if (dlg.IsThreadRunning())
+		{
+			CMessageBox::Show(GetSafeHwnd(), IDS_PROC_LOG_ONLYONCE, IDS_APPNAME, MB_ICONEXCLAMATION);
+			return;
+		}
 		dlg.SetParams(CTGitPath(), CTGitPath(), m_sRevision, m_sRevision, 0);
 		// tell the dialog to use mode for selecting revisions
 		dlg.SetSelect(true);

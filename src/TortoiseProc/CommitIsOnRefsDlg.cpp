@@ -221,6 +221,11 @@ void CCommitIsOnRefsDlg::OnBnClickedSelRevBtn()
 	if (entry == 1) /*Log*/
 	{
 		CLogDlg dlg;
+		if (dlg.IsThreadRunning())
+		{
+			CMessageBox::Show(GetSafeHwnd(), IDS_PROC_LOG_ONLYONCE, IDS_APPNAME, MB_ICONEXCLAMATION);
+			return;
+		}
 		CString revision;
 		m_cRevEdit.GetWindowText(revision);
 		dlg.SetParams(CTGitPath(), CTGitPath(), revision, revision, 0);

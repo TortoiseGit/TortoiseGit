@@ -2060,6 +2060,11 @@ bool CCommitDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
 	{
 		// use the git log to allow selection of a version
 		CLogDlg dlg;
+		if (dlg.IsThreadRunning())
+		{
+			CMessageBox::Show(GetSafeHwnd(), IDS_PROC_LOG_ONLYONCE, IDS_APPNAME, MB_ICONEXCLAMATION);
+			return true;
+		}
 		// tell the dialog to use mode for selecting revisions
 		dlg.SetSelect(true);
 		// only one revision must be selected however
@@ -2075,6 +2080,11 @@ bool CCommitDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
 	{
 		// use the git log to allow selection of a version
 		CLogDlg dlg;
+		if (dlg.IsThreadRunning())
+		{
+			CMessageBox::Show(GetSafeHwnd(), IDS_PROC_LOG_ONLYONCE, IDS_APPNAME, MB_ICONEXCLAMATION);
+			return true;
+		}
 		// tell the dialog to use mode for selecting revisions
 		dlg.SetSelect(true);
 		// only one revision must be selected however

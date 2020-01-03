@@ -95,6 +95,11 @@ protected:
 	{
 		// use the git log to allow selection of a version
 		CLogDlg dlg;
+		if (dlg.IsThreadRunning())
+		{
+			CMessageBox::Show(m_pWin->GetSafeHwnd(), IDS_PROC_LOG_ONLYONCE, IDS_APPNAME, MB_ICONEXCLAMATION);
+			return;
+		}
 		CString revision;
 		m_ChooseVersioinVersion.GetWindowText(revision);
 		dlg.SetParams(CTGitPath(), CTGitPath(), revision, revision, 0);

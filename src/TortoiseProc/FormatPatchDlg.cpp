@@ -27,6 +27,7 @@
 #include "LogDlg.h"
 #include "BrowseRefsDlg.h"
 #include "AppUtils.h"
+#include "MessageBox.h"
 
 // CFormatPatchDlg dialog
 
@@ -179,6 +180,11 @@ void CFormatPatchDlg::OnBnClickedButtonDir()
 void CFormatPatchDlg::OnBnClickedButtonFrom()
 {
 	CLogDlg dlg;
+	if (dlg.IsThreadRunning())
+	{
+		CMessageBox::Show(GetSafeHwnd(), IDS_PROC_LOG_ONLYONCE, IDS_APPNAME, MB_ICONEXCLAMATION);
+		return;
+	}
 	CString revision;
 	m_cFrom.GetWindowText(revision);
 	dlg.SetParams(CTGitPath(), CTGitPath(), revision, revision, 0);
@@ -199,6 +205,11 @@ void CFormatPatchDlg::OnBnClickedButtonFrom()
 void CFormatPatchDlg::OnBnClickedButtonTo()
 {
 	CLogDlg dlg;
+	if (dlg.IsThreadRunning())
+	{
+		CMessageBox::Show(GetSafeHwnd(), IDS_PROC_LOG_ONLYONCE, IDS_APPNAME, MB_ICONEXCLAMATION);
+		return;
+	}
 	CString revision;
 	m_cTo.GetWindowText(revision);
 	dlg.SetParams(CTGitPath(), CTGitPath(), revision, revision, 0);

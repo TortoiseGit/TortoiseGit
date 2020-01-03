@@ -2474,7 +2474,7 @@ void CLogDlg::OnTimer(UINT_PTR nIDEvent)
 		KillTimer(FILEFILTER_TIMER);
 		FillLogMessageCtrl();
 	}
-	DialogEnableWindow(IDC_STATBUTTON, !(((this->IsThreadRunning())||(m_LogList.m_arShownList.empty() || m_LogList.m_arShownList.size() == 1 && m_LogList.m_bShowWC))));
+	DialogEnableWindow(IDC_STATBUTTON, !((IsThreadRunning() || (m_LogList.m_arShownList.empty() || m_LogList.m_arShownList.size() == 1 && m_LogList.m_bShowWC))));
 	__super::OnTimer(nIDEvent);
 }
 

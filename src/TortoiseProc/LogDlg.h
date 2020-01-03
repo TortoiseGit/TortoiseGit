@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2009 - TortoiseSVN
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -68,7 +68,7 @@ public:
 	virtual ~CLogDlg();
 	void SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString hightlightRevision, CString range, DWORD limit, int limitScale = -1);
 	void SetFilter(const CString& findstr, LONG findtype, bool findregex);
-	bool IsThreadRunning() {return !!m_LogList.m_bThreadRunning;}
+	bool IsThreadRunning() { return CGitLogListBase::s_bThreadRunning == TRUE; }
 	void SetSelect(bool bSelect) {m_bSelect = bSelect;}
 	void ContinuousSelection(bool bCont = true) {m_bSelectionMustBeContinuous = bCont;}
 	void SingleSelection(bool bSingle = true) {m_bSelectionMustBeSingle = bSingle;}
