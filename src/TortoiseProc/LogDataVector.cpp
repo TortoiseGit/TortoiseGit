@@ -158,10 +158,7 @@ int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, 
 			pNote = nullptr;
 		}
 
-		pRev->ParserFromCommit(&commit);
-		if (mailmap)
-			pRev->ApplyMailmap(*mailmap);
-		pRev->ParserParentFromCommit(&commit);
+		pRev->Parse(&commit, mailmap.get());
 		git_free_commit(&commit);
 
 		this->push_back(pRev->m_CommitHash);
@@ -231,10 +228,7 @@ int CLogDataVector::Fill(std::unordered_set<CGitHash>& hashes)
 		// right now this code is only used by TortoiseGitBlame,
 		// as such git notes are not needed to be loaded
 
-		pRev->ParserFromCommit(&commit);
-		if (mailmap)
-			pRev->ApplyMailmap(*mailmap);
-		pRev->ParserParentFromCommit(&commit);
+		pRev->Parse(&commit, mailmap.get());
 		git_free_commit(&commit);
 
 		revs.insert(pRev);

@@ -115,6 +115,7 @@ public:
 	virtual void Clear();
 	inline int ParentsCount() {return static_cast<int>(m_ParentHash.size()); }
 
+protected:
 	int ParserFromCommit(GIT_COMMIT *commit);
 	int ParserParentFromCommit(GIT_COMMIT *commit);
 
@@ -123,6 +124,7 @@ public:
 	int GetCommitFromHash(git_repository* repo, const CGitHash& hash);
 	int GetCommit(git_repository* repo, const CString& Rev);
 
+public:
 	int GetParentFromHash(const CGitHash& hash);
 	int GetCommitFromHash(const CGitHash& hash);
 	int GetCommit(const CString& rev);

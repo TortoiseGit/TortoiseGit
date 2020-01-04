@@ -2945,6 +2945,7 @@ UINT CGitLogListBase::LogThread()
 			GitRevLoglist::s_Mailmap = std::make_shared<CGitMailmap>();
 		else if (GitRevLoglist::s_Mailmap)
 			GitRevLoglist::s_Mailmap = nullptr;
+		auto mailmap = GitRevLoglist::s_Mailmap;
 
 		auto hashMapSharedPtr = m_HashMap;
 		auto hashMap = *hashMapSharedPtr.get();
@@ -2995,7 +2996,7 @@ UINT CGitLogListBase::LogThread()
 			CGitHash hash = CGitHash::FromRaw(commit.m_hash);
 
 			GitRevLoglist* pRev = m_LogCache.GetCacheData(hash);
-			pRev->Parse(&commit); // better parse here than on GITLOG_END in LogDlg::OnLogListLoading for updating the DateSelectors
+			pRev->Parse(&commit, mailmap.get()); // better parse here than on GITLOG_END in LogDlg::OnLogListLoading for updating the DateSelectors
 
 			char* note = nullptr;
 			try

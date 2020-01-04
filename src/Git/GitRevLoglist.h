@@ -102,11 +102,11 @@ public:
 		return m_UnRevFiles;
 	}
 
-	void Parse(GIT_COMMIT* commit)
+	void Parse(GIT_COMMIT* commit, const CGitMailmap* mailmap)
 	{
 		ParserParentFromCommit(commit);
 		ParserFromCommit(commit);
-		auto mailmap = s_Mailmap;
+		// no caching here, because mailmap might have changed
 		if (mailmap)
 			ApplyMailmap(*mailmap);
 	}
