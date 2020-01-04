@@ -88,6 +88,7 @@ void CFileDiffDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_REV1EDIT, m_ctrRev1Edit);
 	DDX_Control(pDX, IDC_REV2EDIT, m_ctrRev2Edit);
 	DDX_Control(pDX, IDC_DIFFOPTION, m_cDiffOptionsBtn);
+	DDX_Control(pDX, IDC_VIEW_PATCH, m_ctrlShowPatch);
 }
 
 
@@ -113,6 +114,11 @@ BEGIN_MESSAGE_MAP(CFileDiffDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_DIFFOPTION, OnBnClickedDiffoption)
 	ON_BN_CLICKED(IDC_LOG, &CFileDiffDlg::OnBnClickedLog)
 	ON_NOTIFY(LVN_BEGINDRAG, IDC_FILELIST, OnLvnBegindrag)
+	ON_STN_CLICKED(IDC_VIEW_PATCH, OnStnClickedViewPatch)
+	ON_NOTIFY(LVN_ITEMCHANGED, IDC_FILELIST, OnFileListItemChanged)
+	ON_WM_MOVE()
+	ON_WM_MOVING()
+	ON_WM_SIZING()
 END_MESSAGE_MAP()
 
 
@@ -241,6 +247,7 @@ BOOL CFileDiffDlg::OnInitDialog()
 	AddAnchor(IDC_REV2EDIT,TOP_LEFT);
 	AddAnchor(IDC_DIFFOPTION, TOP_RIGHT);
 	AddAnchor(IDC_LOG, TOP_RIGHT);
+	AddAnchor(IDC_VIEW_PATCH, BOTTOM_RIGHT);
 
 	EnableSaveRestore(L"FileDiffDlg");
 
@@ -308,6 +315,10 @@ BOOL CFileDiffDlg::OnInitDialog()
 
 	m_cDiffOptionsBtn.m_bAlwaysShowArrow = true;
 
+	m_ctrlShowPatch.SetURL(L"");
+	if (g_Git.GetConfigValueBool(_T("tgit.diffshowpatch")))
+		TogglePatchView();
+
 	KillTimer(IDT_INPUT);
 	return FALSE;
 }
@@ -356,12 +367,6 @@ LRESULT CFileDiffDlg::OnDiffFinished(WPARAM, LPARAM)
 	m_cFilter.GetWindowText(sFilterText);
 	m_cFileList.SetRedraw(false);
 	Filter(sFilterText);
-	if (!m_arFileList.IsEmpty())
-	{
-		// Highlight first entry in file list
-		m_cFileList.SetSelectionMark(0);
-		m_cFileList.SetItemState(0, LVIS_SELECTED, LVIS_SELECTED);
-	}
 
 	for (int col = 0, maxcol = m_cFileList.GetHeaderCtrl()->GetItemCount(); col < maxcol; ++col)
 		m_cFileList.SetColumnWidth(col, LVSCW_AUTOSIZE_USEHEADER);
@@ -374,6 +379,8 @@ LRESULT CFileDiffDlg::OnDiffFinished(WPARAM, LPARAM)
 	InvalidateRect(nullptr);
 	RefreshCursor();
 	EnableInputControl(true);
+	FillPatchView(true);
+	m_cFileList.SetFocus();
 	return 0;
 }
 
@@ -873,6 +880,7 @@ void CFileDiffDlg::SetURLLabels(int mask)
 
 void CFileDiffDlg::ClearURLabels(int mask)
 {
+	FillPatchView(true);
 	if(mask&0x1)
 	{
 		SetDlgItemText(IDC_FIRSTURL, L"");
@@ -1218,6 +1226,8 @@ void CFileDiffDlg::OnTimer(UINT_PTR nIDEvent)
 			}
 		}
 	}
+	if (nIDEvent == IDT_FILLPATCHVTIMER)
+		FillPatchView();
 }
 
 void CFileDiffDlg::Filter(const CString& sFilterText)
@@ -1454,4 +1464,113 @@ void CFileDiffDlg::OnLvnBegindrag(NMHDR* pNMHDR, LRESULT* pResult)
 	pdsrc->Release();
 	pdsrc.release();
 	pdobj->Release();
+}
+
+void CFileDiffDlg::FillPatchView(bool onlySetTimer)
+{
+	if (!::IsWindow(this->m_patchViewdlg.m_hWnd))
+		return;
+
+	KillTimer(LOG_FILLPATCHVTIMER);
+	if (onlySetTimer)
+	{
+		SetTimer(LOG_FILLPATCHVTIMER, 100, nullptr);
+		return;
+	}
+
+	if (m_cFileList.HasText() || m_cFileList.GetItemCount() == 0)
+	{
+		m_patchViewdlg.ClearView();
+		return;
+	}
+
+	CString ignore;
+	if (m_bIgnoreSpaceAtEol)
+		ignore += L" --ignore-space-at-eol";
+	if (m_bIgnoreSpaceChange)
+		ignore += L" --ignore-space-change";
+	if (m_bIgnoreAllSpace)
+		ignore += L" --ignore-all-space";
+	if (m_bIgnoreBlankLines)
+		ignore += L" --ignore-blank-lines";
+
+	POSITION pos = m_cFileList.GetFirstSelectedItemPosition();
+	CString out;
+	if (!pos)
+	{
+		CString cmd;
+		if (m_rev2.m_CommitHash.IsEmpty())
+			cmd.Format(L"git.exe diff%s --stat -p  %s --", static_cast<LPCTSTR>(ignore), static_cast<LPCTSTR>(m_rev1.m_CommitHash.ToString()));
+		else if (m_rev1.m_CommitHash.IsEmpty())
+			cmd.Format(L"git.exe diff%s --stat -Rp %s --", static_cast<LPCTSTR>(ignore), static_cast<LPCTSTR>(m_rev2.m_CommitHash.ToString()));
+		else
+			cmd.Format(L"git.exe diff%s --stat -p %s..%s --", static_cast<LPCTSTR>(ignore), static_cast<LPCTSTR>(m_rev1.m_CommitHash.ToString()), static_cast<LPCTSTR>(m_rev2.m_CommitHash.ToString()));
+		g_Git.Run(cmd, &out, CP_UTF8);
+	}
+	else
+	{
+		while (pos)
+		{
+			int nSelect = m_cFileList.GetNextSelectedItem(pos);
+			auto fentry = m_arFilteredList[nSelect];
+			CString cmd;
+			if (m_rev2.m_CommitHash.IsEmpty())
+				cmd.Format(L"git.exe diff%s %s -- \"%s\"", static_cast<LPCTSTR>(ignore), static_cast<LPCTSTR>(m_rev1.m_CommitHash.ToString()), static_cast<LPCTSTR>(fentry->GetGitPathString()));
+			else if (m_rev1.m_CommitHash.IsEmpty())
+				cmd.Format(L"git.exe diff%s -R %s -- \"%s\"", static_cast<LPCTSTR>(ignore), static_cast<LPCTSTR>(m_rev2.m_CommitHash.ToString()), static_cast<LPCTSTR>(fentry->GetGitPathString()));
+			else
+				cmd.Format(L"git.exe diff%s %s..%s -- \"%s\"", static_cast<LPCTSTR>(ignore), static_cast<LPCTSTR>(m_rev1.m_CommitHash.ToString()), static_cast<LPCTSTR>(m_rev2.m_CommitHash.ToString()), static_cast<LPCTSTR>(fentry->GetGitPathString()));
+			g_Git.Run(cmd, &out, CP_UTF8);
+		}
+	}
+
+	m_patchViewdlg.SetText(out);
+}
+
+void CFileDiffDlg::TogglePatchView()
+{
+	OnStnClickedViewPatch();
+}
+
+void CFileDiffDlg::OnStnClickedViewPatch()
+{
+	m_patchViewdlg.m_ParentDlg = this;
+	if (!IsWindow(m_patchViewdlg.m_hWnd))
+	{
+		if (g_Git.GetConfigValueBool(L"tgit.diffshowpatch") == FALSE)
+			g_Git.SetConfigValue(L"tgit.diffshowpatch", L"true");
+		m_patchViewdlg.Create(IDD_PATCH_VIEW, this);
+		m_patchViewdlg.ShowAndAlignToParent();
+
+		FillPatchView();
+
+		m_ctrlShowPatch.SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_COMMIT_HIDEPATCH)));
+	}
+	else
+	{
+		g_Git.SetConfigValue(L"tgit.diffshowpatch", L"false");
+		m_patchViewdlg.ShowWindow(SW_HIDE);
+		m_patchViewdlg.DestroyWindow();
+		m_ctrlShowPatch.SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_COMMIT_SHOWPATCH)));
+	}
+	m_ctrlShowPatch.Invalidate();
+}
+
+void CFileDiffDlg::OnFileListItemChanged(NMHDR* /*pNMHDR*/, LRESULT* /*pResult*/)
+{
+	FillPatchView(true);
+}
+
+void CFileDiffDlg::OnMoving(UINT fwSide, LPRECT pRect)
+{
+	__super::OnMoving(fwSide, pRect);
+
+	m_patchViewdlg.ParentOnMoving(m_hWnd, pRect);
+}
+
+void CFileDiffDlg::OnSizing(UINT fwSide, LPRECT pRect)
+{
+	__super::OnSizing(fwSide, pRect);
+
+	m_patchViewdlg.ParentOnSizing(m_hWnd, pRect);
 }

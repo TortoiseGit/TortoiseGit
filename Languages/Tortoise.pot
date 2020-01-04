@@ -10043,7 +10043,7 @@ msgstr ""
 msgid "View Patch"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1637, IDS_PROC_COMMIT_SHOWPATCH)
+#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1637, Dialog IDD_DIFFFILES: Control id 1637, IDS_PROC_COMMIT_SHOWPATCH)
 msgid "View Patch>>"
 msgstr ""
 

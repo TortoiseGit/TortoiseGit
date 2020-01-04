@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2020 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -31,9 +31,12 @@
 #include "ACEdit.h"
 #include "GestureEnabledControl.h"
 #include "LogDlgFileFilter.h"
+#include "PatchViewDlg.h"
+#include "HyperLink.h"
 
 #define IDT_FILTER		101
 #define IDT_INPUT		102
+#define IDT_FILLPATCHVTIMER 103
 
 /**
  * \ingroup TortoiseProc
@@ -43,7 +46,7 @@
  */
 #define MSG_REF_LOADED	(WM_USER+120)
 
-class CFileDiffDlg : public CResizableStandAloneDialog
+class CFileDiffDlg : public CResizableStandAloneDialog, IHasPatchView
 {
 	DECLARE_DYNAMIC(CFileDiffDlg)
 public:
@@ -175,6 +178,16 @@ private:
 	bool				m_bIgnoreAllSpace;
 	bool				m_bIgnoreBlankLines;
 	bool				m_bCommonAncestorDiff;
+
+	CHyperLink m_ctrlShowPatch;
+	afx_msg void OnStnClickedViewPatch();
+	CPatchViewDlg m_patchViewdlg;
+	void FillPatchView(bool onlySetTimer = false);
+	CWnd* GetPatchViewParentWnd() override { return this; }
+	void TogglePatchView() override;
+	afx_msg void OnFileListItemChanged(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnMoving(UINT fwSide, LPRECT pRect);
+	afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
 
 public:
 	CString				m_strRev1;
