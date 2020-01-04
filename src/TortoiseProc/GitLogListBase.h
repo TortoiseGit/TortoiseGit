@@ -637,18 +637,6 @@ protected:
 		if (!rev->m_IsCommitParsed)
 			return 0;
 		InterlockedExchange(&rev->m_IsFull, TRUE);
-		// we might need to signal that the changed files are now available
-		if (data->GetSelectedCount() == 1)
-		{
-			POSITION pos = data->GetFirstSelectedItemPosition();
-			int nItem = data->GetNextSelectedItem(pos);
-			if (nItem >= 0)
-			{
-				GitRevLoglist* data2 = data->m_arShownList.SafeGetAt(nItem);
-				if (data2 && data2->m_CommitHash == rev->m_CommitHash)
-					data->GetParent()->PostMessage(WM_COMMAND, MSG_FETCHED_DIFF, 0);
-			}
-		}
 		return 0;
 	}
 

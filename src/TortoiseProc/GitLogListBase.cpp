@@ -3744,11 +3744,9 @@ CString CGitLogListBase::GetToolTipText(int nItem, int nSubItem)
 		if (pLogEntry == nullptr)
 			return CString();
 
+		int actions = pLogEntry->GetAction(this);
 		if (!pLogEntry->m_IsDiffFiles)
 			return CString(MAKEINTRESOURCE(IDS_PROC_LOG_FETCHINGFILES));
-
-		int actions = pLogEntry->GetAction(this);
-		CString sToolTipText;
 
 		CString actionText;
 		if (actions & CTGitPath::LOGACTIONS_MODIFIED)
@@ -3785,9 +3783,8 @@ CString CGitLogListBase::GetToolTipText(int nItem, int nSubItem)
 		if (!actionText.IsEmpty())
 		{
 			CString sTitle(MAKEINTRESOURCE(IDS_LOG_ACTIONS));
-			sToolTipText = sTitle + L":\r\n" + actionText;
+			return sTitle + L":\r\n" + actionText;
 		}
-		return sToolTipText;
 	}
 	return CString();
 }

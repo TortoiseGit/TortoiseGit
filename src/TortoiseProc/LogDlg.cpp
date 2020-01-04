@@ -950,19 +950,17 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			if (static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\StyleCommitMessages", TRUE)) == TRUE)
 				CAppUtils::FormatTextInRichEditControl(pMsgView);
 
+			auto& files = pLogEntry->GetFiles(&m_LogList); // either load the diff from disk cache and sets m_IsDiffFiles (then we safe a reload) or it enqueues it in the AsyncDiffThread
 			if (!pLogEntry->m_IsDiffFiles)
 			{
 				m_ChangedFileListCtrl.SetBusyString(CString(MAKEINTRESOURCE(IDS_PROC_LOG_FETCHINGFILES)));
 				m_ChangedFileListCtrl.SetBusy(TRUE);
 				m_ChangedFileListCtrl.SetRedraw(TRUE);
-				// entry might not already been enqueued for updating, issue #3090
-				pLogEntry->GetAction(&m_LogList);
 				return;
 			}
 
 			CString matchpath=this->m_path.GetGitPathString();
 
-			CTGitPathList& files = pLogEntry->GetFiles(&m_LogList);
 			int count = files.GetCount();
 			if (!m_bWholeProject && !matchpath.IsEmpty() && m_iHidePaths)
 			{
