@@ -2450,13 +2450,15 @@ void CGitLogListBase::CopySelectionToClipBoard(int toCopy)
 			if (toCopy == ID_COPYCLIPBOARDFULL)
 			{
 				sPaths = L"----\r\n";
-				for (int cpPathIndex = 0; cpPathIndex<pLogEntry->GetFiles(this).GetCount(); ++cpPathIndex)
+				const auto& files = pLogEntry->GetFiles(nullptr);
+				for (int cpPathIndex = 0; files.GetCount(); ++cpPathIndex)
 				{
-					sPaths += ((CTGitPath&)pLogEntry->GetFiles(this)[cpPathIndex]).GetActionName() + L": " + pLogEntry->GetFiles(this)[cpPathIndex].GetGitPathString();
-					if (((CTGitPath&)pLogEntry->GetFiles(this)[cpPathIndex]).m_Action & (CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_COPY) && !((CTGitPath&)pLogEntry->GetFiles(this)[cpPathIndex]).GetGitOldPathString().IsEmpty())
+					auto& file = files[cpPathIndex];
+					sPaths += file.GetActionName() + L": " + file.GetGitPathString();
+					if (file.m_Action & (CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_COPY) && !file.GetGitOldPathString().IsEmpty())
 					{
 						sPaths += L' ';
-						sPaths.AppendFormat(from, static_cast<LPCTSTR>(pLogEntry->GetFiles(this)[cpPathIndex].GetGitOldPathString()));
+						sPaths.AppendFormat(from, static_cast<LPCTSTR>(file.GetGitOldPathString()));
 					}
 					sPaths += L"\r\n";
 				}
