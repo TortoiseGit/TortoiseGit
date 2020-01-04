@@ -634,9 +634,6 @@ protected:
 		}
 
 		InterlockedExchange(&rev->m_IsDiffFiles, TRUE);
-		if (!rev->m_IsCommitParsed)
-			return 0;
-		InterlockedExchange(&rev->m_IsFull, TRUE);
 		return 0;
 	}
 

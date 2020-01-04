@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -45,8 +45,6 @@ protected:
 	CTGitPathList	m_UnRevFiles;
 
 public:
-	GIT_COMMIT m_GitCommit;
-
 	CString m_Notes;
 
 	TCHAR m_Mark;
@@ -58,8 +56,6 @@ public:
 
 	static std::shared_ptr<CGitMailmap> s_Mailmap;
 
-	volatile LONG m_IsFull;
-	volatile LONG m_IsCommitParsed;
 	volatile LONG m_IsDiffFiles;
 
 	CALL_UPDATE_DIFF_ASYNC *m_CallDiffAsync;
@@ -71,8 +67,6 @@ public:
 			int ret = 0;
 			ret = SafeFetchFullInfo(&g_Git);
 			InterlockedExchange(&m_IsDiffFiles, TRUE);
-			if (m_IsCommitParsed)
-				InterlockedExchange(&m_IsFull, TRUE);
 			return ret;
 		}
 		return 1;
@@ -81,7 +75,6 @@ public:
 public:
 	unsigned int& GetAction(IAsyncDiffCB* data)
 	{
-		CheckAndParser();
 		if (!m_IsDiffFiles && m_CallDiffAsync)
 			m_CallDiffAsync(this, data);
 		else
@@ -96,7 +89,7 @@ public:
 
 	CTGitPathList& GetFiles(IAsyncDiffCB* data)
 	{
-		CheckAndParser();
+		// data might be nullptr when instant data is requested, cf. CGitLogListAction
 		if (data && !m_IsDiffFiles && m_CallDiffAsync)
 			m_CallDiffAsync(this, data);
 		else
@@ -109,74 +102,58 @@ public:
 		return m_UnRevFiles;
 	}
 
-protected:
-	void CheckAndParser()
+	void Parse(GIT_COMMIT* commit)
 	{
-		if (!m_IsCommitParsed && m_GitCommit.m_pGitCommit)
-		{
-			ParserFromCommit(&m_GitCommit);
-			auto mailmap = s_Mailmap;
-			if (mailmap)
-				ApplyMailmap(*mailmap);
-			InterlockedExchange(&m_IsCommitParsed, TRUE);
-			git_free_commit(&m_GitCommit);
-			if (m_IsDiffFiles)
-				InterlockedExchange(&m_IsFull, TRUE);
-		}
+		ParserParentFromCommit(commit);
+		ParserFromCommit(commit);
+		auto mailmap = s_Mailmap;
+		if (mailmap)
+			ApplyMailmap(*mailmap);
 	}
 
 public:
 	CString& GetAuthorName()
 	{
-		CheckAndParser();
 		return m_AuthorName;
 	}
 
 	CString& GetAuthorEmail()
 	{
-		CheckAndParser();
 		return m_AuthorEmail;
 	}
 
 	CTime& GetAuthorDate()
 	{
-		CheckAndParser();
 		return m_AuthorDate;
 	}
 
 	CString& GetCommitterName()
 	{
-		CheckAndParser();
 		return m_CommitterName;
 	}
 
 	CString& GetCommitterEmail()
 	{
-		CheckAndParser();
 		return m_CommitterEmail;
 	}
 
 	CTime& GetCommitterDate()
 	{
-		CheckAndParser();
 		return m_CommitterDate;
 	}
 
 	CString& GetSubject()
 	{
-		CheckAndParser();
 		return m_Subject;
 	}
 
 	CString& GetBody()
 	{
-		CheckAndParser();
 		return m_Body;
 	}
 
 	CString GetSubjectBody(bool crlf = false)
 	{
-		CheckAndParser();
 		CString ret(m_Subject);
 		if (!crlf)
 		{

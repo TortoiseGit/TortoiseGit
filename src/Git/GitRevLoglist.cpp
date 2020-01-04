@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -31,20 +31,15 @@ std::shared_ptr<CGitMailmap> GitRevLoglist::s_Mailmap = nullptr;
 GitRevLoglist::GitRevLoglist(void) : GitRev()
 , m_Action(0)
 , m_RebaseAction(0)
-, m_IsFull(FALSE)
-, m_IsCommitParsed(FALSE)
 , m_IsDiffFiles(FALSE)
 , m_CallDiffAsync(nullptr)
 , m_IsSimpleListReady(FALSE)
 , m_Mark(0)
 {
-	SecureZeroMemory(&m_GitCommit, sizeof(GIT_COMMIT));
 }
 
 GitRevLoglist::~GitRevLoglist(void)
 {
-	if (!m_IsCommitParsed && m_GitCommit.m_pGitCommit)
-		git_free_commit(&m_GitCommit);
 }
 
 void GitRevLoglist::Clear()
@@ -56,8 +51,6 @@ void GitRevLoglist::Clear()
 	m_Ref.Empty();
 	m_RefAction.Empty();
 	m_Mark = 0;
-	m_IsFull = FALSE;
-	m_IsCommitParsed = FALSE;
 	m_IsDiffFiles = FALSE;
 	m_CallDiffAsync = nullptr;
 	m_IsSimpleListReady = FALSE;
@@ -175,8 +168,7 @@ int GitRevLoglist::SafeGetSimpleList(CGit* git)
 	m_SimpleFileList.erase(std::unique(m_SimpleFileList.begin(), m_SimpleFileList.end()), m_SimpleFileList.end());
 
 	InterlockedExchange(&m_IsSimpleListReady, TRUE);
-	if (m_GitCommit.m_pGitCommit != commit.m_pGitCommit)
-		git_free_commit(&commit);
+	git_free_commit(&commit);
 
 	return 0;
 }
@@ -314,8 +306,6 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 				m_Files.AddPath(path);
 			}
 		}
-
-		InterlockedExchange(&m_IsFull, TRUE);
 		return 0;
 	}
 
@@ -409,9 +399,7 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 		++i;
 	}
 
-	InterlockedExchange(&m_IsFull, TRUE);
-	if (m_GitCommit.m_pGitCommit != commit.m_pGitCommit)
-		git_free_commit(&commit);
+	git_free_commit(&commit);
 
 	return 0;
 }

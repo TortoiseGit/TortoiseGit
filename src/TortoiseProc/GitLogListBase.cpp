@@ -193,7 +193,6 @@ int CGitLogListBase::AsyncDiffThread()
 				}
 
 				InterlockedExchange(&pRev->m_IsDiffFiles, TRUE);
-				InterlockedExchange(&pRev->m_IsFull, TRUE);
 
 				CString body = L"\n";
 				body.AppendFormat(IDS_FILESCHANGES, files.GetCount());
@@ -2633,15 +2632,9 @@ int CGitLogListBase::FillGitLog(CTGitPath *path, CString *range, int info)
 	for (unsigned int i = 0; i < m_logEntries.size(); ++i)
 	{
 		if(m_IsOldFirst)
-		{
-			m_logEntries.GetGitRevAt(m_logEntries.size()-i-1).m_IsFull=TRUE;
 			this->m_arShownList.SafeAdd(&m_logEntries.GetGitRevAt(m_logEntries.size()-i-1));
-		}
 		else
-		{
-			m_logEntries.GetGitRevAt(i).m_IsFull=TRUE;
 			this->m_arShownList.SafeAdd(&m_logEntries.GetGitRevAt(i));
-		}
 	}
 
 	ReloadHashMap();
@@ -2666,15 +2659,9 @@ int CGitLogListBase::FillGitLog(std::unordered_set<CGitHash>& hashes)
 	for (unsigned int i = 0; i < m_logEntries.size(); ++i)
 	{
 		if (m_IsOldFirst)
-		{
-			m_logEntries.GetGitRevAt(m_logEntries.size() - i - 1).m_IsFull = TRUE;
 			m_arShownList.SafeAdd(&m_logEntries.GetGitRevAt(m_logEntries.size() - i - 1));
-		}
 		else
-		{
-			m_logEntries.GetGitRevAt(i).m_IsFull = TRUE;
 			m_arShownList.SafeAdd(&m_logEntries.GetGitRevAt(i));
-		}
 	}
 
 	ReloadHashMap();
@@ -2981,10 +2968,10 @@ UINT CGitLogListBase::LogThread()
 				MessageBox(L"Could not get next commit.\nlibgit reports:\n" + err, L"TortoiseGit", MB_ICONERROR);
 				break;
 			}
-			g_Git.m_critGitDllSec.Unlock();
 
 			if(ret)
 			{
+				g_Git.m_critGitDllSec.Unlock();
 				if (ret != -2) // other than end of revision walking
 					MessageBox((L"Could not get next commit.\nlibgit returns:" + std::to_wstring(ret)).c_str(), L"TortoiseGit", MB_ICONERROR);
 				break;
@@ -2993,21 +2980,24 @@ UINT CGitLogListBase::LogThread()
 			if (commit.m_ignore == 1)
 			{
 				git_free_commit(&commit);
+				g_Git.m_critGitDllSec.Unlock();
 				continue;
 			}
 
 			//printf("%s\r\n",commit.GetSubject());
 			if(m_bExitThread)
+			{
+				git_free_commit(&commit);
+				g_Git.m_critGitDllSec.Unlock();
 				break;
+			}
 
 			CGitHash hash = CGitHash::FromRaw(commit.m_hash);
 
 			GitRevLoglist* pRev = m_LogCache.GetCacheData(hash);
-			pRev->m_GitCommit = commit;
-			InterlockedExchange(&pRev->m_IsCommitParsed, FALSE);
+			pRev->Parse(&commit); // better parse here than on GITLOG_END in LogDlg::OnLogListLoading for updating the DateSelectors
 
 			char* note = nullptr;
-			g_Git.m_critGitDllSec.Lock();
 			try
 			{
 				git_get_notes(commit.m_hash, &note);
@@ -3019,7 +3009,6 @@ UINT CGitLogListBase::LogThread()
 				MessageBox(L"Could not get commit notes.\nlibgit reports:\n" + err, L"TortoiseGit", MB_ICONERROR);
 				break;
 			}
-			g_Git.m_critGitDllSec.Unlock();
 
 			if(note)
 			{
@@ -3027,13 +3016,14 @@ UINT CGitLogListBase::LogThread()
 				free(note);
 				note = nullptr;
 			}
+			git_free_commit(&commit);
+			g_Git.m_critGitDllSec.Unlock();
 
 			if(!pRev->m_IsDiffFiles)
 			{
 				pRev->m_CallDiffAsync = DiffAsync;
 			}
 
-			pRev->ParserParentFromCommit(&commit);
 			if (m_ShowFilter & FILTERSHOW_MERGEPOINTS) // See also ShouldShowFilter()
 			{
 				for (size_t i = 0; i < pRev->m_ParentHash.size(); ++i)
