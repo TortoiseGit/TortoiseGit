@@ -32,7 +32,6 @@ GitRevLoglist::GitRevLoglist(void) : GitRev()
 , m_Action(0)
 , m_RebaseAction(0)
 , m_IsFull(FALSE)
-, m_IsUpdateing(FALSE)
 , m_IsCommitParsed(FALSE)
 , m_IsDiffFiles(FALSE)
 , m_CallDiffAsync(nullptr)
@@ -58,7 +57,6 @@ void GitRevLoglist::Clear()
 	m_RefAction.Empty();
 	m_Mark = 0;
 	m_IsFull = FALSE;
-	m_IsUpdateing = FALSE;
 	m_IsCommitParsed = FALSE;
 	m_IsDiffFiles = FALSE;
 	m_CallDiffAsync = nullptr;
@@ -68,9 +66,6 @@ void GitRevLoglist::Clear()
 
 int GitRevLoglist::SafeGetSimpleList(CGit* git)
 {
-	if (InterlockedExchange(&m_IsUpdateing, TRUE) == TRUE)
-		return 0;
-
 	m_SimpleFileList.clear();
 	if (git->UsingLibGit2(CGit::GIT_CMD_LOGLISTDIFF))
 	{
@@ -115,7 +110,6 @@ int GitRevLoglist::SafeGetSimpleList(CGit* git)
 		std::sort(m_SimpleFileList.begin(), m_SimpleFileList.end());
 		m_SimpleFileList.erase(std::unique(m_SimpleFileList.begin(), m_SimpleFileList.end()), m_SimpleFileList.end());
 
-		InterlockedExchange(&m_IsUpdateing, FALSE);
 		InterlockedExchange(&m_IsSimpleListReady, TRUE);
 		return 0;
 	}
@@ -180,7 +174,6 @@ int GitRevLoglist::SafeGetSimpleList(CGit* git)
 	std::sort(m_SimpleFileList.begin(), m_SimpleFileList.end());
 	m_SimpleFileList.erase(std::unique(m_SimpleFileList.begin(), m_SimpleFileList.end()), m_SimpleFileList.end());
 
-	InterlockedExchange(&m_IsUpdateing, FALSE);
 	InterlockedExchange(&m_IsSimpleListReady, TRUE);
 	if (m_GitCommit.m_pGitCommit != commit.m_pGitCommit)
 		git_free_commit(&commit);
@@ -190,9 +183,6 @@ int GitRevLoglist::SafeGetSimpleList(CGit* git)
 
 int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 {
-	if (InterlockedExchange(&m_IsUpdateing, TRUE) == TRUE)
-		return 0;
-
 	m_Files.Clear();
 	if (git->UsingLibGit2(CGit::GIT_CMD_LOGLISTDIFF))
 	{
@@ -325,7 +315,6 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 			}
 		}
 
-		InterlockedExchange(&m_IsUpdateing, FALSE);
 		InterlockedExchange(&m_IsFull, TRUE);
 		return 0;
 	}
@@ -420,7 +409,6 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 		++i;
 	}
 
-	InterlockedExchange(&m_IsUpdateing, FALSE);
 	InterlockedExchange(&m_IsFull, TRUE);
 	if (m_GitCommit.m_pGitCommit != commit.m_pGitCommit)
 		git_free_commit(&commit);

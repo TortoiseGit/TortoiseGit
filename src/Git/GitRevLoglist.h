@@ -59,7 +59,6 @@ public:
 	static std::shared_ptr<CGitMailmap> s_Mailmap;
 
 	volatile LONG m_IsFull;
-	volatile LONG m_IsUpdateing;
 	volatile LONG m_IsCommitParsed;
 	volatile LONG m_IsDiffFiles;
 

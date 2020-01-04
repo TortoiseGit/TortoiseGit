@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2019 - TortoiseGit
+// Copyright (C) 2015-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -62,7 +62,6 @@ static void SafeFetchFullInfo(CGit* cGit)
 	EXPECT_STREQ(L"", rev.GetAuthorName());
 	EXPECT_EQ(FALSE, rev.m_IsSimpleListReady);
 	EXPECT_EQ(FALSE, rev.m_IsFull);
-	EXPECT_EQ(FALSE, rev.m_IsUpdateing);
 	EXPECT_EQ(FALSE, rev.m_IsDiffFiles);
 	EXPECT_EQ(FALSE, rev.m_IsCommitParsed);
 	rev.m_IsDiffFiles = 1;
@@ -70,7 +69,6 @@ static void SafeFetchFullInfo(CGit* cGit)
 	EXPECT_EQ(-1, rev.SafeFetchFullInfo(cGit));
 	EXPECT_STREQ(L"", rev.GetAuthorName());
 	EXPECT_EQ(FALSE, rev.m_IsSimpleListReady);
-	EXPECT_EQ(TRUE, rev.m_IsUpdateing);
 	EXPECT_EQ(FALSE, rev.m_IsFull);
 	EXPECT_EQ(TRUE, rev.m_IsDiffFiles);
 	EXPECT_EQ(FALSE, rev.m_IsCommitParsed);
@@ -79,20 +77,17 @@ static void SafeFetchFullInfo(CGit* cGit)
 	rev.m_IsDiffFiles = TRUE;
 	EXPECT_EQ(1, rev.CheckAndDiff());
 	EXPECT_EQ(FALSE, rev.m_IsSimpleListReady);
-	EXPECT_EQ(FALSE, rev.m_IsUpdateing);
 	EXPECT_EQ(FALSE, rev.m_IsFull);
 	EXPECT_EQ(FALSE, rev.m_IsCommitParsed);
 	EXPECT_STREQ(L"", rev.GetAuthorName());
 	rev.m_IsDiffFiles = FALSE;
 	EXPECT_EQ(FALSE, rev.m_IsSimpleListReady);
-	EXPECT_EQ(FALSE, rev.m_IsUpdateing);
 	EXPECT_EQ(FALSE, rev.m_IsFull);
 	EXPECT_EQ(FALSE, rev.m_IsDiffFiles);
 	EXPECT_EQ(FALSE, rev.m_IsCommitParsed);
 	EXPECT_EQ(0, rev.CheckAndDiff());
 	EXPECT_STREQ(L"", rev.GetAuthorName());
 	EXPECT_EQ(FALSE, rev.m_IsSimpleListReady);
-	EXPECT_EQ(FALSE, rev.m_IsUpdateing);
 	EXPECT_EQ(TRUE, rev.m_IsFull);
 	EXPECT_EQ(TRUE, rev.m_IsDiffFiles);
 	EXPECT_EQ(FALSE, rev.m_IsCommitParsed);
@@ -109,22 +104,9 @@ static void SafeFetchFullInfo(CGit* cGit)
 	EXPECT_FALSE(list[0].IsDirectory());
 	rev.Clear();
 	rev.m_CommitHash = CGitHash::FromHexStr(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6");
-	rev.m_IsUpdateing = TRUE; // do nothing
 	EXPECT_EQ(0, rev.SafeFetchFullInfo(cGit));
 	EXPECT_STREQ(L"", rev.GetAuthorName());
 	EXPECT_EQ(FALSE, rev.m_IsSimpleListReady);
-	EXPECT_EQ(TRUE, rev.m_IsUpdateing);
-	EXPECT_EQ(FALSE, rev.m_IsFull);
-	EXPECT_EQ(FALSE, rev.m_IsDiffFiles);
-	EXPECT_EQ(FALSE, rev.m_IsCommitParsed);
-	EXPECT_EQ(0U, rev.GetAction(nullptr));
-	EXPECT_EQ(0, rev.GetFiles(nullptr).GetCount());
-	rev.Clear();
-	rev.m_CommitHash = CGitHash::FromHexStr(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6");
-	EXPECT_EQ(0, rev.SafeFetchFullInfo(cGit));
-	EXPECT_STREQ(L"", rev.GetAuthorName());
-	EXPECT_EQ(FALSE, rev.m_IsSimpleListReady);
-	EXPECT_EQ(FALSE, rev.m_IsUpdateing);
 	EXPECT_EQ(TRUE, rev.m_IsFull);
 	EXPECT_EQ(FALSE, rev.m_IsDiffFiles);
 	EXPECT_EQ(FALSE, rev.m_IsCommitParsed);
@@ -142,7 +124,6 @@ static void SafeFetchFullInfo(CGit* cGit)
 	rev.m_CommitHash = CGitHash::FromHexStr(L"dead91b4aedeaddeaddead2a56d3c473c705dead"); // non-existent commit
 	EXPECT_EQ(-1, rev.SafeFetchFullInfo(cGit));
 	EXPECT_EQ(FALSE, rev.m_IsSimpleListReady);
-	EXPECT_EQ(TRUE, rev.m_IsUpdateing);
 	EXPECT_EQ(FALSE, rev.m_IsFull);
 	EXPECT_EQ(FALSE, rev.m_IsDiffFiles);
 	EXPECT_EQ(FALSE, rev.m_IsCommitParsed);
@@ -437,18 +418,6 @@ static void SafeGetSimpleList(CGit* cGit)
 	EXPECT_EQ(-1, rev.SafeGetSimpleList(cGit));
 	EXPECT_STREQ(L"", rev.GetAuthorName());
 	EXPECT_EQ(FALSE, rev.m_IsSimpleListReady);
-	EXPECT_EQ(TRUE, rev.m_IsUpdateing);
-	EXPECT_EQ(FALSE, rev.m_IsFull);
-	EXPECT_EQ(FALSE, rev.m_IsDiffFiles);
-	EXPECT_EQ(FALSE, rev.m_IsCommitParsed);
-	EXPECT_TRUE(rev.m_SimpleFileList.empty());
-	rev.Clear();
-	rev.m_CommitHash = CGitHash::FromHexStr(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6");
-	rev.m_IsUpdateing = TRUE; // do nothing
-	EXPECT_EQ(0, rev.SafeGetSimpleList(cGit));
-	EXPECT_STREQ(L"", rev.GetAuthorName());
-	EXPECT_EQ(FALSE, rev.m_IsSimpleListReady);
-	EXPECT_EQ(TRUE, rev.m_IsUpdateing);
 	EXPECT_EQ(FALSE, rev.m_IsFull);
 	EXPECT_EQ(FALSE, rev.m_IsDiffFiles);
 	EXPECT_EQ(FALSE, rev.m_IsCommitParsed);
@@ -458,7 +427,6 @@ static void SafeGetSimpleList(CGit* cGit)
 	EXPECT_EQ(0, rev.SafeGetSimpleList(cGit));
 	EXPECT_STREQ(L"", rev.GetAuthorName());
 	EXPECT_EQ(TRUE, rev.m_IsSimpleListReady);
-	EXPECT_EQ(FALSE, rev.m_IsUpdateing);
 	EXPECT_EQ(FALSE, rev.m_IsFull);
 	EXPECT_EQ(FALSE, rev.m_IsDiffFiles);
 	EXPECT_EQ(FALSE, rev.m_IsCommitParsed);
@@ -468,7 +436,6 @@ static void SafeGetSimpleList(CGit* cGit)
 	rev.m_CommitHash = CGitHash::FromHexStr(L"dead91b4aedeaddeaddead2a56d3c473c705dead"); // non-existent commit
 	EXPECT_EQ(-1, rev.SafeGetSimpleList(cGit));
 	EXPECT_EQ(FALSE, rev.m_IsSimpleListReady);
-	EXPECT_EQ(TRUE, rev.m_IsUpdateing);
 	EXPECT_EQ(FALSE, rev.m_IsFull);
 	EXPECT_EQ(FALSE, rev.m_IsDiffFiles);
 	EXPECT_EQ(FALSE, rev.m_IsCommitParsed);
