@@ -2639,6 +2639,10 @@ int CGitLogListBase::FillGitLog(CTGitPath *path, CString *range, int info)
 			this->m_arShownList.SafeAdd(&m_logEntries.GetGitRevAt(i));
 	}
 
+	m_critSec.Lock();
+	std::for_each(m_arShownList.begin(), m_arShownList.end(), [](auto entry) { entry->m_CallDiffAsync = DiffAsync; });
+	m_critSec.Unlock();
+
 	ReloadHashMap();
 
 	if(path)
@@ -2665,6 +2669,10 @@ int CGitLogListBase::FillGitLog(std::unordered_set<CGitHash>& hashes)
 		else
 			m_arShownList.SafeAdd(&m_logEntries.GetGitRevAt(i));
 	}
+
+	m_critSec.Lock();
+	std::for_each(m_arShownList.begin(), m_arShownList.end(), [](auto entry) { entry->m_CallDiffAsync = DiffAsync; });
+	m_critSec.Unlock();
 
 	ReloadHashMap();
 
