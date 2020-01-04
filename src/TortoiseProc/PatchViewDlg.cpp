@@ -192,7 +192,8 @@ void CPatchViewDlg::ParentOnSizing(HWND parentHWND, LPRECT pRect)
 	RECT parentRect;
 	::GetWindowRect(parentHWND, &parentRect);
 
-	if (patchrect.left != parentRect.right)
+	int adjust = GetBorderAjustment(parentHWND, parentRect);
+	if (patchrect.left != parentRect.right - adjust)
 		return;
 
 	if (patchrect.bottom == parentRect.bottom)
