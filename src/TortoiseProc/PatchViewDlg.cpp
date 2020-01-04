@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -176,6 +176,31 @@ void CPatchViewDlg::ParentOnMoving(HWND parentHWND, LPRECT pRect)
 	int adjust = GetBorderAjustment(parentHWND, parentRect);
 	if (patchrect.left == parentRect.right - adjust)
 		SetWindowPos(nullptr, patchrect.left - (parentRect.left - pRect->left), patchrect.top - (parentRect.top - pRect->top), 0, 0, SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOSIZE | SWP_NOZORDER);
+}
+
+void CPatchViewDlg::ParentOnSizing(HWND parentHWND, LPRECT pRect)
+{
+	if (!::IsWindow(m_hWnd))
+		return;
+
+	if (!::IsWindow(parentHWND))
+		return;
+
+	RECT patchrect;
+	GetWindowRect(&patchrect);
+
+	RECT parentRect;
+	::GetWindowRect(parentHWND, &parentRect);
+
+	if (patchrect.left != parentRect.right)
+		return;
+
+	if (patchrect.bottom == parentRect.bottom)
+		patchrect.bottom -= (parentRect.bottom - pRect->bottom);
+	if (patchrect.top == parentRect.top)
+		patchrect.top -= parentRect.top - pRect->top;
+
+	SetWindowPos(nullptr, patchrect.left - (parentRect.right - pRect->right), patchrect.top - (parentRect.top - pRect->top), patchrect.right - patchrect.left, patchrect.bottom - patchrect.top, SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOZORDER);
 }
 
 void CPatchViewDlg::ShowAndAlignToParent()

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011, 2014-2017, 2019 - TortoiseGit
+// Copyright (C) 2008-2011, 2014-2017, 2019-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -40,6 +40,7 @@ public:
 	void ClearView();
 	void ShowAndAlignToParent();
 	void ParentOnMoving(HWND parentHWND, LPRECT pRect);
+	void ParentOnSizing(HWND parentHWND, LPRECT pRect);
 
 // Dialog Data
 	enum { IDD = IDD_PATCH_VIEW };

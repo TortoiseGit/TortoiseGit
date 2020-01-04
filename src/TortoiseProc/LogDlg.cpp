@@ -1153,23 +1153,7 @@ void CLogDlg::OnSizing(UINT fwSide, LPRECT pRect)
 {
 	__super::OnSizing(fwSide, pRect);
 
-	if (!::IsWindow(this->m_patchViewdlg.m_hWnd))
-		return;
-
-	CRect thisrect, patchrect;
-	this->GetWindowRect(thisrect);
-	this->m_patchViewdlg.GetWindowRect(patchrect);
-	if (thisrect.right != patchrect.left)
-		return;
-
-	patchrect.left -= (thisrect.right - pRect->right);
-	patchrect.right -= (thisrect.right - pRect->right);
-
-	if (patchrect.bottom == thisrect.bottom)
-		patchrect.bottom -= (thisrect.bottom - pRect->bottom);
-	if (patchrect.top == thisrect.top)
-		patchrect.top -= thisrect.top - pRect->top;
-	m_patchViewdlg.MoveWindow(patchrect);
+	m_patchViewdlg.ParentOnSizing(m_hWnd, pRect);
 }
 
 void CLogDlg::OnSelectSearchField()
