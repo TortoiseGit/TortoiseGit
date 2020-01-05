@@ -620,21 +620,30 @@ protected:
 	CWinThread*			m_DiffingThread;
 	volatile LONG m_AsyncThreadRunning;
 
-	static int DiffAsync(GitRevLoglist* rev, IAsyncDiffCB* pdata)
+public:
+	bool IsCached(GitRevLoglist* rev)
 	{
-		auto data = static_cast<CGitLogListBase*>(pdata);
-		ULONGLONG offset = data->m_LogCache.GetOffset(rev->m_CommitHash);
-		if (!offset || data->m_LogCache.LoadOneItem(*rev, offset))
+		ULONGLONG offset = m_LogCache.GetOffset(rev->m_CommitHash);
+		if (offset && !m_LogCache.LoadOneItem(*rev, offset))
 		{
-			data->m_AsynDiffListLock.Lock();
-			data->m_AsynDiffList.push_back(rev);
-			data->m_AsynDiffListLock.Unlock();
-			::SetEvent(data->m_AsyncDiffEvent);
-			return 0;
+			InterlockedExchange(&rev->m_IsDiffFiles, TRUE);
+			return true;
 		}
 
-		InterlockedExchange(&rev->m_IsDiffFiles, TRUE);
-		return 0;
+		return false;
+	}
+
+protected:
+	static void DiffAsync(GitRevLoglist* rev, IAsyncDiffCB* pdata)
+	{
+		auto data = static_cast<CGitLogListBase*>(pdata);
+		if (data->IsCached(rev))
+			return;
+
+		data->m_AsynDiffListLock.Lock();
+		data->m_AsynDiffList.push_back(rev);
+		data->m_AsynDiffListLock.Unlock();
+		::SetEvent(data->m_AsyncDiffEvent);
 	}
 
 	static UINT AsyncThread(LPVOID data)

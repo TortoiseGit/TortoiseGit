@@ -28,7 +28,7 @@ class GitRevLoglist;
 class CLogCache;
 class IAsyncDiffCB;
 
-typedef int CALL_UPDATE_DIFF_ASYNC(GitRevLoglist* pRev, IAsyncDiffCB* data);
+typedef void CALL_UPDATE_DIFF_ASYNC(GitRevLoglist* pRev, IAsyncDiffCB* data);
 
 class GitRevLoglist : public GitRev
 {

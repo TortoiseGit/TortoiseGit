@@ -92,7 +92,7 @@ bool CLogDlgFilter::operator()(GitRevLoglist* pRev, CGitLogListBase* loglist, co
 		   we can add it back by using one-way diff(with outnumber changed and rename detect.
 		   here just need changed filename list. one-way is much quicker.
 		 */
-		if (pRev->m_IsDiffFiles)
+		if (pRev->m_IsDiffFiles || loglist->IsCached(pRev))
 		{
 			auto pathList = pRev->GetFiles(loglist);
 			for (int i = 0; i < pathList.GetCount(); ++i)
