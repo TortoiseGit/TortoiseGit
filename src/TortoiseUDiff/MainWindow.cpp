@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2019 - TortoiseGit
+// Copyright (C) 2012-2020 - TortoiseGit
 // Copyright (C) 2003-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -243,6 +243,7 @@ LRESULT CMainWindow::DoCommand(int id)
 				rect.left, rect.bottom - int(30 * CDPIAware::Instance().ScaleFactorY()),
 				rect.right - rect.left, int(30 * CDPIAware::Instance().ScaleFactorY()),
 				SWP_SHOWWINDOW);
+			m_FindBar.SelectSearchString();
 			::SetFocus(m_FindBar);
 			SendEditor(SCI_SETSELECTIONSTART, 0);
 			SendEditor(SCI_SETSELECTIONEND, 0);
