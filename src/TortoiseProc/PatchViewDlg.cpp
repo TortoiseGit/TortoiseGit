@@ -265,6 +265,13 @@ void CPatchViewDlg::OnShowFindBar()
 	GetClientRect(&rect);
 	::SetWindowPos(m_ctrlPatchView.GetSafeHwnd(), HWND_TOP, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top - 30, SWP_SHOWWINDOW);
 	::SetWindowPos(m_FindBar, HWND_TOP, rect.left, rect.bottom - 30, rect.right - rect.left, 30, SWP_SHOWWINDOW);
+	if (auto selstart = m_ctrlPatchView.Call(SCI_GETSELECTIONSTART), selend = m_ctrlPatchView.Call(SCI_GETSELECTIONEND); selstart != selend)
+	{
+		auto linebuf = std::make_unique<char[]>(selend - selstart + 1);
+		Sci_TextRange range = { static_cast<Sci_PositionCR>(selstart), static_cast<Sci_PositionCR>(selend), linebuf.get() };
+		if (m_ctrlPatchView.Call(SCI_GETTEXTRANGE, 0, reinterpret_cast<LPARAM>(&range)) > 0)
+			m_FindBar.SetFindText(m_ctrlPatchView.StringFromControl(linebuf.get()));
+	}
 	m_FindBar.SetFocusTextBox();
 	m_ctrlPatchView.Call(SCI_SETSELECTIONSTART, 0);
 	m_ctrlPatchView.Call(SCI_SETSELECTIONEND, 0);

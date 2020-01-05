@@ -30,6 +30,7 @@ public:
 	enum { IDD = IDD_FINDBAR };
 
 	bool IsMatchCase() const { return m_bMatchCase == BST_CHECKED; }
+	void SetFindText(CString findStr);
 	const CString GetFindText() const { return m_sFindStr; }
 	void SetFocusTextBox() const
 	{

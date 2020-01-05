@@ -243,6 +243,13 @@ LRESULT CMainWindow::DoCommand(int id)
 				rect.left, rect.bottom - int(30 * CDPIAware::Instance().ScaleFactorY()),
 				rect.right - rect.left, int(30 * CDPIAware::Instance().ScaleFactorY()),
 				SWP_SHOWWINDOW);
+			if (auto selstart = SendEditor(SCI_GETSELECTIONSTART), selend = SendEditor(SCI_GETSELECTIONEND); selstart != selend)
+			{
+				auto linebuf = std::make_unique<char[]>(selend - selstart + 1);
+				Sci_TextRange range = { static_cast<Sci_PositionCR>(selstart), static_cast<Sci_PositionCR>(selend), linebuf.get() };
+				if (SendEditor(SCI_GETTEXTRANGE, 0, reinterpret_cast<LPARAM>(&range)) > 0)
+					m_FindBar.SetSearchString(CUnicodeUtils::StdGetUnicode(linebuf.get()).c_str());
+			}
 			m_FindBar.SelectSearchString();
 			::SetFocus(m_FindBar);
 			SendEditor(SCI_SETSELECTIONSTART, 0);

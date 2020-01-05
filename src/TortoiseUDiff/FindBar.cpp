@@ -100,3 +100,8 @@ void CFindBar::SelectSearchString()
 {
 	SendMessage(GetDlgItem(*this, IDC_FINDTEXT), EM_SETSEL, 0, -1);
 }
+
+void CFindBar::SetSearchString(LPCTSTR findStr)
+{
+	::SetWindowText(GetDlgItem(*this, IDC_FINDTEXT), findStr);
+}

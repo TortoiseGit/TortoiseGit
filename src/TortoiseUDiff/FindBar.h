@@ -33,6 +33,7 @@ public:
 	~CFindBar(void);
 
 	void					SetParent(HWND hParent) {m_hParent = hParent;}
+	void					SetSearchString(LPCTSTR findStr);
 	void					SelectSearchString();
 
 protected:
