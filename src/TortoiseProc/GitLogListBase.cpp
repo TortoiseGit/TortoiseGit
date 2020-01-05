@@ -200,6 +200,7 @@ int CGitLogListBase::AsyncDiffThread()
 				pRev->GetBody() = body;
 				::PostMessage(m_hWnd, MSG_LOADED, 0, 0);
 				this->GetParent()->PostMessage(WM_COMMAND, MSG_FETCHED_DIFF, 0);
+				continue;
 			}
 
 			if (!pRev->CheckAndDiff())
