@@ -259,7 +259,8 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 						for (int i = m_bShowWC ? 1 : 0; i < FirstSelect; ++i)
 						{
 							GitRevLoglist* first = m_arShownList.SafeGetAt(i);
-							CTGitPathList list = first->GetFiles(nullptr);
+							auto filesWrapper = first->GetFiles(nullptr);
+							auto& list = filesWrapper.m_files;
 							const CTGitPath* file = list.LookForGitPath(path);
 							if (file && !file->GetGitOldPathString().IsEmpty())
 								path = file->GetGitOldPathString();
@@ -285,7 +286,8 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 					for (int i = m_bShowWC ? 1 : 0; i < FirstSelect; ++i)
 					{
 						GitRevLoglist* first = m_arShownList.SafeGetAt(i);
-						CTGitPathList list = first->GetFiles(nullptr);
+						auto filesWrapper = first->GetFiles(nullptr);
+						auto& list = filesWrapper.m_files;
 						const CTGitPath* file = list.LookForGitPath(path);
 						if (file && !file->GetGitOldPathString().IsEmpty())
 							path = file->GetGitOldPathString();
@@ -308,7 +310,8 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 					for (int i = m_bShowWC ? 1 : 0; i < FirstSelect; ++i)
 					{
 						GitRevLoglist* first = m_arShownList.SafeGetAt(i);
-						CTGitPathList list = first->GetFiles(nullptr);
+						auto filesWrapper = first->GetFiles(nullptr);
+						auto& list = filesWrapper.m_files;
 						const CTGitPath* file = list.LookForGitPath(path1);
 						if (file && !file->GetGitOldPathString().IsEmpty())
 							path1 = file->GetGitOldPathString();
@@ -317,7 +320,8 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 					for (int i = FirstSelect; i < LastSelect; ++i)
 					{
 						GitRevLoglist* first = m_arShownList.SafeGetAt(i);
-						CTGitPathList list = first->GetFiles(nullptr);
+						auto filesWrapper = first->GetFiles(nullptr);
+						auto& list = filesWrapper.m_files;
 						const CTGitPath* file = list.LookForGitPath(path2);
 						if (file && !file->GetGitOldPathString().IsEmpty())
 							path2 = file->GetGitOldPathString();
@@ -342,7 +346,8 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 					for (int i = m_bShowWC ? 1 : 0; i < FirstSelect; ++i)
 					{
 						GitRevLoglist* first = m_arShownList.SafeGetAt(i);
-						CTGitPathList list = first->GetFiles(nullptr);
+						auto filesWrapper = first->GetFiles(nullptr);
+						auto& list = filesWrapper.m_files;
 						const CTGitPath* file = list.LookForGitPath(path1);
 						if (file && !file->GetGitOldPathString().IsEmpty())
 							path1 = file->GetGitOldPathString();
@@ -389,14 +394,16 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 						for (int i = m_bShowWC ? 1 : 0; i < indexNext; ++i)
 						{
 							GitRevLoglist* first = m_arShownList.SafeGetAt(i);
-							CTGitPathList list = first->GetFiles(nullptr);
+							auto filesWrapper = first->GetFiles(nullptr);
+							auto& list = filesWrapper.m_files;
 							const CTGitPath* file = list.LookForGitPath(path1);
 							if (file && !file->GetGitOldPathString().IsEmpty())
 								path1 = file->GetGitOldPathString();
 						}
 						CString path2 = path1;
 						GitRevLoglist* first = m_arShownList.SafeGetAt(indexNext);
-						CTGitPathList list = first->GetFiles(nullptr);
+						auto filesWrapper = first->GetFiles(nullptr);
+						auto& list = filesWrapper.m_files;
 						const CTGitPath* file = list.LookForGitPath(path2);
 						if (file && !file->GetGitOldPathString().IsEmpty())
 							path2 = file->GetGitOldPathString();

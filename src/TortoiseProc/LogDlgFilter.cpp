@@ -94,7 +94,7 @@ bool CLogDlgFilter::operator()(GitRevLoglist* pRev, CGitLogListBase* loglist, co
 		 */
 		if (pRev->m_IsDiffFiles)
 		{
-			const auto& pathList = pRev->GetFiles(loglist);
+			auto pathList = pRev->GetFiles(loglist);
 			for (int i = 0; i < pathList.GetCount(); ++i)
 			{
 				scratch += pathList[i].GetWinPath();

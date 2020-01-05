@@ -950,7 +950,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			if (static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\StyleCommitMessages", TRUE)) == TRUE)
 				CAppUtils::FormatTextInRichEditControl(pMsgView);
 
-			auto& files = pLogEntry->GetFiles(&m_LogList); // either load the diff from disk cache and sets m_IsDiffFiles (then we safe a reload) or it enqueues it in the AsyncDiffThread
+			auto files = pLogEntry->GetFiles(&m_LogList); // either load the diff from disk cache and sets m_IsDiffFiles (then we safe a reload) or it enqueues it in the AsyncDiffThread
 			if (!pLogEntry->m_IsDiffFiles)
 			{
 				m_ChangedFileListCtrl.SetBusyString(CString(MAKEINTRESOURCE(IDS_PROC_LOG_FETCHINGFILES)));
@@ -1012,7 +1012,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 					pLogEntry->GetAction(&m_LogList) |= CTGitPath::LOGACTIONS_HIDE;
 			}
 
-			m_ChangedFileListCtrl.UpdateWithGitPathList(files);
+			m_ChangedFileListCtrl.UpdateWithGitPathList(const_cast<CTGitPathList&>(files.m_files));
 			m_ChangedFileListCtrl.m_CurrentVersion = pLogEntry->m_CommitHash;
 			if (pLogEntry->m_CommitHash.IsEmpty() && m_bShowUnversioned)
 			{

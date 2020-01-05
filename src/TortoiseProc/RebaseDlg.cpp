@@ -2853,7 +2853,7 @@ void CRebaseDlg::OnRefreshFilelist()
 		POSITION pos = m_CommitList.GetFirstSelectedItemPosition();
 		int selIndex = m_CommitList.GetNextSelectedItem(pos);
 		auto pLogEntry = m_CommitList.m_arShownList.SafeGetAt(selIndex);
-		auto& files = pLogEntry->GetFiles(&m_CommitList);
+		auto files = pLogEntry->GetFiles(&m_CommitList);
 		if (!pLogEntry->m_IsDiffFiles)
 		{
 			m_FileListCtrl.Clear();
@@ -2862,7 +2862,7 @@ void CRebaseDlg::OnRefreshFilelist()
 			m_FileListCtrl.SetRedraw(TRUE);
 			return;
 		}
-		m_FileListCtrl.UpdateWithGitPathList(files);
+		m_FileListCtrl.UpdateWithGitPathList(const_cast<CTGitPathList&>(files.m_files));
 		m_FileListCtrl.m_CurrentVersion = pLogEntry->m_CommitHash;
 		m_FileListCtrl.Show(GITSLC_SHOWVERSIONED);
 	}

@@ -38,11 +38,54 @@ public:
 	GitRevLoglist(void);
 	~GitRevLoglist(void);
 
+	class GitRevLoglistSharedFiles
+	{
+	public:
+		GitRevLoglistSharedFiles(PSRWLOCK lock, CTGitPathList& files)
+			: m_lock(lock)
+			, m_files(files)
+		{
+			AcquireSRWLockShared(m_lock);
+		}
+
+		~GitRevLoglistSharedFiles() { ReleaseSRWLockShared(m_lock); }
+
+		inline int GetCount() const { return m_files.GetCount(); }
+		inline const CTGitPath& operator[](INT_PTR index) const { return m_files[index]; }
+
+		const CTGitPathList& m_files;
+
+	private:
+		PSRWLOCK m_lock;
+	};
+
+	class GitRevLoglistSharedFilesWriter
+	{
+	public:
+		GitRevLoglistSharedFilesWriter(PSRWLOCK lock, CTGitPathList& files, CTGitPathList& unrevfiles)
+			: m_lock(lock)
+			, m_files(files)
+			, m_UnRevFiles(unrevfiles)
+		{
+			AcquireSRWLockExclusive(m_lock);
+		}
+
+		~GitRevLoglistSharedFilesWriter() { ReleaseSRWLockExclusive(m_lock); }
+
+		CTGitPathList& m_files;
+		CTGitPathList& m_UnRevFiles;
+
+	private:
+		PSRWLOCK m_lock;
+	};
+
 protected:
 	int				m_RebaseAction;
 	unsigned int	m_Action;
 	CTGitPathList	m_Files;
 	CTGitPathList	m_UnRevFiles;
+
+	SRWLOCK m_lock;
 
 public:
 	CString m_Notes;
@@ -87,14 +130,19 @@ public:
 		return m_RebaseAction;
 	}
 
-	CTGitPathList& GetFiles(IAsyncDiffCB* data)
+	GitRevLoglistSharedFiles GetFiles(IAsyncDiffCB* data)
 	{
 		// data might be nullptr when instant data is requested, cf. CGitLogListAction
 		if (data && !m_IsDiffFiles && m_CallDiffAsync)
 			m_CallDiffAsync(this, data);
 		else
 			CheckAndDiff();
-		return m_Files;
+		return GitRevLoglistSharedFiles(&m_lock, m_Files);
+	}
+
+	GitRevLoglistSharedFilesWriter GetFilesWriter()
+	{
+		return GitRevLoglistSharedFilesWriter(&m_lock, m_Files, m_UnRevFiles);
 	}
 
 	CTGitPathList& GetUnRevFiles()

@@ -174,7 +174,8 @@ int CGitLogListBase::AsyncDiffThread()
 				if(pRev->m_IsDiffFiles)
 					continue;
 
-				CTGitPathList& files = pRev->GetFiles(this);
+				auto filesWrapper = pRev->GetFilesWriter();
+				auto& files = filesWrapper.m_files;
 				files.Clear();
 				pRev->m_ParentHash.clear();
 				pRev->m_ParentHash.push_back(m_HeadHash);
@@ -2450,7 +2451,7 @@ void CGitLogListBase::CopySelectionToClipBoard(int toCopy)
 			if (toCopy == ID_COPYCLIPBOARDFULL)
 			{
 				sPaths = L"----\r\n";
-				const auto& files = pLogEntry->GetFiles(nullptr);
+				auto files = pLogEntry->GetFiles(nullptr);
 				for (int cpPathIndex = 0; files.GetCount(); ++cpPathIndex)
 				{
 					auto& file = files[cpPathIndex];

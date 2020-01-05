@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2019 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2020 - TortoiseGit
 // Copyright (C) 2011-2013 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
@@ -204,7 +204,7 @@ void CGitBlameLogList::GetParentNumbers(GitRevLoglist* pRev, const std::vector<C
 
 	try
 	{
-		const CTGitPathList& files = pRev->GetFiles(nullptr);
+		auto files = pRev->GetFiles(nullptr);
 		for (int j=0, j_size = files.GetCount(); j < j_size; ++j)
 		{
 			const CTGitPath &file =  files[j];
@@ -259,7 +259,7 @@ void CGitBlameLogList::GetParentHash(GitRevLoglist* pRev, int index, CGitHash& p
 
 	try
 	{
-		const CTGitPathList& files = pRev->GetFiles(nullptr);
+		auto files = pRev->GetFiles(nullptr);
 		for (int j = 0, j_size = files.GetCount(); j < j_size; ++j)
 		{
 			const CTGitPath &file =  files[j];

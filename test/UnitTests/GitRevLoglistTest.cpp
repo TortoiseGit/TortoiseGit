@@ -84,7 +84,7 @@ static void SafeFetchFullInfo(CGit* cGit)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, rev.GetAction(nullptr));
 	ASSERT_EQ(1, rev.GetFiles(nullptr).GetCount());
 	CTGitPathList list;
-	list = rev.GetFiles(nullptr);
+	list = rev.GetFiles(nullptr).m_files;
 	EXPECT_STREQ(L"ascii.txt", list[0].GetGitPathString());
 	EXPECT_STREQ(L"", list[0].GetGitOldPathString());
 	EXPECT_STREQ(L"2", list[0].m_StatAdd);
@@ -100,7 +100,7 @@ static void SafeFetchFullInfo(CGit* cGit)
 	EXPECT_EQ(FALSE, rev.m_IsDiffFiles);
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, rev.GetAction(nullptr));
 	ASSERT_EQ(1, rev.GetFiles(nullptr).GetCount());
-	list = rev.GetFiles(nullptr);
+	list = rev.GetFiles(nullptr).m_files;
 	EXPECT_STREQ(L"ascii.txt", list[0].GetGitPathString());
 	EXPECT_STREQ(L"", list[0].GetGitOldPathString());
 	EXPECT_STREQ(L"2", list[0].m_StatAdd);
@@ -118,7 +118,7 @@ static void SafeFetchFullInfo(CGit* cGit)
 	EXPECT_EQ(0, rev.SafeFetchFullInfo(cGit));
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, rev.GetAction(nullptr));
 	ASSERT_EQ(4, rev.GetFiles(nullptr).GetCount());
-	list = rev.GetFiles(nullptr);
+	list = rev.GetFiles(nullptr).m_files;
 	EXPECT_STREQ(L"copy/ansi.txt", list[0].GetGitPathString());
 	EXPECT_STREQ(L"", list[0].GetGitOldPathString());
 	EXPECT_STREQ(L"1", list[0].m_StatAdd);
@@ -148,7 +148,7 @@ static void SafeFetchFullInfo(CGit* cGit)
 	EXPECT_EQ(0, rev.SafeFetchFullInfo(cGit));
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, rev.GetAction(nullptr));
 	ASSERT_EQ(1, rev.GetFiles(nullptr).GetCount());
-	list = rev.GetFiles(nullptr);
+	list = rev.GetFiles(nullptr).m_files;
 	EXPECT_STREQ(L"newfiles3.txt", list[0].GetGitPathString());
 	EXPECT_STREQ(L"", list[0].GetGitOldPathString());
 	EXPECT_STREQ(L"1", list[0].m_StatAdd);
@@ -161,7 +161,7 @@ static void SafeFetchFullInfo(CGit* cGit)
 	EXPECT_EQ(0, rev.SafeFetchFullInfo(cGit));
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, rev.GetAction(nullptr));
 	ASSERT_EQ(2, rev.GetFiles(nullptr).GetCount());
-	list = rev.GetFiles(nullptr);
+	list = rev.GetFiles(nullptr).m_files;
 	EXPECT_STREQ(L"newfiles.txt", list[0].GetGitPathString());
 	EXPECT_STREQ(L"", list[0].GetGitOldPathString());
 	EXPECT_STREQ(L"1", list[0].m_StatAdd);
@@ -188,7 +188,7 @@ static void SafeFetchFullInfo(CGit* cGit)
 	EXPECT_EQ(0, rev.SafeFetchFullInfo(cGit));
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED | CTGitPath::LOGACTIONS_MODIFIED | CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_DELETED, rev.GetAction(nullptr));
 	ASSERT_EQ(4, rev.GetFiles(nullptr).GetCount());
-	list = rev.GetFiles(nullptr);
+	list = rev.GetFiles(nullptr).m_files;
 	EXPECT_STREQ(L"newfiles2 - Cöpy.txt", list[0].GetGitPathString());
 	EXPECT_STREQ(L"", list[0].GetGitOldPathString());
 	EXPECT_STREQ(L"1", list[0].m_StatAdd);
@@ -222,7 +222,7 @@ static void SafeFetchFullInfo(CGit* cGit)
 	EXPECT_EQ(0, rev.SafeFetchFullInfo(cGit));
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED | CTGitPath::LOGACTIONS_MODIFIED | CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_DELETED, rev.GetAction(nullptr));
 	ASSERT_EQ(4, rev.GetFiles(nullptr).GetCount());
-	list = rev.GetFiles(nullptr);
+	list = rev.GetFiles(nullptr).m_files;
 	EXPECT_STREQ(L"it-was-ansi.txt", list[0].GetGitPathString());
 	EXPECT_STREQ(L"ansi.txt", list[0].GetGitOldPathString());
 	EXPECT_STREQ(L"0", list[0].m_StatAdd);
@@ -273,7 +273,7 @@ static void SafeFetchFullInfo_Submodule(CGit* cGit, config testConfig)
 	EXPECT_EQ(FALSE, rev.m_IsDiffFiles);
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, rev.GetAction(nullptr));
 	ASSERT_EQ(1, rev.GetFiles(nullptr).GetCount());
-	list = rev.GetFiles(nullptr);
+	list = rev.GetFiles(nullptr).m_files;
 	EXPECT_STREQ(L"something", list[0].GetGitPathString());
 	EXPECT_STREQ(L"", list[0].GetGitOldPathString());
 	EXPECT_STREQ(L"1", list[0].m_StatAdd);
@@ -287,7 +287,7 @@ static void SafeFetchFullInfo_Submodule(CGit* cGit, config testConfig)
 	EXPECT_EQ(FALSE, rev.m_IsDiffFiles);
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, rev.GetAction(nullptr));
 	ASSERT_EQ(1, rev.GetFiles(nullptr).GetCount());
-	list = rev.GetFiles(nullptr);
+	list = rev.GetFiles(nullptr).m_files;
 	EXPECT_STREQ(L"something", list[0].GetGitPathString());
 	EXPECT_STREQ(L"", list[0].GetGitOldPathString());
 	EXPECT_STREQ(L"1", list[0].m_StatAdd);
@@ -301,7 +301,7 @@ static void SafeFetchFullInfo_Submodule(CGit* cGit, config testConfig)
 	EXPECT_EQ(FALSE, rev.m_IsDiffFiles);
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, rev.GetAction(nullptr));
 	ASSERT_EQ(1, rev.GetFiles(nullptr).GetCount());
-	list = rev.GetFiles(nullptr);
+	list = rev.GetFiles(nullptr).m_files;
 	EXPECT_STREQ(L"something", list[0].GetGitPathString());
 	EXPECT_STREQ(L"", list[0].GetGitOldPathString());
 	EXPECT_STREQ(L"0", list[0].m_StatAdd);
@@ -315,7 +315,7 @@ static void SafeFetchFullInfo_Submodule(CGit* cGit, config testConfig)
 	EXPECT_EQ(FALSE, rev.m_IsDiffFiles);
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, rev.GetAction(nullptr));
 	ASSERT_EQ(1, rev.GetFiles(nullptr).GetCount());
-	list = rev.GetFiles(nullptr);
+	list = rev.GetFiles(nullptr).m_files;
 	EXPECT_STREQ(L"something", list[0].GetGitPathString());
 	EXPECT_STREQ(L"", list[0].GetGitOldPathString());
 	if (testConfig == LIBGIT2_ALL) // TODO: libgit behaves differently here
@@ -337,7 +337,7 @@ static void SafeFetchFullInfo_Submodule(CGit* cGit, config testConfig)
 	EXPECT_EQ(FALSE, rev.m_IsDiffFiles);
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, rev.GetAction(nullptr));
 	ASSERT_EQ(1, rev.GetFiles(nullptr).GetCount());
-	list = rev.GetFiles(nullptr);
+	list = rev.GetFiles(nullptr).m_files;
 	EXPECT_STREQ(L"something", list[0].GetGitPathString());
 	EXPECT_STREQ(L"", list[0].GetGitOldPathString());
 	if (testConfig == LIBGIT2_ALL) // TODO: libgit behaves differently here
@@ -359,7 +359,7 @@ static void SafeFetchFullInfo_Submodule(CGit* cGit, config testConfig)
 	EXPECT_EQ(FALSE, rev.m_IsDiffFiles);
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, rev.GetAction(nullptr));
 	ASSERT_EQ(2, rev.GetFiles(nullptr).GetCount());
-	list = rev.GetFiles(nullptr);
+	list = rev.GetFiles(nullptr).m_files;
 	EXPECT_STREQ(L"something", list[0].GetGitPathString());
 	EXPECT_STREQ(L"", list[0].GetGitOldPathString());
 	EXPECT_STREQ(L"1", list[0].m_StatAdd);

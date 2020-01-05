@@ -35,6 +35,7 @@ GitRevLoglist::GitRevLoglist(void) : GitRev()
 , m_CallDiffAsync(nullptr)
 , m_IsSimpleListReady(FALSE)
 , m_Mark(0)
+, m_lock(SRWLOCK_INIT)
 {
 }
 
@@ -175,6 +176,8 @@ int GitRevLoglist::SafeGetSimpleList(CGit* git)
 
 int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 {
+	AcquireSRWLockExclusive(&m_lock);
+	SCOPE_EXIT { ReleaseSRWLockExclusive(&m_lock); };
 	m_Files.Clear();
 	if (git->UsingLibGit2(CGit::GIT_CMD_LOGLISTDIFF))
 	{
