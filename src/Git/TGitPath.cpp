@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -1638,7 +1638,7 @@ bool CTGitPathList::IsEqual(const CTGitPathList& list)
 	return true;
 }
 
-const CTGitPath* CTGitPathList::LookForGitPath(const CString& path)
+const CTGitPath* CTGitPathList::LookForGitPath(const CString& path) const
 {
 	int i=0;
 	for (i = 0; i < this->GetCount(); ++i)
