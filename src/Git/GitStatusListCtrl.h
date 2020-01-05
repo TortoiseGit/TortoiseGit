@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -834,7 +834,7 @@ private:
 	int UpdateFileList(const CTGitPathList* list = nullptr);
 public:
 	int UpdateFileList(int mask, bool once = true, const CTGitPathList* list = nullptr);
-	int UpdateUnRevFileList(CTGitPathList &list);
+	int InsertUnRevListFromPreCalculatedList(const CTGitPathList& list);
 	int UpdateUnRevFileList(const CTGitPathList* list = nullptr);
 	int UpdateIgnoreFileList(const CTGitPathList* list = nullptr);
 	int UpdateLocalChangesIgnoredFileList(const CTGitPathList* list = nullptr);

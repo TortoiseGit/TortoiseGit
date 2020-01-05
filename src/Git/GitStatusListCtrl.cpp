@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 // Copyright (C) 2003-2008, 2013-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -3890,7 +3890,7 @@ int CGitStatusListCtrl::UpdateWithGitPathList(CTGitPathList &list)
 	return 0;
 }
 
-int CGitStatusListCtrl::UpdateUnRevFileList(CTGitPathList &list)
+int CGitStatusListCtrl::InsertUnRevListFromPreCalculatedList(const CTGitPathList& list)
 {
 	CAutoWriteLock locker(m_guard);
 	m_UnRevFileList = list;

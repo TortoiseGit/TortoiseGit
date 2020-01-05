@@ -1018,7 +1018,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			m_ChangedFileListCtrl.m_CurrentVersion = pLogEntry->m_CommitHash;
 			if (pLogEntry->m_CommitHash.IsEmpty() && m_bShowUnversioned)
 			{
-				m_ChangedFileListCtrl.UpdateUnRevFileList(pLogEntry->GetUnRevFiles());
+				m_ChangedFileListCtrl.InsertUnRevListFromPreCalculatedList(pLogEntry->GetUnRevFiles());
 				m_ChangedFileListCtrl.Show(GITSLC_SHOWVERSIONED | GITSLC_SHOWUNVERSIONED);
 			}
 			else
