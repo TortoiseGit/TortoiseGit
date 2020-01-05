@@ -227,9 +227,19 @@ LRESULT CMainWindow::DoCommand(int id)
 		}
 		break;
 	case IDM_FINDNEXT:
+		if (m_findtext.empty())
+		{
+			DoCommand(IDM_SHOWFINDBAR);
+			break;
+		}
 		DoSearch(false);
 		break;
 	case IDM_FINDPREV:
+		if (m_findtext.empty())
+		{
+			DoCommand(IDM_SHOWFINDBAR);
+			break;
+		}
 		DoSearch(true);
 		break;
 	case IDM_FINDEXIT:

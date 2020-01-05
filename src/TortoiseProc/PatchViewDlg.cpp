@@ -277,6 +277,11 @@ void CPatchViewDlg::OnShowFindBar()
 
 void CPatchViewDlg::OnFindNext()
 {
+	if (m_FindBar.GetFindText().IsEmpty())
+	{
+		OnShowFindBar();
+		return;
+	}
 	DoSearch(false);
 }
 
@@ -307,6 +312,11 @@ void CPatchViewDlg::DoSearch(bool reverse)
 
 void CPatchViewDlg::OnFindPrev()
 {
+	if (m_FindBar.GetFindText().IsEmpty())
+	{
+		OnShowFindBar();
+		return;
+	}
 	DoSearch(true);
 }
 
