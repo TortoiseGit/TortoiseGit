@@ -1,5 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2016, 2019-2020 - TortoiseGit
 // Copyright (C) 2007,2009-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -72,6 +73,7 @@ private:
 
 	HWND                m_hWndEdit;
 
+	void                DoSearch(bool reverse);
 	CFindBar            m_FindBar;
 	bool                m_bShowFindBar;
 	bool                m_bMatchCase;

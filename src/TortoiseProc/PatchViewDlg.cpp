@@ -273,26 +273,41 @@ void CPatchViewDlg::OnShowFindBar()
 			m_FindBar.SetFindText(m_ctrlPatchView.StringFromControl(linebuf.get()));
 	}
 	m_FindBar.SetFocusTextBox();
-	m_ctrlPatchView.Call(SCI_SETSELECTIONSTART, 0);
-	m_ctrlPatchView.Call(SCI_SETSELECTIONEND, 0);
-	m_ctrlPatchView.Call(SCI_SEARCHANCHOR);
 }
 
 void CPatchViewDlg::OnFindNext()
 {
-	m_ctrlPatchView.Call(SCI_CHARRIGHT);
-	m_ctrlPatchView.Call(SCI_SEARCHANCHOR);
-	if (m_ctrlPatchView.Call(SCI_SEARCHNEXT, m_FindBar.IsMatchCase() ? SCFIND_MATCHCASE : 0, reinterpret_cast<LPARAM>(static_cast<LPCSTR>(CUnicodeUtils::GetUTF8(m_FindBar.GetFindText())))) == -1)
+	DoSearch(false);
+}
+
+void CPatchViewDlg::DoSearch(bool reverse)
+{
+	Sci_Position lastcursor = m_ctrlPatchView.Call(SCI_GETSELECTIONEND);
+	if (!reverse)
+		m_ctrlPatchView.Call(SCI_SETTARGETRANGE, lastcursor, m_ctrlPatchView.Call(SCI_GETLENGTH));
+	else
+	{
+		lastcursor = m_ctrlPatchView.Call(SCI_GETSELECTIONSTART);
+		m_ctrlPatchView.Call(SCI_SETTARGETRANGE, lastcursor, 0);
+	}
+
+	auto searchText = CUnicodeUtils::GetUTF8(m_FindBar.GetFindText());
+	m_ctrlPatchView.Call(SCI_SETSEARCHFLAGS, m_FindBar.IsMatchCase() ? SCFIND_MATCHCASE : SCFIND_NONE);
+	if (auto pos = m_ctrlPatchView.Call(SCI_SEARCHINTARGET, searchText.GetLength(), reinterpret_cast<LPARAM>(static_cast<LPCSTR>(searchText))); pos >= 0)
+	{
+		m_ctrlPatchView.Call(SCI_SETSELECTION, pos, pos + searchText.GetLength());
+		m_ctrlPatchView.Call(SCI_SCROLLCARET);
+	}
+	else
+	{
+		m_ctrlPatchView.Call(SCI_SETSELECTION, lastcursor, lastcursor);
 		FlashWindowEx(FLASHW_ALL, 3, 100);
-	m_ctrlPatchView.Call(SCI_SCROLLCARET);
+	}
 }
 
 void CPatchViewDlg::OnFindPrev()
 {
-	m_ctrlPatchView.Call(SCI_SEARCHANCHOR);
-	if (m_ctrlPatchView.Call(SCI_SEARCHPREV, m_FindBar.IsMatchCase() ? SCFIND_MATCHCASE : 0, reinterpret_cast<LPARAM>(static_cast<LPCSTR>(CUnicodeUtils::GetUTF8(m_FindBar.GetFindText())))) == -1)
-		FlashWindowEx(FLASHW_ALL, 3, 100);
-	m_ctrlPatchView.Call(SCI_SCROLLCARET);
+	DoSearch(true);
 }
 
 void CPatchViewDlg::OnFindExit()
@@ -312,7 +327,6 @@ void CPatchViewDlg::OnFindReset()
 {
 	m_ctrlPatchView.Call(SCI_SETSELECTIONSTART, 0);
 	m_ctrlPatchView.Call(SCI_SETSELECTIONEND, 0);
-	m_ctrlPatchView.Call(SCI_SEARCHANCHOR);
 }
 
 LRESULT CPatchViewDlg::OnFindNextMessage(WPARAM, LPARAM)
