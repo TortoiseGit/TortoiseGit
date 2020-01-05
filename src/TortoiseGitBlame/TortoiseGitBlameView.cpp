@@ -1,6 +1,6 @@
 ﻿// TortoiseGitBlame - a Viewer for Git Blames
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // Copyright (C)2003 Don HO <donho@altern.org>
@@ -1836,13 +1836,12 @@ void CTortoiseGitBlameView::OnEditFind()
 	m_pFindDialog=new CFindReplaceDialog();
 
 	CString oneline = m_sFindText;
-	if (m_TextView.Call(SCI_GETSELECTIONSTART) != m_TextView.Call(SCI_GETSELECTIONEND))
+	if (auto selstart = m_TextView.Call(SCI_GETSELECTIONSTART), selend = m_TextView.Call(SCI_GETSELECTIONEND); selstart != selend)
 	{
-		LRESULT bufsize = m_TextView.Call(SCI_GETSELECTIONEND) - m_TextView.Call(SCI_GETSELECTIONSTART);
-		auto linebuf = std::make_unique<char[]>(bufsize + 1);
-		SecureZeroMemory(linebuf.get(), bufsize + 1);
-		SendEditor(SCI_GETSELTEXT, 0, reinterpret_cast<LPARAM>(linebuf.get()));
-		oneline = m_TextView.StringFromControl(linebuf.get());
+		auto linebuf = std::make_unique<char[]>(selend - selstart + 1);
+		Sci_TextRange range = { static_cast<Sci_PositionCR>(selstart), static_cast<Sci_PositionCR>(selend), linebuf.get() };
+		if (m_TextView.Call(SCI_GETTEXTRANGE, 0, reinterpret_cast<LPARAM>(&range)) > 0)
+			oneline = m_TextView.StringFromControl(linebuf.get());
 	}
 
 	DWORD flags = FR_DOWN | FR_HIDEWHOLEWORD;
