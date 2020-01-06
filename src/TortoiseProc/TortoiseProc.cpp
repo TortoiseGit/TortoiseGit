@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 // Copyright (C) 2003-2008, 2012-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -623,6 +623,9 @@ void CTortoiseProcApp::CheckUpgrade()
 	}
 
 	// version specific updates
+	if (lVersion <= ConvertVersionToInt(2, 9, 1))
+		CRegStdDWORD(L"Software\\TortoiseGit\\TortoiseProc\\PatchDlgWidth").removeValue();
+
 	if (lVersion <= ConvertVersionToInt(2, 4, 1))
 	{
 		CRegStdDWORD(L"Software\\TortoiseGit\\CommitAskBeforeCancel").removeValue();
