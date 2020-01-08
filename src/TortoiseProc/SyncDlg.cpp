@@ -1168,8 +1168,8 @@ BOOL CSyncDlg::OnInitDialog()
 		rect.bottom -= m_seq * 30;
 		if (rect.top < 0)
 		{
-			rect.top += 150;
-			rect.bottom += 150;
+			rect.top += CDPIAware::Instance().ScaleY(150);
+			rect.bottom += CDPIAware::Instance().ScaleY(150);
 		}
 		MoveWindow(rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top);
 	}

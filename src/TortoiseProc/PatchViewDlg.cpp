@@ -24,12 +24,15 @@
 #include "PatchViewDlg.h"
 #include "CommonAppUtils.h"
 #include "StringUtils.h"
+#include "DPIAware.h"
 
 #pragma comment(lib, "Dwmapi.lib")
 
 // CPatchViewDlg dialog
 
 IMPLEMENT_DYNAMIC(CPatchViewDlg, CDialog)
+
+#define SEARCHBARHEIGHT 30
 
 CPatchViewDlg::CPatchViewDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(CPatchViewDlg::IDD, pParent)
@@ -132,8 +135,8 @@ void CPatchViewDlg::OnSize(UINT nType, int cx, int cy)
 
 		if (m_bShowFindBar)
 		{
-			::SetWindowPos(m_ctrlPatchView.GetSafeHwnd(), HWND_TOP, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top - 30, SWP_SHOWWINDOW);
-			::SetWindowPos(m_FindBar.GetSafeHwnd(), HWND_TOP, rect.left, rect.bottom - 30, rect.right - rect.left, 30, SWP_SHOWWINDOW);
+			::SetWindowPos(m_ctrlPatchView.GetSafeHwnd(), HWND_TOP, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top - CDPIAware::Instance().ScaleX(SEARCHBARHEIGHT), SWP_SHOWWINDOW);
+			::SetWindowPos(m_FindBar.GetSafeHwnd(), HWND_TOP, rect.left, rect.bottom - CDPIAware::Instance().ScaleX(SEARCHBARHEIGHT + 2), rect.right - rect.left, CDPIAware::Instance().ScaleX(SEARCHBARHEIGHT), SWP_SHOWWINDOW);
 		}
 		else
 		{
@@ -260,11 +263,10 @@ void CPatchViewDlg::OnEscape()
 void CPatchViewDlg::OnShowFindBar()
 {
 	m_bShowFindBar = true;
-	m_FindBar.ShowWindow(SW_SHOW);
 	RECT rect;
 	GetClientRect(&rect);
-	::SetWindowPos(m_ctrlPatchView.GetSafeHwnd(), HWND_TOP, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top - 30, SWP_SHOWWINDOW);
-	::SetWindowPos(m_FindBar, HWND_TOP, rect.left, rect.bottom - 30, rect.right - rect.left, 30, SWP_SHOWWINDOW);
+	::SetWindowPos(m_ctrlPatchView.GetSafeHwnd(), HWND_TOP, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top - CDPIAware::Instance().ScaleX(SEARCHBARHEIGHT), SWP_SHOWWINDOW);
+	::SetWindowPos(m_FindBar, HWND_TOP, rect.left, rect.bottom - CDPIAware::Instance().ScaleX(SEARCHBARHEIGHT + 2), rect.right - rect.left, CDPIAware::Instance().ScaleX(SEARCHBARHEIGHT), SWP_SHOWWINDOW);
 	if (auto selstart = m_ctrlPatchView.Call(SCI_GETSELECTIONSTART), selend = m_ctrlPatchView.Call(SCI_GETSELECTIONEND); selstart != selend)
 	{
 		auto linebuf = std::make_unique<char[]>(selend - selstart + 1);

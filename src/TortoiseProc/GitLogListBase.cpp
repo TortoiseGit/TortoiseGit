@@ -3700,7 +3700,7 @@ BOOL CGitLogListBase::OnToolTipText(UINT /*id*/, NMHDR* pNMHDR, LRESULT* pResult
 		CRect rect;
 		GetSubItemRect(nItem, lvhitTestInfo.iSubItem, LVIR_LABEL, rect);
 		if (followMousePos)
-			rect.MoveToXY(pt.x, pt.y + 18); // 18: to act like a normal tooltip
+			rect.MoveToXY(pt.x, pt.y + CDPIAware::Instance().ScaleY(18)); // 18: to act like a normal tooltip
 		ClientToScreen(rect);
 		::SetWindowPos(pNMHDR->hwndFrom, HWND_TOP, rect.left, rect.top, 0, 0, SWP_NOACTIVATE|SWP_NOSIZE|SWP_NOOWNERZORDER);
 
