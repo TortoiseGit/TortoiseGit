@@ -269,7 +269,7 @@ BOOL CRebaseDlg::OnInitDialog()
 
 	EnableSaveRestore(L"RebaseDlg");
 
-	DWORD yPos = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\ResizableState\\RebaseDlgSizer");
+	DWORD yPos = CDPIAware::Instance().ScaleY(CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\ResizableState\\RebaseDlgSizer"));
 	RECT rcDlg, rcLogMsg, rcFileList;
 	GetClientRect(&rcDlg);
 	m_CommitList.GetWindowRect(&rcLogMsg);
@@ -282,7 +282,7 @@ BOOL CRebaseDlg::OnInitDialog()
 		m_wndSplitter.GetWindowRect(&rectSplitter);
 		ScreenToClient(&rectSplitter);
 		int delta = yPos - rectSplitter.top;
-		if ((rcLogMsg.bottom + delta > rcLogMsg.top)&&(rcLogMsg.bottom + delta < rcFileList.bottom - 30))
+		if ((rcLogMsg.bottom + delta > rcLogMsg.top) && (rcLogMsg.bottom + delta < rcFileList.bottom - CDPIAware::Instance().ScaleY(30)))
 		{
 			m_wndSplitter.SetWindowPos(nullptr, 0, yPos, 0, 0, SWP_NOSIZE);
 			DoSize(delta);
@@ -475,7 +475,7 @@ void CRebaseDlg::SaveSplitterPos()
 		RECT rectSplitter;
 		m_wndSplitter.GetWindowRect(&rectSplitter);
 		ScreenToClient(&rectSplitter);
-		regPos = rectSplitter.top;
+		regPos = CDPIAware::Instance().UnscaleY(rectSplitter.top);
 	}
 }
 

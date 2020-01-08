@@ -213,7 +213,12 @@ void CPatchViewDlg::ShowAndAlignToParent()
 	m_ParentDlg->GetPatchViewParentWnd()->GetWindowRect(&rect);
 	int adjust = GetBorderAjustment(m_ParentDlg->GetPatchViewParentWnd()->GetSafeHwnd(), rect);
 	rect.left = rect.right - adjust;
-	rect.right = rect.left + static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\TortoiseProc\\ResizableState\\PatchDlgWidth", rect.Width()));
+	rect.right = rect.left;
+	int xPos = static_cast<DWORD>(CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\ResizableState\\PatchDlgWidth"));
+	if (xPos)
+		rect.right += xPos;
+	else
+		rect.right += rect.Width();
 
 	WINDOWPLACEMENT wp;
 	m_ParentDlg->GetPatchViewParentWnd()->GetWindowPlacement(&wp);
@@ -223,7 +228,7 @@ void CPatchViewDlg::ShowAndAlignToParent()
 	{
 		CRect pos;
 		GetWindowRect(&pos);
-		SetWindowPos(nullptr, 0, 0, static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\TortoiseProc\\ResizableState\\PatchDlgWidth", pos.Width())), pos.Height(), SWP_SHOWWINDOW | SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOZORDER | SWP_NOMOVE);
+		SetWindowPos(nullptr, 0, 0, xPos ? xPos : pos.Width(), pos.Height(), SWP_SHOWWINDOW | SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOZORDER | SWP_NOMOVE);
 	}
 	else
 	{
@@ -377,7 +382,7 @@ void CPatchViewDlg::OnDestroy()
 	__super::OnDestroy();
 	CRect rect;
 	GetWindowRect(&rect);
-	CRegStdDWORD(L"Software\\TortoiseGit\\TortoiseProc\\ResizableState\\PatchDlgWidth") = rect.Width();
+	CRegStdDWORD(L"Software\\TortoiseGit\\TortoiseProc\\ResizableState\\PatchDlgWidth") = CDPIAware::Instance().UnscaleX(rect.Width());
 	m_ctrlPatchView.ClearContextMenuHandlers();
 }
 

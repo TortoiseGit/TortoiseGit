@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012, 2016 - TortoiseGit
+// Copyright (C) 2008-2012, 2016, 2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -24,6 +24,7 @@
 #include "ProjectProperties.h"
 #include "GravatarPictureBox.h"
 #include <unordered_set>
+#include "DockablePaneUnscaledStoredState.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // COutputList window
@@ -47,7 +48,7 @@ protected:
 
 class COutputWnd;
 
-class COutputWnd : public CDockablePane
+class COutputWnd : public CDockablePaneUnscaledStoredState
 {
 	DECLARE_DYNAMIC(COutputWnd)
 // Construction

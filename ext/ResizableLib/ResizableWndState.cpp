@@ -22,6 +22,7 @@
 
 #include "stdafx.h"
 #include "ResizableWndState.h"
+#include "..\..\src\Utils\DPIAware.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -66,7 +67,9 @@ BOOL CResizableWndState::SaveWindowRect(LPCTSTR pszName, BOOL bRectOnly)
 	wp.length = sizeof(WINDOWPLACEMENT);
 	if (!GetResizableWnd()->GetWindowPlacement(&wp))
 		return FALSE;
-	
+
+	CDPIAware::Instance().UnscaleWindowPlacement(&wp);
+
 	// use workspace coordinates
 	RECT& rc = wp.rcNormalPosition;
 
@@ -123,6 +126,7 @@ BOOL CResizableWndState::LoadWindowRect(LPCTSTR pszName, BOOL bRectOnly, BOOL bH
 		&rc.right, &rc.bottom, &wp.showCmd, &wp.flags,
 		&wp.ptMinPosition.x, &wp.ptMinPosition.y) == 8)
 	{
+		CDPIAware::Instance().ScaleWindowPlacement(&wp);
 		if ((!bVertResize) || (rc.bottom - rc.top < min_height))
 			rc.bottom = rc.top + min_height;
 		if ((!bHorzResize) || (rc.right - rc.left < min_width))

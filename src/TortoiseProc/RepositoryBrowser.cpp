@@ -262,7 +262,7 @@ BOOL CRepositoryBrowser::OnInitDialog()
 		GetDlgItem(IDC_REPOTREE)->GetClientRect(&rc);
 		xPos = rc.right - rc.left;
 	}
-	HandleDividerMove(CPoint(xPos + CDPIAware::Instance().ScaleX(20), CDPIAware::Instance().ScaleY(10)), false);
+	HandleDividerMove(CPoint(CDPIAware::Instance().ScaleX(xPos + 20), CDPIAware::Instance().ScaleY(10)), false);
 
 	CString sWindowTitle;
 	GetWindowText(sWindowTitle);
@@ -981,7 +981,7 @@ void CRepositoryBrowser::SaveDividerPosition()
 	RECT rc;
 	GetDlgItem(IDC_REPOTREE)->GetClientRect(&rc);
 	CRegDWORD xPos(L"Software\\TortoiseGit\\TortoiseProc\\ResizableState\\RepobrowserDivider");
-	xPos = rc.right - rc.left;
+	xPos = CDPIAware::Instance().UnscaleX(rc.right - rc.left);
 }
 
 void CRepositoryBrowser::HandleDividerMove(CPoint point, bool bDraw)

@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 // Copyright (C) 2004-2018 - TortoiseSVN
 // Copyright (C) 2012-2014 - Sven Strickroth <email@cs-ware.de>
 
@@ -35,6 +35,7 @@
 #include "FormatMessageWrapper.h"
 #include "TaskbarUUID.h"
 #include "RegexFiltersDlg.h"
+#include "DPIAware.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -2039,6 +2040,8 @@ BOOL CMainFrame::ReadWindowPlacement(WINDOWPLACEMENT * pwp)
 		return FALSE;
 	pwp->length = sizeof(WINDOWPLACEMENT);
 
+	CDPIAware::Instance().ScaleWindowPlacement(pwp);
+
 	return TRUE;
 }
 
@@ -2046,6 +2049,8 @@ void CMainFrame::WriteWindowPlacement(WINDOWPLACEMENT * pwp)
 {
 	CRegString placement(L"Software\\TortoiseGitMerge\\WindowPos");
 	TCHAR szBuffer[_countof("-32767")*8 + sizeof("65535")*2];
+
+	CDPIAware::Instance().UnscaleWindowPlacement(pwp);
 
 	swprintf_s(szBuffer, L"%u,%u,%d,%d,%d,%d,%d,%d,%d,%d",
 			pwp->flags, pwp->showCmd,

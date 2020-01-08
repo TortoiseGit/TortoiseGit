@@ -398,8 +398,8 @@ BOOL CLogDlg::OnInitDialog()
 		CenterWindow(CWnd::FromHandle(GetExplorerHWND()));
 	EnableSaveRestore(L"LogDlg");
 
-	DWORD yPos1 = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\ResizableState\\LogDlgSizer1");
-	DWORD yPos2 = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\ResizableState\\LogDlgSizer2");
+	DWORD yPos1 = CDPIAware::Instance().ScaleY(CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\ResizableState\\LogDlgSizer1"));
+	DWORD yPos2 = CDPIAware::Instance().ScaleY(CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\ResizableState\\LogDlgSizer2"));
 	RECT rcDlg, rcLogList, rcChgMsg;
 	GetClientRect(&rcDlg);
 	m_LogList.GetWindowRect(&rcLogList);
@@ -1256,10 +1256,10 @@ void CLogDlg::SaveSplitterPos()
 		RECT rectSplitter;
 		m_wndSplitter1.GetWindowRect(&rectSplitter);
 		ScreenToClient(&rectSplitter);
-		regPos1 = rectSplitter.top;
+		regPos1 = CDPIAware::Instance().UnscaleY(rectSplitter.top);
 		m_wndSplitter2.GetWindowRect(&rectSplitter);
 		ScreenToClient(&rectSplitter);
-		regPos2 = rectSplitter.top;
+		regPos2 = CDPIAware::Instance().UnscaleY(rectSplitter.top);
 	}
 }
 

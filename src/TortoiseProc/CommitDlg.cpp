@@ -422,7 +422,7 @@ BOOL CCommitDlg::OnInitDialog()
 	if (GetExplorerHWND())
 		CenterWindow(CWnd::FromHandle(GetExplorerHWND()));
 	EnableSaveRestore(L"CommitDlg");
-	DWORD yPos = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\ResizableState\\CommitDlgSizer");
+	DWORD yPos = CDPIAware::Instance().ScaleY(CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\ResizableState\\CommitDlgSizer"));
 	RECT rcDlg, rcLogMsg, rcFileList;
 	GetClientRect(&rcDlg);
 	m_cLogMessage.GetWindowRect(&rcLogMsg);
@@ -1270,7 +1270,7 @@ void CCommitDlg::SaveSplitterPos()
 		RECT rectSplitter;
 		m_wndSplitter.GetWindowRect(&rectSplitter);
 		ScreenToClient(&rectSplitter);
-		regPos = rectSplitter.top;
+		regPos = CDPIAware::Instance().UnscaleY(rectSplitter.top);
 	}
 }
 
