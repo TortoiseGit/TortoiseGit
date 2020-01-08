@@ -13,6 +13,7 @@ Released: unreleased
    An external merge tool can now be executed synchronous (ie, TortoiseGit blocks while it's running): After the exit of the merge tool TortoiseGit automatically removes the temporary files and asks whether to mark the conflict as resolved.
  * Fixed issue #3470: Be able to switch branch from the Sync dialog
  * FileDiffDlg: Add patch dialog
+ * Improved UDiff search
 
 == Bug Fixes ==
  * Fixed issue #3449: Crash when indenting short lines (pressing tab key)

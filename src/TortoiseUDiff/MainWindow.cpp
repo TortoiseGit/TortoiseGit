@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2019 - TortoiseGit
+// Copyright (C) 2012-2020 - TortoiseGit
 // Copyright (C) 2003-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -153,41 +153,14 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
 		SetupColors(true);
 		break;
 	case COMMITMONITOR_FINDMSGNEXT:
-		{
-			SendEditor(SCI_CHARRIGHT);
-			SendEditor(SCI_SEARCHANCHOR);
-			m_bMatchCase = !!wParam;
-			m_findtext = reinterpret_cast<LPCTSTR>(lParam);
-			if (SendEditor(SCI_SEARCHNEXT, m_bMatchCase ? SCFIND_MATCHCASE : 0, reinterpret_cast<LPARAM>(CUnicodeUtils::StdGetUTF8(m_findtext).c_str())) == -1)
-			{
-				FLASHWINFO fwi;
-				fwi.cbSize = sizeof(FLASHWINFO);
-				fwi.uCount = 3;
-				fwi.dwTimeout = 100;
-				fwi.dwFlags = FLASHW_ALL;
-				fwi.hwnd = m_hwnd;
-				FlashWindowEx(&fwi);
-			}
-			SendEditor(SCI_SCROLLCARET);
-		}
+		m_bMatchCase = !!wParam;
+		m_findtext = reinterpret_cast<LPCTSTR>(lParam);
+		DoSearch(false);
 		break;
 	case COMMITMONITOR_FINDMSGPREV:
-		{
-			SendEditor(SCI_SEARCHANCHOR);
-			m_bMatchCase = !!wParam;
-			m_findtext = reinterpret_cast<LPCTSTR>(lParam);
-			if (SendEditor(SCI_SEARCHPREV, m_bMatchCase ? SCFIND_MATCHCASE : 0, reinterpret_cast<LPARAM>(CUnicodeUtils::StdGetUTF8(m_findtext).c_str())) == -1)
-			{
-				FLASHWINFO fwi;
-				fwi.cbSize = sizeof(FLASHWINFO);
-				fwi.uCount = 3;
-				fwi.dwTimeout = 100;
-				fwi.dwFlags = FLASHW_ALL;
-				fwi.hwnd = m_hwnd;
-				FlashWindowEx(&fwi);
-			}
-			SendEditor(SCI_SCROLLCARET);
-		}
+		m_bMatchCase = !!wParam;
+		m_findtext = reinterpret_cast<LPCTSTR>(lParam);
+		DoSearch(true);
 		break;
 	case COMMITMONITOR_FINDEXIT:
 		{
@@ -204,7 +177,6 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
 	case COMMITMONITOR_FINDRESET:
 		SendEditor(SCI_SETSELECTIONSTART, 0);
 		SendEditor(SCI_SETSELECTIONEND, 0);
-		SendEditor(SCI_SEARCHANCHOR);
 		break;
 	default:
 		return DefWindowProc(hwnd, uMsg, wParam, lParam);
@@ -243,40 +215,32 @@ LRESULT CMainWindow::DoCommand(int id)
 				rect.left, rect.bottom - int(30 * CDPIAware::Instance().ScaleFactorY()),
 				rect.right - rect.left, int(30 * CDPIAware::Instance().ScaleFactorY()),
 				SWP_SHOWWINDOW);
+			if (auto selstart = SendEditor(SCI_GETSELECTIONSTART), selend = SendEditor(SCI_GETSELECTIONEND); selstart != selend)
+			{
+				auto linebuf = std::make_unique<char[]>(selend - selstart + 1);
+				Sci_TextRange range = { static_cast<Sci_PositionCR>(selstart), static_cast<Sci_PositionCR>(selend), linebuf.get() };
+				if (SendEditor(SCI_GETTEXTRANGE, 0, reinterpret_cast<LPARAM>(&range)) > 0)
+					m_FindBar.SetSearchString(CUnicodeUtils::StdGetUnicode(linebuf.get()).c_str());
+			}
+			m_FindBar.SelectSearchString();
 			::SetFocus(m_FindBar);
-			SendEditor(SCI_SETSELECTIONSTART, 0);
-			SendEditor(SCI_SETSELECTIONEND, 0);
-			SendEditor(SCI_SEARCHANCHOR);
 		}
 		break;
 	case IDM_FINDNEXT:
-		SendEditor(SCI_CHARRIGHT);
-		SendEditor(SCI_SEARCHANCHOR);
-		if (SendEditor(SCI_SEARCHNEXT, m_bMatchCase ? SCFIND_MATCHCASE : 0, reinterpret_cast<LPARAM>(CUnicodeUtils::StdGetUTF8(m_findtext).c_str())) == -1)
+		if (m_findtext.empty())
 		{
-			FLASHWINFO fwi;
-			fwi.cbSize = sizeof(FLASHWINFO);
-			fwi.uCount = 3;
-			fwi.dwTimeout = 100;
-			fwi.dwFlags = FLASHW_ALL;
-			fwi.hwnd = m_hwnd;
-			FlashWindowEx(&fwi);
+			DoCommand(IDM_SHOWFINDBAR);
+			break;
 		}
-		SendEditor(SCI_SCROLLCARET);
+		DoSearch(false);
 		break;
 	case IDM_FINDPREV:
-		SendEditor(SCI_SEARCHANCHOR);
-		if (SendEditor(SCI_SEARCHPREV, m_bMatchCase ? SCFIND_MATCHCASE : 0, reinterpret_cast<LPARAM>(CUnicodeUtils::StdGetUTF8(m_findtext).c_str())) == -1)
+		if (m_findtext.empty())
 		{
-			FLASHWINFO fwi;
-			fwi.cbSize = sizeof(FLASHWINFO);
-			fwi.uCount = 3;
-			fwi.dwTimeout = 100;
-			fwi.dwFlags = FLASHW_ALL;
-			fwi.hwnd = m_hwnd;
-			FlashWindowEx(&fwi);
+			DoCommand(IDM_SHOWFINDBAR);
+			break;
 		}
-		SendEditor(SCI_SCROLLCARET);
+		DoSearch(true);
 		break;
 	case IDM_FINDEXIT:
 		if (IsWindowVisible(m_FindBar))
@@ -926,5 +890,36 @@ void CMainWindow::loadOrSaveFile(bool doLoad, const std::wstring& filename /* = 
 		}
 		else
 			SaveFile(filename.c_str());
+	}
+}
+
+void CMainWindow::DoSearch(bool reverse)
+{
+	Sci_Position lastcursor = SendEditor(SCI_GETSELECTIONEND);
+	if (!reverse)
+		SendEditor(SCI_SETTARGETRANGE, lastcursor, SendEditor(SCI_GETLENGTH));
+	else
+	{
+		lastcursor = SendEditor(SCI_GETSELECTIONSTART);
+		SendEditor(SCI_SETTARGETRANGE, lastcursor, 0);
+	}
+
+	auto searchText = CUnicodeUtils::StdGetUTF8(m_findtext);
+	SendEditor(SCI_SETSEARCHFLAGS, m_bMatchCase ? SCFIND_MATCHCASE : SCFIND_NONE);
+	if (auto pos = SendEditor(SCI_SEARCHINTARGET, searchText.length(), reinterpret_cast<LPARAM>(static_cast<LPCSTR>(searchText.c_str()))); pos >= 0)
+	{
+		SendEditor(SCI_SETSELECTION, pos, pos + searchText.length());
+		SendEditor(SCI_SCROLLCARET);
+	}
+	else
+	{
+		SendEditor(SCI_SETSELECTION, lastcursor, lastcursor);
+		FLASHWINFO fwi;
+		fwi.cbSize = sizeof(FLASHWINFO);
+		fwi.uCount = 3;
+		fwi.dwTimeout = 100;
+		fwi.dwFlags = FLASHW_ALL;
+		fwi.hwnd = m_hwnd;
+		FlashWindowEx(&fwi);
 	}
 }

@@ -1,5 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2020 - TortoiseGit
 // Copyright (C) 2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -32,6 +33,9 @@ public:
 	~CFindBar(void);
 
 	void					SetParent(HWND hParent) {m_hParent = hParent;}
+	void					SetSearchString(LPCTSTR findStr);
+	void					SelectSearchString();
+
 protected:
 	LRESULT CALLBACK		DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam) override;
 	LRESULT					DoCommand(int id, int msg);

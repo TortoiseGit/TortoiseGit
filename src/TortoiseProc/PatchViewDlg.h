@@ -73,6 +73,7 @@ protected:
 	LRESULT OnFindResetMessage(WPARAM, LPARAM);
 	LRESULT OnFindExitMessage(WPARAM, LPARAM);
 
+	void				DoSearch(bool reverse);
 	CFindBar            m_FindBar;
 	bool                m_bShowFindBar;
 

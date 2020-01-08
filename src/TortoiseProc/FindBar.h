@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2016 - TortoiseGit
+// Copyright (C) 2015-2016, 2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -30,8 +30,13 @@ public:
 	enum { IDD = IDD_FINDBAR };
 
 	bool IsMatchCase() const { return m_bMatchCase == BST_CHECKED; }
+	void SetFindText(CString findStr);
 	const CString GetFindText() const { return m_sFindStr; }
-	void SetFocusTextBox() const { GetDlgItem(IDC_FINDTEXT)->SetFocus(); }
+	void SetFocusTextBox() const
+	{
+		GetDlgItem(IDC_FINDTEXT)->SendMessage(EM_SETSEL, 0, -1);
+		GetDlgItem(IDC_FINDTEXT)->SetFocus();
+	}
 
 	static UINT				WM_FINDEXIT;
 	static UINT				WM_FINDNEXT;
