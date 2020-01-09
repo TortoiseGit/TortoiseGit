@@ -1356,6 +1356,11 @@ bool CTGitPathList::AreAllPathsFiles() const
 	return std::none_of(m_paths.cbegin(), m_paths.cend(), std::mem_fn(&CTGitPath::IsDirectory));
 }
 
+bool CTGitPathList::IsAnyAncestorOf(const CTGitPath& possibleDescendant) const
+{
+	return std::any_of(m_paths.cbegin(), m_paths.cend(), [&possibleDescendant](auto& path) { return path.IsAncestorOf(possibleDescendant); });
+}
+
 #if defined(_MFC_VER)
 
 bool CTGitPathList::LoadFromFile(const CTGitPath& filename)

@@ -374,6 +374,8 @@ public:
 	const CTGitPath& operator[](INT_PTR index) const;
 	bool AreAllPathsFiles() const;
 	bool AreAllPathsFilesInOneDirectory() const;
+	bool IsAnyAncestorOf(const CTGitPath& possibleDescendant) const;
+
 	/**
 	 * returns the directory which all items have in common.
 	 * if not all paths are in the same directory, then

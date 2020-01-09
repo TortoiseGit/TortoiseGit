@@ -1776,3 +1776,20 @@ TEST(CTGitPath, AreAllPathsFiles)
 	list.AddPath(CTGitPath(L"file1"));
 	EXPECT_FALSE(list.AreAllPathsFiles());
 }
+
+TEST(CTGitPath, IsAnyAncestorOf)
+{
+	CTGitPathList list;
+	CTGitPath file("a/file");
+	EXPECT_FALSE(list.IsAnyAncestorOf(file));
+
+	list.AddPath(CTGitPath(L"something"));
+	EXPECT_FALSE(list.IsAnyAncestorOf(file));
+
+	list.AddPath(CTGitPath(L"a"));
+	EXPECT_TRUE(list.IsAnyAncestorOf(file));
+
+	list.Clear();
+	list.AddPath(CTGitPath());
+	EXPECT_TRUE(list.IsAnyAncestorOf(file));
+}
