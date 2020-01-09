@@ -702,7 +702,7 @@ private:
 
 public:
 	void SaveChangelists();
-	void PruneChangelists();
+	void PruneChangelists(const CTGitPathList* root);
 
 private:
 	int GetChangeListIdForPath(const CTGitPath* pGitPath);

@@ -1171,7 +1171,12 @@ void CCommitDlg::OnOK()
 					bCloseCommitDlg = false;
 				}
 			}
-			m_ListCtrl.PruneChangelists();
+			CTGitPathList* pList;
+			if (m_bWholeProject || m_bWholeProject2)
+				pList = nullptr;
+			else
+				pList = &m_pathList;
+			m_ListCtrl.PruneChangelists(pList);
 			m_ListCtrl.SaveChangelists();
 		}
 

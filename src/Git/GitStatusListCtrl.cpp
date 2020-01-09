@@ -4713,9 +4713,19 @@ void CGitStatusListCtrl::SaveChangelists()
 	}
 }
 
-void CGitStatusListCtrl::PruneChangelists()
+void CGitStatusListCtrl::PruneChangelists(const CTGitPathList* root)
 {
 	CAutoReadLock locker(m_guard);
+
+	CTGitPath prefix;
+	if (root)
+	{
+		if (root->GetCount() > 1 || root->GetCount() == 1 && !(*root)[0].IsDirectory())
+			return;
+
+		prefix = (*root)[0];
+	}
+
 	std::set<CString> unchecked;
 	int nListboxEntries = GetItemCount();
 	for (int nItem = 0; nItem < nListboxEntries; ++nItem)
@@ -4733,7 +4743,12 @@ void CGitStatusListCtrl::PruneChangelists()
 	while (it1 != unchecked.cend() && it2 != m_pathToChangelist.end())
 	{
 		if (*it1 > it2->first)
-			it2 = m_pathToChangelist.erase(it2);
+		{
+			if (prefix.IsEmpty() || prefix.IsAncestorOf(it2->first))
+				it2 = m_pathToChangelist.erase(it2);
+			else
+				++it2;
+		}
 		else if (it2->first > *it1)
 			++it1;
 		else
@@ -4744,6 +4759,9 @@ void CGitStatusListCtrl::PruneChangelists()
 	}
 	while (it2 != m_pathToChangelist.end())
 	{
-		it2 = m_pathToChangelist.erase(it2);
+		if (prefix.IsEmpty() || prefix.IsAncestorOf(it2->first))
+			it2 = m_pathToChangelist.erase(it2);
+		else
+			++it2;
 	}
 }
