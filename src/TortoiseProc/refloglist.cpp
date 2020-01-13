@@ -21,6 +21,7 @@
 #include "refloglist.h"
 #include "LoglistUtils.h"
 #include "AppUtils.h"
+#include "DPIAware.h"
 
 IMPLEMENT_DYNAMIC(CRefLogList, CGitLogList)
 
@@ -47,13 +48,14 @@ void CRefLogList::InsertRefLogColumn()
 		IDS_STATUSLIST_COLDATE,
 	};
 
+	auto columnWidth = CDPIAware::Instance().ScaleX(ICONITEMBORDER + 16 * 4);
 	static int with[] =
 	{
-		ICONITEMBORDER+16*4,
-		ICONITEMBORDER+16*4,
-		ICONITEMBORDER+16*4,
-		LOGLIST_MESSAGE_MIN,
-		ICONITEMBORDER+16*4,
+		columnWidth,
+		columnWidth,
+		columnWidth,
+		CDPIAware::Instance().ScaleX(LOGLIST_MESSAGE_MIN),
+		columnWidth,
 	};
 	m_dwDefaultColumns = 0xFFFF;
 

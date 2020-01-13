@@ -186,6 +186,9 @@
     <ClCompile Include="..\Git\GitMailmap.cpp">
       <Filter>Git</Filter>
     </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\DockablePaneUnscaledStoredState.cpp">
+      <Filter>Utils\MiscUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditGotoDlg.h">
@@ -367,6 +370,9 @@
     </ClInclude>
     <ClInclude Include="..\Git\GitMailmap.h">
       <Filter>Git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\DockablePaneUnscaledStoredState.h">
+      <Filter>Utils\MiscUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

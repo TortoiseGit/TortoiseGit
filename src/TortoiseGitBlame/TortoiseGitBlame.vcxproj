@@ -67,6 +67,7 @@
     <ClCompile Include="..\Utils\CommonAppUtils.cpp" />
     <ClCompile Include="..\Utils\DebugOutput.cpp" />
     <ClCompile Include="..\Utils\LoadIconEx.cpp" />
+    <ClCompile Include="..\Utils\MiscUI\DockablePaneUnscaledStoredState.cpp" />
     <ClCompile Include="..\Utils\MiscUI\EditWordBreak.cpp" />
     <ClCompile Include="..\Utils\MiscUI\FilterEdit.cpp" />
     <ClCompile Include="..\Utils\MiscUI\HistoryCombo.cpp" />
@@ -127,6 +128,7 @@
     <ClInclude Include="..\Utils\LoadIconEx.h" />
     <ClInclude Include="..\Utils\LruCache.h" />
     <ClInclude Include="..\Utils\MiscUI\CommonDialogFunctions.h" />
+    <ClInclude Include="..\Utils\MiscUI\DockablePaneUnscaledStoredState.h" />
     <ClInclude Include="..\Utils\MiscUI\EditWordBreak.h" />
     <ClInclude Include="..\Utils\MiscUI\FilterEdit.h" />
     <ClInclude Include="..\Utils\MiscUI\GestureEnabledControl.h" />

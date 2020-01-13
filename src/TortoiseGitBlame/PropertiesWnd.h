@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011, 2015-2017, 2019 - TortoiseGit
+// Copyright (C) 2008-2011, 2015-2017, 2019-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,6 +22,7 @@
 
 #include "GitRevLoglist.h"
 #include "GestureEnabledControl.h"
+#include "DockablePaneUnscaledStoredState.h"
 
 class CPropertiesToolBar : public CMFCToolBar
 {
@@ -34,7 +35,7 @@ public:
 	virtual BOOL AllowShowOnList() const override { return FALSE; }
 };
 
-class CPropertiesWnd : public CDockablePane
+class CPropertiesWnd : public CDockablePaneUnscaledStoredState
 {
 // Construction
 public:

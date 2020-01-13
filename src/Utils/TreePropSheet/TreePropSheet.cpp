@@ -22,6 +22,7 @@
 #include "TreePropSheet.h"
 #include "PropPageFrameDefault.h"
 #include "HighColorTab.hpp"
+#include "DPIAware.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -800,11 +801,8 @@ BOOL CTreePropSheet::OnInitDialog()
 	m_pFrame->ShowCaption(m_bPageCaption);
 
 	// Lets make place for the tree ctrl
-	HDC hdc = ::GetDC(nullptr);
-	int dpiX = GetDeviceCaps(hdc, LOGPIXELSX);
-	::ReleaseDC(nullptr, hdc);
-	const int	nTreeWidth = m_nPageTreeWidth * dpiX / 96;
-	const int	nTreeSpace = 5;
+	const int nTreeWidth = static_cast<int>(m_nPageTreeWidth * CDPIAware::Instance().ScaleFactorX());
+	const int nTreeSpace = CDPIAware::Instance().ScaleX(5);
 
 	CRect	rectSheet;
 	GetWindowRect(rectSheet);

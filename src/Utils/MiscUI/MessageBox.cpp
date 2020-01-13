@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2016, 2018-2019 - TortoiseGit
+// Copyright (C) 2012-2016, 2018-2020 - TortoiseGit
 // Copyright (C) 2003-2008,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -845,19 +845,19 @@ CSize CMessageBox::GetButtonSize()
 	CSize sz2 = GetTextSize(m_sButton2);
 	CSize sz3 = GetTextSize(m_sButton3);
 
-	sz1.cx += 2*MESSAGEBOX_BUTTONX;
-	sz1.cy += 2*MESSAGEBOX_BUTTONY;
+	sz1.cx += CDPIAware::Instance().ScaleX(2 * MESSAGEBOX_BUTTONX);
+	sz1.cy += CDPIAware::Instance().ScaleY(2 * MESSAGEBOX_BUTTONY);
 
 	if (sz2.cx)
 	{
-		sz2.cx += 2*MESSAGEBOX_BUTTONX;
-		sz2.cy += 2*MESSAGEBOX_BUTTONY;
+		sz2.cx += CDPIAware::Instance().ScaleX(2 * MESSAGEBOX_BUTTONX);
+		sz2.cy += CDPIAware::Instance().ScaleY(2 * MESSAGEBOX_BUTTONY);
 		nButtons++;
 	}
 	if (sz3.cx)
 	{
-		sz3.cx += 2*MESSAGEBOX_BUTTONX;
-		sz3.cy += 2*MESSAGEBOX_BUTTONY;
+		sz3.cx += CDPIAware::Instance().ScaleX(2 * MESSAGEBOX_BUTTONX);
+		sz3.cy += CDPIAware::Instance().ScaleY(2 * MESSAGEBOX_BUTTONY);
 		nButtons++;
 	}
 
@@ -865,7 +865,7 @@ CSize CMessageBox::GetButtonSize()
 	GetDlgItem(IDC_MESSAGEBOX_BUTTON2)->MoveWindow(0, 0, sz2.cx, sz2.cy);
 	GetDlgItem(IDC_MESSAGEBOX_BUTTON3)->MoveWindow(0, 0, sz3.cx, sz3.cy);
 
-	sz.cx = sz1.cx + sz2.cx + sz3.cx + (nButtons * MESSAGEBOX_BUTTONMARGIN);
+	sz.cx = sz1.cx + sz2.cx + sz3.cx + (nButtons * CDPIAware::Instance().ScaleX(MESSAGEBOX_BUTTONMARGIN));
 	sz.cy = max(sz1.cy, sz2.cy);
 	sz.cy = max(sz.cy, sz3.cy);
 	m_szButtons = sz;
@@ -875,7 +875,7 @@ CSize CMessageBox::GetButtonSize()
 		szCheck.cx += 2*GetSystemMetrics(SM_CXMENUCHECK);
 		szCheck.cy += 2*MESSAGEBOX_BUTTONY;
 		sz.cx = max(sz.cx, szCheck.cx);
-		sz.cy += szCheck.cy + MESSAGEBOX_BUTTONCHECKMARGIN;
+		sz.cy += szCheck.cy + CDPIAware::Instance().ScaleY(MESSAGEBOX_BUTTONCHECKMARGIN);
 		GetDlgItem(IDC_MESSAGEBOX_CHECKBOX)->MoveWindow(0, 0, szCheck.cx, szCheck.cy);
 	}
 	m_szAllButtons = sz;
@@ -914,14 +914,14 @@ void CMessageBox::OnPaint()
 	memDC.SetTextColor(GetSysColor(COLOR_WINDOWTEXT));
 
 	//OnDrawBackground();
-	drawrect.DeflateRect(MESSAGEBOX_BORDERMARGINX, MESSAGEBOX_BORDERMARGINY);
+	drawrect.DeflateRect(CDPIAware::Instance().ScaleX(MESSAGEBOX_BORDERMARGINX), CDPIAware::Instance().ScaleY(MESSAGEBOX_BORDERMARGINY));
 	if (m_hIcon)
 	{
 		DrawIconEx(memDC.m_hDC, drawrect.left, max(drawrect.top, drawrect.top +
-			((drawrect.Height() - m_szAllButtons.cy - MESSAGEBOX_TEXTBUTTONMARGIN - m_szIcon.cy) / 2)),
+			((drawrect.Height() - m_szAllButtons.cy - CDPIAware::Instance().ScaleY(MESSAGEBOX_TEXTBUTTONMARGIN) - m_szIcon.cy) / 2)),
 			m_hIcon, m_szIcon.cx, m_szIcon.cy, 0, nullptr, DI_NORMAL);
 
-		drawrect.left += m_szIcon.cx + MESSAGEBOX_ICONMARGIN;
+		drawrect.left += m_szIcon.cx + CDPIAware::Instance().ScaleX(MESSAGEBOX_ICONMARGIN);
 		if (m_szIcon.cy > m_szText.cy)
 			drawrect.top += (m_szIcon.cy - m_szText.cy) / 2;
 	}
@@ -1028,15 +1028,15 @@ BOOL CMessageBox::OnInitDialog()
 	CSize szButtons = GetButtonSize();
 
 	CSize szIconText;
-	szIconText.cx = m_szText.cx + szIcon.cx + ((szIcon.cx == 0) ? MESSAGEBOX_ICONMARGIN : (2 * MESSAGEBOX_ICONMARGIN));
+	szIconText.cx = m_szText.cx + szIcon.cx + CDPIAware::Instance().ScaleX((szIcon.cx == 0) ? MESSAGEBOX_ICONMARGIN : (2 * MESSAGEBOX_ICONMARGIN));
 	szIconText.cy = max(szIcon.cy, m_szText.cy);
 
 	rect.right = max(szButtons.cx, szIconText.cx);
 	rect.right += 2*GetSystemMetrics(SM_CXBORDER);
-	rect.right += 2*MESSAGEBOX_BORDERMARGINX;
+	rect.right += CDPIAware::Instance().ScaleX(2 * MESSAGEBOX_BORDERMARGINX);
 	rect.bottom = szIconText.cy;
 	rect.bottom += szButtons.cy;
-	rect.bottom += 2*MESSAGEBOX_BORDERMARGINY + MESSAGEBOX_TEXTBUTTONMARGIN;
+	rect.bottom += CDPIAware::Instance().ScaleY(2 * MESSAGEBOX_BORDERMARGINY + MESSAGEBOX_TEXTBUTTONMARGIN);
 	rect.bottom += GetSystemMetrics(SM_CYCAPTION);
 	rect.bottom += 2 * GetSystemMetrics(SM_CYFIXEDFRAME);
 	rect.bottom += 2*GetSystemMetrics(SM_CYBORDER);
@@ -1055,7 +1055,7 @@ BOOL CMessageBox::OnInitDialog()
 		GetDlgItem(IDC_MESSAGEBOX_BUTTON1)->GetWindowRect(rt);
 		ScreenToClient(rt);
 		rt.MoveToX(rect.left + ((rect.Width() - m_szButtons.cx)/2));
-		rt.MoveToY(rect.bottom - MESSAGEBOX_BORDERMARGINY - m_szButtons.cy);
+		rt.MoveToY(rect.bottom - CDPIAware::Instance().ScaleY(MESSAGEBOX_BORDERMARGINY) - m_szButtons.cy);
 		GetDlgItem(IDC_MESSAGEBOX_BUTTON1)->MoveWindow(rt);
 		//hide the other two buttons
 		GetDlgItem(IDC_MESSAGEBOX_BUTTON2)->ShowWindow(SW_HIDE);
@@ -1071,9 +1071,9 @@ BOOL CMessageBox::OnInitDialog()
 		GetDlgItem(IDC_MESSAGEBOX_BUTTON2)->GetWindowRect(rt2);
 		ScreenToClient(rt2);
 		rt1.MoveToX(rect.left + ((rect.Width() - m_szButtons.cx)/2));
-		rt1.MoveToY(rect.bottom - MESSAGEBOX_BORDERMARGINY - m_szButtons.cy);
-		rt2.MoveToX(rt1.right + MESSAGEBOX_BUTTONMARGIN);
-		rt2.MoveToY(rect.bottom - MESSAGEBOX_BORDERMARGINY - m_szButtons.cy);
+		rt1.MoveToY(rect.bottom - CDPIAware::Instance().ScaleY(MESSAGEBOX_BORDERMARGINY) - m_szButtons.cy);
+		rt2.MoveToX(rt1.right + CDPIAware::Instance().ScaleX(MESSAGEBOX_BUTTONMARGIN));
+		rt2.MoveToY(rect.bottom -CDPIAware::Instance().ScaleY(MESSAGEBOX_BORDERMARGINY) - m_szButtons.cy);
 		GetDlgItem(IDC_MESSAGEBOX_BUTTON1)->MoveWindow(rt1);
 		GetDlgItem(IDC_MESSAGEBOX_BUTTON2)->MoveWindow(rt2);
 		//hide the third button
@@ -1094,11 +1094,11 @@ BOOL CMessageBox::OnInitDialog()
 		GetDlgItem(IDC_MESSAGEBOX_BUTTON3)->GetWindowRect(rt3);
 		ScreenToClient(rt3);
 		rt1.MoveToX(rect.left + ((rect.Width() - m_szButtons.cx)/2));
-		rt1.MoveToY(rect.bottom - MESSAGEBOX_BORDERMARGINY - m_szButtons.cy);
-		rt2.MoveToX(rt1.right + MESSAGEBOX_BUTTONMARGIN);
-		rt2.MoveToY(rect.bottom - MESSAGEBOX_BORDERMARGINY - m_szButtons.cy);
-		rt3.MoveToX(rt2.right + MESSAGEBOX_BUTTONMARGIN);
-		rt3.MoveToY(rect.bottom - MESSAGEBOX_BORDERMARGINY - m_szButtons.cy);
+		rt1.MoveToY(rect.bottom - CDPIAware::Instance().ScaleY(MESSAGEBOX_BORDERMARGINY) - m_szButtons.cy);
+		rt2.MoveToX(rt1.right + CDPIAware::Instance().ScaleX(MESSAGEBOX_BUTTONMARGIN));
+		rt2.MoveToY(rect.bottom - CDPIAware::Instance().ScaleY(MESSAGEBOX_BORDERMARGINY) - m_szButtons.cy);
+		rt3.MoveToX(rt2.right + CDPIAware::Instance().ScaleX(MESSAGEBOX_BUTTONMARGIN));
+		rt3.MoveToY(rect.bottom - CDPIAware::Instance().ScaleY(MESSAGEBOX_BORDERMARGINY) - m_szButtons.cy);
 		GetDlgItem(IDC_MESSAGEBOX_BUTTON1)->MoveWindow(rt1);
 		GetDlgItem(IDC_MESSAGEBOX_BUTTON2)->MoveWindow(rt2);
 		GetDlgItem(IDC_MESSAGEBOX_BUTTON3)->MoveWindow(rt3);
@@ -1108,8 +1108,8 @@ BOOL CMessageBox::OnInitDialog()
 		CRect rt;
 		GetDlgItem(IDC_MESSAGEBOX_CHECKBOX)->GetWindowRect(rt);
 		ScreenToClient(rt);
-		rt.MoveToX(rect.left + MESSAGEBOX_BORDERMARGINX/*+ ((rect.Width() - szButtons.cx)/2)*/);
-		rt.MoveToY(rect.bottom - MESSAGEBOX_BORDERMARGINY - szButtons.cy);
+		rt.MoveToX(rect.left + CDPIAware::Instance().ScaleX(MESSAGEBOX_BORDERMARGINX) /*+ ((rect.Width() - szButtons.cx)/2)*/);
+		rt.MoveToY(rect.bottom - CDPIAware::Instance().ScaleY(MESSAGEBOX_BORDERMARGINY) - szButtons.cy);
 		GetDlgItem(IDC_MESSAGEBOX_CHECKBOX)->MoveWindow(rt);
 		GetDlgItem(IDC_MESSAGEBOX_CHECKBOX)->ShowWindow(SW_SHOW);
 	}

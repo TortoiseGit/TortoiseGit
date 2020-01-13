@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -341,7 +341,7 @@ void CGitProgressList::ResizeColumns()
 			hdi.pszText = textbuf;
 			hdi.cchTextMax = _countof(textbuf);
 			pHeaderCtrl->GetItem(col, &hdi);
-			int cx = GetStringWidth(hdi.pszText)+20; // 20 pixels for col separator and margin
+			int cx = GetStringWidth(hdi.pszText)+CDPIAware::Instance().ScaleX(20); // 20 pixels for col separator and margin
 
 			for (int index = 0; index<count; ++index)
 			{
@@ -350,10 +350,10 @@ void CGitProgressList::ResizeColumns()
 				switch (col)
 				{
 				case 0:
-					linewidth = GetStringWidth(m_arData[index]->sActionColumnText) + 12;
+					linewidth = GetStringWidth(m_arData[index]->sActionColumnText) + CDPIAware::Instance().ScaleX(12);
 					break;
 				case 1:
-					linewidth = GetStringWidth(m_arData[index]->sPathColumnText) + 12;
+					linewidth = GetStringWidth(m_arData[index]->sPathColumnText) + CDPIAware::Instance().ScaleX(12);
 					break;
 				}
 				if (cx < linewidth)

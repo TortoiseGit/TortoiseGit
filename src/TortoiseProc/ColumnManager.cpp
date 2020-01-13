@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 // Copyright (C) 2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -22,6 +22,7 @@
 #include "ColumnManager.h"
 #include "LoglistCommonResource.h"
 #include <iterator>
+#include "DPIAware.h"
 
 // registry version number of column-settings of both GitLogListBase and GitStatusListCtrl
 #define GITSLC_COL_VERSION 6
@@ -424,7 +425,7 @@ void ColumnManager::ParseWidths(const CString& widths)
 			// a standard column
 			if (width != MAXLONG)
 			{
-				columns[i].width = width;
+				columns[i].width = CDPIAware::Instance().ScaleX(width);
 				columns[i].adjusted = true;
 			}
 		}
@@ -536,7 +537,7 @@ CString ColumnManager::GetWidthString() const
 	TCHAR buf[10] = { 0 };
 	for (size_t i = 0; i < itemName.size(); ++i)
 	{
-		_stprintf_s(buf, L"%08X", columns[i].adjusted ? columns[i].width : MAXLONG);
+		_stprintf_s(buf, L"%08X", columns[i].adjusted ? CDPIAware::Instance().UnscaleX(columns[i].width) : MAXLONG);
 		result += buf;
 	}
 

@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006, 2011-2014, 2016 - TortoiseSVN
+// Copyright (C) 2006, 2011-2014, 2016, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -19,7 +19,7 @@
 #include "stdafx.h"
 #include "TortoiseMerge.h"
 #include "FindDlg.h"
-
+#include "DPIAware.h"
 
 // CFindDlg dialog
 
@@ -57,9 +57,9 @@ void CFindDlg::Create(CWnd* pParent, int id /* = 0 */)
 		POINT pt = { 0 };
 		CString sRegPath;
 		sRegPath.Format(L"Software\\TortoiseGitMerge\\FindDlgPosX%d", id);
-		pt.x = static_cast<int>(CRegDWORD(sRegPath, 0));
+		pt.x = CDPIAware::Instance().ScaleX(static_cast<int>(CRegDWORD(sRegPath, 0)));
 		sRegPath.Format(L"Software\\TortoiseGitMerge\\FindDlgPosY%d", id);
-		pt.y = static_cast<int>(CRegDWORD(sRegPath, 0));
+		pt.y = CDPIAware::Instance().ScaleY(static_cast<int>(CRegDWORD(sRegPath, 0)));
 		pParent->ClientToScreen(&pt);
 		if (MonitorFromPoint(pt, MONITOR_DEFAULTTONULL))
 			SetWindowPos(nullptr, pt.x, pt.y, 0, 0, SWP_NOACTIVATE | SWP_NOREDRAW | SWP_NOSIZE);
@@ -265,9 +265,9 @@ void CFindDlg::SaveWindowPos(CWnd* pParent)
 		CString sRegPath;
 		sRegPath.Format(L"Software\\TortoiseGitMerge\\FindDlgPosX%d", m_id);
 		CRegDWORD regX(sRegPath);
-		regX = rc.left;
+		regX = CDPIAware::Instance().UnscaleX(rc.left);
 		sRegPath.Format(L"Software\\TortoiseGitMerge\\FindDlgPosY%d", m_id);
 		CRegDWORD regY(sRegPath);
-		regY = rc.top;
+		regY = regX = CDPIAware::Instance().UnscaleY(rc.top);
 	}
 }

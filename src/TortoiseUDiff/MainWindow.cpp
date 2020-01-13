@@ -31,6 +31,8 @@
 
 const UINT TaskBarButtonCreated = RegisterWindowMessage(L"TaskbarButtonCreated");
 
+#define SEARCHBARHEIGHT 30
+
 CMainWindow::CMainWindow(HINSTANCE hInst, const WNDCLASSEX* wcx /* = nullptr*/)
 	: CWindow(hInst, wcx)
 	, m_bShowFindBar(false)
@@ -115,11 +117,11 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
 			{
 				::SetWindowPos(m_hWndEdit, HWND_TOP,
 					rect.left, rect.top,
-					rect.right - rect.left, rect.bottom - rect.top - int(30 * CDPIAware::Instance().ScaleFactorY()),
+					rect.right - rect.left, rect.bottom - rect.top - int(SEARCHBARHEIGHT * CDPIAware::Instance().ScaleFactorY()),
 					SWP_SHOWWINDOW);
 				::SetWindowPos(m_FindBar, HWND_TOP,
-					rect.left, rect.bottom - int(30 * CDPIAware::Instance().ScaleFactorY()),
-					rect.right - rect.left, int(30 * CDPIAware::Instance().ScaleFactorY()),
+					rect.left, rect.bottom - int((SEARCHBARHEIGHT + 2) * CDPIAware::Instance().ScaleFactorY()),
+					rect.right - rect.left, int(SEARCHBARHEIGHT * CDPIAware::Instance().ScaleFactorY()),
 					SWP_SHOWWINDOW);
 			}
 			else
@@ -209,11 +211,11 @@ LRESULT CMainWindow::DoCommand(int id)
 			GetClientRect(*this, &rect);
 			::SetWindowPos(m_hWndEdit, HWND_TOP,
 				rect.left, rect.top,
-				rect.right - rect.left, rect.bottom - rect.top - int(30 * CDPIAware::Instance().ScaleFactorY()),
+				rect.right - rect.left, rect.bottom - rect.top - int(SEARCHBARHEIGHT * CDPIAware::Instance().ScaleFactorY()),
 				SWP_SHOWWINDOW);
 			::SetWindowPos(m_FindBar, HWND_TOP,
-				rect.left, rect.bottom - int(30 * CDPIAware::Instance().ScaleFactorY()),
-				rect.right - rect.left, int(30 * CDPIAware::Instance().ScaleFactorY()),
+				rect.left, rect.bottom - int((SEARCHBARHEIGHT + 2) * CDPIAware::Instance().ScaleFactorY()),
+				rect.right - rect.left, int(SEARCHBARHEIGHT * CDPIAware::Instance().ScaleFactorY()),
 				SWP_SHOWWINDOW);
 			if (auto selstart = SendEditor(SCI_GETSELECTIONSTART), selend = SendEditor(SCI_GETSELECTIONEND); selstart != selend)
 			{

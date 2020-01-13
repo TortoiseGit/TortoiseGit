@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -35,6 +35,7 @@
 #include "UpdateCrypto.h"
 #include <MsiDefs.h>
 #include <MsiQuery.h>
+#include "DPIAware.h"
 
 #pragma comment(lib, "msi.lib")
 
@@ -119,8 +120,8 @@ BOOL CCheckForUpdatesDlg::OnInitDialog()
 	m_ctrlFiles.InsertColumn(0, temp, 0, -1);
 	m_ctrlFiles.InsertColumn(1, temp, 0, -1);
 	m_ctrlFiles.SetExtendedStyle(LVS_EX_DOUBLEBUFFER | LVS_EX_CHECKBOXES);
-	m_ctrlFiles.SetColumnWidth(0, 350);
-	m_ctrlFiles.SetColumnWidth(1, 200);
+	m_ctrlFiles.SetColumnWidth(0, CDPIAware::Instance().ScaleX(350));
+	m_ctrlFiles.SetColumnWidth(1, CDPIAware::Instance().ScaleX(200));
 
 	m_cLogMessage.Init(-1);
 	m_cLogMessage.SetFont(CAppUtils::GetLogFontName(), CAppUtils::GetLogFontSize());
@@ -334,10 +335,10 @@ UINT CCheckForUpdatesDlg::CheckThread()
 				rectDoNotAskAgainButton.bottom = rectOKButton.bottom;
 				GetDlgItem(IDC_DONOTASKAGAIN)->MoveWindow(&rectDoNotAskAgainButton);
 				GetDlgItem(IDC_DONOTASKAGAIN)->ShowWindow(SW_SHOW);
-				rectOKButton.left += 60;
+				rectOKButton.left += CDPIAware::Instance().ScaleX(60);
 				temp.LoadString(IDS_REMINDMELATER);
 				GetDlgItem(IDOK)->SetWindowText(temp);
-				rectOKButton.right += 160;
+				rectOKButton.right += CDPIAware::Instance().ScaleX(160);
 			}
 			GetDlgItem(IDOK)->MoveWindow(&rectOKButton);
 			AddAnchor(IDC_GROUP_CHANGELOG, TOP_LEFT, BOTTOM_RIGHT);

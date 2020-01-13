@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (c) 2003 by Andreas Kapust <info@akinstaller.de>; <http://www.codeproject.com/Articles/2607/AutoComplete-without-IAutoComplete>
-// Copyright (C) 2009, 2012-2013, 2015-2016, 2018-2019 - TortoiseGit
+// Copyright (C) 2009, 2012-2013, 2015-2016, 2018-2020 - TortoiseGit
 
 // Licensed under: The Code Project Open License (CPOL); <http://www.codeproject.com/info/cpol10.aspx>
 
@@ -11,6 +11,7 @@
 #include "stdafx.h"
 #include "ACListWnd.h"
 #include "StringUtils.h"
+#include "DPIAware.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -216,7 +217,7 @@ void CACListWnd::OnPaint()
 void CACListWnd::Init(CWnd *pWnd)
 {
 	VERIFY(m_VertBar.Create(WS_VISIBLE|SBS_VERT|SBS_LEFTALIGN,
-		CRect(0,0,GetSystemMetrics(SM_CYVSCROLL),100),this,0));
+		CRect(0, 0, GetSystemMetrics(SM_CYVSCROLL), CDPIAware::Instance().ScaleX(100)), this, 0));
 
 	SetScroller();
 	m_pEditParent = static_cast<CEdit*>(pWnd);
@@ -250,7 +251,7 @@ void CACListWnd::SetScroller()
 		rcBar.left = (rcWnd.Width()-GetSystemMetrics(SM_CYVSCROLL));
 		rcBar.bottom-= GetSystemMetrics(SM_CYHSCROLL);
 		m_VertBar.MoveWindow(rcBar);
-		rcBar.top = rcWnd.bottom-20;
+		rcBar.top = rcWnd.bottom - CDPIAware::Instance().ScaleY(20);
 		rcBar.bottom = rcWnd.bottom;
 
 		m_VertBar.SetScrollPos(m_lTopIndex,true);

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2019 - TortoiseGit
+// Copyright (C) 2013-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -28,6 +28,7 @@
 #include "AppUtils.h"
 #include "../TortoiseShell/resource.h"
 #include "LoglistCommonResource.h"
+#include "DPIAware.h"
 
 IMPLEMENT_DYNAMIC(CGitRefCompareList, CHintCtrl<CListCtrl>)
 
@@ -82,7 +83,7 @@ void CGitRefCompareList::Init()
 	colNewMessage = InsertColumn(index++,CString(MAKEINTRESOURCE(IDS_NEWMESSAGE)));
 	for (int i = 0; i < index; ++i)
 		SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
-	SetColumnWidth(colRef, 130);
+	SetColumnWidth(colRef, CDPIAware::Instance().ScaleX(130));
 
 	CImageList *imagelist = new CImageList();
 	imagelist->Create(IDB_BITMAP_REFTYPE, 16, 3, RGB(255, 255, 255));

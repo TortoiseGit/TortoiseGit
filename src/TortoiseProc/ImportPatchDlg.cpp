@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -177,7 +177,7 @@ BOOL CImportPatchDlg::OnInitDialog()
 	}
 	m_cList.SetColumnWidth(0, LVSCW_AUTOSIZE);
 
-	DWORD yPos = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\ResizableState\\AMDlgSizer");
+	DWORD yPos = CDPIAware::Instance().ScaleY(CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\ResizableState\\AMDlgSizer"));
 	RECT rcDlg, rcLogMsg, rcFileList;
 	GetClientRect(&rcDlg);
 	m_cList.GetWindowRect(&rcLogMsg);
@@ -584,7 +584,7 @@ void CImportPatchDlg::SaveSplitterPos()
 		RECT rectSplitter;
 		m_wndSplitter.GetWindowRect(&rectSplitter);
 		ScreenToClient(&rectSplitter);
-		regPos = rectSplitter.top;
+		regPos = CDPIAware::Instance().UnscaleY(rectSplitter.top);
 	}
 }
 

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -33,6 +33,7 @@
 #include "PathUtils.h"
 #include "CommonAppUtils.h"
 #include "TaskbarUUID.h"
+#include "DPIAware.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -251,6 +252,21 @@ BOOL CTortoiseGitBlameApp::InitInstance()
 	// call DragAcceptFiles only if there's a suffix
 	//  In an SDI app, this should occur after ProcessShellCommand
 	return TRUE;
+}
+
+BOOL CTortoiseGitBlameApp::LoadWindowPlacement(CRect& rectNormalPosition, int& nFlags, int& nShowCmd)
+{
+	if (!__super::LoadWindowPlacement(rectNormalPosition, nFlags, nShowCmd))
+		return FALSE;
+	CDPIAware::Instance().ScaleRect(&rectNormalPosition);
+	return TRUE;
+}
+
+BOOL CTortoiseGitBlameApp::StoreWindowPlacement(const CRect& rectNormalPosition, int nFlags, int nShowCmd)
+{
+	CRect adj = rectNormalPosition;
+	CDPIAware::Instance().UnscaleRect(&adj);
+	return __super::StoreWindowPlacement(adj, nFlags, nShowCmd);
 }
 
 // CAboutDlg dialog used for App About

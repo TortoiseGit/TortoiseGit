@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2018-2019 - TortoiseGit
+// Copyright (C) 2018-2020 - TortoiseGit
 // Copyright (C) 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -73,12 +73,24 @@ public:
 		pRect->top = Scale(pRect->top);
 		pRect->bottom = Scale(pRect->bottom);
 	}
+	void UnscaleRect(__inout RECT* pRect)
+	{
+		pRect->left = Unscale(pRect->left);
+		pRect->right = Unscale(pRect->right);
+		pRect->top = Unscale(pRect->top);
+		pRect->bottom = Unscale(pRect->bottom);
+	}
 
 	// Scale Point from raw pixels to relative pixels.
 	void ScalePoint(__inout POINT *pPoint)
 	{
 		pPoint->x = Scale(pPoint->x);
 		pPoint->y = Scale(pPoint->y);
+	}
+	void UnscalePoint(__inout POINT* pPoint)
+	{
+		pPoint->x = Unscale(pPoint->x);
+		pPoint->y = Unscale(pPoint->y);
 	}
 
 	// Scale Size from raw pixels to relative pixels.
@@ -87,6 +99,20 @@ public:
 		pSize->cx = Scale(pSize->cx);
 		pSize->cy = Scale(pSize->cy);
 	}
+
+	void ScaleWindowPlacement(__inout WINDOWPLACEMENT* pWindowPlacement)
+	{
+		ScaleRect(&pWindowPlacement->rcNormalPosition);
+		ScalePoint(&pWindowPlacement->ptMinPosition);
+		ScalePoint(&pWindowPlacement->ptMaxPosition);
+	}
+	void UnscaleWindowPlacement(__inout WINDOWPLACEMENT* pWindowPlacement)
+	{
+		UnscaleRect(&pWindowPlacement->rcNormalPosition);
+		UnscalePoint(&pWindowPlacement->ptMinPosition);
+		UnscalePoint(&pWindowPlacement->ptMaxPosition);
+	}
+
 
 	// Determine if screen resolution meets minimum requirements in relative pixels.
 	bool IsResolutionAtLeast(int cxMin, int cyMin)

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2017 - TortoiseGit
+// Copyright (C) 2008-2013, 2017, 2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -43,6 +43,9 @@ public:
 // Overrides
 public:
 	virtual BOOL InitInstance() override;
+
+	BOOL LoadWindowPlacement(CRect& rectNormalPosition, int& nFlags, int& nShowCmd) override;
+	BOOL StoreWindowPlacement(const CRect& rectNormalPosition, int nFlags, int nShowCmd) override;
 
 // Implementation
 	BOOL  m_bHiColorIcons;
