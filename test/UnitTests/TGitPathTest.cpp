@@ -225,6 +225,10 @@ TEST(CTGitPath, AncestorTest)
 	EXPECT_FALSE(testPath.IsAncestorOf(CTGitPath(L"c:\\windowsdummy")));
 	EXPECT_TRUE(testPath.IsAncestorOf(CTGitPath(L"c:\\windows\\test.txt")));
 	EXPECT_TRUE(testPath.IsAncestorOf(CTGitPath(L"c:\\windows\\system32\\test.txt")));
+
+	testPath.SetFromWin(L"");
+	EXPECT_FALSE(testPath.IsAncestorOf(CTGitPath(L"c:\\windows\\test.txt")));
+	EXPECT_TRUE(testPath.IsAncestorOf(CTGitPath(L"test.txt")));
 }
 
 /*TEST(CTGitPath, SubversionPathTest)
@@ -1775,6 +1779,35 @@ TEST(CTGitPath, AreAllPathsFiles)
 
 	list.AddPath(CTGitPath(L"file1"));
 	EXPECT_FALSE(list.AreAllPathsFiles());
+}
+
+TEST(CTGitPath, AreAllPathsDirectories)
+{
+	CTGitPathList list;
+	EXPECT_TRUE(list.AreAllPathsDirectories());
+
+	list.AddPath(CTGitPath(L"C:\\Windows"));
+	EXPECT_TRUE(list.AreAllPathsDirectories());
+
+	list.AddPath(CTGitPath(L"C:\\Windows\\explorer.exe"));
+	EXPECT_FALSE(list.AreAllPathsDirectories());
+
+	list.Clear();
+	// now test relative paths
+	PreserveChdir chdir;
+	CAutoTempDir tmp;
+	SetCurrentDirectory(tmp.GetTempDir());
+
+	EXPECT_TRUE(CreateDirectory(tmp.GetTempDir() + L"\\dir", nullptr));
+	list.AddPath(CTGitPath()); // equivalent of "."
+	EXPECT_TRUE(list.AreAllPathsDirectories());
+
+	list.AddPath(CTGitPath(L"dir"));
+	EXPECT_TRUE(list.AreAllPathsDirectories());
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(tmp.GetTempDir() + L"\\file1", L"something"));
+	list.AddPath(CTGitPath(L"file1"));
+	EXPECT_FALSE(list.AreAllPathsDirectories());
 }
 
 TEST(CTGitPath, IsAnyAncestorOf)

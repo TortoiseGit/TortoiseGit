@@ -373,6 +373,7 @@ public:
 	void Clear();
 	const CTGitPath& operator[](INT_PTR index) const;
 	bool AreAllPathsFiles() const;
+	bool AreAllPathsDirectories() const;
 	bool AreAllPathsFilesInOneDirectory() const;
 	bool IsAnyAncestorOf(const CTGitPath& possibleDescendant) const;
 

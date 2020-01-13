@@ -4717,13 +4717,17 @@ void CGitStatusListCtrl::PruneChangelists(const CTGitPathList* root)
 {
 	CAutoReadLock locker(m_guard);
 
-	CTGitPath prefix;
+	if (m_pathToChangelist.empty())
+		return;
+
+	CTGitPathList prefixList;
 	if (root)
 	{
-		if (root->GetCount() > 1 || root->GetCount() == 1 && !(*root)[0].IsDirectory())
+		if (!root->AreAllPathsDirectories())
 			return;
 
-		prefix = (*root)[0];
+		prefixList = *root;
+		prefixList.SortByPathname();
 	}
 
 	std::set<CString> unchecked;
@@ -4744,7 +4748,7 @@ void CGitStatusListCtrl::PruneChangelists(const CTGitPathList* root)
 	{
 		if (*it1 > it2->first)
 		{
-			if (prefix.IsEmpty() || prefix.IsAncestorOf(it2->first))
+			if (prefixList.IsEmpty() || prefixList.IsAnyAncestorOf(it2->first))
 				it2 = m_pathToChangelist.erase(it2);
 			else
 				++it2;
@@ -4759,7 +4763,7 @@ void CGitStatusListCtrl::PruneChangelists(const CTGitPathList* root)
 	}
 	while (it2 != m_pathToChangelist.end())
 	{
-		if (prefix.IsEmpty() || prefix.IsAncestorOf(it2->first))
+		if (prefixList.IsEmpty() || prefixList.IsAnyAncestorOf(it2->first))
 			it2 = m_pathToChangelist.erase(it2);
 		else
 			++it2;
