@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2019 - TortoiseGit
+// Copyright (C) 2003-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -280,7 +280,7 @@ std::vector<CHARRANGE> ProjectProperties::FindBugIDPositions(const CString& msg)
 					ptrdiff_t matchpos = it->position(0);
 					for (std::wsregex_iterator it2(matchedString.cbegin(), matchedString.cend(), regBugID); it2 != end; ++it2)
 					{
-						ATLTRACE(L"matched id : %s\n", (*it2)[0].str().c_str());
+						//ATLTRACE(L"matched id : %s\n", (*it2)[0].str().c_str());
 						ptrdiff_t matchposID = it2->position(0);
 						CHARRANGE range = { static_cast<LONG>(matchpos + matchposID), static_cast<LONG>(matchpos+matchposID + (*it2)[0].str().size()) };
 						result.push_back(range);
@@ -303,7 +303,7 @@ std::vector<CHARRANGE> ProjectProperties::FindBugIDPositions(const CString& msg)
 					// group 2 as the bug ID
 					if (match.size() >= 2)
 					{
-						ATLTRACE(L"matched id : %s\n", std::wstring(match[1]).c_str());
+						//ATLTRACE(L"matched id : %s\n", std::wstring(match[1]).c_str());
 						CHARRANGE range = { static_cast<LONG>(match[1].first - s.cbegin()), static_cast<LONG>(match[1].second - s.cbegin()) };
 						result.push_back(range);
 					}

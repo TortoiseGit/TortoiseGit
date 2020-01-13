@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -131,7 +131,9 @@ public:
 
 	void ApplyMailmap(const CGitMailmap& mailmap = CGitMailmap());
 
+#if DEBUG
 	void DbgPrint();
+#endif
 
 private:
 	int GetCommitFromHash_withoutLock(const CGitHash& hash);

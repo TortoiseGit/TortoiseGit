@@ -3047,8 +3047,7 @@ UINT CGitLogListBase::LogThread()
 			}
 
 #ifdef DEBUG
-			pRev->DbgPrint();
-			TRACE(L"\n");
+			//pRev->DbgPrint();
 #endif
 
 			bool visible = filter(pRev, this, hashMap);

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2019 - TortoiseGit
+// Copyright (C) 2009-2020 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -317,7 +317,7 @@ void CLogDataVector::updateLanes(GitRevLoglist& c, Lanes& lns, CGitHash& sha)
 		lns.changeActiveLane(sha); // uses previous isBoundary state
 
 	lns.setBoundary(c.IsBoundary() == TRUE, isInitial); // update must be here
-	TRACE(L"%s %d", static_cast<LPCTSTR>(c.m_CommitHash.ToString()), c.IsBoundary());
+	//TRACE(L"%s %d", static_cast<LPCTSTR>(c.m_CommitHash.ToString()), c.IsBoundary());
 
 	if (isFork)
 		lns.setFork(sha);

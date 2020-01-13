@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016, 2018-2019 - TortoiseGit
+// Copyright (C) 2008-2016, 2018-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -173,15 +173,17 @@ int GitRev::GetCommit(git_repository* repo, const CString& refname)
 	return GetCommitFromHash(repo, hash);
 }
 
+#if DEBUG
 void GitRev::DbgPrint()
 {
 	ATLTRACE(L"Commit %s\r\n", static_cast<LPCTSTR>(this->m_CommitHash.ToString()));
 	for (unsigned int i = 0; i < this->m_ParentHash.size(); ++i)
 	{
-		ATLTRACE(L"Parent %i %s", i, static_cast<LPCTSTR>(m_ParentHash[i].ToString()));
+		ATLTRACE(L"Parent %i %s\r\n", i, static_cast<LPCTSTR>(m_ParentHash[i].ToString()));
 	}
-	ATLTRACE(L"\n");
+	ATLTRACE(L"\r\n\r\n");
 }
+#endif
 
 int GitRev::GetParentFromHash(const CGitHash& hash)
 {
