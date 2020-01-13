@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013, 2015-2019 - TortoiseGit
+// Copyright (C) 2009-2013, 2015-2020 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -232,16 +232,7 @@ LRESULT CResolveDlg::OnFileDropped(WPARAM, LPARAM lParam)
 			// our just (maybe) added path is a child of one of those. If it is
 			// a child of a folder already in the list, we must not add it. Otherwise
 			// that path could show up twice in the list.
-			bool bHasParentInList = false;
-			for (int i=0; i<m_pathList.GetCount(); ++i)
-			{
-				if (m_pathList[i].IsAncestorOf(path))
-				{
-					bHasParentInList = true;
-					break;
-				}
-			}
-			if (!bHasParentInList)
+			if (!m_pathList.IsAnyAncestorOf(path))
 			{
 				m_pathList.AddPath(path);
 				m_pathList.RemoveDuplicates();

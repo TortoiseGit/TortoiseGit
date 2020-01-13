@@ -570,6 +570,9 @@ bool CTGitPath::IsAncestorOf(const CTGitPath& possibleDescendant) const
 	possibleDescendant.EnsureBackslashPathSet();
 	EnsureBackslashPathSet();
 
+	if (m_sBackslashPath.IsEmpty() && PathIsRelative(possibleDescendant.m_sBackslashPath))
+		return true;
+
 	bool bPathStringsEqual = CPathUtils::ArePathStringsEqual(m_sBackslashPath, possibleDescendant.m_sBackslashPath.Left(m_sBackslashPath.GetLength()));
 	if (m_sBackslashPath.GetLength() >= possibleDescendant.GetWinPathString().GetLength())
 	{
@@ -1354,6 +1357,17 @@ bool CTGitPathList::AreAllPathsFiles() const
 {
 	// Look through the vector for any directories - if we find them, return false
 	return std::none_of(m_paths.cbegin(), m_paths.cend(), std::mem_fn(&CTGitPath::IsDirectory));
+}
+
+bool CTGitPathList::AreAllPathsDirectories() const
+{
+	// Look through the vector for directories - if we find none, return false
+	return std::all_of(m_paths.cbegin(), m_paths.cend(), std::mem_fn(&CTGitPath::IsDirectory));
+}
+
+bool CTGitPathList::IsAnyAncestorOf(const CTGitPath& possibleDescendant) const
+{
+	return std::any_of(m_paths.cbegin(), m_paths.cend(), [&possibleDescendant](auto& path) { return path.IsAncestorOf(possibleDescendant); });
 }
 
 #if defined(_MFC_VER)

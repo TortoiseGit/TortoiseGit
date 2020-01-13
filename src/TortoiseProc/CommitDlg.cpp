@@ -1171,7 +1171,12 @@ void CCommitDlg::OnOK()
 					bCloseCommitDlg = false;
 				}
 			}
-			m_ListCtrl.PruneChangelists();
+			CTGitPathList* pList;
+			if (m_bWholeProject || m_bWholeProject2)
+				pList = nullptr;
+			else
+				pList = &m_pathList;
+			m_ListCtrl.PruneChangelists(pList);
 			m_ListCtrl.SaveChangelists();
 		}
 
@@ -1707,16 +1712,7 @@ LRESULT CCommitDlg::OnFileDropped(WPARAM, LPARAM lParam)
 			// our just (maybe) added path is a child of one of those. If it is
 			// a child of a folder already in the list, we must not add it. Otherwise
 			// that path could show up twice in the list.
-			bool bHasParentInList = false;
-			for (int i=0; i<m_pathList.GetCount(); ++i)
-			{
-				if (m_pathList[i].IsAncestorOf(path))
-				{
-					bHasParentInList = true;
-					break;
-				}
-			}
-			if (!bHasParentInList)
+			if (!m_pathList.IsAnyAncestorOf(path))
 			{
 				m_pathList.AddPath(path);
 				m_pathList.RemoveDuplicates();
