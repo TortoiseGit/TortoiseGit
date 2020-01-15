@@ -61,7 +61,6 @@
     <ClCompile Include="..\tgit\compat\obstack.c" />
     <ClCompile Include="..\tgit\compat\poll\poll.c" />
     <ClCompile Include="..\tgit\compat\pread.c" />
-    <ClCompile Include="..\tgit\compat\qsort.c" />
     <ClCompile Include="..\tgit\compat\regex\regex.c" />
     <ClCompile Include="..\tgit\compat\setenv.c" />
     <ClCompile Include="..\tgit\compat\snprintf.c" />
@@ -126,7 +125,6 @@
     <ClCompile Include="..\tgit\ewah\ewah_rlw.c" />
     <ClCompile Include="..\tgit\exec-cmd.c" />
     <ClCompile Include="..\tgit\fetch-negotiator.c" />
-    <ClCompile Include="..\tgit\fetch-object.c" />
     <ClCompile Include="..\tgit\fetch-pack.c" />
     <ClCompile Include="..\tgit\fsck.c" />
     <ClCompile Include="..\tgit\fsmonitor.c" />
@@ -188,6 +186,7 @@
     <ClCompile Include="..\tgit\pretty.c" />
     <ClCompile Include="..\tgit\prio-queue.c" />
     <ClCompile Include="..\tgit\progress.c" />
+    <ClCompile Include="..\tgit\promisor-remote.c" />
     <ClCompile Include="..\tgit\protocol.c" />
     <ClCompile Include="..\tgit\quote.c" />
     <ClCompile Include="..\tgit\range-diff.c" />
@@ -204,6 +203,7 @@
     <ClCompile Include="..\tgit\refs\ref-cache.c" />
     <ClCompile Include="..\tgit\remote.c" />
     <ClCompile Include="..\tgit\replace-object.c" />
+    <ClCompile Include="..\tgit\repo-settings.c" />
     <ClCompile Include="..\tgit\repository.c" />
     <ClCompile Include="..\tgit\rerere.c" />
     <ClCompile Include="..\tgit\resolve-undo.c" />
@@ -223,6 +223,7 @@
     <ClCompile Include="..\tgit\sideband.c" />
     <ClCompile Include="..\tgit\sigchain.c" />
     <ClCompile Include="..\tgit\split-index.c" />
+    <ClCompile Include="..\tgit\stable-qsort.c" />
     <ClCompile Include="..\tgit\strbuf.c" />
     <ClCompile Include="..\tgit\streaming.c" />
     <ClCompile Include="..\tgit\string-list.c" />
@@ -380,6 +381,7 @@
     <ClInclude Include="..\tgit\pkt-line.h" />
     <ClInclude Include="..\tgit\prio-queue.h" />
     <ClInclude Include="..\tgit\progress.h" />
+    <ClInclude Include="..\tgit\promisor-remote.h" />
     <ClInclude Include="..\tgit\protocol.h" />
     <ClInclude Include="..\tgit\quote.h" />
     <ClInclude Include="..\tgit\range-diff.h" />

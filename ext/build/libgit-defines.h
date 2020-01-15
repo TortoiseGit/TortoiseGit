@@ -1,6 +1,7 @@
 #ifndef WIN32
 #define WIN32
 #endif
+#define NO_POLL_H
 #define NO_SYS_POLL_H
 #define HAVE_STRING_H 1
 #define NO_GETTEXT
@@ -27,6 +28,7 @@
 #define NO_D_INO_IN_DIRENT
 #define NO_NSEC
 #define USE_WIN32_MMAP
+#define MMAP_PREVENTS_DELETE
 #define UNRELIABLE_FSTAT
 #define OBJECT_CREATION_MODE 1
 #define NO_REGEX
@@ -39,3 +41,5 @@
 #define INTERNAL_QSORT
 #define NO_UNIX_SOCKETS
 #define SHA1_DC
+#define NATIVE_CRLF
+
