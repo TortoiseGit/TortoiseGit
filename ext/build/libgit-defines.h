@@ -20,7 +20,8 @@
 #define NO_STRTOULL
 #define NO_MKDTEMP
 #define NO_MKSTEMPS
-#define SNPRINTF_RETURNS_BOGUS
+// VS2015 with UCRT claims that snprintf and friends are C99 compliant, so we don't need this any more:
+//#define SNPRINTF_RETURNS_BOGUS
 #define NO_SVN_TESTS
 #define NO_PERL_MAKEMAKER
 #define NO_POSIX_ONLY_PROGRAMS
