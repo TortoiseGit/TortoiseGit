@@ -1681,7 +1681,7 @@ private:
 
 TEST(CTGitPath, SetDirectory_DiskAccess)
 {
-#if _MSC_VER == 1924
+#if _MSC_VER == 1924 && _MSC_FULL_VER < 192428315
 	// there is a compiler bug in MSVC, see <https://developercommunity.visualstudio.com/content/problem/847490/msvc-codegen-error-vector-reverse-iterator-x64-c17.html> and <https://github.com/google/googletest/pull/2635>
 	GTEST_SKIP();
 #else
