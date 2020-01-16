@@ -116,6 +116,7 @@ BEGIN_MESSAGE_MAP(CRebaseDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDHELP, OnHelp)
 	ON_BN_CLICKED(IDC_BUTTON_ADD, &CRebaseDlg::OnBnClickedButtonAdd)
 	ON_MESSAGE(MSG_COMMITS_REORDERED, OnCommitsReordered)
+	ON_COMMAND(MSG_FETCHED_DIFF, OnRefreshFilelist)
 END_MESSAGE_MAP()
 
 void CRebaseDlg::CleanUpRebaseActiveFolder()
@@ -2837,14 +2838,36 @@ void CRebaseDlg::FillLogMessageCtrl()
 		POSITION pos = m_CommitList.GetFirstSelectedItemPosition();
 		int selIndex = m_CommitList.GetNextSelectedItem(pos);
 		GitRevLoglist* pLogEntry = m_CommitList.m_arShownList.SafeGetAt(selIndex);
-		m_FileListCtrl.UpdateWithGitPathList(pLogEntry->GetFiles(&m_CommitList));
-		m_FileListCtrl.m_CurrentVersion = pLogEntry->m_CommitHash;
-		m_FileListCtrl.Show(GITSLC_SHOWVERSIONED);
+		OnRefreshFilelist();
 		m_LogMessageCtrl.Call(SCI_SETREADONLY, FALSE);
 		m_LogMessageCtrl.SetText(pLogEntry->GetSubject() + L'\n' + pLogEntry->GetBody());
 		m_LogMessageCtrl.Call(SCI_SETREADONLY, TRUE);
 	}
 }
+
+void CRebaseDlg::OnRefreshFilelist()
+{
+	int selCount = m_CommitList.GetSelectedCount();
+	if (selCount == 1 && (m_RebaseStage == CHOOSE_BRANCH || m_RebaseStage == CHOOSE_COMMIT_PICK_MODE))
+	{
+		POSITION pos = m_CommitList.GetFirstSelectedItemPosition();
+		int selIndex = m_CommitList.GetNextSelectedItem(pos);
+		auto pLogEntry = m_CommitList.m_arShownList.SafeGetAt(selIndex);
+		auto files = pLogEntry->GetFiles(&m_CommitList);
+		if (!pLogEntry->m_IsDiffFiles)
+		{
+			m_FileListCtrl.Clear();
+			m_FileListCtrl.SetBusyString(CString(MAKEINTRESOURCE(IDS_PROC_LOG_FETCHINGFILES)));
+			m_FileListCtrl.SetBusy(TRUE);
+			m_FileListCtrl.SetRedraw(TRUE);
+			return;
+		}
+		m_FileListCtrl.UpdateWithGitPathList(const_cast<CTGitPathList&>(files.m_files));
+		m_FileListCtrl.m_CurrentVersion = pLogEntry->m_CommitHash;
+		m_FileListCtrl.Show(GITSLC_SHOWVERSIONED);
+	}
+}
+
 void CRebaseDlg::OnBnClickedCheckCherryPickedFrom()
 {
 	UpdateData();

@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@ class GitRevLoglist;
 class CLogCache;
 class IAsyncDiffCB;
 
-typedef int CALL_UPDATE_DIFF_ASYNC(GitRevLoglist* pRev, IAsyncDiffCB* data);
+typedef void CALL_UPDATE_DIFF_ASYNC(GitRevLoglist* pRev, IAsyncDiffCB* data);
 
 class GitRevLoglist : public GitRev
 {
@@ -38,15 +38,56 @@ public:
 	GitRevLoglist(void);
 	~GitRevLoglist(void);
 
+	class GitRevLoglistSharedFiles
+	{
+	public:
+		GitRevLoglistSharedFiles(PSRWLOCK lock, CTGitPathList& files)
+			: m_lock(lock)
+			, m_files(files)
+		{
+			AcquireSRWLockShared(m_lock);
+		}
+
+		~GitRevLoglistSharedFiles() { ReleaseSRWLockShared(m_lock); }
+
+		inline int GetCount() const { return m_files.GetCount(); }
+		inline const CTGitPath& operator[](INT_PTR index) const { return m_files[index]; }
+
+		const CTGitPathList& m_files;
+
+	private:
+		PSRWLOCK m_lock;
+	};
+
+	class GitRevLoglistSharedFilesWriter
+	{
+	public:
+		GitRevLoglistSharedFilesWriter(PSRWLOCK lock, CTGitPathList& files, CTGitPathList& unrevfiles)
+			: m_lock(lock)
+			, m_files(files)
+			, m_UnRevFiles(unrevfiles)
+		{
+			AcquireSRWLockExclusive(m_lock);
+		}
+
+		~GitRevLoglistSharedFilesWriter() { ReleaseSRWLockExclusive(m_lock); }
+
+		CTGitPathList& m_files;
+		CTGitPathList& m_UnRevFiles;
+
+	private:
+		PSRWLOCK m_lock;
+	};
+
 protected:
 	int				m_RebaseAction;
 	unsigned int	m_Action;
 	CTGitPathList	m_Files;
 	CTGitPathList	m_UnRevFiles;
 
-public:
-	GIT_COMMIT m_GitCommit;
+	SRWLOCK m_lock;
 
+public:
 	CString m_Notes;
 
 	TCHAR m_Mark;
@@ -58,9 +99,6 @@ public:
 
 	static std::shared_ptr<CGitMailmap> s_Mailmap;
 
-	volatile LONG m_IsFull;
-	volatile LONG m_IsUpdateing;
-	volatile LONG m_IsCommitParsed;
 	volatile LONG m_IsDiffFiles;
 
 	CALL_UPDATE_DIFF_ASYNC *m_CallDiffAsync;
@@ -72,8 +110,6 @@ public:
 			int ret = 0;
 			ret = SafeFetchFullInfo(&g_Git);
 			InterlockedExchange(&m_IsDiffFiles, TRUE);
-			if (m_IsCommitParsed)
-				InterlockedExchange(&m_IsFull, TRUE);
 			return ret;
 		}
 		return 1;
@@ -82,7 +118,6 @@ public:
 public:
 	unsigned int& GetAction(IAsyncDiffCB* data)
 	{
-		CheckAndParser();
 		if (!m_IsDiffFiles && m_CallDiffAsync)
 			m_CallDiffAsync(this, data);
 		else
@@ -95,14 +130,19 @@ public:
 		return m_RebaseAction;
 	}
 
-	CTGitPathList& GetFiles(IAsyncDiffCB* data)
+	GitRevLoglistSharedFiles GetFiles(IAsyncDiffCB* data)
 	{
-		CheckAndParser();
+		// data might be nullptr when instant data is requested, cf. CGitLogListAction
 		if (data && !m_IsDiffFiles && m_CallDiffAsync)
 			m_CallDiffAsync(this, data);
 		else
 			CheckAndDiff();
-		return m_Files;
+		return GitRevLoglistSharedFiles(&m_lock, m_Files);
+	}
+
+	GitRevLoglistSharedFilesWriter GetFilesWriter()
+	{
+		return GitRevLoglistSharedFilesWriter(&m_lock, m_Files, m_UnRevFiles);
 	}
 
 	CTGitPathList& GetUnRevFiles()
@@ -110,74 +150,58 @@ public:
 		return m_UnRevFiles;
 	}
 
-protected:
-	void CheckAndParser()
+	void Parse(GIT_COMMIT* commit, const CGitMailmap* mailmap)
 	{
-		if (!m_IsCommitParsed && m_GitCommit.m_pGitCommit)
-		{
-			ParserFromCommit(&m_GitCommit);
-			auto mailmap = s_Mailmap;
-			if (mailmap)
-				ApplyMailmap(*mailmap);
-			InterlockedExchange(&m_IsCommitParsed, TRUE);
-			git_free_commit(&m_GitCommit);
-			if (m_IsDiffFiles)
-				InterlockedExchange(&m_IsFull, TRUE);
-		}
+		ParserParentFromCommit(commit);
+		ParserFromCommit(commit);
+		// no caching here, because mailmap might have changed
+		if (mailmap)
+			ApplyMailmap(*mailmap);
 	}
 
 public:
 	CString& GetAuthorName()
 	{
-		CheckAndParser();
 		return m_AuthorName;
 	}
 
 	CString& GetAuthorEmail()
 	{
-		CheckAndParser();
 		return m_AuthorEmail;
 	}
 
 	CTime& GetAuthorDate()
 	{
-		CheckAndParser();
 		return m_AuthorDate;
 	}
 
 	CString& GetCommitterName()
 	{
-		CheckAndParser();
 		return m_CommitterName;
 	}
 
 	CString& GetCommitterEmail()
 	{
-		CheckAndParser();
 		return m_CommitterEmail;
 	}
 
 	CTime& GetCommitterDate()
 	{
-		CheckAndParser();
 		return m_CommitterDate;
 	}
 
 	CString& GetSubject()
 	{
-		CheckAndParser();
 		return m_Subject;
 	}
 
 	CString& GetBody()
 	{
-		CheckAndParser();
 		return m_Body;
 	}
 
 	CString GetSubjectBody(bool crlf = false)
 	{
-		CheckAndParser();
 		CString ret(m_Subject);
 		if (!crlf)
 		{

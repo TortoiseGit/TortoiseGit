@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2019 - TortoiseGit
+// Copyright (C) 2009-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -156,7 +156,6 @@ void CRefLogDlg::OnCbnSelchangeRef()
 	for (unsigned int i = 0; i < m_RefList.m_RevCache.size(); ++i)
 	{
 		GitRevLoglist* rev = &m_RefList.m_RevCache[i];
-		rev->m_IsFull = TRUE;
 		this->m_RefList.m_arShownList.SafeAdd(rev);
 	}
 

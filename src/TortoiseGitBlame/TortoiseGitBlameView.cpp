@@ -390,7 +390,7 @@ void CTortoiseGitBlameView::OnRButtonUp(UINT /*nFlags*/, CPoint point)
 		try
 		{
 			CTGitPath path(m_data.GetFilename(line));
-			const CTGitPathList& files = pRev->GetFiles(nullptr);
+			auto files = pRev->GetFiles(nullptr);
 			for (int j = 0, j_size = files.GetCount(); j < j_size; ++j)
 			{
 				const CTGitPath &file =  files[j];

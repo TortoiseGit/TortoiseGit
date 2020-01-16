@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2018-2019 - TortoiseGit
+// Copyright (C) 2018-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -92,9 +92,9 @@ bool CLogDlgFilter::operator()(GitRevLoglist* pRev, CGitLogListBase* loglist, co
 		   we can add it back by using one-way diff(with outnumber changed and rename detect.
 		   here just need changed filename list. one-way is much quicker.
 		 */
-		if (pRev->m_IsFull)
+		if (pRev->m_IsDiffFiles || loglist->IsCached(pRev))
 		{
-			const auto& pathList = pRev->GetFiles(loglist);
+			auto pathList = pRev->GetFiles(loglist);
 			for (int i = 0; i < pathList.GetCount(); ++i)
 			{
 				scratch += pathList[i].GetWinPath();

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 // Copyright (C) 2003-2011, 2014-2016, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -617,7 +617,7 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff, BOOL keepFetchedData)
 
 		if (fetchdiff && (pLogEntry->m_ParentHash.size() <= 1))
 		{
-			CTGitPathList& list = pLogEntry->GetFiles(nullptr);
+			auto list = pLogEntry->GetFiles(nullptr);
 			files = list.GetCount();
 
 			for (int j = 0; j < files; j++)
