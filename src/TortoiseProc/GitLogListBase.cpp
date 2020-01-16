@@ -1187,7 +1187,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				GitRevLoglist* data = m_arShownList.SafeGetAt(pLVCD->nmcd.dwItemSpec);
 
 				auto hashMapSharedPtr = m_HashMap;
-				auto hashMap = *hashMapSharedPtr.get();
+				auto& hashMap = *hashMapSharedPtr;
 				if ((hashMap.find(data->m_CommitHash) != hashMap.cend() || (!m_superProjectHash.IsEmpty() && data->m_CommitHash == m_superProjectHash)) && !(data->GetRebaseAction() & LOGACTIONS_REBASE_DONE))
 				{
 					CRect rect;
@@ -1754,7 +1754,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			return;
 		}
 		auto hashMapSharedPtr = m_HashMap;
-		auto hashMap = *hashMapSharedPtr.get();
+		auto& hashMap = *hashMapSharedPtr;
 		bool isHeadCommit = (pSelLogEntry->m_CommitHash == headHash);
 		CString currentBranch = L"refs/heads/" + g_Git.GetCurrentBranch();
 		CTGitPath workingTree(g_Git.m_CurrentDir);
@@ -2953,7 +2953,7 @@ UINT CGitLogListBase::LogThread()
 		auto mailmap = GitRevLoglist::s_Mailmap;
 
 		auto hashMapSharedPtr = m_HashMap;
-		auto hashMap = *hashMapSharedPtr.get();
+		auto& hashMap = *hashMapSharedPtr;
 
 		GIT_COMMIT commit;
 		t2 = t1 = GetTickCount64();
@@ -3528,7 +3528,7 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 		CLogDlgFilter filter { m_pFindDialog->GetFindString(), m_pFindDialog->Regex(), LOGFILTER_ALL, m_pFindDialog->MatchCase() == TRUE };
 
 		auto hashMapSharedPtr = m_HashMap;
-		auto hashMap = *hashMapSharedPtr.get();
+		auto& hashMap = *hashMapSharedPtr;
 
 		for (i = m_nSearchIndex + 1; ; ++i)
 		{

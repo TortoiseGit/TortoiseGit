@@ -2578,7 +2578,7 @@ void CLogDlg::OnBnClickedJumpUp()
 	m_LogList.SetSelectionMark(-1);
 
 	auto hashMapSharedPtr = m_LogList.m_HashMap;
-	auto hashMap = *hashMapSharedPtr.get();
+	auto& hashMap = *hashMapSharedPtr;
 
 	for (int i = index - 1; i >= 0; i--)
 	{
@@ -2688,7 +2688,7 @@ void CLogDlg::OnBnClickedJumpDown()
 	m_LogList.SetSelectionMark(-1);
 
 	auto hashMapSharedPtr = m_LogList.m_HashMap;
-	auto hashMap = *hashMapSharedPtr.get();
+	auto& hashMap = *hashMapSharedPtr;
 
 	for (int i = index + 1; i < m_LogList.GetItemCount(); ++i)
 	{
