@@ -93,7 +93,7 @@ void CDeleteRemoteTagDlg::Refresh()
 	sysProgressDlg.SetShowProgressBar(false);
 	sysProgressDlg.ShowModal(this, true);
 	REF_VECTOR tags;
-	if (g_Git.GetRemoteTags(m_sRemote, tags))
+	if (g_Git.GetRemoteRefs(m_sRemote, tags, true, false))
 	{
 		sysProgressDlg.Stop();
 		MessageBox(g_Git.GetGitLastErr(L"Could not retrieve remote tags.", CGit::GIT_CMD_FETCH), L"TortoiseGit", MB_ICONERROR);

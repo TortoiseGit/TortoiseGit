@@ -2234,6 +2234,19 @@ BEGIN
     LTEXT           "Download language packs:",IDC_STATIC,17,100,289,8
 END
 
+IDD_SELECTREMOTEREF DIALOGEX 0, 0, 293, 66
+STYLE DS_SETFONT | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "Select remote ref - TortoiseGit"
+FONT 9, "MS Shell Dlg 2", 400, 0, 0x1
+BEGIN
+    LTEXT           "Remote:",IDC_STATIC,7,7,28,8
+    EDITTEXT        IDC_EDIT_REMOTE,104,7,182,14,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "Remote &Branch:",IDC_STATIC,7,26,97,8
+    CONTROL         "",IDC_REMOTE_BRANCH,"ComboBoxEx32",CBS_DROPDOWN | CBS_AUTOHSCROLL | CBS_SORT | WS_VSCROLL | WS_TABSTOP,104,25,182,140
+    DEFPUSHBUTTON   "OK",IDOK,159,45,59,14,WS_DISABLED
+    PUSHBUTTON      "Cancel",IDCANCEL,227,45,59,14
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -3200,6 +3213,15 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 184
         HORZGUIDE, 176
+    END
+
+    IDD_SELECTREMOTEREF, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 286
+        VERTGUIDE, 104
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 59
     END
 END
 #endif    // APSTUDIO_INVOKED

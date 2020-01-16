@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,7 +25,7 @@
 #include "PullFetchDlg.h"
 #include "Git.h"
 #include "AppUtils.h"
-#include "BrowseRefsDlg.h"
+#include "SelectRemoteRefDlg.h"
 #include "MessageBox.h"
 // CPullFetchDlg dialog
 
@@ -353,7 +353,10 @@ void CPullFetchDlg::OnBnClickedRd()
 		m_bRebase = m_bRebaseActivatedInConfigForPull;
 		UpdateData(FALSE);
 		if (!m_IsPull && m_bNamedRemoteFetchAll)
+		{
 			m_RemoteBranch.EnableWindow(FALSE);
+			GetDlgItem(IDC_BUTTON_BROWSE_REF)->EnableWindow(FALSE);
+		}
 	}
 	if( GetCheckedRadioButton(IDC_REMOTE_RD,IDC_OTHER_RD) == IDC_OTHER_RD)
 	{
@@ -385,7 +388,10 @@ void CPullFetchDlg::OnBnClickedRd()
 		m_bRebase = FALSE;
 		UpdateData(FALSE);
 		if(!m_IsPull)
+		{
 			m_RemoteBranch.EnableWindow(TRUE);
+			GetDlgItem(IDC_BUTTON_BROWSE_REF)->EnableWindow(TRUE);
+		}
 	}
 }
 
@@ -438,24 +444,19 @@ void CPullFetchDlg::OnStnClickedRemoteManage()
 
 void CPullFetchDlg::OnBnClickedButtonBrowseRef()
 {
-	CString initialRef;
-	initialRef.Format(L"refs/remotes/%s/%s", static_cast<LPCTSTR>(m_Remote.GetString()), static_cast<LPCTSTR>(m_RemoteBranch.GetString()));
-	CString selectedRef = CBrowseRefsDlg::PickRef(false, initialRef, gPickRef_Remote);
-	if (!CStringUtils::StartsWith(selectedRef, L"refs/remotes/"))
+	CSelectRemoteRefDlg dlg;
+	if (GetCheckedRadioButton(IDC_REMOTE_RD, IDC_OTHER_RD) == IDC_REMOTE_RD)
+		dlg.m_sRemote = m_Remote.GetString();
+	else if (GetCheckedRadioButton(IDC_REMOTE_RD, IDC_OTHER_RD) == IDC_OTHER_RD)
+		dlg.m_sRemote = m_Other.GetString();
+	else
+	{
+		ATLASSERT(false);
 		return;
-
-	selectedRef = selectedRef.Mid(static_cast<int>(wcslen(L"refs/remotes/")));
-	int ixSlash = selectedRef.Find('/');
-
-	CString remoteName   = selectedRef.Left(ixSlash);
-	CString remoteBranch = selectedRef.Mid(ixSlash + 1);
-
-	int ixFound = m_Remote.FindStringExact(0, remoteName);
-	if(ixFound >= 0)
-		m_Remote.SetCurSel(ixFound);
-	m_RemoteBranch.AddString(remoteBranch, 0);
-
-	CheckRadioButton(IDC_REMOTE_RD,IDC_OTHER_RD,IDC_REMOTE_RD);
+	}
+	if (!dlg.DoModal() == IDOK && !dlg.m_sRemoteBranch.IsEmpty())
+		return;
+	m_RemoteBranch.AddString(dlg.m_sRemoteBranch, 0);
 }
 
 void CPullFetchDlg::OnBnClickedCheckDepth()

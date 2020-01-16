@@ -152,6 +152,7 @@
     <ClCompile Include="ProgressCommands\ResolveProgressCommand.cpp" />
     <ClCompile Include="ProgressCommands\RevertProgressCommand.cpp" />
     <ClCompile Include="ProgressCommands\SendMailProgressCommand.cpp" />
+    <ClCompile Include="SelectRemoteRefDlg.cpp" />
     <ClCompile Include="SendMail.cpp" />
     <ClCompile Include="FindDlg.cpp" />
     <ClCompile Include="..\Utils\Libraries.cpp" />
@@ -449,6 +450,7 @@
     <ClInclude Include="ProgressCommands\RevertProgressCommand.h" />
     <ClInclude Include="ProgressCommands\SendMailProgressCommand.h" />
     <ClInclude Include="ResizableColumnsListCtrl.h" />
+    <ClInclude Include="SelectRemoteRefDlg.h" />
     <ClInclude Include="SendMail.h" />
     <ClInclude Include="FindDlg.h" />
     <ClInclude Include="GitProgressList.h" />

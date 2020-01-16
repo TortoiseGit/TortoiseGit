@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -391,7 +391,7 @@ public:
 	int GetBranchList(STRING_VECTOR& list, int* current, BRANCH_TYPE type = BRANCH_LOCAL, bool skipCurrent = false);
 	int GetTagList(STRING_VECTOR &list);
 	int GetRefsCommitIsOn(STRING_VECTOR& list, const CGitHash& hash, bool includeTags, bool includeBranches, BRANCH_TYPE type = BRANCH_LOCAL);
-	int GetRemoteTags(const CString& remote, REF_VECTOR& list);
+	int GetRemoteRefs(const CString& remote, REF_VECTOR& list, bool includeTags, bool includeBranches);
 	int DeleteRemoteRefs(const CString& remote, const STRING_VECTOR& list);
 	int GetBranchDescriptions(MAP_STRING_STRING& map);
 	int GuessRefForHash(CString& ref, const CGitHash& hash);

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2019 - TortoiseGit
+// Copyright (C) 2015-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -118,7 +118,7 @@ int CGitTagCompareList::Fill(const CString& remote, CString& err)
 	}
 
 	REF_VECTOR remoteTags;
-	if (g_Git.GetRemoteTags(remote, remoteTags))
+	if (g_Git.GetRemoteRefs(remote, remoteTags, true, false))
 	{
 		err = g_Git.GetGitLastErr(L"Could not retrieve remote tags.", CGit::GIT_CMD_FETCH);
 		return -1;
