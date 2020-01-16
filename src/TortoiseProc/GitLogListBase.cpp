@@ -3076,13 +3076,13 @@ UINT CGitLogListBase::LogThread()
 				int percent = static_cast<int>(m_logEntries.size() * 100 / (total + 1));
 				if(percent > 99)
 					percent =99;
-				if(percent < GITLOG_START)
+				if (percent <= GITLOG_START)
 					percent = GITLOG_START +1;
 
 				oldsize = m_logEntries.size();
 				PostMessage(LVM_SETITEMCOUNT, this->m_logEntries.size(), LVSICF_NOINVALIDATEALL|LVSICF_NOSCROLL);
 
-				//if( percent > oldprecentage )
+				if (percent > oldprecentage)
 				{
 					::PostMessage(this->GetParent()->m_hWnd,MSG_LOAD_PERCENTAGE, percent, 0);
 					oldprecentage = percent;

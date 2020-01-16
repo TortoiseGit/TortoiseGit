@@ -35,6 +35,7 @@ Released: unreleased
  * Fixed issue #3493: Closing (cancelling) commit selection window while merging minimizes the Merge dialog
  * Fixed issue #3417: "ignore-on-commit" changelist disappears when committing on different folder
  * High DPI fixes (e.g., searchbar height/position in UDiff; remembering of dialog/slider/divider positions and column widths with changing DPI scalings)
+ * LogDlg: Fix flickering on filtering
 
 = Release 2.9.0 =
 Released: 2019-10-31
