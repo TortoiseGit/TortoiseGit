@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -1598,6 +1598,8 @@ int CGit::GetBranchList(STRING_VECTOR &list, int *current, BRANCH_TYPE type, boo
 					return;
 				}
 			}
+			else if (lineA[0] == '+') // since Git 2.23 branches that are checked out in other worktrees connected to the same repository prefixed with '+'
+				branch = branch.Mid(static_cast<int>(wcslen(L"+ ")));
 			if ((type & BRANCH_REMOTE) != 0 && (type & BRANCH_LOCAL) == 0)
 				branch = L"remotes/" + branch;
 			list.push_back(branch);
