@@ -3052,7 +3052,7 @@ UINT CGitLogListBase::LogThread()
 			this->m_critSec.Lock();
 			m_logEntries.append(hash, visible);
 			if (visible)
-				m_arShownList.SafeAdd(pRev);
+				m_arShownList.push_back(pRev); // push_back is ok here, because we use the very same lock, otherwise use SafeAdd
 			this->m_critSec.Unlock();
 
 			if (!visible)
