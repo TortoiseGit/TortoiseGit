@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012, 2017 - TortoiseGit
+// Copyright (C) 2012, 2017, 2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,7 +21,7 @@
 
 #include "HorizontalResizableStandAloneDialog.h"
 
-class CDeleteRemoteTagDlg : public CHorizontalResizableStandAloneDialog
+class CDeleteRemoteTagDlg : public CResizableStandAloneDialog
 {
 	DECLARE_DYNAMIC(CDeleteRemoteTagDlg)
 

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2017, 2019 - TortoiseGit
+// Copyright (C) 2012-2017, 2019-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,10 +27,10 @@
 #include "MassiveGitTask.h"
 #include "SysProgressDlg.h"
 
-IMPLEMENT_DYNAMIC(CDeleteRemoteTagDlg, CHorizontalResizableStandAloneDialog)
+IMPLEMENT_DYNAMIC(CDeleteRemoteTagDlg, CResizableStandAloneDialog)
 
 CDeleteRemoteTagDlg::CDeleteRemoteTagDlg(CWnd* pParent /*=nullptr*/)
-	: CHorizontalResizableStandAloneDialog(CDeleteRemoteTagDlg::IDD, pParent)
+	: CResizableStandAloneDialog(CDeleteRemoteTagDlg::IDD, pParent)
 {
 }
 
@@ -45,7 +45,7 @@ void CDeleteRemoteTagDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LIST_TAGS, m_ctrlTags);
 }
 
-BEGIN_MESSAGE_MAP(CDeleteRemoteTagDlg, CHorizontalResizableStandAloneDialog)
+BEGIN_MESSAGE_MAP(CDeleteRemoteTagDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_SELECTALL, OnBnClickedSelectall)
 	ON_BN_CLICKED(IDOK, OnBnClickedOk)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_TAGS, OnSelchangeTags)
@@ -53,7 +53,7 @@ END_MESSAGE_MAP()
 
 BOOL CDeleteRemoteTagDlg::OnInitDialog()
 {
-	CHorizontalResizableStandAloneDialog::OnInitDialog();
+	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	AdjustControlSize(static_cast<UINT>(IDC_STATIC));
@@ -191,5 +191,5 @@ BOOL CDeleteRemoteTagDlg::PreTranslateMessage(MSG* pMsg)
 		}
 	}
 
-	return CHorizontalResizableStandAloneDialog::PreTranslateMessage(pMsg);
+	return __super::PreTranslateMessage(pMsg);
 }
