@@ -2683,6 +2683,7 @@ int CGitLogListBase::FillGitLog(std::unordered_set<CGitHash>& hashes)
 
 int CGitLogListBase::BeginFetchLog()
 {
+	ATLASSERT(IsInWorkingThread());
 	ClearText();
 
 	this->m_arShownList.SafeRemoveAll();
@@ -2729,15 +2730,7 @@ int CGitLogListBase::BeginFetchLog()
 
 	CString cmd = g_Git.GetLogCmd(range, path, mask, &m_Filter, CRegDWORD(L"Software\\TortoiseGit\\LogOrderBy", CGit::LOG_ORDER_TOPOORDER));
 
-	//this->m_logEntries.ParserFromLog();
-	if(IsInWorkingThread())
-	{
-		PostMessage(LVM_SETITEMCOUNT, this->m_logEntries.size(), LVSICF_NOINVALIDATEALL);
-	}
-	else
-	{
-		SetItemCountEx(static_cast<int>(m_logEntries.size()));
-	}
+	PostMessage(LVM_SETITEMCOUNT, m_logEntries.size(), LVSICF_NOINVALIDATEALL);
 
 	try
 	{
