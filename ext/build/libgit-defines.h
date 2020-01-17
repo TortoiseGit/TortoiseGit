@@ -1,6 +1,7 @@
 #ifndef WIN32
 #define WIN32
 #endif
+#define NO_POLL_H
 #define NO_SYS_POLL_H
 #define HAVE_STRING_H 1
 #define NO_GETTEXT
@@ -19,14 +20,15 @@
 #define NO_STRTOULL
 #define NO_MKDTEMP
 #define NO_MKSTEMPS
-#define SNPRINTF_RETURNS_BOGUS
+// VS2015 with UCRT claims that snprintf and friends are C99 compliant, so we don't need this any more:
+//#define SNPRINTF_RETURNS_BOGUS
 #define NO_SVN_TESTS
 #define NO_PERL_MAKEMAKER
 #define NO_POSIX_ONLY_PROGRAMS
 #define NO_ST_BLOCKS_IN_STRUCT_STAT
 #define NO_D_INO_IN_DIRENT
-#define NO_NSEC
 #define USE_WIN32_MMAP
+#define MMAP_PREVENTS_DELETE
 #define UNRELIABLE_FSTAT
 #define OBJECT_CREATION_MODE 1
 #define NO_REGEX
@@ -39,3 +41,5 @@
 #define INTERNAL_QSORT
 #define NO_UNIX_SOCKETS
 #define SHA1_DC
+#define NATIVE_CRLF
+

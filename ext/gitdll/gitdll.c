@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -661,26 +661,26 @@ int git_get_diff_file(GIT_DIFF diff, GIT_FILE file, int i, char** newname, char*
 int git_add_exclude(const char *string, const char *base,
 					int baselen, EXCLUDE_LIST which, int lineno)
 {
-	add_exclude(string, base, baselen, which, lineno);
+	add_pattern(string, base, baselen, which, lineno);
 	return 0;
 }
 
 int git_create_exclude_list(EXCLUDE_LIST *which)
 {
-	*which = malloc(sizeof(struct exclude_list));
-	memset(*which,0,sizeof(struct exclude_list));
+	*which = malloc(sizeof(struct pattern_list));
+	memset(*which, 0, sizeof(struct pattern_list));
 	return 0;
 }
 
 int git_free_exclude_list(EXCLUDE_LIST which)
 {
-	struct exclude_list *p = (struct exclude_list *) which;
+	struct pattern_list* p = (struct pattern_list*)which;
 
 	for (int i = 0; i < p->nr; ++i)
 	{
-		free(p->excludes[i]);
+		free(p->patterns[i]);
 	}
-	free(p->excludes);
+	free(p->patterns);
 	free(p);
 	return 0;
 }
@@ -690,7 +690,7 @@ int git_check_excluded_1(const char *pathname,
 							EXCLUDE_LIST el, int ignorecase)
 {
 	ignore_case = ignorecase;
-	return is_excluded_from_list(pathname, pathlen, basename, dtype, el, NULL);
+	return path_matches_pattern_list(pathname, pathlen, basename, dtype, el, NULL);
 }
 
 int git_get_notes(const GIT_HASH hash, char** p_note)

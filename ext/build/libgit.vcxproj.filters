@@ -83,9 +83,6 @@
     <ClCompile Include="..\tgit\compat\pread.c">
       <Filter>compat</Filter>
     </ClCompile>
-    <ClCompile Include="..\tgit\compat\qsort.c">
-      <Filter>compat</Filter>
-    </ClCompile>
     <ClCompile Include="..\tgit\compat\regex\regex.c">
       <Filter>compat</Filter>
     </ClCompile>
@@ -647,9 +644,6 @@
     <ClCompile Include="..\tgit\commit-graph.c">
       <Filter>git</Filter>
     </ClCompile>
-    <ClCompile Include="..\tgit\fetch-object.c">
-      <Filter>git</Filter>
-    </ClCompile>
     <ClCompile Include="..\tgit\list-objects-filter.c">
       <Filter>git</Filter>
     </ClCompile>
@@ -766,6 +760,15 @@
     </ClCompile>
     <ClCompile Include="..\tgit\compat\win32\trace2_win32_process_info.c">
       <Filter>compat\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\stable-qsort.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\promisor-remote.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\repo-settings.c">
+      <Filter>git</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1285,6 +1288,9 @@
     </ClInclude>
     <ClInclude Include="..\tgit\json-writer.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\promisor-remote.h">
+      <Filter>git</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
