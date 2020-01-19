@@ -4,7 +4,6 @@ This article documents some of the main steps for releasing a new version.
   * doc/doc.build.include
   * src/version.h
   * src/TortoiseGitSetup/VersionNumberInclude.wxi
-  * For a preview release also make sure to include the yyyymmdd-HASH in src/TortoiseProc/AboutDlg.cpp in "tortoisegitprocpath"
 
 * Make sure crash-report is enabled in version.h (but don't commit this change)
 * For a preview release enable "PREVIEW" in version.h (but don't commit this change)

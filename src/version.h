@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 
 #define FILEVER				2,9,0,0
 #define PRODUCTVER			FILEVER
@@ -20,6 +20,7 @@
 #endif
 
 #define PREVIEW				0
+#define PREVIEW_INFO		"yyyymmdd-hash"
 
 /*
  * TortoiseGit crash handler
