@@ -17,6 +17,7 @@ build_script:
 - msbuild "src\TortoiseGit.sln" /t:"test\UnitTests" /m /verbosity:minimal /p:Configuration=Debug /p:Platform=x64 /maxcpucount /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 - msbuild "src\TortoiseGit.sln" /t:"test\UnitTests" /m /verbosity:minimal /p:Configuration=Debug /p:Platform=Win32 /maxcpucount /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 test_script:
+- set PATH="C:\Program Files\Git\mingw64\bin";%PATH%
 - bin\Debug\bin\tests.exe
 - bin\Debug64\bin\tests.exe
 - reg add HKCU\Software\TortoiseGit /v CygwinHack /t REG_DWORD /f /d 1
