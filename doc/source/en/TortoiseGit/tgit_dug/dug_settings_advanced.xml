@@ -520,6 +520,7 @@
 					The default in all stable releases is <literal>false</literal>.
 				</para>
 			</listitem>
+		</varlistentry>
 		<varlistentry>
 			<term condition="pot">Win8SpellChecker</term>
 			<listitem>
