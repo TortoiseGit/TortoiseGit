@@ -1,7 +1,7 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2003-2019 - TortoiseSVN
-// Copyright (C) 2011-2012, 2017-2019 Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2003-2020 - TortoiseSVN
+// Copyright (C) 2011-2012, 2017-2020 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -47,7 +47,7 @@
 #define new DEBUG_NEW
 #endif
 
-#define HEADERHEIGHT 10
+#define HEADERHEIGHT (CDPIAware::Instance().ScaleY(10))
 
 #define IDT_SCROLLTIMER 101
 
@@ -1341,7 +1341,7 @@ void CBaseView::DrawMargin(CDC *pdc, const CRect &rect, int nLineIndex)
 		int iconHeight = GetSystemMetrics(SM_CYSMICON);
 		if (icon)
 		{
-			::DrawIconEx(pdc->m_hDC, rect.left + 2, rect.top + (rect.Height() - iconHeight) / 2, icon, iconWidth, iconHeight, 0, nullptr, DI_NORMAL);
+			::DrawIconEx(pdc->m_hDC, rect.left + CDPIAware::Instance().ScaleX(2), rect.top + (rect.Height() - iconHeight) / 2, icon, iconWidth, iconHeight, 0, nullptr, DI_NORMAL);
 		}
 		if ((m_bViewLinenumbers)&&(m_nDigits))
 		{
@@ -1375,7 +1375,7 @@ void CBaseView::DrawMargin(CDC *pdc, const CRect &rect, int nLineIndex)
 					pdc->SetTextColor(::GetSysColor(COLOR_WINDOWTEXT));
 
 					pdc->SelectObject(GetFont());
-					pdc->ExtTextOut(rect.left + iconWidth + 2, rect.top, ETO_CLIPPED, &rect, sLinenumber, nullptr);
+					pdc->ExtTextOut(rect.left + iconWidth + CDPIAware::Instance().ScaleX(2), rect.top, ETO_CLIPPED, &rect, sLinenumber, nullptr);
 				}
 			}
 		}
@@ -1384,7 +1384,7 @@ void CBaseView::DrawMargin(CDC *pdc, const CRect &rect, int nLineIndex)
 
 int CBaseView::GetMarginWidth()
 {
-	int marginWidth = GetSystemMetrics(SM_CXSMICON) + 2 + 2;
+	int marginWidth = GetSystemMetrics(SM_CXSMICON) + CDPIAware::Instance().ScaleX(4);
 
 	if ((m_bViewLinenumbers)&&(m_pViewData)&&(m_pViewData->GetCount()))
 	{
@@ -1397,7 +1397,7 @@ int CBaseView::GetMarginWidth()
 			m_nDigits = sMax.GetLength();
 		}
 		int nWidth = GetCharWidth();
-		marginWidth += (m_nDigits * nWidth) + 2;
+		marginWidth += (m_nDigits * nWidth) + CDPIAware::Instance().ScaleX(2);
 	}
 
 	return marginWidth;
@@ -2962,10 +2962,10 @@ INT_PTR CBaseView::OnToolHitTest(CPoint point, TOOLINFO* pTI) const
 	GetClientRect(rcClient);
 	CRect textrect(rcClient.left, rcClient.top, rcClient.Width(), m_nLineHeight+HEADERHEIGHT);
 
-	int marginwidth = GetSystemMetrics(SM_CXSMICON) + 2 + 2;
+	int marginwidth = GetSystemMetrics(SM_CXSMICON) + CDPIAware::Instance().ScaleX(4);
 	if ((m_bViewLinenumbers)&&(m_pViewData)&&(m_pViewData->GetCount())&&(m_nDigits > 0))
 	{
-		marginwidth += (m_nDigits * m_nCharWidth) + 2;
+		marginwidth += (m_nDigits * m_nCharWidth) + CDPIAware::Instance().ScaleX(2);
 	}
 	CRect borderrect(rcClient.left, rcClient.top+m_nLineHeight+HEADERHEIGHT, marginwidth, rcClient.bottom);
 
@@ -5736,7 +5736,7 @@ CString CBaseView::GetSelectedText() const
 	}
 	// remove the non-selected chars from the first line, last line and last \r\n
 	int nLeftCut = start.x;
-	int nRightCut = GetViewLineChars(end.y).GetLength() - end.x + 2;
+	int nRightCut = GetViewLineChars(end.y).GetLength() - end.x + CDPIAware::Instance().ScaleX(2);
 	sSelectedText = sSelectedText.Mid(nLeftCut, sSelectedText.GetLength()-nLeftCut-nRightCut);
 	return sSelectedText;
 }
