@@ -5152,12 +5152,6 @@ int CBaseView::Screen2View::GetSubLineOffset( int screenLine )
 	return m_Screen2View[screenLine].nViewSubLine;
 }
 
-CBaseView::TScreenLineInfo CBaseView::Screen2View::GetScreenLineInfo( int screenLine )
-{
-	RebuildIfNecessary();
-	return m_Screen2View[screenLine];
-}
-
 /**
 	doing partial rebuild, whole screen2view vector is built, but uses ScreenedViewLine cache to do it faster
 */

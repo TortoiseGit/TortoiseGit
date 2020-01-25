@@ -654,7 +654,6 @@ protected:  // variables
 
 		int				GetViewLineForScreen(int screenLine);
 		int				GetSubLineOffset(int screenLine);
-		TScreenLineInfo GetScreenLineInfo(int screenLine);
 		int				FindScreenLineForViewLine(int viewLine);
 		void			ScheduleFullRebuild(CViewData * ViewData);
 		void			ScheduleRangeRebuild(CViewData * ViewData, int FirstViewLine, int LastViewLine);
