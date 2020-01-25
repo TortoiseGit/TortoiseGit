@@ -121,9 +121,7 @@ BOOL CTortoiseProcApp::InitInstance()
 	{
 		langDll.Format(L"%sLanguages\\TortoiseProc%ld.dll", static_cast<LPCTSTR>(CPathUtils::GetAppParentDirectory()), langId);
 
-		CString sVer = _T(STRPRODUCTVER);
-		CString sFileVer = CPathUtils::GetVersionFromFile(langDll);
-		if (sFileVer == sVer)
+		if (wcscmp(CPathUtils::GetVersionFromFile(langDll).c_str(), _T(STRPRODUCTVER)) == 0)
 		{
 			HINSTANCE hInst = LoadLibrary(langDll);
 			if (hInst)

@@ -60,6 +60,9 @@
     <ClCompile Include="..\Utils\LoadIconEx.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\Utils\PathUtils.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FindBar.h">
@@ -114,6 +117,9 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\LoadIconEx.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\PathUtils.h">
       <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>

@@ -105,9 +105,7 @@ BOOL CTortoiseGitBlameApp::InitInstance()
 		langDll.Format(L"%sLanguages\\TortoiseGitBlame%ld.dll", static_cast<LPCTSTR>(CPathUtils::GetAppParentDirectory()), langId);
 
 		hInst = LoadLibrary(langDll);
-		CString sVer = _T(STRPRODUCTVER);
-		CString sFileVer = CPathUtils::GetVersionFromFile(langDll);
-		if (sFileVer.Compare(sVer)!=0)
+		if (wcscmp(CPathUtils::GetVersionFromFile(langDll).c_str(), _T(STRPRODUCTVER)) != 0)
 		{
 			FreeLibrary(hInst);
 			hInst = nullptr;

@@ -17,6 +17,7 @@ using std::min;
 #include <malloc.h>
 #include <memory.h>
 #include <tchar.h>
+#include <string>
 
 #include <windows.h>
 #include <Commdlg.h>

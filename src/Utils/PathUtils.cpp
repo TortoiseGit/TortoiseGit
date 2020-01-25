@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2019 - TortoiseGit
+// Copyright (C) 2012-2020 - TortoiseGit
 // Copyright (C) 2003-2008, 2013-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -294,10 +294,10 @@ void CPathUtils::DropPathPrefixes(CString& path)
 		path = path.Mid(skip);
 	}
 }
+#endif
 
-#ifdef _MFC_VER
 #pragma comment(lib, "Version.lib")
-CString CPathUtils::GetVersionFromFile(const CString & p_strFilename)
+std::wstring CPathUtils::GetVersionFromFile(LPCTSTR p_strFilename)
 {
 	struct TRANSARRAY
 	{
@@ -305,9 +305,8 @@ CString CPathUtils::GetVersionFromFile(const CString & p_strFilename)
 		WORD wCharacterSet;
 	};
 
-	CString strReturn;
 	DWORD dwReserved = 0;
-	DWORD dwBufferSize = GetFileVersionInfoSize(static_cast<LPCTSTR>(p_strFilename), &dwReserved);
+	DWORD dwBufferSize = GetFileVersionInfoSize(p_strFilename, &dwReserved);
 
 	if (dwBufferSize > 0)
 	{
@@ -320,9 +319,8 @@ CString CPathUtils::GetVersionFromFile(const CString & p_strFilename)
 			LPSTR       lpVersion = nullptr;
 			VOID*       lpFixedPointer;
 			TRANSARRAY* lpTransArray;
-			CString     strLangProductVersion;
 
-			GetFileVersionInfo(static_cast<LPCTSTR>(p_strFilename),
+			GetFileVersionInfo(p_strFilename,
 				dwReserved,
 				dwBufferSize,
 				pBuffer.get());
@@ -334,21 +332,22 @@ CString CPathUtils::GetVersionFromFile(const CString & p_strFilename)
 				&nFixedLength);
 			lpTransArray = static_cast<TRANSARRAY*>(lpFixedPointer);
 
-			strLangProductVersion.Format(L"\\StringFileInfo\\%04x%04x\\ProductVersion",
-				lpTransArray[0].wLanguageID, lpTransArray[0].wCharacterSet);
+			TCHAR strLangProductVersion[MAX_PATH] = { 0 };
+			swprintf_s(strLangProductVersion, L"\\StringFileInfo\\%04x%04x\\ProductVersion", lpTransArray[0].wLanguageID, lpTransArray[0].wCharacterSet);
 
 			VerQueryValue(pBuffer.get(),
 				static_cast<LPCTSTR>(strLangProductVersion),
 				reinterpret_cast<LPVOID*>(&lpVersion),
 				&nInfoSize);
 			if (nInfoSize && lpVersion)
-				strReturn = reinterpret_cast<LPCTSTR>(lpVersion);
+				return reinterpret_cast<LPCTSTR>(lpVersion);
 		}
 	}
 
-	return strReturn;
+	return {};
 }
 
+#ifdef CSTRING_AVAILABLE
 CString CPathUtils::GetCopyrightForSelf()
 {
 	DWORD len = 0;
@@ -403,7 +402,7 @@ CString CPathUtils::GetCopyrightForSelf()
 
 	return strReturn;
 }
-#endif
+
 CString CPathUtils::PathPatternEscape(const CString& path)
 {
 	CString result = path;

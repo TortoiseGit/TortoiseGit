@@ -412,7 +412,7 @@ void CCheckForUpdatesDlg::FillDownloads(CVersioncheckParser& versioncheck)
 			{
 				CString sVer = _T(STRPRODUCTVER);
 				sVer = sVer.Left(sVer.ReverseFind('.'));
-				CString sFileVer = CPathUtils::GetVersionFromFile(file);
+				CString sFileVer = CPathUtils::GetVersionFromFile(file).c_str();
 				sFileVer = sFileVer.Left(sFileVer.ReverseFind('.'));
 				CString sLoc = filename.Mid(static_cast<int>(wcslen(L"TortoiseProc")));
 				sLoc = sLoc.Left(sLoc.GetLength() - static_cast<int>(wcslen(L".dll"))); // cut off ".dll"
@@ -603,7 +603,7 @@ bool CCheckForUpdatesDlg::VerifyUpdateFile(const CString& filename, const CStrin
 	DWORD ret = 0;
 	if ((ret = MsiGetSummaryInformation(NULL, filename, 0, &hSummary)) != 0)
 	{
-		CString sFileVer = CPathUtils::GetVersionFromFile(filename);
+		CString sFileVer = CPathUtils::GetVersionFromFile(filename).c_str();
 		sFileVer.Trim();
 		if (sFileVer.IsEmpty())
 		{

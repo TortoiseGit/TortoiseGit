@@ -22,8 +22,7 @@
 #include "LangDll.h"
 #include "../version.h"
 #include <memory>
-
-#pragma comment(lib, "Version.lib")
+#include "PathUtils.h"
 
 CLangDll::CLangDll()
 	: m_hInstance(nullptr)
@@ -91,38 +90,5 @@ void CLangDll::Close()
 
 bool CLangDll::DoVersionStringsMatch(LPCTSTR sVer, LPCTSTR langDll) const
 {
-	struct TRANSARRAY
-	{
-		WORD wLanguageID;
-		WORD wCharacterSet;
-	};
-
-	DWORD dwReserved = 0;
-	DWORD dwBufferSize = GetFileVersionInfoSize(langDll, &dwReserved);
-
-	if (dwBufferSize == 0)
-		return false;
-
-	auto pBuffer = std::make_unique<BYTE[]>(dwBufferSize);
-	if (!pBuffer)
-		return false;
-
-	if (!GetFileVersionInfo(langDll, dwReserved, dwBufferSize, pBuffer.get()))
-		return false;
-
-	VOID* lpFixedPointer;
-	UINT nFixedLength = 0;
-	VerQueryValue(pBuffer.get(), L"\\VarFileInfo\\Translation", &lpFixedPointer, &nFixedLength);
-	auto lpTransArray = static_cast<TRANSARRAY*>(lpFixedPointer);
-
-	TCHAR strLangProductVersion[MAX_PATH] = { 0 };
-	swprintf_s(strLangProductVersion, L"\\StringFileInfo\\%04x%04x\\ProductVersion", lpTransArray[0].wLanguageID, lpTransArray[0].wCharacterSet);
-
-	LPSTR lpVersion = nullptr;
-	UINT nInfoSize = 0;
-	VerQueryValue(pBuffer.get(), strLangProductVersion, reinterpret_cast<LPVOID*>(&lpVersion), &nInfoSize);
-	if (lpVersion && nInfoSize)
-		return (wcscmp(sVer, reinterpret_cast<LPCTSTR>(lpVersion)) == 0);
-
-	return false;
+	return (wcscmp(sVer, CPathUtils::GetVersionFromFile(langDll).c_str()) == 0);
 }

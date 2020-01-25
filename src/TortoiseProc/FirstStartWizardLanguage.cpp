@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2019 - TortoiseGit
+// Copyright (C) 2016-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -154,7 +154,7 @@ void CFirstStartWizardLanguage::OnBnClickedRefresh()
 		{
 			CString sVer = _T(STRPRODUCTVER);
 			sVer = sVer.Left(sVer.ReverseFind('.'));
-			CString sFileVer = CPathUtils::GetVersionFromFile(file);
+			CString sFileVer = CPathUtils::GetVersionFromFile(file).c_str();
 			sFileVer = sFileVer.Left(sFileVer.ReverseFind('.'));
 			if (sFileVer.Compare(sVer) != 0)
 				continue;

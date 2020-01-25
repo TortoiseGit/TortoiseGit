@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2013-2017, 2019 - TortoiseGit
+// Copyright (C) 2013-2017, 2019-2020 - TortoiseGit
 // Copyright (C) 2006-2014, 2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -117,9 +117,7 @@ BOOL CTortoiseMergeApp::InitInstance()
 		langDll.Format(L"%sLanguages\\TortoiseMerge%ld.dll", static_cast<LPCTSTR>(CPathUtils::GetAppParentDirectory()), langId);
 
 		hInst = LoadLibrary(langDll);
-		CString sVer = _T(STRPRODUCTVER);
-		CString sFileVer = CPathUtils::GetVersionFromFile(langDll);
-		if (sFileVer.Compare(sVer)!=0)
+		if (wcscmp(CPathUtils::GetVersionFromFile(langDll).c_str(), _T(STRPRODUCTVER)) != 0)
 		{
 			FreeLibrary(hInst);
 			hInst = nullptr;
