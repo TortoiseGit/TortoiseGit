@@ -96,7 +96,7 @@ public: // methods
 	void			SetCaretPosition(const POINT& pt) { SetCaretViewPosition(ConvertScreenPosToView(pt)); }
 	POINT			GetCaretPosition() { return ConvertViewPosToScreen(GetCaretViewPosition()); }
 	void			SetCaretViewPosition(const POINT & pt) { m_ptCaretViewPos = pt; }
-	POINT			GetCaretViewPosition() { return m_ptCaretViewPos; }
+	POINT			GetCaretViewPosition() const { return m_ptCaretViewPos; }
 	void			UpdateCaretPosition(const POINT& pt) { SetCaretPosition(pt); UpdateCaret(); }
 	void			UpdateCaretViewPosition(const POINT& pt) { SetCaretViewPosition(pt); UpdateCaret(); EnsureCaretVisible(); }
 	void			SetCaretToViewStart() { SetCaretToFirstViewLine(); SetCaretToViewLineStart(); }
@@ -106,7 +106,7 @@ public: // methods
 	void			EnsureCaretVisible();
 	void			UpdateCaret();
 
-	bool			ArePointsSame(const POINT &pt1, const POINT &pt2) {return (pt1.x == pt2.x) && (pt1.y == pt2.y); };
+	bool			ArePointsSame(const POINT &pt1, const POINT &pt2) const { return (pt1.x == pt2.x) && (pt1.y == pt2.y); };
 	POINT			SetupPoint(int x, int y) const {POINT ptRet={x, y}; return ptRet; };
 	POINT			ConvertScreenPosToView(const POINT& pt);
 	POINT			ConvertViewPosToScreen(const POINT& pt);
