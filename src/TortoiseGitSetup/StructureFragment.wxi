@@ -370,6 +370,7 @@
 						<File Id="F__TGITAutolist" Name="autolist.txt" DiskId="1" Source="include\autolist.txt" />
 						<File Id="F__TGITSnippet" Name="snippet.txt" DiskId="1" Source="include\snippet.txt" />
 						<Environment Id="Environment" Name="PATH" Part="last" System="yes" Value="[INSTALLDIR]bin" Action="set" />
+						<RemoveFile Id="CleanupHotfixFile" Name="Hotfix.ini" On="both" />
 					</Component>
 
 					<Component Id="C__TortoiseShell" Guid="$(var.GuidTortoiseShell)" Win64="$(var.Win64YesNo)">

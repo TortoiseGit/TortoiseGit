@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2014, 2016-2017 - TortoiseGit
+// Copyright (C) 2012-2014, 2016-2017, 2020 - TortoiseGit
 // Copyright (C) 2003-2008 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
@@ -87,6 +87,7 @@ private:
 
 	CUpdateListCtrl	m_ctrlFiles;
 
+	CVersioncheckParser::Version m_myVersion;
 	CString		m_sUpdateDownloadLink;			///< Where to send a user looking to download a update
 	CString		m_sUpdateChangeLogLink;			///< Where to send a user looking to change log
 	CHyperLink	m_link;

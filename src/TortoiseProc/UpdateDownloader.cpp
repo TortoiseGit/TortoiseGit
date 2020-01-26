@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2017, 2019 - TortoiseGit
+// Copyright (C) 2013-2017, 2019-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,7 +20,7 @@
 #include "UpdateDownloader.h"
 #include "../version.h"
 
-CUpdateDownloader::CUpdateDownloader(HWND hwnd, bool force, UINT msg, CEvent *eventStop)
+CUpdateDownloader::CUpdateDownloader(HWND hwnd, const CString& sVersion, bool force, UINT msg, CEvent *eventStop)
 : m_hWnd(hwnd)
 , m_bForce(force)
 , m_uiMsg(msg)
@@ -35,7 +35,7 @@ CUpdateDownloader::CUpdateDownloader(HWND hwnd, bool force, UINT msg, CEvent *ev
 		m_sWindowsServicePack.Format(L"SP%ld", inf.wServicePackMajor);
 
 	CString userAgent;
-	userAgent.Format(L"TortoiseGit %s; %s; Windows%s%s %s%s%s", _T(STRFILEVER), _T(TGIT_PLATFORM), m_sWindowsPlatform.IsEmpty() ? L"" : L" ", static_cast<LPCTSTR>(m_sWindowsPlatform), static_cast<LPCTSTR>(m_sWindowsVersion), m_sWindowsServicePack.IsEmpty() ? L"" : L" ", static_cast<LPCTSTR>(m_sWindowsServicePack));
+	userAgent.Format(L"TortoiseGit %s; %s; Windows%s%s %s%s%s", static_cast<LPCTSTR>(sVersion), _T(TGIT_PLATFORM), m_sWindowsPlatform.IsEmpty() ? L"" : L" ", static_cast<LPCTSTR>(m_sWindowsPlatform), static_cast<LPCTSTR>(m_sWindowsVersion), m_sWindowsServicePack.IsEmpty() ? L"" : L" ", static_cast<LPCTSTR>(m_sWindowsServicePack));
 	hOpenHandle = InternetOpen(userAgent, INTERNET_OPEN_TYPE_PRECONFIG, nullptr, nullptr, 0);
 }
 

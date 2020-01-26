@@ -91,8 +91,22 @@ BOOL CCheckForUpdatesDlg::OnInitDialog()
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
+	if (CString hotfix = CPathUtils::GetAppDirectory() + L"hotfix.ini"; PathFileExists(hotfix))
+	{
+		CString err;
+		CVersioncheckParser parser;
+		if (parser.Load(hotfix, err))
+		{
+			auto version = parser.GetTortoiseGitVersion();
+			if (version.major == TGIT_VERMAJOR && version.minor == TGIT_VERMINOR && version.micro == TGIT_VERMICRO && version.build > TGIT_VERBUILD)
+				m_myVersion = version;
+		}
+	}
+	if (m_myVersion.version.IsEmpty() || !m_myVersion.major)
+		m_myVersion = { _T(STRFILEVER), L"", TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD };
+
 	CString temp;
-	temp.Format(IDS_CHECKNEWER_YOURVERSION, TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD);
+	temp.Format(IDS_CHECKNEWER_YOURVERSION, m_myVersion.major, m_myVersion.minor, m_myVersion.micro, m_myVersion.build);
 	SetDlgItemText(IDC_YOURVERSION, temp);
 
 	DialogEnableWindow(IDOK, FALSE);
@@ -127,7 +141,7 @@ BOOL CCheckForUpdatesDlg::OnInitDialog()
 	m_cLogMessage.SetFont(CAppUtils::GetLogFontName(), CAppUtils::GetLogFontSize());
 	m_cLogMessage.Call(SCI_SETREADONLY, TRUE);
 
-	m_updateDownloader = new CUpdateDownloader(GetSafeHwnd(), m_bForce == TRUE, WM_USER_DISPLAYSTATUS, &m_eventStop);
+	m_updateDownloader = new CUpdateDownloader(GetSafeHwnd(), m_myVersion.version, m_bForce == TRUE, WM_USER_DISPLAYSTATUS, &m_eventStop);
 
 	if (!AfxBeginThread(CheckThreadEntry, this))
 	{
@@ -270,13 +284,13 @@ UINT CCheckForUpdatesDlg::CheckThread()
 		BOOL bNewer = FALSE;
 		if (m_bForce)
 			bNewer = TRUE;
-		else if (version.major > TGIT_VERMAJOR)
+		else if (version.major > m_myVersion.major)
 			bNewer = TRUE;
-		else if ((version.minor > TGIT_VERMINOR) && (version.major == TGIT_VERMAJOR))
+		else if ((version.minor > m_myVersion.minor) && (version.major == m_myVersion.major))
 			bNewer = TRUE;
-		else if ((version.micro > TGIT_VERMICRO) && (version.minor == TGIT_VERMINOR) && (version.major == TGIT_VERMAJOR))
+		else if ((version.micro > m_myVersion.micro) && (version.minor == m_myVersion.minor) && (version.major == m_myVersion.major))
 			bNewer = TRUE;
-		else if ((version.build > TGIT_VERBUILD) && (version.micro == TGIT_VERMICRO) && (version.minor == TGIT_VERMINOR) && (version.major == TGIT_VERMAJOR))
+		else if ((version.build > m_myVersion.build) && (version.micro == m_myVersion.micro) && (version.minor == m_myVersion.minor) && (version.major == m_myVersion.major))
 			bNewer = TRUE;
 
 		m_sNewVersionNumber.Format(L"%u.%u.%u.%u", version.major, version.minor, version.micro, version.build);
@@ -455,7 +469,7 @@ void CCheckForUpdatesDlg::FillChangelog(CVersioncheckParser& versioncheck, bool 
 	m_cLogMessage.Init(pp);
 
 	CString sChangelogURL;
-	sChangelogURL.FormatMessage(versioncheck.GetTortoiseGitChangelogURL(), TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, static_cast<LPCTSTR>(m_updateDownloader->m_sWindowsPlatform), static_cast<LPCTSTR>(m_updateDownloader->m_sWindowsVersion), static_cast<LPCTSTR>(m_updateDownloader->m_sWindowsServicePack));
+	sChangelogURL.FormatMessage(versioncheck.GetTortoiseGitChangelogURL(), m_myVersion.major, m_myVersion.minor, m_myVersion.micro, static_cast<LPCTSTR>(m_updateDownloader->m_sWindowsPlatform), static_cast<LPCTSTR>(m_updateDownloader->m_sWindowsVersion), static_cast<LPCTSTR>(m_updateDownloader->m_sWindowsServicePack));
 
 	CString tempchangelogfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
 	if (DWORD err = m_updateDownloader->DownloadFile(sChangelogURL, tempchangelogfile, false); err != ERROR_SUCCESS)

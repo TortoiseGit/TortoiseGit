@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014 - TortoiseGit
+// Copyright (C) 2014, 2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,7 +20,7 @@
 class CUpdateDownloader
 {
 public:
-	CUpdateDownloader(HWND hwnd, bool force = false, UINT msg = 0, CEvent *m_eventStop = nullptr);
+	CUpdateDownloader(HWND hwnd, const CString& sVersion, bool force = false, UINT msg = 0, CEvent* m_eventStop = nullptr);
 	~CUpdateDownloader(void);
 
 	DWORD	DownloadFile(const CString &url, const CString& dest, bool showProgress) const;
