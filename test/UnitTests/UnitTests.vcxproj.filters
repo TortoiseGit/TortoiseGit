@@ -176,6 +176,9 @@
     <ClInclude Include="..\..\src\Git\GitMailmap.h">
       <Filter>Git</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\Utils\I18NHelper.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -375,6 +378,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Git\GitMailmap.cpp">
       <Filter>Git</Filter>
+    </ClCompile>
+    <ClCompile Include="I18NHelperTest.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

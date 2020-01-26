@@ -238,6 +238,9 @@
     <ClInclude Include="..\Git\GitRev.h">
       <Filter>Git</Filter>
     </ClInclude>
+    <ClInclude Include="..\Utils\I18NHelper.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resources\checkout.ico">

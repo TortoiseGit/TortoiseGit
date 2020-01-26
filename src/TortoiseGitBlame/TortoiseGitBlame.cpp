@@ -26,7 +26,7 @@
 #include "MainFrm.h"
 #include "../version.h"
 #include "../Utils/CrashReport.h"
-
+#include "I18NHelper.h"
 #include "TortoiseGitBlameDoc.h"
 #include "TortoiseGitBlameView.h"
 #include "CmdLineParser.h"
@@ -105,7 +105,7 @@ BOOL CTortoiseGitBlameApp::InitInstance()
 		langDll.Format(L"%sLanguages\\TortoiseGitBlame%ld.dll", static_cast<LPCTSTR>(CPathUtils::GetAppParentDirectory()), langId);
 
 		hInst = LoadLibrary(langDll);
-		if (wcscmp(CPathUtils::GetVersionFromFile(langDll).c_str(), _T(STRPRODUCTVER)) != 0)
+		if (!CI18NHelper::DoVersionStringsMatch(CPathUtils::GetVersionFromFile(langDll), _T(STRPRODUCTVER)))
 		{
 			FreeLibrary(hInst);
 			hInst = nullptr;

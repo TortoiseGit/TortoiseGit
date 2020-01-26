@@ -92,6 +92,7 @@
     <ClInclude Include="..\..\src\Utils\DebugHelpers.h" />
     <ClInclude Include="..\..\src\Utils\DebugOutput.h" />
     <ClInclude Include="..\..\src\Utils\DirFileEnum.h" />
+    <ClInclude Include="..\..\src\Utils\I18NHelper.h" />
     <ClInclude Include="..\..\src\Utils\LoadIconEx.h" />
     <ClInclude Include="..\..\src\Utils\LruCache.h" />
     <ClInclude Include="..\..\src\Utils\PathUtils.h" />
@@ -163,6 +164,7 @@
     <ClCompile Include="GitRevTest.cpp" />
     <ClCompile Include="GitTest.cpp" />
     <ClCompile Include="GitWCRevStatusTest.cpp" />
+    <ClCompile Include="I18NHelperTest.cpp" />
     <ClCompile Include="libgit2Test.cpp" />
     <ClCompile Include="libgitTest.cpp" />
     <ClCompile Include="LogDataVectorTest.cpp" />

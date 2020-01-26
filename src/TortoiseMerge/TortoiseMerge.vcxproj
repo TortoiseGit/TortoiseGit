@@ -325,6 +325,7 @@
     <ClInclude Include="..\Utils\CreateProcessHelper.h" />
     <ClInclude Include="..\Utils\DebugOutput.h" />
     <ClInclude Include="..\Utils\DPIAware.h" />
+    <ClInclude Include="..\Utils\I18NHelper.h" />
     <ClInclude Include="..\Utils\LoadIconEx.h" />
     <ClInclude Include="..\Utils\MiscUI\CommonDialogFunctions.h" />
     <ClInclude Include="..\Utils\MiscUI\EditWordBreak.h" />

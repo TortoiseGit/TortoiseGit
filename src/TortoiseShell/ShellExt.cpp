@@ -26,6 +26,7 @@
 #include "ShellExt.h"
 #include "ShellObjects.h"
 #include "../version.h"
+#include "I18NHelper.h"
 #include "GitAdminDir.h"
 #undef swprintf
 
@@ -89,7 +90,7 @@ void LoadLangDll()
 				swprintf_s(langDll, L"%s\\Languages\\TortoiseProc32%lu.dll", langdir, langId);
 			else
 				swprintf_s(langDll, L"%s\\Languages\\TortoiseProc%lu.dll", langdir, langId);
-			if (wcscmp(CPathUtils::GetVersionFromFile(langDll).c_str(), _T(STRPRODUCTVER)) == 0)
+			if (CI18NHelper::DoVersionStringsMatch(CPathUtils::GetVersionFromFile(langDll), _T(STRPRODUCTVER)))
 				hInst = LoadLibrary(langDll);
 			if (hInst)
 			{

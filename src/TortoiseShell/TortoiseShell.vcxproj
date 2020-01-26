@@ -110,6 +110,7 @@
     <ClInclude Include="..\TGitCache\CacheInterface.h" />
     <ClInclude Include="..\Utils\CreateProcessHelper.h" />
     <ClInclude Include="..\Utils\DebugOutput.h" />
+    <ClInclude Include="..\Utils\I18NHelper.h" />
     <ClInclude Include="..\Utils\LoadIconEx.h" />
     <ClInclude Include="..\Utils\MiscUI\IconBitmapUtils.h" />
     <ClInclude Include="..\Utils\ReaderWriterLock.h" />
