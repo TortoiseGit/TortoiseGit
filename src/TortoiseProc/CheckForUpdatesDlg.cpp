@@ -410,10 +410,6 @@ void CCheckForUpdatesDlg::FillDownloads(CVersioncheckParser& versioncheck)
 			CString filename = finder.GetFileName();
 			if (CStringUtils::StartsWithI(filename, L"TortoiseProc"))
 			{
-				CString sVer = _T(STRPRODUCTVER);
-				sVer = sVer.Left(sVer.ReverseFind('.'));
-				CString sFileVer = CPathUtils::GetVersionFromFile(file).c_str();
-				sFileVer = sFileVer.Left(sFileVer.ReverseFind('.'));
 				CString sLoc = filename.Mid(static_cast<int>(wcslen(L"TortoiseProc")));
 				sLoc = sLoc.Left(sLoc.GetLength() - static_cast<int>(wcslen(L".dll"))); // cut off ".dll"
 				if (CStringUtils::StartsWith(sLoc, L"32") && (sLoc.GetLength() > 5))
