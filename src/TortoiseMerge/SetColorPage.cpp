@@ -1,7 +1,7 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2006-2008, 2012-2014, 2017 - TortoiseSVN
-// Copyright (C) 2016, 2019 - TortoiseGit
+// Copyright (C) 2016, 2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -29,8 +29,8 @@ IMPLEMENT_DYNAMIC(CSetColorPage, CPropertyPage)
 CSetColorPage::CSetColorPage()
 	: CPropertyPage(CSetColorPage::IDD)
 	, m_bReloadNeeded(FALSE)
-	, m_regInlineAdded(L"Software\\TortoiseGitMerge\\InlineAdded", INLINEADDED_COLOR)
-	, m_regInlineRemoved(L"Software\\TortoiseGitMerge\\InlineRemoved", INLINEREMOVED_COLOR)
+	, m_regInlineAdded(L"Software\\TortoiseGitMerge\\Colors\\InlineAdded", INLINEADDED_COLOR)
+	, m_regInlineRemoved(L"Software\\TortoiseGitMerge\\Colors\\InlineRemoved", INLINEREMOVED_COLOR)
 	, m_regModifiedBackground(L"Software\\TortoiseGitMerge\\Colors\\ColorModifiedB", MODIFIED_COLOR)
 	, m_bInit(false)
 {

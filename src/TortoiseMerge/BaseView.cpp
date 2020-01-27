@@ -118,8 +118,8 @@ CBaseView::CBaseView()
 	m_bViewLinenumbers = CRegDWORD(L"Software\\TortoiseGitMerge\\ViewLinenumbers", 1);
 	m_bShowInlineDiff = CRegDWORD(L"Software\\TortoiseGitMerge\\DisplayBinDiff", TRUE);
 	m_nInlineDiffMaxLineLength = CRegDWORD(L"Software\\TortoiseGitMerge\\InlineDiffMaxLineLength", 3000);
-	m_InlineAddedBk = CRegDWORD(L"Software\\TortoiseGitMerge\\InlineAdded", INLINEADDED_COLOR);
-	m_InlineRemovedBk = CRegDWORD(L"Software\\TortoiseGitMerge\\InlineRemoved", INLINEREMOVED_COLOR);
+	m_InlineAddedBk = CRegDWORD(L"Software\\TortoiseGitMerge\\Colors\\InlineAdded", INLINEADDED_COLOR);
+	m_InlineRemovedBk = CRegDWORD(L"Software\\TortoiseGitMerge\\Colors\\InlineRemoved", INLINEREMOVED_COLOR);
 	m_ModifiedBk = CRegDWORD(L"Software\\TortoiseGitMerge\\Colors\\ColorModifiedB", MODIFIED_COLOR);
 	m_WhiteSpaceFg = CRegDWORD(L"Software\\TortoiseGitMerge\\Colors\\Whitespace", GetSysColor(COLOR_3DSHADOW));
 	m_sWordSeparators = CRegString(L"Software\\TortoiseGitMerge\\WordSeparators", L"[]();:.,{}!@#$%^&*-+=|/\\<>'`~\"?");
@@ -254,8 +254,8 @@ void CBaseView::DocumentUpdated()
 	m_nTabSize = static_cast<int>(CRegDWORD(L"Software\\TortoiseGitMerge\\TabSize", 4));
 	m_nTabMode = static_cast<int>(CRegDWORD(L"Software\\TortoiseGitMerge\\TabMode", TABMODE_NONE));
 	m_bViewLinenumbers = CRegDWORD(L"Software\\TortoiseGitMerge\\ViewLinenumbers", 1);
-	m_InlineAddedBk = CRegDWORD(L"Software\\TortoiseGitMerge\\InlineAdded", INLINEADDED_COLOR);
-	m_InlineRemovedBk = CRegDWORD(L"Software\\TortoiseGitMerge\\InlineRemoved", INLINEREMOVED_COLOR);
+	m_InlineAddedBk = CRegDWORD(L"Software\\TortoiseGitMerge\\Colors\\InlineAdded", INLINEADDED_COLOR);
+	m_InlineRemovedBk = CRegDWORD(L"Software\\TortoiseGitMerge\\Colors\\InlineRemoved", INLINEREMOVED_COLOR);
 	m_ModifiedBk = CRegDWORD(L"Software\\TortoiseGitMerge\\Colors\\ColorModifiedB", MODIFIED_COLOR);
 	m_WhiteSpaceFg = CRegDWORD(L"Software\\TortoiseGitMerge\\Colors\\Whitespace", GetSysColor(COLOR_3DSHADOW));
 	m_bIconLFs = CRegDWORD(L"Software\\TortoiseGitMerge\\IconLFs", 0);

@@ -621,6 +621,20 @@ void CTortoiseProcApp::CheckUpgrade()
 	}
 
 	// version specific updates
+	if (lVersion <= ConvertVersionToInt(2, 9, 2))
+	{
+		if (auto inlineAdded = CRegDWORD(L"Software\\TortoiseGitMerge\\InlineAdded"); inlineAdded.exists())
+		{
+			CRegDWORD(L"Software\\TortoiseGitMerge\\Colors\\InlineAdded") = static_cast<DWORD>(inlineAdded);
+			inlineAdded.removeValue();
+		}
+		if (auto inlineRemoved = CRegDWORD(L"Software\\TortoiseGitMerge\\InlineRemoved"); inlineRemoved.exists())
+		{
+			CRegDWORD(L"Software\\TortoiseGitMerge\\Colors\\InlineRemoved") = static_cast<DWORD>(inlineRemoved);
+			inlineRemoved.removeValue();
+		}
+	}
+
 	if (lVersion <= ConvertVersionToInt(2, 9, 1))
 		CRegStdDWORD(L"Software\\TortoiseGit\\TortoiseProc\\PatchDlgWidth").removeValue();
 
