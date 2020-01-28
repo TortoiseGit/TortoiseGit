@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2019 - TortoiseGit
+// Copyright (C) 2015-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -186,7 +186,6 @@ TEST(CGit, GetFileModifyTime)
 	__int64 time2 = -1;
 	isDir = false;
 	size = -1;
-	ULONGLONG ticks = GetTickCount64();
 	EXPECT_EQ(0, CGit::GetFileModifyTime(testFile, &time2, &isDir, &size));
 	EXPECT_EQ(time, time2);
 	EXPECT_FALSE(isDir);
@@ -202,7 +201,6 @@ TEST(CGit, GetFileModifyTime)
 	EXPECT_FALSE(isDir);
 	EXPECT_EQ(25, size);
 	EXPECT_GE(time3, time);
-	EXPECT_LE(time3 - time, (__int64)(GetTickCount64() - ticks + 10) * 10000);
 }
 
 TEST(CGit, LoadTextFile)
