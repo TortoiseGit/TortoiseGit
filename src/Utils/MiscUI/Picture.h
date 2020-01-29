@@ -25,6 +25,8 @@
 #pragma warning(disable: 4458) // declaration of 'xxx' hides class member
 #include <GdiPlus.h>
 #pragma warning(pop)
+#include "SmartHandle.h"
+#include <vector>
 
 using namespace Gdiplus;
 
@@ -196,7 +198,7 @@ private:
 	bool				bIsTiff;
 	UINT				nCurrentIcon;
 	std::unique_ptr<BYTE[]> m_lpIcons;
-	std::unique_ptr<HICON[]> m_hIcons;
+	std::unique_ptr<std::vector<CAutoIcon>> m_hIcons;
 	DWORD				m_nSize;
 
 	#pragma pack(push, r1, 2)   // n = 16, pushed to stack
