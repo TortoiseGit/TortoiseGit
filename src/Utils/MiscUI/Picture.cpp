@@ -40,11 +40,7 @@ CPicture::CPicture()
 	: m_Height(0)
 	, m_Weight(0)
 	, m_Width(0)
-	, pBitmap(nullptr)
-	, pBitmapBuffer(nullptr)
 	, m_ip(InterpolationModeDefault)
-	, hIcons(nullptr)
-	, lpIcons(nullptr)
 	, nCurrentIcon(0)
 	, bIsIcon(false)
 	, bIsTiff(false)
@@ -74,7 +70,7 @@ void CPicture::FreePictureData()
 	}
 	if (hIcons)
 	{
-		auto lpIconDir = reinterpret_cast<LPICONDIR>(lpIcons);
+		auto lpIconDir = reinterpret_cast<LPICONDIR>(lpIcons.get());
 		if (lpIconDir)
 		{
 			for (int i = 0; i < lpIconDir->idCount; ++i)
@@ -82,14 +78,10 @@ void CPicture::FreePictureData()
 				DestroyIcon(hIcons[i]);
 			}
 		}
-		delete[] hIcons;
 		hIcons = nullptr;
 	}
-	delete[] lpIcons;
 	lpIcons = nullptr;
-	delete pBitmap;
 	pBitmap = nullptr;
-	delete[] pBitmapBuffer;
 	pBitmapBuffer = nullptr;
 }
 
@@ -137,15 +129,12 @@ bool CPicture::Load(tstring sFilePathName)
 	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr);
 
 	// Attempt to load using GDI+
-	pBitmap = new Bitmap(sFilePathName.c_str(), FALSE);
+	pBitmap = std::make_unique<Bitmap>(sFilePathName.c_str(), FALSE);
 	GUID guid;
 	pBitmap->GetRawFormat(&guid);
 
 	if (pBitmap->GetLastStatus() != Ok)
-	{
-		delete pBitmap;
 		pBitmap = nullptr;
-	}
 
 	// gdiplus only loads the first icon found in an icon file
 	// so we have to handle icon files ourselves :(
@@ -170,9 +159,7 @@ bool CPicture::Load(tstring sFilePathName)
 		if (pBitmap)
 		{
 			// Cleanup first...
-			delete (pBitmap);
 			pBitmap = nullptr;
-			bIsIcon = true;
 		}
 
 		CAutoFile hFile = CreateFile(sFilePathName.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
@@ -181,9 +168,9 @@ bool CPicture::Load(tstring sFilePathName)
 			BY_HANDLE_FILE_INFORMATION fileinfo;
 			if (GetFileInformationByHandle(hFile, &fileinfo))
 			{
-				lpIcons = new BYTE[fileinfo.nFileSizeLow];
+				lpIcons = std::make_unique<BYTE[]>(fileinfo.nFileSizeLow);
 				DWORD readbytes;
-				if (ReadFile(hFile, lpIcons, fileinfo.nFileSizeLow, &readbytes, nullptr))
+				if (ReadFile(hFile, lpIcons.get(), fileinfo.nFileSizeLow, &readbytes, nullptr))
 				{
 					// we have the icon. Now gather the information we need later
 					if (readbytes >= sizeof(ICONDIR))
@@ -191,14 +178,14 @@ bool CPicture::Load(tstring sFilePathName)
 						// we are going to open same file second time so we have to close the file now
 						hFile.CloseHandle();
 
-						auto lpIconDir = reinterpret_cast<LPICONDIR>(lpIcons);
+						auto lpIconDir = reinterpret_cast<LPICONDIR>(lpIcons.get());
 						if ((lpIconDir->idCount) && ((lpIconDir->idCount * sizeof(ICONDIR)) <= fileinfo.nFileSizeLow))
 						{
 							try
 							{
 								bResult = false;
 								nCurrentIcon = 0;
-								hIcons = new HICON[lpIconDir->idCount];
+								hIcons = std::make_unique<HICON[]>(lpIconDir->idCount);
 								// check that the pointers point to data that we just loaded
 								if ((reinterpret_cast<BYTE*>(lpIconDir->idEntries) > reinterpret_cast<BYTE*>(lpIconDir)) &&
 									(reinterpret_cast<BYTE*>(lpIconDir->idEntries) + (lpIconDir->idCount * sizeof(ICONDIRENTRY)) < reinterpret_cast<BYTE*>(lpIconDir) + fileinfo.nFileSizeLow))
@@ -215,7 +202,6 @@ bool CPicture::Load(tstring sFilePathName)
 										if (hIcons[i] == nullptr)
 										{
 											// if the icon couldn't be loaded, the data is most likely corrupt
-											delete[] lpIcons;
 											lpIcons = nullptr;
 											bResult = false;
 											break;
@@ -225,28 +211,24 @@ bool CPicture::Load(tstring sFilePathName)
 							}
 							catch (...)
 							{
-								delete[] lpIcons;
 								lpIcons = nullptr;
 								bResult = false;
 							}
 						}
 						else
 						{
-							delete[] lpIcons;
 							lpIcons = nullptr;
 							bResult = false;
 						}
 					}
 					else
 					{
-						delete[] lpIcons;
 						lpIcons = nullptr;
 						bResult = false;
 					}
 				}
 				else
 				{
-					delete[] lpIcons;
 					lpIcons = nullptr;
 				}
 			}
@@ -310,22 +292,19 @@ bool CPicture::Load(tstring sFilePathName)
 
 									UINT cbBufferSize = cbStride * uHeight;
 									// note: the buffer must exist during the lifetime of the pBitmap object created below
-									pBitmapBuffer = new BYTE[cbBufferSize];
+									pBitmapBuffer = std::make_unique<BYTE[]>(cbBufferSize);
 
 									if (pBitmapBuffer != NULL)
 									{
 										WICRect rc = { 0, 0, static_cast<int>(uWidth), static_cast<int>(uHeight) };
-										hr = piFormatConverter->CopyPixels(&rc, cbStride, cbStride * uHeight, pBitmapBuffer);
+										hr = piFormatConverter->CopyPixels(&rc, cbStride, cbStride * uHeight, pBitmapBuffer.get());
 										if (SUCCEEDED(hr))
 										{
-											pBitmap = new Bitmap(uWidth, uHeight, cbStride, PixelFormat24bppRGB, pBitmapBuffer);
+											pBitmap = std::make_unique<Bitmap>(uWidth, uHeight, cbStride, PixelFormat24bppRGB, pBitmapBuffer.get());
 											bResult = true;
 										}
 										else
-										{
-											delete[] pBitmapBuffer;
 											pBitmapBuffer = nullptr;
-										}
 									}
 									else
 										hr = ERROR_NOT_ENOUGH_MEMORY;
@@ -411,7 +390,7 @@ bool CPicture::Load(tstring sFilePathName)
 						unsigned height = FreeImage_GetHeight(dib);
 
 						// Create a GDI+ bitmap to load into...
-						pBitmap = new Bitmap(width, height, PixelFormat32bppARGB);
+						pBitmap = std::make_unique<Bitmap>(width, height, PixelFormat32bppARGB);
 
 						if (pBitmap && pBitmap->GetLastStatus() == Ok)
 						{
@@ -430,13 +409,11 @@ bool CPicture::Load(tstring sFilePathName)
 							}
 							else    // Failed to lock the destination Bitmap
 							{
-								delete pBitmap;
 								pBitmap = nullptr;
 							}
 						}
 						else    // Bitmap allocation failed
 						{
-							delete pBitmap;
 							pBitmap = nullptr;
 						}
 
@@ -543,7 +520,7 @@ bool CPicture::Show(HDC hDC, RECT DrawRect)
 		ImageAttributes attr;
 		attr.SetWrapMode(WrapModeTileFlipXY);
 		Rect rect(DrawRect.left, DrawRect.top, DrawRect.right - DrawRect.left, DrawRect.bottom - DrawRect.top);
-		graphics.DrawImage(pBitmap, rect, 0, 0, m_Width, m_Height, UnitPixel, &attr);
+		graphics.DrawImage(pBitmap.get(), rect, 0, 0, m_Width, m_Height, UnitPixel, &attr);
 		return true;
 	}
 
@@ -571,7 +548,7 @@ UINT CPicture::GetColorDepth() const
 {
 	if (bIsIcon && lpIcons)
 	{
-		auto lpIconDir = reinterpret_cast<LPICONDIR>(lpIcons);
+		auto lpIconDir = reinterpret_cast<LPICONDIR>(lpIcons.get());
 		return lpIconDir->idEntries[nCurrentIcon].wBitCount;
 	}
 
@@ -676,7 +653,7 @@ UINT CPicture::GetNumberOfDimensions()
 {
 	if (bIsIcon && lpIcons)
 	{
-		auto lpIconDir = reinterpret_cast<LPICONDIR>(lpIcons);
+		auto lpIconDir = reinterpret_cast<LPICONDIR>(lpIcons.get());
 		return lpIconDir->idCount;
 	}
 	return pBitmap ? pBitmap->GetFrameDimensionsCount() : 0;
@@ -738,7 +715,7 @@ UINT CPicture::GetHeight() const
 {
 	if ((bIsIcon) && (lpIcons))
 	{
-		auto lpIconDir = reinterpret_cast<LPICONDIR>(lpIcons);
+		auto lpIconDir = reinterpret_cast<LPICONDIR>(lpIcons.get());
 		return lpIconDir->idEntries[nCurrentIcon].bHeight == 0 ? 256 : lpIconDir->idEntries[nCurrentIcon].bHeight;
 	}
 	return pBitmap ? pBitmap->GetHeight() : 0;
@@ -748,7 +725,7 @@ UINT CPicture::GetWidth() const
 {
 	if ((bIsIcon) && (lpIcons))
 	{
-		auto lpIconDir = reinterpret_cast<LPICONDIR>(lpIcons);
+		auto lpIconDir = reinterpret_cast<LPICONDIR>(lpIcons.get());
 		return lpIconDir->idEntries[nCurrentIcon].bWidth == 0 ? 256 : lpIconDir->idEntries[nCurrentIcon].bWidth;
 	}
 	return pBitmap ? pBitmap->GetWidth() : 0;
@@ -758,7 +735,7 @@ PixelFormat CPicture::GetPixelFormat() const
 {
 	if ((bIsIcon) && (lpIcons))
 	{
-		auto lpIconDir = reinterpret_cast<LPICONDIR>(lpIcons);
+		auto lpIconDir = reinterpret_cast<LPICONDIR>(lpIcons.get());
 		if (lpIconDir->idEntries[nCurrentIcon].wPlanes == 1)
 		{
 			if (lpIconDir->idEntries[nCurrentIcon].wBitCount == 1)
