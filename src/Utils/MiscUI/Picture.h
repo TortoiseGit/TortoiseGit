@@ -189,6 +189,10 @@ protected:
 	bool LoadPictureData(BYTE* pBuffer, int nSize);
 
 private:
+	bool TryLoadIcon(const tstring& sFilePathName);
+	bool TryLoadWIC(const tstring& sFilePathName);
+	bool TryLoadFreeImage(const tstring& sFilePathName);
+
 	GdiplusStartupInput gdiplusStartupInput;
 	ULONG_PTR			gdiplusToken;
 	std::unique_ptr<Bitmap> m_pBitmap;
