@@ -98,12 +98,12 @@ public:
 	 * Return the horizontal resolutions in dpi of the loaded picture.
 	 * \remark this only works if gdi+ is installed.
 	 */
-	float GetHorizontalResolution() {return pBitmap ? pBitmap->GetHorizontalResolution() : 0.0f;}
+	float GetHorizontalResolution() { return m_pBitmap ? m_pBitmap->GetHorizontalResolution() : 0.0f; }
 	/**
 	 * Return the vertical resolution in dpi of the loaded picture.
 	 * \remark this only works if gdi+ is installed.
 	 */
-	float GetVerticalResolution() {return pBitmap ? pBitmap->GetVerticalResolution() : 0.0f;}
+	float GetVerticalResolution() { return m_pBitmap ? m_pBitmap->GetVerticalResolution() : 0.0f; }
 	/**
 	 * Returns the picture height in pixels.
 	 * \remark this only works if gdi+ is installed.
@@ -189,14 +189,14 @@ protected:
 private:
 	GdiplusStartupInput gdiplusStartupInput;
 	ULONG_PTR			gdiplusToken;
-	std::unique_ptr<Bitmap> pBitmap;
-	std::unique_ptr<BYTE[]> pBitmapBuffer;
+	std::unique_ptr<Bitmap> m_pBitmap;
+	std::unique_ptr<BYTE[]> m_pBitmapBuffer;
 	InterpolationMode	m_ip;
 	bool				bIsIcon;
 	bool				bIsTiff;
 	UINT				nCurrentIcon;
-	std::unique_ptr<BYTE[]> lpIcons;
-	std::unique_ptr<HICON[]> hIcons;
+	std::unique_ptr<BYTE[]> m_lpIcons;
+	std::unique_ptr<HICON[]> m_hIcons;
 	DWORD				m_nSize;
 
 	#pragma pack(push, r1, 2)   // n = 16, pushed to stack
