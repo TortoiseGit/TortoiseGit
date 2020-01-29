@@ -63,6 +63,8 @@ using std::min;
 
 #include "DebugOutput.h"
 
+#include "SmartHandle.h"
+
 #include "git2.h"
 #include "SmartLibgit2Ref.h"
 

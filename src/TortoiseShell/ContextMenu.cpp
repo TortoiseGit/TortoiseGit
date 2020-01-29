@@ -1726,7 +1726,7 @@ STDMETHODIMP CShellExt::HandleMenuMsg2(UINT uMsg, WPARAM wParam, LPARAM lParam, 
 				return S_OK;
 			int iconWidth = GetSystemMetrics(SM_CXSMICON);
 			int iconHeight = GetSystemMetrics(SM_CYSMICON);
-			auto hIcon = LoadIconEx(g_hResInst, resource, iconWidth, iconHeight);
+			CAutoIcon hIcon = LoadIconEx(g_hResInst, resource, iconWidth, iconHeight);
 			if (!hIcon)
 				return S_OK;
 			DrawIconEx(lpdis->hDC,
@@ -1734,7 +1734,6 @@ STDMETHODIMP CShellExt::HandleMenuMsg2(UINT uMsg, WPARAM wParam, LPARAM lParam, 
 				lpdis->rcItem.top + (lpdis->rcItem.bottom - lpdis->rcItem.top - iconHeight) / 2,
 				hIcon, iconWidth, iconHeight,
 				0, nullptr, DI_NORMAL);
-			DestroyIcon(hIcon);
 			*pResult = TRUE;
 		}
 		break;

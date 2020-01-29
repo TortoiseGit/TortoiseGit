@@ -37,6 +37,8 @@ using std::min;
 
 #define CSTRING_AVAILABLE
 
+#include "SmartHandle.h"
+
 #include "git2.h"
 #include "SmartLibgit2Ref.h"
 

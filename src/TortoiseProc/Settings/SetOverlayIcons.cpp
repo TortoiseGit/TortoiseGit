@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011, 2013-2014, 2016 - TortoiseGit
+// Copyright (C) 2008-2011, 2013-2014, 2016, 2020 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -155,43 +155,33 @@ void CSetOverlayIcons::ShowIconSet(bool bSmallIcons)
 	CImageList * pImageList = bSmallIcons ? &m_ImageList : &m_ImageListBig;
 	int iconWidth = (bSmallIcons ? smallIconWidth : normalIconWidth);
 	int iconHeight = (bSmallIcons ? smallIconHeight : normalIconHeight);
-	auto hNormalOverlay = LoadIconEx(nullptr, sIconSetPath + L"\\NormalIcon.ico", iconWidth, iconHeight);
+	CAutoIcon hNormalOverlay = LoadIconEx(nullptr, sIconSetPath + L"\\NormalIcon.ico", iconWidth, iconHeight);
 	index = pImageList->Add(hNormalOverlay);
 	VERIFY(pImageList->SetOverlayImage(index, 1));
-	auto hModifiedOverlay = LoadIconEx(nullptr, sIconSetPath + L"\\ModifiedIcon.ico", iconWidth, iconHeight);
+	CAutoIcon hModifiedOverlay = LoadIconEx(nullptr, sIconSetPath + L"\\ModifiedIcon.ico", iconWidth, iconHeight);
 	index = pImageList->Add(hModifiedOverlay);
 	VERIFY(pImageList->SetOverlayImage(index, 2));
-	auto hConflictedOverlay = LoadIconEx(nullptr, sIconSetPath + L"\\ConflictIcon.ico", iconWidth, iconHeight);
+	CAutoIcon hConflictedOverlay = LoadIconEx(nullptr, sIconSetPath + L"\\ConflictIcon.ico", iconWidth, iconHeight);
 	index = pImageList->Add(hConflictedOverlay);
 	VERIFY(pImageList->SetOverlayImage(index, 3));
-	auto hReadOnlyOverlay = LoadIconEx(nullptr, sIconSetPath + L"\\ReadOnlyIcon.ico", iconWidth, iconHeight);
+	CAutoIcon hReadOnlyOverlay = LoadIconEx(nullptr, sIconSetPath + L"\\ReadOnlyIcon.ico", iconWidth, iconHeight);
 	index = pImageList->Add(hReadOnlyOverlay);
 	VERIFY(pImageList->SetOverlayImage(index, 4));
-	auto hDeletedOverlay = LoadIconEx(nullptr, sIconSetPath + L"\\DeletedIcon.ico", iconWidth, iconHeight);
+	CAutoIcon hDeletedOverlay = LoadIconEx(nullptr, sIconSetPath + L"\\DeletedIcon.ico", iconWidth, iconHeight);
 	index = pImageList->Add(hDeletedOverlay);
 	VERIFY(pImageList->SetOverlayImage(index, 5));
-	auto hLockedOverlay = LoadIconEx(nullptr, sIconSetPath + L"\\LockedIcon.ico", iconWidth, iconHeight);
+	CAutoIcon hLockedOverlay = LoadIconEx(nullptr, sIconSetPath + L"\\LockedIcon.ico", iconWidth, iconHeight);
 	index = pImageList->Add(hLockedOverlay);
 	VERIFY(pImageList->SetOverlayImage(index, 6));
-	auto hAddedOverlay = LoadIconEx(nullptr, sIconSetPath + L"\\AddedIcon.ico", iconWidth, iconHeight);
+	CAutoIcon hAddedOverlay = LoadIconEx(nullptr, sIconSetPath + L"\\AddedIcon.ico", iconWidth, iconHeight);
 	index = pImageList->Add(hAddedOverlay);
 	VERIFY(pImageList->SetOverlayImage(index, 7));
-	auto hIgnoredOverlay = LoadIconEx(nullptr, sIconSetPath + L"\\IgnoredIcon.ico", iconWidth, iconHeight);
+	CAutoIcon hIgnoredOverlay = LoadIconEx(nullptr, sIconSetPath + L"\\IgnoredIcon.ico", iconWidth, iconHeight);
 	index = pImageList->Add(hIgnoredOverlay);
 	VERIFY(pImageList->SetOverlayImage(index, 8));
-	auto hUnversionedOverlay = LoadIconEx(nullptr, sIconSetPath + L"\\UnversionedIcon.ico", iconWidth, iconHeight);
+	CAutoIcon hUnversionedOverlay = LoadIconEx(nullptr, sIconSetPath + L"\\UnversionedIcon.ico", iconWidth, iconHeight);
 	index = pImageList->Add(hUnversionedOverlay);
 	VERIFY(pImageList->SetOverlayImage(index, 9));
-
-	DestroyIcon(hNormalOverlay);
-	DestroyIcon(hModifiedOverlay);
-	DestroyIcon(hConflictedOverlay);
-	DestroyIcon(hReadOnlyOverlay);
-	DestroyIcon(hDeletedOverlay);
-	DestroyIcon(hLockedOverlay);
-	DestroyIcon(hAddedOverlay);
-	DestroyIcon(hIgnoredOverlay);
-	DestroyIcon(hUnversionedOverlay);
 
 	// create an image list with different file icons
 	SHFILEINFO sfi = { 0 };

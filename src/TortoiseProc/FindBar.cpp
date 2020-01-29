@@ -30,14 +30,12 @@ IMPLEMENT_DYNAMIC(CFindBar, CDialog)
 
 CFindBar::CFindBar(CWnd* pParent /*=nullptr*/)
 : CDialog(CFindBar::IDD, pParent)
-, m_hIcon(nullptr)
 , m_bMatchCase(false)
 {
 }
 
 CFindBar::~CFindBar(void)
 {
-	DestroyIcon(m_hIcon);
 }
 
 BOOL CFindBar::OnInitDialog()
@@ -45,7 +43,7 @@ BOOL CFindBar::OnInitDialog()
 	CDialog::OnInitDialog();
 
 	m_hIcon = LoadIconEx(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_CANCELNORMAL));
-	GetDlgItem(IDC_FINDEXIT)->SendMessage(BM_SETIMAGE, IMAGE_ICON, reinterpret_cast<LPARAM>(m_hIcon));
+	GetDlgItem(IDC_FINDEXIT)->SendMessage(BM_SETIMAGE, IMAGE_ICON, reinterpret_cast<LPARAM>(static_cast<HICON>(m_hIcon)));
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 }

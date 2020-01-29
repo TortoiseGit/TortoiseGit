@@ -250,11 +250,6 @@ CGitLogListBase::~CGitLogListBase()
 	InterlockedExchange(&m_bNoDispUpdates, TRUE);
 	this->m_arShownList.SafeRemoveAll();
 
-	DestroyIcon(m_hModifiedIcon);
-	DestroyIcon(m_hReplacedIcon);
-	DestroyIcon(m_hConflictedIcon);
-	DestroyIcon(m_hAddedIcon);
-	DestroyIcon(m_hDeletedIcon);
 	m_logEntries.ClearAll();
 
 	SafeTerminateThread();

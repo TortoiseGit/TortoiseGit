@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2017 - TortoiseGit
+// Copyright (C) 2016-2017, 2020 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -150,9 +150,9 @@ protected:
 	HICON			LoadDpiScaledIcon(UINT resourceId, int cx96dpi, int cy96dpi);
 
 protected:
-	HICON					m_hIconCancelNormal;
-	HICON					m_hIconCancelPressed;
-	HICON					m_hIconInfo;
+	CAutoIcon m_hIconCancelNormal;
+	CAutoIcon m_hIconCancelPressed;
+	CAutoIcon m_hIconInfo;
 	CSize					m_sizeCancelIcon;
 	CSize					m_sizeInfoIcon;
 	CRect					m_rcEditArea;

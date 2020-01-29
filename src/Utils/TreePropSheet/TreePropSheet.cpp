@@ -333,29 +333,22 @@ void CTreePropSheet::RefillPageTree()
 		{
 			for (int nImage = 0; nImage < pPageImages->GetImageCount(); ++nImage)
 			{
-				HICON	hIcon = pPageImages->ExtractIcon(nImage);
+				CAutoIcon hIcon = pPageImages->ExtractIcon(nImage);
 				m_Images.Add(hIcon);
-				DestroyIcon(hIcon);
 			}
 		}
 
 		// add default images
 		if (m_DefaultImages.GetSafeHandle())
 		{
-			HICON	hIcon;
-
 			// add default images
-			hIcon = m_DefaultImages.ExtractIcon(0);
+			CAutoIcon hIcon = m_DefaultImages.ExtractIcon(0);
 			if (hIcon)
 			{
 				m_Images.Add(hIcon);
-				DestroyIcon(hIcon);
 			}
 			hIcon = m_DefaultImages.ExtractIcon(1);
-			{
-				m_Images.Add(hIcon);
-				DestroyIcon(hIcon);
-			}
+			m_Images.Add(hIcon);
 		}
 	}
 
@@ -594,10 +587,8 @@ void CTreePropSheet::UpdateCaption()
 		// get image from tree
 		int	nImage;
 		m_pwndPageTree->GetItemImage(hItem, nImage, nImage);
-		HICON	hIcon = m_Images.ExtractIcon(nImage);
+		CAutoIcon hIcon = m_Images.ExtractIcon(nImage);
 		m_pFrame->SetCaption(strCaption, hIcon);
-		if (hIcon)
-			DestroyIcon(hIcon);
 	}
 	else if (bRealPage)
 	{
@@ -609,13 +600,11 @@ void CTreePropSheet::UpdateCaption()
 			TCITEM ti = { 0 };
 			ti.mask = TCIF_IMAGE;
 
-			HICON	hIcon = nullptr;
+			CAutoIcon hIcon;
 			if (pTabCtrl->GetItem(static_cast<int>(m_pwndPageTree->GetItemData(hItem)), &ti))
 				hIcon = pImages->ExtractIcon(ti.iImage);
 
 			m_pFrame->SetCaption(strCaption, hIcon);
-			if (hIcon)
-				DestroyIcon(hIcon);
 		}
 		else
 			m_pFrame->SetCaption(strCaption);

@@ -37,6 +37,8 @@ using std::min;
 
 #include <atlbase.h>
 
+#include "SmartHandle.h"
+
 #include "git2.h"
 #include "SmartLibgit2Ref.h"
 

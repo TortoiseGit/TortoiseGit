@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014-2017, 2019 - TortoiseGit
+// Copyright (C) 2014-2017, 2019-2020 - TortoiseGit
 // Copyright (C) 2003-2006, 2008-2010, 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -133,8 +133,7 @@ int CSysImageList::GetFileIcon(LPCTSTR file, DWORD attributes, UINT extraFlags)
 		&sfi, sizeof sfi,
 		SHGFI_SYSICONINDEX | SHGFI_SMALLICON | SHGFI_USEFILEATTRIBUTES | extraFlags);
 
-	auto hIcon = ImageList_ExtractIcon(nullptr, hSystemImageList, sfi.iIcon);
+	CAutoIcon hIcon = ImageList_ExtractIcon(nullptr, hSystemImageList, sfi.iIcon);
 	auto index = AddIcon(hIcon);
-	DestroyIcon(hIcon);
 	return index;
 }

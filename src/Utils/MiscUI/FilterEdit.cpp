@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012, 2014, 2016-2019 - TortoiseGit
+// Copyright (C) 2012, 2014, 2016-2020 - TortoiseGit
 // Copyright (C) 2007, 2012-2014, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -47,12 +47,6 @@ CFilterEdit::CFilterEdit()
 
 CFilterEdit::~CFilterEdit()
 {
-	if (m_hIconCancelNormal)
-		DestroyIcon(m_hIconCancelNormal);
-	if (m_hIconCancelPressed)
-		DestroyIcon(m_hIconCancelPressed);
-	if (m_hIconInfo)
-		DestroyIcon(m_hIconInfo);
 }
 
 BEGIN_MESSAGE_MAP(CFilterEdit, CEdit)
@@ -96,11 +90,6 @@ BOOL CFilterEdit::SetCancelBitmaps(UINT uCancelNormal, UINT uCancelPressed, int 
 {
 	m_bShowCancelButtonAlways = bShowAlways;
 
-	if (m_hIconCancelNormal)
-		DestroyIcon(m_hIconCancelNormal);
-	if (m_hIconCancelPressed)
-		DestroyIcon(m_hIconCancelPressed);
-
 	m_hIconCancelNormal = LoadDpiScaledIcon(uCancelNormal, cx96dpi, cy96dpi);
 	m_hIconCancelPressed = LoadDpiScaledIcon(uCancelPressed, cx96dpi, cy96dpi);
 
@@ -115,9 +104,6 @@ BOOL CFilterEdit::SetCancelBitmaps(UINT uCancelNormal, UINT uCancelPressed, int 
 
 BOOL CFilterEdit::SetInfoIcon(UINT uInfo, int cx96dpi, int cy96dpi)
 {
-	if (m_hIconInfo)
-		DestroyIcon(m_hIconInfo);
-
 	m_hIconInfo = LoadDpiScaledIcon(uInfo, cx96dpi, cy96dpi);
 
 	if (!m_hIconInfo)

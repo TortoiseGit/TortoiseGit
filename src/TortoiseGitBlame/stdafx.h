@@ -35,6 +35,8 @@ using std::min;
 #include <afxdisp.h>        // MFC Automation classes
 #include <Commctrl.h>
 
+#include "SmartHandle.h"
+
 #include "git2.h"
 #include "SmartLibgit2Ref.h"
 

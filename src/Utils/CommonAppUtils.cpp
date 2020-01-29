@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 // Copyright (C) 2003-2008,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -27,7 +27,6 @@
 #include "SelectFileFilter.h"
 #include "DPIAware.h"
 #include "LoadIconEx.h"
-#include "SmartHandle.h"
 
 extern CString sOrigCWD;
 extern CString g_sGroupingUUID;
@@ -219,10 +218,9 @@ bool CCommonAppUtils::SetListCtrlBackgroundImage(HWND hListCtrl, UINT nID, int w
 	ListView_SetTextBkColor(hListCtrl, CLR_NONE);
 	COLORREF bkColor = ListView_GetBkColor(hListCtrl);
 	// create a bitmap from the icon
-	auto hIcon = ::LoadIconEx(AfxGetResourceHandle(), MAKEINTRESOURCE(nID), width, height);
+	CAutoIcon hIcon = ::LoadIconEx(AfxGetResourceHandle(), MAKEINTRESOURCE(nID), width, height);
 	if (!hIcon)
 		return false;
-	SCOPE_EXIT { DestroyIcon(hIcon); };
 
 	RECT rect = {0};
 	rect.right = width;

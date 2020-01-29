@@ -1,7 +1,7 @@
 ﻿// TortoiseGitIDiff - an image diff viewer in TortoiseSVN
 
 // Copyright (C) 2006-2013, 2018-2019 - TortoiseSVN
-// Copyright (C) 2016, 2018-2019 - TortoiseGit
+// Copyright (C) 2016, 2018-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -504,10 +504,6 @@ LRESULT CALLBACK CPicWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, 
         }
         break;
     case WM_DESTROY:
-        DestroyIcon(hLeft);
-        DestroyIcon(hRight);
-        DestroyIcon(hPlay);
-        DestroyIcon(hStop);
         bWindowClosed = TRUE;
         break;
     default:
@@ -547,12 +543,12 @@ void CPicWindow::Animate(bool bStart)
 {
     if (bStart)
     {
-        SendMessage(hwndPlayBtn, BM_SETIMAGE, IMAGE_ICON, reinterpret_cast<LPARAM>(hStop));
+        SendMessage(hwndPlayBtn, BM_SETIMAGE, IMAGE_ICON, reinterpret_cast<LPARAM>(static_cast<HICON>(hStop)));
         SetTimer(*this, ID_ANIMATIONTIMER, 0, nullptr);
     }
     else
     {
-        SendMessage(hwndPlayBtn, BM_SETIMAGE, IMAGE_ICON, reinterpret_cast<LPARAM>(hPlay));
+        SendMessage(hwndPlayBtn, BM_SETIMAGE, IMAGE_ICON, reinterpret_cast<LPARAM>(static_cast<HICON>(hPlay)));
         KillTimer(*this, ID_ANIMATIONTIMER);
     }
 }
@@ -1405,7 +1401,7 @@ bool CPicWindow::CreateButtons()
     int iconWidth = GetSystemMetrics(SM_CXSMICON);
     int iconHeight = GetSystemMetrics(SM_CYSMICON);
     hLeft = LoadIconEx(hResource, MAKEINTRESOURCE(IDI_BACKWARD), iconWidth, iconHeight);
-    SendMessage(hwndLeftBtn, BM_SETIMAGE, IMAGE_ICON, reinterpret_cast<LPARAM>(hLeft));
+    SendMessage(hwndLeftBtn, BM_SETIMAGE, IMAGE_ICON, reinterpret_cast<LPARAM>(static_cast<HICON>(hLeft)));
     hwndRightBtn = CreateWindowEx(0,
                                 L"BUTTON",
                                 static_cast<LPCTSTR>(nullptr),
@@ -1418,7 +1414,7 @@ bool CPicWindow::CreateButtons()
     if (hwndRightBtn == INVALID_HANDLE_VALUE)
         return false;
     hRight = LoadIconEx(hResource, MAKEINTRESOURCE(IDI_FORWARD), iconWidth, iconHeight);
-    SendMessage(hwndRightBtn, BM_SETIMAGE, IMAGE_ICON, reinterpret_cast<LPARAM>(hRight));
+    SendMessage(hwndRightBtn, BM_SETIMAGE, IMAGE_ICON, reinterpret_cast<LPARAM>(static_cast<HICON>(hRight)));
     hwndPlayBtn = CreateWindowEx(0,
                                 L"BUTTON",
                                 static_cast<LPCTSTR>(nullptr),
@@ -1432,7 +1428,7 @@ bool CPicWindow::CreateButtons()
         return false;
     hPlay = LoadIconEx(hResource, MAKEINTRESOURCE(IDI_START), iconWidth, iconHeight);
     hStop = LoadIconEx(hResource, MAKEINTRESOURCE(IDI_STOP), iconWidth, iconHeight);
-    SendMessage(hwndPlayBtn, BM_SETIMAGE, IMAGE_ICON, reinterpret_cast<LPARAM>(hPlay));
+    SendMessage(hwndPlayBtn, BM_SETIMAGE, IMAGE_ICON, reinterpret_cast<LPARAM>(static_cast<HICON>(hPlay)));
     hwndAlphaToggleBtn = CreateWindowEx(0,
                                 L"BUTTON",
                                 static_cast<LPCTSTR>(nullptr),
@@ -1445,7 +1441,7 @@ bool CPicWindow::CreateButtons()
     if (hwndAlphaToggleBtn == INVALID_HANDLE_VALUE)
         return false;
     hAlphaToggle = LoadIconEx(hResource, MAKEINTRESOURCE(IDI_ALPHATOGGLE), iconWidth, iconHeight);
-    SendMessage(hwndAlphaToggleBtn, BM_SETIMAGE, IMAGE_ICON, reinterpret_cast<LPARAM>(hAlphaToggle));
+    SendMessage(hwndAlphaToggleBtn, BM_SETIMAGE, IMAGE_ICON, reinterpret_cast<LPARAM>(static_cast<HICON>(hAlphaToggle)));
 
     TOOLINFO ti = {0};
     ti.cbSize = sizeof(TOOLINFO);

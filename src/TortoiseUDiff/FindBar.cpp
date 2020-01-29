@@ -27,13 +27,11 @@
 
 CFindBar::CFindBar()
 	: m_hParent(nullptr)
-	, m_hIcon(nullptr)
 {
 }
 
 CFindBar::~CFindBar(void)
 {
-	DestroyIcon(m_hIcon);
 }
 
 LRESULT CFindBar::DlgFunc(HWND /*hwndDlg*/, UINT uMsg, WPARAM wParam, LPARAM /*lParam*/)
@@ -43,7 +41,7 @@ LRESULT CFindBar::DlgFunc(HWND /*hwndDlg*/, UINT uMsg, WPARAM wParam, LPARAM /*l
 	case WM_INITDIALOG:
 		{
 			m_hIcon = LoadIconEx(hResource, MAKEINTRESOURCE(IDI_CANCELNORMAL));
-			SendMessage(GetDlgItem(*this, IDC_FINDEXIT), BM_SETIMAGE, IMAGE_ICON, reinterpret_cast<LPARAM>(m_hIcon));
+			SendMessage(GetDlgItem(*this, IDC_FINDEXIT), BM_SETIMAGE, IMAGE_ICON, reinterpret_cast<LPARAM>(static_cast<HICON>(m_hIcon)));
 		}
 		return TRUE;
 	case WM_COMMAND:

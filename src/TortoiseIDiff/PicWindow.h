@@ -1,5 +1,6 @@
 ﻿// TortoiseIDiff - an image diff viewer in TortoiseSVN
 
+// Copyright (C) 2020 - TortoiseGit
 // Copyright (C) 2006-2010, 2012-2013, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -288,11 +289,11 @@ protected:
     HWND                hwndSelectBtn;
     CNiceTrackbar       m_AlphaSlider;
     HWND                hwndAlphaToggleBtn;
-    HICON               hLeft;
-    HICON               hRight;
-    HICON               hPlay;
-    HICON               hStop;
-    HICON               hAlphaToggle;
+    CAutoIcon           hLeft;
+    CAutoIcon           hRight;
+    CAutoIcon           hPlay;
+    CAutoIcon           hStop;
+    CAutoIcon           hAlphaToggle;
     bool                bPlaying;
     RECT                m_inforect;
 

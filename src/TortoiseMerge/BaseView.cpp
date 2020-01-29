@@ -174,18 +174,6 @@ CBaseView::~CBaseView()
 {
 	ReleaseBitmap();
 	DeleteFonts();
-	DestroyIcon(m_hAddedIcon);
-	DestroyIcon(m_hRemovedIcon);
-	DestroyIcon(m_hConflictedIcon);
-	DestroyIcon(m_hConflictedIgnoredIcon);
-	DestroyIcon(m_hWhitespaceBlockIcon);
-	DestroyIcon(m_hEqualIcon);
-	DestroyIcon(m_hLineEndingCR);
-	DestroyIcon(m_hLineEndingCRLF);
-	DestroyIcon(m_hLineEndingLF);
-	DestroyIcon(m_hEditedIcon);
-	DestroyIcon(m_hMovedIcon);
-	DestroyIcon(m_hMarkedIcon);
 	DestroyCursor(m_margincursor);
 }
 

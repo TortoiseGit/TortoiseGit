@@ -44,5 +44,5 @@ protected:
 
 private:
 	HWND					m_hParent;
-	HICON					m_hIcon;
+	CAutoIcon m_hIcon;
 };

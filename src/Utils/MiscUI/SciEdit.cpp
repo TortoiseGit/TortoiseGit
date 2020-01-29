@@ -321,9 +321,8 @@ void CSciEdit::SetIcon(const std::map<int, UINT> &icons)
 	Call(SCI_RGBAIMAGESETHEIGHT, iconHeight);
 	for (auto icon : icons)
 	{
-		auto hIcon = LoadIconEx(AfxGetInstanceHandle(), MAKEINTRESOURCE(icon.second), iconWidth, iconHeight);
+		CAutoIcon hIcon = LoadIconEx(AfxGetInstanceHandle(), MAKEINTRESOURCE(icon.second), iconWidth, iconHeight);
 		auto bytes = Icon2Image(hIcon);
-		DestroyIcon(hIcon);
 		Call(SCI_REGISTERRGBAIMAGE, icon.first, reinterpret_cast<LPARAM>(bytes.get()));
 	}
 }

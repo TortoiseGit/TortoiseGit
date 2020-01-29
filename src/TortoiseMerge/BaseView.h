@@ -1,5 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
+// Copyright (C) 2020 - TortoiseGit
 // Copyright (C) 2003-2015, 2019 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -520,20 +521,20 @@ protected:  // variables
 	bool			m_bWholeWord;
 
 
-	HICON			m_hAddedIcon;
-	HICON			m_hRemovedIcon;
-	HICON			m_hConflictedIcon;
-	HICON			m_hConflictedIgnoredIcon;
-	HICON			m_hWhitespaceBlockIcon;
-	HICON			m_hEqualIcon;
-	HICON			m_hEditedIcon;
+	CAutoIcon m_hAddedIcon;
+	CAutoIcon m_hRemovedIcon;
+	CAutoIcon m_hConflictedIcon;
+	CAutoIcon m_hConflictedIgnoredIcon;
+	CAutoIcon m_hWhitespaceBlockIcon;
+	CAutoIcon m_hEqualIcon;
+	CAutoIcon m_hEditedIcon;
 
-	HICON			m_hLineEndingCR;
-	HICON			m_hLineEndingCRLF;
-	HICON			m_hLineEndingLF;
+	CAutoIcon m_hLineEndingCR;
+	CAutoIcon m_hLineEndingCRLF;
+	CAutoIcon m_hLineEndingLF;
 
-	HICON			m_hMovedIcon;
-	HICON			m_hMarkedIcon;
+	CAutoIcon m_hMovedIcon;
+	CAutoIcon m_hMarkedIcon;
 
 	LOGFONT			m_lfBaseFont;
 	static const int fontsCount = 4;

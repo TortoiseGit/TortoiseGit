@@ -677,12 +677,12 @@ public:
 protected:
 	CComAutoCriticalSection	m_critSec;
 
-	HICON				m_hModifiedIcon;
-	HICON				m_hReplacedIcon;
-	HICON				m_hConflictedIcon;
-	HICON				m_hAddedIcon;
-	HICON				m_hDeletedIcon;
-	HICON				m_hFetchIcon;
+	CAutoIcon m_hModifiedIcon;
+	CAutoIcon m_hReplacedIcon;
+	CAutoIcon m_hConflictedIcon;
+	CAutoIcon m_hAddedIcon;
+	CAutoIcon m_hDeletedIcon;
+	CAutoIcon m_hFetchIcon;
 
 	CFont				m_boldFont;
 	CFont				m_FontItalics;

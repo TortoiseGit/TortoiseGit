@@ -241,6 +241,9 @@
     <ClInclude Include="..\Utils\I18NHelper.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\Utils\SmartHandle.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resources\checkout.ico">

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016, 2019 - TortoiseGit
+// Copyright (C) 2016, 2019-2020 - TortoiseGit
 // Copyright (C) 2009-2012, 2014, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -41,10 +41,9 @@ HBITMAP IconBitmapUtils::IconToBitmap(HINSTANCE hInst, UINT uIcon)
 	if (bitmap_it != bitmaps.end() && bitmap_it->first == uIcon)
 		return bitmap_it->second;
 
-	auto hIcon = LoadIconEx(hInst, MAKEINTRESOURCE(uIcon), 12, 12);
+	CAutoIcon hIcon = LoadIconEx(hInst, MAKEINTRESOURCE(uIcon), 12, 12);
 	if (!hIcon)
 		return nullptr;
-	SCOPE_EXIT { DestroyIcon(hIcon); };
 
 	RECT rect;
 
@@ -100,11 +99,10 @@ HBITMAP IconBitmapUtils::IconToBitmapPARGB32(HINSTANCE hInst, UINT uIcon)
 		return bitmap_it->second;
 	int iconWidth = GetSystemMetrics(SM_CXSMICON);
 	int iconHeight = GetSystemMetrics(SM_CYSMICON);
-	auto hIcon = LoadIconEx(hInst, MAKEINTRESOURCE(uIcon), iconWidth, iconHeight);
+	CAutoIcon hIcon = LoadIconEx(hInst, MAKEINTRESOURCE(uIcon), iconWidth, iconHeight);
 
 	HBITMAP hBmp = IconToBitmapPARGB32(hIcon, iconWidth, iconHeight);
 
-	DestroyIcon(hIcon);
 
 	if(hBmp)
 		bitmaps.insert(bitmap_it, std::make_pair(uIcon, hBmp));
