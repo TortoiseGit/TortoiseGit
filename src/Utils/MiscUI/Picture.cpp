@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2019 - TortoiseGit
+// Copyright (C) 2015-2020 - TortoiseGit
 // Copyright (C) 2003-2015, 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -37,8 +37,7 @@
 #define HIMETRIC_INCH 2540
 
 CPicture::CPicture()
-	: m_IPicture(nullptr)
-	, m_Height(0)
+	: m_Height(0)
 	, m_Weight(0)
 	, m_Width(0)
 	, pBitmap(nullptr)
@@ -67,7 +66,6 @@ void CPicture::FreePictureData()
 {
 	if (m_IPicture)
 	{
-		m_IPicture->Release();
 		m_IPicture = nullptr;
 		m_Height = 0;
 		m_Weight = 0;
@@ -265,7 +263,7 @@ bool CPicture::Load(tstring sFilePathName)
 	if (!bResult)
 	{
 		// try WIC
-		IWICImagingFactory* pFactory = nullptr;
+		CComPtr<IWICImagingFactory> pFactory;
 		HRESULT hr = CoCreateInstance(CLSID_WICImagingFactory,
 									  nullptr,
 									  CLSCTX_INPROC_SERVER,
@@ -275,7 +273,7 @@ bool CPicture::Load(tstring sFilePathName)
 		// Create a decoder from the file.
 		if (SUCCEEDED(hr))
 		{
-			IWICBitmapDecoder* pDecoder = nullptr;
+			CComPtr<IWICBitmapDecoder> pDecoder;
 			hr = pFactory->CreateDecoderFromFilename(m_Name.c_str(),
 													 nullptr,
 													 GENERIC_READ,
@@ -283,19 +281,15 @@ bool CPicture::Load(tstring sFilePathName)
 													 &pDecoder);
 			if (SUCCEEDED(hr))
 			{
-				IWICBitmapFrameDecode* pBitmapFrameDecode = nullptr;
+				CComPtr<IWICBitmapFrameDecode> pBitmapFrameDecode;
 				hr = pDecoder->GetFrame(0, &pBitmapFrameDecode);
 				if (SUCCEEDED(hr))
 				{
-					IWICBitmapSource* pSource = nullptr;
-					pSource = pBitmapFrameDecode;
-					pSource->AddRef();
-
-					IWICFormatConverter* piFormatConverter = nullptr;
+					CComPtr<IWICFormatConverter> piFormatConverter;
 					hr = pFactory->CreateFormatConverter(&piFormatConverter);
 					if (SUCCEEDED(hr))
 					{
-						hr = piFormatConverter->Initialize(pSource, GUID_WICPixelFormat24bppBGR, WICBitmapDitherTypeNone, nullptr, 0.0, WICBitmapPaletteTypeCustom);
+						hr = piFormatConverter->Initialize(pBitmapFrameDecode, GUID_WICPixelFormat24bppBGR, WICBitmapDitherTypeNone, nullptr, 0.0, WICBitmapPaletteTypeCustom);
 						if (SUCCEEDED(hr))
 						{
 							UINT uWidth = 0;
@@ -338,14 +332,9 @@ bool CPicture::Load(tstring sFilePathName)
 								}
 							}
 						}
-						piFormatConverter->Release();
 					}
-					pSource->Release();
-					pBitmapFrameDecode->Release();
 				}
-				pDecoder->Release();
 			}
-			pFactory->Release();
 		}
 	}
 
@@ -355,7 +344,7 @@ bool CPicture::Load(tstring sFilePathName)
 
 		// NOTE: Currently just loading via FreeImage & using GDI+ for drawing.
 		// It might be nice to remove this dependency in the future.
-		HMODULE hFreeImageLib = LoadLibrary(L"FreeImage.dll");
+		CAutoLibrary hFreeImageLib = LoadLibrary(L"FreeImage.dll");
 
 		// FreeImage DLL functions
 		typedef const char* (__stdcall *FreeImage_GetVersion_t)(void);
@@ -456,9 +445,6 @@ bool CPicture::Load(tstring sFilePathName)
 					}
 				}
 			}
-
-			FreeLibrary(hFreeImageLib);
-			hFreeImageLib = nullptr;
 		}
 	}
 
@@ -500,12 +486,11 @@ bool CPicture::LoadPictureData(BYTE *pBuffer, int nSize)
 	memcpy(pData, pBuffer, nSize);
 	GlobalUnlock(hGlobalMem);
 
-	IStream* pStream = nullptr;
+	CComPtr<IStream> pStream;
 
 	if ((CreateStreamOnHGlobal(hGlobalMem, true, &pStream) == S_OK) && (pStream))
 	{
 		HRESULT hr = OleLoadPicture(pStream, nSize, false, IID_IPicture, reinterpret_cast<LPVOID*>(&m_IPicture));
-		pStream->Release();
 		pStream = nullptr;
 
 		bResult = hr == S_OK;
@@ -593,7 +578,7 @@ UINT CPicture::GetColorDepth() const
 	// try first with WIC to get the pixel format since GDI+ often returns 32-bit even if it's not
 	// Create the image factory.
 	UINT bpp = 0;
-	IWICImagingFactory* pFactory = nullptr;
+	CComPtr<IWICImagingFactory> pFactory;
 	HRESULT hr = CoCreateInstance(CLSID_WICImagingFactory,
 								  nullptr,
 								  CLSCTX_INPROC_SERVER,
@@ -603,7 +588,7 @@ UINT CPicture::GetColorDepth() const
 	// Create a decoder from the file.
 	if (SUCCEEDED(hr))
 	{
-		IWICBitmapDecoder* pDecoder = nullptr;
+		CComPtr<IWICBitmapDecoder> pDecoder;
 		hr = pFactory->CreateDecoderFromFilename(m_Name.c_str(),
 												 nullptr,
 												 GENERIC_READ,
@@ -611,37 +596,28 @@ UINT CPicture::GetColorDepth() const
 												 &pDecoder);
 		if (SUCCEEDED(hr))
 		{
-			IWICBitmapFrameDecode* pBitmapFrameDecode = nullptr;
+			CComPtr<IWICBitmapFrameDecode> pBitmapFrameDecode;
 			hr = pDecoder->GetFrame(0, &pBitmapFrameDecode);
 			if (SUCCEEDED(hr))
 			{
-				IWICBitmapSource* pSource = nullptr;
-				pSource = pBitmapFrameDecode;
-				pSource->AddRef();
 				WICPixelFormatGUID pixelFormat;
-				hr = pSource->GetPixelFormat(&pixelFormat);
+				hr = pBitmapFrameDecode->GetPixelFormat(&pixelFormat);
 				if (SUCCEEDED(hr))
 				{
-					IWICComponentInfo* piCompInfo = nullptr;
+					CComPtr<IWICComponentInfo> piCompInfo;
 					hr = pFactory->CreateComponentInfo(pixelFormat, &piCompInfo);
 					if (SUCCEEDED(hr))
 					{
-						IWICPixelFormatInfo* piPixelFormatInfo = nullptr;
+						CComPtr<IWICPixelFormatInfo> piPixelFormatInfo;
 						hr = piCompInfo->QueryInterface(IID_IWICPixelFormatInfo, reinterpret_cast<LPVOID*>(&piPixelFormatInfo));
 						if (SUCCEEDED(hr))
 						{
 							hr = piPixelFormatInfo->GetBitsPerPixel(&bpp);
-							piPixelFormatInfo->Release();
 						}
-						piCompInfo->Release();
 					}
-					pSource->Release();
 				}
-				pBitmapFrameDecode->Release();
 			}
-			pDecoder->Release();
 		}
-		pFactory->Release();
 	}
 	if (bpp)
 		return bpp;

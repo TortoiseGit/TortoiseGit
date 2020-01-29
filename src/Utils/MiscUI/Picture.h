@@ -1,5 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2020 - TortoiseGit
 // Copyright (C) 2003-2007, 2009, 2012-2015, 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -168,7 +169,7 @@ public:
 	virtual ~CPicture();
 
 
-	IPicture* m_IPicture;	///< Same As LPPICTURE (typedef IPicture __RPC_FAR *LPPICTURE)
+	CComPtr<IPicture> m_IPicture;	///< Same As LPPICTURE (typedef IPicture __RPC_FAR *LPPICTURE)
 
 	LONG		m_Height;	///< Height (in pixels)
 	LONG		m_Width;	///< Width (in pixels)
