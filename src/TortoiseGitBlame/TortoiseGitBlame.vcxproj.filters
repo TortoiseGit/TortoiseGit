@@ -374,6 +374,9 @@
     <ClInclude Include="..\Utils\MiscUI\DockablePaneUnscaledStoredState.h">
       <Filter>Utils\MiscUI</Filter>
     </ClInclude>
+    <ClInclude Include="..\Utils\I18NHelper.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resources\blameres\output_wnd.ico">

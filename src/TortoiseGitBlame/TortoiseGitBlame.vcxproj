@@ -125,6 +125,7 @@
     <ClInclude Include="..\Utils\CmdLineParser.h" />
     <ClInclude Include="..\Utils\DebugOutput.h" />
     <ClInclude Include="..\Utils\DPIAware.h" />
+    <ClInclude Include="..\Utils\I18NHelper.h" />
     <ClInclude Include="..\Utils\LoadIconEx.h" />
     <ClInclude Include="..\Utils\LruCache.h" />
     <ClInclude Include="..\Utils\MiscUI\CommonDialogFunctions.h" />

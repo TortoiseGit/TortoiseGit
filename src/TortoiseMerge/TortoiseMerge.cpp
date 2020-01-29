@@ -24,6 +24,7 @@
 #include "AboutDlg.h"
 #include "CmdLineParser.h"
 #include "version.h"
+#include "I18NHelper.h"
 #include "AppUtils.h"
 #include "PathUtils.h"
 #include "BrowseFolder.h"
@@ -117,7 +118,7 @@ BOOL CTortoiseMergeApp::InitInstance()
 		langDll.Format(L"%sLanguages\\TortoiseMerge%ld.dll", static_cast<LPCTSTR>(CPathUtils::GetAppParentDirectory()), langId);
 
 		hInst = LoadLibrary(langDll);
-		if (wcscmp(CPathUtils::GetVersionFromFile(langDll).c_str(), _T(STRPRODUCTVER)) != 0)
+		if (!CI18NHelper::DoVersionStringsMatch(CPathUtils::GetVersionFromFile(langDll), _T(STRPRODUCTVER)))
 		{
 			FreeLibrary(hInst);
 			hInst = nullptr;

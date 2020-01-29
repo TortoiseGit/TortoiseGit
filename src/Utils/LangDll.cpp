@@ -21,7 +21,7 @@
 #include <assert.h>
 #include "LangDll.h"
 #include "../version.h"
-#include <memory>
+#include "I18NHelper.h"
 #include "PathUtils.h"
 
 CLangDll::CLangDll()
@@ -90,5 +90,5 @@ void CLangDll::Close()
 
 bool CLangDll::DoVersionStringsMatch(LPCTSTR sVer, LPCTSTR langDll) const
 {
-	return (wcscmp(sVer, CPathUtils::GetVersionFromFile(langDll).c_str()) == 0);
+	return CI18NHelper::DoVersionStringsMatch(CPathUtils::GetVersionFromFile(langDll), sVer);
 }

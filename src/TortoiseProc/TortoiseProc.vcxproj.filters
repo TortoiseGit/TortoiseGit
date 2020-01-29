@@ -1870,6 +1870,9 @@
     <ClInclude Include="SelectRemoteRefDlg.h">
       <Filter>Utility Dialogs</Filter>
     </ClInclude>
+    <ClInclude Include="..\Utils\I18NHelper.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resources\actionadded.ico">

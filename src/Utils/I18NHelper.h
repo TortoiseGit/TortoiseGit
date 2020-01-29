@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014, 2020 - TortoiseGit
+// Copyright (C) 2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -17,31 +17,32 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
-class CUpdateDownloader
+
+class CI18NHelper
 {
-public:
-	CUpdateDownloader(HWND hwnd, const CString& sVersion, bool force = false, UINT msg = 0, CEvent* m_eventStop = nullptr);
-	~CUpdateDownloader(void);
-
-	DWORD	DownloadFile(const CString &url, const CString& dest, bool showProgress) const;
-
-	struct DOWNLOADSTATUS
-	{
-		ULONG ulProgress;
-		ULONG ulProgressMax;
-	};
-
-	CString m_sWindowsPlatform;
-	CString m_sWindowsVersion;
-	CString m_sWindowsServicePack;
-
 private:
-	static void BruteforceGetWindowsVersionNumber(OSVERSIONINFOEX& osVersionInfo);
+	CI18NHelper() = delete;
 
-	HINTERNET hOpenHandle;
+	static std::wstring AdjustVersion(const std::wstring& sVer)
+	{
+		if (std::count(sVer.cbegin(), sVer.cend(), L'.') != 3)
+			return {};
 
-	HWND	m_hWnd;
-	bool	m_bForce;
-	UINT	m_uiMsg;
-	CEvent	*m_eventStop;
+		if (auto lastDot = sVer.find_last_of(L'.');  lastDot >= wcslen(L"1.2.3")) // strip last entry; MSI also ignores the build number
+			return sVer.substr(0, lastDot + 1);
+
+		return {};
+	}
+
+public:
+	static bool DoVersionStringsMatch(const std::wstring& sVer1, const std::wstring& sVer2)
+	{
+		auto sAdjustedVer1 = AdjustVersion(sVer1);
+		auto sAdjustedVer2 = AdjustVersion(sVer2);
+
+		if (sAdjustedVer1.empty() || sAdjustedVer2.empty())
+			return false;
+
+		return AdjustVersion(sVer1) == AdjustVersion(sVer2);
+	}
 };

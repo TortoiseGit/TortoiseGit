@@ -24,6 +24,7 @@
 #include "PathUtils.h"
 #define NEED_SIGNING_KEY
 #include "../version.h"
+#include "VersioncheckParser.h"
 #include "AppUtils.h"
 #include "Git.h"
 #include "DPIAware.h"
@@ -98,11 +99,25 @@ BOOL CAboutDlg::OnInitDialog()
 	}
 
 	CString tortoisegitprocpath;
+	CString additionalVersionInformation;
 #if PREVIEW
-	tortoisegitprocpath.Format(L"(%s; %s)", _T(PREVIEW_INFO), static_cast<LPCTSTR>(CPathUtils::GetAppDirectory().TrimRight(L'\\')));
+	additionalVersionInformation = _T(PREVIEW_INFO);
 #else
-	tortoisegitprocpath.Format(L"(%s)", static_cast<LPCTSTR>(CPathUtils::GetAppDirectory().TrimRight(L'\\')));
+	if (CString hotfix = CPathUtils::GetAppDirectory() + L"hotfix.ini"; PathFileExists(hotfix))
+	{
+		CVersioncheckParser parser;
+		if (parser.Load(hotfix, err))
+		{
+			auto version = parser.GetTortoiseGitVersion();
+			if (version.major == TGIT_VERMAJOR && version.minor == TGIT_VERMINOR && version.micro == TGIT_VERMICRO && version.build > TGIT_VERBUILD)
+				additionalVersionInformation = L"Hotfix " + parser.GetTortoiseGitVersion().version;
+		}
+	}
 #endif
+	if (!additionalVersionInformation.IsEmpty())
+		tortoisegitprocpath.Format(L"(%s; %s)", static_cast<LPCTSTR>(additionalVersionInformation), static_cast<LPCTSTR>(CPathUtils::GetAppDirectory().TrimRight(L'\\')));
+	else
+		tortoisegitprocpath.Format(L"(%s)", static_cast<LPCTSTR>(CPathUtils::GetAppDirectory().TrimRight(L'\\')));
 	temp.Format(IDS_ABOUTVERSION, TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, static_cast<LPCTSTR>(tortoisegitprocpath), static_cast<LPCTSTR>(out));
 	SetDlgItemText(IDC_VERSIONABOUT, Lf2Crlf(temp));
 

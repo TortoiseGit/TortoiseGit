@@ -34,6 +34,7 @@
 #include "SmartHandle.h"
 #include "Commands\Command.h"
 #include "../version.h"
+#include "I18NHelper.h"
 #include "JumpListHelpers.h"
 #include "ConfigureGitExe.h"
 #include "Libraries.h"
@@ -121,7 +122,7 @@ BOOL CTortoiseProcApp::InitInstance()
 	{
 		langDll.Format(L"%sLanguages\\TortoiseProc%ld.dll", static_cast<LPCTSTR>(CPathUtils::GetAppParentDirectory()), langId);
 
-		if (wcscmp(CPathUtils::GetVersionFromFile(langDll).c_str(), _T(STRPRODUCTVER)) == 0)
+		if (CI18NHelper::DoVersionStringsMatch(CPathUtils::GetVersionFromFile(langDll), _T(STRPRODUCTVER)))
 		{
 			HINSTANCE hInst = LoadLibrary(langDll);
 			if (hInst)
