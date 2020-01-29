@@ -1127,23 +1127,21 @@ BOOL CHwSMTP::auth()
 	if (m_credentials->m_password[0] != L'\0')
 	{
 		auto len = static_cast<int>(_tcslen(m_credentials->m_password));
-		auto size = len * 4 + 1;
-		auto buf = new char[size];
-		auto ret = WideCharToMultiByte(CP_UTF8, 0, m_credentials->m_password, len, buf, size - 1, nullptr, nullptr);
+		auto size = WideCharToMultiByte(CP_UTF8, 0, m_credentials->m_password, len, nullptr, 0, nullptr, nullptr);
+		auto buf = std::make_unique<char[]>(size + 1);
+		auto ret = WideCharToMultiByte(CP_UTF8, 0, m_credentials->m_password, len, buf.get(), size, nullptr, nullptr);
 		buf[ret] = '\0';
 
 		int neededLength = Base64EncodeGetRequiredLength(len);
-		auto bufBase64 = new char[neededLength + 1];
+		auto bufBase64 = std::make_unique<char[]>(neededLength + 1);
 		bufBase64[0] = '\0';
-		if (Base64Encode(reinterpret_cast<const BYTE*>(buf), ret, bufBase64, &neededLength, ATL_BASE64_FLAG_NOCRLF))
+		if (Base64Encode(reinterpret_cast<const BYTE*>(buf.get()), ret, bufBase64.get(), &neededLength, ATL_BASE64_FLAG_NOCRLF))
 			bufBase64[neededLength] = '\0';
 
-		auto successful = SendBuffer(bufBase64, neededLength);
+		auto successful = SendBuffer(bufBase64.get(), neededLength);
 
-		SecureZeroMemory(bufBase64, neededLength + 1);
-		delete[] bufBase64;
-		SecureZeroMemory(buf, size);
-		delete[] buf;
+		SecureZeroMemory(bufBase64.get(), neededLength + 1);
+		SecureZeroMemory(buf.get(), size + 1);
 		if (!successful)
 			return FALSE;
 	}

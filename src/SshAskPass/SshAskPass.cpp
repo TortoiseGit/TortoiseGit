@@ -26,6 +26,7 @@
 #include <PropKey.h>
 #include "UnicodeUtils.h"
 #include "SmartHandle.h"
+#include <memory>
 
 #include <commctrl.h>
 #pragma comment(lib, "comctl32.lib")
@@ -82,13 +83,12 @@ int APIENTRY _tWinMain(HINSTANCE	/*hInstance*/,
 	if (DialogBox(hInst, MAKEINTRESOURCE(IDD_ASK_PASSWORD), nullptr, PasswdDlg) == IDOK)
 	{
 		auto len = static_cast<int>(_tcslen(g_PassWord));
-		auto size = len * 4 + 1;
-		auto buf = new char[size];
-		auto ret = WideCharToMultiByte(CP_UTF8, 0, g_PassWord, len, buf, size - 1, nullptr, nullptr);
+		auto size = WideCharToMultiByte(CP_UTF8, 0, g_PassWord, len, nullptr, 0, nullptr, nullptr);
+		auto buf = std::make_unique<char[]>(size + 1);
+		auto ret = WideCharToMultiByte(CP_UTF8, 0, g_PassWord, len, buf.get(), size, nullptr, nullptr);
 		buf[ret] = '\0';
-		printf("%s\n", buf);
-		SecureZeroMemory(buf, size);
-		delete[] buf;
+		printf("%s\n", buf.get());
+		SecureZeroMemory(buf.get(), size + 1);
 		SecureZeroMemory(&g_PassWord, sizeof(g_PassWord));
 		return 0;
 	}
