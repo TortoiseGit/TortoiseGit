@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2011, 2015 - TortoiseSVN
-// Copyright (C) 2015-2016, 2019 - TortoiseGit
+// Copyright (C) 2015-2016, 2019-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -197,6 +197,14 @@ struct CCloseFILE
 	}
 };
 
+template <typename T>
+struct CCloseIcon
+{
+	static bool Close(T handle)
+	{
+		return !!DestroyIcon(handle);
+	}
+};
 
 // Client code (definitions of standard Windows handles).
 typedef CSmartHandle<HANDLE,	CCloseHandle>											CAutoGeneralHandle;
@@ -206,6 +214,7 @@ typedef CSmartHandle<HMODULE,	CCloseLibrary>											CAutoLibrary;
 typedef CSmartHandle<HANDLE,	CCloseHandle, CDefaultHandleInvalid>					CAutoFile;
 typedef CSmartHandle<HANDLE,	CCloseFindFile, CDefaultHandleInvalid>					CAutoFindFile;
 typedef CSmartHandle<FILE*,		CCloseFILE>												CAutoFILE;
+typedef CSmartHandle<HICON,		CCloseIcon>												CAutoIcon;
 
 /*
 void CompilerTests()
