@@ -1,5 +1,17 @@
 version: '{branch}.{build}'
 skip_tags: true
+skip_commits:
+  files:
+    - contrib/
+    - doc/
+    - Languages/
+    - '*.txt'
+    - '*.md'
+    - src/*.txt
+    - .tgitconfig
+    - .mailmap
+    - '**/.editorconfig'
+    - '**/.clang.format'
 image:
   - Visual Studio 2017
   - Visual Studio 2019
