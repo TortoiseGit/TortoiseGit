@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2006,2008-2010 - TortoiseSVN
-// Copyright (C) 2008-2013, 2016-2017, 2019 - TortoiseGit
+// Copyright (C) 2008-2013, 2016-2017, 2019-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -103,3 +103,5 @@ struct TGITCacheCommand
 #define TGITCACHE_FLAGS_RECUSIVE_STATUS		0x04
 /// Set this flag if notifications to the shell are not allowed
 #define TGITCACHE_FLAGS_NONOTIFICATIONS		0x08
+/// all of the above flags or-gated:
+#define TGITCACHE_FLAGS_MASK 0x0f

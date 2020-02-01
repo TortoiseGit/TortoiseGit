@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005 - 2006,2010 - Will Dean, Stefan Kueng
-// Copyright (C) 2008-2014, 2016-2019 - TortoiseGit
+// Copyright (C) 2008-2014, 2016-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -638,8 +638,11 @@ DWORD WINAPI InstanceThread(LPVOID lpvParam)
 			return 1;
 		}
 
-		DWORD responseLength;
+		// sanitize request
 		request.path[_countof(request.path) - 1] = L'\0';
+		request.flags &= TGITCACHE_FLAGS_MASK;
+
+		DWORD responseLength;
 		GetAnswerToRequest(&request, &response, &responseLength);
 
 		// Write the reply to the pipe.
