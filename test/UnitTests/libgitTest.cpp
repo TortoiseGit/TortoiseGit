@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2019 - TortoiseGit
+// Copyright (C) 2016-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,7 +27,6 @@ TEST(libgit, BrokenConfig)
 	CAutoTempDir tempdir;
 	g_Git.m_CurrentDir = tempdir.GetTempDir();
 	g_Git.m_IsGitDllInited = false;
-	g_Git.m_CurrentDir = g_Git.m_CurrentDir;
 	g_Git.m_IsUseGitDLL = true;
 	g_Git.m_IsUseLibGit2 = false;
 	g_Git.m_IsUseLibGit2_mask = 0;
@@ -49,6 +48,11 @@ TEST(libgit, Mailmap)
 	g_Git.m_CurrentDir = tempdir.GetTempDir();
 	// libgit relies on CWD being set to working tree
 	SetCurrentDirectory(g_Git.m_CurrentDir);
+
+	CString output;
+	EXPECT_EQ(0, g_Git.Run(L"git.exe init", &output, CP_UTF8));
+	EXPECT_STRNE(L"", output);
+	g_Git.ForceReInitDll();
 
 	GIT_MAILMAP mailmap = reinterpret_cast<void*>(0x12345678);
 	git_read_mailmap(&mailmap);
