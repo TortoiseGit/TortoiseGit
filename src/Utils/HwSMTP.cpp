@@ -1105,7 +1105,7 @@ CString CHwSMTP::GetEncodedHeader(const CString& text)
 	if (CStringUtils::IsPlainReadableASCII(text))
 		return text;
 
-	return L"=?UTF-8?B?" + CUnicodeUtils::GetUnicode(EncodeBase64(text), true) + L"?=";
+	return L"=?UTF-8?B?" + CUnicodeUtils::GetUnicode(EncodeBase64(text)) + L"?=";
 }
 
 BOOL CHwSMTP::auth()
