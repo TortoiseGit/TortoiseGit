@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2014, 2016, 2019 - TortoiseGit
+// Copyright (C) 2009-2014, 2016, 2019-2020 - TortoiseGit
 // Copyright (C) 2003-2006, 2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -226,20 +226,6 @@ CStringA CUnicodeUtils::GetMulti(const CStringW& string,int acp)
 	return retVal;
 }
 
-
-CStringA CUnicodeUtils::GetUTF8(const CStringA& string)
-{
-	WCHAR * buf;
-	int len = string.GetLength();
-	if (len==0)
-		return CStringA();
-	buf = new WCHAR[len*4 + 1];
-	int lengthIncTerminator = MultiByteToWideChar(CP_ACP, 0, string, -1, buf, len * 4);
-	CStringW temp = CStringW(buf, lengthIncTerminator - 1);
-	delete [] buf;
-	return (CUnicodeUtils::GetUTF8(temp));
-}
-
 CString CUnicodeUtils::GetUnicode(const CStringA& string, int acp)
 {
 	WCHAR * buf;
@@ -255,7 +241,6 @@ CString CUnicodeUtils::GetUnicode(const CStringA& string, int acp)
 
 #endif //_MFC_VER
 
-#ifdef UNICODE
 std::string CUnicodeUtils::StdGetUTF8(const std::wstring& wide)
 {
 	int len = static_cast<int>(wide.size());
@@ -283,23 +268,12 @@ std::wstring CUnicodeUtils::StdGetUnicode(const std::string& multibyte)
 	delete [] wide;
 	return sRet;
 }
-#endif
 
 std::string WideToMultibyte(const std::wstring& wide)
 {
 	char * narrow = new char[wide.length()*3+2];
 	BOOL defaultCharUsed;
 	int ret = WideCharToMultiByte(CP_ACP, 0, wide.c_str(), static_cast<int>(wide.size()), narrow, static_cast<int>(wide.length()) * 3 - 1, ".", &defaultCharUsed);
-	narrow[ret] = '\0';
-	std::string str = narrow;
-	delete[] narrow;
-	return str;
-}
-
-std::string WideToUTF8(const std::wstring& wide)
-{
-	char * narrow = new char[wide.length()*3+2];
-	int ret = WideCharToMultiByte(CP_UTF8, 0, wide.c_str(), static_cast<int>(wide.size()), narrow, static_cast<int>(wide.length()) * 3 - 1, nullptr, nullptr);
 	narrow[ret] = '\0';
 	std::string str = narrow;
 	delete[] narrow;
@@ -316,22 +290,6 @@ std::wstring MultibyteToWide(const std::string& multibyte)
 	if (!wide)
 		return std::wstring();
 	int ret = MultiByteToWideChar(CP_ACP, 0, multibyte.c_str(), static_cast<int>(multibyte.size()), wide, static_cast<int>(length) * 2 - 1);
-	wide[ret] = L'\0';
-	std::wstring str = wide;
-	delete[] wide;
-	return str;
-}
-
-std::wstring UTF8ToWide(const std::string& multibyte)
-{
-	size_t length = multibyte.length();
-	if (length == 0)
-		return std::wstring();
-
-	wchar_t * wide = new wchar_t[length*2+2];
-	if (!wide)
-		return std::wstring();
-	int ret = MultiByteToWideChar(CP_UTF8, 0, multibyte.c_str(), static_cast<int>(multibyte.size()), wide, static_cast<int>(length) * 2 - 1);
 	wide[ret] = L'\0';
 	std::wstring str = wide;
 	delete[] wide;
