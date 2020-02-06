@@ -746,7 +746,7 @@ int CGit::SetConfigValue(const CString& key, const CString& value, CONFIG_TYPE t
 		{
 		}
 		CStringA keya, valuea;
-		keya = CUnicodeUtils::GetMulti(key, CP_UTF8);
+		keya = CUnicodeUtils::GetUTF8(key);
 		valuea = CUnicodeUtils::GetUTF8(value);
 
 		try
@@ -798,7 +798,7 @@ int CGit::UnsetConfigValue(const CString& key, CONFIG_TYPE type)
 		{
 		}
 		CStringA keya;
-		keya = CUnicodeUtils::GetMulti(key, CP_UTF8);
+		keya = CUnicodeUtils::GetUTF8(key);
 
 		try
 		{
@@ -2087,13 +2087,13 @@ int CGit::GetBranchDescriptions(MAP_STRING_STRING& map)
 
 static void SetLibGit2SearchPath(int level, const CString &value)
 {
-	CStringA valueA = CUnicodeUtils::GetMulti(value, CP_UTF8);
+	CStringA valueA = CUnicodeUtils::GetUTF8(value);
 	git_libgit2_opts(GIT_OPT_SET_SEARCH_PATH, level, static_cast<LPCSTR>(valueA));
 }
 
 static void SetLibGit2TemplatePath(const CString &value)
 {
-	CStringA valueA = CUnicodeUtils::GetMulti(value, CP_UTF8);
+	CStringA valueA = CUnicodeUtils::GetUTF8(value);
 	git_libgit2_opts(GIT_OPT_SET_TEMPLATE_PATH, static_cast<LPCSTR>(valueA));
 }
 
@@ -2609,9 +2609,9 @@ int CGit::GetOneFile(const CString &Refname, const CTGitPath &path, const CStrin
 		{
 			g_Git.CheckAndInitDll();
 			CStringA ref, patha, outa;
-			ref = CUnicodeUtils::GetMulti(Refname, CP_UTF8);
-			patha = CUnicodeUtils::GetMulti(path.GetGitPathString(), CP_UTF8);
-			outa = CUnicodeUtils::GetMulti(outputfile, CP_UTF8);
+			ref = CUnicodeUtils::GetUTF8(Refname);
+			patha = CUnicodeUtils::GetUTF8(path.GetGitPathString());
+			outa = CUnicodeUtils::GetUTF8(outputfile);
 			::DeleteFile(outputfile);
 			int ret = git_checkout_file(ref, patha, outa.GetBuffer());
 			outa.ReleaseBuffer();
@@ -2936,8 +2936,8 @@ static int resolve_to_tree(git_repository *repo, const char *identifier, git_tre
 /* use libgit2 get unified diff */
 static int GetUnifiedDiffLibGit2(const CTGitPath& path, const CString& revOld, const CString& revNew, std::function<void(const git_buf*, void*)> statCallback, git_diff_line_cb callback, void* data, bool /* bMerge */, bool bNoPrefix)
 {
-	CStringA tree1 = CUnicodeUtils::GetMulti(revNew, CP_UTF8);
-	CStringA tree2 = CUnicodeUtils::GetMulti(revOld, CP_UTF8);
+	CStringA tree1 = CUnicodeUtils::GetUTF8(revNew);
+	CStringA tree2 = CUnicodeUtils::GetUTF8(revOld);
 
 	CAutoRepository repo(g_Git.GetGitRepository());
 	if (!repo)
@@ -2950,7 +2950,7 @@ static int GetUnifiedDiffLibGit2(const CTGitPath& path, const CString& revOld, c
 		return -1;
 
 	git_diff_options opts = GIT_DIFF_OPTIONS_INIT;
-	CStringA pathA = CUnicodeUtils::GetMulti(path.GetGitPathString(), CP_UTF8);
+	CStringA pathA = CUnicodeUtils::GetUTF8(path.GetGitPathString());
 	char *buf = pathA.GetBuffer();
 	if (!pathA.IsEmpty())
 	{

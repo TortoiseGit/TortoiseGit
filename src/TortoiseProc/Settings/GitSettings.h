@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2019 - TortoiseGit
+// Copyright (C) 2013-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -114,7 +114,7 @@ protected:
 		}
 		else
 		{
-			CStringA valueA = CUnicodeUtils::GetMulti(value, CP_UTF8);
+			CStringA valueA = CUnicodeUtils::GetUTF8(value);
 			err = git_config_set_string(config, keyA, valueA);
 		}
 		if (err)

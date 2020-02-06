@@ -2634,7 +2634,7 @@ void CGitStatusListCtrl::SetGitIndexFlagsForSelectedFiles(UINT message, BOOL ass
 			continue;
 
 		size_t idx;
-		if (!git_index_find(&idx, gitindex, CUnicodeUtils::GetMulti(path->GetGitPathString(), CP_UTF8)))
+		if (!git_index_find(&idx, gitindex, CUnicodeUtils::GetUTF8(path->GetGitPathString())))
 		{
 			git_index_entry *e = const_cast<git_index_entry *>(git_index_get_byindex(gitindex, idx)); // HACK
 			if (assumevalid == BST_UNCHECKED)

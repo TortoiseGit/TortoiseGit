@@ -3587,7 +3587,7 @@ int CAppUtils::Git2GetUserPassword(git_cred **out, const char *url, const char *
 		dlg.m_UserName = CUnicodeUtils::GetUnicode(username_from_url, CP_UTF8);
 
 	if (dlg.DoModal() == IDOK)
-		return git_cred_userpass_plaintext_new(out, CUnicodeUtils::GetMulti(dlg.m_UserName, CP_UTF8), dlg.m_passwordA);
+		return git_cred_userpass_plaintext_new(out, CUnicodeUtils::GetUTF8(dlg.m_UserName), dlg.m_passwordA);
 
 	git_error_set_str(GIT_ERROR_NONE, "User cancelled.");
 	return GIT_EUSER;
