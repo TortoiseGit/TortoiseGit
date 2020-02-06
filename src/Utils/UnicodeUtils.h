@@ -20,8 +20,6 @@
 #pragma once
 
 #include <string>
-#include <WinDef.h>
-#include "tstring.h"
 
 /**
  * \ingroup Utils
