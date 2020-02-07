@@ -244,6 +244,46 @@ CString CUnicodeUtils::GetUnicode(const CStringA& string, int acp)
 
 #endif //_MFC_VER
 
+namespace
+{
+// simple utility class that provides an efficient
+// writable string buffer. std::basic_string<> could
+// be used as well but has a less suitable interface.
+
+template <class T>
+class CBuffer {
+private:
+	enum
+	{
+		FIXED_BUFFER_SIZE = 1024
+	};
+
+	T fixedBuffer[FIXED_BUFFER_SIZE];
+	std::unique_ptr<T[]> dynamicBuffer;
+
+	T* buffer;
+
+public:
+	CBuffer(size_t minCapacity)
+	{
+		_ASSERT(minCapacity > 0);
+		fixedBuffer[0] = 0;
+		if (minCapacity <= FIXED_BUFFER_SIZE)
+			buffer = fixedBuffer;
+		else
+		{
+			dynamicBuffer = std::make_unique<T[]>(minCapacity);
+			buffer = dynamicBuffer.get();
+		}
+	}
+
+	operator T*()
+	{
+		return buffer;
+	}
+};
+} // namespace
+
 std::string CUnicodeUtils::StdGetUTF8(const std::wstring& wide)
 {
 	int len = static_cast<int>(wide.size());
@@ -251,14 +291,12 @@ std::string CUnicodeUtils::StdGetUTF8(const std::wstring& wide)
 		return std::string();
 
 	int size = len * 4;
-	char * narrow = new char[size];
-	if (!narrow)
+	CBuffer<char> buffer(size);
+	if (!buffer)
 		return {};
 
-	int ret = WideCharToMultiByte(CP_UTF8, 0, wide.c_str(), len, narrow, size, nullptr, nullptr);
-	std::string sRet = std::string(narrow, ret);
-	delete [] narrow;
-	return sRet;
+	int ret = WideCharToMultiByte(CP_UTF8, 0, wide.c_str(), len, buffer, size, nullptr, nullptr);
+	return std::string(buffer, ret);
 }
 
 std::wstring CUnicodeUtils::StdGetUnicode(const std::string& multibyte)
@@ -268,14 +306,12 @@ std::wstring CUnicodeUtils::StdGetUnicode(const std::string& multibyte)
 		return std::wstring();
 
 	int size = len * 4;
-	wchar_t * wide = new wchar_t[size];
-	if (!wide)
+	CBuffer<wchar_t> buffer(size);
+	if (!buffer)
 		return {};
 
-	int ret = MultiByteToWideChar(CP_UTF8, 0, multibyte.c_str(), len, wide, size);
-	std::wstring sRet = std::wstring(wide, ret);
-	delete [] wide;
-	return sRet;
+	int ret = MultiByteToWideChar(CP_UTF8, 0, multibyte.c_str(), len, buffer, size);
+	return std::wstring(buffer, ret);
 }
 
 std::string WideToMultibyte(const std::wstring& wide)
@@ -285,15 +321,13 @@ std::string WideToMultibyte(const std::wstring& wide)
 		return {};
 
 	int size = len * 3;
-	auto* narrow = new char[size];
-	if (!narrow)
+	CBuffer<char> buffer(size);
+	if (!buffer)
 		return {};
 
 	BOOL defaultCharUsed;
-	int ret = WideCharToMultiByte(CP_ACP, 0, wide.c_str(), len, narrow, size, ".", &defaultCharUsed);
-	std::string str = std::string(narrow, ret);
-	delete[] narrow;
-	return str;
+	int ret = WideCharToMultiByte(CP_ACP, 0, wide.c_str(), len, buffer, size, ".", &defaultCharUsed);
+	return std::string(buffer, ret);
 }
 
 std::wstring MultibyteToWide(const std::string& multibyte)
@@ -303,14 +337,12 @@ std::wstring MultibyteToWide(const std::string& multibyte)
 		return std::wstring();
 
 	int size = len * 2;
-	auto* wide = new wchar_t[size];
-	if (!wide)
+	CBuffer<wchar_t> buffer(size);
+	if (!buffer)
 		return std::wstring();
 
-	int ret = MultiByteToWideChar(CP_ACP, 0, multibyte.c_str(), len, wide, size);
-	std::wstring str = std::wstring(wide, ret);
-	delete[] wide;
-	return str;
+	int ret = MultiByteToWideChar(CP_ACP, 0, multibyte.c_str(), len, buffer, size);
+	return std::wstring(buffer, ret);
 }
 
 #pragma warning(push)
