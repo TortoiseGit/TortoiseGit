@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016, 2018-2019 - TortoiseGit
+// Copyright (C) 2008-2016, 2018-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,6 +25,7 @@
 #include <propsys.h>
 #include <PropKey.h>
 #include "UnicodeUtils.h"
+#include "SmartHandle.h"
 
 #include <commctrl.h>
 #pragma comment(lib, "comctl32.lib")
@@ -99,7 +100,7 @@ void MarkWindowAsUnpinnable(HWND hWnd)
 {
 	typedef HRESULT (WINAPI *SHGPSFW) (HWND hwnd,REFIID riid,void** ppv);
 
-	HMODULE hShell = AtlLoadSystemLibraryUsingFullPath(L"Shell32.dll");
+	CAutoLibrary hShell = AtlLoadSystemLibraryUsingFullPath(L"Shell32.dll");
 
 	if (hShell) {
 		auto pfnSHGPSFW = reinterpret_cast<SHGPSFW>(::GetProcAddress(hShell, "SHGetPropertyStoreForWindow"));
@@ -114,7 +115,6 @@ void MarkWindowAsUnpinnable(HWND hWnd)
 				pps->Release();
 			}
 		}
-		FreeLibrary(hShell);
 	}
 }
 

@@ -42,11 +42,10 @@ inline HRESULT GetDllVersion(
 	_In_z_ LPCTSTR lpstrDllName,
 	_Out_ DLLVERSIONINFO* pDllVersionInfo)
 {
-	HINSTANCE hInstDLL = ::LoadLibrary(lpstrDllName);
+	CAutoLibrary hInstDLL = ::LoadLibrary(lpstrDllName);
 	if (!hInstDLL)
 		return AtlHresultFromLastError();
 	HRESULT hRet = GetDllVersion(hInstDLL, pDllVersionInfo);
-	::FreeLibrary(hInstDLL);
 	return hRet;
 }
 
