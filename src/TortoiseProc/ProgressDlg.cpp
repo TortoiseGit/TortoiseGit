@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -231,9 +231,9 @@ UINT CProgressDlg::RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR&
 		{
 			CStringA str;
 			if (gitList.empty() || gitList.size() == 1 && gitList[0]->m_CurrentDir == git->m_CurrentDir)
-				str = CUnicodeUtils::GetMulti((i > 0 ? L"\r\n" : L"") + cmdlist[i].Trim() + L"\r\n", CP_UTF8);
+				str = CUnicodeUtils::GetUTF8((i > 0 ? L"\r\n" : L"") + cmdlist[i].Trim() + L"\r\n");
 			else
-				str = CUnicodeUtils::GetMulti((i > 0 ? L"\r\n" : L"") + gitList[i]->m_CurrentDir + L"\r\n" + cmdlist[i].Trim() + L"\r\n", CP_UTF8);
+				str = CUnicodeUtils::GetUTF8((i > 0 ? L"\r\n" : L"") + gitList[i]->m_CurrentDir + L"\r\n" + cmdlist[i].Trim() + L"\r\n");
 			for (int j = 0; j < str.GetLength(); ++j)
 			{
 				if (pdata)

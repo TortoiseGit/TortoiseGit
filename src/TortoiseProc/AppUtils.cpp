@@ -3582,9 +3582,9 @@ bool CAppUtils::BisectOperation(HWND hWnd, const CString& op, const CString& ref
 int CAppUtils::Git2GetUserPassword(git_cred **out, const char *url, const char *username_from_url, unsigned int /*allowed_types*/, void * /*payload*/)
 {
 	CUserPassword dlg;
-	dlg.m_URL = CUnicodeUtils::GetUnicode(url, CP_UTF8);
+	dlg.m_URL = CUnicodeUtils::GetUnicode(url);
 	if (username_from_url)
-		dlg.m_UserName = CUnicodeUtils::GetUnicode(username_from_url, CP_UTF8);
+		dlg.m_UserName = CUnicodeUtils::GetUnicode(username_from_url);
 
 	if (dlg.DoModal() == IDOK)
 		return git_cred_userpass_plaintext_new(out, CUnicodeUtils::GetUTF8(dlg.m_UserName), dlg.m_passwordA);
