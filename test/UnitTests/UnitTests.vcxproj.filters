@@ -382,5 +382,8 @@
     <ClCompile Include="I18NHelperTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UnicodeUtilsTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

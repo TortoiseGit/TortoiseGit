@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -133,7 +133,7 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 					{
 						CTGitPath file;
 						file.SetFromWin(CString(filename.c_str()).Mid(m_iStripLength));
-						CStringA pathA = CUnicodeUtils::GetMulti(file.GetGitPathString(), CP_UTF8);
+						CStringA pathA = CUnicodeUtils::GetUTF8(file.GetGitPathString());
 						size_t idx;
 						if (!git_index_find(&idx, index, pathA))
 						{
@@ -600,7 +600,7 @@ void CGitPropertyPage::InitWorkfileView()
 		{
 			CTGitPath file;
 			file.SetFromWin(CString(filename.c_str()).Mid(m_iStripLength));
-			CStringA pathA = CUnicodeUtils::GetMulti(file.GetGitPathString(), CP_UTF8);
+			CStringA pathA = CUnicodeUtils::GetUTF8(file.GetGitPathString());
 			size_t idx;
 			if (!git_index_find(&idx, index, pathA))
 			{

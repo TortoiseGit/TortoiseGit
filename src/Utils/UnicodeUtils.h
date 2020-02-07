@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013, 2016 - TortoiseGit
+// Copyright (C) 2009-2013, 2016, 2020 - TortoiseGit
 // Copyright (C) 2003-2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -20,8 +20,6 @@
 #pragma once
 
 #include <string>
-#include <WinDef.h>
-#include "tstring.h"
 
 /**
  * \ingroup Utils
@@ -34,22 +32,16 @@ public:
 #if defined(_MFC_VER) || defined(CSTRING_AVAILABLE)
 	static CStringA GetUTF8(const CStringW& string);
 	static CStringA GetMulti(const CStringW& string, int acp);
-	static CStringA GetUTF8(const CStringA& string);
 	static CString GetUnicode(const CStringA& string, int acp=CP_UTF8);
 	static int GetCPCode(const CString & codename);
 #endif
-#ifdef UNICODE
+
 	static std::string StdGetUTF8(const std::wstring& wide);
 	static std::wstring StdGetUnicode(const std::string& multibyte);
-#else
-	static std::string StdGetUTF8(std::string str) {return str;}
-	static std::string StdGetUnicode(std::string multibyte) {return multibyte;}
-#endif
 };
 
+/* only used in TortoiseGitShell\ContextMenu.h */
 std::string WideToMultibyte(const std::wstring& wide);
-std::string WideToUTF8(const std::wstring& wide);
 std::wstring MultibyteToWide(const std::string& multibyte);
-std::wstring UTF8ToWide(const std::string& multibyte);
 
 int LoadStringEx(HINSTANCE hInstance, UINT uID, LPTSTR lpBuffer, int nBufferMax, WORD wLanguage);

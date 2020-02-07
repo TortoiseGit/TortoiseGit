@@ -1615,7 +1615,7 @@ bool CMainFrame::FileSave(bool bCheckResolved /*=true*/)
 				if (git_repository_index(index.GetPointer(), repository))
 					break;
 
-				CStringA path = CUnicodeUtils::GetMulti(subpath, CP_UTF8);
+				CStringA path = CUnicodeUtils::GetUTF8(subpath);
 				hasConflictInIndex = git_index_get_bypath(index, path, 1) || git_index_get_bypath(index, path, 2);
 			} while(0);
 

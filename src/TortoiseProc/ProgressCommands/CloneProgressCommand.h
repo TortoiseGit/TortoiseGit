@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2014, 2019 - TortoiseGit
+// Copyright (C) 2013-2014, 2019-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,7 +27,7 @@ protected:
 
 	static void CheckoutCallback(const char *path, size_t cur, size_t tot, void *payload)
 	{
-		CTGitPath tpath = CUnicodeUtils::GetUnicode(CStringA(path), CP_UTF8);
+		CTGitPath tpath = CUnicodeUtils::GetUnicode(CStringA(path));
 		auto list = static_cast<CGitProgressList*>(payload);
 		list->m_itemCountTotal = static_cast<int>(tot);
 		list->m_itemCount = static_cast<int>(cur);

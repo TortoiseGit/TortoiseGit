@@ -822,7 +822,7 @@ void CCommitDlg::OnOK()
 					}
 				}
 
-				CStringA filePathA = CUnicodeUtils::GetMulti(entry->GetGitPathString(), CP_UTF8).TrimRight(L'/');
+				CStringA filePathA = CUnicodeUtils::GetUTF8(entry->GetGitPathString()).TrimRight(L'/');
 
 				if (entry->m_Checked && !m_bCommitMessageOnly)
 				{

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2016, 2018-2019 - TortoiseGit
+// Copyright (C) 2011-2016, 2018-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -59,7 +59,7 @@ bool AddProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, int&
 
 		for (m_itemCount = 0; m_itemCount < m_itemCountTotal; ++m_itemCount)
 		{
-			CStringA filePathA = CUnicodeUtils::GetMulti(m_targetPathList[m_itemCount].GetGitPathString(), CP_UTF8).TrimRight(L'/');
+			CStringA filePathA = CUnicodeUtils::GetUTF8(m_targetPathList[m_itemCount].GetGitPathString()).TrimRight(L'/');
 			if (git_index_add_bypath(index, filePathA))
 			{
 				list->ReportGitError();
@@ -165,7 +165,7 @@ bool AddProgressCommand::SetFileMode(uint32_t mode)
 	{
 		if (m_targetPathList[i].IsDirectory())
 			continue;
-		CStringA filePathA = CUnicodeUtils::GetMulti(m_targetPathList[i].GetGitPathString(), CP_UTF8).TrimRight(L'/');
+		CStringA filePathA = CUnicodeUtils::GetUTF8(m_targetPathList[i].GetGitPathString()).TrimRight(L'/');
 		auto entry = const_cast<git_index_entry*>(git_index_get_bypath(index, filePathA, 0));
 		if (!entry)
 		{

@@ -87,7 +87,7 @@ int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, 
 	try
 	{
 		CAutoLocker lock(g_Git.m_critGitDllSec);
-		if (git_open_log(&handle, CUnicodeUtils::GetMulti(cmd, CP_UTF8)))
+		if (git_open_log(&handle, CUnicodeUtils::GetUTF8(cmd)))
 			return -1;
 	}
 	catch (char* msg)

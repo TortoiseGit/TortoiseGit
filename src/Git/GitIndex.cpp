@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -225,7 +225,7 @@ int CGitIndexList::GetFileStatus(CAutoRepository& repository, const CString& git
 		}
 
 		git_oid actual;
-		CStringA fileA = CUnicodeUtils::GetMulti(entry.m_FileName, CP_UTF8);
+		CStringA fileA = CUnicodeUtils::GetUTF8(entry.m_FileName);
 		if (isSymlink && S_ISLNK(entry.m_Mode))
 		{
 			CStringA linkDestination;
@@ -688,7 +688,7 @@ int CGitIgnoreItem::FetchIgnoreList(const CString& projectroot, const CString& f
 		if(start > 0)
 		{
 			base.Truncate(start);
-			this->m_BaseDir = CUnicodeUtils::GetMulti(base, CP_UTF8) + "/";
+			this->m_BaseDir = CUnicodeUtils::GetUTF8(base) + "/";
 		}
 	}
 
@@ -1018,7 +1018,7 @@ int CGitIgnoreList::CheckIgnore(const CString &path, const CString &projectroot,
 	CString temp = CombinePath(projectroot, path);
 	temp.Replace(L'/', L'\\');
 
-	CStringA patha = CUnicodeUtils::GetMulti(path, CP_UTF8);
+	CStringA patha = CUnicodeUtils::GetUTF8(path);
 	patha.Replace('\\', '/');
 
 	int type = 0;
