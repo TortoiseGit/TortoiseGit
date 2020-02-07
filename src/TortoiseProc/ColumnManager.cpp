@@ -87,11 +87,13 @@ bool PropertyList::HasProperty(const CString& name) const
 #endif
 // registry access
 
-void ColumnManager::ReadSettings(DWORD defaultColumns, DWORD hideColumns, const CString& containerName, int maxsize, int* widthlist)
+void ColumnManager::ReadSettings(DWORD defaultColumns, DWORD hideColumns, const CString& containerName, DWORD version, int maxsize, int* widthlist)
 {
 	// defaults
 	DWORD selectedStandardColumns = defaultColumns & ~hideColumns;
 	m_dwDefaultColumns = defaultColumns & ~hideColumns;
+
+	m_dwVersion = version;
 
 	columns.resize(maxsize);
 	int power = 1;
@@ -113,8 +115,11 @@ void ColumnManager::ReadSettings(DWORD defaultColumns, DWORD hideColumns, const 
 	// where the settings are stored within the registry
 	registryPrefix = L"Software\\TortoiseGit\\StatusColumns\\" + containerName;
 
+	// version check works two fold, generally for the generic format and specifically for the listctrl
 	// we accept settings of current version only
-	bool valid = static_cast<DWORD>(CRegDWORD(registryPrefix + L"Version", 0xff)) == GITSLC_COL_VERSION;
+	bool valid = static_cast<DWORD>(CRegDWORD(L"Software\\TortoiseGit\\StatusColumns\\Version", GITSLC_COL_VERSION)) == GITSLC_COL_VERSION;
+	// we accept settings of current version only
+	valid &= static_cast<DWORD>(CRegDWORD(registryPrefix + L"Version", 0xff)) == m_dwVersion;
 	if (valid)
 	{
 		// read (possibly different) column selection
@@ -157,8 +162,10 @@ void ColumnManager::ReadSettings(DWORD defaultColumns, DWORD hideColumns, const 
 
 void ColumnManager::WriteSettings() const
 {
+	CRegDWORD(L"Software\\TortoiseGit\\StatusColumns\\Version") = GITSLC_COL_VERSION;
+
 	CRegDWORD regVersion(registryPrefix + L"Version", 0, TRUE);
-	regVersion = GITSLC_COL_VERSION;
+	regVersion = m_dwVersion;
 
 	// write (possibly different) column selection
 	CRegDWORD regStandardColumns(registryPrefix, 0, TRUE);

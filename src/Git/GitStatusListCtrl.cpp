@@ -350,7 +350,8 @@ void CGitStatusListCtrl::Init(DWORD dwColumns, const CString& sColumnInfoContain
 			};
 
 	m_ColumnManager.SetNames(standardColumnNames,GITSLC_NUMCOLUMNS);
-	m_ColumnManager.ReadSettings(m_dwDefaultColumns, 0xffffffff & ~(allowedColumns | m_dwDefaultColumns), sColumnInfoContainer, GITSLC_NUMCOLUMNS);
+	constexpr int columnVersion = 6; // adjust when changing number/names/etc. of columns
+	m_ColumnManager.ReadSettings(m_dwDefaultColumns, 0xffffffff & ~(allowedColumns | m_dwDefaultColumns), sColumnInfoContainer, columnVersion, GITSLC_NUMCOLUMNS);
 	m_ColumnManager.SetRightAlign(4);
 	m_ColumnManager.SetRightAlign(5);
 	m_ColumnManager.SetRightAlign(7);
