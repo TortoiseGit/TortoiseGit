@@ -1167,7 +1167,7 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 
 		if (HIWORD(lpcmi->lpVerb))
 		{
-			auto verb = std::wstring(MultibyteToWide(lpcmi->lpVerb));
+			auto verb = MultibyteToWide(lpcmi->lpVerb);
 			const auto verb_it = myVerbsMap.lower_bound(verb);
 			if (verb_it != myVerbsMap.end() && verb_it->first == verb)
 				idCmd = verb_it->second;
