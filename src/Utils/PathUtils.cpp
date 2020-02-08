@@ -393,7 +393,7 @@ CString CPathUtils::GetCopyrightForSelf()
 			strLangLegalCopyright.Format(L"\\StringFileInfo\\%04x%04x\\LegalCopyright", lpTransArray[0].wLanguageID, lpTransArray[0].wCharacterSet);
 
 			UINT nInfoSize = 0;
-			LPSTR lpVersion = nullptr;
+			LPTSTR lpVersion = nullptr;
 			VerQueryValue(pBuffer.get(), static_cast<LPCTSTR>(strLangLegalCopyright), reinterpret_cast<LPVOID*>(&lpVersion), &nInfoSize);
 			if (nInfoSize && lpVersion)
 				strReturn = lpVersion;
