@@ -142,47 +142,8 @@ BOOL CTortoiseMergeApp::InitInstance()
 		langStr.Format(L"%ld", langId);
 		CCrashReport::Instance().AddUserInfoToReport(L"LanguageID", langStr);
 	}
-	TCHAR buf[6] = { 0 };
-	wcscpy_s(buf, L"en");
-	langId = loc;
-	CString sHelppath = CPathUtils::GetAppDirectory() + L"TortoiseMerge_en.chm";
 	free((void*)m_pszHelpFilePath);
-	m_pszHelpFilePath=_wcsdup(sHelppath);
-	sHelppath = CPathUtils::GetAppParentDirectory() + L"Languages\\TortoiseMerge_en.chm";
-	do
-	{
-		GetLocaleInfo(MAKELCID(langId, SORT_DEFAULT), LOCALE_SISO639LANGNAME, buf, _countof(buf));
-		CString sLang = L"_";
-		sLang += buf;
-		sHelppath.Replace(L"_en", sLang);
-		if (PathFileExists(sHelppath))
-		{
-			free((void*)m_pszHelpFilePath);
-			m_pszHelpFilePath=_wcsdup(sHelppath);
-			break;
-		}
-		sHelppath.Replace(sLang, L"_en");
-		GetLocaleInfo(MAKELCID(langId, SORT_DEFAULT), LOCALE_SISO3166CTRYNAME, buf, _countof(buf));
-		sLang += L'_';
-		sLang += buf;
-		sHelppath.Replace(L"_en", sLang);
-		if (PathFileExists(sHelppath))
-		{
-			free((void*)m_pszHelpFilePath);
-			m_pszHelpFilePath=_wcsdup(sHelppath);
-			break;
-		}
-		sHelppath.Replace(sLang, L"_en");
-
-		DWORD lid = SUBLANGID(langId);
-		lid--;
-		if (lid > 0)
-		{
-			langId = MAKELANGID(PRIMARYLANGID(langId), lid);
-		}
-		else
-			langId = 0;
-	} while (langId);
+	m_pszHelpFilePath = _wcsdup(CPathUtils::GetAppDirectory() + L"TortoiseMerge_en.chm");
 	setlocale(LC_ALL, "");
 	// We need to explicitly set the thread locale to the system default one to avoid possible problems with saving files in its original codepage
 	// The problems occures when the language of OS differs from the regional settings
