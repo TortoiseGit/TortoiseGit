@@ -209,11 +209,6 @@ int CUnicodeUtils::GetCPCode(const CString &codename)
 	return CP_UTF8;
 }
 
-CStringA CUnicodeUtils::GetUTF8(const CStringW& string)
-{
-	return GetMulti(string,CP_UTF8);
-}
-
 CStringA CUnicodeUtils::GetMulti(const CStringW& string,int acp)
 {
 	CStringA retVal;

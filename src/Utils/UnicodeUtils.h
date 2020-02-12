@@ -30,7 +30,7 @@ class CUnicodeUtils
 public:
 	CUnicodeUtils() = delete;
 #if defined(_MFC_VER) || defined(CSTRING_AVAILABLE)
-	static CStringA GetUTF8(const CStringW& string);
+	static inline CStringA GetUTF8(const CStringW& string) { return GetMulti(string, CP_UTF8); }
 	static CStringA GetMulti(const CStringW& string, int acp);
 	static CString GetUnicode(const CStringA& string, int acp=CP_UTF8);
 	static int GetCPCode(const CString & codename);
