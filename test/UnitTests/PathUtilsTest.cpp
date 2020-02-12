@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2018 - TortoiseGit
+// Copyright (C) 2015-2018, 2020 - TortoiseGit
 // Copyright (C) 2003-2008, 2013-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -20,6 +20,7 @@
 
 #include "stdafx.h"
 #include "PathUtils.h"
+#include "StringUtils.h"
 
 TEST(CPathUtils, GetFileNameFromPath)
 {
@@ -184,4 +185,10 @@ TEST(CPathUtils, IsSamePath)
 	EXPECT_FALSE(CPathUtils::IsSamePath(L"C:\\my\\path\\da\\da\\da", L"C:\\my\\path\\da\\da\\da\\.."));
 	EXPECT_FALSE(CPathUtils::IsSamePath(L"C:\\my\\path\\da\\da\\da", L"C:\\my\\path\\da\\da\\da\\..\\"));
 	EXPECT_FALSE(CPathUtils::IsSamePath(L"C:\\my\\path\\da\\da\\da", L"C:\\my\\path\\..\\path\\da\\da\\da\\.\\da"));
+}
+
+TEST(CPathUtils, GetCopyrightForSelf)
+{
+	CString copyright = CPathUtils::GetCopyrightForSelf();
+	EXPECT_TRUE(CStringUtils::StartsWith(copyright, L"Copyright (C) 20"));
 }
