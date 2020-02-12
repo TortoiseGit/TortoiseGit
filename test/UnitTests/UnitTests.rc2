@@ -1,0 +1,51 @@
+//
+// UnitTests.rc2 - resources Microsoft Visual C++ does not edit directly
+//
+
+#ifdef APSTUDIO_INVOKED
+#error this file is not editable by Microsoft Visual C++
+#endif //APSTUDIO_INVOKED
+
+#include <windows.h>
+
+/////////////////////////////////////////////////////////////////////////////
+// Add manually edited resources here...
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+#include "../../src/version.h"
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION FILEVER
+ PRODUCTVERSION PRODUCTVER
+ FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
+#ifdef _DEBUG
+ FILEFLAGS VS_FF_DEBUG
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS VOS_NT_WINDOWS32
+ FILETYPE VFT_APP
+ FILESUBTYPE VFT2_UNKNOWN
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "CompanyName", "https://tortoisegit.org/"
+            VALUE "FileDescription", "TortoiseGit UnitTests"
+            VALUE "FileVersion", STRFILEVER
+            VALUE "InternalName", "Tests"
+            VALUE "LegalCopyright", "Copyright (C) 2008-2020 - TortoiseGit and Copyright (C) 2003-2020 - TortoiseSVN"
+            VALUE "OriginalFilename", "Tests.exe"
+            VALUE "ProductName", "TortoiseGit"
+            VALUE "ProductVersion", STRPRODUCTVER
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END
+
+/////////////////////////////////////////////////////////////////////////////

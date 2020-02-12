@@ -27,6 +27,9 @@
     <Filter Include="GitWCRev">
       <UniqueIdentifier>{ab843fd4-d515-4367-a170-58810191edfe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{c07de030-f679-47f3-a744-cc4dc0bd8f4a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -385,5 +388,10 @@
     <ClCompile Include="UnicodeUtilsTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="UnitTests.rc2">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

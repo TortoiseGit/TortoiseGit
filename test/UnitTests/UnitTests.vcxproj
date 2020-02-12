@@ -188,6 +188,9 @@
     <ClCompile Include="WindowsCredentialsStoreTests.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ResourceCompile Include="UnitTests.rc2" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\ext\build\googletest.vcxproj">
       <Project>{c8f6c172-56f2-4e76-b5fa-c3b423b31be8}</Project>
     </ProjectReference>
