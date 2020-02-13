@@ -213,7 +213,7 @@ int CUnicodeUtils::GetCPCode(const CString &codename)
 CStringA CUnicodeUtils::GetMulti(const CStringW& string,int acp)
 {
 	int len = string.GetLength();
-	int size = len * 4;
+	int size = len * 3;
 	if (size < BUFFSIZE)
 	{
 		char buf[BUFFSIZE];
@@ -231,7 +231,7 @@ CStringA CUnicodeUtils::GetMulti(const CStringW& string,int acp)
 CString CUnicodeUtils::GetUnicode(const CStringA& string, int acp)
 {
 	int len = string.GetLength();
-	int size = len * 4;
+	int size = len * 2;
 	if (size < BUFFSIZE)
 	{
 		wchar_t buf[BUFFSIZE];
@@ -294,7 +294,7 @@ std::string CUnicodeUtils::StdGetUTF8(const std::wstring& wide)
 	if (len <= 0)
 		return std::string();
 
-	int size = len * 4;
+	int size = len * 3;
 	CBuffer<char> buffer(size);
 	if (!buffer)
 		return {};
@@ -309,7 +309,7 @@ std::wstring CUnicodeUtils::StdGetUnicode(const std::string& multibyte)
 	if (len <= 0)
 		return std::wstring();
 
-	int size = len * 4;
+	int size = len * 2;
 	CBuffer<wchar_t> buffer(size);
 	if (!buffer)
 		return {};
