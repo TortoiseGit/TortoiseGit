@@ -1,6 +1,6 @@
 ﻿// TortoiseGitBlame - a Viewer for Git Blames
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 // Copyright (C) 2003 Don HO <donho@altern.org>
 
 // This program is free software; you can redistribute it and/or
@@ -306,7 +306,7 @@ int CTortoiseGitBlameData::UpdateEncoding(int encode)
 					lineUtf8 = CStringA(reinterpret_cast<LPCSTR>(&rawLine[linebomoffset]), static_cast<int>(rawLine.size() - linebomoffset));
 				else
 				{
-					CString line = CUnicodeUtils::GetUnicode(CStringA(reinterpret_cast<LPCSTR>(&rawLine[linebomoffset]), static_cast<int>(rawLine.size() - linebomoffset)), encoding);
+					CString line = CUnicodeUtils::GetUnicodeLength(reinterpret_cast<LPCSTR>(&rawLine[linebomoffset]), static_cast<int>(rawLine.size() - linebomoffset), encoding);
 					lineUtf8 = CUnicodeUtils::GetUTF8(line);
 				}
 			}

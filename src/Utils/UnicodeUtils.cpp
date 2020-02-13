@@ -228,9 +228,8 @@ CStringA CUnicodeUtils::GetMulti(const CStringW& string,int acp)
 	return retVal;
 }
 
-CString CUnicodeUtils::GetUnicode(const CStringA& string, int acp)
+CString CUnicodeUtils::GetUnicodeLength(const char* string, int len, int acp)
 {
-	int len = string.GetLength();
 	int size = len * 2;
 	if (size < BUFFSIZE)
 	{

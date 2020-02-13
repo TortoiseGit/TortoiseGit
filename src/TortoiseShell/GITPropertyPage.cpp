@@ -554,7 +554,7 @@ void CGitPropertyPage::InitWorkfileView()
 			CAutoBuf upstreambranchname;
 			if (!git_branch_upstream_name(upstreambranchname, repository, branchFullChar))
 			{
-				remotebranch = CUnicodeUtils::GetUnicode(CStringA(upstreambranchname->ptr, static_cast<int>(upstreambranchname->size)));
+				remotebranch = CUnicodeUtils::GetUnicodeLength(upstreambranchname->ptr, static_cast<int>(upstreambranchname->size));
 				remotebranch = remotebranch.Mid(static_cast<int>(wcslen(L"refs/remotes/")));
 				int pos = remotebranch.Find(L'/');
 				if (pos > 0)

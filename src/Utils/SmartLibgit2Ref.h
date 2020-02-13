@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014-2019 - TortoiseGit
+// Copyright (C) 2014-2020 - TortoiseGit
 // based on SmartHandle of TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -260,7 +260,7 @@ public:
 			return ret;
 		}
 
-		value = CUnicodeUtils::GetUnicode(CStringA(buf->ptr));
+		value = CUnicodeUtils::GetUnicode(buf->ptr);
 
 		return 0;
 	}
