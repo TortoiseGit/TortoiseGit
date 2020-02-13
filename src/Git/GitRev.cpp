@@ -62,37 +62,22 @@ int GitRev::ParserParentFromCommit(GIT_COMMIT *commit)
 int GitRev::ParserFromCommit(GIT_COMMIT *commit)
 {
 	int encode =CP_UTF8;
-
 	if(commit->m_Encode != 0 && commit->m_EncodeSize != 0)
-	{
-		CString str;
-		CGit::StringAppend(&str, commit->m_Encode, CP_UTF8, commit->m_EncodeSize);
-		encode = CUnicodeUtils::GetCPCode(str);
-	}
+		encode = CUnicodeUtils::GetCPCode(CUnicodeUtils::GetUnicodeLength(commit->m_Encode, commit->m_EncodeSize));
 
 	this->m_CommitHash = CGitHash::FromRaw(commit->m_hash);
 
 	this->m_AuthorDate = commit->m_Author.Date;
+	this->m_AuthorEmail = CUnicodeUtils::GetUnicodeLength(commit->m_Author.Email, commit->m_Author.EmailSize, encode);
+	this->m_AuthorName = CUnicodeUtils::GetUnicodeLength(commit->m_Author.Name, commit->m_Author.NameSize, encode);
 
-	this->m_AuthorEmail.Empty();
-	CGit::StringAppend(&m_AuthorEmail, commit->m_Author.Email, encode, commit->m_Author.EmailSize);
-
-	this->m_AuthorName.Empty();
-	CGit::StringAppend(&m_AuthorName, commit->m_Author.Name, encode, commit->m_Author.NameSize);
-
-	this->m_Body.Empty();
-	CGit::StringAppend(&m_Body, commit->m_Body, encode, commit->m_BodySize);
+	this->m_Body = CUnicodeUtils::GetUnicodeLength(commit->m_Body, commit->m_BodySize, encode);
 
 	this->m_CommitterDate = commit->m_Committer.Date;
+	this->m_CommitterEmail = CUnicodeUtils::GetUnicodeLength(commit->m_Committer.Email, commit->m_Committer.EmailSize, encode);
+	this->m_CommitterName = CUnicodeUtils::GetUnicodeLength(commit->m_Committer.Name, commit->m_Committer.NameSize, encode);
 
-	this->m_CommitterEmail.Empty();
-	CGit::StringAppend(&m_CommitterEmail, commit->m_Committer.Email, encode, commit->m_Committer.EmailSize);
-
-	this->m_CommitterName.Empty();
-	CGit::StringAppend(&m_CommitterName, commit->m_Committer.Name, encode, commit->m_Committer.NameSize);
-
-	this->m_Subject.Empty();
-	CGit::StringAppend(&m_Subject, commit->m_Subject,encode,commit->m_SubjectSize);
+	this->m_Subject = CUnicodeUtils::GetUnicodeLength(commit->m_Subject, commit->m_SubjectSize, encode);
 
 	return 0;
 }
