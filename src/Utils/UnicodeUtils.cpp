@@ -209,14 +209,19 @@ int CUnicodeUtils::GetCPCode(const CString &codename)
 	return CP_UTF8;
 }
 
+#define BUFFSIZE 1024
 CStringA CUnicodeUtils::GetMulti(const CStringW& string,int acp)
 {
-	CStringA retVal;
 	int len = string.GetLength();
-	if (len==0)
-		return retVal;
-
 	int size = len * 4;
+	if (size < BUFFSIZE)
+	{
+		char buf[BUFFSIZE];
+		int newlen = WideCharToMultiByte(acp, 0, string, len, buf, size, nullptr, nullptr);
+		return CStringA(buf, newlen);
+	}
+
+	CStringA retVal;
 	auto* buf = retVal.GetBuffer(size);
 	int newlen = WideCharToMultiByte(acp, 0, string, len, buf, size, nullptr, nullptr);
 	retVal.ReleaseBuffer(newlen);
@@ -225,12 +230,16 @@ CStringA CUnicodeUtils::GetMulti(const CStringW& string,int acp)
 
 CString CUnicodeUtils::GetUnicode(const CStringA& string, int acp)
 {
-	CString retVal;
 	int len = string.GetLength();
-	if (len==0)
-		return retVal;
-
 	int size = len * 4;
+	if (size < BUFFSIZE)
+	{
+		wchar_t buf[BUFFSIZE];
+		int newlen = MultiByteToWideChar(acp, 0, string, len, buf, size);
+		return CString(buf, newlen);
+	}
+
+	CString retVal;
 	auto* buf = retVal.GetBuffer(size);
 	int newlen = MultiByteToWideChar(acp, 0, string, len, buf, size);
 	retVal.ReleaseBuffer(newlen);
