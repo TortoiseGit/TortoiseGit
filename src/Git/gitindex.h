@@ -182,7 +182,7 @@ public:
 	bool CheckHeadUpdate();
 
 private:
-	int ReadTreeRecursive(git_repository& repo, const git_tree* tree, const CStringA& base);
+	int ReadTreeRecursive(git_repository& repo, const git_tree* tree, const CString& base);
 };
 
 typedef std::shared_ptr<CGitHeadFileList> SHARED_TREE_PTR;

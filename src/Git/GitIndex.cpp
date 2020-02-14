@@ -587,7 +587,7 @@ bool CGitHeadFileList::CheckHeadUpdate()
 	return false;
 }
 
-int CGitHeadFileList::ReadTreeRecursive(git_repository& repo, const git_tree* tree, const CStringA& base)
+int CGitHeadFileList::ReadTreeRecursive(git_repository& repo, const git_tree* tree, const CString& base)
 {
 #define S_IFGITLINK	0160000
 	size_t count = git_tree_entrycount(tree);
@@ -603,7 +603,7 @@ int CGitHeadFileList::ReadTreeRecursive(git_repository& repo, const git_tree* tr
 		{
 			CGitTreeItem item;
 			item.m_Hash = git_tree_entry_id(entry);
-			CGit::StringAppend(&item.m_FileName, base, CP_UTF8, base.GetLength());
+			item.m_FileName = base;
 			CGit::StringAppend(&item.m_FileName, git_tree_entry_name(entry), CP_UTF8);
 			if (isSubmodule)
 				item.m_FileName += L'/';
@@ -615,9 +615,9 @@ int CGitHeadFileList::ReadTreeRecursive(git_repository& repo, const git_tree* tr
 		git_tree_entry_to_object(object.GetPointer(), &repo, entry);
 		if (!object)
 			continue;
-		CStringA parent = base;
-		parent += git_tree_entry_name(entry);
-		parent += "/";
+		CString parent = base;
+		CGit::StringAppend(&parent, git_tree_entry_name(entry));
+		parent += L'/';
 		ReadTreeRecursive(repo, reinterpret_cast<git_tree*>(static_cast<git_object*>(object)), parent);
 	}
 
@@ -641,7 +641,7 @@ int CGitHeadFileList::ReadTree(bool ignoreCase)
 	ret = ret && !git_commit_tree(tree.GetPointer(), commit);
 	try
 	{
-		ret = ret && !ReadTreeRecursive(*repository, tree, "");
+		ret = ret && !ReadTreeRecursive(*repository, tree, L"");
 	}
 	catch (const std::bad_alloc& ex)
 	{
