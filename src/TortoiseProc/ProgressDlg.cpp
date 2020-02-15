@@ -786,25 +786,29 @@ void CProgressDlg::InsertColorText(CRichEditCtrl& edit, CString text, COLORREF r
 	edit.SetDefaultCharFormat(old);
 }
 
-CString CCommitProgressDlg::Convert2UnionCode(char* buff, int size)
+CString CCommitProgressDlg::Convert2UnionCode(char* buff)
 {
 	int start = 0;
-	if (size == -1)
-		size = static_cast<int>(strlen(buff));
-
-	for (int i = 0; i < size; ++i)
-	{
-		if (buff[i] == ']')
-			start = i;
-		if (start > 0 && buff[i] == '\n')
-		{
-			start = i;
-			break;
-		}
-	}
+	int size = static_cast<int>(strlen(buff));
 
 	CString str;
-	CGit::StringAppend(&str, buff, g_Git.m_LogEncode, start);
+	if (g_Git.m_LogEncode != CP_UTF8)
+	{
+		// git.exe commit output begings with "[BRANCH] SUBJECT" whereas SUBJECT is encoded using m_LogEncode
+		for (int i = 0; i < size; ++i)
+		{
+			if (buff[i] == ']')
+				start = i;
+			else if (start > 0 && buff[i] == '\n')
+			{
+				start = i;
+				break;
+			}
+		}
+
+		CGit::StringAppend(&str, buff, g_Git.m_LogEncode, start);
+	}
+
 	CGit::StringAppend(&str, buff + start, CP_UTF8, size - start);
 
 	ClearESC(str);

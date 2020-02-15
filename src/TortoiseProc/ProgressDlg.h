@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -145,11 +145,9 @@ private:
 	afx_msg void			OnEnLinkLog(NMHDR* pNMHDR, LRESULT* pResult);
 
 	CGitGuardedByteArray	m_Databuf;
-	virtual CString Convert2UnionCode(char *buff, int size=-1)
+	virtual CString Convert2UnionCode(char* buff)
 	{
-		CString str;
-		CGit::StringAppend(&str, buff, CP_UTF8, size);
-		return str;
+		return CUnicodeUtils::GetUnicode(buff);
 	}
 
 		int						m_BufStart;
@@ -197,5 +195,5 @@ public:
 	{
 	}
 
-	virtual CString Convert2UnionCode(char* buff, int size = -1) override;
+	virtual CString Convert2UnionCode(char* buff) override;
 };
