@@ -135,7 +135,7 @@ int GitRev::ParserFromCommit(const git_commit* commit)
 		m_Subject = CUnicodeUtils::GetUnicode(msg, encode);
 	else
 	{
-		m_Subject = CUnicodeUtils::GetUnicode(CStringA(msg, static_cast<int>(body - msg)), encode);
+		m_Subject = CUnicodeUtils::GetUnicodeLength(msg, static_cast<int>(body - msg), encode);
 		m_Body = CUnicodeUtils::GetUnicode(body + 1, encode);
 	}
 

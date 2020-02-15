@@ -27,7 +27,7 @@ protected:
 
 	static void CheckoutCallback(const char *path, size_t cur, size_t tot, void *payload)
 	{
-		CTGitPath tpath = CUnicodeUtils::GetUnicode(CStringA(path));
+		CTGitPath tpath = CUnicodeUtils::GetUnicode(path);
 		auto list = static_cast<CGitProgressList*>(payload);
 		list->m_itemCountTotal = static_cast<int>(tot);
 		list->m_itemCount = static_cast<int>(cur);

@@ -366,8 +366,8 @@ void CGit::StringAppend(CString* str, const char* p, int code, int length)
 	if (len == 0)
 		return;
 	int currentContentLen = str->GetLength();
-	WCHAR * buf = str->GetBuffer(len * 4 + 1 + currentContentLen) + currentContentLen;
-	int appendedLen = MultiByteToWideChar(code, 0, p, len, buf, len * 4);
+	auto* buf = str->GetBuffer(len * 2 + currentContentLen) + currentContentLen;
+	int appendedLen = MultiByteToWideChar(code, 0, p, len, buf, len * 2);
 	str->ReleaseBuffer(currentContentLen + appendedLen); // no - 1 because MultiByteToWideChar is called with a fixed length (thus no nul char included)
 }
 
@@ -1310,8 +1310,7 @@ int CGit::GetTagList(STRING_VECTOR &list)
 
 		for (size_t i = 0; i < tag_names->count; ++i)
 		{
-			CStringA tagName(tag_names->strings[i]);
-			list.push_back(CUnicodeUtils::GetUnicode(tagName));
+			list.push_back(CUnicodeUtils::GetUnicode(tag_names->strings[i]));
 		}
 
 		std::sort(list.begin() + prevCount, list.end(), g_bSortTagsReversed ? LogicalCompareReversedPredicate : LogicalComparePredicate);
@@ -1367,7 +1366,7 @@ CString CGit::GetLibGit2LastErr()
 	const git_error *libgit2err = git_error_last();
 	if (libgit2err)
 	{
-		CString lastError = CUnicodeUtils::GetUnicode(CStringA(libgit2err->message));
+		CString lastError = CUnicodeUtils::GetUnicode(libgit2err->message);
 		git_error_clear();
 		return L"libgit2 returned: " + lastError;
 	}
@@ -1774,8 +1773,7 @@ int CGit::GetRemoteList(STRING_VECTOR &list)
 
 		for (size_t i = 0; i < remotes->count; ++i)
 		{
-			CStringA remote(remotes->strings[i]);
-			list.push_back(CUnicodeUtils::GetUnicode(remote));
+			list.push_back(CUnicodeUtils::GetUnicode(remotes->strings[i]));
 		}
 
 		std::sort(list.begin() + prevCount, list.end(), LogicalComparePredicate);

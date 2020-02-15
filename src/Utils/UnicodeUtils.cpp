@@ -209,33 +209,36 @@ int CUnicodeUtils::GetCPCode(const CString &codename)
 	return CP_UTF8;
 }
 
-CStringA CUnicodeUtils::GetUTF8(const CStringW& string)
-{
-	return GetMulti(string,CP_UTF8);
-}
-
+#define BUFFSIZE 1024
 CStringA CUnicodeUtils::GetMulti(const CStringW& string,int acp)
 {
-	CStringA retVal;
 	int len = string.GetLength();
-	if (len==0)
-		return retVal;
+	int size = len * 3;
+	if (size < BUFFSIZE)
+	{
+		char buf[BUFFSIZE];
+		int newlen = WideCharToMultiByte(acp, 0, string, len, buf, size, nullptr, nullptr);
+		return CStringA(buf, newlen);
+	}
 
-	int size = len * 4;
+	CStringA retVal;
 	auto* buf = retVal.GetBuffer(size);
 	int newlen = WideCharToMultiByte(acp, 0, string, len, buf, size, nullptr, nullptr);
 	retVal.ReleaseBuffer(newlen);
 	return retVal;
 }
 
-CString CUnicodeUtils::GetUnicode(const CStringA& string, int acp)
+CString CUnicodeUtils::GetUnicodeLength(const char* string, int len, int acp)
 {
-	CString retVal;
-	int len = string.GetLength();
-	if (len==0)
-		return retVal;
+	int size = len * 2;
+	if (size < BUFFSIZE)
+	{
+		wchar_t buf[BUFFSIZE];
+		int newlen = MultiByteToWideChar(acp, 0, string, len, buf, size);
+		return CString(buf, newlen);
+	}
 
-	int size = len * 4;
+	CString retVal;
 	auto* buf = retVal.GetBuffer(size);
 	int newlen = MultiByteToWideChar(acp, 0, string, len, buf, size);
 	retVal.ReleaseBuffer(newlen);
@@ -290,7 +293,7 @@ std::string CUnicodeUtils::StdGetUTF8(const std::wstring& wide)
 	if (len <= 0)
 		return std::string();
 
-	int size = len * 4;
+	int size = len * 3;
 	CBuffer<char> buffer(size);
 	if (!buffer)
 		return {};
@@ -305,7 +308,7 @@ std::wstring CUnicodeUtils::StdGetUnicode(const std::string& multibyte)
 	if (len <= 0)
 		return std::wstring();
 
-	int size = len * 4;
+	int size = len * 2;
 	CBuffer<wchar_t> buffer(size);
 	if (!buffer)
 		return {};

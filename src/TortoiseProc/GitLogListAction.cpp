@@ -698,7 +698,7 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 			}
 			catch(std::exception& e)
 			{
-				CMessageBox::Show(GetParentHWND(), CUnicodeUtils::GetUnicode(CStringA(e.what())), L"TortoiseGit", MB_OK | MB_ICONERROR);
+				CMessageBox::Show(GetParentHWND(), CUnicodeUtils::GetUnicode(e.what()), L"TortoiseGit", MB_OK | MB_ICONERROR);
 				sCmd.Format(L"git.exe reset --hard %s --", static_cast<LPCTSTR>(headhash.ToString()));
 				out.Empty();
 				if(g_Git.Run(sCmd, &out, CP_UTF8))
