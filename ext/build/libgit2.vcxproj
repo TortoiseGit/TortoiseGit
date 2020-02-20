@@ -46,7 +46,7 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalIncludeDirectories>..\build\pcre2;..\zlib;..\libgit2\src;..\libgit2\include;..\libgit2\deps\http-parser;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>LIBGIT2_NO_FEATURES_H;HAVE_QSORT_S;GIT_HTTPS;GIT_WINHTTP;GIT_USE_NSEC;GIT_THREADS;GIT_SHA1_COLLISIONDETECT;GIT_REGEX_PCRE2;PCRE2_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>LIBGIT2_NO_FEATURES_H;HAVE_QSORT_S;GIT_HTTPS;GIT_WINHTTP;GIT_USE_NSEC;GIT_THREADS;GIT_SHA1_COLLISIONDETECT;GIT_NTLM;GIT_REGEX_PCRE2;PCRE2_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Platform)'=='Win32'">GIT_ARCH_32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Platform)'=='x64'">GIT_ARCH_64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
@@ -171,7 +171,6 @@
     <ClCompile Include="..\libgit2\src\revparse.c" />
     <ClCompile Include="..\libgit2\src\revwalk.c" />
     <ClCompile Include="..\libgit2\src\settings.c" />
-    <ClCompile Include="..\libgit2\src\sha1_lookup.c" />
     <ClCompile Include="..\libgit2\src\signature.c" />
     <ClCompile Include="..\libgit2\src\sortedcache.c" />
     <ClCompile Include="..\libgit2\src\stash.c" />
@@ -191,8 +190,8 @@
     <ClCompile Include="..\libgit2\src\transport.c" />
     <ClCompile Include="..\libgit2\src\transports\auth.c" />
     <ClCompile Include="..\libgit2\src\transports\auth_negotiate.c" />
-    <ClCompile Include="..\libgit2\src\transports\cred.c" />
-    <ClCompile Include="..\libgit2\src\transports\cred_helpers.c" />
+    <ClCompile Include="..\libgit2\src\transports\credential.c" />
+    <ClCompile Include="..\libgit2\src\transports\credential_helpers.c" />
     <ClCompile Include="..\libgit2\src\transports\ssh.c" />
     <ClCompile Include="..\libgit2\src\tree-cache.c" />
     <ClCompile Include="..\libgit2\src\tree.c" />
@@ -243,7 +242,7 @@
     <ClInclude Include="..\libgit2\include\git2\buffer.h" />
     <ClInclude Include="..\libgit2\include\git2\cert.h" />
     <ClInclude Include="..\libgit2\include\git2\cherrypick.h" />
-    <ClInclude Include="..\libgit2\include\git2\cred.h" />
+    <ClInclude Include="..\libgit2\include\git2\credential.h" />
     <ClInclude Include="..\libgit2\include\git2\cred_helpers.h" />
     <ClInclude Include="..\libgit2\include\git2\deprecated.h" />
     <ClInclude Include="..\libgit2\include\git2\describe.h" />
@@ -267,6 +266,7 @@
     <ClInclude Include="..\libgit2\include\git2\sys\alloc.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\commit.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\config.h" />
+    <ClInclude Include="..\libgit2\include\git2\sys\credential.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\diff.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\filter.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\hashsig.h" />
@@ -377,7 +377,6 @@
     <ClInclude Include="..\libgit2\src\repo_template.h" />
     <ClInclude Include="..\libgit2\src\repository.h" />
     <ClInclude Include="..\libgit2\src\revwalk.h" />
-    <ClInclude Include="..\libgit2\src\sha1_lookup.h" />
     <ClInclude Include="..\libgit2\src\signature.h" />
     <ClInclude Include="..\libgit2\src\sortedcache.h" />
     <ClInclude Include="..\libgit2\src\status.h" />

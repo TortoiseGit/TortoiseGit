@@ -22,7 +22,7 @@
 #include "CommonAppUtils.h"
 
 class CTGitPath;
-struct git_cred;
+struct git_credential;
 struct git_indexer_progress;
 class CIgnoreFile;
 class ProjectProperties;
@@ -234,7 +234,7 @@ public:
 	static bool BisectStart(HWND hWnd, const CString& lastGood, const CString& firstBad);
 	static bool BisectOperation(HWND hWnd, const CString& op, const CString& ref = L"");
 
-	static int	Git2GetUserPassword(git_cred **out, const char *url, const char *username_from_url, unsigned int allowed_types, void *payload);
+	static int Git2GetUserPassword(git_credential** out, const char* url, const char* username_from_url, unsigned int allowed_types, void* payload);
 
 	static int Git2CertificateCheck(git_cert *cert, int valid, const char* host, void *payload);
 

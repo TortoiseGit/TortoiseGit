@@ -154,7 +154,7 @@ static CString FindExecutableOnPath(const CString& executable, LPCTSTR env)
 static bool g_bSortLogical;
 static bool g_bSortLocalBranchesFirst;
 static bool g_bSortTagsReversed;
-static git_cred_acquire_cb g_Git2CredCallback;
+static git_credential_acquire_cb g_Git2CredCallback;
 static git_transport_certificate_check_cb g_Git2CheckCertificateCallback;
 
 static void GetSortOptions()
@@ -2850,7 +2850,7 @@ bool CGit::UsingLibGit2(LIBGIT2_CMD cmd) const
 
 void CGit::SetGit2CredentialCallback(void* callback)
 {
-	g_Git2CredCallback = static_cast<git_cred_acquire_cb>(callback);
+	g_Git2CredCallback = static_cast<git_credential_acquire_cb>(callback);
 }
 
 void CGit::SetGit2CertificateCheckCertificate(void* callback)

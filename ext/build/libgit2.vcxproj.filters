@@ -239,9 +239,6 @@
     <ClCompile Include="..\libgit2\src\revwalk.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\libgit2\src\sha1_lookup.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\libgit2\src\signature.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -331,12 +328,6 @@
     </ClCompile>
     <ClCompile Include="..\libgit2\src\xdiff\xutils.c">
       <Filter>Source Files\xdiff</Filter>
-    </ClCompile>
-    <ClCompile Include="..\libgit2\src\transports\cred.c">
-      <Filter>Source Files\transports</Filter>
-    </ClCompile>
-    <ClCompile Include="..\libgit2\src\transports\cred_helpers.c">
-      <Filter>Source Files\transports</Filter>
     </ClCompile>
     <ClCompile Include="..\libgit2\src\win32\error.c">
       <Filter>Source Files\win32</Filter>
@@ -572,6 +563,12 @@
     <ClCompile Include="..\libgit2\src\regexp.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\libgit2\src\transports\credential.c">
+      <Filter>Source Files\transports</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libgit2\src\transports\credential_helpers.c">
+      <Filter>Source Files\transports</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libgit2\src\attr.h">
@@ -701,9 +698,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\libgit2\src\repository.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libgit2\src\sha1_lookup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\libgit2\src\signature.h">
@@ -1261,11 +1255,14 @@
     <ClInclude Include="..\libgit2\include\git2\cert.h">
       <Filter>Public Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\libgit2\include\git2\cred.h">
-      <Filter>Public Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\libgit2\src\regexp.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\include\git2\sys\credential.h">
+      <Filter>Public Header Files\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\include\git2\credential.h">
+      <Filter>Public Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -3579,7 +3579,7 @@ bool CAppUtils::BisectOperation(HWND hWnd, const CString& op, const CString& ref
 	return ret == IDOK;
 }
 
-int CAppUtils::Git2GetUserPassword(git_cred **out, const char *url, const char *username_from_url, unsigned int /*allowed_types*/, void * /*payload*/)
+int CAppUtils::Git2GetUserPassword(git_credential **out, const char *url, const char *username_from_url, unsigned int /*allowed_types*/, void * /*payload*/)
 {
 	CUserPassword dlg;
 	dlg.m_URL = CUnicodeUtils::GetUnicode(url);
@@ -3587,7 +3587,7 @@ int CAppUtils::Git2GetUserPassword(git_cred **out, const char *url, const char *
 		dlg.m_UserName = CUnicodeUtils::GetUnicode(username_from_url);
 
 	if (dlg.DoModal() == IDOK)
-		return git_cred_userpass_plaintext_new(out, CUnicodeUtils::GetUTF8(dlg.m_UserName), dlg.m_passwordA);
+		return git_credential_userpass_plaintext_new(out, CUnicodeUtils::GetUTF8(dlg.m_UserName), dlg.m_passwordA);
 
 	git_error_set_str(GIT_ERROR_NONE, "User cancelled.");
 	return GIT_EUSER;
