@@ -565,10 +565,15 @@ public:
 
 		// Break into lines and feed to m_recv
 		int eolPos;
+		CStringA line;
 		while ((eolPos = m_buffer.Find('\n')) >= 0)
 		{
-			m_recv(m_buffer.Left(eolPos));
-			m_buffer = m_buffer.Mid(eolPos + 1);
+			memcpy(line.GetBuffer(eolPos), static_cast<const char*>(m_buffer), eolPos);
+			line.ReleaseBuffer(eolPos);
+			auto oldLen = m_buffer.GetLength();
+			memmove(m_buffer.GetBuffer(oldLen), static_cast<const char*>(m_buffer) + eolPos + 1, m_buffer.GetLength() - eolPos - 1);
+			m_buffer.ReleaseBuffer(oldLen - eolPos - 1);
+			m_recv(line);
 		}
 		return false;
 	}

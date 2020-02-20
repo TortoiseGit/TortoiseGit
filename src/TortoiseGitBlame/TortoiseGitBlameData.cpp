@@ -265,8 +265,6 @@ int CTortoiseGitBlameData::UpdateEncoding(int encode)
 
 			int linebomoffset = 0;
 			CStringA lineUtf8;
-			lineUtf8.Empty();
-
 			if (!rawLine.empty())
 			{
 				if (encoding == 1201)
