@@ -18,7 +18,7 @@ Released: unreleased
  * PullFetchDlg: Allow to select remote references (using ls-remote)
  * Add optional support for the Windows 8+ spell checker (needs to be enabled in Advanced Settings using the key "Win8SpellChecker" at the moment; if enabled it will be tried first, cf. manual)
  * Speed up RebaseDlg and SyncDlg by asynchronously calculating the file diff
- * Update libgit to 2.25.0 based on Git for Windows sources
+ * Update libgit to 2.25.1 based on Git for Windows sources
 
 == Bug Fixes ==
  * Fixed issue #3449: Crash when indenting short lines (pressing tab key)
