@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2019 - TortoiseGit
+// Copyright (C) 2015-2020 - TortoiseGit
 // Copyright (C) 2003-2008, 2010-2017, 2019 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -1886,29 +1886,12 @@ BOOL CResModule::ExtractRibbon(LPCTSTR lpszType)
 	const std::sregex_iterator end;
 	for (std::sregex_iterator it(ss.cbegin(), ss.cend(), regRevMatch); it != end; ++it)
 	{
-		size_t len;
-
-		std::string str1 = (*it)[1];
-		len = str1.size();
-		auto bufw1 = std::make_unique<wchar_t[]>(len * 4 + 1);
-		SecureZeroMemory(bufw1.get(), (len * 4 + 1) * sizeof(wchar_t));
-		MultiByteToWideChar(CP_UTF8, 0, str1.c_str(), -1, bufw1.get(), static_cast<int>(len) * 4);
-		std::wstring strIdNameVal = bufw1.get();
+		std::wstring strIdNameVal = CUnicodeUtils::StdGetUnicode((*it)[1].str());
 		strIdNameVal += L" - Ribbon name";
 
-		std::string str2 = (*it)[2];
-		len = str2.size();
-		auto bufw2 = std::make_unique<wchar_t[]>(len * 4 + 1);
-		SecureZeroMemory(bufw2.get(), (len * 4 + 1)*sizeof(wchar_t));
-		MultiByteToWideChar(CP_UTF8, 0, str2.c_str(), -1, bufw2.get(), static_cast<int>(len) * 4);
-		std::wstring strIdVal = bufw2.get();
+		std::wstring strIdVal = CUnicodeUtils::StdGetUnicode((*it)[2].str());
 
-		std::string str3 = (*it)[3];
-		len = str3.size();
-		auto bufw3 = std::make_unique<wchar_t[]>(len * 4 + 1);
-		SecureZeroMemory(bufw3.get(), (len * 4 + 1)*sizeof(wchar_t));
-		MultiByteToWideChar(CP_UTF8, 0, str3.c_str(), -1, bufw3.get(), static_cast<int>(len) * 4);
-		std::wstring str = bufw3.get();
+		std::wstring str = CUnicodeUtils::StdGetUnicode((*it)[3].str());
 
 		RESOURCEENTRY entry = m_StringEntries[str];
 		InsertResourceIDs(RT_RIBBON, 0, entry, std::stoi(strIdVal), strIdNameVal.c_str());
@@ -1923,12 +1906,7 @@ BOOL CResModule::ExtractRibbon(LPCTSTR lpszType)
 	const std::regex regRevMatchName("</ELEMENT_NAME><NAME>([^<]+)</NAME>");
 	for (std::sregex_iterator it(ss.cbegin(), ss.cend(), regRevMatchName); it != end; ++it)
 	{
-		std::string str = (*it)[1];
-		size_t len = str.size();
-		auto bufw = std::make_unique<wchar_t[]>(len * 4 + 1);
-		SecureZeroMemory(bufw.get(), (len*4 + 1)*sizeof(wchar_t));
-		MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, bufw.get(), static_cast<int>(len) * 4);
-		std::wstring ret = bufw.get();
+		std::wstring ret = CUnicodeUtils::StdGetUnicode((*it)[1].str());
 		RESOURCEENTRY entry = m_StringEntries[ret];
 		InsertResourceIDs(RT_RIBBON, 0, entry, reinterpret_cast<INT_PTR>(lpszType), L" - Ribbon element");
 		if (wcschr(ret.c_str(), '%'))
@@ -1964,23 +1942,13 @@ BOOL CResModule::ReplaceRibbon(LPCTSTR lpszType, WORD wLanguage)
 		MYERROR;
 
 	std::string ss = std::string(reinterpret_cast<const char*>(p), sizeres);
-	size_t len = ss.size();
-	auto bufw = std::make_unique<wchar_t[]>(len * 4 + 1);
-	SecureZeroMemory(bufw.get(), (len*4 + 1)*sizeof(wchar_t));
-	MultiByteToWideChar(CP_UTF8, 0, ss.c_str(), -1, bufw.get(), static_cast<int>(len) * 4);
-	std::wstring ssw = bufw.get();
-
+	std::wstring ssw = CUnicodeUtils::StdGetUnicode(ss);
 
 	const std::regex regRevMatch("<TEXT>([^<]+)</TEXT>");
 	const std::sregex_iterator end;
 	for (std::sregex_iterator it(ss.cbegin(), ss.cend(), regRevMatch); it != end; ++it)
 	{
-		std::string str = (*it)[1];
-		size_t slen = str.size();
-		auto bufw2 = std::make_unique<wchar_t[]>(slen * 4 + 1);
-		SecureZeroMemory(bufw2.get(), (slen*4 + 1)*sizeof(wchar_t));
-		MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, bufw2.get(), static_cast<int>(slen) * 4);
-		std::wstring ret = bufw2.get();
+		std::wstring ret = CUnicodeUtils::StdGetUnicode((*it)[1].str());
 
 		RESOURCEENTRY entry = m_StringEntries[ret];
 		ret = L"<TEXT>" + ret + L"</TEXT>";
@@ -2005,12 +1973,7 @@ BOOL CResModule::ReplaceRibbon(LPCTSTR lpszType, WORD wLanguage)
 	const std::regex regRevMatchName("</ELEMENT_NAME><NAME>([^<]+)</NAME>");
 	for (std::sregex_iterator it(ss.cbegin(), ss.cend(), regRevMatchName); it != end; ++it)
 	{
-		std::string str = (*it)[1];
-		size_t slen = str.size();
-		auto bufw2 = std::make_unique<wchar_t[]>(slen * 4 + 1);
-		SecureZeroMemory(bufw2.get(), (slen*4 + 1)*sizeof(wchar_t));
-		MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, bufw2.get(), static_cast<int>(slen) * 4);
-		std::wstring ret = bufw2.get();
+		std::wstring ret = CUnicodeUtils::StdGetUnicode((*it)[1].str());
 
 		RESOURCEENTRY entry = m_StringEntries[ret];
 		ret = L"</ELEMENT_NAME><NAME>" + ret + L"</NAME>";
@@ -2033,7 +1996,7 @@ BOOL CResModule::ReplaceRibbon(LPCTSTR lpszType, WORD wLanguage)
 	}
 
 	auto buf = std::make_unique<char[]>(ssw.size() * 4 + 1);
-	int lengthIncTerminator = WideCharToMultiByte(CP_UTF8, 0, ssw.c_str(), -1, buf.get(), static_cast<int>(len) * 4, nullptr, nullptr);
+	int lengthIncTerminator = WideCharToMultiByte(CP_UTF8, 0, ssw.c_str(), -1, buf.get(), static_cast<int>(ssw.size()) * 4, nullptr, nullptr); //
 
 
 	if (!UpdateResource(m_hUpdateRes, RT_RIBBON, lpszType, (m_wTargetLang ? m_wTargetLang : wLanguage), buf.get(), lengthIncTerminator-1))
