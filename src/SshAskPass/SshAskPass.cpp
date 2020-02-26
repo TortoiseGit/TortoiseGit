@@ -118,6 +118,27 @@ void MarkWindowAsUnpinnable(HWND hWnd)
 	}
 }
 
+static SIZE GetTextSize(HWND hWnd, const TCHAR* str)
+{
+	HDC hDC = ::GetWindowDC(hWnd);
+	HFONT font = reinterpret_cast<HFONT>(::SendMessage(hWnd, WM_GETFONT, 0, 0));
+	HFONT oldFont = reinterpret_cast<HFONT>(::SelectObject(hDC, font));
+	RECT r = { 0 };
+	::DrawText(hDC, str, -1, &r, DT_EDITCONTROL | DT_EXPANDTABS | DT_LEFT | DT_CALCRECT);
+	::SelectObject(hDC, oldFont);
+
+	return SIZE{ r.right, r.bottom };
+}
+
+static void MoveButton(HWND hDlg, DWORD id, const POINT& diff)
+{
+	RECT rect = { 0 };
+	HWND button = ::GetDlgItem(hDlg, id);
+	::GetWindowRect(button, &rect);
+	::MapWindowPoints(nullptr, hDlg, reinterpret_cast<LPPOINT>(&rect), 2);
+	::MoveWindow(button, rect.left + diff.x / 2, rect.top + diff.y, rect.right - rect.left, rect.bottom - rect.top, TRUE);
+}
+
 // Message handler for password box.
 INT_PTR CALLBACK PasswdDlg(HWND hDlg, UINT message, WPARAM wParam, LPARAM /*lParam*/)
 {
@@ -126,21 +147,37 @@ INT_PTR CALLBACK PasswdDlg(HWND hDlg, UINT message, WPARAM wParam, LPARAM /*lPar
 	case WM_INITDIALOG:
 		{
 			MarkWindowAsUnpinnable(hDlg);
+
 			RECT rect;
 			::GetWindowRect(hDlg,&rect);
 			DWORD dwWidth = GetSystemMetrics(SM_CXSCREEN);
 			DWORD dwHeight = GetSystemMetrics(SM_CYSCREEN);
 
-			DWORD x,y;
-			x=(dwWidth - (rect.right-rect.left))/2;
-			y=(dwHeight - (rect.bottom-rect.top))/2;
-
-			::MoveWindow(hDlg,x,y,rect.right-rect.left,rect.bottom-rect.top,TRUE);
 			HWND title = ::GetDlgItem(hDlg, IDC_STATIC_TITLE);
 			::SetWindowText(title, g_Prompt);
-			SendMessage(::GetDlgItem(hDlg, IDC_PASSWORD), EM_SETLIMITTEXT, MAX_LOADSTRING - 1, 0);
+			RECT titleRect = { 0 };
+			::GetClientRect(title, &titleRect);
+			auto promptRect = GetTextSize(title, g_Prompt);
+			POINT diff = { 0 };
+			diff.y = max(0, promptRect.cy - titleRect.bottom);
+			diff.x = max(0, promptRect.cx - titleRect.right);
+			::SetWindowPos(title, nullptr, 0, 0, titleRect.right + diff.x, titleRect.bottom + diff.y, SWP_NOMOVE);
+
+			HWND textfield = ::GetDlgItem(hDlg, IDC_PASSWORD);
+			RECT textfieldRect = { 0 };
+			::GetWindowRect(textfield, &textfieldRect);
+			::MapWindowPoints(nullptr, hDlg, reinterpret_cast<LPPOINT>(&textfieldRect), 2);
+			::MoveWindow(textfield, textfieldRect.left, textfieldRect.top + diff.y, textfieldRect.right - textfieldRect.left + diff.x, textfieldRect.bottom - textfieldRect.top, TRUE);
+
+			MoveButton(hDlg, IDOK, diff);
+			MoveButton(hDlg, IDCANCEL, diff);
+
+			DWORD x = (dwWidth - (rect.right - rect.left + diff.x)) / 2;
+			DWORD y = (dwHeight - (rect.bottom - rect.top + diff.y)) / 2;
+			::MoveWindow(hDlg, x, y, rect.right - rect.left + diff.x, rect.bottom - rect.top + diff.y, TRUE);
+			::SendMessage(textfield, EM_SETLIMITTEXT, MAX_LOADSTRING - 1, 0);
 			if (!StrStrI(g_Prompt, L"pass"))
-				SendMessage(::GetDlgItem(hDlg, IDC_PASSWORD), EM_SETPASSWORDCHAR, 0, 0);
+				::SendMessage(textfield, EM_SETPASSWORDCHAR, 0, 0);
 			::FlashWindow(hDlg, TRUE);
 		}
 		return TRUE;
