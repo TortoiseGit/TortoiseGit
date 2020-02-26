@@ -63,7 +63,7 @@ int APIENTRY _tWinMain(HINSTANCE	/*hInstance*/,
 	if (lpCmdLine[0] != L'\0')
 		g_Prompt = lpCmdLine;
 
-	if (StrStrI(lpCmdLine, L"(yes/no)"))
+	if (StrStrI(lpCmdLine, L"(yes/no"))
 	{
 		if (::MessageBox(nullptr, g_Prompt, L"TortoiseGit - git CLI stdin wrapper", MB_YESNO | MB_ICONQUESTION) == IDYES)
 			wprintf(L"yes");
