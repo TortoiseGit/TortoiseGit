@@ -79,6 +79,18 @@ bool CMainWindow::RegisterAndCreateWindow()
 	return false;
 }
 
+void CMainWindow::UpdateLineCount()
+{
+	auto numberOfLines = static_cast<intptr_t>(SendEditor(SCI_GETLINECOUNT));
+	int numDigits = 2;
+	while (numberOfLines)
+	{
+		numberOfLines /= 10;
+		++numDigits;
+	}
+	SendEditor(SCI_SETMARGINWIDTHN, 0, numDigits * static_cast<int>(SendEditor(SCI_TEXTWIDTH, STYLE_LINENUMBER, reinterpret_cast<LPARAM>("8"))));
+}
+
 LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	if (uMsg == TaskBarButtonCreated)
@@ -181,8 +193,8 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
 		SendEditor(SCI_SETSELECTIONEND, 0);
 		break;
 	case WM_NOTIFY:
-		if (reinterpret_cast<LPNMHDR>(lParam)->code == SCN_ZOOM)
-			SendEditor(SCI_SETMARGINWIDTHN, 0, SendEditor(SCI_TEXTWIDTH, STYLE_LINENUMBER, reinterpret_cast<LPARAM>("_99999")));
+		if (reinterpret_cast<LPNMHDR>(lParam)->code == SCN_PAINTED)
+			UpdateLineCount();
 		break;
 	default:
 		return DefWindowProc(hwnd, uMsg, wParam, lParam);
@@ -593,8 +605,7 @@ bool CMainWindow::Initialize()
 		CUnicodeUtils::StdGetUTF8(CRegStdString(L"Software\\TortoiseGit\\UDiffFontName", L"Consolas")).c_str());
 	SendEditor(SCI_SETTABWIDTH, CRegStdDWORD(L"Software\\TortoiseGit\\UDiffTabSize", 4));
 	SendEditor(SCI_SETREADONLY, TRUE);
-	LRESULT pix = SendEditor(SCI_TEXTWIDTH, STYLE_LINENUMBER, reinterpret_cast<LPARAM>("_99999"));
-	SendEditor(SCI_SETMARGINWIDTHN, 0, pix);
+	UpdateLineCount();
 	SendEditor(SCI_SETMARGINWIDTHN, 1);
 	SendEditor(SCI_SETMARGINWIDTHN, 2);
 	//Set the default windows colors for edit controls

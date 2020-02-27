@@ -41,6 +41,7 @@ Released: unreleased
  * LogDlg: Fix flickering on filtering
  * Fixed issue #3505: TortoiseGitProc and TGitCache crash on repositories with broken core.worktree path
  * SSHAskPass: Adjust window to text size
+ * Fixed issue #3386: Line column in TortoiseGitUDiff might get cut off
 
 = Release 2.9.0 =
 Released: 2019-10-31

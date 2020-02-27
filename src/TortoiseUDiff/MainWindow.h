@@ -65,6 +65,7 @@ private:
 	bool                IsUTF8(LPVOID pBuffer, size_t cb);
 	void                InitEditor();
 	void                SetupWindow(bool bUTF8);
+	void                UpdateLineCount();
 
 private:
 	LRESULT             m_directFunction;
