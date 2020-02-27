@@ -180,6 +180,10 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
 		SendEditor(SCI_SETSELECTIONSTART, 0);
 		SendEditor(SCI_SETSELECTIONEND, 0);
 		break;
+	case WM_NOTIFY:
+		if (reinterpret_cast<LPNMHDR>(lParam)->code == SCN_ZOOM)
+			SendEditor(SCI_SETMARGINWIDTHN, 0, SendEditor(SCI_TEXTWIDTH, STYLE_LINENUMBER, reinterpret_cast<LPARAM>("_99999")));
+		break;
 	default:
 		return DefWindowProc(hwnd, uMsg, wParam, lParam);
 	}

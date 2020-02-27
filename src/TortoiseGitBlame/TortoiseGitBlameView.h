@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2019 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2020 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -125,6 +125,7 @@ protected:
 	afx_msg void OnLButtonDown(UINT nFlags,CPoint point);
 	afx_msg void OnRButtonDown(UINT nFlags,CPoint point){OnLButtonDown(nFlags,point);CView::OnRButtonDown(nFlags,point);};
 	afx_msg void OnSciGetBkColor(NMHDR*, LRESULT*);
+	afx_msg void OnSciZoom(NMHDR*, LRESULT*);
 	afx_msg void OnMouseHover(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnMouseLeave();
