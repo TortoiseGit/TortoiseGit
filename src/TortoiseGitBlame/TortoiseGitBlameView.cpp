@@ -1825,6 +1825,8 @@ BOOL CTortoiseGitBlameView::PreTranslateMessage(MSG* pMsg)
 {
 	if (m_ToolTip.GetSafeHwnd())
 		m_ToolTip.RelayEvent(pMsg);
+	if (pMsg->message == WM_MOUSEWHEEL)
+		pMsg->hwnd = m_TextView.GetSafeHwnd();
 	return CView::PreTranslateMessage(pMsg);
 }
 
