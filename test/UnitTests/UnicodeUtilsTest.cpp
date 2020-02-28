@@ -97,28 +97,28 @@ TEST(UnicodeUtils, CString)
 TEST(UnicodeUtils, Std)
 {
 	std::string result = CUnicodeUtils::StdGetUTF8(L"");
-	EXPECT_EQ(0, result.size());
+	EXPECT_EQ(0u, result.size());
 	EXPECT_STREQ(result.c_str(), "");
 	std::wstring resultW = CUnicodeUtils::StdGetUnicode("");
-	EXPECT_EQ(0, resultW.size());
+	EXPECT_EQ(0u, resultW.size());
 	EXPECT_STREQ(resultW.c_str(), L"");
 
 	result = CUnicodeUtils::GetUTF8(L"Iñtërnâtiônàlizætiøn");
-	EXPECT_EQ(27, result.size());
+	EXPECT_EQ(27u, result.size());
 	EXPECT_STREQ(result.c_str(), "\x49\xC3\xB1\x74\xC3\xAB\x72\x6E\xC3\xA2\x74\x69\xC3\xB4\x6E\xC3\xA0\x6C\x69\x7A\xC3\xA6\x74\x69\xC3\xB8\x6E");
 	resultW = CUnicodeUtils::StdGetUnicode(result);
 	EXPECT_STREQ(resultW.c_str(), L"Iñtërnâtiônàlizætiøn");
-	EXPECT_EQ(20, resultW.size());
+	EXPECT_EQ(20u, resultW.size());
 
 	result = CUnicodeUtils::StdGetUTF8(L"<value>退订</value>");
 	resultW = CUnicodeUtils::StdGetUnicode(result);
 	EXPECT_STREQ(resultW.c_str(), L"<value>退订</value>");
 
 	result = CUnicodeUtils::StdGetUTF8(L"äöü");
-	EXPECT_EQ(6, result.size());
+	EXPECT_EQ(6u, result.size());
 	resultW = CUnicodeUtils::StdGetUnicode(result);
 	EXPECT_STREQ(resultW.c_str(), L"äöü");
-	EXPECT_EQ(3, resultW.size());
+	EXPECT_EQ(3u, resultW.size());
 
 	result = CUnicodeUtils::StdGetUTF8(L"äöüß");
 	EXPECT_STREQ(result.c_str(), "\xC3\xA4\xC3\xB6\xC3\xBC\xC3\x9F");
@@ -149,18 +149,18 @@ TEST(UnicodeUtils, Std)
 	EXPECT_STREQ(resultW.c_str(), L"Verify that the correct path and file name are given.");
 
 	result = CUnicodeUtils::StdGetUTF8(L"\U0002070e"); // 𠜎 is 4-byte utf8
-	EXPECT_EQ(4, result.size());
+	EXPECT_EQ(4u, result.size());
 	EXPECT_STREQ(result.c_str(), "\xf0\xa0\x9c\x8e");
 	resultW = CUnicodeUtils::StdGetUnicode("\xf0\xa0\x9c\x8e");
 	EXPECT_STREQ(resultW.c_str(), L"\U0002070e");
-	EXPECT_EQ(2, resultW.size());
+	EXPECT_EQ(2u, resultW.size());
 
 	resultW = CUnicodeUtils::StdGetUnicode("\xfe");
 	EXPECT_STREQ(resultW.c_str(), L"\uFFFD");
-	EXPECT_EQ(1, resultW.size());
+	EXPECT_EQ(1u, resultW.size());
 
 	resultW = CUnicodeUtils::StdGetUnicode("\xc3\x28"); // Invalid 2 Octet Sequence
 	EXPECT_STREQ(resultW.c_str(), L"\uFFFD(");
-	EXPECT_EQ(2, resultW.size());
+	EXPECT_EQ(2u, resultW.size());
 }
 #pragma warning(pop)
