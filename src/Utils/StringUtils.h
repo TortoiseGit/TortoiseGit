@@ -1,7 +1,7 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2010 - TortoiseSVN
-// Copyright (C) 2015-2016 - TortoiseGit
+// Copyright (C) 2003-2010, 2014 - TortoiseSVN
+// Copyright (C) 2015-2016, 2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,6 +18,8 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
+#include <atlstr.h>
+#include <memory>
 
 #ifdef UNICODE
 #define wcswildcmp wcswildcmp
@@ -134,5 +136,14 @@ public:
 	 */
 	static void PipesToNulls(TCHAR* buffer, size_t length);
 	static void PipesToNulls(TCHAR* buffer);
-};
 
+	static std::unique_ptr<char[]>		Decrypt(const char* text);
+	static CStringA						Encrypt(const char* text);
+	static std::unique_ptr<wchar_t[]>	Decrypt(const wchar_t* text);
+	static CStringW						Encrypt(const wchar_t* text);
+
+	static std::string					Encrypt(const std::string& s, const std::string& password);
+	static std::string					Decrypt(const std::string& s, const std::string& password);
+	static std::string					ToHexString(BYTE* pSrc, int nSrcLen);
+	static bool							FromHexString(const std::string& src, BYTE* pDest);
+};

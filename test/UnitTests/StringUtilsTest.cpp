@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2017 - TortoiseGit
+// Copyright (C) 2015-2017, 2020 - TortoiseGit
 // Copyright (C) 2003-2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -335,4 +335,32 @@ TEST(CStringUtils, EndsWithI)
 	EXPECT_FALSE(CStringUtils::EndsWithI(heystack, L"someteSte"));
 	EXPECT_FALSE(CStringUtils::EndsWithI(heystack, L"text"));
 	EXPECT_FALSE(CStringUtils::EndsWithI(heystack, L"xt"));
+}
+
+TEST(CStringUtils, EnDecrypt)
+{
+	CString widecrypt = CStringUtils::Encrypt(L"test");
+	auto wide = CStringUtils::Decrypt(widecrypt);
+	EXPECT_TRUE(wcscmp(wide.get(), L"test") == 0);
+	CStringA charcrypt = CStringUtils::Encrypt("test");
+	auto charnorm = CStringUtils::Decrypt(charcrypt);
+	EXPECT_TRUE(strcmp(charnorm.get(), "test") == 0);
+
+	std::string encrypted = CStringUtils::Encrypt("test", "test");
+	std::string decrypted = CStringUtils::Decrypt(encrypted, "test");
+	EXPECT_TRUE(decrypted.compare("test") == 0);
+}
+
+TEST(CStringUtils, EnDecrypt2)
+{
+	CAutoFile hFile = CreateFile(L"C:\\Users\\MrTux\\Desktop\\synctest\\export-local.tsex", GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	LARGE_INTEGER fsize = { 0 };
+	GetFileSizeEx(hFile, &fsize);
+	auto filebuf = std::make_unique<char[]>(DWORD(fsize.QuadPart));
+	DWORD bytesread = 0;
+	ReadFile(hFile, filebuf.get(), DWORD(fsize.QuadPart), &bytesread, NULL);
+	std::string encrypted = std::string(filebuf.get(), bytesread);
+	std::string passworda = CUnicodeUtils::GetUTF8(L"");
+	std::string decrypted = CStringUtils::Decrypt(encrypted, passworda);
+	CStringUtils::WriteStringToTextFile(L"C:\\Users\\MrTux\\Desktop\\synctest\\export-local.ini", CString(decrypted.c_str()));
 }

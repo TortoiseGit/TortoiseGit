@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2019 - TortoiseGit
+// Copyright (C) 2011-2020 - TortoiseGit
 // Copyright (C) 2003-2011, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -22,6 +22,10 @@
 #include "StringUtils.h"
 #include "ClipboardHelper.h"
 #include "SmartHandle.h"
+#include <WinCrypt.h>
+#include <scope_exit_noexcept.h>
+
+#pragma comment(lib, "Crypt32.lib")
 
 int strwildcmp(const char *wild, const char *string)
 {
@@ -677,4 +681,247 @@ void CStringUtils::PipesToNulls(TCHAR* buffer)
 		PipeToNull(ptr);
 		++ptr;
 	}
+}
+
+std::unique_ptr<char[]> CStringUtils::Decrypt(const char * text)
+{
+	DWORD dwLen = 0;
+	if (CryptStringToBinaryA(text, (DWORD)strlen(text), CRYPT_STRING_HEX, nullptr, &dwLen, nullptr, nullptr) == FALSE)
+		return nullptr;
+
+	std::unique_ptr<BYTE[]> strIn(new BYTE[dwLen + 1]);
+	if (CryptStringToBinaryA(text, (DWORD)strlen(text), CRYPT_STRING_HEX, strIn.get(), &dwLen, nullptr, nullptr) == FALSE)
+		return nullptr;
+
+	DATA_BLOB blobin;
+	blobin.cbData = dwLen;
+	blobin.pbData = strIn.get();
+	LPWSTR descr = nullptr;
+	DATA_BLOB blobout = { 0 };
+	if (CryptUnprotectData(&blobin, &descr, nullptr, nullptr, nullptr, CRYPTPROTECT_UI_FORBIDDEN, &blobout) == FALSE)
+		return nullptr;
+	SecureZeroMemory(blobin.pbData, blobin.cbData);
+
+	std::unique_ptr<char[]> result(new char[blobout.cbData + 1]);
+	strncpy_s(result.get(), blobout.cbData + 1, (const char*)blobout.pbData, blobout.cbData);
+	SecureZeroMemory(blobout.pbData, blobout.cbData);
+	LocalFree(blobout.pbData);
+	LocalFree(descr);
+	return result;
+}
+
+std::unique_ptr<wchar_t[]> CStringUtils::Decrypt(const wchar_t * text)
+{
+	DWORD dwLen = 0;
+	if (CryptStringToBinaryW(text, (DWORD)wcslen(text), CRYPT_STRING_HEX, nullptr, &dwLen, nullptr, nullptr) == FALSE)
+		return nullptr;
+
+	std::unique_ptr<BYTE[]> strIn(new BYTE[dwLen + 1]);
+	if (CryptStringToBinaryW(text, (DWORD)wcslen(text), CRYPT_STRING_HEX, strIn.get(), &dwLen, nullptr, nullptr) == FALSE)
+		return nullptr;
+
+	DATA_BLOB blobin;
+	blobin.cbData = dwLen;
+	blobin.pbData = strIn.get();
+	LPWSTR descr = nullptr;
+	DATA_BLOB blobout = { 0 };
+	if (CryptUnprotectData(&blobin, &descr, nullptr, nullptr, nullptr, CRYPTPROTECT_UI_FORBIDDEN, &blobout) == FALSE)
+		return nullptr;
+	SecureZeroMemory(blobin.pbData, blobin.cbData);
+
+	std::unique_ptr<wchar_t[]> result(new wchar_t[(blobout.cbData) / sizeof(wchar_t) + 1]);
+	wcsncpy_s(result.get(), (blobout.cbData) / sizeof(wchar_t) + 1, (const wchar_t*)blobout.pbData, blobout.cbData / sizeof(wchar_t));
+	SecureZeroMemory(blobout.pbData, blobout.cbData);
+	LocalFree(blobout.pbData);
+	LocalFree(descr);
+	return result;
+}
+
+CStringA CStringUtils::Encrypt(const char* text)
+{
+	DATA_BLOB blobin = { 0 };
+	DATA_BLOB blobout = { 0 };
+	CStringA result;
+
+	blobin.cbData = (DWORD)strlen(text);
+	blobin.pbData = reinterpret_cast<BYTE*>(const_cast<char*>(text));
+	if (CryptProtectData(&blobin, L"TGITAuth", nullptr, nullptr, nullptr, CRYPTPROTECT_UI_FORBIDDEN, &blobout) == FALSE)
+		return result;
+	DWORD dwLen = 0;
+	if (CryptBinaryToStringA(blobout.pbData, blobout.cbData, CRYPT_STRING_HEX | CRYPT_STRING_NOCRLF, nullptr, &dwLen) == FALSE)
+		return result;
+	auto strOut = std::make_unique<char[]>(dwLen + 1);
+	if (CryptBinaryToStringA(blobout.pbData, blobout.cbData, CRYPT_STRING_HEX | CRYPT_STRING_NOCRLF, strOut.get(), &dwLen) == FALSE)
+		return result;
+	LocalFree(blobout.pbData);
+
+	result = strOut.get();
+
+	return result;
+}
+
+CStringW CStringUtils::Encrypt(const wchar_t* text)
+{
+	DATA_BLOB blobin = { 0 };
+	DATA_BLOB blobout = { 0 };
+	CStringW result;
+
+	blobin.cbData = static_cast<DWORD>(wcslen(text) * sizeof(wchar_t));
+	blobin.pbData = reinterpret_cast<BYTE*>(const_cast<wchar_t*>(text));
+	if (CryptProtectData(&blobin, L"TGITAuth", nullptr, nullptr, nullptr, CRYPTPROTECT_UI_FORBIDDEN, &blobout) == FALSE)
+		return result;
+	DWORD dwLen = 0;
+	if (CryptBinaryToStringW(blobout.pbData, blobout.cbData, CRYPT_STRING_HEX | CRYPT_STRING_NOCRLF, nullptr, &dwLen) == FALSE)
+		return result;
+	auto strOut = std::make_unique<wchar_t[]>(dwLen + 1);
+	if (CryptBinaryToStringW(blobout.pbData, blobout.cbData, CRYPT_STRING_HEX | CRYPT_STRING_NOCRLF, strOut.get(), &dwLen) == FALSE)
+		return result;
+	LocalFree(blobout.pbData);
+
+	result = strOut.get();
+
+	return result;
+}
+
+BYTE HexLookup[513] = {
+	"000102030405060708090a0b0c0d0e0f"
+	"101112131415161718191a1b1c1d1e1f"
+	"202122232425262728292a2b2c2d2e2f"
+	"303132333435363738393a3b3c3d3e3f"
+	"404142434445464748494a4b4c4d4e4f"
+	"505152535455565758595a5b5c5d5e5f"
+	"606162636465666768696a6b6c6d6e6f"
+	"707172737475767778797a7b7c7d7e7f"
+	"808182838485868788898a8b8c8d8e8f"
+	"909192939495969798999a9b9c9d9e9f"
+	"a0a1a2a3a4a5a6a7a8a9aaabacadaeaf"
+	"b0b1b2b3b4b5b6b7b8b9babbbcbdbebf"
+	"c0c1c2c3c4c5c6c7c8c9cacbcccdcecf"
+	"d0d1d2d3d4d5d6d7d8d9dadbdcdddedf"
+	"e0e1e2e3e4e5e6e7e8e9eaebecedeeef"
+	"f0f1f2f3f4f5f6f7f8f9fafbfcfdfeff"
+};
+BYTE DecLookup[] = {
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // gap before first hex digit
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	0, 1, 2, 3, 4, 5, 6, 7, 8, 9,       // 0123456789
+	0, 0, 0, 0, 0, 0, 0,             // :;<=>?@ (gap)
+	10, 11, 12, 13, 14, 15,         // ABCDEF
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // GHIJKLMNOPQRS (gap)
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // TUVWXYZ[/]^_` (gap)
+	10, 11, 12, 13, 14, 15          // abcdef
+};
+
+std::string CStringUtils::ToHexString(BYTE* pSrc, int nSrcLen)
+{
+	auto* pwHex = reinterpret_cast<WORD*>(HexLookup);
+	auto dest = std::make_unique<char[]>((nSrcLen * 2) + 1);
+	auto* pwDest = reinterpret_cast<WORD*>(dest.get());
+	for (int j = 0; j < nSrcLen; ++j)
+	{
+		*pwDest = pwHex[*pSrc];
+		++pwDest; ++pSrc;
+	}
+	*(reinterpret_cast<BYTE*>(pwDest)) = 0; // terminate the string
+	return std::string(dest.get());
+}
+
+bool CStringUtils::FromHexString(const std::string& src, BYTE* pDest)
+{
+	if (src.size() % 2)
+		return false;
+	for (auto it = src.cbegin(); it != src.cend(); ++it)
+	{
+		if ((*it < '0') || (*it > 'f'))
+			return false;
+		int d = DecLookup[*it] << 4;
+		// no bounds check necessary, since the 'if (src.size %2)' above
+		// ensures that we have always one item more available
+		++it;
+		d |= DecLookup[*it];
+		*pDest++ = static_cast<BYTE>(d);
+	}
+	return true;
+}
+
+std::string CStringUtils::Encrypt(const std::string& s, const std::string& password)
+{
+	HCRYPTPROV hProv;
+	// Get handle to user default provider.
+	if (!CryptAcquireContext(&hProv, nullptr, nullptr, PROV_RSA_AES, CRYPT_VERIFYCONTEXT | CRYPT_SILENT))
+		return {};
+	SCOPE_EXIT { CryptReleaseContext(hProv, 0); };
+
+	HCRYPTHASH hHash;
+	// Create hash object.
+	if (!CryptCreateHash(hProv, CALG_SHA_512, 0, 0, &hHash))
+		return {};
+	SCOPE_EXIT { CryptDestroyHash(hHash); };
+
+	// Hash password string.
+	DWORD dwLength = DWORD(password.size());
+	if (!CryptHashData(hHash, reinterpret_cast<const BYTE*>(password.c_str()), dwLength, 0))
+		return {};
+
+	// Create block cipher session key based on hash of the password.
+	HCRYPTKEY hKey;
+	if (!CryptDeriveKey(hProv, CALG_AES_256, hHash, 0, &hKey))
+		return {};
+	SCOPE_EXIT { CryptDestroyKey(hKey); };
+
+	// Determine number of bytes to encrypt at a time.
+	std::string starname = "*";
+	starname += s;
+
+	dwLength = DWORD(starname.size());
+	auto buffer = std::make_unique<BYTE[]>(dwLength + 1024);
+	memcpy(buffer.get(), starname.c_str(), dwLength);
+
+	// Encrypt data
+	if (!CryptEncrypt(hKey, 0, true, 0, buffer.get(), &dwLength, dwLength + 1024))
+		return {};
+
+	return CStringUtils::ToHexString(buffer.get(), dwLength);
+}
+
+std::string CStringUtils::Decrypt(const std::string& s, const std::string& password)
+{
+	HCRYPTPROV hProv;
+	// Get handle to user default provider.
+	if (!CryptAcquireContext(&hProv, nullptr, nullptr, PROV_RSA_AES, CRYPT_VERIFYCONTEXT | CRYPT_SILENT))
+		return {};
+	SCOPE_EXIT { CryptReleaseContext(hProv, 0); };
+
+	HCRYPTHASH hHash;
+	// Create hash object.
+	if (!CryptCreateHash(hProv, CALG_SHA_512, 0, 0, &hHash))
+		return {};
+	SCOPE_EXIT { CryptDestroyHash(hHash); };
+
+	// Hash password string.
+	DWORD dwLength = DWORD(password.size());
+	if (!CryptHashData(hHash, reinterpret_cast<const BYTE*>(password.c_str()), dwLength, 0))
+		return {};
+
+	// Create block cipher session key based on hash of the password.
+	HCRYPTKEY hKey;
+	if (!CryptDeriveKey(hProv, CALG_AES_256, hHash, 0, &hKey))
+		return {};
+	SCOPE_EXIT { CryptDestroyKey(hKey); };
+
+	dwLength = DWORD(s.size() + 1024); // 1024 bytes should be enough for padding
+	auto buffer = std::make_unique<BYTE[]>(dwLength);
+	auto strIn = std::make_unique<BYTE[]>(s.size() + 1);
+	if (!buffer || !strIn || !CStringUtils::FromHexString(s, strIn.get()))
+		return {};
+
+	// copy encrypted password to temporary buffer
+	memcpy(buffer.get(), strIn.get(), s.size());
+	dwLength = DWORD(s.size() / 2);
+	CryptDecrypt(hKey, 0, true, 0, reinterpret_cast<BYTE*>(buffer.get()), &dwLength);
+	auto decryptstring = std::string(reinterpret_cast<const char*>(buffer.get()), dwLength);
+	if (decryptstring.empty() || decryptstring[0] != '*')
+		return {};
+	return decryptstring.substr(1);
 }
