@@ -20,6 +20,7 @@ Released: unreleased
  * Speed up RebaseDlg and SyncDlg by asynchronously calculating the file diff
  * Update libgit to 2.25.1 based on Git for Windows sources
  * Fixed issue #3452: Mouse wheel scroll does not work when mouse over author names in TortoiseGitBlame
+ * Performance optimizations
 
 == Bug Fixes ==
  * Fixed issue #3449: Crash when indenting short lines (pressing tab key)
@@ -42,6 +43,7 @@ Released: unreleased
  * Fixed issue #3505: TortoiseGitProc and TGitCache crash on repositories with broken core.worktree path
  * SSHAskPass: Adjust window to text size
  * Fixed issue #3386: Line column in TortoiseGitUDiff might get cut off
+ * Fixed issue #3454: Misaligned controls in Log Messages dialog
 
 = Release 2.9.0 =
 Released: 2019-10-31
