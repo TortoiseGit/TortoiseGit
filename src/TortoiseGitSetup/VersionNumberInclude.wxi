@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Include Id="VersionNumberInclude">
 	<?define MajorVersion="2" ?>
-	<?define MinorVersion="9" ?>
+	<?define MinorVersion="10" ?>
 	<?define MicroVersion="0" ?>
 	<?define BuildVersion="0" ?>
 </Include>

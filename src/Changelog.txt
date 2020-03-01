@@ -1,5 +1,5 @@
 ﻿= Release 2.10.0 =
-Released: unreleased
+Released: 2020-03-01
 
 == Features ==
  * Fixed issue #3448: Revision Graph: Make direction of arrows configurable
@@ -21,6 +21,7 @@ Released: unreleased
  * Update libgit to 2.25.1 based on Git for Windows sources
  * Fixed issue #3452: Mouse wheel scroll does not work when mouse over author names in TortoiseGitBlame
  * Performance optimizations
+ * Build with Visual Studio 2019
 
 == Bug Fixes ==
  * Fixed issue #3449: Crash when indenting short lines (pressing tab key)
