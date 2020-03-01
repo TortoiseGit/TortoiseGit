@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2019 the TortoiseGit team
+# Copyright (C) 2008-2020 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
@@ -10,13 +10,13 @@
 # Lübbe Onken <luebbe.opensource@gmail.com>, 2011
 # petkovmt <petkovmt@gmail.com>, 2011
 # Stefan Ilivanov <ilivanov@gmail.com>, 2012
-# Sven Strickroth <sstrickroth@googlemail.com>, 2013
+# Sven Strickroth <sstrickroth@googlemail.com>, 2013,2020
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2019-10-25 06:45+0000\n"
+"PO-Revision-Date: 2020-03-01 11:11+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Bulgarian (http://www.transifex.com/lznuaa/tortoisegit/language/bg/)\n"
 "MIME-Version: 1.0\n"
@@ -1344,6 +1344,10 @@ msgstr "&Потребител:"
 msgid "&View"
 msgstr "&Изглед"
 
+#. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 1851)
+msgid "&View effective config"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 65535)
 msgid "&Warn on missing Signed-Off-By on commit"
 msgstr ""
@@ -1983,6 +1987,10 @@ msgstr ""
 msgid "Arrange &vertical\tV"
 msgstr "Подреди &вертикално\tV"
 
+#. Resource IDs: (ID_VIEW_ARROW_POINT_TO_MERGES - Menu)
+msgid "Arrows point towards merges"
+msgstr ""
+
 #. Resource IDs: (IDS_SVNACTION_CHANGELISTSET)
 #, c-format
 msgid "Assigned to changelist '%s'"
@@ -2242,6 +2250,10 @@ msgstr "Показва кой е автора на промените на вс�
 msgid "Blend alpha"
 msgstr "Бленд алфа"
 
+#. Resource IDs: (Dialog IDD_SETTINGSPROGSMERGE: Control id 1852)
+msgid "Block TortoiseGit while executing the external merge tool"
+msgstr ""
+
 #. Resource IDs: (cmdGroupBlocks_LabelTitle_RESID)
 msgid "Blocks"
 msgstr ""
@@ -2452,15 +2464,15 @@ msgstr ""
 #. IDD_REPOSITORY_BROWSER: Control id 2, Dialog IDD_REQUESTPULL: Control id 2,
 #. Dialog IDD_RESET: Control id 2, Dialog IDD_RESOLVE: Control id 2, Dialog
 #. IDD_REVERT: Control id 2, Dialog IDD_REVGRAPHFILTER: Control id 2, Dialog
-#. IDD_SENDMAIL: Control id 2, Dialog IDD_SETTINGSBUGTRAQADV: Control id 2,
-#. Dialog IDD_SETTINGSHOOKCONFIG: Control id 2, Dialog IDD_SETTINGSPROGSADV:
-#. Control id 2, Dialog IDD_SIMPLEPROMPT: Control id 2, Dialog IDD_STASH:
-#. Control id 2, Dialog IDD_SUBMODULE_ADD: Control id 2, Dialog
-#. IDD_SUBMODULE_UPDATE: Control id 2, Dialog IDD_SVNDCOMMITTYPE: Control id
-#. 2, Dialog IDD_SVNIGNORE: Control id 2, Dialog IDD_SVNPROGRESS: Control id
-#. 2, Dialog IDD_TOOLASSOC: Control id 2, Dialog IDD_URL: Control id 2, Dialog
-#. IDD_USER_PASSWD: Control id 2, IDS_MSGBOX_CANCEL,
-#. IDS_PROC_OVERWRITEEXPORT_CANCEL)
+#. IDD_SELECTREMOTEREF: Control id 2, Dialog IDD_SENDMAIL: Control id 2,
+#. Dialog IDD_SETTINGSBUGTRAQADV: Control id 2, Dialog IDD_SETTINGSHOOKCONFIG:
+#. Control id 2, Dialog IDD_SETTINGSPROGSADV: Control id 2, Dialog
+#. IDD_SIMPLEPROMPT: Control id 2, Dialog IDD_STASH: Control id 2, Dialog
+#. IDD_SUBMODULE_ADD: Control id 2, Dialog IDD_SUBMODULE_UPDATE: Control id 2,
+#. Dialog IDD_SVNDCOMMITTYPE: Control id 2, Dialog IDD_SVNIGNORE: Control id
+#. 2, Dialog IDD_SVNPROGRESS: Control id 2, Dialog IDD_TOOLASSOC: Control id
+#. 2, Dialog IDD_URL: Control id 2, Dialog IDD_USER_PASSWD: Control id 2,
+#. IDS_MSGBOX_CANCEL, IDS_PROC_OVERWRITEEXPORT_CANCEL)
 msgid "Cancel"
 msgstr "Отказ"
 
@@ -2839,6 +2851,10 @@ msgstr "Клониране на хранилище"
 msgid "Clone into Bare Repo"
 msgstr ""
 
+#. Resource IDs: (IDS_CLONE_BARE_REPO_TT)
+msgid "Clone into a git repository without the working tree."
+msgstr ""
+
 #. Resource IDs: (IDS_MENUCLONE)
 msgid "Clone..."
 msgstr "Клониране..."
@@ -3019,6 +3035,10 @@ msgstr ""
 msgid "Compare &HEAD revisions"
 msgstr "Сравняване на &главните редакции"
 
+#. Resource IDs: (IDS_LOG_POPUP_COMPARE_PARENT_WC)
+msgid "Compare parent with working tree"
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_BROWSEREFS_COMPAREREFS)
 msgid "Compare selected refs"
 msgstr "Сравняване на избраните отпратки"
@@ -3098,6 +3118,10 @@ msgstr "Конфигуриране на интеграцията с програ
 msgid ""
 "Configure alternative editor. Preferably one which can handle *nix line "
 "endings."
+msgstr ""
+
+#. Resource IDs: (IDS_CONFIGUREDEFAULT)
+msgid "Configure default"
 msgstr ""
 
 #. Resource IDs: (IDS_FIRSTSTART_GITTITLE)
@@ -5183,7 +5207,7 @@ msgstr ""
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 107, Dialog
 #. IDD_SETTINGSMAIN: Control id 143)
 msgid "General"
-msgstr "Общи"
+msgstr "Общо"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 333)
 msgid "General::Alternative editor"
@@ -5203,23 +5227,23 @@ msgstr "Общо::Цветове 3"
 
 #. Resource IDs: (Dialog IDD_SETTINGSLOOKANDFEEL: Control id 195)
 msgid "General::Context Menu"
-msgstr "Общи::Контекстно меню"
+msgstr "Общо::Контекстно меню"
 
 #. Resource IDs: (Dialog IDD_SETTINGSEXTMENU: Control id 4573)
 msgid "General::Context Menu 2"
-msgstr ""
+msgstr "Общо::Контекстно меню 2"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 196)
 msgid "General::Dialogs 1"
-msgstr "Общи::Диалогови прозорци 1"
+msgstr "Общо::Диалогови прозорци 1"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 197)
 msgid "General::Dialogs 2"
-msgstr "Общи::Диалогови прозорци 2"
+msgstr "Общо::Диалогови прозорци 2"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 4593)
 msgid "General::Dialogs 3"
-msgstr "Общи::Диалогови прозорци 3"
+msgstr "Общо::Диалогови прозорци 3"
 
 #. Resource IDs: (IDS_LOG_POPUP_GETMERGELOGS)
 msgid "Get merge logs"
@@ -6113,6 +6137,18 @@ msgid ""
 "Paste"
 msgstr "Вмъква съдържанието на системния буфер\nПоставяне"
 
+#. Resource IDs: (IDS_CLONE_BRANCH_TT)
+msgid ""
+"Instead of pointing the newly created HEAD to the branch pointed to by the "
+"cloned repository’s HEAD, point to specific branch instead."
+msgstr ""
+
+#. Resource IDs: (IDS_CLONE_ORIGIN_NAME_TT)
+msgid ""
+"Instead of using the remote name \"origin\" to keep track of the upstream "
+"repository, use the specific name."
+msgstr ""
+
 #. Resource IDs: (AFX_IDP_FAILED_MEMORY_ALLOC)
 msgid "Insufficient memory to perform operation."
 msgstr "Недостиг на оперативна памет за извършването на тази операция."
@@ -6841,6 +6877,12 @@ msgstr ""
 msgid "No a/ and b/ prefixes"
 msgstr ""
 
+#. Resource IDs: (IDS_CLONE_NO_CHECKOUT_TT)
+msgid ""
+"No checkout of HEAD is performed after the clone is complete.\n"
+"This makes the working tree empty."
+msgstr ""
+
 #. Resource IDs: (IDS_ERR_NOCOMMAND)
 msgid ""
 "No command specified!\n"
@@ -7156,14 +7198,15 @@ msgstr "OEM-US"
 #. IDD_REPOSITORY_BROWSER: Control id 1, Dialog IDD_REQUESTPULL: Control id 1,
 #. Dialog IDD_RESET: Control id 1, Dialog IDD_RESOLVE: Control id 1, Dialog
 #. IDD_RESOLVE_CONFLICT: Control id 4569, Dialog IDD_REVERT: Control id 1,
-#. Dialog IDD_SETTINGSBUGTRAQADV: Control id 1, Dialog IDD_SETTINGSHOOKCONFIG:
-#. Control id 1, Dialog IDD_SETTINGSPROGSADV: Control id 1, Dialog
-#. IDD_SIMPLEPROMPT: Control id 1, Dialog IDD_STASH: Control id 1, Dialog
-#. IDD_STATGRAPH: Control id 1, Dialog IDD_SUBMODULE_ADD: Control id 1, Dialog
-#. IDD_SUBMODULE_UPDATE: Control id 1, Dialog IDD_SVNDCOMMITTYPE: Control id
-#. 1, Dialog IDD_SVNIGNORE: Control id 1, Dialog IDD_SVNPROGRESS: Control id
-#. 1, Dialog IDD_TOOLASSOC: Control id 1, Dialog IDD_URL: Control id 1, Dialog
-#. IDD_USER_PASSWD: Control id 1, IDS_MSGBOX_OK)
+#. Dialog IDD_SELECTREMOTEREF: Control id 1, Dialog IDD_SETTINGSBUGTRAQADV:
+#. Control id 1, Dialog IDD_SETTINGSHOOKCONFIG: Control id 1, Dialog
+#. IDD_SETTINGSPROGSADV: Control id 1, Dialog IDD_SIMPLEPROMPT: Control id 1,
+#. Dialog IDD_STASH: Control id 1, Dialog IDD_STATGRAPH: Control id 1, Dialog
+#. IDD_SUBMODULE_ADD: Control id 1, Dialog IDD_SUBMODULE_UPDATE: Control id 1,
+#. Dialog IDD_SVNDCOMMITTYPE: Control id 1, Dialog IDD_SVNIGNORE: Control id
+#. 1, Dialog IDD_SVNPROGRESS: Control id 1, Dialog IDD_TOOLASSOC: Control id
+#. 1, Dialog IDD_URL: Control id 1, Dialog IDD_USER_PASSWD: Control id 1,
+#. IDS_MSGBOX_OK)
 msgid "OK"
 msgstr "OK"
 
@@ -7795,7 +7838,9 @@ msgid "Pull (fetch and merge) commits from a remote branch."
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_PULLWRONGBRANCH)
-msgid "Pull requires the selected local branch to be the current branch."
+msgid ""
+"Pull requires the selected local branch to be the current branch.\n"
+"Do you want to switch to the selected branch?"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 302)
@@ -8109,7 +8154,8 @@ msgstr ""
 msgid "Remote"
 msgstr "Отдалечено"
 
-#. Resource IDs: (Dialog IDD_PULLFETCH: Control id 65535)
+#. Resource IDs: (Dialog IDD_PULLFETCH: Control id 65535, Dialog
+#. IDD_SELECTREMOTEREF: Control id 65535)
 msgid "Remote &Branch:"
 msgstr ""
 
@@ -8151,7 +8197,8 @@ msgid "Remote status"
 msgstr "Отдалечено състояние"
 
 #. Resource IDs: (Dialog IDD_DELETEREMOTETAG: Control id 65535, Dialog
-#. IDD_SETTINREMOTE: Control id 65535)
+#. IDD_SELECTREMOTEREF: Control id 65535, Dialog IDD_SETTINREMOTE: Control id
+#. 65535)
 msgid "Remote:"
 msgstr "Отдалечено:"
 
@@ -8932,6 +8979,10 @@ msgstr "Избор на програма за сливане"
 #. Resource IDs: (IDS_LOG_MERGETO)
 msgid "Select merge target"
 msgstr "Избор на цел на сливането"
+
+#. Resource IDs: (Dialog IDD_SELECTREMOTEREF: Control id 4601)
+msgid "Select remote ref - TortoiseGit"
+msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_AUTOCLOSE_TT)
 msgid ""
@@ -9758,6 +9809,10 @@ msgstr ""
 msgid "Submodules"
 msgstr "Подмодули"
 
+#. Resource IDs: (IDS_CLONE_RECURSIVE_TT)
+msgid "Submodules are initialized and cloned using their default settings."
+msgstr ""
+
 #. Resource IDs: (IDS_SUCCESS)
 msgid "Success"
 msgstr "Успешно"
@@ -9801,6 +9856,11 @@ msgid ""
 "Switch the contents of the left and right view\n"
 "Switch left and right view"
 msgstr "Разменяне на съдържанието на левия и десния изглед\nРазменя левия с десния изглед"
+
+#. Resource IDs: (IDS_PROC_SYNC_SWITCHTO)
+#, c-format
+msgid "Switch to \"%s\""
+msgstr ""
 
 #. Resource IDs: (AFX_IDS_SCNEXTWINDOW)
 msgid "Switch to the next document window"
@@ -10690,6 +10750,10 @@ msgstr "Прозрачен &цвят..."
 msgid "Trim right"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_SETTINGSPROGSMERGE: Control id 1853)
+msgid "Trust the exitcode of the external mege tool for auto resolving"
+msgstr ""
+
 #. Resource IDs: (IDS_SVNERR_CLEANUPORFRESHCHECKOUT)
 msgid "Try a 'Cleanup'. If that doesn't work you need to do a fresh checkout."
 msgstr "Опитайте командата 'Почистване'. Ако и това не помогне, ще трябва да направите ново изписване."
@@ -10923,7 +10987,7 @@ msgstr ""
 msgid "Use 'theirs' text block then 'mine'"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1911)
+#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 1911)
 msgid "Use .mailmap"
 msgstr ""
 
@@ -11265,8 +11329,8 @@ msgstr ""
 msgid "View Patch"
 msgstr "Виж пътя"
 
-#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1637,
-#. IDS_PROC_COMMIT_SHOWPATCH)
+#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1637, Dialog IDD_DIFFFILES:
+#. Control id 1637, IDS_PROC_COMMIT_SHOWPATCH)
 msgid "View Patch>>"
 msgstr "Виж поправката>>"
 
@@ -11320,6 +11384,14 @@ msgstr "Предупреждение"
 #. Resource IDs: (IDS_PROGRS_CONFLICTSOCCURRED_WARNING)
 msgid "Warning!"
 msgstr "Внимание!"
+
+#. Resource IDs: (IDS_MERGESUCCESSFUL)
+#, c-format
+msgid ""
+"Was the merge of\n"
+"%s\n"
+"successful?"
+msgstr ""
 
 #. Resource IDs: (IDS_FIRSTSTART_HINT4)
 msgid ""

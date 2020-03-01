@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2019 the TortoiseGit team
+# Copyright (C) 2008-2020 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
@@ -16,9 +16,10 @@
 # Maarten Hilferink <mhilferink@objectvision.nl>, 2011
 # Paul <paul@piak.nl>, 2011
 # Richard van Laak <rvanlaak@gmail.com>, 2012
+# Robin Bruggink <robinbruggink@gmail.com>, 2019
 # Sander Boele <sander@addtest.nl>, 2018
 # Sander Boele <sboele@hotmail.com>, 2014
-# Sven Strickroth <sstrickroth@googlemail.com>, 2013
+# Sven Strickroth <sstrickroth@googlemail.com>, 2013,2020
 # wieki <a.wiekens@gmail.com>, 2014
 # W VB <vanbeirendonck.willem@gmail.com>, 2011
 msgid ""
@@ -26,7 +27,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2019-10-25 06:45+0000\n"
+"PO-Revision-Date: 2020-03-01 11:26+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/lznuaa/tortoisegit/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -155,12 +156,12 @@ msgstr "%1!d! jaren geleden"
 #. Resource IDs: (IDS_PROC_SYNC_COMMITSAHEAD)
 #, c-format
 msgid "%1!d! commits ahead \"%2!s!\""
-msgstr ""
+msgstr "%1!d! commits  voor \"%2!s!\""
 
 #. Resource IDs: (IDS_STATUSLIST_FILESREVERTED)
 #, c-format
 msgid "%1!d! files reverted to %2!s!."
-msgstr ""
+msgstr "%1!d! bestanden terug gezet naar %2!s!."
 
 #. Resource IDs: (IDS_COMMITDLG_STATISTICSFORMAT)
 #, c-format
@@ -196,22 +197,22 @@ msgstr "%1!s! (%2!s!)"
 #. Resource IDs: (IDS_PROGRS_PATHATREV)
 #, c-format
 msgid "%1!s! - at revision: %2!d!"
-msgstr ""
+msgstr "%1!s! - bij revisie: %2!d!"
 
 #. Resource IDs: (IDS_PROGRS_FINALINFO)
 #, c-format
 msgid "%1!s! in %2!s!"
-msgstr ""
+msgstr "%1!s! in %2!s!"
 
 #. Resource IDs: (IDS_GITVER_REQUIRED)
 #, c-format
 msgid "%1!s! requires Git >= %2!s!"
-msgstr ""
+msgstr "%1!s! vereist Git >= %2!s!"
 
 #. Resource IDs: (IDS_SVN_PROGRESS_TOTALANDSPEED)
 #, c-format
 msgid "%1!s!, at %2!s!"
-msgstr ""
+msgstr "%1!s!, bij %2!s!"
 
 #. Resource IDs: (IDS_REPOBROWSE_INFO)
 #, c-format
@@ -335,7 +336,7 @@ msgstr "&Afbreken"
 msgid ""
 "&Abort\n"
 "You can fix the reason the hook script failed first."
-msgstr ""
+msgstr "&Stop\nJe moet eerst de reden dat de hook script niet werkt repareren"
 
 #. Resource IDs: (ID_APP_ABOUT - Menu)
 msgid "&About TortoiseGitBlame..."
@@ -488,7 +489,7 @@ msgstr "Ver&gelijk revisies"
 
 #. Resource IDs: (IDS_LOG_POPUP_COMPAREWITHPREVIOUS)
 msgid "&Compare with previous revision"
-msgstr ""
+msgstr "&Vergelijken met de vorige revisie"
 
 #. Resource IDs: (IDS_WALKBEHAVIOUR_COMPRESSED)
 msgid "&Compressed Graph"
@@ -859,7 +860,7 @@ msgstr "&Regelnummer"
 #. Resource IDs: (IDS_GOTOLINE)
 #, c-format
 msgid "&Line number (%1!d! - %2!d!)"
-msgstr ""
+msgstr "&Regelnummer (%1!d! - %2!d!)"
 
 #. Resource IDs: (ID_VIEW_LINKIMAGESTOGETHER - Menu)
 msgid "&Link image positions"
@@ -1008,7 +1009,7 @@ msgstr "Afbeeldingen &overlappen\tO"
 
 #. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1523)
 msgid "&Override branch if exists"
-msgstr ""
+msgstr "&Overschrijf branch wanneer deze bestaat"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROXY: Control id 1411, Dialog
 #. IDD_SIMPLEPROMPT: Control id 65535, Dialog IDD_USER_PASSWD: Control id
@@ -1069,7 +1070,7 @@ msgstr "He&rcommitten"
 
 #. Resource IDs: (IDS_REBASEBUTTON)
 msgid "&Rebase"
-msgstr ""
+msgstr "&Rebase"
 
 #. Resource IDs: (Dialog IDD_SUBMODULE_UPDATE: Control id 1694)
 msgid "&Recursive"
@@ -1159,7 +1160,7 @@ msgstr "&Maak wijzigingen van deze vastlegging ongedaan"
 msgid ""
 "&Run\n"
 "Run the hook script"
-msgstr ""
+msgstr "&Uitvoeren\nVoer het hook script uit"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROXY: Control id 65535)
 msgid "&SSH client:"
@@ -1353,6 +1354,10 @@ msgstr "&Gebruikersnaam:"
 #. Resource IDs: (65535 - PopupMenu, Dialog IDD_LOGMESSAGE: Control id 1777)
 msgid "&View"
 msgstr "B&eeld"
+
+#. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 1851)
+msgid "&View effective config"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 65535)
 msgid "&Warn on missing Signed-Off-By on commit"
@@ -1993,6 +1998,10 @@ msgstr "Weet u zeker dat u wilt opslaan naar \"%s\"?"
 msgid "Arrange &vertical\tV"
 msgstr "&Boven elkaar plaatsen\tV"
 
+#. Resource IDs: (ID_VIEW_ARROW_POINT_TO_MERGES - Menu)
+msgid "Arrows point towards merges"
+msgstr ""
+
 #. Resource IDs: (IDS_SVNACTION_CHANGELISTSET)
 #, c-format
 msgid "Assigned to changelist '%s'"
@@ -2252,6 +2261,10 @@ msgstr "Geeft van een bestand de auteur per regel"
 msgid "Blend alpha"
 msgstr "Alpha mixen"
 
+#. Resource IDs: (Dialog IDD_SETTINGSPROGSMERGE: Control id 1852)
+msgid "Block TortoiseGit while executing the external merge tool"
+msgstr ""
+
 #. Resource IDs: (cmdGroupBlocks_LabelTitle_RESID)
 msgid "Blocks"
 msgstr "Blokken"
@@ -2462,15 +2475,15 @@ msgstr ""
 #. IDD_REPOSITORY_BROWSER: Control id 2, Dialog IDD_REQUESTPULL: Control id 2,
 #. Dialog IDD_RESET: Control id 2, Dialog IDD_RESOLVE: Control id 2, Dialog
 #. IDD_REVERT: Control id 2, Dialog IDD_REVGRAPHFILTER: Control id 2, Dialog
-#. IDD_SENDMAIL: Control id 2, Dialog IDD_SETTINGSBUGTRAQADV: Control id 2,
-#. Dialog IDD_SETTINGSHOOKCONFIG: Control id 2, Dialog IDD_SETTINGSPROGSADV:
-#. Control id 2, Dialog IDD_SIMPLEPROMPT: Control id 2, Dialog IDD_STASH:
-#. Control id 2, Dialog IDD_SUBMODULE_ADD: Control id 2, Dialog
-#. IDD_SUBMODULE_UPDATE: Control id 2, Dialog IDD_SVNDCOMMITTYPE: Control id
-#. 2, Dialog IDD_SVNIGNORE: Control id 2, Dialog IDD_SVNPROGRESS: Control id
-#. 2, Dialog IDD_TOOLASSOC: Control id 2, Dialog IDD_URL: Control id 2, Dialog
-#. IDD_USER_PASSWD: Control id 2, IDS_MSGBOX_CANCEL,
-#. IDS_PROC_OVERWRITEEXPORT_CANCEL)
+#. IDD_SELECTREMOTEREF: Control id 2, Dialog IDD_SENDMAIL: Control id 2,
+#. Dialog IDD_SETTINGSBUGTRAQADV: Control id 2, Dialog IDD_SETTINGSHOOKCONFIG:
+#. Control id 2, Dialog IDD_SETTINGSPROGSADV: Control id 2, Dialog
+#. IDD_SIMPLEPROMPT: Control id 2, Dialog IDD_STASH: Control id 2, Dialog
+#. IDD_SUBMODULE_ADD: Control id 2, Dialog IDD_SUBMODULE_UPDATE: Control id 2,
+#. Dialog IDD_SVNDCOMMITTYPE: Control id 2, Dialog IDD_SVNIGNORE: Control id
+#. 2, Dialog IDD_SVNPROGRESS: Control id 2, Dialog IDD_TOOLASSOC: Control id
+#. 2, Dialog IDD_URL: Control id 2, Dialog IDD_USER_PASSWD: Control id 2,
+#. IDS_MSGBOX_CANCEL, IDS_PROC_OVERWRITEEXPORT_CANCEL)
 msgid "Cancel"
 msgstr "Annuleren"
 
@@ -2849,6 +2862,10 @@ msgstr "Kloon een archief"
 msgid "Clone into Bare Repo"
 msgstr "Kloon naar Kaal Archief"
 
+#. Resource IDs: (IDS_CLONE_BARE_REPO_TT)
+msgid "Clone into a git repository without the working tree."
+msgstr ""
+
 #. Resource IDs: (IDS_MENUCLONE)
 msgid "Clone..."
 msgstr "Kloon..."
@@ -3029,6 +3046,10 @@ msgstr ""
 msgid "Compare &HEAD revisions"
 msgstr "Vergelijk &HEAD revisies"
 
+#. Resource IDs: (IDS_LOG_POPUP_COMPARE_PARENT_WC)
+msgid "Compare parent with working tree"
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_BROWSEREFS_COMPAREREFS)
 msgid "Compare selected refs"
 msgstr "Vergelijk geselecteerde referenties"
@@ -3109,6 +3130,10 @@ msgid ""
 "Configure alternative editor. Preferably one which can handle *nix line "
 "endings."
 msgstr "Configureer een editor. Bij voorkeur een editor die om kan gaan met *nix regeleinden."
+
+#. Resource IDs: (IDS_CONFIGUREDEFAULT)
+msgid "Configure default"
+msgstr ""
 
 #. Resource IDs: (IDS_FIRSTSTART_GITTITLE)
 msgid "Configure git.exe"
@@ -5217,7 +5242,7 @@ msgstr "Algemeen::Contextmenu"
 
 #. Resource IDs: (Dialog IDD_SETTINGSEXTMENU: Control id 4573)
 msgid "General::Context Menu 2"
-msgstr ""
+msgstr "Algemeen::Contextmenu 2"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 196)
 msgid "General::Dialogs 1"
@@ -6123,6 +6148,18 @@ msgid ""
 "Paste"
 msgstr "Plak de inhoud vna het klembord\nPlakken"
 
+#. Resource IDs: (IDS_CLONE_BRANCH_TT)
+msgid ""
+"Instead of pointing the newly created HEAD to the branch pointed to by the "
+"cloned repository’s HEAD, point to specific branch instead."
+msgstr ""
+
+#. Resource IDs: (IDS_CLONE_ORIGIN_NAME_TT)
+msgid ""
+"Instead of using the remote name \"origin\" to keep track of the upstream "
+"repository, use the specific name."
+msgstr ""
+
 #. Resource IDs: (AFX_IDP_FAILED_MEMORY_ALLOC)
 msgid "Insufficient memory to perform operation."
 msgstr "Onvoldoende geheugen om de opdracht uit te voeren."
@@ -6851,6 +6888,12 @@ msgstr "Geen HEAD gevonden"
 msgid "No a/ and b/ prefixes"
 msgstr "Geen a/ en b/ voorvoegsels"
 
+#. Resource IDs: (IDS_CLONE_NO_CHECKOUT_TT)
+msgid ""
+"No checkout of HEAD is performed after the clone is complete.\n"
+"This makes the working tree empty."
+msgstr ""
+
 #. Resource IDs: (IDS_ERR_NOCOMMAND)
 msgid ""
 "No command specified!\n"
@@ -7166,14 +7209,15 @@ msgstr "OEM-US"
 #. IDD_REPOSITORY_BROWSER: Control id 1, Dialog IDD_REQUESTPULL: Control id 1,
 #. Dialog IDD_RESET: Control id 1, Dialog IDD_RESOLVE: Control id 1, Dialog
 #. IDD_RESOLVE_CONFLICT: Control id 4569, Dialog IDD_REVERT: Control id 1,
-#. Dialog IDD_SETTINGSBUGTRAQADV: Control id 1, Dialog IDD_SETTINGSHOOKCONFIG:
-#. Control id 1, Dialog IDD_SETTINGSPROGSADV: Control id 1, Dialog
-#. IDD_SIMPLEPROMPT: Control id 1, Dialog IDD_STASH: Control id 1, Dialog
-#. IDD_STATGRAPH: Control id 1, Dialog IDD_SUBMODULE_ADD: Control id 1, Dialog
-#. IDD_SUBMODULE_UPDATE: Control id 1, Dialog IDD_SVNDCOMMITTYPE: Control id
-#. 1, Dialog IDD_SVNIGNORE: Control id 1, Dialog IDD_SVNPROGRESS: Control id
-#. 1, Dialog IDD_TOOLASSOC: Control id 1, Dialog IDD_URL: Control id 1, Dialog
-#. IDD_USER_PASSWD: Control id 1, IDS_MSGBOX_OK)
+#. Dialog IDD_SELECTREMOTEREF: Control id 1, Dialog IDD_SETTINGSBUGTRAQADV:
+#. Control id 1, Dialog IDD_SETTINGSHOOKCONFIG: Control id 1, Dialog
+#. IDD_SETTINGSPROGSADV: Control id 1, Dialog IDD_SIMPLEPROMPT: Control id 1,
+#. Dialog IDD_STASH: Control id 1, Dialog IDD_STATGRAPH: Control id 1, Dialog
+#. IDD_SUBMODULE_ADD: Control id 1, Dialog IDD_SUBMODULE_UPDATE: Control id 1,
+#. Dialog IDD_SVNDCOMMITTYPE: Control id 1, Dialog IDD_SVNIGNORE: Control id
+#. 1, Dialog IDD_SVNPROGRESS: Control id 1, Dialog IDD_TOOLASSOC: Control id
+#. 1, Dialog IDD_URL: Control id 1, Dialog IDD_USER_PASSWD: Control id 1,
+#. IDS_MSGBOX_OK)
 msgid "OK"
 msgstr "OK"
 
@@ -7805,7 +7849,9 @@ msgid "Pull (fetch and merge) commits from a remote branch."
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_PULLWRONGBRANCH)
-msgid "Pull requires the selected local branch to be the current branch."
+msgid ""
+"Pull requires the selected local branch to be the current branch.\n"
+"Do you want to switch to the selected branch?"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 302)
@@ -8119,7 +8165,8 @@ msgstr "Let op: Leg uw wijzigingen vast na oplossing"
 msgid "Remote"
 msgstr "Extern Archief"
 
-#. Resource IDs: (Dialog IDD_PULLFETCH: Control id 65535)
+#. Resource IDs: (Dialog IDD_PULLFETCH: Control id 65535, Dialog
+#. IDD_SELECTREMOTEREF: Control id 65535)
 msgid "Remote &Branch:"
 msgstr "Externe &Branch:"
 
@@ -8161,7 +8208,8 @@ msgid "Remote status"
 msgstr "Status in archief"
 
 #. Resource IDs: (Dialog IDD_DELETEREMOTETAG: Control id 65535, Dialog
-#. IDD_SETTINREMOTE: Control id 65535)
+#. IDD_SELECTREMOTEREF: Control id 65535, Dialog IDD_SETTINREMOTE: Control id
+#. 65535)
 msgid "Remote:"
 msgstr "Extern Archief:"
 
@@ -8942,6 +8990,10 @@ msgstr "Selecteer een samenvoeg-applicatie"
 #. Resource IDs: (IDS_LOG_MERGETO)
 msgid "Select merge target"
 msgstr "Selecteer een samenvoeg doel"
+
+#. Resource IDs: (Dialog IDD_SELECTREMOTEREF: Control id 4601)
+msgid "Select remote ref - TortoiseGit"
+msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_AUTOCLOSE_TT)
 msgid ""
@@ -9768,6 +9820,10 @@ msgstr ""
 msgid "Submodules"
 msgstr "Submodules"
 
+#. Resource IDs: (IDS_CLONE_RECURSIVE_TT)
+msgid "Submodules are initialized and cloned using their default settings."
+msgstr ""
+
 #. Resource IDs: (IDS_SUCCESS)
 msgid "Success"
 msgstr "Geslaagd"
@@ -9811,6 +9867,11 @@ msgid ""
 "Switch the contents of the left and right view\n"
 "Switch left and right view"
 msgstr "Wissel de inhoud van het linker en rechter venster\nWissel linker en rechter venster"
+
+#. Resource IDs: (IDS_PROC_SYNC_SWITCHTO)
+#, c-format
+msgid "Switch to \"%s\""
+msgstr ""
 
 #. Resource IDs: (AFX_IDS_SCNEXTWINDOW)
 msgid "Switch to the next document window"
@@ -10700,6 +10761,10 @@ msgstr "&Doorzichtige kleur..."
 msgid "Trim right"
 msgstr "Rechts trimmen"
 
+#. Resource IDs: (Dialog IDD_SETTINGSPROGSMERGE: Control id 1853)
+msgid "Trust the exitcode of the external mege tool for auto resolving"
+msgstr ""
+
 #. Resource IDs: (IDS_SVNERR_CLEANUPORFRESHCHECKOUT)
 msgid "Try a 'Cleanup'. If that doesn't work you need to do a fresh checkout."
 msgstr "Probeer te 'Schonen'. Indien het probleem blijft dient u opnieuw op te halen. "
@@ -10933,7 +10998,7 @@ msgstr "Gebruik 'hun' tekstblok"
 msgid "Use 'theirs' text block then 'mine'"
 msgstr "Gebruik 'hun' tekstblok en dan 'mijn' tekstblok"
 
-#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1911)
+#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 1911)
 msgid "Use .mailmap"
 msgstr ".Mailmap gebruiken"
 
@@ -11275,8 +11340,8 @@ msgstr "Bekijk Bars"
 msgid "View Patch"
 msgstr "Bekijk Patch"
 
-#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1637,
-#. IDS_PROC_COMMIT_SHOWPATCH)
+#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1637, Dialog IDD_DIFFFILES:
+#. Control id 1637, IDS_PROC_COMMIT_SHOWPATCH)
 msgid "View Patch>>"
 msgstr "Bekijk Patch>>"
 
@@ -11330,6 +11395,14 @@ msgstr "Waarschuwing"
 #. Resource IDs: (IDS_PROGRS_CONFLICTSOCCURRED_WARNING)
 msgid "Warning!"
 msgstr "Waarschuwing!"
+
+#. Resource IDs: (IDS_MERGESUCCESSFUL)
+#, c-format
+msgid ""
+"Was the merge of\n"
+"%s\n"
+"successful?"
+msgstr ""
 
 #. Resource IDs: (IDS_FIRSTSTART_HINT4)
 msgid ""
