@@ -124,6 +124,7 @@ public:
 
 	@param nWidth
 		The width in pixels for the page tree.
+		The window automatically scales the width according to current DPI.
 
 	@return
 		TRUE on success, FALSE otherwise (if the window has already been
