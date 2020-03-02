@@ -1,4 +1,10 @@
-﻿= Release 2.10.0 =
+﻿= Release 2.11.0 =
+Released: unreleased
+
+== Bug Fixes ==
+ * Fixed issue #3525: LogDlg crashes on copying full log info
+
+= Release 2.10.0 =
 Released: 2020-03-01
 
 == Features ==

@@ -2449,7 +2449,7 @@ void CGitLogListBase::CopySelectionToClipBoard(int toCopy)
 			{
 				sPaths = L"----\r\n";
 				auto files = pLogEntry->GetFiles(nullptr);
-				for (int cpPathIndex = 0; files.GetCount(); ++cpPathIndex)
+				for (int cpPathIndex = 0; cpPathIndex < files.GetCount(); ++cpPathIndex)
 				{
 					auto& file = files[cpPathIndex];
 					sPaths += file.GetActionName() + L": " + file.GetGitPathString();
