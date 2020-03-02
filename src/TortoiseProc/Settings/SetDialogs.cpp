@@ -251,7 +251,7 @@ BOOL CSetDialogs::OnInitDialog()
 		m_cFontSizes.SetWindowText(temp);
 	}
 
-	m_cFontNames.Setup(DEVICE_FONTTYPE|RASTER_FONTTYPE|TRUETYPE_FONTTYPE, 1, FIXED_PITCH);
+	m_cFontNames.Setup(DEVICE_FONTTYPE | RASTER_FONTTYPE | TRUETYPE_FONTTYPE, DEFAULT_CHARSET, FIXED_PITCH);
 	m_cFontNames.SelectFont(m_sFontName);
 	m_cFontNames.SendMessage(CB_SETITEMHEIGHT, WPARAM(-1), m_cFontSizes.GetItemHeight(-1));
 
