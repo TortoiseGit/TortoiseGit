@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2017, 2019 - TortoiseGit
+// Copyright (C) 2013-2017, 2019-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -70,7 +70,9 @@ public:
 	static int GetCredentialAnyEntryCallback(const git_config_entry *entry, void *payload)
 	{
 		CString name = CUnicodeUtils::GetUnicode(entry->name);
-		CString value = CUnicodeUtils::GetUnicode(entry->value);
+		CString value;
+		if (entry->value)
+			value = CUnicodeUtils::GetUnicode(entry->value);
 		CString text;
 		text.Format(L"%s\n%s\n%s", static_cast<LPCTSTR>(ConfigLevelToKey(entry->level)), static_cast<LPCTSTR>(name), static_cast<LPCTSTR>(value));
 		static_cast<STRING_VECTOR*>(payload)->push_back(text);
