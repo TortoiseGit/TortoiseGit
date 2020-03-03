@@ -1821,6 +1821,8 @@ void CRebaseDlg::SetControlEnable()
 		this->GetDlgItem(IDC_BUTTON_DOWN)->EnableWindow(FALSE);
 		m_CommitList.EnableDragnDrop(false);
 		this->GetDlgItem(IDC_BUTTON_ADD)->EnableWindow(FALSE);
+		this->GetDlgItem(IDC_BUTTON_ONTO)->EnableWindow(FALSE);
+		this->GetDlgItem(IDC_BUTTON_BROWSE)->EnableWindow(FALSE);
 
 		if( m_RebaseStage == REBASE_DONE && (this->m_PostButtonTexts.GetCount() != 0) )
 		{
