@@ -10606,7 +10606,7 @@ msgid ""
 "To use TortoiseGit please open the explorer and right-click on any folder you like\n"
 "to bring up the context menu where you will find all TortoiseGit commands.\n"
 "And read the manual!"
-msgstr "TortoiseGit 是一个 Windows 外壳扩展，\\n这意味着该程序是集成在 Windows 资源管理器中的。\\n要使用 TortoiseGit 请打开资源管理器并在任意目录中单击鼠标右键，\\n在弹出的右键菜单中可以找到所有的 TortoiseGit 命令。\\n更详细的使用请阅读手册！"
+msgstr "TortoiseGit 是一个 Windows 外壳扩展，\n这意味着该程序是集成在 Windows 资源管理器中的。\n要使用 TortoiseGit 请打开资源管理器并在任意目录中单击鼠标右键，\n在弹出的右键菜单中可以找到所有的 TortoiseGit 命令。\n更详细的使用请阅读手册！"
 
 #. Resource IDs: (IDS_FIRSTSTART_HINT1)
 msgid ""
