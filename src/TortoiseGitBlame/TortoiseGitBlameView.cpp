@@ -1901,16 +1901,16 @@ LRESULT CTortoiseGitBlameView::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*l
 void CTortoiseGitBlameView::OnViewNext()
 {
 	int startline = static_cast<int>(SendEditor(SCI_GETFIRSTVISIBLELINE));
-	int line = m_data.FindNextLine(this->m_SelectedHash, static_cast<int>(SendEditor(SCI_GETFIRSTVISIBLELINE), false));
+	int line = m_data.FindNextLine(this->m_SelectedHash, startline, false);
 	if(line >= 0)
-		SendEditor(SCI_LINESCROLL, 0, line - startline - 2);
+		SendEditor(SCI_LINESCROLL, 0, line - startline);
 }
 void CTortoiseGitBlameView::OnViewPrev()
 {
 	int startline = static_cast<int>(SendEditor(SCI_GETFIRSTVISIBLELINE));
-	int line = m_data.FindNextLine(this->m_SelectedHash, static_cast<int>(SendEditor(SCI_GETFIRSTVISIBLELINE)), true);
+	int line = m_data.FindNextLine(this->m_SelectedHash, startline, true);
 	if(line >= 0)
-		SendEditor(SCI_LINESCROLL, 0, line - startline - 2);
+		SendEditor(SCI_LINESCROLL, 0, line - startline + 1);
 }
 
 void CTortoiseGitBlameView::OnViewToggleLogID()
