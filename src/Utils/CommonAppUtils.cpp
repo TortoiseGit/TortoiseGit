@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2020 - TortoiseGit
-// Copyright (C) 2003-2008,2010 - TortoiseSVN
+// Copyright (C) 2003-2008, 2010, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,6 +27,7 @@
 #include "SelectFileFilter.h"
 #include "DPIAware.h"
 #include "LoadIconEx.h"
+#include "IconBitmapUtils.h"
 
 extern CString sOrigCWD;
 extern CString g_sGroupingUUID;
@@ -215,49 +216,16 @@ bool CCommonAppUtils::SetListCtrlBackgroundImage(HWND hListCtrl, UINT nID, int w
 {
 	if (static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\ShowListBackgroundImage", TRUE)) == FALSE)
 		return false;
-	ListView_SetTextBkColor(hListCtrl, CLR_NONE);
-	COLORREF bkColor = ListView_GetBkColor(hListCtrl);
 	// create a bitmap from the icon
 	CAutoIcon hIcon = ::LoadIconEx(AfxGetResourceHandle(), MAKEINTRESOURCE(nID), width, height);
 	if (!hIcon)
 		return false;
 
-	RECT rect = {0};
-	rect.right = width;
-	rect.bottom = height;
-
-	HWND desktop = ::GetDesktopWindow();
-	if (!desktop)
-		return false;
-
-	HDC screen_dev = ::GetDC(desktop);
-	if (!screen_dev)
-		return false;
-	SCOPE_EXIT { ::ReleaseDC(desktop, screen_dev); };
-
-	// Create a compatible DC
-	HDC dst_hdc = ::CreateCompatibleDC(screen_dev);
-	if (!dst_hdc)
-		return false;
-	SCOPE_EXIT { ::DeleteDC(dst_hdc); };
-
-	// Create a new bitmap of icon size
-	HBITMAP bmp = ::CreateCompatibleBitmap(screen_dev, rect.right, rect.bottom);
-	if (!bmp)
-		return false;
-
-	// Select it into the compatible DC
-	auto old_dst_bmp = static_cast<HBITMAP>(::SelectObject(dst_hdc, bmp));
-	// Fill the background of the compatible DC with the given color
-	::SetBkColor(dst_hdc, bkColor);
-	::ExtTextOut(dst_hdc, 0, 0, ETO_OPAQUE, &rect, nullptr, 0, nullptr);
-
-	// Draw the icon into the compatible DC
-	::DrawIconEx(dst_hdc, 0, 0, hIcon, rect.right, rect.bottom, 0, nullptr, DI_NORMAL);
-	::SelectObject(dst_hdc, old_dst_bmp);
+    IconBitmapUtils iutils;
+	auto bmp = iutils.IconToBitmapPARGB32(hIcon, width, height);
 
 	LVBKIMAGE lv;
-	lv.ulFlags = LVBKIF_TYPE_WATERMARK;
+	lv.ulFlags = LVBKIF_TYPE_WATERMARK | LVBKIF_FLAG_ALPHABLEND;
 	lv.hbm = bmp;
 	lv.xOffsetPercent = 100;
 	lv.yOffsetPercent = 100;

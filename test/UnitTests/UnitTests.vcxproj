@@ -95,6 +95,7 @@
     <ClInclude Include="..\..\src\Utils\I18NHelper.h" />
     <ClInclude Include="..\..\src\Utils\LoadIconEx.h" />
     <ClInclude Include="..\..\src\Utils\LruCache.h" />
+    <ClInclude Include="..\..\src\Utils\MiscUI\IconBitmapUtils.h" />
     <ClInclude Include="..\..\src\Utils\PathUtils.h" />
     <ClInclude Include="..\..\src\Utils\PersonalDictionary.h" />
     <ClInclude Include="..\..\src\Utils\ProfilingInfo.h" />
@@ -142,6 +143,7 @@
     <ClCompile Include="..\..\src\Utils\DebugOutput.cpp" />
     <ClCompile Include="..\..\src\Utils\DirFileEnum.cpp" />
     <ClCompile Include="..\..\src\Utils\LoadIconEx.cpp" />
+    <ClCompile Include="..\..\src\Utils\MiscUI\IconBitmapUtils.cpp" />
     <ClCompile Include="..\..\src\Utils\PathUtils.cpp" />
     <ClCompile Include="..\..\src\Utils\PersonalDictionary.cpp" />
     <ClCompile Include="..\..\src\Utils\ProfilingInfo.cpp" />

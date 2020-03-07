@@ -30,6 +30,9 @@
     <Filter Include="Resource Files">
       <UniqueIdentifier>{c07de030-f679-47f3-a744-cc4dc0bd8f4a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utils\UI">
+      <UniqueIdentifier>{ffc0b3bc-ffde-42fd-a7a8-787badcb0b66}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -181,6 +184,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Utils\I18NHelper.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Utils\MiscUI\IconBitmapUtils.h">
+      <Filter>Utils\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -387,6 +393,9 @@
     </ClCompile>
     <ClCompile Include="UnicodeUtilsTest.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Utils\MiscUI\IconBitmapUtils.cpp">
+      <Filter>Utils\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

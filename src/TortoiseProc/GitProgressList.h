@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -229,8 +229,6 @@ protected:
 	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
 	afx_msg void OnSysColorChange();
 	virtual ULONG GetGestureStatus(CPoint ptTouch) override;
-
-	UINT m_nBackgroundImageID;
 };
 
 class ProgressCommand

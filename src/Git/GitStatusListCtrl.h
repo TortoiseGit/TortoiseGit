@@ -419,9 +419,6 @@ public:
 	 * \param nID the resource ID of the bitmap to use as the background
 	 */
 	bool SetBackgroundImage(UINT nID);
-private:
-	UINT m_nBackgroundImageID;
-public:
 	/**
 	 * Makes the 'ignore' context menu only ignore the files and not add the
 	 * folder which gets the Git:ignore property changed to the list.

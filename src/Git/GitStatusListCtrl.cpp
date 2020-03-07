@@ -267,7 +267,6 @@ CGitStatusListCtrl::CGitStatusListCtrl() : CResizableColumnsListCtrl<CListCtrl>(
 	, m_nRestoreOvl(0)
 	, m_pContextMenu(nullptr)
 	, m_hShellMenu(nullptr)
-	, m_nBackgroundImageID(0)
 	, m_FileLoaded(0)
 	, m_bIsRevertTheirMy(false)
 	, m_nLineAdded(0)
@@ -376,7 +375,6 @@ void CGitStatusListCtrl::Init(DWORD dwColumns, const CString& sColumnInfoContain
 
 bool CGitStatusListCtrl::SetBackgroundImage(UINT nID)
 {
-	m_nBackgroundImageID = nID;
 	return CAppUtils::SetListCtrlBackgroundImage(GetSafeHwnd(), nID);
 }
 
@@ -4587,8 +4585,6 @@ CTGitPath* CGitStatusListCtrl::GetListEntry(int index)
 void CGitStatusListCtrl::OnSysColorChange()
 {
 	__super::OnSysColorChange();
-	if (m_nBackgroundImageID)
-		CAppUtils::SetListCtrlBackgroundImage(GetSafeHwnd(), m_nBackgroundImageID);
 }
 
 ULONG CGitStatusListCtrl::GetGestureStatus(CPoint /*ptTouch*/)
