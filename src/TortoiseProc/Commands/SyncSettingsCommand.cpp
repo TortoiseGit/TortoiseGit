@@ -34,14 +34,20 @@
 
 #define TGIT_SYNC_VERSION		1
 #define STRINGIFY(x)			#x
-#define TGIT_SYNC_VERSION_STR _T(STRINGIFY(TGIT_SYNC_VERSION))
+#define TOSTRING(x)				STRINGIFY(x)
+#define TGIT_SYNC_VERSION_STR _T(TOSTRING(TGIT_SYNC_VERSION))
 
 // registry entries
 std::vector<CString> regUseArray = {
-	L"TortoiseMerge\\*",
-	L"TortoiseMerge\\History\\Find\\*",
+	L"TortoiseGitMerge\\*",
+	L"TortoiseGitMerge\\History\\Find\\*",
 	L"TortoiseOverlays\\*",
 	L"TortoiseGit\\*",
+	L"TortoiseGit\\LogDlg\\*",
+	L"TortoiseGit\\TortoiseProc\\EmailAddress\\*",
+	L"TortoiseGit\\TortoiseProc\\FormatPatch\\*",
+	L"TortoiseGit\\TortoiseProc\\RequestPull\\*",
+	L"TortoiseGit\\TortoiseProc\\SendMail\\*",
 	L"TortoiseGit\\Colors\\*",
 	L"TortoiseGit\\History\\**",
 	L"TortoiseGit\\History\\repoPaths\\**",
@@ -49,19 +55,20 @@ std::vector<CString> regUseArray = {
 	L"TortoiseGit\\LogCache\\*",
 	L"TortoiseGit\\Merge\\*",
 	L"TortoiseGit\\RevisionGraph\\*",
-	L"TortoiseGit\\Servers\\global\\**",
 	L"TortoiseGit\\StatusColumns\\*",
+	L"TortoiseGit\\TortoiseGitBlame\\Workspace\\*",
 };
 
 std::vector<CString> regUseLocalArray = {
 	L"TortoiseGit\\DiffTools\\*",
 	L"TortoiseGit\\MergeTools\\*",
 	L"TortoiseGit\\StatusColumns\\*",
-	L"Tigris.org\\Subversion\\Config\\**",
-	L"Tigris.org\\Subversion\\Servers\\**",
 };
 
 std::vector<CString> regBlockArray = {
+	L"git_cached_version",
+	L"git_file_time",
+	L"CheckNewerDay",
 	L"checknewerweek",
 	L"configdir",
 	L"currentversion",
@@ -73,19 +80,15 @@ std::vector<CString> regBlockArray = {
 	L"hooks",
 	L"lastcheckoutpath",
 	L"merge",
-	L"mergewcurl",
-	L"newversion",
-	L"newversionlink",
-	L"newversiontext",
+	L"MSysGit",
+	L"Msys2Hack",
+	L"systemconfig",
 	L"nocontextpaths",
 	L"scintilladirect2d",
 	L"synccounter",
 	L"synclast",
 	L"syncpath",
 	L"syncpw",
-	L"tblamepos",
-	L"tblamesize",
-	L"tblamestate",
 	L"udiffpagesetup*",
 	L"*windowpos",
 };
@@ -94,6 +97,10 @@ std::vector<CString> regBlockLocalArray = {
 	L"configdir",
 	L"hooks",
 	L"scintilladirect2d",
+	L"git_cached_version",
+	L"git_file_time",
+	L"CheckNewerDay",
+	L"checknewerweek",
 };
 
 static bool HandleRegistryKey(const CString& regname, CSimpleIni& iniFile, bool bCloudIsNewer)
@@ -479,7 +486,7 @@ bool SyncSettingsCommand::Execute()
 						CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Error loading %s, retrycount %d\n", (LPCWSTR)sDataFilePath, retrycount);
 						Sleep(500);
 					}
-				} while ((err == SI_FILE) && retrycount--);
+				} while ((err == SI_FILE) && --retrycount);
 
 				if (err == SI_FILE)
 					return false;
@@ -632,12 +639,13 @@ bool SyncSettingsCommand::FileOpenSave(CString& path, BOOL& bWithLocals, bool bO
 	path = L"d:\\test.txt";
 	bWithLocals = true;
 	return true;
-	/*HRESULT hr;
+	HRESULT hr;
 	bWithLocals = FALSE;
 	// Create a new common save file dialog
-	CComPtr<IFileDialog> pfd = nullptr;
+	/*CComPtr<IFileDialog> pfd;
 
-	hr = pfd.CoCreateInstance(bOpen ? CLSID_FileOpenDialog : CLSID_FileSaveDialog, nullptr, CLSCTX_INPROC_SERVER);
+	if (!SUCCEEDED(pfd.CoCreateInstance(bOpen ? CLSID_FileOpenDialog : CLSID_FileSaveDialog, nullptr, CLSCTX_INPROC_SERVER)))
+		return false;
 	if (SUCCEEDED(hr))
 	{
 		// Set the dialog options
