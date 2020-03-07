@@ -158,6 +158,7 @@ protected:
 	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnPaint();
+	afx_msg void OnSysColorChange();
 
 	void OnPasteGitHash();
 	void JumpToGitHash(CString hash);

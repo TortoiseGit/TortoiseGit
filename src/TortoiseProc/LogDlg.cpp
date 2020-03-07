@@ -205,6 +205,7 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_WM_SIZING()
 	ON_WM_CTLCOLOR()
 	ON_WM_PAINT()
+	ON_WM_SYSCOLORCHANGE()
 END_MESSAGE_MAP()
 
 enum JumpType
@@ -3570,4 +3571,11 @@ void CLogDlg::OnNMCustomdrawChangedFileList(NMHDR* pNMHDR, LRESULT* pResult)
 	auto filter(m_LogList.m_LogFilter);
 	if ((m_SelectedFilters & LOGFILTER_PATHS) && (filter->IsFilterActive()))
 		*pResult = CGitLogListBase::DrawListItemWithMatches(filter.get(), m_ChangedFileListCtrl, pLVCD, m_Colors);
+}
+
+void CLogDlg::OnSysColorChange()
+{
+	__super::OnSysColorChange();
+	SendDlgItemMessage(IDC_MSGVIEW, WM_SYSCOLORCHANGE, 0, 0);
+	CMFCVisualManager::GetInstance()->RedrawAll();
 }
