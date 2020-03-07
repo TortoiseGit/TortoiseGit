@@ -117,10 +117,7 @@ END_MESSAGE_MAP()
 // CTortoiseGitBlameView construction/destruction
 
 CTortoiseGitBlameView::CTortoiseGitBlameView()
-	: wBlame(0)
-	, wHeader(0)
-	, hwndTT(0)
-	, bIgnoreEOL(false)
+	: bIgnoreEOL(false)
 	, bIgnoreSpaces(false)
 	, bIgnoreAllSpaces(false)
 	, m_MouseLine(-1)
@@ -128,8 +125,6 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 	, hInstance(nullptr)
 	, hResource(nullptr)
 	, currentDialog(nullptr)
-	, wMain(nullptr)
-	, wLocator(nullptr)
 	, m_blamewidth(0)
 	, m_revwidth(0)
 	, m_logidwidth(0)
@@ -666,7 +661,7 @@ bool CTortoiseGitBlameView::DoSearch(CTortoiseGitBlameData::SearchDirection dire
 		m_SelectedLine = i;
 	}
 	else
-		::MessageBox(m_pFindDialog && m_pFindDialog->GetSafeHwnd() ? m_pFindDialog->GetSafeHwnd() : wMain, L"\"" + m_sFindText + L"\" " + CString(MAKEINTRESOURCE(IDS_NOTFOUND)), L"TortoiseGitBlame", MB_ICONINFORMATION);
+		::MessageBox(m_pFindDialog && m_pFindDialog->GetSafeHwnd() ? m_pFindDialog->GetSafeHwnd() : GetSafeHwnd(), L"\"" + m_sFindText + L"\" " + CString(MAKEINTRESOURCE(IDS_NOTFOUND)), L"TortoiseGitBlame", MB_ICONINFORMATION);
 
 	return true;
 }
@@ -1002,7 +997,6 @@ void CTortoiseGitBlameView::DrawLocatorBar(HDC hDC)
 	COLORREF blackColor = GetSysColor(COLOR_WINDOWTEXT);
 
 	RECT rc;
-	//::GetClientRect(wLocator, &rc);
 	this->GetClientRect(&rc);
 
 	rc.right = CDPIAware::Instance().ScaleX(LOCATOR_WIDTH);

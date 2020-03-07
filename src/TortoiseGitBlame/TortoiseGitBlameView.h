@@ -188,11 +188,6 @@ public:
 	HINSTANCE hInstance;
 	HINSTANCE hResource;
 	HWND currentDialog;
-	HWND wMain;
-	HWND wBlame;
-	HWND wHeader;
-	HWND wLocator;
-	HWND hwndTT;
 
 	BOOL bIgnoreEOL;
 	BOOL bIgnoreSpaces;
