@@ -2862,6 +2862,7 @@ void CLogDlg::OnBnClickedHidepaths()
 {
 	FillLogMessageCtrl();
 	m_ChangedFileListCtrl.Invalidate();
+	UpdateLogInfoLabel();
 }
 
 void CLogDlg::UpdateLogInfoLabel()
