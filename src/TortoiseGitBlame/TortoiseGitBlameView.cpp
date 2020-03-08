@@ -770,7 +770,7 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 	}
 	else
 	{
-		auto length = static_cast<int>(std::ceil(std::log10(GetLogList()->GetItemCount())));
+		auto length = static_cast<int>(std::ceil(std::log10(GetLogList()->GetItemCount() + 1)));
 		m_sLogIDFormat.Format(L"%%%dd", length);
 		::GetTextExtentPoint32(hDC, CString(L'8', length), length, &width);
 		m_logidwidth = width.cx + CDPIAware::Instance().ScaleX(BLAMESPACE);
