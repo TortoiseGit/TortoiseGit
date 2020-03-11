@@ -1,7 +1,7 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2013 - TortoiseGit
-// Copyright (C) 2006-2015, 2017 - TortoiseSVN
+// Copyright (C) 2006-2015, 2017, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -194,6 +194,7 @@ protected:
 	afx_msg void	OnUpdateTabModeRight(CCmdUI *pCmdUI);
 	afx_msg void	OnUpdateTabModeBottom(CCmdUI *pCmdUI);
 	afx_msg void	OnUpdateThreeWayActions(CCmdUI* pCmdUI);
+	afx_msg void	OnUpdateColumnStatusBar(CCmdUI* pCmdUI);
 	afx_msg	void	OnRegexNoFilter();
 	afx_msg void	OnUpdateRegexNoFilter(CCmdUI* pCmdUI);
 
