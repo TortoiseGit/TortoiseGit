@@ -81,6 +81,7 @@ CBaseView::CBaseView()
 	, m_nOffsetChar(0)
 	, m_nDigits(0)
 	, m_nMouseLine(-1)
+	, m_nLDownLine(-1)
 	, m_mouseInMargin(false)
 	, m_bIsHidden(FALSE)
 	, m_lineendings(EOL_AUTOLINE)
@@ -239,6 +240,7 @@ void CBaseView::DocumentUpdated()
 	m_bOtherDiffChecked = false;
 	m_nDigits = 0;
 	m_nMouseLine = -1;
+	m_nLDownLine = -1;
 	m_nTabSize = static_cast<int>(CRegDWORD(L"Software\\TortoiseGitMerge\\TabSize", 4));
 	m_nTabMode = static_cast<int>(CRegDWORD(L"Software\\TortoiseGitMerge\\TabMode", TABMODE_NONE));
 	m_bViewLinenumbers = CRegDWORD(L"Software\\TortoiseGitMerge\\ViewLinenumbers", 1);
@@ -2374,7 +2376,7 @@ void CBaseView::OnSetFocus(CWnd* pOldWnd)
 int CBaseView::GetLineFromPoint(CPoint point)
 {
 	ScreenToClient(&point);
-	return (((point.y - HEADERHEIGHT) / GetLineHeight()) + m_nTopLine);
+	return (((point.y - (GetLineHeight() + HEADERHEIGHT)) / GetLineHeight()) + m_nTopLine);
 }
 
 void CBaseView::OnContextMenu(CPoint point, DiffStates state)
@@ -3178,6 +3180,7 @@ void CBaseView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 void CBaseView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	const int nClickedLine = GetButtonEventLineIndex(point);
+	m_nLDownLine = nClickedLine;
 	if ((nClickedLine >= m_nTopLine)&&(nClickedLine < GetLineCount()))
 	{
 		POINT ptCaretPos;
@@ -3362,7 +3365,7 @@ void CBaseView::OnLButtonDblClk(UINT nFlags, CPoint point)
 void CBaseView::OnLButtonTrippleClick( UINT /*nFlags*/, CPoint point )
 {
 	const int nClickedLine = GetButtonEventLineIndex(point);
-	if (((point.y - HEADERHEIGHT) / GetLineHeight()) <= 0)
+	if (((point.y - (GetLineHeight() + HEADERHEIGHT)) / GetLineHeight()) <= 0)
 	{
 		if (!m_sConvertedFilePath.IsEmpty() && (GetKeyState(VK_CONTROL)&0x8000))
 		{
@@ -3441,6 +3444,8 @@ void CBaseView::OnMouseMove(UINT nFlags, CPoint point)
 			Invalidate();
 			UpdateWindow();
 		}
+		if (m_nLDownLine < 0)
+			return; // no scrolling if the click started on the header
 		if (nMouseLine < m_nTopLine)
 		{
 			ScrollAllToLine(m_nTopLine-1, TRUE);
@@ -5020,6 +5025,8 @@ void CBaseView::FilterWhitespaces(CString& line)
 
 int CBaseView::GetButtonEventLineIndex(const POINT& point)
 {
+	if (point.y < (GetLineHeight() + HEADERHEIGHT))
+		return -1;
 	const int nLineFromTop = (point.y - HEADERHEIGHT) / GetLineHeight();
 	int nEventLine = nLineFromTop + m_nTopLine;
 	nEventLine--;     //we need the index
