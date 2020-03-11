@@ -5718,7 +5718,7 @@ CString CBaseView::GetSelectedText() const
 	}
 	// remove the non-selected chars from the first line, last line and last \r\n
 	int nLeftCut = start.x;
-	int nRightCut = GetViewLineChars(end.y).GetLength() - end.x + CDPIAware::Instance().ScaleX(2);
+	int nRightCut = GetViewLineChars(end.y).GetLength() - end.x + 2;
 	sSelectedText = sSelectedText.Mid(nLeftCut, sSelectedText.GetLength()-nLeftCut-nRightCut);
 	return sSelectedText;
 }

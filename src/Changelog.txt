@@ -6,6 +6,7 @@ Released: unreleased
  * Fixes issue #3527: TGit always crashes when commiting an edit after opening the "Onto" dialog
  * LogDlg: Improve high contrast mode switching
  * Fixed issue #3535: `Show log ID instead of SHA-1` might cut of numbers
+ * Fixed issue #3531: TortoiseGitMerge: the captured to clipboard text is two characters shorter than the selected
 
 = Release 2.10.0 =
 Released: 2020-03-01
