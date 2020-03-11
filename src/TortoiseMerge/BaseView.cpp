@@ -3344,12 +3344,21 @@ void CBaseView::OnLButtonDblClk(UINT nFlags, CPoint point)
 			m_sMarkedWord.Empty();
 		}
 
-		if (m_pwndLeft)
-			m_pwndLeft->SetMarkedWord(m_sMarkedWord);
-		if (m_pwndRight)
-			m_pwndRight->SetMarkedWord(m_sMarkedWord);
-		if (m_pwndBottom)
-			m_pwndBottom->SetMarkedWord(m_sMarkedWord);
+		if (GetKeyState(VK_CONTROL) & 0x8000)
+		{
+			// if the ctrl key is pressed, only
+			// mark the words in this view
+			SetMarkedWord(m_sMarkedWord);
+		}
+		else
+		{
+			if (m_pwndLeft)
+				m_pwndLeft->SetMarkedWord(m_sMarkedWord);
+			if (m_pwndRight)
+				m_pwndRight->SetMarkedWord(m_sMarkedWord);
+			if (m_pwndBottom)
+				m_pwndBottom->SetMarkedWord(m_sMarkedWord);
+		}
 
 		Invalidate();
 		if (m_pwndLocator)
