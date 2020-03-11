@@ -158,6 +158,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_THREEWAY_ACTIONS, &CMainFrame::OnUpdateThreeWayActions)
 	ON_UPDATE_COMMAND_UI(ID_INDICATOR_COLUMN, &CMainFrame::OnUpdateColumnStatusBar)
 	ON_UPDATE_COMMAND_UI(ID_INDICATOR_MARKEDWORDS, &CMainFrame::OnUpdateMarkedWords)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_FINDNEXTSTART, &CMainFrame::OnUpdateEnableIfSelection)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_FINDPREVSTART, &CMainFrame::OnUpdateEnableIfSelection)
 	ON_COMMAND_RANGE(ID_INDICATOR_LEFTENCODINGSTART, ID_INDICATOR_LEFTENCODINGSTART+19, &CMainFrame::OnEncodingLeft)
 	ON_COMMAND_RANGE(ID_INDICATOR_RIGHTENCODINGSTART, ID_INDICATOR_RIGHTENCODINGSTART+19, &CMainFrame::OnEncodingRight)
 	ON_COMMAND_RANGE(ID_INDICATOR_BOTTOMENCODINGSTART, ID_INDICATOR_BOTTOMENCODINGSTART+19, &CMainFrame::OnEncodingBottom)
@@ -3161,6 +3163,22 @@ void CMainFrame::OnUpdateMarkedWords(CCmdUI* pCmdUI)
 		pCmdUI->SetText(sStatusBarText);
 		pCmdUI->Enable(true);
 	}
+}
+
+void CMainFrame::OnUpdateEnableIfSelection(CCmdUI* pCmdUI)
+{
+	bool bEnabled = false;
+	auto pWndWithFocus = GetFocus();
+	if (pWndWithFocus)
+	{
+		if (pWndWithFocus == m_pwndBottomView)
+			bEnabled = !m_pwndBottomView->GetSelectedText().IsEmpty();
+		if (pWndWithFocus == m_pwndLeftView)
+			bEnabled = !m_pwndLeftView->GetSelectedText().IsEmpty();
+		if (pWndWithFocus == m_pwndRightView)
+			bEnabled = !m_pwndRightView->GetSelectedText().IsEmpty();
+	}
+	pCmdUI->Enable(bEnabled);
 }
 
 void CMainFrame::OnRegexfilter(UINT cmd)

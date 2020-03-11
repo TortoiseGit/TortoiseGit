@@ -1070,6 +1070,8 @@ BEGIN
     ID_VIEW_MOVEDBLOCKS     "Detect and highlight moved blocks"
     ID_VIEW_WRAPLONGLINES   "Wrap long lines at the right border of the view\nWrap long lines"
     ID_VIEW_INLINEDIFF      "Show Inline-Diff\nInline diff"
+    ID_EDIT_FINDNEXTSTART   "Find the next occurrence of the selected text\nSearch Next"
+    ID_EDIT_FINDPREVSTART   "Find the last occurrence of the selected text\nSearch Previous"
     ID_EDIT_GOTOLINE        "Navigate to a specific line in the view\nGoto Line"
 END
 

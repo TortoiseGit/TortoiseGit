@@ -4471,6 +4471,22 @@ msgstr ""
 msgid "Find"
 msgstr ""
 
+#. Resource IDs: (cmdFindNext_LabelTitle_RESID)
+msgid "Find Next"
+msgstr ""
+
+#. Resource IDs: (cmdFindPrev_LabelTitle_RESID)
+msgid "Find Previous"
+msgstr ""
+
+#. Resource IDs: (cmdFindPrev)
+msgid "Find the last occurrence of the selected text\nSearch Previous"
+msgstr ""
+
+#. Resource IDs: (cmdFindNext)
+msgid "Find the next occurrence of the selected text\nSearch Next"
+msgstr ""
+
 #. Resource IDs: (57636, cmdFind)
 msgid "Find the specified text\nFind"
 msgstr ""
