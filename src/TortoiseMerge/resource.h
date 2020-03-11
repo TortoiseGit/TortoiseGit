@@ -45,6 +45,7 @@
 #define IDB_REGEX_FILTER                171
 #define IDS_SELECTFILE                  200
 #define IDS_INDICATOR_COLUMN            202
+#define IDS_INDICATOR_MARKEDWORDCOUNT   203
 #define IDD_ENCODING                    300
 #define IDC_STATIC_ENCODING             301
 #define IDC_COMBO_ENCODING              302
@@ -185,6 +186,7 @@
 #define ID_INDICATOR_RIGHTTABMODESTART  2320
 #define ID_INDICATOR_BOTTOMTABMODESTART 2340
 #define ID_INDICATOR_COLUMN             2350
+#define ID_INDICATOR_MARKEDWORDS        2351
 #define IDS_COMMONFILEFILTER            2500
 #define IDS_PATCHFILEFILTER             2501
 #define IDS_PATCH_SEARCHPATHTITLE       2700

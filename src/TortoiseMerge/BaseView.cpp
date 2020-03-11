@@ -4488,6 +4488,7 @@ void CBaseView::BuildMarkedWordArray()
 	m_arMarkedWordLines.clear();
 	m_arMarkedWordLines.reserve(lineCount);
 	bool bDoit = !m_sMarkedWord.IsEmpty();
+	m_MarkedWordCount = 0;
 	for (int i = 0; i < lineCount; ++i)
 	{
 		if (bDoit)
@@ -4510,6 +4511,7 @@ void CBaseView::BuildMarkedWordArray()
 						if (eRight != eEnd)
 						{
 							found = 1;
+							++m_MarkedWordCount;
 							break;
 						}
 					}

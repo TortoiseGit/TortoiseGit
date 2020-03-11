@@ -139,6 +139,7 @@ public: // methods
 	void			SetInlineDiff(bool bDiff) {m_bShowInlineDiff = bDiff;}
 	void			SetMarkedWord(const CString& word) {m_sMarkedWord = word; BuildMarkedWordArray();}
 	LPCTSTR			GetMarkedWord() { return static_cast<LPCTSTR>(m_sMarkedWord); }
+	int				GetMarkedWordCount() const { return m_MarkedWordCount; }
 	LPCTSTR			GetFindString() { return static_cast<LPCTSTR>(m_sFindText); }
 
 	// Selection methods; all public methods dealing with selection go here
@@ -544,6 +545,7 @@ protected:  // variables
 	CString			m_sNoLineNr;
 	CString			m_sMarkedWord;
 	CString			m_sPreviousMarkedWord;
+	int				m_MarkedWordCount;
 
 	CBitmap *		m_pCacheBitmap;
 	CDC *			m_pDC;
