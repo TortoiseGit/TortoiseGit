@@ -5919,6 +5919,11 @@ msgstr ""
 msgid "Marked Blocks"
 msgstr ""
 
+#. Resource IDs: (IDS_INDICATOR_MARKEDWORDCOUNT)
+#, c-format
+msgid "Marked words: %s"
+msgstr ""
+
 #. Resource IDs: (cmdMarkResolved)
 msgid "Marks a file as resolved in Git\nMark as resolved"
 msgstr ""

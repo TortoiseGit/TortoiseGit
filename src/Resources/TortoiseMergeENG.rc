@@ -682,7 +682,13 @@ BEGIN
     IDS_MSGBOX_YES          "&Yes"
     IDS_MSGBOX_NO           "&No"
     IDS_MSGBOX_CANCEL       "Cancel"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_SELECTFILE          "Select File..."
     IDS_INDICATOR_COLUMN    "Column: %d"
+    IDS_INDICATOR_MARKEDWORDCOUNT "Marked words: %s"
 END
 
 STRINGTABLE
@@ -799,11 +805,6 @@ STRINGTABLE
 BEGIN
     AFX_IDS_SCRESTORE       "Restore the window to normal size"
     AFX_IDS_SCTASKLIST      "Activate Task List"
-END
-
-STRINGTABLE
-BEGIN
-    IDS_SELECTFILE          "Select File..."
 END
 
 STRINGTABLE
