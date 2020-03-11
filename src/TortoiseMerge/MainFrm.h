@@ -196,6 +196,7 @@ protected:
 	afx_msg void	OnUpdateThreeWayActions(CCmdUI* pCmdUI);
 	afx_msg void	OnUpdateColumnStatusBar(CCmdUI* pCmdUI);
 	afx_msg void	OnUpdateMarkedWords(CCmdUI* pCmdUI);
+	afx_msg void	OnUpdateEnableIfSelection(CCmdUI* pCmdUI);
 	afx_msg	void	OnRegexNoFilter();
 	afx_msg void	OnUpdateRegexNoFilter(CCmdUI* pCmdUI);
 

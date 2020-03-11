@@ -89,6 +89,16 @@
         <Image Source="ribbon/Search.bmp"/>
       </Command.LargeImages>
     </Command>
+    <Command Name="cmdFindNext" LabelTitle="Find Next" Id="32891">
+      <Command.LargeImages>
+        <Image Source="ribbon/Search.bmp"/>
+      </Command.LargeImages>
+    </Command>
+    <Command Name="cmdFindPrev" LabelTitle="Find Previous" Id="32892">
+      <Command.LargeImages>
+        <Image Source="ribbon/Search.bmp"/>
+      </Command.LargeImages>
+    </Command>
     <Command Name="cmdGotoLine" LabelTitle="Goto Line" Id="32893" Keytip="G">
       <Command.LargeImages>
         <Image Source="ribbon/Goto.bmp"/>
@@ -340,6 +350,12 @@
                 <ControlSizeDefinition ImageSize="Large" />
                 <ColumnBreak ShowSeparator="true"/>
                 <ControlSizeDefinition ImageSize="Large" />
+                <Row>
+                  <ControlSizeDefinition ImageSize="Small" />
+                </Row>
+                <Row>
+                  <ControlSizeDefinition ImageSize="Small" />
+                </Row>
                 <ControlSizeDefinition ImageSize="Large" />
                 <ColumnBreak ShowSeparator="true"/>
                 <ControlSizeDefinition ImageSize="Large" />
@@ -371,6 +387,12 @@
                 <Row>
                   <ControlSizeDefinition ImageSize="Small" />
                 </Row>
+                <Row>
+                  <ControlSizeDefinition ImageSize="Small" />
+                </Row>
+                <Row>
+                  <ControlSizeDefinition ImageSize="Large" />
+                </Row>
                 <ColumnBreak ShowSeparator="true"/>
                 <ControlSizeDefinition ImageSize="Large" />
               </GroupSizeDefinition>
@@ -401,6 +423,12 @@
                 <Row>
                   <ControlSizeDefinition ImageSize="Small" />
                 </Row>
+                <Row>
+                  <ControlSizeDefinition ImageSize="Small" />
+                </Row>
+                <Row>
+                  <ControlSizeDefinition ImageSize="Large" />
+                </Row>
                 <ColumnBreak ShowSeparator="true"/>
                 <ControlSizeDefinition ImageSize="Large" />
               </GroupSizeDefinition>
@@ -413,6 +441,8 @@
             <Button CommandName="cmdCopy" />
             <Button CommandName="cmdPaste" />
             <Button CommandName="cmdFind" />
+            <Button CommandName="cmdFindPrev" />
+            <Button CommandName="cmdFindNext" />
             <Button CommandName="cmdGotoLine" />
             <Button CommandName="cmdMarkResolved" />
           </Group>
