@@ -682,6 +682,7 @@ BEGIN
     IDS_MSGBOX_YES          "&Yes"
     IDS_MSGBOX_NO           "&No"
     IDS_MSGBOX_CANCEL       "Cancel"
+    IDS_INDICATOR_COLUMN    "Column: %d"
 END
 
 STRINGTABLE
