@@ -68,7 +68,7 @@
     <ClCompile>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <InlineFunctionExpansion Condition="'$(Platform)|$(MSBuildVersion)'=='x64|16.4.0'">OnlyExplicitInline</InlineFunctionExpansion>
+      <InlineFunctionExpansion Condition="'$(Platform)|$(MSBuildVersion)'=='x64|16.4.0' OR '$(Platform)|$(MSBuildVersion)'=='x64|16.5.0'">OnlyExplicitInline</InlineFunctionExpansion>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
