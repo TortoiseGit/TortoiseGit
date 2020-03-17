@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2018 - TortoiseGit
+// Copyright (C) 2018, 2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -34,9 +34,9 @@ class GitWCRevStatusCBasicGitWithTestBareRepositoryFixture : public CBasicGitWit
 {
 };
 
-INSTANTIATE_TEST_CASE_P(GitWCRevStatus, GitWCRevStatusCBasicGitWithTestRepoFixture, testing::Values(LIBGIT2));
-INSTANTIATE_TEST_CASE_P(GitWCRevStatus, GitWCRevStatusCBasicGitWithEmptyRepositoryFixture, testing::Values(LIBGIT2));
-INSTANTIATE_TEST_CASE_P(GitWCRevStatus, GitWCRevStatusCBasicGitWithTestBareRepositoryFixture, testing::Values(LIBGIT2));
+INSTANTIATE_TEST_SUITE_P(GitWCRevStatus, GitWCRevStatusCBasicGitWithTestRepoFixture, testing::Values(LIBGIT2));
+INSTANTIATE_TEST_SUITE_P(GitWCRevStatus, GitWCRevStatusCBasicGitWithEmptyRepositoryFixture, testing::Values(LIBGIT2));
+INSTANTIATE_TEST_SUITE_P(GitWCRevStatus, GitWCRevStatusCBasicGitWithTestBareRepositoryFixture, testing::Values(LIBGIT2));
 
 TEST(GitWCRevStatus, NotExists)
 {

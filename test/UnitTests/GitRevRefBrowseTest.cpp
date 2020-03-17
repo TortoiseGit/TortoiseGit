@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2019 - TortoiseGit
+// Copyright (C) 2015-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -29,8 +29,8 @@ class GitRevRefBrowserCBasicGitWithTestRepoBareFixture : public CBasicGitWithTes
 {
 };
 
-INSTANTIATE_TEST_CASE_P(GitRevRefBrowser, GitRevRefBrowserCBasicGitWithTestRepoFixture, testing::Values(GIT_CLI));
-INSTANTIATE_TEST_CASE_P(GitRevRefBrowser, GitRevRefBrowserCBasicGitWithTestRepoBareFixture, testing::Values(GIT_CLI));
+INSTANTIATE_TEST_SUITE_P(GitRevRefBrowser, GitRevRefBrowserCBasicGitWithTestRepoFixture, testing::Values(GIT_CLI));
+INSTANTIATE_TEST_SUITE_P(GitRevRefBrowser, GitRevRefBrowserCBasicGitWithTestRepoBareFixture, testing::Values(GIT_CLI));
 
 static void GetGitRevRefMap()
 {

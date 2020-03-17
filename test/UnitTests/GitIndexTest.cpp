@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2019 - TortoiseGit
+// Copyright (C) 2015-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -100,10 +100,10 @@ protected:
 	CString m_SubmoduleSource = m_Dir.GetTempDir() + L"\\SubmoduleSource";
 };
 
-INSTANTIATE_TEST_CASE_P(GitIndex, GitIndexCBasicGitFixture, testing::Values(LIBGIT2));
-INSTANTIATE_TEST_CASE_P(GitIndex, GitIndexCBasicGitWithEmptyRepositoryFixture, testing::Values(LIBGIT2));
-INSTANTIATE_TEST_CASE_P(GitIndex, GitIndexCBasicGitWithTestRepoFixture, testing::Values(LIBGIT2));
-INSTANTIATE_TEST_CASE_P(GitIndex, CBasicGitWithMultiLinkedTestWithSubmoduleRepoFixture, testing::Values(LIBGIT2));
+INSTANTIATE_TEST_SUITE_P(GitIndex, GitIndexCBasicGitFixture, testing::Values(LIBGIT2));
+INSTANTIATE_TEST_SUITE_P(GitIndex, GitIndexCBasicGitWithEmptyRepositoryFixture, testing::Values(LIBGIT2));
+INSTANTIATE_TEST_SUITE_P(GitIndex, GitIndexCBasicGitWithTestRepoFixture, testing::Values(LIBGIT2));
+INSTANTIATE_TEST_SUITE_P(GitIndex, CBasicGitWithMultiLinkedTestWithSubmoduleRepoFixture, testing::Values(LIBGIT2));
 
 TEST_P(GitIndexCBasicGitFixture, EmptyDir)
 {

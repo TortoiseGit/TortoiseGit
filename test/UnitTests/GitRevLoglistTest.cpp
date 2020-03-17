@@ -46,13 +46,13 @@ class GitRevLoglist2CBasicGitWithTestRepoBareFixture : public CBasicGitWithTestR
 {
 };
 
-INSTANTIATE_TEST_CASE_P(GitRevLoglist, GitRevLoglistCBasicGitWithTestRepoFixture, testing::Values(LIBGIT, LIBGIT2, LIBGIT2_ALL));
-INSTANTIATE_TEST_CASE_P(GitRevLoglist, GitRevLoglistCBasicGitWithTestRepoBareFixture, testing::Values(LIBGIT, LIBGIT2, LIBGIT2_ALL));
-INSTANTIATE_TEST_CASE_P(GitRevLoglist, GitRevLoglistCBasicGitWithSubmoduleRepoFixture, testing::Values(LIBGIT, LIBGIT2, LIBGIT2_ALL));
-INSTANTIATE_TEST_CASE_P(GitRevLoglist, GitRevLoglistCBasicGitWithSubmoduleRepoBareFixture, testing::Values(LIBGIT, LIBGIT2, LIBGIT2_ALL));
+INSTANTIATE_TEST_SUITE_P(GitRevLoglist, GitRevLoglistCBasicGitWithTestRepoFixture, testing::Values(LIBGIT, LIBGIT2, LIBGIT2_ALL));
+INSTANTIATE_TEST_SUITE_P(GitRevLoglist, GitRevLoglistCBasicGitWithTestRepoBareFixture, testing::Values(LIBGIT, LIBGIT2, LIBGIT2_ALL));
+INSTANTIATE_TEST_SUITE_P(GitRevLoglist, GitRevLoglistCBasicGitWithSubmoduleRepoFixture, testing::Values(LIBGIT, LIBGIT2, LIBGIT2_ALL));
+INSTANTIATE_TEST_SUITE_P(GitRevLoglist, GitRevLoglistCBasicGitWithSubmoduleRepoBareFixture, testing::Values(LIBGIT, LIBGIT2, LIBGIT2_ALL));
 
-INSTANTIATE_TEST_CASE_P(GitRevLoglist, GitRevLoglist2CBasicGitWithTestRepoFixture, testing::Values(GIT_CLI, LIBGIT, LIBGIT2, LIBGIT2_ALL));
-INSTANTIATE_TEST_CASE_P(GitRevLoglist, GitRevLoglist2CBasicGitWithTestRepoBareFixture, testing::Values(GIT_CLI, LIBGIT, LIBGIT2, LIBGIT2_ALL));
+INSTANTIATE_TEST_SUITE_P(GitRevLoglist, GitRevLoglist2CBasicGitWithTestRepoFixture, testing::Values(GIT_CLI, LIBGIT, LIBGIT2, LIBGIT2_ALL));
+INSTANTIATE_TEST_SUITE_P(GitRevLoglist, GitRevLoglist2CBasicGitWithTestRepoBareFixture, testing::Values(GIT_CLI, LIBGIT, LIBGIT2, LIBGIT2_ALL));
 
 static void SafeFetchFullInfo(CGit* cGit)
 {

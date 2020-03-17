@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015, 2017-2019 - TortoiseGit
+// Copyright (C) 2015, 2017-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -37,10 +37,10 @@ class CLogDataVectorCBasicGitWithEmptyBareRepositoryFixturee : public CBasicGitW
 {
 };
 
-INSTANTIATE_TEST_CASE_P(CLogDataVector, CLogDataVectorCBasicGitWithTestRepoFixture, testing::Values(LIBGIT));
-INSTANTIATE_TEST_CASE_P(CLogDataVector, CLogDataVectorCBasicGitWithTestRepoBareFixture, testing::Values(LIBGIT));
-INSTANTIATE_TEST_CASE_P(CLogDataVector, CLogDataVectorCBasicGitWithEmptyRepositoryFixturee, testing::Values(LIBGIT));
-INSTANTIATE_TEST_CASE_P(CLogDataVector, CLogDataVectorCBasicGitWithEmptyBareRepositoryFixturee, testing::Values(LIBGIT));
+INSTANTIATE_TEST_SUITE_P(CLogDataVector, CLogDataVectorCBasicGitWithTestRepoFixture, testing::Values(LIBGIT));
+INSTANTIATE_TEST_SUITE_P(CLogDataVector, CLogDataVectorCBasicGitWithTestRepoBareFixture, testing::Values(LIBGIT));
+INSTANTIATE_TEST_SUITE_P(CLogDataVector, CLogDataVectorCBasicGitWithEmptyRepositoryFixturee, testing::Values(LIBGIT));
+INSTANTIATE_TEST_SUITE_P(CLogDataVector, CLogDataVectorCBasicGitWithEmptyBareRepositoryFixturee, testing::Values(LIBGIT));
 
 TEST(CLogDataVector, Empty)
 {

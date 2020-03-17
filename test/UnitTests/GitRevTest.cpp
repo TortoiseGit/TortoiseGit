@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2017, 2019 - TortoiseGit
+// Copyright (C) 2015-2017, 2019-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -29,8 +29,8 @@ class GitRevCBasicGitWithTestRepoBareFixture : public CBasicGitWithTestRepoBareF
 {
 };
 
-INSTANTIATE_TEST_CASE_P(GitRev, GitRevCBasicGitWithTestRepoFixture, testing::Values(LIBGIT, LIBGIT2, LIBGIT2_ALL));
-INSTANTIATE_TEST_CASE_P(GitRev, GitRevCBasicGitWithTestRepoBareFixture, testing::Values(LIBGIT, LIBGIT2, LIBGIT2_ALL));
+INSTANTIATE_TEST_SUITE_P(GitRev, GitRevCBasicGitWithTestRepoFixture, testing::Values(LIBGIT, LIBGIT2, LIBGIT2_ALL));
+INSTANTIATE_TEST_SUITE_P(GitRev, GitRevCBasicGitWithTestRepoBareFixture, testing::Values(LIBGIT, LIBGIT2, LIBGIT2_ALL));
 
 static void GetRevParsingTests()
 {
