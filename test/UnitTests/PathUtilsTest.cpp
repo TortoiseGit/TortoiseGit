@@ -192,3 +192,30 @@ TEST(CPathUtils, GetCopyrightForSelf)
 	CString copyright = CPathUtils::GetCopyrightForSelf();
 	EXPECT_TRUE(CStringUtils::StartsWith(copyright, L"Copyright (C) 20"));
 }
+
+TEST(CPathUtils, ConvertToSlash)
+{
+	CString path = L"";
+	CPathUtils::ConvertToSlash(path.GetBuffer());
+	EXPECT_STREQ(path, L"");
+
+	path = L"\\";
+	CPathUtils::ConvertToSlash(path.GetBuffer());
+	EXPECT_STREQ(path, L"/");
+
+	path = L"test";
+	CPathUtils::ConvertToSlash(path.GetBuffer());
+	EXPECT_STREQ(path, L"test");
+
+	path = L"test\\def";
+	CPathUtils::ConvertToSlash(path.GetBuffer());
+	EXPECT_STREQ(path, L"test/def");
+
+	path = L"test/def";
+	CPathUtils::ConvertToSlash(path.GetBuffer());
+	EXPECT_STREQ(path, L"test/def");
+
+	path = L"te\\st/def";
+	CPathUtils::ConvertToSlash(path.GetBuffer());
+	EXPECT_STREQ(path, L"te/st/def");
+}

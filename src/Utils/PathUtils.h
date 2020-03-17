@@ -34,6 +34,7 @@ public:
 	CPathUtils() = delete;
 	static BOOL			MakeSureDirectoryPathExists(LPCTSTR path);
 	static void			ConvertToBackslash(LPTSTR dest, LPCTSTR src, size_t len);
+	static void			ConvertToSlash(LPWSTR path);
 
 	/**
 	 * Returns the version string from the VERSION resource of a dll or exe.

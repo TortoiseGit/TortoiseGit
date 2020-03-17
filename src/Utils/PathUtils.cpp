@@ -23,6 +23,7 @@
 #include "StringUtils.h"
 #include "../../ext/libgit2/src/win32/reparse.h"
 #include "SmartHandle.h"
+#include <assert.h>
 
 BOOL CPathUtils::MakeSureDirectoryPathExists(LPCTSTR path)
 {
@@ -48,6 +49,14 @@ BOOL CPathUtils::MakeSureDirectoryPathExists(LPCTSTR path)
 	} while ((pPath++) && (wcschr(pPath, L'\\')));
 
 	return CreateDirectory(internalpathbuf.get(), &attribs);
+}
+
+void CPathUtils::ConvertToSlash(LPWSTR path)
+{
+	assert(path);
+	auto pCH = path;
+	while ((pCH = wcschr(pCH, L'\\')) != nullptr)
+		*pCH = L'/';
 }
 
 void CPathUtils::ConvertToBackslash(LPTSTR dest, LPCTSTR src, size_t len)

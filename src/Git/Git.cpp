@@ -2161,6 +2161,8 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 
 	if(!sshclient.IsEmpty())
 	{
+		if (ms_bCygwinGit)
+			sshclient.Replace(L'\\', L'/');
 		m_Environment.SetEnv(L"GIT_SSH", sshclient);
 		if (CStringUtils::EndsWithI(sshclient, L"tortoisegitplink") || CStringUtils::EndsWithI(sshclient, L"tortoisegitplink.exe"))
 			m_Environment.SetEnv(L"GIT_SSH_VARIANT", L"ssh");
@@ -2173,6 +2175,8 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 		LPTSTR ptr = wcsrchr(sPlink, L'\\');
 		if (ptr) {
 			wcscpy_s(ptr + 1, _countof(sPlink) - (ptr - sPlink + 1), L"TortoiseGitPlink.exe");
+			if (ms_bCygwinGit)
+				CPathUtils::ConvertToSlash(sPlink);
 			m_Environment.SetEnv(L"GIT_SSH", sPlink);
 			m_Environment.SetEnv(L"GIT_SSH_VARIANT", L"ssh");
 			m_Environment.SetEnv(L"SVN_SSH", sPlink);
@@ -2186,6 +2190,8 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 		if (ptr)
 		{
 			wcscpy_s(ptr + 1, _countof(sAskPass) - (ptr - sAskPass + 1), L"SshAskPass.exe");
+			if (ms_bCygwinGit)
+				CPathUtils::ConvertToSlash(sAskPass);
 			m_Environment.SetEnv(L"DISPLAY",L":9999");
 			m_Environment.SetEnv(L"SSH_ASKPASS",sAskPass);
 			m_Environment.SetEnv(L"GIT_ASKPASS",sAskPass);
