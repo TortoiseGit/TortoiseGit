@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2016, 2019 - TortoiseGit
+// Copyright (C) 2011-2016, 2019-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -71,11 +71,19 @@ bool CMassiveGitTaskBase::ExecuteCommands(volatile BOOL& cancel)
 {
 	m_bUnused = false;
 
+	int max_command_line_length = 30000;
+	int quotes_length = 2;
+	if (CGit::ms_bCygwinGit || CGit::ms_bMsys2Git) // see issue https://tortoisegit.org/issue/3542
+	{
+		max_command_line_length = 3500;
+		quotes_length = 4;
+	}
+
 	int maxLength = 0;
 	int firstCombine = 0;
 	for (int i = 0; i < GetListCount(); ++i)
 	{
-		if (maxLength + GetListItem(i).GetLength() > MAX_COMMANDLINE_LENGTH || i == GetListCount() - 1 || cancel)
+		if (maxLength + GetListItem(i).GetLength() > max_command_line_length || i == GetListCount() - 1 || cancel)
 		{
 			CString add;
 			for (int j = firstCombine; j <= i; ++j)
@@ -110,7 +118,7 @@ bool CMassiveGitTaskBase::ExecuteCommands(volatile BOOL& cancel)
 			}
 		}
 		else
-			maxLength += 3 + GetListItem(i).GetLength();
+			maxLength += 1 + quotes_length + GetListItem(i).GetLength();
 	}
 	return true;
 }

@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2011-2013 - Sven Strickroth <email@cs-ware.de>
-// Copyright (C) 2013-2017 - TortoiseGit
+// Copyright (C) 2013-2017, 2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,8 +21,6 @@
 #pragma once
 #include "gittype.h"
 #include "TGitPath.h"
-
-#define MAX_COMMANDLINE_LENGTH 30000
 
 class CMassiveGitTaskBase
 {
