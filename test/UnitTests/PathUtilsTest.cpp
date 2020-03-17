@@ -219,3 +219,26 @@ TEST(CPathUtils, ConvertToSlash)
 	CPathUtils::ConvertToSlash(path.GetBuffer());
 	EXPECT_STREQ(path, L"te/st/def");
 }
+
+TEST(CPathUtils, ConvertToBackslash)
+{
+	wchar_t out[MAX_PATH] = { 0 };
+
+	CPathUtils::ConvertToBackslash(out, L"", _countof(out));
+	EXPECT_STREQ(out, L"");
+
+	CPathUtils::ConvertToBackslash(out, L"/", _countof(out));
+	EXPECT_STREQ(out, L"\\");
+
+	CPathUtils::ConvertToBackslash(out, L"test", _countof(out));
+	EXPECT_STREQ(out, L"test");
+
+	CPathUtils::ConvertToBackslash(out, L"test/def", _countof(out));
+	EXPECT_STREQ(out, L"test\\def");
+
+	CPathUtils::ConvertToBackslash(out, L"test\\def", _countof(out));
+	EXPECT_STREQ(out, L"test\\def");
+
+	CPathUtils::ConvertToBackslash(out, L"te\\st/def", _countof(out));
+	EXPECT_STREQ(out, L"te\\st\\def");
+}
