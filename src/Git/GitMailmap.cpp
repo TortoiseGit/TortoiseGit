@@ -19,11 +19,24 @@
 
 #include "stdafx.h"
 #include "GitMailmap.h"
+#include "Git.h"
 
 CGitMailmap::CGitMailmap()
 {
 	if (ShouldLoadMailmap())
+	{
+		try
+		{
+			g_Git.CheckAndInitDll();
+		}
+		catch (char* msg)
+		{
+			CString err(msg);
+			MessageBox(nullptr, L"Could not initialize libgit. Disabling Mailmap support.\nlibgit reports:\n" + err, L"TortoiseGit", MB_ICONERROR);
+			return;
+		}
 		git_read_mailmap(&m_pMailmap);
+	}
 }
 
 CGitMailmap::~CGitMailmap()
