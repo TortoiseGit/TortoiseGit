@@ -58,6 +58,7 @@ extern void drop_all_attr_stacks(void);
 extern void git_atexit_dispatch(void);
 extern void git_atexit_clear(void);
 extern void invalidate_ref_cache(void);
+extern void clear_ref_decorations(void);
 extern void cmd_log_init(int argc, const char** argv, const char* prefix, struct rev_info* rev, struct setup_revision_opt* opt);
 extern int estimate_commit_count(struct commit_list* list);
 extern int log_tree_commit(struct rev_info*, struct commit*);
@@ -101,6 +102,7 @@ int git_init(void)
 	g_prefix = setup_git_directory();
 	git_config(git_default_config, NULL);
 	invalidate_ref_cache();
+	clear_ref_decorations();
 
 	/* add a safeguard until we have full support in TortoiseGit */
 	if (the_repository && the_repository->hash_algo && strcmp(the_repository->hash_algo->name, "sha1") != 0)
@@ -395,6 +397,7 @@ int git_open_log(GIT_LOG* handle, const char* arg)
 	memset(p_Rev,0,sizeof(struct rev_info));
 
 	invalidate_ref_cache();
+	clear_ref_decorations();
 
 	init_revisions(p_Rev, g_prefix);
 	p_Rev->diff = 1;

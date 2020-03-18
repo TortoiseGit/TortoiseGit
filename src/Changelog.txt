@@ -9,6 +9,7 @@ Released: unreleased
  * Fixed issue #3531: TortoiseGitMerge: the captured to clipboard text is two characters shorter than the selected
  * Fixed issue #3543: Push can't run TortoiseGitPlink.exe with Cygwin hack enabled
  * Fixed issue #3542: Commit many files not working with Cygwin hack enabled
+ * Fixed issue #3524: Revision Graph very slow after update to 2.10.0.0
 
 = Release 2.10.0 =
 Released: 2020-03-01
