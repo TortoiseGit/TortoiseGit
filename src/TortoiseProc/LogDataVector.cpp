@@ -75,6 +75,7 @@ int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, 
 
 	try
 	{
+		CAutoLocker lock(g_Git.m_critGitDllSec);
 		g_Git.ForceReInitDll();
 	}
 	catch (const char* msg)

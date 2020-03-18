@@ -2730,6 +2730,7 @@ int CGitLogListBase::BeginFetchLog()
 
 	try
 	{
+		CAutoLocker lock(g_Git.m_critGitDllSec);
 		g_Git.CheckAndInitDll();
 	}
 	catch (char* msg)

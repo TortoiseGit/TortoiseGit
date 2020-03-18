@@ -107,12 +107,12 @@ int GitRevLoglist::SafeGetSimpleList(CGit* git)
 		InterlockedExchange(&m_IsSimpleListReady, TRUE);
 		return 0;
 	}
-	git->CheckAndInitDll();
 	GIT_COMMIT commit = { 0 };
 	GIT_COMMIT_LIST list;
 	GIT_HASH parent;
 
 	CAutoLocker lock(g_Git.m_critGitDllSec);
+	git->CheckAndInitDll();
 
 	try
 	{
@@ -312,12 +312,12 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 		return 0;
 	}
 
-	git->CheckAndInitDll();
 	GIT_COMMIT commit = { 0 };
 	GIT_COMMIT_LIST list;
 	GIT_HASH parent;
 
 	CAutoLocker lock(g_Git.m_critGitDllSec);
+	git->CheckAndInitDll();
 
 	try
 	{
@@ -454,6 +454,7 @@ int GitRevLoglist::GetRefLog(const CString& ref, std::vector<GitRevLoglist>& ref
 	}
 	else if (g_Git.m_IsUseGitDLL)
 	{
+		CAutoLocker lock(g_Git.m_critGitDllSec);
 		g_Git.CheckAndInitDll();
 		std::vector<GitRevLoglist> tmp;
 		// no error checking, because the only error which could occur is file not found
