@@ -45,7 +45,6 @@ bool CGit::ms_bCygwinGit = (CRegDWORD(L"Software\\TortoiseGit\\CygwinHack", FALS
 bool CGit::ms_bMsys2Git = (CRegDWORD(L"Software\\TortoiseGit\\Msys2Hack", FALSE) == TRUE);
 int CGit::ms_iSimilarityIndexThreshold = CalculateDiffSimilarityIndexThreshold(CRegDWORD(L"Software\\TortoiseGit\\DiffSimilarityIndexThreshold", 50));
 int CGit::m_LogEncode=CP_UTF8;
-typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 
 static LPCTSTR nextpath(const wchar_t* path, wchar_t* buf, size_t buflen)
 {

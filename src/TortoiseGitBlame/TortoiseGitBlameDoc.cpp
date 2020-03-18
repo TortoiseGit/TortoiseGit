@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -47,8 +47,6 @@ IMPLEMENT_DYNCREATE(CTortoiseGitBlameDoc, CDocument)
 
 BEGIN_MESSAGE_MAP(CTortoiseGitBlameDoc, CDocument)
 END_MESSAGE_MAP()
-
-typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 
 // CTortoiseGitBlameDoc construction/destruction
 

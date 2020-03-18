@@ -24,8 +24,6 @@
 #include "gitdll.h"
 #include "UnicodeUtils.h"
 
-typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
-
 GitRev::GitRev(void)
 {
 }

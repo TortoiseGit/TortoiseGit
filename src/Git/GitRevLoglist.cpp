@@ -24,8 +24,6 @@
 #include "UnicodeUtils.h"
 #include <sys/stat.h>
 
-typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
-
 std::shared_ptr<CGitMailmap> GitRevLoglist::s_Mailmap = nullptr;
 
 GitRevLoglist::GitRevLoglist(void) : GitRev()

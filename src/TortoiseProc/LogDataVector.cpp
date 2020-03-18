@@ -34,8 +34,6 @@
 #include "GitLogListBase.h"
 #include "UnicodeUtils.h"
 
-typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
-
 void CLogDataVector::ClearAll()
 {
 	clear();
