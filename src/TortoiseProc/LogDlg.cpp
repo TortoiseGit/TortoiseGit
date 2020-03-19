@@ -2465,21 +2465,21 @@ void CLogDlg::OnDtnDatetimechangeDateto(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 {
 	try
 	{
-		CTime _time;
+		COleDateTime _time;
 		m_DateTo.GetTime(_time);
 
-		CTime fromTime;
+		COleDateTime fromTime;
 		m_DateFrom.GetTime(fromTime);
 		if (_time < fromTime)
 		{
 			_time = fromTime;
-			m_DateTo.SetTime(&_time);
+			m_DateTo.SetTime(_time);
 		}
 
-		CTime time(_time.GetYear(), _time.GetMonth(), _time.GetDay(), 23, 59, 59);
+		CTime time = (_time < COleDateTime((time_t)0)) ? CTime(0) : CTime(_time.GetYear(), _time.GetMonth(), _time.GetDay(), 23, 59, 59);
 		if (time.GetTime() != m_LogList.m_Filter.m_To)
 		{
-			m_LogList.m_Filter.m_To = static_cast<DWORD>(time.GetTime());
+			m_LogList.m_Filter.m_To = time.GetTime();
 			SetTimer(LOGFTIME_TIMER, 10, nullptr);
 		}
 	}
@@ -2495,21 +2495,21 @@ void CLogDlg::OnDtnDatetimechangeDatefrom(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 {
 	try
 	{
-		CTime _time;
+		COleDateTime _time;
 		m_DateFrom.GetTime(_time);
 
-		CTime toTime;
+		COleDateTime toTime;
 		m_DateTo.GetTime(toTime);
 		if (_time > toTime)
 		{
 			_time = toTime;
-			m_DateFrom.SetTime(&_time);
+			m_DateFrom.SetTime(_time);
 		}
 
-		CTime time(_time.GetYear(), _time.GetMonth(), _time.GetDay(), 0, 0, 0);
+		CTime time = (_time < COleDateTime((time_t)0)) ? CTime(0) : CTime(_time.GetYear(), _time.GetMonth(), _time.GetDay(), 0, 0, 0);
 		if (time.GetTime() != m_LogList.m_Filter.m_From)
 		{
-			m_LogList.m_Filter.m_From = static_cast<DWORD>(time.GetTime());
+			m_LogList.m_Filter.m_From = time.GetTime();
 			m_LogList.m_Filter.m_NumberOfLogsScale = CFilterData::SHOW_LAST_SEL_DATE;
 
 			if (CFilterData::SHOW_LAST_SEL_DATE == static_cast<DWORD>(CRegDWORD(L"Software\\TortoiseGit\\LogDialog\\NumberOfLogsScale", CFilterData::SHOW_NO_LIMIT)))
