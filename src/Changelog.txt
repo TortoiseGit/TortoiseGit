@@ -1,5 +1,5 @@
-﻿= Release 2.11.0 =
-Released: unreleased
+﻿= Release 2.10.0.1 =
+Released: 2020-03-19
 
 == Bug Fixes ==
  * Fixed issue #3525: LogDlg crashes on copying full log info
@@ -10,6 +10,8 @@ Released: unreleased
  * Fixed issue #3543: Push can't run TortoiseGitPlink.exe with Cygwin hack enabled
  * Fixed issue #3542: Commit many files not working with Cygwin hack enabled
  * Fixed issue #3524: Revision Graph very slow after update to 2.10.0.0
+ * Fix possible crash on Git credential helper settings page
+ * Fixed possible data races in sync dialog
 
 = Release 2.10.0 =
 Released: 2020-03-01
