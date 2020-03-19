@@ -250,6 +250,9 @@ BOOL CCommitDlg::OnInitDialog()
 	if (m_bSetAuthor)
 		GetDlgItem(IDC_COMMIT_AUTHORDATA)->ShowWindow(SW_SHOW);
 
+	// git commit accepts only 1970-01-01 to 2099-12-31 regardless timezone
+	COleDateTime minDate(1970, 1, 1, 0, 0, 0), maxDate(2099, 12, 31, 0, 0, 0);
+	m_CommitDate.SetRange(&minDate, &maxDate);
 	if (m_bSetCommitDateTime)
 	{
 		m_CommitDate.SetTime(&m_wantCommitTime);

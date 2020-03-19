@@ -357,6 +357,10 @@ BOOL CLogDlg::OnInitDialog()
 
 	m_DateFrom.SendMessage(DTM_SETMCSTYLE, 0, MCS_WEEKNUMBERS|MCS_NOTODAY|MCS_NOTRAILINGDATES|MCS_NOSELCHANGEONNAV);
 	m_DateTo.SendMessage(DTM_SETMCSTYLE, 0, MCS_WEEKNUMBERS | MCS_NOTRAILINGDATES | MCS_NOSELCHANGEONNAV);
+	COleDateTime minDateUTC((time_t)0); // negative TZ: 1969-12-31
+	COleDateTime minDate(minDateUTC.GetYear(), minDateUTC.GetMonth(), minDateUTC.GetDay(), 0, 0, 0), maxDate(2100, 1, 2, 23, 59, 59);
+	m_DateFrom.SetRange(&minDate, &maxDate);
+	m_DateTo.SetRange(&minDate, &maxDate);
 
 	m_staticRef.SetURL(CString());
 
