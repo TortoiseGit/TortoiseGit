@@ -31,7 +31,7 @@
 				<Component Id="C__infofiles" Guid="$(var.GuidInfoFiles)" Win64="$(var.Win64YesNo)">
 					<File Id="F__changelog" Name="Changelog.txt" DiskId="1" Source="..\Changelog.txt" KeyPath="yes" />
 					<File Id="F__changelog_pre1.8" Name="Changelog-pre1.8.txt" DiskId="1" Source="..\Changelog-pre1.8.txt" />
-					<File Id="F__tortoisegitlicense" Name="TortoiseGit License.txt" DiskId="1" Source="..\gpl.txt" />
+					<File Id="F__tortoisegitlicense" Name="TortoiseGit License.txt" DiskId="1" Source="..\..\LICENSE" />
 					<File Id="F__aprlicense" Name="apr License.txt" DiskId="1" Source="..\..\ext\apr\LICENSE" />
 				</Component>
 
