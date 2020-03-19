@@ -1,4 +1,4 @@
-Overall architecture of TortoiseGit
+dddOverall architecture of TortoiseGit
 ===================================
 
 Mainly TortoiseGit consists of several executables and two DLLs which
