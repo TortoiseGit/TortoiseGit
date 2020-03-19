@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -60,7 +60,7 @@ struct GIT_COMMIT_AUTHOR
 	int	  NameSize;
 	const char* Email;
 	int	  EmailSize;
-	int	  Date;
+	long long Date;
 	int   TimeZone;
 
 };

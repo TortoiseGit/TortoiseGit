@@ -131,7 +131,7 @@ static int git_parse_commit_author(struct GIT_COMMIT_AUTHOR* author, const char*
 
 	pbuff = end + 2;
 
-	author->Date = atol(pbuff);
+	author->Date = atoll(pbuff);
 	end =  strchr(pbuff, ' ');
 	if( end == 0 )
 		return -1;

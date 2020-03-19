@@ -78,7 +78,7 @@ int GitRevRefBrowser::GetGitRevRefMap(MAP_REF_GITREVREFBROWSER& map, int mergefi
 		ref.m_AuthorName = singleRef.Tokenize(L"\04", valuePos).Trim(); if (valuePos < 0) continue;
 		CString email = singleRef.Tokenize(L"\04", valuePos).Trim().Trim(L"<>"); if (valuePos < 0) continue;
 		CString date = singleRef.Tokenize(L"\04", valuePos).Trim();
-		ref.m_AuthorDate = StrToInt(date);
+		ref.m_AuthorDate = _wtoll(date);
 		if (ref.m_AuthorName.IsEmpty())
 		{
 			ref.m_AuthorName = singleRef.Tokenize(L"\04", valuePos).Trim(); if (valuePos < 0) continue;
@@ -86,7 +86,7 @@ int GitRevRefBrowser::GetGitRevRefMap(MAP_REF_GITREVREFBROWSER& map, int mergefi
 			email.Truncate(max(0, email.Find(L'>')));
 			ref.m_AuthorName.Truncate(max(0, ref.m_AuthorName.Find(L" <")));
 			date = singleRef.Tokenize(L"\04", valuePos).Trim();
-			ref.m_AuthorDate = StrToInt(date);
+			ref.m_AuthorDate = _wtoll(date);
 		}
 		if (mailmap)
 			ref.m_AuthorName = mailmap.TranslateAuthor(ref.m_AuthorName, email);
