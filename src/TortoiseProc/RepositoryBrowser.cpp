@@ -243,9 +243,8 @@ BOOL CRepositoryBrowser::OnInitDialog()
 	int borderWidth = 0;
 	if (IsAppThemed())
 	{
-		HTHEME hTheme = OpenThemeData(m_RepoTree, L"TREEVIEW");
+		CAutoThemeData hTheme = OpenThemeData(m_RepoTree, L"TREEVIEW");
 		GetThemeMetric(hTheme, NULL, TVP_TREEITEM, TREIS_NORMAL, TMT_BORDERSIZE, &borderWidth);
-		CloseThemeData(hTheme);
 	}
 	else
 		borderWidth = GetSystemMetrics(SM_CYBORDER);

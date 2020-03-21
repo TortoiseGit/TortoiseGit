@@ -20,6 +20,7 @@
 #include "stdafx.h"
 #include "PropPageFrameDefault.h"
 #include "ExtTextOutFL.h"
+#include "SmartHandle.h"
 
 namespace TreePropSheet
 {
@@ -109,14 +110,13 @@ CRect CPropPageFrameDefault::CalcMsgArea()
 	GetClientRect(rect);
 	if (IsAppThemed())
 	{
-		HTHEME hTheme = OpenThemeData(m_hWnd, L"Tab");
+		CAutoThemeData hTheme = OpenThemeData(m_hWnd, L"Tab");
 		if (hTheme)
 		{
 			CRect	rectContent;
 			CDC		*pDc = GetDC();
 			GetThemeBackgroundContentRect(hTheme, pDc->m_hDC, TABP_PANE, 0, rect, rectContent);
 			ReleaseDC(pDc);
-			CloseThemeData(hTheme);
 
 			if (GetShowCaption())
 				rectContent.top = rect.top+GetCaptionHeight()+1;
@@ -136,14 +136,13 @@ CRect CPropPageFrameDefault::CalcCaptionArea()
 	GetClientRect(rect);
 	if (IsAppThemed())
 	{
-		HTHEME hTheme = OpenThemeData(m_hWnd, L"Tab");
+		CAutoThemeData hTheme = OpenThemeData(m_hWnd, L"Tab");
 		if (hTheme)
 		{
 			CRect	rectContent;
 			CDC		*pDc = GetDC();
 			GetThemeBackgroundContentRect(hTheme, pDc->m_hDC, TABP_PANE, 0, rect, rectContent);
 			ReleaseDC(pDc);
-			CloseThemeData(hTheme);
 
 			if (GetShowCaption())
 				rectContent.bottom = rect.top+GetCaptionHeight();
@@ -260,13 +259,12 @@ BOOL CPropPageFrameDefault::OnEraseBkgnd(CDC* pDC)
 {
 	if (IsAppThemed())
 	{
-		HTHEME hTheme = OpenThemeData(m_hWnd, L"TREEVIEW");
+		CAutoThemeData hTheme = OpenThemeData(m_hWnd, L"TREEVIEW");
 		if (hTheme)
 		{
 			CRect	rect;
 			GetClientRect(rect);
 			DrawThemeBackground(hTheme, pDC->m_hDC, 0, 0, rect, nullptr);
-			CloseThemeData(hTheme);
 		}
 		return TRUE;
 	}

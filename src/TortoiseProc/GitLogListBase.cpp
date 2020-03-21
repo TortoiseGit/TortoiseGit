@@ -515,7 +515,7 @@ void CGitLogListBase::DrawTagBranchMessage(NMLVCUSTOMDRAW* pLVCD, CRect& rect, I
 	CDC W_Dc;
 	W_Dc.Attach(pLVCD->nmcd.hdc);
 
-	HTHEME hTheme = nullptr;
+	CAutoThemeData hTheme;
 	if (IsAppThemed())
 		hTheme = OpenThemeData(m_hWnd, L"Explorer::ListView;ListView");
 
@@ -583,9 +583,6 @@ void CGitLogListBase::DrawTagBranchMessage(NMLVCUSTOMDRAW* pLVCD, CRect& rect, I
 
 		DrawTagBranch(pLVCD->nmcd.hdc, W_Dc, hTheme, rect, rt, rItem, data, refList);
 	}
-
-	if (hTheme)
-		CloseThemeData(hTheme);
 
 	W_Dc.Detach();
 }
@@ -1212,7 +1209,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 							txtState = LISS_SELECTEDNOTFOCUS;
 					}
 
-					HTHEME hTheme = nullptr;
+					CAutoThemeData hTheme;
 					if (IsAppThemed())
 					{
 						hTheme = OpenThemeData(m_hWnd, L"Explorer::ListView;ListView");
@@ -1240,9 +1237,8 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 
 						// calculate background for rect of whole line, but limit redrawing to SubItem rect
 						DrawThemeBackground(hTheme, pLVCD->nmcd.hdc, LVP_LISTITEM, txtState, rt, rect2);
-
-						CloseThemeData(hTheme);
 					}
+					hTheme.CloseHandle();
 					// END: extended redraw
 
 					FillBackGround(pLVCD->nmcd.hdc, pLVCD->nmcd.dwItemSpec, rect);
@@ -4071,7 +4067,7 @@ LRESULT CGitLogListBase::DrawListItemWithMatches(CFilterHelper* filter, CListCtr
 		listCtrl.GetSubItemRect(static_cast<int>(pLVCD->nmcd.dwItemSpec), pLVCD->iSubItem, LVIR_BOUNDS, rect);
 
 	int borderWidth = 0;
-	HTHEME hTheme = nullptr;
+	CAutoThemeData hTheme;
 	if (IsAppThemed())
 	{
 		hTheme = OpenThemeData(listCtrl.m_hWnd, L"Explorer::ListView;ListView");
@@ -4216,9 +4212,8 @@ LRESULT CGitLogListBase::DrawListItemWithMatches(CFilterHelper* filter, CListCtr
 			}
 			if ((state) && (listCtrl.GetExtendedStyle() & LVS_EX_CHECKBOXES))
 			{
-				HTHEME hTheme2 = OpenThemeData(listCtrl.m_hWnd, L"BUTTON");
+				CAutoThemeData hTheme2 = OpenThemeData(listCtrl.m_hWnd, L"BUTTON");
 				DrawThemeBackground(hTheme2, pLVCD->nmcd.hdc, BP_CHECKBOX, state, &irc, NULL);
-				CloseThemeData(hTheme2);
 			}
 		}
 	}
@@ -4243,8 +4238,6 @@ LRESULT CGitLogListBase::DrawListItemWithMatches(CFilterHelper* filter, CListCtr
 	}
 
 	DrawListItemWithMatchesRect(pLVCD, ranges, rect, text, colors, hTheme, txtState);
-	if (hTheme)
-		CloseThemeData(hTheme);
 
 	return CDRF_SKIPDEFAULT;
 }

@@ -18,6 +18,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
+#include <Uxtheme.h>
 
 template <typename type>
 struct CDefaultHandleNull
@@ -198,6 +199,15 @@ struct CCloseFILE
 };
 
 template <typename T>
+struct CCloseThemeData
+{
+	static bool Close(T hTheme)
+	{
+		return !!::CloseThemeData(hTheme);
+	}
+};
+
+template <typename T>
 struct CCloseIcon
 {
 	static bool Close(T handle)
@@ -214,6 +224,7 @@ typedef CSmartHandle<HMODULE,	CCloseLibrary>											CAutoLibrary;
 typedef CSmartHandle<HANDLE,	CCloseHandle, CDefaultHandleInvalid>					CAutoFile;
 typedef CSmartHandle<HANDLE,	CCloseFindFile, CDefaultHandleInvalid>					CAutoFindFile;
 typedef CSmartHandle<FILE*,		CCloseFILE>												CAutoFILE;
+typedef CSmartHandle<HTHEME,	CCloseThemeData>										CAutoThemeData;
 typedef CSmartHandle<HICON,		CCloseIcon>												CAutoIcon;
 
 /*
