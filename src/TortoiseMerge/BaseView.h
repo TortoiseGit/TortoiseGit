@@ -1,7 +1,7 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2020 - TortoiseGit
-// Copyright (C) 2003-2015, 2020 - TortoiseSVN
+// Copyright (C) 2003-2015, 2019 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -498,7 +498,6 @@ protected:  // variables
 	int				m_nSelViewBlockEnd;
 
 	int				m_nMouseLine;
-	int				m_nLDownLine;
 	bool			m_mouseInMargin;
 	HCURSOR			m_margincursor;
 

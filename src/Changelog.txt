@@ -1,4 +1,11 @@
-﻿= Release 2.10.0.1 =
+﻿= Release 2.10.0.2 =
+Released: unreleased
+
+== Bug Fixes ==
+ * Fixed issue #3557: TortoiseGitMerge 'Use this text block' not working
+ * Fixed issue #3559: TortoiseGitMerge loses text selection when you open the context menu by right-clicking
+
+= Release 2.10.0.1 =
 Released: 2020-03-19
 
 == Bug Fixes ==
