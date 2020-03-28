@@ -1,6 +1,6 @@
 // Scintilla source code edit control
 
-// File: LexMetapost.cxx - general context conformant metapost coloring scheme
+// @file LexMetapost.cxx - general context conformant metapost coloring scheme
 // Author: Hans Hagen - PRAGMA ADE - Hasselt NL - www.pragma-ade.com
 // Version: September 28, 2003
 // Modified by instanton: July 10, 2007

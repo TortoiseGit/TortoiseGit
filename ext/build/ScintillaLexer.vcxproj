@@ -72,6 +72,7 @@
     <ClCompile Include="..\scintilla\lexers\LexNim.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexNull.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexProps.cxx" />
+    <ClCompile Include="..\scintilla\lexers\LexRaku.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexRegistry.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexRust.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexSAS.cxx" />
@@ -217,6 +218,7 @@
     <ClInclude Include="..\scintilla\include\SciLexer.h" />
     <ClInclude Include="..\scintilla\include\Scintilla.h" />
     <ClInclude Include="..\scintilla\include\Sci_Position.h" />
+    <ClInclude Include="..\scintilla\lexlib\CatalogueModules.h" />
     <ClInclude Include="..\scintilla\lexlib\CharacterCategory.h" />
     <ClInclude Include="..\scintilla\lexlib\DefaultLexer.h" />
     <ClInclude Include="..\scintilla\src\AutoComplete.h" />

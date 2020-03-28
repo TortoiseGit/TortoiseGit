@@ -496,6 +496,9 @@
     <ClCompile Include="..\scintilla\lexers\LexHollywood.cxx">
       <Filter>lexers</Filter>
     </ClCompile>
+    <ClCompile Include="..\scintilla\lexers\LexRaku.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\scintilla\src\AutoComplete.h">
@@ -674,6 +677,9 @@
     </ClInclude>
     <ClInclude Include="..\scintilla\src\IntegerRectangle.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scintilla\lexlib\CatalogueModules.h">
+      <Filter>lexlib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
