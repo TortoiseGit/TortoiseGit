@@ -252,38 +252,42 @@ class LexerHollywood : public DefaultLexer {
 	OptionSetHollywood osHollywood;
 public:
 	LexerHollywood(int (*CheckFoldPoint_)(char const *), const char * const wordListDescriptions[]) :
+						 DefaultLexer("hollywood", SCLEX_HOLLYWOOD),
 						 CheckFoldPoint(CheckFoldPoint_),
 						 osHollywood(wordListDescriptions) {
 	}
 	virtual ~LexerHollywood() {
 	}
-	void SCI_METHOD Release() {
+	void SCI_METHOD Release() override {
 		delete this;
 	}
-	int SCI_METHOD Version() const {
-		return lvRelease4;
+	int SCI_METHOD Version() const override {
+		return lvRelease5;
 	}
-	const char * SCI_METHOD PropertyNames() {
+	const char * SCI_METHOD PropertyNames() override {
 		return osHollywood.PropertyNames();
 	}
-	int SCI_METHOD PropertyType(const char *name) {
+	int SCI_METHOD PropertyType(const char *name) override {
 		return osHollywood.PropertyType(name);
 	}
-	const char * SCI_METHOD DescribeProperty(const char *name) {
+	const char * SCI_METHOD DescribeProperty(const char *name) override {
 		return osHollywood.DescribeProperty(name);
 	}
-	Sci_Position SCI_METHOD PropertySet(const char *key, const char *val);
-	const char * SCI_METHOD DescribeWordListSets() {
+	Sci_Position SCI_METHOD PropertySet(const char *key, const char *val) override;
+	const char * SCI_METHOD PropertyGet(const char* key) override {
+		return osHollywood.PropertyGet(key);
+	}
+	const char * SCI_METHOD DescribeWordListSets() override {
 		return osHollywood.DescribeWordListSets();
 	}
-	Sci_Position SCI_METHOD WordListSet(int n, const char *wl);
-	void SCI_METHOD Lex(Sci_PositionU startPos, Sci_Position length, int initStyle, IDocument *pAccess);
-	void SCI_METHOD Fold(Sci_PositionU startPos, Sci_Position length, int initStyle, IDocument *pAccess);
+	Sci_Position SCI_METHOD WordListSet(int n, const char *wl) override;
+	void SCI_METHOD Lex(Sci_PositionU startPos, Sci_Position length, int initStyle, IDocument *pAccess) override;
+	void SCI_METHOD Fold(Sci_PositionU startPos, Sci_Position length, int initStyle, IDocument *pAccess) override;
 
-	void * SCI_METHOD PrivateCall(int, void *) {
+	void * SCI_METHOD PrivateCall(int, void *) override {
 		return 0;
 	}
-	static ILexer4 *LexerFactoryHollywood() {
+	static ILexer5 *LexerFactoryHollywood() {
 		return new LexerHollywood(CheckHollywoodFoldPoint, hollywoodWordListDesc);
 	}
 };
