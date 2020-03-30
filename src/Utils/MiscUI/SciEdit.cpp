@@ -930,7 +930,7 @@ BOOL CSciEdit::OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT
 				else
 				{
 					url = m_sUrl;
-					url.Replace(L"%BUGID%", StringFromControl(textbuffer.get()));
+					ProjectProperties::ReplaceBugIDPlaceholder(url, StringFromControl(textbuffer.get()));
 				}
 				if (!url.IsEmpty())
 				{

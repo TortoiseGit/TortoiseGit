@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2011-2014, 2018 - TortoiseGit
+// Copyright (C) 2009, 2011-2014, 2018, 2020 - TortoiseGit
 // Copyright (C) 2003-2008,2011-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -113,6 +113,11 @@ public:
 	 * \param msg the BugID extracted from the log message
 	 */
 	CString GetBugIDUrl(const CString& sBugID);
+
+	/**
+	 * Replaces %BUGID% in the provided URL with the sBugID after doing URL encoding
+	 */
+	static void ReplaceBugIDPlaceholder(CString& url, const CString& sBugID);
 
 	/** replaces bNumer: a regular expression string to check the validity of
 	  * the entered bug ID. */
