@@ -368,7 +368,6 @@
     <ClInclude Include="..\libgit2\src\push.h" />
     <ClInclude Include="..\libgit2\src\reader.h" />
     <ClInclude Include="..\libgit2\src\refdb.h" />
-    <ClInclude Include="..\libgit2\src\refdb_fs.h" />
     <ClInclude Include="..\libgit2\src\reflog.h" />
     <ClInclude Include="..\libgit2\src\refs.h" />
     <ClInclude Include="..\libgit2\src\refspec.h" />
