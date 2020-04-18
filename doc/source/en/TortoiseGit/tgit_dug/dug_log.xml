@@ -116,6 +116,51 @@
 			<emphasis>replaced</emphasis> icon is shown in the fourth column.
 		</para>
 	</sect2>
+	<sect2 id="tgit-dug-showlog-graph">
+		<title>The revision graph</title>
+		<para>
+			The top pane has a <guilabel>Graph</guilabel> column with a line showing
+			the commits, merges and branches. There are two types of shapes.
+		</para>
+		<para>
+			The circles indicate normal commits w/o any branching.
+		</para>
+		<para>
+			The squares indicate merges and branchings. In the first case these are merge commits
+			(i.e., a commit with more than one parent) and in the latter case these are also normal commits.
+			A square was chosen here to indicate that a branch goes off.
+		</para>
+		<para>
+			The colors of the lines (and of the shapes) are there to make the graph better readable (i.e., to see to which branch they belong).
+			The colors are configurable (cf. <xref linkend="tgit-dug-settings-colours3"/>).
+		</para>
+	</sect2>
+	<sect2 id="tgit-dug-showlog-messages">
+		<title>Commit messages and branch/tag indicators</title>
+		<para>
+			The top pane also has a <guilabel>message</guilabel> column.
+			In this column the subjects of the commits are shown.
+			Commits which have an associated reference are decorated with a label.
+		</para>
+		<para>
+			Tags are by default displayed as yellow rectangles. In Git there are two tag types: normal tags and annotated tags. The annotated ones have an apex at the right side.
+		</para>
+		<para>
+			Normally branches are displayed as normal rectangles. The active branch is displayed as a dark red rectangle (by default), the green ones are local branches and the peach ones are remote branches.
+		</para>
+		<para>
+			The boxes with rounded corners for local branches indicate that it has an associated remote tracking. The boxes with rounded corners for remote tracking branches are used to indicate which of (possible several remote branches) is the corresponding remote tracking branch (e.g., master and origin/master).
+		</para>
+		<para>
+			The stash has a dark grey rectangle.
+		</para>
+		<para>
+			There are also reactangles to indicate the bad versions (light red) on bisecting, blue for known good and grey for skip.
+		</para>
+		<para>
+			The colors are configurable (cf. <xref linkend="tgit-dug-settings-colours2"/>). Also, the labels can be configured to be a the right side of the commit message or the displayed text to contain the whole of the commit message (cf. <xref linkend="tgit-dug-settings-dialogs"/>).
+		</para>
+	</sect2>
 	<sect2 id="tgit-dug-showlog-2">
 		<title>Getting Additional Information</title>
 		<para>
