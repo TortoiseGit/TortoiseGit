@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE appendix SYSTEM "../../../dtd/dblite.dtd">
 <appendix>
-	<title>Git Offical Documentation</title>
+	<title>Git Official Documentation</title>
 	<sect1 id="user-manual" xmlns:xi="http://www.w3.org/2001/XInclude">
 		<title>Git User Manual</title>
 		<xi:include href="./user-manual.xml"/>
