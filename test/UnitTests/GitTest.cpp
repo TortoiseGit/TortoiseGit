@@ -823,13 +823,22 @@ TEST_P(CBasicGitWithTestRepoFixture, IsFastForward)
 	EXPECT_STREQ(L"b02add66f48814a73aa2f0876d6bbc8662d6a9a8", commonAncestor.ToString());
 }
 
-static void GetHash(CGit& m_Git)
+static void GetHash(CGit& m_Git, bool orphanedBranch)
 {
 	CGitHash hash;
-	EXPECT_EQ(0, m_Git.GetHash(hash, L"HEAD"));
-	EXPECT_STREQ(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6", hash.ToString());
-	EXPECT_EQ(0, m_Git.GetHash(hash, L"HEAD~1"));
-	EXPECT_STREQ(L"1fc3c9688e27596d8717b54f2939dc951568f6cb", hash.ToString());
+	if (!orphanedBranch)
+	{
+		EXPECT_EQ(0, m_Git.GetHash(hash, L"HEAD"));
+		EXPECT_STREQ(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6", hash.ToString());
+		EXPECT_EQ(0, m_Git.GetHash(hash, L"HEAD~1"));
+		EXPECT_STREQ(L"1fc3c9688e27596d8717b54f2939dc951568f6cb", hash.ToString());
+	}
+	else
+	{
+		EXPECT_EQ(0, m_Git.GetHash(hash, L"HEAD"));
+		EXPECT_TRUE(hash.IsEmpty());
+		EXPECT_NE(0, m_Git.GetHash(hash, L"HEAD~1"));
+	}
 	EXPECT_EQ(0, m_Git.GetHash(hash, L"ff1fbef1a54a9849afd4a5e94d2ca4d80d5b96c2"));
 	EXPECT_STREQ(L"ff1fbef1a54a9849afd4a5e94d2ca4d80d5b96c2", hash.ToString());
 	EXPECT_EQ(0, m_Git.GetHash(hash, L"master"));
@@ -846,16 +855,26 @@ static void GetHash(CGit& m_Git)
 	EXPECT_STREQ(L"313a41bc88a527289c87d7531802ab484715974f", hash.ToString());
 
 	EXPECT_NE(0, m_Git.GetHash(hash, L"non-existing"));
+	EXPECT_NE(0, m_Git.GetHash(hash, L"orphanic"));
 }
 
 TEST_P(CBasicGitWithTestRepoFixture, GetHash)
 {
-	GetHash(m_Git);
+	GetHash(m_Git, false);
 }
 
 TEST_P(CBasicGitWithTestRepoBareFixture, GetHash)
 {
-	GetHash(m_Git);
+	GetHash(m_Git, false);
+}
+
+TEST_P(CBasicGitWithTestRepoFixture, GetHash_OrphanBranch)
+{
+	CString output;
+	EXPECT_EQ(0, m_Git.Run(L"git.exe checkout --orphan orphanic", &output, CP_UTF8));
+	EXPECT_STRNE(L"", output);
+
+	GetHash(m_Git, true);
 }
 
 TEST_P(CBasicGitWithEmptyRepositoryFixture, GetHash_EmptyRepo)
