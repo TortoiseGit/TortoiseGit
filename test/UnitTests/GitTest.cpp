@@ -854,6 +854,10 @@ static void GetHash(CGit& m_Git, bool orphanedBranch)
 	EXPECT_EQ(0, m_Git.GetHash(hash, L"all-files-signed^{}"));
 	EXPECT_STREQ(L"313a41bc88a527289c87d7531802ab484715974f", hash.ToString());
 
+	EXPECT_EQ(0, m_Git.GetHash(hash, L"fab555b2776c6b700fffffffffcccccaaaafe779")); // a hash that does not exist, we don't check for it's existance
+	EXPECT_STREQ(L"fab555b2776c6b700fffffffffcccccaaaafe779", hash.ToString());
+
+	EXPECT_NE(0, m_Git.GetHash(hash, L""));
 	EXPECT_NE(0, m_Git.GetHash(hash, L"non-existing"));
 	EXPECT_NE(0, m_Git.GetHash(hash, L"orphanic"));
 }

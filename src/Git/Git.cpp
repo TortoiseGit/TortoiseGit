@@ -1234,6 +1234,11 @@ int CGit::GetHash(CGitHash &hash, const CString& friendname)
 	}
 	else
 	{
+		if (friendname.IsEmpty())
+		{
+			gitLastErr.Empty();
+			return -1;
+		}
 		CString branch = FixBranchName(friendname);
 		if (friendname == L"FETCH_HEAD" && branch.IsEmpty())
 			branch = friendname;
