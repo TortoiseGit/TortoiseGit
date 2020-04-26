@@ -101,6 +101,11 @@ All user/site specific configuration is stored in doc.build.user.
 				<![CDATA[
 					public static void ScriptMain(Project project)
 					{
+						string linuxPath = "/usr/share/fonts/truetype/";
+						if (Directory.Exists(linuxPath)) {
+							project.Properties.Add("fontpath", linuxPath);
+							return;
+						}
 						string systemPath = Environment.GetFolderPath(Environment.SpecialFolder.System);
 						string fontsPath = Path.GetDirectoryName(systemPath) + Path.DirectorySeparatorChar + "FONTS";
 						fontsPath = fontsPath.Replace('\\','/');
@@ -111,7 +116,7 @@ All user/site specific configuration is stored in doc.build.user.
 		</script>
 
 		<!-- ensure "Version" translation invariant -->
-		<copy file="source\${lang.base}\version.in" tofile="source\${lang.base}\version.xml" overwrite="true"/>
+		<copy file="source/${lang.base}/Version.in" tofile="source/${lang.base}/version.xml" overwrite="true"/>
 
 		<!-- tune path to xsltproc.exe in aspell.bat -->
 		<copy file="Aspell/aspell.in" tofile="Aspell/aspell.bat" overwrite="true">
@@ -321,15 +326,15 @@ All user/site specific configuration is stored in doc.build.user.
 	<target name="UpdateVersionInfo" description="Updates the version file with version info">
 
 		<copy
-			file="source\${lang.target}\version.in" 
-			tofile="source\${lang.target}\version.xml"
+			file="source/${lang.target}/Version.in" 
+			tofile="source/${lang.target}/version.xml"
 			overwrite="true">
 
 			<filterchain>
 				<replacetokens begintoken="$" endtoken="$">
 					<token key="MajorVersion" value="${environment::get-variable('MajorVersion')}"/>
 					<token key="MinorVersion" value="${environment::get-variable('MinorVersion')}"/>
-					<token key="MicroVersion" value="${environment::get-variable('Microversion')}"/>
+					<token key="MicroVersion" value="${environment::get-variable('MicroVersion')}"/>
 				</replacetokens>
 			</filterchain>
 		</copy>
@@ -411,7 +416,7 @@ All user/site specific configuration is stored in doc.build.user.
 			<call target="xsltproc" />
 
 			<!-- Removes the span="inherit" attribute added by xsltproc, which causes a warning -->
-			<move file="${xslt.target}" tofile="${xslt.final}.fo" overwrite="true">
+			<move file="${xslt.target}" tofile="${xslt.final}.fo" overwrite="true" inputencoding="utf-8" outputencoding="utf-8">
 				<filterchain>
 					<replacestring from="span=&quot;inherit&quot; " to="" />
 					<replacestring from="width=&quot;auto&quot; height=&quot;auto&quot; content-width=&quot;auto&quot; content-height=&quot;auto&quot;" to="inline-progression-dimension.maximum=&quot;100%&quot; content-width=&quot;scale-down-to-fit&quot; content-height=&quot;scale-down-to-fit&quot;" />
@@ -433,8 +438,8 @@ All user/site specific configuration is stored in doc.build.user.
 			</if>
 			<property name="commandline" value="-q -fo ${xslt.final}.fo -pdf ${file.target}"/>
 			<property name="commandline" value="-c ${userconfig.lang} ${commandline}" if="${file::exists(userconfig.lang)}"/>
-			
-			<exec program="fop.bat"
+
+			<exec program="${name.fop}"
 						commandline="${commandline}"
 						basedir="${path.fop}"
 						verbose="false"/>

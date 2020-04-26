@@ -28,6 +28,10 @@
 		value="${path::get-full-path('c:/Tools/fop')}"
 		unless="${property::exists('path.fop')}"
 	/>
+	<property name="name.fop"
+		value="fop.bat"
+		unless="${property::exists('name.fop')}"
+	/>
 	<property name="path.xsl" 
 		value="${string::replace(path::get-full-path('c:/Tools/xsl'), '\', '/')}"
 		unless="${property::exists('path.xsl')}"
