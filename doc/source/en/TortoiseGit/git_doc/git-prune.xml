@@ -13,7 +13,7 @@
 <simplesect id="git-prune(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git prune</emphasis> [-n] [-v] [--expire &lt;expire&gt;] [--] [&lt;head&gt;&#8230;]</literallayout>
+<literallayout><emphasis>git prune</emphasis> [-n] [-v] [--progress] [--expire &lt;time&gt;] [--] [&lt;head&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-prune(1)__description">
@@ -64,11 +64,11 @@ not desired, see <xref linkend="git-repack(1)" />.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---
+--progress
 </term>
 <listitem>
 <simpara>
-        Do not interpret any more arguments as options.
+        Show progress.
 </simpara>
 </listitem>
 </varlistentry>
@@ -79,6 +79,16 @@ not desired, see <xref linkend="git-repack(1)" />.</simpara>
 <listitem>
 <simpara>
         Only expire loose objects older than &lt;time&gt;.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--
+</term>
+<listitem>
+<simpara>
+        Do not interpret any more arguments as options.
 </simpara>
 </listitem>
 </varlistentry>
@@ -96,15 +106,15 @@ not desired, see <xref linkend="git-repack(1)" />.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="git-prune(1)__example">
-<title>EXAMPLE</title>
+<simplesect id="git-prune(1)__examples">
+<title>EXAMPLES</title>
 <simpara>To prune objects not used by your repository or another that
 borrows from your repository via its
 <emphasis>.git/objects/info/alternates</emphasis>:</simpara>
 <screen>$ git prune $(cd ../another &amp;&amp; git rev-parse --all)</screen>
 </simplesect>
 <simplesect id="git-prune(1)__notes">
-<title>Notes</title>
+<title>NOTES</title>
 <simpara>In most cases, users will not need to call <emphasis>git prune</emphasis> directly, but
 should instead call <emphasis>git gc</emphasis>, which handles pruning along with
 many other housekeeping tasks.</simpara>

@@ -13,7 +13,7 @@
 <simplesect id="git-update-server-info(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git update-server-info</emphasis> [--force]</literallayout>
+<literallayout><emphasis>git update-server-info</emphasis></literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-update-server-info(1)__description">
@@ -23,24 +23,6 @@ have some auxiliary information files in $GIT_DIR/info and
 $GIT_OBJECT_DIRECTORY/info directories to help clients discover
 what references and packs the server has.  This command
 generates such auxiliary files.</simpara>
-</simplesect>
-<simplesect id="git-update-server-info(1)__options">
-<title>OPTIONS</title>
-<variablelist>
-<varlistentry>
-<term>
--f
-</term>
-<term>
---force
-</term>
-<listitem>
-<simpara>
-        Update the info files from scratch.
-</simpara>
-</listitem>
-</varlistentry>
-</variablelist>
 </simplesect>
 <simplesect id="git-update-server-info(1)__output">
 <title>OUTPUT</title>

@@ -87,8 +87,11 @@ they create are writable and searchable by other group members.</simpara>
 </simplesect>
 <simplesect id="gitcvs-migration(7)__importing_a_cvs_archive">
 <title>Importing a CVS archive</title>
+<note><simpara>These instructions use the <emphasis>git-cvsimport</emphasis> script which ships with
+git, but other importers may provide better results. See the note in
+<xref linkend="git-cvsimport(1)" /> for other options.</simpara></note>
 <simpara>First, install version 2.1 or higher of cvsps from
-<ulink url="http://www.cobite.com/cvsps/">http://www.cobite.com/cvsps/</ulink> and make
+<ulink url="https://github.com/andreyvit/cvsps">https://github.com/andreyvit/cvsps</ulink> and make
 sure it is in your path.  Then cd to a checked out CVS working directory
 of the project you are interested in and run <xref linkend="git-cvsimport(1)" />:</simpara>
 <screen>$ git cvsimport -C &lt;destination&gt; &lt;module&gt;</screen>
@@ -156,6 +159,6 @@ repositories without the need for a central maintainer.</simpara>
 </simplesect>
 <simplesect id="gitcvs-migration(7)__git">
 <title>GIT</title>
-<simpara>Part of the <xref linkend="git(1)" /> suite.</simpara>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
 </sect2>

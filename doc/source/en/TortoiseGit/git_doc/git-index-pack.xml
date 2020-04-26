@@ -146,6 +146,16 @@ objects/pack/ directory of a Git repository.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--fsck-objects
+</term>
+<listitem>
+<simpara>
+        Die if the pack contains broken objects. For internal use only.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --threads=&lt;n&gt;
 </term>
 <listitem>
@@ -161,10 +171,20 @@ objects/pack/ directory of a Git repository.</simpara>
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+--max-input-size=&lt;size&gt;
+</term>
+<listitem>
+<simpara>
+        Die, if the pack is larger than &lt;size&gt;.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="git-index-pack(1)__note">
-<title>Note</title>
+<simplesect id="git-index-pack(1)__notes">
+<title>NOTES</title>
 <simpara>Once the index has been created, the list of object names is sorted
 and the SHA-1 hash of that list is printed to stdout. If --stdin was
 also used then this is prefixed by either "pack\t", or "keep\t" if a

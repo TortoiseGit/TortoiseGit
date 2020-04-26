@@ -149,13 +149,16 @@ instead.  <emphasis>--no-symlinks</emphasis> is the default on Windows.</simpara
 -g
 </term>
 <term>
---gui
+--[no-]gui
 </term>
 <listitem>
 <simpara>
         When <emphasis>git-difftool</emphasis> is invoked with the <emphasis>-g</emphasis> or <emphasis>--gui</emphasis> option
         the default diff tool will be read from the configured
-        <emphasis>diff.guitool</emphasis> variable instead of <emphasis>diff.tool</emphasis>.
+        <emphasis>diff.guitool</emphasis> variable instead of <emphasis>diff.tool</emphasis>. The <emphasis>--no-gui</emphasis>
+        option can be used to override this setting. If <emphasis>diff.guitool</emphasis>
+        is not set, we will fallback in the order of <emphasis>merge.guitool</emphasis>,
+        <emphasis>diff.tool</emphasis>, <emphasis>merge.tool</emphasis> until a tool is found.
 </simpara>
 </listitem>
 </varlistentry>

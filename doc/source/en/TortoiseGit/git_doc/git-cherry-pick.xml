@@ -15,9 +15,7 @@
 <blockquote>
 <literallayout><emphasis>git cherry-pick</emphasis> [--edit] [-n] [-m parent-number] [-s] [-x] [--ff]
                   [-S[&lt;keyid&gt;]] &lt;commit&gt;&#8230;
-<emphasis>git cherry-pick</emphasis> --continue
-<emphasis>git cherry-pick</emphasis> --quit
-<emphasis>git cherry-pick</emphasis> --abort</literallayout>
+<emphasis>git cherry-pick</emphasis> (--continue | --skip | --abort | --quit)</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-cherry-pick(1)__description">
@@ -95,6 +93,20 @@ conflicts.</simpara>
 <simpara>
         With this option, <emphasis>git cherry-pick</emphasis> will let you edit the commit
         message prior to committing.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--cleanup=&lt;mode&gt;
+</term>
+<listitem>
+<simpara>
+        This option determines how the commit message will be cleaned up before
+        being passed on to the commit machinery. See <xref linkend="git-commit(1)" /> for more
+        details. In particular, if the <emphasis>&lt;mode&gt;</emphasis> is given a value of <emphasis>scissors</emphasis>,
+        scissors will be appended to <emphasis>MERGE_MSG</emphasis> before being passed on in the case
+        of a conflict.
 </simpara>
 </listitem>
 </varlistentry>
@@ -190,11 +202,16 @@ effect to your index in a row.</simpara>
 <term>
 --gpg-sign[=&lt;keyid&gt;]
 </term>
+<term>
+--no-gpg-sign
+</term>
 <listitem>
 <simpara>
         GPG-sign commits. The <emphasis>keyid</emphasis> argument is optional and
         defaults to the committer identity; if specified, it must be
-        stuck to the option without a space.
+        stuck to the option without a space. <emphasis>--no-gpg-sign</emphasis> is useful to
+        countermand both <emphasis>commit.gpgSign</emphasis> configuration variable, and
+        earlier <emphasis>--gpg-sign</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -237,7 +254,7 @@ effect to your index in a row.</simpara>
 <listitem>
 <simpara>
         By default, cherry-picking a commit with an empty message will fail.
-        This option overrides that behaviour, allowing commits with empty
+        This option overrides that behavior, allowing commits with empty
         messages to be cherry picked.
 </simpara>
 </listitem>
@@ -282,6 +299,20 @@ effect to your index in a row.</simpara>
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+--rerere-autoupdate
+</term>
+<term>
+--no-rerere-autoupdate
+</term>
+<listitem>
+<simpara>
+        Allow the rerere mechanism to update the index with the
+        result of auto-conflict resolution if possible.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </simplesect>
 <simplesect id="git-cherry-pick(1)__sequencer_subcommands">
@@ -296,6 +327,17 @@ effect to your index in a row.</simpara>
         Continue the operation in progress using the information in
         <emphasis>.git/sequencer</emphasis>.  Can be used to continue after resolving
         conflicts in a failed cherry-pick or revert.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--skip
+</term>
+<listitem>
+<simpara>
+        Skip the current commit and continue with the rest of the
+        sequence.
 </simpara>
 </listitem>
 </varlistentry>
@@ -432,9 +474,9 @@ $ git cherry-pick -Xpatience topic^  <co id="git-cherry-pick_CO1-4"/></screen>
 <callout arearefs="git-cherry-pick_CO1-1">
 <para>
 apply the change that would be shown by <emphasis>git show topic^</emphasis>.
-In this example, the patch does not apply cleanly, so
-information about the conflict is written to the index and
-working tree and no new commit results.
+    In this example, the patch does not apply cleanly, so
+    information about the conflict is written to the index and
+    working tree and no new commit results.
 </para>
 </callout>
 <callout arearefs="git-cherry-pick_CO1-2">
@@ -445,15 +487,15 @@ summarize changes to be reconciled
 <callout arearefs="git-cherry-pick_CO1-3">
 <para>
 cancel the cherry-pick.  In other words, return to the
-pre-cherry-pick state, preserving any local modifications you had in
-the working tree.
+    pre-cherry-pick state, preserving any local modifications
+    you had in the working tree.
 </para>
 </callout>
 <callout arearefs="git-cherry-pick_CO1-4">
 <para>
 try to apply the change introduced by <emphasis>topic^</emphasis> again,
-spending extra time to avoid mistakes based on incorrectly matching
-context lines.
+    spending extra time to avoid mistakes based on incorrectly
+    matching context lines.
 </para>
 </callout>
 </calloutlist>

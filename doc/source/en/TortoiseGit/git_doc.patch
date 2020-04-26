@@ -1,9 +1,12 @@
-Generating git docbook documentation: (done on Debian SID)
+Install needed packages (on a Debian-based system):
+apt-get install git make
+apt-get install --no-install-recommends asciidoc
+
+Generating git docbook documentation:
 - Clone git
 - apply patch
 - change (system/global) asciidoc.conf
   - comment:
-    (?su)(?<!\w)[\\]?(?P<name>http|https|ftp|file|irc|mailto|callto|image|link|anchor|xref|indexterm):(?P<target>\S*?)\[(?P<attrlist>.*?)\]=
     lsquo=&#8216;
     rsquo=&#8217;
     ldquo=&#8220;
@@ -16,10 +19,10 @@ Generating git docbook documentation: (done on Debian SID)
 - take *.xml files
 
 diff --git a/Documentation/Makefile b/Documentation/Makefile
-index 9ad6a6a..adfe07a 100644
+index 59e6ce3a2a..1c1522d57e
 --- a/Documentation/Makefile
 +++ b/Documentation/Makefile
-@@ -216,6 +216,8 @@ all: html man
+@@ -254,6 +254,8 @@ all: html man
  
  html: $(DOC_HTML)
  
@@ -28,15 +31,21 @@ index 9ad6a6a..adfe07a 100644
  man: man1 man5 man7
  man1: $(DOC_MAN1)
  man5: $(DOC_MAN5)
-@@ -330,7 +332,7 @@ manpage-base-url.xsl: manpage-base-url.xsl.in
+@@ -379,12 +381,12 @@ manpage-base-url.xsl: manpage-base-url.xsl.in
  
- %.xml : %.txt asciidoc.conf
+ %.xml : %.txt asciidoc.conf asciidoctor-extensions.rb GIT-ASCIIDOCFLAGS
  	$(QUIET_ASCIIDOC)$(RM) $@+ $@ && \
 -	$(TXT_TO_XML) -d manpage -o $@+ $< && \
 +	$(TXT_TO_XML) -d article -o $@+ $< && \
  	mv $@+ $@
  
- user-manual.xml: user-manual.txt user-manual.conf
+ user-manual.xml: user-manual.txt user-manual.conf asciidoctor-extensions.rb GIT-ASCIIDOCFLAGS
+ 	$(QUIET_ASCIIDOC)$(RM) $@+ $@ && \
+-	$(TXT_TO_XML) -d book -o $@+ $< && \
++	$(TXT_TO_XML) -d article -o $@+ $< && \
+ 	mv $@+ $@
+ 
+ technical/api-index.txt: technical/api-index-skel.txt \
 diff --git a/Documentation/asciidoc.conf b/Documentation/asciidoc.conf
 index 2c16c53..5b98e06
 --- a/Documentation/asciidoc.conf

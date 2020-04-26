@@ -143,7 +143,7 @@ conversion, even with this flag.</simpara>
 with comments and suggestions on the message you are responding to, and to
 conclude it with a patch submission, separating the discussion and the
 beginning of the proposed commit log message with a scissors line.</simpara>
-<simpara>This can enabled by default with the configuration option mailinfo.scissors.</simpara>
+<simpara>This can be enabled by default with the configuration option mailinfo.scissors.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>

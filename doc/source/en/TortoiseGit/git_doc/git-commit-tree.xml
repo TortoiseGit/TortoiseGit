@@ -25,6 +25,9 @@
 <simpara>Creates a new commit object based on the provided tree object and
 emits the new commit object id on stdout. The log message is read
 from the standard input, unless <emphasis>-m</emphasis> or <emphasis>-F</emphasis> options are given.</simpara>
+<simpara>The <emphasis>-m</emphasis> and <emphasis>-F</emphasis> options can be given any number of times, in any
+order. The commit log message will be composed in the order in which
+the options are given.</simpara>
 <simpara>A commit object may have any number of parents. With exactly one
 parent, it is an ordinary commit. Having more than one parent makes
 the commit a merge between several lines of history. Initial (root)
@@ -47,7 +50,7 @@ state was.</simpara>
 </term>
 <listitem>
 <simpara>
-        An existing tree object
+        An existing tree object.
 </simpara>
 </listitem>
 </varlistentry>
@@ -79,7 +82,8 @@ state was.</simpara>
 <listitem>
 <simpara>
         Read the commit log message from the given file. Use <emphasis>-</emphasis> to read
-        from the standard input.
+        from the standard input. This can be given more than once and the
+        content of each file becomes its own paragraph.
 </simpara>
 </listitem>
 </varlistentry>
@@ -90,22 +94,15 @@ state was.</simpara>
 <term>
 --gpg-sign[=&lt;keyid&gt;]
 </term>
-<listitem>
-<simpara>
-        GPG-sign commits. The <emphasis>keyid</emphasis> argument is optional and
-        defaults to the committer identity; if specified, it must be
-        stuck to the option without a space.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
 <term>
 --no-gpg-sign
 </term>
 <listitem>
 <simpara>
-        Countermand <emphasis>commit.gpgSign</emphasis> configuration variable that is
-        set to force each and every commit to be signed.
+        GPG-sign commits. The <emphasis>keyid</emphasis> argument is optional and
+        defaults to the committer identity; if specified, it must be
+        stuck to the option without a space. <emphasis>--no-gpg-sign</emphasis> is useful to
+        countermand a <emphasis>--gpg-sign</emphasis> option given earlier on the command line.
 </simpara>
 </listitem>
 </varlistentry>
@@ -131,29 +128,13 @@ committer name and email and the commit time.
 </simpara>
 </listitem>
 </itemizedlist>
-<simpara>While parent object ids are provided on the command line, author and
-committer information is taken from the following environment variables,
-if set:</simpara>
-<literallayout class="monospaced">GIT_AUTHOR_NAME
-GIT_AUTHOR_EMAIL
-GIT_AUTHOR_DATE
-GIT_COMMITTER_NAME
-GIT_COMMITTER_EMAIL
-GIT_COMMITTER_DATE</literallayout>
-<simpara>(nb "&lt;", "&gt;" and "\n"s are stripped)</simpara>
-<simpara>In case (some of) these environment variables are not set, the information
-is taken from the configuration items user.name and user.email, or, if not
-present, the environment variable EMAIL, or, if that is not set,
-system user name and the hostname used for outgoing mail (taken
-from <emphasis>/etc/mailname</emphasis> and falling back to the fully qualified hostname when
-that file does not exist).</simpara>
 <simpara>A commit comment is read from stdin. If a changelog
 entry is not provided via "&lt;" redirection, <emphasis>git commit-tree</emphasis> will just wait
 for one to be entered and terminated with ^D.</simpara>
 </simplesect>
 <simplesect id="git-commit-tree(1)__date_formats">
 <title>DATE FORMATS</title>
-<simpara>The GIT_AUTHOR_DATE, GIT_COMMITTER_DATE environment variables
+<simpara>The <emphasis>GIT_AUTHOR_DATE</emphasis>, <emphasis>GIT_COMMITTER_DATE</emphasis> environment variables
 support the following date formats:</simpara>
 <variablelist>
 <varlistentry>
@@ -165,7 +146,7 @@ Git internal format
         It is <emphasis>&lt;unix timestamp&gt; &lt;time zone offset&gt;</emphasis>, where <emphasis>&lt;unix
         timestamp&gt;</emphasis> is the number of seconds since the UNIX epoch.
         <emphasis>&lt;time zone offset&gt;</emphasis> is a positive or negative offset from UTC.
-        For example CET (which is 2 hours ahead UTC) is <emphasis>+0200</emphasis>.
+        For example CET (which is 1 hour ahead of UTC) is <emphasis>+0100</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -252,9 +233,9 @@ mind.</simpara>
   have i18n.commitencoding in <emphasis>.git/config</emphasis> file, like this:
 </simpara>
 <screen>[i18n]
-        commitencoding = ISO-8859-1</screen>
+        commitEncoding = ISO-8859-1</screen>
 <simpara>Commit objects created with the above setting record the value
-of <emphasis>i18n.commitencoding</emphasis> in its <emphasis>encoding</emphasis> header.  This is to
+of <emphasis>i18n.commitEncoding</emphasis> in its <emphasis>encoding</emphasis> header.  This is to
 help other people who look at them later.  Lack of this header
 implies that the commit log message is encoded in UTF-8.</simpara>
 </listitem>
@@ -264,12 +245,12 @@ implies that the commit log message is encoded in UTF-8.</simpara>
   <emphasis>encoding</emphasis> header of a commit object, and try to re-code the
   log message into UTF-8 unless otherwise specified.  You can
   specify the desired output encoding with
-  <emphasis>i18n.logoutputencoding</emphasis> in <emphasis>.git/config</emphasis> file, like this:
+  <emphasis>i18n.logOutputEncoding</emphasis> in <emphasis>.git/config</emphasis> file, like this:
 </simpara>
 <screen>[i18n]
-        logoutputencoding = ISO-8859-1</screen>
+        logOutputEncoding = ISO-8859-1</screen>
 <simpara>If you do not have this configuration variable, the value of
-<emphasis>i18n.commitencoding</emphasis> is used instead.</simpara>
+<emphasis>i18n.commitEncoding</emphasis> is used instead.</simpara>
 </listitem>
 </orderedlist>
 <simpara>Note that we deliberately chose not to re-code the commit log
@@ -283,7 +264,8 @@ reversible operation.</simpara>
 </simplesect>
 <simplesect id="git-commit-tree(1)__see_also">
 <title>SEE ALSO</title>
-<simpara><xref linkend="git-write-tree(1)" /></simpara>
+<simpara><xref linkend="git-write-tree(1)" />
+<xref linkend="git-commit(1)" /></simpara>
 </simplesect>
 <simplesect id="git-commit-tree(1)__git">
 <title>GIT</title>

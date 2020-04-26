@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<sect2 lang="en" id="gitsubmodules(7)">
+    <title>gitsubmodules(7)</title>
+<indexterm>
+<primary>gitsubmodules(7)</primary>
+</indexterm>
+<simplesect id="gitsubmodules(7)__name">
+<title>NAME</title>
+<simpara>gitsubmodules - Mounting one repository inside another</simpara>
+</simplesect>
+<simplesect id="gitsubmodules(7)__synopsis">
+<title>SYNOPSIS</title>
+<literallayout class="monospaced">.gitmodules, $GIT_DIR/config</literallayout>
+<screen>git submodule
+git &lt;command&gt; --recurse-submodules</screen>
+</simplesect>
+<simplesect id="gitsubmodules(7)__description">
+<title>DESCRIPTION</title>
+<simpara>A submodule is a repository embedded inside another repository.
+The submodule has its own history; the repository it is embedded
+in is called a superproject.</simpara>
+<simpara>On the filesystem, a submodule usually (but not always - see FORMS below)
+consists of (i) a Git directory located under the <emphasis>$GIT_DIR/modules/</emphasis>
+directory of its superproject, (ii) a working directory inside the
+superproject's working directory, and a <emphasis>.git</emphasis> file at the root of
+the submodule's working directory pointing to (i).</simpara>
+<simpara>Assuming the submodule has a Git directory at <emphasis>$GIT_DIR/modules/foo/</emphasis>
+and a working directory at <emphasis>path/to/bar/</emphasis>, the superproject tracks the
+submodule via a <emphasis>gitlink</emphasis> entry in the tree at <emphasis>path/to/bar</emphasis> and an entry
+in its <emphasis>.gitmodules</emphasis> file (see <xref linkend="gitmodules(5)" />) of the form
+<emphasis>submodule.foo.path = path/to/bar</emphasis>.</simpara>
+<simpara>The <emphasis>gitlink</emphasis> entry contains the object name of the commit that the
+superproject expects the submodule's working directory to be at.</simpara>
+<simpara>The section <emphasis>submodule.foo.*</emphasis> in the <emphasis>.gitmodules</emphasis> file gives additional
+hints to Git's porcelain layer. For example, the <emphasis>submodule.foo.url</emphasis>
+setting specifies where to obtain the submodule.</simpara>
+<simpara>Submodules can be used for at least two different use cases:</simpara>
+<orderedlist numeration="arabic">
+<listitem>
+<simpara>
+Using another project while maintaining independent history.
+  Submodules allow you to contain the working tree of another project
+  within your own working tree while keeping the history of both
+  projects separate. Also, since submodules are fixed to an arbitrary
+  version, the other project can be independently developed without
+  affecting the superproject, allowing the superproject project to
+  fix itself to new versions only when desired.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Splitting a (logically single) project into multiple
+   repositories and tying them back together. This can be used to
+   overcome current limitations of Git's implementation to have
+   finer grained access:
+</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+Size of the Git repository:
+      In its current form Git scales up poorly for large repositories containing
+      content that is not compressed by delta computation between trees.
+      For example, you can use submodules to hold large binary assets
+      and these repositories can be shallowly cloned such that you do not
+      have a large history locally.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Transfer size:
+      In its current form Git requires the whole working tree present. It
+      does not allow partial trees to be transferred in fetch or clone.
+      If the project you work on consists of multiple repositories tied
+      together as submodules in a superproject, you can avoid fetching the
+      working trees of the repositories you are not interested in.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Access control:
+      By restricting user access to submodules, this can be used to implement
+      read/write policies for different users.
+</simpara>
+</listitem>
+</itemizedlist>
+</listitem>
+</orderedlist>
+</simplesect>
+<simplesect id="gitsubmodules(7)__the_configuration_of_submodules">
+<title>The configuration of submodules</title>
+<simpara>Submodule operations can be configured using the following mechanisms
+(from highest to lowest precedence):</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+The command line for those commands that support taking submodules
+   as part of their pathspecs. Most commands have a boolean flag
+   <emphasis>--recurse-submodules</emphasis> which specify whether to recurse into submodules.
+   Examples are <emphasis>grep</emphasis> and <emphasis>checkout</emphasis>.
+   Some commands take enums, such as <emphasis>fetch</emphasis> and <emphasis>push</emphasis>, where you can
+   specify how submodules are affected.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+The configuration inside the submodule. This includes <emphasis>$GIT_DIR/config</emphasis>
+   in the submodule, but also settings in the tree such as a <emphasis>.gitattributes</emphasis>
+   or <emphasis>.gitignore</emphasis> files that specify behavior of commands inside the
+   submodule.
+</simpara>
+<simpara>For example an effect from the submodule's <emphasis>.gitignore</emphasis> file
+would be observed when you run <emphasis>git status --ignore-submodules=none</emphasis> in
+the superproject. This collects information from the submodule's working
+directory by running <emphasis>status</emphasis> in the submodule while paying attention
+to the <emphasis>.gitignore</emphasis> file of the submodule.</simpara>
+<simpara>The submodule's <emphasis>$GIT_DIR/config</emphasis> file would come into play when running
+<emphasis>git push --recurse-submodules=check</emphasis> in the superproject, as this would
+check if the submodule has any changes not published to any remote. The
+remotes are configured in the submodule as usual in the <emphasis>$GIT_DIR/config</emphasis>
+file.</simpara>
+</listitem>
+<listitem>
+<simpara>
+The configuration file <emphasis>$GIT_DIR/config</emphasis> in the superproject.
+   Git only recurses into active submodules (see "ACTIVE SUBMODULES"
+   section below).
+</simpara>
+<simpara>If the submodule is not yet initialized, then the configuration
+inside the submodule does not exist yet, so where to
+obtain the submodule from is configured here for example.</simpara>
+</listitem>
+<listitem>
+<simpara>
+The <emphasis>.gitmodules</emphasis> file inside the superproject. A project usually
+   uses this file to suggest defaults for the upstream collection
+   of repositories for the mapping that is required between a
+   submodule's name and its path.
+</simpara>
+<simpara>This file mainly serves as the mapping between the name and path of submodules
+in the superproject, such that the submodule's Git directory can be
+located.</simpara>
+<simpara>If the submodule has never been initialized, this is the only place
+where submodule configuration is found. It serves as the last fallback
+to specify where to obtain the submodule from.</simpara>
+</listitem>
+</itemizedlist>
+</simplesect>
+<simplesect id="gitsubmodules(7)__forms">
+<title>FORMS</title>
+<simpara>Submodules can take the following forms:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+The basic form described in DESCRIPTION with a Git directory,
+a working directory, a <emphasis>gitlink</emphasis>, and a <emphasis>.gitmodules</emphasis> entry.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+"Old-form" submodule: A working directory with an embedded
+<emphasis>.git</emphasis> directory, and the tracking <emphasis>gitlink</emphasis> and <emphasis>.gitmodules</emphasis> entry in
+the superproject. This is typically found in repositories generated
+using older versions of Git.
+</simpara>
+<simpara>It is possible to construct these old form repositories manually.</simpara>
+<simpara>When deinitialized or deleted (see below), the submodule's Git
+directory is automatically moved to <emphasis>$GIT_DIR/modules/&lt;name&gt;/</emphasis>
+of the superproject.</simpara>
+</listitem>
+<listitem>
+<simpara>
+Deinitialized submodule: A <emphasis>gitlink</emphasis>, and a <emphasis>.gitmodules</emphasis> entry,
+but no submodule working directory. The submodule's Git directory
+may be there as after deinitializing the Git directory is kept around.
+The directory which is supposed to be the working directory is empty instead.
+</simpara>
+<simpara>A submodule can be deinitialized by running <emphasis>git submodule deinit</emphasis>.
+Besides emptying the working directory, this command only modifies
+the superproject's <emphasis>$GIT_DIR/config</emphasis> file, so the superproject's history
+is not affected. This can be undone using <emphasis>git submodule init</emphasis>.</simpara>
+</listitem>
+<listitem>
+<simpara>
+Deleted submodule: A submodule can be deleted by running
+<emphasis>git rm &lt;submodule path&gt; &amp;&amp; git commit</emphasis>. This can be undone
+using <emphasis>git revert</emphasis>.
+</simpara>
+<simpara>The deletion removes the superproject's tracking data, which are
+both the <emphasis>gitlink</emphasis> entry and the section in the <emphasis>.gitmodules</emphasis> file.
+The submodule's working directory is removed from the file
+system, but the Git directory is kept around as it to make it
+possible to checkout past commits without requiring fetching
+from another repository.</simpara>
+<simpara>To completely remove a submodule, manually delete
+<emphasis>$GIT_DIR/modules/&lt;name&gt;/</emphasis>.</simpara>
+</listitem>
+</itemizedlist>
+</simplesect>
+<simplesect id="gitsubmodules(7)__active_submodules">
+<title>ACTIVE SUBMODULES</title>
+<simpara>A submodule is considered active,</simpara>
+<orderedlist numeration="arabic">
+<listitem>
+<simpara>
+if <emphasis>submodule.&lt;name&gt;.active</emphasis> is set to <emphasis>true</emphasis>
+</simpara>
+<simpara>or</simpara>
+</listitem>
+<listitem>
+<simpara>
+if the submodule's path matches the pathspec in <emphasis>submodule.active</emphasis>
+</simpara>
+<simpara>or</simpara>
+</listitem>
+<listitem>
+<simpara>
+if <emphasis>submodule.&lt;name&gt;.url</emphasis> is set.
+</simpara>
+</listitem>
+</orderedlist>
+<simpara>and these are evaluated in this order.</simpara>
+<simpara>For example:</simpara>
+<literallayout class="monospaced">[submodule "foo"]
+  active = false
+  url = https://example.org/foo
+[submodule "bar"]
+  active = true
+  url = https://example.org/bar
+[submodule "baz"]
+  url = https://example.org/baz</literallayout>
+<simpara>In the above config only the submodule <emphasis>bar</emphasis> and <emphasis>baz</emphasis> are active,
+<emphasis>bar</emphasis> due to (1) and <emphasis>baz</emphasis> due to (3). <emphasis>foo</emphasis> is inactive because
+(1) takes precedence over (3)</simpara>
+<simpara>Note that (3) is a historical artefact and will be ignored if the
+(1) and (2) specify that the submodule is not active. In other words,
+if we have a <emphasis>submodule.&lt;name&gt;.active</emphasis> set to <emphasis>false</emphasis> or if the
+submodule's path is excluded in the pathspec in <emphasis>submodule.active</emphasis>, the
+url doesn't matter whether it is present or not. This is illustrated in
+the example that follows.</simpara>
+<literallayout class="monospaced">[submodule "foo"]
+  active = true
+  url = https://example.org/foo
+[submodule "bar"]
+  url = https://example.org/bar
+[submodule "baz"]
+  url = https://example.org/baz
+[submodule "bob"]
+  ignore = true
+[submodule]
+  active = b*
+  active = :(exclude) baz</literallayout>
+<simpara>In here all submodules except <emphasis>baz</emphasis> (foo, bar, bob) are active.
+<emphasis>foo</emphasis> due to its own active flag and all the others due to the
+submodule active pathspec, which specifies that any submodule
+starting with <emphasis>b</emphasis> except <emphasis>baz</emphasis> are also active, regardless of the
+presence of the .url field.</simpara>
+</simplesect>
+<simplesect id="gitsubmodules(7)__workflow_for_a_third_party_library">
+<title>Workflow for a third party library</title>
+<literallayout class="monospaced"># add a submodule
+git submodule add &lt;url&gt; &lt;path&gt;</literallayout>
+<literallayout class="monospaced"># occasionally update the submodule to a new version:
+git -C &lt;path&gt; checkout &lt;new version&gt;
+git add &lt;path&gt;
+git commit -m "update submodule to new version"</literallayout>
+<literallayout class="monospaced"># See the list of submodules in a superproject
+git submodule status</literallayout>
+<literallayout class="monospaced"># See FORMS on removing submodules</literallayout>
+</simplesect>
+<simplesect id="gitsubmodules(7)__workflow_for_an_artificially_split_repo">
+<title>Workflow for an artificially split repo</title>
+<literallayout class="monospaced"># Enable recursion for relevant commands, such that
+# regular commands recurse into submodules by default
+git config --global submodule.recurse true</literallayout>
+<literallayout class="monospaced"># Unlike the other commands below clone still needs
+# its own recurse flag:
+git clone --recurse &lt;URL&gt; &lt;directory&gt;
+cd &lt;directory&gt;</literallayout>
+<literallayout class="monospaced"># Get to know the code:
+git grep foo
+git ls-files</literallayout>
+<literallayout class="monospaced"># Get new code
+git fetch
+git pull --rebase</literallayout>
+<literallayout class="monospaced"># change worktree
+git checkout
+git reset</literallayout>
+</simplesect>
+<simplesect id="gitsubmodules(7)__implementation_details">
+<title>Implementation details</title>
+<simpara>When cloning or pulling a repository containing submodules the submodules
+will not be checked out by default; You can instruct <emphasis>clone</emphasis> to recurse
+into submodules. The <emphasis>init</emphasis> and <emphasis>update</emphasis> subcommands of <emphasis>git submodule</emphasis>
+will maintain submodules checked out and at an appropriate revision in
+your working tree. Alternatively you can set <emphasis>submodule.recurse</emphasis> to have
+<emphasis>checkout</emphasis> recursing into submodules.</simpara>
+</simplesect>
+<simplesect id="gitsubmodules(7)__see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="git-submodule(1)" />, <xref linkend="gitmodules(5)" />.</simpara>
+</simplesect>
+<simplesect id="gitsubmodules(7)__git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</sect2>

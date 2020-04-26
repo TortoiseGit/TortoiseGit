@@ -47,10 +47,10 @@ the <emphasis>.git</emphasis> directory.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---tags
+--heads
 </term>
 <term>
---heads
+--tags
 </term>
 <listitem>
 <simpara>
@@ -177,8 +177,8 @@ the <emphasis>.git</emphasis> directory.</simpara>
 03adf42c988195b50e1a1935ba5fcbc39b2b029b
 ...</screen>
 </simplesect>
-<simplesect id="git-show-ref(1)__example">
-<title>EXAMPLE</title>
+<simplesect id="git-show-ref(1)__examples">
+<title>EXAMPLES</title>
 <simpara>To show all references called "master", whether tags or heads or anything
 else, and regardless of how deep in the reference naming hierarchy they are,
 use:</simpara>

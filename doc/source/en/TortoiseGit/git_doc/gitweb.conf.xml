@@ -21,10 +21,10 @@ perl script fragment as its configuration file.  You can set variables
 using "<emphasis>our $variable = value</emphasis>"; text from a "#" character until the
 end of a line is ignored.  See <emphasis role="strong">perlsyn</emphasis>(1) for details.</simpara>
 <simpara>An example:</simpara>
-<literallayout class="monospaced"># gitweb configuration file for http://git.example.org
+<screen># gitweb configuration file for http://git.example.org
 #
 our $projectroot = "/srv/git"; # FHS recommendation
-our $site_name = 'Example.org &gt;&gt; Repos';</literallayout>
+our $site_name = 'Example.org &gt;&gt; Repos';</screen>
 <simpara>The configuration file is used to override the default settings that
 were built into gitweb at the time the <emphasis>gitweb.cgi</emphasis> script was generated.</simpara>
 <simpara>While one could just alter the configuration settings in the gitweb
@@ -208,8 +208,8 @@ $strict_export
 <listitem>
 <simpara>
         Only allow viewing of repositories also shown on the overview page.
-        This for example makes <emphasis>$gitweb_export_ok</emphasis> file decide if repository is
-        available and not only if it is shown.  If <emphasis>$gitweb_list</emphasis> points to
+        This for example makes <emphasis>$export_ok</emphasis> file decide if repository is
+        available and not only if it is shown.  If <emphasis>$projects_list</emphasis> points to
         file with list of project, only those repositories listed would be
         available for gitweb.  Can be set during building gitweb via
         <emphasis>GITWEB_STRICT_EXPORT</emphasis>.  By default this variable is not set, which
@@ -265,19 +265,26 @@ $highlight_bin
 <listitem>
 <simpara>
         Path to the highlight executable to use (it must be the one from
-        <ulink url="http://www.andre-simon.de">http://www.andre-simon.de</ulink>[] due to assumptions about parameters and output).
+        <ulink url="http://www.andre-simon.de">http://www.andre-simon.de</ulink> due to assumptions about parameters and output).
         By default set to <emphasis>highlight</emphasis>; set it to full path to highlight
         executable if it is not installed on your web server's PATH.
         Note that <emphasis>highlight</emphasis> feature must be set for gitweb to actually
         use syntax highlighting.
 </simpara>
-<simpara><emphasis role="strong">NOTE</emphasis>: if you want to add support for new file type (supported by
-"highlight" but not used by gitweb), you need to modify <emphasis>%highlight_ext</emphasis>
-or <emphasis>%highlight_basename</emphasis>, depending on whether you detect type of file
-based on extension (for example "sh") or on its basename (for example
-"Makefile").  The keys of these hashes are extension and basename,
-respectively, and value for given key is name of syntax to be passed via
-<emphasis>--syntax &lt;syntax&gt;</emphasis> to highlighter.</simpara>
+<simpara><emphasis role="strong">NOTE</emphasis>: for a file to be highlighted, its syntax type must be detected
+and that syntax must be supported by "highlight".  The default syntax
+detection is minimal, and there are many supported syntax types with no
+detection by default.  There are three options for adding syntax
+detection.  The first and second priority are <emphasis>%highlight_basename</emphasis> and
+<emphasis>%highlight_ext</emphasis>, which detect based on basename (the full filename, for
+example "Makefile") and extension (for example "sh").  The keys of these
+hashes are the basename and extension, respectively, and the value for a
+given key is the name of the syntax to be passed via <emphasis>--syntax &lt;syntax&gt;</emphasis>
+to "highlight".  The last priority is the "highlight" configuration of
+<emphasis>Shebang</emphasis> regular expressions to detect the language based on the first
+line in the file, (for example, matching the line "#!/bin/bash").  See
+the highlight documentation and the default config at
+/etc/highlight/filetypes.conf for more details.</simpara>
 <simpara>For example if repositories you are hosting use "phtml" extension for
 PHP files, and you want to have correct syntax-highlighting for those
 files, you can add the following to gitweb configuration:</simpara>
@@ -413,14 +420,12 @@ $home_link_str
 </simpara>
 <simpara>For example, the following setting produces a breadcrumb trail like
 "home / dev / projects / &#8230;" where "projects" is the home link.</simpara>
-</listitem>
-</varlistentry>
-</variablelist>
 <screen>    our @extra_breadcrumbs = (
       [ 'home' =&gt; 'https://www.example.org/' ],
       [ 'dev'  =&gt; 'https://dev.example.org/' ],
     );</screen>
-<variablelist>
+</listitem>
+</varlistentry>
 <varlistentry>
 <term>
 $logo_url
@@ -432,8 +437,8 @@ $logo_label
 <simpara>
         URI and label (title) for the Git logo link (or your site logo,
         if you chose to use different logo image). By default, these both
-        refer to Git homepage, <ulink url="http://git-scm.com">http://git-scm.com</ulink>[]; in the past, they pointed
-        to Git documentation at <ulink url="http://www.kernel.org">http://www.kernel.org</ulink>[].
+        refer to Git homepage, <ulink url="https://git-scm.com">https://git-scm.com</ulink>; in the past, they pointed
+        to Git documentation at <ulink url="https://www.kernel.org">https://www.kernel.org</ulink>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -455,7 +460,7 @@ $site_name
         Name of your site or organization, to appear in page titles.  Set it
         to something descriptive for clearer bookmarks etc.  If this variable
         is not set or is, then gitweb uses the value of the <emphasis>SERVER_NAME</emphasis>
-        CGI environment variable, setting site name to "$SERVER_NAME Git",
+        <emphasis>CGI</emphasis> environment variable, setting site name to "$SERVER_NAME Git",
         or "Untitled Git" if this variable is not set (e.g. if running gitweb
         as standalone script).
 </simpara>
@@ -912,7 +917,7 @@ Supported formats include "tgz", "tbz2", "txz" (gzip/bzip2/xz
 compressed tar archive) and "zip"; please consult gitweb sources for
 a definitive list.  By default only "tgz" is offered.</simpara>
 <simpara>This feature can be configured on a per-repository basis via
-repository's <emphasis>gitweb.blame</emphasis> configuration variable, which contains
+repository's <emphasis>gitweb.snapshot</emphasis> configuration variable, which contains
 a comma separated list of formats or "none" to disable snapshots.
 Unknown values are ignored.</simpara>
 </listitem>
@@ -1066,8 +1071,8 @@ forks
         projects.  For each project <literal>$projname.git</literal>, projects in the
         <literal>$projname/</literal> directory and its subdirectories will not be
         shown in the main projects list.  Instead, a '+' mark is shown
-        next to <literal>$projname</literal>, which links to a "forks" view that lists all
-        the forks (all projects in <literal>$projname/</literal> subdirectory).  Additionally
+        next to <emphasis>$projname</emphasis>, which links to a "forks" view that lists all
+        the forks (all projects in <emphasis>$projname/</emphasis> subdirectory).  Additionally
         a "forks" view for a project is linked from project summary page.
 </simpara>
 <simpara>If the project list is taken from a file (<literal>$projects_list</literal> points to a
@@ -1092,7 +1097,7 @@ expands to the project name, <emphasis>%f</emphasis> to the project path within 
 filesystem (i.e. "$projectroot/$project"), <emphasis>%h</emphasis> to the current hash
 ('h gitweb parameter) and %b` to the current hash base
 ('hb gitweb parameter); %%` expands to '%.</simpara>
-<simpara>For example, at the time this page was written, the <ulink url="http://repo.or.cz">http://repo.or.cz</ulink>[]
+<simpara>For example, at the time this page was written, the <ulink url="http://repo.or.cz">http://repo.or.cz</ulink>
 Git hosting site set it to the following to enable graphical log
 (using the third party tool <emphasis role="strong">git-browser</emphasis>):</simpara>
 <screen>$feature{'actions'}{'default'} =
@@ -1183,12 +1188,14 @@ scrutiny. Duplicated values are filtered.</simpara>
 <simpara>To enable blame, pickaxe search, and snapshot support (allowing "tar.gz" and
 "zip" snapshots), while allowing individual projects to turn them off, put
 the following in your GITWEB_CONFIG file:</simpara>
-<literallayout class="monospaced">$feature{'blame'}{'default'} = [1];
-$feature{'blame'}{'override'} = 1;</literallayout>
-<literallayout class="monospaced">$feature{'pickaxe'}{'default'} = [1];
-$feature{'pickaxe'}{'override'} = 1;</literallayout>
-<literallayout class="monospaced">$feature{'snapshot'}{'default'} = ['zip', 'tgz'];
-$feature{'snapshot'}{'override'} = 1;</literallayout>
+<screen>$feature{'blame'}{'default'} = [1];
+$feature{'blame'}{'override'} = 1;
+
+$feature{'pickaxe'}{'default'} = [1];
+$feature{'pickaxe'}{'override'} = 1;
+
+$feature{'snapshot'}{'default'} = ['zip', 'tgz'];
+$feature{'snapshot'}{'override'} = 1;</screen>
 <simpara>If you allow overriding for the snapshot feature, you can specify which
 snapshot formats are globally disabled. You can also add any command-line
 options you want (such as setting the compression level). For instance, you

@@ -13,7 +13,7 @@
 <simplesect id="git-repack(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git repack</emphasis> [-a] [-A] [-d] [-f] [-F] [-l] [-n] [-q] [-b] [--window=&lt;n&gt;] [--depth=&lt;n&gt;]</literallayout>
+<literallayout><emphasis>git repack</emphasis> [-a] [-A] [-d] [-f] [-F] [-l] [-n] [-q] [-b] [--window=&lt;n&gt;] [--depth=&lt;n&gt;] [--threads=&lt;n&gt;] [--keep-pack=&lt;pack-name&gt;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-repack(1)__description">
@@ -47,6 +47,10 @@ engines, disk storage, etc.</simpara>
 <simpara>Note that users fetching over dumb protocols will have to fetch the
 whole new pack in order to get any contained object, no matter how many
 other objects in that pack they already have locally.</simpara>
+<simpara>Promisor packfiles are repacked separately: if there are packfiles that
+have an associated ".promisor" file, these packfiles will be repacked
+into another separate pack, and an empty ".promisor" file corresponding
+to the new separate pack will be written.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -154,7 +158,18 @@ other objects in that pack they already have locally.</simpara>
         space. <emphasis>--depth</emphasis> limits the maximum delta depth; making it too deep
         affects the performance on the unpacker side, because delta data needs
         to be applied that many times to get to the necessary object.
-        The default value for --window is 10 and --depth is 50.
+</simpara>
+<simpara>The default value for --window is 10 and --depth is 50. The maximum
+depth is 4095.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--threads=&lt;n&gt;
+</term>
+<listitem>
+<simpara>
+        This option is passed through to <emphasis>git pack-objects</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -171,8 +186,10 @@ other objects in that pack they already have locally.</simpara>
         out of memory with a large window, but still be able to take
         advantage of the large window for the smaller objects.  The
         size can be suffixed with "k", "m", or "g".
-        <emphasis>--window-memory=0</emphasis> makes memory usage unlimited, which is the
-        default.
+        <emphasis>--window-memory=0</emphasis> makes memory usage unlimited.  The default
+        is taken from the <emphasis>pack.windowMemory</emphasis> configuration variable.
+        Note that the actual memory usage will be the limit multiplied
+        by the number of threads used by <xref linkend="git-pack-objects(1)" />.
 </simpara>
 </listitem>
 </varlistentry>
@@ -184,7 +201,8 @@ other objects in that pack they already have locally.</simpara>
 <simpara>
         Maximum size of each output pack file. The size can be suffixed with
         "k", "m", or "g". The minimum size allowed is limited to 1 MiB.
-        If specified,  multiple packfiles may be created.
+        If specified, multiple packfiles may be created, which also
+        prevents the creation of a bitmap index.
         The default is unlimited, unless the config variable
         <emphasis>pack.packSizeLimit</emphasis> is set.
 </simpara>
@@ -202,7 +220,8 @@ other objects in that pack they already have locally.</simpara>
         Write a reachability bitmap index as part of the repack. This
         only makes sense when used with <emphasis>-a</emphasis> or <emphasis>-A</emphasis>, as the bitmaps
         must be able to refer to all reachable objects. This option
-        overrides the setting of <emphasis>pack.writeBitmaps</emphasis>.
+        overrides the setting of <emphasis>repack.writeBitmaps</emphasis>.  This option
+        has no effect if multiple packfiles are created.
 </simpara>
 </listitem>
 </varlistentry>
@@ -217,8 +236,65 @@ other objects in that pack they already have locally.</simpara>
         This means that we may duplicate objects, but this makes the
         option safe to use when there are concurrent pushes or fetches.
         This option is generally only useful if you are writing bitmaps
-        with <emphasis>-b</emphasis> or <emphasis>pack.writeBitmaps</emphasis>, as it ensures that the
+        with <emphasis>-b</emphasis> or <emphasis>repack.writeBitmaps</emphasis>, as it ensures that the
         bitmapped packfile has the necessary objects.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--keep-pack=&lt;pack-name&gt;
+</term>
+<listitem>
+<simpara>
+        Exclude the given pack from repacking. This is the equivalent
+        of having <emphasis>.keep</emphasis> file on the pack. <emphasis>&lt;pack-name&gt;</emphasis> is the
+        pack file name without leading directory (e.g. <emphasis>pack-123.pack</emphasis>).
+        The option could be specified multiple times to keep multiple
+        packs.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--unpack-unreachable=&lt;when&gt;
+</term>
+<listitem>
+<simpara>
+        When loosening unreachable objects, do not bother loosening any
+        objects older than <emphasis>&lt;when&gt;</emphasis>. This can be used to optimize out
+        the write of any objects that would be immediately pruned by
+        a follow-up <emphasis>git prune</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-k
+</term>
+<term>
+--keep-unreachable
+</term>
+<listitem>
+<simpara>
+        When used with <emphasis>-ad</emphasis>, any unreachable objects from existing
+        packs will be appended to the end of the packfile instead of
+        being removed. In addition, any unreachable loose objects will
+        be packed (and their loose counterparts removed).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-i
+</term>
+<term>
+--delta-islands
+</term>
+<listitem>
+<simpara>
+        Pass the <emphasis>--delta-islands</emphasis> option to <emphasis>git-pack-objects</emphasis>, see
+        <xref linkend="git-pack-objects(1)" />.
 </simpara>
 </listitem>
 </varlistentry>

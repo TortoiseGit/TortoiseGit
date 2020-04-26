@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<sect2 lang="en" id="gitremote-helpers(1)">
-    <title>gitremote-helpers(1)</title>
+<sect2 lang="en" id="gitremote-helpers(7)">
+    <title>gitremote-helpers(7)</title>
 <indexterm>
-<primary>gitremote-helpers(1)</primary>
+<primary>gitremote-helpers(7)</primary>
 </indexterm>
-<simplesect id="gitremote-helpers(1)__name">
+<simplesect id="gitremote-helpers(7)__name">
 <title>NAME</title>
 <simpara>gitremote-helpers - Helper programs to interact with remote repositories</simpara>
 </simplesect>
-<simplesect id="gitremote-helpers(1)__synopsis">
+<simplesect id="gitremote-helpers(7)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git remote-&lt;transport&gt;</emphasis> &lt;repository&gt; [&lt;URL&gt;]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="gitremote-helpers(1)__description">
+<simplesect id="gitremote-helpers(7)__description">
 <title>DESCRIPTION</title>
 <simpara>Remote helper programs are normally not used directly by end users,
 but they are invoked by Git when it needs to interact with remote
@@ -38,7 +38,7 @@ transport protocols, such as <emphasis>git-remote-http</emphasis>, <emphasis>git
 <emphasis>git-remote-ftp</emphasis> and <emphasis>git-remote-ftps</emphasis>. They implement the capabilities
 <emphasis>fetch</emphasis>, <emphasis>option</emphasis>, and <emphasis>push</emphasis>.</simpara>
 </simplesect>
-<simplesect id="gitremote-helpers(1)__invocation">
+<simplesect id="gitremote-helpers(7)__invocation">
 <title>INVOCATION</title>
 <simpara>Remote helper programs are invoked with one or (optionally) two
 arguments. The first argument specifies a remote repository as in Git;
@@ -65,7 +65,7 @@ configured remote, the first argument is the name of that remote.</simpara>
 <emphasis>&lt;name&gt;</emphasis> as the first argument. If set, the second argument is
 <emphasis>remote.&lt;name&gt;.url</emphasis>; otherwise, the second argument is omitted.</simpara>
 </simplesect>
-<simplesect id="gitremote-helpers(1)__input_format">
+<simplesect id="gitremote-helpers(7)__input_format">
 <title>INPUT FORMAT</title>
 <simpara>Git sends the remote helper a list of commands on standard input, one
 per line.  The first command is always the <emphasis>capabilities</emphasis> command, in
@@ -77,7 +77,7 @@ in the remainder of the command stream.</simpara>
 (indicated in the documentation of the relevant commands), this blank
 line is followed by a payload in some other protocol (e.g., the pack
 protocol), while in others it indicates the end of input.</simpara>
-<section id="gitremote-helpers(1)__capabilities">
+<section id="gitremote-helpers(7)__capabilities">
 <title>Capabilities</title>
 <simpara>Each remote helper is expected to support only a subset of commands.
 The operations a helper supports are declared to Git in the response
@@ -85,7 +85,7 @@ to the <emphasis>capabilities</emphasis> command (see COMMANDS, below).</simpara
 <simpara>In the following, we list all defined capabilities and for
 each we list which commands a helper with that capability
 must provide.</simpara>
-<section id="gitremote-helpers(1)__capabilities_for_pushing">
+<section id="gitremote-helpers(7)__capabilities_for_pushing">
 <title>Capabilities for Pushing</title>
 <variablelist>
 <varlistentry>
@@ -100,6 +100,20 @@ must provide.</simpara>
         requires a bidirectional, full-duplex connection.
 </simpara>
 <simpara>Supported commands: <emphasis>connect</emphasis>.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>stateless-connect</emphasis>
+</term>
+<listitem>
+<simpara>
+        Experimental; for internal use only.
+        Can attempt to connect to a remote server for communication
+        using git's wire-protocol version 2.  See the documentation
+        for the stateless-connect command for more information.
+</simpara>
+<simpara>Supported commands: <emphasis>stateless-connect</emphasis>.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -147,7 +161,7 @@ Other frontends may have some other order of preference.</simpara>
 </varlistentry>
 </variablelist>
 </section>
-<section id="gitremote-helpers(1)__capabilities_for_fetching">
+<section id="gitremote-helpers(7)__capabilities_for_fetching">
 <title>Capabilities for Fetching</title>
 <variablelist>
 <varlistentry>
@@ -162,6 +176,20 @@ Other frontends may have some other order of preference.</simpara>
         requires a bidirectional, full-duplex connection.
 </simpara>
 <simpara>Supported commands: <emphasis>connect</emphasis>.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>stateless-connect</emphasis>
+</term>
+<listitem>
+<simpara>
+        Experimental; for internal use only.
+        Can attempt to connect to a remote server for communication
+        using git's wire-protocol version 2.  See the documentation
+        for the stateless-connect command for more information.
+</simpara>
+<simpara>Supported commands: <emphasis>stateless-connect</emphasis>.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -206,7 +234,7 @@ connecting (see the <emphasis>connect</emphasis> command under COMMANDS).
 When choosing between <emphasis>fetch</emphasis> and <emphasis>import</emphasis>, Git prefers <emphasis>fetch</emphasis>.
 Other frontends may have some other order of preference.</simpara>
 </section>
-<section id="gitremote-helpers(1)__miscellaneous_capabilities">
+<section id="gitremote-helpers(7)__miscellaneous_capabilities">
 <title>Miscellaneous capabilities</title>
 <variablelist>
 <varlistentry>
@@ -313,7 +341,7 @@ the remote repository.</simpara>
 </section>
 </section>
 </simplesect>
-<simplesect id="gitremote-helpers(1)__commands">
+<simplesect id="gitremote-helpers(7)__commands">
 <title>COMMANDS</title>
 <simpara>Commands are given by the caller on the helper's standard input, one per line.</simpara>
 <variablelist>
@@ -396,9 +424,13 @@ the remote repository.</simpara>
         same batch are complete. Only objects which were reported
         in the output of <emphasis>list</emphasis> with a sha1 may be fetched this way.
 </simpara>
-<simpara>Optionally may output a <emphasis>lock &lt;file&gt;</emphasis> line indicating a file under
-GIT_DIR/objects/pack which is keeping a pack until refs can be
-suitably updated.</simpara>
+<simpara>Optionally may output a <emphasis>lock &lt;file&gt;</emphasis> line indicating the full path of
+a file under <emphasis>$GIT_DIR/objects/pack</emphasis> which is keeping a pack until
+refs can be suitably updated.  The path must end with <emphasis>.keep</emphasis>. This is
+a mechanism to name a &lt;pack,idx,keep&gt; tuple by giving only the keep
+component.  The kept pack will not be deleted by a concurrent repack,
+even though its objects may not be referenced until the fetch completes.
+The <emphasis>.keep</emphasis> file will be deleted at the conclusion of the fetch.</simpara>
 <simpara>If option <emphasis>check-connectivity</emphasis> is requested, the helper must output
 <emphasis>connectivity-ok</emphasis> if the clone is self-contained and connected.</simpara>
 <simpara>Supported if the helper has the "fetch" capability.</simpara>
@@ -503,6 +535,28 @@ operations.</simpara>
 <simpara>Supported if the helper has the "connect" capability.</simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+<emphasis>stateless-connect</emphasis> &lt;service&gt;
+</term>
+<listitem>
+<simpara>
+        Experimental; for internal use only.
+        Connects to the given remote service for communication using
+        git's wire-protocol version 2.  Valid replies to this command
+        are empty line (connection established), <emphasis>fallback</emphasis> (no smart
+        transport support, fall back to dumb transports) and just
+        exiting with error message printed (can't connect, don't bother
+        trying to fall back).  After line feed terminating the positive
+        (empty) response, the output of the service starts.  Messages
+        (both request and response) must consist of zero or more
+        PKT-LINEs, terminating in a flush packet. The client must not
+        expect the server to store any state in between request-response
+        pairs.  After the connection ends, the remote helper exits.
+</simpara>
+<simpara>Supported if the helper has the "stateless-connect" capability.</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 <simpara>If a fatal error occurs, the program writes the error message to
 stderr and exits. The caller should expect that a suitable error
@@ -511,7 +565,7 @@ completing a valid response for the current command.</simpara>
 <simpara>Additional commands may be supported, as may be determined from
 capabilities reported by the helper.</simpara>
 </simplesect>
-<simplesect id="gitremote-helpers(1)__ref_list_attributes">
+<simplesect id="gitremote-helpers(7)__ref_list_attributes">
 <title>REF LIST ATTRIBUTES</title>
 <simpara>The <emphasis>list</emphasis> command produces a list of refs in which each ref
 may be followed by a list of attributes. The following ref list
@@ -530,7 +584,7 @@ attributes are defined.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="gitremote-helpers(1)__options">
+<simplesect id="gitremote-helpers(7)__options">
 <title>OPTIONS</title>
 <simpara>The following options are defined and (under suitable circumstances)
 set by Git if the remote helper has the <emphasis>option</emphasis> capability.</simpara>
@@ -568,6 +622,38 @@ set by Git if the remote helper has the <emphasis>option</emphasis> capability.<
 <listitem>
 <simpara>
         Deepens the history of a shallow repository.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+'option deepen-since &lt;timestamp&gt;
+</term>
+<listitem>
+<simpara>
+        Deepens the history of a shallow repository based on time.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+'option deepen-not &lt;ref&gt;
+</term>
+<listitem>
+<simpara>
+        Deepens the history of a shallow repository excluding ref.
+        Multiple options add up.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>option deepen-relative {'true</emphasis>|<emphasis>false</emphasis>}
+</term>
+<listitem>
+<simpara>
+        Deepens the history of a shallow repository relative to
+        current boundary. Only valid when used with "option depth".
 </simpara>
 </listitem>
 </varlistentry>
@@ -628,7 +714,7 @@ set by Git if the remote helper has the <emphasis>option</emphasis> capability.<
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>option cloning {'true</emphasis>|<emphasis>false</emphasis>}
+<emphasis>option cloning</emphasis> {<emphasis>true</emphasis>|<emphasis>false</emphasis>}
 </term>
 <listitem>
 <simpara>
@@ -639,7 +725,7 @@ set by Git if the remote helper has the <emphasis>option</emphasis> capability.<
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>option update-shallow {'true</emphasis>|<emphasis>false</emphasis>}
+<emphasis>option update-shallow</emphasis> {<emphasis>true</emphasis>|<emphasis>false</emphasis>}
 </term>
 <listitem>
 <simpara>
@@ -649,7 +735,7 @@ set by Git if the remote helper has the <emphasis>option</emphasis> capability.<
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>option pushcert {'true</emphasis>|<emphasis>false</emphasis>}
+<emphasis>option pushcert</emphasis> {<emphasis>true</emphasis>|<emphasis>false</emphasis>}
 </term>
 <listitem>
 <simpara>
@@ -657,17 +743,60 @@ set by Git if the remote helper has the <emphasis>option</emphasis> capability.<
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+'option push-option &lt;string&gt;
+</term>
+<listitem>
+<simpara>
+        Transmit &lt;string&gt; as a push option. As the push option
+        must not contain LF or NUL characters, the string is not encoded.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>option from-promisor</emphasis> {<emphasis>true</emphasis>|<emphasis>false</emphasis>}
+</term>
+<listitem>
+<simpara>
+        Indicate that these objects are being fetched from a promisor.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>option no-dependents</emphasis> {<emphasis>true</emphasis>|<emphasis>false</emphasis>}
+</term>
+<listitem>
+<simpara>
+        Indicate that only the objects wanted need to be fetched, not
+        their dependents.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>option atomic</emphasis> {<emphasis>true</emphasis>|<emphasis>false</emphasis>}
+</term>
+<listitem>
+<simpara>
+        When pushing, request the remote server to update refs in a single atomic
+        transaction.  If successful, all refs will be updated, or none will.  If the
+        remote side does not support this capability, the push will fail.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="gitremote-helpers(1)__see_also">
+<simplesect id="gitremote-helpers(7)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="git-remote(1)" /></simpara>
 <simpara><xref linkend="git-remote-ext(1)" /></simpara>
 <simpara><xref linkend="git-remote-fd(1)" /></simpara>
-<simpara><xref linkend="git-remote-testgit(1)" /></simpara>
 <simpara><xref linkend="git-fast-import(1)" /></simpara>
 </simplesect>
-<simplesect id="gitremote-helpers(1)__git">
+<simplesect id="gitremote-helpers(7)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>

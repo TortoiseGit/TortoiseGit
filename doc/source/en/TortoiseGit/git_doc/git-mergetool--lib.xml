@@ -37,7 +37,9 @@ get_merge_tool
 </term>
 <listitem>
 <simpara>
-        returns a merge tool.
+        returns a merge tool. the return code is 1 if we returned a guessed
+        merge tool, else 0. <emphasis>$GIT_MERGETOOL_GUI</emphasis> may be set to <emphasis>true</emphasis> to
+        search for the appropriate guitool.
 </simpara>
 </listitem>
 </varlistentry>

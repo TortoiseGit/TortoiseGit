@@ -20,9 +20,12 @@
              [--chmod=(+|-)x]
              [--[no-]assume-unchanged]
              [--[no-]skip-worktree]
+             [--[no-]ignore-skip-worktree-entries]
+             [--[no-]fsmonitor-valid]
              [--ignore-submodules]
              [--[no-]split-index]
              [--[no-|test-|force-]untracked-cache]
+             [--[no-]fsmonitor]
              [--really-refresh] [--unresolve] [--again | -g]
              [--info-only] [--index-info]
              [-z] [--stdin] [--index-version &lt;n&gt;]
@@ -209,6 +212,30 @@ you will need to handle the situation manually.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--[no-]ignore-skip-worktree-entries
+</term>
+<listitem>
+<simpara>
+        Do not remove skip-worktree (AKA "index-only") entries even when
+        the <emphasis>--remove</emphasis> option was specified.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--[no-]fsmonitor-valid
+</term>
+<listitem>
+<simpara>
+        When one of these flags is specified, the object name recorded
+        for the paths are not updated. Instead, these options
+        set and unset the "fsmonitor valid" bit for the paths. See
+        section "File System Monitor" below for more information.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 -g
 </term>
 <term>
@@ -305,7 +332,7 @@ you will need to handle the situation manually.</simpara>
 </simpara>
 <simpara>Version 4 performs a simple pathname compression that reduces index
 size by 30%-50% on large repositories, which results in faster load
-time. Version 4 is relatively young (first released in in 1.8.0 in
+time. Version 4 is relatively young (first released in 1.8.0 in
 October 2012). Other Git implementations such as JGit and libgit2
 may not support it yet.</simpara>
 </listitem>
@@ -330,15 +357,16 @@ may not support it yet.</simpara>
 </term>
 <listitem>
 <simpara>
-        Enable or disable split index mode. If enabled, the index is
-        split into two files, $GIT_DIR/index and $GIT_DIR/sharedindex.&lt;SHA-1&gt;.
-        Changes are accumulated in $GIT_DIR/index while the shared
-        index file contains all index entries stays unchanged. If
-        split-index mode is already enabled and <emphasis>--split-index</emphasis> is
-        given again, all changes in $GIT_DIR/index are pushed back to
-        the shared index file. This mode is designed for very large
-        indexes that take a significant amount of time to read or write.
+        Enable or disable split index mode. If split-index mode is
+        already enabled and <emphasis>--split-index</emphasis> is given again, all
+        changes in $GIT_DIR/index are pushed back to the shared index
+        file.
 </simpara>
+<simpara>These options take effect whatever the value of the <emphasis>core.splitIndex</emphasis>
+configuration variable (see <xref linkend="git-config(1)" />). But a warning is
+emitted when the change goes against the configured value, as the
+configured value will take effect next time the index is read and this
+will remove the intended effect of the option.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -392,6 +420,24 @@ will remove the intended effect of the option.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--fsmonitor
+</term>
+<term>
+--no-fsmonitor
+</term>
+<listitem>
+<simpara>
+        Enable or disable files system monitor feature. These options
+        take effect whatever the value of the <emphasis>core.fsmonitor</emphasis>
+        configuration variable (see <xref linkend="git-config(1)" />). But a warning
+        is emitted when the change goes against the configured value, as
+        the configured value will take effect next time the index is
+        read and this will remove the intended effect of the option.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --
 </term>
 <listitem>
@@ -417,9 +463,9 @@ will remove the intended effect of the option.</simpara>
 </variablelist>
 </simplesect>
 <simplesect id="git-update-index(1)__using_refresh">
-<title>Using --refresh</title>
+<title>USING --REFRESH</title>
 <simpara><emphasis>--refresh</emphasis> does not calculate a new sha1 file or bring the index
-up-to-date for mode/content changes. But what it <emphasis role="strong">does</emphasis> do is to
+up to date for mode/content changes. But what it <emphasis role="strong">does</emphasis> do is to
 "re-match" the stat information of a file with the index, so that you
 can refresh the index for a file that hasn't been changed but where
 the stat entry is out of date.</simpara>
@@ -427,12 +473,12 @@ the stat entry is out of date.</simpara>
 up the stat index details with the proper files.</simpara>
 </simplesect>
 <simplesect id="git-update-index(1)__using_cacheinfo_or_info_only">
-<title>Using --cacheinfo or --info-only</title>
+<title>USING --CACHEINFO OR --INFO-ONLY</title>
 <simpara><emphasis>--cacheinfo</emphasis> is used to register a file that is not in the
 current working directory.  This is useful for minimum-checkout
 merging.</simpara>
-<simpara>To pretend you have a file with mode and sha1 at path, say:</simpara>
-<screen>$ git update-index --cacheinfo &lt;mode&gt;,&lt;sha1&gt;,&lt;path&gt;</screen>
+<simpara>To pretend you have a file at path with mode and sha1, say:</simpara>
+<screen>$ git update-index --add --cacheinfo &lt;mode&gt;,&lt;sha1&gt;,&lt;path&gt;</screen>
 <simpara><emphasis>--info-only</emphasis> is used to register files without placing them in the object
 database.  This is useful for status-only repositories.</simpara>
 <simpara>Both <emphasis>--cacheinfo</emphasis> and <emphasis>--info-only</emphasis> behave similarly: the index is updated
@@ -442,26 +488,16 @@ useful when the file is available, but you do not wish to update the
 object database.</simpara>
 </simplesect>
 <simplesect id="git-update-index(1)__using_index_info">
-<title>Using --index-info</title>
+<title>USING --INDEX-INFO</title>
 <simpara><emphasis>--index-info</emphasis> is a more powerful mechanism that lets you feed
 multiple entry definitions from the standard input, and designed
 specifically for scripts.  It can take inputs of three formats:</simpara>
 <orderedlist numeration="arabic">
 <listitem>
 <simpara>
-mode         SP sha1          TAB path
-</simpara>
-<simpara>The first format is what "git-apply --index-info"
-reports, and used to reconstruct a partial tree
-that is used for phony merge base tree when falling
-back on 3-way merge.</simpara>
-</listitem>
-<listitem>
-<simpara>
 mode SP type SP sha1          TAB path
 </simpara>
-<simpara>The second format is to stuff <emphasis>git ls-tree</emphasis> output
-into the index file.</simpara>
+<simpara>This format is to stuff <emphasis>git ls-tree</emphasis> output into the index.</simpara>
 </listitem>
 <listitem>
 <simpara>
@@ -469,6 +505,13 @@ mode         SP sha1 SP stage TAB path
 </simpara>
 <simpara>This format is to put higher order stages into the
 index file and matches <emphasis>git ls-files --stage</emphasis> output.</simpara>
+</listitem>
+<listitem>
+<simpara>
+mode         SP sha1          TAB path
+</simpara>
+<simpara>This format is no longer produced by any Git command, but is
+and will continue to be supported by <emphasis>update-index --index-info</emphasis>.</simpara>
 </listitem>
 </orderedlist>
 <simpara>To place a higher stage entry to the index, the path should
@@ -491,7 +534,7 @@ for that path.  After the above, we would end up with this:</simpara>
 100755 8a1218a1024a212bb3db30becd860315f9f3ac52 2       frotz</screen>
 </simplesect>
 <simplesect id="git-update-index(1)__using_assume_unchanged_bit">
-<title>Using assume unchanged bit</title>
+<title>USING ASSUME UNCHANGED BIT</title>
 <simpara>Many operations in Git depend on your filesystem to have an
 efficient <emphasis>lstat(2)</emphasis> implementation, so that <emphasis>st_mtime</emphasis>
 information for working tree files can be cheaply checked to see
@@ -520,7 +563,7 @@ the index (use <emphasis>git update-index --really-refresh</emphasis> if you wan
 to mark them as "assume unchanged").</simpara>
 </simplesect>
 <simplesect id="git-update-index(1)__examples">
-<title>Examples</title>
+<title>EXAMPLES</title>
 <simpara>To update and refresh only the files already checked out:</simpara>
 <screen>$ git checkout-index -n -f -a &amp;&amp; git update-index --ignore-missing --refresh</screen>
 <variablelist>
@@ -594,7 +637,7 @@ now it checks with lstat(2) and finds it has been changed.
 </variablelist>
 </simplesect>
 <simplesect id="git-update-index(1)__skip_worktree_bit">
-<title>Skip-worktree bit</title>
+<title>SKIP-WORKTREE BIT</title>
 <simpara>Skip-worktree bit can be defined in one (long) sentence: When reading
 an entry, if it is marked as skip-worktree, then Git pretends its
 working directory version is up to date and read the index version
@@ -610,8 +653,28 @@ working directory version matches index version)</simpara>
 different from assume-unchanged bit's. Skip-worktree also takes
 precedence over assume-unchanged bit when both are set.</simpara>
 </simplesect>
+<simplesect id="git-update-index(1)__split_index">
+<title>SPLIT INDEX</title>
+<simpara>This mode is designed for repositories with very large indexes, and
+aims at reducing the time it takes to repeatedly write these indexes.</simpara>
+<simpara>In this mode, the index is split into two files, $GIT_DIR/index and
+$GIT_DIR/sharedindex.&lt;SHA-1&gt;. Changes are accumulated in
+$GIT_DIR/index, the split index, while the shared index file contains
+all index entries and stays unchanged.</simpara>
+<simpara>All changes in the split index are pushed back to the shared index
+file when the number of entries in the split index reaches a level
+specified by the splitIndex.maxPercentChange config variable (see
+<xref linkend="git-config(1)" />).</simpara>
+<simpara>Each time a new shared index file is created, the old shared index
+files are deleted if their modification time is older than what is
+specified by the splitIndex.sharedIndexExpire config variable (see
+<xref linkend="git-config(1)" />).</simpara>
+<simpara>To avoid deleting a shared index file that is still used, its
+modification time is updated to the current time every time a new split
+index based on the shared index file is either created or read from.</simpara>
+</simplesect>
 <simplesect id="git-update-index(1)__untracked_cache">
-<title>Untracked cache</title>
+<title>UNTRACKED CACHE</title>
 <simpara>This cache is meant to speed up commands that involve determining
 untracked files such as <emphasis>git status</emphasis>.</simpara>
 <simpara>This feature works by recording the mtime of the working tree
@@ -636,9 +699,51 @@ untracked cache is added to or removed from the index the next time a
 command reads the index; while when <emphasis>--[no-|force-]untracked-cache</emphasis>
 are used, the untracked cache is immediately added to or removed from
 the index.</simpara>
+<simpara>Before 2.17, the untracked cache had a bug where replacing a directory
+with a symlink to another directory could cause it to incorrectly show
+files tracked by git as untracked. See the "status: add a failing test
+showing a core.untrackedCache bug" commit to git.git. A workaround for
+that is (and this might work for other undiscovered bugs in the
+future):</simpara>
+<screen>$ git -c core.untrackedCache=false status</screen>
+<simpara>This bug has also been shown to affect non-symlink cases of replacing
+a directory with a file when it comes to the internal structures of
+the untracked cache, but no case has been reported where this resulted in
+wrong "git status" output.</simpara>
+<simpara>There are also cases where existing indexes written by git versions
+before 2.17 will reference directories that don't exist anymore,
+potentially causing many "could not open directory" warnings to be
+printed on "git status". These are new warnings for existing issues
+that were previously silently discarded.</simpara>
+<simpara>As with the bug described above the solution is to one-off do a "git
+status" run with <emphasis>core.untrackedCache=false</emphasis> to flush out the leftover
+bad data.</simpara>
+</simplesect>
+<simplesect id="git-update-index(1)__file_system_monitor">
+<title>FILE SYSTEM MONITOR</title>
+<simpara>This feature is intended to speed up git operations for repos that have
+large working directories.</simpara>
+<simpara>It enables git to work together with a file system monitor (see the
+"fsmonitor-watchman" section of <xref linkend="githooks(5)" />) that can
+inform it as to what files have been modified. This enables git to avoid
+having to lstat() every file to find modified files.</simpara>
+<simpara>When used in conjunction with the untracked cache, it can further improve
+performance by avoiding the cost of scanning the entire working directory
+looking for new files.</simpara>
+<simpara>If you want to enable (or disable) this feature, it is easier to use
+the <emphasis>core.fsmonitor</emphasis> configuration variable (see
+<xref linkend="git-config(1)" />) than using the <emphasis>--fsmonitor</emphasis> option to
+<emphasis>git update-index</emphasis> in each repository, especially if you want to do so
+across all repositories you use, because you can set the configuration
+variable in your <emphasis>$HOME/.gitconfig</emphasis> just once and have it affect all
+repositories you touch.</simpara>
+<simpara>When the <emphasis>core.fsmonitor</emphasis> configuration variable is changed, the
+file system monitor is added to or removed from the index the next time
+a command reads the index. When <emphasis>--[no-]fsmonitor</emphasis> are used, the file
+system monitor is immediately added to or removed from the index.</simpara>
 </simplesect>
 <simplesect id="git-update-index(1)__configuration">
-<title>Configuration</title>
+<title>CONFIGURATION</title>
 <simpara>The command honors <emphasis>core.filemode</emphasis> configuration variable.  If
 your repository is on a filesystem whose executable bits are
 unreliable, this should be set to <emphasis>false</emphasis> (see <xref linkend="git-config(1)" />).
@@ -659,6 +764,20 @@ ctime for marking files processed) (see <xref linkend="git-config(1)" />).</simp
 <simpara>The untracked cache extension can be enabled by the
 <emphasis>core.untrackedCache</emphasis> configuration variable (see
 <xref linkend="git-config(1)" />).</simpara>
+</simplesect>
+<simplesect id="git-update-index(1)__notes">
+<title>NOTES</title>
+<simpara>Users often try to use the assume-unchanged and skip-worktree bits
+to tell Git to ignore changes to files that are tracked.  This does not
+work as expected, since Git may still check working tree files against
+the index when performing certain operations.  In general, Git does not
+provide a way to ignore changes to tracked files, so alternate solutions
+are recommended.</simpara>
+<simpara>For example, if the file you want to change is some sort of config file,
+the repository can include a sample config file that can then be copied
+into the ignored name and modified.  The repository can even include a
+script to treat the sample file as a template, modifying and copying it
+automatically.</simpara>
 </simplesect>
 <simplesect id="git-update-index(1)__see_also">
 <title>SEE ALSO</title>

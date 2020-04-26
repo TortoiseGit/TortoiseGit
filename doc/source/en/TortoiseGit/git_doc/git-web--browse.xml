@@ -13,7 +13,7 @@
 <simplesect id="git-web&#45;&#45;browse(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git web&#45;&#45;browse</emphasis> [OPTIONS] URL/FILE &#8230;</literallayout>
+<literallayout><emphasis>git web&#45;&#45;browse</emphasis> [&lt;options&gt;] &lt;url|file&gt;&#8230;</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-web&#45;&#45;browse(1)__description">
@@ -184,7 +184,7 @@ the URLs passed as arguments.</simpara>
 </section>
 </simplesect>
 <simplesect id="git-web&#45;&#45;browse(1)__note_about_konqueror">
-<title>Note about konqueror</title>
+<title>NOTE ABOUT KONQUEROR</title>
 <simpara>When <emphasis>konqueror</emphasis> is specified by a command-line option or a
 configuration variable, we launch <emphasis>kfmclient</emphasis> to try to open the HTML
 man page on an already opened konqueror in a new tab if possible.</simpara>

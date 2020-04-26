@@ -298,13 +298,13 @@ situation:</simpara>
 <screen>$ git status
 On branch master
 Changes to be committed:
-  (use "git reset HEAD &lt;file&gt;..." to unstage)
+  (use "git restore --staged &lt;file&gt;..." to unstage)
 
         new file:   closing.txt
 
 Changes not staged for commit:
   (use "git add &lt;file&gt;..." to update what will be committed)
-  (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
+  (use "git restore &lt;file&gt;..." to discard changes in working directory)
 
         modified:   file.txt</screen>
 <simpara>Since the current state of closing.txt is cached in the index file,
@@ -351,6 +351,6 @@ example, creating a new commit.</simpara>
 </simplesect>
 <simplesect id="gittutorial-2(7)__git">
 <title>GIT</title>
-<simpara>Part of the <xref linkend="git(1)" /> suite.</simpara>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
 </sect2>

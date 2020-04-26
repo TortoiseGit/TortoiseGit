@@ -13,7 +13,7 @@
 <simplesect id="git-ls-files(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git ls-files</emphasis> [-z] [-t] [-v]
+<literallayout><emphasis>git ls-files</emphasis> [-z] [-t] [-v] [-f]
                 (--[cached|deleted|others|ignored|stage|unmerged|killed|modified])*
                 (-[c|d|o|i|s|u|k|m])*
                 [--eol]
@@ -22,7 +22,8 @@
                 [--exclude-per-directory=&lt;file&gt;]
                 [--exclude-standard]
                 [--error-unmatch] [--with-tree=&lt;tree-ish&gt;]
-                [--full-name] [--abbrev] [--] [&lt;file&gt;&#8230;]</literallayout>
+                [--full-name] [--recurse-submodules]
+                [--abbrev] [--] [&lt;file&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-ls-files(1)__description">
@@ -100,7 +101,8 @@ shown:</simpara>
         Show only ignored files in the output. When showing files in the
         index, print only those matched by an exclude pattern. When
         showing "other" files, show only those matched by an exclude
-        pattern.
+        pattern. Standard ignore rules are not automatically activated,
+        therefore at least one of the <emphasis>--exclude*</emphasis> options is required.
 </simpara>
 </listitem>
 </varlistentry>
@@ -113,7 +115,7 @@ shown:</simpara>
 </term>
 <listitem>
 <simpara>
-        Show staged contents' object name, mode bits and stage number in the output.
+        Show staged contents' mode bits, object name and stage number in the output.
 </simpara>
 </listitem>
 </varlistentry>
@@ -172,7 +174,8 @@ shown:</simpara>
 </term>
 <listitem>
 <simpara>
-        \0 line termination on output.
+        \0 line termination on output and do not quote filenames.
+        See OUTPUT below for more information.
 </simpara>
 </listitem>
 </varlistentry>
@@ -266,8 +269,7 @@ shown:</simpara>
 </simpara>
 <simpara>This option identifies the file status with the following tags (followed by
 a space) at the start of each line:</simpara>
-</listitem>
-</varlistentry>
+<variablelist>
 <varlistentry>
 <term>
 H
@@ -338,6 +340,9 @@ other
 </simpara>
 </listitem>
 </varlistentry>
+</variablelist>
+</listitem>
+</varlistentry>
 <varlistentry>
 <term>
 -v
@@ -352,6 +357,18 @@ other
 </varlistentry>
 <varlistentry>
 <term>
+-f
+</term>
+<listitem>
+<simpara>
+        Similar to <emphasis>-t</emphasis>, but use lowercase letters for files
+        that are marked as <emphasis>fsmonitor valid</emphasis> (see
+        <xref linkend="git-update-index(1)" />).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --full-name
 </term>
 <listitem>
@@ -360,6 +377,17 @@ other
         outputs paths relative to the current directory.  This
         option forces paths to be output relative to the project
         top directory.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--recurse-submodules
+</term>
+<listitem>
+<simpara>
+        Recursively calls ls-files on each submodule in the repository.
+        Currently there is only support for the --cached mode.
 </simpara>
 </listitem>
 </varlistentry>
@@ -403,8 +431,7 @@ other
 not accessible in the working tree.</simpara>
 <simpara>&lt;eolattr&gt; is the attribute that is used when checking out or committing,
 it is either "", "-text", "text", "text=auto", "text eol=lf", "text eol=crlf".
-Note: Currently Git does not support "text=auto eol=lf" or "text=auto eol=crlf",
-that may change in the future.</simpara>
+Since Git 2.10 "text=auto eol=lf" and "text=auto eol=crlf" are supported.</simpara>
 <simpara>Both the &lt;eolinfo&gt; in the index ("i/&lt;eolinfo&gt;")
 and in the working tree ("w/&lt;eolinfo&gt;") are shown for regular files,
 followed by the  ("attr/&lt;eolattr&gt;").</simpara>
@@ -434,7 +461,7 @@ followed by the  ("attr/&lt;eolattr&gt;").</simpara>
 </variablelist>
 </simplesect>
 <simplesect id="git-ls-files(1)__output">
-<title>Output</title>
+<title>OUTPUT</title>
 <simpara><emphasis>git ls-files</emphasis> just outputs the filenames unless <emphasis>--stage</emphasis> is specified in
 which case it outputs:</simpara>
 <literallayout class="monospaced">[&lt;tag&gt; ]&lt;mode&gt; &lt;object&gt; &lt;stage&gt; &lt;file&gt;</literallayout>
@@ -447,12 +474,13 @@ the index records up to three such pairs; one from tree O in stage
 1, A in stage 2, and B in stage 3.  This information can be used by
 the user (or the porcelain) to see what should eventually be recorded at the
 path. (see <xref linkend="git-read-tree(1)" /> for more information on state)</simpara>
-<simpara>When <emphasis>-z</emphasis> option is not used, TAB, LF, and backslash characters
-in pathnames are represented as <emphasis>\t</emphasis>, <emphasis>\n</emphasis>, and <emphasis>\\</emphasis>,
-respectively.</simpara>
+<simpara>Without the <emphasis>-z</emphasis> option, pathnames with "unusual" characters are
+quoted as explained for the configuration variable <emphasis>core.quotePath</emphasis>
+(see <xref linkend="git-config(1)" />).  Using <emphasis>-z</emphasis> the filename is output
+verbatim and the line is terminated by a NUL byte.</simpara>
 </simplesect>
 <simplesect id="git-ls-files(1)__exclude_patterns">
-<title>Exclude Patterns</title>
+<title>EXCLUDE PATTERNS</title>
 <simpara><emphasis>git ls-files</emphasis> can use a list of "exclude patterns" when
 traversing the directory tree and finding files to show when the
 flags --others or --ignored are specified.  <xref linkend="gitignore(5)" />

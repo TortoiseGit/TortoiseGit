@@ -14,11 +14,10 @@
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git merge</emphasis> [-n] [--stat] [--no-commit] [--squash] [--[no-]edit]
-        [-s &lt;strategy&gt;] [-X &lt;strategy-option&gt;] [-S[&lt;keyid&gt;]]
+        [--no-verify] [-s &lt;strategy&gt;] [-X &lt;strategy-option&gt;] [-S[&lt;keyid&gt;]]
         [--[no-]allow-unrelated-histories]
-        [--[no-]rerere-autoupdate] [-m &lt;msg&gt;] [&lt;commit&gt;&#8230;]
-<emphasis>git merge</emphasis> &lt;msg&gt; HEAD &lt;commit&gt;&#8230;
-<emphasis>git merge</emphasis> --abort</literallayout>
+        [--[no-]rerere-autoupdate] [-m &lt;msg&gt;] [-F &lt;file&gt;] [&lt;commit&gt;&#8230;]
+<emphasis>git merge</emphasis> (--continue | --abort | --quit)</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-merge(1)__description">
@@ -41,10 +40,7 @@ a log message from the user describing the changes.</simpara>
 <screen>          A---B---C topic
          /         \
     D---E---F---G---H master</screen>
-<simpara>The second syntax (&lt;msg&gt; <emphasis>HEAD</emphasis> &lt;commit&gt;&#8230;) is supported for
-historical reasons.  Do not use it from the command line or in
-new scripts.  It is the same as <emphasis>git merge -m &lt;msg&gt; &lt;commit&gt;...</emphasis>.</simpara>
-<simpara>The third syntax ("<emphasis>git merge --abort</emphasis>") can only be run after the
+<simpara>The second syntax ("<emphasis>git merge --abort</emphasis>") can only be run after the
 merge has resulted in conflicts. <emphasis>git merge --abort</emphasis> will abort the
 merge process and try to reconstruct the pre-merge state. However,
 if there were uncommitted changes when the merge started (and
@@ -54,6 +50,8 @@ reconstruct the original (pre-merge) changes. Therefore:</simpara>
 <simpara><emphasis role="strong">Warning</emphasis>: Running <emphasis>git merge</emphasis> with non-trivial uncommitted changes is
 discouraged: while possible, it may leave you in a state that is hard to
 back out of in the case of a conflict.</simpara>
+<simpara>The third syntax ("<emphasis>git merge --continue</emphasis>") can only be run after the
+merge has resulted in conflicts.</simpara>
 </simplesect>
 <simplesect id="git-merge(1)__options">
 <title>OPTIONS</title>
@@ -70,9 +68,13 @@ back out of in the case of a conflict.</simpara>
         Perform the merge and commit the result. This option can
         be used to override --no-commit.
 </simpara>
-<simpara>With --no-commit perform the merge but pretend the merge
-failed and do not autocommit, to give the user a chance to
-inspect and further tweak the merge result before committing.</simpara>
+<simpara>With --no-commit perform the merge and stop just before creating
+a merge commit, to give the user a chance to inspect and further
+tweak the merge result before committing.</simpara>
+<simpara>Note that fast-forward updates do not create a merge commit and
+therefore there is no way to stop those merges with --no-commit.
+Thus, if you want to ensure your branch is not changed or updated
+by the merge command, use --no-ff with --no-commit.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -105,37 +107,63 @@ set to <emphasis>no</emphasis> at the beginning of them.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---ff
+--cleanup=&lt;mode&gt;
 </term>
 <listitem>
 <simpara>
-        When the merge resolves as a fast-forward, only update the branch
-        pointer, without creating a merge commit.  This is the default
-        behavior.
+        This option determines how the merge message will be cleaned up before
+        committing. See <xref linkend="git-commit(1)" /> for more details. In addition, if
+        the <emphasis>&lt;mode&gt;</emphasis> is given a value of <emphasis>scissors</emphasis>, scissors will be appended
+        to <emphasis>MERGE_MSG</emphasis> before being passed on to the commit machinery in the
+        case of a merge conflict.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
+--ff
+</term>
+<term>
 --no-ff
 </term>
-<listitem>
-<simpara>
-        Create a merge commit even when the merge resolves as a
-        fast-forward.  This is the default behaviour when merging an
-        annotated (and possibly signed) tag.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
 <term>
 --ff-only
 </term>
 <listitem>
 <simpara>
-        Refuse to merge and exit with a non-zero status unless the
-        current <emphasis>HEAD</emphasis> is already up-to-date or the merge can be
-        resolved as a fast-forward.
+        Specifies how a merge is handled when the merged-in history is
+        already a descendant of the current history.  <emphasis>--ff</emphasis> is the
+        default unless merging an annotated (and possibly signed) tag
+        that is not stored in its natural place in the <emphasis>refs/tags/</emphasis>
+        hierarchy, in which case <emphasis>--no-ff</emphasis> is assumed.
+</simpara>
+<simpara>With <emphasis>--ff</emphasis>, when possible resolve the merge as a fast-forward (only
+update the branch pointer to match the merged branch; do not create a
+merge commit).  When not possible (when the merged-in history is not a
+descendant of the current history), create a merge commit.</simpara>
+<simpara>With <emphasis>--no-ff</emphasis>, create a merge commit in all cases, even when the merge
+could instead be resolved as a fast-forward.</simpara>
+<simpara>With <emphasis>--ff-only</emphasis>, resolve the merge as a fast-forward when possible.
+When not possible, refuse to merge and exit with a non-zero status.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-S[&lt;keyid&gt;]
+</term>
+<term>
+--gpg-sign[=&lt;keyid&gt;]
+</term>
+<term>
+--no-gpg-sign
+</term>
+<listitem>
+<simpara>
+        GPG-sign the resulting merge commit. The <emphasis>keyid</emphasis> argument is
+        optional and defaults to the committer identity; if specified,
+        it must be stuck to the option without a space. <emphasis>--no-gpg-sign</emphasis>
+        is useful to countermand both <emphasis>commit.gpgSign</emphasis> configuration variable,
+        and earlier <emphasis>--gpg-sign</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -154,6 +182,25 @@ set to <emphasis>no</emphasis> at the beginning of them.</simpara>
 </simpara>
 <simpara>With --no-log do not list one-line descriptions from the
 actual commits being merged.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--signoff
+</term>
+<term>
+--no-signoff
+</term>
+<listitem>
+<simpara>
+        Add Signed-off-by line by the committer at the end of the commit
+        log message.  The meaning of a signoff depends on the project,
+        but it typically certifies that committer has
+        the rights to submit this work under the same license and
+        agrees to a Developer Certificate of Origin
+        (see <ulink url="http://developercertificate.org/">http://developercertificate.org/</ulink> for more information).
+</simpara>
+<simpara>With --no-signoff do not add a Signed-off-by line.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -194,6 +241,18 @@ merge.</simpara>
 </simpara>
 <simpara>With --no-squash perform the merge and commit the result. This
 option can be used to override --squash.</simpara>
+<simpara>With --squash, --commit is not allowed, and will fail.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-verify
+</term>
+<listitem>
+<simpara>
+        This option bypasses the pre-merge and commit-msg hooks.
+        See also <xref linkend="githooks(5)" />.
+</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -236,8 +295,11 @@ option can be used to override --squash.</simpara>
 </term>
 <listitem>
 <simpara>
-        Verify that the commits being merged have good and trusted GPG signatures
-        and abort the merge in case they do not.
+        Verify that the tip commit of the side branch being merged is
+        signed with a valid key, i.e. a key that has a valid uid: in the
+        default trust model, this means the signing key has been signed by
+        a trusted key.  If the tip commit of the side branch is not signed
+        with a valid key, the merge is aborted.
 </simpara>
 </listitem>
 </varlistentry>
@@ -314,21 +376,6 @@ option can be used to override --squash.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--S[&lt;keyid&gt;]
-</term>
-<term>
---gpg-sign[=&lt;keyid&gt;]
-</term>
-<listitem>
-<simpara>
-        GPG-sign the resulting merge commit. The <emphasis>keyid</emphasis> argument is
-        optional and defaults to the committer identity; if specified,
-        it must be stuck to the option without a space.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
 -m &lt;msg&gt;
 </term>
 <listitem>
@@ -345,12 +392,45 @@ invocations. The automated message can include the branch description.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---[no-]rerere-autoupdate
+-F &lt;file&gt;
+</term>
+<term>
+--file=&lt;file&gt;
+</term>
+<listitem>
+<simpara>
+        Read the commit message to be used for the merge commit (in
+        case one is created).
+</simpara>
+<simpara>If <emphasis>--log</emphasis> is specified, a shortlog of the commits being merged
+will be appended to the specified message.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--rerere-autoupdate
+</term>
+<term>
+--no-rerere-autoupdate
 </term>
 <listitem>
 <simpara>
         Allow the rerere mechanism to update the index with the
         result of auto-conflict resolution if possible.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--overwrite-ignore
+</term>
+<term>
+--no-overwrite-ignore
+</term>
+<listitem>
+<simpara>
+        Silently overwrite ignored files from the merge result. This
+        is the default behavior. Use <emphasis>--no-overwrite-ignore</emphasis> to abort.
 </simpara>
 </listitem>
 </varlistentry>
@@ -369,6 +449,29 @@ reconstruct these changes. It is therefore recommended to always
 commit or stash your changes before running <emphasis>git merge</emphasis>.</simpara>
 <simpara><emphasis>git merge --abort</emphasis> is equivalent to <emphasis>git reset --merge</emphasis> when
 <emphasis>MERGE_HEAD</emphasis> is present.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--quit
+</term>
+<listitem>
+<simpara>
+        Forget about the current merge in progress. Leave the index
+        and the working tree as-is.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--continue
+</term>
+<listitem>
+<simpara>
+        After a <emphasis>git merge</emphasis> stops due to conflicts you can conclude the
+        merge by running <emphasis>git merge --continue</emphasis> (see "HOW TO RESOLVE
+        CONFLICTS" section below).
+</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -401,11 +504,11 @@ local uncommitted changes overlap with files that <emphasis>git pull</emphasis>/
 merge</emphasis> may need to update.</simpara>
 <simpara>To avoid recording unrelated changes in the merge commit,
 <emphasis>git pull</emphasis> and <emphasis>git merge</emphasis> will also abort if there are any changes
-registered in the index relative to the <emphasis>HEAD</emphasis> commit.  (One
-exception is when the changed index entries are in the state that
-would result from the merge already.)</simpara>
+registered in the index relative to the <emphasis>HEAD</emphasis> commit.  (Special
+narrow exceptions to this rule may exist depending on which merge
+strategy is in use, but generally, the index must match HEAD.)</simpara>
 <simpara>If all named commits are already ancestors of <emphasis>HEAD</emphasis>, <emphasis>git merge</emphasis>
-will exit early with the message "Already up-to-date."</simpara>
+will exit early with the message "Already up to date."</simpara>
 </simplesect>
 <simplesect id="git-merge(1)__fast_forward_merge">
 <title>FAST-FORWARD MERGE</title>
@@ -551,7 +654,10 @@ Decide not to merge.  The only clean-ups you need are to reset
 <simpara>
 Resolve the conflicts.  Git will mark the conflicts in
    the working tree.  Edit the files into shape and
-   <emphasis>git add</emphasis> them to the index.  Use <emphasis>git commit</emphasis> to seal the deal.
+   <emphasis>git add</emphasis> them to the index.  Use <emphasis>git commit</emphasis> or
+   <emphasis>git merge --continue</emphasis> to seal the deal. The latter command
+   checks whether there is a (interrupted) merge in progress
+   before calling <emphasis>git commit</emphasis>.
 </simpara>
 </listitem>
 </itemizedlist>
@@ -654,8 +760,9 @@ recursive
         causing mismerges by tests done on actual merge commits
         taken from Linux 2.6 kernel development history.
         Additionally this can detect and handle merges involving
-        renames.  This is the default merge strategy when
-        pulling or merging one branch.
+        renames, but currently cannot make use of detected
+        copies.  This is the default merge strategy when pulling
+        or merging one branch.
 </simpara>
 <simpara>The <emphasis>recursive</emphasis> strategy can take the following options:</simpara>
 <variablelist>
@@ -667,7 +774,7 @@ ours
 <simpara>
         This option forces conflicting hunks to be auto-resolved cleanly by
         favoring <emphasis>our</emphasis> version.  Changes from the other tree that do not
-        conflict with our side are reflected to the merge result.
+        conflict with our side are reflected in the merge result.
         For a binary file, the entire contents are taken from our side.
 </simpara>
 <simpara>This should not be confused with the <emphasis>ours</emphasis> merge strategy, which does not
@@ -681,7 +788,8 @@ theirs
 </term>
 <listitem>
 <simpara>
-        This is the opposite of <emphasis>ours</emphasis>.
+        This is the opposite of <emphasis>ours</emphasis>; note that, unlike <emphasis>ours</emphasis>, there is
+        no <emphasis>theirs</emphasis> merge strategy to confuse this merge option with.
 </simpara>
 </listitem>
 </varlistentry>
@@ -722,13 +830,16 @@ ignore-all-space
 <term>
 ignore-space-at-eol
 </term>
+<term>
+ignore-cr-at-eol
+</term>
 <listitem>
 <simpara>
         Treats lines with the indicated type of whitespace change as
         unchanged for the sake of a three-way merge.  Whitespace
         changes mixed with other changes to a line are not ignored.
-        See also <xref linkend="git-diff(1)" /> <emphasis>-b</emphasis>, <emphasis>-w</emphasis>, and
-        <emphasis>--ignore-space-at-eol</emphasis>.
+        See also <xref linkend="git-diff(1)" /> <emphasis>-b</emphasis>, <emphasis>-w</emphasis>,
+        <emphasis>--ignore-space-at-eol</emphasis>, and <emphasis>--ignore-cr-at-eol</emphasis>.
 </simpara>
 <itemizedlist>
 <listitem>
@@ -783,7 +894,8 @@ no-renames
 </term>
 <listitem>
 <simpara>
-        Turn off rename detection.
+        Turn off rename detection. This overrides the <emphasis>merge.renames</emphasis>
+        configuration variable.
         See also <xref linkend="git-diff(1)" /> <emphasis>--no-renames</emphasis>.
 </simpara>
 </listitem>
@@ -795,7 +907,8 @@ find-renames[=&lt;n&gt;]
 <listitem>
 <simpara>
         Turn on rename detection, optionally setting the similarity
-        threshold.  This is the default.
+        threshold.  This is the default. This overrides the
+        <emphasis>merge.renames</emphasis> configuration variable.
         See also <xref linkend="git-diff(1)" /> <emphasis>--find-renames</emphasis>.
 </simpara>
 </listitem>
@@ -933,6 +1046,17 @@ merge.ff
 </varlistentry>
 <varlistentry>
 <term>
+merge.verifySignatures
+</term>
+<listitem>
+<simpara>
+        If true, this is equivalent to the --verify-signatures command
+        line option. See <xref linkend="git-merge(1)" /> for details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 merge.branchdesc
 </term>
 <listitem>
@@ -964,7 +1088,40 @@ merge.renameLimit
 <simpara>
         The number of files to consider when performing rename detection
         during a merge; if not specified, defaults to the value of
-        diff.renameLimit.
+        diff.renameLimit. This setting has no effect if rename detection
+        is turned off.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+merge.renames
+</term>
+<listitem>
+<simpara>
+        Whether Git detects renames.  If set to "false", rename detection
+        is disabled. If set to "true", basic rename detection is enabled.
+        Defaults to the value of diff.renames.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+merge.directoryRenames
+</term>
+<listitem>
+<simpara>
+        Whether Git detects directory renames, affecting what happens at
+        merge time to new files added to a directory on one side of
+        history when that directory was renamed on the other side of
+        history.  If merge.directoryRenames is set to "false", directory
+        rename detection is disabled, meaning that such new files will be
+        left behind in the old directory.  If set to "true", directory
+        rename detection is enabled, meaning that such new files will be
+        moved into the new directory.  If set to "conflict", a conflict
+        will be reported for such paths.  If merge.renames is false,
+        merge.directoryRenames is ignored and treated as false.  Defaults
+        to "conflict".
 </simpara>
 </listitem>
 </varlistentry>
@@ -1006,6 +1163,19 @@ merge.tool
         The list below shows the valid built-in values.
         Any other value is treated as a custom merge tool and requires
         that a corresponding mergetool.&lt;tool&gt;.cmd variable is defined.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+merge.guitool
+</term>
+<listitem>
+<simpara>
+        Controls which merge tool is used by <xref linkend="git-mergetool(1)" /> when the
+        -g/--gui flag is specified. The list below shows the valid built-in values.
+        Any other value is treated as a custom merge tool and requires that a
+        corresponding mergetool.&lt;guitool&gt;.cmd variable is defined.
 </simpara>
 <itemizedlist>
 <listitem>
@@ -1060,6 +1230,11 @@ examdiff
 </listitem>
 <listitem>
 <simpara>
+guiffy
+</simpara>
+</listitem>
+<listitem>
+<simpara>
 gvimdiff
 </simpara>
 </listitem>
@@ -1091,6 +1266,11 @@ opendiff
 <listitem>
 <simpara>
 p4merge
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+smerge
 </simpara>
 </listitem>
 <listitem>

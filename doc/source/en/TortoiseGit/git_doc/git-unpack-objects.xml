@@ -75,6 +75,16 @@ new packs and replace existing ones.</simpara>
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+--max-input-size=&lt;size&gt;
+</term>
+<listitem>
+<simpara>
+        Die, if the pack is larger than &lt;size&gt;.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </simplesect>
 <simplesect id="git-unpack-objects(1)__git">

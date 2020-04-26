@@ -15,7 +15,8 @@
 <blockquote>
 <literallayout><emphasis>git add</emphasis> [--verbose | -v] [--dry-run | -n] [--force | -f] [--interactive | -i] [--patch | -p]
           [--edit | -e] [--[no-]all | --[no-]ignore-removal | [--update | -u]]
-          [--intent-to-add | -N] [--refresh] [--ignore-errors] [--ignore-missing]
+          [--intent-to-add | -N] [--refresh] [--ignore-errors] [--ignore-missing] [--renormalize]
+          [--chmod=(+|-)x] [--pathspec-from-file=&lt;file&gt; [--pathspec-file-nul]]
           [--] [&lt;pathspec&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
@@ -64,10 +65,12 @@ commit.</simpara>
         specifying <emphasis>dir</emphasis> will record not just a file <emphasis>dir/file1</emphasis>
         modified in the working tree, a file <emphasis>dir/file2</emphasis> added to
         the working tree, but also a file <emphasis>dir/file3</emphasis> removed from
-        the working tree.  Note that older versions of Git used
+        the working tree). Note that older versions of Git used
         to ignore removed files; use <emphasis>--no-all</emphasis> option if you want
         to add modified or new files but ignore removed ones.
 </simpara>
+<simpara>For more details about the &lt;pathspec&gt; syntax, see the <emphasis>pathspec</emphasis> entry
+in <xref linkend="gitglossary(7)" />.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -198,7 +201,7 @@ subdirectories).</simpara>
 <simpara>
         Update the index not only where the working tree has a file
         matching &lt;pathspec&gt; but also where the index already has an
-        entry.  This adds, modifies, and removes index entries to
+        entry. This adds, modifies, and removes index entries to
         match the working tree.
 </simpara>
 <simpara>If no &lt;pathspec&gt; is given when <emphasis>-A</emphasis> option is used, all
@@ -283,6 +286,73 @@ for "git add --no-all &lt;pathspec&gt;&#8230;", i.e. ignored removed files.</sim
 </varlistentry>
 <varlistentry>
 <term>
+--no-warn-embedded-repo
+</term>
+<listitem>
+<simpara>
+        By default, <emphasis>git add</emphasis> will warn when adding an embedded
+        repository to the index without using <emphasis>git submodule add</emphasis> to
+        create an entry in <emphasis>.gitmodules</emphasis>. This option will suppress the
+        warning (e.g., if you are manually performing operations on
+        submodules).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--renormalize
+</term>
+<listitem>
+<simpara>
+        Apply the "clean" process freshly to all tracked files to
+        forcibly add them again to the index.  This is useful after
+        changing <emphasis>core.autocrlf</emphasis> configuration or the <emphasis>text</emphasis> attribute
+        in order to correct files added with wrong CRLF/LF line endings.
+        This option implies <emphasis>-u</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--chmod=(+|-)x
+</term>
+<listitem>
+<simpara>
+        Override the executable bit of the added files.  The executable
+        bit is only changed in the index, the files on disk are left
+        unchanged.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--pathspec-from-file=&lt;file&gt;
+</term>
+<listitem>
+<simpara>
+        Pathspec is passed in <emphasis>&lt;file&gt;</emphasis> instead of commandline args. If
+        <emphasis>&lt;file&gt;</emphasis> is exactly <emphasis>-</emphasis> then standard input is used. Pathspec
+        elements are separated by LF or CR/LF. Pathspec elements can be
+        quoted as explained for the configuration variable <emphasis>core.quotePath</emphasis>
+        (see <xref linkend="git-config(1)" />). See also <emphasis>--pathspec-file-nul</emphasis> and
+        global <emphasis>--literal-pathspecs</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--pathspec-file-nul
+</term>
+<listitem>
+<simpara>
+        Only meaningful with <emphasis>--pathspec-from-file</emphasis>. Pathspec elements are
+        separated with NUL character and all other characters are taken
+        literally (including newlines and quotes).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --
 </term>
 <listitem>
@@ -295,20 +365,13 @@ for "git add --no-all &lt;pathspec&gt;&#8230;", i.e. ignored removed files.</sim
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="git-add(1)__configuration">
-<title>Configuration</title>
-<simpara>The optional configuration variable <emphasis>core.excludesFile</emphasis> indicates a path to a
-file containing patterns of file names to exclude from git-add, similar to
-$GIT_DIR/info/exclude.  Patterns in the exclude file are used in addition to
-those in info/exclude.  See <xref linkend="gitignore(5)" />.</simpara>
-</simplesect>
 <simplesect id="git-add(1)__examples">
 <title>EXAMPLES</title>
 <itemizedlist>
 <listitem>
 <simpara>
 Adds content from all <emphasis>*.txt</emphasis> files under <emphasis>Documentation</emphasis> directory
-and its subdirectories:
+  and its subdirectories:
 </simpara>
 <screen>$ git add Documentation/\*.txt</screen>
 <simpara>Note that the asterisk <emphasis>*</emphasis> is quoted from the shell in this
@@ -327,7 +390,7 @@ listing the files explicitly), it does not consider
 </itemizedlist>
 </simplesect>
 <simplesect id="git-add(1)__interactive_mode">
-<title>Interactive mode</title>
+<title>INTERACTIVE MODE</title>
 <simpara>When the command enters the interactive mode, it shows the
 output of the <emphasis>status</emphasis> subcommand, and then goes into its
 interactive command loop.</simpara>

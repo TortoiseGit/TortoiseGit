@@ -107,7 +107,7 @@ format sections of the manual for <emphasis>git diff-&#42;</emphasis> commands) 
 diff-patch format.</simpara>
 </simplesect>
 <simplesect id="gitdiffcore(7)__diffcore_break_for_splitting_up_complete_rewrites">
-<title>diffcore-break: For Splitting Up "Complete Rewrites"</title>
+<title>diffcore-break: For Splitting Up Complete Rewrites</title>
 <simpara>The second transformation in the chain is diffcore-break, and is
 controlled by the -B option to the <emphasis>git diff-&#42;</emphasis> commands.  This is
 used to detect a filepair that represents "complete rewrite" and
@@ -131,8 +131,8 @@ the result is used; if the edit lengthens the file, the size of
 the original is used), and can be customized by giving a number
 after "-B" option (e.g. "-B75" to tell it to use 75%).</simpara>
 </simplesect>
-<simplesect id="gitdiffcore(7)__diffcore_rename_for_detection_renames_and_copies">
-<title>diffcore-rename: For Detection Renames and Copies</title>
+<simplesect id="gitdiffcore(7)__diffcore_rename_for_detecting_renames_and_copies">
+<title>diffcore-rename: For Detecting Renames and Copies</title>
 <simpara>This transformation is used to detect renames and copies, and is
 controlled by the -M option (to detect renames) and the -C option
 (to detect copies as well) to the <emphasis>git diff-&#42;</emphasis> commands.  If the
@@ -171,7 +171,7 @@ the expense of making it slower.  Without <emphasis>--find-copies-harder</emphas
 copied happened to have been modified in the same changeset.</simpara>
 </simplesect>
 <simplesect id="gitdiffcore(7)__diffcore_merge_broken_for_putting_complete_rewrites_back_together">
-<title>diffcore-merge-broken: For Putting "Complete Rewrites" Back Together</title>
+<title>diffcore-merge-broken: For Putting Complete Rewrites Back Together</title>
 <simpara>This transformation is used to merge filepairs broken by
 diffcore-break, and not transformed into rename/copy by
 diffcore-rename, back into a single modification.  This always
@@ -235,7 +235,8 @@ textual diff has an added or a deleted line that matches the given
 regular expression.  This means that it will detect in-file (or what
 rename-detection considers the same file) moves, which is noise.  The
 implementation runs diff twice and greps, and this can be quite
-expensive.</simpara>
+expensive.  To speed things up binary files without textconv filters
+will be ignored.</simpara>
 <simpara>When <emphasis>-S</emphasis> or <emphasis>-G</emphasis> are used without <emphasis>--pickaxe-all</emphasis>, only filepairs
 that match their respective criterion are kept in the output.  When
 <emphasis>--pickaxe-all</emphasis> is used, if even one filepair matches their respective
@@ -274,6 +275,6 @@ t</screen>
 </simplesect>
 <simplesect id="gitdiffcore(7)__git">
 <title>GIT</title>
-<simpara>Part of the <xref linkend="git(1)" /> suite.</simpara>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
 </sect2>

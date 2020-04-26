@@ -83,8 +83,8 @@ v2.6.13
 <simpara>Tags are expected to always point at the same version of a project,
 while heads are expected to advance as development progresses.</simpara>
 <simpara>Create a new branch head pointing to one of these versions and check it
-out using <xref linkend="git-checkout(1)" />:</simpara>
-<literallayout>$ git checkout -b new v2.6.13</literallayout>
+out using <xref linkend="git-switch(1)" />:</simpara>
+<literallayout>$ git switch -c new v2.6.13</literallayout>
 <simpara>The working directory then reflects the contents that the project had
 when it was tagged v2.6.13, and <xref linkend="git-branch(1)" /> shows two
 branches, with an asterisk marking the currently checked-out branch:</simpara>
@@ -248,7 +248,7 @@ a summary of the commands:</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>git checkout &lt;branch&gt;</emphasis>
+<emphasis>git switch &lt;branch&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -259,7 +259,7 @@ a summary of the commands:</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>git checkout -b &lt;new&gt; &lt;start-point&gt;</emphasis>
+<emphasis>git switch -c &lt;new&gt; &lt;start-point&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -277,22 +277,22 @@ ref: refs/heads/master</literallayout>
 </section>
 <section id="Git User Manual_detached-head">
 <title>Examining an old version without creating a new branch</title>
-<simpara>The <emphasis>git checkout</emphasis> command normally expects a branch head, but will also
-accept an arbitrary commit; for example, you can check out the commit
-referenced by a tag:</simpara>
-<literallayout>$ git checkout v2.6.17
+<simpara>The <emphasis>git switch</emphasis> command normally expects a branch head, but will also
+accept an arbitrary commit when invoked with --detach; for example,
+you can check out the commit referenced by a tag:</simpara>
+<literallayout>$ git switch --detach v2.6.17
 Note: checking out 'v2.6.17'.
 
 You are in 'detached HEAD' state. You can look around, make experimental
 changes and commit them, and you can discard any commits you make in this
-state without impacting any branches by performing another checkout.
+state without impacting any branches by performing another switch.
 
 If you want to create a new branch to retain commits you create, you may
-do so (now or later) by using -b with the checkout command again. Example:
+do so (now or later) by using -c with the switch command again. Example:
 
-  git checkout -b new_branch_name
+  git switch -c new_branch_name
 
-HEAD is now at 427abfa... Linux v2.6.17</literallayout>
+HEAD is now at 427abfa Linux v2.6.17</literallayout>
 <simpara>The HEAD then refers to the SHA-1 of the commit instead of to a branch,
 and git branch shows that you are no longer on a branch:</simpara>
 <literallayout>$ cat .git/HEAD
@@ -330,7 +330,7 @@ be updated by <emphasis>git fetch</emphasis> (hence <emphasis>git pull</emphasis
 <xref linkend="Git User Manual_Updating-a-repository-With-git-fetch"/> for details.</simpara>
 <simpara>You might want to build on one of these remote-tracking branches
 on a branch of your own, just as you would for a tag:</simpara>
-<literallayout>$ git checkout -b my-todo-copy origin/todo</literallayout>
+<literallayout>$ git switch -c my-todo-copy origin/todo</literallayout>
 <simpara>You can also check out <emphasis>origin/todo</emphasis> directly to examine it or
 write a one-off patch.  See <link linkend="Git User Manual_detached-head">detached head</link>.</simpara>
 <simpara>Note that the name "origin" is just the name that Git uses by default
@@ -441,7 +441,7 @@ Bisecting: 3537 revisions left to test after this
 [65934a9a028b88e83e2b0f8b36618fe503349f8e] BLOCK: Make USB storage depend on SCSI rather than selecting it [try #6]</literallayout>
 <simpara>If you run <emphasis>git branch</emphasis> at this point, you'll see that Git has
 temporarily moved you in "(no branch)". HEAD is now detached from any
-branch and points directly to a commit (with commit id 65934&#8230;) that
+branch and points directly to a commit (with commit id 65934) that
 is reachable from "master" but not from v2.6.18. Compile and test it,
 and see whether it crashes. Assume it does crash. Then:</simpara>
 <literallayout>$ git bisect bad
@@ -466,11 +466,11 @@ run</simpara>
 <simpara>which will run gitk and label the commit it chose with a marker that
 says "bisect".  Choose a safe-looking commit nearby, note its commit
 id, and check it out with:</simpara>
-<literallayout>$ git reset --hard fb47ddb2db...</literallayout>
+<literallayout>$ git reset --hard fb47ddb2db</literallayout>
 <simpara>then test, run <emphasis>bisect good</emphasis> or <emphasis>bisect bad</emphasis> as appropriate, and
 continue.</simpara>
 <simpara>Instead of <emphasis>git bisect visualize</emphasis> and then <emphasis>git reset --hard
-fb47ddb2db...</emphasis>, you might just want to tell Git that you want to skip
+fb47ddb2db</emphasis>, you might just want to tell Git that you want to skip
 the current commit:</simpara>
 <literallayout>$ git bisect skip</literallayout>
 <simpara>In this case, though, Git may not eventually be able to tell the first
@@ -1041,7 +1041,7 @@ unmerged files using external tools such as Emacs or kdiff3.</simpara>
 <title>Undoing a merge</title>
 <simpara>If you get stuck and decide to just give up and throw the whole mess
 away, you can always return to the pre-merge state with</simpara>
-<literallayout>$ git reset --hard HEAD</literallayout>
+<literallayout>$ git merge --abort</literallayout>
 <simpara>Or, if you've already committed the merge that you want to throw away,</simpara>
 <literallayout>$ git reset --hard ORIG_HEAD</literallayout>
 <simpara>However, this last command can be dangerous in some cases--never
@@ -1066,7 +1066,7 @@ created.</simpara>
 <simpara>If you've messed up the working tree, but haven't yet committed your
 mistake, you can return the entire working tree to the last committed
 state with</simpara>
-<literallayout>$ git reset --hard HEAD</literallayout>
+<literallayout>$ git restore --staged --worktree :/</literallayout>
 <simpara>If you make a commit that you later wish you hadn't, there are two
 fundamentally different ways to fix the problem:</simpara>
 <orderedlist numeration="arabic">
@@ -1124,10 +1124,8 @@ this is an advanced topic to be left for
 <title>Checking out an old version of a file</title>
 <simpara>In the process of undoing a previous bad change, you may find it
 useful to check out an older version of a particular file using
-<xref linkend="git-checkout(1)" />.  We've used <emphasis>git checkout</emphasis> before to switch
-branches, but it has quite different behavior if it is given a path
-name: the command</simpara>
-<literallayout>$ git checkout HEAD^ path/to/file</literallayout>
+<xref linkend="git-restore(1)" />. The command</simpara>
+<literallayout>$ git restore --source=HEAD^ path/to/file</literallayout>
 <simpara>replaces path/to/file by the contents it had in the commit HEAD^, and
 also updates the index to match.  It does not change branches.</simpara>
 <simpara>If you just want to look at an old version of the file, without
@@ -1144,7 +1142,7 @@ before continuing.  You can use <xref linkend="git-stash(1)" /> to save the curr
 state of your work, and after fixing the bug (or, optionally after doing
 so on a different branch and then coming back), unstash the
 work-in-progress changes.</simpara>
-<literallayout>$ git stash save "work in progress for foo feature"</literallayout>
+<literallayout>$ git stash push -m "work in progress for foo feature"</literallayout>
 <simpara>This command will save your changes away to the <emphasis>stash</emphasis>, and
 reset your working tree and the index to match the tip of your
 current branch.  Then you can make your fix as usual.</simpara>
@@ -1189,7 +1187,7 @@ view real errors.</simpara>
 </section>
 <section id="Git User Manual_recovering-lost-changes">
 <title>Recovering lost changes</title>
-<section id="Git User Manual_reflogs">
+<section id="reflogs">
 <title>Reflogs</title>
 <simpara>Say you modify a branch with <link linkend="Git User Manual_fixing-mistakes"><emphasis>git reset --hard</emphasis></link>,
 and then realize that the branch was the only reference you had to
@@ -1419,7 +1417,7 @@ $ mv hooks/post-update.sample hooks/post-update</literallayout>
 clone or pull from that URL, for example with a command line like:</simpara>
 <literallayout>$ git clone http://yourserver.com/~you/proj.git</literallayout>
 <simpara>(See also
-link:howto/setup-git-server-over-http.html[setup-git-server-over-http]
+<ulink url="https://www.kernel.org/pub/software/scm/git/docs/howto/setup-git-server-over-http.html"><citetitle>setup-git-server-over-http</citetitle></ulink>
 for a slightly more sophisticated setup using WebDAV which also
 allows pushing over HTTP.)</simpara>
 </section>
@@ -1462,10 +1460,12 @@ save typing; so, for example:</simpara>
 <title>What to do when a push fails</title>
 <simpara>If a push would not result in a <link linkend="Git User Manual_fast-forwards">fast-forward</link> of the
 remote branch, then it will fail with an error like:</simpara>
-<literallayout>error: remote 'refs/heads/master' is not an ancestor of
- local  'refs/heads/master'.
- Maybe you are not up-to-date and need to pull first?
-error: failed to push to 'ssh://yourserver.com/~you/proj.git'</literallayout>
+<literallayout> ! [rejected]        master -&gt; master (non-fast-forward)
+error: failed to push some refs to '...'
+hint: Updates were rejected because the tip of your current branch is behind
+hint: its remote counterpart. Integrate the remote changes (e.g.
+hint: 'git pull ...') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.</literallayout>
 <simpara>This can happen, for example, if you:</simpara>
 <itemizedlist>
 <listitem>
@@ -1611,7 +1611,7 @@ $ cd work</literallayout>
 <simpara>Linus's tree will be stored in the remote-tracking branch named origin/master,
 and can be updated using <xref linkend="git-fetch(1)" />; you can track other
 public trees using <xref linkend="git-remote(1)" /> to set up a "remote" and
-<xref linkend="git-fetch(1)" /> to keep them up-to-date; see
+<xref linkend="git-fetch(1)" /> to keep them up to date; see
 <xref linkend="Git User Manual_repositories-and-branches"/>.</simpara>
 <simpara>Now create the branches in which you are going to work; these start out
 at the current tip of origin/master branch, and should be set up (using
@@ -1620,8 +1620,8 @@ Linus by default.</simpara>
 <literallayout>$ git branch --track test origin/master
 $ git branch --track release origin/master</literallayout>
 <simpara>These can be easily kept up to date using <xref linkend="git-pull(1)" />.</simpara>
-<literallayout>$ git checkout test &amp;&amp; git pull
-$ git checkout release &amp;&amp; git pull</literallayout>
+<literallayout>$ git switch test &amp;&amp; git pull
+$ git switch release &amp;&amp; git pull</literallayout>
 <simpara>Important note!  If you have any local changes in these branches, then
 this merge will create a commit object in the history (with no local
 changes Git will simply do a "fast-forward" merge).  Many people dislike
@@ -1652,21 +1652,21 @@ Linus's branch. Picking a stable base for your branch will:
 1) help you: by avoiding inclusion of unrelated and perhaps lightly
 tested changes
 2) help future bug hunters that use <emphasis>git bisect</emphasis> to find problems</simpara>
-<literallayout>$ git checkout -b speed-up-spinlocks v2.6.35</literallayout>
+<literallayout>$ git switch -c speed-up-spinlocks v2.6.35</literallayout>
 <simpara>Now you apply the patch(es), run some tests, and commit the change(s).  If
 the patch is a multi-part series, then you should apply each as a separate
 commit to this branch.</simpara>
 <literallayout>$ ... patch ... test  ... commit [ ... patch ... test ... commit ]*</literallayout>
 <simpara>When you are happy with the state of this change, you can merge it into the
 "test" branch in preparation to make it public:</simpara>
-<literallayout>$ git checkout test &amp;&amp; git merge speed-up-spinlocks</literallayout>
+<literallayout>$ git switch test &amp;&amp; git merge speed-up-spinlocks</literallayout>
 <simpara>It is unlikely that you would have any conflicts here &#8230; but you might if you
 spent a while on this step and had also pulled new versions from upstream.</simpara>
 <simpara>Sometime later when enough time has passed and testing done, you can pull the
 same branch into the <emphasis>release</emphasis> tree ready to go upstream.  This is where you
 see the value of keeping each patch (or patch series) in its own branch.  It
 means that the patches can be moved into the <emphasis>release</emphasis> tree in any order.</simpara>
-<literallayout>$ git checkout release &amp;&amp; git merge speed-up-spinlocks</literallayout>
+<literallayout>$ git switch release &amp;&amp; git merge speed-up-spinlocks</literallayout>
 <simpara>After a while, you will have a number of branches, and despite the
 well chosen names you picked for each of them, you may forget what
 they are for, or what status they are in.  To get a reminder of what
@@ -1851,7 +1851,7 @@ you are rewriting history.</simpara>
 <title>Keeping a patch series up to date using git rebase</title>
 <simpara>Suppose that you create a branch <emphasis>mywork</emphasis> on a remote-tracking branch
 <emphasis>origin</emphasis>, and create some commits on top of it:</simpara>
-<literallayout>$ git checkout -b mywork origin
+<literallayout>$ git switch -c mywork origin
 $ vi file.txt
 $ git commit
 $ vi otherfile.txt
@@ -1875,7 +1875,7 @@ the result would create a new merge commit, like this:</simpara>
 <simpara>However, if you prefer to keep the history in mywork a simple series of
 commits without any merges, you may instead choose to use
 <xref linkend="git-rebase(1)" />:</simpara>
-<literallayout>$ git checkout mywork
+<literallayout>$ git switch mywork
 $ git rebase origin</literallayout>
 <simpara>This will remove each of your commits from mywork, temporarily saving
 them as patches (in a directory named <emphasis>.git/rebase-apply</emphasis>), update mywork to
@@ -2399,7 +2399,7 @@ those "loose" objects.</simpara>
 <simpara>You can save space and make Git faster by moving these loose objects in
 to a "pack file", which stores a group of objects in an efficient
 compressed format; the details of how pack files are formatted can be
-found in link:technical/pack-format.html[pack format].</simpara>
+found in <ulink url="https://www.kernel.org/pub/software/scm/git/docs/technical/pack-format.html"><citetitle>pack format</citetitle></ulink>.</simpara>
 <simpara>To put the loose objects into a pack, just run git repack:</simpara>
 <literallayout>$ git repack
 Counting objects: 6020, done.
@@ -2532,7 +2532,7 @@ the file has been lost?</simpara>
 Author:
 Date:
 ...
-:100644 100644 4b9458b... newsha... M somedirectory/myfile
+:100644 100644 4b9458b newsha M somedirectory/myfile
 
 
 commit xyz
@@ -2540,7 +2540,7 @@ Author:
 Date:
 
 ...
-:100644 100644 oldsha... 4b9458b... M somedirectory/myfile</literallayout>
+:100644 100644 oldsha 4b9458b M somedirectory/myfile</literallayout>
 <simpara>This tells you that the immediately following version of the file was
 "newsha", and that the immediately preceding version was "oldsha".
 You also know the commit messages that went with the change from oldsha
@@ -2552,7 +2552,7 @@ shot at reconstructing the contents of the in-between state 4b9458b.</simpara>
 <simpara>and your repository is good again!</simpara>
 <simpara>(Btw, you could have ignored the <emphasis>fsck</emphasis>, and started with doing a</simpara>
 <literallayout>$ git log --raw --all</literallayout>
-<simpara>and just looked for the sha of the missing object (4b9458b..) in that
+<simpara>and just looked for the sha of the missing object (4b9458b) in that
 whole thing. It's up to you--Git does <emphasis role="strong">have</emphasis> a lot of information, it is
 just missing one particular blob version.</simpara>
 </section>
@@ -2737,9 +2737,9 @@ working on a branch.</simpara>
 then you should create or checkout a branch, make your changes, publish the
 change within the submodule, and then update the superproject to reference the
 new commit:</simpara>
-<literallayout>$ git checkout master</literallayout>
+<literallayout>$ git switch master</literallayout>
 <simpara>or</simpara>
-<literallayout>$ git checkout -b fix-up</literallayout>
+<literallayout>$ git switch -c fix-up</literallayout>
 <simpara>then</simpara>
 <literallayout>$ echo "adding a line again" &gt;&gt; a.txt
 $ git commit -a -m "Updated the submodule from within the superproject."
@@ -2758,7 +2758,7 @@ $ git commit -m "Updated submodule a."
 $ git push</literallayout>
 <simpara>You have to run <emphasis>git submodule update</emphasis> after <emphasis>git pull</emphasis> if you want to update
 submodules, too.</simpara>
-<section id="Git User Manual__pitfalls_with_submodules">
+<section id="Git User Manual_pitfalls-with-submodules">
 <title>Pitfalls with submodules</title>
 <simpara>Always publish the submodule change before publishing the change to the
 superproject that references it. If you forget to publish the submodule change,
@@ -2834,8 +2834,8 @@ use <xref linkend="git-tag(1)" /> for both.</simpara>
 </section>
 <section id="Git User Manual_the-workflow">
 <title>The Workflow</title>
-<simpara>High-level operations such as <xref linkend="git-commit(1)" />,
-<xref linkend="git-checkout(1)" /> and <xref linkend="git-reset(1)" /> work by moving data
+<simpara>High-level operations such as <xref linkend="git-commit(1)" /> and
+<xref linkend="git-restore(1)" /> work by moving data
 between the working tree, the index, and the object database.  Git
 provides low-level operations which perform each of these steps
 individually.</simpara>
@@ -3054,9 +3054,9 @@ above example shows is that file <emphasis>hello.c</emphasis> was changed from
 You could resolve this by running your favorite 3-way merge
 program, e.g.  <emphasis>diff3</emphasis>, <emphasis>merge</emphasis>, or Git's own merge-file, on
 the blob objects from these three stages yourself, like this:</simpara>
-<literallayout>$ git cat-file blob 263414f... &gt;hello.c~1
-$ git cat-file blob 06fa6a2... &gt;hello.c~2
-$ git cat-file blob cc44c73... &gt;hello.c~3
+<literallayout>$ git cat-file blob 263414f &gt;hello.c~1
+$ git cat-file blob 06fa6a2 &gt;hello.c~2
+$ git cat-file blob cc44c73 &gt;hello.c~3
 $ git merge-file hello.c~2 hello.c~1 hello.c~3</literallayout>
 <simpara>This would leave the merge result in <emphasis>hello.c~2</emphasis> file, along
 with conflict markers if there are conflicts.  After verifying
@@ -3111,7 +3111,7 @@ to just verifying their superficial consistency through the hash).</simpara>
 source code.  This section gives you a little guidance to show where to
 start.</simpara>
 <simpara>A good place to start is with the contents of the initial commit, with:</simpara>
-<literallayout>$ git checkout e83c5163</literallayout>
+<literallayout>$ git switch --detach e83c5163</literallayout>
 <simpara>The initial revision lays the foundation for almost everything Git has
 today, but is small enough to read in one sitting.</simpara>
 <simpara>Note that terminology has changed since that revision.  For example, the
@@ -3269,7 +3269,7 @@ do not remember where it was (yes, you <emphasis>could</emphasis> <emphasis>git 
 does not illustrate the point!):</simpara>
 <literallayout>$ git log --no-merges t/</literallayout>
 <simpara>In the pager (<emphasis>less</emphasis>), just search for "bundle", go a few lines back,
-and see that it is in commit 18449ab0&#8230;  Now just copy this object name,
+and see that it is in commit 18449ab0.  Now just copy this object name,
 and paste it into the command line</simpara>
 <literallayout>$ git show 18449ab0</literallayout>
 <simpara>Voila.</simpara>
@@ -3282,6 +3282,8 @@ itself!</simpara>
 </section>
 <section id="Git User Manual_glossary">
 <title>Git Glossary</title>
+<section id="Git User Manual_git-explained">
+<title>Git explained</title>
 <variablelist>
 <varlistentry>
 <term>
@@ -3573,7 +3575,7 @@ current branch integrates with) obviously do not work, as there is no
         A fast-forward is a special type of <link linkend="Git User Manual_def_merge">merge</link> where you have a
         <link linkend="Git User Manual_def_revision">revision</link> and you are "merging" another
         <link linkend="Git User Manual_def_branch">branch</link>'s changes that happen to be a descendant of what
-        you have. In such these cases, you do not make a new <link linkend="Git User Manual_def_merge">merge</link>
+        you have. In such a case, you do not make a new <link linkend="Git User Manual_def_merge">merge</link>
         <link linkend="Git User Manual_def_commit">commit</link> but instead just update to his
         revision. This will happen frequently on a
         <link linkend="Git User Manual_def_remote_tracking_branch">remote-tracking branch</link> of a remote
@@ -3785,7 +3787,7 @@ This commit is referred to as a "merge commit", or sometimes just a
 <simpara>
         The unit of storage in Git. It is uniquely identified by the
         <link linkend="Git User Manual_def_SHA1">SHA-1</link> of its contents. Consequently, an
-        object can not be changed.
+        object cannot be changed.
 </simpara>
 </listitem>
 </varlistentry>
@@ -3863,6 +3865,22 @@ This commit is referred to as a "merge commit", or sometimes just a
 </varlistentry>
 <varlistentry>
 <term>
+<anchor id="Git User Manual_def_overlay" xreflabel="[def_overlay]"/>overlay
+</term>
+<listitem>
+<simpara>
+        Only update and add files to the working directory, but don't
+        delete them, similar to how <emphasis>cp -R</emphasis> would update the contents
+        in the destination directory.  This is the default mode in a
+        <link linkend="Git User Manual_def_checkout">checkout</link> when checking out files from the
+        <link linkend="Git User Manual_def_index">index</link> or a <link linkend="Git User Manual_def_tree-ish">tree-ish</link>.  In
+        contrast, no-overlay mode also deletes tracked files not
+        present in the source, similar to <emphasis>rsync --delete</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 <anchor id="Git User Manual_def_pack" xreflabel="[def_pack]"/>pack
 </term>
 <listitem>
@@ -3933,7 +3951,7 @@ alphanumeric, glob, regex special characters nor colon.
 The optional colon that terminates the "magic signature" can be
 omitted if the pattern begins with a character that does not belong to
 "magic signature" symbol set and is not a colon.</simpara>
-<simpara>In the long form, the leading colon <emphasis>:</emphasis> is followed by a open
+<simpara>In the long form, the leading colon <emphasis>:</emphasis> is followed by an open
 parenthesis <emphasis>(</emphasis>, a comma-separated list of zero or more "magic words",
 and a close parentheses <emphasis>)</emphasis>, and the remainder is the pattern to match
 against the path.</simpara>
@@ -4023,13 +4041,57 @@ Other consecutive asterisks are considered invalid.
 </varlistentry>
 <varlistentry>
 <term>
+attr
+</term>
+<listitem>
+<simpara>
+After <emphasis>attr:</emphasis> comes a space separated list of "attribute
+requirements", all of which must be met in order for the
+path to be considered a match; this is in addition to the
+usual non-magic pathspec pattern matching.
+See <xref linkend="gitattributes(5)" />.
+</simpara>
+<simpara>Each of the attribute requirements for the path takes one of
+these forms:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+"<emphasis>ATTR</emphasis>" requires that the attribute <emphasis>ATTR</emphasis> be set.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+"<emphasis>-ATTR</emphasis>" requires that the attribute <emphasis>ATTR</emphasis> be unset.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+"<emphasis>ATTR=VALUE</emphasis>" requires that the attribute <emphasis>ATTR</emphasis> be
+  set to the string <emphasis>VALUE</emphasis>.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+"<emphasis>!ATTR</emphasis>" requires that the attribute <emphasis>ATTR</emphasis> be
+  unspecified.
+</simpara>
+<simpara>Note that when matching against a tree object, attributes are still
+obtained from working tree, not from the given tree object.</simpara>
+</listitem>
+</itemizedlist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 exclude
 </term>
 <listitem>
 <simpara>
         After a path matches any non-exclude pathspec, it will be run
-        through all exclude pathspec (magic signature: <emphasis>!</emphasis>). If it
-        matches, the path is ignored.
+        through all exclude pathspecs (magic signature: <emphasis>!</emphasis> or its
+        synonym <emphasis>^</emphasis>). If it matches, the path is ignored.  When there
+        is no non-exclude pathspec, the exclusion is applied to the
+        result set as if invoked without any pathspec.
 </simpara>
 </listitem>
 </varlistentry>
@@ -4140,7 +4202,7 @@ exclude
 <simpara>
         Pushing a <link linkend="Git User Manual_def_branch">branch</link> means to get the branch's
         <link linkend="Git User Manual_def_head_ref">head ref</link> from a remote <link linkend="Git User Manual_def_repository">repository</link>,
-        find out if it is a direct ancestor to the branch's local
+        find out if it is an ancestor to the branch's local
         head ref, and in that case, putting all
         objects, which are <link linkend="Git User Manual_def_reachable">reachable</link> from the local
         head ref, and which are missing from the remote
@@ -4353,6 +4415,17 @@ The most notable example is <emphasis>HEAD</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+<anchor id="Git User Manual_def_stash" xreflabel="[def_stash]"/>stash entry
+</term>
+<listitem>
+<simpara>
+        An <link linkend="Git User Manual_def_object">object</link> used to temporarily store the contents of a
+        <link linkend="Git User Manual_def_dirty">dirty</link> working directory and the index for future reuse.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 <anchor id="Git User Manual_def_submodule" xreflabel="[def_submodule]"/>submodule
 </term>
 <listitem>
@@ -4528,6 +4601,7 @@ The most notable example is <emphasis>HEAD</emphasis>.</simpara>
 </varlistentry>
 </variablelist>
 </section>
+</section>
 <sect3 id="Git User Manual_git-quick-start">
 <title>Git Quick Reference</title>
 <simpara>This is a quick summary of the major commands; the previous chapters
@@ -4547,10 +4621,10 @@ $ cd project</literallayout>
 </section>
 <section id="Git User Manual_managing-branches">
 <title>Managing branches</title>
-<literallayout>$ git branch         # list all local branches in this repo
-$ git checkout test  # switch working directory to branch "test"
-$ git branch new     # create branch "new" starting at current HEAD
-$ git branch -d new  # delete branch "new"</literallayout>
+<literallayout>$ git branch                    # list all local branches in this repo
+$ git switch test               # switch working directory to branch "test"
+$ git branch new                # create branch "new" starting at current HEAD
+$ git branch -d new             # delete branch "new"</literallayout>
 <simpara>Instead of basing a new branch on current HEAD (the default), use:</simpara>
 <literallayout>$ git branch new test    # branch named "test"
 $ git branch new v2.6.15 # tag named v2.6.15
@@ -4558,14 +4632,14 @@ $ git branch new HEAD^   # commit before the most recent
 $ git branch new HEAD^^  # commit before that
 $ git branch new test~10 # ten commits before tip of branch "test"</literallayout>
 <simpara>Create and switch to a new branch at the same time:</simpara>
-<literallayout>$ git checkout -b new v2.6.15</literallayout>
+<literallayout>$ git switch -c new v2.6.15</literallayout>
 <simpara>Update and examine branches from the repository you cloned from:</simpara>
 <literallayout>$ git fetch             # update
 $ git branch -r         # list
   origin/master
   origin/next
   ...
-$ git checkout -b masterwork origin/master</literallayout>
+$ git switch -c masterwork origin/master</literallayout>
 <simpara>Fetch a branch from a different repository, and give it a new
 name in your repository:</simpara>
 <literallayout>$ git fetch git://example.com/project.git theirbranch:mybranch
@@ -4669,6 +4743,8 @@ $ git push example test</literallayout>
 </sect3>
 <sect3 id="Git User Manual_todo">
 <title>Notes and todo list for this manual</title>
+<section id="Git User Manual_todo-list">
+<title>Todo list</title>
 <simpara>This is a work in progress.</simpara>
 <simpara>The basic requirements:</simpara>
 <itemizedlist>
@@ -4727,7 +4803,8 @@ CVS, Subversion, and just imports of series of release tarballs.</simpara>
 <simpara>Write a chapter on using plumbing and writing scripts.</simpara>
 <simpara>Alternates, clone -reference, etc.</simpara>
 <simpara>More on recovery from repository corruption.  See:
-        <ulink url="http://marc.info/?l=git&amp;m=117263864820799&amp;w=2">http://marc.info/?l=git&amp;m=117263864820799&amp;w=2</ulink>
-        <ulink url="http://marc.info/?l=git&amp;m=117147855503798&amp;w=2">http://marc.info/?l=git&amp;m=117147855503798&amp;w=2</ulink></simpara>
+        <ulink url="https://lore.kernel.org/git/Pine.LNX.4.64.0702272039540.12485@woody.linux-foundation.org/">https://lore.kernel.org/git/Pine.LNX.4.64.0702272039540.12485@woody.linux-foundation.org/</ulink>
+        <ulink url="https://lore.kernel.org/git/Pine.LNX.4.64.0702141033400.3604@woody.linux-foundation.org/">https://lore.kernel.org/git/Pine.LNX.4.64.0702141033400.3604@woody.linux-foundation.org/</ulink></simpara>
+</section>
 </sect3>
 </sect2>

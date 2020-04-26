@@ -48,6 +48,15 @@ Without disambiguating <emphasis>--</emphasis>, Git makes a reasonable guess, bu
    you have to say either <emphasis>git diff HEAD --</emphasis> or <emphasis>git diff -- HEAD</emphasis> to
    disambiguate.
 </simpara>
+</listitem>
+<listitem>
+<simpara>
+Because <emphasis>--</emphasis> disambiguates revisions and paths in some commands, it
+   cannot be used for those commands to separate options and revisions.
+   You can use <emphasis>--end-of-options</emphasis> for this (it also works for commands
+   that do not distinguish between revisions in paths, in which case it
+   is simply an alias for <emphasis>--</emphasis>).
+</simpara>
 <simpara>When writing a script that is expected to handle random user-input, it is
 a good practice to make it explicit which arguments are which by placing
 disambiguating <emphasis>--</emphasis> at appropriate places.</simpara>
@@ -58,8 +67,8 @@ Many commands allow wildcards in paths, but you need to protect
    them from getting globbed by the shell.  These two mean different
    things:
 </simpara>
-<screen>$ git checkout -- *.c
-$ git checkout -- \*.c</screen>
+<screen>$ git restore *.c
+$ git restore \*.c</screen>
 <simpara>The former lets your shell expand the fileglob, and you are asking
 the dot-C files in your working tree to be overwritten with the version
 in the index.  The latter passes the <emphasis>*.c</emphasis> to Git, and you are asking
@@ -140,8 +149,8 @@ couple of magic command-line options:</simpara>
         gives a pretty printed usage of the command.
 </simpara>
 <screen>$ git describe -h
-usage: git describe [options] &lt;commit-ish&gt;*
-   or: git describe [options] --dirty
+usage: git describe [&lt;options&gt;] &lt;commit-ish&gt;*
+   or: git describe [&lt;options&gt;] --dirty
 
     --contains            find the tag that comes after the commit
     --debug               debug search strategy on stderr
@@ -149,6 +158,10 @@ usage: git describe [options] &lt;commit-ish&gt;*
     --tags                use any tag, even unannotated
     --long                always use long format
     --abbrev[=&lt;n&gt;]        use &lt;n&gt; digits to display SHA-1s</screen>
+<simpara>Note that some subcommand (e.g. <emphasis>git grep</emphasis>) may behave differently
+when there are things on the command line other than <emphasis>-h</emphasis>, but <emphasis>git
+subcmd -h</emphasis> without anything else on the command line is meant to
+consistently give the usage.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -227,7 +240,7 @@ The <emphasis>--cached</emphasis> option is used to ask a command that
 The <emphasis>--index</emphasis> option is used to ask a command that
    usually works on files in the working tree to <emphasis role="strong">also</emphasis>
    affect the index.  For example, <emphasis>git stash apply</emphasis> usually
-   merges changes recorded in a stash to the working tree,
+   merges changes recorded in a stash entry to the working tree,
    but with the <emphasis>--index</emphasis> option, it also merges changes to
    the index as well.
 </simpara>
@@ -239,9 +252,31 @@ only affects the files in the working tree, but with
 <emphasis>--index</emphasis>, it patches both the files and their index
 entries, and with <emphasis>--cached</emphasis>, it modifies only the index
 entries.</simpara>
-<simpara>See also <ulink url="http://marc.info/?l=git&amp;m=116563135620359">http://marc.info/?l=git&amp;m=116563135620359</ulink> and
-<ulink url="http://marc.info/?l=git&amp;m=119150393620273">http://marc.info/?l=git&amp;m=119150393620273</ulink> for further
+<simpara>See also <ulink url="https://lore.kernel.org/git/7v64clg5u9.fsf@assigned-by-dhcp.cox.net/">https://lore.kernel.org/git/7v64clg5u9.fsf@assigned-by-dhcp.cox.net/</ulink> and
+<ulink url="https://lore.kernel.org/git/7vy7ej9g38.fsf@gitster.siamese.dyndns.org/">https://lore.kernel.org/git/7vy7ej9g38.fsf@gitster.siamese.dyndns.org/</ulink> for further
 information.</simpara>
+<simpara>Some other commands that also work on files in the working tree and/or
+in the index can take <emphasis>--staged</emphasis> and/or <emphasis>--worktree</emphasis>.</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+<emphasis>--staged</emphasis> is exactly like <emphasis>--cached</emphasis>, which is used to ask a
+  command to only work on the index, not the working tree.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>--worktree</emphasis> is the opposite, to ask a command to work on the
+  working tree only, not the index.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+The two options can be specified together to ask a command to work
+  on both the index and the working tree.
+</simpara>
+</listitem>
+</itemizedlist>
 </simplesect>
 <simplesect id="gitcli(7)__git">
 <title>GIT</title>

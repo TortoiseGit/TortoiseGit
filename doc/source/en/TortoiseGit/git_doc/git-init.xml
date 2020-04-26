@@ -14,7 +14,7 @@
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git init</emphasis> [-q | --quiet] [--bare] [--template=&lt;template_directory&gt;]
-          [--separate-git-dir &lt;git dir&gt;]
+          [--separate-git-dir &lt;git dir&gt;] [--object-format=&lt;format]
           [--shared[=&lt;permissions&gt;]] [directory]</literallayout>
 </blockquote>
 </simplesect>
@@ -57,8 +57,19 @@ Only print error and warning messages; all other output will be suppressed.
 </term>
 <listitem>
 <simpara>
-Create a bare repository. If GIT_DIR environment is not set, it is set to the
+Create a bare repository. If <emphasis>GIT_DIR</emphasis> environment is not set, it is set to the
 current working directory.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--object-format=&lt;format&gt;
+</term>
+<listitem>
+<simpara>
+Specify the given object format (hash algorithm) for the repository.  The valid
+values are <emphasis>sha1</emphasis> and (if enabled) <emphasis>sha256</emphasis>.  <emphasis>sha1</emphasis> is the default.
 </simpara>
 </listitem>
 </varlistentry>
@@ -165,8 +176,8 @@ does not exist, it will be created.</simpara>
 </simplesect>
 <simplesect id="git-init(1)__template_directory">
 <title>TEMPLATE DIRECTORY</title>
-<simpara>The template directory contains files and directories that will be copied to
-the <emphasis>$GIT_DIR</emphasis> after it is created.</simpara>
+<simpara>Files and directories in the template directory whose name do not start with a
+dot will be copied to the <emphasis>$GIT_DIR</emphasis> after it is created.</simpara>
 <simpara>The template directory will be one of the following (in order):</simpara>
 <itemizedlist>
 <listitem>
@@ -191,7 +202,10 @@ the default template directory: <emphasis>/usr/share/git-core/templates</emphasi
 </listitem>
 </itemizedlist>
 <simpara>The default template directory includes some directory structure, suggested
-"exclude patterns" (see <xref linkend="gitignore(5)" />), and sample hook files (see <xref linkend="githooks(5)" />).</simpara>
+"exclude patterns" (see <xref linkend="gitignore(5)" />), and sample hook files.</simpara>
+<simpara>The sample hooks are all disabled by default. To enable one of the
+sample hooks rename it by removing its <emphasis>.sample</emphasis> suffix.</simpara>
+<simpara>See <xref linkend="githooks(5)" /> for more general info on hook execution.</simpara>
 </simplesect>
 <simplesect id="git-init(1)__examples">
 <title>EXAMPLES</title>

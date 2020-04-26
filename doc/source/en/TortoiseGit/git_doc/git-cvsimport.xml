@@ -25,8 +25,8 @@
 <simpara><emphasis role="strong">WARNING:</emphasis> <emphasis>git cvsimport</emphasis> uses cvsps version 2, which is considered
 deprecated; it does not work with cvsps version 3 and later.  If you are
 performing a one-shot import of a CVS repository consider using
-<ulink url="http://cvs2svn.tigris.org/cvs2git.html[cvs2git">http://cvs2svn.tigris.org/cvs2git.html[cvs2git</ulink>] or
-<ulink url="https://github.com/BartMassey/parsecvs[parsecvs">https://github.com/BartMassey/parsecvs[parsecvs</ulink>].</simpara>
+<ulink url="http://cvs2svn.tigris.org/cvs2git.html">cvs2git</ulink> or
+<ulink url="http://www.catb.org/esr/cvs-fast-export/">cvs-fast-export</ulink>.</simpara>
 <simpara>Imports a CVS repository into Git. It will either create a new
 repository, or incrementally import into an existing one.</simpara>
 <simpara>Splitting the CVS log into patch sets is done by <emphasis>cvsps</emphasis>.

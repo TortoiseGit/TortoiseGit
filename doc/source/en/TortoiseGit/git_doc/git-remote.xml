@@ -215,11 +215,14 @@ Gives some information about the remote &lt;name&gt;.
 </term>
 <listitem>
 <simpara>
-Deletes all stale remote-tracking branches under &lt;name&gt;.
-These stale branches have already been removed from the remote repository
-referenced by &lt;name&gt;, but are still locally available in
-"remotes/&lt;name&gt;".
+Deletes stale references associated with &lt;name&gt;. By default, stale
+remote-tracking branches under &lt;name&gt; are deleted, but depending on
+global configuration and the configuration of the remote we might even
+prune local tags that haven't been pushed there. Equivalent to <emphasis>git
+fetch --prune &lt;name&gt;</emphasis>, except that no new references will be fetched.
 </simpara>
+<simpara>See the PRUNING section of <xref linkend="git-fetch(1)" /> for what it'll prune
+depending on various configuration.</simpara>
 <simpara>With <emphasis>--dry-run</emphasis> option, report what branches will be pruned, but do not
 actually prune them.</simpara>
 </listitem>
@@ -230,14 +233,14 @@ actually prune them.</simpara>
 </term>
 <listitem>
 <simpara>
-Fetch updates for a named set of remotes in the repository as defined by
-remotes.&lt;group&gt;.  If a named group is not specified on the command line,
+Fetch updates for remotes or remote groups in the repository as defined by
+remotes.&lt;group&gt;.  If neither group nor remote is specified on the command line,
 the configuration parameter remotes.default will be used; if
 remotes.default is not defined, all remotes which do not have the
 configuration parameter remote.&lt;name&gt;.skipDefaultUpdate set to true will
 be updated.  (See <xref linkend="git-config(1)" />).
 </simpara>
-<simpara>With <emphasis>--prune</emphasis> option, prune all the remotes that are updated.</simpara>
+<simpara>With <emphasis>--prune</emphasis> option, run pruning against all the remotes that are updated.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>
@@ -249,7 +252,7 @@ be updated.  (See <xref linkend="git-config(1)" />).
 <xref linkend="git-config(1)" />).</simpara>
 </simplesect>
 <simplesect id="git-remote(1)__examples">
-<title>Examples</title>
+<title>EXAMPLES</title>
 <itemizedlist>
 <listitem>
 <simpara>
@@ -276,7 +279,7 @@ $ git branch -r
   staging/master
   staging/staging-linus
   staging/staging-next
-$ git checkout -b staging staging/master
+$ git switch -c staging staging/master
 ...</screen>
 </listitem>
 <listitem>

@@ -13,17 +13,19 @@
 <simplesect id="git-rm(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git rm</emphasis> [-f | --force] [-n] [-r] [--cached] [--ignore-unmatch] [--quiet] [--] &lt;file&gt;&#8230;</literallayout>
+<literallayout><emphasis>git rm</emphasis> [-f | --force] [-n] [-r] [--cached] [--ignore-unmatch]
+          [--quiet] [--pathspec-from-file=&lt;file&gt; [--pathspec-file-nul]]
+          [--] [&lt;pathspec&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-rm(1)__description">
 <title>DESCRIPTION</title>
-<simpara>Remove files from the index, or from the working tree and the index.
-<emphasis>git rm</emphasis> will not remove a file from just your working directory.
-(There is no option to remove a file only from the working tree
-and yet keep it in the index; use <emphasis>/bin/rm</emphasis> if you want to do that.)
-The files being removed have to be identical to the tip of the branch,
-and no updates to their contents can be staged in the index,
+<simpara>Remove files matching pathspec from the index, or from the working tree
+and the index. <emphasis>git rm</emphasis> will not remove a file from just your working
+directory. (There is no option to remove a file only from the working
+tree and yet keep it in the index; use <emphasis>/bin/rm</emphasis> if you want to do
+that.) The files being removed have to be identical to the tip of the
+branch, and no updates to their contents can be staged in the index,
 though that default behavior can be overridden with the <emphasis>-f</emphasis> option.
 When <emphasis>--cached</emphasis> is given, the staged content has to
 match either the tip of the branch or the file on disk,
@@ -34,19 +36,21 @@ allowing the file to be removed from just the index.</simpara>
 <variablelist>
 <varlistentry>
 <term>
-&lt;file&gt;&#8230;
+&lt;pathspec&gt;&#8230;
 </term>
 <listitem>
 <simpara>
-        Files to remove.  Fileglobs (e.g. <emphasis>*.c</emphasis>) can be given to
-        remove all matching files.  If you want Git to expand
-        file glob characters, you may need to shell-escape them.
-        A leading directory name
-        (e.g. <emphasis>dir</emphasis> to remove <emphasis>dir/file1</emphasis> and <emphasis>dir/file2</emphasis>) can be
-        given to remove all files in the directory, and recursively
-        all sub-directories,
-        but this requires the <emphasis>-r</emphasis> option to be explicitly given.
+        Files to remove.  A leading directory name (e.g. <emphasis>dir</emphasis> to remove
+        <emphasis>dir/file1</emphasis> and <emphasis>dir/file2</emphasis>) can be given to remove all files in
+        the directory, and recursively all sub-directories, but this
+        requires the <emphasis>-r</emphasis> option to be explicitly given.
 </simpara>
+<simpara>The command removes only the paths that are known to Git.</simpara>
+<simpara>File globbing matches across directory boundaries.  Thus, given two
+directories <emphasis>d</emphasis> and <emphasis>d2</emphasis>, there is a difference between using
+<emphasis>git rm 'd*'</emphasis> and <emphasis>git rm 'd/*'</emphasis>, as the former will also remove all
+of directory <emphasis>d2</emphasis>.</simpara>
+<simpara>For more details, see the <emphasis>pathspec</emphasis> entry in <xref linkend="gitglossary(7)" />.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -136,18 +140,34 @@ allowing the file to be removed from just the index.</simpara>
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+--pathspec-from-file=&lt;file&gt;
+</term>
+<listitem>
+<simpara>
+        Pathspec is passed in <emphasis>&lt;file&gt;</emphasis> instead of commandline args. If
+        <emphasis>&lt;file&gt;</emphasis> is exactly <emphasis>-</emphasis> then standard input is used. Pathspec
+        elements are separated by LF or CR/LF. Pathspec elements can be
+        quoted as explained for the configuration variable <emphasis>core.quotePath</emphasis>
+        (see <xref linkend="git-config(1)" />). See also <emphasis>--pathspec-file-nul</emphasis> and
+        global <emphasis>--literal-pathspecs</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--pathspec-file-nul
+</term>
+<listitem>
+<simpara>
+        Only meaningful with <emphasis>--pathspec-from-file</emphasis>. Pathspec elements are
+        separated with NUL character and all other characters are taken
+        literally (including newlines and quotes).
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
-</simplesect>
-<simplesect id="git-rm(1)__discussion">
-<title>DISCUSSION</title>
-<simpara>The &lt;file&gt; list given to the command can be exact pathnames,
-file glob patterns, or leading directory names.  The command
-removes only the paths that are known to Git.  Giving the name of
-a file that you have not told Git about does not remove that file.</simpara>
-<simpara>File globbing matches across directory boundaries.  Thus, given
-two directories <emphasis>d</emphasis> and <emphasis>d2</emphasis>, there is a difference between
-using <emphasis>git rm 'd*'</emphasis> and <emphasis>git rm 'd/*'</emphasis>, as the former will
-also remove all of directory <emphasis>d2</emphasis>.</simpara>
 </simplesect>
 <simplesect id="git-rm(1)__removing_files_that_have_disappeared_from_the_filesystem">
 <title>REMOVING FILES THAT HAVE DISAPPEARED FROM THE FILESYSTEM</title>
@@ -194,18 +214,19 @@ use the following command:</simpara>
 with a Git version 1.7.8 or newer) will be removed from the work
 tree, as their repository lives inside the .git directory of the
 superproject. If a submodule (or one of those nested inside it)
-still uses a .git directory, <emphasis>git rm</emphasis> will fail - no matter if forced
-or not - to protect the submodule's history. If it exists the
-submodule.&lt;name&gt; section in the <xref linkend="gitmodules(5)" /> file will also
-be removed and that file will be staged (unless --cached or -n are used).</simpara>
-<simpara>A submodule is considered up-to-date when the HEAD is the same as
+still uses a .git directory, <emphasis>git rm</emphasis> will move the submodules
+git directory into the superprojects git directory to protect
+the submodule's history. If it exists the submodule.&lt;name&gt; section
+in the <xref linkend="gitmodules(5)" /> file will also be removed and that file
+will be staged (unless --cached or -n are used).</simpara>
+<simpara>A submodule is considered up to date when the HEAD is the same as
 recorded in the index, no tracked files are modified and no untracked
 files that aren't ignored are present in the submodules work tree.
 Ignored files are deemed expendable and won't stop a submodule's work
 tree from being removed.</simpara>
 <simpara>If you only want to remove the local checkout of a submodule from your
-work tree without committing the removal,
-use <xref linkend="git-submodule(1)" /> <emphasis>deinit</emphasis> instead.</simpara>
+work tree without committing the removal, use <xref linkend="git-submodule(1)" /> <emphasis>deinit</emphasis>
+instead. Also see <xref linkend="gitsubmodules(7)" /> for details on submodule removal.</simpara>
 </simplesect>
 <simplesect id="git-rm(1)__examples">
 <title>EXAMPLES</title>

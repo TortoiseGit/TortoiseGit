@@ -14,9 +14,7 @@
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git revert</emphasis> [--[no-]edit] [-n] [-m parent-number] [-s] [-S[&lt;keyid&gt;]] &lt;commit&gt;&#8230;
-<emphasis>git revert</emphasis> --continue
-<emphasis>git revert</emphasis> --quit
-<emphasis>git revert</emphasis> --abort</literallayout>
+<emphasis>git revert</emphasis> (--continue | --skip | --abort | --quit)</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-revert(1)__description">
@@ -30,9 +28,11 @@ effect of some earlier commits (often only a faulty one).  If you want to
 throw away all uncommitted changes in your working directory, you
 should see <xref linkend="git-reset(1)" />, particularly the <emphasis>--hard</emphasis> option.  If
 you want to extract specific files as they were in another commit, you
-should see <xref linkend="git-checkout(1)" />, specifically the <emphasis>git checkout
-&lt;commit&gt; -- &lt;filename&gt;</emphasis> syntax.  Take care with these alternatives as
+should see <xref linkend="git-restore(1)" />, specifically the <emphasis>--source</emphasis>
+option. Take care with these alternatives as
 both will discard uncommitted changes in your working directory.</simpara>
+<simpara>See "Reset, restore and revert" in <xref linkend="git(1)" /> for the differences
+between the three commands.</simpara>
 </simplesect>
 <simplesect id="git-revert(1)__options">
 <title>OPTIONS</title>
@@ -103,6 +103,20 @@ more details.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--cleanup=&lt;mode&gt;
+</term>
+<listitem>
+<simpara>
+        This option determines how the commit message will be cleaned up before
+        being passed on to the commit machinery. See <xref linkend="git-commit(1)" /> for more
+        details. In particular, if the <emphasis>&lt;mode&gt;</emphasis> is given a value of <emphasis>scissors</emphasis>,
+        scissors will be appended to <emphasis>MERGE_MSG</emphasis> before being passed on in the case
+        of a conflict.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 -n
 </term>
 <term>
@@ -130,11 +144,16 @@ effect to your index in a row.</simpara>
 <term>
 --gpg-sign[=&lt;keyid&gt;]
 </term>
+<term>
+--no-gpg-sign
+</term>
 <listitem>
 <simpara>
         GPG-sign commits. The <emphasis>keyid</emphasis> argument is optional and
         defaults to the committer identity; if specified, it must be
-        stuck to the option without a space.
+        stuck to the option without a space. <emphasis>--no-gpg-sign</emphasis> is useful to
+        countermand both <emphasis>commit.gpgSign</emphasis> configuration variable, and
+        earlier <emphasis>--gpg-sign</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -178,6 +197,20 @@ effect to your index in a row.</simpara>
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+--rerere-autoupdate
+</term>
+<term>
+--no-rerere-autoupdate
+</term>
+<listitem>
+<simpara>
+        Allow the rerere mechanism to update the index with the
+        result of auto-conflict resolution if possible.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </simplesect>
 <simplesect id="git-revert(1)__sequencer_subcommands">
@@ -192,6 +225,17 @@ effect to your index in a row.</simpara>
         Continue the operation in progress using the information in
         <emphasis>.git/sequencer</emphasis>.  Can be used to continue after resolving
         conflicts in a failed cherry-pick or revert.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--skip
+</term>
+<listitem>
+<simpara>
+        Skip the current commit and continue with the rest of the
+        sequence.
 </simpara>
 </listitem>
 </varlistentry>

@@ -111,6 +111,49 @@ success of the resolution after the custom tool has exited.</simpara>
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+-g
+</term>
+<term>
+--gui
+</term>
+<listitem>
+<simpara>
+        When <emphasis>git-mergetool</emphasis> is invoked with the <emphasis>-g</emphasis> or <emphasis>--gui</emphasis> option
+        the default merge tool will be read from the configured
+        <emphasis>merge.guitool</emphasis> variable instead of <emphasis>merge.tool</emphasis>. If
+        <emphasis>merge.guitool</emphasis> is not set, we will fallback to the tool
+        configured under <emphasis>merge.tool</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-gui
+</term>
+<listitem>
+<simpara>
+        This overrides a previous <emphasis>-g</emphasis> or <emphasis>--gui</emphasis> setting and reads the
+        default merge tool will be read from the configured <emphasis>merge.tool</emphasis>
+        variable.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-O&lt;orderfile&gt;
+</term>
+<listitem>
+<simpara>
+        Process files in the order specified in the
+        &lt;orderfile&gt;, which has one shell glob pattern per line.
+        This overrides the <emphasis>diff.orderFile</emphasis> configuration variable
+        (see <xref linkend="git-config(1)" />).  To cancel <emphasis>diff.orderFile</emphasis>,
+        use <emphasis>-O/dev/null</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </simplesect>
 <simplesect id="git-mergetool(1)__temporary_files">

@@ -13,7 +13,7 @@
 <simplesect id="git-svn(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git svn</emphasis> &lt;command&gt; [options] [arguments]</literallayout>
+<literallayout><emphasis>git svn</emphasis> &lt;command&gt; [&lt;options&gt;] [&lt;arguments&gt;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-svn(1)__description">
@@ -183,6 +183,18 @@ your Perl's Getopt::Long is &lt; v2.37).</simpara></note>
 </varlistentry>
 <varlistentry>
 <term>
+--ignore-refs=&lt;regex&gt;
+</term>
+<listitem>
+<simpara>
+        When passed to <emphasis>init</emphasis> or <emphasis>clone</emphasis> this regular expression will
+        be preserved as a config key.  See <emphasis>fetch</emphasis> for a description
+        of <emphasis>--ignore-refs</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --ignore-paths=&lt;regex&gt;
 </term>
 <listitem>
@@ -266,6 +278,24 @@ the same local time zone.</simpara>
 <simpara>
         Fetch only from the SVN parent of the current HEAD.
 </simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--ignore-refs=&lt;regex&gt;
+</term>
+<listitem>
+<simpara>
+        Ignore refs for branches or tags matching the Perl regular
+        expression. A "negative look-ahead assertion" like
+        <emphasis>^refs/remotes/origin/(?!tags/wanted-tag|wanted-branch).*$</emphasis>
+        can be used to allow only certain refs.
+</simpara>
+<blockquote>
+<literallayout>config key: svn-remote.&lt;name&gt;.ignore-refs</literallayout>
+</blockquote>
+<simpara>If the ignore-refs configuration key is set, and the command-line
+option is also given, both regular expressions will be used.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -793,7 +823,7 @@ environment). This command has the same behaviour.</simpara></note>
 <simpara>
         You should consider using <emphasis>dcommit</emphasis> instead of this command.
         Commit specified commit or tree objects to SVN.  This relies on
-        your imported fetch data being up-to-date.  This makes
+        your imported fetch data being up to date.  This makes
         absolutely no attempts to do patching when committing to SVN, it
         simply overwrites files with those specified in the tree or
         commit.  All merging is assumed to have taken place
@@ -849,7 +879,7 @@ environment). This command has the same behaviour.</simpara></note>
 <listitem>
 <simpara>
         Commits the diff of two tree-ish arguments from the
-        command-line.  This command does not rely on being inside an <emphasis>git svn
+        command-line.  This command does not rely on being inside a <emphasis>git svn
         init</emphasis>-ed repository.  This command takes three arguments, (a) the
         original tree to diff against, (b) the new tree result, (c) the
         URL of the target Subversion repository.  The final argument
@@ -857,6 +887,40 @@ environment). This command has the same behaviour.</simpara></note>
         repository (that has been <emphasis>init</emphasis>-ed with <emphasis>git svn</emphasis>).
         The -r&lt;revision&gt; option is required for this.
 </simpara>
+<simpara>The commit message is supplied either directly with the <emphasis>-m</emphasis> or <emphasis>-F</emphasis>
+option, or indirectly from the tag or commit when the second tree-ish
+denotes such an object, or it is requested by invoking an editor (see
+<emphasis>--edit</emphasis> option below).</simpara>
+<variablelist>
+<varlistentry>
+<term>
+-m &lt;msg&gt;
+</term>
+<term>
+--message=&lt;msg&gt;
+</term>
+<listitem>
+<simpara>
+        Use the given <emphasis>msg</emphasis> as the commit message. This option
+        disables the <emphasis>--edit</emphasis> option.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-F &lt;filename&gt;
+</term>
+<term>
+--file=&lt;filename&gt;
+</term>
+<listitem>
+<simpara>
+        Take the commit message from the given file. This option
+        disables the <emphasis>--edit</emphasis> option.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -893,6 +957,22 @@ environment). This command has the same behaviour.</simpara></note>
         Gets the Subversion property given as the first argument, for a
         file.  A specific revision can be specified with -r/--revision.
 </simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>propset</emphasis>
+</term>
+<listitem>
+<simpara>
+        Sets the Subversion property given as the first argument, to the
+        value given as the second argument for the file given as the
+        third argument.
+</simpara>
+<simpara>Example:</simpara>
+<screen>git svn propset svn:keywords "FreeBSD=%H" devel/py-tipper/Makefile</screen>
+<simpara>This will set the property <emphasis>svn:keywords</emphasis> to <emphasis>FreeBSD=%H</emphasis> for the file
+<emphasis>devel/py-tipper/Makefile</emphasis>.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -1119,7 +1199,8 @@ config key: svn.findcopiesharder</literallayout>
 </term>
 <listitem>
 <simpara>
-        Syntax is compatible with the file used by <emphasis>git cvsimport</emphasis>:
+        Syntax is compatible with the file used by <emphasis>git cvsimport</emphasis> but
+        an empty email address can be supplied with <emphasis>&lt;&gt;</emphasis>:
 </simpara>
 <screen>        loginname = Joe User &lt;user@example.com&gt;</screen>
 <simpara>If this option is specified and <emphasis>git svn</emphasis> encounters an SVN
@@ -1141,9 +1222,17 @@ after the authors-file is modified should continue operation.</simpara>
         If this option is specified, for each SVN committer name that
         does not exist in the authors file, the given file is executed
         with the committer name as the first argument.  The program is
-        expected to return a single line of the form "Name &lt;email&gt;",
-        which will be treated as if included in the authors file.
+        expected to return a single line of the form "Name &lt;email&gt;" or
+        "Name &lt;&gt;", which will be treated as if included in the authors
+        file.
 </simpara>
+<simpara>Due to historical reasons a relative <emphasis>filename</emphasis> is first searched
+relative to the current directory for <emphasis>init</emphasis> and <emphasis>clone</emphasis> and relative
+to the root of the working tree for <emphasis>fetch</emphasis>. If <emphasis>filename</emphasis> is
+not found, it is searched like any other command in <emphasis>$PATH</emphasis>.</simpara>
+<blockquote>
+<literallayout>config key: svn.authorsProg</literallayout>
+</blockquote>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -1177,7 +1266,10 @@ after the authors-file is modified should continue operation.</simpara>
 -p
 </term>
 <term>
---preserve-merges
+--rebase-merges
+</term>
+<term>
+--preserve-merges (DEPRECATED)
 </term>
 <listitem>
 <simpara>
@@ -1218,6 +1310,9 @@ creating the branch or tag.</simpara>
         <emphasis>dcommit</emphasis> operations), look for the first <emphasis>From:</emphasis> or <emphasis>Signed-off-by:</emphasis> line
         in the log message and use that as the author string.
 </simpara>
+<blockquote>
+<literallayout>config key: svn.useLogAuthor</literallayout>
+</blockquote>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -1226,12 +1321,15 @@ creating the branch or tag.</simpara>
 </term>
 <listitem>
 <simpara>
-        When committing to svn from Git (as part of <emphasis>commit-diff</emphasis>, <emphasis>set-tree</emphasis> or <emphasis>dcommit</emphasis>
+        When committing to svn from Git (as part of <emphasis>set-tree</emphasis> or <emphasis>dcommit</emphasis>
         operations), if the existing log message doesn't already have a
         <emphasis>From:</emphasis> or <emphasis>Signed-off-by:</emphasis> line, append a <emphasis>From:</emphasis> line based on the
         Git commit's author string.  If you use this, then <emphasis>--use-log-author</emphasis>
         will retrieve a valid author string for all commits.
 </simpara>
+<blockquote>
+<literallayout>config key: svn.addAuthorFrom</literallayout>
+</blockquote>
 </listitem>
 </varlistentry>
 </variablelist>
@@ -1321,11 +1419,11 @@ this, either.  Using this conflicts with the <emphasis>useSvmProps</emphasis>
 option for (hopefully) obvious reasons.</simpara>
 <simpara>This option is NOT recommended as it makes it difficult to track down
 old references to SVN revision numbers in existing documentation, bug
-reports and archives.  If you plan to eventually migrate from SVN to Git
-and are certain about dropping SVN history, consider
-<xref linkend="git-filter-branch(1)" /> instead.  filter-branch also allows
-reformatting of metadata for ease-of-reading and rewriting authorship
-info for non-"svn.authorsFile" users.</simpara>
+reports, and archives.  If you plan to eventually migrate from SVN to
+Git and are certain about dropping SVN history, consider
+<ulink url="https://github.com/newren/git-filter-repo">git-filter-repo</ulink> instead.
+filter-repo also allows reformatting of metadata for ease-of-reading
+and rewriting authorship info for non-"svn.authorsFile" users.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>

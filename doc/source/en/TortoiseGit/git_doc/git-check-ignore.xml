@@ -13,8 +13,8 @@
 <simplesect id="git-check-ignore(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git check-ignore</emphasis> [options] pathname&#8230;
-<emphasis>git check-ignore</emphasis> [options] --stdin</literallayout>
+<literallayout><emphasis>git check-ignore</emphasis> [&lt;options&gt;] &lt;pathname&gt;&#8230;
+<emphasis>git check-ignore</emphasis> [&lt;options&gt;] --stdin</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-check-ignore(1)__description">
@@ -46,10 +46,15 @@ subject to exclude rules; but see --no-index.</simpara>
 </term>
 <listitem>
 <simpara>
-        Also output details about the matching pattern (if any)
-        for each given pathname. For precedence rules within and
-        between exclude sources, see <xref linkend="gitignore(5)" />.
+        Instead of printing the paths that are excluded, for each path
+        that matches an exclude pattern, print the exclude pattern
+        together with the path.  (Matching an exclude pattern usually
+        means the path is excluded, but if the pattern begins with <emphasis>!</emphasis>
+        then it is a negated pattern and matching it means the path is
+        NOT excluded.)
 </simpara>
+<simpara>For precedence rules within and between exclude sources, see
+<xref linkend="gitignore(5)" />.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -69,7 +74,7 @@ subject to exclude rules; but see --no-index.</simpara>
 </term>
 <listitem>
 <simpara>
-        The output format is modified to be machine-parseable (see
+        The output format is modified to be machine-parsable (see
         below).  If <emphasis>--stdin</emphasis> is also given, input paths are separated
         with a NUL character instead of a linefeed character.
 </simpara>
@@ -175,7 +180,7 @@ buffer.</simpara>
 <simplesect id="git-check-ignore(1)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="gitignore(5)" />
-<xref linkend="gitconfig(5)" />
+<xref linkend="git-config(1)" />
 <xref linkend="git-ls-files(1)" /></simpara>
 </simplesect>
 <simplesect id="git-check-ignore(1)__git">

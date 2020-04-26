@@ -14,7 +14,7 @@
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git quiltimport</emphasis> [--dry-run | -n] [--author &lt;author&gt;] [--patches &lt;dir&gt;]
-                [--series &lt;file&gt;]</literallayout>
+                [--series &lt;file&gt;] [--keep-non-patch]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-quiltimport(1)__description">
@@ -69,7 +69,7 @@ preserved as the 1 line subject in the Git description.</simpara>
         The directory to find the quilt patches.
 </simpara>
 <simpara>The default for the patch directory is patches
-or the value of the $QUILT_PATCHES environment
+or the value of the <emphasis>$QUILT_PATCHES</emphasis> environment
 variable.</simpara>
 </listitem>
 </varlistentry>
@@ -82,8 +82,18 @@ variable.</simpara>
         The quilt series file.
 </simpara>
 <simpara>The default for the series file is &lt;patches&gt;/series
-or the value of the $QUILT_SERIES environment
+or the value of the <emphasis>$QUILT_SERIES</emphasis> environment
 variable.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--keep-non-patch
+</term>
+<listitem>
+<simpara>
+        Pass <emphasis>-b</emphasis> flag to <emphasis>git mailinfo</emphasis> (see <xref linkend="git-mailinfo(1)" />).
+</simpara>
 </listitem>
 </varlistentry>
 </variablelist>

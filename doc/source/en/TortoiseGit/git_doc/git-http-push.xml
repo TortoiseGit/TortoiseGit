@@ -119,7 +119,7 @@ Specified branch is an ancestor of the remote HEAD
 </variablelist>
 </simplesect>
 <simplesect id="git-http-push(1)__specifying_the_refs">
-<title>Specifying the Refs</title>
+<title>SPECIFYING THE REFS</title>
 <simpara>A <emphasis>&lt;ref&gt;</emphasis> specification can be either a single pattern, or a pair
 of such patterns separated by a colon ":" (this means that a ref name
 cannot have a colon in it).  A single pattern <emphasis>&lt;name&gt;</emphasis> is just a
@@ -157,11 +157,11 @@ it has to start with "refs/"; &lt;dst&gt; is used as the
 </itemizedlist>
 </listitem>
 </itemizedlist>
-<simpara>Without <emphasis>--force</emphasis>, the &lt;src&gt; ref is stored at the remote only if
+<simpara>Without --force`, the &lt;src&gt; ref is stored at the remote only if
 &lt;dst&gt; does not exist, or &lt;dst&gt; is a proper subset (i.e. an
 ancestor) of &lt;src&gt;.  This check, known as "fast-forward check",
 is performed in order to avoid accidentally overwriting the
-remote ref and lose other peoples' commits from there.</simpara>
+remote ref and lose other peoples commits from there.</simpara>
 <simpara>With <emphasis>--force</emphasis>, the fast-forward check is disabled for all refs.</simpara>
 <simpara>Optionally, a &lt;ref&gt; parameter can be prefixed with a plus <emphasis>+</emphasis> sign
 to disable the fast-forward check only on that ref.</simpara>

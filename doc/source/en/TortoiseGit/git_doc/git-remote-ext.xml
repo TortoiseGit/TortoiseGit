@@ -102,7 +102,7 @@ some tunnel.</simpara>
 </variablelist>
 </simplesect>
 <simplesect id="git-remote-ext(1)__environment_variables">
-<title>ENVIRONMENT VARIABLES:</title>
+<title>ENVIRONMENT VARIABLES</title>
 <variablelist>
 <varlistentry>
 <term>
@@ -117,7 +117,7 @@ GIT_TRANSLOOP_DEBUG
 </variablelist>
 </simplesect>
 <simplesect id="git-remote-ext(1)__environment_variables_passed_to_command">
-<title>ENVIRONMENT VARIABLES PASSED TO COMMAND:</title>
+<title>ENVIRONMENT VARIABLES PASSED TO COMMAND</title>
 <variablelist>
 <varlistentry>
 <term>
@@ -144,7 +144,7 @@ GIT_EXT_SERVICE_NOPREFIX
 </variablelist>
 </simplesect>
 <simplesect id="git-remote-ext(1)__examples">
-<title>EXAMPLES:</title>
+<title>EXAMPLES</title>
 <simpara>This remote helper is transparently used by Git when
 you use commands such as "git fetch &lt;URL&gt;", "git clone &lt;URL&gt;",
 , "git push &lt;URL&gt;" or "git remote add &lt;nick&gt; &lt;URL&gt;", where &lt;URL&gt;
@@ -232,7 +232,7 @@ begins with <emphasis>ext::</emphasis>.  Examples:</simpara>
 </simplesect>
 <simplesect id="git-remote-ext(1)__see_also">
 <title>SEE ALSO</title>
-<simpara><xref linkend="gitremote-helpers(1)" /></simpara>
+<simpara><xref linkend="gitremote-helpers(7)" /></simpara>
 </simplesect>
 <simplesect id="git-remote-ext(1)__git">
 <title>GIT</title>

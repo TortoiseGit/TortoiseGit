@@ -21,11 +21,18 @@
                    [--signature-file=&lt;file&gt;]
                    [-n | --numbered | -N | --no-numbered]
                    [--start-number &lt;n&gt;] [--numbered-files]
-                   [--in-reply-to=Message-Id] [--suffix=.&lt;sfx&gt;]
+                   [--in-reply-to=&lt;message id&gt;] [--suffix=.&lt;sfx&gt;]
                    [--ignore-if-in-upstream]
-                   [--subject-prefix=Subject-Prefix] [(--reroll-count|-v) &lt;n&gt;]
+                   [--cover-from-description=&lt;mode&gt;]
+                   [--rfc] [--subject-prefix=&lt;subject prefix&gt;]
+                   [(--reroll-count|-v) &lt;n&gt;]
                    [--to=&lt;email&gt;] [--cc=&lt;email&gt;]
-                   [--[no-]cover-letter] [--quiet] [--notes[=&lt;ref&gt;]]
+                   [--[no-]cover-letter] [--quiet]
+                   [--[no-]encode-email-headers]
+                   [--no-notes | --notes[=&lt;ref&gt;]]
+                   [--interdiff=&lt;previous&gt;]
+                   [--range-diff=&lt;previous&gt; [--creation-factor=&lt;percent&gt;]]
+                   [--progress]
                    [&lt;common diff options&gt;]
                    [ &lt;since&gt; | &lt;revision range&gt; ]</literallayout>
 </blockquote>
@@ -69,7 +76,8 @@ they are created in the current working directory. The default path
 can be set with the <emphasis>format.outputDirectory</emphasis> configuration option.
 The <emphasis>-o</emphasis> option takes precedence over <emphasis>format.outputDirectory</emphasis>.
 To store patches in the current working directory even when
-<emphasis>format.outputDirectory</emphasis> points elsewhere, use <emphasis>-o .</emphasis>.</simpara>
+<emphasis>format.outputDirectory</emphasis> points elsewhere, use <emphasis>-o .</emphasis>. All directory
+components will be created.</simpara>
 <simpara>By default, the subject of a single patch is "[PATCH] " followed by
 the concatenation of lines from the commit message up to the first blank
 line (see the DISCUSSION section of <xref linkend="git-commit(1)" />).</simpara>
@@ -107,7 +115,56 @@ reference.</simpara>
 <listitem>
 <simpara>
         Generate diffs with &lt;n&gt; lines of context instead of
-        the usual three.
+        the usual three. Implies <emphasis>--patch</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--output=&lt;file&gt;
+</term>
+<listitem>
+<simpara>
+        Output to a specific file instead of stdout.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--output-indicator-new=&lt;char&gt;
+</term>
+<term>
+--output-indicator-old=&lt;char&gt;
+</term>
+<term>
+--output-indicator-context=&lt;char&gt;
+</term>
+<listitem>
+<simpara>
+        Specify the character used to indicate new, old or context
+        lines in the generated patch. Normally they are <emphasis>+</emphasis>, <emphasis>-</emphasis> and
+        ' ' respectively.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--indent-heuristic
+</term>
+<listitem>
+<simpara>
+        Enable the heuristic that shifts diff hunk boundaries to make patches
+        easier to read. This is the default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-indent-heuristic
+</term>
+<listitem>
+<simpara>
+        Disable the indent heuristic.
 </simpara>
 </listitem>
 </varlistentry>
@@ -140,6 +197,21 @@ reference.</simpara>
 <simpara>
         Generate a diff using the "histogram diff" algorithm.
 </simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--anchored=&lt;text&gt;
+</term>
+<listitem>
+<simpara>
+        Generate a diff using the "anchored diff" algorithm.
+</simpara>
+<simpara>This option may be specified more than once.</simpara>
+<simpara>If a line exists in both the source and destination, exists only once,
+and starts with this text, this algorithm attempts to prevent it from
+appearing as a deletion or addition in the output. It uses the "patience
+diff" algorithm internally.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -194,7 +266,7 @@ reference.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>
-<simpara>For instance, if you configured diff.algorithm variable to a
+<simpara>For instance, if you configured the <emphasis>diff.algorithm</emphasis> variable to a
 non-default value and want to use the default one, then you
 have to use <emphasis>--diff-algorithm=default</emphasis> option.</simpara>
 </listitem>
@@ -225,6 +297,21 @@ have to use <emphasis>--diff-algorithm=default</emphasis> option.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--compact-summary
+</term>
+<listitem>
+<simpara>
+        Output a condensed summary of extended header information such
+        as file creations or deletions ("new" or "gone", optionally "+l"
+        if it's a symlink) and mode changes ("+x" or "-x" for adding
+        or removing executable bit respectively) in diffstat. The
+        information is put between the filename part and the graph
+        part. Implies <emphasis>--stat</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --numstat
 </term>
 <listitem>
@@ -250,6 +337,9 @@ have to use <emphasis>--diff-algorithm=default</emphasis> option.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
+<term>
+-X[&lt;param1,param2,&#8230;&gt;]
+</term>
 <term>
 --dirstat[=&lt;param1,param2,&#8230;&gt;]
 </term>
@@ -340,6 +430,26 @@ and accumulating child directory counts in the parent directories:
 </varlistentry>
 <varlistentry>
 <term>
+--cumulative
+</term>
+<listitem>
+<simpara>
+        Synonym for --dirstat=cumulative
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--dirstat-by-file[=&lt;param1,param2&gt;&#8230;]
+</term>
+<listitem>
+<simpara>
+        Synonym for --dirstat=files,param1,param2&#8230;
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --summary
 </term>
 <listitem>
@@ -362,6 +472,16 @@ and accumulating child directory counts in the parent directories:
 </varlistentry>
 <varlistentry>
 <term>
+--[no-]rename-empty
+</term>
+<listitem>
+<simpara>
+        Whether to use empty blobs as rename source.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --full-index
 </term>
 <listitem>
@@ -379,7 +499,7 @@ and accumulating child directory counts in the parent directories:
 <listitem>
 <simpara>
         In addition to <emphasis>--full-index</emphasis>, output a binary diff that
-        can be applied with <emphasis>git-apply</emphasis>.
+        can be applied with <emphasis>git-apply</emphasis>. Implies <emphasis>--patch</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -493,7 +613,7 @@ another file.</simpara>
         the diff between the preimage and <emphasis>/dev/null</emphasis>. The resulting patch
         is not meant to be applied with <emphasis>patch</emphasis> or <emphasis>git apply</emphasis>; this is
         solely for people who want to just concentrate on reviewing the
-        text after the change. In addition, the output obviously lack
+        text after the change. In addition, the output obviously lacks
         enough information to apply such a patch in reverse, even manually,
         hence the name of the option.
 </simpara>
@@ -521,12 +641,48 @@ of a delete/create pair.</simpara>
 </term>
 <listitem>
 <simpara>
-        Output the patch in the order specified in the
-        &lt;orderfile&gt;, which has one shell glob pattern per line.
+        Control the order in which files appear in the output.
         This overrides the <emphasis>diff.orderFile</emphasis> configuration variable
         (see <xref linkend="git-config(1)" />).  To cancel <emphasis>diff.orderFile</emphasis>,
         use <emphasis>-O/dev/null</emphasis>.
 </simpara>
+<simpara>The output order is determined by the order of glob patterns in
+&lt;orderfile&gt;.
+All files with pathnames that match the first pattern are output
+first, all files with pathnames that match the second pattern (but not
+the first) are output next, and so on.
+All files with pathnames that do not match any pattern are output
+last, as if there was an implicit match-all pattern at the end of the
+file.
+If multiple pathnames have the same rank (they match the same pattern
+but no earlier patterns), their output order relative to each other is
+the normal order.</simpara>
+<simpara>&lt;orderfile&gt; is parsed as follows:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+Blank lines are ignored, so they can be used as separators for
+   readability.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Lines starting with a hash ("<emphasis>#</emphasis>") are ignored, so they can be used
+   for comments.  Add a backslash ("<emphasis>\</emphasis>") to the beginning of the
+   pattern if it starts with a hash.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Each other line contains a single pattern.
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>Patterns have the same syntax and semantics as patterns used for
+fnmatch(3) without the FNM_PATHNAME flag, except a pathname also
+matches a pattern if removing any number of the final pathname
+components matches the pattern.  For example, the pattern "<emphasis>foo*bar</emphasis>"
+matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</emphasis>" but not "<emphasis>foobarx</emphasis>".</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -539,6 +695,16 @@ of a delete/create pair.</simpara>
 <listitem>
 <simpara>
         Treat all files as text.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--ignore-cr-at-eol
+</term>
+<listitem>
+<simpara>
+        Ignore carriage-return at the end of line when doing a comparison.
 </simpara>
 </listitem>
 </varlistentry>
@@ -600,6 +766,8 @@ of a delete/create pair.</simpara>
 <simpara>
         Show the context between diff hunks, up to the specified number
         of lines, thereby fusing hunks that are close to each other.
+        Defaults to <emphasis>diff.interHunkContext</emphasis> or 0 if the config option
+        is unset.
 </simpara>
 </listitem>
 </varlistentry>
@@ -705,6 +873,31 @@ of a delete/create pair.</simpara>
 <listitem>
 <simpara>
         Do not show any source or destination prefix.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--line-prefix=&lt;prefix&gt;
+</term>
+<listitem>
+<simpara>
+        Prepend an additional prefix to every line of output.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--ita-invisible-in-index
+</term>
+<listitem>
+<simpara>
+        By default entries added by "git add -N" appear as an existing
+        empty file in "git diff" and a new file in "git diff --cached".
+        This option makes the entry appear as a new file in "git diff"
+        and non-existent in "git diff --cached". This option could be
+        reverted with <emphasis>--ita-visible-in-index</emphasis>. Both options are
+        experimental and could be removed in future.
 </simpara>
 </listitem>
 </varlistentry>
@@ -887,12 +1080,12 @@ will want to ensure that threading is disabled for <emphasis>git send-email</emp
 </varlistentry>
 <varlistentry>
 <term>
---in-reply-to=Message-Id
+--in-reply-to=&lt;message id&gt;
 </term>
 <listitem>
 <simpara>
         Make the first mail (or all the mails with <emphasis>--no-thread</emphasis>) appear as a
-        reply to the given Message-Id, which avoids breaking threads to
+        reply to the given &lt;message id&gt;, which avoids breaking threads to
         provide a new patch series.
 </simpara>
 </listitem>
@@ -913,14 +1106,49 @@ will want to ensure that threading is disabled for <emphasis>git send-email</emp
 </varlistentry>
 <varlistentry>
 <term>
---subject-prefix=&lt;Subject-Prefix&gt;
+--cover-from-description=&lt;mode&gt;
+</term>
+<listitem>
+<simpara>
+        Controls which parts of the cover letter will be automatically
+        populated using the branch's description.
+</simpara>
+<simpara>If <emphasis>&lt;mode&gt;</emphasis> is <emphasis>message</emphasis> or <emphasis>default</emphasis>, the cover letter subject will be
+populated with placeholder text. The body of the cover letter will be
+populated with the branch's description. This is the default mode when
+no configuration nor command line option is specified.</simpara>
+<simpara>If <emphasis>&lt;mode&gt;</emphasis> is <emphasis>subject</emphasis>, the first paragraph of the branch description will
+populate the cover letter subject. The remainder of the description will
+populate the body of the cover letter.</simpara>
+<simpara>If <emphasis>&lt;mode&gt;</emphasis> is <emphasis>auto</emphasis>, if the first paragraph of the branch description
+is greater than 100 bytes, then the mode will be <emphasis>message</emphasis>, otherwise
+<emphasis>subject</emphasis> will be used.</simpara>
+<simpara>If <emphasis>&lt;mode&gt;</emphasis> is <emphasis>none</emphasis>, both the cover letter subject and body will be
+populated with placeholder text.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--subject-prefix=&lt;subject prefix&gt;
 </term>
 <listitem>
 <simpara>
         Instead of the standard <emphasis>[PATCH]</emphasis> prefix in the subject
-        line, instead use <emphasis>[&lt;Subject-Prefix&gt;]</emphasis>. This
+        line, instead use <emphasis>[&lt;subject prefix&gt;]</emphasis>. This
         allows for useful naming of a patch series, and can be
         combined with the <emphasis>--numbered</emphasis> option.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--rfc
+</term>
+<listitem>
+<simpara>
+        Alias for <emphasis>--subject-prefix="RFC PATCH"</emphasis>. RFC means "Request For
+        Comments"; use this when sending an experimental patch for
+        discussion rather than application.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1020,7 +1248,78 @@ feeding the result to <emphasis>git send-email</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--encode-email-headers
+</term>
+<term>
+--no-encode-email-headers
+</term>
+<listitem>
+<simpara>
+        Encode email headers that have non-ASCII characters with
+        "Q-encoding" (described in RFC 2047), instead of outputting the
+        headers verbatim. Defaults to the value of the
+        <emphasis>format.encodeEmailHeaders</emphasis> configuration variable.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--interdiff=&lt;previous&gt;
+</term>
+<listitem>
+<simpara>
+        As a reviewer aid, insert an interdiff into the cover letter,
+        or as commentary of the lone patch of a 1-patch series, showing
+        the differences between the previous version of the patch series and
+        the series currently being formatted. <emphasis>previous</emphasis> is a single revision
+        naming the tip of the previous series which shares a common base with
+        the series being formatted (for example <emphasis>git format-patch
+        --cover-letter --interdiff=feature/v1 -3 feature/v2</emphasis>).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--range-diff=&lt;previous&gt;
+</term>
+<listitem>
+<simpara>
+        As a reviewer aid, insert a range-diff (see <xref linkend="git-range-diff(1)" />)
+        into the cover letter, or as commentary of the lone patch of a
+        1-patch series, showing the differences between the previous
+        version of the patch series and the series currently being formatted.
+        <emphasis>previous</emphasis> can be a single revision naming the tip of the previous
+        series if it shares a common base with the series being formatted (for
+        example <emphasis>git format-patch --cover-letter --range-diff=feature/v1 -3
+        feature/v2</emphasis>), or a revision range if the two versions of the series are
+        disjoint (for example <emphasis>git format-patch --cover-letter
+        --range-diff=feature/v1~3..feature/v1 -3 feature/v2</emphasis>).
+</simpara>
+<simpara>Note that diff options passed to the command affect how the primary
+product of <emphasis>format-patch</emphasis> is generated, and they are not passed to
+the underlying <emphasis>range-diff</emphasis> machinery used to generate the cover-letter
+material (this may change in the future).</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--creation-factor=&lt;percent&gt;
+</term>
+<listitem>
+<simpara>
+        Used with <emphasis>--range-diff</emphasis>, tweak the heuristic which matches up commits
+        between the previous and current series of patches by adjusting the
+        creation/deletion cost fudge factor. See <xref linkend="git-range-diff(1)" />)
+        for details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --notes[=&lt;ref&gt;]
+</term>
+<term>
+--no-notes
 </term>
 <listitem>
 <simpara>
@@ -1034,11 +1333,13 @@ these explanations after <emphasis>format-patch</emphasis> has run but before se
 keeping them as Git notes allows them to be maintained between versions
 of the patch series (but see the discussion of the <emphasis>notes.rewrite</emphasis>
 configuration options in <xref linkend="git-notes(1)" /> to use this workflow).</simpara>
+<simpara>The default is <emphasis>--no-notes</emphasis>, unless the <emphasis>format.notes</emphasis> configuration is
+set.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---[no]-signature=&lt;signature&gt;
+--[no-]signature=&lt;signature&gt;
 </term>
 <listitem>
 <simpara>
@@ -1113,6 +1414,20 @@ you can use <emphasis>--suffix=-patch</emphasis> to get <emphasis>0001-descripti
 </varlistentry>
 <varlistentry>
 <term>
+--[no-]base[=&lt;commit&gt;]
+</term>
+<listitem>
+<simpara>
+        Record the base tree information to identify the state the
+        patch series applies to.  See the BASE TREE INFORMATION section
+        below for details. If &lt;commit&gt; is "auto", a base commit is
+        automatically chosen. The <emphasis>--no-base</emphasis> option overrides a
+        <emphasis>format.useAutoBase</emphasis> configuration.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --root
 </term>
 <listitem>
@@ -1125,14 +1440,25 @@ you can use <emphasis>--suffix=-patch</emphasis> to get <emphasis>0001-descripti
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+--progress
+</term>
+<listitem>
+<simpara>
+        Show progress reports on stderr as patches are generated.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </simplesect>
 <simplesect id="git-format-patch(1)__configuration">
 <title>CONFIGURATION</title>
 <simpara>You can specify extra mail header lines to be added to each message,
 defaults for the subject prefix and file suffix, number patches when
-outputting more than one patch, add "To" or "Cc:" headers, configure
-attachments, and sign off patches with configuration variables.</simpara>
+outputting more than one patch, add "To:" or "Cc:" headers, configure
+attachments, change the patch output directory, and sign off patches
+with configuration variables.</simpara>
 <screen>[format]
         headers = "Organization: git-foo\n"
         subjectPrefix = CHANGE
@@ -1142,7 +1468,9 @@ attachments, and sign off patches with configuration variables.</simpara>
         cc = &lt;email&gt;
         attach [ = mime-boundary-string ]
         signOff = true
-        coverletter = auto</screen>
+        outputDirectory = &lt;directory&gt;
+        coverLetter = auto
+        coverFromDescription = auto</screen>
 </simplesect>
 <simplesect id="git-format-patch(1)__discussion">
 <title>DISCUSSION</title>
@@ -1227,8 +1555,8 @@ Save that patch to a file in UNIX mailbox format.  Call it a.patch,
 Apply it:
 </simpara>
 <literallayout class="monospaced">$ git fetch &lt;project&gt; master:test-apply
-$ git checkout test-apply
-$ git reset --hard
+$ git switch test-apply
+$ git restore --source=HEAD --staged --worktree :/
 $ git am a.patch</literallayout>
 </listitem>
 </itemizedlist>
@@ -1323,9 +1651,9 @@ Toggle it to make sure it is set to <emphasis>false</emphasis>. Also, search for
 <listitem>
 <simpara>
 Disable the use of format=flowed:
-Edit..Preferences..Advanced..Config Editor.  Search for
-"mailnews.send_plaintext_flowed".
-Toggle it to make sure it is set to <emphasis>false</emphasis>.
+   Edit..Preferences..Advanced..Config Editor.  Search for
+   "mailnews.send_plaintext_flowed".
+   Toggle it to make sure it is set to <emphasis>false</emphasis>.
 </simpara>
 </listitem>
 </orderedlist>
@@ -1417,20 +1745,60 @@ Back in the compose window: add whatever other text you wish to the
 </orderedlist>
 </section>
 </simplesect>
+<simplesect id="git-format-patch(1)__base_tree_information">
+<title>BASE TREE INFORMATION</title>
+<simpara>The base tree information block is used for maintainers or third party
+testers to know the exact state the patch series applies to. It consists
+of the <emphasis>base commit</emphasis>, which is a well-known commit that is part of the
+stable part of the project history everybody else works off of, and zero
+or more <emphasis>prerequisite patches</emphasis>, which are well-known patches in flight
+that is not yet part of the <emphasis>base commit</emphasis> that need to be applied on top
+of <emphasis>base commit</emphasis> in topological order before the patches can be applied.</simpara>
+<simpara>The <emphasis>base commit</emphasis> is shown as "base-commit: " followed by the 40-hex of
+the commit object name.  A <emphasis>prerequisite patch</emphasis> is shown as
+"prerequisite-patch-id: " followed by the 40-hex <emphasis>patch id</emphasis>, which can
+be obtained by passing the patch through the <emphasis>git patch-id --stable</emphasis>
+command.</simpara>
+<simpara>Imagine that on top of the public commit P, you applied well-known
+patches X, Y and Z from somebody else, and then built your three-patch
+series A, B, C, the history would be like:</simpara>
+<literallayout class="monospaced">---P---X---Y---Z---A---B---C</literallayout>
+<simpara>With <emphasis>git format-patch --base=P -3 C</emphasis> (or variants thereof, e.g. with
+<emphasis>--cover-letter</emphasis> or using <emphasis>Z..C</emphasis> instead of <emphasis>-3 C</emphasis> to specify the
+range), the base tree information block is shown at the end of the
+first message the command outputs (either the first patch, or the
+cover letter), like this:</simpara>
+<screen>base-commit: P
+prerequisite-patch-id: X
+prerequisite-patch-id: Y
+prerequisite-patch-id: Z</screen>
+<simpara>For non-linear topology, such as</simpara>
+<literallayout class="monospaced">---P---X---A---M---C
+    \         /
+     Y---Z---B</literallayout>
+<simpara>You can also use <emphasis>git format-patch --base=P -3 C</emphasis> to generate patches
+for A, B and C, and the identifiers for P, X, Y, Z are appended at the
+end of the first message.</simpara>
+<simpara>If set <emphasis>--base=auto</emphasis> in cmdline, it will track base commit automatically,
+the base commit will be the merge base of tip commit of the remote-tracking
+branch and revision-range specified in cmdline.
+For a local branch, you need to track a remote branch by <emphasis>git branch
+--set-upstream-to</emphasis> before using this option.</simpara>
+</simplesect>
 <simplesect id="git-format-patch(1)__examples">
 <title>EXAMPLES</title>
 <itemizedlist>
 <listitem>
 <simpara>
 Extract commits between revisions R1 and R2, and apply them on top of
-the current branch using <emphasis>git am</emphasis> to cherry-pick them:
+  the current branch using <emphasis>git am</emphasis> to cherry-pick them:
 </simpara>
 <screen>$ git format-patch -k --stdout R1..R2 | git am -3 -k</screen>
 </listitem>
 <listitem>
 <simpara>
 Extract all commits which are in the current branch but not in the
-origin branch:
+  origin branch:
 </simpara>
 <screen>$ git format-patch origin</screen>
 <simpara>For each commit a separate file is created in the current directory.</simpara>
@@ -1438,7 +1806,7 @@ origin branch:
 <listitem>
 <simpara>
 Extract all commits that lead to <emphasis>origin</emphasis> since the inception of the
-project:
+  project:
 </simpara>
 <screen>$ git format-patch --root origin</screen>
 </listitem>
@@ -1456,7 +1824,7 @@ use it only when you know the recipient uses Git to apply your patch.</simpara>
 <listitem>
 <simpara>
 Extract three topmost commits from the current branch and format them
-as e-mailable patches:
+  as e-mailable patches:
 </simpara>
 <screen>$ git format-patch -3</screen>
 </listitem>

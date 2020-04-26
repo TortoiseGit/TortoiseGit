@@ -24,7 +24,7 @@
 <simplesect id="git-show-branch(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Shows the commit ancestry graph starting from the commits named
-with &lt;rev&gt;s or &lt;globs&gt;s (or all refs under refs/heads
+with &lt;rev&gt;s or &lt;glob&gt;s (or all refs under refs/heads
 and/or refs/tags) semi-visually.</simpara>
 <simpara>It cannot show more than 29 branches and commits at a time.</simpara>
 <simpara>It uses <emphasis>showbranch.default</emphasis> multi-valued configuration items if
@@ -296,13 +296,13 @@ and "mhf":</simpara>
   + [mhf~8] Start adding the $GIT_DIR/remotes/ support.
 *++ [master] Add 'git show-branch'.</screen>
 <simpara>These three branches all forked from a common commit, [master],
-whose commit message is "Add &#39;git show-branch&#39;".
+whose commit message is "Add 'git show-branch'".
 The "fixes" branch adds one commit "Introduce "reset type" flag to
 "git reset"". The "mhf" branch adds many other commits.
 The current branch is "master".</simpara>
 </simplesect>
-<simplesect id="git-show-branch(1)__example">
-<title>EXAMPLE</title>
+<simplesect id="git-show-branch(1)__examples">
+<title>EXAMPLES</title>
 <simpara>If you keep your primary branches immediately under
 <emphasis>refs/heads</emphasis>, and topic branches in subdirectories of
 it, having the following in the configuration file may help:</simpara>

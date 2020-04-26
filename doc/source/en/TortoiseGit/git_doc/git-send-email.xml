@@ -13,7 +13,7 @@
 <simplesect id="git-send-email(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git send-email</emphasis> [options] &lt;file|directory|rev-list options&gt;&#8230;
+<literallayout><emphasis>git send-email</emphasis> [&lt;options&gt;] &lt;file|directory|rev-list options&gt;&#8230;
 <emphasis>git send-email</emphasis> --dump-aliases</literallayout>
 </blockquote>
 </simplesect>
@@ -39,7 +39,7 @@ formatting are ignored.</simpara>
 <listitem>
 <simpara>
 The original format used by Greg Kroah-Hartman's <emphasis>send_lots_of_email.pl</emphasis>
-script
+   script
 </simpara>
 <simpara>This format expects the first line of the file to contain the "Cc:" value
 and the "Subject:" of the message as the second line.</simpara>
@@ -122,6 +122,18 @@ and In-Reply-To headers will be used unless they are removed.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--reply-to=&lt;address&gt;
+</term>
+<listitem>
+<simpara>
+        Specify the address where replies from recipients should go to.
+        Use this if replies to messages should go to another address than what
+        is specified with the --from parameter.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --in-reply-to=&lt;identifier&gt;
 </term>
 <listitem>
@@ -130,7 +142,7 @@ and In-Reply-To headers will be used unless they are removed.</simpara>
         reply to the given Message-Id, which avoids breaking threads to
         provide a new patch series.
         The second and subsequent emails will be sent as replies according to
-        the <emphasis>--[no]-chain-reply-to</emphasis> setting.
+        the <emphasis>--[no-]chain-reply-to</emphasis> setting.
 </simpara>
 <simpara>So for example when <emphasis>--thread</emphasis> and <emphasis>--no-chain-reply-to</emphasis> are specified, the
 second and subsequent patches will be replies to the first one like in the
@@ -200,7 +212,7 @@ is not set, this will be prompted for.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---transfer-encoding=(7bit|8bit|quoted-printable|base64)
+--transfer-encoding=(7bit|8bit|quoted-printable|base64|auto)
 </term>
 <listitem>
 <simpara>
@@ -209,10 +221,11 @@ is not set, this will be prompted for.</simpara>
         can be useful when the repository contains files that contain carriage
         returns, but makes the raw patch email file (as saved from a MUA) much
         harder to inspect manually.  base64 is even more fool proof, but also
-        even more opaque.  Default is the value of the <emphasis>sendemail.transferEncoding</emphasis>
-        configuration value; if that is unspecified, git will use 8bit and not
-        add a Content-Transfer-Encoding header.
+        even more opaque.  auto will use 8bit when possible, and quoted-printable
+        otherwise.
 </simpara>
+<simpara>Default is the value of the <emphasis>sendemail.transferEncoding</emphasis> configuration
+value; if that is unspecified, default to <emphasis>auto</emphasis>.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -290,7 +303,9 @@ is not set, this will be prompted for.</simpara>
 <simpara>If at least one of the specified mechanisms matches the ones advertised by the
 SMTP server and if it is supported by the utilized SASL library, the mechanism
 is used for authentication. If neither <emphasis>sendemail.smtpAuth</emphasis> nor <emphasis>--smtp-auth</emphasis>
-is specified, all mechanisms supported by the SASL library can be used.</simpara>
+is specified, all mechanisms supported by the SASL library can be used. The
+special value <emphasis>none</emphasis> maybe specified to completely disable authentication
+independently of <emphasis>--smtp-user</emphasis></simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -313,6 +328,16 @@ a password is obtained using <emphasis>git-credential</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--no-smtp-auth
+</term>
+<listitem>
+<simpara>
+        Disable SMTP authentication. Short hand for <emphasis>--smtp-auth=none</emphasis>
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --smtp-server=&lt;host&gt;
 </term>
 <listitem>
@@ -322,9 +347,9 @@ a password is obtained using <emphasis>git-credential</emphasis>.</simpara>
         specify a full pathname of a sendmail-like program instead;
         the program must support the <emphasis>-i</emphasis> option.  Default value can
         be specified by the <emphasis>sendemail.smtpServer</emphasis> configuration
-        option; the built-in default is <emphasis>/usr/sbin/sendmail</emphasis> or
-        <emphasis>/usr/lib/sendmail</emphasis> if such program is available, or
-        <emphasis>localhost</emphasis> otherwise.
+        option; the built-in default is to search for <emphasis>sendmail</emphasis> in
+        <emphasis>/usr/sbin</emphasis>, <emphasis>/usr/lib</emphasis> and $PATH if such program is
+        available, falling back to <emphasis>localhost</emphasis> otherwise.
 </simpara>
 </listitem>
 </varlistentry>
@@ -410,11 +435,62 @@ must be used for each option.</simpara>
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+--batch-size=&lt;num&gt;
+</term>
+<listitem>
+<simpara>
+        Some email servers (e.g. smtp.163.com) limit the number emails to be
+        sent per session (connection) and this will lead to a failure when
+        sending many messages.  With this option, send-email will disconnect after
+        sending $&lt;num&gt; messages and wait for a few seconds (see --relogin-delay)
+        and reconnect, to work around such a limit.  You may want to
+        use some form of credential helper to avoid having to retype
+        your password every time this happens.  Defaults to the
+        <emphasis>sendemail.smtpBatchSize</emphasis> configuration variable.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--relogin-delay=&lt;int&gt;
+</term>
+<listitem>
+<simpara>
+        Waiting $&lt;int&gt; seconds before reconnecting to SMTP server. Used together
+        with --batch-size option.  Defaults to the <emphasis>sendemail.smtpReloginDelay</emphasis>
+        configuration variable.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </section>
 <section id="git-send-email(1)__automating">
 <title>Automating</title>
 <variablelist>
+<varlistentry>
+<term>
+--no-[to|cc|bcc]
+</term>
+<listitem>
+<simpara>
+        Clears any list of "To:", "Cc:", "Bcc:" addresses previously
+        set via config.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-identity
+</term>
+<listitem>
+<simpara>
+        Clears the previously read value of <emphasis>sendemail.identity</emphasis> set
+        via config, if any.
+</simpara>
+</listitem>
+</varlistentry>
 <varlistentry>
 <term>
 --to-cmd=&lt;command&gt;
@@ -519,12 +595,12 @@ must be used for each option.</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
-<emphasis>author</emphasis> will avoid including the patch author
+<emphasis>author</emphasis> will avoid including the patch author.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-<emphasis>self</emphasis> will avoid including the sender
+<emphasis>self</emphasis> will avoid including the sender.
 </simpara>
 </listitem>
 <listitem>
@@ -542,7 +618,14 @@ must be used for each option.</simpara>
 <listitem>
 <simpara>
 <emphasis>sob</emphasis> will avoid including anyone mentioned in Signed-off-by lines except
-   for self (use <emphasis>self</emphasis> for that).
+  for self (use <emphasis>self</emphasis> for that).
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>misc-by</emphasis> will avoid including anyone mentioned in Acked-by,
+  Reviewed-by, Tested-by and other "-by" lines in the patch body,
+  except Signed-off-by (use <emphasis>sob</emphasis> for that).
 </simpara>
 </listitem>
 <listitem>
@@ -552,7 +635,7 @@ must be used for each option.</simpara>
 </listitem>
 <listitem>
 <simpara>
-<emphasis>body</emphasis> is equivalent to <emphasis>sob</emphasis> + <emphasis>bodycc</emphasis>
+<emphasis>body</emphasis> is equivalent to <emphasis>sob</emphasis> + <emphasis>bodycc</emphasis> + <emphasis>misc-by</emphasis>.
 </simpara>
 </listitem>
 <listitem>
@@ -693,8 +776,16 @@ have been specified, in which case default to <emphasis>compose</emphasis>.</sim
 <itemizedlist>
 <listitem>
 <simpara>
-Warn of patches that contain lines longer than 998 characters; this
-                        is due to SMTP limits as described by <ulink url="http://www.ietf.org/rfc/rfc2821.txt">http://www.ietf.org/rfc/rfc2821.txt</ulink>.
+Invoke the sendemail-validate hook if present (see <xref linkend="githooks(5)" />).
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Warn of patches that contain lines longer than
+                        998 characters unless a suitable transfer encoding
+                        (<emphasis>auto</emphasis>, <emphasis>base64</emphasis>, or <emphasis>quoted-printable</emphasis>) is used;
+                        this is due to SMTP limits as described by
+                        <ulink url="http://www.ietf.org/rfc/rfc5322.txt">http://www.ietf.org/rfc/rfc5322.txt</ulink>.
 </simpara>
 </listitem>
 </itemizedlist>
@@ -824,24 +915,34 @@ sendemail.confirm
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="git-send-email(1)__example">
-<title>EXAMPLE</title>
+<simplesect id="git-send-email(1)__examples">
+<title>EXAMPLES</title>
 <section id="git-send-email(1)__use_gmail_as_the_smtp_server">
 <title>Use gmail as the smtp server</title>
 <simpara>To use <emphasis>git send-email</emphasis> to send your patches through the GMail SMTP server,
 edit ~/.gitconfig to specify your account settings:</simpara>
-<literallayout class="monospaced">[sendemail]
+<screen>[sendemail]
         smtpEncryption = tls
         smtpServer = smtp.gmail.com
         smtpUser = yourname@gmail.com
-        smtpServerPort = 587</literallayout>
+        smtpServerPort = 587</screen>
+<simpara>If you have multifactor authentication setup on your gmail account, you will
+need to generate an app-specific password for use with <emphasis>git send-email</emphasis>. Visit
+<ulink url="https://security.google.com/settings/security/apppasswords">https://security.google.com/settings/security/apppasswords</ulink> to create it.</simpara>
 <simpara>Once your commits are ready to be sent to the mailing list, run the
 following commands:</simpara>
 <literallayout class="monospaced">$ git format-patch --cover-letter -M origin/master -o outgoing/
 $ edit outgoing/0000-*
 $ git send-email outgoing/*</literallayout>
-<simpara>Note: the following perl modules are required
-      Net::SMTP::SSL, MIME::Base64 and Authen::SASL</simpara>
+<simpara>The first time you run it, you will be prompted for your credentials.  Enter the
+app-specific or your regular password as appropriate.  If you have credential
+helper configured (see <xref linkend="git-credential(1)" />), the password will be saved in
+the credential store so you won't have to type it the next time.</simpara>
+<simpara>Note: the following core Perl modules that may be installed with your
+distribution of Perl are required:
+MIME::Base64, MIME::QuotedPrint, Net::Domain and Net::SMTP.
+These additional Perl modules are also required:
+Authen::SASL and Mail::Address.</simpara>
 </section>
 </simplesect>
 <simplesect id="git-send-email(1)__see_also">

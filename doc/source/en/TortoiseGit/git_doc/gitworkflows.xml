@@ -40,7 +40,7 @@ beginning. It is always easier to squash a few commits together than
 to split one big commit into several.  Don't be afraid of making too
 small or imperfect steps along the way. You can always go back later
 and edit the commits with <emphasis>git rebase --interactive</emphasis> before you
-publish them.  You can use <emphasis>git stash save --keep-index</emphasis> to run the
+publish them.  You can use <emphasis>git stash push --keep-index</emphasis> to run the
 test suite independent of other uncommitted changes; see the EXAMPLES
 section of <xref linkend="git-stash(1)" />.</simpara>
 </simplesect>
@@ -108,7 +108,7 @@ merging downwards, however, since that would merge <emphasis>all</emphasis> chan
 the unstable branch into the stable one.  Hence the following:</simpara>
 <example>
 <title>Merge upwards</title>
-<simpara>Always commit your fixes to the oldest supported branch that require
+<simpara>Always commit your fixes to the oldest supported branch that requires
 them.  Then (periodically) merge the integration branches upwards into each
 other.</simpara>
 </example>
@@ -280,12 +280,7 @@ topics on <emphasis>next</emphasis>:</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
-<emphasis>git checkout next</emphasis>
-</simpara>
-</listitem>
-<listitem>
-<simpara>
-<emphasis>git reset --hard master</emphasis>
+<emphasis>git switch -C next master</emphasis>
 </simpara>
 </listitem>
 <listitem>
@@ -389,8 +384,8 @@ follows.</simpara>
 <title>Push/pull: Merging remote topics</title>
 <simpara><emphasis>git pull &lt;url&gt; &lt;branch&gt;</emphasis></simpara>
 </example>
-<simpara>Occasionally, the maintainer may get merge conflicts when he tries to
-pull changes from downstream.  In this case, he can ask downstream to
+<simpara>Occasionally, the maintainer may get merge conflicts when they try to
+pull changes from downstream.  In this case, they can ask downstream to
 do the merge and resolve the conflicts themselves (perhaps they will
 know better how to resolve them).  It is one of the rare cases where
 downstream <emphasis>should</emphasis> merge from upstream.</simpara>
@@ -456,6 +451,6 @@ other options.</simpara>
 </simplesect>
 <simplesect id="gitworkflows(7)__git">
 <title>GIT</title>
-<simpara>Part of the <xref linkend="git(1)" /> suite.</simpara>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
 </sect2>

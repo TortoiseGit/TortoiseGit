@@ -19,8 +19,9 @@
 <simplesect id="git-http-fetch(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Downloads a remote Git repository via HTTP.</simpara>
-<simpara><emphasis role="strong">NOTE</emphasis>: use of this command without -a is deprecated.  The -a
-behaviour will become the default in a future release.</simpara>
+<simpara>This command always gets all objects. Historically, there were three options
+<emphasis>-a</emphasis>, <emphasis>-c</emphasis> and <emphasis>-t</emphasis> for choosing which objects to download. They are now
+silently ignored.</simpara>
 </simplesect>
 <simplesect id="git-http-fetch(1)__options">
 <title>OPTIONS</title>
@@ -38,31 +39,11 @@ commit-id
 </varlistentry>
 <varlistentry>
 <term>
--c
+-a, -c, -t
 </term>
 <listitem>
 <simpara>
-        Get the commit objects.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
--t
-</term>
-<listitem>
-<simpara>
-        Get trees associated with the commit objects.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
--a
-</term>
-<listitem>
-<simpara>
-        Get all the objects.
+        These options are ignored for historical reasons.
 </simpara>
 </listitem>
 </varlistentry>

@@ -307,7 +307,7 @@ current branch integrates with) obviously do not work, as there is no
         A fast-forward is a special type of <link linkend="gitglossary(7)_def_merge">merge</link> where you have a
         <link linkend="gitglossary(7)_def_revision">revision</link> and you are "merging" another
         <link linkend="gitglossary(7)_def_branch">branch</link>'s changes that happen to be a descendant of what
-        you have. In such these cases, you do not make a new <link linkend="gitglossary(7)_def_merge">merge</link>
+        you have. In such a case, you do not make a new <link linkend="gitglossary(7)_def_merge">merge</link>
         <link linkend="gitglossary(7)_def_commit">commit</link> but instead just update to his
         revision. This will happen frequently on a
         <link linkend="gitglossary(7)_def_remote_tracking_branch">remote-tracking branch</link> of a remote
@@ -519,7 +519,7 @@ This commit is referred to as a "merge commit", or sometimes just a
 <simpara>
         The unit of storage in Git. It is uniquely identified by the
         <link linkend="gitglossary(7)_def_SHA1">SHA-1</link> of its contents. Consequently, an
-        object can not be changed.
+        object cannot be changed.
 </simpara>
 </listitem>
 </varlistentry>
@@ -597,6 +597,22 @@ This commit is referred to as a "merge commit", or sometimes just a
 </varlistentry>
 <varlistentry>
 <term>
+<anchor id="gitglossary(7)_def_overlay" xreflabel="[def_overlay]"/>overlay
+</term>
+<listitem>
+<simpara>
+        Only update and add files to the working directory, but don't
+        delete them, similar to how <emphasis>cp -R</emphasis> would update the contents
+        in the destination directory.  This is the default mode in a
+        <link linkend="gitglossary(7)_def_checkout">checkout</link> when checking out files from the
+        <link linkend="gitglossary(7)_def_index">index</link> or a <link linkend="gitglossary(7)_def_tree-ish">tree-ish</link>.  In
+        contrast, no-overlay mode also deletes tracked files not
+        present in the source, similar to <emphasis>rsync --delete</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 <anchor id="gitglossary(7)_def_pack" xreflabel="[def_pack]"/>pack
 </term>
 <listitem>
@@ -667,7 +683,7 @@ alphanumeric, glob, regex special characters nor colon.
 The optional colon that terminates the "magic signature" can be
 omitted if the pattern begins with a character that does not belong to
 "magic signature" symbol set and is not a colon.</simpara>
-<simpara>In the long form, the leading colon <emphasis>:</emphasis> is followed by a open
+<simpara>In the long form, the leading colon <emphasis>:</emphasis> is followed by an open
 parenthesis <emphasis>(</emphasis>, a comma-separated list of zero or more "magic words",
 and a close parentheses <emphasis>)</emphasis>, and the remainder is the pattern to match
 against the path.</simpara>
@@ -757,13 +773,57 @@ Other consecutive asterisks are considered invalid.
 </varlistentry>
 <varlistentry>
 <term>
+attr
+</term>
+<listitem>
+<simpara>
+After <emphasis>attr:</emphasis> comes a space separated list of "attribute
+requirements", all of which must be met in order for the
+path to be considered a match; this is in addition to the
+usual non-magic pathspec pattern matching.
+See <xref linkend="gitattributes(5)" />.
+</simpara>
+<simpara>Each of the attribute requirements for the path takes one of
+these forms:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+"<emphasis>ATTR</emphasis>" requires that the attribute <emphasis>ATTR</emphasis> be set.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+"<emphasis>-ATTR</emphasis>" requires that the attribute <emphasis>ATTR</emphasis> be unset.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+"<emphasis>ATTR=VALUE</emphasis>" requires that the attribute <emphasis>ATTR</emphasis> be
+  set to the string <emphasis>VALUE</emphasis>.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+"<emphasis>!ATTR</emphasis>" requires that the attribute <emphasis>ATTR</emphasis> be
+  unspecified.
+</simpara>
+<simpara>Note that when matching against a tree object, attributes are still
+obtained from working tree, not from the given tree object.</simpara>
+</listitem>
+</itemizedlist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 exclude
 </term>
 <listitem>
 <simpara>
         After a path matches any non-exclude pathspec, it will be run
-        through all exclude pathspec (magic signature: <emphasis>!</emphasis>). If it
-        matches, the path is ignored.
+        through all exclude pathspecs (magic signature: <emphasis>!</emphasis> or its
+        synonym <emphasis>^</emphasis>). If it matches, the path is ignored.  When there
+        is no non-exclude pathspec, the exclusion is applied to the
+        result set as if invoked without any pathspec.
 </simpara>
 </listitem>
 </varlistentry>
@@ -874,7 +934,7 @@ exclude
 <simpara>
         Pushing a <link linkend="gitglossary(7)_def_branch">branch</link> means to get the branch's
         <link linkend="gitglossary(7)_def_head_ref">head ref</link> from a remote <link linkend="gitglossary(7)_def_repository">repository</link>,
-        find out if it is a direct ancestor to the branch's local
+        find out if it is an ancestor to the branch's local
         head ref, and in that case, putting all
         objects, which are <link linkend="gitglossary(7)_def_reachable">reachable</link> from the local
         head ref, and which are missing from the remote
@@ -1087,6 +1147,17 @@ The most notable example is <emphasis>HEAD</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+<anchor id="gitglossary(7)_def_stash" xreflabel="[def_stash]"/>stash entry
+</term>
+<listitem>
+<simpara>
+        An <link linkend="gitglossary(7)_def_object">object</link> used to temporarily store the contents of a
+        <link linkend="gitglossary(7)_def_dirty">dirty</link> working directory and the index for future reuse.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 <anchor id="gitglossary(7)_def_submodule" xreflabel="[def_submodule]"/>submodule
 </term>
 <listitem>
@@ -1272,6 +1343,6 @@ The most notable example is <emphasis>HEAD</emphasis>.</simpara>
 </simplesect>
 <simplesect id="gitglossary(7)__git">
 <title>GIT</title>
-<simpara>Part of the <xref linkend="git(1)" /> suite.</simpara>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
 </sect2>

@@ -119,8 +119,8 @@ imap.host
 </term>
 <listitem>
 <simpara>
-        A URL identifying the server. Use a <emphasis>imap://</emphasis> prefix for non-secure
-        connections and a <emphasis>imaps://</emphasis> prefix for secure connections.
+        A URL identifying the server. Use an <emphasis>imap://</emphasis> prefix for non-secure
+        connections and an <emphasis>imaps://</emphasis> prefix for secure connections.
         Ignored when imap.tunnel is set, but required otherwise.
 </simpara>
 </listitem>
@@ -221,8 +221,8 @@ imap.authMethod
     sslverify = false</literallayout>
 </section>
 </simplesect>
-<simplesect id="git-imap-send(1)__example">
-<title>EXAMPLE</title>
+<simplesect id="git-imap-send(1)__examples_2">
+<title>EXAMPLES</title>
 <simpara>To submit patches using GMail's IMAP interface, first, edit your ~/.gitconfig
 to specify your account settings:</simpara>
 <screen>[imap]

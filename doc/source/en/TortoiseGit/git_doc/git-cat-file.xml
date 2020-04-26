@@ -13,18 +13,22 @@
 <simplesect id="git-cat-file(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git cat-file</emphasis> (-t [--allow-unknown-type]| -s [--allow-unknown-type]| -e | -p | &lt;type&gt; | --textconv ) &lt;object&gt;
-<emphasis>git cat-file</emphasis> (--batch | --batch-check) [--follow-symlinks]</literallayout>
+<literallayout><emphasis>git cat-file</emphasis> (-t [--allow-unknown-type]| -s [--allow-unknown-type]| -e | -p | &lt;type&gt; | --textconv | --filters ) [--path=&lt;path&gt;] &lt;object&gt;
+<emphasis>git cat-file</emphasis> (--batch | --batch-check) [ --textconv | --filters ] [--follow-symlinks]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-cat-file(1)__description">
 <title>DESCRIPTION</title>
 <simpara>In its first form, the command provides the content or the type of an object in
 the repository. The type is required unless <emphasis>-t</emphasis> or <emphasis>-p</emphasis> is used to find the
-object type, or <emphasis>-s</emphasis> is used to find the object size, or <emphasis>--textconv</emphasis> is used
-(which implies type "blob").</simpara>
+object type, or <emphasis>-s</emphasis> is used to find the object size, or <emphasis>--textconv</emphasis> or
+<emphasis>--filters</emphasis> is used (which imply type "blob").</simpara>
 <simpara>In the second form, a list of objects (separated by linefeeds) is provided on
-stdin, and the SHA-1, type, and size of each object is printed on stdout.</simpara>
+stdin, and the SHA-1, type, and size of each object is printed on stdout. The
+output format can be overridden using the optional <emphasis>&lt;format&gt;</emphasis> argument. If
+either <emphasis>--textconv</emphasis> or <emphasis>--filters</emphasis> was specified, the input is expected to
+list the object names followed by the path name, separated by a single
+whitespace, so that the appropriate drivers can be determined.</simpara>
 </simplesect>
 <simplesect id="git-cat-file(1)__options">
 <title>OPTIONS</title>
@@ -69,8 +73,9 @@ stdin, and the SHA-1, type, and size of each object is printed on stdout.</simpa
 </term>
 <listitem>
 <simpara>
-        Suppress all output; instead exit with zero status if &lt;object&gt;
-        exists and is a valid object.
+        Exit with zero status if &lt;object&gt; exists and is a valid
+        object. If &lt;object&gt; is of an invalid format exit with non-zero and
+        emits an error on stderr.
 </simpara>
 </listitem>
 </varlistentry>
@@ -106,8 +111,34 @@ stdin, and the SHA-1, type, and size of each object is printed on stdout.</simpa
 <listitem>
 <simpara>
         Show the content as transformed by a textconv filter. In this case,
-        &lt;object&gt; has be of the form &lt;tree-ish&gt;:&lt;path&gt;, or :&lt;path&gt; in order
-        to apply the filter to the content recorded in the index at &lt;path&gt;.
+        &lt;object&gt; has to be of the form &lt;tree-ish&gt;:&lt;path&gt;, or :&lt;path&gt; in
+        order to apply the filter to the content recorded in the index at
+        &lt;path&gt;.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--filters
+</term>
+<listitem>
+<simpara>
+        Show the content as converted by the filters configured in
+        the current working tree for the given &lt;path&gt; (i.e. smudge filters,
+        end-of-line conversion, etc). In this case, &lt;object&gt; has to be of
+        the form &lt;tree-ish&gt;:&lt;path&gt;, or :&lt;path&gt;.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--path=&lt;path&gt;
+</term>
+<listitem>
+<simpara>
+        For use with --textconv or --filters, to allow specifying an object
+        name and a path separately, e.g. when it is difficult to figure out
+        the revision from which the blob came.
 </simpara>
 </listitem>
 </varlistentry>
@@ -121,8 +152,10 @@ stdin, and the SHA-1, type, and size of each object is printed on stdout.</simpa
 <listitem>
 <simpara>
         Print object information and contents for each object provided
-        on stdin.  May not be combined with any other options or arguments.
-        See the section <emphasis>BATCH OUTPUT</emphasis> below for details.
+        on stdin.  May not be combined with any other options or arguments
+        except <emphasis>--textconv</emphasis> or <emphasis>--filters</emphasis>, in which case the input lines
+        also need to specify the path, separated by whitespace.  See the
+        section <emphasis>BATCH OUTPUT</emphasis> below for details.
 </simpara>
 </listitem>
 </varlistentry>
@@ -136,7 +169,9 @@ stdin, and the SHA-1, type, and size of each object is printed on stdout.</simpa
 <listitem>
 <simpara>
         Print object information for each object provided on stdin.  May
-        not be combined with any other options or arguments.  See the
+        not be combined with any other options or arguments except
+        <emphasis>--textconv</emphasis> or <emphasis>--filters</emphasis>, in which case the input lines also
+        need to specify the path, separated by whitespace.  See the
         section <emphasis>BATCH OUTPUT</emphasis> below for details.
 </simpara>
 </listitem>
@@ -166,6 +201,23 @@ stdin, and the SHA-1, type, and size of each object is printed on stdout.</simpa
         <emphasis>cat-file</emphasis>. With this option, the output uses normal stdio
         buffering; this is much more efficient when invoking
         <emphasis>--batch-check</emphasis> on a large number of objects.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--unordered
+</term>
+<listitem>
+<simpara>
+        When <emphasis>--batch-all-objects</emphasis> is in use, visit objects in an
+        order which may be more efficient for accessing the object
+        contents than hash order. The exact details of the order are
+        unspecified, but if you do not require a specific order, this
+        should generally result in faster output, especially with
+        <emphasis>--batch</emphasis>.  Note that <emphasis>cat-file</emphasis> will still show each object
+        only once, even if it is stored multiple times in the
+        repository.
 </simpara>
 </listitem>
 </varlistentry>
@@ -227,7 +279,7 @@ respectively print:</simpara>
 <title>OUTPUT</title>
 <simpara>If <emphasis>-t</emphasis> is specified, one of the &lt;type&gt;.</simpara>
 <simpara>If <emphasis>-s</emphasis> is specified, the size of the &lt;object&gt; in bytes.</simpara>
-<simpara>If <emphasis>-e</emphasis> is specified, no output.</simpara>
+<simpara>If <emphasis>-e</emphasis> is specified, no output, unless the &lt;object&gt; is malformed.</simpara>
 <simpara>If <emphasis>-p</emphasis> is specified, the contents of &lt;object&gt; are pretty-printed.</simpara>
 <simpara>If &lt;type&gt; is specified, the raw (though uncompressed) contents of the &lt;object&gt;
 will be returned.</simpara>
@@ -259,7 +311,7 @@ newline. The available atoms are:</simpara>
 </term>
 <listitem>
 <simpara>
-        The type of of the object (the same as <emphasis>cat-file -t</emphasis> reports).
+        The type of the object (the same as <emphasis>cat-file -t</emphasis> reports).
 </simpara>
 </listitem>
 </varlistentry>
@@ -325,6 +377,8 @@ newline.</simpara>
 <simpara>If a name is specified on stdin that cannot be resolved to an object in
 the repository, then <emphasis>cat-file</emphasis> will ignore any custom format and print:</simpara>
 <screen>&lt;object&gt; SP missing LF</screen>
+<simpara>If a name is specified that might refer to more than one object (an ambiguous short sha), then <emphasis>cat-file</emphasis> will ignore any custom format and print:</simpara>
+<screen>&lt;object&gt; SP ambiguous LF</screen>
 <simpara>If --follow-symlinks is used, and a symlink in the repository points
 outside the repository, then <emphasis>cat-file</emphasis> will ignore any custom format
 and print:</simpara>

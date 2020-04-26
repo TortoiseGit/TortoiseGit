@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<sect2 lang="en" id="git-commit-graph(1)">
+    <title>git-commit-graph(1)</title>
+<indexterm>
+<primary>git-commit-graph(1)</primary>
+</indexterm>
+<simplesect id="git-commit-graph(1)__name">
+<title>NAME</title>
+<simpara>git-commit-graph - Write and verify Git commit-graph files</simpara>
+</simplesect>
+<simplesect id="git-commit-graph(1)__synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git commit-graph verify</emphasis> [--object-dir &lt;dir&gt;] [--shallow] [--[no-]progress]
+<emphasis>git commit-graph write</emphasis> &lt;options&gt; [--object-dir &lt;dir&gt;] [--[no-]progress]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="git-commit-graph(1)__description">
+<title>DESCRIPTION</title>
+<simpara>Manage the serialized commit-graph file.</simpara>
+</simplesect>
+<simplesect id="git-commit-graph(1)__options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+--object-dir
+</term>
+<listitem>
+<simpara>
+        Use given directory for the location of packfiles and commit-graph
+        file. This parameter exists to specify the location of an alternate
+        that only has the objects directory, not a full <emphasis>.git</emphasis> directory. The
+        commit-graph file is expected to be in the <emphasis>&lt;dir&gt;/info</emphasis> directory and
+        the packfiles are expected to be in <emphasis>&lt;dir&gt;/pack</emphasis>. If the directory
+        could not be made into an absolute path, or does not match any known
+        object directory, <emphasis>git commit-graph ...</emphasis> will exit with non-zero
+        status.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--[no-]progress
+</term>
+<listitem>
+<simpara>
+        Turn progress on/off explicitly. If neither is specified, progress is
+        shown if standard error is connected to a terminal.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="git-commit-graph(1)__commands">
+<title>COMMANDS</title>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>write</emphasis>
+</term>
+<listitem>
+<simpara>
+Write a commit-graph file based on the commits found in packfiles.
+</simpara>
+<simpara>With the <emphasis>--stdin-packs</emphasis> option, generate the new commit graph by
+walking objects only in the specified pack-indexes. (Cannot be combined
+with <emphasis>--stdin-commits</emphasis> or <emphasis>--reachable</emphasis>.)</simpara>
+<simpara>With the <emphasis>--stdin-commits</emphasis> option, generate the new commit graph by
+walking commits starting at the commits specified in stdin as a list
+of OIDs in hex, one OID per line. (Cannot be combined with
+<emphasis>--stdin-packs</emphasis> or <emphasis>--reachable</emphasis>.)</simpara>
+<simpara>With the <emphasis>--reachable</emphasis> option, generate the new commit graph by walking
+commits starting at all refs. (Cannot be combined with <emphasis>--stdin-commits</emphasis>
+or <emphasis>--stdin-packs</emphasis>.)</simpara>
+<simpara>With the <emphasis>--append</emphasis> option, include all commits that are present in the
+existing commit-graph file.</simpara>
+<simpara>With the <emphasis>--split</emphasis> option, write the commit-graph as a chain of multiple
+commit-graph files stored in <emphasis>&lt;dir&gt;/info/commit-graphs</emphasis>. The new commits
+not already in the commit-graph are added in a new "tip" file. This file
+is merged with the existing file if the following merge conditions are
+met:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+If <emphasis>--size-multiple=&lt;X&gt;</emphasis> is not specified, let <emphasis>X</emphasis> equal 2. If the new
+tip file would have <emphasis>N</emphasis> commits and the previous tip has <emphasis>M</emphasis> commits and
+<emphasis>X</emphasis> times <emphasis>N</emphasis> is greater than  <emphasis>M</emphasis>, instead merge the two files into a
+single file.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+If <emphasis>--max-commits=&lt;M&gt;</emphasis> is specified with <emphasis>M</emphasis> a positive integer, and the
+new tip file would have more than <emphasis>M</emphasis> commits, then instead merge the new
+tip with the previous tip.
+</simpara>
+<simpara>Finally, if <emphasis>--expire-time=&lt;datetime&gt;</emphasis> is not specified, let <emphasis>datetime</emphasis>
+be the current time. After writing the split commit-graph, delete all
+unused commit-graph whose modified times are older than <emphasis>datetime</emphasis>.</simpara>
+</listitem>
+</itemizedlist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>verify</emphasis>
+</term>
+<listitem>
+<simpara>
+Read the commit-graph file and verify its contents against the object
+database. Used to check for corrupted data.
+</simpara>
+<simpara>With the <emphasis>--shallow</emphasis> option, only check the tip commit-graph file in
+a chain of split commit-graphs.</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="git-commit-graph(1)__examples">
+<title>EXAMPLES</title>
+<itemizedlist>
+<listitem>
+<simpara>
+Write a commit-graph file for the packed commits in your local <emphasis>.git</emphasis>
+  directory.
+</simpara>
+<screen>$ git commit-graph write</screen>
+</listitem>
+<listitem>
+<simpara>
+Write a commit-graph file, extending the current commit-graph file
+  using commits in <emphasis>&lt;pack-index&gt;</emphasis>.
+</simpara>
+<screen>$ echo &lt;pack-index&gt; | git commit-graph write --stdin-packs</screen>
+</listitem>
+<listitem>
+<simpara>
+Write a commit-graph file containing all reachable commits.
+</simpara>
+<screen>$ git show-ref -s | git commit-graph write --stdin-commits</screen>
+</listitem>
+<listitem>
+<simpara>
+Write a commit-graph file containing all commits in the current
+  commit-graph file along with those reachable from <emphasis>HEAD</emphasis>.
+</simpara>
+<screen>$ git rev-parse HEAD | git commit-graph write --stdin-commits --append</screen>
+</listitem>
+</itemizedlist>
+</simplesect>
+<simplesect id="git-commit-graph(1)__git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</sect2>
