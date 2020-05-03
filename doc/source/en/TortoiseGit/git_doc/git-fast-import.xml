@@ -13,7 +13,7 @@
 <simplesect id="git-fast-import(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout>frontend | <emphasis>git fast-import</emphasis> [options]</literallayout>
+<literallayout>frontend | <emphasis>git fast-import</emphasis> [&lt;options&gt;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-fast-import(1)__description">
@@ -54,9 +54,10 @@ the frontend program in use.</simpara>
 </term>
 <listitem>
 <simpara>
-        Disable all non-fatal output, making fast-import silent when it
-        is successful.  This option disables the output shown by
-        --stats.
+        Disable the output shown by --stats, making fast-import usually
+        be silent when it is successful.  However, if the import stream
+        has directives intended to show user output (e.g. <emphasis>progress</emphasis>
+        directives), the corresponding messages will still be shown.
 </simpara>
 </listitem>
 </varlistentry>
@@ -71,6 +72,27 @@ the frontend program in use.</simpara>
         memory used by fast-import during this run.  Showing this output
         is currently the default, but can be disabled with --quiet.
 </simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--allow-unsafe-features
+</term>
+<listitem>
+<simpara>
+        Many command-line options can be provided as part of the
+        fast-import stream itself by using the <emphasis>feature</emphasis> or <emphasis>option</emphasis>
+        commands. However, some of these options are unsafe (e.g.,
+        allowing fast-import to access the filesystem outside of the
+        repository). These options are disabled by default, but can be
+        allowed by providing this option on the command line.  This
+        currently impacts only the <emphasis>export-marks</emphasis>, <emphasis>import-marks</emphasis>, and
+        <emphasis>import-marks-if-exists</emphasis> feature commands.
+</simpara>
+<literallayout class="monospaced">Only enable this option if you trust the program generating the
+fast-import stream! This option is enabled automatically for
+remote-helpers that use the `import` capability, as they are
+already trusted to run their own code.</literallayout>
 </listitem>
 </varlistentry>
 </variablelist>
@@ -182,6 +204,35 @@ the frontend program in use.</simpara>
 </varlistentry>
 </variablelist>
 </section>
+<section id="git-fast-import(1)__submodule_rewriting">
+<title>Submodule Rewriting</title>
+<variablelist>
+<varlistentry>
+<term>
+--rewrite-submodules-from=&lt;name&gt;:&lt;file&gt;
+</term>
+<term>
+--rewrite-submodules-to=&lt;name&gt;:&lt;file&gt;
+</term>
+<listitem>
+<simpara>
+  Rewrite the object IDs for the submodule specified by &lt;name&gt; from the values
+        used in the from &lt;file&gt; to those used in the to &lt;file&gt;. The from marks should
+        have been created by <emphasis>git fast-export</emphasis>, and the to marks should have been
+        created by <emphasis>git fast-import</emphasis> when importing that same submodule.
+</simpara>
+<simpara>&lt;name&gt; may be any arbitrary string not containing a colon character, but the
+same value must be used with both options when specifying corresponding marks.
+Multiple submodules may be specified with different values for &lt;name&gt;. It is an
+error not to use these options in corresponding pairs.</simpara>
+<simpara>These options are primarily useful when converting a repository from one hash
+algorithm to another; without them, fast-import will fail if it encounters a
+submodule because it has no way of writing the object ID into the new hash
+algorithm.</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</section>
 <section id="git-fast-import(1)__performance_and_compression_tuning">
 <title>Performance and Compression Tuning</title>
 <variablelist>
@@ -216,7 +267,7 @@ the frontend program in use.</simpara>
 <listitem>
 <simpara>
         Maximum delta depth, for blob and tree deltification.
-        Default is 10.
+        Default is 50.
 </simpara>
 </listitem>
 </varlistentry>
@@ -247,11 +298,21 @@ the frontend program in use.</simpara>
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+fastimport.unpackLimit
+</term>
+<listitem>
+<simpara>
+        See <xref linkend="git-config(1)" />
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </section>
 </simplesect>
 <simplesect id="git-fast-import(1)__performance">
-<title>Performance</title>
+<title>PERFORMANCE</title>
 <simpara>The design of fast-import allows it to import large projects in a minimum
 amount of memory usage and processing time.  Assuming the frontend
 is able to keep up with fast-import and feed it a constant stream of data,
@@ -265,7 +326,7 @@ faster if the source data is stored on a different drive than the
 destination Git repository (due to less IO contention).</simpara>
 </simplesect>
 <simplesect id="git-fast-import(1)__development_cost">
-<title>Development Cost</title>
+<title>DEVELOPMENT COST</title>
 <simpara>A typical frontend for fast-import tends to weigh in at approximately 200
 lines of Perl/Python/Ruby code.  Most developers have been able to
 create working importers in just a couple of hours, even though it
@@ -274,7 +335,7 @@ an ideal situation, given that most conversion tools are throw-away
 (use once, and never look back).</simpara>
 </simplesect>
 <simplesect id="git-fast-import(1)__parallel_operation">
-<title>Parallel Operation</title>
+<title>PARALLEL OPERATION</title>
 <simpara>Like <emphasis>git push</emphasis> or <emphasis>git fetch</emphasis>, imports handled by fast-import are safe to
 run alongside parallel <emphasis>git repack -a -d</emphasis> or <emphasis>git gc</emphasis> invocations,
 or any other Git operation (including <emphasis>git prune</emphasis>, as loose objects
@@ -292,7 +353,7 @@ this only be used on an otherwise quiet repository.  Using --force
 is not necessary for an initial import into an empty repository.</simpara>
 </simplesect>
 <simplesect id="git-fast-import(1)__technical_discussion">
-<title>Technical Discussion</title>
+<title>TECHNICAL DISCUSSION</title>
 <simpara>fast-import tracks a set of branches in memory.  Any branch can be created
 or modified at any point during the import process by sending a
 <emphasis>commit</emphasis> command on the input stream.  This design allows a frontend
@@ -309,7 +370,7 @@ need to perform any costly file update operations when switching
 between branches.</simpara>
 </simplesect>
 <simplesect id="git-fast-import(1)__input_format">
-<title>Input Format</title>
+<title>INPUT FORMAT</title>
 <simpara>With the exception of raw file data (which Git does not interpret)
 the fast-import input format is text (ASCII) based.  This text based
 format simplifies development and debugging of frontend programs,
@@ -479,6 +540,20 @@ and control the current import process.  More detailed discussion
 </varlistentry>
 <varlistentry>
 <term>
+<emphasis>alias</emphasis>
+</term>
+<listitem>
+<simpara>
+        Record that a mark refers to a given object without first
+        creating any new object.  Using --import-marks and referring
+        to missing marks will cause fast-import to fail, so aliases
+        can provide a way to set otherwise pruned commits to a valid
+        value (e.g. the nearest non-pruned ancestor).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 <emphasis>checkpoint</emphasis>
 </term>
 <listitem>
@@ -581,11 +656,13 @@ and control the current import process.  More detailed discussion
 change to the project.</simpara>
 <literallayout class="monospaced">        'commit' SP &lt;ref&gt; LF
         mark?
+        original-oid?
         ('author' (SP &lt;name&gt;)? SP LT &lt;email&gt; GT SP &lt;when&gt; LF)?
         'committer' (SP &lt;name&gt;)? SP LT &lt;email&gt; GT SP &lt;when&gt; LF
+        ('encoding' SP &lt;encoding&gt;)?
         data
         ('from' SP &lt;commit-ish&gt; LF)?
-        ('merge' SP &lt;commit-ish&gt; LF)?
+        ('merge' SP &lt;commit-ish&gt; LF)*
         (filemodify | filedelete | filecopy | filerename | filedeleteall | notemodify)*
         LF?</literallayout>
 <simpara>where <emphasis>&lt;ref&gt;</emphasis> is the name of the branch to make the commit on.
@@ -611,7 +688,12 @@ creating the commit.  These commands may be supplied in any order.
 However it is recommended that a <emphasis>filedeleteall</emphasis> command precede
 all <emphasis>filemodify</emphasis>, <emphasis>filecopy</emphasis>, <emphasis>filerename</emphasis> and <emphasis>notemodify</emphasis> commands in
 the same commit, as <emphasis>filedeleteall</emphasis> wipes the branch clean (see below).</simpara>
-<simpara>The <emphasis>LF</emphasis> after the command is optional (it used to be required).</simpara>
+<simpara>The <emphasis>LF</emphasis> after the command is optional (it used to be required).  Note
+that for reasons of backward compatibility, if the commit ends with a
+<emphasis>data</emphasis> command (i.e. it has no <emphasis>from</emphasis>, <emphasis>merge</emphasis>, <emphasis>filemodify</emphasis>,
+<emphasis>filedelete</emphasis>, <emphasis>filecopy</emphasis>, <emphasis>filerename</emphasis>, <emphasis>filedeleteall</emphasis> or
+<emphasis>notemodify</emphasis> commands) then two <emphasis>LF</emphasis> commands may appear at the end of
+the command instead of just one.</simpara>
 <section id="git-fast-import(1)__emphasis_author_emphasis">
 <title><emphasis>author</emphasis></title>
 <simpara>An <emphasis>author</emphasis> command may optionally appear, if the author information
@@ -635,6 +717,12 @@ of bytes, except <emphasis>LT</emphasis>, <emphasis>GT</emphasis> and <emphasis>
 that was selected by the --date-format=&lt;fmt&gt; command-line option.
 See Date Formats above for the set of supported formats, and
 their syntax.</simpara>
+</section>
+<section id="git-fast-import(1)__emphasis_encoding_emphasis">
+<title><emphasis>encoding</emphasis></title>
+<simpara>The optional <emphasis>encoding</emphasis> command indicates the encoding of the commit
+message.  Most commits are UTF-8 and the encoding is omitted, but this
+allows importing commit messages into git without first reencoding them.</simpara>
 </section>
 <section id="git-fast-import(1)__emphasis_from_emphasis">
 <title><emphasis>from</emphasis></title>
@@ -958,12 +1046,23 @@ a mark.  Only values greater than or equal to 1 may be used as marks.</simpara>
 to another object simply by reusing the same <emphasis>&lt;idnum&gt;</emphasis> in another
 <emphasis>mark</emphasis> command.</simpara>
 </section>
+<section id="git-fast-import(1)__emphasis_original_oid_emphasis">
+<title><emphasis>original-oid</emphasis></title>
+<simpara>Provides the name of the object in the original source control system.
+fast-import will simply ignore this directive, but filter processes
+which operate on and modify the stream before feeding to fast-import
+may have uses for this information</simpara>
+<literallayout class="monospaced">        'original-oid' SP &lt;object-identifier&gt; LF</literallayout>
+<simpara>where <emphasis>&lt;object-identifer&gt;</emphasis> is any string not containing LF.</simpara>
+</section>
 <section id="git-fast-import(1)__emphasis_tag_emphasis">
 <title><emphasis>tag</emphasis></title>
 <simpara>Creates an annotated tag referring to a specific commit.  To create
 lightweight (non-annotated) tags see the <emphasis>reset</emphasis> command below.</simpara>
 <literallayout class="monospaced">        'tag' SP &lt;name&gt; LF
+        mark?
         'from' SP &lt;commit-ish&gt; LF
+        original-oid?
         'tagger' (SP &lt;name&gt;)? SP LT &lt;email&gt; GT SP &lt;when&gt; LF
         data</literallayout>
 <simpara>where <emphasis>&lt;name&gt;</emphasis> is the name of the tag to create.</simpara>
@@ -1020,6 +1119,7 @@ a subsequent <emphasis>commit</emphasis> command by referencing the blob through
 assigned mark.</simpara>
 <literallayout class="monospaced">        'blob' LF
         mark?
+        original-oid?
         data</literallayout>
 <simpara>The mark command is optional here as some frontends have chosen
 to generate the Git SHA-1 for the blob on their own, and feed that
@@ -1085,6 +1185,16 @@ a data chunk which does not have an LF as its last byte.</simpara>
 </varlistentry>
 </variablelist>
 </section>
+<section id="git-fast-import(1)__emphasis_alias_emphasis">
+<title><emphasis>alias</emphasis></title>
+<simpara>Record that a mark refers to a given object without first creating any
+new object.</simpara>
+<literallayout class="monospaced">        'alias' LF
+        mark
+        'to' SP &lt;commit-ish&gt; LF
+        LF?</literallayout>
+<simpara>For a detailed description of <emphasis>&lt;commit-ish&gt;</emphasis> see above under <emphasis>from</emphasis>.</simpara>
+</section>
 <section id="git-fast-import(1)__emphasis_checkpoint_emphasis">
 <title><emphasis>checkpoint</emphasis></title>
 <simpara>Forces fast-import to close the current packfile, start a new one, and to
@@ -1133,9 +1243,6 @@ stdout or to the file descriptor previously arranged with the
 current import; its purpose is to retrieve SHA-1s that later commits
 might want to refer to in their commit messages.</simpara>
 <literallayout class="monospaced">        'get-mark' SP ':' &lt;idnum&gt; LF</literallayout>
-<simpara>This command can be used anywhere in the stream that comments are
-accepted.  In particular, the <emphasis>get-mark</emphasis> command can be used in the
-middle of a commit but not in the middle of a <emphasis>data</emphasis> command.</simpara>
 <simpara>See Responses To Commands below for details about how to read
 this output safely.</simpara>
 </section>
@@ -1155,9 +1262,10 @@ ready to be written.</simpara>
 <literallayout class="monospaced">&lt;sha1&gt; SP 'blob' SP &lt;size&gt; LF
 &lt;contents&gt; LF</literallayout>
 </informalexample>
-<simpara>This command can be used anywhere in the stream that comments are
-accepted.  In particular, the <emphasis>cat-blob</emphasis> command can be used in the
-middle of a commit but not in the middle of a <emphasis>data</emphasis> command.</simpara>
+<simpara>This command can be used where a <emphasis>filemodify</emphasis> directive can appear,
+allowing it to be used in the middle of a commit.  For a <emphasis>filemodify</emphasis>
+using an inline directive, it can also appear right before the <emphasis>data</emphasis>
+directive.</simpara>
 <simpara>See Responses To Commands below for details about how to read
 this output safely.</simpara>
 </section>
@@ -1168,8 +1276,8 @@ previously arranged with the <emphasis>--cat-blob-fd</emphasis> argument.  This 
 printing a blob from the active commit (with <emphasis>cat-blob</emphasis>) or copying a
 blob or tree from a previous commit for use in the current one (with
 <emphasis>filemodify</emphasis>).</simpara>
-<simpara>The <emphasis>ls</emphasis> command can be used anywhere in the stream that comments are
-accepted, including the middle of a commit.</simpara>
+<simpara>The <emphasis>ls</emphasis> command can also be used where a <emphasis>filemodify</emphasis> directive can
+appear, allowing it to be used in the middle of a commit.</simpara>
 <variablelist>
 <varlistentry>
 <term>
@@ -1371,7 +1479,7 @@ stream.</simpara>
 </section>
 </simplesect>
 <simplesect id="git-fast-import(1)__responses_to_commands">
-<title>Responses To Commands</title>
+<title>RESPONSES TO COMMANDS</title>
 <simpara>New objects written by fast-import are not available immediately.
 Most fast-import commands have no visible effect until the next
 checkpoint (or completion).  The frontend can send commands to
@@ -1396,7 +1504,7 @@ pending output from <emphasis>progress</emphasis>, <emphasis>ls</emphasis>, <emp
 performing writes to fast-import that might block.</simpara>
 </simplesect>
 <simplesect id="git-fast-import(1)__crash_reports">
-<title>Crash Reports</title>
+<title>CRASH REPORTS</title>
 <simpara>If fast-import is supplied invalid input it will terminate with a
 non-zero exit status and create a crash report in the top level of
 the Git repository it was importing into.  Crash reports contain
@@ -1470,7 +1578,7 @@ END OF CRASH REPORT</literallayout>
 </informalexample>
 </simplesect>
 <simplesect id="git-fast-import(1)__tips_and_tricks">
-<title>Tips and Tricks</title>
+<title>TIPS AND TRICKS</title>
 <simpara>The following tips and tricks have been collected from various
 users of fast-import, and are offered here as suggestions.</simpara>
 <section id="git-fast-import(1)__use_one_mark_per_commit">
@@ -1563,7 +1671,7 @@ has been processed.</simpara>
 </section>
 </simplesect>
 <simplesect id="git-fast-import(1)__packfile_optimization">
-<title>Packfile Optimization</title>
+<title>PACKFILE OPTIMIZATION</title>
 <simpara>When packing a blob fast-import always attempts to deltify against the last
 blob written.  Unless specifically arranged for by the frontend,
 this will probably not be a prior version of the same file, so the
@@ -1588,9 +1696,16 @@ Git to reorganize the packfiles for faster data access.  If blob
 deltas are suboptimal (see above) then also adding the <emphasis>-f</emphasis> option
 to force recomputation of all deltas can significantly reduce the
 final packfile size (30-50% smaller can be quite typical).</simpara>
+<simpara>Instead of running <emphasis>git repack</emphasis> you can also run <emphasis>git gc
+--aggressive</emphasis>, which will also optimize other things after an import
+(e.g. pack loose refs). As noted in the "AGGRESSIVE" section in
+<xref linkend="git-gc(1)" /> the <emphasis>--aggressive</emphasis> option will find new deltas with
+the <emphasis>-f</emphasis> option to <xref linkend="git-repack(1)" />. For the reasons elaborated
+on above using <emphasis>--aggressive</emphasis> after a fast-import is one of the few
+cases where it's known to be worthwhile.</simpara>
 </simplesect>
 <simplesect id="git-fast-import(1)__memory_utilization">
-<title>Memory Utilization</title>
+<title>MEMORY UTILIZATION</title>
 <simpara>There are a number of factors which affect how much memory fast-import
 requires to perform an import.  Like critical sections of core
 Git, fast-import uses its own memory allocators to amortize any overheads
@@ -1662,7 +1777,7 @@ memory footprint (less than 2.7 MiB per active branch).</simpara>
 </section>
 </simplesect>
 <simplesect id="git-fast-import(1)__signals">
-<title>Signals</title>
+<title>SIGNALS</title>
 <simpara>Sending <emphasis role="strong">SIGUSR1</emphasis> to the <emphasis>git fast-import</emphasis> process ends the current
 packfile early, simulating a <emphasis>checkpoint</emphasis> command.  The impatient
 operator can use this facility to peek at the objects and refs from an

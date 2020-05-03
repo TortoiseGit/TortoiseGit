@@ -18,7 +18,7 @@
 </simplesect>
 <simplesect id="git-verify-commit(1)__description">
 <title>DESCRIPTION</title>
-<simpara>Validates the gpg signature created by <emphasis>git commit -S</emphasis>.</simpara>
+<simpara>Validates the GPG signature created by <emphasis>git commit -S</emphasis>.</simpara>
 </simplesect>
 <simplesect id="git-verify-commit(1)__options">
 <title>OPTIONS</title>

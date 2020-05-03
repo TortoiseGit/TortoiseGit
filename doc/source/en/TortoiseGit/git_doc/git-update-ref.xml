@@ -13,7 +13,7 @@
 <simplesect id="git-update-ref(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git update-ref</emphasis> [-m &lt;reason&gt;] (-d &lt;ref&gt; [&lt;oldvalue&gt;] | [--no-deref] [--create-reflog] &lt;ref&gt; &lt;newvalue&gt; [&lt;oldvalue&gt;] | --stdin [-z])</literallayout>
+<literallayout><emphasis>git update-ref</emphasis> [-m &lt;reason&gt;] [--no-deref] (-d &lt;ref&gt; [&lt;oldvalue&gt;] | [--create-reflog] &lt;ref&gt; &lt;newvalue&gt; [&lt;oldvalue&gt;] | --stdin [-z])</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-update-ref(1)__description">
@@ -145,34 +145,22 @@ modifications are performed.  Note that while each individual
 still see a subset of the modifications.</simpara>
 </simplesect>
 <simplesect id="git-update-ref(1)__logging_updates">
-<title>Logging Updates</title>
+<title>LOGGING UPDATES</title>
 <simpara>If config parameter "core.logAllRefUpdates" is true and the ref is one under
 "refs/heads/", "refs/remotes/", "refs/notes/", or the symbolic ref HEAD; or
 the file "$GIT_DIR/logs/&lt;ref&gt;" exists then <emphasis>git update-ref</emphasis> will append
 a line to the log file "$GIT_DIR/logs/&lt;ref&gt;" (dereferencing all
 symbolic refs before creating the log name) describing the change
 in ref value.  Log lines are formatted as:</simpara>
-<orderedlist numeration="arabic">
-<listitem>
-<simpara>
-oldsha1 SP newsha1 SP committer LF
-</simpara>
+<literallayout class="monospaced">oldsha1 SP newsha1 SP committer LF</literallayout>
 <simpara>Where "oldsha1" is the 40 character hexadecimal value previously
 stored in &lt;ref&gt;, "newsha1" is the 40 character hexadecimal value of
 &lt;newvalue&gt; and "committer" is the committer's name, email address
 and date in the standard Git committer ident format.</simpara>
-</listitem>
-</orderedlist>
 <simpara>Optionally with -m:</simpara>
-<orderedlist numeration="arabic">
-<listitem>
-<simpara>
-oldsha1 SP newsha1 SP committer TAB message LF
-</simpara>
+<literallayout class="monospaced">oldsha1 SP newsha1 SP committer TAB message LF</literallayout>
 <simpara>Where all fields are as described above and "message" is the
 value supplied to the -m option.</simpara>
-</listitem>
-</orderedlist>
 <simpara>An update will fail (without changing &lt;ref&gt;) if the current user is
 unable to create a new log file, append to the existing log file
 or does not have committer information available.</simpara>

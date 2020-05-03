@@ -13,17 +13,17 @@
 <simplesect id="git-rebase(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git rebase</emphasis> [-i | --interactive] [options] [--exec &lt;cmd&gt;] [--onto &lt;newbase&gt;]
-        [&lt;upstream&gt; [&lt;branch&gt;]]
-<emphasis>git rebase</emphasis> [-i | --interactive] [options] [--exec &lt;cmd&gt;] [--onto &lt;newbase&gt;]
+<literallayout><emphasis>git rebase</emphasis> [-i | --interactive] [&lt;options&gt;] [--exec &lt;cmd&gt;]
+        [--onto &lt;newbase&gt; | --keep-base] [&lt;upstream&gt; [&lt;branch&gt;]]
+<emphasis>git rebase</emphasis> [-i | --interactive] [&lt;options&gt;] [--exec &lt;cmd&gt;] [--onto &lt;newbase&gt;]
         --root [&lt;branch&gt;]
-<emphasis>git rebase</emphasis> --continue | --skip | --abort | --edit-todo</literallayout>
+<emphasis>git rebase</emphasis> (--continue | --skip | --abort | --quit | --edit-todo | --show-current-patch)</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-rebase(1)__description">
 <title>DESCRIPTION</title>
 <simpara>If &lt;branch&gt; is specified, <emphasis>git rebase</emphasis> will perform an automatic
-<emphasis>git checkout &lt;branch&gt;</emphasis> before doing anything else.  Otherwise
+<emphasis>git switch &lt;branch&gt;</emphasis> before doing anything else.  Otherwise
 it remains on the current branch.</simpara>
 <simpara>If &lt;upstream&gt; is not specified, the upstream configured in
 branch.&lt;name&gt;.remote and branch.&lt;name&gt;.merge options will be used (see
@@ -141,6 +141,33 @@ desired resolution, you can continue the rebasing process with</simpara>
 <variablelist>
 <varlistentry>
 <term>
+rebase.useBuiltin
+</term>
+<listitem>
+<simpara>
+        Unused configuration variable. Used in Git versions 2.20 and
+        2.21 as an escape hatch to enable the legacy shellscript
+        implementation of rebase. Now the built-in rewrite of it in C
+        is always used. Setting this will emit a warning, to alert any
+        remaining users that setting this now does nothing.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+rebase.backend
+</term>
+<listitem>
+<simpara>
+        Default backend to use for rebasing.  Possible choices are
+        <emphasis>apply</emphasis> or <emphasis>merge</emphasis>.  In the future, if the merge backend gains
+        all remaining capabilities of the apply backend, this setting
+        may become unused.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 rebase.stat
 </term>
 <listitem>
@@ -166,7 +193,14 @@ rebase.autoStash
 </term>
 <listitem>
 <simpara>
-        If set to true enable <emphasis>--autostash</emphasis> option by default.
+        When set to true, automatically create a temporary stash entry
+        before the operation begins, and apply it after the operation
+        ends.  This means that you can run rebase on a dirty worktree.
+        However, use with care: the final stash application after a
+        successful rebase might result in non-trivial conflicts.
+        This option can be overridden by the <emphasis>--no-autostash</emphasis> and
+        <emphasis>--autostash</emphasis> options of <xref linkend="git-rebase(1)" />.
+        Defaults to false.
 </simpara>
 </listitem>
 </varlistentry>
@@ -176,10 +210,15 @@ rebase.missingCommitsCheck
 </term>
 <listitem>
 <simpara>
-        If set to "warn", print warnings about removed commits in
-        interactive mode. If set to "error", print the warnings and
-        stop the rebase. If set to "ignore", no checking is
-        done. "ignore" by default.
+        If set to "warn", git rebase -i will print a warning if some
+        commits are removed (e.g. a line was deleted), however the
+        rebase will still proceed. If set to "error", it will print
+        the previous warning and stop the rebase, <emphasis>git rebase
+        --edit-todo</emphasis> can then be used to correct the error. If set to
+        "ignore", no checking is done.
+        To drop a commit without warning or error, use the <emphasis>drop</emphasis>
+        command in the todo list.
+        Defaults to "ignore".
 </simpara>
 </listitem>
 </varlistentry>
@@ -189,7 +228,40 @@ rebase.instructionFormat
 </term>
 <listitem>
 <simpara>
-        Custom commit list format to use during an <emphasis>--interactive</emphasis> rebase.
+        A format string, as specified in <xref linkend="git-log(1)" />, to be used for the
+        todo list during an interactive rebase.  The format will
+        automatically have the long commit hash prepended to the format.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+rebase.abbreviateCommands
+</term>
+<listitem>
+<simpara>
+        If set to true, <emphasis>git rebase</emphasis> will use abbreviated command names in the
+        todo list resulting in something like this:
+</simpara>
+<screen>        p deadbee The oneline of the commit
+        p fa1afe1 The oneline of the next commit
+        ...</screen>
+<simpara>instead of:</simpara>
+<screen>        pick deadbee The oneline of the commit
+        pick fa1afe1 The oneline of the next commit
+        ...</screen>
+<simpara>Defaults to false.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+rebase.rescheduleFailedExec
+</term>
+<listitem>
+<simpara>
+        Automatically reschedule <emphasis>exec</emphasis> commands that failed. This only makes
+        sense in interactive mode (or when an <emphasis>--exec</emphasis> option was provided).
+        This is the same as specifying the <emphasis>--reschedule-failed-exec</emphasis> option.
 </simpara>
 </listitem>
 </varlistentry>
@@ -212,6 +284,28 @@ rebase.instructionFormat
 <simpara>As a special case, you may use "A...B" as a shortcut for the
 merge base of A and B if there is exactly one merge base. You can
 leave out at most one of A and B, in which case it defaults to HEAD.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--keep-base
+</term>
+<listitem>
+<simpara>
+        Set the starting point at which to create the new commits to the
+        merge base of &lt;upstream&gt; &lt;branch&gt;. Running
+        <emphasis>git rebase --keep-base &lt;upstream&gt; &lt;branch&gt;</emphasis> is equivalent to
+        running <emphasis>git rebase --onto &lt;upstream&gt;&#8230; &lt;upstream&gt;</emphasis>.
+</simpara>
+<simpara>This option is useful in the case where one is developing a feature on
+top of an upstream branch. While the feature is being worked on, the
+upstream branch may advance and it may not be the best idea to keep
+rebasing on top of the upstream but to keep the base commit as-is.</simpara>
+<simpara>Although both this option and --fork-point find the merge base between
+&lt;upstream&gt; and &lt;branch&gt;, this option uses the merge base as the <emphasis>starting
+point</emphasis> on which new commits will be created, whereas --fork-point uses
+the merge base to determine the <emphasis>set of commits</emphasis> which will be rebased.</simpara>
+<simpara>See also INCOMPATIBLE OPTIONS below.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -262,13 +356,111 @@ leave out at most one of A and B, in which case it defaults to HEAD.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--quit
+</term>
+<listitem>
+<simpara>
+        Abort the rebase operation but HEAD is not reset back to the
+        original branch. The index and working tree are also left
+        unchanged as a result.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>--apply:
+        Use applying strategies to rebase (calling <emphasis>git-am</emphasis>
+        internally).  This option may become a no-op in the future
+        once the merge backend handles everything the apply one does.</simpara>
+<simpara>+
+See also INCOMPATIBLE OPTIONS below.</simpara>
+<variablelist>
+<varlistentry>
+<term>
+--empty={drop,keep,ask}
+</term>
+<listitem>
+<simpara>
+        How to handle commits that are not empty to start and are not
+        clean cherry-picks of any upstream commit, but which become
+        empty after rebasing (because they contain a subset of already
+        upstream changes).  With drop (the default), commits that
+        become empty are dropped.  With keep, such commits are kept.
+        With ask (implied by --interactive), the rebase will halt when
+        an empty commit is applied allowing you to choose whether to
+        drop it, edit files more, or just commit the empty changes.
+        Other options, like --exec, will use the default of drop unless
+        -i/--interactive is explicitly specified.
+</simpara>
+<simpara>Note that commits which start empty are kept (unless --no-keep-empty
+is specified), and commits which are clean cherry-picks (as determined
+by <emphasis>git log --cherry-mark ...</emphasis>) are detected and dropped as a
+preliminary step (unless --reapply-cherry-picks is passed).</simpara>
+<simpara>See also INCOMPATIBLE OPTIONS below.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-keep-empty
+</term>
+<term>
 --keep-empty
 </term>
 <listitem>
 <simpara>
-        Keep the commits that do not change anything from its
-        parents in the result.
+        Do not keep commits that start empty before the rebase
+        (i.e. that do not change anything from its parent) in the
+        result.  The default is to keep commits which start empty,
+        since creating such commits requires passing the --allow-empty
+        override flag to <emphasis>git commit</emphasis>, signifying that a user is very
+        intentionally creating such a commit and thus wants to keep
+        it.
 </simpara>
+<simpara>Usage of this flag will probably be rare, since you can get rid of
+commits that start empty by just firing up an interactive rebase and
+removing the lines corresponding to the commits you don't want.  This
+flag exists as a convenient shortcut, such as for cases where external
+tools generate many empty commits and you want them all removed.</simpara>
+<simpara>For commits which do not start empty but become empty after rebasing,
+see the --empty flag.</simpara>
+<simpara>See also INCOMPATIBLE OPTIONS below.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--reapply-cherry-picks
+</term>
+<term>
+--no-reapply-cherry-picks
+</term>
+<listitem>
+<simpara>
+        Reapply all clean cherry-picks of any upstream commit instead
+        of preemptively dropping them. (If these commits then become
+        empty after rebasing, because they contain a subset of already
+        upstream changes, the behavior towards them is controlled by
+        the <emphasis>--empty</emphasis> flag.)
+</simpara>
+<simpara>By default (or if <emphasis>--no-reapply-cherry-picks</emphasis> is given), these commits
+will be automatically dropped.  Because this necessitates reading all
+upstream commits, this can be expensive in repos with a large number
+of upstream commits that need to be read.</simpara>
+<simpara><emphasis>--reapply-cherry-picks</emphasis> allows rebase to forgo reading all upstream
+commits, potentially improving performance.</simpara>
+<simpara>See also INCOMPATIBLE OPTIONS below.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--allow-empty-message
+</term>
+<listitem>
+<simpara>
+        No-op.  Rebasing commits with an empty message used to fail
+        and this option would override that behavior, allowing commits
+        with empty messages to be rebased.  Now commits with an empty
+        message do not cause rebasing to halt.
+</simpara>
+<simpara>See also INCOMPATIBLE OPTIONS below.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -293,6 +485,18 @@ leave out at most one of A and B, in which case it defaults to HEAD.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--show-current-patch
+</term>
+<listitem>
+<simpara>
+        Show the current patch in an interactive rebase or when rebase
+        is stopped because of conflicts. This is the equivalent of
+        <emphasis>git show REBASE_HEAD</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 -m
 </term>
 <term>
@@ -302,13 +506,14 @@ leave out at most one of A and B, in which case it defaults to HEAD.</simpara>
 <simpara>
         Use merging strategies to rebase.  When the recursive (default) merge
         strategy is used, this allows rebase to be aware of renames on the
-        upstream side.
+        upstream side.  This is the default.
 </simpara>
 <simpara>Note that a rebase merge works by replaying each commit from the working
 branch on top of the &lt;upstream&gt; branch.  Because of this, when a merge
 conflict happens, the side reported as <emphasis>ours</emphasis> is the so-far rebased
 series, starting with &lt;upstream&gt;, and <emphasis>theirs</emphasis> is the working branch.  In
 other words, the sides are swapped.</simpara>
+<simpara>See also INCOMPATIBLE OPTIONS below.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -326,8 +531,9 @@ other words, the sides are swapped.</simpara>
 </simpara>
 <simpara>Because <emphasis>git rebase</emphasis> replays each commit from the working branch
 on top of the &lt;upstream&gt; branch using the given strategy, using
-the <emphasis>ours</emphasis> strategy simply discards all patches from the &lt;branch&gt;,
+the <emphasis>ours</emphasis> strategy simply empties all patches from the &lt;branch&gt;,
 which makes little sense.</simpara>
+<simpara>See also INCOMPATIBLE OPTIONS below.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -344,6 +550,21 @@ which makes little sense.</simpara>
         specified, <emphasis>-s recursive</emphasis>.  Note the reversal of <emphasis>ours</emphasis> and
         <emphasis>theirs</emphasis> as noted above for the <emphasis>-m</emphasis> option.
 </simpara>
+<simpara>See also INCOMPATIBLE OPTIONS below.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--rerere-autoupdate
+</term>
+<term>
+--no-rerere-autoupdate
+</term>
+<listitem>
+<simpara>
+        Allow the rerere mechanism to update the index with the
+        result of auto-conflict resolution if possible.
+</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -353,11 +574,16 @@ which makes little sense.</simpara>
 <term>
 --gpg-sign[=&lt;keyid&gt;]
 </term>
+<term>
+--no-gpg-sign
+</term>
 <listitem>
 <simpara>
         GPG-sign commits. The <emphasis>keyid</emphasis> argument is optional and
         defaults to the committer identity; if specified, it must be
-        stuck to the option without a space.
+        stuck to the option without a space. <emphasis>--no-gpg-sign</emphasis> is useful to
+        countermand both <emphasis>commit.gpgSign</emphasis> configuration variable, and
+        earlier <emphasis>--gpg-sign</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -441,27 +667,32 @@ which makes little sense.</simpara>
         Ensure at least &lt;n&gt; lines of surrounding context match before
         and after each change.  When fewer lines of surrounding
         context exist they all must match.  By default no context is
-        ever ignored.
+        ever ignored.  Implies --apply.
 </simpara>
+<simpara>See also INCOMPATIBLE OPTIONS below.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--f
+--no-ff
 </term>
 <term>
 --force-rebase
 </term>
+<term>
+-f
+</term>
 <listitem>
 <simpara>
-        Force a rebase even if the current branch is up-to-date and
-        the command without <emphasis>--force</emphasis> would return without doing anything.
+        Individually replay all rebased commits instead of fast-forwarding
+        over the unchanged ones.  This ensures that the entire history of
+        the rebased branch is composed of new commits.
 </simpara>
-<simpara>You may find this (or --no-ff with an interactive rebase) helpful after
-reverting a topic branch merge, as this option recreates the topic branch with
-fresh commits so it can be remerged successfully without needing to "revert
-the reversion" (see the
-<ulink url="https://www.kernel.org/pub/software/scm/git/docs/howto/revert-a-faulty-merge.html"><citetitle>revert-a-faulty-merge How-To</citetitle></ulink> for details).</simpara>
+<simpara>You may find this helpful after reverting a topic branch merge, as this option
+recreates the topic branch with fresh commits so it can be remerged
+successfully without needing to "revert the reversion" (see the
+<ulink url="https://www.kernel.org/pub/software/scm/git/docs/howto/revert-a-faulty-merge.html"><citetitle>revert-a-faulty-merge How-To</citetitle></ulink> for
+details).</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -484,6 +715,9 @@ the reversion" (see the
 ends up being empty, the &lt;upstream&gt; will be used as a fallback.</simpara>
 <simpara>If either &lt;upstream&gt; or --root is given on the command line, then the
 default is <emphasis>--no-fork-point</emphasis>, otherwise the default is <emphasis>--fork-point</emphasis>.</simpara>
+<simpara>If your branch was based on &lt;upstream&gt; but &lt;upstream&gt; was rewound and
+your branch contains commits which were dropped, this option can be used
+with <emphasis>--keep-base</emphasis> in order to drop those commits from your branch.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -495,10 +729,11 @@ default is <emphasis>--no-fork-point</emphasis>, otherwise the default is <empha
 </term>
 <listitem>
 <simpara>
-        These flag are passed to the <emphasis>git apply</emphasis> program
+        These flags are passed to the <emphasis>git apply</emphasis> program
         (see <xref linkend="git-apply(1)" />) that applies the patch.
-        Incompatible with the --interactive option.
+        Implies --apply.
 </simpara>
+<simpara>See also INCOMPATIBLE OPTIONS below.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -512,8 +747,21 @@ default is <emphasis>--no-fork-point</emphasis>, otherwise the default is <empha
 <simpara>
         These flags are passed to <emphasis>git am</emphasis> to easily change the dates
         of the rebased commits (see <xref linkend="git-am(1)" />).
-        Incompatible with the --interactive option.
 </simpara>
+<simpara>See also INCOMPATIBLE OPTIONS below.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--signoff
+</term>
+<listitem>
+<simpara>
+        Add a Signed-off-by: trailer to all the rebased commits. Note
+        that if <emphasis>--interactive</emphasis> is given then only commits marked to be
+        picked, edited or reworded will have the trailer added.
+</simpara>
+<simpara>See also INCOMPATIBLE OPTIONS below.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -532,6 +780,39 @@ default is <emphasis>--no-fork-point</emphasis>, otherwise the default is <empha
 <simpara>The commit list format can be changed by setting the configuration option
 rebase.instructionFormat.  A customized instruction format will automatically
 have the long commit hash prepended to the format.</simpara>
+<simpara>See also INCOMPATIBLE OPTIONS below.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-r
+</term>
+<term>
+--rebase-merges[=(rebase-cousins|no-rebase-cousins)]
+</term>
+<listitem>
+<simpara>
+        By default, a rebase will simply drop merge commits from the todo
+        list, and put the rebased commits into a single, linear branch.
+        With <emphasis>--rebase-merges</emphasis>, the rebase will instead try to preserve
+        the branching structure within the commits that are to be rebased,
+        by recreating the merge commits. Any resolved merge conflicts or
+        manual amendments in these merge commits will have to be
+        resolved/re-applied manually.
+</simpara>
+<simpara>By default, or when <emphasis>no-rebase-cousins</emphasis> was specified, commits which do not
+have <emphasis>&lt;upstream&gt;</emphasis> as direct ancestor will keep their original branch point,
+i.e. commits that would be excluded by <xref linkend="git-log(1)" />'s
+<emphasis>--ancestry-path</emphasis> option will keep their original ancestry by default. If
+the <emphasis>rebase-cousins</emphasis> mode is turned on, such commits are instead rebased
+onto <emphasis>&lt;upstream&gt;</emphasis> (or <emphasis>&lt;onto&gt;</emphasis>, if specified).</simpara>
+<simpara>The <emphasis>--rebase-merges</emphasis> mode is similar in spirit to the deprecated
+<emphasis>--preserve-merges</emphasis> but works with interactive rebases,
+where commits can be reordered, inserted and dropped at will.</simpara>
+<simpara>It is currently only possible to recreate the merge commits using the
+<emphasis>recursive</emphasis> merge strategy; Different merge strategies can be used only via
+explicit <emphasis>exec git merge -s &lt;strategy&gt; [...]</emphasis> commands.</simpara>
+<simpara>See also REBASING MERGES and INCOMPATIBLE OPTIONS below.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -543,13 +824,15 @@ have the long commit hash prepended to the format.</simpara>
 </term>
 <listitem>
 <simpara>
-        Recreate merge commits instead of flattening the history by replaying
-        commits a merge commit introduces. Merge conflict resolutions or manual
-        amendments to merge commits are not preserved.
+        [DEPRECATED: use <emphasis>--rebase-merges</emphasis> instead] Recreate merge commits
+        instead of flattening the history by replaying commits a merge commit
+        introduces. Merge conflict resolutions or manual amendments to merge
+        commits are not preserved.
 </simpara>
 <simpara>This uses the <emphasis>--interactive</emphasis> machinery internally, but combining it
 with the <emphasis>--interactive</emphasis> option explicitly is generally not a good
 idea unless you know what you are doing (see BUGS below).</simpara>
+<simpara>See also INCOMPATIBLE OPTIONS below.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -563,7 +846,8 @@ idea unless you know what you are doing (see BUGS below).</simpara>
 <simpara>
         Append "exec &lt;cmd&gt;" after each line creating a commit in the
         final history. &lt;cmd&gt; will be interpreted as one or more shell
-        commands.
+        commands. Any command that fails will interrupt the rebase,
+        with exit code 1.
 </simpara>
 <simpara>You may execute several commands by either using one instance of <emphasis>--exec</emphasis>
 with several commands:</simpara>
@@ -575,6 +859,7 @@ the intermediate commits, and will only appear at the end of each
 squash/fixup series.</simpara>
 <simpara>This uses the <emphasis>--interactive</emphasis> machinery internally, but it can be run
 without an explicit <emphasis>--interactive</emphasis>.</simpara>
+<simpara>See also INCOMPATIBLE OPTIONS below.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -592,6 +877,7 @@ without an explicit <emphasis>--interactive</emphasis>.</simpara>
         <emphasis>all</emphasis> root commits will be rewritten to have &lt;newbase&gt; as parent
         instead.
 </simpara>
+<simpara>See also INCOMPATIBLE OPTIONS below.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -604,18 +890,20 @@ without an explicit <emphasis>--interactive</emphasis>.</simpara>
 <listitem>
 <simpara>
         When the commit log message begins with "squash! &#8230;" (or
-        "fixup! &#8230;"), and there is a commit whose title begins with
-        the same &#8230;, automatically modify the todo list of rebase -i
-        so that the commit marked for squashing comes right after the
-        commit to be modified, and change the action of the moved
-        commit from <emphasis>pick</emphasis> to <emphasis>squash</emphasis> (or <emphasis>fixup</emphasis>).  Ignores subsequent
-        "fixup! " or "squash! " after the first, in case you referred to an
-        earlier fixup/squash with <emphasis>git commit --fixup/--squash</emphasis>.
+        "fixup! &#8230;"), and there is already a commit in the todo list that
+        matches the same <emphasis>...</emphasis>, automatically modify the todo list of rebase
+        -i so that the commit marked for squashing comes right after the
+        commit to be modified, and change the action of the moved commit
+        from <emphasis>pick</emphasis> to <emphasis>squash</emphasis> (or <emphasis>fixup</emphasis>).  A commit matches the <emphasis>...</emphasis> if
+        the commit subject matches, or if the <emphasis>...</emphasis> refers to the commit's
+        hash. As a fall-back, partial matches of the commit subject work,
+        too.  The recommended way to create fixup/squash commits is by using
+        the <emphasis>--fixup</emphasis>/<emphasis>--squash</emphasis> options of <xref linkend="git-commit(1)" />.
 </simpara>
-<simpara>This option is only valid when the <emphasis>--interactive</emphasis> option is used.</simpara>
 <simpara>If the <emphasis>--autosquash</emphasis> option is enabled by default using the
 configuration variable <emphasis>rebase.autoSquash</emphasis>, this option can be
 used to override and disable this setting.</simpara>
+<simpara>See also INCOMPATIBLE OPTIONS below.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -627,7 +915,7 @@ used to override and disable this setting.</simpara>
 </term>
 <listitem>
 <simpara>
-        Automatically create a temporary stash before the operation
+        Automatically create a temporary stash entry before the operation
         begins, and apply it after the operation ends.  This means
         that you can run rebase on a dirty worktree.  However, use
         with care: the final stash application after a successful
@@ -637,22 +925,289 @@ used to override and disable this setting.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---no-ff
+--reschedule-failed-exec
+</term>
+<term>
+--no-reschedule-failed-exec
 </term>
 <listitem>
 <simpara>
-        With --interactive, cherry-pick all rebased commits instead of
-        fast-forwarding over the unchanged ones.  This ensures that the
-        entire history of the rebased branch is composed of new commits.
+        Automatically reschedule <emphasis>exec</emphasis> commands that failed. This only makes
+        sense in interactive mode (or when an <emphasis>--exec</emphasis> option was provided).
 </simpara>
-<simpara>Without --interactive, this is a synonym for --force-rebase.</simpara>
-<simpara>You may find this helpful after reverting a topic branch merge, as this option
-recreates the topic branch with fresh commits so it can be remerged
-successfully without needing to "revert the reversion" (see the
-<ulink url="https://www.kernel.org/pub/software/scm/git/docs/howto/revert-a-faulty-merge.html"><citetitle>revert-a-faulty-merge How-To</citetitle></ulink> for details).</simpara>
 </listitem>
 </varlistentry>
 </variablelist>
+</simplesect>
+<simplesect id="git-rebase(1)__incompatible_options">
+<title>INCOMPATIBLE OPTIONS</title>
+<simpara>The following options:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+--apply
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+--committer-date-is-author-date
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+--ignore-date
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+--ignore-whitespace
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+--whitespace
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+-C
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>are incompatible with the following options:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+--merge
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+--strategy
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+--strategy-option
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+--allow-empty-message
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+--[no-]autosquash
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+--rebase-merges
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+--preserve-merges
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+--interactive
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+--exec
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+--no-keep-empty
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+--empty=
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+--reapply-cherry-picks
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+--edit-todo
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+--root when used in combination with --onto
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>In addition, the following pairs of options are incompatible:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+--preserve-merges and --interactive
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+--preserve-merges and --signoff
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+--preserve-merges and --rebase-merges
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+--preserve-merges and --empty=
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+--keep-base and --onto
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+--keep-base and --root
+</simpara>
+</listitem>
+</itemizedlist>
+</simplesect>
+<simplesect id="git-rebase(1)__behavioral_differences">
+<title>BEHAVIORAL DIFFERENCES</title>
+<simpara>git rebase has two primary backends: apply and merge.  (The apply
+backend used to be known as the <emphasis>am</emphasis> backend, but the name led to
+confusion as it looks like a verb instead of a noun.  Also, the merge
+backend used to be known as the interactive backend, but it is now
+used for non-interactive cases as well.  Both were renamed based on
+lower-level functionality that underpinned each.) There are some
+subtle differences in how these two backends behave:</simpara>
+<section id="git-rebase(1)__empty_commits">
+<title>Empty commits</title>
+<simpara>The apply backend unfortunately drops intentionally empty commits, i.e.
+commits that started empty, though these are rare in practice.  It
+also drops commits that become empty and has no option for controlling
+this behavior.</simpara>
+<simpara>The merge backend keeps intentionally empty commits by default (though
+with -i they are marked as empty in the todo list editor, or they can
+be dropped automatically with --no-keep-empty).</simpara>
+<simpara>Similar to the apply backend, by default the merge backend drops
+commits that become empty unless -i/--interactive is specified (in
+which case it stops and asks the user what to do).  The merge backend
+also has an --empty={drop,keep,ask} option for changing the behavior
+of handling commits that become empty.</simpara>
+</section>
+<section id="git-rebase(1)__directory_rename_detection">
+<title>Directory rename detection</title>
+<simpara>Due to the lack of accurate tree information (arising from
+constructing fake ancestors with the limited information available in
+patches), directory rename detection is disabled in the apply backend.
+Disabled directory rename detection means that if one side of history
+renames a directory and the other adds new files to the old directory,
+then the new files will be left behind in the old directory without
+any warning at the time of rebasing that you may want to move these
+files into the new directory.</simpara>
+<simpara>Directory rename detection works with the merge backend to provide you
+warnings in such cases.</simpara>
+</section>
+<section id="git-rebase(1)__context">
+<title>Context</title>
+<simpara>The apply backend works by creating a sequence of patches (by calling
+<emphasis>format-patch</emphasis> internally), and then applying the patches in sequence
+(calling <emphasis>am</emphasis> internally).  Patches are composed of multiple hunks,
+each with line numbers, a context region, and the actual changes.  The
+line numbers have to be taken with some fuzz, since the other side
+will likely have inserted or deleted lines earlier in the file.  The
+context region is meant to help find how to adjust the line numbers in
+order to apply the changes to the right lines.  However, if multiple
+areas of the code have the same surrounding lines of context, the
+wrong one can be picked.  There are real-world cases where this has
+caused commits to be reapplied incorrectly with no conflicts reported.
+Setting diff.context to a larger value may prevent such types of
+problems, but increases the chance of spurious conflicts (since it
+will require more lines of matching context to apply).</simpara>
+<simpara>The merge backend works with a full copy of each relevant file,
+insulating it from these types of problems.</simpara>
+</section>
+<section id="git-rebase(1)__labelling_of_conflicts_markers">
+<title>Labelling of conflicts markers</title>
+<simpara>When there are content conflicts, the merge machinery tries to
+annotate each side's conflict markers with the commits where the
+content came from.  Since the apply backend drops the original
+information about the rebased commits and their parents (and instead
+generates new fake commits based off limited information in the
+generated patches), those commits cannot be identified; instead it has
+to fall back to a commit summary.  Also, when merge.conflictStyle is
+set to diff3, the apply backend will use "constructed merge base" to
+label the content from the merge base, and thus provide no information
+about the merge base commit whatsoever.</simpara>
+<simpara>The merge backend works with the full commits on both sides of history
+and thus has no such limitations.</simpara>
+</section>
+<section id="git-rebase(1)__hooks">
+<title>Hooks</title>
+<simpara>The apply backend has not traditionally called the post-commit hook,
+while the merge backend has.  However, this was by accident of
+implementation rather than by design.  Both backends should have the
+same behavior, though it is not clear which one is correct.</simpara>
+</section>
+<section id="git-rebase(1)__interruptability">
+<title>Interruptability</title>
+<simpara>The apply backend has safety problems with an ill-timed interrupt; if
+the user presses Ctrl-C at the wrong time to try to abort the rebase,
+the rebase can enter a state where it cannot be aborted with a
+subsequent <emphasis>git rebase --abort</emphasis>.  The merge backend does not appear to
+suffer from the same shortcoming.  (See
+<ulink url="https://lore.kernel.org/git/20200207132152.GC2868@szeder.dev/">https://lore.kernel.org/git/20200207132152.GC2868@szeder.dev/</ulink> for
+details.)</simpara>
+</section>
+<section id="git-rebase(1)__commit_rewording">
+<title>Commit Rewording</title>
+<simpara>When a conflict occurs while rebasing, rebase stops and asks the user
+to resolve.  Since the user may need to make notable changes while
+resolving conflicts, after conflicts are resolved and the user has run
+<emphasis>git rebase --continue</emphasis>, the rebase should open an editor and ask the
+user to update the commit message.  The merge backend does this, while
+the apply backend blindly applies the original commit message.</simpara>
+</section>
+<section id="git-rebase(1)__miscellaneous_differences">
+<title>Miscellaneous differences</title>
+<simpara>There are a few more behavioral differences that most folks would
+probably consider inconsequential but which are mentioned for
+completeness:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+Reflog: The two backends will use different wording when describing
+  the changes made in the reflog, though both will make use of the
+  word "rebase".
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Progress, informational, and error messages: The two backends
+  provide slightly different progress and informational messages.
+  Also, the apply backend writes error messages (such as "Your files
+  would be overwritten&#8230;") to stdout, while the merge backend writes
+  them to stderr.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+State directories: The two backends keep their state in different
+  directories under .git/
+</simpara>
+</listitem>
+</itemizedlist>
+</section>
 </simplesect>
 <simplesect id="git-rebase(1)__merge_strategies">
 <title>MERGE STRATEGIES</title>
@@ -690,8 +1245,9 @@ recursive
         causing mismerges by tests done on actual merge commits
         taken from Linux 2.6 kernel development history.
         Additionally this can detect and handle merges involving
-        renames.  This is the default merge strategy when
-        pulling or merging one branch.
+        renames, but currently cannot make use of detected
+        copies.  This is the default merge strategy when pulling
+        or merging one branch.
 </simpara>
 <simpara>The <emphasis>recursive</emphasis> strategy can take the following options:</simpara>
 <variablelist>
@@ -703,7 +1259,7 @@ ours
 <simpara>
         This option forces conflicting hunks to be auto-resolved cleanly by
         favoring <emphasis>our</emphasis> version.  Changes from the other tree that do not
-        conflict with our side are reflected to the merge result.
+        conflict with our side are reflected in the merge result.
         For a binary file, the entire contents are taken from our side.
 </simpara>
 <simpara>This should not be confused with the <emphasis>ours</emphasis> merge strategy, which does not
@@ -717,7 +1273,8 @@ theirs
 </term>
 <listitem>
 <simpara>
-        This is the opposite of <emphasis>ours</emphasis>.
+        This is the opposite of <emphasis>ours</emphasis>; note that, unlike <emphasis>ours</emphasis>, there is
+        no <emphasis>theirs</emphasis> merge strategy to confuse this merge option with.
 </simpara>
 </listitem>
 </varlistentry>
@@ -758,13 +1315,16 @@ ignore-all-space
 <term>
 ignore-space-at-eol
 </term>
+<term>
+ignore-cr-at-eol
+</term>
 <listitem>
 <simpara>
         Treats lines with the indicated type of whitespace change as
         unchanged for the sake of a three-way merge.  Whitespace
         changes mixed with other changes to a line are not ignored.
-        See also <xref linkend="git-diff(1)" /> <emphasis>-b</emphasis>, <emphasis>-w</emphasis>, and
-        <emphasis>--ignore-space-at-eol</emphasis>.
+        See also <xref linkend="git-diff(1)" /> <emphasis>-b</emphasis>, <emphasis>-w</emphasis>,
+        <emphasis>--ignore-space-at-eol</emphasis>, and <emphasis>--ignore-cr-at-eol</emphasis>.
 </simpara>
 <itemizedlist>
 <listitem>
@@ -819,7 +1379,8 @@ no-renames
 </term>
 <listitem>
 <simpara>
-        Turn off rename detection.
+        Turn off rename detection. This overrides the <emphasis>merge.renames</emphasis>
+        configuration variable.
         See also <xref linkend="git-diff(1)" /> <emphasis>--no-renames</emphasis>.
 </simpara>
 </listitem>
@@ -831,7 +1392,8 @@ find-renames[=&lt;n&gt;]
 <listitem>
 <simpara>
         Turn on rename detection, optionally setting the similarity
-        threshold.  This is the default.
+        threshold.  This is the default. This overrides the
+        <emphasis>merge.renames</emphasis> configuration variable.
         See also <xref linkend="git-diff(1)" /> <emphasis>--find-renames</emphasis>.
 </simpara>
 </listitem>
@@ -1007,6 +1569,8 @@ example), so do not delete or edit the names.</simpara>
 <emphasis>git rebase</emphasis> to stop after applying that commit, so that you can edit
 the files and/or the commit message, amend the commit, and continue
 rebasing.</simpara>
+<simpara>To interrupt the rebase (just like an "edit" command would do, but without
+cherry-picking any commit first), use the "break" command.</simpara>
 <simpara>If you just want to edit the commit message for a commit, replace the
 command "pick" with the command "reword".</simpara>
 <simpara>To drop a commit, replace the command "pick" with "drop", or just
@@ -1026,7 +1590,8 @@ was HEAD~4 becomes the new HEAD. To achieve that, you would call
 <emphasis>git rebase</emphasis> like this:</simpara>
 <screen>$ git rebase -i HEAD~5</screen>
 <simpara>And move the first patch to the end of the list.</simpara>
-<simpara>You might want to preserve merges, if you have a history like this:</simpara>
+<simpara>You might want to recreate merge commits, e.g. if you have a history
+like this:</simpara>
 <screen>           X
             \
          A---M---B
@@ -1034,7 +1599,7 @@ was HEAD~4 becomes the new HEAD. To achieve that, you would call
 ---o---O---P---Q</screen>
 <simpara>Suppose you want to rebase the side branch starting at "A" to "Q". Make
 sure that the current HEAD is "B", and call</simpara>
-<screen>$ git rebase -i -p --onto Q O</screen>
+<screen>$ git rebase -i -r --onto Q O</screen>
 <simpara>Reordering and editing commits usually creates untested intermediate
 steps.  You may want to check that your history editing did not break
 anything by running a test, or at least recompiling at intermediate
@@ -1132,7 +1697,7 @@ to avoid rebasing the upstream in the first place.</simpara>
 <emphasis>subsystem</emphasis> branch, and you are working on a <emphasis>topic</emphasis> that is dependent
 on this <emphasis>subsystem</emphasis>.  You might end up with a history like the
 following:</simpara>
-<screen>    o---o---o---o---o---o---o---o---o  master
+<screen>    o---o---o---o---o---o---o---o  master
          \
           o---o---o---o---o  subsystem
                            \
@@ -1177,7 +1742,8 @@ Hard case: The changes are not the same.
         This happens if the <emphasis>subsystem</emphasis> rebase had conflicts, or used
         <emphasis>--interactive</emphasis> to omit, edit, squash, or fixup commits; or
         if the upstream used one of <emphasis>commit --amend</emphasis>, <emphasis>reset</emphasis>, or
-        <emphasis>filter-branch</emphasis>.
+        a full history rewriting command like
+        <ulink url="https://github.com/newren/git-filter-repo"><emphasis>filter-repo</emphasis></ulink>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1188,7 +1754,8 @@ Hard case: The changes are not the same.
 <emphasis>subsystem</emphasis> are literally the same before and after the rebase
 <emphasis>subsystem</emphasis> did.</simpara>
 <simpara>In that case, the fix is easy because <emphasis>git rebase</emphasis> knows to skip
-changes that are already present in the new upstream.  So if you say
+changes that are already present in the new upstream (unless
+<emphasis>--reapply-cherry-picks</emphasis> is given). So if you say
 (assuming you're on <emphasis>topic</emphasis>)</simpara>
 <screen>    $ git rebase subsystem</screen>
 <simpara>you will end up with the fixed history</simpara>
@@ -1207,7 +1774,7 @@ correspond to the ones before the rebase.</simpara>
       example, a commit that was removed via <emphasis>git rebase
       --interactive</emphasis> will be <emphasis role="strong">resurrected</emphasis>!</simpara></note>
 <simpara>The idea is to manually tell <emphasis>git rebase</emphasis> "where the old <emphasis>subsystem</emphasis>
-ended and your <emphasis>topic</emphasis> began", that is, what the old merge-base
+ended and your <emphasis>topic</emphasis> began", that is, what the old merge base
 between them was.  You will have to find a way to name the last commit
 of the old <emphasis>subsystem</emphasis>, for example:</simpara>
 <itemizedlist>
@@ -1233,12 +1800,121 @@ saying (for the reflog case, and assuming you are on <emphasis>topic</emphasis> 
 case" recovery too!</simpara>
 </section>
 </simplesect>
+<simplesect id="git-rebase(1)__rebasing_merges">
+<title>REBASING MERGES</title>
+<simpara>The interactive rebase command was originally designed to handle
+individual patch series. As such, it makes sense to exclude merge
+commits from the todo list, as the developer may have merged the
+then-current <emphasis>master</emphasis> while working on the branch, only to rebase
+all the commits onto <emphasis>master</emphasis> eventually (skipping the merge
+commits).</simpara>
+<simpara>However, there are legitimate reasons why a developer may want to
+recreate merge commits: to keep the branch structure (or "commit
+topology") when working on multiple, inter-related branches.</simpara>
+<simpara>In the following example, the developer works on a topic branch that
+refactors the way buttons are defined, and on another topic branch
+that uses that refactoring to implement a "Report a bug" button. The
+output of <emphasis>git log --graph --format=%s -5</emphasis> may look like this:</simpara>
+<screen>*   Merge branch 'report-a-bug'
+|\
+| * Add the feedback button
+* | Merge branch 'refactor-button'
+|\ \
+| |/
+| * Use the Button class for all buttons
+| * Extract a generic Button class from the DownloadButton one</screen>
+<simpara>The developer might want to rebase those commits to a newer <emphasis>master</emphasis>
+while keeping the branch topology, for example when the first topic
+branch is expected to be integrated into <emphasis>master</emphasis> much earlier than the
+second one, say, to resolve merge conflicts with changes to the
+DownloadButton class that made it into <emphasis>master</emphasis>.</simpara>
+<simpara>This rebase can be performed using the <emphasis>--rebase-merges</emphasis> option.
+It will generate a todo list looking like this:</simpara>
+<screen>label onto
+
+# Branch: refactor-button
+reset onto
+pick 123456 Extract a generic Button class from the DownloadButton one
+pick 654321 Use the Button class for all buttons
+label refactor-button
+
+# Branch: report-a-bug
+reset refactor-button # Use the Button class for all buttons
+pick abcdef Add the feedback button
+label report-a-bug
+
+reset onto
+merge -C a1b2c3 refactor-button # Merge 'refactor-button'
+merge -C 6f5e4d report-a-bug # Merge 'report-a-bug'</screen>
+<simpara>In contrast to a regular interactive rebase, there are <emphasis>label</emphasis>, <emphasis>reset</emphasis>
+and <emphasis>merge</emphasis> commands in addition to <emphasis>pick</emphasis> ones.</simpara>
+<simpara>The <emphasis>label</emphasis> command associates a label with the current HEAD when that
+command is executed. These labels are created as worktree-local refs
+(<emphasis>refs/rewritten/&lt;label&gt;</emphasis>) that will be deleted when the rebase
+finishes. That way, rebase operations in multiple worktrees linked to
+the same repository do not interfere with one another. If the <emphasis>label</emphasis>
+command fails, it is rescheduled immediately, with a helpful message how
+to proceed.</simpara>
+<simpara>The <emphasis>reset</emphasis> command resets the HEAD, index and worktree to the specified
+revision. It is similar to an <emphasis>exec git reset --hard &lt;label&gt;</emphasis>, but
+refuses to overwrite untracked files. If the <emphasis>reset</emphasis> command fails, it is
+rescheduled immediately, with a helpful message how to edit the todo list
+(this typically happens when a <emphasis>reset</emphasis> command was inserted into the todo
+list manually and contains a typo).</simpara>
+<simpara>The <emphasis>merge</emphasis> command will merge the specified revision(s) into whatever
+is HEAD at that time. With <emphasis>-C &lt;original-commit&gt;</emphasis>, the commit message of
+the specified merge commit will be used. When the <emphasis>-C</emphasis> is changed to
+a lower-case <emphasis>-c</emphasis>, the message will be opened in an editor after a
+successful merge so that the user can edit the message.</simpara>
+<simpara>If a <emphasis>merge</emphasis> command fails for any reason other than merge conflicts (i.e.
+when the merge operation did not even start), it is rescheduled immediately.</simpara>
+<simpara>At this time, the <emphasis>merge</emphasis> command will <emphasis role="strong">always</emphasis> use the <emphasis>recursive</emphasis>
+merge strategy for regular merges, and <emphasis>octopus</emphasis> for octopus merges,
+with no way to choose a different one. To work around
+this, an <emphasis>exec</emphasis> command can be used to call <emphasis>git merge</emphasis> explicitly,
+using the fact that the labels are worktree-local refs (the ref
+<emphasis>refs/rewritten/onto</emphasis> would correspond to the label <emphasis>onto</emphasis>, for example).</simpara>
+<simpara>Note: the first command (<emphasis>label onto</emphasis>) labels the revision onto which
+the commits are rebased; The name <emphasis>onto</emphasis> is just a convention, as a nod
+to the <emphasis>--onto</emphasis> option.</simpara>
+<simpara>It is also possible to introduce completely new merge commits from scratch
+by adding a command of the form <emphasis>merge &lt;merge-head&gt;</emphasis>. This form will
+generate a tentative commit message and always open an editor to let the
+user edit it. This can be useful e.g. when a topic branch turns out to
+address more than a single concern and wants to be split into two or
+even more topic branches. Consider this todo list:</simpara>
+<screen>pick 192837 Switch from GNU Makefiles to CMake
+pick 5a6c7e Document the switch to CMake
+pick 918273 Fix detection of OpenSSL in CMake
+pick afbecd http: add support for TLS v1.3
+pick fdbaec Fix detection of cURL in CMake on Windows</screen>
+<simpara>The one commit in this list that is not related to CMake may very well
+have been motivated by working on fixing all those bugs introduced by
+switching to CMake, but it addresses a different concern. To split this
+branch into two topic branches, the todo list could be edited like this:</simpara>
+<screen>label onto
+
+pick afbecd http: add support for TLS v1.3
+label tlsv1.3
+
+reset onto
+pick 192837 Switch from GNU Makefiles to CMake
+pick 918273 Fix detection of OpenSSL in CMake
+pick fdbaec Fix detection of cURL in CMake on Windows
+pick 5a6c7e Document the switch to CMake
+label cmake
+
+reset onto
+merge tlsv1.3
+merge cmake</screen>
+</simplesect>
 <simplesect id="git-rebase(1)__bugs">
 <title>BUGS</title>
-<simpara>The todo list presented by <emphasis>--preserve-merges --interactive</emphasis> does not
-represent the topology of the revision graph.  Editing commits and
-rewording their commit messages should work fine, but attempts to
-reorder commits tend to produce counterintuitive results.</simpara>
+<simpara>The todo list presented by the deprecated <emphasis>--preserve-merges --interactive</emphasis>
+does not represent the topology of the revision graph (use <emphasis>--rebase-merges</emphasis>
+instead).  Editing commits and rewording their commit messages should work
+fine, but attempts to reorder commits tend to produce counterintuitive results.
+Use <emphasis>--rebase-merges</emphasis> in such scenarios instead.</simpara>
 <simpara>For example, an attempt to rearrange</simpara>
 <screen>1 --- 2 --- 3 --- 4 --- 5</screen>
 <simpara>to</simpara>

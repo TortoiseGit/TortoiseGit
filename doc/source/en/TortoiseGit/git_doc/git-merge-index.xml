@@ -84,18 +84,18 @@ RCS <emphasis>merge</emphasis> program merge object order. In the above ordering
 original is first. But the argument order to the 3-way merge program
 <emphasis>merge</emphasis> is to have the original in the middle. Don't ask me why.</simpara>
 <simpara>Examples:</simpara>
-<literallayout class="monospaced">torvalds@ppc970:~/merge-test&gt; git merge-index cat MM
-This is MM from the original tree.                    # original
-This is modified MM in the branch A.                  # merge1
-This is modified MM in the branch B.                  # merge2
-This is modified MM in the branch B.                  # current contents</literallayout>
+<screen>torvalds@ppc970:~/merge-test&gt; git merge-index cat MM
+This is MM from the original tree.              # original
+This is modified MM in the branch A.            # merge1
+This is modified MM in the branch B.            # merge2
+This is modified MM in the branch B.            # current contents</screen>
 <simpara>or</simpara>
-<literallayout class="monospaced">torvalds@ppc970:~/merge-test&gt; git merge-index cat AA MM
+<screen>torvalds@ppc970:~/merge-test&gt; git merge-index cat AA MM
 cat: : No such file or directory
 This is added AA in the branch A.
 This is added AA in the branch B.
 This is added AA in the branch B.
-fatal: merge program failed</literallayout>
+fatal: merge program failed</screen>
 <simpara>where the latter example shows how <emphasis>git merge-index</emphasis> will stop trying to
 merge once anything has returned an error (i.e., <emphasis>cat</emphasis> returned an error
 for the AA file, because it didn't exist in the original, and thus

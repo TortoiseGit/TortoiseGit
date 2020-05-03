@@ -23,9 +23,7 @@
 with the contents of the named file (which can be outside of the
 work tree), and optionally writes the resulting object into the
 object database.  Reports its object ID to its standard output.
-This is used by <emphasis>git cvsimport</emphasis> to update the index
-without modifying files in the work tree.  When &lt;type&gt; is not
-specified, it defaults to "blob".</simpara>
+When &lt;type&gt; is not specified, it defaults to "blob".</simpara>
 </simplesect>
 <simplesect id="git-hash-object(1)__options">
 <title>OPTIONS</title>

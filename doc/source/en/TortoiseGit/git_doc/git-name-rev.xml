@@ -42,7 +42,25 @@ format parsable by <emphasis>git rev-parse</emphasis>.</simpara>
 <listitem>
 <simpara>
         Only use refs whose names match a given shell pattern.  The pattern
-        can be one of branch name, tag name or fully qualified ref name.
+        can be one of branch name, tag name or fully qualified ref name. If
+        given multiple times, use refs whose names match any of the given shell
+        patterns. Use <emphasis>--no-refs</emphasis> to clear any previous ref patterns given.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--exclude=&lt;pattern&gt;
+</term>
+<listitem>
+<simpara>
+        Do not use any ref whose name matches a given shell pattern. The
+        pattern can be one of branch name, tag name or fully qualified ref
+        name. If given multiple times, a ref will be excluded when it matches
+        any of the given patterns. When used together with --refs, a ref will
+        be used as a match only when it matches at least one --refs pattern and
+        does not match any --exclude patterns. Use <emphasis>--no-exclude</emphasis> to clear the
+        list of exclude patterns.
 </simpara>
 </listitem>
 </varlistentry>
@@ -105,8 +123,8 @@ format parsable by <emphasis>git rev-parse</emphasis>.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="git-name-rev(1)__example">
-<title>EXAMPLE</title>
+<simplesect id="git-name-rev(1)__examples">
+<title>EXAMPLES</title>
 <simpara>Given a commit, find out where it is relative to the local refs. Say somebody
 wrote you about that fantastic commit 33db5f4d9027a10e477ccf054b2c1ab94f74c85a.
 Of course, you look into the commit, but that only tells you what happened, but

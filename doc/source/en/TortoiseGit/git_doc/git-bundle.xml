@@ -13,8 +13,8 @@
 <simplesect id="git-bundle(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git bundle</emphasis> create &lt;file&gt; &lt;git-rev-list-args&gt;
-<emphasis>git bundle</emphasis> verify &lt;file&gt;
+<literallayout><emphasis>git bundle</emphasis> create [-q | --quiet | --progress | --all-progress] [--all-progress-implied] &lt;file&gt; &lt;git-rev-list-args&gt;
+<emphasis>git bundle</emphasis> verify [-q | --quiet] &lt;file&gt;
 <emphasis>git bundle</emphasis> list-heads &lt;file&gt; [&lt;refname&gt;&#8230;]
 <emphasis>git bundle</emphasis> unbundle &lt;file&gt; [&lt;refname&gt;&#8230;]</literallayout>
 </blockquote>
@@ -24,11 +24,12 @@
 <simpara>Some workflows require that one or more branches of development on one
 machine be replicated on another machine, but the two machines cannot
 be directly connected, and therefore the interactive Git protocols (git,
-ssh, http) cannot be used.  This command provides support for
-<emphasis>git fetch</emphasis> and <emphasis>git pull</emphasis> to operate by packaging objects and references
-in an archive at the originating machine, then importing those into
-another repository using <emphasis>git fetch</emphasis> and <emphasis>git pull</emphasis>
-after moving the archive by some means (e.g., by sneakernet).  As no
+ssh, http) cannot be used.</simpara>
+<simpara>The <emphasis>git bundle</emphasis> command packages objects and references in an archive
+at the originating machine, which can then be imported into another
+repository using <emphasis>git fetch</emphasis>, <emphasis>git pull</emphasis>, or <emphasis>git clone</emphasis>,
+after moving the archive by some means (e.g., by sneakernet).</simpara>
+<simpara>As no
 direct connection between the repositories exists, the user must specify a
 basis for the bundle that is held by the destination repository: the
 bundle assumes that all objects in the basis are already in the
@@ -39,12 +40,14 @@ destination repository.</simpara>
 <variablelist>
 <varlistentry>
 <term>
-create &lt;file&gt;
+create [options] &lt;file&gt; &lt;git-rev-list-args&gt;
 </term>
 <listitem>
 <simpara>
         Used to create a bundle named <emphasis>file</emphasis>.  This requires the
-        <emphasis>git-rev-list-args</emphasis> arguments to define the bundle contents.
+        <emphasis>&lt;git-rev-list-args&gt;</emphasis> arguments to define the bundle contents.
+        <emphasis>options</emphasis> contains the options specific to the <emphasis>git bundle create</emphasis>
+        subcommand.
 </simpara>
 </listitem>
 </varlistentry>
@@ -120,6 +123,63 @@ unbundle &lt;file&gt;
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+--progress
+</term>
+<listitem>
+<simpara>
+        Progress status is reported on the standard error stream
+        by default when it is attached to a terminal, unless -q
+        is specified. This flag forces progress status even if
+        the standard error stream is not directed to a terminal.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--all-progress
+</term>
+<listitem>
+<simpara>
+        When --stdout is specified then progress report is
+        displayed during the object count and compression phases
+        but inhibited during the write-out phase. The reason is
+        that in some cases the output stream is directly linked
+        to another command which may wish to display progress
+        status of its own as it processes incoming pack data.
+        This flag is like --progress except that it forces progress
+        report for the write-out phase as well even if --stdout is
+        used.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--all-progress-implied
+</term>
+<listitem>
+<simpara>
+        This is used to imply --all-progress whenever progress display
+        is activated.  Unlike --all-progress this flag doesn't actually
+        force any progress display by itself.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-q
+</term>
+<term>
+--quiet
+</term>
+<listitem>
+<simpara>
+        This flag makes the command not to report its progress
+        on the standard error stream.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </simplesect>
 <simplesect id="git-bundle(1)__specifying_references">
@@ -136,9 +196,16 @@ specified explicitly (e.g. <emphasis>^master~10</emphasis>), or implicitly (e.g.
 It is okay to err on the side of caution, causing the bundle file
 to contain objects already in the destination, as these are ignored
 when unpacking at the destination.</simpara>
+<simpara><emphasis>git clone</emphasis> can use any bundle created without negative refspecs
+(e.g., <emphasis>new</emphasis>, but not <emphasis>old..new</emphasis>).
+If you want to match <emphasis>git clone --mirror</emphasis>, which would include your
+refs such as <emphasis>refs/remotes/*</emphasis>, use <emphasis>--all</emphasis>.
+If you want to provide the same set of refs that a clone directly
+from the source repository would get, use <emphasis>--branches --tags</emphasis> for
+the <emphasis>&lt;git-rev-list-args&gt;</emphasis>.</simpara>
 </simplesect>
-<simplesect id="git-bundle(1)__example">
-<title>EXAMPLE</title>
+<simplesect id="git-bundle(1)__examples">
+<title>EXAMPLES</title>
 <simpara>Assume you want to transfer the history from a repository R1 on machine A
 to another repository R2 on machine B.
 For whatever reason, direct connection between A and B is not allowed,

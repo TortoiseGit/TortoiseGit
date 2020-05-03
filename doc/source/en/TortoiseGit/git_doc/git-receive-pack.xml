@@ -33,6 +33,8 @@ post-update hooks found in the Documentation/howto directory.</simpara>
 <simpara><emphasis>git-receive-pack</emphasis> honours the receive.denyNonFastForwards config
 option, which tells it if updates to a ref should be denied if they
 are not fast-forwards.</simpara>
+<simpara>A number of other receive.* config options are available to tweak
+its behavior, see <xref linkend="git-config(1)" />.</simpara>
 </simplesect>
 <simplesect id="git-receive-pack(1)__options">
 <title>OPTIONS</title>
@@ -50,7 +52,7 @@ are not fast-forwards.</simpara>
 </variablelist>
 </simplesect>
 <simplesect id="git-receive-pack(1)__pre_receive_hook">
-<title>pre-receive Hook</title>
+<title>PRE-RECEIVE HOOK</title>
 <simpara>Before any ref is updated, if $GIT_DIR/hooks/pre-receive file exists
 and is executable, it will be invoked once with no parameters.  The
 standard input of the hook will be one line per ref to be updated:</simpara>
@@ -200,9 +202,10 @@ fast-forward checks are performed.</simpara>
 will be performed, and the update, post-receive and post-update
 hooks will not be invoked either.  This can be useful to quickly
 bail out if the update is not to be supported.</simpara>
+<simpara>See the notes on the quarantine environment below.</simpara>
 </simplesect>
 <simplesect id="git-receive-pack(1)__update_hook">
-<title>update Hook</title>
+<title>UPDATE HOOK</title>
 <simpara>Before each ref is updated, if $GIT_DIR/hooks/update file exists
 and is executable, it is invoked once per ref, with three parameters:</simpara>
 <literallayout class="monospaced">$GIT_DIR/hooks/update refname sha1-old sha1-new</literallayout>
@@ -220,7 +223,7 @@ As such it is not a good idea to send notices (e.g. email) from
 this hook.  Consider using the post-receive hook instead.</simpara>
 </simplesect>
 <simplesect id="git-receive-pack(1)__post_receive_hook">
-<title>post-receive Hook</title>
+<title>POST-RECEIVE HOOK</title>
 <simpara>After all refs were updated (or attempted to be updated), if any
 ref update was successful, and if $GIT_DIR/hooks/post-receive
 file exists and is executable, it will be invoked once with no
@@ -241,7 +244,7 @@ to the repository.  This example script sends one mail message per
 ref listing the commits pushed to the repository, and logs the push
 certificates of signed pushes with good signatures to a logger
 service:</simpara>
-<literallayout class="monospaced">#!/bin/sh
+<screen>#!/bin/sh
 # mail out commit update information.
 while read oval nval ref
 do
@@ -263,7 +266,7 @@ then
                 git cat-file blob ${GIT_PUSH_CERT}
         ) | mail -s "push certificate from $GIT_PUSH_CERT_SIGNER" push-log@mydomain
 fi
-exit 0</literallayout>
+exit 0</screen>
 <simpara>The exit code from this hook invocation is ignored, however a
 non-zero exit code will generate an error message.</simpara>
 <simpara>Note that it is possible for refname to not have sha1-new when this
@@ -273,7 +276,7 @@ to evaluate it.  It is recommended that hooks rely on sha1-new
 rather than the current value of refname.</simpara>
 </simplesect>
 <simplesect id="git-receive-pack(1)__post_update_hook">
-<title>post-update Hook</title>
+<title>POST-UPDATE HOOK</title>
 <simpara>After all other processing, if at least one ref was updated, and
 if $GIT_DIR/hooks/post-update file exists and is executable, then
 post-update will be called with the list of refs that have been updated.
@@ -283,8 +286,43 @@ left for <emphasis>git-receive-pack</emphasis> to do at that point is to exit it
 anyway.</simpara>
 <simpara>This hook can be used, for example, to run <emphasis>git update-server-info</emphasis>
 if the repository is packed and is served via a dumb transport.</simpara>
-<literallayout class="monospaced">#!/bin/sh
-exec git update-server-info</literallayout>
+<screen>#!/bin/sh
+exec git update-server-info</screen>
+</simplesect>
+<simplesect id="git-receive-pack(1)__quarantine_environment">
+<title>QUARANTINE ENVIRONMENT</title>
+<simpara>When <emphasis>receive-pack</emphasis> takes in objects, they are placed into a temporary
+"quarantine" directory within the <emphasis>$GIT_DIR/objects</emphasis> directory and
+migrated into the main object store only after the <emphasis>pre-receive</emphasis> hook
+has completed. If the push fails before then, the temporary directory is
+removed entirely.</simpara>
+<simpara>This has a few user-visible effects and caveats:</simpara>
+<orderedlist numeration="arabic">
+<listitem>
+<simpara>
+Pushes which fail due to problems with the incoming pack, missing
+     objects, or due to the <emphasis>pre-receive</emphasis> hook will not leave any
+     on-disk data. This is usually helpful to prevent repeated failed
+     pushes from filling up your disk, but can make debugging more
+     challenging.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Any objects created by the <emphasis>pre-receive</emphasis> hook will be created in
+     the quarantine directory (and migrated only if it succeeds).
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+The <emphasis>pre-receive</emphasis> hook MUST NOT update any refs to point to
+     quarantined objects. Other programs accessing the repository will
+     not be able to see the objects (and if the pre-receive hook fails,
+     those refs would become corrupted). For safety, any ref updates
+     from within <emphasis>pre-receive</emphasis> are automatically rejected.
+</simpara>
+</listitem>
+</orderedlist>
 </simplesect>
 <simplesect id="git-receive-pack(1)__see_also">
 <title>SEE ALSO</title>

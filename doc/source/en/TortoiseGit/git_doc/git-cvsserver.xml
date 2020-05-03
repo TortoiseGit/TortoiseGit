@@ -23,7 +23,7 @@
 </blockquote>
 <simpara>Usage:</simpara>
 <blockquote>
-<literallayout><emphasis>git-cvsserver</emphasis> [options] [pserver|server] [&lt;directory&gt; &#8230;]</literallayout>
+<literallayout><emphasis>git-cvsserver</emphasis> [&lt;options&gt;] [pserver|server] [&lt;directory&gt; &#8230;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-cvsserver(1)__options">
@@ -224,7 +224,7 @@ Clients should now be able to check out the project. Use the CVS <emphasis>modul
 </orderedlist>
 </simplesect>
 <simplesect id="git-cvsserver(1)_dbbackend">
-<title>Database Backend</title>
+<title>DATABASE BACKEND</title>
 <simpara><emphasis>git-cvsserver</emphasis> uses one database per Git head (i.e. CVS module) to
 store information about the repository to maintain consistent
 CVS revision numbers. The database needs to be
@@ -236,14 +236,14 @@ access method and requested operation.</simpara>
 <simpara>That means that even if you offer only read access (e.g. by using
 the pserver method), <emphasis>git-cvsserver</emphasis> should have write access to
 the database to work reliably (otherwise you need to make sure
-that the database is up-to-date any time <emphasis>git-cvsserver</emphasis> is executed).</simpara>
+that the database is up to date any time <emphasis>git-cvsserver</emphasis> is executed).</simpara>
 <simpara>By default it uses SQLite databases in the Git directory, named
 <emphasis>gitcvs.&lt;module_name&gt;.sqlite</emphasis>. Note that the SQLite backend creates
 temporary files in the same directory as the database file on
 write so it might not be enough to grant the users using
 <emphasis>git-cvsserver</emphasis> write access to the database file without granting
 them write access to the directory, too.</simpara>
-<simpara>The database can not be reliably regenerated in a
+<simpara>The database cannot be reliably regenerated in a
 consistent form after the branch it is tracking has changed.
 Example: For merged branches, <emphasis>git-cvsserver</emphasis> only tracks
 one branch of development, and after a <emphasis>git merge</emphasis> an
@@ -350,7 +350,7 @@ gitcvs.dbTableNamePrefix
 <listitem>
 <simpara>
         Git directory name, where all characters except for
-        alpha-numeric ones, <emphasis>.</emphasis>, and <emphasis>-</emphasis> are replaced with
+        alphanumeric ones, <emphasis>.</emphasis>, and <emphasis>-</emphasis> are replaced with
         <emphasis>_</emphasis> (this should make it easier to use the directory
         name in a filename if wanted)
 </simpara>
@@ -404,7 +404,7 @@ git-cvsserver, as described above.</simpara>
 command-line arguments may not be used.</simpara>
 </simplesect>
 <simplesect id="git-cvsserver(1)__eclipse_cvs_client_notes">
-<title>Eclipse CVS Client Notes</title>
+<title>ECLIPSE CVS CLIENT NOTES</title>
 <simpara>To get a checkout with the Eclipse CVS client:</simpara>
 <orderedlist numeration="arabic">
 <listitem>
@@ -443,7 +443,7 @@ the cvs utility on the server with <emphasis>git-cvsserver</emphasis> or manipul
 so that calling <emphasis>cvs</emphasis> effectively calls <emphasis>git-cvsserver</emphasis>.</simpara>
 </simplesect>
 <simplesect id="git-cvsserver(1)__clients_known_to_work">
-<title>Clients known to work</title>
+<title>CLIENTS KNOWN TO WORK</title>
 <itemizedlist>
 <listitem>
 <simpara>
@@ -468,7 +468,7 @@ TortoiseCVS
 </itemizedlist>
 </simplesect>
 <simplesect id="git-cvsserver(1)__operations_supported">
-<title>Operations supported</title>
+<title>OPERATIONS SUPPORTED</title>
 <simpara>All the operations required for normal use are supported, including
 checkout, diff, status, update, log, add, remove, commit.</simpara>
 <simpara>Most CVS command arguments that read CVS tags or revision numbers
@@ -529,7 +529,7 @@ and <emphasis>gitcvs.allBinary</emphasis> to "guess".</simpara>
 </section>
 </simplesect>
 <simplesect id="git-cvsserver(1)__dependencies">
-<title>Dependencies</title>
+<title>DEPENDENCIES</title>
 <simpara><emphasis>git-cvsserver</emphasis> depends on DBD::SQLite.</simpara>
 </simplesect>
 <simplesect id="git-cvsserver(1)__git">

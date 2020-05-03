@@ -26,7 +26,7 @@ pushing using the smart HTTP protocol.</simpara>
 <simpara>It verifies that the directory has the magic file
 "git-daemon-export-ok", and it will refuse to export any Git directory
 that hasn't explicitly been marked for export this way (unless the
-GIT_HTTP_EXPORT_ALL environmental variable is set).</simpara>
+<emphasis>GIT_HTTP_EXPORT_ALL</emphasis> environmental variable is set).</simpara>
 <simpara>By default, only the <emphasis>upload-pack</emphasis> service is enabled, which serves
 <emphasis>git fetch-pack</emphasis> and <emphasis>git ls-remote</emphasis> clients, which are invoked from
 <emphasis>git fetch</emphasis>, <emphasis>git pull</emphasis>, and <emphasis>git clone</emphasis>.  If the client is authenticated,
@@ -244,7 +244,7 @@ $HTTP["url"] =~ "^/git/.*/git-receive-pack$" {
 </simplesect>
 <simplesect id="git-http-backend(1)__environment">
 <title>ENVIRONMENT</title>
-<simpara><emphasis>git http-backend</emphasis> relies upon the CGI environment variables set
+<simpara><emphasis>git http-backend</emphasis> relies upon the <emphasis>CGI</emphasis> environment variables set
 by the invoking web server, including:</simpara>
 <itemizedlist>
 <listitem>
@@ -278,7 +278,7 @@ REQUEST_METHOD
 </simpara>
 </listitem>
 </itemizedlist>
-<simpara>The GIT_HTTP_EXPORT_ALL environmental variable may be passed to
+<simpara>The <emphasis>GIT_HTTP_EXPORT_ALL</emphasis> environmental variable may be passed to
 <emphasis>git-http-backend</emphasis> to bypass the check for the "git-daemon-export-ok"
 file in each repository before allowing export of that repository.</simpara>
 <simpara>The <emphasis>GIT_HTTP_MAX_REQUEST_BUFFER</emphasis> environment variable (or the
@@ -293,7 +293,7 @@ specified with a unit (e.g., <emphasis>100M</emphasis> for 100 megabytes). The d
 GIT_COMMITTER_EMAIL to <emphasis>${REMOTE_USER}@http.${REMOTE_ADDR}</emphasis>,
 ensuring that any reflogs created by <emphasis>git-receive-pack</emphasis> contain some
 identifying information of the remote user who performed the push.</simpara>
-<simpara>All CGI environment variables are available to each of the hooks
+<simpara>All <emphasis>CGI</emphasis> environment variables are available to each of the hooks
 invoked by the <emphasis>git-receive-pack</emphasis>.</simpara>
 </simplesect>
 <simplesect id="git-http-backend(1)__git">

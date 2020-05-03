@@ -12,7 +12,7 @@
 </simplesect>
 <simplesect id="gitignore(5)__synopsis">
 <title>SYNOPSIS</title>
-<simpara>$HOME/.config/git/ignore, $GIT_DIR/info/exclude, .gitignore</simpara>
+<simpara>$XDG_CONFIG_HOME/git/ignore, $GIT_DIR/info/exclude, .gitignore</simpara>
 </simplesect>
 <simplesect id="gitignore(5)__description">
 <title>DESCRIPTION</title>
@@ -129,38 +129,40 @@ An optional prefix "<emphasis>!</emphasis>" which negates the pattern; any
 </listitem>
 <listitem>
 <simpara>
-If the pattern ends with a slash, it is removed for the
-   purpose of the following description, but it would only find
-   a match with a directory.  In other words, <emphasis>foo/</emphasis> will match a
-   directory <emphasis>foo</emphasis> and paths underneath it, but will not match a
-   regular file or a symbolic link <emphasis>foo</emphasis> (this is consistent
-   with the way how pathspec works in general in Git).
+The slash <emphasis>/</emphasis> is used as the directory separator. Separators may
+   occur at the beginning, middle or end of the <emphasis>.gitignore</emphasis> search pattern.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-If the pattern does not contain a slash <emphasis>/</emphasis>, Git treats it as
-   a shell glob pattern and checks for a match against the
-   pathname relative to the location of the <emphasis>.gitignore</emphasis> file
-   (relative to the toplevel of the work tree if not from a
-   <emphasis>.gitignore</emphasis> file).
+If there is a separator at the beginning or middle (or both) of the
+   pattern, then the pattern is relative to the directory level of the
+   particular <emphasis>.gitignore</emphasis> file itself. Otherwise the pattern may also
+   match at any level below the <emphasis>.gitignore</emphasis> level.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-Otherwise, Git treats the pattern as a shell glob suitable
-   for consumption by fnmatch(3) with the FNM_PATHNAME flag:
-   wildcards in the pattern will not match a / in the pathname.
-   For example, "Documentation/&#42;.html" matches
-   "Documentation/git.html" but not "Documentation/ppc/ppc.html"
-   or "tools/perf/Documentation/perf.html".
+If there is a separator at the end of the pattern then the pattern
+   will only match directories, otherwise the pattern can match both
+   files and directories.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-A leading slash matches the beginning of the pathname.
-   For example, "/&#42;.c" matches "cat-file.c" but not
-   "mozilla-sha1/sha1.c".
+For example, a pattern <emphasis>doc/frotz/</emphasis> matches <emphasis>doc/frotz</emphasis> directory,
+   but not <emphasis>a/doc/frotz</emphasis> directory; however <emphasis>frotz/</emphasis> matches <emphasis>frotz</emphasis>
+   and <emphasis>a/frotz</emphasis> that is a directory (all paths are relative from
+   the <emphasis>.gitignore</emphasis> file).
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+An asterisk "<emphasis>*</emphasis>" matches anything except a slash.
+   The character "<emphasis>?</emphasis>" matches any one character except "<emphasis>/</emphasis>".
+   The range notation, e.g. <emphasis>[a-zA-Z]</emphasis>, can be used to match
+   one of the characters in a range. See fnmatch(3) and the
+   FNM_PATHNAME flag for a more detailed description.
 </simpara>
 </listitem>
 </itemizedlist>
@@ -192,10 +194,18 @@ A slash followed by two consecutive asterisks then a slash
 </listitem>
 <listitem>
 <simpara>
-Other consecutive asterisks are considered invalid.
+Other consecutive asterisks are considered regular asterisks and
+   will match according to the previous rules.
 </simpara>
 </listitem>
 </itemizedlist>
+</simplesect>
+<simplesect id="gitignore(5)__configuration">
+<title>CONFIGURATION</title>
+<simpara>The optional configuration variable <emphasis>core.excludesFile</emphasis> indicates a path to a
+file containing patterns of file names to exclude, similar to
+<emphasis>$GIT_DIR/info/exclude</emphasis>.  Patterns in the exclude file are used in addition to
+those in <emphasis>$GIT_DIR/info/exclude</emphasis>.</simpara>
 </simplesect>
 <simplesect id="gitignore(5)__notes">
 <title>NOTES</title>
@@ -206,6 +216,42 @@ not tracked by Git remain untracked.</simpara>
 </simplesect>
 <simplesect id="gitignore(5)__examples">
 <title>EXAMPLES</title>
+<itemizedlist>
+<listitem>
+<simpara>
+The pattern <emphasis>hello.*</emphasis> matches any file or folder
+   whose name begins with <emphasis>hello</emphasis>. If one wants to restrict
+   this only to the directory and not in its subdirectories,
+   one can prepend the pattern with a slash, i.e. <emphasis>/hello.*</emphasis>;
+   the pattern now matches <emphasis>hello.txt</emphasis>, <emphasis>hello.c</emphasis> but not
+   <emphasis>a/hello.java</emphasis>.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+The pattern <emphasis>foo/</emphasis> will match a directory <emphasis>foo</emphasis> and
+   paths underneath it, but will not match a regular file
+   or a symbolic link <emphasis>foo</emphasis> (this is consistent with the
+   way how pathspec works in general in Git)
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+The pattern <emphasis>doc/frotz</emphasis> and <emphasis>/doc/frotz</emphasis> have the same effect
+   in any <emphasis>.gitignore</emphasis> file. In other words, a leading slash
+   is not relevant  if there is already a middle slash in
+   the pattern.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+The pattern "foo/*", matches "foo/test.json"
+   (a regular file), "foo/bar" (a directory), but it does not match
+   "foo/bar/hello.c" (a regular file), as the asterisk in the
+   pattern does not match "bar/hello.c" which has a slash in it.
+</simpara>
+</listitem>
+</itemizedlist>
 <screen>    $ git status
     [...]
     # Untracked files:

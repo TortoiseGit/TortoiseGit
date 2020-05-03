@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<sect2 lang="en" id="git-restore(1)">
+    <title>git-restore(1)</title>
+<indexterm>
+<primary>git-restore(1)</primary>
+</indexterm>
+<simplesect id="git-restore(1)__name">
+<title>NAME</title>
+<simpara>git-restore - Restore working tree files</simpara>
+</simplesect>
+<simplesect id="git-restore(1)__synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git restore</emphasis> [&lt;options&gt;] [--source=&lt;tree&gt;] [--staged] [--worktree] [--] &lt;pathspec&gt;&#8230;
+<emphasis>git restore</emphasis> [&lt;options&gt;] [--source=&lt;tree&gt;] [--staged] [--worktree] --pathspec-from-file=&lt;file&gt; [--pathspec-file-nul]
+<emphasis>git restore</emphasis> (-p|--patch) [&lt;options&gt;] [--source=&lt;tree&gt;] [--staged] [--worktree] [--] [&lt;pathspec&gt;&#8230;]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="git-restore(1)__description">
+<title>DESCRIPTION</title>
+<simpara>Restore specified paths in the working tree with some contents from a
+restore source. If a path is tracked but does not exist in the restore
+source, it will be removed to match the source.</simpara>
+<simpara>The command can also be used to restore the content in the index with
+<emphasis>--staged</emphasis>, or restore both the working tree and the index with
+<emphasis>--staged --worktree</emphasis>.</simpara>
+<simpara>By default, the restore sources for working tree and the index are the
+index and <emphasis>HEAD</emphasis> respectively. <emphasis>--source</emphasis> could be used to specify a
+commit as the restore source.</simpara>
+<simpara>See "Reset, restore and revert" in <xref linkend="git(1)" /> for the differences
+between the three commands.</simpara>
+<simpara>THIS COMMAND IS EXPERIMENTAL. THE BEHAVIOR MAY CHANGE.</simpara>
+</simplesect>
+<simplesect id="git-restore(1)__options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+-s &lt;tree&gt;
+</term>
+<term>
+--source=&lt;tree&gt;
+</term>
+<listitem>
+<simpara>
+        Restore the working tree files with the content from the given
+        tree. It is common to specify the source tree by naming a
+        commit, branch or tag associated with it.
+</simpara>
+<simpara>If not specified, the default restore source for the working tree is
+the index, and the default restore source for the index is
+<emphasis>HEAD</emphasis>. When both <emphasis>--staged</emphasis> and <emphasis>--worktree</emphasis> are specified,
+<emphasis>--source</emphasis> must also be specified.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-p
+</term>
+<term>
+--patch
+</term>
+<listitem>
+<simpara>
+        Interactively select hunks in the difference between the
+        restore source and the restore location. See the Interactive
+        Mode section of <xref linkend="git-add(1)" /> to learn how to operate
+        the <emphasis>--patch</emphasis> mode.
+</simpara>
+<simpara>Note that <emphasis>--patch</emphasis> can accept no pathspec and will prompt to restore
+all modified paths.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-W
+</term>
+<term>
+--worktree
+</term>
+<term>
+-S
+</term>
+<term>
+--staged
+</term>
+<listitem>
+<simpara>
+        Specify the restore location. If neither option is specified,
+        by default the working tree is restored. Specifying <emphasis>--staged</emphasis>
+        will only restore the index. Specifying both restores both.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-q
+</term>
+<term>
+--quiet
+</term>
+<listitem>
+<simpara>
+        Quiet, suppress feedback messages. Implies <emphasis>--no-progress</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--progress
+</term>
+<term>
+--no-progress
+</term>
+<listitem>
+<simpara>
+        Progress status is reported on the standard error stream
+        by default when it is attached to a terminal, unless <emphasis>--quiet</emphasis>
+        is specified. This flag enables progress reporting even if not
+        attached to a terminal, regardless of <emphasis>--quiet</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--ours
+</term>
+<term>
+--theirs
+</term>
+<listitem>
+<simpara>
+        When restoring files in the working tree from the index, use
+        stage #2 (<emphasis>ours</emphasis>) or #3 (<emphasis>theirs</emphasis>) for unmerged paths.
+</simpara>
+<simpara>Note that during <emphasis>git rebase</emphasis> and <emphasis>git pull --rebase</emphasis>, <emphasis>ours</emphasis> and
+<emphasis>theirs</emphasis> may appear swapped. See the explanation of the same options
+in <xref linkend="git-checkout(1)" /> for details.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-m
+</term>
+<term>
+--merge
+</term>
+<listitem>
+<simpara>
+        When restoring files on the working tree from the index,
+        recreate the conflicted merge in the unmerged paths.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--conflict=&lt;style&gt;
+</term>
+<listitem>
+<simpara>
+        The same as <emphasis>--merge</emphasis> option above, but changes the way the
+        conflicting hunks are presented, overriding the
+        <emphasis>merge.conflictStyle</emphasis> configuration variable.  Possible values
+        are "merge" (default) and "diff3" (in addition to what is
+        shown by "merge" style, shows the original contents).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--ignore-unmerged
+</term>
+<listitem>
+<simpara>
+        When restoring files on the working tree from the index, do
+        not abort the operation if there are unmerged entries and
+        neither <emphasis>--ours</emphasis>, <emphasis>--theirs</emphasis>, <emphasis>--merge</emphasis> or <emphasis>--conflict</emphasis> is
+        specified. Unmerged paths on the working tree are left alone.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--ignore-skip-worktree-bits
+</term>
+<listitem>
+<simpara>
+        In sparse checkout mode, by default is to only update entries
+        matched by <emphasis>&lt;pathspec&gt;</emphasis> and sparse patterns in
+        $GIT_DIR/info/sparse-checkout. This option ignores the sparse
+        patterns and unconditionally restores any files in
+        <emphasis>&lt;pathspec&gt;</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--overlay
+</term>
+<term>
+--no-overlay
+</term>
+<listitem>
+<simpara>
+        In overlay mode, the command never removes files when
+        restoring. In no-overlay mode, tracked files that do not
+        appear in the <emphasis>--source</emphasis> tree are removed, to make them match
+        <emphasis>&lt;tree&gt;</emphasis> exactly. The default is no-overlay mode.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--pathspec-from-file=&lt;file&gt;
+</term>
+<listitem>
+<simpara>
+        Pathspec is passed in <emphasis>&lt;file&gt;</emphasis> instead of commandline args. If
+        <emphasis>&lt;file&gt;</emphasis> is exactly <emphasis>-</emphasis> then standard input is used. Pathspec
+        elements are separated by LF or CR/LF. Pathspec elements can be
+        quoted as explained for the configuration variable <emphasis>core.quotePath</emphasis>
+        (see <xref linkend="git-config(1)" />). See also <emphasis>--pathspec-file-nul</emphasis> and
+        global <emphasis>--literal-pathspecs</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--pathspec-file-nul
+</term>
+<listitem>
+<simpara>
+        Only meaningful with <emphasis>--pathspec-from-file</emphasis>. Pathspec elements are
+        separated with NUL character and all other characters are taken
+        literally (including newlines and quotes).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--
+</term>
+<listitem>
+<simpara>
+        Do not interpret any more arguments as options.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;pathspec&gt;&#8230;
+</term>
+<listitem>
+<simpara>
+        Limits the paths affected by the operation.
+</simpara>
+<simpara>For more details, see the <emphasis>pathspec</emphasis> entry in <xref linkend="gitglossary(7)" />.</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="git-restore(1)__examples">
+<title>EXAMPLES</title>
+<simpara>The following sequence switches to the <emphasis>master</emphasis> branch, reverts the
+<emphasis>Makefile</emphasis> to two revisions back, deletes hello.c by mistake, and gets
+it back from the index.</simpara>
+<screen>$ git switch master
+$ git restore --source master~2 Makefile  <co id="git-restore_CO1-1"/>
+$ rm -f hello.c
+$ git restore hello.c                     <co id="git-restore_CO1-2"/></screen>
+<calloutlist>
+<callout arearefs="git-restore_CO1-1">
+<para>
+take a file out of another commit
+</para>
+</callout>
+<callout arearefs="git-restore_CO1-2">
+<para>
+restore hello.c from the index
+</para>
+</callout>
+</calloutlist>
+<simpara>If you want to restore <emphasis>all</emphasis> C source files to match the version in
+the index, you can say</simpara>
+<screen>$ git restore '*.c'</screen>
+<simpara>Note the quotes around <emphasis>*.c</emphasis>.  The file <emphasis>hello.c</emphasis> will also be
+restored, even though it is no longer in the working tree, because the
+file globbing is used to match entries in the index (not in the
+working tree by the shell).</simpara>
+<simpara>To restore all files in the current directory</simpara>
+<screen>$ git restore .</screen>
+<simpara>or to restore all working tree files with <emphasis>top</emphasis> pathspec magic (see
+<xref linkend="gitglossary(7)" />)</simpara>
+<screen>$ git restore :/</screen>
+<simpara>To restore a file in the index to match the version in <emphasis>HEAD</emphasis> (this is
+the same as using <xref linkend="git-reset(1)" />)</simpara>
+<screen>$ git restore --staged hello.c</screen>
+<simpara>or you can restore both the index and the working tree (this the same
+as using <xref linkend="git-checkout(1)" />)</simpara>
+<screen>$ git restore --source=HEAD --staged --worktree hello.c</screen>
+<simpara>or the short form which is more practical but less readable:</simpara>
+<screen>$ git restore -s@ -SW hello.c</screen>
+</simplesect>
+<simplesect id="git-restore(1)__see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="git-checkout(1)" />,
+<xref linkend="git-reset(1)" /></simpara>
+</simplesect>
+<simplesect id="git-restore(1)__git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</sect2>

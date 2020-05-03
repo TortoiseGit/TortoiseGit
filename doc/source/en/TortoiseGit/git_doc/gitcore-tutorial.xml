@@ -26,7 +26,7 @@ you want to understand Git's internals.</simpara>
 <simpara>The core Git is often called "plumbing", with the prettier user
 interfaces on top of it called "porcelain". You may not want to use the
 plumbing directly very often, but it can be good to know what the
-plumbing does for when the porcelain isn't flushing.</simpara>
+plumbing does when the porcelain isn't flushing.</simpara>
 <simpara>Back when this document was originally written, many porcelain
 commands were shell scripts. For simplicity, it still uses them as
 examples to illustrate how plumbing is fit together to form the
@@ -482,7 +482,7 @@ file (which caches various information, notably some of the "stat"
 information for the files involved) will likely need to be refreshed.
 So after you do a <emphasis>cp -a</emphasis> to create a new copy, you'll want to do</simpara>
 <screen>$ git update-index --refresh</screen>
-<simpara>in the new repository to make sure that the index file is up-to-date.</simpara>
+<simpara>in the new repository to make sure that the index file is up to date.</simpara>
 </listitem>
 </itemizedlist>
 <simpara>Note that the second point is true even across machines. You can
@@ -529,7 +529,7 @@ actually have any of the working tree files to work on. To get
 those, you'd check them out with</simpara>
 <screen>$ git checkout-index -u -a</screen>
 <simpara>where the <emphasis>-u</emphasis> flag means that you want the checkout to keep the index
-up-to-date (so that you don't have to refresh it afterward), and the
+up to date (so that you don't have to refresh it afterward), and the
 <emphasis>-a</emphasis> flag means "check out all files" (if you have a stale copy or an
 older version of a checked out tree you may also need to add the <emphasis>-f</emphasis>
 flag first, to tell <emphasis>git checkout-index</emphasis> to <emphasis role="strong">force</emphasis> overwriting of any old
@@ -557,20 +557,20 @@ and nothing enforces it.</simpara>
 <simpara>To show that as an example, let's go back to the git-tutorial repository we
 used earlier, and create a branch in it. You do that by simply just
 saying that you want to check out a new branch:</simpara>
-<screen>$ git checkout -b mybranch</screen>
+<screen>$ git switch -c mybranch</screen>
 <simpara>will create a new branch based at the current <emphasis>HEAD</emphasis> position, and switch
 to it.</simpara>
 <note>
 <simpara>If you make the decision to start your new branch at some
 other point in the history than the current <emphasis>HEAD</emphasis>, you can do so by
-just telling <emphasis>git checkout</emphasis> what the base of the checkout would be.
+just telling <emphasis>git switch</emphasis> what the base of the checkout would be.
 In other words, if you have an earlier tag or branch, you'd just do</simpara>
-<screen>$ git checkout -b mybranch earlier-commit</screen>
+<screen>$ git switch -c mybranch earlier-commit</screen>
 <simpara>and it would create the new branch <emphasis>mybranch</emphasis> at the earlier commit,
 and check out the state at that time.</simpara>
 </note>
 <simpara>You can always just jump back to your original <emphasis>master</emphasis> branch by doing</simpara>
-<screen>$ git checkout master</screen>
+<screen>$ git switch master</screen>
 <simpara>(or any other branch-name, for that matter) and if you forget which
 branch you happen to be on, a simple</simpara>
 <screen>$ cat .git/HEAD</screen>
@@ -584,7 +584,7 @@ checking it out and switching to it. If so, just use the command</simpara>
 <screen>$ git branch &lt;branchname&gt; [startingpoint]</screen>
 <simpara>which will simply <emphasis>create</emphasis> the branch, but will not do anything further.
 You can then later -- once you decide that you want to actually develop
-on that branch -- switch to that branch with a regular <emphasis>git checkout</emphasis>
+on that branch -- switch to that branch with a regular <emphasis>git switch</emphasis>
 with the branchname as the argument.</simpara>
 </simplesect>
 <simplesect id="gitcore-tutorial(7)__merging_two_branches">
@@ -594,7 +594,7 @@ experimental) work in it, and eventually merge it back to the main
 branch. So assuming you created the above <emphasis>mybranch</emphasis> that started out
 being the same as the original <emphasis>master</emphasis> branch, let's make sure we're in
 that branch, and do some work there.</simpara>
-<screen>$ git checkout mybranch
+<screen>$ git switch mybranch
 $ echo "Work, work, work" &gt;&gt;hello
 $ git commit -m "Some work." -i hello</screen>
 <simpara>Here, we just added another line to <emphasis>hello</emphasis>, and we used a shorthand for
@@ -606,7 +606,7 @@ commit log message from the command line.</simpara>
 <simpara>Now, to make it a bit more interesting, let's assume that somebody else
 does some work in the original branch, and simulate that by going back
 to the master branch, and editing the same file differently there:</simpara>
-<screen>$ git checkout master</screen>
+<screen>$ git switch master</screen>
 <simpara>Here, take a moment to look at the contents of <emphasis>hello</emphasis>, and notice how they
 don't contain the work we just did in <emphasis>mybranch</emphasis> -- because that work
 hasn't happened in the <emphasis>master</emphasis> branch at all. Then do</simpara>
@@ -696,7 +696,7 @@ merge commit visible in this case.</simpara></note>
 <emphasis>mybranch</emphasis>, and the fruit of your hard work has finally been merged
 to the <emphasis>master</emphasis> branch. Let's go back to <emphasis>mybranch</emphasis>, and run
 <emphasis>git merge</emphasis> to get the "upstream changes" back to your branch.</simpara>
-<screen>$ git checkout mybranch
+<screen>$ git switch mybranch
 $ git merge -m "Merge upstream changes." master</screen>
 <simpara>This outputs something like this (the actual commit object names
 would be different)</simpara>
@@ -872,9 +872,8 @@ and bring ourselves back to the pre-merge state:</simpara>
 <simpara>Remember, before running <emphasis>git merge</emphasis>, our <emphasis>master</emphasis> head was at
 "Some fun." commit, while our <emphasis>mybranch</emphasis> head was at "Some
 work." commit.</simpara>
-<screen>$ git checkout mybranch
-$ git reset --hard master^2
-$ git checkout master
+<screen>$ git switch -C mybranch master^2
+$ git switch master
 $ git reset --hard master^</screen>
 <simpara>After rewinding, the commit structure should look like this:</simpara>
 <screen>$ git show-branch
@@ -978,7 +977,7 @@ the remote machine. You need to have an SSH account there to
 run a single command, <emphasis>git-receive-pack</emphasis>.</simpara>
 <simpara>First, you need to create an empty repository on the remote
 machine that will house your public repository. This empty
-repository will be populated and be kept up-to-date by pushing
+repository will be populated and be kept up to date by pushing
 into it later. Obviously, this repository creation needs to be
 done only once.</simpara>
 <note><simpara><emphasis>git push</emphasis> uses a pair of commands,
@@ -1033,7 +1032,7 @@ storage by "packing them together". The command</simpara>
 <simpara>will do it for you. If you followed the tutorial examples, you
 would have accumulated about 17 objects in <emphasis>.git/objects/??/</emphasis>
 directories by now. <emphasis>git repack</emphasis> tells you how many objects it
-packed, and stores the packed file in <emphasis>.git/objects/pack</emphasis>
+packed, and stores the packed file in the <emphasis>.git/objects/pack</emphasis>
 directory.</simpara>
 <note><simpara>You will see two files, <emphasis>pack-*.pack</emphasis> and <emphasis>pack-*.idx</emphasis>,
 in <emphasis>.git/objects/pack</emphasis> directory. They are closely related to
@@ -1079,7 +1078,7 @@ repositories every once in a while.</simpara>
 convenient to organize your project with an informal hierarchy
 of developers. Linux kernel development is run this way. There
 is a nice illustration (page 17, "Merges to Mainline") in
-<ulink url="http://www.xenotime.net/linux/mentor/linux-mentoring-2006.pdf[Randy">http://www.xenotime.net/linux/mentor/linux-mentoring-2006.pdf[Randy</ulink> Dunlap's presentation].</simpara>
+<ulink url="https://web.archive.org/web/20120915203609/http://www.xenotime.net/linux/mentor/linux-mentoring-2006.pdf">Randy Dunlap's presentation</ulink>.</simpara>
 <simpara>It should be stressed that this hierarchy is purely <emphasis role="strong">informal</emphasis>.
 There is nothing fundamental in Git that enforces the "chain of
 patch flow" this hierarchy implies. You do not have to pull
@@ -1103,7 +1102,7 @@ transport protocols (HTTP), you need to keep this repository
 would contain a call to <emphasis>git update-server-info</emphasis>
 but you need to manually enable the hook with
 <emphasis>mv post-update.sample post-update</emphasis>.  This makes sure
-<emphasis>git update-server-info</emphasis> keeps the necessary files up-to-date.</simpara>
+<emphasis>git update-server-info</emphasis> keeps the necessary files up to date.</simpara>
 </listitem>
 <listitem>
 <simpara>
@@ -1147,7 +1146,7 @@ on that project and has an own "public repository" goes like this:</simpara>
 <orderedlist numeration="arabic">
 <listitem>
 <simpara>
-Prepare your work repository, by <emphasis>git clone</emphasis> the public
+Prepare your work repository, by running <emphasis>git clone</emphasis> on the public
    repository of the "project lead". The URL used for the
    initial cloning is stored in the remote.origin.url
    configuration variable.
@@ -1245,9 +1244,9 @@ Use <emphasis>git format-patch origin</emphasis> to prepare patches for e-mail
 </simplesect>
 <simplesect id="gitcore-tutorial(7)__working_with_others_shared_repository_style">
 <title>Working with Others, Shared Repository Style</title>
-<simpara>If you are coming from CVS background, the style of cooperation
+<simpara>If you are coming from a CVS background, the style of cooperation
 suggested in the previous section may be new to you. You do not
-have to worry. Git supports "shared public repository" style of
+have to worry. Git supports the "shared public repository" style of
 cooperation you are probably more familiar with as well.</simpara>
 <simpara>See <xref linkend="gitcvs-migration(7)" /> for the details.</simpara>
 </simplesect>
@@ -1314,7 +1313,7 @@ $ git show-branch
  +* [diff-fix~1] Better common substring algorithm.
   * [master~1] Release candidate #1
 ++* [master~2] Pretty-print messages.</screen>
-<simpara>Note that you should not do Octopus because you can.  An octopus
+<simpara>Note that you should not do Octopus just because you can.  An octopus
 is a valid thing to do and often makes it easier to view the
 commit history if you are merging more than two independent
 changes at the same time.  However, if you have merge conflicts
@@ -1337,6 +1336,6 @@ to follow, not easier.</simpara>
 </simplesect>
 <simplesect id="gitcore-tutorial(7)__git">
 <title>GIT</title>
-<simpara>Part of the <xref linkend="git(1)" /> suite.</simpara>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
 </sect2>

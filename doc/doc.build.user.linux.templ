@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<project name="doc.build.user">
+	<property name="docformats" value="html" />
+
+	<!-- On a Debian based system you need the following packages: xsltproc docbook-xsl nant fop fonts-freefont-ttf -->
+	<property name="path.bin" value="${path::get-full-path('/usr/bin')}" unless="${property::exists('path.bin')}" />
+	<property name="path.fop" value="/usr/bin" unless="${property::exists('path.fop')}" />
+	<property name="name.fop" value="fop" unless="${property::exists('name.fop')}" />
+	<property name="path.xsl" value="/usr/share/xml/docbook/stylesheet/docbook-xsl/" unless="${property::exists('path.xsl')}" />
+</project>

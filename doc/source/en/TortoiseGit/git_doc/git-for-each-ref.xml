@@ -15,8 +15,9 @@
 <blockquote>
 <literallayout><emphasis>git for-each-ref</emphasis> [--count=&lt;count&gt;] [--shell|--perl|--python|--tcl]
                    [(--sort=&lt;key&gt;)&#8230;] [--format=&lt;format&gt;] [&lt;pattern&gt;&#8230;]
-                   [--points-at &lt;object&gt;] [(--merged | --no-merged) [&lt;object&gt;]]
-                   [--contains [&lt;object&gt;]]</literallayout>
+                   [--points-at=&lt;object&gt;]
+                   (--merged[=&lt;object&gt;] | --no-merged[=&lt;object&gt;])
+                   [--contains[=&lt;object&gt;]] [--no-contains[=&lt;object&gt;]]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-for-each-ref(1)__description">
@@ -33,7 +34,20 @@ host language allowing their direct evaluation in that language.</simpara>
 <variablelist>
 <varlistentry>
 <term>
-&lt;count&gt;
+&lt;pattern&gt;&#8230;
+</term>
+<listitem>
+<simpara>
+        If one or more patterns are given, only refs are shown that
+        match against at least one pattern, either using fnmatch(3) or
+        literally, in the latter case matching completely or from the
+        beginning up to a slash.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--count=&lt;count&gt;
 </term>
 <listitem>
 <simpara>
@@ -45,7 +59,7 @@ host language allowing their direct evaluation in that language.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-&lt;key&gt;
+--sort=&lt;key&gt;
 </term>
 <listitem>
 <simpara>
@@ -59,15 +73,16 @@ host language allowing their direct evaluation in that language.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-&lt;format&gt;
+--format=&lt;format&gt;
 </term>
 <listitem>
 <simpara>
-        A string that interpolates <emphasis>%(fieldname)</emphasis> from the
-        object pointed at by a ref being shown.  If <emphasis>fieldname</emphasis>
+        A string that interpolates <emphasis>%(fieldname)</emphasis> from a ref being shown
+        and the object it points at.  If <emphasis>fieldname</emphasis>
         is prefixed with an asterisk (<emphasis>*</emphasis>) and the ref points
-        at a tag object, the value for the field in the object
-        tag refers is used.  When unspecified, defaults to
+        at a tag object, use the value for the field in the object
+        which the tag object refers to (instead of the field in the tag object).
+        When unspecified, <emphasis>&lt;format&gt;</emphasis> defaults to
         <emphasis>%(objectname) SPC %(objecttype) TAB %(refname)</emphasis>.
         It also interpolates <emphasis>%%</emphasis> to <emphasis>%</emphasis>, and <emphasis>%xx</emphasis> where <emphasis>xx</emphasis>
         are hex digits interpolates to character with hex code
@@ -78,14 +93,13 @@ host language allowing their direct evaluation in that language.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-&lt;pattern&gt;&#8230;
+--color[=&lt;when&gt;]
 </term>
 <listitem>
 <simpara>
-        If one or more patterns are given, only refs are shown that
-        match against at least one pattern, either using fnmatch(3) or
-        literally, in the latter case matching completely or from the
-        beginning up to a slash.
+        Respect any colors specified in the <emphasis>--format</emphasis> option. The
+        <emphasis>&lt;when&gt;</emphasis> field must be one of <emphasis>always</emphasis>, <emphasis>never</emphasis>, or <emphasis>auto</emphasis> (if
+        <emphasis>&lt;when&gt;</emphasis> is absent, behave as if <emphasis>always</emphasis> was given).
 </simpara>
 </listitem>
 </varlistentry>
@@ -113,7 +127,7 @@ host language allowing their direct evaluation in that language.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---points-at &lt;object&gt;
+--points-at=&lt;object&gt;
 </term>
 <listitem>
 <simpara>
@@ -123,34 +137,57 @@ host language allowing their direct evaluation in that language.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---merged [&lt;object&gt;]
+--merged[=&lt;object&gt;]
 </term>
 <listitem>
 <simpara>
         Only list refs whose tips are reachable from the
-        specified commit (HEAD if not specified).
+        specified commit (HEAD if not specified),
+        incompatible with <emphasis>--no-merged</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---no-merged [&lt;object&gt;]
+--no-merged[=&lt;object&gt;]
 </term>
 <listitem>
 <simpara>
         Only list refs whose tips are not reachable from the
-        specified commit (HEAD if not specified).
+        specified commit (HEAD if not specified),
+        incompatible with <emphasis>--merged</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---contains [&lt;object&gt;]
+--contains[=&lt;object&gt;]
 </term>
 <listitem>
 <simpara>
         Only list refs which contain the specified commit (HEAD if not
         specified).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-contains[=&lt;object&gt;]
+</term>
+<listitem>
+<simpara>
+        Only list refs which don't contain the specified commit (HEAD
+        if not specified).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--ignore-case
+</term>
+<listitem>
+<simpara>
+        Sorting and filtering refs are case insensitive.
 </simpara>
 </listitem>
 </varlistentry>
@@ -172,12 +209,20 @@ refname
         The name of the ref (the part after $GIT_DIR/).
         For a non-ambiguous short name of the ref append <emphasis>:short</emphasis>.
         The option core.warnAmbiguousRefs is used to select the strict
-        abbreviation mode. If <emphasis>strip=&lt;N&gt;</emphasis> is appended, strips <emphasis>&lt;N&gt;</emphasis>
-        slash-separated path components from the front of the refname
-        (e.g., <emphasis>%(refname:strip=2)</emphasis> turns <emphasis>refs/tags/foo</emphasis> into <emphasis>foo</emphasis>.
-        <emphasis>&lt;N&gt;</emphasis> must be a positive integer.  If a displayed ref has fewer
-        components than <emphasis>&lt;N&gt;</emphasis>, the command aborts with an error.
+        abbreviation mode. If <emphasis>lstrip=&lt;N&gt;</emphasis> (<emphasis>rstrip=&lt;N&gt;</emphasis>) is appended, strips <emphasis>&lt;N&gt;</emphasis>
+        slash-separated path components from the front (back) of the refname
+        (e.g. <emphasis>%(refname:lstrip=2)</emphasis> turns <emphasis>refs/tags/foo</emphasis> into <emphasis>foo</emphasis> and
+        <emphasis>%(refname:rstrip=2)</emphasis> turns <emphasis>refs/tags/foo</emphasis> into <emphasis>refs</emphasis>).
+        If <emphasis>&lt;N&gt;</emphasis> is a negative number, strip as many path components as
+        necessary from the specified end to leave <emphasis>-&lt;N&gt;</emphasis> path components
+        (e.g. <emphasis>%(refname:lstrip=-2)</emphasis> turns
+        <emphasis>refs/tags/foo</emphasis> into <emphasis>tags/foo</emphasis> and <emphasis>%(refname:rstrip=-1)</emphasis>
+        turns <emphasis>refs/tags/foo</emphasis> into <emphasis>refs</emphasis>). When the ref does not have
+        enough components, the result becomes an empty string if
+        stripping with positive &lt;N&gt;, or it becomes the full refname if
+        stripping with negative &lt;N&gt;.  Neither is an error.
 </simpara>
+<simpara><emphasis>strip</emphasis> can be used as a synonym to <emphasis>lstrip</emphasis>.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -197,6 +242,8 @@ objectsize
 <listitem>
 <simpara>
         The size of the object (the same as <emphasis>git cat-file -s</emphasis> reports).
+        Append <emphasis>:disk</emphasis> to get the size, in bytes, that the object takes up on
+        disk. See the note about on-disk sizes in the <emphasis>CAVEATS</emphasis> section below.
 </simpara>
 </listitem>
 </varlistentry>
@@ -208,6 +255,21 @@ objectname
 <simpara>
         The object name (aka SHA-1).
         For a non-ambiguous abbreviation of the object name append <emphasis>:short</emphasis>.
+        For an abbreviation of the object name with desired length append
+        <emphasis>:short=&lt;length&gt;</emphasis>, where the minimum length is MINIMUM_ABBREV. The
+        length may be exceeded to ensure unique object names.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+deltabase
+</term>
+<listitem>
+<simpara>
+        This expands to the object name of the delta base for the
+        given object, if it is stored as a delta.  Otherwise it
+        expands to the null object name (all zeroes).
 </simpara>
 </listitem>
 </varlistentry>
@@ -218,13 +280,24 @@ upstream
 <listitem>
 <simpara>
         The name of a local ref which can be considered upstream
-        from the displayed ref. Respects <emphasis>:short</emphasis> in the same way as
-        <emphasis>refname</emphasis> above.  Additionally respects <emphasis>:track</emphasis> to show
-        "[ahead N, behind M]" and <emphasis>:trackshort</emphasis> to show the terse
-        version: "&gt;" (ahead), "&lt;" (behind), "&lt;&gt;" (ahead and behind),
-        or "=" (in sync).  Has no effect if the ref does not have
-        tracking information associated with it.
+        from the displayed ref. Respects <emphasis>:short</emphasis>, <emphasis>:lstrip</emphasis> and
+        <emphasis>:rstrip</emphasis> in the same way as <emphasis>refname</emphasis> above.  Additionally
+        respects <emphasis>:track</emphasis> to show "[ahead N, behind M]" and
+        <emphasis>:trackshort</emphasis> to show the terse version: "&gt;" (ahead), "&lt;"
+        (behind), "&lt;&gt;" (ahead and behind), or "=" (in sync). <emphasis>:track</emphasis>
+        also prints "[gone]" whenever unknown upstream ref is
+        encountered. Append <emphasis>:track,nobracket</emphasis> to show tracking
+        information without brackets (i.e "ahead N, behind M").
 </simpara>
+<simpara>For any remote-tracking branch <emphasis>%(upstream)</emphasis>, <emphasis>%(upstream:remotename)</emphasis>
+and <emphasis>%(upstream:remoteref)</emphasis> refer to the name of the remote and the
+name of the tracked remote ref, respectively. In other words, the
+remote-tracking branch can be updated explicitly and individually by
+using the refspec <emphasis>%(upstream:remoteref):%(upstream)</emphasis> to fetch from
+<emphasis>%(upstream:remotename)</emphasis>.</simpara>
+<simpara>Has no effect if the ref does not have tracking information associated
+with it.  All the options apart from <emphasis>nobracket</emphasis> are mutually exclusive,
+but if used together the last option is selected.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -233,10 +306,11 @@ push
 </term>
 <listitem>
 <simpara>
-        The name of a local ref which represents the <emphasis>@{push}</emphasis> location
-        for the displayed ref. Respects <emphasis>:short</emphasis>, <emphasis>:track</emphasis>, and
-        <emphasis>:trackshort</emphasis> options as <emphasis>upstream</emphasis> does. Produces an empty
-        string if no <emphasis>@{push}</emphasis> ref is configured.
+        The name of a local ref which represents the <emphasis>@{push}</emphasis>
+        location for the displayed ref. Respects <emphasis>:short</emphasis>, <emphasis>:lstrip</emphasis>,
+        <emphasis>:rstrip</emphasis>, <emphasis>:track</emphasis>, <emphasis>:trackshort</emphasis>, <emphasis>:remotename</emphasis>, and <emphasis>:remoteref</emphasis>
+        options as <emphasis>upstream</emphasis> does. Produces an empty string if no <emphasis>@{push}</emphasis>
+        ref is configured.
 </simpara>
 </listitem>
 </varlistentry>
@@ -257,8 +331,10 @@ color
 </term>
 <listitem>
 <simpara>
-        Change output color.  Followed by <emphasis>:&lt;colorname&gt;</emphasis>, where names
-        are described in <emphasis>color.branch.*</emphasis>.
+        Change output color. Followed by <emphasis>:&lt;colorname&gt;</emphasis>, where color
+        names are described under Values in the "CONFIGURATION FILE"
+        section of <xref linkend="git-config(1)" />.  For example,
+        <emphasis>%(color:bold red)</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -284,6 +360,51 @@ align
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+if
+</term>
+<listitem>
+<simpara>
+        Used as %(if)&#8230;%(then)&#8230;%(end) or
+        %(if)&#8230;%(then)&#8230;%(else)&#8230;%(end).  If there is an atom with
+        value or string literal after the %(if) then everything after
+        the %(then) is printed, else if the %(else) atom is used, then
+        everything after %(else) is printed. We ignore space when
+        evaluating the string before %(then), this is useful when we
+        use the %(HEAD) atom which prints either "*" or " " and we
+        want to apply the <emphasis>if</emphasis> condition only on the <emphasis>HEAD</emphasis> ref.
+        Append ":equals=&lt;string&gt;" or ":notequals=&lt;string&gt;" to compare
+        the value between the %(if:&#8230;) and %(then) atoms with the
+        given string.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+symref
+</term>
+<listitem>
+<simpara>
+        The ref which the given symbolic ref refers to. If not a
+        symbolic ref, nothing is printed. Respects the <emphasis>:short</emphasis>,
+        <emphasis>:lstrip</emphasis> and <emphasis>:rstrip</emphasis> options in the same way as <emphasis>refname</emphasis>
+        above.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+worktreepath
+</term>
+<listitem>
+<simpara>
+        The absolute path to the worktree in which the ref is checked
+        out, if it is checked out in any linked worktree. Empty string
+        otherwise.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 <simpara>In addition to the above, for commit and tag objects, the header
 field names (<emphasis>tree</emphasis>, <emphasis>parent</emphasis>, <emphasis>object</emphasis>, <emphasis>type</emphasis>, and <emphasis>tag</emphasis>) can
@@ -300,7 +421,13 @@ Its first line is <emphasis>contents:subject</emphasis>, where subject is the co
 of all lines of the commit message up to the first blank line.  The next
 line is <emphasis>contents:body</emphasis>, where body is all of the lines after the first
 blank line.  The optional GPG signature is <emphasis>contents:signature</emphasis>.  The
-first <emphasis>N</emphasis> lines of the message is obtained using <emphasis>contents:lines=N</emphasis>.</simpara>
+first <emphasis>N</emphasis> lines of the message is obtained using <emphasis>contents:lines=N</emphasis>.
+Additionally, the trailers as interpreted by <xref linkend="git-interpret-trailers(1)" />
+are obtained as <emphasis>trailers</emphasis> (or by using the historical alias
+<emphasis>contents:trailers</emphasis>).  Non-trailer lines from the trailer block can be omitted
+with <emphasis>trailers:only</emphasis>. Whitespace-continuations can be removed from trailers so
+that each trailer appears on a line by itself with its full content with
+<emphasis>trailers:unfold</emphasis>. Both can be used together as <emphasis>trailers:unfold,only</emphasis>.</simpara>
 <simpara>For sorting purposes, fields with numeric values sort in numeric order
 (<emphasis>objectsize</emphasis>, <emphasis>authordate</emphasis>, <emphasis>committerdate</emphasis>, <emphasis>creatordate</emphasis>, <emphasis>taggerdate</emphasis>).
 All other fields are used to sort in their byte-value order.</simpara>
@@ -311,7 +438,13 @@ the object referred by the ref does not cause an error.  It
 returns an empty string instead.</simpara>
 <simpara>As a special case for the date-type fields, you may specify a format for
 the date by adding <emphasis>:</emphasis> followed by date format name (see the
-values the <emphasis>--date</emphasis> option to <xref linkend=":git-rev-list(1)" /> takes).</simpara>
+values the <emphasis>--date</emphasis> option to <xref linkend="git-rev-list(1)" /> takes).</simpara>
+<simpara>Some atoms like %(align) and %(if) always require a matching %(end).
+We call them "opening atoms" and sometimes denote them as %($open).</simpara>
+<simpara>When a scripting language specific quoting is in effect, everything
+between a top-level opening atom and its matching %(end) is evaluated
+according to the semantics of the opening atom and only its result
+from the top-level is quoted.</simpara>
 </simplesect>
 <simplesect id="git-for-each-ref(1)__examples">
 <title>EXAMPLES</title>
@@ -386,6 +519,24 @@ eval=`git for-each-ref --shell --format="$fmt" \
         --sort=-taggerdate \
         refs/tags`
 eval "$eval"</screen>
+<simpara>An example to show the usage of %(if)&#8230;%(then)&#8230;%(else)&#8230;%(end).
+This prefixes the current branch with a star.</simpara>
+<screen>git for-each-ref --format="%(if)%(HEAD)%(then)* %(else)  %(end)%(refname:short)" refs/heads/</screen>
+<simpara>An example to show the usage of %(if)&#8230;%(then)&#8230;%(end).
+This prints the authorname, if present.</simpara>
+<screen>git for-each-ref --format="%(refname)%(if)%(authorname)%(then) Authored by: %(authorname)%(end)"</screen>
+</simplesect>
+<simplesect id="git-for-each-ref(1)__caveats">
+<title>CAVEATS</title>
+<simpara>Note that the sizes of objects on disk are reported accurately, but care
+should be taken in drawing conclusions about which refs or objects are
+responsible for disk usage. The size of a packed non-delta object may be
+much larger than the size of objects which delta against it, but the
+choice of which object is the base and which is the delta is arbitrary
+and is subject to change during a repack.</simpara>
+<simpara>Note also that multiple copies of an object may be present in the object
+database; in this case, it is undefined which copy's size or delta base
+will be reported.</simpara>
 </simplesect>
 <simplesect id="git-for-each-ref(1)__see_also">
 <title>SEE ALSO</title>

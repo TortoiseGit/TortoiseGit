@@ -13,7 +13,7 @@
 <simplesect id="git-apply(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git apply</emphasis> [--stat] [--numstat] [--summary] [--check] [--index] [--3way]
+<literallayout><emphasis>git apply</emphasis> [--stat] [--numstat] [--summary] [--check] [--index | --intent-to-add] [--3way]
           [--apply] [--no-add] [--build-fake-ancestor=&lt;file&gt;] [-R | --reverse]
           [--allow-binary-replacement | --binary] [--reject] [-z]
           [-p&lt;n&gt;] [-C&lt;n&gt;] [--inaccurate-eof] [--recount] [--cached]
@@ -111,7 +111,7 @@ and does not require them to be in a Git repository.</simpara>
         disables it is in effect), make sure the patch is
         applicable to what the current index file records.  If
         the file to be patched in the working tree is not
-        up-to-date, it is flagged as an error.  This flag also
+        up to date, it is flagged as an error.  This flag also
         causes the index file to be updated.
 </simpara>
 </listitem>
@@ -125,6 +125,21 @@ and does not require them to be in a Git repository.</simpara>
         Apply a patch without touching the working tree. Instead take the
         cached data, apply the patch, and store the result in the index
         without using the working tree. This implies <emphasis>--index</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--intent-to-add
+</term>
+<listitem>
+<simpara>
+        When applying the patch only to the working tree, mark new
+        files to be added to the index later (see <emphasis>--intent-to-add</emphasis>
+        option in <xref linkend="git-add(1)" />). This option is ignored unless
+        running in a Git repository and <emphasis>--index</emphasis> is not specified.
+        Note that <emphasis>--index</emphasis> could be implied by other options such
+        as <emphasis>--cached</emphasis> or <emphasis>--3way</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -198,10 +213,9 @@ the information is read from the current index instead.</simpara>
         When <emphasis>--numstat</emphasis> has been given, do not munge pathnames,
         but use a NUL-terminated machine-readable format.
 </simpara>
-<simpara>Without this option, each pathname output will have TAB, LF, double quotes,
-and backslash characters replaced with <emphasis>\t</emphasis>, <emphasis>\n</emphasis>, <emphasis>\"</emphasis>, and <emphasis>\\</emphasis>,
-respectively, and the pathname will be enclosed in double quotes if
-any of those replacements occurred.</simpara>
+<simpara>Without this option, pathnames with "unusual" characters are quoted as
+explained for the configuration variable <emphasis>core.quotePath</emphasis> (see
+<xref linkend="git-config(1)" />).</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -210,8 +224,10 @@ any of those replacements occurred.</simpara>
 </term>
 <listitem>
 <simpara>
-        Remove &lt;n&gt; leading slashes from traditional diff paths. The
-        default is 1.
+        Remove &lt;n&gt; leading path components (separated by slashes) from
+        traditional diff paths. E.g., with <emphasis>-p2</emphasis>, a patch against
+        <emphasis>a/dir/file</emphasis> will be applied directly to <emphasis>file</emphasis>. The default is
+        1.
 </simpara>
 </listitem>
 </varlistentry>
@@ -461,7 +477,7 @@ has no effect when <emphasis>--index</emphasis> or <emphasis>--cached</emphasis>
 </variablelist>
 </simplesect>
 <simplesect id="git-apply(1)__configuration">
-<title>Configuration</title>
+<title>CONFIGURATION</title>
 <variablelist>
 <varlistentry>
 <term>
@@ -489,13 +505,13 @@ apply.whitespace
 </variablelist>
 </simplesect>
 <simplesect id="git-apply(1)__submodules">
-<title>Submodules</title>
+<title>SUBMODULES</title>
 <simpara>If the patch contains any changes to submodules then <emphasis>git apply</emphasis>
 treats these changes as follows.</simpara>
 <simpara>If <emphasis>--index</emphasis> is specified (explicitly or implicitly), then the submodule
 commits must match the index exactly for the patch to apply.  If any
 of the submodules are checked-out, then these check-outs are completely
-ignored, i.e., they are not required to be up-to-date or clean and they
+ignored, i.e., they are not required to be up to date or clean and they
 are not updated.</simpara>
 <simpara>If <emphasis>--index</emphasis> is not specified, then the submodule commits in the patch
 are ignored and only the absence or presence of the corresponding

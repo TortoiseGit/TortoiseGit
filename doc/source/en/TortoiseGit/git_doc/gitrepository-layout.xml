@@ -96,7 +96,7 @@ objects/pack
 </term>
 <listitem>
 <simpara>
-        Packs (files that store many object in compressed form,
+        Packs (files that store many objects in compressed form,
         along with index files to allow them to be randomly
         accessed) are found in this directory.
 </simpara>
@@ -122,7 +122,7 @@ objects/info/packs
         This file is to help dumb transports discover what packs
         are available in this object store.  Whenever a pack is
         added or removed, <emphasis>git update-server-info</emphasis> should be run
-        to keep this file up-to-date if the repository is
+        to keep this file up to date if the repository is
         published for dumb transports.  <emphasis>git repack</emphasis> does this
         by default.
 </simpara>
@@ -167,8 +167,10 @@ refs
         References are stored in subdirectories of this
         directory.  The <emphasis>git prune</emphasis> command knows to preserve
         objects reachable from refs found in this directory and
-        its subdirectories. This directory is ignored if $GIT_COMMON_DIR
-        is set and "$GIT_COMMON_DIR/refs" will be used instead.
+        its subdirectories.
+        This directory is ignored (except refs/bisect,
+        refs/rewritten and refs/worktree) if $GIT_COMMON_DIR is
+        set and "$GIT_COMMON_DIR/refs" will be used instead.
 </simpara>
 </listitem>
 </varlistentry>
@@ -267,6 +269,18 @@ config
 </varlistentry>
 <varlistentry>
 <term>
+config.worktree
+</term>
+<listitem>
+<simpara>
+        Working directory specific configuration file for the main
+        working directory in multiple working directory setup (see
+        <xref linkend="git-worktree(1)" />).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 branches
 </term>
 <listitem>
@@ -302,6 +316,19 @@ hooks
 </varlistentry>
 <varlistentry>
 <term>
+common
+</term>
+<listitem>
+<simpara>
+        When multiple working trees are used, most of files in
+        $GIT_DIR are per-worktree with a few known exceptions. All
+        files under <emphasis>common</emphasis> however will be shared between all
+        working trees.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 index
 </term>
 <listitem>
@@ -330,7 +357,7 @@ info
 <simpara>
         Additional information about the repository is recorded
         in this directory. This directory is ignored if $GIT_COMMON_DIR
-        is set and "$GIT_COMMON_DIR/index" will be used instead.
+        is set and "$GIT_COMMON_DIR/info" will be used instead.
 </simpara>
 </listitem>
 </varlistentry>
@@ -385,6 +412,17 @@ info/exclude
 </varlistentry>
 <varlistentry>
 <term>
+info/attributes
+</term>
+<listitem>
+<simpara>
+        Defines which attributes to assign to a path, similar to per-directory
+        <emphasis>.gitattributes</emphasis> files.   See also: <xref linkend="gitattributes(5)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 info/sparse-checkout
 </term>
 <listitem>
@@ -418,8 +456,8 @@ logs
 <simpara>
         Records of changes made to refs are stored in this directory.
         See <xref linkend="git-update-ref(1)" /> for more information. This
-        directory is ignored if $GIT_COMMON_DIR is set and
-        "$GIT_COMMON_DIR/logs" will be used instead.
+        directory is ignored (except logs/HEAD) if $GIT_COMMON_DIR is
+        set and "$GIT_COMMON_DIR/logs" will be used instead.
 </simpara>
 </listitem>
 </varlistentry>
@@ -525,17 +563,125 @@ worktrees/&lt;id&gt;/locked
 </varlistentry>
 <varlistentry>
 <term>
-worktrees/&lt;id&gt;/link
+worktrees/&lt;id&gt;/config.worktree
 </term>
 <listitem>
 <simpara>
-        If this file exists, it is a hard link to the linked .git
-        file. It is used to detect if the linked repository is
-        manually removed.
+        Working directory specific configuration file.
 </simpara>
 </listitem>
 </varlistentry>
 </variablelist>
+</simplesect>
+<simplesect id="gitrepository-layout(5)__git_repository_format_versions">
+<title>Git Repository Format Versions</title>
+<simpara>Every git repository is marked with a numeric version in the
+<emphasis>core.repositoryformatversion</emphasis> key of its <emphasis>config</emphasis> file. This version
+specifies the rules for operating on the on-disk repository data. An
+implementation of git which does not understand a particular version
+advertised by an on-disk repository MUST NOT operate on that repository;
+doing so risks not only producing wrong results, but actually losing
+data.</simpara>
+<simpara>Because of this rule, version bumps should be kept to an absolute
+minimum. Instead, we generally prefer these strategies:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+bumping format version numbers of individual data files (e.g.,
+    index, packfiles, etc). This restricts the incompatibilities only to
+    those files.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+introducing new data that gracefully degrades when used by older
+    clients (e.g., pack bitmap files are ignored by older clients, which
+    simply do not take advantage of the optimization they provide).
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>A whole-repository format version bump should only be part of a change
+that cannot be independently versioned. For instance, if one were to
+change the reachability rules for objects, or the rules for locking
+refs, that would require a bump of the repository format version.</simpara>
+<simpara>Note that this applies only to accessing the repository's disk contents
+directly. An older client which understands only format <emphasis>0</emphasis> may still
+connect via <emphasis>git://</emphasis> to a repository using format <emphasis>1</emphasis>, as long as the
+server process understands format <emphasis>1</emphasis>.</simpara>
+<simpara>The preferred strategy for rolling out a version bump (whether whole
+repository or for a single file) is to teach git to read the new format,
+and allow writing the new format with a config switch or command line
+option (for experimentation or for those who do not care about backwards
+compatibility with older gits). Then after a long period to allow the
+reading capability to become common, we may switch to writing the new
+format by default.</simpara>
+<simpara>The currently defined format versions are:</simpara>
+<section id="gitrepository-layout(5)__version_emphasis_0_emphasis">
+<title>Version <emphasis>0</emphasis></title>
+<simpara>This is the format defined by the initial version of git, including but
+not limited to the format of the repository directory, the repository
+configuration file, and the object and ref storage. Specifying the
+complete behavior of git is beyond the scope of this document.</simpara>
+</section>
+<section id="gitrepository-layout(5)__version_emphasis_1_emphasis">
+<title>Version <emphasis>1</emphasis></title>
+<simpara>This format is identical to version <emphasis>0</emphasis>, with the following exceptions:</simpara>
+<orderedlist numeration="arabic">
+<listitem>
+<simpara>
+When reading the <emphasis>core.repositoryformatversion</emphasis> variable, a git
+     implementation which supports version 1 MUST also read any
+     configuration keys found in the <emphasis>extensions</emphasis> section of the
+     configuration file.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+If a version-1 repository specifies any <emphasis>extensions.*</emphasis> keys that
+     the running git has not implemented, the operation MUST NOT
+     proceed. Similarly, if the value of any known key is not understood
+     by the implementation, the operation MUST NOT proceed.
+</simpara>
+</listitem>
+</orderedlist>
+<simpara>Note that if no extensions are specified in the config file, then
+<emphasis>core.repositoryformatversion</emphasis> SHOULD be set to <emphasis>0</emphasis> (setting it to <emphasis>1</emphasis>
+provides no benefit, and makes the repository incompatible with older
+implementations of git).</simpara>
+<simpara>This document will serve as the master list for extensions. Any
+implementation wishing to define a new extension should make a note of
+it here, in order to claim the name.</simpara>
+<simpara>The defined extensions are:</simpara>
+<section id="gitrepository-layout(5)__emphasis_noop_emphasis">
+<title><emphasis>noop</emphasis></title>
+<simpara>This extension does not change git's behavior at all. It is useful only
+for testing format-1 compatibility.</simpara>
+</section>
+<section id="gitrepository-layout(5)__emphasis_preciousobjects_emphasis">
+<title><emphasis>preciousObjects</emphasis></title>
+<simpara>When the config key <emphasis>extensions.preciousObjects</emphasis> is set to <emphasis>true</emphasis>,
+objects in the repository MUST NOT be deleted (e.g., by <emphasis>git-prune</emphasis> or
+<emphasis>git repack -d</emphasis>).</simpara>
+</section>
+<section id="gitrepository-layout(5)__emphasis_partialclone_emphasis">
+<title><emphasis>partialclone</emphasis></title>
+<simpara>When the config key <emphasis>extensions.partialclone</emphasis> is set, it indicates
+that the repo was created with a partial clone (or later performed
+a partial fetch) and that the remote may have omitted sending
+certain unwanted objects.  Such a remote is called a "promisor remote"
+and it promises that all such omitted objects can be fetched from it
+in the future.</simpara>
+<simpara>The value of this key is the name of the promisor remote.</simpara>
+</section>
+<section id="gitrepository-layout(5)__emphasis_worktreeconfig_emphasis">
+<title><emphasis>worktreeConfig</emphasis></title>
+<simpara>If set, by default "git config" reads from both "config" and
+"config.worktree" file from GIT_DIR in that order. In
+multiple working directory mode, "config" file is shared while
+"config.worktree" is per-working directory (i.e., it's in
+GIT_COMMON_DIR/worktrees/&lt;id&gt;/config.worktree)</simpara>
+</section>
+</section>
 </simplesect>
 <simplesect id="gitrepository-layout(5)__see_also">
 <title>SEE ALSO</title>
@@ -550,6 +696,6 @@ worktrees/&lt;id&gt;/link
 </simplesect>
 <simplesect id="gitrepository-layout(5)__git">
 <title>GIT</title>
-<simpara>Part of the <xref linkend="git(1)" /> suite.</simpara>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
 </sect2>

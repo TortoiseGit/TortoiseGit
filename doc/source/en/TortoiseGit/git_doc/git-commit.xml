@@ -18,31 +18,37 @@
            [-F &lt;file&gt; | -m &lt;msg&gt;] [--reset-author] [--allow-empty]
            [--allow-empty-message] [--no-verify] [-e] [--author=&lt;author&gt;]
            [--date=&lt;date&gt;] [--cleanup=&lt;mode&gt;] [--[no-]status]
-           [-i | -o] [-S[&lt;keyid&gt;]] [--] [&lt;file&gt;&#8230;]</literallayout>
+           [-i | -o] [--pathspec-from-file=&lt;file&gt; [--pathspec-file-nul]]
+           [-S[&lt;keyid&gt;]] [--] [&lt;pathspec&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-commit(1)__description">
 <title>DESCRIPTION</title>
-<simpara>Stores the current contents of the index in a new commit along
-with a log message from the user describing the changes.</simpara>
-<simpara>The content to be added can be specified in several ways:</simpara>
+<simpara>Create a new commit containing the current contents of the index and
+the given log message describing the changes. The new commit is a
+direct child of HEAD, usually the tip of the current branch, and the
+branch is updated to point to it (unless no branch is associated with
+the working tree, in which case HEAD is "detached" as described in
+<xref linkend="git-checkout(1)" />).</simpara>
+<simpara>The content to be committed can be specified in several ways:</simpara>
 <orderedlist numeration="arabic">
 <listitem>
 <simpara>
-by using <emphasis>git add</emphasis> to incrementally "add" changes to the
-   index before using the <emphasis>commit</emphasis> command (Note: even modified
-   files must be "added");
+by using <xref linkend="git-add(1)" /> to incrementally "add" changes to the
+   index before using the <emphasis>commit</emphasis> command (Note: even modified files
+   must be "added");
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-by using <emphasis>git rm</emphasis> to remove files from the working tree
+by using <xref linkend="git-rm(1)" /> to remove files from the working tree
    and the index, again before using the <emphasis>commit</emphasis> command;
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-by listing files as arguments to the <emphasis>commit</emphasis> command, in which
+by listing files as arguments to the <emphasis>commit</emphasis> command
+   (without --interactive or --patch switch), in which
    case the commit will ignore changes staged in the index, and instead
    record the current content of the listed files (which must already
    be known to Git);
@@ -60,7 +66,8 @@ by using the -a switch with the <emphasis>commit</emphasis> command to automatic
 <listitem>
 <simpara>
 by using the --interactive or --patch switches with the <emphasis>commit</emphasis> command
-   to decide one by one which files or hunks should be part of the commit,
+   to decide one by one which files or hunks should be part of the commit
+   in addition to contents in the index,
    before finalizing the operation. See the Interactive Mode section of
    <xref linkend="git-add(1)" /> to learn how to operate these modes.
 </simpara>
@@ -168,7 +175,7 @@ that, you can recover from it with <emphasis>git reset</emphasis>.</simpara>
 <listitem>
 <simpara>
         When used with -C/-c/--amend options, or when committing after a
-        a conflicting cherry-pick, declare that the authorship of the
+        conflicting cherry-pick, declare that the authorship of the
         resulting commit now belongs to the committer. This also renews
         the author timestamp.
 </simpara>
@@ -213,7 +220,7 @@ that, you can recover from it with <emphasis>git reset</emphasis>.</simpara>
 </term>
 <listitem>
 <simpara>
-        When doing a dry-run, give the output in a the long-format.
+        When doing a dry-run, give the output in the long-format.
         Implies <emphasis>--dry-run</emphasis>.
 </simpara>
 </listitem>
@@ -227,9 +234,12 @@ that, you can recover from it with <emphasis>git reset</emphasis>.</simpara>
 </term>
 <listitem>
 <simpara>
-        When showing <emphasis>short</emphasis> or <emphasis>porcelain</emphasis> status output, terminate
-        entries in the status output with NUL, instead of LF. If no
-        format is given, implies the <emphasis>--porcelain</emphasis> output format.
+        When showing <emphasis>short</emphasis> or <emphasis>porcelain</emphasis> status output, print the
+        filename verbatim and terminate the entries with NUL, instead of LF.
+        If no format is given, implies the <emphasis>--porcelain</emphasis> output format.
+        Without the <emphasis>-z</emphasis> option, filenames with "unusual" characters are
+        quoted as explained for the configuration variable <emphasis>core.quotePath</emphasis>
+        (see <xref linkend="git-config(1)" />).
 </simpara>
 </listitem>
 </varlistentry>
@@ -284,6 +294,7 @@ that, you can recover from it with <emphasis>git reset</emphasis>.</simpara>
         If multiple <emphasis>-m</emphasis> options are given, their values are
         concatenated as separate paragraphs.
 </simpara>
+<simpara>The <emphasis>-m</emphasis> option is mutually exclusive with <emphasis>-c</emphasis>, <emphasis>-C</emphasis>, and <emphasis>-F</emphasis>.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -412,12 +423,11 @@ scissors
 </term>
 <listitem>
 <simpara>
-        Same as <emphasis>whitespace</emphasis>, except that everything from (and
-        including) the line
-        "<emphasis># ------------------------ &gt;8 ------------------------</emphasis>"
-        is truncated if the message is to be edited. "<emphasis>#</emphasis>" can be
-        customized with core.commentChar.
+        Same as <emphasis>whitespace</emphasis> except that everything from (and including)
+        the line found below is truncated, if the message is to be edited.
+        "<emphasis>#</emphasis>" can be customized with core.commentChar.
 </simpara>
+<literallayout class="monospaced"># ------------------------ &gt;8 ------------------------</literallayout>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -534,7 +544,35 @@ FROM UPSTREAM REBASE" section in <xref linkend="git-rebase(1)" />.)</simpara>
         If this option is specified together with <emphasis>--amend</emphasis>, then
         no paths need to be specified, which can be used to amend
         the last commit without committing changes that have
-        already been staged.
+        already been staged. If used together with <emphasis>--allow-empty</emphasis>
+        paths are also not required, and an empty commit will be created.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--pathspec-from-file=&lt;file&gt;
+</term>
+<listitem>
+<simpara>
+        Pathspec is passed in <emphasis>&lt;file&gt;</emphasis> instead of commandline args. If
+        <emphasis>&lt;file&gt;</emphasis> is exactly <emphasis>-</emphasis> then standard input is used. Pathspec
+        elements are separated by LF or CR/LF. Pathspec elements can be
+        quoted as explained for the configuration variable <emphasis>core.quotePath</emphasis>
+        (see <xref linkend="git-config(1)" />). See also <emphasis>--pathspec-file-nul</emphasis> and
+        global <emphasis>--literal-pathspecs</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--pathspec-file-nul
+</term>
+<listitem>
+<simpara>
+        Only meaningful with <emphasis>--pathspec-from-file</emphasis>. Pathspec elements are
+        separated with NUL character and all other characters are taken
+        literally (including newlines and quotes).
 </simpara>
 </listitem>
 </varlistentry>
@@ -568,10 +606,10 @@ default is <emphasis>normal</emphasis>, i.e. show untracked files and directorie
 <simpara>
 <emphasis>all</emphasis>    - Also shows individual files in untracked directories.
 </simpara>
-<simpara>The default can be changed using the status.showUntrackedFiles
-configuration variable documented in <xref linkend="git-config(1)" />.</simpara>
 </listitem>
 </itemizedlist>
+<simpara>The default can be changed using the status.showUntrackedFiles
+configuration variable documented in <xref linkend="git-config(1)" />.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -589,7 +627,8 @@ configuration variable documented in <xref linkend="git-config(1)" />.</simpara>
         what changes the commit has.
         Note that this diff output doesn't have its
         lines prefixed with <emphasis>#</emphasis>. This diff will not be a part
-        of the commit message.
+        of the commit message. See the <emphasis>commit.verbose</emphasis> configuration
+        variable in <xref linkend="git-config(1)" />.
 </simpara>
 <simpara>If specified twice, show in addition the unified diff between
 what would be committed and the worktree files, i.e. the unstaged
@@ -653,22 +692,16 @@ changes to tracked files.</simpara>
 <term>
 --gpg-sign[=&lt;keyid&gt;]
 </term>
-<listitem>
-<simpara>
-        GPG-sign commits. The <emphasis>keyid</emphasis> argument is optional and
-        defaults to the committer identity; if specified, it must be
-        stuck to the option without a space.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
 <term>
 --no-gpg-sign
 </term>
 <listitem>
 <simpara>
-        Countermand <emphasis>commit.gpgSign</emphasis> configuration variable that is
-        set to force each and every commit to be signed.
+        GPG-sign commits. The <emphasis>keyid</emphasis> argument is optional and
+        defaults to the committer identity; if specified, it must be
+        stuck to the option without a space. <emphasis>--no-gpg-sign</emphasis> is useful to
+        countermand both <emphasis>commit.gpgSign</emphasis> configuration variable, and
+        earlier <emphasis>--gpg-sign</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -684,62 +717,16 @@ changes to tracked files.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-&lt;file&gt;&#8230;
+&lt;pathspec&gt;&#8230;
 </term>
 <listitem>
 <simpara>
-        When files are given on the command line, the command
-        commits the contents of the named files, without
-        recording the changes already staged.  The contents of
-        these files are also staged for the next commit on top
-        of what have been staged before.
+        When pathspec is given on the command line, commit the contents of
+        the files that match the pathspec without recording the changes
+        already added to the index. The contents of these files are also
+        staged for the next commit on top of what have been staged before.
 </simpara>
-</listitem>
-</varlistentry>
-</variablelist>
-</simplesect>
-<simplesect id="git-commit(1)__date_formats">
-<title>DATE FORMATS</title>
-<simpara>The GIT_AUTHOR_DATE, GIT_COMMITTER_DATE environment variables
-and the <emphasis>--date</emphasis> option
-support the following date formats:</simpara>
-<variablelist>
-<varlistentry>
-<term>
-Git internal format
-</term>
-<listitem>
-<simpara>
-        It is <emphasis>&lt;unix timestamp&gt; &lt;time zone offset&gt;</emphasis>, where <emphasis>&lt;unix
-        timestamp&gt;</emphasis> is the number of seconds since the UNIX epoch.
-        <emphasis>&lt;time zone offset&gt;</emphasis> is a positive or negative offset from UTC.
-        For example CET (which is 2 hours ahead UTC) is <emphasis>+0200</emphasis>.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-RFC 2822
-</term>
-<listitem>
-<simpara>
-        The standard email format as described by RFC 2822, for example
-        <emphasis>Thu, 07 Apr 2005 22:13:13 +0200</emphasis>.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-ISO 8601
-</term>
-<listitem>
-<simpara>
-        Time and date specified by the ISO 8601 standard, for example
-        <emphasis>2005-04-07T22:13:13</emphasis>. The parser accepts a space instead of the
-        <emphasis>T</emphasis> character as well.
-</simpara>
-<note><simpara>In addition, the date part is accepted in the following formats:
-<emphasis>YYYY.MM.DD</emphasis>, <emphasis>MM/DD/YYYY</emphasis> and <emphasis>DD.MM.YYYY</emphasis>.</simpara></note>
+<simpara>For more details, see the <emphasis>pathspec</emphasis> entry in <xref linkend="gitglossary(7)" />.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>
@@ -750,7 +737,7 @@ ISO 8601
 your working tree are temporarily stored to a staging area
 called the "index" with <emphasis>git add</emphasis>.  A file can be
 reverted back, only in the index but not in the working tree,
-to that of the last commit with <emphasis>git reset HEAD -- &lt;file&gt;</emphasis>,
+to that of the last commit with <emphasis>git restore --staged &lt;file&gt;</emphasis>,
 which effectively reverts <emphasis>git add</emphasis> and prevents the changes to
 this file from participating in the next commit.  After building
 the state to be committed incrementally with these commands,
@@ -810,6 +797,80 @@ resolution, you cannot use <emphasis>git commit</emphasis> with pathnames to
 alter the order the changes are committed, because the merge
 should be recorded as a single commit.  In fact, the command
 refuses to run when given pathnames (but see <emphasis>-i</emphasis> option).</simpara>
+</simplesect>
+<simplesect id="git-commit(1)__commit_information">
+<title>COMMIT INFORMATION</title>
+<simpara>Author and committer information is taken from the following environment
+variables, if set:</simpara>
+<literallayout class="monospaced">GIT_AUTHOR_NAME
+GIT_AUTHOR_EMAIL
+GIT_AUTHOR_DATE
+GIT_COMMITTER_NAME
+GIT_COMMITTER_EMAIL
+GIT_COMMITTER_DATE</literallayout>
+<simpara>(nb "&lt;", "&gt;" and "\n"s are stripped)</simpara>
+<simpara>The author and committer names are by convention some form of a personal name
+(that is, the name by which other humans refer to you), although Git does not
+enforce or require any particular form. Arbitrary Unicode may be used, subject
+to the constraints listed above. This name has no effect on authentication; for
+that, see the <emphasis>credential.username</emphasis> variable in <xref linkend="git-config(1)" />.</simpara>
+<simpara>In case (some of) these environment variables are not set, the information
+is taken from the configuration items <emphasis>user.name</emphasis> and <emphasis>user.email</emphasis>, or, if not
+present, the environment variable EMAIL, or, if that is not set,
+system user name and the hostname used for outgoing mail (taken
+from <emphasis>/etc/mailname</emphasis> and falling back to the fully qualified hostname when
+that file does not exist).</simpara>
+<simpara>The <emphasis>author.name</emphasis> and <emphasis>committer.name</emphasis> and their corresponding email options
+override <emphasis>user.name</emphasis> and <emphasis>user.email</emphasis> if set and are overridden themselves by
+the environment variables.</simpara>
+<simpara>The typical usage is to set just the <emphasis>user.name</emphasis> and <emphasis>user.email</emphasis> variables;
+the other options are provided for more complex use cases.</simpara>
+</simplesect>
+<simplesect id="git-commit(1)__date_formats">
+<title>DATE FORMATS</title>
+<simpara>The <emphasis>GIT_AUTHOR_DATE</emphasis>, <emphasis>GIT_COMMITTER_DATE</emphasis> environment variables
+and the <emphasis>--date</emphasis> option
+support the following date formats:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+Git internal format
+</term>
+<listitem>
+<simpara>
+        It is <emphasis>&lt;unix timestamp&gt; &lt;time zone offset&gt;</emphasis>, where <emphasis>&lt;unix
+        timestamp&gt;</emphasis> is the number of seconds since the UNIX epoch.
+        <emphasis>&lt;time zone offset&gt;</emphasis> is a positive or negative offset from UTC.
+        For example CET (which is 1 hour ahead of UTC) is <emphasis>+0100</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+RFC 2822
+</term>
+<listitem>
+<simpara>
+        The standard email format as described by RFC 2822, for example
+        <emphasis>Thu, 07 Apr 2005 22:13:13 +0200</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+ISO 8601
+</term>
+<listitem>
+<simpara>
+        Time and date specified by the ISO 8601 standard, for example
+        <emphasis>2005-04-07T22:13:13</emphasis>. The parser accepts a space instead of the
+        <emphasis>T</emphasis> character as well.
+</simpara>
+<note><simpara>In addition, the date part is accepted in the following formats:
+<emphasis>YYYY.MM.DD</emphasis>, <emphasis>MM/DD/YYYY</emphasis> and <emphasis>DD.MM.YYYY</emphasis>.</simpara></note>
+</listitem>
+</varlistentry>
+</variablelist>
 </simplesect>
 <simplesect id="git-commit(1)__discussion">
 <title>DISCUSSION</title>
@@ -874,9 +935,9 @@ mind.</simpara>
   have i18n.commitencoding in <emphasis>.git/config</emphasis> file, like this:
 </simpara>
 <screen>[i18n]
-        commitencoding = ISO-8859-1</screen>
+        commitEncoding = ISO-8859-1</screen>
 <simpara>Commit objects created with the above setting record the value
-of <emphasis>i18n.commitencoding</emphasis> in its <emphasis>encoding</emphasis> header.  This is to
+of <emphasis>i18n.commitEncoding</emphasis> in its <emphasis>encoding</emphasis> header.  This is to
 help other people who look at them later.  Lack of this header
 implies that the commit log message is encoded in UTF-8.</simpara>
 </listitem>
@@ -886,12 +947,12 @@ implies that the commit log message is encoded in UTF-8.</simpara>
   <emphasis>encoding</emphasis> header of a commit object, and try to re-code the
   log message into UTF-8 unless otherwise specified.  You can
   specify the desired output encoding with
-  <emphasis>i18n.logoutputencoding</emphasis> in <emphasis>.git/config</emphasis> file, like this:
+  <emphasis>i18n.logOutputEncoding</emphasis> in <emphasis>.git/config</emphasis> file, like this:
 </simpara>
 <screen>[i18n]
-        logoutputencoding = ISO-8859-1</screen>
+        logOutputEncoding = ISO-8859-1</screen>
 <simpara>If you do not have this configuration variable, the value of
-<emphasis>i18n.commitencoding</emphasis> is used instead.</simpara>
+<emphasis>i18n.commitEncoding</emphasis> is used instead.</simpara>
 </listitem>
 </orderedlist>
 <simpara>Note that we deliberately chose not to re-code the commit log
@@ -902,14 +963,14 @@ reversible operation.</simpara>
 <simplesect id="git-commit(1)__environment_and_configuration_variables">
 <title>ENVIRONMENT AND CONFIGURATION VARIABLES</title>
 <simpara>The editor used to edit the commit log message will be chosen from the
-GIT_EDITOR environment variable, the core.editor configuration variable, the
-VISUAL environment variable, or the EDITOR environment variable (in that
+<emphasis>GIT_EDITOR</emphasis> environment variable, the core.editor configuration variable, the
+<emphasis>VISUAL</emphasis> environment variable, or the <emphasis>EDITOR</emphasis> environment variable (in that
 order).  See <xref linkend="git-var(1)" /> for details.</simpara>
 </simplesect>
 <simplesect id="git-commit(1)__hooks">
 <title>HOOKS</title>
 <simpara>This command can run <emphasis>commit-msg</emphasis>, <emphasis>prepare-commit-msg</emphasis>, <emphasis>pre-commit</emphasis>,
-and <emphasis>post-commit</emphasis> hooks.  See <xref linkend="githooks(5)" /> for more
+<emphasis>post-commit</emphasis> and <emphasis>post-rewrite</emphasis> hooks.  See <xref linkend="githooks(5)" /> for more
 information.</simpara>
 </simplesect>
 <simplesect id="git-commit(1)__files">

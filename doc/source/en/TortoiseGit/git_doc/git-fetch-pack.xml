@@ -158,6 +158,41 @@ be in a separate packet, and the list must end with a flush packet.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--shallow-since=&lt;date&gt;
+</term>
+<listitem>
+<simpara>
+        Deepen or shorten the history of a shallow repository to
+        include all reachable commits after &lt;date&gt;.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--shallow-exclude=&lt;revision&gt;
+</term>
+<listitem>
+<simpara>
+        Deepen or shorten the history of a shallow repository to
+        exclude commits reachable from a specified remote branch or tag.
+        This option can be specified multiple times.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--deepen-relative
+</term>
+<listitem>
+<simpara>
+        Argument --depth specifies the number of commits from the
+        current shallow boundary instead of from the tip of each
+        remote branch history.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --no-progress
 </term>
 <listitem>
@@ -207,9 +242,9 @@ be in a separate packet, and the list must end with a flush packet.</simpara>
         $GIT_DIR (e.g. "HEAD", "refs/heads/master").  When
         unspecified, update from all heads the remote side has.
 </simpara>
-<simpara>If the remote has enabled the options <emphasis>uploadpack.allowTipSHA1InWant</emphasis> or
-<emphasis>uploadpack.allowReachableSHA1InWant</emphasis>, they may alternatively be 40-hex
-sha1s present on the remote.</simpara>
+<simpara>If the remote has enabled the options <emphasis>uploadpack.allowTipSHA1InWant</emphasis>,
+<emphasis>uploadpack.allowReachableSHA1InWant</emphasis>, or <emphasis>uploadpack.allowAnySHA1InWant</emphasis>,
+they may alternatively be 40-hex sha1s present on the remote.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>

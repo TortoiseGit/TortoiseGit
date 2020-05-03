@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<sect2 lang="en" id="git-sparse-checkout(1)">
+    <title>git-sparse-checkout(1)</title>
+<indexterm>
+<primary>git-sparse-checkout(1)</primary>
+</indexterm>
+<simplesect id="git-sparse-checkout(1)__name">
+<title>NAME</title>
+<simpara>git-sparse-checkout - Initialize and modify the sparse-checkout
+configuration, which reduces the checkout to a set of paths
+given by a list of patterns.</simpara>
+</simplesect>
+<simplesect id="git-sparse-checkout(1)__synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git sparse-checkout &lt;subcommand&gt; [options]</emphasis></literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="git-sparse-checkout(1)__description">
+<title>DESCRIPTION</title>
+<simpara>Initialize and modify the sparse-checkout configuration, which reduces
+the checkout to a set of paths given by a list of patterns.</simpara>
+<simpara>THIS COMMAND IS EXPERIMENTAL. ITS BEHAVIOR, AND THE BEHAVIOR OF OTHER
+COMMANDS IN THE PRESENCE OF SPARSE-CHECKOUTS, WILL LIKELY CHANGE IN
+THE FUTURE.</simpara>
+</simplesect>
+<simplesect id="git-sparse-checkout(1)__commands">
+<title>COMMANDS</title>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>list</emphasis>
+</term>
+<listitem>
+<simpara>
+        Describe the patterns in the sparse-checkout file.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>init</emphasis>
+</term>
+<listitem>
+<simpara>
+        Enable the <emphasis>core.sparseCheckout</emphasis> setting. If the
+        sparse-checkout file does not exist, then populate it with
+        patterns that match every file in the root directory and
+        no other directories, then will remove all directories tracked
+        by Git. Add patterns to the sparse-checkout file to
+        repopulate the working directory.
+</simpara>
+<simpara>To avoid interfering with other worktrees, it first enables the
+<emphasis>extensions.worktreeConfig</emphasis> setting and makes sure to set the
+<emphasis>core.sparseCheckout</emphasis> setting in the worktree-specific config file.</simpara>
+<simpara>When <emphasis>--cone</emphasis> is provided, the <emphasis>core.sparseCheckoutCone</emphasis> setting is
+also set, allowing for better performance with a limited set of
+patterns (see <emphasis>CONE PATTERN SET</emphasis> below).</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>set</emphasis>
+</term>
+<listitem>
+<simpara>
+        Write a set of patterns to the sparse-checkout file, as given as
+        a list of arguments following the <emphasis>set</emphasis> subcommand. Update the
+        working directory to match the new patterns. Enable the
+        core.sparseCheckout config setting if it is not already enabled.
+</simpara>
+<simpara>When the <emphasis>--stdin</emphasis> option is provided, the patterns are read from
+standard in as a newline-delimited list instead of from the arguments.</simpara>
+<simpara>When <emphasis>core.sparseCheckoutCone</emphasis> is enabled, the input list is considered a
+list of directories instead of sparse-checkout patterns. The command writes
+patterns to the sparse-checkout file to include all files contained in those
+directories (recursively) as well as files that are siblings of ancestor
+directories. The input format matches the output of <emphasis>git ls-tree --name-only</emphasis>.
+This includes interpreting pathnames that begin with a double quote (") as
+C-style quoted strings.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>add</emphasis>
+</term>
+<listitem>
+<simpara>
+        Update the sparse-checkout file to include additional patterns.
+        By default, these patterns are read from the command-line arguments,
+        but they can be read from stdin using the <emphasis>--stdin</emphasis> option. When
+        <emphasis>core.sparseCheckoutCone</emphasis> is enabled, the given patterns are interpreted
+        as directory names as in the <emphasis>set</emphasis> subcommand.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>disable</emphasis>
+</term>
+<listitem>
+<simpara>
+        Disable the <emphasis>core.sparseCheckout</emphasis> config setting, and restore the
+        working directory to include all files. Leaves the sparse-checkout
+        file intact so a later <emphasis>git sparse-checkout init</emphasis> command may
+        return the working directory to the same state.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="git-sparse-checkout(1)__sparse_checkout">
+<title>SPARSE CHECKOUT</title>
+<simpara>"Sparse checkout" allows populating the working directory sparsely.
+It uses the skip-worktree bit (see <xref linkend="git-update-index(1)" />) to tell
+Git whether a file in the working directory is worth looking at. If
+the skip-worktree bit is set, then the file is ignored in the working
+directory. Git will not populate the contents of those files, which
+makes a sparse checkout helpful when working in a repository with many
+files, but only a few are important to the current user.</simpara>
+<simpara>The <emphasis>$GIT_DIR/info/sparse-checkout</emphasis> file is used to define the
+skip-worktree reference bitmap. When Git updates the working
+directory, it updates the skip-worktree bits in the index based
+on this file. The files matching the patterns in the file will
+appear in the working directory, and the rest will not.</simpara>
+<simpara>To enable the sparse-checkout feature, run <emphasis>git sparse-checkout init</emphasis> to
+initialize a simple sparse-checkout file and enable the <emphasis>core.sparseCheckout</emphasis>
+config setting. Then, run <emphasis>git sparse-checkout set</emphasis> to modify the patterns in
+the sparse-checkout file.</simpara>
+<simpara>To repopulate the working directory with all files, use the
+<emphasis>git sparse-checkout disable</emphasis> command.</simpara>
+</simplesect>
+<simplesect id="git-sparse-checkout(1)__full_pattern_set">
+<title>FULL PATTERN SET</title>
+<simpara>By default, the sparse-checkout file uses the same syntax as <emphasis>.gitignore</emphasis>
+files.</simpara>
+<simpara>While <emphasis>$GIT_DIR/info/sparse-checkout</emphasis> is usually used to specify what
+files are included, you can also specify what files are <emphasis>not</emphasis> included,
+using negative patterns. For example, to remove the file <emphasis>unwanted</emphasis>:</simpara>
+<screen>/*
+!unwanted</screen>
+</simplesect>
+<simplesect id="git-sparse-checkout(1)__cone_pattern_set">
+<title>CONE PATTERN SET</title>
+<simpara>The full pattern set allows for arbitrary pattern matches and complicated
+inclusion/exclusion rules. These can result in O(N*M) pattern matches when
+updating the index, where N is the number of patterns and M is the number
+of paths in the index. To combat this performance issue, a more restricted
+pattern set is allowed when <emphasis>core.sparseCheckoutCone</emphasis> is enabled.</simpara>
+<simpara>The accepted patterns in the cone pattern set are:</simpara>
+<orderedlist numeration="arabic">
+<listitem>
+<simpara>
+<emphasis role="strong">Recursive:</emphasis> All paths inside a directory are included.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis role="strong">Parent:</emphasis> All files immediately inside a directory are included.
+</simpara>
+</listitem>
+</orderedlist>
+<simpara>In addition to the above two patterns, we also expect that all files in the
+root directory are included. If a recursive pattern is added, then all
+leading directories are added as parent patterns.</simpara>
+<simpara>By default, when running <emphasis>git sparse-checkout init</emphasis>, the root directory is
+added as a parent pattern. At this point, the sparse-checkout file contains
+the following patterns:</simpara>
+<screen>/*
+!/*/</screen>
+<simpara>This says "include everything in root, but nothing two levels below root."</simpara>
+<simpara>When in cone mode, the <emphasis>git sparse-checkout set</emphasis> subcommand takes a list of
+directories instead of a list of sparse-checkout patterns. In this mode,
+the command <emphasis>git sparse-checkout set A/B/C</emphasis> sets the directory <emphasis>A/B/C</emphasis> as
+a recursive pattern, the directories <emphasis>A</emphasis> and <emphasis>A/B</emphasis> are added as parent
+patterns. The resulting sparse-checkout file is now</simpara>
+<screen>/*
+!/*/
+/A/
+!/A/*/
+/A/B/
+!/A/B/*/
+/A/B/C/</screen>
+<simpara>Here, order matters, so the negative patterns are overridden by the positive
+patterns that appear lower in the file.</simpara>
+<simpara>If <emphasis>core.sparseCheckoutCone=true</emphasis>, then Git will parse the sparse-checkout file
+expecting patterns of these types. Git will warn if the patterns do not match.
+If the patterns do match the expected format, then Git will use faster hash-
+based algorithms to compute inclusion in the sparse-checkout.</simpara>
+<simpara>In the cone mode case, the <emphasis>git sparse-checkout list</emphasis> subcommand will list the
+directories that define the recursive patterns. For the example sparse-checkout
+file above, the output is as follows:</simpara>
+<screen>$ git sparse-checkout list
+A/B/C</screen>
+<simpara>If <emphasis>core.ignoreCase=true</emphasis>, then the pattern-matching algorithm will use a
+case-insensitive check. This corrects for case mismatched filenames in the
+<emphasis>git sparse-checkout set</emphasis> command to reflect the expected cone in the working
+directory.</simpara>
+</simplesect>
+<simplesect id="git-sparse-checkout(1)__submodules">
+<title>SUBMODULES</title>
+<simpara>If your repository contains one or more submodules, then those submodules will
+appear based on which you initialized with the <emphasis>git submodule</emphasis> command. If
+your sparse-checkout patterns exclude an initialized submodule, then that
+submodule will still appear in your working directory.</simpara>
+</simplesect>
+<simplesect id="git-sparse-checkout(1)__see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="git-read-tree(1)" />
+<xref linkend="gitignore(5)" /></simpara>
+</simplesect>
+<simplesect id="git-sparse-checkout(1)__git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</sect2>

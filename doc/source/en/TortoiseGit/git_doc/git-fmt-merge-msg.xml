@@ -135,10 +135,10 @@ merge.summary
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="git-fmt-merge-msg(1)__example">
-<title>EXAMPLE</title>
-<simpara>$ git fetch origin master
-$ git fmt-merge-msg --log &lt;$GIT_DIR/FETCH_HEAD</simpara>
+<simplesect id="git-fmt-merge-msg(1)__examples">
+<title>EXAMPLES</title>
+<screen>$ git fetch origin master
+$ git fmt-merge-msg --log &lt;$GIT_DIR/FETCH_HEAD</screen>
 <simpara>Print a log message describing a merge of the "master" branch from
 the "origin" remote.</simpara>
 </simplesect>

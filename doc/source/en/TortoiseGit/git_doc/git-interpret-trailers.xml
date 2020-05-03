@@ -8,24 +8,26 @@
 </indexterm>
 <simplesect id="git-interpret-trailers(1)__name">
 <title>NAME</title>
-<simpara>git-interpret-trailers - help add structured information into commit messages</simpara>
+<simpara>git-interpret-trailers - Add or parse structured information in commit messages</simpara>
 </simplesect>
 <simplesect id="git-interpret-trailers(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git interpret-trailers</emphasis> [--in-place] [--trim-empty] [(--trailer &lt;token&gt;[(=|:)&lt;value&gt;])&#8230;] [&lt;file&gt;&#8230;]</literallayout>
+<literallayout><emphasis>git interpret-trailers</emphasis> [&lt;options&gt;] [(--trailer &lt;token&gt;[(=|:)&lt;value&gt;])&#8230;] [&lt;file&gt;&#8230;]
+<emphasis>git interpret-trailers</emphasis> [&lt;options&gt;] [--parse] [&lt;file&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-interpret-trailers(1)__description">
 <title>DESCRIPTION</title>
-<simpara>Help adding <emphasis>trailers</emphasis> lines, that look similar to RFC 822 e-mail
+<simpara>Help parsing or adding <emphasis>trailers</emphasis> lines, that look similar to RFC 822 e-mail
 headers, at the end of the otherwise free-form part of a commit
 message.</simpara>
 <simpara>This command reads some patches or commit messages from either the
-&lt;file&gt; arguments or the standard input if no &lt;file&gt; is specified. Then
-this command applies the arguments passed using the <emphasis>--trailer</emphasis>
-option, if any, to the commit message part of each input file. The
-result is emitted on the standard output.</simpara>
+&lt;file&gt; arguments or the standard input if no &lt;file&gt; is specified. If
+<emphasis>--parse</emphasis> is specified, the output consists of the parsed trailers.</simpara>
+<simpara>Otherwise, this command applies the arguments passed using the
+<emphasis>--trailer</emphasis> option, if any, to the commit message part of each input
+file. The result is emitted on the standard output.</simpara>
 <simpara>Some configuration variables control the way the <emphasis>--trailer</emphasis> arguments
 are applied to each commit message and the way any existing trailer in
 the commit message is changed. They also make it possible to
@@ -45,17 +47,21 @@ after the commit message part of the output, and, if there is no line
 with only spaces at the end of the commit message part, one blank line
 will be added before the new trailer.</simpara>
 <simpara>Existing trailers are extracted from the input message by looking for
-a group of one or more lines that contain a colon (by default), where
-the group is preceded by one or more empty (or whitespace-only) lines.
+a group of one or more lines that (i) is all trailers, or (ii) contains at
+least one Git-generated or user-configured trailer and consists of at
+least 25% trailers.
+The group must be preceded by one or more empty (or whitespace-only) lines.
 The group must either be at the end of the message or be the last
-non-whitespace lines before a line that starts with <emphasis>---</emphasis>. Such three
-minus signs start the patch part of the message.</simpara>
-<simpara>When reading trailers, there can be whitespaces before and after the
+non-whitespace lines before a line that starts with <emphasis>---</emphasis> (followed by a
+space or the end of the line). Such three minus signs start the patch
+part of the message. See also <emphasis>--no-divider</emphasis> below.</simpara>
+<simpara>When reading trailers, there can be whitespaces after the
 token, the separator and the value. There can also be whitespaces
-inside the token and the value.</simpara>
+inside the token and the value. The value may be split over multiple lines with
+each subsequent line starting with whitespace, like the "folding" in RFC 822.</simpara>
 <simpara>Note that <emphasis>trailers</emphasis> do not follow and are not intended to follow many
-rules for RFC 822 headers. For example they do not follow the line
-folding rules, the encoding rules and probably many other rules.</simpara>
+rules for RFC 822 headers. For example they do not follow
+the encoding rules and probably many other rules.</simpara>
 </simplesect>
 <simplesect id="git-interpret-trailers(1)__options">
 <title>OPTIONS</title>
@@ -91,6 +97,115 @@ folding rules, the encoding rules and probably many other rules.</simpara>
         Specify a (&lt;token&gt;, &lt;value&gt;) pair that should be applied as a
         trailer to the input messages. See the description of this
         command.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--where &lt;placement&gt;
+</term>
+<term>
+--no-where
+</term>
+<listitem>
+<simpara>
+        Specify where all new trailers will be added.  A setting
+        provided with <emphasis>--where</emphasis> overrides all configuration variables
+        and applies to all <emphasis>--trailer</emphasis> options until the next occurrence of
+        <emphasis>--where</emphasis> or <emphasis>--no-where</emphasis>. Possible values are <emphasis>after</emphasis>, <emphasis>before</emphasis>,
+        <emphasis>end</emphasis> or <emphasis>start</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--if-exists &lt;action&gt;
+</term>
+<term>
+--no-if-exists
+</term>
+<listitem>
+<simpara>
+        Specify what action will be performed when there is already at
+        least one trailer with the same &lt;token&gt; in the message.  A setting
+        provided with <emphasis>--if-exists</emphasis> overrides all configuration variables
+        and applies to all <emphasis>--trailer</emphasis> options until the next occurrence of
+        <emphasis>--if-exists</emphasis> or <emphasis>--no-if-exists</emphasis>. Possible actions are <emphasis>addIfDifferent</emphasis>,
+        <emphasis>addIfDifferentNeighbor</emphasis>, <emphasis>add</emphasis>, <emphasis>replace</emphasis> and <emphasis>doNothing</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--if-missing &lt;action&gt;
+</term>
+<term>
+--no-if-missing
+</term>
+<listitem>
+<simpara>
+        Specify what action will be performed when there is no other
+        trailer with the same &lt;token&gt; in the message.  A setting
+        provided with <emphasis>--if-missing</emphasis> overrides all configuration variables
+        and applies to all <emphasis>--trailer</emphasis> options until the next occurrence of
+        <emphasis>--if-missing</emphasis> or <emphasis>--no-if-missing</emphasis>. Possible actions are <emphasis>doNothing</emphasis>
+        or <emphasis>add</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--only-trailers
+</term>
+<listitem>
+<simpara>
+        Output only the trailers, not any other parts of the input.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--only-input
+</term>
+<listitem>
+<simpara>
+        Output only trailers that exist in the input; do not add any
+        from the command-line or by following configured <emphasis>trailer.*</emphasis>
+        rules.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--unfold
+</term>
+<listitem>
+<simpara>
+        Remove any whitespace-continuation in trailers, so that each
+        trailer appears on a line by itself with its full content.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--parse
+</term>
+<listitem>
+<simpara>
+        A convenience alias for <emphasis>--only-trailers --only-input
+        --unfold</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-divider
+</term>
+<listitem>
+<simpara>
+        Do not treat <emphasis>---</emphasis> as the end of the commit message. Use this
+        when you know your input contains just the commit message itself
+        (and not an email or the output of <emphasis>git format-patch</emphasis>).
 </simpara>
 </listitem>
 </varlistentry>
@@ -151,7 +266,7 @@ trailer.ifexists
         same &lt;token&gt; in the message.
 </simpara>
 <simpara>The valid values for this option are: <emphasis>addIfDifferentNeighbor</emphasis> (this
-is the default), <emphasis>addIfDifferent</emphasis>, <emphasis>add</emphasis>, <emphasis>overwrite</emphasis> or <emphasis>doNothing</emphasis>.</simpara>
+is the default), <emphasis>addIfDifferent</emphasis>, <emphasis>add</emphasis>, <emphasis>replace</emphasis> or <emphasis>doNothing</emphasis>.</simpara>
 <simpara>With <emphasis>addIfDifferentNeighbor</emphasis>, a new trailer will be added only if no
 trailer with the same (&lt;token&gt;, &lt;value&gt;) pair is above or below the line
 where the new trailer will be added.</simpara>
@@ -213,11 +328,11 @@ trailer.&lt;token&gt;.where
 </varlistentry>
 <varlistentry>
 <term>
-trailer.&lt;token&gt;.ifexist
+trailer.&lt;token&gt;.ifexists
 </term>
 <listitem>
 <simpara>
-        This option takes the same values as the <emphasis>trailer.ifexist</emphasis>
+        This option takes the same values as the <emphasis>trailer.ifexists</emphasis>
         configuration variable and it overrides what is specified by
         that option for trailers with the specified &lt;token&gt;.
 </simpara>

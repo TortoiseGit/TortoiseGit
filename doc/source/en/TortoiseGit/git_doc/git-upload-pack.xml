@@ -13,7 +13,8 @@
 <simplesect id="git-upload-pack(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git-upload-pack</emphasis> [--strict] [--timeout=&lt;n&gt;] &lt;directory&gt;</literallayout>
+<literallayout><emphasis>git-upload-pack</emphasis> [--[no-]strict] [--timeout=&lt;n&gt;] [--stateless-rpc]
+                  [--advertise-refs] &lt;directory&gt;</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-upload-pack(1)__description">
@@ -30,7 +31,7 @@ repository.  For push operations, see <emphasis>git send-pack</emphasis>.</simpa
 <variablelist>
 <varlistentry>
 <term>
---strict
+--[no-]strict
 </term>
 <listitem>
 <simpara>
@@ -45,6 +46,30 @@ repository.  For push operations, see <emphasis>git send-pack</emphasis>.</simpa
 <listitem>
 <simpara>
         Interrupt transfer after &lt;n&gt; seconds of inactivity.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--stateless-rpc
+</term>
+<listitem>
+<simpara>
+        Perform only a single read-write cycle with stdin and stdout.
+        This fits with the HTTP POST request processing model where
+        a program may read the request, write a response, and must exit.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--advertise-refs
+</term>
+<listitem>
+<simpara>
+        Only the initial ref advertisement is output, and the program exits
+        immediately. This fits with the HTTP GET request model, where
+        no request content is received but a response must be produced.
 </simpara>
 </listitem>
 </varlistentry>

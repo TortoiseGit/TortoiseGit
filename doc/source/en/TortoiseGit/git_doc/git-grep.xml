@@ -17,12 +17,12 @@
            [-v | --invert-match] [-h|-H] [--full-name]
            [-E | --extended-regexp] [-G | --basic-regexp]
            [-P | --perl-regexp]
-           [-F | --fixed-strings] [-n | --line-number]
+           [-F | --fixed-strings] [-n | --line-number] [--column]
            [-l | --files-with-matches] [-L | --files-without-match]
            [(-O | --open-files-in-pager) [&lt;pager&gt;]]
            [-z | --null]
-           [-c | --count] [--all-match] [-q | --quiet]
-           [--max-depth &lt;depth&gt;]
+           [ -o | --only-matching ] [-c | --count] [--all-match] [-q | --quiet]
+           [--max-depth &lt;depth&gt;] [--[no-]recursive]
            [--color[=&lt;when&gt;] | --no-color]
            [--break] [--heading] [-p | --show-function]
            [-A &lt;post-context&gt;] [-B &lt;pre-context&gt;] [-C &lt;context&gt;]
@@ -30,6 +30,7 @@
            [--threads &lt;num&gt;]
            [-f &lt;file&gt;] [-e] &lt;pattern&gt;
            [--and|--or|--not|(|)|-e &lt;pattern&gt;&#8230;]
+           [--recurse-submodules] [--parent-basename &lt;basename&gt;]
            [ [--[no-]exclude-standard] [--cached | --no-index | --untracked] | &lt;tree&gt;&#8230;]
            [--] [&lt;pathspec&gt;&#8230;]</literallayout>
 </blockquote>
@@ -51,6 +52,16 @@ grep.lineNumber
 <listitem>
 <simpara>
         If set to true, enable <emphasis>-n</emphasis> option by default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+grep.column
+</term>
+<listitem>
+<simpara>
+        If set to true, enable the <emphasis>--column</emphasis> option by default.
 </simpara>
 </listitem>
 </varlistentry>
@@ -85,8 +96,8 @@ grep.threads
 </term>
 <listitem>
 <simpara>
-        Number of grep worker threads to use.  If unset (or set to 0),
-        8 threads are used by default (for now).
+        Number of grep worker threads to use. If unset (or set to 0), Git will
+        use as many threads as the number of logical cores available.
 </simpara>
 </listitem>
 </varlistentry>
@@ -173,6 +184,20 @@ grep.fallbackToNoIndex
 </varlistentry>
 <varlistentry>
 <term>
+--recurse-submodules
+</term>
+<listitem>
+<simpara>
+        Recursively search in each submodule that has been initialized and
+        checked out in the repository.  When used in combination with the
+        &lt;tree&gt; option the prefix of all submodule output will be the name of
+        the parent project's &lt;tree&gt; object. This option has no effect
+        if <emphasis>--no-index</emphasis> is given.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 -a
 </term>
 <term>
@@ -236,10 +261,33 @@ grep.fallbackToNoIndex
 <listitem>
 <simpara>
         For each &lt;pathspec&gt; given on command line, descend at most &lt;depth&gt;
-        levels of directories. A negative value means no limit.
+        levels of directories. A value of -1 means no limit.
         This option is ignored if &lt;pathspec&gt; contains active wildcards.
         In other words if "a*" matches a directory named "a*",
         "*" is matched literally so --max-depth is still effective.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-r
+</term>
+<term>
+--recursive
+</term>
+<listitem>
+<simpara>
+        Same as <emphasis>--max-depth=-1</emphasis>; this is the default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-recursive
+</term>
+<listitem>
+<simpara>
+        Same as <emphasis>--max-depth=0</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -330,9 +378,11 @@ grep.fallbackToNoIndex
 </term>
 <listitem>
 <simpara>
-        Use Perl-compatible regexp for patterns. Requires libpcre to be
-        compiled in.
+        Use Perl-compatible regular expressions for patterns.
 </simpara>
+<simpara>Support for these types of regular expressions is an optional
+compile-time dependency. If Git wasn't compiled with support for them
+providing this option will cause it to die.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -359,6 +409,17 @@ grep.fallbackToNoIndex
 <listitem>
 <simpara>
         Prefix the line number to matching lines.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--column
+</term>
+<listitem>
+<simpara>
+        Prefix the 1-indexed byte-offset of the first match from the start of the
+        matching line.
 </simpara>
 </listitem>
 </varlistentry>
@@ -417,6 +478,20 @@ grep.fallbackToNoIndex
 <simpara>
         Output \0 instead of the character that normally follows a
         file name.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-o
+</term>
+<term>
+--only-matching
+</term>
+<listitem>
+<simpara>
+        Print only the matched (non-empty) parts of a matching line, with each such
+        part on a separate output line.
 </simpara>
 </listitem>
 </varlistentry>
@@ -575,6 +650,19 @@ grep.fallbackToNoIndex
 <simpara>
         Read patterns from &lt;file&gt;, one per line.
 </simpara>
+<simpara>Passing the pattern via &lt;file&gt; allows for providing a search pattern
+containing a \0.</simpara>
+<simpara>Not all pattern types support patterns containing \0. Git will error
+out if a given pattern type can't support such a pattern. The
+<emphasis>--perl-regexp</emphasis> pattern type when compiled against the PCRE v2 backend
+has the widest support for these types of patterns.</simpara>
+<simpara>In versions of Git before 2.23.0 patterns containing \0 would be
+silently considered fixed. This was never documented, there were also
+odd and undocumented interactions between e.g. non-ASCII patterns
+containing \0 and <emphasis>--ignore-case</emphasis>.</simpara>
+<simpara>In future versions we may learn to support patterns containing \0 for
+more search backends, until then we'll die when the pattern type in
+question doesn't support them.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -669,12 +757,14 @@ grep.fallbackToNoIndex
         If given, limit the search to paths matching at least one pattern.
         Both leading paths match and glob(7) patterns are supported.
 </simpara>
+<simpara>For more details about the &lt;pathspec&gt; syntax, see the <emphasis>pathspec</emphasis> entry
+in <xref linkend="gitglossary(7)" />.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>
 </simplesect>
 <simplesect id="git-grep(1)__examples">
-<title>Examples</title>
+<title>EXAMPLES</title>
 <variablelist>
 <varlistentry>
 <term>
@@ -709,7 +799,26 @@ grep.fallbackToNoIndex
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+<emphasis>git grep solution -- :^Documentation</emphasis>
+</term>
+<listitem>
+<simpara>
+        Looks for <emphasis>solution</emphasis>, excluding files in <emphasis>Documentation</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
+</simplesect>
+<simplesect id="git-grep(1)__notes_on_threads">
+<title>NOTES ON THREADS</title>
+<simpara>The <emphasis>--threads</emphasis> option (and the grep.threads configuration) will be ignored when
+<emphasis>--open-files-in-pager</emphasis> is used, forcing a single-threaded execution.</simpara>
+<simpara>When grepping the object store (with <emphasis>--cached</emphasis> or giving tree objects), running
+with multiple threads might perform slower than single threaded if <emphasis>--textconv</emphasis>
+is given and there're too many text conversions. So if you experience low
+performance in this case, it might be desirable to use <emphasis>--threads=1</emphasis>.</simpara>
 </simplesect>
 <simplesect id="git-grep(1)__git">
 <title>GIT</title>

@@ -13,7 +13,8 @@
 <simplesect id="git-mailsplit(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git mailsplit</emphasis> [-b] [-f&lt;nn&gt;] [-d&lt;prec&gt;] [--keep-cr] -o&lt;directory&gt; [--] [(&lt;mbox&gt;|&lt;Maildir&gt;)&#8230;]</literallayout>
+<literallayout><emphasis>git mailsplit</emphasis> [-b] [-f&lt;nn&gt;] [-d&lt;prec&gt;] [--keep-cr] [--mboxrd]
+                -o&lt;directory&gt; [--] [(&lt;mbox&gt;|&lt;Maildir&gt;)&#8230;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-mailsplit(1)__description">
@@ -99,6 +100,17 @@ patches in the correct order.</simpara></important>
 <listitem>
 <simpara>
         Do not remove <emphasis>\r</emphasis> from lines ending with <emphasis>\r\n</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--mboxrd
+</term>
+<listitem>
+<simpara>
+        Input is of the "mboxrd" format and "^&gt;+From " line escaping is
+        reversed.
 </simpara>
 </listitem>
 </varlistentry>

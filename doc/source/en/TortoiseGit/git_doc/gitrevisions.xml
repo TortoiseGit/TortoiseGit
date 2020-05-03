@@ -8,7 +8,7 @@
 </indexterm>
 <simplesect id="gitrevisions(7)__name">
 <title>NAME</title>
-<simpara>gitrevisions - specifying revisions and ranges for Git</simpara>
+<simpara>gitrevisions - Specifying revisions and ranges for Git</simpara>
 </simplesect>
 <simplesect id="gitrevisions(7)__synopsis">
 <title>SYNOPSIS</title>
@@ -18,12 +18,13 @@
 <title>DESCRIPTION</title>
 <simpara>Many Git commands take revision parameters as arguments. Depending on
 the command, they denote a specific commit or, for commands which
-walk the revision graph (such as <xref linkend="git-log(1)" />), all commits which can
-be reached from that commit. In the latter case one can also specify a
-range of revisions explicitly.</simpara>
-<simpara>In addition, some Git commands (such as <xref linkend="git-show(1)" />) also take
-revision parameters which denote other objects than commits, e.g. blobs
-("files") or trees ("directories of files").</simpara>
+walk the revision graph (such as <xref linkend="git-log(1)" />), all commits which are
+reachable from that commit. For commands that walk the revision graph one can
+also specify a range of revisions explicitly.</simpara>
+<simpara>In addition, some Git commands (such as <xref linkend="git-show(1)" /> and
+<xref linkend="git-push(1)" />) can also take revision parameters which denote
+other objects than commits, e.g. blobs ("files") or trees
+("directories of files").</simpara>
 </simplesect>
 <simplesect id="gitrevisions(7)__specifying_revisions">
 <title>SPECIFYING REVISIONS</title>
@@ -32,6 +33,9 @@ commit object.  It uses what is called an <emphasis>extended SHA-1</emphasis>
 syntax.  Here are various ways to spell object names.  The
 ones listed near the end of this list name trees and
 blobs contained in a commit.</simpara>
+<note><simpara>This document shows the "raw" syntax as seen by git. The shell
+and other UIs might require additional quoting to protect special
+characters and to avoid word splitting.</simpara></note>
 <variablelist>
 <varlistentry>
 <term>
@@ -135,7 +139,7 @@ some output processing may assume ref names in UTF-8.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>&lt;refname&gt;@{&lt;date&gt;}</emphasis>, e.g. <emphasis>master@{yesterday}</emphasis>, <emphasis>HEAD@{5 minutes ago}</emphasis>
+<emphasis>[&lt;refname&gt;]@{&lt;date&gt;}</emphasis>, e.g. <emphasis>master@{yesterday}</emphasis>, <emphasis>HEAD@{5 minutes ago}</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -193,7 +197,7 @@ some output processing may assume ref names in UTF-8.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>&lt;branchname&gt;@{upstream}</emphasis>, e.g. <emphasis>master@{upstream}</emphasis>, <emphasis>@{u}</emphasis>
+<emphasis>[&lt;branchname&gt;]@{upstream}</emphasis>, e.g. <emphasis>master@{upstream}</emphasis>, <emphasis>@{u}</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -201,13 +205,14 @@ some output processing may assume ref names in UTF-8.</simpara>
   refers to the branch that the branch specified by branchname is set to build on
   top of (configured with <emphasis>branch.&lt;name&gt;.remote</emphasis> and
   <emphasis>branch.&lt;name&gt;.merge</emphasis>).  A missing branchname defaults to the
-  current one.
+  current one. These suffixes are also accepted when spelled in uppercase, and
+  they mean the same thing no matter the case.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>&lt;branchname&gt;@{push}</emphasis>, e.g. <emphasis>master@{push}</emphasis>, <emphasis>@{push}</emphasis>
+<emphasis>[&lt;branchname&gt;]@{push}</emphasis>, e.g. <emphasis>master@{push}</emphasis>, <emphasis>@{push}</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -220,7 +225,7 @@ some output processing may assume ref names in UTF-8.</simpara>
 <simpara>Here's an example to make it more clear:</simpara>
 <screen>$ git config push.default current
 $ git config remote.pushdefault myfork
-$ git checkout -b mybranch origin/master
+$ git switch -c mybranch origin/master
 
 $ git rev-parse --symbolic-full-name @{upstream}
 refs/remotes/origin/master
@@ -230,11 +235,13 @@ refs/remotes/myfork/mybranch</screen>
 <simpara>Note in the example that we set up a triangular workflow, where we pull
 from one location and push to another. In a non-triangular workflow,
 <emphasis>@{push}</emphasis> is the same as <emphasis>@{upstream}</emphasis>, and there is no need for it.</simpara>
+<simpara>This suffix is also accepted when spelled in uppercase, and means the same
+thing no matter the case.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>&lt;rev&gt;&#94;</emphasis>, e.g. <emphasis>HEAD&#94;, v1.5.1&#94;0</emphasis>
+<emphasis>&lt;rev&gt;&#94;[&lt;n&gt;]</emphasis>, e.g. <emphasis>HEAD&#94;, v1.5.1&#94;0</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -249,10 +256,12 @@ from one location and push to another. In a non-triangular workflow,
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>&lt;rev&gt;&#126;&lt;n&gt;</emphasis>, e.g. <emphasis>master&#126;3</emphasis>
+<emphasis>&lt;rev&gt;&#126;[&lt;n&gt;]</emphasis>, e.g. <emphasis>HEAD&#126;, master&#126;3</emphasis>
 </term>
 <listitem>
 <simpara>
+  A suffix <emphasis>&#126;</emphasis> to a revision parameter means the first parent of
+  that commit object.
   A suffix <emphasis>&#126;&lt;n&gt;</emphasis> to a revision parameter means the commit
   object that is the &lt;n&gt;th generation ancestor of the named
   commit object, following only the first parents.  I.e. <emphasis>&lt;rev&gt;&#126;3</emphasis> is
@@ -279,11 +288,11 @@ from one location and push to another. In a non-triangular workflow,
   <emphasis>&lt;rev&gt;&#94;0</emphasis>
   is a short-hand for <emphasis>&lt;rev&gt;&#94;{commit}</emphasis>.
 </simpara>
-<simpara><emphasis>rev&#94;{object}</emphasis> can be used to make sure <emphasis>rev</emphasis> names an
-object that exists, without requiring <emphasis>rev</emphasis> to be a tag, and
-without dereferencing <emphasis>rev</emphasis>; because a tag is already an object,
+<simpara><emphasis>&lt;rev&gt;&#94;{object}</emphasis> can be used to make sure <emphasis>&lt;rev&gt;</emphasis> names an
+object that exists, without requiring <emphasis>&lt;rev&gt;</emphasis> to be a tag, and
+without dereferencing <emphasis>&lt;rev&gt;</emphasis>; because a tag is already an object,
 it does not have to be dereferenced even once to get to an object.</simpara>
-<simpara><emphasis>rev&#94;{tag}</emphasis> can be used to ensure that <emphasis>rev</emphasis> identifies an
+<simpara><emphasis>&lt;rev&gt;&#94;{tag}</emphasis> can be used to ensure that <emphasis>&lt;rev&gt;</emphasis> identifies an
 existing tag object.</simpara>
 </listitem>
 </varlistentry>
@@ -323,27 +332,27 @@ existing tag object.</simpara>
   A colon, followed by a slash, followed by a text, names
   a commit whose commit message matches the specified regular expression.
   This name returns the youngest matching commit which is
-  reachable from any ref. The regular expression can match any part of the
+  reachable from any ref, including HEAD.
+  The regular expression can match any part of the
   commit message. To match messages starting with a string, one can use
   e.g. <emphasis>:/^foo</emphasis>. The special sequence <emphasis>:/!</emphasis> is reserved for modifiers to what
   is matched. <emphasis>:/!-foo</emphasis> performs a negative match, while <emphasis>:/!!foo</emphasis> matches a
   literal <emphasis>!</emphasis> character, followed by <emphasis>foo</emphasis>. Any other sequence beginning with
   <emphasis>:/!</emphasis> is reserved for now.
+  Depending on the given text, the shell's word splitting rules might
+  require additional quoting.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>&lt;rev&gt;:&lt;path&gt;</emphasis>, e.g. <emphasis>HEAD:README</emphasis>, <emphasis>:README</emphasis>, <emphasis>master:./README</emphasis>
+<emphasis>&lt;rev&gt;:&lt;path&gt;</emphasis>, e.g. <emphasis>HEAD:README</emphasis>, <emphasis>master:./README</emphasis>
 </term>
 <listitem>
 <simpara>
   A suffix <emphasis>:</emphasis> followed by a path names the blob or tree
   at the given path in the tree-ish object named by the part
   before the colon.
-  <emphasis>:path</emphasis> (with an empty part before the colon)
-  is a special case of the syntax described next: content
-  recorded in the index at the given path.
   A path starting with <emphasis>./</emphasis> or <emphasis>../</emphasis> is relative to the current working directory.
   The given path will be converted to be relative to the working tree's root directory.
   This is most useful to address a blob or tree from a commit or tree that has
@@ -353,7 +362,7 @@ existing tag object.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>:&lt;n&gt;:&lt;path&gt;</emphasis>, e.g. <emphasis>:0:README</emphasis>, <emphasis>:README</emphasis>
+<emphasis>:[&lt;n&gt;:]&lt;path&gt;</emphasis>, e.g. <emphasis>:0:README</emphasis>, <emphasis>:README</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -395,34 +404,90 @@ J = F^2  = B^3^2   = A^^3^2</literallayout>
 <simplesect id="gitrevisions(7)__specifying_ranges">
 <title>SPECIFYING RANGES</title>
 <simpara>History traversing commands such as <emphasis>git log</emphasis> operate on a set
-of commits, not just a single commit.  To these commands,
-specifying a single revision with the notation described in the
-previous section means the set of commits reachable from that
-commit, following the commit ancestry chain.</simpara>
-<simpara>To exclude commits reachable from a commit, a prefix <emphasis>&#94;</emphasis>
-notation is used.  E.g. <emphasis>&#94;r1 r2</emphasis> means commits reachable
-from <emphasis>r2</emphasis> but exclude the ones reachable from <emphasis>r1</emphasis>.</simpara>
-<simpara>This set operation appears so often that there is a shorthand
-for it.  When you have two commits <emphasis>r1</emphasis> and <emphasis>r2</emphasis> (named according
-to the syntax explained in SPECIFYING REVISIONS above), you can ask
-for commits that are reachable from r2 excluding those that are reachable
-from r1 by <emphasis>&#94;r1 r2</emphasis> and it can be written as <emphasis>r1..r2</emphasis>.</simpara>
-<simpara>A similar notation <emphasis>r1...r2</emphasis> is called symmetric difference
-of <emphasis>r1</emphasis> and <emphasis>r2</emphasis> and is defined as
-<emphasis>r1 r2 --not $(git merge-base --all r1 r2)</emphasis>.
-It is the set of commits that are reachable from either one of
-<emphasis>r1</emphasis> or <emphasis>r2</emphasis> but not from both.</simpara>
-<simpara>In these two shorthands, you can omit one end and let it default to HEAD.
+of commits, not just a single commit.</simpara>
+<simpara>For these commands,
+specifying a single revision, using the notation described in the
+previous section, means the set of commits <emphasis>reachable</emphasis> from the given
+commit.</simpara>
+<simpara>A commit's reachable set is the commit itself and the commits in
+its ancestry chain.</simpara>
+<section id="gitrevisions(7)__commit_exclusions">
+<title>Commit Exclusions</title>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>&#94;&lt;rev&gt;</emphasis> (caret) Notation
+</term>
+<listitem>
+<simpara>
+ To exclude commits reachable from a commit, a prefix <emphasis>&#94;</emphasis>
+ notation is used.  E.g. <emphasis>&#94;r1 r2</emphasis> means commits reachable
+ from <emphasis>r2</emphasis> but exclude the ones reachable from <emphasis>r1</emphasis> (i.e. <emphasis>r1</emphasis> and
+ its ancestors).
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</section>
+<section id="gitrevisions(7)__dotted_range_notations">
+<title>Dotted Range Notations</title>
+<variablelist>
+<varlistentry>
+<term>
+The <emphasis>..</emphasis> (two-dot) Range Notation
+</term>
+<listitem>
+<simpara>
+ The <emphasis>&#94;r1 r2</emphasis> set operation appears so often that there is a shorthand
+ for it.  When you have two commits <emphasis>r1</emphasis> and <emphasis>r2</emphasis> (named according
+ to the syntax explained in SPECIFYING REVISIONS above), you can ask
+ for commits that are reachable from r2 excluding those that are reachable
+ from r1 by <emphasis>&#94;r1 r2</emphasis> and it can be written as <emphasis>r1..r2</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+The <emphasis>&#8230;</emphasis> (three-dot) Symmetric Difference Notation
+</term>
+<listitem>
+<simpara>
+ A similar notation <emphasis>r1...r2</emphasis> is called symmetric difference
+ of <emphasis>r1</emphasis> and <emphasis>r2</emphasis> and is defined as
+ <emphasis>r1 r2 --not $(git merge-base --all r1 r2)</emphasis>.
+ It is the set of commits that are reachable from either one of
+ <emphasis>r1</emphasis> (left side) or <emphasis>r2</emphasis> (right side) but not from both.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>In these two shorthand notations, you can omit one end and let it default to HEAD.
 For example, <emphasis>origin..</emphasis> is a shorthand for <emphasis>origin..HEAD</emphasis> and asks "What
 did I do since I forked from the origin branch?"  Similarly, <emphasis>..origin</emphasis>
 is a shorthand for <emphasis>HEAD..origin</emphasis> and asks "What did the origin do since
 I forked from them?"  Note that <emphasis>..</emphasis> would mean <emphasis>HEAD..HEAD</emphasis> which is an
 empty range that is both reachable and unreachable from HEAD.</simpara>
-<simpara>Two other shorthands for naming a set that is formed by a commit
-and its parent commits exist.  The <emphasis>r1&#94;@</emphasis> notation means all
-parents of <emphasis>r1</emphasis>.  <emphasis>r1&#94;!</emphasis> includes commit <emphasis>r1</emphasis> but excludes
-all of its parents.</simpara>
-<simpara>To summarize:</simpara>
+</section>
+<section id="gitrevisions(7)__other_lt_rev_gt_94_parent_shorthand_notations">
+<title>Other &lt;rev&gt;&#94; Parent Shorthand Notations</title>
+<simpara>Three other shorthands exist, particularly useful for merge commits,
+for naming a set that is formed by a commit and its parent commits.</simpara>
+<simpara>The <emphasis>r1&#94;@</emphasis> notation means all parents of <emphasis>r1</emphasis>.</simpara>
+<simpara>The <emphasis>r1&#94;!</emphasis> notation includes commit <emphasis>r1</emphasis> but excludes all of its parents.
+By itself, this notation denotes the single commit <emphasis>r1</emphasis>.</simpara>
+<simpara>The <emphasis>&lt;rev&gt;&#94;-[&lt;n&gt;]</emphasis> notation includes <emphasis>&lt;rev&gt;</emphasis> but excludes the &lt;n&gt;th
+parent (i.e. a shorthand for <emphasis>&lt;rev&gt;&#94;&lt;n&gt;..&lt;rev&gt;</emphasis>), with <emphasis>&lt;n&gt;</emphasis> = 1 if
+not given. This is typically useful for merge commits where you
+can just pass <emphasis>&lt;commit&gt;&#94;-</emphasis> to get all the commits in the branch
+that was merged in merge commit <emphasis>&lt;commit&gt;</emphasis> (including <emphasis>&lt;commit&gt;</emphasis>
+itself).</simpara>
+<simpara>While <emphasis>&lt;rev&gt;&#94;&lt;n&gt;</emphasis> was about specifying a single commit parent, these
+three notations also consider its parents. For example you can say
+<emphasis>HEAD&#94;2&#94;@</emphasis>, however you cannot say <emphasis>HEAD&#94;@&#94;2</emphasis>.</simpara>
+</section>
+</simplesect>
+<simplesect id="gitrevisions(7)__revision_range_summary">
+<title>Revision Range Summary</title>
 <variablelist>
 <varlistentry>
 <term>
@@ -430,8 +495,8 @@ all of its parents.</simpara>
 </term>
 <listitem>
 <simpara>
-        Include commits that are reachable from (i.e. ancestors of)
-        &lt;rev&gt;.
+        Include commits that are reachable from &lt;rev&gt; (i.e. &lt;rev&gt; and its
+        ancestors).
 </simpara>
 </listitem>
 </varlistentry>
@@ -441,8 +506,8 @@ all of its parents.</simpara>
 </term>
 <listitem>
 <simpara>
-        Exclude commits that are reachable from (i.e. ancestors of)
-        &lt;rev&gt;.
+        Exclude commits that are reachable from &lt;rev&gt; (i.e. &lt;rev&gt; and its
+        ancestors).
 </simpara>
 </listitem>
 </varlistentry>
@@ -494,19 +559,43 @@ all of its parents.</simpara>
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+<emphasis>&lt;rev&gt;&#94;-&lt;n&gt;</emphasis>, e.g. <emphasis>HEAD&#94;-, HEAD&#94;-2</emphasis>
+</term>
+<listitem>
+<simpara>
+        Equivalent to <emphasis>&lt;rev&gt;&#94;&lt;n&gt;..&lt;rev&gt;</emphasis>, with <emphasis>&lt;n&gt;</emphasis> = 1 if not
+        given.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
-<simpara>Here are a handful of examples:</simpara>
-<literallayout class="monospaced">D                G H D
-D F              G H I J D F
-^G D             H D
-^D B             E I J F B
-B..C             C
-B...C            G H D E B C
-^D B C           E I J F B C
-C                I J F C
-C^@              I J F
-C^!              C
-F^! D            G H D F</literallayout>
+<simpara>Here are a handful of examples using the Loeliger illustration above,
+with each step in the notation's expansion and selection carefully
+spelt out:</simpara>
+<literallayout class="monospaced">   Args   Expanded arguments    Selected commits
+   D                            G H D
+   D F                          G H I J D F
+   ^G D                         H D
+   ^D B                         E I J F B
+   ^D B C                       E I J F B C
+   C                            I J F C
+   B..C   = ^B C                C
+   B...C  = B ^F C              G H D E B C
+   B^-    = B^..B
+          = ^B^1 B              E I J F B
+   C^@    = C^1
+          = F                   I J F
+   B^@    = B^1 B^2 B^3
+          = D E F               D G H E F I J
+   C^!    = C ^C^@
+          = C ^C^1
+          = C ^F                C
+   B^!    = B ^B^@
+          = B ^B^1 ^B^2 ^B^3
+          = B ^D ^E ^F          B
+   F^! D  = F ^I ^J D           G H D F</literallayout>
 </simplesect>
 <simplesect id="gitrevisions(7)__see_also">
 <title>SEE ALSO</title>

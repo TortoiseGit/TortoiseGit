@@ -92,13 +92,29 @@
 
   <fo:table-body
     background-color="#f0f0ff">
-  <xsl:apply-templates select="row[1]">
-      <xsl:with-param name="spans">
-        <xsl:call-template name="blank.spans">
-          <xsl:with-param name="cols" select="../@cols"/>
-        </xsl:call-template>
-      </xsl:with-param>
-    </xsl:apply-templates>
+    <xsl:choose>
+      <!-- Use recursion if @morerows is used -->
+      <xsl:when test="row/entry/@morerows|row/entrytbl/@morerows">
+        <xsl:apply-templates select="row[1]">
+          <xsl:with-param name="spans">
+            <xsl:call-template name="blank.spans">
+              <xsl:with-param name="cols" select="../@cols"/>
+            </xsl:call-template>
+          </xsl:with-param>
+          <xsl:with-param name="browserows" select="'recurse'"/>
+        </xsl:apply-templates>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:apply-templates select="row">
+          <xsl:with-param name="spans">
+            <xsl:call-template name="blank.spans">
+              <xsl:with-param name="cols" select="../@cols"/>
+            </xsl:call-template>
+          </xsl:with-param>
+          <xsl:with-param name="browserows" select="'loop'" />
+        </xsl:apply-templates>
+      </xsl:otherwise>
+    </xsl:choose>
   </fo:table-body>
 </xsl:template>
 

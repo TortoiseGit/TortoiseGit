@@ -58,7 +58,7 @@
     <xsl:attribute name="border-left">1px solid</xsl:attribute>
 
     <xsl:attribute name="border-color">
-      <xsl:param name="node" select="."/>
+      <xsl:variable name="node" select="."/>
       <xsl:choose>
         <xsl:when test="name($node)='note'">#069</xsl:when>
         <xsl:when test="name($node)='warning'">#900</xsl:when>
@@ -76,7 +76,7 @@
 
     <xsl:attribute name="border-left">1px solid</xsl:attribute>
     <xsl:attribute name="border-color">
-      <xsl:param name="node" select="."/>
+      <xsl:variable name="node" select="."/>
       <xsl:choose>
         <xsl:when test="name($node)='note'">#069</xsl:when>
         <xsl:when test="name($node)='warning'">#900</xsl:when>

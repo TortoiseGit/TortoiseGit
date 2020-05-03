@@ -66,8 +66,36 @@ same as for <emphasis>git diff-index</emphasis> and <emphasis>git diff-tree</emp
 <listitem>
 <simpara>
         Generate diffs with &lt;n&gt; lines of context instead of
-        the usual three.
+        the usual three. Implies <emphasis>--patch</emphasis>.
         Implies <emphasis>-p</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--output=&lt;file&gt;
+</term>
+<listitem>
+<simpara>
+        Output to a specific file instead of stdout.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--output-indicator-new=&lt;char&gt;
+</term>
+<term>
+--output-indicator-old=&lt;char&gt;
+</term>
+<term>
+--output-indicator-context=&lt;char&gt;
+</term>
+<listitem>
+<simpara>
+        Specify the character used to indicate new, old or context
+        lines in the generated patch. Normally they are <emphasis>+</emphasis>, <emphasis>-</emphasis> and
+        ' ' respectively.
 </simpara>
 </listitem>
 </varlistentry>
@@ -89,6 +117,27 @@ same as for <emphasis>git diff-index</emphasis> and <emphasis>git diff-tree</emp
 <listitem>
 <simpara>
         Synonym for <emphasis>-p --raw</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--indent-heuristic
+</term>
+<listitem>
+<simpara>
+        Enable the heuristic that shifts diff hunk boundaries to make patches
+        easier to read. This is the default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-indent-heuristic
+</term>
+<listitem>
+<simpara>
+        Disable the indent heuristic.
 </simpara>
 </listitem>
 </varlistentry>
@@ -121,6 +170,21 @@ same as for <emphasis>git diff-index</emphasis> and <emphasis>git diff-tree</emp
 <simpara>
         Generate a diff using the "histogram diff" algorithm.
 </simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--anchored=&lt;text&gt;
+</term>
+<listitem>
+<simpara>
+        Generate a diff using the "anchored diff" algorithm.
+</simpara>
+<simpara>This option may be specified more than once.</simpara>
+<simpara>If a line exists in both the source and destination, exists only once,
+and starts with this text, this algorithm attempts to prevent it from
+appearing as a deletion or addition in the output. It uses the "patience
+diff" algorithm internally.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -175,7 +239,7 @@ same as for <emphasis>git diff-index</emphasis> and <emphasis>git diff-tree</emp
 </listitem>
 </varlistentry>
 </variablelist>
-<simpara>For instance, if you configured diff.algorithm variable to a
+<simpara>For instance, if you configured the <emphasis>diff.algorithm</emphasis> variable to a
 non-default value and want to use the default one, then you
 have to use <emphasis>--diff-algorithm=default</emphasis> option.</simpara>
 </listitem>
@@ -206,6 +270,21 @@ have to use <emphasis>--diff-algorithm=default</emphasis> option.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--compact-summary
+</term>
+<listitem>
+<simpara>
+        Output a condensed summary of extended header information such
+        as file creations or deletions ("new" or "gone", optionally "+l"
+        if it's a symlink) and mode changes ("+x" or "-x" for adding
+        or removing executable bit respectively) in diffstat. The
+        information is put between the filename part and the graph
+        part. Implies <emphasis>--stat</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --numstat
 </term>
 <listitem>
@@ -231,6 +310,9 @@ have to use <emphasis>--diff-algorithm=default</emphasis> option.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
+<term>
+-X[&lt;param1,param2,&#8230;&gt;]
+</term>
 <term>
 --dirstat[=&lt;param1,param2,&#8230;&gt;]
 </term>
@@ -321,6 +403,26 @@ and accumulating child directory counts in the parent directories:
 </varlistentry>
 <varlistentry>
 <term>
+--cumulative
+</term>
+<listitem>
+<simpara>
+        Synonym for --dirstat=cumulative
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--dirstat-by-file[=&lt;param1,param2&gt;&#8230;]
+</term>
+<listitem>
+<simpara>
+        Synonym for --dirstat=files,param1,param2&#8230;
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --summary
 </term>
 <listitem>
@@ -349,10 +451,9 @@ and accumulating child directory counts in the parent directories:
         When <emphasis>--raw</emphasis>, <emphasis>--numstat</emphasis>, <emphasis>--name-only</emphasis> or <emphasis>--name-status</emphasis> has been
         given, do not munge pathnames and use NULs as output field terminators.
 </simpara>
-<simpara>Without this option, each pathname output will have TAB, LF, double quotes,
-and backslash characters replaced with <emphasis>\t</emphasis>, <emphasis>\n</emphasis>, <emphasis>\"</emphasis>, and <emphasis>\\</emphasis>,
-respectively, and the pathname will be enclosed in double quotes if
-any of those replacements occurred.</simpara>
+<simpara>Without this option, pathnames with "unusual" characters are quoted as
+explained for the configuration variable <emphasis>core.quotePath</emphasis> (see
+<xref linkend="git-config(1)" />).</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -382,13 +483,16 @@ any of those replacements occurred.</simpara>
 </term>
 <listitem>
 <simpara>
-        Specify how differences in submodules are shown.  When <emphasis>--submodule</emphasis>
-        or <emphasis>--submodule=log</emphasis> is given, the <emphasis>log</emphasis> format is used.  This format lists
-        the commits in the range like <xref linkend="git-submodule(1)" /> <emphasis>summary</emphasis> does.
-        Omitting the <emphasis>--submodule</emphasis> option or specifying <emphasis>--submodule=short</emphasis>,
-        uses the <emphasis>short</emphasis> format. This format just shows the names of the commits
-        at the beginning and end of the range.  Can be tweaked via the
-        <emphasis>diff.submodule</emphasis> configuration variable.
+        Specify how differences in submodules are shown.  When specifying
+        <emphasis>--submodule=short</emphasis> the <emphasis>short</emphasis> format is used.  This format just
+        shows the names of the commits at the beginning and end of the range.
+        When <emphasis>--submodule</emphasis> or <emphasis>--submodule=log</emphasis> is specified, the <emphasis>log</emphasis>
+        format is used.  This format lists the commits in the range like
+        <xref linkend="git-submodule(1)" /> <emphasis>summary</emphasis> does.  When <emphasis>--submodule=diff</emphasis>
+        is specified, the <emphasis>diff</emphasis> format is used.  This format shows an
+        inline diff of the changes in the submodule contents between the
+        commit range.  Defaults to <emphasis>diff.submodule</emphasis> or the <emphasis>short</emphasis> format
+        if the config option is unset.
 </simpara>
 </listitem>
 </varlistentry>
@@ -412,6 +516,189 @@ any of those replacements occurred.</simpara>
 <simpara>
         Turn off colored diff.
         It is the same as <emphasis>--color=never</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--color-moved[=&lt;mode&gt;]
+</term>
+<listitem>
+<simpara>
+        Moved lines of code are colored differently.
+        The &lt;mode&gt; defaults to <emphasis>no</emphasis> if the option is not given
+        and to <emphasis>zebra</emphasis> if the option with no mode is given.
+        The mode must be one of:
+</simpara>
+<variablelist>
+<varlistentry>
+<term>
+no
+</term>
+<listitem>
+<simpara>
+        Moved lines are not highlighted.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+default
+</term>
+<listitem>
+<simpara>
+        Is a synonym for <emphasis>zebra</emphasis>. This may change to a more sensible mode
+        in the future.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+plain
+</term>
+<listitem>
+<simpara>
+        Any line that is added in one location and was removed
+        in another location will be colored with <emphasis>color.diff.newMoved</emphasis>.
+        Similarly <emphasis>color.diff.oldMoved</emphasis> will be used for removed lines
+        that are added somewhere else in the diff. This mode picks up any
+        moved line, but it is not very useful in a review to determine
+        if a block of code was moved without permutation.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+blocks
+</term>
+<listitem>
+<simpara>
+        Blocks of moved text of at least 20 alphanumeric characters
+        are detected greedily. The detected blocks are
+        painted using either the <emphasis>color.diff.{old,new}Moved</emphasis> color.
+        Adjacent blocks cannot be told apart.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+zebra
+</term>
+<listitem>
+<simpara>
+        Blocks of moved text are detected as in <emphasis>blocks</emphasis> mode. The blocks
+        are painted using either the <emphasis>color.diff.{old,new}Moved</emphasis> color or
+        <emphasis>color.diff.{old,new}MovedAlternative</emphasis>. The change between
+        the two colors indicates that a new block was detected.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+dimmed-zebra
+</term>
+<listitem>
+<simpara>
+        Similar to <emphasis>zebra</emphasis>, but additional dimming of uninteresting parts
+        of moved code is performed. The bordering lines of two adjacent
+        blocks are considered interesting, the rest is uninteresting.
+        <emphasis>dimmed_zebra</emphasis> is a deprecated synonym.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-color-moved
+</term>
+<listitem>
+<simpara>
+        Turn off move detection. This can be used to override configuration
+        settings. It is the same as <emphasis>--color-moved=no</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--color-moved-ws=&lt;modes&gt;
+</term>
+<listitem>
+<simpara>
+        This configures how whitespace is ignored when performing the
+        move detection for <emphasis>--color-moved</emphasis>.
+        These modes can be given as a comma separated list:
+</simpara>
+<variablelist>
+<varlistentry>
+<term>
+no
+</term>
+<listitem>
+<simpara>
+        Do not ignore whitespace when performing move detection.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+ignore-space-at-eol
+</term>
+<listitem>
+<simpara>
+        Ignore changes in whitespace at EOL.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+ignore-space-change
+</term>
+<listitem>
+<simpara>
+        Ignore changes in amount of whitespace.  This ignores whitespace
+        at line end, and considers all other sequences of one or
+        more whitespace characters to be equivalent.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+ignore-all-space
+</term>
+<listitem>
+<simpara>
+        Ignore whitespace when comparing lines. This ignores differences
+        even if one line has whitespace where the other line has none.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+allow-indentation-change
+</term>
+<listitem>
+<simpara>
+        Initially ignore any whitespace in the move detection, then
+        group the moved code blocks only into a block if the change in
+        whitespace is the same per line. This is incompatible with the
+        other modes.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-color-moved-ws
+</term>
+<listitem>
+<simpara>
+        Do not ignore whitespace when performing move detection. This can be
+        used to override configuration settings. It is the same as
+        <emphasis>--color-moved-ws=no</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -499,7 +786,7 @@ newline.</simpara>
 <simpara>For example, <emphasis>--word-diff-regex=.</emphasis> will treat each character as a word
 and, correspondingly, show differences character by character.</simpara>
 <simpara>The regex can also be set via a diff driver or configuration option, see
-<xref linkend="gitattributes(1)" /> or <xref linkend="git-config(1)" />.  Giving it explicitly
+<xref linkend="gitattributes(5)" /> or <xref linkend="git-config(1)" />.  Giving it explicitly
 overrides any diff driver or configuration setting.  Diff drivers
 override configuration settings.</simpara>
 </listitem>
@@ -528,6 +815,16 @@ override configuration settings.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--[no-]rename-empty
+</term>
+<listitem>
+<simpara>
+        Whether to use empty blobs as rename source.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --check
 </term>
 <listitem>
@@ -535,7 +832,7 @@ override configuration settings.</simpara>
         Warn if changes introduce conflict markers or whitespace errors.
         What are considered whitespace errors is controlled by <emphasis>core.whitespace</emphasis>
         configuration.  By default, trailing whitespaces (including
-        lines that solely consist of whitespaces) and a space character
+        lines that consist solely of whitespaces) and a space character
         that is immediately followed by a tab character inside the
         initial indent of the line are considered whitespace errors.
         Exits with non-zero status if problems are found. Not compatible
@@ -549,13 +846,14 @@ override configuration settings.</simpara>
 </term>
 <listitem>
 <simpara>
-        Highlight whitespace errors on lines specified by &lt;kind&gt;
-        in the color specified by <emphasis>color.diff.whitespace</emphasis>.  &lt;kind&gt;
-        is a comma separated list of <emphasis>old</emphasis>, <emphasis>new</emphasis>, <emphasis>context</emphasis>.  When
-        this option is not given, only whitespace errors in <emphasis>new</emphasis>
-        lines are highlighted.  E.g. <emphasis>--ws-error-highlight=new,old</emphasis>
-        highlights whitespace errors on both deleted and added lines.
-        <emphasis>all</emphasis> can be used as a short-hand for <emphasis>old,new,context</emphasis>.
+        Highlight whitespace errors in the <emphasis>context</emphasis>, <emphasis>old</emphasis> or <emphasis>new</emphasis>
+        lines of the diff.  Multiple values are separated by comma,
+        <emphasis>none</emphasis> resets previous values, <emphasis>default</emphasis> reset the list to
+        <emphasis>new</emphasis> and <emphasis>all</emphasis> is a shorthand for <emphasis>old,new,context</emphasis>.  When
+        this option is not given, and the configuration variable
+        <emphasis>diff.wsErrorHighlight</emphasis> is not set, only whitespace errors in
+        <emphasis>new</emphasis> lines are highlighted. The whitespace errors are colored
+        with <emphasis>color.diff.whitespace</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -578,7 +876,7 @@ override configuration settings.</simpara>
 <listitem>
 <simpara>
         In addition to <emphasis>--full-index</emphasis>, output a binary diff that
-        can be applied with <emphasis>git-apply</emphasis>.
+        can be applied with <emphasis>git-apply</emphasis>. Implies <emphasis>--patch</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -692,7 +990,7 @@ another file.</simpara>
         the diff between the preimage and <emphasis>/dev/null</emphasis>. The resulting patch
         is not meant to be applied with <emphasis>patch</emphasis> or <emphasis>git apply</emphasis>; this is
         solely for people who want to just concentrate on reviewing the
-        text after the change. In addition, the output obviously lack
+        text after the change. In addition, the output obviously lacks
         enough information to apply such a patch in reverse, even manually,
         hence the name of the option.
 </simpara>
@@ -731,6 +1029,13 @@ of a delete/create pair.</simpara>
         other criteria in the comparison; if there is no file
         that matches other criteria, nothing is selected.
 </simpara>
+<simpara>Also, these upper-case letters can be downcased to exclude.  E.g.
+<emphasis>--diff-filter=ad</emphasis> excludes added and deleted paths.</simpara>
+<simpara>Note that not all diffs can feature all types. For instance, diffs
+from the index to the working tree can never have Added entries
+(because the set of paths included in the diff is limited by what is in
+the index).  Similarly, copied and renamed entries cannot appear if
+detection for those types is disabled.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -748,6 +1053,7 @@ struct), and want to know the history of that block since it first
 came into being: use the feature iteratively to feed the interesting
 block in the preimage back into <emphasis>-S</emphasis>, and keep going until you get the
 very first version of the block.</simpara>
+<simpara>Binary files are searched as well.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -762,14 +1068,31 @@ very first version of the block.</simpara>
 <simpara>To illustrate the difference between <emphasis>-S&lt;regex&gt; --pickaxe-regex</emphasis> and
 <emphasis>-G&lt;regex&gt;</emphasis>, consider a commit with the following diff in the same
 file:</simpara>
-<screen>+    return !regexec(regexp, two-&gt;ptr, 1, &amp;regmatch, 0);
+<screen>+    return frotz(nitfol, two-&gt;ptr, 1, 0);
 ...
--    hit = !regexec(regexp, mf2.ptr, 1, &amp;regmatch, 0);</screen>
-<simpara>While <emphasis>git log -G"regexec\(regexp"</emphasis> will show this commit, <emphasis>git log
--S"regexec\(regexp" --pickaxe-regex</emphasis> will not (because the number of
+-    hit = frotz(nitfol, mf2.ptr, 1, 0);</screen>
+<simpara>While <emphasis>git log -G"frotz\(nitfol"</emphasis> will show this commit, <emphasis>git log
+-S"frotz\(nitfol" --pickaxe-regex</emphasis> will not (because the number of
 occurrences of that string did not change).</simpara>
+<simpara>Unless <emphasis>--text</emphasis> is supplied patches of binary files without a textconv
+filter will be ignored.</simpara>
 <simpara>See the <emphasis>pickaxe</emphasis> entry in <xref linkend="gitdiffcore(7)" /> for more
 information.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--find-object=&lt;object-id&gt;
+</term>
+<listitem>
+<simpara>
+        Look for differences that change the number of occurrences of
+        the specified object. Similar to <emphasis>-S</emphasis>, just the argument is different
+        in that it doesn't search for a specific string but for a specific
+        object id.
+</simpara>
+<simpara>The object can be a blob or a submodule commit. It implies the <emphasis>-t</emphasis> option in
+<emphasis>git-log</emphasis> to also find trees.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -801,12 +1124,48 @@ information.</simpara>
 </term>
 <listitem>
 <simpara>
-        Output the patch in the order specified in the
-        &lt;orderfile&gt;, which has one shell glob pattern per line.
+        Control the order in which files appear in the output.
         This overrides the <emphasis>diff.orderFile</emphasis> configuration variable
         (see <xref linkend="git-config(1)" />).  To cancel <emphasis>diff.orderFile</emphasis>,
         use <emphasis>-O/dev/null</emphasis>.
 </simpara>
+<simpara>The output order is determined by the order of glob patterns in
+&lt;orderfile&gt;.
+All files with pathnames that match the first pattern are output
+first, all files with pathnames that match the second pattern (but not
+the first) are output next, and so on.
+All files with pathnames that do not match any pattern are output
+last, as if there was an implicit match-all pattern at the end of the
+file.
+If multiple pathnames have the same rank (they match the same pattern
+but no earlier patterns), their output order relative to each other is
+the normal order.</simpara>
+<simpara>&lt;orderfile&gt; is parsed as follows:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+Blank lines are ignored, so they can be used as separators for
+   readability.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Lines starting with a hash ("<emphasis>#</emphasis>") are ignored, so they can be used
+   for comments.  Add a backslash ("<emphasis>\</emphasis>") to the beginning of the
+   pattern if it starts with a hash.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Each other line contains a single pattern.
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>Patterns have the same syntax and semantics as patterns used for
+fnmatch(3) without the FNM_PATHNAME flag, except a pathname also
+matches a pattern if removing any number of the final pathname
+components matches the pattern.  For example, the pattern "<emphasis>foo*bar</emphasis>"
+matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</emphasis>" but not "<emphasis>foobarx</emphasis>".</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -845,6 +1204,16 @@ information.</simpara>
 <listitem>
 <simpara>
         Treat all files as text.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--ignore-cr-at-eol
+</term>
+<listitem>
+<simpara>
+        Ignore carriage-return at the end of line when doing a comparison.
 </simpara>
 </listitem>
 </varlistentry>
@@ -906,6 +1275,8 @@ information.</simpara>
 <simpara>
         Show the context between diff hunks, up to the specified number
         of lines, thereby fusing hunks that are close to each other.
+        Defaults to <emphasis>diff.interHunkContext</emphasis> or 0 if the config option
+        is unset.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1036,6 +1407,31 @@ information.</simpara>
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+--line-prefix=&lt;prefix&gt;
+</term>
+<listitem>
+<simpara>
+        Prepend an additional prefix to every line of output.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--ita-invisible-in-index
+</term>
+<listitem>
+<simpara>
+        By default entries added by "git add -N" appear as an existing
+        empty file in "git diff" and a new file in "git diff --cached".
+        This option makes the entry appear as a new file in "git diff"
+        and non-existent in "git diff --cached". This option could be
+        reverted with <emphasis>--ita-visible-in-index</emphasis>. Both options are
+        experimental and could be removed in future.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 <simpara>For more detailed explanation on these common options, see also
 <xref linkend="gitdiffcore(7)" />.</simpara>
@@ -1144,12 +1540,12 @@ git-diff-files [&lt;pattern&gt;&#8230;]
 what is being compared. After that, all the commands print one output
 line per changed file.</simpara>
 <simpara>An output line is formatted this way:</simpara>
-<screen>in-place edit  :100644 100644 bcd1234... 0123456... M file0
-copy-edit      :100644 100644 abcd123... 1234567... C68 file1 file2
-rename-edit    :100644 100644 abcd123... 1234567... R86 file1 file3
-create         :000000 100644 0000000... 1234567... A file4
-delete         :100644 000000 1234567... 0000000... D file5
-unmerged       :000000 000000 0000000... 0000000... U file6</screen>
+<screen>in-place edit  :100644 100644 bcd1234 0123456 M file0
+copy-edit      :100644 100644 abcd123 1234567 C68 file1 file2
+rename-edit    :100644 100644 abcd123 1234567 R86 file1 file3
+create         :000000 100644 0000000 1234567 A file4
+delete         :100644 000000 1234567 0000000 D file5
+unmerged       :000000 000000 0000000 0000000 U file6</screen>
 <simpara>That is, from the left to the right:</simpara>
 <orderedlist numeration="arabic">
 <listitem>
@@ -1263,7 +1659,7 @@ T: change in the type of the file
 <listitem>
 <simpara>
 U: file is unmerged (you must complete the merge before it can
-be committed)
+  be committed)
 </simpara>
 </listitem>
 <listitem>
@@ -1279,10 +1675,11 @@ percentage of dissimilarity) for file rewrites.</simpara>
 <simpara>&lt;sha1&gt; is shown as all 0's if a file is new on the filesystem
 and it is out of sync with the index.</simpara>
 <simpara>Example:</simpara>
-<screen>:100644 100644 5be4a4...... 000000...... M file.c</screen>
-<simpara>When <emphasis>-z</emphasis> option is not used, TAB, LF, and backslash characters
-in pathnames are represented as <emphasis>\t</emphasis>, <emphasis>\n</emphasis>, and <emphasis>\\</emphasis>,
-respectively.</simpara>
+<screen>:100644 100644 5be4a4a 0000000 M file.c</screen>
+<simpara>Without the <emphasis>-z</emphasis> option, pathnames with "unusual" characters are
+quoted as explained for the configuration variable <emphasis>core.quotePath</emphasis>
+(see <xref linkend="git-config(1)" />).  Using <emphasis>-z</emphasis> the filename is output
+verbatim and the line is terminated by a NUL byte.</simpara>
 </simplesect>
 <simplesect id="git-diff-files(1)__diff_format_for_merges">
 <title>diff format for merges</title>
@@ -1313,23 +1710,37 @@ no optional "score" number
 </listitem>
 <listitem>
 <simpara>
-single path, only for "dst"
+tab-separated pathname(s) of the file
 </simpara>
 </listitem>
 </orderedlist>
-<simpara>Example:</simpara>
-<screen>::100644 100644 100644 fabadb8... cc95eb0... 4866510... MM      describe.c</screen>
+<simpara>For <emphasis>-c</emphasis> and <emphasis>--cc</emphasis>, only the destination or final path is shown even
+if the file was renamed on any side of history.  With
+<emphasis>--combined-all-paths</emphasis>, the name of the path in each parent is shown
+followed by the name of the path in the merge commit.</simpara>
+<simpara>Examples for <emphasis>-c</emphasis> and <emphasis>--cc</emphasis> without <emphasis>--combined-all-paths</emphasis>:</simpara>
+<screen>::100644 100644 100644 fabadb8 cc95eb0 4866510 MM       desc.c
+::100755 100755 100755 52b7a2d 6d1ac04 d2ac7d7 RM       bar.sh
+::100644 100644 100644 e07d6c5 9042e82 ee91881 RR       phooey.c</screen>
+<simpara>Examples when <emphasis>--combined-all-paths</emphasis> added to either <emphasis>-c</emphasis> or <emphasis>--cc</emphasis>:</simpara>
+<screen>::100644 100644 100644 fabadb8 cc95eb0 4866510 MM       desc.c  desc.c  desc.c
+::100755 100755 100755 52b7a2d 6d1ac04 d2ac7d7 RM       foo.sh  bar.sh  bar.sh
+::100644 100644 100644 e07d6c5 9042e82 ee91881 RR       fooey.c fuey.c  phooey.c</screen>
 <simpara>Note that <emphasis>combined diff</emphasis> lists only files which were modified from
 all parents.</simpara>
 </simplesect>
-<simplesect id="git-diff-files(1)__generating_patches_with_p">
-<title>Generating patches with -p</title>
-<simpara>When "git-diff-index", "git-diff-tree", or "git-diff-files" are run
-with a <emphasis>-p</emphasis> option, "git diff" without the <emphasis>--raw</emphasis> option, or
-"git log" with the "-p" option, they
-do not produce the output described above; instead they produce a
-patch file.  You can customize the creation of such patches via the
-GIT_EXTERNAL_DIFF and the GIT_DIFF_OPTS environment variables.</simpara>
+<simplesect id="git-diff-files(1)__generating_patch_text_with_p">
+<title>Generating patch text with -p</title>
+<simpara>Running
+<xref linkend="git-diff(1)" />,
+<xref linkend="git-log(1)" />,
+<xref linkend="git-show(1)" />,
+<xref linkend="git-diff-index(1)" />,
+<xref linkend="git-diff-tree(1)" />, or
+<xref linkend="git-diff-files(1)" />
+with the <emphasis>-p</emphasis> option produces patch text.
+You can customize the creation of patch text via the
+<emphasis>GIT_EXTERNAL_DIFF</emphasis> and the <emphasis>GIT_DIFF_OPTS</emphasis> environment variables.</simpara>
 <simpara>What the -p option produces is slightly different from the traditional
 diff format:</simpara>
 <orderedlist numeration="arabic">
@@ -1369,16 +1780,15 @@ is a rounded down integer, followed by a percent sign.  The
 similarity index value of 100% is thus reserved for two equal
 files, while 100% dissimilarity means that no line from the old
 file made it into the new one.</simpara>
-<simpara>The index line includes the SHA-1 checksum before and after the change.
+<simpara>The index line includes the blob object names before and after the change.
 The &lt;mode&gt; is included if the file mode does not change; otherwise,
 separate lines indicate the old and the new mode.</simpara>
 </listitem>
 <listitem>
 <simpara>
-TAB, LF, double quote and backslash characters in pathnames
-    are represented as <emphasis>\t</emphasis>, <emphasis>\n</emphasis>, <emphasis>\"</emphasis> and <emphasis>\\</emphasis>, respectively.
-    If there is need for such substitution then the whole
-    pathname is put in double quotes.
+Pathnames with "unusual" characters are quoted as explained for
+    the configuration variable <emphasis>core.quotePath</emphasis> (see
+    <xref linkend="git-config(1)" />).
 </simpara>
 </listitem>
 <listitem>
@@ -1398,14 +1808,14 @@ rename to a</literallayout>
 </orderedlist>
 </simplesect>
 <simplesect id="git-diff-files(1)__combined_diff_format">
-<title>combined diff format</title>
+<title>Combined diff format</title>
 <simpara>Any diff-generating command can take the <emphasis>-c</emphasis> or <emphasis>--cc</emphasis> option to
 produce a <emphasis>combined diff</emphasis> when showing a merge. This is the default
 format when showing merges with <xref linkend="git-diff(1)" /> or
 <xref linkend="git-show(1)" />. Note also that you can give the <emphasis>-m</emphasis> option to any
 of these commands to force generation of diffs with individual parents
 of a merge.</simpara>
-<simpara>A <emphasis>combined diff</emphasis> format looks like this:</simpara>
+<simpara>A "combined diff" format looks like this:</simpara>
 <screen>diff --combined describe.c
 index fabadb8,cc95eb0..4866510
 --- a/describe.c
@@ -1437,10 +1847,10 @@ index fabadb8,cc95eb0..4866510
 <listitem>
 <simpara>
 It is preceded with a "git diff" header, that looks like
-     this (when <emphasis>-c</emphasis> option is used):
+     this (when the <emphasis>-c</emphasis> option is used):
 </simpara>
 <literallayout class="monospaced">diff --combined file</literallayout>
-<simpara>or like this (when <emphasis>--cc</emphasis> option is used):</simpara>
+<simpara>or like this (when the <emphasis>--cc</emphasis> option is used):</simpara>
 <literallayout class="monospaced">diff --cc file</literallayout>
 </listitem>
 <listitem>
@@ -1467,13 +1877,23 @@ It is followed by two-line from-file/to-file header
 <simpara>Similar to two-line header for traditional <emphasis>unified</emphasis> diff
 format, <emphasis>/dev/null</emphasis> is used to signal created or deleted
 files.</simpara>
+<simpara>However, if the --combined-all-paths option is provided, instead of a
+two-line from-file/to-file you get a N+1 line from-file/to-file header,
+where N is the number of parents in the merge commit</simpara>
+<literallayout class="monospaced">--- a/file
+--- a/file
+--- a/file
++++ b/file</literallayout>
+<simpara>This extended format can be useful if rename or copy detection is
+active, to allow you to see the original name of the file in different
+parents.</simpara>
 </listitem>
 <listitem>
 <simpara>
 Chunk header format is modified to prevent people from
      accidentally feeding it to <emphasis>patch -p1</emphasis>. Combined diff format
      was created for review of merge commit changes, and was not
-     meant for apply. The change is similar to the change in the
+     meant to be applied. The change is similar to the change in the
      extended <emphasis>index</emphasis> header:
 </simpara>
 <literallayout class="monospaced">@@@ &lt;from-file-range&gt; &lt;from-file-range&gt; &lt;to-file-range&gt; @@@</literallayout>

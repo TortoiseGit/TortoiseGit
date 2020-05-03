@@ -109,7 +109,8 @@ the behaviour is similar to that of "/bin/ls" in that the <emphasis>&lt;path&gt;
 </term>
 <listitem>
 <simpara>
-        \0 line termination on output.
+        \0 line termination on output and do not quote filenames.
+        See OUTPUT FORMAT below for more information.
 </simpara>
 </listitem>
 </varlistentry>
@@ -177,15 +178,17 @@ the behaviour is similar to that of "/bin/ls" in that the <emphasis>&lt;path&gt;
 <simplesect id="git-ls-tree(1)__output_format">
 <title>Output Format</title>
 <literallayout class="monospaced">&lt;mode&gt; SP &lt;type&gt; SP &lt;object&gt; TAB &lt;file&gt;</literallayout>
-<simpara>Unless the <emphasis>-z</emphasis> option is used, TAB, LF, and backslash characters
-in pathnames are represented as <emphasis>\t</emphasis>, <emphasis>\n</emphasis>, and <emphasis>\\</emphasis>, respectively.
-This output format is compatible with what <emphasis>--index-info --stdin</emphasis> of
+<simpara>This output format is compatible with what <emphasis>--index-info --stdin</emphasis> of
 <emphasis>git update-index</emphasis> expects.</simpara>
 <simpara>When the <emphasis>-l</emphasis> option is used, format changes to</simpara>
 <literallayout class="monospaced">&lt;mode&gt; SP &lt;type&gt; SP &lt;object&gt; SP &lt;object size&gt; TAB &lt;file&gt;</literallayout>
 <simpara>Object size identified by &lt;object&gt; is given in bytes, and right-justified
 with minimum width of 7 characters.  Object size is given only for blobs
 (file) entries; for other entries <emphasis>-</emphasis> character is used in place of size.</simpara>
+<simpara>Without the <emphasis>-z</emphasis> option, pathnames with "unusual" characters are
+quoted as explained for the configuration variable <emphasis>core.quotePath</emphasis>
+(see <xref linkend="git-config(1)" />).  Using <emphasis>-z</emphasis> the filename is output
+verbatim and the line is terminated by a NUL byte.</simpara>
 </simplesect>
 <simplesect id="git-ls-tree(1)__git">
 <title>GIT</title>

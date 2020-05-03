@@ -78,8 +78,8 @@ its remote name.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="git-request-pull(1)__example">
-<title>EXAMPLE</title>
+<simplesect id="git-request-pull(1)__examples">
+<title>EXAMPLES</title>
 <simpara>Imagine that you built your work on your <emphasis>master</emphasis> branch on top of
 the <emphasis>v1.0</emphasis> release, and want it to be integrated to the project.
 First you push that change to your public repository for others to

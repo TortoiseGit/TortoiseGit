@@ -38,8 +38,8 @@
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="git-var(1)__example">
-<title>EXAMPLE</title>
+<simplesect id="git-var(1)__examples">
+<title>EXAMPLES</title>
 <literallayout class="monospaced">$ git var GIT_AUTHOR_IDENT
 Eric W. Biederman &lt;ebiederm@lnxi.com&gt; 1121223278 -0600</literallayout>
 </simplesect>

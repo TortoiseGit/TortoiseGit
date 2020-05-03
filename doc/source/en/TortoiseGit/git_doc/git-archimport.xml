@@ -8,7 +8,7 @@
 </indexterm>
 <simplesect id="git-archimport(1)__name">
 <title>NAME</title>
-<simpara>git-archimport - Import an Arch repository into Git</simpara>
+<simpara>git-archimport - Import a GNU Arch repository into Git</simpara>
 </simplesect>
 <simplesect id="git-archimport(1)__synopsis">
 <title>SYNOPSIS</title>
@@ -19,7 +19,8 @@
 </simplesect>
 <simplesect id="git-archimport(1)__description">
 <title>DESCRIPTION</title>
-<simpara>Imports a project from one or more Arch repositories. It will follow branches
+<simpara>Imports a project from one or more GNU Arch repositories.
+It will follow branches
 and repositories within the namespaces defined by the &lt;archive/branch&gt;
 parameters supplied. If it cannot find the remote branch a merge comes from
 it will just import it as a regular commit. If it can find it, it will mark it
@@ -140,7 +141,7 @@ patches that have been traded out-of-sequence between the branches.</simpara>
 </term>
 <listitem>
 <simpara>
-        Attempt to auto-register archives at <ulink url="http://mirrors.sourcecontrol.net">http://mirrors.sourcecontrol.net</ulink>
+        Attempt to auto-register archives at <emphasis>http://mirrors.sourcecontrol.net</emphasis>
         This is particularly useful with the -D option.
 </simpara>
 </listitem>

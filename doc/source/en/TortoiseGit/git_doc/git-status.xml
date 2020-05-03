@@ -57,7 +57,17 @@ third are what you <emphasis>could</emphasis> commit by running <emphasis>git ad
 </varlistentry>
 <varlistentry>
 <term>
---porcelain
+--show-stash
+</term>
+<listitem>
+<simpara>
+        Show the number of entries currently stashed away.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--porcelain[=&lt;version&gt;]
 </term>
 <listitem>
 <simpara>
@@ -66,6 +76,8 @@ third are what you <emphasis>could</emphasis> commit by running <emphasis>git ad
         across Git versions and regardless of user configuration. See
         below for details.
 </simpara>
+<simpara>The version parameter is used to specify the format version.
+This is optional and defaults to the original version <emphasis>v1</emphasis> format.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -125,6 +137,8 @@ stuck to the option (e.g. <emphasis>-uno</emphasis>, but not <emphasis>-u no</em
 <simpara>
 <emphasis>all</emphasis>    - Also shows individual files in untracked directories.
 </simpara>
+</listitem>
+</itemizedlist>
 <simpara>When <emphasis>-u</emphasis> option is not used, untracked files and directories are
 shown (i.e. the same as specifying <emphasis>normal</emphasis>), to help you avoid
 forgetting to add newly created files.  Because it takes extra work
@@ -136,8 +150,6 @@ Consider enabling untracked cache and split index if supported (see
 return more quickly without showing untracked files.</simpara>
 <simpara>The default can be changed using the status.showUntrackedFiles
 configuration variable documented in <xref linkend="git-config(1)" />.</simpara>
-</listitem>
-</itemizedlist>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -164,12 +176,41 @@ configuration variable documented in <xref linkend="git-config(1)" />.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---ignored
+--ignored[=&lt;mode&gt;]
 </term>
 <listitem>
 <simpara>
         Show ignored files as well.
 </simpara>
+<simpara>The mode parameter is used to specify the handling of ignored files.
+It is optional: it defaults to <emphasis>traditional</emphasis>.</simpara>
+<simpara>The possible options are:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+<emphasis>traditional</emphasis> - Shows ignored files and directories, unless
+                          --untracked-files=all is specified, in which case
+                          individual files in ignored directories are
+                          displayed.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>no</emphasis>          - Show no ignored files.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>matching</emphasis>    - Shows ignored files and directories matching an
+                          ignore pattern.
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>When <emphasis>matching</emphasis> mode is specified, paths that explicitly match an
+ignored pattern are shown. If a directory matches an ignore pattern,
+then it is shown, but not paths contained in the ignored directory. If
+a directory does not match an ignore pattern, but all contents are
+ignored, then the directory is not shown, but all contents are shown.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -179,7 +220,7 @@ configuration variable documented in <xref linkend="git-config(1)" />.</simpara>
 <listitem>
 <simpara>
         Terminate entries with NUL, instead of LF.  This implies
-        the <emphasis>--porcelain</emphasis> output format if no other format is given.
+        the <emphasis>--porcelain=v1</emphasis> output format if no other format is given.
 </simpara>
 </listitem>
 </varlistentry>
@@ -199,6 +240,56 @@ configuration variable documented in <xref linkend="git-config(1)" />.</simpara>
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+--ahead-behind
+</term>
+<term>
+--no-ahead-behind
+</term>
+<listitem>
+<simpara>
+        Display or do not display detailed ahead/behind counts for the
+        branch relative to its upstream branch.  Defaults to true.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--renames
+</term>
+<term>
+--no-renames
+</term>
+<listitem>
+<simpara>
+        Turn on/off rename detection regardless of user configuration.
+        See also <xref linkend="git-diff(1)" /> <emphasis>--no-renames</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--find-renames[=&lt;n&gt;]
+</term>
+<listitem>
+<simpara>
+        Turn on rename detection, optionally setting the similarity
+        threshold.
+        See also <xref linkend="git-diff(1)" /> <emphasis>--find-renames</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;pathspec&gt;&#8230;
+</term>
+<listitem>
+<simpara>
+        See the <emphasis>pathspec</emphasis> entry in <xref linkend="gitglossary(7)" />.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </simplesect>
 <simplesect id="git-status(1)__output">
@@ -214,12 +305,13 @@ subdirectory (this is on purpose, to help cutting and pasting). See
 the status.relativePaths config option below.</simpara>
 <section id="git-status(1)__short_format">
 <title>Short Format</title>
-<simpara>In the short-format, the status of each path is shown as</simpara>
-<literallayout class="monospaced">XY PATH1 -&gt; PATH2</literallayout>
-<simpara>where <emphasis>PATH1</emphasis> is the path in the <emphasis>HEAD</emphasis>, and the " <emphasis>-&gt; PATH2</emphasis>" part is
-shown only when <emphasis>PATH1</emphasis> corresponds to a different path in the
-index/worktree (i.e. the file is renamed). The <emphasis>XY</emphasis> is a two-letter
-status code.</simpara>
+<simpara>In the short-format, the status of each path is shown as one of these
+forms</simpara>
+<literallayout class="monospaced">XY PATH
+XY ORIG_PATH -&gt; PATH</literallayout>
+<simpara>where <emphasis>ORIG_PATH</emphasis> is where the renamed/copied contents came
+from. <emphasis>ORIG_PATH</emphasis> is only shown when the entry is renamed or
+copied. The <emphasis>XY</emphasis> is a two-letter status code.</simpara>
 <simpara>The fields (including the <emphasis>-&gt;</emphasis>) are separated from each other by a
 single space. If a filename contains whitespace or other nonprintable
 characters, that field will be quoted in the manner of a C string
@@ -271,15 +363,17 @@ codes can be interpreted as follows:</simpara>
 in which case <emphasis>XY</emphasis> are <emphasis>!!</emphasis>.</simpara>
 <literallayout class="monospaced">X          Y     Meaning
 -------------------------------------------------
-          [MD]   not updated
+         [AMD]   not updated
 M        [ MD]   updated in index
 A        [ MD]   added to index
-D         [ M]   deleted from index
+D                deleted from index
 R        [ MD]   renamed in index
 C        [ MD]   copied in index
 [MARC]           index and work tree matches
 [ MARC]     M    work tree changed since index
 [ MARC]     D    deleted in work tree
+[ D]        R    renamed in work tree
+[ D]        C    copied in work tree
 -------------------------------------------------
 D           D    unmerged, both deleted
 A           U    unmerged, added by us
@@ -292,12 +386,21 @@ U           U    unmerged, both modified
 ?           ?    untracked
 !           !    ignored
 -------------------------------------------------</literallayout>
+<simpara>Submodules have more state and instead report
+                M    the submodule has a different HEAD than
+                     recorded in the index
+                m    the submodule has modified content
+                ?    the submodule has untracked files
+since modified content or untracked files in a submodule cannot be added
+via <emphasis>git add</emphasis> in the superproject to prepare a commit.</simpara>
+<simpara><emphasis>m</emphasis> and <emphasis>?</emphasis> are applied recursively. For example if a nested submodule
+in a submodule contains an untracked file, this is reported as <emphasis>?</emphasis> as well.</simpara>
 <simpara>If -b is used the short-format status is preceded by a line</simpara>
-<simpara>## branchname tracking info</simpara>
+<literallayout class="monospaced">## branchname tracking info</literallayout>
 </section>
-<section id="git-status(1)__porcelain_format">
-<title>Porcelain Format</title>
-<simpara>The porcelain format is similar to the short format, but is guaranteed
+<section id="git-status(1)__porcelain_format_version_1">
+<title>Porcelain Format Version 1</title>
+<simpara>Version 1 porcelain format is similar to the short format, but is guaranteed
 not to change in a backwards-incompatible way between Git versions or
 based on user configuration. This makes it ideal for parsing by scripts.
 The description of the short format above also describes the porcelain
@@ -325,6 +428,107 @@ and the terminating newline (but a space still separates the status
 field from the first filename).  Third, filenames containing special
 characters are not specially formatted; no quoting or
 backslash-escaping is performed.</simpara>
+<simpara>Any submodule changes are reported as modified <emphasis>M</emphasis> instead of <emphasis>m</emphasis> or single <emphasis>?</emphasis>.</simpara>
+</section>
+<section id="git-status(1)__porcelain_format_version_2">
+<title>Porcelain Format Version 2</title>
+<simpara>Version 2 format adds more detailed information about the state of
+the worktree and changed items.  Version 2 also defines an extensible
+set of easy to parse optional headers.</simpara>
+<simpara>Header lines start with "#" and are added in response to specific
+command line arguments.  Parsers should ignore headers they
+don't recognize.</simpara>
+<section id="git-status(1)__branch_headers">
+<title>Branch Headers</title>
+<simpara>If <emphasis>--branch</emphasis> is given, a series of header lines are printed with
+information about the current branch.</simpara>
+<literallayout class="monospaced">Line                                     Notes
+------------------------------------------------------------
+# branch.oid &lt;commit&gt; | (initial)        Current commit.
+# branch.head &lt;branch&gt; | (detached)      Current branch.
+# branch.upstream &lt;upstream_branch&gt;      If upstream is set.
+# branch.ab +&lt;ahead&gt; -&lt;behind&gt;           If upstream is set and
+                                         the commit is present.
+------------------------------------------------------------</literallayout>
+</section>
+<section id="git-status(1)__changed_tracked_entries">
+<title>Changed Tracked Entries</title>
+<simpara>Following the headers, a series of lines are printed for tracked
+entries.  One of three different line formats may be used to describe
+an entry depending on the type of change.  Tracked entries are printed
+in an undefined order; parsers should allow for a mixture of the 3
+line types in any order.</simpara>
+<simpara>Ordinary changed entries have the following format:</simpara>
+<literallayout class="monospaced">1 &lt;XY&gt; &lt;sub&gt; &lt;mH&gt; &lt;mI&gt; &lt;mW&gt; &lt;hH&gt; &lt;hI&gt; &lt;path&gt;</literallayout>
+<simpara>Renamed or copied entries have the following format:</simpara>
+<literallayout class="monospaced">2 &lt;XY&gt; &lt;sub&gt; &lt;mH&gt; &lt;mI&gt; &lt;mW&gt; &lt;hH&gt; &lt;hI&gt; &lt;X&gt;&lt;score&gt; &lt;path&gt;&lt;sep&gt;&lt;origPath&gt;</literallayout>
+<literallayout class="monospaced">Field       Meaning
+--------------------------------------------------------
+&lt;XY&gt;        A 2 character field containing the staged and
+            unstaged XY values described in the short format,
+            with unchanged indicated by a "." rather than
+            a space.
+&lt;sub&gt;       A 4 character field describing the submodule state.
+            "N..." when the entry is not a submodule.
+            "S&lt;c&gt;&lt;m&gt;&lt;u&gt;" when the entry is a submodule.
+            &lt;c&gt; is "C" if the commit changed; otherwise ".".
+            &lt;m&gt; is "M" if it has tracked changes; otherwise ".".
+            &lt;u&gt; is "U" if there are untracked changes; otherwise ".".
+&lt;mH&gt;        The octal file mode in HEAD.
+&lt;mI&gt;        The octal file mode in the index.
+&lt;mW&gt;        The octal file mode in the worktree.
+&lt;hH&gt;        The object name in HEAD.
+&lt;hI&gt;        The object name in the index.
+&lt;X&gt;&lt;score&gt;  The rename or copy score (denoting the percentage
+            of similarity between the source and target of the
+            move or copy). For example "R100" or "C75".
+&lt;path&gt;      The pathname.  In a renamed/copied entry, this
+            is the target path.
+&lt;sep&gt;       When the `-z` option is used, the 2 pathnames are separated
+            with a NUL (ASCII 0x00) byte; otherwise, a tab (ASCII 0x09)
+            byte separates them.
+&lt;origPath&gt;  The pathname in the commit at HEAD or in the index.
+            This is only present in a renamed/copied entry, and
+            tells where the renamed/copied contents came from.
+--------------------------------------------------------</literallayout>
+<simpara>Unmerged entries have the following format; the first character is
+a "u" to distinguish from ordinary changed entries.</simpara>
+<literallayout class="monospaced">u &lt;xy&gt; &lt;sub&gt; &lt;m1&gt; &lt;m2&gt; &lt;m3&gt; &lt;mW&gt; &lt;h1&gt; &lt;h2&gt; &lt;h3&gt; &lt;path&gt;</literallayout>
+<literallayout class="monospaced">Field       Meaning
+--------------------------------------------------------
+&lt;XY&gt;        A 2 character field describing the conflict type
+            as described in the short format.
+&lt;sub&gt;       A 4 character field describing the submodule state
+            as described above.
+&lt;m1&gt;        The octal file mode in stage 1.
+&lt;m2&gt;        The octal file mode in stage 2.
+&lt;m3&gt;        The octal file mode in stage 3.
+&lt;mW&gt;        The octal file mode in the worktree.
+&lt;h1&gt;        The object name in stage 1.
+&lt;h2&gt;        The object name in stage 2.
+&lt;h3&gt;        The object name in stage 3.
+&lt;path&gt;      The pathname.
+--------------------------------------------------------</literallayout>
+</section>
+<section id="git-status(1)__other_items">
+<title>Other Items</title>
+<simpara>Following the tracked entries (and if requested), a series of
+lines will be printed for untracked and then ignored items
+found in the worktree.</simpara>
+<simpara>Untracked items have the following format:</simpara>
+<literallayout class="monospaced">? &lt;path&gt;</literallayout>
+<simpara>Ignored items have the following format:</simpara>
+<literallayout class="monospaced">! &lt;path&gt;</literallayout>
+</section>
+<section id="git-status(1)__pathname_format_notes_and_z">
+<title>Pathname Format Notes and -z</title>
+<simpara>When the <emphasis>-z</emphasis> option is given, pathnames are printed as is and
+without any quoting and lines are terminated with a NUL (ASCII 0x00)
+byte.</simpara>
+<simpara>Without the <emphasis>-z</emphasis> option, pathnames with "unusual" characters are
+quoted as explained for the configuration variable <emphasis>core.quotePath</emphasis>
+(see <xref linkend="git-config(1)" />).</simpara>
+</section>
 </section>
 </simplesect>
 <simplesect id="git-status(1)__configuration">
@@ -346,6 +550,18 @@ submodules where <emphasis>submodule.&lt;name&gt;.ignore=all</emphasis>. To also
 ignored submodules you can either use the --ignore-submodules=dirty command
 line option or the <emphasis>git submodule summary</emphasis> command, which shows a similar
 output but does not honor these settings.</simpara>
+</simplesect>
+<simplesect id="git-status(1)__background_refresh">
+<title>BACKGROUND REFRESH</title>
+<simpara>By default, <emphasis>git status</emphasis> will automatically refresh the index, updating
+the cached stat information from the working tree and writing out the
+result. Writing out the updated index is an optimization that isn't
+strictly necessary (<emphasis>status</emphasis> computes the values for itself, but writing
+them out is just to save subsequent programs from repeating our
+computation). When <emphasis>status</emphasis> is run in the background, the lock held
+during the write may conflict with other simultaneous processes, causing
+them to fail. Scripts running <emphasis>status</emphasis> in the background should consider
+using <emphasis>git --no-optional-locks status</emphasis> (see <xref linkend="git(1)" /> for details).</simpara>
 </simplesect>
 <simplesect id="git-status(1)__see_also">
 <title>SEE ALSO</title>

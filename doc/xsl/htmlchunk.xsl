@@ -2,5 +2,6 @@
 
 <xsl:import href="./db_htmlchunk.xsl"/> 
 <xsl:param name="keep.relative.image.uris" select="0"/>
+<xsl:param name="chunker.output.encoding" select="'UTF-8'"/>
 
 </xsl:stylesheet> 

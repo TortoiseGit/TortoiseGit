@@ -13,8 +13,8 @@
 <simplesect id="git-check-attr(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git check-attr</emphasis> [-a | --all | attr&#8230;] [--] pathname&#8230;
-<emphasis>git check-attr</emphasis> --stdin [-z] [-a | --all | attr&#8230;]</literallayout>
+<literallayout><emphasis>git check-attr</emphasis> [-a | --all | &lt;attr&gt;&#8230;] [--] &lt;pathname&gt;&#8230;
+<emphasis>git check-attr</emphasis> --stdin [-z] [-a | --all | &lt;attr&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-check-attr(1)__description">
@@ -64,7 +64,7 @@
 </term>
 <listitem>
 <simpara>
-        The output format is modified to be machine-parseable.
+        The output format is modified to be machine-parsable.
         If <emphasis>--stdin</emphasis> is also given, input paths are separated
         with a NUL character instead of a linefeed character.
 </simpara>

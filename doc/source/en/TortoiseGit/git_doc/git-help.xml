@@ -13,7 +13,7 @@
 <simplesect id="git-help(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git help</emphasis> [-a|--all] [-g|--guide]
+<literallayout><emphasis>git help</emphasis> [-a|--all [--[no-]verbose]] [-g|--guide]
            [-i|--info|-m|--man|-w|--web] [COMMAND|GUIDE]</literallayout>
 </blockquote>
 </simplesect>
@@ -30,6 +30,9 @@ Git guides is also printed on the standard output.</simpara>
 guide is brought up. The <emphasis>man</emphasis> program is used by default for this
 purpose, but this can be overridden by other options or configuration
 variables.</simpara>
+<simpara>If an alias is given, git shows the definition of the alias on
+standard output. To get the manual page for the aliased command, use
+<emphasis>git COMMAND --help</emphasis>.</simpara>
 <simpara>Note that <emphasis>git --help ...</emphasis> is identical to <emphasis>git help ...</emphasis> because the
 former is internally converted into the latter.</simpara>
 <simpara>To display the <xref linkend="git(1)" /> man page, use <emphasis>git help git</emphasis>.</simpara>
@@ -49,6 +52,31 @@ former is internally converted into the latter.</simpara>
 <simpara>
         Prints all the available commands on the standard output. This
         option overrides any given command or guide name.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--verbose
+</term>
+<listitem>
+<simpara>
+        When used with <emphasis>--all</emphasis> print description for all recognized
+        commands. This is the default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-c
+</term>
+<term>
+--config
+</term>
+<listitem>
+<simpara>
+        List all available configuration variables. This is a short
+        summary of the list in <xref linkend="git-config(1)" />.
 </simpara>
 </listitem>
 </varlistentry>
@@ -165,13 +193,13 @@ format is chosen. The following values are currently supported:</simpara>
 <listitem>
 <simpara>
 "woman": use <emphasis>emacsclient</emphasis> to launch the "woman" mode in emacs
-(this only works starting with emacsclient versions 22),
+  (this only works starting with emacsclient versions 22),
 </simpara>
 </listitem>
 <listitem>
 <simpara>
 "konqueror": use <emphasis>kfmclient</emphasis> to open the man page in a new konqueror
-tab (see <emphasis>Note about konqueror</emphasis> below).
+  tab (see <emphasis>Note about konqueror</emphasis> below).
 </simpara>
 </listitem>
 </itemizedlist>
@@ -187,7 +215,7 @@ listed in the configuration file.</simpara>
 <simpara>will try to use konqueror first. But this may fail (for example, if
 DISPLAY is not set) and in that case emacs' woman mode will be tried.</simpara>
 <simpara>If everything fails, or if no viewer is configured, the viewer specified
-in the GIT_MAN_VIEWER environment variable will be tried.  If that
+in the <emphasis>GIT_MAN_VIEWER</emphasis> environment variable will be tried.  If that
 fails too, the <emphasis>man</emphasis> program will be tried anyway.</simpara>
 </section>
 <section id="git-help(1)__man_lt_tool_gt_path">

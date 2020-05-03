@@ -8,7 +8,7 @@
 </indexterm>
 <simplesect id="gitmodules(5)__name">
 <title>NAME</title>
-<simpara>gitmodules - defining submodule properties</simpara>
+<simpara>gitmodules - Defining submodule properties</simpara>
 </simplesect>
 <simplesect id="gitmodules(5)__synopsis">
 <title>SYNOPSIS</title>
@@ -66,9 +66,8 @@ submodule.&lt;name&gt;.update
         submodule init</emphasis> to initialize the configuration variable of
         the same name. Allowed values here are <emphasis>checkout</emphasis>, <emphasis>rebase</emphasis>,
         <emphasis>merge</emphasis> or <emphasis>none</emphasis>. See description of <emphasis>update</emphasis> command in
-        <xref linkend="git-submodule(1)" /> for their meaning. Note that the
-        <emphasis>!command</emphasis> form is intentionally ignored here for security
-        reasons.
+        <xref linkend="git-submodule(1)" /> for their meaning. For security
+        reasons, the <emphasis>!command</emphasis> form is not accepted here.
 </simpara>
 </listitem>
 </varlistentry>
@@ -79,8 +78,11 @@ submodule.&lt;name&gt;.branch
 <listitem>
 <simpara>
         A remote branch name for tracking updates in the upstream submodule.
-        If the option is not specified, it defaults to <emphasis>master</emphasis>.  See the
-        <emphasis>--remote</emphasis> documentation in <xref linkend="git-submodule(1)" /> for details.
+        If the option is not specified, it defaults to <emphasis>master</emphasis>.  A special
+        value of <emphasis>.</emphasis> is used to indicate that the name of the branch in the
+        submodule should be the same name as the current branch in the
+        current repository.  See the <emphasis>--remote</emphasis> documentation in
+        <xref linkend="git-submodule(1)" /> for details.
 </simpara>
 </listitem>
 </varlistentry>
@@ -106,21 +108,75 @@ submodule.&lt;name&gt;.ignore
 <listitem>
 <simpara>
         Defines under what circumstances "git status" and the diff family show
-        a submodule as modified. When set to "all", it will never be considered
-        modified (but will nonetheless show up in the output of status and
-        commit when it has been staged), "dirty" will ignore all changes
-        to the submodules work tree and
-        takes only differences between the HEAD of the submodule and the commit
-        recorded in the superproject into account. "untracked" will additionally
-        let submodules with modified tracked files in their work tree show up.
-        Using "none" (the default when this option is not set) also shows
-        submodules that have untracked files in their work tree as changed.
-        If this option is also present in the submodules entry in .git/config of
-        the superproject, the setting there will override the one found in
-        .gitmodules.
-        Both settings can be overridden on the command line by using the
-        "--ignore-submodule" option. The <emphasis>git submodule</emphasis> commands are not
-        affected by this setting.
+        a submodule as modified. The following values are supported:
+</simpara>
+<variablelist>
+<varlistentry>
+<term>
+all
+</term>
+<listitem>
+<simpara>
+The submodule will never be considered modified (but will
+            nonetheless show up in the output of status and commit when it has
+            been staged).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+dirty
+</term>
+<listitem>
+<simpara>
+All changes to the submodule's work tree will be ignored, only
+            committed differences between the HEAD of the submodule and its
+            recorded state in the superproject are taken into account.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+untracked
+</term>
+<listitem>
+<simpara>
+Only untracked files in submodules will be ignored.
+            Committed differences and modifications to tracked files will show
+            up.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+none
+</term>
+<listitem>
+<simpara>
+No modifications to submodules are ignored, all of committed
+            differences, and modifications to tracked and untracked files are
+            shown. This is the default option.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>If this option is also present in the submodules entry in .git/config
+of the superproject, the setting there will override the one found in
+.gitmodules.</simpara>
+<simpara>Both settings can be overridden on the command line by using the
+"--ignore-submodules" option. The <emphasis>git submodule</emphasis> commands are not
+affected by this setting.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+submodule.&lt;name&gt;.shallow
+</term>
+<listitem>
+<simpara>
+        When set to true, a clone of this submodule will be performed as a
+        shallow clone (with a history depth of 1) unless the user explicitly
+        asks for a non-shallow clone.
 </simpara>
 </listitem>
 </varlistentry>
@@ -129,19 +185,20 @@ submodule.&lt;name&gt;.ignore
 <simplesect id="gitmodules(5)__examples">
 <title>EXAMPLES</title>
 <simpara>Consider the following .gitmodules file:</simpara>
-<literallayout class="monospaced">[submodule "libfoo"]
+<screen>[submodule "libfoo"]
         path = include/foo
-        url = git://foo.com/git/lib.git</literallayout>
-<literallayout class="monospaced">[submodule "libbar"]
+        url = git://foo.com/git/lib.git
+
+[submodule "libbar"]
         path = include/bar
-        url = git://bar.com/git/lib.git</literallayout>
+        url = git://bar.com/git/lib.git</screen>
 <simpara>This defines two submodules, <emphasis>libfoo</emphasis> and <emphasis>libbar</emphasis>. These are expected to
 be checked out in the paths <emphasis>include/foo</emphasis> and <emphasis>include/bar</emphasis>, and for both
 submodules a URL is specified which can be used for cloning the submodules.</simpara>
 </simplesect>
 <simplesect id="gitmodules(5)__see_also">
 <title>SEE ALSO</title>
-<simpara><xref linkend="git-submodule(1)" /> <xref linkend="git-config(1)" /></simpara>
+<simpara><xref linkend="git-submodule(1)" />, <xref linkend="gitsubmodules(7)" />, <xref linkend="git-config(1)" /></simpara>
 </simplesect>
 <simplesect id="gitmodules(5)__git">
 <title>GIT</title>

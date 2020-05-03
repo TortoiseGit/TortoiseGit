@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<sect2 lang="en" id="git-multi-pack-index(1)">
+    <title>git-multi-pack-index(1)</title>
+<indexterm>
+<primary>git-multi-pack-index(1)</primary>
+</indexterm>
+<simplesect id="git-multi-pack-index(1)__name">
+<title>NAME</title>
+<simpara>git-multi-pack-index - Write and verify multi-pack-indexes</simpara>
+</simplesect>
+<simplesect id="git-multi-pack-index(1)__synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git multi-pack-index</emphasis> [--object-dir=&lt;dir&gt;] [--[no-]progress] &lt;subcommand&gt;</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="git-multi-pack-index(1)__description">
+<title>DESCRIPTION</title>
+<simpara>Write or verify a multi-pack-index (MIDX) file.</simpara>
+</simplesect>
+<simplesect id="git-multi-pack-index(1)__options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+--object-dir=&lt;dir&gt;
+</term>
+<listitem>
+<simpara>
+        Use given directory for the location of Git objects. We check
+        <emphasis>&lt;dir&gt;/packs/multi-pack-index</emphasis> for the current MIDX file, and
+        <emphasis>&lt;dir&gt;/packs</emphasis> for the pack-files to index.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--[no-]progress
+</term>
+<listitem>
+<simpara>
+        Turn progress on/off explicitly. If neither is specified, progress is
+        shown if standard error is connected to a terminal.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>The following subcommands are available:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+write
+</term>
+<listitem>
+<simpara>
+        Write a new MIDX file.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+verify
+</term>
+<listitem>
+<simpara>
+        Verify the contents of the MIDX file.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+expire
+</term>
+<listitem>
+<simpara>
+        Delete the pack-files that are tracked  by the MIDX file, but
+        have no objects referenced by the MIDX. Rewrite the MIDX file
+        afterward to remove all references to these pack-files.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+repack
+</term>
+<listitem>
+<simpara>
+        Create a new pack-file containing objects in small pack-files
+        referenced by the multi-pack-index. If the size given by the
+        <emphasis>--batch-size=&lt;size&gt;</emphasis> argument is zero, then create a pack
+        containing all objects referenced by the multi-pack-index. For
+        a non-zero batch size, Select the pack-files by examining packs
+        from oldest-to-newest, computing the "expected size" by counting
+        the number of objects in the pack referenced by the
+        multi-pack-index, then divide by the total number of objects in
+        the pack and multiply by the pack size. We select packs with
+        expected size below the batch size until the set of packs have
+        total expected size at least the batch size. If the total size
+        does not reach the batch size, then do nothing. If a new pack-
+        file is created, rewrite the multi-pack-index to reference the
+        new pack-file. A later run of <emphasis>git multi-pack-index expire</emphasis> will
+        delete the pack-files that were part of this batch.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="git-multi-pack-index(1)__examples">
+<title>EXAMPLES</title>
+<itemizedlist>
+<listitem>
+<simpara>
+Write a MIDX file for the packfiles in the current .git folder.
+</simpara>
+<screen>$ git multi-pack-index write</screen>
+</listitem>
+<listitem>
+<simpara>
+Write a MIDX file for the packfiles in an alternate object store.
+</simpara>
+<screen>$ git multi-pack-index --object-dir &lt;alt&gt; write</screen>
+</listitem>
+<listitem>
+<simpara>
+Verify the MIDX file for the packfiles in the current .git folder.
+</simpara>
+<screen>$ git multi-pack-index verify</screen>
+</listitem>
+</itemizedlist>
+</simplesect>
+<simplesect id="git-multi-pack-index(1)__see_also">
+<title>SEE ALSO</title>
+<simpara>See <ulink url="https://www.kernel.org/pub/software/scm/git/docs/technical/multi-pack-index.html"><citetitle>The Multi-Pack-Index Design
+Document</citetitle></ulink> and <ulink url="https://www.kernel.org/pub/software/scm/git/docs/technical/pack-format.html"><citetitle>The Multi-Pack-Index
+Format</citetitle></ulink> for more information on the multi-pack-index feature.</simpara>
+</simplesect>
+<simplesect id="git-multi-pack-index(1)__git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</sect2>

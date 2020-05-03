@@ -22,12 +22,12 @@
 on the subcommand:</simpara>
 <literallayout class="monospaced">git bisect start [--term-{old,good}=&lt;term&gt; --term-{new,bad}=&lt;term&gt;]
                  [--no-checkout] [&lt;bad&gt; [&lt;good&gt;...]] [--] [&lt;paths&gt;...]
-git bisect (bad|new) [&lt;rev&gt;]
-git bisect (good|old) [&lt;rev&gt;...]
+git bisect (bad|new|&lt;term-new&gt;) [&lt;rev&gt;]
+git bisect (good|old|&lt;term-old&gt;) [&lt;rev&gt;...]
 git bisect terms [--term-good | --term-bad]
 git bisect skip [(&lt;rev&gt;|&lt;range&gt;)...]
 git bisect reset [&lt;commit&gt;]
-git bisect visualize
+git bisect (visualize|view)
 git bisect replay &lt;logfile&gt;
 git bisect log
 git bisect run &lt;cmd&gt;...
@@ -101,7 +101,7 @@ the change". So instead, you can use the terms "old" and "new",
 respectively, in place of "good" and "bad". (But note that you cannot
 mix "good" and "bad" with "old" and "new" in a single session.)</simpara>
 <simpara>In this more general usage, you provide <emphasis>git bisect</emphasis> with a "new"
-commit has some property and an "old" commit that doesn't have that
+commit that has some property and an "old" commit that doesn't have that
 property. Each time <emphasis>git bisect</emphasis> checks out a commit, you test if that
 commit has the property. If it does, mark the commit as "new";
 otherwise, mark it as "old". When the bisection is done, <emphasis>git bisect</emphasis>
@@ -115,8 +115,8 @@ commands to add the commits:</simpara>
 <simpara>to indicate that it was after.</simpara>
 <simpara>To get a reminder of the currently used terms, use</simpara>
 <screen>git bisect terms</screen>
-<simpara>You can get just the old (respectively new) term with <emphasis>git bisect term
---term-old</emphasis> or <emphasis>git bisect term --term-good</emphasis>.</simpara>
+<simpara>You can get just the old (respectively new) term with <emphasis>git bisect terms
+--term-old</emphasis> or <emphasis>git bisect terms --term-good</emphasis>.</simpara>
 <simpara>If you would like to use your own terms instead of "bad"/"good" or
 "new"/"old", you can choose any names you like (except existing bisect
 subcommands like <emphasis>reset</emphasis>, <emphasis>start</emphasis>, &#8230;) by starting the
@@ -130,16 +130,16 @@ performance regression, you might use</simpara>
 <simpara>Then, use <emphasis>git bisect &lt;term-old&gt;</emphasis> and <emphasis>git bisect &lt;term-new&gt;</emphasis> instead
 of <emphasis>git bisect good</emphasis> and <emphasis>git bisect bad</emphasis> to mark commits.</simpara>
 </section>
-<section id="git-bisect(1)__bisect_visualize">
-<title>Bisect visualize</title>
+<section id="git-bisect(1)__bisect_visualize_view">
+<title>Bisect visualize/view</title>
 <simpara>To see the currently remaining suspects in <emphasis>gitk</emphasis>, issue the following
-command during the bisection process:</simpara>
+command during the bisection process (the subcommand <emphasis>view</emphasis> can be used
+as an alternative to <emphasis>visualize</emphasis>):</simpara>
 <screen>$ git bisect visualize</screen>
-<simpara><emphasis>view</emphasis> may also be used as a synonym for <emphasis>visualize</emphasis>.</simpara>
 <simpara>If the <emphasis>DISPLAY</emphasis> environment variable is not set, <emphasis>git log</emphasis> is used
 instead.  You can also give command-line options such as <emphasis>-p</emphasis> and
 <emphasis>--stat</emphasis>.</simpara>
-<screen>$ git bisect view --stat</screen>
+<screen>$ git bisect visualize --stat</screen>
 </section>
 <section id="git-bisect(1)__bisect_log_and_bisect_replay">
 <title>Bisect log and bisect replay</title>
@@ -300,7 +300,7 @@ Automatically bisect with temporary modifications (hot-fix):
 
 # tweak the working tree by merging the hot-fix branch
 # and then attempt a build
-if      git merge --no-commit hot-fix &amp;&amp;
+if      git merge --no-commit --no-ff hot-fix &amp;&amp;
         make
 then
         # run project specific test and report its status

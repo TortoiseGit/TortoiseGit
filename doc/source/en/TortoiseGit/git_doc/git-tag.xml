@@ -13,13 +13,14 @@
 <simplesect id="git-tag(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git tag</emphasis> [-a | -s | -u &lt;keyid&gt;] [-f] [-m &lt;msg&gt; | -F &lt;file&gt;]
+<literallayout><emphasis>git tag</emphasis> [-a | -s | -u &lt;keyid&gt;] [-f] [-m &lt;msg&gt; | -F &lt;file&gt;] [-e]
         &lt;tagname&gt; [&lt;commit&gt; | &lt;object&gt;]
 <emphasis>git tag</emphasis> -d &lt;tagname&gt;&#8230;
-<emphasis>git tag</emphasis> [-n[&lt;num&gt;]] -l [--contains &lt;commit&gt;] [--points-at &lt;object&gt;]
-        [--column[=&lt;options&gt;] | --no-column] [--create-reflog] [--sort=&lt;key&gt;]
-        [--format=&lt;format&gt;] [--[no-]merged [&lt;commit&gt;]] [&lt;pattern&gt;&#8230;]
-<emphasis>git tag</emphasis> -v &lt;tagname&gt;&#8230;</literallayout>
+<emphasis>git tag</emphasis> [-n[&lt;num&gt;]] -l [--contains &lt;commit&gt;] [--no-contains &lt;commit&gt;]
+        [--points-at &lt;object&gt;] [--column[=&lt;options&gt;] | --no-column]
+        [--create-reflog] [--sort=&lt;key&gt;] [--format=&lt;format&gt;]
+        [--[no-]merged [&lt;commit&gt;]] [&lt;pattern&gt;&#8230;]
+<emphasis>git tag</emphasis> -v [--format=&lt;format&gt;] &lt;tagname&gt;&#8230;</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-tag(1)__description">
@@ -33,8 +34,8 @@ creates a <emphasis>tag</emphasis> object, and requires a tag message.  Unless
 in the tag message.</simpara>
 <simpara>If <emphasis>-m &lt;msg&gt;</emphasis> or <emphasis>-F &lt;file&gt;</emphasis> is given and <emphasis>-a</emphasis>, <emphasis>-s</emphasis>, and <emphasis>-u &lt;keyid&gt;</emphasis>
 are absent, <emphasis>-a</emphasis> is implied.</simpara>
-<simpara>Otherwise just a tag reference for the SHA-1 object name of the commit object is
-created (i.e. a lightweight tag).</simpara>
+<simpara>Otherwise, a tag reference that points directly at the given object
+(i.e., a lightweight tag) is created.</simpara>
 <simpara>A GnuPG signed tag object will be created when <emphasis>-s</emphasis> or <emphasis>-u
 &lt;keyid&gt;</emphasis> is used.  When <emphasis>-u &lt;keyid&gt;</emphasis> is not used, the
 committer identity for the current user is used to find the
@@ -76,6 +77,20 @@ lightweight tags by default.</simpara>
 <listitem>
 <simpara>
         Make a GPG-signed tag, using the default e-mail address's key.
+        The default behavior of tag GPG-signing is controlled by <emphasis>tag.gpgSign</emphasis>
+        configuration variable if it exists, or disabled otherwise.
+        See <xref linkend="git-config(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-sign
+</term>
+<listitem>
+<simpara>
+        Override <emphasis>tag.gpgSign</emphasis> configuration variable that is
+        set to force each and every tag to be signed.
 </simpara>
 </listitem>
 </varlistentry>
@@ -127,7 +142,7 @@ lightweight tags by default.</simpara>
 </term>
 <listitem>
 <simpara>
-        Verify the gpg signature of the given tag names.
+        Verify the GPG signature of the given tag names.
 </simpara>
 </listitem>
 </varlistentry>
@@ -138,28 +153,31 @@ lightweight tags by default.</simpara>
 <listitem>
 <simpara>
         &lt;num&gt; specifies how many lines from the annotation, if any,
-        are printed when using -l.
-        The default is not to print any annotation lines.
-        If no number is given to <emphasis>-n</emphasis>, only the first line is printed.
-        If the tag is not annotated, the commit message is displayed instead.
+        are printed when using -l. Implies <emphasis>--list</emphasis>.
 </simpara>
+<simpara>The default is not to print any annotation lines.
+If no number is given to <emphasis>-n</emphasis>, only the first line is printed.
+If the tag is not annotated, the commit message is displayed instead.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--l &lt;pattern&gt;
+-l
 </term>
 <term>
---list &lt;pattern&gt;
+--list
 </term>
 <listitem>
 <simpara>
-        List tags with names that match the given pattern (or all if no
-        pattern is given).  Running "git tag" without arguments also
-        lists all tags. The pattern is a shell wildcard (i.e., matched
-        using fnmatch(3)).  Multiple patterns may be given; if any of
-        them matches, the tag is shown.
+        List tags. With optional <emphasis>&lt;pattern&gt;...</emphasis>, e.g. <emphasis>git tag --list
+        'v-*'</emphasis>, list only the tags that match the pattern(s).
 </simpara>
+<simpara>Running "git tag" without arguments also lists all tags. The pattern
+is a shell wildcard (i.e., matched using fnmatch(3)). Multiple
+patterns may be given; if any of them matches, the tag is shown.</simpara>
+<simpara>This option is implicitly supplied if any other list-like option such
+as <emphasis>--contains</emphasis> is provided. See the documentation for each of those
+options for details.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -173,12 +191,37 @@ lightweight tags by default.</simpara>
         multiple times, in which case the last key becomes the primary
         key. Also supports "version:refname" or "v:refname" (tag
         names are treated as versions). The "version:refname" sort
-        order can also be affected by the
-        "versionsort.prereleaseSuffix" configuration variable.
+        order can also be affected by the "versionsort.suffix"
+        configuration variable.
         The keys supported are the same as those in <emphasis>git for-each-ref</emphasis>.
         Sort order defaults to the value configured for the <emphasis>tag.sort</emphasis>
         variable if it exists, or lexicographic order otherwise. See
         <xref linkend="git-config(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--color[=&lt;when&gt;]
+</term>
+<listitem>
+<simpara>
+        Respect any colors specified in the <emphasis>--format</emphasis> option. The
+        <emphasis>&lt;when&gt;</emphasis> field must be one of <emphasis>always</emphasis>, <emphasis>never</emphasis>, or <emphasis>auto</emphasis> (if
+        <emphasis>&lt;when&gt;</emphasis> is absent, behave as if <emphasis>always</emphasis> was given).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-i
+</term>
+<term>
+--ignore-case
+</term>
+<listitem>
+<simpara>
+        Sorting and filtering tags are case insensitive.
 </simpara>
 </listitem>
 </varlistentry>
@@ -205,7 +248,40 @@ lightweight tags by default.</simpara>
 <listitem>
 <simpara>
         Only list tags which contain the specified commit (HEAD if not
-        specified).
+        specified). Implies <emphasis>--list</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-contains [&lt;commit&gt;]
+</term>
+<listitem>
+<simpara>
+        Only list tags which don't contain the specified commit (HEAD if
+        not specified). Implies <emphasis>--list</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--merged [&lt;commit&gt;]
+</term>
+<listitem>
+<simpara>
+        Only list tags whose commits are reachable from the specified
+        commit (<emphasis>HEAD</emphasis> if not specified), incompatible with <emphasis>--no-merged</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-merged [&lt;commit&gt;]
+</term>
+<listitem>
+<simpara>
+        Only list tags whose commits are not reachable from the specified
+        commit (<emphasis>HEAD</emphasis> if not specified), incompatible with <emphasis>--merged</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -215,7 +291,8 @@ lightweight tags by default.</simpara>
 </term>
 <listitem>
 <simpara>
-        Only list tags of the given object.
+        Only list tags of the given object (HEAD if not
+        specified). Implies <emphasis>--list</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -254,6 +331,21 @@ lightweight tags by default.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+-e
+</term>
+<term>
+--edit
+</term>
+<listitem>
+<simpara>
+        The message taken from file with <emphasis>-F</emphasis> and command line with
+        <emphasis>-m</emphasis> are usually used as the tag message unmodified.
+        This option lets you further edit the message taken from these sources.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --cleanup=&lt;mode&gt;
 </term>
 <listitem>
@@ -272,7 +364,24 @@ lightweight tags by default.</simpara>
 </term>
 <listitem>
 <simpara>
-        Create a reflog for the tag.
+        Create a reflog for the tag. To globally enable reflogs for tags, see
+        <emphasis>core.logAllRefUpdates</emphasis> in <xref linkend="git-config(1)" />.
+        The negated form <emphasis>--no-create-reflog</emphasis> only overrides an earlier
+        <emphasis>--create-reflog</emphasis>, but currently does not negate the setting of
+        <emphasis>core.logAllRefUpdates</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--format=&lt;format&gt;
+</term>
+<listitem>
+<simpara>
+        A string that interpolates <emphasis>%(fieldname)</emphasis> from a tag ref being shown
+        and the object it points at.  The format is the same as
+        that of <xref linkend="git-for-each-ref(1)" />.  When unspecified,
+        defaults to <emphasis>%(refname:strip=2)</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -303,31 +412,6 @@ lightweight tags by default.</simpara>
 </simpara>
 </listitem>
 </varlistentry>
-<varlistentry>
-<term>
-&lt;format&gt;
-</term>
-<listitem>
-<simpara>
-        A string that interpolates <emphasis>%(fieldname)</emphasis> from the object
-        pointed at by a ref being shown.  The format is the same as
-        that of <xref linkend="git-for-each-ref(1)" />.  When unspecified,
-        defaults to <emphasis>%(refname:strip=2)</emphasis>.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
---[no-]merged [&lt;commit&gt;]
-</term>
-<listitem>
-<simpara>
-        Only list tags whose tips are reachable, or not reachable
-        if <emphasis>--no-merged</emphasis> is used, from the specified commit (<emphasis>HEAD</emphasis>
-        if not specified).
-</simpara>
-</listitem>
-</varlistentry>
 </variablelist>
 </simplesect>
 <simplesect id="git-tag(1)__configuration">
@@ -338,6 +422,9 @@ find a key.  If you want to use a different default key, you can specify
 it in the repository configuration as follows:</simpara>
 <screen>[user]
     signingKey = &lt;gpg-keyid&gt;</screen>
+<simpara><emphasis>pager.tag</emphasis> is only respected when listing tags, i.e., when <emphasis>-l</emphasis> is
+used or implied. The default is to use a pager.
+See <xref linkend="git-config(1)" />.</simpara>
 </simplesect>
 <simplesect id="git-tag(1)__discussion">
 <title>DISCUSSION</title>
@@ -354,19 +441,19 @@ the old tag. In that case you can do one of two things:</simpara>
 <listitem>
 <simpara>
 The sane thing.
-Just admit you screwed up, and use a different name. Others have
-already seen one tag-name, and if you keep the same name, you
-may be in the situation that two people both have "version X",
-but they actually have <emphasis>different</emphasis> "X"'s.  So just call it "X.1"
-and be done with it.
+  Just admit you screwed up, and use a different name. Others have
+  already seen one tag-name, and if you keep the same name, you
+  may be in the situation that two people both have "version X",
+  but they actually have <emphasis>different</emphasis> "X"'s.  So just call it "X.1"
+  and be done with it.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
 The insane thing.
-You really want to call the new version "X" too, <emphasis>even though</emphasis>
-others have already seen the old one. So just use <emphasis>git tag -f</emphasis>
-again, as if you hadn't already published the old one.
+  You really want to call the new version "X" too, <emphasis>even though</emphasis>
+  others have already seen the old one. So just use <emphasis>git tag -f</emphasis>
+  again, as if you hadn't already published the old one.
 </simpara>
 </listitem>
 </orderedlist>
@@ -405,9 +492,8 @@ People need to know that their tags might have been changed.</simpara>
 <section id="git-tag(1)__on_automatic_following">
 <title>On Automatic following</title>
 <simpara>If you are following somebody else's tree, you are most likely
-using remote-tracking branches (<emphasis>refs/heads/origin</emphasis> in traditional
-layout, or <emphasis>refs/remotes/origin/master</emphasis> in the separate-remote
-layout).  You usually want the tags from the other end.</simpara>
+using remote-tracking branches (eg. <emphasis>refs/remotes/origin/master</emphasis>).
+You usually want the tags from the other end.</simpara>
 <simpara>On the other hand, if you are fetching because you would want a
 one-shot merge from somebody else, you typically do not want to
 get tags from there.  This happens more often for people near
@@ -467,7 +553,7 @@ values; the most common form is "YYYY-MM-DD HH:MM").</simpara>
 </simplesect>
 <simplesect id="git-tag(1)__date_formats">
 <title>DATE FORMATS</title>
-<simpara>The GIT_AUTHOR_DATE, GIT_COMMITTER_DATE environment variables
+<simpara>The <emphasis>GIT_AUTHOR_DATE</emphasis>, <emphasis>GIT_COMMITTER_DATE</emphasis> environment variables
 support the following date formats:</simpara>
 <variablelist>
 <varlistentry>
@@ -479,7 +565,7 @@ Git internal format
         It is <emphasis>&lt;unix timestamp&gt; &lt;time zone offset&gt;</emphasis>, where <emphasis>&lt;unix
         timestamp&gt;</emphasis> is the number of seconds since the UNIX epoch.
         <emphasis>&lt;time zone offset&gt;</emphasis> is a positive or negative offset from UTC.
-        For example CET (which is 2 hours ahead UTC) is <emphasis>+0200</emphasis>.
+        For example CET (which is 1 hour ahead of UTC) is <emphasis>+0100</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>

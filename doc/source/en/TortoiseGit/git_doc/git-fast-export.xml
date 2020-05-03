@@ -13,7 +13,7 @@
 <simplesect id="git-fast-export(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git fast-export [options]</emphasis> | <emphasis>git fast-import</emphasis></literallayout>
+<literallayout><emphasis>git fast-export [&lt;options&gt;]</emphasis> | <emphasis>git fast-import</emphasis></literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-fast-export(1)__description">
@@ -21,8 +21,9 @@
 <simpara>This program dumps the given revisions in a form suitable to be piped
 into <emphasis>git fast-import</emphasis>.</simpara>
 <simpara>You can use it as a human-readable bundle replacement (see
-<xref linkend="git-bundle(1)" />), or as a kind of an interactive
-<emphasis>git filter-branch</emphasis>.</simpara>
+<xref linkend="git-bundle(1)" />), or as a format that can be edited before being
+fed to <emphasis>git fast-import</emphasis> in order to do history rewrites (an ability
+relied on by tools like <emphasis>git filter-repo</emphasis>).</simpara>
 </simplesect>
 <simplesect id="git-fast-export(1)__options">
 <title>OPTIONS</title>
@@ -119,10 +120,26 @@ produced incorrect results if you gave these options.</simpara>
         &lt;file&gt;.  The input file must exist, must be readable, and
         must use the same format as produced by --export-marks.
 </simpara>
-<simpara>Any commits that have already been marked will not be exported again.
-If the backend uses a similar --import-marks file, this allows for
-incremental bidirectional exporting of the repository by keeping the
-marks the same across runs.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--mark-tags
+</term>
+<listitem>
+<simpara>
+        In addition to labelling blobs and commits with mark ids, also
+        label tags.  This is useful in conjunction with
+        <emphasis>--export-marks</emphasis> and <emphasis>--import-marks</emphasis>, and is also useful (and
+        necessary) for exporting of nested tags.  It does not hurt
+        other cases and would be the default, but many fast-import
+        frontends are not prepared to accept tags with mark
+        identifiers.
+</simpara>
+<simpara>Any commits (or tags) that have already been marked will not be
+exported again.  If the backend uses a similar --import-marks file,
+this allows for incremental bidirectional exporting of the repository
+by keeping the marks the same across runs.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -191,6 +208,53 @@ marks the same across runs.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--reference-excluded-parents
+</term>
+<listitem>
+<simpara>
+        By default, running a command such as <emphasis>git fast-export
+        master~5..master</emphasis> will not include the commit master&#126;5
+        and will make master&#126;4 no longer have master&#126;5 as
+        a parent (though both the old master&#126;4 and new
+        master&#126;4 will have all the same files).  Use
+        --reference-excluded-parents to instead have the stream
+        refer to commits in the excluded range of history by their
+        sha1sum.  Note that the resulting stream can only be used by a
+        repository which already contains the necessary parent
+        commits.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--show-original-ids
+</term>
+<listitem>
+<simpara>
+        Add an extra directive to the output for commits and blobs,
+        <emphasis>original-oid &lt;SHA1SUM&gt;</emphasis>.  While such directives will likely be
+        ignored by importers such as git-fast-import, it may be useful
+        for intermediary filters (e.g. for rewriting commit messages
+        which refer to older commits, or for stripping blobs by id).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--reencode=(yes|no|abort)
+</term>
+<listitem>
+<simpara>
+        Specify how to handle <emphasis>encoding</emphasis> header in commit objects.  When
+        asking to <emphasis>abort</emphasis> (which is the default), this program will die
+        when encountering such a commit object.  With <emphasis>yes</emphasis>, the commit
+        message will be re-encoded into UTF-8.  With <emphasis>no</emphasis>, the original
+        encoding will be preserved.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --refspec
 </term>
 <listitem>
@@ -210,7 +274,9 @@ marks the same across runs.</simpara>
         <emphasis>git rev-list</emphasis>, that specifies the specific objects and references
         to export.  For example, <emphasis>master~10..master</emphasis> causes the
         current master reference to be exported along with all objects
-        added since its 10th ancestor commit.
+        added since its 10th ancestor commit and (unless the
+        --reference-excluded-parents option is specified) all files
+        common to master&#126;9 and master&#126;10.
 </simpara>
 </listitem>
 </varlistentry>
@@ -272,7 +338,7 @@ smaller output, and it is usually easy to quickly confirm that there is
 no private data in the stream.</simpara>
 </simplesect>
 <simplesect id="git-fast-export(1)__limitations">
-<title>Limitations</title>
+<title>LIMITATIONS</title>
 <simpara>Since <emphasis>git fast-import</emphasis> cannot tag trees, you will not be
 able to export the linux.git repository completely, as it contains
 a tag referencing a tree instead of a commit.</simpara>

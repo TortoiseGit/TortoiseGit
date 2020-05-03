@@ -13,7 +13,7 @@
 <simplesect id="git-annotate(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git annotate</emphasis> [options] file [revision]</literallayout>
+<literallayout><emphasis>git annotate</emphasis> [&lt;options&gt;] &lt;file&gt; [&lt;revision&gt;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-annotate(1)__description">
@@ -142,7 +142,7 @@ file.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---reverse
+--reverse &lt;rev&gt;..&lt;rev&gt;
 </term>
 <listitem>
 <simpara>
@@ -150,7 +150,8 @@ file.</simpara>
         the revision in which a line appeared, this shows the last
         revision in which a line has existed. This requires a range of
         revision like START..END where the path to blame exists in
-        START.
+        START.  <emphasis>git blame --reverse START</emphasis> is taken as <emphasis>git blame
+        --reverse START..HEAD</emphasis> for convenience.
 </simpara>
 </listitem>
 </varlistentry>
@@ -248,7 +249,7 @@ file.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--M|&lt;num&gt;|
+-M[&lt;num&gt;]
 </term>
 <listitem>
 <simpara>
@@ -270,7 +271,7 @@ commit. The default value is 20.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--C|&lt;num&gt;|
+-C[&lt;num&gt;]
 </term>
 <listitem>
 <simpara>
@@ -289,6 +290,39 @@ between files for it to associate those lines with the parent
 commit. And the default value is 40. If there are more than one
 <emphasis>-C</emphasis> options given, the &lt;num&gt; argument of the last <emphasis>-C</emphasis> will
 take effect.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--ignore-rev &lt;rev&gt;
+</term>
+<listitem>
+<simpara>
+        Ignore changes made by the revision when assigning blame, as if the
+        change never happened.  Lines that were changed or added by an ignored
+        commit will be blamed on the previous commit that changed that line or
+        nearby lines.  This option may be specified multiple times to ignore
+        more than one revision.  If the <emphasis>blame.markIgnoredLines</emphasis> config option
+        is set, then lines that were changed by an ignored commit and attributed to
+        another commit will be marked with a <emphasis>?</emphasis> in the blame output.  If the
+        <emphasis>blame.markUnblamableLines</emphasis> config option is set, then those lines touched
+        by an ignored commit that we could not attribute to another revision are
+        marked with a <emphasis>*</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--ignore-revs-file &lt;file&gt;
+</term>
+<listitem>
+<simpara>
+        Ignore revisions listed in <emphasis>file</emphasis>, which must be in the same format as an
+        <emphasis>fsck.skipList</emphasis>.  This option may be repeated, and these files will be
+        processed after any files specified with the <emphasis>blame.ignoreRevsFile</emphasis> config
+        option.  An empty file name, <emphasis>""</emphasis>, will clear the list of revs from
+        previously processed files.
+</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>

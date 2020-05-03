@@ -24,9 +24,9 @@ depending on the subcommand:</simpara>
 <literallayout><emphasis>git reflog</emphasis> [<emphasis>show</emphasis>] [log-options] [&lt;ref&gt;]
 <emphasis>git reflog expire</emphasis> [--expire=&lt;time&gt;] [--expire-unreachable=&lt;time&gt;]
         [--rewrite] [--updateref] [--stale-fix]
-        [--dry-run] [--verbose] [--all | &lt;refs&gt;&#8230;]
+        [--dry-run | -n] [--verbose] [--all [--single-worktree] | &lt;refs&gt;&#8230;]
 <emphasis>git reflog delete</emphasis> [--rewrite] [--updateref]
-        [--dry-run] [--verbose] ref@{specifier}&#8230;
+        [--dry-run | -n] [--verbose] ref@{specifier}&#8230;
 <emphasis>git reflog exists</emphasis> &lt;ref&gt;</literallayout>
 </blockquote>
 <simpara>Reference logs, or "reflogs", record when the tips of branches and
@@ -72,6 +72,18 @@ not.</simpara>
 <listitem>
 <simpara>
         Process the reflogs of all references.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--single-worktree
+</term>
+<listitem>
+<simpara>
+        By default when <emphasis>--all</emphasis> is specified, reflogs from all working
+        trees are processed. This option limits the processing to reflogs
+        from the current working tree only.
 </simpara>
 </listitem>
 </varlistentry>

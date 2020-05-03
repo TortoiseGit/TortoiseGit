@@ -53,8 +53,9 @@ will be in unmerged state when <emphasis>git read-tree</emphasis> returns.</simp
 </term>
 <listitem>
 <simpara>
-        Same as -m, except that unmerged entries are discarded
-        instead of failing.
+        Same as -m, except that unmerged entries are discarded instead
+        of failing. When used with <emphasis>-u</emphasis>, updates leading to loss of
+        working tree changes will not abort the operation.
 </simpara>
 </listitem>
 </varlistentry>
@@ -157,15 +158,14 @@ when both sides add a path identically.  The resolution
 </varlistentry>
 <varlistentry>
 <term>
---prefix=&lt;prefix&gt;/
+--prefix=&lt;prefix&gt;
 </term>
 <listitem>
 <simpara>
         Keep the current index contents, and read the contents
         of the named tree-ish under the directory at <emphasis>&lt;prefix&gt;</emphasis>.
         The command will refuse to overwrite entries that already
-        existed in the original index file. Note that the <emphasis>&lt;prefix&gt;/</emphasis>
-        value must end with a slash.
+        existed in the original index file.
 </simpara>
 </listitem>
 </varlistentry>
@@ -212,6 +212,19 @@ when both sides add a path identically.  The resolution
 </varlistentry>
 <varlistentry>
 <term>
+--[no-]recurse-submodules
+</term>
+<listitem>
+<simpara>
+        Using --recurse-submodules will update the content of all initialized
+        submodules according to the commit recorded in the superproject by
+        calling read-tree recursively, also setting the submodules HEAD to be
+        detached at that commit.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --no-sparse-checkout
 </term>
 <listitem>
@@ -234,6 +247,19 @@ when both sides add a path identically.  The resolution
 </varlistentry>
 <varlistentry>
 <term>
+-q
+</term>
+<term>
+--quiet
+</term>
+<listitem>
+<simpara>
+        Quiet, suppress feedback messages.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 &lt;tree-ish#&gt;
 </term>
 <listitem>
@@ -245,10 +271,10 @@ when both sides add a path identically.  The resolution
 </variablelist>
 </simplesect>
 <simplesect id="git-read-tree(1)__merging">
-<title>Merging</title>
+<title>MERGING</title>
 <simpara>If <emphasis>-m</emphasis> is specified, <emphasis>git read-tree</emphasis> can perform 3 kinds of
 merge, a single tree merge if only 1 tree is given, a
-fast-forward merge with 2 trees, or a 3-way merge if 3 trees are
+fast-forward merge with 2 trees, or a 3-way merge if 3 or more trees are
 provided.</simpara>
 <section id="git-read-tree(1)__single_tree_merge">
 <title>Single Tree Merge</title>
@@ -289,39 +315,44 @@ that no local change is lost as the result of this "merge".
 Here are the "carry forward" rules, where "I" denotes the index,
 "clean" means that index and work tree coincide, and "exists"/"nothing"
 refer to the presence of a path in the specified commit:</simpara>
-<literallayout class="monospaced">   I                   H        M        Result
-  -------------------------------------------------------
-0  nothing             nothing  nothing  (does not happen)
-1  nothing             nothing  exists   use M
-2  nothing             exists   nothing  remove path from index
-3  nothing             exists   exists,  use M if "initial checkout",
-                                H == M   keep index otherwise
-                                exists,  fail
-                                H != M</literallayout>
-<literallayout class="monospaced">   clean I==H  I==M
-  ------------------
-4  yes   N/A   N/A     nothing  nothing  keep index
-5  no    N/A   N/A     nothing  nothing  keep index</literallayout>
-<literallayout class="monospaced">6  yes   N/A   yes     nothing  exists   keep index
-7  no    N/A   yes     nothing  exists   keep index
-8  yes   N/A   no      nothing  exists   fail
-9  no    N/A   no      nothing  exists   fail</literallayout>
-<literallayout class="monospaced">10 yes   yes   N/A     exists   nothing  remove path from index
-11 no    yes   N/A     exists   nothing  fail
-12 yes   no    N/A     exists   nothing  fail
-13 no    no    N/A     exists   nothing  fail</literallayout>
-<literallayout class="monospaced">   clean (H==M)
-  ------
-14 yes                 exists   exists   keep index
-15 no                  exists   exists   keep index</literallayout>
-<literallayout class="monospaced">   clean I==H  I==M (H!=M)
-  ------------------
-16 yes   no    no      exists   exists   fail
-17 no    no    no      exists   exists   fail
-18 yes   no    yes     exists   exists   keep index
-19 no    no    yes     exists   exists   keep index
-20 yes   yes   no      exists   exists   use M
-21 no    yes   no      exists   exists   fail</literallayout>
+<literallayout class="monospaced">        I                   H        M        Result
+       -------------------------------------------------------
+     0  nothing             nothing  nothing  (does not happen)
+     1  nothing             nothing  exists   use M
+     2  nothing             exists   nothing  remove path from index
+     3  nothing             exists   exists,  use M if "initial checkout",
+                                     H == M   keep index otherwise
+                                     exists,  fail
+                                     H != M
+
+        clean I==H  I==M
+       ------------------
+     4  yes   N/A   N/A     nothing  nothing  keep index
+     5  no    N/A   N/A     nothing  nothing  keep index
+
+     6  yes   N/A   yes     nothing  exists   keep index
+     7  no    N/A   yes     nothing  exists   keep index
+     8  yes   N/A   no      nothing  exists   fail
+     9  no    N/A   no      nothing  exists   fail
+
+     10 yes   yes   N/A     exists   nothing  remove path from index
+     11 no    yes   N/A     exists   nothing  fail
+     12 yes   no    N/A     exists   nothing  fail
+     13 no    no    N/A     exists   nothing  fail
+
+        clean (H==M)
+       ------
+     14 yes                 exists   exists   keep index
+     15 no                  exists   exists   keep index
+
+        clean I==H  I==M (H!=M)
+       ------------------
+     16 yes   no    no      exists   exists   fail
+     17 no    no    no      exists   exists   fail
+     18 yes   no    yes     exists   exists   keep index
+     19 no    no    yes     exists   exists   keep index
+     20 yes   yes   no      exists   exists   use M
+     21 no    yes   no      exists   exists   fail</literallayout>
 <simpara>In all "keep index" cases, the index entry stays as in the
 original index file.  If the entry is not up to date,
 <emphasis>git read-tree</emphasis> keeps the copy in the work tree intact when
@@ -490,7 +521,7 @@ have finished your work-in-progress), attempt the merge again.</simpara>
 </section>
 </simplesect>
 <simplesect id="git-read-tree(1)__sparse_checkout">
-<title>Sparse checkout</title>
+<title>SPARSE CHECKOUT</title>
 <simpara>"Sparse checkout" allows populating the working directory sparsely.
 It uses the skip-worktree bit (see <xref linkend="git-update-index(1)" />) to tell
 Git whether a file in the working directory is worth looking at.</simpara>
@@ -525,7 +556,7 @@ support.</simpara>
 <simplesect id="git-read-tree(1)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="git-write-tree(1)" />; <xref linkend="git-ls-files(1)" />;
-<xref linkend="gitignore(5)" /></simpara>
+<xref linkend="gitignore(5)" />; <xref linkend="git-sparse-checkout(1)" />;</simpara>
 </simplesect>
 <simplesect id="git-read-tree(1)__git">
 <title>GIT</title>

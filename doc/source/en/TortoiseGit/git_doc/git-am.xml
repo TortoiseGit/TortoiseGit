@@ -20,7 +20,7 @@
          [--exclude=&lt;path&gt;] [--include=&lt;path&gt;] [--reject] [-q | --quiet]
          [--[no-]scissors] [-S[&lt;keyid&gt;]] [--patch-format=&lt;format&gt;]
          [(&lt;mbox&gt; | &lt;Maildir&gt;)&#8230;]
-<emphasis>git am</emphasis> (--continue | --skip | --abort)</literallayout>
+<emphasis>git am</emphasis> (--continue | --skip | --abort | --quit | --show-current-patch[=(diff|raw)])</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-am(1)__description">
@@ -213,6 +213,20 @@ default.   You can use <emphasis>--no-utf8</emphasis> to override this.</simpara
 </varlistentry>
 <varlistentry>
 <term>
+--rerere-autoupdate
+</term>
+<term>
+--no-rerere-autoupdate
+</term>
+<listitem>
+<simpara>
+        Allow the rerere mechanism to update the index with the
+        result of auto-conflict resolution if possible.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --ignore-space-change
 </term>
 <term>
@@ -256,7 +270,8 @@ default.   You can use <emphasis>--no-utf8</emphasis> to override this.</simpara
         By default the command will try to detect the patch format
         automatically. This option allows the user to bypass the automatic
         detection and specify the patch format that the patch(es) should be
-        interpreted as. Valid formats are mbox, stgit, stgit-series and hg.
+        interpreted as. Valid formats are mbox, mboxrd,
+        stgit, stgit-series and hg.
 </simpara>
 </listitem>
 </varlistentry>
@@ -319,11 +334,16 @@ default.   You can use <emphasis>--no-utf8</emphasis> to override this.</simpara
 <term>
 --gpg-sign[=&lt;keyid&gt;]
 </term>
+<term>
+--no-gpg-sign
+</term>
 <listitem>
 <simpara>
         GPG-sign commits. The <emphasis>keyid</emphasis> argument is optional and
         defaults to the committer identity; if specified, it must be
-        stuck to the option without a space.
+        stuck to the option without a space. <emphasis>--no-gpg-sign</emphasis> is useful to
+        countermand both <emphasis>commit.gpgSign</emphasis> configuration variable, and
+        earlier <emphasis>--gpg-sign</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -372,6 +392,30 @@ default.   You can use <emphasis>--no-utf8</emphasis> to override this.</simpara
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+--quit
+</term>
+<listitem>
+<simpara>
+        Abort the patching operation but keep HEAD and the index
+        untouched.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--show-current-patch[=(diff|raw)]
+</term>
+<listitem>
+<simpara>
+        Show the message at which <emphasis>git am</emphasis> has stopped due to
+        conflicts.  If <emphasis>raw</emphasis> is specified, show the raw contents of
+        the e-mail message; if <emphasis>diff</emphasis>, show the diff portion only.
+        Defaults to <emphasis>raw</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </simplesect>
 <simplesect id="git-am(1)__discussion">
@@ -382,8 +426,8 @@ of the message.  The "Subject: " line is used as the title of
 the commit, after stripping common prefix "[PATCH &lt;anything&gt;]".
 The "Subject: " line is supposed to concisely describe what the
 commit is about in one line of text.</simpara>
-<simpara>"From: " and "Subject: " lines starting the body override the respective
-commit author name and title values taken from the headers.</simpara>
+<simpara>"From: ", "Date: ", and "Subject: " lines starting the body override the
+respective commit author name and title values taken from the headers.</simpara>
 <simpara>The commit message is formed by the title taken from the
 "Subject: ", a blank line and the body of the message up to
 where the patch begins.  Excess whitespace at the end of each

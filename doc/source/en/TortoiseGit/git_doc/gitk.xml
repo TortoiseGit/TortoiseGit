@@ -116,7 +116,7 @@ command-line parser.</simpara>
 </term>
 <listitem>
 <simpara>
-        Mark which side of a symmetric diff a commit is reachable
+        Mark which side of a symmetric difference a commit is reachable
         from.  Commits from the left side are prefixed with a <emphasis>&lt;</emphasis>
         symbol and those from the right with a <emphasis>&gt;</emphasis> symbol.
 </simpara>
@@ -177,8 +177,12 @@ command-line parser.</simpara>
         (or the function name regex &lt;funcname&gt;) within the &lt;file&gt;.  You may
         not give any pathspec limiters.  This is currently limited to
         a walk starting from a single revision, i.e., you may only
-        give zero or one positive revision arguments.
-        You can specify this option more than once.
+        give zero or one positive revision arguments, and
+        &lt;start&gt; and &lt;end&gt; (or &lt;funcname&gt;) must exist in the starting revision.
+        You can specify this option more than once. Implies <emphasis>--patch</emphasis>.
+        Patch output can be suppressed using <emphasis>--no-patch</emphasis>, but other diff formats
+        (namely <emphasis>--raw</emphasis>, <emphasis>--numstat</emphasis>, <emphasis>--shortstat</emphasis>, <emphasis>--dirstat</emphasis>, <emphasis>--summary</emphasis>,
+        <emphasis>--name-only</emphasis>, <emphasis>--name-status</emphasis>, <emphasis>--check</emphasis>) are not currently implemented.
 </simpara>
 <simpara><emphasis role="strong">Note:</emphasis> gitk (unlike <xref linkend="git-log(1)" />) currently only understands
 this option if you specify it "glued together" with its argument.  Do
@@ -341,8 +345,12 @@ used by default. If <emphasis>$XDG_CONFIG_HOME</emphasis> is not set it defaults
 <simplesect id="gitk(1)__history">
 <title>History</title>
 <simpara>Gitk was the first graphical repository browser. It's written in
-tcl/tk and started off in a separate repository but was later merged
-into the main Git repository.</simpara>
+tcl/tk.</simpara>
+<simpara><emphasis>gitk</emphasis> is actually maintained as an independent project, but stable
+versions are distributed as part of the Git suite for the convenience
+of end users.</simpara>
+<simpara>gitk-git/ comes from Paul Mackerras's gitk project:</simpara>
+<literallayout class="monospaced">git://ozlabs.org/~paulus/gitk</literallayout>
 </simplesect>
 <simplesect id="gitk(1)__see_also">
 <title>SEE ALSO</title>
@@ -354,17 +362,6 @@ into the main Git repository.</simpara>
 <listitem>
 <simpara>
         A repository browser written in C++ using Qt.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-<emphasis>gitview(1)</emphasis>
-</term>
-<listitem>
-<simpara>
-        A repository browser written in Python using Gtk. It's based on
-        <emphasis>bzrk(1)</emphasis> and distributed in the contrib area of the Git repository.
 </simpara>
 </listitem>
 </varlistentry>

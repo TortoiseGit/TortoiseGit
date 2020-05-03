@@ -52,7 +52,7 @@ browser
 <listitem>
 <simpara>
         Start a tree browser showing all files in the specified
-        commit (or <emphasis>HEAD</emphasis> by default).  Files selected through the
+        commit.  Files selected through the
         browser are opened in the blame viewer.
 </simpara>
 </listitem>
@@ -206,11 +206,8 @@ version
 <simpara><emphasis>git gui</emphasis> is actually maintained as an independent project, but stable
 versions are distributed as part of the Git suite for the convenience
 of end users.</simpara>
-<simpara>A <emphasis>git gui</emphasis> development repository can be obtained from:</simpara>
-<literallayout class="monospaced">git clone git://repo.or.cz/git-gui.git</literallayout>
-<simpara>or</simpara>
-<literallayout class="monospaced">git clone http://repo.or.cz/r/git-gui.git</literallayout>
-<simpara>or browsed online at <ulink url="http://repo.or.cz/w/git-gui.git/">http://repo.or.cz/w/git-gui.git/</ulink>[].</simpara>
+<simpara>The official repository of the <emphasis>git gui</emphasis> project can be found at:</simpara>
+<literallayout class="monospaced">https://github.com/prati0100/git-gui.git/</literallayout>
 </simplesect>
 <simplesect id="git-gui(1)__git">
 <title>GIT</title>

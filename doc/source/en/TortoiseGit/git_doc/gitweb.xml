@@ -64,8 +64,7 @@ Finding commits which commit messages matches given search term.
 </simpara>
 </listitem>
 </itemizedlist>
-<simpara>See <ulink url="http://git.kernel.org/?p=git/git.git;a=tree;f=gitweb">http://git.kernel.org/?p=git/git.git;a=tree;f=gitweb</ulink>[] or
-<ulink url="http://repo.or.cz/w/git.git/tree/HEAD:/gitweb/">http://repo.or.cz/w/git.git/tree/HEAD:/gitweb/</ulink>[] for gitweb source code,
+<simpara>See <ulink url="http://repo.or.cz/w/git.git/tree/HEAD:/gitweb/">http://repo.or.cz/w/git.git/tree/HEAD:/gitweb/</ulink> for gitweb source code,
 browsed using gitweb itself.</simpara>
 </simplesect>
 <simplesect id="gitweb(1)__configuration">
@@ -121,7 +120,7 @@ separator (rules for Perl's "<emphasis>split(" ", $line)</emphasis>").
 <simpara>
 Fields use modified URI encoding, defined in RFC 3986, section 2.1
 (Percent-Encoding), or rather "Query string encoding" (see
-<ulink url="https://en.wikipedia.org/wiki/Query_string#URL_encoding">https://en.wikipedia.org/wiki/Query_string#URL_encoding</ulink>[]), the difference
+<ulink url="https://en.wikipedia.org/wiki/Query_string#URL_encoding">https://en.wikipedia.org/wiki/Query_string#URL_encoding</ulink>), the difference
 being that SP (" ") can be encoded as "&#43;" (and therefore "&#43;" has to be
 also percent-encoded).
 </simpara>

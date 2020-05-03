@@ -81,8 +81,8 @@ permissions.</simpara>
 <simpara>If a <emphasis>no-interactive-login</emphasis> command exists, then it is run and the
 interactive shell is aborted.</simpara>
 </simplesect>
-<simplesect id="git-shell(1)__example">
-<title>EXAMPLE</title>
+<simplesect id="git-shell(1)__examples">
+<title>EXAMPLES</title>
 <simpara>To disable interactive logins, displaying a greeting instead:</simpara>
 <screen>$ chsh -s /usr/bin/git-shell
 $ mkdir $HOME/git-shell-commands
@@ -93,6 +93,18 @@ printf '%s\n' "provide interactive shell access."
 exit 128
 EOF
 $ chmod +x $HOME/git-shell-commands/no-interactive-login</screen>
+<simpara>To enable git-cvsserver access (which should generally have the
+<emphasis>no-interactive-login</emphasis> example above as a prerequisite, as creating
+the git-shell-commands directory allows interactive logins):</simpara>
+<screen>$ cat &gt;$HOME/git-shell-commands/cvs &lt;&lt;\EOF
+if ! test $# = 1 &amp;&amp; test "$1" = "server"
+then
+        echo &gt;&amp;2 "git-cvsserver only handles \"server\""
+        exit 1
+fi
+exec git cvsserver server
+EOF
+$ chmod +x $HOME/git-shell-commands/cvs</screen>
 </simplesect>
 <simplesect id="git-shell(1)__see_also">
 <title>SEE ALSO</title>

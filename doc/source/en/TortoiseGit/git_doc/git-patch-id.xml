@@ -80,16 +80,6 @@ Result is different from the value produced by git 1.9 and older
 <literallayout class="monospaced">This is the default.</literallayout>
 </listitem>
 </varlistentry>
-<varlistentry>
-<term>
-&lt;patch&gt;
-</term>
-<listitem>
-<simpara>
-        The diff to create the ID of.
-</simpara>
-</listitem>
-</varlistentry>
 </variablelist>
 </simplesect>
 <simplesect id="git-patch-id(1)__git">

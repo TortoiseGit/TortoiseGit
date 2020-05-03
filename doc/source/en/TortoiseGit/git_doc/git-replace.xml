@@ -16,6 +16,7 @@
 <literallayout><emphasis>git replace</emphasis> [-f] &lt;object&gt; &lt;replacement&gt;
 <emphasis>git replace</emphasis> [-f] --edit &lt;object&gt;
 <emphasis>git replace</emphasis> [-f] --graft &lt;commit&gt; [&lt;parent&gt;&#8230;]
+<emphasis>git replace</emphasis> [-f] --convert-graft-file
 <emphasis>git replace</emphasis> -d &lt;object&gt;&#8230;
 <emphasis>git replace</emphasis> [--format=&lt;format&gt;] [-l [&lt;pattern&gt;]]</literallayout>
 </blockquote>
@@ -115,9 +116,20 @@ achieve the same effect as the <emphasis>--no-replace-objects</emphasis> option.
         content as &lt;commit&gt; except that its parents will be
         [&lt;parent&gt;&#8230;] instead of &lt;commit&gt;'s parents. A replacement ref
         is then created to replace &lt;commit&gt; with the newly created
-        commit. See contrib/convert-grafts-to-replace-refs.sh for an
-        example script based on this option that can convert grafts to
-        replace refs.
+        commit. Use <emphasis>--convert-graft-file</emphasis> to convert a
+        <emphasis>$GIT_DIR/info/grafts</emphasis> file and use replace refs instead.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--convert-graft-file
+</term>
+<listitem>
+<simpara>
+        Creates graft commits for all entries in <emphasis>$GIT_DIR/info/grafts</emphasis>
+        and deletes that file upon success. The purpose is to help users
+        with transitioning off of the now-deprecated graft file.
 </simpara>
 </listitem>
 </varlistentry>
@@ -177,10 +189,10 @@ achieve the same effect as the <emphasis>--no-replace-objects</emphasis> option.
 </simplesect>
 <simplesect id="git-replace(1)__creating_replacement_objects">
 <title>CREATING REPLACEMENT OBJECTS</title>
-<simpara><xref linkend="git-filter-branch(1)" />, <xref linkend="git-hash-object(1)" /> and
-<xref linkend="git-rebase(1)" />, among other git commands, can be used to create
-replacement objects from existing objects. The <emphasis>--edit</emphasis> option can
-also be used with <emphasis>git replace</emphasis> to create a replacement object by
+<simpara><xref linkend="git-hash-object(1)" />, <xref linkend="git-rebase(1)" />, and
+<ulink url="https://github.com/newren/git-filter-repo">git-filter-repo</ulink>, among other git commands, can be used to
+create replacement objects from existing objects. The <emphasis>--edit</emphasis> option
+can also be used with <emphasis>git replace</emphasis> to create a replacement object by
 editing an existing object.</simpara>
 <simpara>If you want to replace many blobs, trees or commits that are part of a
 string of commits, you may just want to create a replacement string of
@@ -200,13 +212,13 @@ pending objects.</simpara>
 <simplesect id="git-replace(1)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="git-hash-object(1)" />
-<xref linkend="git-filter-branch(1)" />
 <xref linkend="git-rebase(1)" />
 <xref linkend="git-tag(1)" />
 <xref linkend="git-branch(1)" />
 <xref linkend="git-commit(1)" />
 <xref linkend="git-var(1)" />
-<xref linkend="git(1)" /></simpara>
+<xref linkend="git(1)" />
+<ulink url="https://github.com/newren/git-filter-repo">git-filter-repo</ulink></simpara>
 </simplesect>
 <simplesect id="git-replace(1)__git">
 <title>GIT</title>

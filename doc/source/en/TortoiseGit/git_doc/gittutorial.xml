@@ -70,8 +70,8 @@ summary of the situation with <emphasis>git status</emphasis>:</simpara>
 <screen>$ git status
 On branch master
 Changes to be committed:
-Your branch is up-to-date with 'origin/master'.
-  (use "git reset HEAD &lt;file&gt;..." to unstage)
+Your branch is up to date with 'origin/master'.
+  (use "git restore --staged &lt;file&gt;..." to unstage)
 
         modified:   file1
         modified:   file2
@@ -127,12 +127,12 @@ development.  To create a new branch named "experimental", use</simpara>
 "master" branch is a default branch that was created for you
 automatically.  The asterisk marks the branch you are currently on;
 type</simpara>
-<screen>$ git checkout experimental</screen>
+<screen>$ git switch experimental</screen>
 <simpara>to switch to the experimental branch.  Now edit a file, commit the
 change, and switch back to the master branch:</simpara>
 <screen>(edit file)
 $ git commit -a
-$ git checkout master</screen>
+$ git switch master</screen>
 <simpara>Check that the change you made is no longer visible, since it was
 made on the experimental branch and you're back on the master branch.</simpara>
 <simpara>You can make a different change on the master branch:</simpara>
@@ -437,6 +437,6 @@ digressions that may be interesting at this point are:</simpara>
 </simplesect>
 <simplesect id="gittutorial(7)__git">
 <title>GIT</title>
-<simpara>Part of the <xref linkend="git(1)" /> suite.</simpara>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
 </sect2>
