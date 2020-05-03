@@ -1838,7 +1838,7 @@ void CBaseView::DrawTextLine(
 			// change color of affected parts
 			const long int nIntenseColorScale = 30;
 			std::map<int, linecolors_t>::iterator it = lineCols.lower_bound(nMarkStart+nStringPos);
-			for ( ; it != lineCols.end() && it->first < nMarkEnd; ++it)
+			for ( ; it != lineCols.end() && it->first < nMarkEnd + nStringPos; ++it)
 			{
 				auto& second = it->second;
 				COLORREF crBk = CAppUtils::IntenseColor(nIntenseColorScale, second.background);
@@ -1848,7 +1848,7 @@ void CBaseView::DrawTextLine(
 				second.text = CAppUtils::IntenseColor(nIntenseColorScale, second.text);
 			}
 			searchLine = searchLine.Mid(nMarkEnd);
-			nStringPos = nMarkEnd;
+			nStringPos += nMarkEnd;
 			nMarkStart = 0;
 			nMarkEnd = 0;
 		}
@@ -5505,32 +5505,45 @@ void CBaseView::OnEditFindprevStart()
 
 bool CBaseView::StringFound(const CString& str, SearchDirection srchDir, int& start, int& end) const
 {
-	if (srchDir == SearchPrevious)
+	bool bStringFound;
+	do
 	{
-		int laststart = -1;
-		int laststart2 = -1;
-		do
+		if (srchDir == SearchPrevious)
 		{
-			laststart2 = laststart;
-			laststart = str.Find(m_sFindText, laststart + 1);
-		} while (laststart >= 0 && laststart < start);
-		start = laststart2;
-	}
-	else
-		start = str.Find(m_sFindText, start);
-	end = start + m_sFindText.GetLength();
-	bool bStringFound = (start >= 0);
-	if (bStringFound && m_bWholeWord)
-	{
-		if (start)
-			bStringFound = IsWordSeparator(str.Mid(start-1,1).GetAt(0));
-
-		if (bStringFound)
-		{
-			if (str.GetLength() > end)
-				bStringFound = IsWordSeparator(str.Mid(end, 1).GetAt(0));
+			int laststart = -1;
+			int laststart2 = -1;
+			do
+			{
+				laststart2 = laststart;
+				laststart = str.Find(m_sFindText, laststart + 1);
+			} while (laststart >= 0 && laststart < start);
+			start = laststart2;
 		}
-	}
+		else
+			start = str.Find(m_sFindText, start);
+		end = start + m_sFindText.GetLength();
+		bStringFound = (start >= 0);
+		if (bStringFound && m_bWholeWord)
+		{
+			if (start)
+				bStringFound = IsWordSeparator(str.Mid(start - 1, 1).GetAt(0));
+
+			if (bStringFound)
+			{
+				if (str.GetLength() > end)
+					bStringFound = IsWordSeparator(str.Mid(end, 1).GetAt(0));
+			}
+
+			if (!bStringFound)
+			{
+				if (srchDir == SearchPrevious)
+					start--;
+				else
+					start = end;
+			}
+		}
+	} while (!bStringFound && start >= 0);
+
 	return bStringFound;
 }
 
