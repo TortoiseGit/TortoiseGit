@@ -111,6 +111,28 @@
 			<xref linkend="tgit-app-internals-overlays"/>.
 		</para>
 	</sect2>
+	<sect2 id="tgit-dug-wcstatus-winprops">
+		<title>Explorer Properties</title>
+		<indexterm>
+			<primary>windows properties</primary>
+			<primary>explorer properties</primary>
+		</indexterm>
+		<para>
+			<figure id="tgit-dug-propertypage-dia-1">
+				<title>Explorer property page, Git tab</title>
+				<graphic fileref="../images/Properties.png"/>
+			</figure>
+			TortoiseGit provides a property page in Windows Explorer for files/folders under Git version control.
+			There you can see all relevant information about the selected file/directory.
+			Just select a file or directory and select
+			<menuchoice>
+				<guimenu>Windows Menu</guimenu>
+				<guimenuitem>properties</guimenuitem>
+			</menuchoice>
+			in the context menu (note: this is the normal properties menu entry
+			the explorer provides, not the one in the TortoiseGit submenu!).
+		</para>
+	</sect2>
 	<sect2 id="tgit-dug-wcstatus-2">
 		<?dbhh topicname="HIDD_CHANGEDFILES"?>
 		<title>Status</title>
