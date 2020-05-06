@@ -1,6 +1,9 @@
 ﻿= Release 2.11.0 =
 Released: unreleased
 
+== Bug Fixes ==
+ * Fixed issue #3593: Statistics dialog - misaligned controls
+
 == Features ==
  * Update Scintilla to 4.3.3
  * Fixed issue #3348: Showing line and column number in the status line of TortoiseGitMerge
