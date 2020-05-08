@@ -32,4 +32,6 @@ move 8bit.tmp %1 >nul
 optipng.exe -o7 -quiet %1
 pngout.exe %1 /y /d0 /s0 /mincodes0 >nul
 DeflOpt.exe %1 >nul
+zopflipng.exe -y -m %1 zopfli.tmp
+move zopfli.tmp %1 >nul
 endlocal & goto :EOF
