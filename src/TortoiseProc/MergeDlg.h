@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2007-2011, 2013-2016 - TortoiseGit
 
@@ -79,5 +79,4 @@ private:
 	afx_msg void OnCbnSelchangeComboMergestrategy();
 	afx_msg void OnCbnSelchangeComboStrategyoption();
 	afx_msg void OnBnClickedCheckFFonlyOrNoFF();
-	afx_msg void OnSysColorChange();
 };

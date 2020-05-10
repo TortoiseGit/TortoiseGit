@@ -49,7 +49,6 @@ void CBugtraqRegexTestDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CBugtraqRegexTestDlg, CResizableStandAloneDialog)
 	ON_EN_CHANGE(IDC_BUGTRAQLOGREGEX1, &CBugtraqRegexTestDlg::OnEnChangeBugtraqlogregex1)
 	ON_EN_CHANGE(IDC_BUGTRAQLOGREGEX2, &CBugtraqRegexTestDlg::OnEnChangeBugtraqlogregex2)
-	ON_WM_SYSCOLORCHANGE()
 END_MESSAGE_MAP()
 
 void CBugtraqRegexTestDlg::OnEnChangeBugtraqlogregex1()
@@ -103,12 +102,4 @@ void CBugtraqRegexTestDlg::UpdateLogControl()
 		m_cLogMessage.Init(projectprops);
 		m_cLogMessage.RestyleBugIDs();
 	}
-}
-
-void CBugtraqRegexTestDlg::OnSysColorChange()
-{
-	__super::OnSysColorChange();
-
-	m_cLogMessage.SetColors(true);
-	m_cLogMessage.SetFont(CAppUtils::GetLogFontName(), CAppUtils::GetLogFontSize());
 }

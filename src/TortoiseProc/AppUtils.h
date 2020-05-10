@@ -106,16 +106,6 @@ public:
 	static BOOL CheckForEmptyDiff(const CTGitPath& sDiffPath);
 
 	/**
-	 * Returns font name which is used for log messages, etc.
-	 */
-	static CString GetLogFontName();
-
-	/**
-	 * Returns font size which is used for log messages, etc.
-	 */
-	static DWORD GetLogFontSize();
-
-	/**
 	 * Create a font which can is used for log messages, etc
 	 */
 	static void CreateFontForLogs(CFont& fontToCreate);

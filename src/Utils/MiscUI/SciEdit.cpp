@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2009-2020 - TortoiseGit
-// Copyright (C) 2003-2008, 2012-2019 - TortoiseSVN
+// Copyright (C) 2003-2008, 2012-2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,6 +27,7 @@
 #include "SmartHandle.h"
 #include "../../TortoiseUDiff/UDiffColors.h"
 #include "LoadIconEx.h"
+#include "CommonAppUtils.h"
 
 void CSciEditContextMenuInterface::InsertMenuItems(CMenu&, int&) {return;}
 bool CSciEditContextMenuInterface::HandleMenuItemClick(int, CSciEdit *) {return false;}
@@ -154,8 +155,8 @@ static std::unique_ptr<UINT[]> Icon2Image(HICON hIcon)
 
 void CSciEdit::SetColors(bool recolorize)
 {
-	Call(SCI_STYLESETFORE, STYLE_DEFAULT, ::GetSysColor(COLOR_WINDOWTEXT));
-	Call(SCI_STYLESETBACK, STYLE_DEFAULT, ::GetSysColor(COLOR_WINDOW));
+	Call(SCI_STYLESETFORE, STYLE_DEFAULT, ::GetSysColor(!IsWindowEnabled() ? COLOR_GRAYTEXT : COLOR_WINDOWTEXT));
+	Call(SCI_STYLESETBACK, STYLE_DEFAULT, ::GetSysColor(!IsWindowEnabled() ? COLOR_BTNFACE : COLOR_WINDOW));
 	Call(SCI_SETSELFORE, TRUE, ::GetSysColor(COLOR_HIGHLIGHTTEXT));
 	Call(SCI_SETSELBACK, TRUE, ::GetSysColor(COLOR_HIGHLIGHT));
 	Call(SCI_SETCARETFORE, ::GetSysColor(COLOR_WINDOWTEXT));
@@ -955,7 +956,18 @@ BOOL CSciEdit::OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT
 BEGIN_MESSAGE_MAP(CSciEdit, CWnd)
 	ON_WM_KEYDOWN()
 	ON_WM_CONTEXTMENU()
+	ON_WM_SYSCOLORCHANGE()
 END_MESSAGE_MAP()
+
+void CSciEdit::OnSysColorChange()
+{
+	__super::OnSysColorChange();
+	SetColors(true);
+	if (m_bUDiffmode)
+		SetUDiffStyle();
+	else
+		SetFont(CCommonAppUtils::GetLogFontName(), CCommonAppUtils::GetLogFontSize());
+}
 
 void CSciEdit::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
@@ -1675,7 +1687,9 @@ void CSciEdit::SetAStyle(int style, COLORREF fore, COLORREF back, int size, cons
 
 void CSciEdit::SetUDiffStyle()
 {
+	m_bUDiffmode = true;
 	m_bDoStyle = false;
+	Call(SCI_CLEARDOCUMENTSTYLE);
 	SetAStyle(STYLE_DEFAULT, ::GetSysColor(COLOR_WINDOWTEXT), ::GetSysColor(COLOR_WINDOW),
 		CRegStdDWORD(L"Software\\TortoiseGit\\UDiffFontSize", 10),
 		CUnicodeUtils::StdGetUTF8(CRegStdString(L"Software\\TortoiseGit\\UDiffFontName", L"Consolas")).c_str());
@@ -1779,4 +1793,11 @@ void CSciEdit::RestyleBugIDs()
 ULONG CSciEdit::GetGestureStatus(CPoint /*ptTouch*/)
 {
 	return 0;
+}
+
+BOOL CSciEdit::EnableWindow(BOOL bEnable /*= TRUE*/)
+{
+	auto ret = __super::EnableWindow(bEnable);
+	SetColors(true);
+	return ret;
 }

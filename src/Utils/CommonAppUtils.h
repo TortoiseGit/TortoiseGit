@@ -96,5 +96,15 @@ public:
 	static void SetCharFormat(CWnd* window, DWORD mask, DWORD effects, const std::vector<CHARRANGE>& positions);
 	static void SetCharFormat(CWnd* window, DWORD mask, DWORD effects);
 
+	/**
+	 * Returns font name which is used for log messages, etc.
+	 */
+	static CString GetLogFontName();
+
+	/**
+	 * Returns font size which is used for log messages, etc.
+	 */
+	static DWORD GetLogFontSize();
+
 	CCommonAppUtils() = delete;
 };

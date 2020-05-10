@@ -222,7 +222,6 @@ BEGIN_MESSAGE_MAP(CImportPatchDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_BUTTON_REMOVE, &CImportPatchDlg::OnBnClickedButtonRemove)
 	ON_BN_CLICKED(IDOK, &CImportPatchDlg::OnBnClickedOk)
 	ON_WM_SIZE()
-	ON_WM_SYSCOLORCHANGE()
 	ON_WM_THEMECHANGED()
 	ON_BN_CLICKED(IDCANCEL, &CImportPatchDlg::OnBnClickedCancel)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_PATCH, &CImportPatchDlg::OnHdnItemchangedListPatch)
@@ -718,13 +717,6 @@ LRESULT CImportPatchDlg::OnTaskbarBtnCreated(WPARAM wParam, LPARAM lParam)
 	m_pTaskbarList.Release();
 	m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
 	return __super::OnTaskbarButtonCreated(wParam, lParam);
-}
-
-void CImportPatchDlg::OnSysColorChange()
-{
-	__super::OnSysColorChange();
-	m_PatchCtrl.SetUDiffStyle();
-	m_wndOutput.SetColors(true);
 }
 
 LRESULT CImportPatchDlg::OnThemeChanged()

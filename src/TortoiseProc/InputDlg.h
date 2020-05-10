@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2013, 2016 - TortoiseGit
 // Copyright (C) 2003-2006 - Stefan Kueng
@@ -45,7 +45,6 @@ protected:
 	virtual void OnOK() override;
 
 	afx_msg void OnEnChangeLogmessage();
-	afx_msg void OnSysColorChange();
 	DECLARE_MESSAGE_MAP()
 public:
 	CString				m_sInputText;

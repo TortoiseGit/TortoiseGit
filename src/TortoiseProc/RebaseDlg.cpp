@@ -93,7 +93,6 @@ BEGIN_MESSAGE_MAP(CRebaseDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_REBASE_ABORT,  OnBnClickedAbort)
 	ON_WM_SIZE()
 	ON_WM_THEMECHANGED()
-	ON_WM_SYSCOLORCHANGE()
 	ON_CBN_SELCHANGE(IDC_REBASE_COMBOXEX_BRANCH,   &CRebaseDlg::OnCbnSelchangeBranch)
 	ON_CBN_SELCHANGE(IDC_REBASE_COMBOXEX_UPSTREAM, &CRebaseDlg::OnCbnSelchangeUpstream)
 	ON_MESSAGE(MSG_REBASE_UPDATE_UI, OnRebaseUpdateUI)
@@ -2989,15 +2988,6 @@ LRESULT CRebaseDlg::OnThemeChanged()
 {
 	CMFCVisualManager::GetInstance()->DestroyInstance();
 	return 0;
-}
-
-void CRebaseDlg::OnSysColorChange()
-{
-	__super::OnSysColorChange();
-	m_LogMessageCtrl.SetColors(true);
-	m_LogMessageCtrl.SetFont(CAppUtils::GetLogFontName(), CAppUtils::GetLogFontSize());
-	m_wndOutputRebase.SetColors(true);
-	m_wndOutputRebase.SetFont(CAppUtils::GetLogFontName(), CAppUtils::GetLogFontSize());
 }
 
 void CRebaseDlg::OnBnClickedButtonAdd()

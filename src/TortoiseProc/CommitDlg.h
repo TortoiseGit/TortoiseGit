@@ -121,7 +121,6 @@ protected:
 	afx_msg LRESULT OnGitStatusListCtrlNeedsRefresh(WPARAM, LPARAM);
 	afx_msg LRESULT OnGitStatusListCtrlCheckChanged(WPARAM, LPARAM);
 	afx_msg LRESULT OnGitStatusListCtrlItemChanged(WPARAM, LPARAM);
-	afx_msg void OnSysColorChange();
 
 	afx_msg LRESULT OnCheck(WPARAM count, LPARAM);
 	afx_msg LRESULT OnAutoListReady(WPARAM, LPARAM);
