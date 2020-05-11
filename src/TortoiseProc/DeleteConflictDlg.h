@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2011, 2017, 2019 - TortoiseGit
+// Copyright (C) 2009-2011, 2017, 2019-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -49,6 +49,8 @@ public:
 	CString m_RemoteStatus;
 	CGitHash m_LocalHash;
 	CGitHash m_RemoteHash;
+	CString m_LocalRef;
+	CString m_RemoteRef;
 	BOOL	m_bShowModifiedButton;
 	CTGitPath	m_File;
 	CTGitPath	m_FileBaseVersion;

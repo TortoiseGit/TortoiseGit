@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2019 - TortoiseGit
+// Copyright (C) 2009-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -47,8 +47,8 @@ void CDeleteConflictDlg::DoDataExchange(CDataExchange* pDX)
 
 	DDX_Text(pDX, IDC_LOCAL_STATUS, m_LocalStatus);
 	DDX_Text(pDX, IDC_REMOTE_STATUS, m_RemoteStatus);
-	GetDlgItem(IDC_FROMHASH)->SetWindowText(m_LocalHash.ToString());
-	GetDlgItem(IDC_TOHASH)->SetWindowText(m_RemoteHash.ToString());
+	GetDlgItem(IDC_FROMHASH)->SetWindowText(m_LocalRef);
+	GetDlgItem(IDC_TOHASH)->SetWindowText(m_RemoteRef);
 }
 
 
@@ -77,9 +77,9 @@ BOOL CDeleteConflictDlg::OnInitDialog()
 	}
 	else
 		this->GetDlgItem(IDC_MODIFY)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_CREATED)));
-	if (m_LocalHash.IsEmpty())
+	if (m_LocalRef.IsEmpty())
 		GetDlgItem(IDC_LOG)->ShowWindow(SW_HIDE);
-	if (m_RemoteHash.IsEmpty())
+	if (m_RemoteRef.IsEmpty())
 		GetDlgItem(IDC_LOG2)->ShowWindow(SW_HIDE);
 
 	CString sWindowTitle;

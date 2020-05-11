@@ -1539,7 +1539,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				{
 					popup.AppendMenuIcon(IDGITLC_RESOLVECONFLICT, IDS_STATUSLIST_CONTEXT_RESOLVED, IDI_RESOLVE);
 					CString tmp, mineTitle, theirsTitle;
-					CAppUtils::GetConflictTitles(nullptr, mineTitle, theirsTitle, m_bIsRevertTheirMy);
+					CAppUtils::GetConflictTitles(nullptr, mineTitle, nullptr, theirsTitle, nullptr, m_bIsRevertTheirMy);
 					tmp.Format(IDS_SVNPROGRESS_MENURESOLVEUSING, static_cast<LPCTSTR>(theirsTitle));
 					if (m_bIsRevertTheirMy)
 					{
@@ -2231,7 +2231,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						if (nListItems >= 5)
 						{
 							CString tmp, mineTitle, theirsTitle;
-							CAppUtils::GetConflictTitles(nullptr, mineTitle, theirsTitle, m_bIsRevertTheirMy);
+							CAppUtils::GetConflictTitles(nullptr, mineTitle, nullptr, theirsTitle, nullptr, m_bIsRevertTheirMy);
 							tmp.LoadString(IDS_PROGRS_TITLE_RESOLVE);
 							if (m_bIsRevertTheirMy)
 							{

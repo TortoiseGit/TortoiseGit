@@ -173,7 +173,7 @@ public:
 	static bool IgnoreFile(HWND hWnd, const CTGitPathList& filelist, bool IsMask);
 	static bool GitReset(HWND hWnd, const CString& ref, int type = 1);
 	static bool ConflictEdit(HWND hWnd, CTGitPath& file, bool bAlternativeTool = false, bool revertTheirMy = false, HWND resolveMsgHwnd = nullptr);
-	static void GetConflictTitles(CString* baseText, CString& mineText, CString& theirsText, bool rebaseActive);
+	static void GetConflictTitles(CString* baseText, CString& mineText, CGitHash* mineHash, CString& theirsText, CGitHash* theirsHash, bool rebaseActive);
 
 	static CString GetMergeTempFile(const CString& str, const CTGitPath& merge, bool returnAbsolutePath = true);
 	static bool	StashSave(HWND hWnd, const CString& msg = CString(), bool showPull = false, bool pullShowPush = false, bool showMerge = false, const CString& mergeRev = CString());
