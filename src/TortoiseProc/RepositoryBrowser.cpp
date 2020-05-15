@@ -181,7 +181,6 @@ BEGIN_MESSAGE_MAP(CRepositoryBrowser, CResizableStandAloneDialog)
 	ON_WM_MOUSEMOVE()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_LBUTTONUP()
-	ON_WM_SYSCOLORCHANGE()
 	ON_NOTIFY(LVN_BEGINDRAG, IDC_REPOLIST, &CRepositoryBrowser::OnLvnBegindragRepolist)
 	ON_NOTIFY(TVN_BEGINDRAG, IDC_REPOTREE, &CRepositoryBrowser::OnTvnBegindragRepotree)
 END_MESSAGE_MAP()
@@ -1460,10 +1459,4 @@ CShadowFilesTree* CRepositoryBrowser::GetTreeEntry(HTREEITEM treeItem)
 	auto entry = reinterpret_cast<CShadowFilesTree*>(m_RepoTree.GetItemData(treeItem));
 	ASSERT(entry);
 	return entry;
-}
-
-void CRepositoryBrowser::OnSysColorChange()
-{
-	__super::OnSysColorChange();
-	CAppUtils::SetListCtrlBackgroundImage(m_RepoList.GetSafeHwnd(), IDI_REPOBROWSER_BKG);
 }

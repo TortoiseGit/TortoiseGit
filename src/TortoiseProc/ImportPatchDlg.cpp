@@ -725,7 +725,6 @@ void CImportPatchDlg::OnSysColorChange()
 	__super::OnSysColorChange();
 	m_PatchCtrl.SetUDiffStyle();
 	m_wndOutput.SetColors(true);
-	CAppUtils::SetListCtrlBackgroundImage(m_cList.GetSafeHwnd(), IDI_IMPORTPATHCES_BKG);
 }
 
 LRESULT CImportPatchDlg::OnThemeChanged()

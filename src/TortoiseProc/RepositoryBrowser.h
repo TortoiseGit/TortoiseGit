@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2014, 2016-2017 - TortoiseGit
+// Copyright (C) 2009-2014, 2016-2017, 2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -133,7 +133,6 @@ private:
 	afx_msg void			OnCancel();
 	afx_msg void			OnDestroy();
 	virtual BOOL			OnInitDialog() override;
-	afx_msg void			OnSysColorChange();
 
 	CGestureEnabledControlTmpl<CTreeCtrl>	m_RepoTree;
 	CGestureEnabledControlTmpl<CListCtrl>	m_RepoList;
