@@ -312,9 +312,7 @@ BOOL CLogDlg::OnInitDialog()
 
 	// set the font to use in the log message view, configured in the settings dialog
 	CAppUtils::CreateFontForLogs(m_logFont);
-	GetDlgItem(IDC_MSGVIEW)->SetFont(&m_logFont);
-	// make the log message rich edit control send a message when the mouse pointer is over a link
-	GetDlgItem(IDC_MSGVIEW)->SendMessage(EM_SETEVENTMASK, NULL, ENM_LINK | ENM_SCROLL);
+	SetupLogMessageViewControl();
 
 	// "unrelated paths" should be in gray color
 	m_iHidePaths = 2;
@@ -3581,6 +3579,23 @@ void CLogDlg::OnNMCustomdrawChangedFileList(NMHDR* pNMHDR, LRESULT* pResult)
 void CLogDlg::OnSysColorChange()
 {
 	__super::OnSysColorChange();
-	SendDlgItemMessage(IDC_MSGVIEW, WM_SYSCOLORCHANGE, 0, 0);
+	SetupLogMessageViewControl();
 	CMFCVisualManager::GetInstance()->RedrawAll();
+}
+
+void CLogDlg::SetupLogMessageViewControl()
+{
+	auto pWnd = GetDlgItem(IDC_MSGVIEW);
+	// set the font to use in the log message view, configured in the settings dialog
+	pWnd->SetFont(&m_logFont);
+	// make the log message rich edit control send a message when the mouse pointer is over a link
+	pWnd->SendMessage(EM_SETEVENTMASK, NULL, ENM_LINK | ENM_SCROLL);
+
+	CHARFORMAT2 format = { 0 };
+	format.cbSize = sizeof(CHARFORMAT2);
+	format.dwMask = CFM_COLOR | CFM_BACKCOLOR;
+	format.crTextColor = ::GetSysColor(COLOR_WINDOWTEXT);
+	format.crBackColor = ::GetSysColor(COLOR_WINDOW);
+	pWnd->SendMessage(EM_SETCHARFORMAT, SCF_ALL, reinterpret_cast<LPARAM>(&format));
+	pWnd->SendMessage(EM_SETBKGNDCOLOR, 0, format.crBackColor);
 }

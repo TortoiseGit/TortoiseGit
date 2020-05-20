@@ -195,6 +195,7 @@ private:
 	void SaveSplitterPos();
 	void CheckRegexpTooltip();
 	void SetDlgTitle();
+	void SetupLogMessageViewControl();
 	CString GetAbsoluteUrlFromRelativeUrl(const CString& url);
 	void ShowGravatar();
 
