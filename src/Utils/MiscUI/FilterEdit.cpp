@@ -1,7 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012, 2014, 2016-2020 - TortoiseGit
-// Copyright (C) 2007, 2012-2014, 2018 - TortoiseSVN
+// Copyright (C) 2007, 2009, 2011-2015, 2017-2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,6 +20,7 @@
 #include "FilterEdit.h"
 #include "DPIAware.h"
 #include "LoadIconEx.h"
+#include "Theme.h"
 
 const UINT CFilterEdit::WM_FILTEREDIT_INFOCLICKED = ::RegisterWindowMessage(L"TGITWM_FILTEREDIT_INFOCLICKED");
 const UINT CFilterEdit::WM_FILTEREDIT_CANCELCLICKED = ::RegisterWindowMessage(L"TGITWM_FILTEREDIT_CANCELCLICKED");
@@ -36,17 +36,21 @@ CFilterEdit::CFilterEdit()
 	, m_iButtonClickedMessageId(WM_FILTEREDIT_INFOCLICKED)
 	, m_iCancelClickedMessageId(WM_FILTEREDIT_CANCELCLICKED)
 	, m_pValidator(nullptr)
-	, m_backColor(GetSysColor(COLOR_WINDOW))
+	, m_backColor(CTheme::Instance().IsDarkTheme() ? CTheme::darkBkColor : GetSysColor(COLOR_WINDOW))
+	, m_themeCallbackId(0)
 {
 	m_rcEditArea.SetRect(0, 0, 0, 0);
 	m_rcButtonArea.SetRect(0, 0, 0, 0);
 	m_rcInfoArea.SetRect(0, 0, 0, 0);
 	m_sizeInfoIcon.SetSize(0, 0);
 	m_sizeCancelIcon.SetSize(0, 0);
+	m_themeCallbackId = CTheme::Instance().RegisterThemeChangeCallback([this]() { SetTheme(CTheme::Instance().IsDarkTheme()); });
+	SetTheme(CTheme::Instance().IsDarkTheme());
 }
 
 CFilterEdit::~CFilterEdit()
 {
+	CTheme::Instance().RemoveRegisteredCallback(m_themeCallbackId);
 }
 
 BEGIN_MESSAGE_MAP(CFilterEdit, CEdit)
@@ -65,7 +69,7 @@ BEGIN_MESSAGE_MAP(CFilterEdit, CEdit)
 	ON_CONTROL_REFLECT(EN_KILLFOCUS, &CFilterEdit::OnEnKillfocus)
 	ON_CONTROL_REFLECT(EN_SETFOCUS, &CFilterEdit::OnEnSetfocus)
 	ON_MESSAGE(WM_PASTE, &CFilterEdit::OnPaste)
-	ON_WM_SYSCOLORCHANGE()
+	ON_WM_THEMECHANGED()
 END_MESSAGE_MAP()
 
 
@@ -84,6 +88,11 @@ void CFilterEdit::PreSubclassWindow( )
 BOOL CFilterEdit::PreTranslateMessage( MSG* pMsg )
 {
 	return CEdit::PreTranslateMessage(pMsg);
+}
+
+ULONG CFilterEdit::GetGestureStatus(CPoint /*ptTouch*/)
+{
+	return 0;
 }
 
 BOOL CFilterEdit::SetCancelBitmaps(UINT uCancelNormal, UINT uCancelPressed, int cx96dpi, int cy96dpi, BOOL bShowAlways)
@@ -300,7 +309,7 @@ BOOL CFilterEdit::OnEnChange()
 
 HBRUSH CFilterEdit::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
 {
-	if (m_backColor != GetSysColor(COLOR_WINDOW))
+	if (m_backColor != (CTheme::Instance().IsDarkTheme() ? CTheme::darkBkColor : GetSysColor(COLOR_WINDOW)))
 	{
 		pDC->SetBkColor(m_backColor);
 		return m_brBack;
@@ -308,9 +317,10 @@ HBRUSH CFilterEdit::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
 	return nullptr;
 }
 
-void CFilterEdit::ValidateAndRedraw()
+LRESULT CFilterEdit::OnThemeChanged()
 {
-	OnEnChange();
+	ResizeWindow();
+	return 0;
 }
 
 void CFilterEdit::Validate()
@@ -319,21 +329,21 @@ void CFilterEdit::Validate()
 	{
 		CString text;
 		GetWindowText(text);
-		m_backColor = GetSysColor(COLOR_WINDOW);
+		m_backColor = CTheme::Instance().IsDarkTheme() ? CTheme::darkBkColor : GetSysColor(COLOR_WINDOW);
 		if (!m_pValidator->Validate(text))
 		{
 			// Use a background color slightly shifted to red.
 			// We do this by increasing red component and decreasing green and blue.
-			const int SHIFT_PRECENTAGE = 10;
+			const int SHIFT_PERCENTAGE = 10;
 			int r = GetRValue(m_backColor);
 			int g = GetGValue(m_backColor);
 			int b = GetBValue(m_backColor);
 
-			r = min(r * (100 + SHIFT_PRECENTAGE) / 100, 255);
+			r = min(r * (100 + SHIFT_PERCENTAGE) / 100, 255);
 			// Ensure that there is at least some redness.
-			r = max(r, 255 * SHIFT_PRECENTAGE / 100);
-			g = g * (100 - SHIFT_PRECENTAGE) / 100;
-			b = b * (100 - SHIFT_PRECENTAGE) / 100;
+			r = max(r, 255 * SHIFT_PERCENTAGE / 100);
+			g = g * (100 - SHIFT_PERCENTAGE) / 100;
+			b = b * (100 - SHIFT_PERCENTAGE) / 100;
 			m_backColor = RGB(r, g, b);
 			m_brBack.DeleteObject();
 			m_brBack.CreateSolidBrush(m_backColor);
@@ -373,8 +383,8 @@ void CFilterEdit::DrawDimText()
 	int			iState = dcDraw.SaveDC();
 
 	dcDraw.SelectObject((*GetFont()));
-	dcDraw.SetTextColor(GetSysColor(COLOR_GRAYTEXT));
-	dcDraw.SetBkColor(GetSysColor(COLOR_WINDOW));
+	dcDraw.SetTextColor(CTheme::Instance().GetThemeColor(GetSysColor(COLOR_GRAYTEXT)));
+	dcDraw.SetBkColor(CTheme::Instance().IsDarkTheme() ? CTheme::darkBkColor : GetSysColor(COLOR_WINDOW));
 	dcDraw.DrawText(m_sCueBanner, m_sCueBanner.GetLength(), &m_rcEditArea, DT_CENTER | DT_VCENTER);
 	dcDraw.RestoreDC(iState);
 	return;
@@ -386,6 +396,11 @@ HICON CFilterEdit::LoadDpiScaledIcon(UINT resourceId, int cx96dpi, int cy96dpi)
 	int cx = MulDiv(cx96dpi, dc.GetDeviceCaps(LOGPIXELSX), 96);
 	int cy = MulDiv(cy96dpi, dc.GetDeviceCaps(LOGPIXELSY), 96);
 	return LoadIconEx(AfxGetResourceHandle(), MAKEINTRESOURCE(resourceId), cx, cy);
+}
+
+void CFilterEdit::SetTheme(bool /*bDark*/)
+{
+	Validate();
 }
 
 void CFilterEdit::OnEnKillfocus()
@@ -434,17 +449,6 @@ LRESULT CFilterEdit::OnPaste(WPARAM, LPARAM)
 
 		GetParent()->SendMessage(WM_COMMAND, MAKEWPARAM(GetDlgCtrlID(), EN_CHANGE), reinterpret_cast<LPARAM>(GetSafeHwnd()));
 	}
-	return 0;
-}
 
-void CFilterEdit::OnSysColorChange()
-{
-	__super::OnSysColorChange();
-	m_backColor = GetSysColor(COLOR_WINDOW);
-	Invalidate();
-}
-
-ULONG CFilterEdit::GetGestureStatus(CPoint /*ptTouch*/)
-{
 	return 0;
 }

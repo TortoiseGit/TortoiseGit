@@ -3595,8 +3595,16 @@ void CLogDlg::SetupLogMessageViewControl()
 	CHARFORMAT2 format = { 0 };
 	format.cbSize = sizeof(CHARFORMAT2);
 	format.dwMask = CFM_COLOR | CFM_BACKCOLOR;
-	format.crTextColor = ::GetSysColor(COLOR_WINDOWTEXT);
-	format.crBackColor = ::GetSysColor(COLOR_WINDOW);
+	if (CTheme::Instance().IsDarkTheme())
+	{
+		format.crTextColor = CTheme::darkTextColor;
+		format.crBackColor = CTheme::darkBkColor;
+	}
+	else
+	{
+		format.crTextColor = ::GetSysColor(COLOR_WINDOWTEXT);
+		format.crBackColor = ::GetSysColor(COLOR_WINDOW);
+	}
 	pWnd->SendMessage(EM_SETCHARFORMAT, SCF_ALL, reinterpret_cast<LPARAM>(&format));
 	pWnd->SendMessage(EM_SETBKGNDCOLOR, 0, format.crBackColor);
 }

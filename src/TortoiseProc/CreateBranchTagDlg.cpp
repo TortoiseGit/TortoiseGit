@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -135,6 +135,7 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 	m_tooltips.Activate(TRUE);
 
 	OnCbnSelchangeComboboxexBranch();
+	SetTheme(CTheme::Instance().IsDarkTheme());
 	return TRUE;
 }
 // CCreateBranchTagDlg message handlers

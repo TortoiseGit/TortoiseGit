@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2012 - TortoiseSVN
+// Copyright (C) 2003-2012, 2020 - TortoiseSVN
 // Copyright (C) 2013-2017, 2019-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
@@ -21,6 +21,7 @@
 #include "HistoryCombo.h"
 #include "../registry.h"
 #include "DPIAware.h"
+#include "Theme.h"
 
 #ifdef HISTORYCOMBO_WITH_SYSIMAGELIST
 #include "../SysImageList.h"
@@ -588,16 +589,16 @@ void CHistoryCombo::OnMouseMove(UINT nFlags, CPoint point)
 			rectClient.left += 1;
 			rectClient.top += 3;
 
-			COLORREF rgbText = ::GetSysColor(COLOR_WINDOWTEXT);
-			COLORREF rgbBackground = ::GetSysColor(COLOR_WINDOW);
+			COLORREF rgbText = CTheme::Instance().GetThemeColor(::GetSysColor(COLOR_WINDOWTEXT));
+			COLORREF rgbBackground = CTheme::Instance().GetThemeColor(::GetSysColor(COLOR_WINDOW));
 
 			CWnd *pWnd = GetFocus();
 			if (pWnd)
 			{
 				if (pWnd->m_hWnd == m_hWnd)
 				{
-					rgbText = ::GetSysColor(COLOR_HIGHLIGHTTEXT);
-					rgbBackground = ::GetSysColor(COLOR_HIGHLIGHT);
+					rgbText = CTheme::Instance().GetThemeColor(::GetSysColor(COLOR_HIGHLIGHTTEXT));
+					rgbBackground = CTheme::Instance().GetThemeColor(::GetSysColor(COLOR_HIGHLIGHT));
 				}
 			}
 
@@ -683,8 +684,8 @@ void CHistoryCombo::CreateToolTip()
 
 	::SendMessage(m_hWndToolTip, TTM_SETMAXTIPWIDTH, 0, SHRT_MAX);
 	::SendMessage(m_hWndToolTip, TTM_ADDTOOL, 0, reinterpret_cast<LPARAM>(&m_ToolInfo));
-	::SendMessage(m_hWndToolTip, TTM_SETTIPBKCOLOR, ::GetSysColor(COLOR_HIGHLIGHT), 0);
-	::SendMessage(m_hWndToolTip, TTM_SETTIPTEXTCOLOR, ::GetSysColor(COLOR_HIGHLIGHTTEXT), 0);
+	::SendMessage(m_hWndToolTip, TTM_SETTIPBKCOLOR, CTheme::Instance().GetThemeColor(::GetSysColor(COLOR_HIGHLIGHT)), 0);
+	::SendMessage(m_hWndToolTip, TTM_SETTIPTEXTCOLOR, CTheme::Instance().GetThemeColor(::GetSysColor(COLOR_HIGHLIGHTTEXT)), 0);
 
 	CRect rectMargins(0,-1,0,-1);
 	::SendMessage(m_hWndToolTip, TTM_SETMARGIN, 0, reinterpret_cast<LPARAM>(&rectMargins));

@@ -167,6 +167,8 @@ BOOL CMergeDlg::OnInitDialog()
 
 	InitChooseVersion(true);
 
+	SetTheme(CTheme::Instance().IsDarkTheme());
+
 	return FALSE;
 }
 

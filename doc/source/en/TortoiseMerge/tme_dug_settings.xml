@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE chapter SYSTEM "../../dtd/dblite.dtd">
 <sect1 id="tmerge-dug-settings">
 	<title>Settings</title>
@@ -148,6 +148,13 @@
 				<listitem>
 					Characters used to indicate Whitespace are shown in a different colour
 					from normal text.
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Use dark mode</term>
+				<listitem>
+					Enables a dark mode for the UI. This requires at least Windows 10 1809.
+					This feature also requires that dark mode for applications is enabled in the Windows 10 settings.
 				</listitem>
 			</varlistentry>
 		</variablelist>

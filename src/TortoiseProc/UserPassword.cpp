@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2016, 2018-2019 - TortoiseGit
+// Copyright (C) 2013-2016, 2018-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -24,11 +24,10 @@
 
 // CUserPassword dialog
 
-IMPLEMENT_DYNAMIC(CUserPassword, CDialog)
+IMPLEMENT_DYNAMIC(CUserPassword, CStandAloneDialog)
 
 CUserPassword::CUserPassword(CWnd* pParent /*=nullptr*/)
-	: CDialog(CUserPassword::IDD, pParent)
-	, CommonDialogFunctions(this)
+	: CStandAloneDialog(CUserPassword::IDD, pParent)
 {
 	SecureZeroMemory(&m_password, sizeof(m_password));
 	SecureZeroMemory(&m_passwordA, sizeof(m_passwordA));
@@ -42,11 +41,11 @@ CUserPassword::~CUserPassword()
 
 void CUserPassword::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+	CStandAloneDialog::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_USER_NAME, m_UserName);
 }
 
-BEGIN_MESSAGE_MAP(CUserPassword, CDialog)
+BEGIN_MESSAGE_MAP(CUserPassword, CStandAloneDialog)
 	ON_BN_CLICKED(IDOK, &CUserPassword::OnBnClickedOk)
 	ON_WM_DESTROY()
 END_MESSAGE_MAP()
@@ -55,7 +54,7 @@ END_MESSAGE_MAP()
 
 BOOL CUserPassword::OnInitDialog()
 {
-	CDialog::OnInitDialog();
+	CStandAloneDialog::OnInitDialog();
 	if (!m_URL.IsEmpty())
 	{
 		CString title;
@@ -87,7 +86,7 @@ void CUserPassword::OnBnClickedOk()
 	auto lengthIncTerminator = WideCharToMultiByte(CP_UTF8, 0, m_password, static_cast<int>(wcslen(m_password)), m_passwordA, sizeof(m_passwordA) - 1, nullptr, nullptr);
 	m_passwordA[lengthIncTerminator] = '\0';
 
-	CDialog::OnOK();
+	CStandAloneDialog::OnOK();
 }
 
 void CUserPassword::OnDestroy()

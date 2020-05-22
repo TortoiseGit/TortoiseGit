@@ -726,7 +726,6 @@ private:
 	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
 	virtual BOOL OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult) override;
 	virtual ULONG GetGestureStatus(CPoint ptTouch) override;
-	afx_msg void OnSysColorChange();
 	afx_msg void OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnHdnItemclick(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg BOOL OnLvnItemchanged(NMHDR *pNMHDR, LRESULT *pResult);

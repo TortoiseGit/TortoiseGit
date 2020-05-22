@@ -106,6 +106,8 @@ BOOL CRequestPullDlg::OnInitDialog()
 
 	this->UpdateData(FALSE);
 
+	SetTheme(CTheme::Instance().IsDarkTheme());
+
 	return TRUE;
 }
 

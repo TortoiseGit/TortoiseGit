@@ -67,6 +67,7 @@
 #define ID_VIEW_TRANSPARENTCOLOR        32816
 #define ID_VIEW_FITIMAGEWIDTHS          32817
 #define ID_VIEW_FITIMAGEHEIGHTS         32818
+#define ID_VIEW_DARKMODE                32819
 #define IDC_STATIC                      -1
 
 // Next default values for new objects
@@ -75,7 +76,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        156
-#define _APS_NEXT_COMMAND_VALUE         32819
+#define _APS_NEXT_COMMAND_VALUE         32820
 #define _APS_NEXT_CONTROL_VALUE         1006
 #define _APS_NEXT_SYMED_VALUE           110
 #endif

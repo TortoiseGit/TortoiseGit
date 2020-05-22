@@ -127,7 +127,12 @@ BOOL CImportPatchDlg::OnInitDialog()
 	pwnd->GetWindowRect(&rectDummy);
 	this->ScreenToClient(rectDummy);
 
-	if (!m_ctrlTabCtrl.Create(CMFCTabCtrl::STYLE_FLAT, rectDummy, this, IDC_AM_TAB))
+	if (CTheme::Instance().IsDarkTheme())
+	{
+		CMFCVisualManagerOffice2007::SetStyle(CMFCVisualManagerOffice2007::Office2007_ObsidianBlack);
+		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerOffice2007));
+	}
+	if (!m_ctrlTabCtrl.Create(CTheme::Instance().IsDarkTheme() ? CMFCTabCtrl::STYLE_3D : CMFCTabCtrl::STYLE_FLAT, rectDummy, this, IDC_AM_TAB))
 	{
 		TRACE0("Failed to create output tab window\n");
 		return FALSE;      // fail to create
@@ -223,7 +228,6 @@ BEGIN_MESSAGE_MAP(CImportPatchDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_BUTTON_REMOVE, &CImportPatchDlg::OnBnClickedButtonRemove)
 	ON_BN_CLICKED(IDOK, &CImportPatchDlg::OnBnClickedOk)
 	ON_WM_SIZE()
-	ON_WM_THEMECHANGED()
 	ON_BN_CLICKED(IDCANCEL, &CImportPatchDlg::OnBnClickedCancel)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_PATCH, &CImportPatchDlg::OnHdnItemchangedListPatch)
 	ON_REGISTERED_MESSAGE(TaskBarButtonCreated, OnTaskbarBtnCreated)
@@ -707,8 +711,20 @@ LRESULT CImportPatchDlg::OnTaskbarBtnCreated(WPARAM wParam, LPARAM lParam)
 	return __super::OnTaskbarButtonCreated(wParam, lParam);
 }
 
-LRESULT CImportPatchDlg::OnThemeChanged()
+void CImportPatchDlg::SetTheme(bool bDark)
 {
+	__super::SetTheme(bDark);
 	CMFCVisualManager::GetInstance()->DestroyInstance();
-	return 0;
+	if (bDark)
+	{
+		CMFCVisualManagerOffice2007::SetStyle(CMFCVisualManagerOffice2007::Office2007_ObsidianBlack);
+		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerOffice2007));
+		m_ctrlTabCtrl.ModifyTabStyle(CMFCTabCtrl::STYLE_3D);
+	}
+	else
+	{
+		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows));
+		m_ctrlTabCtrl.ModifyTabStyle(CMFCTabCtrl::STYLE_FLAT);
+	}
+	CMFCVisualManager::RedrawAll();
 }

@@ -235,6 +235,7 @@ void CRefLogDlg::OnFind()
 		return;
 	m_pFindDialog = new CFindReplaceDialog();
 	m_pFindDialog->Create(TRUE, L"", nullptr, FR_DOWN | FR_HIDEWHOLEWORD | FR_HIDEUPDOWN, this);
+	CTheme::Instance().SetThemeForDialog(m_pFindDialog->GetSafeHwnd(), CTheme::Instance().IsDarkTheme());
 }
 
 LRESULT CRefLogDlg::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*/)

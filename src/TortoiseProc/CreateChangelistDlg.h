@@ -1,5 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2020 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -17,13 +18,13 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
-
+#include "StandAloneDlg.h"
 
 /**
  * \ingroup TortoiseProc
  * Helper dialog to get the name of a change list.
  */
-class CCreateChangelistDlg : public CDialog
+class CCreateChangelistDlg : public CStandAloneDialog
 {
 	DECLARE_DYNAMIC(CCreateChangelistDlg)
 

@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014 - TortoiseSVN
+// Copyright (C) 2014, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -31,3 +31,20 @@
 #define UDIFF_COLORBACKCOMMENT  ::GetSysColor(COLOR_WINDOW)
 #define UDIFF_COLORBACKADDED    RGB(0xCC, 0xFF, 0xCC)
 #define UDIFF_COLORBACKREMOVED  RGB(0xFF, 0xDD, 0xDD)
+
+const COLORREF UDiffTextColorDark = 0xDDDDDD;
+const COLORREF UDiffBackColorDark = 0x202020; // cf. Theme.h
+
+#define UDIFF_COLORFORECOMMAND_DARK RGB(201,226,245)
+#define UDIFF_COLORFOREPOSITION_DARK RGB(0xFF, 0x20, 0x20)
+#define UDIFF_COLORFOREHEADER_DARK RGB(0xC0, 0, 0)
+#define UDIFF_COLORFORECOMMENT_DARK RGB(0, 0x80, 0)
+#define UDIFF_COLORFOREADDED_DARK UDiffTextColorDark
+#define UDIFF_COLORFOREREMOVED_DARK UDiffTextColorDark
+
+#define UDIFF_COLORBACKCOMMAND_DARK UDiffBackColorDark
+#define UDIFF_COLORBACKPOSITION_DARK UDiffBackColorDark
+#define UDIFF_COLORBACKHEADER_DARK RGB(0x30, 0x30, 0x00)
+#define UDIFF_COLORBACKCOMMENT_DARK UDiffBackColorDark
+#define UDIFF_COLORBACKADDED_DARK RGB(0x10, 0x40, 0x10)
+#define UDIFF_COLORBACKREMOVED_DARK RGB(0x40, 0x20, 0x20)

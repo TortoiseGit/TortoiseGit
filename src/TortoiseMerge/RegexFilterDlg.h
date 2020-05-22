@@ -1,6 +1,6 @@
-// TortoiseMerge - a Diff/Patch program
+﻿// TortoiseMerge - a Diff/Patch program
 
-// Copyright (C) 2013-2014 - TortoiseSVN
+// Copyright (C) 2013-2014, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -17,11 +17,11 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
-
+#include "StandAloneDlg.h"
 
 // CRegexFilterDlg dialog
 
-class CRegexFilterDlg : public CDialogEx
+class CRegexFilterDlg : public CStandAloneDialog
 {
 	DECLARE_DYNAMIC(CRegexFilterDlg)
 

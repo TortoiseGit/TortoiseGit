@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2016, 2019-2020 - TortoiseGit
-// Copyright (C) 2007,2009-2013 - TortoiseSVN
+// Copyright (C) 2007, 2009-2013, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -59,6 +59,7 @@ protected:
 	LRESULT             DoCommand(int id);
 
 	bool                Initialize();
+	void                SetTheme(bool bDark);
 
 private:
 	void                SetAStyle(int style, COLORREF fore, COLORREF back = ::GetSysColor(COLOR_WINDOW), int size = -1, const char* face = nullptr);
@@ -70,9 +71,9 @@ private:
 private:
 	LRESULT             m_directFunction;
 	LRESULT             m_directPointer;
-	void                SetupColors(bool recolorize);
 
 	HWND                m_hWndEdit;
+	int                 m_themeCallbackId;
 
 	void                DoSearch(bool reverse);
 	CFindBar            m_FindBar;

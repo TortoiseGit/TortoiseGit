@@ -41,8 +41,10 @@ protected:
 	LRESULT					DoCommand(int id, int msg);
 
 	void					DoFind(bool bFindPrev);
+	void					SetTheme(bool bDark);
 
 private:
 	HWND					m_hParent;
 	CAutoIcon m_hIcon;
+	int m_themeCallbackId;
 };

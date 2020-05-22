@@ -48,6 +48,7 @@
 #include "SysProgressDlg.h"
 #include "CreateChangelistDlg.h"
 #include "GitAdminDir.h"
+#include "Theme.h"
 
 const UINT CGitStatusListCtrl::GITSLNM_ITEMCOUNTCHANGED
 					= ::RegisterWindowMessage(L"GITSLNM_ITEMCOUNTCHANGED");
@@ -211,7 +212,6 @@ BEGIN_MESSAGE_MAP(CGitStatusListCtrl, CResizableColumnsListCtrl<CListCtrl>)
 	ON_NOTIFY_REFLECT(NM_RETURN, OnNMReturn)
 	ON_WM_KEYDOWN()
 	ON_WM_PAINT()
-	ON_WM_SYSCOLORCHANGE()
 	ON_NOTIFY_REFLECT(LVN_BEGINDRAG, OnBeginDrag)
 END_MESSAGE_MAP()
 
@@ -3081,6 +3081,36 @@ BOOL CGitStatusListCtrl::OnNMCustomdraw(NMHDR* pNMHDR, LRESULT* pResult)
 	switch (pLVCD->nmcd.dwDrawStage)
 	{
 	case CDDS_PREPAINT:
+		if (pLVCD->dwItemType == LVCDI_GROUP)
+		{
+			if (CTheme::Instance().IsDarkTheme())
+			{
+				LVGROUP gInfo = { sizeof(LVGROUP) };
+				gInfo.mask = LVGF_STATE | LVGF_HEADER | LVGF_GROUPID;
+				SendMessage(LVM_GETGROUPINFO, pLVCD->nmcd.dwItemSpec, (LPARAM)&gInfo);
+
+				::SetTextColor(pLVCD->nmcd.hdc, RGB(200, 0, 0));
+				RECT labelRect = { 0 };
+				labelRect.top = LVGGR_LABEL;
+				SendMessage(LVM_GETGROUPRECT, pLVCD->nmcd.dwItemSpec, (LPARAM)&labelRect);
+				ExtTextOut(pLVCD->nmcd.hdc, labelRect.left, labelRect.top, ETO_CLIPPED, &labelRect, gInfo.pszHeader, gInfo.cchHeader, nullptr);
+
+				RECT groupRect = { 0 };
+				groupRect.top = LVGGR_HEADER;
+				SendMessage(LVM_GETGROUPRECT, pLVCD->nmcd.dwItemSpec, (LPARAM)&groupRect);
+
+				auto pen = CreatePen(PS_SOLID, 2, RGB(180, 0, 0));
+				auto oldPen = SelectObject(pLVCD->nmcd.hdc, pen);
+				auto y = (groupRect.top + groupRect.bottom) / 2;
+				MoveToEx(pLVCD->nmcd.hdc, labelRect.right + 4, y, nullptr);
+				LineTo(pLVCD->nmcd.hdc, groupRect.right, y);
+				SelectObject(pLVCD->nmcd.hdc, oldPen);
+				DeleteObject(pen);
+
+				*pResult = CDRF_SKIPDEFAULT;
+				break;
+			}
+		}
 		*pResult = CDRF_NOTIFYITEMDRAW;
 		break;
 	case CDDS_ITEMPREPAINT:
@@ -3111,21 +3141,21 @@ BOOL CGitStatusListCtrl::OnNMCustomdraw(NMHDR* pNMHDR, LRESULT* pResult)
 				// red    : conflicts or sure conflicts
 				COLORREF crText;
 				if(entry->m_Action & CTGitPath::LOGACTIONS_GRAY)
-					crText = RGB(128,128,128);
+					crText = CTheme::Instance().GetThemeColor(GetSysColor(COLOR_GRAYTEXT));
 				else if(entry->m_Action & CTGitPath::LOGACTIONS_UNMERGED)
-					crText = m_Colors.GetColor(CColors::Conflict);
+					crText = CTheme::Instance().GetThemeColor(m_Colors.GetColor(CColors::Conflict), true);
 				else if(entry->m_Action & (CTGitPath::LOGACTIONS_MODIFIED))
-					crText = m_Colors.GetColor(CColors::Modified);
+					crText = CTheme::Instance().GetThemeColor(m_Colors.GetColor(CColors::Modified), true);
 				else if(entry->m_Action & (CTGitPath::LOGACTIONS_ADDED|CTGitPath::LOGACTIONS_COPY))
-					crText = m_Colors.GetColor(CColors::Added);
+					crText = CTheme::Instance().GetThemeColor(m_Colors.GetColor(CColors::Added), true);
 				else if(entry->m_Action & CTGitPath::LOGACTIONS_DELETED)
-					crText = m_Colors.GetColor(CColors::Deleted);
+					crText = CTheme::Instance().GetThemeColor(m_Colors.GetColor(CColors::Deleted), true);
 				else if(entry->m_Action & CTGitPath::LOGACTIONS_REPLACED)
-					crText = m_Colors.GetColor(CColors::Renamed);
+					crText = CTheme::Instance().GetThemeColor(m_Colors.GetColor(CColors::Renamed), true);
 				else if(entry->m_Action & CTGitPath::LOGACTIONS_MERGED)
-					crText = m_Colors.GetColor(CColors::Merged);
+					crText = CTheme::Instance().GetThemeColor(m_Colors.GetColor(CColors::Merged), true);
 				else
-					crText = GetSysColor(COLOR_WINDOWTEXT);
+					crText = CTheme::Instance().GetThemeColor(GetSysColor(COLOR_WINDOWTEXT));
 				// Store the color back in the NMLVCUSTOMDRAW struct.
 				pLVCD->clrText = crText;
 			}
@@ -3392,12 +3422,12 @@ void CGitStatusListCtrl::OnPaint()
 			else
 				str = m_sEmpty;
 		}
-		COLORREF clrText = ::GetSysColor(COLOR_WINDOWTEXT);
+		COLORREF clrText = CTheme::Instance().GetThemeColor(::GetSysColor(COLOR_WINDOWTEXT));
 		COLORREF clrTextBk;
 		if (IsWindowEnabled())
-			clrTextBk = ::GetSysColor(COLOR_WINDOW);
+			clrTextBk = CTheme::Instance().IsDarkTheme() ? CTheme::darkBkColor : ::GetSysColor(COLOR_WINDOW);
 		else
-			clrTextBk = ::GetSysColor(COLOR_3DFACE);
+			clrTextBk = CTheme::Instance().GetThemeColor(::GetSysColor(COLOR_3DFACE));
 
 		CRect rc;
 		GetClientRect(&rc);
@@ -4580,11 +4610,6 @@ CTGitPath* CGitStatusListCtrl::GetListEntry(int index)
 		return nullptr;
 	}
 	return const_cast<CTGitPath*>(m_arStatusArray[m_arListArray[index]]);
-}
-
-void CGitStatusListCtrl::OnSysColorChange()
-{
-	__super::OnSysColorChange();
 }
 
 ULONG CGitStatusListCtrl::GetGestureStatus(CPoint /*ptTouch*/)

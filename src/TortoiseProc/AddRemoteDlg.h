@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2016-2017 - TortoiseGit
+// Copyright (C) 2009, 2016-2017, 2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -17,11 +17,11 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
-
+#include "StandAloneDlg.h"
 
 // CAddRemoteDlg dialog
 
-class CAddRemoteDlg : public CDialog
+class CAddRemoteDlg : public CStandAloneDialog
 {
 	DECLARE_DYNAMIC(CAddRemoteDlg)
 

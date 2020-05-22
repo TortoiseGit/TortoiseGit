@@ -1,6 +1,6 @@
-﻿// TortoiseMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2013-2014, 2016 - TortoiseSVN
+// Copyright (C) 2013-2014, 2016, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,10 +25,10 @@
 
 // CRegexFilterDlg dialog
 
-IMPLEMENT_DYNAMIC(CRegexFilterDlg, CDialogEx)
+IMPLEMENT_DYNAMIC(CRegexFilterDlg, CStandAloneDialog)
 
 CRegexFilterDlg::CRegexFilterDlg(CWnd* pParent /*=nullptr*/)
-	: CDialogEx(CRegexFilterDlg::IDD, pParent)
+	: CStandAloneDialog(CRegexFilterDlg::IDD, pParent)
 {
 }
 
@@ -38,14 +38,14 @@ CRegexFilterDlg::~CRegexFilterDlg()
 
 void CRegexFilterDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialogEx::DoDataExchange(pDX);
+	CStandAloneDialog::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_NAME, m_sName);
 	DDX_Text(pDX, IDC_REGEX, m_sRegex);
 	DDX_Text(pDX, IDC_REPLACE, m_sReplace);
 }
 
 
-BEGIN_MESSAGE_MAP(CRegexFilterDlg, CDialogEx)
+BEGIN_MESSAGE_MAP(CRegexFilterDlg, CStandAloneDialog)
 END_MESSAGE_MAP()
 
 
@@ -54,7 +54,7 @@ END_MESSAGE_MAP()
 
 BOOL CRegexFilterDlg::OnInitDialog()
 {
-	CDialogEx::OnInitDialog();
+	CStandAloneDialog::OnInitDialog();
 
 	UpdateData(FALSE);
 
@@ -78,7 +78,7 @@ void CRegexFilterDlg::OnOK()
 		return;
 	}
 
-	CDialog::OnOK();
+	__super::OnOK();
 }
 
 void CRegexFilterDlg::ShowEditBalloon(UINT nIdControl, UINT nIdText, UINT nIdTitle, int nIcon)

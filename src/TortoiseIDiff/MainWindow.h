@@ -1,7 +1,7 @@
 ﻿// TortoiseIDiff - an image diff viewer in TortoiseSVN
 
 // Copyright (C) 2015-2016 - TortoiseGit
-// Copyright (C) 2006-2007, 2009, 2011-2013, 2015 - TortoiseSVN
+// Copyright (C) 2006-2007, 2009, 2011-2013, 2015-2016, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -67,6 +67,7 @@ public:
         , hwndTB(0)
         , hToolbarImgList(nullptr)
         , bSelectionMode(false)
+        , m_themeCallbackId(0)
         , resolveMsgWnd(nullptr)
         , resolveMsgLParam(0)
         , resolveMsgWParam(0)
@@ -117,6 +118,8 @@ protected:
     LRESULT                             Splitter_OnMouseMove(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam);
     void                                Splitter_CaptureChanged();
 
+    void                                SetTheme(bool bDark);
+    int                                 m_themeCallbackId;
     // toolbar
     bool                                CreateToolbar();
     HWND                                hwndTB;

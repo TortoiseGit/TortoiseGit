@@ -1,5 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2020 - TortoiseGit
 // Copyright (C) 2009, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -18,11 +19,12 @@
 //
 #pragma once
 #include "SciEdit.h"
+#include "StandAloneDlg.h"
 #include <afxcmn.h>
 
 // CAutoTextTestDlg dialog
 
-class CAutoTextTestDlg : public CDialog
+class CAutoTextTestDlg : public CStandAloneDialog
 {
 	DECLARE_DYNAMIC(CAutoTextTestDlg)
 

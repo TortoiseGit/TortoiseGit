@@ -763,6 +763,25 @@
 				</listitem>
 			</varlistentry>
 		</variablelist>
+		<para>
+			other settings:
+			<variablelist>
+				<varlistentry>
+					<term>Dark theme</term>
+					<listitem>
+						<para>
+							The dialogs in TortoiseGit can be shown in a dark mode on Windows 10 1809 and later.
+							This feature also requires that dark mode for applications is enabled in the Windows 10 settings.
+						</para>
+						<important>
+							<para>
+								Note that not all controls in all dialogs are shown in a dark theme.
+							</para>
+						</important>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+		</para>
 	</sect3>
 	<sect3 id="tgit-dug-settings-colours2">
 		<title>TortoiseGit Colour Settings 2</title>

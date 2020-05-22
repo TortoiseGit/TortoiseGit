@@ -125,6 +125,8 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "&Image info\tI",            ID_VIEW_IMAGEINFO
         MENUITEM "Arrange &vertical\tV",      ID_VIEW_ARRANGEVERTICAL
+        MENUITEM SEPARATOR
+        MENUITEM "&Dark Mode\tD",             ID_VIEW_DARKMODE
     END
     MENUITEM "?",                           ID_ABOUT
 END
@@ -146,6 +148,8 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "&Image info\tI",            ID_VIEW_IMAGEINFO
         MENUITEM "Arrange &vertical\tV",      ID_VIEW_ARRANGEVERTICAL
+        MENUITEM SEPARATOR
+        MENUITEM "&Dark Mode\tD",             ID_VIEW_DARKMODE
     END
     MENUITEM "?",                           ID_ABOUT
 END
@@ -240,6 +244,7 @@ BEGIN
     VK_ESCAPE,      IDM_EXIT,               VIRTKEY, NOINVERT
     "W",            ID_VIEW_FITIMAGEWIDTHS, VIRTKEY, NOINVERT
     "H",            ID_VIEW_FITIMAGEHEIGHTS, VIRTKEY, NOINVERT
+    "D",            ID_VIEW_DARKMODE,       VIRTKEY, NOINVERT
 END
 
 

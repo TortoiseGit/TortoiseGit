@@ -261,6 +261,7 @@ BOOL CPullFetchDlg::OnInitDialog()
 
 	EnableSaveRestore(L"PullFetchDlg");
 	this->m_RemoteManage.SetURL(CString());
+	SetTheme(CTheme::Instance().IsDarkTheme());
 	return TRUE;
 }
 

@@ -30,12 +30,12 @@
 
 // CPatchViewDlg dialog
 
-IMPLEMENT_DYNAMIC(CPatchViewDlg, CDialog)
+IMPLEMENT_DYNAMIC(CPatchViewDlg, CStandAloneDialog)
 
 #define SEARCHBARHEIGHT 30
 
 CPatchViewDlg::CPatchViewDlg(CWnd* pParent /*=nullptr*/)
-	: CDialog(CPatchViewDlg::IDD, pParent)
+	: CStandAloneDialog(CPatchViewDlg::IDD, pParent)
 	, m_ParentDlg(nullptr)
 	, m_hAccel(nullptr)
 	, m_bShowFindBar(false)
@@ -49,11 +49,11 @@ CPatchViewDlg::~CPatchViewDlg()
 
 void CPatchViewDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+	CStandAloneDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_PATCH, m_ctrlPatchView);
 }
 
-BEGIN_MESSAGE_MAP(CPatchViewDlg, CDialog)
+BEGIN_MESSAGE_MAP(CPatchViewDlg, CStandAloneDialog)
 	ON_WM_SIZE()
 	ON_WM_MOVING()
 	ON_WM_CLOSE()
@@ -66,14 +66,13 @@ BEGIN_MESSAGE_MAP(CPatchViewDlg, CDialog)
 	ON_REGISTERED_MESSAGE(CFindBar::WM_FINDNEXT, OnFindNextMessage)
 	ON_REGISTERED_MESSAGE(CFindBar::WM_FINDPREV, OnFindPrevMessage)
 	ON_REGISTERED_MESSAGE(CFindBar::WM_FINDRESET, OnFindResetMessage)
-	ON_WM_SYSCOLORCHANGE()
 END_MESSAGE_MAP()
 
 // CPatchViewDlg message handlers
 
 BOOL CPatchViewDlg::OnInitDialog()
 {
-	CDialog::OnInitDialog();
+	CStandAloneDialog::OnInitDialog();
 
 	auto hIcon = LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_PATCH));
 	SetIcon(hIcon, TRUE);
@@ -123,7 +122,7 @@ static int GetBorderAjustment(HWND parentHWND, const RECT& parentRect)
 
 void CPatchViewDlg::OnSize(UINT nType, int cx, int cy)
 {
-	CDialog::OnSize(nType, cx, cy);
+	CStandAloneDialog::OnSize(nType, cx, cy);
 
 	if (this->IsWindowVisible())
 	{
@@ -157,7 +156,7 @@ void CPatchViewDlg::OnMoving(UINT fwSide, LPRECT pRect)
 		pRect->left = parentRect.right - adjust;
 		pRect->right = pRect->left + width;
 	}
-	CDialog::OnMoving(fwSide, pRect);
+	CStandAloneDialog::OnMoving(fwSide, pRect);
 }
 
 void CPatchViewDlg::ParentOnMoving(HWND parentHWND, LPRECT pRect)
@@ -239,7 +238,7 @@ void CPatchViewDlg::ShowAndAlignToParent()
 
 void CPatchViewDlg::OnClose()
 {
-	CDialog::OnClose();
+	CStandAloneDialog::OnClose();
 	m_ParentDlg->TogglePatchView();
 }
 
@@ -366,13 +365,6 @@ LRESULT CPatchViewDlg::OnFindResetMessage(WPARAM, LPARAM)
 {
 	OnFindReset();
 	return 0;
-}
-
-void CPatchViewDlg::OnSysColorChange()
-{
-	__super::OnSysColorChange();
-
-	m_ctrlPatchView.SetUDiffStyle();
 }
 
 void CPatchViewDlg::OnDestroy()

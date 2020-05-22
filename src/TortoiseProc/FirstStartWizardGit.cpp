@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2019 - TortoiseGit
+// Copyright (C) 2016-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -24,6 +24,7 @@
 #include "MessageBox.h"
 #include "GitForWindows.h"
 #include "../../TGitCache/CacheInterface.h"
+#include "Theme.h"
 
 IMPLEMENT_DYNAMIC(CFirstStartWizardGit, CFirstStartWizardBasePage)
 
@@ -147,6 +148,8 @@ BOOL CFirstStartWizardGit::OnInitDialog()
 
 	if (m_sMsysGitPath.IsEmpty())
 		SetTimer(CHECK_NEWGIT_TIMER, 1000, nullptr);
+
+	CTheme::Instance().SetThemeForDialog(GetSafeHwnd(), CTheme::Instance().IsDarkTheme());
 
 	return TRUE;
 }

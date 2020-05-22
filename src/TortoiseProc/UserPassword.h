@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013, 2018 - TortoiseGit
+// Copyright (C) 2013, 2018, 2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -17,13 +17,13 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
-#include "CommonDialogFunctions.h"
+#include "StandAloneDlg.h"
 
 // CUserPassword dialog
 
 #define MAX_LENGTH_PASSWORD 256
 
-class CUserPassword : public CDialog, protected CommonDialogFunctions<CDialog>
+class CUserPassword : public CStandAloneDialog
 {
 	DECLARE_DYNAMIC(CUserPassword)
 

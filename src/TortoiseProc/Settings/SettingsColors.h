@@ -1,7 +1,7 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2009, 2011-2013, 2017 - TortoiseGit
+// Copyright (C) 2009, 2011-2013, 2017, 2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -41,6 +41,7 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
 	virtual BOOL OnInitDialog() override;
 	afx_msg void OnBnClickedColor();
+	afx_msg void OnBnClickedTheme();
 	afx_msg void OnBnClickedRestore();
 	virtual BOOL OnApply() override;
 
@@ -58,4 +59,6 @@ private:
 	CColors			m_Colors;
 	CButton			m_RevGraphUseLocalForCur;
 	CRegDWORD		m_regRevGraphUseLocalForCur;
+	CRegDWORD		m_regUseDarkMode;
+	CButton			m_chkUseDarkMode;
 };

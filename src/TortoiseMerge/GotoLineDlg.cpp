@@ -1,6 +1,6 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2011, 2013 - TortoiseSVN
+// Copyright (C) 2011, 2013, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -24,10 +24,10 @@
 
 // CGotoLineDlg dialog
 
-IMPLEMENT_DYNAMIC(CGotoLineDlg, CDialogEx)
+IMPLEMENT_DYNAMIC(CGotoLineDlg, CStandAloneDialog)
 
 CGotoLineDlg::CGotoLineDlg(CWnd* pParent /*=nullptr*/)
-	: CDialogEx(CGotoLineDlg::IDD, pParent)
+	: CStandAloneDialog(CGotoLineDlg::IDD, pParent)
 	, m_nLine(0)
 	, m_nLow(-1)
 	, m_nHigh(-1)
@@ -40,13 +40,13 @@ CGotoLineDlg::~CGotoLineDlg()
 
 void CGotoLineDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialogEx::DoDataExchange(pDX);
+	CStandAloneDialog::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_NUMBER, m_nLine);
 	DDX_Control(pDX, IDC_NUMBER, m_cNumber);
 }
 
 
-BEGIN_MESSAGE_MAP(CGotoLineDlg, CDialogEx)
+BEGIN_MESSAGE_MAP(CGotoLineDlg, CStandAloneDialog)
 END_MESSAGE_MAP()
 
 
@@ -54,7 +54,7 @@ END_MESSAGE_MAP()
 
 BOOL CGotoLineDlg::OnInitDialog()
 {
-	CDialogEx::OnInitDialog();
+	CStandAloneDialog::OnInitDialog();
 
 	if (!m_sLabel.IsEmpty())
 	{
@@ -78,5 +78,5 @@ void CGotoLineDlg::OnOK()
 		m_cNumber.SetSel(0, -1);
 		return;
 	}
-	CDialogEx::OnOK();
+	CStandAloneDialog::OnOK();
 }

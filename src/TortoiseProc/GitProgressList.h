@@ -89,7 +89,8 @@ public:
 	{
 	public:
 		NotificationData()
-		: color(::GetSysColor(COLOR_WINDOWTEXT))
+		: color(CTheme::Instance().IsDarkTheme() ? CTheme::darkTextColor : GetSysColor(COLOR_WINDOWTEXT))
+		, colorIsDirect(false)
 		, bAuxItem(false)
 		{};
 
@@ -110,6 +111,7 @@ public:
 		CString					sActionColumnText;
 		CTGitPath				path;
 		COLORREF				color;
+		bool					colorIsDirect;
 		bool					bAuxItem;					// Set if this item is not a true 'Git action'
 		CString					sPathColumnText;
 	};
@@ -173,7 +175,7 @@ public:
 	void		ReportWarning(const CString& sWarning);
 	void		ReportNotification(const CString& sNotification);
 	void		ReportCmd(const CString& sCmd);
-	void		ReportString(CString sMessage, const CString& sMsgKind, COLORREF color = ::GetSysColor(COLOR_WINDOWTEXT));
+	void		ReportString(CString sMessage, const CString& sMsgKind, bool colorIsDirect, COLORREF color = CTheme::Instance().IsDarkTheme() ? CTheme::darkTextColor : GetSysColor(COLOR_WINDOWTEXT));
 
 private:
 	void		AddItemToList();

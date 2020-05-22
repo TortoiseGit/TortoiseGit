@@ -25,6 +25,7 @@
 #include "../version.h"
 #include "I18NHelper.h"
 #include "FirstStartWizardLanguage.h"
+#include "Theme.h"
 
 #define DOWNLOAD_URL L"https://tortoisegit.org/download/"
 #define WM_SETPAGEFOCUS WM_APP+2
@@ -82,6 +83,8 @@ BOOL CFirstStartWizardLanguage::OnInitDialog()
 	AdjustControlSize(IDC_LINK, false);
 
 	OnBnClickedRefresh();
+
+	CTheme::Instance().SetThemeForDialog(GetSafeHwnd(), CTheme::Instance().IsDarkTheme());
 
 	return TRUE;
 }

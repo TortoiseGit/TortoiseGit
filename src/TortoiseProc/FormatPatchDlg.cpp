@@ -159,6 +159,7 @@ BOOL CFormatPatchDlg::OnInitDialog()
 		DialogEnableWindow(IDOK, FALSE);
 
 	EnableSaveRestore(L"FormatPatchDlg");
+	SetTheme(CTheme::Instance().IsDarkTheme());
 	return TRUE;
 }
 // CFormatPatchDlg message handlers

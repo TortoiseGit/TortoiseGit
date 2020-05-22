@@ -33,6 +33,7 @@
 #include "LogDlgFileFilter.h"
 #include "PatchViewDlg.h"
 #include "HyperLink.h"
+#include "ThemeControls.h"
 
 #define IDT_FILTER		101
 #define IDT_INPUT		102
@@ -144,7 +145,7 @@ private:
 
 	CMenuButton			m_cDiffOptionsBtn;
 
-	CMFCButton			m_SwitchButton;
+	CThemeMFCButton		m_SwitchButton;
 	CColors				m_colors;
 	CGestureEnabledControlTmpl<CHintCtrl<CListCtrl>>	m_cFileList;
 	bool				m_bBlame;

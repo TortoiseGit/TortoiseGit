@@ -24,14 +24,17 @@
 #include <string>
 #include <Commdlg.h>
 #include "LoadIconEx.h"
+#include "Theme.h"
 
 CFindBar::CFindBar()
 	: m_hParent(nullptr)
+	, m_themeCallbackId(0)
 {
 }
 
 CFindBar::~CFindBar(void)
 {
+	CTheme::Instance().RemoveRegisteredCallback(m_themeCallbackId);
 }
 
 LRESULT CFindBar::DlgFunc(HWND /*hwndDlg*/, UINT uMsg, WPARAM wParam, LPARAM /*lParam*/)
@@ -42,6 +45,8 @@ LRESULT CFindBar::DlgFunc(HWND /*hwndDlg*/, UINT uMsg, WPARAM wParam, LPARAM /*l
 		{
 			m_hIcon = LoadIconEx(hResource, MAKEINTRESOURCE(IDI_CANCELNORMAL));
 			SendMessage(GetDlgItem(*this, IDC_FINDEXIT), BM_SETIMAGE, IMAGE_ICON, reinterpret_cast<LPARAM>(static_cast<HICON>(m_hIcon)));
+			m_themeCallbackId = CTheme::Instance().RegisterThemeChangeCallback([this]() { SetTheme(CTheme::Instance().IsDarkTheme()); });
+			SetTheme(CTheme::Instance().IsDarkTheme());
 		}
 		return TRUE;
 	case WM_COMMAND:
@@ -102,4 +107,9 @@ void CFindBar::SelectSearchString()
 void CFindBar::SetSearchString(LPCTSTR findStr)
 {
 	::SetWindowText(GetDlgItem(*this, IDC_FINDTEXT), findStr);
+}
+
+void CFindBar::SetTheme(bool bDark)
+{
+	CTheme::Instance().SetThemeForDialog(*this, bDark);
 }

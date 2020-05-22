@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2016-2017, 2020 - TortoiseGit
-// Copyright (C) 2007-2008 - TortoiseSVN
+// Copyright (C) 2007-2008, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -92,6 +92,9 @@ public:
 	 * The notification is either WM_FILTEREDIT_INFOCLICKED or the one
 	 * set with SetButtonClickedMessageId().
 	 *
+	 * The \c cx96dpi and \c cy96dpi specifies width and height of icon in 96 DPI.
+	 * Control will automatically scale icon according to current DPI.
+	 *
 	 * To catch the notification, handle the message directly (or use the
 	 * WM_MESSAGE() macro). The LPARAM parameter of the message contains the
 	 * rectangle (pointer to RECT) of the info icon in screen coordinates.
@@ -119,8 +122,10 @@ public:
 	BOOL SetCueBanner(LPCWSTR lpcwText);
 
 	void SetValidator(IFilterEditValidator * pValidator) {m_pValidator = pValidator;}
+	void Redraw() { ResizeWindow(); }
 
-	void ValidateAndRedraw();
+	void ValidateAndRedraw() { OnEnChange(); }
+
 protected:
 	virtual void	PreSubclassWindow() override;
 	virtual BOOL	PreTranslateMessage(MSG* pMsg) override;
@@ -135,11 +140,11 @@ protected:
 	afx_msg void	OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg BOOL	OnEnChange();
 	afx_msg HBRUSH	CtlColor(CDC* /*pDC*/, UINT /*nCtlColor*/);
+	afx_msg LRESULT OnThemeChanged();
 	afx_msg void	OnPaint();
 	afx_msg void	OnEnKillfocus();
 	afx_msg void	OnEnSetfocus();
 	afx_msg LRESULT	OnPaste(WPARAM wParam, LPARAM lParam);
-	afx_msg void	OnSysColorChange();
 	DECLARE_MESSAGE_MAP()
 
 
@@ -148,6 +153,7 @@ protected:
 	void			Validate();
 	void			DrawDimText();
 	HICON			LoadDpiScaledIcon(UINT resourceId, int cx96dpi, int cy96dpi);
+	void SetTheme(bool bDark);
 
 protected:
 	CAutoIcon m_hIconCancelNormal;
@@ -164,6 +170,7 @@ protected:
 	UINT					m_iCancelClickedMessageId;
 	COLORREF				m_backColor;
 	CBrush					m_brBack;
+	int						m_themeCallbackId;
 	IFilterEditValidator *	m_pValidator;
 	CString					m_sCueBanner;
 };

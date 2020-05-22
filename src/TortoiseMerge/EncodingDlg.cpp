@@ -1,6 +1,6 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2013 - TortoiseSVN
+// Copyright (C) 2013, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -49,10 +49,10 @@ const EOL eolArray[] =
 
 // dialog
 
-IMPLEMENT_DYNAMIC(CEncodingDlg, CDialog)
+IMPLEMENT_DYNAMIC(CEncodingDlg, CStandAloneDialog)
 
 CEncodingDlg::CEncodingDlg(CWnd* pParent)
-	: CDialog(CEncodingDlg::IDD, pParent)
+	: CStandAloneDialog(CEncodingDlg::IDD, pParent)
 	, texttype(CFileTextLines::ASCII)
 	, lineendings(EOL_AUTOLINE)
 {
@@ -64,13 +64,13 @@ CEncodingDlg::~CEncodingDlg()
 
 void CEncodingDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+	CStandAloneDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_COMBO_ENCODING, m_Encoding);
 	DDX_Control(pDX, IDC_COMBO_EOL, m_EOL);
 }
 
 
-BEGIN_MESSAGE_MAP(CEncodingDlg, CDialog)
+BEGIN_MESSAGE_MAP(CEncodingDlg, CStandAloneDialog)
 END_MESSAGE_MAP()
 
 
@@ -91,7 +91,7 @@ void CEncodingDlg::OnOK()
 
 BOOL CEncodingDlg::OnInitDialog()
 {
-	CDialog::OnInitDialog();
+	CStandAloneDialog::OnInitDialog();
 
 	CString sTitle;
 	GetWindowText(sTitle);

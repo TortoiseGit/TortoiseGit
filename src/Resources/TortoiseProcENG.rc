@@ -1372,7 +1372,7 @@ BEGIN
     CONTROL         "",IDC_FIRSTSTART_HINT,"SysLink",LWS_NOPREFIX | WS_TABSTOP,17,7,289,135
 END
 
-IDD_SETTINGSCOLORS_1 DIALOGEX 0, 0, 300, 217
+IDD_SETTINGSCOLORS_1 DIALOGEX 0, 0, 300, 230
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "General::Colors 1"
 FONT 9, "MS Shell Dlg 2", 400, 0, 0x1
@@ -1393,11 +1393,12 @@ BEGIN
     GROUPBOX        "Revision graph",IDC_STATIC,7,130,286,62
     LTEXT           "Note node",IDC_STATIC,14,142,137,8
     PUSHBUTTON      "",IDC_NOTENODECOLOR,158,139,101,14
-    PUSHBUTTON      "Restore Default",IDC_RESTORE,211,196,82,14
     LTEXT           "Unknown ref-types",IDC_STATIC,14,159,137,8
     PUSHBUTTON      "",IDC_OTHERREFSCOLOR,158,156,101,14
     CONTROL         "Use local branch color for current branch",IDC_REVGRAPHUSELOCALFORCUR,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,172,146,10
+    CONTROL         "Dark theme",IDC_DARKTHEME,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,195,245,10
+    PUSHBUTTON      "Restore Default",IDC_RESTORE,211,209,82,14
 END
 
 IDD_SETTINGSCOLORS_3 DIALOGEX 0, 0, 300, 217
@@ -2826,7 +2827,7 @@ BEGIN
         VERTGUIDE, 158
         VERTGUIDE, 259
         TOPMARGIN, 7
-        BOTTOMMARGIN, 210
+        BOTTOMMARGIN, 223
     END
 
     IDD_SETTINGSCOLORS_3, DIALOG
@@ -3842,6 +3843,7 @@ BEGIN
     IDS_MERGESUCCESSFUL     "Was the merge of\n%s\nsuccessful?"
     IDS_PROC_SYNC_SWITCHTO  "Switch to ""%s"""
     IDS_CONFIGUREDEFAULT    "Configure default"
+    IDS_DARKTHEME_TT        "Dark theme requires at least Win10 1803, and it must be enabled in the Windows system settings."
 END
 
 STRINGTABLE

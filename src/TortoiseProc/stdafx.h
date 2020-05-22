@@ -4,6 +4,7 @@
 
 #pragma once
 #define XMESSAGEBOX_APPREGPATH "Software\\TortoiseGit\\"
+#define REGSTRING_DARKTHEME L"Software\\TortoiseGit\\DarkTheme"
 
 #include <SDKDDKVer.h>
 

@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006, 2009-2010, 2014-2015, 2017-2018 - TortoiseSVN
+// Copyright (C) 2006, 2009-2010, 2014-2015, 2017-2018, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,6 +20,9 @@
 #include "Settings.h"
 #include "SetMainPage.h"
 #include "SetColorPage.h"
+#include "Theme.h"
+
+#define BOTTOMMARG 32
 
 int CALLBACK PropSheetProc(HWND /*hWndDlg*/, UINT uMsg, LPARAM lParam)
 {
@@ -42,6 +45,7 @@ CSettings::CSettings(UINT nIDCaption, CWnd* pParentWnd, UINT iSelectPage)
 	: CPropertySheet(nIDCaption, pParentWnd, iSelectPage)
 	, m_pMainPage(nullptr)
 	, m_pColorPage(nullptr)
+	, m_themeCallbackId(0)
 {
 }
 
@@ -49,12 +53,14 @@ CSettings::CSettings(LPCTSTR pszCaption, CWnd* pParentWnd, UINT iSelectPage)
 	: CPropertySheet(pszCaption, pParentWnd, iSelectPage)
 	, m_pMainPage(nullptr)
 	, m_pColorPage(nullptr)
+	, m_themeCallbackId(0)
 {
 	AddPropPages();
 }
 
 CSettings::~CSettings()
 {
+	CTheme::Instance().RemoveRegisteredCallback(m_themeCallbackId);
 	RemovePropPages();
 }
 
@@ -96,6 +102,11 @@ BOOL CSettings::IsReloadNeeded() const
 	return bReload;
 }
 
+bool CSettings::IsDarkMode() const
+{
+	return m_pColorPage->m_IsDarkMode;
+}
+
 BEGIN_MESSAGE_MAP(CSettings, CPropertySheet)
 END_MESSAGE_MAP()
 
@@ -105,5 +116,9 @@ END_MESSAGE_MAP()
 BOOL CSettings::OnInitDialog()
 {
 	BOOL bResult = CPropertySheet::OnInitDialog();
+
+	m_themeCallbackId = CTheme::Instance().RegisterThemeChangeCallback([this]() { CTheme::Instance().SetThemeForDialog(GetSafeHwnd(), CTheme::Instance().IsDarkTheme()); });
+
+	CTheme::Instance().SetThemeForDialog(GetSafeHwnd(), CTheme::Instance().IsDarkTheme());
 	return bResult;
 }

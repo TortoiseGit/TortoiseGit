@@ -1,5 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2020 - TortoiseGit
 // Copyright (C) 2003-2006 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
@@ -25,7 +26,7 @@
  * \ingroup TortoiseProc
  * Helper dialog to ask the user for authentication data.
  */
-class CSimplePrompt : public CDialog
+class CSimplePrompt : public CStandAloneDialog
 {
 	DECLARE_DYNAMIC(CSimplePrompt)
 

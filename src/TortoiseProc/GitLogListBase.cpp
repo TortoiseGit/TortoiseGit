@@ -107,10 +107,6 @@ CGitLogListBase::CGitLogListBase() : CHintCtrl<CResizableColumnsListCtrl<CListCt
 	}
 	m_Filter.m_NumberOfLogs = CRegDWORD(L"Software\\TortoiseGit\\LogDialog\\NumberOfLogs", 1);
 
-	for (int i = 0; i < Lanes::COLORS_NUM; ++i)
-	{
-		m_LineColors[i] = m_Colors.GetColor((CColors::Colors)(CColors::BranchLine1+i));
-	}
 	// get short/long datetime setting from registry
 	DWORD RegUseShortDateFormat = CRegDWORD(L"Software\\TortoiseGit\\LogDateFormat", TRUE);
 	if ( RegUseShortDateFormat )
@@ -553,7 +549,7 @@ void CGitLogListBase::DrawTagBranchMessage(NMLVCUSTOMDRAW* pLVCD, CRect& rect, I
 		{
 			DTTOPTS opts = { 0 };
 			opts.dwSize = sizeof(opts);
-			opts.crText = skip ? RGB(128, 128, 128) : ::GetSysColor(COLOR_WINDOWTEXT);
+			opts.crText = skip ? RGB(128, 128, 128) : CTheme::Instance().IsDarkTheme() ? CTheme::darkTextColor : GetSysColor(COLOR_WINDOWTEXT);
 			opts.dwFlags = DTT_TEXTCOLOR;
 			DrawThemeTextEx(hTheme, pLVCD->nmcd.hdc, LVP_LISTITEM, txtState, msg, -1, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS, &rt, &opts);
 		}
@@ -563,7 +559,7 @@ void CGitLogListBase::DrawTagBranchMessage(NMLVCUSTOMDRAW* pLVCD, CRect& rect, I
 		if ((rItem.state & LVIS_SELECTED) && ::GetFocus() == m_hWnd)
 			pLVCD->clrText = skip ? RGB(128, 128, 128) : ::GetSysColor(COLOR_HIGHLIGHTTEXT);
 		else
-			pLVCD->clrText = skip ? RGB(128, 128, 128) : ::GetSysColor(COLOR_WINDOWTEXT);
+			pLVCD->clrText = skip ? RGB(128, 128, 128) : CTheme::Instance().IsDarkTheme() ? CTheme::darkTextColor : GetSysColor(COLOR_WINDOWTEXT);
 		if (!ranges.empty())
 			DrawListItemWithMatchesRect(pLVCD, ranges, rt, msg, m_Colors);
 		else
@@ -681,7 +677,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CDC& W_Dc, HTHEME hTheme, CRect& re
 
 				DTTOPTS opts = { 0 };
 				opts.dwSize = sizeof(opts);
-				opts.crText = ::GetSysColor(COLOR_WINDOWTEXT);
+				opts.crText = GetSysColor(COLOR_WINDOWTEXT);
 				opts.dwFlags = DTT_TEXTCOLOR;
 				DrawThemeTextEx(hTheme, hdc, LVP_LISTITEM, txtState, shortname, -1, textpos | DT_SINGLELINE | DT_VCENTER, &textRect, &opts);
 			}
@@ -697,7 +693,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CDC& W_Dc, HTHEME hTheme, CRect& re
 				}
 				else
 				{
-					COLORREF clrOld = ::SetTextColor(hdc, ::GetSysColor(COLOR_WINDOWTEXT));
+					COLORREF clrOld = ::SetTextColor(hdc, CTheme::Instance().IsDarkTheme() ? CTheme::darkTextColor : GetSysColor(COLOR_WINDOWTEXT));
 					::DrawText(hdc, shortname, shortname.GetLength(), &textRect, textpos | DT_SINGLELINE | DT_VCENTER);
 					::SetTextColor(hdc, clrOld);
 				}
@@ -1023,7 +1019,7 @@ void CGitLogListBase::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
 	int maxWidth = rect.Width();
 	int lw = 3 * rect.Height() / 4; //laneWidth()
 
-	COLORREF activeColor = m_LineColors[activeLane % Lanes::COLORS_NUM];
+	COLORREF activeColor = CTheme::Instance().GetThemeColor(m_Colors.GetColor((CColors::Colors)(CColors::BranchLine1 + (activeLane % Lanes::COLORS_NUM))), true);
 
 	for (unsigned int i = 0; i < laneNum && x2 < maxWidth; ++i)
 	{
@@ -1034,7 +1030,7 @@ void CGitLogListBase::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
 		if (ln == Lanes::EMPTY)
 			continue;
 
-		COLORREF color = i == activeLane ? activeColor : m_LineColors[i % Lanes::COLORS_NUM];
+		COLORREF color = i == activeLane ? activeColor : CTheme::Instance().GetThemeColor(m_Colors.GetColor((CColors::Colors)(CColors::BranchLine1 + (i % Lanes::COLORS_NUM))), true);
 		paintGraphLane(hdc, rect.Height(),ln, x1+rect.left, x2+rect.left, color,activeColor, rect.top);
 	}
 
@@ -1086,7 +1082,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 			// Tell Windows to send draw notifications for each subitem.
 			*pResult = CDRF_NOTIFYSUBITEMDRAW;
 
-			COLORREF crText = GetSysColor(COLOR_WINDOWTEXT);
+			COLORREF crText = CTheme::Instance().IsDarkTheme() ? CTheme::darkTextColor : GetSysColor(COLOR_WINDOWTEXT);
 
 			if (m_arShownList.size() > pLVCD->nmcd.dwItemSpec)
 			{
@@ -1096,14 +1092,14 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 					HGDIOBJ hGdiObj = nullptr;
 					int action = data->GetRebaseAction();
 					if (action & (LOGACTIONS_REBASE_DONE | LOGACTIONS_REBASE_SKIP))
-						crText = RGB(128,128,128);
+						crText = RGB(128,128,128);//
 
 					if (action & LOGACTIONS_REBASE_SQUASH)
-						pLVCD->clrTextBk = RGB(156,156,156);
+						pLVCD->clrTextBk = RGB(156,156,156);//
 					else if (action & LOGACTIONS_REBASE_EDIT)
-						pLVCD->clrTextBk  = RGB(200,200,128);
+						pLVCD->clrTextBk = CTheme::Instance().GetThemeColor(RGB(200, 200, 128));
 					else
-						pLVCD->clrTextBk  = ::GetSysColor(COLOR_WINDOW);
+						pLVCD->clrTextBk = CTheme::Instance().IsDarkTheme() ? CTheme::darkBkColor : GetSysColor(COLOR_WINDOW);
 
 					if (action & LOGACTIONS_REBASE_CURRENT)
 						hGdiObj = m_boldFont.GetSafeHandle();
@@ -1270,9 +1266,9 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 							if (!(m_ShowRefMask & LOGLIST_SHOWLOCALBRANCHES))
 								continue;
 							if (refLabel.name == m_CurrentBranch)
-								refLabel.color = m_Colors.GetColor(CColors::CurrentBranch);
+								refLabel.color = CTheme::Instance().GetThemeColor(m_Colors.GetColor(CColors::CurrentBranch), true);
 							else
-								refLabel.color = m_Colors.GetColor(CColors::LocalBranch);
+								refLabel.color = CTheme::Instance().GetThemeColor(m_Colors.GetColor(CColors::LocalBranch), true);
 
 							std::pair<CString, CString> trackingEntry = m_TrackingMap[refLabel.name];
 							CString pullRemote = trackingEntry.first;
@@ -1299,7 +1295,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 										bool sameName = pullBranch == refLabel.name;
 										refsToShow.push_back(refLabel);
 										CGit::GetShortName(defaultUpstream, refLabel.name, L"refs/remotes/");
-										refLabel.color = m_Colors.GetColor(CColors::RemoteBranch);
+										refLabel.color = CTheme::Instance().GetThemeColor(m_Colors.GetColor(CColors::RemoteBranch), true);
 										if (m_bSymbolizeRefNames)
 										{
 											if (!m_SingleRemote.IsEmpty() && m_SingleRemote == pullRemote)
@@ -1340,7 +1336,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 							if (found)
 								continue;
 
-							refLabel.color = m_Colors.GetColor(CColors::RemoteBranch);
+							refLabel.color = CTheme::Instance().GetThemeColor(m_Colors.GetColor(CColors::RemoteBranch), true);
 							if (m_bSymbolizeRefNames)
 							{
 								if (!m_SingleRemote.IsEmpty() && CStringUtils::StartsWith(refLabel.name, m_SingleRemote + L"/"))
@@ -1355,13 +1351,13 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 						case CGit::REF_TYPE::TAG:
 							if (!(m_ShowRefMask & LOGLIST_SHOWTAGS))
 								continue;
-							refLabel.color = m_Colors.GetColor(CColors::Tag);
+							refLabel.color = CTheme::Instance().GetThemeColor(m_Colors.GetColor(CColors::Tag), true);
 							break;
 
 						case CGit::REF_TYPE::STASH:
 							if (!(m_ShowRefMask & LOGLIST_SHOWSTASH))
 								continue;
-							refLabel.color = m_Colors.GetColor(CColors::Stash);
+							refLabel.color = CTheme::Instance().GetThemeColor(m_Colors.GetColor(CColors::Stash), true);
 							break;
 
 						case CGit::REF_TYPE::BISECT_GOOD: // fallthrough
@@ -1369,19 +1365,19 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 						case CGit::REF_TYPE::BISECT_SKIP:
 							if (!(m_ShowRefMask & LOGLIST_SHOWBISECT))
 								continue;
-							refLabel.color = (refLabel.refType == CGit::REF_TYPE::BISECT_GOOD) ? m_Colors.GetColor(CColors::BisectGood) : ((refLabel.refType == CGit::REF_TYPE::BISECT_SKIP) ? m_Colors.GetColor(CColors::BisectSkip) : m_Colors.GetColor(CColors::BisectBad));
+							refLabel.color = CTheme::Instance().GetThemeColor((refLabel.refType == CGit::REF_TYPE::BISECT_GOOD) ? m_Colors.GetColor(CColors::BisectGood) : ((refLabel.refType == CGit::REF_TYPE::BISECT_SKIP) ? m_Colors.GetColor(CColors::BisectSkip) : m_Colors.GetColor(CColors::BisectBad)), true);
 							break;
 
 						case CGit::REF_TYPE::NOTES:
 							if (!(m_ShowRefMask & LOGLIST_SHOWOTHERREFS))
 								continue;
-							refLabel.color = m_Colors.GetColor(CColors::NoteNode);
+							refLabel.color = CTheme::Instance().GetThemeColor(m_Colors.GetColor(CColors::NoteNode), true);
 							break;
 
 						default:
 							if (!(m_ShowRefMask & LOGLIST_SHOWOTHERREFS))
 								continue;
-							refLabel.color = m_Colors.GetColor(CColors::OtherRef);
+							refLabel.color = CTheme::Instance().GetThemeColor(m_Colors.GetColor(CColors::OtherRef), true);
 							break;
 						}
 						refsToShow.push_back(refLabel);
@@ -1389,7 +1385,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 					if (!m_superProjectHash.IsEmpty() && data->m_CommitHash == m_superProjectHash)
 					{
 						REFLABEL refLabel;
-						refLabel.color = RGB(246, 153, 253);
+						refLabel.color = CTheme::Instance().GetThemeColor(RGB(246, 153, 253), true);
 						refLabel.singleRemote = false;
 						refLabel.hasTracking = false;
 						refLabel.sameName = false;
@@ -1409,7 +1405,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 					*pResult = CDRF_SKIPDEFAULT;
 					return;
 				}
-				else if (DrawListItemWithMatchesIfEnabled(m_LogFilter, LOGFILTER_SUBJECT | LOGFILTER_MESSAGES, pLVCD, pResult))
+				else if (DrawListItemWithMatchesIfEnabled(m_LogFilter, LOGFILTER_SUBJECT | LOGFILTER_MESSAGES, pLVCD, pResult))//from here
 					return;
 			}
 			break;
@@ -4003,14 +3999,14 @@ void CGitLogListBase::DrawListItemWithMatchesRect(NMLVCUSTOMDRAW* pLVCD, const s
 		{
 			if (!hTheme)
 			{
-				::SetTextColor(pLVCD->nmcd.hdc, colors.GetColor(CColors::FilterMatch));
+				::SetTextColor(pLVCD->nmcd.hdc, CTheme::Instance().GetThemeColor(colors.GetColor(CColors::FilterMatch), true));
 				DrawText(pLVCD->nmcd.hdc, text.Mid(drawPos), it->cpMax - drawPos, &rc, DT_SINGLELINE | DT_VCENTER | DT_NOPREFIX | DT_END_ELLIPSIS);
 				DrawText(pLVCD->nmcd.hdc, text.Mid(drawPos), it->cpMax - drawPos, &rc, DT_CALCRECT | DT_SINGLELINE | DT_VCENTER | DT_NOPREFIX | DT_END_ELLIPSIS);
 				::SetTextColor(pLVCD->nmcd.hdc, textColor);
 			}
 			else
 			{
-				opts.crText = colors.GetColor(CColors::FilterMatch);
+				opts.crText = CTheme::Instance().GetThemeColor(colors.GetColor(CColors::FilterMatch), true);
 				DrawThemeTextEx(hTheme, pLVCD->nmcd.hdc, LVP_LISTITEM, txtState, text.Mid(drawPos), it->cpMax - drawPos, DT_SINGLELINE | DT_VCENTER | DT_NOPREFIX | DT_END_ELLIPSIS, &rc, &opts);
 				GetThemeTextExtent(hTheme, pLVCD->nmcd.hdc, LVP_LISTITEM, txtState, text.Mid(drawPos), it->cpMax - drawPos, DT_CALCRECT | DT_SINGLELINE | DT_VCENTER | DT_NOPREFIX | DT_END_ELLIPSIS, &rect, &rc);
 				opts.crText = textColor;
@@ -4030,6 +4026,62 @@ bool CGitLogListBase::DrawListItemWithMatchesIfEnabled(std::shared_ptr<CLogDlgFi
 {
 	if ((filter->GetSelectedFilters() & selectedFilter) && filter->IsFilterActive())
 	{
+		CRect rect;
+		GetSubItemRect(static_cast<int>(pLVCD->nmcd.dwItemSpec), pLVCD->iSubItem, LVIR_BOUNDS, rect);
+
+		int index = static_cast<int>(pLVCD->nmcd.dwItemSpec);
+		int state = GetItemState(index, LVIS_SELECTED);
+		int txtState = LISS_NORMAL;
+		if (IsAppThemed() && GetHotItem() == static_cast<int>(index))
+		{
+			if (state & LVIS_SELECTED)
+				txtState = LISS_HOTSELECTED;
+			else
+				txtState = LISS_HOT;
+		}
+		else if (state & LVIS_SELECTED)
+		{
+			if (::GetFocus() == m_hWnd)
+				txtState = LISS_SELECTED;
+			else
+				txtState = LISS_SELECTEDNOTFOCUS;
+		}
+
+		CAutoThemeData hTheme;
+		if (IsAppThemed())
+		{
+			hTheme = OpenThemeData(m_hWnd, L"Explorer::ListView;ListView");
+
+			// make sure the column separator/border is not overpainted
+			int borderWidth = 0;
+			GetThemeMetric(hTheme, pLVCD->nmcd.hdc, LVP_LISTITEM, LISS_NORMAL, TMT_BORDERSIZE, &borderWidth);
+			InflateRect(&rect, -(2 * borderWidth), 0);
+		}
+
+		if (hTheme && IsThemeBackgroundPartiallyTransparent(hTheme, LVP_LISTDETAIL, txtState))
+			DrawThemeParentBackground(m_hWnd, pLVCD->nmcd.hdc, &rect);
+		else
+		{
+			HBRUSH brush = ::CreateSolidBrush(pLVCD->clrTextBk);
+			::FillRect(pLVCD->nmcd.hdc, rect, brush);
+			::DeleteObject(brush);
+		}
+		if (hTheme && txtState != LISS_NORMAL)
+		{
+			CRect rt;
+			// get rect of whole line
+			GetItemRect(index, rt, LVIR_BOUNDS);
+			CRect rect2 = rect;
+
+			// calculate background for rect of whole line, but limit redrawing to SubItem rect
+			DrawThemeBackground(hTheme, pLVCD->nmcd.hdc, LVP_LISTITEM, txtState, rt, rect2);
+		}
+		hTheme.CloseHandle();
+		// END: extended redraw
+
+		FillBackGround(pLVCD->nmcd.hdc, pLVCD->nmcd.dwItemSpec, rect);
+
+
 		*pResult = DrawListItemWithMatches(filter.get(), *this, pLVCD, m_Colors);
 		return true;
 	}
@@ -4108,7 +4160,8 @@ LRESULT CGitLogListBase::DrawListItemWithMatches(CFilterHelper* filter, CListCtr
 			else
 			{
 				brush = ::CreateSolidBrush(::GetSysColor(COLOR_BTNFACE));
-				pLVCD->clrText = ::GetSysColor(COLOR_WINDOWTEXT);
+				pLVCD->clrText = CTheme::Instance().IsDarkTheme() ? CTheme::darkTextColor : GetSysColor(COLOR_WINDOWTEXT);
+				;
 			}
 		}
 		else
@@ -4139,7 +4192,7 @@ LRESULT CGitLogListBase::DrawListItemWithMatches(CFilterHelper* filter, CListCtr
 			DrawThemeParentBackground(listCtrl.m_hWnd, pLVCD->nmcd.hdc, &rect);
 		else
 		{
-			HBRUSH brush = ::CreateSolidBrush(::GetSysColor(COLOR_WINDOW));
+			HBRUSH brush = ::CreateSolidBrush(pLVCD->clrTextBk);
 			::FillRect(pLVCD->nmcd.hdc, rect, brush);
 			::DeleteObject(brush);
 		}

@@ -141,7 +141,7 @@ private:
 	void					OnCancel();
 	afx_msg void			OnClose();
 
-	afx_msg void			OnSysColorChange();
+	void					SetupLogMessageViewControl();
 	afx_msg void			OnEnscrollLog();
 	afx_msg void			OnEnLinkLog(NMHDR* pNMHDR, LRESULT* pResult);
 

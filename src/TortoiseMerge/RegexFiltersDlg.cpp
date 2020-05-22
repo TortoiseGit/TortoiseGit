@@ -1,6 +1,6 @@
-// TortoiseMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2013 - TortoiseSVN
+// Copyright (C) 2013, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,10 +25,10 @@
 
 // CRegexFiltersDlg dialog
 
-IMPLEMENT_DYNAMIC(CRegexFiltersDlg, CDialogEx)
+IMPLEMENT_DYNAMIC(CRegexFiltersDlg, CStandAloneDialog)
 
 CRegexFiltersDlg::CRegexFiltersDlg(CWnd* pParent /*=nullptr*/)
-	: CDialogEx(CRegexFiltersDlg::IDD, pParent)
+	: CStandAloneDialog(CRegexFiltersDlg::IDD, pParent)
 	, m_pIni(nullptr)
 {
 }
@@ -39,12 +39,12 @@ CRegexFiltersDlg::~CRegexFiltersDlg()
 
 void CRegexFiltersDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialogEx::DoDataExchange(pDX);
+	CStandAloneDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_REGEXLIST, m_RegexList);
 }
 
 
-BEGIN_MESSAGE_MAP(CRegexFiltersDlg, CDialogEx)
+BEGIN_MESSAGE_MAP(CRegexFiltersDlg, CStandAloneDialog)
 	ON_BN_CLICKED(IDC_ADD, &CRegexFiltersDlg::OnBnClickedAdd)
 	ON_BN_CLICKED(IDC_EDIT, &CRegexFiltersDlg::OnBnClickedEdit)
 	ON_BN_CLICKED(IDC_REMOVE, &CRegexFiltersDlg::OnBnClickedRemove)
@@ -115,7 +115,7 @@ void CRegexFiltersDlg::OnBnClickedRemove()
 
 BOOL CRegexFiltersDlg::OnInitDialog()
 {
-	CDialogEx::OnInitDialog();
+	CStandAloneDialog::OnInitDialog();
 
 	SetWindowTheme(m_RegexList.GetSafeHwnd(), L"Explorer", nullptr);
 

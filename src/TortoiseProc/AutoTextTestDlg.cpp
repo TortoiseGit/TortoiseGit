@@ -1,5 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2020 - TortoiseGit
 // Copyright (C) 2009, 2011, 2013-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -26,10 +27,10 @@
 
 // CAutoTextTestDlg dialog
 
-IMPLEMENT_DYNAMIC(CAutoTextTestDlg, CDialog)
+IMPLEMENT_DYNAMIC(CAutoTextTestDlg, CStandAloneDialog)
 
 CAutoTextTestDlg::CAutoTextTestDlg(CWnd* pParent /*=nullptr*/)
-	: CDialog(CAutoTextTestDlg::IDD, pParent)
+	: CStandAloneDialog(CAutoTextTestDlg::IDD, pParent)
 {
 }
 
@@ -39,21 +40,21 @@ CAutoTextTestDlg::~CAutoTextTestDlg()
 
 void CAutoTextTestDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+	CStandAloneDialog::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_AUTOTEXTREGEX, m_sRegex);
 	DDX_Text(pDX, IDC_TESTRESULT, m_sResult);
 	DDX_Text(pDX, IDC_TIMINGLABEL, m_sTimingLabel);
 	DDX_Control(pDX, IDC_AUTOTEXTCONTENT, m_cContent);
 }
 
-BEGIN_MESSAGE_MAP(CAutoTextTestDlg, CDialog)
+BEGIN_MESSAGE_MAP(CAutoTextTestDlg, CStandAloneDialog)
 	ON_BN_CLICKED(IDC_AUTOTEXTSCAN, &CAutoTextTestDlg::OnBnClickedAutotextscan)
 END_MESSAGE_MAP()
 
 
 BOOL CAutoTextTestDlg::OnInitDialog()
 {
-	CDialog::OnInitDialog();
+	CStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	m_cContent.LimitText(200*1024);

@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2006 - Stefan Kueng
-// Copyright (C) 2012-2016, 2018-2019 - TortoiseGit
+// Copyright (C) 2012-2016, 2018-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,10 +25,10 @@
 #include "BrowseRefsDlg.h"
 #include "StringUtils.h"
 
-IMPLEMENT_DYNAMIC(CRevGraphFilterDlg, CDialog)
+IMPLEMENT_DYNAMIC(CRevGraphFilterDlg, CStandAloneDialog)
 
 CRevGraphFilterDlg::CRevGraphFilterDlg(CWnd* pParent /*=nullptr*/)
-	: CDialog(CRevGraphFilterDlg::IDD, pParent)
+	: CStandAloneDialog(CRevGraphFilterDlg::IDD, pParent)
 	, m_bCurrentBranch(FALSE)
 	, m_bLocalBranches(FALSE)
 {
@@ -40,7 +40,7 @@ CRevGraphFilterDlg::~CRevGraphFilterDlg()
 
 void CRevGraphFilterDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+	CStandAloneDialog::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_FROMREV, m_sFromRev);
 	DDX_Text(pDX, IDC_TOREV, m_sToRev);
 	DDX_Check(pDX, IDC_CURRENT_BRANCH, m_bCurrentBranch);
@@ -49,7 +49,7 @@ void CRevGraphFilterDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TOREV, m_ctrlToRev);
 }
 
-BEGIN_MESSAGE_MAP(CRevGraphFilterDlg, CDialog)
+BEGIN_MESSAGE_MAP(CRevGraphFilterDlg, CStandAloneDialog)
 	ON_BN_CLICKED(IDC_REV1BTN1, &CRevGraphFilterDlg::OnBnClickedRev1btn1)
 	ON_BN_CLICKED(IDC_REV1BTN2, &CRevGraphFilterDlg::OnBnClickedRev1btn2)
 	ON_BN_CLICKED(IDC_RESETFILTER, &CRevGraphFilterDlg::OnBnClickedResetfilter)
@@ -59,7 +59,7 @@ END_MESSAGE_MAP()
 
 BOOL CRevGraphFilterDlg::OnInitDialog()
 {
-	CDialog::OnInitDialog();
+	CStandAloneDialog::OnInitDialog();
 	this->m_ctrlFromRev.Init();
 	this->m_ctrlToRev.Init();
 
@@ -123,7 +123,7 @@ void CRevGraphFilterDlg::SetRevisionRange (CString minrev, CString maxrev)
 
 void CRevGraphFilterDlg::OnOK()
 {
-	CDialog::OnOK();
+	CStandAloneDialog::OnOK();
 }
 
 void CRevGraphFilterDlg::OnBnClickedRev1btn1()
@@ -151,7 +151,7 @@ void CRevGraphFilterDlg::OnBnClickedResetfilter()
 	m_bCurrentBranch = FALSE;
 	m_bLocalBranches = FALSE;
 	UpdateData(FALSE);
-	CDialog::OnOK();
+	CStandAloneDialog::OnOK();
 }
 
 void CRevGraphFilterDlg::OnBnClickedCurrentBranch()
