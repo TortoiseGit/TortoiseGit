@@ -238,19 +238,22 @@ void CThemeMFCMenuButton::OnDraw(CDC* pDC, const CRect& rect, UINT uiState)
 
 		auto vmargin = CDPIAware::Instance().ScaleX(6);
 		auto hmargin = CDPIAware::Instance().ScaleY(3);
-		if (m_bRightArrow)
+		if (!m_bNoArrow)
 		{
-			POINT vertices[] = { { rectArrow.left + hmargin, rectArrow.bottom - vmargin },
-								 { rectArrow.left + hmargin, rectArrow.top + vmargin },
-								 { rectArrow.right - hmargin, (rectArrow.top + rectArrow.bottom) / 2 } };
-			pDC->Polygon(vertices, _countof(vertices));
-		}
-		else
-		{
-			POINT vertices[] = { { rectArrow.left + hmargin, rectArrow.top + vmargin },
-								 { rectArrow.right - hmargin, rectArrow.top + vmargin },
-								 { (rectArrow.left + rectArrow.right) / 2, rectArrow.bottom - vmargin } };
-			pDC->Polygon(vertices, _countof(vertices));
+			if (m_bRightArrow)
+			{
+				POINT vertices[] = { { rectArrow.left + hmargin, rectArrow.bottom - vmargin },
+									 { rectArrow.left + hmargin, rectArrow.top + vmargin },
+									 { rectArrow.right - hmargin, (rectArrow.top + rectArrow.bottom) / 2 } };
+				pDC->Polygon(vertices, _countof(vertices));
+			}
+			else
+			{
+				POINT vertices[] = { { rectArrow.left + hmargin, rectArrow.top + vmargin },
+									 { rectArrow.right - hmargin, rectArrow.top + vmargin },
+									 { (rectArrow.left + rectArrow.right) / 2, rectArrow.bottom - vmargin } };
+				pDC->Polygon(vertices, _countof(vertices));
+			}
 		}
 
 		pDC->SelectObject(hOldBrush);
@@ -265,7 +268,7 @@ void CThemeMFCMenuButton::OnDraw(CDC* pDC, const CRect& rect, UINT uiState)
 						  rectArrow, (uiState & ODS_DISABLED) ? CMenuImages::ImageGray : CMenuImages::ImageBlack);
 	}
 
-	if (m_bDefaultClick)
+	if (m_bDefaultClick && !m_bNoArrow)
 	{
 		//----------------
 		// Draw separator:
@@ -399,7 +402,10 @@ void CThemeMFCMenuButton::OnButtonDraw(CDC* pDC, const CRect& rect, UINT uiState
 		clrText = GetGlobalData()->clrGrayedText;
 	}
 
-	clrText = CTheme::Instance().GetThemeColor(clrText);
+	if (clrText != GetGlobalData()->clrBtnText || !CTheme::Instance().IsDarkTheme())
+		clrText = CTheme::Instance().GetThemeColor(clrText);
+	else
+		clrText = CTheme::darkTextColor;
 	pDC->SetTextColor(clrText);
 
 	if (m_bDelayFullTextTooltipSet)

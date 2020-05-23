@@ -45,5 +45,9 @@ public:
 	virtual void OnDrawFocusRect(CDC* pDC, const CRect& rectClient) override;
 	virtual void OnDrawBorder(CDC* pDC, CRect& rectClient, UINT uiState) override;
 
+	virtual BOOL IsPressed() { return __super::IsPressed(); }
+
 	void OnButtonDraw(CDC* pDC, const CRect& rect, UINT uiState);
+
+	bool m_bNoArrow = false;
 };

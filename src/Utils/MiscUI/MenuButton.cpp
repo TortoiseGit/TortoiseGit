@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011, 2015-2017, 2019 - TortoiseGit
+// Copyright (C) 2011, 2015-2017, 2019-2020 - TortoiseGit
 // Copyright (C) 2011,2015-2016 - Sven Strickroth <email@cs-ware.de>
 
 //based on:
@@ -22,7 +22,7 @@
 //
 #include "stdafx.h"
 #include "MenuButton.h"
-
+#include "Theme.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -33,17 +33,15 @@ static char THIS_FILE[]=__FILE__;
 
 IMPLEMENT_DYNCREATE(CMenuButton, CMFCMenuButton)
 
-CMenuButton::CMenuButton(void) : CMFCMenuButton()
+CMenuButton::CMenuButton(void) : CThemeMFCMenuButton()
 	, m_nDefault(0)
 	, m_bMarkDefault(TRUE)
 	, m_bShowCurrentItem(true)
-	, m_bRealMenuIsActive(false)
 	, m_bAlwaysShowArrow(false)
 {
 	m_bOSMenu = TRUE;
 	m_bDefaultClick = TRUE;
 	m_bTransparent = TRUE;
-	m_bMenuIsActive = TRUE;
 	m_bStayPressed = TRUE;
 
 	m_btnMenu.CreatePopupMenu();
@@ -59,10 +57,12 @@ bool CMenuButton::SetCurrentEntry(INT_PTR entry)
 	if (entry < 0 || entry >= m_sEntries.GetCount() || !m_bShowCurrentItem)
 		return false;
 
-	m_nDefault = entry + 1;
 	SetWindowText(m_sEntries[entry]);
 	if (m_bMarkDefault)
+	{
+		m_nDefault = entry + 1;
 		m_btnMenu.SetDefaultItem(static_cast<UINT>(m_nDefault), FALSE);
+	}
 
 	return true;
 }
@@ -73,15 +73,12 @@ void CMenuButton::RemoveAll()
 		m_btnMenu.RemoveMenu(0, MF_BYPOSITION);
 	m_sEntries.RemoveAll();
 	m_nDefault = m_nMenuResult = 0;
-	m_bMenuIsActive = TRUE;
 }
 
 INT_PTR CMenuButton::AddEntry(const CString& sEntry, UINT uIcon /*= 0U*/)
 {
 	INT_PTR ret = m_sEntries.Add(sEntry);
 	m_btnMenu.AppendMenuIcon(m_sEntries.GetCount(), sEntry, uIcon);
-	if (m_sEntries.GetCount() == 2)
-		m_bMenuIsActive = FALSE;
 
 	if (ret == 0)
 		SetCurrentEntry(ret);
@@ -128,6 +125,7 @@ BEGIN_MESSAGE_MAP(CMenuButton, CMFCMenuButton)
 	ON_CONTROL_REFLECT_EX(BN_CLICKED, &CMenuButton::OnClicked)
 	ON_WM_SYSCOLORCHANGE()
 	ON_WM_THEMECHANGED()
+	ON_WM_LBUTTONDOWN()
 END_MESSAGE_MAP()
 
 
@@ -147,113 +145,53 @@ BOOL CMenuButton::PreTranslateMessage(MSG* pMsg)
 		{
 		case VK_RETURN:
 		case VK_SPACE:
-			if (m_bMenuIsActive && !m_bRealMenuIsActive)
+			if (!m_bMenuIsActive)
 			{
 				GetParent()->SendMessage(WM_COMMAND, MAKEWPARAM(GetDlgCtrlID(), BN_CLICKED), reinterpret_cast<LPARAM>(m_hWnd));
 				return TRUE;
 			}
 		case VK_F4:
-			OnShowMenu();
+			if (m_bAlwaysShowArrow)
+				GetParent()->SendMessage(WM_COMMAND, MAKEWPARAM(GetDlgCtrlID(), BN_CLICKED), reinterpret_cast<LPARAM>(m_hWnd));
+			else
+				OnShowMenu();
 			return TRUE;
 		}
 	}
 
-	return CMFCMenuButton::PreTranslateMessage(pMsg);
+	return __super::PreTranslateMessage(pMsg);
 }
 
 void CMenuButton::OnDestroy()
 {
 	m_sEntries.RemoveAll();
 
-	CMFCMenuButton::OnDestroy();
+	__super::OnDestroy();
+}
+
+BOOL CMenuButton::IsPressed()
+{
+	return __super::IsPressed() || m_bChecked;
 }
 
 void CMenuButton::OnDraw(CDC* pDC, const CRect& rect, UINT uiState)
 {
-	if (m_bMenuIsActive && !m_bRealMenuIsActive && !m_bAlwaysShowArrow)
+	m_bNoArrow = !m_bAlwaysShowArrow && m_sEntries.GetCount() < 2;
+	if (!m_bAlwaysShowArrow && m_bNoArrow && !CTheme::Instance().IsDarkTheme())
 		CMFCButton::OnDraw(pDC, rect, uiState);
 	else
-		CMFCMenuButton::OnDraw(pDC, rect, uiState);
+		__super::OnDraw(pDC, rect, uiState);
 
 	if (m_Font.m_hObject == nullptr)
 		FixFont();
 }
 
-void CMenuButton::OnShowMenu()
+void CMenuButton::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	m_bRealMenuIsActive = true;
-
-	// Begin CMFCMenuButton::OnShowMenu()
-	if (m_hMenu == NULL || m_bMenuIsActive)
-	{
-		return;
-	}
-
-	CRect rectWindow;
-	GetWindowRect(rectWindow);
-
-	int x, y;
-
-	if (m_bRightArrow)
-	{
-		x = rectWindow.right;
-		y = rectWindow.top;
-	}
+	if (m_bAlwaysShowArrow || m_sEntries.GetCount() < 2)
+		CMFCButton::OnLButtonDown(nFlags, point);
 	else
-	{
-		x = rectWindow.left;
-		y = rectWindow.bottom;
-	}
-
-	if (m_bStayPressed)
-	{
-		m_bPushed = TRUE;
-		m_bHighlighted = TRUE;
-	}
-
-	m_bMenuIsActive = TRUE;
-	Invalidate();
-
-	TPMPARAMS params;
-	params.cbSize = sizeof(TPMPARAMS);
-	params.rcExclude = rectWindow;
-	m_nMenuResult = ::TrackPopupMenuEx(m_hMenu, TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_NONOTIFY | TPM_RETURNCMD | TPM_VERTICAL, x, y, GetSafeHwnd(), &params);
-
-	CWnd* pParent = GetParent();
-
-#ifdef _DEBUG
-	if ((pParent->IsKindOf(RUNTIME_CLASS(CDialog))) && (!pParent->IsKindOf(RUNTIME_CLASS(CDialogEx))))
-	{
-		TRACE(_T("CMFCMenuButton parent is CDialog, should be CDialogEx for popup menu handling to work correctly.\n"));
-	}
-#endif
-
-	if (m_nMenuResult != 0)
-	{
-		//-------------------------------------------------------
-		// Trigger mouse up event(to button click notification):
-		//-------------------------------------------------------
-		if (pParent != NULL)
-		{
-			pParent->SendMessage(WM_COMMAND, MAKEWPARAM(GetDlgCtrlID(), BN_CLICKED), reinterpret_cast<LPARAM>(m_hWnd));
-		}
-	}
-
-	m_bPushed = FALSE;
-	m_bHighlighted = FALSE;
-	m_bMenuIsActive = FALSE;
-
-	Invalidate();
-	UpdateWindow();
-
-	if (m_bCaptured)
-	{
-		ReleaseCapture();
-		m_bCaptured = FALSE;
-	}
-	// End CMFCMenuButton::OnShowMenu()
-
-	m_bRealMenuIsActive = false;
+		__super::OnLButtonDown(nFlags, point);
 }
 
 LRESULT CMenuButton::OnThemeChanged()
