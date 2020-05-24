@@ -143,6 +143,8 @@ BOOL CImportPatchDlg::OnInitDialog()
 	m_PatchCtrl.Init(-1);
 	m_PatchCtrl.Call(SCI_SETREADONLY, TRUE);
 	m_PatchCtrl.SetUDiffStyle();
+	m_PatchCtrl.Call(SCI_SETSCROLLWIDTH, 1);
+	m_PatchCtrl.Call(SCI_SETSCROLLWIDTHTRACKING, TRUE);
 
 	if (!m_wndOutput.Create(L"Scintilla", L"source", 0, rectDummy, &m_ctrlTabCtrl, 0, 0))
 	{
@@ -151,6 +153,8 @@ BOOL CImportPatchDlg::OnInitDialog()
 	}
 	m_wndOutput.Init(-1);
 	m_wndOutput.Call(SCI_SETREADONLY, TRUE);
+	m_wndOutput.Call(SCI_SETSCROLLWIDTH, 1);
+	m_wndOutput.Call(SCI_SETSCROLLWIDTHTRACKING, TRUE);
 
 	m_tooltips.AddTool(IDC_CHECK_3WAY,IDS_AM_3WAY_TT);
 	m_tooltips.AddTool(IDC_CHECK_IGNORE_SPACE,IDS_AM_IGNORE_SPACE_TT);
