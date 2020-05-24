@@ -1682,10 +1682,7 @@ void CSciEdit::SetUDiffStyle()
 	Call(SCI_SETTABWIDTH, CRegStdDWORD(L"Software\\TortoiseGit\\UDiffTabSize", 4));
 
 	Call(SCI_SETREADONLY, TRUE);
-	//LRESULT pix = Call(SCI_TEXTWIDTH, STYLE_LINENUMBER, reinterpret_cast<LPARAM>("_99999"));
-	//Call(SCI_SETMARGINWIDTHN, 0, pix);
-	//Call(SCI_SETMARGINWIDTHN, 1);
-	//Call(SCI_SETMARGINWIDTHN, 2);
+
 	//Set the default windows colors for edit controls
 	SetColors(false);
 
