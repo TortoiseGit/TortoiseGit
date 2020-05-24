@@ -668,7 +668,7 @@ void CMainWindow::InitEditor()
 {
 	SendEditor(SCI_SETREADONLY, FALSE);
 	SendEditor(SCI_CLEARALL);
-	SendEditor(EM_EMPTYUNDOBUFFER);
+	SendEditor(SCI_EMPTYUNDOBUFFER);
 	SendEditor(SCI_SETSAVEPOINT);
 	SendEditor(SCI_CANCEL);
 	SendEditor(SCI_SETUNDOCOLLECTION, 0);
@@ -680,7 +680,7 @@ void CMainWindow::SetupWindow(bool bUTF8)
 
 	SendEditor(SCI_SETUNDOCOLLECTION, 1);
 	::SetFocus(m_hWndEdit);
-	SendEditor(EM_EMPTYUNDOBUFFER);
+	SendEditor(SCI_EMPTYUNDOBUFFER);
 	SendEditor(SCI_SETSAVEPOINT);
 	SendEditor(SCI_GOTOPOS, 0);
 

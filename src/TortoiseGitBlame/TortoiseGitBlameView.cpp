@@ -1518,7 +1518,7 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 	InitialiseEditor();
 	SendEditor(SCI_SETREADONLY, FALSE);
 	SendEditor(SCI_CLEARALL);
-	SendEditor(EM_EMPTYUNDOBUFFER);
+	SendEditor(SCI_EMPTYUNDOBUFFER);
 	SendEditor(SCI_SETSAVEPOINT);
 	SendEditor(SCI_CANCEL);
 	SendEditor(SCI_SETUNDOCOLLECTION, 0);
