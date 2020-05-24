@@ -140,6 +140,7 @@ public:
 	int			LoadFromFile(CString &filename);
 	void		RestyleBugIDs();
 	BOOL		EnableWindow(BOOL bEnable = TRUE);
+	void		SetReadOnly(bool bReadOnly);
 
 private:
 	bool IsUTF8(LPVOID pBuffer, size_t cb);
@@ -161,6 +162,7 @@ private:
 	int			m_nAutoCompleteMinChars;
 	LruCache<std::wstring, BOOL> m_SpellingCache;
 	bool		m_blockModifiedHandler;
+	bool		m_bReadOnly;
 	static bool IsValidURLChar(unsigned char ch);
 protected:
 	virtual BOOL OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pLResult) override;

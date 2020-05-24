@@ -224,7 +224,7 @@ BOOL CRebaseDlg::OnInitDialog()
 	m_ProjectProperties.ReadProps();
 	m_LogMessageCtrl.Init(m_ProjectProperties);
 	m_LogMessageCtrl.SetFont(CAppUtils::GetLogFontName(), CAppUtils::GetLogFontSize());
-	m_LogMessageCtrl.Call(SCI_SETREADONLY, TRUE);
+	m_LogMessageCtrl.SetReadOnly(true);
 
 	dwStyle = LBS_NOINTEGRALHEIGHT | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL;
 
@@ -235,7 +235,7 @@ BOOL CRebaseDlg::OnInitDialog()
 	}
 	m_wndOutputRebase.Init(-1);
 	m_wndOutputRebase.SetFont(CAppUtils::GetLogFontName(), CAppUtils::GetLogFontSize());
-	m_wndOutputRebase.Call(SCI_SETREADONLY, TRUE);
+	m_wndOutputRebase.SetReadOnly(true);
 
 	m_tooltips.AddTool(IDC_REBASE_CHECK_FORCE,IDS_REBASE_FORCE_TT);
 	m_tooltips.AddTool(IDC_REBASE_ABORT, IDS_REBASE_ABORT_TT);
@@ -2460,7 +2460,7 @@ LRESULT CRebaseDlg::OnRebaseUpdateUI(WPARAM,LPARAM)
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_CONFLICT);
 		if (m_pTaskbarList)
 			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_ERROR);
-		this->m_LogMessageCtrl.Call(SCI_SETREADONLY, FALSE);
+		this->m_LogMessageCtrl.SetReadOnly(false);
 		CString logMessage;
 		if (m_IsCherryPick)
 		{
@@ -2479,7 +2479,7 @@ LRESULT CRebaseDlg::OnRebaseUpdateUI(WPARAM,LPARAM)
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_MESSAGE);
 		if (m_pTaskbarList)
 			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_PAUSED);
-		this->m_LogMessageCtrl.Call(SCI_SETREADONLY, FALSE);
+		this->m_LogMessageCtrl.SetReadOnly(false);
 		if (m_bAddCherryPickedFrom)
 		{
 			// Since the new commit is done and the HEAD points to it,
@@ -2495,7 +2495,7 @@ LRESULT CRebaseDlg::OnRebaseUpdateUI(WPARAM,LPARAM)
 		break;
 	case REBASE_SQUASH_EDIT:
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_MESSAGE);
-		this->m_LogMessageCtrl.Call(SCI_SETREADONLY, FALSE);
+		this->m_LogMessageCtrl.SetReadOnly(false);
 		this->m_LogMessageCtrl.SetText(this->m_SquashMessage);
 		if (m_pTaskbarList)
 			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_PAUSED);
@@ -2840,9 +2840,7 @@ void CRebaseDlg::FillLogMessageCtrl()
 		int selIndex = m_CommitList.GetNextSelectedItem(pos);
 		GitRevLoglist* pLogEntry = m_CommitList.m_arShownList.SafeGetAt(selIndex);
 		OnRefreshFilelist();
-		m_LogMessageCtrl.Call(SCI_SETREADONLY, FALSE);
 		m_LogMessageCtrl.SetText(pLogEntry->GetSubject() + L'\n' + pLogEntry->GetBody());
-		m_LogMessageCtrl.Call(SCI_SETREADONLY, TRUE);
 	}
 }
 

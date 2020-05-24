@@ -98,9 +98,7 @@ BOOL CPatchViewDlg::OnInitDialog()
 
 void CPatchViewDlg::SetText(const CString& text)
 {
-	m_ctrlPatchView.Call(SCI_SETREADONLY, FALSE);
 	m_ctrlPatchView.SetText(text);
-	m_ctrlPatchView.Call(SCI_SETREADONLY, TRUE);
 	if (!text.IsEmpty())
 	{
 		m_ctrlPatchView.Call(SCI_GOTOPOS, 0);

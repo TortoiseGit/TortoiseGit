@@ -278,7 +278,7 @@ int CTortoiseGitBlameView::OnCreate(LPCREATESTRUCT lpcs)
 	m_TextView.Init(-1);
 	m_TextView.ShowWindow( SW_SHOW);
 	CreateFont();
-	SendEditor(SCI_SETREADONLY, TRUE);
+	m_TextView.SetReadOnly(true);
 	m_ToolTip.Create(this->GetParent());
 
 	::AfxGetApp()->GetMainWnd();
@@ -612,7 +612,6 @@ void CTortoiseGitBlameView::InitialiseEditor()
 			fontName.c_str()
 			);
 	SendEditor(SCI_SETTABWIDTH, static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\BlameTabSize", 4)));
-	SendEditor(SCI_SETREADONLY, TRUE);
 	auto numberOfLines = m_data.GetNumberOfLines();
 	int numDigits = 2;
 	while (numberOfLines)
@@ -1516,7 +1515,7 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 	CreateFont();
 
 	InitialiseEditor();
-	SendEditor(SCI_SETREADONLY, FALSE);
+	m_TextView.SetReadOnly(false);
 	SendEditor(SCI_CLEARALL);
 	SendEditor(SCI_EMPTYUNDOBUFFER);
 	SendEditor(SCI_SETSAVEPOINT);
@@ -1609,7 +1608,7 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 	else
 		SendEditor(SCI_SETSCROLLWIDTH, 1);
 	SendEditor(SCI_SETSCROLLWIDTHTRACKING, TRUE);
-	SendEditor(SCI_SETREADONLY, TRUE);
+	m_TextView.SetReadOnly(true);
 
 	GetBlameWidth();
 	CRect rect;
