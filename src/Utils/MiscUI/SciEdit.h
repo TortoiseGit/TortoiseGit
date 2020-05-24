@@ -88,6 +88,9 @@ public:
 	~CSciEdit(void);
 
 	void				SetAStyle(int style, COLORREF fore, COLORREF back = ::GetSysColor(COLOR_WINDOW), int size = -1, const char* face = nullptr);
+	/**
+	 * Set style and Scintilla configuration for read-only patch views
+	 */
 	void SetUDiffStyle();
 
 	/**

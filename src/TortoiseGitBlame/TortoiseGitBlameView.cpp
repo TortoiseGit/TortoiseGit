@@ -1598,9 +1598,6 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 #endif
 	SetupLexer(GetDocument()->m_CurrentFileName);
 
-	SendEditor(SCI_SETUNDOCOLLECTION, 1);
-	SendEditor(EM_EMPTYUNDOBUFFER);
-	SendEditor(SCI_SETSAVEPOINT);
 	SendEditor(SCI_GOTOPOS, 0);
 	// set max scroll width, based on textwidth of longest line (heuristic, only works for monospace font)
 	if (longestLine > 0)
