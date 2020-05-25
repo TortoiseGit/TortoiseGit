@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012, 2014-2019 - TortoiseGit
+// Copyright (C) 2012, 2014-2020 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -63,6 +63,7 @@ BOOL CInputDlg::OnInitDialog()
 	if (!m_sInputText.IsEmpty())
 	{
 		m_cInput.SetText(m_sInputText);
+		m_cInput.Call(SCI_EMPTYUNDOBUFFER);
 	}
 	if (!m_sHintText.IsEmpty())
 	{

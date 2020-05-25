@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014-2016 - TortoiseGit
+// Copyright (C) 2014-2016, 2020 - TortoiseGit
 // Copyright (C) 2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -75,6 +75,7 @@ BOOL CBugtraqRegexTestDlg::OnInitDialog()
 	m_cLogMessage.SetFont(CAppUtils::GetLogFontName(), CAppUtils::GetLogFontSize());
 
 	m_cLogMessage.SetText(CString(MAKEINTRESOURCE(IDS_SAMPLEBUGTRAQTESTMSG)));
+	m_cLogMessage.Call(SCI_EMPTYUNDOBUFFER);
 	m_cLogMessage.Call(SCI_SETCURRENTPOS, 0);
 	m_cLogMessage.Call(SCI_SETSEL, 0, 0);
 

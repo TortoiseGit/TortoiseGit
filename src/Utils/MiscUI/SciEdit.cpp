@@ -1822,3 +1822,9 @@ void CSciEdit::SetReadOnly(bool bReadOnly)
 	m_bReadOnly = bReadOnly;
 	Call(SCI_SETREADONLY, m_bReadOnly);
 }
+
+void CSciEdit::ClearUndoBuffer()
+{
+	Call(SCI_EMPTYUNDOBUFFER);
+	Call(SCI_SETSAVEPOINT);
+}

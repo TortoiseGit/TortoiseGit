@@ -2474,6 +2474,7 @@ LRESULT CRebaseDlg::OnRebaseUpdateUI(WPARAM,LPARAM)
 		if (logMessage.IsEmpty())
 			logMessage = curRev->GetSubject() + L'\n' + curRev->GetBody();
 		this->m_LogMessageCtrl.SetText(logMessage);
+		m_LogMessageCtrl.ClearUndoBuffer();
 		break;
 		}
 	case REBASE_EDIT:
@@ -2493,11 +2494,13 @@ LRESULT CRebaseDlg::OnRebaseUpdateUI(WPARAM,LPARAM)
 		}
 		else
 			m_LogMessageCtrl.SetText(curRev->GetSubject() + L'\n' + curRev->GetBody());
+		m_LogMessageCtrl.ClearUndoBuffer();
 		break;
 	case REBASE_SQUASH_EDIT:
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_MESSAGE);
 		this->m_LogMessageCtrl.SetReadOnly(false);
 		this->m_LogMessageCtrl.SetText(this->m_SquashMessage);
+		m_LogMessageCtrl.ClearUndoBuffer();
 		if (m_pTaskbarList)
 			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_PAUSED);
 		break;
@@ -2842,6 +2845,7 @@ void CRebaseDlg::FillLogMessageCtrl()
 		GitRevLoglist* pLogEntry = m_CommitList.m_arShownList.SafeGetAt(selIndex);
 		OnRefreshFilelist();
 		m_LogMessageCtrl.SetText(pLogEntry->GetSubject() + L'\n' + pLogEntry->GetBody());
+		m_LogMessageCtrl.ClearUndoBuffer();
 	}
 }
 

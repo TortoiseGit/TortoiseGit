@@ -1204,6 +1204,7 @@ void CCommitDlg::OnOK()
 				this->m_sLogMessage.Empty();
 				GetCommitTemplate(m_sLogMessage);
 				m_cLogMessage.SetText(m_sLogMessage);
+				m_cLogMessage.ClearUndoBuffer();
 				if (m_bCreateNewBranch)
 				{
 					GetDlgItem(IDC_COMMIT_TO)->ShowWindow(SW_SHOW);

@@ -144,6 +144,7 @@ public:
 	void		RestyleBugIDs();
 	BOOL		EnableWindow(BOOL bEnable = TRUE);
 	void		SetReadOnly(bool bReadOnly);
+	void		ClearUndoBuffer();
 
 private:
 	bool IsUTF8(LPVOID pBuffer, size_t cb);
