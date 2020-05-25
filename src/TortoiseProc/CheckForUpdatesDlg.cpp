@@ -138,6 +138,7 @@ BOOL CCheckForUpdatesDlg::OnInitDialog()
 
 	m_cLogMessage.Init(-1);
 	m_cLogMessage.SetFont(CAppUtils::GetLogFontName(), CAppUtils::GetLogFontSize());
+	m_cLogMessage.Call(SCI_SETUNDOCOLLECTION, 0);
 	m_cLogMessage.SetReadOnly(true);
 
 	m_updateDownloader = new CUpdateDownloader(GetSafeHwnd(), m_myVersion.version, m_bForce == TRUE, WM_USER_DISPLAYSTATUS, &m_eventStop);

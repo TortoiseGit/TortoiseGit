@@ -236,6 +236,7 @@ BOOL CRebaseDlg::OnInitDialog()
 	m_wndOutputRebase.Init(-1);
 	m_wndOutputRebase.SetFont(CAppUtils::GetLogFontName(), CAppUtils::GetLogFontSize());
 	m_wndOutputRebase.SetReadOnly(true);
+	m_wndOutputRebase.Call(SCI_SETUNDOCOLLECTION, 0);
 
 	m_tooltips.AddTool(IDC_REBASE_CHECK_FORCE,IDS_REBASE_FORCE_TT);
 	m_tooltips.AddTool(IDC_REBASE_ABORT, IDS_REBASE_ABORT_TT);

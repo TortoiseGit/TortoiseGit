@@ -151,6 +151,7 @@ BOOL CImportPatchDlg::OnInitDialog()
 		return -1;      // fail to create
 	}
 	m_wndOutput.Init(-1);
+	m_wndOutput.Call(SCI_SETUNDOCOLLECTION, 0);
 	m_wndOutput.SetReadOnly(true);
 	m_wndOutput.Call(SCI_SETSCROLLWIDTH, 1);
 	m_wndOutput.Call(SCI_SETSCROLLWIDTHTRACKING, TRUE);
