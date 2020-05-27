@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014-2016 - TortoiseGit
+// Copyright (C) 2014-2016, 2020 - TortoiseGit
 // Copyright (C) 2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -49,7 +49,6 @@ void CBugtraqRegexTestDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CBugtraqRegexTestDlg, CResizableStandAloneDialog)
 	ON_EN_CHANGE(IDC_BUGTRAQLOGREGEX1, &CBugtraqRegexTestDlg::OnEnChangeBugtraqlogregex1)
 	ON_EN_CHANGE(IDC_BUGTRAQLOGREGEX2, &CBugtraqRegexTestDlg::OnEnChangeBugtraqlogregex2)
-	ON_WM_SYSCOLORCHANGE()
 END_MESSAGE_MAP()
 
 void CBugtraqRegexTestDlg::OnEnChangeBugtraqlogregex1()
@@ -76,6 +75,7 @@ BOOL CBugtraqRegexTestDlg::OnInitDialog()
 	m_cLogMessage.SetFont(CAppUtils::GetLogFontName(), CAppUtils::GetLogFontSize());
 
 	m_cLogMessage.SetText(CString(MAKEINTRESOURCE(IDS_SAMPLEBUGTRAQTESTMSG)));
+	m_cLogMessage.Call(SCI_EMPTYUNDOBUFFER);
 	m_cLogMessage.Call(SCI_SETCURRENTPOS, 0);
 	m_cLogMessage.Call(SCI_SETSEL, 0, 0);
 
@@ -103,12 +103,4 @@ void CBugtraqRegexTestDlg::UpdateLogControl()
 		m_cLogMessage.Init(projectprops);
 		m_cLogMessage.RestyleBugIDs();
 	}
-}
-
-void CBugtraqRegexTestDlg::OnSysColorChange()
-{
-	__super::OnSysColorChange();
-
-	m_cLogMessage.SetColors(true);
-	m_cLogMessage.SetFont(CAppUtils::GetLogFontName(), CAppUtils::GetLogFontSize());
 }

@@ -141,7 +141,6 @@ BOOL CImportPatchDlg::OnInitDialog()
 		return FALSE;
 	}
 	m_PatchCtrl.Init(-1);
-	m_PatchCtrl.Call(SCI_SETREADONLY, TRUE);
 	m_PatchCtrl.SetUDiffStyle();
 	m_PatchCtrl.Call(SCI_SETSCROLLWIDTH, 1);
 	m_PatchCtrl.Call(SCI_SETSCROLLWIDTHTRACKING, TRUE);
@@ -152,7 +151,8 @@ BOOL CImportPatchDlg::OnInitDialog()
 		return -1;      // fail to create
 	}
 	m_wndOutput.Init(-1);
-	m_wndOutput.Call(SCI_SETREADONLY, TRUE);
+	m_wndOutput.Call(SCI_SETUNDOCOLLECTION, 0);
+	m_wndOutput.SetReadOnly(true);
 	m_wndOutput.Call(SCI_SETSCROLLWIDTH, 1);
 	m_wndOutput.Call(SCI_SETSCROLLWIDTHTRACKING, TRUE);
 
@@ -222,7 +222,6 @@ BEGIN_MESSAGE_MAP(CImportPatchDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_BUTTON_REMOVE, &CImportPatchDlg::OnBnClickedButtonRemove)
 	ON_BN_CLICKED(IDOK, &CImportPatchDlg::OnBnClickedOk)
 	ON_WM_SIZE()
-	ON_WM_SYSCOLORCHANGE()
 	ON_WM_THEMECHANGED()
 	ON_BN_CLICKED(IDCANCEL, &CImportPatchDlg::OnBnClickedCancel)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_PATCH, &CImportPatchDlg::OnHdnItemchangedListPatch)
@@ -682,15 +681,9 @@ void CImportPatchDlg::OnHdnItemchangedListPatch(NMHDR * /*pNMHDR*/, LRESULT *pRe
 	*pResult = 0;
 
 	if(this->m_cList.GetSelectedCount() != 1)
-	{
-		m_PatchCtrl.SendMessage(SCI_SETREADONLY, FALSE);
 		m_PatchCtrl.SetText(CString());
-		m_PatchCtrl.SendMessage(SCI_SETREADONLY, TRUE);
-	}
 	else
 	{
-		CString text;
-
 		POSITION pos;
 		pos = m_cList.GetFirstSelectedItemPosition();
 		int selected = m_cList.GetNextSelectedItem(pos);
@@ -698,18 +691,11 @@ void CImportPatchDlg::OnHdnItemchangedListPatch(NMHDR * /*pNMHDR*/, LRESULT *pRe
 		if(selected>=0&& selected< m_cList.GetItemCount())
 		{
 			CString str = m_cList.GetItemText(selected,0);
-			m_PatchCtrl.SendMessage(SCI_SETREADONLY, FALSE);
-			m_PatchCtrl.SetText(text);
 			m_PatchCtrl.LoadFromFile(str);
-			m_PatchCtrl.SendMessage(SCI_SETREADONLY, TRUE);
 
 		}
 		else
-		{
-			m_PatchCtrl.SendMessage(SCI_SETREADONLY, FALSE);
-			m_PatchCtrl.SetText(text);
-			m_PatchCtrl.SendMessage(SCI_SETREADONLY, TRUE);
-		}
+			m_PatchCtrl.SetText(L"");
 	}
 }
 
@@ -718,13 +704,6 @@ LRESULT CImportPatchDlg::OnTaskbarBtnCreated(WPARAM wParam, LPARAM lParam)
 	m_pTaskbarList.Release();
 	m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
 	return __super::OnTaskbarButtonCreated(wParam, lParam);
-}
-
-void CImportPatchDlg::OnSysColorChange()
-{
-	__super::OnSysColorChange();
-	m_PatchCtrl.SetUDiffStyle();
-	m_wndOutput.SetColors(true);
 }
 
 LRESULT CImportPatchDlg::OnThemeChanged()

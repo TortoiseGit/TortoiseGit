@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012, 2014-2019 - TortoiseGit
+// Copyright (C) 2012, 2014-2020 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -47,7 +47,6 @@ void CInputDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CInputDlg, CResizableStandAloneDialog)
 	ON_EN_CHANGE(IDC_INPUTTEXT, OnEnChangeLogmessage)
-	ON_WM_SYSCOLORCHANGE()
 END_MESSAGE_MAP()
 
 BOOL CInputDlg::OnInitDialog()
@@ -64,6 +63,7 @@ BOOL CInputDlg::OnInitDialog()
 	if (!m_sInputText.IsEmpty())
 	{
 		m_cInput.SetText(m_sInputText);
+		m_cInput.Call(SCI_EMPTYUNDOBUFFER);
 	}
 	if (!m_sHintText.IsEmpty())
 	{
@@ -135,11 +135,4 @@ void CInputDlg::OnEnChangeLogmessage()
 		DialogEnableWindow(IDOK, TRUE);
 	else
 		DialogEnableWindow(IDOK, FALSE);
-}
-
-void CInputDlg::OnSysColorChange()
-{
-	__super::OnSysColorChange();
-	m_cInput.SetColors(true);
-	m_cInput.SetFont(CAppUtils::GetLogFontName(), CAppUtils::GetLogFontSize());
 }

@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2009-2020 - TortoiseGit
-// Copyright (C) 2003-2008, 2012-2019 - TortoiseSVN
+// Copyright (C) 2003-2008, 2012-2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,6 +27,7 @@
 #include "SmartHandle.h"
 #include "../../TortoiseUDiff/UDiffColors.h"
 #include "LoadIconEx.h"
+#include "CommonAppUtils.h"
 
 void CSciEditContextMenuInterface::InsertMenuItems(CMenu&, int&) {return;}
 bool CSciEditContextMenuInterface::HandleMenuItemClick(int, CSciEdit *) {return false;}
@@ -81,6 +82,7 @@ CSciEdit::CSciEdit(void) : m_DirectFunction(NULL)
 	, m_nAutoCompleteMinChars(3)
 	, m_SpellingCache(2000)
 	, m_blockModifiedHandler(false)
+	, m_bReadOnly(false)
 {
 	m_hModule = ::LoadLibrary(L"SciLexer_tgit.dll");
 }
@@ -154,8 +156,8 @@ static std::unique_ptr<UINT[]> Icon2Image(HICON hIcon)
 
 void CSciEdit::SetColors(bool recolorize)
 {
-	Call(SCI_STYLESETFORE, STYLE_DEFAULT, ::GetSysColor(COLOR_WINDOWTEXT));
-	Call(SCI_STYLESETBACK, STYLE_DEFAULT, ::GetSysColor(COLOR_WINDOW));
+	Call(SCI_STYLESETFORE, STYLE_DEFAULT, ::GetSysColor(!IsWindowEnabled() ? COLOR_GRAYTEXT : COLOR_WINDOWTEXT));
+	Call(SCI_STYLESETBACK, STYLE_DEFAULT, ::GetSysColor(!IsWindowEnabled() ? COLOR_BTNFACE : COLOR_WINDOW));
 	Call(SCI_SETSELFORE, TRUE, ::GetSysColor(COLOR_HIGHLIGHTTEXT));
 	Call(SCI_SETSELBACK, TRUE, ::GetSysColor(COLOR_HIGHLIGHT));
 	Call(SCI_SETCARETFORE, ::GetSysColor(COLOR_WINDOWTEXT));
@@ -410,6 +412,10 @@ CStringA CSciEdit::StringForControl(const CString& text)
 
 void CSciEdit::SetText(const CString& sText)
 {
+	auto readonly = m_bReadOnly;
+	SCOPE_EXIT { SetReadOnly(readonly); };
+	SetReadOnly(false);
+
 	CStringA sTextA = StringForControl(sText);
 	Call(SCI_SETTEXT, 0, reinterpret_cast<LPARAM>(static_cast<LPCSTR>(sTextA)));
 
@@ -427,6 +433,10 @@ void CSciEdit::SetText(const CString& sText)
 
 void CSciEdit::InsertText(const CString& sText, bool bNewLine)
 {
+	auto readonly = m_bReadOnly;
+	SCOPE_EXIT { SetReadOnly(readonly); };
+	SetReadOnly(false);
+
 	CStringA sTextA = StringForControl(sText);
 	Call(SCI_REPLACESEL, 0, reinterpret_cast<LPARAM>(static_cast<LPCSTR>(sTextA)));
 	if (bNewLine)
@@ -611,6 +621,9 @@ BOOL CSciEdit::IsMisspelled(const CString& sWord)
 
 void CSciEdit::CheckSpelling(Sci_Position startpos, Sci_Position endpos)
 {
+	if (m_bReadOnly)
+		return;
+
 	if (!pChecker && !m_SpellChecker)
 		return;
 
@@ -955,7 +968,18 @@ BOOL CSciEdit::OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT
 BEGIN_MESSAGE_MAP(CSciEdit, CWnd)
 	ON_WM_KEYDOWN()
 	ON_WM_CONTEXTMENU()
+	ON_WM_SYSCOLORCHANGE()
 END_MESSAGE_MAP()
+
+void CSciEdit::OnSysColorChange()
+{
+	__super::OnSysColorChange();
+	SetColors(true);
+	if (m_bUDiffmode)
+		SetUDiffStyle();
+	else
+		SetFont(CCommonAppUtils::GetLogFontName(), CCommonAppUtils::GetLogFontSize());
+}
 
 void CSciEdit::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
@@ -1675,30 +1699,28 @@ void CSciEdit::SetAStyle(int style, COLORREF fore, COLORREF back, int size, cons
 
 void CSciEdit::SetUDiffStyle()
 {
+	m_bUDiffmode = true;
 	m_bDoStyle = false;
+	Call(SCI_CLEARDOCUMENTSTYLE);
 	SetAStyle(STYLE_DEFAULT, ::GetSysColor(COLOR_WINDOWTEXT), ::GetSysColor(COLOR_WINDOW),
 		CRegStdDWORD(L"Software\\TortoiseGit\\UDiffFontSize", 10),
 		CUnicodeUtils::StdGetUTF8(CRegStdString(L"Software\\TortoiseGit\\UDiffFontName", L"Consolas")).c_str());
 	Call(SCI_SETTABWIDTH, CRegStdDWORD(L"Software\\TortoiseGit\\UDiffTabSize", 4));
 
-	Call(SCI_SETREADONLY, TRUE);
+	SetReadOnly(true);
 
 	//Set the default windows colors for edit controls
 	SetColors(false);
 
 	//SendEditor(SCI_SETREADONLY, FALSE);
 	Call(SCI_CLEARALL);
-	Call(EM_EMPTYUNDOBUFFER);
+	Call(SCI_EMPTYUNDOBUFFER);
 	Call(SCI_SETSAVEPOINT);
 	Call(SCI_CANCEL);
 	Call(SCI_SETUNDOCOLLECTION, 0);
 
-	Call(SCI_SETUNDOCOLLECTION, 1);
 	Call(SCI_SETWRAPMODE,SC_WRAP_NONE);
 
-	//::SetFocus(m_hWndEdit);
-	Call(EM_EMPTYUNDOBUFFER);
-	Call(SCI_SETSAVEPOINT);
 	Call(SCI_GOTOPOS, 0);
 
 	Call(SCI_SETVIEWWS, 1);
@@ -1754,6 +1776,13 @@ int CSciEdit::LoadFromFile(CString &filename)
 	if (!fp)
 		return -1;
 
+	auto readonly = m_bReadOnly;
+	SCOPE_EXIT { SetReadOnly(readonly); };
+	SetReadOnly(false);
+
+	Call(SCI_CLEARALL);
+	Call(SCI_CANCEL);
+
 	char data[4096] = { 0 };
 	size_t lenFile = fread(data, 1, sizeof(data), fp);
 	bool bUTF8 = IsUTF8(data, lenFile);
@@ -1779,4 +1808,23 @@ void CSciEdit::RestyleBugIDs()
 ULONG CSciEdit::GetGestureStatus(CPoint /*ptTouch*/)
 {
 	return 0;
+}
+
+BOOL CSciEdit::EnableWindow(BOOL bEnable /*= TRUE*/)
+{
+	auto ret = __super::EnableWindow(bEnable);
+	SetColors(true);
+	return ret;
+}
+
+void CSciEdit::SetReadOnly(bool bReadOnly)
+{
+	m_bReadOnly = bReadOnly;
+	Call(SCI_SETREADONLY, m_bReadOnly);
+}
+
+void CSciEdit::ClearUndoBuffer()
+{
+	Call(SCI_EMPTYUNDOBUFFER);
+	Call(SCI_SETSAVEPOINT);
 }

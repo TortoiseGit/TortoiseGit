@@ -77,7 +77,6 @@ BEGIN_MESSAGE_MAP(CCheckForUpdatesDlg, CResizableStandAloneDialog)
 	ON_WM_WINDOWPOSCHANGING()
 	ON_WM_SETCURSOR()
 	ON_WM_DESTROY()
-	ON_WM_SYSCOLORCHANGE()
 	ON_BN_CLICKED(IDC_BUTTON_UPDATE, OnBnClickedButtonUpdate)
 	ON_MESSAGE(WM_USER_DISPLAYSTATUS, OnDisplayStatus)
 	ON_MESSAGE(WM_USER_ENDDOWNLOAD, OnEndDownload)
@@ -139,7 +138,8 @@ BOOL CCheckForUpdatesDlg::OnInitDialog()
 
 	m_cLogMessage.Init(-1);
 	m_cLogMessage.SetFont(CAppUtils::GetLogFontName(), CAppUtils::GetLogFontSize());
-	m_cLogMessage.Call(SCI_SETREADONLY, TRUE);
+	m_cLogMessage.Call(SCI_SETUNDOCOLLECTION, 0);
+	m_cLogMessage.SetReadOnly(true);
 
 	m_updateDownloader = new CUpdateDownloader(GetSafeHwnd(), m_myVersion.version, m_bForce == TRUE, WM_USER_DISPLAYSTATUS, &m_eventStop);
 
@@ -804,9 +804,7 @@ LRESULT CCheckForUpdatesDlg::OnFillChangelog(WPARAM, LPARAM lParam)
 	ASSERT(lParam);
 
 	LPCTSTR changelog = reinterpret_cast<LPCTSTR>(lParam);
-	m_cLogMessage.Call(SCI_SETREADONLY, FALSE);
 	m_cLogMessage.SetText(changelog);
-	m_cLogMessage.Call(SCI_SETREADONLY, TRUE);
 	m_cLogMessage.Call(SCI_GOTOPOS, 0);
 	m_cLogMessage.Call(SCI_SETWRAPSTARTINDENT, 3);
 
@@ -875,11 +873,4 @@ void CCheckForUpdatesDlg::OnBnClickedDonotaskagain()
 		CRegDWORD(L"Software\\TortoiseGit\\VersionCheck") = FALSE;
 		OnOK();
 	}
-}
-
-void CCheckForUpdatesDlg::OnSysColorChange()
-{
-	__super::OnSysColorChange();
-	m_cLogMessage.SetColors(true);
-	m_cLogMessage.SetFont(CAppUtils::GetLogFontName(), CAppUtils::GetLogFontSize());
 }

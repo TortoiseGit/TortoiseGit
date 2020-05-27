@@ -147,7 +147,6 @@ BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
 	ON_REGISTERED_MESSAGE(WM_UPDATEDATAFALSE, OnUpdateDataFalse)
 	ON_WM_TIMER()
 	ON_WM_SIZE()
-	ON_WM_SYSCOLORCHANGE()
 	ON_BN_CLICKED(IDC_SIGNOFF, &CCommitDlg::OnBnClickedSignOff)
 	ON_BN_CLICKED(IDC_COMMIT_AMEND, &CCommitDlg::OnBnClickedCommitAmend)
 	ON_BN_CLICKED(IDC_COMMIT_MESSAGEONLY, &CCommitDlg::OnBnClickedCommitMessageOnly)
@@ -1205,6 +1204,7 @@ void CCommitDlg::OnOK()
 				this->m_sLogMessage.Empty();
 				GetCommitTemplate(m_sLogMessage);
 				m_cLogMessage.SetText(m_sLogMessage);
+				m_cLogMessage.ClearUndoBuffer();
 				if (m_bCreateNewBranch)
 				{
 					GetDlgItem(IDC_COMMIT_TO)->ShowWindow(SW_SHOW);
@@ -2893,11 +2893,4 @@ bool CCommitDlg::RunStartCommitHook()
 		}
 	}
 	return true;
-}
-
-void CCommitDlg::OnSysColorChange()
-{
-	__super::OnSysColorChange();
-	m_cLogMessage.SetColors(true);
-	m_cLogMessage.SetFont(CAppUtils::GetLogFontName(), CAppUtils::GetLogFontSize());
 }

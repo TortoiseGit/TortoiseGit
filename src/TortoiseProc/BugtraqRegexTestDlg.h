@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2014, 2016-2017 - TortoiseGit
 // Copyright (C) 2011 - TortoiseSVN
@@ -46,7 +46,6 @@ protected:
 
 	afx_msg void OnEnChangeBugtraqlogregex1();
 	afx_msg void OnEnChangeBugtraqlogregex2();
-	afx_msg void OnSysColorChange();
 
 private:
 	void		UpdateLogControl();

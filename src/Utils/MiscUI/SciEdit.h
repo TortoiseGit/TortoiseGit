@@ -88,6 +88,9 @@ public:
 	~CSciEdit(void);
 
 	void				SetAStyle(int style, COLORREF fore, COLORREF back = ::GetSysColor(COLOR_WINDOW), int size = -1, const char* face = nullptr);
+	/**
+	 * Set style and Scintilla configuration for read-only patch views
+	 */
 	void SetUDiffStyle();
 
 	/**
@@ -100,7 +103,6 @@ public:
 	 */
 	void		Init(LONG lLanguage = 0);
 	void		SetIcon(const std::map<int, UINT> &icons);
-	void		SetColors(bool recolorize);
 	/**
 	 * Execute a scintilla command, e.g. SCI_GETLINE.
 	 */
@@ -140,6 +142,9 @@ public:
 	CString		StringFromControl(const CStringA& text);
 	int			LoadFromFile(CString &filename);
 	void		RestyleBugIDs();
+	BOOL		EnableWindow(BOOL bEnable = TRUE);
+	void		SetReadOnly(bool bReadOnly);
+	void		ClearUndoBuffer();
 
 private:
 	bool IsUTF8(LPVOID pBuffer, size_t cb);
@@ -156,10 +161,12 @@ private:
 	CString		m_sUrl;
 	CArray<CSciEditContextMenuInterface *, CSciEditContextMenuInterface *> m_arContextHandlers;
 	CPersonalDictionary m_personalDict;
+	bool		m_bUDiffmode = false;
 	bool		m_bDoStyle;
 	int			m_nAutoCompleteMinChars;
 	LruCache<std::wstring, BOOL> m_SpellingCache;
 	bool		m_blockModifiedHandler;
+	bool		m_bReadOnly;
 	static bool IsValidURLChar(unsigned char ch);
 protected:
 	virtual BOOL OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pLResult) override;
@@ -176,6 +183,7 @@ protected:
 	void		StyleURLs(Sci_Position startstylepos, Sci_Position endstylepos);
 	bool		WrapLines(Sci_Position startpos, Sci_Position endpos);
 	bool		FindStyleChars(const char* line, char styler, Sci_Position& start, Sci_Position& end);
+	void		SetColors(bool recolorize);
 	void		AdvanceUTF8(const char * str, int& pos);
 	BOOL		IsMisspelled(const CString& sWord);
 	BOOL		CheckWordSpelling(const CString& sWord);
@@ -186,5 +194,6 @@ protected:
 
 	virtual afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/);
+	afx_msg void OnSysColorChange();
 	DECLARE_MESSAGE_MAP()
 };

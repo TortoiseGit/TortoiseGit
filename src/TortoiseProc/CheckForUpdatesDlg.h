@@ -55,7 +55,6 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
 	virtual BOOL OnInitDialog() override;
 	afx_msg void OnDestroy();
-	afx_msg void OnSysColorChange();
 	virtual void OnOK() override;
 	virtual void OnCancel() override;
 

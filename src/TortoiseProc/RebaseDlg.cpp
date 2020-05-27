@@ -93,7 +93,6 @@ BEGIN_MESSAGE_MAP(CRebaseDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_REBASE_ABORT,  OnBnClickedAbort)
 	ON_WM_SIZE()
 	ON_WM_THEMECHANGED()
-	ON_WM_SYSCOLORCHANGE()
 	ON_CBN_SELCHANGE(IDC_REBASE_COMBOXEX_BRANCH,   &CRebaseDlg::OnCbnSelchangeBranch)
 	ON_CBN_SELCHANGE(IDC_REBASE_COMBOXEX_UPSTREAM, &CRebaseDlg::OnCbnSelchangeUpstream)
 	ON_MESSAGE(MSG_REBASE_UPDATE_UI, OnRebaseUpdateUI)
@@ -225,7 +224,7 @@ BOOL CRebaseDlg::OnInitDialog()
 	m_ProjectProperties.ReadProps();
 	m_LogMessageCtrl.Init(m_ProjectProperties);
 	m_LogMessageCtrl.SetFont(CAppUtils::GetLogFontName(), CAppUtils::GetLogFontSize());
-	m_LogMessageCtrl.Call(SCI_SETREADONLY, TRUE);
+	m_LogMessageCtrl.SetReadOnly(true);
 
 	dwStyle = LBS_NOINTEGRALHEIGHT | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL;
 
@@ -236,7 +235,8 @@ BOOL CRebaseDlg::OnInitDialog()
 	}
 	m_wndOutputRebase.Init(-1);
 	m_wndOutputRebase.SetFont(CAppUtils::GetLogFontName(), CAppUtils::GetLogFontSize());
-	m_wndOutputRebase.Call(SCI_SETREADONLY, TRUE);
+	m_wndOutputRebase.SetReadOnly(true);
+	m_wndOutputRebase.Call(SCI_SETUNDOCOLLECTION, 0);
 
 	m_tooltips.AddTool(IDC_REBASE_CHECK_FORCE,IDS_REBASE_FORCE_TT);
 	m_tooltips.AddTool(IDC_REBASE_ABORT, IDS_REBASE_ABORT_TT);
@@ -2461,7 +2461,7 @@ LRESULT CRebaseDlg::OnRebaseUpdateUI(WPARAM,LPARAM)
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_CONFLICT);
 		if (m_pTaskbarList)
 			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_ERROR);
-		this->m_LogMessageCtrl.Call(SCI_SETREADONLY, FALSE);
+		this->m_LogMessageCtrl.SetReadOnly(false);
 		CString logMessage;
 		if (m_IsCherryPick)
 		{
@@ -2474,13 +2474,14 @@ LRESULT CRebaseDlg::OnRebaseUpdateUI(WPARAM,LPARAM)
 		if (logMessage.IsEmpty())
 			logMessage = curRev->GetSubject() + L'\n' + curRev->GetBody();
 		this->m_LogMessageCtrl.SetText(logMessage);
+		m_LogMessageCtrl.ClearUndoBuffer();
 		break;
 		}
 	case REBASE_EDIT:
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_MESSAGE);
 		if (m_pTaskbarList)
 			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_PAUSED);
-		this->m_LogMessageCtrl.Call(SCI_SETREADONLY, FALSE);
+		this->m_LogMessageCtrl.SetReadOnly(false);
 		if (m_bAddCherryPickedFrom)
 		{
 			// Since the new commit is done and the HEAD points to it,
@@ -2493,11 +2494,13 @@ LRESULT CRebaseDlg::OnRebaseUpdateUI(WPARAM,LPARAM)
 		}
 		else
 			m_LogMessageCtrl.SetText(curRev->GetSubject() + L'\n' + curRev->GetBody());
+		m_LogMessageCtrl.ClearUndoBuffer();
 		break;
 	case REBASE_SQUASH_EDIT:
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_MESSAGE);
-		this->m_LogMessageCtrl.Call(SCI_SETREADONLY, FALSE);
+		this->m_LogMessageCtrl.SetReadOnly(false);
 		this->m_LogMessageCtrl.SetText(this->m_SquashMessage);
+		m_LogMessageCtrl.ClearUndoBuffer();
 		if (m_pTaskbarList)
 			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_PAUSED);
 		break;
@@ -2841,9 +2844,8 @@ void CRebaseDlg::FillLogMessageCtrl()
 		int selIndex = m_CommitList.GetNextSelectedItem(pos);
 		GitRevLoglist* pLogEntry = m_CommitList.m_arShownList.SafeGetAt(selIndex);
 		OnRefreshFilelist();
-		m_LogMessageCtrl.Call(SCI_SETREADONLY, FALSE);
 		m_LogMessageCtrl.SetText(pLogEntry->GetSubject() + L'\n' + pLogEntry->GetBody());
-		m_LogMessageCtrl.Call(SCI_SETREADONLY, TRUE);
+		m_LogMessageCtrl.ClearUndoBuffer();
 	}
 }
 
@@ -2989,15 +2991,6 @@ LRESULT CRebaseDlg::OnThemeChanged()
 {
 	CMFCVisualManager::GetInstance()->DestroyInstance();
 	return 0;
-}
-
-void CRebaseDlg::OnSysColorChange()
-{
-	__super::OnSysColorChange();
-	m_LogMessageCtrl.SetColors(true);
-	m_LogMessageCtrl.SetFont(CAppUtils::GetLogFontName(), CAppUtils::GetLogFontSize());
-	m_wndOutputRebase.SetColors(true);
-	m_wndOutputRebase.SetFont(CAppUtils::GetLogFontName(), CAppUtils::GetLogFontSize());
 }
 
 void CRebaseDlg::OnBnClickedButtonAdd()

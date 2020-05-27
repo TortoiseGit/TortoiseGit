@@ -357,3 +357,13 @@ void CCommonAppUtils::SetCharFormat(CWnd* window, DWORD mask, DWORD effects )
 	format.dwEffects = effects;
 	window->SendMessage(EM_SETCHARFORMAT, SCF_SELECTION, reinterpret_cast<LPARAM>(&format));
 }
+
+CString CCommonAppUtils::GetLogFontName()
+{
+	return CRegString(L"Software\\TortoiseGit\\LogFontName", L"Consolas");
+}
+
+DWORD CCommonAppUtils::GetLogFontSize()
+{
+	return CRegDWORD(L"Software\\TortoiseGit\\LogFontSize", 9);
+}
