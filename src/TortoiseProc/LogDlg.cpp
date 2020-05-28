@@ -3581,6 +3581,7 @@ void CLogDlg::OnSysColorChange()
 	__super::OnSysColorChange();
 	SetupLogMessageViewControl();
 	CMFCVisualManager::GetInstance()->RedrawAll();
+	FillLogMessageCtrl();
 }
 
 void CLogDlg::SetupLogMessageViewControl()
