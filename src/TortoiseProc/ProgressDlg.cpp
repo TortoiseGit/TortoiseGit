@@ -99,6 +99,7 @@ BEGIN_MESSAGE_MAP(CProgressDlg, CResizableStandAloneDialog)
 	ON_NOTIFY(EN_LINK, IDC_LOG, OnEnLinkLog)
 	ON_EN_VSCROLL(IDC_LOG, OnEnscrollLog)
 	ON_EN_HSCROLL(IDC_LOG, OnEnscrollLog)
+	ON_WM_SYSCOLORCHANGE()
 END_MESSAGE_MAP()
 
 BOOL CProgressDlg::OnInitDialog()
@@ -436,7 +437,12 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam, LPARAM lParam)
 				log.Format(L"\r\n%s (%I64u ms @ %s)\r\n", static_cast<LPCTSTR>(temp), tickSpent, static_cast<LPCTSTR>(strEndTime));
 			else
 				log.Format(L"\r\n%s\r\n", static_cast<LPCTSTR>(temp));
-			InsertColorText(this->m_Log, log, RGB(0, 0, 255));
+			HIGHCONTRAST highContrast = { 0 };
+			highContrast.cbSize = sizeof(HIGHCONTRAST);
+			if (SystemParametersInfo(SPI_GETHIGHCONTRAST, 0, &highContrast, 0) == TRUE && (highContrast.dwFlags & HCF_HIGHCONTRASTON))
+				InsertColorText(this->m_Log, log, ::GetSysColor(COLOR_WINDOWTEXT));
+			else
+				InsertColorText(this->m_Log, log, RGB(0, 0, 255));
 			this->DialogEnableWindow(IDCANCEL, FALSE);
 		}
 
@@ -962,4 +968,17 @@ void CProgressDlg::OnEnLinkLog(NMHDR* pNMHDR, LRESULT* pResult)
 void CProgressDlg::OnEnscrollLog()
 {
 	m_tooltips.DelTool(GetDlgItem(IDC_LOG), 1);
+}
+
+void CProgressDlg::OnSysColorChange()
+{
+	__super::OnSysColorChange();
+
+	CHARFORMAT2 format = { 0 };
+	format.cbSize = sizeof(CHARFORMAT2);
+	format.dwMask = CFM_COLOR | CFM_BACKCOLOR;
+	format.crTextColor = GetSysColor(COLOR_WINDOWTEXT);
+	format.crBackColor = GetSysColor(COLOR_WINDOW);
+	m_Log.SendMessage(EM_SETCHARFORMAT, SCF_ALL, reinterpret_cast<LPARAM>(&format));
+	m_Log.SendMessage(EM_SETBKGNDCOLOR, 0, format.crBackColor);
 }
