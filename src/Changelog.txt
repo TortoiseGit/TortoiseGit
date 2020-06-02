@@ -10,6 +10,7 @@ Released: unreleased
  * Fixed issue #3408: TortoiseGitMerge: When double clicking on a word, mark the word only in the current view if also the Ctrl key is pressed
  * Fixed issue #2101: Tortoise(Git)Merge - 'find' workflow suggested enhancement: Add "Search next" and "Search previous" to the ribbon
  * Fixed issue #3568: Add support for Git repository version 1
+ * Fixed issue #3605: TortoiseGitProc branch command is not documented and does not handle /name parameter
 
 = Release 2.10.0.2 =
 Released: 2020-03-24
