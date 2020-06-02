@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2009, 2015-2016, 2018-2019 - TortoiseGit
+// Copyright (C) 2008-2009, 2015-2016, 2018-2020 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -35,5 +35,5 @@ bool BranchCommand::Execute()
 	if(base.IsEmpty())
 		p = nullptr;
 
-	return CAppUtils::CreateBranchTag(GetExplorerHWND(), FALSE, p);
+	return CAppUtils::CreateBranchTag(GetExplorerHWND(), FALSE, p, false, parser.HasVal(L"name") ? parser.GetVal(L"name") : nullptr);
 }
