@@ -1,7 +1,7 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2008, 2011-2012 - TortoiseSVN
-// Copyright (C) 2008-2017, 2019 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -525,7 +525,10 @@ void CDirectoryWatcher::WorkerThread()
 						// wait a while. We don't want to have this thread
 						// running using 100% CPU if something goes completely
 						// wrong.
+						pdi->CloseDirectoryHandle();
+						watchedPaths.RemovePath(pdi->m_DirName);
 						Sleep(200);
+						CloseCompletionPort();
 					}
 				}
 			}

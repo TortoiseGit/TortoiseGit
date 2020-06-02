@@ -3,6 +3,7 @@ Released: unreleased
 
 == Bug Fixes ==
  * Fixed issue #3593: Statistics dialog - misaligned controls
+ * Fixed issue #3598: TGitCache blocks repository directory to be truly deleted
 
 == Features ==
  * Update Scintilla to 4.3.3
