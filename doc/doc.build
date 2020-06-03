@@ -135,8 +135,14 @@ All user/site specific configuration is stored in doc.build.user.
 	<target name="copyimages" description="Copy images">
 		<delete dir="${doc.target.work}/images" failonerror="false"/>
 		<mkdir dir="${doc.target.work}/images"/>
+		<mkdir dir="${doc.target.work}/images/callouts"/>
 		<copy todir="${doc.target.work}/images">
 			<fileset basedir="images/${lang.base}">
+				<include name="*"/>
+			</fileset>
+		</copy>
+		<copy todir="${doc.target.work}/images/callouts">
+			<fileset basedir="images/${lang.base}/callouts">
 				<include name="*"/>
 			</fileset>
 		</copy>
