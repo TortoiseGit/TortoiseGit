@@ -427,7 +427,7 @@ bool ProjectProperties::MightContainABugID()
 
 CString ProjectProperties::GetBugIDUrl(const CString& sBugID)
 {
-	CString ret;
+	CString ret = sUrl;
 	if (sUrl.IsEmpty())
 		return ret;
 	if (!sMessage.IsEmpty() || !sCheckRe.IsEmpty())
