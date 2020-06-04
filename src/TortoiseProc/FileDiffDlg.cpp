@@ -440,8 +440,8 @@ void CFileDiffDlg::EnableInputControl(bool b)
 
 void CFileDiffDlg::DoDiff(int selIndex, bool blame)
 {
-	CTGitPath* fd2 = m_arFilteredList[selIndex];
-	CTGitPath* fd1 = fd2;
+	auto fd2 = m_arFilteredList[selIndex];
+	auto fd1 = fd2;
 	if (m_rev2.m_CommitHash.IsEmpty() && g_Git.IsInitRepos())
 	{
 		CGitDiff::DiffNull(GetSafeHwnd(), fd2, GIT_REV_ZERO, true, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
@@ -517,7 +517,7 @@ void CFileDiffDlg::OnNMCustomdrawFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 
 		if (m_arFilteredList.size() > pLVCD->nmcd.dwItemSpec)
 		{
-			CTGitPath * fd = m_arFilteredList[pLVCD->nmcd.dwItemSpec];
+			auto fd = m_arFilteredList[pLVCD->nmcd.dwItemSpec];
 			switch (fd->m_Action)
 			{
 			case CTGitPath::LOGACTIONS_ADDED:
@@ -652,8 +652,8 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 				POSITION pos = m_cFileList.GetFirstSelectedItemPosition();
 				while (pos)
 				{
-					CTGitPath *fd2 = m_arFilteredList[m_cFileList.GetNextSelectedItem(pos)];
-					CTGitPath *fd1 = fd2;
+					auto fd2 = m_arFilteredList[m_cFileList.GetNextSelectedItem(pos)];
+					auto fd1 = fd2;
 					if (fd1->m_Action & CTGitPath::LOGACTIONS_REPLACED)
 						fd2 = new CTGitPath(fd2->GetGitOldPathString());
 					CAppUtils::StartShowUnifiedDiff(m_hWnd, *fd1, m_rev1.m_CommitHash.ToString(), *fd2, m_rev2.m_CommitHash.ToString(), !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
@@ -735,7 +735,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 						while (pos)
 						{
 							int index = m_cFileList.GetNextSelectedItem(pos);
-							CTGitPath* fd = m_arFilteredList[index];
+							auto fd = m_arFilteredList[index];
 							file.WriteString(fd->GetGitPathString());
 							file.WriteString(L"\r\n");
 						}
@@ -770,7 +770,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 					while (pos)
 					{
 						int index = m_cFileList.GetNextSelectedItem(pos);
-						CTGitPath* fd = m_arFilteredList[index];
+						auto fd = m_arFilteredList[index];
 						// we cannot export directories or folders
 						if (fd->m_Action == CTGitPath::LOGACTIONS_DELETED || fd->IsDirectory())
 							continue;
@@ -1239,7 +1239,7 @@ void CFileDiffDlg::Filter(const CString& sFilterText)
 	for (int i=0;i<m_arFileList.GetCount();i++)
 	{
 		if (filter(m_arFileList[i]))
-			m_arFilteredList.push_back(const_cast<CTGitPath*>(&(m_arFileList[i])));
+			m_arFilteredList.push_back(&m_arFileList[i]);
 	}
 	for (const auto path : m_arFilteredList)
 		AddEntry(path);
@@ -1326,7 +1326,7 @@ int CFileDiffDlg::RevertSelectedItemToVersion(CString rev)
 	while ((index = m_cFileList.GetNextSelectedItem(pos)) >= 0)
 	{
 		CString cmd, out;
-		CTGitPath* fentry = m_arFilteredList[index];
+		auto fentry = m_arFilteredList[index];
 		cmd.Format(L"git.exe checkout %s -- \"%s\"", static_cast<LPCTSTR>(rev), static_cast<LPCTSTR>(fentry->GetGitPathString()));
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{

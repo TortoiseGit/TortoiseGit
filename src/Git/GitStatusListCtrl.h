@@ -664,7 +664,7 @@ private:
 		OPEN,
 		OPEN_WITH,
 	};
-	void OpenFile(CTGitPath *path,int mode);
+	void OpenFile(const CTGitPath* path, int mode);
 
 	/// Clear the status vector (contains custodial pointers)
 	void ClearStatusArray();
@@ -743,7 +743,7 @@ private:
 	afx_msg void OnPaint();
 
 	void FilesExport();
-	void FileSaveAs(CTGitPath *path);
+	void FileSaveAs(const CTGitPath* path);
 	int RevertSelectedItemToVersion(bool parent = false);
 	bool GetParentCommitInfo(const CGitHash& hash, const int parentNo, CGitHash& parentHash, CString& title);
 

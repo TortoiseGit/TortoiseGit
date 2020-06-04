@@ -1650,7 +1650,7 @@ const CTGitPath* CTGitPathList::LookForGitPath(const CString& path) const
 	for (i = 0; i < this->GetCount(); ++i)
 	{
 		if (CPathUtils::ArePathStringsEqualWithCase((*this)[i].GetGitPathString(), path))
-			return const_cast<CTGitPath*>(&(*this)[i]);
+			return &(*this)[i];
 	}
 	return nullptr;
 }

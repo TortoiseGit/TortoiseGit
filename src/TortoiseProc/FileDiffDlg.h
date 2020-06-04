@@ -149,7 +149,7 @@ private:
 	CGestureEnabledControlTmpl<CHintCtrl<CListCtrl>>	m_cFileList;
 	bool				m_bBlame;
 	CTGitPathList		m_arFileList;
-	std::vector<CTGitPath*> m_arFilteredList;
+	std::vector<const CTGitPath*> m_arFilteredList;
 
 	CString				m_strExportDir;
 

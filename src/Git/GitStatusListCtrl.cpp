@@ -4175,7 +4175,7 @@ void CGitStatusListCtrl::FilesExport()
 	}
 }
 
-void CGitStatusListCtrl::FileSaveAs(CTGitPath *path)
+void CGitStatusListCtrl::FileSaveAs(const CTGitPath* path)
 {
 	CAutoReadLock locker(m_guard);
 	CString filename;
@@ -4288,7 +4288,7 @@ int CGitStatusListCtrl::RevertSelectedItemToVersion(bool parent)
 	return 0;
 }
 
-void CGitStatusListCtrl::OpenFile(CTGitPath*filepath,int mode)
+void CGitStatusListCtrl::OpenFile(const CTGitPath* filepath, int mode)
 {
 	CString file;
 	if (m_CurrentVersion.IsEmpty())
