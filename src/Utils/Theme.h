@@ -42,7 +42,7 @@ private:
 public:
 	static CTheme& Instance();
 
-	// cf. src/TortoiseUDiff/UDiffColors.h
+	// cf. src/TortoiseUDiff/UDiffColors.h and src/SshAskPass/SshAskPass.cpp
 	static const COLORREF darkBkColor = 0x202020;
 	static const COLORREF darkTextColor = 0xDDDDDD;
 	static const COLORREF darkDisabledTextColor = 0x808080;
