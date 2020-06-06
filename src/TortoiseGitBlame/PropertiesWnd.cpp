@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2016, 2018-2019 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2016, 2018-2020 - TortoiseGit
 // Copyright (C) 2011-2013 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
@@ -27,6 +27,7 @@
 #include "TortoiseGitBlame.h"
 #include "IconMenu.h"
 #include "StringUtils.h"
+#include "Theme.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -97,7 +98,21 @@ int CPropertiesWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	InitPropList();
 
 	AdjustLayout();
+
+	m_themeCallbackId = CTheme::Instance().RegisterThemeChangeCallback(
+	[this]() {
+		SetTheme(CTheme::Instance().IsDarkTheme());
+	});
+	SetTheme(CTheme::Instance().IsDarkTheme());
 	return 0;
+}
+
+void CPropertiesWnd::SetTheme(bool bDark)
+{
+	if (bDark)
+		m_wndPropList.SetCustomColors(CTheme::darkBkColor, CTheme::darkTextColor, RGB(83, 83, 83), CTheme::darkTextColor, CTheme::darkBkColor, CTheme::darkTextColor, static_cast<COLORREF>(-1));
+	else
+		m_wndPropList.SetCustomColors(static_cast<COLORREF>(-1), static_cast<COLORREF>(-1), static_cast<COLORREF>(-1), static_cast<COLORREF>(-1), static_cast<COLORREF>(-1), static_cast<COLORREF>(-1), static_cast<COLORREF>(-1));
 }
 
 void CPropertiesWnd::OnSize(UINT nType, int cx, int cy)

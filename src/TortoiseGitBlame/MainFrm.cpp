@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2016-2019 - TortoiseGit
+// Copyright (C) 2008-2013, 2016-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -26,6 +26,7 @@
 #include "MenuEncode.h"
 #include "MainFrm.h"
 #include "TaskbarUUID.h"
+#include "ThemeMFCVisualManager.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -41,6 +42,7 @@ const UINT uiLastUserToolBarId = uiFirstUserToolBarId + iMaxUserToolbars - 1;
 
 BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_WM_CREATE()
+	ON_WM_DESTROY()
 	// Global help commands
 	ON_COMMAND(ID_HELP_FINDER, &CFrameWndEx::OnHelpFinder)
 	ON_UPDATE_COMMAND_UI(ID_HELP_FINDER, &CMainFrame::OnUpdateHelpFinder)
@@ -146,7 +148,49 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// enable quick (Alt+drag) toolbar customization
 	CMFCToolBar::EnableQuickCustomization();
 
+	m_themeCallbackId = CTheme::Instance().RegisterThemeChangeCallback([this]() { SetTheme(CTheme::Instance().IsDarkTheme()); });
+	SetTheme(theApp.GetInt(L"DarkMode") && CTheme::Instance().IsDarkModeAllowed() && DarkModeHelper::Instance().ShouldAppsUseDarkMode());
 	return 0;
+}
+
+void CMainFrame::SetTheme(bool bDark)
+{
+	if (bDark)
+	{
+		DarkModeHelper::Instance().AllowDarkModeForApp(TRUE);
+		DarkModeHelper::Instance().AllowDarkModeForWindow(GetSafeHwnd(), TRUE);
+		SetClassLongPtr(GetSafeHwnd(), GCLP_HBRBACKGROUND, reinterpret_cast<LONG_PTR>(GetStockObject(BLACK_BRUSH)));
+		BOOL darkFlag = TRUE;
+		DarkModeHelper::WINDOWCOMPOSITIONATTRIBDATA data = { DarkModeHelper::WINDOWCOMPOSITIONATTRIB::WCA_USEDARKMODECOLORS, &darkFlag, sizeof(darkFlag) };
+		DarkModeHelper::Instance().SetWindowCompositionAttribute(GetSafeHwnd(), &data);
+		DarkModeHelper::Instance().FlushMenuThemes();
+		DarkModeHelper::Instance().RefreshImmersiveColorPolicyState();
+		BOOL dark = TRUE;
+		DwmSetWindowAttribute(GetSafeHwnd(), 19, &dark, sizeof(dark));
+
+		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CThemeMFCVisualManager));
+	}
+	else
+	{
+		DarkModeHelper::Instance().AllowDarkModeForWindow(GetSafeHwnd(), FALSE);
+		BOOL darkFlag = FALSE;
+		DarkModeHelper::WINDOWCOMPOSITIONATTRIBDATA data = { DarkModeHelper::WINDOWCOMPOSITIONATTRIB::WCA_USEDARKMODECOLORS, &darkFlag, sizeof(darkFlag) };
+		DarkModeHelper::Instance().SetWindowCompositionAttribute(GetSafeHwnd(), &data);
+		DarkModeHelper::Instance().FlushMenuThemes();
+		DarkModeHelper::Instance().RefreshImmersiveColorPolicyState();
+		DarkModeHelper::Instance().AllowDarkModeForApp(FALSE);
+		SetClassLongPtr(GetSafeHwnd(), GCLP_HBRBACKGROUND, reinterpret_cast<LONG_PTR>(GetSysColorBrush(COLOR_3DFACE)));
+
+		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows));
+	}
+	CTheme::Instance().SetThemeForDialog(GetSafeHwnd(), bDark);
+	::RedrawWindow(GetSafeHwnd(), nullptr, nullptr, RDW_FRAME | RDW_INVALIDATE | RDW_ERASE | RDW_INTERNALPAINT | RDW_ALLCHILDREN | RDW_UPDATENOW);
+}
+
+void CMainFrame::OnDestroy()
+{
+	CTheme::Instance().RemoveRegisteredCallback(m_themeCallbackId);
+	__super::OnDestroy();
 }
 
 LRESULT CMainFrame::OnTaskbarButtonCreated(WPARAM /*wParam*/, LPARAM /*lParam*/)

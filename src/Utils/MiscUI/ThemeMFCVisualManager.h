@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012, 2020 - TortoiseSVN
+// Copyright (C) 2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -16,13 +16,20 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #pragma once
 
-const COLORREF BlameTextColorDark = RGB(240, 240, 240);
-const COLORREF BlameBackColorDark = 0x202020; // cf. Theme.h
+class CThemeMFCVisualManager : public CMFCVisualManagerOffice2007
+{
+public:
+	CThemeMFCVisualManager();
+	virtual ~CThemeMFCVisualManager();
 
-#define BLAMENEWCOLOR		RGB(255,255,80)
-#define BLAMEOLDCOLOR		RGB(255,255,255)
+	DECLARE_DYNCREATE(CThemeMFCVisualManager)
 
-#define DARKBLAMENEWCOLOR	RGB(80, 80, 0)
-#define DARKBLAMEOLDCOLOR	BlameBackColorDark
+	virtual void OnUpdateSystemColors() override;
+	virtual void OnFillBarBackground(CDC* pDC, CBasePane* pBar, CRect rectClient, CRect rectClip, BOOL bNCArea = FALSE);
+	virtual BOOL IsOwnerDrawMenuCheck();
+	virtual void OnDrawMenuCheck(CDC* pDC, CMFCToolBarMenuButton* pButton, CRect rect, BOOL bHighlight, BOOL bIsRadio);
+	virtual void OnHighlightMenuItem(CDC* pDC, CMFCToolBarMenuButton* pButton, CRect rect, COLORREF& clrText);
+};

@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011, 2016 - TortoiseGit
+// Copyright (C) 2008-2011, 2016, 2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,10 +27,10 @@
 
 // CEditGotoDlg dialog
 
-IMPLEMENT_DYNAMIC(CEditGotoDlg, CDialog)
+IMPLEMENT_DYNAMIC(CEditGotoDlg, CStandAloneDialog)
 
 CEditGotoDlg::CEditGotoDlg(CWnd* pParent /*=nullptr*/)
-	: CDialog(CEditGotoDlg::IDD, pParent)
+	: CStandAloneDialog(CEditGotoDlg::IDD, pParent)
 	, m_LineNumber(0)
 {
 }
@@ -41,13 +41,13 @@ CEditGotoDlg::~CEditGotoDlg()
 
 void CEditGotoDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+	CStandAloneDialog::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_LINENUMBER, m_LineNumber);
 	DDV_MinMaxUInt(pDX, m_LineNumber, 0, 40000000);
 }
 
 
-BEGIN_MESSAGE_MAP(CEditGotoDlg, CDialog)
+BEGIN_MESSAGE_MAP(CEditGotoDlg, CStandAloneDialog)
 
 END_MESSAGE_MAP()
 
