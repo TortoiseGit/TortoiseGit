@@ -59,6 +59,7 @@ protected:  // control bar embedded members
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnDestroy();
+	afx_msg void OnSysColorChange();
 	afx_msg void OnUpdateHelpFinder(CCmdUI *pCmdUI);
 	afx_msg void OnViewCustomize();
 	afx_msg LRESULT OnToolbarCreateNew(WPARAM wp, LPARAM lp);

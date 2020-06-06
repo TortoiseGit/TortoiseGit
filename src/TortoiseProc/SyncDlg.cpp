@@ -33,6 +33,7 @@
 #include "ProgressCommands/FetchProgressCommand.h"
 #include "SyncTabCtrl.h"
 #include "SysProgressDlg.h"
+#include "ThemeMFCVisualManager.h"
 
 // CSyncDlg dialog
 
@@ -909,10 +910,7 @@ BOOL CSyncDlg::OnInitDialog()
 	this->ScreenToClient(rectDummy);
 
 	if (CTheme::Instance().IsDarkTheme())
-	{
-		CMFCVisualManagerOffice2007::SetStyle(CMFCVisualManagerOffice2007::Office2007_ObsidianBlack);
-		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerOffice2007));
-	}
+		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CThemeMFCVisualManager));
 	if (!m_ctrlTabCtrl.Create(CTheme::Instance().IsDarkTheme() ? CMFCTabCtrl::STYLE_3D : CMFCTabCtrl::STYLE_FLAT, rectDummy, this, IDC_SYNC_TAB))
 	{
 		TRACE0("Failed to create output tab window\n");
@@ -1831,8 +1829,7 @@ void CSyncDlg::SetTheme(bool bDark)
 	CMFCVisualManager::GetInstance()->DestroyInstance();
 	if (bDark)
 	{
-		CMFCVisualManagerOffice2007::SetStyle(CMFCVisualManagerOffice2007::Office2007_ObsidianBlack);
-		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerOffice2007));
+		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CThemeMFCVisualManager));
 		m_ctrlTabCtrl.ModifyTabStyle(CMFCTabCtrl::STYLE_3D);
 	}
 	else

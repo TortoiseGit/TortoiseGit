@@ -43,6 +43,7 @@ const UINT uiLastUserToolBarId = uiFirstUserToolBarId + iMaxUserToolbars - 1;
 BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_WM_CREATE()
 	ON_WM_DESTROY()
+	ON_WM_SYSCOLORCHANGE()
 	// Global help commands
 	ON_COMMAND(ID_HELP_FINDER, &CFrameWndEx::OnHelpFinder)
 	ON_UPDATE_COMMAND_UI(ID_HELP_FINDER, &CMainFrame::OnUpdateHelpFinder)
@@ -153,6 +154,13 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	return 0;
 }
 
+void CMainFrame::OnSysColorChange()
+{
+	__super::OnSysColorChange();
+	CTheme::Instance().OnSysColorChanged();
+	SetTheme(CTheme::Instance().IsDarkTheme());
+}
+
 void CMainFrame::SetTheme(bool bDark)
 {
 	if (bDark)
@@ -167,8 +175,6 @@ void CMainFrame::SetTheme(bool bDark)
 		DarkModeHelper::Instance().RefreshImmersiveColorPolicyState();
 		BOOL dark = TRUE;
 		DwmSetWindowAttribute(GetSafeHwnd(), 19, &dark, sizeof(dark));
-
-		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CThemeMFCVisualManager));
 	}
 	else
 	{
@@ -180,9 +186,10 @@ void CMainFrame::SetTheme(bool bDark)
 		DarkModeHelper::Instance().RefreshImmersiveColorPolicyState();
 		DarkModeHelper::Instance().AllowDarkModeForApp(FALSE);
 		SetClassLongPtr(GetSafeHwnd(), GCLP_HBRBACKGROUND, reinterpret_cast<LONG_PTR>(GetSysColorBrush(COLOR_3DFACE)));
-
 		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows));
 	}
+	if (bDark || CTheme::Instance().IsHighContrastModeDark())
+		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CThemeMFCVisualManager));
 	CTheme::Instance().SetThemeForDialog(GetSafeHwnd(), bDark);
 	::RedrawWindow(GetSafeHwnd(), nullptr, nullptr, RDW_FRAME | RDW_INVALIDATE | RDW_ERASE | RDW_INTERNALPAINT | RDW_ALLCHILDREN | RDW_UPDATENOW);
 }

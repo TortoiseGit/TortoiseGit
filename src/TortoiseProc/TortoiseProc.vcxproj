@@ -101,6 +101,7 @@
     <ClCompile Include="..\Utils\MiscUI\SVG.cpp" />
     <ClCompile Include="..\Utils\MiscUI\SysProgressDlg.cpp" />
     <ClCompile Include="..\Utils\MiscUI\ThemeControls.cpp" />
+    <ClCompile Include="..\Utils\MiscUI\ThemeMFCVisualManager.cpp" />
     <ClCompile Include="..\Utils\MiscUI\Tooltip.cpp" />
     <ClCompile Include="..\Utils\MiscUI\WaterEffect.cpp" />
     <ClCompile Include="..\Utils\PathUtils.cpp" />
@@ -396,6 +397,7 @@
     <ClInclude Include="..\Utils\MiscUI\SVG.h" />
     <ClInclude Include="..\Utils\MiscUI\SysProgressDlg.h" />
     <ClInclude Include="..\Utils\MiscUI\ThemeControls.h" />
+    <ClInclude Include="..\Utils\MiscUI\ThemeMFCVisualManager.h" />
     <ClInclude Include="..\Utils\MiscUI\Tooltip.h" />
     <ClInclude Include="..\Utils\MiscUI\WaterEffect.h" />
     <ClInclude Include="..\Utils\PathUtils.h" />

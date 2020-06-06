@@ -66,6 +66,7 @@
     <ClCompile Include="..\Utils\MiscUI\IconBitmapUtils.cpp" />
     <ClCompile Include="..\Utils\MiscUI\IconMenu.cpp" />
     <ClCompile Include="..\Utils\MiscUI\StandAloneDlg.cpp" />
+    <ClCompile Include="..\Utils\MiscUI\ThemeMFCVisualManager.cpp" />
     <ClCompile Include="..\Utils\MiscUI\Tooltip.cpp" />
     <ClCompile Include="..\Utils\ProfilingInfo.cpp" />
     <ClCompile Include="..\Utils\SysImageList.cpp" />
@@ -338,6 +339,7 @@
     <ClInclude Include="..\Utils\MiscUI\IconMenu.h" />
     <ClInclude Include="..\Utils\MiscUI\LineColors.h" />
     <ClInclude Include="..\Utils\MiscUI\StandAloneDlg.h" />
+    <ClInclude Include="..\Utils\MiscUI\ThemeMFCVisualManager.h" />
     <ClInclude Include="..\Utils\MiscUI\Tooltip.h" />
     <ClInclude Include="..\Utils\MiscUI\TripleClick.h" />
     <ClInclude Include="..\Utils\ProfilingInfo.h" />

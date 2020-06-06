@@ -28,6 +28,7 @@
 #include "SmartHandle.h"
 #include "LoglistCommonResource.h"
 #include "DPIAware.h"
+#include "ThemeMFCVisualManager.h"
 
 // CImportPatchDlg dialog
 
@@ -128,10 +129,7 @@ BOOL CImportPatchDlg::OnInitDialog()
 	this->ScreenToClient(rectDummy);
 
 	if (CTheme::Instance().IsDarkTheme())
-	{
-		CMFCVisualManagerOffice2007::SetStyle(CMFCVisualManagerOffice2007::Office2007_ObsidianBlack);
-		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerOffice2007));
-	}
+		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CThemeMFCVisualManager));
 	if (!m_ctrlTabCtrl.Create(CTheme::Instance().IsDarkTheme() ? CMFCTabCtrl::STYLE_3D : CMFCTabCtrl::STYLE_FLAT, rectDummy, this, IDC_AM_TAB))
 	{
 		TRACE0("Failed to create output tab window\n");
@@ -717,8 +715,7 @@ void CImportPatchDlg::SetTheme(bool bDark)
 	CMFCVisualManager::GetInstance()->DestroyInstance();
 	if (bDark)
 	{
-		CMFCVisualManagerOffice2007::SetStyle(CMFCVisualManagerOffice2007::Office2007_ObsidianBlack);
-		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerOffice2007));
+		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CThemeMFCVisualManager));
 		m_ctrlTabCtrl.ModifyTabStyle(CMFCTabCtrl::STYLE_3D);
 	}
 	else

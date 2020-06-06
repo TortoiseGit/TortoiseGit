@@ -1001,6 +1001,9 @@
     <ClCompile Include="..\Utils\MiscUI\ThemeControls.cpp">
       <Filter>Utils\UI</Filter>
     </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\ThemeMFCVisualManager.cpp">
+      <Filter>Utils\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1889,6 +1892,9 @@
       <Filter>Utils\General</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\MiscUI\ThemeControls.h">
+      <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\ThemeMFCVisualManager.h">
       <Filter>Utils\UI</Filter>
     </ClInclude>
   </ItemGroup>
