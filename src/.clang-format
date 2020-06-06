@@ -60,6 +60,9 @@ AllowShortFunctionsOnASingleLine: Inline
 AllowShortIfStatementsOnASingleLine: false
 AllowShortLoopsOnASingleLine: false
 
+# But allow short lambdas on a single line
+AllowShortLambdasOnASingleLine: All
+
 # By default don't add a line break after the return type of top-level functions
 # int foo();
 AlwaysBreakAfterReturnType: None
@@ -85,8 +88,9 @@ BreakBeforeBraces: Custom
 BraceWrapping:
   AfterEnum: true
   AfterStruct: true
+  AfterCaseLabel: true
   SplitEmptyFunction: false
-  AfterClass: false
+  AfterClass: true
   AfterControlStatement: true
   AfterFunction: true
   AfterNamespace: true
@@ -94,14 +98,14 @@ BraceWrapping:
   AfterExternBlock: true
   BeforeCatch: true
   BeforeElse: true
-# TODO: After lambda is missing in clang-format definition ATM
+  #BeforeLambdaBody, not supported by VS2019
 
 # The constructor initializers style to use.
 # Constructor()
 #    : initializer1()
 #    , initializer2()
 BreakConstructorInitializers: BeforeComma
-#BreakInheritanceList: BeforeComma # not yet supported by VS2017
+BreakInheritanceList: BeforeComma
 
 # Break after operators
 # int valuve = aaaaaaaaaaaaa +
@@ -112,6 +116,8 @@ BreakBeforeTernaryOperators: false
 
 # Don't break string literals
 BreakStringLiterals: false
+
+# Re-check: IndentCaseBlocks (not supported in VS2019)
 
 # Use the same indentation level as for the switch statement.
 # Switch statement body is always indented one level more than case labels.
