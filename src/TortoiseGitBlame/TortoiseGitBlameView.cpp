@@ -276,6 +276,7 @@ int CTortoiseGitBlameView::OnCreate(LPCREATESTRUCT lpcs)
 		return -1; // fail to create
 	}
 	m_TextView.Init(-1);
+	m_TextView.m_bNoAutomaticStyling = true;
 	m_TextView.ShowWindow( SW_SHOW);
 	CreateFont();
 	m_TextView.SetReadOnly(true);

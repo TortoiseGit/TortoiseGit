@@ -27,7 +27,6 @@
 #include "SmartHandle.h"
 #include "../../TortoiseUDiff/UDiffColors.h"
 #include "LoadIconEx.h"
-#include "CommonAppUtils.h"
 
 void CSciEditContextMenuInterface::InsertMenuItems(CMenu&, int&) {return;}
 bool CSciEditContextMenuInterface::HandleMenuItemClick(int, CSciEdit *) {return false;}
@@ -161,6 +160,31 @@ void CSciEdit::SetColors(bool recolorize)
 	Call(SCI_SETSELFORE, TRUE, ::GetSysColor(COLOR_HIGHLIGHTTEXT));
 	Call(SCI_SETSELBACK, TRUE, ::GetSysColor(COLOR_HIGHLIGHT));
 	Call(SCI_SETCARETFORE, ::GetSysColor(COLOR_WINDOWTEXT));
+
+	if (!m_bNoAutomaticStyling)
+	{
+		Call(SCI_STYLECLEARALL);
+
+		LPARAM color = ::GetSysColor(COLOR_HOTLIGHT);
+		// set the styles for the bug ID strings
+		Call(SCI_STYLESETBOLD, STYLE_ISSUEBOLD, TRUE);
+		Call(SCI_STYLESETFORE, STYLE_ISSUEBOLD, color);
+		Call(SCI_STYLESETBOLD, STYLE_ISSUEBOLDITALIC, TRUE);
+		Call(SCI_STYLESETITALIC, STYLE_ISSUEBOLDITALIC, TRUE);
+		Call(SCI_STYLESETFORE, STYLE_ISSUEBOLDITALIC, color);
+		Call(SCI_STYLESETHOTSPOT, STYLE_ISSUEBOLDITALIC, TRUE);
+
+		// set the formatted text styles
+		Call(SCI_STYLESETBOLD, STYLE_BOLD, TRUE);
+		Call(SCI_STYLESETITALIC, STYLE_ITALIC, TRUE);
+		Call(SCI_STYLESETUNDERLINE, STYLE_UNDERLINED, TRUE);
+
+		// set the style for URLs
+		Call(SCI_STYLESETFORE, STYLE_URL, color);
+		Call(SCI_STYLESETHOTSPOT, STYLE_URL, TRUE);
+
+		Call(SCI_SETHOTSPOTACTIVEUNDERLINE, TRUE);
+	}
 
 	if (recolorize)
 		Call(SCI_COLOURISE, 0, -1);
@@ -977,8 +1001,6 @@ void CSciEdit::OnSysColorChange()
 	SetColors(true);
 	if (m_bUDiffmode)
 		SetUDiffStyle();
-	else
-		SetFont(CCommonAppUtils::GetLogFontName(), CCommonAppUtils::GetLogFontSize());
 }
 
 void CSciEdit::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
