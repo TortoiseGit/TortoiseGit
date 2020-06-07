@@ -236,6 +236,7 @@ public:
 
 protected:
 	void CreateFont();
+	void CreateNewFont(bool resize);
 	void SetupLexer(CString filename);
 	void SetupCppLexer();
 	int GetLineUnderCursor(CPoint point);

@@ -835,16 +835,32 @@ void CTortoiseGitBlameView::CreateFont()
 {
 	if (m_font.GetSafeHandle())
 		return;
-	LOGFONT lf = {0};
+
+	CreateNewFont(false);
+}
+
+void CTortoiseGitBlameView::CreateNewFont(bool resize)
+{
+	m_font.DeleteObject();
+	LOGFONT lf = { 0 };
 	lf.lfWeight = 400;
-	lf.lfHeight = -CDPIAware::Instance().PointsToPixelsY(static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\BlameFontSize", 10)));
+	lf.lfHeight = -CDPIAware::Instance().PointsToPixelsY(static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\BlameFontSize", 10))) - static_cast<int>(SendEditor(SCI_GETZOOM));
 	lf.lfCharSet = DEFAULT_CHARSET;
 	CRegStdString fontname = CRegStdString(L"Software\\TortoiseGit\\BlameFontName", L"Consolas");
 	wcsncpy_s(lf.lfFaceName, static_cast<std::wstring>(fontname).c_str(), _TRUNCATE);
 	m_font.CreateFontIndirect(&lf);
 
 	lf.lfItalic = TRUE;
+	m_italicfont.DeleteObject();
 	m_italicfont.CreateFontIndirect(&lf);
+
+	if (!resize || !m_pDocument)
+		return;
+
+	CRect rect;
+	this->GetClientRect(&rect);
+	rect.left = GetBlameWidth();
+	m_TextView.MoveWindow(&rect);
 }
 
 void CTortoiseGitBlameView::DrawBlame(HDC hDC)
@@ -1708,6 +1724,8 @@ void CTortoiseGitBlameView::OnSciZoom(NMHDR* /*hdr*/, LRESULT* /*result*/)
 		SendEditor(SCI_SETMARGINWIDTHN, 0);
 	SendEditor(SCI_SETMARGINWIDTHN, 1);
 	SendEditor(SCI_SETMARGINWIDTHN, 2);
+
+	CreateNewFont(true);
 
 	Invalidate();
 }
