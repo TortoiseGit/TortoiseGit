@@ -285,7 +285,7 @@ BOOL CRebaseDlg::OnInitDialog()
 		int delta = yPos - rectSplitter.top;
 		if ((rcLogMsg.bottom + delta > rcLogMsg.top) && (rcLogMsg.bottom + delta < rcFileList.bottom - CDPIAware::Instance().ScaleY(30)))
 		{
-			m_wndSplitter.SetWindowPos(nullptr, 0, yPos, 0, 0, SWP_NOSIZE);
+			m_wndSplitter.SetWindowPos(nullptr, rectSplitter.left, yPos, 0, 0, SWP_NOSIZE);
 			DoSize(delta);
 		}
 	}
