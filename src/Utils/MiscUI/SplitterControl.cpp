@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2019 - TortoiseGit
+// Copyright (C) 2019-2020 - TortoiseGit
 // Copyright (C) 2003-2006, 2008-2013, 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -221,6 +221,8 @@ void CSplitterControl::OnMouseMove(UINT nFlags, CPoint point)
 			storyBoard->AddTransition(m_AnimVarHot, transHot);
 			Animator::Instance().RunStoryBoard(storyBoard, [this]()
 			{
+				if (!this->GetSafeHwnd())
+					return;
 				InvalidateRect(nullptr, false);
 			});
 		}
@@ -239,6 +241,8 @@ LRESULT CSplitterControl::OnMouseLeave(WPARAM /*wParam*/, LPARAM /*lParam*/)
 			storyBoard->AddTransition(m_AnimVarHot, transHot);
 			Animator::Instance().RunStoryBoard(storyBoard, [this]()
 			{
+				if (!this->GetSafeHwnd())
+					return;
 				InvalidateRect(nullptr, false);
 			});
 		}
