@@ -612,19 +612,8 @@ void CTortoiseGitBlameView::InitialiseEditor()
 			fontName.c_str()
 			);
 	SendEditor(SCI_SETTABWIDTH, static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\BlameTabSize", 4)));
-	auto numberOfLines = m_data.GetNumberOfLines();
-	int numDigits = 2;
-	while (numberOfLines)
-	{
-		numberOfLines /= 10;
-		++numDigits;
-	}
-	if (m_bShowLine)
-		SendEditor(SCI_SETMARGINWIDTHN, 0, numDigits * static_cast<int>(SendEditor(SCI_TEXTWIDTH, STYLE_LINENUMBER, reinterpret_cast<LPARAM>("8"))));
-	else
-		SendEditor(SCI_SETMARGINWIDTHN, 0);
-	SendEditor(SCI_SETMARGINWIDTHN, 1);
-	SendEditor(SCI_SETMARGINWIDTHN, 2);
+	OnSciZoom(nullptr, nullptr);
+
 	//Set the default windows colors for edit controls
 	SendEditor(SCI_SETSELFORE, TRUE, ::GetSysColor(COLOR_HIGHLIGHTTEXT));
 	SendEditor(SCI_SETSELBACK, TRUE, ::GetSysColor(COLOR_HIGHLIGHT));
@@ -1705,7 +1694,20 @@ void CTortoiseGitBlameView::OnLButtonDown(UINT nFlags,CPoint point)
 
 void CTortoiseGitBlameView::OnSciZoom(NMHDR* /*hdr*/, LRESULT* /*result*/)
 {
-	InitialiseEditor();
+	auto numberOfLines = m_data.GetNumberOfLines();
+	int numDigits = 2;
+	while (numberOfLines)
+	{
+		numberOfLines /= 10;
+		++numDigits;
+	}
+	if (m_bShowLine)
+		SendEditor(SCI_SETMARGINWIDTHN, 0, numDigits * static_cast<int>(SendEditor(SCI_TEXTWIDTH, STYLE_LINENUMBER, reinterpret_cast<LPARAM>("8"))));
+	else
+		SendEditor(SCI_SETMARGINWIDTHN, 0);
+	SendEditor(SCI_SETMARGINWIDTHN, 1);
+	SendEditor(SCI_SETMARGINWIDTHN, 2);
+
 	Invalidate();
 }
 
