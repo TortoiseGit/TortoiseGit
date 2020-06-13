@@ -20,6 +20,8 @@ General rules for all screenshots
 =================================
 Use PNG format
 8 bit colour depth (256 colours, done by adjustimages.bat)
-Windows 7 style preferred, white background, English Windows (especially for Context Menus)
+Windows 10 default style w/o transparency, white background, English Windows (especially for Context Menus)
 Use the D:\TortoiseGit repository
 If you update a Screenshot please make sure it looks quite similar to the existing one
+
+For context menu screenshots delete/crop the menu shadow and make the white space transparent.
