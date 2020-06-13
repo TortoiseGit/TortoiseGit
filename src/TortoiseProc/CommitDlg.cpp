@@ -2125,7 +2125,7 @@ bool CCommitDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
 			{
 				CString status = entry->GetActionName();
 				if(entry->m_Action & CTGitPath::LOGACTIONS_UNVER)
-					status = L"Add"; // I18N TODO
+					status = CTGitPath::GetActionName(CTGitPath::LOGACTIONS_ADDED);
 
 				//git_wc_status_kind status = entry->status;
 				WORD langID = static_cast<WORD>(CRegStdDWORD(L"Software\\TortoiseGit\\LanguageID", GetUserDefaultLangID()));
