@@ -1,7 +1,7 @@
 ﻿// TortoiseIDiff - an image diff viewer in TortoiseSVN
 
 // Copyright (C) 2020 - TortoiseGit
-// Copyright (C) 2006-2010, 2012-2013, 2015 - TortoiseSVN
+// Copyright (C) 2006-2010, 2012-2016, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -90,6 +90,7 @@ public:
         , startVSecondScrollPos(0)
         , startHSecondScrollPos(0)
         , hwndTT(0)
+        , hwndTrack(0)
         , hwndLeftBtn(0)
         , hwndRightBtn(0)
         , hwndPlayBtn(0)
@@ -104,6 +105,7 @@ public:
         , m_linkedHeight(0)
         , bDragging(false)
         , bSelectionMode(false)
+        , m_themeCallbackId(0)
     {
         SetWindowTitle(L"Picture Window");
         m_lastTTPos.x = 0;
@@ -239,7 +241,10 @@ protected:
     void                SetZoomToWidth(long width);
     /// adjusts the zoom to fit the specified height
     void                SetZoomToHeight(long height);
-
+    /// sets the dark mode
+    void                SetTheme(bool bDark);
+    /// returns the transparent color, adjusted for theme
+    COLORREF            GetTransparentThemedColor();
 
     tstring             picpath;            ///< the path to the image we show
     tstring             pictitle;           ///< the string to show in the image view as a title
@@ -265,7 +270,9 @@ protected:
     char                m_szTip[8192];
     POINT               m_lastTTPos;
     HWND                hwndTT;
+    HWND                hwndTrack;
     bool                bSelectionMode;     ///< true if TortoiseIDiff is in selection mode, used to resolve conflicts
+    int                 m_themeCallbackId;
     // scrollbar info
     int                 nVScrollPos;        ///< vertical scroll position
     int                 nHScrollPos;        ///< horizontal scroll position

@@ -992,6 +992,18 @@
     <ClCompile Include="SelectRemoteRefDlg.cpp">
       <Filter>Utility Dialogs</Filter>
     </ClCompile>
+    <ClCompile Include="..\Utils\Theme.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\DarkModeHelper.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\ThemeControls.cpp">
+      <Filter>Utils\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\ThemeMFCVisualManager.cpp">
+      <Filter>Utils\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1872,6 +1884,18 @@
     </ClInclude>
     <ClInclude Include="..\Utils\I18NHelper.h">
       <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\Theme.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\DarkModeHelper.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\ThemeControls.h">
+      <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\ThemeMFCVisualManager.h">
+      <Filter>Utils\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2012, 2015 - TortoiseSVN
+// Copyright (C) 2006-2012, 2014-2015, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,6 +25,7 @@
 #include "BottomView.h"
 #include "DiffColors.h"
 #include "AppUtils.h"
+#include "Theme.h"
 
 
 IMPLEMENT_DYNAMIC(CLocatorBar, CPaneDialog)
@@ -34,11 +35,16 @@ CLocatorBar::CLocatorBar() : CPaneDialog()
 	, m_regUseFishEye(L"Software\\TortoiseGitMerge\\UseFishEye", TRUE)
 	, m_nLines(-1)
 	, m_minWidth(0)
+	, m_bDark(false)
+	, m_themeCallbackId(0)
 {
+	m_themeCallbackId = CTheme::Instance().RegisterThemeChangeCallback([this]() { SetTheme(CTheme::Instance().IsDarkTheme()); });
+	SetTheme(CTheme::Instance().IsDarkTheme());
 }
 
 CLocatorBar::~CLocatorBar()
 {
+	CTheme::Instance().RemoveRegisteredCallback(m_themeCallbackId);
 	if (m_pCacheBitmap)
 	{
 		m_pCacheBitmap->DeleteObject();
@@ -115,6 +121,13 @@ void CLocatorBar::DocumentUpdated(CBaseView* view, CDWordArray& indents, CDWordA
 	states.Add(state);
 }
 
+void CLocatorBar::SetTheme(bool bDark)
+{
+	m_bDark = bDark;
+	if (IsWindow(GetSafeHwnd()))
+		Invalidate();
+}
+
 CSize CLocatorBar::CalcFixedLayout(BOOL bStretch, BOOL bHorz)
 {
 	auto s = __super::CalcFixedLayout(bStretch, bHorz);
@@ -147,13 +160,13 @@ void CLocatorBar::OnPaint()
 	CBitmap *pOldBitmap = cacheDC.SelectObject(m_pCacheBitmap);
 
 	COLORREF color, color2;
-	CDiffColors::GetInstance().GetColors(DIFFSTATE_UNKNOWN, color, color2);
+	CDiffColors::GetInstance().GetColors(DIFFSTATE_UNKNOWN, CTheme::Instance().IsDarkTheme() || CTheme::Instance().IsHighContrastModeDark(), color, color2);
 	cacheDC.FillSolidRect(rect, color);
 
 	if (m_nLines)
 	{
 		cacheDC.FillSolidRect(rect.left, height*nTopLine/m_nLines,
-			width, (height*nBottomLine/m_nLines)-(height*nTopLine/m_nLines), RGB(180,180,255));
+			width, (height * nBottomLine / m_nLines) - (height * nTopLine / m_nLines), CTheme::Instance().GetThemeColor(RGB(180, 180, 255), true));
 
 		if (m_pMainFrm)
 		{
@@ -162,16 +175,16 @@ void CLocatorBar::OnPaint()
 			PaintView (cacheDC, m_pMainFrm->m_pwndBottomView, m_arBottomIdent, m_arBottomState, rect, 1);
 		}
 	}
-
+	auto vertLineClr = CTheme::Instance().GetThemeColor(RGB(0, 0, 0), true);
 	if (m_nLines == 0)
 		m_nLines = 1;
 	cacheDC.FillSolidRect(rect.left, height*nTopLine/m_nLines,
-		width, 2, RGB(0,0,0));
+		width, 2, vertLineClr);
 	cacheDC.FillSolidRect(rect.left, height*nBottomLine/m_nLines,
-		width, 2, RGB(0,0,0));
+		width, 2, vertLineClr);
 	//draw two vertical lines, so there are three rows visible indicating the three panes
-	cacheDC.FillSolidRect(rect.left + (width/3), rect.top, 1, height, RGB(0,0,0));
-	cacheDC.FillSolidRect(rect.left + (width*2/3), rect.top, 1, height, RGB(0,0,0));
+	cacheDC.FillSolidRect(rect.left + (width / 3), rect.top, 1, height, vertLineClr);
+	cacheDC.FillSolidRect(rect.left + (width * 2 / 3), rect.top, 1, height, vertLineClr);
 
 	// draw the fish eye
 	DWORD pos = GetMessagePos();
@@ -287,7 +300,7 @@ void CLocatorBar::PaintView(CDC& cacheDC, CBaseView* view, CDWordArray& indents,
 		COLORREF color, color2;
 		const long identcount = indents.GetAt(i);
 		const DWORD state = states.GetAt(i);
-		CDiffColors::GetInstance().GetColors(static_cast<DiffStates>(state), color, color2);
+		CDiffColors::GetInstance().GetColors(static_cast<DiffStates>(state), CTheme::Instance().IsDarkTheme() || CTheme::Instance().IsHighContrastModeDark(), color, color2);
 		if (static_cast<DiffStates>(state) != DIFFSTATE_NORMAL)
 		{
 			cacheDC.FillSolidRect(rect.left + (width*stripeIndex/3), height*linecount/m_nLines,
@@ -298,7 +311,7 @@ void CLocatorBar::PaintView(CDC& cacheDC, CBaseView* view, CDWordArray& indents,
 	if (view->GetMarkedWord()[0])
 	{
 		COLORREF color, color2;
-		CDiffColors::GetInstance().GetColors(DIFFSTATE_NORMAL, color, color2);
+		CDiffColors::GetInstance().GetColors(DIFFSTATE_NORMAL, CTheme::Instance().IsDarkTheme() || CTheme::Instance().IsHighContrastModeDark(), color, color2);
 		color = CAppUtils::IntenseColor(200, color);
 		for (size_t i=0; i<view->m_arMarkedWordLines.size(); ++i)
 		{
@@ -312,7 +325,7 @@ void CLocatorBar::PaintView(CDC& cacheDC, CBaseView* view, CDWordArray& indents,
 	if (view->GetFindString()[0])
 	{
 		COLORREF color, color2;
-		CDiffColors::GetInstance().GetColors(DIFFSTATE_NORMAL, color, color2);
+		CDiffColors::GetInstance().GetColors(DIFFSTATE_NORMAL, CTheme::Instance().IsDarkTheme() || CTheme::Instance().IsHighContrastModeDark(), color, color2);
 		color = CAppUtils::IntenseColor(30, color);
 		for (size_t i=0; i<view->m_arFindStringLines.size(); ++i)
 		{
@@ -332,8 +345,9 @@ void CLocatorBar::DrawFishEye(CDC& cacheDC, const CRect& rect )
 	const long width = rect.Width();
 	const int fishstart = m_MousePos.y - height/20;
 	const int fishheight = height/10;
-	cacheDC.FillSolidRect(rect.left, fishstart-1, width, 1, RGB(0,0,100));
-	cacheDC.FillSolidRect(rect.left, fishstart+fishheight+1, width, 1, RGB(0,0,100));
+	auto clr = CTheme::Instance().GetThemeColor(RGB(0, 0, 100), true);
+	cacheDC.FillSolidRect(rect.left, fishstart - 1, width, 1, clr);
+	cacheDC.FillSolidRect(rect.left, fishstart + fishheight + 1, width, 1, clr);
 	VERIFY(cacheDC.StretchBlt(rect.left, fishstart, width, fishheight,
 		&cacheDC, 0, fishstart + (3*fishheight/8), width, fishheight/4, SRCCOPY));
 	// draw the magnified area a little darker, so the
@@ -343,10 +357,20 @@ void CLocatorBar::DrawFishEye(CDC& cacheDC, const CRect& rect )
 		for (int j=fishstart; j<fishstart+fishheight; j++)
 		{
 			const COLORREF color = cacheDC.GetPixel(i, j);
-			int r = max(GetRValue(color)-20, 0);
-			int g = max(GetGValue(color)-20, 0);
-			int b = max(GetBValue(color)-20, 0);
-			cacheDC.SetPixel(i, j, RGB(r,g,b));
+			if (m_bDark)
+			{
+				int r = min(GetRValue(color) + 40, 255);
+				int g = min(GetGValue(color) + 40, 255);
+				int b = min(GetBValue(color) + 40, 255);
+				cacheDC.SetPixel(i, j, RGB(r, g, b));
+			}
+			else
+			{
+				int r = max(GetRValue(color) - 20, 0);
+				int g = max(GetGValue(color) - 20, 0);
+				int b = max(GetBValue(color) - 20, 0);
+				cacheDC.SetPixel(i, j, RGB(r, g, b));
+			}
 		}
 	}
 }

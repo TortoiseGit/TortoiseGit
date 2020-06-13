@@ -13,6 +13,9 @@ Released: unreleased
  * Fixed issue #3568: Add support for Git repository version 1
  * Fixed issue #3605: TortoiseGitProc branch command is not documented and does not handle /name parameter
  * Update pcre2 to 10.35
+ * Fixed issue #3589: Added dark mode support to all TortoiseGit tools, needs to be separately enabled
+   Dark mode can only be enabled for Windows 10 1809 and later when Windows dark mode is activated.
+   This also improves the high contrast mode.
 
 = Release 2.10.0.2 =
 Released: 2020-03-24

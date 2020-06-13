@@ -1,5 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2020 - TortoiseGit
 // Copyright (C) 2003-2006 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
@@ -23,10 +24,10 @@
 
 // CCreateChangelistDlg dialog
 
-IMPLEMENT_DYNAMIC(CCreateChangelistDlg, CDialog)
+IMPLEMENT_DYNAMIC(CCreateChangelistDlg, CStandAloneDialog)
 
 CCreateChangelistDlg::CCreateChangelistDlg(CWnd* pParent /*=nullptr*/)
-	: CDialog(CCreateChangelistDlg::IDD, pParent)
+	: CStandAloneDialog(CCreateChangelistDlg::IDD, pParent)
 {
 }
 
@@ -36,11 +37,11 @@ CCreateChangelistDlg::~CCreateChangelistDlg()
 
 void CCreateChangelistDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+	CStandAloneDialog::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_NAME, m_sName);
 }
 
-BEGIN_MESSAGE_MAP(CCreateChangelistDlg, CDialog)
+BEGIN_MESSAGE_MAP(CCreateChangelistDlg, CStandAloneDialog)
 	ON_EN_CHANGE(IDC_NAME, &CCreateChangelistDlg::OnEnChangeName)
 END_MESSAGE_MAP()
 
@@ -48,7 +49,7 @@ END_MESSAGE_MAP()
 
 BOOL CCreateChangelistDlg::OnInitDialog()
 {
-	CDialog::OnInitDialog();
+	CStandAloneDialog::OnInitDialog();
 
 	GetDlgItem(IDOK)->EnableWindow(FALSE);
 	GetDlgItem(IDC_NAME)->SetFocus();

@@ -71,6 +71,7 @@ protected:
 	virtual LRESULT DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam) override;
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg LRESULT OnRebaseUpdateUI(WPARAM wParam, LPARAM lParam);
+	void SetTheme(bool bDark) override;
 	void DoSize(int delta);
 	void AddRebaseAnchor();
 
@@ -194,7 +195,6 @@ protected:
 	afx_msg void OnBnClickedContinue();
 	afx_msg void OnBnClickedAbort();
 	afx_msg void OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg LRESULT OnThemeChanged();
 	void FillLogMessageCtrl();
 
 	CProgressCtrl		m_ProgressBar;

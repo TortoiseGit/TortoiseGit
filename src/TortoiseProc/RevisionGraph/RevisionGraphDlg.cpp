@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012, 2018 - TortoiseSVN
-// Copyright (C) 2012-2016, 2018-2019 - TortoiseGit
+// Copyright (C) 2012-2016, 2018-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -64,6 +64,7 @@ CRevisionGraphDlg::CRevisionGraphDlg(CWnd* pParent /*=nullptr*/)
 	, m_bVisible(true)
 	, m_pFindDialog(nullptr)
 	, m_nSearchIndex(0)
+	, m_themeCallbackId(0)
 {
 	// GDI+ initialization
 
@@ -77,7 +78,7 @@ CRevisionGraphDlg::CRevisionGraphDlg(CWnd* pParent /*=nullptr*/)
 CRevisionGraphDlg::~CRevisionGraphDlg()
 {
 	// GDI+ cleanup
-
+	CTheme::Instance().RemoveRegisteredCallback(m_themeCallbackId);
 	GdiplusShutdown (m_gdiPlusToken);
 }
 
@@ -250,7 +251,7 @@ BOOL CRevisionGraphDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
-
+	m_themeCallbackId = CTheme::Instance().RegisterThemeChangeCallback([this]() { SetTheme(CTheme::Instance().IsDarkTheme()); });
 	EnableToolTips();
 
 	CString sWindowTitle;
@@ -291,6 +292,8 @@ BOOL CRevisionGraphDlg::OnInitDialog()
 	EnableSaveRestore(L"RevisionGraphDlg");
 //	if (GetExplorerHWND())
 //		CenterWindow(CWnd::FromHandle(GetExplorerHWND()));
+
+	SetTheme(CTheme::Instance().IsDarkTheme());
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 }
@@ -354,6 +357,18 @@ bool CRevisionGraphDlg::UpdateData()
 	m_Graph.PostMessage (CRevisionGraphWnd::WM_WORKERTHREADDONE, 0, 0);
 
 	return true;
+}
+
+void CRevisionGraphDlg::SetTheme(bool bDark)
+{
+	__super::SetTheme(bDark);
+	DarkModeHelper::Instance().AllowDarkModeForWindow(m_Graph.GetSafeHwnd(), bDark);
+	DarkModeHelper::Instance().AllowDarkModeForWindow(m_StatusBar.GetSafeHwnd(), bDark);
+	DarkModeHelper::Instance().AllowDarkModeForWindow(m_ToolBar.GetSafeHwnd(), bDark);
+
+	SetWindowTheme(m_Graph.GetSafeHwnd(), L"Explorer", nullptr);
+	SetWindowTheme(m_StatusBar.GetSafeHwnd(), L"Explorer", nullptr);
+	SetWindowTheme(m_ToolBar.GetSafeHwnd(), L"Explorer", nullptr);
 }
 
 void CRevisionGraphDlg::OnSize(UINT nType, int cx, int cy)

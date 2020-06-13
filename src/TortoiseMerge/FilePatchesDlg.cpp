@@ -1,7 +1,7 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006, 2008, 2010-2012, 2015 - TortoiseSVN
-// Copyright (C) 2012, 2016-2017, 2019 - Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2006, 2008, 2010-2012, 2015, 2020 - TortoiseSVN
+// Copyright (C) 2012, 2016-2017, 2019-2020 - Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,6 +25,7 @@
 #include "PathUtils.h"
 #include "SysProgressDlg.h"
 #include "SysImageList.h"
+#include "Theme.h"
 
 IMPLEMENT_DYNAMIC(CFilePatchesDlg, CResizableStandAloneDialog)
 CFilePatchesDlg::CFilePatchesDlg(CWnd* pParent /*=nullptr*/)
@@ -277,25 +278,25 @@ void CFilePatchesDlg::OnNMCustomdrawFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 		// item's text color. Our return value will tell Windows to draw the
 		// item itself, but it will use the new color we set here.
 
-		COLORREF crText = ::GetSysColor(COLOR_WINDOWTEXT);
+		COLORREF crText = CTheme::Instance().IsDarkTheme() ? CTheme::darkTextColor : GetSysColor(COLOR_WINDOWTEXT);
 
 		if (m_arFileStates.GetCount() > static_cast<INT_PTR>(pLVCD->nmcd.dwItemSpec))
 		{
 			if (m_arFileStates.GetAt(pLVCD->nmcd.dwItemSpec) == FPDLG_FILESTATE_CONFLICT)
 			{
-				crText = RGB(255, 200, 100); // orange
+				crText = CTheme::Instance().GetThemeColor(RGB(255, 200, 100), true); // orange
 			}
 			if (m_arFileStates.GetAt(pLVCD->nmcd.dwItemSpec)==FPDLG_FILESTATE_ERROR)
 			{
-				crText = RGB(200, 0, 0);
+				crText = CTheme::Instance().GetThemeColor(RGB(200, 0, 0), true);
 			}
 			if (m_arFileStates.GetAt(pLVCD->nmcd.dwItemSpec)>0)
 			{
-				crText = RGB(100, 0, 0);
+				crText = CTheme::Instance().GetThemeColor(RGB(100, 0, 0), true);
 			}
 			if (m_arFileStates.GetAt(pLVCD->nmcd.dwItemSpec)==FPDLG_FILESTATE_PATCHED)
 			{
-				crText = ::GetSysColor(COLOR_GRAYTEXT);
+				crText = CTheme::Instance().GetThemeColor(::GetSysColor(COLOR_GRAYTEXT));
 			}
 			// Store the color back in the NMLVCUSTOMDRAW struct.
 			pLVCD->clrText = crText;

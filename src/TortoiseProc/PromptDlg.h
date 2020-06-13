@@ -1,5 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2020 - TortoiseGit
 // Copyright (C) 2003-2006 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
@@ -27,7 +28,7 @@
  * A dialog box which is used by git authentication callback
  * to prompt the user for authentication data.
  */
-class CPromptDlg : public CDialog
+class CPromptDlg : public CStandAloneDialog
 {
 	DECLARE_DYNAMIC(CPromptDlg)
 

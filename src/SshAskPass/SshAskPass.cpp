@@ -27,6 +27,8 @@
 #include "UnicodeUtils.h"
 #include "SmartHandle.h"
 #include <memory>
+#include "DarkModeHelper.h"
+#include "registry.h"
 
 #include <commctrl.h>
 #pragma comment(lib, "comctl32.lib")
@@ -36,6 +38,7 @@
 
 // Global Variables:
 HINSTANCE hInst;								// current instance
+bool g_darkmode = false;
 
 const TCHAR g_Promptphrase[] = L"Enter your OpenSSH passphrase:";
 const TCHAR* g_Prompt = g_Promptphrase;
@@ -139,14 +142,61 @@ static void MoveButton(HWND hDlg, DWORD id, const POINT& diff)
 	::MoveWindow(button, rect.left + diff.x / 2, rect.top + diff.y, rect.right - rect.left, rect.bottom - rect.top, TRUE);
 }
 
+void SetTheme(HWND hWnd)
+{
+	HIGHCONTRAST hc = { sizeof(HIGHCONTRAST) };
+	SystemParametersInfo(SPI_GETHIGHCONTRAST, sizeof(HIGHCONTRAST), &hc, FALSE);
+	bool isHighContrastMode = ((hc.dwFlags & HCF_HIGHCONTRASTON) != 0);
+
+	g_darkmode = !isHighContrastMode && DarkModeHelper::Instance().CanHaveDarkMode() && DarkModeHelper::Instance().ShouldAppsUseDarkMode() && CRegStdDWORD(L"Software\\TortoiseGit\\DarkTheme", FALSE) == TRUE;
+	if (g_darkmode)
+	{
+		DarkModeHelper::Instance().AllowDarkModeForApp(TRUE);
+		DarkModeHelper::Instance().AllowDarkModeForWindow(hWnd, TRUE);
+		SetClassLongPtr(hWnd, GCLP_HBRBACKGROUND, reinterpret_cast<LONG_PTR>(GetStockObject(BLACK_BRUSH)));
+		if (FAILED(SetWindowTheme(hWnd, L"DarkMode_Explorer", nullptr)))
+			SetWindowTheme(hWnd, L"Explorer", nullptr);
+		BOOL darkFlag = TRUE;
+		DarkModeHelper::WINDOWCOMPOSITIONATTRIBDATA data = { DarkModeHelper::WINDOWCOMPOSITIONATTRIB::WCA_USEDARKMODECOLORS, &darkFlag, sizeof(darkFlag) };
+		DarkModeHelper::Instance().SetWindowCompositionAttribute(hWnd, &data);
+		DarkModeHelper::Instance().FlushMenuThemes();
+		DarkModeHelper::Instance().RefreshImmersiveColorPolicyState();
+		for (UINT id : { IDOK, IDCANCEL })
+		{
+			HWND ctrl = ::GetDlgItem(hWnd, id);
+			if (FAILED(SetWindowTheme(ctrl, L"DarkMode_Explorer", nullptr)))
+				SetWindowTheme(ctrl, L"Explorer", nullptr);
+		}
+	}
+	else
+	{
+		DarkModeHelper::Instance().AllowDarkModeForApp(FALSE);
+		DarkModeHelper::Instance().AllowDarkModeForWindow(hWnd, FALSE);
+		SetWindowTheme(hWnd, L"Explorer", nullptr);
+		BOOL darkFlag = FALSE;
+		DarkModeHelper::WINDOWCOMPOSITIONATTRIBDATA data = { DarkModeHelper::WINDOWCOMPOSITIONATTRIB::WCA_USEDARKMODECOLORS, &darkFlag, sizeof(darkFlag) };
+		DarkModeHelper::Instance().SetWindowCompositionAttribute(hWnd, &data);
+		DarkModeHelper::Instance().FlushMenuThemes();
+		DarkModeHelper::Instance().RefreshImmersiveColorPolicyState();
+		DarkModeHelper::Instance().AllowDarkModeForApp(FALSE);
+		SetClassLongPtr(hWnd, GCLP_HBRBACKGROUND, reinterpret_cast<LONG_PTR>(GetSysColorBrush(COLOR_3DFACE)));
+		for (UINT id : { IDOK, IDCANCEL })
+			SetWindowTheme(::GetDlgItem(hWnd, id), L"Explorer", nullptr);
+	}
+
+	::RedrawWindow(hWnd, nullptr, nullptr, RDW_FRAME | RDW_INVALIDATE | RDW_ERASE | RDW_INTERNALPAINT | RDW_ALLCHILDREN | RDW_UPDATENOW);
+}
+
 // Message handler for password box.
 INT_PTR CALLBACK PasswdDlg(HWND hDlg, UINT message, WPARAM wParam, LPARAM /*lParam*/)
 {
+	static HBRUSH hbrBkgnd = nullptr;
 	switch (message)
 	{
 	case WM_INITDIALOG:
 		{
 			MarkWindowAsUnpinnable(hDlg);
+			SetTheme(hDlg);
 
 			RECT rect;
 			::GetWindowRect(hDlg,&rect);
@@ -181,6 +231,35 @@ INT_PTR CALLBACK PasswdDlg(HWND hDlg, UINT message, WPARAM wParam, LPARAM /*lPar
 			::FlashWindow(hDlg, TRUE);
 		}
 		return TRUE;
+
+	case WM_CTLCOLORDLG:
+	case WM_CTLCOLOREDIT:
+	case WM_CTLCOLORSTATIC:
+		if (g_darkmode)
+		{
+			constexpr COLORREF darkBkColor = 0x202020; // cf. THeme.h
+			constexpr COLORREF darkTextColor = 0xDDDDDD;
+
+			HDC hdc = reinterpret_cast<HDC>(wParam);
+			SetTextColor(hdc, darkTextColor);
+			SetBkColor(hdc, darkBkColor);
+			if (!hbrBkgnd)
+				hbrBkgnd = CreateSolidBrush(darkBkColor);
+			return reinterpret_cast<INT_PTR>(hbrBkgnd);
+		}
+		break;
+
+	case WM_DESTROY:
+		if (hbrBkgnd)
+		{
+			::DeleteObject(hbrBkgnd);
+			hbrBkgnd = nullptr;
+		}
+		break;
+
+	case WM_SYSCOLORCHANGE:
+		SetTheme(hDlg);
+		break;
 
 	case WM_COMMAND:
 

@@ -1,7 +1,7 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2020 - TortoiseGit
-// Copyright (C) 2003-2015, 2019-2020 - TortoiseSVN
+// Copyright (C) 2003-2015, 2017-2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -468,10 +468,15 @@ protected:  // methods
 
 	static void		ResetUndoStep();
 	void			SaveUndoStep();
+
+	void			SetTheme(bool bDark);
 protected:  // variables
 	COLORREF		m_InlineRemovedBk;
 	COLORREF		m_InlineAddedBk;
 	COLORREF		m_ModifiedBk;
+	COLORREF		m_InlineRemovedDarkBk;
+	COLORREF		m_InlineAddedDarkBk;
+	COLORREF		m_ModifiedDarkBk;
 	COLORREF		m_WhiteSpaceFg;
 	UINT			m_nStatusBarID;		///< The ID of the status bar pane used by this view. Must be set by the parent class.
 
@@ -556,7 +561,8 @@ protected:  // variables
 	UnicodeType		m_texttype;		///< the text encoding this view uses
 	EOL				m_lineendings;	///< the line endings the view uses
 	bool			m_bInsertMode;
-
+	bool			m_bDark;
+	int				m_themeCallbackId;
 	char			m_szTip[MAX_PATH*2+1];
 	wchar_t			m_wszTip[MAX_PATH*2+1];
 	// These three pointers lead to the three parent

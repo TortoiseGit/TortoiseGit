@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2011, 2015 - TortoiseSVN
-// Copyright (C) 2012-2013, 2015-2019 - TortoiseGit
+// Copyright (C) 2012-2013, 2015-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -28,6 +28,7 @@
 #include "registry.h"
 #include "UnicodeUtils.h"
 #include "DPIAware.h"
+#include "Theme.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -60,7 +61,7 @@ void CRevisionGraphWnd::OnPaint()
 	if (IsUpdateJobRunning())
 	{
 		CString fetch = CString(MAKEINTRESOURCE(IDS_PROC_LOADING));
-		dc.FillSolidRect(rect, ::GetSysColor(COLOR_APPWORKSPACE));
+		dc.FillSolidRect(rect, CTheme::Instance().GetThemeColor(::GetSysColor(COLOR_APPWORKSPACE)));
 		dc.ExtTextOut(20, 20, ETO_CLIPPED, nullptr, fetch, nullptr);
 		CWnd::OnPaint();
 		return;
@@ -69,7 +70,7 @@ void CRevisionGraphWnd::OnPaint()
 	{
 		CString sNoGraphText;
 		sNoGraphText.LoadString(IDS_REVGRAPH_ERR_NOGRAPH);
-		dc.FillSolidRect(rect, RGB(255,255,255));
+		dc.FillSolidRect(rect, CTheme::Instance().GetThemeColor(RGB(255, 255, 255), true));
 		dc.ExtTextOut(20, 20, ETO_CLIPPED, nullptr, sNoGraphText, nullptr);
 		return;
 	}
@@ -290,7 +291,7 @@ void CRevisionGraphWnd::DrawConnections(GraphicsDevice& graphics, const CRect& /
 		graphics.graphics->SetSmoothingMode(Gdiplus::SmoothingModeAntiAlias);
 
 	float penwidth = 2*m_fZoomFactor<1? 1:2*m_fZoomFactor;
-	Gdiplus::Pen pen(GetColorFromSysColor(COLOR_WINDOWTEXT), penwidth);
+	Gdiplus::Pen pen(CTheme::Instance().GetThemeColor(GetColorFromSysColor(COLOR_WINDOWTEXT)), penwidth);
 
 	// iterate over all visible lines
 	ogdf::edge e;
@@ -438,17 +439,17 @@ static AllColorsAndBrushes SetupColorsAndBrushes(CColors& colors)
 	return {
 		{ static_cast<ARGB>(Color::Black) },
 		{ background, brightColor, { background, 1.0F }, { brightColor } },
-		COLORLINE(colors.GetColor(revGraphUseLocalForCur ? colors.LocalBranch : colors.CurrentBranch)),
-		COLORLINE(colors.GetColor(colors.LocalBranch)),
-		COLORLINE(colors.GetColor(colors.RemoteBranch)),
-		COLORLINE(colors.GetColor(colors.Tag)),
-		COLORLINE(colors.GetColor(colors.Stash)),
-		COLORLINE(colors.GetColor(colors.BisectGood)),
-		COLORLINE(colors.GetColor(colors.BisectBad)),
-		COLORLINE(colors.GetColor(colors.BisectBad)),
-		COLORLINE(colors.GetColor(colors.NoteNode)),
-		COLORLINE(RGB(246, 153, 253)),
-		COLORLINE(colors.GetColor(colors.OtherRef)),
+		COLORLINE(CTheme::Instance().GetThemeColor(colors.GetColor(revGraphUseLocalForCur ? colors.LocalBranch : colors.CurrentBranch), true)),
+		COLORLINE(CTheme::Instance().GetThemeColor(colors.GetColor(colors.LocalBranch), true)),
+		COLORLINE(CTheme::Instance().GetThemeColor(colors.GetColor(colors.RemoteBranch), true)),
+		COLORLINE(CTheme::Instance().GetThemeColor(colors.GetColor(colors.Tag), true)),
+		COLORLINE(CTheme::Instance().GetThemeColor(colors.GetColor(colors.Stash), true)),
+		COLORLINE(CTheme::Instance().GetThemeColor(colors.GetColor(colors.BisectGood), true)),
+		COLORLINE(CTheme::Instance().GetThemeColor(colors.GetColor(colors.BisectBad), true)),
+		COLORLINE(CTheme::Instance().GetThemeColor(colors.GetColor(colors.BisectBad), true)),
+		COLORLINE(CTheme::Instance().GetThemeColor(colors.GetColor(colors.NoteNode), true)),
+		COLORLINE(CTheme::Instance().GetThemeColor(RGB(246, 153, 253), true)),
+		COLORLINE(CTheme::Instance().GetThemeColor(colors.GetColor(colors.OtherRef), true)),
 	};
 }
 
@@ -604,7 +605,7 @@ void CRevisionGraphWnd::DrawGraph(GraphicsDevice& graphics, const CRect& rect, i
 			graphics.pDC = &memDC->GetDC();
 		}
 
-		graphics.pDC->FillSolidRect(rect, GetSysColor(COLOR_WINDOW));
+		graphics.pDC->FillSolidRect(rect, CTheme::Instance().GetThemeColor(GetSysColor(COLOR_WINDOW)));
 		graphics.pDC->SetBkMode(TRANSPARENT);
 	}
 

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -114,6 +114,8 @@ BOOL CGitSwitchDlg::OnInitDialog()
 	m_tooltips.AddTool(GetDlgItem(IDC_CHECK_MERGE), CString(MAKEINTRESOURCE(IDS_PROC_SWITCH_MERGE_TT)));
 	m_tooltips.AddTool(GetDlgItem(IDC_CHECK_TRACK), CString(MAKEINTRESOURCE(IDS_PROC_NEWBRANCHTAG_TRACK_TT)));
 	m_tooltips.Activate(TRUE);
+
+	SetTheme(CTheme::Instance().IsDarkTheme());
 
 	return FALSE;
 }

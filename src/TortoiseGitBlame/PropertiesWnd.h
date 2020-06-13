@@ -92,4 +92,7 @@ protected:
 
 	std::vector<CMFCPropertyGridProperty*> m_ParentHash;
 	std::vector<CMFCPropertyGridProperty*> m_ParentSubject;
+
+	void SetTheme(bool bDark);
+	int m_themeCallbackId = 0;
 };

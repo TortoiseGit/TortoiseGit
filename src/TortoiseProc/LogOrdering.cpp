@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2016, 2019 - TortoiseGit
+// Copyright (C) 2013-2016, 2019-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,9 +21,9 @@
 #include "Git.h"
 #include "registry.h"
 
-IMPLEMENT_DYNAMIC(CLogOrdering, CDialog)
+IMPLEMENT_DYNAMIC(CLogOrdering, CStandAloneDialog)
 CLogOrdering::CLogOrdering(CWnd* pParent /*=nullptr*/)
-	: CDialog(CLogOrdering::IDD, pParent)
+	: CStandAloneDialog(CLogOrdering::IDD, pParent)
 {
 }
 
@@ -33,16 +33,16 @@ CLogOrdering::~CLogOrdering()
 
 void CLogOrdering::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+	CStandAloneDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_COMBOBOXEX_ORDERING, m_cLogOrdering);
 }
 
-BEGIN_MESSAGE_MAP(CLogOrdering, CDialog)
+BEGIN_MESSAGE_MAP(CLogOrdering, CStandAloneDialog)
 END_MESSAGE_MAP()
 
 BOOL CLogOrdering::OnInitDialog()
 {
-	CDialog::OnInitDialog();
+	CStandAloneDialog::OnInitDialog();
 
 	int ind = m_cLogOrdering.AddString(CString(MAKEINTRESOURCE(IDS_LOG_CHRONOLOGICALREVERSEDORDER)));
 	m_cLogOrdering.SetItemData(ind, CGit::LOG_ORDER_CHRONOLOGIALREVERSED);

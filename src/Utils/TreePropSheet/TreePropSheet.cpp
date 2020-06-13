@@ -127,6 +127,15 @@ CTreePropSheet::~CTreePropSheet()
 /////////////////////////////////////////////////////////////////////
 // Operationen
 
+void CTreePropSheet::SetTheme(bool bDark)
+{
+	m_bDark = bDark;
+	if (m_pFrame)
+		m_pFrame->SetTheme(bDark);
+	if (IsWindow(GetSafeHwnd()))
+		Invalidate();
+}
+
 BOOL CTreePropSheet::SetTreeViewMode(BOOL bTreeViewMode /* = TRUE */, BOOL bPageCaption /* = FALSE */, BOOL bTreeImages /* = FALSE */)
 {
 	if (IsWindow(m_hWnd))

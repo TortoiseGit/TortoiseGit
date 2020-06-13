@@ -87,6 +87,7 @@ BEGIN
         MENUITEM "P&age setup...",              ID_FILE_PAGESETUP
         MENUITEM "&Print...\tCtrl+P",         ID_FILE_PRINT
         MENUITEM SEPARATOR
+        MENUITEM "&Dark Mode",                ID_VIEW_DARKMODE
         MENUITEM "Se&ttings...",                ID_FILE_SETTINGS
         MENUITEM SEPARATOR
         MENUITEM "&Find\tCtrl+F",             IDM_SHOWFINDBAR

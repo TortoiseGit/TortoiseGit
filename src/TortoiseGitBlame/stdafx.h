@@ -61,6 +61,7 @@ using std::min;
 
 #define USE_GDI_GRADIENT
 #define HISTORYCOMBO_WITH_SYSIMAGELIST
+#define REGSTRING_DARKTHEME L"Software\\TortoiseGit\\TortoiseGitBlame\\Settings\\DarkTheme"
 
 #ifdef _UNICODE
 #if defined _M_IX86

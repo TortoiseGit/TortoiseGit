@@ -1,6 +1,6 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2010, 2012, 2015 - TortoiseSVN
+// Copyright (C) 2006-2010, 2012, 2015, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -64,6 +64,7 @@ protected:
 						const CRect& rect, int stripeIndex);
 	void			DrawFishEye(CDC& dc, const CRect& rect );
 	void			DocumentUpdated(CBaseView* view, CDWordArray& indents, CDWordArray& states);
+	void			SetTheme(bool bDark);
 
 	CBitmap *		m_pCacheBitmap;
 
@@ -78,6 +79,8 @@ protected:
 	CDWordArray		m_arBottomState;
 
 	CRegDWORD		m_regUseFishEye;
+	bool			m_bDark;
+	int				m_themeCallbackId;
 	DECLARE_MESSAGE_MAP()
 public:
 	CMainFrame *	m_pMainFrm;

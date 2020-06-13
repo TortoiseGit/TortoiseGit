@@ -37,6 +37,7 @@
 #include "StringUtils.h"
 #include "Hooks.h"
 #include "LogDlg.h"
+#include "ThemeMFCVisualManager.h"
 
 // CRebaseDlg dialog
 
@@ -92,7 +93,6 @@ BEGIN_MESSAGE_MAP(CRebaseDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_REBASE_CONTINUE,OnBnClickedContinue)
 	ON_BN_CLICKED(IDC_REBASE_ABORT,  OnBnClickedAbort)
 	ON_WM_SIZE()
-	ON_WM_THEMECHANGED()
 	ON_CBN_SELCHANGE(IDC_REBASE_COMBOXEX_BRANCH,   &CRebaseDlg::OnCbnSelchangeBranch)
 	ON_CBN_SELCHANGE(IDC_REBASE_COMBOXEX_UPSTREAM, &CRebaseDlg::OnCbnSelchangeUpstream)
 	ON_MESSAGE(MSG_REBASE_UPDATE_UI, OnRebaseUpdateUI)
@@ -199,7 +199,9 @@ BOOL CRebaseDlg::OnInitDialog()
 	pwnd->GetWindowRect(&rectDummy);
 	this->ScreenToClient(rectDummy);
 
-	if (!m_ctrlTabCtrl.Create(CMFCTabCtrl::STYLE_FLAT, rectDummy, this, IDC_REBASE_TAB))
+	if (CTheme::Instance().IsDarkTheme())
+		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CThemeMFCVisualManager));
+	if (!m_ctrlTabCtrl.Create(CTheme::Instance().IsDarkTheme() ? CMFCTabCtrl::STYLE_3D : CMFCTabCtrl::STYLE_FLAT, rectDummy, this, IDC_REBASE_TAB))
 	{
 		TRACE0("Failed to create output tab window\n");
 		return FALSE;      // fail to create
@@ -353,6 +355,8 @@ BOOL CRebaseDlg::OnInitDialog()
 	else
 		this->m_CurrentRebaseIndex = static_cast<int>(m_CommitList.m_logEntries.size());
 
+	SetTheme(CTheme::Instance().IsDarkTheme());
+
 	if (GetDlgItem(IDC_REBASE_CONTINUE)->IsWindowEnabled() && m_bRebaseAutoStart)
 		this->PostMessage(WM_COMMAND, MAKELONG(IDC_REBASE_CONTINUE, BN_CLICKED), reinterpret_cast<LPARAM>(GetDlgItem(IDC_REBASE_CONTINUE)->GetSafeHwnd()));
 
@@ -364,9 +368,9 @@ HBRUSH CRebaseDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
 	if (pWnd->GetDlgCtrlID() == IDC_STATUS_STATIC && nCtlColor == CTLCOLOR_STATIC && m_bStatusWarning)
 	{
-		pDC->SetBkColor(RGB(255, 0, 0));
-		pDC->SetTextColor(RGB(255, 255, 255));
-		return CreateSolidBrush(RGB(255, 0, 0));
+		pDC->SetBkColor(CTheme::Instance().GetThemeColor(RGB(255, 0, 0)));
+		pDC->SetTextColor(CTheme::Instance().GetThemeColor(RGB(255, 255, 255)));
+		return CreateSolidBrush(CTheme::Instance().GetThemeColor(RGB(255, 0, 0)));
 	}
 
 	return CResizableStandAloneDialog::OnCtlColor(pDC, pWnd, nCtlColor);
@@ -2987,10 +2991,21 @@ int	CRebaseDlg::RunGitCmdRetryOrAbort(const CString& cmd)
 	}
 }
 
-LRESULT CRebaseDlg::OnThemeChanged()
+void CRebaseDlg::SetTheme(bool bDark)
 {
+	__super::SetTheme(bDark);
 	CMFCVisualManager::GetInstance()->DestroyInstance();
-	return 0;
+	if (bDark)
+	{
+		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CThemeMFCVisualManager));
+		m_ctrlTabCtrl.ModifyTabStyle(CMFCTabCtrl::STYLE_3D);
+	}
+	else
+	{
+		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows));
+		m_ctrlTabCtrl.ModifyTabStyle(CMFCTabCtrl::STYLE_FLAT);
+	}
+	CMFCVisualManager::RedrawAll();
 }
 
 void CRebaseDlg::OnBnClickedButtonAdd()

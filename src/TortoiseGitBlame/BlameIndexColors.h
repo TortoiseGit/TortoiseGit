@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012 - TortoiseSVN
+// Copyright (C) 2012, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,6 +18,11 @@
 //
 #pragma once
 
+const COLORREF BlameTextColorDark = RGB(240, 240, 240);
+const COLORREF BlameBackColorDark = 0x202020; // cf. Theme.h
+
 #define BLAMENEWCOLOR		RGB(255,255,80)
 #define BLAMEOLDCOLOR		RGB(255,255,255)
 
+#define DARKBLAMENEWCOLOR	RGB(80, 80, 0)
+#define DARKBLAMEOLDCOLOR	BlameBackColorDark

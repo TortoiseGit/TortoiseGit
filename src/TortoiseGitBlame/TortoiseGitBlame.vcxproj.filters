@@ -189,6 +189,15 @@
     <ClCompile Include="..\Utils\MiscUI\DockablePaneUnscaledStoredState.cpp">
       <Filter>Utils\MiscUI</Filter>
     </ClCompile>
+    <ClCompile Include="..\Utils\Theme.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\DarkModeHelper.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\ThemeMFCVisualManager.cpp">
+      <Filter>Utils\MiscUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditGotoDlg.h">
@@ -376,6 +385,18 @@
     </ClInclude>
     <ClInclude Include="..\Utils\I18NHelper.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\Theme.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\DarkModeHelper.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\StandAloneDlg.h">
+      <Filter>Utils\MiscUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\ThemeMFCVisualManager.h">
+      <Filter>Utils\MiscUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

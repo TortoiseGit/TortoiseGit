@@ -33,6 +33,7 @@
 #include "ProgressCommands/FetchProgressCommand.h"
 #include "SyncTabCtrl.h"
 #include "SysProgressDlg.h"
+#include "ThemeMFCVisualManager.h"
 
 // CSyncDlg dialog
 
@@ -100,7 +101,6 @@ BEGIN_MESSAGE_MAP(CSyncDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_CHECK_FORCE, &CSyncDlg::OnBnClickedCheckForce)
 	ON_BN_CLICKED(IDC_LOG, &CSyncDlg::OnBnClickedLog)
 	ON_WM_DESTROY()
-	ON_WM_THEMECHANGED()
 END_MESSAGE_MAP()
 
 void CSyncDlg::EnableControlButton(bool bEnabled)
@@ -909,7 +909,9 @@ BOOL CSyncDlg::OnInitDialog()
 	pwnd->GetWindowRect(&rectDummy);
 	this->ScreenToClient(rectDummy);
 
-	if (!m_ctrlTabCtrl.Create(CMFCTabCtrl::STYLE_FLAT, rectDummy, this, IDC_SYNC_TAB))
+	if (CTheme::Instance().IsDarkTheme())
+		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CThemeMFCVisualManager));
+	if (!m_ctrlTabCtrl.Create(CTheme::Instance().IsDarkTheme() ? CMFCTabCtrl::STYLE_3D : CMFCTabCtrl::STYLE_FLAT, rectDummy, this, IDC_SYNC_TAB))
 	{
 		TRACE0("Failed to create output tab window\n");
 		return FALSE;      // fail to create
@@ -1173,6 +1175,8 @@ BOOL CSyncDlg::OnInitDialog()
 		}
 		MoveWindow(rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top);
 	}
+
+	SetTheme(CTheme::Instance().IsDarkTheme());
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -1819,10 +1823,21 @@ void CSyncDlg::OnDestroy()
 	__super::OnDestroy();
 }
 
-LRESULT CSyncDlg::OnThemeChanged()
+void CSyncDlg::SetTheme(bool bDark)
 {
+	__super::SetTheme(bDark);
 	CMFCVisualManager::GetInstance()->DestroyInstance();
-	return 0;
+	if (bDark)
+	{
+		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CThemeMFCVisualManager));
+		m_ctrlTabCtrl.ModifyTabStyle(CMFCTabCtrl::STYLE_3D);
+	}
+	else
+	{
+		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows));
+		m_ctrlTabCtrl.ModifyTabStyle(CMFCTabCtrl::STYLE_FLAT);
+	}
+	CMFCVisualManager::RedrawAll();
 }
 
 void CSyncDlg::OnEnLinkLog(NMHDR *pNMHDR, LRESULT *pResult)

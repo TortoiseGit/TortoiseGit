@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008, 2010-2011 - TortoiseSVN
+// Copyright (C) 2008, 2010-2011, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -31,16 +31,8 @@ class CToolTips : public CToolTipCtrl
 {
 // Construction
 public:
-	virtual BOOL Create(CWnd* pParentWnd, DWORD dwStyle = 0)
-	{
-		m_pParentWnd = pParentWnd;
-		m_pParentWnd->EnableToolTips();
-		BOOL bRet = CToolTipCtrl::Create(pParentWnd, dwStyle);
-		SetMaxTipWidth(600);
-		SetDelayTime (TTDT_AUTOPOP, 30000);
-		return bRet;
-	}
-	CToolTips() : CToolTipCtrl(), m_pParentWnd(nullptr) {}
+	virtual BOOL Create(CWnd* pParentWnd, DWORD dwStyle = 0);
+	CToolTips() : CToolTipCtrl(), m_pParentWnd(nullptr), m_themeCallbackId(0) {}
 	virtual ~CToolTips() {}
 
 	BOOL AddTool(CWnd* pWnd, UINT nIDText, LPCRECT lpRectTool = nullptr, UINT_PTR nIDTool = 0);
@@ -54,12 +46,16 @@ public:
 	void ShowBalloon(int nIdWnd, UINT nIdText, UINT nIDTitle, UINT icon = 0);
 	void RelayEvent(LPMSG lpMsg, CWnd* dlgWnd = nullptr);
 
+protected:
 	DECLARE_MESSAGE_MAP()
 	afx_msg BOOL OnTtnNeedText(NMHDR *pNMHDR, LRESULT *pResult);
 
 private:
+	void SetTheme(bool bDark);
+
 	CWnd *	m_pParentWnd;
 	std::map<UINT, CString>		toolTextMap;
+	int m_themeCallbackId;
 
 	static CString LoadTooltip( UINT nIDText );
 };

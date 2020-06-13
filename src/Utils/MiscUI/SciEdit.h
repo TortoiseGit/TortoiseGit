@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2009-2020 - TortoiseGit
-// Copyright (C) 2003-2008, 2013, 2018 - TortoiseSVN
+// Copyright (C) 2003-2008, 2013, 2018, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -168,6 +168,8 @@ private:
 	LruCache<std::wstring, BOOL> m_SpellingCache;
 	bool		m_blockModifiedHandler;
 	bool		m_bReadOnly;
+	int			m_themeCallbackId;
+
 	static bool IsValidURLChar(unsigned char ch);
 protected:
 	virtual BOOL OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pLResult) override;

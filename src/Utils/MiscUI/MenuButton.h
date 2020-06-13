@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2017 - TortoiseGit
+// Copyright (C) 2016-2017, 2020 - TortoiseGit
 // Copyright (C) 2011, 2016 - Sven Strickroth <email@cs-ware.de>
 
 //based on:
@@ -22,6 +22,7 @@
 //
 #pragma once
 #include "IconMenu.h"
+#include "ThemeControls.h"
 
 /**
  * \ingroup Utils
@@ -31,7 +32,7 @@
  * part will bring up a menu where the user can choose what
  * action the button should do.
  */
-class CMenuButton : public CMFCMenuButton
+class CMenuButton : public CThemeMFCMenuButton
 {
 public:
 	DECLARE_DYNCREATE(CMenuButton);
@@ -86,9 +87,10 @@ public:
 protected:
 	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
 
-	bool	m_bRealMenuIsActive;
-	virtual void OnShowMenu() override;
+	virtual BOOL IsPressed() override;
+
 	afx_msg void OnDraw(CDC* pDC, const CRect& rect, UINT uiState);
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnSysColorChange();
 	afx_msg LRESULT OnThemeChanged();
 

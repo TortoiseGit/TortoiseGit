@@ -167,6 +167,8 @@ void CPropPageFrameDefault::DrawCaption(CDC *pDc, CRect rect, LPCTSTR lpszCaptio
 {
 	COLORREF	clrLeft = GetSysColor(COLOR_INACTIVECAPTION);
 	COLORREF	clrRight = pDc->GetPixel(rect.right-1, rect.top);
+	if (IsDarkTheme())
+		std::swap(clrLeft, clrRight);
 	FillGradientRectH(pDc, rect, clrLeft, clrRight);
 
 	double hScale = 1.0;
@@ -193,7 +195,7 @@ void CPropPageFrameDefault::DrawCaption(CDC *pDc, CRect rect, LPCTSTR lpszCaptio
 	// draw text
 	rect.left += static_cast<LONG>(2 * hScale + 0.5);
 
-	COLORREF	clrPrev = pDc->SetTextColor(GetSysColor(COLOR_CAPTIONTEXT));
+	COLORREF clrPrev = IsDarkTheme() ? pDc->SetTextColor(GetSysColor(COLOR_ACTIVECAPTION)) : pDc->SetTextColor(GetSysColor(COLOR_CAPTIONTEXT));
 	int				nBkStyle = pDc->SetBkMode(TRANSPARENT);
 
 	LOGFONT lf;
@@ -257,6 +259,13 @@ void CPropPageFrameDefault::OnPaint()
 
 BOOL CPropPageFrameDefault::OnEraseBkgnd(CDC* pDC)
 {
+	if (IsDarkTheme())
+	{
+		CRect rect;
+		GetClientRect(rect);
+		pDC->FillSolidRect(&rect, 0);
+		return TRUE;
+	}
 	if (IsAppThemed())
 	{
 		CAutoThemeData hTheme = OpenThemeData(m_hWnd, L"TREEVIEW");

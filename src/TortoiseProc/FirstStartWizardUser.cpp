@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2017, 2019 - TortoiseGit
+// Copyright (C) 2016-2017, 2019-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,6 +21,7 @@
 #include "FirstStartWizard.h"
 #include "FirstStartWizardUser.h"
 #include "Git.h"
+#include "Theme.h"
 
 IMPLEMENT_DYNAMIC(CFirstStartWizardUser, CFirstStartWizardBasePage)
 
@@ -117,6 +118,8 @@ BOOL CFirstStartWizardUser::OnInitDialog()
 	config.GetString(L"user.email", m_sUseremail);
 
 	UpdateData(FALSE);
+
+	CTheme::Instance().SetThemeForDialog(GetSafeHwnd(), CTheme::Instance().IsDarkTheme());
 
 	return TRUE;
 }

@@ -697,7 +697,6 @@ protected:
 	CString				m_CurrentBranch;
 	CGitHash			m_HeadHash;
 
-	COLORREF			m_LineColors[Lanes::COLORS_NUM];
 	DWORD				m_LineWidth;
 	DWORD				m_NodeSize;
 	DWORD				m_DateFormat;	// DATE_SHORTDATE or DATE_LONGDATE

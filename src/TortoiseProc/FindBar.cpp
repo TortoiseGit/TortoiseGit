@@ -26,11 +26,11 @@ UINT CFindBar::WM_FINDNEXT = RegisterWindowMessage(L"TORTOISEGIT_PATCHVIEW_FINDN
 UINT CFindBar::WM_FINDPREV = RegisterWindowMessage(L"TORTOISEGIT_PATCHVIEW_FINDPREV_MSG");
 UINT CFindBar::WM_FINDRESET = RegisterWindowMessage(L"TORTOISEGIT_PATCHVIEW_FINDRESET_MSG");
 
-IMPLEMENT_DYNAMIC(CFindBar, CDialog)
+IMPLEMENT_DYNAMIC(CFindBar, CStandAloneDialog)
 
 CFindBar::CFindBar(CWnd* pParent /*=nullptr*/)
-: CDialog(CFindBar::IDD, pParent)
-, m_bMatchCase(false)
+	: CStandAloneDialog(CFindBar::IDD, pParent)
+	, m_bMatchCase(false)
 {
 }
 
@@ -40,7 +40,7 @@ CFindBar::~CFindBar(void)
 
 BOOL CFindBar::OnInitDialog()
 {
-	CDialog::OnInitDialog();
+	CStandAloneDialog::OnInitDialog();
 
 	m_hIcon = LoadIconEx(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_CANCELNORMAL));
 	GetDlgItem(IDC_FINDEXIT)->SendMessage(BM_SETIMAGE, IMAGE_ICON, reinterpret_cast<LPARAM>(static_cast<HICON>(m_hIcon)));
@@ -50,12 +50,12 @@ BOOL CFindBar::OnInitDialog()
 
 void CFindBar::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+	CStandAloneDialog::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_FINDTEXT, m_sFindStr);
 	DDX_Check(pDX, IDC_MATCHCASECHECK, m_bMatchCase);
 }
 
-BEGIN_MESSAGE_MAP(CFindBar, CDialog)
+BEGIN_MESSAGE_MAP(CFindBar, CStandAloneDialog)
 	ON_BN_CLICKED(IDC_FINDEXIT, &OnFindExit)
 	ON_BN_CLICKED(IDC_FINDNEXT, &OnFindNext)
 	ON_BN_CLICKED(IDC_FINDPREV, &OnFindPrev)

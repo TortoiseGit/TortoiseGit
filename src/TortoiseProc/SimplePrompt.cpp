@@ -1,5 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2020 - TortoiseGit
 // Copyright (C) 2003-2006 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
@@ -20,9 +21,9 @@
 #include "TortoiseProc.h"
 #include "SimplePrompt.h"
 
-IMPLEMENT_DYNAMIC(CSimplePrompt, CDialog)
+IMPLEMENT_DYNAMIC(CSimplePrompt, CStandAloneDialog)
 CSimplePrompt::CSimplePrompt(CWnd* pParent /*=nullptr*/)
-	: CDialog(CSimplePrompt::IDD, pParent)
+	: CStandAloneDialog(CSimplePrompt::IDD, pParent)
 	, m_bSaveAuthentication(FALSE)
 	, m_hParentWnd(nullptr)
 {
@@ -34,7 +35,7 @@ CSimplePrompt::~CSimplePrompt()
 
 void CSimplePrompt::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+	CStandAloneDialog::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_USEREDIT, m_sUsername);
 	DDX_Text(pDX, IDC_PASSEDIT, m_sPassword);
 	DDX_Check(pDX, IDC_SAVECHECK, m_bSaveAuthentication);
@@ -42,12 +43,12 @@ void CSimplePrompt::DoDataExchange(CDataExchange* pDX)
 }
 
 
-BEGIN_MESSAGE_MAP(CSimplePrompt, CDialog)
+BEGIN_MESSAGE_MAP(CSimplePrompt, CStandAloneDialog)
 END_MESSAGE_MAP()
 
 BOOL CSimplePrompt::OnInitDialog()
 {
-	CDialog::OnInitDialog();
+	CStandAloneDialog::OnInitDialog();
 
 	GetDlgItem(IDC_USEREDIT)->SetFocus();
 	if (!m_hParentWnd && hWndExplorer)

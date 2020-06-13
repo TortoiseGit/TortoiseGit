@@ -1411,6 +1411,7 @@
 #define IDC_BLAME_ONLYFIRSTPARENT       1677
 #define IDS_CONFIGUREDEFAULT            1677
 #define IDC_FROMSUBJECT                 1678
+#define IDS_DARKTHEME_TT                1678
 #define IDC_TOHASH                      1679
 #define IDC_TOSUBJECT                   1680
 #define IDC_CHECK_NEWBRANCH             1681
@@ -1439,6 +1440,7 @@
 #define IDC_GROUP_CHANGELOG             1697
 #define IDC_GROUP_DOWNLOADS             1698
 #define IDC_LOG3                        1698
+#define IDC_DARKTHEME                   1699
 #define IDC_SELECTLABEL                 1700
 #define IDS_ABOUTVERSION                1700
 #define IDC_CHECKALL                    1701

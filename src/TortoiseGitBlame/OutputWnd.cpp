@@ -49,7 +49,14 @@ BEGIN_MESSAGE_MAP(COutputWnd, CDockablePane)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LOG, OnLvnItemchangedLoglist)
+	ON_WM_SYSCOLORCHANGE()
 END_MESSAGE_MAP()
+
+void COutputWnd::OnSysColorChange()
+{
+	__super::OnSysColorChange();
+	CTheme::Instance().SetThemeForDialog(GetSafeHwnd(), CTheme::Instance().IsDarkTheme());
+}
 
 int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {

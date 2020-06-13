@@ -1,6 +1,6 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2008, 2013-2014, 2017 - TortoiseSVN
+// Copyright (C) 2006-2008, 2013-2014, 2017, 2020 - TortoiseSVN
 // Copyright (C) 2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
@@ -42,16 +42,20 @@ public:
 	void SaveData();
 
 	BOOL	m_bReloadNeeded;
-// Dialog Data
+	bool	m_IsDarkMode;
+
+	// Dialog Data
 	enum { IDD = IDD_SETCOLORPAGE };
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnInitDialog();
+	void SetupColorButtons();
 	virtual BOOL OnApply();
 
 	afx_msg void OnBnClickedColor();
 	afx_msg void OnBnClickedRestore();
+	afx_msg void OnBnClickedDarkmode();
 
 	DECLARE_MESSAGE_MAP()
 
@@ -60,6 +64,10 @@ protected:
 	CRegDWORD		m_regInlineAdded;
 	CRegDWORD		m_regInlineRemoved;
 	CRegDWORD		m_regModifiedBackground;
+	CRegDWORD		m_regDarkInlineAdded;
+	CRegDWORD		m_regDarkInlineRemoved;
+	CRegDWORD		m_regDarkModifiedBackground;
+	CRegDWORD		m_regUseDarkMode;
 	CMFCColorButton m_cBkNormal;
 	CMFCColorButton m_cBkRemoved;
 	CMFCColorButton m_cBkAdded;
@@ -77,4 +85,6 @@ protected:
 	CMFCColorButton m_cFgConflictResolved;
 	CMFCColorButton m_cFgWhitespaces;
 	CMFCColorButton m_cBkFiltered;
+	CButton m_chkUseDarkMode;
+	int m_themeCallbackId;
 };

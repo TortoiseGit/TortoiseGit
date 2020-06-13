@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012, 2015-2019 - TortoiseGit
+// Copyright (C) 2008-2012, 2015-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -75,6 +75,7 @@ protected:
 
 	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
 	virtual BOOL OnInitDialog() override;
+	virtual void SetTheme(bool bDark) override;
 
 	CMFCTabCtrl m_ctrlTabCtrl;
 
@@ -111,7 +112,6 @@ protected:
 	afx_msg void OnBnClickedButtonDown();
 	afx_msg void OnBnClickedButtonRemove();
 	afx_msg void OnBnClickedOk();
-	afx_msg LRESULT OnThemeChanged();
 
 	void EnableInputCtrl(BOOL b);
 	void UpdateOkCancelText();

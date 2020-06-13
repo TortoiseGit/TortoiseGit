@@ -1,7 +1,7 @@
 ﻿// TortoiseGitIDiff - an image diff viewer in TortoiseSVN
 
 // Copyright (C) 2015-2019 - TortoiseGit
-// Copyright (C) 2006-2013, 2015, 2018 - TortoiseSVN
+// Copyright (C) 2006-2015, 2018, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,6 +27,9 @@
 #include "PathUtils.h"
 #include "DPIAware.h"
 #include "LoadIconEx.h"
+#include "registry.h"
+#include "Theme.h"
+#include "DarkModeHelper.h"
 
 #pragma comment(lib, "comctl32.lib")
 
@@ -211,6 +214,9 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
             picWindow1.FitImageInWindow();
             picWindow2.FitImageInWindow();
             picWindow3.FitImageInWindow();
+
+            m_themeCallbackId = CTheme::Instance().RegisterThemeChangeCallback([this]() { SetTheme(CTheme::Instance().IsDarkTheme()); });
+            SetTheme(CTheme::Instance().IsDarkTheme());
         }
         break;
     case WM_COMMAND:
@@ -404,8 +410,14 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
         PostQuitMessage(0);
         break;
     case WM_CLOSE:
+        CTheme::Instance().RemoveRegisteredCallback(m_themeCallbackId);
+        m_themeCallbackId = 0;
         ImageList_Destroy(hToolbarImgList);
         ::DestroyWindow(m_hwnd);
+        break;
+    case WM_SYSCOLORCHANGE:
+        CTheme::Instance().OnSysColorChanged();
+        CTheme::Instance().SetDarkTheme(CTheme::Instance().IsDarkTheme(), true);
         break;
     default:
         return DefWindowProc(hwnd, uMsg, wParam, lParam);
@@ -811,6 +823,9 @@ LRESULT CMainWindow::DoCommand(int id, LPARAM lParam)
             PostQuitMessage(resolveWith);
         }
         break;
+        case ID_VIEW_DARKMODE:
+        CTheme::Instance().SetDarkTheme(!CTheme::Instance().IsDarkTheme());
+        break;
     case IDM_EXIT:
         ::PostQuitMessage(0);
         return 0;
@@ -919,6 +934,58 @@ LRESULT CMainWindow::Splitter_OnLButtonDown(HWND hwnd, UINT /*iMsg*/, WPARAM /*w
 void CMainWindow::Splitter_CaptureChanged()
 {
     bDragMode = false;
+}
+
+void CMainWindow::SetTheme(bool bDark)
+{
+    transparentColor = ::GetSysColor(COLOR_WINDOW);
+    picWindow1.SetTransparentColor(transparentColor);
+    picWindow2.SetTransparentColor(transparentColor);
+    picWindow3.SetTransparentColor(transparentColor);
+    if (bDark)
+    {
+        DarkModeHelper::Instance().AllowDarkModeForApp(TRUE);
+
+        DarkModeHelper::Instance().AllowDarkModeForWindow(*this, TRUE);
+        SetClassLongPtr(*this, GCLP_HBRBACKGROUND, reinterpret_cast<LONG_PTR>(GetStockObject(BLACK_BRUSH)));
+        if (FAILED(SetWindowTheme(*this, L"DarkMode_Explorer", nullptr)))
+            SetWindowTheme(*this, L"Explorer", nullptr);
+        DarkModeHelper::Instance().AllowDarkModeForWindow(hwndTB, TRUE);
+        if (FAILED(SetWindowTheme(hwndTB, L"DarkMode_Explorer", nullptr)))
+            SetWindowTheme(hwndTB, L"Explorer", nullptr);
+        BOOL darkFlag = TRUE;
+        DarkModeHelper::WINDOWCOMPOSITIONATTRIBDATA data = { DarkModeHelper::WINDOWCOMPOSITIONATTRIB::WCA_USEDARKMODECOLORS, &darkFlag, sizeof(darkFlag) };
+        DarkModeHelper::Instance().SetWindowCompositionAttribute(*this, &data);
+        DarkModeHelper::Instance().FlushMenuThemes();
+        DarkModeHelper::Instance().RefreshImmersiveColorPolicyState();
+    }
+    else
+    {
+        DarkModeHelper::Instance().AllowDarkModeForApp(FALSE);
+        DarkModeHelper::Instance().AllowDarkModeForWindow(*this, FALSE);
+        DarkModeHelper::Instance().AllowDarkModeForWindow(hwndTB, FALSE);
+        SetClassLongPtr(*this, GCLP_HBRBACKGROUND, reinterpret_cast<LONG_PTR>(GetSysColorBrush(COLOR_3DFACE)));
+        SetWindowTheme(*this, L"Explorer", nullptr);
+        SetWindowTheme(hwndTB, L"Explorer", nullptr);
+        DarkModeHelper::Instance().AllowDarkModeForWindow(*this, FALSE);
+        DarkModeHelper::Instance().AllowDarkModeForWindow(hwndTB, FALSE);
+        BOOL darkFlag = FALSE;
+        DarkModeHelper::WINDOWCOMPOSITIONATTRIBDATA data = { DarkModeHelper::WINDOWCOMPOSITIONATTRIB::WCA_USEDARKMODECOLORS, &darkFlag, sizeof(darkFlag) };
+        DarkModeHelper::Instance().SetWindowCompositionAttribute(*this, &data);
+        DarkModeHelper::Instance().FlushMenuThemes();
+        DarkModeHelper::Instance().RefreshImmersiveColorPolicyState();
+        DarkModeHelper::Instance().AllowDarkModeForApp(FALSE);
+    }
+
+    HMENU hMenu = GetMenu(*this);
+    UINT uCheck = MF_BYCOMMAND;
+    uCheck |= CTheme::Instance().IsDarkTheme() ? MF_CHECKED : MF_UNCHECKED;
+    CheckMenuItem(hMenu, ID_VIEW_DARKMODE, uCheck);
+    UINT uEnabled = MF_BYCOMMAND;
+    uEnabled |= CTheme::Instance().IsDarkModeAllowed() ? MF_ENABLED : MF_DISABLED;
+    EnableMenuItem(hMenu, ID_VIEW_DARKMODE, uEnabled);
+
+    ::RedrawWindow(*this, nullptr, nullptr, RDW_FRAME | RDW_INVALIDATE | RDW_ERASE | RDW_INTERNALPAINT | RDW_ALLCHILDREN | RDW_UPDATENOW);
 }
 
 LRESULT CMainWindow::Splitter_OnLButtonUp(HWND hwnd, UINT /*iMsg*/, WPARAM /*wParam*/, LPARAM lParam)
@@ -1106,6 +1173,7 @@ BOOL CALLBACK CMainWindow::OpenDlgProc(HWND hwndDlg, UINT message, WPARAM wParam
     {
     case WM_INITDIALOG:
         {
+            CTheme::Instance().SetThemeForDialog(hwndDlg, CTheme::Instance().IsDarkTheme());
             // center on the parent window
             HWND hParentWnd = ::GetParent(hwndDlg);
             RECT parentrect, childrect, centeredrect;
@@ -1155,6 +1223,7 @@ BOOL CALLBACK CMainWindow::OpenDlgProc(HWND hwndDlg, UINT message, WPARAM wParam
             }
             // Fall through.
         case IDCANCEL:
+            CTheme::Instance().SetThemeForDialog(hwndDlg, false);
             EndDialog(hwndDlg, wParam);
             return TRUE;
         }

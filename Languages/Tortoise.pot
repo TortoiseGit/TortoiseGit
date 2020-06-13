@@ -460,6 +460,14 @@ msgstr ""
 msgid "&Custom"
 msgstr ""
 
+#. Resource IDs: (ID_VIEW_DARKMODE - Menu)
+msgid "&Dark Mode"
+msgstr ""
+
+#. Resource IDs: (ID_VIEW_DARKMODE - Menu)
+msgid "&Dark Mode\tD"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1269)
 msgid "&Default"
 msgstr ""
@@ -3254,6 +3262,14 @@ msgstr ""
 msgid "Daemon"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 1699)
+msgid "Dark theme"
+msgstr ""
+
+#. Resource IDs: (IDS_DARKTHEME_TT)
+msgid "Dark theme requires at least Win10 1803, and it must be enabled in the Windows system settings."
+msgstr ""
+
 #. Resource IDs: (IDS_LOG_DATE, IDS_STATUSLIST_COLDATE)
 msgid "Date"
 msgstr ""
@@ -5130,6 +5146,10 @@ msgstr ""
 
 #. Accelerator Entry for Menu ID:32818; 'Fit image &heights\tH'
 msgid "ID:32818:V   +H"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32819; '&Dark Mode\tD'
+msgid "ID:32819:V   +D"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32822; ''
@@ -9848,6 +9868,10 @@ msgstr ""
 
 #. Resource IDs: (IDS_SMTP_CONFIGURED)
 msgid "Use configured server"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_SETCOLORPAGE: Control id 1513)
+msgid "Use dark mode"
 msgstr ""
 
 #. Resource IDs: (ID_EDIT_USELEFTBLOCK - Menu, cmdUseLeftBlock_LabelTitle_RESID)

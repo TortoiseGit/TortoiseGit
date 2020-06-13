@@ -199,7 +199,8 @@ protected:
 	afx_msg void	OnUpdateEnableIfSelection(CCmdUI* pCmdUI);
 	afx_msg	void	OnRegexNoFilter();
 	afx_msg void	OnUpdateRegexNoFilter(CCmdUI* pCmdUI);
-
+	afx_msg void	OnSettingChange(UINT uFlags, LPCTSTR lpszSection);
+	afx_msg void	OnSysColorChange();
 	DECLARE_MESSAGE_MAP()
 protected:
 	void			UpdateLayout();
@@ -252,6 +253,8 @@ protected:
 	void			BuildRegexSubitems(CMFCPopupMenu* pMenuPopup = nullptr);
 	bool			AdjustUnicodeTypeForLoad(CFileTextLines::UnicodeType& type);
 	void			DiffTwo(const CWorkingFile& file1, const CWorkingFile& file2);
+	void			SetTheme(bool bDark);
+	void			SetAccentColor();
 
 protected:
 	CMFCStatusBar	m_wndStatusBar;
@@ -311,6 +314,8 @@ public:
 	void			FillTabModeButton(CMFCRibbonButton * pButton, int start);
 	CMFCMenuBar		m_wndMenuBar;
 	CMFCToolBar		m_wndToolBar;
+
+	int				m_themeCallbackId;
 
 	std::unique_ptr<CNativeRibbonApp> m_pRibbonApp;
 	CComPtr<IUIFramework> m_pRibbonFramework;

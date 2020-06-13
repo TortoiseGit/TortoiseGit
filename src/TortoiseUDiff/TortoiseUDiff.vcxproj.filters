@@ -63,6 +63,12 @@
     <ClCompile Include="..\Utils\PathUtils.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\Utils\DarkModeHelper.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\Theme.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FindBar.h">
@@ -123,6 +129,12 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\I18NHelper.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\DarkModeHelper.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\Theme.h">
       <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>

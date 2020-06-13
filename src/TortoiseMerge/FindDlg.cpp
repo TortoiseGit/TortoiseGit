@@ -23,10 +23,10 @@
 
 // CFindDlg dialog
 
-IMPLEMENT_DYNAMIC(CFindDlg, CDialog)
+IMPLEMENT_DYNAMIC(CFindDlg, CStandAloneDialog)
 
 CFindDlg::CFindDlg(CWnd* pParent /*=nullptr*/)
-	: CDialog(CFindDlg::IDD, pParent)
+	: CStandAloneDialog(CFindDlg::IDD, pParent)
 	, m_pParent(pParent)
 	, m_bTerminating(false)
 	, m_bFindNext(false)
@@ -50,7 +50,7 @@ CFindDlg::~CFindDlg()
 
 void CFindDlg::Create(CWnd* pParent, int id /* = 0 */)
 {
-	CDialog::Create(IDD, pParent);
+	__super::Create(IDD, pParent);
 	if (id && pParent)
 	{
 		m_id = id;
@@ -70,7 +70,7 @@ void CFindDlg::Create(CWnd* pParent, int id /* = 0 */)
 
 void CFindDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+	CStandAloneDialog::DoDataExchange(pDX);
 	DDX_Check(pDX, IDC_MATCHCASE, m_bMatchCase);
 	DDX_Check(pDX, IDC_LIMITTODIFFS, m_bLimitToDiffs);
 	DDX_Check(pDX, IDC_WHOLEWORD, m_bWholeWord);
@@ -81,7 +81,7 @@ void CFindDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 
-BEGIN_MESSAGE_MAP(CFindDlg, CDialog)
+BEGIN_MESSAGE_MAP(CFindDlg, CStandAloneDialog)
 	ON_CBN_EDITCHANGE(IDC_FINDCOMBO, &CFindDlg::OnCbnEditchangeFindcombo)
 	ON_CBN_EDITCHANGE(IDC_REPLACECOMBO, &CFindDlg::OnCbnEditchangeFindcombo)
 	ON_BN_CLICKED(IDC_COUNT, &CFindDlg::OnBnClickedCount)
@@ -136,7 +136,7 @@ void CFindDlg::OnOK()
 
 BOOL CFindDlg::OnInitDialog()
 {
-	CDialog::OnInitDialog();
+	CStandAloneDialog::OnInitDialog();
 	m_FindMsg = RegisterWindowMessage(FINDMSGSTRING);
 
 	m_bMatchCase = m_regMatchCase;
@@ -156,6 +156,7 @@ BOOL CFindDlg::OnInitDialog()
 
 	m_FindCombo.SetFocus();
 
+	SetTheme(CTheme::Instance().IsDarkTheme());
 	return FALSE;
 }
 
@@ -194,7 +195,7 @@ HBRUSH CFindDlg::OnCtlColor(CDC* pDC, CWnd *pWnd, UINT nCtlColor)
 	case CTLCOLOR_STATIC:
 		if (pWnd == &m_FindStatus)
 		{
-			HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
+			HBRUSH hbr = CStandAloneDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 			pDC->SetTextColor(m_clrFindStatus);
 			pDC->SetBkMode(TRANSPARENT);
 			return hbr;
@@ -202,7 +203,7 @@ HBRUSH CFindDlg::OnCtlColor(CDC* pDC, CWnd *pWnd, UINT nCtlColor)
 	default:
 		break;
 	}
-	return CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
+	return CStandAloneDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 }
 
 void CFindDlg::SetStatusText(const CString& str, COLORREF color)

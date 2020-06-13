@@ -71,6 +71,7 @@ using std::min;
 #define USE_GDI_GRADIENT
 
 #define XMESSAGEBOX_APPREGPATH "Software\\TortoiseGitMerge\\"
+#define REGSTRING_DARKTHEME L"Software\\TortoiseGitMerge\\DarkTheme"
 
 #include "scope_exit_noexcept.h"
 #include "ProfilingInfo.h"

@@ -1,6 +1,6 @@
-// TortoiseIDiff - an image diff viewer in TortoiseSVN
+﻿// TortoiseIDiff - an image diff viewer in TortoiseGit
 
-// Copyright (C) 2012-2013 - TortoiseSVN
+// Copyright (C) 2012-2013, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,6 +20,7 @@
 #include "resource.h"
 #include "AboutDlg.h"
 #include "registry.h"
+#include "Theme.h"
 #include "../version.h"
 #include <string>
 #include <Commdlg.h>
@@ -28,6 +29,7 @@
 CAboutDlg::CAboutDlg(HWND hParent)
     : m_hParent(hParent)
     , m_hHiddenWnd(0)
+    , m_themeCallbackId(0)
 {
 }
 
@@ -49,6 +51,7 @@ LRESULT CAboutDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
             ::LoadString (hResource, IDS_VERSION, maskbuf, _countof(maskbuf));
             swprintf_s(verbuf, maskbuf, TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD);
             SetDlgItemText(hwndDlg, IDC_ABOUTVERSION, verbuf);
+            CTheme::Instance().SetThemeForDialog(*this, CTheme::Instance().IsDarkTheme());
         }
         return TRUE;
     case WM_COMMAND:
@@ -65,6 +68,7 @@ LRESULT CAboutDlg::DoCommand(int id)
     case IDOK:
         // fall through
     case IDCANCEL:
+        CTheme::Instance().SetThemeForDialog(*this, false);
         EndDialog(*this, id);
         break;
     }

@@ -113,6 +113,7 @@ protected:
 protected:
 	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
 	afx_msg void OnSysColorChange();
+	afx_msg void OnDestroy();
 	afx_msg void OnChangeEncode(UINT nID);
 	afx_msg void OnEditFind();
 	afx_msg void OnEditGoto();
@@ -163,6 +164,8 @@ protected:
 	afx_msg void OnViewToggleColorByAge();
 	afx_msg void OnUpdateViewToggleColorByAge(CCmdUI *pCmdUI);
 	afx_msg void OnViewToggleLexer();
+	afx_msg void OnUpdateViewToggleDarkMode(CCmdUI* pCmdUI);
+	afx_msg void OnViewToggleDarkMode();
 	afx_msg void OnUpdateViewToggleLexer(CCmdUI *pCmdUI);
 	afx_msg void OnViewWrapLongLines();
 	afx_msg void OnUpdateViewWrapLongLines(CCmdUI* pCmdUI);
@@ -184,6 +187,7 @@ public:
 
 	CSciEditBlame		m_TextView;
 	CToolTips			m_ToolTip;
+	CString				m_sLastFilename;
 
 	HINSTANCE hInstance;
 	HINSTANCE hResource;
@@ -213,6 +217,7 @@ public:
 	LONG GetBlameWidth();
 	void DrawBlame(HDC hDC);
 	void DrawLocatorBar(HDC hDC);
+	void SetTheme(bool bDark);
 	void CopyToClipboard();
 	bool DoSearch(CTortoiseGitBlameData::SearchDirection direction);
 	bool GotoLine(int line);
@@ -237,6 +242,7 @@ public:
 protected:
 	void CreateFont();
 	void CreateNewFont(bool resize);
+	void SetupColoring();
 	void SetupLexer(CString filename);
 	void SetupCppLexer();
 	int GetLineUnderCursor(CPoint point);
@@ -266,6 +272,8 @@ protected:
 
 	CRegStdDWORD				m_regOldLinesColor;
 	CRegStdDWORD				m_regNewLinesColor;
+	CRegStdDWORD				m_regDarkOldLinesColor;
+	CRegStdDWORD				m_regDarkNewLinesColor;
 
 	CGitBlameLogList * GetLogList();
 
@@ -274,6 +282,8 @@ protected:
 #ifdef USE_TEMPFILENAME
 	char					*m_Buffer;
 #endif
+
+	int m_themeCallbackId;
 
 	DWORD					m_DateFormat;	// DATE_SHORTDATE or DATE_LONGDATE
 	bool					m_bRelativeTimes;	// Show relative times

@@ -58,6 +58,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\Utils\CommonAppUtils.cpp" />
+    <ClCompile Include="..\Utils\DarkModeHelper.cpp" />
     <ClCompile Include="..\Utils\DebugOutput.cpp" />
     <ClCompile Include="..\Utils\LoadIconEx.cpp" />
     <ClCompile Include="..\Utils\MiscUI\EditWordBreak.cpp" />
@@ -65,10 +66,13 @@
     <ClCompile Include="..\Utils\MiscUI\IconBitmapUtils.cpp" />
     <ClCompile Include="..\Utils\MiscUI\IconMenu.cpp" />
     <ClCompile Include="..\Utils\MiscUI\StandAloneDlg.cpp" />
+    <ClCompile Include="..\Utils\MiscUI\ThemeMFCVisualManager.cpp" />
     <ClCompile Include="..\Utils\MiscUI\Tooltip.cpp" />
     <ClCompile Include="..\Utils\ProfilingInfo.cpp" />
     <ClCompile Include="..\Utils\SysImageList.cpp" />
     <ClCompile Include="..\Utils\TaskbarUUID.cpp" />
+    <ClCompile Include="..\Utils\Theme.cpp" />
+    <ClCompile Include="..\Utils\Windows10Colors.cpp" />
     <ClCompile Include="EditorConfigWrapper.cpp" />
     <ClCompile Include="EncodingDlg.cpp" />
     <ClCompile Include="EOL.cpp" />
@@ -323,6 +327,7 @@
     <ClInclude Include="..\Git\TGitPath.h" />
     <ClInclude Include="..\Utils\CommonAppUtils.h" />
     <ClInclude Include="..\Utils\CreateProcessHelper.h" />
+    <ClInclude Include="..\Utils\DarkModeHelper.h" />
     <ClInclude Include="..\Utils\DebugOutput.h" />
     <ClInclude Include="..\Utils\DPIAware.h" />
     <ClInclude Include="..\Utils\I18NHelper.h" />
@@ -334,11 +339,14 @@
     <ClInclude Include="..\Utils\MiscUI\IconMenu.h" />
     <ClInclude Include="..\Utils\MiscUI\LineColors.h" />
     <ClInclude Include="..\Utils\MiscUI\StandAloneDlg.h" />
+    <ClInclude Include="..\Utils\MiscUI\ThemeMFCVisualManager.h" />
     <ClInclude Include="..\Utils\MiscUI\Tooltip.h" />
     <ClInclude Include="..\Utils\MiscUI\TripleClick.h" />
     <ClInclude Include="..\Utils\ProfilingInfo.h" />
     <ClInclude Include="..\Utils\SysImageList.h" />
     <ClInclude Include="..\Utils\TaskbarUUID.h" />
+    <ClInclude Include="..\Utils\Theme.h" />
+    <ClInclude Include="..\Utils\Windows10Colors.h" />
     <ClInclude Include="CustomMFCRibbonStatusBar.h" />
     <ClInclude Include="EditorConfigWrapper.h" />
     <ClInclude Include="EncodingDlg.h" />

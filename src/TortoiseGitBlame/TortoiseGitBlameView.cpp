@@ -40,6 +40,8 @@
 #include "TGitPath.h"
 #include "IconMenu.h"
 #include "DPIAware.h"
+#include "Theme.h"
+#include "DarkModeHelper.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -94,6 +96,8 @@ BEGIN_MESSAGE_MAP(CTortoiseGitBlameView, CView)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_COLORBYAGE, OnUpdateViewToggleColorByAge)
 	ON_COMMAND(ID_VIEW_ENABLELEXER, OnViewToggleLexer)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_ENABLELEXER, OnUpdateViewToggleLexer)
+	ON_COMMAND(ID_VIEW_DARKMODE, OnViewToggleDarkMode)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_DARKMODE, OnUpdateViewToggleDarkMode)
 	ON_COMMAND(ID_VIEW_WRAPLONGLINES, OnViewWrapLongLines)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_WRAPLONGLINES, OnUpdateViewWrapLongLines)
 	ON_COMMAND_RANGE(IDM_FORMAT_ENCODE, IDM_FORMAT_ENCODE_END, OnChangeEncode)
@@ -106,6 +110,7 @@ BEGIN_MESSAGE_MAP(CTortoiseGitBlameView, CView)
 	ON_WM_RBUTTONDOWN()
 	ON_WM_RBUTTONUP()
 	ON_WM_SYSCOLORCHANGE()
+	ON_WM_DESTROY()
 	ON_WM_ERASEBKGND()
 	ON_NOTIFY(SCN_PAINTED, IDC_SCINTILLA, OnSciPainted)
 	ON_NOTIFY(SCN_GETBKCOLOR, IDC_SCINTILLA, OnSciGetBkColor)
@@ -136,23 +141,13 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 	, m_SelectedLine(-1)
 	, m_bShowLine(true)
 	, m_pFindDialog(nullptr)
+	, m_themeCallbackId(0)
 #ifdef USE_TEMPFILENAME
 	, m_Buffer(nullptr)
 #endif
 {
-	m_windowcolor = ::GetSysColor(COLOR_WINDOW);
-	m_textcolor = ::GetSysColor(COLOR_WINDOWTEXT);
-	m_texthighlightcolor = ::GetSysColor(COLOR_HIGHLIGHTTEXT);
-	m_mouserevcolor = InterColor(m_windowcolor, m_textcolor, 20);
-	m_mouseauthorcolor = InterColor(m_windowcolor, m_textcolor, 10);
-	m_selectedrevcolor = ::GetSysColor(COLOR_HIGHLIGHT);
-	m_selectedauthorcolor = InterColor(m_selectedrevcolor, m_texthighlightcolor, 35);
-
-	HIGHCONTRAST highContrast = { 0 };
-	highContrast.cbSize = sizeof(HIGHCONTRAST);
-	BOOL highContrastModeEnabled = SystemParametersInfo(SPI_GETHIGHCONTRAST, 0, &highContrast, 0) == TRUE && (highContrast.dwFlags & HCF_HIGHCONTRASTON);
-	m_colorage = !!theApp.GetInt(L"ColorAge", !highContrastModeEnabled);
-	m_bLexer = !!theApp.GetInt(L"EnableLexer", !highContrastModeEnabled);
+	m_colorage = !!theApp.GetInt(L"ColorAge", !CTheme::Instance().IsHighContrastMode());
+	m_bLexer = !!theApp.GetInt(L"EnableLexer", !CTheme::Instance().IsHighContrastMode());
 
 	m_bShowLogID = (theApp.GetInt(L"ShowLogID", 0) == 1);
 	m_bShowAuthor = (theApp.GetInt(L"ShowAuthor", 1) == 1);
@@ -282,6 +277,8 @@ int CTortoiseGitBlameView::OnCreate(LPCREATESTRUCT lpcs)
 	m_TextView.SetReadOnly(true);
 	m_ToolTip.Create(this->GetParent());
 
+	m_themeCallbackId = CTheme::Instance().RegisterThemeChangeCallback([this]() { SetTheme(CTheme::Instance().IsDarkTheme()); });
+	SetTheme(CTheme::Instance().IsDarkTheme());
 	::AfxGetApp()->GetMainWnd();
 	return CView::OnCreate(lpcs);
 }
@@ -598,29 +595,21 @@ void CTortoiseGitBlameView::SetAStyle(int style, COLORREF fore, COLORREF back, i
 {
 	if (fore == back && fore == m_windowcolor)
 		fore = m_textcolor;
+	else if (CTheme::Instance().IsDarkTheme())
+		fore = CTheme::Instance().GetThemeColor(fore);
 	m_TextView.SetAStyle(style, fore, back, size, face);
 }
 
 void CTortoiseGitBlameView::InitialiseEditor()
 {
-	SendEditor(SCI_STYLERESETDEFAULT);
-	// Set up the global default style. These attributes are used wherever no explicit choices are made.
-	std::string fontName = CUnicodeUtils::StdGetUTF8(CRegStdString(L"Software\\TortoiseGit\\BlameFontName", L"Consolas"));
-	SetAStyle(STYLE_DEFAULT,
-			::GetSysColor(COLOR_WINDOWTEXT),
-			::GetSysColor(COLOR_WINDOW),
-			static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\BlameFontSize", 10)),
-			fontName.c_str()
-			);
 	SendEditor(SCI_SETTABWIDTH, static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\BlameTabSize", 4)));
 	OnSciZoom(nullptr, nullptr);
 
-	//Set the default windows colors for edit controls
-	SendEditor(SCI_SETSELFORE, TRUE, ::GetSysColor(COLOR_HIGHLIGHTTEXT));
-	SendEditor(SCI_SETSELBACK, TRUE, ::GetSysColor(COLOR_HIGHLIGHT));
-	SendEditor(SCI_SETCARETFORE, ::GetSysColor(COLOR_WINDOWTEXT));
+
 	m_regOldLinesColor = CRegStdDWORD(L"Software\\TortoiseGit\\BlameOldColor", BLAMEOLDCOLOR);
 	m_regNewLinesColor = CRegStdDWORD(L"Software\\TortoiseGit\\BlameNewColor", BLAMENEWCOLOR);
+	m_regDarkOldLinesColor = CRegStdDWORD(L"Software\\TortoiseGit\\BlameOldColorDark", DARKBLAMEOLDCOLOR);
+	m_regDarkNewLinesColor = CRegStdDWORD(L"Software\\TortoiseGit\\BlameNewColorDark", DARKBLAMENEWCOLOR);
 	if (CRegStdDWORD(L"Software\\TortoiseGit\\ScintillaDirect2D", FALSE) != FALSE)
 	{
 		SendEditor(SCI_SETTECHNOLOGY, SC_TECHNOLOGY_DIRECTWRITERETAIN);
@@ -631,7 +620,45 @@ void CTortoiseGitBlameView::InitialiseEditor()
 		SendEditor(SCI_SETWRAPMODE, SC_WRAP_WORD);
 	else
 		SendEditor(SCI_SETWRAPMODE, SC_WRAP_NONE);
-	SendEditor(SCI_STYLECLEARALL);
+
+	if (CTheme::Instance().IsDarkTheme())
+	{
+		SendEditor(SCI_SETSELFORE, TRUE, CTheme::Instance().GetThemeColor(RGB(0, 0, 0)));
+		SendEditor(SCI_SETSELBACK, TRUE, CTheme::Instance().GetThemeColor(RGB(51, 153, 255)));
+		SendEditor(SCI_STYLESETFORE, STYLE_DEFAULT, BlameTextColorDark);
+		SendEditor(SCI_STYLESETBACK, STYLE_DEFAULT, BlameBackColorDark);
+		SendEditor(SCI_STYLECLEARALL);
+		SendEditor(SCI_SETCARETFORE, BlameTextColorDark);
+		SendEditor(SCI_SETWHITESPACEFORE, true, RGB(180, 180, 180));
+	}
+	else
+	{
+		SendEditor(SCI_SETSELFORE, TRUE, ::GetSysColor(COLOR_HIGHLIGHTTEXT));
+		SendEditor(SCI_SETSELBACK, TRUE, ::GetSysColor(COLOR_HIGHLIGHT));
+		SendEditor(SCI_STYLESETFORE, STYLE_DEFAULT, ::GetSysColor(COLOR_WINDOWTEXT));
+		SendEditor(SCI_STYLESETBACK, STYLE_DEFAULT, ::GetSysColor(COLOR_WINDOW));
+		SendEditor(SCI_STYLECLEARALL);
+		SendEditor(SCI_SETCARETFORE, ::GetSysColor(COLOR_WINDOWTEXT));
+		SendEditor(SCI_SETWHITESPACEFORE, true, ::GetSysColor(COLOR_3DSHADOW));
+		SendEditor(SCI_SETFOLDMARGINCOLOUR, true, RGB(240, 240, 240));
+		SendEditor(SCI_SETFOLDMARGINHICOLOUR, true, RGB(255, 255, 255));
+		SendEditor(SCI_STYLESETFORE, STYLE_LINENUMBER, RGB(109, 109, 109));
+		SendEditor(SCI_STYLESETBACK, STYLE_LINENUMBER, RGB(230, 230, 230));
+	}
+	SendEditor(SCI_STYLESETFORE, STYLE_BRACELIGHT, RGB(0, 150, 0));
+	SendEditor(SCI_STYLESETBOLD, STYLE_BRACELIGHT, 1);
+	SendEditor(SCI_STYLESETFORE, STYLE_BRACEBAD, RGB(255, 0, 0));
+	SendEditor(SCI_STYLESETBOLD, STYLE_BRACEBAD, 1);
+
+	if (CTheme::Instance().IsDarkTheme() || CTheme::Instance().IsHighContrastModeDark())
+	{
+		SendEditor(SCI_STYLESETFORE, STYLE_LINENUMBER, RGB(140, 140, 140));
+		SendEditor(SCI_STYLESETBACK, STYLE_LINENUMBER, BlameBackColorDark);
+		SendEditor(SCI_SETFOLDMARGINCOLOUR, true, BlameTextColorDark);
+		SendEditor(SCI_SETFOLDMARGINHICOLOUR, true, RGB(0, 0, 0));
+	}
+	if (m_bLexer)
+		SetupLexer(m_sLastFilename);
 }
 
 bool CTortoiseGitBlameView::DoSearch(CTortoiseGitBlameData::SearchDirection direction)
@@ -740,6 +767,18 @@ void CTortoiseGitBlameView::CopyToClipboard()
 		else
 			m_TextView.Call(SCI_COPY);
 	}
+}
+
+void CTortoiseGitBlameView::SetTheme(bool bDark)
+{
+	DarkModeHelper::Instance().AllowDarkModeForWindow(GetSafeHwnd(), bDark);
+	SetupColoring();
+	InitialiseEditor();
+
+	CMFCVisualManager::GetInstance()->OnUpdateSystemColors();
+	CMFCVisualManager::RedrawAll();
+
+	::RedrawWindow(GetSafeHwnd(), nullptr, nullptr, RDW_FRAME | RDW_INVALIDATE | RDW_ERASE | RDW_INTERNALPAINT | RDW_ALLCHILDREN | RDW_UPDATENOW);
 }
 
 LONG CTortoiseGitBlameView::GetBlameWidth()
@@ -999,7 +1038,7 @@ void CTortoiseGitBlameView::DrawLocatorBar(HDC hDC)
 	int line = static_cast<int>(SendEditor(SCI_GETFIRSTVISIBLELINE));
 	int linesonscreen = static_cast<int>(SendEditor(SCI_LINESONSCREEN));
 	int Y = 0;
-	COLORREF blackColor = GetSysColor(COLOR_WINDOWTEXT);
+	COLORREF blackColor = CTheme::Instance().GetThemeColor(GetSysColor(COLOR_WINDOWTEXT));
 
 	RECT rc;
 	this->GetClientRect(&rc);
@@ -1520,6 +1559,12 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 {
 	CreateFont();
 
+	// Set up the global default style. These attributes are used wherever no explicit choices are made.
+	std::string fontName = CUnicodeUtils::StdGetUTF8(CRegStdString(L"Software\\TortoiseGit\\BlameFontName", L"Consolas"));
+	SendEditor(SCI_STYLESETSIZE, STYLE_DEFAULT, (DWORD)CRegStdDWORD(L"Software\\TortoiseGit\\BlameFontSize", 10));
+	SendEditor(SCI_STYLESETFONT, STYLE_DEFAULT, reinterpret_cast<LPARAM>(fontName.c_str()));
+	SendEditor(SCI_STYLECLEARALL);
+
 	InitialiseEditor();
 	m_TextView.SetReadOnly(false);
 	SendEditor(SCI_CLEARALL);
@@ -1602,7 +1647,8 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 
 	//SendEditor(SCI_REPLACESEL, 0, (LPARAM)(LPCSTR)(m_Buffer + bomoffset));
 #endif
-	SetupLexer(GetDocument()->m_CurrentFileName);
+	m_sLastFilename = GetDocument()->m_CurrentFileName;
+	SetupLexer(m_sLastFilename);
 
 	SendEditor(SCI_GOTOPOS, 0);
 	// set max scroll width, based on textwidth of longest line (heuristic, only works for monospace font)
@@ -1649,13 +1695,38 @@ COLORREF CTortoiseGitBlameView::GetLineColor(size_t line)
 		if (logIndex >= 0)
 		{
 			int slider = static_cast<int>((GetLogData()->size() - logIndex) * 100 / (GetLogData()->size() + 1));
-			return InterColor(DWORD(m_regOldLinesColor), DWORD(m_regNewLinesColor), slider);
+			COLORREF newCol = (CTheme::Instance().IsDarkTheme() || CTheme::Instance().IsHighContrastModeDark()) ? DWORD(m_regDarkNewLinesColor) : DWORD(m_regNewLinesColor);
+			COLORREF oldCol = (CTheme::Instance().IsDarkTheme() || CTheme::Instance().IsHighContrastModeDark()) ? DWORD(m_regDarkOldLinesColor) : DWORD(m_regOldLinesColor);
+			return InterColor(oldCol, newCol, slider);
 		}
 	}
 	return m_windowcolor;
 }
 
-CGitBlameLogList * CTortoiseGitBlameView::GetLogList()
+void CTortoiseGitBlameView::SetupColoring()
+{
+	if (CTheme::Instance().IsDarkTheme())
+	{
+		m_windowcolor = CTheme::darkBkColor;
+		m_textcolor = CTheme::darkTextColor;
+		m_texthighlightcolor = m_textcolor;
+		m_selectedrevcolor = RGB(0, 30, 80);
+		m_selectedauthorcolor = InterColor(m_selectedrevcolor, m_texthighlightcolor, 15);
+	}
+	else
+	{
+		m_windowcolor = GetSysColor(COLOR_WINDOW);
+		m_textcolor = GetSysColor(COLOR_WINDOWTEXT);
+		m_texthighlightcolor = GetSysColor(COLOR_HIGHLIGHTTEXT);
+		m_selectedrevcolor = GetSysColor(COLOR_HIGHLIGHT);
+		m_selectedauthorcolor = InterColor(m_selectedrevcolor, m_texthighlightcolor, 35);
+	}
+
+	m_mouserevcolor = InterColor(m_windowcolor, m_textcolor, 20);
+	m_mouseauthorcolor = InterColor(m_windowcolor, m_textcolor, 10);
+}
+
+CGitBlameLogList *CTortoiseGitBlameView::GetLogList()
 {
 	return &(GetDocument()->GetMainFrame()->m_wndOutput.m_LogList);
 }
@@ -1854,6 +1925,7 @@ void CTortoiseGitBlameView::OnEditFind()
 		return;
 
 	m_pFindDialog=new CFindReplaceDialog();
+	CTheme::Instance().SetThemeForDialog(m_pFindDialog->GetSafeHwnd(), CTheme::Instance().IsDarkTheme());
 
 	CString oneline = m_sFindText;
 	if (auto selstart = m_TextView.Call(SCI_GETSELECTIONSTART), selend = m_TextView.Call(SCI_GETSELECTIONEND); selstart != selend)
@@ -2173,14 +2245,25 @@ void CTortoiseGitBlameView::OnViewToggleLexer()
 
 	theApp.WriteInt(L"EnableLexer", m_bLexer);
 
-	InitialiseEditor();
+	SendEditor(SCI_CLEARDOCUMENTSTYLE, 0, 0);
 	SetupLexer(GetDocument()->m_CurrentFileName);
-	this->Invalidate();
 }
 
 void CTortoiseGitBlameView::OnUpdateViewToggleLexer(CCmdUI *pCmdUI)
 {
 	pCmdUI->SetCheck(m_bLexer);
+}
+
+void CTortoiseGitBlameView::OnViewToggleDarkMode()
+{
+	CTheme::Instance().SetDarkTheme(!CTheme::Instance().IsDarkTheme());
+	theApp.WriteInt(L"DarkMode", CTheme::Instance().IsDarkTheme());
+}
+
+void CTortoiseGitBlameView::OnUpdateViewToggleDarkMode(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(CTheme::Instance().IsDarkModeAllowed());
+	pCmdUI->SetCheck(CTheme::Instance().IsDarkTheme());
 }
 
 void CTortoiseGitBlameView::OnViewWrapLongLines()
@@ -2219,18 +2302,18 @@ void CTortoiseGitBlameView::OnUpdateViewCopyToClipboard(CCmdUI *pCmdUI)
 		pCmdUI->Enable(FALSE);
 }
 
+void CTortoiseGitBlameView::OnDestroy()
+{
+	CTheme::Instance().SetThemeForDialog(GetSafeHwnd(), false);
+	__super::OnDestroy();
+	CTheme::Instance().RemoveRegisteredCallback(m_themeCallbackId);
+}
+
 void CTortoiseGitBlameView::OnSysColorChange()
 {
 	__super::OnSysColorChange();
-	m_windowcolor = ::GetSysColor(COLOR_WINDOW);
-	m_textcolor = ::GetSysColor(COLOR_WINDOWTEXT);
-	m_texthighlightcolor = ::GetSysColor(COLOR_HIGHLIGHTTEXT);
-	m_mouserevcolor = InterColor(m_windowcolor, m_textcolor, 20);
-	m_mouseauthorcolor = InterColor(m_windowcolor, m_textcolor, 10);
-	m_selectedrevcolor = ::GetSysColor(COLOR_HIGHLIGHT);
-	m_selectedauthorcolor = InterColor(m_selectedrevcolor, m_texthighlightcolor, 35);
-	InitialiseEditor();
-	SetupLexer(GetDocument()->m_CurrentFileName);
+	CTheme::Instance().OnSysColorChanged();
+	SetTheme(CTheme::Instance().IsDarkTheme());
 }
 
 ULONG CTortoiseGitBlameView::GetGestureStatus(CPoint ptTouch)

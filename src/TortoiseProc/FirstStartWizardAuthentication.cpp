@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2017, 2019 - TortoiseGit
+// Copyright (C) 2016-2017, 2019-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -23,6 +23,7 @@
 #include "Git.h"
 #include "Settings/SettingGitCredential.h"
 #include "PathUtils.h"
+#include "Theme.h"
 
 #define WM_SETPAGEFOCUS WM_APP+2
 
@@ -211,6 +212,8 @@ BOOL CFirstStartWizardAuthentication::OnInitDialog()
 	//GetDlgItem(IDC_GENERATEPUTTYKEY)->ShowWindow(CAppUtils::IsSSHPutty() ? SW_SHOW : SW_HIDE);
 
 	UpdateData(FALSE);
+
+	CTheme::Instance().SetThemeForDialog(GetSafeHwnd(), CTheme::Instance().IsDarkTheme());
 
 	return TRUE;
 }

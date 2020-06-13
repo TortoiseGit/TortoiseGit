@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2009, 2011 - TortoiseSVN
-// Copyright (C) 2012, 2018-2019 - TortoiseGit
+// Copyright (C) 2012, 2018-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -121,6 +121,7 @@ private:
 	void			UpdateZoomBox();
 
 	bool			UpdateData();
+	void			SetTheme(bool bDark);
 
 	float						m_fZoomFactor;
 	CRevisionGraphWnd			m_Graph;
@@ -130,4 +131,5 @@ private:
 	CString						m_outputPath;
 	ULONG_PTR					m_gdiPlusToken;
 	CComPtr<ITaskbarList3>		m_pTaskbarList;
+	int							m_themeCallbackId;
 };

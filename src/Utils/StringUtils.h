@@ -1,7 +1,7 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2010 - TortoiseSVN
-// Copyright (C) 2015-2016 - TortoiseGit
+// Copyright (C) 2003-2010, 2020 - TortoiseSVN
+// Copyright (C) 2015-2016, 2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,6 +18,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
+#include <string>
 
 #ifdef UNICODE
 #define wcswildcmp wcswildcmp
@@ -51,6 +52,75 @@
 int strwildcmp(const char * wild, const char * string);
 int wcswildcmp(const wchar_t * wild, const wchar_t * string);
 
+template <typename Container>
+void stringtok(Container& container, const std::wstring& in, bool trim, const wchar_t* const delimiters = L"|", bool append = false)
+{
+	const std::string::size_type len = in.length();
+	std::string::size_type i = 0;
+	if (!append)
+		container.clear();
+
+	while (i < len)
+	{
+		if (trim)
+		{
+			// eat leading whitespace
+			i = in.find_first_not_of(delimiters, i);
+			if (i == std::string::npos)
+				return; // nothing left but white space
+		}
+
+		// find the end of the token
+		std::string::size_type j = in.find_first_of(delimiters, i);
+
+		// push token
+		if (j == std::string::npos)
+		{
+			container.push_back(in.substr(i));
+			return;
+		}
+		else
+			container.push_back(in.substr(i, j - i));
+
+		// set up for next loop
+		i = j + 1;
+	}
+}
+
+template <typename Container>
+void stringtok(Container& container, const std::string& in, bool trim, const char* const delimiters = "|", bool append = false)
+{
+	const std::string::size_type len = in.length();
+	std::string::size_type i = 0;
+	if (!append)
+		container.clear();
+
+	while (i < len)
+	{
+		if (trim)
+		{
+			// eat leading whitespace
+			i = in.find_first_not_of(delimiters, i);
+			if (i == std::string::npos)
+				return; // nothing left but white space
+		}
+
+		// find the end of the token
+		std::string::size_type j = in.find_first_of(delimiters, i);
+
+		// push token
+		if (j == std::string::npos)
+		{
+			container.push_back(in.substr(i));
+			return;
+		}
+		else
+			container.push_back(in.substr(i, j - i));
+
+		// set up for next loop
+		i = j + 1;
+	}
+}
 
 /**
  * \ingroup Utils

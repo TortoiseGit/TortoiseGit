@@ -206,6 +206,7 @@ BOOL CPushDlg::OnInitDialog()
 	this->UpdateData(false);
 
 	OnBnClickedPushall();
+	SetTheme(CTheme::Instance().IsDarkTheme());
 	return TRUE;
 }
 

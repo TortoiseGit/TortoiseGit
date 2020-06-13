@@ -513,7 +513,7 @@ void CFileDiffDlg::OnNMCustomdrawFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 		// Tell Windows to paint the control itself.
 		*pResult = CDRF_NOTIFYSUBITEMDRAW;
 
-		COLORREF crText = GetSysColor(COLOR_WINDOWTEXT);
+		COLORREF crText = CTheme::Instance().IsDarkTheme() ? CTheme::darkTextColor : GetSysColor(COLOR_WINDOWTEXT);
 
 		if (m_arFilteredList.size() > pLVCD->nmcd.dwItemSpec)
 		{
@@ -521,16 +521,16 @@ void CFileDiffDlg::OnNMCustomdrawFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 			switch (fd->m_Action)
 			{
 			case CTGitPath::LOGACTIONS_ADDED:
-				crText = m_colors.GetColor(CColors::Added);
+				crText = CTheme::Instance().GetThemeColor(m_colors.GetColor(CColors::Added));
 				break;
 			case CTGitPath::LOGACTIONS_DELETED:
-				crText = m_colors.GetColor(CColors::Deleted);
+				crText = CTheme::Instance().GetThemeColor(m_colors.GetColor(CColors::Deleted));
 				break;
 			case CTGitPath::LOGACTIONS_MODIFIED:
-				crText = m_colors.GetColor(CColors::Modified);
+				crText = CTheme::Instance().GetThemeColor(m_colors.GetColor(CColors::Modified));
 				break;
 			default:
-				crText = m_colors.GetColor(CColors::PropertyChanged);
+				crText = CTheme::Instance().GetThemeColor(m_colors.GetColor(CColors::PropertyChanged));
 				break;
 			}
 		}

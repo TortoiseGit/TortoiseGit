@@ -65,6 +65,7 @@
     <ClCompile Include="..\TortoiseProc\LogDlgFilter.cpp" />
     <ClCompile Include="..\Utils\CmdLineParser.cpp" />
     <ClCompile Include="..\Utils\CommonAppUtils.cpp" />
+    <ClCompile Include="..\Utils\DarkModeHelper.cpp" />
     <ClCompile Include="..\Utils\DebugOutput.cpp" />
     <ClCompile Include="..\Utils\LoadIconEx.cpp" />
     <ClCompile Include="..\Utils\MiscUI\DockablePaneUnscaledStoredState.cpp" />
@@ -75,6 +76,7 @@
     <ClCompile Include="..\Utils\MiscUI\IconMenu.cpp" />
     <ClCompile Include="..\Utils\MiscUI\MessageBox.cpp" />
     <ClCompile Include="..\Utils\MiscUI\Picture.cpp" />
+    <ClCompile Include="..\Utils\MiscUI\ThemeMFCVisualManager.cpp" />
     <ClCompile Include="..\Utils\MiscUI\Tooltip.cpp" />
     <ClCompile Include="..\Utils\PathUtils.cpp" />
     <ClCompile Include="..\Utils\PersonalDictionary.cpp" />
@@ -83,6 +85,7 @@
     <ClCompile Include="..\Utils\SysImageList.cpp" />
     <ClCompile Include="..\Utils\TaskbarUUID.cpp" />
     <ClCompile Include="..\Utils\TempFile.cpp" />
+    <ClCompile Include="..\Utils\Theme.cpp" />
     <ClCompile Include="..\Utils\UnicodeUtils.cpp" />
     <ClCompile Include="EditGotoDlg.cpp" />
     <ClCompile Include="..\TortoiseMerge\FileTextLines.cpp" />
@@ -123,6 +126,7 @@
     <ClInclude Include="..\TortoiseProc\FilterHelper.h" />
     <ClInclude Include="..\TortoiseProc\LogDlgFilter.h" />
     <ClInclude Include="..\Utils\CmdLineParser.h" />
+    <ClInclude Include="..\Utils\DarkModeHelper.h" />
     <ClInclude Include="..\Utils\DebugOutput.h" />
     <ClInclude Include="..\Utils\DPIAware.h" />
     <ClInclude Include="..\Utils\I18NHelper.h" />
@@ -139,6 +143,8 @@
     <ClInclude Include="..\Utils\MiscUI\IconMenu.h" />
     <ClInclude Include="..\Utils\MiscUI\MessageBox.h" />
     <ClInclude Include="..\Utils\MiscUI\Picture.h" />
+    <ClInclude Include="..\Utils\MiscUI\StandAloneDlg.h" />
+    <ClInclude Include="..\Utils\MiscUI\ThemeMFCVisualManager.h" />
     <ClInclude Include="..\Utils\MiscUI\Tooltip.h" />
     <ClInclude Include="..\Utils\PathUtils.h" />
     <ClInclude Include="..\Utils\PersonalDictionary.h" />
@@ -147,6 +153,7 @@
     <ClInclude Include="..\Utils\SysImageList.h" />
     <ClInclude Include="..\Utils\TaskbarUUID.h" />
     <ClInclude Include="..\Utils\TempFile.h" />
+    <ClInclude Include="..\Utils\Theme.h" />
     <ClInclude Include="..\Utils\UnicodeUtils.h" />
     <ClInclude Include="BlameDetectMovedOrCopiedLines.h" />
     <ClInclude Include="BlameIndexColors.h" />

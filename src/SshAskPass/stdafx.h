@@ -18,3 +18,5 @@
 #include <tchar.h>
 
 #include <atlbase.h>
+
+#include <string>

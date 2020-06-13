@@ -12,6 +12,7 @@
 #include "ACListWnd.h"
 #include "StringUtils.h"
 #include "DPIAware.h"
+#include "Theme.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -117,7 +118,7 @@ void CACListWnd::DrawItem(CDC* pDC,long m_lItem,long width)
 	long y = m_lItem - m_lTopIndex;
 	CRect rcLabel(2,y*m_ItemHeight,width,(y+1)*m_ItemHeight);
 
-	pDC->SetTextColor(::GetSysColor(COLOR_WINDOWTEXT));
+	pDC->SetTextColor(CTheme::Instance().IsDarkTheme() ? CTheme::darkTextColor : CTheme::Instance().GetThemeColor(::GetSysColor(COLOR_WINDOWTEXT)));
 
 	if(m_lItem == m_lSelItem)
 	{
@@ -162,7 +163,7 @@ void CACListWnd::OnPaint()
 
 	long width = rcWnd.Width() - ScrollBarWidth();
 
-	MemDC.FillSolidRect(rcWnd,::GetSysColor(COLOR_WINDOW));
+	MemDC.FillSolidRect(rcWnd, CTheme::Instance().IsDarkTheme() ? CTheme::darkBkColor : CTheme::Instance().GetThemeColor(::GetSysColor(COLOR_WINDOW)));
 	MemDC.SelectObject(m_uiFont);
 	MemDC.SetBkMode(TRANSPARENT);
 
@@ -172,7 +173,7 @@ void CACListWnd::OnPaint()
 	}
 
 
-	CPen m_Pen1(PS_SOLID, 1, ::GetSysColor(COLOR_WINDOW));
+	CPen m_Pen1(PS_SOLID, 1, CTheme::Instance().IsDarkTheme() ? CTheme::darkTextColor : ::GetSysColor(COLOR_WINDOW));
 	CPen m_Pen2(PS_SOLID, 1, ::GetSysColor(COLOR_BTNFACE));
 	CPen m_Pen3(PS_SOLID, 1, ::GetSysColor(COLOR_3DSHADOW));
 
@@ -339,7 +340,7 @@ void CACListWnd::OnNcPaint()
 
 	rectWindow.OffsetRect(-rectWindow.left, -rectWindow.top);
 
-	dc.FillSolidRect(rectWindow,::GetSysColor(COLOR_WINDOWTEXT));
+	dc.FillSolidRect(rectWindow, CTheme::Instance().IsDarkTheme() ? CTheme::darkTextColor : CTheme::Instance().GetThemeColor(::GetSysColor(COLOR_WINDOWTEXT)));
 }
 
 /*********************************************************************/

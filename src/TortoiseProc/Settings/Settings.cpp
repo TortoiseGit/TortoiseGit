@@ -1,7 +1,7 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2018 - TortoiseGit
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2008-2018, 2020 - TortoiseGit
+// Copyright (C) 2003-2008, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,18 +25,32 @@
 #include "../../TGitCache\CacheInterface.h"
 #include "GitAdminDir.h"
 #include "AppUtils.h"
+#include "Theme.h"
+#include "DarkModeHelper.h"
 
 IMPLEMENT_DYNAMIC(CSettings, CStandAloneDialogTmpl<CTreePropSheet>)
 CSettings::CSettings(UINT nIDCaption, CTGitPath * /*cmdPath*/, CWnd* pParentWnd, UINT iSelectPage)
 : CStandAloneDialogTmpl<CTreePropSheet>(nIDCaption, pParentWnd)
 {
-	SetActivePage(iSelectPage);
 	AddPropPages();
+	SetTheme(CTheme::Instance().IsDarkTheme());
+	SetActivePage(iSelectPage);
 }
 
 CSettings::~CSettings()
 {
 	RemovePropPages();
+}
+
+void CSettings::SetTheme(bool bDark)
+{
+	__super::SetTheme(bDark);
+	for (int i = 0; i < GetPageCount(); ++i)
+	{
+		auto pPage = GetPage(i);
+		if (IsWindow(pPage->GetSafeHwnd()))
+			CTheme::Instance().SetThemeForDialog(pPage->GetSafeHwnd(), bDark);
+	}
 }
 
 void CSettings::AddPropPages()
@@ -232,6 +246,10 @@ BOOL CSettings::OnInitDialog()
 		GetWindowText(title);
 		SetWindowText(g_Git.m_CurrentDir + L" - " + title);
 	}
+
+	DarkModeHelper::Instance().AllowDarkModeForApp(CTheme::Instance().IsDarkTheme());
+	SetTheme(CTheme::Instance().IsDarkTheme());
+	CTheme::Instance().SetThemeForDialog(GetSafeHwnd(), CTheme::Instance().IsDarkTheme());
 
 	CenterWindow(CWnd::FromHandle(GetExplorerHWND()));
 

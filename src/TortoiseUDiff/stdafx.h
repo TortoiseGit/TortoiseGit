@@ -28,6 +28,8 @@ using std::min;
 #define COMMITMONITOR_FINDEXIT			(WM_APP+3)
 #define COMMITMONITOR_FINDRESET			(WM_APP+4)
 
+#define REGSTRING_DARKTHEME L"Software\\TortoiseGit\\UDiffDarkTheme"
+
 #include "SmartHandle.h"
 #include "scope_exit_noexcept.h"
 

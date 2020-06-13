@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2019-2020 - TortoiseGit
-// Copyright (C) 2003-2006, 2008-2013, 2017 - TortoiseSVN
+// Copyright (C) 2003-2006, 2008-2013, 2017, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,6 +20,7 @@
 #include "stdafx.h"
 #include "SplitterControl.h"
 #include "MyMemDC.h"
+#include "Theme.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -96,9 +97,9 @@ void CSplitterControl::OnPaint()
 		Gdiplus::Graphics g(dcreal);
 
 		Gdiplus::Color c1;
-		c1.SetFromCOLORREF(GetSysColor(COLOR_3DFACE));
+		c1.SetFromCOLORREF(CTheme::Instance().GetThemeColor(GetSysColor(COLOR_3DFACE)));
 		Gdiplus::Color c2;
-		c2.SetFromCOLORREF(GetSysColor(COLOR_BTNSHADOW));
+		c2.SetFromCOLORREF(CTheme::Instance().GetThemeColor(GetSysColor(COLOR_BTNSHADOW)));
 
 		Gdiplus::SolidBrush bkgBrush(c1);
 		g.FillRectangle(&bkgBrush, rc);

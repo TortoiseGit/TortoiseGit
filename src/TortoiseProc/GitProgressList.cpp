@@ -26,6 +26,7 @@
 #include "StringUtils.h"
 #include "LogFile.h"
 #include "LoglistUtils.h"
+#include "Theme.h"
 
 BOOL	CGitProgressList::m_bAscending = FALSE;
 int		CGitProgressList::m_nSortedColumn = -1;
@@ -384,7 +385,7 @@ void CGitProgressList::ReportError(const CString& sError)
 {
 	if (CRegDWORD(L"Software\\TortoiseGit\\NoSounds", FALSE) == FALSE)
 		PlaySound(reinterpret_cast<LPCTSTR>(SND_ALIAS_SYSTEMEXCLAMATION), nullptr, SND_ALIAS_ID | SND_ASYNC);
-	ReportString(sError, CString(MAKEINTRESOURCE(IDS_ERR_ERROR)), m_Colors.GetColor(CColors::Conflict));
+	ReportString(sError, CString(MAKEINTRESOURCE(IDS_ERR_ERROR)), true, m_Colors.GetColor(CColors::Conflict));
 	m_bErrorsOccurred = true;
 }
 
@@ -392,22 +393,22 @@ void CGitProgressList::ReportWarning(const CString& sWarning)
 {
 	if (CRegDWORD(L"Software\\TortoiseGit\\NoSounds", FALSE) == FALSE)
 		PlaySound(reinterpret_cast<LPCTSTR>(SND_ALIAS_SYSTEMDEFAULT), nullptr, SND_ALIAS_ID | SND_ASYNC);
-	ReportString(sWarning, CString(MAKEINTRESOURCE(IDS_WARN_WARNING)), m_Colors.GetColor(CColors::Conflict));
+	ReportString(sWarning, CString(MAKEINTRESOURCE(IDS_WARN_WARNING)), true, m_Colors.GetColor(CColors::Conflict));
 }
 
 void CGitProgressList::ReportNotification(const CString& sNotification)
 {
 	if (CRegDWORD(L"Software\\TortoiseGit\\NoSounds", FALSE) == FALSE)
 		PlaySound(reinterpret_cast<LPCTSTR>(SND_ALIAS_SYSTEMDEFAULT), nullptr, SND_ALIAS_ID | SND_ASYNC);
-	ReportString(sNotification, CString(MAKEINTRESOURCE(IDS_WARN_NOTE)));
+	ReportString(sNotification, CString(MAKEINTRESOURCE(IDS_WARN_NOTE)), false);
 }
 
 void CGitProgressList::ReportCmd(const CString& sCmd)
 {
-	ReportString(sCmd, CString(MAKEINTRESOURCE(IDS_PROGRS_CMDINFO)), m_Colors.GetColor(CColors::Cmd));
+	ReportString(sCmd, CString(MAKEINTRESOURCE(IDS_PROGRS_CMDINFO)), true, m_Colors.GetColor(CColors::Cmd));
 }
 
-void CGitProgressList::ReportString(CString sMessage, const CString& sMsgKind, COLORREF color)
+void CGitProgressList::ReportString(CString sMessage, const CString& sMsgKind, bool colorIsDirect, COLORREF color)
 {
 	// instead of showing a dialog box with the error message or notification,
 	// just insert the error text into the list control.
@@ -426,6 +427,7 @@ void CGitProgressList::ReportString(CString sMessage, const CString& sMsgKind, C
 			data->sPathColumnText = sMessage;
 		data->sPathColumnText.Trim(L"\n\r");
 		data->color = color;
+		data->colorIsDirect = colorIsDirect;
 		if (sMessage.Find('\n')>=0)
 		{
 			sMessage = sMessage.Mid(sMessage.Find('\n'));
@@ -650,7 +652,7 @@ void CGitProgressList::OnNMCustomdrawSvnprogress(NMHDR *pNMHDR, LRESULT *pResult
 			return;
 
 		// Store the color back in the NMLVCUSTOMDRAW struct.
-		pLVCD->clrText = data->color;
+		pLVCD->clrText = CTheme::Instance().GetThemeColor(data->color, data->colorIsDirect);
 	}
 }
 
@@ -700,7 +702,10 @@ bool CGitProgressList::NotificationDataIsAux(const NotificationData* pData)
 void CGitProgressList::AddNotify(NotificationData* data, CColors::Colors color)
 {
 	if (color != CColors::COLOR_END)
+	{
 		data->color = m_Colors.GetColor(color);
+		data->colorIsDirect = true;
+	}
 	else
 		data->SetColorCode(m_Colors);
 
@@ -1123,6 +1128,7 @@ void CGitProgressList::WC_File_NotificationData::SetColorCode(CColors& colors)
 	case git_wc_notify_checkout: // fall-through
 	case git_wc_notify_add:
 		color = colors.GetColor(CColors::Added);
+		colorIsDirect = true;
 		break;
 
 	default:
@@ -1174,6 +1180,7 @@ void CGitProgressList::WC_File_NotificationData::HandleDblClick() const
 void CGitProgressList::OnSysColorChange()
 {
 	__super::OnSysColorChange();
+	CTheme::Instance().OnSysColorChanged();
 }
 
 ULONG CGitProgressList::GetGestureStatus(CPoint /*ptTouch*/)

@@ -227,7 +227,7 @@ BOOL CTortoiseGitBlameApp::StoreWindowPlacement(const CRect& rectNormalPosition,
 
 // CAboutDlg dialog used for App About
 
-class CAboutDlg : public CDialog
+class CAboutDlg : public CStandAloneDialog
 {
 public:
 	CAboutDlg();
@@ -243,7 +243,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 };
 
-CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD)
+CAboutDlg::CAboutDlg() : CStandAloneDialog(CAboutDlg::IDD)
 {
 }
 
@@ -252,12 +252,12 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 }
 
-BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
+BEGIN_MESSAGE_MAP(CAboutDlg, CStandAloneDialog)
 END_MESSAGE_MAP()
 
 BOOL CAboutDlg::OnInitDialog()
 {
-	CDialog::OnInitDialog();
+	CStandAloneDialog::OnInitDialog();
 
 	TCHAR verbuf[1024] = {0};
 	TCHAR maskbuf[1024] = {0};
