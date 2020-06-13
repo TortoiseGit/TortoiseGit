@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -400,8 +400,16 @@ int CGitDiff::Diff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* pPath2, c
 	}
 	else
 	{
-		file1 = g_Git.CombinePath(pPath);
-		title1.Format(IDS_DIFF_WCNAME, static_cast<LPCTSTR>(pPath->GetGitPathString()));
+		if (PathIsRelative(pPath->GetWinPath()))
+		{
+			file1 = g_Git.CombinePath(pPath);
+			title1.Format(IDS_DIFF_WCNAME, static_cast<LPCTSTR>(pPath->GetGitPathString()));
+		}
+		else
+		{
+			file1 = pPath->GetWinPath();
+			title1 = pPath->GetWinPathString();
+		}
 		if (!PathFileExists(file1))
 		{
 			CString sMsg;
@@ -436,8 +444,16 @@ int CGitDiff::Diff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* pPath2, c
 	}
 	else
 	{
-		file2 = g_Git.CombinePath(pPath2);
-		title2.Format(IDS_DIFF_WCNAME, static_cast<LPCTSTR>(pPath2->GetGitPathString()));
+		if (PathIsRelative(pPath2->GetWinPath()))
+		{
+			file2 = g_Git.CombinePath(pPath2);
+			title2.Format(IDS_DIFF_WCNAME, static_cast<LPCTSTR>(pPath2->GetGitPathString()));
+		}
+		else
+		{
+			file2 = pPath2->GetWinPath();
+			title2 = pPath2->GetWinPathString();
+		}
 	}
 
 	CAppUtils::StartExtDiff(file2,file1,

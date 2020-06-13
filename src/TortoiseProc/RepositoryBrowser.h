@@ -179,6 +179,7 @@ private:
 
 	virtual BOOL			PreTranslateMessage(MSG* pMsg) override;
 
+	void					UpdateDiffWithFileFromReg();
 	CString					m_sMarkForDiffFilename;
 	CGitHash				m_sMarkForDiffVersion;
 

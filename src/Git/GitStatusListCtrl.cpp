@@ -369,6 +369,8 @@ void CGitStatusListCtrl::Init(DWORD dwColumns, const CString& sColumnInfoContain
 		m_pDropTarget->AddSuportedFormat(ftetc);
 	}
 
+	UpdateDiffWithFileFromReg();
+
 	SetRedraw(true);
 	m_bWaitCursor = false;
 }
@@ -1732,6 +1734,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				{
 					popup.AppendMenu(MF_SEPARATOR);
 					popup.AppendMenuIcon(IDGITLC_PREPAREDIFF, IDS_PREPAREDIFF, IDI_DIFF);
+					UpdateDiffWithFileFromReg();
 					if (!m_sMarkForDiffFilename.IsEmpty())
 					{
 						CString diffWith;
@@ -1740,7 +1743,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						else
 						{
 							PathCompactPathEx(CStrBuf(diffWith, 2 * GIT_HASH_SIZE), m_sMarkForDiffFilename, 2 * GIT_HASH_SIZE, 0);
-							diffWith += L':' + m_sMarkForDiffVersion.Left(g_Git.GetShortHASHLength());
+							if (m_sMarkForDiffVersion != GitRev::GetWorkingCopy() || PathIsRelative(m_sMarkForDiffFilename))
+								diffWith += L':' + m_sMarkForDiffVersion.Left(g_Git.GetShortHASHLength());
 						}
 						CString menuEntry;
 						menuEntry.Format(IDS_MENUDIFFNOW, static_cast<LPCTSTR>(diffWith));
@@ -1969,6 +1973,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 			case IDGITLC_PREPAREDIFF_COMPARE:
 				{
+					if (auto reg = CRegString(L"Software\\TortoiseGit\\DiffLater", L""); m_sMarkForDiffFilename == reg)
+						reg.removeValue();
 					CTGitPath savedFile(m_sMarkForDiffFilename);
 					CGitDiff::Diff(GetParentHWND(), filepath, &savedFile, m_CurrentVersion.ToString(), m_sMarkForDiffVersion, false, false, 0, bShift);
 				}
@@ -2897,6 +2903,17 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 					m_CurrentVersion.ToString() + str, false, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 			}
 		}
+	}
+}
+
+void CGitStatusListCtrl::UpdateDiffWithFileFromReg()
+{
+	static CString lastDiffLaterFile;
+	if (CString diffLaterFile = CRegString(L"Software\\TortoiseGit\\DiffLater", L""); !diffLaterFile.IsEmpty() && lastDiffLaterFile != diffLaterFile)
+	{
+		lastDiffLaterFile = diffLaterFile;
+		m_sMarkForDiffFilename = diffLaterFile;
+		m_sMarkForDiffVersion = GitRev::GetWorkingCopy();
 	}
 }
 

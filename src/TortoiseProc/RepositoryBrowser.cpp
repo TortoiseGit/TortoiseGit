@@ -271,9 +271,22 @@ BOOL CRepositoryBrowser::OnInitDialog()
 
 	Refresh();
 
+	UpdateDiffWithFileFromReg();
+
 	m_RepoList.SetFocus();
 
 	return FALSE;
+}
+
+void CRepositoryBrowser::UpdateDiffWithFileFromReg()
+{
+	static CString lastDiffLaterFile;
+	if (CString diffLaterFile = CRegString(L"Software\\TortoiseGit\\DiffLater", L""); !diffLaterFile.IsEmpty() && lastDiffLaterFile != diffLaterFile)
+	{
+		lastDiffLaterFile = diffLaterFile;
+		m_sMarkForDiffFilename = diffLaterFile;
+		m_sMarkForDiffVersion.Empty();
+	}
 }
 
 void CRepositoryBrowser::OnDestroy()
@@ -794,6 +807,7 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 	if (selectedLeafs.size() == 1 && selType == ONLY_FILES)
 	{
 		popupMenu.AppendMenuIcon(eCmd_PrepareDiff, IDS_PREPAREDIFF, IDI_DIFF);
+		UpdateDiffWithFileFromReg();
 		if (!m_sMarkForDiffFilename.IsEmpty())
 		{
 			CString diffWith;
@@ -802,7 +816,8 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 			else
 			{
 				PathCompactPathEx(CStrBuf(diffWith, 2 * GIT_HASH_SIZE), m_sMarkForDiffFilename, 2 * GIT_HASH_SIZE, 0);
-				diffWith += L':' + m_sMarkForDiffVersion.ToString(g_Git.GetShortHASHLength());
+				if (!m_sMarkForDiffVersion.IsEmpty() || PathIsRelative(m_sMarkForDiffFilename))
+					diffWith += L':' + m_sMarkForDiffVersion.ToString(g_Git.GetShortHASHLength());
 			}
 			CString menuEntry;
 			menuEntry.Format(IDS_MENUDIFFNOW, static_cast<LPCTSTR>(diffWith));
@@ -901,6 +916,8 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 		break;
 	case eCmd_PrepareDiff_Compare:
 		{
+			if (auto reg = CRegString(L"Software\\TortoiseGit\\DiffLater", L""); m_sMarkForDiffFilename == reg)
+				reg.removeValue();
 			CTGitPath savedFile(m_sMarkForDiffFilename);
 			CTGitPath selectedFile(selectedLeafs.at(0)->GetFullName());
 			CGitHash currentHash;

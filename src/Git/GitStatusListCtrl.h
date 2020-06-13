@@ -652,6 +652,7 @@ private:
 
 	void SetGitIndexFlagsForSelectedFiles(UINT message, BOOL assumevalid, BOOL skipworktree);
 
+	void UpdateDiffWithFileFromReg();
 	CString m_sMarkForDiffFilename;
 	CString m_sMarkForDiffVersion;
 
