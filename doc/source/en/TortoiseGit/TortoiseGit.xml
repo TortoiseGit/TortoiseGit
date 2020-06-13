@@ -34,8 +34,8 @@
 	<xi:include href="./tgit_repository/repository.xml"/>
 	-->
 	<xi:include href="./tgit_dug/dug.xml"/>
-	<xi:include href="./tgit_app_faq.xml"/>
 	<xi:include href="./tgit_gitwcrev.xml"/>
+	<xi:include href="./tgit_app_faq.xml"/>
 	<xi:include href="./tgit_bugtraqprovider.xml"/>
 	<xi:include href="./tgit_app_admins.xml" />
 	<xi:include href="./tgit_app_automation.xml"/>
