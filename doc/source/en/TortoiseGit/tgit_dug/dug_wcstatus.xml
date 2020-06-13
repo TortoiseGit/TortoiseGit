@@ -58,27 +58,22 @@
 		</para>
 		<para>
 			<graphic fileref="../images/ReadOnlyIcon.png"/>
-			Staged. If you use "git update-index" to tell git this file will be committed,
-			Git makes that file staged.
+			This tells you that this file is marked as "assume-valid".
+			This overlay is optional.
 		</para>
-		<!--
 		<para>
 			<graphic fileref="../images/LockedIcon.png"/>
-			If you hold a lock on a file, and the Git status is
-			<emphasis>normal</emphasis>, this icon overlay reminds you that you
-			should release the lock if you are not using it to allow others to
-			commit their changes to the file.
+			This tells you that this file is marked as "skip-worktree".
+			This overlay is optional.
 		</para>
-		-->
 		<para>
 			<graphic fileref="../images/DeletedIcon.png"/>
 			This icon shows you that some files or folders inside the current folder
-			have been scheduled to be <emphasis>deleted</emphasis> from version control
-			or a file under version control is missing in a folder.
+			have been scheduled to be <emphasis>deleted</emphasis> from version control.
 		</para>
 		<para>
 			<graphic fileref="../images/AddedIcon.png"/>
-			The plus sign tells you that a file or folder has been scheduled to be
+			The plus sign tells you that a file has been scheduled to be
 			<emphasis>added</emphasis> to version control.
 		</para>
 		<para>
