@@ -1092,10 +1092,10 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 					HGDIOBJ hGdiObj = nullptr;
 					int action = data->GetRebaseAction();
 					if (action & (LOGACTIONS_REBASE_DONE | LOGACTIONS_REBASE_SKIP))
-						crText = RGB(128,128,128);//
+						crText = RGB(128, 128, 128);
 
 					if (action & LOGACTIONS_REBASE_SQUASH)
-						pLVCD->clrTextBk = RGB(156,156,156);//
+						pLVCD->clrTextBk = RGB(156, 156, 156);
 					else if (action & LOGACTIONS_REBASE_EDIT)
 						pLVCD->clrTextBk = CTheme::Instance().GetThemeColor(RGB(200, 200, 128));
 					else
