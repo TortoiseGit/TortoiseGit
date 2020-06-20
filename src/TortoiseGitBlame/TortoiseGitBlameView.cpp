@@ -1925,7 +1925,6 @@ void CTortoiseGitBlameView::OnEditFind()
 		return;
 
 	m_pFindDialog=new CFindReplaceDialog();
-	CTheme::Instance().SetThemeForDialog(m_pFindDialog->GetSafeHwnd(), CTheme::Instance().IsDarkTheme());
 
 	CString oneline = m_sFindText;
 	if (auto selstart = m_TextView.Call(SCI_GETSELECTIONSTART), selend = m_TextView.Call(SCI_GETSELECTIONEND); selstart != selend)
@@ -1941,6 +1940,7 @@ void CTortoiseGitBlameView::OnEditFind()
 		flags |= FR_MATCHCASE;
 
 	m_pFindDialog->Create(TRUE, oneline, nullptr, flags, this);
+	CTheme::Instance().SetThemeForDialog(m_pFindDialog->GetSafeHwnd(), CTheme::Instance().IsDarkTheme());
 }
 
 void CTortoiseGitBlameView::OnEditGoto()
