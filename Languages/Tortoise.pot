@@ -10314,6 +10314,10 @@ msgstr ""
 msgid "You cannot change the type of this ref with a rename."
 msgstr ""
 
+#. Resource IDs: (IDS_COMMITDLG_NOTEDITEDTEMPLATE)
+msgid "You did not edit the message template.\nProceed without individual commit message?"
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_OLDMSYSGIT)
 #, c-format
 msgid "You have an old unsupported version of Git installed.\n\nYou should consider an upgrade to %s."

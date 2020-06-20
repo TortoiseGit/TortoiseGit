@@ -18,6 +18,7 @@ Released: unreleased
    This also improves the high contrast mode.
  * Allow to diff a file in Log/RepositoryBrowser with file selected by "Diff later" in Explorer
  * Fixed issue #3362: Ease searches in the log window (auto select text)
+ * Fixed issue #3539: doesn't abort commit if user doesn't modify the template commit message
 
 = Release 2.10.0.2 =
 Released: 2020-03-24

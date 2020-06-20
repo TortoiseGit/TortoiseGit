@@ -166,8 +166,9 @@ BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_COMMIT_SETAUTHOR, &CCommitDlg::OnBnClickedCommitSetauthor)
 END_MESSAGE_MAP()
 
-int GetCommitTemplate(CString &msg)
+static int GetCommitTemplate(CString &msg)
 {
+	msg.Empty();
 	CString tplFilename = g_Git.GetConfigValue(L"commit.template");
 	if (tplFilename.IsEmpty())
 		return -1;
@@ -201,10 +202,11 @@ BOOL CCommitDlg::OnInitDialog()
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
+	GetCommitTemplate(m_sLogTemplate);
 	if (m_sLogMessage.IsEmpty())
 	{
 		if (!m_bForceCommitAmend)
-			GetCommitTemplate(m_sLogMessage);
+			m_sLogMessage = m_sLogTemplate;
 
 		CString dotGitPath;
 		GitAdminDir::GetWorktreeAdminDirPath(g_Git.m_CurrentDir, dotGitPath);
@@ -642,6 +644,14 @@ void CCommitDlg::OnOK()
 	{
 		if (CMessageBox::Show(this->m_hWnd, IDS_COMMITDLG_NOISSUEWARNING, IDS_APPNAME, MB_YESNO | MB_ICONWARNING)!=IDYES)
 			return;
+	}
+	if (!m_sLogTemplate.IsEmpty() && m_sLogTemplate == m_sLogMessage)
+	{
+		if (CMessageBox::ShowCheck(GetSafeHwnd(), IDS_COMMITDLG_NOTEDITEDTEMPLATE, IDS_APPNAME, 2, IDI_WARNING, IDS_PROCEEDBUTTON, IDS_MSGBOX_NO, 0, L"CommitMessageTemplateNotEdited", IDS_MSGBOX_DONOTSHOWAGAIN) != 1)
+		{
+			CMessageBox::RemoveRegistryKey(L"CommitMessageTemplateNotEdited"); // only remember "proceed anyway"
+			return;
+		}
 	}
 
 	if (m_ProjectProperties.bWarnNoSignedOffBy == TRUE && m_cLogMessage.GetText().Find(GetSignedOffByLine()) == -1)
@@ -1201,8 +1211,8 @@ void CCommitDlg::OnOK()
 					m_History.Save();
 				}
 
-				this->m_sLogMessage.Empty();
-				GetCommitTemplate(m_sLogMessage);
+				GetCommitTemplate(m_sLogTemplate);
+				m_sLogMessage = m_sLogTemplate;
 				m_cLogMessage.SetText(m_sLogMessage);
 				m_cLogMessage.ClearUndoBuffer();
 				if (m_bCreateNewBranch)

@@ -1413,6 +1413,7 @@
 #define IDC_FROMSUBJECT                 1678
 #define IDS_DARKTHEME_TT                1678
 #define IDC_TOHASH                      1679
+#define IDS_COMMITDLG_NOTEDITEDTEMPLATE 1679
 #define IDC_TOSUBJECT                   1680
 #define IDC_CHECK_NEWBRANCH             1681
 #define IDC_TOGROUP2                    1681

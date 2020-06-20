@@ -3844,6 +3844,8 @@ BEGIN
     IDS_PROC_SYNC_SWITCHTO  "Switch to ""%s"""
     IDS_CONFIGUREDEFAULT    "Configure default"
     IDS_DARKTHEME_TT        "Dark theme requires at least Win10 1803, and it must be enabled in the Windows system settings."
+    IDS_COMMITDLG_NOTEDITEDTEMPLATE 
+                            "You did not edit the message template.\nProceed without individual commit message?"
 END
 
 STRINGTABLE

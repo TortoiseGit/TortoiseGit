@@ -378,6 +378,7 @@ void CSetSavedDataPage::OnBnClickedStoreddecisionsclear()
 		L"PushAllBranches",
 		L"CommitMessageContainsConflictHint",
 		L"MergeConflictsNeedsCommit",
+		L"CommitMessageTemplateNotEdited",
 	};
 	for (const auto& value : tgitvalues)
 	{
