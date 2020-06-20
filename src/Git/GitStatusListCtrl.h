@@ -849,7 +849,7 @@ public:
 	std::map<CString, CString>	m_restorepaths;
 	mutable CReaderWriterLock	m_guard;
 
-	HFONT			m_uiFont;
+	CFont			m_uiFont;
 
 	HMENU			m_hShellMenu;
 	LPCONTEXTMENU	m_pContextMenu;
