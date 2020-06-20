@@ -61,7 +61,7 @@ using namespace TreePropSheet;
  * it means that the changes are discarded! Each settings page has
  * to make sure that no changes are saved outside that method.
  */
-class CSettings : public CStandAloneDialogTmpl<CTreePropSheet>
+class CSettings : public CTreePropSheet
 {
 	DECLARE_DYNAMIC(CSettings)
 

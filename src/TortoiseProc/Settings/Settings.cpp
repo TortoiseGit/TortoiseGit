@@ -28,9 +28,9 @@
 #include "Theme.h"
 #include "DarkModeHelper.h"
 
-IMPLEMENT_DYNAMIC(CSettings, CStandAloneDialogTmpl<CTreePropSheet>)
+IMPLEMENT_DYNAMIC(CSettings, CTreePropSheet)
 CSettings::CSettings(UINT nIDCaption, CTGitPath * /*cmdPath*/, CWnd* pParentWnd, UINT iSelectPage)
-: CStandAloneDialogTmpl<CTreePropSheet>(nIDCaption, pParentWnd)
+: CTreePropSheet(nIDCaption, pParentWnd)
 {
 	AddPropPages();
 	SetTheme(CTheme::Instance().IsDarkTheme());
@@ -51,6 +51,7 @@ void CSettings::SetTheme(bool bDark)
 		if (IsWindow(pPage->GetSafeHwnd()))
 			CTheme::Instance().SetThemeForDialog(pPage->GetSafeHwnd(), bDark);
 	}
+	::RedrawWindow(GetSafeHwnd(), nullptr, nullptr, RDW_FRAME | RDW_INVALIDATE | RDW_ERASE | RDW_INTERNALPAINT | RDW_ALLCHILDREN | RDW_UPDATENOW);
 }
 
 void CSettings::AddPropPages()
@@ -232,7 +233,7 @@ void CSettings::HandleRestart()
 	}
 }
 
-BEGIN_MESSAGE_MAP(CSettings, CStandAloneDialogTmpl<CTreePropSheet>)
+BEGIN_MESSAGE_MAP(CSettings, CTreePropSheet)
 END_MESSAGE_MAP()
 
 BOOL CSettings::OnInitDialog()
