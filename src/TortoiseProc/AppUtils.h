@@ -106,11 +106,6 @@ public:
 	static BOOL CheckForEmptyDiff(const CTGitPath& sDiffPath);
 
 	/**
-	 * Create a font which can is used for log messages, etc
-	 */
-	static void CreateFontForLogs(CFont& fontToCreate);
-
-	/**
 	* Launch the external blame viewer
 	*/
 	static bool LaunchTortoiseBlame(

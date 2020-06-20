@@ -322,6 +322,11 @@ void CGitLogListBase::InsertGitColumn()
 	CString temp;
 
 	Init();
+	if (CRegDWORD(L"Software\\TortoiseGit\\LogFontForLogCtrl", FALSE))
+	{
+		CCommonAppUtils::CreateFontForLogs(m_Font);
+		SetFont(&m_Font);
+	}
 
 	// use the default font, create a copy of it and
 	// change the copy to BOLD (leave the rest of the font

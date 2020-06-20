@@ -147,6 +147,7 @@ private:
 
 	CThemeMFCButton		m_SwitchButton;
 	CColors				m_colors;
+	CFont				m_font;
 	CGestureEnabledControlTmpl<CHintCtrl<CListCtrl>>	m_cFileList;
 	bool				m_bBlame;
 	CTGitPathList		m_arFileList;

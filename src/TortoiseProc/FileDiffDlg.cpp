@@ -319,6 +319,12 @@ BOOL CFileDiffDlg::OnInitDialog()
 	if (g_Git.GetConfigValueBool(_T("tgit.diffshowpatch")))
 		TogglePatchView();
 
+	if (CRegDWORD(L"Software\\TortoiseGit\\LogFontForFileListCtrl", FALSE))
+	{
+		CAppUtils::CreateFontForLogs(m_font);
+		m_cFileList.SetFont(&m_font);
+	}
+
 	KillTimer(IDT_INPUT);
 	return FALSE;
 }

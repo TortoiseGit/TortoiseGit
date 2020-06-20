@@ -90,6 +90,14 @@ CSettingsAdvanced::CSettingsAdvanced()
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
 	settings[i++].def.b	= true;
 
+	settings[i].sName	= L"LogFontForFileListCtrl";
+	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
+	settings[i++].def.b	= false;
+
+	settings[i].sName	= L"LogFontForLogCtrl";
+	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
+	settings[i++].def.b	= false;
+
 	settings[i].sName	= L"LogIncludeBoundaryCommits";
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
 	settings[i++].def.b	= false;

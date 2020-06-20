@@ -328,6 +328,13 @@ void CGitStatusListCtrl::Init(DWORD dwColumns, const CString& sColumnInfoContain
 
 	SetWindowTheme(m_hWnd, L"Explorer", nullptr);
 
+	if (CRegDWORD(L"Software\\TortoiseGit\\LogFontForFileListCtrl", FALSE))
+	{
+		m_uiFont.DeleteObject();
+		CAppUtils::CreateFontForLogs(m_uiFont);
+		SetFont(&m_uiFont);
+	}
+
 	m_nIconFolder = SYS_IMAGE_LIST().GetDirIconIndex();
 	m_nRestoreOvl = SYS_IMAGE_LIST().AddIcon(CCommonAppUtils::LoadIconEx(IDI_RESTOREOVL, 0, 0));
 	SYS_IMAGE_LIST().SetOverlayImage(m_nRestoreOvl, OVL_RESTORE);
