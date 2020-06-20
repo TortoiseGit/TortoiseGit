@@ -54,7 +54,7 @@ CFilterEdit::~CFilterEdit()
 }
 
 BEGIN_MESSAGE_MAP(CFilterEdit, CEdit)
-
+	ON_WM_SETFOCUS()
 	ON_MESSAGE(WM_SETFONT, OnSetFont)
 	ON_WM_SIZE()
 	ON_WM_ERASEBKGND()
@@ -276,6 +276,13 @@ LRESULT CFilterEdit::OnSetFont( WPARAM wParam, LPARAM lParam )
 	ResizeWindow();
 
 	return 0;
+}
+
+void CFilterEdit::OnSetFocus(CWnd* pOldWnd)
+{
+	__super::OnSetFocus(pOldWnd);
+	if (auto len = GetWindowTextLength(); len > 0)
+		SetSel(0, len);
 }
 
 void CFilterEdit::OnSize( UINT nType, int cx, int cy )
