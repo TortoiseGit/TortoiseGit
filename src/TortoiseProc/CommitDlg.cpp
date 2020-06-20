@@ -193,7 +193,10 @@ static int GetCommitTemplate(CString &msg)
 	tplFilename.Replace(L'/', L'\\');
 
 	if (!CGit::LoadTextFile(tplFilename, msg))
+	{
+		MessageBox(nullptr, L"Could not open and load commit.template file: " + tplFilename, L"TortoiseGit", MB_ICONERROR);
 		return -1;
+	}
 	return 0;
 }
 
