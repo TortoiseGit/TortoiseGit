@@ -1630,6 +1630,7 @@
 #define IDC_MERGEBLOCK                  1852
 #define IDS_LOG_FILTER_MESSAGES         1853
 #define IDC_TRUSTEXITCODE               1853
+#define IDC_DIFFVIEWER_CROSSLINK        1853
 #define IDS_LOG_FILTER_REVS             1854
 #define IDS_LOG_FILTER_REGEX            1855
 #define IDS_LOG_FILTER_BUGIDS           1856
@@ -2083,7 +2084,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        363
 #define _APS_NEXT_COMMAND_VALUE         32875
-#define _APS_NEXT_CONTROL_VALUE         1853
+#define _APS_NEXT_CONTROL_VALUE         1854
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

@@ -2073,7 +2073,7 @@ BEGIN
     DEFPUSHBUTTON   "Cancel",IDCANCEL,256,180,50,14
 END
 
-IDD_SETTINGSUDIFF DIALOGEX 0, 0, 301, 232
+IDD_SETTINGSUDIFF DIALOGEX 0, 0, 301, 246
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "TortoiseGitUDiff"
 FONT 9, "MS Shell Dlg 2", 400, 0, 0x1
@@ -2106,7 +2106,7 @@ BEGIN
     COMBOBOX        IDC_FONTSIZES,252,156,32,47,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
     LTEXT           "Tab size:",IDC_STATIC,14,174,92,8
     EDITTEXT        IDC_TABSIZE,252,172,32,12,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER
-    LTEXT           "Note: These settings also apply to the Patch Viewer dialog.",IDC_STATIC,14,193,270,24
+    LTEXT           "Note: These settings also apply to the Patch Viewer dialog.\nTo select whether you would like to use the build-in or any alterative diff viewer program go to ""Diff Viewer"" preferences section in the leftward tree.",IDC_STATIC,7,193,287,46
 END
 
 IDD_RESOLVESUBMODULECONFLICT DIALOGEX 0, 0, 381, 209
@@ -3140,7 +3140,7 @@ BEGIN
         VERTGUIDE, 209
         VERTGUIDE, 284
         TOPMARGIN, 7
-        BOTTOMMARGIN, 225
+        BOTTOMMARGIN, 239
     END
 
     IDD_RESOLVESUBMODULECONFLICT, DIALOG

@@ -6406,7 +6406,7 @@ msgid "Note that if you choose to recover the auto-saved documents, you must exp
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 65535)
-msgid "Note: These settings also apply to the Patch Viewer dialog."
+msgid "Note: These settings also apply to the Patch Viewer dialog.\nTo select whether you would like to use the build-in or any alterative diff viewer program go to \"Diff Viewer\" preferences section in the leftward tree."
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_REVERT: Control id 1481)
