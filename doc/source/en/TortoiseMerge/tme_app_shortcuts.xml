@@ -1,14 +1,14 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE appendix SYSTEM "../../dtd/dblite.dtd">
 <appendix id="tme-keyboard">
-	<title>keyboard shortcuts</title>
+	<title>Keyboard Shortcuts</title>
 	<simplesect>
 		<para>
 			List of keyboard shortcuts and commands.
 		</para>
 	</simplesect>
 	<sect1 id="tme-keyboard-shortcuts">
-		<title>Keyboard shortcuts</title>
+		<title>Keyboard Shortcuts</title>
 		<variablelist>
 			<varlistentry>
 				<term>Ctrl-Q, Ctrl-W, Escape</term>
@@ -83,7 +83,7 @@
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>F7</term>
+				<term>F7, Ctrl-Down</term>
 				<listitem>
 					<para>
 						Go to next difference
@@ -91,7 +91,7 @@
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>Shift-F7</term>
+				<term>Shift-F7, Ctrl-Up</term>
 				<listitem>
 					<para>
 						Go to previous difference
@@ -171,14 +171,6 @@
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>Ctrl-P</term>
-				<listitem>
-					<para>
-						Toggles between line wrapping
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
 				<term>Ctrl-U</term>
 				<listitem>
 					<para>
@@ -199,6 +191,14 @@
 				<listitem>
 					<para>
 						Switch between left/right/bottom view
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Ctrl-M</term>
+				<listitem>
+					<para>
+						Toggles between marking the selected change
 					</para>
 				</listitem>
 			</varlistentry>
