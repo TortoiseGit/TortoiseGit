@@ -976,6 +976,8 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 				{
 					CString str;
 					str.Format(m_sLogIDFormat, GetLogList()->GetItemCount() - m_lineToLogIndex[i]);
+					if (m_lineToLogIndex[i] < 0)
+						str = "0";
 					::ExtTextOut(hDC, rc.left, rc.top, ETO_CLIPPED, &rc, str, str.GetLength(), 0);
 				}
 				rc.left += m_logidwidth;
