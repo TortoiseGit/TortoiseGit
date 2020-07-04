@@ -65,7 +65,7 @@ private:
 		{
 			const DLGTEMPLATE* pResource = ppsp->pResource;
 			CDialogTemplate dlgTemplate(pResource);
-			dlgTemplate.SetFont(L"MS Shell Dlg 2", 9);
+			dlgTemplate.SetFont(L"Segoe UI", 9);
 			HGLOBAL hNew = GlobalAlloc(GPTR, dlgTemplate.m_dwTemplateSize);
 			ppsp->pResource = static_cast<DLGTEMPLATE*>(GlobalLock(hNew));
 			Checked::memcpy_s(const_cast<void*>(static_cast<const void*>(ppsp->pResource)), dlgTemplate.m_dwTemplateSize, dlgTemplate.m_hTemplate, dlgTemplate.m_dwTemplateSize);

@@ -19,6 +19,7 @@ Released: unreleased
  * Allow to diff a file in Log/RepositoryBrowser with file selected by "Diff later" in Explorer
  * Fixed issue #3362: Ease searches in the log window (auto select text)
  * Fixed issue #3539: doesn't abort commit if user doesn't modify the template commit message
+ * Fixed issue #3233: Change the dialog font to "Segoe UI", which is the default font for most Windows dialogs, including Explorer
  * Fixed issue #1274: Allow log font to be used for LogListCtrl and FileListCtrl
    Needs to be enabled explicitly in TortoiseGit advanced settings using LogFontForFileListCtrl resp. LogFontForLogCtrl
  * Fixed issue #3282: Prefs and Docs - UDiff should have a link back to Diff Viewer section

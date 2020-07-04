@@ -32,7 +32,7 @@ int CALLBACK PropSheetProc(HWND /*hWndDlg*/, UINT uMsg, LPARAM lParam)
 	{
 		auto pResource = reinterpret_cast<LPDLGTEMPLATE>(lParam);
 		CDialogTemplate dlgTemplate(pResource);
-		dlgTemplate.SetFont(L"MS Shell Dlg 2", 9);
+		dlgTemplate.SetFont(L"Segoe UI", 9);
 		memmove(reinterpret_cast<void*>(lParam), dlgTemplate.m_hTemplate, dlgTemplate.m_dwTemplateSize);
 	}
 	break;

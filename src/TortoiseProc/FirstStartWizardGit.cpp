@@ -138,6 +138,8 @@ BOOL CFirstStartWizardGit::OnInitDialog()
 	GetDlgItem(IDC_LINK)->SetWindowText(GIT_FOR_WINDOWS_URL);
 	m_link.SetURL(GIT_FOR_WINDOWS_URL);
 
+	CTheme::Instance().SetThemeForDialog(GetSafeHwnd(), CTheme::Instance().IsDarkTheme());
+
 	AdjustControlSize(IDC_LINK, false);
 	AdjustControlSize(IDC_WORKAROUNDS);
 	AdjustControlSize(IDC_GITHACKS1);
@@ -148,8 +150,6 @@ BOOL CFirstStartWizardGit::OnInitDialog()
 
 	if (m_sMsysGitPath.IsEmpty())
 		SetTimer(CHECK_NEWGIT_TIMER, 1000, nullptr);
-
-	CTheme::Instance().SetThemeForDialog(GetSafeHwnd(), CTheme::Instance().IsDarkTheme());
 
 	return TRUE;
 }

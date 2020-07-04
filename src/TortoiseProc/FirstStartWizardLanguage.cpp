@@ -72,6 +72,8 @@ BOOL CFirstStartWizardLanguage::OnInitDialog()
 {
 	CFirstStartWizardBasePage::OnInitDialog();
 
+	CTheme::Instance().SetThemeForDialog(GetSafeHwnd(), CTheme::Instance().IsDarkTheme());
+
 	CString hinttext;
 	hinttext.LoadString(IDS_FIRSTSTART_LANGUAGEHINT1);
 	AppendStringResource(hinttext, IDS_FIRSTSTART_LANGUAGEHINT2);
@@ -83,8 +85,6 @@ BOOL CFirstStartWizardLanguage::OnInitDialog()
 	AdjustControlSize(IDC_LINK, false);
 
 	OnBnClickedRefresh();
-
-	CTheme::Instance().SetThemeForDialog(GetSafeHwnd(), CTheme::Instance().IsDarkTheme());
 
 	return TRUE;
 }
