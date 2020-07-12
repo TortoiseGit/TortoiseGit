@@ -23,6 +23,7 @@ Released: unreleased
  * Fixed issue #1274: Allow log font to be used for LogListCtrl and FileListCtrl
    Needs to be enabled explicitly in TortoiseGit advanced settings using LogFontForFileListCtrl resp. LogFontForLogCtrl
  * Fixed issue #3282: Prefs and Docs - UDiff should have a link back to Diff Viewer section
+ * Update TortoiseGitPlink to PuTTY Plink 0.74
 
 = Release 2.10.0.2 =
 Released: 2020-03-24

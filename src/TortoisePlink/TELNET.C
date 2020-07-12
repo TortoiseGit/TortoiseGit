@@ -580,7 +580,7 @@ static void do_telnet_read(Telnet *telnet, const char *buf, size_t len)
             break;
           case SEENSB:
             telnet->sb_opt = c;
-            telnet->sb_buf->len = 0;
+            strbuf_clear(telnet->sb_buf);
             telnet->state = SUBNEGOT;
             break;
           case SUBNEGOT:
@@ -604,7 +604,7 @@ static void do_telnet_read(Telnet *telnet, const char *buf, size_t len)
 
         if (outbuf->len >= 4096) {
             c_write(telnet, outbuf->u, outbuf->len);
-            outbuf->len = 0;
+            strbuf_clear(outbuf);
         }
     }
 

@@ -131,12 +131,12 @@ static const char *serial_configure(Serial *serial, HANDLE serport, Conf *conf)
         logeventf(serial->logctx, "Configuring %u data bits", dcb.ByteSize);
 
         switch (conf_get_int(conf, CONF_serstopbits)) {
-          case 2: dcb.StopBits = ONESTOPBIT; str = "1"; break;
-          case 3: dcb.StopBits = ONE5STOPBITS; str = "1.5"; break;
-          case 4: dcb.StopBits = TWOSTOPBITS; str = "2"; break;
+          case 2: dcb.StopBits = ONESTOPBIT; str = "1 stop bit"; break;
+          case 3: dcb.StopBits = ONE5STOPBITS; str = "1.5 stop bits"; break;
+          case 4: dcb.StopBits = TWOSTOPBITS; str = "2 stop bits"; break;
           default: return "Invalid number of stop bits (need 1, 1.5 or 2)";
         }
-        logeventf(serial->logctx, "Configuring %s data bits", str);
+        logeventf(serial->logctx, "Configuring %s", str);
 
         switch (conf_get_int(conf, CONF_serparity)) {
           case SER_PAR_NONE: dcb.Parity = NOPARITY; str = "no"; break;

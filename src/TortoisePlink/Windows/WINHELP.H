@@ -102,6 +102,7 @@
 #define WINHELP_CTX_ssh_share "config-ssh-sharing"
 #define WINHELP_CTX_ssh_kexlist "config-ssh-kex-order"
 #define WINHELP_CTX_ssh_hklist "config-ssh-hostkey-order"
+#define WINHELP_CTX_ssh_hk_known "config-ssh-prefer-known-hostkeys"
 #define WINHELP_CTX_ssh_gssapi_kex_delegation "config-ssh-kex-gssapi-delegation"
 #define WINHELP_CTX_ssh_kex_repeat "config-ssh-kex-rekey"
 #define WINHELP_CTX_ssh_kex_manual_hostkeys "config-ssh-kex-manual-hostkeys"

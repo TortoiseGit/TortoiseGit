@@ -237,7 +237,8 @@ static const char *rlogin_init(Seat *seat, Backend **backend_handle,
         if (ret >= 0) {
             /* Next terminal output will come from server */
             seat_set_trust_status(rlogin->seat, false);
-            rlogin_startup(rlogin, rlogin->prompt->prompts[0]->result);
+            rlogin_startup(rlogin, prompt_get_result_ref(
+                               rlogin->prompt->prompts[0]));
         }
     }
 
@@ -286,7 +287,8 @@ static size_t rlogin_send(Backend *be, const char *buf, size_t len)
         if (ret >= 0) {
             /* Next terminal output will come from server */
             seat_set_trust_status(rlogin->seat, false);
-            rlogin_startup(rlogin, rlogin->prompt->prompts[0]->result);
+            rlogin_startup(rlogin, prompt_get_result_ref(
+                               rlogin->prompt->prompts[0]));
             /* that nulls out rlogin->prompt, so then we'll start sending
              * data down the wire in the obvious way */
         }

@@ -205,10 +205,10 @@ static void version(void)
     exit(0);
 }
 
-char *do_select(SOCKET skt, bool startup)
+char *do_select(SOCKET skt, bool enable)
 {
     int events;
-    if (startup) {
+    if (enable) {
         events = (FD_CONNECT | FD_READ | FD_WRITE |
                   FD_OOB | FD_CLOSE | FD_ACCEPT);
     } else {
