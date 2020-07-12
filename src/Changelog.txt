@@ -4,6 +4,7 @@ Released: unreleased
 == Bug Fixes ==
  * Fixed issue #3593: Statistics dialog - misaligned controls
  * Fixed issue #3598: TGitCache blocks repository directory to be truly deleted
+ * Fixed issue #3619: Hook settings always reset "Hide the script while running" to checked for hooks stored in .tgitconfig
 
 == Features ==
  * Update Scintilla to 4.4.3

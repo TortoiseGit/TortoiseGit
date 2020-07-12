@@ -251,9 +251,9 @@ void ProjectProperties::FetchHookString(CAutoConfig& gitconfig, const CString& s
 	boolval = false;
 	gitconfig.GetBool(sBase + L"show", boolval);
 	if (boolval)
-		sHook += L"true";
+		sHook += L"show";
 	else
-		sHook += L"false";
+		sHook += L"hide";
 }
 
 std::vector<CHARRANGE> ProjectProperties::FindBugIDPositions(const CString& msg)
