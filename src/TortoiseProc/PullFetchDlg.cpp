@@ -255,7 +255,12 @@ BOOL CPullFetchDlg::OnInitDialog()
 	else
 		sWindowTitle.LoadString(IDS_PROGRS_TITLE_FETCH);
 
-	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
+	CString& dirTitle = g_Git.m_CurrentDir;
+
+	if (m_pathList.GetCount() > 1)
+		dirTitle = m_pathList.GetCommonRoot().GetUIPathString();
+
+	CAppUtils::SetWindowTitle(m_hWnd, dirTitle, sWindowTitle);
 
 	Refresh();
 
@@ -290,21 +295,34 @@ void CPullFetchDlg::Refresh()
 
 	STRING_VECTOR list;
 	m_Remote.Reset();
-	int sel=0;
-	if(!g_Git.GetRemoteList(list))
-	{
-		if (!m_IsPull && list.size() > 1)
-			m_Remote.AddString(CString(MAKEINTRESOURCE(IDS_PROC_PUSHFETCH_ALLREMOTES)));
 
-		for (unsigned int i = 0; i < list.size(); ++i)
-		{
-			m_Remote.AddString(list[i]);
-			if (!m_bAllRemotes && list[i] == pullRemote)
-				sel = i + (!m_IsPull && list.size() > 1 ? 1 : 0);
-		}
+	if (m_pathList.GetCount() > 1)
+	{
+		m_Remote.AddString(CString(MAKEINTRESOURCE(IDS_PROC_PUSHFETCH_ALLREMOTES)));
+		GetDlgItem(IDC_REMOTE_RD)->EnableWindow(FALSE);
+		m_Remote.EnableWindow(FALSE);
+		GetDlgItem(IDC_OTHER_RD)->EnableWindow(FALSE);
+		GetDlgItem(IDC_OTHER)->EnableWindow(FALSE);
+		GetDlgItem(IDC_STATIC)->EnableWindow(FALSE);
 	}
-	m_Remote.SetCurSel(sel);
-	OnCbnSelchangeRemote();
+	else
+	{
+		int sel = 0;
+		if (!g_Git.GetRemoteList(list))
+		{
+			if (!m_IsPull && list.size() > 1)
+				m_Remote.AddString(CString(MAKEINTRESOURCE(IDS_PROC_PUSHFETCH_ALLREMOTES)));
+
+			for (unsigned int i = 0; i < list.size(); ++i)
+			{
+				m_Remote.AddString(list[i]);
+				if (!m_bAllRemotes && list[i] == pullRemote)
+					sel = i + (!m_IsPull && list.size() > 1 ? 1 : 0);
+			}
+		}
+		m_Remote.SetCurSel(sel);
+		OnCbnSelchangeRemote();
+	}
 }
 // CPullFetchDlg message handlers
 

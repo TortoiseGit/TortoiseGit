@@ -483,6 +483,7 @@
 #define IDS_USERCANCELLED               1181
 #define IDC_AUTOCLOSECOMBO              1181
 #define IDS_LOG_SIZE                    1182
+#define IDC_AUTOCLOSEMFCOMBO            1182
 #define IDS_ERR_INVALIDPATH             1183
 #define IDC_AUTOCOMPLETION              1184
 #define IDS_PROC_REMOVEBRANCH           1184

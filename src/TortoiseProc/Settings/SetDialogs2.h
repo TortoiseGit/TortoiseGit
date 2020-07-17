@@ -47,6 +47,7 @@ protected:
 	virtual BOOL OnApply() override;
 	afx_msg void OnChange();
 	afx_msg void OnCbnSelchangeAutoclosecombo();
+	afx_msg void OnCbnSelchangeAutocloseMFcombo();
 
 private:
 	CRegDWORD		m_regUseRecycleBin;
@@ -54,6 +55,9 @@ private:
 	CRegDWORD		m_regAutoCloseGitProgress;
 	DWORD_PTR		m_dwAutoCloseGitProgress;
 	CComboBox		m_cAutoCloseGitProgress;
+	CRegDWORD		m_regAutoCloseMFGitProgress;
+	DWORD_PTR		m_dwAutoCloseMFGitProgress;
+	CComboBox		m_cAutoCloseMFGitProgress;
 	CRegDWORD		m_regConfirmKillProcess;
 	BOOL			m_bConfirmKillProcess;
 	CRegDWORD		m_regSyncDialogRandomPos;

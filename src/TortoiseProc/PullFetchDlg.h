@@ -69,6 +69,8 @@ public:
 	CString		m_RemoteURL;
 	CString		m_RemoteBranchName;
 
+	CTGitPathList m_pathList;
+
 protected:
 	CString		m_configPullRemote;
 	CString		m_configPullBranch;

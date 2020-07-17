@@ -30,5 +30,5 @@ bool FetchCommand::Execute()
 		return false;
 	}
 
-	return CAppUtils::Fetch(GetExplorerHWND(), parser.GetVal(L"remote"));
+	return CAppUtils::Fetch(GetExplorerHWND(), parser.GetVal(L"remote"), false, &orgPathList);
 }
