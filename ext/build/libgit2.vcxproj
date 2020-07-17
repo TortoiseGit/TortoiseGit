@@ -175,6 +175,7 @@
     <ClCompile Include="..\libgit2\src\sortedcache.c" />
     <ClCompile Include="..\libgit2\src\stash.c" />
     <ClCompile Include="..\libgit2\src\status.c" />
+    <ClCompile Include="..\libgit2\src\strarray.c" />
     <ClCompile Include="..\libgit2\src\streams\mbedtls.c" />
     <ClCompile Include="..\libgit2\src\streams\openssl.c" />
     <ClCompile Include="..\libgit2\src\streams\registry.c" />
@@ -291,6 +292,7 @@
     <ClInclude Include="..\libgit2\src\annotated_commit.h" />
     <ClInclude Include="..\libgit2\src\apply.h" />
     <ClInclude Include="..\libgit2\src\array.h" />
+    <ClInclude Include="..\libgit2\src\assert_safe.h" />
     <ClInclude Include="..\libgit2\src\attr.h" />
     <ClInclude Include="..\libgit2\src\attrcache.h" />
     <ClInclude Include="..\libgit2\src\attr_file.h" />

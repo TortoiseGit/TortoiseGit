@@ -56,7 +56,7 @@ private:
 };
 
 typedef CSmartBuffer<git_buf,			git_buf_dispose>					CAutoBuf;
-typedef CSmartBuffer<git_strarray,		git_strarray_free>					CAutoStrArray;
+typedef CSmartBuffer<git_strarray,		git_strarray_dispose>				CAutoStrArray;
 
 template <typename ReferenceType, void FreeFunction(ReferenceType*)>
 class CSmartLibgit2Ref
