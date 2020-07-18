@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2011-2019 - TortoiseGit
+// Copyright (C) 2009, 2011-2020 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -208,12 +208,20 @@ static bool DoCleanUp(const CTGitPathList& pathList, int cleanType, bool bDir, b
 		for (int i = 0; i < pathList.GetCount(); ++i)
 		{
 			CString path;
-			if (pathList[i].IsDirectory())
+			if (pathList[i].IsDirectory() && !pathList[i].IsWCRoot())
 				path = pathList[i].GetGitPathString();
 			else
 				path = pathList[i].GetContainingDirectory().GetGitPathString();
 
-			progress.m_GitDirList.push_back(g_Git.m_CurrentDir);
+			if (pathList[i].IsWCRoot() && pathList[i].GetWinPathString() != g_Git.m_CurrentDir)
+			{
+				if (PathIsRelative(pathList[i].GetWinPathString()))
+					progress.m_GitDirList.push_back(g_Git.CombinePath(pathList[i].GetWinPathString()));
+				else
+					progress.m_GitDirList.push_back(pathList[i].GetWinPathString());
+			}
+			else
+				progress.m_GitDirList.push_back(g_Git.m_CurrentDir);
 			progress.m_GitCmdList.push_back(cmd + (path.IsEmpty() ? L"" : (L" -- \"" + path + L'"')));
 		}
 
@@ -261,12 +269,22 @@ static bool DoCleanUp(const CTGitPathList& pathList, int cleanType, bool bDir, b
 		for (int i = 0; i < pathList.GetCount(); ++i)
 		{
 			CString path;
-			if (pathList[i].IsDirectory())
+			if (pathList[i].IsDirectory() && !pathList[i].IsWCRoot())
 				path = pathList[i].GetGitPathString();
 			else
 				path = pathList[i].GetContainingDirectory().GetGitPathString();
 
-			if (!GetFilesToCleanUp(delList, cmd, &g_Git, path, quotepath, sysProgressDlg))
+			if (pathList[i].IsWCRoot() && pathList[i].GetWinPathString() != g_Git.m_CurrentDir)
+			{
+				CGit git;
+				if (PathIsRelative(pathList[i].GetWinPathString()))
+					git.m_CurrentDir = g_Git.CombinePath(pathList[i].GetWinPathString());
+				else
+					git.m_CurrentDir = pathList[i].GetWinPathString();
+				if (!GetFilesToCleanUp(delList, cmd, &git, path, quotepath, sysProgressDlg))
+					return false;
+			}
+			else if (!GetFilesToCleanUp(delList, cmd, &g_Git, path, quotepath, sysProgressDlg))
 				return false;
 		}
 
