@@ -121,7 +121,7 @@ BOOL CPullFetchDlg::OnInitDialog()
 	AddAnchor(IDC_REMOTE_MANAGE,BOTTOM_LEFT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
-	CString WorkingDir=g_Git.m_CurrentDir;
+	CString WorkingDir=g_Git.m_CurrentDir;// doesn't make sense for multi-project
 	WorkingDir.Replace(L':', L'_');
 
 	m_RemoteReg = CRegString(L"Software\\TortoiseGit\\History\\PullRemote\\" + WorkingDir);
@@ -304,6 +304,7 @@ void CPullFetchDlg::Refresh()
 		GetDlgItem(IDC_OTHER_RD)->EnableWindow(FALSE);
 		GetDlgItem(IDC_OTHER)->EnableWindow(FALSE);
 		GetDlgItem(IDC_STATIC)->EnableWindow(FALSE);
+		GetDlgItem(IDC_REMOTE_MANAGE)->EnableWindow(FALSE);
 	}
 	else
 	{
@@ -443,7 +444,7 @@ void CPullFetchDlg::OnBnClickedOk()
 		CMessageBox::Show(GetSafeHwnd(), IDS_PROC_PULL_EMPTYBRANCH, IDS_APPNAME, MB_ICONEXCLAMATION);
 		return;
 	}
-
+	// doesn't make sense for multi-project
 	m_RemoteReg = m_Remote.GetString();
 
 	m_RemoteBranch.SaveHistory();
