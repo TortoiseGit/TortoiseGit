@@ -22,6 +22,7 @@
 #include <algorithm>
 #include <memory>
 #include <chrono>
+#include <mutex>
 
 // Want to use std::min and std::max so don't want Windows.h version of min and max
 #if !defined(NOMINMAX)
@@ -423,7 +424,6 @@ class ScintillaWin :
 	void SetCtrlID(int identifier) override;
 	int GetCtrlID() override;
 	void NotifyParent(SCNotification scn) override;
-	virtual void NotifyParent(SCNotification* scn);
 	void NotifyDoubleClick(Point pt, int modifiers) override;
 	CaseFolder *CaseFolderForEncoding() override;
 	std::string CaseMapString(const std::string &s, int caseMapping) override;
@@ -482,6 +482,7 @@ public:
 	/// Implement important part of IDataObject
 	STDMETHODIMP GetData(FORMATETC *pFEIn, STGMEDIUM *pSTM);
 
+	static void Prepare() noexcept;
 	static bool Register(HINSTANCE hInstance_) noexcept;
 	static bool Unregister() noexcept;
 
@@ -677,10 +678,7 @@ void ScintillaWin::EnsureRenderTarget(HDC hdc) {
 }
 
 void ScintillaWin::DropRenderTarget() {
-	if (pRenderTarget) {
-		pRenderTarget->Release();
-		pRenderTarget = nullptr;
-	}
+	ReleaseUnknown(pRenderTarget);
 }
 
 #endif
@@ -1344,7 +1342,7 @@ sptr_t ScintillaWin::GetText(uptr_t wParam, sptr_t lParam) {
 	Sci::Position sizeRequestedRange = pdoc->GetRelativePositionUTF16(0, lengthWanted);
 	if (sizeRequestedRange < 0) {
 		// Requested more text than there is in the document.
-		sizeRequestedRange = pdoc->CountUTF16(0, pdoc->Length());
+		sizeRequestedRange = pdoc->Length();
 	}
 	std::string docBytes(sizeRequestedRange, '\0');
 	pdoc->GetCharRange(&docBytes[0], 0, sizeRequestedRange);
@@ -2279,13 +2277,6 @@ void ScintillaWin::NotifyParent(SCNotification scn) {
 	scn.nmhdr.idFrom = GetCtrlID();
 	::SendMessage(::GetParent(MainHWND()), WM_NOTIFY,
 	              GetCtrlID(), reinterpret_cast<LPARAM>(&scn));
-}
-
-void ScintillaWin::NotifyParent(SCNotification* scn) {
-	scn->nmhdr.hwndFrom = MainHWND();
-	scn->nmhdr.idFrom = GetCtrlID();
-	::SendMessage(::GetParent(MainHWND()), WM_NOTIFY,
-		GetCtrlID(), reinterpret_cast<LPARAM>(scn));
 }
 
 void ScintillaWin::NotifyDoubleClick(Point pt, int modifiers) {
@@ -3313,6 +3304,22 @@ STDMETHODIMP ScintillaWin::GetData(FORMATETC *pFEIn, STGMEDIUM *pSTM) {
 	return S_OK;
 }
 
+void ScintillaWin::Prepare() noexcept {
+	Platform_Initialise(hInstance);
+
+	// Register the CallTip class
+	WNDCLASSEX wndclassc{};
+	wndclassc.cbSize = sizeof(wndclassc);
+	wndclassc.style = CS_GLOBALCLASS | CS_HREDRAW | CS_VREDRAW;
+	wndclassc.cbWndExtra = sizeof(ScintillaWin *);
+	wndclassc.hInstance = hInstance;
+	wndclassc.lpfnWndProc = ScintillaWin::CTWndProc;
+	wndclassc.hCursor = ::LoadCursor(NULL, IDC_ARROW);
+	wndclassc.lpszClassName = callClassName;
+
+	callClassAtom = ::RegisterClassEx(&wndclassc);
+}
+
 bool ScintillaWin::Register(HINSTANCE hInstance_) noexcept {
 
 	hInstance = hInstance_;
@@ -3327,22 +3334,7 @@ bool ScintillaWin::Register(HINSTANCE hInstance_) noexcept {
 	wndclass.hInstance = hInstance;
 	wndclass.lpszClassName = L"Scintilla";
 	scintillaClassAtom = ::RegisterClassExW(&wndclass);
-	bool result = 0 != scintillaClassAtom;
-
-	if (result) {
-		// Register the CallTip class
-		WNDCLASSEX wndclassc {};
-		wndclassc.cbSize = sizeof(wndclassc);
-		wndclassc.style = CS_GLOBALCLASS | CS_HREDRAW | CS_VREDRAW;
-		wndclassc.cbWndExtra = sizeof(ScintillaWin *);
-		wndclassc.hInstance = hInstance;
-		wndclassc.lpfnWndProc = ScintillaWin::CTWndProc;
-		wndclassc.hCursor = ::LoadCursor(NULL, IDC_ARROW);
-		wndclassc.lpszClassName = callClassName;
-
-		callClassAtom = ::RegisterClassEx(&wndclassc);
-		result = 0 != callClassAtom;
-	}
+	const bool result = 0 != scintillaClassAtom;
 
 	return result;
 }
@@ -3460,8 +3452,10 @@ LRESULT PASCAL ScintillaWin::CTWndProc(
 					}
 					// If above SUCCEEDED, then pCTRenderTarget not nullptr
 					assert(pCTRenderTarget);
-					surfaceWindow->Init(pCTRenderTarget, hWnd);
-					pCTRenderTarget->BeginDraw();
+					if (pCTRenderTarget) {
+						surfaceWindow->Init(pCTRenderTarget, hWnd);
+						pCTRenderTarget->BeginDraw();
+					}
 #endif
 				}
 				surfaceWindow->SetUnicodeMode(SC_CP_UTF8 == sciThis->ct.codePage);
@@ -3474,8 +3468,7 @@ LRESULT PASCAL ScintillaWin::CTWndProc(
 #endif
 				surfaceWindow->Release();
 #if defined(USE_D2D)
-				if (pCTRenderTarget)
-					pCTRenderTarget->Release();
+				ReleaseUnknown(pCTRenderTarget);
 #endif
 				::EndPaint(hWnd, &ps);
 				return 0;
@@ -3530,6 +3523,8 @@ LRESULT PASCAL ScintillaWin::SWndProc(
 	if (sci == nullptr) {
 		try {
 			if (iMessage == WM_CREATE) {
+				static std::once_flag once;
+				std::call_once(once, Prepare);
 				// Create C++ object associated with window
 				sci = new ScintillaWin(hWnd);
 				SetWindowPointer(hWnd, sci);
@@ -3556,14 +3551,13 @@ LRESULT PASCAL ScintillaWin::SWndProc(
 // This function is externally visible so it can be called from container when building statically.
 // Must be called once only.
 int Scintilla_RegisterClasses(void *hInstance) {
-	Platform_Initialise(hInstance);
 	const bool result = ScintillaWin::Register(static_cast<HINSTANCE>(hInstance));
 	return result;
 }
 
 namespace Scintilla {
 
-int ResourcesRelease(bool fromDllMain) {
+int ResourcesRelease(bool fromDllMain) noexcept {
 	const bool result = ScintillaWin::Unregister();
 	Platform_Finalise(fromDllMain);
 	return result;
