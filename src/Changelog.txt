@@ -8,7 +8,7 @@ Released: unreleased
  * Fixed issue #3617: 'Saving config failed (key: "fetch.prune", value: "")' in remote repository definition when `fetch.prune` is set in global config
 
 == Features ==
- * Update Scintilla to 4.4.3
+ * Update Scintilla to 4.4.4
  * Fixed issue #3348: Showing line and column number in the status line of TortoiseGitMerge
  * Fixed issue #3408: TortoiseGitMerge: When double clicking on a word, mark the word only in the current view if also the Ctrl key is pressed
  * TortoiseGitMerge: Show the number of marked words in the status bar
