@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -455,7 +455,7 @@ BOOL CSettingGitRemote::OnApply()
 
 	if (m_ChangedMask & REMOTE_PRUNEALL)
 	{
-		if (!SaveGeneral(L"fetch.prune", m_bPruneAll == TRUE ? L"true" : L""))
+		if (!SaveGeneral(L"fetch.prune", m_bPruneAll == TRUE ? L"true" : L"false"))
 			return FALSE;
 		m_ChangedMask &= ~REMOTE_PRUNEALL;
 	}
