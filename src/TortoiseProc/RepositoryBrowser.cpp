@@ -214,7 +214,7 @@ BOOL CRepositoryBrowser::OnInitDialog()
 	m_ColumnManager.SetNames(columnNames, _countof(columnNames));
 	constexpr int columnVersion = 6; // adjust when changing number/names/etc. of columns
 	m_ColumnManager.ReadSettings(dwDefaultColumns, 0, L"RepoBrowser", columnVersion, _countof(columnNames), columnWidths);
-	m_ColumnManager.SetRightAlign(2);
+	m_ColumnManager.SetRightAlign(m_ColumnManager.GetColumnByName(IDS_LOG_SIZE));
 
 	// set up the list control
 	// set the extended style of the list control
