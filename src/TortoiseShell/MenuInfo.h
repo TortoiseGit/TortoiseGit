@@ -86,6 +86,10 @@ enum GitCommands
 		ShellMenuDiffLater,
 		ShellMenuImportPatchDrop,
 		ShellMenuBisectSkip,
+		ShellMenuLFSMenu,
+		ShellMenuLFSLocks,
+		ShellMenuLFSLock,
+		ShellMenuLFSUnlock,
 		ShellMenuLastEntry			// used to mark the menu array end
 };
 

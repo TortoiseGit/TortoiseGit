@@ -174,6 +174,9 @@
     <Filter Include="Commands\Help">
       <UniqueIdentifier>{3a3018a4-ac2f-4bf5-a8fe-e8af554e8435}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Commands\LFS">
+      <UniqueIdentifier>{fce39608-03c2-4646-9710-d244308dd3cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddRemoteDlg.cpp">
@@ -1003,6 +1006,15 @@
     </ClCompile>
     <ClCompile Include="..\Utils\MiscUI\ThemeMFCVisualManager.cpp">
       <Filter>Utils\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\LFSCommands.cpp">
+      <Filter>Commands\LFS</Filter>
+    </ClCompile>
+    <ClCompile Include="ProgressCommands\LFSSetLockedProgressCommand.cpp">
+      <Filter>Utility Dialogs\ProgressCommands</Filter>
+    </ClCompile>
+    <ClCompile Include="LFSLocksDlg.cpp">
+      <Filter>Commands\LFS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1897,6 +1909,15 @@
     <ClInclude Include="..\Utils\MiscUI\ThemeMFCVisualManager.h">
       <Filter>Utils\UI</Filter>
     </ClInclude>
+    <ClInclude Include="LFSLocksDlg.h">
+      <Filter>Commands\LFS</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\LFSCommands.h">
+      <Filter>Commands\LFS</Filter>
+    </ClInclude>
+    <ClInclude Include="ProgressCommands\LFSSetLockedProgressCommand.h">
+      <Filter>Utility Dialogs\ProgressCommands</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resources\actionadded.ico">
@@ -2224,6 +2245,12 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\gitfolder.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\LockBackground.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\UnlockBackground.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

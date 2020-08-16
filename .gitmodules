@@ -34,3 +34,6 @@
 [submodule "ext/hunspell"]
 	path = ext/hunspell
 	url = https://github.com/hunspell/hunspell.git
+[submodule "ext/json"]
+	path = ext/json
+	url = https://github.com/nlohmann/json.git

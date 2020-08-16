@@ -40,8 +40,8 @@
   <PropertyGroup Label="UserMacros" />
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(ProjectDir);..\Resources;$InputDir;..\..\ext\ResizableLib;..\Git;..\Utils;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\MiscUI;..\TortoiseShell;..\..\ext\gitdll;..\..\ext\libgit2\include;..\..\ext\zlib;..\..\ext\OGDF\include;..\..\ext\build\ogdf;..\AsyncFramework;..\TortoiseMerge;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>HUNSPELL_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir);..\Resources;$InputDir;..\..\ext\ResizableLib;..\Git;..\Utils;..\..\ext\json\include;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\MiscUI;..\TortoiseShell;..\..\ext\gitdll;..\..\ext\libgit2\include;..\..\ext\zlib;..\..\ext\OGDF\include;..\..\ext\build\ogdf;..\AsyncFramework;..\TortoiseMerge;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>HUNSPELL_STATIC;TGIT_LFS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling>SyncCThrow</ExceptionHandling>
     </ClCompile>
     <ResourceCompile>
@@ -131,6 +131,7 @@
     <ClCompile Include="ColumnManager.cpp" />
     <ClCompile Include="Commands\CommitIsOnRefsCommand.cpp" />
     <ClCompile Include="Commands\DaemonCommand.cpp" />
+    <ClCompile Include="Commands\LFSCommands.cpp" />
     <ClCompile Include="CommitIsOnRefsDlg.cpp" />
     <ClCompile Include="CreateChangelistDlg.cpp" />
     <ClCompile Include="FilterHelper.cpp" />
@@ -144,11 +145,13 @@
     <ClCompile Include="FirstStartWizardUser.cpp" />
     <ClCompile Include="GitTagCompareList.cpp" />
     <ClCompile Include="GravatarPictureBox.cpp" />
+    <ClCompile Include="LFSLocksDlg.cpp" />
     <ClCompile Include="LogDlgFileFilter.cpp" />
     <ClCompile Include="LogDlgFilter.cpp" />
     <ClCompile Include="MergeAbortDlg.cpp" />
     <ClCompile Include="GitRefCompareList.cpp" />
     <ClCompile Include="ProgressCommands\AddProgressCommand.cpp" />
+    <ClCompile Include="ProgressCommands\LFSSetLockedProgressCommand.cpp" />
     <ClCompile Include="ProgressCommands\CloneProgressCommand.cpp" />
     <ClCompile Include="ProgressCommands\FetchProgressCommand.cpp" />
     <ClCompile Include="ProgressCommands\RemoteProgressCommand.cpp" />
@@ -431,6 +434,7 @@
     <ClInclude Include="Commands\CommitIsOnRefsCommand.h" />
     <ClInclude Include="Commands\DaemonCommand.h" />
     <ClInclude Include="Commands\HelpCommand.h" />
+    <ClInclude Include="Commands\LFSCommands.h" />
     <ClInclude Include="Commands\RTFMCommand.h" />
     <ClInclude Include="CommitIsOnRefsDlg.h" />
     <ClInclude Include="ConfigureGitExe.h" />
@@ -446,11 +450,13 @@
     <ClInclude Include="FirstStartWizardUser.h" />
     <ClInclude Include="GitTagCompareList.h" />
     <ClInclude Include="GravatarPictureBox.h" />
+    <ClInclude Include="LFSLocksDlg.h" />
     <ClInclude Include="LogDlgFileFilter.h" />
     <ClInclude Include="LogDlgFilter.h" />
     <ClInclude Include="MergeAbortDlg.h" />
     <ClInclude Include="GitRefCompareList.h" />
     <ClInclude Include="ProgressCommands\AddProgressCommand.h" />
+    <ClInclude Include="ProgressCommands\LFSSetLockedProgressCommand.h" />
     <ClInclude Include="ProgressCommands\CloneProgressCommand.h" />
     <ClInclude Include="ProgressCommands\FetchProgressCommand.h" />
     <ClInclude Include="ProgressCommands\RemoteProgressCommand.h" />
@@ -674,6 +680,7 @@
     <Image Include="..\Resources\lineadded.ico" />
     <Image Include="..\Resources\lineconflicted.ico" />
     <Image Include="..\Resources\lineremoved.ico" />
+    <Image Include="..\Resources\LockBackground.ico" />
     <Image Include="..\Resources\logfilter.ico" />
     <Image Include="..\Resources\lookandfeel.ico" />
     <Image Include="..\Resources\menuabout.ico" />
@@ -722,6 +729,7 @@
     <Image Include="..\Resources\saveddata.ico" />
     <Image Include="..\Resources\snippet.ico" />
     <Image Include="..\Resources\spell.ico" />
+    <Image Include="..\Resources\UnlockBackground.ico" />
     <Image Include="..\Resources\UpdateBackground.ico" />
     <Image Include="..\Resources\switch.ico" />
     <Image Include="..\Resources\SwitchBackground.ico" />

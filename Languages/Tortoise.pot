@@ -1239,6 +1239,10 @@ msgstr ""
 msgid "&Unknown drives"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_LFS_LOCKS: Control id 32927)
+msgid "&Unlock"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1386)
 msgid "&Up"
 msgstr ""
@@ -2249,7 +2253,7 @@ msgstr ""
 msgid "Can't copy \n%1!s!\nto\n%2!s!"
 msgstr ""
 
-#. Resource IDs: (Dialog AFX_IDD_NEWTYPEDLG: Control id 2, Dialog AFX_IDD_PRINTDLG: Control id 2, Dialog IDD_ADD: Control id 2, Dialog IDD_ADD_REMOTE: Control id 2, Dialog IDD_BISECTSTART: Control id 2, Dialog IDD_BROWSE_REFS: Control id 2, Dialog IDD_BUGTRAQREGEXTESTER: Control id 2, Dialog IDD_CERTCHECK: Control id 2, Dialog IDD_CLEAN: Control id 2, Dialog IDD_CLONE: Control id 2, Dialog IDD_COMMITDLG: Control id 2, Dialog IDD_CREATECHANGELIST: Control id 2, Dialog IDD_CREATEREPO: Control id 2, Dialog IDD_ENCODING: Control id 2, Dialog IDD_EXPORT: Control id 2, Dialog IDD_FIND: Control id 2, Dialog IDD_FORMAT_PATCH: Control id 2, Dialog IDD_GITSWITCH: Control id 2, Dialog IDD_GOTO: Control id 2, Dialog IDD_GOTODLG: Control id 2, Dialog IDD_HISTORYDLG: Control id 2, Dialog IDD_IGNORE: Control id 2, Dialog IDD_INPUTDLG: Control id 2, Dialog IDD_LOGMESSAGE: Control id 2, Dialog IDD_LOGORDERING: Control id 2, Dialog IDD_MERGE: Control id 2, Dialog IDD_MERGEABORT: Control id 2, Dialog IDD_NEW_BRANCH_TAG: Control id 2, Dialog IDD_OPEN: Control id 2, Dialog IDD_OPENDLG: Control id 2, Dialog IDD_PROMPT: Control id 2, Dialog IDD_PULLFETCH: Control id 2, Dialog IDD_PUSH: Control id 2, Dialog IDD_REFLOG: Control id 2, Dialog IDD_REGEXFILTER: Control id 2, Dialog IDD_REGEXFILTERS: Control id 2, Dialog IDD_RENAME: Control id 2, Dialog IDD_REPOSITORY_BROWSER: Control id 2, Dialog IDD_REQUESTPULL: Control id 2, Dialog IDD_RESET: Control id 2, Dialog IDD_RESOLVE: Control id 2, Dialog IDD_REVERT: Control id 2, Dialog IDD_REVGRAPHFILTER: Control id 2, Dialog IDD_SELECTREMOTEREF: Control id 2, Dialog IDD_SENDMAIL: Control id 2, Dialog IDD_SETTINGSBUGTRAQADV: Control id 2, Dialog IDD_SETTINGSHOOKCONFIG: Control id 2, Dialog IDD_SETTINGSPROGSADV: Control id 2, Dialog IDD_SIMPLEPROMPT: Control id 2, Dialog IDD_STASH: Control id 2, Dialog IDD_SUBMODULE_ADD: Control id 2, Dialog IDD_SUBMODULE_UPDATE: Control id 2, Dialog IDD_SVNDCOMMITTYPE: Control id 2, Dialog IDD_SVNIGNORE: Control id 2, Dialog IDD_SVNPROGRESS: Control id 2, Dialog IDD_TOOLASSOC: Control id 2, Dialog IDD_URL: Control id 2, Dialog IDD_USER_PASSWD: Control id 2, IDS_MSGBOX_CANCEL, IDS_PROC_OVERWRITEEXPORT_CANCEL)
+#. Resource IDs: (Dialog AFX_IDD_NEWTYPEDLG: Control id 2, Dialog AFX_IDD_PRINTDLG: Control id 2, Dialog IDD_ADD: Control id 2, Dialog IDD_ADD_REMOTE: Control id 2, Dialog IDD_BISECTSTART: Control id 2, Dialog IDD_BROWSE_REFS: Control id 2, Dialog IDD_BUGTRAQREGEXTESTER: Control id 2, Dialog IDD_CERTCHECK: Control id 2, Dialog IDD_CLEAN: Control id 2, Dialog IDD_CLONE: Control id 2, Dialog IDD_COMMITDLG: Control id 2, Dialog IDD_CREATECHANGELIST: Control id 2, Dialog IDD_CREATEREPO: Control id 2, Dialog IDD_ENCODING: Control id 2, Dialog IDD_EXPORT: Control id 2, Dialog IDD_FIND: Control id 2, Dialog IDD_FORMAT_PATCH: Control id 2, Dialog IDD_GITSWITCH: Control id 2, Dialog IDD_GOTO: Control id 2, Dialog IDD_GOTODLG: Control id 2, Dialog IDD_HISTORYDLG: Control id 2, Dialog IDD_IGNORE: Control id 2, Dialog IDD_INPUTDLG: Control id 2, Dialog IDD_LFS_LOCKS: Control id 2, Dialog IDD_LOGMESSAGE: Control id 2, Dialog IDD_LOGORDERING: Control id 2, Dialog IDD_MERGE: Control id 2, Dialog IDD_MERGEABORT: Control id 2, Dialog IDD_NEW_BRANCH_TAG: Control id 2, Dialog IDD_OPEN: Control id 2, Dialog IDD_OPENDLG: Control id 2, Dialog IDD_PROMPT: Control id 2, Dialog IDD_PULLFETCH: Control id 2, Dialog IDD_PUSH: Control id 2, Dialog IDD_REFLOG: Control id 2, Dialog IDD_REGEXFILTER: Control id 2, Dialog IDD_REGEXFILTERS: Control id 2, Dialog IDD_RENAME: Control id 2, Dialog IDD_REPOSITORY_BROWSER: Control id 2, Dialog IDD_REQUESTPULL: Control id 2, Dialog IDD_RESET: Control id 2, Dialog IDD_RESOLVE: Control id 2, Dialog IDD_REVERT: Control id 2, Dialog IDD_REVGRAPHFILTER: Control id 2, Dialog IDD_SELECTREMOTEREF: Control id 2, Dialog IDD_SENDMAIL: Control id 2, Dialog IDD_SETTINGSBUGTRAQADV: Control id 2, Dialog IDD_SETTINGSHOOKCONFIG: Control id 2, Dialog IDD_SETTINGSPROGSADV: Control id 2, Dialog IDD_SIMPLEPROMPT: Control id 2, Dialog IDD_STASH: Control id 2, Dialog IDD_SUBMODULE_ADD: Control id 2, Dialog IDD_SUBMODULE_UPDATE: Control id 2, Dialog IDD_SVNDCOMMITTYPE: Control id 2, Dialog IDD_SVNIGNORE: Control id 2, Dialog IDD_SVNPROGRESS: Control id 2, Dialog IDD_TOOLASSOC: Control id 2, Dialog IDD_URL: Control id 2, Dialog IDD_USER_PASSWD: Control id 2, IDS_MSGBOX_CANCEL, IDS_PROC_OVERWRITEEXPORT_CANCEL)
 msgid "Cancel"
 msgstr ""
 
@@ -4613,6 +4617,10 @@ msgstr ""
 msgid "Force the rebase even if the current branch is a descendant of the commit you are rebasing onto.\nNormally the command will exit with the message \"Current branch is up to date\" in such a situation."
 msgstr ""
 
+#. Resource IDs: (IDS_PROGS_LFS_FORCEUNLOCK)
+msgid "Force unlock"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1796)
 msgid "Force: May discard"
 msgstr ""
@@ -4975,7 +4983,7 @@ msgstr ""
 msgid "Hebrew"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_ADD: Control id 9, Dialog IDD_ADD_REMOTE: Control id 9, Dialog IDD_APPLY_PATCH_LIST: Control id 9, Dialog IDD_BISECTSTART: Control id 9, Dialog IDD_BROWSE_REFS: Control id 9, Dialog IDD_CLEAN: Control id 9, Dialog IDD_CLONE: Control id 9, Dialog IDD_COMMITDLG: Control id 9, Dialog IDD_CREATEREPO: Control id 9, Dialog IDD_EXPORT: Control id 9, Dialog IDD_FORMAT_PATCH: Control id 9, Dialog IDD_GITSWITCH: Control id 9, Dialog IDD_IGNORE: Control id 9, Dialog IDD_LOGMESSAGE: Control id 9, Dialog IDD_MERGE: Control id 9, Dialog IDD_MERGEABORT: Control id 9, Dialog IDD_NEW_BRANCH_TAG: Control id 9, Dialog IDD_OPENDLG: Control id 9, Dialog IDD_PULLFETCH: Control id 9, Dialog IDD_PUSH: Control id 9, Dialog IDD_REBASE: Control id 9, Dialog IDD_REFLOG: Control id 9, Dialog IDD_REPOSITORY_BROWSER: Control id 9, Dialog IDD_REQUESTPULL: Control id 9, Dialog IDD_RESET: Control id 9, Dialog IDD_RESOLVE: Control id 9, Dialog IDD_RESOLVESUBMODULECONFLICT: Control id 9, Dialog IDD_RESOLVE_CONFLICT: Control id 9, Dialog IDD_REVERT: Control id 9, Dialog IDD_SENDMAIL: Control id 9, Dialog IDD_SETTINGSBUGTRAQADV: Control id 9, Dialog IDD_SETTINGSHOOKCONFIG: Control id 9, Dialog IDD_STASH: Control id 9, Dialog IDD_SUBMODULE_ADD: Control id 9, Dialog IDD_SUBMODULE_UPDATE: Control id 9, Dialog IDD_SVNDCOMMITTYPE: Control id 9, Dialog IDD_SYNC: Control id 9, IDS_MSGBOX_HELP)
+#. Resource IDs: (Dialog IDD_ADD: Control id 9, Dialog IDD_ADD_REMOTE: Control id 9, Dialog IDD_APPLY_PATCH_LIST: Control id 9, Dialog IDD_BISECTSTART: Control id 9, Dialog IDD_BROWSE_REFS: Control id 9, Dialog IDD_CLEAN: Control id 9, Dialog IDD_CLONE: Control id 9, Dialog IDD_COMMITDLG: Control id 9, Dialog IDD_CREATEREPO: Control id 9, Dialog IDD_EXPORT: Control id 9, Dialog IDD_FORMAT_PATCH: Control id 9, Dialog IDD_GITSWITCH: Control id 9, Dialog IDD_IGNORE: Control id 9, Dialog IDD_LFS_LOCKS: Control id 9, Dialog IDD_LOGMESSAGE: Control id 9, Dialog IDD_MERGE: Control id 9, Dialog IDD_MERGEABORT: Control id 9, Dialog IDD_NEW_BRANCH_TAG: Control id 9, Dialog IDD_OPENDLG: Control id 9, Dialog IDD_PULLFETCH: Control id 9, Dialog IDD_PUSH: Control id 9, Dialog IDD_REBASE: Control id 9, Dialog IDD_REFLOG: Control id 9, Dialog IDD_REPOSITORY_BROWSER: Control id 9, Dialog IDD_REQUESTPULL: Control id 9, Dialog IDD_RESET: Control id 9, Dialog IDD_RESOLVE: Control id 9, Dialog IDD_RESOLVESUBMODULECONFLICT: Control id 9, Dialog IDD_RESOLVE_CONFLICT: Control id 9, Dialog IDD_REVERT: Control id 9, Dialog IDD_SENDMAIL: Control id 9, Dialog IDD_SETTINGSBUGTRAQADV: Control id 9, Dialog IDD_SETTINGSHOOKCONFIG: Control id 9, Dialog IDD_STASH: Control id 9, Dialog IDD_SUBMODULE_ADD: Control id 9, Dialog IDD_SUBMODULE_UPDATE: Control id 9, Dialog IDD_SVNDCOMMITTYPE: Control id 9, Dialog IDD_SYNC: Control id 9, IDS_MSGBOX_HELP)
 msgid "Help"
 msgstr ""
 
@@ -5644,8 +5652,24 @@ msgstr ""
 msgid "L"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_CLONE: Control id 1847)
+#. Resource IDs: (Dialog IDD_CLONE: Control id 1847, IDS_MENULFS)
 msgid "LFS"
+msgstr ""
+
+#. Resource IDs: (IDS_PROGRS_TITLE_LFS_LOCK)
+msgid "LFS Lock"
+msgstr ""
+
+#. Resource IDs: (IDS_STATUSLIST_COLLFSLOCK)
+msgid "LFS Lock Owner"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_LFS_LOCKS: Control id 176)
+msgid "LFS Locks"
+msgstr ""
+
+#. Resource IDs: (IDS_PROGRS_TITLE_LFS_UNLOCK)
+msgid "LFS Unlock"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_3: Control id 65535)
@@ -5682,6 +5706,10 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 65535)
 msgid "Language:"
+msgstr ""
+
+#. Resource IDs: (IDS_MENUDESCLFS)
+msgid "Large file storage"
 msgstr ""
 
 #. Resource IDs: (IDS_LAST_N_COMMITS)
@@ -5857,6 +5885,14 @@ msgstr ""
 
 #. Resource IDs: (cmdViewLocatorBar_LabelTitle_RESID)
 msgid "Locator bar"
+msgstr ""
+
+#. Resource IDs: (IDS_MENULFSLOCK, IDS_PROGRS_CMD_LFS_LOCK)
+msgid "Lock"
+msgstr ""
+
+#. Resource IDs: (IDS_MENUDESCLFSLOCK)
+msgid "Locks a file using LFS"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSTBLAME: Control id 65535, IDS_LOG)
@@ -8165,7 +8201,7 @@ msgstr ""
 msgid "Select what file you want to save as\nNote: There is unresolved conflict!"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_ADD: Control id 1067, Dialog IDD_DELETEREMOTETAG: Control id 1067, Dialog IDD_RESOLVE: Control id 1067, Dialog IDD_REVERT: Control id 1067, Dialog IDD_SETTINGSEXTMENU: Control id 1067, Dialog IDD_SETTINGSLOOKANDFEEL: Control id 1067, Dialog IDD_SUBMODULE_UPDATE: Control id 1067)
+#. Resource IDs: (Dialog IDD_ADD: Control id 1067, Dialog IDD_DELETEREMOTETAG: Control id 1067, Dialog IDD_LFS_LOCKS: Control id 1067, Dialog IDD_RESOLVE: Control id 1067, Dialog IDD_REVERT: Control id 1067, Dialog IDD_SETTINGSEXTMENU: Control id 1067, Dialog IDD_SETTINGSLOOKANDFEEL: Control id 1067, Dialog IDD_SUBMODULE_UPDATE: Control id 1067)
 msgid "Select/deselect &all"
 msgstr ""
 
@@ -8437,6 +8473,10 @@ msgstr ""
 msgid "Show linenumber&s"
 msgstr ""
 
+#. Resource IDs: (IDS_MENULFSLOCKS)
+msgid "Show locked files"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_COMMITISONREFS: Control id 1132, Dialog IDD_DIFFFILES: Control id 1132, Dialog IDD_DIFFSUBMODULE: Control id 1132, Dialog IDD_DIFFSUBMODULE: Control id 1695, Dialog IDD_RESOLVESUBMODULECONFLICT: Control id 1132, Dialog IDD_RESOLVESUBMODULECONFLICT: Control id 1695, Dialog IDD_RESOLVESUBMODULECONFLICT: Control id 1698, Dialog IDD_RESOLVE_CONFLICT: Control id 1132, Dialog IDD_RESOLVE_CONFLICT: Control id 1695, IDS_BLAME_POPUP_LOG, IDS_FILEDIFF_LOG)
 msgid "Show log"
 msgstr ""
@@ -8550,6 +8590,10 @@ msgstr ""
 
 #. Resource IDs: (IDS_MENUDESCREVISIONGRAPH)
 msgid "Shows a graphical representation of copies/tags/branches"
+msgstr ""
+
+#. Resource IDs: (IDS_MENUDESCLFSLOCKS)
+msgid "Shows a list of all files locked using LFS"
 msgstr ""
 
 #. Resource IDs: (IDS_MENUDESCSHOWCHANGED)
@@ -9715,6 +9759,14 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 65535)
 msgid "Unknown ref-types"
+msgstr ""
+
+#. Resource IDs: (IDS_MENULFSUNLOCK, IDS_PROGRS_CMD_LFS_UNLOCK)
+msgid "Unlock"
+msgstr ""
+
+#. Resource IDs: (IDS_MENUDESCLFSUNLOCK)
+msgid "Unlocks a file using LFS"
 msgstr ""
 
 #. Resource IDs: (IDS_VIEWCONTEXTMENU_UNMARKBLOCK)

@@ -125,6 +125,8 @@ public:
 			git_wc_notify_resolved,
 			git_wc_notify_revert,
 			git_wc_notify_checkout,
+			git_wc_notify_lfs_lock,
+			git_wc_notify_lfs_unlock,
 		} git_wc_notify_action_t;
 
 		WC_File_NotificationData(const CTGitPath& path, git_wc_notify_action_t action);

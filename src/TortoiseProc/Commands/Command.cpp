@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 // Copyright (C) 2007-2009 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -79,6 +79,7 @@
 #include "DaemonCommand.h"
 #include "CommitIsOnRefsCommand.h"
 #include "RTFMCommand.h"
+#include "LFSCommands.h"
 
 #if 0
 #include "CrashCommand.h"
@@ -154,6 +155,9 @@ typedef enum
 	cmdDaemon,
 	cmdPGPFP,
 	cmdCommitIsOnRefs,
+	cmdLFSLocks,
+	cmdLFSLock,
+	cmdLFSUnlock,
 } TGitCommand;
 
 static const struct CommandInfo
@@ -227,6 +231,9 @@ static const struct CommandInfo
 	{	cmdDaemon,			L"daemon"			},
 	{	cmdPGPFP,			L"pgpfp"			},
 	{	cmdCommitIsOnRefs,	L"commitisonrefs"	},
+	{	cmdLFSLocks,		L"lfslocks"			},
+	{	cmdLFSLock,			L"lfslock"			},
+	{	cmdLFSUnlock,		L"lfsunlock"		},
 };
 
 
@@ -371,6 +378,12 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new DaemonCommand;
 	case cmdCommitIsOnRefs:
 		return new CommitIsOnRefsCommand;
+	case cmdLFSLocks:
+		return new LFSLocksCommand;
+	case cmdLFSLock:
+		return new LFSLockCommand;
+	case cmdLFSUnlock:
+		return new LFSUnlockCommand;
 	case cmdRTFM:
 		return new RTFMCommand;
 #if 0

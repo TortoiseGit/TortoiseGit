@@ -53,6 +53,7 @@ public:
 	int GetInvisibleCount() const;
 	bool IsRelevant(int column) const;
 	CString GetName(int column) const;
+	int GetColumnByName(int nameId) const;
 	int SetNames(UINT* buff, int size);
 	int GetWidth(int column, bool useDefaults = false) const;
 	int GetVisibleWidth(int column, bool useDefaults) const;
@@ -148,6 +149,7 @@ public:
 		return 1;
 	}
 	void OnContextMenuHeader(CWnd* pWnd, CPoint point, bool isGroundEnable = false);
+	void SetOnVisibilityChanged(std::function<void(int, bool)> onVisibilityChanged);
 
 private:
 	void AddMenuItem(CMenu* pop)
@@ -200,6 +202,8 @@ private:
 		bool relevant;      ///< set to @a visible, if no *shown* item has that property
 		bool adjusted;
 	};
+
+	std::function<void(int, bool)> onVisibilityChanged;
 
 	std::vector<ColumnInfo> columns;
 

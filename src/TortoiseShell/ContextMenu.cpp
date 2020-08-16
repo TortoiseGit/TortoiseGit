@@ -1006,6 +1006,11 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmd
 						if(InsertIgnoreSubmenus(idCmd, idCmdFirst, hMenu, subMenu, indexMenu, indexSubMenu, topmenu, bShowIcons, uFlags))
 							bMenuEntryAdded = true;
 					}
+					else if (menuInfo[menuIndex].command == ShellMenuLFSMenu)
+					{
+						if (InsertLFSSubmenu(idCmd, idCmdFirst, hMenu, subMenu, indexMenu, indexSubMenu, topmenu, bShowIcons, uFlags))
+							bMenuEntryAdded = true;
+					}
 					else
 					{
 						bIsTop = ((topmenu & menuInfo[menuIndex].menuID) != 0);
@@ -1598,6 +1603,15 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 			case ShellMenuFetch:
 				AddPathFileCommand(gitCmd, L"fetch", true);
 				break;
+			case ShellMenuLFSLocks:
+				AddPathFileCommand(gitCmd, L"lfslocks");
+				break;
+			case ShellMenuLFSLock:
+				AddPathFileCommand(gitCmd, L"lfslock");
+				break;
+			case ShellMenuLFSUnlock:
+				AddPathFileCommand(gitCmd, L"lfsunlock");
+				break;
 
 			default:
 				break;
@@ -1880,6 +1894,62 @@ bool CShellExt::IsIllegalFolder(const std::wstring& folder, int* cslidarray)
 			return true;
 	}
 	return false;
+}
+
+bool CShellExt::InsertLFSSubmenu(UINT& idCmd, UINT idCmdFirst, HMENU hMenu, HMENU subMenu, UINT& indexMenu, int& indexSubMenu, unsigned __int64 topmenu, bool bShowIcons, UINT uFlags)
+{
+	static MenuInfo infos[] = {
+		{ ShellMenuLFSLocks,	0,	IDI_REPOBROWSE,	IDS_MENULFSLOCKS,	IDS_MENUDESCLFSLOCKS,	{ ITEMIS_FOLDERINGIT | ITEMIS_ONLYONE, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 } },
+		{ ShellMenuLFSLock,		0,	IDI_LFSLOCK,	IDS_MENULFSLOCK,	IDS_MENUDESCLFSLOCK,	{ ITEMIS_INGIT | ITEMIS_INVERSIONEDFOLDER, ITEMIS_FOLDER }, { 0, 0 }, { 0, 0 }, { 0, 0 } },
+		{ ShellMenuLFSUnlock,	0,	IDI_LFSUNLOCK,	IDS_MENULFSUNLOCK,	IDS_MENUDESCLFSUNLOCK,	{ ITEMIS_INGIT | ITEMIS_INVERSIONEDFOLDER, ITEMIS_FOLDER }, { 0, 0 }, { 0, 0 }, { 0, 0 } },
+	};
+
+	if (folder_.empty() && files_.empty())
+		return false;
+
+	CTGitPath askedpath;
+	askedpath.SetFromWin(folder_.empty() ? files_.front().c_str() : folder_.c_str());
+	CString workTreePath;
+	askedpath.HasAdminDir(&workTreePath);
+	CString adminDir;
+	GitAdminDir::GetAdminDirPath(workTreePath, adminDir);
+	if (!PathFileExists(adminDir + L"lfs"))
+		return false;
+
+	HMENU lfssubmenu = CreateMenu();
+	int indexlfssub = 0;
+	bool anyMenu = false;
+
+	for (const auto& info : infos)
+	{
+		if (ShouldInsertItem(info))
+		{
+			InsertGitMenu(false, lfssubmenu, indexlfssub++, idCmd++, info.menuTextID, bShowIcons ? info.iconID : 0, idCmdFirst, info.command, uFlags);
+			anyMenu = true;
+		}
+	}
+
+	if (!anyMenu)
+		return false;
+
+	MENUITEMINFO menuiteminfo = { 0 };
+	menuiteminfo.cbSize = sizeof(menuiteminfo);
+	menuiteminfo.fMask = MIIM_FTYPE | MIIM_ID | MIIM_SUBMENU | MIIM_DATA | MIIM_STRING | MIIM_BITMAP;
+	menuiteminfo.fType = MFT_STRING;
+	menuiteminfo.hbmpItem = m_iconBitmapUtils.IconToBitmapPARGB32(g_hResInst, IDI_LFS);
+	menuiteminfo.hSubMenu = lfssubmenu;
+	menuiteminfo.wID = idCmd;
+
+	SecureZeroMemory(stringtablebuffer, sizeof(stringtablebuffer));
+	GetMenuTextFromResource(ShellMenuLFSMenu);
+	menuiteminfo.dwTypeData = stringtablebuffer;
+	menuiteminfo.cch = static_cast<UINT>(min(wcslen(menuiteminfo.dwTypeData), static_cast<size_t>(UINT_MAX)));
+
+	InsertMenuItem((topmenu & MENULFS) ? hMenu : subMenu, (topmenu & MENULFS) ? indexMenu++ : indexSubMenu++, TRUE, &menuiteminfo);
+	myIDMap[idCmd - idCmdFirst] = ShellMenuLFSMenu;
+	myIDMap[idCmd++] = ShellMenuLFSMenu;
+
+	return true;
 }
 
 bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, HMENU subMenu, UINT &indexMenu, int &indexSubMenu, unsigned __int64 topmenu, bool bShowIcons, UINT /*uFlags*/)

@@ -632,6 +632,13 @@ Don't touch these lines:
 								<option>/name:"tag_name"</option> fills the Tag name in Create Tag dialog.
 							</entry>
 						</row>
+						<row>
+							<entry condition="pot">:lfslocks</entry>
+							<entry>
+								Opens the <link linkend="tgit-dug-lfslocking-locks">Show Locks dialog</link>.
+								More info in <link linkend="tgit-dug-lfslocking">LFS Locking</link>.
+							</entry>
+						</row>
 					</tbody>
 				</tgroup>
 			</table>

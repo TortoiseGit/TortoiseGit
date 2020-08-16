@@ -38,7 +38,8 @@
 #define GITSLC_COLDEL				0x000000020
 #define GITSLC_COLMODIFICATIONDATE	0x000000040
 #define	GITSLC_COLSIZE				0x000000080
-#define GITSLC_NUMCOLUMNS			8
+#define GITSLC_COLLFSLOCK			0x000000100
+#define GITSLC_NUMCOLUMNS			9
 
 //#define SVNSLC_COLURL				0x000000200
 //#define SVNSLC_COLCOPYFROM			0x000020000
@@ -65,6 +66,7 @@
 #define GITSLC_SHOWINCHANGELIST 0x00000000
 #define GITSLC_SHOWASSUMEVALID  CTGitPath::LOGACTIONS_ASSUMEVALID
 #define GITSLC_SHOWSKIPWORKTREE CTGitPath::LOGACTIONS_SKIPWORKTREE
+#define GITSLC_SHOWLFSLOCKS		0x00200000
 
 #define GITSLC_SHOWDIRECTS		(GITSLC_SHOWDIRECTFILES | GITSLC_SHOWDIRECTFOLDER)
 
@@ -122,6 +124,8 @@ GITSLC_SHOWINCOMPLETE|GITSLC_SHOWEXTERNAL|GITSLC_SHOWINEXTERNALS)
 #define GITSLC_POPEXPORT				CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_EXPORT)
 #define GITSLC_POPUNSETIGNORELOCALCHANGES CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_UNSETIGNORELOCALCHANGES)
 #define GITSLC_POPPREPAREDIFF			CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_PREPAREDIFF)
+#define GITSLC_POPLFSLOCK				CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_LFSLOCK)
+#define GITSLC_POPLFSUNLOCK				CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_LFSUNLOCK)
 
 #define GITSLC_IGNORECHANGELIST			L"ignore-on-commit"
 
@@ -130,6 +134,7 @@ GITSLC_SHOWINCOMPLETE|GITSLC_SHOWEXTERNAL|GITSLC_SHOWINEXTERNALS)
 typedef int (__cdecl *GENERICCOMPAREFN)(const void * elem1, const void * elem2);
 
 class CGitStatusListCtrlDropTarget;
+class CIconMenu;
 
 /**
 * \ingroup TortoiseProc
@@ -235,6 +240,9 @@ public:
 		IDGITLC_COPYFILENAMES	,
 		IDGITLC_ADD_EXE			,
 		IDGITLC_ADD_LINK		,
+		/** LFS Locking **/
+		IDGITLC_LFSLOCK			,
+		IDGITLC_LFSUNLOCK		,
 // the IDSVNLC_MOVETOCS *must* be the last index, because it contains a dynamic submenu where
 // the submenu items get command ID's sequent to this number
 		IDGITLC_MOVETOCS		,
@@ -443,7 +451,8 @@ public:
 				   , bool bUpdate = false
 				   , bool bShowIgnores = false
 				   , bool bShowUnRev = false
-				   , bool bShowLocalChangesIgnored = false);
+				   , bool bShowLocalChangesIgnored = false
+				   , bool bShowLFSLocks = false);
 
 	/**
 	 * Populates the list control with the previously (with GetStatus) gathered status information.
@@ -451,6 +460,8 @@ public:
 	 * \param dwCheck mask of file types to check. Use GitLC_SHOWxxx defines. Default (0) means 'use the entry's stored check status'
 	 */
 	void Show(unsigned int dwShow, unsigned int dwCheck = 0, bool bShowFolders = true,BOOL updateStatusList=FALSE, bool UseStoredCheckStatus=false);
+
+	void AppendLFSLocks(bool onlyExisting);
 
 	/**
 	 * Copies the selected entries in the control to the clipboard. The entries
@@ -698,6 +709,7 @@ private:
 	void RemoveFromChangelist();
 	void LoadChangelists();
 
+	void OnColumnVisibilityChanged(int column, bool visible);
 	void RefreshParent();
 
 public:
@@ -720,6 +732,8 @@ private:
 	void OnContextMenuList(CWnd * pWnd, CPoint point);
 	void OnContextMenuGroup(CWnd * pWnd, CPoint point);
 	bool CheckMultipleDiffs();
+
+	void AppendLocksMenuItems(CIconMenu& popup);
 
 	void DeleteSelectedFiles();
 
@@ -765,6 +779,7 @@ private:
 	bool						m_bHasIgnoreGroup;
 	CTGitPathList				m_StatusFileList;
 	CTGitPathList				m_UnRevFileList;
+	CTGitPathList				m_LocksFileList;
 	CTGitPathList				m_IgnoreFileList;
 	CTGitPathList				m_LocalChangesIgnoredFileList; // assume valid & skip worktree
 	CString						m_sLastError;
@@ -828,6 +843,7 @@ public:
 		FILELIST_UNVER = 0x2,
 		FILELIST_IGNORE =0x4,
 		FILELIST_LOCALCHANGESIGNORED = 0x8, // assume valid & skip worktree files
+		FILELIST_LOCKS = 0x10,
 	};
 private:
 	int UpdateFileList(const CTGitPathList* list = nullptr);
@@ -835,6 +851,7 @@ public:
 	int UpdateFileList(int mask, bool once = true, const CTGitPathList* list = nullptr);
 	int InsertUnRevListFromPreCalculatedList(const CTGitPathList& list);
 	int UpdateUnRevFileList(const CTGitPathList* list = nullptr);
+	int UpdateLFSLockedFileList(bool onlyExisting);
 	int UpdateIgnoreFileList(const CTGitPathList* list = nullptr);
 	int UpdateLocalChangesIgnoredFileList(const CTGitPathList* list = nullptr);
 
@@ -846,6 +863,7 @@ public:
 	CGitHash m_CurrentVersion;
 	bool m_bDoNotAutoselectSubmodules;
 	bool m_bNoAutoselectMissing;
+	bool m_bEnableDblClick;
 	std::map<CString, CString>	m_restorepaths;
 	mutable CReaderWriterLock	m_guard;
 

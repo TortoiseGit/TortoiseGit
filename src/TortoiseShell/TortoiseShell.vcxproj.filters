@@ -408,6 +408,15 @@
     <Image Include="..\Resources\menumergeabort.ico">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="..\Resources\menulfs.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\menulock.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\menuunlock.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resourceshell.rc">

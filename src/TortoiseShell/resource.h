@@ -82,12 +82,18 @@
 #define IDS_MENUBISECTRESET             171
 #define IDS_MENUBISECTSKIP              172
 #define IDS_MENUDESCBISECTSKIP          173
+#define IDS_MENULFSLOCK                 174
+#define IDS_MENULFSUNLOCK               175
 #define IDS_MENUDIFF                    176
 #define IDS_MENUDESCDIFF                177
 #define IDS_DROPCOPYADDMENU             178
 #define IDS_DROPMOVEMENU                179
 #define IDS_MENULOG                     180
 #define IDS_MENUDESCLOG                 181
+#define IDS_MENUDESCLFSLOCK             182
+#define IDS_MENUDESCLFSUNLOCK           183
+#define IDS_MENULFSLOCKS                184
+#define IDS_MENUDESCLFSLOCKS            185
 #define IDS_MENUCONFLICT                186
 #define IDS_MENUDESCCONFLICT            187
 #define IDS_MENUDESCBISECTSTART         188
@@ -193,6 +199,8 @@
 #define IDS_MENUREVISIONGRAPH           367
 #define IDS_MENUDESCREVISIONGRAPH       368
 #define IDS_LOADING                     369
+#define IDS_MENULFS                     370
+#define IDS_MENUDESCLFS                 371
 #define IDC_HEAD_HASH                   1001
 #define IDC_LAST_HASH                   1002
 #define IDC_SHELL_CURRENT_BRANCH        1003
@@ -235,6 +243,9 @@
 #define IDI_BISECT                      5182
 #define IDI_BISECT_RESET                5183
 #define IDI_SHOWBRANCHES                5184
+#define IDI_LFS                         5185
+#define IDI_LFSLOCK                     5186
+#define IDI_LFSUNLOCK                   5187
 #define IDC_CONFIG_AUTOCRLF             11020
 #define IDC_EDITPROPERTIES              11021
 #define IDC_REPOURLUNESCAPED            11022
@@ -257,7 +268,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        5185
+#define _APS_NEXT_RESOURCE_VALUE        5188
 #define _APS_NEXT_COMMAND_VALUE         40001
 #define _APS_NEXT_CONTROL_VALUE         11032
 #define _APS_NEXT_SYMED_VALUE           5101

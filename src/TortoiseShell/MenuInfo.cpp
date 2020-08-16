@@ -153,6 +153,11 @@ MenuInfo menuInfo[] =
 
 	{ ShellSeparator, 0, 0, 0, 0, {0, 0}, {0, 0}, {0, 0}, {0, 0} },
 
+	{ ShellMenuLFSMenu,						MENULFS,			IDI_LFS,				IDS_MENULFS,				IDS_MENUDESCLFS,
+		{ITEMIS_INVERSIONEDFOLDER|ITEMIS_INGIT}, {0, 0}, {0, 0}, {0, 0} },
+
+	{ ShellSeparator, 0, 0, 0, 0, {0, 0}, {0, 0}, {0, 0}, {0, 0} },
+
 //	{ ShellMenuCopy,						MENUCOPY,			IDI_COPY,				IDS_MENUBRANCH,				IDS_MENUDESCCOPY,
 //	ITEMIS_INGIT|ITEMIS_ONLYONE, ITEMIS_ADDED }, {ITEMIS_FOLDER|ITEMIS_FOLDERINGIT|ITEMIS_ONLYONE, 0}, {0, 0}, {0, 0} },
 

@@ -41,6 +41,7 @@
 #include "GitAdminDir.h"
 #include "GitDataObject.h"
 #include "ProgressCommands/AddProgressCommand.h"
+#include "ProgressCommands/LFSSetLockedProgressCommand.h"
 #include "IconMenu.h"
 #include "FormatMessageWrapper.h"
 #include "BrowseFolder.h"
@@ -273,6 +274,7 @@ CGitStatusListCtrl::CGitStatusListCtrl() : CResizableColumnsListCtrl<CListCtrl>(
 	, m_nLineDeleted(0)
 	, m_nBlockItemChangeHandler(0)
 	, m_bIncludedStaged(false)
+	, m_bEnableDblClick(true)
 {
 	m_bNoAutoselectMissing = CRegDWORD(L"Software\\TortoiseGit\\AutoselectMissingFiles", FALSE) == TRUE;
 
@@ -280,6 +282,12 @@ CGitStatusListCtrl::CGitStatusListCtrl() : CResizableColumnsListCtrl<CListCtrl>(
 	metrics.cbSize = sizeof(NONCLIENTMETRICS);
 	SystemParametersInfo(SPI_GETNONCLIENTMETRICS, 0, &metrics, FALSE);
 	m_uiFont.CreateFontIndirect(&metrics.lfMessageFont);
+
+	m_ColumnManager.SetOnVisibilityChanged(
+		[this](int column, bool visible)
+		{
+			OnColumnVisibilityChanged(column, visible);
+		});
 }
 
 CGitStatusListCtrl::~CGitStatusListCtrl()
@@ -350,10 +358,16 @@ void CGitStatusListCtrl::Init(DWORD dwColumns, const CString& sColumnInfoContain
 			, IDS_STATUSLIST_COLDEL
 			, IDS_STATUSLIST_COLLASTMODIFIED
 			, IDS_STATUSLIST_COLSIZE
+			, IDS_STATUSLIST_COLLFSLOCK
 			};
 
+	CString adminDir;
+	GitAdminDir::GetAdminDirPath(g_Git.m_CurrentDir, adminDir);
+	if (!PathFileExists(adminDir + L"lfs"))
+		allowedColumns &= ~GITSLC_COLLFSLOCK;
+
 	m_ColumnManager.SetNames(standardColumnNames,GITSLC_NUMCOLUMNS);
-	constexpr int columnVersion = 6; // adjust when changing number/names/etc. of columns
+	constexpr int columnVersion = 7; // adjust when changing number/names/etc. of columns
 	m_ColumnManager.ReadSettings(m_dwDefaultColumns, 0xffffffff & ~(allowedColumns | m_dwDefaultColumns), sColumnInfoContainer, columnVersion, GITSLC_NUMCOLUMNS);
 	m_ColumnManager.SetRightAlign(4);
 	m_ColumnManager.SetRightAlign(5);
@@ -388,7 +402,8 @@ BOOL CGitStatusListCtrl::GetStatus ( const CTGitPathList* pathList
 									, bool bUpdate /* = FALSE */
 									, bool bShowIgnores /* = false */
 									, bool bShowUnRev /* = false */
-									, bool bShowLocalChangesIgnored /* = false */)
+									, bool bShowLocalChangesIgnored /* = false */
+									, bool bShowLFSLocks  /* = false */ )
 {
 	CAutoWriteLock locker(m_guard);
 
@@ -396,6 +411,10 @@ BOOL CGitStatusListCtrl::GetStatus ( const CTGitPathList* pathList
 	m_bBusy = true;
 	m_bWaitCursor = true;
 	Invalidate();
+
+	CString adminDir;
+	GitAdminDir::GetAdminDirPath(g_Git.m_CurrentDir, adminDir);
+	bool hasLFS = PathFileExists(adminDir + L"lfs");
 
 	m_bIsRevertTheirMy = g_Git.IsRebaseRunning() > 0;
 
@@ -406,7 +425,16 @@ BOOL CGitStatusListCtrl::GetStatus ( const CTGitPathList* pathList
 		mask|= CGitStatusListCtrl::FILELIST_UNVER;
 	if (bShowLocalChangesIgnored)
 		mask |= CGitStatusListCtrl::FILELIST_LOCALCHANGESIGNORED;
+	if (bShowLFSLocks && hasLFS)
+		mask |= CGitStatusListCtrl::FILELIST_LOCKS;
 	this->UpdateFileList(mask, bUpdate, pathList);
+
+	if (!bShowLFSLocks && hasLFS)
+	{
+		int id = m_ColumnManager.GetColumnByName(IDS_STATUSLIST_COLLFSLOCK);
+		if (id >= 0 && m_ColumnManager.IsVisible(id))
+			UpdateLFSLockedFileList(true);
+	}
 
 	if (pathList && m_setDirectFiles.empty())
 	{
@@ -644,6 +672,8 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 
 			for (int i = 0; i < m_LocalChangesIgnoredFileList.GetCount(); ++i)
 				m_arStatusArray.push_back(&m_LocalChangesIgnoredFileList[i]);
+
+			AppendLFSLocks(false);
 		}
 		PrepareGroups();
 		m_arListArray.clear();
@@ -846,6 +876,33 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 #endif
 }
 
+void CGitStatusListCtrl::AppendLFSLocks(bool onlyExisting)
+{
+	for (int i = 0; i < m_LocksFileList.GetCount(); ++i)
+	{
+		auto gitpath = const_cast<CTGitPath*>(&m_LocksFileList[i]);
+		gitpath->m_Checked = FALSE;
+
+		bool found = false;
+
+		for (size_t j = 0; j < m_arStatusArray.size(); ++j)
+		{
+			auto gitpath2 = const_cast<CTGitPath*>(m_arStatusArray[j]);
+
+			if (gitpath2->GetGitPathString() == gitpath->GetGitPathString())
+			{
+				gitpath2->m_LFSLockOwner = gitpath->m_LFSLockOwner;
+				gitpath2->m_Action |= gitpath->m_Action;
+				found = true;
+				break;
+			}
+		}
+
+		if (!onlyExisting && !found)
+			m_arStatusArray.push_back(gitpath);
+	}
+}
+
 void CGitStatusListCtrl::StoreScrollPos()
 {
 	m_sScrollPos.enabled = true;
@@ -956,6 +1013,9 @@ CString CGitStatusListCtrl::GetCellText(int listIndex, int column)
 			return buf;
 		}
 		return empty;
+
+	case 8: // GITSLC_COLLFSLOCK
+		return entry->m_LFSLockOwner;
 
 #if 0
 	default: // user-defined properties
@@ -1683,6 +1743,9 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						popup.AppendMenuIcon(IDGITLC_RESTOREPATH, IDS_MENURESTORE, IDI_RESTORE);
 				}
 
+				if ((m_dwContextMenus & (GITSLC_POPLFSLOCK | GITSLC_POPLFSUNLOCK)) && m_CurrentVersion.IsEmpty() && !(wcStatus & CTGitPath::LOGACTIONS_UNMERGED))
+					AppendLocksMenuItems(popup);
+
 				if ((m_dwContextMenus & GetContextMenuBit(IDGITLC_REVERTTOREV)) && !m_CurrentVersion.IsEmpty() && !(wcStatus & CTGitPath::LOGACTIONS_DELETED))
 				{
 					popup.AppendMenuIcon(IDGITLC_REVERTTOREV, IDS_LOG_POPUP_REVERTTOREV, IDI_REVERT);
@@ -1964,6 +2027,29 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 			case IDGITLC_OPENWITH:
 				OpenFile(filepath,OPEN_WITH);
+				break;
+
+			case IDGITLC_LFSLOCK:
+			case IDGITLC_LFSUNLOCK:
+				{
+					CTGitPathList paths;
+					FillListOfSelectedItemPaths(paths, true);
+
+					CGitProgressDlg progDlg;
+					LFSSetLockedProgressCommand lfsCommand(cmd == IDGITLC_LFSLOCK, false);
+					progDlg.SetCommand(&lfsCommand);
+					lfsCommand.SetPathList(paths);
+					progDlg.SetItemCount(paths.GetCount());
+					progDlg.DoModal();
+
+					// reset unchecked status
+					POSITION pos = GetFirstSelectedItemPosition();
+					int index;
+					while ((index = GetNextSelectedItem(pos)) >= 0)
+						m_mapFilenameToChecked.erase(GetListEntry(index)->GetGitPathString());
+
+					RefreshParent();
+				}
 				break;
 
 			case IDGITLC_EXPLORE:
@@ -2575,6 +2661,58 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 	} // if (selIndex >= 0)
 }
 
+void CGitStatusListCtrl::AppendLocksMenuItems(CIconMenu& popup)
+{
+	CString adminDir;
+	GitAdminDir::GetAdminDirPath(g_Git.m_CurrentDir, adminDir);
+	if (!PathFileExists(adminDir + L"lfs"))
+		return;
+
+	if (!m_ColumnManager.IsVisible(m_ColumnManager.GetColumnByName(IDS_STATUSLIST_COLLFSLOCK)))
+	{
+		// User disabled IDS_STATUSLIST_COLLFSLOCK
+		// So we haven't asked lock list data from server in CGitStatusListCtrl::GetStatus
+		// But locking & unlocking is still valid operations (except for folders).
+
+		POSITION pos = GetFirstSelectedItemPosition();
+		int index;
+		while ((index = GetNextSelectedItem(pos)) >= 0)
+		{
+			auto path = GetListEntry(index);
+			if (path->IsDirectory())
+				return;
+		}
+
+		popup.AppendMenuIcon(IDGITLC_LFSLOCK, IDS_PROGRS_TITLE_LFS_LOCK, IDI_LFSLOCK);
+		popup.AppendMenuIcon(IDGITLC_LFSUNLOCK, IDS_PROGRS_TITLE_LFS_UNLOCK, IDI_LFSUNLOCK);
+		return;
+	}
+
+	bool hasLocked = false;
+	bool hasUnLocked = false;
+
+	POSITION pos = GetFirstSelectedItemPosition();
+	int index;
+	while ((index = GetNextSelectedItem(pos)) >= 0)
+	{
+		auto path = GetListEntry(index);
+
+		if (path->IsDirectory())
+			return;
+
+		if (path->m_Action & GITSLC_SHOWLFSLOCKS)
+			hasLocked = true;
+		else
+			hasUnLocked = true;
+	}
+
+	if (hasUnLocked && !hasLocked)
+		popup.AppendMenuIcon(IDGITLC_LFSLOCK, IDS_PROGRS_TITLE_LFS_LOCK, IDI_LFSLOCK);
+
+	if (hasLocked && !hasUnLocked)
+		popup.AppendMenuIcon(IDGITLC_LFSUNLOCK, IDS_PROGRS_TITLE_LFS_UNLOCK, IDI_LFSUNLOCK);
+}
+
 void CGitStatusListCtrl::MoveToChangelist(const CString& name)
 {
 	CAutoReadLock locker(m_guard);
@@ -2684,7 +2822,7 @@ void CGitStatusListCtrl::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 	if (!readLock.IsAcquired())
 		return;
 
-	if (pNMLV->iItem < 0)
+	if (pNMLV->iItem < 0 || !m_bEnableDblClick)
 		return;
 
 	auto file = GetListEntry(pNMLV->iItem);
@@ -3929,6 +4067,20 @@ int CGitStatusListCtrl::InsertUnRevListFromPreCalculatedList(const CTGitPathList
 	return 0;
 }
 
+int CGitStatusListCtrl::UpdateLFSLockedFileList(bool onlyExisting)
+{
+	CAutoWriteLock locker(m_guard);
+	if (CString err; m_LocksFileList.FillLFSLocks(GITSLC_SHOWLFSLOCKS, &err))
+	{
+		MessageBox(L"Failed to get LFS locks file list\n" + err, L"TortoiseGit", MB_OK | MB_ICONERROR);
+		return -1;
+	}
+
+	AppendLFSLocks(onlyExisting);
+
+	return 0;
+}
+
 int CGitStatusListCtrl::UpdateUnRevFileList(const CTGitPathList* List)
 {
 	CAutoWriteLock locker(m_guard);
@@ -4026,6 +4178,15 @@ int CGitStatusListCtrl::UpdateFileList(int mask, bool once, const CTGitPathList*
 		UpdateLocalChangesIgnoredFileList(List);
 		m_FileLoaded |= CGitStatusListCtrl::FILELIST_LOCALCHANGESIGNORED;
 	}
+	if (mask & CGitStatusListCtrl::FILELIST_LOCKS)
+	{
+		if (once || (!(m_FileLoaded&CGitStatusListCtrl::FILELIST_LOCKS)))
+		{
+			UpdateLFSLockedFileList(false);
+			m_FileLoaded |= CGitStatusListCtrl::FILELIST_LOCKS;
+		}
+	}
+
 	return 0;
 }
 
@@ -4784,6 +4945,12 @@ void CGitStatusListCtrl::PruneChangelists(const CTGitPathList* root)
 		else
 			++it2;
 	}
+}
+
+void CGitStatusListCtrl::OnColumnVisibilityChanged(int column, bool visible)
+{
+	if (visible && column == m_ColumnManager.GetColumnByName(IDS_STATUSLIST_COLLFSLOCK))
+		RefreshParent();
 }
 
 void CGitStatusListCtrl::RefreshParent()

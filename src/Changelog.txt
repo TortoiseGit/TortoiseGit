@@ -29,6 +29,7 @@ Released: unreleased
  * Update TortoiseGitPlink to PuTTY Plink 0.74
  * Update libgit2 to 1.0
  * Implement very simple multi-project pull/fetch/push
+ * Fixed issue #3183: Add support for git lfs lock/unlock
 
 = Release 2.10.0.2 =
 Released: 2020-03-24
