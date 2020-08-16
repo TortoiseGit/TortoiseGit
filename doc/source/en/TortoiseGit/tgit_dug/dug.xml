@@ -91,6 +91,7 @@
 	<xi:include href="./dug_bugtracker.xml"/>
 	<xi:include href="./dug_settings.xml"/>
 	<xi:include href="./dug_gitsvn.xml"/>
+	<xi:include href="./dug_lfslocking.xml"/>
 	<sect1 id="tgit-dug-donate">
 		<title>Final Step</title>
 		<xi:include href="../../wishlist.xml"/>

@@ -1187,7 +1187,7 @@ void CGitProgressList::WC_File_NotificationData::GetContextMenu(CIconMenu& popup
 				sCmd.Format(L"/command:lfslock /pathfile:\"%s\" /deletepathfile", static_cast<LPCTSTR>(tempfilename));
 				CAppUtils::RunTortoiseGitProc(sCmd);
 			});
-			popup.AppendMenuIcon(actions.size(), IDS_PROGRS_CMD_LFS_LOCK, IDI_LFSLOCK);
+			popup.AppendMenuIcon(actions.size(), IDS_PROGRS_TITLE_LFS_LOCK, IDI_LFSLOCK);
 
 			actions.push_back([&] {
 				CString tempfilename = CTempFiles::Instance().GetTempFilePath(false).GetWinPathString();
@@ -1196,7 +1196,7 @@ void CGitProgressList::WC_File_NotificationData::GetContextMenu(CIconMenu& popup
 				sCmd.Format(L"/command:lfsunlock /pathfile:\"%s\" /deletepathfile", static_cast<LPCTSTR>(tempfilename));
 				CAppUtils::RunTortoiseGitProc(sCmd);
 			});
-			popup.AppendMenuIcon(actions.size(), IDS_PROGRS_CMD_LFS_UNLOCK, IDI_LFSUNLOCK);
+			popup.AppendMenuIcon(actions.size(), IDS_PROGRS_TITLE_LFS_UNLOCK, IDI_LFSUNLOCK);
 		}
 	}
 }

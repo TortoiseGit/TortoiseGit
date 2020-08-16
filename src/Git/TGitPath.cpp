@@ -30,6 +30,11 @@
 #include "../Resources/LoglistCommonResource.h"
 #include <sys/stat.h>
 
+#ifdef TGIT_LFS
+#include "nlohmann/json.hpp"
+using json = nlohmann::json;
+#endif
+
 extern CGit g_Git;
 
 CTGitPath::CTGitPath(void)
@@ -1085,6 +1090,37 @@ int CTGitPathList::FillUnRev(unsigned int action, const CTGitPathList* list, CSt
 	}
 	return 0;
 }
+
+#ifdef TGIT_LFS
+int CTGitPathList::FillLFSLocks(unsigned int action, CString* err)
+{
+	Clear();
+
+	CString output;
+	CString errCmd;
+	if (g_Git.Run(L"git.exe lfs locks --json", &output, &errCmd, CP_UTF8) != 0)
+	{
+		if (err != nullptr)
+			err->Append(errCmd);
+		return -1;
+	}
+
+	if (output.IsEmpty())
+		return 0;
+
+	auto result = json::parse(CUnicodeUtils::GetUTF8(output).GetString());
+	for (auto& r : result)
+	{
+		CTGitPath gitPath;
+		gitPath.SetFromGit(CUnicodeUtils::GetUnicode(r["path"].get<std::string>().c_str()));
+		gitPath.m_Action = action;
+		gitPath.m_LFSLockOwner = CUnicodeUtils::GetUnicode(r["owner"]["name"].get<std::string>().c_str());
+		AddPath(gitPath);
+	}
+
+	return 0;
+}
+#endif
 
 int CTGitPathList::FillBasedOnIndexFlags(unsigned short flag, unsigned short flagextended, const CTGitPathList* list /*nullptr*/)
 {

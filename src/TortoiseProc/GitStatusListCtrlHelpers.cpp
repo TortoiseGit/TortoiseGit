@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008, 2014 - TortoiseSVN
 // Copyright (C) 2008-2017, 2019 - TortoiseGit
@@ -43,6 +43,12 @@ bool CSorter::operator() (const CTGitPath* entry1 , const CTGitPath* entry2) con
 	int result = 0;
 	switch (sortedColumn)
 	{
+	case 8: // LFS Locks
+		{
+			if (result == 0)
+				result = entry1->m_LFSLockOwner.CompareNoCase(entry2->m_LFSLockOwner);
+			break;
+		}
 	case 7: // File size
 		{
 			if (result == 0)

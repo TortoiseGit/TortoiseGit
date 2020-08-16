@@ -60,6 +60,9 @@ public:
 
 	CString m_StatAdd;
 	CString m_StatDel;
+#ifdef TGIT_LFS
+	CString m_LFSLockOwner;
+#endif
 	unsigned int		m_Action;
 	bool    m_Checked;
 	unsigned int ParserAction(BYTE action);
@@ -359,6 +362,9 @@ public:
 	int	ParserFromLog(BYTE_VECTOR &log, bool parseDeletes = false);
 	int ParserFromLsFile(BYTE_VECTOR &out,bool staged=true);
 	int FillUnRev(unsigned int Action, const CTGitPathList* filterlist = nullptr, CString* err = nullptr);
+#ifdef TGIT_LFS
+	int FillLFSLocks(unsigned int action, CString* err = nullptr);
+#endif
 	int FillBasedOnIndexFlags(unsigned short flag, unsigned short flagextended, const CTGitPathList* filterlist = nullptr);
 	unsigned int GetAction();
 	/**

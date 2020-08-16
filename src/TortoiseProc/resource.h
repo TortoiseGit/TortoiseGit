@@ -30,6 +30,7 @@
 #define IDD_TOOLASSOC                   171
 #define IDD_CHECKFORUPDATES             174
 #define IDD_REVERT                      175
+#define IDD_LFS_LOCKS                   176
 #define IDD_STATGRAPH                   179
 #define IDD_SETOVERLAYICONS             184
 #define IDI_SET_OVERLAYS                190
@@ -1759,6 +1760,7 @@
 #define IDS_STATUSLIST_COLREVISION      3313
 #define IDS_STATUSLIST_COLMODIFICATIONDATE 3316
 #define IDS_STATUSLIST_COLFILENAME      3317
+#define IDS_STATUSLIST_COLLFSLOCK       3318
 #define IDS_STATUSLIST_SWITCHEDTO       3323
 #define IDS_STATUSLIST_CONTEXT_ADD      3330
 #define IDS_STATUSLIST_CONTEXT_EXPLORE  3331
@@ -2084,12 +2086,14 @@
 #define IDS_PROGRS_CMD_LFS_UNLOCK       32923
 #define IDI_LOCK_BKG                    32924
 #define IDI_UNLOCK_BKG                  32925
+#define IDC_LOCKSLIST                   32926
+#define IDC_LFS_UNLOCK                  32927
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        363
+#define _APS_NEXT_RESOURCE_VALUE        364
 #define _APS_NEXT_COMMAND_VALUE         32875
 #define _APS_NEXT_CONTROL_VALUE         1854
 #define _APS_NEXT_SYMED_VALUE           201

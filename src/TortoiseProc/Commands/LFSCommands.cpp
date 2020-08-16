@@ -20,6 +20,7 @@
 #include "LFSCommands.h"
 #include "GitProgressDlg.h"
 #include "ProgressDlg.h"
+#include "LFSLocksDlg.h"
 #include "ProgressCommands/LFSSetLockedProgressCommand.h"
 
 static bool setLockedState(bool isLocked, bool force, CTGitPathList& pathList)
@@ -42,4 +43,11 @@ bool LFSLockCommand::Execute()
 bool LFSUnlockCommand::Execute()
 {
 	return setLockedState(false, parser.HasVal(L"force"), pathList);
+}
+
+bool LFSLocksCommand::Execute()
+{
+	CLFSLocksDlg dlg;
+	dlg.m_pathList = pathList;
+	return dlg.DoModal() == IDOK;
 }

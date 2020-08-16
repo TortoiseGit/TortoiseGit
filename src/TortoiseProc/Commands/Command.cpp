@@ -155,6 +155,7 @@ typedef enum
 	cmdDaemon,
 	cmdPGPFP,
 	cmdCommitIsOnRefs,
+	cmdLFSLocks,
 	cmdLFSLock,
 	cmdLFSUnlock,
 } TGitCommand;
@@ -230,6 +231,7 @@ static const struct CommandInfo
 	{	cmdDaemon,			L"daemon"			},
 	{	cmdPGPFP,			L"pgpfp"			},
 	{	cmdCommitIsOnRefs,	L"commitisonrefs"	},
+	{	cmdLFSLocks,		L"lfslocks"			},
 	{	cmdLFSLock,			L"lfslock"			},
 	{	cmdLFSUnlock,		L"lfsunlock"		},
 };
@@ -376,6 +378,8 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new DaemonCommand;
 	case cmdCommitIsOnRefs:
 		return new CommitIsOnRefsCommand;
+	case cmdLFSLocks:
+		return new LFSLocksCommand;
 	case cmdLFSLock:
 		return new LFSLockCommand;
 	case cmdLFSUnlock:

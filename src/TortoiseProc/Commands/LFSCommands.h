@@ -30,3 +30,9 @@ class LFSUnlockCommand : public Command
 public:
 	virtual bool Execute() override;
 };
+
+class LFSLocksCommand : public Command
+{
+public:
+	virtual bool Execute() override;
+};

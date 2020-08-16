@@ -1013,6 +1013,9 @@
     <ClCompile Include="ProgressCommands\LFSSetLockedProgressCommand.cpp">
       <Filter>Utility Dialogs\ProgressCommands</Filter>
     </ClCompile>
+    <ClCompile Include="LFSLocksDlg.cpp">
+      <Filter>Commands\LFS</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1905,6 +1908,9 @@
     </ClInclude>
     <ClInclude Include="..\Utils\MiscUI\ThemeMFCVisualManager.h">
       <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="LFSLocksDlg.h">
+      <Filter>Commands\LFS</Filter>
     </ClInclude>
     <ClInclude Include="Commands\LFSCommands.h">
       <Filter>Commands\LFS</Filter>

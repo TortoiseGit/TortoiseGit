@@ -92,6 +92,8 @@
 #define IDS_MENUDESCLOG                 181
 #define IDS_MENUDESCLFSLOCK             182
 #define IDS_MENUDESCLFSUNLOCK           183
+#define IDS_MENULFSLOCKS                184
+#define IDS_MENUDESCLFSLOCKS            185
 #define IDS_MENUCONFLICT                186
 #define IDS_MENUDESCCONFLICT            187
 #define IDS_MENUDESCBISECTSTART         188

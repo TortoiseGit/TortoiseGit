@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tgit-dug-lfslocking">
+	<title>Git LFS Locking</title>
+	<indexterm>
+		<primary>LFS</primary>
+	</indexterm>
+	<indexterm>
+		<primary>Lock</primary>
+	</indexterm>
+	<para>
+		This section talks about how to use the Git LFS (Large File Support) locking feature.
+	</para>
+	<para>
+		File locking allows developers to lock files they are updating to prevent other users from updating them at the same time. Concurrent edits in Git repositories will lead to merge conflicts, which are very difficult to resolve in large binary files.
+	</para>
+	<sect2>
+		<title>Setting up the repository</title>
+		<para>To use Git LFS locking you need to set up a repository. Currently this step needs to be done through Git command line.</para>
+		<para>Git has built-in tools for resolving merge conflicts in text files (such as source code, documentation, etc.). The first step to use File Locking is to define what file types need the extra overhead. The Git LFS track command includes a <literal>--lockable</literal> flag. The following command will store JPG files in LFS, and mark them as lockable:</para>
+		<screen>$ git lfs track "*.jpg" --lockable</screen>
+		<para>This adds the following line to your <filename>.gitattributes</filename> file:</para>
+		<screen>*.jpg filter=lfs diff=lfs merge=lfs -text lockable</screen>
+		<para>If you'd like to register a file type as lockable, without using LFS, you can edit the <filename>.gitattributes</filename> file directly:</para>
+		<screen>*.yml lockable</screen>
+		<para>Once file patterns in <filename>.gitattributes</filename> are lockable, Git LFS will make them read-only on the local file system automatically. This prevents users from accidentally editing a file without locking it first.</para>
+	</sect2>
+	<sect2>
+		<title>Locking a file</title>
+		<para>In order to edit a lockable file you need to lock it using context menu via
+		<menuchoice>
+			<guimenu>TortoiseGit</guimenu>
+			<guimenuitem>LFS</guimenuitem>
+			<guimenuitem>Lock</guimenuitem>
+		</menuchoice>.
+		</para>
+		<para>This is the client-server command and, thus, requires access to a remote server.</para>
+	</sect2>
+	<sect2>
+		<title>Unlocking a file</title>
+		<para>When you're done editing a file it's good practice to push and unlock it as soon as possible. To unlock the file use the context menu and choose
+		<menuchoice>
+			<guimenu>TortoiseGit</guimenu>
+			<guimenuitem>LFS</guimenuitem>
+			<guimenuitem>Unlock</guimenuitem>
+		</menuchoice>.
+		</para>
+		<para>This is the client-server command and, thus, requires access to a remote server.</para>
+	</sect2>
+	<sect2 id="tgit-dug-lfslocking-locks">
+		<?dbhh topicname="HIDD_LFS_LOCKS"?>
+		<title>Show Locks Dialog</title>
+		<para>In order to open Locks Dialog use
+			<menuchoice>
+				<guimenu>TortoiseGit</guimenu>
+				<guimenuitem>LFS</guimenuitem>
+				<guimenuitem>Locks</guimenuitem>
+			</menuchoice> in any folder inside the working tree.
+		</para>
+		<para>
+			<figure id="tgit-dug-lfslocking-locks-dia-1">
+				<title>Locks Dialog</title>
+				<graphic fileref="../images/LFSLocks.png"/>
+			</figure>
+		</para>
+		<para>
+			You can use this dialog to see all locks in the project. Also, you can unlock files here. If unlocking fails you will be offered to use force unlock.
+		</para>
+	</sect2>
+</sect1>
