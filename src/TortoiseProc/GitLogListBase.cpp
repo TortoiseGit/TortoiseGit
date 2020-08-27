@@ -1683,7 +1683,7 @@ bool CGitLogListBase::IsBisect(const GitRev * pSelLogEntry)
 
 void CGitLogListBase::GetParentHashes(GitRev *pRev, GIT_REV_LIST &parentHash)
 {
-	if (pRev->m_ParentHash.empty())
+	if (pRev->m_ParentHash.empty() && !pRev->m_CommitHash.IsEmpty())
 	{
 		if (pRev->GetParentFromHash(pRev->m_CommitHash))
 			MessageBox(pRev->GetLastErr(), L"TortoiseGit", MB_ICONERROR);
