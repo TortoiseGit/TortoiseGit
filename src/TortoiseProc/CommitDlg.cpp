@@ -2815,6 +2815,8 @@ void CCommitDlg::OnBnClickedCheckNewBranch()
 	{
 		GetDlgItem(IDC_COMMIT_TO)->ShowWindow(SW_HIDE);
 		GetDlgItem(IDC_NEWBRANCH)->ShowWindow(SW_SHOW);
+		GetDlgItem(IDC_NEWBRANCH)->SetFocus();
+		GetDlgItem(IDC_NEWBRANCH)->SendMessage(EM_SETSEL, 0, -1);
 	}
 	else
 	{
