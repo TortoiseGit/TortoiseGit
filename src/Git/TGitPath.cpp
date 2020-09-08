@@ -1108,16 +1108,24 @@ int CTGitPathList::FillLFSLocks(unsigned int action, CString* err)
 	if (output.IsEmpty())
 		return 0;
 
-	auto result = json::parse(CUnicodeUtils::GetUTF8(output).GetString());
-	for (auto& r : result)
+	try
 	{
-		CTGitPath gitPath;
-		gitPath.SetFromGit(CUnicodeUtils::GetUnicode(r["path"].get<std::string>().c_str()));
-		gitPath.m_Action = action;
-		gitPath.m_LFSLockOwner = CUnicodeUtils::GetUnicode(r["owner"]["name"].get<std::string>().c_str());
-		AddPath(gitPath);
+		auto result = json::parse(CUnicodeUtils::GetUTF8(output).GetString());
+		for (auto& r : result)
+		{
+			CTGitPath gitPath;
+			gitPath.SetFromGit(CUnicodeUtils::GetUnicode(r["path"].get<std::string>().c_str()));
+			gitPath.m_Action = action;
+			gitPath.m_LFSLockOwner = CUnicodeUtils::GetUnicode(r["owner"]["name"].get<std::string>().c_str());
+			AddPath(gitPath);
+		}
 	}
-
+	catch (json::parse_error& ex)
+	{
+		if (err)
+			err->Append(CUnicodeUtils::GetUnicode(ex.what()));
+		return -1;
+	}
 	return 0;
 }
 #endif
