@@ -1105,6 +1105,13 @@ int CTGitPathList::FillLFSLocks(unsigned int action, CString* err)
 		return -1;
 	}
 
+	return ParserFromLFSLocks(action, output, err);
+}
+
+int CTGitPathList::ParserFromLFSLocks(unsigned int action, const CString& output, CString* err)
+{
+	Clear();
+
 	if (output.IsEmpty())
 		return 0;
 

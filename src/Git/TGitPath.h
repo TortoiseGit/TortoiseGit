@@ -364,7 +364,12 @@ public:
 	int FillUnRev(unsigned int Action, const CTGitPathList* filterlist = nullptr, CString* err = nullptr);
 #ifdef TGIT_LFS
 	int FillLFSLocks(unsigned int action, CString* err = nullptr);
+#ifndef GTEST_INCLUDE_GTEST_GTEST_H_
+private:
 #endif
+	int ParserFromLFSLocks(unsigned int action, const CString& output, CString* err = nullptr);
+#endif
+public:
 	int FillBasedOnIndexFlags(unsigned short flag, unsigned short flagextended, const CTGitPathList* filterlist = nullptr);
 	unsigned int GetAction();
 	/**

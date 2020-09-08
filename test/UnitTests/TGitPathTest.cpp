@@ -1826,3 +1826,39 @@ TEST(CTGitPath, IsAnyAncestorOf)
 	list.AddPath(CTGitPath());
 	EXPECT_TRUE(list.IsAnyAncestorOf(file));
 }
+
+TEST(CTGitPath, ParseFromLFSLocks)
+{
+	// output from git lfs locks --json
+	CString output = L"[{\"id\":\"47814\",\"path\":\"2.zip\",\"owner\":{\"name\":\"Sven Strickröth\"},\"locked_at\":\"2020-07-12T14:16:57Z\"},{\"id\":\"49337\",\"path\":\"subdir/3 - Kopie.zip\",\"owner\":{\"name\":\"Sven Strickroth\"},\"locked_at\":\"2020-08-14T21:28:13Z\"},{\"id\":\"49357\",\"path\":\"3.zip\",\"owner\":{\"name\":\"Sven Strickroth\"},\"locked_at\":\"2020-08-16T11:15:14Z\"}]";
+
+	constexpr unsigned int dummy = 5;
+
+	CTGitPathList locks;
+	EXPECT_EQ(0, locks.ParserFromLFSLocks(dummy, output));
+	ASSERT_EQ(3, locks.GetCount());
+
+	EXPECT_STREQ(L"2.zip", locks[0].GetWinPathString());
+	EXPECT_STREQ(L"Sven Strickröth", locks[0].m_LFSLockOwner);
+	EXPECT_EQ(dummy, locks[0].m_Action);
+
+	EXPECT_STREQ(L"subdir\\3 - Kopie.zip", locks[1].GetWinPathString());
+	EXPECT_STREQ(L"Sven Strickroth", locks[1].m_LFSLockOwner);
+	EXPECT_EQ(dummy, locks[1].m_Action);
+
+	EXPECT_STREQ(L"3.zip", locks[2].GetWinPathString());
+	EXPECT_STREQ(L"Sven Strickroth", locks[2].m_LFSLockOwner);
+	EXPECT_EQ(dummy, locks[2].m_Action);
+
+	EXPECT_EQ(0, locks.ParserFromLFSLocks(0, L"[]"));
+	ASSERT_EQ(0, locks.GetCount());
+
+	locks.AddPath(CTGitPath(L"dummy"));
+	EXPECT_EQ(1, locks.GetCount());
+	EXPECT_EQ(0, locks.ParserFromLFSLocks(0, L""));
+	ASSERT_EQ(0, locks.GetCount());
+
+	CString err;
+	EXPECT_EQ(-1, locks.ParserFromLFSLocks(0, L"invalid", &err));
+	EXPECT_STRNE(L"", err);
+}
