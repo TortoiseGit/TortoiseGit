@@ -35,16 +35,6 @@ protected:
 	}
 };
 
-class GitIndexCBasicGitWithEmptyRepositoryFixture : public CBasicGitWithEmptyRepositoryFixture
-{
-protected:
-	virtual void SetUp()
-	{
-		CBasicGitWithEmptyRepositoryFixture::SetUp();
-		g_AdminDirMap.clear();
-	}
-};
-
 class GitIndexCBasicGitWithTestRepoFixture : public CBasicGitWithTestRepoFixture
 {
 protected:
@@ -101,7 +91,6 @@ protected:
 };
 
 INSTANTIATE_TEST_SUITE_P(GitIndex, GitIndexCBasicGitFixture, testing::Values(LIBGIT2));
-INSTANTIATE_TEST_SUITE_P(GitIndex, GitIndexCBasicGitWithEmptyRepositoryFixture, testing::Values(LIBGIT2));
 INSTANTIATE_TEST_SUITE_P(GitIndex, GitIndexCBasicGitWithTestRepoFixture, testing::Values(LIBGIT2));
 INSTANTIATE_TEST_SUITE_P(GitIndex, CBasicGitWithMultiLinkedTestWithSubmoduleRepoFixture, testing::Values(LIBGIT2));
 
