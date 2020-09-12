@@ -56,7 +56,6 @@
 #include "MarginView.h"
 #include "EditView.h"
 #include "ElapsedPeriod.h"
-#include "Editor.h"
 
 using namespace Scintilla;
 
@@ -182,7 +181,6 @@ EditView::EditView() {
 	tabArrowHeight = 4;
 	customDrawTabArrow = nullptr;
 	customDrawWrapMarker = nullptr;
-	editor = nullptr;
 }
 
 EditView::~EditView() {
@@ -389,6 +387,9 @@ void EditView::LayoutLine(const EditModel &model, Sci::Line line, Surface *surfa
 	if (posLineEnd >(posLineStart + ll->maxLineLength)) {
 		posLineEnd = posLineStart + ll->maxLineLength;
 	}
+	// Hard to cope when too narrow, so just assume there is space
+	width = std::max(width, 20);
+
 	if (ll->validity == LineLayout::ValidLevel::checkTextAndStyle) {
 		Sci::Position lineLength = posLineEnd - posLineStart;
 		if (!vstyle.viewEOL) {
@@ -398,23 +399,21 @@ void EditView::LayoutLine(const EditModel &model, Sci::Line line, Surface *surfa
 			// See if chars, styles, indicators, are all the same
 			bool allSame = true;
 			// Check base line layout
-			int styleByte = 0;
-			int numCharsInLine = 0;
 			char chPrevious = 0;
-			while (numCharsInLine < lineLength) {
+			for (Sci::Position numCharsInLine = 0; numCharsInLine < lineLength; numCharsInLine++) {
 				const Sci::Position charInDoc = numCharsInLine + posLineStart;
 				const char chDoc = model.pdoc->CharAt(charInDoc);
-				styleByte = model.pdoc->StyleIndexAt(charInDoc);
+				const int styleByte = model.pdoc->StyleIndexAt(charInDoc);
 				allSame = allSame &&
 					(ll->styles[numCharsInLine] == styleByte);
 				allSame = allSame &&
 					(ll->chars[numCharsInLine] == CaseForce(vstyle.styles[styleByte].caseForce, chDoc, chPrevious));
 				chPrevious = chDoc;
-				numCharsInLine++;
 			}
-			allSame = allSame && (ll->styles[numCharsInLine] == styleByte);	// For eolFilled
+			const int styleByteLast = (posLineEnd > posLineStart) ? model.pdoc->StyleIndexAt(posLineEnd - 1) : 0;
+			allSame = allSame && (ll->styles[lineLength] == styleByteLast);	// For eolFilled
 			if (allSame) {
-				ll->validity = LineLayout::ValidLevel::positions;
+				ll->validity = (ll->widthLine != width) ? LineLayout::ValidLevel::positions : LineLayout::ValidLevel::lines;
 			} else {
 				ll->validity = LineLayout::ValidLevel::invalid;
 			}
@@ -507,10 +506,6 @@ void EditView::LayoutLine(const EditModel &model, Sci::Line line, Surface *surfa
 		ll->numCharsInLine = numCharsInLine;
 		ll->numCharsBeforeEOL = numCharsBeforeEOL;
 		ll->validity = LineLayout::ValidLevel::positions;
-	}
-	// Hard to cope when too narrow, so just assume there is space
-	if (width < 20) {
-		width = 20;
 	}
 	if ((ll->validity == LineLayout::ValidLevel::positions) || (ll->widthLine != width)) {
 		ll->widthLine = width;
@@ -1900,9 +1895,12 @@ void EditView::DrawForeground(Surface *surface, const EditModel &model, const Vi
 					const int indicatorValue = deco->ValueAt(ts.start + posLineStart);
 					if (indicatorValue) {
 						const Indicator &indicator = vsDraw.indicators[deco->Indicator()];
-						const bool hover = indicator.IsDynamic() &&
-							((model.hoverIndicatorPos >= ts.start + posLineStart) &&
-							(model.hoverIndicatorPos <= ts.end() + posLineStart));
+						bool hover = false;
+						if (indicator.IsDynamic()) {
+							const Sci::Position startPos = ts.start + posLineStart;
+							const Range rangeRun(deco->StartRun(startPos), deco->EndRun(startPos));
+							hover =	rangeRun.ContainsCharacter(model.hoverIndicatorPos);
+						}
 						if (hover) {
 							if (indicator.sacHover.style == INDIC_TEXTFORE) {
 								textFore = indicator.sacHover.fore;
@@ -2110,15 +2108,7 @@ void EditView::DrawLine(Surface *surface, const EditModel &model, const ViewStyl
 	}
 
 	// See if something overrides the line background colour.
-	ColourOptional background = vsDraw.Background(model.pdoc->GetMark(line), model.caret.active, ll->containsCaret);
-	SCNotification scn = { 0 };
-	scn.nmhdr.code = SCN_GETBKCOLOR;
-	scn.line = line;
-	scn.lParam = -1;
-	if (editor)
-		reinterpret_cast<Editor*>(editor)->NotifyParent(&scn);
-	if (scn.lParam != -1)
-		background = ColourOptional(true, scn.lParam);
+	const ColourOptional background = vsDraw.Background(model.pdoc->GetMark(line), model.caret.active, ll->containsCaret);
 
 	const Sci::Position posLineStart = model.pdoc->LineStart(line);
 
