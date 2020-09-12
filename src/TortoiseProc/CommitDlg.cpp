@@ -1415,6 +1415,8 @@ UINT CCommitDlg::StatusThread()
 		}
 	}
 
+	GetDlgItem(IDC_MERGEACTIVE)->ShowWindow(PathFileExists(dotGitPath + L"MERGE_HEAD") ? SW_SHOW : SW_HIDE);
+
 	SetDlgTitle();
 
 	// we don't have to block the commit dialog while we fetch the
