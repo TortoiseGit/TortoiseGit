@@ -7,6 +7,7 @@ Released: unreleased
  * Fixed issue #3619: Hook settings always reset "Hide the script while running" to checked for hooks stored in .tgitconfig
  * Fixed issue #3617: 'Saving config failed (key: "fetch.prune", value: "")' in remote repository definition when `fetch.prune` is set in global config
  * Fixed issue #3632: Log dialog: Message box with the text "git_get_commit_from_hash failed for 00...00" appears in certain situations
+ * Fixed issue #3638: Better handling of trying to set an upstream branch not set to be fetched in the remote
 
 == Features ==
  * Update Scintilla to 4.4.4

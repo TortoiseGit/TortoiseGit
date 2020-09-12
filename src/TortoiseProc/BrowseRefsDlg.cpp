@@ -1292,11 +1292,13 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 			CString remote, branch;
 			if (SplitRemoteBranchName(newRef, remote, branch))
 				return;
-			CString key;
-			key.Format(L"branch.%s.remote", static_cast<LPCTSTR>(selectedLeafs[0]->GetRefsHeadsName()));
-			g_Git.SetConfigValue(key, remote);
-			key.Format(L"branch.%s.merge", static_cast<LPCTSTR>(selectedLeafs[0]->GetRefsHeadsName()));
-			g_Git.SetConfigValue(key, L"refs/heads/" + branch);
+			// Setting the config keys directly might result in an invalid situation if the remote is not set to
+			// fetch the desired upstream branch (in remote.x.fetch), cf. issue #3638
+			if (CString errorMsg; g_Git.Run(L"git.exe branch \"" + selectedLeafs[0]->GetRefsHeadsName() + L"\" --set-upstream-to=\"" + remote + L'/' + branch + L'"', &errorMsg, CP_UTF8) != 0)
+			{
+				MessageBox(errorMsg + "\r\n\r\nThis is generally caused when remote." + remote + ".fetch does not include the desired branch.", L"TortoiseGit", MB_ICONERROR);
+				return;
+			}
 			Refresh();
 		}
 		break;
