@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2018-2019 - TortoiseGit
+// Copyright (C) 2018-2020 - TortoiseGit
 // Copyright (C) 2010-2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -42,7 +42,7 @@ bool CFilterHelper::Match(std::wstring& text) const
 			{
 			case and_not:
 				found = !found;
-				// fallthrough
+				[[fallthrough]];
 			case and:
 				if (!found)
 				{

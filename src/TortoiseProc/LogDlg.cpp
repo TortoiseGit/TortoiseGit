@@ -2784,7 +2784,7 @@ void CLogDlg::SortByColumn(int /*nSortColumn*/, bool /*bAscending*/)
 				std::sort(m_logEntries.begin(), m_logEntries.end(), CLogDataVector::DescBugIDSort());
 			break;
 		}
-		// fall through here
+		[[fallthrough]];
 	case 5: // Message
 		{
 			if(bAscending)

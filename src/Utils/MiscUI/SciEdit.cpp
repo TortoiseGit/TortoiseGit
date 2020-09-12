@@ -1215,7 +1215,7 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 			break;	// no command selected
 		case SCI_SELECTALL:
 			bRestoreCursor = false;
-			// fall through
+			[[fallthrough]];
 		case SCI_UNDO:
 		case SCI_REDO:
 		case SCI_CUT:

@@ -63,7 +63,7 @@ LRESULT CFindBar::DoCommand(int id, int msg)
 	{
 	case IDC_FINDPREV:
 		bFindPrev = true;
-		// fallthrough
+		[[fallthrough]];
 	case IDC_FINDNEXT:
 		{
 			DoFind(bFindPrev);

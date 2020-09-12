@@ -1352,7 +1352,8 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 							}
 							break;
 						}
-						case CGit::REF_TYPE::ANNOTATED_TAG: // fallthrough
+						case CGit::REF_TYPE::ANNOTATED_TAG:
+							[[fallthrough]];
 						case CGit::REF_TYPE::TAG:
 							if (!(m_ShowRefMask & LOGLIST_SHOWTAGS))
 								continue;
@@ -1365,8 +1366,10 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 							refLabel.color = CTheme::Instance().GetThemeColor(m_Colors.GetColor(CColors::Stash), true);
 							break;
 
-						case CGit::REF_TYPE::BISECT_GOOD: // fallthrough
-						case CGit::REF_TYPE::BISECT_BAD: // fallthrough
+						case CGit::REF_TYPE::BISECT_GOOD:
+							[[fallthrough]];
+						case CGit::REF_TYPE::BISECT_BAD:
+							[[fallthrough]];
 						case CGit::REF_TYPE::BISECT_SKIP:
 							if (!(m_ShowRefMask & LOGLIST_SHOWBISECT))
 								continue;

@@ -1684,7 +1684,8 @@ void CSyncDlg::OnBnClickedButtonSubmodule()
 		switch (m_ctrlSubmodule.GetCurrentEntry())
 		{
 		case 0:
-		case 1: // fall-through
+			[[fallthrough]];
+		case 1:
 			CAppUtils::RunTortoiseGitProc(L"/command:subupdate /bkpath:\"" + g_Git.m_CurrentDir + L"\"");
 			break;
 		case 2:

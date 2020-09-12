@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2009-2013, 2015-2019 - TortoiseGit
+// Copyright (C) 2009-2013, 2015-2020 - TortoiseGit
 // Copyright (C) 2012-2013 - Sven Strickroth <email@cs-ware.de>
 // Copyright (C) 2004-2009,2011-2014 - TortoiseSVN
 
@@ -88,7 +88,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 					break;
 				}
 			}
-			// fallthrough!
+			[[fallthrough]];
 			case 1:
 			{
 				//index

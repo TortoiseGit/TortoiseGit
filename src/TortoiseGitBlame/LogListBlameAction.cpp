@@ -101,7 +101,8 @@ void CGitBlameLogList::ContextMenuAction(int cmd, int /*FirstSelect*/, int /*Las
 				}
 			}
 			break;
-		case ID_GNUDIFF1: // fallthrough
+		case ID_GNUDIFF1:
+			[[fallthrough]];
 		case ID_COMPAREWITHPREVIOUS:
 			{
 				int index = (cmd >> 16) & 0xFFFF;

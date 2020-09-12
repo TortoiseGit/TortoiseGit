@@ -1132,7 +1132,8 @@ void CGitProgressList::WC_File_NotificationData::SetColorCode(CColors& colors)
 {
 	switch (action)
 	{
-	case git_wc_notify_checkout: // fall-through
+	case git_wc_notify_checkout:
+		[[fallthrough]];
 	case git_wc_notify_add:
 		color = colors.GetColor(CColors::Added);
 		colorIsDirect = true;

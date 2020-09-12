@@ -1502,7 +1502,7 @@ void CGitStatusListCtrl::OnContextMenuGroup(CWnd * /*pWnd*/, CPoint point)
 			{
 			case IDGITLC_CHECKGROUP:
 				bCheck = true;
-				// fall through here
+				[[fallthrough]];
 			case IDGITLC_UNCHECKGROUP:
 				{
 					int group = GetGroupFromPoint(&clientpoint);

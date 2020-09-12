@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016, 2018-2019 - TortoiseGit
+// Copyright (C) 2016, 2018-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -71,7 +71,7 @@ void CFirstStartWizard::OnSysCommand(UINT nID, LPARAM lParam)
 			if (page && !page->OkToCancel())
 				break;
 		}
-		// fall through
+		[[fallthrough]];
 	default:
 		__super::OnSysCommand(nID, lParam);
 		break;

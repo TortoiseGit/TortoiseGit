@@ -315,13 +315,14 @@ LRESULT CALLBACK CHyperLink::_HyperlinkProc(HWND hwnd, UINT message,
 				break;
 			}
 		}
-						// Fall through
+						[[fallthrough]];
 	case WM_LBUTTONUP:
 		{
 			pHyperLink->Navigate();
 			return 0;
 		}
-	case WM_SETFOCUS:	// Fall through
+	case WM_SETFOCUS:
+		[[fallthrough]];
 	case WM_KILLFOCUS:
 		{
 			if( message == WM_SETFOCUS )

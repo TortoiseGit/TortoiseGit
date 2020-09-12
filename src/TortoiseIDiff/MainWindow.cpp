@@ -1221,7 +1221,7 @@ BOOL CALLBACK CMainWindow::OpenDlgProc(HWND hwndDlg, UINT message, WPARAM wParam
                     *path = 0;
                 rightpicpath = path;
             }
-            // Fall through.
+            [[fallthrough]];
         case IDCANCEL:
             CTheme::Instance().SetThemeForDialog(hwndDlg, false);
             EndDialog(hwndDlg, wParam);

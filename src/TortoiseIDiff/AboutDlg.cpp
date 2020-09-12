@@ -66,7 +66,7 @@ LRESULT CAboutDlg::DoCommand(int id)
     switch (id)
     {
     case IDOK:
-        // fall through
+        [[fallthrough]];
     case IDCANCEL:
         CTheme::Instance().SetThemeForDialog(*this, false);
         EndDialog(*this, id);
