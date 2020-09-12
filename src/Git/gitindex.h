@@ -61,15 +61,18 @@ public:
 	~CGitIndexList();
 
 	int ReadIndex(CString dotgitdir);
+	void ClearDirectoryCache();
 	int GetFileStatus(const CString& gitdir, const CString& path, git_wc_status2_t& status, CGitHash* pHash = nullptr);
 	int GetFileStatus(CAutoRepository& repository, const CString& gitdir, CGitIndex& entry, git_wc_status2_t& status, __int64 time, __int64 filesize, bool isSymlink);
 #ifdef GTEST_INCLUDE_GTEST_GTEST_H_
 	FRIEND_TEST(GitIndexCBasicGitWithTestRepoFixture, GetFileStatus);
 #endif
 protected:
+	typedef std::map<CString, std::vector<WIN32_FIND_DATA> > DirectoryStatuses;
 	int		m_iIndexCaps;
 	__int64 m_iMaxCheckSize;
 	CAutoConfig config;
+	DirectoryStatuses m_dirStatuses;
 	int GetFileStatus(const CString& gitdir, const CString& path, git_wc_status2_t& status, __int64 time, __int64 filesize, bool isSymlink, CGitHash* pHash = nullptr);
 };
 

@@ -368,6 +368,7 @@ int CCachedDirectory::EnumFiles(const CTGitPath& path, CString sProjectRoot, con
 {
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": EnumFiles %s\n", path.GetWinPath());
 
+	long recursionDepth = 0;
 	// strip "\" at the end, otherwise cache lookups for drives do not work correctly
 	sProjectRoot.TrimRight(L'\\');
 
@@ -377,7 +378,7 @@ int CCachedDirectory::EnumFiles(const CTGitPath& path, CString sProjectRoot, con
 	if (!path.IsDirectory())
 	{
 		git_wc_status2_t status = { git_wc_status_none, false, false };
-		if (pStatus->GetFileStatus(sProjectRoot, sSubPath, status, TRUE, true))
+		if (pStatus->GetFileStatus(sProjectRoot, recursionDepth, sSubPath, status, TRUE, true))
 		{
 			// we could not get the status of a file, try whole directory after a short delay if the whole directory was not already crawled with an error
 			if (m_currentFullStatus == git_wc_status_none)

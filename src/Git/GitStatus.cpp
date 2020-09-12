@@ -41,7 +41,7 @@ GitStatus::GitStatus()
 
 // static method
 #ifndef TGITCACHE
-int GitStatus::GetAllStatus(const CTGitPath& path, bool bIsRecursive, git_wc_status2_t& status)
+int GitStatus::GetAllStatus(const CTGitPath& path, long recursionDepth, bool bIsRecursive, git_wc_status2_t& status)
 {
 	BOOL						isDir;
 	CString						sProjectRoot;
@@ -64,12 +64,12 @@ int GitStatus::GetAllStatus(const CTGitPath& path, bool bIsRecursive, git_wc_sta
 
 	if(isDir)
 	{
-		auto err = GetDirStatus(sProjectRoot, sSubPath, &status.status, isfull, bIsRecursive, isfull);
+		auto err = GetDirStatus(sProjectRoot, recursionDepth, sSubPath, &status.status, isfull, bIsRecursive, isfull);
 		AdjustFolderStatus(status.status);
 		return err;
 	}
 
-	return GetFileStatus(sProjectRoot, sSubPath, status, isfull, isfull);
+	return GetFileStatus(sProjectRoot, recursionDepth, sSubPath, status, isfull, isfull);
 }
 #endif
 
@@ -110,7 +110,7 @@ void GitStatus::GetStatus(const CTGitPath& path, bool /*update*/ /* = false */, 
 	// NOTE: unlike the SVN version this one does not cache the enumerated files, because in practice no code in all of
 	//       Tortoise uses this, all places that call GetStatus create a temp GitStatus object which gets destroyed right
 	//       after the call again
-
+	int recursionDepth = 0;
 	CString sProjectRoot;
 	if ( !path.HasAdminDir(&sProjectRoot) )
 		return;
@@ -137,11 +137,11 @@ void GitStatus::GetStatus(const CTGitPath& path, bool /*update*/ /* = false */, 
 
 	if (path.IsDirectory())
 	{
-		err = GetDirStatus(sProjectRoot, lpszSubPath, &m_status.status, isfull, false, !noignore);
+		err = GetDirStatus(sProjectRoot, recursionDepth, lpszSubPath, &m_status.status, isfull, false, !noignore);
 		AdjustFolderStatus(m_status.status);
 	}
 	else
-		err = GetFileStatus(sProjectRoot, lpszSubPath, m_status, isfull, !noignore);
+		err = GetFileStatus(sProjectRoot, recursionDepth, lpszSubPath, m_status, isfull, !noignore);
 
 	// Error present if function is not under version control
 	if (err)
@@ -162,11 +162,15 @@ typedef struct CGitRepoLists
 	SHARED_TREE_PTR pTree;
 } CGitRepoLists;
 
-static int GetFileStatus_int(const CString& gitdir, CGitRepoLists& repolists, const CString& path, git_wc_status2_t& status, BOOL IsFull, BOOL IsIgnore, BOOL update)
+static int GetFileStatus_int(const CString& gitdir, CGitRepoLists& repolists, long recursionDepth, const CString& path, git_wc_status2_t& status, BOOL IsFull, BOOL IsIgnore, BOOL update)
 {
 	ATLASSERT(repolists.pIndex);
 	ATLASSERT(!status.assumeValid && !status.skipWorktree);
 
+	if (repolists.pIndex && recursionDepth <= 0)
+	{
+		repolists.pIndex->ClearDirectoryCache();
+	}
 	CGitHash hash;
 	if (repolists.pIndex->GetFileStatus(gitdir, path, status, &hash))
 	{
@@ -255,7 +259,7 @@ static int GetFileStatus_int(const CString& gitdir, CGitRepoLists& repolists, co
 	return 0;
 }
 
-int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status2_t& status, BOOL IsFull, BOOL IsIgnore, bool update)
+int GitStatus::GetFileStatus(const CString& gitdir, long recursionDepth, CString path, git_wc_status2_t& status, BOOL IsFull, BOOL IsIgnore, bool update)
 {
 	ATLASSERT(!status.assumeValid && !status.skipWorktree);
 
@@ -272,7 +276,7 @@ int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status2
 		return -1;
 	}
 
-	return GetFileStatus_int(gitdir, sharedRepoLists, path, status, IsFull, IsIgnore, update);
+	return GetFileStatus_int(gitdir, sharedRepoLists, recursionDepth, path, status, IsFull, IsIgnore, update);
 }
 
 // checks whether indexPath is a direct submodule and not one in a subfolder
@@ -542,7 +546,7 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 #endif
 
 #ifndef TGITCACHE
-int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_wc_status_kind* status, BOOL IsFul, BOOL IsRecursive, BOOL IsIgnore)
+int GitStatus::GetDirStatus(const CString& gitdir, long recursionDepth, const CString& subpath, git_wc_status_kind* status, BOOL IsFul, BOOL IsRecursive, BOOL IsIgnore)
 {
 	ATLASSERT(status);
 
@@ -562,6 +566,11 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 	{
 		*status = git_wc_status_none;
 		return -1;
+	}
+
+	if (sharedRepoLists.pIndex && recursionDepth <= 0)
+	{
+		sharedRepoLists.pIndex->ClearDirectoryCache();
 	}
 
 	size_t pos = SearchInSortVector(*sharedRepoLists.pIndex, path, path.GetLength(), sharedRepoLists.pIndex->IsIgnoreCase());
@@ -712,7 +721,7 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 			continue;
 
 		git_wc_status2_t filestatus = { git_wc_status_none, false, false };
-		GetFileStatus_int(gitdir, sharedRepoLists, indexentry.m_FileName, filestatus, IsFul, IsIgnore, false);
+		GetFileStatus_int(gitdir, sharedRepoLists, recursionDepth + 1, indexentry.m_FileName, filestatus, IsFul, IsIgnore, false);
 		switch (filestatus.status)
 		{
 		case git_wc_status_added:

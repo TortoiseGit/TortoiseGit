@@ -76,8 +76,8 @@ class GitStatus
 {
 public:
 
-	static int GetFileStatus(const CString& gitdir, CString path, git_wc_status2_t& status, BOOL IsFull = FALSE, BOOL isIgnore = TRUE, bool update = true);
-	static int GetDirStatus(const CString& gitdir, const CString& path, git_wc_status_kind* status, BOOL IsFull = false, BOOL IsRecursive = false, BOOL isIgnore = true);
+	static int GetFileStatus(const CString& gitdir, long recursionDepth, CString path, git_wc_status2_t& status, BOOL IsFull = FALSE, BOOL isIgnore = TRUE, bool update = true);
+	static int GetDirStatus(const CString& gitdir, long recursionDepth, const CString& path, git_wc_status_kind* status, BOOL IsFull = false, BOOL IsRecursive = false, BOOL isIgnore = true);
 	static int EnumDirStatus(const CString& gitdir, const CString& path, git_wc_status_kind* dirstatus, FILL_STATUS_CALLBACK callback, void* pData);
 	static int GetFileList(const CString& path, std::vector<CGitFileName>& list, bool& isRepoRoot, bool ignoreCase);
 	static bool IsExistIndexLockFile(CString gitdir);
@@ -92,7 +92,7 @@ public:
 	 * If the status of the text and property part are different
 	 * then the more important status is returned.
 	 */
-	static int GetAllStatus(const CTGitPath& path, bool bIsRecursive, git_wc_status2_t& status);
+	static int GetAllStatus(const CTGitPath& path, long recursionDepth, bool bIsRecursive, git_wc_status2_t& status);
 
 	/**
 	 * Returns the status which is more "important" of the two statuses specified.
