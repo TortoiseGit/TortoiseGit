@@ -985,19 +985,19 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 			if (m_bShowAuthor)
 			{
 				if (oldHash != hash)
-					::ExtTextOut(hDC, rc.left, rc.top, ETO_CLIPPED, &rc, m_data.GetAuthor(i), m_data.GetAuthor(i).GetLength(), 0);
+					::DrawText(hDC, m_data.GetAuthor(i), m_data.GetAuthor(i).GetLength(), &rc, DT_HIDEPREFIX | DT_NOPREFIX | DT_SINGLELINE);
 				rc.left += m_authorwidth;
 			}
 			if (m_bShowDate)
 			{
 				if (oldHash != hash)
-					::ExtTextOut(hDC, rc.left, rc.top, ETO_CLIPPED, &rc, m_data.GetDate(i), m_data.GetDate(i).GetLength(), 0);
+					::DrawText(hDC, m_data.GetDate(i), m_data.GetDate(i).GetLength(), &rc, DT_HIDEPREFIX | DT_NOPREFIX | DT_SINGLELINE);
 				rc.left += m_datewidth;
 			}
 			if (m_bShowFilename)
 			{
 				if (oldFile != file)
-					::ExtTextOut(hDC, rc.left, rc.top, ETO_CLIPPED, &rc, m_data.GetFilename(i), m_data.GetFilename(i).GetLength(), 0);
+					::DrawText(hDC, m_data.GetFilename(i), m_data.GetFilename(i).GetLength(), &rc, DT_HIDEPREFIX | DT_NOPREFIX | DT_SINGLELINE);
 				rc.left += m_filenameWidth;
 			}
 			if (m_bShowOriginalLineNumber)

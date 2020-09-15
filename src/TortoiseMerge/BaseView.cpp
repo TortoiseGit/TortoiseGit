@@ -1441,8 +1441,10 @@ void CBaseView::DrawHeader(CDC *pdc, const CRect &rect)
 		int offset = std::min<int>(m_nOffsetChar, (nStringLength-rect.Width())/GetCharWidth()+1);
 		sViewTitle = m_sWindowName.Mid(offset);
 	}
-	pdc->ExtTextOut(std::max<int>(rect.left + (rect.Width()-nStringLength)/2, 1),
-		rect.top + (HEADERHEIGHT / 2), ETO_CLIPPED, textrect, sViewTitle, nullptr);
+	RECT titleRC = textrect;
+	titleRC.left = std::max<int>(rect.left + (rect.Width() - nStringLength) / 2, 1);
+	titleRC.top = rect.top + (HEADERHEIGHT / 2);
+	pdc->DrawText(sViewTitle, &titleRC, DT_HIDEPREFIX | DT_NOPREFIX | DT_SINGLELINE);
 	if (this->GetFocus() == this)
 		pdc->DrawEdge(textrect, EDGE_BUMP, BF_RECT);
 	else
@@ -1948,7 +1950,10 @@ void CBaseView::DrawTextLine(
 					leftcoord += lower > 0 ? posBuffer[lower - 1] : 0;
 				}
 
-				pDC->ExtTextOut(leftcoord, coords.y, ETO_CLIPPED, &rc, p_zBlockText + offset, min(nTextLength, 4094), nullptr);
+                RECT drawRC = rc;
+				drawRC.left = leftcoord;
+				drawRC.top = coords.y;
+				pDC->DrawText(p_zBlockText + offset, min(nTextLength, 4094), &drawRC, DT_HIDEPREFIX | DT_NOPREFIX | DT_SINGLELINE);
 				if ((second.shot != second.background) && (itStart->first == nStart + nTextOffset))
 					pDC->FillSolidRect(nLeft - 1, rc.top, 1, rc.Height(), second.shot);
 			}

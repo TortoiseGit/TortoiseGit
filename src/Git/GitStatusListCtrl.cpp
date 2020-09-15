@@ -3252,7 +3252,7 @@ BOOL CGitStatusListCtrl::OnNMCustomdraw(NMHDR* pNMHDR, LRESULT* pResult)
 				RECT labelRect = { 0 };
 				labelRect.top = LVGGR_LABEL;
 				SendMessage(LVM_GETGROUPRECT, pLVCD->nmcd.dwItemSpec, (LPARAM)&labelRect);
-				ExtTextOut(pLVCD->nmcd.hdc, labelRect.left, labelRect.top, ETO_CLIPPED, &labelRect, gInfo.pszHeader, gInfo.cchHeader, nullptr);
+				::DrawText(pLVCD->nmcd.hdc, gInfo.pszHeader, gInfo.cchHeader, &labelRect, DT_HIDEPREFIX | DT_NOPREFIX | DT_SINGLELINE);
 
 				RECT groupRect = { 0 };
 				groupRect.top = LVGGR_HEADER;

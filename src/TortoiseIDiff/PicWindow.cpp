@@ -625,25 +625,18 @@ void CPicWindow::DrawViewTitle(HDC hDC, RECT * rect)
     {
         int nStringLength = stringsize.cx;
         int texttop = pSecondPic ? textrect.top + (header_height /2) - stringsize.cy : textrect.top + (header_height /2) - stringsize.cy/2;
-        ExtTextOut(hDC,
-            max(textrect.left + ((textrect.right - textrect.left) - nStringLength) / 2, 1l),
-            texttop,
-            ETO_CLIPPED,
-            &textrect,
-            realtitle.c_str(),
-            static_cast<UINT>(realtitle.size()),
-            nullptr);
+
+        RECT drawRC = textrect;
+        drawRC.left = max(textrect.left + ((textrect.right - textrect.left) - nStringLength) / 2, 1l);
+        drawRC.top = texttop;
+        ::DrawText(hDC, realtitle.c_str(), (int)realtitle.size(), &drawRC, DT_HIDEPREFIX | DT_NOPREFIX | DT_SINGLELINE);
         if (pSecondPic)
         {
             realtitle = (pictitle2.empty() ? picpath2 : pictitle2);
-            ExtTextOut(hDC,
-                max(textrect.left + ((textrect.right - textrect.left) - nStringLength) / 2, 1l),
-                texttop + stringsize.cy,
-                ETO_CLIPPED,
-                &textrect,
-                realtitle.c_str(),
-                static_cast<UINT>(realtitle.size()),
-                nullptr);
+            drawRC = textrect;
+            drawRC.left = max(textrect.left + ((textrect.right - textrect.left) - nStringLength) / 2, 1l);
+            drawRC.top = texttop + stringsize.cy;
+            ::DrawText(hDC, realtitle.c_str(), (int)realtitle.size(), &drawRC, DT_HIDEPREFIX | DT_NOPREFIX | DT_SINGLELINE);
         }
     }
     if (HasMultipleImages())
@@ -652,15 +645,10 @@ void CPicWindow::DrawViewTitle(HDC hDC, RECT * rect)
         {
             int nStringLength = stringsize.cx;
 
-            ExtTextOut(hDC,
-                max(textrect.left + ((textrect.right - textrect.left) - nStringLength) / 2, 1l),
-                textrect.top + header_height + (header_height /2) - stringsize.cy/2,
-                ETO_CLIPPED,
-                &textrect,
-                imgnumstring.c_str(),
-                static_cast<UINT>(imgnumstring.size()),
-                nullptr);
-        }
+            RECT drawRC = textrect;
+            drawRC.left = max(textrect.left + ((textrect.right - textrect.left) - nStringLength) / 2, 1l);
+            drawRC.top = textrect.top + header_height + (header_height / 2) - stringsize.cy / 2;
+            ::DrawText(hDC, imgnumstring.c_str(), (int)imgnumstring.size(), &drawRC, DT_HIDEPREFIX | DT_NOPREFIX | DT_SINGLELINE);        }
     }
     SelectObject(hDC, hFontOld);
     DeleteObject(hFont);
@@ -1369,7 +1357,7 @@ void CPicWindow::Paint(HWND hwnd)
             {
                 int nStringLength = stringsize.cx;
 
-                ExtTextOut(memDC,
+                ExtTextOut(memDC,//
                     max(rect.left + ((rect.right - rect.left) - nStringLength) / 2, 1l),
                     rect.top + ((rect.bottom-rect.top) - stringsize.cy)/2,
                     ETO_CLIPPED,
