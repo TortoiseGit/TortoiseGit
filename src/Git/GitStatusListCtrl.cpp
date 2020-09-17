@@ -3813,7 +3813,6 @@ bool CGitStatusListCtrl::CopySelectedEntriesToClipboard(DWORD dwCols, int cmd)
 bool CGitStatusListCtrl::HasChangelistInSelection()
 {
 	CAutoReadLock locker(m_guard);
-	std::set<CString> changelists;
 	POSITION pos = GetFirstSelectedItemPosition();
 	int index;
 	while ((index = GetNextSelectedItem(pos)) >= 0)
