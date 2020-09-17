@@ -32,6 +32,9 @@ public:
 	Win10Colors();
 	~Win10Colors();
 
+	Win10Colors(const Win10Colors& t) = delete;
+	Win10Colors& operator=(const Win10Colors& t) = delete;
+
 	/**
 	 * RGBA color. Red is in the LSB, Alpha in the MSB.
 	 * You can use GetRValue() et al to access individual components.

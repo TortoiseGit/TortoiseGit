@@ -94,6 +94,9 @@ private:
 	DarkModeHelper();
 	~DarkModeHelper();
 
+	DarkModeHelper(const DarkModeHelper& t) = delete;
+	DarkModeHelper& operator=(const DarkModeHelper& t) = delete;
+
 	typedef void(WINAPI* AllowDarkModeForAppFPN)(BOOL allow);
 	typedef PreferredAppMode(WINAPI* SetPreferredAppModeFPN)(PreferredAppMode appMode);
 	typedef void(WINAPI* AllowDarkModeForWindowFPN)(HWND hwnd, BOOL allow);
