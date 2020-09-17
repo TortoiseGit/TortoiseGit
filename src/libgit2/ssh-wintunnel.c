@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014, 2016-2019 TortoiseGit
+// Copyright (C) 2014, 2016-2020 TortoiseGit
 // Copyright (C) the libgit2 contributors. All rights reserved.
 //               - based on libgit2/src/transports/ssh.c
 
@@ -558,7 +558,7 @@ int git_smart_subtransport_ssh_wintunnel(
 		return -1;
 	}
 
-	t->sshtoolpath = wcsdup(sshtoolpath);
+	t->sshtoolpath = _wcsdup(sshtoolpath);
 	t->pEnv = pEnv;
 
 	t->owner = (transport_smart *)owner;

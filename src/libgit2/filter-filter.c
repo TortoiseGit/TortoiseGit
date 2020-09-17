@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014, 2016-2019 TortoiseGit
+// Copyright (C) 2014, 2016-2020 TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -301,7 +301,7 @@ git_filter *git_filter_filter_new(LPCWSTR shexepath, LPWSTR* pEnv)
 	f->f.cleanup	= filter_cleanup;
 	f->shexepath	= NULL;
 	if (shexepath && shexepath[0])
-		f->shexepath = wcsdup(shexepath);
+		f->shexepath = _wcsdup(shexepath);
 	f->pEnv			= pEnv;
 
 	return (git_filter *)f;
