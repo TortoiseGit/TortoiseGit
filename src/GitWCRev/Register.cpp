@@ -370,7 +370,7 @@ HRESULT LoadTypeLib(HINSTANCE hInstTypeLib, LPCOLESTR lpszIndex, BSTR* pbstrPath
 	return hr;
 }
 
-static inline UINT WINAPI GetDirLen(LPCOLESTR lpszPathName) throw()
+static inline UINT WINAPI GetDirLen(LPCOLESTR lpszPathName)
 {
 	ATLASSERT(lpszPathName);
 
