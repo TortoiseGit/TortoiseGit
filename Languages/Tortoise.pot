@@ -7173,6 +7173,10 @@ msgstr ""
 msgid "Push"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_PUSH: Control id 1492)
+msgid "Push &option:"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETTINREMOTE: Control id 1786)
 msgid "Push Default"
 msgstr ""

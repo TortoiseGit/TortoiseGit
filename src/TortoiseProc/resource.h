@@ -1000,6 +1000,7 @@
 #define IDS_DIFFOPTION_IGNOREALLSPACE   1491
 #define IDC_OTHER_RD                    1492
 #define IDS_DIFFOPTION_IGNORBLANKLINES  1492
+#define IDC_STATIC_PUSHOPTION           1492
 #define IDC_OTHER                       1493
 #define IDC_BRANCH_SOURCE               1493
 #define IDS_SELECTUPSTREAM              1493
@@ -1012,6 +1013,7 @@
 #define IDC_REMOTE                      1496
 #define IDS_REPOBROWSEASKSUBMODULEUPDATE 1496
 #define IDS_TRACKEDBRANCH               1497
+#define IDC_PUSHOPTION                  1497
 #define IDS_REBASE_AUTOSKIPPED          1498
 #define IDC_FORCE_WITH_LEASE            1498
 #define IDC_TAGS                        1499

@@ -64,6 +64,7 @@ void CPushDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_URL, this->m_RemoteURL);
 	DDX_Control(pDX, IDC_BUTTON_BROWSE_SOURCE_BRANCH, m_BrowseLocalRef);
 	DDX_Control(pDX, IDC_COMBOBOX_RECURSE_SUBMODULES, m_RecurseSubmodulesCombo);
+	DDX_Control(pDX, IDC_PUSHOPTION, m_PushOption);
 	DDX_Check(pDX,IDC_FORCE,this->m_bForce);
 	DDX_Check(pDX, IDC_FORCE_WITH_LEASE, m_bForceWithLease);
 	DDX_Check(pDX,IDC_PUSHALL,this->m_bPushAllBranches);
@@ -141,6 +142,9 @@ BOOL CPushDlg::OnInitDialog()
 	AddAnchor(IDC_STATIC_RECURSE_SUBMODULES, TOP_LEFT);
 	AddAnchor(IDC_COMBOBOX_RECURSE_SUBMODULES, TOP_LEFT);
 
+	AddAnchor(IDC_STATIC_PUSHOPTION, TOP_LEFT);
+	AddAnchor(IDC_PUSHOPTION, TOP_LEFT, TOP_RIGHT);
+
 	AddAnchor(IDC_REMOTE_MANAGE,TOP_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
@@ -157,6 +161,7 @@ BOOL CPushDlg::OnInitDialog()
 	m_Remote.SetMaxHistoryItems(0x7FFFFFFF);
 	m_RemoteURL.SetCaseSensitive(TRUE);
 	m_RemoteURL.SetURLHistory(TRUE);
+	m_PushOption.SetCaseSensitive(TRUE);
 
 	CString WorkingDir=g_Git.m_CurrentDir;
 	WorkingDir.Replace(L':', L'_');
@@ -166,6 +171,7 @@ BOOL CPushDlg::OnInitDialog()
 	m_bPushAllBranches = m_regPushAllBranches;
 	m_RemoteURL.LoadHistory(L"Software\\TortoiseGit\\History\\PushURLS\\" + WorkingDir, L"url");
 	m_RemoteURL.EnableWindow(FALSE);
+	m_PushOption.LoadHistory(L"Software\\TortoiseGit\\History\\PushOption\\" + WorkingDir, L"option");
 	CheckRadioButton(IDC_RD_REMOTE,IDC_RD_URL,IDC_RD_REMOTE);
 
 	this->m_regAutoLoad = CRegDWORD(L"Software\\TortoiseGit\\History\\PushDlgAutoLoad\\" + WorkingDir,
@@ -471,6 +477,9 @@ void CPushDlg::OnBnClickedOk()
 			}
 		}
 	}
+
+	m_sPushOption = m_PushOption.GetString();
+	m_PushOption.SaveHistory();
 
 	m_regPushAllBranches = m_bPushAllBranches;
 	m_regPushAllRemotes = m_bPushAllRemotes;

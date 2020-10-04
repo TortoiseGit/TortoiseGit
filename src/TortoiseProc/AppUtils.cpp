@@ -2735,7 +2735,7 @@ bool CAppUtils::Fetch(HWND hWnd, const CString& remoteName, bool allRemotes)
 	return false;
 }
 
-bool CAppUtils::DoPush(HWND hWnd, bool autoloadKey, bool tags, bool allRemotes, bool allBranches, bool force, bool forceWithLease, const CString& localBranch, const CString& remote, const CString& remoteBranch, bool setUpstream, int recurseSubmodules)
+bool CAppUtils::DoPush(HWND hWnd, bool autoloadKey, bool tags, bool allRemotes, bool allBranches, bool force, bool forceWithLease, const CString& localBranch, const CString& remote, const CString& remoteBranch, bool setUpstream, int recurseSubmodules, const CString& pushOption)
 {
 	CString error;
 	DWORD exitcode = 0xFFFFFFFF;
@@ -2780,6 +2780,18 @@ bool CAppUtils::DoPush(HWND hWnd, bool autoloadKey, bool tags, bool allRemotes, 
 		arg += L"--recurse-submodules=check ";
 	if (recurseSubmodules == 2 && recurseSubmodules != iRecurseSubmodules)
 		arg += L"--recurse-submodules=on-demand ";
+	if (!pushOption.IsEmpty())
+	{
+		if (pushOption.Find(L'"') < 0)
+			arg += L"--push-option=\"" + pushOption + L"\" ";
+		else
+		{
+			CString escaped = pushOption;
+			escaped.Replace(L"\\\"", L"\\\\\"");
+			escaped.Replace(L"\"", L"\\\"");
+			arg += L"--push-option=\"" + escaped + L"\" ";
+		}
+	}
 
 	arg += L"--progress ";
 
@@ -2886,7 +2898,7 @@ bool CAppUtils::Push(HWND hWnd, const CString& selectLocalBranch)
 	dlg.m_BranchSourceName = selectLocalBranch;
 
 	if (dlg.DoModal() == IDOK)
-		return DoPush(hWnd, !!dlg.m_bAutoLoad, !!dlg.m_bTags, !!dlg.m_bPushAllRemotes, !!dlg.m_bPushAllBranches, !!dlg.m_bForce, !!dlg.m_bForceWithLease, dlg.m_BranchSourceName, dlg.m_URL, dlg.m_BranchRemoteName, !!dlg.m_bSetUpstream, dlg.m_RecurseSubmodules);
+		return DoPush(hWnd, !!dlg.m_bAutoLoad, !!dlg.m_bTags, !!dlg.m_bPushAllRemotes, !!dlg.m_bPushAllBranches, !!dlg.m_bForce, !!dlg.m_bForceWithLease, dlg.m_BranchSourceName, dlg.m_URL, dlg.m_BranchRemoteName, !!dlg.m_bSetUpstream, dlg.m_RecurseSubmodules, dlg.m_sPushOption);
 
 	return FALSE;
 }
