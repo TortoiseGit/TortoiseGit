@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2019 - TortoiseGit
+// Copyright (C) 2015-2020 - TortoiseGit
 // Copyright (C) 2005-2006, 2009-2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -18,7 +18,6 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "stdafx.h"
 #include "DirFileEnum.h"
-#include "SysInfo.h"
 #include "StringUtils.h"
 
 CSimpleFileFind::CSimpleFileFind(const CString &sPath, LPCTSTR pPattern)
