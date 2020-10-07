@@ -126,29 +126,62 @@
 			No credential config keys are in all config levels.
 		</para>
 		<para>
+			<guilabel>manager-core - this repository only</guilabel>
+			Git Credential Manager Core (manager-core; <ulink url="https://github.com/microsoft/Git-Credential-Manager-Core">https://github.com/microsoft/Git-Credential-Manager-Core</ulink>) is enabled in local config only.
+			This option is visible only if manager-core is installed.
+		</para>
+		<para>
+			<guilabel>manager - this repository only</guilabel>
+			Git Credential Manager (manager; <ulink url="https://github.com/microsoft/Git-Credential-Manager-for-Windows">https://github.com/microsoft/Git-Credential-Manager-for-Windows</ulink>) is enabled in local config only.
+			This option is visible only if manager is installed.
+		</para>
+		<para>
 			<guilabel>wincred - this repository only</guilabel>
-			wincred is enabled in local config.
+			wincred is enabled in local config only.
 			This option is visible only if wincred is installed.
 		</para>
 		<para>
 			<guilabel>winstore - this repository only</guilabel>
-			winstore is enabled in local config.
+			winstore is enabled in local config only.
 			This option is visible only if winstore is installed for current Windows user.
 		</para>
 		<para>
+			<guilabel>manager-core - current Windows user</guilabel>
+			Git Credential Manager Core (manager-core; <ulink url="https://github.com/microsoft/Git-Credential-Manager-Core">https://github.com/microsoft/Git-Credential-Manager-Core</ulink>) is enabled in global config only.
+			This option is visible only if manager-core is installed.
+		</para>
+		<para>
+			<guilabel>manager - current Windows user</guilabel>
+			Git Credential Manager (manager; <ulink url="https://github.com/microsoft/Git-Credential-Manager-for-Windows">https://github.com/microsoft/Git-Credential-Manager-for-Windows</ulink>) is enabled in global config only.
+			This option is visible only if manager is installed.
+		</para>
+		<para>
 			<guilabel>wincred - current Windows user</guilabel>
-			wincred is enabled in global config.
+			wincred is enabled in global config only.
 			This option is visible only if wincred is installed.
 		</para>
 		<para>
 			<guilabel>winstore - current Windows user</guilabel>
-			winstore is enabled in global config.
+			winstore is enabled in global config only.
 			This option is visible only if winstore is installed for current Windows user.
 		</para>
 		<para>
+			<guilabel>manager-core - all Windows users</guilabel>
+			Git Credential Manager Core (manager-core; <ulink url="https://github.com/microsoft/Git-Credential-Manager-Core">https://github.com/microsoft/Git-Credential-Manager-Core</ulink>) is enabled in system config only.
+			This option is visible only if manager-core is installed.
+			Change to this option requires administrator privileges.
+		</para>
+		<para>
+			<guilabel>manager - all Windows users</guilabel>
+			Git Credential Manager (manager; <ulink url="https://github.com/microsoft/Git-Credential-Manager-for-Windows">https://github.com/microsoft/Git-Credential-Manager-for-Windows</ulink>) is enabled in system config only.
+			This option is visible only if manager is installed.
+			Change to this option requires administrator privileges.
+		</para>
+		<para>
 			<guilabel>wincred - all Windows users</guilabel>
-			wincred is enabled in system config.
+			wincred is enabled in system config only.
 			This option is visible only if wincred is installed.
+			Change to this option requires administrator privileges.
 		</para>
 		<para>Advanced credential helper configuration</para>
 		<para>
@@ -162,7 +195,7 @@
 		<para>
 			<guilabel>Helper</guilabel>
 			Select a credential helper program.
-			wincred and winstore are predefined in TortoiseGit.
+			manager-core, manager, wincred, and winstore are predefined in TortoiseGit.
 			It is possible to use other credential helpers or with extra options.
 		</para>
 		<para>
