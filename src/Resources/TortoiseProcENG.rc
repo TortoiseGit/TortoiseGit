@@ -100,6 +100,7 @@ IDI_NOTEPAD             ICON                    "notepad.ico"
 IDI_GITFOLDER           ICON                    "gitfolder.ico"
 IDI_LOCK_BKG            ICON                    "LockBackground.ico"
 IDI_UNLOCK_BKG          ICON                    "UnlockBackground.ico"
+IDI_INDETERMINATE       ICON                    "indeterminate.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -227,7 +228,7 @@ BEGIN
     CONTROL         "",IDC_PROGRESS,"msctls_progress32",NOT WS_VISIBLE | WS_BORDER,87,312,212,10
 END
 
-IDD_COMMITDLG DIALOGEX 0, 0, 359, 306
+IDD_COMMITDLG DIALOGEX 0, 0, 359, 318
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 CAPTION "Commit"
 FONT 9, "Segoe UI", 400, 0, 0x1
@@ -261,21 +262,25 @@ BEGIN
     LTEXT           "Files",IDC_CHECKFILES,264,172,15,8
     LTEXT           "Submodules",IDC_CHECKSUBMODULES,285,172,47,8
     CONTROL         "",IDC_FILELIST,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,14,184,330,62
-    CONTROL         "Show &Unversioned Files",IDC_SHOWUNVERSIONED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,249,135,10
+    CONTROL         "Staging support (EXPERIMENTAL)",IDC_STAGINGSUPPORT,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,252,117,10
+    CONTROL         "Show &Unversioned Files",IDC_SHOWUNVERSIONED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,263,135,10
     LTEXT           "",IDC_STATISTICS,149,247,195,8,0,WS_EX_RIGHT
+    RTEXT           "Partial Staging>>",IDC_PARTIAL_STAGING,259,268,76,8,NOT WS_VISIBLE
+    RTEXT           "Partial Unstaging>>",IDC_PARTIAL_UNSTAGING,259,276,76,8,NOT WS_VISIBLE
     CONTROL         "Do not autoselect submodules",IDC_NOAUTOSELECTSUBMODULES,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,260,147,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,274,147,10
     RTEXT           "View Patch>>",IDC_VIEW_PATCH,259,260,76,8
-    CONTROL         "Show &Whole Project",IDC_WHOLE_PROJECT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,277,109,10
-    CONTROL         "Keep changelists",IDC_KEEPLISTS,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_DISABLED | WS_TABSTOP,150,289,111,10
-    CONTROL         "Message onl&y",IDC_COMMIT_MESSAGEONLY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,289,107,10
-    PUSHBUTTON      "C&ommit",IDOK,171,285,69,14,WS_DISABLED
-    PUSHBUTTON      "Cancel",IDCANCEL,247,285,50,14
-    PUSHBUTTON      "Help",IDHELP,302,285,50,14
+    CONTROL         "Show &Whole Project",IDC_WHOLE_PROJECT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,290,109,10
+    CONTROL         "Keep changelists",IDC_KEEPLISTS,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_DISABLED | WS_TABSTOP,150,301,111,10
+    CONTROL         "Message onl&y",IDC_COMMIT_MESSAGEONLY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,301,107,10
+    PUSHBUTTON      "C&ommit",IDOK,171,297,69,14,WS_DISABLED
+    PUSHBUTTON      "Cancel",IDCANCEL,247,297,50,14
+    PUSHBUTTON      "Help",IDHELP,302,297,50,14
     GROUPBOX        "&Message:",IDC_MESSAGEGROUP,6,19,346,135
-    GROUPBOX        "Changes made (double-click on file for diff):",IDC_LISTGROUP,6,162,346,113
+    GROUPBOX        "Changes made (double-click on file for diff):",IDC_LISTGROUP,6,162,346,126
     LTEXT           "",IDC_TEXT_INFO,299,105,45,8,0,WS_EX_RIGHT
-    ICON            IDI_MERGEACTIVE,IDC_MERGEACTIVE,147,285,21,20,SS_NOTIFY | SS_REALSIZEIMAGE | NOT WS_VISIBLE,WS_EX_TRANSPARENT
+    ICON            IDI_MERGEACTIVE,IDC_MERGEACTIVE,147,291,18,17,SS_NOTIFY | SS_REALSIZEIMAGE | NOT WS_VISIBLE,WS_EX_TRANSPARENT
 END
 
 IDD_PROMPT DIALOGEX 0, 0, 241, 54
@@ -1715,6 +1720,7 @@ END
 IDD_PATCH_VIEW DIALOGEX 0, 0, 248, 195
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 CAPTION "View Patch"
+MENU IDR_STAGING
 FONT 9, "Segoe UI", 400, 0, 0x1
 BEGIN
     CONTROL         "Scintilla",IDC_PATCH,"Scintilla",WS_TABSTOP,0,0,248,195,WS_EX_STATICEDGE
@@ -2316,7 +2322,7 @@ BEGIN
         VERTGUIDE, 295
         VERTGUIDE, 344
         TOPMARGIN, 6
-        BOTTOMMARGIN, 299
+        BOTTOMMARGIN, 311
         HORZGUIDE, 245
     END
 
@@ -3325,6 +3331,20 @@ BEGIN
     POPUP "&File"
     BEGIN
         MENUITEM "&Save graph as...",           ID_FILE_SAVESTATGRAPHAS, GRAYED
+    END
+END
+
+IDR_STAGING MENU
+BEGIN
+    POPUP "&Staging"
+    BEGIN
+        MENUITEM "Stage selected &lines",       ID_STAGING_STAGESELECTEDLINES, INACTIVE
+        MENUITEM "Stage selected &hunks",       ID_STAGING_STAGESELECTEDHUNKS, INACTIVE
+    END
+    POPUP "&Unstaging"
+    BEGIN
+        MENUITEM "Unstage selected &lines",     ID_UNSTAGING_UNSTAGESELECTEDLINES, INACTIVE
+        MENUITEM "Unstage selected &hunks",     ID_UNSTAGING_UNSTAGESELECTEDHUNKS, INACTIVE
     END
 END
 
@@ -5077,6 +5097,20 @@ BEGIN
     IDS_GLOBAL_GCMCORE      "manager-core - current Windows user"
     IDS_LOCAL_GCMCORE       "manager-core - this repository only"
     IDS_PRUNE_OPTION_GUIDE  "You can configure it for all remotes or global on the Git settings page."
+    IDS_PROC_COMMIT_PARTIAL_STAGING "Partial Staging>>"
+    IDS_TIPSTAGINGMODE      "While in this mode, the checkbox for each file reflects its staging status:\n- Checked means all the changes for the file are staged\n- Unchecked means all the changes for the file are unstaged\n- A gray square means that only some changes for the file are staged\n\nClicking the checkboxes immediately stages or unstages the whole file.\n\nYou can also click ""Partial Staging"" or ""Partial Unstaging"". A window shows up where you can select hunks or lines in the currently selected file and stage or unstage them."
+    IDS_ERROR_PARTIALSTAGING 
+                            "Invalid selection.\n\nIf this is a single-line file that has been modified, you must click the checkbox to stage or unstage the whole file."
+    IDS_PROC_COMMIT_HIDE_UNSTAGING "Hide Unstaging<<"
+    IDS_PROC_COMMIT_PARTIAL_UNSTAGING "Partial Unstaging>>"
+    IDS_PROC_COMMIT_HIDE_STAGING "Hide Staging<<"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_VIEWPATCH_HEAD_INDEX "View Patch - HEAD to index"
+    IDS_VIEWPATCH_INDEX_WORKTREE "View Patch - index to working tree"
+    IDS_VIEWPATCH           "View Patch"
 END
 
 #endif    // English (U.S.) resources

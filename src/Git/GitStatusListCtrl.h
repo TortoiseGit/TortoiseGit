@@ -424,6 +424,7 @@ public:
 	 * \param bHasWC TRUE if the reporisty is not a bare repository (hides wc related items on the contextmenu)
 	 */
 	void Init(DWORD dwColumns, const CString& sColumnInfoContainer, unsigned __int64 dwContextMenus, bool bHasCheckboxes = true, bool bHasWC = true, DWORD allowedColumns = 0xffffffff);
+	void EnableThreeStateCheckboxes(bool enable);
 	/**
 	 * Sets a background image for the list control.
 	 * The image is shown in the right bottom corner.
@@ -455,7 +456,8 @@ public:
 				   , bool bShowIgnores = false
 				   , bool bShowUnRev = false
 				   , bool bShowLocalChangesIgnored = false
-				   , bool bShowLFSLocks = false);
+				   , bool bShowLFSLocks = false
+				   , bool bGetStagingStatus = false);
 
 	/**
 	 * Populates the list control with the previously (with GetStatus) gathered status information.
@@ -849,9 +851,9 @@ public:
 		FILELIST_LOCKS = 0x10,
 	};
 private:
-	int UpdateFileList(const CTGitPathList* list = nullptr);
+	int UpdateFileList(const CTGitPathList* list = nullptr, bool getStagingStatus = false);
 public:
-	int UpdateFileList(int mask, bool once = true, const CTGitPathList* list = nullptr);
+	int UpdateFileList(int mask, bool once = true, const CTGitPathList* list = nullptr, bool getStagingStatus = false);
 	int InsertUnRevListFromPreCalculatedList(const CTGitPathList& list);
 	int UpdateUnRevFileList(const CTGitPathList* list = nullptr);
 	int UpdateLFSLockedFileList(bool onlyExisting);
@@ -886,6 +888,10 @@ private:
 		int selMark;
 		int nSelectedEntry;
 	} m_sScrollPos;
+
+	void			GitStageEntry(CTGitPath* entry);
+	void			GitUnstageEntry(CTGitPath* entry);
+	bool			m_bThreeStateCheckboxes;
 };
 
 class CGitStatusListCtrlDropTarget : public CIDropTarget

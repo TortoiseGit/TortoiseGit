@@ -1,0 +1,13 @@
+diff --git a/fool parser.txt b/fool parser.txt
+index 8ca82ef..3845212 100644
+--- a/fool parser.txt	
++++ b/fool parser.txt	
+@@ -1,6 +1,6 @@
+ diff --git a/fool parser.txt b/fool parser.txt
+ index abababa..abababa 100644
+--- a/fool parser.txt
++++ b/fool parser.txt
+ áàãâä çóñtèxt líñè - the 2 lines above are not a header, but actually - and + lines, and the 2 above them are context
+ éèêë  çóñtèxt líñè
+ íìîï  çóñtèxt líñè
+\ No newline at end of file

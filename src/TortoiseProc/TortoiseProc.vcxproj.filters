@@ -1022,6 +1022,15 @@
     <ClCompile Include="..\Utils\Monitor.cpp">
       <Filter>Utils\General</Filter>
     </ClCompile>
+    <ClCompile Include="FileTextLinesFromScintilla.cpp">
+      <Filter>Commands\Commit</Filter>
+    </ClCompile>
+    <ClCompile Include="StagingOperations.cpp">
+      <Filter>Commands\Commit</Filter>
+    </ClCompile>
+    <ClCompile Include="DiffLinesForStaging.cpp">
+      <Filter>Commands\Commit</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1930,6 +1939,18 @@
     <ClInclude Include="..\Utils\Monitor.h">
       <Filter>Utils\General</Filter>
     </ClInclude>
+    <ClInclude Include="FileTextLinesFromScintilla.h">
+      <Filter>Commands\Commit</Filter>
+    </ClInclude>
+    <ClInclude Include="StagingOperations.h">
+      <Filter>Commands\Commit</Filter>
+    </ClInclude>
+    <ClInclude Include="EnableStagingTypes.h">
+      <Filter>Commands\Commit</Filter>
+    </ClInclude>
+    <ClInclude Include="DiffLinesForStaging.h">
+      <Filter>Commands\Commit</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resources\actionadded.ico">
@@ -2263,6 +2284,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\UnlockBackground.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\indeterminate.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

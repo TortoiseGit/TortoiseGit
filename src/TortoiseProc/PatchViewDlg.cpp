@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019-2020 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,14 +21,20 @@
 
 #include "stdafx.h"
 #include "TortoiseProc.h"
+#include "MessageBox.h"
 #include "PatchViewDlg.h"
 #include "CommonAppUtils.h"
 #include "StringUtils.h"
 #include "DPIAware.h"
+#include "StagingOperations.h"
+#include "Git.h"
+#include "EnableStagingTypes.h"
 
 #pragma comment(lib, "Dwmapi.lib")
 
 // CPatchViewDlg dialog
+
+UINT CPatchViewDlg::WM_PARTIALSTAGINGREFRESHPATCHVIEW = RegisterWindowMessage(L"TORTOISEGIT_COMMIT_PARTIALSTAGINGREFRESHPATCHVIEW"); // same string in CommitDlg.cpp!!!
 
 IMPLEMENT_DYNAMIC(CPatchViewDlg, CStandAloneDialog)
 
@@ -40,6 +46,11 @@ CPatchViewDlg::CPatchViewDlg(CWnd* pParent /*=nullptr*/)
 	, m_hAccel(nullptr)
 	, m_bShowFindBar(false)
 	, m_nPopupSave(0)
+	, m_nStageHunks(0)
+	, m_nStageLines(0)
+	, m_nUnstageHunks(0)
+	, m_nUnstageLines(0)
+	, m_nEnableStagingType(EnableStagingTypes::None)
 {
 }
 
@@ -62,6 +73,10 @@ BEGIN_MESSAGE_MAP(CPatchViewDlg, CStandAloneDialog)
 	ON_COMMAND(IDM_FINDEXIT, OnEscape)
 	ON_COMMAND(IDM_FINDNEXT, OnFindNext)
 	ON_COMMAND(IDM_FINDPREV, OnFindPrev)
+	ON_COMMAND(ID_STAGING_STAGESELECTEDLINES, OnStageLines)
+	ON_COMMAND(ID_STAGING_STAGESELECTEDHUNKS, OnStageHunks)
+	ON_COMMAND(ID_UNSTAGING_UNSTAGESELECTEDLINES, OnUnstageLines)
+	ON_COMMAND(ID_UNSTAGING_UNSTAGESELECTEDHUNKS, OnUnstageHunks)
 	ON_REGISTERED_MESSAGE(CFindBar::WM_FINDEXIT, OnFindExitMessage)
 	ON_REGISTERED_MESSAGE(CFindBar::WM_FINDNEXT, OnFindNextMessage)
 	ON_REGISTERED_MESSAGE(CFindBar::WM_FINDPREV, OnFindPrevMessage)
@@ -93,6 +108,35 @@ BOOL CPatchViewDlg::OnInitDialog()
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
+}
+
+// This is intended to be called by the commit window when staging support is enabled there and
+// we were invoked becaused the user clicked on "Partial Staging>>" or "Partial Unstaging>>".
+// We assume the commit window will later on pass us the output of "git diff" (for staging) or
+// "git diff --cached" (for unstaging), of one file only.
+// If we were invoked from somewhere else (e.g. the File Diff Dialog), this will never be called
+// and all staging menu items will stay disabled.
+void CPatchViewDlg::EnableStaging(EnableStagingTypes enableStagingType)
+{
+	EnableMenuItem(GetMenu()->GetSafeHmenu(), ID_STAGING_STAGESELECTEDHUNKS, enableStagingType == EnableStagingTypes::Staging ? MF_ENABLED : MF_DISABLED);
+	EnableMenuItem(GetMenu()->GetSafeHmenu(), ID_STAGING_STAGESELECTEDLINES, enableStagingType == EnableStagingTypes::Staging ? MF_ENABLED : MF_DISABLED);
+	EnableMenuItem(GetMenu()->GetSafeHmenu(), ID_UNSTAGING_UNSTAGESELECTEDHUNKS, enableStagingType == EnableStagingTypes::Unstaging ? MF_ENABLED : MF_DISABLED);
+	EnableMenuItem(GetMenu()->GetSafeHmenu(), ID_UNSTAGING_UNSTAGESELECTEDLINES, enableStagingType == EnableStagingTypes::Unstaging ? MF_ENABLED : MF_DISABLED);
+
+	switch (enableStagingType)
+	{
+	case EnableStagingTypes::None:
+		SetWindowText(CString(MAKEINTRESOURCE(IDS_VIEWPATCH)));
+		break;
+	case EnableStagingTypes::Staging:
+		SetWindowText(CString(MAKEINTRESOURCE(IDS_VIEWPATCH_INDEX_WORKTREE)));
+		break;
+	case EnableStagingTypes::Unstaging:
+		SetWindowText(CString(MAKEINTRESOURCE(IDS_VIEWPATCH_HEAD_INDEX)));
+		break;
+	}
+
+	m_nEnableStagingType = enableStagingType; // This will be used to determine which context menu items to show
 }
 
 void CPatchViewDlg::SetText(const CString& text)
@@ -367,6 +411,82 @@ LRESULT CPatchViewDlg::OnFindResetMessage(WPARAM, LPARAM)
 	return 0;
 }
 
+void CPatchViewDlg::OnStageHunks()
+{
+	StageOrUnstageSelectedLinesOrHunks(StagingType::StageHunks);
+}
+
+void CPatchViewDlg::OnStageLines()
+{
+	StageOrUnstageSelectedLinesOrHunks(StagingType::StageLines);
+}
+
+void CPatchViewDlg::OnUnstageHunks()
+{
+	StageOrUnstageSelectedLinesOrHunks(StagingType::UnstageHunks);
+}
+
+void CPatchViewDlg::OnUnstageLines()
+{
+	StageOrUnstageSelectedLinesOrHunks(StagingType::UnstageLines);
+}
+
+int CPatchViewDlg::GetFirstLineNumberSelected()
+{
+	auto selstart = m_ctrlPatchView.Call(SCI_GETSELECTIONSTART);
+	return static_cast<int>(m_ctrlPatchView.Call(SCI_LINEFROMPOSITION, selstart));
+}
+
+int CPatchViewDlg::GetLastLineNumberSelected()
+{
+	auto selend = m_ctrlPatchView.Call(SCI_GETSELECTIONEND);
+	return static_cast<int>(m_ctrlPatchView.Call(SCI_LINEFROMPOSITION, selend));
+}
+
+void CPatchViewDlg::StageOrUnstageSelectedLinesOrHunks(StagingType stagingType)
+{
+	auto documentLength = static_cast<Sci_Position>(m_ctrlPatchView.Call(SCI_GETLENGTH));
+	auto wholePatchBuf = std::make_unique<char[]>(documentLength + 1);
+	m_ctrlPatchView.Call(SCI_GETTEXT, documentLength + 1, reinterpret_cast<LPARAM>(wholePatchBuf.get()));
+
+	int lineCount = static_cast<int>(m_ctrlPatchView.Call(SCI_GETLINECOUNT));
+
+	CDiffLinesForStaging lines(wholePatchBuf.get(), lineCount, GetFirstLineNumberSelected(), GetLastLineNumberSelected());
+	auto op = StagingOperations(&lines);
+	std::unique_ptr<char[]> strPatch;
+	if (stagingType == StagingType::StageLines || stagingType == StagingType::UnstageLines)
+		strPatch = op.CreatePatchBufferToStageOrUnstageSelectedLines(stagingType);
+	else if (stagingType == StagingType::StageHunks || stagingType == StagingType::UnstageHunks)
+		strPatch = op.CreatePatchBufferToStageOrUnstageSelectedHunks();
+	else
+		return; // this should never happen
+	if (!strPatch)
+	{
+		CMessageBox::Show(GetSafeHwnd(), IDS_ERROR_PARTIALSTAGING, IDS_APPNAME, MB_OK | MB_ICONERROR);
+		return;
+	}
+
+	CString tempPatch = StagingOperations::WritePatchBufferToTemporaryFile(strPatch.get());
+	if (tempPatch.IsEmpty())
+		return;
+
+	CString out;
+	int ret;
+	if (stagingType == StagingType::StageHunks || stagingType == StagingType::StageLines)
+		ret = g_Git.ApplyPatchToIndex(tempPatch, &out);
+	else //if (stagingType == StagingType::UnstageHunks || stagingType == StagingType::UnstageLines)
+		ret = g_Git.ApplyPatchToIndexReverse(tempPatch, &out);
+	if (ret != 0)
+	{
+		MessageBox(out, L"TortoiseGit", MB_OK | MB_ICONERROR);
+		return;
+	}
+	m_ctrlPatchView.Call(SCI_SETSELECTIONSTART, 0);
+	m_ctrlPatchView.Call(SCI_SETSELECTIONEND, 0);
+	// Tell the commit window we partially staged a file and ask it to update ourselves with the updated diff
+	m_ParentDlg->GetPatchViewParentWnd()->SendMessage(WM_PARTIALSTAGINGREFRESHPATCHVIEW);
+}
+
 void CPatchViewDlg::OnDestroy()
 {
 	__super::OnDestroy();
@@ -383,6 +503,29 @@ void CPatchViewDlg::InsertMenuItems(CMenu& mPopup, int& nCmd)
 	sMenuItemText.LoadString(IDS_REPOBROWSE_SAVEAS);
 	m_nPopupSave = nCmd++;
 	mPopup.AppendMenu(MF_STRING | MF_ENABLED, m_nPopupSave, sMenuItemText);
+	// We need to reset those to 0:
+	m_nStageHunks = 0;
+	m_nStageLines = 0;
+	m_nUnstageHunks = 0;
+	m_nUnstageLines = 0;
+	if (m_nEnableStagingType == EnableStagingTypes::Staging || m_nEnableStagingType == EnableStagingTypes::Unstaging)
+		mPopup.AppendMenu(MF_SEPARATOR);
+	if (m_nEnableStagingType == EnableStagingTypes::Staging)
+	{
+		m_nStageHunks = nCmd++;
+		mPopup.AppendMenu(MF_STRING | MF_ENABLED, m_nStageHunks, _T("Stage selected &hunks"));
+
+		m_nStageLines = nCmd++;
+		mPopup.AppendMenu(MF_STRING | MF_ENABLED, m_nStageLines, _T("Stage selected &lines"));
+	}
+	if (m_nEnableStagingType == EnableStagingTypes::Unstaging)
+	{
+		m_nUnstageHunks = nCmd++;
+		mPopup.AppendMenu(MF_STRING | MF_ENABLED, m_nUnstageHunks, _T("Unstage selected &hunks"));
+
+		m_nUnstageLines = nCmd++;
+		mPopup.AppendMenu(MF_STRING | MF_ENABLED, m_nUnstageLines, _T("Unstage selected &lines"));
+	}
 }
 
 bool CPatchViewDlg::HandleMenuItemClick(int cmd, CSciEdit*)
@@ -392,6 +535,26 @@ bool CPatchViewDlg::HandleMenuItemClick(int cmd, CSciEdit*)
 		CString filename;
 		if (CCommonAppUtils::FileOpenSave(filename, nullptr, 0, IDS_PATCHFILEFILTER, false, GetSafeHwnd(), L"diff"))
 			CStringUtils::WriteStringToTextFile(filename, m_ctrlPatchView.GetText());
+		return true;
+	}
+	else if (cmd == m_nStageHunks)
+	{
+		OnStageHunks();
+		return true;
+	}
+	else if (cmd == m_nStageLines)
+	{
+		OnStageLines();
+		return true;
+	}
+	else if (cmd == m_nUnstageHunks)
+	{
+		OnUnstageHunks();
+		return true;
+	}
+	else if (cmd == m_nUnstageLines)
+	{
+		OnUnstageLines();
 		return true;
 	}
 	return false;
