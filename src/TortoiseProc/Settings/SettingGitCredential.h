@@ -111,6 +111,13 @@ public:
 		return CRegDWORD(L"SOFTWARE\\Microsoft\\NET Framework Setup\\NDP\\v4\\Full\\Release", 0, false, HKEY_LOCAL_MACHINE) >= 378675;
 	}
 
+	static bool GCMCoreExists()
+	{
+		CString path = CGit::ms_MsysGitRootDir;
+		path.Append(L"libexec\\git-core\\git-credential-manager-core.exe");
+		return !!PathFileExists(path);
+	}
+
 protected:
 	static CString ConfigLevelToKey(git_config_level_t level)
 	{
@@ -152,7 +159,7 @@ protected:
 
 	void AddConfigType(int &index, CString text, bool add = true);
 	void AddSimpleCredential(int &index, CString text, bool add = true);
-	void FillSimpleList(bool addNone, bool systemWincred, bool systemGCM);
+	void FillSimpleList(bool addNone, bool systemWincred, bool systemGCM, bool systemGCMCore);
 	void LoadList();
 	CString Load(CString key);
 	void Save(CString key, CString value);

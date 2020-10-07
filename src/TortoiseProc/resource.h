@@ -1421,10 +1421,13 @@
 #define IDS_PROGS_LFS_FORCEUNLOCK       1680
 #define IDC_CHECK_NEWBRANCH             1681
 #define IDC_TOGROUP2                    1681
+#define IDS_SYSTEM_GCMCORE              1681
 #define IDC_CHECK_CHERRYPICKED_FROM     1682
 #define IDC_THEIRSHASH                  1682
+#define IDS_GLOBAL_GCMCORE              1682
 #define IDC_CREATELIB                   1683
 #define IDC_THEIRSSUBJECT               1683
+#define IDS_LOCAL_GCMCORE               1683
 #define IDC_BUTTON_REVISION             1684
 #define IDC_RUNFIRSTSTARTWIZARD         1684
 #define IDC_REPOBROWSER_URL             1685

@@ -10710,6 +10710,18 @@ msgstr ""
 msgid "manager - this repository only"
 msgstr ""
 
+#. Resource IDs: (IDS_SYSTEM_GCMCORE)
+msgid "manager-core - all Windows users"
+msgstr ""
+
+#. Resource IDs: (IDS_GLOBAL_GCMCORE)
+msgid "manager-core - current Windows user"
+msgstr ""
+
+#. Resource IDs: (IDS_LOCAL_GCMCORE)
+msgid "manager-core - this repository only"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1494)
 msgid "master"
 msgstr ""

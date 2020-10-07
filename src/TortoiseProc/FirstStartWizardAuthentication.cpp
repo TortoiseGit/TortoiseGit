@@ -171,6 +171,8 @@ BOOL CFirstStartWizardAuthentication::OnInitDialog()
 	if (config.GetString(L"credential.helper", selectedHelper) == GIT_ENOTFOUND)
 		m_ctrlSimpleCredential.SetCurSel(0);
 
+	if (CSettingGitCredential::GCMCoreExists())
+		AddHelper(m_ctrlSimpleCredential, m_availableHelpers, L"manager-core", selectedHelper);
 	if (CSettingGitCredential::GCMExists())
 		AddHelper(m_ctrlSimpleCredential, m_availableHelpers, L"manager", selectedHelper);
 	if (CSettingGitCredential::WincredExists())

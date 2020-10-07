@@ -5072,6 +5072,9 @@ END
 STRINGTABLE
 BEGIN
     IDS_PROGS_LFS_FORCEUNLOCK "Force unlock"
+    IDS_SYSTEM_GCMCORE      "manager-core - all Windows users"
+    IDS_GLOBAL_GCMCORE      "manager-core - current Windows user"
+    IDS_LOCAL_GCMCORE       "manager-core - this repository only"
 END
 
 #endif    // English (U.S.) resources
