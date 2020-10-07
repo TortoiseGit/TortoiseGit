@@ -78,11 +78,13 @@
     <ClInclude Include="..\..\src\Git\TGitPath.h" />
     <ClInclude Include="..\..\src\TortoiseMerge\FileTextLines.h" />
     <ClInclude Include="..\..\src\TortoiseMerge\Patch.h" />
+    <ClInclude Include="..\..\src\TortoiseProc\DiffLinesForStaging.h" />
     <ClInclude Include="..\..\src\TortoiseProc\gitlogcache.h" />
     <ClInclude Include="..\..\src\TortoiseProc\lanes.h" />
     <ClInclude Include="..\..\src\TortoiseProc\LogDlgHelper.h" />
     <ClInclude Include="..\..\src\TortoiseProc\ProjectProperties.h" />
     <ClInclude Include="..\..\src\TortoiseProc\SerialPatch.h" />
+    <ClInclude Include="..\..\src\TortoiseProc\StagingOperations.h" />
     <ClInclude Include="..\..\src\TortoiseProc\UpdateCrypto.h" />
     <ClInclude Include="..\..\src\TortoiseProc\UpdateDownloader.h" />
     <ClInclude Include="..\..\src\TortoiseProc\VersioncheckParser.h" />
@@ -130,11 +132,13 @@
     <ClCompile Include="..\..\src\Git\TGitPath.cpp" />
     <ClCompile Include="..\..\src\TortoiseMerge\FileTextLines.cpp" />
     <ClCompile Include="..\..\src\TortoiseMerge\Patch.cpp" />
+    <ClCompile Include="..\..\src\TortoiseProc\DiffLinesForStaging.cpp" />
     <ClCompile Include="..\..\src\TortoiseProc\GitLogCache.cpp" />
     <ClCompile Include="..\..\src\TortoiseProc\lanes.cpp" />
     <ClCompile Include="..\..\src\TortoiseProc\LogDataVector.cpp" />
     <ClCompile Include="..\..\src\TortoiseProc\ProjectProperties.cpp" />
     <ClCompile Include="..\..\src\TortoiseProc\SerialPatch.cpp" />
+    <ClCompile Include="..\..\src\TortoiseProc\StagingOperations.cpp" />
     <ClCompile Include="..\..\src\TortoiseProc\UpdateCrypto.cpp" />
     <ClCompile Include="..\..\src\TortoiseProc\VersioncheckParser.cpp" />
     <ClCompile Include="..\..\src\TortoiseShell\PreserveChdir.cpp" />
@@ -176,6 +180,7 @@
     <ClCompile Include="PersonalDictionaryTest.cpp" />
     <ClCompile Include="ProjectPropertiesTest.cpp" />
     <ClCompile Include="SerialPatchTest.cpp" />
+    <ClCompile Include="StagingTest.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

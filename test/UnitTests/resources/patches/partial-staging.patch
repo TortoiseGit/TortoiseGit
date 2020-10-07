@@ -1,0 +1,104 @@
+diff --git a/src/TortoiseProc/StagingOperations.cpp b/src/TortoiseProc/StagingOperations.cpp
+index 1102eda53..8de340bf0 100644
+--- a/src/TortoiseProc/StagingOperations.cpp
++++ b/src/TortoiseProc/StagingOperations.cpp
+@@ -19,17 +19,15 @@
+ //
+ #include <stdafx.h>
+ #include "StagingOperations.h"
+-#include <Scintilla.h>
+-#include <SciLexer.h>
+ #include <regex>
+ #include <Shlwapi.h>
+ 
+ bool StagingOperations::IsWithinFileHeader(int line) const
+ {
+-	int style = m_lines->GetStyleAtLine(line);
++	DiffLines style = m_lines->GetStyleAtLine(line);
+ 	if (m_lines->IsNoNewlineComment(line))
+ 		return false;
+-	return (style == SCE_DIFF_COMMAND || style == SCE_DIFF_COMMENT || style == SCE_DIFF_HEADER);
++	return (style == DiffLines::DIFF_LINE_COMMAND || style == DiffLines::DIFF_LINE_COMMENT || style == DiffLines::DIFF_LINE_HEADER);
+ }
+ 
+ // From (and including) given line, looks backwards for a hunk start line (@@xxxxxxxx@@),
+@@ -39,7 +37,7 @@ int StagingOperations::FindHunkStartBackwardsFrom(int line, int topBoundaryLine)
+ 	int i = line;
+ 	for (; i >= topBoundaryLine; i--)
+ 	{
+-		if (m_lines->GetStyleAtLine(i) == SCE_DIFF_POSITION)
++		if (m_lines->GetStyleAtLine(i) == DiffLines::DIFF_LINE_POSITION)
+ 			return i;
+ 	}
+ 	return -1;
+@@ -52,7 +50,7 @@ int StagingOperations::FindHunkStartForwardsFrom(int line, int bottomBoundaryLin
+ 	int i = line;
+ 	for (; i <= bottomBoundaryLine; i++)
+ 	{
+-		if (m_lines->GetStyleAtLine(i) == SCE_DIFF_POSITION)
++		if (m_lines->GetStyleAtLine(i) == DiffLines::DIFF_LINE_POSITION)
+ 			return i;
+ 	}
+ 	return -1;
+@@ -91,12 +89,12 @@ int StagingOperations::FindHunkEndGivenHunkStartAndCounts(int hunkStart, int old
+ 	int i = hunkStart + 1;
+ 	for (; i <= lastDocumentLine; i++)
+ 	{
+-		int style = m_lines->GetStyleAtLine(i);
+-		if (style == SCE_DIFF_DELETED)
++		DiffLines style = m_lines->GetStyleAtLine(i);
++		if (style == DiffLines::DIFF_LINE_DELETED)
+ 			oldCount--;
+-		else if (style == SCE_DIFF_ADDED)
++		else if (style == DiffLines::DIFF_LINE_ADDED)
+ 			newCount--;
+-		else if (style == SCE_DIFF_DEFAULT)
++		else if (style == DiffLines::DIFF_LINE_DEFAULT)
+ 		{
+ 			oldCount--;
+ 			newCount--;
+@@ -122,8 +120,8 @@ std::unique_ptr<char[]> StagingOperations::FindFileHeaderBackwardsFrom(int line)
+ 	int i = line;
+ 	for (; i > -1; i--)
+ 	{
+-		int style = m_lines->GetStyleAtLine(i);
+-		if (style != SCE_DIFF_POSITION && style != SCE_DIFF_DEFAULT && style != SCE_DIFF_ADDED && style != SCE_DIFF_DELETED
++		DiffLines style = m_lines->GetStyleAtLine(i);
++		if (style != DiffLines::DIFF_LINE_POSITION && style != DiffLines::DIFF_LINE_DEFAULT && style != DiffLines::DIFF_LINE_ADDED && style != DiffLines::DIFF_LINE_DELETED
+ 			&& !m_lines->IsNoNewlineComment(i))
+ 			break;
+ 	}
+@@ -132,7 +130,7 @@ std::unique_ptr<char[]> StagingOperations::FindFileHeaderBackwardsFrom(int line)
+ 	int fileHeaderLastLine = i;
+ 	for (; i > -1; i--)
+ 	{
+-		if (m_lines->GetStyleAtLine(i) == SCE_DIFF_COMMAND)
++		if (m_lines->GetStyleAtLine(i) == DiffLines::DIFF_LINE_COMMAND)
+ 			break;
+ 	}
+ 	if (i == -1)
+@@ -336,12 +334,12 @@ bool StagingOperations::ParseHunkOnEitherSelectionBoundary(std::unique_ptr<char[
+ 	bool includeHunkAtAll = false;
+ 	for (int i = hunkStartLine + 1; i <= hunkLastLine; i++)
+ 	{
+-		int style = m_lines->GetStyleAtLine(i);
++		DiffLines style = m_lines->GetStyleAtLine(i);
+ 		auto strLine = m_lines->GetFullLineByLineNumber(i);
+ 		// TODO: In some situations, this will include in the temporary patch a "no newline" line which shouldn't be included
+-		if (style == SCE_DIFF_DEFAULT || m_lines->IsNoNewlineComment(i))
++		if (style == DiffLines::DIFF_LINE_DEFAULT || m_lines->IsNoNewlineComment(i))
+ 			strcat_s(hunkWithoutStartLine->get(), hunkWithoutStartLineLen, strLine.get());
+-		else if (style == SCE_DIFF_ADDED)
++		else if (style == DiffLines::DIFF_LINE_ADDED)
+ 		{
+ 			if (i < firstLineSelected || i > lastLineSelected) // outside the user selection
+ 			{
+@@ -362,7 +360,7 @@ bool StagingOperations::ParseHunkOnEitherSelectionBoundary(std::unique_ptr<char[
+ 				strcat_s(hunkWithoutStartLine->get(), hunkWithoutStartLineLen, strLine.get());
+ 			}
+ 		}
+-		else if (style == SCE_DIFF_DELETED)
++		else if (style == DiffLines::DIFF_LINE_DELETED)
+ 		{
+ 			if (i < firstLineSelected || i > lastLineSelected) // outside the user selection
+ 			{

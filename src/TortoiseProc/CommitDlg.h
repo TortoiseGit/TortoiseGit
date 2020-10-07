@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -32,7 +32,7 @@
 #include "HyperLink.h"
 #include "PatchViewDlg.h"
 #include "MenuButton.h"
-
+#include "EnableStagingTypes.h"
 #include <regex>
 
 #define ENDDIALOGTIMER	100
@@ -78,6 +78,26 @@ public:
 
 		m_ctrlShowPatch.Invalidate();
 	}
+	void ShowPartialStagingTextAndUpdateFlag(bool b = true)
+	{
+		if (b)
+			this->m_ctrlPartialStaging.SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_COMMIT_PARTIAL_STAGING)));
+		else
+			this->m_ctrlPartialStaging.SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_COMMIT_HIDE_STAGING)));
+
+		m_bPartialStagingTextCurrentlyIsShow = b; // we need to keep track of this to figure out whether the user clicked Hide
+		m_ctrlPartialStaging.Invalidate();
+	}
+	void ShowPartialUnstagingTextAndUpdateFlag(bool b = true)
+	{
+		if (b)
+			this->m_ctrlPartialUnstaging.SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_COMMIT_PARTIAL_UNSTAGING)));
+		else
+			this->m_ctrlPartialUnstaging.SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_COMMIT_HIDE_UNSTAGING)));
+
+		m_bPartialUnstagingTextCurrentlyIsShow = b; // we need to keep track of this to figure out whether the user clicked Hide
+		m_ctrlPartialUnstaging.Invalidate();
+	}
 	void SetAuthor(CString author)
 	{
 		m_bSetAuthor = TRUE;
@@ -88,12 +108,13 @@ public:
 		m_bSetCommitDateTime = TRUE;
 		m_wantCommitTime = time;
 	}
+	void FillPatchView(bool onlySetTimer = false);
+
 private:
 	CTime m_wantCommitTime;
 	void ReloadHistoryEntries();
 	static UINT StatusThreadEntry(LPVOID pVoid);
 	UINT StatusThread();
-	void FillPatchView(bool onlySetTimer = false);
 	CWnd * GetPatchViewParentWnd() { return this; }
 	void TogglePatchView();
 	void SetDlgTitle();
@@ -126,6 +147,7 @@ protected:
 	afx_msg LRESULT OnAutoListReady(WPARAM, LPARAM);
 	afx_msg LRESULT OnUpdateOKButton(WPARAM, LPARAM);
 	afx_msg LRESULT OnUpdateDataFalse(WPARAM, LPARAM);
+	afx_msg LRESULT OnPartialStagingRefreshPatchView(WPARAM, LPARAM);
 	afx_msg LRESULT OnFileDropped(WPARAM, LPARAM lParam);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
@@ -141,6 +163,8 @@ protected:
 	void ParseRegexFile(const CString& sFile, std::map<CString, CString>& mapRegex);
 	void ParseSnippetFile(const CString& sFile, std::map<CString, CString>& mapSnippet);
 	bool RunStartCommitHook();
+	void CreatePatchViewDlg();
+	void DestroyPatchViewDlgIfOpen();
 
 	DECLARE_MESSAGE_MAP()
 
@@ -173,6 +197,7 @@ protected:
 	BOOL				m_bSetAuthor;
 	CString				m_sAuthor;
 	volatile bool		m_bDoNotStoreLastSelectedLine; // true on first start of commit dialog and set on recommit
+	BOOL				m_bStagingSupport;
 
 	int					CheckHeadDetach();
 
@@ -193,6 +218,7 @@ private:
 	static UINT			WM_AUTOLISTREADY;
 	static UINT			WM_UPDATEOKBUTTON;
 	static UINT			WM_UPDATEDATAFALSE;
+	static UINT			WM_PARTIALSTAGINGREFRESHPATCHVIEW;
 	int					m_nPopupPickCommitHash;
 	int					m_nPopupPickCommitMessage;
 	int					m_nPopupPasteListCmd;
@@ -205,6 +231,10 @@ private:
 	CRect				m_LogMsgOrigRect;
 	CPathWatcher		m_pathwatcher;
 	CHyperLink			m_ctrlShowPatch;
+	CHyperLink			m_ctrlPartialStaging;
+	CHyperLink			m_ctrlPartialUnstaging;
+	bool				m_bPartialStagingTextCurrentlyIsShow; // false if currently "Hide Staging"
+	bool				m_bPartialUnstagingTextCurrentlyIsShow; // false if currently "Hide Unstaging"
 	CPatchViewDlg		m_patchViewdlg;
 	BOOL				m_bSetCommitDateTime;
 	CDateTimeCtrl		m_CommitDate;
@@ -235,6 +265,8 @@ protected:
 	afx_msg void OnBnClickedWholeProject();
 	afx_msg void OnScnUpdateUI(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnStnClickedViewPatch();
+	afx_msg void OnStnClickedPartialUnstaging();
+	afx_msg void OnStnClickedPartialStaging();
 	afx_msg void OnMoving(UINT fwSide, LPRECT pRect);
 	afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
 	afx_msg void OnHdnItemchangedFilelist(NMHDR *pNMHDR, LRESULT *pResult);
@@ -244,6 +276,7 @@ protected:
 	afx_msg void OnBnClickedCommitAsCommitDate();
 	afx_msg void OnBnClickedCheckNewBranch();
 	afx_msg void OnBnClickedCommitSetauthor();
+	afx_msg void OnBnClickedStagingSupport();
 
 	CLinkControl		m_CheckAll;
 	CLinkControl		m_CheckNone;
