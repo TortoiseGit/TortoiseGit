@@ -206,7 +206,7 @@ void CGitSwitchDlg::SetDefaultName(BOOL isUpdateCreateBranch)
 		this->m_bTrack=FALSE;
 	}
 
-	if(radio==IDC_RADIO_TAGS || radio==IDC_RADIO_VERSION)
+	if (radio==IDC_RADIO_VERSION)
 	{
 		if(isUpdateCreateBranch)
 			this->m_bBranch=TRUE;

@@ -34,6 +34,7 @@ Released: unreleased
  * Fixed issue #3183: Add support for git lfs lock/unlock
  * Fixed issue #3636: Commit Window new branch should focus textbox
  * Fixed issue #3312: Add --push-option to push dialog
+ * Fixed issue #3641: Remove default behavior to create a branch when switching to a tag
 
 = Release 2.10.0.2 =
 Released: 2020-03-24
