@@ -1,0 +1,4 @@
+﻿<Include>
+	<File Id='SPELLSQALAFF' Name='sq_AL.aff' DiskId='1' Source='..\ext\spell\sq_AL\sq_AL.aff' Vital='no'></File>
+	<File Id='SPELLSAQLDIC' Name='sq_AL.dic' DiskId='1' Source='..\ext\spell\sq_AL\sq_AL.dic' Vital='no'></File>
+</Include>

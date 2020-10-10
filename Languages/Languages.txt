@@ -44,6 +44,7 @@ ro;	1048;	0;	Romanian;	Romanian;		Romanian
 ru;	1049;	1;	Russian;	Russian;		Russian
 sk;	1051;	1;	Slovak;		Slovak;			Slovak
 sl;	1060;	1;	Slovenian;	Slovenian;		Slovenian
+sq;	1052;	0;	Albanian;	Albanian;		Albanian;
 sr_spc;	3098;	0;	Serbian cyrillic;	Serbian cyrillic;	Serbian cyrillic
 sr_spl;	2074;	0;	Serbian latin;	Serbian latin;	Serbian latin
 uk;	1058;	0;	Ukrainian;	Ukrainian;		Ukrainian
