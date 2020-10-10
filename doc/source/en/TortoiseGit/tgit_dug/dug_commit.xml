@@ -92,6 +92,9 @@
 			The color code of the different items is described in <xref linkend="tgit-dug-wcstatus-2"/>.
 		<para>
 		</para>
+		<para>
+			Please note that the commit dialog always shows staged files - even if it was started on a different folder (this is by design in order to not forget to commit those, e.g. in case of a merge). Also, in the lower left there is the checkbox <guilabel>Show whole project</guilabel>. Use this to override the file/folder filter and show all changed files for the whole repository. This setting is remembered for a repository - even if you started the commit dialog on a single file.
+		</para>
 		<tip>
 			<title>Drag and Drop</title>
 			<para>
