@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+	<PropertyGroup>
+		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+		<Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+		<ProductVersion>3.5</ProductVersion>
+		<SchemaVersion>2.0</SchemaVersion>
+		<OutputType>Package</OutputType>
+		<WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+		<LinkerAdditionalOptions>-ext WixUIExtension</LinkerAdditionalOptions>
+		<SuppressIces>ICE61;ICE82</SuppressIces>
+		<SuppressSpecificWarnings>1008</SuppressSpecificWarnings>
+	</PropertyGroup>
+	<PropertyGroup>
+		<ProjectGuid>{2684f1fc-45ba-446c-bd83-382d32d5a588}</ProjectGuid>
+		<OutputName>TortoiseGit-LanguagePack-lt</OutputName>
+		<DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;COUNTRYID=1063;LANGNATIVE=Lithuanian;SPELL=1;</DefineConstants>
+		<Cultures>lt-LT</Cultures>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+		<OutputPath>bin\$(Configuration)\</OutputPath>
+		<IntermediateOutputPath>..\obj\$(OutputName)\$(Configuration)\</IntermediateOutputPath>
+		<DefineConstants>Debug</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+		<OutputPath>..\bin\setup\x86\</OutputPath>
+		<IntermediateOutputPath>..\obj\$(OutputName)\$(Configuration)\</IntermediateOutputPath>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+		<OutputPath>bin\$(Configuration)64\</OutputPath>
+		<IntermediateOutputPath>..\obj\$(OutputName)\$(Configuration)64\</IntermediateOutputPath>
+		<DefineConstants>Debug</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+		<OutputPath>..\bin\setup\x64\</OutputPath>
+		<IntermediateOutputPath>..\obj\$(OutputName)\$(Configuration)64\</IntermediateOutputPath>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Include="LanguagePack.wxs" />
+		<Compile Include="WixUI_LanguagePacks.wxs" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="spell\1063.wxi" />
+	</ItemGroup>
+	<Import Project="$(WixTargetsPath)" />
+</Project>

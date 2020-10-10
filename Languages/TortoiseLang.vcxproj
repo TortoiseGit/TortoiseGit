@@ -60,6 +60,7 @@
     <None Include="Tortoise_it.po" />
     <None Include="Tortoise_ja.po" />
     <None Include="Tortoise_ko.po" />
+    <None Include="Tortoise_lt.po" />
     <None Include="Tortoise_nl.po" />
     <None Include="Tortoise_oc.po" />
     <None Include="Tortoise_pl.po" />

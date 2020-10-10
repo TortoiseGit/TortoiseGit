@@ -32,6 +32,7 @@ call :nmake 1053 sv
 call :nmake 1055 tr
 call :nmake 1057 id
 call :nmake 1058 uk
+call :nmake 1063 lt
 call :nmake 1065 fa
 call :nmake 1066 vi
 call :nmake 2052 zh_CN

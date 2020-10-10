@@ -33,6 +33,7 @@ id;	1057;	1;	Indonesian;	Indonesian;		Indonesia
 it;	1040;	0;	Italian;	Italian;		Italiano
 ja;	1041;	1;	Japanese;	Japanese;		Japanese
 ko;	1042;	0;	Korean;		Korean;			Korean
+lt;	1063;	0;	Lithuanian;	Lithuanian;		Lithuanian
 mk;	1071;	0;	Macedonian;	Macedonian;		Macedonian
 nb;	1044;	0;	Norwegian;	Norwegian, bokmål;	Norwegian, bokmål
 fa;	1065;	1;	Persian;	Persian;		Farsi
