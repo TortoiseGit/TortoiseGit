@@ -13,7 +13,7 @@
 # Garfield Yao <field977@gmail.com>, 2011
 # Gones <liejie050911@163.com>, 2013
 # Gong Gong <gongong83@gmail.com>, 2013
-# shuyu liu <liushuyu011@gmail.com>, 2014,2016
+# liushuyu011 <liushuyu011@gmail.com>, 2014,2016
 # loveyu <yuht@qq.com>, 2012
 # Lübbe Onken <luebbe.opensource@gmail.com>, 2011,2013
 # lznuaa <lznuaa@gmail.com>, 2013-2014,2017
@@ -25,7 +25,7 @@
 # RAMBOO <ramboooo@126.com>, 2013
 # RAMBOO <ramboooo@126.com>, 2013
 # Shengbin Meng <shengbinmeng@gmail.com>, 2013
-# shuyu liu <liushuyu011@gmail.com>, 2014,2016
+# liushuyu011 <liushuyu011@gmail.com>, 2014,2016
 # Sven Strickroth <sstrickroth@googlemail.com>, 2012-2013,2017-2019
 # szkingrose <1072258106@qq.com>, 2014
 # Verplusor, 2011
@@ -33,6 +33,7 @@
 # wwj402 <wwj402@gmail.com>, 2013
 # xiaobing chen <olivetchan@qq.com>, 2016
 # Xijian Yan, 2018
+# XY <1642787610@qq.com>, 2020
 # YFdyh000 <yfdyh000@gmail.com>, 2013,2016,2019-2020
 # YFdyh000 <yfdyh000@gmail.com>, 2013,2016
 # YFdyh000 <yfdyh000@gmail.com>, 2013-2018
@@ -43,8 +44,8 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2020-02-20 22:03+0000\n"
-"Last-Translator: YFdyh000 <yfdyh000@gmail.com>\n"
+"PO-Revision-Date: 2020-10-07 09:37+0000\n"
+"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/lznuaa/tortoisegit/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -532,6 +533,14 @@ msgstr "凭证助手(&C):"
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 1662)
 msgid "&Custom"
 msgstr "自定义(&C)"
+
+#. Resource IDs: (ID_VIEW_DARKMODE - Menu)
+msgid "&Dark Mode"
+msgstr "＆黑暗模式"
+
+#. Resource IDs: (ID_VIEW_DARKMODE - Menu)
+msgid "&Dark Mode\tD"
+msgstr "＆黑暗模式\tD"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1269)
 msgid "&Default"
@@ -1344,6 +1353,10 @@ msgstr "比较标准差异(&U)"
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1061)
 msgid "&Unknown drives"
 msgstr "未知磁盘(&U)"
+
+#. Resource IDs: (Dialog IDD_LFS_LOCKS: Control id 32927)
+msgid "&Unlock"
+msgstr "＆开锁"
 
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1386)
 msgid "&Up"
@@ -2481,25 +2494,26 @@ msgstr "无法复制 \n%1!s!\n到\n%2!s!"
 #. IDD_GITSWITCH: Control id 2, Dialog IDD_GOTO: Control id 2, Dialog
 #. IDD_GOTODLG: Control id 2, Dialog IDD_HISTORYDLG: Control id 2, Dialog
 #. IDD_IGNORE: Control id 2, Dialog IDD_INPUTDLG: Control id 2, Dialog
-#. IDD_LOGMESSAGE: Control id 2, Dialog IDD_LOGORDERING: Control id 2, Dialog
-#. IDD_MERGE: Control id 2, Dialog IDD_MERGEABORT: Control id 2, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 2, Dialog IDD_OPEN: Control id 2, Dialog
-#. IDD_OPENDLG: Control id 2, Dialog IDD_PROMPT: Control id 2, Dialog
-#. IDD_PULLFETCH: Control id 2, Dialog IDD_PUSH: Control id 2, Dialog
-#. IDD_REFLOG: Control id 2, Dialog IDD_REGEXFILTER: Control id 2, Dialog
-#. IDD_REGEXFILTERS: Control id 2, Dialog IDD_RENAME: Control id 2, Dialog
-#. IDD_REPOSITORY_BROWSER: Control id 2, Dialog IDD_REQUESTPULL: Control id 2,
-#. Dialog IDD_RESET: Control id 2, Dialog IDD_RESOLVE: Control id 2, Dialog
-#. IDD_REVERT: Control id 2, Dialog IDD_REVGRAPHFILTER: Control id 2, Dialog
-#. IDD_SELECTREMOTEREF: Control id 2, Dialog IDD_SENDMAIL: Control id 2,
-#. Dialog IDD_SETTINGSBUGTRAQADV: Control id 2, Dialog IDD_SETTINGSHOOKCONFIG:
-#. Control id 2, Dialog IDD_SETTINGSPROGSADV: Control id 2, Dialog
-#. IDD_SIMPLEPROMPT: Control id 2, Dialog IDD_STASH: Control id 2, Dialog
-#. IDD_SUBMODULE_ADD: Control id 2, Dialog IDD_SUBMODULE_UPDATE: Control id 2,
-#. Dialog IDD_SVNDCOMMITTYPE: Control id 2, Dialog IDD_SVNIGNORE: Control id
-#. 2, Dialog IDD_SVNPROGRESS: Control id 2, Dialog IDD_TOOLASSOC: Control id
-#. 2, Dialog IDD_URL: Control id 2, Dialog IDD_USER_PASSWD: Control id 2,
-#. IDS_MSGBOX_CANCEL, IDS_PROC_OVERWRITEEXPORT_CANCEL)
+#. IDD_LFS_LOCKS: Control id 2, Dialog IDD_LOGMESSAGE: Control id 2, Dialog
+#. IDD_LOGORDERING: Control id 2, Dialog IDD_MERGE: Control id 2, Dialog
+#. IDD_MERGEABORT: Control id 2, Dialog IDD_NEW_BRANCH_TAG: Control id 2,
+#. Dialog IDD_OPEN: Control id 2, Dialog IDD_OPENDLG: Control id 2, Dialog
+#. IDD_PROMPT: Control id 2, Dialog IDD_PULLFETCH: Control id 2, Dialog
+#. IDD_PUSH: Control id 2, Dialog IDD_REFLOG: Control id 2, Dialog
+#. IDD_REGEXFILTER: Control id 2, Dialog IDD_REGEXFILTERS: Control id 2,
+#. Dialog IDD_RENAME: Control id 2, Dialog IDD_REPOSITORY_BROWSER: Control id
+#. 2, Dialog IDD_REQUESTPULL: Control id 2, Dialog IDD_RESET: Control id 2,
+#. Dialog IDD_RESOLVE: Control id 2, Dialog IDD_REVERT: Control id 2, Dialog
+#. IDD_REVGRAPHFILTER: Control id 2, Dialog IDD_SELECTREMOTEREF: Control id 2,
+#. Dialog IDD_SENDMAIL: Control id 2, Dialog IDD_SETTINGSBUGTRAQADV: Control
+#. id 2, Dialog IDD_SETTINGSHOOKCONFIG: Control id 2, Dialog
+#. IDD_SETTINGSPROGSADV: Control id 2, Dialog IDD_SIMPLEPROMPT: Control id 2,
+#. Dialog IDD_STASH: Control id 2, Dialog IDD_SUBMODULE_ADD: Control id 2,
+#. Dialog IDD_SUBMODULE_UPDATE: Control id 2, Dialog IDD_SVNDCOMMITTYPE:
+#. Control id 2, Dialog IDD_SVNIGNORE: Control id 2, Dialog IDD_SVNPROGRESS:
+#. Control id 2, Dialog IDD_TOOLASSOC: Control id 2, Dialog IDD_URL: Control
+#. id 2, Dialog IDD_USER_PASSWD: Control id 2, IDS_MSGBOX_CANCEL,
+#. IDS_PROC_OVERWRITEEXPORT_CANCEL)
 msgid "Cancel"
 msgstr "取消"
 
@@ -2930,6 +2944,11 @@ msgstr "依据年龄标记颜色，连续的(&C)"
 #. 65535)
 msgid "Colors"
 msgstr "颜色"
+
+#. Resource IDs: (IDS_INDICATOR_COLUMN)
+#, c-format
+msgid "Column: %d"
+msgstr "列：%d"
 
 #. Resource IDs: (IDS_COMBINE_TO_ONE)
 msgid "Com&bine to one commit"
@@ -3632,6 +3651,16 @@ msgstr "DCommit 类型"
 #. Resource IDs: (IDS_MENUDAEMON)
 msgid "Daemon"
 msgstr "后台服务进程"
+
+#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 1699)
+msgid "Dark theme"
+msgstr "黑暗主题"
+
+#. Resource IDs: (IDS_DARKTHEME_TT)
+msgid ""
+"Dark theme requires at least Win10 1803, and it must be enabled in the "
+"Windows system settings."
+msgstr "深色主题至少需要Win10 1803，并且必须在Windows系统设置中将其启用。"
 
 #. Resource IDs: (IDS_LOG_DATE, IDS_STATUSLIST_COLDATE)
 msgid "Date"
@@ -4974,6 +5003,26 @@ msgstr "已过滤"
 msgid "Find"
 msgstr "查找"
 
+#. Resource IDs: (cmdFindNext_LabelTitle_RESID)
+msgid "Find Next"
+msgstr "找下一个"
+
+#. Resource IDs: (cmdFindPrev_LabelTitle_RESID)
+msgid "Find Previous"
+msgstr "查找上一个"
+
+#. Resource IDs: (cmdFindPrev)
+msgid ""
+"Find the last occurrence of the selected text\n"
+"Search Previous"
+msgstr "查找所选文本的最后一次出现\n搜索上一个"
+
+#. Resource IDs: (cmdFindNext)
+msgid ""
+"Find the next occurrence of the selected text\n"
+"Search Next"
+msgstr "查找下一次出现的所选文本\n搜索下一个"
+
 #. Resource IDs: (57636, cmdFind)
 msgid ""
 "Find the specified text\n"
@@ -5103,6 +5152,10 @@ msgid ""
 "Force the rebase even if the current branch is a descendant of the commit you are rebasing onto.\n"
 "Normally the command will exit with the message \"Current branch is up to date\" in such a situation."
 msgstr "尽管当前分支是你想变基到的后裔节点，也要强制变基。\n正常情况命令打印“当前分支已经最新(Current branch is up to date)\"，然后退出。"
+
+#. Resource IDs: (IDS_PROGS_LFS_FORCEUNLOCK)
+msgid "Force unlock"
+msgstr "强制解锁"
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1796)
 msgid "Force: May discard"
@@ -5510,20 +5563,21 @@ msgstr "Hebrew"
 #. Control id 9, Dialog IDD_CLONE: Control id 9, Dialog IDD_COMMITDLG: Control
 #. id 9, Dialog IDD_CREATEREPO: Control id 9, Dialog IDD_EXPORT: Control id 9,
 #. Dialog IDD_FORMAT_PATCH: Control id 9, Dialog IDD_GITSWITCH: Control id 9,
-#. Dialog IDD_IGNORE: Control id 9, Dialog IDD_LOGMESSAGE: Control id 9,
-#. Dialog IDD_MERGE: Control id 9, Dialog IDD_MERGEABORT: Control id 9, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 9, Dialog IDD_OPENDLG: Control id 9, Dialog
-#. IDD_PULLFETCH: Control id 9, Dialog IDD_PUSH: Control id 9, Dialog
-#. IDD_REBASE: Control id 9, Dialog IDD_REFLOG: Control id 9, Dialog
-#. IDD_REPOSITORY_BROWSER: Control id 9, Dialog IDD_REQUESTPULL: Control id 9,
-#. Dialog IDD_RESET: Control id 9, Dialog IDD_RESOLVE: Control id 9, Dialog
-#. IDD_RESOLVESUBMODULECONFLICT: Control id 9, Dialog IDD_RESOLVE_CONFLICT:
-#. Control id 9, Dialog IDD_REVERT: Control id 9, Dialog IDD_SENDMAIL: Control
-#. id 9, Dialog IDD_SETTINGSBUGTRAQADV: Control id 9, Dialog
-#. IDD_SETTINGSHOOKCONFIG: Control id 9, Dialog IDD_STASH: Control id 9,
-#. Dialog IDD_SUBMODULE_ADD: Control id 9, Dialog IDD_SUBMODULE_UPDATE:
-#. Control id 9, Dialog IDD_SVNDCOMMITTYPE: Control id 9, Dialog IDD_SYNC:
-#. Control id 9, IDS_MSGBOX_HELP)
+#. Dialog IDD_IGNORE: Control id 9, Dialog IDD_LFS_LOCKS: Control id 9, Dialog
+#. IDD_LOGMESSAGE: Control id 9, Dialog IDD_MERGE: Control id 9, Dialog
+#. IDD_MERGEABORT: Control id 9, Dialog IDD_NEW_BRANCH_TAG: Control id 9,
+#. Dialog IDD_OPENDLG: Control id 9, Dialog IDD_PULLFETCH: Control id 9,
+#. Dialog IDD_PUSH: Control id 9, Dialog IDD_REBASE: Control id 9, Dialog
+#. IDD_REFLOG: Control id 9, Dialog IDD_REPOSITORY_BROWSER: Control id 9,
+#. Dialog IDD_REQUESTPULL: Control id 9, Dialog IDD_RESET: Control id 9,
+#. Dialog IDD_RESOLVE: Control id 9, Dialog IDD_RESOLVESUBMODULECONFLICT:
+#. Control id 9, Dialog IDD_RESOLVE_CONFLICT: Control id 9, Dialog IDD_REVERT:
+#. Control id 9, Dialog IDD_SENDMAIL: Control id 9, Dialog
+#. IDD_SETTINGSBUGTRAQADV: Control id 9, Dialog IDD_SETTINGSHOOKCONFIG:
+#. Control id 9, Dialog IDD_STASH: Control id 9, Dialog IDD_SUBMODULE_ADD:
+#. Control id 9, Dialog IDD_SUBMODULE_UPDATE: Control id 9, Dialog
+#. IDD_SVNDCOMMITTYPE: Control id 9, Dialog IDD_SYNC: Control id 9,
+#. IDS_MSGBOX_HELP)
 msgid "Help"
 msgstr "帮助"
 
@@ -5701,6 +5755,10 @@ msgstr "ID:32817:V   +W"
 #. Accelerator Entry for Menu ID:32818; 'Fit image &heights\tH'
 msgid "ID:32818:V   +H"
 msgstr "ID:32818:V   +H"
+
+#. Accelerator Entry for Menu ID:32819; '&Dark Mode\tD'
+msgid "ID:32819:V   +D"
+msgstr "ID:32819:V +D"
 
 #. Accelerator Entry for Menu ID:32822; ''
 msgid "ID:32822:V C +F"
@@ -6259,9 +6317,25 @@ msgstr "韩语"
 msgid "L"
 msgstr "L"
 
-#. Resource IDs: (Dialog IDD_CLONE: Control id 1847)
+#. Resource IDs: (Dialog IDD_CLONE: Control id 1847, IDS_MENULFS)
 msgid "LFS"
 msgstr "LFS"
+
+#. Resource IDs: (IDS_PROGRS_TITLE_LFS_LOCK)
+msgid "LFS Lock"
+msgstr "LFS锁"
+
+#. Resource IDs: (IDS_STATUSLIST_COLLFSLOCK)
+msgid "LFS Lock Owner"
+msgstr "LFS锁定所有者"
+
+#. Resource IDs: (Dialog IDD_LFS_LOCKS: Control id 176)
+msgid "LFS Locks"
+msgstr "LFS锁"
+
+#. Resource IDs: (IDS_PROGRS_TITLE_LFS_UNLOCK)
+msgid "LFS Unlock"
+msgstr "LFS解锁"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_3: Control id 65535)
 msgid "LINE1"
@@ -6298,6 +6372,10 @@ msgstr "行8"
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 65535)
 msgid "Language:"
 msgstr "语言:"
+
+#. Resource IDs: (IDS_MENUDESCLFS)
+msgid "Large file storage"
+msgstr "大文件存储"
 
 #. Resource IDs: (IDS_LAST_N_COMMITS)
 #, c-format
@@ -6492,6 +6570,14 @@ msgstr "定位工具栏"
 msgid "Locator bar"
 msgstr "位置栏"
 
+#. Resource IDs: (IDS_MENULFSLOCK, IDS_PROGRS_CMD_LFS_LOCK)
+msgid "Lock"
+msgstr "锁定"
+
+#. Resource IDs: (IDS_MENUDESCLFSLOCK)
+msgid "Locks a file using LFS"
+msgstr "使用LFS锁定文件"
+
 #. Resource IDs: (Dialog IDD_SETTINGSTBLAME: Control id 65535, IDS_LOG)
 msgid "Log"
 msgstr "日志"
@@ -6591,6 +6677,11 @@ msgstr "标记此块"
 #. Resource IDs: (IDS_ASKFORSAVE_MARKEDBLOCKS)
 msgid "Marked Blocks"
 msgstr "标记的更改"
+
+#. Resource IDs: (IDS_INDICATOR_MARKEDWORDCOUNT)
+#, c-format
+msgid "Marked words: %s"
+msgstr "标记词：%s"
 
 #. Resource IDs: (cmdMarkResolved)
 msgid ""
@@ -7088,8 +7179,10 @@ msgid ""
 msgstr "如果您选择恢复自动保存的文档，您必须明确地将它们保存并覆盖原文件。如果您选择不恢复自动保存的文档，它们将被删除。"
 
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 65535)
-msgid "Note: These settings also apply to the Patch Viewer dialog."
-msgstr "注意：这些设置也影响“补丁查看器”对话框。"
+msgid ""
+"Note: These settings also apply to the Patch Viewer dialog.\n"
+"To select whether you would like to use the build-in or any alterative diff viewer program go to \"Diff Viewer\" preferences section in the leftward tree."
+msgstr "注意：这些设置也适用于“补丁查看器”对话框。\n要选择是否要使用内置的或任何其他差异查看器程序，请转到左侧树中的“差异查看器”首选项部分。"
 
 #. Resource IDs: (Dialog IDD_REVERT: Control id 1481)
 msgid "Note: the folder contains unversioned items"
@@ -7894,6 +7987,10 @@ msgstr "推送(&H)..."
 #. 1612)
 msgid "Push"
 msgstr "推送"
+
+#. Resource IDs: (Dialog IDD_PUSH: Control id 1492)
+msgid "Push &option:"
+msgstr "推送选项(&O):"
 
 #. Resource IDs: (Dialog IDD_SETTINREMOTE: Control id 1786)
 msgid "Push Default"
@@ -9047,10 +9144,10 @@ msgid ""
 msgstr "选择您想另存为的文件\n注意：有未解决的冲突！"
 
 #. Resource IDs: (Dialog IDD_ADD: Control id 1067, Dialog IDD_DELETEREMOTETAG:
-#. Control id 1067, Dialog IDD_RESOLVE: Control id 1067, Dialog IDD_REVERT:
-#. Control id 1067, Dialog IDD_SETTINGSEXTMENU: Control id 1067, Dialog
-#. IDD_SETTINGSLOOKANDFEEL: Control id 1067, Dialog IDD_SUBMODULE_UPDATE:
-#. Control id 1067)
+#. Control id 1067, Dialog IDD_LFS_LOCKS: Control id 1067, Dialog IDD_RESOLVE:
+#. Control id 1067, Dialog IDD_REVERT: Control id 1067, Dialog
+#. IDD_SETTINGSEXTMENU: Control id 1067, Dialog IDD_SETTINGSLOOKANDFEEL:
+#. Control id 1067, Dialog IDD_SUBMODULE_UPDATE: Control id 1067)
 msgid "Select/deselect &all"
 msgstr "全选/取消(&A)"
 
@@ -9339,6 +9436,10 @@ msgstr "仅显示有块状标签的提交(&B)"
 msgid "Show linenumber&s"
 msgstr "显示行号(&S)"
 
+#. Resource IDs: (IDS_MENULFSLOCKS)
+msgid "Show locked files"
+msgstr "显示锁定的文件"
+
 #. Resource IDs: (Dialog IDD_COMMITISONREFS: Control id 1132, Dialog
 #. IDD_DIFFFILES: Control id 1132, Dialog IDD_DIFFSUBMODULE: Control id 1132,
 #. Dialog IDD_DIFFSUBMODULE: Control id 1695, Dialog
@@ -9478,6 +9579,10 @@ msgstr "正在显示 %1!ld! 个修订版本，从 %2!s! 到 %3!s! - 已选择 %4
 #. Resource IDs: (IDS_MENUDESCREVISIONGRAPH)
 msgid "Shows a graphical representation of copies/tags/branches"
 msgstr "显示图形化的复制/标签/分支"
+
+#. Resource IDs: (IDS_MENUDESCLFSLOCKS)
+msgid "Shows a list of all files locked using LFS"
+msgstr "显示使用LFS锁定的所有文件的列表"
 
 #. Resource IDs: (IDS_MENUDESCSHOWCHANGED)
 msgid "Shows all files which were changed since the last commit."
@@ -10932,6 +11037,14 @@ msgstr "未知"
 msgid "Unknown ref-types"
 msgstr "未知 ref-types"
 
+#. Resource IDs: (IDS_MENULFSUNLOCK, IDS_PROGRS_CMD_LFS_UNLOCK)
+msgid "Unlock"
+msgstr "解除锁定"
+
+#. Resource IDs: (IDS_MENUDESCLFSUNLOCK)
+msgid "Unlocks a file using LFS"
+msgstr "使用LFS解锁文件"
+
 #. Resource IDs: (IDS_VIEWCONTEXTMENU_UNMARKBLOCK)
 msgid "Unmark this block"
 msgstr "取消此块"
@@ -11093,6 +11206,10 @@ msgstr "使用共同祖先（A...B diff）"
 #. Resource IDs: (IDS_SMTP_CONFIGURED)
 msgid "Use configured server"
 msgstr "使用配置的服务器"
+
+#. Resource IDs: (Dialog IDD_SETCOLORPAGE: Control id 1513)
+msgid "Use dark mode"
+msgstr "使用暗模式"
 
 #. Resource IDs: (ID_EDIT_USELEFTBLOCK - Menu,
 #. cmdUseLeftBlock_LabelTitle_RESID)
@@ -11617,6 +11734,12 @@ msgstr "您不能在文件夹上设置此属性，它只能设置在文件上！
 msgid "You cannot change the type of this ref with a rename."
 msgstr "您不能通过重命名更改此引用的类型。"
 
+#. Resource IDs: (IDS_COMMITDLG_NOTEDITEDTEMPLATE)
+msgid ""
+"You did not edit the message template.\n"
+"Proceed without individual commit message?"
+msgstr "您没有编辑消息模板。\n是否继续发送个人提交消息？"
+
 #. Resource IDs: (IDS_PROC_OLDMSYSGIT)
 #, c-format
 msgid ""
@@ -12010,6 +12133,18 @@ msgstr "管理器 - 当前 Windows 用户"
 #. Resource IDs: (IDS_LOCAL_GCM)
 msgid "manager - this repository only"
 msgstr "管理器 - 仅此版本库"
+
+#. Resource IDs: (IDS_SYSTEM_GCMCORE)
+msgid "manager-core - all Windows users"
+msgstr ""
+
+#. Resource IDs: (IDS_GLOBAL_GCMCORE)
+msgid "manager-core - current Windows user"
+msgstr ""
+
+#. Resource IDs: (IDS_LOCAL_GCMCORE)
+msgid "manager-core - this repository only"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1494)
 msgid "master"

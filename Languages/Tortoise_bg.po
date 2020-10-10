@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2020-03-01 11:11+0000\n"
+"PO-Revision-Date: 2020-10-07 09:37+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Bulgarian (http://www.transifex.com/lznuaa/tortoisegit/language/bg/)\n"
 "MIME-Version: 1.0\n"
@@ -505,6 +505,14 @@ msgstr ""
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 1662)
 msgid "&Custom"
 msgstr "&Допълнително"
+
+#. Resource IDs: (ID_VIEW_DARKMODE - Menu)
+msgid "&Dark Mode"
+msgstr ""
+
+#. Resource IDs: (ID_VIEW_DARKMODE - Menu)
+msgid "&Dark Mode\tD"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1269)
 msgid "&Default"
@@ -1317,6 +1325,10 @@ msgstr ""
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1061)
 msgid "&Unknown drives"
 msgstr "&Непознати устройства"
+
+#. Resource IDs: (Dialog IDD_LFS_LOCKS: Control id 32927)
+msgid "&Unlock"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1386)
 msgid "&Up"
@@ -2454,25 +2466,26 @@ msgstr ""
 #. IDD_GITSWITCH: Control id 2, Dialog IDD_GOTO: Control id 2, Dialog
 #. IDD_GOTODLG: Control id 2, Dialog IDD_HISTORYDLG: Control id 2, Dialog
 #. IDD_IGNORE: Control id 2, Dialog IDD_INPUTDLG: Control id 2, Dialog
-#. IDD_LOGMESSAGE: Control id 2, Dialog IDD_LOGORDERING: Control id 2, Dialog
-#. IDD_MERGE: Control id 2, Dialog IDD_MERGEABORT: Control id 2, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 2, Dialog IDD_OPEN: Control id 2, Dialog
-#. IDD_OPENDLG: Control id 2, Dialog IDD_PROMPT: Control id 2, Dialog
-#. IDD_PULLFETCH: Control id 2, Dialog IDD_PUSH: Control id 2, Dialog
-#. IDD_REFLOG: Control id 2, Dialog IDD_REGEXFILTER: Control id 2, Dialog
-#. IDD_REGEXFILTERS: Control id 2, Dialog IDD_RENAME: Control id 2, Dialog
-#. IDD_REPOSITORY_BROWSER: Control id 2, Dialog IDD_REQUESTPULL: Control id 2,
-#. Dialog IDD_RESET: Control id 2, Dialog IDD_RESOLVE: Control id 2, Dialog
-#. IDD_REVERT: Control id 2, Dialog IDD_REVGRAPHFILTER: Control id 2, Dialog
-#. IDD_SELECTREMOTEREF: Control id 2, Dialog IDD_SENDMAIL: Control id 2,
-#. Dialog IDD_SETTINGSBUGTRAQADV: Control id 2, Dialog IDD_SETTINGSHOOKCONFIG:
-#. Control id 2, Dialog IDD_SETTINGSPROGSADV: Control id 2, Dialog
-#. IDD_SIMPLEPROMPT: Control id 2, Dialog IDD_STASH: Control id 2, Dialog
-#. IDD_SUBMODULE_ADD: Control id 2, Dialog IDD_SUBMODULE_UPDATE: Control id 2,
-#. Dialog IDD_SVNDCOMMITTYPE: Control id 2, Dialog IDD_SVNIGNORE: Control id
-#. 2, Dialog IDD_SVNPROGRESS: Control id 2, Dialog IDD_TOOLASSOC: Control id
-#. 2, Dialog IDD_URL: Control id 2, Dialog IDD_USER_PASSWD: Control id 2,
-#. IDS_MSGBOX_CANCEL, IDS_PROC_OVERWRITEEXPORT_CANCEL)
+#. IDD_LFS_LOCKS: Control id 2, Dialog IDD_LOGMESSAGE: Control id 2, Dialog
+#. IDD_LOGORDERING: Control id 2, Dialog IDD_MERGE: Control id 2, Dialog
+#. IDD_MERGEABORT: Control id 2, Dialog IDD_NEW_BRANCH_TAG: Control id 2,
+#. Dialog IDD_OPEN: Control id 2, Dialog IDD_OPENDLG: Control id 2, Dialog
+#. IDD_PROMPT: Control id 2, Dialog IDD_PULLFETCH: Control id 2, Dialog
+#. IDD_PUSH: Control id 2, Dialog IDD_REFLOG: Control id 2, Dialog
+#. IDD_REGEXFILTER: Control id 2, Dialog IDD_REGEXFILTERS: Control id 2,
+#. Dialog IDD_RENAME: Control id 2, Dialog IDD_REPOSITORY_BROWSER: Control id
+#. 2, Dialog IDD_REQUESTPULL: Control id 2, Dialog IDD_RESET: Control id 2,
+#. Dialog IDD_RESOLVE: Control id 2, Dialog IDD_REVERT: Control id 2, Dialog
+#. IDD_REVGRAPHFILTER: Control id 2, Dialog IDD_SELECTREMOTEREF: Control id 2,
+#. Dialog IDD_SENDMAIL: Control id 2, Dialog IDD_SETTINGSBUGTRAQADV: Control
+#. id 2, Dialog IDD_SETTINGSHOOKCONFIG: Control id 2, Dialog
+#. IDD_SETTINGSPROGSADV: Control id 2, Dialog IDD_SIMPLEPROMPT: Control id 2,
+#. Dialog IDD_STASH: Control id 2, Dialog IDD_SUBMODULE_ADD: Control id 2,
+#. Dialog IDD_SUBMODULE_UPDATE: Control id 2, Dialog IDD_SVNDCOMMITTYPE:
+#. Control id 2, Dialog IDD_SVNIGNORE: Control id 2, Dialog IDD_SVNPROGRESS:
+#. Control id 2, Dialog IDD_TOOLASSOC: Control id 2, Dialog IDD_URL: Control
+#. id 2, Dialog IDD_USER_PASSWD: Control id 2, IDS_MSGBOX_CANCEL,
+#. IDS_PROC_OVERWRITEEXPORT_CANCEL)
 msgid "Cancel"
 msgstr "Отказ"
 
@@ -2903,6 +2916,11 @@ msgstr ""
 #. 65535)
 msgid "Colors"
 msgstr "Цветове"
+
+#. Resource IDs: (IDS_INDICATOR_COLUMN)
+#, c-format
+msgid "Column: %d"
+msgstr ""
 
 #. Resource IDs: (IDS_COMBINE_TO_ONE)
 msgid "Com&bine to one commit"
@@ -3604,6 +3622,16 @@ msgstr ""
 
 #. Resource IDs: (IDS_MENUDAEMON)
 msgid "Daemon"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 1699)
+msgid "Dark theme"
+msgstr ""
+
+#. Resource IDs: (IDS_DARKTHEME_TT)
+msgid ""
+"Dark theme requires at least Win10 1803, and it must be enabled in the "
+"Windows system settings."
 msgstr ""
 
 #. Resource IDs: (IDS_LOG_DATE, IDS_STATUSLIST_COLDATE)
@@ -4947,6 +4975,26 @@ msgstr ""
 msgid "Find"
 msgstr "Търсене"
 
+#. Resource IDs: (cmdFindNext_LabelTitle_RESID)
+msgid "Find Next"
+msgstr ""
+
+#. Resource IDs: (cmdFindPrev_LabelTitle_RESID)
+msgid "Find Previous"
+msgstr ""
+
+#. Resource IDs: (cmdFindPrev)
+msgid ""
+"Find the last occurrence of the selected text\n"
+"Search Previous"
+msgstr ""
+
+#. Resource IDs: (cmdFindNext)
+msgid ""
+"Find the next occurrence of the selected text\n"
+"Search Next"
+msgstr ""
+
 #. Resource IDs: (57636, cmdFind)
 msgid ""
 "Find the specified text\n"
@@ -5075,6 +5123,10 @@ msgstr ""
 msgid ""
 "Force the rebase even if the current branch is a descendant of the commit you are rebasing onto.\n"
 "Normally the command will exit with the message \"Current branch is up to date\" in such a situation."
+msgstr ""
+
+#. Resource IDs: (IDS_PROGS_LFS_FORCEUNLOCK)
+msgid "Force unlock"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1796)
@@ -5483,20 +5535,21 @@ msgstr "Иврит"
 #. Control id 9, Dialog IDD_CLONE: Control id 9, Dialog IDD_COMMITDLG: Control
 #. id 9, Dialog IDD_CREATEREPO: Control id 9, Dialog IDD_EXPORT: Control id 9,
 #. Dialog IDD_FORMAT_PATCH: Control id 9, Dialog IDD_GITSWITCH: Control id 9,
-#. Dialog IDD_IGNORE: Control id 9, Dialog IDD_LOGMESSAGE: Control id 9,
-#. Dialog IDD_MERGE: Control id 9, Dialog IDD_MERGEABORT: Control id 9, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 9, Dialog IDD_OPENDLG: Control id 9, Dialog
-#. IDD_PULLFETCH: Control id 9, Dialog IDD_PUSH: Control id 9, Dialog
-#. IDD_REBASE: Control id 9, Dialog IDD_REFLOG: Control id 9, Dialog
-#. IDD_REPOSITORY_BROWSER: Control id 9, Dialog IDD_REQUESTPULL: Control id 9,
-#. Dialog IDD_RESET: Control id 9, Dialog IDD_RESOLVE: Control id 9, Dialog
-#. IDD_RESOLVESUBMODULECONFLICT: Control id 9, Dialog IDD_RESOLVE_CONFLICT:
-#. Control id 9, Dialog IDD_REVERT: Control id 9, Dialog IDD_SENDMAIL: Control
-#. id 9, Dialog IDD_SETTINGSBUGTRAQADV: Control id 9, Dialog
-#. IDD_SETTINGSHOOKCONFIG: Control id 9, Dialog IDD_STASH: Control id 9,
-#. Dialog IDD_SUBMODULE_ADD: Control id 9, Dialog IDD_SUBMODULE_UPDATE:
-#. Control id 9, Dialog IDD_SVNDCOMMITTYPE: Control id 9, Dialog IDD_SYNC:
-#. Control id 9, IDS_MSGBOX_HELP)
+#. Dialog IDD_IGNORE: Control id 9, Dialog IDD_LFS_LOCKS: Control id 9, Dialog
+#. IDD_LOGMESSAGE: Control id 9, Dialog IDD_MERGE: Control id 9, Dialog
+#. IDD_MERGEABORT: Control id 9, Dialog IDD_NEW_BRANCH_TAG: Control id 9,
+#. Dialog IDD_OPENDLG: Control id 9, Dialog IDD_PULLFETCH: Control id 9,
+#. Dialog IDD_PUSH: Control id 9, Dialog IDD_REBASE: Control id 9, Dialog
+#. IDD_REFLOG: Control id 9, Dialog IDD_REPOSITORY_BROWSER: Control id 9,
+#. Dialog IDD_REQUESTPULL: Control id 9, Dialog IDD_RESET: Control id 9,
+#. Dialog IDD_RESOLVE: Control id 9, Dialog IDD_RESOLVESUBMODULECONFLICT:
+#. Control id 9, Dialog IDD_RESOLVE_CONFLICT: Control id 9, Dialog IDD_REVERT:
+#. Control id 9, Dialog IDD_SENDMAIL: Control id 9, Dialog
+#. IDD_SETTINGSBUGTRAQADV: Control id 9, Dialog IDD_SETTINGSHOOKCONFIG:
+#. Control id 9, Dialog IDD_STASH: Control id 9, Dialog IDD_SUBMODULE_ADD:
+#. Control id 9, Dialog IDD_SUBMODULE_UPDATE: Control id 9, Dialog
+#. IDD_SVNDCOMMITTYPE: Control id 9, Dialog IDD_SYNC: Control id 9,
+#. IDS_MSGBOX_HELP)
 msgid "Help"
 msgstr "Помощ"
 
@@ -5674,6 +5727,10 @@ msgstr "ID:32817:V   +W"
 #. Accelerator Entry for Menu ID:32818; 'Fit image &heights\tH'
 msgid "ID:32818:V   +H"
 msgstr "ID:32818:V   +H"
+
+#. Accelerator Entry for Menu ID:32819; '&Dark Mode\tD'
+msgid "ID:32819:V   +D"
+msgstr ""
 
 #. Accelerator Entry for Menu ID:32822; ''
 msgid "ID:32822:V C +F"
@@ -6232,8 +6289,24 @@ msgstr "Корейски"
 msgid "L"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_CLONE: Control id 1847)
+#. Resource IDs: (Dialog IDD_CLONE: Control id 1847, IDS_MENULFS)
 msgid "LFS"
+msgstr ""
+
+#. Resource IDs: (IDS_PROGRS_TITLE_LFS_LOCK)
+msgid "LFS Lock"
+msgstr ""
+
+#. Resource IDs: (IDS_STATUSLIST_COLLFSLOCK)
+msgid "LFS Lock Owner"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_LFS_LOCKS: Control id 176)
+msgid "LFS Locks"
+msgstr ""
+
+#. Resource IDs: (IDS_PROGRS_TITLE_LFS_UNLOCK)
+msgid "LFS Unlock"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_3: Control id 65535)
@@ -6271,6 +6344,10 @@ msgstr "Линия8"
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 65535)
 msgid "Language:"
 msgstr "Език:"
+
+#. Resource IDs: (IDS_MENUDESCLFS)
+msgid "Large file storage"
+msgstr ""
 
 #. Resource IDs: (IDS_LAST_N_COMMITS)
 #, c-format
@@ -6465,6 +6542,14 @@ msgstr "Локатор"
 msgid "Locator bar"
 msgstr "Локатор"
 
+#. Resource IDs: (IDS_MENULFSLOCK, IDS_PROGRS_CMD_LFS_LOCK)
+msgid "Lock"
+msgstr ""
+
+#. Resource IDs: (IDS_MENUDESCLFSLOCK)
+msgid "Locks a file using LFS"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETTINGSTBLAME: Control id 65535, IDS_LOG)
 msgid "Log"
 msgstr "Дневник"
@@ -6563,6 +6648,11 @@ msgstr ""
 
 #. Resource IDs: (IDS_ASKFORSAVE_MARKEDBLOCKS)
 msgid "Marked Blocks"
+msgstr ""
+
+#. Resource IDs: (IDS_INDICATOR_MARKEDWORDCOUNT)
+#, c-format
+msgid "Marked words: %s"
 msgstr ""
 
 #. Resource IDs: (cmdMarkResolved)
@@ -7061,7 +7151,9 @@ msgid ""
 msgstr "Имайте предвид, че, ако решите да възстановите автоматично запазените документи, трябва изрично да го потвърдите защото те ще заменят оригиналните. Ако решите да не ги възстановите те ще бъдат изтрити."
 
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 65535)
-msgid "Note: These settings also apply to the Patch Viewer dialog."
+msgid ""
+"Note: These settings also apply to the Patch Viewer dialog.\n"
+"To select whether you would like to use the build-in or any alterative diff viewer program go to \"Diff Viewer\" preferences section in the leftward tree."
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_REVERT: Control id 1481)
@@ -7867,6 +7959,10 @@ msgstr ""
 #. 1612)
 msgid "Push"
 msgstr "Бутане"
+
+#. Resource IDs: (Dialog IDD_PUSH: Control id 1492)
+msgid "Push &option:"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINREMOTE: Control id 1786)
 msgid "Push Default"
@@ -9020,10 +9116,10 @@ msgid ""
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_ADD: Control id 1067, Dialog IDD_DELETEREMOTETAG:
-#. Control id 1067, Dialog IDD_RESOLVE: Control id 1067, Dialog IDD_REVERT:
-#. Control id 1067, Dialog IDD_SETTINGSEXTMENU: Control id 1067, Dialog
-#. IDD_SETTINGSLOOKANDFEEL: Control id 1067, Dialog IDD_SUBMODULE_UPDATE:
-#. Control id 1067)
+#. Control id 1067, Dialog IDD_LFS_LOCKS: Control id 1067, Dialog IDD_RESOLVE:
+#. Control id 1067, Dialog IDD_REVERT: Control id 1067, Dialog
+#. IDD_SETTINGSEXTMENU: Control id 1067, Dialog IDD_SETTINGSLOOKANDFEEL:
+#. Control id 1067, Dialog IDD_SUBMODULE_UPDATE: Control id 1067)
 msgid "Select/deselect &all"
 msgstr ""
 
@@ -9312,6 +9408,10 @@ msgstr ""
 msgid "Show linenumber&s"
 msgstr "&Номерация на редовете"
 
+#. Resource IDs: (IDS_MENULFSLOCKS)
+msgid "Show locked files"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_COMMITISONREFS: Control id 1132, Dialog
 #. IDD_DIFFFILES: Control id 1132, Dialog IDD_DIFFSUBMODULE: Control id 1132,
 #. Dialog IDD_DIFFSUBMODULE: Control id 1695, Dialog
@@ -9451,6 +9551,10 @@ msgstr ""
 #. Resource IDs: (IDS_MENUDESCREVISIONGRAPH)
 msgid "Shows a graphical representation of copies/tags/branches"
 msgstr "Графично представяне на копията/етикетите/разклоненията"
+
+#. Resource IDs: (IDS_MENUDESCLFSLOCKS)
+msgid "Shows a list of all files locked using LFS"
+msgstr ""
 
 #. Resource IDs: (IDS_MENUDESCSHOWCHANGED)
 msgid "Shows all files which were changed since the last commit."
@@ -10905,6 +11009,14 @@ msgstr ""
 msgid "Unknown ref-types"
 msgstr ""
 
+#. Resource IDs: (IDS_MENULFSUNLOCK, IDS_PROGRS_CMD_LFS_UNLOCK)
+msgid "Unlock"
+msgstr ""
+
+#. Resource IDs: (IDS_MENUDESCLFSUNLOCK)
+msgid "Unlocks a file using LFS"
+msgstr ""
+
 #. Resource IDs: (IDS_VIEWCONTEXTMENU_UNMARKBLOCK)
 msgid "Unmark this block"
 msgstr ""
@@ -11065,6 +11177,10 @@ msgstr ""
 
 #. Resource IDs: (IDS_SMTP_CONFIGURED)
 msgid "Use configured server"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_SETCOLORPAGE: Control id 1513)
+msgid "Use dark mode"
 msgstr ""
 
 #. Resource IDs: (ID_EDIT_USELEFTBLOCK - Menu,
@@ -11590,6 +11706,12 @@ msgstr "Това свойство не може да се установи на 
 msgid "You cannot change the type of this ref with a rename."
 msgstr ""
 
+#. Resource IDs: (IDS_COMMITDLG_NOTEDITEDTEMPLATE)
+msgid ""
+"You did not edit the message template.\n"
+"Proceed without individual commit message?"
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_OLDMSYSGIT)
 #, c-format
 msgid ""
@@ -11982,6 +12104,18 @@ msgstr ""
 
 #. Resource IDs: (IDS_LOCAL_GCM)
 msgid "manager - this repository only"
+msgstr ""
+
+#. Resource IDs: (IDS_SYSTEM_GCMCORE)
+msgid "manager-core - all Windows users"
+msgstr ""
+
+#. Resource IDs: (IDS_GLOBAL_GCMCORE)
+msgid "manager-core - current Windows user"
+msgstr ""
+
+#. Resource IDs: (IDS_LOCAL_GCMCORE)
+msgid "manager-core - this repository only"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1494)

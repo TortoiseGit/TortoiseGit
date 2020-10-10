@@ -5,8 +5,10 @@
 # 
 # Translators:
 # Hydriz Scholz <hydriz@jorked.com>, 2013
-# Austin Chang <changkenyu@gmail.com>, 2019
+# b3913ac4b2e2c95732350f21c7eb54c9_61fcf8a <5dee753d03900635d4f59be6489e6841_823413>, 2019
+# b3913ac4b2e2c95732350f21c7eb54c9_61fcf8a <5dee753d03900635d4f59be6489e6841_823413>, 2020
 # BinotaLIU <binota@binota.org>, 2013
+# byStarTW (pan93412) <pan93412@gmail.com>, 2020
 # Cecil Sheng <zcecil@csie.org>, 2011,2013
 # 乙酸鋰 <ch3cooli@gmail.com>, 2012
 # 乙酸鋰 <ch3cooli@gmail.com>, 2012-2015
@@ -20,8 +22,8 @@
 # Lübbe Onken <luebbe.opensource@gmail.com>, 2011,2014
 # Nick Vrvilo <nick@vrvilo.com>, 2011
 # Sven Strickroth <sstrickroth@googlemail.com>, 2013,2018
-# Will 保哥 <doggy.huang@gmail.com>, 2020
-# Yue Lin Ho <yuelinho777@gmail.com>, 2014-2019
+# Will保哥 <doggy.huang@gmail.com>, 2020
+# Yue Lin Ho <yuelinho777@gmail.com>, 2014-2020
 # 乙酸鋰 <ch3cooli@gmail.com>, 2012,2017,2019
 # Yue Lin Ho <yuelinho777@gmail.com>, 2017
 # 乙酸鋰 <ch3cooli@gmail.com>, 2012-2013
@@ -30,8 +32,8 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2020-02-21 04:17+0000\n"
-"Last-Translator: Will 保哥 <doggy.huang@gmail.com>\n"
+"PO-Revision-Date: 2020-10-07 09:37+0000\n"
+"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/lznuaa/tortoisegit/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -519,6 +521,14 @@ msgstr "憑證小幫手(&C)："
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 1662)
 msgid "&Custom"
 msgstr "自訂(&C)"
+
+#. Resource IDs: (ID_VIEW_DARKMODE - Menu)
+msgid "&Dark Mode"
+msgstr "深色模式(&D)"
+
+#. Resource IDs: (ID_VIEW_DARKMODE - Menu)
+msgid "&Dark Mode\tD"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1269)
 msgid "&Default"
@@ -1332,6 +1342,10 @@ msgstr "統合式差異檔(&U)"
 msgid "&Unknown drives"
 msgstr "未知磁碟(&U)"
 
+#. Resource IDs: (Dialog IDD_LFS_LOCKS: Control id 32927)
+msgid "&Unlock"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1386)
 msgid "&Up"
 msgstr "向上(&U)"
@@ -1360,7 +1374,7 @@ msgstr "檢視(&V)"
 
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 1851)
 msgid "&View effective config"
-msgstr ""
+msgstr "檢視有效設定(&V)"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 65535)
 msgid "&Warn on missing Signed-Off-By on commit"
@@ -2003,7 +2017,7 @@ msgstr "垂直排列(&V)\tV"
 
 #. Resource IDs: (ID_VIEW_ARROW_POINT_TO_MERGES - Menu)
 msgid "Arrows point towards merges"
-msgstr ""
+msgstr "箭頭指向合併"
 
 #. Resource IDs: (IDS_SVNACTION_CHANGELISTSET)
 #, c-format
@@ -2266,7 +2280,7 @@ msgstr "混合半透明"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSMERGE: Control id 1852)
 msgid "Block TortoiseGit while executing the external merge tool"
-msgstr ""
+msgstr "執行外部合併工具時鎖住 TortoiseGit"
 
 #. Resource IDs: (cmdGroupBlocks_LabelTitle_RESID)
 msgid "Blocks"
@@ -2468,25 +2482,26 @@ msgstr "無法複製\n%1!s!\n到\n%2!s!"
 #. IDD_GITSWITCH: Control id 2, Dialog IDD_GOTO: Control id 2, Dialog
 #. IDD_GOTODLG: Control id 2, Dialog IDD_HISTORYDLG: Control id 2, Dialog
 #. IDD_IGNORE: Control id 2, Dialog IDD_INPUTDLG: Control id 2, Dialog
-#. IDD_LOGMESSAGE: Control id 2, Dialog IDD_LOGORDERING: Control id 2, Dialog
-#. IDD_MERGE: Control id 2, Dialog IDD_MERGEABORT: Control id 2, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 2, Dialog IDD_OPEN: Control id 2, Dialog
-#. IDD_OPENDLG: Control id 2, Dialog IDD_PROMPT: Control id 2, Dialog
-#. IDD_PULLFETCH: Control id 2, Dialog IDD_PUSH: Control id 2, Dialog
-#. IDD_REFLOG: Control id 2, Dialog IDD_REGEXFILTER: Control id 2, Dialog
-#. IDD_REGEXFILTERS: Control id 2, Dialog IDD_RENAME: Control id 2, Dialog
-#. IDD_REPOSITORY_BROWSER: Control id 2, Dialog IDD_REQUESTPULL: Control id 2,
-#. Dialog IDD_RESET: Control id 2, Dialog IDD_RESOLVE: Control id 2, Dialog
-#. IDD_REVERT: Control id 2, Dialog IDD_REVGRAPHFILTER: Control id 2, Dialog
-#. IDD_SELECTREMOTEREF: Control id 2, Dialog IDD_SENDMAIL: Control id 2,
-#. Dialog IDD_SETTINGSBUGTRAQADV: Control id 2, Dialog IDD_SETTINGSHOOKCONFIG:
-#. Control id 2, Dialog IDD_SETTINGSPROGSADV: Control id 2, Dialog
-#. IDD_SIMPLEPROMPT: Control id 2, Dialog IDD_STASH: Control id 2, Dialog
-#. IDD_SUBMODULE_ADD: Control id 2, Dialog IDD_SUBMODULE_UPDATE: Control id 2,
-#. Dialog IDD_SVNDCOMMITTYPE: Control id 2, Dialog IDD_SVNIGNORE: Control id
-#. 2, Dialog IDD_SVNPROGRESS: Control id 2, Dialog IDD_TOOLASSOC: Control id
-#. 2, Dialog IDD_URL: Control id 2, Dialog IDD_USER_PASSWD: Control id 2,
-#. IDS_MSGBOX_CANCEL, IDS_PROC_OVERWRITEEXPORT_CANCEL)
+#. IDD_LFS_LOCKS: Control id 2, Dialog IDD_LOGMESSAGE: Control id 2, Dialog
+#. IDD_LOGORDERING: Control id 2, Dialog IDD_MERGE: Control id 2, Dialog
+#. IDD_MERGEABORT: Control id 2, Dialog IDD_NEW_BRANCH_TAG: Control id 2,
+#. Dialog IDD_OPEN: Control id 2, Dialog IDD_OPENDLG: Control id 2, Dialog
+#. IDD_PROMPT: Control id 2, Dialog IDD_PULLFETCH: Control id 2, Dialog
+#. IDD_PUSH: Control id 2, Dialog IDD_REFLOG: Control id 2, Dialog
+#. IDD_REGEXFILTER: Control id 2, Dialog IDD_REGEXFILTERS: Control id 2,
+#. Dialog IDD_RENAME: Control id 2, Dialog IDD_REPOSITORY_BROWSER: Control id
+#. 2, Dialog IDD_REQUESTPULL: Control id 2, Dialog IDD_RESET: Control id 2,
+#. Dialog IDD_RESOLVE: Control id 2, Dialog IDD_REVERT: Control id 2, Dialog
+#. IDD_REVGRAPHFILTER: Control id 2, Dialog IDD_SELECTREMOTEREF: Control id 2,
+#. Dialog IDD_SENDMAIL: Control id 2, Dialog IDD_SETTINGSBUGTRAQADV: Control
+#. id 2, Dialog IDD_SETTINGSHOOKCONFIG: Control id 2, Dialog
+#. IDD_SETTINGSPROGSADV: Control id 2, Dialog IDD_SIMPLEPROMPT: Control id 2,
+#. Dialog IDD_STASH: Control id 2, Dialog IDD_SUBMODULE_ADD: Control id 2,
+#. Dialog IDD_SUBMODULE_UPDATE: Control id 2, Dialog IDD_SVNDCOMMITTYPE:
+#. Control id 2, Dialog IDD_SVNIGNORE: Control id 2, Dialog IDD_SVNPROGRESS:
+#. Control id 2, Dialog IDD_TOOLASSOC: Control id 2, Dialog IDD_URL: Control
+#. id 2, Dialog IDD_USER_PASSWD: Control id 2, IDS_MSGBOX_CANCEL,
+#. IDS_PROC_OVERWRITEEXPORT_CANCEL)
 msgid "Cancel"
 msgstr "取消"
 
@@ -2851,27 +2866,27 @@ msgstr "剪貼簿"
 
 #. Resource IDs: (IDS_PROGRS_TITLE_CLONE, IDS_PROG_CLONE)
 msgid "Clone"
-msgstr "克隆"
+msgstr "複製"
 
 #. Resource IDs: (Dialog IDD_CLONE: Control id 1572)
 msgid "Clone Existing Repository"
-msgstr "克隆存在的版本庫"
+msgstr "複製現存的版本庫"
 
 #. Resource IDs: (IDS_MENUDESCCLONE)
 msgid "Clone a repository"
-msgstr "克隆版本庫"
+msgstr "複製版本庫"
 
 #. Resource IDs: (Dialog IDD_CLONE: Control id 1653)
 msgid "Clone into Bare Repo"
-msgstr "克隆成純版本庫"
+msgstr "複製成純版本庫"
 
 #. Resource IDs: (IDS_CLONE_BARE_REPO_TT)
 msgid "Clone into a git repository without the working tree."
-msgstr ""
+msgstr "複製一個沒有工作目錄的版本庫"
 
 #. Resource IDs: (IDS_MENUCLONE)
 msgid "Clone..."
-msgstr "克隆..."
+msgstr "複製..."
 
 #. Resource IDs: (Dialog IDD_DELETEREMOTETAG: Control id 2, Dialog
 #. IDD_GITPROGRESS: Control id 1, Dialog IDD_SYNC: Control id 1)
@@ -2917,6 +2932,11 @@ msgstr "依照時間上色(&C)"
 #. 65535)
 msgid "Colors"
 msgstr "色彩"
+
+#. Resource IDs: (IDS_INDICATOR_COLUMN)
+#, c-format
+msgid "Column: %d"
+msgstr "欄位：%d"
 
 #. Resource IDs: (IDS_COMBINE_TO_ONE)
 msgid "Com&bine to one commit"
@@ -3051,7 +3071,7 @@ msgstr "比較 &HEAD 版本"
 
 #. Resource IDs: (IDS_LOG_POPUP_COMPARE_PARENT_WC)
 msgid "Compare parent with working tree"
-msgstr ""
+msgstr "比對親代與工作目錄"
 
 #. Resource IDs: (IDS_PROC_BROWSEREFS_COMPAREREFS)
 msgid "Compare selected refs"
@@ -3136,7 +3156,7 @@ msgstr "設定文字編輯器，最好能處理 *nix 換行符號。"
 
 #. Resource IDs: (IDS_CONFIGUREDEFAULT)
 msgid "Configure default"
-msgstr ""
+msgstr "設定預設值"
 
 #. Resource IDs: (IDS_FIRSTSTART_GITTITLE)
 msgid "Configure git.exe"
@@ -3619,6 +3639,16 @@ msgstr "DCommit 類型"
 #. Resource IDs: (IDS_MENUDAEMON)
 msgid "Daemon"
 msgstr "守護行程"
+
+#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 1699)
+msgid "Dark theme"
+msgstr "深色主題"
+
+#. Resource IDs: (IDS_DARKTHEME_TT)
+msgid ""
+"Dark theme requires at least Win10 1803, and it must be enabled in the "
+"Windows system settings."
+msgstr "需要 Win10 1803 或更高版本以使用深色主題，且必須在 Windows 系統設定內啟用。"
 
 #. Resource IDs: (IDS_LOG_DATE, IDS_STATUSLIST_COLDATE)
 msgid "Date"
@@ -4961,6 +4991,26 @@ msgstr "已篩選的"
 msgid "Find"
 msgstr "搜尋"
 
+#. Resource IDs: (cmdFindNext_LabelTitle_RESID)
+msgid "Find Next"
+msgstr "尋找下一個"
+
+#. Resource IDs: (cmdFindPrev_LabelTitle_RESID)
+msgid "Find Previous"
+msgstr "尋找上一個"
+
+#. Resource IDs: (cmdFindPrev)
+msgid ""
+"Find the last occurrence of the selected text\n"
+"Search Previous"
+msgstr ""
+
+#. Resource IDs: (cmdFindNext)
+msgid ""
+"Find the next occurrence of the selected text\n"
+"Search Next"
+msgstr ""
+
 #. Resource IDs: (57636, cmdFind)
 msgid ""
 "Find the specified text\n"
@@ -5090,6 +5140,10 @@ msgid ""
 "Force the rebase even if the current branch is a descendant of the commit you are rebasing onto.\n"
 "Normally the command will exit with the message \"Current branch is up to date\" in such a situation."
 msgstr "儘管你想要變基的基準點是目前分支的後裔節點，也要強制變基。\n正常情况下該命令會列印「目前分支已是最新(Current branch is up to date)」，然後退出。"
+
+#. Resource IDs: (IDS_PROGS_LFS_FORCEUNLOCK)
+msgid "Force unlock"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1796)
 msgid "Force: May discard"
@@ -5350,7 +5404,7 @@ msgstr "Git同步"
 
 #. Resource IDs: (Dialog IDD_CLONE: Control id 297)
 msgid "Git clone - TortoiseGit"
-msgstr "Git克隆 - TortoiseGit"
+msgstr "Git 複製 - TortoiseGit"
 
 #. Resource IDs: (IDS_PROC_GITCONFIG_NOMSYSGIT)
 msgid "Git directory not set (see \"General\" settings page)."
@@ -5497,20 +5551,21 @@ msgstr "希伯來文"
 #. Control id 9, Dialog IDD_CLONE: Control id 9, Dialog IDD_COMMITDLG: Control
 #. id 9, Dialog IDD_CREATEREPO: Control id 9, Dialog IDD_EXPORT: Control id 9,
 #. Dialog IDD_FORMAT_PATCH: Control id 9, Dialog IDD_GITSWITCH: Control id 9,
-#. Dialog IDD_IGNORE: Control id 9, Dialog IDD_LOGMESSAGE: Control id 9,
-#. Dialog IDD_MERGE: Control id 9, Dialog IDD_MERGEABORT: Control id 9, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 9, Dialog IDD_OPENDLG: Control id 9, Dialog
-#. IDD_PULLFETCH: Control id 9, Dialog IDD_PUSH: Control id 9, Dialog
-#. IDD_REBASE: Control id 9, Dialog IDD_REFLOG: Control id 9, Dialog
-#. IDD_REPOSITORY_BROWSER: Control id 9, Dialog IDD_REQUESTPULL: Control id 9,
-#. Dialog IDD_RESET: Control id 9, Dialog IDD_RESOLVE: Control id 9, Dialog
-#. IDD_RESOLVESUBMODULECONFLICT: Control id 9, Dialog IDD_RESOLVE_CONFLICT:
-#. Control id 9, Dialog IDD_REVERT: Control id 9, Dialog IDD_SENDMAIL: Control
-#. id 9, Dialog IDD_SETTINGSBUGTRAQADV: Control id 9, Dialog
-#. IDD_SETTINGSHOOKCONFIG: Control id 9, Dialog IDD_STASH: Control id 9,
-#. Dialog IDD_SUBMODULE_ADD: Control id 9, Dialog IDD_SUBMODULE_UPDATE:
-#. Control id 9, Dialog IDD_SVNDCOMMITTYPE: Control id 9, Dialog IDD_SYNC:
-#. Control id 9, IDS_MSGBOX_HELP)
+#. Dialog IDD_IGNORE: Control id 9, Dialog IDD_LFS_LOCKS: Control id 9, Dialog
+#. IDD_LOGMESSAGE: Control id 9, Dialog IDD_MERGE: Control id 9, Dialog
+#. IDD_MERGEABORT: Control id 9, Dialog IDD_NEW_BRANCH_TAG: Control id 9,
+#. Dialog IDD_OPENDLG: Control id 9, Dialog IDD_PULLFETCH: Control id 9,
+#. Dialog IDD_PUSH: Control id 9, Dialog IDD_REBASE: Control id 9, Dialog
+#. IDD_REFLOG: Control id 9, Dialog IDD_REPOSITORY_BROWSER: Control id 9,
+#. Dialog IDD_REQUESTPULL: Control id 9, Dialog IDD_RESET: Control id 9,
+#. Dialog IDD_RESOLVE: Control id 9, Dialog IDD_RESOLVESUBMODULECONFLICT:
+#. Control id 9, Dialog IDD_RESOLVE_CONFLICT: Control id 9, Dialog IDD_REVERT:
+#. Control id 9, Dialog IDD_SENDMAIL: Control id 9, Dialog
+#. IDD_SETTINGSBUGTRAQADV: Control id 9, Dialog IDD_SETTINGSHOOKCONFIG:
+#. Control id 9, Dialog IDD_STASH: Control id 9, Dialog IDD_SUBMODULE_ADD:
+#. Control id 9, Dialog IDD_SUBMODULE_UPDATE: Control id 9, Dialog
+#. IDD_SVNDCOMMITTYPE: Control id 9, Dialog IDD_SYNC: Control id 9,
+#. IDS_MSGBOX_HELP)
 msgid "Help"
 msgstr "說明"
 
@@ -5688,6 +5743,10 @@ msgstr "ID:32817:V   +W"
 #. Accelerator Entry for Menu ID:32818; 'Fit image &heights\tH'
 msgid "ID:32818:V   +H"
 msgstr "ID:32818:V   +H"
+
+#. Accelerator Entry for Menu ID:32819; '&Dark Mode\tD'
+msgid "ID:32819:V   +D"
+msgstr "ID:32819:V +D"
 
 #. Accelerator Entry for Menu ID:32822; ''
 msgid "ID:32822:V C +F"
@@ -6161,7 +6220,7 @@ msgstr ""
 msgid ""
 "Instead of using the remote name \"origin\" to keep track of the upstream "
 "repository, use the specific name."
-msgstr ""
+msgstr "為這個遠端版本庫取一個更具識別度的代稱，而不是預設的代稱「origin」。"
 
 #. Resource IDs: (AFX_IDP_FAILED_MEMORY_ALLOC)
 msgid "Insufficient memory to perform operation."
@@ -6246,9 +6305,25 @@ msgstr "韓文"
 msgid "L"
 msgstr "L"
 
-#. Resource IDs: (Dialog IDD_CLONE: Control id 1847)
+#. Resource IDs: (Dialog IDD_CLONE: Control id 1847, IDS_MENULFS)
 msgid "LFS"
 msgstr "LFS"
+
+#. Resource IDs: (IDS_PROGRS_TITLE_LFS_LOCK)
+msgid "LFS Lock"
+msgstr ""
+
+#. Resource IDs: (IDS_STATUSLIST_COLLFSLOCK)
+msgid "LFS Lock Owner"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_LFS_LOCKS: Control id 176)
+msgid "LFS Locks"
+msgstr ""
+
+#. Resource IDs: (IDS_PROGRS_TITLE_LFS_UNLOCK)
+msgid "LFS Unlock"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_3: Control id 65535)
 msgid "LINE1"
@@ -6285,6 +6360,10 @@ msgstr "列8"
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 65535)
 msgid "Language:"
 msgstr "語系："
+
+#. Resource IDs: (IDS_MENUDESCLFS)
+msgid "Large file storage"
+msgstr ""
 
 #. Resource IDs: (IDS_LAST_N_COMMITS)
 #, c-format
@@ -6479,6 +6558,14 @@ msgstr "定位列"
 msgid "Locator bar"
 msgstr "定位列"
 
+#. Resource IDs: (IDS_MENULFSLOCK, IDS_PROGRS_CMD_LFS_LOCK)
+msgid "Lock"
+msgstr ""
+
+#. Resource IDs: (IDS_MENUDESCLFSLOCK)
+msgid "Locks a file using LFS"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETTINGSTBLAME: Control id 65535, IDS_LOG)
 msgid "Log"
 msgstr "日誌"
@@ -6578,6 +6665,11 @@ msgstr "標記此區塊"
 #. Resource IDs: (IDS_ASKFORSAVE_MARKEDBLOCKS)
 msgid "Marked Blocks"
 msgstr "已標記區塊"
+
+#. Resource IDs: (IDS_INDICATOR_MARKEDWORDCOUNT)
+#, c-format
+msgid "Marked words: %s"
+msgstr "已標記字詞：%s"
 
 #. Resource IDs: (cmdMarkResolved)
 msgid ""
@@ -6895,7 +6987,7 @@ msgstr "不使用前綴「a/」和「b/」（以相容 svn 補綴格式）"
 msgid ""
 "No checkout of HEAD is performed after the clone is complete.\n"
 "This makes the working tree empty."
-msgstr ""
+msgstr "複製完成後不要取出 HEAD 內容。工作目錄將不會有任何檔案。"
 
 #. Resource IDs: (IDS_ERR_NOCOMMAND)
 msgid ""
@@ -7075,8 +7167,10 @@ msgid ""
 msgstr "請注意：如果您選擇還原自動儲存的文件，您必須要手動再儲存一次才能保留下來。如果您不還原自動儲存的文件，它們會被刪除。"
 
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 65535)
-msgid "Note: These settings also apply to the Patch Viewer dialog."
-msgstr "注意：這些設定值也會套用在補綴瀏覽視窗。"
+msgid ""
+"Note: These settings also apply to the Patch Viewer dialog.\n"
+"To select whether you would like to use the build-in or any alterative diff viewer program go to \"Diff Viewer\" preferences section in the leftward tree."
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_REVERT: Control id 1481)
 msgid "Note: the folder contains unversioned items"
@@ -7855,7 +7949,7 @@ msgstr "從遠端版本庫拉取（＝獲取＋合併）提交。"
 msgid ""
 "Pull requires the selected local branch to be the current branch.\n"
 "Do you want to switch to the selected branch?"
-msgstr ""
+msgstr "「拉取」需要將選擇的本地端分支變為目前分支。\n是否切換至選擇分支？"
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 302)
 msgid "Pull/Fetch"
@@ -7881,6 +7975,10 @@ msgstr "推送(&H)..."
 #. 1612)
 msgid "Push"
 msgstr "推送"
+
+#. Resource IDs: (Dialog IDD_PUSH: Control id 1492)
+msgid "Push &option:"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINREMOTE: Control id 1786)
 msgid "Push Default"
@@ -9034,10 +9132,10 @@ msgid ""
 msgstr "請選擇你要另存的檔案\n注意：尚有未解決的衝突！"
 
 #. Resource IDs: (Dialog IDD_ADD: Control id 1067, Dialog IDD_DELETEREMOTETAG:
-#. Control id 1067, Dialog IDD_RESOLVE: Control id 1067, Dialog IDD_REVERT:
-#. Control id 1067, Dialog IDD_SETTINGSEXTMENU: Control id 1067, Dialog
-#. IDD_SETTINGSLOOKANDFEEL: Control id 1067, Dialog IDD_SUBMODULE_UPDATE:
-#. Control id 1067)
+#. Control id 1067, Dialog IDD_LFS_LOCKS: Control id 1067, Dialog IDD_RESOLVE:
+#. Control id 1067, Dialog IDD_REVERT: Control id 1067, Dialog
+#. IDD_SETTINGSEXTMENU: Control id 1067, Dialog IDD_SETTINGSLOOKANDFEEL:
+#. Control id 1067, Dialog IDD_SUBMODULE_UPDATE: Control id 1067)
 msgid "Select/deselect &all"
 msgstr "全部選擇或取消(&A)"
 
@@ -9326,6 +9424,10 @@ msgstr "僅僅顯示有標記的提交(&B)"
 msgid "Show linenumber&s"
 msgstr "顯示行號(&S)"
 
+#. Resource IDs: (IDS_MENULFSLOCKS)
+msgid "Show locked files"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_COMMITISONREFS: Control id 1132, Dialog
 #. IDD_DIFFFILES: Control id 1132, Dialog IDD_DIFFSUBMODULE: Control id 1132,
 #. Dialog IDD_DIFFSUBMODULE: Control id 1695, Dialog
@@ -9465,6 +9567,10 @@ msgstr "顯示 %1!ld! 個版本，由版本 %2!s! 至版本 %3!s! － 選取了 
 #. Resource IDs: (IDS_MENUDESCREVISIONGRAPH)
 msgid "Shows a graphical representation of copies/tags/branches"
 msgstr "顯示圖形化的「複製／標籤／分支」"
+
+#. Resource IDs: (IDS_MENUDESCLFSLOCKS)
+msgid "Shows a list of all files locked using LFS"
+msgstr ""
 
 #. Resource IDs: (IDS_MENUDESCSHOWCHANGED)
 msgid "Shows all files which were changed since the last commit."
@@ -10919,6 +11025,14 @@ msgstr "不明"
 msgid "Unknown ref-types"
 msgstr "未知的參照型別"
 
+#. Resource IDs: (IDS_MENULFSUNLOCK, IDS_PROGRS_CMD_LFS_UNLOCK)
+msgid "Unlock"
+msgstr ""
+
+#. Resource IDs: (IDS_MENUDESCLFSUNLOCK)
+msgid "Unlocks a file using LFS"
+msgstr ""
+
 #. Resource IDs: (IDS_VIEWCONTEXTMENU_UNMARKBLOCK)
 msgid "Unmark this block"
 msgstr "取消標記此區塊"
@@ -11080,6 +11194,10 @@ msgstr "使用共同祖先 (A...B diff)"
 #. Resource IDs: (IDS_SMTP_CONFIGURED)
 msgid "Use configured server"
 msgstr "使用已組態伺服器"
+
+#. Resource IDs: (Dialog IDD_SETCOLORPAGE: Control id 1513)
+msgid "Use dark mode"
+msgstr "使用深色模式"
 
 #. Resource IDs: (ID_EDIT_USELEFTBLOCK - Menu,
 #. cmdUseLeftBlock_LabelTitle_RESID)
@@ -11604,6 +11722,12 @@ msgstr "這個性質不能設定在資料夾上，只能設定在檔案上！\n�
 msgid "You cannot change the type of this ref with a rename."
 msgstr "你不能透過重新命名來更改這參照的類型"
 
+#. Resource IDs: (IDS_COMMITDLG_NOTEDITEDTEMPLATE)
+msgid ""
+"You did not edit the message template.\n"
+"Proceed without individual commit message?"
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_OLDMSYSGIT)
 #, c-format
 msgid ""
@@ -11997,6 +12121,18 @@ msgstr "manager - 目前 Windows 使用者"
 #. Resource IDs: (IDS_LOCAL_GCM)
 msgid "manager - this repository only"
 msgstr "manager - 只限此版本庫"
+
+#. Resource IDs: (IDS_SYSTEM_GCMCORE)
+msgid "manager-core - all Windows users"
+msgstr ""
+
+#. Resource IDs: (IDS_GLOBAL_GCMCORE)
+msgid "manager-core - current Windows user"
+msgstr ""
+
+#. Resource IDs: (IDS_LOCAL_GCMCORE)
+msgid "manager-core - this repository only"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1494)
 msgid "master"

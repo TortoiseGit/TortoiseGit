@@ -44,8 +44,8 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2020-02-05 15:35+0000\n"
-"Last-Translator: Tetsuhiko Koto\n"
+"PO-Revision-Date: 2020-10-07 09:37+0000\n"
+"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Japanese (http://www.transifex.com/lznuaa/tortoisegit/language/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -533,6 +533,14 @@ msgstr "資格情報ヘルパー(&C):"
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 1662)
 msgid "&Custom"
 msgstr "カスタム(&C)"
+
+#. Resource IDs: (ID_VIEW_DARKMODE - Menu)
+msgid "&Dark Mode"
+msgstr "ダークモード(&D)"
+
+#. Resource IDs: (ID_VIEW_DARKMODE - Menu)
+msgid "&Dark Mode\tD"
+msgstr "ダークモード(&D)\tD"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1269)
 msgid "&Default"
@@ -1346,6 +1354,10 @@ msgstr "&Unified 形式の差分"
 msgid "&Unknown drives"
 msgstr "その他/判定に失敗(&U)"
 
+#. Resource IDs: (Dialog IDD_LFS_LOCKS: Control id 32927)
+msgid "&Unlock"
+msgstr "ロック解除(&U)"
+
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1386)
 msgid "&Up"
 msgstr "上へ(&U)"
@@ -1605,7 +1617,7 @@ msgstr "このタグ名は既に存在します"
 msgid ""
 "A viewer program for GNU diff files (patch files).\n"
 "If you don't have one use NotePad."
-msgstr "GNU 形式の差分ファイル（パッチファイル）用のビューアープログラムを指定する。\nデフォルトではメモ帳を使用する。"
+msgstr "GNU 形式の差分ファイル（パッチファイル）用のビューアプログラムを指定する。\nデフォルトではメモ帳を使用する。"
 
 #. Resource IDs: (IDS_ABORTBUTTON)
 msgid "A&bort"
@@ -2482,25 +2494,26 @@ msgstr "%1!s!\nを\n%2!s!\nにコピーできません。"
 #. IDD_GITSWITCH: Control id 2, Dialog IDD_GOTO: Control id 2, Dialog
 #. IDD_GOTODLG: Control id 2, Dialog IDD_HISTORYDLG: Control id 2, Dialog
 #. IDD_IGNORE: Control id 2, Dialog IDD_INPUTDLG: Control id 2, Dialog
-#. IDD_LOGMESSAGE: Control id 2, Dialog IDD_LOGORDERING: Control id 2, Dialog
-#. IDD_MERGE: Control id 2, Dialog IDD_MERGEABORT: Control id 2, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 2, Dialog IDD_OPEN: Control id 2, Dialog
-#. IDD_OPENDLG: Control id 2, Dialog IDD_PROMPT: Control id 2, Dialog
-#. IDD_PULLFETCH: Control id 2, Dialog IDD_PUSH: Control id 2, Dialog
-#. IDD_REFLOG: Control id 2, Dialog IDD_REGEXFILTER: Control id 2, Dialog
-#. IDD_REGEXFILTERS: Control id 2, Dialog IDD_RENAME: Control id 2, Dialog
-#. IDD_REPOSITORY_BROWSER: Control id 2, Dialog IDD_REQUESTPULL: Control id 2,
-#. Dialog IDD_RESET: Control id 2, Dialog IDD_RESOLVE: Control id 2, Dialog
-#. IDD_REVERT: Control id 2, Dialog IDD_REVGRAPHFILTER: Control id 2, Dialog
-#. IDD_SELECTREMOTEREF: Control id 2, Dialog IDD_SENDMAIL: Control id 2,
-#. Dialog IDD_SETTINGSBUGTRAQADV: Control id 2, Dialog IDD_SETTINGSHOOKCONFIG:
-#. Control id 2, Dialog IDD_SETTINGSPROGSADV: Control id 2, Dialog
-#. IDD_SIMPLEPROMPT: Control id 2, Dialog IDD_STASH: Control id 2, Dialog
-#. IDD_SUBMODULE_ADD: Control id 2, Dialog IDD_SUBMODULE_UPDATE: Control id 2,
-#. Dialog IDD_SVNDCOMMITTYPE: Control id 2, Dialog IDD_SVNIGNORE: Control id
-#. 2, Dialog IDD_SVNPROGRESS: Control id 2, Dialog IDD_TOOLASSOC: Control id
-#. 2, Dialog IDD_URL: Control id 2, Dialog IDD_USER_PASSWD: Control id 2,
-#. IDS_MSGBOX_CANCEL, IDS_PROC_OVERWRITEEXPORT_CANCEL)
+#. IDD_LFS_LOCKS: Control id 2, Dialog IDD_LOGMESSAGE: Control id 2, Dialog
+#. IDD_LOGORDERING: Control id 2, Dialog IDD_MERGE: Control id 2, Dialog
+#. IDD_MERGEABORT: Control id 2, Dialog IDD_NEW_BRANCH_TAG: Control id 2,
+#. Dialog IDD_OPEN: Control id 2, Dialog IDD_OPENDLG: Control id 2, Dialog
+#. IDD_PROMPT: Control id 2, Dialog IDD_PULLFETCH: Control id 2, Dialog
+#. IDD_PUSH: Control id 2, Dialog IDD_REFLOG: Control id 2, Dialog
+#. IDD_REGEXFILTER: Control id 2, Dialog IDD_REGEXFILTERS: Control id 2,
+#. Dialog IDD_RENAME: Control id 2, Dialog IDD_REPOSITORY_BROWSER: Control id
+#. 2, Dialog IDD_REQUESTPULL: Control id 2, Dialog IDD_RESET: Control id 2,
+#. Dialog IDD_RESOLVE: Control id 2, Dialog IDD_REVERT: Control id 2, Dialog
+#. IDD_REVGRAPHFILTER: Control id 2, Dialog IDD_SELECTREMOTEREF: Control id 2,
+#. Dialog IDD_SENDMAIL: Control id 2, Dialog IDD_SETTINGSBUGTRAQADV: Control
+#. id 2, Dialog IDD_SETTINGSHOOKCONFIG: Control id 2, Dialog
+#. IDD_SETTINGSPROGSADV: Control id 2, Dialog IDD_SIMPLEPROMPT: Control id 2,
+#. Dialog IDD_STASH: Control id 2, Dialog IDD_SUBMODULE_ADD: Control id 2,
+#. Dialog IDD_SUBMODULE_UPDATE: Control id 2, Dialog IDD_SVNDCOMMITTYPE:
+#. Control id 2, Dialog IDD_SVNIGNORE: Control id 2, Dialog IDD_SVNPROGRESS:
+#. Control id 2, Dialog IDD_TOOLASSOC: Control id 2, Dialog IDD_URL: Control
+#. id 2, Dialog IDD_USER_PASSWD: Control id 2, IDS_MSGBOX_CANCEL,
+#. IDS_PROC_OVERWRITEEXPORT_CANCEL)
 msgid "Cancel"
 msgstr "キャンセル"
 
@@ -2931,6 +2944,11 @@ msgstr "変更時期に応じて徐々に色を変える(&c)"
 #. 65535)
 msgid "Colors"
 msgstr "色"
+
+#. Resource IDs: (IDS_INDICATOR_COLUMN)
+#, c-format
+msgid "Column: %d"
+msgstr "桁: %d"
 
 #. Resource IDs: (IDS_COMBINE_TO_ONE)
 msgid "Com&bine to one commit"
@@ -3399,7 +3417,7 @@ msgid ""
 "Could not start diff viewer!\n"
 "\n"
 "%s"
-msgstr "差分ビュアーを起動出来ませんでした。\n\n%s"
+msgstr "差分ビューアを起動出来ませんでした。\n\n%s"
 
 #. Resource IDs: (IDS_ERR_EXTDIFFSTART)
 #, c-format
@@ -3434,7 +3452,7 @@ msgid ""
 "Could not start text viewer!\n"
 "\n"
 "%s"
-msgstr "テキストビュアーを起動出来ませんでした。\n\n%s"
+msgstr "テキストビューアを起動出来ませんでした。\n\n%s"
 
 #. Resource IDs: (IDS_ERR_PAGEANT)
 msgid "Could not start the Putty Agent (pageant)."
@@ -3633,6 +3651,16 @@ msgstr "DCommit タイプ"
 #. Resource IDs: (IDS_MENUDAEMON)
 msgid "Daemon"
 msgstr "バックグラウンド稼働"
+
+#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 1699)
+msgid "Dark theme"
+msgstr "ダークテーマ"
+
+#. Resource IDs: (IDS_DARKTHEME_TT)
+msgid ""
+"Dark theme requires at least Win10 1803, and it must be enabled in the "
+"Windows system settings."
+msgstr "ダークテーマには Windows 10 1803 以上が必要であり、Windowsのシステム設定で有効にする必要があります。"
 
 #. Resource IDs: (IDS_LOG_DATE, IDS_STATUSLIST_COLDATE)
 msgid "Date"
@@ -3880,11 +3908,11 @@ msgstr "２つのコミットの差分"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSDIFF: Control id 192)
 msgid "Diff Viewer"
-msgstr "差分ビューアー"
+msgstr "差分ビューア"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSMERGE: Control id 193)
 msgid "Diff Viewer::Merge Tool"
-msgstr "差分ビューアー::マージツール"
+msgstr "差分ビューア::マージツール"
 
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 65535)
 msgid "Diff added lines"
@@ -4975,6 +5003,26 @@ msgstr "フィルター済み"
 msgid "Find"
 msgstr "検索"
 
+#. Resource IDs: (cmdFindNext_LabelTitle_RESID)
+msgid "Find Next"
+msgstr "次を検索"
+
+#. Resource IDs: (cmdFindPrev_LabelTitle_RESID)
+msgid "Find Previous"
+msgstr "前を検索"
+
+#. Resource IDs: (cmdFindPrev)
+msgid ""
+"Find the last occurrence of the selected text\n"
+"Search Previous"
+msgstr "選択したテキストの前の出現を探します\n前を検索"
+
+#. Resource IDs: (cmdFindNext)
+msgid ""
+"Find the next occurrence of the selected text\n"
+"Search Next"
+msgstr "選択したテキストの次の出現を探します\n次を検索"
+
 #. Resource IDs: (57636, cmdFind)
 msgid ""
 "Find the specified text\n"
@@ -5104,6 +5152,10 @@ msgid ""
 "Force the rebase even if the current branch is a descendant of the commit you are rebasing onto.\n"
 "Normally the command will exit with the message \"Current branch is up to date\" in such a situation."
 msgstr "現在のブランチが、接続しようとしているコミットの子孫であっても、強制的にリベースします。\n通常、そのようなコマンドは、\"現在のブランチは最新です\" のようなメッセージを出力して終了します。"
+
+#. Resource IDs: (IDS_PROGS_LFS_FORCEUNLOCK)
+msgid "Force unlock"
+msgstr "強制ロック解除"
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1796)
 msgid "Force: May discard"
@@ -5511,20 +5563,21 @@ msgstr "ヘブライ語"
 #. Control id 9, Dialog IDD_CLONE: Control id 9, Dialog IDD_COMMITDLG: Control
 #. id 9, Dialog IDD_CREATEREPO: Control id 9, Dialog IDD_EXPORT: Control id 9,
 #. Dialog IDD_FORMAT_PATCH: Control id 9, Dialog IDD_GITSWITCH: Control id 9,
-#. Dialog IDD_IGNORE: Control id 9, Dialog IDD_LOGMESSAGE: Control id 9,
-#. Dialog IDD_MERGE: Control id 9, Dialog IDD_MERGEABORT: Control id 9, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 9, Dialog IDD_OPENDLG: Control id 9, Dialog
-#. IDD_PULLFETCH: Control id 9, Dialog IDD_PUSH: Control id 9, Dialog
-#. IDD_REBASE: Control id 9, Dialog IDD_REFLOG: Control id 9, Dialog
-#. IDD_REPOSITORY_BROWSER: Control id 9, Dialog IDD_REQUESTPULL: Control id 9,
-#. Dialog IDD_RESET: Control id 9, Dialog IDD_RESOLVE: Control id 9, Dialog
-#. IDD_RESOLVESUBMODULECONFLICT: Control id 9, Dialog IDD_RESOLVE_CONFLICT:
-#. Control id 9, Dialog IDD_REVERT: Control id 9, Dialog IDD_SENDMAIL: Control
-#. id 9, Dialog IDD_SETTINGSBUGTRAQADV: Control id 9, Dialog
-#. IDD_SETTINGSHOOKCONFIG: Control id 9, Dialog IDD_STASH: Control id 9,
-#. Dialog IDD_SUBMODULE_ADD: Control id 9, Dialog IDD_SUBMODULE_UPDATE:
-#. Control id 9, Dialog IDD_SVNDCOMMITTYPE: Control id 9, Dialog IDD_SYNC:
-#. Control id 9, IDS_MSGBOX_HELP)
+#. Dialog IDD_IGNORE: Control id 9, Dialog IDD_LFS_LOCKS: Control id 9, Dialog
+#. IDD_LOGMESSAGE: Control id 9, Dialog IDD_MERGE: Control id 9, Dialog
+#. IDD_MERGEABORT: Control id 9, Dialog IDD_NEW_BRANCH_TAG: Control id 9,
+#. Dialog IDD_OPENDLG: Control id 9, Dialog IDD_PULLFETCH: Control id 9,
+#. Dialog IDD_PUSH: Control id 9, Dialog IDD_REBASE: Control id 9, Dialog
+#. IDD_REFLOG: Control id 9, Dialog IDD_REPOSITORY_BROWSER: Control id 9,
+#. Dialog IDD_REQUESTPULL: Control id 9, Dialog IDD_RESET: Control id 9,
+#. Dialog IDD_RESOLVE: Control id 9, Dialog IDD_RESOLVESUBMODULECONFLICT:
+#. Control id 9, Dialog IDD_RESOLVE_CONFLICT: Control id 9, Dialog IDD_REVERT:
+#. Control id 9, Dialog IDD_SENDMAIL: Control id 9, Dialog
+#. IDD_SETTINGSBUGTRAQADV: Control id 9, Dialog IDD_SETTINGSHOOKCONFIG:
+#. Control id 9, Dialog IDD_STASH: Control id 9, Dialog IDD_SUBMODULE_ADD:
+#. Control id 9, Dialog IDD_SUBMODULE_UPDATE: Control id 9, Dialog
+#. IDD_SVNDCOMMITTYPE: Control id 9, Dialog IDD_SYNC: Control id 9,
+#. IDS_MSGBOX_HELP)
 msgid "Help"
 msgstr "ヘルプ"
 
@@ -5702,6 +5755,10 @@ msgstr "ID:32817:V   +W"
 #. Accelerator Entry for Menu ID:32818; 'Fit image &heights\tH'
 msgid "ID:32818:V   +H"
 msgstr "ID:32818:V   +H"
+
+#. Accelerator Entry for Menu ID:32819; '&Dark Mode\tD'
+msgid "ID:32819:V   +D"
+msgstr "ID:32819:V   +D"
 
 #. Accelerator Entry for Menu ID:32822; ''
 msgid "ID:32822:V C +F"
@@ -6260,9 +6317,25 @@ msgstr "朝鮮語"
 msgid "L"
 msgstr "L"
 
-#. Resource IDs: (Dialog IDD_CLONE: Control id 1847)
+#. Resource IDs: (Dialog IDD_CLONE: Control id 1847, IDS_MENULFS)
 msgid "LFS"
 msgstr "LFS"
+
+#. Resource IDs: (IDS_PROGRS_TITLE_LFS_LOCK)
+msgid "LFS Lock"
+msgstr "LFSロック"
+
+#. Resource IDs: (IDS_STATUSLIST_COLLFSLOCK)
+msgid "LFS Lock Owner"
+msgstr "LFSロック保持者"
+
+#. Resource IDs: (Dialog IDD_LFS_LOCKS: Control id 176)
+msgid "LFS Locks"
+msgstr "LFSロック"
+
+#. Resource IDs: (IDS_PROGRS_TITLE_LFS_UNLOCK)
+msgid "LFS Unlock"
+msgstr "LFSロック解除"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_3: Control id 65535)
 msgid "LINE1"
@@ -6299,6 +6372,10 @@ msgstr "ライン8"
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 65535)
 msgid "Language:"
 msgstr "言語:"
+
+#. Resource IDs: (IDS_MENUDESCLFS)
+msgid "Large file storage"
+msgstr "Large file storage (大容量ファイルストレージ)"
 
 #. Resource IDs: (IDS_LAST_N_COMMITS)
 #, c-format
@@ -6493,6 +6570,14 @@ msgstr "位置バー"
 msgid "Locator bar"
 msgstr "位置バー"
 
+#. Resource IDs: (IDS_MENULFSLOCK, IDS_PROGRS_CMD_LFS_LOCK)
+msgid "Lock"
+msgstr "ロック"
+
+#. Resource IDs: (IDS_MENUDESCLFSLOCK)
+msgid "Locks a file using LFS"
+msgstr "LFSを用いてファイルをロックする"
+
 #. Resource IDs: (Dialog IDD_SETTINGSTBLAME: Control id 65535, IDS_LOG)
 msgid "Log"
 msgstr "ログ"
@@ -6592,6 +6677,11 @@ msgstr "このブロックをマークする"
 #. Resource IDs: (IDS_ASKFORSAVE_MARKEDBLOCKS)
 msgid "Marked Blocks"
 msgstr "マークされたブロック"
+
+#. Resource IDs: (IDS_INDICATOR_MARKEDWORDCOUNT)
+#, c-format
+msgid "Marked words: %s"
+msgstr "マークされた単語の数: %s"
 
 #. Resource IDs: (cmdMarkResolved)
 msgid ""
@@ -7089,8 +7179,10 @@ msgid ""
 msgstr "もしあなたが、自動保存されたドキュメントの復元を選択する場合は、オリジナルのドキュメントを上書きするために明示的に保存処理を行う必要がある事に注意してください。なお、選択しなかった場合は、自動保存されたドキュメントは削除されます。"
 
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 65535)
-msgid "Note: These settings also apply to the Patch Viewer dialog."
-msgstr "注意: この設定は、パッチビューアーダイアログにも適用されます"
+msgid ""
+"Note: These settings also apply to the Patch Viewer dialog.\n"
+"To select whether you would like to use the build-in or any alterative diff viewer program go to \"Diff Viewer\" preferences section in the leftward tree."
+msgstr "注：これらの設定は、パッチビューアダイアログにも適用されます。\nビルトインの差分ビューアを使用するか、代わりの差分ビューアを使用するかを選択するには、左側のツリーの「差分ビューア」設定セクションを選択してください。"
 
 #. Resource IDs: (Dialog IDD_REVERT: Control id 1481)
 msgid "Note: the folder contains unversioned items"
@@ -7895,6 +7987,10 @@ msgstr "プッシュ(&H)..."
 #. 1612)
 msgid "Push"
 msgstr "プッシュ"
+
+#. Resource IDs: (Dialog IDD_PUSH: Control id 1492)
+msgid "Push &option:"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINREMOTE: Control id 1786)
 msgid "Push Default"
@@ -9035,7 +9131,7 @@ msgstr "追跡するブランチを選択"
 
 #. Resource IDs: (IDS_SETTINGS_SELECTDIFFVIEWER)
 msgid "Select viewer for diff-files"
-msgstr "ファイルの差分を表示するビューアーを選択"
+msgstr "ファイルの差分を表示するビューアを選択"
 
 #. Resource IDs: (IDS_ASKFORSAVEAS_MORE)
 msgid "Select what file you want to save as"
@@ -9048,10 +9144,10 @@ msgid ""
 msgstr "どのファイルを名前を付けて保存するか選択してください\n注意: 未解決の競合があります!"
 
 #. Resource IDs: (Dialog IDD_ADD: Control id 1067, Dialog IDD_DELETEREMOTETAG:
-#. Control id 1067, Dialog IDD_RESOLVE: Control id 1067, Dialog IDD_REVERT:
-#. Control id 1067, Dialog IDD_SETTINGSEXTMENU: Control id 1067, Dialog
-#. IDD_SETTINGSLOOKANDFEEL: Control id 1067, Dialog IDD_SUBMODULE_UPDATE:
-#. Control id 1067)
+#. Control id 1067, Dialog IDD_LFS_LOCKS: Control id 1067, Dialog IDD_RESOLVE:
+#. Control id 1067, Dialog IDD_REVERT: Control id 1067, Dialog
+#. IDD_SETTINGSEXTMENU: Control id 1067, Dialog IDD_SETTINGSLOOKANDFEEL:
+#. Control id 1067, Dialog IDD_SUBMODULE_UPDATE: Control id 1067)
 msgid "Select/deselect &all"
 msgstr "すべてを選択/解除(&A)"
 
@@ -9340,6 +9436,10 @@ msgstr "ラベルの付いたコミットのみ(&B)"
 msgid "Show linenumber&s"
 msgstr "行番号を表示する(&S)"
 
+#. Resource IDs: (IDS_MENULFSLOCKS)
+msgid "Show locked files"
+msgstr "ロックされたファイルを表示"
+
 #. Resource IDs: (Dialog IDD_COMMITISONREFS: Control id 1132, Dialog
 #. IDD_DIFFFILES: Control id 1132, Dialog IDD_DIFFSUBMODULE: Control id 1132,
 #. Dialog IDD_DIFFSUBMODULE: Control id 1695, Dialog
@@ -9479,6 +9579,10 @@ msgstr "%1!ld! 件のリビジョンを表示中(リビジョン %2!s! から %3
 #. Resource IDs: (IDS_MENUDESCREVISIONGRAPH)
 msgid "Shows a graphical representation of copies/tags/branches"
 msgstr "複製/タグ/ブランチの関連をグラフィカルに表示"
+
+#. Resource IDs: (IDS_MENUDESCLFSLOCKS)
+msgid "Shows a list of all files locked using LFS"
+msgstr "LFSを用いたファイルロックの一覧を表示する"
 
 #. Resource IDs: (IDS_MENUDESCSHOWCHANGED)
 msgid "Shows all files which were changed since the last commit."
@@ -10680,7 +10784,7 @@ msgid ""
 "/overlay\t\tto enable overlay mode\n"
 "/fit\t\tto fit the images sizes\n"
 "/showinfo\t\tto show the image info boxes"
-msgstr "TortoiseGitIDiff: TortoiseSVNの画像差分ビュアー\n\n利用可能なコマンドラインパラメーター:\n/left:\"左の画像のパス\"\n/lefttitle:\"左の画像のタイトル\"\n/right:\"右の画像のパス\"\n/righttitle:\"右の画像のタイトル\"\n/overlay\t\tオーバーレイモードを有効\n/fit\t\tイメージサイズに合わせる\n/showinfo\t\t画像の情報ボックスを表示"
+msgstr "TortoiseGitIDiff: TortoiseSVNの画像差分ビューア\n\n利用可能なコマンドラインパラメーター:\n/left:\"左の画像のパス\"\n/lefttitle:\"左の画像のタイトル\"\n/right:\"右の画像のパス\"\n/righttitle:\"右の画像のタイトル\"\n/overlay\t\tオーバーレイモードを有効\n/fit\t\tイメージサイズに合わせる\n/showinfo\t\t画像の情報ボックスを表示"
 
 #. Resource IDs: (100, 32897, AFX_IDS_APP_TITLE, Dialog IDD_OPENDLG: Control
 #. id 130, IDS_APPNAME)
@@ -10780,7 +10884,7 @@ msgstr "行末の空白を削除"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSMERGE: Control id 1853)
 msgid "Trust the exitcode of the external mege tool for auto resolving"
-msgstr ""
+msgstr "自動的な解決のために外部マージツールの終了コードを信頼する"
 
 #. Resource IDs: (IDS_SVNERR_CLEANUPORFRESHCHECKOUT)
 msgid "Try a 'Cleanup'. If that doesn't work you need to do a fresh checkout."
@@ -10932,6 +11036,14 @@ msgstr "管理外"
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 65535)
 msgid "Unknown ref-types"
 msgstr "未知のrefの種類"
+
+#. Resource IDs: (IDS_MENULFSUNLOCK, IDS_PROGRS_CMD_LFS_UNLOCK)
+msgid "Unlock"
+msgstr "ロック解除"
+
+#. Resource IDs: (IDS_MENUDESCLFSUNLOCK)
+msgid "Unlocks a file using LFS"
+msgstr "LFSを用いたファイルロックを解除する"
 
 #. Resource IDs: (IDS_VIEWCONTEXTMENU_UNMARKBLOCK)
 msgid "Unmark this block"
@@ -11094,6 +11206,10 @@ msgstr "共通の祖先を使用 (A...B diff)"
 #. Resource IDs: (IDS_SMTP_CONFIGURED)
 msgid "Use configured server"
 msgstr "設定済サーバーを使用"
+
+#. Resource IDs: (Dialog IDD_SETCOLORPAGE: Control id 1513)
+msgid "Use dark mode"
+msgstr "ダークテーマを使う"
 
 #. Resource IDs: (ID_EDIT_USELEFTBLOCK - Menu,
 #. cmdUseLeftBlock_LabelTitle_RESID)
@@ -11364,7 +11480,7 @@ msgstr "パッチを表示>>"
 
 #. Resource IDs: (IDS_LOG_POPUP_VIEWPATHREV)
 msgid "View revision for path in &webviewer"
-msgstr "パスのリビジョンをウェブビューアーで表示(&W)"
+msgstr "パスのリビジョンをウェブビューアで表示(&W)"
 
 #. Resource IDs: (IDS_LOG_POPUP_VIEWREV)
 msgid "View revision in alternative editor"
@@ -11419,7 +11535,7 @@ msgid ""
 "Was the merge of\n"
 "%s\n"
 "successful?"
-msgstr ""
+msgstr "%s\nのマージは成功しましたか?"
 
 #. Resource IDs: (IDS_FIRSTSTART_HINT4)
 msgid ""
@@ -11618,6 +11734,12 @@ msgstr "このプロパティはファイルに対してのみ設定可能であ
 msgid "You cannot change the type of this ref with a rename."
 msgstr "リネームでリファレンス(ref)のタイプを変えることは出来ません。"
 
+#. Resource IDs: (IDS_COMMITDLG_NOTEDITEDTEMPLATE)
+msgid ""
+"You did not edit the message template.\n"
+"Proceed without individual commit message?"
+msgstr "メッセージはテンプレートから変更されていません。\n個別のコミットメッセージなしで続行しますか？"
+
 #. Resource IDs: (IDS_PROC_OLDMSYSGIT)
 #, c-format
 msgid ""
@@ -11648,7 +11770,7 @@ msgid ""
 "You have selected %d items to show the diff for.\n"
 "For every of these items a new instance of the diff viewer will be started.\n"
 "Do you really want to show the diff for so many items at once?"
-msgstr "%d 件のファイルを選択して差分表示しようとしています。それぞれのファイル毎に新しく差分ビュアーが起動します。本当に、そんなに沢山のファイルの差分を一度に表示してよろしいですか？"
+msgstr "%d 件のファイルを選択して差分表示しようとしています。それぞれのファイル毎に新しく差分ビューアが起動します。本当に、そんなに沢山のファイルの差分を一度に表示してよろしいですか？"
 
 #. Resource IDs: (IDS_COMMITDLG_NOISSUEWARNING)
 msgid ""
@@ -12011,6 +12133,18 @@ msgstr "manager - 現在のWindowsユーザー"
 #. Resource IDs: (IDS_LOCAL_GCM)
 msgid "manager - this repository only"
 msgstr "manager - このレポジトリのみ"
+
+#. Resource IDs: (IDS_SYSTEM_GCMCORE)
+msgid "manager-core - all Windows users"
+msgstr ""
+
+#. Resource IDs: (IDS_GLOBAL_GCMCORE)
+msgid "manager-core - current Windows user"
+msgstr ""
+
+#. Resource IDs: (IDS_LOCAL_GCMCORE)
+msgid "manager-core - this repository only"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1494)
 msgid "master"

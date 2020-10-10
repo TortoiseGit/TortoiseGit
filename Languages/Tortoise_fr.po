@@ -27,12 +27,13 @@
 # Groog <florentzimolo@gmail.com>, 2014
 # guillaumefrancois55 <guillaume.francois55@gmail.com>, 2011
 # Jack, 2015
+# Jack, 2020
 # jeremy shields <jeremy.shields@orange.fr>, 2016
 # Jonathan GRIFFON <kugan49@gmail.com>, 2017-2020
 # Kegnarok <kegnarok.rm@laposte.net>, 2013
 # Kerzzy <6greenday6@gmail.com>, 2015
 # Le Gall Nicolas <contact@nlegall.fr>, 2014
-# Librius <inactive+Librius@transifex.com>, 2014
+# 556b8933f5444413a6e3eb8ce0499357_237b366 <dc7a580f2694f34a68331c39892a2ae0_170598>, 2014
 # Linus Fredrich Levisse <linukcs@live.fr>, 2011
 # lkppo, 2012
 # Lübbe Onken <l.onken@rac.de>, 2011
@@ -52,19 +53,19 @@
 # Raphaël MICHEL <raphael.michel@tymsoft.fr>, 2015-2016,2018
 # ShevAbam, 2015
 # peter griffin <softy@yopmail.com>, 2013
-# lkppo, 2012
+# 4a14a73d523224463300dea5e0502458_3dab472, 2012
 # Stéphane Aulery <saulery@legtux.org>, 2016-2020
 # Sven Strickroth <sstrickroth@googlemail.com>, 2012-2014
 # ykatchou <ykatchou@gmail.com>, 2012-2013
-# Yohann Berger <inactive+yberger@transifex.com>, 2015
-# Yohann Berger <inactive+yberger@transifex.com>, 2015
+# d25d9e2161b89af316b61f449106a075_fbd05c9 <8465a6d6bba4183be55c93639397a626_353654>, 2015
+# d25d9e2161b89af316b61f449106a075_fbd05c9 <8465a6d6bba4183be55c93639397a626_353654>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2020-02-21 08:01+0000\n"
-"Last-Translator: Jonathan GRIFFON <kugan49@gmail.com>\n"
+"PO-Revision-Date: 2020-10-07 09:37+0000\n"
+"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: French (http://www.transifex.com/lznuaa/tortoisegit/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -127,12 +128,12 @@ msgstr "%1 n'a pas été trouvé."
 #. Resource IDs: (IDS_DAY_AGO)
 #, c-format
 msgid "%1!d! Day ago"
-msgstr "%1!d! jour"
+msgstr "Il y a %1!d! jour"
 
 #. Resource IDs: (IDS_DAYS_AGO)
 #, c-format
 msgid "%1!d! Days ago"
-msgstr "%1!d! jours"
+msgstr "Il y a %1!d! jours"
 
 #. Resource IDs: (IDS_HOUR_AGO)
 #, c-format
@@ -504,7 +505,7 @@ msgstr "&Fermer"
 #. IDD_NEW_BRANCH_TAG: Control id 1514, Dialog IDD_RESET: Control id 1514,
 #. Dialog IDD_SYNC: Control id 1625)
 msgid "&Commit"
-msgstr "&Livrer"
+msgstr "&Commit"
 
 #. Resource IDs: (IDS_MENUCOMMITSUBMODULE)
 msgid "&Commit submodule..."
@@ -552,6 +553,14 @@ msgstr "Aide d’&identification :"
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 1662)
 msgid "&Custom"
 msgstr "&Personnalisé"
+
+#. Resource IDs: (ID_VIEW_DARKMODE - Menu)
+msgid "&Dark Mode"
+msgstr "Thème &sombre"
+
+#. Resource IDs: (ID_VIEW_DARKMODE - Menu)
+msgid "&Dark Mode\tD"
+msgstr "Thème &sombre\tD"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1269)
 msgid "&Default"
@@ -1365,6 +1374,10 @@ msgstr "Diff &unifiée avec"
 msgid "&Unknown drives"
 msgstr "&Disques inconnus"
 
+#. Resource IDs: (Dialog IDD_LFS_LOCKS: Control id 32927)
+msgid "&Unlock"
+msgstr "&Débloquer"
+
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1386)
 msgid "&Up"
 msgstr "&Haut"
@@ -1718,7 +1731,7 @@ msgstr "Ajouter"
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1482)
 msgid "Add &Signed-off-by"
-msgstr "Ajouter &Signé-de-par"
+msgstr "Ajouter &Signed-off-by"
 
 #. Resource IDs: (IDS_SCIEDIT_ADDWORD)
 #, c-format
@@ -2036,7 +2049,7 @@ msgstr "Arranger &verticalement\tV"
 
 #. Resource IDs: (ID_VIEW_ARROW_POINT_TO_MERGES - Menu)
 msgid "Arrows point towards merges"
-msgstr ""
+msgstr "Les flèches pointent vers les fusions"
 
 #. Resource IDs: (IDS_SVNACTION_CHANGELISTSET)
 #, c-format
@@ -2154,7 +2167,7 @@ msgstr "Fin de ligne auto :"
 
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 65535)
 msgid "Auto&CrLf:"
-msgstr ""
+msgstr "Auto&CrLf :"
 
 #. Resource IDs: (IDS_PROGRS_CLOSE_NOCONFLICTS)
 msgid "Auto-close if no conflicts"
@@ -2299,7 +2312,7 @@ msgstr "Fusionner la transparence"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSMERGE: Control id 1852)
 msgid "Block TortoiseGit while executing the external merge tool"
-msgstr ""
+msgstr "Bloquer TortoiseGit durant l'exécution de l'outil de fusion externe."
 
 #. Resource IDs: (cmdGroupBlocks_LabelTitle_RESID)
 msgid "Blocks"
@@ -2501,25 +2514,26 @@ msgstr "Impossible de copier \n%1!s!\nvers\n%2!s!"
 #. IDD_GITSWITCH: Control id 2, Dialog IDD_GOTO: Control id 2, Dialog
 #. IDD_GOTODLG: Control id 2, Dialog IDD_HISTORYDLG: Control id 2, Dialog
 #. IDD_IGNORE: Control id 2, Dialog IDD_INPUTDLG: Control id 2, Dialog
-#. IDD_LOGMESSAGE: Control id 2, Dialog IDD_LOGORDERING: Control id 2, Dialog
-#. IDD_MERGE: Control id 2, Dialog IDD_MERGEABORT: Control id 2, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 2, Dialog IDD_OPEN: Control id 2, Dialog
-#. IDD_OPENDLG: Control id 2, Dialog IDD_PROMPT: Control id 2, Dialog
-#. IDD_PULLFETCH: Control id 2, Dialog IDD_PUSH: Control id 2, Dialog
-#. IDD_REFLOG: Control id 2, Dialog IDD_REGEXFILTER: Control id 2, Dialog
-#. IDD_REGEXFILTERS: Control id 2, Dialog IDD_RENAME: Control id 2, Dialog
-#. IDD_REPOSITORY_BROWSER: Control id 2, Dialog IDD_REQUESTPULL: Control id 2,
-#. Dialog IDD_RESET: Control id 2, Dialog IDD_RESOLVE: Control id 2, Dialog
-#. IDD_REVERT: Control id 2, Dialog IDD_REVGRAPHFILTER: Control id 2, Dialog
-#. IDD_SELECTREMOTEREF: Control id 2, Dialog IDD_SENDMAIL: Control id 2,
-#. Dialog IDD_SETTINGSBUGTRAQADV: Control id 2, Dialog IDD_SETTINGSHOOKCONFIG:
-#. Control id 2, Dialog IDD_SETTINGSPROGSADV: Control id 2, Dialog
-#. IDD_SIMPLEPROMPT: Control id 2, Dialog IDD_STASH: Control id 2, Dialog
-#. IDD_SUBMODULE_ADD: Control id 2, Dialog IDD_SUBMODULE_UPDATE: Control id 2,
-#. Dialog IDD_SVNDCOMMITTYPE: Control id 2, Dialog IDD_SVNIGNORE: Control id
-#. 2, Dialog IDD_SVNPROGRESS: Control id 2, Dialog IDD_TOOLASSOC: Control id
-#. 2, Dialog IDD_URL: Control id 2, Dialog IDD_USER_PASSWD: Control id 2,
-#. IDS_MSGBOX_CANCEL, IDS_PROC_OVERWRITEEXPORT_CANCEL)
+#. IDD_LFS_LOCKS: Control id 2, Dialog IDD_LOGMESSAGE: Control id 2, Dialog
+#. IDD_LOGORDERING: Control id 2, Dialog IDD_MERGE: Control id 2, Dialog
+#. IDD_MERGEABORT: Control id 2, Dialog IDD_NEW_BRANCH_TAG: Control id 2,
+#. Dialog IDD_OPEN: Control id 2, Dialog IDD_OPENDLG: Control id 2, Dialog
+#. IDD_PROMPT: Control id 2, Dialog IDD_PULLFETCH: Control id 2, Dialog
+#. IDD_PUSH: Control id 2, Dialog IDD_REFLOG: Control id 2, Dialog
+#. IDD_REGEXFILTER: Control id 2, Dialog IDD_REGEXFILTERS: Control id 2,
+#. Dialog IDD_RENAME: Control id 2, Dialog IDD_REPOSITORY_BROWSER: Control id
+#. 2, Dialog IDD_REQUESTPULL: Control id 2, Dialog IDD_RESET: Control id 2,
+#. Dialog IDD_RESOLVE: Control id 2, Dialog IDD_REVERT: Control id 2, Dialog
+#. IDD_REVGRAPHFILTER: Control id 2, Dialog IDD_SELECTREMOTEREF: Control id 2,
+#. Dialog IDD_SENDMAIL: Control id 2, Dialog IDD_SETTINGSBUGTRAQADV: Control
+#. id 2, Dialog IDD_SETTINGSHOOKCONFIG: Control id 2, Dialog
+#. IDD_SETTINGSPROGSADV: Control id 2, Dialog IDD_SIMPLEPROMPT: Control id 2,
+#. Dialog IDD_STASH: Control id 2, Dialog IDD_SUBMODULE_ADD: Control id 2,
+#. Dialog IDD_SUBMODULE_UPDATE: Control id 2, Dialog IDD_SVNDCOMMITTYPE:
+#. Control id 2, Dialog IDD_SVNIGNORE: Control id 2, Dialog IDD_SVNPROGRESS:
+#. Control id 2, Dialog IDD_TOOLASSOC: Control id 2, Dialog IDD_URL: Control
+#. id 2, Dialog IDD_USER_PASSWD: Control id 2, IDS_MSGBOX_CANCEL,
+#. IDS_PROC_OVERWRITEEXPORT_CANCEL)
 msgid "Cancel"
 msgstr "Annuler"
 
@@ -2950,6 +2964,11 @@ msgstr "Colorer par age, de façon &continuelle"
 #. 65535)
 msgid "Colors"
 msgstr "Couleurs"
+
+#. Resource IDs: (IDS_INDICATOR_COLUMN)
+#, c-format
+msgid "Column: %d"
+msgstr "Colonne : %d"
 
 #. Resource IDs: (IDS_COMBINE_TO_ONE)
 msgid "Com&bine to one commit"
@@ -3652,6 +3671,16 @@ msgstr "Type de DCommit"
 #. Resource IDs: (IDS_MENUDAEMON)
 msgid "Daemon"
 msgstr "Service"
+
+#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 1699)
+msgid "Dark theme"
+msgstr "Thème sombre"
+
+#. Resource IDs: (IDS_DARKTHEME_TT)
+msgid ""
+"Dark theme requires at least Win10 1803, and it must be enabled in the "
+"Windows system settings."
+msgstr "Le thème sombre nécessite au moins Win 10 v. 1803 et doit être activé dans les paramètres système de Windows."
 
 #. Resource IDs: (IDS_LOG_DATE, IDS_STATUSLIST_COLDATE)
 msgid "Date"
@@ -4994,6 +5023,26 @@ msgstr "Filtré"
 msgid "Find"
 msgstr "Rechercher"
 
+#. Resource IDs: (cmdFindNext_LabelTitle_RESID)
+msgid "Find Next"
+msgstr "Résultat suivant"
+
+#. Resource IDs: (cmdFindPrev_LabelTitle_RESID)
+msgid "Find Previous"
+msgstr "Résultat précédent"
+
+#. Resource IDs: (cmdFindPrev)
+msgid ""
+"Find the last occurrence of the selected text\n"
+"Search Previous"
+msgstr "Recherche l'occurrence précédente du texte sélectionné\nRechercher la précédente"
+
+#. Resource IDs: (cmdFindNext)
+msgid ""
+"Find the next occurrence of the selected text\n"
+"Search Next"
+msgstr "Recherche l'occurrence suivante du texte sélectionné\nRechercher la suivante"
+
 #. Resource IDs: (57636, cmdFind)
 msgid ""
 "Find the specified text\n"
@@ -5123,6 +5172,10 @@ msgid ""
 "Force the rebase even if the current branch is a descendant of the commit you are rebasing onto.\n"
 "Normally the command will exit with the message \"Current branch is up to date\" in such a situation."
 msgstr "Forcer le rebase même si la branche courante est un descendant de la livraison sur laquelle vous rebasez.\nNormalement, la commande se terminera avec le message \"La branche courante est à jour\" dans une telle situation."
+
+#. Resource IDs: (IDS_PROGS_LFS_FORCEUNLOCK)
+msgid "Force unlock"
+msgstr "Forcer le déblocage"
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1796)
 msgid "Force: May discard"
@@ -5530,20 +5583,21 @@ msgstr "Hébreu"
 #. Control id 9, Dialog IDD_CLONE: Control id 9, Dialog IDD_COMMITDLG: Control
 #. id 9, Dialog IDD_CREATEREPO: Control id 9, Dialog IDD_EXPORT: Control id 9,
 #. Dialog IDD_FORMAT_PATCH: Control id 9, Dialog IDD_GITSWITCH: Control id 9,
-#. Dialog IDD_IGNORE: Control id 9, Dialog IDD_LOGMESSAGE: Control id 9,
-#. Dialog IDD_MERGE: Control id 9, Dialog IDD_MERGEABORT: Control id 9, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 9, Dialog IDD_OPENDLG: Control id 9, Dialog
-#. IDD_PULLFETCH: Control id 9, Dialog IDD_PUSH: Control id 9, Dialog
-#. IDD_REBASE: Control id 9, Dialog IDD_REFLOG: Control id 9, Dialog
-#. IDD_REPOSITORY_BROWSER: Control id 9, Dialog IDD_REQUESTPULL: Control id 9,
-#. Dialog IDD_RESET: Control id 9, Dialog IDD_RESOLVE: Control id 9, Dialog
-#. IDD_RESOLVESUBMODULECONFLICT: Control id 9, Dialog IDD_RESOLVE_CONFLICT:
-#. Control id 9, Dialog IDD_REVERT: Control id 9, Dialog IDD_SENDMAIL: Control
-#. id 9, Dialog IDD_SETTINGSBUGTRAQADV: Control id 9, Dialog
-#. IDD_SETTINGSHOOKCONFIG: Control id 9, Dialog IDD_STASH: Control id 9,
-#. Dialog IDD_SUBMODULE_ADD: Control id 9, Dialog IDD_SUBMODULE_UPDATE:
-#. Control id 9, Dialog IDD_SVNDCOMMITTYPE: Control id 9, Dialog IDD_SYNC:
-#. Control id 9, IDS_MSGBOX_HELP)
+#. Dialog IDD_IGNORE: Control id 9, Dialog IDD_LFS_LOCKS: Control id 9, Dialog
+#. IDD_LOGMESSAGE: Control id 9, Dialog IDD_MERGE: Control id 9, Dialog
+#. IDD_MERGEABORT: Control id 9, Dialog IDD_NEW_BRANCH_TAG: Control id 9,
+#. Dialog IDD_OPENDLG: Control id 9, Dialog IDD_PULLFETCH: Control id 9,
+#. Dialog IDD_PUSH: Control id 9, Dialog IDD_REBASE: Control id 9, Dialog
+#. IDD_REFLOG: Control id 9, Dialog IDD_REPOSITORY_BROWSER: Control id 9,
+#. Dialog IDD_REQUESTPULL: Control id 9, Dialog IDD_RESET: Control id 9,
+#. Dialog IDD_RESOLVE: Control id 9, Dialog IDD_RESOLVESUBMODULECONFLICT:
+#. Control id 9, Dialog IDD_RESOLVE_CONFLICT: Control id 9, Dialog IDD_REVERT:
+#. Control id 9, Dialog IDD_SENDMAIL: Control id 9, Dialog
+#. IDD_SETTINGSBUGTRAQADV: Control id 9, Dialog IDD_SETTINGSHOOKCONFIG:
+#. Control id 9, Dialog IDD_STASH: Control id 9, Dialog IDD_SUBMODULE_ADD:
+#. Control id 9, Dialog IDD_SUBMODULE_UPDATE: Control id 9, Dialog
+#. IDD_SVNDCOMMITTYPE: Control id 9, Dialog IDD_SYNC: Control id 9,
+#. IDS_MSGBOX_HELP)
 msgid "Help"
 msgstr "Aide"
 
@@ -5721,6 +5775,10 @@ msgstr "ID:32817:V +L"
 #. Accelerator Entry for Menu ID:32818; 'Fit image &heights\tH'
 msgid "ID:32818:V   +H"
 msgstr "ID:32818:V +H"
+
+#. Accelerator Entry for Menu ID:32819; '&Dark Mode\tD'
+msgid "ID:32819:V   +D"
+msgstr "ID:32819:V   +D"
 
 #. Accelerator Entry for Menu ID:32822; ''
 msgid "ID:32822:V C +F"
@@ -6188,13 +6246,13 @@ msgstr "Insérer le presse papiers\nColler"
 msgid ""
 "Instead of pointing the newly created HEAD to the branch pointed to by the "
 "cloned repository’s HEAD, point to specific branch instead."
-msgstr ""
+msgstr "Au lieu de pointer le HEAD nouvellement créé vers la branche pointée par le HEAD du dépôt cloné, pointez plutôt sur une branche spécifique."
 
 #. Resource IDs: (IDS_CLONE_ORIGIN_NAME_TT)
 msgid ""
 "Instead of using the remote name \"origin\" to keep track of the upstream "
 "repository, use the specific name."
-msgstr ""
+msgstr "Au lieu d'utiliser le nom distant \"origin\" pour traquer le dépôt amont, utilisez un nom spécifique."
 
 #. Resource IDs: (AFX_IDP_FAILED_MEMORY_ALLOC)
 msgid "Insufficient memory to perform operation."
@@ -6279,9 +6337,25 @@ msgstr "Coréen"
 msgid "L"
 msgstr "L"
 
-#. Resource IDs: (Dialog IDD_CLONE: Control id 1847)
+#. Resource IDs: (Dialog IDD_CLONE: Control id 1847, IDS_MENULFS)
 msgid "LFS"
 msgstr "LFS"
+
+#. Resource IDs: (IDS_PROGRS_TITLE_LFS_LOCK)
+msgid "LFS Lock"
+msgstr "Blocage LFS"
+
+#. Resource IDs: (IDS_STATUSLIST_COLLFSLOCK)
+msgid "LFS Lock Owner"
+msgstr "Blocage Propriétaire LFS"
+
+#. Resource IDs: (Dialog IDD_LFS_LOCKS: Control id 176)
+msgid "LFS Locks"
+msgstr "Blocages LFS"
+
+#. Resource IDs: (IDS_PROGRS_TITLE_LFS_UNLOCK)
+msgid "LFS Unlock"
+msgstr "Débloquer LFS"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_3: Control id 65535)
 msgid "LINE1"
@@ -6318,6 +6392,10 @@ msgstr "LIGNE8"
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 65535)
 msgid "Language:"
 msgstr "Langue"
+
+#. Resource IDs: (IDS_MENUDESCLFS)
+msgid "Large file storage"
+msgstr "Stockage Fichier Volumineux"
 
 #. Resource IDs: (IDS_LAST_N_COMMITS)
 #, c-format
@@ -6512,6 +6590,14 @@ msgstr "Barre localisateur"
 msgid "Locator bar"
 msgstr "Barre de localisation"
 
+#. Resource IDs: (IDS_MENULFSLOCK, IDS_PROGRS_CMD_LFS_LOCK)
+msgid "Lock"
+msgstr "Bloquer"
+
+#. Resource IDs: (IDS_MENUDESCLFSLOCK)
+msgid "Locks a file using LFS"
+msgstr "Boquer un fichier en utilisant LSF"
+
 #. Resource IDs: (Dialog IDD_SETTINGSTBLAME: Control id 65535, IDS_LOG)
 msgid "Log"
 msgstr "Journal"
@@ -6611,6 +6697,11 @@ msgstr "Marquer ce bloc"
 #. Resource IDs: (IDS_ASKFORSAVE_MARKEDBLOCKS)
 msgid "Marked Blocks"
 msgstr "Blocs marqués"
+
+#. Resource IDs: (IDS_INDICATOR_MARKEDWORDCOUNT)
+#, c-format
+msgid "Marked words: %s"
+msgstr "Mots marqués : %s"
 
 #. Resource IDs: (cmdMarkResolved)
 msgid ""
@@ -6928,7 +7019,7 @@ msgstr "PAs de préfixes a/ et b/"
 msgid ""
 "No checkout of HEAD is performed after the clone is complete.\n"
 "This makes the working tree empty."
-msgstr ""
+msgstr "Aucun checkout de HEAD n'est fait après un clonage.\nCela donne une arborescence vide."
 
 #. Resource IDs: (IDS_ERR_NOCOMMAND)
 msgid ""
@@ -7108,8 +7199,10 @@ msgid ""
 msgstr "Notez que si vous choisissez de récupérer les documents automatiquement sauvegardés, vous devez explicitement les sauvegarder afin d'écraser les documents originaux. Si vous choisissez de ne pas récupérer les versions automatiquement sauvegardées, elles seront supprimées."
 
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 65535)
-msgid "Note: These settings also apply to the Patch Viewer dialog."
-msgstr "Note : les réglages de police de caractères affectent également TortoiseUDiff"
+msgid ""
+"Note: These settings also apply to the Patch Viewer dialog.\n"
+"To select whether you would like to use the build-in or any alterative diff viewer program go to \"Diff Viewer\" preferences section in the leftward tree."
+msgstr "Note: ces réglages s'appliquent aussi à la fenêtre de visualisation des Patchs.\nPour sélectionner de quelle manière vous voudriez utiliser la version intégrée ou un autre programme de visualisation aller à \"Visualisateur de différences\" dans les préférences dans l'arbre à gauche."
 
 #. Resource IDs: (Dialog IDD_REVERT: Control id 1481)
 msgid "Note: the folder contains unversioned items"
@@ -7673,7 +7766,7 @@ msgstr "Veuillez entrer un chemin où appliquer le script hook. Utilisez \"*\" p
 
 #. Resource IDs: (IDS_GITCHANGED_NEEDRESTART)
 msgid "Please restart TortoiseGit for the changes of git.exe to take effect."
-msgstr ""
+msgstr "Veuillez redémarrer TortoiseGit pour que les changements de git.exe prennent effet."
 
 #. Resource IDs: (IDS_FIRSTSTART_HINT3)
 msgid ""
@@ -7888,7 +7981,7 @@ msgstr "Tirer (extraire et fusionner) les commits à partir d'une branche distan
 msgid ""
 "Pull requires the selected local branch to be the current branch.\n"
 "Do you want to switch to the selected branch?"
-msgstr ""
+msgstr "Pull nécessite que la branche sélectionnée soit la branche courante.\nVoulez-vous changer de branche ?"
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 302)
 msgid "Pull/Fetch"
@@ -7914,6 +8007,10 @@ msgstr "Pousser..."
 #. 1612)
 msgid "Push"
 msgstr "Pousser"
+
+#. Resource IDs: (Dialog IDD_PUSH: Control id 1492)
+msgid "Push &option:"
+msgstr "&Option de poussée:"
 
 #. Resource IDs: (Dialog IDD_SETTINREMOTE: Control id 1786)
 msgid "Push Default"
@@ -9067,10 +9164,10 @@ msgid ""
 msgstr "Choisissez quel fichier vous voulez sauver sous\nNote: il y a des conflits non résolus!"
 
 #. Resource IDs: (Dialog IDD_ADD: Control id 1067, Dialog IDD_DELETEREMOTETAG:
-#. Control id 1067, Dialog IDD_RESOLVE: Control id 1067, Dialog IDD_REVERT:
-#. Control id 1067, Dialog IDD_SETTINGSEXTMENU: Control id 1067, Dialog
-#. IDD_SETTINGSLOOKANDFEEL: Control id 1067, Dialog IDD_SUBMODULE_UPDATE:
-#. Control id 1067)
+#. Control id 1067, Dialog IDD_LFS_LOCKS: Control id 1067, Dialog IDD_RESOLVE:
+#. Control id 1067, Dialog IDD_REVERT: Control id 1067, Dialog
+#. IDD_SETTINGSEXTMENU: Control id 1067, Dialog IDD_SETTINGSLOOKANDFEEL:
+#. Control id 1067, Dialog IDD_SUBMODULE_UPDATE: Control id 1067)
 msgid "Select/deselect &all"
 msgstr "Sélectionner / désélectionner &tout"
 
@@ -9359,6 +9456,10 @@ msgstr "Afficher uniquement les commentaires rédigés"
 msgid "Show linenumber&s"
 msgstr "Voir les numéros de ligne&s"
 
+#. Resource IDs: (IDS_MENULFSLOCKS)
+msgid "Show locked files"
+msgstr "Afficher les fichiers bloqués"
+
 #. Resource IDs: (Dialog IDD_COMMITISONREFS: Control id 1132, Dialog
 #. IDD_DIFFFILES: Control id 1132, Dialog IDD_DIFFSUBMODULE: Control id 1132,
 #. Dialog IDD_DIFFSUBMODULE: Control id 1695, Dialog
@@ -9498,6 +9599,10 @@ msgstr "Affichage de %1!ld! révision(s), de la révision %2!s! à la révision 
 #. Resource IDs: (IDS_MENUDESCREVISIONGRAPH)
 msgid "Shows a graphical representation of copies/tags/branches"
 msgstr "Afficher une courbe représentant les copies/étiquettes/branches"
+
+#. Resource IDs: (IDS_MENUDESCLFSLOCKS)
+msgid "Shows a list of all files locked using LFS"
+msgstr "Afficher la liste des fichiers bloqués utilisant LFS"
 
 #. Resource IDs: (IDS_MENUDESCSHOWCHANGED)
 msgid "Shows all files which were changed since the last commit."
@@ -9858,7 +9963,7 @@ msgstr "Sous-modules"
 
 #. Resource IDs: (IDS_CLONE_RECURSIVE_TT)
 msgid "Submodules are initialized and cloned using their default settings."
-msgstr ""
+msgstr "Les sous-modules sont initialisés et clonés en utilisant leurs paramètres par défaut."
 
 #. Resource IDs: (IDS_SUCCESS)
 msgid "Success"
@@ -9907,7 +10012,7 @@ msgstr "Échanger les contenus des vues de gauche et de droite\nÉchanger vues d
 #. Resource IDs: (IDS_PROC_SYNC_SWITCHTO)
 #, c-format
 msgid "Switch to \"%s\""
-msgstr ""
+msgstr "Basculer sur \"%s\""
 
 #. Resource IDs: (AFX_IDS_SCNEXTWINDOW)
 msgid "Switch to the next document window"
@@ -10799,7 +10904,7 @@ msgstr "découper à droite"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSMERGE: Control id 1853)
 msgid "Trust the exitcode of the external mege tool for auto resolving"
-msgstr ""
+msgstr "Faites confiance au code de sortie de l'outil de fusion externe pour la résolution automatique"
 
 #. Resource IDs: (IDS_SVNERR_CLEANUPORFRESHCHECKOUT)
 msgid "Try a 'Cleanup'. If that doesn't work you need to do a fresh checkout."
@@ -10951,6 +11056,14 @@ msgstr "Inconnu"
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 65535)
 msgid "Unknown ref-types"
 msgstr "Types de référence inconnus"
+
+#. Resource IDs: (IDS_MENULFSUNLOCK, IDS_PROGRS_CMD_LFS_UNLOCK)
+msgid "Unlock"
+msgstr "Débloquer"
+
+#. Resource IDs: (IDS_MENUDESCLFSUNLOCK)
+msgid "Unlocks a file using LFS"
+msgstr "Débloquer un fichier en utilisant LFS"
 
 #. Resource IDs: (IDS_VIEWCONTEXTMENU_UNMARKBLOCK)
 msgid "Unmark this block"
@@ -11108,11 +11221,15 @@ msgstr "Utiliser les noms des auteurs"
 
 #. Resource IDs: (IDS_COMMON_ANCESTOR)
 msgid "Use common ancestor (A...B diff)"
-msgstr ""
+msgstr "Utiliser l'ancêtre commun (A...B diff)"
 
 #. Resource IDs: (IDS_SMTP_CONFIGURED)
 msgid "Use configured server"
 msgstr "Utiliser le serveur configuré"
+
+#. Resource IDs: (Dialog IDD_SETCOLORPAGE: Control id 1513)
+msgid "Use dark mode"
+msgstr "Utiliser le thème sombre"
 
 #. Resource IDs: (ID_EDIT_USELEFTBLOCK - Menu,
 #. cmdUseLeftBlock_LabelTitle_RESID)
@@ -11438,7 +11555,7 @@ msgid ""
 "Was the merge of\n"
 "%s\n"
 "successful?"
-msgstr ""
+msgstr "La fusion de\n%s\na-t-elle était réussie ?"
 
 #. Resource IDs: (IDS_FIRSTSTART_HINT4)
 msgid ""
@@ -11477,7 +11594,7 @@ msgstr "Lors de la fermeture d'une fenêtre d'avancement avec un processus git e
 msgid ""
 "When enabled, TortoiseGit move context menu items will be available when "
 "dragging folders / files"
-msgstr "Si activé, TortoiseGit le choix de déplacement dans le menu contextuel sera disponible lors de glissement de dossiers / fichiers"
+msgstr "Si activé, le menu contextuel de déplacement d'élément de TortoiseGit sera disponible pendant un glisser-déposer de dossiers ou de fichiers"
 
 #. Resource IDs: (IDS_SORTTAGSREVERSED_TT)
 msgid ""
@@ -11636,6 +11753,12 @@ msgstr "Vous ne pouvez mettre cette propriété sur les répertoires, seulement 
 #. Resource IDs: (IDS_PROC_BROWSEREFS_NOCHANGEOFTYPE)
 msgid "You cannot change the type of this ref with a rename."
 msgstr "Vous ne pouvez pas modifier le type de cette référence avec un renommage."
+
+#. Resource IDs: (IDS_COMMITDLG_NOTEDITEDTEMPLATE)
+msgid ""
+"You did not edit the message template.\n"
+"Proceed without individual commit message?"
+msgstr "Vous n'avez pas édité le message modèle.\nContinuez sans message individuel de commit ?"
 
 #. Resource IDs: (IDS_PROC_OLDMSYSGIT)
 #, c-format
@@ -12030,6 +12153,18 @@ msgstr "Gestion - Utilisateur Windows courant"
 #. Resource IDs: (IDS_LOCAL_GCM)
 msgid "manager - this repository only"
 msgstr "Gestion - Seulement le dépôt"
+
+#. Resource IDs: (IDS_SYSTEM_GCMCORE)
+msgid "manager-core - all Windows users"
+msgstr ""
+
+#. Resource IDs: (IDS_GLOBAL_GCMCORE)
+msgid "manager-core - current Windows user"
+msgstr ""
+
+#. Resource IDs: (IDS_LOCAL_GCMCORE)
+msgid "manager-core - this repository only"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1494)
 msgid "master"
