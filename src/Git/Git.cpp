@@ -1886,6 +1886,8 @@ int CGit::GetRemoteRefs(const CString& remote, REF_VECTOR& list, bool includeTag
 			}
 			if (includeTags && includeBranches)
 				list.emplace_back(TGitRef{ ref, hash });
+			else if (includeTags && CStringUtils::EndsWith(ref, L"^{}"))
+				list.emplace_back(TGitRef{ shortname + L"^{}", hash });
 			else
 				list.emplace_back(TGitRef{ shortname, hash });
 		},
