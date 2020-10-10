@@ -40,6 +40,7 @@ call :nmake 1066 vi
 call :nmake 2052 zh_CN
 call :nmake 2070 pt_PT
 call :nmake 2074 sr@latin
+call :nmake 3098 sr@Cyrl
 goto :eof
 
 :nmake
