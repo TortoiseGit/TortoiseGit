@@ -3,7 +3,7 @@
 // Copyright (C) 2008-2020 - TortoiseGit
 
 #define TGIT_VERMAJOR		2
-#define TGIT_VERMINOR		10
+#define TGIT_VERMINOR		11
 #define TGIT_VERMICRO		0
 #define TGIT_VERBUILD		0
 #define TGIT_VERDATE		__DATE__

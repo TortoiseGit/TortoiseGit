@@ -1,5 +1,5 @@
 ﻿= Release 2.11.0 =
-Released: unreleased
+Released: 2020-10-10
 
 == Bug Fixes ==
  * Fixed issue #3593: Statistics dialog - misaligned controls
