@@ -4,7 +4,7 @@
   Copyright (c) 2003, Michael Carruth
   All rights reserved.
 
-  Adjusted by Sven Strickroth <email@cs-ware.de>, 2011-2018
+  Adjusted by Sven Strickroth <email@cs-ware.de>, 2011-2020
    * added flag to show mail compose dialog
    * make it work with 32-64bit inconsistencies (http://msdn.microsoft.com/en-us/library/dd941355.aspx)
    * auto extract filenames of attachments
@@ -90,7 +90,7 @@ public:
 
 	static BOOL DetectMailClient(CString& sMailClientName);
 	BOOL Send();
-	CString GetLastErrorMsg(){ return m_sErrorMsg; }
+	CString GetLastErrorMsg() const { return m_sErrorMsg; }
 
 protected:
 	MailAddress					m_from;

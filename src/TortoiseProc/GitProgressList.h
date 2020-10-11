@@ -63,7 +63,7 @@ public:
 	void SetItemCountTotal(long count) { if(count) m_itemCountTotal = count; }
 	void SetItemProgress(long count) { m_itemCount = count;} // do not use SetItemCount here as this overrides the ListBox method
 	bool SetBackgroundImage(UINT nID);
-	bool DidErrorsOccur() {return m_bErrorsOccurred;}
+	bool DidErrorsOccur() const { return m_bErrorsOccurred; }
 	bool			m_bErrorsOccurred;
 	CWnd			*m_pProgressLabelCtrl;
 	CWnd			*m_pInfoCtrl;
@@ -71,8 +71,8 @@ public:
 	CProgressCtrl	*m_pProgControl;
 	ProgressCommand	*m_Command;
 	void			Cancel();
-	volatile BOOL IsCancelled()	{return m_bCancelled;}
-	volatile LONG IsRunning()	{return m_bThreadRunning;}
+	volatile BOOL IsCancelled() const { return m_bCancelled; }
+	volatile LONG IsRunning() const { return m_bThreadRunning; }
 	CWinThread*				m_pThread;
 	CWnd			*m_pPostWnd;
 	bool					m_bSetTitle;
@@ -247,7 +247,7 @@ public:
 	: m_PostCmdCallback(nullptr)
 	{}
 
-	void SetPathList(CTGitPathList& pathList) { m_targetPathList = pathList; }
+	void SetPathList(const CTGitPathList& pathList) { m_targetPathList = pathList; }
 	virtual bool Run(CGitProgressList* list, CString& sWindowTitle, int& m_itemCountTotal, int& m_itemCount) = 0;
 	virtual bool ShowInfo(CString& /*info*/) { return false; }
 	virtual ~ProgressCommand() {}

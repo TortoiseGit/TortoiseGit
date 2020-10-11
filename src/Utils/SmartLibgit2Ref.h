@@ -230,7 +230,7 @@ class CAutoConfig : public CSmartLibgit2Ref<git_config, git_config_free>
 public:
 	CAutoConfig() {}
 
-	CAutoConfig(CAutoRepository &repo)
+	CAutoConfig(const CAutoRepository& repo)
 	{
 		git_repository_config(&m_Ref, repo);
 	}

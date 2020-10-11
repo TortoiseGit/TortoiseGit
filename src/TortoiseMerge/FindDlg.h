@@ -37,14 +37,14 @@ public:
 	CFindDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CFindDlg();
 	void Create(CWnd* pParent = nullptr, int id = 0);
-	bool IsTerminating() {return m_bTerminating;}
-	bool FindNext() {return m_bFindNext;}
-	bool MatchCase() {return !!m_bMatchCase;}
-	bool LimitToDiffs() {return !!m_bLimitToDiffs;}
-	bool WholeWord() {return !!m_bWholeWord;}
-	bool SearchUp() { return !!m_bSearchUp; }
-	CString GetFindString() { return m_FindCombo.GetString(); }
-	CString GetReplaceString() { return m_ReplaceCombo.GetString(); }
+	bool IsTerminating() const { return m_bTerminating; }
+	bool FindNext() const { return m_bFindNext; }
+	bool MatchCase() const { return !!m_bMatchCase; }
+	bool LimitToDiffs() const { return !!m_bLimitToDiffs; }
+	bool WholeWord() const { return !!m_bWholeWord; }
+	bool SearchUp() const { return !!m_bSearchUp; }
+	CString GetFindString() const { return m_FindCombo.GetString(); }
+	CString GetReplaceString() const { return m_ReplaceCombo.GetString(); }
 	void SetFindString(const CString& str) { if (!str.IsEmpty()) { m_FindCombo.SetWindowText(str); } }
 	void SetStatusText(const CString& str, COLORREF color = RGB(0, 0, 255));
 	void SetReadonly(bool bReadonly);

@@ -39,7 +39,7 @@ class CGitIndex
 {
 public:
 	CString    m_FileName;
-	__time64_t	m_ModifyTime;
+	mutable __time64_t	m_ModifyTime;
 	uint16_t	m_Flags;
 	uint16_t	m_FlagsExtended;
 	CGitHash	m_IndexHash;
@@ -55,14 +55,14 @@ public:
 	__time64_t  m_LastModifyTime;
 	__int64		m_LastFileSize;
 	BOOL		m_bHasConflicts;
-	inline bool	IsIgnoreCase() { return m_iIndexCaps & GIT_INDEX_CAPABILITY_IGNORE_CASE; }
+	inline bool IsIgnoreCase() const { return m_iIndexCaps & GIT_INDEX_CAPABILITY_IGNORE_CASE; }
 
 	CGitIndexList();
 	~CGitIndexList();
 
 	int ReadIndex(CString dotgitdir);
-	int GetFileStatus(const CString& gitdir, const CString& path, git_wc_status2_t& status, CGitHash* pHash = nullptr);
-	int GetFileStatus(CAutoRepository& repository, const CString& gitdir, CGitIndex& entry, git_wc_status2_t& status, __int64 time, __int64 filesize, bool isSymlink);
+	int GetFileStatus(const CString& gitdir, const CString& path, git_wc_status2_t& status, CGitHash* pHash = nullptr) const;
+	int GetFileStatus(CAutoRepository& repository, const CString& gitdir, const CGitIndex& entry, git_wc_status2_t& status, __int64 time, __int64 filesize, bool isSymlink) const;
 #ifdef GTEST_INCLUDE_GTEST_GTEST_H_
 	FRIEND_TEST(GitIndexCBasicGitWithTestRepoFixture, GetFileStatus);
 #endif
@@ -70,10 +70,10 @@ protected:
 	int		m_iIndexCaps;
 	__int64 m_iMaxCheckSize;
 	CAutoConfig config;
-	int GetFileStatus(const CString& gitdir, const CString& path, git_wc_status2_t& status, __int64 time, __int64 filesize, bool isSymlink, CGitHash* pHash = nullptr);
+	int GetFileStatus(const CString& gitdir, const CString& path, git_wc_status2_t& status, __int64 time, __int64 filesize, bool isSymlink, CGitHash* pHash = nullptr) const;
 };
 
-typedef std::shared_ptr<CGitIndexList> SHARED_INDEX_PTR;
+typedef std::shared_ptr<const CGitIndexList> SHARED_INDEX_PTR;
 typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 
 class CGitIndexFileMap:public std::map<CString, SHARED_INDEX_PTR>
@@ -179,13 +179,13 @@ public:
 
 	int ReadTree(bool ignoreCase);
 	int ReadHeadHash(const CString& gitdir);
-	bool CheckHeadUpdate();
+	bool CheckHeadUpdate() const;
 
 private:
 	int ReadTreeRecursive(git_repository& repo, const git_tree* tree, const CString& base);
 };
 
-typedef std::shared_ptr<CGitHeadFileList> SHARED_TREE_PTR;
+typedef std::shared_ptr<const CGitHeadFileList> SHARED_TREE_PTR;
 class CGitHeadFileMap:public std::map<CString,SHARED_TREE_PTR>
 {
 public:

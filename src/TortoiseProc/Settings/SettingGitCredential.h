@@ -155,7 +155,7 @@ protected:
 	virtual BOOL OnApply() override;
 
 	void EnableAdvancedOptions();
-	BOOL IsUrlExist(CString &text);
+	BOOL IsUrlExist(const CString& text);
 
 	void AddConfigType(int &index, CString text, bool add = true);
 	void AddSimpleCredential(int &index, CString text, bool add = true);

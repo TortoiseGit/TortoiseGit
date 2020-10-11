@@ -1,4 +1,4 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2006, 2008, 2010-2011, 2013, 2015 - TortoiseSVN
 
@@ -87,7 +87,7 @@ public:
 	BOOL	Init(GitPatch * pPatch, CPatchFilesDlgCallBack * pCallBack, CString sPath, CWnd * pParent);
 
 	BOOL	SetFileStatusAsPatched(CString sPath);
-	bool	HasFiles() {return m_cFileList.GetItemCount()>0;}
+	bool	HasFiles() const { return m_cFileList.GetItemCount() > 0; }
 	enum { IDD = IDD_FILEPATCHES };
 protected:
 	GitPatch *					m_pPatch;

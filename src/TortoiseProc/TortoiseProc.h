@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2016-2018 - TortoiseGit
+// Copyright (C) 2008-2013, 2016-2018, 2020 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -59,7 +59,7 @@ public:
 
 	ULONG_PTR m_gdiplusToken;
 
-	HWND GetExplorerHWND() { return ::IsWindow(hWndExplorer) ? hWndExplorer : nullptr; }
+	HWND GetExplorerHWND() const { return ::IsWindow(hWndExplorer) ? hWndExplorer : nullptr; }
 
 // Implementation
 private:

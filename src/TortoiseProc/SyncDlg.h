@@ -185,7 +185,7 @@ protected:
 	}
 
 	void AddDiffFileList(CGitStatusListCtrl *pCtrlList, CTGitPathList *pGitList,
-							CGitHash& rev1, CGitHash& rev2)
+							const CGitHash& rev1, const CGitHash& rev2)
 	{
 		g_Git.GetCommitDiffList(rev1.ToString(), rev2.ToString(), *pGitList);
 		pCtrlList->m_Rev1 = rev1;

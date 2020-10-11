@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2014, 2020 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoioseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -162,7 +162,7 @@ protected:
 	 * It must return true to prevent the default processing for the
 	 * return key. The default implementation returns false.
 	 */
-	virtual bool OnReturnKeyPressed() { return m_bWantReturn; }
+	virtual bool OnReturnKeyPressed() const { return m_bWantReturn; }
 
 protected:
 	CStringArray	m_arEntries;

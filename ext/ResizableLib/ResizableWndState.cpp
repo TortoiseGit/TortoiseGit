@@ -71,7 +71,7 @@ BOOL CResizableWndState::SaveWindowRect(LPCTSTR pszName, BOOL bRectOnly)
 	CDPIAware::Instance().UnscaleWindowPlacement(&wp);
 
 	// use workspace coordinates
-	RECT& rc = wp.rcNormalPosition;
+	const RECT& rc = wp.rcNormalPosition;
 
 	if (bRectOnly)	// save size/pos only (normal state)
 	{

@@ -43,7 +43,7 @@
 
 IMPLEMENT_DYNAMIC(CGitLogList, CHintCtrl<CListCtrl>)
 
-static bool GetFirstEntryStartingWith(STRING_VECTOR& heystack, const CString& needle, CString& result)
+static bool GetFirstEntryStartingWith(const STRING_VECTOR& heystack, const CString& needle, CString& result)
 {
 	auto it = std::find_if(heystack.cbegin(), heystack.cend(), [&needle](const CString& entry) { return CStringUtils::StartsWith(entry, needle); });
 	if (it == heystack.cend())
@@ -157,7 +157,7 @@ int CGitLogList::CherryPickFrom(CString from, CString to)
 	return 0;
 }
 
-void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CMenu* popmenu, MAP_HASH_NAME& hashMap)
+void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CMenu* popmenu, const MAP_HASH_NAME& hashMap)
 {
 	POSITION pos = GetFirstSelectedItemPosition();
 	int indexNext = GetNextSelectedItem(pos);
@@ -490,9 +490,9 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 					else
 						sClipboard = CGit::StripRefName(*selectedBranch);
 				}
-				else if (hashMap.find(pSelLogEntry->m_CommitHash) != hashMap.cend())
+				else if (auto refList = hashMap.find(pSelLogEntry->m_CommitHash); refList != hashMap.cend())
 				{
-					for (const auto& ref : hashMap[pSelLogEntry->m_CommitHash])
+					for (const auto& ref : refList->second)
 					{
 						if (CStringUtils::StartsWith(ref, L"refs/tags/") && CStringUtils::EndsWith(ref, L"^{}"))
 							sClipboard += ref.Left(ref.GetLength() - static_cast<int>(wcslen(L"^{}")));
@@ -508,8 +508,8 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 			{
 				CString str=pSelLogEntry->m_CommitHash.ToString();
 				// try to get the tag
-				if (hashMap.find(pSelLogEntry->m_CommitHash) != hashMap.cend())
-					GetFirstEntryStartingWith(hashMap[pSelLogEntry->m_CommitHash], L"refs/tags/", str);
+				if (auto refList = hashMap.find(pSelLogEntry->m_CommitHash); refList != hashMap.cend())
+					GetFirstEntryStartingWith(refList->second, L"refs/tags/", str);
 				CAppUtils::Export(GetParentHWND(), &str, &m_Path);
 			}
 			break;
@@ -520,8 +520,8 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 				CString str = pSelLogEntry->m_CommitHash.ToString();
 				if (branch)
 					str = *branch;
-				else if (hashMap.find(pSelLogEntry->m_CommitHash) != hashMap.cend()) // try to guess remote branch in order to enable tracking
-					GetFirstEntryStartingWith(hashMap[pSelLogEntry->m_CommitHash], L"refs/remotes/", str);
+				else if (auto refList = hashMap.find(pSelLogEntry->m_CommitHash); refList != hashMap.cend()) // try to guess remote branch in order to enable tracking
+					GetFirstEntryStartingWith(refList->second, L"refs/remotes/", str);
 
 				CAppUtils::CreateBranchTag(GetParentHWND(), (cmd & 0xFFFF) == ID_CREATE_TAG, &str);
 				ReloadHashMap();
@@ -537,8 +537,8 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 				auto branch = popmenu ? reinterpret_cast<const CString*>(static_cast<CIconMenu*>(popmenu)->GetMenuItemData(cmd & 0xFFFF)) : nullptr;
 				if (branch)
 					str = *branch;
-				else if (hashMap.find(pSelLogEntry->m_CommitHash) != hashMap.cend()) // try to guess remote branch in order to recommend good branch name and tracking
-					GetFirstEntryStartingWith(hashMap[pSelLogEntry->m_CommitHash], L"refs/remotes/", str);
+				else if (auto refList = hashMap.find(pSelLogEntry->m_CommitHash); refList != hashMap.cend()) // try to guess remote branch in order to recommend good branch name and tracking
+					GetFirstEntryStartingWith(refList->second, L"refs/remotes/", str);
 
 				CAppUtils::Switch(GetParentHWND(), str);
 			}
@@ -746,12 +746,11 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 				CRebaseDlg dlg;
 				dlg.m_Upstream = pSelLogEntry->m_CommitHash.ToString();
 				// try to guess a branch, optimally a local branch
-				if (hashMap.find(pSelLogEntry->m_CommitHash) != hashMap.cend())
+				if (auto refList = hashMap.find(pSelLogEntry->m_CommitHash); refList != hashMap.cend())
 				{
-					const auto& refList = hashMap[pSelLogEntry->m_CommitHash];
-					if (!refList.empty())
-						dlg.m_Upstream = refList.front();
-					for (const auto& ref : refList)
+					if (!refList->second.empty())
+						dlg.m_Upstream = refList->second.front();
+					for (const auto& ref : refList->second)
 					{
 						if (CGit::GetShortName(ref, dlg.m_Upstream, L"refs/heads/"))
 							break;
@@ -875,11 +874,11 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 				ASSERT(first && last);
 
 				CString firstBad = first->m_CommitHash.ToString();
-				if (hashMap.find(first->m_CommitHash) != hashMap.cend() && !hashMap[first->m_CommitHash].empty())
-					firstBad = hashMap[first->m_CommitHash].at(0);
+				if (auto refList = hashMap.find(first->m_CommitHash); refList != hashMap.cend() && !refList->second.empty())
+					firstBad = refList->second.at(0);
 				CString lastGood = last->m_CommitHash.ToString();
-				if (hashMap.find(last->m_CommitHash) != hashMap.cend() && !hashMap[last->m_CommitHash].empty())
-					lastGood = hashMap[last->m_CommitHash].at(0);
+				if (auto refList = hashMap.find(last->m_CommitHash); refList != hashMap.cend() && !refList->second.empty())
+					lastGood = refList->second.at(0);
 
 				if (CAppUtils::BisectStart(GetParentHWND(), lastGood, firstBad))
 					Refresh();
@@ -933,10 +932,10 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 				auto branch = popmenu ? reinterpret_cast<const CString*>(static_cast<CIconMenu*>(popmenu)->GetMenuItemData(cmd)) : nullptr;
 				if (branch && !CStringUtils::StartsWith(*branch, L"refs/remotes/"))
 					guessAssociatedBranch = *branch;
-				else if (hashMap.find(pSelLogEntry->m_CommitHash) != hashMap.cend())
+				else if (auto refList = hashMap.find(pSelLogEntry->m_CommitHash); refList != hashMap.cend())
 				{
-					if (!GetFirstEntryStartingWith(hashMap[pSelLogEntry->m_CommitHash], L"refs/heads/", guessAssociatedBranch))
-						GetFirstEntryStartingWith(hashMap[pSelLogEntry->m_CommitHash], L"refs/tags/", guessAssociatedBranch);
+					if (!GetFirstEntryStartingWith(refList->second, L"refs/heads/", guessAssociatedBranch))
+						GetFirstEntryStartingWith(refList->second, L"refs/tags/", guessAssociatedBranch);
 				}
 
 				if (CStringUtils::EndsWith(guessAssociatedBranch, L"^{}"))
@@ -997,11 +996,12 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 				CString shortname;
 				if (branch == reinterpret_cast<CString*>(MAKEINTRESOURCE(IDS_ALL)))
 				{
-					if (hashMap.find(pSelLogEntry->m_CommitHash) == hashMap.cend())
+					auto refList = hashMap.find(pSelLogEntry->m_CommitHash);
+					if (refList == hashMap.cend())
 						return;
 					CString currentBranch = L"refs/heads/" + m_CurrentBranch;
 					bool nothingDeleted = true;
-					for (const auto& ref : hashMap[pSelLogEntry->m_CommitHash])
+					for (const auto& ref : refList->second)
 					{
 						if (ref == currentBranch)
 							continue;
@@ -1043,8 +1043,8 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 				auto branch = popmenu ? reinterpret_cast<const CString*>(static_cast<CIconMenu*>(popmenu)->GetMenuItemData(cmd & 0xFFFF)) : nullptr;
 				if (branch)
 					str = *branch;
-				else if (hashMap.find(pSelLogEntry->m_CommitHash) != hashMap.cend() && !hashMap[pSelLogEntry->m_CommitHash].empty())
-					str = hashMap[pSelLogEntry->m_CommitHash].at(0);
+				else if (auto refList = hashMap.find(pSelLogEntry->m_CommitHash); refList != hashMap.cend() && !refList->second.empty())
+					str = refList->second.at(0);
 				// we need an URL to complete this command, so error out if we can't get an URL
 				if (CAppUtils::Merge(GetParentHWND(), &str))
 				{

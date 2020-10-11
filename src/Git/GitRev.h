@@ -113,7 +113,7 @@ public:
 	GIT_REV_LIST m_ParentHash;
 
 	virtual void Clear();
-	inline int ParentsCount() {return static_cast<int>(m_ParentHash.size()); }
+	inline int ParentsCount() const { return static_cast<int>(m_ParentHash.size()); }
 
 protected:
 	int ParserFromCommit(GIT_COMMIT *commit);

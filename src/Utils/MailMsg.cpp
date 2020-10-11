@@ -194,7 +194,7 @@ BOOL CMailMsg::Send()
 
 	// add attachments
 	std::vector<MapiFileDescW> attachments;
-	std::for_each(m_attachments.cbegin(), m_attachments.cend(), [&attachments](auto& attachment)
+	std::for_each(m_attachments.cbegin(), m_attachments.cend(), [&attachments](const auto& attachment)
 	{
 		MapiFileDescW fileDesc = { 0 };
 		fileDesc.nPosition = 0xFFFFFFFF;

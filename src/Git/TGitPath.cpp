@@ -1665,7 +1665,7 @@ void CTGitPathList::RemovePath(const CTGitPath& path)
 	}
 }
 
-void CTGitPathList::RemoveItem(CTGitPath & path)
+void CTGitPathList::RemoveItem(const CTGitPath& path)
 {
 	PathVector::iterator it;
 	for(it = m_paths.begin(); it != m_paths.end(); ++it)

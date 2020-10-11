@@ -459,7 +459,7 @@ int CTortoiseGitBlameData::FindFirstLineWrapAround(SearchDirection direction, co
 
 bool CTortoiseGitBlameData::ContainsOnlyFilename(const CString &filename) const
 {
-	return std::all_of(m_Filenames.cbegin(), m_Filenames.cend(), [&filename](auto& name) { return filename == name; });
+	return std::all_of(m_Filenames.cbegin(), m_Filenames.cend(), [&filename](const auto& name) { return filename == name; });
 }
 
 GitRevLoglist* CTortoiseGitBlameData::GetRevForHash(CGitHashMap& HashToRev, const CGitHash& hash, const CGitMailmap* mailmap, CString* err)

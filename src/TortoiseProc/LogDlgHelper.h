@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2007 - TortoiseSVN
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -68,15 +68,15 @@ public:
 	}
 	void ClearAll();
 	int  ParserFromLog(CTGitPath* path = nullptr, DWORD count = 0, DWORD infomask = CGit::LOG_INFO_STAT | CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE, CString* range = nullptr);
-	int  Fill(std::unordered_set<CGitHash>& hashes);
+	int  Fill(const std::unordered_set<CGitHash>& hashes);
 
 	Lanes m_Lns;
 	int	 m_FirstFreeLane;
 	// Log order: LOG_ORDER_CHRONOLOGIALREVERSED, LOG_ORDER_TOPOORDER, LOG_ORDER_DATEORDER
 	int m_logOrderBy;
 	MAP_HASH_REV m_HashMap;
-	void updateLanes(GitRevLoglist& c, Lanes& lns, CGitHash& sha);
-	void setLane(CGitHash& sha) ;
+	void updateLanes(GitRevLoglist& c, Lanes& lns, const CGitHash& sha);
+	void setLane(const CGitHash& sha);
 	void append(CGitHash& sha, bool storeInVector);
 
 #if 0

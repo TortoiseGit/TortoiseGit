@@ -197,7 +197,7 @@ bool ColumnManager::IsVisible(int column) const
 
 int ColumnManager::GetInvisibleCount() const
 {
-	return static_cast<int>(std::count_if(columns.cbegin(), columns.cend(), [](auto& column) { return !column.visible; }));
+	return static_cast<int>(std::count_if(columns.cbegin(), columns.cend(), [](const auto& column) { return !column.visible; }));
 }
 
 bool ColumnManager::IsRelevant(int column) const

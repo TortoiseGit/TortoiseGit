@@ -324,8 +324,8 @@ public:
 
 	// IDragSourceHelper
 	HRESULT InitializeFromBitmap(HBITMAP hBitmap,
-		POINT& pt,  // cursor position in client coords of the window
-		RECT& rc,   // selected item's bounding rect
+		const POINT& pt,  // cursor position in client coords of the window
+		const RECT& rc,   // selected item's bounding rect
 		IDataObject* pDataObject,
 		BOOL allowDropDescription=TRUE,
 		COLORREF crColorKey=GetSysColor(COLOR_WINDOW)// color of the window used for transparent effect.

@@ -222,7 +222,7 @@ void CSettingGitCredential::EnableAdvancedOptions()
 	GetDlgItem(IDC_BUTTON_REMOVE)->EnableWindow(enable && canModifySystem);
 }
 
-BOOL CSettingGitCredential::IsUrlExist(CString &text)
+BOOL CSettingGitCredential::IsUrlExist(const CString& text)
 {
 	CString str;
 	for(int i = 0; i < m_ctrlUrlList.GetCount();i++)

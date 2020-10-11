@@ -44,7 +44,7 @@ public:
 	bool                RegisterAndCreateWindow();
 
 	LRESULT             SendEditor(UINT Msg, WPARAM wParam = 0, LPARAM lParam = 0);
-	HWND                GetHWNDEdit() { return m_hWndEdit; }
+	HWND                GetHWNDEdit() const { return m_hWndEdit; }
 	bool                LoadFile(LPCTSTR filename);
 	bool                LoadFile(HANDLE hFile);
 	bool                SaveFile(LPCTSTR filename);

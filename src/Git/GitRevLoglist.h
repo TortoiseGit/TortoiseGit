@@ -41,7 +41,7 @@ public:
 	class GitRevLoglistSharedFiles
 	{
 	public:
-		GitRevLoglistSharedFiles(PSRWLOCK lock, CTGitPathList& files)
+		GitRevLoglistSharedFiles(PSRWLOCK lock, const CTGitPathList& files)
 			: m_lock(lock)
 			, m_files(files)
 		{
@@ -200,7 +200,7 @@ public:
 		return m_Body;
 	}
 
-	CString GetSubjectBody(bool crlf = false)
+	CString GetSubjectBody(bool crlf = false) const
 	{
 		CString ret(m_Subject);
 		if (!crlf)
@@ -219,7 +219,7 @@ public:
 		return ret;
 	}
 
-	BOOL IsBoundary() { return m_Mark == L'-'; }
+	BOOL IsBoundary() const { return m_Mark == L'-'; }
 
 	virtual void Clear() override;
 

@@ -187,7 +187,7 @@ struct SortByParentDate
 	}
 };
 
-int CLogDataVector::Fill(std::unordered_set<CGitHash>& hashes)
+int CLogDataVector::Fill(const std::unordered_set<CGitHash>& hashes)
 {
 	ATLASSERT(m_pLogCache);
 	try
@@ -251,7 +251,7 @@ void CLogDataVector::append(CGitHash& sha, bool storeInVector)
 	updateLanes(*r, this->m_Lns, sha);
 }
 
-void CLogDataVector::setLane(CGitHash& sha)
+void CLogDataVector::setLane(const CGitHash& sha)
 {
 	Lanes* l = &(this->m_Lns);
 	int i = m_FirstFreeLane;
@@ -293,7 +293,7 @@ void CLogDataVector::setLane(CGitHash& sha)
 #endif
 }
 
-void CLogDataVector::updateLanes(GitRevLoglist& c, Lanes& lns, CGitHash& sha)
+void CLogDataVector::updateLanes(GitRevLoglist& c, Lanes& lns, const CGitHash& sha)
 {
 // we could get third argument from c.sha(), but we are in fast path here
 // and c.sha() involves a deep copy, so we accept a little redundancy

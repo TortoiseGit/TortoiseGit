@@ -733,7 +733,7 @@ BOOL FindGitHash(const CString& msg, int offset, CWnd *pWnd)
 	return positions.empty() ? FALSE : TRUE;
 }
 
-static int DescribeCommit(CGitHash& hash, CString& result)
+static int DescribeCommit(const CGitHash& hash, CString& result)
 {
 	CAutoRepository repo(g_Git.GetGitRepository());
 	if (!repo)
@@ -2581,7 +2581,7 @@ void CLogDlg::OnBnClickedJumpUp()
 	m_LogList.SetSelectionMark(-1);
 
 	auto hashMapSharedPtr = m_LogList.m_HashMap;
-	auto& hashMap = *hashMapSharedPtr;
+	const auto& hashMap = *hashMapSharedPtr;
 
 	for (int i = index - 1; i >= 0; i--)
 	{
@@ -2689,7 +2689,7 @@ void CLogDlg::OnBnClickedJumpDown()
 	m_LogList.SetSelectionMark(-1);
 
 	auto hashMapSharedPtr = m_LogList.m_HashMap;
-	auto& hashMap = *hashMapSharedPtr;
+	const auto& hashMap = *hashMapSharedPtr;
 
 	for (int i = index + 1; i < m_LogList.GetItemCount(); ++i)
 	{

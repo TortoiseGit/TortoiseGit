@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013 - TortoiseGit
+// Copyright (C) 2013, 2020 - TortoiseGit
 // Copyright (C) 2010-2011, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -49,7 +49,7 @@ public:
 	T				Pop();
 	size_t			erase(const T &value);
 	size_t			size() const { return m_Queue.size(); }
-	bool			empty() { return m_Queue.empty(); }
+	bool			empty() const { return m_Queue.empty(); }
 private:
 	struct UniqueQueueStruct
 	{

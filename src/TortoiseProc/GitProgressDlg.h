@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2017, 2020 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -51,7 +51,7 @@ public:
 	 */
 	void SetItemCount(long count) {if(count) m_ProgList.SetItemCountTotal(count);}
 
-	bool DidErrorsOccur() {return m_ProgList.m_bErrorsOccurred;}
+	bool DidErrorsOccur() const { return m_ProgList.m_bErrorsOccurred; }
 
 	enum { IDD = IDD_SVNPROGRESS };
 

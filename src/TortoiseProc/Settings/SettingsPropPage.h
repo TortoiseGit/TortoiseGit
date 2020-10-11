@@ -59,7 +59,7 @@ public:
 	/**
 	 * Returns the restart code
 	 */
-	virtual SettingsRestart GetRestart() {return m_restart;}
+	virtual SettingsRestart GetRestart() const { return m_restart; }
 
 protected:
 	virtual BOOL OnInitDialog() override

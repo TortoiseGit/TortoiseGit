@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012, 2014, 2017, 2019 - TortoiseGit
+// Copyright (C) 2012, 2014, 2017, 2019-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -33,7 +33,7 @@ public:
 	enum { IDD = IDD_DIFFSUBMODULE };
 
 	void SetDiff(CString path, bool toIsWorkingCopy, const CGitHash& fromHash, CString fromSubject, bool fromOK, const CGitHash& toHash, CString toSubject, bool toOK, bool dirty, CGitDiff::ChangeType changeType);
-	bool IsRefresh() { return m_bRefresh; }
+	bool IsRefresh() const { return m_bRefresh; }
 
 	static HBRUSH GetInvalidBrush(CDC* pDC);
 	static HBRUSH GetChangeTypeBrush(CDC* pDC, const CGitDiff::ChangeType& changeType);

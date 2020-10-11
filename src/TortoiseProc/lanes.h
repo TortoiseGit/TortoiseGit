@@ -65,7 +65,7 @@ public:
 		, NODE_L(0)
 		, NODE_R(0)
 	{}
-	bool isEmpty() { return typeVec.empty(); }
+	bool isEmpty() const { return typeVec.empty(); }
 	void init(const CGitHash& expectedSha);
 	void clear();
 	bool isFork(const CGitHash& sha, bool& isDiscontinuity);
@@ -81,7 +81,7 @@ public:
 	void afterBranch();
 	void afterApplied();
 	void nextParent(const CGitHash& sha);
-	void getLanes(QVector<int> &ln) { ln = typeVec; } // O(1) vector is implicitly shared
+	void getLanes(QVector<int>& ln) const { ln = typeVec; } // O(1) vector is implicitly shared
 
 private:
 	int findNextSha(const CGitHash& next, int pos);

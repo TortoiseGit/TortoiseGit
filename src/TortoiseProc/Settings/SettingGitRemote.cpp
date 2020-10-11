@@ -188,7 +188,7 @@ void CSettingGitRemote::OnBnClickedButtonAdd()
 	this->OnApply();
 }
 
-BOOL CSettingGitRemote::IsRemoteExist(CString &remote)
+BOOL CSettingGitRemote::IsRemoteExist(const CString& remote)
 {
 	CString str;
 	for(int i=0;i<m_ctrlRemoteList.GetCount();i++)

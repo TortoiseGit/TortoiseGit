@@ -413,7 +413,7 @@ public:
 	/** Removes all paths which are on or in a git admin directory */
 	void RemoveAdminPaths();
 	void RemovePath(const CTGitPath& path);
-	void RemoveItem(CTGitPath &path);
+	void RemoveItem(const CTGitPath& path);
 	/**
 	 * Removes all child items and leaves only the top folders. Useful if you
 	 * create the list to remove them (i.e. if you remove a parent folder, the

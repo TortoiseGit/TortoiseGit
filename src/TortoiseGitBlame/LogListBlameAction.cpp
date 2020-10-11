@@ -70,7 +70,7 @@ void RunTortoiseGitProcWithCurrentRev(const CString& command, const GitRev* pRev
 	CCommonAppUtils::RunTortoiseGitProc(procCmd);
 }
 
-void CGitBlameLogList::ContextMenuAction(int cmd, int /*FirstSelect*/, int /*LastSelect*/, CMenu* /*menu*/, MAP_HASH_NAME&)
+void CGitBlameLogList::ContextMenuAction(int cmd, int /*FirstSelect*/, int /*LastSelect*/, CMenu* /*menu*/, const MAP_HASH_NAME&)
 {
 	POSITION pos = GetFirstSelectedItemPosition();
 	int indexNext = GetNextSelectedItem(pos);

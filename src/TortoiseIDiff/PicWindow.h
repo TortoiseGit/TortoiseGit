@@ -180,7 +180,7 @@ public:
     /// Sets the zoom factor of the image
     void SetZoom(int Zoom, bool centermouse, bool inzoom = false);
     /// Returns the currently used zoom factor in which the image is shown.
-    int GetZoom() {return picscale;}
+    int GetZoom() const { return picscale; }
     /// Zooms in (true) or out (false) in nice steps
     void Zoom(bool in, bool centermouse);
     /// Sets the 'Other' pic window
@@ -196,8 +196,8 @@ public:
 
     bool HasMultipleImages();
 
-    int GetHPos() {return nHScrollPos;}
-    int GetVPos() {return nVScrollPos;}
+    int GetHPos() const { return nHScrollPos; }
+    int GetVPos() const { return nVScrollPos; }
     void SetZoomValue(int z) { picscale = z; InvalidateRect(*this, nullptr, FALSE); }
 
     void SetSelectionMode(bool bSelect = true) { bSelectionMode = bSelect; }

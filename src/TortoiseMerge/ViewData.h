@@ -131,7 +131,7 @@ public:
 			m_nMarkedBlocks++;
 		m_data[index].marked = marked;
 	}
-	bool			HasMarkedBlocks() { return m_nMarkedBlocks > 0; }
+	bool			HasMarkedBlocks() const { return m_nMarkedBlocks > 0; }
 
 	void			Clear() { m_data.clear(); m_nMarkedBlocks = 0; }
 	void			Reserve(int length) {m_data.reserve(length);}

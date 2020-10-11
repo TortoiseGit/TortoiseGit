@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2007-2008, 2012 - TortoiseSVN
 
@@ -57,7 +57,7 @@ public:
 	/**
 	 * Returns the number of recursively watched paths.
 	 */
-	int GetNumberOfWatchedPaths() {return watchedPaths.GetCount();}
+	int GetNumberOfWatchedPaths() const { return watchedPaths.GetCount(); }
 
 	/**
 	 * Stops the watching thread.

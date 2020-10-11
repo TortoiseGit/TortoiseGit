@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2018 - TortoiseGit
+// Copyright (C) 2011-2018, 2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -38,12 +38,12 @@ public:
 	virtual ~CFindDlg();
 	void Create(CWnd* pParent = nullptr) { m_pParent = pParent; CDialog::Create(IDD, pParent); ShowWindow(SW_SHOW); UpdateWindow(); }
 
-	bool IsTerminating() {return m_bTerminating;}
-	bool FindNext() {return m_bFindNext;}
-	bool MatchCase() {return !!m_bMatchCase;}
-	bool Regex() {return !!m_bRegex;}
-	bool IsRef()	{return !!m_bIsRef;}
-	CString GetFindString() {return m_FindString;}
+	bool IsTerminating() const { return m_bTerminating; }
+	bool FindNext() const { return m_bFindNext; }
+	bool MatchCase() const { return !!m_bMatchCase; }
+	bool Regex() const { return !!m_bRegex; }
+	bool IsRef() const { return !!m_bIsRef; }
+	CString GetFindString() const { return m_FindString; }
 	void SetFindString(const CString& str) { if (!str.IsEmpty()) { m_FindCombo.SetWindowText(str); } }
 	void RefreshList();
 

@@ -473,7 +473,7 @@ public:
 	/**
 	 * If unversioned files are found (but not necessarily shown) TRUE is returned.
 	 */
-	BOOL HasUnversionedItems() {return m_bHasUnversionedItems;}
+	BOOL HasUnversionedItems() const { return m_bHasUnversionedItems; }
 
 	/**
 	 * If there are any change lists defined in the working copy, TRUE is returned
@@ -578,7 +578,7 @@ public:
 	/**
 	 * Returns the number of selected items
 	 */
-	LONG GetSelected(){return m_nSelected;};
+	LONG GetSelected() const { return m_nSelected; };
 
 	/**
 	 * Enables dropping of files on the control.
@@ -604,20 +604,20 @@ public:
 	/**
 	 * Returns the currently used show flags passed to the Show() method.
 	 */
-	DWORD GetShowFlags() {return m_dwShow;}
+	DWORD GetShowFlags() const { return m_dwShow; }
 
 public:
-	CString GetLastErrorMessage() {return m_sLastError;}
+	CString GetLastErrorMessage() const { return m_sLastError; }
 
 	void BusyCursor(bool bBusy) { m_bWaitCursor = bBusy; }
 
-	LONG GetUnversionedCount() { return m_nShownUnversioned; }
-	LONG GetModifiedCount() { return m_nShownModified; }
-	LONG GetAddedCount() { return m_nShownAdded; }
-	LONG GetDeletedCount() { return m_nShownDeleted; }
-	LONG GetConflictedCount() { return m_nShownConflicted; }
-	LONG GetFileCount() { return m_nShownFiles; }
-	LONG GetSubmoduleCount() { return m_nShownSubmodules; }
+	LONG GetUnversionedCount() const { return m_nShownUnversioned; }
+	LONG GetModifiedCount() const { return m_nShownModified; }
+	LONG GetAddedCount() const { return m_nShownAdded; }
+	LONG GetDeletedCount() const { return m_nShownDeleted; }
+	LONG GetConflictedCount() const { return m_nShownConflicted; }
+	LONG GetFileCount() const { return m_nShownFiles; }
+	LONG GetSubmoduleCount() const { return m_nShownSubmodules; }
 
 	CAutoReadLock AcquireReadLock() { return CAutoReadLock(m_guard); }
 	CAutoReadWeakLock AcquireReadWeakLock(DWORD timeout) { return CAutoReadWeakLock(m_guard, timeout); }

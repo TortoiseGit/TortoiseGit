@@ -87,12 +87,12 @@ public:
 	 */
 	void		CenterSplitter();
 
-	int			GetOldRowCount() { return m_nOldRows; }
-	int			GetOldColCount() { return m_nOldCols; }
-	bool		HasOldRowSize() { return m_pRowOldSize != nullptr; }
-	bool		HasOldColSize() { return m_pColOldSize != nullptr; }
-	int			GetOldRowSize(int index) { return m_pRowOldSize[index]; }
-	int			GetOldColSize(int index) { return m_pColOldSize[index]; }
+	int			GetOldRowCount() const { return m_nOldRows; }
+	int			GetOldColCount() const { return m_nOldCols; }
+	bool		HasOldRowSize() const { return m_pRowOldSize != nullptr; }
+	bool		HasOldColSize() const { return m_pColOldSize != nullptr; }
+	int			GetOldRowSize(int index) const { return m_pRowOldSize[index]; }
+	int			GetOldColSize(int index) const { return m_pColOldSize[index]; }
 
 protected:
 	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);

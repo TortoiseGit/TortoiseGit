@@ -68,7 +68,7 @@ public:
 	virtual ~CLogDlg();
 	void SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString hightlightRevision, CString range, DWORD limit, int limitScale = -1);
 	void SetFilter(const CString& findstr, LONG findtype, bool findregex);
-	bool IsThreadRunning() { return CGitLogListBase::s_bThreadRunning == TRUE; }
+	bool IsThreadRunning() const { return CGitLogListBase::s_bThreadRunning == TRUE; }
 	void SetSelect(bool bSelect) {m_bSelect = bSelect;}
 	void ContinuousSelection(bool bCont = true) {m_bSelectionMustBeContinuous = bCont;}
 	void SingleSelection(bool bSingle = true) {m_bSelectionMustBeSingle = bSingle;}
@@ -80,7 +80,7 @@ public:
 	 * Provides selected commit hash if available, call after OK return from here
 	 * Empty if none
 	**/
-	std::vector<CGitHash> GetSelectedHash(){ return m_sSelectedHash; }
+	std::vector<CGitHash> GetSelectedHash() const { return m_sSelectedHash; }
 
 // Dialog Data
 	enum { IDD = IDD_LOGMESSAGE };

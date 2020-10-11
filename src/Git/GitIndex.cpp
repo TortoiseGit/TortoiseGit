@@ -160,7 +160,7 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	return 0;
 }
 
-int CGitIndexList::GetFileStatus(const CString& gitdir, const CString& pathorg, git_wc_status2_t& status, __int64 time, __int64 filesize, bool isSymlink, CGitHash* pHash)
+int CGitIndexList::GetFileStatus(const CString& gitdir, const CString& pathorg, git_wc_status2_t& status, __int64 time, __int64 filesize, bool isSymlink, CGitHash* pHash) const
 {
 	size_t index = SearchInSortVector(*this, pathorg, -1, IsIgnoreCase());
 
@@ -181,7 +181,7 @@ int CGitIndexList::GetFileStatus(const CString& gitdir, const CString& pathorg, 
 	return GetFileStatus(repository, gitdir, entry, status, time, filesize, isSymlink);
 }
 
-int CGitIndexList::GetFileStatus(CAutoRepository& repository, const CString& gitdir, CGitIndex& entry, git_wc_status2_t& status, __int64 time, __int64 filesize, bool isSymlink)
+int CGitIndexList::GetFileStatus(CAutoRepository& repository, const CString& gitdir, const CGitIndex& entry, git_wc_status2_t& status, __int64 time, __int64 filesize, bool isSymlink) const
 {
 	ATLASSERT(!status.assumeValid && !status.skipWorktree);
 
@@ -256,7 +256,7 @@ int CGitIndexList::GetFileStatus(CAutoRepository& repository, const CString& git
 	return 0;
 }
 
-int CGitIndexList::GetFileStatus(const CString& gitdir, const CString& path, git_wc_status2_t& status, CGitHash* pHash)
+int CGitIndexList::GetFileStatus(const CString& gitdir, const CString& path, git_wc_status2_t& status, CGitHash* pHash) const
 {
 	ATLASSERT(!status.assumeValid && !status.skipWorktree);
 
@@ -324,7 +324,7 @@ bool CGitIndexFileMap::HasIndexChangedOnDisk(const CString& gitdir)
 
 int CGitIndexFileMap::LoadIndex(const CString &gitdir)
 {
-	SHARED_INDEX_PTR pIndex = std::make_shared<CGitIndexList>();
+	auto pIndex = std::make_shared<CGitIndexList>();
 
 	if (pIndex->ReadIndex(gitdir))
 	{
@@ -544,7 +544,7 @@ int CGitHeadFileList::ReadHeadHash(const CString& gitdir)
 	return 0;
 }
 
-bool CGitHeadFileList::CheckHeadUpdate()
+bool CGitHeadFileList::CheckHeadUpdate() const
 {
 	if (this->m_HeadFile.IsEmpty())
 		return true;
@@ -1083,14 +1083,14 @@ void CGitHeadFileMap::CheckHeadAndUpdate(const CString& gitdir, bool ignoreCase)
 	if (ptr.get() && !ptr->CheckHeadUpdate())
 		return;
 
-	ptr = std::make_shared<CGitHeadFileList>();
-	if (ptr->ReadHeadHash(gitdir) || ptr->ReadTree(ignoreCase))
+	auto newPtr = std::make_shared<CGitHeadFileList>();
+	if (newPtr->ReadHeadHash(gitdir) || newPtr->ReadTree(ignoreCase))
 	{
 		SafeClear(gitdir);
 		return;
 	}
 
-	this->SafeSet(gitdir, ptr);
+	this->SafeSet(gitdir, newPtr);
 
 	return;
 }
