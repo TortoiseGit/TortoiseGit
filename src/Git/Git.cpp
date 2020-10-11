@@ -2000,7 +2000,7 @@ int libgit2_addto_map_each_ref_fn(git_reference *ref, void *payload)
 	{
 		str += L"^{}"; // deref tag
 		CAutoObject derefedTag;
-		if (git_object_peel(derefedTag.GetPointer(), gitObject, GIT_OBJECT_ANY))
+		if (git_tag_target(derefedTag.GetPointer(), reinterpret_cast<git_tag*>(static_cast<git_object*>(gitObject))))
 			return 1;
 		gitObject.Swap(derefedTag);
 	}
