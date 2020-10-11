@@ -46,9 +46,9 @@ void for_each(Cont& c, Pred&& p)
 }
 
 template <typename Cont, typename Pred>
-auto find_if(Cont& c, Pred&& p)
+auto any_of(Cont& c, Pred&& p)
 {
-	return std::find_if(cbegin(c), cend(c), p);
+	return std::any_of(cbegin(c), cend(c), p);
 }
 
 // CGitLogList

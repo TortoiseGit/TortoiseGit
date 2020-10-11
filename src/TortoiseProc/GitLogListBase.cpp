@@ -1672,7 +1672,7 @@ bool CGitLogListBase::IsStash(const GitRev * pSelLogEntry)
 	auto refList = hashMap.get()->find(pSelLogEntry->m_CommitHash);
 	if (refList == hashMap.get()->cend())
 		return false;
-	return find_if((*refList).second, [](const auto& ref) { return ref == L"refs/stash"; }) != (*refList).second.cend();
+	return any_of((*refList).second, [](const auto& ref) { return ref == L"refs/stash"; });
 }
 
 bool CGitLogListBase::IsBisect(const GitRev * pSelLogEntry)
@@ -1681,7 +1681,7 @@ bool CGitLogListBase::IsBisect(const GitRev * pSelLogEntry)
 	auto refList = hashMap->find(pSelLogEntry->m_CommitHash);
 	if (refList == hashMap->cend())
 		return false;
-	return find_if((*refList).second, [](const auto& ref) { return CStringUtils::StartsWith(ref, L"refs/bisect/"); }) != (*refList).second.cend();
+	return any_of((*refList).second, [](const auto& ref) { return CStringUtils::StartsWith(ref, L"refs/bisect/"); });
 }
 
 void CGitLogListBase::GetParentHashes(GitRev *pRev, GIT_REV_LIST &parentHash)
@@ -2262,7 +2262,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			if ((m_ContextMenuMask & GetContextMenuBit(ID_PUSH)) && ((!isStash && hashMap.find(pSelLogEntry->m_CommitHash) != hashMap.cend()) || showExtendedMenu))
 			{
 				// show the push-option only if the log entry has an associated local branch
-				bool isLocal = hashMap.find(pSelLogEntry->m_CommitHash) != hashMap.cend() && find_if(hashMap[pSelLogEntry->m_CommitHash], [](const CString& ref) { return CStringUtils::StartsWith(ref, L"refs/heads/") || CStringUtils::StartsWith(ref, L"refs/tags/"); }) != hashMap[pSelLogEntry->m_CommitHash].cend();
+				bool isLocal = hashMap.find(pSelLogEntry->m_CommitHash) != hashMap.cend() && any_of(hashMap.find(pSelLogEntry->m_CommitHash)->second, [](const CString& ref) { return CStringUtils::StartsWith(ref, L"refs/heads/") || CStringUtils::StartsWith(ref, L"refs/tags/"); });
 				if (isLocal || showExtendedMenu)
 				{
 					CString str;

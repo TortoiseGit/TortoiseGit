@@ -1916,9 +1916,9 @@ void CLogDlg::OnEnLinkMsgview(NMHDR *pNMHDR, LRESULT *pResult)
 		msg.Replace(L"\r\n", L"\n");
 		url = msg.Mid(pEnLink->chrg.cpMin, pEnLink->chrg.cpMax-pEnLink->chrg.cpMin);
 		auto findResult = m_LogList.m_ProjectProperties.FindBugIDPositions(msg);
-		if (std::find_if(findResult.cbegin(), findResult.cend(),
+		if (std::any_of(findResult.cbegin(), findResult.cend(),
 			[=] (const CHARRANGE &cr) -> bool { return cr.cpMin == pEnLink->chrg.cpMin && cr.cpMax == pEnLink->chrg.cpMax; }
-		) != findResult.cend())
+		))
 		{
 			url = m_LogList.m_ProjectProperties.GetBugIDUrl(url);
 			url = GetAbsoluteUrlFromRelativeUrl(url);
@@ -2607,7 +2607,7 @@ void CLogDlg::OnBnClickedJumpUp()
 		{
 			auto refList = hashMap.find(data->m_CommitHash);
 			if (refList != hashMap.cend())
-				found = find_if((*refList).second, [](const auto& ref) { return CStringUtils::StartsWith(ref, L"refs/tags/"); }) != (*refList).second.cend();
+				found = any_of((*refList).second, [](const auto& ref) { return CStringUtils::StartsWith(ref, L"refs/tags/"); });
 
 			if (found && jumpType == JumpType_TagFF)
 				found = g_Git.IsFastForward(hashValue.ToString(), data->m_CommitHash.ToString());
@@ -2616,7 +2616,7 @@ void CLogDlg::OnBnClickedJumpUp()
 		{
 			auto refList = hashMap.find(data->m_CommitHash);
 			if (refList != hashMap.cend())
-				found = find_if((*refList).second, [](const auto& ref) { return CStringUtils::StartsWith(ref, L"refs/heads/") || CStringUtils::StartsWith(ref, L"refs/remotes/"); }) != (*refList).second.cend();
+				found = any_of((*refList).second, [](const auto& ref) { return CStringUtils::StartsWith(ref, L"refs/heads/") || CStringUtils::StartsWith(ref, L"refs/remotes/"); });
 
 			if (found && jumpType == JumpType_BranchFF)
 				found = g_Git.IsFastForward(hashValue.ToString(), data->m_CommitHash.ToString());
@@ -2711,7 +2711,7 @@ void CLogDlg::OnBnClickedJumpDown()
 		{
 			auto refList = hashMap.find(data->m_CommitHash);
 			if (refList != hashMap.cend())
-				found = find_if((*refList).second, [](const auto& ref) { return CStringUtils::StartsWith(ref, L"refs/tags/"); }) != (*refList).second.cend();
+				found = any_of((*refList).second, [](const auto& ref) { return CStringUtils::StartsWith(ref, L"refs/tags/"); });
 
 			if (found && jumpType == JumpType_TagFF)
 				found = g_Git.IsFastForward(data->m_CommitHash.ToString(), hashValue.ToString());
@@ -2720,7 +2720,7 @@ void CLogDlg::OnBnClickedJumpDown()
 		{
 			auto refList = hashMap.find(data->m_CommitHash);
 			if (refList != hashMap.cend())
-				found = find_if((*refList).second, [](const auto& ref) { return CStringUtils::StartsWith(ref, L"refs/heads/") || CStringUtils::StartsWith(ref, L"refs/remotes/"); }) != (*refList).second.cend();
+				found = any_of((*refList).second, [](const auto& ref) { return CStringUtils::StartsWith(ref, L"refs/heads/") || CStringUtils::StartsWith(ref, L"refs/remotes/"); });
 
 			if (found && jumpType == JumpType_BranchFF)
 				found = g_Git.IsFastForward(data->m_CommitHash.ToString(), hashValue.ToString());
