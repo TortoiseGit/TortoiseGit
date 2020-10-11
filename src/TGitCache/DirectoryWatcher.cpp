@@ -147,13 +147,13 @@ bool CDirectoryWatcher::AddPath(const CTGitPath& path, bool bCloseInfoMap)
 	PTSTR pFound = StrStrI(path.GetWinPath(), L":\\RECYCLER");
 	if (pFound)
 	{
-		if ((*(pFound + 10) == '\0') || (*(pFound + 10) == '\\'))
+		if (*(pFound + wcslen(L":\\RECYCLER")) == L'\0' || *(pFound + wcslen(L":\\RECYCLER")) == L'\\')
 			return false;
 	}
 	pFound = StrStrI(path.GetWinPath(), L":\\$Recycle.Bin");
 	if (pFound)
 	{
-		if ((*(pFound + 14) == '\0') || (*(pFound + 14) == '\\'))
+		if (*(pFound + wcslen(L":\\$Recycle.Bin")) == L'\0' || *(pFound + wcslen(L":\\$Recycle.Bin")) == L'\\')
 			return false;
 	}
 
@@ -439,18 +439,18 @@ void CDirectoryWatcher::WorkerThread()
 							{
 								if ((pFound = StrStrI(buf, L"\\tmp")) != nullptr)
 								{
-									pFound += 4;
-									if (((*pFound) == '\\') || ((*pFound) == '\0'))
+									pFound += wcslen(L"\\tmp");
+									if (*pFound == L'\\' || *pFound == L'\0')
 										continue;
 								}
 								if ((pFound = StrStrI(buf, L":\\RECYCLER")) != nullptr)
 								{
-									if ((*(pFound + 10) == '\0') || (*(pFound + 10) == '\\'))
+									if (*(pFound + wcslen(L":\\RECYCLER")) == L'\0' || *(pFound + wcslen(L":\\RECYCLER")) == L'\\')
 										continue;
 								}
 								if ((pFound = StrStrI(buf, L":\\$Recycle.Bin")) != nullptr)
 								{
-									if ((*(pFound + 14) == '\0') || (*(pFound + 14) == '\\'))
+									if (*(pFound + wcslen(L":\\$Recycle.Bin")) == L'\0' || *(pFound + wcslen(L":\\$Recycle.Bin")) == L'\\')
 										continue;
 								}
 
