@@ -89,7 +89,7 @@ static CString FindFileOnPath(const CString& filename, LPCTSTR env, bool wantDir
 		{
 			if (wantDirectory)
 				pfin[1] = L'\0';
-			return buf;
+			return CString(buf);
 		}
 	}
 
