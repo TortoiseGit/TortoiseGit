@@ -50,7 +50,7 @@ class CSciEditBlame: public CSciEdit
 {
 	DECLARE_DYNAMIC(CSciEditBlame)
 public:
-	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) override
 	{
 		switch (nChar)
 		{

@@ -51,7 +51,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 	virtual void OnCancel();
 	virtual void OnOK();
-	virtual BOOL OnInitDialog();
+	virtual BOOL OnInitDialog() override;
 	CComboBox m_Encoding;
 	CComboBox m_EOL;
 };

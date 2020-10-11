@@ -51,7 +51,7 @@ public:
 	PatchOpenDlgEventHandler() {}
 	~PatchOpenDlgEventHandler() {}
 
-	virtual STDMETHODIMP OnButtonClicked(IFileDialogCustomize* pfdc, DWORD dwIDCtl)
+	virtual STDMETHODIMP OnButtonClicked(IFileDialogCustomize* pfdc, DWORD dwIDCtl) override
 	{
 		if (dwIDCtl == 101)
 		{

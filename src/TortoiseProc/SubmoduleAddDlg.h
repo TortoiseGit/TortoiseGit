@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2017 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2017, 2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -29,7 +29,7 @@ class CSubmoduleAddDlg : public CHorizontalResizableStandAloneDialog
 public:
 	CSubmoduleAddDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CSubmoduleAddDlg();
-	BOOL OnInitDialog();
+	BOOL OnInitDialog() override;
 // Dialog Data
 	enum { IDD = IDD_SUBMODULE_ADD };
 

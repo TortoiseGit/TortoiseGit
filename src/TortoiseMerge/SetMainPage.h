@@ -48,7 +48,7 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnApply();
-	virtual BOOL OnInitDialog();
+	virtual BOOL OnInitDialog() override;
 
 	afx_msg void OnModified();
 	afx_msg void OnModifiedWithReload();

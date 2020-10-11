@@ -67,7 +67,7 @@ protected:
 	afx_msg void OnDestroy();
 	afx_msg void OnBnClickedPatchfromclipboard();
 
-	virtual BOOL OnInitDialog();
+	virtual BOOL OnInitDialog() override;
 	virtual void OnOK();
 	void AutoCompleteOn(int controlId);
 

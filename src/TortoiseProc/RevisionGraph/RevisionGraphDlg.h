@@ -121,7 +121,7 @@ private:
 	void			UpdateZoomBox();
 
 	bool			UpdateData();
-	void			SetTheme(bool bDark);
+	void			SetTheme(bool bDark) override;
 
 	float						m_fZoomFactor;
 	CRevisionGraphWnd			m_Graph;

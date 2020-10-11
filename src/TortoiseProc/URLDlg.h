@@ -40,7 +40,7 @@ public:
 	enum { IDD = IDD_URL };
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
-	virtual BOOL OnInitDialog();
+	virtual BOOL OnInitDialog() override;
 	virtual void OnOK();
 	afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
 

@@ -89,7 +89,7 @@ protected:
 
 	virtual BOOL IsPressed() override;
 
-	afx_msg void OnDraw(CDC* pDC, const CRect& rect, UINT uiState);
+	afx_msg void OnDraw(CDC* pDC, const CRect& rect, UINT uiState) override;
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnSysColorChange();
 	afx_msg LRESULT OnThemeChanged();
