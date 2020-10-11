@@ -2605,8 +2605,7 @@ void CLogDlg::OnBnClickedJumpUp()
 		}
 		else if (jumpType == JumpType_Tag || jumpType == JumpType_TagFF)
 		{
-			auto refList = hashMap.find(data->m_CommitHash);
-			if (refList != hashMap.cend())
+			if (auto refList = hashMap.find(data->m_CommitHash); refList != hashMap.cend())
 				found = any_of((*refList).second, [](const auto& ref) { return CStringUtils::StartsWith(ref, L"refs/tags/"); });
 
 			if (found && jumpType == JumpType_TagFF)
@@ -2614,8 +2613,7 @@ void CLogDlg::OnBnClickedJumpUp()
 		}
 		else if (jumpType == JumpType_Branch || jumpType == JumpType_BranchFF)
 		{
-			auto refList = hashMap.find(data->m_CommitHash);
-			if (refList != hashMap.cend())
+			if (auto refList = hashMap.find(data->m_CommitHash); refList != hashMap.cend())
 				found = any_of((*refList).second, [](const auto& ref) { return CStringUtils::StartsWith(ref, L"refs/heads/") || CStringUtils::StartsWith(ref, L"refs/remotes/"); });
 
 			if (found && jumpType == JumpType_BranchFF)
@@ -2709,8 +2707,7 @@ void CLogDlg::OnBnClickedJumpDown()
 			found = data->m_CommitHash == hashValue;
 		else if (jumpType == JumpType_Tag || jumpType == JumpType_TagFF)
 		{
-			auto refList = hashMap.find(data->m_CommitHash);
-			if (refList != hashMap.cend())
+			if (auto refList = hashMap.find(data->m_CommitHash); refList != hashMap.cend())
 				found = any_of((*refList).second, [](const auto& ref) { return CStringUtils::StartsWith(ref, L"refs/tags/"); });
 
 			if (found && jumpType == JumpType_TagFF)
@@ -2718,8 +2715,7 @@ void CLogDlg::OnBnClickedJumpDown()
 		}
 		else if (jumpType == JumpType_Branch || jumpType == JumpType_BranchFF)
 		{
-			auto refList = hashMap.find(data->m_CommitHash);
-			if (refList != hashMap.cend())
+			if (auto refList = hashMap.find(data->m_CommitHash); refList != hashMap.cend())
 				found = any_of((*refList).second, [](const auto& ref) { return CStringUtils::StartsWith(ref, L"refs/heads/") || CStringUtils::StartsWith(ref, L"refs/remotes/"); });
 
 			if (found && jumpType == JumpType_BranchFF)
