@@ -191,10 +191,14 @@ All user/site specific configuration is stored in doc.build.user.
 
 		<echo message="Stylesheet: ${xslt.file}" />
 		<echo message="Parameters: ${xslt.params}" />
+		<property name="xslt.output.file" value="${path::get-temp-file-name()}"/>
 		<exec program="xsltproc"
 					commandline="${xslt.params} --output ${xslt.target} ${xslt.file} ${xslt.source}"
 					basedir="${path.bin}"
+					output="${xslt.output.file}"
 					verbose="false"/>
+		<loadfile file="${xslt.output.file}" property="xsltproc.output" />
+		<fail if="${string::contains(xsltproc.output, ': parser error :')}">"Parser error" found</fail>
 	</target>
 	
 <!-- ====================================================================== -->
