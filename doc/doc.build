@@ -72,6 +72,7 @@ All user/site specific configuration is stored in doc.build.user.
 				<call target="copyimages"/>
 
 				<property name="xslt.source" value="${doc.target.source}"/>
+				<call target="checkimages"/>
 				<foreach item="String" in="${docformats}" delim="," property="docformat">
 					<call target="${docformat}"/>
 				</foreach>
@@ -152,6 +153,22 @@ All user/site specific configuration is stored in doc.build.user.
 				<include name="*"/>
 			</fileset>
 		</copy>
+	</target>
+
+	<target name="checkimages" desciption="Checks whether all referenced images are there">
+		<property name="xslt.params" value="${xsl.pdf.params}"/>
+
+		<property name="xslt.target" value="${path::get-temp-file-name()}"/>
+		<exec program="xsltproc"
+					commandline="${xslt.params} --output ${xslt.target} images/extract-images.xsl ${xslt.source}"
+					basedir="${path.bin}"
+					verbose="false"/>
+		<loadfile file="${xslt.target}" property="xsltproc.output" />
+
+		<foreach item="Line" in="${xslt.target}" property="filename" trim="Both">
+			<property name="fullname" value="images/${lang.target}/${filename}"/>
+			<fail unless="${file::exists(fullname)}">Missing image: ${fullname}</fail>
+		</foreach>
 	</target>
 
 <!-- ====================================================================== -->
