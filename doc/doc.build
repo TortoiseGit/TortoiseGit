@@ -211,6 +211,8 @@ All user/site specific configuration is stored in doc.build.user.
 					verbose="false"/>
 		<loadfile file="${xslt.output.file}" property="xsltproc.output" />
 		<fail if="${string::contains(xsltproc.output, ': parser error :')}">"Parser error" found</fail>
+		<fail if="${string::contains(xsltproc.output, 'Error: no ID for constraint linkend:')}">"Error: no ID for constraint linkend:" found</fail>
+		<fail if="${string::contains(xsltproc.output, 'ERROR: xref linking to ')}">"ERROR: xref linking to" found</fail>
 	</target>
 	
 <!-- ====================================================================== -->

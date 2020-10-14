@@ -181,7 +181,7 @@ write access to the log file and to the database (see
 SSH, the users of course also need write access to the Git repository itself.</simpara>
 <simpara>You also need to ensure that each repository is "bare" (without a Git index
 file) for <emphasis>cvs commit</emphasis> to work. See <xref linkend="gitcvs-migration(7)" />.</simpara>
-<simpara id="configaccessmethod">All configuration variables can also be overridden for a specific method of
+<simpara id="git-cvsserver(1)_configaccessmethod">All configuration variables can also be overridden for a specific method of
 access. Valid method names are "ext" (for SSH access) and "pserver". The
 following example configuration would disable pserver access while still
 allowing access over SSH.</simpara>
